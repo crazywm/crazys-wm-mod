@@ -21,6 +21,31 @@
 #include "libintl.h"
 extern cRng g_Dice;
 
+// constructors + destructors
+cCustomers::cCustomers()
+{
+	//	m_Parent=0;
+	m_NumCustomers = 0;
+	ChangeCustomerBase();
+	//	m_Last=0;
+}
+cCustomers::~cCustomers()
+{
+	Free();
+}
+sCustomer::sCustomer()
+{
+	m_Fetish = 0;
+	m_Next = 0;
+	m_Prev = 0;
+	m_Official = 0;
+}
+sCustomer::~sCustomer()
+{
+	if (m_Next) delete m_Next;
+	m_Next = 0;
+	m_Prev = 0;
+}
 void cCustomers::Free()
 {
 	m_NumCustomers = 0;
@@ -45,8 +70,7 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel* brothel)
 {
 
 	// It may be a group of people looking for group sex (5% chance)
-	customer.m_Amount = g_Dice.d100();
-	if (customer.m_Amount <= 5) // changed to bring to documented 5%, consider rasing to 10 or 15, was 4. -PP
+	if (g_Dice.percent(5)) // changed to bring to documented 5%, consider rasing to 10 or 15, was 4. -PP
 	{
 		customer.m_IsWoman = 0;
 		customer.m_Amount = (g_Dice % 3) + 2; // was +1 this allowed groups of 1 -PP
@@ -61,6 +85,10 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel* brothel)
 	// get their stats generated
 	for (int j = 0; j < NUM_STATS; j++)		customer.m_Stats[j] = (g_Dice % 81) + 20;
 	for (u_int j = 0; j < NUM_SKILLS; j++)	customer.m_Skills[j] = (g_Dice % 81) + 20;
+
+	customer.m_GoalA = 0;
+	customer.m_GoalB = 0;
+	customer.m_GoalC = 0;
 
 	// generate their fetish
 	customer.m_Fetish = g_Dice%NUM_FETISH;
@@ -163,10 +191,9 @@ void cCustomers::GetCustomer(sCustomer& customer, sBrothel* brothel)
 void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 {
 	Free();	// Free any existing customers
+	if (brothel->m_NumGirls == 0) return;	// no girls, no customers
 
 	stringstream ss;
-	ss.str("");
-	if (brothel->m_NumGirls == 0) return;	// no girls, no customers
 	string daynighttime = (Day0Night1 ? gettext("nighttime") : gettext("daytime"));
 	/*
  *	base number of customers = number of girls times 1.5f
@@ -232,6 +259,11 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 
 	if (m_NumCustomers < 0)  // negative number of customers doesn't make sense
 		m_NumCustomers = 0;
+}
+
+void cCustomers::PopulateCustomers(sBrothel * brothel, bool Day0Night1)
+{
+
 }
 
 /*sCustomer* cCustomers::GetParentCustomer()

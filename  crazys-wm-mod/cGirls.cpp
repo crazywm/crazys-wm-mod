@@ -9882,8 +9882,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
-		contraception = girl->calc_pregnancy(customer, false, 0.75);
-		STDchance += (contraception ? 2 : 20);
+		if (!customer->m_IsWoman)
+		{
+			contraception = girl->calc_pregnancy(customer, false, 0.75);
+			STDchance += (contraception ? 2 : 20);
+		}
 
 		UpdateStatTemp(girl, STAT_LIBIDO, -5);
 		UpdateStat(girl, STAT_SPIRIT, -1);
@@ -10071,7 +10074,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			message += "\n\nShe got over-excited by her desire for cum, and failed to use her anti-preg. ";
 			girl->m_UseAntiPreg = false;	// turn off anti
-			contraception = girl->calc_pregnancy(customer, good, 1.5);
+			contraception = girl->calc_group_pregnancy(customer, good, 1.5);
 			STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
 			if (contraception) message += "Luckily she didn't get pregnant.\n";
 			else message += "Sure enough, she got pregnant.";
@@ -10080,7 +10083,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else
 		{
 			//50% bonus to the chance of pregnancy since there's more than one partner involved
-			contraception = girl->calc_pregnancy(customer, good, 1.5);
+			contraception = girl->calc_group_pregnancy(customer, good, 1.5);
 			STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
 		}
 		UpdateStatTemp(girl, STAT_LIBIDO, -20);
@@ -13349,7 +13352,7 @@ bool sGirl::calc_group_pregnancy(cPlayer *player, bool good, double factor)
 }
 bool sGirl::calc_group_pregnancy(sCustomer *cust, bool good, double factor)
 {
-	double chance = preg_chance(cfg.pregnancy.player_chance(), good, factor);
+	double chance = preg_chance(cfg.pregnancy.customer_chance(), good, factor);
 	chance += cust->m_Amount;
 	// now do the calculation
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);

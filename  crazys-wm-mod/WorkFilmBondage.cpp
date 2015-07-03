@@ -82,10 +82,19 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		jobperformance += 50;
 		ss << "She is no longer a virgin.\n";
 	}
-	sCustomer Cust; g_Customers.GetCustomer(Cust, brothel);
-	if (!girl->calc_pregnancy(&Cust, false, 0.75))
+	sCustomer Cust; g_Customers.GetCustomer(Cust, brothel); Cust.m_Amount = 1;
+	if (Cust.m_IsWoman)	// FemDom
 	{
-		g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
+		jobperformance += 20;
+		/* */if (girl->has_trait("Lesbian"))	jobperformance += 20;
+		else if (girl->has_trait("Straight"))	jobperformance -= 20;
+	}
+	else
+	{
+		if (!girl->calc_pregnancy(&Cust, false, 0.75))
+			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
+		/* */if (girl->has_trait("Lesbian"))	jobperformance -= 10;
+		else if (girl->has_trait("Straight"))	jobperformance += 10;
 	}
 
 	// remaining modifiers are in the AddScene function --PP

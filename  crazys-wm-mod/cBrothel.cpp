@@ -1139,11 +1139,9 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 		m_JobManager.do_custjobs(current, 0);
 		UpdateGirls(current, 0);
 #else
-
-
+		g_Customers.PopulateCustomers(current, 0);	// `J` creates the brothel's customers
+		UpdateCustomers(current, 0);	// `J` replaces the UpdateGirls running through customers instead of the girls.
 #endif
-
-
 
 #pragma endregion
 #pragma region //	Night Shift			//
@@ -1152,9 +1150,14 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 		m_JobManager.do_advertising(current, 1);
 		g_Customers.GenerateCustomers(current, 1);
 		current->m_TotalCustomers += g_Customers.GetNumCustomers();
+#if 1
 		m_JobManager.do_whorejobs(current, 1);
 		m_JobManager.do_custjobs(current, 1);
 		UpdateGirls(current, 1);
+#else
+		g_Customers.PopulateCustomers(current, 1);	// `J` creates the brothel's customers
+		UpdateCustomers(current, 1);	// `J` replaces the UpdateGirls running through customers instead of the girls.
+#endif
 
 #pragma endregion
 #pragma region //	Shift Summary			//

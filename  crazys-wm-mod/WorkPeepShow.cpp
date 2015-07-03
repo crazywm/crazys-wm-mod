@@ -157,68 +157,68 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		//New stuff
 		else if (g_Girls.HasTrait(girl, "Futanari"))
 		{
-				//Addiction bypasses confidence check
-				if (g_Girls.HasTrait(girl, "Cum Addict"))
-					{
-						//Autofellatio, belly gets in the way if pregnant, requires extra flexibility
-						if (g_Girls.HasTrait(girl, "Flexible") && !(girl->is_pregnant()) && g_Dice.percent(50))
-							{
-								ss << "\nDuring her shift " << girlName << " couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
-								g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
-								g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
-								tips += 30;
-							}
-						else
-							{
-								//default Cum Addict
-								ss << "\n" << girlName << " won't miss a chance to taste some yummy cum. She came up on the stage with a goblet, cummed in it and then drank the content to entertain the customers.";
-								g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
-								tips += 10;
-							}
-								sCustomer cust;
-								GetMiscCustomer(brothel, cust);
-								brothel->m_Happiness += 100;
-								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
-								// work out the pay between the house and the girl
-								wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
-								imagetype = IMGTYPE_MAST;
-						}
-						//Let's see if she has what it takes to do it: Confidence > 65 or Exhibitionist trait, maybe shy girls should be excluded
-						else if (!g_Girls.HasTrait(girl, "Cum Addict") && g_Girls.HasTrait(girl, "Exhibitionist") || !g_Girls.HasTrait(girl, "Cum Addict") && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65)
-						{
-								//Some variety
-								//Autopaizuri, requires very big breasts
-								if (g_Dice.percent(25) && g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Dice.percent(25) && (g_Girls.HasTrait(girl, "Titanic Tits")))
-								{
-										ss << "\n" << girlName << " was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
-										g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 1);
-										tips += 30;
-								}
-								//cums over self
-								else if (g_Girls.GetStat(girl, STAT_DIGNITY) < -40 && g_Dice.percent(25))
-								{
-										ss << "\nThe customers were really impressed when " << girlName << " finished her show by cumming all over herself";
-										tips += 10;
-								}
-								//Regular futa masturbation
-								else
-								{
-										ss << "\n" << girlName << "'s cock was hard all the time and she ended up cumming on stage. The customers enjoyed it but the cleaning crew won't be happy.";
-										brothel->m_Filthiness += 1;
-								}
-								sCustomer cust;
-								GetMiscCustomer(brothel, cust);
-								brothel->m_Happiness += 100;
-								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
-								// work out the pay between the house and the girl
-								wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
-								imagetype = IMGTYPE_MAST;
-						}
-						else
-						{
-								ss << "\nThere was a noticeable bulge in " << girlName << "'s panties but she didn't have enough confidence to masturbate in public.";
-						}
+			//Addiction bypasses confidence check
+			if (g_Girls.HasTrait(girl, "Cum Addict"))
+			{
+				//Autofellatio, belly gets in the way if pregnant, requires extra flexibility
+				if (g_Girls.HasTrait(girl, "Flexible") && !(girl->is_pregnant()) && g_Dice.percent(50))
+				{
+					ss << "\nDuring her shift " << girlName << " couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
+					g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
+					tips += 30;
 				}
+				else
+				{
+					//default Cum Addict
+					ss << "\n" << girlName << " won't miss a chance to taste some yummy cum. She came up on the stage with a goblet, cummed in it and then drank the content to entertain the customers.";
+					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
+					tips += 10;
+				}
+				sCustomer cust;
+				GetMiscCustomer(brothel, cust);
+				brothel->m_Happiness += 100;
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+				// work out the pay between the house and the girl
+				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+				imagetype = IMGTYPE_MAST;
+			}
+			//Let's see if she has what it takes to do it: Confidence > 65 or Exhibitionist trait, maybe shy girls should be excluded
+			else if (!g_Girls.HasTrait(girl, "Cum Addict") && g_Girls.HasTrait(girl, "Exhibitionist") || !g_Girls.HasTrait(girl, "Cum Addict") && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65)
+			{
+				//Some variety
+				//Autopaizuri, requires very big breasts
+				if (g_Dice.percent(25) && g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Dice.percent(25) && (g_Girls.HasTrait(girl, "Titanic Tits")))
+				{
+					ss << "\n" << girlName << " was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
+					g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 1);
+					tips += 30;
+				}
+				//cums over self
+				else if (g_Girls.GetStat(girl, STAT_DIGNITY) < -40 && g_Dice.percent(25))
+				{
+					ss << "\nThe customers were really impressed when " << girlName << " finished her show by cumming all over herself";
+					tips += 10;
+				}
+				//Regular futa masturbation
+				else
+				{
+					ss << "\n" << girlName << "'s cock was hard all the time and she ended up cumming on stage. The customers enjoyed it but the cleaning crew won't be happy.";
+					brothel->m_Filthiness += 1;
+				}
+				sCustomer cust;
+				GetMiscCustomer(brothel, cust);
+				brothel->m_Happiness += 100;
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+				// work out the pay between the house and the girl
+				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+				imagetype = IMGTYPE_MAST;
+			}
+			else
+			{
+				ss << "\nThere was a noticeable bulge in " << girlName << "'s panties but she didn't have enough confidence to masturbate in public.";
+			}
+		}
 		else
 		{
 			//GirlFucks handles all the stuff for the other events but it isn't used here so everything has to be added manually
@@ -411,13 +411,13 @@ double cJobManager::JP_PeepShow(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Slow Learner"))             jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Horrific Scars"))           jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Small Scars"))              jobperformance -= 5;
-	if (girl->is_pregnant())								jobperformance -= 5; 
+	if (girl->is_pregnant())								jobperformance -= 5;
 	if (g_Girls.HasTrait(girl, "Flat Ass"))					jobperformance -= 15;
 	if (g_Girls.HasTrait(girl, "Flat Chest"))				jobperformance -= 15;
 
 	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 40;
 	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 40;
-	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 30; 
+	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 60;
 	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 125;
 	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 60;

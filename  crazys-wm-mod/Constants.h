@@ -376,35 +376,39 @@ const unsigned int JOB_TRAIN            = ;	// not added yet	// trains the girl 
 
 
 // Goon missions
-const unsigned int MISS_GUARDING        = 0;	// guarding your businesses
-const unsigned int MISS_SABOTAGE        = 1;	// sabotaging rival business
-const unsigned int MISS_SPYGIRLS        = 2;	// checking up on the girls while they work
-const unsigned int MISS_CAPTUREGIRL     = 3;	// looking for runaway girls
-const unsigned int MISS_EXTORTION       = 4;	// exthortion of local business for money in return for protection
-const unsigned int MISS_PETYTHEFT       = 5;	// go out on the streets and steal from people
-const unsigned int MISS_GRANDTHEFT      = 6;	// Go and rob local business while noone is there
-const unsigned int MISS_KIDNAPP         = 7;	// go out and kidnap homeless or lost girls
-const unsigned int MISS_CATACOMBS       = 8;	// men go down into the catacombs to find treasures
-const unsigned int MISS_TRAINING        = 9;	// men improve their skills
-const unsigned int MISS_RECRUIT         = 10;	// men recuit their number better
+enum Gang_Missions{
+	MISS_GUARDING = 0,						// guarding your businesses
+	MISS_SABOTAGE,							// sabotaging rival business
+	MISS_SPYGIRLS,							// checking up on the girls while they work
+	MISS_CAPTUREGIRL,						// looking for runaway girls
+	MISS_EXTORTION,							// exthortion of local business for money in return for protection
+	MISS_PETYTHEFT,							// go out on the streets and steal from people
+	MISS_GRANDTHEFT,						// Go and rob local business while noone is there
+	MISS_KIDNAPP,							// go out and kidnap homeless or lost girls
+	MISS_CATACOMBS,							// men go down into the catacombs to find treasures
+	MISS_TRAINING,							// men improve their skills
+	MISS_RECRUIT,							// men recuit their number better
+};
 
 // Reasons for keeping them in the dungeon
-const int DUNGEON_RELEASE           = 0;	// released from the dungeon on next update
-const int DUNGEON_CUSTNOPAY         = 1;	// a customer that failed to pay or provide adiquate compensation
-const int DUNGEON_GIRLCAPTURED      = 2;	// A new girl that was captured
-const int DUNGEON_GIRLKIDNAPPED     = 3;	// A new girl taken against her will
-const int DUNGEON_CUSTBEATGIRL      = 4;	// A customer that was found hurting a girl
-const int DUNGEON_CUSTSPY           = 5;	// A customer that was found to be a spy for a rival
-const int DUNGEON_RIVAL             = 6;	// a captured rival
-const int DUNGEON_GIRLWHIM          = 7;	// a girl placed here on a whim
-const int DUNGEON_GIRLSTEAL         = 8;	// a girl that was placed here after being found stealing extra
-const int DUNGEON_DEAD              = 9;	// this person has died and will be removed next turn
-const int DUNGEON_GIRLRUNAWAY       = 10;	// girl ran away but was recaptured
-const int DUNGEON_NEWSLAVE          = 11;	// a newly brought slave
-const int DUNGEON_NEWGIRL           = 12;	// a new girl who just joined you
-const int DUNGEON_KID               = 13;	// a girl child just aged up
-const int DUNGEON_NEWARENA          = 14;	// a new girl who just joined you from the arena
-const int DUNGEON_RECRUITED         = 15;	// a new girl who was just recruited
+enum Dungeon_Reasons{
+	DUNGEON_RELEASE = 0,					// released from the dungeon on next update
+	DUNGEON_CUSTNOPAY,						// a customer that failed to pay or provide adiquate compensation
+	DUNGEON_GIRLCAPTURED,					// A new girl that was captured
+	DUNGEON_GIRLKIDNAPPED,					// A new girl taken against her will
+	DUNGEON_CUSTBEATGIRL,					// A customer that was found hurting a girl
+	DUNGEON_CUSTSPY,						// A customer that was found to be a spy for a rival
+	DUNGEON_RIVAL,							// a captured rival
+	DUNGEON_GIRLWHIM,						// a girl placed here on a whim
+	DUNGEON_GIRLSTEAL,						// a girl that was placed here after being found stealing extra
+	DUNGEON_DEAD,							// this person has died and will be removed next turn
+	DUNGEON_GIRLRUNAWAY,					// girl ran away but was recaptured
+	DUNGEON_NEWSLAVE,						// a newly brought slave
+	DUNGEON_NEWGIRL,						// a new girl who just joined you
+	DUNGEON_KID,							// a girl child just aged up
+	DUNGEON_NEWARENA,						// a new girl who just joined you from the arena
+	DUNGEON_RECRUITED,						// a new girl who was just recruited
+};
 
 // Town Constants
 const int TOWN_NUMBUSINESSES        = 250;	// the amount of businesses in the town
@@ -415,208 +419,231 @@ const int INCOME_BUSINESS           = 10;
 
 // Item types
 const int NUM_SHOPITEMS             = 40;	// number of items that the shop may hold at one time
-const unsigned int INVRING          = 1;	// worn on fingers (max 8)
-const unsigned int INVDRESS         = 2;	// Worn on body, (max 1)
-const unsigned int INVSHOES         = 3;	// worn on feet, (max 1) often unequipped when going into combat
-const unsigned int INVFOOD          = 4;	// Eaten, single use
-const unsigned int INVNECKLACE      = 5;	// worn on neck, (max 1)
-const unsigned int INVWEAPON        = 6;	// equipped on body, often unequipped outside of combat, (max 2)
-const unsigned int INVMAKEUP        = 7;	// worn on face, single use
-const unsigned int INVARMOR         = 8;	// worn on body over dresses, often unequipped outside of combat, (max 1)
-const unsigned int INVMISC          = 9;    // these items don't usually do anythinig just random stuff girls might buy. The ones that do, cause a constant effect without having to be equiped
-const unsigned int INVARMBAND       = 10;	// (max 2), worn around arms
-const unsigned int INVSMWEAPON      = 11;   // small weapon which can be hidden on body, (max 2)
-const unsigned int INVUNDERWEAR     = 12;   // CRAZY added this - underwear (max 1)
-const unsigned int INVHAT			= 13;	// CRAZY added this - Noncombat worn on the head (max 1)
-const unsigned int INVHELMET		= 14;	// CRAZY added this	- Combat worn on the head (max 1)
-const unsigned int INVGLASSES		= 15;	// CRAZY added this	- Glasses (max 1)
-const unsigned int INVSWIMSUIT		= 16;	// CRAZY added this - Swimsuit (max 1 in use but can have as many as they want)
-const unsigned int INVCOMBATSHOES	= 17;	// `J`   added this - Combat Shoes (max 1) often unequipped outside of combat
-const unsigned int INVSHIELD		= 18;	// `J`   added this - Shields (max 1) often unequipped outside of combat
+enum Item_Type{
+	INVRING = 1,							// worn on fingers (max 8)
+	INVDRESS,								// Worn on body, (max 1)
+	INVSHOES,								// worn on feet, (max 1) often unequipped when going into combat
+	INVFOOD,								// Eaten, single use
+	INVNECKLACE,							// worn on neck, (max 1)
+	INVWEAPON,								// equipped on body, often unequipped outside of combat, (max 2)
+	INVMAKEUP,								// worn on face, single use
+	INVARMOR,								// worn on body over dresses, often unequipped outside of combat, (max 1)
+	INVMISC,								// these items don't usually do anythinig just random stuff girls might buy. The ones that do, cause a constant effect without having to be equiped
+	INVARMBAND,								// (max 2), worn around arms
+	INVSMWEAPON,							// small weapon which can be hidden on body, (max 2)
+	INVUNDERWEAR,							// CRAZY added this - underwear (max 1)
+	INVHAT,									// CRAZY added this - Noncombat worn on the head (max 1)
+	INVHELMET,								// CRAZY added this	- Combat worn on the head (max 1)
+	INVGLASSES,								// CRAZY added this	- Glasses (max 1)
+	INVSWIMSUIT,							// CRAZY added this - Swimsuit (max 1 in use but can have as many as they want)
+	INVCOMBATSHOES,							// `J`   added this - Combat Shoes (max 1) often unequipped outside of combat
+	INVSHIELD								// `J`   added this - Shields (max 1) often unequipped outside of combat
+};
 //const unsigned int INVLEGS = ;		//CRAZY added this
 
 // Item Rarity
-const int NUM_ITEM_RARITY = 9;	// number of items that the shop may hold at one time
-const unsigned int RARITYCOMMON			= 0;	// 
-const unsigned int RARITYSHOP50			= 1;	// 
-const unsigned int RARITYSHOP25			= 2;	// 
-const unsigned int RARITYSHOP05			= 3;	// 
-const unsigned int RARITYCATACOMB15		= 4;	// 
-const unsigned int RARITYCATACOMB05		= 5;	// 
-const unsigned int RARITYCATACOMB01		= 6;	// 
-const unsigned int RARITYSCRIPTONLY		= 7;	// 
-const unsigned int RARITYSCRIPTORREWARD = 8;	// 
+enum Item_Rarity{
+	RARITYCOMMON = 0,						// 
+	RARITYSHOP50,							// 
+	RARITYSHOP25,							// 
+	RARITYSHOP05,							// 
+	RARITYCATACOMB15,						// 
+	RARITYCATACOMB05,						// 
+	RARITYCATACOMB01,						// 
+	RARITYSCRIPTONLY,						// 
+	RARITYSCRIPTORREWARD,					// 
+	NUM_ITEM_RARITY							//
+};
 
 // Random objectives (well kinda random, they appear to guide the player for the win)
-const int NUM_OBJECTIVES = 10;							  // was 12 probably from when had sep Bar & Casino 
-const unsigned int OBJECTIVE_REACHGOLDTARGET        = 0;
-const unsigned int OBJECTIVE_GETNEXTBROTHEL         = 1;
-const unsigned int OBJECTIVE_LAUNCHSUCCESSFULATTACK = 2;
-const unsigned int OBJECTIVE_HAVEXGOONS             = 3;
-const unsigned int OBJECTIVE_STEALXAMOUNTOFGOLD     = 4;
-const unsigned int OBJECTIVE_CAPTUREXCATACOMBGIRLS  = 5;
-const unsigned int OBJECTIVE_HAVEXMONSTERGIRLS      = 6;
-const unsigned int OBJECTIVE_KIDNAPXGIRLS           = 7;
-const unsigned int OBJECTIVE_EXTORTXNEWBUSINESS     = 8;
-const unsigned int OBJECTIVE_HAVEXAMOUNTOFGIRLS     = 9;
+enum Objectives{
+	OBJECTIVE_REACHGOLDTARGET = 0,		// 
+	OBJECTIVE_GETNEXTBROTHEL,			// 
+	OBJECTIVE_LAUNCHSUCCESSFULATTACK,	// 
+	OBJECTIVE_HAVEXGOONS,				// 
+	OBJECTIVE_STEALXAMOUNTOFGOLD,		// 
+	OBJECTIVE_CAPTUREXCATACOMBGIRLS,	// 
+	OBJECTIVE_HAVEXMONSTERGIRLS,		// 
+	OBJECTIVE_KIDNAPXGIRLS,				// 
+	OBJECTIVE_EXTORTXNEWBUSINESS,		// 
+	OBJECTIVE_HAVEXAMOUNTOFGIRLS,		// 
+	NUM_OBJECTIVES						// 
+};
 
 // Objective reward types
-const int          NUM_REWARDS          = 4;
-const unsigned int REWARD_GOLD          = 0;
-const unsigned int REWARD_GIRLS         = 1;
-const unsigned int REWARD_RIVALHINDER   = 2;
-const unsigned int REWARD_ITEM          = 3;
+enum Rewards{
+	REWARD_GOLD = 0,					//
+	REWARD_GIRLS,						//
+	REWARD_RIVALHINDER,					//
+	REWARD_ITEM,						//
+	NUM_REWARDS							//
+};
 
 // customer fetishes (important that they are ordered from normal to weird)
-const unsigned int  NUM_FETISH              = 19;
-const unsigned char FETISH_TRYANYTHING      = 0;	// will like and try any form of sex (a nympho basically)
-const unsigned char FETISH_SPECIFICGIRL     = 1;	// wants a particular girl
-const unsigned char FETISH_BIGBOOBS         = 2;	// likes girls with big boobs
-const unsigned char FETISH_SEXY             = 3;	// likes girls with lots of sex appeal
-const unsigned char FETISH_CUTEGIRLS        = 4;	// Likes girls that are cute
-const unsigned char FETISH_FIGURE           = 5;	// likes girls with good figures
-const unsigned char FETISH_LOLITA           = 6;	// likes lolitas
-const unsigned char FETISH_ARSE             = 7;	// likes girls with good arses
-const unsigned char FETISH_COOLGIRLS        = 8;	// likes cool girls, may chat with them a little
-const unsigned char FETISH_ELEGANT          = 9;	// likes girls with class
-const unsigned char FETISH_NERDYGIRLS       = 10;	// likes nerds or clumsy girls
-const unsigned char FETISH_SMALLBOOBS       = 11;	// likes girls with small boobs
-const unsigned char FETISH_DANGEROUSGIRLS   = 12;	// likes girls with a bit of danger
-const unsigned char FETISH_NONHUMAN         = 13;	// likes non human girls
-const unsigned char FETISH_FREAKYGIRLS      = 14;	// likes freaky girls
-const unsigned char FETISH_FUTAGIRLS		= 15;	// likes girls with dicks
-const unsigned char FETISH_TALLGIRLS        = 16;	// likes tall girls
-const unsigned char FETISH_SHORTGIRLS		= 17;	// likes short girls
-const unsigned char FETISH_FATGIRLS			= 18;	// likes fat girls
+enum Fetishs{
+	FETISH_TRYANYTHING = 0,				// will like and try any form of sex (a nympho basically)
+	FETISH_SPECIFICGIRL,				// wants a particular girl
+	FETISH_BIGBOOBS,					// likes girls with big boobs
+	FETISH_SEXY,						// likes girls with lots of sex appeal
+	FETISH_CUTEGIRLS,					// Likes girls that are cute
+	FETISH_FIGURE,						// likes girls with good figures
+	FETISH_LOLITA,						// likes lolitas
+	FETISH_ARSE,						// likes girls with good arses
+	FETISH_COOLGIRLS,					// likes cool girls, may chat with them a little
+	FETISH_ELEGANT,						// likes girls with class
+	FETISH_NERDYGIRLS,					// likes nerds or clumsy girls
+	FETISH_SMALLBOOBS,					// likes girls with small boobs
+	FETISH_DANGEROUSGIRLS,				// likes girls with a bit of danger
+	FETISH_NONHUMAN,					// likes non human girls
+	FETISH_FREAKYGIRLS,					// likes freaky girls
+	FETISH_FUTAGIRLS,					// likes girls with dicks
+	FETISH_TALLGIRLS,					// likes tall girls
+	FETISH_SHORTGIRLS,					// likes short girls
+	FETISH_FATGIRLS,					// likes fat girls
+	NUM_FETISH							// 
+};
+
+enum Goals{								// `J` new
+	GOAL_UNDECIDED = 0,					// The customer is not sure what they want to do
+	GOAL_FIGHT,							// The customer wants to start a fight
+	GOAL_SEX,							// The customer wants to get laid
+	GOAL_GETDRUNK,						// The customer wants to get drunk
+	GOAL_GAMBLE,						// The customer wants to gamble
+	GOAL_ENTERTAINMENT,					// The customer wants to be entertained
+	GOAL_OTHER,							// The customer wants to do something different
+	NUM_GOALS							// 
+};
+
 
 // actions girls can disobey against
 // `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> Constants.h
-const unsigned char ACTION_COMBAT           = 0;
-const unsigned char ACTION_SEX              = 1;
-const unsigned char ACTION_WORKESCORT		= 2;
-const unsigned char ACTION_WORKCLEANING     = 3;
-const unsigned char ACTION_WORKMATRON       = 4;
-const unsigned char ACTION_WORKBAR          = 5;
-const unsigned char ACTION_WORKHALL         = 6;
-const unsigned char ACTION_WORKSHOW         = 7;
-const unsigned char ACTION_WORKSECURITY     = 8;
-const unsigned char ACTION_WORKADVERTISING  = 9;
-const unsigned char ACTION_WORKTORTURER     = 10;
-const unsigned char ACTION_WORKCARING       = 11;
-const unsigned char ACTION_WORKDOCTOR       = 12;
-const unsigned char ACTION_WORKMOVIE        = 13;
-const unsigned char ACTION_WORKCUSTSERV     = 14;
-const unsigned char ACTION_WORKCENTRE       = 15;
-const unsigned char ACTION_WORKCLUB         = 16;
-const unsigned char ACTION_WORKHAREM        = 17;
-const unsigned char ACTION_WORKRECRUIT      = 18;
-const unsigned char ACTION_WORKNURSE        = 19;
-const unsigned char ACTION_WORKMECHANIC     = 20;
-const unsigned char ACTION_WORKCOUNSELOR    = 21;
-const unsigned char ACTION_WORKMUSIC		= 22;
-const unsigned char ACTION_WORKSTRIP		= 23;
-const unsigned char ACTION_WORKMILK 		= 24;
-const unsigned char ACTION_WORKMASSUSSE		= 25;
-const unsigned char ACTION_WORKFARM			= 26;
-const unsigned char ACTION_WORKTRAINING		= 27;
-const unsigned char ACTION_WORKREHAB		= 28;
-const unsigned char ACTION_WORKMAKEPOTIONS	= 29;
-const unsigned char ACTION_WORKMAKEITEMS	= 30;
-const unsigned char ACTION_WORKCOOKING		= 31;
-const unsigned char ACTION_WORKTHERAPY		= 32;
-const unsigned char ACTION_GENERAL			= 33; // ACTION_GENERAL must be the last sction type
-
-const unsigned char NUM_ACTIONTYPES = ACTION_GENERAL + 1;
+enum Action_Types{
+	ACTION_COMBAT = 0,
+	ACTION_SEX,
+	ACTION_WORKESCORT,
+	ACTION_WORKCLEANING,
+	ACTION_WORKMATRON,
+	ACTION_WORKBAR,
+	ACTION_WORKHALL,
+	ACTION_WORKSHOW,
+	ACTION_WORKSECURITY,
+	ACTION_WORKADVERTISING,
+	ACTION_WORKTORTURER,
+	ACTION_WORKCARING,
+	ACTION_WORKDOCTOR,
+	ACTION_WORKMOVIE,
+	ACTION_WORKCUSTSERV,
+	ACTION_WORKCENTRE,
+	ACTION_WORKCLUB,
+	ACTION_WORKHAREM,
+	ACTION_WORKRECRUIT,
+	ACTION_WORKNURSE,
+	ACTION_WORKMECHANIC,
+	ACTION_WORKCOUNSELOR,
+	ACTION_WORKMUSIC,
+	ACTION_WORKSTRIP,
+	ACTION_WORKMILK,
+	ACTION_WORKMASSUSSE,
+	ACTION_WORKFARM,
+	ACTION_WORKTRAINING,
+	ACTION_WORKREHAB,
+	ACTION_WORKMAKEPOTIONS,
+	ACTION_WORKMAKEITEMS,
+	ACTION_WORKCOOKING,
+	ACTION_WORKTHERAPY,
+	
+	// ACTION_GENERAL must be the last sction type
+	ACTION_GENERAL,
+	NUM_ACTIONTYPES
+};
 
 // Character image
 // `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> Constants.h
-const int IMGTYPE_ANAL      = 0;
-const int IMGTYPE_BDSM      = 1;
-const int IMGTYPE_SEX       = 2;
-const int IMGTYPE_BEAST     = 3;
-const int IMGTYPE_GROUP     = 4;
-const int IMGTYPE_LESBIAN   = 5;
-const int IMGTYPE_TORTURE	= 6;	// `J` added
-const int IMGTYPE_DEATH		= 7;
-const int IMGTYPE_PROFILE   = 8;
-const int IMGTYPE_COMBAT    = 9;
-const int IMGTYPE_ORAL		= 10;
-const int IMGTYPE_ECCHI     = 11;
-const int IMGTYPE_STRIP     = 12;
-const int IMGTYPE_MAID      = 13;
-const int IMGTYPE_SING      = 14;
-const int IMGTYPE_WAIT      = 15;
-const int IMGTYPE_CARD      = 16;
-const int IMGTYPE_BUNNY     = 17;
-const int IMGTYPE_NUDE      = 18;
-const int IMGTYPE_MAST      = 19;
-const int IMGTYPE_TITTY     = 20;
-const int IMGTYPE_MILK      = 21;
-const int IMGTYPE_HAND      = 22;
-const int IMGTYPE_FOOT		= 23;
-const int IMGTYPE_BED		= 24;
-const int IMGTYPE_FARM		= 25;
-const int IMGTYPE_HERD		= 26;
-const int IMGTYPE_COOK		= 27;
-const int IMGTYPE_CRAFT		= 28;
-const int IMGTYPE_SWIM		= 29;
-const int IMGTYPE_BATH		= 30;
-const int IMGTYPE_NURSE		= 31;
-const int IMGTYPE_FORMAL	= 32;
-const int IMGTYPE_SHOP		= 33;
-const int IMGTYPE_MAGIC		= 34;
-const int IMGTYPE_SIGN		= 35;	// Going be used for advertising
-const int IMGTYPE_PRESENTED = 36;	// Going be used for Slave Market
-const int IMGTYPE_DOM		= 37;	// 
-const int IMGTYPE_PREGNANT	= 38;	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
+enum Image_Types{
+	IMGTYPE_ANAL = 0,					// 
+	IMGTYPE_BDSM,						// 
+	IMGTYPE_SEX,						// 
+	IMGTYPE_BEAST,						// 
+	IMGTYPE_GROUP,						// 
+	IMGTYPE_LESBIAN,					// 
+	IMGTYPE_TORTURE,					// `J` added
+	IMGTYPE_DEATH,						// 
+	IMGTYPE_PROFILE,					// 
+	IMGTYPE_COMBAT,						// 
+	IMGTYPE_ORAL,						// 
+	IMGTYPE_ECCHI,						// 
+	IMGTYPE_STRIP,						// 
+	IMGTYPE_MAID,						// 
+	IMGTYPE_SING,						// 
+	IMGTYPE_WAIT,						// 
+	IMGTYPE_CARD,						// 
+	IMGTYPE_BUNNY,						// 
+	IMGTYPE_NUDE,						// 
+	IMGTYPE_MAST,						// 
+	IMGTYPE_TITTY,						// 
+	IMGTYPE_MILK,						// 
+	IMGTYPE_HAND,						// 
+	IMGTYPE_FOOT,						// 
+	IMGTYPE_BED,						// 
+	IMGTYPE_FARM,						// 
+	IMGTYPE_HERD,						// 
+	IMGTYPE_COOK,						// 
+	IMGTYPE_CRAFT,						// 
+	IMGTYPE_SWIM,						// 
+	IMGTYPE_BATH,						// 
+	IMGTYPE_NURSE,						// 
+	IMGTYPE_FORMAL,						// 
+	IMGTYPE_SHOP,						// 
+	IMGTYPE_MAGIC,						// 
+	IMGTYPE_SIGN,						// Going be used for advertising
+	IMGTYPE_PRESENTED,					// Going be used for Slave Market
+	IMGTYPE_DOM,						// 
 
-/*
-*	`J` All image types can have a pregnant alternative now
-*	Then we can convert by adding PREG_OFFSET
-*	The order and exact number of the pregnant types does not really 
-*	matter as they are based off the nonpregnant types.
-*/
+	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
+	IMGTYPE_PREGNANT,					// 
+
+	// `J` All image types can have a pregnant alternative now
+	IMGTYPE_PREGANAL,					// 
+	IMGTYPE_PREGBDSM,					// 
+	IMGTYPE_PREGSEX,					// 
+	IMGTYPE_PREGBEAST,					// 
+	IMGTYPE_PREGGROUP,					// 
+	IMGTYPE_PREGLESBIAN,				// 
+	IMGTYPE_PREGTORTURE,				// 
+	IMGTYPE_PREGDEATH,					// 
+	IMGTYPE_PREGPROFILE,				// 
+	IMGTYPE_PREGCOMBAT,					// 
+	IMGTYPE_PREGORAL,					// 
+	IMGTYPE_PREGECCHI,					// 
+	IMGTYPE_PREGSTRIP,					// 
+	IMGTYPE_PREGMAID,					// 
+	IMGTYPE_PREGSING,					// 
+	IMGTYPE_PREGWAIT,					// 
+	IMGTYPE_PREGCARD,					// 
+	IMGTYPE_PREGBUNNY,					// 
+	IMGTYPE_PREGNUDE,					// 
+	IMGTYPE_PREGMAST,					// 
+	IMGTYPE_PREGTITTY,					// 
+	IMGTYPE_PREGMILK,					// 
+	IMGTYPE_PREGHAND,					// 
+	IMGTYPE_PREGFOOT,					// 
+	IMGTYPE_PREGBED,					// 
+	IMGTYPE_PREGFARM,					// 
+	IMGTYPE_PREGHERD,					// 
+	IMGTYPE_PREGCOOK,					// 
+	IMGTYPE_PREGCRAFT,					// 
+	IMGTYPE_PREGSWIM,					// 
+	IMGTYPE_PREGBATH,					// 
+	IMGTYPE_PREGNURSE,					// 
+	IMGTYPE_PREGFORMAL,					// 
+	IMGTYPE_PREGSHOP,					// 
+	IMGTYPE_PREGMAGIC,					// 
+	IMGTYPE_PREGSIGN,					// 
+	IMGTYPE_PREGPRESENTED,				// 
+	IMGTYPE_PREGDOM,					// 
+	NUM_IMGTYPES	// `J` All image types can have a pregnant variation (except pregnant-pregnant)
+};
 const int PREG_OFFSET = IMGTYPE_PREGNANT + 1;
-const int IMGTYPE_PREGANAL	    = IMGTYPE_ANAL			+ PREG_OFFSET;
-const int IMGTYPE_PREGBDSM	    = IMGTYPE_BDSM			+ PREG_OFFSET;
-const int IMGTYPE_PREGSEX	    = IMGTYPE_SEX			+ PREG_OFFSET;
-const int IMGTYPE_PREGBEAST	    = IMGTYPE_BEAST			+ PREG_OFFSET;
-const int IMGTYPE_PREGGROUP	    = IMGTYPE_GROUP			+ PREG_OFFSET;
-const int IMGTYPE_PREGLESBIAN	= IMGTYPE_LESBIAN		+ PREG_OFFSET;
-const int IMGTYPE_PREGTORTURE	= IMGTYPE_TORTURE		+ PREG_OFFSET;
-const int IMGTYPE_PREGDEATH		= IMGTYPE_DEATH			+ PREG_OFFSET;
-const int IMGTYPE_PREGPROFILE	= IMGTYPE_PROFILE		+ PREG_OFFSET; 
-const int IMGTYPE_PREGCOMBAT	= IMGTYPE_COMBAT		+ PREG_OFFSET;
-const int IMGTYPE_PREGORAL		= IMGTYPE_ORAL			+ PREG_OFFSET; 
-const int IMGTYPE_PREGECCHI		= IMGTYPE_ECCHI			+ PREG_OFFSET;
-const int IMGTYPE_PREGSTRIP		= IMGTYPE_STRIP			+ PREG_OFFSET;
-const int IMGTYPE_PREGMAID		= IMGTYPE_MAID			+ PREG_OFFSET;
-const int IMGTYPE_PREGSING		= IMGTYPE_SING			+ PREG_OFFSET;
-const int IMGTYPE_PREGWAIT		= IMGTYPE_WAIT			+ PREG_OFFSET;
-const int IMGTYPE_PREGCARD		= IMGTYPE_CARD			+ PREG_OFFSET;
-const int IMGTYPE_PREGBUNNY		= IMGTYPE_BUNNY			+ PREG_OFFSET;
-const int IMGTYPE_PREGNUDE		= IMGTYPE_NUDE			+ PREG_OFFSET;
-const int IMGTYPE_PREGMAST		= IMGTYPE_MAST			+ PREG_OFFSET;
-const int IMGTYPE_PREGTITTY		= IMGTYPE_TITTY			+ PREG_OFFSET;
-const int IMGTYPE_PREGMILK		= IMGTYPE_MILK			+ PREG_OFFSET;
-const int IMGTYPE_PREGHAND		= IMGTYPE_HAND			+ PREG_OFFSET;
-const int IMGTYPE_PREGFOOT		= IMGTYPE_FOOT			+ PREG_OFFSET;
-const int IMGTYPE_PREGBED		= IMGTYPE_BED			+ PREG_OFFSET;
-const int IMGTYPE_PREGFARM		= IMGTYPE_FARM			+ PREG_OFFSET;
-const int IMGTYPE_PREGHERD		= IMGTYPE_HERD			+ PREG_OFFSET;
-const int IMGTYPE_PREGCOOK		= IMGTYPE_COOK			+ PREG_OFFSET;
-const int IMGTYPE_PREGCRAFT		= IMGTYPE_CRAFT			+ PREG_OFFSET;
-const int IMGTYPE_PREGSWIM		= IMGTYPE_SWIM			+ PREG_OFFSET;
-const int IMGTYPE_PREGBATH		= IMGTYPE_BATH			+ PREG_OFFSET;
-const int IMGTYPE_PREGNURSE		= IMGTYPE_NURSE			+ PREG_OFFSET;
-const int IMGTYPE_PREGFORMAL	= IMGTYPE_FORMAL		+ PREG_OFFSET;
-const int IMGTYPE_PREGSHOP		= IMGTYPE_SHOP			+ PREG_OFFSET;
-const int IMGTYPE_PREGMAGIC		= IMGTYPE_MAGIC			+ PREG_OFFSET;
-const int IMGTYPE_PREGSIGN		= IMGTYPE_SIGN			+ PREG_OFFSET;
-const int IMGTYPE_PREGPRESENTED = IMGTYPE_PRESENTED		+ PREG_OFFSET;
-const int IMGTYPE_PREGDOM		= IMGTYPE_DOM			+ PREG_OFFSET;
-const int NUM_IMGTYPES			= IMGTYPE_PREGNANT		+ PREG_OFFSET; // `J` All image types can have a pregnant variation (except pregnant-pregnant)
-
 
 
 const int NUM_GIRLFLAGS				= 30;

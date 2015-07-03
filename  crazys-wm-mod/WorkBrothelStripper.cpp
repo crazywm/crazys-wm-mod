@@ -343,9 +343,16 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		else if (n == SKILL_FOOTJOB)	imageType = IMGTYPE_FOOT;
 		else if (n == SKILL_ANAL)		imageType = IMGTYPE_ANAL;
 		else if (n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
-		if (n == SKILL_NORMALSEX && !girl->calc_pregnancy(&cust, false, 1.0))
+		if (n == SKILL_NORMALSEX)
 		{
-			g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
+			if (g_Girls.CheckVirginity(girl))
+			{
+				g_Girls.LoseVirginity(girl);
+			}
+			if (!girl->calc_pregnancy(&cust, false, 1.0))
+			{
+				g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
+			}
 		}
 		g_Girls.UpdateSkill(girl, n, 2);
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25);

@@ -2246,6 +2246,11 @@ Added traits to Girl Fights Back check
 Updated WorkAdvertising
 Started blocking out Brothel turn flow - No real changes yet
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
+Added more job updates by Hanzo
+Updated more of Constants.h stuff to enum
+Added enum Goals for what the customers want to do.
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
 
 
 

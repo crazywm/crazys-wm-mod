@@ -197,6 +197,7 @@ public:
 	void UpdateBrothels();
 	void UpdateGirls(sBrothel* brothel, bool Day0Night1);
 
+	void UpdateCustomers(sBrothel* brothel, bool Day0Night1);
 
 	// MYR: Start of my automation functions
 	void UsePlayersItems(sGirl* cur);

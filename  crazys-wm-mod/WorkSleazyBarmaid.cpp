@@ -198,7 +198,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 	}
 
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && g_Dice.percent(20) && !g_Girls.HasTrait(girl, "Virgin") && !g_Girls.HasTrait(girl, "Lesbian"))
+	if ((g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && g_Dice.percent(20) && !g_Girls.HasTrait(girl, "Virgin") && !g_Girls.HasTrait(girl, "Lesbian"))
 	{
 		if (roll <= 50)
 		{
@@ -210,10 +210,13 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 		imagetype = IMGTYPE_SEX;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
+		sCustomer Cust; g_Customers.GetCustomer(Cust, brothel); Cust.m_Amount = 1;
+		if (!girl->calc_pregnancy(&Cust, false, 1.0))
+		{
+			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant.", 0);
+		}
 	}
-
-
-
 	//enjoyed the work or not
 	if (roll <= 5)
 	{

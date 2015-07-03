@@ -58,7 +58,9 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	int roll = g_Dice.d100();
 	double jobperformance = JP_BrothelMasseuse(girl, false);
 
-	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE) + 40, work = 0;
+	double wages = g_Girls.GetStat(girl, STAT_ASKPRICE) + 40;
+    double tips = 0;
+	int work = 0;
 	int imageType = IMGTYPE_PROFILE;
 	bool bannedCustomer = false; //ANON: in case she bans cust as per msg
 
@@ -72,7 +74,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (roll <= 20)
 		{
 			ss << girlName << " hands are the best thing that could touch a man. Customers left big tips after getting a massage from her.\n";
-			wages += 20;
+			tips += 20;
 		}
 		else if (roll <= 40)
 		{
@@ -92,7 +94,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		else
 		{
 			ss << "Being asked to perfume more sensual massage, " << girlName << " massage the customer with her breasts for some extra coin.\n";
-			wages += 20;
+			tips += 20;
 		}
 	}
 	else if (jobperformance >= 185)
@@ -173,7 +175,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		else if (roll <= 80)
 		{
-			ss << "She made few mistakes, but manged not to hurt anyone today.\n";
+			ss << "She made few mistakes, but managed not to hurt anyone today.\n";
 		}
 		else
 		{
@@ -238,6 +240,10 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 	}
 
+	
+	//base tips, aprox 5-30% of base wages
+	tips += (((5 + jobperformance / 8) * wages) / 100);
+
 	if ((g_Girls.GetStat(girl, STAT_LIBIDO) > 90) && !bannedCustomer)
 		//ANON: sanity check: not gonna give 'perks' to the cust she just banned for wanting perks!
 	{
@@ -270,15 +276,24 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		else if (n == SKILL_FOOTJOB)	imageType = IMGTYPE_FOOT;
 		else if (n == SKILL_ANAL)		imageType = IMGTYPE_ANAL;
 		else if (n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
-		if (n == SKILL_NORMALSEX && !girl->calc_pregnancy(&cust, false, 1.0))
+		if (n == SKILL_NORMALSEX)
 		{
-			g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
+			if (g_Girls.CheckVirginity(girl))
+			{
+				g_Girls.LoseVirginity(girl);
+			}
+			if (!girl->calc_pregnancy(&cust, false, 1.0))
+			{
+				g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
+			}
 		}
 		g_Girls.UpdateSkill(girl, n, 2);
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25);
 		// work out the pay between the house and the girl
 		wages += 225;
-		girl->m_Pay = wages;
+		tips += 30 + g_Girls.GetSkill(girl, n) / 5;
+		girl->m_Pay = (int)wages;
+		girl->m_Tips = (int)tips;
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
 		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 	}
@@ -287,7 +302,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		brothel->m_Happiness += (g_Dice % 70) + 30;
 		brothel->m_MiscCustomers++;
 		// work out the pay between the house and the girl
-		girl->m_Pay = wages;
+		girl->m_Pay = (int)wages;
+		girl->m_Tips = (int)tips;
 		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 	}
 
