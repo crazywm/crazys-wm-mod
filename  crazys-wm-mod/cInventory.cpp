@@ -816,9 +816,10 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 							if (eff_id == STATUS_PREGNANT)
 							{
 								sBrothel* brothel = g_Brothels.GetBrothel(0);
-								sCustomer Cust;
+								sCustomer* Cust = new sCustomer;
 								g_Customers.GetCustomer(Cust, brothel);
-								bool preg = !girl->calc_pregnancy(&Cust, false, (double)amount);
+								bool preg = !girl->calc_pregnancy(Cust, false, (double)amount);
+								delete Cust;
 								if (preg)
 									g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") +
 									girl->m_Inventory[num]->m_Name +

@@ -62,6 +62,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	double wages = 25, tips = 0;
 	int work = 0;
 	int imagetype = IMGTYPE_ECCHI;
+	sCustomer* Cust = new sCustomer;
 
 	double jobperformance = JP_HallXXXEntertainer(girl, false);
 
@@ -537,8 +538,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 										g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
 										tips += 10;
 								}
-								sCustomer cust;
-								GetMiscCustomer(brothel, cust);
+								GetMiscCustomer(brothel, Cust);
 								brothel->m_Happiness += 100;
 								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
 								// work out the pay between the house and the girl
@@ -568,8 +568,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 										ss << girlName << "'s cock was hard all the time and she ended up cumming on stage. The customers enjoyed it but the cleaning crew won't be happy.";
 										brothel->m_Filthiness += 1;
 								}
-								sCustomer cust;
-								GetMiscCustomer(brothel, cust);
+								GetMiscCustomer(brothel, Cust);
 								brothel->m_Happiness += 100;
 								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
 								// work out the pay between the house and the girl
@@ -585,8 +584,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 				else if (!g_Girls.HasTrait(girl, "Futanari") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
 				{
 						ss << "She was horny and ended up masturbating for the customers making them very happy.";
-						sCustomer cust;
-						GetMiscCustomer(brothel, cust);
+						GetMiscCustomer(brothel, Cust);
 						brothel->m_Happiness += 100;
 						g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 						// work out the pay between the house and the girl
@@ -646,6 +644,11 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	//SIN: new trait
 	g_Girls.PossiblyGainNewTrait(girl, "Exhibitionist", 50, ACTION_WORKSTRIP, "Performing sexual entertainment for strangers every day has made " + girlName + " quite keen to show off her sexuality.", Day0Night1);
 
+	if (jobperformance >= 140 && g_Dice.percent(25))
+	{
+		g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
+	}
+	delete Cust;
 	return false;
 }
 

@@ -61,6 +61,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int imagetype = IMGTYPE_STRIP, enjoyment = 0;
 	u_int sextype = SKILL_STRIP;
 	int roll = g_Dice.d100();
+	sCustomer* Cust = new sCustomer;
 
 
 	double jobperformance = JP_PeepShow(girl, false);
@@ -175,8 +176,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
 					tips += 10;
 				}
-				sCustomer cust;
-				GetMiscCustomer(brothel, cust);
+				GetMiscCustomer(brothel, Cust);
 				brothel->m_Happiness += 100;
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
 				// work out the pay between the house and the girl
@@ -206,8 +206,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << "\n" << girlName << "'s cock was hard all the time and she ended up cumming on stage. The customers enjoyed it but the cleaning crew won't be happy.";
 					brothel->m_Filthiness += 1;
 				}
-				sCustomer cust;
-				GetMiscCustomer(brothel, cust);
+				GetMiscCustomer(brothel, Cust);
 				brothel->m_Happiness += 100;
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
 				// work out the pay between the house and the girl
@@ -224,8 +223,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			//GirlFucks handles all the stuff for the other events but it isn't used here so everything has to be added manually
 			//It's is the same text as the XXX entertainer masturbation event, so I'll just copy the rest
 			ss << "\nShe was horny and ended up masturbating for the customers, making them very happy.";
-			sCustomer cust;
-			GetMiscCustomer(brothel, cust);
+			GetMiscCustomer(brothel, Cust);
 			brothel->m_Happiness += 100;
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
 			// work out the pay between the house and the girl
@@ -302,26 +300,25 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (sextype != SKILL_STRIP)
 	{
 		// `J` get the customer and configure them to what is already known about them
-		sCustomer cust;
-		GetMiscCustomer(brothel, cust);
-		cust.m_Amount = 1;										// always only 1
-		cust.m_SexPref = sextype;								// they don't get a say in this
-		if (sextype == SKILL_LESBIAN) cust.m_IsWoman = true;	// make sure it is a lesbian
+		GetMiscCustomer(brothel, Cust);
+		Cust->m_Amount = 1;										// always only 1
+		Cust->m_SexPref = sextype;								// they don't get a say in this
+		if (sextype == SKILL_LESBIAN) Cust->m_IsWoman = true;	// make sure it is a lesbian
 
 		string message = ss.str();
-		g_Girls.GirlFucks(girl, Day0Night1, &cust, false, message, sextype);
+		g_Girls.GirlFucks(girl, Day0Night1, Cust, false, message, sextype);
 		ss.str(""); ss << message;
-		brothel->m_Happiness += cust.m_Stats[STAT_HAPPINESS];
+		brothel->m_Happiness += Cust->m_Stats[STAT_HAPPINESS];
 
 		/* `J` g_Girls.GirlFucks handles libido and customer happiness
-		cust.m_Stats[STAT_HAPPINESS] = max(100, cust.m_Stats[STAT_HAPPINESS] + 50);
+		Cust->m_Stats[STAT_HAPPINESS] = max(100, Cust->m_Stats[STAT_HAPPINESS] + 50);
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		//*/
 
-		int sexwages = min(g_Dice % (cust.m_Money / 4) + g_Girls.GetStat(girl, STAT_ASKPRICE), int(cust.m_Money));
-		cust.m_Money -= sexwages;
-		int sextips = max(0, int(g_Dice%cust.m_Money - (cust.m_Money / 2)));
-		cust.m_Money -= sextips;
+		int sexwages = min(g_Dice % (Cust->m_Money / 4) + g_Girls.GetStat(girl, STAT_ASKPRICE), int(Cust->m_Money));
+		Cust->m_Money -= sexwages;
+		int sextips = max(0, int(g_Dice%Cust->m_Money - (Cust->m_Money / 2)));
+		Cust->m_Money -= sextips;
 		wages += sexwages;
 		tips += sextips;
 
@@ -370,10 +367,20 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
+	//gain traits
+		if (jobperformance >= 140 && g_Dice.percent(25))
+	{
+		g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
+	}
+	if (sextype != SKILL_STRIP && g_Girls.GetStat(girl, STAT_DIGNITY) < 0 && g_Dice.percent(25))
+	{
+		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1);
+	}
 
 	//lose
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKSTRIP, girlName + " has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
 
+	delete Cust;
 	return false;
 }
 

@@ -68,8 +68,8 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	//Adding cust here for use in scripts...
-	sCustomer cust;
-	GetMiscCustomer(brothel, cust);
+	sCustomer* Cust = new sCustomer;
+	GetMiscCustomer(brothel, Cust);
 
 
 	int dispo; // `J` merged slave/free messages and moved actual dispo change to after
@@ -283,7 +283,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 				ss << "She is no longer a virgin.\n";
 			}
-			if (!girl->calc_pregnancy(&cust, false, 1.0))
+			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
 				g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 			}
@@ -338,6 +338,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
+	delete Cust;
 	return false;
 }
 

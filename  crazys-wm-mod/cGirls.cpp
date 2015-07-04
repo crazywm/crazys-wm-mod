@@ -7281,7 +7281,6 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, 	STAT_INTELLIGENCE	, -50);		//
 				UpdateStatTr(girl, 	STAT_AGILITY		, -20);		//
 				UpdateStatTr(girl, 	STAT_ASKPRICE		, -1000);	//
-				UpdateStatTr(girl, 	STAT_HOUSE			, 100);		// zombies don't need money
 				UpdateStatTr(girl, 	STAT_BEAUTY			, -20);		//
 				UpdateStatTr(girl, 	STAT_TIREDNESS		, -100);	// zombies don't get tired
 				UpdateStatTr(girl, 	STAT_MORALITY		, -50);		// zombies eat people
@@ -14982,7 +14981,7 @@ int cGirls::PreferredAccom(sGirl* girl)
 }
 
 // `J` the girl will check the customer for diseases before continuing.
-bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustomer cust, double mod)
+bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustomer* Cust, double mod)
 {
 	string girlName = girl->m_Realname;
 	stringstream ss;
@@ -14994,7 +14993,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 		return true;
 	}
 	// if the customer is clean, then it will return false
-	if (!cust.m_HasAIDS && !cust.m_HasChlamydia && !cust.m_HasHerpes && !cust.m_HasSyphilis) return false;
+	if (!Cust->m_HasAIDS && !Cust->m_HasChlamydia && !Cust->m_HasHerpes && !Cust->m_HasSyphilis) return false;
 	// 10% chance to miss it
 	if (g_Dice.percent(10))	return false;
 
@@ -15077,7 +15076,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 	if (girl->has_trait("Your Wife"))				detectdisease += 10;	// she knows what to look out for
 
 	// these need better texts
-	if (cust.m_HasAIDS && g_Dice.percent(min(90.0, detectdisease*0.5)))	// harder to detect
+	if (Cust->m_HasAIDS && g_Dice.percent(min(90.0, detectdisease*0.5)))	// harder to detect
 	{
 		ss << girlName << " detected that her customer has AIDS and refused to allow them to touch her.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
@@ -15085,7 +15084,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 		brothel->m_RejectCustomersDisease++;
 		return true;
 	}
-	if (cust.m_HasSyphilis && g_Dice.percent(detectdisease*0.8))	// harder to detect
+	if (Cust->m_HasSyphilis && g_Dice.percent(detectdisease*0.8))	// harder to detect
 	{
 		ss << girlName << " detected that her customer has Syphilis and refused to allow them to touch her.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
@@ -15093,7 +15092,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 		brothel->m_RejectCustomersDisease++;
 		return true;
 	}
-	if (cust.m_HasChlamydia && g_Dice.percent(detectdisease))
+	if (Cust->m_HasChlamydia && g_Dice.percent(detectdisease))
 	{
 		ss << girlName << " detected that her customer has Chlamydia and refused to allow them to touch her.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
@@ -15101,7 +15100,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 		brothel->m_RejectCustomersDisease++;
 		return true;
 	}
-	if (cust.m_HasHerpes && g_Dice.percent(detectdisease))
+	if (Cust->m_HasHerpes && g_Dice.percent(detectdisease))
 	{
 		ss << girlName << " detected that her customer has Herpes and refused to allow them to touch her.";
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);

@@ -269,12 +269,24 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 		*/
 
+	if (girl->is_pregnant())
+	{
+		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
+		{
+			ss << "\n\nAll that training proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
+		}
+		else
+		{
+			ss << "\n\nAll that training proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
+		}
+		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+	}
 
 
 	//enjoyed the work or not
-	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy her time training."; }
-	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time training."; }
-	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
+	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "\nShe did not enjoy her time training."; }
+	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "\nShe had a pleasant time training."; }
+	else /*             */	{ enjoy += g_Dice % 2;		ss << "\nOtherwise, the shift passed uneventfully."; }
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	g_Girls.UpdateEnjoyment(girl, actiontype2, enjoy);
 

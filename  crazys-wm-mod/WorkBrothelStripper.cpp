@@ -85,11 +85,11 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//Adding cust here for use in scripts...
-	sCustomer cust;
-	GetMiscCustomer(brothel, cust);
-
+	sCustomer* Cust = new sCustomer;
+	g_Customers.GetCustomer(Cust, brothel);
+	
 	//A little more randomness
-	if (cust.m_IsWoman && (g_Girls.HasTrait(girl, "Lesbian") || g_Girls.GetSkill(girl, SKILL_LESBIAN) > 60))
+	if (Cust->m_IsWoman && (g_Girls.HasTrait(girl, "Lesbian") || g_Girls.GetSkill(girl, SKILL_LESBIAN) > 60))
 	{
 		ss << girlName << " was overjoyed to perform for a woman, and gave a much more sensual, personal performance.\n";
 		jobperformance += 25;
@@ -318,7 +318,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss << "In one of the private shows, she ended up ";
 		brothel->m_Happiness += 100;
 		//int imageType = IMGTYPE_SEX;
-		if (cust.m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
+		if (Cust->m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
 		{
 			n = SKILL_LESBIAN;
 			ss << "licking the customer's clit until she screamed out in pleasure, making her very happy.";
@@ -349,7 +349,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			{
 				g_Girls.LoseVirginity(girl);
 			}
-			if (!girl->calc_pregnancy(&cust, false, 1.0))
+			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
 				g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
 			}
@@ -386,10 +386,17 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (girl->is_pregnant())
 	{
-		ss << "\nPole dancing proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10);
-	}
+		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
+		{
+			ss << "\nPole dancing proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
+		}
+		else
+		{
+			ss << "\nPole dancing proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 
+		}
+		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+	}
 	//enjoyed the work or not
 	if (roll <= 5)
 	{
@@ -403,6 +410,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
 	}
+	delete Cust;
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 	girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
@@ -426,13 +434,16 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gained
-	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, actiontype, girlName + " has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, actiontype, girlName + " has been stripping and having to be sexy for so long she now reeks of sexiness.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Exhibitionist", 60, actiontype, girlName + " has been stripping for so long she loves to be naked now.", Day0Night1);
 	if (jobperformance >= 140 && g_Dice.percent(25))
 	{
-		g_Girls.PossiblyGainNewTrait(girl, "Agile", 40, actiontype, girlName + " has been working the pole long enought to become quite Agile.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Agile", 40, actiontype, girlName + " has been working the pole long enough to become quite Agile.", Day0Night1);
 	}
-
+	if (sex == true && g_Girls.GetStat(girl, STAT_DIGNITY) < 0 && g_Dice.percent(25))
+	{
+		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1);
+	}
 	//lose
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, girlName + " has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
 	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65) { g_Girls.PossiblyLoseExistingTrait(girl, "Shy", 60, actiontype, girlName + " has been stripping for so long now that her confidence is super high and she is no longer Shy.", Day0Night1); }

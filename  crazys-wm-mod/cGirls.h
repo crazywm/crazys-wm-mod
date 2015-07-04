@@ -979,7 +979,7 @@ public:
 	void updateGirlTurnStats(sGirl* girl);
 
 	bool girl_has_matron(sGirl* girl, int shift = 0);
-	bool detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustomer cust, double mod = 0.0);
+	bool detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustomer* cust, double mod = 0.0);
 
 	string Accommodation(int acc);
 	int PreferredAccom(sGirl* girl);

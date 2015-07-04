@@ -135,6 +135,19 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss << "The fight ended in a draw.";
 	}
 
+	if (girl->is_pregnant())
+	{
+		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
+		{
+			ss << "\n\nAll that fighting proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
+		}
+		else
+		{
+			ss << "\n\nAll that fighting proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
+		}
+		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+	}
+
 	if (tempgirl) delete tempgirl; tempgirl = 0;	// Cleanup
 
 
@@ -180,6 +193,14 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 65, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
+	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 65 && g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
+	{
+		g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, girlName + " has become pretty Strong from all of the fights she's been in.", Day0Night1);
+	}
+	if (g_Dice.percent(25) && g_Girls.GetSkill(girl, SKILL_COMBAT) >= 60 && g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
+	{
+		g_Girls.PossiblyGainNewTrait(girl, "Brawler", 60, ACTION_COMBAT, girlName + " has become pretty good at fighting.", Day0Night1);
+	}
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 35, actiontype, girlName + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 	return false;

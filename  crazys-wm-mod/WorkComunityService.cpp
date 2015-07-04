@@ -69,8 +69,8 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	double jobperformance = JP_ComunityService(girl, false);
 
 	//Adding cust here for use in scripts...
-	sCustomer cust;
-	GetMiscCustomer(brothel, cust);
+	sCustomer* Cust = new sCustomer;
+	GetMiscCustomer(brothel, Cust);
 
 	// `J` merged slave/free messages and moved actual dispo change to after
 	/* */if (jobperformance >= 245)
@@ -153,7 +153,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 				ss << "She is no longer a virgin.\n";
 			}
-			if (!girl->calc_pregnancy(&cust, false, 1.0))
+			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
 				g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 			}
@@ -197,6 +197,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 
+	delete Cust;
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;

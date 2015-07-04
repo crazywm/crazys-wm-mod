@@ -34,10 +34,10 @@ typedef struct sCustomer
 
 	unsigned int m_Money;
 
-	bool m_HasAIDS = false;			// `J` Does the customer have AIDS?
-	bool m_HasChlamydia = false;	// `J` Does the customer have Chlamydia?
-	bool m_HasSyphilis = false;		// `J` Does the customer have Syphilis?
-	bool m_HasHerpes = false;		// `J` Does the customer have Herpes?
+	bool m_HasAIDS;					// `J` Does the customer have AIDS?
+	bool m_HasChlamydia;			// `J` Does the customer have Chlamydia?
+	bool m_HasSyphilis;				// `J` Does the customer have Syphilis?
+	bool m_HasHerpes;				// `J` Does the customer have Herpes?
 
 	int m_Stats[NUM_STATS];
 	int m_Skills[NUM_SKILLS];
@@ -77,11 +77,12 @@ public:
 	void PopulateCustomers(sBrothel* brothel, bool Day0Night1 = SHIFT_DAY);	// `J` populates the building's customers
 
 	//	sCustomer* GetParentCustomer();		// Gets a random customer from the customer base
-	void GetCustomer(sCustomer& customer, sBrothel *brothel);
+	void GetCustomer(sCustomer* customer, sBrothel *brothel);
 	void ChangeCustomerBase();	// Changes customer base, it is based on how much money the player is bring into the town
 	int GetNumCustomers() { return m_NumCustomers; }
 	void AdjustNumCustomers(int amount) { m_NumCustomers += amount; }
-	//	void Remove(sCustomer* cust);
+	void Remove(sCustomer* cust);
+	void SetGoals(sCustomer* cust);
 	//	int GetHappiness();	//mod
 
 private:
@@ -90,8 +91,8 @@ private:
 	int m_Rich;		// percentage of rich people in the town
 
 	int m_NumCustomers;
-	//	sCustomer* m_Parent;
-	//	sCustomer* m_Last;
+	sCustomer* m_Parent;
+	sCustomer* m_Last;
 };
 
 #endif

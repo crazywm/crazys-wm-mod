@@ -249,10 +249,10 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		u_int n;
 		ss << "Because she was quite horny, she ended up ";
-		sCustomer cust;
+		sCustomer* Cust = new sCustomer;
+		g_Customers.GetCustomer(Cust, brothel);
 		brothel->m_Happiness += 100;
-		GetMiscCustomer(brothel, cust);
-		if (cust.m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
+		if (Cust->m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
 		{
 			n = SKILL_LESBIAN, ss << "intensely licking the female customer's clit until she got off, making the lady very happy.\n";
 		}
@@ -282,7 +282,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 			{
 				g_Girls.LoseVirginity(girl);
 			}
-			if (!girl->calc_pregnancy(&cust, false, 1.0))
+			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
 				g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
 			}
@@ -296,6 +296,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->m_Tips = (int)tips;
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
 		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
+		delete Cust;
 	}
 	else
 	{

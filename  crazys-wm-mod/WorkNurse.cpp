@@ -80,8 +80,8 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	double jobperformance = JP_Nurse(girl, false);
 
 	//Adding cust here for use in scripts...
-	sCustomer cust;
-	GetMiscCustomer(brothel, cust);
+	sCustomer* Cust = new sCustomer;
+	GetMiscCustomer(brothel, Cust);
 
 	int roll = g_Dice.d100();
 	if (jobperformance >= 245)
@@ -340,7 +340,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		{
 			imagetype = IMGTYPE_SEX;
 			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
-			if (!girl->calc_pregnancy(&cust, false, 1.0))
+			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
 				g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 			}
@@ -420,6 +420,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 
+	delete Cust;
 	return false;
 }
 

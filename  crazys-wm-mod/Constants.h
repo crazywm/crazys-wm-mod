@@ -506,10 +506,16 @@ enum Fetishs{
 enum Goals{								// `J` new
 	GOAL_UNDECIDED = 0,					// The customer is not sure what they want to do
 	GOAL_FIGHT,							// The customer wants to start a fight
+	GOAL_RAPE,							// They want to rape someone?
 	GOAL_SEX,							// The customer wants to get laid
 	GOAL_GETDRUNK,						// The customer wants to get drunk
 	GOAL_GAMBLE,						// The customer wants to gamble
 	GOAL_ENTERTAINMENT,					// The customer wants to be entertained
+	GOAL_XXXENTERTAINMENT,				// They want sexual entertainment
+	GOAL_MASSAGE,						// Their muscles hurt and want someone to work on it, (should Happy Ending be a separate job?)
+	GOAL_STRIPSHOW,						// They want to see someone naked
+	GOAL_FREAKSHOW,						// They want to see something strange, nonhuman or just different
+	GOAL_CULTURALEXPLORER,				// They want to have sex with something strange, nonhuman or just different
 	GOAL_OTHER,							// The customer wants to do something different
 	NUM_GOALS							// 
 };

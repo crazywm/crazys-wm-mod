@@ -82,8 +82,8 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		jobperformance += 50;
 		ss << "She is no longer a virgin.\n";
 	}
-	sCustomer Cust; g_Customers.GetCustomer(Cust, brothel); Cust.m_Amount = 1;
-	if (Cust.m_IsWoman)	// FemDom
+	sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel); Cust->m_Amount = 1;
+	if (Cust->m_IsWoman)	// FemDom
 	{
 		jobperformance += 20;
 		/* */if (girl->has_trait("Lesbian"))	jobperformance += 20;
@@ -91,7 +91,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else
 	{
-		if (!girl->calc_pregnancy(&Cust, false, 0.75))
+		if (!girl->calc_pregnancy(Cust, false, 0.75))
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 		/* */if (girl->has_trait("Lesbian"))	jobperformance -= 10;
 		else if (girl->has_trait("Straight"))	jobperformance += 10;
@@ -133,6 +133,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 	//lose
 
+	delete Cust;
 	return false;
 }
 

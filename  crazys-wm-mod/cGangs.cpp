@@ -2233,6 +2233,12 @@ bool cGangManager::kidnapp_mission(sGang* gang)
 				dungeonreason = DUNGEON_NEWGIRL;
 				BoostGangSkill(&gang->m_Stats[STAT_CHARISMA], 3);
 				captured = true;
+				if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_KIDNAPXGIRLS)
+				{
+					g_Brothels.GetObjective()->m_SoFar++;						// `J` Added to make Charisma Kidnapping count
+					if (g_Dice.percent(g_Brothels.GetObjective()->m_Target*10))	// but possibly reduce the reward to gold only
+						g_Brothels.GetObjective()->m_Reward = REWARD_GOLD;
+				}
 			}
 			if (!captured && gang->net_limit() > 0)	// try to capture using net
 			{

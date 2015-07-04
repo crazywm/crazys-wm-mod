@@ -89,8 +89,8 @@ bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	g_Building = BUILDING_STUDIO;
-	sCustomer Cust; g_Customers.GetCustomer(Cust, brothel);	Cust.m_Amount = 1; Cust.m_IsWoman = false;
-	if (!girl->calc_pregnancy(&Cust, false, 1.0))
+	sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel);	Cust->m_Amount = 1; Cust->m_IsWoman = false;
+	if (!girl->calc_pregnancy(Cust, false, 1.0))
 	{
 		g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
 	}
@@ -126,6 +126,7 @@ bool cJobManager::WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 	//lose
 
+	delete Cust;
 	return false;
 }
 

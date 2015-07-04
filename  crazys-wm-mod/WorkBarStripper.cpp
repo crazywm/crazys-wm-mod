@@ -437,8 +437,15 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	if (girl->is_pregnant())
 	{
-		ss << "\nPole dancing proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10);
+		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
+		{
+			ss << "\nPole dancing proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
+		}
+		else
+		{
+			ss << "\nPole dancing proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
+		}
+		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - (g_Girls.GetStat(girl, STAT_STRENGTH) / 20 ));
 	}
 
 

@@ -104,9 +104,15 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, enjoy); //I've changed this to workstrip, it make more sense than sex
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
+	
+	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
+	if (jobperformance >= 140 && g_Dice.percent(25))
+	{
+		g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
+	}
 
 	return false;
 }

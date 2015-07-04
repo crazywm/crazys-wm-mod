@@ -2251,6 +2251,14 @@ Updated more of Constants.h stuff to enum
 Added enum Goals for what the customers want to do.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+###  Changes 7/3
+Added a few more options for Customer Goals
+Updated Customer Constructor
+Changed all existing stand-alone Customer calls to pointers
+Made stand-alone Customer calls use new/delete for better memory management.
+Added more job updates by Hanzo
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.07
 
 
 
