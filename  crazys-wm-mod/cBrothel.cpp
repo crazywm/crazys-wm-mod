@@ -1139,7 +1139,6 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 		m_JobManager.do_custjobs(current, 0);
 		UpdateGirls(current, 0);
 #else
-		g_Customers.PopulateCustomers(current, 0);	// `J` creates the brothel's customers
 		UpdateCustomers(current, 0);	// `J` replaces the UpdateGirls running through customers instead of the girls.
 #endif
 
@@ -1155,7 +1154,6 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 		m_JobManager.do_custjobs(current, 1);
 		UpdateGirls(current, 1);
 #else
-		g_Customers.PopulateCustomers(current, 1);	// `J` creates the brothel's customers
 		UpdateCustomers(current, 1);	// `J` replaces the UpdateGirls running through customers instead of the girls.
 #endif
 
@@ -1726,6 +1724,12 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 
 	// WD: Finished Processing Shift set flag
 	m_Processing_Shift = -1;
+}
+
+void cBrothelManager::UpdateCustomers(sBrothel* brothel, bool Day0Night1)
+{
+
+
 }
 
 // MYR: My automation is here

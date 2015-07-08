@@ -53,7 +53,6 @@ sCustomer::sCustomer()
 sCustomer::~sCustomer()
 {
 	if (m_Next) delete m_Next;	m_Next = 0;
-	if (m_Prev) delete m_Prev;	m_Prev = 0;
 }
 void cCustomers::Free()
 {
@@ -74,6 +73,13 @@ void cCustomers::Free()
 	}
 	return num;
 }*/
+
+sCustomer* cCustomers::CreateCustomer(sBrothel* brothel)
+{
+	sCustomer* cust = new sCustomer;
+	GetCustomer(cust, brothel);
+	return cust;
+}
 
 // Create 1 customer
 void cCustomers::GetCustomer(sCustomer* customer, sBrothel* brothel)
@@ -210,8 +216,8 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
  *	adding a .5 bonus to night time trade as well - should see more 
  *	punters after dark it seems to me
  */
-	m_NumCustomers = int(brothel->m_NumGirls * (Day0Night1 ? 2.0 : 1.5));
-	ss << gettext("The number of girls in this brothel attracted ") << m_NumCustomers << gettext(" initial ") << daynighttime << gettext(" customers.\n\n");
+	int num = int(brothel->m_NumGirls * (Day0Night1 ? 2.0 : 1.5));
+	ss << gettext("The number of girls in this brothel attracted ") << num << gettext(" initial ") << daynighttime << gettext(" customers.\n\n");
 /*
  *	the customers attracted by the places fame (for this shift)
  *	is the fame divided by 4 (so a max of 25 people)
@@ -220,7 +226,7 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
  */
 	int fame_customers = brothel->m_Fame / 4;
 	ss << gettext("This brothel's fame enticed ") << fame_customers << gettext(" additional ") << daynighttime << gettext(" customers to visit.\n\n");
-	m_NumCustomers += fame_customers;
+	num += fame_customers;
 
 	// each 100 gold of advertising adds 6 customers which is then randomized a little
 	if (brothel->m_AdvertisingBudget > 0 || brothel->m_AdvertisingLevel > 1.0)
@@ -231,12 +237,12 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 		int custsFromAds = int(advert * 0.06);					// 6 customers per 100 gold or so
 		custsFromAds = g_Dice%custsFromAds + (custsFromAds / 2);  // randomized from 50% to 150%
 		ss << gettext("You brought in ") << custsFromAds << gettext(" more ") << daynighttime << gettext(" customers through advertising.\n\n");
-		m_NumCustomers += custsFromAds;
+		num += custsFromAds;
 	}
 
 	// filthiness will take away customers
 	int LostCustomers = int(brothel->m_Filthiness / 10); // was /3, but that was overly harsh; changed to /10
-	m_NumCustomers -= LostCustomers;
+	num -= LostCustomers;
 
 	if(LostCustomers <= 0)
 		ss << gettext("Your brothel was spotlessly clean, so you didn't lose any ") << daynighttime << gettext(" customers due to filthiness.\n\n");
@@ -249,7 +255,7 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 	ScareCustomers -= 4;	// less security could attract more customers (for good or bad)
 	if (ScareCustomers < 0) ScareCustomers = (g_Dice % 3) * -1;
 	if (ScareCustomers > 10) ScareCustomers += g_Dice%ScareCustomers;
-	m_NumCustomers -= ScareCustomers;
+	num -= ScareCustomers;
 
 	if (ScareCustomers < 0)
 	{
@@ -264,12 +270,13 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 	brothel->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 
 
-	if (m_NumCustomers < 0)  // negative number of customers doesn't make sense
-		m_NumCustomers = 0;
-}
+	if (num < 0)	num = 0;  // negative number of customers doesn't make sense
 
-void cCustomers::PopulateCustomers(sBrothel * brothel, bool Day0Night1)
-{
+	for (int i = 0; i < num; i++)
+	{
+		Add(CreateCustomer(brothel));
+
+	}
 
 }
 
@@ -285,13 +292,25 @@ void cCustomers::ChangeCustomerBase()
 	// leaving 10-80% poor
 }
 
+void cCustomers::Add(sCustomer* cust)
+{
+	cust->m_Prev = cust->m_Next = 0;
+	if (m_Parent)
+	{
+		cust->m_Prev = m_Last;
+		m_Last->m_Next = cust;
+		m_Last = cust;
+	}
+	else	m_Last = m_Parent = cust;
+	m_NumCustomers++;
+}
+
 void cCustomers::Remove(sCustomer* cust)
 {
-	if(cust->m_Prev)
+	if (cust->m_Prev)
 	{
 		cust->m_Prev->m_Next = cust->m_Next;
-		if(cust->m_Next)
-			cust->m_Next->m_Prev = cust->m_Prev;
+		if (cust->m_Next) cust->m_Next->m_Prev = cust->m_Prev;
 		cust->m_Next = cust->m_Prev = 0;
 		delete cust;
 		cust = 0;
@@ -300,8 +319,7 @@ void cCustomers::Remove(sCustomer* cust)
 	{
 		m_Parent = cust->m_Next;
 		cust->m_Next = 0;
-		if(m_Parent)
-			m_Parent->m_Prev = 0;
+		if (m_Parent) m_Parent->m_Prev = 0;
 		delete cust;
 		cust = 0;
 	}

@@ -110,6 +110,9 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << "\n\n" << girlName << " finished her cleaning early so ";
 		roll_a = g_Dice % 6;
 		if (roll_a == 1 && brothel->m_RestrictOral) roll_a = 0;
+		if (roll_a == 1 && g_Girls.HasTrait(girl, "Lesbian")) roll_a = 0;
+		if (roll_a != 2 && g_Girls.GetStat(girl, STAT_TIREDNESS) >= 80) roll_a = 2;
+		if (roll_a != 1 && g_Dice.percent(30) && g_Girls.HasTrait(girl, "Cum Addict")) roll_a = 1;
 
 		switch (roll_a)
 		{
@@ -156,17 +159,18 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case 5:
 		{
-			if (g_Dice.percent(70))
+			if (g_Girls.HasTrait(girl, "Your Wife") || g_Dice.percent(30) && !g_Girls.HasTrait(girl, "Your Daughter") && !g_Girls.HasTrait(girl, "Lesbian")) //Flipped to fix the daughter issue
+
 			{
-				ss << "she hung out around the brothel, watching the other girls and trying to learn tricks and techniques.\n";
-				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, g_Dice % 2);
-				g_Girls.UpdateSkill(girl, SKILL_ANAL, g_Dice % 2);
-				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, g_Dice % 2);
-				g_Girls.UpdateSkill(girl, SKILL_BDSM, g_Dice % 2);
-				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, g_Dice % 2);
-			}
-			else
-			{
+
+
+
+
+
+
+
+
+
 				tips = 20; // you tip her for cleaning you
 				ss << "she came to your room and cleaned you.\n\n" << girlName << " ran you a hot bath and bathed naked with you.";/* Need a check here so your daughters won't do this zzzzz FIXME*/
 				imagetype = IMGTYPE_BATH;
@@ -200,6 +204,15 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice % 2);
 				g_Girls.UpdateStat(girl, STAT_OBEDIENCE, g_Dice % 4);
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, g_Dice % 5);
+			}
+			else
+			{
+				ss << "she hung out around the brothel, watching the other girls and trying to learn tricks and techniques.\n";
+				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, g_Dice % 2);
+				g_Girls.UpdateSkill(girl, SKILL_ANAL, g_Dice % 2);
+				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, g_Dice % 2);
+				g_Girls.UpdateSkill(girl, SKILL_BDSM, g_Dice % 2);
+				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, g_Dice % 2);
 			}
 		}break;
 

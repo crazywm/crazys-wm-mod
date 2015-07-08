@@ -104,8 +104,11 @@ public:
 		newEvent->m_ObjectID = Object;
 		newEvent->m_Next = 0;
 
-		if(!m_Events)
+		if (!m_Events)
+		{
+			m_NumEvents = 0;
 			m_Events = newEvent;
+		}
 		else
 		{
 			cInterfaceEvent* current = m_Events;

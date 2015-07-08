@@ -228,7 +228,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		// if she has already slept with the max she can attact then stop processing her fucking routine
 		if (NumSleptWith >= NumCusts) break;
 		// Stop if she has worked the bare minimum and tiredness is high enough to get a warning, pushing too hard is bad for the business too
-		if (g_Girls.GetStat(girl, STAT_TIREDNESS > 80) && NumSleptWith >= 2) break;
+		if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 80 && NumSleptWith >= 2) break;
 
 		// WD:	Init Loop variables
 		pay = AskPrice;

@@ -2260,6 +2260,20 @@ Added more job updates by Hanzo
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.07
 
+Fixed a bug in whore tiredness limiter.
+Added a few more things to customers.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.08
+
+###  Changes 7/4-6 - no time for the game.
+
+###  Changes 7/7
+Hopefully fixed a bug causing a crah - the number of events was not getting cleared for some reason.
+
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.09
+
+
 
 
 

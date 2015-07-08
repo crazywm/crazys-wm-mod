@@ -176,7 +176,7 @@ void cScreenGallery::init()
 					t = ("preg" + numeric.substr(j, 1) + "*." + ext[e]);
 					testmode.add(t.c_str());
 				}
-				numimages[i][e+1] = testmode.size();
+				numimages[i][e + 1] = testmode.size();
 			}
 		}
 		else
@@ -202,6 +202,7 @@ void cScreenGallery::init()
 	Img = 0;
 	changeimage = true;
 }
+
 void cScreenGallery::check_events()
 {
 	if (g_LeftArrow || g_A_Key || g_RightArrow || g_D_Key || g_W_Key || g_UpArrow || g_S_Key || g_DownArrow){}
@@ -236,7 +237,7 @@ void cScreenGallery::check_events()
 		g_UpArrow = g_W_Key = false;
 		while (1)
 		{
-			Mode --;
+			Mode--;
 			if (Mode < 0) Mode = NUM_IMGTYPES;
 			Img = 0;
 			if (numimages[Mode][0] > 0)
@@ -251,7 +252,7 @@ void cScreenGallery::check_events()
 		g_DownArrow = g_S_Key = false;
 		while (1)
 		{
-			Mode ++;
+			Mode++;
 			if (Mode > NUM_IMGTYPES) Mode = 0;
 			Img = 0;
 			if (numimages[Mode][0] > 0)

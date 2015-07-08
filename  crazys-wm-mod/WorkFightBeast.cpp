@@ -145,7 +145,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (g_Brothels.GetNumBeasts() < kills)	// or however many there are
 		kills = g_Brothels.GetNumBeasts();
 	if (kills < 0) kills = 0;				// can't gain any
-	g_Brothels.add_to_beasts(kills);
+	g_Brothels.add_to_beasts(-kills);
 
 	if (girl->is_pregnant())
 	{
