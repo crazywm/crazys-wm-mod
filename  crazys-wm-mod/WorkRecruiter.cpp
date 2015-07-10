@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -39,18 +40,22 @@ extern cInventory g_InvManager;
 extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
+extern cTariff tariff;
 
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
 
 extern cPlayer* The_Player;
 
+#pragma endregion
+
 // `J` Job House - General
 bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	int actiontype = ACTION_WORKRECRUIT;
 	if (Day0Night1) return false;
-
+#pragma region //	Job setup				//
+	int actiontype = ACTION_WORKRECRUIT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -59,13 +64,19 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	ss << " worked trying to recruit girls for you.\n\n";
 
-	cTariff tariff;
+	double wages = 100, tips = 0;
+	int enjoy = 0, fame = 0;
+
+	int imagetype = IMGTYPE_PROFILE;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, are you are trying to recruit for the military?
 
 	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
-	int wages = 100, work = 0;
-	int roll = g_Dice.d100();
 	int findchance = 0;
 
 	/* */if (HateLove < -80)	ss << "She hates you more then anything so she doesn't try that hard.";
@@ -194,7 +205,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 				newgirl->m_Stats[STAT_HOUSE] = 60;
 				stringstream NGmsg;
 				NGmsg << newgirl->m_Realname << " was recruited by " << girl->m_Realname << " to work for you.";
-				newgirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
+				newgirl->m_Events.AddMessage(NGmsg.str(), imagetype, EVENT_GANG);
 
 				m_Dungeon->AddGirl(newgirl, DUNGEON_RECRUITED);
 			}
@@ -211,29 +222,42 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	ss << "\n\n";
 
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
 	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 5)
 	{
 		ss << "Some of the people abused her during the shift.";
-		work -= 1;
+		enjoy -= 1;
 	}
-	else if (roll <= 25)
+	else if (roll_a <= 25)
 	{
 		ss << "She had a pleasant time working.";
-		work += 3;
+		enjoy += 3;
 	}
 	else
 	{
 		ss << "Otherwise, the shift passed uneventfully.";
-		work += 1;
+		enjoy += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
+
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 	int roll_max = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetSkill(girl, SKILL_SERVICE));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	girl->m_Pay = wages;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 
 	// Improve stats
@@ -242,8 +266,12 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
+	if (fame < 20 && jobperformance >= 100)				{ fame += 1; }
+	if (fame < 40 && jobperformance >= 145)				{ fame += 1; }
+	if (fame < 50 && jobperformance >= 185)				{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	if (g_Dice % 2)	g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
 	else			g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
@@ -257,6 +285,8 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+
+#pragma endregion
 	return false;
 }
 

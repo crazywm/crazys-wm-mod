@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -39,11 +40,15 @@ extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+#pragma endregion
+
 // `J` Job Brothel - Brothel
 bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKSTRIP;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -57,68 +62,71 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE) + g_Dice % 50;
 	int tips = max((g_Dice % 50) - 10, 0);
-	double mod = 0.0;
-	int imagetype = IMGTYPE_STRIP, enjoyment = 0;
+	int enjoy = 0, fame = 0;
 	u_int sextype = SKILL_STRIP;
-	int roll = g_Dice.d100();
+	int imagetype = IMGTYPE_STRIP;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 	sCustomer* Cust = new sCustomer;
 
-
 	double jobperformance = JP_PeepShow(girl, false);
-
+	double mod = 0.0;
 
 	if (jobperformance >= 245)
 	{
-		mod = 3.0;				ss << "She must be the perfect teaser she never goes to fast but never to slow, she knows just when to do things. The customers can't get enough of her.\n\n";
-		/* */if (roll <= 20) { ss << "Knowing every trick in the book and not hesitating to use them, she makes a lot of money today.\n"; }
-		else if (roll <= 40) { ss << "She is just a gold mine.\n"; }
-		else if (roll <= 60) { ss << "She certainly knows how to sell the show. After hours of teasing she finally gets naked.\n"; }
-		else if (roll <= 80) { ss << girlName << " was requested by name by a single customer. He paid double of her daily earnings for the privilege of getting an exclusive performance.\n"; }
-		else /*           */ { ss << girlName << " is performing today. Like always the cleaning crew have a lot of work after her shows.\n"; }
+		mod = 3.0;/*           */ ss << "She must be the perfect teaser she never goes to fast but never to slow, she knows just when to do things. The customers can't get enough of her.\n\n";
+		/* */if (roll_b <= 20)	{ ss << "Knowing every trick in the book and not hesitating to use them, she makes a lot of money today.\n"; }
+		else if (roll_b <= 40)	{ ss << "She is just a gold mine.\n"; }
+		else if (roll_b <= 60)	{ ss << "She certainly knows how to sell the show. After hours of teasing she finally gets naked.\n"; }
+		else if (roll_b <= 80)	{ ss << girlName << " was requested by name by a single customer. He paid double of her daily earnings for the privilege of getting an exclusive performance.\n"; }
+		else /*             */	{ ss << girlName << " is performing today. Like always the cleaning crew have a lot of work after her shows.\n"; }
 	}
 	else if (jobperformance >= 185)
 	{
 		mod = 2.0;				ss << "She is unbelievable at this and is always finding new ways of pleasing the customers.\n\n";
-		/* */if (roll <= 20) { ss << "She is really good at this, knowing how to tease customers into staying and paying for hours.\n"; }
-		else if (roll <= 40) { ss << girlName << " swinging her boobs and ass in a very sexual way. As a result causing heavy breathing from the booths.\n"; }
-		else if (roll <= 60) { ss << "Her body movement is flawless and very sensual, earning a nice sum today.\n"; }
-		else if (roll <= 80) { ss << girlName << " gave a very good performance, making her clients very satisfied with the time they spent here.\n"; }
+		/* */if (roll_b <= 20) { ss << "She is really good at this, knowing how to tease customers into staying and paying for hours.\n"; }
+		else if (roll_b <= 40) { ss << girlName << " swinging her boobs and ass in a very sexual way. As a result causing heavy breathing from the booths.\n"; }
+		else if (roll_b <= 60) { ss << "Her body movement is flawless and very sensual, earning a nice sum today.\n"; }
+		else if (roll_b <= 80) { ss << girlName << " gave a very good performance, making her clients very satisfied with the time they spent here.\n"; }
 		else /*           */ { ss << girlName << " was requested by name by a group of customers. She gave them a special performance for a really high price.\n"; }
 	}
 	else if (jobperformance >= 145)
 	{
 		mod = 1.5;				ss << "She's good at this job and knows a few tricks to drive the customers wild.\n\n";
-		/* */if (roll <= 20) { ss << "She has a good body and sense of rhythm, but she strips too fast, so she make less money from today performance.\n"; }
-		else if (roll <= 40) { ss << "She makes the mistake of getting naked too fast, ending the show prematurely.\n"; }
-		else if (roll <= 60) { ss << "She certainly has the skills for this job, but with more work she will get even better.\n"; }
-		else if (roll <= 80) { ss << girlName << " comes on stage with some 'toys' that she uses to prolong her performance.\n"; }
+		/* */if (roll_b <= 20) { ss << "She has a good body and sense of rhythm, but she strips too fast, so she make less money from today performance.\n"; }
+		else if (roll_b <= 40) { ss << "She makes the mistake of getting naked too fast, ending the show prematurely.\n"; }
+		else if (roll_b <= 60) { ss << "She certainly has the skills for this job, but with more work she will get even better.\n"; }
+		else if (roll_b <= 80) { ss << girlName << " comes on stage with some 'toys' that she uses to prolong her performance.\n"; }
 		else /*           */ { ss << "Having confidence in her skills, " << girlName << " gives a very good performance.\n"; }
 	}
 	else if (jobperformance >= 100)
 	{
 		mod = 1.0;				ss << "She made a few mistakes but overall she is okay at this.\n\n";
-		/* */if (roll <= 20) { ss << girlName << " can strip and people come here to see her do that but there is nothing extraordinary in her performance.\n"; }
-		else if (roll <= 40) { ss << "Pretty boring show, But at least she gets naked all the way thru.\n"; }
-		else if (roll <= 60) { ss << "Having stage fright, her movement seems mechanical, leaving paying customers unsatisfied.\n"; }
-		else if (roll <= 80) { ss << "Not too confident in herself, " << girlName << "'s tense performance rubs off on the customers.\n"; }
+		/* */if (roll_b <= 20) { ss << girlName << " can strip and people come here to see her do that but there is nothing extraordinary in her performance.\n"; }
+		else if (roll_b <= 40) { ss << "Pretty boring show, But at least she gets naked all the way thru.\n"; }
+		else if (roll_b <= 60) { ss << "Having stage fright, her movement seems mechanical, leaving paying customers unsatisfied.\n"; }
+		else if (roll_b <= 80) { ss << "Not too confident in herself, " << girlName << "'s tense performance rubs off on the customers.\n"; }
 		else /*           */ { ss << "She did good today. With improving her skills, " << girlName << " could become one of the best.\n"; }
 	}
 	else if (jobperformance >= 70)
 	{
 		mod = 0.9;				ss << "She was nervous and made a few mistakes. She isn't that good at this.\n\n";
-		/* */if (roll <= 20) { ss << "When it was time for " << girlName << " to take off her panties, she collapsed on the floor covering her breasts and crying.\n"; }
-		else if (roll <= 40) { ss << "Not being able to unbuckle her fancy bra, she struggled for minutes. Some of the customers left demanding their money back.\n"; }
-		else if (roll <= 60) { ss << "She gets naked but in a boring and not exciting way.\n"; }
-		else if (roll <= 80) { ss << "Trying a more advanced pose, she hurts herself, falling painfully on the floor.\n"; }
+		/* */if (roll_b <= 20) { ss << "When it was time for " << girlName << " to take off her panties, she collapsed on the floor covering her breasts and crying.\n"; }
+		else if (roll_b <= 40) { ss << "Not being able to unbuckle her fancy bra, she struggled for minutes. Some of the customers left demanding their money back.\n"; }
+		else if (roll_b <= 60) { ss << "She gets naked but in a boring and not exciting way.\n"; }
+		else if (roll_b <= 80) { ss << "Trying a more advanced pose, she hurts herself, falling painfully on the floor.\n"; }
 		else /*           */ { ss << girlName << " definitely tries to give a good performance, but having only good will isn't enough.\n"; }
 	}
 	else
 	{
 		mod = 0.8;				ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
-		/* */if (roll <= 20) { ss << "She is awful at this job. Her stage movement and striptease are lifeless.\n"; }
-		else if (roll <= 40) { ss << "Her stripping ability could be compared to getting undressed before a shower.\n"; }
-		else if (roll <= 60) { ss << "Her show was so bad, that you could swear you heard snoring from one booth.\n"; }
-		else if (roll <= 80) { ss << "When trying to take off her t-shirt, " << girlName << "'s head got stuck for minutes.\n"; }
+		/* */if (roll_b <= 20) { ss << "She is awful at this job. Her stage movement and striptease are lifeless.\n"; }
+		else if (roll_b <= 40) { ss << "Her stripping ability could be compared to getting undressed before a shower.\n"; }
+		else if (roll_b <= 60) { ss << "Her show was so bad, that you could swear you heard snoring from one booth.\n"; }
+		else if (roll_b <= 80) { ss << "When trying to take off her t-shirt, " << girlName << "'s head got stuck for minutes.\n"; }
 		else /*           */ { ss << "Trying to give her best, " << girlName << " gave a poor performance.\n"; }
 	}
 
@@ -136,7 +144,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		else if (g_Girls.HasTrait(girl, "Bisexual") && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")))
 		{
-			if (roll <= 50)
+			if (roll_c <= 50)
 			{
 				ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.\n";
 				sextype = SKILL_LESBIAN;
@@ -167,6 +175,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << "\nDuring her shift " << girlName << " couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
 					g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
 					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
+					fame += 1;
 					tips += 30;
 				}
 				else
@@ -181,6 +190,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
 				// work out the pay between the house and the girl
 				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+				fame += 1;
 				imagetype = IMGTYPE_MAST;
 			}
 			//Let's see if she has what it takes to do it: Confidence > 65 or Exhibitionist trait, maybe shy girls should be excluded
@@ -192,6 +202,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 					ss << "\n" << girlName << " was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
 					g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 1);
+					fame += 1;
 					tips += 30;
 				}
 				//cums over self
@@ -211,6 +222,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
 				// work out the pay between the house and the girl
 				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+				fame += 1;
 				imagetype = IMGTYPE_MAST;
 			}
 			else
@@ -228,6 +240,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
 			// work out the pay between the house and the girl
 			wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+			fame += 1;
 			imagetype = IMGTYPE_MAST;
 		}
 	}
@@ -238,12 +251,12 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			if (g_Girls.HasTrait(girl, "Meek") || g_Girls.HasTrait(girl, "Shy"))
 			{
-				enjoyment -= 5;
+				enjoy -= 5;
 				ss << "meekly ran away from it.\n";
 			}
 			else if (g_Girls.HasTrait(girl, "Lesbian"))
 			{
-				enjoyment -= 2;
+				enjoy -= 2;
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -10);
 				ss << "she doesn't understand the appeal of them, which turned her off.\n";
 			}
@@ -342,17 +355,31 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 
 
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
 
 	//enjoyed the work or not
-	/* */if (roll <= 5)		{ enjoyment -= 1; ss << "\nSome of the patrons abused her during the shift."; }
-	else if (roll <= 25)	{ enjoyment += 3; ss << "\nShe had a pleasant time working."; }
-	else /*           */	{ enjoyment += 1; ss << "\nOtherwise, the shift passed uneventfully."; }
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, enjoyment);
+	/* */if (roll_a <= 5)	{ enjoy -= 1; ss << "\nSome of the patrons abused her during the shift."; }
+	else if (roll_a <= 25)	{ enjoy += 3; ss << "\nShe had a pleasant time working."; }
+	else /*           */	{ enjoy += 1; ss << "\nOtherwise, the shift passed uneventfully."; }
+
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
+
+
+
+	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, enjoy);
 
 	// work out the pay between the house and the girl
-	girl->m_Tips = tips;
-	girl->m_Pay = wages;
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;
@@ -360,8 +387,12 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
+	if (fame < 30 && jobperformance >= 100)				{ fame += 1; }
+	if (fame < 60 && jobperformance >= 145)				{ fame += 1; }
+	if (fame < 80 && jobperformance >= 185)				{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 1);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
@@ -381,6 +412,8 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKSTRIP, girlName + " has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
 
 	delete Cust;
+
+#pragma endregion
 	return false;
 }
 

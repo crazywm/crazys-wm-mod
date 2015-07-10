@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -39,11 +40,15 @@ extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+#pragma endregion
+
 // `J` Job Brothel - Bar
 bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKBAR;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -54,46 +59,50 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	g_Girls.UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
-	int imagetype = IMGTYPE_WAIT;
 
 	sGirl* barmaidonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARMAID, Day0Night1);
 	string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->m_Realname + "" : "the Barmaid");
 
 	double wages = 15, tips = 0;
-	int work = 0;
+	int enjoy = 0, fame = 0;
 
-	int roll = g_Dice.d100();
+	int imagetype = IMGTYPE_WAIT;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 	double jobperformance = JP_BarWaitress(girl, false);
 	if (jobperformance >= 245)
 	{
 		ss << " She's the perfect waitress. Customers go on about her and many seem to come more for her than for the drinks or entertainment.\n\n";
 		wages += 155;
 
-		if (roll <= 14)
+		if (roll_b <= 14)
 		{
 			ss << girlName << " danced around the bar dropping orders off as if she didn't even have to think about it.\n";
 		}
-		else if (roll <= 28)
+		else if (roll_b <= 28)
 		{
 			ss << "Knowing how to speak with customers, " << girlName << " always gets the clients to order something extra or more pricey then they wanted at the beginning, making you a tidy profit.\n";
 			wages += 10;
 		}
-		else if (roll <= 42)
+		else if (roll_b <= 42)
 		{
 			ss << "Being a very popular waitress made " << girlName << " some fans, that come here only to be served by her. On the other hand they leave generous tips behind.\n";
 			brothel->m_Fame += 10;
 			tips += 10;
 		}
-		else if (roll <= 56)
+		else if (roll_b <= 56)
 		{
 			ss << "Her shift past smoothly, earning her some really juicy tips.\n";
 			tips += 15;
 		}
-		else if (roll <= 70)
+		else if (roll_b <= 70)
 		{
 			ss << "Memorizing the whole menu and prices, taking out three or four trays at once, not making a single mistake for days. " << girlName << " sure doesn't seem human.\n";
 		}
-		else if (roll <= 84)
+		else if (roll_b <= 84)
 		{
 			ss << "Today she saved your place from a major disturbance. When greeting clients, " << girlName << " noticed that the newly arrived group was part of a gang that was at war with another group of men which were already inside your place. She politely apologized and explained that your place was full and couldn't take such a large group. The men left unhappy but without giving her any trouble.\n";
 		}
@@ -108,25 +117,25 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 		wages += 95;
 
-		if (roll <= 16)
+		if (roll_b <= 16)
 		{
 			ss << girlName << " bounced from table to table taking orders and recommending items to help you make more money.\n";
 			wages += 10;
 		}
-		else if (roll <= 32)
+		else if (roll_b <= 32)
 		{
 			ss << "She's very good at this. You saw her several times today carrying out two orders at a time.\n";
 		}
-		else if (roll <= 48)
+		else if (roll_b <= 48)
 		{
 			ss << "When placing drink on the table she got slapped on the ass by one of the customers. " << girlName << " scolded them in a flirty way, saying that this kind of behavior could get them kicked out by the security and that she didn't want to lose her favorite customers. The client apologies, assuring her that he didn't mean any harm.\n";
 		}
-		else if (roll <= 64)
+		else if (roll_b <= 64)
 		{
 			ss << "Knowing the menu paid off for " << girlName << ". After hearing the order she advised a more expensive option. Customers went for it and enjoyed their stay. Happy with the good advice they left her a great tip.\n";
 			tips += 10;
 		}
-		else if (roll <= 83)
+		else if (roll_b <= 83)
 		{
 			ss << "Memorizing the menu and prices has paid off for " << girlName << ".\n";
 		}
@@ -141,7 +150,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		ss << " She's good at this job and gets praised by the customers often.\n\n";
 		wages += 55;
 
-		if (roll <= 14)
+		if (roll_b <= 14)
 		{   //SIN - implement code for new boob traits
 			if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") || g_Girls.HasTrait(girl, "Massive Melons"))
 			{
@@ -157,25 +166,25 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 				brothel->m_Happiness += 5;
 			}
 		}
-		else if (roll <= 28)
+		else if (roll_b <= 28)
 		{
 			ss << "One mishap today. A customer got away without paying!\n";
 			wages -= 10;
 		}
-		else if (roll <= 42)
+		else if (roll_b <= 42)
 		{
 			ss << "She spends her shift greeting customers and showing them to their tables.\n";
 		}
-		else if (roll <= 56)
+		else if (roll_b <= 56)
 		{
 			ss << "Being confident in her skill, " << girlName << " didn't make a single mistake today. She also earned some tips from happy customers.\n";
 			tips += 10;
 		}
-		else if (roll <= 70)
+		else if (roll_b <= 70)
 		{
 			ss << "Having a slow shift, she mostly gossip with other staff members.\n";
 		}
-		else if (roll <= 84)
+		else if (roll_b <= 84)
 		{
 			ss << "Ensuring that every table was served, tired " << girlName << " took a five minute breather.\n";
 		}
@@ -190,30 +199,30 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		ss << " She made a few mistakes but overall she is okay at this.\n\n";
 		wages += 15;
 
-		if (roll <= 14)
+		if (roll_b <= 14)
 		{
 			ss << girlName << " forgot to take an order to a table for over an hour.  But they were in a forgiving mood and stuck around.\n";
 		}
-		else if (roll <= 28)
+		else if (roll_b <= 28)
 		{
 			ss << "Trying her best, " << girlName << " made few mistakes but otherwise she had a pleasant day.\n";
-			work += 1;
+			enjoy += 1;
 		}
-		else if (roll <= 42)
+		else if (roll_b <= 42)
 		{
 			ss << "She tripped over her own shoelaces when carrying out an expensive order!\n";
 			brothel->m_Filthiness += 5;
 		}
-		else if (roll <= 56)
+		else if (roll_b <= 56)
 		{
 			ss << "Taking orders without mistakes and getting drinks to the tables not spilling a single drop from them. Today was a good day for " << girlName << ".\n";
-			work += 1;
+			enjoy += 1;
 		}
-		else if (roll <= 70)
+		else if (roll_b <= 70)
 		{
 			ss << "When placing drink on the table she got slapped on the ass by one of the customers. " << girlName << " didn't ignore that and called him names. Her behavior left the clients stunned for a moment.\n";
 		}
-		else if (roll <= 84)
+		else if (roll_b <= 84)
 		{
 			ss << girlName << " spent her shift on cleaning duty. Mopping the floor, wiping tables and ensuring that the bathrooms were accessible. She did a decent job.\n";
 			brothel->m_Filthiness -= 5;
@@ -228,30 +237,30 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		wages -= 5;
-		if (roll <= 14)
+		if (roll_b <= 14)
 		{
 			ss << girlName << " wrote down the wrong orders for a few patrons resulting in them leaving.\n";
 			brothel->m_Happiness -= 5;
 		}
-		else if (roll <= 28)
+		else if (roll_b <= 28)
 		{
 			ss << "After being asked for the fourth time to repeat his order, the irritated customer left your facility. " << girlName << " clearly isn't very good at this job.\n";
 			brothel->m_Happiness -= 5;
 		}
-		else if (roll <= 42)
+		else if (roll_b <= 42)
 		{
 			ss << "Giving back change to a customer, " << girlName << " made an error calculating the amount in favor of the client. \n";
 			wages -= 5;
 		}
-		else if (roll <= 56)
+		else if (roll_b <= 56)
 		{
 			ss << "Holding the tray firmly in her hands, " << girlName << " successfully delivered the order to designated table. She was so nervous and focused on not failing this time, that she jumped scared when the customer thanked her.\n";
 		}
-		else if (roll <= 70)
+		else if (roll_b <= 70)
 		{
 			ss << girlName << " really hates this job. She used every opportunity to take a break.\n";
 		}
-		else if (roll <= 84)
+		else if (roll_b <= 84)
 		{
 			ss << "Still learning to do her job, " << girlName << " gets some orders wrong making a lot of people really angry.\n";
 			brothel->m_Happiness -= 5;
@@ -266,31 +275,31 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		wages -= 15;
-		if (roll <= 14)
+		if (roll_b <= 14)
 		{
 			ss << girlName << " was taking orders to the wrong tables and letting a lot of people walk out without paying their tab.\n";
 		}
-		else if (roll <= 28)
+		else if (roll_b <= 28)
 		{
 			ss << girlName << " was presenting the ordered dish when she sneezed in it. The outraged customer demanded a new serving, that he got on the house.\n";
 			brothel->m_Happiness -= 5;
 			wages -= 15;
 		}
-		else if (roll <= 42)
+		else if (roll_b <= 42)
 		{
 			ss << "The tray slipped from " << girlName << "'s hand right in front of the patron. Causing her to get yelled at for being bad at her job.\n";
 			brothel->m_Filthiness += 5;
 		}
-		else if (roll <= 56)
+		else if (roll_b <= 56)
 		{
 			ss << "Trying her best, " << girlName << " focused on not screwing up today. Surprisingly she managed not to fail at one of her appointed tasks today.\n";
 		}
-		else if (roll <= 70)
+		else if (roll_b <= 70)
 		{
 			ss << "After picking up a tray full of drinks from the bar, " << girlName << " tried to bring it to the table. Her attempt failed when she slipped on wet floor that she mopped a minute ago.\n";
 			brothel->m_Filthiness += 5;
 		}
-		else if (roll <= 84)
+		else if (roll_b <= 84)
 		{
 			ss << girlName << " was slacking on the job spending most of her shift chatting with other staff members.\n";
 		}
@@ -452,30 +461,44 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 
 
+
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
 	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 5)
 	{
-		ss << "\nSome of the patrons abused her during the shift."; work -= 1;
+		ss << "\nSome of the patrons abused her during the shift."; 
+		enjoy -= 1;
 	}
-	else if (roll <= 25)
+	else if (roll_a <= 25)
 	{
-		ss << "\nShe had a pleasant time working."; work += 3;
+		ss << "\nShe had a pleasant time working."; 
+		enjoy += 3;
 	}
 	else
 	{
-		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+		ss << "\nOtherwise, the shift passed uneventfully."; 
+		enjoy += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work);
-	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
+
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	if (wages < 0) wages = 0;
-	if (tips < 0) tips = 0;
-	girl->m_Pay = (int)wages;
-	girl->m_Tips = (int)tips;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
@@ -483,8 +506,12 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
+	if (fame < 20 && jobperformance >= 100)				{ fame += 1; }
+	if (fame < 40 && jobperformance >= 145)				{ fame += 1; }
+	if (fame < 60 && jobperformance >= 185)				{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	if (g_Dice % 2 == 1)
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
@@ -502,6 +529,8 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her breaking hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1);
+
+#pragma endregion
 	return false;
 }
 double cJobManager::JP_BarWaitress(sGirl* girl, bool estimate)// not used

@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -39,11 +40,15 @@ extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+#pragma endregion
+
 // `J` Job Brothel - Sleazy Bar
 bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCLUB;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -54,23 +59,23 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int imagetype = IMGTYPE_ECCHI;
-	
-	sGirl* barmaidonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_SLEAZYBARMAID, Day0Night1);
-	string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->m_Realname + "" : "the Barmaid");
-
-	int roll = g_Dice.d100(), roll_d = g_Dice.d100();
 	double wages = 25, tips = 0;
-	int work = 0, anal = 0, health = 0, happy = 0, oral = 0, hand = 0;
+	int enjoy = 0, anal = 0, health = 0, happy = 0, oral = 0, hand = 0, fame = 0;
+	int imagetype = IMGTYPE_ECCHI;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
 
 	double jobperformance = JP_SleazyWaitress(girl, false);
 
-
+	sGirl* barmaidonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_SLEAZYBARMAID, Day0Night1);
+	string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->m_Realname + "" : "the Barmaid");
 
 	// `CRAZY`
 	/*default*/	int dick_type = 1;    string dick_type_text = "normal sized";
-	/* */if (roll_d <= 10)	{ dick_type = 2; dick_type_text = "huge"; }
-	else if (roll_d >= 90)	{ dick_type = 0; dick_type_text = "small"; }
+	/* */if (roll_c <= 10)	{ dick_type = 2; dick_type_text = "huge"; }
+	else if (roll_c >= 90)	{ dick_type = 0; dick_type_text = "small"; }
 
 
 	if (jobperformance >= 245)
@@ -154,7 +159,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 50;
 				imagetype = IMGTYPE_ANAL;
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
-				if (roll_d >= 90)//small
+				if (roll_c >= 90)//small
 				{
 					if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 70)
 					{
@@ -205,7 +210,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 						}
 					}
 				}
-				else if (roll_d <= 10)//huge
+				else if (roll_c <= 10)//huge
 				{
 					if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 70)
 					{
@@ -395,7 +400,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if ((g_Girls.HasTrait(girl, "Meek") || g_Girls.HasTrait(girl, "Shy")) && g_Dice.percent(5))
 	{
 		ss << girlName << " was taking an order from a rather rude patron when he decide to grope her. She isn't the kind of girl to resist this and had a bad day at work because of this.\n";
-		work -= 5;
+		enjoy -= 5;
 	}
 
 	if (g_Dice.percent(25) && (g_Girls.HasTrait(girl, "Nymphomaniac")     || g_Girls.HasTrait(girl, "Succubus")) && (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 80 || g_Girls.HasTrait(girl, "Cum Addict")) && !g_Girls.HasTrait(girl, "Lesbian")  && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 )
@@ -418,7 +423,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	if (g_Dice.percent(20) && (g_Girls.HasTrait(girl, "Exhibitionist") || g_Girls.GetStat(girl, STAT_DIGNITY) <= -20))
 	{
-		if (roll <= 50)
+		if (roll_b <= 50)
 		{
 			ss << "During her shift, " << girlName << " deliberately dropped the pen she uses to write down orders in front of one of the customers. Exploiting her skimpy outfit, she made sure to bend over to pick it up in a way that allowed her to directly flash her butt on the sitting client's eye level. This earned her an extra tip.\n"; tips += 20;
 		}
@@ -543,6 +548,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		if (g_Girls.CheckVirginity(girl))
 		{
 			g_Girls.LoseVirginity(girl);
+			ss << "\nShe is no longer a virgin.\n";
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -10);
 			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -2);
 			g_Girls.UpdateStat(girl, STAT_HEALTH, -1);
@@ -576,34 +582,45 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (tips < 0)
 		tips = 0;
 
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
 
 	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 5)
 	{
-		ss << "\nSome of the patrons abused her during the shift."; work -= 1;
+		ss << "\nSome of the patrons abused her during the shift."; enjoy -= 1;
 	}
-	else if (roll <= 25)
+	else if (roll_a <= 25)
 	{
-		ss << "\nShe had a pleasant time working."; work += 3;
+		ss << "\nShe had a pleasant time working."; enjoy += 3;
 	}
 	else
 	{
-		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+		ss << "\nOtherwise, the shift passed uneventfully."; enjoy += 1;
 	}
+
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
 
 
 	g_Girls.UpdateSkill(girl, SKILL_ORALSEX, oral);
 	g_Girls.UpdateSkill(girl, SKILL_HANDJOB, hand);
 	g_Girls.UpdateSkill(girl, SKILL_ANAL, anal);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCLUB, work);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	girl->m_Pay = (int)wages;
-	girl->m_Tips = (int)tips;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;
@@ -612,24 +629,30 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 	if (!g_Girls.HasTrait(girl, "Straight"))	{ libido += min(3, g_Brothels.GetNumGirlsOnJob(0, JOB_BARSTRIPPER, false)); }
+	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
+	if (fame < 20 && jobperformance >= 100)				{ fame += 1; }
+	if (fame < 40 && jobperformance >= 145)				{ fame += 1; }
+	if (fame < 60 && jobperformance >= 185)				{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gained traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, ACTION_WORKCLUB, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
-	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, ACTION_WORKCLUB, girlName + " has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", Day0Night1); }
+	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, actiontype, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
+	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, actiontype, girlName + " has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", Day0Night1); }
 	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_DIGNITY) < 0 && (anal > 0 || oral > 0 || hand > 0))
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1);
 	}
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLUB, "It took her breaking hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her breaking hundreds of dishes, and just as many reprimands, but " + girlName + " has finally stopped being so Clumsy.", Day0Night1);
 
+
+#pragma endregion
 	return false;
 }
 

@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCentre.h"
@@ -44,28 +45,37 @@ extern cGold g_Gold;
 extern int g_Building;
 extern cPlayer* The_Player;
 
+#pragma endregion
+
 // `J` Job Centre - General
 bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCENTRE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked doing comunity service.\n\n";
+	ss << " worked doing community service.\n\n";
 
 	g_Building = BUILDING_CENTRE;
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int image = IMGTYPE_PROFILE;
 	bool blow = false, sex = false;
 	int dispo = 0;
-	int roll = g_Dice.d100();
-	int wages = 100, work = 0, help = 0;
+	int wages = 20, tips = 0;
+	int enjoy = 0, help = 0, fame = 0;
+	int imagetype = IMGTYPE_PROFILE;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 	double jobperformance = JP_ComunityService(girl, false);
 
 	//Adding cust here for use in scripts...
@@ -109,49 +119,53 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	//try and add randomness here
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && !g_Girls.HasTrait(girl, "Virgin")
 		&& !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 75
-		&& !brothel->m_RestrictNormal)
+		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{
 		sex = true;
-		ss << "Her Nymphomania got the better of her today and she decide the best way to services her community was on her back!\n";
+		ss << "Her Nymphomania got the better of her today and she decided the best way to serve her community was on her back!\n\n";
 	}
 
-	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
+	if (g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55)//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{
 		blow = true;
 		ss << "An elderly fellow managed to convince " << girlName << " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n\n";
 	}
 
 
+
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
 	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 5)
 	{
 		ss << "\nSome of the patrons abused her during the shift.";
-		work -= 1;
+		enjoy -= 1;
 	}
-	else if (roll <= 25)
+	else if (roll_a <= 25)
 	{
 		ss << "\nShe had a pleasant time working.";
-		work += 3;
+		enjoy += 3;
 	}
 	else
 	{
 		ss << "\nOtherwise, the shift passed uneventfully.";
-		work += 1;
+		enjoy += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 
 	if (sex)
 	{
-		if (roll <= 50 && !brothel->m_RestrictNormal)
+		if (!brothel->m_RestrictNormal && (roll_b <= 50 || brothel->m_RestrictAnal)) //Tweak to avoid an issue when roll > 50 && anal is restricted
 		{
 			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
-			image = IMGTYPE_SEX;
+			imagetype = IMGTYPE_SEX;
 			if (g_Girls.CheckVirginity(girl))
 			{
 				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
-				ss << "She is no longer a virgin.\n";
+				ss << "\nShe is no longer a virgin.\n";
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
@@ -160,11 +174,13 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		else if (!brothel->m_RestrictAnal)
 		{
-			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2); image = IMGTYPE_ANAL;
+			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+			imagetype = IMGTYPE_ANAL;
 		}
 		brothel->m_Happiness += 100;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3);
+		fame += 1;
 		dispo += 6;
 	}
 	else if (blow)
@@ -172,23 +188,35 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		brothel->m_Happiness += (g_Dice % 70) + 60;
 		dispo += 4;
 		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
-		image = IMGTYPE_ORAL;
+		fame += 1;
+		imagetype = IMGTYPE_ORAL;
 	}
 
 	if (girl->m_States&(1 << STATUS_SLAVE))
 	{
 		ss << "\nThe fact that she is your slave makes people think its less of a good deed on your part.";
+		wages = 0;
 	}
 	else
 	{
 		ss << "\nThe fact that your paying this girl to do this helps people think your a better person.";
-		girl->m_Pay = wages;
 		g_Gold.staff_wages(100);  // wages come from you
 		dispo = int(dispo*1.5);
 	}
 
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+
 	The_Player->disposition(dispo);
-	girl->m_Events.AddMessage(ss.str(), image, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	help += (int)(jobperformance / 10);		//  1 helped per 10 point of performance
 
@@ -205,14 +233,20 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
+	if (fame < 20 && jobperformance >= 100)				{ fame += 1; }
+	if (fame < 40 && jobperformance >= 145)				{ fame += 1; }
+	if (fame < 50 && jobperformance >= 185)				{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	if (g_Dice % 2 == 1)	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
 	else				g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
+
+#pragma endregion
 	return false;
 }
 

@@ -512,6 +512,7 @@ enum Goals{								// `J` new
 	GOAL_GAMBLE,						// The customer wants to gamble
 	GOAL_ENTERTAINMENT,					// The customer wants to be entertained
 	GOAL_XXXENTERTAINMENT,				// They want sexual entertainment
+	GOAL_LONELY,						// They just want company and a friendly ear
 	GOAL_MASSAGE,						// Their muscles hurt and want someone to work on it, (should Happy Ending be a separate job?)
 	GOAL_STRIPSHOW,						// They want to see someone naked
 	GOAL_FREAKSHOW,						// They want to see something strange, nonhuman or just different

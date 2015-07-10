@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -39,11 +40,15 @@ extern cBrothelManager g_Brothels;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+#pragma endregion
+
 // `J` Job Brothel - Bar
 bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKMUSIC;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -55,8 +60,13 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UnequipCombat(girl); // put that shit away, you'll scare off the customers!
 
 	double wages = 20, tips = 0;
-	int work = 0, happy = 0, fame = 0;
-	int roll = g_Dice.d100(), roll_a = g_Dice.d100();
+	int enjoy = 0, happy = 0, fame = 0;
+	int imagetype = IMGTYPE_SING;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
 	double jobperformance = JP_BarSinger(girl, false);
 	
 	sGirl* pianoonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_PIANO, Day0Night1);
@@ -69,6 +79,8 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		roll_a = 30;	// classical
 	else if (g_Dice.percent(60) && (g_Girls.HasTrait(girl, "Aggressive")))
 		roll_a = 20;	// death metal
+	else if (g_Dice.percent(60) && (g_Girls.HasTrait(girl, "Bimbo")))
+		roll_a = 90;	// Pop Songs
 
 	// `CRAZY` The type of music she sings
 	/*default*/	int song_type = 1;    string song_type_text = "Various types of music";
@@ -96,20 +108,20 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		ss << "She must have the voice of an angel, the customers go on and on about her and always come to listen when she sings.\n\n";
 		wages += 155;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << girlName << "'s voice brought many patrons to tears as she sang a song full of sadness.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			ss << "Wanting to have some fun she encouraged some listeners to sing-along with her.\n";
 			happy += 10;
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << "Feeling a little blue she only sang sad ballads today. You could swear that some customers were crying from the emotion.\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << "The whole room was quiet when " << girlName << " was singing. After she finished, she gathered listeners applauded for minutes.\n";
 			fame += 5;
@@ -123,17 +135,17 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		ss << "She's unbelievable at this and is always getting praised by the customers for her voice.\n\n";
 		wages += 95;
-		if (roll <= 25)
+		if (roll_b <= 25)
 		{
 			ss << girlName << " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks\n";
 			fame += 10; wages += 10;
 		}
-		else if (roll <= 50)
+		else if (roll_b <= 50)
 		{
 			ss << "Her performance was really great, giving the listeners a pleasant time.\n";
 			happy += 5;
 		}
-		else if (roll <= 75)
+		else if (roll_b <= 75)
 		{
 			ss << "When " << girlName << " got on stage the crowd went wild. She didn't disappoint her fans giving one of the best performances in her life.\n";
 			happy += 5;
@@ -147,19 +159,19 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		ss << "Her voice is really good and gets praised by the customers often.\n\n";
 		wages += 55;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << "Her singing was pleasing, if bland.  Her voice was nice, if slightly untrained.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			ss << "She sang every part of the song clearly. " << girlName << " is a really good singer.\n";
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << "This wasn't the best performance of her life time, but in general she did well.\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << "She is good at this. With some work she could be a star.\n";
 			fame += 5;
@@ -173,15 +185,15 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		ss << "She hits a few right notes but she still has room to improve.\n\n";
 		wages += 15;
-		if (roll <= 25)
+		if (roll_b <= 25)
 		{
 			ss << "While she won't win any contests, " << girlName << " isn't a terrible singer.\n";
 		}
-		else if (roll <= 50)
+		else if (roll_b <= 50)
 		{
 			ss << "She didn't sing every part clearly but overall she was good.\n";
 		}
-		else if (roll <= 75)
+		else if (roll_b <= 75)
 		{
 			ss << "Maybe she isn't the best but at least she doesn't scare away the customers.\n";
 		}
@@ -194,20 +206,20 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		ss << "She almost never hits a right note. Lucky for you most of your customers are drunks.\n\n";
 		wages -= 5;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << "Her singing is barely acceptable, but fortunately the bustling of the bar drowns " << girlName << " out for the most part.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			ss << "After hearing today's performance, you order your guards to gag her for a week.\n";
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << "Some customers left immediately after " << girlName << " started to sing.\n";
 			wages -= 10;
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << girlName << " singing was awful. Not a single line was sung clearly.\n";
 			happy -= 5;
@@ -221,29 +233,29 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		ss << "Her voice sounds like nails on a chalk board.  She could be the worst singer ever.\n\n";
 		wages -= 15;
-		if (roll <= 14)
+		if (roll_b <= 14)
 		{
 			ss << "Her audience seems paralyzed, as if they couldn't believe that a human body could produce those sounds, much less call them \"singing\".\n";
 			happy -= 5;
 		}
-		else if (roll <= 28)
+		else if (roll_b <= 28)
 		{
 			ss << "It's tragic, " << girlName << " really can't sing.\n";
 		}
-		else if (roll <= 42)
+		else if (roll_b <= 42)
 		{
 			ss << "She is just terrible. You could swear that your singing under the shower is far better.\n";
 		}
-		else if (roll <= 56)
+		else if (roll_b <= 56)
 		{
 			ss << girlName << " was the first to get on stage before today's star performance. Seeing the gathered crowd, she froze up being able to let out a single word.\n";
 		}
-		else if (roll <= 70)
+		else if (roll_b <= 70)
 		{
 			ss << girlName << " singing was awful. Angry listeners throw random objects at her.\n";
 			happy -= 5;
 		}
-		else if (roll <= 84)
+		else if (roll_b <= 84)
 		{
 			ss << "Hearing " << girlName << "'s singing gave you a thought to use it as a new torture method.\n";
 		}
@@ -331,18 +343,21 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		ss << "Today a large group of " << girlName << "'s followers came to listen to her sing, leaving very generous tips behind.\n";
 		wages += 15;
 		tips += 25 + g_Girls.GetStat(girl, STAT_FAME) / 4;
+		g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	}
 	else if (g_Girls.HasTrait(girl, "Idol") && g_Dice.percent(25))
 	{
 		ss << "A group of " << girlName << "'s fans came to listen to her sing, leaving good tips behind.\n";
 		wages += 10;
 		tips += 20 + g_Girls.GetStat(girl, STAT_FAME) / 5;
+		g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	}
 	else if (!g_Girls.HasTrait(girl, "Idol") && g_Girls.GetStat(girl, STAT_FAME) > 75 && g_Dice.percent(15))
 	{
 		ss << girlName << " is quite popular in Crossgate so a small crowd of people came in just to listen to her.\n";
 		wages += 5;
 		tips += 15;
+		g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	}
 
 	if (g_Brothels.GetNumGirlsOnJob(0, JOB_PIANO, Day0Night1) >= 1 && g_Dice.percent(25))
@@ -357,38 +372,42 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		}
 	}
 
-	if (wages < 0)
-		wages = 0;
-	if (tips < 0)
-		tips = 0;
-
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
 
 	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 5)
 	{
-		ss << "\nSome of the patrons abused her during the shift."; work -= 1;
+		ss << "\nSome of the patrons abused her during the shift."; enjoy -= 1;
 	}
-	else if (roll <= 25)
+	else if (roll_a <= 25)
 	{
-		ss << "\nShe had a pleasant time working."; work += 3; g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
+		ss << "\nShe had a pleasant time working."; enjoy += 3; g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
 	}
 	else
 	{
-		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+		ss << "\nOtherwise, the shift passed uneventfully."; enjoy += 1;
 	}
+
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
 	brothel->m_Fame += fame;
 	brothel->m_Happiness += happy;
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_SING, Day0Night1);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	if (wages < 0) wages = 0;
-	if (tips < 0) tips = 0;
-	girl->m_Pay = (int)wages;
-	girl->m_Tips = (int)tips;
+
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
@@ -397,7 +416,10 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	if (g_Girls.GetStat(girl, STAT_FAME) < 10 && jobperformance >= 70)		{ g_Girls.UpdateStat(girl, STAT_FAME, 1); }
+	if (g_Girls.GetStat(girl, STAT_FAME) < 30 && jobperformance >= 100)		{ g_Girls.UpdateStat(girl, STAT_FAME, 1); }
+	if (g_Girls.GetStat(girl, STAT_FAME) < 60 && jobperformance >= 145)		{ g_Girls.UpdateStat(girl, STAT_FAME, 1); }
+	if (g_Girls.GetStat(girl, STAT_FAME) < 90 && jobperformance >= 185)		{ g_Girls.UpdateStat(girl, STAT_FAME, 1); }
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	if (g_Dice % 2 == 1)
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill + 1);
@@ -406,7 +428,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Singing on a daily basis has made " + girlName + " more Charismatic.", Day0Night1);
-	if (g_Girls.GetStat(girl, STAT_FAME) >= 80 && g_Dice.percent(25))
+	if (g_Girls.GetStat(girl, STAT_FAME) >= 70 && g_Dice.percent(25))
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Idol", 50, actiontype, "Her fame and singing skills has made " + girlName + " an Idol in Crossgate.", Day0Night1);
 	}
@@ -415,6 +437,8 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 	g_Girls.PossiblyLoseExistingTrait(girl, "Meek", 50, actiontype, girlName + "'s having to sing every day has forced her to get over her meekness.", Day0Night1);
 
+
+#pragma endregion
 	return false;
 }
 double cJobManager::JP_BarSinger(sGirl* girl, bool estimate)// not used

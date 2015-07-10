@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -40,11 +41,15 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+#pragma endregion
+
 // `J` Job Brothel - Hall
 bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKHALL;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -58,9 +63,13 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	sGirl* dealeronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_DEALER, Day0Night1);
 	string dealername = (dealeronduty ? "Dealer " + dealeronduty->m_Realname + "" : "the Dealer");
 
-	int roll = g_Dice.d100();
 	double wages = 25, tips = 0;
-	int work = 0;
+	int work = 0, fame = 0;
+	int imagetype = IMGTYPE_BUNNY;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
 
 	double jobperformance = JP_HallEntertainer(girl, false);
 
@@ -101,7 +110,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		ss << " She must be the perfect entertainer customers go on and on about her and always come to see her when she works.\n\n";
 		wages += 155;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			if (g_Girls.HasTrait(girl, "Aggressive"))
 			{
@@ -112,7 +121,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << "Every one of " << girlName << "'s jokes elicits a wave of laughter from the crowd of patrons, many of whom have no interest in gambling.\n";
 			}
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Elegant"))
 			{
@@ -123,11 +132,11 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << "Her voice is that of an angel, and her humor is as sharp and cutting as a blade.\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << "Each shift, " << girlName << " ends her show by blowing a kiss to her fans, producing waves of applause and cheers.\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			if (g_Girls.HasTrait(girl, "Charming") || g_Girls.HasTrait(girl, "Charismatic"))
 			{
@@ -154,7 +163,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 		wages += 95;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			if (g_Girls.HasTrait(girl, "Your Daughter"))
 			{
@@ -165,7 +174,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << girlName << " begun to acquire her own following - a small crowd of people came in just to listen to her and buy drinks.\n";
 			}
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Aggressive"))
 			{
@@ -180,11 +189,11 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << "Her jokes are almost always funny as " << girlName << "'s repertoire develops and expands.\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << girlName << "'s arrival on the stage at the beginning of her shift is greeted by scattered applause by the last few gamblers from the previous shift, and the new clients.\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << girlName << "'s soothing voice seems to glide over the noise and bustling of the gamblers and dealers.\n";
 		}
@@ -204,11 +213,11 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		ss << " She's good at this job and gets praised by the customers often.\n\n";
 		wages += 55;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << girlName << " managed to provide amusement for anybody who happened to listen to her.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Aggressive"))
 			{
@@ -223,7 +232,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << "Most of the jokes " << girlName << " told were amusing.\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			if (g_Girls.HasTrait(girl, "Charming") || g_Girls.HasTrait(girl, "Charismatic"))
 			{
@@ -234,7 +243,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << "Her singing was pleasing, if bland.  Her voice was nice, if slightly untrained.\n";
 			}
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			if (g_Girls.HasTrait(girl, "Your Daughter"))
 			{
@@ -254,11 +263,11 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		ss << " She made a few mistakes but overall she is okay at this.\n\n";
 		wages += 15;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << girlName << " managed to elicit a few chuckles, and got a few tips.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Charming") || g_Girls.HasTrait(girl, "Charismatic"))
 			{
@@ -269,7 +278,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << "While she won't win any contests, " << girlName << " isn't a terrible singer.\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			if (g_Girls.HasTrait(girl, "Aggressive"))
 			{
@@ -280,7 +289,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << girlName << " monologued the guests for an hour or so.  While nobody seemed particularly interested, nobody looked pissed either.\n";
 			}
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			if (g_Girls.HasTrait(girl, "Elegant"))
 			{
@@ -307,11 +316,11 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		wages -= 5;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << "While her jokes aren't actually driving anyone off, nobody seems to find " << girlName << " entertaining either.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Charming") || g_Girls.HasTrait(girl, "Charismatic"))
 			{
@@ -322,7 +331,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << "Her singing is barely acceptable, but fortunately the bustling of the gambling hall drowns " << girlName << " out for the most part.\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			if (g_Girls.HasTrait(girl, "Aggressive"))
 			{
@@ -333,7 +342,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << girlName << " tells bland jokes and sings forgettable songs.\n";
 			}
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			if (g_Girls.HasTrait(girl, "Your Daughter"))
 			{
@@ -353,7 +362,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		wages -= 15;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			if (g_Girls.HasTrait(girl, "Clumsy"))
 			{
@@ -368,7 +377,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << "You stuck your head into the hall halfway through shift, and swore off the gin for the third time this week after hearing " << girlName << "'s horrible singing.\n";
 			}
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Fearless"))
 			{
@@ -379,7 +388,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << "She managed to aggravate several customers with her poor taste in jokes.\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			if (g_Girls.HasTrait(girl, "Your Daughter"))
 			{
@@ -390,7 +399,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 				ss << girlName << "'s as funny as a peasant uprising and about as appreciated by her audience.\n";
 			}
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			if (g_Girls.HasTrait(girl, "Aggressive"))
 			{
@@ -501,13 +510,17 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 	}
 
+
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
 	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 5)
 	{
 		ss << "\nSeveral patrons heckled her and made her shift generally unpleasant.";
 		work -= 1;
 	}
-	else if (roll <= 25)
+	else if (roll_a <= 25)
 	{
 		ss << "\nShe had a great time working.";
 		work += 3;
@@ -518,15 +531,22 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		work += 1;
 	}
 
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
+
 	g_Girls.UpdateEnjoyment(girl, actiontype, work);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_BUNNY, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 
 	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
-	if (wages < 0) wages = 0;
-	if (tips < 0) tips = 0;
-	girl->m_Pay = (int)wages;
-	girl->m_Tips = (int)tips;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 
 	// Improve girl
@@ -535,13 +555,19 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
+	if (fame < 30 && jobperformance >= 100)				{ fame += 1; }
+	if (fame < 50 && jobperformance >= 145)				{ fame += 1; }
+	if (fame < 70 && jobperformance >= 185)				{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
+
+#pragma endregion
 	return false;
 }
 

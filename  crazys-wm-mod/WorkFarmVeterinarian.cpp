@@ -100,8 +100,6 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
 
-
-
 	//enjoyed the work or not
 	if (roll_a <= 5)
 	{

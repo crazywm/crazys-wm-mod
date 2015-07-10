@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCentre.h"
@@ -44,11 +45,15 @@ extern cGold g_Gold;
 extern int g_Building;
 extern cPlayer* The_Player;
 
+#pragma endregion
+
 // `J` Job Centre - General
 bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCENTRE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, ACTION_WORKCENTRE, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -60,9 +65,15 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Building = BUILDING_CENTRE;
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int roll = g_Dice.d100();
 	bool blow = false, sex = false;
-	int wages = 100, work = 0, feed = 0;
+	double wages = 20, tips = 0;
+	int enjoy = 0, feed = 0, fame = 0;
+
+	int imagetype = IMGTYPE_PROFILE;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
 
 	double jobperformance = JP_FeedPoor(girl, false);
 
@@ -77,19 +88,19 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " She must be perfect at this.\n\n";
 		dispo = 12;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << "Today " << girlName << " was managing the kitchen giving orders to other cooks and checking the quality of their work.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			ss << girlName << " was helping in the kitchen. Her task was to stir-fry vegetables. One word: Perfection. Food that she prepared was great!\n";
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << "Being done with the main dish earlier, " << girlName << " decided to bake cookies for desert!\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << "Excellent dish! Some world class chefs should learn from " << girlName << "!\n";
 		}
@@ -102,19 +113,19 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " She's unbelievable at this and is always getting praised by people for her work.\n\n";
 		dispo = 10;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << girlName << " is in charge of the cooking for several weeks now. You could swear that the population of rodents and small animals in the area went down.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			ss << "While preparing for today's cooking, " << girlName << " noticed that one of the crucial ingredients is missing. She manage to change the menu and fully use available ingredients.\n";
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << "She speedily served all in line at the food counter. All the portions handed out were equal.\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << "Preparing something new she mixed up the proportions from the recipe. The outcome tasted great!\n";
 		}
@@ -127,19 +138,19 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " She's good at this job and gets praised by people often.\n\n";
 		dispo = 8;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << "While cooking she used everything that was in the kitchen. Nothing was wasted.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
-			ss << "While cooking she accidently sneezed into the pot. Luckily nobody saw that.\n";
+			ss << "While cooking she accidentally sneezed into the pot. Luckily nobody saw that.\n";
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << girlName << " was helping in the kitchen. Her task was to carve the meat. Smile on her face that appear while doing this, was somehow scary and disturbing.\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << girlName << " was doing the dishes. Most of them \"survived\" and will be used next time.\n";
 		}
@@ -152,19 +163,19 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " She made a few mistakes but overall she is okay at this.\n\n";
 		dispo = 6;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << "Her cooking isn't very good. But You probably would risk serving the prepared dish to a dog.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			ss << "Today she was assign as the cook. Not being able to focus on the task at hand, she overcooked the pasta.\n";
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << "She served all in line at the food counter. Some portions were smaller than others.\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << girlName << " was helping in the kitchen. Her task was to make a salad. She manage to do this much.\n";
 		}
@@ -177,19 +188,19 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		dispo = 4;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << "Today she was assign as the cook. Meatballs that she prepared could be used as lethal projectiles.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			ss << girlName << " was doing the dishes. Let's say it would be a lot quicker to throw them all right away, then wait for her to brake so many during this simple chore.\n";
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			ss << "While cooking she burned two, brand new pots!\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << girlName << " was helping in the kitchen. Her task was to dice the carrots. Surely the carrots were cut, but to called them diced would be an exaggeration.\n";
 		}
@@ -202,25 +213,25 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		dispo = 2;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << "While preparing ingredients for the soup she almost cut off her hand!\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			ss << girlName << " was helping in the kitchen. Her task was to peel the potatoes. The peels were thick and had a lot of the vegetable left on them. What a waste!\n";
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
-			ss << "Today she was assignd as the cook. The thing that she created hardly could be called food.\n";
+			ss << "Today she was assigned as the cook. The thing that she created hardly could be called food.\n";
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
-			ss << "Today she was assignd to work at the food counter. While handing out food she served different portions to people in line.\n";
+			ss << "Today she was assigned to work at the food counter. While handing out food she served different portions to people in line.\n";
 		}
 		else
 		{
-			ss << "Being assign to the food counter, she putted a sign \"self serving\" and went out.\n";
+			ss << "Being assigned to the food counter, she putted a sign \"self serving\" and went out.\n";
 		}
 	}
 
@@ -233,10 +244,10 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 75
 		&& !g_Girls.HasTrait(girl, "Lesbian") && !g_Girls.HasTrait(girl, "Virgin")
-		&& !brothel->m_RestrictNormal)
+		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{
 		sex = true;
-		ss << "Her Nymphomania got the better of her today and she decide to let them eat her pussy!  After a few minutes they started fucking her.\n";
+		ss << "Her Nymphomania got the better of her today and she decided to let them eat her pussy!  After a few minutes they started fucking her.\n";
 	}
 
 
@@ -245,36 +256,42 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << "\nThe fact that she is your slave makes people think its less of a good deed on your part.";
 		The_Player->disposition(dispo);
+		wages = 0;
 	}
 	else
 	{
 		ss << "\nThe fact that your paying this girl to do this helps people think your a better person.";
-		girl->m_Pay = wages;
 		g_Gold.staff_wages(100);  // wages come from you
 		The_Player->disposition(int(dispo*1.5));
 	}
 
 
 
+
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
 	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 5)
 	{
-		ss << "\nSome of the patrons abused her during the shift."; work -= 1;
+		ss << "\nSome of the patrons abused her during the shift."; 
+		enjoy -= 1;
 	}
-	else if (roll <= 25)
+	else if (roll_a <= 25)
 	{
-		ss << "\nShe had a pleasant time working."; work += 3;
+		ss << "\nShe had a pleasant time working."; 
+		enjoy += 3;
 	}
 	else
 	{
-		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
+		ss << "\nOtherwise, the shift passed uneventfully."; 
+		enjoy += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCENTRE, work);
 
 	if (sex)
 	{
-		if (roll <= 50 && !brothel->m_RestrictNormal)
+		if (!brothel->m_RestrictNormal && (roll_b <= 50 || brothel->m_RestrictAnal)) //Tweak to avoid an issue when roll > 50 && anal is restricted
 		{
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
@@ -296,6 +313,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		brothel->m_Happiness += 100;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3);
+		fame += 1;
 		dispo += 6;
 	}
 	else if (blow)
@@ -303,12 +321,24 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		brothel->m_Happiness += (g_Dice % 70) + 60;
 		dispo += 4;
 		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+		fame += 1;
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 	}
 	else
 	{
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	}
+
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	feed += (int)(jobperformance / 10);		//  1 feed per 10 point of performance
 
@@ -320,7 +350,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	brothel->m_Finance.centre_costs(cost);
 	ss.str("");
 	ss << girlName << " feed " << feed << " costing you " << cost << " gold.";
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 
 	// Improve stats
@@ -329,16 +359,25 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
+	if (fame < 20 && jobperformance >= 100)				{ fame += 1; }
+	if (fame < 40 && jobperformance >= 145)				{ fame += 1; }
+	if (fame < 50 && jobperformance >= 185)				{ fame += 1; }
 
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	if (g_Dice % 2)
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+
+
 	delete Cust;
+
+#pragma endregion
 	return false;
 }
 

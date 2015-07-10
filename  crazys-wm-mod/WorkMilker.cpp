@@ -232,8 +232,7 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		g_Brothels.add_to_drinks((int)drinks);
 		ss << " brought in " << (int)drinks << " units of milk.";
 	}
-	else { ss<< " was unable to collect any milk."; }
-
+	else { ss << " was unable to collect any milk."; }
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 

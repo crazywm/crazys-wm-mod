@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCustomers.h"
@@ -40,11 +41,15 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+#pragma endregion
+
 // `J` Job Brothel - Hall
 bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_WORKHALL;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -55,17 +60,20 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
+	double wages = 25, tips = 0;
+	int work = 0, fame = 0;
+	int imagetype = IMGTYPE_CARD;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
+
+	int jobperformance = (int)JP_HallDealer(girl, false);
+
 	sGirl* enteronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_ENTERTAINMENT, Day0Night1);
 	string entername = (enteronduty ? "Entertainer " + enteronduty->m_Realname + "" : "the Entertainer");
-
 	sGirl* xxxenteronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_XXXENTERTAINMENT, Day0Night1);
 	string xxxentername = (xxxenteronduty ? "Entertainer " + xxxenteronduty->m_Realname + "" : "the Sexual Entertainer");
-
-	double wages = 25, tips = 0;
-	int work = 0;
-
-	int roll = g_Dice.d100();
-	int jobperformance = (int)JP_HallDealer(girl, false);
 
 
 	//a little pre-game randomness
@@ -110,7 +118,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		ss << " She's the perfect dealer. The customers love her and keep coming back to play against her, even after they lose the lose the shirts off their backs.\n\n";
 		wages += 155;
-		if (roll <= 33)
+		if (roll_b <= 33)
 		{
 			//SIN: Fixed - think this is all of them!
 			if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs")
@@ -128,7 +136,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << girlName << " is as near to perfect as any being could get.  She made a pile of money today.\n";
 			}
 		}
-		else if (roll <= 66)
+		else if (roll_b <= 66)
 		{
 			if (g_Girls.HasTrait(girl, "Sexy Air"))
 			{
@@ -148,11 +156,11 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		ss << " She's unbelievable at this and is always finding new ways to beat the customer.\n\n";
 		wages += 95;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << girlName << "'s a skilled card dealer, and turned a substantial profit today.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Sexy Air"))
 			{
@@ -163,7 +171,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << "She won all of her games bar one or two today!\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			if (g_Girls.HasTrait(girl, "Quick Learner"))
 			{
@@ -174,7 +182,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << girlName << " could find a place in any gambling institution with her skills with cards.\n";
 			}
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			if (g_Girls.HasTrait(girl, "Cool Scars") || g_Girls.HasTrait(girl, "Horrific Scars"))
 			{
@@ -204,11 +212,11 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		ss << " She's good at this job and knows a few tricks to win.\n\n";
 		wages += 55;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			ss << girlName << "'s a fairly good card dealer, and turned a profit today.\n";
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Lolita"))
 			{
@@ -225,7 +233,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << "Her professional smile and pleasing form reinforced her acceptable skill level.\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			if (g_Girls.HasTrait(girl, "Quick Learner"))
 			{
@@ -236,7 +244,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << " Lady Luck seems to be smiling on " << girlName << " today - she won more games then she lost.\n";
 			}
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << "Most of the patrons that sat down at " << girlName << "'s table today rose just a bit lighter.\n";
 		}
@@ -256,7 +264,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		ss << " She made a few mistakes but overall she is okay at this.\n\n";
 		wages += 15;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Meek"))
 			{
@@ -267,7 +275,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << "She's no cardsharp, but " << girlName << " can hold her own against the patrons.\n";
 			}
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Quick Learner"))
 			{
@@ -278,7 +286,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << girlName << "broke even today, thank the Lady.\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			if (g_Girls.HasTrait(girl, "Sexy Air"))
 			{
@@ -289,7 +297,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << "Pasteboard isn't her friend as the cards seemed to taunt her.\n";
 			}
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			ss << "Almost all the patrons managed to preserve most of their initial stake.\n";
 		}
@@ -311,7 +319,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		wages -= 5;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			if (g_Girls.HasTrait(girl, "Quick Learner"))
 			{
@@ -322,7 +330,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << girlName << " struggles valiantly against the forces of chance, and wins! A. Single. Game.\n";
 			}
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Meek"))
 			{
@@ -333,7 +341,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << "Despite her feeble protests, gamblers walked all over " << girlName << ".\n";
 			}
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 70)
 			{
@@ -344,7 +352,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << "As you watch " << girlName << " fold like a house of cards on a royal flush, you idly wonder if she could be replaced with a shaved ape.\n";
 			}
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs")
 				|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
@@ -373,7 +381,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		wages -= 15;
-		if (roll <= 20)
+		if (roll_b <= 20)
 		{
 			if (g_Girls.HasTrait(girl, "Sexy Air"))
 			{
@@ -384,11 +392,11 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << girlName << " dropped the deck on the floor, spraying cards everywhere.\n";
 			}
 		}
-		else if (roll <= 40)
+		else if (roll_b <= 40)
 		{
 			ss << girlName << " managed, against all probability, to lose every single game.\n";
 		}
-		else if (roll <= 60)
+		else if (roll_b <= 60)
 		{
 			if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs")
 				|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
@@ -401,7 +409,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << girlName << " shrugged with a degree of embarrassment as a chortling patron walked away with a fat moneybag.\n";
 			}
 		}
-		else if (roll <= 80)
+		else if (roll_b <= 80)
 		{
 			if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Meek"))
 			{
@@ -588,12 +596,16 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (tips < 0) tips = 0;
 
 
+
+#pragma endregion
+#pragma region	//	Enjoyment and Tiredness		//
+
 	//enjoyed the work or not
-	if (roll <= 5)
+	if (roll_a <= 5)
 	{
 		ss << "\nSome of the patrons abused her during the shift."; work -= 1;
 	}
-	else if (roll <= 25)
+	else if (roll_a <= 25)
 	{
 		ss << "\nShe had a pleasant time working."; work += 3;
 	}
@@ -602,13 +614,22 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << "\nOtherwise, the shift passed uneventfully."; work += 1;
 	}
 
+#pragma endregion
+#pragma region	//	Money					//
+
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
+
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work);
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_CARD, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	// work out the pay between the house and the girl
 	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
-	girl->m_Pay = (int)wages;
-	girl->m_Tips = (int)tips;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 
 
@@ -619,8 +640,12 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 	if (!g_Girls.HasTrait(girl, "Straight"))	{ libido += min(3, g_Brothels.GetNumGirlsOnJob(0, JOB_XXXENTERTAINMENT, false)); }
+	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
+	if (fame < 20 && jobperformance >= 100)				{ fame += 1; }
+	if (fame < 40 && jobperformance >= 145)				{ fame += 1; }
+	if (fame < 50 && jobperformance >= 185)				{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
+	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	int gain = g_Dice % 3;
 	/* */if (gain == 0)	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
@@ -629,6 +654,8 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
+
+#pragma endregion
 	return false;
 }
 

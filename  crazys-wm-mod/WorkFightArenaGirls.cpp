@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cArena.h"
@@ -43,11 +44,15 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cGold g_Gold;
 
+#pragma endregion
+
 // `J` Job Arena - Fighting
 bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_COMBAT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -57,7 +62,14 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	ss << " was assigned to fight other girls in the arena.\n\n";
 
 	
-	int wages = 0, fight_outcome = 0, enjoyment = 0, fame = 0, imagetype = IMGTYPE_COMBAT;
+	double wages = 0, tips = 0;
+	int fight_outcome = 0, enjoy = 0, fame = 0;
+
+	int imagetype = IMGTYPE_COMBAT;
+	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Job Performance			//
 
 	double jobperformance = JP_FightArenaGirls(girl, false);
 
@@ -75,7 +87,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (fight_outcome == 1)	// she won
 	{
-		enjoyment = g_Dice % 3 + 1;
+		enjoy = g_Dice % 3 + 1;
 		fame = g_Dice % 3 + 1;
 		sGirl* ugirl = 0;
 		if (g_Dice.percent(10))		// chance of getting unique girl
@@ -120,7 +132,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (fight_outcome == 2) // she lost
 	{
-		enjoyment = -(g_Dice % 3 + 1);
+		enjoy = -(g_Dice % 3 + 1);
 		fame = -(g_Dice % 3 + 1);
 		ss << "She lost the fight.";
 		int cost = 150;
@@ -130,7 +142,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (fight_outcome == 0)  // it was a draw
 	{
-		enjoyment = g_Dice % 3 - 2;
+		enjoy = g_Dice % 3 - 2;
 		fame = g_Dice % 3 - 2;
 		ss << "The fight ended in a draw.";
 	}
@@ -164,7 +176,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		wages = 0;
 	}
 
-	girl->m_Pay = wages;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+
+
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
@@ -173,7 +189,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
 	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyment);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	/* `J` this will be a place holder until a better payment system gets done
 	*
@@ -203,6 +219,8 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Fragile", 35, actiontype, girlName + " has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
+
+#pragma endregion
 	return false;
 }
 
