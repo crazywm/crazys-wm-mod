@@ -343,13 +343,13 @@ public:
 	static bool Preprocessing(int action, sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary, string& message);
 	static void GetMiscCustomer(sBrothel* brothel, sCustomer* cust);
 
-	bool work_show(sGirl * girl,sBrothel * brothel,string& summary,bool Day0Night1);
+	bool work_show(sGirl* girl,sBrothel* brothel,string& summary,bool Day0Night1);
 	void update_film(sBrothel *);
 	long make_money_films();
 	void save_films(ofstream &ofs);
 	void load_films(ifstream &ifs);
-	bool apply_job(sGirl * girl, int job, int brothel_id, bool Day0Night1, string & message);
-	int get_num_on_job(int job, int brothel_id, bool Day0Night1);
+	bool apply_job(sGirl* girl, int job, int brothel_id, bool Day0Night1, string & message);
+	int get_num_on_job(sBrothel* brothel, int job_wanted, bool Day0Night1);
 	static bool is_sex_type_allowed(unsigned int sex_type, sBrothel* brothel);
 	#ifndef _DEBUG
 		static void free();

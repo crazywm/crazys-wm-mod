@@ -362,7 +362,8 @@ void cScreenGirlDetails::init()
 	else
 	{  // if in dungeon, effectively disable job lists
 		ClearListBox(joblist_id);
-		AddToListBox(jobtypelist_id, -1, gettext("Languish in dungeon"));
+		AddToListBox(jobtypelist_id, 0, gettext("Languish in dungeon"));
+		SetSelectedItemInList(jobtypelist_id, 0, false);
 		HideButton(day_id, true);
 		HideButton(night_id, true);
 	}

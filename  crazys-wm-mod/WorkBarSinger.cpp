@@ -416,10 +416,11 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	if (g_Girls.GetStat(girl, STAT_FAME) < 10 && jobperformance >= 70)		{ g_Girls.UpdateStat(girl, STAT_FAME, 1); }
-	if (g_Girls.GetStat(girl, STAT_FAME) < 30 && jobperformance >= 100)		{ g_Girls.UpdateStat(girl, STAT_FAME, 1); }
-	if (g_Girls.GetStat(girl, STAT_FAME) < 60 && jobperformance >= 145)		{ g_Girls.UpdateStat(girl, STAT_FAME, 1); }
-	if (g_Girls.GetStat(girl, STAT_FAME) < 90 && jobperformance >= 185)		{ g_Girls.UpdateStat(girl, STAT_FAME, 1); }
+	if (girl->fame() < 10 && jobperformance >= 70)		{ fame += 1; }
+	if (girl->fame() < 30 && jobperformance >= 100)		{ fame += 1; }
+	if (girl->fame() < 60 && jobperformance >= 145)		{ fame += 1; }
+	if (girl->fame() < 90 && jobperformance >= 185)		{ fame += 1; }
+
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	if (g_Dice % 2 == 1)
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill + 1);

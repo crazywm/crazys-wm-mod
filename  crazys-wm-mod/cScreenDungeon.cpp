@@ -131,11 +131,13 @@ void cScreenDungeon::init()
 	ss << gettext("Your Dungeon where ") << dungeon->GetNumDied() << gettext(" people have died.");
 	EditTextItem(ss.str(), header_id);
 	// Fill the list box
+	selection = dungeon->GetNumGirls() > 0 ? 0 : -1;
 	string* Data = new string[numColumns];
 	for (int i = 0; i < dungeon->GetNumGirls(); i++)												// add girls
 	{
 		sGirl *girl = dungeon->GetGirl(i)->m_Girl;													// get the i-th girl
 		if (selected_girl == girl) selection = i;													// if selected_girl is this girl, update selection
+		girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
 		int col = ((girl->health() <= 30) || (girl->happiness() <= 30)) ? COLOR_RED : COLOR_BLUE;	// if she's low health or unhappy, flag her entry to display in red // Anon21
 		dungeon->OutputGirlRow(i, Data, columnNames);												// add her to the list
 		AddToListBox(girllist_id, i, Data, numColumns, col);
@@ -753,7 +755,7 @@ void cScreenDungeon::update_image()
 
 int cScreenDungeon::process_events()
 {
-	if (g_InterfaceEvents.GetNumEvents() == 0) return Continue;
+	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_SpaceKey) return Continue;
 	if (g_InterfaceEvents.CheckButton(back_id))		// if it's the back button, pop the window off the stack and we're done
 	{
 		g_InitWin = true;
@@ -776,8 +778,9 @@ int cScreenDungeon::process_events()
 		update_image();
 		return Return;
 	}
-	if (g_InterfaceEvents.CheckButton(viewdetails_id))
+	if (g_InterfaceEvents.CheckButton(viewdetails_id) || g_SpaceKey)
 	{
+		g_SpaceKey = false;
 		g_GirlDetails.lastsexact = -1;
 		return view_girl();
 	}

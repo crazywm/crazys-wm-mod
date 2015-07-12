@@ -2278,7 +2278,14 @@ Updating more jobs.
  - WorkBarmaid.cpp got a major update
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
-
+###  Changes 7/10-12
+Fixed a problem with fame in some jobs.
+Fixed a bug again - set jobs for Dungeon and Runaways when loading and saving.
+Removed autosave.gam from load game list - you can still load it using Continue from the main menu.
+Added space key goes to girl details in dungeon
+Updated WorkBarmaid.cpp more.
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.10
 
 
 

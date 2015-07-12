@@ -112,6 +112,7 @@ TiXmlElement* cDungeon::SaveDungeonDataXML(TiXmlElement* pRoot)// saves all the 
 		ss << "Saving Dungeon Girl: " << girl->m_Girl->m_Realname;
 		g_LogFile.write(ss.str()); ss.str("");
 
+		girl->m_Girl->m_DayJob = girl->m_Girl->m_NightJob = JOB_INDUNGEON;
 		TiXmlElement* pGirl = girl->m_Girl->SaveGirlXML(pDungeonGirls);
 
 		TiXmlElement* pDungeonData = new TiXmlElement("Dungeon_Data");
@@ -172,6 +173,7 @@ bool cDungeon::LoadDungeonDataXML(TiXmlHandle hDungeon)	// loads all the people 
 			{
 				ss << "Loading Dungeon Girl: " << girl->m_Girl->m_Realname;
 				g_LogFile.write(ss.str()); ss.str("");
+			//	girl->m_Girl->m_DayJob = girl->m_Girl->m_NightJob = JOB_INDUNGEON;
 
 				TiXmlElement* pDungeonData = pGirl->FirstChildElement("Dungeon_Data");
 				if (pDungeonData)

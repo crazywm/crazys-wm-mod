@@ -233,10 +233,10 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
-	if (fame < 20 && jobperformance >= 100)				{ fame += 1; }
-	if (fame < 40 && jobperformance >= 145)				{ fame += 1; }
-	if (fame < 50 && jobperformance >= 185)				{ fame += 1; }
+	if (girl->fame() < 10 && jobperformance >= 70)		{ fame += 1; }
+	if (girl->fame() < 20 && jobperformance >= 100)		{ fame += 1; }
+	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
+	if (girl->fame() < 50 && jobperformance >= 185)		{ fame += 1; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, fame);
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);

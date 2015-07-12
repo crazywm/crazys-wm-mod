@@ -232,6 +232,7 @@ void LoadGameScreen()
 	const char *pattern = "*.gam";
 	FileList fl(location, pattern);
 
+	int selected = 0;
 	if (g_InitWin)
 	{
 		g_LoadGame.Focused();
@@ -244,9 +245,11 @@ void LoadGameScreen()
 		*/
 		for (int i = 0; i < fl.size(); i++)
 		{
-			g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
+			if (fl[i].leaf() != "autosave.gam")
+				g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
+			else if (i == selected) selected++;
 		}
-		g_LoadGame.SetSelectedItemInList(g_interfaceid.LIST_LOADGSAVES, 0);
+		g_LoadGame.SetSelectedItemInList(g_interfaceid.LIST_LOADGSAVES, selected);
 		g_InitWin = false;
 	}
 

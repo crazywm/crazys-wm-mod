@@ -852,6 +852,7 @@ TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 	sGirl* rgirl = m_Runaways;
 	while (rgirl)
 	{
+		rgirl->m_DayJob = rgirl->m_NightJob = JOB_RUNAWAY;
 		rgirl->SaveGirlXML(pRunaways);
 		rgirl = rgirl->m_Next;
 	}
@@ -4914,6 +4915,7 @@ void cBrothelManager::RemoveGirlFromRunaways(sGirl* girl)
 void cBrothelManager::AddGirlToRunaways(sGirl* girl)
 {
 	girl->m_Prev = girl->m_Next = 0;
+	girl->m_DayJob = girl->m_NightJob = JOB_RUNAWAY;
 	if (m_Runaways)
 	{
 		girl->m_Prev = m_LastRunaway;

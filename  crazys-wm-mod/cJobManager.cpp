@@ -1033,9 +1033,11 @@ void cJobManager::do_custjobs(sBrothel* brothel, bool Day0Night1)
 	}
 }
 
-int cJobManager::get_num_on_job(int job, int brothel_id, bool Day0Night1)
+int cJobManager::get_num_on_job(sBrothel* brothel, int job_wanted, bool Day0Night1)
 {
-	return 0;
+	vector<sGirl*> girls = girls_on_job(brothel, job_wanted, Day0Night1);
+	int num = girls.size();
+	return num;
 }
 
 bool cJobManager::FullTimeJob(u_int Job)

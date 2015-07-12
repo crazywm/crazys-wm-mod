@@ -57,6 +57,14 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
+	else if (brothel->m_TotalCustomers < 1)
+	{
+		ss.str("");
+		ss << "There were no customers in the bar on the " << (Day0Night1 ? "night" : "day") << " shift so " << girlName << " just cleaned up a bit.";
+		brothel->m_Filthiness -= 20 + girl->service() * 2;
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return false;
+	}
 	ss << " worked as a barmaid.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
@@ -71,8 +79,23 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 #pragma region //	Job Performance			//
 
 	double jobperformance = JP_Barmaid(girl, false);
-	double drinkssold = jobperformance;					// how many drinks she can sell in a shift
-	double drinkswasted = 0;							// for when she messes up an order
+
+	int numbarmaid = g_Brothels.m_JobManager.get_num_on_job(brothel, JOB_BARMAID, Day0Night1);
+	int numbarwait = g_Brothels.m_JobManager.get_num_on_job(brothel, JOB_WAITRESS, Day0Night1);
+	int numbargirls = numbarmaid + numbarwait;
+	int numallcust = brothel->m_TotalCustomers;
+	int numhercust = (numallcust / numbargirls)
+		+ g_Dice % ((girl->charisma() / 10) - 3)
+		+ g_Dice % ((girl->beauty() / 10) - 1);
+	if (numhercust < 0) numhercust = 1;
+	if (numhercust > numallcust) numhercust = numallcust;
+
+	double drinkssold = 0;											// how many drinks she can sell in a shift
+	for (int i = 0; i < numhercust; i++)
+	{
+		drinkssold += 1 + ((g_Dice % (int)jobperformance) / 30);	// 200jp can serve up to 7 drinks per customer
+	}
+	double drinkswasted = 0;										// for when she messes up an order
 
 	//what is she wearing?
 	if (g_Girls.HasItemJ(girl, "Bourgeoise Gown") != -1 && g_Dice.percent(60))
@@ -391,7 +414,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 #pragma endregion
 #pragma region	//	Tips and Adjustments		//
 
-	tips += (drinkssold - drinkswasted) * (roll_e / 100);	//base tips
+	tips += (drinkssold - drinkswasted) * ((double)roll_e / 100.0);	//base tips
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
@@ -621,7 +644,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{
 		enjoy -= g_Dice % 3 + 1;
 		drinkssold *= 0.9;
-ss << "\nSome of the patrons abused her during the shift.";
+		ss << "\nSome of the patrons abused her during the shift.";
 	}
 	else if (roll_e >= 90)
 	{
@@ -643,10 +666,12 @@ ss << "\nSome of the patrons abused her during the shift.";
 #pragma region	//	Money					//
 
 	// drinks are sold for 5gp each, if there are not enough in stock they cost 2gp.
-	int d1 = (int)drinkssold + (int)drinkswasted;						// all drinks needed
+	int ds = max(0, (int)drinkssold);
+	int dw = max(0, (int)drinkswasted);
+	int d1 = ds + dw;													// all drinks needed
 	int d2 = g_Brothels.m_Drinks >= d1 ? d1 : g_Brothels.m_Drinks;		// Drinks taken from stock
 	int d3 = g_Brothels.m_Drinks >= d1 ? 0 : d1 - g_Brothels.m_Drinks;	// Drinks needed to be bought
-	int profit = ((int)drinkssold * 5) - (d3 * 2);
+	int profit = (ds * 5) - (d3 * 2);
 	g_Brothels.add_to_drinks(-d2);
 
 	if ((int)d1 > 0)
@@ -654,8 +679,8 @@ ss << "\nSome of the patrons abused her during the shift.";
 		ss << "\n" << girlName;
 		/* */if ((int)drinkssold <= 0)	ss << " didn't sell any drinks.";
 		else if ((int)drinkssold == 1)	ss << " only sold one drink.";
-		else/*                      */	ss << " sold " << drinkssold << " drinks.";
-		/* */if ((int)drinkswasted > 0)	ss << "\n" << drinkswasted << " were not paid for or were spilled.";
+		else/*                      */	ss << " sold " << ds << " drinks.";
+		/* */if ((int)dw > 0)	ss << "\n" << dw << " were not paid for or were spilled.";
 		/* */if (d2 > 0)/*           */ ss << "\n" << d2 << " drinks were taken from the bar's stock.";
 		/* */if (d3 > 0)/*           */ ss << "\n" << d3 << " drinks had to be restocked durring the week at a cost of 2 gold each.";
 		ss << "\n\n" << girlName;
@@ -667,23 +692,124 @@ ss << "\nSome of the patrons abused her during the shift.";
 
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 	{
-		/* */if ((int)wages > 0)	ss << "\nShe turned in an extra " << (int)wages << " gold from other sources.";
+		if (!cfg.initial.slave_keep_tips())
+		{
+			wages += tips;
+			tips = 0;
+		}
+		/* */if ((int)wages > 0)	ss << "\n" << girlName << " turned in an extra " << (int)wages << " gold from other sources.";
 		else if ((int)wages < 0)	ss << "\nShe cost you " << (int)wages << " gold from other sources.";
+		if ((int)tips > 0 && cfg.initial.slave_keep_tips())
+		{
+			ss << "\nShe made " << (int)tips << " gold in tips";
+			if ((int)wages < 0)
+			{
+				ss << " but you made her pay back what she could of the losses";
+				int l = (int)tips + (int)wages;
+				if (l > 0)		// she can pay it all
+				{
+					tips -= l;
+					wages += l;
+				}
+				else
+				{
+					wages += (int)tips;
+					tips = 0;
+				}
+			}
+			ss << ".";
+		}
 		profit += (int)wages;	// all of it goes to the house
 		wages = 0;
 	}
 	else
 	{
+		if (profit >= 10)	// base pay is 10 unless she makes less
+		{
+			ss << "\n\n"<< girlName<< " made the bar a profit so she gets paid 10 gold for the shift.";
+			wages += 10;
+			profit -= 10;
+		}
 		if (profit > 0)
 		{
-			int b = profit / 100;
+			int b = profit / 50;
+			if (b > 0) ss << "\nShe gets 2% of the profit from her drink sales as a bonus totaling " << b << " gold.";
+			wages += b;					// 2% of profit from drinks sold
 			profit -= b;
-			if (b > 0)
-				ss << "\nShe gets a small percentage of the bar's profit as a bonus totaling " << b << " gold.";
-			wages += b;					// 1% of profit from drinks sold
+			girl->happiness(b / 5);
 		}
-		wages -= drinkswasted / 10;	// she pays for wasted drinks
+		if (dw > 0)
+		{
+			girl->happiness(-(dw / 5));
+
+			int c = min(dw, (int)wages);
+			int d = min(dw - c, (int)tips);
+			int e = min(0, dw - d);
+			bool left = false;
+			if (dw < (int)wages)					// she pays for all wasted drinks out of wages
+			{
+				ss << "\nYou take 1 gold out of her pay for each drink she wasted ";
+				wages -= c;
+				profit += c;
+				left = true;
+			}
+			else if (dw < (int)wages + (int)tips)	// she pays for all wasted drinks out of wages and tips
+			{
+				ss << "\nYou take 1 gold from her wages and tips for each drink she wasted ";
+				wages -= c;
+				tips -= d;
+				profit += c + d;
+				left = true;
+			}
+			else									// no pay plus she has to pay from her pocket
+			{
+				wages -= c;
+				tips -= d;
+				profit += c + d;
+				if (girl->m_Money < 1)				// she can't pay so you scold her
+				{
+					girl->pcfear(g_Dice.bell(-1,5));
+					ss << "\nYou take all her wages and tips and then scold her for wasting so many drinks";
+				}
+				else if (girl->m_Money >= e)		// she has enough to pay it back
+				{
+					girl->pcfear(g_Dice.bell(-1, 2));
+					girl->pchate(g_Dice.bell(-1, 2));
+					ss << "\nYou take all her wages and tips and then make her pay for the rest out of her own money";
+					girl->m_Money -= e;
+					profit += e;
+				}
+				else								// she does not have all but can pay some
+				{
+					girl->pcfear(g_Dice.bell(-1, 4));
+					girl->pchate(g_Dice.bell(-1, 2));
+					ss << "\nYou take all her wages and tips and then make her pay for what she can of the rest out of her own money";
+					e = girl->m_Money;
+					girl->m_Money -= e;
+					profit += e;
+				}
+			}
+
+			if (left)
+			{
+				ss << "leaving her with ";
+				/* */if ((int)wages + (int)tips < 1)	ss << "nothing";
+				else if ((int)wages + (int)tips < 2)	ss << "just one gold";
+				else/*                            */	ss << (int)wages + (int)tips << "gold";
+			}
+			ss << ".";
+		}
 	}
+
+	// tiredness
+	int t0 = d1;
+	int easydrinks = (girl->constitution() + girl->service()) / 4;
+	int mediumdrinks = (girl->constitution() + girl->service()) /2;
+	int haarddrinks = (girl->constitution() + girl->service());
+	int t1 = easydrinks;					// 1 tired per 20 drinks
+	int t2 = max(0, t0 - easydrinks);		// 1 tired per 10 drinks
+	int t3 = max(0, t0 - mediumdrinks);		// 1 tired per 2 drinks
+	int tired = (t1 / 20) + (t2 / 10) + (t3 / 2);
 
 	// Money
 	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
@@ -707,12 +833,13 @@ ss << "\nSome of the patrons abused her during the shift.";
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-	if (fame < 10 && jobperformance >= 70)				{ fame += 1; }
-	if (fame < 20 && jobperformance >= 100)				{ fame += 1; }
-	if (fame < 40 && jobperformance >= 145)				{ fame += 1; }
-	if (fame < 60 && jobperformance >= 185)				{ fame += 1; }
+	if (girl->fame() < 10 && jobperformance >= 70)		{ fame += 1; }
+	if (girl->fame() < 20 && jobperformance >= 100)		{ fame += 1; }
+	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
+	if (girl->fame() < 60 && jobperformance >= 185)		{ fame += 1; }
 
 	g_Girls.UpdateStat(girl, STAT_FAME, fame);
+	g_Girls.UpdateStat(girl, STAT_TIREDNESS, tired);
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	if (g_Dice % 2 == 1)
@@ -768,7 +895,7 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 
 	if (g_Girls.HasTrait(girl, "One Arm"))				jobperformance -= 30;
 	if (g_Girls.HasTrait(girl, "One Foot"))				jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "One Hand"))				jobperformance -= 15; 
+	if (g_Girls.HasTrait(girl, "One Hand"))				jobperformance -= 15;
 	if (g_Girls.HasTrait(girl, "One Leg"))				jobperformance -= 40;
 	if (g_Girls.HasTrait(girl, "No Arms"))				jobperformance -= 100;
 	if (g_Girls.HasTrait(girl, "No Feet"))				jobperformance -= 20;
