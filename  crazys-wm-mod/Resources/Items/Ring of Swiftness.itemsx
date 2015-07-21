@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Ring of Swiftness" Desc="This twirly silver ring allows its wearer to move exceptionally fast. (+30 Agility)" Type="Ring" Badness="0" Special="None" Cost="10000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Agility" Amount="30" />
+    </Item>
+</Items>

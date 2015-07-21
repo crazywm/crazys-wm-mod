@@ -665,13 +665,13 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 #pragma endregion
 #pragma region	//	Money					//
 
-	// drinks are sold for 5gp each, if there are not enough in stock they cost 2gp.
+	// drinks are sold for 3gp each, if there are not enough in stock they cost 1gp.
 	int ds = max(0, (int)drinkssold);
 	int dw = max(0, (int)drinkswasted);
 	int d1 = ds + dw;													// all drinks needed
 	int d2 = g_Brothels.m_Drinks >= d1 ? d1 : g_Brothels.m_Drinks;		// Drinks taken from stock
 	int d3 = g_Brothels.m_Drinks >= d1 ? 0 : d1 - g_Brothels.m_Drinks;	// Drinks needed to be bought
-	int profit = (ds * 5) - (d3 * 2);
+	int profit = (ds * 3) - (d3 * 1);
 	g_Brothels.add_to_drinks(-d2);
 
 	if ((int)d1 > 0)
@@ -682,7 +682,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		else/*                      */	ss << " sold " << ds << " drinks.";
 		/* */if ((int)dw > 0)	ss << "\n" << dw << " were not paid for or were spilled.";
 		/* */if (d2 > 0)/*           */ ss << "\n" << d2 << " drinks were taken from the bar's stock.";
-		/* */if (d3 > 0)/*           */ ss << "\n" << d3 << " drinks had to be restocked durring the week at a cost of 2 gold each.";
+		/* */if (d3 > 0)/*           */ ss << "\n" << d3 << " drinks had to be restocked durring the week at a cost of 1 gold each.";
 		ss << "\n\n" << girlName;
 		/* */if (profit > 0)/*       */	ss << " made you a profit of " << profit << " gold.";
 		else if (profit < 0)/*       */	ss << " cost you " << profit << " gold.";
@@ -867,6 +867,12 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
 		g_Girls.GetSkill(girl, SKILL_SERVICE));
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))			jobperformance += 15;

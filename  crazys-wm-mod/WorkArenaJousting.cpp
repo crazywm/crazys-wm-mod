@@ -163,6 +163,13 @@ double cJobManager::JP_ArenaJousting(sGirl* girl, bool estimate)// not used
 		(girl->animalhandling() / 2) +
 		girl->level());
 
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;	
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
+
 	//good traits
 	if (g_Girls.HasTrait(girl, "Aggressive"))				jobperformance += 20;
 	if (g_Girls.HasTrait(girl, "Charismatic"))				jobperformance += 10;

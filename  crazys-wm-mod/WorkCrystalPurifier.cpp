@@ -176,6 +176,10 @@ double cJobManager::JP_CrystalPurifier(sGirl* girl, bool estimate)// not used
 	}
 	else// for the actual check
 	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= t / 3;
+
 		jobperformance += (girl->spirit() - 50) / 10;
 		jobperformance += (girl->intelligence() - 50) / 10;
 		jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;

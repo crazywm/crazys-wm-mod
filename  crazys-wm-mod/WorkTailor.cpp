@@ -360,6 +360,12 @@ double cJobManager::JP_Tailor(sGirl* girl, bool estimate)// not used
 		((girl->service() + girl->intelligence() + girl->magic()) / 3) +
 		// level bonus
 		girl->level();
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 	// traits modifiers
 
 

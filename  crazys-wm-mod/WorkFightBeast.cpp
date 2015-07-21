@@ -226,6 +226,12 @@ double cJobManager::JP_FightBeast(sGirl* girl, bool estimate)// not used
 	else// for the actual check
 	{
 		jobperformance += (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2;
+		if (!estimate)
+		{
+			int t = girl->tiredness() - 80;
+			if (t > 0)
+				jobperformance -= (t + 2) * (t / 2);
+		}
 
 	}
 	return jobperformance;

@@ -579,6 +579,12 @@ double cJobManager::JP_HallEntertainer(sGirl* girl, bool estimate)// not used
 		g_Girls.GetStat(girl, STAT_CONFIDENCE)) / 3 +
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
 
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 
 	//good traits

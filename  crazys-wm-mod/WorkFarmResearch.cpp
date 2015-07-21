@@ -371,6 +371,12 @@ double cJobManager::JP_FarmResearch(sGirl* girl, bool estimate)// not used
 		jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
 			g_Girls.GetSkill(girl, SKILL_HERBALISM) / 2 +
 			g_Girls.GetSkill(girl, SKILL_BREWING));
+		if (!estimate)
+		{
+			int t = girl->tiredness() - 80;
+			if (t > 0)
+				jobperformance -= (t + 2) * (t / 3);
+		}
 
 		//good traits
 		if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;

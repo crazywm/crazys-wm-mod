@@ -446,6 +446,15 @@ double cJobManager::JP_BarSinger(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
 		(g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
+
+
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
+
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 15;
 	if (g_Girls.HasTrait(girl, "Sexy Air"))			jobperformance += 5;

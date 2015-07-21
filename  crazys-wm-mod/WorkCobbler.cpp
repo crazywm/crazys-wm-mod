@@ -285,6 +285,12 @@ double cJobManager::JP_Cobbler(sGirl* girl, bool estimate)// not used
 		// level bonus
 		girl->level();
 		// traits modifiers
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	return jobperformance;
 }

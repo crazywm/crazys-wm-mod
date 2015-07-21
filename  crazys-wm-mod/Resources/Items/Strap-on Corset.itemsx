@@ -6,7 +6,7 @@
         Type="Underwear"
         Badness="35"
         Special="None"
-        Cost="900"
+        Cost="600"
         Rarity="Shop25"
         Infinite="false"
         GirlBuyChance="0"

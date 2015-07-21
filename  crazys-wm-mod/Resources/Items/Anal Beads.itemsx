@@ -2,7 +2,7 @@
 <Items>
     <Item
         Name="Anal Beads"
-        Desc="Anal sex toy consisting in a series of beads attached to a piece of plastic. (+12 Anal, +2 BDSM, +10 Libido, -8 Refinement, -2 Agility)"
+        Desc="Anal sex toy consisting in a series of beads attached to a piece of plastic. (+12 Anal, +2 BDSM, +4 Con, +10 Libido, -8 Refinement, -2 Agility)"
         Type="Misc"
         Badness="21"
         Special="None"
@@ -23,6 +23,10 @@
             What="Stat"
             Name="Libido"
             Amount="10" />
+        <Effect
+            What="Stat"
+            Name="Constitution"
+            Amount="4" />
         <Effect
             What="Stat"
             Name="Refinement"

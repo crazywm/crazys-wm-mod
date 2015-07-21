@@ -225,14 +225,5 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 double cJobManager::JP_FilmStagehand(sGirl* girl, bool estimate)
 {
-	// this is hard to use because the job does both cleaning and adds to film quality
-
-	int CleanAmt = 0;
-	if (estimate)	// for third detail string
-	{
-		CleanAmt = girl->service() * 2;
-	}
-
-
-	return CleanAmt;
+	return JP_Cleaning(girl, estimate);		// just use cleaning so there is 1 less thing to edit
 }

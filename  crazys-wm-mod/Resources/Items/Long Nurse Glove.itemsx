@@ -2,11 +2,11 @@
 <Items>
     <Item
         Name="Long Nurse Glove"
-        Desc="Elbow length white latex glove. No nurse outfit is complete without a pair. (+3 Charisma, +7 Medicine, +2 Service, +3 Strip, +2 Handjob, +2 Animal Handling)"
+        Desc="Elbow length white latex glove. No nurse outfit is complete without a pair. (+3 Charisma, +8 Medicine, +2 Service, +3 Strip, +2 Handjob, +2 Animal Handling)"
         Type="Armband"
         Badness="5"
         Special="None"
-        Cost="300"
+        Cost="230"
         Rarity="Shop25"
         Infinite="true"
         GirlBuyChance="0"
@@ -18,7 +18,7 @@
         <Effect
             What="Skill"
             Name="Medicine"
-            Amount="7" />
+            Amount="8" />
         <Effect
             What="Skill"
             Name="Service"

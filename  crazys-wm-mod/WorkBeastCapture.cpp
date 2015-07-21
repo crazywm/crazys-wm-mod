@@ -334,6 +334,12 @@ double cJobManager::JP_BeastCapture(sGirl* girl, bool estimate)// not used
 		((girl->beastiality() + girl->constitution() + girl->agility() + girl->magic()) / 4) +
 		// level bonus
 		girl->level();
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	if (girl->has_trait("Hunter"))				jobperformance += 40;
 	if (girl->has_trait("Adventurer"))			jobperformance += 10;

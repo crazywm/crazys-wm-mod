@@ -143,6 +143,9 @@ double cJobManager::JP_Fluffer(sGirl* girl, bool estimate)// not used
 	}
 	else// for the actual check
 	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= t / 4;
 		jobperformance += (g_Girls.GetSkill(girl, SKILL_ORALSEX) + g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_SPIRIT)) / 30;
 		jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
 		jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);

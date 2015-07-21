@@ -200,6 +200,9 @@ double cJobManager::JP_Security(sGirl* girl, bool estimate)	// not used
 		SecLev = g_Dice % (g_Girls.GetSkill(girl, SKILL_COMBAT))
 			+ g_Dice % (g_Girls.GetSkill(girl, SKILL_MAGIC) / 3)
 			+ g_Dice % (g_Girls.GetStat(girl, STAT_AGILITY) / 3);
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			SecLev -= t * 2;
 	}
 
 	// Good traits

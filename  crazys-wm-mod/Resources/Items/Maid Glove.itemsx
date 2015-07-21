@@ -2,7 +2,7 @@
 <Items>
     <Item
         Name="Maid Glove"
-        Desc="Excellent at cleaning, cooking and stroking hard objects. (+3 Charisma, +7 Service, +7 Cooking, +5 Handjob)"
+        Desc="Excellent at cleaning, cooking and stroking hard objects. (+3 Charisma, +8 Service, +7 Cooking, +5 Handjob)"
         Type="Armband"
         Badness="5"
         Special="None"
@@ -18,7 +18,7 @@
         <Effect
             What="Skill"
             Name="Service"
-            Amount="7" />
+            Amount="8" />
         <Effect
             What="Skill"
             Name="Cooking"

@@ -666,6 +666,12 @@ double cJobManager::JP_HallDealer(sGirl* girl, bool estimate)
 		g_Girls.GetStat(girl, STAT_AGILITY) / 2 +			// agility makes her fast enough to cheat
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +	// performance helps her get away with it
 		g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))    jobperformance += 5;

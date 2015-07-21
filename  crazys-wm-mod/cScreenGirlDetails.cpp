@@ -812,7 +812,7 @@ void cScreenGirlDetails::check_events()
 				}
 				else
 				{
-						dp = DirPath(cfg.folders.characters().c_str()) << selected_girl->m_Name << trig->m_Script;
+					dp = DirPath(cfg.folders.characters().c_str()) << selected_girl->m_Name << trig->m_Script;
 				}
 			}
 			cScriptManager script_manager;

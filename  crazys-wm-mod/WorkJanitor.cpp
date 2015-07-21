@@ -178,49 +178,5 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 double cJobManager::JP_Janitor(sGirl* girl, bool estimate)// not used
 {
-	int CleanAmt = 0;
-	if (estimate)	// for third detail string
-	{
-		CleanAmt = girl->service() * 2;
-	}
-
-	if (g_Girls.HasTrait(girl, "Maid"))						CleanAmt += 20;
-	if (g_Girls.HasTrait(girl, "Powerful Magic"))			CleanAmt += 10;
-	if (g_Girls.HasTrait(girl, "Strong Magic"))				CleanAmt += 5;
-	if (g_Girls.HasTrait(girl, "Handyman"))					CleanAmt += 5;
-	if (g_Girls.HasTrait(girl, "Waitress"))					CleanAmt += 5;
-	if (g_Girls.HasTrait(girl, "Agile"))					CleanAmt += 5;
-	if (g_Girls.HasTrait(girl, "Fleet of Foot"))			CleanAmt += 2;
-	if (g_Girls.HasTrait(girl, "Strong"))					CleanAmt += 5;
-	if (g_Girls.HasTrait(girl, "Assassin"))					CleanAmt += 1;
-	if (g_Girls.HasTrait(girl, "Psychic"))					CleanAmt += 2;
-	if (g_Girls.HasTrait(girl, "Manly"))					CleanAmt += 1;
-	if (g_Girls.HasTrait(girl, "Tomboy"))					CleanAmt += 2;
-	if (g_Girls.HasTrait(girl, "Optimist"))					CleanAmt += 1;
-	if (g_Girls.HasTrait(girl, "Sharp-Eyed"))				CleanAmt += 1;
-	if (g_Girls.HasTrait(girl, "Giant"))					CleanAmt += 2;
-	if (g_Girls.HasTrait(girl, "Prehensile Tail"))			CleanAmt += 3;
-
-	if (g_Girls.HasTrait(girl, "Blind"))					CleanAmt -= 20;
-	if (g_Girls.HasTrait(girl, "Queen"))					CleanAmt -= 20;
-	if (g_Girls.HasTrait(girl, "Princess"))					CleanAmt -= 10;
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))				CleanAmt -= 10;
-	if (g_Girls.HasTrait(girl, "Bimbo"))					CleanAmt -= 5;
-	if (g_Girls.HasTrait(girl, "Retarded"))					CleanAmt -= 5;
-	if (g_Girls.HasTrait(girl, "Smoker"))					CleanAmt -= 1;
-	if (g_Girls.HasTrait(girl, "Clumsy"))					CleanAmt -= 5;
-	if (g_Girls.HasTrait(girl, "Delicate"))					CleanAmt -= 1;
-	if (g_Girls.HasTrait(girl, "Elegant"))					CleanAmt -= 5;
-	if (g_Girls.HasTrait(girl, "Malformed"))				CleanAmt -= 1;
-	if (g_Girls.HasTrait(girl, "Massive Melons"))			CleanAmt -= 1;
-	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	CleanAmt -= 3;
-	if (g_Girls.HasTrait(girl, "Titanic Tits"))				CleanAmt -= 5;
-	if (g_Girls.HasTrait(girl, "Broken Will"))				CleanAmt -= 5;
-	if (g_Girls.HasTrait(girl, "Pessimist"))				CleanAmt -= 1;
-	if (g_Girls.HasTrait(girl, "Meek"))						CleanAmt -= 2;
-	if (g_Girls.HasTrait(girl, "Nervous"))					CleanAmt -= 2;
-	if (g_Girls.HasTrait(girl, "Dependant"))				CleanAmt -= 5;
-	if (g_Girls.HasTrait(girl, "Bad Eyesight"))				CleanAmt -= 5;
-
-	return CleanAmt;
+	return JP_Cleaning(girl, estimate);		// just use cleaning so there is 1 less thing to edit
 }

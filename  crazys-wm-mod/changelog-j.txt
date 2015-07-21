@@ -2287,6 +2287,22 @@ Updated WorkBarmaid.cpp more.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.10
 
+###  Changes 7/13
+Added AdjustGirlFlag to scripts.
+
+###  Changes 7/14-18 - no time to work on the game
+
+###  Changes 7/19
+Added job performance reduction due to tiredness to many jobs
+Made most cleaning jobs use JP_Cleaning instead of each having its own jobperformance calc so it only needs to be edited once.
+
+###  Changes 7/20
+Added a bypass for the default walkabout script intro.
+Added more items and updated others by Hanzo.
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.11
+
+
 
 
 

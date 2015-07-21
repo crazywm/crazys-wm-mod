@@ -29,6 +29,7 @@
 #include <locale>
 #include <sstream>
 #include "cGangs.h"
+#include "FileList.h"
 
 extern	bool			g_InitWin;
 extern	int			g_CurrBrothel;
@@ -161,54 +162,64 @@ void cCastingTry::do_walk()
 {
 	if (g_TryCast)
 	{
-		g_MessageQue.AddToQue("You can only do this once per week.", 2);
+		g_MessageQue.AddToQue("You can only do this once per week.", COLOR_RED);
 		return;
 	}
-
-	sGirl *girl = g_Girls.GetRandomGirl();	//let's get a girl for the player to meet
-	if (girl == 0)							// if there's no girl, no meeting
+	sGirl *girl = g_Girls.GetRandomGirl();						// let's get a girl for the player to meet
+	if (girl == 0)												// if there's no girl, no meeting
 	{
 		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
-	/*
-	*	most of the time, you're not going to find anyone
-	*	unless you're cheating, of course.
-	*/
-	int meet_chance = cfg.initial.girl_meet();
-	if (!g_Dice.percent(meet_chance) && !g_Cheats) {
-		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
+	// most of the time, you're not going to find anyone unless you're cheating, of course.
+	if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Cheats)
+	{
+		g_MessageQue.AddToQue(walk_no_luck(), COLOR_BLUE);
 		return;
 	}
-	/*
-	*	I'd like to move this to the handler script
-	*
-	*	once scripts are stable
-	*/
-	string message = "";
-	int pre = g_Dice % 2;
-	if (pre == 1)	message = "You need a new girl for your next film. You set up a public casting call.";
-	else			message = "You hold an open casting call to try to get a new actress for your movies.";
-	g_MessageQue.AddToQue(message, COLOR_BLUE);
+
+	g_Building = BUILDING_STUDIO;
 	int v[2] = { 0, -1 };
 	cTrigger* trig = 0;
-	g_Building = BUILDING_STUDIO;
 	DirPath dp;
-	string filename;
+	DirPath intro;
+	string introfile = "";
+	string message = "";
 	cScriptManager sm;
-	/*
-	*	is there a girl specific talk script?
-	*/
-	if (!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v))) {
+
+	// is there a girl specific talk script?
+	if (!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v)))
+	{
 		// no, so trigger the default one
+		introfile = "MeetCastingTry.script.intro";
+		intro = DirPath() << "Resources" << "Scripts";
 		dp = DirPath() << "Resources" << "Scripts" << "MeetCastingTry.script";
 	}
-	else {
+	else
+	{
 		// trigger the girl-specific one
+		introfile = trig->m_Script + ".intro";
+		intro = DirPath(cfg.folders.characters().c_str()) << girl->m_Name;
 		dp = DirPath(cfg.folders.characters().c_str()) << girl->m_Name << trig->m_Script;
 	}
+
+	FileList abstest(intro, introfile.c_str());
+	if (abstest.size() == 0)
+	{
+		int pre = g_Dice % 2;
+		if (pre == 1)	message = "You need a new girl for your next film. You set up a public casting call.";
+		else			message = "You hold an open casting call to try to get a new actress for your movies.";
+	}
+	else
+	{
+		message = "";
+		ifstream in;
+		in.open(abstest[0].full());
+		in >> message;
+		in.close();
+	}
+	if (message.size() > 0) g_MessageQue.AddToQue(message, COLOR_BLUE);
+
 	eventrunning = true;
 	sm.Load(dp, girl);
 }
-
-

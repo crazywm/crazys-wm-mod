@@ -292,11 +292,18 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 double cJobManager::JP_Recruiter(sGirl* girl, bool estimate)// not used
 {
+	if (girl->is_slave()) return -1000;
+
 	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	double jobperformance =
 		(HateLove + g_Girls.GetStat(girl, STAT_CHARISMA));
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
-	if (girl->is_slave()) jobperformance -= 1000;
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 20;

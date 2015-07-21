@@ -358,7 +358,7 @@ struct sGirl
 
 	long m_FetishTypes;							// the types of fetishes this girl has
 
-	unsigned char m_Flags[NUM_GIRLFLAGS];		// flags used by scripts
+	char m_Flags[NUM_GIRLFLAGS];				// flags used by scripts
 
 	cEvents m_Events;							// Each girl keeps track of all her events that happened to her in the last turn
 

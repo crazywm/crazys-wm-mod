@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Minor Ring of the Schwarzenegger"
-      Desc="Personally endorsed by the Governator of California. (+30 Str, +15 Cons)"
+      Desc="Personally endorsed by the Governator of California. (+30 Str)"
       Type="Ring"
       Badness="0"
       Special="None"
       Cost="7000"
       Rarity="Shop05"
       Infinite="false">
-   <Effect What="Stat"  Name="Constitution"            Amount="15"    />
    <Effect What="Stat"  Name="Strength"                Amount="30"    />
 </Item>
 </Items>

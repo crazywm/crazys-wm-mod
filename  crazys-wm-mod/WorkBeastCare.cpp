@@ -193,6 +193,12 @@ double cJobManager::JP_BeastCare(sGirl* girl, bool estimate)
 		g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 3 +
 		g_Girls.GetSkill(girl, SKILL_SERVICE) / 3 +
 		g_Girls.GetSkill(girl, SKILL_MAGIC) / 3);
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	return jobperformance;
 }

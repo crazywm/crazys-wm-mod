@@ -195,6 +195,9 @@ double cJobManager::JP_FilmPromoter(sGirl* girl, bool estimate)// not used
 		{
 			jobperformance += (cval / 2);  // add 50% of level to jobperformance
 		}
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
 	}
 
 

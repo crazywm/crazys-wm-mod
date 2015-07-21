@@ -300,6 +300,12 @@ double cJobManager::JP_FarmMarketer(sGirl* girl, bool estimate)// not used
 		((girl->intelligence() + girl->fame() + girl->farming()) / 3) +
 		// level bonus
 		girl->level();
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 5);
+	}
 
 	if (girl->morality() > 50)						jobperformance -= 5;	// too honest to cheat the customer
 	else if (girl->morality() < -50)				jobperformance -= 5;	// too crooked to be trusted with an honest price

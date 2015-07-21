@@ -348,6 +348,12 @@ double cJobManager::JP_Jeweler(sGirl* girl, bool estimate)// not used
 		((girl->agility() + girl->confidence() + girl->intelligence() + girl->magic()) / 4) + 
 		// level bonus
 		girl->level();
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	//good traits
 

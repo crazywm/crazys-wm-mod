@@ -233,6 +233,12 @@ double cJobManager::JP_Butcher(sGirl* girl, bool estimate)// not used
 		((girl->medicine() + girl->intelligence() + girl->cooking()) / 3) +
 		// level bonus
 		girl->level();
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;

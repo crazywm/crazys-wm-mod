@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Ring of the Schwarzenegger"
-      Desc="Only the best for the Californian Governator, This ring terminates flabby muscles!. (+50 Str, +25 Cons)"
+      Desc="Only the best for the Californian Governator, This ring terminates flabby muscles!. (+50 Str)"
       Type="Ring"
       Badness="0"
       Special="None"
@@ -9,6 +9,5 @@
       Rarity="Catacomb15"
       Infinite="false">
    <Effect What="Stat"  Name="Strength"                Amount="50"    />
-   <Effect What="Stat"  Name="Constitution"            Amount="25"    />
 </Item>
 </Items>

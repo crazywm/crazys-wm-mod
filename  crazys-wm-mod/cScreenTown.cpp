@@ -34,6 +34,7 @@
 #include <sstream>
 #include "cGangs.h"
 #include "libintl.h"
+#include "FileList.h"
 
 extern bool						g_InitWin;
 extern int						g_CurrBrothel;
@@ -321,21 +322,19 @@ void cScreenTown::do_walk()
 {
 	if (g_WalkAround)
 	{
-		g_MessageQue.AddToQue(gettext("You can only do this once per week."), 2);
+		g_MessageQue.AddToQue("You can only do this once per week.", COLOR_RED);
 		return;
 	}
-	sGirl *girl = g_Girls.GetRandomGirl();			// let's get a girl for the player to meet
-	if (girl == 0)									// if there's no girl, no meeting
+	sGirl *girl = g_Girls.GetRandomGirl();						// let's get a girl for the player to meet
+	if (girl == 0)												// if there's no girl, no meeting
 	{
-		g_MessageQue.AddToQue(walk_no_luck(), 0);
+		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
 	}
 	// most of the time, you're not going to find anyone unless you're cheating, of course.
-	
-	int meet_chance = cfg.initial.girl_meet();
-	if (!g_Dice.percent(meet_chance) && !g_Cheats)
+	if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Cheats)
 	{
-		g_MessageQue.AddToQue(walk_no_luck(), 1);
+		g_MessageQue.AddToQue(walk_no_luck(), COLOR_BLUE);
 		return;
 	}
 
@@ -349,23 +348,45 @@ void cScreenTown::do_walk()
 		else HideImage(girlimage_id, true);
 	}
 
-	// I'd like to move this to the handler script - once scripts are stable
-	string message = "You go out searching around town for any new girls. You notice a potential new girl and walk up to her.";
-	g_MessageQue.AddToQue(message, 2);
 	int v[2] = { 0, -1 };
 	cTrigger* trig = 0;
-
 	DirPath dp;
-	string filename;
+	DirPath intro;
+	string introfile = "";
+	string message = "";
 	cScriptManager sm;
+
+	// is there a girl specific talk script?
 	if (!(trig = girl->m_Triggers.CheckForScript(TRIGGER_MEET, false, v)))
 	{
+		// no, so trigger the default one
+		introfile = "MeetTownDefault.script.intro";
+		intro = DirPath() << "Resources" << "Scripts";
 		dp = DirPath() << "Resources" << "Scripts" << "MeetTownDefault.script";			// no, so trigger the default one
 	}
 	else
 	{
-			dp = DirPath(cfg.folders.characters().c_str()) << girl->m_Name << trig->m_Script;
+		// trigger the girl-specific one
+		introfile = trig->m_Script + ".intro";
+		intro = DirPath(cfg.folders.characters().c_str()) << girl->m_Name;
+		dp = DirPath(cfg.folders.characters().c_str()) << girl->m_Name << trig->m_Script;
 	}
+
+	FileList abstest(intro, introfile.c_str());
+	if (abstest.size() == 0)
+	{
+		message = "You go out searching around town for any new girls. You notice a potential new girl and walk up to her.";
+	}
+	else
+	{
+		message = "";
+		ifstream in;
+		in.open(abstest[0].full());
+		in >> message;
+		in.close();
+	}
+	if (message.size() > 0) g_MessageQue.AddToQue(message, COLOR_BLUE);
+
 	eventrunning = true;
 	sm.Load(dp, girl);
 	return;

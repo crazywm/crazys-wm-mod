@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Minor Ring of Toughness" Desc="Magical band that improves the physical condition of its wearer. (+15 Constitution)" Type="Ring" Badness="0" Special="None" Cost="6000" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Constitution" Amount="15" />
+    </Item>
+</Items>

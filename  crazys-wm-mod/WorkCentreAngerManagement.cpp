@@ -226,7 +226,6 @@ double cJobManager::JP_CentreAngerManagement(sGirl* girl, bool estimate)
 		if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance += 100;	// if she has 1 = A
 		if (g_Girls.HasTrait(girl, "Tsundere"))		jobperformance += 100;	// if she has 2 = S
 		if (g_Girls.HasTrait(girl, "Yandere"))		jobperformance += 100;	// if she has 3 = I
-
 	}
 	return jobperformance;
 }

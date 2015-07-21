@@ -282,6 +282,9 @@ double cJobManager::JP_Advertising(sGirl* girl, bool estimate)
 			jobperformance += (cval / 10);  // add 10% of fame to jobperformance
 		}
 
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
 	}
 	// positiv traits
 	if (girl->has_trait("Actress"))					jobperformance += 10;	// 

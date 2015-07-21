@@ -58,7 +58,7 @@ INT 0 4
 INT 0 65535
 "SetGirlFlag ~ ~"
 INT 0 29
-INT 0 254
+INT -254 254
 "AddRandomValueToGold ~ ~"
 INT 0 65535
 INT 0 65535
@@ -188,7 +188,7 @@ CHOICE 6
 "GreaterThan"
 "GreaterOrEqualTo"
 "NotEqualTo"
-INT 0 254
+INT -254 254
 "GameOver"
 "IfStat ~ ~ ~"
 CHOICE 27
@@ -329,3 +329,6 @@ CHOICE 8
 "House"
 INT 0 6
 "Have Dominatrix"
+"AdjustGirlFlag ~ ~"
+INT 0 29
+INT -254 254

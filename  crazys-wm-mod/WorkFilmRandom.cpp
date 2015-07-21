@@ -61,12 +61,5 @@ bool cJobManager::WorkFilmRandom(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 double cJobManager::JP_FilmRandom(sGirl* girl, bool estimate)// not used
 {
-	double jobperformance = 0.0;
-	if (estimate)// for third detail string
-	{
-	}
-	else// for the actual check
-	{
-	}
-	return jobperformance;
+	return 0;
 }

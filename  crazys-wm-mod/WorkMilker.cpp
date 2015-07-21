@@ -273,7 +273,12 @@ double cJobManager::JP_Milker(sGirl* girl, bool estimate)// not used
 		((girl->farming() + girl->intelligence()) / 2) +
 		// level bonus
 		girl->level();
-	// traits modifiers
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 
 

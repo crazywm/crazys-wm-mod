@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Leopard Platform Heels" Desc="Leopard print platform shoes with very high heels. Prized among bimbos and other classy girls. (C) (+5 Cha, +2 BDSM, +3 Beast, +7 Conf, -10 Refinement, -15 Agi, -20 Com, adds Long Legs, removes Elegant and Fleet of Foot)" Type="Shoes" Badness="20" Special="None" Cost="250" Rarity="Shop25" Infinite="false" GirlBuyChance="20" ItemWeight="0.0">
+        <Effect What="Stat" Name="Charisma" Amount="5" />
+        <Effect What="Skill" Name="BDSM" Amount="2" />
+        <Effect What="Skill" Name="Beastiality" Amount="3" />
+        <Effect What="Stat" Name="Confidence" Amount="7" />
+        <Effect What="Stat" Name="Refinement" Amount="-10" />
+        <Effect What="Stat" Name="Agility" Amount="-15" />
+        <Effect What="Skill" Name="Combat" Amount="-20" />
+        <Effect What="Trait" Name="Long Legs" Amount="1" />
+        <Effect What="Trait" Name="Fleet of Foot" Amount="0" />
+        <Effect What="Trait" Name="Elegant" Amount="0" />
+    </Item>
+</Items>

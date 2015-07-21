@@ -147,6 +147,7 @@ sScript *cGameScript::Process(sScript *Script)
 	case 77: return Script_PresentedTarget(Script);
 	case 78: return Script_GetRandomGirl(Script);
 	case 79: return Script_DomTarget(Script);
+	case 80: return Script_AdjustGirlFlag(Script);
 
 		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
 
@@ -499,9 +500,22 @@ sScript *cGameScript::Script_SetGirlFlag(sScript *Script)
 	
 	if (m_GirlTarget == 0) return Script->m_Next;	// this shouldn't happen
 
-	m_GirlTarget->m_Flags[value[0]] = (unsigned char)value[1];
+	m_GirlTarget->m_Flags[value[0]] = (char)value[1];
 	return Script->m_Next;
 }
+
+sScript *cGameScript::Script_AdjustGirlFlag(sScript *Script)
+{
+	int value[2];
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+
+	if (m_GirlTarget == 0) return Script->m_Next;	// this shouldn't happen
+
+	m_GirlTarget->m_Flags[value[0]] += (char)value[1];
+	return Script->m_Next;
+}
+
 
 sScript *cGameScript::Script_AddRandomValueToGold(sScript *Script)
 {

@@ -663,6 +663,12 @@ double cJobManager::JP_SleazyWaitress(sGirl* girl, bool estimate)// not used
 		g_Girls.GetStat(girl, STAT_BEAUTY) +
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE)) / 3 +
 		g_Girls.GetSkill(girl, SKILL_SERVICE));
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 10;

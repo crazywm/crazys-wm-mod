@@ -306,6 +306,12 @@ double cJobManager::JP_SleazyBarmaid(sGirl* girl, bool estimate)// not used
 	double jobperformance = (girl->service() +
 		(girl->charisma() / 3) + (girl->beauty() / 3) + (girl->performance() / 3) +
 		girl->level());
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Charismatic"))			jobperformance += 20;

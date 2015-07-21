@@ -152,50 +152,5 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 double cJobManager::JP_CleanArena(sGirl* girl, bool estimate)// not used
 {
-	double jobperformance = 0.0;
-	if (estimate)// for third detail string
-	{
-		jobperformance += girl->service() + 2;
-	}
-	else// for the actual check
-	{
-	}
-	if (g_Girls.HasTrait(girl, "Maid"))						jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Powerful Magic"))			jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Strong Magic"))				jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Handyman"))					jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Waitress"))					jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Agile"))					jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Fleet of Foot"))			jobperformance += 2;
-	if (g_Girls.HasTrait(girl, "Strong"))					jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Assassin"))					jobperformance += 1;
-	if (g_Girls.HasTrait(girl, "Psychic"))					jobperformance += 2;
-	if (g_Girls.HasTrait(girl, "Manly"))					jobperformance += 1;
-	if (g_Girls.HasTrait(girl, "Tomboy"))					jobperformance += 2;
-	if (g_Girls.HasTrait(girl, "Optimist"))					jobperformance += 1;
-	if (g_Girls.HasTrait(girl, "Sharp-Eyed"))				jobperformance += 1;
-	if (g_Girls.HasTrait(girl, "Giant"))					jobperformance += 2;
-	if (g_Girls.HasTrait(girl, "Prehensile Tail"))			jobperformance += 3;
-
-	if (g_Girls.HasTrait(girl, "Blind"))					jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Queen"))					jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Princess"))					jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))				jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Bimbo"))					jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Retarded"))					jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Smoker"))					jobperformance -= 1;
-	if (g_Girls.HasTrait(girl, "Clumsy"))					jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Delicate"))					jobperformance -= 1;
-	if (g_Girls.HasTrait(girl, "Elegant"))					jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Malformed"))				jobperformance -= 1;
-	if (g_Girls.HasTrait(girl, "Massive Melons"))			jobperformance -= 1;
-	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	jobperformance -= 3;
-	if (g_Girls.HasTrait(girl, "Titanic Tits"))				jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Broken Will"))				jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Pessimist"))				jobperformance -= 1;
-	if (g_Girls.HasTrait(girl, "Meek"))						jobperformance -= 2;
-	if (g_Girls.HasTrait(girl, "Nervous"))					jobperformance -= 2;
-	if (g_Girls.HasTrait(girl, "Dependant"))				jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Bad Eyesight"))				jobperformance -= 5;
-	return jobperformance;
+	return JP_Cleaning(girl, estimate);		// just use cleaning so there is 1 less thing to edit
 }

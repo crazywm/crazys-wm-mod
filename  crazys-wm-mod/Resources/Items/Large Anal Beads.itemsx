@@ -2,11 +2,11 @@
 <Items>
     <Item
         Name="Large Anal Beads"
-        Desc="Extra large anal beads for anal sex lovers. (+18 Anal, +5 BDSM, +5 Con, +2 Obed, +12 Lib, -10 Ref, -10 Agi, -5 Com, +5 Hate, -2 Happiness, -5 Spirit, removes Fleet of Foot)"
+        Desc="Extra large anal beads for anal sex lovers. (+18 Anal, +5 BDSM, +8 Con, +2 Obed, +12 Lib, -10 Ref, -10 Agi, -5 Com, +5 Hate, -2 Happiness, -5 Spirit, removes Fleet of Foot)"
         Type="Misc"
         Badness="30"
         Special="None"
-        Cost="700"
+        Cost="600"
         Rarity="Shop05"
         Infinite="false"
         GirlBuyChance="0"
@@ -30,7 +30,7 @@
         <Effect
             What="Stat"
             Name="Constitution"
-            Amount="5" />
+            Amount="8" />
         <Effect
             What="Stat"
             Name="Libido"

@@ -246,6 +246,12 @@ double cJobManager::JP_Shepherd(sGirl* girl, bool estimate)// not used
 		((girl->charisma() + girl->intelligence() + girl->confidence()) / 3) +
 		// level bonus
 		girl->level();
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 
 	//good traits

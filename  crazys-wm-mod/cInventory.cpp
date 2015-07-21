@@ -517,7 +517,7 @@ sInventoryItem* cInventory::GetRandomItem()
 sInventoryItem* cInventory::GetRandomCatacombItem()
 {
 	if (items.size() == 0)	return 0;
-	sInventoryItem *temp;
+	sInventoryItem *temp = 0;
 	int index = g_Dice % (items.size() - 1);
 
 	int tries = items.size() / 3;	// try 1/3 of all items to get an item

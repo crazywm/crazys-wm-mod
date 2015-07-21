@@ -2,7 +2,7 @@
 <Items>
     <Item
         Name="Nipple Chain"
-        Desc="Set of nipple rings with a metallic chain that connects them. (+3 BDSM, +3 Titty, +2 Charisma, +3 Libido, adds Pierced Nipples)"
+        Desc="Set of nipple rings with a metallic chain that connects them. (+3 BDSM, +3 Titty, +2 Charisma, +3 Obedience, +3 Libido, adds Pierced Nipples)"
         Type="Ring"
         Badness="21"
         Special="None"
@@ -23,6 +23,10 @@
             What="Stat"
             Name="Charisma"
             Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Obedience"
+            Amount="3" />
         <Effect
             What="Stat"
             Name="Libido"

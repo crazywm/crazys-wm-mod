@@ -273,6 +273,12 @@ double cJobManager::JP_Farmer(sGirl* girl, bool estimate)// not used
 		((girl->intelligence() + girl->constitution() + girl->strength()) / 3) +
 		// level bonus
 		girl->level();
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
 
 	//good traits
 	if (g_Girls.HasTrait(girl, "Farmer"))				jobperformance += 30;
