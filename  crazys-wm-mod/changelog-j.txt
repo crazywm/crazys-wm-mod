@@ -2302,6 +2302,10 @@ Added more items and updated others by Hanzo.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.11
 
+###  Changes 7/21
+Fixed a bug in sRandomGirl constructor - fixed bad initializers
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.12
 
 
 

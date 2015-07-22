@@ -958,8 +958,6 @@ bool LoadGameXML(TiXmlHandle hDoc)
 	g_LogFile.write("Loading global triggers");
 	g_GlobalTriggers.LoadTriggersXML(hRoot.FirstChildElement("Triggers"));
 
-	g_LogFile.write("Loading default images");
-
 	if (g_Cheats)
 	{
 		g_WalkAround = false;

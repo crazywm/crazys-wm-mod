@@ -269,6 +269,79 @@ sGirl::~sGirl()		// destructor
 
 }
 
+sRandomGirl::sRandomGirl()
+{
+	m_Name = "";
+	m_Desc = "-";
+
+	m_newRandom = false;
+	m_Human = true;
+	m_Catacomb = m_Arena = m_YourDaughter = m_IsDaughter = false;
+
+	m_NumTraits = m_NumTraitNames = 0;
+	for (int i = 0; i < MAXNUM_TRAITS; i++)
+	{
+		m_Traits[i] = 0;
+		m_TraitChance[i] = 0;
+	}
+	m_NumItems = m_NumItemNames = 0;
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
+	{
+		m_ItemChance[i] = 0;
+		m_Inventory[i] = 0;
+	}
+
+	//assigning defaults
+	for (int i = 0; i < NUM_STATS; i++)
+	{
+		// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.h > sRandomGirl
+		switch (i)
+		{
+		case STAT_HAPPINESS:
+		case STAT_HEALTH:
+			m_MinStats[i] = m_MaxStats[i] = 100;
+			break;
+		case STAT_TIREDNESS:
+		case STAT_FAME:
+		case STAT_LEVEL:
+		case STAT_EXP:
+		case STAT_PCFEAR:
+		case STAT_PCLOVE:
+		case STAT_PCHATE:
+		case STAT_ASKPRICE:
+		case STAT_HOUSE:
+			m_MinStats[i] = m_MaxStats[i] = 0;
+			break;
+		case STAT_AGE:
+			m_MinStats[i] = 17; m_MaxStats[i] = 25;
+			break;
+		case STAT_MORALITY:
+		case STAT_REFINEMENT:
+		case STAT_DIGNITY:
+			m_MinStats[i] = -10; m_MaxStats[i] = 10;
+			break;
+		case STAT_LACTATION:
+			m_MinStats[i] = -20; m_MaxStats[i] = 20;
+			break;
+		default:
+			m_MinStats[i] = 30;	m_MaxStats[i] = 60;
+			break;
+		}
+	}
+	for (int i = 0; i < NUM_SKILLS; i++)// Changed from 10 to NUM_SKILLS so that it will always set the proper number of defaults --PP
+	{
+		m_MinSkills[i] = 0;				// Changed from 30 to 0, made no sense for all skills to be a default of 30.
+		m_MaxSkills[i] = 30;
+	}
+	//now for a few overrides
+	m_MinMoney = 0;
+	m_MaxMoney = 10;
+}
+sRandomGirl::~sRandomGirl()
+{
+	if (m_Next) delete m_Next;
+	m_Next = 0;
+}
 
 // ----- Lookups
 void sGirl::setup_maps()
@@ -1218,6 +1291,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			g_LogFile.os() << "There was an error in CreateRandomGirl code, using hard coded random girl" << endl;
 		}
 	}
+	
 	if (!current)	// `J` added hard coded random girl if there are no rgirlsx files
 	{
 		current = new sRandomGirl();
@@ -1227,6 +1301,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		current->m_Human = (Human0Monster1 == 0);
 		current->m_Arena = arena;
 		current->m_YourDaughter = daughter;
+
 		for (int i = 0; i < NUM_STATS; i++)
 		{
 			if (age != 0 && i == STAT_AGE)	{ current->m_MinStats[i] = age;	current->m_MaxStats[i] = age; }
@@ -1378,7 +1453,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 
 				if (c < 0)	c = 0;
 			}
-
+			
 			// all other traits have a 1 in 3 chance of making the cut
 			if (c == -1 && g_Dice % 3 == 1)
 			{
@@ -1436,6 +1511,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 
 				if (c == -1) c = 1; // set all unlisted to base 1%
 			}
+			
 			if (c > 0)	// after the checks, if c was set, add the trait to the girl
 			{
 				if (current->m_NumTraitNames < MAXNUM_TRAITS)	// first 40
@@ -1451,7 +1527,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			}
 		}
 	}
-
+	
 	sGirl* newGirl = new sGirl();
 	newGirl->m_Next = 0;
 	newGirl->m_AccLevel = cfg.initial.girls_accom();
@@ -1460,7 +1536,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 
 	newGirl->m_Desc = current->m_Desc;		// Bugfix.. was populating description with name.
 	newGirl->m_Name = current->m_Name.c_str();
-
+	
 
 	// set all jobs to null
 	newGirl->m_DayJob = newGirl->m_NightJob = newGirl->m_YesterDayJob = newGirl->m_YesterNightJob = newGirl->m_PrevDayJob = newGirl->m_PrevNightJob = 255;
@@ -1503,32 +1579,33 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			}
 		}
 	}
-
-	for (int i = 0; i < current->m_NumItemNames && newGirl->m_NumInventory < MAXNUM_GIRL_INVENTORY; i++)
+	
+	if (current->m_NumItemNames > 0)
 	{
-		if (g_Dice.percent(current->m_ItemChanceB[i]))
+		for (int i = 0; i < current->m_NumItemNames && newGirl->m_NumInventory < MAXNUM_GIRL_INVENTORY; i++)
 		{
-			sInventoryItem* item = current->m_Inventory[i];
-			if (item)
+			if (g_Dice.percent(current->m_ItemChanceB[i]))
 			{
-				newGirl->m_Inventory[newGirl->m_NumInventory] = item;
-				if (item->m_Type != INVFOOD && item->m_Type != INVMAKEUP)
+				sInventoryItem* item = current->m_Inventory[i];
+				if (item)
 				{
-					g_Girls.EquipItem(newGirl, newGirl->m_NumInventory, false);
+					newGirl->m_Inventory[newGirl->m_NumInventory] = item;
+					if (item->m_Type != INVFOOD && item->m_Type != INVMAKEUP)
+					{
+						g_Girls.EquipItem(newGirl, newGirl->m_NumInventory, false);
+					}
+					newGirl->m_NumInventory++;
 				}
-				newGirl->m_NumInventory++;
-			}
-			else
-			{
-				stringstream ss;
-				ss << "cGirls::CreateRandomGirl: ERROR: Item '" << current->m_ItemNames[i] << "' from girl template "
-					<< current->m_Name << " doesn't exist or is spelled incorrectly.";
-				g_MessageQue.AddToQue(ss.str(), COLOR_RED);
+				else
+				{
+					stringstream ss;
+					ss << "cGirls::CreateRandomGirl: ERROR: Item '" << current->m_ItemNames[i] << "' from girl template "
+						<< current->m_Name << " doesn't exist or is spelled incorrectly.";
+					g_MessageQue.AddToQue(ss.str(), COLOR_RED);
+				}
 			}
 		}
 	}
-
-
 
 	if (current->m_Human == 0)			AddTrait(newGirl, "Not Human");
 	if (current->m_YourDaughter == 1)	AddTrait(newGirl, "Your Daughter");
@@ -1637,7 +1714,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		if (NameExists(name)) continue;
 		break;
 	}
-
+	
 	string surname;
 	if (daughter || newGirl->m_States&(1 << STATUS_YOURDAUGHTER))	// `J` if she is your daughter...
 	{
@@ -1658,7 +1735,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	newGirl->m_MiddleName = name2;
 	newGirl->m_Surname = surname;
 	CreateRealName(newGirl);
-
+	
 	DirPath dp = DirPath(cfg.folders.characters().c_str()) << newGirl->m_Name << "triggers.xml";
 	newGirl->m_Triggers.LoadList(dp);
 	newGirl->m_Triggers.SetGirlTarget(newGirl);
@@ -1669,7 +1746,6 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	if (addToGGirls)	AddGirl(newGirl);
 
 	CalculateGirlType(newGirl);
-
 	return newGirl;
 }
 

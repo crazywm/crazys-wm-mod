@@ -76,26 +76,29 @@ extern cAbstractGirls *g_GirlsPtr;
 // structure to hold randomly generated girl information
 typedef struct sRandomGirl
 {
-	string m_Name = "";
-	string m_Desc = "-";
+	sRandomGirl();
+	~sRandomGirl();
 
-	bool m_newRandom = false;
-	bool *m_newRandomTable = false;
+	string m_Name;
+	string m_Desc;
 
-	bool m_Human = true;			// 1 means they are human otherwise they are not
-	bool m_Catacomb = false;		// 1 means they are a monster found in catacombs, 0 means wanderer
-	bool m_Arena = false;			// 1 means they are fighter found in arena
-	bool m_YourDaughter = false;	// `J` 1 means they are your daughter
-	bool m_IsDaughter = false;		// 1 means they are a set daughter
+	bool m_newRandom;
+	bool *m_newRandomTable;
 
-	int m_MinStats[NUM_STATS];	    // min and max stats they may start with
+	bool m_Human;							// 1 means they are human otherwise they are not
+	bool m_Catacomb;						// 1 means they are a monster found in catacombs, 0 means wanderer
+	bool m_Arena;							// 1 means they are fighter found in arena
+	bool m_YourDaughter;					// `J` 1 means they are your daughter
+	bool m_IsDaughter;						// 1 means they are a set daughter
+
+	int m_MinStats[NUM_STATS];			    // min and max stats they may start with
 	int m_MaxStats[NUM_STATS];
 
-	int m_MinSkills[NUM_SKILLS];	    // min and max skills they may start with
+	int m_MinSkills[NUM_SKILLS];		    // min and max skills they may start with
 	int m_MaxSkills[NUM_SKILLS];
 
 	int m_NumTraits;						// number of traits they are assigned
-	int m_NumTraitNames;						// number of traits they are assigned
+	int m_NumTraitNames;					// number of traits they are assigned
 	sTrait* m_Traits[MAXNUM_TRAITS];		// List of traits they may start with
 	int m_TraitChance[MAXNUM_TRAITS];		// the percentage change for each trait
 	int m_TraitChanceB[200];
@@ -110,8 +113,8 @@ typedef struct sRandomGirl
 	string m_ItemNames[200];				
 
 
-	int m_MinMoney = 0;	// min and max money they can start with
-	int m_MaxMoney = 0;
+	int m_MinMoney;	// min and max money they can start with
+	int m_MaxMoney;
 
 	sRandomGirl* m_Next;
 	/*
@@ -136,61 +139,6 @@ typedef struct sRandomGirl
 	*	END MOD
 	*/
 	static sGirl *lookup;  // used to look up stat and skill IDs
-	sRandomGirl()
-	{
-		m_newRandomTable = false;
-		m_Next = 0;
-		//assigning defaults
-		for (int i = 0; i < NUM_STATS; i++)
-		{
-// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.h > sRandomGirl
-			switch (i)
-			{
-			case STAT_HAPPINESS:
-			case STAT_HEALTH:
-				m_MinStats[i] = m_MaxStats[i] = 100;
-				break;
-			case STAT_TIREDNESS:
-			case STAT_FAME:
-			case STAT_LEVEL:
-			case STAT_EXP:
-			case STAT_PCFEAR:
-			case STAT_PCLOVE:
-			case STAT_PCHATE:
-			case STAT_ASKPRICE:
-			case STAT_HOUSE:
-				m_MinStats[i] = m_MaxStats[i] = 0;
-				break;
-			case STAT_AGE:
-				m_MinStats[i] = 17; m_MaxStats[i] = 25;
-				break;
-			case STAT_MORALITY:
-			case STAT_REFINEMENT:
-			case STAT_DIGNITY:
-				m_MinStats[i] = -10; m_MaxStats[i] = 10;
-				break;
-			case STAT_LACTATION:
-				m_MinStats[i] = -20; m_MaxStats[i] = 20;
-				break;
-			default:
-				m_MinStats[i] = 30;	m_MaxStats[i] = 60;
-				break;
-			}
-		}
-		for (int i = 0; i < NUM_SKILLS; i++)// Changed from 10 to NUM_SKILLS so that it will always set the proper number of defaults --PP
-		{
-			m_MinSkills[i] = 0;				// Changed from 30 to 0, made no sense for all skills to be a default of 30.
-			m_MaxSkills[i] = 30;
-		}
-		//now for a few overrides
-		m_MinMoney = 0;
-		m_MaxMoney = 10;
-	}
-	~sRandomGirl() 
-	{
-		if (m_Next) delete m_Next; 
-		m_Next = 0; 
-	}
 }sRandomGirl;
 
 typedef struct sChild
