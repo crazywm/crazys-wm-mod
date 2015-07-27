@@ -50,10 +50,12 @@ bool cJobManager::WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	// if she was not in surgery last turn, reset working days to 0 before proceding
 	if (girl->m_YesterDayJob != JOB_FERTILITY) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 
-	if (girl->is_pregnant() || !g_Girls.HasTrait(girl, "Sterile"))
+	if (girl->is_pregnant() || g_Girls.HasTrait(girl, "Broodmother"))
 	{
-		if (!g_Girls.HasTrait(girl, "Sterile"))	ss << " is already Fertile so she was sent to the waiting room.";
-		else if (girl->is_pregnant())			ss << " is pregant.\nShe must be Fertile so She doesn't need this now.";
+		if (g_Girls.HasTrait(girl, "Broodmother"))
+			ss << " is already as Fertile as she can be so she was sent to the waiting room.";
+		else if (girl->is_pregnant())
+			ss << " is pregant.\nShe must either have her baby or get an abortion before She can get recieve any more fertility treatments.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
@@ -169,8 +171,8 @@ double cJobManager::JP_GetFertility(sGirl* girl, bool estimate)
 	double jobperformance = 0.0;
 	if (estimate)	// for third detail string - how much do they need this?
 	{
-		if (girl->is_pregnant())					return -1000;	// X - not needed?
 		if (g_Girls.HasTrait(girl, "Broodmother"))	return -1000;	// X - not needed
+		if (girl->is_pregnant())					return 0;		// E - needs abortion or birth first
 		if (g_Girls.HasTrait(girl, "Sterile"))		return 200;		// A - needs it to have a baby
 		if (g_Girls.HasTrait(girl, "Fertile"))		return 100;		// C - would improve chances
 		return 150;													// B - would improve chances greatly

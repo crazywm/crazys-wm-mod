@@ -678,6 +678,8 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		m_Images[id]->m_AnimatedImage->m_Gif = false;
 		m_Images[id]->m_AnimatedImage = 0;
 	}
+	m_Images[id]->m_Image = 0;
+
 	string girlName = girl->m_Name;
 
 	int dir = 0; DirPath usedir = "";

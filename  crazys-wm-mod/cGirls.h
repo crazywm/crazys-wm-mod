@@ -787,8 +787,6 @@ public:
 	// */
 	void MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait = 0, bool rememberflag = false);
 
-	void UpdateSSTraits(sGirl* girl);	// updates skills and stats from traits
-
 	bool PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
 	bool PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
 

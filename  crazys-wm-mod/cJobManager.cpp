@@ -1524,13 +1524,13 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			{
 				Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 				g_MessageQue.AddToQue(Girl->m_Realname +
-					gettext(" is pregant.\nShe must be Fertile so She doesn't need this now."), 0);
+					" is pregant.\nShe must either have her baby or get an abortion before She can get recieve any more fertility treatments.", 0);
 				jobgood = false;
 			}
-			else if (!g_Girls.HasTrait(Girl, "Sterile"))
+			else if (g_Girls.HasTrait(Girl, "Broodmother"))
 			{
 				Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
-				g_MessageQue.AddToQue(gettext("She is already Fertile and doesn't need this."), 0);
+				g_MessageQue.AddToQue("She is already as Fertile as she can be and doesn't need any more fertility treatments.", 0);
 				jobgood = false;
 			}
 		}

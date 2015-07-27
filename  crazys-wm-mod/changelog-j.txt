@@ -2307,6 +2307,15 @@ Fixed a bug in sRandomGirl constructor - fixed bad initializers
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.12
 
+###  Changes 7/22-25 no time for the game
+
+###  Changes 7/26
+Fixed a bug in sGirl constructor - fixed bad CHILD_COUNT_TYPES initializer
+Fixed a bug in Fertility Treatment and Get Tubes Tied jobs so they work fully.
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.13
+
+
 
 
 

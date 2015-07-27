@@ -166,9 +166,9 @@ double cJobManager::JP_GetTubesTied(sGirl* girl, bool estimate)
 	double jobperformance = 0.0;
 	if (estimate)	// for third detail string - how much do they need this?
 	{
-		if (girl->is_pregnant())					return 0;		// E - needs abortion first
-		if (g_Girls.HasTrait(girl, "Broodmother"))	return 200;		// A
 		if (g_Girls.HasTrait(girl, "Sterile"))		return -1000;	// X - not needed
+		if (girl->is_pregnant())					return 0;		// E - needs abortion or birth first
+		if (g_Girls.HasTrait(girl, "Broodmother"))	return 200;		// A
 		if (g_Girls.HasTrait(girl, "Fertile"))		return 100;		// B
 		return 150;													// C
 	}

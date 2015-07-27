@@ -233,14 +233,16 @@ sGirl::sGirl()				// constructor
 
 	// Others
 	for (int i = 0; i < NUM_GIRLFLAGS; i++)			{ m_Flags[i] = 0; }
+	for (int i = 0; i < CHILD_COUNT_TYPES; i++)		{ m_ChildrenCount[i] = 0; }
 	m_States = m_BaseStates = 0;
 	m_FetishTypes = 0;
+
+
 
 	// Other things that I'm not sure how their defaults would be set 
 	//	cEvents m_Events;
 	//	cTriggerList m_Triggers;
 	//	cChildList m_Children;
-	//	int m_ChildrenCount[CHILD_COUNT_TYPES];
 	//	vector<string> m_Canonical_Daughters;
 
 
@@ -4254,7 +4256,10 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	TiXmlElement* pChildren = pGirl->FirstChildElement("Children");
 	for (int i = 0; i < CHILD_COUNT_TYPES; i++)		// `J` added
 	{
-		pChildren->QueryIntAttribute(children_type_names[i], &tempInt); m_ChildrenCount[i] = tempInt; tempInt = 0;
+		pChildren->QueryIntAttribute(children_type_names[i], &tempInt);
+		if (tempInt < 0 || tempInt>1000) tempInt = 0;
+		m_ChildrenCount[i] = tempInt;
+		tempInt = 0;
 	}
 	if (pChildren)
 	{
@@ -4400,7 +4405,7 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	TiXmlElement* pChildren = new TiXmlElement("Children");
 	for (int i = 0; i < CHILD_COUNT_TYPES; i++)
 	{
-		if (m_ChildrenCount[i] < 0)	m_ChildrenCount[i] = 0;		// to correct girls without these
+		if (m_ChildrenCount[i] < 0 || m_ChildrenCount[i] > 1000)	m_ChildrenCount[i] = 0;		// to correct girls without these
 		pChildren->SetAttribute(children_type_names[i], m_ChildrenCount[i]);
 	}
 	
@@ -8194,12 +8199,6 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 	}
 }
 
-
-// When traits change, update stat and skill modifiers
-void cGirls::UpdateSSTraits(sGirl* girl)
-{
-
-}
 
 bool cGirls::HasRememberedTrait(sGirl* girl, string trait)
 {
