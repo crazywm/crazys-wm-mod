@@ -466,8 +466,11 @@ bool cScreenSlaveMarket::check_events()
 	{
 		int tmp = GetLastSelectedItemFromList(trait_list_id);
 		selection = GetLastSelectedItemFromList(slave_list_id);
-		if (tmp != -1 && selection != -1 && MarketSlaveGirls[selection]->m_Traits > 0)
+		if (tmp != -1 && selection != -1 && MarketSlaveGirls[selection]->m_NumTraits > 0)
+		{
+			if (tmp > MarketSlaveGirls[selection]->m_NumTraits)	tmp = 0;
 			EditTextItem(MarketSlaveGirls[selection]->m_Traits[tmp]->m_Desc, trait_id);
+		}
 		else EditTextItem("", trait_id);
 		return true;
 	}

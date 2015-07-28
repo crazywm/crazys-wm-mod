@@ -669,7 +669,7 @@ int TryImageType(int imagetype, int tries)
 // `J` Totally new method for image handling for .06.02.00
 void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, int ImageNum, bool gallery, string ImageName)
 {
-	if (!girl)	return;	// no girl, no images
+	// Clear the old images
 	if (m_Images[id] &&
 		m_Images[id]->m_AnimatedImage &&
 		m_Images[id]->m_AnimatedImage->getNumFrames() > 0)
@@ -679,6 +679,13 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		m_Images[id]->m_AnimatedImage = 0;
 	}
 	m_Images[id]->m_Image = 0;
+
+	if (!girl || imagetype < 0 || ImageName == "blank")		// no girl, no images
+	{
+		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
+		m_Images[id]->m_Image->m_Message = "No image.";
+		return;
+	}
 
 	string girlName = girl->m_Name;
 
@@ -698,7 +705,6 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	if (totalimagesCc + totalimagesCo + totalimagesDc + totalimagesDo < 1)	// no images at all so return a blank image
 	{
 		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-		m_Images[id]->m_AnimatedImage = 0;
 		m_Images[id]->m_Image->m_Message = "No image found.";
 		return;
 	}
@@ -919,6 +925,11 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
 		m_Images[id]->m_AnimatedImage = 0;
 		m_Images[id]->m_Image->m_Message = "No image found.";
+	}
+
+	if (cfg.debug.log_extradetails())
+	{
+		g_LogFile.ss() << "Loading image: " << m_Images[id]->m_Image->m_Message; g_LogFile.ssend();
 	}
 }
 

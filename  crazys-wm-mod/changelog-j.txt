@@ -2315,6 +2315,11 @@ Fixed a bug in Fertility Treatment and Get Tubes Tied jobs so they work fully.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.13
 
+###  Changes 7/27
+Fixed a bug in Slave Market trait list that would sometimes crash if a girl had no traits.
+Cleaned up PrepareImage a little and added cfg.debug.log_extradetails() to log what image is loaded
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.14
 
 
 
