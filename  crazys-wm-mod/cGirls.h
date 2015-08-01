@@ -71,7 +71,7 @@ public:
 	virtual void UpdateStatTemp(sGirl* girl, int stat, int amount) = 0;
 	virtual void UpdateEnjoymentTemp(sGirl* girl, int stat, int amount) = 0;
 };
-extern cAbstractGirls *g_GirlsPtr;
+extern cAbstractGirls* g_GirlsPtr;
 
 // structure to hold randomly generated girl information
 typedef struct sRandomGirl
@@ -83,7 +83,7 @@ typedef struct sRandomGirl
 	string m_Desc;
 
 	bool m_newRandom;
-	bool *m_newRandomTable;
+	bool* m_newRandomTable;
 
 	bool m_Human;							// 1 means they are human otherwise they are not
 	bool m_Catacomb;						// 1 means they are a monster found in catacombs, 0 means wanderer
@@ -110,7 +110,7 @@ typedef struct sRandomGirl
 	sInventoryItem* m_Inventory[MAXNUM_INVENTORY];
 	int m_ItemChance[MAXNUM_GIRL_INVENTORY];
 	int m_ItemChanceB[200];
-	string m_ItemNames[200];				
+	string m_ItemNames[200];
 
 
 	int m_MinMoney;	// min and max money they can start with
@@ -138,7 +138,7 @@ typedef struct sRandomGirl
 	/*
 	*	END MOD
 	*/
-	static sGirl *lookup;  // used to look up stat and skill IDs
+	static sGirl* lookup;  // used to look up stat and skill IDs
 }sRandomGirl;
 
 typedef struct sChild
@@ -151,7 +151,7 @@ typedef struct sChild
 		if (m_MultiBirth == 4) return "Quads";
 		if (m_MultiBirth == 5) return "Quints";
 		// `J` anything else is single
-		m_MultiBirth = 1;	
+		m_MultiBirth = 1;
 		return "Single";
 	};
 	enum Gender {
@@ -161,7 +161,7 @@ typedef struct sChild
 	};
 	Gender m_Sex;
 	int m_GirlsBorn;			// if multiple births, how many are girls
-	string boy_girl_str() 
+	string boy_girl_str()
 	{
 		if (m_MultiBirth == 2)	return "twins";
 		if (m_MultiBirth == 3)	return "triplets";
@@ -198,18 +198,18 @@ class cChildList
 {
 public:
 
-	sChild * m_FirstChild;
-	sChild * m_LastChild;
+	sChild* m_FirstChild;
+	sChild* m_LastChild;
 	int m_NumChildren;
 	cChildList(){ m_FirstChild = 0; m_LastChild = 0; m_NumChildren = 0; }
 	~cChildList(){ if (m_FirstChild) delete m_FirstChild; }
-	void add_child(sChild *);
-	sChild * remove_child(sChild *, sGirl *);
+	void add_child(sChild*);
+	sChild* remove_child(sChild*, sGirl*);
 	//void handle_childs();
 	//void save_data(ofstream);
 	//void write_data(ofstream);
-	//sChild * GenerateBornChild();//need to figure out what the player/customer base class is and if needed create one
-	//sChild * GenerateUnbornChild();
+	//sChild* GenerateBornChild();//need to figure out what the player/customer base class is and if needed create one
+	//sChild* GenerateUnbornChild();
 
 };
 
@@ -386,7 +386,7 @@ struct sGirl
 	*	Strictly speaking, methods don't belong in structs.
 	*	I've always thought that more of a guideline than a hard and fast rule
 	*/
-	void load_from_xml(TiXmlElement *el);	// uses sGirl::load_from_xml
+	void load_from_xml(TiXmlElement* el);	// uses sGirl::load_from_xml
 	TiXmlElement* SaveGirlXML(TiXmlElement* pRoot);
 	bool LoadGirlXML(TiXmlHandle hGirl);
 
@@ -583,15 +583,15 @@ struct sGirl
 
 	int preg_chance(int base_pc, bool good = false, double factor = 1.0);
 
-	bool calc_pregnancy(int, cPlayer *);
-	bool calc_pregnancy(cPlayer *player, bool good = false, double factor = 1.0);
-	bool calc_insemination(cPlayer *player, bool good = false, double factor = 1.0);
-	bool calc_group_pregnancy(cPlayer *player, bool good = false, double factor = 1.0);
+	bool calc_pregnancy(int, cPlayer*);
+	bool calc_pregnancy(cPlayer* player, bool good = false, double factor = 1.0);
+	bool calc_insemination(cPlayer* player, bool good = false, double factor = 1.0);
+	bool calc_group_pregnancy(cPlayer* player, bool good = false, double factor = 1.0);
 
-	bool calc_pregnancy(int, sCustomer *);
-	bool calc_pregnancy(sCustomer *cust, bool good = false, double factor = 1.0);
-	bool calc_insemination(sCustomer *cust, bool good = false, double factor = 1.0);
-	bool calc_group_pregnancy(sCustomer *cust, bool good = false, double factor = 1.0);
+	bool calc_pregnancy(int, sCustomer*);
+	bool calc_pregnancy(sCustomer* cust, bool good = false, double factor = 1.0);
+	bool calc_insemination(sCustomer* cust, bool good = false, double factor = 1.0);
+	bool calc_group_pregnancy(sCustomer* cust, bool good = false, double factor = 1.0);
 	/*
 	*	let's overload that...
 	*	should be able to do the same using sCustomer as well...
@@ -636,7 +636,7 @@ struct sGirl
 			has_trait("Tsundere");
 	}
 
-	sChild *next_child(sChild *child, bool remove = false)
+	sChild* next_child(sChild* child, bool remove = false)
 	{
 		if (!remove)
 		{
@@ -659,7 +659,7 @@ struct sGirl
 		}
 		return new_type;
 	}
-	sGirl *run_away();
+	sGirl* run_away();
 
 	bool is_slave()			{ return (m_States & (1 << STATUS_SLAVE)) != 0; }
 	bool is_free()			{ return !is_slave(); }
@@ -694,7 +694,7 @@ struct sGirl
 
 class GirlPredicate {
 public:
-	virtual bool test(sGirl *) { return true; }
+	virtual bool test(sGirl*) { return true; }
 };
 
 // Keeps track of all the available (not used by player) girls in the game.
@@ -739,7 +739,7 @@ public:
 	string GetRandomAnalString();
 
 	// MYR: More functions for attack/defense/agility-style combat.
-	int GetCombatDamage(sGirl *girl, int CombatType);
+	int GetCombatDamage(sGirl* girl, int CombatType);
 	int TakeCombatDamage(sGirl* girl, int amt);
 
 	void LevelUp(sGirl* girl);	// advances a girls level
@@ -780,11 +780,6 @@ public:
 
 
 	void ApplyTraits(sGirl* girl, sTrait* trait = 0);	// applys the stat bonuses for traits to a girl
-	/* `J` replacing separate ApplyTraits and UnapplyTraits with a single ApplyTraits.
-	*	The new ApplyTraits(girl) recalculates all trait effects if no trait is supplied.
-	*	If a trait is supplied, it only calculates that one trait.
-	void UnapplyTraits(sGirl* girl, sTrait* trait = 0);	// unapplys a trait (or all traits) from a girl
-	// */
 	void MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait = 0, bool rememberflag = false);
 
 	bool PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
@@ -889,9 +884,9 @@ public:
 	void CalculateGirlType(sGirl* girl);	// updates a girls fetish type based on her traits and stats
 	bool CheckGirlType(sGirl* girl, int type);	// Checks if a girl has this fetish type
 
-	void do_abnormality(sGirl *sprog, int chance);
+	void do_abnormality(sGirl* sprog, int chance);
 	void HandleChild(sGirl* girl, sChild* child, string& summary);
-	void HandleChild_CheckIncest(sGirl* mum, sGirl *sprog, sChild* child, string& summary);
+	void HandleChild_CheckIncest(sGirl* mum, sGirl* sprog, sChild* child, string& summary);
 	bool child_is_grown(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	bool child_is_due(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	void HandleChildren(sGirl* girl, string& summary, bool PlayerControlled = true);	// ages children and handles pregnancy
@@ -905,9 +900,9 @@ public:
 	*	while I'm on, a few funcs to factor out some common code in DrawImages
 	*/
 	int draw_with_default(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random, int img);
-	int calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players);
+	int calc_abnormal_pc(sGirl* mom, sGirl* sprog, bool is_players);
 
-	vector<sGirl *>  get_girls(GirlPredicate* pred);
+	vector<sGirl* >  get_girls(GirlPredicate* pred);
 
 	// end mod
 
@@ -925,7 +920,7 @@ public:
 	void updateGirlTurnStats(sGirl* girl);
 
 	bool girl_has_matron(sGirl* girl, int shift = 0);
-	bool detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustomer* cust, double mod = 0.0);
+	bool detect_disease_in_customer(sBrothel* brothel, sGirl* girl, sCustomer* cust, double mod = 0.0);
 
 	string Accommodation(int acc);
 	int PreferredAccom(sGirl* girl);
@@ -952,11 +947,9 @@ private:
 
 	int test_child_name(string name);
 
-	sGirl *make_girl_child(sGirl* mom, bool playerisdad=false);
-	sGirl *find_girl_by_name(string name, int *index_pt=0);
-
-	sRandomGirl *select_random_girl(bool NonHuman, bool childnapped);
-	sRandomGirl *find_random_girl_by_name(string name, int *index_pt=0);
+	sGirl* make_girl_child(sGirl* mom, bool playerisdad = false);
+	sGirl* find_girl_by_name(string name, int* index_pt = 0);
+	sRandomGirl* find_random_girl_by_name(string name, int* index_pt = 0);
 
 };
 

@@ -45,6 +45,7 @@ extern cMessageQue g_MessageQue;
 // `J` Job Clinic - Surgery
 bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+	int actiontype = ACTION_GENERAL;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	g_Girls.UnequipCombat(girl);	// not for patients
 
@@ -123,6 +124,8 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		else						ss << "\n\nShe has been released from the Clinic.";
 		if (girl->m_DayJob == JOB_GETHEALING)	girl->m_DayJob = JOB_CLINICREST;
 		if (girl->m_NightJob == JOB_GETHEALING)	girl->m_NightJob = JOB_CLINICREST;
+		if (girl->m_DayJob == JOB_GETREPAIRS)	girl->m_DayJob = JOB_CLINICREST;
+		if (girl->m_NightJob == JOB_GETREPAIRS)	girl->m_NightJob = JOB_CLINICREST;
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
@@ -130,13 +133,12 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	return false;
 }
 
-
 double cJobManager::JP_Healing(sGirl* girl, bool estimate)
 {
 	if (g_Girls.HasTrait(girl, "Construct")) return -1000;
 	double jobperformance = 1.0;
-		jobperformance += (100 - girl->health());
-		jobperformance += (100 - girl->happiness());
-		jobperformance += girl->tiredness();
+	jobperformance += (100 - girl->health());
+	jobperformance += (100 - girl->happiness());
+	jobperformance += girl->tiredness();
 	return jobperformance;
 }

@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -42,12 +43,16 @@ extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+#pragma endregion
+
 // `J` Job Clinic - Surgery
 bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	// if she was not in surgery last turn, reset working days to 0 before proceding
 	if (girl->m_YesterDayJob != JOB_BREASTREDUCTION) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
+	girl->m_DayJob = girl->m_NightJob = JOB_BREASTREDUCTION;	// it is a full time job
 
 	if (g_Girls.HasTrait(girl, "Flat Chest"))
 	{
@@ -57,8 +62,8 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		return false;	// not refusing
 	}
-
-	bool hasDoctor = (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0);
+	bool hasDoctor = g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) > 0;
+	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
 	if (!hasDoctor)
 	{
 		ss << " does nothing. You don't have any Doctors working. (require 1) ";
@@ -69,7 +74,9 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient
-	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
+
+#pragma endregion
+#pragma region //	Count the Days				//
 
 	if (Day0Night1 == SHIFT_DAY)	// the Doctor works on her durring the day
 	{
@@ -77,6 +84,7 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else	// and if there are nurses on duty, they take care of her at night
 	{
+		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		ss << "The surgery is a success.\n";
 		msgtype = EVENT_GOODNEWS;
 
@@ -113,9 +121,11 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			ss << girlName << "'s breasts are as small as they can get so she was sent to the waiting room.";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
-			girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		}
 	}
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
@@ -128,6 +138,7 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
 
+#pragma endregion
 	return false;
 }
 

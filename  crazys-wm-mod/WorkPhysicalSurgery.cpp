@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -42,14 +43,19 @@ extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+#pragma endregion
+
 // `J` Job Clinic - Surgery
 bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	// if she was not in surgery last turn, reset working days to 0 before proceding
 	if (girl->m_YesterDayJob != JOB_PHYSICALSURGERY) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
+	girl->m_DayJob = girl->m_NightJob = JOB_PHYSICALSURGERY;	// it is a full time job
 
-	bool hasDoctor = (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0);
+	bool hasDoctor = g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) > 0;
+	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
 	if (!hasDoctor)
 	{
 		ss << " does nothing. You don't have any Doctors working. (require 1) ";
@@ -60,6 +66,9 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient
+
+#pragma endregion
+#pragma region //	Count the Days				//
 
 	if (Day0Night1 == SHIFT_DAY)	// the Doctor works on her durring the day
 	{
@@ -75,22 +84,15 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 	}
 
-	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
+#pragma endregion
+#pragma region //	Night Check				//
 
-	if (girl->m_WorkingDay >= 5)
+	if (girl->m_WorkingDay >= 5 && Day0Night1 == SHIFT_NIGHT)
 	{
 		ss << "The surgery is a success.\n";
 		msgtype = EVENT_GOODNEWS;
-		if (!g_Girls.HasTrait(girl, "Sexy Air"))
-		{
-			girl->add_trait("Sexy Air", false);
-			ss << "She gains Sexy Air trait.\n";
-		}
-		else if (!g_Girls.HasTrait(girl, "Cute"))
-		{
-			girl->add_trait("Cute", false);
-			ss << "She gains Cute trait.\n";
-		}
+		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
+
 		if (numnurse > 1)
 		{
 			ss << "The Nurses kept her healthy and happy during her recovery.\n";
@@ -119,13 +121,27 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, 8);
 		}
 
-		if (g_Girls.HasTrait(girl, "Fragile")){ g_Girls.UpdateStat(girl, STAT_HEALTH, -5); }
-		else if (g_Girls.HasTrait(girl, "Tough")){ g_Girls.UpdateStat(girl, STAT_HEALTH, 5); }
-		if (g_Girls.HasTrait(girl, "Pessimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5); }
-		else if (g_Girls.HasTrait(girl, "Optimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5); }
+		if (g_Girls.HasTrait(girl, "Fragile"))			g_Girls.UpdateStat(girl, STAT_HEALTH, -5);
+		else if (g_Girls.HasTrait(girl, "Tough"))		g_Girls.UpdateStat(girl, STAT_HEALTH, 5);
+		if (g_Girls.HasTrait(girl, "Pessimist"))		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
+		else if (g_Girls.HasTrait(girl, "Optimist"))	g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
 
-		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
-		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		if (!g_Girls.HasTrait(girl, "Sexy Air"))
+		{
+			girl->add_trait("Sexy Air", false);
+			ss << "She gains Sexy Air trait.\n";
+		}
+		else if (!g_Girls.HasTrait(girl, "Cute"))
+		{
+			girl->add_trait("Cute", false);
+			ss << "She gains Cute trait.\n";
+		}
+
+		if (g_Girls.HasTrait(girl, "Sexy Air") && g_Girls.HasTrait(girl, "Cute") && girl->beauty() > 99)
+		{
+			ss << "\n\nShe has been released from the Clinic.";
+			girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		}
 	}
 	else
 	{
@@ -142,9 +158,10 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 		else							{ ss << "Having a Nurse on duty will speed up her recovery."; }
 	}
 
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
-
-
 
 	// Improve girl
 	int libido = 1;
@@ -155,6 +172,7 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
 
+#pragma endregion
 	return false;
 }
 

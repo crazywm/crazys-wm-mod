@@ -81,39 +81,30 @@ int sGirlcmp(sGirl *a, sGirl *b);
 // // ----- Strut sBrothel Create / destroy
 sBrothel::sBrothel() : m_Finance(0)	// constructor
 {
-	m_MiscCustomers = 0;
-	m_TotalCustomers = 0;
-	m_Filthiness = 0;
-	m_HasGambStaff = 0;
-	m_HasBarStaff = 0;
-	m_AdvertisingBudget = 0;
 	m_Next = 0;
 	m_Girls = 0;
 	m_LastGirl = 0;
-	m_Fame = 0;
-	m_Happiness = 0;
-	// end mod
 	m_NumGirls = 0;
-	m_ShowTime = 0;
-	m_ShowQuality = 0;
-	m_SecurityLevel = 0;
-	m_KeepPotionsStocked = 0;
-	m_AntiPregPotions = 0;
-	m_RestrictAnal = false;
-	m_RestrictBDSM = false;
-	m_RestrictBeast = false;
-	m_RestrictFoot = false;
-	m_RestrictGroup = false;
-	m_RestrictHand = false;
-	m_RestrictLesbian = false;
-	m_RestrictNormal = false;
-	m_RestrictOral = false;
-	m_RestrictStrip = false;
-	m_RestrictTitty = false;
+	m_NumRooms = m_MaxNumRooms = 0;
+	m_SecurityLevel = m_Filthiness = 0;
+	m_Fame = 0; 
+	m_Happiness = 0;
+	
+	m_HasGambStaff = m_HasBarStaff = m_Bar = m_GamblingHall = 0;
+	
+	m_KeepPotionsStocked = false;
+	m_AntiPregPotions = m_AntiPregUsed = 0;
+
+	m_AdvertisingBudget = 0;
+	m_AdvertisingLevel = 0;
+	m_TotalCustomers = m_RejectCustomersRestrict = m_RejectCustomersDisease = m_MiscCustomers = 0;
+	
+	m_RestrictAnal = m_RestrictBDSM = m_RestrictBeast = m_RestrictFoot = m_RestrictGroup = m_RestrictHand = 
+		m_RestrictLesbian = m_RestrictNormal = m_RestrictOral = m_RestrictStrip = m_RestrictTitty = false;
 	for (u_int i = 0; i < NUMJOBTYPES; i++) m_BuildingQuality[i] = 0;
 
 	//movie
-
+	m_ShowTime = m_ShowQuality = 0;
 	m_CurrFilm = 0;
 	m_NumMovies = 0;
 	m_LastMovies = 0;

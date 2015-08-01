@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCentre.h"
@@ -42,22 +43,24 @@ extern cCentreManager g_Centre;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+#pragma endregion
+
 // `J` Job Centre - Therapy - Full_Time_Job
 bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int actiontype = ACTION_WORKREHAB;
 	// if she was not in rehab yesterday, reset working days to 0 before proceding
 	if (girl->m_YesterDayJob != JOB_REHAB) girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 	girl->m_DayJob = girl->m_NightJob = JOB_REHAB;	// it is a full time job
 
+	g_Girls.UnequipCombat(girl);	// not for patient
+
 	// `J` this will be taken care of in the centre reflow - leaving it in anyway
-	if (!g_Girls.HasTrait(girl, "Fairy Dust Addict") &&		// `J` if the girl is not an addict
-		!g_Girls.HasTrait(girl, "Shroud Addict") &&
-		!g_Girls.HasTrait(girl, "Cum Addict") &&
-		!g_Girls.HasTrait(girl, "Alcoholic") &&
-		!g_Girls.HasTrait(girl, "Smoker") &&
-		!g_Girls.HasTrait(girl, "Viras Blood Addict"))
+	if (!g_Girls.HasTrait(girl, "Fairy Dust Addict")	&&	!g_Girls.HasTrait(girl, "Alcoholic") &&
+		!g_Girls.HasTrait(girl, "Shroud Addict")		&&	!g_Girls.HasTrait(girl, "Cum Addict") &&
+		!g_Girls.HasTrait(girl, "Viras Blood Addict")	&&	!g_Girls.HasTrait(girl, "Smoker"))
 	{
 		ss << " is not addicted to anything so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -67,11 +70,8 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		return false;	// not refusing
 	}
 	ss << " underwent rehab for her addiction.\n\n";
-
-	
-	g_Girls.UnequipCombat(girl);	// not for patient
-
-	if (g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, true) < 1 || g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, false) < 1)
+	bool hasCounselor = g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) > 0;
+	if (!hasCounselor)
 	{
 		ss << "She sits in rehab doing nothing. You must assign a counselor to treat her.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -90,6 +90,9 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	int enjoy = 0;
 	int msgtype = Day0Night1, imagetype = IMGTYPE_PROFILE;
 	if (!Day0Night1) girl->m_WorkingDay++;
+
+#pragma endregion
+#pragma region //	Count the Days				//
 
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 30 - 20);
 	g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice % 5 - 10);
@@ -182,6 +185,9 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		ss << "The rehab is in progress (" << (3 - girl->m_WorkingDay) << " day remaining).";
 	}
 
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	// Improve girl
@@ -190,6 +196,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
+#pragma endregion
 	return false;
 }
 

@@ -122,25 +122,23 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		if (nummecs + numnurse < 1)	ss << "\n\nShe wanders out of the Clinic when she is feeling better.";
 		else						ss << "\n\nShe has been released from the Clinic.";
+		if (girl->m_DayJob == JOB_GETHEALING)	girl->m_DayJob = JOB_CLINICREST;
+		if (girl->m_NightJob == JOB_GETHEALING)	girl->m_NightJob = JOB_CLINICREST;
 		if (girl->m_DayJob == JOB_GETREPAIRS)	girl->m_DayJob = JOB_CLINICREST;
 		if (girl->m_NightJob == JOB_GETREPAIRS)	girl->m_NightJob = JOB_CLINICREST;
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
-
 	return false;
 }
 
 double cJobManager::JP_RepairShop(sGirl* girl, bool estimate)
 {
+	if (!g_Girls.HasTrait(girl, "Construct") && !g_Girls.HasTrait(girl, "Half-Construct")) return -1000;
 	double jobperformance = 0.0;
-	if (estimate)	// for third detail string - how much do they need this?
-	{
-		if (!g_Girls.HasTrait(girl, "Construct") && !g_Girls.HasTrait(girl, "Half-Construct")) return -1000;
-		jobperformance += (100 - girl->health());
-		jobperformance += (100 - girl->happiness());
-		jobperformance += girl->tiredness();
-	}
+	jobperformance += (100 - girl->health());
+	jobperformance += (100 - girl->happiness());
+	jobperformance += girl->tiredness();
 	return jobperformance;
 }

@@ -62,7 +62,6 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 #pragma endregion
 #pragma region //	Job Performance			//
 
-
 	// How much will she help stretch your advertising budget? Let's find out
 	double multiplier = JP_Advertising(girl, false);
 

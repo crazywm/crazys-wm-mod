@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -42,13 +43,17 @@ extern cClinicManager g_Clinic;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+#pragma endregion
+
 // `J` Job Clinic - Surgery
 bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	int actiontype = ACTION_GENERAL;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	// if she was not in surgery last turn, reset working days to 0 before proceding
 	if (girl->m_YesterDayJob != JOB_GETABORT) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
+	girl->m_DayJob = girl->m_NightJob = JOB_GETABORT;	// it is a full time job
 
 	if (!girl->is_pregnant())
 	{
@@ -58,8 +63,8 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		return false;	// not refusing
 	}
-
-	bool hasDoctor = (g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, true) > 0 || g_Clinic.GetNumGirlsOnJob(brothel->m_id, JOB_DOCTOR, false) > 0);
+	bool hasDoctor = g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) > 0;
+	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
 	if (!hasDoctor)
 	{
 		ss << " does nothing. You don't have any Doctors working. (require 1) ";
@@ -71,6 +76,9 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient
 
+#pragma endregion
+#pragma region //	Count the Days				//
+
 	if (Day0Night1 == SHIFT_DAY)	// the Doctor works on her durring the day
 	{
 		girl->m_WorkingDay++;
@@ -80,17 +88,20 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
 		{
 			girl->m_WorkingDay++;
-			g_Girls.UpdateStat(girl, STAT_MANA, 10);
-
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
+			g_Girls.UpdateStat(girl, STAT_MANA, 5);
 		}
 	}
 
-	int numnurse = g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1);
+#pragma endregion
+#pragma region //	Night Check				//
 
-	if (girl->m_WorkingDay >= 2)
+	if (girl->m_WorkingDay >= 2 && Day0Night1 == SHIFT_NIGHT)
 	{
+		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		ss << "The girl had an abortion.\n";
 		msgtype = EVENT_GOODNEWS;
+		
 		// `J` first set the base stat modifiers
 		int happy = -10, health = -20, mana = -20, spirit = -5, love = -5, hate = 5;
 
@@ -333,11 +344,13 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_PrevWorkingDay = 0;
 		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 	}
-
 	else
 	{
 		ss << "The abortion is in progress (1 day remaining).";
 	}
+
+#pragma endregion
+#pragma region	//	Finish the shift			//
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 
@@ -348,19 +361,14 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-
+#pragma endregion
 	return false;
 }
 
 double cJobManager::JP_GetAbort(sGirl* girl, bool estimate)
 {
-	double jobperformance = 0.0;
-	if (estimate)	// for third detail string - how much do they need this?
-	{
-		if (!girl->is_pregnant())			return -1000;	// X - not needed
-		if (girl->carrying_players_child())	return 0;		// E - its your's
-		if (girl->carrying_monster())		return 150;		// B - Beast
-		return 100;											// C - customer's child
-	}
-	return jobperformance;
+	if (!girl->is_pregnant())			return -1000;	// X - not needed
+	if (girl->carrying_players_child())	return 1;		// E - its your's
+	if (girl->carrying_monster())		return 150;		// B - Beast
+	return 100;											// C - customer's child
 }

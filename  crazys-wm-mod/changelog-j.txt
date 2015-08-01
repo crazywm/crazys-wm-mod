@@ -2321,6 +2321,14 @@ Cleaned up PrepareImage a little and added cfg.debug.log_extradetails() to log w
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.14
 
+###  Changes 7/28-29
+Cleaned up and expanded Brothel Constructor.
+Fixed a bug in test_child_name().
+
+###  Changes 7/30-31
+Fixed a bug in WorkGetFertility.cpp that skipped Fertility in line going to Broodmother instead.
+Updated many of the surgery and therapy jobs
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
 
 

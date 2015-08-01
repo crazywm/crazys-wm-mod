@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cCentre.h"
@@ -42,9 +43,12 @@ extern cCentreManager g_Centre;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 
+#pragma endregion
+
 // `J` Job Centre - Therapy
 bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+#pragma region //	Job setup				//
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int actiontype = ACTION_WORKTHERAPY;
 	// if she was not in thearpy yesterday, reset working days to 0 before proceding
@@ -61,7 +65,8 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 		return false; // not refusing
 	}
-	if (g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, true) < 1 || g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, false) < 1)
+	bool hasCounselor = g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) > 0;
+	if (!hasCounselor)
 	{
 		ss << " has no counselor to help her on the " << (Day0Night1 ? "night" : "day") << " Shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -126,6 +131,10 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 
 	int enjoy = 0;
 	int msgtype = Day0Night1;
+
+#pragma endregion
+#pragma region //	Count the Days				//
+
 	if (!Day0Night1) girl->m_WorkingDay++;
 
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 30 - 20);
@@ -201,6 +210,9 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 		ss << "The therapy is in progress (" << (3 - girl->m_WorkingDay) << " day remaining).";
 	}
 
+#pragma endregion
+#pragma region	//	Finish the shift			//
+
 	// Improve girl
 	int libido = 1;
 
@@ -210,6 +222,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
+#pragma endregion
 	return false;
 }
 

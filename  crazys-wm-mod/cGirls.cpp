@@ -185,9 +185,10 @@ sGirl::sGirl()				// constructor
 
 	// Jobs and money
 	m_DayJob = m_NightJob = m_PrevDayJob = m_PrevNightJob = m_YesterDayJob = m_YesterNightJob = 255;
+	m_WorkingDay = m_PrevWorkingDay = m_SpecialJobGoal = 0;
+
 	where_is_she = 0;
 	m_InClinic = m_InStudio = m_InArena = m_InCentre = m_InHouse = m_InFarm = false;
-	m_SpecialJobGoal = m_WorkingDay = 0;
 	m_Refused_To_Work_Day = m_Refused_To_Work_Night = false;
 	m_Money = m_Pay = m_Tips = 0;
 	m_NumCusts = 0;
@@ -1227,22 +1228,28 @@ sRandomGirl* cGirls::random_girl_at(u_int n)
 	return current;		// and there we (hopefully) are
 }
 
-sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool Human0Monster1, bool childnaped, bool arena, bool daughter, bool isdaughter, string findbyname)
+sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool Human0Monster1, 
+								bool childnaped, bool arena, bool daughter, bool isdaughter, string findbyname)
 {
 	sRandomGirl* current = 0;
+	// 1. The most direct check is to try to find a girl by name.
 	if (findbyname != "")
 	{
 		current = find_random_girl_by_name(findbyname, 0);
 	}
-	if (current == 0 && daughter &&	m_NumRandomYourDaughterGirls > 0) // We are now checking for your daughter girls
+
+	// 2. Next we see if you are looking for your own daughter
+	if (current == 0 && daughter &&	m_NumRandomYourDaughterGirls > 0)
 	{
 		bool girlfound = false;
 		bool monstergirl = Human0Monster1;
-		if (m_NumNonHumanRandomYourDaughterGirls < 1) monstergirl = false;	// if there are no monster girls we will accept a human
+		if (m_NumNonHumanRandomYourDaughterGirls < 1) 
+			monstergirl = false;
+		// if there are no monster girls we will accept a human
 
 		int i = 0;
 		int random_girl_index = g_Dice%m_NumRandomGirls;	// pick a number between 0 and m_NumRandomGirls as the stating point
-		while (i < (int)m_NumRandomGirls)	// loop until we find a human/non-human template as required
+		while (i < (int)m_NumRandomGirls)					// loop until we find a human/non-human template as required
 		{
 			current = random_girl_at(random_girl_index);
 			if (current != 0 && current->m_YourDaughter)
@@ -13596,8 +13603,8 @@ int cGirls::test_child_name(string name)
 	if (current)	return 1;		// yes, we did!
 
 	//	OK, we need to search for a random girl
-	sRandomGirl *rgirl = find_random_girl_by_name(name);
-	if (!rgirl)		return 2;
+	sRandomGirl* rgirl = find_random_girl_by_name(name);
+	if (rgirl)		return 2;
 	return 0;
 }
 
