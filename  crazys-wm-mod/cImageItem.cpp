@@ -669,10 +669,10 @@ int TryImageType(int imagetype, int tries)
 // `J` Totally new method for image handling for .06.02.00
 void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, int ImageNum, bool gallery, string ImageName)
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || Getting image for: "<<girl->m_Realname; g_LogFile.ssend(); }
+
 	// Clear the old images
-	if (m_Images[id] &&
-		m_Images[id]->m_AnimatedImage &&
-		m_Images[id]->m_AnimatedImage->getNumFrames() > 0)
+	if (m_Images[id] && m_Images[id]->m_AnimatedImage && m_Images[id]->m_AnimatedImage->getNumFrames() > 0)
 	{
 		AG_FreeSurfaces(m_Images[id]->m_AnimatedImage->getAFrames(), m_Images[id]->m_AnimatedImage->getNumFrames());
 		m_Images[id]->m_AnimatedImage->m_Gif = false;
@@ -728,6 +728,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	do
 	{
 		int tryimagetype = TryImageType(imagetype, tries);
+		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || Try: " << tries<<" || In: " << pic_types[imagetype] << " | Out: " << pic_types[tryimagetype]; g_LogFile.ssend(); }
 
 		// choose an image folder
 		dir = 0; usedir = "";

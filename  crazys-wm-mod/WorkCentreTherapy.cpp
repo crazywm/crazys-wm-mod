@@ -61,7 +61,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	{
 		ss << " doesn't need therapy for anything so she was sent to the waiting room.";
 		if (Day0Night1 == 0)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
+		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 		return false; // not refusing
 	}
@@ -124,29 +124,47 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (girl->m_WorkingDay >= 3 && Day0Night1)
 	{
+		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 		enjoy += g_Dice % 5;
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice % 6 - 2);	// `J` She may want to help others with their problems
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 5);
 
 		ss << "The therapy is a success.\n";
 		msgtype = EVENT_GOODNEWS;
-		if (g_Girls.HasTrait(girl, "Nervous"))
-		{
-			g_Girls.RemoveTrait(girl, "Nervous");
-			ss << "She is no longer nervous all the time.\n";
-		}
-		else if (g_Girls.HasTrait(girl, "Dependant"))
-		{
-			g_Girls.RemoveTrait(girl, "Dependant");
-			ss << "She is no longer Dependant on others.\n";
-		}
-		else if (g_Girls.HasTrait(girl, "Pessimist"))
-		{
-			g_Girls.RemoveTrait(girl, "Pessimist");
-			ss << "She is no longer a Pessimist about everything.\n";
-		}
 
-		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
+		bool cured = false;
+		int tries = 5;
+		while (!cured && tries > -2)
+		{
+			tries--;
+			int t = max(0, g_Dice % tries);
+			switch (t)
+			{
+			case 0:
+
+				if (g_Girls.HasTrait(girl, "Nervous"))
+				{
+					g_Girls.RemoveTrait(girl, "Nervous");
+					ss << "She is no longer nervous all the time.\n";
+					cured = true; break;
+				}
+			case 1:
+				if (g_Girls.HasTrait(girl, "Dependant"))
+				{
+					g_Girls.RemoveTrait(girl, "Dependant");
+					ss << "She is no longer Dependant on others.\n";
+					cured = true; break;
+				}
+			case 2:
+			default:
+				if (g_Girls.HasTrait(girl, "Pessimist"))
+				{
+					g_Girls.RemoveTrait(girl, "Pessimist");
+					ss << "She is no longer a Pessimist about everything.\n";
+					cured = true; break;
+				}
+			}
+		}
 
 		if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Dependant") || g_Girls.HasTrait(girl, "Pessimist"))
 		{
@@ -155,9 +173,8 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		else // get out of therapy
 		{
 			ss << "\nShe has been released from therapy.";
-			girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
+			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
 			girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
-			girl->m_PrevDayJob = girl->m_PrevNightJob = 255;
 		}
 	}
 	else
@@ -183,16 +200,12 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 double cJobManager::JP_CentreTherapy(sGirl* girl, bool estimate)
 {
-	double jobperformance = 0.0;
-	if (estimate)	// for third detail string - how much do they need this?
-	{
-		if (!g_Girls.HasTrait(girl, "Nervous") && 
-			!g_Girls.HasTrait(girl, "Dependant") &&
-			!g_Girls.HasTrait(girl, "Pessimist"))	return -1000;			// X - does not need it
-		jobperformance += 100;
-		if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance +=100;	// if she has 1 = A
-		if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance +=100;	// if she has 2 = S
-		if (g_Girls.HasTrait(girl, "Pessimist"))	jobperformance +=100;	// if she has 3 = I
-	}
+	double jobperformance = 100;
+	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance += 100;	// if she has 1 = A
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance += 100;	// if she has 2 = S
+	if (g_Girls.HasTrait(girl, "Pessimist"))	jobperformance += 100;	// if she has 3 = I
+
+	if (jobperformance == 100)	return -1000;			// X - does not need it
+
 	return jobperformance;
 }

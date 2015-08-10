@@ -2330,11 +2330,33 @@ Fixed a bug in WorkGetFertility.cpp that skipped Fertility in line going to Broo
 Updated many of the surgery and therapy jobs
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+###  Changes 8/1
+Finished updating the surgery and therapy jobs
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.15
+
+###  Changes 8/2-3
+Fixed a bug in therapy jobs.
+Added AdjustTraitTemp to scripts.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.16
+
+###  Changes 8/4-9
+Slowly updating crafting jobs when I get time.
+ - WorkMakeItem.cpp has a full item tree now and should work as intended
+ - WorkBlacksmith.cpp has a partial tree but not full checks
+ - WorkCobbler.cpp will only make FlipFlops
+ - WorkJeweler.cpp will only make Bauble Necklace
+ - WorkTailor.cpp will only make Eye patch
+ 
+Added more to gamelog.txt for better bug checking
+Cleaned up cGirlTorture.cpp
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.17
+
 
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
-
 
 Config.xml: 
  > Debug > ShowNumbers

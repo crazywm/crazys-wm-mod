@@ -1040,7 +1040,7 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 #endif
 #endif
 
-#if 1
+#if 0
 	g_LogFile.ss() << "\n`J` DEBUG CODE - this section is used to debug a piece of code.\n"; g_LogFile.ssend();
 
 
@@ -1167,8 +1167,7 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 		cfg.reload(av[1]);
 	}
 
-	CLog log = log;
-	log.write("calling init");
+	g_LogFile.write("\n------------------------------------------------------------------------------------------------------------------------\nCalling Init");
 	// INit the program
 	if (!Init())
 		return 1;

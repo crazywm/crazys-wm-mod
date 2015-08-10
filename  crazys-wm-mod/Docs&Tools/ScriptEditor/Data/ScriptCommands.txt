@@ -332,3 +332,6 @@ INT 0 6
 "AdjustGirlFlag ~ ~"
 INT 0 29
 INT -254 254
+"AdjustTraitTemp ~ ~"
+TEXT
+INT -255 255

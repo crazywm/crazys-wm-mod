@@ -251,17 +251,8 @@ class cConfig
 {
 	static	sConfigData	*data;
 public:
-	cConfig()
-	{
-		if (!data)
-		{
-			data = new sConfigData();
-		}
-	}
-	void	reload(const char *filename) {
-		sConfigData *newd = new sConfigData(filename);
-		*data = *newd;
-	}
+	cConfig();
+	void reload(const char *filename);
 
 	struct InFactors {
 		double extortion()			{ return data->in_fact.extortion; }

@@ -28,12 +28,29 @@
 #include "cColor.h"
 #include "Constants.h"
 #include "XmlUtil.h"
+#include "Revision.h"
 
 
 extern CLog g_LogFile;
 static CLog &l = g_LogFile;
 static cColor ColorConvert;
 sConfigData *cConfig::data;
+
+cConfig::cConfig()
+{
+	if (!data)
+	{
+		l.ss() << "Whore Master v" << g_MajorVersion << "." << g_MinorVersionA << g_MinorVersionB << "." << g_StableVersion << " BETA" << " Svn: " << svn_revision; l.ssend();
+		l.ss() << "\n------------------------------------------------------------------------------------------------------------------------\nLoading Default configuration variables"; l.ssend();
+		data = new sConfigData();
+	}
+}
+
+void cConfig::reload(const char *filename)
+{
+	sConfigData *newd = new sConfigData(filename);
+	*data = *newd;
+}
 
 /*
 * changed this to take a filename so we can pass config files on the command line
@@ -98,7 +115,7 @@ sConfigData::sConfigData(const char *a_filename)
 		if (el->ValueStr() == "Fonts")			{ get_font_data(el);		continue; }
 		if (el->ValueStr() == "Debug")			{ get_debug_flags(el);		continue; }
 
-		l.ss() << "Warning: config.xml: tag: '" << tag << "' unexpected"; l.ssend();
+		l.ss() << "\nWarning: config.xml: tag: '" << tag << "' unexpected"; l.ssend();
 	}
 	// check interface for colors
 	DirPath dpi = DirPath() << "Resources" << "Interface" << resolution.resolution << "InterfaceColors.xml";
@@ -183,7 +200,7 @@ void sConfigData::get_att(TiXmlElement *el, const char *name, bool &bval)
 void sConfigData::get_att(TiXmlElement *el, const char *name, double *dpt)
 {
 	if (el->Attribute(name, dpt)) { return; }
-	l.ss() << "Warning: config.xml: No '" << name << "' attribute: defaulting to " << *dpt; l.ssend();
+	l.ss() << "\nWarning: config.xml: No '" << name << "' attribute: defaulting to " << *dpt; l.ssend();
 }
 
 void sConfigData::get_att(TiXmlElement *el, const char *name, string &s)
@@ -191,14 +208,14 @@ void sConfigData::get_att(TiXmlElement *el, const char *name, string &s)
 	const char *pt;
 	pt = el->Attribute(name);
 	if (pt) { s = pt;	return; }
-	l.ss() << "Warning: config.xml: No '" << name << "' attribute: defaulting to " << s; l.ssend();
+	l.ss() << "\nWarning: config.xml: No '" << name << "' attribute: defaulting to " << s; l.ssend();
 }
 
 void sConfigData::get_att(TiXmlElement *el, const char *name, int *ipt)
 {
 	int def_val = *ipt;
 	if (el->Attribute(name, ipt)) { return; }
-	l.ss() << "Warning: config.xml: No '" << name << "' attribute: defaulting to " << def_val; l.ssend();
+	l.ss() << "\nWarning: config.xml: No '" << name << "' attribute: defaulting to " << def_val; l.ssend();
 	*ipt = def_val;
 }
 
@@ -245,7 +262,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 		}
 		else
 		{
-			l.ss() << "Warning: config.xml: Characters folder '" << testch << "' does not exist or has no girls in it.\nDefaulting to ./Resources/Characters"; l.ssend();
+			l.ss() << "\nWarning: config.xml: Characters folder '" << testch << "' does not exist or has no girls in it.\n\tDefaulting to ./Resources/Characters"; l.ssend();
 		}
 	}
 	if (testsa != "")
@@ -274,7 +291,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 		}
 		else
 		{
-			l.ss() << "\n\nWarning: config.xml: Save game folder '" << testsa << "' does not exist.\nDefaulting to ./Saves"; l.ssend();
+			l.ss() << "\nWarning: config.xml: Save game folder '" << testsa << "' does not exist.\n\tDefaulting to ./Saves"; l.ssend();
 		}
 	}
 	if (testil != "")
@@ -297,7 +314,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 		}
 		else
 		{
-			l.ss() << "Warning: config.xml: Items folder '" << testil << "' does not exist or has no Items in it.\nDefaulting to ./Resources/Items"; l.ssend();
+			l.ss() << "\nWarning: config.xml: Items folder '" << testil << "' does not exist or has no Items in it.\n\tDefaulting to ./Resources/Items"; l.ssend();
 		}
 	}
 	if (testdi != "")
@@ -321,7 +338,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 		}
 		else
 		{
-			l.ss() << "\n\nWarning: config.xml: Default Images folder '" << testdi << "' does not exist or has no images in it.\n\n"; l.ssend();
+			l.ss() << "\nWarning: config.xml: Default Images folder '" << testdi << "' does not exist or has no images in it."; l.ssend();
 		}
 	}
 }
@@ -343,12 +360,12 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 		}
 		else
 		{
-			l.ss() << "\n\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\ndefaulting to 'J_1024x768'\n\n"; l.ssend();
+			l.ss() << "\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\n\tDefaulting to 'J_1024x768'\n\n"; l.ssend();
 		}
 	}
 	else
 	{
-		l.ss() << "\n\nWarning: config.xml: No Resolution specified, using defaults.\n\n"; l.ssend();
+		l.ss() << "\nWarning: config.xml: No Resolution specified, using defaults."; l.ssend();
 	}
 	if (pt = el->Attribute("Width"))			{ get_att(el, "Width", &resolution.width);		resolution.configXML = true; }
 	if (pt = el->Attribute("Height"))			{ get_att(el, "Height", &resolution.height);	resolution.configXML = true; }
@@ -565,7 +582,7 @@ void sConfigData::get_font_data(TiXmlElement *el)
 void sConfigData::get_debug_flags(TiXmlElement *el)
 {
 	const char *pt;
-	if (pt = el->Attribute("LogAll"))				get_att(el, "LogItems", debug.log_all);
+	if (pt = el->Attribute("LogAll"))				get_att(el, "LogAll", debug.log_all);
 
 	if (debug.log_all) debug.log_girls = debug.log_rgirls = debug.log_girl_fights = debug.log_items = debug.log_fonts = debug.log_torture = debug.log_debug = debug.log_extra_details = debug.log_show_numbers = debug.log_all;
 	else

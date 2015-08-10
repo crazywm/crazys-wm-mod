@@ -508,6 +508,8 @@ void LoadGirlsFiles()
 
 void NextWeek()
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Start"; g_LogFile.ssend(); }
+
 	g_GenGirls = g_WalkAround = false;
 	g_GenGirls = g_TryCentre = false;
 	g_GenGirls = g_TryOuts = false;
@@ -539,13 +541,19 @@ void NextWeek()
 	g_Gangs.GangStartOfShift();
 
 	// go through and update all the brothels (this updates the girls each brothel has and calculates sex and stuff)
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Clinic"; g_LogFile.ssend(); }
 	if (g_Clinic.GetNumBrothels() > 0)		g_Clinic.UpdateClinic();
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Studio"; g_LogFile.ssend(); }
 	if (g_Studios.GetNumBrothels() > 0)		g_Studios.UpdateMovieStudio();
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Arena"; g_LogFile.ssend(); }
 	if (g_Arena.GetNumBrothels() > 0)		g_Arena.UpdateArena();
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Centre"; g_LogFile.ssend(); }
 	if (g_Centre.GetNumBrothels() > 0)		g_Centre.UpdateCentre();
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Farm"; g_LogFile.ssend(); }
 	if (g_Farm.GetNumBrothels() > 0)		g_Farm.UpdateFarm();
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin House"; g_LogFile.ssend(); }
 	g_House.UpdateHouse();
-
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Brothels"; g_LogFile.ssend(); }
 	g_Brothels.UpdateBrothels(); // Moved so new buildings show up in profit reports --PP
 
 	// go ahead and handle pregnancies for girls not controlled by player
@@ -554,7 +562,10 @@ void NextWeek()
 	// go through and update all the gang-related data (send them on missions, etc.)
 	g_Gangs.UpdateGangs();
 
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Dungeon"; g_LogFile.ssend(); }
 	g_Brothels.m_Dungeon.Update();	// update the people in the dungeon
+
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || End Buildings"; g_LogFile.ssend(); }
 
 	// update objectives or maybe create a new one
 	if (g_Brothels.GetObjective()) g_Brothels.UpdateObjective();
@@ -587,6 +598,7 @@ void NextWeek()
 
 	GameEvents();
 	g_CTRLDown = false;
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || End"; g_LogFile.ssend(); }
 
 }
 

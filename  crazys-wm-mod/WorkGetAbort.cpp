@@ -59,7 +59,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " is not pregant so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		return false;	// not refusing
 	}
@@ -340,9 +340,8 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_ChildrenCount[CHILD09_ABORTIONS]++;
 		girl->clear_pregnancy();
 		girl->m_PregCooldown = cfg.pregnancy.cool_down();
-		girl->m_WorkingDay = 0;
-		girl->m_PrevWorkingDay = 0;
-		girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 	}
 	else
 	{

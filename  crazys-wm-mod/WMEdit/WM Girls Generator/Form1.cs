@@ -2279,7 +2279,7 @@ namespace WM_Girls_Generator
                         sexskills[3] = jSkills[4];	    //Bestiality Sex
                         sexskills[4] = jSkills[5];	    //Group Sex
                         sexskills[5] = jSkills[6];	    //Lesbian Sex
-                        sexskills[6] = jSkills[8];	    //Stripping Sex
+                        sexskills[6] = jSkills[8];	    //Stripping
                         sexskills[7] = jSkills[10];	    //OralSex
                         sexskills[8] = jSkills[11];	    //TittySex
                         sexskills[9] = jSkills[14];	    //Handjob
@@ -4184,8 +4184,16 @@ namespace WM_Girls_Generator
                 {
                     stat = xmldoc.CreateElement("Stat");
                     stat.SetAttribute("Name", sStats[statsortorder[y]]);
-                    stat.SetAttribute("Min", sMinStat[statsortorder[y]]);
-                    stat.SetAttribute("Max", sMaxStat[statsortorder[y]]);
+                    if (y < sMinStat.Length)
+                    {
+                        stat.SetAttribute("Min", sMinStat[statsortorder[y]]);
+                        stat.SetAttribute("Max", sMaxStat[statsortorder[y]]);
+                    }
+                    else
+                    {
+                        stat.SetAttribute("Min","0");
+                        stat.SetAttribute("Max","0");
+                    }
                     girl.AppendChild(stat);
                 }
                 for (int y = 0; y < sSkills.Count(); y++)

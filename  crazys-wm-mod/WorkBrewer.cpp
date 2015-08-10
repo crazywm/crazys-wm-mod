@@ -102,8 +102,6 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
 
-
-
 	if (wages < 0) wages = 0;
 #if 1
 	//enjoyed the work or not

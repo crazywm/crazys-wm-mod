@@ -680,6 +680,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 	else if (stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Reset Potion MK ii"))
 	{
 		// remove all traits
+		girl->m_Stats[STAT_HEALTH] = 100;	// `J` revive dead girls
 		for (int i = 0; i < MAXNUM_TRAITS; i++)
 		{
 			if (girl->m_Traits[i]) g_Girls.RemoveTrait(girl, girl->m_Traits[i]->m_Name, false, true, false);

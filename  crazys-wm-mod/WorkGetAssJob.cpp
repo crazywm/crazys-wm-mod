@@ -59,7 +59,7 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		ss << " already has a Great Arse so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		return false;	// not refusing
 	}
@@ -88,62 +88,16 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
 		{
 			girl->m_WorkingDay++;
+			g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 10);
 			g_Girls.UpdateStat(girl, STAT_MANA, 10);
 		}
 	}
 
 #pragma endregion
-#pragma region //	Night Check				//
+#pragma region //	In Progress				//
 
-	if (girl->m_WorkingDay >= 5 && Day0Night1 == SHIFT_NIGHT)
-	{
-		ss << "The surgery is a success.\n";
-		msgtype = EVENT_GOODNEWS;
-		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
-
-		if (numnurse > 1)
-		{
-			ss << "The Nurses kept her healthy and happy during her recovery.\n";
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, 5);
-			g_Girls.UpdateStat(girl, STAT_MANA, 10);
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, 10);
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, 10);
-		}
-		else if (numnurse > 0)
-		{
-			ss << "The Nurse helped her during her recovery.\n";
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
-			g_Girls.UpdateStat(girl, STAT_HEALTH, -10);
-			g_Girls.UpdateStat(girl, STAT_MANA, -10);
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, 8);
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, 8);
-		}
-		else
-		{
-			ss << "She is sad and has lost some health during the operation.\n";
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -15);
-			g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
-			g_Girls.UpdateStat(girl, STAT_MANA, -20);
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, 5);
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, 5);
-		}
-
-		if (g_Girls.HasTrait(girl, "Fragile"))			g_Girls.UpdateStat(girl, STAT_HEALTH, -5);
-		else if (g_Girls.HasTrait(girl, "Tough"))		g_Girls.UpdateStat(girl, STAT_HEALTH, 5);
-		if (g_Girls.HasTrait(girl, "Pessimist"))		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
-		else if (g_Girls.HasTrait(girl, "Optimist"))	g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
-
-		if (!g_Girls.HasTrait(girl, "Great Arse"))
-		{
-			girl->add_trait("Great Arse", false);
-			ss << "Thanks to the surgery she now has a Great Arse.\n";
-			ss << "\n\nShe has been released from the Clinic.";
-			girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
-		}
-	}
-	else
+	if (girl->m_WorkingDay < 5 || Day0Night1 == SHIFT_DAY)
 	{
 		int wdays = (5 - girl->m_WorkingDay);
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
@@ -156,6 +110,55 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 1)		{ ss << "The Nurses are taking care of her at night."; }
 		else if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0){ ss << "The Nurse is taking care of her at night."; }
 		else							{ ss << "Having a Nurse on duty will speed up her recovery."; }
+	}
+
+#pragma endregion
+#pragma region //	Surgery Finished			//
+
+	else
+	{
+		ss << "The surgery is a success.\n";
+		msgtype = EVENT_GOODNEWS;
+		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
+
+		if (numnurse > 2)
+		{
+			ss << "The Nurses kept her healthy and happy during her recovery.\n";
+			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 20));
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(0, 10));
+			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(0, 10));
+			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(0, 20));
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(0, 2));
+			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(0, 2));
+		}
+		else if (numnurse > 0)
+		{
+			ss << "The Nurse" << (numnurse > 1 ? "s" : "") << " helped her during her recovery.\n";
+			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 10));
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(0, 5));
+			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(0, 5));
+			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(0, 10));
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % 2);
+			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice % 2);
+		}
+		else
+		{
+			ss << "She is sad and has lost some health during the operation.\n";
+			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(-20, 2));
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(-10, 1));
+			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(-5, 1));
+			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(-20, 3));
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(-1, 1));
+			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(-1, 1));
+		}
+
+		if (!g_Girls.HasTrait(girl, "Great Arse"))
+		{
+			girl->add_trait("Great Arse", false);
+			ss << "Thanks to the surgery she now has a Great Arse.\n";
+			ss << "\n\nShe has been released from the Clinic.";
+			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		}
 	}
 
 #pragma endregion
@@ -178,14 +181,6 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 double cJobManager::JP_GetAssJob(sGirl* girl, bool estimate)
 {
-	double jobperformance = 0.0;
-	if (estimate)	// for third detail string - how much do they need this?
-	{
-		if (g_Girls.HasTrait(girl, "Great Arse")) return -1000;	// X - not needed
-		return 200;												// A
-	}
-	else// for the actual check
-	{
-	}
-	return jobperformance;
+	if (g_Girls.HasTrait(girl, "Great Arse")) return -1000;	// X - not needed
+	return 200;												// A
 }

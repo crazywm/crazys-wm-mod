@@ -115,7 +115,7 @@ private:
 	sScript* Script_GetRandomGirl(sScript* Script);					// `J` new
 	sScript* Script_DomTarget(sScript* Script);						// `J` new
 	sScript* Script_AdjustGirlFlag(sScript *Script);				// `J` new
-
+	sScript* Script_AdjustTraitTemp(sScript *Script);				// `J` new
 	//sScript* Script_GirlNameTarget(sScript* Script);
 
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.h

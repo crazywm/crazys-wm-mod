@@ -3449,7 +3449,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 }
 
 // added human check: -1 does not matter, 0 not human, 1 human
-sGirl* cGirls::GetRandomYourDaughterGirl(int Human0Monster1)
+sGirl* cGirls::GetUniqueYourDaughterGirl(int Human0Monster1)
 {
 	if (GetNumYourDaughterGirls() == 0) return 0;
 	sGirl *girl;
@@ -4142,8 +4142,6 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	m_Surname = (pGirl->Attribute("Surname") ? pGirl->Attribute("Surname") : "");	// `J` New
 	if (m_Realname == "" || (m_FirstName == "" && m_MiddleName == "" && m_Surname == "")) g_Girls.BuildName(this);
 
-	if (cfg.debug.log_girls()) g_LogFile.ss() << "Loading girl: '" << m_Realname; g_LogFile.ssend();
-
 	m_Desc = (pGirl->Attribute("Desc") ? pGirl->Attribute("Desc") : "-");	// get the description
 
 	// load the amount of days they are unhappy in a row
@@ -4757,6 +4755,11 @@ bool cGirls::LoadGirlsXML(TiXmlHandle hGirls)
 	{
 		current = new sGirl();			// load each girl and add her
 		bool success = current->LoadGirlXML(TiXmlHandle(pGirl));
+		if (cfg.debug.log_girls())
+		{
+			g_LogFile.ss() << "Loading girl: " << current->m_Realname << " | (" << current->m_Name << ") | " << (success ? "Done" : "Failed");
+			g_LogFile.ssend();
+		}
 		if (success == true) AddGirl(current);
 		else { delete current; continue; }
 	}
@@ -8221,12 +8224,19 @@ bool cGirls::HasRememberedTrait(sGirl* girl, string trait)
 
 bool cGirls::HasTrait(sGirl* girl, string trait)
 {
-	for (int i = 0; i < MAXNUM_TRAITS; i++)
+	if (girl)
 	{
-		if (girl->m_Traits[i])
+		for (int i = 0; i < MAXNUM_TRAITS; i++)
 		{
-			if (trait.compare(girl->m_Traits[i]->m_Name) == 0) return true;
+			if (girl->m_Traits[i])
+			{
+				if (trait.compare(girl->m_Traits[i]->m_Name) == 0) return true;
+			}
 		}
+	}
+	else
+	{
+		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug HasTrait || Girl is NULL"; g_LogFile.ssend(); }
 	}
 	return false;
 }
@@ -8234,33 +8244,47 @@ bool cGirls::HasTrait(sGirl* girl, string trait)
 // `J` returns the number of turns left on a temp trait or 0 if is not temporary
 int cGirls::HasTempTrait(sGirl* girl, string trait)
 {
-	for (int i = 0; i < MAXNUM_TRAITS; i++)
+	if (girl)
 	{
-		if (girl->m_Traits[i] && girl->m_TempTrait[i] > 0)
+		for (int i = 0; i < MAXNUM_TRAITS; i++)
 		{
-			if (trait.compare(girl->m_Traits[i]->m_Name) == 0)
+			if (girl->m_Traits[i] && girl->m_TempTrait[i] > 0)
 			{
-				return girl->m_TempTrait[i];
+				if (trait.compare(girl->m_Traits[i]->m_Name) == 0)
+				{
+					return girl->m_TempTrait[i];
+				}
 			}
 		}
+	}
+	else
+	{
+		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug HasTempTrait || Girl is NULL"; g_LogFile.ssend(); }
 	}
 	return 0;
 }
 
 void cGirls::RemoveRememberedTrait(sGirl* girl, string name)
 {
-	sTrait* trait = g_Traits.GetTrait(name);
-	for (int i = 0; i < MAXNUM_TRAITS * 2; i++)	// remove the traits
+	if (girl)
 	{
-		if (girl->m_RememTraits[i])
+		sTrait* trait = g_Traits.GetTrait(name);
+		for (int i = 0; i < MAXNUM_TRAITS * 2; i++)	// remove the traits
 		{
-			if (girl->m_RememTraits[i] == trait)
+			if (girl->m_RememTraits[i])
 			{
-				girl->m_NumRememTraits--;
-				girl->m_RememTraits[i] = 0;
-				return;
+				if (girl->m_RememTraits[i] == trait)
+				{
+					girl->m_NumRememTraits--;
+					girl->m_RememTraits[i] = 0;
+					return;
+				}
 			}
 		}
+	}
+	else
+	{
+		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug RemoveRememberedTrait || Girl is NULL"; g_LogFile.ssend(); }
 	}
 }
 
@@ -8527,15 +8551,30 @@ void cGirls::updateTempTraits(sGirl* girl)
 // Update individual temp trait and remove expired trait - can not make nontemp traits temp
 void cGirls::updateTempTraits(sGirl* girl, string trait, int amount)
 {
-	if (girl->health() <= 0) return;				// Sanity check. Abort on dead girl
+	if (girl->health() <= 0) return;									// Sanity check. Abort on dead girl
 
-	for (int i = 0; i < MAXNUM_TRAITS; i++)
+	if (!g_Girls.HasTrait(girl, trait))									// first check if she does not have the trait already
 	{
-		if (girl->m_TempTrait[i] > 0 && girl->m_Traits[i] && trait.compare(girl->m_Traits[i]->m_Name) == 0)
+		if (amount > 0)													// add it if modifier is positive
+			g_Girls.AddTrait(girl, trait, amount);
+		return;
+	}
+	else																// if she does have it, check if it is permanent or temp
+	{
+		for (int i = 0; i < MAXNUM_TRAITS; i++)							// go through her traits
 		{
-			girl->m_TempTrait[i] += amount;
-			if (girl->m_TempTrait[i] <= 0) g_Girls.RemoveTrait(girl, girl->m_Traits[i]->m_Name);
-			return;
+			if (trait.compare(girl->m_Traits[i]->m_Name) == 0)			// until you find the trait
+			{
+				if (girl->m_TempTrait[i] > 0)							// if the trait is temp ...
+				{
+					girl->m_TempTrait[i] += amount;						// ... adjust the temp time
+					if (girl->m_TempTrait[i] <= 0)						// if the temp trait is reduced below 1 ...
+						girl->remove_trait(girl->m_Traits[i]->m_Name);	// ... remove it
+					if (girl->m_TempTrait[i] > 100)						// if the temp trait goes above 100 ...
+						girl->m_TempTrait[i] = 0;						// ... make it permanet
+				}
+				return;
+			}
 		}
 	}
 }
@@ -13731,8 +13770,8 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		}
 		if (!sprog && playerfather && GetNumYourDaughterGirls() > 0)				// this should check all your daughter girls that apply
 		{
-			sprog = GetRandomYourDaughterGirl(MomIsMonster);						// first try to get the same human/nonhuman as mother
-			if (!sprog && MomIsMonster) sprog = GetRandomYourDaughterGirl(true);	// next, if mom is nonhuman, try to get a human daughter
+			sprog = GetUniqueYourDaughterGirl(MomIsMonster);						// first try to get the same human/nonhuman as mother
+			if (!sprog && MomIsMonster) sprog = GetUniqueYourDaughterGirl(true);	// next, if mom is nonhuman, try to get a human daughter
 		}
 		if (!sprog)
 		{
@@ -13951,8 +13990,8 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 				}
 				if (!sprog && playerfather && GetNumYourDaughterGirls() > 0)				// this should check all your daughter girls that apply
 				{
-					sprog = GetRandomYourDaughterGirl(MomIsMonster);						// first try to get the same human/nonhuman as mother
-					if (!sprog && MomIsMonster) sprog = GetRandomYourDaughterGirl(true);	// next, if mom is nonhuman, try to get a human daughter
+					sprog = GetUniqueYourDaughterGirl(MomIsMonster);						// first try to get the same human/nonhuman as mother
+					if (!sprog && MomIsMonster) sprog = GetUniqueYourDaughterGirl(true);	// next, if mom is nonhuman, try to get a human daughter
 				}
 				if (!sprog)
 				{

@@ -58,7 +58,7 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		ss << " already has a Flat Chest so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		return false;	// not refusing
 	}
@@ -90,37 +90,41 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 
 		ss << g_Girls.AdjustTraitGroupBreastSize(girl, -1, false) << "\n\n";
 
-		if (numnurse > 1)
+		if (numnurse > 2)
 		{
 			ss << "The Nurses kept her healthy and happy during her recovery.\n";
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, 5);
-			g_Girls.UpdateStat(girl, STAT_MANA, 10);
+			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 20));
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(0, 10));
+			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(0, 10));
+			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(0, 20));
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(0, 2));
+			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(0, 2));
 		}
 		else if (numnurse > 0)
 		{
-			ss << "The Nurse helped her during her recovery.\n";
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
-			g_Girls.UpdateStat(girl, STAT_HEALTH, -10);
-			g_Girls.UpdateStat(girl, STAT_MANA, -10);
+			ss << "The Nurse" << (numnurse > 1 ? "s" : "") << " helped her during her recovery.\n";
+			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 10));
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(0, 5));
+			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(0, 5));
+			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(0, 10));
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % 2);
+			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice % 2);
 		}
 		else
 		{
 			ss << "She is sad and has lost some health during the operation.\n";
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -15);
-			g_Girls.UpdateStat(girl, STAT_HEALTH, -20);
-			g_Girls.UpdateStat(girl, STAT_MANA, -20);
+			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(-20, 2));
+			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(-10, 1));
+			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(-5, 1));
+			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(-20, 3));
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(-1, 1));
+			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(-1, 1));
 		}
-
-		if (g_Girls.HasTrait(girl, "Fragile")){ g_Girls.UpdateStat(girl, STAT_HEALTH, -5); }
-		else if (g_Girls.HasTrait(girl, "Tough")){ g_Girls.UpdateStat(girl, STAT_HEALTH, 5); }
-		if (g_Girls.HasTrait(girl, "Pessimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5); }
-		else if (g_Girls.HasTrait(girl, "Optimist")){ g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5); }
 
 		if (g_Girls.HasTrait(girl, "Flat Chest"))
 		{
 			ss << girlName << "'s breasts are as small as they can get so she was sent to the waiting room.";
-			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		}
 	}
 

@@ -612,6 +612,7 @@ void cScreenGirlDetails::check_events()
 	}
 	if (g_InterfaceEvents.CheckButton(reldungeon_id))
 	{
+		if (!selected_girl) return;
 		g_Brothels.GetDungeon()->GetDungeonPos(selected_girl);
 		if ((g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms - g_Brothels.GetBrothel(g_CurrBrothel)->m_NumGirls) == 0)
 		{
@@ -636,6 +637,7 @@ void cScreenGirlDetails::check_events()
 	}
 	if (g_InterfaceEvents.CheckButton(senddungeon_id))
 	{
+		if (!selected_girl) return;
 		ss.str("");
 		g_Brothels.GetGirlPos(g_CurrBrothel, selected_girl);
 
@@ -782,6 +784,7 @@ void cScreenGirlDetails::check_events()
 	}
 	if (g_InterfaceEvents.CheckButton(interact_id))
 	{
+		if (!selected_girl) return;
 		if (g_TalkCount > 0)
 		{
 			DirPath dp;

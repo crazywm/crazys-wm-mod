@@ -826,7 +826,7 @@ public:
 	sGirl* CreateRandomGirl(int age, bool addToGGirls, bool slave = false, bool undead = false, bool Human0Monster1 = false, bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false, string findbyname = "");
 
 	sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false);
-	sGirl* GetRandomYourDaughterGirl(int Human0Monster1 = -1);	// -1 either, 0 human, 1 monster
+	sGirl* GetUniqueYourDaughterGirl(int Human0Monster1 = -1);	// -1 either, 0 human, 1 monster
 
 	bool NameExists(string name);
 	bool SurnameExists(string surname);

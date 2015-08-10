@@ -58,7 +58,7 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		ss << " is too young to get a Face Lift so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		return false;	// not refusing
 	}
@@ -87,21 +87,40 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
 		{
 			girl->m_WorkingDay++;
+			g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 10);
 			g_Girls.UpdateStat(girl, STAT_MANA, 10);
 		}
 	}
 
 #pragma endregion
-#pragma region //	Night Check				//
+#pragma region //	In Progress				//
 
-	if (girl->m_WorkingDay >= 5 && Day0Night1 == SHIFT_NIGHT)
+	if (girl->m_WorkingDay < 5 || Day0Night1 == SHIFT_DAY)
+	{
+		int wdays = (5 - girl->m_WorkingDay);
+		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
+		{
+			if (wdays >= 3)		{ wdays = 3; }
+			else if (wdays > 1)	{ wdays = 2; }
+			else				{ wdays = 1; }
+		}
+		ss << "The operation is in progress (" << wdays << " day remaining).\n";
+		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 1)		{ ss << "The Nurses are taking care of her at night."; }
+		else if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0){ ss << "The Nurse is taking care of her at night."; }
+		else							{ ss << "Having a Nurse on duty will speed up her recovery."; }
+	}
+
+#pragma endregion
+#pragma region //	Surgery Finished			//
+
+	else
 	{
 		ss << "The surgery is a success.\nShe looks a few years younger.\n";
 		msgtype = EVENT_GOODNEWS;
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 
-		if (numnurse > 1)
+		if (numnurse > 2)
 		{
 			ss << "The Nurses kept her healthy and happy during her recovery.\n";
 			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 20));
@@ -110,11 +129,11 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(0, 20));
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(8, 16));
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(0, 2));
-			g_Girls.UpdateStat(girl, STAT_AGE, g_Dice.bell(-4, -2));
+			g_Girls.UpdateStat(girl, STAT_AGE, g_Dice.bell(-4, -1));
 		}
 		else if (numnurse > 0)
 		{
-			ss << "The Nurse helped her during her recovery.\n";
+			ss << "The Nurse" << (numnurse > 1 ? "s" : "") << " helped her during her recovery.\n";
 			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 10));
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(0, 5));
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(0, 5));
@@ -135,31 +154,12 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 			g_Girls.UpdateStat(girl, STAT_AGE, g_Dice.bell(-2, -1));
 		}
 
-		if (g_Girls.HasTrait(girl, "Fragile"))			g_Girls.UpdateStat(girl, STAT_HEALTH, -5);
-		else if (g_Girls.HasTrait(girl, "Tough"))		g_Girls.UpdateStat(girl, STAT_HEALTH, 5);
-		if (g_Girls.HasTrait(girl, "Pessimist"))		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
-		else if (g_Girls.HasTrait(girl, "Optimist"))	g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
-
 		if (girl->m_Stats[STAT_AGE] <= 18) girl->m_Stats[STAT_AGE] = 18;
 		if (g_Girls.GetStat(girl, STAT_AGE) <= 21)
 		{
 			ss << "\n\nShe has been released from the Clinic.";
-			girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
+			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		}
-	}
-	else
-	{
-		int wdays = (5 - girl->m_WorkingDay);
-		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
-		{
-			if (wdays >= 3)		{ wdays = 3; }
-			else if (wdays > 1)	{ wdays = 2; }
-			else				{ wdays = 1; }
-		}
-		ss << "The operation is in progress (" << wdays << " day remaining).\n";
-		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 1)		{ ss << "The Nurses are taking care of her at night."; }
-		else if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0){ ss << "The Nurse is taking care of her at night."; }
-		else							{ ss << "Having a Nurse on duty will speed up her recovery."; }
 	}
 
 #pragma endregion
@@ -187,7 +187,7 @@ double cJobManager::JP_GetFacelift(sGirl* girl, bool estimate)
 	{
 		if (girl->age() <= 21)	return -1000;			// X - not needed
 		if (girl->age() == 100) return 0;				// E - unknown age?
-		
+
 		// this probably needs to be reworked
 		jobperformance += 50 + girl->age() * 5;
 		jobperformance -= girl->charisma();

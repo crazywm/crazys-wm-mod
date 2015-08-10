@@ -148,6 +148,7 @@ sScript *cGameScript::Process(sScript *Script)
 	case 78: return Script_GetRandomGirl(Script);
 	case 79: return Script_DomTarget(Script);
 	case 80: return Script_AdjustGirlFlag(Script);
+	case 81: return Script_AdjustTraitTemp(Script);
 
 		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
 
@@ -1596,6 +1597,15 @@ sScript* cGameScript::Script_AddTraitTemp(sScript* Script)						// `J` new
 		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text, Script->m_Entries[1].m_lValue);
 	return Script->m_Next;
 }
+sScript* cGameScript::Script_AdjustTraitTemp(sScript* Script)					// `J` new
+{
+	if (m_GirlTarget)
+	{
+		g_Girls.updateTempTraits(m_GirlTarget, Script->m_Entries[0].m_Text, Script->m_Entries[1].m_lValue);
+	}
+	return Script->m_Next;
+}
+
 
 sScript* cGameScript::Script_GetRandomGirl(sScript* Script)						// `J` new
 {
