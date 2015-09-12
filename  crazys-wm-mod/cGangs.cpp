@@ -1493,6 +1493,33 @@ sGang* cGangManager::GetGangOnMission(u_int missID)
 	return currentGang;
 }
 
+// `J` - Added for .06.02.18
+sGang* cGangManager::GetGangNotFull(int roomfor, bool recruiting)
+{
+	sGang* currentGang = m_GangStart;
+	if (recruiting)
+	{
+		int mission[4] = { MISS_RECRUIT, MISS_TRAINING, MISS_SPYGIRLS, MISS_GUARDING };
+		for (int i = 0; i < 4; i++)
+		{
+			while (currentGang)
+			{
+				if (currentGang->m_MissionID == mission[i] && currentGang->m_Num < 15 - roomfor) return currentGang;
+				currentGang = currentGang->m_Next;
+			}
+		}
+	}
+	else
+	{
+		while (currentGang)
+		{
+			if (currentGang->m_Num < 15) return currentGang;
+			currentGang = currentGang->m_Next;
+		}
+	}
+	return 0;
+}
+
 // `J` - Added for .06.01.09
 sGang* cGangManager::GetGangRecruitingNotFull(int roomfor)
 {

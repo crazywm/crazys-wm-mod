@@ -774,7 +774,7 @@
         Type="Physical"
         InheritChance="1"
         RandomChance="5" />
-   <Trait
+    <Trait
         Name="Fat"
         Desc="She is a very heavy girl."
         Type="Physical"
@@ -787,11 +787,11 @@
         InheritChance="70"
         RandomChance="10" />
     <Trait
-	Name="Flexible"
-	Desc="She is able to bend her body in many different ways."
-	Type="Physical"
-	InheritChance="10"
-	RandomChance="5" />
+        Name="Flexible"
+        Desc="She is able to bend her body in many different ways."
+        Type="Physical"
+        InheritChance="10"
+        RandomChance="5" />
     <Trait
         Name="Giant"
         Desc="This girl is tall. The height might be a bit intimidating..."
@@ -984,13 +984,13 @@
         Type="Physical"
         InheritChance="50"
         RandomChance="20" />
-   <Trait
+    <Trait
         Name="Short"
         Desc="This girl is short."
         Type="Physical"
         InheritChance="50"
         RandomChance="20" />
-  <Trait
+    <Trait
         Name="Tall"
         Desc="This girl is considered tall."
         Type="Physical"

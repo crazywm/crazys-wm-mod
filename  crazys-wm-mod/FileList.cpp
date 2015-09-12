@@ -115,7 +115,22 @@ void FileList::scan(const char *pattern)
 #include"interfaceIDs.h"
 extern cInterfaceWindow g_LoadGame;
 
+string ReadTextFile(DirPath path, string file)
+{
+	FileList abstest(path, file.c_str());
 
+	stringstream ss;
+	ifstream in;
+	in.open(abstest[0].full());
+	while (in.good())
+	{
+		string m;
+		getline(in, m);
+		ss<< m << "\n";
+	}
+	in.close();
+	return ss.str();
+}
 
 FileList::FileList(DirPath dp, const char *pattern)
 {

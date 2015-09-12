@@ -801,7 +801,10 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		}
 	}
 
+
+
 	// tiredness
+#if 0	// `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found
 	int t0 = d1;
 	int easydrinks = (girl->constitution() + girl->service()) / 4;
 	int mediumdrinks = (girl->constitution() + girl->service()) /2;
@@ -810,6 +813,10 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int t2 = max(0, t0 - easydrinks);		// 1 tired per 10 drinks
 	int t3 = max(0, t0 - mediumdrinks);		// 1 tired per 2 drinks
 	int tired = (t1 / 20) + (t2 / 10) + (t3 / 2);
+#else
+	int tired = max(1, (600 - ((int)jobperformance + (girl->constitution() * 3))) / 10);
+
+#endif
 
 	// Money
 	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;

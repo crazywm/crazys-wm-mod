@@ -578,7 +578,7 @@ struct sGirl
 	bool is_pregnant()				{ return(m_States & (1 << STATUS_PREGNANT) || m_States & (1 << STATUS_PREGNANT_BY_PLAYER) || m_States & (1 << STATUS_INSEMINATED)); }
 	bool is_mother()				{ return(m_States&(1 << STATUS_HAS_DAUGHTER) || m_States&(1 << STATUS_HAS_SON)); }
 	bool is_poisoned()				{ return(m_States&(1 << STATUS_POISONED) || m_States&(1 << STATUS_BADLY_POISONED)); }
-	void clear_pregnancy()			{ m_States &= ~(1 << STATUS_PREGNANT); m_States &= ~(1 << STATUS_PREGNANT_BY_PLAYER); m_States &= ~(1 << STATUS_INSEMINATED); m_WeeksPreg = 0; }
+	void clear_pregnancy();
 	void clear_dating()				{ m_States &= ~(1 << STATUS_DATING_PERV); m_States &= ~(1 << STATUS_DATING_MEAN); m_States &= ~(1 << STATUS_DATING_NICE); }
 
 	int preg_chance(int base_pc, bool good = false, double factor = 1.0);
@@ -891,6 +891,8 @@ public:
 	bool child_is_due(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	void HandleChildren(sGirl* girl, string& summary, bool PlayerControlled = true);	// ages children and handles pregnancy
 	bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]);	// checks if a girl gets pregnant
+	void CreatePregnancy(sGirl* girl, int numchildren, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]);	// create the actual pregnancy
+
 	void UncontrolledPregnancies();	// ages children and handles pregnancy for all girls not controlled by player
 
 	// mod - docclox - func to return random girl N in the chain

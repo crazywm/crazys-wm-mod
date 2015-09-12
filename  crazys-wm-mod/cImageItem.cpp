@@ -669,7 +669,7 @@ int TryImageType(int imagetype, int tries)
 // `J` Totally new method for image handling for .06.02.00
 void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, int ImageNum, bool gallery, string ImageName)
 {
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || Getting image for: "<<girl->m_Realname; g_LogFile.ssend(); }
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || Start"; g_LogFile.ssend(); }
 
 	// Clear the old images
 	if (m_Images[id] && m_Images[id]->m_AnimatedImage && m_Images[id]->m_AnimatedImage->getNumFrames() > 0)
@@ -682,12 +682,23 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 
 	if (!girl || imagetype < 0 || ImageName == "blank")		// no girl, no images
 	{
+		if (cfg.debug.log_debug())
+		{
+			g_LogFile.ss() << "Debug Alt Images";
+			if (ImageName == "blank")	g_LogFile.ss() << " || Blank image called for";
+			else
+			{
+				if (!girl)					g_LogFile.ss() << " || No Girl";
+				if (imagetype < 0)			g_LogFile.ss() << " || imagetype < 0";
+			}
+			g_LogFile.ssend();
+		}
 		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
 		m_Images[id]->m_Image->m_Message = "No image.";
 		return;
 	}
-
 	string girlName = girl->m_Name;
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || Getting image for: " << girl->m_Realname << " (" << girlName << ")"; g_LogFile.ssend(); }
 
 	int dir = 0; DirPath usedir = "";
 	DirPath imagedirCc = DirPath(cfg.folders.characters().c_str()) << girlName;	// usedir = 1
@@ -704,6 +715,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	int totalimagesDo = tiDo.size();
 	if (totalimagesCc + totalimagesCo + totalimagesDc + totalimagesDo < 1)	// no images at all so return a blank image
 	{
+		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || No Images found for: " << girlName << " and no Default images found"; g_LogFile.ssend(); }
 		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
 		m_Images[id]->m_Image->m_Message = "No image found.";
 		return;
@@ -771,10 +783,10 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		}
 		if (dir == 0 && gallery)	// gallery stops here if there are no images
 		{
+			if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || No gallery images found for: " << girlName; g_LogFile.ssend(); }
 			m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-			m_Images[id]->m_AnimatedImage = 0;
 			m_Images[id]->m_Image->m_Message = "No images found.";
-			break;
+			return;
 		}
 
 		// if neither character folder has what we are looking for try the defaults
@@ -815,7 +827,6 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		if (dir == 0)
 		{
 			m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-			m_Images[id]->m_AnimatedImage = 0;
 			m_Images[id]->m_Image->m_Message = "No images found.";
 			continue;
 		}
@@ -908,11 +919,15 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 				imagechosen = true;
 			}
 		}
-		else
+		else if (ext == "jpg" || ext == "jpeg" || ext == "png")
 		{
 			m_Images[id]->m_Image = new CSurface(file);
 			m_Images[id]->m_AnimatedImage = 0;
 			imagechosen = true;
+		}
+		else	// any other extension gets cleared.
+		{
+			ext = "";
 		}
 	}	while (!imagechosen && --tries > 0);
 

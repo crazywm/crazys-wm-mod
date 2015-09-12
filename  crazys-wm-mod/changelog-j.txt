@@ -2353,6 +2353,45 @@ Cleaned up cGirlTorture.cpp
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.17
 
+###  Changes 8/10-21 - Nothing
+
+###  Changes 8/22-24
+Added Boy children can go to gangs when the grow up.
+
+WME - Added Trait Type customization to Traits page
+
+###  Changes 8/25-9/4 - Nothing much
+
+###  Changes 9/5-9/11
+Fixed a bug in Barmaid giving too much tiredness.
+Fixed a bug in Script_AdjustTargetGirlStat to compensate for the new STAT_NPCLOVE so older scripts will work properly
+ - Added AdjustTargetGirlSkill for new scripts
+Fixed a bug where beast pregnancies used human pregnancy time from config.xml
+Fixed a bug in sGirl::clear_pregnancy() that left the unborn child in the girl's code even after ending the pregnancy.
+Made cGirls::CreatePregnancy function to allow for creating pregnancies outside of pregnancy check.
+Rewrite of how pregnancy items work.
+ - Entirely new section in cInventory::Equip to handle pregnancy items
+ - Good and bad effects still need to be added.
+Adjusted a few numbers in create random girls.
+ - Kidnapped girls spirit, confidence, obedience and pchate are now random instead of a fixed amount
+Fixed a bug in cDungeon::AddGirl where location changes for the girl were made after she was already converted to m_Girl thus doing nothing.
+Minor rewrite of cGameScript::Script_AddRandomGirlToDungeon
+ - AddRandomGirlToDungeon ["Kidnaped" or "Captured"] [min age] [max age] [slave] [nonhuman] [arena] [daughter]
+ - Added your daughter option to the code
+ - Added arena and daughter to the old script editor
+ - Rewrite of the age calculation to work better
+Added ReadTextFile(DirPath path, string file) to allow for easy text file input
+ - Updated Walk/Tryout to use ReadTextFile for .intro files.
+Made Walk/Tryouts run directly off their main area page instead of opening its own page.
+ - Studio Tryouts, Arean Tryouts and Clinic Walk around ER
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.18
+
+
+
+
+
 
 
  

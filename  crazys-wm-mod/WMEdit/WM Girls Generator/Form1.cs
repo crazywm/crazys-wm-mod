@@ -18,6 +18,7 @@ namespace WM_Girls_Generator
     {
         ArrayList aTraits = new ArrayList();				//ArrayList to store trait info (experiment for trait tooltips), apparently it worked
         DataTable TraitCollection = new DataTable();		//DataTable to store traits in
+        DataTable TraitTypes = new DataTable();		        //DataTable to store trait types in
         DataTable iTable = new DataTable();					//DataTable for items effects
         DataTable iTTable = new DataTable();				//DataTable for item traits
         DataTable ItemsCollection = new DataTable();		//DataTable to store items in
@@ -57,7 +58,6 @@ namespace WM_Girls_Generator
             TraitCollection.Columns.Add("RandomChance", typeof(string));
             TraitCollection.Columns.Add("Checked", typeof(string));
 
-
             dataGridView_Scripts.DataSource = ScriptsCollection;
             ScriptsCollection.Columns.Add("Script_ActionNumber", typeof(string));
             ScriptsCollection.Columns.Add("Script_EntryNumber", typeof(string));
@@ -65,9 +65,8 @@ namespace WM_Girls_Generator
             ScriptsCollection.Columns.Add("Script_IOValue", typeof(string));
             ScriptsCollection.Columns.Add("Script_Var", typeof(string));
             ScriptsCollection.Columns.Add("Script_Text", typeof(string));
+
             
-
-
             dataGridView_Traits.DataSource = TraitCollection;
             dataGridView_Traits.RowHeadersVisible = false;
             dataGridView_Traits.AllowUserToAddRows = true;
@@ -78,9 +77,24 @@ namespace WM_Girls_Generator
             dataGridView_Traits.Columns[4].Visible = true;
             dataGridView_Traits.Columns[5].Visible = false;
 
+            TraitTypes.Columns.Add("CategoryName");
+            dataGridView_Trait_Types.DataSource = TraitTypes;
+            dataGridView_Traits_Trait_Type.DataSource = TraitTypes;
+            dataGridView_Traits_Trait_Type.DisplayMember = "CategoryName";
+            dataGridView_Traits_Trait_Type.ValueMember = "CategoryName";
+            comboBox_Traits_Trait_Type.DataSource = TraitTypes;
+            comboBox_Traits_Trait_Type.DisplayMember = "CategoryName";
+            comboBox_Traits_Trait_Type.ValueMember = "CategoryName";
+
+            dataGridView_Trait_Types.RowHeadersVisible = false;
+            dataGridView_Trait_Types.AllowUserToAddRows = true;
+            dataGridView_Trait_Types.Columns[0].Visible = true;
+
+
             dataGridView_G_Traits.DataSource = TraitCollection;
             dataGridView_G_Traits.Columns[0].SortMode = DataGridViewColumnSortMode.Automatic;
-            
+
+
             dataGridView_G_Traits.Columns[0].Visible = false;
             dataGridView_G_Traits.Columns[1].Visible = true;
             dataGridView_G_Traits.Columns[2].Visible = false;
@@ -97,7 +111,6 @@ namespace WM_Girls_Generator
             dataGridView_G_Traits.AllowUserToAddRows = false;
             dataGridView_G_Traits.AllowUserToDeleteRows = false;
             dataGridView_G_Traits.ShowCellToolTips = false;
-
 
 
             //Checks to determine editor executable is in one of predefined places so it can load CoreTraits.traits file automaticaly
@@ -122,6 +135,8 @@ namespace WM_Girls_Generator
                 tabControl1.SelectedTab = tabPage1_Girls;
                 checkBox_ToggleTraitTooltips.Visible = true;
             }
+
+            
 
             //checks where config.xml is
             bool configfound = false;
@@ -404,7 +419,11 @@ namespace WM_Girls_Generator
                     {
                         if (node.Attributes[i].Name == "Name") sName = node.Attributes["Name"].Value;
                         if (node.Attributes[i].Name == "Desc") sDesc = node.Attributes["Desc"].Value;
-                        if (node.Attributes[i].Name == "Type") sType = node.Attributes["Type"].Value;
+                        if (node.Attributes[i].Name == "Type")
+                        {
+                            sType = node.Attributes["Type"].Value;
+                            AddTraitType(sType);
+                        }
                         if (node.Attributes[i].Name == "InheritChance") sInheritChance = node.Attributes["InheritChance"].Value;
                         if (node.Attributes[i].Name == "RandomChance") sRandomChance = node.Attributes["RandomChance"].Value;
                     }
@@ -415,6 +434,8 @@ namespace WM_Girls_Generator
                     aTraits.Add(sDesc);
                 }
                 xmlread.Close();
+                dataGridView_Traits_Trait_Type.DataSource = TraitTypes;
+                comboBox_Traits_Trait_Type.DataSource = TraitTypes;
                 StatusLabel1.Text = "Loaded " + x.ToString() + " traits from XML file...";
                 comboBox_RGTraits.SelectedIndex = 0;	//after filling random girls droplist it sets it to first entry
             }
@@ -477,6 +498,46 @@ namespace WM_Girls_Generator
             xmldoc.Save(xmlwrite);									//now we tell our XmlDocument to save itself to our XmlWriter, this is what finally gives us our file
             xmlwrite.Close();										//now to be all nice and proper we close our file, after all it's finished
         }
+
+        private void AddTraitType(string type)
+        {
+            for (int x = 0; x < TraitTypes.Rows.Count;x++ )
+            {
+                if (TraitTypes.Rows[x]["CategoryName"].ToString() == type)
+                {
+                    return;
+                }
+            }
+            DataRow dr = TraitTypes.NewRow();
+            dr["CategoryName"] = type;
+            TraitTypes.Rows.InsertAt(dr, 0);
+        }
+
+        private void dataGridView_Trait_Types_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SortDataTable(ref TraitCollection, ref listBox_Traits_Names);
+            dataGridView_Trait_Types.DataSource = TraitTypes;
+            dataGridView_Traits_Trait_Type.DataSource = TraitTypes;
+
+            //dataGridView_Traits.DataSource = TraitCollection;
+        }
+
+        private void listBox_Trait_Names_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int num = listBox_Traits_Names.SelectedIndex;
+            if (num < 0) return;
+            textBox_Traits_Trait_Name.Text = TraitCollection.Rows[num]["Name"].ToString();
+            TBox_Traits_Description.Text = TraitCollection.Rows[num]["Desc"].ToString();
+            comboBox_Traits_Trait_Type.SelectedIndex = comboBox_Traits_Trait_Type.FindStringExact(TraitCollection.Rows[num]["Type"].ToString());
+            textBox_Traits_Inherit_Chance.Text = TraitCollection.Rows[num]["InheritChance"].ToString();
+            textBox_Traits_Random_Chance.Text = TraitCollection.Rows[num]["RandomChance"].ToString();
+
+
+
+
+        }
+
+
 
         //*******************************************
         //*****   Load, Save and Reset CONFIG   *****
@@ -5980,6 +6041,21 @@ namespace WM_Girls_Generator
                 lb.Items.Add(dt.Rows[x][0].ToString());
             }
             lb.SelectedItem = Name;
+        }
+
+        private void SortDataTable(ref DataTable dt, ref ListBox lb, string Column, bool ASC0DESC1)
+        {
+            DataView v = dt.DefaultView;							//create DataView from our DataTable
+            v.Sort = Column + " " + (ASC0DESC1 ? "DESC" : "ASC");   //sort this DataView in ascending order using "Name" column as key
+            
+            dt = v.ToTable();									//apply this sorted view to our original DataTable
+
+            lb.Items.Clear();									//empty listbBox from entries it has
+
+            for (int x = 0; x < dt.Rows.Count; x++)				//go through all records in DataTable and add names to listBox so our index sync works again
+            {
+                lb.Items.Add(dt.Rows[x][0].ToString());
+            }
         }
 
         //event to prevent other stuff to be dropped, it accepts only files

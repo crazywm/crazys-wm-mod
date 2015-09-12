@@ -229,13 +229,14 @@ void cDungeon::AddGirl(sGirl* girl, int reason)
 		}
 	}
 
+	girl->m_InStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = false;	// `J`
+	girl->where_is_she = 0;	// `J`
+	girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
+
 	// by this stage they should no longer be a part of any other lists of girls
 	sDungeonGirl* newPerson = new sDungeonGirl();
 	newPerson->m_Reason = reason;
 	newPerson->m_Girl = girl;
-	girl->m_InStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = false;	// `J`
-	girl->where_is_she = 0;	// `J`
-	girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
 
 	// remove from girl manager if she is there
 	g_Girls.RemoveGirl(girl);

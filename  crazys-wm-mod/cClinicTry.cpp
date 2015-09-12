@@ -31,20 +31,22 @@
 #include "cGangs.h"
 #include "FileList.h"
 
-extern	bool			g_InitWin;
-extern	int			g_CurrBrothel;
-extern	cGold			g_Gold;
-extern	cBrothelManager		g_Brothels;
-extern	cClinicManager		g_Clinic;
-extern	cWindowManager		g_WinManager;
+extern	bool					g_InitWin;
+extern	int						g_CurrBrothel;
+extern	cGold					g_Gold;
+extern	cBrothelManager			g_Brothels;
+extern	cClinicManager			g_Clinic;
+extern	cWindowManager			g_WinManager;
 extern	cInterfaceEventManager	g_InterfaceEvents;
-extern bool g_TryEr;
-extern bool g_Cheats;
-extern	bool	eventrunning;
-extern string g_ReturnText;
-extern cGangManager g_Gangs;
-extern bool g_AllTogle;
-extern int g_Building;
+extern	bool					g_TryEr;
+extern	bool					g_Cheats;
+extern	bool					eventrunning;
+extern	string					g_ReturnText;
+extern	cGangManager			g_Gangs;
+extern	bool					g_AllTogle;
+extern	int						g_CurrentScreen;
+extern	int						g_Building;
+extern	string					ReadTextFile(DirPath path, string file);
 
 bool cClinicTry::ids_set = false;
 
@@ -210,11 +212,7 @@ void cClinicTry::do_walk()
 	}
 	else
 	{
-		message = "";
-		ifstream in;
-		in.open(abstest[0].full());
-		in >> message;
-		in.close();
+		message = ReadTextFile(intro, introfile);
 	}
 	if (message.size() > 0) g_MessageQue.AddToQue(message, COLOR_BLUE);
 

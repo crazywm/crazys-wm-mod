@@ -64,6 +64,9 @@ extern cPlayer* The_Player;
 
 sScript *cGameScript::Process(sScript *Script)
 {
+	stringstream ss;
+	ss << "Script: " << Script->m_Type;
+	g_LogFile.write(ss.str());
 	// Jump to function based on action type
 	switch (Script->m_Type)
 	{
@@ -149,6 +152,7 @@ sScript *cGameScript::Process(sScript *Script)
 	case 79: return Script_DomTarget(Script);
 	case 80: return Script_AdjustGirlFlag(Script);
 	case 81: return Script_AdjustTraitTemp(Script);
+	case 82: return Script_AdjustTargetGirlSkill(Script);
 
 		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
 
@@ -451,13 +455,14 @@ sScript *cGameScript::Script_AddCustToDungeon(sScript *Script)
 
 sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 {
-	int value[6];
+	int value[7];
 	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_Selection] : Script->m_Entries[0].m_Selection);
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
 	value[3] = (Script->m_Entries[3].m_Var == 1 ? m_Vars[Script->m_Entries[3].m_lValue] : Script->m_Entries[3].m_lValue);
 	value[4] = (Script->m_Entries[4].m_Var == 1 ? m_Vars[Script->m_Entries[4].m_lValue] : Script->m_Entries[4].m_lValue);
 	value[5] = (Script->m_Entries[5].m_Var == 1 ? m_Vars[Script->m_Entries[5].m_lValue] : Script->m_Entries[5].m_lValue);
+	value[6] = (Script->m_Entries[6].m_Var == 1 ? m_Vars[Script->m_Entries[6].m_lValue] : Script->m_Entries[6].m_lValue);
 
 	bool kidnaped = false;
 	int reason = 0;
@@ -475,15 +480,29 @@ sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 	bool slave = (value[3] == 1);
 	bool allowNonHuman = (value[4] == 1);
 	bool arena = (value[5] == 1);
-	int age = (value[1] == 0 ? (g_Dice % (value[2] + 1)) + value[1] : (g_Dice % (value[2] + 1)) + value[1] - 1);
+	bool daughter = (value[6] == 1);
 
-	sGirl* newgirl = g_Girls.CreateRandomGirl(age, false, slave, false, allowNonHuman, kidnaped, arena);
+	// `J` reworking age
+	int age = 18;
+	int minage = value[1];
+	int maxage = value[2];
+	if (minage == 100 || maxage == 100)	age = 100;
+	else
+	{
+		if (minage < 18) minage = 18;			// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
+		if (minage > 80) minage = 80;
+		if (maxage < minage) maxage = minage;
+		if (maxage > 80) maxage = 80;
+		age = g_Dice.in_range(minage, maxage);
+	}
+
+	sGirl* newgirl = g_Girls.CreateRandomGirl(age, false, slave, false, allowNonHuman, kidnaped, arena, daughter);
 	stringstream NGmsg;
 	NGmsg << "(DEBUG:: " << newgirl->m_Realname << " was added by a script.\nLookup code: D_001)";
 	newgirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 
 	g_Brothels.GetDungeon()->AddGirl(newgirl, reason);
-
+	
 	return Script->m_Next;
 }
 
@@ -720,13 +739,26 @@ sScript *cGameScript::Script_AdjustTargetGirlStat(sScript *Script)
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 	if (m_GirlTarget)
 	{
-		if (value[0] - NUM_STATS >= 0)
+		if (value[0] - (STAT_STRENGTH + 1) >= 0)	// `J` correcting for old scripts for the new STAT_NPCLOVE
 			g_Girls.UpdateSkill(m_GirlTarget, value[0] - NUM_STATS, value[1]);
 		else
 			g_Girls.UpdateStat(m_GirlTarget, value[0], value[1]);
 	}
 	return Script->m_Next;
 }
+
+sScript *cGameScript::Script_AdjustTargetGirlSkill(sScript *Script)
+{
+	int value[2];
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_Selection] : Script->m_Entries[0].m_Selection);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	if (m_GirlTarget)
+	{
+			g_Girls.UpdateSkill(m_GirlTarget, value[0], value[1]);
+	}
+	return Script->m_Next;
+}
+
 
 sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 {

@@ -116,6 +116,7 @@ public:
 	sGang* GetGang(int gangID);	// gets a gang
 	sGang* GetHireableGang(int gangID);	// gets a recruitable gang
 	sGang* GetGangOnMission(u_int missID);	// gets a gang on the current mission
+	sGang* GetGangNotFull(int roomfor = 0, bool recruiting = true);		// gets a gang with room to spare
 	sGang* GetGangRecruitingNotFull(int roomfor = 0);	// gets a gang recruiting with room to spare
 	void UpdateGangs();
 

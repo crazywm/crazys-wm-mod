@@ -45,12 +45,14 @@ CHOICE 2
 "beating a girl"
 INT 0 65535
 BOOL
-"AddRandomGirlToDungeon ~ ~ ~ ~ ~"
+"AddRandomGirlToDungeon ~ ~ ~ ~ ~ ~ ~"
 CHOICE 2
 "Kidnaped"
 "Captured"
 INT 0 65535
 INT 0 65535
+BOOL
+BOOL
 BOOL
 BOOL
 "Set Global ~ ~"
@@ -335,3 +337,27 @@ INT -254 254
 "AdjustTraitTemp ~ ~"
 TEXT
 INT -255 255
+"AdjustTargetGirlSkill ~ ~"
+CHOICE 22
+"ANAL"
+"MAGIC"
+"BDSM"
+"NORMALSEX"
+"BEASTIALITY"
+"GROUP"
+"LESBIAN"
+"SERVICE"
+"STRIP"
+"COMBAT"
+"ORALSEX"
+"TITTYSEX"
+"MEDICINE"
+"PERFORMANCE"
+"HANDJOB"
+"CRAFTING"
+"HERBALISM"
+"FARMING"
+"BREWING"
+"ANIMALHANDLING"
+"FOOTJOB"
+"COOKING"

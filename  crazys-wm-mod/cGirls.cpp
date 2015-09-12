@@ -1628,10 +1628,15 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	if (childnaped)	// this girl has been taken against her will so make her rebelious
 	{
 		AddTrait(newGirl, "Kidnapped", max(5, g_Dice.bell(0, 25)));		// 5-25 turn temp trait
-		newGirl->m_Stats[STAT_SPIRIT] = 100;
-		newGirl->m_Stats[STAT_CONFIDENCE] = 100;
-		newGirl->m_Stats[STAT_OBEDIENCE] = 0;
-		newGirl->m_Stats[STAT_PCHATE] = 50;
+		int spirit = g_Dice.bell(50, 125);
+		int conf = g_Dice.bell(50, 125);
+		int obey = g_Dice.bell(-50, 50);
+		int hate = g_Dice.bell(0, 100);
+
+		newGirl->m_Stats[STAT_SPIRIT] = min(100, spirit);
+		newGirl->m_Stats[STAT_CONFIDENCE] = min(100, conf);
+		newGirl->m_Stats[STAT_OBEDIENCE] = max(0, obey);
+		newGirl->m_Stats[STAT_PCHATE] = hate;
 	}
 
 	if (CheckVirginity(newGirl))	// `J` check random girl's virginity
@@ -2365,7 +2370,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
 	if (!purchase)
 	{
-		int to_go = cfg.pregnancy.weeks_pregnant() - girl->m_WeeksPreg;
+		int to_go = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - girl->m_WeeksPreg;
 		if (girl->m_States&(1 << STATUS_PREGNANT))					{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
 		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
 		else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated, due: " << to_go << " weeks\n"; }
@@ -2483,7 +2488,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			ss << "\nStored Night Job: " << g_Brothels.m_JobManager.JobName[girl->m_PrevNightJob];
 		}
 		ss << "\n";
-		int to_go = cfg.pregnancy.weeks_pregnant() - girl->m_WeeksPreg;
+		int to_go = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - girl->m_WeeksPreg;
 		// first line is current pregnancy
 		/* */if (girl->m_States&(1 << STATUS_PREGNANT))				{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
 		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
@@ -13493,6 +13498,21 @@ bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, player->m_Stats, player->m_Skills);
 }
 
+void sGirl::clear_pregnancy()
+{
+	m_States &= ~(1 << STATUS_PREGNANT);
+	m_States &= ~(1 << STATUS_PREGNANT_BY_PLAYER);
+	m_States &= ~(1 << STATUS_INSEMINATED);
+	m_WeeksPreg = 0;
+	sChild* leftover = (this)->m_Children.m_FirstChild;
+	while (leftover)
+	{
+		leftover = (this)->next_child(leftover, (leftover->m_Unborn > 0));
+	}
+
+}
+
+
 // returns false if she becomes pregnant or true if she does not
 bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS])
 {
@@ -13540,10 +13560,16 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 		text += gettext(" gotten pregnant.");
 		break;
 	}
-	girl->m_States |= (1 << type);	// set the pregnant status
-	girl->m_Events.AddMessage(text, IMGTYPE_PREGNANT, EVENT_DANGER);
 
-	int numchildren = 1;
+	girl->m_Events.AddMessage(text, IMGTYPE_PREGNANT, EVENT_DANGER);
+	CreatePregnancy(girl, 1, type, stats, skills);
+	return false;
+}
+
+void cGirls::CreatePregnancy(sGirl* girl, int numchildren, int type, int stats[NUM_STATS], int skills[NUM_SKILLS])
+{
+	girl->m_States |= (1 << type);	// set the pregnant status
+
 	if (g_Girls.HasTrait(girl, "Broodmother"))
 	{
 		if (g_Dice.percent(cfg.pregnancy.multi_birth_chance())) numchildren++;
@@ -13566,7 +13592,6 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 	}
 
 	girl->m_Children.add_child(child);
-	return false;
 }
 
 int cGirls::calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players)
@@ -13736,18 +13761,24 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		{
 			summary += "A son grew of age. ";
 			mom->m_States |= (1 << STATUS_HAS_SON);
-
-			if (PlayerControlled)	// get the going rate for a male slave and sell the poor sod
+			ss << "Her son has grown of age";
+			sGang* gang = g_Gangs.GetGangNotFull(1, false);
+			if (gang->m_Num < 15)
+			{
+				gang->m_Num++;
+				ss << " and was sent to join your gang " << gang->m_Name << ".\n";
+			}
+			else if (PlayerControlled)	// get the going rate for a male slave and sell the poor sod
 			{
 				int gold = tariff.male_slave_sales();
 				g_Gold.slave_sales(gold);
-				ss << "Her son has grown of age and has been sold into slavery.\n";
+				ss << " and has been sold into slavery.\n";
 				ss << "You make " << gold << " gold selling the boy.\n";
 			}
 			else	// or send him on his way
 			{
 				int roll = g_Dice % 4;
-				ss << "Her son has grown of age and ";
+				ss << " and ";
 				if (roll == 0)		ss << "moved away";
 				else if (roll == 1)	ss << "joined the army";
 				else 				ss << "got his own place in town";
@@ -14215,7 +14246,8 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	*	if not, return false (meaning "do not remove this child yet)
 	*/
 	girl->m_WeeksPreg++;
-	if (girl->m_WeeksPreg < cfg.pregnancy.weeks_pregnant()) return false;
+	if (girl->m_WeeksPreg < (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()))
+		return false;
 	/*
 	*	OK, it's time to give birth
 	*	start with some basic bookkeeping.
@@ -14704,7 +14736,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	{
 		if (is_pregnant())
 		{
-			int to_go = cfg.pregnancy.weeks_pregnant() - m_WeeksPreg;
+			int to_go = ((this)->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - (this)->m_WeeksPreg;
 			ss << to_go;
 		}
 		else
@@ -14881,7 +14913,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	{
 		if (is_pregnant())
 		{
-			int to_go = cfg.pregnancy.weeks_pregnant() - m_WeeksPreg;
+			int to_go = ((this)->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - (this)->m_WeeksPreg;
 			ss << gettext("Yes");
 			if (has_trait("Sterile"))	ss << "?" << to_go << "?";	// how?
 			else						ss << "(" << to_go << ")";

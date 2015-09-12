@@ -61,6 +61,7 @@ extern cGangManager				g_Gangs;
 extern bool						g_AllTogle;
 extern int						g_CurrentScreen;
 extern int						g_Building;
+extern string					ReadTextFile(DirPath path, string file);
 
 bool cScreenTown::ids_set = false;
 
@@ -140,6 +141,7 @@ static static_brothel_data clinic_data[] = {
 
 void cScreenTown::init()
 {
+	g_CurrentScreen = SCREEN_TOWN;
 	if (BuyClinic != -1)
 	{
 		(g_ChoiceManager.GetChoice(0) == 0 ? GetClinic = true : BuyClinic = -1);
@@ -379,11 +381,7 @@ void cScreenTown::do_walk()
 	}
 	else
 	{
-		message = "";
-		ifstream in;
-		in.open(abstest[0].full());
-		in >> message;
-		in.close();
+		message = ReadTextFile(intro, introfile);
 	}
 	if (message.size() > 0) g_MessageQue.AddToQue(message, COLOR_BLUE);
 

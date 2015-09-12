@@ -2759,7 +2759,9 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
 
 	for (u_int i = girls.size(); i-- > 0;)
 	{  // no girls sneaking in training if she gave birth
-		if ((girls[i]->m_WeeksPreg > 0 && girls[i]->m_WeeksPreg + 1 >= cfg.pregnancy.weeks_pregnant()) || (girls[i]->m_JustGaveBirth && Day0Night1 == SHIFT_NIGHT))
+		if ((girls[i]->m_WeeksPreg > 0 && 
+			girls[i]->m_WeeksPreg + 1 >= (girls[i]->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()))
+			|| (girls[i]->m_JustGaveBirth && Day0Night1 == SHIFT_NIGHT))
 			girls.erase(girls.begin() + i);
 	}
 	random_shuffle(girls.begin(), girls.end());

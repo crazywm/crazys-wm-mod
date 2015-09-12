@@ -36,20 +36,21 @@ private:
 /*
  *	interface/event IDs
  */
-	int		back_id;		// Back button
-	int		walk_id;		// Walk Around Town button
-	int		girls_id;		// girl managment map button
-	int		staff_id;		// gang map button
-	int		turns_id;		// turn summary map button
-	int		weeks_id;		// next week map button
-	int		dungeon_id;		// dungeon map button
-	int		setup_id;		// setup map button
-	int		curbrothel_id;	// Current Brothel text
-	int		clinic_id;		// Clinic's House map button
-	int		info_id;		// Clinic's info
-	int		nextbrothel_id;	// next brothel button
-	int		prevbrothel_id;		// prev brothel button
-	int     clinicdetails_id;    // clinic description text
+	int	back_id;			// Back button
+	int	curbrothel_id;		// Current Brothel text
+	int	dungeon_id;			// dungeon map button
+	int	girlimage_id;		// Girl image
+	int	girls_id;			// girl managment map button
+	int	info_id;			// Clinic's info
+	int	nextbrothel_id;		// next brothel button
+	int	prevbrothel_id;		// prev brothel button
+	int	setup_id;			// setup map button
+	int	staff_id;			// gang map button
+	int	turns_id;			// turn summary map button
+	int	walk_id;			// Walk Around Town button
+	int	weeks_id;			// next week map button
+	int	clinic_id;			// Clinic's House map button
+	int	clinicdetails_id;	// clinic description text
 
 	bool m_first_walk;
 
