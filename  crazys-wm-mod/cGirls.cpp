@@ -13763,7 +13763,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 			mom->m_States |= (1 << STATUS_HAS_SON);
 			ss << "Her son has grown of age";
 			sGang* gang = g_Gangs.GetGangNotFull(1, false);
-			if (gang->m_Num < 15)
+			if (gang&&gang->m_Num < 15)
 			{
 				gang->m_Num++;
 				ss << " and was sent to join your gang " << gang->m_Name << ".\n";

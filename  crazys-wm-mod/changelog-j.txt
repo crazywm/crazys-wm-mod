@@ -2362,7 +2362,7 @@ WME - Added Trait Type customization to Traits page
 
 ###  Changes 8/25-9/4 - Nothing much
 
-###  Changes 9/5-9/11
+###  Changes 9/5-9/13
 Fixed a bug in Barmaid giving too much tiredness.
 Fixed a bug in Script_AdjustTargetGirlStat to compensate for the new STAT_NPCLOVE so older scripts will work properly
  - Added AdjustTargetGirlSkill for new scripts
@@ -2388,7 +2388,12 @@ Made Walk/Tryouts run directly off their main area page instead of opening its o
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.18
 
+###  Changes 9/14
+Fixed a bug in Boy children can go to gangs when they grow up.
+A little more work on pregnancy items.
 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.19
 
 
 

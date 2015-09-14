@@ -818,9 +818,9 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 						{
 							pregmsg << " but the insemination fluid consumed the human baby and took over the pregnancy.";
 							girl->clear_pregnancy();
-							girl->m_States |= (1 << STATUS_INSEMINATED);	// set the pregnant status
+							type = STATUS_INSEMINATED;
+							startpreg = true;
 							badchance += pregbyB * 5;
-
 						}
 						else pregmsg << " so the new pregnancy did not take hold.";
 					}
@@ -852,7 +852,41 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		}
 		else					// some combination of add and end
 		{
+#if 0
+			if (pregbefore)		// end old pregnancy to start a new one?
+			{
+				if (girl->m_States&(1 << STATUS_PREGNANT))
+				{
+					
+				}
+				else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
+				{
 
+				}
+				else	// girl->m_States&(1 << STATUS_INSEMINATED)
+				{
+
+				}
+
+//				pregbyC				pregbyP				pregbyB
+//				pregrmC				pregrmP				pregrmB
+
+
+
+			}
+			else				// or just start a new one
+			{
+
+			}
+#else
+			pregmsg << "(Add AND Remove pregnancy. Details not implemented yet)\n";
+			endpreg = true;
+			startpreg = true;
+			int roll = g_Dice % (pregbyP + pregbyC + pregbyB);
+			/* */if (roll < pregbyC)/*      */	type = STATUS_PREGNANT;
+			else if (roll < pregbyP + pregbyC)	type = STATUS_PREGNANT_BY_PLAYER;
+			else/*                          */	type = STATUS_INSEMINATED;
+#endif
 
 
 		}
