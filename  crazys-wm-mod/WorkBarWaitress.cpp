@@ -454,13 +454,6 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		}
 	}
 
-	if (wages < 0)
-		wages = 0;
-	if (tips < 0)
-		tips = 0;
-
-
-
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//

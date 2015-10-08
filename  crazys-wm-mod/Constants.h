@@ -236,12 +236,12 @@ enum JOBS {
 	JOB_FIGHTBEASTS,		// customers come to place bets on who will win, girl may die (uses beasts resource)
 	JOB_FIGHTARENAGIRLS,
 	JOB_FIGHTTRAIN,
-	//const unsigned int JOB_JOUSTING		= ;
-	//const unsigned int JOB_MAGICDUEL		= ;
-	//const unsigned int JOB_ARMSDUEL		= ;
-	//const unsigned int JOB_FIGHTBATTLE	= ;
-	//const unsigned int JOB_ATHELETE		= ;
-	//const unsigned int JOB_RACING			= ;
+	//JOB_JOUSTING		= ;
+	//JOB_MAGICDUEL		= ;
+	//JOB_ARMSDUEL		= ;
+	//JOB_FIGHTBATTLE	= ;
+	//JOB_ATHELETE		= ;
+	JOB_RACING,				//	
 	// `J` Job Arena - Staff
 	JOB_ARENAREST,			//free time of arena
 	JOB_DOCTORE,			//Matron of arena
@@ -250,13 +250,13 @@ enum JOBS {
 	JOB_COBBLER,			//
     JOB_JEWELER,
 	JOB_CLEANARENA,			//
-	//const unsigned int JOB_BATTLEMASTER	= ;
-	//const unsigned int JOB_ARENAPROMOTER	= ;
-	//const unsigned int JOB_BEASTMASTER	= ;
-	//const unsigned int JOB_VENDOR			= ;
-	//const unsigned int JOB_BOOKIE			= ;
-	//const unsigned int JOB_GROUNDSKEEPER	= ;
-	//const unsigned int JOB_MINER			= ;
+	//JOB_BATTLEMASTER	= ;
+	//JOB_ARENAPROMOTER	= ;
+	//JOB_BEASTMASTER	= ;
+	//JOB_VENDOR			= ;
+	//JOB_BOOKIE			= ;
+	//JOB_GROUNDSKEEPER	= ;
+	//JOB_MINER			= ;
 
 	// `J` Job Centre - General
 	JOB_CENTREREST,			// centres free time
@@ -327,9 +327,10 @@ enum JOBS {
 	JOB_PERSONALTRAINING,	//
 	JOB_PERSONALBEDWARMER,	//
 	JOB_CLEANHOUSE,			//
-	//const unsigned int JOB_HOUSECOOK		= ;    // cooks for the harem, (helps keep them happy, and increase job performance)
-	//const unsigned int JOB_HOUSEDATE		= ;
-	//const unsigned int JOB_HOUSEVAC		= ;
+	JOB_HOUSEPET,			//		
+	JOB_HOUSECOOK,			// cooks for the harem, (helps keep them happy, and increase job performance)
+	//JOB_HOUSEDATE		= ;
+	//JOB_HOUSEVAC		= ;
 
 	// - extra unassignable
 	JOB_INDUNGEON,			//
@@ -388,6 +389,7 @@ enum Gang_Missions{
 	MISS_CATACOMBS,							// men go down into the catacombs to find treasures
 	MISS_TRAINING,							// men improve their skills
 	MISS_RECRUIT,							// men recuit their number better
+	MISS_DUNGEON,							// men will help break girls in the dungeon
 };
 
 // Reasons for keeping them in the dungeon
@@ -558,10 +560,20 @@ enum Action_Types{
 	ACTION_WORKMAKEITEMS,
 	ACTION_WORKCOOKING,
 	ACTION_WORKTHERAPY,
+	ACTION_WORKHOUSEPET,
 	
 	// ACTION_GENERAL must be the last sction type
 	ACTION_GENERAL,
 	NUM_ACTIONTYPES
+};
+
+// training girls can under take
+// When modifying Training types, search for "Change-Traning-Types"  :  found in >> Constants.h
+enum Training_Types{
+	TRAINING_PUPPY = 0,
+	// TRAINING_GENERAL must be the last sction type
+	TRAINING_GENERAL,
+	NUM_TRAININGTYPES
 };
 
 // Character image
@@ -605,6 +617,18 @@ enum Image_Types{
 	IMGTYPE_SIGN,						// Going be used for advertising
 	IMGTYPE_PRESENTED,					// Going be used for Slave Market
 	IMGTYPE_DOM,						// 
+	IMGTYPE_DEEPTHROAT,					// 
+	IMGTYPE_EATOUT,						// 
+	IMGTYPE_DILDO,						// 
+	IMGTYPE_SUB,						// 
+	IMGTYPE_STRAPON,					// 
+	IMGTYPE_LES69ING,					// 
+	IMGTYPE_LICK,						// 
+	IMGTYPE_SUCKBALLS,					// 
+	IMGTYPE_COWGIRL,					// 
+	IMGTYPE_REVCOWGIRL,					// 
+	IMGTYPE_SEXDOGGY,					// 
+	IMGTYPE_JAIL,						// 
 
 	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
 	IMGTYPE_PREGNANT,					// 
@@ -648,6 +672,7 @@ enum Image_Types{
 	IMGTYPE_PREGSIGN,					// 
 	IMGTYPE_PREGPRESENTED,				// 
 	IMGTYPE_PREGDOM,					// 
+	IMGTYPE_PREGDEEPTHROAT,				// 
 	NUM_IMGTYPES	// `J` All image types can have a pregnant variation (except pregnant-pregnant)
 };
 const int PREG_OFFSET = IMGTYPE_PREGNANT + 1;

@@ -227,10 +227,10 @@ bool sGang::LoadGangXML(TiXmlHandle hGang)
 			max(0, m_Stats[STAT_STRENGTH]);
 		int low = total / 8;
 		int high = total / 6;
-		if (m_Skills[SKILL_MAGIC] <= 0)			m_Skills[SKILL_MAGIC] = g_Dice.bell(low, high);
+		if (m_Skills[SKILL_MAGIC] <= 0)				m_Skills[SKILL_MAGIC] = g_Dice.bell(low, high);
 		if (m_Skills[SKILL_COMBAT] <= 0)			m_Skills[SKILL_COMBAT] = g_Dice.bell(low, high);
 		if (m_Stats[STAT_INTELLIGENCE] <= 0)		m_Stats[STAT_INTELLIGENCE] = g_Dice.bell(low, high);
-		if (m_Stats[STAT_AGILITY] <= 0)			m_Stats[STAT_AGILITY] = g_Dice.bell(low, high);
+		if (m_Stats[STAT_AGILITY] <= 0)				m_Stats[STAT_AGILITY] = g_Dice.bell(low, high);
 		if (m_Stats[STAT_CONSTITUTION] <= 0)		m_Stats[STAT_CONSTITUTION] = g_Dice.bell(low, high);
 		if (m_Stats[STAT_CHARISMA] <= 0)			m_Stats[STAT_CHARISMA] = g_Dice.bell(low, high);
 		if (m_Stats[STAT_STRENGTH] <= 0)			m_Stats[STAT_STRENGTH] = g_Dice.bell(low, high);

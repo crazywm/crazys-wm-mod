@@ -43,6 +43,7 @@ static	bool		ids_set;
 	int		release_id;	// Release button
 	int		prison_list_id;	// Prisoner list
 	int		girl_desc_id;	// Girl description
+	int		girlimage_id;	// Girl image
 
 	void		set_ids();
 public:
@@ -64,5 +65,6 @@ public:
 	sGirl* get_selected_girl();
 	void selection_change();
 	bool check_keys();
+	void	update_image();
 
 };

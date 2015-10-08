@@ -90,6 +90,7 @@ map<string, unsigned int> sGirl::skill_lookup;
 map<string, unsigned int> sGirl::status_lookup;
 map<string, unsigned int> sGirl::enjoy_lookup;
 map<string, unsigned int> sGirl::jobs_lookup;
+map<string, unsigned int> sGirl::training_lookup;
 
 const char *sGirl::stat_names[] =
 {
@@ -117,7 +118,7 @@ const char *sGirl::enjoy_names[] =
 	"WORKADVERTISING", "WORKTORTURER", "WORKCARING", "WORKDOCTOR", "WORKMOVIE", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
 	"WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC", "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
 	"WORKMASSUSSE", "WORKFARM", "WORKTRAINING", "WORKREHAB", "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
-	"GENERAL"
+	"WORKHOUSEPET", "GENERAL"
 };
 // `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > enjoy_jobs[]
 const char *sGirl::enjoy_jobs[] = {
@@ -153,13 +154,24 @@ const char *sGirl::enjoy_jobs[] = {
 	"making potions",					// ACTION_WORKMAKEPOTIONS	
 	"making items",						// ACTION_WORKMAKEITEMS	
 	"cooking",							// ACTION_WORKCOOKING		
-	"therapy",							// ACTION_WORKTHERAPY		
+	"therapy",							// ACTION_WORKTHERAPY	
+	"puppy training",					// ACTION_WORKHOUSEPET	
 	"doing miscellaneous tasks"			// ACTION_GENERAL			
 };
 const char *sGirl::children_type_names[] =
 {
 	"Total_Births", "Beasts", "All_Girls", "All_Boys", "Customer_Girls",
 	"Customer_Boys", "Your_Girls", "Your_Boys", "Miscarriages", "Abortions"
+};
+// When modifying Training types, search for "Change-Traning-Types"  :  found in >> cGirls.cpp > training_names[]
+const char *sGirl::training_names[] =
+{
+	"PUPPY", "GENERAL"
+};
+//  When modifying Training types, search for "Change-Traning-Types"  :  found in >> cGirls.cpp > training_jobs[]
+const char *sGirl::training_jobs[] = {
+	"puppy training",					// ACTION_WORKHOUSEPET	
+	"no special training"			// ACTION_GENERAL			
 };
 
 // calculate the max like this, and it's self-maintaining
@@ -168,6 +180,7 @@ const unsigned int sGirl::max_skills = (sizeof(sGirl::skill_names) / sizeof(sGir
 const unsigned int sGirl::max_statuses = (sizeof(sGirl::status_names) / sizeof(sGirl::status_names[0]));
 const unsigned int sGirl::max_enjoy = (sizeof(sGirl::enjoy_names) / sizeof(sGirl::enjoy_names[0]));
 const unsigned int sGirl::max_jobs = (sizeof(g_Brothels.m_JobManager.JobQkNm) / sizeof(g_Brothels.m_JobManager.JobQkNm[0]));
+const unsigned int sGirl::max_training = (sizeof(sGirl::training_names) / sizeof(sGirl::training_names[0]));
 
 
 
@@ -231,6 +244,10 @@ sGirl::sGirl()				// constructor
 		m_Enjoyment[i] = m_EnjoymentTR[i] = m_EnjoymentMods[i] = m_EnjoymentTemps[i] = 0;
 	for (u_int i = 0; i < NUM_ACTIONTYPES; i++)	// `J` randomize starting likes -10 to 10 most closer to 0
 		m_Enjoyment[i] = (g_Dice.bell(-10, 10));
+
+	// Training
+	for (int i = 0; i < NUM_TRAININGTYPES; i++)	// Added m_Training here to zero out any that are not specified
+		m_Training[i] = m_TrainingTR[i] = m_TrainingMods[i] = m_TrainingTemps[i] = 0;
 
 	// Others
 	for (int i = 0; i < NUM_GIRLFLAGS; i++)			{ m_Flags[i] = 0; }
@@ -458,6 +475,7 @@ void sGirl::setup_maps()
 	enjoy_lookup["MAKEITEMS"] = ACTION_WORKMAKEITEMS;
 	enjoy_lookup["COOKING"] = ACTION_WORKCOOKING;
 	enjoy_lookup["GETTHERAPY"] = ACTION_WORKTHERAPY;
+	enjoy_lookup["WORKHOUSEPET"] = ACTION_WORKHOUSEPET;
 	enjoy_lookup["GENERAL"] = ACTION_GENERAL;
 
 	jobs_lookup["Adv"] = JOB_ADVERTISING;
@@ -530,7 +548,9 @@ void sGirl::setup_maps()
 	jobs_lookup["Heal"] = JOB_GETHEALING;
 	jobs_lookup["Repr"] = JOB_GETREPAIRS;
 	jobs_lookup["HGrl"] = JOB_HEADGIRL;
+	jobs_lookup["Hcok"] = JOB_HOUSECOOK;
 	jobs_lookup["TOff"] = JOB_HOUSEREST;
+	jobs_lookup["Hpet"] = JOB_HOUSEPET;
 	jobs_lookup["Ntrn"] = JOB_INTERN;
 	jobs_lookup["Jntr"] = JOB_JANITOR;
 	jobs_lookup["Jwlr"] = JOB_JEWELER;
@@ -576,6 +596,12 @@ void sGirl::setup_maps()
 	jobs_lookup["Dngn"] = JOB_INDUNGEON;
 	jobs_lookup["RunA"] = JOB_RUNAWAY;
 	jobs_lookup["255"] = 255;
+
+
+	// When modifying Training types, search for "Change-Traning-Types"  :  found in >> cGirls.cpp > setup_maps
+
+	training_lookup["PUPPY"] = TRAINING_PUPPY;
+	training_lookup["GENERAL"] = TRAINING_GENERAL;
 
 
 }
@@ -633,6 +659,17 @@ int sGirl::lookup_jobs_code(string s)
 		return -1;
 	}
 	return jobs_lookup[s];
+}
+
+int sGirl::lookup_training_code(string s)
+{
+	// be useful to be able to log unrecognised type names here
+	if (training_lookup.find(s) == training_lookup.end())
+	{
+		g_LogFile.os() << "[sGirl::lookup_training_code] Error: unknown Training: " << s << endl;
+		return -1;
+	}
+	return training_lookup[s];
 }
 
 // END MOD
@@ -2624,6 +2661,35 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		if (cfg.debug.log_extradetails())			{ ss << "\n"; }
 		else if (enjcount > 0)						{ ss << "\nShe is indifferent to all other tasks.\n\n"; }
 		else										{ ss << "At the moment, she is indifferent to all tasks.\n\n"; }
+
+		ss << "She";
+		int tricount = 0;
+		for (int i = 0; i < NUM_TRAININGTYPES; ++i)
+		{
+			if (sGirl::training_jobs[i] == "")			continue;
+			int e = girl->get_training(i);
+			/* */if (e < 0)	{ text = " hasn't started "; }
+			// if she's indifferent, why specify it? Let's instead skip it.
+			else if (e < 15)	{ if (cfg.debug.log_extradetails())	{ text = " is indifferent to "; } else continue; }
+			else if (e < 30)	{ text = " is happy enough with "; }
+			else if (e < 50)	{ text = " likes "; }
+			else if (e < 70)	{ text = " really enjoys "; }
+			else				{ text = " loves "; }
+			ss << base << text << sGirl::training_jobs[i] << ".";
+			if (cfg.debug.log_extradetails() || cfg.debug.log_show_numbers())
+			{ 
+				if (cfg.debug.log_extradetails()) ss << "\n";
+				ss << "    ( " << girl->m_Training[i];
+				if (cfg.debug.log_extradetails())
+					ss << " + " << girl->m_TrainingTemps[i] << " + " << girl->m_TrainingMods[i] << " + " << girl->m_TrainingTR[i];
+				ss << " )";
+			}
+			ss << "\n";
+			tricount++;
+		}
+		if (cfg.debug.log_extradetails())			{ ss << "\n"; }
+		else if (tricount > 0)						{ ss << "\nShe hasn't started any other training.\n\n"; }
+		else										{ ss << "At the moment, she hasn't started any special training.\n\n"; }
 	}
 
 	ss << "\n\n\nBased on:  ";
@@ -13087,6 +13153,69 @@ void cGirls::updateTempEnjoyment(sGirl* girl)
 	}
 }
 
+int cGirls::GetTraining(sGirl* girl, int whatSheTrains)
+{
+	if (whatSheTrains < 0) return 0;
+	// Generic calculation
+	int value = girl->m_Training[whatSheTrains] + girl->m_TrainingTR[whatSheTrains] +
+		girl->m_TrainingMods[whatSheTrains] + girl->m_TrainingTemps[whatSheTrains];
+
+	if (value < 0) value = 0;
+	else if (value > 100) value = 100;
+	return value;
+}
+void cGirls::SetTraining(sGirl* girl, int whatSheTrains, int amount)										// `CRAZY` added
+{
+	girl->m_Training[whatSheTrains] = amount;
+	if (girl->m_Training[whatSheTrains] > 100) 		girl->m_Training[whatSheTrains] = 100;
+	else if (girl->m_Training[whatSheTrains] < 0) 	girl->m_Training[whatSheTrains] = 0;
+}
+void cGirls::SetTrainingTR(sGirl* girl, int whatSheTrains, int amount)									// `CRAZY` added for traits
+{
+	girl->m_TrainingTR[whatSheTrains] = amount;
+	if (girl->m_TrainingTR[whatSheTrains] > 100) 			girl->m_TrainingTR[whatSheTrains] = 100;
+	else if (girl->m_TrainingTR[whatSheTrains] < 0) 	girl->m_TrainingTR[whatSheTrains] = 0;
+}
+
+void cGirls::UpdateTraining(sGirl* girl, int whatSheTrains, int amount)
+{
+	girl->m_Training[whatSheTrains] += amount;
+	/* */if (girl->m_Training[whatSheTrains] > 100) 	girl->m_Training[whatSheTrains] = 100;
+	else if (girl->m_Training[whatSheTrains] < 0) 	girl->m_Training[whatSheTrains] = 0;
+}
+void cGirls::UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount)
+{
+	girl->m_TrainingTR[whatSheTrains] += amount;
+}
+void cGirls::UpdateTrainingMod(sGirl* girl, int whatSheTrains, int amount)
+{
+	girl->m_TrainingMods[whatSheTrains] += amount;
+}
+void cGirls::UpdateTrainingTemp(sGirl* girl, int whatSheTrains, int amount)
+{
+	girl->m_TrainingTemps[whatSheTrains] += amount;
+}
+// Normalise to zero by 30%
+void cGirls::updateTempTraining(sGirl* girl)
+{
+	// Sanity check. Abort on dead girl
+	if (girl->health() <= 0) return;
+
+	for (u_int i = 0; i < NUM_TRAININGTYPES; i++)
+	{
+		if (girl->m_TrainingTemps[i] != 0)
+		{											// normalize towards 0 by 30% each week
+			int newEnjoy = (int)(float(girl->m_TrainingTemps[i]) * 0.7);
+			if (newEnjoy != girl->m_TrainingTemps[i])	girl->m_TrainingTemps[i] = newEnjoy;
+			else
+			{										// if 30% did nothing, go with 1 instead
+				/* */if (girl->m_TrainingTemps[i] > 0)	girl->m_TrainingTemps[i]--;
+				else if (girl->m_TrainingTemps[i] < 0)	girl->m_TrainingTemps[i]++;
+			}
+		}
+	}
+}
+
 
 
 // Increment birthday counter and update Girl's age if needed
@@ -15052,6 +15181,21 @@ string cGirls::Accommodation(int acc)
 	else if (acc == 7)	return "Great";
 	else if (acc == 8)	return "Wonderful";
 	else if (acc == 9)	return "High Class";
+	else /*         */	return "Error";
+}
+
+string cGirls::AccommodationDetails(int acc)
+{
+	/* */if (acc == 0)	return "";
+	else if (acc == 1)	return "";
+	else if (acc == 2)	return "";
+	else if (acc == 3)	return "";
+	else if (acc == 4)	return "";
+	else if (acc == 5)	return "";
+	else if (acc == 6)	return "";
+	else if (acc == 7)	return "";
+	else if (acc == 8)	return "";
+	else if (acc == 9)	return "";
 	else /*         */	return "Error";
 }
 

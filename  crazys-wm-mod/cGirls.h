@@ -57,9 +57,11 @@ public:
 	virtual int GetStat(sGirl* girl, int stat) = 0;
 	virtual int GetSkill(sGirl* girl, int skill) = 0;
 	virtual int GetEnjoyment(sGirl* girl, int skill) = 0;
+	virtual int GetTraining(sGirl* girl, int skill) = 0;
 	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
 	virtual void UpdateSkill(sGirl* girl, int skill, int amount) = 0;
 	virtual void UpdateEnjoyment(sGirl* girl, int skill, int amount) = 0;
+	virtual void UpdateTraining(sGirl* girl, int skill, int amount) = 0;
 	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]) = 0;
 	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
@@ -70,6 +72,7 @@ public:
 	virtual void UpdateSkillTemp(sGirl* girl, int skill, int amount) = 0;	// updates a skill temporarily
 	virtual void UpdateStatTemp(sGirl* girl, int stat, int amount) = 0;
 	virtual void UpdateEnjoymentTemp(sGirl* girl, int stat, int amount) = 0;
+	virtual void UpdateTrainingTemp(sGirl* girl, int stat, int amount) = 0;
 };
 extern cAbstractGirls* g_GirlsPtr;
 
@@ -285,6 +288,12 @@ struct sGirl
 	int m_SkillMods[NUM_SKILLS];
 	int m_SkillTemps[NUM_SKILLS];				// these go down (or up) by 1 each week until they reach 0
 
+	int m_Training[NUM_TRAININGTYPES];			// these values determine how far a girl is into her training CRAZY
+	int m_TrainingTR[NUM_TRAININGTYPES];		// 
+	int m_TrainingMods[NUM_TRAININGTYPES];		// 
+	int m_TrainingTemps[NUM_TRAININGTYPES];		// 
+	// (starts at 0, 100 if fully trained)
+
 	int m_RunAway;					// if 0 then off, if 1 then girl is removed from list,
 	// otherwise will count down each week
 	unsigned char m_Spotted;					// if 1 then she has been seen stealing but not punished yet
@@ -354,6 +363,8 @@ struct sGirl
 	static const char	*status_names[];
 	static const char	*enjoy_names[];
 	static const char	*enjoy_jobs[];
+	static const char	*training_names[];
+	static const char	*training_jobs[];
 	static const char	*children_type_names[];	// `J` added
 	/*
 	*	again, might as well make them part of the struct that uses them
@@ -363,6 +374,7 @@ struct sGirl
 	static const unsigned int	max_statuses;
 	static const unsigned int	max_enjoy;
 	static const unsigned int	max_jobs;
+	static const unsigned int	max_training;
 	/*
 	*	we need to be able to go the other way, too:
 	*	from string to number. The maps map stat/skill names
@@ -375,6 +387,7 @@ struct sGirl
 	static map<string, unsigned int>	status_lookup;
 	static map<string, unsigned int>	enjoy_lookup;
 	static map<string, unsigned int>	jobs_lookup;
+	static map<string, unsigned int>	training_lookup;
 	static void		setup_maps();
 
 	static int lookup_stat_code(string s);
@@ -382,6 +395,7 @@ struct sGirl
 	static int lookup_status_code(string s);
 	static int lookup_enjoy_code(string s);
 	static int lookup_jobs_code(string s);
+	static int lookup_training_code(string s);
 	/*
 	*	Strictly speaking, methods don't belong in structs.
 	*	I've always thought that more of a guideline than a hard and fast rule
@@ -429,6 +443,17 @@ struct sGirl
 	{
 		g_GirlsPtr->UpdateEnjoyment(this, stat_id, amount);
 		return g_GirlsPtr->GetEnjoyment(this, stat_id);
+	}
+
+	int upd_temp_Training(int stat_id, int amount)
+	{
+		g_GirlsPtr->UpdateTrainingTemp(this, stat_id, amount);
+		return g_GirlsPtr->GetTraining(this, stat_id);
+	}
+	int upd_Training(int stat_id, int amount, bool usetraits = true)
+	{
+		g_GirlsPtr->UpdateTraining(this, stat_id, amount);
+		return g_GirlsPtr->GetTraining(this, stat_id);
 	}
 
 
@@ -566,6 +591,10 @@ struct sGirl
 	int get_enjoyment(int actiontype)
 	{
 		return g_GirlsPtr->GetEnjoyment(this, actiontype);
+	}
+	int get_training(int actiontype)
+	{
+		return g_GirlsPtr->GetTraining(this, actiontype);
 	}
 
 	/*
@@ -769,6 +798,14 @@ public:
 	void UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 	void UpdateEnjoymentTemp(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 
+	int GetTraining(sGirl* girl, int a_Training);													// `CRAZY` added
+	void SetTraining(sGirl* girl, int a_Training, int amount);									// `CRAZY` added
+	void SetTrainingTR(sGirl* girl, int a_Training, int amount);									// `CRAZY` added for traits
+	void UpdateTraining(sGirl* girl, int whatSheTrains, int amount);	// updates what she enjoys
+	void UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
+	void UpdateTrainingMod(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
+	void UpdateTrainingTemp(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
+
 
 	double GetAverageOfAllSkills(sGirl* girl);	// `J` added
 	double GetAverageOfSexSkills(sGirl* girl);	// `J` added
@@ -916,6 +953,7 @@ public:
 	void updateTempSkills(sGirl* girl);
 	void updateTempTraits(sGirl* girl);
 	void updateTempEnjoyment(sGirl* girl);
+	void updateTempTraining(sGirl* girl);
 	void updateTempTraits(sGirl* girl, string trait, int amount);
 	void updateSTD(sGirl* girl);
 	void updateHappyTraits(sGirl* girl);
@@ -925,6 +963,7 @@ public:
 	bool detect_disease_in_customer(sBrothel* brothel, sGirl* girl, sCustomer* cust, double mod = 0.0);
 
 	string Accommodation(int acc);
+	string AccommodationDetails(int acc);
 	int PreferredAccom(sGirl* girl);
 	string catacombs_look_for(int girls, int items, int beast);
 

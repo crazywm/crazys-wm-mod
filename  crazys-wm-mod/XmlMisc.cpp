@@ -32,7 +32,12 @@ const char* actionTypeNames[] =
 	"WORKADVERTISING", "WORKTORTURER", "WORKCARING", "WORKDOCTOR", "WORKMOVIE", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
 	"WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC", "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
 	"WORKMASSUSSE", "WORKFARM", "WORKTRAINING", "WORKREHAB", "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
-	"GENERAL"
+	"WORKHOUSEPET", "GENERAL"
+};
+const char* trainingTypeNames[] =
+{
+	// When modifying Training types, search for "Change-Traning-Types"  :  found in > XmlMisc.cpp
+	"PUPPY", "GENERAL"
 };
 
 /*
@@ -358,6 +363,49 @@ bool LoadActionsXML(TiXmlHandle hActions, int enjoyments[], int enjoymentsMods[]
 			tempInt = 0;
 			if (pAction->Attribute("Temp"))	pAction->QueryIntAttribute("Temp", &tempInt);
 			enjoymentsTemps[x] = tempInt;
+		}
+	}
+	return true;
+}
+
+TiXmlElement* SaveTrainingXML(TiXmlElement* pRoot, int training[], int trainingMods[], int trainingTemps[])
+{
+	TiXmlElement* pTrainings = new TiXmlElement("Training");
+	pRoot->LinkEndChild(pTrainings);
+	for (int i = 0; i < NUM_ACTIONTYPES; i++)
+	{
+		TiXmlElement* pTraining = new TiXmlElement(XMLifyString(trainingTypeNames[i]));
+		pTrainings->LinkEndChild(pTraining);
+		pTraining->SetAttribute("Training", training[i]);
+		if (trainingMods && trainingMods[i])	pTraining->SetAttribute("Mod", trainingMods[i]);
+		if (trainingTemps && trainingTemps[i])	pTraining->SetAttribute("Temp", trainingTemps[i]);
+	}
+	return pTrainings;
+}
+
+bool LoadTrainingXML(TiXmlHandle hTrainings, int training[], int trainingMods[], int trainingTemps[])
+{
+	TiXmlElement* pTrainings = hTrainings.ToElement();
+	if (pTrainings == 0) return false;
+
+	for (int x = 0; x < NUM_TRAININGTYPES; ++x)
+	{
+		TiXmlElement* pTraining = pTrainings->FirstChildElement(XMLifyString(trainingTypeNames[x]));
+		
+		if (pTraining)
+		{
+			int tempInt = 0;
+			if (pTraining->Attribute("Training"))	pTraining->QueryIntAttribute("Training", &tempInt);
+			if (tempInt < -100)	tempInt = -100; if (tempInt > 100)	tempInt = 100;
+			training[x] = tempInt; 
+			
+			tempInt = 0;
+			if (pTraining->Attribute("Mod"))	pTraining->QueryIntAttribute("Mod", &tempInt);
+			trainingMods[x] = tempInt;
+
+			tempInt = 0;
+			if (pTraining->Attribute("Temp"))	pTraining->QueryIntAttribute("Temp", &tempInt);
+			trainingTemps[x] = tempInt;
 		}
 	}
 	return true;

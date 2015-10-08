@@ -58,6 +58,8 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int wages = 50, work = 0;
 	double jobperformance = JP_ArenaRacing(girl, false);
 
+	int numracers = g_Brothels.m_JobManager.get_num_on_job(brothel, JOB_RACING, Day0Night1);
+
 
 	ss << "She worked as a chariot racer in the arena.";
 

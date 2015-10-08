@@ -1419,6 +1419,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkHouseCook.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\WorkHousePet.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkHouseVacation.cpp"
 				>
 			</File>

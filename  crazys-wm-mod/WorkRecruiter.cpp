@@ -204,7 +204,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			{
 				newgirl->m_Stats[STAT_HOUSE] = 60;
 				stringstream NGmsg;
-				NGmsg << newgirl->m_Realname << " was recruited by " << girl->m_Realname << " to work for you.";
+				NGmsg << newgirl->m_Realname << " was recruited by " << girlName << " to work for you.";
 				newgirl->m_Events.AddMessage(NGmsg.str(), imagetype, EVENT_GANG);
 
 				m_Dungeon->AddGirl(newgirl, DUNGEON_RECRUITED);
@@ -280,11 +280,11 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with people all day has made " + girl->m_Realname + " more Charismatic.", Day0Night1);
-	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 80, actiontype, girl->m_Realname + " has been doing this for so long it's as if she can read minds now.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with people all day has made " + girlName + " more Charismatic.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 80, actiontype, girlName + " has been doing this for so long it's as if she can read minds now.", Day0Night1);
 
 	//lose traits
-	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 
 #pragma endregion
 	return false;

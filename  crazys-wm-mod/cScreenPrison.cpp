@@ -52,6 +52,10 @@ extern	bool	g_X_Key;
 extern	bool	g_C_Key;
 extern	int		g_CurrentScreen;
 
+static int lastNum = -1;
+static int ImageNum = -1;
+extern sGirl *selected_girl;
+
 void cScreenPrison::init()
 {
 	stringstream ss;
@@ -95,6 +99,7 @@ void cScreenPrison::set_ids()
 	release_id		= get_id("ReleaseButton");
 	prison_list_id	= get_id("PrisonList");
 	girl_desc_id	= get_id("GirlDescription");
+	girlimage_id	= get_id("GirlImage");
 	DetailLevel		= 0;
 }
 
@@ -268,4 +273,16 @@ int cScreenPrison::PrisonReleaseCost(sGirl* girl)
 	if (g_Girls.CheckVirginity(girl)) cost += int(cost / 2);	//	`J` fixed virgin adds half cost more
 	cost *= 2;
 	return cost;
+}
+void cScreenPrison::update_image()
+{
+	if ((selected_girl) && !IsMultiSelected(prison_list_id))//This may need fixed CRAZY
+	{
+		PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, true, ImageNum);
+		HideImage(girlimage_id, false);
+	}
+	else
+	{
+		HideImage(girlimage_id, true);
+	}
 }
