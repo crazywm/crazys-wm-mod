@@ -1087,6 +1087,7 @@ bool cJobManager::FullTimeJob(u_int Job)
 		// - House
 		Job == JOB_HEADGIRL ||
 		Job == JOB_RECRUITER ||
+		Job == JOB_HOUSEPET ||
 		// - Farm
 		Job == JOB_FARMMANGER ||
 		false);
@@ -1318,6 +1319,11 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (Girl->is_slave())	g_MessageQue.AddToQue(gettext("The recruiter cannot be a slave."), 0);
 		else					Girl->m_NightJob = Girl->m_DayJob = JOB_RECRUITER;
+	}
+	else if (u_int(JobID) == JOB_HOUSEPET)
+	{
+		if (Girl->is_slave())	Girl->m_NightJob = Girl->m_DayJob = JOB_HOUSEPET;
+		else					g_MessageQue.AddToQue(gettext("Only slaves can take this training."), 0)
 	}
 	// Special Farm Jobs
 	else if (u_int(JobID) == JOB_FARMMANGER)
@@ -1686,8 +1692,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				}
 			}
 			// house jobs
-			else if ((u_int(OldJobID) == JOB_HEADGIRL || u_int(OldJobID) == JOB_RECRUITER) &&
-				(u_int(JobID) != JOB_HEADGIRL || u_int(JobID) != JOB_RECRUITER))
+			else if ((u_int(OldJobID) == JOB_HEADGIRL || u_int(OldJobID) == JOB_RECRUITER || u_int(OldJobID) == JOB_HOUSEPET) &&
+				(u_int(JobID) != JOB_HEADGIRL || u_int(JobID) != JOB_RECRUITER || u_int(JobID) != JOB_HOUSEPET))
 			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
 				(Day0Night1 ? Girl->m_DayJob = JOB_HOUSEREST : Girl->m_NightJob = JOB_HOUSEREST);
 			}

@@ -1534,7 +1534,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			sGirl* fightgirlonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_FIGHTARENAGIRLS, Day0Night1);
 			string fightgirlname = (fightgirlonduty ? "Gladiator " + fightgirlonduty->m_Realname + "" : "the Gladiator");
-			sGirl* fightbeastonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARSTRIPPER, Day0Night1);
+			sGirl* fightbeastonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_FIGHTBEASTS, Day0Night1);
 			string fightbeastname = (fightbeastonduty ? "Beast fighter " + fightbeastonduty->m_Realname + "" : "the Beast fighter");
 			ss << girlName << " decides to go to the arena and watch some fights.\n";
 			if (fightgirlonduty && fightbeastonduty)
@@ -1684,7 +1684,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				ss << " and with the help of her Free Weights she got a better workout.\n"; workout += 2;
 			}
-			else if (g_Girls.HasTrait(girl, "Clumsy"))
+			else if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(50))
 			{
 				ss << " but somehow she ended up hurting herself."; workout -= 2;
 				roll = 4;

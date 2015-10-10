@@ -29,6 +29,7 @@
 #include "cTrainable.h"
 #include "cTariff.h"
 #include "cGold.h"
+#include "cBrothel.h"
 #include "cGangs.h"
 #include "cMessageBox.h"
 #include "libintl.h"
@@ -62,6 +63,8 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	
 
+	sBrothel* m_Parent;
+	sBrothel* current = (sBrothel*)m_Parent;
 	int numgirls = brothel->m_NumGirls;
 	int enjoy = 0;
 	int conf = 0;
@@ -198,13 +201,13 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	if (g_Girls.HasTrait(girl, "Optimistic") && roll_b < g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at best
 	{
 		ss << "\n\nWorking with someone as cheerful as " << girlName << " makes everybody a bit happier.";
-		UpdateAllGirlsStat(current, STAT_HAPPINESS, 1);
+		g_Brothels.UpdateAllGirlsStat(current, STAT_HAPPINESS, 1);
 	}
 	
 	if (g_Girls.HasTrait(girl, "Pessimistic") && roll_b > 50 + g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at worst
 	{
 		ss << "\n\nWorking with someone as pessimistic as " << girlName << " makes everybody a little bit sadder.";
-		UpdateAllGirlsStat(current, STAT_HAPPINESS, -1);
+		g_Brothels.UpdateAllGirlsStat(current, STAT_HAPPINESS, -1);
 	}
 	
 

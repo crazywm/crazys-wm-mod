@@ -68,10 +68,10 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int actiontype = ACTION_WORKHOUSEPET;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	int train = roll_a + g_Girls.GetRebelValue(girl, false);
+	int train = roll_a + g_Girls.GetRebelValue(girl, false) - g_Girls.GetTraining(girl, TRAINING_PUPPY);
 
 	//double wages = 100, tips = 0;
-	int enjoy = 0, fame = 0;
+	int enjoy = 0, fame = 0, training = 0, ob = 0, fear = 0, love = 0;
 
 	// `J` add in player's disposition so if the girl has heard of you
 	int dispmod = 0;
@@ -154,6 +154,8 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " she licked the dust from the bowl as her stomach growled, albeit less insistently.\"Good girl, " << girlName << ".\" " << girlName << "'s eyes snapped up, humiliated, to " << headname << " as she clipped a leash to her collar.";
 						ss << " " << headname << " smiled and stroked her hair. \"See, you can be a good girl! I think your master is occupied tonight, but you deserve a reward.";
 						ss << " I think you can sleep at the foot of my bed instead of in your kennel tonight.\" " << girlName << " crawled after " << headname << " obediently.";
+						training += 2;
+						ob += 2;
 					}
 				else
 					{
@@ -181,6 +183,8 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " You continue to ignore her as she bobs up and down, but you can feel her eyes on you. When the cum hits the back of her throat,";
 						ss << " she squeals as you hold her down. As your dick begins to soften you loosen your hold, stroking her hair as she licks you clean. \"Good girl, " << girlName << ".\"";
 						ss << " You pat her cheek with a slight smile and " << girlName << " flushes in embarassment. " << headname << " clips a leash to " << girlName << "'s collar and leads her away with a smile.";
+						training += 4;
+						ob += 4;
 					}
 			}
 			else if (roll_b >= 33)
@@ -198,6 +202,8 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << " not, " << girlName << " leaned in, ignoring the soap getting in her mouth, and began to gently tongue " << cleanername << "'s clit. She gasped as your pet suckled her,";
 				ss << " and then grabbed the back of her head as girlName began to fuck her with her tongue, occasionally pushing and nibbling at her clit at the same time using her upper lip.";
 				ss << " Perhaps bath time would get better for both of them, but there was a ways to go.";
+				training += 2;
+				ob += 2;
 			}
 			else
 			{
@@ -221,6 +227,8 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " No wonder the sales girl likes you, normally ~she~ is the one who has to lick them clean. You feel something something at the front of your own pants.";
 					ss << " Looking down, you see just in time as the sales girl inhales your cock. \"Sometimes a girl just needs to be aclimated.\" the cobbler said sagely, stroking your pet's hair.";
 					ss << " \"They don't always realize what they are from the start, it's our job to gently help them along.\" You couldn't agree more.";
+					training += 2;
+					ob += 2;
 				}
 				else//BAD
 				{
@@ -247,6 +255,8 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " Show me what a good girl you can be.\" " << girlName << " was dehydrated enough that tears didn't come,";
 					ss << " even as she looked up at you and ran her dry tongue somewhat fearfully and appreciatively over your fingers as best she could.";
 					ss << " You smile, undo the leash from the post, and lead her crawling dejectedly back to the house.";
+					training += 3;
+					ob += 3;
 				}
 			}
 		}
@@ -277,6 +287,8 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " \"Are you sure? Maybe you need another week?\" " << girlName << " let out a low, feminine howl, and began to lick and kiss her old collar. \"Just checking, girl.\"";
 						ss << " You laugh and unlock the old and new collars, and " << girlName << " quietly places her neck in the band, shuddering a little as it clipped shut. \"Good girl.\" ";
 						ss << " You pet her hair, and she leans into your hand, closing her eyes. \"Now you'll have to police yourself. Do you think you can do that, girl?\" She barked.";
+						training += 2;
+						ob += 2;
 					}
 				else if (dispmod < 0)/*BAD DISP*/
 					{
@@ -296,6 +308,8 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " \"Tha- thank you.\" " << girlName << " said haltingly. The cleaning girl's face turned bright, as she raised her voice.";
 						ss << " \"Mistress? She spoke! The bitch spoke!\" " << girlName << " stared in disbelief at the girl who had just cared for her so tenderly. Soon she was sobbing again as the blows rained down on her.";
 						ss << " When " << torturername << " was done, she pulled the girl's sagging head up by her hair. \"What do you say now, bitch?\" \"Woof.\" \"What was that?\" \"Woof!\" " << girlName << " croaked out. \"Good girl.\"";
+						training += 3;
+						ob += 3;
 					}
 			}
 			else
@@ -320,6 +334,115 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << " trained to be a house pet.\n\n";
 		if (TRAINING_PUPPY >= 70)
 			{
+				if (roll_b >= 90 && g_Girls.HasTrait(girl, "Virgin"))
+					{
+						if (roll_c >= 99)
+						{
+							if (dispmod >= 0)/*NICE DISP*/
+							{
+								ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.\n";
+								/**/
+								ss << "" << girlName << " was anxious. When ";
+								if (headonduty)
+								{ ss << "" << headname << ""; } 
+								else if (traningonduty)
+								{ ss << "" << traningname << "";  } 
+								else if (cleaneronduty)
+								{ ss << "" << cleanername << "";  } 
+								else if (bedwarmeronduty)
+								{ ss << "" << bedname << "";  } 
+								else if (recruiteronduty)
+								{ ss << "" << recruitername << "";  } 
+								else
+								{ ss << "the girl"; } 
+								ss << " told her with a smile that today was a special day, she was ~so~ certain that her master would finally fuck her, and finally let her cum.";
+								ss << " She paced back and forth, shaking in anticipation, whimpering as random members of the household stopped to play with her moist, throbbing pussy.";
+								ss << " Her cunt seemed to throb as the seconds ticked on the clock, waiting for you to return home. When you returned, she greeted you at the door";
+								ss << " like a good little bitch should, with happy barking, pushing her face into your groin. " << girlName << " was disappoint when you just";
+								ss << " gave her a pat on the head and went to your room to read. " << girlName << " followed you, panting, and licked your shoes, pawing at your cock through your pants.\n";
+								/**/
+								ss << "She spent several minutes fawning over you before you finally looked down to find her humping your leg gently with a pleading look on her face.";
+								ss << " You smile and stroke " << girlName << "'s hair.";
+								ss << " \"Who's my good girl? Who's master's good little bitch?\" " << girlName << " barked happily, and licked your fingers. \"Alright girl,";
+								ss << " I suppose you've waited long enough. Present!\" " << girlName << " yelped as her paws tangled beneath her, unable to move fast enough. Soon she had her face and";
+								ss << " tits pressed to the carpet, her arched back pushing her round ass into the air. She panted in anticipation, waiting and waiting. Minutes dragged on.";
+								ss << " Suddenly she felt a hand on her ass, giving it a little slap, and then playing with it, pushing her cheeks together. She yelped in surprise and moaned.\n";
+								/**/
+								ss << "It was so sudden, no real workup. She felt the cock she had been sucking for ages now thrust into her aching pussy hard. She whined at first, as your balls started slapping her clit,";
+								ss << " your cock pushing through the tight walls. It hurt. Why did it hurt? When she tried to raise her head, you shushed her by gently placing your hand on the back";
+								ss << " of her neck. After a couple minutes, " << girlName << " was able to concentrate past the initial pain. How could this feel so good? Unbidden, her cunt tightened";
+								ss << " and clamped down on your cock, and she made little, happy whimpers with each thrust. And she came. Oh how she came. Every couple minutes an orgasm";
+								ss << " build and rocked her body as you continued to thrust hard into her pussy. " << girlName << " barked happily as you wrapped her hair around your hand and pulled her up on";
+								ss << " her paws, her tits swinging as you began to thrust more furiously. Suddenly she felt you slam into her with a mighty jerk of her hair, and she";
+								ss << " howled as your throbbing cock released spurt after spurt of warm, sticky cum into her womb. She slumps, exhausted as you sit back into your chair and";
+								ss << " close your eyes. After a moment you feel " << girlName << "'s tongue running along each surface of your cock and thighs, cleaning you as she had";
+								ss << " been taught. When you finally open your eyes, " << girlName << "'s cheeks are resting between your cock and your thigh, smiling as you pet her hair. \"Good girl.\"";
+								training += 4;
+								ob += 4;
+								g_Girls.LoseVirginity(girl);
+								imagetype = IMGTYPE_SEX;
+							}
+							else
+							{
+								ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.\n";
+								/**/
+								ss << "\"Today is the day, my pretty little bitch.\" You give " << girlName << " an evil smile as you yank her leash, causing her to yelp in surprise. " << girlName << " was torn between a base";
+								ss << " need, having been denied and teased for weeks or months, and apprehension. She knew full well that this was the day she was finally losing";
+								ss << " her virginity, and she had longed for the day with a fearful mind. Her cunt dripped constantly because she was in a constant state of excitement, but";
+								ss << " her master had taken a worrisome, fiendish glee in counting down the days on the calendar, reminding her each morning as she sucked";
+								ss << " him off or he whipped her to remind her of her place. As you lead " << girlName << " through the city, her pussy glistened for everyone looking on.\n";
+								/**/
+								ss << "When you finally reached your destination, " << girlName << " was shocked to hear whines and barks, and her own soon joined the chorus as you dragged her into the";
+								ss << " city dog pound. \"First breeding day?\" A slovenly man walked from behind the counter in the dingy front room, and spit on the floor as you";
+								ss << " handed " << girlName << "'s leash over. \"Yeah, feel free to use her when she's not enjoying her kennelmates. I'll be back in a week.\" " << girlName << "'s eyes grew wide.";
+								ss << " A week in this place? This was where her virginity would be taken? " << girlName << " began to whine loudly and press herself against her uncaring master's";
+								ss << " leg, but was cut off with a quick yelp as the man dragged heavily on the leash, pulling her through a back room and into the kennel yard. The barking";
+								ss << " got louder as " << girlName << " was paraded past a line of kennels and dog runs, each with several dogs, most with a cowering girl. Finally the man stopped";
+								ss << " in front of a run with 6 large dogs. \"Be careful of Prince. He's the black one, bitch. He mauled his last cunt.\"\n";
+								ss << " The man unclipped the leash from the crying girl's collar and pushed her hard through the gate in the fence. The dogs pounced roughly in second.";
+								/**/
+								ss << "A week later, you returned to find the man half asleep behind the counter. When you ring the bell, he grunted and stood up.";
+								ss << " \"Here for " << girlName << "?\" He asked shortly, shoving a leash and tape of her first day into your hands.";
+								ss << " \"Out back.\" You know the way, of course, and head back to the kennels. " << girlName << " was occupied, Prince pounding on her back as she moaned and whined.";
+								ss << " You politely wait until Prince is finished, and when he's done, " << girlName << " crawls over to the gate. \"The fuck? I taught you better manners than that,";
+								ss << " bitch.\" You nod towards Prince in disgust, and the girl crawled back, dismayed. " << girlName << " pushed her way under the large dog and gently used";
+								ss << " her lips and tongue to clean him as she had been taught, and finally crawled back to the gate where you waited. She licks and kisses your shoes as you leash her.";
+								ss << " \"Have a good first time, bitch?\" " << girlName << "'s eyes streamed with tears, but she barked an affirmation. She was, after all, just a bitch dog. This is what she was.";
+								training += 4;
+								ob += 4;
+								g_Girls.LoseVirginity(girl);
+								imagetype = IMGTYPE_BEAST;
+							}
+						}
+						else
+						{
+							ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.\n";
+							/**/
+							ss << "" << girlName << " was in a constant state of confusion, some days. She was coming acclimating to her status as a mere pet, an animal,";
+							ss << " but still having trouble at times with that meant. When she first became a pet, " << girlName << " was";
+							ss << " so rebellious,  she often earned punishments that she now understood were well-deserved. On the flip side, her Master and occasionally";
+							ss << " the other girls would reward her good behavior as well, allowing her to cum. As the weeks progressed and she began to learn the joy of";
+							ss << " serving her owner for it's own sake, she was forbidden to cum, and slowly weaned off it being a reward. " << girlName << " simply didn't know what to do.";
+							ss << " She was a good pet, but she spent most of her days unfulfilled, her cunt twitching with an anticipation and need that she couldn't fulfill.\n";
+							/**/
+							ss << "Secretly, " << girlName << " knew the answer to the question she couldn't ask. As she lay on the couch with her head in your lap, a special privilege in and";
+							ss << " of itself, she understood that you were teaching her. Her master made ~everything~ a lesson. Her virginity remained intact and";
+							ss << " she was forbidden to cum for one reason: she wasn't ready. Her master needed her to know that it was ~his~ decision, and that getting fucked was a privilege";
+							ss << " she didn't deserve, and that she hadn't sufficient begged for that privilege. As you pet her hair, occasionally rubbing her constantly";
+							ss << " hard nipples, she understood but was unwilling to admit that she was being trained to be horny at all times, but serve at her master's pleasure.\n";
+							/**/
+							ss << "" << girlName << " began to moan softly as you tickled her clit with your fingers, and rub her smooth mound. It was a torment, but a welcome one,";
+							ss << " and in minutes she was occasionally trying to push backwards on your fingers. " << girlName << " desperately";
+							ss << " wanted something, anything, in her pussy. She began to pant and nuzzle your hardening dick through your pants. You smile and stop rubbing,";
+							ss << " leaving " << girlName << " bucking empty air for a few moments. She whimpered up at you, and you smiled at the tears pooling in the corners of her pleading eyes.";
+							ss << " \"What's wrong girl? What do you want? Do you need something?\" " << girlName << " gave a tiny bark, wagging her ass, and you laugh, \"No, I don't think you're quite ready. Clean your mess.\"";
+							ss << " " << girlName << " whined, but licked her master's sticky fingers, flushing with both humiliation and embarrassment. Things she never would have considered before now";
+							ss << " gave her such perverse pleasure. When she finished, you quiet her by pushing her head back down and petting her hair, her eyes still full of tears.";
+							training += 4;
+							ob += 4;
+							imagetype = IMGTYPE_ORAL;
+						}
+					}
 				if (roll_b >= 80 && puppyonduty)
 					{
 						ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.\n";
@@ -345,6 +468,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " Puppies are easily distracted though, and the licking soon turned back on each other.";
 						ss << " Within minutes they were curled up on their sides at your feet, licking each other's cunts, moaning in pleasure. It did make it hard to read,";
 						ss << " but the bitches were just doing what they should. You smile at the happy look in " << girlName << "'s eyes, and turn the page.";
+						training += 2;
 					}
 				else if (roll_b >= 60 && g_Studios.GetNumBrothels() > 0)
 					{
@@ -384,6 +508,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							{
 								ss << "Happy with " << girlName << " you promise her a reward later.";
 							}
+							training += 2;
 					}
 				else if (roll_b >= 40 && headonduty)
 					{
@@ -410,6 +535,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							ss << " enjoying the attention of the Master's little pet. After an hour and several orgasms had passed, " << headname << " finally gripped " << girlName << "'s hair and";
 							ss << " pulled her away. \"Good girl, now let me work.\" Her voice was kind but firm, and " << girlName << " knew she was done for the time being.";
 							ss << " Quietly, and curled up at " << headname << "'s feet, resting her cheek on her on of her shoes, waiting for her next instruction.";
+							training += 2;
 					}
 				else if (roll_b >= 20)
 					{
@@ -434,6 +560,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " times as the man's cock throbbed in her, balls slapping into the teen's virgin pussy. When he was close, he pulled out of her pussy,";
 						ss << " walked around the side, and jerked his cum onto the teen's budding breasts. \"Clean her up, and we'll get you back to your master.\"";
 						ss << " The gang member slapped " << girlName << "'s ass once, and she began to gingerly lick the jizz from the teen's nipples.";
+						training += 2;
 					}
 				else
 					{
@@ -460,6 +587,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " Half an hour later the nurse informed you of " << girlName << "'s clean bill of health, stroking her hair and letting your trembling pet what a good girl she was, letting her nibble a treat from her palm.";
 						ss << " She finished up by rubbing your girl down with a special oil, both skin and hair, designed to keep her skin firm and supple and her coat soft and shiny.";
 						ss << " " << girlName << " clearly enjoyed that part of the process, but was relieved to have it over and be heading home with her Master.";
+						training += 2;
 					}
 			}
 		else if (TRAINING_PUPPY >= 50)
@@ -473,6 +601,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " Your pet barked happily, but the girl holding her leash tugged it gently, thanking the old man. " << girlName << " was a little disappointed, but she knew better than to disobey while leashed.";
 					ss << " When they returned home, the girl stroked your pet's hair and offered her a treat for being such a good little bitch while they were out. ";
 					ss << girlName << " became aroused as she happily licked the girl's cunt, sucking her clit till she came. For being such a good pet, she's allowed to sleep at the foot of the girl's bed that night instead of in her kennel.";
+					training += 2;
 				}
 				else if (roll_b >= 60 && bedwarmeronduty)
 				{
@@ -497,6 +626,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " When you stiffen and shoot your load in her waiting mouth, her eyes sparkle with happiness, and she spends another ten minutes suckling you clean.";
 					ss << " When you don't look down from your book, she sighs with contentment, crawls to the end of the bed, and curls up.";
 					ss << " After licking your feet, she falls asleep. It's just another day in the life of a petgirl.";
+					training += 2;
 				}
 				else if (roll_b >= 40 && cleaneronduty)
 				{
@@ -522,6 +652,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " As " << girlName << " was about to cum, the dildo stopped, causing her to whine, pleading. \"Come on girl, you know your owner hasn't given you permission.\" " << girlName << " knew she was right, but that didn't make it any easier.";
 					ss << " Absently, " << cleanername << " pulled the dildo from the girl's pussy and brought it to her mouth. Obediently, " << girlName << " licked and sucked the dildo clean, and then licked her juices from the girl's fingers.";
 					ss << " \"Come along now, Master is probably home for dinner.\" She stood up and used the leash to propel the pet crawling to the kitchen, excited that her Master might be home.";
+					training += 2;
 				}
 				else if (roll_b >= 20)
 				{
@@ -536,6 +667,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " It becomes very difficult to concentrate with your cute pet bobbing up and down on your cock with the occasional needy whine, and even petting her hair wouldn't satisfy her.";
 					ss << " Soon you forget about your work entirely as you erupt in her mouth.";
 					ss << " For several minutes after she dutifully holds you in her mouth as you pet her hair, just enjoying yourself.";
+					training += 2;
 				}
 				else
 				{
@@ -565,6 +697,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " you, cowering. You pick up the end of her leash and pet her hair, tits and chest until " << girlName << " stopped trembling.";
 					ss << " Standing up, the tension was back on the leash, and the bad thoughts were gone. " << girlName << " was where she was supposed to be.";
 					ss << " \"C'mon girl, let's go home. You deserve a treat, and I think " << headname << " got you some more Bitch Bites.\" " << girlName << " barked happily.";
+					training += 2;
 				}
 			}
 		else/*LOW SKILL*/
@@ -587,6 +720,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " Master undid the lock on her kennel, and " << girlName << "'s ass began to wag unconsciously. She licked Master's hand affectionately, begrudgingly.";
 					ss << " The hand holding the leash. Leash. Jingle. Tingle. Time seemed to slow for her as Master stroked under her chin, up her cheek, pushing the hair to the other side of her scalp.";
 					ss << " Ever so slowly, his hand rose to meet her collar, leash in hand. An overly loud click. " << girlName << " shuddered, her eyes momentarily closed. \"Heel.\"";
+					training += 2;
 				}
 				else if (roll_b >= 33 && headonduty)/*NEEDS MOVED TO MID LVL*/
 				{
@@ -623,41 +757,100 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " \"Good girl, " << girlName << ".\" " << headname << " was quite pleased, petting the girl's head.";
 					ss << " \"You'll get used to it with practice. Just keep at it, we wouldn't want to need to punish you, would we?\"";
 					ss << " " << girlName << " barked, and a leash was attached to her collar. Her day was just beginning.";
+					training += 2;
 				}
 				else
 				{
-					ss << girlName << " slurped heavily on her Master's cock, her head carefully bobbing so as not to graze the table. That skill had taken practice, but practice was something she got quite a bit of, these days.";
-					ss << " Master mostly ignored her, drinking his evening whiskey as he went over the affairs of his household";
-					if (headonduty)
-						{
-							ss << "with " << headname << ". "; 
-						}
+					if (g_Girls.GetSkill(girl, SKILL_ORALSEX) < 35)
+					{
+						ss << "You clip a leash to " << girlName << "'s collar and she barks uneasily. She knows she's just your pet bitch, but she remembers when she wasn't. She hasn't quite embraced this life yet.\n";
+						/**/
+						ss << headname << " happened by as you spent an afternoon  working out a new business strategy, " << girlName << " keeping herself entertained with your cock beneath your large, glass desk.";
+						ss << " \"Problem sir?\" You sighed, clearly unhappy. \"Not really, " << headname << ".\" You reply, rubbing your temples.";
+						ss << " \"" << girlName << " is coming along nicely, but her skills at sucking cock are... lackluster at best. It's not that she's not making an effort,";
+						ss << " the basics just haven't clicked yet is all.\" " << headname << " smiled knowingly, watching through the glass as " << girlName << " bobbed up and down with difficulty.";
+						ss << " \"I'm sure with more training she will learn to apply herself, sir. I've got just the thing that will fix this.\"\n";
+						/**/
+						ss << "When " << girlName << " crawled into the dining room for dinner, she was surprised to find only her bowl of kibble, no water bowl. \"Here girl!\" " << headname << " called from the";
+						ss << " kitchen, \"I've got something for you!\" " << girlName << " crawled across the wooden floors past her master and the other girls and";
+						ss << " real people who were sitting down to eat. " << headname << " was standing by the sink where " << girlName << " was greeted by a peculiar development.";
+						ss << " On the wall near the cabinets, bellow the sink, a large flaccid dildo seemed to have been set into the wall.";
+						ss << " " << headname << " knelt beside her, rubbing her stomach and swaying tits. \"From today on, you don't get a water bowl unless I decide.";
+						ss << " See this cock? I've had someone rig it to mimic a real one. You have to please this cock for every little bit of water you get.\"";
+						ss << " Tears welled up in " << girlName << "'s eyes but " << headname << " patted her asscheeks and cooed softly in her ear, \"Shhhh, good girl,";
+						ss << " you'll learn. It's not so bad, you'll learn to love it.\" Then " << headname << " left " << girlName << " alone with the flaccid dick hanging on the wall.\n";
+						/**/
+						ss << "" << girlName << " gingerly put her lips around the cock. She was quite surprised to find it was warm to the touch, and pulsed gently, just like a human cock.";
+						ss << " It took nearly ten frustrating minutes for her to realize she had to tease it with her tongue to bring the water";
+						ss << " cock to an erect position. Once " << girlName << " finally finished running her tongue up and down the large member, tickling it's head, she finally began to suck.";
+						ss << " It took another half hour, during which her thirst became quite apparent, to begin to notice little twitches in the cock indicating";
+						ss << " good performance. She gradually changed her style from clumsy attempts to force the cock, often resulting in her teeth scraping it, to slow,";
+						ss << " gentle sucking that slowly increased. She found that she needed to move her tongue while she sucked much more than she had thought,";
+						ss << " continuing to tease the cock. " << girlName << " still had great difficulty getting the cock even a little bit into her throat, though it seemed a little";
+						ss << " easier as time went on. Suddenly the cock spurted cool, crisp water down her throat, and " << girlName << " moaned. She had never imagined water could";
+						ss << " taste so good, but there was so little! Was it to be like this every time? Dinner was already over, her food bowl was sure";
+						ss << " to have been picked up by now. She felt the dick growing flaccid again, and quickly began licking it teasingly. She had a long, long way to go.";
+						training += 2;
+						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+						imagetype = IMGTYPE_ORAL;
+					}
 					else
-						{
-							ss << ".";
-						}
-					ss << girlName << " kept her eyes up as she sucked, even though he didn't look down, as was proper etiquette. She hated to admit it, but she was eager for Master's cum.";
-					ss << " She was always eager for Master's cum. Her meals were just bland and not filling. " << girlName << " blinked, stopping for a moment. Did she really just think that? That horrible dog food? Was she already forgetting being a person?";
-					ss << " Master's hand brought her out of her revere, and she quickly resumed sucking his pulsing cock as he pet her hair. " << girlName << " marveled at the fact that his petting actually felt good, in so many ways. Why?";
-					ss << " She was cut off as a blast of hot cum hit the back of her mouth mid-bob, and she locked her lips around his stiffening member, tickling it's underside with her tongue. How much better this tasted than her dog food! This was heaven.\n";
-					/**/
-					ss << "Something jolted " << girlName << " out of her trance. Master said her name. She wasn't looking up, she realized. " << girlName << " flicked her eyes upwards and began sucking and licking Master's waning cock again. He was smiling. \"Yes, you ~are~ a good girl. You definitely deserve this gift.\"";
-					ss << " Gift? What was Master saying? What gift? " << girlName << " looked on longingly as he put away his cock, and clipped a leash to her collar. Where were they going? It didn't matter, " << girlName << " admonished herself. He held the leash.\n";
-					/**/
-					ss << "The bedroom, it turned out. Two of Master's bedwarmers lay wrapped in an embrace in his bed. Did she get to sleep at the foot of the bed? Was that her gift for being a good girl? " << girlName << " longed to play with Master and his bedwarmers, but he didn't lead her to the bed.";
-					ss << " Instead, he led her around the side, to the doggie bed she sometimes slept in when she was good or when he just wanted her nearby.";
-					ss << " Only it was a different doggie bed. It took " << girlName << " a few moments to get over her shock. HER CLOTHES. The clothes she was kidnapped in!";
-					ss << " A bed made from them! Her mind reeled, both in humiliation and old memories, but also with a dark pleasure. She was torn between abject horror and sadness and humiliation, and also.... a perverse joy.";
-					ss << " She edged closer. The skirt and low cut blouse that  she had last worn to school, now part of her bed. She could se the puckered cotton fabric of her old bra, and even the slight staining on her old panties, from a mixture of cum and urine from her fear at being taken.";
-					ss << " \"Well, go on!\" " << girlName << " jolted back to reality with a gentle slap on her ass, realizing the leash had been unclipped. She crawled obediently to the bed, first sniffing and nuzzling it, then doing a couple turns as she crawled on top of it's fluff.";
-					ss << " She plopped down, curled up like a precious puppy, her face resting between her paws, right on her old panties. Strangely she had no tears. This is what she was. \"Do you like it?\" She barked.";
-				}
+					{
+						ss << girlName << " slurped heavily on her Master's cock, her head carefully bobbing so as not to graze the table. That skill had taken practice, but practice was something she got quite a bit of, these days.";
+						ss << " Master mostly ignored her, drinking his evening whiskey as he went over the affairs of his household";
+						if (headonduty)
+							{
+								ss << "with " << headname << ". "; 
+							}
+						else
+							{
+								ss << ".";
+							}
+						ss << girlName << " kept her eyes up as she sucked, even though he didn't look down, as was proper etiquette. She hated to admit it, but she was eager for Master's cum.";
+						ss << " She was always eager for Master's cum. Her meals were just bland and not filling. " << girlName << " blinked, stopping for a moment. Did she really just think that? That horrible dog food? Was she already forgetting being a person?";
+						ss << " Master's hand brought her out of her revere, and she quickly resumed sucking his pulsing cock as he pet her hair. " << girlName << " marveled at the fact that his petting actually felt good, in so many ways. Why?";
+						ss << " She was cut off as a blast of hot cum hit the back of her mouth mid-bob, and she locked her lips around his stiffening member, tickling it's underside with her tongue. How much better this tasted than her dog food! This was heaven.\n";
+						/**/
+						ss << "Something jolted " << girlName << " out of her trance. Master said her name. She wasn't looking up, she realized. " << girlName << " flicked her eyes upwards and began sucking and licking Master's waning cock again. He was smiling. \"Yes, you ~are~ a good girl. You definitely deserve this gift.\"";
+						ss << " Gift? What was Master saying? What gift? " << girlName << " looked on longingly as he put away his cock, and clipped a leash to her collar. Where were they going? It didn't matter, " << girlName << " admonished herself. He held the leash.\n";
+						/**/
+						ss << "The bedroom, it turned out. Two of Master's bedwarmers lay wrapped in an embrace in his bed. Did she get to sleep at the foot of the bed? Was that her gift for being a good girl? " << girlName << " longed to play with Master and his bedwarmers, but he didn't lead her to the bed.";
+						ss << " Instead, he led her around the side, to the doggie bed she sometimes slept in when she was good or when he just wanted her nearby.";
+						ss << " Only it was a different doggie bed. It took " << girlName << " a few moments to get over her shock. HER CLOTHES. The clothes she was kidnapped in!";
+						ss << " A bed made from them! Her mind reeled, both in humiliation and old memories, but also with a dark pleasure. She was torn between abject horror and sadness and humiliation, and also.... a perverse joy.";
+						ss << " She edged closer. The skirt and low cut blouse that  she had last worn to school, now part of her bed. She could se the puckered cotton fabric of her old bra, and even the slight staining on her old panties, from a mixture of cum and urine from her fear at being taken.";
+						ss << " \"Well, go on!\" " << girlName << " jolted back to reality with a gentle slap on her ass, realizing the leash had been unclipped. She crawled obediently to the bed, first sniffing and nuzzling it, then doing a couple turns as she crawled on top of it's fluff.";
+						ss << " She plopped down, curled up like a precious puppy, her face resting between her paws, right on her old panties. Strangely she had no tears. This is what she was. \"Do you like it?\" She barked.";
+						training += 2;
+						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+						imagetype = IMGTYPE_ORAL;
+					}
 			}
+		}
 	}
 
 
 #pragma endregion
 #pragma region //	Job Performance			//
+
+
+	//enjoyed the work or not
+	int roll = g_Dice.d100();
+	if (roll <= 5)
+	{
+		ss << "Some of the girls made fun of her for been a puppy during the shift.";
+		enjoy -= 1;
+	}
+	else if (roll <= 25)
+	{
+		ss << "She had a pleasant time training.";
+		enjoy += 3;
+	}
+	else
+	{
+		ss << "Otherwise, the shift passed uneventfully.";
+		enjoy += 1;
+	}
 
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
@@ -672,6 +865,9 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	g_Girls.UpdateTraining(girl, TRAINING_PUPPY, training);
+	g_Girls.UpdateStat(girl, STAT_OBEDIENCE, ob);
 
 	return false;
 }

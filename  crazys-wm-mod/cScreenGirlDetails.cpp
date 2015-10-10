@@ -228,6 +228,8 @@ void cScreenGirlDetails::init()
 	}
 	DisableButton(interact_id, (g_TalkCount <= 0));
 	DisableButton(takegold_id, (selected_girl->m_Money <= 0));
+	DisableButton(accomup_id, (selected_girl->m_AccLevel >= 9));
+	DisableButton(accomdown_id, (selected_girl->m_AccLevel <= 0));
 	SetCheckBox(antipreg_id, (selected_girl->m_UseAntiPreg));
 
 	bool InMovieStudio = (selected_girl->m_InStudio);

@@ -2431,6 +2431,12 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 		else											ss << "\n";
 	}
 
+	if (!purchase)
+	{
+		int cust = girl->m_NumCusts;
+		ss << "\nShe has slept with " << cust << " Customers.";
+	}
+
 	// display Skills
 	ss << "\n\nSKILLS";
 	if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
