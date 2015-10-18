@@ -68,7 +68,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int actiontype = ACTION_WORKHOUSEPET;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	int train = roll_a + g_Girls.GetRebelValue(girl, false) - g_Girls.GetTraining(girl, TRAINING_PUPPY);
+	int train = roll_a - g_Girls.GetStat(girl, STAT_OBEDIENCE) - g_Girls.GetTraining(girl, TRAINING_PUPPY);
 
 	//double wages = 100, tips = 0;
 	int enjoy = 0, fame = 0, training = 0, ob = 0, fear = 0, love = 0;
@@ -112,22 +112,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " refused to train during the " << (Day0Night1 ? "night" : "day") << " shift.\n";
 		ss << girlName << " is still in training, and is having difficulty accepting her new role. Today she was a bad girl!\n";
-		if (TRAINING_PUPPY >= 70)
-		{
-			if (dispmod > 0)
-				{
-					ss << "\nNice.";
-				}
-			else if (dispmod < 0)
-				{
-					ss << "\nBad.";
-				}
-			else
-				{
-					ss << "\nNetural.";
-				}
-		}
-		else if (TRAINING_PUPPY >= 50)
+		if (TRAINING_PUPPY >= 50)
 		{
 			if (roll_b >= 66)
 			{
@@ -334,9 +319,32 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << " trained to be a house pet.\n\n";
 		if (TRAINING_PUPPY >= 70)
 			{
-				if (roll_b >= 90 && g_Girls.HasTrait(girl, "Virgin"))
+				if (girl->m_WeeksPreg >= 38 && headonduty)	
+				{
+					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
+					/**/
+					ss << "" << girlName << " was very, very pregnant. " << headname << " had to isolate " << girlName << " from the other puppies, animals, guards, just about everyone really.";
+					ss << " The rough play and enthusiastic activities " << girlName << " was used to could possibly injure her puppies, and";
+					ss << " no one wanted that. " << girlName << " spent her days in a kennel that was much larger than she was used to, with a very soft bed. Her pregnancy was";
+					ss << " making keeping her proper puppy posture difficult, but " << girlName << " was well-trained. The veterinarian would stop by every couple days to check on her,";
+					ss << " so " << girlName << " knew it would be any day now, and she was anxious for the pregnancy to be over so she could get back to being a part of the household.\n";
+					/**/
+					ss << "" << girlName << " wasn't lonely, of course. Everyone wanted to visit her, and did! Under the watchful eye of " << headname << ", the girls would stop by and sit with her,";
+					ss << " petting her hair and rubbing her swollen stomach, telling her what a good girl she was and how they missed her. The guards would send one of their number";
+					ss << " every so often, and he would slip " << girlName << " a Bitch Bite when " << headname << " wasn't looking. Most enjoyable were her Master's visits. " << girlName << " saw";
+					ss << " her Master every other day when he would stop and show her affection. She could always tell he coming by the sound of his boots, and his scent,";
+					ss << " from down the hall. Each time she would greet him by licking his shoes and barking like a good girl. " << girlName << " loved how her Master would smile, and even";
+					ss << " if he couldn't stay long, was happy when he came to check on her. Sometimes he would let her suck his cock, like she did before she was pregnant and";
+					ss << " isolated. " << girlName << " loved that most of all. She missed laying at her Master's feet, missed sucking his dick, missed the feeling of his hands as he pet her.\n";
+					/**/
+					ss << "\"Time for bed girl.\" " << girlName << " gave a pouting whine at " << headname << ". Master must have been busy today and couldn't visit. " << girlName << " whimpered in resignation,";
+					ss << " and respectfully licked " << headname << "'s long legs. " << headname << " smiled and pet her hair, but still said, \"I mean it, bed!\" " << girlName << " crawled";
+					ss << " to her spacious kennel with her soft bed. Her belly and breasts swayed, both occasionally brushing the ground, and she back into the kennel and curled up";
+					ss << " on her bed. " << headname << " closed the door, wished her a good night, and turned off the light. " << girlName << " sighed restlessly and slowly fell asleep.";
+				}
+				else if (roll_b >= 90 && g_Girls.HasTrait(girl, "Virgin"))
 					{
-						if (roll_c >= 99)
+						if (roll_c >= 85)
 						{
 							if (dispmod >= 0)/*NICE DISP*/
 							{
@@ -592,7 +600,56 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		else if (TRAINING_PUPPY >= 50)
 			{
-				if (roll_b >= 80 && recruiteronduty)
+				if (girl->m_WeeksPreg >= 38 && headonduty)	
+				{
+					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
+					/**/
+					ss << "" << girlName << " was very, very pregnant. " << headname << " had to isolate " << girlName << " from the other puppies, animals, guards, just about everyone really.";
+					ss << " The rough play and enthusiastic activities " << girlName << " was used to could possibly injure her puppies, and";
+					ss << " no one wanted that. " << girlName << " spent her days in a kennel that was much larger than she was used to, with a very soft bed. Her pregnancy was";
+					ss << " making keeping her proper puppy posture difficult, but " << girlName << " was well-trained. The veterinarian would stop by every couple days to check on her,";
+					ss << " so " << girlName << " knew it would be any day now, and she was anxious for the pregnancy to be over so she could get back to being a part of the household.\n";
+					/**/
+					ss << "" << girlName << " wasn't lonely, of course. Everyone wanted to visit her, and did! Under the watchful eye of " << headname << ", the girls would stop by and sit with her,";
+					ss << " petting her hair and rubbing her swollen stomach, telling her what a good girl she was and how they missed her. The guards would send one of their number";
+					ss << " every so often, and he would slip " << girlName << " a Bitch Bite when " << headname << " wasn't looking. Most enjoyable were her Master's visits. " << girlName << " saw";
+					ss << " her Master every other day when he would stop and show her affection. She could always tell he coming by the sound of his boots, and his scent,";
+					ss << " from down the hall. Each time she would greet him by licking his shoes and barking like a good girl. " << girlName << " loved how her Master would smile, and even";
+					ss << " if he couldn't stay long, was happy when he came to check on her. Sometimes he would let her suck his cock, like she did before she was pregnant and";
+					ss << " isolated. " << girlName << " loved that most of all. She missed laying at her Master's feet, missed sucking his dick, missed the feeling of his hands as he pet her.\n";
+					/**/
+					ss << "\"Time for bed girl.\" " << girlName << " gave a pouting whine at " << headname << ". Master must have been busy today and couldn't visit. " << girlName << " whimpered in resignation,";
+					ss << " and respectfully licked " << headname << "'s long legs. " << headname << " smiled and pet her hair, but still said, \"I mean it, bed!\" " << girlName << " crawled";
+					ss << " to her spacious kennel with her soft bed. Her belly and breasts swayed, both occasionally brushing the ground, and she back into the kennel and curled up";
+					ss << " on her bed. " << headname << " closed the door, wished her a good night, and turned off the light. " << girlName << " sighed restlessly and slowly fell asleep.";
+				}
+				else if (roll_b >= 85 && headonduty && !g_Girls.HasTrait(girl, "Your Daughter") && g_Girls.HasTrait(girl, "Kidnapped"))
+				{
+					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
+					/**/
+					ss << "" << girlName << " had mixed feelings about her occasional walks with " << headname << " or her Master, or even more occasionally her Master's recruiter.";
+					ss << " She was deathly afraid of running into people from her life before she was a registered animal, but she knew better than to disobey.";
+					ss << " A couple times, " << girlName << " thought she'd seen family or a friend in the distance, but never up close. Today was not to be her day.\n";
+					/**/
+					ss << "" << headname << " led the crawling girl down a path in the park towards the dog park, when they came upon a man who seemed like he was in a hurry.";
+					ss << " " << girlName << " recognized the man almost immediately as her father, and almost said so,";
+					ss << " but caught herself. She quickly looked up at " << headname << " who continued walking without a care. The man stopped in front of them.";
+					ss << " He had clearly been preoccupied before, and almost ran into them. \"So sorry. What a cute d-\" " << girlName << "'s father froze, halfway bent to pet his";
+					ss << " daughter, naked at the end of this woman's leash. \"...sweetie?\" " << girlName << "'s eyes brimmed with tears as she looked back and forth between her father and " << headname << ".";
+					ss << " She knew she'd be punished severely for speaking. With resignation, " << girlName << " barked, and began licking her father's outstretched fingers.";
+					ss << " \"Yes?\" " << headname << " said expectantly, not really sure what was going on, but certain it was ~gold~ for " << girlName << "'s training.\n";
+					/**/
+					ss << "\"I- uh, sorry.\" The man straightened, a lump in this throat. \"I thought I knew her, that's all.\" " << headname << " smiled, knowingly. \"She's a cute little bitch, isn't she, sir?";
+					ss << " " << girlName << ", be a good girl, show him what you want!\" " << girlName << " whimpered, but slowly brought herself to her father's crotch, and began licking";
+					ss << " and kissing the front of his pants. The man's eyes grew wide, and his face flushed as his prick clearly began to stiffen mightily in his pants.";
+					ss << " \"Is there perhaps something she could... do for you?\" " << headname << " whispered in the man's ear coyly, stroking " << girlName << "'s hair with one hand,";
+					ss << " her other on the man's chest. " << headname << "'s breath tickled the man's ear, her lips and nose so close he could feel them without touching them.";
+					ss << " \"Ah- n, no...\" The man was clearly in pain, and his voice hoarse as his daughter continued, never looking away. \"Are.... you.... sure?\"";
+					ss << " " << headname << " cooed, as the man's cock strained harder against his pants with each of his daughter's licks and kisses. \"She's very good.\" The man suddenly groaned and";
+					ss << " shuddered as " << headname << " pressed his daughter's face into his crotch. \"I, I have to go.\" The man left in tears. \"Maybe you're still daddy's little girl?\"";
+					ss << " " << headname << " said in an innocent tone, tugging " << girlName << "'s leash to propel the humiliated girl down the path again, face now sticky She never once spoke.";
+				}
+				else if (roll_b >= 70 && recruiteronduty)
 				{
 					ss << recruitername << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -603,7 +660,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << girlName << " became aroused as she happily licked the girl's cunt, sucking her clit till she came. For being such a good pet, she's allowed to sleep at the foot of the girl's bed that night instead of in her kennel.";
 					training += 2;
 				}
-				else if (roll_b >= 60 && bedwarmeronduty)
+				else if (roll_b >= 55 && bedwarmeronduty)
 				{
 					ss << bedname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -628,7 +685,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " After licking your feet, she falls asleep. It's just another day in the life of a petgirl.";
 					training += 2;
 				}
-				else if (roll_b >= 40 && cleaneronduty)
+				else if (roll_b >= 35 && cleaneronduty)
 				{
 					ss << cleanername << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -654,7 +711,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " \"Come along now, Master is probably home for dinner.\" She stood up and used the leash to propel the pet crawling to the kitchen, excited that her Master might be home.";
 					training += 2;
 				}
-				else if (roll_b >= 20)
+				else if (roll_b >= 15)
 				{
 					ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.\n";
 					/**/

@@ -113,6 +113,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			FT_ClinicCheckup,	// go to the Clinic
 			FT_ClinicVisit,		// go to the Clinic to visit
 			FT_WorkOut,			// she works out to stay in shape
+			FT_HasTraining,		// she has been trained to be a pet
 
 			// Crazy started adding these but didn't finish them yet
 			FT_WatchMovie,		// go to see a movie
@@ -158,6 +159,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else if (girl->is_addict(true) && girl->happiness() < 80)	// `J` changed it so only hard drugs will trigger this
 			{
 				choice = FT_BuyDrugs;
+				choicemade = true;
+			}
+			else if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 35))	//
+			{
+				choice = FT_HasTraining;
 				choicemade = true;
 			}
 
@@ -2117,6 +2123,49 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			ss << girlName << " decides to make some extra money so she ";
 		}
 		break;	// end FT_MakeExtraMoney
+
+		case FT_HasTraining:
+		{
+			ss << girlName << " is far enough along in her training that she has started to behave that way in her free time.";
+			if (TRAINING_PUPPY >= 10)
+			{
+				if (roll >= 60)
+				{
+					ss << "Even your pets get the occasional downtime.\n";
+					/**/
+					ss << "" << girlName << " crawled around the house, searching for something to do, or someone to play with. The guards had taken her playmates, the other hounds, earlier. She was a little sad, and Brutus, the large dog she had been licking, wasn't too thrilled either,";
+					ss << " but " << girlName << " knew better than to complain. After wandering through the halls only to find girls too busy to play, she followed the sound of a pair of giggling";
+					ss << " voices. " << girlName << " pushed a door open gently with her paw, and found two girl wrapped up in each other's arms. " << girlName << " barked and whined softly, trying to push";
+					ss << " her nose up on the bed, pawing at one of the girl's  thighs. The other girl looked up from the cunt she was licking and smiled impishly, stroking the puppy's";
+					ss << " hair. " << girlName << " whined and licked the girl's fingers, as the girl continued to eat her partner's pussy. " << girlName << " wanted to play too, why couldn't she play?\n";
+					/**/
+					ss << "After a few minutes, " << girlName << " gave up, and nosed around the room looking for other mischief. She wanted so desperately to play with the other girls, her little moist pussy";
+					ss << " ached. Suddenly a scent caught her nose, and she began nosing around the small piles of clothing on the floor. The smell was faint, but puppies were trained to have";
+					ss << " an acute sense of smell. The smell grew stronger as " << girlName << " pushed a soft, sheer gown off the pile to reveal a damn pair of pink panties. " << girlName << " sniffed them for";
+					ss << " a moment, eyeing the girls on the bed. They ignored her. With a sharp yelp, " << girlName << " grabbed the panties with her teeth, and scampered off with her prize.\n";
+					/**/
+					ss << "" << girlName << " curled up peevishly in her kennel, licking and chewing the panties. Good puppies knew better than to chew up clothing, but she couldn't help herself, wishing she";
+					ss << " had someone to play with during her free time today. As the day wore on, " << girlName << " fell asleep, taking a nap, her mouth still absently chewing on the panties.";
+				}
+				else if (roll >= 30)
+				{
+					ss << "Even your pets get the occasional downtime\n";
+					/**/
+					ss << "" << girlName << "  was left mostly to her own devices today. She enjoyed sleeping in, and remained curled up in her kennel even after the door was open. Someone must have been feeling generous, because her";
+					ss << " bowl of kibble wasn't taken away when " << girlName << " missed breakfast with the rest of the household, and there was even a treat in her bowl. Several of the Master's girls";
+					ss << " smiled an pet " << girlName << " while she slowly ate her dog food, but didn't stop to clip a leash to her collar or bring her along with whatever errands or chores.\n";
+					/**/
+					ss << "Since " << girlName << " had little else to do, she crawled out her puppy door into the yard. The grass felt good on her skin, and she spent some time romping";
+					ss << " in the garden with the other dogs while the guards watched, smiling. When the sun was getting higher in";
+					ss << " the sky, " << girlName << " plopped down in the grass, curling up beside one of the Master's large hounds. All the dogs accepted her as part of the pack, like they did with all the";
+					ss << " Master's pets, even when the pets themselves had trouble accepting it. Soon her tits rose and fell much slower as she slept in the shade with her pack.";
+				}
+				else
+				{
+				}
+			}
+		}
+		break;	// end FT_HasTraining
 
 
 

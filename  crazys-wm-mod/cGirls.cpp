@@ -8847,7 +8847,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else
 	{
 		// need to add more traits
-		if (HasTrait(girl, "Succubus"))		intro += 4;
+		if (HasTrait(girl, "Succubus"))		intro += 5;
 		if (!customer->m_IsWoman && HasTrait(girl, "Cum Addict")) intro += 4;
 		if (customer->m_IsWoman && HasTrait(girl, "Lesbian"))	intro += 3;
 		if (HasTrait(girl, "Fast Orgasms"))	intro += 3;
@@ -10151,7 +10151,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else
 			{
-				message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at oral doesn't hurt, but can be embarrasing. --PP
+				if (g_Dice.percent(40)) message += "\nHer inexperience caused her some embarrassment."; // Changed... being new at oral doesn't hurt, but can be embarrasing. --PP
+				else /*              */	message += "\nShe's inexperienced and got poked in the eye.";/*CRAZY*/
 				UpdateStat(girl, STAT_HAPPINESS, -2);
 				UpdateStat(girl, STAT_SPIRIT, -3);
 				UpdateStat(girl, STAT_CONFIDENCE, -1);
