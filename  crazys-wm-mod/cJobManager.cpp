@@ -147,6 +147,11 @@ void cJobManager::Setup()
 	JobDesc[JOB_ESCORT] = "She will be an escort.";
 	JobFunc[JOB_ESCORT] = &WorkEscort;
 	JobPerf[JOB_ESCORT] = &JP_Escort;
+	JobName[JOB_BARCOOK] = "Bar Cook";
+	JobQkNm[JOB_BARCOOK] = "BrCk";
+	JobDesc[JOB_BARCOOK] = "She will cook food for the bar.";
+	JobFunc[JOB_BARCOOK] = &WorkBarCook;
+	JobPerf[JOB_BARCOOK] = &JP_Barcook;
 	// - Gambling Hall Jobs
 	JobFilterName[JOBFILTER_GAMBHALL] = "Gambling Hall";
 	JobFilterDesc[JOBFILTER_GAMBHALL] = "These are jobs for running a gambling hall.";

@@ -1111,6 +1111,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkBarCook.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkBarmaid.cpp"
 				>
 			</File>

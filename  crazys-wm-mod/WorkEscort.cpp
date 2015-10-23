@@ -51,17 +51,30 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " is going on a \"Date\" with a customer.\n\n";
+	ss << " has been assigned to work as an Escort. She is informed that various men will ask for her to accompany them on dates, whether because they need a date for a social engagement of some kind or because of their own loneliness. Her skills in service, her beauty, her charisma, her intelligence, and her refinement may all be tested to provide the ideal date that each client requests. And, of course, should she decide to spend some \"extra\" time with the client, she will need to perform well with each of their sexual proclivities. This is her choice, however.\n\n";
+
+	if (g_Girls.HasTrait(girl, "Deaf"))
+	{
+		ss << girlName << " is deaf, meaning she would be unable to hear the conversation that is so critical to being successful as an escort. As there is practically no chance that a client will want to have an entire date in sign language, assuming he even knows it, " << girlName << " is particularly unsuited to work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
+		//end job
+	}
+	else if (g_Girls.HasTrait(girl, "Mute"))
+	{
+		ss << girlName << " is mute, and while some men enjoy a woman who stays silent, these men are not paying escorts to engage them in conversation. As it is severely unlikely that a client will want to spend the entire date deciphering sign language, even if they do know it, " << girlName << " is particularly unsuited for work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
+		//end job
+	}
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int jobperformance = 0, wages = 0, tips = 0;
+	int jobperformance = 0, wages = 0, tips = 0, escort =0, fame = 0;
+	int imagetype = IMGTYPE_FORMAL;
 
 	int agl = (g_Girls.GetStat(girl, STAT_AGILITY));
 	int roll_a = g_Dice.d100();							// customer type
 	int roll_b = g_Dice.d100();							// customer wealth
 	int roll_c = g_Dice.d100() + agl;					// agility adjustment
 	int roll_d = g_Dice.d100();
+	int roll_sex = g_Dice.d100();
 
 	int pass_a = false;
 	int pass_b = false;
@@ -181,7 +194,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_FORMAL, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with customers and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1);

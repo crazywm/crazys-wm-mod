@@ -161,7 +161,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				choice = FT_BuyDrugs;
 				choicemade = true;
 			}
-			else if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 35))	//
+			else if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 35)	//
 			{
 				choice = FT_HasTraining;
 				choicemade = true;
@@ -247,7 +247,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					// if she can not afford it, reroll.
 					break;
 				case FT_Counseling:
-					if (girl->is_addict() || girl->is_fighter() || girl->has_trait("Shy") || girl->has_trait("Pessimist"))
+					if (girl->is_addict() || girl->is_fighter(true) || girl->has_trait("Shy") || girl->has_trait("Pessimist"))
 					{
 						choicemade = true;	// She has enough money for it, so continue
 					}

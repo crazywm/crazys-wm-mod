@@ -55,7 +55,8 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a waitress in the strip club.\n\n";
+	ss << " is instructed to work at your sleazy restaurant as a waitress. She is informed that the customers here want good service, but they chose this place because of the promise of attractive women in skimpy clothing. If she wants to be successful, she will need to impress them with her body as well as her service.\n\n";
+	ss << "She worked as a waitress in the strip club.\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -77,36 +78,113 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	/* */if (roll_c <= 10)	{ dick_type = 2; dick_type_text = "huge"; }
 	else if (roll_c >= 90)	{ dick_type = 0; dick_type_text = "small"; }
 
+	//a little pre-game randomness
+	if (g_Girls.HasTrait(girl, "Cum Addict") && g_Dice.percent(30))
+	{
+		ss << girlName << " is addicted to cum, and she cannot serve her shift without taking advantage of a room full of cocks. Since most of your patrons are already sexually primed with all this nubile flesh walking around in skimpy uniforms, she does not need to be very persuasive to convince various men to satisfy her addiction. You see her feet sticking out from under the tables from time to time as a satisfied customer smiles at the ceiling. Her service with the other tables suffers, but her tips are still quite high.\n";
+		jobperformance -= 10;
+		tips += 40;
+		imagetype = IMGTYPE_ORAL;
+	}
+	if (g_Girls.HasTrait(girl, "Shy") || g_Girls.HasTrait(girl, "Nervous") && g_Dice.percent(20))
+	{
+		ss << girlName << " has serious difficulty being around all these new people, and the fact that they are all so forward about her body does nothing to help. She spends a lot of time hiding in the kitchen, petrified of going back out and talking to all those people.";
+		jobperformance -= 20;
+	}
+
 
 	if (jobperformance >= 245)
 	{
 		ss << " She must be the perfect waitress customers go on and on about her and always come to see her when she works.\n\n";
 		wages += 155;
+
+		if (roll_b >= 50)
+		{
+			ss << girlName << " is amazing as a waitress, and dances about the room from table to table keeping all the customers satisfied. She recalls their orders by perfect memory, watches everyone to make sure they have everything they want, and appears as if by magic the moment anyone places a menu back on the table or returns their fork to the plate. Her sexy body keeps everyone thinking about her long after she walks away.\n";
+			brothel->m_Fame += 10;
+			tips += 10;
+		}
+		else
+		{
+			ss << girlName << " does a great job, and her memorization of the menu and the specials, paired with her timely service and polite demeanor, pays dividends as she moves from table to table collecting orders. The patrons are pleased, and while " << girlName << " knows better than to interrupt anyone while they are eating, the customers have no complaints when she is forced to do so. She walks with just the right sexy strut that she is a welcome sight whenever she appears.\n";
+			brothel->m_Fame += 5;
+			tips += 15;
+		}
 	}
 	else if (jobperformance >= 185)
 	{
 		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 		wages += 95;
+
+		if (roll_b >= 50)
+		{
+			ss << girlName << " is a very good waitress, and collects the orders promptly and politely. She has almost everything on the menu memorized and can speak knowledgeably about the beer list and customer favorites. She occasionally spends too much time at each table or appears while customers are still considering their orders, but this does not seriously detract from her service, and the patrons who enjoy her extra attention flirt with her constantly.\n";
+			tips += 5;
+		}
+		else
+		{
+			ss << girlName << " impresses the patrons with her efficiency, politeness, and knowledge. She deftly deters the patrons away from dishes that are not perfected, and also from dishes that are too inexpensive. She talks a number of customers into ordering a more expensive special, and they are all happy with the results, especially as she hovers long and low over them, brushing them repeatedly with her breasts as she sets it on the table.\n";
+			tips += 10;
+		}
 	}
-	else if (jobperformance >= 135)
+	else if (jobperformance >= 145)
 	{
 		ss << " She's good at this job and gets praised by the customers often.\n\n";
 		wages += 55;
+
+		if (roll_b >= 50)
+		{
+			ss << girlName << " provides satisfactory service. She tends to show up too early, and occasionally the customers feel rushed, but " << girlName << " is nevertheless polite and courteous and everyone is generally pleased with her work. She needs to learn more about the menu items and the specials, and her flirtations with the customers feel forced and unnatural, but all in all, her work is good.\n";
+		}
+		else
+		{
+			ss << girlName << " is fairly good as a waitress. She is attentive and prompt, and while she has to write all the orders down in order not to forget, the customers are not too put out by her efforts. She does not understand the cooks' capabilities well enough to steer customers away from poorer dishes, but she is good enough at flirting with them and occasionally grinding against them that they are distracted from the meal.\n";
+		}
+		tips += 5;
 	}
-	else if (jobperformance >= 85)
+	else if (jobperformance >= 100)
 	{
 		ss << " She made a few mistakes but overall she is okay at this.\n\n";
 		wages += 15;
+
+		if (roll_b >= 50)
+		{
+			ss << girlName << " manages to get all the food ordered and delivered, but that is the extent of her skills. Her unease at this job translates into customers that feel rushed to order sooner than they would like, and her inability to speak with knowledge about the menu items and specials leads them to make hasty and usually inexpensive selections. When she tries to bend low and give them a good view of her tits as they order, it ends up looking awkward and forced. The patrons are satisfied by her work, but only just.\n";
+		}
+		else
+		{
+			ss << girlName << " is still learning how to be a decent waitress. She is able to get the right food to the right patron on time, but it is clear that she is still training in her job. Her attempts at grinding her ass against them are badly timed and usually come across as clumsiness rather than flirtation, and the customers show limited patience while she asks them to repeat their orders as she writes everything down.\n";
+		}
 	}
 	else if (jobperformance >= 70)
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		wages -= 5;
+
+		if (roll_b >= 50)
+		{
+			ss << girlName << " is not very good at working as a waitress. She forgets orders and has to return to the tables for clarification regularly. Some patrons get the wrong meal, and a few choose to leave without paying rather than wait for her to place the corrected order. She stumbles over the menu options and her flirtatious comments sound like a terrible actress rehearsing even worse lines. The customers are not very pleased with her work, and her tips reflect this.\n";
+		}
+		else
+		{
+			ss << girlName << " barely makes it through her shift without running every customer out of the restaurant. Her skills need a lot of work. She asks patrons for their orders before they even pick up the menu, and rather than giving them time to look it over and select, she stands there staring until they place the order. She tries to make up for this by \"gently\" brushing her tits against their heads when she adjusts something on the table, but it ends up being a weird boob mash in their ears. Most patrons find this very unnerving, but it would probably be forgiven if she brought them the right orders. She does not, usually. Some patrons walk out, promising that they will tell their friends about the poor service. Almost nobody tips her.\n";
+		}
 	}
 	else
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		wages -= 15;
+
+		if (roll_b >= 50)
+		{
+			ss << girlName << " is really bad at serving as a waitress. Awful, really. She hassles customers for food orders, interrupts them constantly while they eat, and constantly screws up their order. She makes practically no effort to flirt or entice the customers with her body. The kitchen is constantly compelled to send complimentary food out to cover for her poor service, but most customers are not so easily placated and deride " << girlName << " to her face. They leave, promising that they will never come back. Nobody tips her.\n";
+			brothel->m_Happiness -= 10;
+		}
+		else
+		{
+			ss << girlName << " understands nothing about being a waitress. The menu confuses her, the specials are completely outside her understanding, and she has no idea how to use her body to her advantage. Those customers that stick around after her terrible initial service are not very surprised to find that a completely different meal than the one they ordered finds its way to their table. She hovers over them while they eat, clearly waiting for them to finish and pay so she can bus the table. Nobody tips her, and most tell her that they will not come back again as long as she works here.\n";
+			brothel->m_Fame -= 10;
+		}
 	}
 
 
@@ -121,7 +199,15 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
 	{
-		ss << "Her clumsy nature cause her to spill food on a customer resulting in them storming off without paying.\n"; wages -= 25;
+		if (g_Dice.percent(50))
+		{
+			ss << "Her clumsy nature cause her to spill food on a customer resulting in them storming off without paying.\n"; 
+		}
+		else 
+		{
+			ss << girlName << " is clumsy, which is not a great attribute for someone that carries food for others all day. All the customers are jarred to hear a pile of plates come crashing down to the floor, as " << girlName << " sheepishly stares at the heap of broken dishes and scattered food. A customer is forced to wait while she apologizes and places a new order.";
+		}
+		wages -= 25;
 	}
 
 	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
@@ -576,11 +662,103 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		tips *= 0.9;
 	}
 
+	if (g_Girls.HasTrait(girl, "Fleet Of Foot") && g_Dice.percent(30))
+	{
+		ss << girlName << " is fast on her feet, and makes great time navigating from table to table. She is able to serve almost twice as many customers in her shift.\n";
+		tips += 50;
+	}
 
-	if (wages < 0)
-		wages = 0;
-	if (tips < 0)
-		tips = 0;
+	if (g_Girls.HasTrait(girl, "Long Legs") || g_Girls.HasTrait(girl, "Great Figure") || g_Girls.HasTrait(girl, "Hourglass Figure") && g_Dice.percent(30))
+	{
+		ss << girlName << "'s body is incredible, and the customers fixate on her immediately. Her tips reflect their attention.";
+		tips += 20;
+	}
+
+	if (g_Girls.HasTrait(girl, "Dojikko") && g_Dice.percent(35))
+	{
+		ss << girlName << "  is clumsy in the most adorable way, and when she trips and falls face-first into a patron's lap, spilling a tray all over the floor, he just laughs and asks if there is anything he can do to help.\n";
+		if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 50 || g_Girls.GetStat(girl, STAT_LIBIDO) <= 50)
+		{
+			ss << girlName << " gives him a nervous smile as she gets back up and dusts herself off. \"I'm so sorry, sir,\" she mutters, and he waves the whole thing away as if nothing happened. \"I'm happy to wait for another drink, for you, cutie,\" he says.\n";
+		}
+		else
+		{
+			ss << "\"There might be something I can do for you while I'm here,\" replies " << girlName << ". She places her mouth over the bulge in his pants and starts sucking the pants until he unzips himself and pulls out his dick for her. \"I hope this makes up for me spilling that drink,\" she says before she locks her mouth around his dick.\n";
+			if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
+			{
+				ss << "\"It certainly does,\" responds the customer. \"You're very good at this, you clumsy little minx.\" " << girlName << " murmurs appreciably around his cock but does not stop until she has milked out his cum and swallowed it. She stands back up, dusts herself off, and starts picking up the dropped tray and the glasses. \"Allow me to get you another drink, sir,\" she states as she saunters away.\n";
+				tips += 35;
+				brothel->m_Happiness += 5;
+			}
+			else
+			{
+				ss << "The customer initially thinks that this is way better than having his drink, but then realizes that " << girlName << " is a bit inexperienced with her efforts around his shaft. \"Looks like you're clumsy in just about everything you do,\" he comments, \"but somehow, that's still super adorable. Keep going, and I'll finish in a few minutes.\" She takes a little longer than she should to bring him to orgasm, and then stands, wipes the cum off her lips, and picks up the dropped tray. \"I'll get you another drink immediately,\" she announces as she walks back to the kitchen.\n";
+				tips += 15;
+			}
+			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+			imagetype = IMGTYPE_ORAL;
+		}
+	}
+
+	if (g_Girls.HasTrait(girl, "Sexy Air") && g_Dice.percent(35))
+	{
+		ss << "Customers enjoy watching " << girlName << " work. Her sexy body and her indefinably attractive way of carrying herself draw attention, whether she likes it or not. It is uncanny how many drinks the customers accidentally spill on their laps, and they would all like her help drying themselves off.\n";
+		if (g_Girls.GetStat(girl, STAT_DIGNITY) <= 0 || g_Girls.GetStat(girl, STAT_LIBIDO) >= 60)
+		{
+			ss << "\"What a terrible spill,\" she cries in mock indignation as she kneels down beside one of them. \"Maybe I can deal with all of this.. wetness..\" she continues, quickly working her hand down his pants, stroking vigorously and using the spilled drink as lubrication.\n";	
+			if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 50)
+			{
+				ss << "The customer sighs with satisfaction and then erupts with an ecstatic cry as she finishes him with her skilled fingers. " << girlName << " stands back up and smiles as she asks him if that solves the problem. He assures her that it did and thanks her by placing a handful of coins on the table.\n";
+				tips += 35;
+				brothel->m_Happiness += 5;
+			}
+			else
+			{
+				ss << "The customer is thrilled until he realizes that " << girlName << " is not very good at handjobs. Still, she is so sexy that he does not have to make a lot of effort to cum on her palm. \"Thank you,\" he smiles. \"I think it's all dry now.\"\n";
+				brothel->m_Happiness += 5;
+			}
+			g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
+			imagetype = IMGTYPE_HAND;
+		}
+	}
+
+	if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(50))
+	{
+		ss << girlName << " is a rampant exhibitionist, and this job gives her a lot of opportunities to flash her goods at select customers. She has cut her uniform top to be even shorter than usual, and her nipples constantly appear when she flashes her underboobs. " << girlName << " does a great job of increasing the atmosphere of sexual tension in your restaurant.";
+		brothel->m_Happiness += 15;
+	}
+
+	if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Sexy Air")
+				|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
+				|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") && g_Girls.GetStat(girl, STAT_DIGNITY) >= 50 && g_Dice.percent(35))
+	{
+		ss << girlName << " draws a lot of attention when she walks and bends towards patrons, and everybody strains their necks for a look down her shirt at her heavy swinging breasts. They openly make lewd comments about the things they would do to her tits, and " << girlName << " shies away and tries to cover them more fully with a menu. She swerves to avoid the many groping hands that \"accidentally\" find themselves brushing against her mammaries. The customers think this is just great fun and catcall after her whenever she tries to retreat.\n";
+		brothel->m_Happiness += 15;
+	}
+
+	if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Sexy Air")
+				|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
+				|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") && g_Girls.GetStat(girl, STAT_DIGNITY) <= 0 && g_Dice.percent(35))
+	{
+		ss << girlName << " has been blessed with great tits and the wisdom to know it. She leans deep over the tables to give customers a good view down her cleavage as she takes their orders. When a customer \"accidentally\" grabs her left tit instead of his glass, she pushes the tit deeper into his hands, stares into his eyes, and smiles. \"These aren’t on the menu,\" she purrs.\n";
+		if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 60)
+		{
+			ss << "\"But they could be the daily special,\" she continues, grinding the breast against his hand. The customer grins and places a handful of coins on the table. \"That looks about right,\" " << girlName << " says as she gets down on the floor and crawls under the table. He is laughing and high-fiving his buddies in no time as she wraps his dick around her tits and starts mashing them together for his pleasure.\n";
+			if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 50)
+			{
+				ss << "He enjoys it immensely, and adds a few more coins to the table as " << girlName << " crawls back from under the table and sexily wipes the cum from her face.\n";
+				tips += 35;
+			}
+			else
+			{
+				ss << "The titfuck is not the best, but he’s hardly one to complain. \"I don’t know if I’ll order the special regularly,\" he says to her when she crawls back up and finishes wiping off the cum, \"but it was certainly a bonus for today!\"\n";
+			}
+			g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
+			imagetype = IMGTYPE_TITTY;
+		}
+		tips += 15;
+	}
+
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//

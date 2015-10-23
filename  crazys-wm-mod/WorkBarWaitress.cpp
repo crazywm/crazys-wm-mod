@@ -63,7 +63,16 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	ss << " worked as a waitress in the bar.\n\n";
+
+	ss << " has been assigned to work as a waitress at your restaurant. She is informed that this is a genteel and conservative establishment, and she should focus on providing timely and efficient service.\n";
+	if (g_Girls.HasTrait(girl, "Mind Fucked"))
+	{
+		ss << girlName << " nods in understanding, but she also has a hand down her skirt, absent-mindedly rubbing her pussy as she listens. You are not entirely sure that she understands what \"genteel and conservative\" means here.. " << girlName << "'s mind fucked state may make this a more interesting shift than you anticipated.\n\n";
+	}
+	else
+	{
+		ss << girlName << " worked as a waitress in the bar.\n\n";
+	}
 
 	g_Girls.UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
@@ -71,16 +80,41 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	sGirl* barmaidonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARMAID, Day0Night1);
 	string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->m_Realname + "" : "the Barmaid");
 
+	sGirl* cookonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARCOOK, Day0Night1);
+	string cookname = (cookonduty ? "Cook " + cookonduty->m_Realname + "" : "the cook");
+
 	double wages = 15, tips = 0;
 	int enjoy = 0, fame = 0;
 
 	int imagetype = IMGTYPE_WAIT;
 	int msgtype = Day0Night1;
+	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 
 #pragma endregion
 #pragma region //	Job Performance			//
 
 	double jobperformance = JP_BarWaitress(girl, false);
+
+	//a little pre-game randomness
+	if (g_Girls.HasTrait(girl, "Mind Fucked") && g_Dice.percent(20))
+	{
+		ss << girlName << " unnerves the customers with her far-away stare while she takes their orders, and causes a few gentlemen to sweat with discomfort as she casually mentions that she is also on the menu, if they would like to use her for anything. They all cough, turn their heads, and try to ignore it.";
+		jobperformance -= 5;
+	}
+	if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Sexy Air")
+				|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
+				|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") && g_Dice.percent(20))
+	{
+		ss << "Customers are willing to forgive a lot of mistakes where " << girlName << " is concerned. Her sexy body distracts them when they order, and some find themselves ordering much more expensive wine than they had anticipated in an effort to impress her.";
+		jobperformance += 5; tips += 10;
+	}
+	if (g_Girls.HasTrait(girl, "Shy") || g_Girls.HasTrait(girl, "Nervous") && g_Dice.percent(20))
+	{
+		ss << "Some customers are forced to flag " << girlName << " down to get her to come to their table, as her nerves and shyness get in the way of providing suitable service. She is not comfortable talking with all of these new people.";
+		jobperformance -= 10;
+	}
+
+
 	if (jobperformance >= 245)
 	{
 		ss << " She's the perfect waitress. Customers go on about her and many seem to come more for her than for the drinks or entertainment.\n\n";
@@ -365,8 +399,15 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
 	{
-		ss << "She used her Psychic skills to know exactly what the patrons wanted to order making them happy and increasing her tips.\n";
-		tips += 15;
+		if (g_Dice.percent(50))
+		{
+			ss << "She used her Psychic skills to know exactly what the patrons wanted to order making them happy and increasing her tips.\n";
+		}
+		else
+		{
+			ss << girlName << " uses her psychic abilities to her advantage. She knows when a customer is thinking about dessert or another bottle of wine, and shows up just in time with the perfect recommendation.\n";
+		}
+		tips += 20;
 	}
 
 	if (g_Girls.HasTrait(girl, "Great Arse") && g_Dice.percent(15))
@@ -459,6 +500,75 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		{
 			ss << girlName << " used " << barmaidname << " to great effect speeding up her work and increasing her tips.\n";
 			tips += 25;
+		}
+	}
+
+	if (g_Girls.HasTrait(girl, "Fleet Of Foot") && g_Dice.percent(30))
+	{
+		ss << girlName << " is fast on her feet, and makes great time navigating from table to table. She is able to serve almost twice as many customers in her shift.\n";
+		tips += 50;
+	}
+
+	if (g_Girls.HasTrait(girl, "Dojikko") && g_Dice.percent(35))
+	{
+		ss << girlName << " accidentally sends a tray of plates crashing to the floor, drawing the eyes of the entire restaurant to her. She smiles and sighs with such cuteness that everyone just laughs, and the customer whose dish splattered all over the tiles grins and says he would be happy to wait for a replacement, and that it could happen to anyone.\n";
+		tips += 15;
+		brothel->m_Happiness += 5;
+	}
+
+	//BIRTHDAY /**/
+	if (girl->m_BDay >= 51)
+	{
+		if (girl->m_States&(1 << STATUS_SLAVE))
+		{
+		}
+		else
+		{
+			if (HateLove >= 80)
+			{
+				if (girl->libido() >= 60)
+				{
+					ss << girlName << " has barely finished her shift before she is changed into her sexiest dress and standing before you. \"I have a little birthday wish,\" she whispers, drawing closer to you. \"I thought maybe, as your gift to me, you would allow me to serve you alone tonight. I asked " << cookname << " to cook all your favorite dishes, and I've prepared the upper dining area so it will just be the two of us.\" She leads you upstairs and seats you before disappearing for a moment and returning with the first course. " << girlName << " feeds you with her own hands, giggling with every few bites. \"We have a cake, of course,\" she smiles as you finish everything, \"but that isn't the only dessert.\"\n";
+					if (roll_c >= 80)//ANAL
+					{
+						ss << girlName << " lifts up her skirt so you can see that she is not wearing underwear. \"I was hoping that you might put your birthday present in my ass,\" she whispers into your ear, deftly opening your pants and lowering herself onto your suddenly and ragingly erect cock. She whimpers briefly as your dick penetrates her, then she spits on her hand and rubs the lubricant onto your tip before impaling herself again. \"You have no idea how often I fantasize about this when dealing with those stodgy customers all day,\" she pants, reveling as you ream her ass. \"Use me like a dirty backstreet whore,\" she continues, wrapping her asshole around you and bouncing up and down. It does not take long to cum for both of you. " << girlName << " smiles";
+						ss << " with fulfillment as she lifts herself off your cock, semen leaking onto the table. \"I guess I'll need to clean that up,\" she comments, before turning back to you. \"Happy birthday to me,\" she grins. \"Let's do it again sometime.\"";
+						imagetype = IMGTYPE_ANAL;
+						g_Girls.UpdateSkill(girl, SKILL_ANAL, 1);
+					}
+					else if (roll_c >= 50)//SEX
+					{
+						ss << girlName << " lies flat on her back on the cleared table, hiking up her dress so you have direct access to her wet pussy and placing the cake on her stomach. \"If you want dessert, I think you should come and get it,\" she purrs. You insert your hard-on into her and slowly fuck her as she moans, stopping only for a moment to take a piece of cake. You eat a bite and then feed her the rest as you pump with increasing speed, and as she takes the last bite, you spurt deep inside her. \"Happy birthday to me,\" she smiles.";
+						imagetype = IMGTYPE_SEX;
+						g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
+					}
+					else//ORAL
+					{
+						if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50 && g_Girls.HasTrait(girl, "Deep Throat"))
+						{
+							ss << girlName << " does not even wait for a reply before she moves her hand to your cock, deftly opening your pants and working you to a raging hard-on. She smiles mischievously at you and then dives down, swallowing your whole cock with one quick motion. She stays there, locked with her tongue on your balls and your shaft buried in her throat, massaging your cock with swallowing motions while staring with watering eyes into yours, until she begins to lose oxygen. You cum buckets straight down her throat as she begins to choke herself on you, and when she has secured every drop in her stomach, she pulls back, takes a deep breath, and smiles. \"Happy birthday to me,\" she says.";
+						}
+						else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
+						{
+							ss << girlName << " kisses you once on the lips, and then once on the chest, and then slowly works her way down to your pants. She gently pulls out your cock and surrounds it with her velvety mouth, sucking gently. The blowjob is excellent, and you relish every moment, taking an occasional bite of cake as she latches onto your dick.";
+						}
+						else
+						{
+							ss << girlName << " kisses you once on the lips, and then once on the chest, and then slowly works her way down to your pants. She gently pulls out your cock and surrounds it with her velvety mouth, sucking gently. The blowjob is not amazing, but it is delivered with such tenderness and love that you find yourself very satisfied regardless.";
+						}
+						imagetype = IMGTYPE_ORAL;
+						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+					}
+				}
+				else
+				{
+					ss << girlName << " finished her work and came to you with a shy grin. \"Did you know that it's my birthday?\" she asks, brushing against you gently and continuing without waiting for a response. \"I asked " << cookname << " to make a little something special, and I thought maybe we could share it together.\" The two of you enjoy a delicious light dinner, followed by an adorable little cake, as she giggles appreciably at your jokes and flirts with you. \"Maybe we should do this again without waiting a whole year,\" she suggests at the end of the evening, eyes flashing with unspoken promises. \"I'd love to thank you more fully for everything you have done for me.\"\n";
+				}
+			}
+			else
+			{
+				ss << girlName << " finished her work as a waitress and returned home for a private birthday celebration with her friends.\n";
+			}
 		}
 	}
 

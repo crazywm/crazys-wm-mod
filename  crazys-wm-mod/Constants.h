@@ -187,6 +187,7 @@ enum JOBS {
 	JOB_SINGER,				// sings in the bar
 	JOB_PIANO,				// plays the piano for customers
 	JOB_ESCORT,				// High lvl whore.  Sees less clients but needs higher skill high lvl items and the such to make them happy
+	JOB_BARCOOK,			// cooks at the bar
 	//const unsigned int JOB_WETTSHIRT		= ;
 	// `J` Job Brothel - Hall
 	JOB_DEALER,				// dealer for gambling tables

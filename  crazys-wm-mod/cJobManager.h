@@ -112,6 +112,8 @@ public:
 	static double JP_BarPiano(sGirl* girl, bool estimate);
 	static bool WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_Escort(sGirl* girl, bool estimate);
+	static bool WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_Barcook(sGirl* girl, bool estimate);
 	// - Gambling Hall
 	static bool WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_HallDealer(sGirl* girl, bool estimate);
