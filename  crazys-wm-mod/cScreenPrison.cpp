@@ -278,7 +278,7 @@ void cScreenPrison::update_image()
 {
 	if ((selected_girl) && !IsMultiSelected(prison_list_id))//This may need fixed CRAZY
 	{
-		PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, true, ImageNum);
+		PrepareImage(girlimage_id, selected_girl, IMGTYPE_JAIL, true, ImageNum);
 		HideImage(girlimage_id, false);
 	}
 	else

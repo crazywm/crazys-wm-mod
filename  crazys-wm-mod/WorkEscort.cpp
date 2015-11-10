@@ -75,9 +75,17 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int roll_c = g_Dice.d100() + agl;					// agility adjustment
 	int roll_d = g_Dice.d100();
 	int roll_sex = g_Dice.d100();
+	int prepare = (g_Girls.GetStat(girl, STAT_AGILITY) + g_Girls.GetStat(girl, SKILL_SERVICE)/2);
 
-	int pass_a = false;
-	int pass_b = false;
+	int sex = false;
+	int anal = false;
+	int oral = false;
+
+	int titty_lover = false;
+	int ass_lover = false;
+	int sex_event = false;
+	int sex_offer = false;
+	int group_offer = false;
 
 	//CRAZY
 	/*Escort plans
@@ -95,6 +103,39 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	a king might be almost impossable to make fully happy without the perfect girl.  Sending a virgin should have different
 	things happen if it comes to sex where the girl could accept or not.  Maybe have special things happen if the escort is
 	your daughter.*/
+
+	//a little pre-game randomness
+	if (girl->is_fighter(true))
+	{
+		ss << girlName << "has some particularly aggressive tendencies that make her a poor choice for patrons seeking polite conversation. Even if she carries a conversation well, the undercurrent of restrained hostility will detract from her performance.\n";
+		escort -= 2;
+	}
+	if (g_Girls.HasTrait(girl, "Bimbo"))
+	{
+		ss << girlName << " is a complete ditz. Her repertoire of conversation is limited to her favorite dresses and her many powerful feelings on makeup brands. This will stymy her abilities as an escort, no matter how well she does otherwise.\n";
+		escort -= 1;
+	}
+	if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Shy"))
+	{
+		ss << girlName << " is very shy with new people. For a job that requires meeting with new people constantly, this is a bad trait to possess. Her nervousness will translate into some awkward conversational moments, no matter how great her charisma is.\n";
+		escort -= 2;
+	}
+	if (g_Girls.HasTrait(girl, "Retarded"))
+	{
+		ss << girlName << " is retarded, and this is a natural obstacle to most conversations. For those men that do not want a prolonged conversation on her favorite colors or a description of her last \"poopy,\" which is the vast majority of men, she may have some trouble as an escort.\n";
+		escort -= 3;
+	}
+	//good
+	if (g_Girls.HasTrait(girl, "Psychic"))
+	{
+		ss << girlName << " has some psychic abilities, meaning she has a natural advantage in conversation. She knows what the client likes and can avoid the subjects that he dislikes. This may come in very handy.\n";
+		escort += 2;
+	}
+	if (g_Girls.HasTrait(girl, "Charismatic") || g_Girls.HasTrait(girl, "Charming"))
+	{
+		ss << girlName << " is very personable and charming. Conversations with her will be easy, and this gives her an advantage as an escort.\n";
+		escort += 2;
+	}
 
 
 	// `J` The type of customer She Escorts
@@ -179,6 +220,9 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	// work out the pay between the house and the girl
 	girl->m_Tips = max(tips, 0);
 	girl->m_Pay = wages;
+
+	ss << "\n\n" << girlName << " receives " << wages << " in payment for her work as an Escort for a " << cust_type_text << " client. Her fame as an Escort has changed by " << fame << ".";
+
 
 	// Improve stats
 	int xp = 20, libido = 1, skill = 3;

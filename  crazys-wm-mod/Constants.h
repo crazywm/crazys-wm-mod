@@ -327,9 +327,9 @@ enum JOBS {
 	JOB_RECRUITER,			//
 	JOB_PERSONALTRAINING,	//
 	JOB_PERSONALBEDWARMER,	//
-	JOB_CLEANHOUSE,			//
 	JOB_HOUSEPET,			//		
 	JOB_HOUSECOOK,			// cooks for the harem, (helps keep them happy, and increase job performance)
+	JOB_CLEANHOUSE,			//
 	//JOB_HOUSEDATE		= ;
 	//JOB_HOUSEVAC		= ;
 
@@ -572,6 +572,7 @@ enum Action_Types{
 // When modifying Training types, search for "Change-Traning-Types"  :  found in >> Constants.h
 enum Training_Types{
 	TRAINING_PUPPY = 0,
+	TRAINING_PONY,
 	// TRAINING_GENERAL must be the last sction type
 	TRAINING_GENERAL,
 	NUM_TRAININGTYPES
@@ -630,6 +631,9 @@ enum Image_Types{
 	IMGTYPE_REVCOWGIRL,					// 
 	IMGTYPE_SEXDOGGY,					// 
 	IMGTYPE_JAIL,						// 
+	IMGTYPE_PUPPYGIRL,					// 
+	IMGTYPE_PONYGIRL,					// 
+	IMGTYPE_CATGIRL,					// 
 
 	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
 	IMGTYPE_PREGNANT,					// 

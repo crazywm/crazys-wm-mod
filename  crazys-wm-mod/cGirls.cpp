@@ -2524,6 +2524,10 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		}
 		ss << "\nCost per turn: " << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold.\n";
 
+			ss << "\nDetails: ";
+		if (cfg.debug.log_extradetails()) ss << "( " << girl->m_AccLevel << " ) ";
+		ss << AccommodationDetails(girl->m_AccLevel);
+
 		// added from Dagoth
 		if (girl->is_resting() && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
 		{
@@ -15220,17 +15224,35 @@ string cGirls::Accommodation(int acc)
 
 string cGirls::AccommodationDetails(int acc)
 {
-	/* */if (acc == 0)	return "";
-	else if (acc == 1)	return "";
-	else if (acc == 2)	return "";
-	else if (acc == 3)	return "";
-	else if (acc == 4)	return "";
-	else if (acc == 5)	return "";
-	else if (acc == 6)	return "";
-	else if (acc == 7)	return "";
-	else if (acc == 8)	return "";
-	else if (acc == 9)	return "";
-	else /*         */	return "Error";
+	sGirl* girl;
+	if (girl->m_States&(1 << STATUS_SLAVE))
+	{
+		/* */if (acc == 0)	return "Slave";
+		else if (acc == 1)	return "Slave 2";
+		else if (acc == 2)	return "Slave 3";
+		else if (acc == 3)	return "Slave 4";
+		else if (acc == 4)	return "Slave 5";
+		else if (acc == 5)	return "Slave 6";
+		else if (acc == 6)	return "Slave 7";
+		else if (acc == 7)	return "Slave 8";
+		else if (acc == 8)	return "Slave 9";
+		else if (acc == 9)	return "Slave 10";
+		else /*         */	return "Error";
+	}
+	else
+	{
+		/* */if (acc == 0)	return "Free";
+		else if (acc == 1)	return "2";
+		else if (acc == 2)	return "3";
+		else if (acc == 3)	return "4";
+		else if (acc == 4)	return "5";
+		else if (acc == 5)	return "6";
+		else if (acc == 6)	return "7";
+		else if (acc == 7)	return "8";
+		else if (acc == 8)	return "9";
+		else if (acc == 9)	return "10";
+		else /*         */	return "Error";
+	}
 }
 
 // The accommodation level the girl expects/demands

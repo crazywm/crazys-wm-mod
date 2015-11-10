@@ -708,21 +708,22 @@ void cJobManager::Setup()
 	JobDesc[JOB_PERSONALBEDWARMER] = gettext("She will stay in your bed at night with you.");
 	JobFunc[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;
 	JobPerf[JOB_PERSONALBEDWARMER] = &JP_PersonalBedWarmer;
-	//JobName[JOB_HOUSECOOK] = gettext("House Cook");
-	//JobQkNm[JOB_HOUSECOOK] = "Hcok";
-	//JobDesc[JOB_HOUSECOOK] = gettext("She will cook for your house.");
-	//JobFunc[JOB_HOUSECOOK] = &WorkHouseCook;
+	JobName[JOB_HOUSECOOK] = gettext("House Cook");
+	JobQkNm[JOB_HOUSECOOK] = "Hcok";
+	JobDesc[JOB_HOUSECOOK] = gettext("She will cook for your house.");
+	JobFunc[JOB_HOUSECOOK] = &WorkHouseCook;
 	JobPerf[JOB_HOUSECOOK] = &JP_HouseCook;
+	JobName[JOB_HOUSEPET] = gettext("House Pet");
+	JobQkNm[JOB_HOUSEPET] = "Hpet";
+	JobDesc[JOB_HOUSEPET] = gettext("She will be trained to become the house pet.");
+	JobFunc[JOB_HOUSEPET] = &WorkHousePet;
+	//JobPerf[JOB_HOUSEPET] = &JP_HousePet;
 	JobName[JOB_CLEANHOUSE] = gettext("Clean House");
 	JobQkNm[JOB_CLEANHOUSE] = "ClnH";
 	JobDesc[JOB_CLEANHOUSE] = gettext("She will clean your house.");
 	JobFunc[JOB_CLEANHOUSE] = &WorkCleanHouse;
 	JobPerf[JOB_CLEANHOUSE] = &JP_CleanHouse;
-	/*JobName[JOB_HOUSEPET] = gettext("House Pet");
-	JobQkNm[JOB_HOUSEPET] = "Hpet";
-	JobDesc[JOB_HOUSEPET] = gettext("She will be trained to become the house pet.");
-	JobFunc[JOB_HOUSEPET] = &WorkHousePet;
-	JobPerf[JOB_HOUSEPET] = &JP_HousePet;*/
+
 
 	JobFilterName[JOBFILTER_NONE] = gettext("Non-Job");
 	JobFilterDesc[JOBFILTER_NONE] = gettext("These are NOT jobs. They are special cases.");
@@ -1328,7 +1329,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_HOUSEPET)
 	{
 		if (Girl->is_slave())	Girl->m_NightJob = Girl->m_DayJob = JOB_HOUSEPET;
-		else					g_MessageQue.AddToQue(gettext("Only slaves can take this training."), 0)
+		else					g_MessageQue.AddToQue(gettext("Only slaves can take this training."), 0);
 	}
 	// Special Farm Jobs
 	else if (u_int(JobID) == JOB_FARMMANGER)

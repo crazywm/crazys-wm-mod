@@ -75,7 +75,7 @@ bool cJobManager::WorkCentreManager(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	else if (check > 90)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		conf -= 1; happy -= 3;
+		conf += 1; happy += 3;
 		ss << " enjoyed helping the girls with their lives.";
 	}
 	else

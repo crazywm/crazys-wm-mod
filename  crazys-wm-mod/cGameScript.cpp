@@ -61,6 +61,7 @@ extern cScreenGirlDetails g_GirlDetails;
 
 extern cSurnameList g_SurnameList;
 extern cPlayer* The_Player;
+extern sCustomer* customer;
 
 sScript *cGameScript::Process(sScript *Script)
 {
@@ -153,6 +154,18 @@ sScript *cGameScript::Process(sScript *Script)
 	case 80: return Script_AdjustGirlFlag(Script);
 	case 81: return Script_AdjustTraitTemp(Script);
 	case 82: return Script_AdjustTargetGirlSkill(Script);
+	case 83: return Script_DeepTarget(Script);
+	case 84: return Script_EatOutTarget(Script);
+	case 85: return Script_StrapOnTarget(Script);
+	case 86: return Script_Les69ingTarget(Script);
+	case 87: return Script_DildoTarget(Script);
+	case 88: return Script_SubTarget(Script);
+	case 89: return Script_LickTarget(Script);
+	case 90: return Script_SuckBallsTarget(Script);
+	case 91: return Script_CowGirlTarget(Script);
+	case 92: return Script_RevCowGirlTarget(Script);
+	case 93: return Script_SexDoggyTarget(Script);
+	case 94: return Script_NormalSexWithRandomTarget(Script);
 
 		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
 
@@ -1750,6 +1763,98 @@ sScript* cGameScript::Script_GetRandomGirl(sScript* Script)						// `J` new
 	return Script->m_Next;
 }
 
+sScript* cGameScript::Script_DeepTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_DEEPTHROAT;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_EatOutTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_EATOUT;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_StrapOnTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_STRAPON;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_Les69ingTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_LES69ING;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_DildoTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_DILDO;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_SubTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_SUB;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_LickTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_LICK;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_SuckBallsTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_SUCKBALLS;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_CowGirlTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_COWGIRL;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_RevCowGirlTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_REVCOWGIRL;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_SexDoggyTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_SEXDOGGY;
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
+{
+	if (m_GirlTarget)
+	{
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 2);
+
+		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+
+		if (!m_GirlTarget->calc_pregnancy(customer, false, 1.0))
+			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
+	}
+	g_GirlDetails.lastsexact = IMGTYPE_SEX;
+
+	return Script->m_Next;
+}
 
 
 //sScript* cGameScript::Script_GirlNameTarget(sScript* Script)

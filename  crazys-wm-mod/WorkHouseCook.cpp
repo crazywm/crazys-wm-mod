@@ -204,4 +204,6 @@ double cJobManager::JP_HouseCook(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
 	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
 	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
+
+	return jobperformance;
 }

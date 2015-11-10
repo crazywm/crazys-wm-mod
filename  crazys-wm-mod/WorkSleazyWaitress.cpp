@@ -86,7 +86,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		tips += 40;
 		imagetype = IMGTYPE_ORAL;
 	}
-	if (g_Girls.HasTrait(girl, "Shy") || g_Girls.HasTrait(girl, "Nervous") && g_Dice.percent(20))
+	else if (g_Girls.HasTrait(girl, "Shy") || g_Girls.HasTrait(girl, "Nervous") && g_Dice.percent(20))
 	{
 		ss << girlName << " has serious difficulty being around all these new people, and the fact that they are all so forward about her body does nothing to help. She spends a lot of time hiding in the kitchen, petrified of going back out and talking to all those people.";
 		jobperformance -= 20;
@@ -697,6 +697,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
 			imagetype = IMGTYPE_ORAL;
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		}
 	}
 
@@ -719,6 +720,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
 			imagetype = IMGTYPE_HAND;
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		}
 	}
 
@@ -755,6 +757,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
 			imagetype = IMGTYPE_TITTY;
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		}
 		tips += 15;
 	}
