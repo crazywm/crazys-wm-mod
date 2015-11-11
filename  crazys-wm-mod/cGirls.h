@@ -963,7 +963,7 @@ public:
 	bool detect_disease_in_customer(sBrothel* brothel, sGirl* girl, sCustomer* cust, double mod = 0.0);
 
 	string Accommodation(int acc);
-	string AccommodationDetails(int acc);
+	string AccommodationDetails(sGirl* girl, int acc);
 	int PreferredAccom(sGirl* girl);
 	string catacombs_look_for(int girls, int items, int beast);
 

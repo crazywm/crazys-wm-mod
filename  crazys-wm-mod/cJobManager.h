@@ -328,6 +328,7 @@ public:
 	static double JP_HouseCook(sGirl* girl, bool estimate);
 	static bool WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_HousePet(sGirl* girl, bool estimate);
+	static bool WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 
 
 

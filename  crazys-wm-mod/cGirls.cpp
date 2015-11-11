@@ -570,6 +570,7 @@ void sGirl::setup_maps()
 	jobs_lookup["PTrn"] = JOB_PERSONALTRAINING;
 	jobs_lookup["CosS"] = JOB_PHYSICALSURGERY;
 	jobs_lookup["Pno"] = JOB_PIANO;
+	jobs_lookup["PGil"] = JOB_PONYGIRL;
 	jobs_lookup["Prmt"] = JOB_PROMOTER;
 	jobs_lookup["Rncr"] = JOB_RANCHER;
 	jobs_lookup["Rcrt"] = JOB_RECRUITER;
@@ -2524,9 +2525,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		}
 		ss << "\nCost per turn: " << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold.\n";
 
-			ss << "\nDetails: ";
-		if (cfg.debug.log_extradetails()) ss << "( " << girl->m_AccLevel << " ) ";
-		ss << AccommodationDetails(girl->m_AccLevel);
+		ss << "\nDetails:\n ";
+		//ss << AccommodationDetails(girl);
+		//ss << g_Girls.AccommodationDetails(m_AccLevel);
 
 		// added from Dagoth
 		if (girl->is_resting() && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
@@ -15222,9 +15223,8 @@ string cGirls::Accommodation(int acc)
 	else /*         */	return "Error";
 }
 
-string cGirls::AccommodationDetails(int acc)
+string cGirls::AccommodationDetails(sGirl* girl, int acc)
 {
-	sGirl* girl;
 	if (girl->m_States&(1 << STATUS_SLAVE))
 	{
 		/* */if (acc == 0)	return "Slave";

@@ -329,6 +329,7 @@ enum JOBS {
 	JOB_PERSONALBEDWARMER,	//
 	JOB_HOUSEPET,			//		
 	JOB_HOUSECOOK,			// cooks for the harem, (helps keep them happy, and increase job performance)
+	JOB_PONYGIRL,			//		
 	JOB_CLEANHOUSE,			//
 	//JOB_HOUSEDATE		= ;
 	//JOB_HOUSEVAC		= ;
