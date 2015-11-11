@@ -2127,7 +2127,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		case FT_HasTraining:
 		{
 			ss << girlName << " is far enough along in her training that she has started to behave that way in her free time.";
-			if (TRAINING_PUPPY >= 10)
+			if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 10)
 			{
 				if (roll >= 60)
 				{
@@ -2162,7 +2162,21 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				else
 				{
+					ss << "Even your pets get the occasional downtime\n";
+					ss << "She was let outside ";
+					if (g_Dice.percent(20))
+					{
+						ss << "and she found a spot to take a nap.";
+					}
+					else
+					{
+						ss << "she seen a cat and chased it up a tree.";
+					}
 				}
+			}
+			else if (g_Girls.GetTraining(girl, TRAINING_PONY) >= 10)
+			{
+				ss << "";
 			}
 		}
 		break;	// end FT_HasTraining

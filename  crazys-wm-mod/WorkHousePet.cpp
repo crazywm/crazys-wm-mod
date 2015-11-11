@@ -112,7 +112,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " refused to train during the " << (Day0Night1 ? "night" : "day") << " shift.\n";
 		ss << girlName << " is still in training, and is having difficulty accepting her new role. Today she was a bad girl!\n";
-		if (TRAINING_PUPPY >= 50)
+		if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 50)
 		{
 			if (roll_b >= 66)
 			{
@@ -131,7 +131,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " Her eyes watered as she watched you feed the girl scraps from your dinner and small chocolate truffles when she finished, and " << traningname << " happily rested her head in your lap, looking up at you.";
 						ss << " How dare she? That was " << girlName << "'s job! But still " << girlName << " refused.\n";
 						/**/
-						ss << "By dinner time the next night, the seasoned kabobs of meat and veggies were too appetizing to resist, and girlName crawled under the table, placing her cheek against your manhood, tits quivering as hunger rocked her stomach. " << girlName << " made little whining noises when you smiled down at her,";
+						ss << "By dinner time the next night, the seasoned kabobs of meat and veggies were too appetizing to resist, and " << girlName << " crawled under the table, placing her cheek against your manhood, tits quivering as hunger rocked her stomach. " << girlName << " made little whining noises when you smiled down at her,";
 						ss << " stroking her hair, but you did not give her a yummy cock to suck. You did not give her treats. Tears formed in her eyes as the table was cleared.";
 						ss << " It was all so unfair! She eyed her kibble grudgingly as you left the room with one of your personal bed warmers to join the others upstairs.";
 						ss << " Gingerly she leaned in and began picking up little bits of stale kibble with her tongue and mouth,";
@@ -180,12 +180,12 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << " After getting " << headname << "'s permission, " << cleanername << " took " << girlName << " with her all day during her jobs. " << girlName << " was forced to clean toilets,";
 				ss << " foul portions of the floor with day old cum, andevery other foul thing " << cleanername << " encountered with nothing but her tongue, enforced by an occasional whipping.\n";
 				/**/
-				ss << "By the end of the day, girlName was quite contrite as " << cleanername << " lead her crawling back to the bathroom. \"I'm sorry, but you'll learn, one way or another, " << girlName << ".\"";
+				ss << "By the end of the day, " << girlName << " was quite contrite as " << cleanername << " lead her crawling back to the bathroom. \"I'm sorry, but you'll learn, one way or another, " << girlName << ".\"";
 				ss << " It didn't take much coaxing to get " << girlName << " into the frothy tub, and surprisingly " << cleanername << " joined her.";
 				ss << " Both girls were clean soon, but " << cleanername << " decided they were going to stay and relax a bit longer.";
 				ss << " \"Don't you think you owe me an apology?\" she asked, stroking the suds from " << girlName << "'s hair. Whether she did or";
 				ss << " not, " << girlName << " leaned in, ignoring the soap getting in her mouth, and began to gently tongue " << cleanername << "'s clit. She gasped as your pet suckled her,";
-				ss << " and then grabbed the back of her head as girlName began to fuck her with her tongue, occasionally pushing and nibbling at her clit at the same time using her upper lip.";
+				ss << " and then grabbed the back of her head as " << girlName << " began to fuck her with her tongue, occasionally pushing and nibbling at her clit at the same time using her upper lip.";
 				ss << " Perhaps bath time would get better for both of them, but there was a ways to go.";
 				training += 2;
 				ob += 2;
@@ -317,7 +317,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else /*She did the training*/
 	{
 		ss << " trained to be a house pet.\n\n";
-		if (TRAINING_PUPPY >= 70)
+		if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 70)
 			{
 				if (girl->m_WeeksPreg >= 38 && headonduty)	
 				{
@@ -451,7 +451,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							imagetype = IMGTYPE_ORAL;
 						}
 					}
-				if (roll_b >= 80 && puppyonduty)
+				else if (roll_b >= 80 && puppyonduty)
 					{
 						ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.\n";
 						/**/
@@ -549,18 +549,18 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					{
 						ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.\n";
 						/**/
-						ss << "Many pet owners act neglectfully of their pets, but not you! GirlName was happy when you led her crawling through the city";
+						ss << "Many pet owners act neglectfully of their pets, but not you! " << girlName << " was happy when you led her crawling through the city";
 						ss << " to your brothel, excited to keep you company while you worked. Upon arrival, however, you hand off";
 						ss << " " << girlName << "'s leash to a member of a gang, who leads the confused girl fearfully into the dungeon, unsure of what to expect. " << girlName << " flinched";
 						ss << " at the cries of pain, but instead of enduring punishment, she is led to a room with five girls, all young, frog-tied and placed";
 						ss << " on their backs. " << girlName << " looked up at the gang member and yipped questioningly, nuzzling his thigh like a good puppy.\n";
 						/**/
-						ss << "“Often your Master gets girls that are virgins,” he explained, stroking girlName's hair, “And this is part of their....";
+						ss << "“Often your Master gets girls that are virgins,” he explained, stroking " << girlName << "'s hair, “And this is part of their....";
 						ss << " tenderizing process. We won't fuck them for a couple weeks yet at least, after they are branded, but we like to keep them excited.";
 						ss << " That's your job today.” Not quite gently, the man grabbed her hair and pushed " << girlName << "'s face into the first girl's cunt. " << girlName << " began to lick";
 						ss << " in earnest, both happy with her task, and that she was not being punished. Little muffled cries and moans came from the hooded girl";
 						ss << " as she bucked her hips into the pet's lips and tongue. Clearly the girl had not had release in some some time. When the young slave-to-be's";
-						ss << " nipples were hard as could be and she was on the cusp, the man tugged girlName away, leaving the teen thrashing, unfulfilled.\n";
+						ss << " nipples were hard as could be and she was on the cusp, the man tugged " << girlName << " away, leaving the teen thrashing, unfulfilled.\n";
 						/**/
 						ss << "The process was repeated over the course of a couple hours, the gang member occasionally giving " << girlName << "'s wagging ass little slaps to motivate her, as if she needed any motivation. As she licked the last girl,";
 						ss << " she suddenly gasped as he shoved her face in the girl's pussy and pushed himself into hers. As " << girlName << " was being fucked, she crawled on top of the virgin";
@@ -598,7 +598,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						training += 2;
 					}
 			}
-		else if (TRAINING_PUPPY >= 50)
+		else if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 50)
 			{
 				if (girl->m_WeeksPreg >= 38 && headonduty)	
 				{
@@ -689,7 +689,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 					ss << cleanername << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
-					ss << "It was time for girlName's daily bath, something she and RandomHouseCleaner always enjoyed.";
+					ss << "It was time for " << girlName << "'s daily bath, something she and RandomHouseCleaner always enjoyed.";
 					ss << " Your pet was happy to climb in the tub, and splash around enough to enjoy herself, but not make a huge mess for " << cleanername << ".";
 					ss << " " << cleanername << " smiled and generously scrubbed the dirt from your girl, massaging her body and working the grime from her hair.";
 					ss << " When she was finished, " << girlName << " was dried off with a towel, and a leash clipped to her collar.";
@@ -730,7 +730,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 					ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.\n";
 					/**/
-					ss << "\"Ah, damn, I forgot something.\" You curse, and loosely tie the leash to girlName's collar to a tree outside the shop on the edge of town.";
+					ss << "\"Ah, damn, I forgot something.\" You curse, and loosely tie the leash to " << girlName << "'s collar to a tree outside the shop on the edge of town.";
 					ss << " \"Stay, girl.\" " << girlName << " whined as her Master pet her hair a moment,";
 					ss << " and walked back inside the shop. She panted a moment, looking after him, and then curled up on the soft grass.";
 					ss << " There weren't really any people around, but there was still plenty for a puppy to see, hear,";

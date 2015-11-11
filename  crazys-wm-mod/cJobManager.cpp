@@ -718,10 +718,10 @@ void cJobManager::Setup()
 	JobDesc[JOB_HOUSEPET] = gettext("She will be trained to become the house pet.");
 	JobFunc[JOB_HOUSEPET] = &WorkHousePet;
 	//JobPerf[JOB_HOUSEPET] = &JP_HousePet;
-	JobName[JOB_PONYGIRL] = gettext("Pony Girl");
-	JobQkNm[JOB_PONYGIRL] = "PGil";
-	JobDesc[JOB_PONYGIRL] = gettext("She will be trained to become a pony girl.");
-	JobFunc[JOB_PONYGIRL] = &WorkFarmPonyGirl;
+	//JobName[JOB_PONYGIRL] = gettext("Pony Girl");
+	//JobQkNm[JOB_PONYGIRL] = "PGil";
+	//JobDesc[JOB_PONYGIRL] = gettext("She will be trained to become a pony girl.");
+	//JobFunc[JOB_PONYGIRL] = &WorkFarmPonyGirl;
 	JobName[JOB_CLEANHOUSE] = gettext("Clean House");
 	JobQkNm[JOB_CLEANHOUSE] = "ClnH";
 	JobDesc[JOB_CLEANHOUSE] = gettext("She will clean your house.");

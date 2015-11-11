@@ -127,7 +127,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 	else /*She did the training*/
 	{
-		ss << " trained to be a house pet.\n\n";
+		ss << " trained to be a pony girl.\n\n";
 		if (TRAINING_PUPPY >= 70)
 			{
 				ss << "has over 70 training";
