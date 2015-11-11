@@ -128,7 +128,7 @@ private:
 	sScript* Script_CowGirlTarget(sScript* Script);
 	sScript* Script_RevCowGirlTarget(sScript* Script);
 	sScript* Script_SexDoggyTarget(sScript* Script);
-	sScript* Script_NormalSexWithRandomTarget(sScript* Script);
+	//sScript* Script_NormalSexWithRandomTarget(sScript* Script);
 	//sScript* Script_GirlNameTarget(sScript* Script);
 
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.h

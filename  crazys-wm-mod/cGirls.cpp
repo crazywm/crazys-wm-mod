@@ -3635,7 +3635,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	LoadActionsXML(hGirl.FirstChildElement("Actions"), m_Enjoyment, m_EnjoymentMods, m_EnjoymentTemps);
 
 	// load training values
-	LoadTrainingXML(hGirl.FirstChildElement("Actions"), m_Training, m_TrainingMods, m_TrainingTemps);
+	LoadTrainingXML(hGirl.FirstChildElement("Training"), m_Training, m_TrainingMods, m_TrainingTemps);
 
 	// load virginity
 	pGirl->QueryIntAttribute("Virgin", &m_Virgin);

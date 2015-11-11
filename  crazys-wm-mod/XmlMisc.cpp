@@ -376,7 +376,7 @@ TiXmlElement* SaveTrainingXML(TiXmlElement* pRoot, int training[], int trainingM
 	{
 		TiXmlElement* pTraining = new TiXmlElement(XMLifyString(trainingTypeNames[i]));
 		pTrainings->LinkEndChild(pTraining);
-		pTraining->SetAttribute("Training", training[i]);
+		pTraining->SetAttribute("Train", training[i]);
 		if (trainingMods && trainingMods[i])	pTraining->SetAttribute("Mod", trainingMods[i]);
 		if (trainingTemps && trainingTemps[i])	pTraining->SetAttribute("Temp", trainingTemps[i]);
 	}
@@ -395,7 +395,7 @@ bool LoadTrainingXML(TiXmlHandle hTrainings, int training[], int trainingMods[],
 		if (pTraining)
 		{
 			int tempInt = 0;
-			if (pTraining->Attribute("Training"))	pTraining->QueryIntAttribute("Training", &tempInt);
+			if (pTraining->Attribute("Train"))	pTraining->QueryIntAttribute("Train", &tempInt);
 			if (tempInt < -100)	tempInt = -100; if (tempInt > 100)	tempInt = 100;
 			training[x] = tempInt; 
 			
