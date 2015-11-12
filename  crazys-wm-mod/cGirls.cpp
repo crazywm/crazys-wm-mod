@@ -2674,12 +2674,13 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		else if (enjcount > 0)						{ ss << "\nShe is indifferent to all other tasks.\n\n"; }
 		else										{ ss << "At the moment, she is indifferent to all tasks.\n\n"; }
 
-		ss << "She";
+	
 		int tricount = 0;
 		for (int i = 0; i < NUM_TRAININGTYPES; ++i)
 		{
 			if (sGirl::training_jobs[i] == "")			continue;
 			int e = girl->get_training(i);
+			ss << "She";
 			/* */if (e < 0)	{ text = " hasn't started "; }
 			// if she's indifferent, why specify it? Let's instead skip it.
 			else if (e < 15)	{ if (cfg.debug.log_extradetails())	{ text = " is indifferent to "; } else continue; }
@@ -3885,7 +3886,7 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	}
 
 	SaveActionsXML(pGirl, m_Enjoyment);							// save their enjoyment values
-	SaveTrainingXML(pGirl, m_Training);							// save their training values
+	SaveTrainingXML(pGirl, m_Training, m_TrainingMods, m_TrainingTemps);						// save their training values
 	m_Triggers.SaveTriggersXML(pGirl);							// save their triggers
 
 	return pGirl;

@@ -41,13 +41,19 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"wait*.", "card*.", "bunny*.", "nude*.", "mast*.", "titty*.", "milk*.", "hand*.",
 	"foot*.", "bed*.", "farm*.", "herd*.", "cook*.", "craft*.", "swim*.", "bath*.",
 	"nurse*.", "formal*.", "shop*.", "magic*.", "sign*.", "presented*.", "dom*.*",
+	"deep*.", "eatout*.", "dildo*.", "sub*.", "strapon*.", "les69ing*.", "lick*.*",
+	"balls*.", "cowgirl*.", "revcowgirl*.", "sexdoggy*.", "jail*.", "puppygirl*.", "ponygirl*.*",
+	"catgirl*.*",
 	"preg*.",	// pregnant varients
 	"preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
 	"pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
 	"pregstrip*.", "pregmaid*.", "pregsing*.", "pregwait*.", "pregcard*.", "pregbunny*.", "pregnude*.",
 	"pregmast*.", "pregtitty*.", "pregmilk*.", "preghand*.", "pregfoot*.", "pregbed*.", "pregfarm*.",
 	"pregherd*.", "pregcook*.", "pregcraft*.", "pregswim*.", "pregbath*.", "pregnurse*.", "pregformal*.",
-	"pregshop*.", "pregmagic*.", "pregsign*.", "pregpresented*.", "pregdom*.*"
+	"pregshop*.", "pregmagic*.", "pregsign*.", "pregpresented*.", "pregdom*.*", "pregdeep*.", 
+	"pregeatout*.", "pregdildo*.", "pregsub*.", "pregstrapon*.", "pregles69ing*.", "preglick*.*",
+	"pregballs*.", "pregcowgirl*.", "pregrevcowgirl*.", "pregsexdoggy*.", "pregjail*.", "pregpuppygirl*.", 
+	"pregponygirl*.*", "pregcatgirl*.*"
 };
 string galtxt[] = 
 {

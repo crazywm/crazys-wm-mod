@@ -37,7 +37,7 @@ const char* actionTypeNames[] =
 const char* trainingTypeNames[] =
 {
 	// When modifying Training types, search for "Change-Traning-Types"  :  found in > XmlMisc.cpp
-	"PUPPY", "GENERAL"
+	"PUPPY", "PONY", "GENERAL"
 };
 
 /*
@@ -372,7 +372,7 @@ TiXmlElement* SaveTrainingXML(TiXmlElement* pRoot, int training[], int trainingM
 {
 	TiXmlElement* pTrainings = new TiXmlElement("Training");
 	pRoot->LinkEndChild(pTrainings);
-	for (int i = 0; i < NUM_ACTIONTYPES; i++)
+	for (int i = 0; i < NUM_TRAININGTYPES; i++)
 	{
 		TiXmlElement* pTraining = new TiXmlElement(XMLifyString(trainingTypeNames[i]));
 		pTrainings->LinkEndChild(pTraining);
@@ -396,7 +396,7 @@ bool LoadTrainingXML(TiXmlHandle hTrainings, int training[], int trainingMods[],
 		{
 			int tempInt = 0;
 			if (pTraining->Attribute("Train"))	pTraining->QueryIntAttribute("Train", &tempInt);
-			if (tempInt < -100)	tempInt = -100; if (tempInt > 100)	tempInt = 100;
+			if (tempInt < 0)	tempInt = 0; if (tempInt > 100)	tempInt = 100;
 			training[x] = tempInt; 
 			
 			tempInt = 0;
