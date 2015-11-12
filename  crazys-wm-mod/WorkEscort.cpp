@@ -77,6 +77,8 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int roll_sex = g_Dice.d100();
 	int prepare = (g_Girls.GetStat(girl, STAT_AGILITY) + g_Girls.GetStat(girl, SKILL_SERVICE)/2);
 	int cust_wealth = 1;
+	int cust_type = 0;
+	string cust_type_text = "";
 
 	int sex = false;
 	int anal = false;
@@ -138,17 +140,17 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		escort += 2;
 	}
 
-	// The type of customer She Escorts
-/*default*/	int cust_type = 2;    string cust_type_text = "Commoner";
-{ cust_type = 10; cust_type_text = "King"; }
-{ cust_type = 9; cust_type_text = "Prince"; }
-{ cust_type = 8; cust_type_text = "Noble"; }
-{ cust_type = 7; cust_type_text = "Judge"; }
-{ cust_type = 6; cust_type_text = "Mayor"; }
-{ cust_type = 5; cust_type_text = "Sheriff"; }
-{ cust_type = 4; cust_type_text = "Bureaucrat"; }
-{ cust_type = 3; cust_type_text = "Regular"; }
-{ cust_type = 1; cust_type_text = "Deadbeat"; }	
+// The type of customer She Escorts
+///*default*/	int cust_type = 2;    string cust_type_text = "Commoner";
+//{ cust_type = 10; cust_type_text = "King"; }
+//{ cust_type = 9; cust_type_text = "Prince"; }
+//{ cust_type = 8; cust_type_text = "Noble"; }
+//{ cust_type = 7; cust_type_text = "Judge"; }
+//{ cust_type = 6; cust_type_text = "Mayor"; }
+//{ cust_type = 5; cust_type_text = "Sheriff"; }
+//{ cust_type = 4; cust_type_text = "Bureaucrat"; }
+//{ cust_type = 3; cust_type_text = "Regular"; }
+//{ cust_type = 1; cust_type_text = "Deadbeat"; }	
 
 enum escortchoice
 		{
@@ -207,7 +209,7 @@ switch (choice)
 
 case Es_Regular:
 {
-	cust_type = 3;
+	cust_type = 3; cust_type_text = "Regular";
 	//Regular event
 	//telling what she is meeting and where
 	ss << girlName << " has been requested by a regular client, a man who has called on her before and now is willing to pay extra for a special assignation. His new boss has asked the client out for a double date with the client's girlfriend and his own wife so he can get to know his new employee better. The problem is that the client does not have a girlfriend. " << girlName << " is to arrive at a local restaurant, equipped with a suitable dress and pair of shoes, ready to chat amiably. The client sends a list of written details about their \"shared relationship\" for her to memorize.\n";
@@ -790,7 +792,7 @@ break;	// end Es_Regular
 
 case Es_Commoner:
 {
-	cust_type = 2;
+	cust_type = 2; cust_type_text = "Commoner";
 	//COMMENER
 	//telling what she is meeting and where
 	ss << girlName << " has been requested by a commoner client, an artisan who has used your services before and is looking for a refined and charming young lady to join him for dinner at a popular restaurant in the Crossgate city center. She is to wear casual clothes and meet him for drinks, dinner, and conversation.\n";
@@ -1102,6 +1104,7 @@ case Es_Commoner:
 		else
 		{
 			ss << girlName << " smiles back, with a flash of lust in her eyes. \"I would love to get to know you better, too,\" she responds, reaching over to brush his fingers with hers. \"A coffee at your home would be lovely.\" The two of them walk hand-in-hand out of the restaurant and a few blocks to his place, laughing at each other's jokes the whole way. The journey from Crossgate's city center takes a fairly long time, and " << girlName << " observes with a new understanding as they pass by the expensive homes into poorer and poorer neighborhoods before they finally come to a humble artisan's cottage on the outskirts. The client opens the door like a gentleman, hiding his embarrassment at his own relative poverty, and the two enter.\n";
+			sex_event = true;
 		}
 	}
 
@@ -1346,7 +1349,7 @@ break;	// end Es_Commoner
 
 case Es_DeadBeat:
 {
-	cust_type = 1;
+	cust_type = 1; cust_type_text = "Dead Beat";
 	//telling what she is meeting and where
 	ss << girlName << " has been requested by a client who has not used your services before, and has no reputation with your establishment. Because she is not famous enough to attract more reputable customers, she has no other clientele. She is to wear casual clothing and meet him at a nearby bar for a drink.\n";
 
