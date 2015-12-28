@@ -227,6 +227,7 @@ void cGirlTorture::DoTorture()
 	*	DANGER DEATH and low health warnings
 	*
 	*/
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGirlTorture || DANGER DEATH"; g_LogFile.ssend(); }
 	if (m_TorturedByPlayer)
 	{
 		if (m_Girl->health() <= 0)		// Dead Girl
@@ -235,7 +236,6 @@ void cGirlTorture::DoTorture()
 			m_Message += gettext("Also, she is close to death.\n");
 
 	}
-
 	else	// Tortured by Torturer Girl
 	{
 		if (m_Girl->health() <= 0)
@@ -266,13 +266,7 @@ void cGirlTorture::DoTorture()
 
 		}
 	}
-
-	if (cfg.debug.log_torture())
-	{
-		g_LogFile.ss() << "cGirlTorture: " << sGirlName << " torture completed!\n";
-		g_LogFile.ssend();
-	}
-
+	if (cfg.debug.log_torture()) { g_LogFile.ss() << "cGirlTorture: " << sGirlName << " torture completed!\n"; g_LogFile.ssend(); }
 }
 
 void cGirlTorture::AddTextPlayer()
@@ -604,20 +598,24 @@ void cGirlTorture::UpdateTraits()
 	doubles chance of injuring girls when torturing them
 	evil gained from torture is also doubled  */
 	if (cfg.initial.torture_mod() < 0){ harshtorture = true; }
-	else	{ nWeekMod = cfg.initial.torture_mod() * m_DungeonGirl->m_Weeks; }
+	else { nWeekMod = cfg.initial.torture_mod() * m_DungeonGirl->m_Weeks; }
+	if (nWeekMod < 1) nWeekMod = 1;
 
 	if (g_Dice.percent(30) && m_Girl->spirit() < 20 && m_Girl->health() < 20)
 	{
+		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGirlTorture || add_trait Broken Will"; g_LogFile.ssend(); }
 		if (harshtorture)	{ m_Girl->add_trait("Broken Will", false); }
-		else				{ m_Girl->add_trait("Broken Will", 5 + nWeekMod / 2); }
+		else				{ m_Girl->add_trait("Broken Will", int(5 + nWeekMod / 2)); }
 	}
 	if (g_Dice.percent(30) && m_Girl->bdsm() > 30)
 	{
+		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGirlTorture || add_trait Masochist"; g_LogFile.ssend(); }
 		if (harshtorture)	{ m_Girl->add_trait("Masochist", false); }
 		else				{ m_Girl->add_trait("Masochist", 10 + nWeekMod); }
 	}
 	if (g_Dice.percent(30) && m_Girl->health() < 10)
 	{
+		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGirlTorture || add_trait Mind Fucked"; g_LogFile.ssend(); }
 		if (harshtorture)	{ m_Girl->add_trait("Mind Fucked", false); }
 		else				{ m_Girl->add_trait("Mind Fucked", 10 + nWeekMod); }
 	}

@@ -158,6 +158,7 @@
     <ClCompile Include="tinyxmlparser.cpp" />
     <ClCompile Include="WorkArenaJousting.cpp" />
     <ClCompile Include="WorkBaker.cpp" />
+    <ClCompile Include="WorkBarCook.cpp" />
     <ClCompile Include="WorkBlacksmith.cpp" />
     <ClCompile Include="WorkBoobJob.cpp" />
     <ClCompile Include="WorkBreastReduction.cpp" />
@@ -185,6 +186,8 @@
     <ClCompile Include="WorkGetFertility.cpp" />
     <ClCompile Include="WorkGetTubesTied.cpp" />
     <ClCompile Include="WorkGetVaginalRejuvenation.cpp" />
+    <ClCompile Include="WorkHouseCook.cpp" />
+    <ClCompile Include="WorkHousePet.cpp" />
     <ClCompile Include="WorkIntern.cpp" />
     <ClCompile Include="WorkJeweler.cpp" />
     <ClCompile Include="WorkLiposuction.cpp" />

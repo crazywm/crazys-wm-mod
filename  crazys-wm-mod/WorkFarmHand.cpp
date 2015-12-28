@@ -53,7 +53,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	CleanAmt += JP_FarmHand(girl, false);
 
 	int enjoyC = 0, enjoyF = 0;
-	int wages = 0;
+	double wages = 0, tips = 0;
 	bool playtime = false;
 
 
@@ -148,7 +148,10 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// do all the output
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
 	brothel->m_Filthiness -= int(CleanAmt);
-	girl->m_Pay = wages;
+
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve girl
 	int xp = 5, libido = 1, skill = 3;

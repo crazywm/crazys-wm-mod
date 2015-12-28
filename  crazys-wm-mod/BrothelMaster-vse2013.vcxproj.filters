@@ -612,6 +612,9 @@
     <ClCompile Include="WorkJeweler.cpp" />
     <ClCompile Include="cScreenGallery.cpp" />
     <ClCompile Include="cScreenTurnSummary.cpp" />
+    <ClCompile Include="WorkHouseCook.cpp" />
+    <ClCompile Include="WorkHousePet.cpp" />
+    <ClCompile Include="WorkBarCook.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

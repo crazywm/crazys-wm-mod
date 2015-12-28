@@ -318,7 +318,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	ss << "\n\n";
 
 	//value calculation
-	int milkValue = milkProduced * MILKWHOLESALE;		//value
+	int milkValue = int(milkProduced * MILKWHOLESALE);		//value
 	if (g_Girls.HasTrait(girl, "Cat Girl"))
 	{
 		ss << "Cat-Girl breast-milk has higher value.\n";

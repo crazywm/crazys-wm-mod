@@ -66,7 +66,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int jobperformance = 0, wages = 0, tips = 0, escort =0, fame = 0;
+	double jobperformance = 0, wages = 0, tips = 0, escort = 0, fame = 0;
 	int imagetype = IMGTYPE_FORMAL;
 
 	int agl = (g_Girls.GetStat(girl, STAT_AGILITY));
@@ -76,7 +76,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int roll_d = g_Dice.d100();
 	int roll_sex = g_Dice.d100();
 	int prepare = (g_Girls.GetStat(girl, STAT_AGILITY) + g_Girls.GetStat(girl, SKILL_SERVICE)/2);
-	int cust_wealth = 1;
+	double cust_wealth = 1;
 	int cust_type = 0;
 	string cust_type_text = "";
 
@@ -1937,10 +1937,9 @@ break;	// end Es_DeadBeat
 	//tips = (jobperformance > 0) ? (g_Dice%jobperformance) * cust_type * cust_wealth : 0;
 	ss << "\n\n" << girlName << " receives " << wages << " in payment for her work as an Escort for a " << cust_type_text << " client. Her fame as an Escort has changed by " << fame << ".";
 
-	girl->m_Tips = max(tips, 0);
-	girl->m_Pay = wages;
-
-
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 20, libido = 1, skill = 3;

@@ -43,13 +43,14 @@ public:
 	}
 	~cTextItem() { if (m_Next) delete m_Next; m_Next = 0; }
 
-	void CreateTextItem(int ID, int x, int y, int width, int height, string text, int size, bool auto_scrollbar = true, bool force_scrollbar = false)
+	void CreateTextItem(int ID, int x, int y, int width, int height, string text, int size, bool auto_scrollbar = true,
+		bool force_scrollbar = false, int red = 0, int green = 0, int blue = 0)
 	{
 		m_ID = ID;
 		SetPosition(x, y, width, height);
 
 		SetText(text);
-		ChangeFontSize(size);
+		ChangeFontSize(size, red, green, blue);
 
 		m_AutoScrollBar = auto_scrollbar;
 		m_ForceScrollBar = force_scrollbar;
@@ -80,11 +81,11 @@ public:
 
 	bool IsOver(int x, int y) { return (x > m_XPos && y > m_YPos && x < m_XPos + m_Width - 15 && y < m_YPos + m_Height); }
 
-	void ChangeFontSize(int FontSize)
+	void ChangeFontSize(int FontSize, int red = 0, int green = 0, int blue = 0)
 	{
 		m_Font.LoadFont(cfg.fonts.normal(), FontSize);
 		m_Font.SetText(m_Text);
-		m_Font.SetColor(0, 0, 0);
+		m_Font.SetColor(red, green, blue);
 		m_Font.SetMultiline(true, m_Width, m_Height);
 	}
 

@@ -466,7 +466,8 @@ void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height
 	m_CheckBoxes.push_back(newCheckBox);
 }
 
-void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height, string text, int size, bool auto_scrollbar, bool force_scrollbar)
+void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height, string text, int size, bool auto_scrollbar,
+	bool force_scrollbar, int red, int green, int blue)
 {
 	width = (int)((float)width*m_xRatio);
 	height = (int)((float)height*m_yRatio);
@@ -476,7 +477,7 @@ void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height
 	// create text item
 	ID = m_TextItems.size();
 	cTextItem* newTextItem = new cTextItem();
-	newTextItem->CreateTextItem(ID, x + m_XPos, y + m_YPos, width, height, text, size, auto_scrollbar, force_scrollbar);
+	newTextItem->CreateTextItem(ID, x + m_XPos, y + m_YPos, width, height, text, size, auto_scrollbar, force_scrollbar, red, green, blue);
 
 	// Store text item
 	m_TextItems.push_back(newTextItem);
@@ -767,7 +768,7 @@ void cInterfaceWindowXML::read_text_item(TiXmlElement *el)
 {
 	string name, text;
 	XmlUtil xu(m_filename);
-	int id, x, y, w, h, font_size;
+	int id, x, y, w, h, font_size, red = 0, green = 0, blue = 0;
 	bool auto_scrollbar = true, force_scrollbar = false;
 
 	xu.get_att(el, "Name", name);
@@ -779,10 +780,13 @@ void cInterfaceWindowXML::read_text_item(TiXmlElement *el)
 	xu.get_att(el, "FontSize", font_size);
 	xu.get_att(el, "AutoScrollbar", auto_scrollbar, Optional);	// automatically use scrollbar if text doesn't fit; otherwise, don't
 	xu.get_att(el, "ForceScrollbar", force_scrollbar, Optional);	// force scrollbar display even when not needed (shown disabled, grayed out)
+	xu.get_att(el, "Red", red, Optional);
+	xu.get_att(el, "Green", green, Optional);
+	xu.get_att(el, "Blue", blue, Optional);
 	/*
 	*	create the text item
 	*/
-	AddTextItem(id, x, y, w, h, text, font_size, auto_scrollbar, force_scrollbar);
+	AddTextItem(id, x, y, w, h, text, font_size, auto_scrollbar, force_scrollbar, red, green, blue);
 	/*
 	*	make a note of the ID
 	*/

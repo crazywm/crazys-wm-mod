@@ -672,29 +672,25 @@ void cListBox::Draw()
 		offset.y = offset.y + 1;
 		if (current->m_Selected)
 		{
-			if (current->m_Color == 1)
-				SDL_BlitSurface(m_SelectedRedBackground, 0, g_Graphics.GetScreen(), &offset);
-			else if (current->m_Color == 2)
-				SDL_BlitSurface(m_SelectedDarkBlueBackground, 0, g_Graphics.GetScreen(), &offset);
-			if (current->m_Color == 3)
-				SDL_BlitSurface(m_SelectedGreenBackground, 0, g_Graphics.GetScreen(), &offset);	// `J` added green
-			if (current->m_Color == 4)
-				SDL_BlitSurface(m_SelectedYellowBackground, 0, g_Graphics.GetScreen(), &offset);	// `J` added yellow
-			else
-				SDL_BlitSurface(m_ElementSelectedBackground, 0, g_Graphics.GetScreen(), &offset);
+			switch (current->m_Color)
+			{
+			case 1:		SDL_BlitSurface(m_SelectedRedBackground, 0, g_Graphics.GetScreen(), &offset);		break;
+			case 2:		SDL_BlitSurface(m_SelectedDarkBlueBackground, 0, g_Graphics.GetScreen(), &offset);	break;
+			case 3:		SDL_BlitSurface(m_SelectedGreenBackground, 0, g_Graphics.GetScreen(), &offset);		break;	// `J` added green
+			case 4:		SDL_BlitSurface(m_SelectedYellowBackground, 0, g_Graphics.GetScreen(), &offset);	break;	// `J` added yellow
+			default:	SDL_BlitSurface(m_ElementSelectedBackground, 0, g_Graphics.GetScreen(), &offset);	break;
+			}
 		}
 		else
 		{
-			if (current->m_Color == 1)
-				SDL_BlitSurface(m_RedBackground, 0, g_Graphics.GetScreen(), &offset);
-			else if (current->m_Color == 2)
-				SDL_BlitSurface(m_DarkBlueBackground, 0, g_Graphics.GetScreen(), &offset);
-			else if (current->m_Color == 3)
-				SDL_BlitSurface(m_GreenBackground, 0, g_Graphics.GetScreen(), &offset);
-			else if (current->m_Color == 4)
-				SDL_BlitSurface(m_YellowBackground, 0, g_Graphics.GetScreen(), &offset);
-			else
-				SDL_BlitSurface(m_ElementBackground, 0, g_Graphics.GetScreen(), &offset);
+			switch (current->m_Color)
+			{
+			case 1:		SDL_BlitSurface(m_RedBackground, 0, g_Graphics.GetScreen(), &offset);				break;
+			case 2:		SDL_BlitSurface(m_DarkBlueBackground, 0, g_Graphics.GetScreen(), &offset);			break;
+			case 3:		SDL_BlitSurface(m_GreenBackground, 0, g_Graphics.GetScreen(), &offset);				break;	// `J` added green
+			case 4:		SDL_BlitSurface(m_YellowBackground, 0, g_Graphics.GetScreen(), &offset);			break;	// `J` added yellow
+			default:	SDL_BlitSurface(m_ElementBackground, 0, g_Graphics.GetScreen(), &offset);			break;
+			}
 		}
 
 		// if we have a custom text color specified, use it
@@ -704,8 +700,7 @@ void cListBox::Draw()
 		// draw the text
 		for (int i = 0; i<m_ColumnCount; i++)
 		{
-			if (m_SkipColumn[i])
-				continue;
+			if (m_SkipColumn[i]) continue;
 			m_Font.SetText(current->m_Data[m_ColumnSort[i]]);
 			m_Font.DrawText(offset.x + 2 + m_ColumnOffset[i], offset.y + 1);
 		}

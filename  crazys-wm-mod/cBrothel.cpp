@@ -4530,7 +4530,7 @@ string cBrothelManager::fame_text(sBrothel* brothel)
 	else if (brothel->m_Fame >= 50)/*     */	ss << gettext("Somewhat known");
 	else if (brothel->m_Fame >= 30)/*     */	ss << gettext("Mostly unknown");
 	else/*                                */	ss << gettext("Unknown");
-	if (cfg.debug.log_show_numbers())/*   */	ss << " (" << brothel->m_Fame << ")";
+	if (cfg.debug.log_show_numbers())/*   */	ss << " (" << (int)brothel->m_Fame << ")";
 	return ss.str();
 }
 string cBrothelManager::happiness_text(sBrothel* brothel)

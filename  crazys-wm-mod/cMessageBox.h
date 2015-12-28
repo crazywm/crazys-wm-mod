@@ -20,8 +20,14 @@
 #define __CMESSAGEBOX_H
 
 // Includes
+#include "DirPath.h"
+#include "tinyxml.h"
+#include "XmlUtil.h"
+#include "CLog.h"
 #include "cFont.h"
 #include<queue>
+
+extern CLog g_LogFile;
 
 const int NUM_MESSBOXCOLOR = 4;
 
@@ -30,15 +36,22 @@ const int NUM_MESSBOXCOLOR = 4;
 class cMessageBox
 {
 public:
-	cMessageBox() {m_Color=0;m_TextAdvance=false;m_Font = 0;m_Text = "";for(int i=0; i<NUM_MESSBOXCOLOR; i++)m_Background[i]=0;m_Border=0;m_Active=false;m_Advance=false;m_Position=0;}
+	cMessageBox();
 	~cMessageBox();
 
 	void CreateWindow(int x = 32, int y = 416, int width = 736, int height = 160, int BorderSize = 1, int FontSize = 16, bool scale = true);
 	void ChangeFontSize(int FontSize = 16);
 	void Draw();
 	void Advance();
-	void ResetWindow(string text, int color) {if(m_Font)m_Font->SetText(text);m_Text=text;m_Position=0;m_TextAdvance=false;m_Color = color;}
-	bool IsActive() {return m_Active;}
+	void ResetWindow(string text, int color)
+	{
+		if (m_Font)m_Font->SetText(text);
+		m_Text = text;
+		m_Position = 0;
+		m_TextAdvance = false;
+		m_Color = color;
+	}
+	bool IsActive() { return m_Active; }
 	void SetActive(bool active) {m_Active = active;}
 
 private:

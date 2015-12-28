@@ -100,7 +100,7 @@ public:
 	void HideText(int id, bool hide);
 	void HideText(int id) { HideText(id, true); }
 	void UnhideText(int id) { HideText(id, false); }
-	void AddTextItem(int & ID, int x, int y, int width, int height, string text, int size = 16, bool auto_scrollbar = true, bool force_scrollbar = false);
+	void AddTextItem(int & ID, int x, int y, int width, int height, string text, int size = 16, bool auto_scrollbar = true, bool force_scrollbar = false, int red = 0, int green = 0, int blue = 0);
 	void AddTextItemScrollBar(int id);
 
 	void AddSlider(int & ID, int x, int y, int width, int min = 0, int max = 100, int increment = 5, int value = 0, bool live_update = true);
