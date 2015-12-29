@@ -1,0 +1,75 @@
+###  Changes before 12/27/2015
+I kindof dropped out of working on the game because work was draining me too much mentally and physically.
+As a result I did not work on the game at all for 2 months but other people did.
+Much of what they have done I have not really gone through yet so I can't really comment on it for now.
+Several new image types and a few new jobs have been added as well as a lot of new texts for jobs.
+
+
+###  Changes 12/27/2015 - I'm back :)
+Added color configuration to text items in interface xmls
+* Add Red, Green and Blue tags to the <Text> block with numbers 0-255 to add hex colors
+** <Text Name="Label1" Text="Brothel Name" XPos="32" YPos="32" Width="128" Height="32" FontSize="16" Red="250" Green="0" Blue="0" />
+Added popup_message.xml to the interface so it can be customized.
+Added more debug lines to torture code to narrow down the cause of crashes.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.21
+
+###  Changes 12/28/2015
+Fixed a few unfinished additions 
+* fixed new image types not displaying in gallery
+Updated a few items with changes I made before.
+Updated WorkMatron.cpp with changes I made before:
+* updated Addict and Exhibitionist events
+Cleaned a few things in cGirls.cpp,h
+* Added has_weapon(); to see if the girl has a weapon or small weapon
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.22
+
+###  Changes 12/29/2015
+Fixed a bug in workSecurity.cpp and did a little updating
+* Reduced the base security level so it is not too over powered
+* HHT plays a little part in security level now
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.23
+
+
+ 
+$$$$ TO DO - SHORT TERM - (for this version) $$$$
+
+$$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
+
+$$$$ TO DO - SHORT TERM - (Soon) $$$$
+
+$$$$ TO DO - MID TERM - (for the next few versions) $$$$
+Keep expanding on simple-save
+food and drink
+
+Make config in_fact and out_fact do something
+
+Change the way the game handles images
+ - Make cfg.folders.preferdefault() work
+
+
+New Script Stuff:
+ - Picture_Sequence     -- needs image rework before it can be implemented
+ - Make_Movie_Scene     -- needs movie and scene rework before it can be implemented
+ - And/Or
+New Default Interacts for each building
+ - DefaultInteractStudio.script
+ - DefaultInteractArena.script
+ - DefaultInteractCentre.script
+ - DefaultInteractClinic.script
+ - DefaultInteractFarm.script
+ - DefaultInteractHouse.script
+New Meet Try for the buildings that don't have them
+ - MeetCentreTry.script (homeless, addicts, psychpatients, etc.)
+ - MeetFarmTry.script (beast girls, farmers, craftsmen, etc.)
+ - MeetHouseTry.script (House party? - Costs money to do, adds lots of filthiness to the house, etc.)
+
+
+$$$$ TO DO - LONG TERM $$$$
+Update from SDL1.2 to SDL2.0 (or something else)
+Expand the map and allow multiples of all buildings

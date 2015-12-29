@@ -72,7 +72,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	string whorename = (whoreonduty ? "Whore " + whoreonduty->m_Realname + "" : "the Whore");
 
 
-	double SecLev = JP_Freetime(girl, false);
+	double SecLev = JP_Security(girl, false);
 
 
 	// Complications
@@ -117,37 +117,20 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	}
 
-	if (g_Dice.percent(5) || (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(20)))
+	if ((girl->libido() > 50 && g_Dice.percent(girl->libido() / 5)) || (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(20)))
 	{
-		int  tex = g_Dice % 5;
 		ss << gettext("\nGave some bonus service to the well behaved patrons, ");
-		if (tex <= 1 && !brothel->m_RestrictHand)
+		int l = 0;
+		switch (g_Dice % 4)		// `J` just roll for the 4 sex options and flash only if sex is restricted
 		{
-			ss << gettext(" She jerked them off.");
-			imagetype = IMGTYPE_HAND;
+		case 1:	if (!brothel->m_RestrictOral)	{ l = 10;	imagetype = IMGTYPE_ORAL;	ss << gettext("She sucked them off");	break; }
+		case 2:	if (!brothel->m_RestrictTitty)	{ l = 7;	imagetype = IMGTYPE_TITTY;	ss << gettext("She used her tits to get them off");	break; }
+		case 3:	if (!brothel->m_RestrictHand)	{ l = 6;	imagetype = IMGTYPE_HAND;	ss << gettext("She jerked them off");	break; }
+		case 4:	if (!brothel->m_RestrictFoot)	{ l = 4;	imagetype = IMGTYPE_FOOT;	ss << gettext("She used her feet to get them off");	break; }
+		default:/*                         */	{ l = 2;	imagetype = IMGTYPE_STRIP;	ss << gettext("She flashed them");	break; }
 		}
-		else if (tex <= 2 && !brothel->m_RestrictOral)
-		{
-			ss << gettext(" She sucked them off.");
-			imagetype = IMGTYPE_ORAL;
-		}
-		else if (tex <= 3 && !brothel->m_RestrictTitty)
-		{
-			ss << gettext(" She used her tits to get them off.");
-			imagetype = IMGTYPE_TITTY;
-		}
-		else if (tex <= 4 && !brothel->m_RestrictFoot)
-		{
-			ss << gettext(" She used her feet to get them off.");
-			imagetype = IMGTYPE_FOOT;
-		}
-		else
-		{
-			ss << gettext(" She flashed them.");
-			imagetype = IMGTYPE_STRIP;
-		}
-		ss << "\n\n";
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -10);
+		ss << ".\n\n";
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -l);
 	}
 
 	if (SecLev < 10) SecLev = 10;
@@ -197,12 +180,9 @@ double cJobManager::JP_Security(sGirl* girl, bool estimate)	// not used
 	}
 	else			// for the actual check
 	{
-		SecLev = g_Dice % (g_Girls.GetSkill(girl, SKILL_COMBAT))
-			+ g_Dice % (g_Girls.GetSkill(girl, SKILL_MAGIC) / 3)
-			+ g_Dice % (g_Girls.GetStat(girl, STAT_AGILITY) / 3);
-		int t = girl->tiredness() - 80;
-		if (t > 0)
-			SecLev -= t * 2;
+		SecLev = g_Dice % (g_Girls.GetSkill(girl, SKILL_COMBAT) / 2)
+			+ g_Dice % (g_Girls.GetSkill(girl, SKILL_MAGIC) / 4)
+			+ g_Dice % (g_Girls.GetStat(girl, STAT_AGILITY) / 4);
 	}
 
 	// Good traits
@@ -275,6 +255,23 @@ double cJobManager::JP_Security(sGirl* girl, bool estimate)	// not used
 	if (g_Girls.HasTrait(girl, "Delicate"))				SecLev -= 5;	// Awww, I broke a nail :(
 	if (g_Girls.HasTrait(girl, "Old"))					SecLev -= 5;	// Gets no respect
 	if (g_Girls.HasTrait(girl, "Plump"))				SecLev -= 5;	// Chubby... chaser?
+
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 70;
+		if (t > 0) SecLev -= t * 2;
+
+		int h = girl->health();
+		if (h < 10) SecLev -= (20 - h) * 5;
+		else if (h < 20) SecLev -= (20 - h) * 2;
+		else if (h < 30) SecLev -= 30 - h;
+
+		int y = girl->happiness();
+		if (y < 20) SecLev -= 20 - y;
+
+		if (SecLev < 0)	SecLev = 0;
+	}
+
 
 	return SecLev;
 }
