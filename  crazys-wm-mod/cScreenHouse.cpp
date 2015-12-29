@@ -74,11 +74,11 @@ void cScreenHouse::init()
 		switch (obj->m_Objective)
 		{
 		case OBJECTIVE_REACHGOLDTARGET:
-			ss << gettext("Gather ") << obj->m_Target << gettext(" gold");
+			ss << gettext("End the week ") << obj->m_Target << gettext(" gold in the bank");
 			if (obj->m_Limit != -1) {
-				ss << gettext(" in ") << obj->m_Limit << gettext(" weeks");
+				ss << gettext(" within ") << obj->m_Limit << gettext(" weeks");
 			}
-			ss << gettext(", ") << g_Gold.ival() << gettext(" gathered so far.");
+			ss << gettext(", ") << g_Brothels.GetBankMoney() << gettext(" gathered so far.");
 			break;
 		case OBJECTIVE_GETNEXTBROTHEL:
 			fmt_objective(ss, gettext("Purchase the next brothel"), obj->m_Limit);

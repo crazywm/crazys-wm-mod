@@ -386,7 +386,16 @@ TiXmlElement* SaveTrainingXML(TiXmlElement* pRoot, int training[], int trainingM
 bool LoadTrainingXML(TiXmlHandle hTrainings, int training[], int trainingMods[], int trainingTemps[])
 {
 	TiXmlElement* pTrainings = hTrainings.ToElement();
-	if (pTrainings == 0) return false;
+	if (pTrainings == 0)
+	{
+		for (int x = 0; x < NUM_TRAININGTYPES; ++x)	// `J` added to set missing trainings to 0
+		{
+			training[x] = 0;
+			trainingMods[x] = 0;
+			trainingTemps[x] = 0;
+		}
+		return false;
+	}
 
 	for (int x = 0; x < NUM_TRAININGTYPES; ++x)
 	{
@@ -406,6 +415,12 @@ bool LoadTrainingXML(TiXmlHandle hTrainings, int training[], int trainingMods[],
 			tempInt = 0;
 			if (pTraining->Attribute("Temp"))	pTraining->QueryIntAttribute("Temp", &tempInt);
 			trainingTemps[x] = tempInt;
+		}
+		else
+		{
+			training[x] = 0;
+			trainingMods[x] = 0;
+			trainingTemps[x] = 0;
 		}
 	}
 	return true;

@@ -40,28 +40,29 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"death*.", "profile*.", "combat*.", "oral*.", "ecchi*.", "strip*.", "maid*.", "sing*.",
 	"wait*.", "card*.", "bunny*.", "nude*.", "mast*.", "titty*.", "milk*.", "hand*.",
 	"foot*.", "bed*.", "farm*.", "herd*.", "cook*.", "craft*.", "swim*.", "bath*.",
-	"nurse*.", "formal*.", "shop*.", "magic*.", "sign*.", "presented*.", "dom*.*",
-	"deep*.", "eatout*.", "dildo*.", "sub*.", "strapon*.", "les69ing*.", "lick*.*",
-	"balls*.", "cowgirl*.", "revcowgirl*.", "sexdoggy*.", "jail*.", "puppygirl*.", "ponygirl*.*",
-	"catgirl*.*",
+	"nurse*.", "formal*.", "shop*.", "magic*.", "sign*.", "presented*.", "dom*.",
+	"deep*.", "eatout*.", "dildo*.", "sub*.", "strapon*.", "les69ing*.", "lick*.",
+	"balls*.", "cowgirl*.", "revcowgirl*.", "sexdoggy*.", "jail*.", "puppygirl*.", "ponygirl*.",
+	"catgirl*.",
 	"preg*.",	// pregnant varients
 	"preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
 	"pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
 	"pregstrip*.", "pregmaid*.", "pregsing*.", "pregwait*.", "pregcard*.", "pregbunny*.", "pregnude*.",
 	"pregmast*.", "pregtitty*.", "pregmilk*.", "preghand*.", "pregfoot*.", "pregbed*.", "pregfarm*.",
 	"pregherd*.", "pregcook*.", "pregcraft*.", "pregswim*.", "pregbath*.", "pregnurse*.", "pregformal*.",
-	"pregshop*.", "pregmagic*.", "pregsign*.", "pregpresented*.", "pregdom*.*", "pregdeep*.", 
-	"pregeatout*.", "pregdildo*.", "pregsub*.", "pregstrapon*.", "pregles69ing*.", "preglick*.*",
-	"pregballs*.", "pregcowgirl*.", "pregrevcowgirl*.", "pregsexdoggy*.", "pregjail*.", "pregpuppygirl*.", 
-	"pregponygirl*.*", "pregcatgirl*.*"
+	"pregshop*.", "pregmagic*.", "pregsign*.", "pregpresented*.", "pregdom*.", "pregdeep*.",
+	"pregeatout*.", "pregdildo*.", "pregsub*.", "pregstrapon*.", "pregles69ing*.", "preglick*.",
+	"pregballs*.", "pregcowgirl*.", "pregrevcowgirl*.", "pregsexdoggy*.", "pregjail*.", "pregpuppygirl*.",
+	"pregponygirl*.", "pregcatgirl*."
 };
-string galtxt[] = 
+string galtxt[] =
 {
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cImageItem.cpp > galtxt
 	"Anal", "BDSM", "Sex", "Beast", "Group", "Lesbian", "Torture", "Death", "Profile", "Combat",
 	"Oral", "Ecchi", "Strip", "Maid", "Sing", "Wait", "Card", "Bunny", "Nude", "Mast", "Titty", "Milk", "Hand",
 	"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic", "Sign",
-	"Presented", "Dominatrix", 
+	"Presented", "Dominatrix", "Deepthroat", "Eatout", "Dildo", "Sub", "Strapon", "Les69ing", "Lick",
+	"Balls", "Cowgirl", "Revcowgirl", "Sexdoggy", "Jail", "Puppygirl", "Ponygirl", "Catgirl",
 	"Pregnant",	// pregnant varients
 	"Pregnant Anal", "Pregnant BDSM", "Pregnant Sex", "Pregnant Beast", "Pregnant Group",
 	"Pregnant Lesbian", "Pregnant Torture", "Pregnant Death", "Pregnant Profile", "Pregnant Combat",
@@ -69,7 +70,10 @@ string galtxt[] =
 	"Pregnant Card", "Pregnant Bunny", "Pregnant Nude", "Pregnant Mast", "Pregnant Titty", "Pregnant Milk",
 	"Pregnant Hand", "Pregnant Foot", "Pregnant Bed", "Pregnant Farm", "Pregnant Herd", "Pregnant Cook",
 	"Pregnant Craft", "Pregnant Swim", "Pregnant Bath", "Pregnant Nurse", "Pregnant Formal", "Pregnant Shop",
-	"Pregnant Magic", "Pregnant Sign", "Pregnant Presented", "Pregnant Dominatrix"
+	"Pregnant Magic", "Pregnant Sign", "Pregnant Presented", "Pregnant Dominatrix", "Pregnant Deepthroat",
+	"Pregnant Eatout", "Pregnant Dildo", "Pregnant Sub", "Pregnant Strapon", "Pregnant Les69ing", "Pregnant Lick",
+	"Pregnant Balls", "Pregnant Cowgirl", "Pregnant Revcowgirl", "Pregnant Sexdoggy", "Pregnant Jail", 
+	"Pregnant Puppygirl", "Pregnant Ponygirl", "Pregnant Catgirl"
 };
 
 // Constructors, Deconstructors and Free
@@ -130,6 +134,8 @@ int TryImageType(int imagetype, int tries)
 	// for 11 through 30 and 2 trhough 8, some choices need to be made for each type
 	switch (trytype)
 	{
+		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cImageItem.cpp > TryImageType
+
 	case IMGTYPE_ANAL:
 	case IMGTYPE_BDSM:
 	case IMGTYPE_BEAST:
@@ -178,13 +184,16 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_SEX:
 	{
 		if (tries > 6 && tries < 10)	return trytype;
-		if (t < 10)	return IMGTYPE_STRIP;
-		if (t < 20)	return IMGTYPE_ECCHI;
-		if (t < 30)	return IMGTYPE_ANAL;
-		if (t < 35)	return IMGTYPE_ORAL;
-		if (t < 40)	return IMGTYPE_TITTY;
-		if (t < 45)	return IMGTYPE_HAND;
-		if (t < 50)	return IMGTYPE_FOOT;
+		if (t < 15)	return IMGTYPE_COWGIRL;
+		if (t < 30)	return IMGTYPE_REVCOWGIRL;
+		if (t < 45)	return IMGTYPE_SEXDOGGY;
+		if (t < 55)	return IMGTYPE_ANAL;
+		if (t < 64)	return IMGTYPE_ORAL;
+		if (t < 73)	return IMGTYPE_TITTY;
+		if (t < 80)	return IMGTYPE_HAND;
+		if (t < 85)	return IMGTYPE_FOOT;
+		if (t < 90)	return IMGTYPE_STRIP;
+		if (t < 95)	return IMGTYPE_ECCHI;
 		return IMGTYPE_NUDE;
 	}break;
 	case	IMGTYPE_PREGSEX:
@@ -192,42 +201,16 @@ int TryImageType(int imagetype, int tries)
 		if (tries == 8)	return trytype;					// try with defaults
 		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
-			if (t < 5)	return IMGTYPE_PREGFOOT;
-			if (t < 10)	return IMGTYPE_PREGHAND;
-			if (t < 15)	return IMGTYPE_PREGTITTY;
-			if (t < 20)	return IMGTYPE_PREGORAL;
-			if (t < 25)	return IMGTYPE_PREGECCHI;
-			if (t < 35)	return IMGTYPE_PREGSTRIP;
-			if (t < 50)	return IMGTYPE_PREGNUDE;
-			return IMGTYPE_PREGANAL;
-		}
-		if (tries > 18 || tries == 5)	// try nonpreg base
-		{
-			return trytype - PREG_OFFSET;
-		}
-		if (tries > 14 || tries == 4)	// try nonpreg vars
-		{
-			if (t < 5)	return IMGTYPE_FOOT;
-			if (t < 10)	return IMGTYPE_HAND;
-			if (t < 15)	return IMGTYPE_TITTY;
-			if (t < 20)	return IMGTYPE_ORAL;
-			if (t < 25)	return IMGTYPE_ECCHI;
-			if (t < 35)	return IMGTYPE_STRIP;
-			if (t < 50)	return IMGTYPE_NUDE;
-			return IMGTYPE_ANAL;
-		}
-		// try profile
-		if (tries > 13 || tries == 3) return IMGTYPE_PREGPROFILE;
-		if (tries > 11 || tries == 2) return IMGTYPE_PREGNANT;
-	}break;
-
-	case	IMGTYPE_PREGLESBIAN:
-	{
-		if (tries == 8)	return trytype;					// try with defaults
-		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
-		{
-			if (t < 20)	return IMGTYPE_PREGSTRIP;
-			if (t < 40)	return IMGTYPE_PREGECCHI;
+			if (t < 15)	return IMGTYPE_PREGCOWGIRL;
+			if (t < 30)	return IMGTYPE_PREGREVCOWGIRL;
+			if (t < 45)	return IMGTYPE_PREGSEXDOGGY;
+			if (t < 55)	return IMGTYPE_PREGANAL;
+			if (t < 64)	return IMGTYPE_PREGORAL;
+			if (t < 73)	return IMGTYPE_PREGTITTY;
+			if (t < 80)	return IMGTYPE_PREGHAND;
+			if (t < 85)	return IMGTYPE_PREGFOOT;
+			if (t < 90)	return IMGTYPE_PREGSTRIP;
+			if (t < 95)	return IMGTYPE_PREGECCHI;
 			return IMGTYPE_PREGNUDE;
 		}
 		if (tries > 18 || tries == 5)	// try nonpreg base
@@ -236,51 +219,52 @@ int TryImageType(int imagetype, int tries)
 		}
 		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
-			if (t < 20)	return IMGTYPE_STRIP;
-			if (t < 40)	return IMGTYPE_ECCHI;
+			if (t < 15)	return IMGTYPE_COWGIRL;
+			if (t < 30)	return IMGTYPE_REVCOWGIRL;
+			if (t < 45)	return IMGTYPE_SEXDOGGY;
+			if (t < 55)	return IMGTYPE_ANAL;
+			if (t < 64)	return IMGTYPE_ORAL;
+			if (t < 73)	return IMGTYPE_TITTY;
+			if (t < 80)	return IMGTYPE_HAND;
+			if (t < 85)	return IMGTYPE_FOOT;
+			if (t < 90)	return IMGTYPE_STRIP;
+			if (t < 95)	return IMGTYPE_ECCHI;
 			return IMGTYPE_NUDE;
 		}
 		// try profile
 		if (tries > 13 || tries == 3) return IMGTYPE_PREGPROFILE;
 		if (tries > 11 || tries == 2) return IMGTYPE_PREGNANT;
 	}break;
-	case	IMGTYPE_LESBIAN:
+
+	case	IMGTYPE_COWGIRL:
+	case	IMGTYPE_REVCOWGIRL:
+	case	IMGTYPE_SEXDOGGY:
 	{
 		if (tries > 6 && tries < 10)	return trytype;
-		if (t < 20)	return IMGTYPE_STRIP;
-		if (t < 40)	return IMGTYPE_ECCHI;
+		if (t < 30)	return IMGTYPE_SEX;
+		if (t < 45)	return IMGTYPE_COWGIRL;
+		if (t < 60)	return IMGTYPE_REVCOWGIRL;
+		if (t < 75)	return IMGTYPE_SEXDOGGY;
+		if (t < 85)	return IMGTYPE_ANAL;
+		if (t < 90)	return IMGTYPE_STRIP;
+		if (t < 95)	return IMGTYPE_ECCHI;
 		return IMGTYPE_NUDE;
 	}break;
+	case	IMGTYPE_PREGCOWGIRL:
+	case	IMGTYPE_PREGREVCOWGIRL:
+	case	IMGTYPE_PREGSEXDOGGY:
 
-
-	case	IMGTYPE_ORAL:
-	case	IMGTYPE_TITTY:
-	case	IMGTYPE_HAND:
-	case	IMGTYPE_FOOT:
-	{
-		if (tries > 6 && tries < 10)	return trytype;
-		if (t < 10)	return IMGTYPE_ORAL;
-		if (t < 20)	return IMGTYPE_TITTY;
-		if (t < 30)	return IMGTYPE_HAND;
-		if (t < 40)	return IMGTYPE_FOOT;
-		if (t < 50)	return IMGTYPE_STRIP;
-		if (t < 60)	return IMGTYPE_ECCHI;
-		return IMGTYPE_NUDE;
-	}break;
-	case	IMGTYPE_PREGTITTY:
-	case	IMGTYPE_PREGORAL:
-	case	IMGTYPE_PREGHAND:
-	case	IMGTYPE_PREGFOOT:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
 		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
-			if (t < 5)	return IMGTYPE_PREGFOOT;
-			if (t < 10)	return IMGTYPE_PREGHAND;
-			if (t < 20)	return IMGTYPE_PREGTITTY;
-			if (t < 40)	return IMGTYPE_PREGORAL;
-			if (t < 55)	return IMGTYPE_PREGECCHI;
-			if (t < 70)	return IMGTYPE_PREGSTRIP;
+			if (t < 30)	return IMGTYPE_PREGSEX;
+			if (t < 45)	return IMGTYPE_PREGCOWGIRL;
+			if (t < 60)	return IMGTYPE_PREGREVCOWGIRL;
+			if (t < 75)	return IMGTYPE_PREGSEXDOGGY;
+			if (t < 85)	return IMGTYPE_PREGANAL;
+			if (t < 90)	return IMGTYPE_PREGSTRIP;
+			if (t < 95)	return IMGTYPE_PREGECCHI;
 			return IMGTYPE_PREGNUDE;
 		}
 		if (tries > 18 || tries == 5)	// try nonpreg base
@@ -289,12 +273,161 @@ int TryImageType(int imagetype, int tries)
 		}
 		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
-			if (t < 5)	return IMGTYPE_FOOT;
-			if (t < 10)	return IMGTYPE_HAND;
+			if (t < 30)	return IMGTYPE_SEX;
+			if (t < 45)	return IMGTYPE_COWGIRL;
+			if (t < 60)	return IMGTYPE_REVCOWGIRL;
+			if (t < 75)	return IMGTYPE_SEXDOGGY;
+			if (t < 85)	return IMGTYPE_ANAL;
+			if (t < 90)	return IMGTYPE_STRIP;
+			if (t < 95)	return IMGTYPE_ECCHI;
+			return IMGTYPE_NUDE;
+		}
+		// try profile
+		if (tries > 13 || tries == 3) return IMGTYPE_PREGPROFILE;
+		if (tries > 11 || tries == 2) return IMGTYPE_PREGNANT;
+	}break;
+
+
+
+
+	case	IMGTYPE_LESBIAN:
+	case	IMGTYPE_EATOUT:
+	case	IMGTYPE_LES69ING:
+	case	IMGTYPE_STRAPON:
+	{
+		if (tries > 6 && tries < 10)	return trytype;
+		if (t < 10)	return IMGTYPE_STRIP;
+		if (t < 20)	return IMGTYPE_ECCHI;
+		if (t < 30)	return IMGTYPE_NUDE;
+		if (t < 45)	return IMGTYPE_EATOUT;
+		if (t < 60)	return IMGTYPE_STRAPON;
+		if (t < 75)	return IMGTYPE_LES69ING;
+		return IMGTYPE_LESBIAN;
+	}break;
+	case	IMGTYPE_PREGLESBIAN:
+	case	IMGTYPE_PREGEATOUT:
+	case	IMGTYPE_PREGLES69ING:
+	case	IMGTYPE_PREGSTRAPON:
+	{
+		if (tries == 8)	return trytype;					// try with defaults
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
+		{
+			if (t < 10)	return IMGTYPE_PREGSTRIP;
+			if (t < 20)	return IMGTYPE_PREGECCHI;
+			if (t < 30)	return IMGTYPE_PREGNUDE;
+			if (t < 45)	return IMGTYPE_PREGEATOUT;
+			if (t < 60)	return IMGTYPE_PREGSTRAPON;
+			if (t < 75)	return IMGTYPE_PREGLES69ING;
+			return IMGTYPE_PREGLESBIAN;
+		}
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
+		{
+			if (t < 10)	return IMGTYPE_STRIP;
+
+			if (t < 20)	return IMGTYPE_ECCHI;
+			if (t < 30)	return IMGTYPE_NUDE;
+			if (t < 45)	return IMGTYPE_EATOUT;
+			if (t < 60)	return IMGTYPE_STRAPON;
+			if (t < 75)	return IMGTYPE_LES69ING;
+			return IMGTYPE_LESBIAN;
+		}
+		// try profile
+		if (tries > 13 || tries == 3) return IMGTYPE_PREGPROFILE;
+		if (tries > 11 || tries == 2) return IMGTYPE_PREGNANT;
+	}break;
+
+
+	case	IMGTYPE_ORAL:
+	case	IMGTYPE_DEEPTHROAT:
+	case	IMGTYPE_LICK:
+	case	IMGTYPE_SUCKBALLS:
+	{
+		if (tries > 6 && tries < 10)	return trytype;
+		if (t < 20)	return IMGTYPE_DEEPTHROAT;
+		if (t < 40)	return IMGTYPE_LICK;
+		if (t < 60)	return IMGTYPE_SUCKBALLS;
+		if (t < 70)	return IMGTYPE_TITTY;
+		return IMGTYPE_ORAL;
+	}break;
+
+	case	IMGTYPE_PREGORAL:
+	case	IMGTYPE_PREGDEEPTHROAT:
+	case	IMGTYPE_PREGLICK:
+	case	IMGTYPE_PREGSUCKBALLS:
+	{
+		if (tries == 8)	return trytype;					// try with defaults
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
+		{
+			if (t < 20)	return IMGTYPE_PREGDEEPTHROAT;
+			if (t < 40)	return IMGTYPE_PREGLICK;
+			if (t < 60)	return IMGTYPE_PREGSUCKBALLS;
+			if (t < 70)	return IMGTYPE_PREGTITTY;
+			return IMGTYPE_PREGORAL;
+		}
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
+		{
+			if (t < 20)	return IMGTYPE_DEEPTHROAT;
+			if (t < 40)	return IMGTYPE_LICK;
+			if (t < 60)	return IMGTYPE_SUCKBALLS;
+			if (t < 70)	return IMGTYPE_TITTY;
+			return IMGTYPE_ORAL;
+		}
+		// try profile
+		if (tries > 13 || tries == 3) return IMGTYPE_PREGPROFILE;
+		if (tries > 11 || tries == 2) return IMGTYPE_PREGNANT;
+	}break;
+
+	case	IMGTYPE_TITTY:
+	case	IMGTYPE_HAND:
+	case	IMGTYPE_FOOT:
+	{
+		if (tries > 6 && tries < 10)	return trytype;
+
+		if (t < 20)	return IMGTYPE_TITTY;
+		if (t < 35)	return IMGTYPE_HAND;
+		if (t < 50)	return IMGTYPE_FOOT;
+		if (t < 65)	return IMGTYPE_STRIP;
+		if (t < 80)	return IMGTYPE_ECCHI;
+		return IMGTYPE_NUDE;
+	}break;
+	case	IMGTYPE_PREGTITTY:
+
+	case	IMGTYPE_PREGHAND:
+	case	IMGTYPE_PREGFOOT:
+	{
+		if (tries == 8)	return trytype;					// try with defaults
+		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
+		{
+
+
+			if (t < 20)	return IMGTYPE_PREGTITTY;
+			if (t < 35)	return IMGTYPE_PREGHAND;
+			if (t < 50)	return IMGTYPE_PREGFOOT;
+			if (t < 65)	return IMGTYPE_PREGSTRIP;
+			if (t < 80)	return IMGTYPE_PREGECCHI;
+			return IMGTYPE_PREGNUDE;
+		}
+		if (tries > 18 || tries == 5)	// try nonpreg base
+		{
+			return trytype - PREG_OFFSET;
+		}
+		if (tries > 14 || tries == 4)	// try nonpreg vars
+		{
+
+
 			if (t < 20)	return IMGTYPE_TITTY;
-			if (t < 40)	return IMGTYPE_ORAL;
-			if (t < 55)	return IMGTYPE_ECCHI;
-			if (t < 70)	return IMGTYPE_STRIP;
+			if (t < 35)	return IMGTYPE_HAND;
+			if (t < 50)	return IMGTYPE_FOOT;
+			if (t < 65)	return IMGTYPE_STRIP;
+			if (t < 80)	return IMGTYPE_ECCHI;
 			return IMGTYPE_NUDE;
 		}
 		// try profile
@@ -303,10 +436,13 @@ int TryImageType(int imagetype, int tries)
 	}break;
 
 	case	IMGTYPE_MAST:
+	case	IMGTYPE_DILDO:
 	{
-		if (tries > 6 && tries < 10)	return trytype;
-		if (t < 30)	return IMGTYPE_STRIP;
-		if (t < 50)	return IMGTYPE_ECCHI;
+		if (tries > 7 && tries < 10)	return trytype;
+		if (t < 30)	return IMGTYPE_MAST;
+		if (t < 45)	return IMGTYPE_STRIP;
+		if (t < 60)	return IMGTYPE_ECCHI;
+		if (t < 80)	return IMGTYPE_DILDO;
 		return IMGTYPE_NUDE;
 	}break;
 	case	IMGTYPE_PREGMAST:
@@ -314,8 +450,11 @@ int TryImageType(int imagetype, int tries)
 		if (tries == 8)	return trytype;					// try with defaults
 		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
 		{
-			if (t < 30)	return IMGTYPE_PREGSTRIP;
-			if (t < 50)	return IMGTYPE_PREGECCHI;
+			if (t < 30)	return IMGTYPE_PREGMAST;
+			if (t < 45)	return IMGTYPE_PREGSTRIP;
+
+			if (t < 60)	return IMGTYPE_PREGECCHI;
+			if (t < 80)	return IMGTYPE_PREGDILDO;
 			return IMGTYPE_PREGNUDE;
 		}
 		if (tries > 18 || tries == 5)	// try nonpreg base
@@ -324,8 +463,10 @@ int TryImageType(int imagetype, int tries)
 		}
 		if (tries > 14 || tries == 4)	// try nonpreg vars
 		{
-			if (t < 30)	return IMGTYPE_STRIP;
-			if (t < 50)	return IMGTYPE_ECCHI;
+			if (t < 30)	return IMGTYPE_MAST;
+			if (t < 45)	return IMGTYPE_STRIP;
+			if (t < 60)	return IMGTYPE_ECCHI;
+			if (t < 80)	return IMGTYPE_DILDO;
 			return IMGTYPE_NUDE;
 		}
 		// try profile
@@ -353,6 +494,35 @@ int TryImageType(int imagetype, int tries)
 		if (tries > 13 || tries == 3) return IMGTYPE_PREGPROFILE;
 		if (tries > 11 || tries == 2) return IMGTYPE_PREGNANT;
 	}break;
+
+	case	IMGTYPE_SUB:
+	{
+		if (tries > 6 && tries < 10)	return trytype;
+		if (t < 30)	return IMGTYPE_STRIP;
+		if (t < 60)	return IMGTYPE_ECCHI;
+		return IMGTYPE_NUDE;
+	}break;
+	case	IMGTYPE_PREGSUB:
+	{
+		if (tries == 8)	return trytype;					// try with defaults
+		if (tries > 20 || tries == 6 || tries == 7)		// try preg vars
+		{
+			if (t < 30)	return IMGTYPE_PREGSTRIP;
+			if (t < 60)	return IMGTYPE_PREGECCHI;
+			return IMGTYPE_PREGNUDE;
+		}
+		if (tries > 14 || tries == 4 || tries == 5)	// try nonpreg vars
+		{
+			if (t < 30)	return IMGTYPE_STRIP;
+			if (t < 60)	return IMGTYPE_ECCHI;
+			return IMGTYPE_NUDE;
+		}
+		// try profile
+		if (tries > 13 || tries == 3) return IMGTYPE_PREGPROFILE;
+		if (tries > 11 || tries == 2) return IMGTYPE_PREGNANT;
+	}break;
+
+
 
 	case	IMGTYPE_ECCHI:
 	case	IMGTYPE_STRIP:
@@ -622,6 +792,7 @@ int TryImageType(int imagetype, int tries)
 
 
 
+
 	// any preg varients not coded in yet just returns pregnant
 
 
@@ -663,6 +834,10 @@ int TryImageType(int imagetype, int tries)
 	case IMGTYPE_DEATH:
 	case IMGTYPE_SHOP:
 	case IMGTYPE_SIGN:
+	case IMGTYPE_JAIL:
+	case IMGTYPE_PUPPYGIRL:
+	case IMGTYPE_PONYGIRL:
+	case IMGTYPE_CATGIRL:
 	default:
 		return IMGTYPE_PROFILE;
 		break;

@@ -1,16 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Pitch Black Underwear"    
-      Desc="This underwear radiates with dark magic. It clings to a girl's breasts and genitals, and only her owner or employer can remove them. Fortunately, the crotch has openings that allow for penetration. The inside surfaces have hundreds of small, ghostly barbs that lengthen and recede at random. When piercing the skin, they inject a venom that causes great pain and an intense rush of arousal. Over time, the wearer's mind begins to equate the pain with strong desire. (+Masochist, +Nymphomaniac, +Twisted, +15 Fear)" 
-      Type="Underwear" 
-      Badness="46" 
-      Special="None" 
-      Cost="8000" 
-      Rarity="Catacomb15" 
-      Infinite="false">
-   <Effect What="Stat" Name="PCFear" Amount="15" />
-   <Effect What="Trait" Name="Masochist" Amount="1" />
-   <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
-   <Effect What="Trait" Name="Twisted" Amount="1" />
-</Item>
+    <Item Name="Pitch Black Underwear" Desc="This underwear radiates with dark magic. It clings to a girl's breasts and genitals, and only her owner or employer can remove them. Fortunately, the crotch has openings that allow for penetration. The inside surfaces have hundreds of small, ghostly barbs that lengthen and recede at random. When piercing the skin, they inject a venom that causes great pain and an intense rush of arousal. Over time, the wearer's mind begins to equate the pain with strong desire. (+Masochist, +Nymphomaniac, +Twisted, +15 Fear)" Type="Underwear" Badness="46" Special="None" Cost="8000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="PCFear" Amount="15" />
+        <Effect What="Trait" Name="Masochist" Amount="1" />
+        <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
+        <Effect What="Trait" Name="Twisted" Amount="1" />
+    </Item>
 </Items>

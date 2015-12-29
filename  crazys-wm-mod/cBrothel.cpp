@@ -3534,7 +3534,7 @@ void cBrothelManager::UpdateObjective()
 		switch (m_Objective->m_Objective)
 		{
 		case OBJECTIVE_REACHGOLDTARGET:
-			if (g_Gold.ival() >= m_Objective->m_Target)				PassObjective();
+			if (g_Brothels.GetBankMoney() >= m_Objective->m_Target)	PassObjective();	// `J` changed to bank instead of cash to clear up issues
 			break;
 		case OBJECTIVE_HAVEXGOONS:
 			if (g_Gangs.GetNumGangs() >= m_Objective->m_Target)		PassObjective();

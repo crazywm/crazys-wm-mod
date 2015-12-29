@@ -523,6 +523,7 @@ struct sGirl
 	int rebel();
 	string JobRating(double value, string type = "", string name = "");
 	string JobRatingLetter(double value);
+	bool FixFreeTimeJobs(sGirl* girl);
 	/*
 	*	notice that if we do tweak get_stat to reference the stats array
 	*	direct, the above still work.
@@ -600,15 +601,16 @@ struct sGirl
 	/*
 	*	convenience func. Also easier to read like this
 	*/
-	bool carrying_monster()			{ return(m_States & (1 << STATUS_INSEMINATED)) != 0; }
-	bool carrying_human()			{ return carrying_players_child() || carrying_customer_child(); }
-	bool carrying_players_child()	{ return(m_States & (1 << STATUS_PREGNANT_BY_PLAYER)) != 0; }
-	bool carrying_customer_child()	{ return(m_States & (1 << STATUS_PREGNANT)) != 0; }
-	bool is_pregnant()				{ return(m_States & (1 << STATUS_PREGNANT) || m_States & (1 << STATUS_PREGNANT_BY_PLAYER) || m_States & (1 << STATUS_INSEMINATED)); }
-	bool is_mother()				{ return(m_States&(1 << STATUS_HAS_DAUGHTER) || m_States&(1 << STATUS_HAS_SON)); }
-	bool is_poisoned()				{ return(m_States&(1 << STATUS_POISONED) || m_States&(1 << STATUS_BADLY_POISONED)); }
+	bool carrying_monster();
+	bool carrying_human();
+	bool carrying_players_child();
+	bool carrying_customer_child();
+	bool is_pregnant();
+	bool is_mother();
+	bool is_poisoned();
+	bool has_weapon();
 	void clear_pregnancy();
-	void clear_dating()				{ m_States &= ~(1 << STATUS_DATING_PERV); m_States &= ~(1 << STATUS_DATING_MEAN); m_States &= ~(1 << STATUS_DATING_NICE); }
+	void clear_dating();
 
 	int preg_chance(int base_pc, bool good = false, double factor = 1.0);
 
@@ -625,69 +627,14 @@ struct sGirl
 	*	let's overload that...
 	*	should be able to do the same using sCustomer as well...
 	*/
-	void add_trait(string trait, int temptime = 0)	{ g_GirlsPtr->AddTrait(this, trait, temptime); }
-	void remove_trait(string trait)					{ g_GirlsPtr->RemoveTrait(this, trait); }
-	bool has_trait(string trait)					{ return g_GirlsPtr->HasTrait(this, trait); }
-	bool is_addict(bool onlyhard = false)	// `J` added bool onlyhard to allow only hard drugs to be checked for
-	{
-		if (onlyhard)
-		{
-			return	has_trait("Shroud Addict") ||
-				has_trait("Fairy Dust Addict") ||
-				has_trait("Viras Blood Addict");
-		}
-		return	has_trait("Shroud Addict") ||
-			has_trait("Fairy Dust Addict") ||
-			has_trait("Smoker") ||
-			has_trait("Alcoholic") ||
-			has_trait("Cum Addict") ||
-			has_trait("Viras Blood Addict");
-	}
-	bool has_disease()
-	{
-		return	has_trait("AIDS") ||
-			has_trait("Herpes") ||
-			has_trait("Chlamydia") ||
-			has_trait("Syphilis");
-	}
-	bool is_fighter(bool canbehelped = false)
-	{
-		if (canbehelped)
-		{
-			return	has_trait("Aggressive") ||
-				has_trait("Yandere") ||
-				has_trait("Tsundere");
-		}
-		return	has_trait("Aggressive") ||
-			has_trait("Assassin") ||
-			has_trait("Yandere") ||
-			has_trait("Brawler") ||
-			has_trait("Tsundere");
-	}
-
-	sChild* next_child(sChild* child, bool remove = false)
-	{
-		if (!remove)
-		{
-			return child->m_Next;
-		}
-		return m_Children.remove_child(child, this);
-	}
-
-	int preg_type(int image_type)
-	{
-		int new_type = image_type + PREG_OFFSET;
-		/*
-		*		if the new image type is >=  NUM_IMGTYPES
-		*		then it was one of the types that doesn't have
-		*		an equivalent pregnant form
-		*/
-		if (new_type >= NUM_IMGTYPES)
-		{
-			return image_type;
-		}
-		return new_type;
-	}
+	void add_trait(string trait, int temptime = 0);
+	void remove_trait(string trait);
+	bool has_trait(string trait);
+	bool is_addict(bool onlyhard = false);	// `J` added bool onlyhard to allow only hard drugs to be checked for
+	bool has_disease();
+	bool is_fighter(bool canbehelped = false);
+	sChild* next_child(sChild* child, bool remove = false);
+	int preg_type(int image_type);
 	sGirl* run_away();
 
 	bool is_slave()			{ return (m_States & (1 << STATUS_SLAVE)) != 0; }
@@ -699,17 +646,7 @@ struct sGirl
 	bool is_yourdaughter()	{ return (m_States & (1 << STATUS_YOURDAUGHTER)) != 0; }
 	bool is_isdaughter()	{ return (m_States & (1 << STATUS_ISDAUGHTER)) != 0; }
 	bool is_warrior()		{ return !is_arena(); }
-
-	bool is_resting()
-	{
-		return ((m_DayJob == JOB_FILMFREETIME	&& m_NightJob == JOB_FILMFREETIME) ||
-			(m_DayJob == JOB_ARENAREST		&& m_NightJob == JOB_ARENAREST) ||
-			(m_DayJob == JOB_CENTREREST		&& m_NightJob == JOB_CENTREREST) ||
-			(m_DayJob == JOB_CLINICREST		&& m_NightJob == JOB_CLINICREST) ||
-			(m_DayJob == JOB_HOUSEREST		&& m_NightJob == JOB_HOUSEREST) ||
-			(m_DayJob == JOB_FARMREST		&& m_NightJob == JOB_FARMREST) ||
-			(m_DayJob == JOB_RESTING		&& m_NightJob == JOB_RESTING));
-	}
+	bool is_resting();
 
 	void fight_own_gang(bool &girl_wins);
 	void win_vs_own_gang(vector<sGang*> &v, int max_goons, bool &girl_wins);
@@ -768,6 +705,7 @@ public:
 	string GetRandomAnalString();
 
 	// MYR: More functions for attack/defense/agility-style combat.
+	bool GirlInjured(sGirl* girl, unsigned int modifier);
 	int GetCombatDamage(sGirl* girl, int CombatType);
 	int TakeCombatDamage(sGirl* girl, int amt);
 
@@ -915,8 +853,6 @@ public:
 	void AddTiredness(sGirl* girl);
 
 	void SetAntiPreg(sGirl* girl, bool useAntiPreg) { girl->m_UseAntiPreg = useAntiPreg; }
-
-	bool GirlInjured(sGirl* girl, unsigned int modifier);
 
 	void CalculateGirlType(sGirl* girl);	// updates a girls fetish type based on her traits and stats
 	bool CheckGirlType(sGirl* girl, int type);	// Checks if a girl has this fetish type

@@ -1,55 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Cowbell Nipple Rings of Lactation"
-        Desc="Nipple rings with dangling magical cowbells that increase the girl's lactation to impressive levels. They'll also increase breast size, but only if the wearer is of below-average size. (+10 Beast, +2 BDSM, +3 Libido, +5 Titty, -5 Spirit, adds Cow Tits and Pierced Nipples, Increases breast size to Average)"
-        Type="Ring"
-        Badness="15"
-        Special="None"
-        Cost="5000"
-        Rarity="Catacomb15"
-        Infinite="false"
-        GirlBuyChance="0"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="Beastiality"
-            Amount="10" />
-        <Effect
-            What="Skill"
-            Name="BDSM"
-            Amount="2" />
-        <Effect
-            What="Skill"
-            Name="TittySex"
-            Amount="5" />
-        <Effect
-            What="Stat"
-            Name="Spirit"
-            Amount="-5" />
-        <Effect
-            What="Stat"
-            Name="Libido"
-            Amount="3" />
-        <Effect
-            What="Trait"
-            Name="Cow Tits"
-            Amount="1" />
-        <Effect
-            What="Trait"
-            Name="Pierced Nipples"
-            Amount="1" />
-        <Effect
-            What="Trait"
-            Name="Small Boobs"
-            Amount="0" />
-        <Effect
-            What="Trait"
-            Name="Petite Breasts"
-            Amount="0" />
-        <Effect
-            What="Trait"
-            Name="Flat Chest"
-            Amount="0" />
+    <Item Name="Cowbell Nipple Rings of Lactation" Desc="Nipple rings with dangling magical cowbells that increase the girl's lactation to impressive levels. They'll also increase breast size, but only if the wearer is of below-average size. (+10 Beast, +2 BDSM, +3 Libido, +5 Titty, -5 Spirit, adds Cow Tits and Pierced Nipples, Increases breast size to Average)" Type="Ring" Badness="15" Special="None" Cost="5000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Beastiality" Amount="10" />
+        <Effect What="Skill" Name="BDSM" Amount="2" />
+        <Effect What="Skill" Name="TittySex" Amount="5" />
+        <Effect What="Stat" Name="Spirit" Amount="-5" />
+        <Effect What="Stat" Name="Libido" Amount="3" />
+        <Effect What="Trait" Name="Cow Tits" Amount="1" />
+        <Effect What="Trait" Name="Pierced Nipples" Amount="1" />
+        <Effect What="Trait" Name="Small Boobs" Amount="0" />
+        <Effect What="Trait" Name="Petite Breasts" Amount="0" />
+        <Effect What="Trait" Name="Flat Chest" Amount="0" />
     </Item>
 </Items>

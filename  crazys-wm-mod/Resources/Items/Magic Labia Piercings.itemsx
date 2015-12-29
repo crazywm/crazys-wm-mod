@@ -1,20 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Magic Labia Piercings"
-      Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This rare set of labia piercings create a magical desire for pain, while the jewelry contains many small, sharp barbs to help satisfy that desire.  (+Masochist, +Fast Orgasms, -20 Norm, +20 Libedo, +30 BDSM, +10 Fear)"
-      Type="Misc"
-      Badness="35"
-      Special="None"
-      Cost="1400"
-      Rarity="Shop05"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Stat"  Name="PCFear"                  Amount="10"    />
-   <Effect What="Stat"  Name="Libido"                  Amount="20"    />
-   <Effect What="Skill" Name="NormalSex"               Amount="-20"    />
-   <Effect What="Skill" Name="BDSM"                    Amount="30"    />
-   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
-   <Effect What="Trait" Name="Slow Orgasms"            Amount="0"    />
-   <Effect What="Trait" Name="Masochist"               Amount="1"    />
-</Item>
+    <Item Name="Magic Labia Piercings" Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This rare set of labia piercings create a magical desire for pain, while the jewelry contains many small, sharp barbs to help satisfy that desire.  (+Masochist, +Fast Orgasms, -20 Norm, +20 Libedo, +30 BDSM, +10 Fear)" Type="Misc" Badness="35" Special="None" Cost="1400" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="PCFear" Amount="10" />
+        <Effect What="Stat" Name="Libido" Amount="20" />
+        <Effect What="Skill" Name="NormalSex" Amount="-20" />
+        <Effect What="Skill" Name="BDSM" Amount="30" />
+        <Effect What="Trait" Name="Fast Orgasms" Amount="1" />
+        <Effect What="Trait" Name="Slow Orgasms" Amount="0" />
+        <Effect What="Trait" Name="Masochist" Amount="1" />
+    </Item>
 </Items>

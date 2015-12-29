@@ -1,39 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Spiked Nipple Barbells"
-        Desc="This set of black spiked barbell rings look dangerous and sexy at the same time. (+5 BDSM, +3 Confidence, -1 Titty, +1 Libido, +3 Spirit, adds Pierced Nipples)"
-        Type="Ring"
-        Badness="21"
-        Special="None"
-        Cost="75"
-        Rarity="Shop25"
-        Infinite="false"
-        GirlBuyChance="0"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="BDSM"
-            Amount="5" />
-        <Effect
-            What="Skill"
-            Name="TittySex"
-            Amount="-1" />
-        <Effect
-            What="Stat"
-            Name="Libido"
-            Amount="1" />
-        <Effect
-            What="Stat"
-            Name="Confidence"
-            Amount="3" />
-        <Effect
-            What="Stat"
-            Name="Spirit"
-            Amount="3" />
-        <Effect
-            What="Trait"
-            Name="Pierced Nipples"
-            Amount="1" />
+    <Item Name="Spiked Nipple Barbells" Desc="This set of black spiked barbell rings look dangerous and sexy at the same time. (+5 BDSM, +3 Confidence, -1 Titty, +1 Libido, +3 Spirit, adds Pierced Nipples)" Type="Ring" Badness="21" Special="None" Cost="75" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="BDSM" Amount="5" />
+        <Effect What="Skill" Name="TittySex" Amount="-1" />
+        <Effect What="Stat" Name="Libido" Amount="1" />
+        <Effect What="Stat" Name="Confidence" Amount="3" />
+        <Effect What="Stat" Name="Spirit" Amount="3" />
+        <Effect What="Trait" Name="Pierced Nipples" Amount="1" />
     </Item>
 </Items>

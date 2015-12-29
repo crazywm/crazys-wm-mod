@@ -1,20 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Magic Tongue Piercing"
-      Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  The piercing and the jewelry's magic will make her tongue feel more pleasing to others, but the magic makes her less able to articulate and speak elegantly. (+Good Kisser, +Pierced Tongue, -Elegant, +15 Norm/Les Sex, +25 Oral, +8 Fear)"
-      Type="Misc"
-      Badness="19"
-      Special="None"
-      Cost="700"
-      Rarity="Shop25"
-      Infinite="false"
-      GirlBuyChance="5">
-   <Effect What="Stat"  Name="PCFear"                  Amount="8"    />
-   <Effect What="Skill" Name="Lesbian"                 Amount="15"    />
-   <Effect What="Skill" Name="NormalSex"               Amount="15"    />
-   <Effect What="Skill" Name="OralSex"                 Amount="25"    />
-   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
-   <Effect What="Trait" Name="Good Kisser"             Amount="1"    />
-   <Effect What="Trait" Name="Pierced Tongue"          Amount="1"    />
-</Item>
+    <Item Name="Magic Tongue Piercing" Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  The piercing and the jewelry's magic will make her tongue feel more pleasing to others, but the magic makes her less able to articulate and speak elegantly. (+Good Kisser, +Pierced Tongue, -Elegant, +15 Norm/Les Sex, +25 Oral, +8 Fear)" Type="Misc" Badness="19" Special="None" Cost="700" Rarity="Shop25" Infinite="false" GirlBuyChance="5" ItemWeight="0.0">
+        <Effect What="Stat" Name="PCFear" Amount="8" />
+        <Effect What="Skill" Name="Lesbian" Amount="15" />
+        <Effect What="Skill" Name="NormalSex" Amount="15" />
+        <Effect What="Skill" Name="OralSex" Amount="25" />
+        <Effect What="Trait" Name="Elegant" Amount="0" />
+        <Effect What="Trait" Name="Good Kisser" Amount="1" />
+        <Effect What="Trait" Name="Pierced Tongue" Amount="1" />
+    </Item>
 </Items>

@@ -1,16 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Magic Facial Piercings"
-      Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This versatile item pierces a girl's lips, eyebrows, or nose.  While not especially useful, many find it cool and kind of sexy. (+Cool Person, +5 Cha. +5 Fear)"
-      Type="Misc"
-      Badness="10"
-      Special="None"
-      Cost="800"
-      Rarity="Shop25"
-      Infinite="false"
-      GirlBuyChance="5">
-   <Effect What="Stat"  Name="Charisma"                Amount="5"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="5"    />
-   <Effect What="Trait" Name="Cool Person"             Amount="1"    />
-</Item>
+    <Item Name="Magic Facial Piercings" Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This versatile item pierces a girl's lips, eyebrows, or nose.  While not especially useful, many find it cool and kind of sexy. (+Cool Person, +5 Cha. +5 Fear)" Type="Misc" Badness="10" Special="None" Cost="800" Rarity="Shop25" Infinite="false" GirlBuyChance="5" ItemWeight="0.0">
+        <Effect What="Stat" Name="Charisma" Amount="5" />
+        <Effect What="Stat" Name="PCFear" Amount="5" />
+        <Effect What="Trait" Name="Cool Person" Amount="1" />
+    </Item>
 </Items>

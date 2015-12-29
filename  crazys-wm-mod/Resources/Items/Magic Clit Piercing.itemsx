@@ -1,19 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Magic Clit Piercing"
-      Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This unpleasant piercing goes straight through the clitoris, and the jewelry's magic keeps the girl too sensitive and aroused to ever be fully satisfied.  (+Fast Orgasms, +Nympho, +40 Lib, +12 Fear/Hate)"
-      Type="Misc"
-      Badness="50"
-      Special="None"
-      Cost="1400"
-      Rarity="Shop25"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Stat"  Name="Libido"                  Amount="40"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="12"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="12"    />
-   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
-   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
-   <Effect What="Trait" Name="Pierced Clit"            Amount="1"    />
-</Item>
+    <Item Name="Magic Clit Piercing" Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This unpleasant piercing goes straight through the clitoris, and the jewelry's magic keeps the girl too sensitive and aroused to ever be fully satisfied.  (+Fast Orgasms, +Nympho, +40 Lib, +12 Fear/Hate)" Type="Misc" Badness="50" Special="None" Cost="1400" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Libido" Amount="40" />
+        <Effect What="Stat" Name="PCFear" Amount="12" />
+        <Effect What="Stat" Name="PCHate" Amount="12" />
+        <Effect What="Trait" Name="Fast Orgasms" Amount="1" />
+        <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
+        <Effect What="Trait" Name="Pierced Clit" Amount="1" />
+    </Item>
 </Items>

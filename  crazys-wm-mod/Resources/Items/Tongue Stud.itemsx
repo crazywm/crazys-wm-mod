@@ -1,31 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Tongue Stud"
-        Desc="Tongue piercing that will drive her customers crazy. (+2 BDSM, -5 Refinement,  -Elegant, adds Pierced Tongue)"
-        Type="Misc"
-        Badness="10"
-        Special="None"
-        Cost="75"
-        Rarity="Shop25"
-        Infinite="false"
-        GirlBuyChance="2"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="BDSM"
-            Amount="2" />
-        <Effect
-            What="Stat"
-            Name="Refinement"
-            Amount="-5" />
-        <Effect
-            What="Trait"
-            Name="Elegant"
-            Amount="0" />
-        <Effect
-            What="Trait"
-            Name="Pierced Tongue"
-            Amount="1" />
+    <Item Name="Tongue Stud" Desc="Tongue piercing that will drive her customers crazy. (+2 BDSM, -5 Refinement,  -Elegant, adds Pierced Tongue)" Type="Misc" Badness="10" Special="None" Cost="75" Rarity="Shop25" Infinite="false" GirlBuyChance="2" ItemWeight="0.0">
+        <Effect What="Skill" Name="BDSM" Amount="2" />
+        <Effect What="Stat" Name="Refinement" Amount="-5" />
+        <Effect What="Trait" Name="Elegant" Amount="0" />
+        <Effect What="Trait" Name="Pierced Tongue" Amount="1" />
     </Item>
 </Items>

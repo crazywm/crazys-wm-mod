@@ -1,31 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Nipple Rings of Lactation"
-        Desc="This pair of nipple rings increase the girl lactation to impressive levels. (+1 BDSM, +1 Libido, adds Abundant Lactation and Pierced Nipples)"
-        Type="Ring"
-        Badness="10"
-        Special="None"
-        Cost="2000"
-        Rarity="Catacomb15"
-        Infinite="false"
-        GirlBuyChance="0"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="BDSM"
-            Amount="1" />
-        <Effect
-            What="Stat"
-            Name="Libido"
-            Amount="1" />
-        <Effect
-            What="Trait"
-            Name="Abundant Lactation"
-            Amount="1" />
-        <Effect
-            What="Trait"
-            Name="Pierced Nipples"
-            Amount="1" />
+    <Item Name="Nipple Rings of Lactation" Desc="This pair of nipple rings increase the girl lactation to impressive levels. (+1 BDSM, +1 Libido, adds Abundant Lactation and Pierced Nipples)" Type="Ring" Badness="10" Special="None" Cost="2000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="BDSM" Amount="1" />
+        <Effect What="Stat" Name="Libido" Amount="1" />
+        <Effect What="Trait" Name="Abundant Lactation" Amount="1" />
+        <Effect What="Trait" Name="Pierced Nipples" Amount="1" />
     </Item>
 </Items>

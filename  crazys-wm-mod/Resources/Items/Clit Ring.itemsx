@@ -1,43 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Clit Ring"
-        Desc="Clit piercing that keeps the girl in a permanent state of arousal. (+2 Normal, +2 BDSM, +7 Hate and Fear, -5 Happiness, +10 Libido, adds Pierced Clit)"
-        Type="Ring"
-        Badness="25"
-        Special="None"
-        Cost="125"
-        Rarity="Shop25"
-        Infinite="false"
-        GirlBuyChance="0"
-        ItemWeight="0.0">
-        <Effect
-            What="Stat"
-            Name="PCFear"
-            Amount="7" />
-        <Effect
-            What="Stat"
-            Name="PCHate"
-            Amount="7" />
-        <Effect
-            What="Stat"
-            Name="Happiness"
-            Amount="-5" />
-        <Effect
-            What="Stat"
-            Name="Libido"
-            Amount="10" />
-        <Effect
-            What="Skill"
-            Name="NormalSex"
-            Amount="2" />
-        <Effect
-            What="Skill"
-            Name="BDSM"
-            Amount="2" />
-        <Effect
-            What="Trait"
-            Name="Pierced Clit"
-            Amount="1" />
+    <Item Name="Clit Ring" Desc="Clit piercing that keeps the girl in a permanent state of arousal. (+2 Normal, +2 BDSM, +7 Hate and Fear, -5 Happiness, +10 Libido, adds Pierced Clit)" Type="Ring" Badness="25" Special="None" Cost="125" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="PCFear" Amount="7" />
+        <Effect What="Stat" Name="PCHate" Amount="7" />
+        <Effect What="Stat" Name="Happiness" Amount="-5" />
+        <Effect What="Stat" Name="Libido" Amount="10" />
+        <Effect What="Skill" Name="NormalSex" Amount="2" />
+        <Effect What="Skill" Name="BDSM" Amount="2" />
+        <Effect What="Trait" Name="Pierced Clit" Amount="1" />
     </Item>
 </Items>

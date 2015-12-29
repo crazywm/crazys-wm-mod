@@ -36,7 +36,9 @@
 #include "cGirlTorture.h"
 #include "cScreenGirlDetails.h"
 #include "cScreenBrothelManagement.h"
+#include "cCustomers.h"
 
+extern cCustomers g_Customers;
 extern bool g_InitWin;
 extern cWindowManager g_WinManager;
 extern cMessageQue g_MessageQue;
@@ -61,7 +63,6 @@ extern cScreenGirlDetails g_GirlDetails;
 
 extern cSurnameList g_SurnameList;
 extern cPlayer* The_Player;
-//extern sCustomer* customer;
 
 sScript *cGameScript::Process(sScript *Script)
 {
@@ -165,7 +166,7 @@ sScript *cGameScript::Process(sScript *Script)
 	case 91: return Script_CowGirlTarget(Script);
 	case 92: return Script_RevCowGirlTarget(Script);
 	case 93: return Script_SexDoggyTarget(Script);
-	//case 94: return Script_NormalSexWithRandomTarget(Script);
+	case 94: return Script_NormalSexWithRandomTarget(Script);
 
 		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
 
@@ -1840,21 +1841,22 @@ sScript* cGameScript::Script_SexDoggyTarget(sScript* Script)
 	return Script->m_Next;
 }
 
-//sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
-//{
-//	if (m_GirlTarget)
-//	{
-//		g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 2);
-//
-//		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
-//
-//		if (!m_GirlTarget->calc_pregnancy(customer, false, 1.0))
-//			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
-//	}
-//	g_GirlDetails.lastsexact = IMGTYPE_SEX;
-//
-//	return Script->m_Next;
-//}
+sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
+{
+	if (m_GirlTarget)
+	{
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 2);
+
+		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		sCustomer* Cust = new sCustomer;
+		g_Customers.GetCustomer(Cust, g_Brothels.GetBrothel(g_CurrBrothel));
+		if (!m_GirlTarget->calc_pregnancy(Cust, false, 1.0))
+			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
+	}
+	g_GirlDetails.lastsexact = IMGTYPE_SEX;
+
+	return Script->m_Next;
+}
 
 
 //sScript* cGameScript::Script_GirlNameTarget(sScript* Script)

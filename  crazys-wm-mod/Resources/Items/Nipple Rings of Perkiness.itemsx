@@ -1,31 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Nipple Rings of Perkiness"
-        Desc="Special rings designed to keep the nipples of her wearer erect. (+1 BDSM, +1 Libido, adds Perky Nipples and Pierced Nipples)"
-        Type="Ring"
-        Badness="7"
-        Special="None"
-        Cost="1500"
-        Rarity="Shop05"
-        Infinite="false"
-        GirlBuyChance="0"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="BDSM"
-            Amount="1" />
-        <Effect
-            What="Stat"
-            Name="Libido"
-            Amount="1" />
-        <Effect
-            What="Trait"
-            Name="Pierced Nipples"
-            Amount="1" />
-        <Effect
-            What="Trait"
-            Name="Perky Nipples"
-            Amount="1" />
+    <Item Name="Nipple Rings of Perkiness" Desc="Special rings designed to keep the nipples of her wearer erect. (+1 BDSM, +1 Libido, adds Perky Nipples and Pierced Nipples)" Type="Ring" Badness="7" Special="None" Cost="1500" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="BDSM" Amount="1" />
+        <Effect What="Stat" Name="Libido" Amount="1" />
+        <Effect What="Trait" Name="Pierced Nipples" Amount="1" />
+        <Effect What="Trait" Name="Perky Nipples" Amount="1" />
     </Item>
 </Items>

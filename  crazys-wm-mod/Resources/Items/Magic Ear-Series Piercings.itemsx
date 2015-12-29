@@ -1,16 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Magic Ear-Series Piercings"
-      Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This makes a series of several piercings around each of a girl's earlobes and cartilidge.  Many find it sexy, but it serves little other purpose. (+Sexy Air, +3 Beauty +5 Fear)"
-      Type="Misc"
-      Badness="10"
-      Special="None"
-      Cost="700"
-      Rarity="Shop25"
-      Infinite="false"
-      GirlBuyChance="5">
-   <Effect What="Stat"  Name="PCFear"                  Amount="5"    />
-   <Effect What="Stat"  Name="Beauty"                  Amount="3"    />
-   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
-</Item>
+    <Item Name="Magic Ear-Series Piercings" Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This makes a series of several piercings around each of a girl's earlobes and cartilidge.  Many find it sexy, but it serves little other purpose. (+Sexy Air, +3 Beauty +5 Fear)" Type="Misc" Badness="10" Special="None" Cost="700" Rarity="Shop25" Infinite="false" GirlBuyChance="5" ItemWeight="0.0">
+        <Effect What="Stat" Name="PCFear" Amount="5" />
+        <Effect What="Stat" Name="Beauty" Amount="3" />
+        <Effect What="Trait" Name="Sexy Air" Amount="1" />
+    </Item>
 </Items>

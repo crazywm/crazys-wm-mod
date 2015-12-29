@@ -1,61 +1,60 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Elixir of Ultimate Regeneration"
-      Desc="This mighty potion instantly causes the drinker's body to regenerate all lost limbs, heal all physical wounds, cure all illnesses, and erase any scars. The process is physiologically exhausting and may require a convalescence period. (+100 HP, +100 Tired, Regenerates all physical damage, removes all scars, diseases and more)"
-      Type="Food"      Badness="0"      Special="None"      Cost="10000"      Rarity="Catacomb05"      Infinite="false"      GirlBuyChance="0">
-        <Effect What="Stat"  Name="Health"                  Amount="100"    />
-        <Effect What="Stat"  Name="Tiredness"               Amount="100"    />
-        <Effect What="Trait" Name="Zombie"                  Amount="0"    />
-        <Effect What="Trait" Name="Undead"                  Amount="0"    />
-        <Effect What="Trait" Name="Skeleton"                Amount="0"    />
-        <Effect What="Trait" Name="Construct"               Amount="0"    />
-        <Effect What="Trait" Name="Half-Construct"          Amount="0"    />
-        <Effect What="Trait" Name="Malformed"               Amount="0"    />
-        <Effect What="Trait" Name="Sterile"                 Amount="0"    />
-        <Effect What="Trait" Name="Missing Finger"          Amount="0"    />
-        <Effect What="Trait" Name="Missing Fingers"         Amount="0"    />
-        <Effect What="Trait" Name="Missing Nipple"          Amount="0"    />
-        <Effect What="Trait" Name="Missing Teeth"           Amount="0"    />
-        <Effect What="Trait" Name="Missing Toe"             Amount="0"    />
-        <Effect What="Trait" Name="Missing Toes"            Amount="0"    />
-        <Effect What="Trait" Name="No Arms"                 Amount="0"    />
-        <Effect What="Trait" Name="No Clit"                 Amount="0"    />
-        <Effect What="Trait" Name="No Feet"                 Amount="0"    />
-        <Effect What="Trait" Name="No Hands"                Amount="0"    />
-        <Effect What="Trait" Name="No Legs"                 Amount="0"    />
-        <Effect What="Trait" Name="No Nipples"              Amount="0"    />
-        <Effect What="Trait" Name="No Teeth"                Amount="0"    />
-        <Effect What="Trait" Name="One Arm"                 Amount="0"    />
-        <Effect What="Trait" Name="One Eye"                 Amount="0"    />
-        <Effect What="Trait" Name="One Foot"                Amount="0"    />
-        <Effect What="Trait" Name="One Hand"                Amount="0"    />
-        <Effect What="Trait" Name="One Leg"                 Amount="0"    />
-        <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
-        <Effect What="Trait" Name="Blind"                   Amount="0"    />
-        <Effect What="Trait" Name="Bad Eyesight"            Amount="0"    />
-        <Effect What="Trait" Name="Deaf"                    Amount="0"    />
-        <Effect What="Trait" Name="Bruises"                 Amount="0"    />
-        <Effect What="Trait" Name="Dry Milk"                Amount="0"    />
-        <Effect What="Trait" Name="Inverted Nipples"        Amount="0"    />
-        <Effect What="Trait" Name="Scarce Lactation"        Amount="0"    />
-        <Effect What="Trait" Name="Pierced Clit"            Amount="0"    />
-        <Effect What="Trait" Name="Pierced Nipples"         Amount="0"    />
-        <Effect What="Trait" Name="Pierced Nose"            Amount="0"    />
-        <Effect What="Trait" Name="Pierced Tongue"          Amount="0"    />
-        <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
-        <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
-        <Effect What="Trait" Name="Small Scars"             Amount="0"    />
-        <Effect What="Trait" Name="AIDS"                    Amount="0"    />
-        <Effect What="Trait" Name="Chlamydia"               Amount="0"    />
-        <Effect What="Trait" Name="Herpes"                  Amount="0"    />
-        <Effect What="Trait" Name="Syphilis"                Amount="0"    />
-        <Effect What="Trait" Name="Alcoholic"               Amount="0"    />
-        <Effect What="Trait" Name="Cum Addict"              Amount="0"    />
-        <Effect What="Trait" Name="Fairy Dust Addict"       Amount="0"    />
-        <Effect What="Trait" Name="Former Addict"           Amount="0"    />
-        <Effect What="Trait" Name="Shroud Addict"           Amount="0"    />
-        <Effect What="Trait" Name="Smoker"                  Amount="0"    />
-        <Effect What="Trait" Name="Viras Blood Addict"      Amount="0"    />
-        <Effect What="Trait" Name="Virgin"                  Amount="1"    />
-</Item>
+    <Item Name="Elixir of Ultimate Regeneration" Desc="This mighty potion instantly causes the drinker's body to regenerate all lost limbs, heal all physical wounds, cure all illnesses, and erase any scars. The process is physiologically exhausting and may require a convalescence period. (+100 HP, +100 Tired, Regenerates all physical damage, removes all scars, diseases and more)"
+	Type="Food" Badness="0" Special="None" Cost="10000" Rarity="Catacomb05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="100" />
+        <Effect What="Stat" Name="Tiredness" Amount="100" />
+        <Effect What="Trait" Name="Zombie" Amount="0" />
+        <Effect What="Trait" Name="Undead" Amount="0" />
+        <Effect What="Trait" Name="Skeleton" Amount="0" />
+        <Effect What="Trait" Name="Construct" Amount="0" />
+        <Effect What="Trait" Name="Half-Construct" Amount="0" />
+        <Effect What="Trait" Name="Malformed" Amount="0" />
+        <Effect What="Trait" Name="Sterile" Amount="0" />
+        <Effect What="Trait" Name="Missing Finger" Amount="0" />
+        <Effect What="Trait" Name="Missing Fingers" Amount="0" />
+        <Effect What="Trait" Name="Missing Nipple" Amount="0" />
+        <Effect What="Trait" Name="Missing Teeth" Amount="0" />
+        <Effect What="Trait" Name="Missing Toe" Amount="0" />
+        <Effect What="Trait" Name="Missing Toes" Amount="0" />
+        <Effect What="Trait" Name="No Arms" Amount="0" />
+        <Effect What="Trait" Name="No Clit" Amount="0" />
+        <Effect What="Trait" Name="No Feet" Amount="0" />
+        <Effect What="Trait" Name="No Hands" Amount="0" />
+        <Effect What="Trait" Name="No Legs" Amount="0" />
+        <Effect What="Trait" Name="No Nipples" Amount="0" />
+        <Effect What="Trait" Name="No Teeth" Amount="0" />
+        <Effect What="Trait" Name="One Arm" Amount="0" />
+        <Effect What="Trait" Name="One Eye" Amount="0" />
+        <Effect What="Trait" Name="One Foot" Amount="0" />
+        <Effect What="Trait" Name="One Hand" Amount="0" />
+        <Effect What="Trait" Name="One Leg" Amount="0" />
+        <Effect What="Trait" Name="Eye Patch" Amount="0" />
+        <Effect What="Trait" Name="Blind" Amount="0" />
+        <Effect What="Trait" Name="Bad Eyesight" Amount="0" />
+        <Effect What="Trait" Name="Deaf" Amount="0" />
+        <Effect What="Trait" Name="Bruises" Amount="0" />
+        <Effect What="Trait" Name="Dry Milk" Amount="0" />
+        <Effect What="Trait" Name="Inverted Nipples" Amount="0" />
+        <Effect What="Trait" Name="Scarce Lactation" Amount="0" />
+        <Effect What="Trait" Name="Pierced Clit" Amount="0" />
+        <Effect What="Trait" Name="Pierced Nipples" Amount="0" />
+        <Effect What="Trait" Name="Pierced Nose" Amount="0" />
+        <Effect What="Trait" Name="Pierced Tongue" Amount="0" />
+        <Effect What="Trait" Name="Cool Scars" Amount="0" />
+        <Effect What="Trait" Name="Horrific Scars" Amount="0" />
+        <Effect What="Trait" Name="Small Scars" Amount="0" />
+        <Effect What="Trait" Name="AIDS" Amount="0" />
+        <Effect What="Trait" Name="Chlamydia" Amount="0" />
+        <Effect What="Trait" Name="Herpes" Amount="0" />
+        <Effect What="Trait" Name="Syphilis" Amount="0" />
+        <Effect What="Trait" Name="Alcoholic" Amount="0" />
+        <Effect What="Trait" Name="Cum Addict" Amount="0" />
+        <Effect What="Trait" Name="Fairy Dust Addict" Amount="0" />
+        <Effect What="Trait" Name="Former Addict" Amount="0" />
+        <Effect What="Trait" Name="Shroud Addict" Amount="0" />
+        <Effect What="Trait" Name="Smoker" Amount="0" />
+        <Effect What="Trait" Name="Viras Blood Addict" Amount="0" />
+        <Effect What="Trait" Name="Virgin" Amount="1" />
+    </Item>
 </Items>

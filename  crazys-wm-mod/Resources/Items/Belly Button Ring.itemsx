@@ -1,31 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Belly Button Ring"
-        Desc="Barbell ring usually worn by exotic dancers. (+3 Strip, +2 Charisma, +1 Beauty, Adds Pierced Navel)"
-        Type="Ring"
-        Badness="5"
-        Special="None"
-        Cost="100"
-        Rarity="Shop25"
-        Infinite="false"
-        GirlBuyChance="2"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="Strip"
-            Amount="3" />
-        <Effect
-            What="Stat"
-            Name="Charisma"
-            Amount="2" />
-        <Effect
-            What="Stat"
-            Name="Beauty"
-            Amount="1" />
-        <Effect
-            What="Trait"
-            Name="Pierced Navel"
-            Amount="1" />
+    <Item Name="Belly Button Ring" Desc="Barbell ring usually worn by exotic dancers. (+3 Strip, +2 Charisma, +1 Beauty, Adds Pierced Navel)" Type="Ring" Badness="5" Special="None" Cost="100" Rarity="Shop25" Infinite="false" GirlBuyChance="2" ItemWeight="0.0">
+        <Effect What="Skill" Name="Strip" Amount="3" />
+        <Effect What="Stat" Name="Charisma" Amount="2" />
+        <Effect What="Stat" Name="Beauty" Amount="1" />
+        <Effect What="Trait" Name="Pierced Navel" Amount="1" />
     </Item>
 </Items>

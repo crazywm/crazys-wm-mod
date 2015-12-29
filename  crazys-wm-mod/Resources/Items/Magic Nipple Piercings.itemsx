@@ -1,20 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-<Item Name="Magic Nipple Piercings"
-      Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  These piercings make the girl's nipples seem perky and cute, even under clothes. The jewelry's magic also keeps her slightly aroused and anxious. (+Perky Nips, +Cute, +15 Lib, +10 BDSM, +10 Fear, -15 Conf)"
-      Type="Misc"
-      Badness="25"
-      Special="None"
-      Cost="1200"
-      Rarity="Shop25"
-      Infinite="false"
-      GirlBuyChance="5">
-   <Effect What="Skill" Name="BDSM"                    Amount="10"    />
-   <Effect What="Stat"  Name="Libido"                  Amount="15"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="10"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="-15"    />
-   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
-   <Effect What="Trait" Name="Cute"                    Amount="1"    />
-   <Effect What="Trait" Name="Pierced Nipples"         Amount="1"    />
-</Item>
+    <Item Name="Magic Nipple Piercings" Desc="Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  These piercings make the girl's nipples seem perky and cute, even under clothes. The jewelry's magic also keeps her slightly aroused and anxious. (+Perky Nips, +Cute, +15 Lib, +10 BDSM, +10 Fear, -15 Conf)" Type="Misc" Badness="25" Special="None" Cost="1200" Rarity="Shop25" Infinite="false" GirlBuyChance="5" ItemWeight="0.0">
+        <Effect What="Skill" Name="BDSM" Amount="10" />
+        <Effect What="Stat" Name="Libido" Amount="15" />
+        <Effect What="Stat" Name="PCFear" Amount="10" />
+        <Effect What="Stat" Name="Confidence" Amount="-15" />
+        <Effect What="Trait" Name="Perky Nipples" Amount="1" />
+        <Effect What="Trait" Name="Cute" Amount="1" />
+        <Effect What="Trait" Name="Pierced Nipples" Amount="1" />
+    </Item>
 </Items>

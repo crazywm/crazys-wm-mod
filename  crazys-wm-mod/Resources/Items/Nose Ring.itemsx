@@ -1,35 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Nose Ring"
-        Desc="A thin, silver ring that pierces the septum and hangs in between the nostrils. (+5 Best, +2 BDSM, -7 Refinement, adds Pierced nose, removes Elegant)"
-        Type="Ring"
-        Badness="21"
-        Special="None"
-        Cost="150"
-        Rarity="Shop25"
-        Infinite="false"
-        GirlBuyChance="0"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="Beastiality"
-            Amount="5" />
-        <Effect
-            What="Skill"
-            Name="BDSM"
-            Amount="2" />
-        <Effect
-            What="Stat"
-            Name="Refinement"
-            Amount="-7" />
-        <Effect
-            What="Trait"
-            Name="Pierced Nose"
-            Amount="1" />
-        <Effect
-            What="Trait"
-            Name="Elegant"
-            Amount="0" />
+    <Item Name="Nose Ring" Desc="A thin, silver ring that pierces the septum and hangs in between the nostrils. (+5 Best, +2 BDSM, -7 Refinement, adds Pierced nose, removes Elegant)" Type="Ring" Badness="21" Special="None" Cost="150" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Beastiality" Amount="5" />
+        <Effect What="Skill" Name="BDSM" Amount="2" />
+        <Effect What="Stat" Name="Refinement" Amount="-7" />
+        <Effect What="Trait" Name="Pierced Nose" Amount="1" />
+        <Effect What="Trait" Name="Elegant" Amount="0" />
     </Item>
 </Items>

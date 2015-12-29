@@ -1,31 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Items>
-    <Item
-        Name="Nipple Rings"
-        Desc="Ring shaped nipple piercings. (+2 BDSM, +3 Libido and Titty, adds Pierced Nipples)"
-        Type="Ring"
-        Badness="5"
-        Special="None"
-        Cost="60"
-        Rarity="Shop50"
-        Infinite="true"
-        GirlBuyChance="5"
-        ItemWeight="0.0">
-        <Effect
-            What="Skill"
-            Name="BDSM"
-            Amount="2" />
-        <Effect
-            What="Skill"
-            Name="TittySex"
-            Amount="3" />
-        <Effect
-            What="Stat"
-            Name="Libido"
-            Amount="3" />
-        <Effect
-            What="Trait"
-            Name="Pierced Nipples"
-            Amount="1" />
+    <Item Name="Nipple Rings" Desc="Ring shaped nipple piercings. (+2 BDSM, +3 Libido and Titty, adds Pierced Nipples)" Type="Ring" Badness="5" Special="None" Cost="60" Rarity="Shop50" Infinite="true" GirlBuyChance="5" ItemWeight="0.0">
+        <Effect What="Skill" Name="BDSM" Amount="2" />
+        <Effect What="Skill" Name="TittySex" Amount="3" />
+        <Effect What="Stat" Name="Libido" Amount="3" />
+        <Effect What="Trait" Name="Pierced Nipples" Amount="1" />
     </Item>
 </Items>

@@ -464,9 +464,50 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		current = current->m_Next;
 	}
 
-	///////////////////////////////////////////////////////////
-	//  All Jobs in the Arena can be done at the same time.  //
-	///////////////////////////////////////////////////////////
+	////////////////////////////////////////
+	//  Run any races the girls can run.  //
+	////////////////////////////////////////
+	current = brothel->m_Girls;
+	while (current)
+	{
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->health() <= 0 || sw != JOB_RACING)
+		{	// skip dead girls, and anyone not racing
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+
+		// do their job
+		refused = m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);
+
+		totalPay += current->m_Pay;
+		totalTips += current->m_Tips;
+		totalGold += current->m_Pay + current->m_Tips;
+		g_Brothels.CalculatePay(brothel, current, sw);
+
+		//		Summary Messages
+		if (refused)
+		{
+			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			ss << girlName << " refused to work so made no money.";
+		}
+		else
+		{
+			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, Day0Night1);
+			if (totalGold < 0) sum = EVENT_DEBUG;
+
+			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next; // Next Girl
+	}
+
+
+
+	/////////////////////////////////////////////////////////////////
+	//  All other Jobs in the Arena can be done at the same time.  //
+	/////////////////////////////////////////////////////////////////
 	/* `J` zzzzzz - Need to split up the jobs
 	Done - JOB_ARENAREST, JOB_DOCTORE
 
@@ -477,14 +518,13 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	JOB_FIGHTTRAIN
 	JOB_CITYGUARD
 
-
 	//*/
 	current = brothel->m_Girls;
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || sw == restjob || sw == matronjob)
-		{	// skip dead girls, resting girls and the matron
+		if (current->health() <= 0 || sw == restjob || sw == matronjob || sw == JOB_RACING)
+		{	// skip dead girls, resting girls and the matron and racers
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}

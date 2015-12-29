@@ -250,7 +250,6 @@ enum JOBS {
 	JOB_BLACKSMITH,			//
 	JOB_COBBLER,			//
     JOB_JEWELER,
-	JOB_CLEANARENA,			//
 	//JOB_BATTLEMASTER	= ;
 	//JOB_ARENAPROMOTER	= ;
 	//JOB_BEASTMASTER	= ;
@@ -258,6 +257,7 @@ enum JOBS {
 	//JOB_BOOKIE			= ;
 	//JOB_GROUNDSKEEPER	= ;
 	//JOB_MINER			= ;
+	JOB_CLEANARENA,			//
 
 	// `J` Job Centre - General
 	JOB_CENTREREST,			// centres free time
@@ -330,9 +330,9 @@ enum JOBS {
 	JOB_HOUSEPET,			//		
 	JOB_HOUSECOOK,			// cooks for the harem, (helps keep them happy, and increase job performance)
 	JOB_PONYGIRL,			//		
-	JOB_CLEANHOUSE,			//
 	//JOB_HOUSEDATE		= ;
 	//JOB_HOUSEVAC		= ;
+	JOB_CLEANHOUSE,			//
 
 	// - extra unassignable
 	JOB_INDUNGEON,			//

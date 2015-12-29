@@ -2525,9 +2525,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		}
 		ss << "\nCost per turn: " << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold.\n";
 
-		ss << "\nDetails:\n ";
-		//ss << AccommodationDetails(girl);
-		//ss << g_Girls.AccommodationDetails(m_AccLevel);
+		//ss << "\nDetails:\n";
+		//ss << AccommodationDetails(girl, girl->m_AccLevel);
+		//ss << g_Girls.AccommodationDetails(girl, girl->m_AccLevel);
 
 		// added from Dagoth
 		if (girl->is_resting() && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
@@ -2535,8 +2535,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			ss << "\n\nOFF WORK, RESTING DUE TO TIREDNESS.";
 			ss << "\nStored Day Job:   " << g_Brothels.m_JobManager.JobName[girl->m_PrevDayJob];
 			ss << "\nStored Night Job: " << g_Brothels.m_JobManager.JobName[girl->m_PrevNightJob];
+			ss << "\n";
 		}
-		ss << "\n";
 		int to_go = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - girl->m_WeeksPreg;
 		// first line is current pregnancy
 		/* */if (girl->m_States&(1 << STATUS_PREGNANT))				{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
@@ -2674,13 +2674,11 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		else if (enjcount > 0)						{ ss << "\nShe is indifferent to all other tasks.\n\n"; }
 		else										{ ss << "At the moment, she is indifferent to all tasks.\n\n"; }
 
-	
 		int tricount = 0;
 		for (int i = 0; i < NUM_TRAININGTYPES; ++i)
 		{
 			if (sGirl::training_jobs[i] == "")			continue;
 			int e = girl->get_training(i);
-			ss << "She";
 			/* */if (e < 0)	{ text = " hasn't started "; }
 			// if she's indifferent, why specify it? Let's instead skip it.
 			else if (e < 15)	{ if (cfg.debug.log_extradetails())	{ text = " is indifferent to "; } else continue; }
@@ -2705,8 +2703,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		else										{ ss << "At the moment, she hasn't started any special training.\n\n"; }
 	}
 
-	ss << "\n\n\nBased on:  ";
-	ss << girl->m_Name;
+	ss << "\n\n\nBased on:  " << girl->m_Name;
 
 	return ss.str();
 }
@@ -3017,8 +3014,8 @@ int cGirls::GetRebelValue(sGirl* girl, bool matron)
 			if (houseStat >= 100) chanceNo += 10;	// Take all the money, more Rebel
 		}
 	}
-	
-	/* 
+
+	/*
 	*	`J` "Kidnapped" and "Emprisoned Customer" are factored in twice, before and after mental trait modifiers
 	*	This will allow them to have at least some effect on "Mind Fucked", "Dependant" or "Meek" girls
 	*/
@@ -3035,6 +3032,21 @@ int cGirls::GetRebelValue(sGirl* girl, bool matron)
 	if (HasTrait(girl, "Meek") && chanceNo > 20)			chanceNo = 20;
 
 	chanceNo += kep;
+
+	// `J` What type of accommodations she is held in will affect her a lot.
+	int accommod = girl->m_AccLevel - g_Girls.PreferredAccom(girl);
+	if (accommod < -4)
+	{
+		chanceNo -= accommod * 2;
+	}
+	else if (accommod < -1)
+	{
+		chanceNo -= accommod;
+	}
+	else if (accommod > 1)
+	{
+		chanceNo -= accommod * 2;
+	}
 
 
 	// Normalise
@@ -7525,7 +7537,7 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 #if 1	// Start of Special Group Traits
 
 
-		else if (	// Check _type_ Traits
+		else if (	// Check Eye Traits
 			name == "Different Colored Eyes" ||
 			name == "Eye Patch" ||
 			name == "One Eye" ||
@@ -7576,9 +7588,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 		}
 
-#endif	// End of Special Group Traits
+#endif	// End of Eye Traits
 
-#if 1	// Start of Species Traits
+#if 0	// Start of Species Traits
 
 		else if (	// Check Eyesight Traits
 			name == "Succubus" ||
@@ -8346,7 +8358,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (HasTrait(girl, "Tight Butt"))
 			{
-				sexMessage << "It took the customer quite a bit of effort to force himself into " << girlName << "’s tight ass, ignoring her cries when he was finally inside her, moving harshly until he finished.";
+				sexMessage << "It took the customer quite a bit of effort to force himself into " << girlName << "'s tight ass, ignoring her cries when he was finally inside her, moving harshly until he finished.";
 				//Gondra: add happiness and health reduction?
 			}
 			else if (choice < 50)	//Gondra: if we have no Trait related message use vanilla ones. TODO Gondra: Replace/supplement these Anal Vanilla messages.
@@ -8381,7 +8393,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (HasTrait(girl, "Tight Butt"))
 			{
-				sexMessage << girlName << "’s very tight butt forced him to take it slow but the vice like grip seemed to do the trick either way as he came quickly.";
+				sexMessage << girlName << "'s very tight butt forced him to take it slow but the vice like grip seemed to do the trick either way as he came quickly.";
 			}
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
@@ -8595,12 +8607,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (HasTrait(girl, "Fast Orgasms"))
 			{
-				sexMessage << girlName << "’s moans grew louder and louder as the customer kept going at it with her, and even though he came before she had a chance to, it was still an enjoyable fuck for both of them.";
+				sexMessage << girlName << "'s moans grew louder and louder as the customer kept going at it with her, and even though he came before she had a chance to, it was still an enjoyable fuck for both of them.";
 				customer->m_Stats[STAT_HAPPINESS] += 5;
 			}
 			else if (HasTrait(girl, "Fake Orgasm Expert"))
 			{
-				sexMessage << girlName << "’s sudden faked orgasm just as her customer came didn’t really do it’s job, but as he had already finished the customer didn’t bother reprimanding her.";
+				sexMessage << girlName << "'s sudden faked orgasm just as her customer came didn't really do it's job, but as he had already finished the customer didn't bother reprimanding her.";
 			}
 			else if (choice < 33)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
@@ -8624,7 +8636,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (HasTrait(girl, "Fast Orgasms") || HasTrait(girl, "Fake Orgasm Expert"))
 			{
-				sexMessage << girlName << "’s increasingly audible pleasure spurns the customer to fuck her hard, pushing her over the edge before he cums himself.";
+				sexMessage << girlName << "'s increasingly audible pleasure spurns the customer to fuck her hard, pushing her over the edge before he cums himself.";
 			}
 			else if (choice < 33)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
@@ -13047,6 +13059,26 @@ bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, player->m_Stats, player->m_Skills);
 }
 
+
+bool sGirl::carrying_monster()			{ return(m_States & (1 << STATUS_INSEMINATED)) != 0; }
+bool sGirl::carrying_human()			{ return carrying_players_child() || carrying_customer_child(); }
+bool sGirl::carrying_players_child()	{ return(m_States & (1 << STATUS_PREGNANT_BY_PLAYER)) != 0; }
+bool sGirl::carrying_customer_child()	{ return(m_States & (1 << STATUS_PREGNANT)) != 0; }
+bool sGirl::is_pregnant()				{ return(m_States & (1 << STATUS_PREGNANT) || m_States & (1 << STATUS_PREGNANT_BY_PLAYER) || m_States & (1 << STATUS_INSEMINATED)); }
+bool sGirl::is_mother()					{ return(m_States&(1 << STATUS_HAS_DAUGHTER) || m_States&(1 << STATUS_HAS_SON)); }
+bool sGirl::is_poisoned()				{ return(m_States&(1 << STATUS_POISONED) || m_States&(1 << STATUS_BADLY_POISONED)); }
+bool sGirl::has_weapon()		// `J` added .06.02.22
+{
+	if (this->m_NumInventory <= 0) return false;	// she has no items
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)	// check all her items
+	{
+		if (this->m_Inventory[i] != 0 && this->m_EquipedItems[i] == 1 &&
+			(this->m_Inventory[i]->m_Type == INVWEAPON || this->m_Inventory[i]->m_Type == INVSMWEAPON))
+			return true;							// and return true if she has a weapon equiped
+	}
+	return false;
+}
+void sGirl::clear_dating()				{ m_States &= ~(1 << STATUS_DATING_PERV); m_States &= ~(1 << STATUS_DATING_MEAN); m_States &= ~(1 << STATUS_DATING_NICE); }
 void sGirl::clear_pregnancy()
 {
 	m_States &= ~(1 << STATUS_PREGNANT);
@@ -13158,6 +13190,81 @@ int cGirls::calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players)
 	sprog->add_trait("Incest", false);						// she IS, so we add the incest trait
 	if (mom->has_trait("Incest")) return 10;				// if mom is also incestuous, that adds 5% to the odds
 	return 5;
+}
+
+void sGirl::add_trait(string trait, int temptime)	{ g_GirlsPtr->AddTrait(this, trait, temptime); }
+void sGirl::remove_trait(string trait)					{ g_GirlsPtr->RemoveTrait(this, trait); }
+bool sGirl::has_trait(string trait)					{ return g_GirlsPtr->HasTrait(this, trait); }
+bool sGirl::is_addict(bool onlyhard)	// `J` added bool onlyhard to allow only hard drugs to be checked for
+{
+	if (onlyhard)
+	{
+		return	has_trait("Shroud Addict") ||
+			has_trait("Fairy Dust Addict") ||
+			has_trait("Viras Blood Addict");
+	}
+	return	has_trait("Shroud Addict") ||
+		has_trait("Fairy Dust Addict") ||
+		has_trait("Smoker") ||
+		has_trait("Alcoholic") ||
+		has_trait("Cum Addict") ||
+		has_trait("Viras Blood Addict");
+}
+bool sGirl::has_disease()
+{
+	return	has_trait("AIDS") ||
+		has_trait("Herpes") ||
+		has_trait("Chlamydia") ||
+		has_trait("Syphilis");
+}
+bool sGirl::is_fighter(bool canbehelped)
+{
+	if (canbehelped)
+	{
+		return	has_trait("Aggressive") ||
+			has_trait("Yandere") ||
+			has_trait("Tsundere");
+	}
+	return	has_trait("Aggressive") ||
+		has_trait("Assassin") ||
+		has_trait("Yandere") ||
+		has_trait("Brawler") ||
+		has_trait("Tsundere");
+}
+
+sChild* sGirl::next_child(sChild* child, bool remove)
+{
+	if (!remove)
+	{
+		return child->m_Next;
+	}
+	return m_Children.remove_child(child, this);
+}
+
+int sGirl::preg_type(int image_type)
+{
+	int new_type = image_type + PREG_OFFSET;
+	/*
+	*		if the new image type is >=  NUM_IMGTYPES
+	*		then it was one of the types that doesn't have
+	*		an equivalent pregnant form
+	*/
+	if (new_type >= NUM_IMGTYPES)
+	{
+		return image_type;
+	}
+	return new_type;
+}
+
+bool sGirl::is_resting()
+{
+	return ((m_DayJob == JOB_FILMFREETIME	&& m_NightJob == JOB_FILMFREETIME) ||
+		(m_DayJob == JOB_ARENAREST		&& m_NightJob == JOB_ARENAREST) ||
+		(m_DayJob == JOB_CENTREREST		&& m_NightJob == JOB_CENTREREST) ||
+		(m_DayJob == JOB_CLINICREST		&& m_NightJob == JOB_CLINICREST) ||
+		(m_DayJob == JOB_HOUSEREST		&& m_NightJob == JOB_HOUSEREST) ||
+		(m_DayJob == JOB_FARMREST		&& m_NightJob == JOB_FARMREST) ||
+		(m_DayJob == JOB_RESTING		&& m_NightJob == JOB_RESTING));
 }
 
 
@@ -14528,6 +14635,43 @@ string sGirl::JobRatingLetter(double value)
 	else if (value >= 100)		return "C    ";	// Can do it
 	else if (value >= 70)		return "D    ";	// Don't bother
 	else						return "E    "; // Expect Failure
+}
+
+bool sGirl::FixFreeTimeJobs(sGirl* girl)
+{
+	bool fixedD = false;
+	bool fixedN = false;
+	if (girl->m_DayJob == JOB_FILMFREETIME || girl->m_DayJob == JOB_ARENAREST || girl->m_DayJob == JOB_CENTREREST || girl->m_DayJob == JOB_CLINICREST ||
+		girl->m_DayJob == JOB_HOUSEREST || girl->m_DayJob == JOB_FARMREST || girl->m_DayJob == JOB_RESTING || girl->m_DayJob == 255)
+	{
+		fixedD = true;
+		/* */if (girl->m_InStudio	&&	girl->m_DayJob != JOB_FILMFREETIME)	girl->m_DayJob = JOB_FILMFREETIME;
+		else if (girl->m_InArena	&&	girl->m_DayJob != JOB_ARENAREST)		girl->m_DayJob = JOB_ARENAREST;
+		else if (girl->m_InCentre	&&	girl->m_DayJob != JOB_CENTREREST)		girl->m_DayJob = JOB_CENTREREST;
+		else if (girl->m_InClinic	&&	girl->m_DayJob != JOB_CLINICREST)		girl->m_DayJob = JOB_CLINICREST;
+		else if (girl->m_InHouse	&&	girl->m_DayJob != JOB_HOUSEREST)		girl->m_DayJob = JOB_HOUSEREST;
+		else if (girl->m_InFarm		&&	girl->m_DayJob != JOB_FARMREST)		girl->m_DayJob = JOB_FARMREST;
+		else if (!girl->m_InStudio && !girl->m_InArena && !girl->m_InCentre && !girl->m_InClinic && !girl->m_InHouse
+			&& !girl->m_InFarm && girl->m_DayJob != JOB_RESTING)				girl->m_DayJob = JOB_RESTING;
+		else fixedD = false;
+	}
+	if (girl->m_NightJob == JOB_FILMFREETIME || girl->m_NightJob == JOB_ARENAREST || girl->m_NightJob == JOB_CENTREREST || girl->m_NightJob == JOB_CLINICREST ||
+		girl->m_NightJob == JOB_HOUSEREST || girl->m_NightJob == JOB_FARMREST || girl->m_NightJob == JOB_RESTING || girl->m_NightJob == 255)
+	{
+		fixedN = true;
+		/* */if (girl->m_InStudio	&&	girl->m_NightJob != JOB_FILMFREETIME)	girl->m_NightJob = JOB_FILMFREETIME;
+		else if (girl->m_InArena	&&	girl->m_NightJob != JOB_ARENAREST)		girl->m_NightJob = JOB_ARENAREST;
+		else if (girl->m_InCentre	&&	girl->m_NightJob != JOB_CENTREREST)		girl->m_NightJob = JOB_CENTREREST;
+		else if (girl->m_InClinic	&&	girl->m_NightJob != JOB_CLINICREST)		girl->m_NightJob = JOB_CLINICREST;
+		else if (girl->m_InHouse	&&	girl->m_NightJob != JOB_HOUSEREST)		girl->m_NightJob = JOB_HOUSEREST;
+		else if (girl->m_InFarm		&&	girl->m_NightJob != JOB_FARMREST)		girl->m_NightJob = JOB_FARMREST;
+		else if (!girl->m_InStudio && !girl->m_InArena && !girl->m_InCentre && !girl->m_InClinic && !girl->m_InHouse
+			&& !girl->m_InFarm && girl->m_NightJob != JOB_RESTING)				girl->m_NightJob = JOB_RESTING;
+		else fixedN = false;
+	}
+
+	if (fixedD || fixedN) return true;
+	return false;
 }
 
 string cGirls::GetHoroscopeName(int month, int day)
