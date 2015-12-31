@@ -1021,45 +1021,55 @@ void TransferGirls()
 		g_TransferGirls.SetSelectedItemInList(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 6);
 		g_TransferGirls.SetSelectedItemInList(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 6);
 
-		// add the movie studio studio
-		sMovieStudio* currentStudio = (sMovieStudio*)g_Studios.GetBrothel(0);
-		while (currentStudio)
+		if (g_Clinic.GetNumBrothels() > 0)		// add the clinic
 		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 0, currentStudio->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 0, currentStudio->m_Name);
-			currentStudio = (sMovieStudio*)currentStudio->m_Next;
+			sClinic* currentClinic = (sClinic*)g_Clinic.GetBrothel(0);
+			while (currentClinic)
+			{
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 3, currentClinic->m_Name);
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 3, currentClinic->m_Name);
+				currentClinic = (sClinic*)currentClinic->m_Next;
+			}
 		}
-		// add the arena
-		sArena* currentArena = (sArena*)g_Arena.GetBrothel(0);
-		while (currentArena)
+		if (g_Studios.GetNumBrothels() > 0)		// add the movie studio studio
 		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 1, currentArena->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 1, currentArena->m_Name);
-			currentArena = (sArena*)currentArena->m_Next;
+			sMovieStudio* currentStudio = (sMovieStudio*)g_Studios.GetBrothel(0);
+			while (currentStudio)
+			{
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 0, currentStudio->m_Name);
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 0, currentStudio->m_Name);
+				currentStudio = (sMovieStudio*)currentStudio->m_Next;
+			}
 		}
-		// add the centre
-		sCentre* currentCentre = (sCentre*)g_Centre.GetBrothel(0);
-		while (currentCentre)
+		if (g_Arena.GetNumBrothels() > 0)		// add the arena
 		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 2, currentCentre->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 2, currentCentre->m_Name);
-			currentCentre = (sCentre*)currentCentre->m_Next;
+			sArena* currentArena = (sArena*)g_Arena.GetBrothel(0);
+			while (currentArena)
+			{
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 1, currentArena->m_Name);
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 1, currentArena->m_Name);
+				currentArena = (sArena*)currentArena->m_Next;
+			}
 		}
-		// add the clinic
-		sClinic* currentClinic = (sClinic*)g_Clinic.GetBrothel(0);
-		while (currentClinic)
+		if (g_Centre.GetNumBrothels() > 0)		// add the centre
 		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 3, currentClinic->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 3, currentClinic->m_Name);
-			currentClinic = (sClinic*)currentClinic->m_Next;
+			sCentre* currentCentre = (sCentre*)g_Centre.GetBrothel(0);
+			while (currentCentre)
+			{
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 2, currentCentre->m_Name);
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 2, currentCentre->m_Name);
+				currentCentre = (sCentre*)currentCentre->m_Next;
+			}
 		}
-		// add the farm
-		sFarm* currentFarm = (sFarm*)g_Farm.GetBrothel(0);
-		while (currentFarm)
+		if (g_Farm.GetNumBrothels() > 0)	// add the farm
 		{
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 4, currentFarm->m_Name);
-			g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 4, currentFarm->m_Name);
-			currentFarm = (sFarm*)currentFarm->m_Next;
+			sFarm* currentFarm = (sFarm*)g_Farm.GetBrothel(0);
+			while (currentFarm)
+			{
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 4, currentFarm->m_Name);
+				g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 4, currentFarm->m_Name);
+				currentFarm = (sFarm*)currentFarm->m_Next;
+			}
 		}
 		// add the house
 		sHouse* currentHouse = (sHouse*)g_House.GetBrothel(0);

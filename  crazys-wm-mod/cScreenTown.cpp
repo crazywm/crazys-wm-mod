@@ -252,11 +252,12 @@ void cScreenTown::init()
 	// buttons enable/disable
 	DisableButton(walk_id, g_WalkAround);
 
-	HideButton(brothel2_id, (g_Brothels.GetBrothel(1) == 0));
-	HideButton(brothel3_id, (g_Brothels.GetBrothel(2) == 0));
-	HideButton(brothel4_id, (g_Brothels.GetBrothel(3) == 0));
-	HideButton(brothel5_id, (g_Brothels.GetBrothel(4) == 0));
-	HideButton(brothel6_id, (g_Brothels.GetBrothel(5) == 0));
+	HideButton(brothel2_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == 0);
+	HideButton(brothel3_id, g_Brothels.GetNumBrothels() < 3 || g_Brothels.GetBrothel(2) == 0);
+	HideButton(brothel4_id, g_Brothels.GetNumBrothels() < 4 || g_Brothels.GetBrothel(3) == 0);
+	HideButton(brothel5_id, g_Brothels.GetNumBrothels() < 5 || g_Brothels.GetBrothel(4) == 0);
+	HideButton(brothel6_id, g_Brothels.GetNumBrothels() < 6 || g_Brothels.GetBrothel(5) == 0);
+
 
 	string brothel = "Current Brothel: ";
 	brothel += g_Brothels.GetName(g_CurrBrothel);

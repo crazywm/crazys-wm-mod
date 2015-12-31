@@ -144,7 +144,7 @@ void cScreenDungeon::init()
 	}
 	// now add the customers
 	int offset = dungeon->GetNumGirls();
-	for (int i = 0; i<dungeon->GetNumCusts(); i++)	// add customers
+	for (int i = 0; i < dungeon->GetNumCusts(); i++)	// add customers
 	{
 		int col = (dungeon->GetCust(i)->m_Health <= 30) ? COLOR_RED : COLOR_BLUE;
 		dungeon->OutputCustRow(i, Data, columnNames);
@@ -183,17 +183,17 @@ void cScreenDungeon::init()
 	ss << "Room for " << releaseto->free_rooms() << " more girls.";
 	EditTextItem(ss.str(), roomsfree_id);
 
-	HideButton(brothel1_id, (g_Brothels.GetBrothel(1) == 0));
-	HideButton(brothel2_id, (g_Brothels.GetBrothel(2) == 0));
-	HideButton(brothel3_id, (g_Brothels.GetBrothel(3) == 0));
-	HideButton(brothel4_id, (g_Brothels.GetBrothel(4) == 0));
-	HideButton(brothel5_id, (g_Brothels.GetBrothel(5) == 0));
-	HideButton(brothel6_id, (g_Brothels.GetBrothel(6) == 0));
-	HideButton(clinic_id, (g_Clinic.GetBrothel(0) == 0));
-	HideButton(studio_id, (g_Studios.GetBrothel(0) == 0));
-	HideButton(arena_id, (g_Arena.GetBrothel(0) == 0));
-	HideButton(centre_id, (g_Centre.GetBrothel(0) == 0));
-	HideButton(farm_id, (g_Farm.GetBrothel(0) == 0));
+	HideButton(brothel1_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == 0);
+	HideButton(brothel2_id, g_Brothels.GetNumBrothels() < 3 || g_Brothels.GetBrothel(2) == 0);
+	HideButton(brothel3_id, g_Brothels.GetNumBrothels() < 4 || g_Brothels.GetBrothel(3) == 0);
+	HideButton(brothel4_id, g_Brothels.GetNumBrothels() < 5 || g_Brothels.GetBrothel(4) == 0);
+	HideButton(brothel5_id, g_Brothels.GetNumBrothels() < 6 || g_Brothels.GetBrothel(5) == 0);
+	HideButton(brothel6_id, g_Brothels.GetNumBrothels() < 7 || g_Brothels.GetBrothel(6) == 0);
+	HideButton(clinic_id,	g_Clinic.GetNumBrothels()	< 1 || g_Clinic.GetBrothel(0) == 0);
+	HideButton(studio_id,	g_Studios.GetNumBrothels()	< 1 || g_Studios.GetBrothel(0) == 0);
+	HideButton(arena_id,	g_Arena.GetNumBrothels()	< 1 || g_Arena.GetBrothel(0) == 0);
+	HideButton(centre_id,	g_Centre.GetNumBrothels()	< 1 || g_Centre.GetBrothel(0) == 0);
+	HideButton(farm_id,		g_Farm.GetNumBrothels()		< 1 || g_Farm.GetBrothel(0) == 0);
 
 	g_InitWin = false;
 

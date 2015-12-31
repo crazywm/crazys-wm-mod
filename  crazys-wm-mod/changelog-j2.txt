@@ -31,9 +31,20 @@ Cleaned a few things in cGirls.cpp,h
 Fixed a bug in workSecurity.cpp and did a little updating
 * Reduced the base security level so it is not too over powered
 * HHT plays a little part in security level now
+Updated ScriptCommands.txt so the old script editor can use the new image types
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.23
+
+###  Changes 12/30/2015
+Added m_ChildrenCount to Script_AddFamilyToDungeon so the mother will actually show the daughters
+Cleaned up some unneeded log spam ("Brothel # not found in list!")
+Fixed GetTotalNumGirls() to count girls in every building
+Updated ScriptCommands.txt so the old script editor can use the new stats
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.24
+
 
 
  

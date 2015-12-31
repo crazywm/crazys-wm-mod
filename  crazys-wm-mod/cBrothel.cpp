@@ -4269,9 +4269,15 @@ int cBrothelManager::GetTotalNumGirls(bool monster)
 	int total = 0;
 	if (!monster)
 	{
-		for (int i = 0; i<m_NumBrothels; i++)
+		for (int i = 0; i < m_NumBrothels; i++)
 			total += GetNumGirls(i);
 		total += GetDungeon()->GetNumGirls();
+		total += g_Arena.GetNumGirls(0);
+		total += g_Studios.GetNumGirls(0);
+		total += g_Clinic.GetNumGirls(0);
+		total += g_Centre.GetNumGirls(0);
+		total += g_House.GetNumGirls(0);
+		total += g_Farm.GetNumGirls(0);
 	}
 	else
 	{
@@ -4287,12 +4293,71 @@ int cBrothelManager::GetTotalNumGirls(bool monster)
 			}
 			current = current->m_Next;
 		}
-
-		for (int i = 0; i<GetDungeon()->GetNumGirls(); i++)
+		for (int i = 0; i < GetDungeon()->GetNumGirls(); i++)
 		{
 			sDungeonGirl* dgirl = GetDungeon()->GetGirl(i);
 			if (g_Girls.HasTrait(dgirl->m_Girl, "Not Human"))
 				total++;
+		}
+		if (g_Clinic.GetNumGirls(0) > 0)
+		{
+			sGirl* girl = g_Clinic.GetBrothel(0)->m_Girls;
+			while (girl)
+			{
+				if (g_Girls.HasTrait(girl, "Not Human"))
+					total++;
+				girl = girl->m_Next;
+			}
+		}
+		if (g_Studios.GetNumGirls(0) > 0)
+		{
+			sGirl* girl = g_Studios.GetBrothel(0)->m_Girls;
+			while (girl)
+			{
+				if (g_Girls.HasTrait(girl, "Not Human"))
+					total++;
+				girl = girl->m_Next;
+			}
+		}
+		if (g_Arena.GetNumGirls(0) > 0)
+		{
+			sGirl* girl = g_Arena.GetBrothel(0)->m_Girls;
+			while (girl)
+			{
+				if (g_Girls.HasTrait(girl, "Not Human"))
+					total++;
+				girl = girl->m_Next;
+			}
+		}
+		if (g_Centre.GetNumGirls(0) > 0)
+		{
+			sGirl* girl = g_Centre.GetBrothel(0)->m_Girls;
+			while (girl)
+			{
+				if (g_Girls.HasTrait(girl, "Not Human"))
+					total++;
+				girl = girl->m_Next;
+			}
+		}
+		if (g_Farm.GetNumGirls(0) > 0)
+		{
+			sGirl* girl = g_Farm.GetBrothel(0)->m_Girls;
+			while (girl)
+			{
+				if (g_Girls.HasTrait(girl, "Not Human"))
+					total++;
+				girl = girl->m_Next;
+			}
+		}
+		if (g_House.GetNumGirls(0) > 0)
+		{
+			sGirl* girl = g_House.GetBrothel(0)->m_Girls;
+			while (girl)
+			{
+				if (g_Girls.HasTrait(girl, "Not Human"))
+					total++;
+				girl = girl->m_Next;
+			}
 		}
 	}
 

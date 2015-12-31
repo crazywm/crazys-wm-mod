@@ -679,6 +679,13 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 		if (value[0] > 0)	Daughter1->m_Desc = Daughter1->m_Desc + "\n\n" + biography;
 		if (value[0] > 1)	Daughter2->m_Desc = Daughter2->m_Desc + "\n\n" + biography;
 		if (value[0] > 2)	Daughter3->m_Desc = Daughter3->m_Desc + "\n\n" + biography;
+		
+		if (value[0] > 0)
+		{
+			Mother->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] += value[0];
+			Mother->m_ChildrenCount[CHILD02_ALL_GIRLS] += value[0];
+			Mother->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] += value[0];
+		}
 	}
 	string kstring = (kidnaped ? "kidnapped from her family" : "captured");
 
@@ -753,7 +760,7 @@ sScript *cGameScript::Script_AdjustTargetGirlStat(sScript *Script)
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 	if (m_GirlTarget)
 	{
-		if (value[0] - (STAT_STRENGTH + 1) >= 0)	// `J` correcting for old scripts for the new STAT_NPCLOVE
+		if (value[0] - (NUM_STATS) > 0)	// `J` correcting for old scripts for the new STAT_NPCLOVE
 			g_Girls.UpdateSkill(m_GirlTarget, value[0] - NUM_STATS, value[1]);
 		else
 			g_Girls.UpdateStat(m_GirlTarget, value[0], value[1]);
@@ -776,9 +783,7 @@ sScript *cGameScript::Script_AdjustTargetGirlSkill(sScript *Script)
 
 sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 {
-	if (m_GirlTarget == 0) {
-		return Script->m_Next;
-	}
+	if (m_GirlTarget == 0) return Script->m_Next;
 
 	g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 2);
 	g_Girls.UpdateSkill(m_GirlTarget, SKILL_ANAL, 2);
