@@ -334,12 +334,12 @@ struct sGirl
 
 	vector<string> m_Canonical_Daughters;
 
-	bool m_InClinic;
 	bool m_InStudio;
 	bool m_InArena;
 	bool m_InCentre;
-	bool m_InHouse;
+	bool m_InClinic;
 	bool m_InFarm;
+	bool m_InHouse;
 	int where_is_she;
 	int m_PrevWorkingDay;						// `J` save the last count of the number of working days
 	int m_WorkingDay;							// count the number of working day

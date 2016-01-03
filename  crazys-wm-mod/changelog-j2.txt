@@ -45,6 +45,17 @@ Updated ScriptCommands.txt so the old script editor can use the new stats
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.24
 
+###  Changes 12/31/2015
+Checked Blacksmith, Cobbler, Jeweler and Tailor for adding item creation
+
+###  Changes 1/1-2/2016
+Started reworking slave buying code
+* Made buy_slaves() function to remove duplicate code in events and keys.
+* Total rewrite of transfer of girls out of the Slave Market
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.25
+
 
 
  

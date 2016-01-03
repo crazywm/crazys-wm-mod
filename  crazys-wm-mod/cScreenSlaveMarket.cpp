@@ -16,7 +16,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <vector>
 #include "cBrothel.h"
+#include "main.h"
 #include "cScreenSlaveMarket.h"
 #include "cWindowManager.h"
 #include "cGold.h"
@@ -56,7 +58,10 @@ extern	bool	g_X_Key;
 extern	bool	g_C_Key;
 extern	int		g_CurrentScreen;
 
+static string ReleaseGirlToWhere = "Br0";
+
 bool cScreenSlaveMarket::ids_set = false;
+cTariff tariff;
 
 void cScreenSlaveMarket::set_ids()
 {
@@ -67,10 +72,32 @@ void cScreenSlaveMarket::set_ids()
 	cur_brothel_id = get_id("CurrentBrothel");
 	slave_list_id = get_id("SlaveList");
 	trait_list_id = get_id("TraitList");
+	trait_list_text_id = get_id("TraitListT");
 	details_id = get_id("SlaveDetails");
 	trait_id = get_id("TraitDesc");
+	girl_desc_id = get_id("GirlDesc");
 	slave_image_id = get_id("SlaveImage");
 	header_id = get_id("ScreenHeader");
+	gold_id = get_id("Gold");
+	slave_market_id = get_id("SlaveMarket");
+
+	releaseto_id = get_id("ReleaseTo");
+	roomsfree_id = get_id("RoomsFree");
+
+	brothel0_id = get_id("Brothel0");
+	brothel1_id = get_id("Brothel1");
+	brothel2_id = get_id("Brothel2");
+	brothel3_id = get_id("Brothel3");
+	brothel4_id = get_id("Brothel4");
+	brothel5_id = get_id("Brothel5");
+	brothel6_id = get_id("Brothel6");
+	house_id = get_id("House");
+	clinic_id = get_id("Clinic");
+	studio_id = get_id("Studio");
+	arena_id = get_id("Arena");
+	centre_id = get_id("Centre");
+	farm_id = get_id("Farm");
+	dungeon_id = get_id("Dungeon");
 }
 
 void cScreenSlaveMarket::init()
@@ -88,12 +115,45 @@ void cScreenSlaveMarket::init()
 	if (cfg.debug.log_girls()) g_LogFile.os() << "setting up slave market: genGirls = " << g_GenGirls << endl;
 
 	ImageNum = -1;
-	string brothel = gettext("Current Brothel: ");
-	brothel += g_Brothels.GetName(g_CurrBrothel);
-	EditTextItem(brothel, cur_brothel_id);
+	stringstream ss;
+	if (cur_brothel_id >= 0)
+	{
+		ss << "Current Brothel: " << g_Brothels.GetName(g_CurrBrothel);
+		EditTextItem(ss.str(), cur_brothel_id);
+	}
 
-	// clear the list
-	ClearListBox(slave_list_id);
+	string sub = ReleaseGirlToWhere.substr(0, 2);
+	sBrothel *releaseto = g_Brothels.GetBrothel(g_CurrBrothel);
+	char a = ReleaseGirlToWhere[2]; char b = "0"[0]; int sendtonum = a - b;	// `J` cheap fix to get brothel number
+	/* */if (sub == "Br") releaseto = g_Brothels.GetBrothel(sendtonum);
+	else if (sub == "Ho") releaseto = g_House.GetBrothel(sendtonum);
+	else if (sub == "Cl") releaseto = g_Clinic.GetBrothel(sendtonum);
+	else if (sub == "St") releaseto = g_Studios.GetBrothel(sendtonum);
+	else if (sub == "Ar") releaseto = g_Arena.GetBrothel(sendtonum);
+	else if (sub == "Ce") releaseto = g_Centre.GetBrothel(sendtonum);
+	else if (sub == "Fa") releaseto = g_Farm.GetBrothel(sendtonum);
+	else if (sub == "Du") releaseto = g_Brothels.GetBrothel(0);
+
+	ss.str("");
+	ss << "Send Girl to: " << (sub == "Du" ? "The Dungeon" : releaseto->m_Name);
+	EditTextItem(ss.str(), releaseto_id);
+	ss.str("");
+	if (sub != "Du") ss << "Room for " << releaseto->free_rooms() << " more girls.";
+	EditTextItem(ss.str(), roomsfree_id);
+
+	HideButton(brothel1_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == 0);
+	HideButton(brothel2_id, g_Brothels.GetNumBrothels() < 3 || g_Brothels.GetBrothel(2) == 0);
+	HideButton(brothel3_id, g_Brothels.GetNumBrothels() < 4 || g_Brothels.GetBrothel(3) == 0);
+	HideButton(brothel4_id, g_Brothels.GetNumBrothels() < 5 || g_Brothels.GetBrothel(4) == 0);
+	HideButton(brothel5_id, g_Brothels.GetNumBrothels() < 6 || g_Brothels.GetBrothel(5) == 0);
+	HideButton(brothel6_id, g_Brothels.GetNumBrothels() < 7 || g_Brothels.GetBrothel(6) == 0);
+	HideButton(clinic_id, g_Clinic.GetNumBrothels()		< 1 || g_Clinic.GetBrothel(0) == 0);
+	HideButton(studio_id, g_Studios.GetNumBrothels()	< 1 || g_Studios.GetBrothel(0) == 0);
+	HideButton(arena_id, g_Arena.GetNumBrothels()		< 1 || g_Arena.GetBrothel(0) == 0);
+	HideButton(centre_id, g_Centre.GetNumBrothels()		< 1 || g_Centre.GetBrothel(0) == 0);
+	HideButton(farm_id, g_Farm.GetNumBrothels()			< 1 || g_Farm.GetBrothel(0) == 0);
+
+	ClearListBox(slave_list_id);	// clear the list
 
 	int numgirls = g_Dice.bell(cfg.slavemarket.slavesnewweeklymin(), cfg.slavemarket.slavesnewweeklymax());
 
@@ -183,11 +243,19 @@ void cScreenSlaveMarket::init()
 	*/
 	g_GenGirls = (g_Cheats) ? false : true;
 
-	string message = gettext("Slave Market, ");
-	message += g_Gold.sval();
-	message += gettext(" gold");
-	EditTextItem(message, header_id);
-
+	if (header_id >= 0)
+	{
+		ss.str("");
+		ss << "Slave Market, " << g_Gold.sval() << gettext(" gold");
+		EditTextItem(ss.str(), header_id);
+	}
+	if (gold_id >= 0)
+	{
+		ss.str("");
+		ss << "Gold:  " << g_Gold.sval();
+		EditTextItem(ss.str(), gold_id);
+	}
+	
 	// Finds the first girl in the selection, so she is highlighted. This stops the No girl selected that was normal before. --PP
 	for (int i = numgirls-1; i > -1; i--)
 	{
@@ -198,7 +266,9 @@ void cScreenSlaveMarket::init()
 	// if there is still as selection (a non empty slave list) then highlight the current selection
 	if (selection >= 0) SetSelectedItemInList(slave_list_id, selection, true);
 	// now we need to populate the trait box
-	ClearListBox(trait_list_id);
+	if (trait_list_id >= 0) ClearListBox(trait_list_id);
+	if (trait_list_text_id >= 0) EditTextItem("Traits:", trait_list_text_id);
+	if (girl_desc_id >= 0)	EditTextItem("", girl_desc_id);
 	int tmp = GetLastSelectedItemFromList(slave_list_id);
 	// if the last item was -1 I assume the list is empty so we can go home early (and probably should have earlier still)
 	if (tmp == -1) return;
@@ -209,14 +279,7 @@ void cScreenSlaveMarket::init()
 		g_LogFile.os() << "error: null pointer for cursor entry in market" << endl;
 		return;
 	}
-	// loop through her traits, populating the box
-	for (int i = 0; i < MAXNUM_TRAITS; i++)
-	{
-		if (!g->m_Traits[i]) continue;
-		AddToListBox(trait_list_id, i, g_Traits.GetTranslateName(g->m_Traits[i]->m_Name));
-	}
-	// and finally, highlight the selected entry?
-	SetSelectedItemInList(trait_list_id, 0);
+	preparescreenitems(g);
 }
 
 bool cScreenSlaveMarket::check_keys()
@@ -253,42 +316,67 @@ bool cScreenSlaveMarket::check_keys()
 	}
 	if (g_SpaceKey)
 	{
-		cTariff tariff;
-		sGirl *girl = MarketSlaveGirls[selection];
-		g_SpaceKey = false;
-		for (selection = multi_slave_first(); selection != -1; selection = multi_slave_next())
-		{
-			girl = MarketSlaveGirls[selection];
-			int cost = tariff.slave_buy_price(girl);
-			cerr << "Selection = " << selection << ", girl = " << girl->m_Realname << endl;
-			// can the player afford this particular playmate?
-			if (g_Gold.slave_cost(cost) == false)
-			{
-				string text = "You don't have enough money to purchase ";
-				text += girl->m_Realname;
-				g_MessageQue.AddToQue(text, 0);
-				break;
-			}
+		return buy_slaves();
+	}
+	return false;
+}
 
-			sBrothel* brothel = g_Brothels.GetBrothel(g_CurrBrothel);
-			string text = get_buy_slave_string(girl);
-			if (g_Girls.GetRebelValue(girl, false) >= 35 || (brothel->m_NumRooms - brothel->m_NumGirls) == 0)
-			{
-				g_MessageQue.AddToQue(text, 0);
-				g_Brothels.GetDungeon()->AddGirl(girl, DUNGEON_NEWSLAVE);
-			}
-			else
-			{
-				g_MessageQue.AddToQue(text, 0);
-				g_Brothels.AddGirl(g_CurrBrothel, girl);
-			}
-			EditTextItem("", details_id);
-			MarketSlaveGirls[selection] = 0;
-		}
-		selection = -1;
+bool cScreenSlaveMarket::check_events()
+{
+	sGirl *girl = MarketSlaveGirls[selection];
+
+	if (g_InterfaceEvents.GetNumEvents() == 0) return true;	// no events means we can go home
+
+	// if it's the back button, pop the window off the stack and we're done
+	if (g_InterfaceEvents.CheckButton(back_id))
+	{
+		girl = 0;
 		g_InitWin = true;
+		g_WinManager.Pop();
 		return true;
 	}
+
+	if (g_InterfaceEvents.CheckButton(buy_slave_id))
+	{
+		return buy_slaves();
+	}
+	if (g_InterfaceEvents.CheckButton(more_id))
+	{
+		if (DetailLevel == 0)		{ DetailLevel = 1; EditTextItem(g_Girls.GetMoreDetailsString(girl, true), details_id); }
+		else if (DetailLevel == 1)	{ DetailLevel = 2; EditTextItem(g_Girls.GetThirdDetailsString(girl), details_id); }
+		else						{ DetailLevel = 0; EditTextItem(g_Girls.GetDetailsString(girl, true), details_id); }
+		return true;
+	}
+	if (g_InterfaceEvents.CheckListbox(trait_list_id))
+	{
+		int tmp = GetLastSelectedItemFromList(trait_list_id);
+		selection = GetLastSelectedItemFromList(slave_list_id);
+		if (tmp != -1 && selection != -1 && MarketSlaveGirls[selection]->m_NumTraits > 0)
+		{
+			if (tmp > MarketSlaveGirls[selection]->m_NumTraits)	tmp = 0;
+			if (trait_id >= 0)	EditTextItem(MarketSlaveGirls[selection]->m_Traits[tmp]->m_Desc, trait_id);
+		}
+		else if (trait_id >= 0)	EditTextItem("", trait_id);
+		return true;
+	}
+	if (g_InterfaceEvents.CheckListbox(slave_list_id)) return change_selected_girl();
+
+
+	/* */if (g_InterfaceEvents.CheckButton(brothel0_id))	change_release("Br0");
+	else if (g_InterfaceEvents.CheckButton(brothel1_id))	change_release("Br1");
+	else if (g_InterfaceEvents.CheckButton(brothel2_id))	change_release("Br2");
+	else if (g_InterfaceEvents.CheckButton(brothel3_id))	change_release("Br3");
+	else if (g_InterfaceEvents.CheckButton(brothel4_id))	change_release("Br4");
+	else if (g_InterfaceEvents.CheckButton(brothel5_id))	change_release("Br5");
+	else if (g_InterfaceEvents.CheckButton(brothel6_id))	change_release("Br6");
+	else if (g_InterfaceEvents.CheckButton(house_id))		change_release("Ho0");
+	else if (g_InterfaceEvents.CheckButton(clinic_id))		change_release("Cl0");
+	else if (g_InterfaceEvents.CheckButton(studio_id))		change_release("St0");
+	else if (g_InterfaceEvents.CheckButton(arena_id))		change_release("Ar0");
+	else if (g_InterfaceEvents.CheckButton(centre_id))		change_release("Ce0");
+	else if (g_InterfaceEvents.CheckButton(farm_id))		change_release("Fa0");
+	else if (g_InterfaceEvents.CheckButton(dungeon_id))		change_release("Du0");
+
 	return false;
 }
 
@@ -301,19 +389,160 @@ void cScreenSlaveMarket::process()
 	HideImage(slave_image_id, (selection == -1));	// hide/show image based on whether a girl is selected
 	if (selection == -1)							// if no girl is selected, clear girl info
 	{
-		EditTextItem(gettext("No girl selected"), details_id);
-		EditTextItem("", trait_id);
+		EditTextItem("No girl selected", details_id);
+		if (trait_id >= 0) EditTextItem("", trait_id);
 	}
 	// nothing selected == nothing further to do
 	int index = selected_item();
 	if (index == -1) return;
-	sGirl *girl;
-	girl = MarketSlaveGirls[index];
-	if (!girl)
+	sGirl* girl = MarketSlaveGirls[index];
+	if (!girl) g_LogFile.os() << "... no girl at index " << index << "- returning " << endl;
+}
+
+bool cScreenSlaveMarket::buy_slaves()
+{
+	g_SpaceKey = false;
+	stringstream ss;
+	stringstream sendtotext;
+	// set the brothel
+	sBrothel *brothel = g_Brothels.GetBrothel(g_CurrBrothel);
+	string sub = ReleaseGirlToWhere.substr(0, 2);
+	char a = ReleaseGirlToWhere[2]; char b = "0"[0]; int sendtonum = a - b;	// `J` cheap fix to get brothel number
+	if (sub == "Du") sendtotext << "the Dungeon";
+	else
 	{
-		g_LogFile.os() << "... no girl at index " << index << "- returning " << endl;
-		return;
+		/* */if (sub == "Br")	{ brothel = g_Brothels.GetBrothel(sendtonum);	sendtotext << "your brothel: " << brothel->m_Name;	}
+		else if (sub == "Ho")	{ brothel = g_House.GetBrothel(sendtonum);		sendtotext << "your House";							}
+		else if (sub == "Cl")	{ brothel = g_Clinic.GetBrothel(sendtonum);		sendtotext << "the Clinic";							}
+		else if (sub == "St")	{ brothel = g_Studios.GetBrothel(sendtonum);	sendtotext << "the Studio";							}
+		else if (sub == "Ar")	{ brothel = g_Arena.GetBrothel(sendtonum);		sendtotext << "the Arena";							}
+		else if (sub == "Ce")	{ brothel = g_Centre.GetBrothel(sendtonum);		sendtotext << "the Community Centre";				}
+		else if (sub == "Fa")	{ brothel = g_Farm.GetBrothel(sendtonum);		sendtotext << "the Farm";							}
 	}
+
+	// set the girls
+	sGirl *girl = MarketSlaveGirls[selection];
+	vector<string> girlsnames;
+
+	int totalcost = 0;
+	for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+	{
+		girl = MarketSlaveGirls[sel];
+		totalcost += tariff.slave_buy_price(girl);
+		girlsnames.push_back(girl->m_Realname);
+	}
+
+	// Check if there is enough room where we want to send her
+	if (sub != "Du")	// Dungeon has no limit so don't bother checking if sending them there.
+	{
+		if (brothel->free_rooms() < 0)
+		{
+			g_MessageQue.AddToQue("The current building has no more room.\nChoose another building to send them to.", 0);
+			return false;
+		}
+		if (brothel->free_rooms() < (int)girlsnames.size())
+		{
+			g_MessageQue.AddToQue("The current building does not have enough room for all the girls you want to send there.\nChoose another building or select fewer girls at a time to buy.", 0);
+			return false;
+		}
+	}
+
+	// `J` check if we can afford all the girls selected
+	if (!g_Gold.slave_cost(totalcost))	// this pays for them if you can afford them
+	{									// otherwise this part runs and returns a fail message.
+		stringstream text;
+		if (girlsnames.size() > 4 && g_Gold.ival() < totalcost / 2) text << "Calm down!  ";
+		text << "You don't have enough money to purchase ";
+		if (girlsnames.size() == 1) text << girlsnames[0];
+		else
+		{
+			if (girlsnames.size() == 2) text << "these two";
+			else if (girlsnames.size() == 3) text << "these three";
+			else text << girlsnames.size();
+			text << " girls";
+		}
+		text << ".";
+		g_MessageQue.AddToQue(text.str(), 0);
+		return false;
+	}
+
+	// `J` we could afford the girls so lets get to it
+	ss << "You buy ";
+
+	/* */if (girlsnames.size() == 1)	ss << "a girl,   " << girlsnames[0] << "   and send her to " << sendtotext.str();
+	else if (girlsnames.size() == 2)	ss << "two girls,   " << girlsnames[0] << "   and   " << girlsnames[1] << ". You send them to " << sendtotext.str();
+	else /*                       */	ss << girlsnames.size() << " girls and send them to " << sendtotext.str();
+	ss << ".\n\n";
+
+	// `J` zzzzzz - add in flavor texts here
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	// `J` end flavor texts
+	
+	// `J` send them where they need to go
+	for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+	{
+		girl = MarketSlaveGirls[sel];
+		/* */if (sub == "Br") g_Brothels.AddGirl(brothel->m_id, girl);
+		else if (sub == "Ho") g_House.AddGirl(brothel->m_id, girl);
+		else if (sub == "Cl") g_Clinic.AddGirl(brothel->m_id, girl);
+		else if (sub == "St") g_Studios.AddGirl(brothel->m_id, girl);
+		else if (sub == "Ar") g_Arena.AddGirl(brothel->m_id, girl);
+		else if (sub == "Ce") g_Centre.AddGirl(brothel->m_id, girl);
+		else if (sub == "Fa") g_Farm.AddGirl(brothel->m_id, girl);
+		else	// if something fails this will catch it and send them to the dungeon
+		{
+			g_Brothels.GetDungeon()->AddGirl(girl, DUNGEON_NEWSLAVE);
+		}
+		MarketSlaveGirls[sel] = 0;
+	}
+
+	// `J` now tell the player what happened
+	if (girlsnames.size() <= 0)	g_MessageQue.AddToQue("Error, no girls names in the list", 0);
+	else g_MessageQue.AddToQue(ss.str(), 0);
+
+	// finish it
+	EditTextItem("", details_id);
+	selection = -1;
+	g_InitWin = true;
+	return true;
+}
+
+void cScreenSlaveMarket::change_release(string towhere)
+{
+	ReleaseGirlToWhere = towhere;
+	stringstream ss;
+	string sub = ReleaseGirlToWhere.substr(0, 2);
+	sBrothel *releaseto = g_Brothels.GetBrothel(g_CurrBrothel);
+	char a = ReleaseGirlToWhere[2]; char b = "0"[0]; int sendtonum = a - b;	// `J` cheap fix to get brothel number
+	/* */if (sub == "Br") releaseto = g_Brothels.GetBrothel(sendtonum);
+	else if (sub == "Ho") releaseto = g_House.GetBrothel(sendtonum);
+	else if (sub == "Cl") releaseto = g_Clinic.GetBrothel(sendtonum);
+	else if (sub == "St") releaseto = g_Studios.GetBrothel(sendtonum);
+	else if (sub == "Ar") releaseto = g_Arena.GetBrothel(sendtonum);
+	else if (sub == "Ce") releaseto = g_Centre.GetBrothel(sendtonum);
+	else if (sub == "Fa") releaseto = g_Farm.GetBrothel(sendtonum);
+	else if (sub == "Du") releaseto = g_Brothels.GetBrothel(0);
+
+	ss.str("");
+	ss << "Send Girl to: " << (sub == "Du" ? "The Dungeon" : releaseto->m_Name);
+	EditTextItem(ss.str(), releaseto_id);
+	ss.str("");
+	if (sub != "Du") ss << "Room for " << releaseto->free_rooms() << " more girls.";
+	EditTextItem(ss.str(), roomsfree_id);
+
+
 }
 
 void cScreenSlaveMarket::generate_unique_girl(int i, bool &unique)
@@ -369,7 +598,9 @@ bool cScreenSlaveMarket::change_selected_girl()
 	// disable/enable buttons based on whether a girl is selected
 	DisableButton(more_id, (selection == -1));
 	DisableButton(buy_slave_id, (selection == -1));
-	ClearListBox(trait_list_id);
+	if (trait_list_id >= 0) ClearListBox(trait_list_id);
+	if (trait_list_text_id >= 0) EditTextItem("Traits:", trait_list_text_id);
+	if (girl_desc_id >= 0)	EditTextItem("", girl_desc_id);
 	// selection of -1 means nothing selected so we get to go home early
 	if (selection == -1) return true;
 	/*
@@ -392,90 +623,11 @@ bool cScreenSlaveMarket::change_selected_girl()
 	else						detail = g_Girls.GetThirdDetailsString(girl);
 	EditTextItem(detail, details_id);
 	ImageNum = -1;										// I don't understand where this is used...
-	for (int i = 0; i < MAXNUM_TRAITS; i++)						// whizz down the girl's trait list
-	{
-		sTrait *trait = girl->m_Traits[i];
-		if (!trait) continue;							// skip any that are absent
-		AddToListBox(trait_list_id, i, trait->m_Name);	// mention the rest in the trait listbox
-	}
 
+	preparescreenitems(girl);
 	PrepareImage(slave_image_id, girl, IMGTYPE_PRESENTED, true, ImageNum);
-	SetSelectedItemInList(trait_list_id, 0);
+
 	return true;
-}
-
-bool cScreenSlaveMarket::check_events()
-{
-	cTariff tariff;
-	sGirl *girl = MarketSlaveGirls[selection];
-
-	if (g_InterfaceEvents.GetNumEvents() == 0) return true;	// no events means we can go home
-
-	// if it's the back button, pop the window off the stack and we're done
-	if (g_InterfaceEvents.CheckButton(back_id))
-	{
-		girl = 0;
-		g_InitWin = true;
-		g_WinManager.Pop();
-		return true;
-	}
-
-	if (g_InterfaceEvents.CheckButton(buy_slave_id))
-	{
-		for (selection = multi_slave_first(); selection != -1; selection = multi_slave_next())
-		{
-			girl = MarketSlaveGirls[selection];
-			int cost = tariff.slave_buy_price(girl);
-			cerr << "Selection = " << selection << ", girl = " << girl->m_Realname << endl;
-			// can the player afford this particular playmate?
-			if (g_Gold.slave_cost(cost) == false)
-			{
-				string text = gettext("You don't have enough money to purchase ");
-				text += girl->m_Realname;
-				g_MessageQue.AddToQue(text, 0);
-				break;
-			}
-
-			sBrothel* brothel = g_Brothels.GetBrothel(g_CurrBrothel);
-			string text = get_buy_slave_string(girl);
-			if (g_Girls.GetRebelValue(girl, false) >= 35 || (brothel->m_NumRooms - brothel->m_NumGirls) == 0)
-			{
-				g_MessageQue.AddToQue(text, 0);
-				g_Brothels.GetDungeon()->AddGirl(girl, DUNGEON_NEWSLAVE);
-			}
-			else
-			{
-				g_MessageQue.AddToQue(text, 0);
-				g_Brothels.AddGirl(g_CurrBrothel, girl);
-			}
-			EditTextItem("", details_id);
-			MarketSlaveGirls[selection] = 0;
-		}
-		selection = -1;
-		g_InitWin = true;
-		return true;
-	}
-	if (g_InterfaceEvents.CheckButton(more_id))
-	{
-		if (DetailLevel == 0)		{ DetailLevel = 1; EditTextItem(g_Girls.GetMoreDetailsString(girl, true), details_id); }
-		else if (DetailLevel == 1)	{ DetailLevel = 2; EditTextItem(g_Girls.GetThirdDetailsString(girl), details_id); }
-		else						{ DetailLevel = 0; EditTextItem(g_Girls.GetDetailsString(girl, true), details_id); }
-		return true;
-	}
-	if (g_InterfaceEvents.CheckListbox(trait_list_id))
-	{
-		int tmp = GetLastSelectedItemFromList(trait_list_id);
-		selection = GetLastSelectedItemFromList(slave_list_id);
-		if (tmp != -1 && selection != -1 && MarketSlaveGirls[selection]->m_NumTraits > 0)
-		{
-			if (tmp > MarketSlaveGirls[selection]->m_NumTraits)	tmp = 0;
-			EditTextItem(MarketSlaveGirls[selection]->m_Traits[tmp]->m_Desc, trait_id);
-		}
-		else EditTextItem("", trait_id);
-		return true;
-	}
-	if (g_InterfaceEvents.CheckListbox(slave_list_id)) return change_selected_girl();
-	return false;
 }
 
 string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
@@ -558,4 +710,32 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 		}
 	}
 	return text;
+}
+
+void cScreenSlaveMarket::preparescreenitems(sGirl* girl)
+{
+
+	int trait_count = 0;
+	stringstream traits_text;
+	traits_text << "Traits:      ";
+
+	// loop through her traits, populating the box
+	for (int i = 0; i < MAXNUM_TRAITS; i++)
+	{
+		if (!girl->m_Traits[i]) continue;
+		trait_count++;
+		if (trait_list_id >= 0) AddToListBox(trait_list_id, i, g_Traits.GetTranslateName(girl->m_Traits[i]->m_Name));
+		if (trait_list_text_id)
+		{
+			if (trait_count > 1) traits_text << ",   ";
+			traits_text << g_Traits.GetTranslateName(girl->m_Traits[i]->m_Name);
+		}
+	}
+	// and finally, highlight the selected entry?
+	if (trait_list_id >= 0) SetSelectedItemInList(trait_list_id, 0);
+	if (trait_list_text_id >= 0) EditTextItem(traits_text.str(), trait_list_text_id);
+	if (girl_desc_id >= 0)	EditTextItem(girl->m_Desc, girl_desc_id);
+
+
+
 }
