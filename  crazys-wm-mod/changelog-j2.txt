@@ -56,6 +56,11 @@ Started reworking slave buying code
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.25
 
+###  Changes 1/3/2016
+Added some flavor texts to the Slave Market.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.26
 
 
  

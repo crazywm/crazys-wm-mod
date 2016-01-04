@@ -404,6 +404,8 @@ bool cScreenSlaveMarket::buy_slaves()
 	g_SpaceKey = false;
 	stringstream ss;
 	stringstream sendtotext;
+	int playerwealth = g_Gold.ival()/1000;
+
 	// set the brothel
 	sBrothel *brothel = g_Brothels.GetBrothel(g_CurrBrothel);
 	string sub = ReleaseGirlToWhere.substr(0, 2);
@@ -423,6 +425,7 @@ bool cScreenSlaveMarket::buy_slaves()
 	// set the girls
 	sGirl *girl = MarketSlaveGirls[selection];
 	vector<string> girlsnames;
+	int numgirls;
 
 	int totalcost = 0;
 	for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
@@ -431,6 +434,7 @@ bool cScreenSlaveMarket::buy_slaves()
 		totalcost += tariff.slave_buy_price(girl);
 		girlsnames.push_back(girl->m_Realname);
 	}
+	numgirls = girlsnames.size();
 
 	// Check if there is enough room where we want to send her
 	if (sub != "Du")	// Dungeon has no limit so don't bother checking if sending them there.
@@ -440,7 +444,7 @@ bool cScreenSlaveMarket::buy_slaves()
 			g_MessageQue.AddToQue("The current building has no more room.\nChoose another building to send them to.", 0);
 			return false;
 		}
-		if (brothel->free_rooms() < (int)girlsnames.size())
+		if (brothel->free_rooms() < numgirls)
 		{
 			g_MessageQue.AddToQue("The current building does not have enough room for all the girls you want to send there.\nChoose another building or select fewer girls at a time to buy.", 0);
 			return false;
@@ -451,17 +455,17 @@ bool cScreenSlaveMarket::buy_slaves()
 	if (!g_Gold.slave_cost(totalcost))	// this pays for them if you can afford them
 	{									// otherwise this part runs and returns a fail message.
 		stringstream text;
-		if (girlsnames.size() > 4 && g_Gold.ival() < totalcost / 2) text << "Calm down!  ";
+		if (numgirls > 4 && g_Gold.ival() < totalcost / 2) text << "Calm down!  ";
 		text << "You don't have enough money to purchase ";
-		if (girlsnames.size() == 1) text << girlsnames[0];
-		else
+		switch (numgirls)
 		{
-			if (girlsnames.size() == 2) text << "these two";
-			else if (girlsnames.size() == 3) text << "these three";
-			else text << girlsnames.size();
-			text << " girls";
+		case 0: text << "... noone ... Wait? What? Something went wrong.\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org"; break;
+		case 1: text << girlsnames[0]; break;
+		case 2: text << "these two"; break;
+		case 3: text << "these three"; break;
+		default: text << numgirls; break;
 		}
-		text << ".";
+		text << (numgirls <= 1 ? "" : " girls") << ".";
 		g_MessageQue.AddToQue(text.str(), 0);
 		return false;
 	}
@@ -469,31 +473,303 @@ bool cScreenSlaveMarket::buy_slaves()
 	// `J` we could afford the girls so lets get to it
 	ss << "You buy ";
 
-	/* */if (girlsnames.size() == 1)	ss << "a girl,   " << girlsnames[0] << "   and send her to " << sendtotext.str();
-	else if (girlsnames.size() == 2)	ss << "two girls,   " << girlsnames[0] << "   and   " << girlsnames[1] << ". You send them to " << sendtotext.str();
-	else /*                       */	ss << girlsnames.size() << " girls and send them to " << sendtotext.str();
+	/* */if (numgirls == 1)	ss << "a girl,   " << girlsnames[0] << "   and send her to " << sendtotext.str();
+	else if (numgirls == 2)	ss << "two girls,   " << girlsnames[0] << "   and   " << girlsnames[1] << ". You send them to " << sendtotext.str();
+	else /*                       */	ss << numgirls << " girls and send them to " << sendtotext.str();
 	ss << ".\n\n";
-
+	
 	// `J` zzzzzz - add in flavor texts here
-	
-	
+	if (numgirls < 1) ss << "(error, no girls)";
+#pragma region //	Send them to a Brothel			//
+	else if (sub == "Br")
+	{
+		if (numgirls == 1)		// single girl flavor texts
+		{
+			ss << "";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+			}
+		}
+		else
+		{
+			ss << "";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+			}
+		}
+	}
+#pragma endregion
+#pragma region //	Send them to Your House		//
+	else if (sub == "Ho")
+	{
+		if (numgirls == 1)		// single girl flavor texts
+		{
+			ss << "";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+			}
+		}
+		else
+		{
+			ss << "";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+			}
+		}
+	}
+#pragma endregion
+#pragma region //	Send them to the Clinic		//
+	else if (sub == "Cl")
+	{
+		if (numgirls == 1)		// single girl flavor texts
+		{
+			ss << "";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+			}
+		}
+		else
+		{
+			ss << "";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+			}
+		}
+	}
+#pragma endregion
+#pragma region //	Send them to the Studio		//
+	else if (sub == "St")
+	{
+		ss << "\"Ok " << (numgirls == 1 ? "my dear" : "ladies") << ", here are a couple of scripts to practice with on your way to the Studio.\"\n";
 
+		if (numgirls == 1)		// single girl flavor texts
+		{
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+				/* */if (girl->has_trait("Porn Star"))
+				{
+					ss << girl->m_Realname << ": \"Script? I don't need a script, just tell me who to fuck and where the camera is and I'll get it done.\"\n";
+				}
+				else if (girl->has_trait("Actress"))
+				{
+					ss << girl->m_Realname << ": \"This is a rather short script, I'm used to long dialogues. I don't seem to get a lot of lines here, how much camera time do I get?\"\nGuard: \"Don't worry sweetheart, your mouth will get a lot to do.\"\n";
+				}
+				else if (girl->has_trait("Shy"))
+				{
+					ss << girl->m_Realname << ": \"I can't act, I can barely talk to other people. I get tongue tied whenever I'm around people.\"\nGuard: \"Tongued? Tied? That shouldn't be a problem sweetheart, they can work with anything where you are going.\"\n";
+					girl->happiness(-10);
+				}
+				else
+				{
+					ss << girl->m_Realname << " spends her time going over the scripts, disgusted at times, turned on at others.";
+					girl->performance(g_Dice % 4);
+					girl->libido(g_Dice % 10);
+				}
+			}
+		}
+		else					// multiple girl flavor texts
+		{
+			bool pornstar = false;	string pornstarname = "";	int pornstarnum = 0;
+			bool actress = false;	string actressname = "";	int actressnum = 0;
+			bool shygirl = false;	string shygirlname = "";	int shygirlnum = 0;
 
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+				/* */if (girl->has_trait("Porn Star"))	{ pornstarnum++; pornstar = true;	pornstarname = girl->m_Realname; }
+				else if (girl->has_trait("Actress"))	{ actressnum++;  actress = true;	actressname = girl->m_Realname; }
+				else if (girl->has_trait("Shy"))		{ shygirlnum++;  shygirl = true;	shygirlname = girl->m_Realname; }
+			}
+			if (actressnum > 0 && pornstarnum > 0)
+			{
+				ss << actressname << ": \"I've been in a few films already, this will be fun.\"\n" << pornstarname << ": \"Its not that kind of film honey.\"\n";
+			}
+			ss << "The girls practice their scripts, playing different roles and with eachother.\n";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+				girl->lesbian(g_Dice % numgirls);
+				girl->performance(g_Dice % numgirls);
+			}
+		}
 
+	}
+#pragma endregion
+#pragma region //	Send them to the Arena			//
+	else if (sub == "Ar")
+	{
+		ss << "Guard: \"Ok "; if (numgirls == 1) ss << girl->m_Realname; else ss << "ladies";
+		ss << ", we are headed for the Arena where you will train and eventually fight for your new master, " << The_Player->RealName() << ".Your first lesson, to carry these heavy packages to the Arena.Load up and march.\"\n";
+		for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+		{
+			girl = MarketSlaveGirls[sel];
+			girl->strength(g_Dice % 6);
+			girl->constitution(g_Dice % 3);
+			girl->tiredness(g_Dice % 50);
+		}
+	}
+#pragma endregion
+#pragma region //	Send them to the Centre		//
+	else if (sub == "Ce")
+	{
+		ss << "When "; if (numgirls == 1) ss << girl->m_Realname << " arrives"; else ss << "the girls arrive";
+		ss << " at the Centre " << (numgirls == 1 ? "she is" : "they are") << " shown around and then assigned to ";
+		if (numgirls == 1) ss << "clean the dishes.\n";
+		else ss << "various tasks around the Centre.\n";
+		for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+		{
+			girl = MarketSlaveGirls[sel];
+			girl->service(g_Dice % 5);
+			girl->morality(g_Dice % 5);
+			girl->cooking(g_Dice % 3);
+		}
+	}
+#pragma endregion
+#pragma region //	Send them to the Farm			//
+	else if (sub == "Fa")
+	{
+		if (numgirls == 1) ss << girl->m_Realname << " is"; else ss << "The girls are";
+		ss << " brought to your stall at the town's farmers market until they are ready to go to the Farm. While there, " << (numgirls == 1 ? "she is" : "they are") << " shown the various animals and goods that they will be producing on the farm.\n";
+		for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+		{
+			girl = MarketSlaveGirls[sel];
+			girl->farming(g_Dice % 5 + 1);
+			girl->animalhandling(g_Dice % 5 + 1);
+			girl->herbalism(g_Dice % 3);
+		}
+	}
+#pragma endregion
+#pragma region //	Send them to the Dungeon		//
+	else
+	{
+		if (The_Player->disposition() >= 80)				//Benevolent
+		{
+			ss << "\"Don't worry " << (numgirls == 1 ? "my dear" : "ladies") << ", I'm only sending you there until I find room for you somewhere better.\"\n";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				// you have a reputation for not torturing so they are not afraid (but you are sending them to a dungeon so...)
+				girl = MarketSlaveGirls[sel];
+				girl->m_AccLevel = 0;
+				girl->pcfear(g_Dice.bell(-3, 1));
+				girl->pchate(g_Dice.bell(-3, 1));
+				girl->pclove(g_Dice.bell(-1, 3));
+				girl->happiness(g_Dice.bell(-5, 10));
+				girl->spirit(g_Dice.bell(-2, 4));
+				girl->obedience(g_Dice.bell(-2, 5));
+			}
+		}
+		else if (The_Player->disposition() >= 50)			//Nice
+		{
+			ss << "\"Don't worry " << (numgirls == 1 ? "my dear" : "ladies") << ", you will not be in there long, I promise.\"\n";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				// you have a reputation for not torturing much so they are less afraid (but you are sending them to a dungeon so...)
+				girl = MarketSlaveGirls[sel];
+				girl->m_AccLevel = 0;
+				girl->pcfear(g_Dice.bell(-2, 2));
+				girl->pchate(g_Dice.bell(-2, 2));
+				girl->pclove(g_Dice.bell(-2, 2));
+				girl->happiness(g_Dice.bell(-10, 5));
+				girl->spirit(g_Dice.bell(-2, 2));
+				girl->obedience(g_Dice.bell(-2, 2));
+			}
+		}
+		else if (The_Player->disposition() >= 10)			//Pleasant
+		{
+			ss << "\"Try to make " << (numgirls == 1 ? "yourself" : "yourselves") << " comfortable, you should not be in there too long.\"\n";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+				girl->m_AccLevel = 0;
+				girl->pcfear(g_Dice % 5 + (girl->has_trait("Masochist") ? 0 : 3));
+				girl->pchate(g_Dice % 3 + (girl->has_trait("Masochist") ? 0 : 2));
+				girl->pclove(-(g_Dice % 6 - (girl->has_trait("Masochist") ? 2 : 0)));
+				girl->happiness(-(g_Dice % 6 - (girl->has_trait("Masochist") ? 2 : 0)));
+				girl->spirit(-(g_Dice % 4 - (girl->has_trait("Masochist") ? 2 : 0)));
+				girl->obedience(g_Dice % 3 - 1);
+			}
+		}
+		else if (The_Player->disposition() >= -10)			//Neutral
+		{
+			ss << "\"To the Dungeon with " << (numgirls == 1 ? "you" : "them") << ", I'll see you there shortly.\"\n";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+				girl->m_AccLevel = 0;
+				girl->pcfear(g_Dice % 5 + (girl->has_trait("Masochist") ? 0 : 3));
+				girl->pchate(g_Dice % 3 + (girl->has_trait("Masochist") ? 0 : 2));
+				girl->pclove(-(g_Dice % 6 - (girl->has_trait("Masochist") ? 2 : 0)));
+				girl->happiness(-(g_Dice % 6 - (girl->has_trait("Masochist") ? 2 : 0)));
+				girl->spirit(-(g_Dice % 4 - (girl->has_trait("Masochist") ? 2 : 0)));
+				girl->obedience(g_Dice % 3 - 1);
+			}
+		}
+		else if (The_Player->disposition() >= -50)			//Not nice
+		{
+			ss << "\"To the Dungeon with " << (numgirls == 1 ? "you" : "them") << ". I'll enjoy this, but you may not.\"\n";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+				girl->m_AccLevel = 0;
+				girl->pcfear(g_Dice % 10 + (girl->has_trait("Masochist") ? 0 : 5));
+				girl->pchate(g_Dice % 5 + (girl->has_trait("Masochist") ? 0 : 3));
+				girl->pclove(-(g_Dice % 12 - (girl->has_trait("Masochist") ? 3 : 0)));
+				girl->happiness(-(g_Dice % 12 - (girl->has_trait("Masochist") ? 3 : 0)));
+				girl->spirit(-(g_Dice % 7 - (girl->has_trait("Masochist") ? 2 : 0)));
+				girl->obedience(g_Dice % 5 - 2);
+			}
 
+		}
+		else if (The_Player->disposition() >= -80)			//Mean
+		{
+			ss << "\"To the Dungeon with " << (numgirls == 1 ? "you" : "them") << ". Put " << (numgirls == 1 ? "her" : "them") << " in chains and I'll get to them when I am done here.\"\n";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+				girl->m_AccLevel = 0;
+				girl->pcfear(g_Dice % 20 + (girl->has_trait("Masochist") ? 0 : 10));
+				girl->pchate(g_Dice % 10 + (girl->has_trait("Masochist") ? 0 : 5));
+				girl->pclove(-(g_Dice % 25 - (girl->has_trait("Masochist") ? 5 : 0)));
+				girl->happiness(-(g_Dice % 25 - (girl->has_trait("Masochist") ? 5 : 0)));
+				girl->spirit(-(g_Dice % 15 - (girl->has_trait("Masochist") ? 3 : 0)));
+				girl->obedience(g_Dice % 10 - 3);
+			}
+		}
+		else/*                                        */	//Evil
+		{
+			ss << "\"You are off to your new home, the Dungeon, where my dreams happen and your dreams become nightmares.\"\n";
+			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			{
+				girl = MarketSlaveGirls[sel];
+				girl->m_AccLevel = 0;
+				girl->pcfear(g_Dice % 40 + (girl->has_trait("Masochist") ? 0 : 20));
+				girl->pchate(g_Dice % 20 + (girl->has_trait("Masochist") ? 0 : 10));
+				girl->pclove(-(g_Dice % 50 - (girl->has_trait("Masochist") ? 10 : 0)));
+				girl->happiness(-(g_Dice % 50 - (girl->has_trait("Masochist") ? 10 : 0)));
+				girl->spirit(-(g_Dice % 30 - (girl->has_trait("Masochist") ? 5 : 0)));
+				girl->obedience(g_Dice % 20 - 5);
+			}
 
-
-
-
-
-
-
+		}
+	}
+#pragma endregion
 	// `J` end flavor texts
 	
 	// `J` send them where they need to go
 	for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
 	{
 		girl = MarketSlaveGirls[sel];
+		stringstream sss;
+		sss << "Purchased from the Slave Market for " << tariff.slave_buy_price(girl) << " gold.";
+		girl->m_Events.AddMessage(sss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+
 		/* */if (sub == "Br") g_Brothels.AddGirl(brothel->m_id, girl);
 		else if (sub == "Ho") g_House.AddGirl(brothel->m_id, girl);
 		else if (sub == "Cl") g_Clinic.AddGirl(brothel->m_id, girl);
@@ -509,7 +785,7 @@ bool cScreenSlaveMarket::buy_slaves()
 	}
 
 	// `J` now tell the player what happened
-	if (girlsnames.size() <= 0)	g_MessageQue.AddToQue("Error, no girls names in the list", 0);
+	if (numgirls <= 0)	g_MessageQue.AddToQue("Error, no girls names in the list", 0);
 	else g_MessageQue.AddToQue(ss.str(), 0);
 
 	// finish it
