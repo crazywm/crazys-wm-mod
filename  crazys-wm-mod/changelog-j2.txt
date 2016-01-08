@@ -62,6 +62,16 @@ Added some flavor texts to the Slave Market.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.26
 
+###  Changes 1/4-7/2016 - I don't have much time to work on the game durring the week
+Continued adding flavor texts to the Slave Market.
+Fixed a bug in cJobManager.cpp where Boob Job would not allow girls with "Abnormally Large Boobs" to start, fixed to "Titanic Tits"
+ * Also fixed breast reduction.
+Fixed a bug in .ani files causing a crash.
+Fixed a bug in girl details (hopefully)
+ 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.27
+ 
 
  
 $$$$ TO DO - SHORT TERM - (for this version) $$$$

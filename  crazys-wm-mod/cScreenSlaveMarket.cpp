@@ -485,10 +485,49 @@ bool cScreenSlaveMarket::buy_slaves()
 	{
 		if (numgirls == 1)		// single girl flavor texts
 		{
-			ss << "";
 			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
 			{
 				girl = MarketSlaveGirls[sel];
+				ss << girl->m_Realname;
+				{
+					int t = g_Dice % 2;	// `J` because there are currently only 2 text options per disposition this should be ok
+					if (The_Player->disposition() >= 80)				//Benevolent
+					{
+						if (t == 1)	ss<< " went to your current brothel with a smile on her face happy that such a nice guy bought her.";
+						else		ss << " smiled as you offered her your arm, surprised to find such a kindness waiting for her. Hopeing such kindness would continue, she went happily with you as her owner.";
+					}
+					else if (The_Player->disposition() >= 50)			//Nice
+					{
+						if (t == 1)	ss << ", having heard about her new owner's reputation, was guided to your current brothel without giving any trouble.";
+						else		ss << " looked up at you hopefully as you refused the use of a retainer or delivery, instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air before you both return home.";
+					}
+					else if (The_Player->disposition() >= 10)			//Pleasant
+					{
+						if (t == 1)	ss << " was sent to your current brothel, knowing that she could have been bought by a lot worse owner.";
+						else		ss << " was escorted home by one of your slaves who helped her settle in. She seems rather hopeful of a good life in your care.";
+					}
+					else if (The_Player->disposition() >= -10)			//Neutral
+					{
+						if (t == 1)	ss << " as your newest investment, she was sent to your current brothel.";
+						else		ss << " has been sent to your establishment under the supervision of your most trusted slaves.";
+					}
+					else if (The_Player->disposition() >= -50)			//Not nice
+					{
+						if (t == 1)	ss << " not being very happy about her new owner, was escorted to your current brothel.";
+						else		ss << " struggled as her hands were shackled in front of her. Her eyes locked on the floor, tears gathering in the corners of her eyes, as she was sent off to your brothel.";
+					}
+					else if (The_Player->disposition() >= -80)			//Mean
+					{
+						if (t == 1)	ss << " didn't wanted to provoke you in any possible way. She went quietly to your current brothel, without any resistance.";
+						else		ss << " was dragged away to your brothel crying, one of your guards slapping her face as she tried to resist. ";
+					}
+					else											//Evil
+					{
+						if (t == 1)	ss << " was dragged crying and screaming to your current brothel afraid of what you might do to her as her new owner.";
+						else		ss << " looked up at you in fear as you order for her to be taken to your brothel. A hint of some emotion hidden in her eyes draws your attention for a moment before she unconsciously looked away, no doubt afraid of what you'd do to her if she met your gaze.";
+					}
+				}
+
 			}
 		}
 		else
@@ -525,20 +564,32 @@ bool cScreenSlaveMarket::buy_slaves()
 #pragma region //	Send them to the Clinic		//
 	else if (sub == "Cl")
 	{
-		if (numgirls == 1)		// single girl flavor texts
+		if (numgirls==1) ss << girl->m_Realname<<" is";
+		else ss << "The girls are";
+		ss << " brought to the Clinic where they are given a full checkup.\n";
+		for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
 		{
-			ss << "";
-			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
+			girl = MarketSlaveGirls[sel];
+			girl->health(100);
+			girl->happiness(100);
+			girl->tiredness(-100);
+			girl->service(max(0, g_Dice.bell(-1, 3)));
+			girl->medicine(max(0, g_Dice.bell(-2, 3)));
+			girl->morality(max(0, g_Dice.bell(-2, 2)));
+			if (girl->has_disease())
 			{
-				girl = MarketSlaveGirls[sel];
-			}
-		}
-		else
-		{
-			ss << "";
-			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
-			{
-				girl = MarketSlaveGirls[sel];
+				vector<string> diseases;
+				if (girl->has_trait("AIDS"))		diseases.push_back("AIDS");
+				if (girl->has_trait("Chlamydia"))	diseases.push_back("Chlamydia");
+				if (girl->has_trait("Herpes"))		diseases.push_back("Herpes");
+				if (girl->has_trait("Syphilis"))	diseases.push_back("Syphilis");
+				ss << girl->m_Realname << " has been diagnosed with ";
+				if (diseases.size() <= 0)	ss << "an unknown disease.";
+				if (diseases.size() >= 1)	ss << diseases[0];
+				if (diseases.size() >= 2)	ss << " and "<< diseases[1];
+				if (diseases.size() >= 3)	ss << " and "<< diseases[2];
+				if (diseases.size() >= 4)	ss << " and "<< diseases[3];
+				ss << ".\n";
 			}
 		}
 	}

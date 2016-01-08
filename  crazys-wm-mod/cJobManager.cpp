@@ -1500,13 +1500,13 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else if (u_int(JobID) == JOB_PHYSICALSURGERY)
 		{
 		}
-		else if (u_int(JobID) == JOB_BREASTREDUCTION && g_Girls.HasTrait(Girl, "Small Boobs"))
+		else if (u_int(JobID) == JOB_BREASTREDUCTION && g_Girls.HasTrait(Girl, "Flat Chest"))
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("Her boobs can't get no smaller."), 0);
 			jobgood = false;
 		}
-		else if (u_int(JobID) == JOB_BOOBJOB && g_Girls.HasTrait(Girl, "Abnormally Large Boobs"))
+		else if (u_int(JobID) == JOB_BOOBJOB && g_Girls.HasTrait(Girl, "Titanic Tits"))
 		{
 			Girl->m_DayJob = Girl->m_NightJob = JOB_CLINICREST;
 			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);

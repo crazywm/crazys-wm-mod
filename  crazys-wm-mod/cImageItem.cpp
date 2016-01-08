@@ -1068,6 +1068,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 			else
 			{
 				input >> numFrames >> speed >> aniwidth >> aniheight;
+				m_Images[id]->m_Image = newImage->m_Surface;
 				m_Images[id]->m_AnimatedImage = new cAnimatedSurface();
 				m_Images[id]->m_AnimatedImage->SetData(0, 0, numFrames, speed, aniwidth, aniheight, newImage->m_Surface);
 				imagechosen = true;

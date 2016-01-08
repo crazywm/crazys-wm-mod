@@ -166,12 +166,13 @@ const char *sGirl::children_type_names[] =
 // When modifying Training types, search for "Change-Traning-Types"  :  found in >> cGirls.cpp > training_names[]
 const char *sGirl::training_names[] =
 {
-	"PUPPY", "GENERAL"
+	"PUPPY", "PONY", "GENERAL"
 };
 //  When modifying Training types, search for "Change-Traning-Types"  :  found in >> cGirls.cpp > training_jobs[]
 const char *sGirl::training_jobs[] = {
-	"puppy training",					// ACTION_WORKHOUSEPET	
-	"no special training"			// ACTION_GENERAL			
+	"puppy training",
+	"pony training",
+	"general training"
 };
 
 // calculate the max like this, and it's self-maintaining
