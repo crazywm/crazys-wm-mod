@@ -72,8 +72,32 @@ Fixed a bug in girl details (hopefully)
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.27
  
+###  Changes 1/8-10/2016
+Added framework to the rest of the Slave Market flavor texts - still need the actual texts written.
 
- 
+###  Changes 1/20/2016
+WME - Fixed a bug with NPCLove loading and storing it as Strength overwriting Strength.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version .08.31
+
+###  Changes 1/27/2016
+WME - fixed a bug on item screen add and remove buttons crashing if nothing is selected.
+WME - Fixed a bug with traits not loading on Girls page
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version .08.32
+
+###  Changes 2/3/2016
+Added save/load lines for happiness and fame to the non-brothel buildings
+Added FixFreeTimeJobs() to the girls loading section to correct for bad free time jobs.
+Adjusted Anger Management to make it use m_WorkingDay like the other therapy jobs
+Changed level up trait report to EVENT_GOODNEWS
+Added a part to PossiblyGainNewTrait() to make the event type customizeable so that slut will be added as EVENT_WARNING instead of EVENT_GOODNEWS.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.28
+
+
+
+
+
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 
 $$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$

@@ -1971,7 +1971,7 @@ void cGirls::LevelUp(sGirl* girl)
 				addedtrait = 0;
 				AddTrait(girl, trait);
 				ss << " She has gained the " << trait << " trait.";
-				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 			}
 			addedtrait--;
 		}
@@ -3693,6 +3693,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 
 	if (m_YesterDayJob < 0)		m_YesterDayJob = 255;
 	if (m_YesterNightJob < 0)	m_YesterNightJob = 255;
+	FixFreeTimeJobs(this);
 
 	// load runnayway value
 	pGirl->QueryIntAttribute("RunAway", &tempInt); m_RunAway = tempInt; tempInt = 0;
@@ -5194,7 +5195,7 @@ int cGirls::GetNumItemEquiped(sGirl* girl, int Type)
 // ----- Traits
 
 // If a girl enjoys a job enough, she has a chance of gaining traits associated with it
-bool cGirls::PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1)
+bool cGirls::PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, int eventtype)
 {
 	if (girl->m_Enjoyment[ActionType] > Threshold && !girl->has_trait(Trait))
 	{
@@ -5202,7 +5203,7 @@ bool cGirls::PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int 
 		if (g_Dice.percent(chance))
 		{
 			girl->add_trait(Trait, false);
-			girl->m_Events.AddMessage(Message, IMGTYPE_PROFILE, EVENT_GOODNEWS);
+			girl->m_Events.AddMessage(Message, IMGTYPE_PROFILE, eventtype);
 			return true;
 		}
 	}

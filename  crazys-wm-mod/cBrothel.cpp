@@ -780,7 +780,7 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 	pBrothel->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
 
 	pBrothel->QueryIntAttribute("Bar", &tempInt); m_Bar = tempInt; tempInt = 0;
-	pBrothel->QueryIntAttribute(gettext("Fame"), &tempInt); m_Fame = tempInt; tempInt = 0;
+	pBrothel->QueryIntAttribute("Fame", &tempInt); m_Fame = tempInt; tempInt = 0;
 	pBrothel->QueryIntAttribute("GamblingHall", &tempInt); m_GamblingHall = tempInt; tempInt = 0;
 	pBrothel->QueryValueAttribute<unsigned short>("Happiness", &m_Happiness);
 	pBrothel->QueryIntAttribute("HasBarStaff", &tempInt); m_HasBarStaff = tempInt; tempInt = 0;

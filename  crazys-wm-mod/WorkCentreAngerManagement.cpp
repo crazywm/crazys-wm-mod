@@ -75,7 +75,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 	if (g_Dice.percent(20) || g_Girls.DisobeyCheck(girl, actiontype, brothel))	// `J` - yes, OR, not and.
 	{
 		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
-		girl->m_WorkingDay--;
+		if (Day0Night1) girl->m_WorkingDay--;
 		if (g_Dice.percent(10))
 		{
 			g_Girls.UpdateEnjoyment(girl, actiontype, -5);

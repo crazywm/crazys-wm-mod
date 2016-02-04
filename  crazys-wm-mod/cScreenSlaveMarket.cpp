@@ -156,6 +156,7 @@ void cScreenSlaveMarket::init()
 	ClearListBox(slave_list_id);	// clear the list
 
 	int numgirls = g_Dice.bell(cfg.slavemarket.slavesnewweeklymin(), cfg.slavemarket.slavesnewweeklymax());
+	if (numgirls > 20)	numgirls = 20;	if (numgirls < 0)	numgirls = 0;
 
 	// Check if any slave girls
 	for (int i = 0; i < 20; i++)
@@ -526,17 +527,49 @@ bool cScreenSlaveMarket::buy_slaves()
 						if (t == 1)	ss << " was dragged crying and screaming to your current brothel afraid of what you might do to her as her new owner.";
 						else		ss << " looked up at you in fear as you order for her to be taken to your brothel. A hint of some emotion hidden in her eyes draws your attention for a moment before she unconsciously looked away, no doubt afraid of what you'd do to her if she met your gaze.";
 					}
+					ss << "\n";
 				}
-
 			}
 		}
 		else
 		{
-			ss << "";
+			if (The_Player->disposition() >= 80)				//Benevolent
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= 50)			//Nice
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= 10)			//Pleasant
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= -10)			//Neutral
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= -50)			//Not nice
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= -80)			//Mean
+			{
+				ss << "";
+			}
+			else											//Evil
+			{
+				ss << "";
+			}
+
 			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
 			{
 				girl = MarketSlaveGirls[sel];
 			}
+
+
+
+
 		}
 	}
 #pragma endregion
@@ -545,15 +578,70 @@ bool cScreenSlaveMarket::buy_slaves()
 	{
 		if (numgirls == 1)		// single girl flavor texts
 		{
-			ss << "";
 			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
 			{
 				girl = MarketSlaveGirls[sel];
+				if (The_Player->disposition() >= 80)				//Benevolent
+				{
+					ss << "";
+				}
+				else if (The_Player->disposition() >= 50)			//Nice
+				{
+					ss << "";
+				}
+				else if (The_Player->disposition() >= 10)			//Pleasant
+				{
+					ss << "";
+				}
+				else if (The_Player->disposition() >= -10)			//Neutral
+				{
+					ss << "";
+				}
+				else if (The_Player->disposition() >= -50)			//Not nice
+				{
+					ss << "";
+				}
+				else if (The_Player->disposition() >= -80)			//Mean
+				{
+					ss << "";
+				}
+				else											//Evil
+				{
+					ss << "";
+				}
 			}
 		}
 		else
 		{
-			ss << "";
+			if (The_Player->disposition() >= 80)				//Benevolent
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= 50)			//Nice
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= 10)			//Pleasant
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= -10)			//Neutral
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= -50)			//Not nice
+			{
+				ss << "";
+			}
+			else if (The_Player->disposition() >= -80)			//Mean
+			{
+				ss << "";
+			}
+			else											//Evil
+			{
+				ss << "";
+			}
+
 			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
 			{
 				girl = MarketSlaveGirls[sel];

@@ -290,7 +290,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	if (jobperformance < 100 && roll_a <= 2) { g_Girls.PossiblyGainNewTrait(girl, "Assassin", 10, actiontype, girlName + "'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", Day0Night1); }
 	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_DIGNITY) < 0 && (imagetype == IMGTYPE_SEX || imagetype == IMGTYPE_ORAL))
 	{
-		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1, EVENT_WARNING);
 	}
 
 	//lose

@@ -79,9 +79,9 @@ namespace WM_Girls_Generator
 
             TraitTypes.Columns.Add("CategoryName");
             dataGridView_Trait_Types.DataSource = TraitTypes;
-            dataGridView_Traits_Trait_Type.DataSource = TraitTypes;
-            dataGridView_Traits_Trait_Type.DisplayMember = "CategoryName";
-            dataGridView_Traits_Trait_Type.ValueMember = "CategoryName";
+            //dataGridView_Traits_Trait_Type.DataSource = TraitTypes;
+            //dataGridView_Traits_Trait_Type.DisplayMember = "CategoryName";
+            //dataGridView_Traits_Trait_Type.ValueMember = "CategoryName";
             comboBox_Traits_Trait_Type.DataSource = TraitTypes;
             comboBox_Traits_Trait_Type.DisplayMember = "CategoryName";
             comboBox_Traits_Trait_Type.ValueMember = "CategoryName";
@@ -434,7 +434,7 @@ namespace WM_Girls_Generator
                     aTraits.Add(sDesc);
                 }
                 xmlread.Close();
-                dataGridView_Traits_Trait_Type.DataSource = TraitTypes;
+                //dataGridView_Traits_Trait_Type.DataSource = TraitTypes;
                 comboBox_Traits_Trait_Type.DataSource = TraitTypes;
                 StatusLabel1.Text = "Loaded " + x.ToString() + " traits from XML file...";
                 comboBox_RGTraits.SelectedIndex = 0;	//after filling random girls droplist it sets it to first entry
@@ -515,9 +515,10 @@ namespace WM_Girls_Generator
 
         private void dataGridView_Trait_Types_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SortDataTable(ref TraitCollection, ref listBox_Traits_Names);
+            DataTable dt = TraitCollection;
+            SortDataTable(ref dt, ref listBox_Traits_Names);
             dataGridView_Trait_Types.DataSource = TraitTypes;
-            dataGridView_Traits_Trait_Type.DataSource = TraitTypes;
+            //dataGridView_Traits_Trait_Type.DataSource = TraitTypes;
 
             //dataGridView_Traits.DataSource = TraitCollection;
         }
@@ -3443,6 +3444,7 @@ namespace WM_Girls_Generator
                     string[] aDignity = new string[2];
                     string[] aLactation = new string[2];
                     string[] aStrength = new string[2];
+                    string[] aNPCLove = new string[2];
 
                     string[] aAnal = new string[2];
                     string[] aMagic = new string[2];
@@ -3583,8 +3585,8 @@ namespace WM_Girls_Generator
                                 aStrength[1] = stat.Attributes["Max"].Value;
                                 break;
                             case "NPCLove":
-                                aStrength[0] = stat.Attributes["Min"].Value;
-                                aStrength[1] = stat.Attributes["Max"].Value;
+                                aNPCLove[0] = stat.Attributes["Min"].Value;
+                                aNPCLove[1] = stat.Attributes["Max"].Value;
                                 break;
                         }
                     }
@@ -3697,8 +3699,8 @@ namespace WM_Girls_Generator
                         tcount++;
                     }
 
-                    string sMinStat = aCharisma[0] + " " + aHappiness[0] + " " + aLibido[0] + " " + aConstitution[0] + " " + aIntelligence[0] + " " + aConfidence[0] + " " + aMana[0] + " " + aAgility[0] + " " + aFame[0] + " " + aLevel[0] + " " + aAskPrice[0] + " " + aHouse[0] + " " + aExp[0] + " " + aAge[0] + " " + aObedience[0] + " " + aSpirit[0] + " " + aBeauty[0] + " " + aTiredness[0] + " " + aHealth[0] + " " + aPCFear[0] + " " + aPCLove[0] + " " + aPCHate[0] + " " + aMorality[0] + " " + aRefinement[0] + " " + aDignity[0] + " " + aLactation[0] + " " + aStrength[0];
-                    string sMaxStat = aCharisma[1] + " " + aHappiness[1] + " " + aLibido[1] + " " + aConstitution[1] + " " + aIntelligence[1] + " " + aConfidence[1] + " " + aMana[1] + " " + aAgility[1] + " " + aFame[1] + " " + aLevel[1] + " " + aAskPrice[1] + " " + aHouse[1] + " " + aExp[1] + " " + aAge[1] + " " + aObedience[1] + " " + aSpirit[1] + " " + aBeauty[1] + " " + aTiredness[1] + " " + aHealth[1] + " " + aPCFear[1] + " " + aPCLove[1] + " " + aPCHate[1] + " " + aMorality[1] + " " + aRefinement[1] + " " + aDignity[1] + " " + aLactation[1] + " " + aStrength[1];
+                    string sMinStat = aCharisma[0] + " " + aHappiness[0] + " " + aLibido[0] + " " + aConstitution[0] + " " + aIntelligence[0] + " " + aConfidence[0] + " " + aMana[0] + " " + aAgility[0] + " " + aFame[0] + " " + aLevel[0] + " " + aAskPrice[0] + " " + aHouse[0] + " " + aExp[0] + " " + aAge[0] + " " + aObedience[0] + " " + aSpirit[0] + " " + aBeauty[0] + " " + aTiredness[0] + " " + aHealth[0] + " " + aPCFear[0] + " " + aPCLove[0] + " " + aPCHate[0] + " " + aMorality[0] + " " + aRefinement[0] + " " + aDignity[0] + " " + aLactation[0] + " " + aStrength[0] + " " + aNPCLove[0];
+                    string sMaxStat = aCharisma[1] + " " + aHappiness[1] + " " + aLibido[1] + " " + aConstitution[1] + " " + aIntelligence[1] + " " + aConfidence[1] + " " + aMana[1] + " " + aAgility[1] + " " + aFame[1] + " " + aLevel[1] + " " + aAskPrice[1] + " " + aHouse[1] + " " + aExp[1] + " " + aAge[1] + " " + aObedience[1] + " " + aSpirit[1] + " " + aBeauty[1] + " " + aTiredness[1] + " " + aHealth[1] + " " + aPCFear[1] + " " + aPCLove[1] + " " + aPCHate[1] + " " + aMorality[1] + " " + aRefinement[1] + " " + aDignity[1] + " " + aLactation[1] + " " + aStrength[1] + " " + aNPCLove[1];
 
                     string sMinSkill = aAnal[0] + " " + aMagic[0] + " " + aBDSM[0] + " " + aNormalSex[0] + " " + aBeastiality[0] + " " + aGroup[0] + " " + aLesbian[0] + " " + aService[0] + " " + aStrip[0] + " " + aCombat[0] + " " + aOralSex[0] + " " + aTittySex[0] + " " + aMedicine[0] + " " + aPerformance[0] + " " + aHandjob[0] + " " + aCrafting[0] + " " + aHerbalism[0] + " " + aFarming[0] + " " + aBrewing[0] + " " + aAnimalHandling[0] + " " + aFootjob[0] + " " + aCooking[0];
                     string sMaxSkill = aAnal[1] + " " + aMagic[1] + " " + aBDSM[1] + " " + aNormalSex[1] + " " + aBeastiality[1] + " " + aGroup[1] + " " + aLesbian[1] + " " + aService[1] + " " + aStrip[1] + " " + aCombat[1] + " " + aOralSex[1] + " " + aTittySex[1] + " " + aMedicine[1] + " " + aPerformance[1] + " " + aHandjob[1] + " " + aCrafting[1] + " " + aHerbalism[1] + " " + aFarming[1] + " " + aBrewing[1] + " " + aAnimalHandling[1] + " " + aFootjob[1] + " " + aCooking[1];
@@ -4687,7 +4689,11 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                dataGridView_Bad_Files.Rows.Add(comboBox_affects_01.SelectedItem.ToString(), err.Message);
+                if (comboBox_affects_01.SelectedItem == null)
+                    dataGridView_Bad_Files.Rows.Add("Null string from button_AddToItemDataGrid_Click", err.Message);
+                else
+                    dataGridView_Bad_Files.Rows.Add(comboBox_affects_01.SelectedItem.ToString(), err.Message);
+
                 MessageBox.Show("One or more drop fields are empty", "Add error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -4700,7 +4706,10 @@ namespace WM_Girls_Generator
             }
             catch (Exception err)
             {
-                dataGridView_Bad_Files.Rows.Add(dataGridView2.CurrentRow.Index, err.Message);
+                if (dataGridView2.CurrentRow == null)
+                    dataGridView_Bad_Files.Rows.Add("Null string from button_RemoveItemFromDataGrid_Click", err.Message);
+                else
+                    dataGridView_Bad_Files.Rows.Add(dataGridView2.CurrentRow.Index, err.Message);
                 MessageBox.Show("Nothing is selected or list is empty.", "Delete error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
@@ -6180,6 +6189,7 @@ namespace WM_Girls_Generator
              * and can probably be removed
              */
         }
+
 
    }
 }

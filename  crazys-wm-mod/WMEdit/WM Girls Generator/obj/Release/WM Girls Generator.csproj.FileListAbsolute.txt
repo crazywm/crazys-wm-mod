@@ -24,7 +24,6 @@ C:\Users\Joey\Downloads\WMEdit\WM Girls Generator\obj\Release\WM_Girls_Generator
 C:\Users\Joey\Downloads\WMEdit\WM Girls Generator\obj\Release\WM Girls Generator.csproj.GenerateResource.Cache
 C:\SVN\trunk\ crazys-wm-mod\WMEdit\Release\WMEdit.exe
 C:\SVN\trunk\ crazys-wm-mod\WMEdit\Release\WMEdit.pdb
-C:\SVN\trunk\ crazys-wm-mod\WMEdit\WM Girls Generator\obj\Release\WM Girls Generator.csprojResolveAssemblyReference.cache
 C:\SVN\trunk\ crazys-wm-mod\WMEdit\WM Girls Generator\obj\Release\WM_Girls_Generator.Form1.resources
 C:\SVN\trunk\ crazys-wm-mod\WMEdit\WM Girls Generator\obj\Release\WM_Girls_Generator.Properties.Resources.resources
 C:\SVN\trunk\ crazys-wm-mod\WMEdit\WM Girls Generator\obj\Release\WM Girls Generator.csproj.GenerateResource.Cache

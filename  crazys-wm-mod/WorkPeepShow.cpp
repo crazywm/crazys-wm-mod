@@ -405,7 +405,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	if (sextype != SKILL_STRIP && g_Girls.GetStat(girl, STAT_DIGNITY) < 0 && g_Dice.percent(25))
 	{
-		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1, EVENT_WARNING);
 	}
 
 	//lose

@@ -817,6 +817,8 @@ TiXmlElement* sCentre::SaveCentreXML(TiXmlElement* pRoot)
 	if (m_MaxNumRooms < 200)		m_MaxNumRooms = 200;
 	else if (m_MaxNumRooms > 600)	m_MaxNumRooms = 600;
 	pBrothel->SetAttribute("MaxNumRooms", m_MaxNumRooms);
+	pBrothel->SetAttribute("Fame", m_Fame);
+	pBrothel->SetAttribute("Happiness", m_Happiness);
 	pBrothel->SetAttribute("Filthiness", m_Filthiness);
 	pBrothel->SetAttribute("SecurityLevel", m_SecurityLevel);
 	// save variables for sex restrictions
@@ -914,6 +916,8 @@ bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
 	pBrothel->QueryIntAttribute("MaxNumRooms", &tempInt); m_MaxNumRooms = tempInt; tempInt = 0;
 	if (m_MaxNumRooms < 200)		m_MaxNumRooms = 200;
 	else if (m_MaxNumRooms > 600)	m_MaxNumRooms = 600;
+	pBrothel->QueryIntAttribute("Fame", &tempInt); m_Fame = tempInt; tempInt = 0;
+	pBrothel->QueryValueAttribute<unsigned short>("Happiness", &m_Happiness);
 	pBrothel->QueryIntAttribute("Filthiness", &m_Filthiness);
 	pBrothel->QueryIntAttribute("SecurityLevel", &m_SecurityLevel);
 	// load variables for sex restrictions
