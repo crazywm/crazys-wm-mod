@@ -92,8 +92,11 @@ Changed level up trait report to EVENT_GOODNEWS
 Added a part to PossiblyGainNewTrait() to make the event type customizeable so that slut will be added as EVENT_WARNING instead of EVENT_GOODNEWS.
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
-!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.28
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.28 - removed
+Forgot to include load checks for new happiness and fame for non-brothel buildings
 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.28
 
 
 
