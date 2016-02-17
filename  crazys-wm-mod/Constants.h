@@ -152,7 +152,14 @@ enum JOBFILTER {
   JOBFILTER_GAMBHALL,
   JOBFILTER_SLEAZYBAR,
   JOBFILTER_BROTHEL,
+#if 0
   JOBFILTER_MOVIESTUDIO,
+#else
+  JOBFILTER_EXTREMESTUDIO,
+  JOBFILTER_PORNSTUDIO,
+  JOBFILTER_MOVIESTUDIO,
+  JOBFILTER_RANDSTUDIO,
+#endif // 0
   JOBFILTER_STUDIOCREW,
   JOBFILTER_ARENA,
   JOBFILTER_ARENASTAFF,
@@ -207,6 +214,7 @@ enum JOBS {
 	JOB_WHOREBROTHEL,		// whore herself inside the building
 	JOB_WHORESTREETS,		// whore self on the city streets
 
+#if 0
 	// `J` Job Movie Studio - Actress
 	JOB_FILMBEAST,			// films this sort of scene in the movie (uses beast resource)
 	JOB_FILMSEX,			// films this sort of scene in the movie
@@ -224,6 +232,37 @@ enum JOBS {
 	// *****IMPORTANT**** If you add more scene types, they must go somewhere between
 	// JOB_FILMBEAST and JOB_FILMRANDOM, or it will cause the random job to stop working..
 	// JOB_FILMBEAST must be the first film job, JOB_FILMRANDOM must be the last one. --PP
+#else
+	//Following above note...
+	//Nasty jobs
+	JOB_FILMBEAST,			// films this sort of scene in the movie (uses beast resource)
+	JOB_FILMBUKKAKE,
+	JOB_FILMFACEFUCK,
+	JOB_FILMBONDAGE,		// films this sort of scene in the movie
+	JOB_FILMPUBLICBDSM,	
+
+	//whore jobs
+	JOB_FILMMAST,			// films this type of scene CRAZY
+	JOB_FILMFOOTJOB,		// films this type of scene CRAZY
+	JOB_FILMHANDJOB,		// films this type of scene CRAZY
+	JOB_FILMTITTY,			// films this type of scene CRAZY
+	JOB_FILMORAL,			// films this type of scene CRAZY
+	JOB_FILMSEX,			// films this sort of scene in the movie
+	JOB_FILMLESBIAN,		// films this sort of scene in the movie. thinking about changing to Lesbian
+	JOB_FILMANAL,			// films this sort of scene in the movie
+	JOB_FILMGROUP,			// films this sort of scene in the movie
+	
+	//nice jobs
+	JOB_FILMIDOL,			//For cool, sexy & cute girls
+	JOB_FILMACTION,			//For sexy combatants
+	JOB_FILMMUSIC,			//For cute music videos
+	JOB_FILMCHEF,			//For sexy cooking
+	JOB_FILMTEASE,			//Fex sensual and cute
+	JOB_FILMSTRIP,			// films this type of scene CRAZY
+		
+	//Must go last
+	JOB_FILMRANDOM,			// Films a random sex scene ... it does NOT work like most jobs, see following note.
+#endif
 	// `J` Job Movie Studio - Crew
 	JOB_FILMFREETIME,		// Free time
 	JOB_DIRECTOR,			// Does same work as matron plus adds quality to films.

@@ -231,6 +231,7 @@ void cJobManager::Setup()
 	JobPerf[JOB_WHORESTREETS] = &JP_WhoreStreets;
 
 	//- Movie Jobs
+#if 0
 	JobFilterName[JOBFILTER_MOVIESTUDIO] = gettext("Actresses");
 	JobFilterDesc[JOBFILTER_MOVIESTUDIO] = gettext("These are the ladies starring in the films.");
 	JobFilterIndex[JOBFILTER_MOVIESTUDIO] = JOB_FILMBEAST;
@@ -299,6 +300,149 @@ void cJobManager::Setup()
 	JobDesc[JOB_FILMRANDOM] = ("She will perform in a random sex scene.");
 //	JobFunc[JOB_FILMRANDOM] = &WorkFilmRandom;		// This job is handled different than others, it is in cMovieStudio.cpp UpdateGirls()
 	JobPerf[JOB_FILMRANDOM] = &JP_FilmRandom;
+
+#else
+	//"Good" Film jobs - Cool films to make her friends jealous, and her dad... well, almost proud.
+	JobFilterName[JOBFILTER_MOVIESTUDIO] = gettext("Actresses");
+	JobFilterDesc[JOBFILTER_MOVIESTUDIO] = gettext("Your ladies star in cool, fun or sexy films. These boost their fame, happiness and abilities.");
+	JobFilterIndex[JOBFILTER_MOVIESTUDIO] = JOB_FILMIDOL;
+	
+	JobName[JOB_FILMACTION] = ("Action");
+	JobQkNm[JOB_FILMACTION] = "FAct";
+	JobDesc[JOB_FILMACTION] = ("She will be the scantily clad heroine in fighting/magical action scenes.");
+	JobFunc[JOB_FILMACTION] = &WorkFilmAction;
+	JobPerf[JOB_FILMACTION] = &JP_FilmAction;
+	JobName[JOB_FILMMUSIC] = ("Music");
+	JobQkNm[JOB_FILMMUSIC] = "FMus";
+	JobDesc[JOB_FILMMUSIC] = ("She will make a music video.");
+	JobFunc[JOB_FILMMUSIC] = &WorkFilmMusic;
+	JobPerf[JOB_FILMMUSIC] = &JP_FilmMusic;
+	JobName[JOB_FILMCHEF] = ("The Naked Chef");
+	JobQkNm[JOB_FILMCHEF] = "FChf";
+	JobDesc[JOB_FILMCHEF] = ("She will be filmed preparing food. And talking slowly. Sensuously. In sexy outfits. Because no reason.");
+	JobFunc[JOB_FILMCHEF] = &WorkFilmChef;
+	JobPerf[JOB_FILMCHEF] = &JP_FilmChef;
+	JobName[JOB_FILMIDOL] = ("Idol (Aidoru)");
+	JobQkNm[JOB_FILMIDOL] = "FIdl";
+	JobDesc[JOB_FILMIDOL] = ("She will be presented to the public as an idol: a cute, sexy woman.");
+	JobFunc[JOB_FILMIDOL] = &WorkFilmIdol;
+	JobPerf[JOB_FILMIDOL] = &JP_FilmIdol;
+	JobName[JOB_FILMTEASE] = ("Teaser Video");
+	JobQkNm[JOB_FILMTEASE] = "FTea";
+	JobDesc[JOB_FILMTEASE] = ("She will flirt and remove her clothes and tease seductively, but won't show all. If you freeze-frame you might just catch a nipple.");
+	JobFunc[JOB_FILMTEASE] = &WorkFilmTease;
+	JobPerf[JOB_FILMTEASE] = &JP_FilmTease;
+
+	//Adult film jobs - Okay so... We're filming a whore.
+	JobFilterName[JOBFILTER_PORNSTUDIO] = gettext("Adult Performer");
+	JobFilterDesc[JOBFILTER_PORNSTUDIO] = gettext("Your ladies rub, fuck and suck for the camera. Common whore work, but filmed.");
+	JobFilterIndex[JOBFILTER_PORNSTUDIO] = JOB_FILMSTRIP;
+	JobName[JOB_FILMSTRIP] = ("Strip Tease");
+	JobQkNm[JOB_FILMSTRIP] = "FStp";
+	JobDesc[JOB_FILMSTRIP] = ("She will dance, tease and completely strip off on camera, showing everything up close.");
+	JobFunc[JOB_FILMSTRIP] = &WorkFilmStrip;
+	JobPerf[JOB_FILMSTRIP] = &JP_FilmStrip;
+	/*
+	JobName[JOB_FILMFFLASH] = ("Flashing");
+	JobQkNm[JOB_FILMFFLASH] = "FMst";
+	JobDesc[JOB_FILMFFLASH] = ("She be filmed displaying herself and masturbating in public places. (Risky)");
+	JobFunc[JOB_FILMFFLASH] = &WorkFilmFlash;
+	JobPerf[JOB_FILMFFLASH] = &JP_FilmFlash;
+	*/
+	JobName[JOB_FILMMAST] = ("Going Solo");
+	JobQkNm[JOB_FILMMAST] = "FMst";
+	JobDesc[JOB_FILMMAST] = ("She will rub herself off on camera using whatever toys she has to hand.");
+	JobFunc[JOB_FILMMAST] = &WorkFilmMast;
+	JobPerf[JOB_FILMMAST] = &JP_FilmMast;
+	JobName[JOB_FILMFOOTJOB] = ("Foot Fetish");
+	JobQkNm[JOB_FILMFOOTJOB] = "FFJ";
+	JobDesc[JOB_FILMFOOTJOB] = ("She will be filmed pleasing a man with her feet.");
+	JobFunc[JOB_FILMFOOTJOB] = &WorkFilmFootJob;
+	JobPerf[JOB_FILMFOOTJOB] = &JP_FilmFootJob;
+	JobName[JOB_FILMTITTY] = ("Tit-Fuck");
+	JobQkNm[JOB_FILMTITTY] = "FTit";
+	JobDesc[JOB_FILMTITTY] = ("She will perform a titty fuck scene.");
+	JobFunc[JOB_FILMTITTY] = &WorkFilmTitty;
+	JobPerf[JOB_FILMTITTY] = &JP_FilmTitty;
+	JobName[JOB_FILMHANDJOB] = ("Hand Job");
+	JobQkNm[JOB_FILMHANDJOB] = "FHJ";
+	JobDesc[JOB_FILMHANDJOB] = ("She will jack a guy off on camera.");
+	JobFunc[JOB_FILMHANDJOB] = &WorkFilmHandJob;
+	JobPerf[JOB_FILMHANDJOB] = &JP_FilmHandJob;
+	JobName[JOB_FILMORAL] = ("Oral");
+	JobQkNm[JOB_FILMORAL] = "FOrl";
+	JobDesc[JOB_FILMORAL] = ("She will be filmed sucking a guy off.");
+	JobFunc[JOB_FILMORAL] = &WorkFilmOral;
+	JobPerf[JOB_FILMORAL] = &JP_FilmOral;
+	JobName[JOB_FILMSEX] = gettext("Sex");
+	JobQkNm[JOB_FILMSEX] = "FSex";
+	JobDesc[JOB_FILMSEX] = gettext("She will tease, suck, rub and fuck on camera.");
+	JobFunc[JOB_FILMSEX] = &WorkFilmSex;
+	JobPerf[JOB_FILMSEX] = &JP_FilmSex;
+	JobName[JOB_FILMANAL] = gettext("Anal");
+	JobQkNm[JOB_FILMANAL] = "FAnl";
+	JobDesc[JOB_FILMANAL] = gettext("She will tease, suck, rub and be fucked anally.");
+	JobFunc[JOB_FILMANAL] = &WorkFilmAnal;
+	JobPerf[JOB_FILMANAL] = &JP_FilmAnal;
+	JobName[JOB_FILMLESBIAN] = gettext("Film Lesbian");
+	JobQkNm[JOB_FILMLESBIAN] = "FLes";
+	JobDesc[JOB_FILMLESBIAN] = gettext("She will be filmed getting down and dirty with a woman.");
+	JobFunc[JOB_FILMLESBIAN] = &WorkFilmLesbian;
+	JobPerf[JOB_FILMLESBIAN] = &JP_FilmLesbian;
+	JobName[JOB_FILMGROUP] = ("Gangbang");
+	JobQkNm[JOB_FILMGROUP] = "FGrp";
+	JobDesc[JOB_FILMGROUP] = ("She will fuck with a large group of people.");
+	JobFunc[JOB_FILMGROUP] = &WorkFilmGroup;
+	JobPerf[JOB_FILMGROUP] = &JP_FilmGroup;
+	/*
+	JobName[JOB_FILMGODOG] = ("Go Dogging");
+	JobQkNm[JOB_FILMGODOG] = "FDog";
+	JobDesc[JOB_FILMGODOG] = ("She will be filmed going out and performing sex acts in public with strangers. (Risky)");
+	JobFunc[JOB_FILMGODOG] = &WorkFilmDog;
+	JobPerf[JOB_FILMGODOG] = &JP_FilmDog;
+	*/
+
+	//"Evil" film jobs - Going for the truly 'extreme' market? Or do you just wanna make this girl suffer?
+	JobFilterName[JOBFILTER_EXTREMESTUDIO] = gettext("Xtreme");
+	JobFilterDesc[JOBFILTER_EXTREMESTUDIO] = gettext("Going for the extreme market? Your ladies will fulfill Crossgates's darkest pleasures. They'll get torn up and abused on film, and will most likely end up hating you. But you'll make money.");
+	JobFilterIndex[JOBFILTER_EXTREMESTUDIO] = JOB_FILMBEAST;
+	JobName[JOB_FILMBEAST] = gettext("Bestiality");
+	JobQkNm[JOB_FILMBEAST] = "FBst";
+	JobDesc[JOB_FILMBEAST] = gettext("She will fuck animals on film.");
+	JobFunc[JOB_FILMBEAST] = &WorkFilmBeast;
+	JobPerf[JOB_FILMBEAST] = &JP_FilmBeast;
+	JobName[JOB_FILMBUKKAKE] = gettext("Cumslut/Bukkake");
+	JobQkNm[JOB_FILMBUKKAKE] = "FBuk";											//update in cGirls.cpp
+	JobDesc[JOB_FILMBUKKAKE] = gettext("A large group of men will cum on, over and inside her.");
+	JobFunc[JOB_FILMBUKKAKE] = &WorkFilmBuk;
+	JobPerf[JOB_FILMBUKKAKE] = &JP_FilmBuk;
+	JobName[JOB_FILMBONDAGE] = gettext("BDSM");
+	JobQkNm[JOB_FILMBONDAGE] = "FBnd";
+	JobDesc[JOB_FILMBONDAGE] = gettext("She will be taken to your dungeon and will be roughly used on film.");
+	JobFunc[JOB_FILMBONDAGE] = &WorkFilmBondage;
+	JobPerf[JOB_FILMBONDAGE] = &JP_FilmBondage;
+	JobName[JOB_FILMFACEFUCK] = gettext("Face-fuck");
+	JobQkNm[JOB_FILMFACEFUCK] = "FFac";											//update in cGirls.cpp
+	JobDesc[JOB_FILMFACEFUCK] = gettext("She will be used in gag and face-fuck scenes.");
+	JobFunc[JOB_FILMFACEFUCK] = &WorkFilmThroat;
+	JobPerf[JOB_FILMFACEFUCK] = &JP_FilmThroat;
+	JobName[JOB_FILMPUBLICBDSM] = gettext("Public Torture");
+	JobQkNm[JOB_FILMPUBLICBDSM] = "FTor";											//update in cGirls.cpp
+	JobDesc[JOB_FILMPUBLICBDSM] = gettext("She will be tied up in a public place, where she will be stripped, whipped, tortured and fully-used. On film.");
+	JobFunc[JOB_FILMPUBLICBDSM] = &WorkFilmPublicBDSM;
+	JobPerf[JOB_FILMPUBLICBDSM] = &JP_FilmPublicBDSM;
+	//
+	JobFilterName[JOBFILTER_RANDSTUDIO] = gettext("Random");
+	JobFilterDesc[JOBFILTER_RANDSTUDIO] = gettext("The studio will surprise you with something.");
+	JobFilterIndex[JOBFILTER_RANDSTUDIO] = JOB_FILMRANDOM;
+	JobName[JOB_FILMRANDOM] = ("Film a random scene");
+	JobQkNm[JOB_FILMRANDOM] = "FRnd";
+	JobDesc[JOB_FILMRANDOM] = ("She will perform in a random sex scene.");
+	//	JobFunc[JOB_FILMRANDOM] = &WorkFilmRandom;		// This job is handled different than others, it is in cMovieStudio.cpp UpdateGirls()
+	JobPerf[JOB_FILMRANDOM] = &JP_FilmRandom;
+#endif // 0
+
+
 	//- Studio Crew
 	JobFilterName[JOBFILTER_STUDIOCREW] = gettext("Studio Crew");
 	JobFilterDesc[JOBFILTER_STUDIOCREW] = gettext("These are jobs for running a movie studio.");

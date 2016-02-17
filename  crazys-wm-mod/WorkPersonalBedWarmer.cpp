@@ -684,6 +684,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			if ((warmers - sz) > 1) ss << gettext("The other girls in your house also watch as ");
 			else if ((warmers - sz) == 1) ss << gettext("The other girl in your house watches as ");
 			else ss << gettext("You notice a neighbour staring through your window as ");
+			break;
 		default:
 			ss << gettext("Something impossible happens while ");
 			break;

@@ -86,7 +86,7 @@ bool cJobManager::WorkFilmAnal(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 
 	// remaining modifiers are in the AddScene function --PP
-	finalqual = g_Studios.AddScene(girl, SKILL_ANAL, jobperformance);
+	finalqual = g_Studios.AddScene(girl, JOB_FILMANAL, jobperformance);
 	ss << "Her scene is valued at: " << finalqual << " gold.";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);

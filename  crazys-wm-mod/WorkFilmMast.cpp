@@ -52,7 +52,7 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	
+
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50;
@@ -80,10 +80,29 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Girls.CheckVirginity(girl))
 	{
 		jobperformance += 20;
-		ss << "She is a virgin.\n";
+		ss << "Her pussy is so tight she is undeniably a virgin.\n";
 	}
+#if 1
+	//BSIN
+	else if (g_Dice.percent(33))
+	{
+		int dildo = 0;
+		/* */if (g_Girls.HasItem(girl, "Compelling Dildo") != -1)	dildo = 1;
+		else if (g_Girls.HasItem(girl, "Dreidel Dildo") != -1)	dildo = 2;
+		else if (g_Girls.HasItem(girl, "Double Dildo") != -1)		dildo = 3;
+		if (dildo > 0)
+		{
+			ss << girl << " finished the scene by pounding herself with her ";
+			/* */if (dildo == 1) ss << "Compelling Dildo";
+			else if (dildo == 2) ss << "Dreidel Dildo";
+			else if (dildo == 3) ss << "Double Dildo";
+			ss << " until she came again.\n";
+			jobperformance += 20;
+		}
+	}
+#endif
 	// remaining modifiers are in the AddScene function --PP
-	int finalqual = g_Studios.AddScene(girl, SKILL_SERVICE, jobperformance);
+	int finalqual = g_Studios.AddScene(girl, JOB_FILMMAST, jobperformance);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);

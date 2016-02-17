@@ -132,7 +132,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 
 	// remaining modifiers are in the AddScene function --PP
-	int finalqual = g_Studios.AddScene(girl, SKILL_GROUP, jobperformance);
+	int finalqual = g_Studios.AddScene(girl, JOB_FILMGROUP, jobperformance);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, Day0Night1);

@@ -302,6 +302,7 @@ void cScreenGirlDetails::init()
 		DisableButton(day_id, (Day0Night1 == SHIFT_DAY));
 		DisableButton(night_id, (Day0Night1 == SHIFT_NIGHT));
 	}
+#if 0
 	else if (InMovieStudio)
 	{
 		Day0Night1 = SHIFT_NIGHT;
@@ -315,6 +316,31 @@ void cScreenGirlDetails::init()
 		HideButton(day_id, true);
 		HideButton(night_id, true);
 
+	}
+#else
+
+#endif
+	else if (InMovieStudio)
+	{
+		Day0Night1 = SHIFT_NIGHT;
+		ClearListBox(joblist_id);
+		AddToListBox(jobtypelist_id, JOBFILTER_STUDIOCREW, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOCREW]);
+		AddToListBox(jobtypelist_id, JOBFILTER_MOVIESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_MOVIESTUDIO]);
+		AddToListBox(jobtypelist_id, JOBFILTER_PORNSTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_PORNSTUDIO]);
+		AddToListBox(jobtypelist_id, JOBFILTER_EXTREMESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_EXTREMESTUDIO]);
+		AddToListBox(jobtypelist_id, JOBFILTER_RANDSTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_RANDSTUDIO]);
+		RefreshJobList();
+		if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_MOVIESTUDIO);
+		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_PORNSTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_PORNSTUDIO + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_PORNSTUDIO);
+		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_EXTREMESTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_EXTREMESTUDIO + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_EXTREMESTUDIO);
+		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_RANDSTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_RANDSTUDIO + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_RANDSTUDIO);
+		else SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
+		HideButton(day_id, true);
+		HideButton(night_id, true);
 	}
 	else if (InFarm)
 	{

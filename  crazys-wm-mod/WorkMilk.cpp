@@ -89,7 +89,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	//MAGIC NUMBER COMING NEXT - milk seems to sell for 50G/oz, so trade/wholesale value of 10 seems reasonable and produces fair output.
 	//Gives less than current for small breasted, non-pregs, and more for pregnant breasted girls.
 	const int MILKWHOLESALE = 10;
-	const int CATGIRLBONUS = 4;			//cat girl milk is four times as much in shop
+	const int CATGIRLBONUS = 2;			//CG milk is four times as much in shop - trade boost of 2 seems right (shop pockets difference)
 	//
 	//
 	//
@@ -317,8 +317,10 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	}
 	ss << "\n\n";
 
-	//value calculation
-	int milkValue = int(milkProduced * MILKWHOLESALE);		//value
+	//value calculations
+	int milkValue = int(milkProduced * MILKWHOLESALE);		//Base value
+	int traitBoost = milkValue;								//Now basing the boost on base value, not on inflated CG value.
+
 	if (g_Girls.HasTrait(girl, "Cat Girl"))
 	{
 		ss << "Cat-Girl breast-milk has higher value.\n";
@@ -330,33 +332,35 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	{
 		if (g_Dice.percent(60) && (g_Girls.HasTrait(girl, "Fallen Goddess") || g_Girls.HasTrait(girl, "Goddess")))
 		{
-			ss << "Customers are willing to pay much more to sup milky-nectar from the breast of a Goddess.\n";
-			milkValue *= 4;
+			ss << "Customers are willing to pay much more to sup from the breast of a Goddess.\n";
+			milkValue += (2 * traitBoost);
 		}
 		else if (g_Dice.percent(40) && g_Girls.HasTrait(girl, "Demon"))
 		{
 			ss << "Customers are thrilled at the chance to consume the milk of a Demon.\n";
-			milkValue *= 4;
+			milkValue += (2 * traitBoost);
 		}
 		else if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Queen"))
 		{
 			ss << "Customers are willing to pay more to enjoy the breast-milk of a Queen.\n";
-			milkValue *= (g_Dice % 2 + 2);
+			traitBoost *= (1 + g_Dice % 2);
+			milkValue += traitBoost;
 		}
 		else if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Princess"))
 		{
 			ss << "Customers are willing to pay more to enjoy the breast-milk of a Princess.\n";
-			milkValue *= (g_Dice % 2 + 2);
+			traitBoost *= (1 + g_Dice % 2);
+			milkValue += traitBoost;
 		}
 		else if (g_Dice.percent(30) && (g_Girls.HasTrait(girl, "Priestess")))
 		{
 			ss << "Customers pay more to drink the breast-milk of a religious holy-woman.\n";
-			milkValue *= 2;
+			milkValue += traitBoost;
 		}
 		else if (g_Dice.percent(40) && (g_Girls.GetStat(girl, STAT_FAME) >= 95))
 		{
 			ss << "Your customers eagerly gulp down the breast-milk of such a famous and well-loved girl.\n";
-			milkValue *= 2;
+			milkValue += traitBoost;
 		}
 		else if (g_Girls.HasTrait(girl, "Vampire"))
 		{
@@ -375,7 +379,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			if ((g_Girls.GetSkill(girl, SKILL_MAGIC) > 75) && (g_Girls.GetStat(girl, STAT_MANA) > 50))
 			{
 				ss << "Her milk pulsates with magical healing energies. It can cure colds, heal injuries and 'improve performance.' Customers pay significantly more for it.\n";
-				milkValue *= 2;
+				milkValue += traitBoost;
 				g_Girls.UpdateStat(girl, STAT_MANA, -25); //Mana passes into milk
 			}
 			else

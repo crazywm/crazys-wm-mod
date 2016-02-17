@@ -76,7 +76,7 @@ bool cJobManager::WorkFilmTitty(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	jobperformance = enjoy * 2;
 
 	// remaining modifiers are in the AddScene function --PP
-	int finalqual = g_Studios.AddScene(girl, SKILL_TITTYSEX, jobperformance);
+	int finalqual = g_Studios.AddScene(girl, JOB_FILMTITTY, jobperformance);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, Day0Night1);

@@ -154,9 +154,19 @@ void cScreenStudioManagement::init()
 
 	// add the job filters
 	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
+#if 0
+	//BSIN - adding some more
 	AddToListBox(jobtypelist_id, JOBFILTER_STUDIOCREW, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOCREW]);
 	AddToListBox(jobtypelist_id, JOBFILTER_MOVIESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_MOVIESTUDIO]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
+#else
+	AddToListBox(jobtypelist_id, JOBFILTER_STUDIOCREW, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOCREW]);
+	AddToListBox(jobtypelist_id, JOBFILTER_MOVIESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_MOVIESTUDIO]);
+	AddToListBox(jobtypelist_id, JOBFILTER_PORNSTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_PORNSTUDIO]);
+	AddToListBox(jobtypelist_id, JOBFILTER_EXTREMESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_EXTREMESTUDIO]);
+	AddToListBox(jobtypelist_id, JOBFILTER_RANDSTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_RANDSTUDIO]);
+	SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
+#endif
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;

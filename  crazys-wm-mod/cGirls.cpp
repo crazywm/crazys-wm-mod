@@ -530,6 +530,7 @@ void sGirl::setup_maps()
 	jobs_lookup["Cage"] = JOB_FIGHTARENAGIRLS;
 	jobs_lookup["FiBs"] = JOB_FIGHTBEASTS;
 	jobs_lookup["CT"] = JOB_FIGHTTRAIN;
+#if 0
 	jobs_lookup["FAnl"] = JOB_FILMANAL;
 	jobs_lookup["FBst"] = JOB_FILMBEAST;
 	jobs_lookup["FBnd"] = JOB_FILMBONDAGE;
@@ -544,6 +545,39 @@ void sGirl::setup_maps()
 	jobs_lookup["FSex"] = JOB_FILMSEX;
 	jobs_lookup["FStp"] = JOB_FILMSTRIP;
 	jobs_lookup["FTit"] = JOB_FILMTITTY;
+#else
+	//Nice
+	jobs_lookup["FIdl"] = JOB_FILMIDOL;
+	jobs_lookup["FAct"] = JOB_FILMACTION;
+	jobs_lookup["FMus"] = JOB_FILMMUSIC;
+	jobs_lookup["FChf"] = JOB_FILMCHEF;
+	jobs_lookup["FTea"] = JOB_FILMTEASE;
+	//OK
+	jobs_lookup["FStp"] = JOB_FILMSTRIP;
+	jobs_lookup["FAnl"] = JOB_FILMANAL;
+	jobs_lookup["FSex"] = JOB_FILMSEX;
+	jobs_lookup["FTit"] = JOB_FILMTITTY;
+	jobs_lookup["FFJ"] = JOB_FILMFOOTJOB;
+	jobs_lookup["TOff"] = JOB_FILMFREETIME;
+	jobs_lookup["FGrp"] = JOB_FILMGROUP;
+	jobs_lookup["FHJ"] = JOB_FILMHANDJOB;
+	jobs_lookup["FLes"] = JOB_FILMLESBIAN;
+	jobs_lookup["FMst"] = JOB_FILMMAST;
+	jobs_lookup["FOrl"] = JOB_FILMORAL;
+	/*
+	[JOB_FILMGODOG] = "FDog";
+	*/
+
+	//Nasty
+	jobs_lookup["FBst"] = JOB_FILMBEAST;
+	jobs_lookup["FBnd"] = JOB_FILMBONDAGE;
+	jobs_lookup["FTor"] = JOB_FILMPUBLICBDSM;
+	jobs_lookup["FFac"] = JOB_FILMFACEFUCK;
+	jobs_lookup["FBuk"] = JOB_FILMBUKKAKE;
+	//Other
+	jobs_lookup["FRnd"] = JOB_FILMRANDOM;
+
+#endif
 	jobs_lookup["Fluf"] = JOB_FLUFFER;
 	jobs_lookup["Grdn"] = JOB_GARDENER;
 	jobs_lookup["Abrt"] = JOB_GETABORT;
@@ -2765,18 +2799,29 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Studio_Data += girl->JobRating(m_JobManager.JP_Fluffer(girl, true), "?", "Fluffer");
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmStagehand(girl, true), "?", "FilmStagehand");
 		Studio_Data += "\n";
-		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmBeast(girl, true), "* Film Beast");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmIdol(girl, true), "Idol Tape");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmAction(girl, true), "Action Film");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmMusic(girl, true), "Music Video");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmChef(girl, true), "Cookery Show");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmTease(girl, true), "Teaser Scene");
+		Studio_Data += "\n";
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmStrip(girl, true), "Stripping Scene");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmSex(girl, true), "* Film Sex");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmAnal(girl, true), "* Film Anal");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmLesbian(girl, true), "* Film Lesbian");
-		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmBondage(girl, true), "* Film Bondage");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmGroup(girl, true), "* Film Group");
-		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmOral(girl, true), "* Film Oral");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmOral(girl, true), "Film Oral");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmMast(girl, true), "* Film Mast");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmTitty(girl, true), "* Film Titty");
-		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmStrip(girl, true), "* Film Strip");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmHandJob(girl, true), "* Film HandJob");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmFootJob(girl, true), "* Film FootJob");
+		Studio_Data += "\n";
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmThroat(girl, true), "FaceFuck");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmBuk(girl, true), "Bukkake Scene");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmBondage(girl, true), "Bondage Scene");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmPublicBDSM(girl, true), "Public Bondage");
+		Studio_Data += girl->JobRating(m_JobManager.JP_FilmBeast(girl, true), "BeastPlay");
+
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmRandom(girl, true), "* Film Random");
 		Studio_Data += div;
 	}
