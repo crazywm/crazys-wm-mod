@@ -60,7 +60,7 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int wages = 50;
 	int enjoy = 0, bonus = 0;
 	double jobperformance = JP_FilmOral(girl, false);
-	
+
 	/*
 	//BSIN - not sure what's wrong but this crashes the game.
 	sGang * TempGang = g_Gangs.GetGangOnMission(MISS_GUARDING);

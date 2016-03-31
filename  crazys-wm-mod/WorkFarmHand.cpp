@@ -45,19 +45,15 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	ss << " worked cleaning and repairing the farm.\n\n";
 
-	
-
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
-	double CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 10;
-	CleanAmt += JP_FarmHand(girl, false);
-
-	int enjoyC = 0, enjoyF = 0;
-	double wages = 0, tips = 0;
+	double CleanAmt = JP_FarmHand(girl, false);
+	int enjoy = 0, enjoyC = 0, enjoyF = 0;
+	int wages = 0;
+	int tips = 0;
+	int imagetype = IMGTYPE_MAID;
+	int msgtype = Day0Night1;
 	bool playtime = false;
-
-
-
 
 	if (roll_a <= 10)
 	{

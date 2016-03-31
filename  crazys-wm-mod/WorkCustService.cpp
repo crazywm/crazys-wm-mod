@@ -186,7 +186,7 @@ double cJobManager::JP_CustService(sGirl* girl, bool estimate)
 	if (estimate)	// for third detail string
 	{
 		jobperformance += (girl->confidence() + girl->spirit() + girl->beauty() +
-			girl->charisma() + girl->performance() + girl->service()) / 6;
+			girl->charisma() + girl->performance() + girl->service()) / 3;
 	}
 	else			// for the actual check			// not used
 	{

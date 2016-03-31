@@ -56,15 +56,15 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		return true;
 	}
 	ss << " worked as a stagehand.\n\n";
-
 	
 	g_Girls.UnequipCombat(girl);	// not for studio crew
-
-	int wages = 50;
 	int enjoyc = 0, enjoym = 0;
-	bool filming = true;
-	bool playtime = false;
+	int wages = 50;
+	int tips = 0;
 	int imagetype = IMGTYPE_PROFILE;
+	int msgtype = Day0Night1;
+	bool playtime = false;
+	bool filming = true;
 
 
 	// `J` - jobperformance and CleanAmt need to be worked out specially for this job.
@@ -127,8 +127,6 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		CleanAmt *= 0.5;
 	}
 
-
-
 	if (roll_a <= 10)
 	{
 		enjoyc -= g_Dice % 3 + 1; if (filming) enjoym -= g_Dice % 3 + 1;
@@ -185,7 +183,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		wages += int(CleanAmt);
 	}
 
-	ss << gettext("Cleanliness rating improved by ") << CleanAmt;
+	ss << "Cleanliness rating improved by " << (int)CleanAmt;
 
 	if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
 	{

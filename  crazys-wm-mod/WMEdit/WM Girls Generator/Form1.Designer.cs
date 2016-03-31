@@ -694,6 +694,11 @@
             this.dataGridView_Trait_Types = new System.Windows.Forms.DataGridView();
             this.button_Clear_Traits = new System.Windows.Forms.Button();
             this.dataGridView_Traits = new System.Windows.Forms.DataGridView();
+            this.dataGridView_Traits_Trait_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_Traits_Trait_Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_Traits_Trait_Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_Traits_Trait_InheritChance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dataGridView_Traits_Trait_RandomChance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button_Load_Traits = new System.Windows.Forms.Button();
             this.label_Load_Traits = new System.Windows.Forms.Label();
             this.button_Save_Traits = new System.Windows.Forms.Button();
@@ -741,11 +746,6 @@
             this.button24 = new System.Windows.Forms.Button();
             this.checkBox_ToggleTraitTooltips = new System.Windows.Forms.CheckBox();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.dataGridView_Traits_Trait_Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridView_Traits_Trait_Desc = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridView_Traits_Trait_Type = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridView_Traits_Trait_InheritChance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridView_Traits_Trait_RandomChance = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage0_Info.SuspendLayout();
             this.tabPage1_Girls.SuspendLayout();
@@ -2055,6 +2055,8 @@
             this.StatsTBox_27.Size = new System.Drawing.Size(65, 20);
             this.StatsTBox_27.TabIndex = 38;
             this.StatsTBox_27.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.StatsTBox_27.TextChanged += new System.EventHandler(this.ValidateTextBox);
+            this.StatsTBox_27.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.LimitTextBox);
             // 
             // label195
             // 
@@ -8683,6 +8685,46 @@
             this.dataGridView_Traits.Size = new System.Drawing.Size(666, 229);
             this.dataGridView_Traits.TabIndex = 4;
             // 
+            // dataGridView_Traits_Trait_Name
+            // 
+            this.dataGridView_Traits_Trait_Name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_Name.DataPropertyName = "Name";
+            this.dataGridView_Traits_Trait_Name.HeaderText = "Trait Name";
+            this.dataGridView_Traits_Trait_Name.Name = "dataGridView_Traits_Trait_Name";
+            this.dataGridView_Traits_Trait_Name.Width = 78;
+            // 
+            // dataGridView_Traits_Trait_Desc
+            // 
+            this.dataGridView_Traits_Trait_Desc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.dataGridView_Traits_Trait_Desc.DataPropertyName = "Desc";
+            this.dataGridView_Traits_Trait_Desc.HeaderText = "Trait Description";
+            this.dataGridView_Traits_Trait_Desc.Name = "dataGridView_Traits_Trait_Desc";
+            // 
+            // dataGridView_Traits_Trait_Type
+            // 
+            this.dataGridView_Traits_Trait_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_Type.DataPropertyName = "Type";
+            this.dataGridView_Traits_Trait_Type.HeaderText = "Trait Type";
+            this.dataGridView_Traits_Trait_Type.Name = "dataGridView_Traits_Trait_Type";
+            this.dataGridView_Traits_Trait_Type.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView_Traits_Trait_Type.Width = 74;
+            // 
+            // dataGridView_Traits_Trait_InheritChance
+            // 
+            this.dataGridView_Traits_Trait_InheritChance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_InheritChance.DataPropertyName = "InheritChance";
+            this.dataGridView_Traits_Trait_InheritChance.HeaderText = "Inherit Chance";
+            this.dataGridView_Traits_Trait_InheritChance.Name = "dataGridView_Traits_Trait_InheritChance";
+            this.dataGridView_Traits_Trait_InheritChance.Width = 93;
+            // 
+            // dataGridView_Traits_Trait_RandomChance
+            // 
+            this.dataGridView_Traits_Trait_RandomChance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dataGridView_Traits_Trait_RandomChance.DataPropertyName = "RandomChance";
+            this.dataGridView_Traits_Trait_RandomChance.HeaderText = "Random Chance";
+            this.dataGridView_Traits_Trait_RandomChance.Name = "dataGridView_Traits_Trait_RandomChance";
+            this.dataGridView_Traits_Trait_RandomChance.Width = 103;
+            // 
             // button_Load_Traits
             // 
             this.button_Load_Traits.Location = new System.Drawing.Point(6, 566);
@@ -9188,46 +9230,6 @@
             this.checkBox_ToggleTraitTooltips.Text = "Show trait tooltips";
             this.checkBox_ToggleTraitTooltips.UseVisualStyleBackColor = true;
             this.checkBox_ToggleTraitTooltips.CheckedChanged += new System.EventHandler(this.checkBox_ToggleTraitTooltips_CheckedChanged);
-            // 
-            // dataGridView_Traits_Trait_Name
-            // 
-            this.dataGridView_Traits_Trait_Name.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridView_Traits_Trait_Name.DataPropertyName = "Name";
-            this.dataGridView_Traits_Trait_Name.HeaderText = "Trait Name";
-            this.dataGridView_Traits_Trait_Name.Name = "dataGridView_Traits_Trait_Name";
-            this.dataGridView_Traits_Trait_Name.Width = 84;
-            // 
-            // dataGridView_Traits_Trait_Desc
-            // 
-            this.dataGridView_Traits_Trait_Desc.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.dataGridView_Traits_Trait_Desc.DataPropertyName = "Desc";
-            this.dataGridView_Traits_Trait_Desc.HeaderText = "Trait Description";
-            this.dataGridView_Traits_Trait_Desc.Name = "dataGridView_Traits_Trait_Desc";
-            // 
-            // dataGridView_Traits_Trait_Type
-            // 
-            this.dataGridView_Traits_Trait_Type.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridView_Traits_Trait_Type.DataPropertyName = "Type";
-            this.dataGridView_Traits_Trait_Type.HeaderText = "Trait Type";
-            this.dataGridView_Traits_Trait_Type.Name = "dataGridView_Traits_Trait_Type";
-            this.dataGridView_Traits_Trait_Type.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView_Traits_Trait_Type.Width = 80;
-            // 
-            // dataGridView_Traits_Trait_InheritChance
-            // 
-            this.dataGridView_Traits_Trait_InheritChance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridView_Traits_Trait_InheritChance.DataPropertyName = "InheritChance";
-            this.dataGridView_Traits_Trait_InheritChance.HeaderText = "Inherit Chance";
-            this.dataGridView_Traits_Trait_InheritChance.Name = "dataGridView_Traits_Trait_InheritChance";
-            this.dataGridView_Traits_Trait_InheritChance.Width = 101;
-            // 
-            // dataGridView_Traits_Trait_RandomChance
-            // 
-            this.dataGridView_Traits_Trait_RandomChance.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridView_Traits_Trait_RandomChance.DataPropertyName = "RandomChance";
-            this.dataGridView_Traits_Trait_RandomChance.HeaderText = "Random Chance";
-            this.dataGridView_Traits_Trait_RandomChance.Name = "dataGridView_Traits_Trait_RandomChance";
-            this.dataGridView_Traits_Trait_RandomChance.Width = 103;
             // 
             // Form1
             // 

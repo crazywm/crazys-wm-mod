@@ -1455,7 +1455,7 @@ sScript* cGameScript::Script_CleanTarget(sScript* Script)
 		int CleanAmt = (g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) >= 10 ? ((g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) / 10) + 5) * 10 : 50);
 		brothel->m_Filthiness -= CleanAmt;
 		stringstream sstemp;
-		sstemp << ("Cleanliness rating improved by ") << CleanAmt;
+		sstemp << "Cleanliness rating improved by " << (int)CleanAmt;
 		g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 1);
 	}
 	g_GirlDetails.lastsexact = IMGTYPE_MAID;

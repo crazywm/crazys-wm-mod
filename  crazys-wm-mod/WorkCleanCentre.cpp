@@ -51,11 +51,11 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (roll_a <= 50 && g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to clean the centre.";
+		ss << " refused to clean the Centre.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked cleaning the centre.\n\n";
+	ss << " worked cleaning the Centre.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
@@ -72,7 +72,7 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 		enjoy -= g_Dice % 3 + 1;
 		CleanAmt *= 0.8;
 		if (roll_b < 50)	ss << "She spilled a bucket of something unpleasant all over herself.";
-		else				ss << "She did not like cleaning the centre today.";
+		else				ss << "She did not like cleaning the Centre today.";
 	}
 	else if (roll_a >= 90)
 	{
@@ -96,12 +96,12 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else
 	{
-		wages = (int)CleanAmt; // `J` Pay her based on how much she cleaned
+		wages = min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
 	}
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
-	ss << gettext("\n\nCleanliness rating improved by ") << CleanAmt;
+	ss << "\n\nCleanliness rating improved by " << (int)CleanAmt;
 	if (playtime)	// `J` needs more variation
 	{
 		if (roll_a < 20 && roll_b < 60 && roll_c < 50)

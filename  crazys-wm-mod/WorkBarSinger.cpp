@@ -445,8 +445,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 double cJobManager::JP_BarSinger(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_CONFIDENCE) + g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
-
+		// primary - first 100
+		girl->performance() +
+		// secondary - second 100
+		((girl->charisma() + girl->confidence() + girl->constitution()) / 3) +
+		// level bonus
+		girl->level();
 
 	if (!estimate)
 	{

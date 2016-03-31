@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <vector>
 #include "cImageItem.h"
 #include "CGraphics.h"
 #include "libintl.h"
@@ -867,17 +868,17 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		{
 			g_LogFile.ss() << "Debug Alt Images";
 			if (ImageName == "blank")	g_LogFile.ss() << " || Blank image called for";
-			else
-			{
-				if (!girl)					g_LogFile.ss() << " || No Girl";
-				if (imagetype < 0)			g_LogFile.ss() << " || imagetype < 0";
-			}
+			else if (!girl)				g_LogFile.ss() << " || No Girl";
+			else if (imagetype < 0)		g_LogFile.ss() << " || Imagetype < 0";
+			else/*                  */	g_LogFile.ss() << " || Unknown error";
 			g_LogFile.ssend();
 		}
 		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
 		m_Images[id]->m_Image->m_Message = "No image.";
 		return;
 	}
+
+
 	string girlName = girl->m_Name;
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || Getting image for: " << girl->m_Realname << " (" << girlName << ")"; g_LogFile.ssend(); }
 
@@ -890,6 +891,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	FileList tiCo(imagedirCo, "*.*");
 	FileList tiDc(imagedirDc, "*.*");
 	FileList tiDo(imagedirDo, "*.*");
+	
 	int totalimagesCc = tiCc.size();
 	int totalimagesCo = tiCo.size();
 	int totalimagesDc = tiDc.size();
@@ -902,6 +904,11 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		return;
 	}
 
+	string file = "";
+	string filename = "";
+	string ext = "";
+	bool imagechosen = false;
+
 	int tries = 40;
 	if (gallery) tries = 0;
 	else	// try some corrections
@@ -913,13 +920,9 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		if (!girl->is_pregnant() && imagetype > IMGTYPE_PREGNANT)	imagetype -= PREG_OFFSET;
 	}
 
-	string file = "";
-	string filename = "";
-	string ext = "";
-	
-	bool imagechosen = false;
 	do
 	{
+#if 1	// old code
 		int tryimagetype = TryImageType(imagetype, tries);
 		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || Try: " << tries<<" || In: " << pic_types[imagetype] << " | Out: " << pic_types[tryimagetype]; g_LogFile.ssend(); }
 
@@ -927,6 +930,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		dir = 0; usedir = "";
 		string checkfor = pic_types[tryimagetype] + "*";
 		if (tryimagetype == IMGTYPE_PREGNANT) checkfor = "pregnant*.*";
+		if (tryimagetype == IMGTYPE_SUCKBALLS) checkfor = "suckballs*.*";
 
 		if (totalimagesCc > 0)
 		{
@@ -936,6 +940,14 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 				for (u_int i = 0; i < numeric.size(); i++)
 				{
 					string t = ("preg" + numeric.substr(i, 1) + "*.*");
+					testall.add(t.c_str());
+				}
+			}
+			if (tryimagetype == IMGTYPE_SUCKBALLS)
+			{
+				for (u_int i = 0; i < numeric.size(); i++)
+				{
+					string t = ("balls*.*");
 					testall.add(t.c_str());
 				}
 			}
@@ -953,6 +965,14 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 				for (u_int i = 0; i < numeric.size(); i++)
 				{
 					string t = ("preg" + numeric.substr(i, 1) + "*.*");
+					testall.add(t.c_str());
+				}
+			}
+			if (tryimagetype == IMGTYPE_SUCKBALLS)
+			{
+				for (u_int i = 0; i < numeric.size(); i++)
+				{
+					string t = ("balls*.*");
 					testall.add(t.c_str());
 				}
 			}
@@ -982,6 +1002,14 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 					testall.add(t.c_str());
 				}
 			}
+			if (tryimagetype == IMGTYPE_SUCKBALLS)
+			{
+				for (u_int i = 0; i < numeric.size(); i++)
+				{
+					string t = ("balls*.*");
+					testall.add(t.c_str());
+				}
+			}
 			if (testall.size() > 0)
 			{
 				usedir = imagedirDc;
@@ -996,6 +1024,14 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 				for (u_int i = 0; i < numeric.size(); i++)
 				{
 					string t = ("preg" + numeric.substr(i, 1) + "*.*");
+					testall.add(t.c_str());
+				}
+			}
+			if (tryimagetype == IMGTYPE_SUCKBALLS)
+			{
+				for (u_int i = 0; i < numeric.size(); i++)
+				{
+					string t = ("balls*.*");
 					testall.add(t.c_str());
 				}
 			}
@@ -1021,13 +1057,33 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 				testall.add(t.c_str());
 			}
 		}
+		if (tryimagetype == IMGTYPE_SUCKBALLS)
+		{
+			for (u_int i = 0; i < numeric.size(); i++)
+			{
+				string t = ("balls*.*");
+				testall.add(t.c_str());
+			}
+		}
 		if (testall.size() <= 0) continue;
 		int num = ImageNum;
 		if (rand || ImageNum < 0 || ImageNum >= testall.size()) num = g_Dice%testall.size();
 		file = testall[num].full();
 		filename = testall[num].leaf();
-		ext = stringtolowerj(filename.substr(filename.find_last_of('.') + 1, filename.size()));
+		usedir = DirPath() << testall[num].path();
 
+#else
+	// `J` added for .06.02.29
+	
+
+
+
+
+
+#endif
+
+
+		ext = stringtolowerj(filename.substr(filename.find_last_of('.') + 1, filename.size()));
 		if (ext == "ani")
 		{
 			DirPath anidir = usedir; anidir << "ani";
@@ -1112,6 +1168,8 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 			ext = "";
 		}
 	}	while (!imagechosen && --tries > 0);
+
+
 
 	if (m_Images[id]->m_Image->m_Message == "")
 	{

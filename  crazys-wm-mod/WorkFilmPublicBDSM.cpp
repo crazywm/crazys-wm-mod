@@ -44,7 +44,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cPlayer* The_Player;
 
-//Movie Studio - Hardcore - 
+// Job Movie Studio - Hardcore - 
 bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;
@@ -59,13 +59,13 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	string girlName = girl->m_Realname;
 	int wages = 50;
 	int enjoy = 0;
-	int jobperformance = JP_FilmPublicBDSM(girl, false);
+	double jobperformance = JP_FilmPublicBDSM(girl, false);
+	int bonus = 0;
 
 	//JOB
 	enum { BYMAN = 1, BYBEAST };
 	int fucked = 0, impact = 0;
 	bool throat = false, hard = false;
-	int bonus = 0;
 	
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)

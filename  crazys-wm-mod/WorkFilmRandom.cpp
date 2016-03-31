@@ -43,19 +43,87 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern int g_Building;
 
+
+
 // `J` Job Movie Studio - Unused
 bool cJobManager::WorkFilmRandom(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;
 	bool refused = false;
-	int sw;
-	do
+	int sextype = -1;
+	int filmjob;
+	int numfilmjobs = JOB_FILMRANDOM - JOB_STAGEHAND;
+	bool cando = false;
+	
+	if (nothing_banned(brothel))
 	{
-		int roll = g_Dice % 7;
-		sw = roll + JOB_FILMBEAST;
-	} while (!is_sex_type_allowed(sw, brothel));
+		int roll = g_Dice % numfilmjobs;
+		filmjob = roll + JOB_STAGEHAND + 1;
+	}
+	else
+	{
+		do
+		{
+			int roll = g_Dice % numfilmjobs;
+			filmjob = roll + JOB_STAGEHAND + 1;
+			// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> WorkFilmRandom.cpp
+			switch (filmjob)
+			{
+			case	JOB_FILMMAST:
+			case 	JOB_FILMSTRIP:
+			case 	JOB_FILMTEASE:
+				cando = is_sex_type_allowed(SKILL_STRIP, brothel);
+				break;
+			case 	JOB_FILMANAL:
+				cando = is_sex_type_allowed(SKILL_ANAL, brothel);
+				break;
+			case 	JOB_FILMFOOTJOB:
+				cando = is_sex_type_allowed(SKILL_FOOTJOB, brothel);
+				break;
+				//case 	JOB_FILMFUTA			:
+				//	cando = is_sex_type_allowed(SKILL_NORMALSEX, brothel);
+				//	break;
+			case 	JOB_FILMHANDJOB:
+				cando = is_sex_type_allowed(SKILL_HANDJOB, brothel);
+				break;
+			case 	JOB_FILMLESBIAN:
+				cando = is_sex_type_allowed(SKILL_LESBIAN, brothel);
+				break;
+			case 	JOB_FILMORAL:
+				cando = is_sex_type_allowed(SKILL_ORALSEX, brothel);
+				break;
+			case 	JOB_FILMSEX:
+				cando = is_sex_type_allowed(SKILL_NORMALSEX, brothel);
+				break;
+			case 	JOB_FILMTITTY:
+				cando = is_sex_type_allowed(SKILL_TITTYSEX, brothel);
+				break;
+			case 	JOB_FILMBEAST:
+				cando = is_sex_type_allowed(SKILL_BEASTIALITY, brothel);
+				break;
+			case 	JOB_FILMBONDAGE:
+				cando = is_sex_type_allowed(SKILL_BDSM, brothel);
+				break;
+			case 	JOB_FILMBUKKAKE:
+				cando = is_sex_type_allowed(SKILL_ORALSEX, brothel) && is_sex_type_allowed(SKILL_NORMALSEX, brothel);
+				break;
+			case 	JOB_FILMFACEFUCK:
+				cando = is_sex_type_allowed(SKILL_ORALSEX, brothel);
+				break;
+			case 	JOB_FILMGROUP:
+				cando = is_sex_type_allowed(SKILL_GROUP, brothel);
+				break;
+			case 	JOB_FILMPUBLICBDSM:
+				cando = is_sex_type_allowed(SKILL_BDSM, brothel);
+				break;
+			default:
+				cando = true;
+				break;
+			}
+		} while (!cando);
+	}
 
-	//	refused = jobmng.JobFunc[sw](girl,brothel,SHIFT_NIGHT,summary);
+	refused = g_Studios.m_JobManager.JobFunc[filmjob](girl, brothel, SHIFT_NIGHT, summary);
 	return refused;
 }
 

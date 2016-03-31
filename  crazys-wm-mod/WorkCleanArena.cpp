@@ -57,19 +57,15 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	ss << " worked cleaning the arena.\n\n";
 
-	
-
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
-	double CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 10;
-	CleanAmt += JP_CleanArena(girl, false);
-
+	double CleanAmt = JP_CleanArena(girl, false);
 	int enjoy = 0;
 	int wages = 0;
-	int jobperformance = 0;
+	int tips = 0;
+	int imagetype = IMGTYPE_MAID;
+	int msgtype = Day0Night1;
 	bool playtime = false;
-
-
 
 	if (roll_a <= 10)
 	{
@@ -101,12 +97,12 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else
 	{
-		wages = (int)CleanAmt; // `J` Pay her based on how much she cleaned
+		wages = min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
 	}
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
-	ss << gettext("\n\nCleanliness rating improved by ") << CleanAmt;
+	ss << "\n\nCleanliness rating improved by " << (int)CleanAmt;
 	if (playtime)	// `J` needs more variation
 	{
 		ss << "\n\n" << girlName << " finished her cleaning early so she played around with some of the equipment.";
@@ -120,7 +116,9 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	// do all the output
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
 	brothel->m_Filthiness -= (int)CleanAmt;
-	girl->m_Pay = wages;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = tips;
 
 
 

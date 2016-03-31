@@ -228,13 +228,8 @@ double cJobManager::JP_Advertising(sGirl* girl, bool estimate)
 	if (estimate)	// for third detail string
 	{
 		jobperformance =
-			g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 6.0 +
-			g_Girls.GetSkill(girl, SKILL_SERVICE) / 6.0 +
-			g_Girls.GetStat(girl, STAT_CHARISMA) / 6.0 +
-			g_Girls.GetStat(girl, STAT_BEAUTY) / 10.0 +
-			g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 6.0 +
-			g_Girls.GetStat(girl, STAT_CONFIDENCE) / 10.0 +
-			g_Girls.GetStat(girl, STAT_FAME) / 10.0;
+			((girl->fame() + girl->charisma() + girl->performance()) / 3) +
+			((girl->beauty() + girl->confidence() + girl->service() + girl->intelligence()) / 4);
 	}
 	else			// for the actual check
 	{

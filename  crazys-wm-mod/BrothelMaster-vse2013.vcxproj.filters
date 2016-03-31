@@ -615,6 +615,14 @@
     <ClCompile Include="WorkHouseCook.cpp" />
     <ClCompile Include="WorkHousePet.cpp" />
     <ClCompile Include="WorkBarCook.cpp" />
+    <ClCompile Include="WorkFarmPonyGirl.cpp" />
+    <ClCompile Include="WorkFilmAction.cpp" />
+    <ClCompile Include="WorkFilmBuk.cpp" />
+    <ClCompile Include="WorkFilmChef.cpp" />
+    <ClCompile Include="WorkFilmMusic.cpp" />
+    <ClCompile Include="WorkFilmPublicBDSM.cpp" />
+    <ClCompile Include="WorkFilmThroat.cpp" />
+    <ClCompile Include="WorkFilmTease.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

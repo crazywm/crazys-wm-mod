@@ -126,8 +126,8 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 	sBrothel* current = (sBrothel*)m_Parent;
 	u_int restjob = JOB_FILMFREETIME;
 	u_int matronjob = JOB_DIRECTOR;
-	u_int firstjob = JOB_FILMBEAST;
-	u_int lastjob = JOB_STAGEHAND;
+	u_int firstjob = JOB_FILMFREETIME;
+	u_int lastjob = JOB_FILMRANDOM;
 
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
@@ -742,43 +742,43 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		refused = false;
 		girlName = current->m_Realname;
 
-		// `J` only JOB_FILMRANDOM will check if anything is prohibited. If you put them on a specific job, then it is you breaking the prohibition.
-		if (sw == JOB_FILMRANDOM)
-		{
-			int test = 80;
-			do // now roll a random number and if that skill is higher than the test number set that as her job
-			{
-				int testa = g_Dice % 12;
-				if (testa == 0 && !m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel))	testa++;
-				if (testa == 1 && !m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel))			testa++;
-				if (testa == 2 && !m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel))			testa++;
-				if (testa == 3 && !m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel))			testa++;
-				if (testa == 4 && !m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel))		testa++;
-				if (testa == 5 && !m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))		testa++;
-				if (testa == 6 && !m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel))		testa++;
-				if (testa == 7 && !m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel))		testa++;
-				if (testa == 8 && !m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel))		testa++;
-				if (testa == 9 && !m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel))		testa++;
-				if (testa == 10 && !m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel))			testa++;
-				switch (testa)
-				{
-				case 0:		if (test <= current->get_skill(SKILL_BEASTIALITY))	{ sw = JOB_FILMBEAST;	}	break;
-				case 1:		if (test <= current->get_skill(SKILL_BDSM))			{ sw = JOB_FILMBONDAGE;	}	break;
-				case 2:		if (test <= current->get_skill(SKILL_GROUP))		{ sw = JOB_FILMGROUP;	}	break;
-				case 3:		if (test <= current->get_skill(SKILL_ANAL))			{ sw = JOB_FILMANAL;	}	break;
-				case 4:		if (test <= current->get_skill(SKILL_NORMALSEX))	{ sw = JOB_FILMSEX;		}	break;
-				case 5:		if (test <= current->get_skill(SKILL_LESBIAN))		{ sw = JOB_FILMLESBIAN;	}	break;
-				case 6:		if (test <= current->get_skill(SKILL_FOOTJOB))		{ sw = JOB_FILMFOOTJOB;	}	break;
-				case 7:		if (test <= current->get_skill(SKILL_HANDJOB))		{ sw = JOB_FILMHANDJOB;	}	break;
-				case 8:		if (test <= current->get_skill(SKILL_ORALSEX))		{ sw = JOB_FILMORAL;	}	break;
-				case 9:		if (test <= current->get_skill(SKILL_TITTYSEX))		{ sw = JOB_FILMTITTY;	}	break;
-				case 10:	if (test <= current->get_skill(SKILL_STRIP))		{ sw = JOB_FILMSTRIP;	}	break;
-				case 11:	if (test <= current->get_skill(SKILL_PERFORMANCE))	{ sw = JOB_FILMMAST;	}	break;
-				default: break;
-				}
-				test -= 5;	// after each roll, lower the test number and roll again
-			} while (sw == JOB_FILMRANDOM);	// until something is assigned or the test number gets too low
-		}
+//		// `J` only JOB_FILMRANDOM will check if anything is prohibited. If you put them on a specific job, then it is you breaking the prohibition.
+//		if (sw == JOB_FILMRANDOM)
+//		{
+//			int test = 80;
+//			do // now roll a random number and if that skill is higher than the test number set that as her job
+//			{
+//				int testa = g_Dice % 12;
+//				if (testa == 0 && !m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel))	testa++;
+//				if (testa == 1 && !m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel))			testa++;
+//				if (testa == 2 && !m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel))			testa++;
+//				if (testa == 3 && !m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel))			testa++;
+//				if (testa == 4 && !m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel))		testa++;
+//				if (testa == 5 && !m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))		testa++;
+//				if (testa == 6 && !m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel))		testa++;
+//				if (testa == 7 && !m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel))		testa++;
+//				if (testa == 8 && !m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel))		testa++;
+//				if (testa == 9 && !m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel))		testa++;
+//				if (testa == 10 && !m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel))			testa++;
+//				switch (testa)
+//				{
+//				case 0:		if (test <= current->get_skill(SKILL_BEASTIALITY))	{ sw = JOB_FILMBEAST;	}	break;
+//				case 1:		if (test <= current->get_skill(SKILL_BDSM))			{ sw = JOB_FILMBONDAGE;	}	break;
+//				case 2:		if (test <= current->get_skill(SKILL_GROUP))		{ sw = JOB_FILMGROUP;	}	break;
+//				case 3:		if (test <= current->get_skill(SKILL_ANAL))			{ sw = JOB_FILMANAL;	}	break;
+//				case 4:		if (test <= current->get_skill(SKILL_NORMALSEX))	{ sw = JOB_FILMSEX;		}	break;
+//				case 5:		if (test <= current->get_skill(SKILL_LESBIAN))		{ sw = JOB_FILMLESBIAN;	}	break;
+//				case 6:		if (test <= current->get_skill(SKILL_FOOTJOB))		{ sw = JOB_FILMFOOTJOB;	}	break;
+//				case 7:		if (test <= current->get_skill(SKILL_HANDJOB))		{ sw = JOB_FILMHANDJOB;	}	break;
+//				case 8:		if (test <= current->get_skill(SKILL_ORALSEX))		{ sw = JOB_FILMORAL;	}	break;
+//				case 9:		if (test <= current->get_skill(SKILL_TITTYSEX))		{ sw = JOB_FILMTITTY;	}	break;
+//				case 10:	if (test <= current->get_skill(SKILL_STRIP))		{ sw = JOB_FILMSTRIP;	}	break;
+//				case 11:	if (test <= current->get_skill(SKILL_PERFORMANCE))	{ sw = JOB_FILMMAST;	}	break;
+//				default: break;
+//				}
+//				test -= 5;	// after each roll, lower the test number and roll again
+//			} while (sw == JOB_FILMRANDOM);	// until something is assigned or the test number gets too low
+//		}
 		refused = m_JobManager.JobFunc[sw](current, brothel, SHIFT_NIGHT, summary);
 
 		totalPay += current->m_Pay;
@@ -1290,6 +1290,7 @@ void cMovieStudioManager::EndMovie(sBrothel* brothel)
 
 int cMovieStudioManager::Num_Actress(int brothel)
 {
+	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cMovieStudio.cpp > Num_Actress
 	return
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMBEAST, 1) +
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMBONDAGE, 1) +
@@ -1310,12 +1311,13 @@ int cMovieStudioManager::Num_Actress(int brothel)
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMCHEF, 1) +
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMMUSIC, 1) +
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMTEASE, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMIDOL, 1) +
+		//g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMIDOL, 1) +
 		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMRANDOM, 1);
 }
 
 bool cMovieStudioManager::is_Actress_Job(int testjob)
 {
+	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >>cMovieStudio.cpp > is_Actress_Job
 	if (testjob == JOB_FILMBEAST ||
 		testjob == JOB_FILMBONDAGE ||
 		testjob == JOB_FILMPUBLICBDSM ||
@@ -1335,7 +1337,7 @@ bool cMovieStudioManager::is_Actress_Job(int testjob)
 		testjob == JOB_FILMCHEF ||
 		testjob == JOB_FILMMUSIC ||
 		testjob == JOB_FILMTEASE ||
-		testjob == JOB_FILMIDOL ||
+		//testjob == JOB_FILMIDOL ||
 		testjob == JOB_FILMRANDOM)
 		return true;
 	return false;
@@ -1343,6 +1345,7 @@ bool cMovieStudioManager::is_Actress_Job(int testjob)
 
 bool cMovieStudioManager::CrewNeeded()	// `J` added, if CM and CP both on duty or there are no actresses, return false
 {
+	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cMovieStudio.cpp > CrewNeeded
 	if ((GetNumGirlsOnJob(0, JOB_CAMERAMAGE, 1) > 0 &&
 		GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, 1) > 0) ||
 		GetNumGirlsOnJob(0, JOB_FILMBEAST, 1) +
@@ -1364,7 +1367,7 @@ bool cMovieStudioManager::CrewNeeded()	// `J` added, if CM and CP both on duty o
 		GetNumGirlsOnJob(0, JOB_FILMCHEF, 1) +
 		GetNumGirlsOnJob(0, JOB_FILMMUSIC, 1) +
 		GetNumGirlsOnJob(0, JOB_FILMTEASE, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMIDOL, 1) +
+		//GetNumGirlsOnJob(0, JOB_FILMIDOL, 1) +
 		GetNumGirlsOnJob(0, JOB_FILMRANDOM, 1) < 1)
 		return false;	// a CM or CP is not Needed
 	return true;	// Otherwise a CM or CP is Needed
@@ -1375,6 +1378,8 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 {
 	sMovieStudio* current = (sMovieStudio*)m_Parent;
 	sMovieScene* newScene = new sMovieScene();
+	stringstream ss;
+	string girlName = girl->m_Realname;
 
 	if (newScene == 0) return 0;
 	//NOTE i crazy added this to try and improve the movies before it only check for normalsex skill now it should check for each skill type i hope
@@ -1383,27 +1388,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	quality += Bonus;
 	quality += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 
-	// `J` do job based modifiers
-	quality += g_Girls.GetSkill(girl, Job) / 5;
 
-	//BSIN: Great idea to vary this all based on film type, just changing implementation
-	//Changing fn to take JOB_FILMxxxxxx as input rather than SKILL_xxxxx
-	//It's more flexible and just makes more sense.
-#if 0
-	// Modifier for what kind of sex scene it is.. normal sex is the baseline at +0
-	if (Job == SKILL_ANAL)			quality += 5;
-	if (Job == SKILL_BDSM)			quality += 5;
-	if (Job == SKILL_NORMALSEX)		quality += 0;
-	if (Job == SKILL_BEASTIALITY)	quality += 5;
-	if (Job == SKILL_GROUP)			quality += 5;
-	if (Job == SKILL_LESBIAN)		quality += 10;
-	if (Job == SKILL_STRIP)			quality -= 5;
-	if (Job == SKILL_ORALSEX)		quality -= 5;
-	if (Job == SKILL_TITTYSEX)		quality -= 5;
-	if (Job == SKILL_HANDJOB)		quality -= 5;
-	if (Job == SKILL_FOOTJOB)		quality -= 5;
-	if (Job == SKILL_SERVICE)		quality -= 5;	// foot job needs to be added so will use service until then
-#else
 	//Balance is...
 	//Evil jobs should pay better and show higher 'quality' - but damage health, happiness, love and can possibly cause injury/disease
 	//Nice jobs should pay less, but be safe and boost fame, skills, happiness and health.
@@ -1411,31 +1396,42 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	//
 	enum { NICE, NORMAL, EVIL };
 	int jobType = NORMAL;
+	int Skill = SKILL_NORMALSEX;
+	switch (Job)
+	{
+	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cMovieStudio.cpp > AddScene
+	case JOB_FILMACTION:		jobType = NORMAL;	quality -= 8;	Skill = SKILL_COMBAT;		ss << "Action";			break;
+	case JOB_FILMCHEF:			jobType = NICE;		quality -= 8;	Skill = SKILL_COOKING;		ss << "Cooking";		break;
+	//case JOB_FILMCOMEDY:		jobType = NICE;		quality -= 2;	Skill = SKILL_PERFORMANCE;	ss << "Comedy";			break;
+	//case JOB_FILMDRAMA:		jobType = NICE;		quality -= 2;	Skill = SKILL_PERFORMANCE;	ss << "Drama";			break;
+	//case JOB_FILMHORROR:		jobType = NORMAL;	quality -= 2;	Skill = SKILL_PERFORMANCE;	ss << "Horror";			break;
+	//case JOB_FILMIDOL:		jobType = NICE;		quality -= 5;	Skill = SKILL_PERFORMANCE;	ss << "Idol";			break;
+	case JOB_FILMMUSIC:			jobType = NICE;		quality -= 3;	Skill = SKILL_PERFORMANCE;	ss << "Music";			break;
+	case JOB_FILMMAST:			jobType = NICE;		quality -= 10;	Skill = SKILL_PERFORMANCE;	ss << "Masturbation";	break;
+	case JOB_FILMSTRIP:			jobType = NICE;		quality += 0;	Skill = SKILL_STRIP;		ss << "Stripping";		break;
+	case JOB_FILMTEASE:			jobType = NICE;		quality += 0;	Skill = SKILL_STRIP;		ss << "Teaser";			break;
+	case JOB_FILMANAL:			jobType = NORMAL;	quality += 5;	Skill = SKILL_ANAL;			ss << "Anal";			break;
+	case JOB_FILMFOOTJOB:		jobType = NORMAL;	quality -= 5;	Skill = SKILL_FOOTJOB;		ss << "Footjob";		break;
+	//case JOB_FILMFUTA:		jobType = NORMAL;	quality += 5;	Skill = SKILL_NORMALSEX;	ss << "Futa";			break;
+	case JOB_FILMHANDJOB:		jobType = NORMAL;	quality -= 5;	Skill = SKILL_HANDJOB;		ss << "Handjob";		break;
+	case JOB_FILMLESBIAN:		jobType = NORMAL;	quality += 10;	Skill = SKILL_LESBIAN;		ss << "Lesbian";		break;
+	case JOB_FILMORAL:			jobType = NORMAL;	quality -= 5;	Skill = SKILL_ORALSEX;		ss << "Oral";			break;
+	case JOB_FILMSEX:			jobType = NORMAL;	quality += 0;	Skill = SKILL_NORMALSEX;	ss << "Sex";			break;
+	case JOB_FILMTITTY:			jobType = NORMAL;	quality -= 5;	Skill = SKILL_TITTYSEX;		ss << "Titty";			break;
+	case JOB_FILMBEAST:			jobType = EVIL;		quality += 5;	Skill = SKILL_BEASTIALITY;	ss << "Beast";			break;
+	case JOB_FILMBONDAGE:		jobType = EVIL;		quality += 8;	Skill = SKILL_BDSM;			ss << "Bondage";		break;
+	case JOB_FILMBUKKAKE:		jobType = EVIL;		quality += 5;	Skill = SKILL_GROUP;		ss << "Bukkake";		break;
+	case JOB_FILMFACEFUCK:		jobType = EVIL;		quality += 5;	Skill = SKILL_ORALSEX;		ss << "Facefucking";	break;
+	case JOB_FILMGROUP:			jobType = NORMAL;	quality += 5;	Skill = SKILL_GROUP;		ss << "Group";			break;
+	case JOB_FILMPUBLICBDSM:	jobType = EVIL;		quality += 10;	Skill = SKILL_BDSM;			ss << "Public BDSM";	break;
+	default:
+		break;
+	}
+	ss << " scene by  " << girlName << " (" << m_movieScenes.size() + 1 << ")";
 
-	//NICE JOBS
-	if (Job == JOB_FILMACTION)			quality -= 8,	jobType = NICE;
-	if (Job == JOB_FILMCHEF)			quality -= 8,	jobType = NICE;
-	if (Job == JOB_FILMIDOL)			quality -= 5,	jobType = NICE;
-	if (Job == JOB_FILMTEASE)			quality -= 5,	jobType = NICE;
-	if (Job == JOB_FILMSTRIP)			quality -= 5,	jobType = NICE;
-	//NORMAL
-	if (Job == JOB_FILMANAL)			quality += 5;
-	if (Job == JOB_FILMSEX)				quality += 0;
-	if (Job == JOB_FILMGROUP)			quality += 5;
-	if (Job == JOB_FILMLESBIAN)			quality += 10;
-	if (Job == JOB_FILMORAL)			quality -= 5;
-	if (Job == JOB_FILMTITTY)			quality -= 5;
-	if (Job == JOB_FILMHANDJOB)			quality -= 5;
-	if (Job == JOB_FILMFOOTJOB)			quality -= 5;
-	if (Job == JOB_FILMMAST)			quality -= 10;
-	//EVIL
-	if (Job == JOB_FILMBUKKAKE)			quality += 5,	jobType = EVIL;
-	if (Job == JOB_FILMFACEFUCK)		quality += 5,	jobType = EVIL;
-	if (Job == JOB_FILMBONDAGE)			quality += 8,	jobType = EVIL;
-	if (Job == JOB_FILMPUBLICBDSM)		quality += 10,	jobType = EVIL;
-	if (Job == JOB_FILMBEAST)			quality += 5,	jobType = EVIL;
+	// `J` do job based modifiers
+	quality += g_Girls.GetSkill(girl, Skill) / 5;
 
-#endif
 
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> cMovieStudioManager::AddScene
 
@@ -1512,7 +1508,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	{
 		if (Job == JOB_FILMBEAST)	quality += 3;
 	}
-	if (Job == JOB_FILMORAL)
+	if (Job == JOB_FILMORAL || Job == JOB_FILMFACEFUCK)
 	{
 		if (g_Girls.HasTrait(girl, "Pierced Tongue"))		quality += 1;
 		if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))	quality += 2;
@@ -1544,7 +1540,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 		if (Job == JOB_FILMTITTY)		quality -= 4;
 		if (Job == JOB_FILMFOOTJOB)		quality -= 2;
 		if (Job == JOB_FILMHANDJOB)		quality -= 2;
-		if (Job == JOB_FILMMAST)		quality -= 1;	// foot job needs to be added so will use service until then
+		if (Job == JOB_FILMMAST)		quality -= 1;
 	}
 	if (g_Girls.HasTrait(girl, "Straight"))
 	{
@@ -1600,48 +1596,6 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	newScene->m_Promo_Quality = 0;
 	newScene->m_Money_Made = 0;
 	newScene->m_RunWeeks = 0;
-	stringstream ss;
-	string girlName = girl->m_Realname;
-#if 0
-	//BSIN - Rewriting just to reorder and add new job types... See below
-	/* */if (Job == JOB_FILMLESBIAN)			ss << "Lesbian scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMANAL)				ss << "Anal scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMBEAST)				ss << "Beast scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMSEX)				ss << "Sex scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMGROUP)				ss << "Group scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMORAL)				ss << "Oral scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMTITTY)				ss << "Titty sex scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMFOOTJOB)			ss << "Foot job scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMHANDJOB)			ss << "Hand job scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMBONDAGE)			ss << "BDSM scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMSTRIP)				ss << "Stripping scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else ss << "Masturbation scene by  " << girlName << " " << m_movieScenes.size() + 1; /*Dont think there is any more so that should work for masturbation without hurting anything CRAZY*/
-#else
-	//Nice jobs
-	/**/ if (Job == JOB_FILMACTION)				ss << "Action scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMCHEF)				ss << "Chef scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMIDOL)				ss << "Idol scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMTEASE)				ss << "Teaser scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMSTRIP)				ss << "Stripping scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	
-	//Normal
-	else if (Job == JOB_FILMMAST)				ss << "Masturbation scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMHANDJOB)			ss << "Handjob scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMFOOTJOB)			ss << "Footjob scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMTITTY)				ss << "Titty sex scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMORAL)				ss << "Oral scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMSEX)				ss << "Sex scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMLESBIAN)			ss << "Lesbian scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMANAL)				ss << "Anal scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMGROUP)				ss << "Group scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	//Nasty
-	else if (Job == JOB_FILMBEAST)				ss << "Beast scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMBUKKAKE)			ss << "Bukkake scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMFACEFUCK)			ss << "Facefucking scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMBONDAGE)			ss << "BDSM scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	else if (Job == JOB_FILMPUBLICBDSM)			ss << "Public BDSM scene by  " << girlName << " " << m_movieScenes.size() + 1;
-	
-#endif
 	newScene->m_Name = ss.str();
 	m_movieScenes.push_back(newScene);
 	return performance;

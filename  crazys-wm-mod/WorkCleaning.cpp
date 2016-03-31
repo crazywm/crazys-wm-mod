@@ -57,30 +57,27 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	ss << " worked cleaning the brothel.\n\n";
 
-	
-
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
-	double CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 10;
-	CleanAmt += JP_Cleaning(girl, false);		// `J` a replacement for job performance
+	double CleanAmt = JP_Cleaning(girl, false);		// `J` a replacement for job performance
 	int enjoy = 0;
 	int wages = 0;
 	int tips = 0;
-	bool playtime = false;
 	int imagetype = IMGTYPE_MAID;
-
+	int msgtype = Day0Night1;
+	bool playtime = false;
 
 	if (roll_a <= 10)
 	{
 		enjoy -= g_Dice % 3 + 1;
-		CleanAmt = CleanAmt * 0.8;
+		CleanAmt *= 0.8;
 		if (roll_b < 50)	ss << "She spilled a bucket of something unpleasant all over herself.";
 		else				ss << "She did not like cleaning the brothel today.";
 	}
 	else if (roll_a >= 90)
 	{
 		enjoy += g_Dice % 3 + 1;
-		CleanAmt = CleanAmt * 1.1;
+		CleanAmt *= 1.1;
 		if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
 		else				ss << "She had a great time working today.";
 	}

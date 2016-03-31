@@ -50,7 +50,7 @@ extern cPlayer* The_Player;
 //Useful fn
 void AndAction(stringstream *, string, bool);
 
-//Evil Jobs - Bukakke
+// Job Movie Studio - Evil Jobs - Bukakke
 bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;

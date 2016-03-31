@@ -206,8 +206,8 @@ public:
 	static double JP_FilmFootJob(sGirl* girl, bool estimate);
 	
 	//Actress
-	static bool WorkFilmIdol(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmIdol(sGirl* girl, bool estimate);
+	//static bool WorkFilmIdol(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	//static double JP_FilmIdol(sGirl* girl, bool estimate);
 	static bool WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_FilmAction(sGirl* girl, bool estimate);
 	static bool WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
@@ -411,6 +411,7 @@ public:
 	bool apply_job(sGirl* girl, int job, int brothel_id, bool Day0Night1, string & message);
 	int get_num_on_job(sBrothel* brothel, int job_wanted, bool Day0Night1);
 	static bool is_sex_type_allowed(unsigned int sex_type, sBrothel* brothel);
+	static bool nothing_banned(sBrothel* brothel);
 	#ifndef _DEBUG
 		static void free();
 	#else

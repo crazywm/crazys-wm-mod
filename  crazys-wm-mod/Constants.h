@@ -152,15 +152,18 @@ enum JOBFILTER {
   JOBFILTER_GAMBHALL,
   JOBFILTER_SLEAZYBAR,
   JOBFILTER_BROTHEL,
-#if 0
-  JOBFILTER_MOVIESTUDIO,
-#else
-  JOBFILTER_EXTREMESTUDIO,
-  JOBFILTER_PORNSTUDIO,
-  JOBFILTER_MOVIESTUDIO,
-  JOBFILTER_RANDSTUDIO,
-#endif // 0
+
+  // `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> Constants.h > JOBFILTER
   JOBFILTER_STUDIOCREW,
+  JOBFILTER_STUDIONONSEX,
+  JOBFILTER_STUDIOSOFTCORE,		
+  JOBFILTER_STUDIOPORN,			
+  JOBFILTER_STUDIOHARDCORE,			
+  JOBFILTER_RANDSTUDIO,
+  // JOBFILTER_MOVIESTUDIO,		
+  // JOBFILTER_EXTREMESTUDIO,		
+  // JOBFILTER_PORNSTUDIO,		
+
   JOBFILTER_ARENA,
   JOBFILTER_ARENASTAFF,
   JOBFILTER_COMMUNITYCENTRE,
@@ -214,63 +217,63 @@ enum JOBS {
 	JOB_WHOREBROTHEL,		// whore herself inside the building
 	JOB_WHORESTREETS,		// whore self on the city streets
 
-#if 0
-	// `J` Job Movie Studio - Actress
-	JOB_FILMBEAST,			// films this sort of scene in the movie (uses beast resource)
-	JOB_FILMSEX,			// films this sort of scene in the movie
-	JOB_FILMANAL,			// films this sort of scene in the movie
-	JOB_FILMLESBIAN,		// films this sort of scene in the movie. thinking about changing to Lesbian
-	JOB_FILMBONDAGE,		// films this sort of scene in the movie
-	JOB_FILMGROUP,			// films this sort of scene in the movie
-	JOB_FILMORAL,			// films this type of scene CRAZY
-	JOB_FILMMAST,			// films this type of scene CRAZY
-	JOB_FILMTITTY,			// films this type of scene CRAZY
-	JOB_FILMSTRIP,			// films this type of scene CRAZY
-	JOB_FILMHANDJOB,		// films this type of scene CRAZY
-	JOB_FILMFOOTJOB,		// films this type of scene CRAZY
-	JOB_FILMRANDOM,			// Films a random sex scene ... it does NOT work like most jobs, see following note.
-	// *****IMPORTANT**** If you add more scene types, they must go somewhere between
-	// JOB_FILMBEAST and JOB_FILMRANDOM, or it will cause the random job to stop working..
-	// JOB_FILMBEAST must be the first film job, JOB_FILMRANDOM must be the last one. --PP
-#else
-	//Following above note...
-	//Nasty jobs
-	JOB_FILMBEAST,			// films this sort of scene in the movie (uses beast resource)
-	JOB_FILMBUKKAKE,
-	JOB_FILMFACEFUCK,
-	JOB_FILMBONDAGE,		// films this sort of scene in the movie
-	JOB_FILMPUBLICBDSM,	
 
-	//whore jobs
-	JOB_FILMMAST,			// films this type of scene CRAZY
-	JOB_FILMFOOTJOB,		// films this type of scene CRAZY
-	JOB_FILMHANDJOB,		// films this type of scene CRAZY
-	JOB_FILMTITTY,			// films this type of scene CRAZY
-	JOB_FILMORAL,			// films this type of scene CRAZY
-	JOB_FILMSEX,			// films this sort of scene in the movie
-	JOB_FILMLESBIAN,		// films this sort of scene in the movie. thinking about changing to Lesbian
-	JOB_FILMANAL,			// films this sort of scene in the movie
-	JOB_FILMGROUP,			// films this sort of scene in the movie
-	
-	//nice jobs
-	JOB_FILMIDOL,			//For cool, sexy & cute girls
-	JOB_FILMACTION,			//For sexy combatants
-	JOB_FILMMUSIC,			//For cute music videos
-	JOB_FILMCHEF,			//For sexy cooking
-	JOB_FILMTEASE,			//Fex sensual and cute
-	JOB_FILMSTRIP,			// films this type of scene CRAZY
-		
-	//Must go last
-	JOB_FILMRANDOM,			// Films a random sex scene ... it does NOT work like most jobs, see following note.
-#endif
+
 	// `J` Job Movie Studio - Crew
 	JOB_FILMFREETIME,		// Free time
 	JOB_DIRECTOR,			// Does same work as matron plus adds quality to films.
 	JOB_PROMOTER,			// Advertising -- This helps film sales after it is created.
 	JOB_CAMERAMAGE,			// Uses magic to record the scenes to crystals (requires at least 1)
 	JOB_CRYSTALPURIFIER,	// Post editing to get the best out of the film (requires at least 1)
+	//JOB_SOUNDTRACK,			// Correct audio and add in music to the scenes (not required but helpful)
 	JOB_FLUFFER,			// Keeps the porn stars and animals aroused
 	JOB_STAGEHAND,			// Currently does the same as a cleaner.
+
+	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> Constants.h > JOBS
+
+	// *****IMPORTANT**** If you add more scene types, they must go somewhere between
+	// JOB_STAGEHAND and JOB_FILMRANDOM, or it will cause the random job to stop working..
+	// the job after JOB_STAGEHAND must be the first film job, JOB_FILMRANDOM must be the last one.
+
+	// Studio - Non-Sex Scenes
+	JOB_FILMACTION,			// For sexy combatants
+	JOB_FILMCHEF,			// For sexy cooking
+	//JOB_FILMCOMEDY,			// For Comedy scenes
+	//JOB_FILMDRAMA,			// For Drama scenes
+	//JOB_FILMHORROR,			// For Horror scenes
+	//JOB_FILMIDOL,			//For cool, sexy & cute girls
+	JOB_FILMMUSIC,			// For cute music videos
+
+	// Studio - Softcore Porn
+	JOB_FILMMAST,			// films this type of scene CRAZY
+	JOB_FILMSTRIP,			// films this type of scene CRAZY
+	JOB_FILMTEASE,			//Fex sensual and cute
+
+	// Studio - Porn
+	JOB_FILMANAL,			// films this sort of scene in the movie
+	JOB_FILMFOOTJOB,		// films this type of scene CRAZY
+	//JOB_FILMFUTA,			// films scenes with/as futa
+	JOB_FILMHANDJOB,		// films this type of scene CRAZY
+	JOB_FILMLESBIAN,		// films this sort of scene in the movie. thinking about changing to Lesbian
+	JOB_FILMORAL,			// films this type of scene CRAZY
+	JOB_FILMSEX,			// films this sort of scene in the movie
+	JOB_FILMTITTY,			// films this type of scene CRAZY
+
+	// Studio - Hardcore porn
+	JOB_FILMBEAST,			// films this sort of scene in the movie (uses beast resource)
+	JOB_FILMBONDAGE,		// films this sort of scene in the movie
+	JOB_FILMBUKKAKE,		// 
+	JOB_FILMFACEFUCK,		// 
+	JOB_FILMGROUP,			// films this sort of scene in the movie
+	JOB_FILMPUBLICBDSM,		// 
+
+	//Must go last
+	JOB_FILMRANDOM,			// Films a random sex scene ... it does NOT work like most jobs, see following note.
+
+
+
+
+
 
 	// `J` Job Arena - Fighting
 	JOB_FIGHTBEASTS,		// customers come to place bets on who will win, girl may die (uses beasts resource)
@@ -674,6 +677,20 @@ enum Image_Types{
 	IMGTYPE_PUPPYGIRL,					// 
 	IMGTYPE_PONYGIRL,					// 
 	IMGTYPE_CATGIRL,					// 
+
+	/*
+IMGTYPE_WATER			- "water*."			- "Watersports"		- watersports
+IMGTYPE_PETPROFILE		- "pet*."			- "Pet"				- profile, nude
+IMGTYPE_PETORAL			- "petoral*."		- "PetOral"			- oral, lick, deepthroat, titty, petprofile, nude, bdsm
+IMGTYPE_PETSEX			- "petsex*."		- "PetSex"			- sex, nude, anal, petprofile, bdsm
+IMGTYPE_PETBEAST		- "petbeast*."		- "PetBeastiality"	- beast, sex, anal, bdsm, nude
+IMGTYPE_PETFEED			- "petfeed*."		- "PetFeed"			- oral, lick, petprofile, bdsm, nude
+IMGTYPE_PETPLAY			- "petplay*."		- "PetPlay"			- petprofile, bdsm, nude
+IMGTYPE_PETTOY			- "pettoy*."		- "PetToy"			- dildo, petprofile, oral, mast, bdsm, nude
+IMGTYPE_PETWALK			- "petwalk*."		- "PetWalk"			- petprofile, bdsm, nude
+IMGTYPE_PETLICK			- "petlick*."		- "PetLick"			- lick, oral, petprofile, bdsm, nude, titty
+	*/
+
 
 	// IMGTYPE_PREGNANT needs to be the last of the nonpregnant image types.
 	IMGTYPE_PREGNANT,					// 

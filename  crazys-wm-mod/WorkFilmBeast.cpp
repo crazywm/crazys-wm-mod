@@ -65,7 +65,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	string girlName = girl->m_Realname;
 	int wages = 50;
 	int enjoy = 0, bonus = 0;
-	int jobperformance = JP_FilmBeast(girl, false);
+	double jobperformance = JP_FilmBeast(girl, false);
 	bool tied = false;
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
@@ -168,7 +168,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 
 	// remaining modifiers are in the AddScene function --PP
-	int finalqual = g_Studios.AddScene(girl, JOB_FILMBEAST, jobperformance);
+	int finalqual = g_Studios.AddScene(girl, JOB_FILMBEAST, bonus);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl

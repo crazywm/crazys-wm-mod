@@ -59,6 +59,7 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int wages = 50;
 	int enjoy = 0;
 	int jobperformance = 0;
+	int bonus = 0;
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
@@ -82,7 +83,7 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night
 		ss << "No 'Man' has been with her, She is still a virgin.\n";
 	}
 	// remaining modifiers are in the AddScene function --PP
-	int finalqual = g_Studios.AddScene(girl, JOB_FILMLESBIAN, jobperformance);
+	int finalqual = g_Studios.AddScene(girl, JOB_FILMLESBIAN, bonus);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);

@@ -619,6 +619,7 @@ void cBrothelManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)
 
 void sBrothel::AddGirl(sGirl* pGirl)
 {
+	pGirl->FixFreeTimeJobs();
 	if (m_Girls)
 	{
 		pGirl->m_Prev = m_LastGirl;

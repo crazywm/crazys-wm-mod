@@ -59,7 +59,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	string girlName = girl->m_Realname;
 	int wages = 50;
 	int enjoy = 0;
-	int jobperformance = JP_FilmBondage(girl, false);
+	double jobperformance = JP_FilmBondage(girl, false);
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
@@ -155,7 +155,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 			return true;
 		}
 	}
-	else ss << gettext(" was taken for bondage and torture scenes in your dungeon.\n\n");
+	else ss << girlName << gettext(" was taken for bondage and torture scenes in your dungeon.\n\n");
 
 	//Qual
 	if (jobperformance >= 350)
@@ -255,7 +255,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 #if 0
 	// remaining modifiers are in the AddScene function --PP
-	int finalqual = g_Studios.AddScene(girl, JOB_FILMBONDAGE, jobperformance);
+	int finalqual = g_Studios.AddScene(girl, JOB_FILMBONDAGE, bonus);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
@@ -272,7 +272,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	girl->m_Pay = wages;
 #else
 	//Evil pays more and costs about the same...
-	int finalqual = g_Studios.AddScene(girl, JOB_FILMBONDAGE, jobperformance);
+	int finalqual = g_Studios.AddScene(girl, JOB_FILMBONDAGE, bonus);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);

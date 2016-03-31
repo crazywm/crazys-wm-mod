@@ -98,6 +98,30 @@ Forgot to include load checks for new happiness and fame for non-brothel buildin
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.28
 
+###  Changes 2/4/2016
+Adjusted cleaner's pay and fixed a summary message throwing out decimals.
+Added girl's name into beastsex>80 random text.
+Did a little cleanup of claning jobs.
+
+###  Changes 2/5/2016
+Cleaned FixFreeTimeJobs() and moved it to a better place in the code so it works better.
+
+###  Changes 2/14/2016
+Added IMGTYPE_SUCKBALLS check so either "balls*.*" or "suckballs*.*" images will work.
+Started rewriting image handling again.
+
+###  Changes 2/16/2016
+Crazy added in changes by bsin - Mostly movie stuff.
+
+###  Changes 2/18/2016
+Started cleaning bsin's stuff to make sure it works.
+
+###  Changes 3/5/2016
+Rewrite Studio job handling, rearranged job categories and jobs
+Fixing several film jobs.
+
+
+
 
 
 

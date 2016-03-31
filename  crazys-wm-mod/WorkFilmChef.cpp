@@ -170,7 +170,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 80, ACTION_WORKMOVIE, "She has become quite Charming.", Day0Night1);
-	g_Girls.PossiblyGainNewTrait(girl, "Actress", 80, ACTION_WORKSTRIP, "Working on camera has improved her acting skills.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Actress", 80, ACTION_WORKMOVIE, "Working on camera has improved her acting skills.", Day0Night1);
 	if (jobperformance >= 220 && g_Dice.percent(30))
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Chef", 80, ACTION_WORKCOOKING, girlName + " has become a competent Chef.", Day0Night1);

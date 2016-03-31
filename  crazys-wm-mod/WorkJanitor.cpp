@@ -51,30 +51,28 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (roll_a <= 50 && g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to clean the clinic.";
+		ss << " refused to clean the Clinic.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked cleaning the clinic.\n\n";
-	
+	ss << " worked cleaning the Clinic.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
-	double CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10) + 5) * 10;
-	CleanAmt += JP_Janitor(girl, false);
+	double CleanAmt = JP_Janitor(girl, false);
 	int enjoy = 0;
 	int wages = 0;
-	int jobperformance = 0;
+	int tips = 0;
+	int imagetype = IMGTYPE_MAID;
+	int msgtype = Day0Night1;
 	bool playtime = false;
-
 
 	if (roll_a <= 10)
 	{
 		enjoy -= g_Dice % 3 + 1;
 		CleanAmt *= 0.8;
 		if (roll_b < 50)	ss << "She spilled a bucket of something unpleasant all over herself.";
-		else				ss << "She did not like cleaning the clinic today.";
-
+		else				ss << "She did not like cleaning the Clinic today.";
 	}
 	else if (roll_a >= 90)
 	{
@@ -98,12 +96,12 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else
 	{
-		wages = (int)CleanAmt; // `J` Pay her based on how much she cleaned
+		wages = min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
 	}
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
-	ss << gettext("\n\nCleanliness rating improved by ") << CleanAmt;
+	ss << "\n\nCleanliness rating improved by " << (int)CleanAmt;
 	if (playtime)	// `J` needs more variation
 	{
 		ss << "\n\n" << girlName << " finished her cleaning early so she ";
@@ -135,7 +133,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			ss << "watched the ";
 			if (d + n < 1)
 			{
-				ss << "people wander aboout the clinic.";
+				ss << "people wander about the Clinic.";
 				g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 3) - 1);
 			}
 			else
@@ -152,7 +150,9 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	// do all the output
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
 	brothel->m_Filthiness -= (int)CleanAmt;
-	girl->m_Pay = wages;
+	// Money
+	if (wages < 0)	wages = 0;	girl->m_Pay = wages;
+	if (tips < 0)	tips = 0;	girl->m_Tips = tips;
 
 	// Improve girl
 	int xp = 5, libido = 1, skill = 3;

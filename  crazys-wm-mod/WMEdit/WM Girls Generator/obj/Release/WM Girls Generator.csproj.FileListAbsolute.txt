@@ -29,3 +29,4 @@ C:\SVN\trunk\ crazys-wm-mod\WMEdit\WM Girls Generator\obj\Release\WM_Girls_Gener
 C:\SVN\trunk\ crazys-wm-mod\WMEdit\WM Girls Generator\obj\Release\WM Girls Generator.csproj.GenerateResource.Cache
 C:\SVN\trunk\ crazys-wm-mod\WMEdit\WM Girls Generator\obj\Release\WMEdit.exe
 C:\SVN\trunk\ crazys-wm-mod\WMEdit\WM Girls Generator\obj\Release\WMEdit.pdb
+C:\SVN\trunk\ crazys-wm-mod\WMEdit\WM Girls Generator\obj\Release\WM Girls Generator.csprojResolveAssemblyReference.cache

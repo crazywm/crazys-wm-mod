@@ -302,42 +302,23 @@ void cScreenGirlDetails::init()
 		DisableButton(day_id, (Day0Night1 == SHIFT_DAY));
 		DisableButton(night_id, (Day0Night1 == SHIFT_NIGHT));
 	}
-#if 0
 	else if (InMovieStudio)
 	{
 		Day0Night1 = SHIFT_NIGHT;
 		ClearListBox(joblist_id);
+		// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cScreenGirlDetails.cpp
 		AddToListBox(jobtypelist_id, JOBFILTER_STUDIOCREW, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOCREW]);
-		AddToListBox(jobtypelist_id, JOBFILTER_MOVIESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_MOVIESTUDIO]);
-		RefreshJobList();
-		if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO + 1])
-			SetSelectedItemInList(jobtypelist_id, JOBFILTER_MOVIESTUDIO);
-		else SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
-		HideButton(day_id, true);
-		HideButton(night_id, true);
-
-	}
-#else
-
-#endif
-	else if (InMovieStudio)
-	{
-		Day0Night1 = SHIFT_NIGHT;
-		ClearListBox(joblist_id);
-		AddToListBox(jobtypelist_id, JOBFILTER_STUDIOCREW, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOCREW]);
-		AddToListBox(jobtypelist_id, JOBFILTER_MOVIESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_MOVIESTUDIO]);
-		AddToListBox(jobtypelist_id, JOBFILTER_PORNSTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_PORNSTUDIO]);
-		AddToListBox(jobtypelist_id, JOBFILTER_EXTREMESTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_EXTREMESTUDIO]);
+		AddToListBox(jobtypelist_id, JOBFILTER_STUDIONONSEX, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIONONSEX]);
+		AddToListBox(jobtypelist_id, JOBFILTER_STUDIOSOFTCORE, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOSOFTCORE]);
+		AddToListBox(jobtypelist_id, JOBFILTER_STUDIOPORN, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOPORN]);
+		AddToListBox(jobtypelist_id, JOBFILTER_STUDIOHARDCORE, g_Studios.m_JobManager.JobFilterName[JOBFILTER_STUDIOHARDCORE]);
 		AddToListBox(jobtypelist_id, JOBFILTER_RANDSTUDIO, g_Studios.m_JobManager.JobFilterName[JOBFILTER_RANDSTUDIO]);
 		RefreshJobList();
-		if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_MOVIESTUDIO + 1])
-			SetSelectedItemInList(jobtypelist_id, JOBFILTER_MOVIESTUDIO);
-		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_PORNSTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_PORNSTUDIO + 1])
-			SetSelectedItemInList(jobtypelist_id, JOBFILTER_PORNSTUDIO);
-		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_EXTREMESTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_EXTREMESTUDIO + 1])
-			SetSelectedItemInList(jobtypelist_id, JOBFILTER_EXTREMESTUDIO);
-		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_RANDSTUDIO] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_RANDSTUDIO + 1])
-			SetSelectedItemInList(jobtypelist_id, JOBFILTER_RANDSTUDIO);
+		/* */if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIONONSEX]	&& job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIONONSEX + 1])		SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIONONSEX);
+		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIOSOFTCORE] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIOSOFTCORE + 1])	SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOSOFTCORE);
+		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIOPORN]		&& job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIOPORN + 1])		SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOPORN);
+		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIOHARDCORE] && job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIOHARDCORE + 1])	SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOHARDCORE);
+		else if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_RANDSTUDIO]		&& job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_RANDSTUDIO + 1])		SetSelectedItemInList(jobtypelist_id, JOBFILTER_RANDSTUDIO);
 		else SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIOCREW);
 		HideButton(day_id, true);
 		HideButton(night_id, true);

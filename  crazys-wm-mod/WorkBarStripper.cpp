@@ -311,7 +311,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	//base tips, aprox 5-40% of base wages
 	tips += (((5 + jobperformance / 6) * wages) / 100);
-	
+
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
@@ -455,7 +455,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		{
 			ss << "\nPole dancing proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - (g_Girls.GetStat(girl, STAT_STRENGTH) / 20 ));
+		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - (g_Girls.GetStat(girl, STAT_STRENGTH) / 20));
 	}
 
 
@@ -466,12 +466,12 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	//enjoyed the work or not
 	if (roll_a <= 5)
 	{
-		ss << "\nSome of the patrons abused her during the shift."; 
+		ss << "\nSome of the patrons abused her during the shift.";
 		enjoy -= 1;
 	}
 	else if (roll_a <= 25)
 	{
-		ss << "\nShe had a pleasant time working."; 
+		ss << "\nShe had a pleasant time working.";
 		enjoy += 3;
 		if (g_Girls.HasTrait(girl, "Exhibitionist"))
 		{
@@ -480,7 +480,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else
 	{
-		ss << "\nOtherwise, the shift passed uneventfully."; 
+		ss << "\nOtherwise, the shift passed uneventfully.";
 		enjoy += 1;
 		if (g_Girls.HasTrait(girl, "Exhibitionist"))
 		{
@@ -536,8 +536,10 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	//lose
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, girlName + " has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
-	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65) { g_Girls.PossiblyLoseExistingTrait(girl, "Shy", 60, actiontype, girlName + " has been stripping for so long now that her confidence is super high and she is no longer Shy.", Day0Night1); }
-
+	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65)
+	{
+		g_Girls.PossiblyLoseExistingTrait(girl, "Shy", 60, actiontype, girlName + " has been stripping for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);
+	}
 
 #pragma endregion
 	return false;

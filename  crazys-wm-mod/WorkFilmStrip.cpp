@@ -52,12 +52,13 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	
+
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50;
 	int enjoy = 0;
 	int jobperformance = 0;
+	int bonus = 0;
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
@@ -70,13 +71,26 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She stripped on film today, but didn't like it.\n\n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She loved stripping for the camera.\n\n"; }
-	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day stripping today.\n\n"; }
+	else if (roll <= 10)
+	{
+		enjoy -= g_Dice % 3 + 1;
+		ss << "She stripped on film today, but didn't like it.\n\n";
+	}
+	else if (roll >= 90)
+	{
+		enjoy += g_Dice % 3 + 1;
+		ss << "She loved stripping for the camera.\n\n";
+	}
+	else
+	{
+		enjoy += g_Dice % 2;
+		ss << "She had a pleasant day stripping today.\n\n";
+	}
 	jobperformance = enjoy * 2;
+	bonus = enjoy;
 
 	// remaining modifiers are in the AddScene function --PP
-	int finalqual = g_Studios.AddScene(girl, JOB_FILMSTRIP, jobperformance);
+	int finalqual = g_Studios.AddScene(girl, JOB_FILMSTRIP, bonus);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
@@ -108,10 +122,9 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
 	
 	//gain traits
-	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
-	if (jobperformance >= 140 && g_Dice.percent(25))
+	if (girl->performance() > 50 && girl->strip() > 50 && g_Dice.percent(25))
 	{
-		g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
+		g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been stripping for so long, when she walks, it seems her clothes just want to fall off.", Day0Night1);
 	}
 
 	return false;

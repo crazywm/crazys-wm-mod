@@ -46,7 +46,7 @@ extern cPlayer* The_Player;
 
 void AddStory(stringstream *);
 
-//Nice Job - Action Scene
+// Job Movie Studio - //Nice Job - Action Scene
 //This film will use her combat and magic skills, and will be more popular if she's hot.
 bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {

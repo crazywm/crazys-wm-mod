@@ -61,6 +61,7 @@ bool cJobManager::WorkFilmAnal(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int enjoy = 0;
 	int finalqual = 0;
 	int jobperformance = 0;
+	int bonus = 0;
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
@@ -86,7 +87,7 @@ bool cJobManager::WorkFilmAnal(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 
 	// remaining modifiers are in the AddScene function --PP
-	finalqual = g_Studios.AddScene(girl, JOB_FILMANAL, jobperformance);
+	finalqual = g_Studios.AddScene(girl, JOB_FILMANAL, bonus);
 	ss << "Her scene is valued at: " << finalqual << " gold.";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);

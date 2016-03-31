@@ -523,7 +523,7 @@ struct sGirl
 	int rebel();
 	string JobRating(double value, string type = "", string name = "");
 	string JobRatingLetter(double value);
-	bool FixFreeTimeJobs(sGirl* girl);
+	bool FixFreeTimeJobs();
 	/*
 	*	notice that if we do tweak get_stat to reference the stats array
 	*	direct, the above still work.
@@ -870,7 +870,7 @@ public:
 
 	// mod - docclox - func to return random girl N in the chain
 	// returns null if n out of range
-	sRandomGirl* random_girl_at(u_int n);
+	sRandomGirl* random_girl_at(int n);
 	/*
 	*	while I'm on, a few funcs to factor out some common code in DrawImages
 	*/
@@ -911,13 +911,13 @@ private:
 	sGirl* m_Parent;	// first in the list of girls who are dead, gone or in use
 	sGirl* m_Last;	// last in the list of girls who are dead, gone or in use
 
-	unsigned int m_NumRandomGirls;
-	unsigned int m_NumHumanRandomGirls;
-	unsigned int m_NumNonHumanRandomGirls;
+	int m_NumRandomGirls;
+	int m_NumHumanRandomGirls;
+	int m_NumNonHumanRandomGirls;
 
-	unsigned int m_NumRandomYourDaughterGirls;
-	unsigned int m_NumHumanRandomYourDaughterGirls;
-	unsigned int m_NumNonHumanRandomYourDaughterGirls;
+	int m_NumRandomYourDaughterGirls;
+	int m_NumHumanRandomYourDaughterGirls;
+	int m_NumNonHumanRandomYourDaughterGirls;
 
 	sRandomGirl* m_RandomGirls;
 	sRandomGirl* m_LastRandomGirls;
