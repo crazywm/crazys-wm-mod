@@ -6938,10 +6938,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "" && HasRememberedTrait(girl, ""))	AddTrait(girl, "", false, false, true);
-				else if (name != "" && HasRememberedTrait(girl, ""))	AddTrait(girl, "", false, false, true);
-				else if (name != "" && HasRememberedTrait(girl, ""))	AddTrait(girl, "", false, false, true);
-				else if (name != "" && HasRememberedTrait(girl, ""))	AddTrait(girl, "", false, false, true);
+				/* */if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+				else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+				else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+				else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
 			}
 		}
 
@@ -6974,15 +6974,15 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Flat Chest" && HasRememberedTrait(girl, "Flat Chest"))							AddTrait(girl, "Flat Chest", false, false, true);
-				else if (name != "Petite Breasts" && HasRememberedTrait(girl, "Petite Breasts"))					AddTrait(girl, "Petite Breasts", false, false, true);
-				else if (name != "Small Boobs" && HasRememberedTrait(girl, "Small Boobs"))							AddTrait(girl, "Small Boobs", false, false, true);
-				else if (name != "Busty Boobs" && HasRememberedTrait(girl, "Busty Boobs"))							AddTrait(girl, "Busty Boobs", false, false, true);
-				else if (name != "Big Boobs" && HasRememberedTrait(girl, "Big Boobs"))								AddTrait(girl, "Big Boobs", false, false, true);
-				else if (name != "Giant Juggs" && HasRememberedTrait(girl, "Giant Juggs"))							AddTrait(girl, "Giant Juggs", false, false, true);
-				else if (name != "Massive Melons" && HasRememberedTrait(girl, "Massive Melons"))					AddTrait(girl, "Massive Melons", false, false, true);
-				else if (name != "Abnormally Large Boobs" && HasRememberedTrait(girl, "Abnormally Large Boobs"))	AddTrait(girl, "Abnormally Large Boobs", false, false, true);
-				else if (name != "Titanic Tits" && HasRememberedTrait(girl, "Titanic Tits"))						AddTrait(girl, "Titanic Tits", false, false, true);
+				/* */if (name != "Flat Chest" && HasRememberedTrait(girl, "Flat Chest"))							RestoreRememberedTrait(girl, "Flat Chest");
+				else if (name != "Petite Breasts" && HasRememberedTrait(girl, "Petite Breasts"))					RestoreRememberedTrait(girl, "Petite Breasts");
+				else if (name != "Small Boobs" && HasRememberedTrait(girl, "Small Boobs"))							RestoreRememberedTrait(girl, "Small Boobs");
+				else if (name != "Busty Boobs" && HasRememberedTrait(girl, "Busty Boobs"))							RestoreRememberedTrait(girl, "Busty Boobs");
+				else if (name != "Big Boobs" && HasRememberedTrait(girl, "Big Boobs"))								RestoreRememberedTrait(girl, "Big Boobs");
+				else if (name != "Giant Juggs" && HasRememberedTrait(girl, "Giant Juggs"))							RestoreRememberedTrait(girl, "Giant Juggs");
+				else if (name != "Massive Melons" && HasRememberedTrait(girl, "Massive Melons"))					RestoreRememberedTrait(girl, "Massive Melons");
+				else if (name != "Abnormally Large Boobs" && HasRememberedTrait(girl, "Abnormally Large Boobs"))	RestoreRememberedTrait(girl, "Abnormally Large Boobs");
+				else if (name != "Titanic Tits" && HasRememberedTrait(girl, "Titanic Tits"))						RestoreRememberedTrait(girl, "Titanic Tits");
 			}
 		}
 		else if (	// Check Lactation Traits
@@ -7012,10 +7012,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Dry Milk" && HasRememberedTrait(girl, "Dry Milk"))						AddTrait(girl, "Dry Milk", false, false, true);
-				else if (name != "Scarce Lactation" && HasRememberedTrait(girl, "Scarce Lactation"))		AddTrait(girl, "Scarce Lactation", false, false, true);
-				else if (name != "Abundant Lactation" && HasRememberedTrait(girl, "Abundant Lactation"))	AddTrait(girl, "Abundant Lactation", false, false, true);
-				else if (name != "Cow Tits" && HasRememberedTrait(girl, "Cow Tits"))						AddTrait(girl, "Cow Tits", false, false, true);
+				/* */if (name != "Dry Milk" && HasRememberedTrait(girl, "Dry Milk"))						RestoreRememberedTrait(girl, "Dry Milk");
+				else if (name != "Scarce Lactation" && HasRememberedTrait(girl, "Scarce Lactation"))		RestoreRememberedTrait(girl, "Scarce Lactation");
+				else if (name != "Abundant Lactation" && HasRememberedTrait(girl, "Abundant Lactation"))	RestoreRememberedTrait(girl, "Abundant Lactation");
+				else if (name != "Cow Tits" && HasRememberedTrait(girl, "Cow Tits"))						RestoreRememberedTrait(girl, "Cow Tits");
 
 				// make it easy by adding the trait as usual and then move it to remembered if she has no nipples
 				if (HasTrait(girl, "No Nipples"))
@@ -7062,18 +7062,18 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				// if removing "No Nipples" try adding back the others
 				/* */if (name == "No Nipples")
 				{
-					/* */if (HasRememberedTrait(girl, "Dry Milk"))				AddTrait(girl, "Dry Milk", false, false, true);
-					else if (HasRememberedTrait(girl, "Scarce Lactation"))		AddTrait(girl, "Scarce Lactation", false, false, true);
-					else if (HasRememberedTrait(girl, "Abundant Lactation"))	AddTrait(girl, "Abundant Lactation", false, false, true);
-					else if (HasRememberedTrait(girl, "Cow Tits"))				AddTrait(girl, "Cow Tits", false, false, true);
-					/* */if (HasRememberedTrait(girl, "Puffy Nipples"))			AddTrait(girl, "Puffy Nipples", false, false, true);
+					/* */if (HasRememberedTrait(girl, "Dry Milk"))				RestoreRememberedTrait(girl, "Dry Milk");
+					else if (HasRememberedTrait(girl, "Scarce Lactation"))		RestoreRememberedTrait(girl, "Scarce Lactation");
+					else if (HasRememberedTrait(girl, "Abundant Lactation"))	RestoreRememberedTrait(girl, "Abundant Lactation");
+					else if (HasRememberedTrait(girl, "Cow Tits"))				RestoreRememberedTrait(girl, "Cow Tits");
+					/* */if (HasRememberedTrait(girl, "Puffy Nipples"))			RestoreRememberedTrait(girl, "Puffy Nipples");
 				}
 				/* */if ((name == "No Nipples" || (!HasTrait(girl, "No Nipples") && name == "Inverted Nipples"))
 					&& HasRememberedTrait(girl, "Perky Nipples"))
-					AddTrait(girl, "Perky Nipples", false, false, true);
+					RestoreRememberedTrait(girl, "Perky Nipples");
 				else if ((name == "No Nipples" || (!HasTrait(girl, "No Nipples") && name == "Perky Nipples"))
 					&& HasRememberedTrait(girl, "Inverted Nipples"))
-					AddTrait(girl, "Inverted Nipples", false, false, true);
+					RestoreRememberedTrait(girl, "Inverted Nipples");
 			}
 		}
 
@@ -7094,9 +7094,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Sterile" && HasRememberedTrait(girl, "Sterile"))			AddTrait(girl, "Sterile", false, false, true);
-				else if (name != "Broodmother" && HasRememberedTrait(girl, "Broodmother"))	AddTrait(girl, "Broodmother", false, false, true);
-				else if (name != "Fertile" && HasRememberedTrait(girl, "Fertile"))			AddTrait(girl, "Fertile", false, false, true);
+				/* */if (name != "Sterile" && HasRememberedTrait(girl, "Sterile"))			RestoreRememberedTrait(girl, "Sterile");
+				else if (name != "Broodmother" && HasRememberedTrait(girl, "Broodmother"))	RestoreRememberedTrait(girl, "Broodmother");
+				else if (name != "Fertile" && HasRememberedTrait(girl, "Fertile"))			RestoreRememberedTrait(girl, "Fertile");
 			}
 		}
 		else if (	// Check Sexuality Traits
@@ -7112,9 +7112,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Bisexual" && HasRememberedTrait(girl, "Bisexual"))	AddTrait(girl, "Bisexual", false, false, true);
-				else if (name != "Lesbian" && HasRememberedTrait(girl, "Lesbian"))		AddTrait(girl, "Lesbian", false, false, true);
-				else if (name != "Straight" && HasRememberedTrait(girl, "Straight"))	AddTrait(girl, "Straight", false, false, true);
+				/* */if (name != "Bisexual" && HasRememberedTrait(girl, "Bisexual"))	RestoreRememberedTrait(girl, "Bisexual");
+				else if (name != "Lesbian" && HasRememberedTrait(girl, "Lesbian"))		RestoreRememberedTrait(girl, "Lesbian");
+				else if (name != "Straight" && HasRememberedTrait(girl, "Straight"))	RestoreRememberedTrait(girl, "Straight");
 			}
 		}
 		else if (	// Check Gag Reflex Traits
@@ -7132,10 +7132,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Strong Gag Reflex" && HasRememberedTrait(girl, "Strong Gag Reflex"))	AddTrait(girl, "Strong Gag Reflex", false, false, true);
-				else if (name != "Gag Reflex" && HasRememberedTrait(girl, "Gag Reflex"))				AddTrait(girl, "Gag Reflex", false, false, true);
-				else if (name != "No Gag Reflex" && HasRememberedTrait(girl, "No Gag Reflex"))			AddTrait(girl, "No Gag Reflex", false, false, true);
-				else if (name != "Deep Throat" && HasRememberedTrait(girl, "Deep Throat"))				AddTrait(girl, "Deep Throat", false, false, true);
+				/* */if (name != "Strong Gag Reflex" && HasRememberedTrait(girl, "Strong Gag Reflex"))	RestoreRememberedTrait(girl, "Strong Gag Reflex");
+				else if (name != "Gag Reflex" && HasRememberedTrait(girl, "Gag Reflex"))				RestoreRememberedTrait(girl, "Gag Reflex");
+				else if (name != "No Gag Reflex" && HasRememberedTrait(girl, "No Gag Reflex"))			RestoreRememberedTrait(girl, "No Gag Reflex");
+				else if (name != "Deep Throat" && HasRememberedTrait(girl, "Deep Throat"))				RestoreRememberedTrait(girl, "Deep Throat");
 			}
 		}
 		else if (	// Check Orgasm Traits
@@ -7151,9 +7151,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Fake Orgasm Expert" && HasRememberedTrait(girl, "Fake Orgasm Expert"))	AddTrait(girl, "Fake Orgasm Expert", false, false, true);
-				else if (name != "Fast Orgasms" && HasRememberedTrait(girl, "Fast Orgasms"))				AddTrait(girl, "Fast Orgasms", false, false, true);
-				else if (name != "Slow Orgasms" && HasRememberedTrait(girl, "Slow Orgasms"))				AddTrait(girl, "Slow Orgasms", false, false, true);
+				/* */if (name != "Fake Orgasm Expert" && HasRememberedTrait(girl, "Fake Orgasm Expert"))	RestoreRememberedTrait(girl, "Fake Orgasm Expert");
+				else if (name != "Fast Orgasms" && HasRememberedTrait(girl, "Fast Orgasms"))				RestoreRememberedTrait(girl, "Fast Orgasms");
+				else if (name != "Slow Orgasms" && HasRememberedTrait(girl, "Slow Orgasms"))				RestoreRememberedTrait(girl, "Slow Orgasms");
 			}
 		}
 
@@ -7172,8 +7172,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Fragile" && HasRememberedTrait(girl, "Fragile"))	AddTrait(girl, "Fragile", false, false, true);
-				else if (name != "Tough" && HasRememberedTrait(girl, "Tough"))		AddTrait(girl, "Tough", false, false, true);
+				/* */if (name != "Fragile" && HasRememberedTrait(girl, "Fragile"))	RestoreRememberedTrait(girl, "Fragile");
+				else if (name != "Tough" && HasRememberedTrait(girl, "Tough"))		RestoreRememberedTrait(girl, "Tough");
 			}
 		}
 		else if (	// Check Construct Traits
@@ -7187,8 +7187,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Construct" && HasRememberedTrait(girl, "Construct"))				AddTrait(girl, "Construct", false, false, true);
-				else if (name != "Half-Construct" && HasRememberedTrait(girl, "Half-Construct"))	AddTrait(girl, "Half-Construct", false, false, true);
+				/* */if (name != "Construct" && HasRememberedTrait(girl, "Construct"))				RestoreRememberedTrait(girl, "Construct");
+				else if (name != "Half-Construct" && HasRememberedTrait(girl, "Half-Construct"))	RestoreRememberedTrait(girl, "Half-Construct");
 			}
 		}
 		else if (	// Check Ass Traits
@@ -7210,12 +7210,12 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Flat Ass" && HasRememberedTrait(girl, "Flat Ass"))				AddTrait(girl, "Flat Ass", false, false, true);
-				else if (name != "Tight Butt" && HasRememberedTrait(girl, "Tight Butt"))			AddTrait(girl, "Tight Butt", false, false, true);
-				else if (name != "Plump Tush" && HasRememberedTrait(girl, "Plump Tush"))			AddTrait(girl, "Plump Tush", false, false, true);
-				else if (name != "Great Arse" && HasRememberedTrait(girl, "Great Arse"))			AddTrait(girl, "Great Arse", false, false, true);
-				else if (name != "Phat Booty" && HasRememberedTrait(girl, "Phat Booty"))			AddTrait(girl, "Phat Booty", false, false, true);
-				else if (name != "Deluxe Derriere" && HasRememberedTrait(girl, "Deluxe Derriere"))	AddTrait(girl, "Deluxe Derriere", false, false, true);
+				/* */if (name != "Flat Ass" && HasRememberedTrait(girl, "Flat Ass"))				RestoreRememberedTrait(girl, "Flat Ass");
+				else if (name != "Tight Butt" && HasRememberedTrait(girl, "Tight Butt"))			RestoreRememberedTrait(girl, "Tight Butt");
+				else if (name != "Plump Tush" && HasRememberedTrait(girl, "Plump Tush"))			RestoreRememberedTrait(girl, "Plump Tush");
+				else if (name != "Great Arse" && HasRememberedTrait(girl, "Great Arse"))			RestoreRememberedTrait(girl, "Great Arse");
+				else if (name != "Phat Booty" && HasRememberedTrait(girl, "Phat Booty"))			RestoreRememberedTrait(girl, "Phat Booty");
+				else if (name != "Deluxe Derriere" && HasRememberedTrait(girl, "Deluxe Derriere"))	RestoreRememberedTrait(girl, "Deluxe Derriere");
 			}
 		}
 		else if (	// Check Teeth Traits
@@ -7229,13 +7229,13 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Missing Teeth" && HasRememberedTrait(girl, "Missing Teeth"))	AddTrait(girl, "Missing Teeth", false, false, true);
-				else if (name != "No Teeth" && HasRememberedTrait(girl, "No Teeth"))			AddTrait(girl, "No Teeth", false, false, true);
+				/* */if (name != "Missing Teeth" && HasRememberedTrait(girl, "Missing Teeth"))	RestoreRememberedTrait(girl, "Missing Teeth");
+				else if (name != "No Teeth" && HasRememberedTrait(girl, "No Teeth"))			RestoreRememberedTrait(girl, "No Teeth");
 			}
 		}
 		else if (	// Check Height
 			name == "Giant" ||
-			name == "Tall"  ||
+			name == "Tall" ||
 			name == "Short" ||
 			name == "Dwarf")
 		{
@@ -7248,15 +7248,15 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Giant" && HasRememberedTrait(girl, "Giant"))			AddTrait(girl, "Giant", false, false, true);
-				else if (name != "Tall" && HasRememberedTrait(girl, "Tall"))			AddTrait(girl, "Tall", false, false, true);
-				else if (name != "Short" && HasRememberedTrait(girl, "Short"))			AddTrait(girl, "Short", false, false, true);
-				else if (name != "Dwarf" && HasRememberedTrait(girl, "Dwarf"))			AddTrait(girl, "Dwarf", false, false, true);
+				/* */if (name != "Giant" && HasRememberedTrait(girl, "Giant"))			RestoreRememberedTrait(girl, "Giant");
+				else if (name != "Tall" && HasRememberedTrait(girl, "Tall"))			RestoreRememberedTrait(girl, "Tall");
+				else if (name != "Short" && HasRememberedTrait(girl, "Short"))			RestoreRememberedTrait(girl, "Short");
+				else if (name != "Dwarf" && HasRememberedTrait(girl, "Dwarf"))			RestoreRememberedTrait(girl, "Dwarf");
 			}
 		}
 		else if (	// Check Figure
 			name == "Great Figure" ||
-			name == "Hourglass Figure"  ||
+			name == "Hourglass Figure" ||
 			name == "Plump" ||
 			name == "Fat")
 		{
@@ -7269,10 +7269,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Great Figure" && HasRememberedTrait(girl, "Great Figure"))			AddTrait(girl, "Great Figure", false, false, true);
-				else if (name != "Hourglass Figure" && HasRememberedTrait(girl, "Hourglass Figure"))	AddTrait(girl, "Hourglass Figure", false, false, true);
-				else if (name != "Plump" && HasRememberedTrait(girl, "Plump"))							AddTrait(girl, "Plump", false, false, true);
-				else if (name != "Fat" && HasRememberedTrait(girl, "Fat"))								AddTrait(girl, "Fat", false, false, true);
+				/* */if (name != "Great Figure" && HasRememberedTrait(girl, "Great Figure"))			RestoreRememberedTrait(girl, "Great Figure");
+				else if (name != "Hourglass Figure" && HasRememberedTrait(girl, "Hourglass Figure"))	RestoreRememberedTrait(girl, "Hourglass Figure");
+				else if (name != "Plump" && HasRememberedTrait(girl, "Plump"))							RestoreRememberedTrait(girl, "Plump");
+				else if (name != "Fat" && HasRememberedTrait(girl, "Fat"))								RestoreRememberedTrait(girl, "Fat");
 			}
 		}
 
@@ -7294,9 +7294,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Small Tattoos" && HasRememberedTrait(girl, "Small Tattoos"))			AddTrait(girl, "Small Tattoos", false, false, true);
-				else if (name != "Tattooed" && HasRememberedTrait(girl, "Tattooed"))					AddTrait(girl, "Tattooed", false, false, true);
-				else if (name != "Heavily Tattooed" && HasRememberedTrait(girl, "Heavily Tattooed"))	AddTrait(girl, "Heavily Tattooed", false, false, true);
+				/* */if (name != "Small Tattoos" && HasRememberedTrait(girl, "Small Tattoos"))			RestoreRememberedTrait(girl, "Small Tattoos");
+				else if (name != "Tattooed" && HasRememberedTrait(girl, "Tattooed"))					RestoreRememberedTrait(girl, "Tattooed");
+				else if (name != "Heavily Tattooed" && HasRememberedTrait(girl, "Heavily Tattooed"))	RestoreRememberedTrait(girl, "Heavily Tattooed");
 			}
 		}
 
@@ -7319,10 +7319,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Muggle" && HasRememberedTrait(girl, "Muggle"))					AddTrait(girl, "Muggle", false, false, true);
-				else if (name != "Weak Magic" && HasRememberedTrait(girl, "Weak Magic"))			AddTrait(girl, "Weak Magic", false, false, true);
-				else if (name != "Strong Magic" && HasRememberedTrait(girl, "Strong Magic"))		AddTrait(girl, "Strong Magic", false, false, true);
-				else if (name != "Powerful Magic" && HasRememberedTrait(girl, "Powerful Magic"))	AddTrait(girl, "Powerful Magic", false, false, true);
+				/* */if (name != "Muggle" && HasRememberedTrait(girl, "Muggle"))					RestoreRememberedTrait(girl, "Muggle");
+				else if (name != "Weak Magic" && HasRememberedTrait(girl, "Weak Magic"))			RestoreRememberedTrait(girl, "Weak Magic");
+				else if (name != "Strong Magic" && HasRememberedTrait(girl, "Strong Magic"))		RestoreRememberedTrait(girl, "Strong Magic");
+				else if (name != "Powerful Magic" && HasRememberedTrait(girl, "Powerful Magic"))	RestoreRememberedTrait(girl, "Powerful Magic");
 			}
 		}
 
@@ -7341,8 +7341,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Princess" && HasRememberedTrait(girl, "Princess"))	AddTrait(girl, "Princess", false, false, true);
-				else if (name != "Queen" && HasRememberedTrait(girl, "Queen"))			AddTrait(girl, "Queen", false, false, true);
+				/* */if (name != "Princess" && HasRememberedTrait(girl, "Princess"))	RestoreRememberedTrait(girl, "Princess");
+				else if (name != "Queen" && HasRememberedTrait(girl, "Queen"))			RestoreRememberedTrait(girl, "Queen");
 			}
 		}
 		else if (	// Check Lolita/MILF Traits
@@ -7369,15 +7369,15 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				// if removing Lolita add back both Old and MILF
 				if (name == "Lolita")
 				{
-					AddTrait(girl, "Old", false, false, true);
-					AddTrait(girl, "MILF", false, false, true);
+					RestoreRememberedTrait(girl, "Old");
+					RestoreRememberedTrait(girl, "MILF");
 				}
 				// if removing Old or MILF try to add the other one and if neither are there then try adding Lolita
 				else
 				{
-					if (name != "Old" && HasRememberedTrait(girl, "Old"))	AddTrait(girl, "Old", false, false, true);
-					if (name != "MILF" && HasRememberedTrait(girl, "MILF"))	AddTrait(girl, "MILF", false, false, true);
-					if (!HasTrait(girl, "Old") && !HasTrait(girl, "MILF"))			AddTrait(girl, "Lolita", false, false, true);
+					if (name != "Old" && HasRememberedTrait(girl, "Old"))	RestoreRememberedTrait(girl, "Old");
+					if (name != "MILF" && HasRememberedTrait(girl, "MILF"))	RestoreRememberedTrait(girl, "MILF");
+					if (!HasTrait(girl, "Old") && !HasTrait(girl, "MILF"))			RestoreRememberedTrait(girl, "Lolita");
 				}
 			}
 		}
@@ -7392,8 +7392,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Shy" && HasRememberedTrait(girl, "Shy"))						AddTrait(girl, "Shy", false, false, true);
-				else if (name != "Exhibitionist" && HasRememberedTrait(girl, "Exhibitionist"))	AddTrait(girl, "Exhibitionist", false, false, true);
+				/* */if (name != "Shy" && HasRememberedTrait(girl, "Shy"))						RestoreRememberedTrait(girl, "Shy");
+				else if (name != "Exhibitionist" && HasRememberedTrait(girl, "Exhibitionist"))	RestoreRememberedTrait(girl, "Exhibitionist");
 			}
 		}
 
@@ -7412,8 +7412,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Optimist" && HasRememberedTrait(girl, "Optimist"))	AddTrait(girl, "Optimist", false, false, true);
-				else if (name != "Pessimist" && HasRememberedTrait(girl, "Pessimist"))	AddTrait(girl, "Pessimist", false, false, true);
+				/* */if (name != "Optimist" && HasRememberedTrait(girl, "Optimist"))	RestoreRememberedTrait(girl, "Optimist");
+				else if (name != "Pessimist" && HasRememberedTrait(girl, "Pessimist"))	RestoreRememberedTrait(girl, "Pessimist");
 			}
 		}
 		else if (	// singer/tone deaf
@@ -7427,8 +7427,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Singer" && HasRememberedTrait(girl, "Singer"))	AddTrait(girl, "Singer", false, false, true);
-				else if (name != "Tone Deaf" && HasRememberedTrait(girl, "Tone Deaf"))	AddTrait(girl, "Tone Deaf", false, false, true);
+				/* */if (name != "Singer" && HasRememberedTrait(girl, "Singer"))	RestoreRememberedTrait(girl, "Singer");
+				else if (name != "Tone Deaf" && HasRememberedTrait(girl, "Tone Deaf"))	RestoreRememberedTrait(girl, "Tone Deaf");
 			}
 		}
 		else if (	// Check Willpower Traits
@@ -7442,8 +7442,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Broken Will" && HasRememberedTrait(girl, "Broken Will"))	AddTrait(girl, "Broken Will", false, false, true);
-				else if (name != "Iron Will" && HasRememberedTrait(girl, "Iron Will"))		AddTrait(girl, "Iron Will", false, false, true);
+				/* */if (name != "Broken Will" && HasRememberedTrait(girl, "Broken Will"))	RestoreRememberedTrait(girl, "Broken Will");
+				else if (name != "Iron Will" && HasRememberedTrait(girl, "Iron Will"))		RestoreRememberedTrait(girl, "Iron Will");
 			}
 		}
 		else if (	// Check Learning Traits
@@ -7457,8 +7457,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Slow Learner" && HasRememberedTrait(girl, "Slow Learner"))	AddTrait(girl, "Slow Learner", false, false, true);
-				else if (name != "Quick Learner" && HasRememberedTrait(girl, "Quick Learner"))	AddTrait(girl, "Quick Learner", false, false, true);
+				/* */if (name != "Slow Learner" && HasRememberedTrait(girl, "Slow Learner"))	RestoreRememberedTrait(girl, "Slow Learner");
+				else if (name != "Quick Learner" && HasRememberedTrait(girl, "Quick Learner"))	RestoreRememberedTrait(girl, "Quick Learner");
 			}
 		}
 		else if (	// Check Social Force Traits
@@ -7508,30 +7508,30 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				if ((name == "Audacity" || name == "Fearless" || name == "Aggressive") &&
 					!HasTrait(girl, "Audacity") && !HasTrait(girl, "Fearless") && !HasTrait(girl, "Aggressive"))
 				{
-					AddTrait(girl, "Meek", false, false, true);
+					RestoreRememberedTrait(girl, "Meek");
 				}
 				if ((name == "Audacity" || name == "Fearless") &&
 					!HasTrait(girl, "Audacity") && !HasTrait(girl, "Fearless"))
 				{
-					AddTrait(girl, "Nervous", false, false, true);
+					RestoreRememberedTrait(girl, "Nervous");
 				}
 				if (name == "Audacity")
 				{
-					AddTrait(girl, "Dependant", false, false, true);
+					RestoreRememberedTrait(girl, "Dependant");
 				}
 				if ((name == "Meek" || name == "Nervous" || name == "Dependant") &&
 					!HasTrait(girl, "Meek") && !HasTrait(girl, "Nervous") && !HasTrait(girl, "Dependant"))
 				{
-					AddTrait(girl, "Audacity", false, false, true);
+					RestoreRememberedTrait(girl, "Audacity");
 				}
 				if ((name == "Meek" || name == "Nervous") &&
 					!HasTrait(girl, "Meek") && !HasTrait(girl, "Nervous"))
 				{
-					AddTrait(girl, "Fearless", false, false, true);
+					RestoreRememberedTrait(girl, "Fearless");
 				}
 				if (name == "Meek")
 				{
-					AddTrait(girl, "Aggressive", false, false, true);
+					RestoreRememberedTrait(girl, "Aggressive");
 				}
 			}
 		}
@@ -7553,9 +7553,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Blind" && HasRememberedTrait(girl, "Blind"))					AddTrait(girl, "Blind", false, false, true);
-				else if (name != "Bad Eyesight" && HasRememberedTrait(girl, "Bad Eyesight"))	AddTrait(girl, "Bad Eyesight", false, false, true);
-				else if (name != "Sharp-Eyed" && HasRememberedTrait(girl, "Sharp-Eyed"))		AddTrait(girl, "Sharp-Eyed", false, false, true);
+				/* */if (name != "Blind" && HasRememberedTrait(girl, "Blind"))					RestoreRememberedTrait(girl, "Blind");
+				else if (name != "Bad Eyesight" && HasRememberedTrait(girl, "Bad Eyesight"))	RestoreRememberedTrait(girl, "Bad Eyesight");
+				else if (name != "Sharp-Eyed" && HasRememberedTrait(girl, "Sharp-Eyed"))		RestoreRememberedTrait(girl, "Sharp-Eyed");
 			}
 		}
 
@@ -7611,7 +7611,7 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				if ((name == "Eye Patch" || name == "One Eye") &&
 					!HasTrait(girl, "Eye Patch") && !HasTrait(girl, "One Eye") && !HasTrait(girl, "Cyclops"))
 				{
-					AddTrait(girl, "Different Colored Eyes", false, false, true);
+					RestoreRememberedTrait(girl, "Different Colored Eyes");
 				}
 			}
 		}
@@ -7663,24 +7663,24 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			}
 			else
 			{
-				/* */if (name != "Succubus" && HasRememberedTrait(girl, "Succubus"))					AddTrait(girl, "Succubus", false, false, true);
-				else if (name != "Angel" && HasRememberedTrait(girl, "Angel"))							AddTrait(girl, "Angel", false, false, true);
-				else if (name != "Battery Operated" && HasRememberedTrait(girl, "Battery Operated"))	AddTrait(girl, "Battery Operated", false, false, true);
-				else if (name != "Canine" && HasRememberedTrait(girl, "Canine"))						AddTrait(girl, "Canine", false, false, true);
-				else if (name != "Cat Girl" && HasRememberedTrait(girl, "Cat Girl"))					AddTrait(girl, "Cat Girl", false, false, true);
-				else if (name != "Cow Girl" && HasRememberedTrait(girl, "Cow Girl"))					AddTrait(girl, "Cow Girl", false, false, true);
-				else if (name != "Demon" && HasRememberedTrait(girl, "Demon"))							AddTrait(girl, "Demon", false, false, true);
-				else if (name != "Dryad" && HasRememberedTrait(girl, "Dryad"))							AddTrait(girl, "Dryad", false, false, true);
-				else if (name != "Elf" && HasRememberedTrait(girl, "Elf"))								AddTrait(girl, "Elf", false, false, true);
-				else if (name != "Equine" && HasRememberedTrait(girl, "Equine"))						AddTrait(girl, "Equine", false, false, true);
-				else if (name != "Fallen Goddess" && HasRememberedTrait(girl, "Fallen Goddess"))		AddTrait(girl, "Fallen Goddess", false, false, true);
-				else if (name != "Furry" && HasRememberedTrait(girl, "Furry"))							AddTrait(girl, "Furry", false, false, true);
-				else if (name != "Goddess" && HasRememberedTrait(girl, "Goddess"))						AddTrait(girl, "Goddess", false, false, true);
-				else if (name != "Half-Breed" && HasRememberedTrait(girl, "Half-Breed"))				AddTrait(girl, "Half-Breed", false, false, true);
-				else if (name != "Not Human" && HasRememberedTrait(girl, "Not Human"))					AddTrait(girl, "Not Human", false, false, true);
-				else if (name != "Reptilian" && HasRememberedTrait(girl, "Reptilian"))					AddTrait(girl, "Reptilian", false, false, true);
-				else if (name != "Slitherer" && HasRememberedTrait(girl, "Slitherer"))					AddTrait(girl, "Slitherer", false, false, true);
-				else if (name != "Solar Powered" && HasRememberedTrait(girl, "Solar Powered"))			AddTrait(girl, "Solar Powered", false, false, true);
+				/* */if (name != "Succubus" && HasRememberedTrait(girl, "Succubus"))					RestoreRememberedTrait(girl, "Succubus");
+				else if (name != "Angel" && HasRememberedTrait(girl, "Angel"))							RestoreRememberedTrait(girl, "Angel");
+				else if (name != "Battery Operated" && HasRememberedTrait(girl, "Battery Operated"))	RestoreRememberedTrait(girl, "Battery Operated");
+				else if (name != "Canine" && HasRememberedTrait(girl, "Canine"))						RestoreRememberedTrait(girl, "Canine");
+				else if (name != "Cat Girl" && HasRememberedTrait(girl, "Cat Girl"))					RestoreRememberedTrait(girl, "Cat Girl");
+				else if (name != "Cow Girl" && HasRememberedTrait(girl, "Cow Girl"))					RestoreRememberedTrait(girl, "Cow Girl");
+				else if (name != "Demon" && HasRememberedTrait(girl, "Demon"))							RestoreRememberedTrait(girl, "Demon");
+				else if (name != "Dryad" && HasRememberedTrait(girl, "Dryad"))							RestoreRememberedTrait(girl, "Dryad");
+				else if (name != "Elf" && HasRememberedTrait(girl, "Elf"))								RestoreRememberedTrait(girl, "Elf");
+				else if (name != "Equine" && HasRememberedTrait(girl, "Equine"))						RestoreRememberedTrait(girl, "Equine");
+				else if (name != "Fallen Goddess" && HasRememberedTrait(girl, "Fallen Goddess"))		RestoreRememberedTrait(girl, "Fallen Goddess");
+				else if (name != "Furry" && HasRememberedTrait(girl, "Furry"))							RestoreRememberedTrait(girl, "Furry");
+				else if (name != "Goddess" && HasRememberedTrait(girl, "Goddess"))						RestoreRememberedTrait(girl, "Goddess");
+				else if (name != "Half-Breed" && HasRememberedTrait(girl, "Half-Breed"))				RestoreRememberedTrait(girl, "Half-Breed");
+				else if (name != "Not Human" && HasRememberedTrait(girl, "Not Human"))					RestoreRememberedTrait(girl, "Not Human");
+				else if (name != "Reptilian" && HasRememberedTrait(girl, "Reptilian"))					RestoreRememberedTrait(girl, "Reptilian");
+				else if (name != "Slitherer" && HasRememberedTrait(girl, "Slitherer"))					RestoreRememberedTrait(girl, "Slitherer");
+				else if (name != "Solar Powered" && HasRememberedTrait(girl, "Solar Powered"))			RestoreRememberedTrait(girl, "Solar Powered");
 			}
 		}
 
@@ -7725,6 +7725,26 @@ bool cGirls::HasRememberedTrait(sGirl* girl, string trait)
 	}
 	return false;
 }
+bool cGirls::RestoreRememberedTrait(sGirl* girl, string trait)
+{
+	if (HasRememberedTrait(girl, trait)) RemoveRememberedTrait(girl, trait);
+	else return false;							//	WD:	No trait to add
+
+	for (int i = 0; i < MAXNUM_TRAITS; i++)				// add the trait
+	{
+		if (girl->m_Traits[i] == 0)
+		{
+			girl->m_NumTraits++;
+			sTrait *addthistrait = g_Traits.GetTrait(g_Traits.GetTranslateName(trait)); // `J` added translation check
+			girl->m_Traits[i] = addthistrait;
+
+			return true;
+		}
+	}
+	return false;
+
+}
+
 
 bool cGirls::HasTrait(sGirl* girl, string trait)
 {

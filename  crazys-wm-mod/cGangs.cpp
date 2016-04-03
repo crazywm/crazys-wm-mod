@@ -1422,6 +1422,8 @@ void cGangManager::UpdateGangs()
 			stringstream sse;
 			sse << "Error: no mission set or mission not found : " << currentGang->m_MissionID;
 			currentGang->m_Events.AddMessage(sse.str(), IMGTYPE_PROFILE, EVENT_GANG);
+			if (currentGang->m_Next) currentGang = currentGang->m_Next;
+			else break;
 		}break;
 		}
 

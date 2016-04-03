@@ -752,6 +752,7 @@ public:
 	bool HasTrait(sGirl* girl, string trait);
 	bool HasRememberedTrait(sGirl* girl, string trait);
 	int HasTempTrait(sGirl* girl, string trait);
+	bool RestoreRememberedTrait(sGirl* girl, string trait);
 
 
 	void ApplyTraits(sGirl* girl, sTrait* trait = 0);	// applys the stat bonuses for traits to a girl

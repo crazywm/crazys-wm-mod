@@ -1291,56 +1291,19 @@ void cMovieStudioManager::EndMovie(sBrothel* brothel)
 int cMovieStudioManager::Num_Actress(int brothel)
 {
 	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cMovieStudio.cpp > Num_Actress
-	return
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMBEAST, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMBONDAGE, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMPUBLICBDSM, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMFACEFUCK, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMBUKKAKE, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMSEX, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMANAL, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMLESBIAN, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMGROUP, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMORAL, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMMAST, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMTITTY, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMSTRIP, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMHANDJOB, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMFOOTJOB, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMACTION, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMCHEF, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMMUSIC, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMTEASE, 1) +
-		//g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMIDOL, 1) +
-		g_Studios.GetNumGirlsOnJob(brothel, JOB_FILMRANDOM, 1);
+	int actresses = 0;
+	for (int i = JOB_STAGEHAND + 1; i < JOB_FILMRANDOM; i++)
+	{
+		actresses += GetNumGirlsOnJob(0, i, 1);
+	}
+
+	return actresses;
 }
 
 bool cMovieStudioManager::is_Actress_Job(int testjob)
 {
 	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >>cMovieStudio.cpp > is_Actress_Job
-	if (testjob == JOB_FILMBEAST ||
-		testjob == JOB_FILMBONDAGE ||
-		testjob == JOB_FILMPUBLICBDSM ||
-		testjob == JOB_FILMFACEFUCK ||
-		testjob == JOB_FILMBUKKAKE ||
-		testjob == JOB_FILMSEX ||
-		testjob == JOB_FILMANAL ||
-		testjob == JOB_FILMLESBIAN ||
-		testjob == JOB_FILMGROUP ||
-		testjob == JOB_FILMORAL ||
-		testjob == JOB_FILMMAST ||
-		testjob == JOB_FILMTITTY ||
-		testjob == JOB_FILMSTRIP ||
-		testjob == JOB_FILMHANDJOB ||
-		testjob == JOB_FILMFOOTJOB ||
-		testjob == JOB_FILMACTION ||
-		testjob == JOB_FILMCHEF ||
-		testjob == JOB_FILMMUSIC ||
-		testjob == JOB_FILMTEASE ||
-		//testjob == JOB_FILMIDOL ||
-		testjob == JOB_FILMRANDOM)
-		return true;
-	return false;
+	return (testjob > JOB_STAGEHAND && testjob <= JOB_FILMRANDOM);
 }
 
 bool cMovieStudioManager::CrewNeeded()	// `J` added, if CM and CP both on duty or there are no actresses, return false
@@ -1348,27 +1311,7 @@ bool cMovieStudioManager::CrewNeeded()	// `J` added, if CM and CP both on duty o
 	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cMovieStudio.cpp > CrewNeeded
 	if ((GetNumGirlsOnJob(0, JOB_CAMERAMAGE, 1) > 0 &&
 		GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, 1) > 0) ||
-		GetNumGirlsOnJob(0, JOB_FILMBEAST, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMSEX, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMANAL, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMLESBIAN, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMBONDAGE, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMPUBLICBDSM, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMFACEFUCK, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMBUKKAKE, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMGROUP, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMORAL, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMMAST, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMTITTY, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMSTRIP, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMHANDJOB, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMFOOTJOB, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMACTION, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMCHEF, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMMUSIC, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMTEASE, 1) +
-		//GetNumGirlsOnJob(0, JOB_FILMIDOL, 1) +
-		GetNumGirlsOnJob(0, JOB_FILMRANDOM, 1) < 1)
+		g_Studios.Num_Actress(0) < 1)
 		return false;	// a CM or CP is not Needed
 	return true;	// Otherwise a CM or CP is Needed
 }

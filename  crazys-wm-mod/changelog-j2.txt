@@ -121,6 +121,25 @@ Rewrite Studio job handling, rearranged job categories and jobs
 Fixing several film jobs.
 
 
+###  Changes 3/31/2016
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+###  Changes 4/2/2016
+Fixed a bug in EquipCombat crashing with items adding/removing traits while there are remembereed traits.
+ - Added RestoreRememberedTrait to fix this.
+Fixed a bug in UpdateGangs if their mission is not normal
+Cleaned a few minor things in Studio code.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.29
+
+
+
+
+
+
+
+
 
 
 
