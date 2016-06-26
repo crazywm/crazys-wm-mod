@@ -520,6 +520,18 @@ bool cScreenItemManagement::check_keys()
 	return false;
 }
 
+void cScreenItemManagement::write_item_text(sInventoryItem * item)
+{
+	stringstream ss;
+	ss << gettext("Cost: ") << item->m_Cost << gettext(" gold      ");
+	ss << gettext("Sell for: ") << int((float)item->m_Cost*0.5f) << gettext(" gold\n");
+	ss << gettext("Item Name: ") << item->m_Name;
+	ss << gettext("\nType: ") << item->m_Type;
+	ss << gettext("\n\n") << item->m_Desc;
+
+	EditTextItem(ss.str(), desc_id);
+};
+
 void cScreenItemManagement::check_events()
 {
 	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
@@ -563,41 +575,27 @@ void cScreenItemManagement::check_events()
 
 		if (leftItem != -1)
 		{
-			stringstream ss;
-			ss << gettext("Cost: ");
 			if (leftOwner == 0)	//Shop
 			{
-				ss << gettext("Value: ") << g_Brothels.m_Inventory[leftItem]->m_Cost << gettext(" gold    ");
-				ss << gettext("Sell for: ") << int((float)g_Brothels.m_Inventory[leftItem]->m_Cost*0.5f) << gettext(" gold\n");
-				ss << gettext("Item Name: ") << g_Brothels.m_Inventory[leftItem]->m_Name;
-				ss << gettext("\n") << g_Brothels.m_Inventory[leftItem]->m_Desc;
-
+				write_item_text(g_Brothels.m_Inventory[leftItem]);
 				DisableButton(equip_l_id, true);
 				DisableButton(unequip_l_id, true);
 
 			}
 			else if (leftOwner == 1)	//Player
 			{
-				ss << g_InvManager.GetShopItem(leftItem)->m_Cost << gettext(" gold\n");
-				ss << gettext("Item Name: ") << g_InvManager.GetShopItem(leftItem)->m_Name;
-				ss << "\n" << g_InvManager.GetShopItem(leftItem)->m_Desc;
-
+				write_item_text(g_InvManager.GetShopItem(leftItem));
 				DisableButton(equip_l_id, true);
 				DisableButton(unequip_l_id, true);
-
-
 			}
-			else
+			else  // Girl
 			{
 				sGirl* targetGirl = 0;
 				targetGirl = GirlSelectedFromList(leftOwner);
 
 				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-				ss << gettext("Value: ") << targetGirl->m_Inventory[leftItem]->m_Cost << gettext(" gold    ");
-				ss << gettext("Sell for: ") << int((float)targetGirl->m_Inventory[leftItem]->m_Cost*0.5f) << gettext(" gold\n");
-				ss << gettext("Item Name: ") << targetGirl->m_Inventory[leftItem]->m_Name;
-				ss << gettext("\n") << targetGirl->m_Inventory[leftItem]->m_Desc;
+				write_item_text(targetGirl->m_Inventory[leftItem]);
 
 				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[leftItem]))
 				{
@@ -610,7 +608,6 @@ void cScreenItemManagement::check_events()
 					DisableButton(unequip_l_id, true);
 				}
 			}
-			EditTextItem(ss.str(), desc_id);
 		}
 		else
 		{
@@ -635,39 +632,26 @@ void cScreenItemManagement::check_events()
 
 		if (rightItem != -1)
 		{
-			stringstream ss;
-			ss << gettext("Cost: ");
-			if (rightOwner == 0)
+			if (rightOwner == 0) // Shop
 			{
-				ss << gettext("Value: ") << g_Brothels.m_Inventory[rightItem]->m_Cost << gettext(" gold    ");
-				ss << gettext("Sell for: ") << int((float)g_Brothels.m_Inventory[rightItem]->m_Cost*0.5f) << gettext(" gold\n");
-				ss << gettext("Item Name: ") << g_Brothels.m_Inventory[rightItem]->m_Name;
-				ss << gettext("\n") << g_Brothels.m_Inventory[rightItem]->m_Desc;
-
+				write_item_text(g_Brothels.m_Inventory[rightItem]);
 				DisableButton(equip_r_id, true);
 				DisableButton(unequip_r_id, true);
 			}
-			else if (rightOwner == 1)
+			else if (rightOwner == 1) // Player
 			{
-				ss << g_InvManager.GetShopItem(rightItem)->m_Cost << gettext(" gold\n");
-				ss << gettext("Item Name: ") << g_InvManager.GetShopItem(rightItem)->m_Name;
-				ss << "\n" << g_InvManager.GetShopItem(rightItem)->m_Desc;
-
+				write_item_text(g_InvManager.GetShopItem(rightItem));
 				DisableButton(equip_r_id, true);
 				DisableButton(unequip_r_id, true);
-
 			}
-			else
+			else // Girl
 			{
 				sGirl* targetGirl = 0;
 				targetGirl = GirlSelectedFromList(rightOwner);
 
 				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-				ss << gettext("Value: ") << targetGirl->m_Inventory[rightItem]->m_Cost << gettext(" gold    ");
-				ss << gettext("Sell for: ") << int((float)targetGirl->m_Inventory[rightItem]->m_Cost*0.5f) << gettext(" gold\n");
-				ss << gettext("Item Name: ") << targetGirl->m_Inventory[rightItem]->m_Name;
-				ss << gettext("\n") << targetGirl->m_Inventory[rightItem]->m_Desc;
+				write_item_text(targetGirl->m_Inventory[rightItem]);
 
 				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[rightItem]))
 				{
@@ -680,7 +664,6 @@ void cScreenItemManagement::check_events()
 					DisableButton(unequip_r_id, true);
 				}
 			}
-			EditTextItem(ss.str(), desc_id);
 		}
 		else
 		{
