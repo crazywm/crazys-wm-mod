@@ -96,6 +96,7 @@ extern	bool	g_X_Key;
 extern	bool	g_C_Key;
 extern	bool	g_O_Key;
 extern	bool	g_CTRLDown;
+extern  bool    g_EnterKey; // More Hotkeys
 
 #pragma endregion
 #pragma region //	Local Variables			//
@@ -331,7 +332,7 @@ void cScreenTurnSummary::init()
 bool cScreenTurnSummary::check_events()
 {
 	if (g_Q_Key || g_W_Key || g_E_Key || g_A_Key || g_S_Key || g_D_Key || g_Z_Key || g_X_Key || g_C_Key || g_O_Key ||
-		g_LeftArrow || g_RightArrow || g_UpArrow || g_DownArrow || g_SpaceKey){
+		g_LeftArrow || g_RightArrow || g_UpArrow || g_DownArrow || g_SpaceKey || g_EnterKey){
 	}	// if one of these keys is pressed then continue
 	else if (g_InterfaceEvents.GetNumEvents() == 0)	return false;							// no events means we can go home
 
@@ -442,6 +443,15 @@ bool cScreenTurnSummary::check_events()
 		if (Event >= 0 && Event == Event_Last)	return true;	// no change
 		Event_Change = true;
 		return true;
+	}
+
+	if (g_EnterKey)
+	{
+		g_InitWin = true;
+		g_EnterKey = false;
+		if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
+		NextWeek();
+		return false;
 	}
 
 	// change sort order
