@@ -699,6 +699,7 @@ public:
 	// MYR: Millions of ways to say, [girl] does [act] to [customer]
 	string GetRandomGroupString();
 	string GetRandomSexString();
+	string GetRandomOralSexString();
 	string GetRandomLesString();
 	string GetRandomBDSMString();
 	string GetRandomBeastString();

@@ -64,6 +64,67 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		return true;
 	}
 
+	int found = 0;
+	int Armor = -1, Weap1 = -1, Weap2 = -1;
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
+		if (girl->m_Inventory[i] != 0)
+		{
+			found++;
+			if (girl->m_Inventory[i]->m_Type == INVWEAPON)
+			{
+				g_InvManager.Unequip(girl, i);
+				if (Weap1 == -1) Weap1 = i;
+				else if (Weap2 == -1) Weap2 = i;
+				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Weap1]->m_Cost)
+				{
+					Weap2 = Weap1;
+					Weap1 = i;
+				}
+				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Weap2]->m_Cost)
+					Weap2 = i;
+			}
+			if (girl->m_Inventory[i]->m_Type == INVARMOR)
+			{
+				g_InvManager.Unequip(girl, i);
+				if (Armor == -1) Armor = i;
+				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Armor]->m_Cost) Armor = i;
+			}
+		}
+
+	if (Armor > -1)		g_InvManager.Equip(girl, Armor, false);
+	if (Weap1 > -1)		g_InvManager.Equip(girl, Weap1, false);
+	if (Weap2 > -1)		g_InvManager.Equip(girl, Weap2, false);
+
+	if (Armor == -1)	
+	{
+		ss << "The crowd can't belive you sent " << girlName << " out to fight without armor";
+		if (Weap1 == -1 && Weap2 == -1)
+		{
+			ss << " or a weapon.";
+		}
+		else if (Weap1 > -1 || Weap2 > -1)
+		{
+			ss << ". But atleast she had a weapon.";
+		}
+		else
+		{
+			ss << ".";
+		}
+
+	}
+	else
+	{
+		ss << girlName << " came out in armor";
+		if (Weap1 == -1 && Weap2 == -1)
+		{
+			ss << " but didn't have a weapon.";
+		}
+		else
+		{
+			ss << " and with a weapon in hand. The crowd felt she was ready for battle.";
+		}
+	}
+
 	
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 	Uint8 fight_outcome = 0;
@@ -108,7 +169,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else if (fight_outcome == 1)	// she won
 	{
-		ss << "She had fun fighting beasts today.";
+		ss << "She won the fight againts beasts today.";//was confusing
 		enjoy += 3;
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 		int roll_max = girl->fame() + girl->charisma();

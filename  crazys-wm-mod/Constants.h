@@ -174,6 +174,7 @@ enum JOBFILTER {
   JOBFILTER_LABORERS,
   JOBFILTER_PRODUCERS,
   JOBFILTER_HOUSE,
+  //JOBFILTER_DRUGLAB,
   JOBFILTER_NONE,
   NUMJOBTYPES
 };// END JOBFILTER Enum
@@ -266,6 +267,7 @@ enum JOBS {
 	JOB_FILMFACEFUCK,		// 
 	JOB_FILMGROUP,			// films this sort of scene in the movie
 	JOB_FILMPUBLICBDSM,		// 
+	JOB_FILMDOM,			//
 
 	//Must go last
 	JOB_FILMRANDOM,			// Films a random sex scene ... it does NOT work like most jobs, see following note.
@@ -337,7 +339,10 @@ enum JOBS {
 	JOB_NURSE,				// helps girls recover from surgery on healing
 	JOB_MECHANIC,			// construct girls can get repaired quickly
 	JOB_INTERN,				// training for nurse job
-	JOB_JANITOR,			// cleans clinic	
+	JOB_JANITOR,			// cleans clinic
+
+	// Job Clinic - Drug lab
+	JOB_DRUGDEALER,	
 
 	// `J` Job Farm - Staff
 	JOB_FARMREST,			//farm rest

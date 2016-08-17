@@ -84,7 +84,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else if (The_Player->disposition() >= -80)	dispmod = -2;	// "Mean"
 	else /*								  */	dispmod = -3;	// "Evil"
 
-	int imagetype = IMGTYPE_PROFILE;
+	int imagetype = IMGTYPE_PONYGIRL;
 	int msgtype = Day0Night1;
 
 	sGirl* headonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_HEADGIRL, Day0Night1);
@@ -94,7 +94,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	{
 		ss << " refused to train during the " << (Day0Night1 ? "night" : "day") << " shift.\n";
 		ss << girlName << " is still in training, and is having difficulty accepting her new role. Today she was a bad girl!\n";
-		if (TRAINING_PUPPY >= 50)
+		if (g_Girls.GetTraining(girl, TRAINING_PONY) >= 50)
 		{
 			ss << "high skill";
 			if (roll_b >= 66)
@@ -128,7 +128,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else /*She did the training*/
 	{
 		ss << " trained to be a pony girl.\n\n";
-		if (TRAINING_PUPPY >= 70)
+		if (g_Girls.GetTraining(girl, TRAINING_PONY) >= 70)
 			{
 				ss << "has over 70 training";
 				if (roll_b >= 80)
@@ -157,7 +157,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 						training += 5;
 					}
 			}
-		else if (TRAINING_PUPPY >= 50)
+		else if (g_Girls.GetTraining(girl, TRAINING_PONY) >= 50)
 			{
 				ss << "has over 50";
 				 if (roll_b >= 85)

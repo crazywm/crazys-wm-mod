@@ -42,6 +42,11 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cPlayer* The_Player;
 
+//SIN
+//SPICE = added a lot of spice (variety/trait/skill) to dialogues
+//1 turns them ON, 0 turns them OFF (compiles with warnings, but not errors - worth it for the easy search)
+#define SPICE 1;
+
 // `J` Job Brothel - Brothel
 bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
@@ -349,10 +354,79 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			}
 			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	// 
 			{
-				fuckMessage << girlName << " refuses to sleep with a beast she has to much dignity for that.\n\n";
+				fuckMessage << girlName << " refuses to sleep with a beast because she has too much dignity for that.\n\n";
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
+#if SPICE
+			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))
+			{
+				fuckMessage << girlName << " refuses to sleep with a beast because one of Royal blood is above that.\n\n";
+				brothel->m_Fame -= 5;
+				acceptsGirl = false;
+			}
+			else if (girl->is_pregnant() && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(35))
+			{
+				fuckMessage << girlName << " refuses because she shouldn't fuck beasts in her condition.\n\n";
+				brothel->m_Fame -= 5;
+				acceptsGirl = false;
+			}
+			else if (g_Girls.GetStat(girl, STAT_HEALTH) < 33 && g_Dice.percent(50))
+			{
+				fuckMessage << "The customer refuses because " << girlName << " looks sick and he doesn't want to catch anything.\n\n";
+				brothel->m_Fame -= 10;
+				acceptsGirl = false;
+			}
+			else if (girl->has_trait("Porn Star") && g_Dice.percent(15))
+			{
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " has seen her in porn.\n\n";
+				acceptsGirl = true;
+			}
+			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && g_Dice.percent(10))
+			{
+				fuckMessage << "The customer chooses her because she is former royalty.\n\n";
+				acceptsGirl = true;
+			}
+			else if (girl->has_trait("Teacher") && g_Dice.percent(10))
+			{
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " used to daydream about this back when "
+					<< (Cust->m_IsWoman ? "she" : "he") << " was in " << girlName << "'s class.\n\n";
+				acceptsGirl = true;
+			}
+			else if (girl->has_trait("Old") && g_Dice.percent(20))
+			{
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " likes mature women.\n\n";
+				acceptsGirl = true;
+			}
+			else if (girl->has_trait("Natural Pheromones") && g_Dice.percent(20))
+			{
+				fuckMessage << "The customer chooses her for reasons " << (Cust->m_IsWoman ? "she" : "he") << " can't explain. There's something about her.\n\n";
+				acceptsGirl = true;
+			}
+			else if (g_Dice.percent(10) && girl->has_trait("Lolita"))
+			{
+				fuckMessage << "The customer chooses her because "
+					<< (Cust->m_IsWoman ? "she wants a young woman, uncorrupted by men." : "he's hoping for a virgin, and she looks like one.\n\n");
+				acceptsGirl = true;
+			}
+			else if (g_Dice.percent(20) && girl->has_trait("Social Drinker"))
+			{
+				fuckMessage << "The customer chooses her because she's fun, flirty and half-cut.\n\n";
+				acceptsGirl = true;
+			}
+			else if (g_Dice.percent(40) && girl->has_trait("Exhibitionist") && g_Girls.GetStat(girl, STAT_BEAUTY) >= 50)
+			{
+				fuckMessage << "The customer chooses her because she walks into the waiting room naked and the customer likes what "
+					<< (Cust->m_IsWoman ? "she sees.\n\n" : "he sees.\n\n");
+				acceptsGirl = true;
+			}
+			else if (g_Dice.percent(5) && (girl->has_trait("Slut") || g_Girls.GetStat(girl, STAT_DIGNITY) >= 70))
+			{
+				fuckMessage << girlName << " gets bored of waiting for someone to step up and starts " << (Cust->m_IsWoman ? "fingering this lady" : "giving this guy a handjob")
+					<< " right there in the waiting room. The customer quickly chooses her.\n\n";
+				acceptsGirl = true;
+			}
+#endif
 			else if (Cust->m_Stats[STAT_LIBIDO] >= 80)
 			{
 				fuckMessage << "Customer chooses her because they are very horny.\n\n";
@@ -478,7 +552,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			{
 				if (g_Dice.percent(50))
 				{
-					message += "Learning that she was your daughter the customer tosses some extra gold down saying no dad should do this to there daughter.\n";
+					message += "Learning that she was your daughter the customer tosses some extra gold down saying no dad should do this to their daughter.\n";
 				}
 				else
 				{

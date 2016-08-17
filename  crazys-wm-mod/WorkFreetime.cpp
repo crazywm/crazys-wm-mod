@@ -1451,7 +1451,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 					else//doesnt
 					{
-						ss << "She managed to make it. But didn't help her any.\n";
+						ss << "She managed to make it. But it didn't help her any.\n";
 					}
 				}
 			}
@@ -1485,7 +1485,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 					else//doesnt
 					{
-						ss << "She managed to make it. But didn't help her any.\n";
+						ss << "She managed to make it. But it didn't help her any.\n";
 					}
 				}
 			}
@@ -1505,7 +1505,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 					else//doesnt
 					{
-						ss << "She managed to make it. But didn't help her any.\n";
+						ss << "She managed to make it. But it didn't help her any.\n";
 					}
 				}
 			}
@@ -1798,7 +1798,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << "They went to dinner. ";	
 						if (girl->m_States&(1 << STATUS_DATING_PERV))//perv
 						{
-							ss << "During dinner her date told several dirt jokes and made many lewd comments which she ";
+							ss << "During dinner her date told several dirty jokes and made many lewd comments which she ";
 							if (g_Girls.HasTrait(girl, "Shy"))
 								{
 									ss << "didn't like at all.\n"; enjoy -= 2;

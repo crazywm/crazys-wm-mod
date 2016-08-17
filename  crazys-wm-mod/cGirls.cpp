@@ -940,6 +940,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Beauty Mark"))				/**/{ Cool += 5; Freak += 5; Sexy += 5; }
 	if (HasTrait(girl, "Blind"))					/**/{ Freak += 10; Dangerous -= 15; }
 	if (HasTrait(girl, "Deaf"))						/**/{ Freak += 10; Dangerous -= 5; }
+	if (HasTrait(girl, "Mute"))						/**/{ Freak += 15; Dangerous -= 5; }
 	//	if (HasTrait(girl, "Bad Eyesight"))				/**/{} // Not visible to customer
 	//	if (HasTrait(girl, "Sharp-Eyed"))				/**/{} // Not visible to customer
 	//	if (HasTrait(girl, "Incest"))					/**/{} // Not visible to customer
@@ -1098,6 +1099,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	/****** Species Traits ******/
 	if (HasTrait(girl, "Cat Girl"))						{ CuteGirl += 20; NonHuman += 60; Freak += 5; }
 	if (HasTrait(girl, "Construct"))					{ Dangerous += 10; NonHuman += 60; Freak += 20; }
+	if (HasTrait(girl, "Angel"))						{ CuteGirl += 10; NonHuman += 60; Freak += 5; }
 	if (HasTrait(girl, "Demon"))						{ Dangerous += 10; NonHuman += 60; Freak += 5; }
 	if (HasTrait(girl, "Different Colored Eyes"))		{ NonHuman += 5; Freak += 10; }
 	if (HasTrait(girl, "Futanari"))						{ CuteGirl -= 15; NonHuman += 10; Freak += 30; }
@@ -1113,6 +1115,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Zombie"))						{ NonHuman += 100; Freak += 100; CuteGirl -= 50; Dangerous += 100; Elegant -= 50; }
 
 	//Following traits marked /**/ are newly added from CoreTraits.traitsx - delete this comment if these are ok and the numbers are reasonable
+	if (HasTrait(girl, "Battery Operated"))			/**/{ NonHuman += 20; Freak += 5; }
 	if (HasTrait(girl, "Canine"))					/**/{ NonHuman += 60; CuteGirl += 10; Freak += 15; }
 	if (HasTrait(girl, "Cow Girl"))					/**/{ NonHuman += 60; CuteGirl -= 20; Freak += 25; BigBoobs += 20; SmallBoobs -= 20; }
 	if (HasTrait(girl, "Dryad"))					/**/{ NonHuman += 50; CuteGirl -= 10; Freak += 20; }
@@ -1127,7 +1130,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Prehensile Tail"))			/**/{ NonHuman += 20; Freak += 40; }
 	if (HasTrait(girl, "Reptilian"))				/**/{ NonHuman += 50; Freak += 20; Dangerous += 10; CuteGirl -= 20; }
 	if (HasTrait(girl, "Slitherer"))				/**/{ NonHuman += 60; Freak += 25; CuteGirl -= 30; }
-	if (HasTrait(girl, "Solar Powered"))			/**/{ NonHuman += 20; }
+	if (HasTrait(girl, "Solar Powered"))			/**/{ NonHuman += 20; Freak += 5; }
 	if (HasTrait(girl, "Succubus"))					/**/{ NonHuman += 40; Freak += 30; Sexy += 30; }
 	if (HasTrait(girl, "Wings"))					/**/{ NonHuman += 50; Freak += 20; }
 
@@ -1160,6 +1163,8 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Demon Possessed"))			/**/{}
 	if (HasTrait(girl, "Out-Patient Surgery"))		/**/{}
 	if (HasTrait(girl, "Spirit Possessed"))			/**/{}
+	if (HasTrait(girl, "Kidnapped"))				/**/{}
+	if (HasTrait(girl, "Emprisoned Customer"))		/**/{}
 
 #endif	// end unused traits
 
@@ -8634,12 +8639,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (choice < 60)
 			{
-				sexMessage << "\"You get what you pay for.\" the customer grumbled as he threw a few wads of money on the jizz covered floor.";
+				sexMessage << "\"You get what you pay for,\" the customer grumbled as he threw a few wads of money on the jizz covered floor.";
 				customer->m_Stats[STAT_HAPPINESS] -= 5;
 			}
 			else if (choice < 80)
 			{
-				sexMessage << girlName << "'s forced smile and awkward demeanor made the whole ordeal more awkward than necessary, but the deed gets done.";
+				sexMessage << girlName << "'s forced smile and awkward demeanor made the whole ordeal more awkward than necessary, but the deed got done.";
 			}
 			else
 			{
@@ -8714,6 +8719,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
 				sexMessage << girlName << " loved having a cock buried in her cunt and fucked back as much as she got.";
+			}
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " stunned the customer with her range of positions and techniques, making him cum multiple times.";
 			}
 			else
 			{
@@ -11800,7 +11809,7 @@ string cGirls::GetRandomLesString()
 		/* */if (random <= 2)	OStr << gettext("sexy");
 		else if (random <= 4)	OStr << gettext("rock hard");
 		else if (random <= 6)	OStr << gettext("hot");
-		else if (random <= 8)	OStr << gettext("androgonous");
+		else if (random <= 8)	OStr << gettext("androgynous");
 		else if (random <= 10)	OStr << gettext("spirited");
 		else /*            */	OStr << gettext("exuberant");
 		OStr << gettext(" MILF.");

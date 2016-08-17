@@ -664,6 +664,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		case 2:
 			if (headOnDuty) ss << gettext("Your Head Girl sits with you to watch as ");
 			else ss << gettext("There are squeals, yelps, shouts and groans as ");
+			break;
 		case 3:
 			ss << gettext("You ply them with drinks and watch as ");
 			break;

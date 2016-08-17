@@ -84,7 +84,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (The_Player->disposition() >= -80)	dispmod = -2;	// "Mean"
 	else /*								  */	dispmod = -3;	// "Evil"
 
-	int imagetype = IMGTYPE_PROFILE;
+	int imagetype = IMGTYPE_PUPPYGIRL;
 	int msgtype = Day0Night1;
 
 	sGirl* headonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_HEADGIRL, Day0Night1);
