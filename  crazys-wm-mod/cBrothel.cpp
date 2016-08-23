@@ -2970,7 +2970,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		else if (cook)		imagetype = IMGTYPE_COOK;
 		else if (maid)		imagetype = IMGTYPE_MAID;
 
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
+		girl->m_Events.AddMessage(ss.str(), imagetype, EVENT_SUMMARY);
 
 	}
 

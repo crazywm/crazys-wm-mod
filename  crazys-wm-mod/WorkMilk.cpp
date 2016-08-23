@@ -31,14 +31,13 @@ extern cGold g_Gold;
 extern cBrothelManager g_Brothels;
 extern cFarmManager g_Farm;
 extern cInventory g_InvManager;
-
-#if 1
-//BSIN: makes player accessible to code
+extern cJobManager m_JobManager;
+extern cCustomers g_Customers;
 extern cPlayer* The_Player;
 //BSIN: function used to convert to ounces
 double toOz(int ml)			{ return (0.0338 * ml); }
 
-#endif
+
 
 // `J` Job Farm - Laborers
 bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
@@ -56,6 +55,9 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 	g_Girls.UnequipCombat(girl);	//Not needed
+
+	sGirl* farmmanonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_FARMMANGER, Day0Night1);
+	string farmmanname = (farmmanonduty ? "Farm Manager " + farmmanonduty->m_Realname + "" : "the Farm Manager");
 
 	int enjoy = 0;
 	int wages = 0;
@@ -96,7 +98,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	//INITIATE THINGS I NEED
 	int volume = 0;						// in milliliters
 	int lactation = girl->lactation();	// how much?
-	bool isPregnant = (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER)) ? true : false;
+	bool isPregnant = (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER) || girl->m_States&(1 << STATUS_INSEMINATED)) ? true : false;
 	int pregMultiplier = ((isPregnant) ? 2 : 1);
 	bool yours = (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER)) ? true : false;
 	int nips = 0;
@@ -106,6 +108,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	stringstream ssextra; 
 	int extraimage = 0;
 	bool extraEvent = false;
+	bool noAnti = girl->m_UseAntiPreg = false;
 
 	int breastsize = 4;
 	/* */if (g_Girls.HasTrait(girl, "Flat Chest"))				breastsize = 1;
@@ -123,6 +126,36 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	if (g_Girls.HasTrait(girl, "Scarce Lactation"))				{ lactation = (lactation * 6) / 10; }
 	if (g_Girls.HasTrait(girl, "Abundant Lactation"))			{ lactation = (lactation * 14) / 10; }
 	if (g_Girls.HasTrait(girl, "Cow Tits"))						{ lactation = (lactation * 16) / 10; }
+
+
+
+	//test code for auto preg
+	if (girl->m_WeeksPreg < 0 && g_Brothels.GetNumGirlsOnJob(0, JOB_FARMMANGER, false) >= 1 && noAnti && !g_Girls.HasTrait(girl, "Virgin"))
+	{
+		sCustomer* Cust = new sCustomer;
+		g_Customers.GetCustomer(Cust, brothel);
+		ss << farmmanname <<" noticing that " << girlName << " wasn't pregnant decided to take it upon herself to make sure she got knocked up.\n";
+		if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && g_Brothels.GetNumBeasts() >= 1 && g_Dice.percent(50))
+		{
+			ss << "She sends in one of your beasts to get the job done.";
+			g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
+			if (!girl->calc_insemination(Cust, false, 1.0))
+			{
+				g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
+			}
+		}
+		else
+		{
+			ss << "She found a random man off the street and offered him the chance to have sex with " << girlName << " for free as long as he cummed inside her. He jumped at the chance for it.";
+			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
+			girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
+			if (!girl->calc_pregnancy(Cust, false, 1.0))
+			{
+				g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
+			}
+		}
+	}
 
 
 	//Lets get some scenario...

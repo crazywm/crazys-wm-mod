@@ -483,16 +483,16 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 							if (testa == 10 && !m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel))			testa++;
 							switch (testa)
 							{
-							case 0:		if (test <= current->get_skill(SKILL_BEASTIALITY))	{ sw = JOB_FILMBEAST;	ss << "perform in bestiality scenes."; }		break;
+							case 0:		if (test <= current->get_skill(SKILL_BEASTIALITY))	{ sw = JOB_FILMBEAST;	ss << "perform in bestiality scenes."; }	break;
 							case 1:		if (test <= current->get_skill(SKILL_BDSM))			{ sw = JOB_FILMBONDAGE;	ss << "perform in bondage scenes."; }		break;
 							case 2:		if (test <= current->get_skill(SKILL_GROUP))		{ sw = JOB_FILMGROUP;	ss << "perform in group sex scenes."; }		break;
 							case 3:		if (test <= current->get_skill(SKILL_ANAL))			{ sw = JOB_FILMANAL;	ss << "perform in anal scenes."; }			break;
-							case 4:		if (test <= current->get_skill(SKILL_NORMALSEX))	{ sw = JOB_FILMSEX;		ss << "perform in normal sex scenes."; }		break;
+							case 4:		if (test <= current->get_skill(SKILL_NORMALSEX))	{ sw = JOB_FILMSEX;		ss << "perform in normal sex scenes."; }	break;
 							case 5:		if (test <= current->get_skill(SKILL_LESBIAN))		{ sw = JOB_FILMLESBIAN;	ss << "perform in lesbian scenes."; }		break;
 							case 6:		if (test <= current->get_skill(SKILL_FOOTJOB))		{ sw = JOB_FILMFOOTJOB;	ss << "perform in foot job scenes."; }		break;
 							case 7:		if (test <= current->get_skill(SKILL_HANDJOB))		{ sw = JOB_FILMHANDJOB;	ss << "perform in hand job scenes."; }		break;
 							case 8:		if (test <= current->get_skill(SKILL_ORALSEX))		{ sw = JOB_FILMORAL;	ss << "perform in oral sex scenes."; }		break;
-							case 9:		if (test <= current->get_skill(SKILL_TITTYSEX))		{ sw = JOB_FILMTITTY;	ss << "perform in titty fuck scenes."; }		break;
+							case 9:		if (test <= current->get_skill(SKILL_TITTYSEX))		{ sw = JOB_FILMTITTY;	ss << "perform in titty fuck scenes."; }	break;
 							case 10:	if (test <= current->get_skill(SKILL_STRIP))		{ sw = JOB_FILMSTRIP;	ss << "perform in strip tease scenes."; }	break;
 							case 11:	if (test <= current->get_skill(SKILL_PERFORMANCE))	{ sw = JOB_FILMMAST;	ss << "perform in masturbation scenes."; }	break;
 							default: break;
@@ -1367,6 +1367,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	case JOB_FILMFACEFUCK:		jobType = EVIL;		quality += 5;	Skill = SKILL_ORALSEX;		ss << "Facefucking";	break;
 	case JOB_FILMGROUP:			jobType = NORMAL;	quality += 5;	Skill = SKILL_GROUP;		ss << "Group";			break;
 	case JOB_FILMPUBLICBDSM:	jobType = EVIL;		quality += 10;	Skill = SKILL_BDSM;			ss << "Public BDSM";	break;
+	case JOB_FILMDOM:			jobType = EVIL;		quality += 8;	Skill = SKILL_BDSM;			ss << "Dominatrix";		break;
 	default:
 		break;
 	}

@@ -358,7 +358,6 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
-#if SPICE
 			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))
 			{
 				fuckMessage << girlName << " refuses to sleep with a beast because one of Royal blood is above that.\n\n";
@@ -426,7 +425,6 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 					<< " right there in the waiting room. The customer quickly chooses her.\n\n";
 				acceptsGirl = true;
 			}
-#endif
 			else if (Cust->m_Stats[STAT_LIBIDO] >= 80)
 			{
 				fuckMessage << "Customer chooses her because they are very horny.\n\n";

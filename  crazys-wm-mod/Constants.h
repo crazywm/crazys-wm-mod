@@ -377,8 +377,8 @@ enum JOBS {
 	JOB_HOUSEPET,			//		
 	JOB_HOUSECOOK,			// cooks for the harem, (helps keep them happy, and increase job performance)
 	JOB_PONYGIRL,			//		
-	//JOB_HOUSEDATE		= ;
-	//JOB_HOUSEVAC		= ;
+	//JOB_HOUSEDATE,
+	//JOB_HOUSEVAC,
 	JOB_CLEANHOUSE,			//
 
 	// - extra unassignable
@@ -392,10 +392,9 @@ enum JOBS {
 const unsigned int JOBFILTER_COMMUNITYCENTRE = ;
 const unsigned int JOB_COLLECTDONATIONS = ;	// not added yet	// collects money to help the poor
 // - Drug Lab (these jobs gain bonus if in same building as a clinic)
-const unsigned int JOBFILTER_DRUGLAB    = ;
-const unsigned int JOB_VIRASPLANTFUCKER = ;	// not added yet	// the plants need to inseminate with other humanoids to proper-gate, creates vira blood items
-const unsigned int JOB_SHROUDGROWER     = ;	// not added yet	// They require lots of care, and may explode. Produces shroud mushroom item.
-const unsigned int JOB_FAIRYDUSTER      = ;	// not added yet	// captures and pounds faries to dust, produces fairy dust item
+	JOB_VIRASPLANTFUCKER,	// not added yet	// the plants need to inseminate with other humanoids to proper-gate, creates vira blood items
+	JOB_SHROUDGROWER,		// not added yet	// They require lots of care, and may explode. Produces shroud mushroom item.
+	JOB_FAIRYDUSTER,		// not added yet	// captures and pounds faries to dust, produces fairy dust item
 const unsigned int JOB_DRUGDEALER       = ;	// not added yet	// goes out onto the streets to sell the items made with the other jobs
 // - Alchemist lab (these jobs gain bonus if in same building as a drug lab)
 const unsigned int JOBFILTER_ALCHEMISTLAB = ;

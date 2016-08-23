@@ -69,16 +69,19 @@ bool cJobManager::WorkHouseCook(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (jobperformance >= 245)
 	{
 		ss << " She must be the perfect at this.";
+		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, 3);
 		wages += 20;
 	}
 	else if (jobperformance >= 185)
 	{
 		ss << " She's unbelievable at this.";
+		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, 2);
 		wages += 15;
 	}
 	else if (jobperformance >= 145)
 	{
 		ss << " She's good at this job.";
+		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, 1);
 		wages += 10;
 	}
 	else if (jobperformance >= 100)
@@ -89,11 +92,13 @@ bool cJobManager::WorkHouseCook(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (jobperformance >= 70)
 	{
 		ss << " She was nervous and made a few mistakes. She isn't that good at this.";
+		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, -1);
 		wages -= 5;
 	}
 	else
 	{
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
+		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, -2);
 		wages -= 15;
 	}
 	ss << "\n\n";
@@ -179,6 +184,7 @@ double cJobManager::JP_HouseCook(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Chef"))			  jobperformance += 30;
+	if (g_Girls.HasTrait(girl, "Mixologist"))	  jobperformance += 20;	//Good with measures
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job

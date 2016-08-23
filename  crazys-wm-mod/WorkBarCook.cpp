@@ -452,6 +452,7 @@ double cJobManager::JP_Barcook(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Chef"))			  jobperformance += 30;
+	if (g_Girls.HasTrait(girl, "Mixologist"))	  jobperformance += 20;	//Good with measures
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job

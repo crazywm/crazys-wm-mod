@@ -60,7 +60,7 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	string girlName = girl->m_Realname;
 	int wages = 40;
 	int enjoy = 0;
-	double jobperformance = JP_FilmTease(girl, false);
+	double jobperformance = JP_FilmMusic(girl, false);
 	int bonus = 0;
 	
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)

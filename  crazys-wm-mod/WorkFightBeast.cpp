@@ -124,6 +124,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			ss << " and with a weapon in hand. The crowd felt she was ready for battle.";
 		}
 	}
+	ss << "\n\n";
 
 	
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
@@ -131,22 +132,6 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int wages = 175, enjoy = 0;
 	double jobperformance = JP_FightBeast(girl, false);
 
-	if (roll <= 15)
-	{
-		ss << " didn't like fighting beasts today.";
-		enjoy -= 3;
-	}
-	else if (roll >= 90)
-	{
-		ss << " loved fighting beasts today.";
-		enjoy += 3;
-	}
-	else
-	{
-		ss << " had a pleasant time fighting beasts today.";
-		enjoy += 1;
-	}
-	ss << "\n\n";
 
 	// TODO need better dialog
 
@@ -220,6 +205,25 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		}
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}
+
+
+
+	if (roll <= 15)
+	{
+		ss << " didn't like fighting beasts today.";
+		enjoy -= 3;
+	}
+	else if (roll >= 90)
+	{
+		ss << " loved fighting beasts today.";
+		enjoy += 3;
+	}
+	else
+	{
+		ss << " had a pleasant time fighting beasts today.";
+		enjoy += 1;
+	}
+	ss << "\n\n";
 
 	// Cleanup
 	if (tempgirl) delete tempgirl; tempgirl = 0;

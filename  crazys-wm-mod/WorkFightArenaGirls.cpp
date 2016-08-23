@@ -126,7 +126,46 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		else
 		{
-			ss << girlName << " won her fight.";
+			if (g_Girls.HasTrait(girl, "Exhibitionist"))
+			{
+				ss << "As she enjoys showing off her body, " << girlName << " lets her opponent cut away her already-skimpy clothing, ending her match all but naked - but victorious.  Many of the patrons seem to enjoy the show.\n";
+			}
+			else if (g_Girls.HasTrait(girl, "Sadist"))
+			{
+				ss << "As the match draws to a close, " << girlName << " stops trying to win and simply toys with her opponent, practically torturing her in front of the audience.  Many patrons disapprove, although a few respond favorably.\n";
+			}
+			else if (g_Girls.HasTrait(girl, "Dominatrix"))
+			{
+				ss << girlName << "'s verbal abuse, along with her combat prowess, lead to a dramatic defeat of her opponent, although her behavior towards the loser disappoints many patrons.\n";
+			}
+			else if (g_Girls.HasTrait(girl, "Brawler"))
+			{
+				ss << girlName << "'s preference for grappling and clinch-fighting throws her opponent off-balance and gives her an easy, if somewhat boring, victory.\n";
+			}
+			else if (g_Girls.HasTrait(girl, "Flight"))
+			{
+				ss << "Being able to fly is an almost-unfair advantage that most opponents can't counter.  Thanks to that, " << girlName << " wins handily.\n";
+			}
+			else if (g_Girls.HasTrait(girl, "Assassin"))
+			{
+				ss << "Utilizing a no-rules, victory-at-any-cost combat style, " << girlName << " won a decisive victory over her orthodox opponent.  This was not unnoticed by some people in the audience.\n";
+			}
+			else if (g_Girls.HasTrait(girl, "Masochist"))
+			{
+				ss << girlName << "'s cries of joy and outright pleasure upon being injured distract her opponent, and the pain-loving girl comes back from apparent defeat to achieve a dramatic victory.  Despite her many injuries, she smiles happily as she thanks her opponent for the match.\n";
+			}
+			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && g_Girls.GetSkill(girl, SKILL_COMBAT) < 50))
+			{
+				ss << girlName << "'s powerful magic demonstrates precisely why mages are feared by many.  She even manages to look good while doing it!\n";
+			}
+			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && g_Girls.GetSkill(girl, SKILL_COMBAT) >= 75))
+			{
+				ss << "Having mastered both weapons and sorcery, " << girlName << " is a nearly unstoppable force of nature in the Arena, easily dispatching opponents who focus on one branch of combat over the other.\n";
+			}
+			else
+			{
+				ss << girlName << " won her fight.";
+			}
 			wages = 100 + g_Dice % (girl->fame() + girl->charisma());
 		}
 	}
@@ -134,7 +173,34 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		enjoy = -(g_Dice % 3 + 1);
 		fame = -(g_Dice % 3 + 1);
-		ss << "She lost the fight.";
+		if (g_Girls.HasTrait(girl, "Exhibitionist"))
+		{
+			ss << "As she enjoys showing off her body, " << girlName << " lets her opponent cut away her already-skimpy clothing, but either because of her lack of skill or just bad luck, she takes a real hit and is defeated.\n";
+		}
+		else if (g_Girls.HasTrait(girl, "Sadist"))
+		{
+			ss << girlName << " tries to torment her opponent, but her overconfidence leads to a stunning defeat when the other fighter feigns injury.\n";
+		}
+		else if (g_Girls.HasTrait(girl, "Flight"))
+		{
+			ss << girlName << " was unable to leverage her greater maneuverability and yielded the match after being forced to the ground.\n";
+		}
+		else if (g_Girls.HasTrait(girl, "Masochist"))
+		{
+			ss << "Overwhelmed by pleasure, " << girlName << " is unable to defend herself from her opponent and is easily defeated.  After the match ends, she begs the other fighter for another match - 'just like this one.'\n";
+		}
+		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && g_Girls.GetSkill(girl, SKILL_COMBAT) < 50))
+		{
+			ss << "Lacking the physical prowess to hold her opponent off while she readies her spells, " << girlName << " is quickly defeated by her opponent.\n";
+		}
+		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && g_Girls.GetSkill(girl, SKILL_COMBAT) >= 75))
+		{
+			ss << "You can't belive, " << girlName << " lost. With her skill in combat and magic you thought her unbeatable.\n";
+		}
+		else
+		{
+			ss << "She lost the fight.";
+		}
 		int cost = 150;
 		brothel->m_Finance.arena_costs(cost);
 		ss << " You had to pay " << cost << " gold cause your girl lost.";
@@ -158,6 +224,16 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 			ss << "\n\nAll that fighting proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+	}
+
+	if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(15))
+	{
+		ss  << "A flamboyant fighter, " << girlName << " fights with as little armor and clothing as possible, and sometimes takes something off in the middle of a match, to the enjoyment of many fans.\n";
+	}
+
+	if (g_Girls.HasTrait(girl, "Idol") && g_Dice.percent(15))
+	{
+		ss  << girlName << " has quite the following, and the Arena is almost always packed when she fights.  People just love to watch her in action.\n";
 	}
 
 	if (tempgirl) delete tempgirl; tempgirl = 0;	// Cleanup

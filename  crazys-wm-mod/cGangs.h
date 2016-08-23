@@ -67,6 +67,7 @@ typedef struct sGang
 	int constitution()	{ return m_Stats[STAT_CONSTITUTION]; }
 	int charisma()		{ return m_Stats[STAT_CHARISMA]; }
 	int strength()		{ return m_Stats[STAT_STRENGTH]; }
+	int happy()			{ return m_Stats[STAT_HAPPINESS]; }
 
 	sGang()
 	{

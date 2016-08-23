@@ -319,7 +319,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << " trained to be a house pet.\n\n";
 		if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 70)
 			{
-				if (girl->m_WeeksPreg >= 38 && headonduty)	
+				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)	
 				{
 					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -451,7 +451,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							imagetype = IMGTYPE_ORAL;
 						}
 					}
-				else if (roll_b >= 80 && puppyonduty)
+				else if (roll_b >= 80 && g_Brothels.GetNumGirlsOnJob(0, JOB_HOUSEPET, false) >= 2)
 					{
 						ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.\n";
 						/**/
@@ -495,7 +495,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							/**/
 							ss << "The commercial was a little difficult to shoot. Your little bitch went through her roll with the grace trained into her, but";
 							ss << " the mastiff was over-eager, and bits of the scene had to be shot several times.";
-							ss << " Still, all went well, and Director finally yelled \"Cut!\" with both " << girlName << " and the large dog's faces pressed";
+							ss << " Still, all went well, and the Director finally yelled \"Cut!\" with both " << girlName << " and the large dog's faces pressed";
 							ss << " into their meal. "; 
 							if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.HasTrait(girl, "Virgin"))
 							{
@@ -518,7 +518,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							}
 							training += 2;
 					}
-				else if (roll_b >= 40 && headonduty)
+				else if (roll_b >= 40 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)
 					{
 						ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";		
 							/**/
@@ -600,7 +600,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		else if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 50)
 			{
-				if (girl->m_WeeksPreg >= 38 && headonduty)	
+				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)	
 				{
 					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -623,7 +623,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " to her spacious kennel with her soft bed. Her belly and breasts swayed, both occasionally brushing the ground, and she back into the kennel and curled up";
 					ss << " on her bed. " << headname << " closed the door, wished her a good night, and turned off the light. " << girlName << " sighed restlessly and slowly fell asleep.";
 				}
-				else if (roll_b >= 85 && headonduty && !g_Girls.HasTrait(girl, "Your Daughter") && g_Girls.HasTrait(girl, "Kidnapped"))
+				else if (roll_b >= 85 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1 && !g_Girls.HasTrait(girl, "Your Daughter") && g_Girls.HasTrait(girl, "Kidnapped"))
 				{
 					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -649,7 +649,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " shuddered as " << headname << " pressed his daughter's face into his crotch. \"I, I have to go.\" The man left in tears. \"Maybe you're still daddy's little girl?\"";
 					ss << " " << headname << " said in an innocent tone, tugging " << girlName << "'s leash to propel the humiliated girl down the path again, face now sticky She never once spoke.";
 				}
-				else if (roll_b >= 70 && recruiteronduty)
+				else if (roll_b >= 70 && g_Brothels.GetNumGirlsOnJob(0, JOB_RECRUITER, false) >= 1)
 				{
 					ss << recruitername << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -660,7 +660,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << girlName << " became aroused as she happily licked the girl's cunt, sucking her clit till she came. For being such a good pet, she's allowed to sleep at the foot of the girl's bed that night instead of in her kennel.";
 					training += 2;
 				}
-				else if (roll_b >= 55 && bedwarmeronduty)
+				else if (roll_b >= 55 && g_Brothels.GetNumGirlsOnJob(0, JOB_PERSONALBEDWARMER, false) >= 1)
 				{
 					ss << bedname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -685,7 +685,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " After licking your feet, she falls asleep. It's just another day in the life of a petgirl.";
 					training += 2;
 				}
-				else if (roll_b >= 35 && cleaneronduty)
+				else if (roll_b >= 35 && g_Brothels.GetNumGirlsOnJob(0, JOB_CLEANHOUSE, false) >= 1)
 				{
 					ss << cleanername << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -779,7 +779,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " Ever so slowly, his hand rose to meet her collar, leash in hand. An overly loud click. " << girlName << " shuddered, her eyes momentarily closed. \"Heel.\"";
 					training += 2;
 				}
-				else if (roll_b >= 33 && headonduty)/*NEEDS MOVED TO MID LVL*/
+				else if (roll_b >= 33 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)/*NEEDS MOVED TO MID LVL*/
 				{
 					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/

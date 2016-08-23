@@ -1335,6 +1335,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WorkFilmDominatrix.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\WorkFilmFootJob.cpp"
 				>
 			</File>
@@ -1344,10 +1348,6 @@
 			</File>
 			<File
 				RelativePath=".\WorkFilmHandJob.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\WorkFilmIdol.cpp"
 				>
 			</File>
 			<File

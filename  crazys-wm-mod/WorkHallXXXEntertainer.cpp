@@ -97,7 +97,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 			wages += 30;
 			fame += 1;
 		}
-		else if (girl->age() > 30 && g_Dice.percent(min(90, max((girl->age() - 30) * 3, 1))))
+		else if (girl->age() > 30 && g_Dice.percent(min(90, max((girl->age() - 30) * 3, 1))) && g_Girls.GetStat(girl, STAT_BEAUTY) < 30)
 		{	//"Too old!" - chance of heckle: age<30y= 0%, then 4%/year (32y - 6%, 40y - 30%...) max 90%... (but only a 20% chance this bit even runs)
 			//Note: demons are exempt as they age differently
 			ss << "Some customers heckle " << girlName << " over her age.";

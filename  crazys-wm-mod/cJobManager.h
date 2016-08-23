@@ -144,34 +144,6 @@ public:
 	static double JP_WhoreStreets(sGirl* girl, bool estimate);
 
 	// - Movie Studio - Actress
-#if 0
-	static bool WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmBeast(sGirl* girl, bool estimate);
-	static bool WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmSex(sGirl* girl, bool estimate);
-	static bool WorkFilmAnal(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmAnal(sGirl* girl, bool estimate);
-	static bool WorkFilmLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmLesbian(sGirl* girl, bool estimate);
-	static bool WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmBondage(sGirl* girl, bool estimate);
-	static bool WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmGroup(sGirl* girl, bool estimate);
-	static bool WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmOral(sGirl* girl, bool estimate);
-	static bool WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmMast(sGirl* girl, bool estimate);
-	static bool WorkFilmTitty(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmTitty(sGirl* girl, bool estimate);
-	static bool WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmStrip(sGirl* girl, bool estimate);
-	static bool WorkFilmHandJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmHandJob(sGirl* girl, bool estimate);
-	static bool WorkFilmFootJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmFootJob(sGirl* girl, bool estimate);
-	static bool WorkFilmRandom(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_FilmRandom(sGirl* girl, bool estimate);
-#else
 	//BSIN
 	//Xxtreme
 	static bool WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
@@ -184,6 +156,9 @@ public:
 	static double JP_FilmBondage(sGirl* girl, bool estimate);
 	static bool WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_FilmPublicBDSM(sGirl* girl, bool estimate);
+
+	/*static bool WorkFilmDominatrix(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FilmDom(sGirl* girl, bool estimate);*/
 
 	//Adult
 	static bool WorkFilmSex(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
@@ -222,7 +197,7 @@ public:
 	//Rand
 	static bool WorkFilmRandom(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_FilmRandom(sGirl* girl, bool estimate);
-#endif
+
 	// - Movie Studio - Crew
 	static bool WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_FilmDirector(sGirl* girl, bool estimate);

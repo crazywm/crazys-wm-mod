@@ -422,6 +422,12 @@ void cJobManager::Setup()
 	JobFunc[JOB_FILMPUBLICBDSM] = &WorkFilmPublicBDSM;
 	JobPerf[JOB_FILMPUBLICBDSM] = &JP_FilmPublicBDSM;
 
+	//JobName[JOB_FILMDOM] = gettext("Film Dominatrix");
+	//JobQkNm[JOB_FILMDOM] = "FDom";											//update in cGirls.cpp
+	//JobDesc[JOB_FILMDOM] = gettext("She will perform in a Dominatrix scene.");
+	//JobFunc[JOB_FILMDOM] = &WorkFilmDominatrix;
+	//JobPerf[JOB_FILMDOM] = &JP_FilmDom;
+
 	// Studio - Random
 	JobFilterName[JOBFILTER_RANDSTUDIO] = gettext("Random Scenes");
 	JobFilterDesc[JOBFILTER_RANDSTUDIO] = gettext("Let the game choose what scene the girl will film.");
@@ -1938,7 +1944,27 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 	 */
 	if ((girl->has_trait("Yandere") || girl->has_trait("Tsundere") || girl->has_trait("Aggressive")) && g_Dice.percent(30)) 
 	{
-		girl->m_Events.AddMessage(gettext("She beat the customer silly."), IMGTYPE_COMBAT, Day0Night1);
+		switch (g_Dice % 5)
+			{
+			case 0:
+				girl->m_Events.AddMessage(gettext("She beat the customer silly."), IMGTYPE_COMBAT, Day0Night1);
+				break;
+			case 1:
+				girl->m_Events.AddMessage(gettext("The customer's face annoyed her, so she punched it until it went away."), IMGTYPE_COMBAT, Day0Night1);
+				break;
+			case 2:
+				girl->m_Events.AddMessage(gettext("The customer acted like he owned her - so she pwned him."), IMGTYPE_COMBAT, Day0Night1);
+				break;
+			case 3:
+				girl->m_Events.AddMessage(gettext("The customer's attitude was bad. She corrected it."), IMGTYPE_COMBAT, Day0Night1);
+				break;
+			case 4:
+				girl->m_Events.AddMessage(gettext("He tried to insert a bottle into her, so she 'gave it' to him instead."), IMGTYPE_COMBAT, Day0Night1);
+				break;
+			default:
+				girl->m_Events.AddMessage(gettext("Did som(E)thing violent."), IMGTYPE_COMBAT, Day0Night1);
+				break;
+			}
 		g_Girls.UpdateStat(girl, STAT_FAME, -1);
 	}
 	return false;
