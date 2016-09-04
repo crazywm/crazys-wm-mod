@@ -205,6 +205,52 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 double cJobManager::JP_Torturer(sGirl* girl, bool estimate)		// not used
 {
+#if 1	//SIN - this is a special case.
+	//AFAIK the torturer ID/skills not used at all in the job processing (apart from names in strings)
+	//Who does the currently has ZERO affect on outcome.
+	//So this stat just shows how much THIS girl (i.e. the torturer) will 'enjoy' job.
+	//standardized per J's instructs
+
+	double jobperformance =
+		//main stat - how evil?
+		(100 - girl->morality()) +
+		//secondary stats - obedience, effectiveness and understanding of anatomy
+		((girl->obedience() + girl->combat() + girl->strength() + girl->medicine()) / 4) +
+		//add level
+		girl->level();
+
+	//and finally traits
+	//"good"
+	if (g_Girls.HasTrait(girl, "Sadistic"))					jobperformance += 30;	//how do you like... THIS!
+	if (g_Girls.HasTrait(girl, "Powerful Magic"))			jobperformance += 25;	//magical flame
+	if (g_Girls.HasTrait(girl, "Strong Magic"))				jobperformance += 20;	//magical flame
+	if (g_Girls.HasTrait(girl, "Dominatrix"))				jobperformance += 20;	//you will learn to obey me
+	if (g_Girls.HasTrait(girl, "Merciless"))				jobperformance += 20;	//"Stop"? <shrug> I don't know that word.
+	if (g_Girls.HasTrait(girl, "Demon"))					jobperformance += 20;	//satan taught me this move
+	if (g_Girls.HasTrait(girl, "Aggressive"))				jobperformance += 15;	//WHAT did you say?
+	if (g_Girls.HasTrait(girl, "Assassin"))					jobperformance += 15;	//skills
+	if (g_Girls.HasTrait(girl, "Doctor"))					jobperformance += 15;	//they call me doctor pain...
+	if (g_Girls.HasTrait(girl, "Iron Will"))				jobperformance += 15;	//I *WILL* break you
+	if (g_Girls.HasTrait(girl, "Alchoholic"))				jobperformance += 10;	//she's a mean drunk
+	if (g_Girls.HasTrait(girl, "Twisted"))					jobperformance += 10;	//twisted biatch
+	if (g_Girls.HasTrait(girl, "Broken Will"))				jobperformance += 5;	//just following orders
+	if (g_Girls.HasTrait(girl, "Mind Fucked"))				jobperformance += 5;	//let's play together
+
+	//either
+	if (g_Girls.HasTrait(girl, "Psychic"))												//I feel your pain... such suffering...
+	{
+		if (g_Girls.HasTrait(girl, "Masochist"))			jobperformance += 30;	//... [smiles] and I like it!
+		else												jobperformance -= 30;
+	}
+
+	//"bad"
+	if (g_Girls.HasTrait(girl, "Goddess"))					jobperformance -= 50;	//Wouldn't harm a soul
+	if (g_Girls.HasTrait(girl, "Angel"))					jobperformance -= 40;	//Wouldn't harm a soul
+	if (g_Girls.HasTrait(girl, "Battery Operated"))			jobperformance -= 20;	//"What is this 'pain' you feel?"
+	if (g_Girls.HasTrait(girl, "Construct"))				jobperformance -= 20;	//"What is this 'pain' you feel?"
+	if (g_Girls.HasTrait(girl, "Clumsy"))					jobperformance += 20;	//OW! I just whipped myself.
+
+#else
 	double jobperformance = 0.0;
 	if (estimate)	// for third detail string
 	{
@@ -214,6 +260,6 @@ double cJobManager::JP_Torturer(sGirl* girl, bool estimate)		// not used
 	{
 
 	}
-
+#endif
 	return jobperformance;
 }

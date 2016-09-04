@@ -78,6 +78,26 @@ extern cSurnameList g_SurnameList;
 extern cPlayer* The_Player;
 extern cConfig cfg;
 
+//SIN
+//SPICE = added a lot of spice (variety/trait/skill) to dialogues
+//SANITY = adding a 'craziness' stat, to be used with new events and reflect the world's impact on her sanity
+//1 turns them ON, 0 turns them OFF (compiles with warnings, but not errors - worth it for the easy search)
+#define SPICE 1;
+#define SANITY 1;
+
+// SIN - adding raisable (only) minimum age in config.xml file, because:
+//(1) makes the code easier to read and maintain (so age references don't get Ctrl+H replaced along with other number "18"s, and vice versa)
+//(2) makes it possible for user to increase the min age for girls (for legal or preference reasons - some places age is 20/21)
+//(3) means that age can easily be used in dialogues, etc (without search, replace and recompile if user wants to update)
+//This uses a variable collected from the config.xml (via sConfig) to allow user to enter higher age (but remains hard-coded to min 18).
+//const int MINAGE = max(HCM, cfg.initial.minimumgirlage());
+
+//SIN - FMA = Fixed Min Age.
+//			//Set to 1, this uses the old code with age set at different points as a magic no. throughout various functions in the code.
+//			//Set to 0, this uses the above MINAGE variable in all locations (easier to see and maintain), which allows raising of the minage if user prefers.
+//(compiles with warnings, but not errors)
+#define FMA 0;
+
 
 /*
 * MOD: DocClox: Stuff for the XML loader code
@@ -542,6 +562,7 @@ void sGirl::setup_maps()
 	jobs_lookup["FFac"] = JOB_FILMFACEFUCK;
 	jobs_lookup["FGrp"] = JOB_FILMGROUP;
 	jobs_lookup["FTor"] = JOB_FILMPUBLICBDSM;
+	jobs_lookup["FDom"] = JOB_FILMDOM;
 	jobs_lookup["FRnd"] = JOB_FILMRANDOM;
 	jobs_lookup["FiBs"] = JOB_FIGHTBEASTS;
 	jobs_lookup["Cage"] = JOB_FIGHTARENAGIRLS;
@@ -2792,7 +2813,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmChef(girl, true), "Cookery Show");
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmTease(girl, true), "Teaser Scene");
 		Studio_Data += "\n";
-		Studio_Data += girl->JobRating(m_JobManager.JP_FilmStrip(girl, true), "Stripping Scene");
+		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmStrip(girl, true), "Stripping Scene");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmSex(girl, true), "* Film Sex");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmAnal(girl, true), "* Film Anal");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmLesbian(girl, true), "* Film Lesbian");
@@ -8167,6 +8188,206 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	int check = GetSkill(girl, SexType);
 	string girlName = girl->m_Realname;
 
+	if (cfg.debug.log_extradetails())
+	{
+		message += "\n(Debug: Customer wants ";
+		/**/ if (SexType == SKILL_ANAL)			message += "anal";
+		else if (SexType == SKILL_BDSM)			message += "bondage";
+		else if (SexType == SKILL_NORMALSEX)	message += "sex";
+		else if (SexType == SKILL_BEASTIALITY)	message += "beast";
+		else if (SexType == SKILL_GROUP)		message += "gangbang";
+		else if (SexType == SKILL_LESBIAN)		message += "lesbian";
+		else if (SexType == SKILL_STRIP)		message += "a strip";
+		else if (SexType == SKILL_ORALSEX)		message += "oral";
+		else if (SexType == SKILL_TITTYSEX)		message += "titty sex";
+		else if (SexType == SKILL_HANDJOB)		message += "a handjob";
+		else if (SexType == SKILL_FOOTJOB)		message += "a footjob";
+		message += ").\n";
+	}
+
+	//SIN: let's add a problem...
+	if (g_Dice.percent(33) && (GetStat(girl, STAT_HAPPINESS) < 40) && (GetStat(girl, STAT_INTELLIGENCE) < 50)
+		&& (HasTrait(girl, "Shroud Addict") || HasTrait(girl, "Fairy Dust Addict") || HasTrait(girl, "Viras Blood Addict")))
+	{
+		stringstream runawaymsg;
+		if (girl->is_yourdaughter()) runawaymsg << "Your daughter ";
+		runawaymsg << girlName << " ran away with your rival!\nExploiting her desperate drug cravings, he claimed to be ";
+		
+		//the con
+		switch (check % 6) //avoids a dice roll
+		{
+		case 0:
+			runawaymsg << "her true love, ";
+			break;
+		case 1:
+			runawaymsg << "a Prince, ";
+			break;
+		case 2:
+			runawaymsg << "the Spy who Loves her, ";
+			break;
+		case 3:
+			runawaymsg << "her long-lost brother, ";
+			break;
+		case 4:
+			runawaymsg << "a Priest, ";
+			break;
+		case 5:
+			runawaymsg << "her old school friend, ";
+			break;
+		default:
+			runawaymsg << "a h(E)ro ";
+			break;
+		}
+		runawaymsg << "promising her a better life and everything she needs if she escaped with him.\nShe did. By now she will probably be ";
+		
+		//speculate
+		switch (g_Dice % 6)
+		{
+		case 0:
+			runawaymsg << "tied over a park-bench being gang-raped by ";
+			break;
+		case 1:
+			runawaymsg << "chained to a rack being ram-raided by ";
+			break;
+		case 2:
+			runawaymsg << "tied up in a dumpster giving blowjobs to ";
+			break;
+		case 3:
+			runawaymsg << "folded over a fence being 'used' by ";
+			break;
+		case 4:
+			runawaymsg << "naked in the town arena being 'conquered' by ";
+			break;
+		case 5:
+			runawaymsg << "stripped and locked in the town's public-stocks, being 'punished' by ";
+			break;
+		default:
+			runawaymsg << "being abus(E)d by ";
+			break;
+		}
+		switch (g_Dice % 8)
+		{
+		case 0:
+			runawaymsg << "rival gang-members.";
+			break;
+		case 1:
+			runawaymsg << "bums.";
+			break;
+		case 2:
+			runawaymsg << "horny street kids.";
+			break;
+		case 3:
+			runawaymsg << "mistreated slaves.";
+			break;
+		case 4:
+			runawaymsg << "wild animals.";
+			break;
+		case 5:
+			runawaymsg << "pumped-up gladiators.";
+			break;
+		case 6:
+			runawaymsg << "the town's gentlemen.";
+			break;
+		case 7:
+			runawaymsg << "aristocrats.";
+			break;
+		default:
+			runawaymsg << "(E)veryone.";
+			break;
+		}
+		runawaymsg << "\n";
+
+		//What do you do...
+		/**/ if (The_Player->disposition() < -33) runawaymsg << "She's where she deserves. Why waste a gang's time going to fetch her? Unless you want to punish personally?";
+		else if (The_Player->disposition() < 33) runawaymsg << "You could send a gang to retrieve her. Or you could leave her. No hurry.";
+		else runawaymsg << "You should send a gang right away to rescue the poor girl.";
+		
+		runawaymsg << "(When you find her, she may be... changed.)";
+		
+		//If she was a virgin, she won't be now...
+		LoseVirginity(girl);
+
+		//What damage?
+		int harm = g_Dice.d100();
+		if (harm > 95) //5% multi STDS
+		{
+			harm = g_Dice.d100();
+			if (harm == 100) AddTrait(girl, "AIDS"), AddTrait(girl, "Syphilis"), AddTrait(girl, "Herpes"), AddTrait(girl, "Chlamydia");
+			else if (harm > 95) AddTrait(girl, "AIDS"),		AddTrait(girl, "Syphilis");
+			else if (harm > 85) AddTrait(girl, "AIDS"),		AddTrait(girl, "Herpes");
+			else if (harm > 70) AddTrait(girl, "Syphilis"),	AddTrait(girl, "Herpes");
+			else if (harm > 50) AddTrait(girl, "Syphilis"),	AddTrait(girl, "Chlamydia");
+			else				AddTrait(girl, "Herpes"),	AddTrait(girl, "Chlamydia");
+		}
+		else if (harm > 90)  //5% an STD
+		{
+			harm = g_Dice.d100();
+			if (harm > 95)		AddTrait(girl, "AIDS");
+			else if (harm > 80)	AddTrait(girl, "Syphilis");
+			else if (harm > 50) AddTrait(girl, "Herpes");
+			else				AddTrait(girl, "Chlamydia");
+		}
+		else if (harm > 85)  //10% scars
+		{
+			if (!HasTrait(girl, "Small Scars") && !HasTrait(girl, "Cool Scars") && !HasTrait(girl, "Horrific Scars")) AddTrait(girl, "Small Scars");
+			else if (HasTrait(girl, "Small Scars")) AddTrait(girl, "Cool Scars");
+			else if (HasTrait(girl, "Cool Scars")) AddTrait(girl, "Horrific Scars");
+		}
+		else if (harm > 75)  //10% traumatised
+		{
+			AddTrait(girl, "Mind Fucked");
+		}
+		else if (harm > 50)  //25% chance
+		{
+			//overused face
+			AddTrait(girl, "Missing Teeth");
+			AdjustTraitGroupGagReflex(girl, +1);
+
+			RemoveTrait(girl, "Optimist");
+			UpdateStat(girl, STAT_DIGNITY, -10);
+			UpdateStat(girl, STAT_SPIRIT, -10);
+			UpdateSkill(girl, SKILL_ORALSEX, 5);
+		}
+		else if (harm > 25)  //25% chance
+		{
+			//overused behind
+			AddTrait(girl, "Whore");
+			
+			RemoveTrait(girl, "Optimist");
+			UpdateStat(girl, STAT_HEALTH, -5);
+			UpdateStat(girl, STAT_SPIRIT, -5);
+			UpdateStatTemp(girl, STAT_LIBIDO, -50);
+			UpdateSkill(girl, SKILL_NORMALSEX, 5);
+		}
+		else if (harm > 15)  //10% chance
+		{
+			AddTrait(girl, "Broken Will");
+			AddTrait(girl, "Branded on the Ass");
+		}
+		else //15% no damage
+		{
+			
+		}
+
+
+		//does she get knocked up?
+		bool antiPregStatus = girl->m_UseAntiPreg;
+		girl->m_UseAntiPreg = false;					//won't have access to this
+		girl->calc_group_pregnancy(customer, false, 2);
+		girl->m_UseAntiPreg = antiPregStatus;			//afterwards she'll go back to normal
+
+		// player has 6 weeks to retreive
+		girl->m_RunAway = 6;
+		g_Brothels.RemoveGirl(girl->where_is_she, girl, false);
+		girl->m_NightJob = girl->m_DayJob = JOB_RUNAWAY;
+		g_Brothels.AddGirlToRunaways(girl);
+
+		//Warn the user
+		g_MessageQue.AddToQue(runawaymsg.str(), COLOR_RED);
+		return;
+	}
+
+	
 	bool good = false;
 	bool contraception = false;
 	double STDchance = 0.001;		// `J` added new percent that allows 3 decimal check so setting a 0.001% base chance
@@ -8325,26 +8546,171 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (HasTrait(girl, "Kidnapped"))	intro -= 5;
 		if (HasTrait(girl, "Emprisoned Customer"))	intro -= 5;
 
+
+		//SIN: Fix ordering and wording - delete old if this okay
 		/* */if (intro < 2)		introtext += " reluctantly leads";
 		else if (intro < 4)		introtext += " hesitantly leads";
-		else if (intro < 8)		introtext += " quickly leads";
-		else if (intro < 12)	introtext += " leads";
-		else if (intro < 18)	introtext += " casually leads";
-		else if (intro < 22)	introtext += " eagerly leads";
-		else if (intro < 25)	introtext += " casually drags";
+		else if (intro < 8)		introtext += " leads";
+		else if (intro < 12)	introtext += " quickly leads";
+		else if (intro < 18)	introtext += " eagerly leads";
+		else if (intro < 22)	introtext += " excitedly leads";
+		else if (intro < 25)	introtext += " almost drags";
 		else					introtext += " eagerly drags";
 	}
+
 	if (SexType == SKILL_GROUP)	introtext += " her customers ";
 	else introtext += " her customer ";
 
 	int currentjob = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
 	if (currentjob == JOB_WHOREBROTHEL || currentjob == JOB_BARWHORE || currentjob == JOB_WHOREGAMBHALL)
 	{
-		if (SexType == SKILL_GROUP && g_Dice.percent(30))
-			introtext += "to an Orgy room.\n";
-		else if (SexType == SKILL_BDSM && g_Dice.percent(30))
-			introtext += "to a Bondage room.\n";
-		else introtext += "to her room.\n";
+		//SIN - added some variety here
+		//How many options do we need for a litttle randomness below? State it here.
+		const int OPTS = 4;
+		int RANDROLL = g_Dice%OPTS;
+
+		if (SexType == SKILL_GROUP && g_Dice.percent(40))
+		{
+			introtext += "to the ";
+			switch (RANDROLL)
+			{
+			case 0:
+				introtext += "pirate-themed 'Cap'n's Orrrrgy Cabin.'\n";
+				break;
+			case 1:
+				introtext += "college-themed dorm room.\n";
+				break;
+			case 2:
+				introtext += "prison-themed communal shower.\n";
+				break;
+			case 3:
+				introtext += "secluded orgy garden.\n";
+				break;
+			default:
+				introtext += "gen(E)ric orgy place.\n";
+				break;
+			}
+		}
+		else if (SexType == SKILL_BDSM && g_Dice.percent(40))
+		{
+			//Now, what kind of person are you?
+			if (The_Player->disposition() < -40)	//You're related to satan, right?
+			{
+				introtext += "deep underground to your infamous dungeons.\n";
+				switch (RANDROLL)
+				{
+				case 0:
+					introtext += "\"This is really it, isn't it?!\" he smiles, wonderstruck. ";
+					break;
+				case 1:
+					introtext += "He stops, crouching, putting his fingers to a dark stain on the concrete floor: \"I've heard so much about this place,\" he whispers. ";
+					break;
+				case 2:
+					introtext += "\"So it's true. All of it!\" he glances between the stock, the chains, the whips and cages. ";
+					break;
+				case 3:
+					introtext += "\"They say you can do ANYTHING here,\" he hisses. ";
+					break;
+				default:
+					introtext += "He is speechl(E)ss: ";
+					break;
+				}
+				introtext += "\"" + The_Player->RealName() + "'s Dungeon.\"\n";
+				if (g_Dice.percent(20)) introtext += "\nHe laughs nervously. \"I do get to come out again, right?\"\n";
+				customer->m_Stats[STAT_HAPPINESS] += 10;	//Evil customer likes evil
+			}
+			else if (The_Player->disposition() < 0)		//You're bad, you're bad, you know it.
+			{
+				introtext += "to your ominous dungeons.\n";
+				switch (RANDROLL)
+				{
+				case 0:
+					introtext += "The customer looks around: \"This is it... ";
+					break;
+				case 1:
+					introtext += "\"I've heard about this place,\" he says evenly. \"";
+					break;
+				case 2:
+					introtext += "\"I heard the rumours but I never believed them,\" he says. \"";
+					break;
+				case 3:
+					introtext += "He grins: \"So you'll be my toy here in ";
+					break;
+				default:
+					introtext += "He is speechl(E)ss: \"";
+					break;
+				}
+				introtext += The_Player->RealName() + "'s Dungeon.\"\n";
+			}
+			else if (The_Player->disposition() < 40)		//You're good
+			{
+				introtext += "to the dungeons.\n";
+			}
+			else									//You're nice, bless your little cotton socks.
+			{
+				introtext += "to an aseptic, custom-made and well-equipped Bondage room";
+				switch (RANDROLL)
+				{
+				case 0:
+					introtext += " right next to the first aid station.\n";
+					break;
+				case 1:
+					introtext += " within earshot of the guard station. Just in case.\n";
+					break;
+				case 2:
+					introtext += " designed for safety first.\n\"Some interesting toys here\" he says.";
+					break;
+				case 3:
+					introtext += ".\nThe customer nods approvingly.\n";
+					break;
+				default:
+					introtext += ". Wow you'r(E) nice.\n";
+					break;
+				}
+				if (g_Dice.percent(20)) introtext += " \"Nice set up.\"\n";
+			}
+		}
+		else if (SexType == SKILL_BEASTIALITY && g_Dice.percent(40))
+		{
+			switch (RANDROLL)
+			{
+			case 0:
+				introtext += "to the beasts' den.\n";
+				break;
+			case 1:
+				introtext += "to the animal pit.\n";
+				break;
+			case 2:
+				introtext += "to the monster's lair.\n";
+				break;
+			case 3:
+				introtext += "to a small cave in the garden.\n";
+				break;
+			default:
+				introtext += "to the b(E)ast cave.\n";
+				break;
+			}
+		}
+		else	//Nice room = nicer for customer too, right? (Good customer likes Good)
+		{
+			
+			introtext += "back to her ";
+			if (girl->m_AccLevel < 2)
+			{
+				introtext += "cramped little hovel.";
+				customer->m_Stats[STAT_HAPPINESS] -= 5;
+				if (SexType == SKILL_GROUP && g_Dice.percent(50))
+				{
+					introtext += " It was awkward getting this many customers in her tiny room.";
+					customer->m_Stats[STAT_HAPPINESS] -= 5;
+				}
+			}
+			else if (girl->m_AccLevel < 4) introtext += "modest little room.";
+			else if (girl->m_AccLevel < 6) introtext += "nice, spacious room.",				customer->m_Stats[STAT_HAPPINESS] += 5;
+			else if (girl->m_AccLevel < 8) introtext += "large, elegant room.",				customer->m_Stats[STAT_HAPPINESS] += 10;
+			else /*                     */ introtext += "huge, extravagant suite.",			customer->m_Stats[STAT_HAPPINESS] += 20;
+			introtext += "\n";
+		}
 	}
 	else if (currentjob == JOB_WHORESTREETS)
 		introtext += "to a secluded alley way.\n";
@@ -8379,6 +8745,378 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	int choice = g_Dice.d100(); //Gondra: initializing a choice variable here because god this is a mess of different ways to handle this
 	stringstream sexMessage; //Gondra: using this as a temporary storage so I have less problems when there shouldn't be girlname at the start.
 
+#if SPICE
+	//SIN- Adding will for willfull chars - they can refuse jobs they are bad at.
+	//First, a var to store her willfullness. Max (full spirit, no obed) = 50% refusal; Min (all obedience, no spirit) = 0%
+	int willfullness = ((100 + (GetStat(girl, STAT_SPIRIT) - GetStat(girl, STAT_OBEDIENCE))) / 2);
+	//Next a couple of reasons why refuse
+	bool pigHeaded = HasTrait(girl, "Iron Will");
+	bool highStatus = (HasTrait(girl, "Princess") || HasTrait(girl, "Queen") || HasTrait(girl, "Noble"));
+	
+	//Now the implementation...
+	if ((check < 40) && !z && !HasTrait(girl, "Mute"))  //if she's bad at this sex-type (and not a zombie or mute!), pride kicks in
+	{
+		//if she's pigheaded, or thinks this is beneath her - she refuses
+		if (g_Dice.percent(willfullness) && (pigHeaded || highStatus))
+		{
+			//Initiate locally used stuff
+			int newSexType = 0;			//What will she change it to?
+			bool resisting = true;		//Does she even resist? Low-level non-intrusive requests will be honored
+			bool forced = false;		//in case the customer overpowers her
+			bool askedForHerTopSkill = false;	//in case what she's refusing is already her top skill.
+			bool angry = false;			//has he actively pissed her off
+
+			//Why is she refusing - let's put it in a string now
+			string refusesbecause;
+			const int REASONS = 5;
+			if (pigHeaded)
+			{
+				switch (g_Dice%REASONS)
+				{
+				case 0:
+					refusesbecause = "Whatever anyone says, she's noone's sex-slave.";
+					break;
+				case 1:
+					refusesbecause = "It's her body: she will not let him do this to her.";
+					break;
+				case 2:
+					refusesbecause = "No way. He'll have to kill her first.";
+					break;
+				case 3:
+					refusesbecause = "She still has some sense of self-worth.";
+					break;
+				case 4:
+					refusesbecause = "If she doesn't want to, she doesn't want to. End of.";
+					break;
+				default:
+					refusesbecause = "She is downright pigheaded.(E)"; //(E)rror
+					break;
+				}
+				refusesbecause += "\n";
+			}
+			else
+			{
+				switch (g_Dice%REASONS)
+				{
+				case 0:
+					refusesbecause = "This is beneath her.";
+					break;
+				case 1:
+					refusesbecause = "Does he think she's some common street whore?";
+					break;
+				case 2:
+					refusesbecause = "A Lady does NOT do this.";
+					break;
+				case 3:
+					refusesbecause = "She will leave this kind of thing for the common-folk.";
+					break;
+				case 4:
+					refusesbecause = "She was raised for Greatness, not this.";
+					break;
+				default:
+					refusesbecause = "She is too posh for this.(E)"; //(E)rror
+					break;
+				}
+				refusesbecause += "\n";
+			}
+
+			//Find top skill - what 'skill' is she most comfortable with? Working from the most extreme down...
+			int TopSkillID = 0, TopSkillLev = 0;
+
+			if (TopSkillLev < GetSkill(girl, SKILL_BEASTIALITY))TopSkillID = SKILL_BEASTIALITY, TopSkillLev = (GetSkill(girl, TopSkillID));
+			if (TopSkillLev < GetSkill(girl, SKILL_ANAL))		TopSkillID = SKILL_ANAL,		TopSkillLev = (GetSkill(girl, TopSkillID));
+			if (TopSkillLev < GetSkill(girl, SKILL_NORMALSEX))	TopSkillID = SKILL_NORMALSEX,	TopSkillLev = (GetSkill(girl, TopSkillID));
+			if (TopSkillLev < GetSkill(girl, SKILL_ORALSEX))	TopSkillID = SKILL_ORALSEX,		TopSkillLev = (GetSkill(girl, TopSkillID));
+			if (TopSkillLev < GetSkill(girl, SKILL_TITTYSEX))	TopSkillID = SKILL_TITTYSEX,	TopSkillLev = (GetSkill(girl, TopSkillID));
+			if (TopSkillLev < GetSkill(girl, SKILL_HANDJOB))	TopSkillID = SKILL_HANDJOB,		TopSkillLev = (GetSkill(girl, TopSkillID));
+			if (TopSkillLev < GetSkill(girl, SKILL_FOOTJOB))	TopSkillID = SKILL_FOOTJOB,		TopSkillLev = (GetSkill(girl, TopSkillID));
+			if (TopSkillLev < GetSkill(girl, SKILL_STRIP))		TopSkillID = SKILL_STRIP,		TopSkillLev = (GetSkill(girl, TopSkillID));
+
+			//is the thing she's being asked for already her top skill?
+			if (TopSkillID == SexType) askedForHerTopSkill = true;
+			
+
+			//She's getting willful, time to explain why and what is being refused
+	switch (SexType)
+	{
+			case SKILL_BEASTIALITY:
+				if (choice < 33)
+				{
+					sexMessage << girlName << " will not be fucked by animals for this slithery pervert's entertainment. He only wants to see her degraded.\n"
+						<< refusesbecause
+						<< "\"No,\" she says. \"Not doing that.\"";
+				}
+				else if (choice < 66)
+				{
+					sexMessage << "The customer brings in a unicorn-like creature, with a large horn on it's head and the hugest, weirdest animal-cock " << girlName
+						<< " has ever seen. He smirks at her with a shit-eating grin.\n"
+						<< refusesbecause
+						<< "\"No,\" she says simply.";
+				}
+				else
+				{
+					sexMessage << "The customer want to see " << girlName << " fucked by large tentacle creatures.\n"
+						<< refusesbecause
+						<< "She refuses to let the beast near her.";
+				}
+				break;
+
+			case SKILL_BDSM:
+				if (choice < 33)
+				{
+					sexMessage << "Without warning, the customer grabs " << girlName << " by the throat and slams her back onto a table.\n"
+						<< "\"You're mine, whore,\" he growls, climbing onto her. The last straw is when he spits in her mouth.\n"
+						<< refusesbecause
+						<< "She resists";
+					angry = true;
+					if (g_Dice.percent(GetStat(girl, STAT_STRENGTH))) sexMessage << " and in her fury, overpowers him.";
+					else if (g_Dice.percent(GetSkill(girl, SKILL_COMBAT))) sexMessage << ", and in her fury fights him off.";
+					else
+					{
+						sexMessage << ", but he is too strong, and with his arm locked on her throat, she can't even scream. "
+							<< "As he tortures and rapes her, her blood runs cold with impotent fury.";
+						forced = true;
+						UpdateStat(girl, STAT_HAPPINESS, -5);	//sad
+						UpdateStat(girl, STAT_SPIRIT, 2);		//angry
+						//UpdateStat(girl, STAT_SANITY, -4);		//and a bit crazy
+					}
+				}
+				else if (choice < 67)
+				{
+					sexMessage << "As " << girlName << " bends down easing off her panties, giving the customer a great show, he unexpectedly whips her ass/pussy. "
+						<< "Hard. With an actual whip - three-headed, metal-tipped.\nShe yelps in pain, as he howls laughing.\n"
+						<< refusesbecause
+						<< "She cooly locks the BDSM tools away.";
+				}
+				else
+				{
+					sexMessage << "As customer starts to paw through the whips, clamps, and insertions, " << girlName << " decides she doesn't feel like being anyone's bitch right now.\n"
+						<< refusesbecause
+						<< "\"We'll do something else.\"\nHe looks crest-fallen.";
+				}
+				break;
+
+			case SKILL_ANAL:
+				if (choice < 33)
+				{
+					sexMessage << "Without warning, the customer slips a finger up " << girlName << "'s asshole. She squeals and spins away.\n"
+						<< refusesbecause
+						<< "\"THAT,\" she says. \"Is out of bounds.\"";
+				}
+				else if (choice < 67)
+				{
+					sexMessage << "The customer pats " << girlName << "'s ass, and grins with a wink: \"After THIS don't reckon you gonna be sittin' down for a while.\"\n"
+						<< refusesbecause
+						<< "She just shakes her head: \"Not happening.\"\nHis face drops.";
+				}
+				else
+				{
+					sexMessage << girlName << " is still removing her clothes when the customer pushes her over a desk, yanks apart her butt-cheeks, and spits on her asshole. "
+						<< "She spins round like a demon and shoves him away.\n"
+						<< refusesbecause
+						<< "\"NOT that.\"";
+					angry = true;
+				}			   
+				break;
+
+			case SKILL_NORMALSEX:
+				if (highStatus && customer->m_Class == 1 && g_Dice.percent(20))
+				{
+					sexMessage << "The customer, a minor noble, smirked when he saw " << girlName << ".\n\"" << girlName
+						<< "! A lady or breeding!\" he says pulling away her clothes. \"Okay, let's breed.\"\n"
+						<< refusesbecause
+						<< "\"I was intimate with three beggars before,\" she says coldly, shaking her head. \"But that's as low-class as I'm willing to go.\"";
+					angry = true;
+				}
+				else if (choice < 33)
+				{
+					sexMessage << "Without warning, the customer shoves three fingers up " << girlName << "'s pussy. She squeals and pulls away.\n"
+						<< refusesbecause
+						<< "\"That is NOT how you ask,\" she tells him angrily.";
+				}
+				else if (choice < 67)
+				{
+					sexMessage << "The customer nods approvingly at " << girlName << "'s pussy.\n\"Damn,\" he grins. \"I am gonna tear that apart.\"\n"
+						<< refusesbecause
+						<< "She shakes her head.\nHis face drops.";
+				}
+				else
+				{
+					sexMessage << "As " << girlName << " makes a show of easing off her panties, bending way down to give the customer a view, he pounces slamming his cock hard into her pussy.\n"
+						<< refusesbecause
+						<< "She thrashes to shake him off";
+					angry = true;
+					if (g_Dice.percent(GetStat(girl, STAT_STRENGTH))) sexMessage << ", and in a frenzy, throws him clean across the room.";
+					else if (g_Dice.percent(GetSkill(girl, SKILL_COMBAT))) sexMessage << ", a hammer-fist between her legs catching him right in the balls. He falls back with a whimper.";
+					else
+					{
+						sexMessage << "But he is too strong, and pinned under all his weight, she can't even wriggle away. "
+							<< "As his filthy cock slides into her, she refuses to give him any pleasure.";
+						forced = true;
+						UpdateStat(girl, STAT_HAPPINESS, -5);	//sad
+						UpdateStat(girl, STAT_SPIRIT, 2);		//angry
+						//UpdateStat(girl, STAT_SANITY, -2);		//crazy
+						check -= 40;							//deliberately underperforms
+					}
+				}
+				break;
+
+			case SKILL_ORALSEX:
+				if (highStatus && customer->m_Class == 1 && g_Dice.percent(20))
+				{
+					sexMessage << "The customer, a minor noble, smirked when he saw " << girlName << ".\n\"" << girlName
+						<< "!\" he smiles pulling out his cock. \"Get on your knees. Remember when you were 'too good' for me?!\"\n"
+						<< refusesbecause
+						<< "\"I still am,\" she says coldly.";
+					angry = true;
+				}
+				else if (choice < 33)
+				{
+					sexMessage << "Without warning, the customer waves his cock in " << girlName << "'s face. She pats it away, shaking her head.\n"
+						<< refusesbecause;
+				}
+				else if (choice < 67)
+				{
+					sexMessage << "The customer suddenly puts his hand in " << girlName << "'s mouth, grabbing her by the jaw and pinching her lips.\n";
+					if (HasTrait(girl, "Dick-Sucking Lips")) sexMessage << "\"Those lips!\" he says, shoving her head down. \"Made for dick-sucking.\"\n";
+					else sexMessage << "\"On your knees, whore,\" he says. \"And suck this.\"\n"
+						<< refusesbecause
+						<< "She shakes her head: \"Not if you wanna keep it.\"";
+				}
+				else
+				{
+					sexMessage << girlName << " is still locking the door when the customer grabs her head and starts pulling it down toward his cock.\n"
+						<< refusesbecause
+						<< "She grabs his balls with a sharp squeeze. He freezes.\n\"I wouldn't do that,\" she says.";
+				}
+				break;
+			
+			default:
+				resisting = false;	//if they're asking for anything else, it is okay
+				break;
+			}
+			if (resisting)
+			{
+				sexMessage << "\n";
+
+				//if she's resisted what they asked for, and has not been forced she "chooses"...
+				if (!forced)
+				{
+					//If she's pissed, she won't give more than an angry handjob
+					if (angry)
+					{
+						newSexType = SKILL_HANDJOB;
+						check -= 30;
+					}
+					else
+					{
+						//she will give her best skill - or if that's what they already asked for...
+						if (!askedForHerTopSkill) newSexType = TopSkillID;
+						else
+						{
+							//she will statically downgrade to something (K.I.S.S.)
+							if (SexType == SKILL_BEASTIALITY)		newSexType = SKILL_NORMALSEX;
+							else if (SexType == SKILL_BDSM)			newSexType = SKILL_NORMALSEX;
+							else if (SexType == SKILL_ANAL)			newSexType = SKILL_NORMALSEX;
+							else if (SexType == SKILL_NORMALSEX)	newSexType = SKILL_HANDJOB;
+							else if (SexType == SKILL_ORALSEX)		newSexType = SKILL_HANDJOB;
+						}
+					}
+
+					if (SexType != newSexType) //if these aren't the same, report the change
+					{
+						//report the old
+						switch (SexType)
+						{
+						case SKILL_BEASTIALITY:
+							sexMessage << "\"I won't fuck some filthy animal for you,\" " << girlName << " says";
+							break;
+						case SKILL_BDSM:
+							sexMessage << "\"You do not get to abuse me. You do not get to hurt me.\" " << girlName << " says";
+							break;
+						case SKILL_ANAL:
+							sexMessage << "\"There is no way That is going in my ass ";
+							Day0Night1 ? sexMessage << "today,\" " : sexMessage << "tonight,\" ";
+							sexMessage << girlName << " says";
+							break;
+						case SKILL_NORMALSEX:
+							sexMessage << "\"I will not have you in my pussy,\" " << girlName << " says";
+							break;
+						case SKILL_ORALSEX:
+							sexMessage << "\"Your cock is not going in my mouth ";
+							Day0Night1 ? sexMessage << "today,\" " : sexMessage << "tonight,\" ";
+							sexMessage << girlName << " says";
+							break;
+						default: //no way, if it doesn't match these types, it should not change.
+							sexMessage << "(E)";
+							break;
+						}
+						//report the new
+						switch (newSexType)
+						{
+						case SKILL_BEASTIALITY:
+							sexMessage << ". \"I'd sooner fuck a beast than that... Though I guess you can watch if you want.\"";
+							break;
+						case SKILL_ANAL:
+							sexMessage << ". \"But you can have my ass, if you want.\"";
+							break;
+						case SKILL_NORMALSEX:
+							sexMessage << ". \"But if you're man enough, I guess you can fuck me.\"";
+							break;
+						case SKILL_ORALSEX:
+							sexMessage << ", adding with a smile. \"But if you want your dick sucked";
+							if (highStatus)
+							{
+								if (HasTrait(girl, "Queen")) sexMessage << " by a Queen";
+								else if (HasTrait(girl, "Princess")) sexMessage << " by a Princess";
+								else sexMessage << " by Nobility";
+							}
+							else sexMessage << " by a girl who doesn't stop";
+							sexMessage << "... That can still happen.\"";
+							break;
+						case SKILL_TITTYSEX:
+							sexMessage << ". She slips off her gown exposing her chest, and sits back on the bed, rubbing her nipples and squeezing ";
+							if (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs")) sexMessage << "her small, under-developed breasts";
+							else if (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs")) sexMessage << "her large, round breasts";
+							else if (HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits")) sexMessage << "her enormous breasts";
+							else sexMessage << "her breasts";
+							sexMessage << ". \"But we can oil these up and have some fun.\"";
+							break;
+						case SKILL_HANDJOB:
+							if (angry) sexMessage << ". Without a word she grabs his cock and starts giving an angry handjob.";
+							else sexMessage << ", grabbing his penis and rubbing it. \"But this is okay.\"";
+							break;
+						case SKILL_FOOTJOB:
+							sexMessage << ". \"But have you ever tried a girl who's good with her feet?\"";
+							break;
+						case SKILL_STRIP:
+							sexMessage << ". \"But if you promise to good from here, I'll give you a lapdance.\"";
+							break;
+						default: //no way, if it doesn't match these types, it should not change.
+							sexMessage << "(E)";
+							break;
+						}
+						//finally update variable for next bit
+						SexType = newSexType;
+						sexMessage << "\n";
+					}
+					
+				}
+				//Forced to do what they want, so no changes
+				//let's reset choice to avoid outcomes above being always paired with ones below
+				choice = g_Dice.d100();
+			}
+			//She didn't have a problem with what they asked for
+		}
+		//else she doesn't refuse - so move along, nothing to see here
+	}
+
+	//SIN - also adding a few vars for branches of dialogue below
+	bool SheAintPretty = (GetStat(girl, STAT_BEAUTY) < 45);
+	bool GirlGotNoClass = (GetStat(girl, STAT_REFINEMENT) < 35);
+	int HateLove = GetStat(girl, STAT_PCLOVE) - GetStat(girl, STAT_PCHATE);
+
+#endif
 	switch (SexType)
 	{
 	case SKILL_ANAL:
@@ -8391,7 +9129,6 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		/* Gondra: Commented out for now
 		//TODO Gondra: replace this with a descripton string in front of ALL Sexmessages?
-		//SIN: Trying to use some of the new traits.
 		if (HasTrait(girl, "Great Arse") || HasTrait(girl, "Deluxe Derriere")) sexMessage << "'s behind is a thing of beauty. She ";
 		else if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush")) sexMessage << "'s big round booty was up in the air. She "; //Gondra: Wide Bottom is mising here?
 		else if (HasTrait(girl, "Tight Butt")) sexMessage << " has a tight, round firm little butt. She ";
@@ -8401,23 +9138,43 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		//Gondra: reworking this part with choice variable
 		if (check < 20)		//Gondra: if the girl is unskilled show one of these messages
 		{
-			if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse"))	//Gondra: not sure if it is the best idea to always show Trait related messages
+			if (g_Dice.percent(33) && (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse")))	//Gondra: not sure if it is the best idea to always show Trait related messages
 			{
 				sexMessage << girlName << " was clearly uncomfortable as the customer pushed his cock into her jiggling booty.";
 			}
-			else if (HasTrait(girl, "Prehensile Tail") || HasTrait(girl, "Playful Tail"))
+			else if (g_Dice.percent(60) && HasTrait(girl, "Prehensile Tail") || HasTrait(girl, "Playful Tail"))
 			{
 				sexMessage << "Using her tail as a handhold the customer made the fuck a lot more traumatic for " << girlName << " than it normally would have been.";
 			}
-			else if (HasTrait(girl, "Tight Butt"))
+			else if (g_Dice.percent(33) && HasTrait(girl, "Tight Butt"))
 			{
 				sexMessage << "It took the customer quite a bit of effort to force himself into " << girlName << "'s tight ass, ignoring her cries when he was finally inside her, moving harshly until he finished.";
 				//Gondra: add happiness and health reduction?
 			}
+#if SPICE	//SIN - Replace/supplement...
+			else if (g_Dice.percent(33) && SheAintPretty)
+			{
+				sexMessage << "As he fucked her ass, the customer did it from behind, shoving " << girlName
+					<< "'s face into the pillow so he could imagine it was someone prettier. Unfortunately she was awful at this.";
+			}
+			
+			else if (choice < 25)
+			{
+				sexMessage << "When she saw the customer's cock, " << girlName << " begged him to use her pussy instead. "
+					"But it was his dollar and he insisted on trying to squeeze all of that into her asshole, despite her yelps and squeals.";
+			}
+#endif
 			else if (choice < 50)	//Gondra: if we have no Trait related message use vanilla ones. TODO Gondra: Replace/supplement these Anal Vanilla messages.
 			{
 				sexMessage << girlName << " found it difficult to get it in but painfully allowed the customer to fuck her in her tight ass.";
 			}
+#if SPICE
+			//SIN - Replace/supplement...
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " didn't realize he was aiming for *that* hole until it was too late. She couldn't really enjoy it.";
+			}
+#endif
 			else
 			{
 				sexMessage << girlName << " bit the pillow to muffle her cries as the customer managed to squeeze his cock into her ass.";
@@ -8425,14 +9182,37 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
 		{
-			if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse")) //Gondra: Trait messages
+			if (g_Dice.percent(75) && (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse"))) //Gondra: Trait messages
 			{
 				sexMessage << girlName << " felt a bit uncomfortable as the customer's erect cock slipped between her ass-cheeks, but the customer hardly noticed as her plentiful flesh wrapped around him.";
 			}
+#if SPICE
+			//SIN - supplement...
+			else if (g_Dice.percent(75) && HasTrait(girl, "Virgin"))
+			{
+				sexMessage << girlName << "'s virginity was spared, as he used her ass-hole. Considering she's a 'virgin' she seems to have done THIS before.";
+			}
+			else if (g_Dice.percent(33) && SheAintPretty)
+			{
+				sexMessage << "He fucked " << girlName << "'s ass from behind, so that he wouldn't have to look at her ugly face. "
+					<< "She was okay at this.";
+			}
+			else if (choice < 25)
+			{
+				sexMessage << "When " << girlName << " saw the customer's cock, her eyes widened. "
+					"Getting all of that in her ass would take some work.";
+			}
+#endif
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " had to relax somewhat but had the customer fucking her in her ass.";
 			}
+#if SPICE
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " enjoyed it, even though she's not that good at this yet. He did most of the work.";
+			}
+#endif
 			else
 			{
 				sexMessage << girlName << " struggled to relax, but was okay with the customer gently screwing her ass.";
@@ -8440,14 +9220,33 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 60) //Gondra: the girl is reasonably skilled
 		{
-			if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse")) //Gondra: Trait messages 
+			if (g_Dice.percent(60) && (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse"))) //Gondra: Trait messages 
 			{
 				sexMessage << girlName << "'s voluminous ass jiggles quite a bit as the customer goes at it.";
 			}
-			else if (HasTrait(girl, "Tight Butt"))
+			else if (g_Dice.percent(60) && HasTrait(girl, "Tight Butt"))
 			{
 				sexMessage << girlName << "'s very tight butt forced him to take it slow but the vice like grip seemed to do the trick either way as he came quickly.";
 			}
+#if SPICE
+			else if (g_Dice.percent(20) && HasTrait(girl, "Queen"))
+			{
+				sexMessage << "As one of the rebels that once tried to overthrow " << girlName << ", the customer relished the chance to fuck her in the ass for some paltry gold coins. "
+					<< "He left boasting to everyone about how good it had been to buttfuck a notorious Queen! (Leading to lots of sniggering and rumours that would follow him for years)\n";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+				UpdateStat(girl, STAT_FAME, 5);
+			}
+			else if (g_Dice.percent(33) && SheAintPretty)
+			{
+				sexMessage << "He fucked " << girlName << "'s ass from behind, so that he wouldn't have to look at her face. "
+					<< "She was pretty good at this.";
+			}
+#endif
+			else if (choice < 25)	//Gondra: Vanilla Messages
+			{
+				sexMessage << "The customer lay on the bed groaning as " << girlName << " bounced up and down, working his cock with her ass.";
+			}
+
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " found it easier going with the customer fucking her in her ass.";
@@ -8459,6 +9258,37 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 80) //Gondra: the girl is VERY skilled
 		{
+#if SPICE
+			//SIN: Unnecessary testing all of these traits twice if she has none - also the "choice" was only ANDED with the "Great Arse" - so any other trait would fire whether choice passed or not
+			//Rewritten to cut overhead and fix logic. Also using 'choice' more to avoid locking into ALWAYS one message for a girl with a given trait.
+
+			if (g_Dice.percent(60) && (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse")))
+			{
+				/**/ if (choice < 33)	sexMessage << girlName << " enjoyed showing of that she can hide the customers whole cock between her cheeks, before she lets him slip into her ass proper.";
+				else if (choice < 66)	sexMessage << "Encouraged by " << girlName << " the customer plowed her ass hard, both enjoying the sound her jiggling backside made each time he drove his cock home.";
+				else /*			   */	sexMessage << "The customer slammed his cock again and again into " << girlName << "'s asshole, loving the slap and the jiggle of flesh each time he drove it home.";
+			}
+			else if (g_Dice.percent(60) && HasTrait(girl, "Tight Butt"))
+			{
+				sexMessage << "Just as the customer wondered if he would fit into the tight ass in front of him, " << girlName << "spread her ass for him, inviting him to push it deep into her.";
+			}
+			else if (g_Dice.percent(20) && HasTrait(girl, "Queen"))
+			{
+				sexMessage << "As one of the rebels that once tried to overthrow " << girlName << ", the customer relished the chance to fuck her in the ass for some gold coins. "
+					<< "He left telling to everyone about how amazing it felt to buttfuck a Queen! (Leading to lots of sniggering, and rumours that would follow him for years)\n";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+				UpdateStat(girl, STAT_FAME, 5);
+			}
+			else if (g_Dice.percent(33) && SheAintPretty)
+			{
+				sexMessage << "At first the customer seemed uphappy with " << girlName << "'s looks, but as soon as she had her sphincter locked around his cock "
+					<< "and started grinding her ass onto him, any complaints quickly vanished.";
+			}
+			else if (choice < 25)	//Gondra: Vanilla Messages
+			{
+				sexMessage << "The customer lay on the bed gasping with pleasure as " << girlName << " bounced up and down, riding his pole for all she was worth.";
+			}
+#else
 			if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse") && choice < 50) //Gondra: EXAMPLE Since I have two texts for the same Trait set I am reusing the choice variable here
 			{
 				sexMessage << girlName << " enjoyed showing of that she can hide the customers whole cock between her cheeks, before she lets him slip into her ass proper.";
@@ -8471,10 +9301,17 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Just as the customer wondered if he would fit into the tight ass in front of him, " << girlName << "spread her ass for him, inviting him to push it deep into her.";
 			}
+#endif
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
 				sexMessage << "The customer slid it right into her ass and " << girlName << " loved every minute of it.";
 			}
+#if SPICE
+			else if (choice < 75)	//Gondra: Vanilla Messages
+			{
+				sexMessage << girlName << " sat on the bed and placed her legs on his shoulders, as the customer plunged it deep in her ass.";
+			}
+#endif
 			else
 			{
 				sexMessage << girlName << " had the customer's cock go in easy. She found having him fuck her ass a very pleasurable experience.";
@@ -8483,17 +9320,40 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		//Gondra: I thought 'check' values larger than 80 were added in that randomized fashion but there isn't one for ANAL?
 		else //Gondra: the girl is EXTREMELY skilled
 		{
-			if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse")) //Gondra: Trait messages
+			if (g_Dice.percent(60) && (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse"))) //Gondra: Trait messages
 			{
 				sexMessage << "The customer played around with the big round ass " << girlName << " held up for him, which already made her moan loudly. And then made her cum for the first of many times, just by pushing his throbbing length into her willing anus.";
 			}
-			else if (HasTrait(girl, "Tight Butt"))
+			else if (g_Dice.percent(50) && HasTrait(girl, "Tight Butt"))
 			{
 				sexMessage << "The customer looked surprised when " << girlName << " slipped her ass onto his cock, the tight embrace of her backside milking him several times with exquisite motions. Not a single drop of cum leaked from her even after they had finished and she accompanied him out.";
 			}
+#if SPICE	//SIN
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Flexible") || HasTrait(girl, "Agile")))
+			{
+				sexMessage << girlName << " did the splits on the edge of the bed, her spread pussy and ass facing the customer. After a moment's indecision, he fucked her deep in the ass until they both came.";
+			}
+			else if (g_Dice.percent(40) && HasTrait(girl, "Cum Addict"))
+			{
+				sexMessage << girlName << " skillfully milked the customer's cock with her ass";
+				/**/ if (choice < 33) sexMessage << ", quickly switching to her mouth when she sensed him ready to give up his precious cum.";
+				else if (choice < 67) sexMessage << " until, without warning, he wasted his precious cum shooting it all up her ass. She managed to claw some back out, "
+					<< "licking it greedily off her fingers, but most was lost.\nThe customer was awed, thinking this was all part of the show.";
+				else sexMessage << " until, without warning, he threw away his precious load in her ass.\nAnnoyed, she climbed off him and squatted on the floor, squeezing, "
+					<< "until - with a little toot - it squirted and oozed back out. Relieved, she nodded politely to the customer, and started lapping it off the floor.";
+			}
+			else if (choice < 25)	//Gondra: Vanilla Messages
+			{
+				sexMessage << "The customer writhed on the bed breathless with pleasure as " << girlName << " rode his pole, her anus milking orgasm after crippling orgasm out of him.";
+			}
+#endif
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
 				sexMessage << "The customer started slow but quickly began to pound hard into " << girlName << "'s ass making her moan like crazy.";
+			}
+			else if (choice < 75)	//Gondra: Vanilla Messages
+			{
+				sexMessage << girlName << " sat on the bed and put her legs around his neck, as the customer plunged his cock up her ass.";
 			}
 			else
 			{
@@ -8521,40 +9381,550 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				// `J` while masochist gives +50 bdsm (probably a little too high) other things could reduce it below 20
 				sexMessage << "While " << girlName << " was visibly uncomfortable, she was eager to learn more about this 'interesting' act after the fact.";
 			}
+#if SPICE
+			else if (g_Dice.percent(66) && girl->is_pregnant())
+			{
+				int term = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant());
+				if (girl->m_WeeksPreg < (term / 4)) // if she's not showing
+				{
+					sexMessage << girlName << " was awkward with the customer, refusing to do anything too extreme for fear of harming her unborn child.";
+					customer->m_Stats[STAT_HAPPINESS] -= 10;
+				}
+				else if (g_Dice.percent(10))
+				{
+					sexMessage << girlName << " was bound and roughly used by some sicko who seemed to get off on her pregnancy.";
+					customer->m_Stats[STAT_HAPPINESS] += 20;
+					UpdateEnjoyment(girl, ACTION_SEX, -5);
+					UpdateStat(girl, STAT_HAPPINESS, -5);
+				}
+				else
+				{
+					if (girl->m_WeeksPreg < ((3 * term) / 4)) // if she's showing
+					{
+						sexMessage << "Both " << girlName << " and her customer were reluctant to do any real bondage while she is bearing child.";
+						customer->m_Stats[STAT_HAPPINESS] -= 20;
+					}
+					else		//if she's about to drop
+					{
+						sexMessage << "\"Can you do this in your condition?\"\nWith " << girlName << "'s very obvious pregnancy, the customer was reluctant to do anything at all for fear harming her unborn child.";
+						customer->m_Stats[STAT_HAPPINESS] -= 30;
+					}
+				}
+			}
+			else if (g_Dice.percent(66) && HasTrait(girl, "Mind Fucked"))
+			{
+				sexMessage << "Naked, hollow-eyed and open-mouthed " << girlName << " smiled at the customer drooling ";
+				const int FREAK = 5;
+				switch (g_Dice%FREAK)
+				{
+				case 0:
+					sexMessage << " and singing a Nursery Rhyme as she brutally slapped her clit.";
+					break;
+				case 1:
+					sexMessage << " and crying as she fisted herself.";
+					break;
+				case 2:
+					sexMessage << " into her hands, and then wiping the slobber over her face and giggling like a child.";
+					break;
+				case 3:
+					sexMessage << " and purring as she played with the candle, its wax and its exquisite flame.";
+					break;
+				case 4:
+					sexMessage << " and laughing as she played with the high-voltage toys and insertions.";
+					break;
+				default:
+					sexMessage << " and doing something so awful it cannot be described (E).";
+					break;
+				}
+				sexMessage << "\nShe lives for bondage. Unfortunately she had the customer very freaked out and unable to get aroused.\n";
+			}
+			else if (g_Dice.percent(33) && HasTrait(girl, "Mute"))
+			{
+				sexMessage << girlName << " was tied down for a BDSM session.\nNot realising " << girlName << " was mute, the customer took her silence as a challenge, and grew increasingly "
+					<< "brutal in his efforts to get a scream out of 'this insolent bitch.'\nHe was frustrated, and she won't sit comfortably for a few weeks.";
+				UpdateStat(girl, STAT_HEALTH, -10);
+			}
+			else if (g_Dice.percent(25) && HasTrait(girl, "Shy"))
+			{
+				sexMessage << "Annoyed by " << girlName << "'s boring shyness, the customer finally jacked off in her face, zipped up, angrily flung open the door and left, "
+					<< "leaving waiting customers with a clear view of her butt-naked, chained spread-eagled to a rack, as cum ran down her face. A number of them wolf-whistled.";
+				UpdateStat(girl, STAT_DIGNITY, -5);
+				UpdateStat(girl, STAT_FAME, 5);
+			}
+			//else if (g_Dice.percent(25) && GetStat(girl, STAT_SANITY) < 25)
+			//{
+			//	const int HEDIDWHAT = 5;
+			//	const int SHEDIDWHAT = 5;
+
+			//	sexMessage << "The customer was unsettled by this BDSM session. As he ";
+
+			//	switch (g_Dice%HEDIDWHAT)
+			//	{
+			//	case 0:
+			//		sexMessage << "thwacked her nipples red with a stick";
+			//		break;
+			//	case 1:
+			//		sexMessage << "deliberately came in her eye";
+			//		break;
+			//	case 2:
+			//		sexMessage << "shoved his dick in her ass";
+			//		break;
+			//	case 3:
+			//		sexMessage << "dripped hot candle wax on her asshole";
+			//		break;
+			//	case 4:
+			//		sexMessage << "cruelly fisted her";
+			//		break;
+			//	default:
+			//		sexMessage << "did som(E)thing nasty";
+			//		break;
+			//	}
+
+			//	sexMessage << " " << girlName << " ";
+
+			//	switch (g_Dice%SHEDIDWHAT)
+			//	{
+			//	case 0:
+			//		sexMessage << "started suddenly laughing";
+			//		break;
+			//	case 1:
+			//		sexMessage << "softly began to sing";
+			//		break;
+			//	case 2:
+			//		sexMessage << "stared up at him with an unnerving empty smile";
+			//		break;
+			//	case 3:
+			//		sexMessage << "grinned and silently wept";
+			//		break;
+			//	case 4:
+			//		sexMessage << "started speaking in tongues";
+			//		break;
+			//	default:
+			//		sexMessage << "did som(E)thing weird";
+			//		break;
+			//	}
+
+			//	sexMessage << ", ";
+
+			//	if (GetStat(girl, STAT_MORALITY) > 33) //fundie
+			//	{
+			//		sexMessage << "urging him to cleanse her and saying something about fate, the Gods, and divine retribution.";
+			//	}
+			//	else if (GetStat(girl, STAT_MORALITY) > -33) //crazy
+			//	{
+			//		sexMessage << "calling him 'bunny' and urging him to teach her the secret ways.";
+			//	}
+			//	else	//evil
+			//	{
+			//		sexMessage << "urging him to make her stronger, and muttering about the strong consuming the unworthy.";
+			//	}
+			//	sexMessage << " It was just weird.\n";
+			//	UpdateStat(girl, STAT_FAME, 5);
+			//}
+			else if (choice < 25)
+			{
+				sexMessage << girlName << " was horrified as the customer clamped things on her, shoved things in her, and whipped, hurt and deliberately degraded her for his own sexual gratification.";
+			}
+#endif
 			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
 				sexMessage << girlName << " was frightened by being tied up and having pain inflicted on her.";
 			}
+#if SPICE
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " wept in pain and humilation as the customer poured hot candle-wax on her sensitive parts.";
+			}
+#endif
 			else
 			{
 				sexMessage << "Being unfamiliar with the tools of this part of the trade, " << girlName << " had a questioning look on her face that made it hard for the customer to enjoy themselves.";
 			}
+#if SPICE
+			//SIN
+			//NOT reusing "choice" here because want this to be independent of above message
+			if (g_Dice.percent(20)) //customer goes wild - unlikely and only affects lower level girls (more skilled girls can take it)
+			{
+				sexMessage << "The customer suddenly turned sadist and started really hurting " << girlName << ". ";
+				//default harm stored in local vars to avoid repeat update calls
+				int upset = 4, damage = 4, PCLove = -1, PCFear = 1;
+
+				bool guardingGang = (g_Gangs.gangs_watching_girls().size() > 0);
+				bool guardingGirl = (g_Brothels.GetNumGirlsOnJob(0, JOB_SECURITY, Day0Night1) > 0);
+				
+				if (guardingGirl) //there's a girl watching the place
+				{
+					sGirl * guard = (g_Brothels.GetRandomGirlOnJob(0, JOB_SECURITY, Day0Night1));
+					string guardName = guard->m_Realname;
+
+					if (The_Player->disposition() > 30)						//Player is Actively Good.
+					{
+						sexMessage << "Knowing you wouldn't want things to go too far, your guard, " << guardName << ", intervened, instructing the customer to take it easy on "
+							<< girlName << " or get banned from your establishment.\n";
+						PCFear -= 3;	//you protect her
+						PCLove += 3;	//ditto
+						damage -= 2;	//reduced damage
+						upset -= 3;		//and upset
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+					}
+					else if (GetStat(guard, STAT_MORALITY) > 50)	//If guard is good
+					{
+						sexMessage << "Your guard, " << guardName << ", intervened, angrily demanding the customer 'back off' when things were clearly getting too extreme for " << girlName << ".\n";
+						PCFear -= 1;
+						damage -= 2;
+						upset -= 3;
+						customer->m_Stats[STAT_HAPPINESS] -= 8;
+					}
+					else if (g_Dice.percent(50) && (HasTrait(girl, "Psychic") || HasTrait(girl, "Strong Magic"))) //If girl can compell
+					{
+						sexMessage << "Your guard, " << guardName << ", felt oddly compelled to help " << girlName << ", demanding the customer take it easier on " << girlName << ".\n";
+						damage -= 2;
+						upset -= 2;
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+					}
+					else
+					{
+						sexMessage << "Your guard, " << guardName << ", heard " << girlName << "'s screams, but didn't care to do anything. It's bought and paid for.\n";
+						//UpdateStat(girl, STAT_SANITY, -4);
+					}
+				}
+				else if (guardingGang)
+				{
+					if (The_Player->disposition() > 30)						//Player is Actively Good.
+					{
+						sexMessage << "Knowing you wouldn't want things to go too far, your defending gang intervened, ordering the customer to take it easy on "
+							<< girlName << " or get banned from your establishment.\n";
+						PCFear -= 3;	//you protect her
+						PCLove += 3;	//ditto
+						damage -= 2;	//reduced damage
+						upset -= 3;		//and upset
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+					}
+					else if (g_Dice.percent(50) && (HasTrait(girl, "Psychic") || HasTrait(girl, "Strong Magic"))) //If girl can compell
+					{
+						sexMessage << "Your defending gang felt oddly compelled to help " << girlName << ", demanding the customer take it easier on her.\n";
+						damage -= 2;
+						upset -= 2;
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+					}
+					else
+					{
+						sexMessage << "Your guards heard " << girlName << "'s screams, but didn't care to do anything. It's bought and paid for.\n";
+						//UpdateStat(girl, STAT_SANITY, -4);
+					}
+				}
+				else if (HasTrait(girl, "Psychic") && (GetStat(girl, STAT_MANA) > 60))	//If girl can sway customer
+				{
+					sexMessage << "Suddenly, he calmed down and stopped. " << girlName << "'s eyes glowed as the customer tenderly untied her bindings.\n";
+					damage -= 2;
+					upset -= 2;
+					customer->m_Stats[STAT_HAPPINESS] += 5; //magical bliss
+					UpdateStat(girl, STAT_MANA, -50);	//BIG mana hit
+				}
+				else
+				{
+					sexMessage << "No one was around to stop him, so she ended up taking some damage.";
+					//UpdateStat(girl, STAT_SANITY, -4);
+				}
+				UpdateStat(girl, STAT_PCFEAR, PCFear);
+				UpdateStat(girl, STAT_PCLOVE, PCLove);
+				UpdateStat(girl, STAT_HEALTH, -damage);
+				UpdateStat(girl, STAT_HAPPINESS, -upset);
+		}
+#endif
 		}
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
 		{
 			if (HasTrait(girl, "Masochist")) //Gondra: Trait messages
 			{
-				sexMessage << girlName << " eagerly let herself be bound by the customer, visibly enjoying herself as the customer began inflicting pain on her.";
+				sexMessage << girlName << " eagerly let herself be bound by the customer, visibly enjoying herself as the customer began inflicting pain on her. It wasn't that great for him though.";
 			}
+#if SPICE
+			else if (g_Dice.percent(60) && girl->is_pregnant())
+			{
+				int term = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant());
+				if (girl->m_WeeksPreg < (term / 4)) // if she's not showing
+				{
+					sexMessage << girlName << " was a little awkward with the customer, refusing to do things that may harm her unborn child.";
+					customer->m_Stats[STAT_HAPPINESS] -= 5;
+				}
+				else if (g_Dice.percent(10))
+				{
+					sexMessage << girlName << " was bound and roughly used by some sicko who seemed to get off on her pregnancy.";
+					customer->m_Stats[STAT_HAPPINESS] += 20;
+					UpdateEnjoyment(girl, ACTION_SEX, -2);
+					UpdateStat(girl, STAT_HAPPINESS, -2);
+				}
+				else
+				{
+					if (girl->m_WeeksPreg < ((3 * term) / 4)) // if she's showing
+					{
+						sexMessage << "The customer was reluctant to do bondage while " << girlName << " is bearing child, but she told him some things would be okay.";
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+					}
+					else		//if she's about to drop
+					{
+						sexMessage << "\"Can you do this in your condition?\"\nWith her advanced pregnancy, the customer and " << girlName << " proceeded carefully, so as not to harm her unborn child.";
+						customer->m_Stats[STAT_HAPPINESS] -= 10;
+					}
+				}
+			}
+			else if (g_Dice.percent(33) && (HasTrait(girl, "Plump") || HasTrait(girl, "Fat")))
+			{
+				sexMessage << "The customer tied " << girlName << "to a rack, where he used a paddle to spank her fat ass, her wobbly thighs and her flabby breasts, sending fat waves rippling all over her body. "
+					<< "The pain was too much for her, and her wimpering totally killed his mood.";
+			}
+			else if (choice < 25)
+			{
+				sexMessage << girlName << " was upset as the customer clamped things on her nipples and shoved things in her mouth, deliberately degrading her for his amusement.";
+			}
+#endif
 			else if (choice < 50) //Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " was not enjoying being bound and hurt, but endured it.";
 			}
+#if SPICE
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " squealed and struggled as the customer dripped sizzling candle-wax on sensitive areas.";
+			}
+#endif
 			else
 			{
 				sexMessage << girlName << " was still a bit scared as the customer began applying the bondage gear on her body, but didn't really show it.";
 			}
+#if SPICE
+			//SIN
+			//NOT reusing "choice" here because want this to be independent of above message
+			if (g_Dice.percent(20)) //customer goes wild - unlikely and only affects lower level girls (more skilled girls can take it)
+			{
+				sexMessage << "The customer suddenly turned sadist and started really hurting " << girlName << ". ";
+				//default harm stored in local vars to avoid repeat update calls
+				int upset = 4, damage = 4, PCLove = -1, PCFear = 1;
+
+				bool guardingGang = (g_Gangs.gangs_watching_girls().size() > 0);
+				bool guardingGirl = (g_Brothels.GetNumGirlsOnJob(0, JOB_SECURITY, Day0Night1) > 0);
+
+				if (guardingGirl) //there's a girl watching the place
+				{
+					sGirl * guard = (g_Brothels.GetRandomGirlOnJob(0, JOB_SECURITY, Day0Night1));
+					string guardName = guard->m_Realname;
+
+					if (The_Player->disposition() > 30)						//Player is Actively Good.
+					{
+						sexMessage << "Knowing you wouldn't want things to go too far, your guard, " << guardName << ", intervened, instructing the customer to take it easy on "
+							<< girlName << " or get banned from your establishment.\n";
+						PCFear -= 3;	//you protect her
+						PCLove += 3;	//ditto
+						damage -= 2;	//reduced damage
+						upset -= 3;		//and upset
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+					}
+					else if (GetStat(guard, STAT_MORALITY) > 50)	//If guard is good
+					{
+						sexMessage << "Your guard, " << guardName << ", intervened, angrily demanding the customer 'back off' when things were clearly getting too extreme for " << girlName << ".\n";
+						PCFear -= 1;
+						damage -= 2;
+						upset -= 3;
+						customer->m_Stats[STAT_HAPPINESS] -= 8;
+		}
+					else if (g_Dice.percent(50) && (HasTrait(girl, "Psychic") || HasTrait(girl, "Strong Magic"))) //If girl can compell
+					{
+						sexMessage << "Your guard, " << guardName << ", felt oddly compelled to help " << girlName << ", demanding the customer take it easier on " << girlName << ".\n";
+						damage -= 2;
+						upset -= 2;
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+					}
+					else
+					{
+						sexMessage << "Your guard, " << guardName << ", heard " << girlName << "'s screams, but didn't care to do anything. It's bought and paid for.\n";
+						//UpdateStat(girl, STAT_SANITY, -4);
+					}
+				}
+				else if (guardingGang)
+				{
+					if (The_Player->disposition() > 30)						//Player is Actively Good.
+					{
+						sexMessage << "Knowing you wouldn't want things to go too far, your defending gang intervened, ordering the customer to take it easy on "
+							<< girlName << " or get banned from your establishment.\n";
+						PCFear -= 3;	//you protect her
+						PCLove += 3;	//ditto
+						damage -= 2;	//reduced damage
+						upset -= 3;		//and upset
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+					}
+					else if (g_Dice.percent(50) && (HasTrait(girl, "Psychic") || HasTrait(girl, "Strong Magic"))) //If girl can compell
+					{
+						sexMessage << "Your defending gang felt oddly compelled to help " << girlName << ", demanding the customer take it easier on her.\n";
+						damage -= 2;
+						upset -= 2;
+						customer->m_Stats[STAT_HAPPINESS] -= 5;
+					}
+					else
+					{
+						sexMessage << "Your guards heard " << girlName << "'s screams, but didn't care to do anything. It's bought and paid for.\n";
+						//UpdateStat(girl, STAT_SANITY, -4);
+					}
+				}
+				else if (HasTrait(girl, "Psychic") && (GetStat(girl, STAT_MANA) > 60))	//If girl can sway customer
+				{
+					sexMessage << "Suddenly, he calmed down and stopped. " << girlName << "'s eyes glowed as the customer tenderly untied her bindings.\n";
+					damage -= 2;
+					upset -= 2;
+					customer->m_Stats[STAT_HAPPINESS] += 5; //magical bliss
+					UpdateStat(girl, STAT_MANA, -50);	//BIG mana hit
+				}
+				else
+				{
+					sexMessage << "No one was around to stop him, so she ended up taking some damage.";
+					//UpdateStat(girl, STAT_SANITY, -4);
+				}
+				UpdateStat(girl, STAT_PCFEAR, PCFear);
+				UpdateStat(girl, STAT_PCLOVE, PCLove);
+				UpdateStat(girl, STAT_HEALTH, -damage);
+				UpdateStat(girl, STAT_HAPPINESS, -upset);
+			}
+#endif
 		}
 		else if (check < 60) //Gondra: the girl is reasonably skilled
 		{
-			if (HasTrait(girl, "Masochist")) //Gondra: Trait messages
+			if (g_Dice.percent(40) && HasTrait(girl, "Masochist")) //Gondra: Trait messages
 			{
 				sexMessage << "Once bound, " << girlName << " was already beginning to show visible arousal, that only intensified as the customer started to use the various tools available on her.";
 			}
+#if SPICE
+			else if (g_Dice.percent(50) && girl->is_pregnant())
+			{
+				int term = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant());
+				if (girl->m_WeeksPreg < (term / 4)) // if she's not showing
+				{
+					sexMessage << girlName << " provided an exciting bondage session, while subtly steering the customer away from things that might be harmful to her unborn child.";
+				}
+				else if (g_Dice.percent(10))
+				{
+					sexMessage << girlName << " was bound and roughly used by some sicko who got off on her pregnancy. She enjoyed it.";
+					customer->m_Stats[STAT_HAPPINESS] += 20;
+				}
+				else
+				{
+					if (girl->m_WeeksPreg < ((3 * term) / 4)) // if she's showing
+					{
+						sexMessage << "Seeing her condition, the customer was reluctant to do bondage. " << girlName << " reassured him and showed him there was lots he could still do to her.";
+					}
+					else		//if she's about to drop
+					{
+						sexMessage << "Seeing her advanced pregnancy, the customer figured bondage was impossibe. " << girlName << " helped him see there were lots of fun things he could still do to her."
+							<< " She squeezed her breasts, watching him watch the milk run down.";
+					}
+				}
+			}
+			else if (g_Dice.percent(30) && (HasTrait(girl, "Pierced Clit") || HasTrait(girl, "Pierced Nipples") || HasTrait(girl, "Pierced Tongue")))
+			{
+				sexMessage << "The customer showed real imagination involving " << girlName << "'s piercings in the BDSM action. ";
+				if (HasTrait(girl, "Pierced Clit")) sexMessage << "Her clit piercing got extra special attention.\n";
+				else if (HasTrait(girl, "Pierced Nipples")) sexMessage << "He 'led' her between tools using a chain on her nipple piercings.\n";
+				else sexMessage << "He pulled her around using a chain on her tongue piercing.\n";
+			}
+			else if (g_Dice.percent(30) && (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Deluxe Derriere") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Plump Tush")))
+			{
+				sexMessage << girlName << " was aroused being abused by the customer. He particularly enjoyed spanking her ass and thighs, just to watch her booty ripple.";
+			}
+			else if (g_Dice.percent(30) && (HasTrait(girl, "MILF") || HasTrait(girl, "Whore")))
+			{
+				sexMessage << "The customer ties " << girlName << " upside-down and starts inserting large 'toys' in her pussy. An impressive number fit inside.\n"
+					<< "She enjoys this.\n";
+			}
+			else if (g_Dice.percent(30) && (HasTrait(girl, "Smoker")))
+			{
+				sexMessage << "While 'playing' with her, the customer finds " << girlName << "'s cigarretes and carefully singes her with them.\n"
+					<< "She actually quite enjoys this.\n";
+			}
+			else if (g_Dice.percent(25) /*&& GetStat(girl, STAT_SANITY) < 25*/)
+			{
+				const int HEDIDWHAT = 5;
+				const int SHEDIDWHAT = 5;
+
+				sexMessage << "The customer had a great time in this BDSM session. As he ";
+
+				switch (g_Dice%HEDIDWHAT)
+				{
+				case 0:
+					sexMessage << "thwacked her nipples red with a stick";
+					break;
+				case 1:
+					sexMessage << "deliberately came in her eye";
+					break;
+				case 2:
+					sexMessage << "shoved his dick in her ass";
+					break;
+				case 3:
+					sexMessage << "dripped hot candle wax on her asshole";
+					break;
+				case 4:
+					sexMessage << "cruelly fisted her";
+					break;
+				default:
+					sexMessage << "did som(E)thing nasty";
+					break;
+				}
+
+				sexMessage << " " << girlName << " ";
+
+				switch (g_Dice%SHEDIDWHAT)
+				{
+				case 0:
+					sexMessage << "started suddenly laughing";
+					break;
+				case 1:
+					sexMessage << "softly began to sing";
+					break;
+				case 2:
+					sexMessage << "stared up at him with an unnerving empty smile";
+					break;
+				case 3:
+					sexMessage << "grinned and silently wept";
+					break;
+				case 4:
+					sexMessage << "started speaking in tongues";
+					break;
+				default:
+					sexMessage << "did som(E)thing weird";
+					break;
+				}
+
+				sexMessage << ", ";
+
+				if (GetStat(girl, STAT_MORALITY) > 33) //fundie
+				{
+					sexMessage << "urging him to cleanse her and saying something about fate, the Gods, and divine retribution.";
+				}
+				else if (GetStat(girl, STAT_MORALITY) > -33) //crazy
+				{
+					sexMessage << "calling him 'bunny' and urging him to teach her the secret ways.";
+				}
+				else	//evil
+				{
+					sexMessage << "urging him to make her stronger, and muttering about the strong consuming the unworthy.";
+				}
+
+				sexMessage << " This really got him in the mood.\n";
+				UpdateStat(girl, STAT_FAME, 5);
+			}
+			else if (choice < 25)
+			{
+				sexMessage << girlName << " was aroused as the customer deliberately hurt, used and degraded her for his sexual gratification.";
+			}
+#endif
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " was a little turned on by being tied up and having the customer hurting her.";
 			}
+#if SPICE
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " squealed and groaned as the customer stimulated her sensitive areas with scalding candle-wax.";
+			}
+#endif
 			else
 			{
 				sexMessage << "Being at the mercy of the customer was something " << girlName << " actually found herself enjoying a bit.";
@@ -8562,18 +9932,155 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 80) //Gondra: the girl is VERY skilled
 		{
-			if (HasTrait(girl, "Masochist")) //Gondra: Trait messages
+			if (g_Dice.percent(30) && (HasTrait(girl, "Masochist"))) //Gondra: Trait messages
 			{
 				sexMessage << "After telling the customer to hit her harder several times, " << girlName << " found herself gagged. Her now muffled cries seemingly adding to the enjoyment of both her and her customer.";
 			}
-			else if (HasTrait(girl, "No Gag Reflex") || HasTrait(girl, "Deep Throat"))
+			else if (g_Dice.percent(30) && (HasTrait(girl, "No Gag Reflex") || HasTrait(girl, "Deep Throat")))
 			{
-				sexMessage << girlName << " found her drooling mouth filled by the customers hard, pulsing cock, as he continued to slap her bound body, enjoying his impromptu gag serviced by her throat.";
+				sexMessage << girlName << " found her drooling mouth filled by the customers hard, pulsing cock, as he continued to slap her bound body, enjoying his impromptu gag service by her throat.";
 			}
+#if SPICE
+			else if (g_Dice.percent(40) && girl->is_pregnant())
+			{
+				int term = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant());
+				if (girl->m_WeeksPreg < (term / 4)) // if she's not showing
+				{
+					sexMessage << girlName << " gave an amazing bondage session, steering the customer away from things that might be harmful to her unborn child, "
+						<< "without him ever noticing.";
+				}
+				else if (g_Dice.percent(10))
+				{
+					sexMessage << girlName << " was bound and roughly used by some sicko who got off on her pregnancy. She loved it: "
+						<< "it was great to be treated like a real whore again, and not some little china doll. She completely forgot herself and gave him an amazing time.";
+					customer->m_Stats[STAT_HAPPINESS] += 20;
+					UpdateStat(girl, STAT_HEALTH, -4);
+				}
+				else
+				{
+					if (girl->m_WeeksPreg < ((3 * term) / 4)) // if she's showing
+					{
+						sexMessage << "Due to her obvious pregnancy, the customer was reluctant to do bondage.\n" << girlName << " shoved her hands into his pants and grabbed him by the balls. "
+							<< "\"If you're not man enough, I can take charge?\"\nWith just the right blend of goading and encouragement, " << girlName << " pushed the customer past his inhibitions, "
+							<< "and they had an amazing time.";
+						UpdateStat(girl, STAT_HEALTH, -1);
+					}
+					else		//if she's about to drop
+					{
+						sexMessage << "Seeing her advanced pregnancy, the customer figured bondage was impossibe. " << girlName << " helped him see there were lots of fun things he could still do to her."
+							<< " She squeezed her breasts, squirting milk in his eye.\n\"Mister,\" she smiled, impudently. \"Are you going to let me get away with that?!\"";
+						UpdateStat(girl, STAT_HEALTH, -1);
+					}
+				}
+			}
+			else if (g_Dice.percent(30) && (HasTrait(girl, "Pierced Clit") || HasTrait(girl, "Pierced Nipples") || HasTrait(girl, "Pierced Tongue")))
+			{
+				sexMessage << girlName << " urged the customer to use her piercings while torturing her. ";
+				if (HasTrait(girl, "Pierced Clit")) sexMessage << "Her clit piercing was definitely the most 'useful'.\n";
+				else if (HasTrait(girl, "Pierced Nipples")) sexMessage << "Her nipple piercings were useful both for control, and for target practice.\n";
+				else sexMessage << "The tongue-piercing was great for holding her mouth open while he face-fucked her.\n";
+			}
+			else if (g_Dice.percent(33) && (HasTrait(girl, "Plump") || HasTrait(girl, "Fat")))
+			{
+				sexMessage << "The customer tied " << girlName << " to a rack and spanked her fat ass, her wobbly thighs and her flabby breasts with a paddle, sending fat waves rippling all over. "
+					<< "She was into the pain and humiliation, forcing the customer to degrade her further. They ended up drenched with sweat and cum.";
+			}
+			else if (g_Dice.percent(25) /*&& GetStat(girl, STAT_SANITY) < 25*/)
+			{
+				const int HEDIDWHAT = 5;
+				const int SHEDIDWHAT = 5;
+
+				sexMessage << "The customer loved this BDSM session. " << girlName << " was completely crazy, and as he ";
+
+				switch (g_Dice%HEDIDWHAT)
+				{
+				case 0:
+					sexMessage << "thwacked her nipples red with a stick";
+					break;
+				case 1:
+					sexMessage << "deliberately came in her eye";
+					break;
+				case 2:
+					sexMessage << "shoved his dick hard up her ass";
+					break;
+				case 3:
+					sexMessage << "dripped hot candle wax on her clit";
+					break;
+				case 4:
+					sexMessage << "cruelly fisted her";
+					break;
+				default:
+					sexMessage << "did som(E)thing nasty";
+					break;
+				}
+
+				sexMessage << " " << girlName << " ";
+
+				switch (g_Dice%SHEDIDWHAT)
+				{
+				case 0:
+					sexMessage << "started suddenly laughing";
+					break;
+				case 1:
+					sexMessage << "softly began to sing";
+					break;
+				case 2:
+					sexMessage << "stared up at him with an vacant smile";
+					break;
+				case 3:
+					sexMessage << "grinned and silently wept";
+					break;
+				case 4:
+					sexMessage << "started speaking in tongues";
+					break;
+				default:
+					sexMessage << "did som(E)thing weird";
+					break;
+				}
+
+				sexMessage << ", ";
+
+				if (GetStat(girl, STAT_MORALITY) > 33) //fundie
+			{
+					sexMessage << "urging him to cleanse her and saying something about fate, the Gods, and divine retribution.";
+			}
+				else if (GetStat(girl, STAT_MORALITY) > -33) //crazy
+				{
+					sexMessage << "calling him 'bunny' and urging him to teach her the secret ways.";
+				}
+				else	//evil
+				{
+					sexMessage << "urging him to make her stronger, and muttering about the strong consuming the unworthy.";
+				}
+
+				sexMessage << " He didn't need to be told twice, and got so into the session.\n";
+				UpdateStat(girl, STAT_FAME, 10);
+			}
+			else if (g_Dice.percent(30) && (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs")))
+			{
+				sexMessage << "The customer repeatedly spanked and slapped her 'pathetic little breasts', demanding that she grow some. " 
+					<< girlName << " was aroused from the pain and degradation.";
+			}
+			else if (g_Dice.percent(30) && HasTrait(girl, "Mute"))
+			{
+				sexMessage << "When he realises she can't scream, the customer takes the BDSM to a whole new level. Luckily she's tough and into it, "
+					<< "and they both have a great time.";
+			}
+			else if (choice < 25)
+			{
+				sexMessage << girlName << " was aroused as the customer deliberately hurt, used and degraded her for his sexual gratification.";
+			}
+#endif
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
 				sexMessage << "Thoroughly bound, " << girlName << " found herself being teased endlessly by the customers cock and hands, coming hard under his expert care shortly before the end of the session.";
 			}
+#if SPICE
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " was aroused as the customer singed her sensitive areas with candle-wax, begging him for more.";
+			}
+#endif
 			else
 			{
 				sexMessage << girlName << " was highly aroused by the pain and bondage, even more so when fucking at the same time.";
@@ -8613,12 +10120,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		//Gondra: reworking this part with choice variable
 		if (check < 20)		//Gondra: if the girl is unskilled show one of these messages
 		{
-			if (HasTrait(girl, "Aggressive"))	//Gondra: Trait messages TODO Gondra: add positive Trait messages here?
+			if (HasTrait(girl, "Aggressive") && g_Dice.percent(35))	//Gondra: Trait messages TODO Gondra: add positive Trait messages here?
 			{
 				sexMessage << girlName << " stared angrily at the customer as she tore the clothes off of her body. It made the customer feel uncomfortable.";
 				customer->m_Stats[STAT_HAPPINESS] -= 5;
 			}
-			else if (HasTrait(girl, "Nervous"))
+			else if (HasTrait(girl, "Nervous") && g_Dice.percent(35))
 			{
 				sexMessage << girlName << " was clearly uncomfortable with the arrangement, and it made the customer feel uncomfortable.";
 				customer->m_Stats[STAT_HAPPINESS] -= 5;
@@ -8628,9 +10135,54 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << "'s robotic moans along with her tearful eyes ruined the customer's boner. He didn't even manage to finish before angrily stomping out of the room.";
 				customer->m_Stats[STAT_HAPPINESS] -= 15;
 			}
+#if SPICE
+			else if (HasTrait(girl, "Priestess") && g_Dice.percent(55))
+			{
+				sexMessage << girlName << "'s mini-sermon about sin and judgement made the sex awkward. The customer was clearly uncomfortable.";
+				customer->m_Stats[STAT_HAPPINESS] -= 5;
+			}
+			else if (g_Dice.percent(45) && girl->is_pregnant())
+			{
+				sexMessage << girlName << " tried to have sex, but it was awkward because of her pregnancy.";
+				customer->m_Stats[STAT_HAPPINESS] -= 5;
+			}
+			else if ((HasTrait(girl, "Agile") || HasTrait(girl, "Flexible")) && g_Dice.percent(66))
+			{
+				sexMessage << "Even though " << girlName << " doesn't have much skill in bed, her suppleness meant that the customer could twist her into some great positions.";
+				customer->m_Stats[STAT_HAPPINESS] += 15;
+			}
+			else if (g_Dice.percent(25) && HasTrait(girl, "Assassin"))
+			{
+				sexMessage << "The look " << girlName << " gave when the customer asked for a pre-sex blowie was terrifying. In fear of his life he got the deed done and escaped as fast as he could.";
+				customer->m_Stats[STAT_HAPPINESS] -= 5;
+			}
+			else if (g_Dice.percent(25) && HasTrait(girl, "Alchoholic"))
+			{
+				sexMessage << "Somehow " << girlName << " had gotten hold of alcohol. She lay incoherent on the bed while the customer 'came' and went.";
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Great Arse") || HasTrait(girl, "Tight Butt") || HasTrait(girl, "Phat Booty")
+				|| HasTrait(girl, "Deluxe Derriere") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Plump Tush")))
+			{
+				sexMessage << girlName << " is embarrassingly awkward at sex, but also has a great ass. When the customer flipped her over, gripped onto her ass and did her from behind, "
+					<< "he had a better time.";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+			}
+			else if (g_Dice.percent(35) && The_Player->disposition() > 40) //bonus if you are nice
+			{
+				sexMessage << girlName << " is not great at sex. However, inspired by your goodness and not wanting to let you down, she tried her best to give the customer a decent fuck.";
+				customer->m_Stats[STAT_HAPPINESS] += 20;
+				UpdateStat(girl, STAT_HAPPINESS, 2);
+				UpdateStat(girl, STAT_OBEDIENCE, 2);
+				UpdateEnjoyment(girl, ACTION_SEX, 2);
+			}
+			else if (g_Dice.percent(35) && GetStat(girl, STAT_REFINEMENT) > 66)
+			{
+				sexMessage << girlName << " didn't do much as the customer fucked her pussy, but was clearly horrified when he dumped a load of cum inside.";
+			}
+#endif
 			else if (choice < 20)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
-				sexMessage << girlName << " didn't do much as she allowed the customer to fuck her pussy.";
+				sexMessage << girlName << " didn't do much as the customer fucked her pussy.";
 			}
 			else if (choice < 40)
 			{
@@ -8654,24 +10206,75 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
 		{
 
-			if (HasTrait(girl, "Plump")) //Gondra: Trait messages
+			if (g_Dice.percent(50) && HasTrait(girl, "Plump")) //Gondra: Trait messages
 			{
 				sexMessage << "The constant prodding and groping of her embarrassingly plump body made it hard for " << girlName << " to concentrate on being a good fuck.";
 			}
-			else if (HasTrait(girl, "Fast Orgasms"))
+			else if (g_Dice.percent(33) && HasTrait(girl, "Fast Orgasms"))
 			{
 				sexMessage << girlName << "'s moans grew louder and louder as the customer kept going at it with her, and even though he came before she had a chance to, it was still an enjoyable fuck for both of them.";
 				customer->m_Stats[STAT_HAPPINESS] += 5;
 			}
-			else if (HasTrait(girl, "Fake Orgasm Expert"))
+			else if (g_Dice.percent(25) && HasTrait(girl, "Fake Orgasm Expert"))
 			{
 				sexMessage << girlName << "'s sudden faked orgasm just as her customer came didn't really do it's job, but as he had already finished the customer didn't bother reprimanding her.";
 			}
-			else if (choice < 33)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+#if SPICE
+			else if ((HasTrait(girl, "Agile") || HasTrait(girl, "Flexible")) && g_Dice.percent(66))
+			{
+				sexMessage << girlName << " was okay in bed, and the positions she could twist herself into impressed the customer.";
+				customer->m_Stats[STAT_HAPPINESS] += 15;
+			}
+			else if ((HasTrait(girl, "Clumsy") || HasTrait(girl, "Dojikko")) && g_Dice.percent(66))
+			{
+				sexMessage << girlName << " was doing okay at sex until she accidentally sat on the customer balls, causing him quite a lot of pain.";
+				customer->m_Stats[STAT_HAPPINESS] -= 20;
+			}
+			else if (g_Dice.percent(25) && HasTrait(girl, "Assassin"))
+			{
+				sexMessage << "The customer was excited to have sex with a dangerous femme-fatale like " << girlName << ".";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(25) && HasTrait(girl, "Alchoholic"))
+			{
+				sexMessage << "Somehow " << girlName << " had gotten hold of alcohol. She was too drunk to to anything for the customer and just lay back rocking and grunting while he fucked her.";
+				customer->m_Stats[STAT_HAPPINESS] -= 15;
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Great Arse") || HasTrait(girl, "Tight Butt") || HasTrait(girl, "Phat Booty")
+				|| HasTrait(girl, "Deluxe Derriere") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Plump Tush")))
+			{
+				sexMessage << girlName << " is okay at sex, but the customer figured out: to have a really great time you have to grip dat ass and do her from behind.";
+				customer->m_Stats[STAT_HAPPINESS] += 20;
+			}
+			else if (g_Dice.percent(35) && (HateLove > 0) && The_Player->disposition() > 40) //bonus if you are nice
+			{
+				sexMessage << girlName << " is inspired by your kindness and wants you to succeed. She tried her best to give the customer great sex.";
+				customer->m_Stats[STAT_HAPPINESS] += 20;
+				UpdateStat(girl, STAT_HAPPINESS, 2);
+				UpdateStat(girl, STAT_OBEDIENCE, 2);
+				UpdateEnjoyment(girl, ACTION_SEX, 2);
+			}
+			else if (g_Dice.percent(35) && HateLove > 60)	//if she likes you
+			{
+				sexMessage << "When " << girlName << " couldn't get in the mood for the customer, she closed her eyes and imagined it was you. She fucked him with some real passion.";
+				customer->m_Stats[STAT_HAPPINESS] += 15;
+			}
+			else if (g_Dice.percent(35) && (GirlGotNoClass || HasTrait(girl, "Cum Addict")))
+			{
+				sexMessage << girlName << "'s sex was... efficient. However, after the customer came in her, she quickly sucked his cock clean and "
+					<< "started scooping his cum out of her pussy and lapping it off her fingers, while fingering herself to orgasm right in front of him. It was a hell of an after-show.";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+			}
+			else if (choice < 25)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+			{
+				sexMessage << girlName << " let him fuck her, while she did her best to look like she loved it.";
+			}
+#endif
+			else if (choice < 50)
 			{
 				sexMessage << girlName << " fucked the customer back while their cock was embedded in her cunt.";
 			}
-			else if (choice < 66)
+			else if (choice < 75)
 			{
 				sexMessage << girlName << " made the right noises and held the customer as he fucked her.";
 			}
@@ -8682,15 +10285,69 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 60) //Gondra: the girl is reasonably skilled
 		{
-
-			if (HasTrait(girl, "Slut")) //Gondra: Trait messages
+			if (g_Dice.percent(35) && HasTrait(girl, "Slut")) //Gondra: Trait messages
 			{
 				sexMessage << girlName << " was on the customers cock quickly and surprised him with a few tricks while they fucked.";
 			}
-			else if (HasTrait(girl, "Fast Orgasms") || HasTrait(girl, "Fake Orgasm Expert"))
+			else if (g_Dice.percent(50) && (HasTrait(girl, "Fast Orgasms") || HasTrait(girl, "Fake Orgasm Expert")))
 			{
 				sexMessage << girlName << "'s increasingly audible pleasure spurns the customer to fuck her hard, pushing her over the edge before he cums himself.";
 			}
+#if SPICE
+			else if (g_Dice.percent(35) && SheAintPretty)
+			{
+				sexMessage << "The customer initially grumbled about getting \"some ugly skank\", but " << girlName << " showed him a damn good time.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && girl->is_pregnant())
+			{
+				sexMessage << "Horny from her pregnancy, " << girlName << " wanted cum inside her, and gave the customer a great time.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if ((HasTrait(girl, "Agile") || HasTrait(girl, "Flexible")) && g_Dice.percent(66))
+			{
+				sexMessage << girlName << " was great at sex, athletically twisting herself into positions the customer had never imagined.";
+				customer->m_Stats[STAT_HAPPINESS] += 20;
+			}
+			else if ((HasTrait(girl, "Clumsy") || HasTrait(girl, "Dojikko")) && g_Dice.percent(66))
+			{
+				sexMessage << "Despite a few clumsy bumps, " << girlName << " gave the customer some damn good sex.";
+			}
+			else if (g_Dice.percent(25) && HasTrait(girl, "Assassin"))
+			{
+				sexMessage << "The customer was excited to have sex with a dangerous femme-fatale. And " << girlName << " was damn good in the sack.";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+			}
+			else if (g_Dice.percent(25) && HasTrait(girl, "Alchoholic"))
+			{
+				sexMessage << "Somehow " << girlName << " had gotten hold of alcohol. She was completely wild, fucking the customer like crazy even after he came.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && (HateLove > 0) && (The_Player->disposition() > 40)) //bonus if you are nice
+			{
+				sexMessage << girlName << " knows you are the best " << (girl->is_slave() ? "master" : "brother owner")
+					<< " in town, and pulls out all the stops to give the customer amazing sex.";
+				customer->m_Stats[STAT_HAPPINESS] += 20;
+				UpdateStat(girl, STAT_HAPPINESS, 2);
+				UpdateStat(girl, STAT_OBEDIENCE, 2);
+				UpdateEnjoyment(girl, ACTION_SEX, 2);
+			}
+			else if (g_Dice.percent(35) && HateLove > 60)	//if she likes you
+			{
+				sexMessage << girlName << " closed her eyes and imagined it was you. She fucked him dry.";
+				customer->m_Stats[STAT_HAPPINESS] += 15;
+			}
+			else if (g_Dice.percent(35) && (GirlGotNoClass || HasTrait(girl, "Cum Addict")))
+			{
+				sexMessage << girlName << "'s sex was great. And afterward she made a show of scooping his cum out of her pussy "
+					<< "and licking it off her hands. Finally she fingered herself to orgasm right in front of him.";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+			}
+			else if (choice < 25)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+			{
+				sexMessage << girlName << " let him fuck her, while she did her best to look like she loved it.";
+			}
+#endif
 			else if (choice < 33)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
 				sexMessage << girlName << " pushed back against the customers pistoning hips, inspiring him to work a bit harder himself.";
@@ -8707,15 +10364,98 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else if (check < 80) //Gondra: the girl is very skilled
 		{
 
-			if (HasTrait(girl, "Fake Orgasm Expert") || HasTrait(girl, "Fast Orgasms")) //Gondra: Trait messages
+			if (g_Dice.percent(35) && (HasTrait(girl, "Fake Orgasm Expert") || HasTrait(girl, "Fast Orgasms"))) //Gondra: Trait messages
 			{
 				sexMessage << girlName << " went at it hard with the customer, cumming shortly after he penetrated her, and then several times until she finished her performance with an especially loud orgasm as the customer came.";
 			}
-			else if (HasTrait(girl, "Slow Orgasms"))
+			else if (g_Dice.percent(35) && HasTrait(girl, "Slow Orgasms"))
 			{
 				sexMessage << "Although she is known to be hard to please, " << girlName << " managed to cum through a combination of her considerable skill and an particularly observant customer that left with a smile on his face.";
 				customer->m_Stats[STAT_HAPPINESS] += 5;
 			}
+#if SPICE
+			//SIN - more spice
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Plump") || HasTrait(girl, "Fat")))
+			{
+				if (g_Dice.percent(50))
+				{
+					sexMessage << "The customer is stunned that a heavy-set girl like " << girlName << " can be so good in the sack.";
+					customer->m_Stats[STAT_HAPPINESS] += 5;
+				}
+				else
+				{
+					sexMessage << "The customer initially grumbled about getting \"some fat whore\", but " << girlName
+						<< " really showed him how a big-girl can fuck.";
+					customer->m_Stats[STAT_HAPPINESS] += 5;
+				}
+			}
+			else if (g_Dice.percent(35) && SheAintPretty)
+			{
+				sexMessage << "The customer initially grumbled about getting \"some ugly skank\", but " << girlName << " really showed what she could do.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && girl->is_pregnant())
+			{
+				sexMessage << "Despite her pregnancy - or perhaps because of it - " << girlName
+					<< " really fucked the customer, orgasming twice before bringing him to a powerful climax.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (HasTrait(girl, "Priestess") && g_Dice.percent(55))
+			{
+				sexMessage << "Sexy Priestess, " << girlName << ", lay the customer on the floor and knelt over him. She energetically praised the divine as she rode his cock, "
+					<< "until she was filled with his divine blessing.\nThen she used her mouth and made him rise again.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(40) && (HasTrait(girl, "Agile") || HasTrait(girl, "Flexible") || GetStat(girl, STAT_AGILITY) > 75))
+			{
+				if (choice < 33)
+				{
+					sexMessage << "The customer made full use of " << girlName << "'s agility, fucking her in a wide range of positions.";
+					customer->m_Stats[STAT_HAPPINESS] += 5;
+				}
+				else if (choice < 67)
+				{
+					sexMessage << "The customer fucked " << girlName << " as she went through her stretch routine. It was hot.";
+					customer->m_Stats[STAT_HAPPINESS] += 5;
+				}
+				else
+				{
+					sexMessage << "The customer was nervous and had some performance problems... Until a naked " << girlName << " lay on the bed, "
+						<< "twisted both feet behind her head and smiled up at him.";
+					customer->m_Stats[STAT_HAPPINESS] += 5;
+				}
+			}
+			else if (g_Dice.percent(35) && (GirlGotNoClass || HasTrait(girl, "Cum Addict")))
+			{
+				sexMessage << girlName << "'s sex was amazing, and her well trained pussy drained him dry. Afterward she made a show of "
+					<< "crouching on the floor and watching his cum dribble out. Finally she made him fuck her again while she licked his cum off the floor.";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+			}
+			else if (g_Dice.percent(25) && HasTrait(girl, "Assassin"))
+			{
+				sexMessage << "The customer was excited to have sex with a notorious femme-fatale like " << girlName
+					<< ". She gave him an incredible time.";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+			}
+			else if (g_Dice.percent(25) && HasTrait(girl, "Alchoholic"))
+			{
+				sexMessage << "Somehow " << girlName << " was drunk. She was completely wild and uninhibited fucking and sucking the customer like crazy even after he came twice.";
+				customer->m_Stats[STAT_HAPPINESS] += 15;
+			}
+			else if (g_Dice.percent(35) && (HateLove > 0) && (The_Player->disposition() > 40)) //bonus if you are nice
+			{
+				sexMessage << girlName << " knows you are the kindest " << (girl->is_slave() ? "master" : "brother owner")
+					<< " in town, and feels like she owes you. She uses all her skills to make sure the customer has an incredible time.";
+				customer->m_Stats[STAT_HAPPINESS] += 20;
+				UpdateStat(girl, STAT_HAPPINESS, 2);
+				UpdateStat(girl, STAT_OBEDIENCE, 2);
+				UpdateEnjoyment(girl, ACTION_SEX, 2);
+			}
+			else if (choice < 25)	//Vanilla Messages
+			{
+				sexMessage << girlName << " passionately rode the customer's cock until it erupted inside her.";
+			}
+#endif
 			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
 				sexMessage << girlName << " loved having a cock buried in her cunt and fucked back as much as she got.";
@@ -8775,15 +10515,134 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		//Gondra: reworking this part with choice variable
 		if (check < 20)		//Gondra: if the girl is unskilled show one of these messages
 		{
-			if (HasTrait(girl, "Cum Addict"))	//Gondra: Trait messages
+			if (g_Dice.percent(50) && (HasTrait(girl, "Cum Addict")))	//Gondra: Trait messages
 			{
 				sexMessage << "The smell that came from the customers cock in front of her awoke " << girlName << "'s hunger for cum, which made her work his shaft with considerable greed, forgetting to be careful with her teeth, until the customer came with a pained expression, letting her swallow what she craved.";
 			}
-			else if (HasTrait(girl, "Dick-Sucking Lips"))
+#if SPICE
+			//SIN
+			else if (g_Dice.percent(50) && (HasTrait(girl, "Princess") || HasTrait(girl, "Queen") || HasTrait(girl, "Goddess")
+				|| HasTrait(girl, "Fallen Goddess") || HasTrait(girl, "Demon") || HasTrait(girl, "Your Daughter")))
+			{
+				sexMessage << "The customer is ecstatic. Sure it was awful and " << girlName << " had no clue what she was doing - but";
+
+				bool royalty = (HasTrait(girl, "Princess") || HasTrait(girl, "Queen"));
+				bool divinity = (HasTrait(girl, "Goddess") || HasTrait(girl, "Fallen Goddess"));
+				bool demon = HasTrait(girl, "Demon");
+				bool yourKid = HasTrait(girl, "Your Daughter");
+
+				if (choice < 25)
+				{
+					sexMessage << " he just made ";
+					/**/ if (royalty) sexMessage << "ROYALTY";
+					else if (divinity) sexMessage << "a GOD";
+					else if (demon) sexMessage << "a DEMON";
+					else if (yourKid) sexMessage << "your DAUGHTER";
+					else sexMessage << "this girl (E)";	//Shouldn't get here, but just in case
+					sexMessage << " swallow his cum!\n";
+				}
+				else
+				{
+					/**/ if (choice < 50) sexMessage << "... He just had his dick sucked by ";
+					else if (choice < 75) sexMessage << " he just finished face-fucking ";
+					else /**************/ sexMessage << "... He just managed to Angry Dragon ";
+
+					/**/ if (royalty) sexMessage << "Royalty!";
+					else if (divinity) sexMessage << "a Goddess!";
+					else if (demon) sexMessage << "a Demon Whore!";
+					else if (yourKid) sexMessage << "your Daughter!";
+					else /**********/ sexMessage << "this girl! (E)";	//Shouldn't get here, but just in case
+					sexMessage << "\n";
+				}
+				customer->m_Stats[STAT_HAPPINESS] += 20;
+			}
+			//else if (g_Dice.percent(15) && (HasTrait(girl, "Lolita") || GetStat(girl, STAT_AGE) < (MINAGE + 2))) //if looks young or is near legal limit in game...
+			//{
+			//	sexMessage << "The 'customer' was a City Official following up on complaints that " << girlName << " looked 'too young.' Specifically, girls under-"
+			//		<< MINAGE << " should not be used in this city. She explained that she is " << GetStat(girl, STAT_AGE) << ", but with no documents, he demanded "
+			//		<< "- under Statute 2218-C - that she 'prove Majority' by demonstrating 'adult-level competence' in oral sex.\nShe submitted to testing";
+			//	if (g_Dice.percent(GetSkill(girl, SKILL_ORALSEX)))  //Better she is, more hope she has
+			//	{
+			//		sexMessage << ", and against the odds managed to make him come in her mouth.\n\"She took a while, but seemed to have some basic idea,\" he said,"
+			//			<< " rating her 'Age Questionable.'\nThere is no fine, but this rating raises your suspicion.";
+			//		The_Player->suspicion(10);
+			//	}
+			//	else
+			//	{
+			//		sexMessage << ", and failed badly, not even managing to get him hard.\n";
+			//		if (g_Dice.percent(GetStat(girl, STAT_BEAUTY)))
+			//		{
+			//			sexMessage << "\"To make sure, I carried out other checks: she's young-looking, obviously; ";
+			//			if (HasTrait(girl, "Delicate") || HasTrait(girl, "Fragile") || GetStat(girl, STAT_CONSTITUTION) < 40) sexMessage << "she's childishly delicate; ";
+			//			if (HasTrait(girl, "Dependant")) sexMessage << "she's dependent, showing little sign of being able to care for herself; ";
+			//			if (HasTrait(girl, "Tight Butt"))
+			//			{
+			//				sexMessage << "she has ";
+			//				if (HasTrait(girl, "Flat Ass")) sexMessage << "a flat underdeveloped ass and ";
+			//				sexMessage << "an extremely tight anus barely capable of fitting even my finger; ";
+			//			}
+			//			else if (HasTrait(girl, "Flat Ass")) sexMessage << "she has a flat underdeveloped ass; ";
+			//			if (HasTrait(girl, "Short") || HasTrait(girl, "Dwarf")) sexMessage << "she's childishly short, probably not fully-grown; ";
+			//			if (HasTrait(girl, "Virgin"))
+			//			{
+			//				sexMessage << "with modern surgery it's hard to be sure, but from closely examining her vagina she looks like a virgin, "
+			//					<< "it's certainly very tight; ";
+			//			}
+			//			if (HasTrait(girl, "Clumsy") || HasTrait(girl, "Dojikko")) sexMessage << "she's clumsy; ";
+			//			if (HasTrait(girl, "Shy") || (GetStat(girl,STAT_CHARISMA) < 40)) sexMessage << "she has the communication skills of a child; ";
+			//			if (HasTrait(girl, "Tsundere") || HasTrait(girl, "Yandere")) sexMessage << "she has adolescent mood swings; ";
+			//			if (HasTrait(girl, "Exhibitionist")) sexMessage << "she hasn't learned social norms yet, with no shame around nudity; ";
+			//			if (HasTrait(girl, "Princess")) sexMessage << "she has childish delusions of being a 'Princess'; ";
+			//			if (HasTrait(girl, "Nymphomaniac") || HasTrait(girl, "Fast Orgasms")) sexMessage << "she has sex-cravings and clitoral hyper-sensitivity - classic signs of adolescent nymphomania; ";
+			//			if (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs"))
+			//			{
+			//				sexMessage << "she has underdeveloped breasts, noticeably firm to the touch";
+			//				if (HasTrait(girl, "Perky Nipples")) sexMessage << " and highly-sensitive perky little nipples";
+			//				else if (HasTrait(girl, "Puffy Nipples")) sexMessage << " and sensitive puffy nipples";
+			//				sexMessage << "; ";
+			//			}
+			//			sexMessage << "she... Well, the list goes on. You get the picture.\"\n\n";
+			//		}
+			//		sexMessage << "He finally rated her 'underage' and fined you 1,000 gold on the spot, and filed a report against you with the City Hall.\nThis will not help your reputation.";
+			//		g_Gold.misc_debit(1000);
+			//		The_Player->suspicion(10);
+			//	}
+			//}
+			else if (g_Dice.percent(30) && (HasTrait(girl, "Shy") || HasTrait(girl, "Nervous")|| HasTrait(girl, "Lolita")))
+			{
+				sexMessage << girlName << " blushed furiously, with no idea how to pleasure this thing in front of her. ";
+				if (choice < 50)
+				{
+					sexMessage << "The customer was patient, teaching her how to do it properly.";
+					customer->m_Stats[STAT_HAPPINESS] += 5;
+					SetSkill(girl, SKILL_ORALSEX, 2);
+				}
+				else
+				{
+					sexMessage << "The customer eventually got bored, grabbed her head and started face-fucking her. ";
+					if (HasTrait(girl, "Strong Gag Reflex") || HasTrait(girl, "Gag Reflex"))
+					{
+						sexMessage << "She gagged, retched and threw up on his cock. The customer left disgusted.";
+						customer->m_Stats[STAT_HAPPINESS] -= 30;
+					}
+					else
+					{
+						sexMessage << "She started gagging and just when she thought she was going to throw up, the customer's hot cum pumped into her mouth.";
+					}
+				}
+			}
+#endif
+			else if (g_Dice.percent(40) && HasTrait(girl, "Dick-Sucking Lips"))
 			{
 				sexMessage << "Although she isn't particularly good at it, the customer enjoyed seeing " << girlName << "'s lips wrapped around his cock.";
 				customer->m_Stats[STAT_HAPPINESS] += 5;
 			}
+#if SPICE
+			else if (choice < 30)	//Vanilla 
+			{
+				sexMessage << girlName << " gave the customer a sloppy, awkward blowjob that wasn't going anywhere. Finally he finished himself off in her face.";
+			}
+#endif
 			else if (choice < 70)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
 				sexMessage << girlName << " awkwardly licked the customer's cock, and recoiled when he came.";
@@ -8796,10 +10655,78 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
 		{
-			if (HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
+			if (g_Dice.percent(40) && HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
 			{
 				sexMessage << "Knowing about the reward that awaited her, " << girlName << " sucked on the customers length with a singular drive that made the customer come quickly. She continued sucking until she had swallowed the last drop of his cum";
 			}
+#if SPICE
+//#if FMA		//in case min age cannot be raised.
+//			else if (g_Dice.percent(15) && (HasTrait(girl, "Lolita") || GetStat(girl, STAT_AGE) < 20)) //if looks young or is near legal limit in game...
+//#else
+//			else if (g_Dice.percent(15) && (HasTrait(girl, "Lolita") || GetStat(girl, STAT_AGE) < (MINAGE + 2))) //if looks young or is near legal limit in game...
+//#endif
+//			{
+//				sexMessage << "The 'customer' was a City Official following up on complaints that " << girlName << " looked 'too young.' Specifically, girls under-"
+//					<< MINAGE << " should not be used in this city. She explained that she is " << GetStat(girl, STAT_AGE) << ", but with no documents, he demanded "
+//					<< "- under Statute 2218-C - that she 'prove Majority' by demonstrating 'adult-level competence' in oral sex.\nShe submitted to testing, "
+//					<< "and he carried out a full test, finally rating her skills 'insufficient' - \"I told her to swallow and she couldn't even do it,\" he explained, shaking his head.\n";
+//				int evidence = 0;
+//				if (g_Dice.percent(GetStat(girl, STAT_BEAUTY))) //He seems to investigate pretty girls more - coincidence, huh?!
+//				{
+//					sexMessage << "\"When she failed THAT,\" he explained. \"I carried out further tests to establish her maturity: firstly, she's clearly very young-looking; ";
+//					if (HasTrait(girl, "Delicate") || HasTrait(girl, "Fragile") || GetStat(girl, STAT_CONSTITUTION) < 40) sexMessage << "she's childishly delicate; ", evidence++;
+//					if (HasTrait(girl, "Dependant")) sexMessage << "she's dependent, showing little sign of being able to care for herself; ", evidence++;
+//					if (HasTrait(girl, "Tight Butt"))
+//					{
+//						sexMessage << "she has ";
+//						if (HasTrait(girl, "Flat Ass")) sexMessage << "a flat underdeveloped ass and ", evidence++;
+//						sexMessage << "an extremely tight anus barely capable of fitting even my finger; ", evidence++;
+//					}
+//					else if (HasTrait(girl, "Flat Ass")) sexMessage << "she has a flat underdeveloped ass; ", evidence++;
+//					if (HasTrait(girl, "Short") || HasTrait(girl, "Dwarf")) sexMessage << "she's childishly short, probably not fully-grown; ", evidence++;
+//					if (HasTrait(girl, "Virgin"))
+//					{
+//						sexMessage << "with modern surgery it's hard to be sure, but from closely examining her vagina she looks like a virgin, "
+//							<< "it's certainly very tight; ", evidence++;
+//					}
+//					if (HasTrait(girl, "Clumsy") || HasTrait(girl, "Dojikko")) sexMessage << "she's clumsy; ", evidence++;
+//					if (HasTrait(girl, "Shy") || (GetStat(girl, STAT_CHARISMA) < 40)) sexMessage << "she has the communication skills of a child; ", evidence++;
+//					if (HasTrait(girl, "Tsundere") || HasTrait(girl, "Yandere")) sexMessage << "she has adolescent mood swings; ", evidence++;
+//					if (HasTrait(girl, "Exhibitionist")) sexMessage << "she hasn't learned social norms yet, with no shame around nudity; ", evidence++;
+//					if (HasTrait(girl, "Princess")) sexMessage << "she has childish delusions of being a 'Princess'; ", evidence+=2;
+//					if (HasTrait(girl, "Nymphomaniac") || HasTrait(girl, "Fast Orgasms")) sexMessage << "she has sex-cravings and clitoral hyper-sensitivity - classic signs of adolescent nymphomania; ", evidence++;
+//					if (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs"))
+//					{
+//						sexMessage << "she has underdeveloped breasts, noticeably firm to the touch", evidence++;
+//						if (HasTrait(girl, "Perky Nipples")) sexMessage << " and highly-sensitive perky little nipples";
+//						else if (HasTrait(girl, "Puffy Nipples")) sexMessage << " and sensitive puffy nipples";
+//						sexMessage << "; ";
+//					}
+//					sexMessage << "she's ... Well, the list goes on. You get the picture.\"\n";
+//				}
+//				if (evidence > 3)
+//				{
+//					sexMessage << "\nOn this 'evidence' he rated her \"Likely Underage\" - fining you 500 gold and filing a report against you.\n\""
+//						<< ((The_Player->Gender() == GENDER_MALE) ? "Men" : "Women")
+//						<< " like you disgust me!\"\n";
+//					g_Gold.misc_debit(500);
+//				}
+//				else sexMessage << "He finally rated her \"Age Questionable - follow up visit required\" - this significantly raises suspicion on your establishments.";
+//				The_Player->suspicion(10);
+//			}
+			else if (g_Dice.percent(20) && (HasTrait(girl, "Aggressive") || HasTrait(girl, "Twisted") || HasTrait(girl, "Sadistic")))
+			{
+				sexMessage << "After some time there was a high-pitch squeal. A few minutes later, " << girlName << " left the room, with the customer hobbling out behind her clutching his groin."
+					<< "\"They come in my eyes,\" she calmly explained, wiping down her face with a tissue. \"I punch in their balls.\n\"Fair's fair.\"";
+				customer->m_Stats[STAT_HAPPINESS] -= 20;
+			}
+			else if (g_Dice.percent(60) && HasTrait(girl, "Sexy Air"))
+			{
+				sexMessage << girlName << " isn't the best at this, but something about the sexy way she keeps eye-contact right through "
+					<< "makes the experience far more intense.";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+			}
+			
 			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
 				sexMessage << "Although still a bit awkward, " << girlName << " worked the customers length with her tongue and mouth, only spitting out the customers cum after he had left.";
@@ -8808,13 +10735,96 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " mechanically pleasured her customers cock, his load shooting all over her face as she didn't pay attention.";
 			}
+#else
+			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+			{
+				sexMessage << "Although still a bit awkward, " << girlName << " worked the customers length with her tongue and mouth, only spitting out the customers cum after he had left.";
+		}
+			else
+			{
+				sexMessage << girlName << " mechanically pleasured her customers cock, his load shooting all over her face as she didn't pay attention.";
+			}
+#endif
 		}
 		else if (check < 60) //Gondra: the girl is reasonably skilled
 		{
-			if (HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
+			if (g_Dice.percent(35) && HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
 			{
 				sexMessage << girlName << " managed to make the customer cum a second time as she continued to suck on him after she had swallowed his first load.";
 			}
+#if SPICE
+			//SIN: more spice
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Old") || GetStat(girl, STAT_AGE) > 45))
+			{
+				sexMessage << girlName << " sucked on his cock until his cum splattered across her face. She rubbed it into her skin - explaining that it's her secret ingredient for youthful looks.\n"
+					<< "The customer joked that she could probably use some more.";
+				customer->m_Stats[STAT_HAPPINESS] += 2;
+				UpdateStat(girl, STAT_HAPPINESS, -2);
+			}
+			/*else if (g_Dice.percent(5) && HasTrait(girl, "Lolita"))
+			{
+				sexMessage << "The customer, a City Official, claimed to be responding to 'complaints' that " << girlName << " was 'clearly under-" << MINAGE << ".' She told him she is actually "
+					<< GetStat(girl, STAT_AGE) << ", but in the absense of documentation, he demanded - under City Statute 2218-C - that she 'prove Majority' by 'demonstrating adult-level competence' in oral sex.\n"
+					<< "He carried out a thorough test and finally rated her skills 'good' - \"She was very efficient,\" he nodded. \"I tested her three times and her skill certainly matches an appropriate age.\"\n"
+					<< "He rated her age 'legal' - this slightly reduces suspicion around your establishments.";
+				The_Player->suspicion(-5);
+			}*/
+			else if (g_Dice.percent(50) && HasTrait(girl, "Dick-Sucking Lips"))
+			{
+				sexMessage << "Sure there are more skillful girls out there, but having " << girlName << "'s full, soft lips wrapped around his meat blew the customer's mind.";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+			}
+			else if (g_Dice.percent(34) && (HasTrait(girl, "Clumsy") || HasTrait(girl, "Dojikko")))
+			{
+				sexMessage << girlName << " gave pretty good head. Unfortunately, a clumsy accident ";
+				const int ACCIDENTSHAPPEN = 5;
+				switch (g_Dice%ACCIDENTSHAPPEN)
+				{
+				case 0:
+					sexMessage << "with some candles";
+					break;
+				case 1:
+					/**/ if (HasItem(girl, "Cat"))			sexMessage << "involving her cat";
+					else if (HasItem(girl, "Guard Dog"))	sexMessage << "with her Guard Dog";
+					else /*****************************/	sexMessage << "with a badly timed sneeze";
+					break;
+				case 2:
+					/**/ if (HasItem(girl, "Studded Dildo") || HasItem(girl, "Dreidel Dildo") || HasItem(girl, "Dildo")) sexMessage << "with a misplaced dildo";
+					else if (HasItem(girl, "Lolita Wand") || HasItem(girl, "Lolita Wand (Lesser)") || HasItem(girl, "Magical Girl Wand") || HasItem(girl, "Hermione's Wand")) sexMessage << "with a misplaced wand";
+					else sexMessage << "with some chewing gum and a lava lamp";
+					break;
+				case 3:
+					sexMessage << "with a plugged-in hair-curler";
+					break;
+				case 4:
+					if (HasTrait(girl, "Pierced Clit") || HasTrait(girl, "Pierced Nipples") || HasTrait(girl, "Pierced Tongue") || HasTrait(girl, "Pierced Navel") || HasTrait(girl, "Pierced Nose"))
+						sexMessage << "with her piercing";
+					else sexMessage << "with an ornate hairpin";
+					break;
+				default:
+					sexMessage << "of some nature (E)";
+					break;
+				}
+				sexMessage << " left the customer in pain.";
+				customer->m_Stats[STAT_HAPPINESS] -= 10;
+			}
+			else if (choice < 25)
+			{
+				sexMessage << girlName << " licked and sucked the customer's cock with some skill.";
+			}
+			else if (choice < 50)
+			{
+				sexMessage << girlName << " gave the customer some pretty good head, even giving the balls a good licking, until he came on her face.";
+			}
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " sucked the customer off until he came in her mouth. She then made a great show of dribbling it all onto her chest and rubbing it into her breasts.";
+			}
+			else
+			{
+				sexMessage << girlName << " made a few more slurping noises than necessary, didn't forget to give his balls a bit of attention and swallowed the customer's cum after showing it to him. Altogether good work.";
+			}
+#else
 			else if (choice < 33)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
 				sexMessage << girlName << " licked and sucked the customer's cock with some skill.";
@@ -8823,35 +10833,118 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " made a few more slurping noises than necessary, didn't forget to give his balls a bit of attention and swallowed the customers cum after showing it to him. Altogether good work.";
 			}
+#endif
 		}
-		else// if (check < 80) //Gondra: the girl is very skilled
+		else if (check < 80) //Gondra: the girl is very skilled
 		{
+#if SPICE
+			//SIN
+			if (g_Dice.percent(65) && HasTrait(girl, "Doctor"))
+			{
+				sexMessage << girlName;
+				if (g_Dice.percent(50)) sexMessage << " expertly stimulated the customer with her mouth and tongue - extracting every drop of semen with medical precision.";
+				else sexMessage << " gives a whole new meaning to 'bedside manner' as she kneels beside the bed sucking the customer's balls dry.";
+			}
+		/*	else if (g_Dice.percent(5) && HasTrait(girl, "Lolita"))
+			{
+				sexMessage << "The customer, a City Official, claimed to be responding to 'complaints' that " << girlName << " was 'clearly under-" << MINAGE << ".' She told him she is actually "
+					<< GetStat(girl, STAT_AGE) << ", but in the absense of documentation, he demanded - under City Statute 2218-C - that she 'prove Majority' by 'demonstrating adult-level competence' in oral sex.\n"
+					<< "He carried out a thorough test and finally rated her skills 'Excellent' - \"A girl who can do that,\" he said. \"Is definitely old enough in my book.\"\n"
+					<< "He rated her age 'Legal' and left praising her skills - this reduces suspicion around your establishments and improves her fame.";
+				The_Player->suspicion(-15);
+				UpdateStat(girl, STAT_FAME, 5);
+		}*/
+			else if (g_Dice.percent(65) && HasTrait(girl, "Cum Addict")) //added a roll, just so that it doesn't always overpower all other options
+			{
+				sexMessage << girlName << " kept caressing the customers cock and balls making him cum again and again, swallowing each load until he was dry.";
+			}
+			else if (g_Dice.percent(50) && HasTrait(girl, "Lesbian"))
+			{
+				sexMessage << "From the expert way " << girlName << " sucks the customer's cock, you'd never think she was a lesbian. She even swallows. A true professional.";
+			}
+#else
 			if (HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
 			{
 				sexMessage << girlName << " kept caressing the customers cock and balls making him cum again and again, swallowing each load until he was dry.";
 			}
-			else if (HasTrait(girl, "Deep Throat") || HasTrait(girl, "No Gag Reflex"))
+#endif
+			else if (g_Dice.percent(60) && (HasTrait(girl, "Deep Throat") || HasTrait(girl, "No Gag Reflex")))
 			{
 				sexMessage << "Surprising the customer, " << girlName << " rammed his hard cock down her own throat, occasionally looking up to his face while she worked on it with all her skill.";
 			}
-			else if (HasTrait(girl, "Nimble Tongue"))
+			else if (g_Dice.percent(60) && HasTrait(girl, "Nimble Tongue"))
 			{
 				sexMessage << "Instead of a normal blowjob, " << girlName << " showed off just how nimble her tongue is, making him blow his load after keeping him on edge for several minutes just with the tip of her tongue.";
 			}
-			else if (choice < 50)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+#if SPICE	//SIN - and variety
+			else if (g_Dice.percent(50) && (HasTrait(girl, "Princess") || HasTrait(girl, "Queen") || HasTrait(girl, "Goddess")
+				|| HasTrait(girl, "Fallen Goddess") || HasTrait(girl, "Demon") || HasTrait(girl, "Your Daughter")))
+			{
+				sexMessage << "The customer was overjoyed. " << girlName << " gave him amazing oral ";
+
+				bool royalty = (HasTrait(girl, "Princess") || HasTrait(girl, "Queen"));
+				bool divinity = (HasTrait(girl, "Goddess") || HasTrait(girl, "Fallen Goddess"));
+				bool demon = HasTrait(girl, "Demon");
+				bool yourKid = HasTrait(girl, "Your Daughter");
+
+				if (choice < 25)
+				{
+					sexMessage << "and he just watched ";
+					/**/ if (royalty) sexMessage << "a ROYAL";
+					else if (divinity) sexMessage << "a GODDESS";
+					else if (demon) sexMessage << "a DEMON";
+					else if (yourKid) sexMessage << "your DAUGHTER";
+					else sexMessage << "this girl (E)";	//Shouldn't get here, but just in case
+					sexMessage << " swallow down his cum!\n";
+				}
+				else
+				{
+					/**/ if (choice < 50) sexMessage << "and he can't wait to tell his friends he had his cock blown by ";
+					else if (choice < 75) sexMessage << "- he just face-fucked ";
+					else /**************/ sexMessage << "- and the girl whose face he painted... ";
+
+					/**/ if (royalty) sexMessage << "Royalty!";
+					else if (divinity) sexMessage << "a Goddess!";
+					else if (demon) sexMessage << "a Demon!";
+					else if (yourKid) sexMessage << "your Daughter!";
+					else /**********/ sexMessage << "this girl! (E)";	//Shouldn't get here, but just in case
+					sexMessage << "\n";
+				}
+				customer->m_Stats[STAT_HAPPINESS] += 20;
+			}
+			else if (g_Dice.percent(60) && HasTrait(girl, "Queen"))
+			{
+				sexMessage << girlName << "'s former subject, the customer was overjoyed to have his Monarch suck his dick, and felt great pride when she swallowed his cum. "
+					<< "He left to tell all his friends how he had been expertly sucked off by a Queen! (Leading to lots sniggering, and rumours that would follow him for years to come)\n";
+				customer->m_Stats[STAT_HAPPINESS] += 10;
+				UpdateStat(girl, STAT_FAME, 5);
+			}
+			else if (choice < 25)	//Gondra: Vanilla Messages
+			{
+				sexMessage << girlName << " dropped to her knees and let her mouth make love to the customer's cock.";
+			}
+#endif
+			else if (choice < 50)
 			{
 				sexMessage << girlName << " loved sucking the customer's cock, and let him cum all over her.";
 			}
+#if SPICE	//SIN
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " licked the customer's balls and shaft so expertly, he came within seconds of her putting his cock in her mouth. "
+					<< "She looked up at him, swallowed, and started again.";
+			}
+#endif
 			else
 			{
 				sexMessage << girlName << " wouldn't stop licking and sucking the customer's cock until she had swallowed his entire load.";
 			}
 		}
-		/*else //Gondra: the girl is EXTREMELY skilled //TODO Gondra: add extremely skilled texts.
+		else //Gondra: the girl is EXTREMELY skilled //TODO Gondra: add extremely skilled texts.
 		{
 			//Gondra: 
-			sexMessage << girlName << GetRandomSexString();
-		}*/
+			sexMessage << girlName << GetRandomOralSexString();
+		}
 		message += sexMessage.str(); //Gondra: add our sexMessage to our message string
 #endif
 	}break; //End of SKILL_ORALSEX Case
@@ -8869,19 +10962,56 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		//Gondra: reworking this part with choice variable
 		if (check < 20)		//Gondra: if the girl is unskilled show one of these messages
 		{
-			if (HasTrait(girl, "Cum Addict"))	//Gondra: Trait messages
+			if (g_Dice.percent(50) && HasTrait(girl, "Cum Addict"))	//Gondra: Trait messages
 			{
 				sexMessage << "After he was done fucking her tits, " << girlName << " scooped up his cum from her tits greedily licking off every single drop from her fingers.";
 			}
-			else if (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs"))
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs")))
 			{
 				sexMessage << girlName << " struggled to pleasure the customer with the little bit of chest she has, until the customer jerked off onto her tiny tits telling her to rub his cum in if she wants to have actual tits someday.";
 			}
-			else if (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") || HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits")) //Gondra: Catch all for large tits for now
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") || HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits"))) //Gondra: Catch all for large tits for now
 			{
 				sexMessage << girlName << " was lying on her back occasionally yelping in pain as the customer roughly fucked her quavering tits";
 			}
-			else if (choice < 33)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
+#if SPICE
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Furry") || HasTrait(girl, "Cow Girl")))
+			{
+				sexMessage << "Despite having more breasts than most, " << (HasTrait(girl, "Furry")? "beast-girl ":"cow-girl ") << girlName << " gave poor titty-sex.";
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Plump") || HasTrait(girl, "Fat")))
+			{
+				sexMessage << girlName << " gave awful titty-sex and flubbered uselessly around the bed like a beached whale.";
+				customer->m_Stats[STAT_HAPPINESS] -= 10;
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Abundant Lactation") || HasTrait(girl, "Cow Tits") || GetStat(girl, STAT_LACTATION) > 50))
+			{
+				sexMessage << girlName << "'s breast milk squirted around as the customer tried to fuck her tits. She wasn't good at this.";
+			}
+			else if (g_Dice.percent(35) && HasTrait(girl, "Exotic"))
+			{
+				sexMessage << girlName << " finds this breast fetish strange. In her land people are topless and breasts are boring, functional things for feeding babies. Why would you fuck them?!";
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Exhibitionist") || HasTrait(girl, "Sexy Air")))
+			{
+				sexMessage << girlName << " had an amazing, sexy way of revealing her self which really aroused the customer. Sadly the titty-sex that followed was disappointing.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && HasTrait(girl, "Cute"))
+			{
+				sexMessage << girlName << " was awful at titty-sex and did nothing for the customer. But she's very cute. And there are worse things than spunking on a cute girl's chest, so the customer didn't mind so much.";
+				customer->m_Stats[STAT_HAPPINESS] += 15;
+			}
+			else if (choice < 25)	//Vanilla Messages
+			{
+				sexMessage << girlName << " lay passively on the bed as the customer tried to bring himself off with her tits.";
+			}
+			else if (choice < 50)
+			{
+				sexMessage << girlName << " squeezed her breasts around amateurishly, making it difficult for the customer to get any good feeling from fucking them.";
+			}
+#endif
+			else if (choice < 75)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " awkwardly let the customer fuck her tits.";
 			}
@@ -8892,19 +11022,56 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
 		{
-			if (HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
+			if (g_Dice.percent(50) && HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
 			{
 				sexMessage << "After letting her customer use her tits, " << girlName << " managed to catch most of his load in her mouth as he came, eagerly licking up the rest.";
 			}
-			else if (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs"))
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Flat Chest") || HasTrait(girl, "Petite Breasts") || HasTrait(girl, "Small Boobs")))
 			{
 				sexMessage << girlName << " let the customer rub his cock against the nipples of her meager breasts until he came.";
 			}
-			else if (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") || HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits")) //Gondra: Catch all for large tits for now
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") || HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits"))) //Gondra: Catch all for large tits for now
 			{
 				sexMessage << "Her customers cock completely disappearing between her breasts, " << girlName << " heaved her chest up and down her customers cock, until she could feel his hot cum between her breasts.";
 			}
-			else if (choice < 33)	//Gondra: Vanilla Messages
+#if SPICE
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Furry") || HasTrait(girl, "Cow Girl")))
+			{
+				sexMessage << "With more breasts than most girls, " << (HasTrait(girl, "Furry") ? "beast-girl " : "cow-girl ") << girlName << " gave okay titty-sex.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Plump") || HasTrait(girl, "Fat")))
+			{
+				sexMessage << girlName << " her sweat lubricated the titty-sex a little as she hefted herself around the bed.";
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Abundant Lactation") || HasTrait(girl, "Cow Tits") || GetStat(girl, STAT_LACTATION) > 50))
+			{
+				sexMessage << girlName << "'s breast milk squirted around as the customer fucked her tits.";
+			}
+			else if (g_Dice.percent(35) && HasTrait(girl, "Exotic"))
+			{
+				sexMessage << girlName << " finds this breast fetish strange. In her land breasts are boring, functional things. However, she is making a good effort to learn.";
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Exhibitionist") || HasTrait(girl, "Sexy Air")))
+			{
+				sexMessage << girlName << " had an amazing, sexy way of revealing her self which really aroused the customer. The titty-sex that followed was okay.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && HasTrait(girl, "Cute"))
+			{
+				sexMessage << girlName << " was cute enough that the customer barely noticed how poor she was at titty-sex. In the end he spunked on a cute girl's breasts - that's a win in anyone's book.";
+				customer->m_Stats[STAT_HAPPINESS] += 15;
+			}
+			else if (choice < 25)	//Vanilla Messages
+			{
+				sexMessage << girlName << " lay awkwardly on the bed as the customer used her tits.";
+			}
+			else if (choice < 50)
+			{
+				sexMessage << girlName << " squeezed her breasts around, helping the customer get some good feeling from fucking them.";
+			}
+#endif
+			else if (choice < 75)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " used her breasts on the customer's cock.";
 			}
@@ -8927,7 +11094,55 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Moaning lightly as she 'accidentally' pushed the customers cock against one of her nipples, " << girlName << " begun to run him through a long, teasing routine, at the end of which he covered her large chest with a large load off his seed.";
 			}
-			else if (choice < 50)	//Gondra: Vanilla Messages
+#if SPICE
+			else if (g_Dice.percent(40) && HasTrait(girl, "Waitress"))
+			{
+				sexMessage << girlName << " entered dressed as a topless waitress, with her breasts pushed up on a tray. She presented them to the customer, who excitedly fucked her chest.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(40) && HasTrait(girl, "Muscular"))
+			{
+				sexMessage << girlName << " gripped his cock between her powerful chest muscles, and gave him a powerful titty-fuck.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Furry") || HasTrait(girl, "Cow Girl")))
+			{
+				sexMessage << "With her extra breasts, " << (HasTrait(girl, "Furry") ? "beast-girl " : "cow-girl ") << girlName << " gave some memorable titty-sex.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Plump") || HasTrait(girl, "Fat")))
+			{
+				sexMessage << girlName << " used her fat to good effect in titty-sex, making her breasts grip him, and ripple very pleasantly.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Abundant Lactation") || HasTrait(girl, "Cow Tits") || GetStat(girl, STAT_LACTATION) > 50))
+			{
+				sexMessage << girlName << "'s breast milk squirted everywhere as the customer fucked her tits, providing nice lubricaton.";
+			}
+			else if (g_Dice.percent(35) && HasTrait(girl, "Exotic"))
+			{
+				sexMessage << girlName << " finds this breast fetish strange. In her land breasts are boring, functional things. However, she is making a good effort to learn.";
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Exhibitionist") || HasTrait(girl, "Sexy Air")))
+			{
+				sexMessage << girlName << " had an amazing, sexy way of revealing her self which really aroused the customer. The titty-sex that followed was okay.";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
+			}
+			else if (g_Dice.percent(35) && HasTrait(girl, "Cute"))
+			{
+				sexMessage << girlName << " was cute enough that the customer barely noticed how poor she was titty-sex. In the end he spunked on a cute girl's breasts - that's a win in anyone's book.";
+				customer->m_Stats[STAT_HAPPINESS] += 15;
+			}
+			else if (choice < 25)	//Vanilla Messages
+			{
+				sexMessage << girlName << " clamped her breasts around his cock and jiggled them rhythmically until his cum splattered onto her chin.";
+			}
+			else if (choice < 50)
+			{
+				sexMessage << girlName << " squeezed her breasts around, enhancing the customer's feeling as he fucks them.";
+			}
+#endif
+			else if (choice < 75)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " smiled as her customer spurted his load over her face and chest, rubbing it over her chest as he left before she went and cleaned herself up.";
 			}
@@ -8970,7 +11185,6 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	case SKILL_HANDJOB:
 	{
-#if 1
 		if (z)
 		{
 			sexMessage << "(Z text not done)\n";
@@ -8983,6 +11197,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (HasTrait(girl, "Cum Addict"))	//Gondra: Trait messages
 			{
 				sexMessage << girlName << " sat down for a few minutes to lick the cum from her hands after she had finally managed to get her customer off with her hands.";
+			}
+			//SIN - added spice
+			else if (HasTrait(girl, "Farmer") || HasTrait(girl, "Farmers Daughter") || HasTrait(girl, "Country Gal"))
+			{
+				sexMessage << girlName << " yanks it about like she's milking a cow, leaving the customer in real pain.\n";
+				customer->m_Stats[STAT_HAPPINESS] -= 10;
 			}
 			else if (choice < 40)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
@@ -8999,6 +11219,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (HasTrait(girl, "Cum Addict")) //Gondra: Trait messages
 			{
 				sexMessage << girlName << "'s handjob was more awkward than necessary as she almost fell because she tried to catch all his seed in her hands as her customer came.";
+			}
+			//SIN - added spice
+			else if (HasTrait(girl, "Farmer") || HasTrait(girl, "Farmers Daughter") || HasTrait(girl, "Country Gal"))
+			{
+				sexMessage << girlName << " still seems think this is like milking cows on the farm, yanking the customer around quite unpleasantly.\n";
+				customer->m_Stats[STAT_HAPPINESS] -= 5;
 			}
 			else if (choice < 66)	//Gondra: Vanilla Messages TODO Gondra: Replace/supplement these Vanilla messages.
 			{
@@ -9049,20 +11275,19 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			sexMessage << girlName << GetRandomSexString();
 		}*/
 		message += sexMessage.str(); //Gondra: add our sexMessage to our message string
-#endif
 	}break; //End of SKILL_HANDJOB Case
 
 	case SKILL_FOOTJOB:
 	{
-#if 1
 		if (z)
 		{
 			//sexMessage << " laid back as the customer used her feet to get off."; /*Its not great but trying to get something.. wrote when net was down so spelling isnt right CRAZY*/
 			sexMessage << "(Z text not done)\n";
 			//break;
 		}
-
+#if 0
 		//TODO Gondra: rework this with the standard system I used in the prior Cases
+		//SIN - DONE - below
 		if (check < 20)
 		{
 			if (g_Dice.percent(40))	sexMessage << girlName << " awkwardly worked the customer's cock with her feet,";
@@ -9094,9 +11319,205 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				customer->m_Stats[STAT_HAPPINESS] -= 10;
 				break;
 			}
+#else
+		if (check < 20)
+		{
+			//Traits
+			if (g_Dice.percent(30) && HasTrait(girl, "Cum Addict"))
+				sexMessage << girlName << " squeezed the customer's cock around with her feet and licked up every last drop of cum when he finally finished.";
+
+			else if (g_Dice.percent(30) && HasTrait(girl, "Flexible"))
+			{
+				sexMessage << "Though " << girlName << " wasn't very skilled with her feet, her flexibility impressed the customer and improved his enjoyment a little.\n";
+				customer->m_Stats[STAT_HAPPINESS] += 5;
 		}
-		message += sexMessage.str(); //Gondra: add our sexMessage to our message string
+
+			else if ((g_Dice.percent(30) && HasTrait(girl, "Alcoholic")) ||
+				(g_Dice.percent(10) && HasTrait(girl, "Social Drinker")))
+			{
+				sexMessage << girlName << " was supposed to give a footjob. However, she'd had a few drinks";
+				switch (g_Dice % 3)
+				{
+				case 0:
+					sexMessage << " and was rough with her feet, giving the customer no pleasure and quite a lot of pain.";
+					customer->m_Stats[STAT_HAPPINESS] -= 15;
+					break;
+				case 1:
+					sexMessage << ", so even though the footjob was awful, she was fairly charming.";
+					customer->m_Stats[STAT_HAPPINESS] += 5;
+					break;
+				case 2:
+					sexMessage << " and accidentally stepped on a sensitive part of him.";
+					customer->m_Stats[STAT_HAPPINESS] -= 10;
+					break;
+				}
+			}
+			//Vanilla
+			else if (choice < 33)
+			{
+				sexMessage << girlName << " awkwardly worked the customer's cock with her feet, not even managing to get him hard. Disappointed, he finally took matters into his own hands.\n";
+			}
+			else if (choice < 67)
+			{
+				sexMessage << girlName << " squashed the customer's cock around with her feet, and accidentally stamped a ball, causing him some pain. He left disappointed.\n";
+			}
+			else
+			{
+				sexMessage << girlName << " squeezed the customer's cock around with her feet, eventually managing to create some pleasant feelings, but recoiling when he finally came.\n";
+			}
+		}
+		else if (check < 40)
+		{
+			//trait
+			if (g_Dice.percent(30) && HasTrait(girl, "Cum Addict"))
+				sexMessage << girlName << " massage the customer's cock eagerly with her feet and licked up every last drop of cum when he finally came.";
+
+			else if (HasTrait(girl, "Sexy Air"))
+			{
+				sexMessage << girlName << " flirted expertly as her feet massaged his cock. Her movements were crude and unskilled, but her sexy air more than made up for it.";
+		}
+
+			else if ((g_Dice.percent(30) && HasTrait(girl, "Alcoholic")) ||
+				(g_Dice.percent(10) && HasTrait(girl, "Social Drinker")))
+			{
+				sexMessage << "The customer asked " << girlName << " for a footjob. She'd had a few drinks";
+				switch (g_Dice % 3)
+				{
+				case 0:
+					sexMessage << ", however, and was far too rough with her feet, making the whole experience a lot less pleasant. He did eventually come.";
+					customer->m_Stats[STAT_HAPPINESS] -= 5;
+					break;
+				case 1:
+					sexMessage << ", so even though the footjob was average, she flirted, goaded and charmed him to a powerful orgasm.";
+					customer->m_Stats[STAT_HAPPINESS] += 10;
+					break;
+				case 2:
+					sexMessage << " and accidentally kicked him a few times, causing him to leave in pain.";
+					customer->m_Stats[STAT_HAPPINESS] -= 15;
+					break;
+				}
+			}
+
+			else if (g_Dice.percent(30) && HasTrait(girl, "Lesbian"))
+			{
+				sexMessage << girlName << " did her best to bring the customer off with her feet. This is about as close to a cock as this dyke wants to get.";
+			}
+
+			//Vanilla
+			else if (choice < 33)
+			{
+				sexMessage << girlName << " worked the customer's cock with her feet for a while, until his cum finally spurted onto her.\n";
+			}
+			else if (choice < 67)
+			{
+				sexMessage << girlName << " rubbed the customer's cock around with her feet, accidentally swiping a ball with her toe, but she got him there in the end.\n";
+			}
+			else
+			{
+				sexMessage << girlName << " massaged the customer's cock with her feet, managing to create some good feelings, but flinching when he finally came.\n";
+			}
+		}
+		else if (check < 60)
+		{
+			//Traits
+			if (g_Dice.percent(30) && HasTrait(girl, "Natural Pheromones"))
+			{
+				sexMessage << "Something about " << girlName << "'s smell had him rock hard the moment he entered the room. "
+					<< "She didn't have to do so much with her feet to bring him to an explosive orgasm.\n";
+			}
+			else if (g_Dice.percent(40) && (HasTrait(girl, "Twisted") || HasTrait(girl, "Audacity")))
+			{
+				sexMessage << girlName << " skillfully rubbed the customer's cock with her feet. "
+					<< "At the last possible moment, she moved his cock so that he came all over his own stomach, laughing at his disgusted expression.\n";
+			}
+			else if (g_Dice.percent(30) && HasTrait(girl, "Lesbian"))
+			{
+				sexMessage << girlName << " skillfully milked the man's cock with her feet. She could do this all day with a smile if it meant she didn't have to fuck the stupid things.\n";
+			}
+			else if (g_Dice.percent(30) && HasTrait(girl, "Cum Addict"))
+			{
+				sexMessage << girlName << " massage the customer's cock powerfully with her feet until his cum exploded in her face.\n";
+			}
+			else if (g_Dice.percent(30) && HasTrait(girl, "Sexy Air"))
+			{
+				sexMessage << girlName << " flirted as her feet expertly massaged the customer's cock. Her movements were good, and her sexy air heightened the experience for him.\n";
+			}
+			else if (g_Dice.percent(30) && HasTrait(girl, "Flexible"))
+			{
+				sexMessage << girlName << " used all her skills and her stunning flexibility to give the customer an excellent footjob.\n";
+				customer->m_Stats[STAT_HAPPINESS] += 15;
+			}
+			//Vanilla
+			else if (choice < 33)
+			{
+				sexMessage << girlName << " skillfully worked the customer's cock with her feet, until his cum spurted all over her.\n";
+			}
+			else if (choice < 67)
+			{
+				sexMessage << girlName << " deftly rubbed the customer's cock with her feet, making him cum all in her toes.\n";
+			}
+			else
+			{
+				sexMessage << girlName << " expertly massaged the customer's cock with her feet, making him come twice.\n";
+			}
+		}
+		else if (check < 80)
+		{
+			//traits
+			if (g_Dice.percent(30) && HasTrait(girl, "Natural Pheromones"))
+			{
+				sexMessage << "Something about " << girlName << "'s smell had his dick rock-hard the moment he entered the room. "
+					<< "Her expert feet took him through several orgasms, and left him blissed-out and exhausted.\n";
+			}
+			else if (g_Dice.percent(30) && (HasTrait(girl, "Twisted") || HasTrait(girl, "Audacity")))
+			{
+				sexMessage << girlName << " expertly made love to the customer's cock with her feet until, at the last possible moment, "
+					<< "she pointed it up so that he shot his whole load up at his own gasping cum-face. After an experience like that, "
+					<< "he couldn't help laughing at her audacity, as he hocked his own cum out of his mouth.\n";
+			}
+			else if (g_Dice.percent(30) && HasTrait(girl, "Lesbian"))
+			{
+				sexMessage << girlName << " expertly milked the man's cock with her feet, making sure the cum mostly missed her. "
+					<< "Being skillful at this means she doesn't have to fuck the filthy things.\n";
+			}
+			else if (g_Dice.percent(30) && HasTrait(girl, "Cum Addict"))
+			{
+				sexMessage << girlName << " massage the customer's cock powerfully with her feet until his cum exploded in her open mouth.\n";
+			}
+			else if (g_Dice.percent(30) && HasTrait(girl, "Sexy Air"))
+			{
+				sexMessage << girlName << " flirted as her feet expertly massaged the customer's cock. Her movements were perfect, and her sexy air heightened the experience for to something divine.\n";
+			}
+			else if (g_Dice.percent(30) && HasTrait(girl, "Flexible"))
+			{
+				sexMessage << girlName << " used all her foot-skills and her stunning flexibility to give the customer an unforgettable experience.\n";
+				customer->m_Stats[STAT_HAPPINESS] += 25;
+			}
+			else if (g_Dice.percent(10) && HasTrait(girl, "Incest"))
+			{
+				sexMessage << "A child of incest, " << girlName << " has unusual webbed-toes that make her footjobs an unforgettably 'gripping' experience.\n";
+			}
+			//Vanilla
+			else if (choice < 33)
+			{
+				sexMessage << girlName << " wouldn't stop using her feet to massage the customer's cock until she had made him spill his entire load.";
+			}
+			else if (choice < 67)
+			{
+				sexMessage << girlName << " exoertly milked the customer's cock with her feet, until she felt his sticky cum pumping through her toes.\n";
+			}
+			else
+			{
+				sexMessage << girlName << " loved using her feet on the customer's cock, and let him cum all over her.";
+			}	
+		}
+		/*else //Gondra: the girl is EXTREMELY skilled //TODO Gondra: add extremely skilled texts.
+		{
+		//Gondra:
+		sexMessage << GetRandomSexString();
+		}*/
 #endif
+		message += sexMessage.str(); //Gondra: add our sexMessage to our message string
 	}break; //End of SKILL_FOOTJOB Case
 
 	case SKILL_BEASTIALITY:
@@ -9105,8 +11526,50 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (z)
 		{
 			//sexMessage << "Seems the customer thought having a beast fuck the dead would be great fun."; /*Its not great but try to get something.. wrote when net was down so spelling isnt right CRAZY*/
-			sexMessage << "(Z text not done)\n";
-			//break;
+			//sexMessage << "(Z text not done)\n";
+			//SIN - ADDED
+			sexMessage << "This customer wanted to see an undead girl fucked by a beast. ";
+			if (g_Brothels.GetNumBeasts() == 0)
+			{
+				sexMessage << "Unfortunately there were no beasts, so a fake was used. It's not the same.\n\n";
+				customer->m_Stats[STAT_HAPPINESS] -= 30;
+				break;
+		}
+			sexMessage << "\n" << girlName;
+			if (g_Dice.percent(50))
+			{
+				sexMessage << " was docile and unresponsive";
+				if (g_Dice.percent(50))
+				{
+					sexMessage << " as the beast tried a number of ways to mate with her cold, motionless body.\nThe customer was entertained.\n";
+					customer->m_Stats[STAT_HAPPINESS] += 30;
+				}
+				else
+				{
+					sexMessage << ". The beast instinctively recoiled, refusing to go anywhere near her.\nThe customer was disappointed.\n";
+					customer->m_Stats[STAT_HAPPINESS] -= 30;
+				}
+			}
+			else
+			{
+				sexMessage << " was irrational and aggressive. With an angry grunt she lurched and clawed at the amorous beast";
+				if (g_Dice.percent(g_Girls.GetSkill(girl, SKILL_COMBAT)))
+				{
+					sexMessage << " quickly tearing the poor creature apart and feasting on its flesh.\nThe customer seemed a little shocked.\n";
+					g_Brothels.add_to_beasts(-1);
+					g_Girls.UpdateStat(girl, STAT_HAPPINESS, +5);
+					g_Girls.UpdateStat(girl, STAT_HEALTH, +5);
+					customer->m_Stats[STAT_HAPPINESS] -= 10;
+				}
+				else
+				{
+					sexMessage << ", but your beast easily overpowered her.\nThe customer is thrilled to watch as your beast pins and fucks this furious, snarling zombie-girl.\n";
+					g_Girls.UpdateStat(girl, STAT_HEALTH, -10);
+					customer->m_Stats[STAT_HAPPINESS] += 50;
+				}
+			}
+			break;
+
 		}
 
 		//TODO Gondra: rework this with the standard system I used in the prior Cases - although this will require a bit more work.
@@ -9136,7 +11599,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 			if (check < 20)		//Gondra: if the girl is unskilled show one of these messages
 			{
-				if (HasTrait(girl, "Cow Girl"))	//Gondra: Trait messages
+				//Gondra: Trait messages
+				if (HasTrait(girl, "Cow Girl"))
 				{
 					sexMessage << "Held down by the customer, " << girlName << " gritted her teeth as the beast penetrated her roughly, mooing with definite discomfort when the customer told her to do so.";
 				}
@@ -9222,12 +11686,69 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 #if 1
 		if (z)
 		{
-			sexMessage << "The group of customers had fun chasing, tackeling and gangbanging their zombie sex toy.\n";
+			sexMessage << "The group of customers had fun chasing, tackling and gangbanging their zombie sex toy.\n";
 			break;
 		}
 		//Gondra: reworking this part with choice variable
 		if (check < 20)		//Gondra: the girl is unskilled
 		{
+#if SPICE
+			//SIN - more spice
+			if (g_Dice.percent(33) && (HasTrait(girl, "Slut") || HasTrait(girl, "Nymphomaniac")))	//V. common traits - added roll to stop this supressing everything else
+			{
+				sexMessage << "At first " << girlName << " seemed to be in her element surrounded by so many \"wonderful\" cocks, but it quickly became apparent that she does not have the experience to satisfy them all.";
+			}
+			else if (g_Dice.percent(60) && (HasTrait(girl, "Virgin")))
+			{
+				sexMessage << girlName << " has never fucked ONE person before and had no idea how to handle this kind of group. She was completely overwhelmed and had no control over what was happening "
+					<< "as strangers twisted and dragged her around while endless cocks were shoved painfully inside her and splurted cum in her face.";
+				UpdateStat(girl, STAT_HEALTH, -5);
+				UpdateStat(girl, STAT_HAPPINESS, -5);
+			}
+			else if (g_Dice.percent(60) && (HasTrait(girl, "Delicate") || HasTrait(girl, "Lolita")))
+			{
+				sexMessage << "This was far too much for a delicate flower like " << girlName << ". By the end she had no control over what happened, as endless cocks rammed into her.";
+				UpdateStat(girl, STAT_HEALTH, -3);
+				UpdateStat(girl, STAT_HAPPINESS, -1);
+			}
+			else if (g_Dice.percent(30) && (HasTrait(girl, "Optimist") || HasTrait(girl, "Quick Learner")))
+			{
+				sexMessage << girlName << " was completely unable to handle this group. While it was damn uncomfortable, being fucked this many ways by this many customers, "
+					<< "it was a powerful experience. She's quietly confident she'll do better next time.";
+				SetSkill(girl, SKILL_GROUP, g_Dice % 3);
+				UpdateStat(girl, STAT_HAPPINESS, 1);
+			}
+			else if (g_Dice.percent(40) && HasTrait(girl, "Natural Pheromones"))
+			{
+				sexMessage << "Her powerful pheromones drove the group insane. When the customers finally staggered out "
+					<< "one of your staff found "<< girlName << " unconscious over a desk with cum coating her face and hair, and dribbling from her pussy, mouth and asshole.";
+			}
+			else if (g_Dice.percent(30) && SheAintPretty)
+			{
+				sexMessage << girlName << " was completely unable to handle this group. The whole experience was awful, especially the bit where "
+					"they held her to the bed and deliberately splurted stinking cum in her eyes, up her nose and all over her mouth to hide her 'ugly-bitch face.'";
+			}
+			else if (choice < 20)
+			{
+				sexMessage << girlName << " was overwhelmed by the group surrounding her, barely able to react to what was done to her.";
+			}
+			else if (choice < 40)
+			{
+				sexMessage << girlName << " was being used by the group more than her actively servicing them.";
+			}
+			else if (choice < 60)
+			{
+				sexMessage << girlName << " struggled to service everyone in the group that came to fuck her.";
+			}
+			else if (choice < 80)
+			{
+				sexMessage << girlName << " was powerless as hands pinned her down and groped her, while cocks were stuffed into every hole.";
+			}
+			else
+			{
+				sexMessage << girlName << " awkwardly tried to service the group, but was soon overwhelmed as they got bored and took the initiative.";
+			}
+#else
 			if (HasTrait(girl, "Slut") || HasTrait(girl, "Nymphomaniac"))	//Gondra: Trait messages
 			{
 				sexMessage << "At first " << girlName << " seemed to be in her element surrounded by so many \"wonderful\" cocks, but it quickly became apparent that she does not have the experience to satisfy them all.";
@@ -9244,9 +11765,72 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " struggled to service everyone in the group that came to fuck her.";
 			}
+#endif
 		}
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
 		{
+#if SPICE
+			//SIN - more spice and variety
+			if (g_Dice.percent(35) && HasTrait(girl, "Plump"))
+			{
+				sexMessage << girlName << "'s jiggling body seemed to invite the cocks around her to prod her everywhere as she struggled to satisfy the demands of the group.";
+			}
+			else if (g_Dice.percent(35) && HasTrait(girl, "Dick-Sucking Lips"))
+			{
+				sexMessage << girlName << "'s full, soft lips looked like heaven. Her body was almost untouched as they all had a turn making love to her mouth. She was left ";
+				if (choice < 33)
+				{
+					sexMessage << "pretty nauseous from all the cum she swallowed down.";
+					UpdateStat(girl, STAT_HEALTH, -2);
+				}
+				else if (choice < 67)
+				{
+					sexMessage << "with a raw throat and cum all over her face and hair.";
+					UpdateStat(girl, STAT_HEALTH, -1);
+					UpdateStat(girl, STAT_DIGNITY, -1);
+				}
+				else
+				{
+					sexMessage << "broken, slumped naked in a corner, with cum and drool running from her mouth.";
+					UpdateStat(girl, STAT_SPIRIT, -2);
+				}
+			}
+			else if (g_Dice.percent(35) && (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") ||
+				HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits")))
+			{
+				sexMessage << "When " << girlName << "'s pussy, ass and mouth can't keep the group happy, they start squeezing her breasts together and fucking them too.";
+			}
+			else if (g_Dice.percent(30) && SheAintPretty)
+			{
+				sexMessage << girlName << " was barely able to handle this group. The whole experience was pretty bad for her, especially the bit where "
+					"they held her to the bed and deliberately splooged stinking cum in her eyes, nose and all over her head to hide 'that ugly-bitch face.'";
+			}
+			else if (g_Dice.percent(35) && (GirlGotNoClass || HasTrait(girl, "Open Minded")))
+			{
+				sexMessage << girlName << " struggled to keep everyone in the group happy, but impressed them with her lack of inhibitions. "
+					"Some girls have class, but " << girlName << " was happy to do anything they wanted.";
+			}
+			else if (g_Dice.percent(35) && SheAintPretty)
+			{
+				sexMessage << girlName << " didn't impress them with her looks, but she was okay in the bedroom.";
+			}
+			else if (choice < 25)	//Gondra: Vanilla Messages
+			{
+				sexMessage << girlName << " was barely able to service everyone, but managed to entertain her customers nonetheless.";
+			}
+			else if (choice < 50)
+			{
+				sexMessage << girlName << " used every trick she knew to keep the whole group satisfied.";
+			}
+			else if (choice < 75)
+			{
+				sexMessage << girlName << " lost count after the first four or five creampies, but they all seemed satisfied.";
+			}
+			else
+			{
+				sexMessage << girlName << " struggled to keep all the group satisfied all the time, but certainly gave everyone something to remember.";
+			}
+#else
 			if (HasTrait(girl, "Plump")) //Gondra: Trait messages
 			{
 				sexMessage << girlName << "'s jiggling body seemed to invite the cocks around her to prod her everywhere as she struggled to satisfy the demands of the group.";
@@ -9259,10 +11843,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " managed to keep the group of customers fucking her satisfied.";
 			}
+#endif
 		}
-		else if (check <60) //Gondra: the girl is reasonably skilled
+		else if (check < 60) //Gondra: the girl is reasonably skilled
 		{
-			if (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") || HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits")) //Gondra: Trait messages
+			if (g_Dice.percent(50) && (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") || HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits"))) //Gondra: Trait messages
 			{
 				sexMessage << girlName << "'s large chest was the center of attention as she serviced the group, being prodded and fucked by the customers numerous dicks, leaving her chest glazed with layers of cum";
 				if (HasTrait(girl, "Cum Addict"))
@@ -9274,7 +11859,40 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					sexMessage << " which took her quite a bit of time to clean up afterwards.";
 				}
 			}
-			else if (choice < 66)	//Gondra: Vanilla Messages
+#if SPICE
+			//SIN - a little more variety
+			else if (g_Dice.percent(66) && HasTrait(girl, "Shape Shifter"))
+			{
+				sexMessage << "As a shape shifter, " << girlName << " is able to fuck and suck the entire group simultaneously. It's not something they're ever likely to forget.";
+				customer->m_Stats[STAT_HAPPINESS] += 30;
+			}
+			else if (g_Dice.percent(66) && HasTrait(girl, "Shy"))
+			{
+				sexMessage << "For a 'shy' girl, " << girlName << " seems surprising comfortable fucking and sucking an group of random men.";
+			}
+			else if (g_Dice.percent(50) && (HasTrait(girl, "Plump") || HasTrait(girl, "Fat")))
+			{
+				sexMessage << girlName << " is pretty skilled at this. Her size just means there's plenty of girl go round.";
+			}
+			else if (g_Dice.percent(35) && (GirlGotNoClass || HasTrait(girl, "Open Minded")))
+			{
+				sexMessage << girlName << " worked hard to keep everyone happy, and impressed them with her lack on inhibitions. "
+					"Some girls won't lick a dick that just came inside her, but " << girlName << " didn't seem to care.";
+			}
+			else if (g_Dice.percent(35) && SheAintPretty)
+			{
+				sexMessage << "The gang were disappointed with " << girlName << " looks at first, but she soon made them forget about it.";
+			}
+			else if (choice < 25)
+			{
+				sexMessage << girlName << " had some sexy tricks for pleasuring more customers at once than they expected.";
+			}
+			else if (choice < 50)
+			{
+				sexMessage << girlName << " did a good job. When she got up, cum oozed out and was running down her leg for over a minute.";
+			}
+#endif
+			else if (choice < 75)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " managed to surprise a few of her customers as she pleasured more of them at the same time than they had thought possible.";
 			}
@@ -9283,9 +11901,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << " serviced everyone in the group of customers that fucked her.";
 			}
 		}
-		else if (check <80) //Gondra: the girl is very skilled
+		else if (check < 80) //Gondra: the girl is very skilled
 		{
-			if (HasTrait(girl, "Deep Throat") || HasTrait(girl, "No Gag Reflex")) //Gondra: Trait messages
+			//SIN - some reworking and a little added variety
+			if (g_Dice.percent(40) && (HasTrait(girl, "Deep Throat") || HasTrait(girl, "No Gag Reflex"))) //roll added to stop these common traits suppressing everything else
 			{
 				sexMessage << "After seeing " << girlName << "'s throat easily handling the largest cock in the group, they all took turns cumming deep in her throat.";
 				if (HasTrait(girl, "Cum Addict"))
@@ -9297,10 +11916,31 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					sexMessage << " Leaving her looking a tiny bit ill because of the sheer amount of cum forced down her throat in such a small amount of time."; // Gondra: chance to gain cum addict?
 				}
 			}
-			else if (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse"))
+#if SPICE
+			else if (g_Dice.percent(40) && HasTrait(girl, "Natural Pheromones"))
+			{
+				sexMessage << "Her powerful pheromones drove the group insane. Luckily she was skilled enough to keep up with them all. "
+					<< "Many orgasms later, she lay amid her boys in a naked bundle of sweat, semen and satisfied smiles.";
+			}
+#endif
+			else if (g_Dice.percent(50) && (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse")))
 			{
 				sexMessage << "While it certainly isn't the only thing the group uses, " << girlName << "'s great arse sees near constant use, always a fresh cock ready to make her backside ripple when the previous one is done filling her insides with creamy white cum.";
 			}
+#if SPICE
+			else if (g_Dice.percent(50) && (HasTrait(girl, "Slut") || HasTrait(girl, "Nymphomaniac")))
+			{
+				sexMessage << girlName << " was definitely in her element surrounded by so many \"wonderful\" cocks, and she refused to stop until she had drained every one dry.";
+			}
+			else if (g_Dice.percent(35) && (GirlGotNoClass || HasTrait(girl, "Open Minded")))
+			{
+				sexMessage << girlName << " impressed the group with her total absense of inhibitions, licking and sucking *anything* no matter where it had been, and doing everything they could imagine.";
+			}
+			else if (g_Dice.percent(35) && SheAintPretty)
+			{
+				sexMessage << "The gang were disappointed with " << girlName << " looks at first, but she soon made them forget about it.";
+			}
+#endif
 			else if (choice < 50)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " was praised for her enthusiastic multitasking, which left everyone satisfied and a bit exhausted.";
@@ -9321,12 +11961,108 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	case SKILL_LESBIAN:
 	{
-#if 1
 		if (z)
 		{
+			//SIN: Zombie lesbians? CHECK
 			//sexMessage << "Seems the customer was interested in knowing if a dead girls pussy tasted any different."; /*Its not great but try to get something.. wrote when net was down so spelling isnt right CRAZY*/
-			sexMessage << "(Z text not done)\n";
-			//break;
+			//sexMessage << "(Z text not done)\n";
+			int zLezroll = g_Dice.d100();
+			if (zLezroll < 45)
+			{
+				sexMessage << "This thrill-seeking woman wanted a zombie-girl to eat her pussy. ";
+				if (HasTrait(girl, "No Teeth"))
+				{
+					sexMessage << "Frighteningly, " << girlName << " had exactly the same idea. Luckily she has no teeth, so her furious efforts to consume "
+						<< "the customer's pussy only succeeded in bringing the thrilled woman to a powerful orgasm.";
+					customer->m_Stats[STAT_HAPPINESS] += 60;
+				}
+				else if (g_Dice.percent(girl->health()))
+				{
+					sexMessage << "Luckily, " << girlName << " has been fed recently and showed no interest.";
+				}
+				else if (g_Dice.percent(girl->intelligence()))
+				{
+					sexMessage << "Luckily, " << girlName << " has some of sense left and did not eat the woman.";
+				}
+				else
+				{
+					sexMessage << "Unfortunately, " << girlName << " had exactly the same idea, "
+						<< "and bit into the customer's cunt.\nHer shocked screams quickly brought help.\n";
+					customer->m_Stats[STAT_HAPPINESS] -= 50;
+				}
+				break;
+			}
+			else if (zLezroll < 85)
+			{
+				const int OPTIONS = 5;
+				sexMessage << "This slim, unnaturally pale female customer stared silently at your zombie-girl. She stood in the corner waiting silently until " << girlName << "'s handler left.\nThe guards heard the lock click shut";
+				switch (g_Dice%OPTIONS)
+				{
+				case 0:
+					sexMessage << " and after that, not another sound";
+					break;
+				case 1:
+					sexMessage << ". Then the screams started. They echoed through the halls for a solid hour";
+					break;
+				case 2:
+					sexMessage << ", and an Angelic singing begun, punctuated by strange zombie grunts";
+					break;
+				case 3:
+					sexMessage << ". Moments later, with no warning, several of the guards passed out. Suddenly there was a wraithlike scream that came from everywhere. Then silence";
+					break;
+				case 4:
+					sexMessage << " and not the slightest sound was heard, except for one guard who swore he could hear weeping";
+					break;
+				default:
+					sexMessage << " and what happened next can never be spoken of (Error)";
+					break;
+				}
+				sexMessage << ".\nAt the end of her time, the lock clicked open. Without a word, the woman walked out of the building.\n";
+				if (g_Dice.percent(40))
+				{
+					sexMessage << "\nFearing she hadn't paid your guards gave chase";
+					const int ESCAPE = 3;
+					switch (g_Dice%ESCAPE)
+					{
+					case 0:
+						sexMessage << ", but she was already gone";
+						break;
+					case 1:
+						sexMessage << " and caught her at the door. They surrounded her and demanded she turn around. She did. Your guards woke up minutes later with little idea what had happened";
+						break;
+					case 2:
+						sexMessage << ". They actually caught her, but for reasons none could explain, they let her go";
+						break;
+					default:
+						sexMessage << " and what happened next can never be spoken of (Error)";
+						break;
+					}
+					sexMessage << ".\n";
+				}
+				sexMessage << "\nRetrieving " << girlName << ", the handler found her rocking and making a strange noise.\nNext to her, a bundle of gold.\n\n";
+				customer->m_Stats[STAT_HAPPINESS] += 50;
+			}
+			else
+			{
+				sexMessage << "This slutty young woman was involved in some kind of bet that her mindblowing oral could even make an undead girl come.\n";
+				sexMessage << "She spread the zombie's legs, slipped her tongue into " << girlName << "'s cold pussy and";
+				if (zLezroll < 95)
+				{
+					sexMessage << " almost immediately threw up at the taste. She won't try that again.\n";
+					customer->m_Stats[STAT_HAPPINESS] -= 50;
+				}
+				else if (zLezroll < 87)
+				{
+					sexMessage << " retched repeatedly, complaining about the 'taste,' and gave it up for impossible after a few minutes\n";
+					customer->m_Stats[STAT_HAPPINESS] -= 30;
+				}
+				else
+				{
+					sexMessage << " warmed it up with her expert licks. Despite some early gagging, the customer ate her out for a long time. " << girlName << " just sat motionless with a slightly confused expression.\n";
+					customer->m_Stats[STAT_HAPPINESS] -= 10;
+				} 
+				break;
+			}
 		}
 
 		//Gondra: reworking this part with choice variable
@@ -9392,7 +12128,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				}
 				else
 				{
-					sexMessage << "declining the offer of the customer to return the favor without annoying her.";
+					sexMessage << "declining the customer's offer to return the favor without being rude.";
 				}
 			}
 			else if (HasTrait(girl, "Good Kisser")) //Gondra: Trait messages
@@ -9437,12 +12173,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			sexMessage << girlName << GetRandomLesString();
 		}
 		message += sexMessage.str();
-#endif
 	}break; //End of SKILL_LESBIAN Case
+
+
 	case SKILL_STRIP:
 	default:
 	{
-#if 1
 		if (z)
 		{
 			sexMessage << "While Zombies don't generally care about clothes, " << girlName << " did not so much \"strip\" as tear her clothes off.\n";
@@ -9451,31 +12187,59 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 		if (check < 20)
 		{
-			if (g_Dice.percent(30)) sexMessage << girlName << " shyly took her clothes off in front of the customer.";
+			if (SheAintPretty && g_Dice.percent(60)) sexMessage << girlName << " was self-conscious of her looks and gave a weak performance.";
+			else if (g_Dice.percent(30)) sexMessage << girlName << " shyly took her clothes off in front of the customer.";
 			else /*              */	sexMessage << girlName << " stared at the floor as she stood there awkwardly taking off her clothes in front of the customer. She was embarrassed and kept covering herself with her arms and hands.";
 		}
 		else if (check < 40)
 		{
-			if (g_Dice.percent(30)) sexMessage << girlName << " coyly took her clothes off in front of the customer.";
+			if (girl->is_pregnant() && g_Dice.percent(60)) sexMessage << girlName << " stripped off well, despite her pregnancy.";
+			else if (g_Dice.percent(30)) sexMessage << girlName << " coyly took her clothes off in front of the customer.";
 			else /*              */	sexMessage << girlName << " made occasional eye contact as she coyly took her clothes off in front of the customer, moving around a little so the customer could see better.";
 		}
 		else if (check < 60)
 		{
-			if (g_Dice.percent(30)) sexMessage << girlName << " hotly took her clothes off in front of the customer.";
+			if (SheAintPretty && g_Dice.percent(60)) sexMessage << girlName << " isn't the most beautiful, but gave a good enough show that the customer didn't notice.";
+			else if (g_Dice.percent(30)) sexMessage << girlName << " hotly took her clothes off in front of the customer.";
 			else /*              */	sexMessage << girlName << " moved around and stripped off her clothes in front of the customer.";
 		}
 		else if (check < 80)
 		{
-			if (g_Dice.percent(30)) sexMessage << girlName << " proudly took her clothes off in front of the customer.";
+			if (girl->is_pregnant() && g_Dice.percent(60)) sexMessage << girlName << " stripped off incredibly well, despite the bulge in her belly.";
+			else if (GirlGotNoClass && g_Dice.percent(40)) sexMessage << girlName << " clearly enjoyed taking everything off in front of the seated customer, and masturbated right in front of his face.";
+			else if (g_Dice.percent(30)) sexMessage << girlName << " proudly took her clothes off in front of the customer.";
 			else /*              */	sexMessage << girlName << " sexily danced around the customer stripping off her clothes.";
 		}
 		else
 		{
-			if (g_Dice.percent(30)) sexMessage << girlName << " joyously took her clothes off in front of the customer.";
+			if (SheAintPretty && g_Dice.percent(50)) sexMessage << girlName << " gave a such an energetic, joyous and sensual strip-show that the customer didn't even notice her plain face.";
+			else if (GirlGotNoClass && g_Dice.percent(40))
+			{
+				sexMessage << girlName << " was clearly aroused stripping everything off right in front of the seated customer";
+				switch (g_Dice % 4)
+				{
+				case 0:
+					sexMessage << ", fisting herself to orgasm inches from his nose.";
+					break;
+				case 1:
+					sexMessage << " before bending over and fingering both holes right in front of his face.";
+					break;
+				case 2:
+					sexMessage << " and stuffing her tiny, cotton panties up her vagina, before inviting the customer to pull back them out.";
+					break;
+				case 3:
+					sexMessage << ". She then took a few steps back, spread her legs, and pissed on her hands - afterwards licking and sucking her fingers in front of the astonished customer.";
+					break;
+				default:
+					sexMessage << " and doing some pr(E)tty dirty stuff in front of him.";
+					break;
+				}
+				
+			}
+			else if (g_Dice.percent(30)) sexMessage << girlName << " joyously took her clothes off in front of the customer.";
 			else /*              */	sexMessage << girlName << " sensuously prowled around the customer stripping off her clothes, while caressing herself, always making sure the customer had the best possible view.";
 		}
 		message += sexMessage.str(); //Gondra: add our sexMessage to our message string
-#endif
 	}break; //End of SKILL_STRIP Case
 	}	//end switch
 
@@ -9486,7 +12250,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	customer->m_Stats[STAT_HAPPINESS] = min(100, (int)customer->m_Stats[STAT_HAPPINESS]);
 
 	message += (SexType == SKILL_GROUP) ? "\nThe customers " : "\nThe customer ";
-	/* */if (customer->m_Stats[STAT_HAPPINESS] > 80)	message += "swore they would come back.";
+	/* */if (customer->m_Stats[STAT_HAPPINESS] > 99)	message += "swore it was the best ever.";
+	else if (customer->m_Stats[STAT_HAPPINESS] > 80)	message += "swore they would come back.";
 	else if (customer->m_Stats[STAT_HAPPINESS] > 60)	message += "enjoyed the experience.";
 	else if (customer->m_Stats[STAT_HAPPINESS] > 50)	message += "has had a better experience before."; //added this CRAZY
 	else if (customer->m_Stats[STAT_HAPPINESS] > 40)	message += "thought it was okay."; //added this CRAZY
@@ -9511,14 +12276,28 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		/* */if (check < 20)	message += "\nThough she had a tough time with it, she was horny and still managed to gain some little enjoyment.";
 		else if (check < 40)	message += "\nShe considered it a learning experience and enjoyed it a bit.";
 		else if (check < 60)	message += "\nShe enjoyed it a lot and wanted more.";
-		else if (check < 80)	message += "\nIt was nothing new for her, but she really does appreciate such work.";
-		else /*           */	message += "\nIt seems that she lives for this sort of thing.";
+		else if (check < 80)	message += "\nIt was nothing new for her, but she really does appreciate such work.";//UpdateStat(girl, STAT_SANITY, 1);
+		else /*           */	message += "\nIt seems that she lives for this sort of thing.";//UpdateStat(girl, STAT_SANITY, 2);
 		UpdateStat(girl, STAT_HAPPINESS, GetStat(girl, STAT_LIBIDO) / 5);
 	}
 	else
 	{
-		message += "\nShe wasn't really in the mood.";
-		UpdateStat(girl, STAT_HAPPINESS, -1);
+		if (check < 30)
+		{
+			message += "\nShe wasn't in the mood at all and didn't enjoy being used this way.";
+			UpdateStat(girl, STAT_HAPPINESS, -2);
+			//UpdateStat(girl, STAT_SANITY, -1);
+		}
+		else if (check < 60)
+		{
+			message += "\nShe wasn't really in the mood.";
+			UpdateStat(girl, STAT_HAPPINESS, -1);
+		}
+		else
+		{
+			message += "\nShe didn't need this right now, but was happy enough to do it for the ";
+			message += (customer->m_IsWoman ? "girl." : "guy.");
+		}
 	}
 
 	// special cases for certain sex types
@@ -9539,10 +12318,37 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_HEALTH, -3);
+			//UpdateStat(girl, STAT_SANITY, -3);
 		}
 		UpdateStatTemp(girl, STAT_LIBIDO, -10);
 		UpdateStat(girl, STAT_SPIRIT, -1);
 		STDchance += 30;
+
+	 //SIN - GIFT DROP
+		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
+		{
+			bool keep = false;
+			message += "\n\nAfterwards he stuffed a toy up " + girlName + "'s cum lubricated ass, telling her it was a 'gift.' ";
+			if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+			{
+				message += "She kept it in while she dressed and tidied. She'll definitely keep ";
+				keep = true;
+			}
+			else if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+			{
+				message += "As soon as he was gone, she pulled out the stinking thing and threw it in the trash.";
+			}
+			else
+			{
+				message += "She decided to keep ";
+				keep = true;
+			}
+			if (keep)
+			{
+				if (g_Dice.percent(66)) g_Girls.AddInv(girl, g_InvManager.GetItem("Buttplug")), message += "this buttplug.";
+				else g_Girls.AddInv(girl, g_InvManager.GetItem("Anal Beads")), message += "these anal beads.";
+			}
+		}
 	}break;
 
 	case SKILL_BDSM:
@@ -9555,11 +12361,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (check <= 30)	// if unexperienced then will get hurt
 		{
 			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
-			else /*              */	message += "\nHer inexperience hurt her a little. She's not used to haveing pain in those places.";
+			else /*              */	message += "\nHer inexperience hurt her a little. She's not used to having pain in those places.";
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
+			//UpdateStat(girl, STAT_SANITY, -5);
 		}
 		if (!customer->m_IsWoman)
 		{
@@ -9569,6 +12376,32 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 		UpdateStatTemp(girl, STAT_LIBIDO, -5);
 		UpdateStat(girl, STAT_SPIRIT, -1);
+
+	 //SIN - GIFT DROP
+		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
+		{
+			bool keep = false;
+			message += "\n\nAs he untied " + girlName + ", he told her she could keep the collar. ";
+			if (g_Girls.HasTrait(girl, "Masochist") || g_Girls.HasTrait(girl, "Slut"))
+			{
+				message += "She agreed. It's exactly what she deserves: a ";
+				keep = true;
+			}
+			else if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+			{
+				message += "\nA collar?! As soon as he was gone, she ripped it off and threw it in the trash.";
+			}
+			else
+			{
+				message += "She decided to keep this ";
+				keep = true;
+			}
+			if (keep)
+			{
+				if (g_Dice.percent(66)) g_Girls.AddInv(girl, g_InvManager.GetItem("Spiked Collar")), message += "spiked collar.";
+				else g_Girls.AddInv(girl, g_InvManager.GetItem("Slut Collar")), message += "'slut' collar.";
+			}
+		}
 	}break;
 
 	case SKILL_NORMALSEX:
@@ -9586,6 +12419,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
+			//UpdateStat(girl, STAT_SANITY, -2);
 		}
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
@@ -9594,7 +12428,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			contraception = false;							// none needed
 			STDchance += 16;								// less chance than not using but more chance than using
 		}
-		//SIN: added traits
+		//Trait modifications
 		else if (HasTrait(girl, "Cum Addict") && girl->m_UseAntiPreg &&
 			g_Dice.percent(GetStat(girl, STAT_LIBIDO)) && !g_Dice.percent(GetStat(girl, STAT_INTELLIGENCE)))
 		{
@@ -9612,6 +12446,32 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			STDchance += (contraception ? 4 : 40);
 		}
 		UpdateStatTemp(girl, STAT_LIBIDO, -15);
+
+	 //SIN - GIFT DROP
+		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
+		{
+			bool keep = false;
+			message += "\n\nAfterwards he squeezed a toy into " + girlName + "'s cummy cunt, leaving it there as a 'gift.' ";
+			if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+			{
+				message += "While he was getting dressed, she noisily tried out the new ";
+				keep = true;
+			}
+			else if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+			{
+				message += "As soon as he was gone, she pulled out the filthy thing and threw it in the trash.";
+			}
+			else
+			{
+				message += "She decided to keep ";
+				keep = true;
+			}
+			if (keep)
+			{
+				if (g_Dice.percent(66)) g_Girls.AddInv(girl, g_InvManager.GetItem("Dildo")), message += "dildo.";
+				else g_Girls.AddInv(girl, g_InvManager.GetItem("Studded Dildo")), message += "studded dildo.";
+			}
+		}
 	}break;
 
 	case SKILL_ORALSEX:
@@ -9630,6 +12490,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				UpdateStat(girl, STAT_SPIRIT, -3);
 				UpdateStat(girl, STAT_CONFIDENCE, -1);
 				UpdateStat(girl, STAT_HEALTH, -3);
+				//UpdateStat(girl, STAT_SANITY, -3);
 			}
 			else
 			{
@@ -9638,10 +12499,20 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				UpdateStat(girl, STAT_HAPPINESS, -2);
 				UpdateStat(girl, STAT_SPIRIT, -3);
 				UpdateStat(girl, STAT_CONFIDENCE, -1);
+				//UpdateStat(girl, STAT_SANITY, -1);
 			}
 		}
 		STDchance += 10;
 		UpdateStatTemp(girl, STAT_LIBIDO, -2);
+
+	 //SIN - GIFT DROP
+		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
+		{
+			bool keep = false;
+			message += "\n\nAfterwards he gave " + girlName + " a gift to help her give head in future. She got ";
+			if (g_Dice.percent(50)) g_Girls.AddInv(girl, g_InvManager.GetItem("Oral Sex Candy")), message += "some delicious oral sex candies.";
+			else g_Girls.AddInv(girl, g_InvManager.GetItem("Knee Pads")), message += "some comfortable knee pads.";
+		}
 	}break;
 
 	case SKILL_TITTYSEX:
@@ -9657,6 +12528,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
+			//UpdateStat(girl, STAT_SANITY, -1);
 		}
 		STDchance += 1;
 		UpdateStatTemp(girl, STAT_LIBIDO, -2);
@@ -9712,6 +12584,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
+			//UpdateStat(girl, STAT_SANITY, -4);
 		}
 		UpdateStat(girl, STAT_SPIRIT, -1);	// is pretty degrading
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
@@ -9723,6 +12596,27 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			STDchance += (contraception ? 2 : 20);
 		}
 		UpdateStatTemp(girl, STAT_LIBIDO, -10);
+
+	//SIN - GIFT DROP
+		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 50)
+		{
+			bool keep = true;
+			if (g_Dice.percent(90))
+			{
+				message += "\n\nAfterward the customer gave " + girlName + " a pet collar as a gift.";
+				if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+				{
+					message += "Annoyed, she later threw out this demeaning trash.";
+					keep = false;
+				}
+				if (keep) g_Girls.AddInv(girl, g_InvManager.GetItem("Pet Collar"));
+			}
+			else
+			{
+				message += "\n\nAfterward the customer gave " + girlName + " some cute Paw-Print Teddy lingerie as a gift.";
+				g_Girls.AddInv(girl, g_InvManager.GetItem("Paw-Print Teddy"));
+			}
+		}
 	}break;
 
 	case SKILL_GROUP:
@@ -9740,6 +12634,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 			UpdateStat(girl, STAT_HEALTH, -3);
+			//UpdateStat(girl, STAT_SANITY, -3);
 		}
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
@@ -9748,7 +12643,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			contraception = false;							// none needed
 			STDchance += ((4 + customer->m_Amount) * 4);	// less chance than not using but more chance than using
 		}
-		//SIN: added traits
+		//trait variation
 		else if (HasTrait(girl, "Cum Addict") && girl->m_UseAntiPreg &&
 			g_Dice.percent(GetStat(girl, STAT_LIBIDO)) && !g_Dice.percent(GetStat(girl, STAT_INTELLIGENCE)))
 		{
@@ -9766,6 +12661,37 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			contraception = girl->calc_group_pregnancy(customer, good, 1.5);
 			STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
 		}
+	 //GIFT DROP
+		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 50)
+		{
+			if (g_Dice.percent(90))
+			{
+				message += "\n\nAfter the group had left, " + girlName + " found they had filled her decorative goblet with their cum. ";
+				if (g_Girls.HasTrait(girl, "Cum Addict"))
+				{
+					message += "She immediately swallowed it all down.";
+				}
+				else if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+				{
+					message += "Annoyed, she threw the goblet, and its disgusting contents, in the trash.";
+				}
+				else
+				{
+					message += "She decided to keep it.";
+					g_Girls.AddInv(girl, g_InvManager.GetItem("Goblet of Cum"));
+				}
+			}
+			else if (customer->m_Stats[STAT_HAPPINESS] > 90)
+			{
+				g_Girls.AddInv(girl, g_InvManager.GetItem("Ring of Hivemind"));
+				message += "\n\nThe grateful group were so exhausted they forgot to take their Ring of Hivemind. It's hers now.";
+			}
+			else
+			{
+				g_Girls.AddInv(girl, g_InvManager.GetItem("Herpes Cure"));
+				message += "\n\nWorryingly, as she tidied up she found a Herpes Cure dropped under the bed. It's hers now.";
+			}
+		}
 		UpdateStatTemp(girl, STAT_LIBIDO, -20);
 	}break;
 
@@ -9782,9 +12708,36 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_HAPPINESS, -2);
 			UpdateStat(girl, STAT_SPIRIT, -3);
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
+			//UpdateStat(girl, STAT_SANITY, -1);
 		}
 		STDchance += 5;
 		UpdateStatTemp(girl, STAT_LIBIDO, -10);
+
+	 //SIN - GIFT DROP
+		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
+		{
+			bool keep = true;
+			if (g_Dice.percent(90))
+			{
+				message += "\n\nAfterwards the woman let " + girlName + " keep the double-dildo they had shared.";
+				if (g_Girls.HasTrait(girl, "Straight"))
+				{
+					message += "\nBeing straight, she had no desire to keep it and threw it out later.";
+					keep = false;
+				}
+				if (keep) g_Girls.AddInv(girl, g_InvManager.GetItem("Dildo"));
+			}
+			else
+			{
+				message += "\n\nThe woman gave " + girlName + " an expensive, illustrated book on lesbian sex.";
+				if (g_Girls.HasTrait(girl, "Straight"))
+				{
+					message += "\nBeing straight, she found it kinda gross and threw it out.";
+					keep = false;
+				}
+				if (keep) g_Girls.AddInv(girl, g_InvManager.GetItem("Manual of Two Roses"));
+			}
+		}
 	}break;
 
 	case SKILL_STRIP:
@@ -9863,6 +12816,35 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (virgincheck) g_Girls.LoseVirginity(girl);
 	}
 
+	//SIN - poor accomodation minus...
+	if (g_Dice.percent(3) && girl->m_AccLevel < 2)
+	{
+		message += "\n\nOn the way out, the customer mentioned " + girlName + "'s \"awful personal hygiene\" to one of your staff.\n";
+		switch (g_Dice % 5)
+		{
+		case 0:
+			message += "\"She has cum-dreadlocks in her hair!\"";
+			break;
+		case 1:
+			message += "\"The stink when I took her panties off...\"";
+			break;
+		case 2:
+			message += "\"Her breath stank of cock.\"";
+			break;
+		case 3:
+			message += "\"There were stains all over her clothes and bed.\"";
+			break;
+		case 4:
+			message += "\"Her kiss tasted like horse cum. And do NOT ask how I know what that tastes like...\"";
+			break;
+		default:
+			message += "\"Dirty girl. And not in a pl(E)asant way.\""; //(E)rror
+			break;
+		}
+		message += "\nIt's not really her fault: the room/closet you have her living in doesn't even have a sink.";
+		customer->m_Stats[STAT_HAPPINESS] -= 15;
+	}
+
 	// Now calculate other skill increases
 	int skillgain = 4;	int exp = 5;
 	if (HasTrait(girl, "Quick Learner"))		{ skillgain += 1; exp += 2; }
@@ -9902,8 +12884,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		case SKILL_LESBIAN:			enjoy += 1; break;
 			// Nymphomaniac would rather have something inside her so if she can't, she does not enjoy it as much
 		case SKILL_STRIP:			enjoy -= 2; break;
-		case SKILL_TITTYSEX:
-		case SKILL_HANDJOB:
+		case SKILL_TITTYSEX:		enjoy -= 1; break;
+		case SKILL_HANDJOB:			enjoy -= 1; break;
 		case SKILL_FOOTJOB:			enjoy -= 1; break;
 		case SKILL_ORALSEX:
 		default:
@@ -9955,7 +12937,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	int health = GetStat(girl, STAT_HEALTH);
 	/* */if (health > 95)	{ STDchance = 1; }
 	else if (health > 30)	{ STDchance /= (health - 25) / 5; }
-	else if (health < 30)	{ STDchance *= (35 - health) / 10; }
+	else /*if (health < 30)*/	{ STDchance *= (35 - health) / 10; } //SIN: check not required
 	if (STDchance < 0.1)	STDchance = 0.1;
 
 	if (HasTrait(girl, "AIDS") && !customer->m_HasAIDS && g_Dice.percent(STDchance))
@@ -10444,6 +13426,365 @@ string cGirls::GetRandomSexString()
 	OStr << gettext("\n");
 	return OStr.str();
 }
+
+//SIN - adding
+string cGirls::GetRandomOralSexString()
+{
+	int roll1 = 0, roll2 = 0, roll3 = 0, random = 0;
+	stringstream OStr;
+	OStr << " ";  // Consistency
+	// Roll #1
+# pragma region oral1
+	roll1 = g_Dice % 6 + 1;   // << updated??
+	switch (roll1)
+	{
+	case 1:
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("knelt in front of");
+		else if (random <= 4)	OStr << gettext("bowed deeply to");
+		else if (random <= 6)	OStr << gettext("fingered herself in front of");
+		else if (random <= 8)	OStr << gettext("stripped off before");
+		else /*            */	OStr << gettext("smiled hungrily at");
+		OStr << gettext(" the client, and grabbed his ");
+		random = g_Dice % 10 + 1;
+		/* */if (random == 1)	OStr << gettext("meat");
+		else if (random == 2)	OStr << gettext("one-eyed dragon");
+		else if (random == 3)	OStr << gettext("cock");
+		else if (random == 4)	OStr << gettext("trouser-snake");
+		else if (random == 5)	OStr << gettext("love train");
+		else if (random == 6)	OStr << gettext("bald bishop");
+		else if (random == 7)	OStr << gettext("fuckpole");
+		else if (random == 8)	OStr << gettext("meaty womb raider");
+		else if (random == 9)	OStr << gettext("crankshaft");
+		else /*            */	OStr << gettext("greasy gutbuster");
+		break;
+	case 2:
+		OStr << gettext("made him sit on a chair and watch as she 'fellated' a ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("banana");
+		else if (random <= 4)	OStr << gettext("dildo");
+		else if (random <= 6)	OStr << gettext("bottle");
+		else if (random <= 8)	OStr << gettext("broomstick");
+		else /*            */	OStr << gettext("bedknob");
+		OStr << gettext(" while ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("never breaking eye-contact");
+		else if (random <= 4)	OStr << gettext("fingering her clit");
+		else if (random <= 6)	OStr << gettext("rubbing her nipples");
+		else if (random <= 8)	OStr << gettext("another girl watched");
+		else /*            */	OStr << gettext("bending waaaaayyy over");
+		break;
+	case 3:
+		OStr << gettext("had some fun with his ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("foot");
+		else if (random <= 4)	OStr << gettext("tickle");
+		else if (random <= 6)	OStr << gettext("hair");
+		else if (random <= 8)	OStr << gettext("butt");
+		else /*            */	OStr << gettext("food");
+		OStr << gettext(" fetish and gave him an extended ");
+		random = g_Dice % 6 + 1;
+		/* */if (random <= 2)	OStr << gettext("ball");
+		else if (random <= 4)	OStr << gettext("anal");
+		else /*            */	OStr << gettext("cock");
+		OStr << gettext(" 'massage'");
+		break;
+	case 4:
+		OStr << gettext("dressed as a ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("schoolgirl");
+		else if (random <= 4)	OStr << gettext("girl-next-door");
+		else if (random <= 6)	OStr << gettext("cheerleader");
+		else if (random <= 8)	OStr << gettext("baby-sitter");
+		else /*            */	OStr << gettext("priestess");
+		OStr << gettext(" and begged him to ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("let her know what cum tastes like");
+		else if (random <= 4)	OStr << gettext("teach her how to please a man");
+		else if (random <= 6)	OStr << gettext("let her taste his love");
+		else if (random <= 8)	OStr << gettext("use her worthless face");
+		else /*            */	OStr << gettext("be gentle... but not too gentle");
+		break;
+	case 5:
+		OStr << gettext("lay naked across ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("the bed");
+		else if (random <= 4)	OStr << gettext("the desk");
+		else if (random <= 6)	OStr << gettext("some cushions");
+		else if (random <= 8)	OStr << gettext("a cold table-top");
+		else /*            */	OStr << gettext("a pile of boxes");
+		OStr << gettext(" with her head hanging over the edge ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("and her mouth wide open");
+		else if (random <= 4)	OStr << gettext("and her throat ready");
+		else if (random <= 6)	OStr << gettext("ready for a face-fuck");
+		else if (random <= 8)	OStr << gettext("and her lips puckered");
+		else /*            */	OStr << gettext("and a craving in her eyes");
+		break;
+	case 6:
+		OStr << gettext("warmed up by ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("shoving a giant dildo down her throat");
+		else if (random <= 4)	OStr << gettext("deepthroating a perfume bottle");
+		else if (random <= 6)	OStr << gettext("shoving her fingers down her throat");
+		else if (random <= 8)	OStr << gettext("gagging down her favourite butt-plug");
+		else /*            */	OStr << gettext("deepthroatng a sacred religious symbol");
+		OStr << gettext(", as she absently ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("rubbed her clit");
+		else if (random <= 4)	OStr << gettext("pinched her nipples");
+		else if (random <= 6)	OStr << gettext("flicked her bean");
+		else if (random <= 8)	OStr << gettext("fisted herself");
+		else /*            */	OStr << gettext("fingered her anus");
+		break;
+	}
+# pragma endregion oral1
+	// Roll #2
+# pragma region oral2
+	OStr << ". Finally, ";
+	roll2 = g_Dice % 7 + 1;  //<<< updated????
+	switch (roll2)
+	{
+	case 1:
+		OStr << gettext("her ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OStr << gettext("soft-lips made love to his");
+		else if (random <= 4)	OStr << gettext("open throat sucked down his");
+		else if (random <= 6)	OStr << gettext("tongue milked his");
+		else /*            */	OStr << gettext("mouth energetically fucked his");
+		OStr << gettext(" ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OStr << gettext("rock hard cock");
+		else if (random <= 4)	OStr << gettext("slippery man-meat");
+		else if (random <= 6)	OStr << gettext("greasy sex-pole");
+		else /*            */	OStr << gettext("fat flesh-flute");
+		OStr << gettext(" until ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("hot cum was forced down her throat");
+		else if (random <= 4)	OStr << gettext("cum splattered across her face");
+		else if (random <= 6)	OStr << gettext("she received a spunky facial");
+		else if (random <= 8)	OStr << gettext("cum was shooting out of her nose");
+		else /*            */	OStr << gettext("her mouth was shot full of semen");
+		OStr << gettext(" courtesy of");
+		break;
+	case 2:
+		OStr << gettext("her jaw felt like it was gonna lock as ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("she greedily gulped his meat");
+		else if (random <= 4)	OStr << gettext("she relentlessly sucked him off");
+		else if (random <= 6)	OStr << gettext("her mouth expertly milked his manhood");
+		else if (random <= 8)	OStr << gettext("his cock slipped into her throat");
+		else /*            */	OStr << gettext("she sucked and licked his cock");
+		OStr << gettext(" until ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("a warm desposit was left in her mouth");
+		else if (random <= 4)	OStr << gettext("cum was pumped directly into her stomach");
+		else if (random <= 6)	OStr << gettext("her eyes bulged as cum filled her head");
+		else if (random <= 8)	OStr << gettext("cum was blasted into her face");
+		else /*            */	OStr << gettext("sperm dripped from her mouth and nose");
+		OStr << gettext(" courtesy of");
+		break;
+	case 3:
+		OStr << gettext("she was face-fucked ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("blind");
+		else if (random <= 4)	OStr << gettext("raw");
+		else if (random <= 6)	OStr << gettext("senseless");
+		else if (random <= 8)	OStr << gettext("for hours");
+		else /*            */	OStr << gettext("against the wall");
+		OStr << gettext(" by");
+		break;
+	case 4:
+		OStr << gettext("her throat was stuffed full of ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("hot cock");
+		else if (random <= 4)	OStr << gettext("male anatomy");
+		else if (random <= 6)	OStr << gettext("her favourite thing");
+		else if (random <= 8)	OStr << gettext("quivering pork sword");
+		else /*            */	OStr << gettext("stanky dick");
+		OStr << gettext(" until ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("her eyes bulged");
+		else if (random <= 4)	OStr << gettext("her ears popped");
+		else if (random <= 6)	OStr << gettext(", with a shudder, cum was shot straight into her gut");
+		else if (random <= 8)	OStr << gettext("he pulled out and splurged in her face");
+		else /*            */	OStr << gettext("cum was left drooling from her mouth");
+		OStr << gettext(" thanks to");
+		break;
+	case 5:
+		OStr << gettext("she took his cock in her mouth and expertly ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("sucked it down");
+		else if (random <= 4)	OStr << gettext("licked from smooth head to hairy base");
+		else if (random <= 6)	OStr << gettext("pleasured the head with her soft lips");
+		else if (random <= 8)	OStr << gettext("deepthroated the lot");
+		else /*            */	OStr << gettext("massaged it with her lips while licking with her tongue");
+		OStr << gettext(" while her hands ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("played with his balls");
+		else if (random <= 4)	OStr << gettext("cradled his balls");
+		else if (random <= 6)	OStr << gettext("gripped his butt");
+		else if (random <= 8)	OStr << gettext("stayed behind her back");
+		else /*            */	OStr << gettext("fingered his ass-hole");
+		OStr << gettext(" until she got a hot mouthful of cum from");
+		break;
+	case 6:
+		OStr << gettext("the customer climbed over, and full-on fucked her face. She ended up ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("with a warm desposit filling her mouth");
+		else if (random <= 4)	OStr << gettext("with her gut pumped full of cum");
+		else if (random <= 6)	OStr << gettext("spunked up from nose to navel");
+		else if (random <= 8)	OStr << gettext("with cum blasted in her face");
+		else /*            */	OStr << gettext("with sperm exploding from her mouth and nose");
+		OStr << gettext(" courtesy of");
+		break;
+	case 7:
+		OStr << gettext("she clamped her lips around his dick and wouldn't stop ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("sucking and stimulating it with her mouth");
+		else if (random <= 4)	OStr << gettext("orally fucking it");
+		else if (random <= 6)	OStr << gettext("deepthroating it");
+		else if (random <= 8)	OStr << gettext("pumping it");
+		else /*            */	OStr << gettext("gulping it down");
+		OStr << gettext(" until she had swallowed down ") << (g_Dice % 5 + 2) << gettext(" loads of cum from ");
+		break;
+	}
+# pragma endregion oral2
+	// Roll #3
+# pragma region oral3
+	OStr << " ";	// Consistency
+	roll3 = g_Dice % 18 + 1;
+	switch (roll3)
+	{
+	case 1:
+		OStr << gettext("the guy ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("wearing three amulets of the sex elemental.");
+		else if (random <= 4)	OStr << gettext("wearing eight rings of the horndog.");
+		else if (random <= 6)	OStr << gettext("wearing a band of invulnerability.");
+		else if (random <= 8)	OStr << gettext("in the Guy mask.");
+		else /*            */	OStr << gettext("with the funny eyes.");
+		break;
+	case 2: OStr << gettext("Poseidon, God of Salty Seamen!!!!"); break;
+	case 3:
+		OStr << gettext("the good ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("Lord Mayor.");
+		else if (random <= 4)	OStr << gettext("samaritan.");
+		else if (random <= 6)	OStr << gettext("Reverend.");
+		else if (random <= 8)	OStr << gettext("shepherd.");
+		else /*            */	OStr << gettext("husband (a blowjob isn't cheating).");
+		break;
+	case 4: OStr << gettext("the surprisingly endowed dwarven gentleman."); break;
+	case 5: OStr << gettext("Colonel Mustard (right after he did it with the candlestick)."); break;
+	case 6:
+		OStr << gettext("the ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << "talking bear.";
+		else if (random <= 4)	OStr << gettext("bearded biker dude.");
+		else if (random <= 6)	OStr << gettext("dude who looked like a lady.");
+		else if (random <= 8)	OStr << gettext("mischievous monkey man.");
+		else /*            */	OStr << gettext("escaped pensioner.");
+		break;
+	case 7:
+		OStr << gettext("the unbelievably well behaved ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OStr << gettext("Pink Petal forum member.");
+		else if (random <= 4)	OStr << gettext("Judge.");
+		else if (random <= 6)	OStr << gettext("pirate.");
+		else /*            */	OStr << gettext("ninja.");
+		break;
+	case 8:
+		random = g_Dice % 20 + 1;
+		OStr << gettext("the infamous ");
+		/* */if (random <= 2)	OStr << gettext("Lord");
+		else if (random <= 4)	OStr << gettext("Master");
+		else if (random <= 6)	OStr << gettext("Saint");
+		else if (random <= 8)	OStr << gettext("Lieutenant");
+		else if (random <= 10)	OStr << gettext("Master");
+		else if (random <= 12)	OStr << gettext("Doctor");
+		else if (random <= 14)	OStr << gettext("Gardener");
+		else if (random <= 16)	OStr << gettext("Blacksmith");
+		else if (random <= 18)	OStr << gettext("DockMaster");
+		else /*            */	OStr << gettext("Sherrif");
+		OStr << gettext(" Peterson.");
+		break;
+	case 9: OStr << gettext("this regular customer."); break;
+	case 10: OStr << gettext("the pesky poltergeist."); break;
+	case 11:
+		OStr << gettext("her ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("platonic guy friend, who she'd always thought of more as a brother.");
+		else if (random <= 4)	OStr << gettext("personal trainer, Buck.");
+		else if (random <= 6)	OStr << gettext("excited former-classmate.");
+		else if (random <= 8)	OStr << gettext("father's best-friend.");
+		else /*            */	OStr << gettext("kindly uncle.");
+		break;
+	case 12:
+		OStr << gettext("the clockwork man! (With no sensation in his clockwork ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("tool");
+		else if (random <= 4)	OStr << gettext("head");
+		else if (random <= 6)	OStr << gettext("fingers");
+		else if (random <= 8)	OStr << gettext("attachment");
+		else /*            */	OStr << gettext("clock");
+		OStr << gettext(" and no sense to ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("stop");
+		else if (random <= 4)	OStr << gettext("slow down");
+		else if (random <= 6)	OStr << gettext("moderate");
+		else if (random <= 8)	OStr << gettext("be gentle");
+		else
+		{
+			OStr << gettext("stop at ");
+			random = g_Dice % 50 + 30;
+			OStr << random;
+			OStr << gettext(" orgasms");
+		}
+		OStr << gettext(".)");
+		break;
+	case 13:
+		// MYR: This one gives useful advice to the players.  A gift from us to them.
+		OStr << gettext("the Brothel Master developer. ");
+		random = g_Dice % 20 + 1;
+		/* */if (random <= 2)	OStr << gettext("(Quick learner is a great talent to have.)");
+		else if (random <= 4)	OStr << gettext("(Don't ignore the practice skills option for your girls.)");
+		else if (random <= 6)	OStr << gettext("(Train your gangs.)");
+		else if (random <= 8)	OStr << gettext("(Every time you restart the game, the shop inventory is reset.)");
+		else if (random <= 10)	OStr << gettext("(Invulnerable (incorporeal) characters should be exploring the catacombs.)");
+		else if (random <= 12)	OStr << gettext("(High dodge gear is great for characters exploring the catacombs.)");
+		else if (random <= 14)	OStr << gettext("(For a character with a high constitution, experiment with working on both shifts.)");
+		else if (random <= 16)	OStr << gettext("(Matrons need high service skills.)");
+		else if (random <= 18)	OStr << gettext("(Girls see a max of 3 people for high reputations, 3 for high appearance and 3 for high skills.)");
+		else /*            */	OStr << gettext("(Don't overlook the bribery option in the town hall and the bank.)");
+		break;
+	case 14: OStr << gettext("a guy she never noticed at school."); break;
+	case 15:
+		OStr << gettext("a man cursed with permanent 'hardness.'");	break;
+	case 16:
+		OStr << gettext("the ");
+		random = g_Dice % 8 + 1;
+		/* */if (random <= 2)	OStr << gettext("mayor");
+		else if (random <= 4)	OStr << gettext("bishop");
+		else if (random <= 6)	OStr << gettext("town treasurer");
+		else /*            */	OStr << gettext("school principle");
+		OStr << gettext(", on one of his regular health checkups.");
+		break;
+	case 17: OStr << gettext("an young guy in ");
+		random = g_Dice % 10 + 1;
+		/* */if (random <= 2)	OStr << gettext("a dress.");
+		else if (random <= 4)	OStr << gettext("robes.");
+		else if (random <= 6)	OStr << gettext("handcuffs.");
+		else if (random <= 8)	OStr << gettext("a straight-jacket.");
+		else /*            */	OStr << gettext("trouble with the mob.");
+		break;
+	case 18: OStr << gettext("the untapped virgin."); break;
+	}
+# pragma endregion oral3
+	OStr << gettext("\n");
+	return OStr.str();
+}
+
 string cGirls::GetRandomGroupString()
 {
 	int roll1 = 0, roll2 = 0, roll3 = 0, random = 0;
@@ -12722,6 +16063,10 @@ void cGirls::updateGirlAge(sGirl* girl, bool inc_inService)
 		girl->m_BDay = 0;
 		girl->age(1);
 		if (girl->age() > 20 && girl->has_trait("Lolita")) g_Girls.RemoveTrait(girl, "Lolita");
+		if (girl->age() >= 50)
+		{
+			g_Girls.UpdateStat(girl, STAT_BEAUTY, -(g_Dice % 3 + 1));
+		}
 	}
 }
 

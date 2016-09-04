@@ -643,6 +643,13 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		else if (NumSleptWith < NumCusts)		{ ss << "\n\nShe ran out of customers who like her."; }
 	}
 
+	if (girl->m_NumCusts = 1000)
+	{
+		stringstream goodnews;
+		goodnews << "She has slept with 1000 people.. You gotta wonder if its like throwing a hot dog down a hallway at this point.";
+		girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+	}
+
 	summary += ss.str();
 
 	girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1);

@@ -52,7 +52,9 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		//SIN - More informative mssg to show *what* she refuses
+		//ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		ss << " refused to work as a card dealer in the gambling hall " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -661,11 +663,23 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 double cJobManager::JP_HallDealer(sGirl* girl, bool estimate)
 {
+#if 1	//SIN - standardizing job performance per J's instructs
+	double jobperformance =
+		//Core stats - first 100 - intel and agility for smarts and speed to cheat
+		((girl->intelligence() + girl->agility()) / 2) +
+		//secondary stats - second 100 - cust service, performance to bluff/cheat, and a bit of magic for 'luck'
+		((girl->service() + girl->performance() + girl->magic()) / 3) +
+		//add level
+		girl->level();
+
+	//next up tiredness penalty...
+#else	
 	double jobperformance =
 		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 + 	// intel makes her smart enough to know when to cheat
 		g_Girls.GetStat(girl, STAT_AGILITY) / 2 +			// agility makes her fast enough to cheat
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +	// performance helps her get away with it
 		g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
+#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -674,13 +688,19 @@ double cJobManager::JP_HallDealer(sGirl* girl, bool estimate)
 	}
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))    jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))		  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Cool Person"))    jobperformance += 5; //people love to be around her
-	if (g_Girls.HasTrait(girl, "Cute"))			  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Charming"))		  jobperformance += 10; //people like charming people
-	if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Charismatic"))			jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))				jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Cool Person"))			jobperformance += 5; //people love to be around her
+	if (g_Girls.HasTrait(girl, "Cute"))					jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charming"))				jobperformance += 10; //people like charming people
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))				jobperformance += 20; //"How did you know I was bluffing!?"
+	if (g_Girls.HasTrait(girl, "Agile"))				jobperformance += 10; //quick hands
+	if (g_Girls.HasTrait(girl, "Lolita"))				jobperformance += 10; //Customers go easy on her - she's just a girl, right?
+	if (g_Girls.HasTrait(girl, "Natural Pheromones"))	jobperformance += 10; //Customers can't figure out why they can't focus today
+	if (g_Girls.HasTrait(girl, "Powerful Magic"))		jobperformance += 15; //Switched your cards!? But I've been over here the whole time.
+	if (g_Girls.HasTrait(girl, "Strong Magic"))			jobperformance += 10; //Switched your cards!? But I've been over here the whole time.
+	
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job	

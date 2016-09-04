@@ -51,7 +51,8 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		//SIN changed to informative message - hate not knowing what she's refused on the recap screen
+		ss << " refused to wait the bar " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -646,10 +647,22 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 }
 double cJobManager::JP_BarWaitress(sGirl* girl, bool estimate)// not used
 {
+#if 1  //SIN - standardizing job performance calc per J's instructs
+	double jobperformance =
+		//main stats - first 100 - needs outstanding service skills
+		girl->service() +
+		//secondary stats - second 100 - charisma to charm customers, and agility and intelligence to get to them all
+		((girl->charisma() + girl->intelligence() + girl->agility()) / 4) +
+		//add level
+		girl->level();
+
+	//next up tiredness penalty
+#else
 	double jobperformance =
 		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
 		g_Girls.GetStat(girl, STAT_AGILITY) / 2 +
 		g_Girls.GetSkill(girl, SKILL_SERVICE));
+#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -658,28 +671,32 @@ double cJobManager::JP_BarWaitress(sGirl* girl, bool estimate)// not used
 	}
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))  jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cool Person"))  jobperformance += 10; //people love to be around her	
-	if (g_Girls.HasTrait(girl, "Cute"))			jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Charming"))		jobperformance += 20; //people like charming people
-	if (g_Girls.HasTrait(girl, "Quick Learner"))jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))		jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Fleet of Foot"))jobperformance += 5;//faster at taking orders and droping them off
-	if (g_Girls.HasTrait(girl, "Waitress"))		jobperformance += 40;
-	if (g_Girls.HasTrait(girl, "Natural Pheromones"))jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Agile"))		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Flexible"))		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Flat Ass"))		jobperformance += 10;	//Ass wont get in the way
-
+	if (g_Girls.HasTrait(girl, "Charismatic"))			jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Sexy Air"))				jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Cool Person"))			jobperformance += 10;	//people love to be around her	
+	if (g_Girls.HasTrait(girl, "Cute"))					jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Charming"))				jobperformance += 20;	//people like charming people
+	if (g_Girls.HasTrait(girl, "Quick Learner"))		jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Psychic"))				jobperformance += 10;
+	if (g_Girls.HasTrait(girl, "Fleet of Foot"))		jobperformance += 5;	//faster at taking orders and droping them off
+	if (g_Girls.HasTrait(girl, "Waitress"))				jobperformance += 40;
+	if (g_Girls.HasTrait(girl, "Natural Pheromones"))	jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Agile"))				jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Flexible"))				jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Flat Ass"))				jobperformance += 10;	//Ass wont get in the way
+	if (g_Girls.HasTrait(girl, "Prehensile Tail"))		jobperformance += 10;	//for carrying that one extra drink!
+	if (g_Girls.HasTrait(girl, "Social Drinker"))		jobperformance += 5;	//customers like a girl that might have a drink with them
+	if (g_Girls.HasTrait(girl, "Bisexual"))				jobperformance += 5;	//can flirt with everyone
+	
+	
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))			  jobperformance -= 50; //needs others to do the job	
 	if (g_Girls.HasTrait(girl, "Clumsy")) 				  jobperformance -= 20; //spills food and breaks things often
 	if (g_Girls.HasTrait(girl, "Aggressive"))			  jobperformance -= 20; //gets mad easy and may attack people	
 	if (g_Girls.HasTrait(girl, "Nervous"))				  jobperformance -= 30; //don't like to be around people	
-	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs")) jobperformance -= 20; //boobs are to big and get in the way	
-	if (g_Girls.HasTrait(girl, "Titanic Tits"))			  jobperformance -= 25; //boobs are to big and get in the way
+	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs")) jobperformance -= 20; //boobs are too big and get in the way	
+	if (g_Girls.HasTrait(girl, "Titanic Tits"))			  jobperformance -= 25; //boobs are too big and get in the way
 	if (g_Girls.HasTrait(girl, "Meek"))					  jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Slow Learner"))			  jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "One Eye"))				  jobperformance -= 10;

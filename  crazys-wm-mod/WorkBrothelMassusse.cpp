@@ -52,7 +52,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		//SIN - More informative mssg to show *what* she refuses
+		ss << " refused to massage customers in your brothel " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -249,7 +250,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 	}
 
-	
+
 	//base tips, aprox 5-30% of base wages
 	tips += (((5 + jobperformance / 8) * wages) / 100);
 
@@ -305,6 +306,20 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		fame += 1;
 		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 		delete Cust;
+	}
+	//SIN - bit more spice - roll_c doesn't seem to be used anywhere else so ok here
+	else if (g_Girls.HasTrait(girl, "Doctor") && roll_c > 95)
+	{
+		ss << "Due to " << girlName << "'s training as a Doctor, she was able to discover an undetected medical condition in her client during the massage. ";
+		if (g_Girls.GetStat(girl, STAT_CHARISMA) < 50)
+		{
+			ss << "The customer was devastated to get such news from a massage and numbly accepted the referral for treatment.\n";
+		}
+		else
+		{
+			ss << "The customer was shocked to get such news, but was calmed by " << girlName << "'s kind explanations, and happily accepted the referral for treatment.\n";
+			brothel->m_Happiness += 20;
+		}
 	}
 	else
 	{
@@ -371,11 +386,23 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 
 double cJobManager::JP_BrothelMasseuse(sGirl* girl, bool estimate)// not used
 {
+#if 1	//SIN - standardizing job performance per J's instructs
+	double jobperformance =
+		//Core stats - first 100: how well she serves customers and understanding of body
+		((girl->service() + girl->medicine()) / 2) +
+		//secondary stats - second 100 - strength to do this all night, and attractiveness
+		((girl->strength() + girl->beauty() + girl->charisma()) / 3) +
+		//add level
+		girl->level();
+
+	//next up tiredness penalty...
+#else	
 	double jobperformance =
 		(g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
 		g_Girls.GetStat(girl, STAT_BEAUTY) / 2 +
 		g_Girls.GetSkill(girl, SKILL_MEDICINE) / 2 +
 		g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
+#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -394,6 +421,9 @@ double cJobManager::JP_BrothelMasseuse(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Quick Learner")) jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Psychic"))		 jobperformance += 10; //knows what people want to hear	
 	if (g_Girls.HasTrait(girl, "Strong"))		 jobperformance += 15;
+	if (g_Girls.HasTrait(girl, "Blind"))		 jobperformance += 15; //SIN: heightened sense of touch
+	if (g_Girls.HasTrait(girl, "Doctor"))		 jobperformance += 10; //understands the body
+	
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
@@ -412,7 +442,7 @@ double cJobManager::JP_BrothelMasseuse(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 40;
 	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 75;
 	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 60;
-	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 15;
+	//if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 15; //SIN: Why? Moved this to positive
 	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 10;
 	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
 	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks

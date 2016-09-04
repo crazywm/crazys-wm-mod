@@ -44,7 +44,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (roll_a < 50 && g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		ss << " refused to take care of beasts during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -188,6 +188,43 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 double cJobManager::JP_BeastCare(sGirl* girl, bool estimate)
 {
+#if 1	//SIN - standardizing job performance calc per J's instructs
+	double jobperformance =
+		//main stat - first 100
+		girl->animalhandling() +
+		//secondary stats - second 100
+		((girl->intelligence() + girl->service() + girl->magic()) / 3) +
+		//add level
+		girl->level();
+
+	//tiredness penalty
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
+
+	//and finally some traits
+	//Good
+	if (g_Girls.HasTrait(girl, "Powerful Magic"))				jobperformance += 35;	//Animagical
+	if (g_Girls.HasTrait(girl, "Strong Magic"))					jobperformance += 30;	//Animal magic spells
+	if (g_Girls.HasTrait(girl, "Farmer"))						jobperformance += 30;	//Animal expert
+	if (g_Girls.HasTrait(girl, "Furry"))						jobperformance += 25;	//Animal instinct
+	if (g_Girls.HasTrait(girl, "Goddess"))						jobperformance += 25;	//Animal command
+	if (g_Girls.HasTrait(girl, "Natural Pheromones"))			jobperformance += 20;	//Animal attraction
+	if (g_Girls.HasTrait(girl, "Farmers Daughter"))				jobperformance += 20;	//Animal understanding
+	if (g_Girls.HasTrait(girl, "Country Gal"))					jobperformance += 15;	//Animal awareness
+
+	//Bad
+	if (g_Girls.HasTrait(girl, "Undead"))						jobperformance -= 50;	//Animals fear her
+	if (g_Girls.HasTrait(girl, "Zombie"))						jobperformance -= 50;	//Animals fear her
+	if (g_Girls.HasTrait(girl, "Skeleton"))						jobperformance -= 40;	//Animals fear her
+	if (g_Girls.HasTrait(girl, "Muggle"))						jobperformance -= 30;	//This job uses magic a lot, so bad magic = low skill
+	if (g_Girls.HasTrait(girl, "Weak Magic"))					jobperformance -= 20;	//This job uses magic a lot, so bad magic = low skill
+	if (g_Girls.HasTrait(girl, "City Girl"))					jobperformance -= 15;	//Saw animals on TV once. They looked cute.
+	
+#else
 	double jobperformance = 0.0;
 	jobperformance = (g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) +
 		g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 3 +
@@ -199,6 +236,6 @@ double cJobManager::JP_BeastCare(sGirl* girl, bool estimate)
 		if (t > 0)
 			jobperformance -= (t + 2) * (t / 3);
 	}
-
+#endif
 	return jobperformance;
 }

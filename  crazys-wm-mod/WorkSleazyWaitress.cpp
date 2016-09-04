@@ -51,7 +51,8 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		//SIN - More informative mssg to show *what* she refuses
+		ss << " refused to be a waitress for the creeps in your strip club " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -840,10 +841,22 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 double cJobManager::JP_SleazyWaitress(sGirl* girl, bool estimate)// not used
 {
+#if 1  //SIN - standardizing job performance calc per J's instructs
+	double jobperformance =
+		//main stats - first 100 - service skills and beauty (due to sleazy bar)
+		(girl->service() + girl->beauty() / 2) +
+		//secondary stats - second 100 - charisma to charm customers, agility and performance to entertain them
+		((girl->charisma() + girl->performance() + girl->agility()) / 3) +
+		//add level
+		girl->level();
+
+	//next up tiredness penalty
+#else
 	double jobperformance = ((g_Girls.GetStat(girl, STAT_CHARISMA) +
 		g_Girls.GetStat(girl, STAT_BEAUTY) +
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE)) / 3 +
 		g_Girls.GetSkill(girl, SKILL_SERVICE));
+#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;

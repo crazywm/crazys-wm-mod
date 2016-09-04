@@ -57,10 +57,12 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int GirlsBrothelNo = g_Brothels.GetGirlsCurrentBrothel(girl);
 	sGirl * ArenaRacer;
 	// racer this shift
-	vector<sGirl *> AreRacer = g_Brothels.GirlsOnJob(GirlsBrothelNo, JOB_RACING, Day0Night1 == SHIFT_DAY);
+//	vector<sGirl *> AreRacer = girls_on_job(GirlsBrothelNo, JOB_RACING, Day0Night1);
 	int roll = g_Dice%100;
 	int wages = 50, work = 0;
 	double jobperformance = JP_ArenaRacing(girl, false);
+	//double Otherjobperformance = JP_ArenaRacing(AreRacer, false);
+	//int otherRacerskill = Otherjobperformance;
 
 	int numracers = g_Brothels.m_JobManager.get_num_on_job(brothel, JOB_RACING, Day0Night1);
 
@@ -68,6 +70,14 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 	ss << "She worked as a chariot racer in the arena.\n";
 
 	ss << numracers << " girls raced today.\n";
+	/*if (jobperformance > otherRacerskill)
+	{
+		ss << "She won the race.";
+	}
+	else
+	{
+		ss << "She lost.";
+	}*/
 
 	//CRAZY
 	/*Racing plans

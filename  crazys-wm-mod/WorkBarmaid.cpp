@@ -51,9 +51,18 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int actiontype = ACTION_WORKBAR;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_jp = g_Dice.d100(), roll_e = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	//Does she work?
+	if (girl->libido() >= 90 && g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(20))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		ss << " let lust get the better of her and she ended up missing her " << (DayNight ? "night" : "day") << " shift.";
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, EVENT_NOWORK);
+		return true;
+	}
+	else if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	{
+		//Making mssg more informative (what was refused?)
+		ss << " refused to work as a barmaid in your bar " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -96,6 +105,20 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		drinkssold += 1 + ((g_Dice % (int)jobperformance) / 30);	// 200jp can serve up to 7 drinks per customer
 	}
 	double drinkswasted = 0;										// for when she messes up an order
+
+	if (g_Dice.percent(20))
+	{
+		if (actiontype >= 75)
+		{
+			ss << "Excited to get to work " << girlName << " brings her 'A' game " << (Day0Night1 ? "tonight." : "today.");
+			jobperformance += 40;
+		}
+		else if (actiontype <= 25)
+		{
+			ss << "The thought of working " << (Day0Night1 ? "tonight." : "today.") << " made " << girlName << " feel uninspired so she didn't really try.";
+			jobperformance -= 40;
+		}
+	}
 
 	//what is she wearing?
 	if (g_Girls.HasItemJ(girl, "Bourgeoise Gown") != -1 && g_Dice.percent(60))
@@ -870,10 +893,22 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 }
 double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 {
+#if 1  //SIN - standardizing job performance calc per J's instructs
+	double jobperformance =
+		//main stats - first 100 - needs to be smart and good at service
+		((girl->service() + girl->intelligence()) / 2) +
+		//secondary stats - second 100 - charming, good performer and able to mix a drink
+		((girl->charisma() + girl->performance() + girl->brewing()) / 3) +
+		//add level
+		girl->level();
+
+	//next up tiredness penalty
+#else
 	double jobperformance =
 		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
 		g_Girls.GetSkill(girl, SKILL_SERVICE));
+#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -892,8 +927,11 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Mixologist"))			jobperformance += 40;
 	if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))	jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Long Legs"))			jobperformance += 5;
+	if (g_Girls.HasTrait(girl, "Fleet of Foot"))		jobperformance += 10;	//fast worker
+	if (g_Girls.HasTrait(girl, "Agile"))				jobperformance += 5;	//fast worker
 	if (g_Girls.HasTrait(girl, "Natural Pheromones"))	jobperformance += 15;
-
+	if (g_Girls.HasTrait(girl, "Optimist"))				jobperformance += 5;	//cheerful
+	
 
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50;  //needs others to do the job

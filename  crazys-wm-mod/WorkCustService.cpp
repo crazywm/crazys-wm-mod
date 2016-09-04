@@ -48,7 +48,9 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		//SIN - More informative mssg to show *what* she refuses
+		//ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		ss << " refused to provide Customer Service in your brothel " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -67,17 +69,23 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int roll = g_Dice%100;
 	if (roll <= 5)
 	{
-		ss << " Some of the patrons abused her during the shift.";
+		ss << "Some of the patrons abused her during the shift.";
 		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
 	}
-
+#if 1
+	if (roll <= 15)
+	{
+		ss << "A customer mistook her for a whore and was abusive when she wouldn't provide THAT service.";
+		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
+	}
+#endif
 	else if (roll >= 75) {
-		ss << " She had a pleasant time working.";
+		ss << "She had a pleasant time working.";
 		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
 	}
 	else
 	{
-		ss << " The shift passed uneventfully.";
+		ss << "The shift passed uneventfully.";
 	}
 	// Decide how many customers the girl can handle
 	if (g_Girls.GetStat(girl, STAT_CONFIDENCE) > 0) 
@@ -182,6 +190,15 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	
 double cJobManager::JP_CustService(sGirl* girl, bool estimate)
 {
+#if 1	//SIN - standardizing job performance per J's instructs
+	double jobperformance =
+		//main stats - first 100
+		((girl->service() + girl->charisma()) / 2) +
+		//secondary stats - second 100
+		((girl->confidence() + girl->spirit() + girl->performance() + girl->beauty()) / 4) +
+		//add level
+		girl->level();
+#else	
 	double jobperformance = 0.0;
 	if (estimate)	// for third detail string
 	{
@@ -192,6 +209,64 @@ double cJobManager::JP_CustService(sGirl* girl, bool estimate)
 	{
 
 	}
+#endif
+	//tiredness penalty
+	if (!estimate)
+	{
+		int t = girl->tiredness() - 80;
+		if (t > 0)
+			jobperformance -= (t + 2) * (t / 3);
+	}
+
+	////////SIN - and traits
+	//Good traits
+	if (g_Girls.HasTrait(girl, "Charismatic"))					jobperformance += 20;	//good with people
+	if (g_Girls.HasTrait(girl, "Psychic"))						jobperformance += 15;	//knows what will make them happy
+	if (g_Girls.HasTrait(girl, "Porn Star"))					jobperformance += 15;	//famous for related reasons
+	if (g_Girls.HasTrait(girl, "Succubus"))						jobperformance += 15;	//likes to sexually entertain
+	if (g_Girls.HasTrait(girl, "Titanic Tits"))					jobperformance += 10;	//huge distraction for customer not getting laid
+	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))		jobperformance += 10;	//huge distraction for customer not getting laid
+	if (g_Girls.HasTrait(girl, "Natural Pheromones"))			jobperformance += 10;   //Natural turnon
+	if (g_Girls.HasTrait(girl, "Charming"))						jobperformance += 10;	//good with people
+	if (g_Girls.HasTrait(girl, "Sexy Air"))						jobperformance += 10;	//Natural turnon
+	if (g_Girls.HasTrait(girl, "Idol"))							jobperformance += 10;	//famous
+	if (g_Girls.HasTrait(girl, "Actress"))						jobperformance += 10;	//can act the part
+	if (g_Girls.HasTrait(girl, "Fallen Goddess"))				jobperformance += 10;	//like exotic but better - not too judgemental
+	if (g_Girls.HasTrait(girl, "Massive Melons"))				jobperformance += 5;	//big distraction for customer not getting laid
+	if (g_Girls.HasTrait(girl, "Giant Juggs"))					jobperformance += 5;	//big distraction for customer not getting laid
+	if (g_Girls.HasTrait(girl, "Cool Person"))					jobperformance += 5;	//good with people
+	if (g_Girls.HasTrait(girl, "Social Drinker"))				jobperformance += 5;	//gets customers merry
+	if (g_Girls.HasTrait(girl, "Exotic"))						jobperformance += 5;	//holds their interest
+	if (g_Girls.HasTrait(girl, "Cat Girl"))						jobperformance += 5;	//holds their interest
+	if (g_Girls.HasTrait(girl, "Strong Magic"))					jobperformance += 5;	//a saucier sorceror
+	if (g_Girls.HasTrait(girl, "Big Boobs"))					jobperformance += 2;	//distraction for customer not getting laid
+	if (g_Girls.HasTrait(girl, "Busty Boobs"))					jobperformance += 2;	//distraction for customer not getting laid
+	if (g_Girls.HasTrait(girl, "Cute"))							jobperformance += 2;	//cheer up customer
+	if (g_Girls.HasTrait(girl, "Optimist"))						jobperformance += 2;	//cheer up customer
+
+
+	//Bad traits
+	if (g_Girls.HasTrait(girl, "Zombie"))						jobperformance -= 50;	//Guuhhh! Customehh serv... Huh?! Mr run run?!
+	if (g_Girls.HasTrait(girl, "Undead"))						jobperformance -= 50;	//Stop! I'm already dead...
+	if (g_Girls.HasTrait(girl, "Mind Fucked"))					jobperformance -= 50;	//Hello. I like flowers. Do you like vaginas? ... This!? It's a knife, silly; can I cut you? ... For FUN!
+	if (g_Girls.HasTrait(girl, "Mute"))							jobperformance -= 30;	// (-_-) ...
+	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))			jobperformance -= 25;	//Focussed on own needs
+	if (g_Girls.HasTrait(girl, "Shroud Addict"))				jobperformance -= 25;	//Focussed on own needs
+	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))			jobperformance -= 25;	//Focussed on own needs
+	if (g_Girls.HasTrait(girl, "Queen"))						jobperformance -= 20;	//Service?! Oh Jeeves! Jeeves!? Where is he?! Y'know you can't get the help these days.
+	if (g_Girls.HasTrait(girl, "Blind"))						jobperformance -= 20;	//Waiting customers?! Where?!
+	if (g_Girls.HasTrait(girl, "Broken Will"))					jobperformance -= 15;	// (-_-) ...
+	if (g_Girls.HasTrait(girl, "Vampire"))						jobperformance -= 15;	//I vant to help vith your... hey come back!?
+	if (g_Girls.HasTrait(girl, "Princess"))						jobperformance -= 15;	//Me serve you?! Get away, commoner.
+	if (g_Girls.HasTrait(girl, "Aggressive"))					jobperformance -= 10;	//"Customer service. Impotent whiner says what?"
+	if (g_Girls.HasTrait(girl, "Cow Girl"))						jobperformance -= 10;	// *blinks*  ...  *chews a little* ... *blinks*
+	if (g_Girls.HasTrait(girl, "Nervous"))						jobperformance -= 10;	//C-c-customer service. Can I, like... How can I... I mean...
+	if (g_Girls.HasTrait(girl, "Goddess"))						jobperformance -= 10;	//Preachy
+	if (g_Girls.HasTrait(girl, "Angel"))						jobperformance -= 10;	//Preachy
+	if (g_Girls.HasTrait(girl, "Deaf"))							jobperformance -= 5;	//What's the problem sir? What?! WHAT!?!
+	if (g_Girls.HasTrait(girl, "Pessimist"))					jobperformance -= 5;	//I can help you, but you probably won't like it very much.
+	if (g_Girls.HasTrait(girl, "Flat Chest"))					jobperformance -= 5;	//No natural distractions
+	
 
 	return jobperformance;
 }

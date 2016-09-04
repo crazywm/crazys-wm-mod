@@ -52,7 +52,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		//SIN - More informative mssg to show *what* she refuses
+		ss << " refused to strip for customers in your brothel " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -496,11 +497,24 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 double cJobManager::JP_BrothelStripper(sGirl* girl, bool estimate)// not used
 {
+#if 1	//SIN - standardizing job performance per J's instructs
+	double jobperformance =
+		//basing this on payout logic from code above
+		//main stats - first 100 - charisma and beauty are used above to calc typical "roll_max" (max payout)
+		(girl->charisma() + girl->beauty() / 2) +
+		//secondary stats - second 100 - these set her "lapdance" probabiliy int (so chance of higher payout)
+		((girl->intelligence() + girl->performance() + girl->strip()) / 3) +
+		//add level
+		girl->level();
+
+	//next up tiredness penalty...
+#else	
 	double jobperformance =
 		(g_Girls.GetStat(girl, STAT_CHARISMA) / 4 +
 		g_Girls.GetStat(girl, STAT_BEAUTY) / 4 +
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
 		g_Girls.GetSkill(girl, SKILL_STRIP));
+#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;

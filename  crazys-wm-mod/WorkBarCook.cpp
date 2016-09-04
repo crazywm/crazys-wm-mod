@@ -51,7 +51,9 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << girlName << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		//SIN - replaced with more informative mssg
+		//ss << girlName << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		ss << girlName << " refused to cook food in the bar " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}

@@ -54,7 +54,9 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		//SIN - More informative mssg to show *what* she refuses
+		//ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		ss << " refused to provide sexual entertainment in the gambling hall " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -696,12 +698,24 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 double cJobManager::JP_HallXXXEntertainer(sGirl* girl, bool estimate)// not used
 {
+#if 1	//SIN - standardizing job performance per J's instructs
+	double jobperformance =
+		//Core stats - performance & beauty: can she put on a show, and will anyone want to see?
+		((girl->performance() + girl->beauty()) / 2) +
+		//secondary stats - personality, strip skills and how into it she is
+		((girl->charisma() + girl->confidence() + girl->strip() + girl->libido()) / 4) +
+		//add level
+		girl->level();
+
+	//next up tiredness penalty...
+#else	
 	double jobperformance =
 		((g_Girls.GetStat(girl, STAT_CHARISMA) +
 		g_Girls.GetStat(girl, STAT_BEAUTY) +
 		g_Girls.GetStat(girl, STAT_CONFIDENCE)) / 3 +
 		g_Girls.GetSkill(girl, SKILL_STRIP) / 2 +
 		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2);
+#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -724,7 +738,13 @@ double cJobManager::JP_HallXXXEntertainer(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Exhibitionist"))jobperformance += 10;
 	if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))jobperformance += 5;
 	if (g_Girls.HasTrait(girl, "Fearless"))		jobperformance += 5;
-
+	if (g_Girls.HasTrait(girl, "Natural Pheromones"))jobperformance += 10; //SIN - exudes sex
+	if (g_Girls.HasTrait(girl, "Agile"))		jobperformance += 5;  //good movement
+	if (g_Girls.HasTrait(girl, "Flexible"))		jobperformance += 10; //positions
+	if (g_Girls.HasTrait(girl, "Porn Star"))	jobperformance += 10; //this is her day job
+	if (g_Girls.HasTrait(girl, "Social Drinker"))jobperformance += 5; //uninhibited
+	
+	
 	//bad traits
 	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job	
 	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 10; //spills food and breaks things often	
