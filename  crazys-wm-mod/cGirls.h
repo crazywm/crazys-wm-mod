@@ -306,6 +306,7 @@ struct sGirl
 
 
 	unsigned long m_NumCusts;					// number of customers this girl has slept with
+	unsigned long m_NumCusts_old;				// number of customers this girl has slept with before this week
 
 	bool m_Tort;								// if true then have already tortured today
 	bool m_JustGaveBirth;						// did she give birth this current week?
@@ -518,6 +519,8 @@ struct sGirl
 	int lactation(int n)		{ return upd_stat(STAT_LACTATION, n); }
 	int npclove()				{ return get_stat(STAT_NPCLOVE); }
 	int npclove(int n)			{ return upd_stat(STAT_NPCLOVE, n); }
+	int sanity()				{ return get_stat(STAT_SANITY); }
+	int sanity(int n)			{ return upd_stat(STAT_SANITY, n); }
 
 
 	int rebel();

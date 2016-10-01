@@ -54,7 +54,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	//Does she work?
 	if (girl->libido() >= 90 && g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(20))
 	{
-		ss << " let lust get the better of her and she ended up missing her " << (DayNight ? "night" : "day") << " shift.";
+		ss << " let lust get the better of her and she ended up missing her " << (Day0Night1 ? "night" : "day") << " shift.";
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, EVENT_NOWORK);
 		return true;

@@ -117,7 +117,7 @@ const char *sGirl::stat_names[] =
 	"Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility",
 	"Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health", 
 	"PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation", "Strength",
-	"NPCLove"
+	"NPCLove", "Sanity"
 };
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > *_names[]
 const char *sGirl::skill_names[] =
@@ -225,7 +225,7 @@ sGirl::sGirl()				// constructor
 	m_InClinic = m_InStudio = m_InArena = m_InCentre = m_InHouse = m_InFarm = false;
 	m_Refused_To_Work_Day = m_Refused_To_Work_Night = false;
 	m_Money = m_Pay = m_Tips = 0;
-	m_NumCusts = 0;
+	m_NumCusts = m_NumCusts_old = 0;
 
 	// Sex
 	m_Virgin = -1;
@@ -359,6 +359,7 @@ sRandomGirl::sRandomGirl()
 		case STAT_MORALITY:
 		case STAT_REFINEMENT:
 		case STAT_DIGNITY:
+		case STAT_SANITY:
 			m_MinStats[i] = -10; m_MaxStats[i] = 10;
 			break;
 		case STAT_LACTATION:
@@ -417,6 +418,7 @@ void sGirl::setup_maps()
 	stat_lookup["Lactation"] = STAT_LACTATION;
 	stat_lookup["Strength"] = STAT_STRENGTH;
 	stat_lookup["NPCLove"] = STAT_NPCLOVE;
+	stat_lookup["Sanity"] = STAT_SANITY;
 
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > setup_maps
 
@@ -1732,7 +1734,6 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		RemoveTrait(newGirl, "Virgin");
 	}
 	if (newGirl->m_Stats[STAT_AGE] < 18) newGirl->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
-
 	if (g_Dice.percent(5))		AddTrait(newGirl, "Former Addict");
 	else
 	{
@@ -2042,6 +2043,44 @@ void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 {
 	cJobManager m_JobManager;
 
+	stringstream goodnews;
+	/* */if (girl->m_NumCusts == girl->m_NumCusts_old)	{}	// no customers
+	else if (girl->m_NumCusts < girl->m_NumCusts_old)	{}	// lost customers??
+	else if (girl->m_NumCusts_old == 0 && girl->m_NumCusts > 0)
+	{
+		goodnews << girl->m_Realname << " has serviced her first";
+		/* */if (girl->m_NumCusts == 1)			goodnews << " customer.";
+		else if (girl->m_NumCusts == 2)		goodnews << " pair of customers.";
+		else if (girl->m_NumCusts == 12)	goodnews << " dozen customers.";
+		else		goodnews << (int)girl->m_NumCusts << " customers. ";
+		goodnews << " She is sure to service more as long as she works for you."; 
+	}
+	else if (girl->m_NumCusts_old < 100 && girl->m_NumCusts >= 100)
+	{
+		goodnews << girl->m_Realname << " serviced her first hundred customers.";
+		if (girl->has_trait("Optimist") && girl->happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
+		else goodnews << " You see great potential in this one.";
+		girl->fame(1);
+	}
+	else if (girl->m_NumCusts_old < 500 && girl->m_NumCusts >= 500)
+	{
+		goodnews << girl->m_Realname << " serviced five hundred customers.";
+		if (girl->has_trait("Optimist") && girl->happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
+		girl->fame(5);
+	}
+	else if (girl->m_NumCusts_old < 1000 && girl->m_NumCusts >= 1000)
+	{
+		goodnews << girl->m_Realname << " has slept with 1000 people.. You gotta wonder if its like throwing a hot dog down a hallway at this point.";
+		girl->fame(10);
+
+	}
+	if (goodnews.str().length() > 2)	girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+
+
+	girl->m_NumCusts_old = girl->m_NumCusts;			// prepare for next week
+		;
+
+
 	int E_mana = 0, E_libido = 0, E_lactation = 0;
 
 	/* */if (HasTrait(girl, "Muggle"))			E_mana = girl->magic() / 50;	// max 2 per day
@@ -2309,16 +2348,46 @@ string cGirls::GetGirlMood(sGirl* girl)
 
 	int morality = GetStat(girl, STAT_MORALITY); //zzzzz FIXME needs better text
 	ss << "\nShe " << (girl->health() < 1 ? "was " : "is ");
-	/* */if (morality <= -80)	ss << "pure evil.";
-	else if (morality <= -60)	ss << "evil.";
-	else if (morality <= -40)	ss << "mean.";
-	else if (morality <= -20)	ss << "not nice.";
-	else if (morality <= 0)		ss << "neutral.";
-	else if (morality <= 20)	ss << "lawful.";
+	/* */if (morality <= -80)	ss << "pure evil";
+	else if (morality <= -60)	ss << "evil";
+	else if (morality <= -40)	ss << "mean";
+	else if (morality <= -20)	ss << "not nice";
+	else if (morality <= 0)		ss << "neutral";
+	else if (morality <= 20)	ss << "lawful";
 	else if (morality <= 40)	ss << "nice";
-	else if (morality <= 60)	ss << "good.";
-	else if (morality <= 80)	ss << "very good.";
-	else 						ss << "holy.";
+	else if (morality <= 60)	ss << "good";
+	else if (morality <= 80)	ss << "very good";
+	else 						ss << "holy";
+	ss << ".";
+
+	int sanity = girl->sanity();	// `bsin` added - `J` adjusted
+	ss << "\nShe " << (girl->health() < 1 ? "was " : "is ");
+
+	/* */if (sanity <= -75)	
+	{
+		/**/ if (morality < -66)		ss << "psychopathic";
+		else if (morality < -33)		ss << "a total bunny-boiler";
+		else if (morality <	 33)		ss << "dangerous";
+		else if (morality <	 66)		ss << "a raving fundamentalist";
+		else							ss << "a religious extremist";
+	}
+	else if (sanity <= -45)
+	{
+		/**/ if (morality < -33)		ss << "a bit of a psycho";
+		else if (morality <	 33)		ss << "scarily out-there";
+		else							ss << "scarily over-zealous";
+	}
+	else if (sanity <= -15)
+	{
+		if (morality < 0)		ss << "disturbed";
+		else					ss << "nuts";
+	}
+	else if (sanity <= 15)	ss << "mentally stable";
+	else if (sanity <= 45)	ss << "well-adjusted";
+	else if (sanity <= 75)	ss << "completely rational";
+	else ss << "rational to the extreme";
+
+	ss << ".";
 
 	return ss.str();
 }
@@ -3182,7 +3251,6 @@ int cGirls::GetStat(sGirl* girl, int a_stat)
 	if (a_stat < 0) return 0;
 	u_int stat = a_stat;
 	int value = 0, min = 0, max = 100;
-
 	/* */if (stat == STAT_AGE) min = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 	else if (stat == STAT_EXP) max = 32000;
 	else if (stat == STAT_LEVEL) max = 255;
@@ -3764,6 +3832,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 
 	// load number of customers slept with
 	pGirl->QueryValueAttribute<unsigned long>("NumCusts", &m_NumCusts);
+	m_NumCusts_old = m_NumCusts;
 
 	// load girl flags
 	TiXmlElement* pFlags = pGirl->FirstChildElement("Flags");
@@ -4262,7 +4331,6 @@ void cGirls::LoadGirlsXML(string filename)
 			RemoveTrait(girl, "Virgin");
 		}
 		if (girl->m_Stats[STAT_AGE] < 18) girl->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
-
 		MutuallyExclusiveTraits(girl, 1);	// make sure all the trait effects are applied
 		RemoveAllRememberedTraits(girl);	// WD: For new girls remove any remembered traits from trait incompatibilities
 		ApplyTraits(girl);
@@ -5564,7 +5632,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 		for (int r = 0; r < NUM_ACTIONTYPES; r++)	girl->m_EnjoymentTR[r] = 0;
 
 	}
-	for (int i = 0; i<girl->m_NumTraits || doOnce; i++)
+	for (int i = 0; i < girl->m_NumTraits || doOnce; i++)
 	{
 		sTrait* tr = 0;
 		tr = (doOnce) ? trait : girl->m_Traits[i];
@@ -5606,6 +5674,10 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			else if (Name == "Agile")
 			{
 				UpdateStatTr(girl, STAT_AGILITY, 20);
+			}
+			else if (Name == "Alcoholic")
+			{
+				UpdateStatTr(girl, STAT_SANITY, -10);
 			}
 			else if (Name == "Angel")
 			{
@@ -5833,6 +5905,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			else if (Name == "Demon Possessed")
 			{
 				UpdateStatTr(girl, STAT_MORALITY, -25);
+				UpdateStatTr(girl, STAT_SANITY, -30);
 			}
 			else if (Name == "Demon")
 			{
@@ -5963,7 +6036,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			}
 			else if (Name == "Fallen Goddess")
 			{
-				//
+				UpdateStatTr(girl, STAT_SANITY, -10);
 			}
 			else if (Name == "Farmer")
 			{
@@ -6006,6 +6079,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, STAT_SPIRIT, 30);
 				UpdateSkillTr(girl, SKILL_PERFORMANCE, 5);
 				UpdateEnjoymentTR(girl, ACTION_COMBAT, 20);
+				UpdateStatTr(girl, STAT_SANITY, 10);
 			}
 			else if (Name == "Fertile")
 			{
@@ -6293,6 +6367,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 				UpdateStatTr(girl, STAT_OBEDIENCE, 100);
 				UpdateStatTr(girl, STAT_SPIRIT, -50);
 				UpdateStatTr(girl, STAT_DIGNITY, -35);
+				UpdateStatTr(girl, STAT_SANITY, -40);
 			}
 			else if (Name == "Mixologist")
 			{
@@ -6811,6 +6886,10 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			{
 				UpdateStatTr(girl, STAT_CONFIDENCE, 20);
 				UpdateStatTr(girl, STAT_OBEDIENCE, -20);
+			}
+			else if (Name == "Twisted")
+			{
+				UpdateStatTr(girl, STAT_SANITY, -20);
 			}
 		}
 		else if (first == "u")

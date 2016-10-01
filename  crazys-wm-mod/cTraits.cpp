@@ -280,6 +280,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("dominatrix") == 0)				return gettext("Dominatrix");
 		else if (trait.compare("dry milk") == 0)				return gettext("Dry Milk");
 		else if (trait.compare("dryad") == 0)					return gettext("Dryad");
+		else if (trait.compare("dwarf") == 0)					return gettext("Dwarf");
 	}
 	else if (first == "e")
 	{
@@ -300,6 +301,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("farmer") == 0)					return gettext("Farmer");
 		else if (trait.compare("farmers daughter") == 0)		return gettext("Farmers Daughter");
 		else if (trait.compare("fast orgasms") == 0)			return gettext("Fast Orgasms");
+		else if (trait.compare("fat") == 0)						return gettext("Fat");
 		else if (trait.compare("fearless") == 0)				return gettext("Fearless");
 		else if (trait.compare("fertile") == 0)					return gettext("Fertile");
 		else if (trait.compare("flat ass") == 0)				return gettext("Flat Ass");
@@ -456,6 +458,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("sexy air") == 0)				return gettext("Sexy Air");
 		else if (trait.compare("shape shifter") == 0)			return gettext("Shape Shifter");
 		else if (trait.compare("sharp-eyed") == 0)				return gettext("Sharp-Eyed");
+		else if (trait.compare("short") == 0)					return gettext("Short");
 		else if (trait.compare("shroud addict") == 0)			return gettext("Shroud Addict");
 		else if (trait.compare("shy") == 0)						return gettext("Shy");
 		else if (trait.compare("singer") == 0)					return gettext("Singer");
@@ -482,7 +485,8 @@ string cTraits::GetTranslateName(string name)
 	}
 	else if (first == "t")
 	{
-		/* */if (trait.compare("tattooed") == 0)				return gettext("Tattooed");
+		/* */if (trait.compare("tall") == 0)					return gettext("Tall");
+		else if (trait.compare("tattooed") == 0)				return gettext("Tattooed");
 		else if (trait.compare("teacher") == 0)					return gettext("Teacher");
 		else if (trait.compare("tight butt") == 0)				return gettext("Tight Butt");
 		else if (trait.compare("titanic tits") == 0)			return gettext("Titanic Tits");

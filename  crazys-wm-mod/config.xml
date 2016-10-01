@@ -321,6 +321,6 @@
         LogFonts="false"
         LogTorture="false"
         LogDebug="false"
-        LogExtraDetails="true"
-        LogShowNumbers="true" />
+        LogExtraDetails="false"
+        LogShowNumbers="false" />
 </config>

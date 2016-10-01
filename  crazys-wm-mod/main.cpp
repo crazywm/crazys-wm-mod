@@ -331,6 +331,7 @@ void handle_hotkeys()
 			// girl management screen
 		case SDLK_g:    if (g_AltKeys)  break;
 		case SDLK_F1:
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering Brothel");
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_GIRLMANAGEMENT;
@@ -343,6 +344,7 @@ void handle_hotkeys()
 			// staff management screen (gang management)
 		case SDLK_t:    if (g_AltKeys)  break;
 		case SDLK_F2:
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Gang Management");
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_GANGMANAGEMENT;
@@ -353,6 +355,7 @@ void handle_hotkeys()
 			// Dungeon
 		case SDLK_d:    if (g_AltKeys)  break;
 		case SDLK_F3:
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Dungeon");
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_InitWin = true;
@@ -363,6 +366,7 @@ void handle_hotkeys()
 			// Slave market screen
 		case SDLK_s:    if (g_AltKeys)  break;
 		case SDLK_F4:
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Slave Market");
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_InitWin = true;
@@ -378,6 +382,7 @@ void handle_hotkeys()
 				g_MessageQue.AddToQue(msg, 0);
 				break;
 			}
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Studio");
 			// Yes!
 			g_Building = BUILDING_STUDIO;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
@@ -400,6 +405,7 @@ void handle_hotkeys()
 				break;
 			}
 			// Yes!
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Arena");
 			g_Building = BUILDING_ARENA;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_ARENA;
@@ -419,6 +425,7 @@ void handle_hotkeys()
 				break;
 			}
 			// Yes!
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Centre");
 			g_Building = BUILDING_CENTRE;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_CENTRE;
@@ -440,6 +447,7 @@ void handle_hotkeys()
 				break;
 			}
 			// Yes!
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Clinic");
 			g_Building = BUILDING_CLINIC;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_CLINIC;
@@ -460,6 +468,7 @@ void handle_hotkeys()
 				break;
 			}
 			// Yes!
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Farm");
 			g_Building = BUILDING_FARM;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_FARM;
@@ -481,6 +490,7 @@ void handle_hotkeys()
 			}
 			else
 				g_AllTogle = true;
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering Inventory");
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_INVENTORY;
@@ -492,6 +502,7 @@ void handle_hotkeys()
 			// town screen
 		case SDLK_o:    if (g_AltKeys)  break;
 		case SDLK_F10:
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering Town");
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_TOWN;
@@ -515,6 +526,7 @@ void handle_hotkeys()
 			}
 		case SDLK_a:    if (g_AltKeys && vent.key.keysym.sym == SDLK_a)  break;
 		case SDLK_F11:
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering Turn Summary");
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_TURNSUMMARY;
@@ -536,6 +548,7 @@ void handle_hotkeys()
 				break;
 			}
 		case SDLK_F12:  // House
+			if (cfg.debug.log_debug())	g_LogFile.write("Entering House");
 			g_Building = BUILDING_HOUSE;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_HOUSE;

@@ -1092,6 +1092,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 				cgirl->m_YesterDayJob = cgirl->m_DayJob;
 				cgirl->m_YesterNightJob = cgirl->m_NightJob;
 				cgirl->m_Refused_To_Work_Day = cgirl->m_Refused_To_Work_Night = false;
+				cgirl->m_NumCusts_old = cgirl->m_NumCusts;// prepare for this week
 				string summary = "";
 
 				g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
@@ -3010,30 +3011,30 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 		while (name.length() < 30) name += " ";
 		l.ss() << "" << name << " | P_" << preferredaccom << "-A_" << girl->m_AccLevel << "=M_" << mod << (mod > 0 ? " " : "");
 	}
-
-	int hapA, hapB, lovA, lovB, hatA, hatB, feaA, feaB;		// A should always be lower than B
+	// bsin added Sanity for .06.02.30
+	int hapA, hapB, lovA, lovB, hatA, hatB, feaA, feaB, sanA, sanB;		// A should always be lower than B
 	if (mod < -9) mod = -9;	if (mod > 9) mod = 9;
 	switch (mod)	// happiness, love, hate, fear
 	{
-	case -9:	hapA = -24;	hapB = -7;	lovA = -14;	lovB = -3;	hatA = 6;	hatB = 22;	feaA = 5;	feaB = 12;	break;
-	case -8:	hapA = -19;	hapB = -6;	lovA = -11;	lovB = -3;	hatA = 5;	hatB = 18;	feaA = 4;	feaB = 9;	break;
-	case -7:	hapA = -16;	hapB = -5;	lovA = -9;	lovB = -3;	hatA = 4;	hatB = 14;	feaA = 3;	feaB = 7;	break;
-	case -6:	hapA = -13;	hapB = -4;	lovA = -7;	lovB = -2;	hatA = 4;	hatB = 10;	feaA = 2;	feaB = 5;	break;
-	case -5:	hapA = -10;	hapB = -3;	lovA = -6;	lovB = -2;	hatA = 3;	hatB = 7;	feaA = 1;	feaB = 4;	break;
-	case -4:	hapA = -8;	hapB = -2;	lovA = -5;	lovB = -1;	hatA = 2;	hatB = 5;	feaA = 0;	feaB = 3;	break;
-	case -3:	hapA = -6;	hapB = -1;	lovA = -4;	lovB = 0;	hatA = 1;	hatB = 4;	feaA = 0;	feaB = 2;	break;
-	case -2:	hapA = -4;	hapB = 0;	lovA = -3;	lovB = 0;	hatA = 0;	hatB = 3;	feaA = 0;	feaB = 1;	break;
-	case -1:	hapA = -2;	hapB = 1;	lovA = -2;	lovB = 1;	hatA = -1;	hatB = 2;	feaA = 0;	feaB = 0;	break;
-	case 0:		hapA = -1;	hapB = 3;	lovA = -1;	lovB = 2;	hatA = -1;	hatB = 1;	feaA = 0;	feaB = 0;	break;
-	case 1:		hapA = 0;	hapB = 5;	lovA = -1;	lovB = 3;	hatA = -1;	hatB = 0;	feaA = 0;	feaB = 0;	break;
-	case 2:		hapA = 1;	hapB = 8;	lovA = 0;	lovB = 3;	hatA = -3;	hatB = 0;	feaA = 0;	feaB = 0;	break;
-	case 3:		hapA = 2;	hapB = 11;	lovA = 0;	lovB = 4;	hatA = -5;	hatB = -1;	feaA = -1;	feaB = 0;	break;
-	case 4:		hapA = 3;	hapB = 14;	lovA = 1;	lovB = 4;	hatA = -6;	hatB = -1;	feaA = -1;	feaB = 0;	break;
-	case 5:		hapA = 4;	hapB = 16;	lovA = 1;	lovB = 5;	hatA = -7;	hatB = -1;	feaA = -1;	feaB = 0;	break;
-	case 6:		hapA = 5;	hapB = 18;	lovA = 2;	lovB = 5;	hatA = -7;	hatB = -2;	feaA = -2;	feaB = 0;	break;
-	case 7:		hapA = 5;	hapB = 19;	lovA = 2;	lovB = 6;	hatA = -8;	hatB = -2;	feaA = -2;	feaB = 0;	break;
-	case 8:		hapA = 5;	hapB = 20;	lovA = 2;	lovB = 7;	hatA = -9;	hatB = -3;	feaA = -3;	feaB = 0;	break;
-	case 9:		hapA = 5;	hapB = 21;	lovA = 2;	lovB = 8;	hatA = -10;	hatB = -3;	feaA = -3;	feaB = 0;	break;
+	case -9:	hapA = -24;	hapB = -7;	lovA = -14;	lovB = -3;	hatA = 6;	hatB = 22;	feaA = 5;	feaB = 12;	sanA = -7;	sanB = 2;	break;
+	case -8:	hapA = -19;	hapB = -6;	lovA = -11;	lovB = -3;	hatA = 5;	hatB = 18;	feaA = 4;	feaB = 9;	sanA = -6;	sanB = 2;	break;
+	case -7:	hapA = -16;	hapB = -5;	lovA = -9;	lovB = -3;	hatA = 4;	hatB = 14;	feaA = 3;	feaB = 7;	sanA = -5;	sanB = 1;	break;
+	case -6:	hapA = -13;	hapB = -4;	lovA = -7;	lovB = -2;	hatA = 4;	hatB = 10;	feaA = 2;	feaB = 5;	sanA = -4;	sanB = 1;	break;
+	case -5:	hapA = -10;	hapB = -3;	lovA = -6;	lovB = -2;	hatA = 3;	hatB = 7;	feaA = 1;	feaB = 4;	sanA = -3;	sanB = 1;	break;
+	case -4:	hapA = -8;	hapB = -2;	lovA = -5;	lovB = -1;	hatA = 2;	hatB = 5;	feaA = 0;	feaB = 3;	sanA = -2;	sanB = 0;	break;
+	case -3:	hapA = -6;	hapB = -1;	lovA = -4;	lovB = 0;	hatA = 1;	hatB = 4;	feaA = 0;	feaB = 2;	sanA = -1;	sanB = 0;	break;
+	case -2:	hapA = -4;	hapB = 0;	lovA = -3;	lovB = 0;	hatA = 0;	hatB = 3;	feaA = 0;	feaB = 1;	sanA = 0;	sanB = 0;	break;
+	case -1:	hapA = -2;	hapB = 1;	lovA = -2;	lovB = 1;	hatA = -1;	hatB = 2;	feaA = 0;	feaB = 0;	sanA = 0;	sanB = 0;	break;
+	case 0:		hapA = -1;	hapB = 3;	lovA = -1;	lovB = 2;	hatA = -1;	hatB = 1;	feaA = 0;	feaB = 0;	sanA = 0;	sanB = 1;	break;
+	case 1:		hapA = 0;	hapB = 5;	lovA = -1;	lovB = 3;	hatA = -1;	hatB = 0;	feaA = 0;	feaB = 0;	sanA = 0;	sanB = 1;	break;
+	case 2:		hapA = 1;	hapB = 8;	lovA = 0;	lovB = 3;	hatA = -3;	hatB = 0;	feaA = 0;	feaB = 0;	sanA = 0;	sanB = 1;	break;
+	case 3:		hapA = 2;	hapB = 11;	lovA = 0;	lovB = 4;	hatA = -5;	hatB = -1;	feaA = -1;	feaB = 0;	sanA = 0;	sanB = 2;	break;
+	case 4:		hapA = 3;	hapB = 14;	lovA = 1;	lovB = 4;	hatA = -6;	hatB = -1;	feaA = -1;	feaB = 0;	sanA = 0;	sanB = 2;	break;
+	case 5:		hapA = 4;	hapB = 16;	lovA = 1;	lovB = 5;	hatA = -7;	hatB = -1;	feaA = -1;	feaB = 0;	sanA = 0;	sanB = 3;	break;
+	case 6:		hapA = 5;	hapB = 18;	lovA = 2;	lovB = 5;	hatA = -7;	hatB = -2;	feaA = -2;	feaB = 0;	sanA = -1;	sanB = 3;	break;
+	case 7:		hapA = 5;	hapB = 19;	lovA = 2;	lovB = 6;	hatA = -8;	hatB = -2;	feaA = -2;	feaB = 0;	sanA = -1;	sanB = 4;	break;
+	case 8:		hapA = 5;	hapB = 20;	lovA = 2;	lovB = 7;	hatA = -9;	hatB = -3;	feaA = -3;	feaB = 0;	sanA = -1;	sanB = 4;	break;
+	case 9:		hapA = 5;	hapB = 21;	lovA = 2;	lovB = 8;	hatA = -10;	hatB = -3;	feaA = -3;	feaB = 0;	sanA = -2;	sanB = 5;	break;
 	default: break;
 	}
 	if (cfg.debug.log_extradetails())
@@ -3086,12 +3087,12 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 		{
 			l.ss() << "d";
 		}
-		/* */if (mod < -6){ hapA -= 6;	hapB -= 2;	lovA -= 4;	lovB -= 1;	hatA += 3;	hatB += 4;	feaA += 2;	feaB += 4; }
-		else if (mod < -3){ hapA -= 4;	hapB -= 1;	lovA -= 3;	lovB -= 1;	hatA += 2;	hatB += 3;	feaA += 1;	feaB += 3; }
-		else if (mod < 0){	hapA -= 2;	hapB -= 1;	lovA -= 1;	lovB += 0;	hatA += 1;	hatB += 2;	feaA += 0;	feaB += 2; }
-		else if (mod < 1){	hapA -= 1;	hapB += 1;	lovA -= 0;	lovB += 0;	hatA -= 0;	hatB += 1;	feaA -= 1;	feaB += 1; }
-		else if (mod < 4){	hapA += 0;	hapB += 4;	lovA += 0;	lovB += 1;	hatA -= 1;	hatB += 0;	feaA -= 2;	feaB += 1; }
-		else if (mod < 7){	hapA += 2;	hapB += 8;	lovA += 1;	lovB += 1;	hatA -= 1;	hatB += 0;	feaA -= 3;	feaB += 0; }
+		/* */if (mod < -6){ hapA -= 6;	hapB -= 2;	lovA -= 4;	lovB -= 1;	hatA += 3;	hatB += 4;	feaA += 2;	feaB += 4; sanA -= 4;  sanB -= 2;}
+		else if (mod < -3){ hapA -= 4;	hapB -= 1;	lovA -= 3;	lovB -= 1;	hatA += 2;	hatB += 3;	feaA += 1;	feaB += 3; sanA -= 2;  sanB -= 1;}
+		else if (mod < 0){	hapA -= 2;	hapB -= 1;	lovA -= 1;	lovB += 0;	hatA += 1;	hatB += 2;	feaA += 0;	feaB += 2; sanA -= 1;  sanB -= 0;}
+		else if (mod < 1){	hapA -= 1;	hapB += 1;	lovA -= 0;	lovB += 0;	hatA -= 0;	hatB += 1;	feaA -= 1;	feaB += 1; sanA += 0;  sanB += 1;}
+		else if (mod < 4){	hapA += 0;	hapB += 4;	lovA += 0;	lovB += 1;	hatA -= 1;	hatB += 0;	feaA -= 2;	feaB += 1; sanA += 1;  sanB += 2;}
+		else if (mod < 7){	hapA += 2;	hapB += 8;	lovA += 1;	lovB += 1;	hatA -= 1;	hatB += 0;	feaA -= 3;	feaB += 0; sanA += 2;  sanB += 4;}
 	}
 	else if (cfg.debug.log_extradetails())
 	{
@@ -3115,6 +3116,7 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 	int lov = g_Dice.bell(lovA, lovB);
 	int hat = g_Dice.bell(hatA, hatB);
 	int fea = g_Dice.bell(feaA, feaB);
+	int san = g_Dice.bell(sanA, sanB);
 
 	if (cfg.debug.log_extradetails())
 	{
@@ -3122,6 +3124,7 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 			<< "\t| love :\t" << lovA << "\t" << lovB << "\t=" << lov
 			<< "\t| hate :\t" << hatA << "\t" << hatB << "\t=" << hat
 			<< "\t| fear :\t" << feaA << "\t" << feaB << "\t=" << fea
+			<< "\t| sanity :\t" << sanA << "\t" << sanB << "\t=" << san
 			;
 		l.ssend();
 	}
@@ -3131,6 +3134,7 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 	girl->pclove(lov);
 	girl->pchate(hat);
 	girl->pcfear(fea);
+	girl->sanity(san);
 
 
 	// after all the happy, love fear and hate are done, do some other checks.
@@ -3198,22 +3202,22 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 #if 1
 	else if (g_Dice.percent(90)){}	// `J` - zzzzzz - The rest need work so for now they will be less common
 #endif
-	else if (girl->has_trait("Optimist") && g_Dice.percent(3))
+	else if (girl->has_trait("Optimist") && mod < 0 && g_Dice.percent(3))
 	{
 		g_Girls.RemoveTrait(girl, "Optimist", true);
 		ss << girl->m_Realname << " has lost the \"Optimist\" trait. (someone write better text for this)";
 	}
-	else if (!girl->has_trait("Optimist") && g_Dice.percent(3))	// `J` - zzzzzz - needs work
+	else if (!girl->has_trait("Optimist") && mod > 0 && g_Dice.percent(3))	// `J` - zzzzzz - needs work
 	{
 		g_Girls.AddTrait(girl, "Optimist");
 		ss << girl->m_Realname << " has gained the \"Optimist\" trait. (someone write better text for this)";
 	}
-	else if (girl->has_trait("Pessimist") && g_Dice.percent(3))	// `J` - zzzzzz - needs work
+	else if (girl->has_trait("Pessimist") && mod > 0 && g_Dice.percent(3))	// `J` - zzzzzz - needs work
 	{
 		g_Girls.RemoveTrait(girl, "Pessimist", true);
 		ss << girl->m_Realname << " has lost the \"Pessimist\" trait. (someone write better text for this)";
 	}
-	else if (!girl->has_trait("Pessimist") && g_Dice.percent(3))	// `J` - zzzzzz - needs work
+	else if (!girl->has_trait("Pessimist") && mod < 0 && g_Dice.percent(3))	// `J` - zzzzzz - needs work
 	{
 		g_Girls.AddTrait(girl, "Pessimist");
 		ss << girl->m_Realname << " has gained the \"Pessimist\" trait. (someone write better text for this)";
