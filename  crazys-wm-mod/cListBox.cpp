@@ -763,7 +763,7 @@ int cListBox::GetLastSelected()
 int cListBox::GetSelected()
 {
 	if (m_LastSelected == 0) return -1;
-	else return m_LastSelected->m_ID;
+	//else return m_LastSelected->m_ID;
 
 	cListItem* current = m_Items;
 	while (current->m_Selected == false && current)
@@ -1022,8 +1022,14 @@ void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 	}
 	else
 	{
-		if (m_Position >= posit)
-			m_Position = posit - 1;
+		if (m_Position >= posit)	// if the item is above the top of the list
+		{
+			m_Position = posit - 1;	// shift the list up
+		}
+		else if (m_Position < posit && posit < m_Position + m_NumDrawnElements - 1)
+		{
+			// don't change m_Position
+		}
 		else if (m_Position + m_NumDrawnElements - 1 <= posit)
 			m_Position = posit - m_NumDrawnElements + 2;
 	}

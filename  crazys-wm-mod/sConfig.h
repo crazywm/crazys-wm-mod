@@ -81,6 +81,7 @@ struct sConfigData
 		bool configXML;
 		int list_scroll;
 		int text_scroll;
+		bool next_turn_enter;
 	} resolution;
 	/*
 	*	income factors
@@ -406,6 +407,7 @@ public:
 		bool configXML()		{ return data->resolution.configXML; }
 		int list_scroll()		{ return data->resolution.list_scroll; }
 		int text_scroll()		{ return data->resolution.text_scroll; }
+		bool next_turn_enter()	{ return data->resolution.next_turn_enter; }
 	} resolution;
 
 	struct Debug{

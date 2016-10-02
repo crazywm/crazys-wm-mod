@@ -86,7 +86,7 @@ public:
 	string GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, string ItemName = "");
 	sGirl* GirlSelectedFromList(int owner, int selectedfromlist = -100);
 
-	void write_item_text(sInventoryItem * item);
+	void write_item_text(sInventoryItem * item, int owner, int target);
 
 	// XML screen replacement for cSelector, for multi-select listboxes
 	int multi_left_first() {

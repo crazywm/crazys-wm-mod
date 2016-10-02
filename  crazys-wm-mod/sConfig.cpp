@@ -374,6 +374,7 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 	if (pt = el->Attribute("FullScreen"))		{ get_att(el, "FullScreen", resolution.fullscreen); }
 	if (pt = el->Attribute("ListScrollAmount"))	{ get_att(el, "ListScrollAmount", &resolution.list_scroll); }
 	if (pt = el->Attribute("TextScrollAmount"))	{ get_att(el, "TextScrollAmount", &resolution.text_scroll); }
+	if (pt = el->Attribute("NextTurnEnter"))	{ get_att(el, "NextTurnEnter", resolution.next_turn_enter); }
 }
 
 void sConfigData::get_initial_values(TiXmlElement *el)
@@ -626,6 +627,7 @@ void sConfigData::set_defaults()
 	resolution.configXML = false;			// `J` added - Will be changed to interfaces
 	resolution.list_scroll = 3;				// `Dagoth` added
 	resolution.text_scroll = 3;				// `Dagoth` added
+	resolution.next_turn_enter = false;		// `J` added - for `mjsmagalhaes`
 
 	initial.gold = 4000;
 	initial.girl_meet = 30;

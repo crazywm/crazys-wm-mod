@@ -133,6 +133,31 @@ Cleaned a few minor things in Studio code.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.29
 
+########## I have not been able to do anything here because work is taking too much out of me.
+########## Crazy, bsin and the other guys have done a lot while I was gone but I have not really looked at it too much so I can't comment on it.
+
+###  Changes 10/1/2016
+Included all the changes done by the other guys while I was gone.
+Moved and expanded customer count milestone messages.
+Fixed accommodation trait add/remove checks.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.30
+
+Merged Pull Request by mjsmagalhaes in GitHub 
+ - Condensed Inventory screen item text into one "write_item_text" function.
+ - Added "Enter" key to start next week on the Turn Summary screen 
+!!!!!!!!!!!!!!!!!!!! merged in GitHub
+
+Expanded on the "write_item_text" function
+Fixed the Inventory list boxes to correct next item selection after moving an item.
+Added "NextTurnEnter" to "Resolution" section of config.xml for those who don't want to use it.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.31
+
+
+
 
 
 

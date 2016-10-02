@@ -447,10 +447,13 @@ bool cScreenTurnSummary::check_events()
 
 	if (g_EnterKey)
 	{
-		g_InitWin = true;
 		g_EnterKey = false;
-		if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
-		NextWeek();
+		if (cfg.resolution.next_turn_enter())
+		{
+			g_InitWin = true;
+			if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
+			NextWeek();
+		}
 		return false;
 	}
 

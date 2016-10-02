@@ -479,8 +479,10 @@ void cScreenItemManagement::init()	// `J` bookmark
 	g_AllTogle = false;
 #endif	// create owner lists
 
-	SetSelectedItemInList(owners_l_id, leftOwner);
-	SetSelectedItemInList(owners_r_id, rightOwner);
+	if (m_ListBoxes[owners_l_id]->GetSelected() != leftOwner)
+		SetSelectedItemInList(owners_l_id, leftOwner);
+	if (m_ListBoxes[owners_r_id]->GetSelected() != rightOwner)
+		SetSelectedItemInList(owners_r_id, rightOwner);
 
 	SetSelectedItemInList(items_l_id, leftItem);
 	SetSelectedItemInList(items_r_id, rightItem);
@@ -520,14 +522,36 @@ bool cScreenItemManagement::check_keys()
 	return false;
 }
 
-void cScreenItemManagement::write_item_text(sInventoryItem * item)
+void cScreenItemManagement::write_item_text(sInventoryItem * item, int owner, int target)
 {
 	stringstream ss;
-	ss << gettext("Cost: ") << item->m_Cost << gettext(" gold      ");
-	ss << gettext("Sell for: ") << int((float)item->m_Cost*0.5f) << gettext(" gold\n");
-	ss << gettext("Item Name: ") << item->m_Name;
-	ss << gettext("\nType: ") << item->m_Type;
-	ss << gettext("\n\n") << item->m_Desc;
+	stringstream iName;
+	stringstream iCost;
+	stringstream iSell;
+	stringstream iType;
+	stringstream iDesc;
+
+	if (item == NULL || item == 0 || owner < 0)
+	{}
+	else
+	{
+		iName << item->m_Name;
+		iCost << item->m_Cost << " gold";
+		iSell << int((float)item->m_Cost*0.5f) << " gold";
+		iType << item->m_Type;
+		iDesc << item->m_Desc;
+	}
+	if (owner != 1 && owner >= 0 && target == 1)
+	{
+		cFont check; int w, h, size = int(m_TextItems[desc_id]->GetWidth()*0.25);
+		check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
+		check.GetSize(iCost.str(), w, h); while (w < size) { iCost << " "; check.GetSize(iCost.str(), w, h); }
+	}
+	ss << "Item Name:      " << iName.str();
+	ss << "\nCost:  " << iCost.str();
+	if (owner != 1 && owner >= 0 && target == 1) ss << "Sell for:  " << iSell.str();
+	ss << "\nType:  " << iType.str();
+	ss << "\n\n" << iDesc.str();
 
 	EditTextItem(ss.str(), desc_id);
 };
@@ -552,8 +576,14 @@ void cScreenItemManagement::check_events()
 	if (g_InterfaceEvents.CheckButton(sellall_l_id))	{ attempt_transfer(Right, 999);		g_InitWin = true; }
 	if (g_InterfaceEvents.CheckButton(shift_r_id))		{ attempt_transfer(Left);			g_InitWin = true; }
 	if (g_InterfaceEvents.CheckButton(shift_l_id))		{ attempt_transfer(Right);			g_InitWin = true; }
-	if (g_InterfaceEvents.CheckListbox(owners_l_id))	{ refresh_item_list(Left); }
-	if (g_InterfaceEvents.CheckListbox(owners_r_id))	{ refresh_item_list(Right); }
+	if (g_InterfaceEvents.CheckListbox(owners_l_id))
+	{
+		refresh_item_list(Left);
+	}
+	if (g_InterfaceEvents.CheckListbox(owners_r_id))
+	{
+		refresh_item_list(Right);
+	}
 
 	if (g_InterfaceEvents.CheckCheckbox(autouse_id))	AutoUseItems = IsCheckboxOn(autouse_id);
 
@@ -561,6 +591,7 @@ void cScreenItemManagement::check_events()
 	if (g_InterfaceEvents.CheckListbox(items_l_id))
 	{
 		leftItem = GetLastSelectedItemFromList(items_l_id);
+		
 		DisableButton(shift_r_id, (leftItem < 0) || (leftOwner == 1 && !g_Gold.afford(g_InvManager.GetShopItem(leftItem)->m_Cost)));
 
 		bool disablebuy10R = true;
@@ -575,27 +606,26 @@ void cScreenItemManagement::check_events()
 
 		if (leftItem != -1)
 		{
-			if (leftOwner == 0)	//Shop
+			sInventoryItem * item;
+			if (leftOwner == 0)			// Player
 			{
-				write_item_text(g_Brothels.m_Inventory[leftItem]);
-				DisableButton(equip_l_id, true);
-				DisableButton(unequip_l_id, true);
-
-			}
-			else if (leftOwner == 1)	//Player
-			{
-				write_item_text(g_InvManager.GetShopItem(leftItem));
+				item = g_Brothels.m_Inventory[leftItem];
 				DisableButton(equip_l_id, true);
 				DisableButton(unequip_l_id, true);
 			}
-			else  // Girl
+			else if (leftOwner == 1)	// Shop
+			{
+				item = g_InvManager.GetShopItem(leftItem);
+				DisableButton(equip_l_id, true);
+				DisableButton(unequip_l_id, true);
+			}
+			else						// Girl
 			{
 				sGirl* targetGirl = 0;
 				targetGirl = GirlSelectedFromList(leftOwner);
-
+				item = targetGirl->m_Inventory[leftItem];
 				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-				write_item_text(targetGirl->m_Inventory[leftItem]);
 
 				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[leftItem]))
 				{
@@ -608,6 +638,7 @@ void cScreenItemManagement::check_events()
 					DisableButton(unequip_l_id, true);
 				}
 			}
+			write_item_text(item, leftOwner, rightOwner);
 		}
 		else
 		{
@@ -632,15 +663,16 @@ void cScreenItemManagement::check_events()
 
 		if (rightItem != -1)
 		{
+			sInventoryItem * item;
 			if (rightOwner == 0) // Shop
 			{
-				write_item_text(g_Brothels.m_Inventory[rightItem]);
+				item = g_Brothels.m_Inventory[rightItem];
 				DisableButton(equip_r_id, true);
 				DisableButton(unequip_r_id, true);
 			}
 			else if (rightOwner == 1) // Player
 			{
-				write_item_text(g_InvManager.GetShopItem(rightItem));
+				item = g_InvManager.GetShopItem(rightItem);
 				DisableButton(equip_r_id, true);
 				DisableButton(unequip_r_id, true);
 			}
@@ -648,10 +680,8 @@ void cScreenItemManagement::check_events()
 			{
 				sGirl* targetGirl = 0;
 				targetGirl = GirlSelectedFromList(rightOwner);
-
+				item = targetGirl->m_Inventory[rightItem];
 				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
-
-				write_item_text(targetGirl->m_Inventory[rightItem]);
 
 				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[rightItem]))
 				{
@@ -664,6 +694,7 @@ void cScreenItemManagement::check_events()
 					DisableButton(unequip_r_id, true);
 				}
 			}
+			write_item_text(item, rightOwner,leftOwner);
 		}
 		else
 		{
@@ -675,8 +706,10 @@ void cScreenItemManagement::check_events()
 	{
 		filter = GetLastSelectedItemFromList(filter_id);
 		filterpos = m_ListBoxes[filter_id]->m_Position;
-		SetSelectedItemInList(owners_l_id, leftOwner);
-		SetSelectedItemInList(owners_r_id, rightOwner);
+		if (m_ListBoxes[owners_l_id]->GetSelected() != leftOwner)
+			SetSelectedItemInList(owners_l_id, leftOwner);
+		if (m_ListBoxes[owners_r_id]->GetSelected() != rightOwner)
+			SetSelectedItemInList(owners_r_id, rightOwner);
 		g_InitWin = true;
 	}
 	if (g_InterfaceEvents.CheckButton(equip_l_id))
@@ -692,8 +725,10 @@ void cScreenItemManagement::check_events()
 			g_InvManager.Equip(targetGirl, leftItem, true);
 			DisableButton(equip_l_id, true);
 			DisableButton(unequip_l_id, false);
-			SetSelectedItemInList(owners_l_id, leftOwner);
-			SetSelectedItemInList(owners_r_id, rightOwner);
+			if (m_ListBoxes[owners_l_id]->GetSelected() != leftOwner)
+				SetSelectedItemInList(owners_l_id, leftOwner);
+			if (m_ListBoxes[owners_r_id]->GetSelected() != rightOwner)
+				SetSelectedItemInList(owners_r_id, rightOwner);
 		}
 	}
 	if (g_InterfaceEvents.CheckButton(unequip_l_id))
@@ -703,14 +738,16 @@ void cScreenItemManagement::check_events()
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-		int leftItem = GetLastSelectedItemFromList(items_l_id);
+		leftItem = GetLastSelectedItemFromList(items_l_id);
 		if (leftItem != -1)
 		{
 			g_InvManager.Unequip(targetGirl, leftItem);
 			DisableButton(equip_l_id, false);
 			DisableButton(unequip_l_id, true);
-			SetSelectedItemInList(owners_l_id, leftOwner);
-			SetSelectedItemInList(owners_r_id, rightOwner);
+			if (m_ListBoxes[owners_l_id]->GetSelected() != leftOwner)
+				SetSelectedItemInList(owners_l_id, leftOwner);
+			if (m_ListBoxes[owners_r_id]->GetSelected() != rightOwner)
+				SetSelectedItemInList(owners_r_id, rightOwner);
 		}
 	}
 	if (g_InterfaceEvents.CheckButton(equip_r_id))
@@ -726,8 +763,10 @@ void cScreenItemManagement::check_events()
 			g_InvManager.Equip(targetGirl, rightItem, true);
 			DisableButton(equip_r_id, true);
 			DisableButton(unequip_r_id, false);
-			SetSelectedItemInList(owners_l_id, leftOwner);
-			SetSelectedItemInList(owners_r_id, rightOwner);
+			if (m_ListBoxes[owners_l_id]->GetSelected() != leftOwner)
+				SetSelectedItemInList(owners_l_id, leftOwner);
+			if (m_ListBoxes[owners_r_id]->GetSelected() != rightOwner)
+				SetSelectedItemInList(owners_r_id, rightOwner);
 		}
 	}
 	if (g_InterfaceEvents.CheckButton(unequip_r_id))
@@ -737,14 +776,16 @@ void cScreenItemManagement::check_events()
 
 		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
 
-		int rightItem = GetLastSelectedItemFromList(items_r_id);
+		rightItem = GetLastSelectedItemFromList(items_r_id);
 		if (rightItem != -1)
 		{
 			g_InvManager.Unequip(targetGirl, rightItem);
 			DisableButton(equip_r_id, false);
 			DisableButton(unequip_r_id, true);
-			SetSelectedItemInList(owners_l_id, leftOwner);
-			SetSelectedItemInList(owners_r_id, rightOwner);
+			if (m_ListBoxes[owners_l_id]->GetSelected() != leftOwner)
+				SetSelectedItemInList(owners_l_id, leftOwner);
+			if (m_ListBoxes[owners_r_id]->GetSelected() != rightOwner)
+				SetSelectedItemInList(owners_r_id, rightOwner);
 		}
 	}
 	check_buttons();
@@ -918,7 +959,7 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
 
 	if (GetLastSelectedItemFromList(item_list) < 0)
 	{
-		EditTextItem("", desc_id);
+		write_item_text(NULL, -1, -1);
 		DisableButton((which_list == Left) ? shift_r_id : shift_l_id, true);
 	}
 
@@ -1273,12 +1314,12 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 	sel_pos_r = GetNextSelectedItemFromList(items_r_id, 0, pos);
 	leftOwner = GetNextSelectedItemFromList(owners_l_id, 0, pos);
 	rightOwner = GetNextSelectedItemFromList(owners_r_id, 0, pos);
-	sel_next_l = GetAfterSelectedItemFromList(items_l_id);
-	sel_next_r = GetAfterSelectedItemFromList(items_r_id);
+	sel_next_l = GetAfterSelectedItemFromList(items_l_id);	if (sel_next_l < 0) sel_next_l = 0;
+	sel_next_r = GetAfterSelectedItemFromList(items_r_id);	if (sel_next_r < 0) sel_next_r = 0;
 
 	// update the item lists
-	SetSelectedItemInList(source_owner_list, source_owner);
-	SetSelectedItemInList(target_owner_list, target_owner);
+	if (m_ListBoxes[source_owner_list]->GetSelected() != source_owner)	SetSelectedItemInList(source_owner_list, source_owner);
+	if (m_ListBoxes[target_owner_list]->GetSelected() != target_owner)	SetSelectedItemInList(target_owner_list, target_owner);
 }
 
 string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, string ItemName)

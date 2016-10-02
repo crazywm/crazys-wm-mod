@@ -609,7 +609,6 @@
     <ClCompile Include="WorkShepherd.cpp" />
     <ClCompile Include="WorkCobbler.cpp" />
     <ClCompile Include="WorkTailor.cpp" />
-    <ClCompile Include="WorkJeweler.cpp" />
     <ClCompile Include="cScreenGallery.cpp" />
     <ClCompile Include="cScreenTurnSummary.cpp" />
     <ClCompile Include="WorkHouseCook.cpp" />
@@ -623,6 +622,7 @@
     <ClCompile Include="WorkFilmPublicBDSM.cpp" />
     <ClCompile Include="WorkFilmThroat.cpp" />
     <ClCompile Include="WorkFilmTease.cpp" />
+    <ClCompile Include="WorkJeweler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
