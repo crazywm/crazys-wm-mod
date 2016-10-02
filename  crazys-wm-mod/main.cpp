@@ -612,7 +612,7 @@ void handle_hotkeys()
 				{
 				case SCREEN_BROTHEL:
 					msg += "Brothel Screen:\n";
-					msg += "Right Arrown    Next Brothel\n";
+					msg += "Right Arrow     Next Brothel\n";
 					msg += "Left Arrow      Previous Brothel\n\n";
 					break;
 				case SCREEN_TURNSUMMARY:
@@ -628,7 +628,9 @@ void handle_hotkeys()
 					msg += "S     Next Event\n";
 					msg += "Q     Next Catagory\n";
 					msg += "E     Previous Catagory\n";
-					msg += "Space Change current picture\n\n";
+					msg += "Space Change current picture\n";
+					if (cfg.resolution.next_turn_enter()) msg += "Enter  Goto Next Week\n";
+					msg += "\n";
 					break;
 				case SCREEN_GALLERY:
 				case SCREEN_GALLERY2:
@@ -661,7 +663,8 @@ void handle_hotkeys()
 					msg += "E     Next Job\n";
 					msg += "Z     Day Shift\n";
 					msg += "C     Night Shift\n";
-					msg += "Space   Goto Girl Details\n\n";
+					msg += "Space   Goto Girl Details\n";
+					msg += "Enter   Goto Girl Details\n\n";
 					break;
 				case SCREEN_GIRLDETAILS:
 					msg += "Girl Details:\n";
@@ -738,7 +741,8 @@ void handle_hotkeys()
 					break;
 				case SCREEN_HOUSE:
 					msg += "House:\n";
-					msg += "Space   Goto Girl Details\n\n";
+					msg += "Space   Goto Girl Details\n";
+					msg += "Enter   Goto Girl Details\n\n";
 					break;
 				case SCREEN_CLINIC:
 					msg += "Clinic:\n";
@@ -747,7 +751,8 @@ void handle_hotkeys()
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n\n";
-					msg += "Space   Goto Girl Details\n\n";
+					msg += "Space   Goto Girl Details\n";
+					msg += "Enter   Goto Girl Details\n\n";
 					break;
 				case SCREEN_ARENA:
 					msg += "Arena:\n";
@@ -756,7 +761,8 @@ void handle_hotkeys()
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n\n";
-					msg += "Space   Goto Girl Details\n\n";
+					msg += "Space   Goto Girl Details\n";
+					msg += "Enter   Goto Girl Details\n\n";
 					break;
 				case SCREEN_TRYOUTS:
 					msg += "Try Outs:\n";
@@ -770,7 +776,8 @@ void handle_hotkeys()
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n\n";
-					msg += "Space   Goto Girl Details\n\n";
+					msg += "Space   Goto Girl Details\n";
+					msg += "Enter   Goto Girl Details\n\n";
 					break;
 				case SCREEN_STUDIO:
 					msg += "Studio:\n";
@@ -779,7 +786,8 @@ void handle_hotkeys()
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n\n";
-					msg += "Space   Goto Girl Details\n\n";
+					msg += "Space   Goto Girl Details\n";
+					msg += "Enter   Goto Girl Details\n\n";
 					break;
 				case SCREEN_CREATEMOVIE:
 					msg += "Create Movie:\n";
@@ -951,9 +959,13 @@ void handle_hotkeys()
 			msg += "0           List Global Hotkeys.\n";
 			msg += "I           Shop Screen (Inventory)\n";
 			msg += "\n\n";
-			msg += "Space Key   Clears message boxes.\n";
+			msg += "Any Key     Clears message boxes.\n";
 			msg += "Ctrl + Home Default HotKeys\n";
-			msg += "Ctrl + End  Alternate HotKeys\n";
+			msg += "Ctrl + End  Alternate HotKeys\n\n";
+			msg += "Choice Boxes:\n";
+			msg += "Up Arrow    Move Selection Up\n";
+			msg += "Down Arrow  Move Selection Down\n";
+			msg += "Enter       Make Selection\n";
 			g_MessageQue.AddToQue(msg, 0);
 			break;
 		}
@@ -1318,36 +1330,40 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 					case SDLK_x:		g_X_Key = false;		break;
 					case SDLK_y:		g_Y_Key = false;		break;
 					case SDLK_z:		g_Z_Key = false;		break;
-				}
+					}
 				}
 			}
 			else if (vent.type == SDL_KEYDOWN)
 			{
-				if (!g_MessageBox.IsActive() && !g_ChoiceManager.IsActive())
+				if (g_MessageBox.IsActive())
+				{
+					g_MessageBox.Advance();
+				}
+				else if (!g_MessageBox.IsActive() && !g_ChoiceManager.IsActive())
 				{
 					if (g_WinManager.HasEditBox())
 					{
 						if (g_WinManager.GetWindow() == &g_NewGame)
 						{
-							if (vent.key.keysym.sym == SDLK_UP			|| vent.key.keysym.sym == SDLK_DOWN
-								|| vent.key.keysym.sym == SDLK_LEFT		|| vent.key.keysym.sym == SDLK_RIGHT
-								|| vent.key.keysym.sym == SDLK_TAB		|| vent.key.keysym.sym == SDLK_ESCAPE
-								|| vent.key.keysym.sym == SDLK_HOME		|| vent.key.keysym.sym == SDLK_END
-								|| vent.key.keysym.sym == SDLK_PAGEUP	|| vent.key.keysym.sym == SDLK_PAGEDOWN
+							if (vent.key.keysym.sym == SDLK_UP || vent.key.keysym.sym == SDLK_DOWN
+								|| vent.key.keysym.sym == SDLK_LEFT || vent.key.keysym.sym == SDLK_RIGHT
+								|| vent.key.keysym.sym == SDLK_TAB || vent.key.keysym.sym == SDLK_ESCAPE
+								|| vent.key.keysym.sym == SDLK_HOME || vent.key.keysym.sym == SDLK_END
+								|| vent.key.keysym.sym == SDLK_PAGEUP || vent.key.keysym.sym == SDLK_PAGEDOWN
 
-								|| vent.key.keysym.sym == SDLK_1		|| vent.key.keysym.sym == SDLK_2
-								|| vent.key.keysym.sym == SDLK_3		|| vent.key.keysym.sym == SDLK_4
-								|| vent.key.keysym.sym == SDLK_5		|| vent.key.keysym.sym == SDLK_6
-								|| vent.key.keysym.sym == SDLK_7		|| vent.key.keysym.sym == SDLK_8
-								|| vent.key.keysym.sym == SDLK_9		|| vent.key.keysym.sym == SDLK_0
+								|| vent.key.keysym.sym == SDLK_1 || vent.key.keysym.sym == SDLK_2
+								|| vent.key.keysym.sym == SDLK_3 || vent.key.keysym.sym == SDLK_4
+								|| vent.key.keysym.sym == SDLK_5 || vent.key.keysym.sym == SDLK_6
+								|| vent.key.keysym.sym == SDLK_7 || vent.key.keysym.sym == SDLK_8
+								|| vent.key.keysym.sym == SDLK_9 || vent.key.keysym.sym == SDLK_0
 
-								|| vent.key.keysym.sym == SDLK_F1		|| vent.key.keysym.sym == SDLK_F2
-								|| vent.key.keysym.sym == SDLK_F3		|| vent.key.keysym.sym == SDLK_F4
-								|| vent.key.keysym.sym == SDLK_F5		|| vent.key.keysym.sym == SDLK_F6
-								|| vent.key.keysym.sym == SDLK_F7		|| vent.key.keysym.sym == SDLK_F8
-								|| vent.key.keysym.sym == SDLK_F9		|| vent.key.keysym.sym == SDLK_F10
-								|| vent.key.keysym.sym == SDLK_F11		|| vent.key.keysym.sym == SDLK_F12
-								
+								|| vent.key.keysym.sym == SDLK_F1 || vent.key.keysym.sym == SDLK_F2
+								|| vent.key.keysym.sym == SDLK_F3 || vent.key.keysym.sym == SDLK_F4
+								|| vent.key.keysym.sym == SDLK_F5 || vent.key.keysym.sym == SDLK_F6
+								|| vent.key.keysym.sym == SDLK_F7 || vent.key.keysym.sym == SDLK_F8
+								|| vent.key.keysym.sym == SDLK_F9 || vent.key.keysym.sym == SDLK_F10
+								|| vent.key.keysym.sym == SDLK_F11 || vent.key.keysym.sym == SDLK_F12
+
 								)
 								handle_hotkeys();
 						}
@@ -1394,6 +1410,26 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 					if (g_MessageBox.IsActive())
 						g_MessageBox.Advance();
 					g_SpaceKey = false;
+				}
+				else if (vent.key.keysym.sym == SDLK_RETURN || vent.key.keysym.sym == SDLK_KP_ENTER)
+				{
+					if (g_MessageBox.IsActive())
+						g_MessageBox.Advance();
+					else if (g_ChoiceManager.IsActive())
+					{
+						g_EnterKey = true;
+						g_ChoiceManager.ButtonClicked(0, 0);
+					}
+					g_EnterKey = false;
+				}
+				else if (g_ChoiceManager.IsActive())
+				{
+					if (vent.key.keysym.sym == SDLK_UP || vent.key.keysym.sym == SDLK_DOWN)
+					{
+						/* */if (vent.key.keysym.sym == SDLK_UP)		g_UpArrow = true;
+						else if (vent.key.keysym.sym == SDLK_DOWN)		g_DownArrow = true;
+						g_ChoiceManager.ButtonClicked(0, 0);
+					}
 				}
 			}
 			else if (vent.type == SDL_MOUSEMOTION)

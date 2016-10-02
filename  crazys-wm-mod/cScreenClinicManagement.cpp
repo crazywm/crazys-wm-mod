@@ -42,6 +42,7 @@ extern	bool	g_RightArrow;
 extern	bool	g_UpArrow;
 extern	bool	g_DownArrow;
 extern	bool	g_AltKeys;	// New hotkeys --PP
+extern	bool	g_EnterKey;
 extern	bool	g_SpaceKey;
 extern	bool	g_CTRLDown;
 extern	bool	g_Q_Key;
@@ -223,9 +224,10 @@ bool cScreenClinicManagement::check_keys()
 		selection = ArrowDownListBox(girllist_id);
 		return true;
 	}
-	if (g_SpaceKey)		// Show Girl Details
+	// Show Girl Details
+	if (g_SpaceKey || g_EnterKey)
 	{
-		g_SpaceKey = false;
+		g_SpaceKey = g_EnterKey = false;
 		g_GirlDetails.lastsexact = -1;
 		ViewSelectedGirl();
 		return true;

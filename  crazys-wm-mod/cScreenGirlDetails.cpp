@@ -61,6 +61,7 @@ extern	bool	g_UpArrow;
 extern	bool	g_DownArrow;
 extern	int		g_CurrentScreen;
 extern	bool	g_AltKeys;	// New hotkeys --PP
+extern	bool	g_EnterKey;
 extern	bool	g_SpaceKey;
 extern	bool	g_ShiftDown;
 extern	bool	g_CTRLDown;

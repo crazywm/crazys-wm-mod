@@ -84,6 +84,7 @@ extern	bool	g_RightArrow;
 extern	bool	g_UpArrow;
 extern	bool	g_DownArrow;
 extern	bool	g_AltKeys;	// New hotkeys --PP
+extern	bool	g_EnterKey;
 extern	bool	g_SpaceKey;
 extern	bool	g_Q_Key;
 extern	bool	g_W_Key;

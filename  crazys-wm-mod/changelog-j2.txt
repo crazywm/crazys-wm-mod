@@ -156,7 +156,16 @@ Added "NextTurnEnter" to "Resolution" section of config.xml for those who don't 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.31
 
+###  Changes 10/2/2016
+Fixed a bug in the Inventory screen where the owner list would reset to Player | Shop when moving items.
+Added several keybord interactions:
+ - Any key will clear a message box.
+ - Enter key on girl lists will go to the girl details page.
+ - Up and Down arrows move choice boxes and Enter selects the choice.
+ - Updated Hotkey lists (9 and 0).
 
+ !!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.32
 
 
 

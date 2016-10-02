@@ -1312,8 +1312,16 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 	int pos = 0;
 	sel_pos_l = GetNextSelectedItemFromList(items_l_id, 0, pos);
 	sel_pos_r = GetNextSelectedItemFromList(items_r_id, 0, pos);
-	leftOwner = GetNextSelectedItemFromList(owners_l_id, 0, pos);
-	rightOwner = GetNextSelectedItemFromList(owners_r_id, 0, pos);
+	if (transfer_from == Left)
+	{
+		leftOwner = source_owner;
+		rightOwner= target_owner;
+	}
+	else
+	{
+		rightOwner = source_owner;
+		leftOwner = target_owner;
+	}
 	sel_next_l = GetAfterSelectedItemFromList(items_l_id);	if (sel_next_l < 0) sel_next_l = 0;
 	sel_next_r = GetAfterSelectedItemFromList(items_r_id);	if (sel_next_r < 0) sel_next_r = 0;
 

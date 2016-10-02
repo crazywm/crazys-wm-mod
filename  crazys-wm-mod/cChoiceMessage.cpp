@@ -24,6 +24,9 @@
 extern CGraphics g_Graphics;
 
 extern cConfig cfg;
+extern	bool	g_UpArrow;
+extern	bool	g_DownArrow;
+extern	bool	g_EnterKey;
 
 extern unsigned char g_ChoiceMessageTextR, g_ChoiceMessageTextG, g_ChoiceMessageTextB;
 extern unsigned char g_ChoiceMessageBorderR, g_ChoiceMessageBorderG, g_ChoiceMessageBorderB;
@@ -32,8 +35,7 @@ extern unsigned char g_ChoiceMessageSelectedR, g_ChoiceMessageSelectedG, g_Choic
 
 void cChoiceManager::Free()
 {
-	if(m_Parent)
-		delete m_Parent;
+	if(m_Parent)	delete m_Parent;
 	m_Parent = 0;
 	m_ActiveChoice = 0;
 	m_CurrUp=m_CurrDown=0;
@@ -458,8 +460,40 @@ bool cChoiceManager::IsOver(int x, int y)
 
 bool cChoiceManager::ButtonClicked(int x, int y)
 {
-	if(!IsActive() || !IsOver(x,y)) {
+	if(!IsActive())
+	{
 		return false;
+	}
+	if (!IsOver(x, y) && !g_UpArrow && !g_DownArrow && !g_EnterKey)
+	{
+		return false;
+	}
+
+	if (g_EnterKey)
+	{
+		if (m_callback) {
+			m_callback(m_ActiveChoice->m_CurrChoice);
+			m_callback = 0;
+		}
+		m_ActiveChoice = 0;
+		return true;
+	}
+
+	if (g_UpArrow)
+	{
+		g_UpArrow = false;
+		m_ActiveChoice->m_CurrChoice--;
+		if (m_ActiveChoice->m_CurrChoice < 0)
+			m_ActiveChoice->m_CurrChoice = m_ActiveChoice->m_NumChoices-1;
+		return true;
+	}
+	if (g_DownArrow)
+	{
+		g_DownArrow = false;
+		m_ActiveChoice->m_CurrChoice++;
+		if (m_ActiveChoice->m_CurrChoice > m_ActiveChoice->m_NumChoices-1)
+			m_ActiveChoice->m_CurrChoice = 0;
+		return true;
 	}
 
 	if(m_ActiveChoice->m_ScrollDisabled) {
@@ -467,13 +501,15 @@ bool cChoiceManager::ButtonClicked(int x, int y)
 		return bv;
 	}
 
-	if(m_CurrUp == m_UpOn) {
-		if(m_ActiveChoice->m_Position-1 >= 0)
+	if (m_CurrUp == m_UpOn)
+	{
+		if (m_ActiveChoice->m_Position - 1 >= 0)
 			m_ActiveChoice->m_Position--;
 		return true;
 	}
 
-	if(m_CurrDown == m_DownOn) {
+	if(m_CurrDown == m_DownOn)
+	{
 		if(m_ActiveChoice->m_Position+m_ActiveChoice->m_NumDrawnElements < m_ActiveChoice->m_NumChoices)
 			m_ActiveChoice->m_Position++;
 		return true;
