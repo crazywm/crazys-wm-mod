@@ -408,11 +408,21 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
 	else if (detailName == "Duration")			{ ss << m_Weeks; }
 	else if (detailName == "Feeding")			{ ss << ((m_Feeding) ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "Tortured")			{ ss << ((m_Girl->m_Tort) ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "Kidnapped")			
+	{
+		int duration = cGirls::HasTempTrait(m_Girl, "Kidnapped");
+
+		if (duration)
+			ss << duration;
+		else 
+			ss << "-";
+	}
 	else
 	{
 		m_Girl->OutputGirlDetailString(Data, detailName);
 		return;
 	}
+
 	Data = ss.str();
 }
 
