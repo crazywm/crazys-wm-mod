@@ -58,7 +58,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	sGirl* singeronduty = g_Brothels.GetRandomGirlOnJob(brothel->m_id, JOB_SINGER, Day0Night1);
 	string singername = (singeronduty ? "Singer " + singeronduty->m_Realname + "" : "the Singer");
 
-	double wages = 20, tips = 0;
+	int wages = 20, tips = 0;
 	int enjoy = 0, fame = 0;
 	int imagetype = IMGTYPE_PROFILE;
 	int msgtype = Day0Night1;
@@ -375,8 +375,8 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #pragma region	//	Finish the shift			//
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;

@@ -53,6 +53,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	g_Girls.EquipCombat(girl);	// Ready for combat training
 	
 	int enjoy = 0;												// 
+	int tips = 0;												// 
 	int wages = 0;												// 
 	int train = 0;												// main skill trained
 	int tcom = girl->m_Skills[SKILL_COMBAT];					// Starting level - train = 1
@@ -294,7 +295,8 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	brothel->m_Filthiness += 2;	// fighting is dirty
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket())) { wages = 0; }
 	else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 5 + skill, libido = int(1 + skill / 2);

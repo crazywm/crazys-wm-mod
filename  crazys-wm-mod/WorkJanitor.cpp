@@ -151,8 +151,8 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
 	brothel->m_Filthiness -= (int)CleanAmt;
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve girl
 	int xp = 5, libido = 1, skill = 3;

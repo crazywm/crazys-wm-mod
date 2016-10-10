@@ -58,7 +58,7 @@ bool cJobManager::WorkHouseCook(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	ss << " worked cooking for your house.\n\n";
 
 	int enjoy = 0;
-	int wages = 30;
+	int wages = 30, tips = 0;
 	double jobperformance = JP_HouseCook(girl, false);
 
 
@@ -138,8 +138,8 @@ bool cJobManager::WorkHouseCook(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else
 	{
 		// Money
-		if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-		//if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+		girl->m_Tips = max(0, tips);
+		girl->m_Pay = max(0, wages);
 	}
 #pragma endregion
 

@@ -63,7 +63,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
-	double wages = 25, tips = 0;
+	int wages = 25, tips = 0;
 	int enjoy = 0, fame = 0;
 	int imagetype = IMGTYPE_PROFILE;
 	int msgtype = Day0Night1;
@@ -190,8 +190,8 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	wages += 10 + g_Dice%roll_max;
 	wages += 5 * g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, Day0Night1);	// `J` pay her 5 for each patient you send to her		
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 
 	// Improve stats

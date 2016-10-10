@@ -90,7 +90,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	sGirl* barmaidonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARMAID, Day0Night1);
 	string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->m_Realname + "" : "the Barmaid");
 
-	double wages = 15, tips = 0;
+	int wages = 15, tips = 0;
 	int enjoy = 0, fame = 0;
 
 	int imagetype = IMGTYPE_COOK;
@@ -402,8 +402,8 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;

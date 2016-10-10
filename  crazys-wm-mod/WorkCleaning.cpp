@@ -67,22 +67,6 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int msgtype = Day0Night1;
 	bool playtime = false;
 
-#if 0
-	if (roll_a <= 10)
-	{
-		enjoy -= g_Dice % 3 + 1;
-		jobperformance *= 0.8;
-		if (roll_b < 50)	ss << "She spilled a bucket of something unpleasant all over herself.";
-		else				ss << "She did not like cleaning the brothel today.";
-	}
-	else if (roll_a >= 90)
-	{
-		enjoy += g_Dice % 3 + 1;
-		jobperformance *= 1.1;
-		if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
-		else				ss << "She had a great time working today.";
-	}
-#else
 	//SIN - a little more variety
 	if (roll_a <= 10)
 	{
@@ -109,25 +93,12 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		else if (roll_b < 66)	ss << "A waiting customer chatted with her as she worked, and even helped her out a little.";
 		else					ss << "She had a great time working today.";
 	}
-#endif
 	else
 	{
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
 	ss << "\n\n";
-
-
-	// slave girls not being paid for a job that normally you would pay directly for do less work
-	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
-	{
-		jobperformance = jobperformance * 0.9;
-		wages = 0;
-	}
-	else
-	{
-		wages = int(jobperformance); // `J` Pay her based on how much she cleaned
-	}
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < jobperformance / 2) playtime = true;
@@ -243,11 +214,29 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			break;
 		}
 	}
-	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
+
+
+
+	// slave girls not being paid for a job that normally you would pay directly for do less work
+	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
+	{
+		jobperformance = jobperformance * (jobperformance >= 0 ? 0.9 : 1.1);
+		wages = 0;
+	}
+	else
+	{
+		wages = int(jobperformance); // `J` Pay her based on how much she cleaned
+	}
+
 	brothel->m_Filthiness -= (int)jobperformance;
 
-	girl->m_Tips = tips;  //job is classed as player-paid, so this is only way to give her tip
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);	//job is classed as player-paid, so this is only way to give her tip
+	girl->m_Pay = max(0, wages);
+
+
+
+	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
+
 
 	// Improve girl
 	int xp = 5, libido = 1, skill = 3;

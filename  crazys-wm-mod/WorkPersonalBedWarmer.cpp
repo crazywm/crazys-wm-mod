@@ -75,7 +75,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 
 #else		//bsin - adding more than just refusal: difference for slave vs free & headgirl or no
 	//initiate things I need 
-	int wages = 0;
+	int wages = 0, tips = 0;
 	bool isAddict = g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Viras Blood Addict");
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
@@ -1455,7 +1455,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 #endif
 	if (wages < 0) wages = 0;
 	g_Gold.girl_support(wages);  // wages come from you
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 10, libido = 3;

@@ -3049,8 +3049,8 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 	else if (totalGold > 0)
 	{
 		ss << girlName << " earned a total of " << totalGold << " gold";
-	
-			// if it is a player paid job and she is not a slave
+
+		// if it is a player paid job and she is not a slave
 		if ((is_job_Paid_Player(sw) && !girl->is_slave()) ||
 			// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
 			(is_job_Paid_Player(sw) && girl->is_slave() && cfg.initial.slave_pay_outofpocket()))
@@ -3067,20 +3067,19 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 		{
 			int hpay = int(double(totalPay * double(girl->m_Stats[STAT_HOUSE] * 0.01)));
 			int gpay = totalPay - hpay;
-			ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" 
-				<< 100 - girl->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay 
+			ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut ("
+				<< 100 - girl->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay
 				<< " gold.\n\nYou got " << hpay << " gold (" << girl->m_Stats[STAT_HOUSE] << "%).";
 		}
 		else
 		{
 			int hpay = int(double(totalGold * double(girl->m_Stats[STAT_HOUSE] * 0.01)));
 			int gpay = totalGold - hpay;
-			ss << ".\nShe keeps " << gpay << " gold. (" << 100 - girl->m_Stats[STAT_HOUSE] 
+			ss << ".\nShe keeps " << gpay << " gold. (" << 100 - girl->m_Stats[STAT_HOUSE]
 				<< "%)\nYou keep " << hpay << " gold (" << girl->m_Stats[STAT_HOUSE] << "%).";
 		}
 	}
 	else if (totalGold == 0)	{ ss << girlName << " made no money."; }
-	else if (totalGold < 0)		{ ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org"; }
-	
+	else if (totalGold < 0)		{ ss << "ERROR: She has a loss of " << totalGold << " gold\n\nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n" << "\nGirl Name: " << girl->m_Realname << "\nJob: " << JobName[(Day0Night1 ? girl->m_NightJob : girl->m_DayJob)] << "\nPay:     " << girl->m_Pay << "\nTips:   " << girl->m_Tips << "\nTotal: " << totalGold; }
 	return ss.str();
 }

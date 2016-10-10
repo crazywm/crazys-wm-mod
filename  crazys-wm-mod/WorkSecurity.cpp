@@ -146,8 +146,11 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
 
-	girl->m_Pay += 70;
-	g_Gold.staff_wages(70);  // wages come from you
+	wages += 70;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
+
+	//g_Gold.staff_wages(70);  // wages come from you
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % skill) + 1);
 	g_Girls.UpdateSkill(girl, SKILL_MAGIC, (g_Dice % skill) + 1);

@@ -69,6 +69,7 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.UnequipCombat(girl);	// not for doctor
 
 	int wages = 25;
+	int tips = 0;
 	int enjoy = 0;
 
 	/* */if (roll_a <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "The addicts hasseled her."; }
@@ -83,7 +84,8 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	wages += 5 * rehabers;	// `J` pay her 5 for each patient you send to her
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 5 + (rehabers / 2), skill = 2 + (rehabers / 2), libido = 1;

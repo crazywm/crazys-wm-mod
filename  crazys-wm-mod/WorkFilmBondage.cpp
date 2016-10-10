@@ -57,7 +57,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	
 	stringstream ss;
 	string girlName = girl->m_Realname;
-	int wages = 50;
+	int wages = 50, tips = 0;
 	int enjoy = 0;
 	double jobperformance = JP_FilmBondage(girl, false);
 
@@ -253,24 +253,6 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		else if (girl->has_trait("Straight"))	jobperformance += 10;
 	}
 
-#if 0
-	// remaining modifiers are in the AddScene function --PP
-	int finalqual = g_Studios.AddScene(girl, JOB_FILMBONDAGE, bonus);
-	ss << "Her scene is valued at: " << finalqual << " gold.\n";
-
-	girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
-
-	// work out the pay between the house and the girl
-	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket())
-	{
-		wages = 0;	// You own her so you don't have to pay her.
-	}
-	else
-	{
-		wages += finalqual * 2;
-	}
-	girl->m_Pay = wages;
-#else
 	//Evil pays more and costs about the same...
 	int finalqual = g_Studios.AddScene(girl, JOB_FILMBONDAGE, bonus);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
@@ -286,8 +268,9 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		wages += finalqual * 2;
 	}
-	girl->m_Pay = wages;
-#endif
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
+
 	// Improve stats
 	int xp = 10, skill = 3;
 

@@ -78,7 +78,8 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	double wages = 0, tips = 0;			// money
+	int wages = 0;
+	double tips = 0;
 	int enjoy = 0, fame = 0;				// girl
 	int Bhappy = 0, Bfame = 0, Bfilth = 0;	// brothel
 	int imagetype = IMGTYPE_WAIT;
@@ -717,7 +718,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{
 		if (!cfg.initial.slave_keep_tips())
 		{
-			wages += tips;
+			wages += (int)tips;
 			tips = 0;
 		}
 		/* */if ((int)wages > 0)	ss << "\n" << girlName << " turned in an extra " << (int)wages << " gold from other sources.";
@@ -842,8 +843,8 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 #endif
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, (int)tips);
+	girl->m_Pay = max(0, wages);
 
 	g_Gold.bar_income(profit);
 

@@ -70,7 +70,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	int train = roll_a - g_Girls.GetStat(girl, STAT_OBEDIENCE) - g_Girls.GetTraining(girl, TRAINING_PUPPY);
 
-	//double wages = 100, tips = 0;
+	int wages = 100, tips = 0;
 	int enjoy = 0, fame = 0, training = 0, ob = 0, fear = 0, love = 0;
 
 	// `J` add in player's disposition so if the girl has heard of you

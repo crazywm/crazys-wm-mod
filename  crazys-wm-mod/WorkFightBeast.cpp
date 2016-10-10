@@ -129,7 +129,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 	Uint8 fight_outcome = 0;
-	int wages = 175, enjoy = 0;
+	int wages = 175, tips = 0, enjoy = 0;
 	double jobperformance = JP_FightBeast(girl, false);
 
 
@@ -160,7 +160,8 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		int roll_max = girl->fame() + girl->charisma();
 		roll_max /= 4;
 		wages += 10 + g_Dice%roll_max;
-		girl->m_Pay = wages;
+		girl->m_Tips = max(0, tips);
+		girl->m_Pay = max(0, wages);
 		g_Girls.UpdateStat(girl, STAT_FAME, 2);
 	}
 	else  // she lost or it was a draw

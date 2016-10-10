@@ -42,6 +42,7 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 	
 
 	int numgirls = brothel->m_NumGirls;
+	int wages = 0, tips = 0;
 	int enjoy = 0;
 	int conf = 0;
 	int happy = 0;
@@ -88,7 +89,9 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
 	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += numgirls / 20;
 
-	girl->m_Pay = int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
+	wages += int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	if (conf>-1) conf += g_Dice%skill;
 	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, conf);

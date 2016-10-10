@@ -101,6 +101,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 	ss << ".\n\n";
 
 	int wages = 50;
+	int tips = 0;
 	int enjoy = 0;
 
 	if (roll <= 10)
@@ -142,7 +143,8 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	g_Studios.m_PurifierQaulity += (int)jobperformance;
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 5, skill = 3, libido = 1;

@@ -61,7 +61,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	double wages = 45, tips = 0;
+	int wages = 45, tips = 0;
 	int enjoy = 0, fame = 0;
 	int imagetype = IMGTYPE_STRIP;
 	int msgtype = Day0Night1;
@@ -453,8 +453,8 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;

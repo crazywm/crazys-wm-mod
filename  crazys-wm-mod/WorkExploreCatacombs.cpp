@@ -69,6 +69,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	int type_beasts = 0;
 	int num_items = 0;
 	long gold = 0;
+	int wages = 0, tips = 0;
 	bool raped = false;
 	string UGirls_list = "";
 	string Girls_list = "";
@@ -492,7 +493,9 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		}
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}
-	girl->m_Pay += gold;
+	wages += gold;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve girl
 	int num = type_monster_girls + type_unique_monster_girls + type_beasts + 1;

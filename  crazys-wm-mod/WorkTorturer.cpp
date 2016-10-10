@@ -56,24 +56,11 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	ss << " is assigned to torture people in the dungeon.";
 	girl->morality(-1);
+	int wages = 0, tips = 0;
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
 	// Complications
-#if 0
-	if (g_Dice.percent(10))
-	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, -3);
-		ss << girlName << gettext(" hurt herself while torturing someone.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
-	}
-	else
-	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
-		ss << girlName << gettext(" enjoyed her job working in the dungeon.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, Day0Night1);
-	}
-#else
 	//SIN: bit more variety for the above
 	int roll(g_Dice % 5);
 	bool forFree = false;
@@ -173,7 +160,6 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	}
-#endif
 
 	// Improve girl
 	int xp = 15, libido = 5, skill = 1;
@@ -184,9 +170,11 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if (!forFree)
 	{
-		girl->m_Pay += 65;
-		g_Gold.staff_wages(65);  // wages come from you
+		wages += 65;
+		//g_Gold.staff_wages(65);  // wages come from you
 	}
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStat(girl, STAT_MORALITY, -2);

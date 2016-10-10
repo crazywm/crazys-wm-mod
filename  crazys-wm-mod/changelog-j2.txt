@@ -164,11 +164,17 @@ Added several keybord interactions:
  - Up and Down arrows move choice boxes and Enter selects the choice.
  - Updated Hotkey lists (9 and 0).
 
- !!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.32
 
+###  Changes 10/2-9/2016
+Fixed a bug in the inventory screen - using consumable items did not refresh the item list
+Added items to the Tailor job
+Normalized wages and tips across most jobs
+Added things to and cleaned up whore jobs.
 
-
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.33
 
 
 

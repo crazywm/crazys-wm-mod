@@ -54,7 +54,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
-	double wages = 20, tips = 0;
+	int wages = 20, tips = 0;
 	int enjoy = 0, fame = 0;
 	int imagetype = IMGTYPE_SIGN;
 	int msgtype = EVENT_SUMMARY;
@@ -153,7 +153,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// if you pay slave girls out of pocket  or if she is a free girl  pay them
 	if ((girl->is_slave() && cfg.initial.slave_pay_outofpocket()) || girl->is_free())
 	{
-		girl->m_Pay += 70;
+		wages += 70;
 		g_Gold.advertising_costs(70);
 		ss << " You paid her 70 gold for her advertising efforts.";
 	}
@@ -171,8 +171,8 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	brothel->m_AdvertisingLevel += (multiplier / 100);
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;
