@@ -575,7 +575,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				if (g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
 				{
 					ss << girlName << " found herself looking at " << xxxentername << "'s performance often, losing more times than usual.\n";
-					wages *= 0.9;
+					wages = int(wages * 0.9);
 				}
 				else
 				{
@@ -590,7 +590,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		else
 		{
 			ss << girlName << " took advantage of " << xxxentername << "'s show to win more hands and make some extra money.\n";
-			wages *= 1.2;
+			wages = int(wages * 1.2);
 		}
 	}
 

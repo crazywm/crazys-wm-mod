@@ -79,7 +79,7 @@ void cEditBox::Draw()
 	m_Text->DrawText(m_XPos+m_BorderSize+1, m_YPos+m_BorderSize+1);
 }
 
-bool cEditBox::CreateEditBox(int ID, int x, int y, int width, int height, int BorderSize)
+bool cEditBox::CreateEditBox(int ID, int x, int y, int width, int height, int BorderSize, int FontSize)
 {
 	m_BorderSize = BorderSize;
 	SetPosition(x,y,width,height);

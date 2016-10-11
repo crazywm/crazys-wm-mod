@@ -273,7 +273,7 @@ void LoadInterface()
 {
 	cTariff tariff;
 	stringstream ss;
-	int r = 0, g = 0, b = 0, a = 0, c = 0, d = 0, e = 0, fontsize = 16,
+	int r = 0, g = 0, b = 0, a = 0, c = 0, d = 0, e = 0, fontsize = 10, rowheight = 20 ,
 		increment = 0, min = 0, max = 0, value = 0;
 	string image = ""; string text = ""; string file = "";
 	bool Transparency = false, Scale = true, multi = false, events = false, liveUpdate = false;
@@ -471,9 +471,12 @@ void LoadInterface()
 			xu.get_att(el, "Name", name);
 			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
 			xu.get_att(el, "Image", image, true); xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
+			
+			xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 10;
+			xu.get_att(el, "RowHeight", rowheight); if (rowheight == 0) rowheight = 20;
 
 			if (name == "LoadMenu")	g_LoadGame.CreateWindow(a, b, c, d, e);
-			if (name == "FileName")	g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true);
+			if (name == "FileName")	g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true, false, false, true, true, fontsize, rowheight);
 			if (name == "LoadGame")	g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGLOAD, a, b, c, d, Transparency, Scale);
 			if (name == "Back")		g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGBACK, a, b, c, d, Transparency, Scale);
 		}
@@ -488,7 +491,7 @@ void LoadInterface()
 		g_LoadGame.CreateWindow(a, b, c, d, e);
 		g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, d - 10, c, 12, "Please read the readme.html", 10);
 		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
-		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true);
+		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true, false, false, true, true, fontsize, rowheight);
 		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
 		g_LoadGame.AddButton("Load", g_interfaceid.BUTTON_LOADGLOAD, a, b, c, d, true);
 		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
@@ -500,7 +503,7 @@ void LoadInterface()
 		g_LogFile.write("Loading Default LoadMenu");
 		g_LoadGame.CreateWindow(224, 128, 344, 344, 1);
 		g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, 334 - 10, 344, 12, "Please read the readme.html", 10);
-		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, 8, 8, 328, 288, 1, true);
+		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, 8, 8, 328, 288, 1, true, false, false, true, true, fontsize, rowheight);
 		g_LoadGame.AddButton("Load", g_interfaceid.BUTTON_LOADGLOAD, 8, 304, 160, 32, true);
 		g_LoadGame.AddButton("Back", g_interfaceid.BUTTON_LOADGBACK, 176, 304, 160, 32, true);
 	}
@@ -535,13 +538,13 @@ void LoadInterface()
 			xu.get_att(el, "Name", name);
 			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
 			xu.get_att(el, "Image", image, true); xu.get_att(el, "Transparency", Transparency, true); 
-			xu.get_att(el, "Scale", Scale, true); xu.get_att(el, "Text", text,true);
+			xu.get_att(el, "Scale", Scale, true); xu.get_att(el, "Text", text, true); xu.get_att(el, "FontSize", fontsize, true);
 
 			if (name == "GetString")	g_GetString.CreateWindow(a, b, c, d, e);
 			if (name == "Ok")			g_GetString.AddButton(image, g_interfaceid.BUTTON_OK, a, b, c, d, Transparency, Scale);
 			if (name == "Cancel")		g_GetString.AddButton(image, g_interfaceid.BUTTON_CANCEL, a, b, c, d, Transparency, Scale);
 			if (name == "Label")		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, a, b, c, d, text, fontsize);
-			if (name == "TextField")	g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, a, b, c, d, e);
+			if (name == "TextField")	g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, a, b, c, d, e, fontsize);
 		}
 	}
 	else if (GetString == 2)
@@ -559,7 +562,7 @@ void LoadInterface()
 		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
 		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, a, b, c, d, "Enter Text:", e);
 		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
-		g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, a, b, c, d, e);
+		g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, a, b, c, d, e, fontsize);
 		incol.close();
 	}
 	else
@@ -569,7 +572,7 @@ void LoadInterface()
 		g_GetString.AddButton("Ok", g_interfaceid.BUTTON_OK, 32, 104, 128, 32, true);
 		g_GetString.AddButton("Cancel", g_interfaceid.BUTTON_CANCEL, 192, 104, 128, 32, true);
 		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, 32, 32, 128, 32, "Enter Text:", 16);
-		g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, 160, 32, 160, 32, 1);
+		g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, 160, 32, 160, 32, 1, fontsize);
 	}
 
 
@@ -580,8 +583,8 @@ void LoadInterface()
 	g_ChangeJobs.AddButton("Ok", g_interfaceid.BUTTON_CJOK, 8, 336, 128, 32, true);
 	g_ChangeJobs.AddButton("Cancel", g_interfaceid.BUTTON_CJCANCEL, 152, 336, 128, 32, true);
 	g_ChangeJobs.AddTextItem(g_interfaceid.TEXT_CJDESC, 8, 240, 272, 88, "", 10);
-	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJDAYTIME, 8, 48, 144, 192, 1, true);
-	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJNIGHTTIME, 152, 48, 144, 192, 1, true);
+	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJDAYTIME, 8, 48, 144, 192, 1, true, false, false, true, true, fontsize, rowheight);
+	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJNIGHTTIME, 152, 48, 144, 192, 1, true, false, false, true, true, fontsize, rowheight);
 	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 128, 32, "Day Shift");
 	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 152, 8, 128, 32, "Night Shift");
 
@@ -602,16 +605,18 @@ void LoadInterface()
 			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
 			xu.get_att(el, "Image", image, true); xu.get_att(el, "File", file, true);
 			xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
-			xu.get_att(el, "Text", text, true); xu.get_att(el, "FontSize", fontsize, true);
+			xu.get_att(el, "Text", text, true);
+			xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 10;
+			xu.get_att(el, "RowHeight", rowheight); if (rowheight == 0) rowheight = 20;
 
 			if (name == "Transfer Girls")	g_TransferGirls.CreateWindow(a, b, c, d, e);
 			if (name == "Back")				g_TransferGirls.AddButton(image, g_interfaceid.BUTTON_TRANSGBACK, a, b, c, d, Transparency, Scale);
 			if (name == "ShiftLeft")		g_TransferGirls.AddButton(image, g_interfaceid.BUTTON_TRANSGSHIFTL, a, b, c, d, Transparency, Scale);
 			if (name == "ShiftRight")		g_TransferGirls.AddButton(image, g_interfaceid.BUTTON_TRANSGSHIFTR, a, b, c, d, Transparency, Scale);
-			if (name == "ListLeft")			g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, a, b, c, d, e, true, true);
-			if (name == "ListRight")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, a, b, c, d, e, true, true);
-			if (name == "BrothelLeft")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, a, b, c, d, e, true);
-			if (name == "BrothelRight")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, a, b, c, d, e, true);
+			if (name == "ListLeft")			g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, a, b, c, d, e, true, true, false, true, true, fontsize, rowheight);
+			if (name == "ListRight")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, a, b, c, d, e, true, true, false, true, true, fontsize, rowheight);
+			if (name == "BrothelLeft")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, a, b, c, d, e, true, false, false, true, true, fontsize, rowheight);
+			if (name == "BrothelRight")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, a, b, c, d, e, true, false, false, true, true, fontsize, rowheight);
 			if (name == "LabelLeft")		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
 			if (name == "LabelRight")		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
 		}
@@ -624,10 +629,10 @@ void LoadInterface()
 		g_TransferGirls.AddButton("Back", g_interfaceid.BUTTON_TRANSGBACK, 308, 536, 160, 32, true);
 		g_TransferGirls.AddButton("ShiftLeft", g_interfaceid.BUTTON_TRANSGSHIFTL, 366, 214, 48, 48, true);
 		g_TransferGirls.AddButton("ShiftRight", g_interfaceid.BUTTON_TRANSGSHIFTR, 366, 304, 48, 48, true);
-		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, 168, 48, 190, 482, 1, true, true);
-		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, 418, 48, 190, 482, 1, true, true);
-		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 8, 48, 126, 234, 1, true, false);
-		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 632, 48, 126, 234, 1, true, false);
+		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, 168, 48, 190, 482, 1, true, true, false, true, true, fontsize, rowheight);
+		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, 418, 48, 190, 482, 1, true, true, false, true, true, fontsize, rowheight);
+		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 8, 48, 126, 234, 1, true, false, false, true, true, fontsize, rowheight);
+		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 632, 48, 126, 234, 1, true, false, false, true, true, fontsize, rowheight);
 		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 160, 32, "BROTHELS");
 		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 632, 8, 160, 32, "BROTHELS");
 	}

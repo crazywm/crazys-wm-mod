@@ -262,7 +262,7 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 		&& x > m_XPos + m_eWidth - 16
 		&& x <= m_XPos + m_eWidth
 		&& y > m_YPos + m_BorderSize
-		&& y <= m_YPos + m_BorderSize + LISTBOX_ITEMHEIGHT
+		&& y <= m_YPos + m_BorderSize + m_RowHeight
 		)
 	{
 		UnSortList();
@@ -288,7 +288,7 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 
 		// See if a header was clicked
 		m_HeaderClicked = "";
-		if (m_ShowHeaders && y > m_YPos + m_BorderSize && y <= m_YPos + m_BorderSize + LISTBOX_ITEMHEIGHT)
+		if (m_ShowHeaders && y > m_YPos + m_BorderSize && y <= m_YPos + m_BorderSize + m_RowHeight)
 		{
 			int x_start = 0, x_end = 0;
 			for (int i = 0; i < m_ColumnCount; i++)
@@ -375,9 +375,9 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 					break;
 
 				int cX = m_XPos + m_BorderSize;
-				int cY = (m_YPos + m_BorderSize) + (LISTBOX_ITEMHEIGHT*temp);
+				int cY = (m_YPos + m_BorderSize) + (m_RowHeight*temp);
 				if (m_ShowHeaders) // Account for headers if shown
-					cY += LISTBOX_ITEMHEIGHT;
+					cY += m_RowHeight;
 
 				// Check if over the item
 				if (x > cX && y > cY && x < cX + m_eWidth && y <= cY + m_eHeight)
@@ -428,9 +428,9 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 					if (count >= m_Position && count - m_Position < m_NumDrawnElements)
 					{
 						int cX = m_XPos + m_BorderSize;
-						int cY = (m_YPos + m_BorderSize) + (LISTBOX_ITEMHEIGHT*(count - m_Position));
+						int cY = (m_YPos + m_BorderSize) + (m_RowHeight*(count - m_Position));
 						if (m_ShowHeaders) // Account for headers if shown
-							cY += LISTBOX_ITEMHEIGHT;
+							cY += m_RowHeight;
 
 						// Check if over the item
 						if (x > cX && y > cY && x < cX + m_eWidth && y <= cY + m_eHeight)
@@ -462,7 +462,7 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 	}
 }
 
-void cListBox::CreateListbox(int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect, bool ShowHeaders, bool HeaderDiv, bool HeaderSort)
+void cListBox::CreateListbox(int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect, bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight)
 {
 	SDL_Rect dest_rect;
 
@@ -473,6 +473,7 @@ void cListBox::CreateListbox(int ID, int x, int y, int width, int height, int Bo
 	m_ID = ID;
 
 	m_BorderSize = BorderSize;
+	m_RowHeight = (rowheight == 0 ? LISTBOX_ITEMHEIGHT : rowheight);
 	SetPosition(x, y, width, height);
 	m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
 	SDL_FillRect(m_Border, 0, SDL_MapRGB(m_Border->format, g_ListBoxBorderR, g_ListBoxBorderG, g_ListBoxBorderB));
@@ -480,11 +481,11 @@ void cListBox::CreateListbox(int ID, int x, int y, int width, int height, int Bo
 	m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, width - (BorderSize * 2) - 16, height - (BorderSize * 2), 32, 0, 0, 0, 0);
 	SDL_FillRect(m_Background, 0, SDL_MapRGB(m_Background->format, g_ListBoxBackgroundR, g_ListBoxBackgroundG, g_ListBoxBackgroundB));
 
-	m_NumDrawnElements = height / LISTBOX_ITEMHEIGHT;
+	m_NumDrawnElements = height / m_RowHeight;
 	if (m_ShowHeaders) // Account for headers if shown
 		m_NumDrawnElements--;
 	m_eWidth = (width - (BorderSize * 2));
-	m_eHeight = LISTBOX_ITEMHEIGHT;
+	m_eHeight = m_RowHeight;
 
 	m_RedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
 	SDL_FillRect(m_RedBackground, 0, SDL_MapRGB(m_RedBackground->format, g_ListBoxS1ElementBackgroundR, g_ListBoxS1ElementBackgroundG, g_ListBoxS1ElementBackgroundB));
@@ -575,7 +576,7 @@ void cListBox::CreateListbox(int ID, int x, int y, int width, int height, int Bo
 		}
 	}
 
-	m_Font.LoadFont(cfg.fonts.normal(), 10);
+	m_Font.LoadFont(cfg.fonts.normal(), (fontsize == 0 ? 10 : fontsize));
 	m_Font.SetText("");
 	m_Font.SetColor(g_ListBoxTextR, g_ListBoxTextG, g_ListBoxTextB);
 
@@ -661,9 +662,9 @@ void cListBox::Draw()
 
 		// Draw the window
 		offset.x = m_XPos + m_BorderSize;
-		offset.y = (m_YPos + m_BorderSize) + (LISTBOX_ITEMHEIGHT*temp);
+		offset.y = (m_YPos + m_BorderSize) + (m_RowHeight*temp);
 		if (m_ShowHeaders) // Account for headers if shown
-			offset.y += LISTBOX_ITEMHEIGHT;
+			offset.y += m_RowHeight;
 
 		// blit to the screen
 		SDL_BlitSurface(m_ElementBorder, 0, g_Graphics.GetScreen(), &offset);

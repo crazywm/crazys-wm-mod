@@ -177,6 +177,21 @@ Added things to and cleaned up whore jobs.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.33
 
 
+###  Changes 10/10-11/2016
+Fixed a few issues in wages and tips
+Added customization to Font Sizes and Row Heights for List Boxes and Edit Boxes are now editable in the interface .xmls.
+ - Add FontSize and RowHeight to the ListBox and EditBox lines and adjust list column widths to compensate for the larger text.
+ - <ListBox Name="FileName"              XPos="8"   YPos="8"   Width="328" Height="288" Border="1" FontSize="15" RowHeight="30"/>
+ - If they are not specified, they use the default numbers.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.34
+
+
+
+
+
+
 
 
 

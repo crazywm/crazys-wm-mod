@@ -1934,7 +1934,7 @@ break;	// end Es_DeadBeat
 	
 
 	// work out the pay between the house and the girl
-	wages = girl->askprice() * cust_type * cust_wealth;
+	wages = (int)(girl->askprice() * cust_type * cust_wealth);
 	//tips = (jobperformance > 0) ? (g_Dice%jobperformance) * cust_type * cust_wealth : 0;
 	ss << "\n\n" << girlName << " receives " << wages << " in payment for her work as an Escort for a " << cust_type_text << " client. Her fame as an Escort has changed by " << fame << ".";
 

@@ -297,7 +297,7 @@ void cInterfaceWindow::SetImage(int id, cAnimatedSurface* image)
 	m_Images[id]->m_AnimatedImage = image;
 }
 
-void cInterfaceWindow::AddEditBox(int & ID, int x, int y, int width, int height, int BorderSize)
+void cInterfaceWindow::AddEditBox(int & ID, int x, int y, int width, int height, int BorderSize, int FontSize)
 {
 	width = (int)((float)width*m_xRatio);
 	height = (int)((float)height*m_yRatio);
@@ -307,7 +307,7 @@ void cInterfaceWindow::AddEditBox(int & ID, int x, int y, int width, int height,
 	// create button
 	ID = m_EditBoxes.size();
 	cEditBox* newEditBox = new cEditBox();
-	newEditBox->CreateEditBox(ID, x + m_XPos, y + m_YPos, width, height, BorderSize);
+	newEditBox->CreateEditBox(ID, x + m_XPos, y + m_YPos, width, height, BorderSize, FontSize);
 
 	// Store button
 	m_EditBoxes.push_back(newEditBox);
@@ -531,7 +531,7 @@ void cInterfaceWindow::EditTextItem(string text, int ID)
 	}
 }
 
-void cInterfaceWindow::AddListBox(int & ID, int x, int y, int width, int height, int BorderSize, bool enableEvents, bool MultiSelect, bool ShowHeaders, bool HeaderDiv, bool HeaderSort)
+void cInterfaceWindow::AddListBox(int & ID, int x, int y, int width, int height, int BorderSize, bool enableEvents, bool MultiSelect, bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight)
 {
 	width = (int)((float)width*m_xRatio);
 	height = (int)((float)height*m_yRatio);
@@ -544,7 +544,7 @@ void cInterfaceWindow::AddListBox(int & ID, int x, int y, int width, int height,
 	g_LogFile.write("initializing listbox");
 	cListBox* newListBox = new cListBox();
 	g_LogFile.write("creating listbox");
-	newListBox->CreateListbox(ID, x + m_XPos, y + m_YPos, width, height, BorderSize, MultiSelect, ShowHeaders, HeaderDiv, HeaderSort);
+	newListBox->CreateListbox(ID, x + m_XPos, y + m_YPos, width, height, BorderSize, MultiSelect, ShowHeaders, HeaderDiv, HeaderSort, fontsize, rowheight);
 	g_LogFile.write("enabling events");
 	newListBox->m_EnableEvents = enableEvents;
 
@@ -768,7 +768,7 @@ void cInterfaceWindowXML::read_text_item(TiXmlElement *el)
 {
 	string name, text;
 	XmlUtil xu(m_filename);
-	int id, x, y, w, h, font_size, red = 0, green = 0, blue = 0;
+	int id, x, y, w, h, fontsize, red = 0, green = 0, blue = 0;
 	bool auto_scrollbar = true, force_scrollbar = false;
 
 	xu.get_att(el, "Name", name);
@@ -777,7 +777,7 @@ void cInterfaceWindowXML::read_text_item(TiXmlElement *el)
 	xu.get_att(el, "YPos", y);
 	xu.get_att(el, "Width", w);
 	xu.get_att(el, "Height", h);
-	xu.get_att(el, "FontSize", font_size);
+	xu.get_att(el, "FontSize", fontsize);
 	xu.get_att(el, "AutoScrollbar", auto_scrollbar, Optional);	// automatically use scrollbar if text doesn't fit; otherwise, don't
 	xu.get_att(el, "ForceScrollbar", force_scrollbar, Optional);	// force scrollbar display even when not needed (shown disabled, grayed out)
 	xu.get_att(el, "Red", red, Optional);
@@ -786,7 +786,7 @@ void cInterfaceWindowXML::read_text_item(TiXmlElement *el)
 	/*
 	*	create the text item
 	*/
-	AddTextItem(id, x, y, w, h, text, font_size, auto_scrollbar, force_scrollbar, red, green, blue);
+	AddTextItem(id, x, y, w, h, text, fontsize, auto_scrollbar, force_scrollbar, red, green, blue);
 	/*
 	*	make a note of the ID
 	*/
@@ -957,7 +957,7 @@ void cInterfaceWindowXML::read_editbox_definition(TiXmlElement *el)
 {
 	XmlUtil xu(m_filename);
 	string name;
-	int id, x, y, w, h, border_size;
+	int id, x, y, w, h, border_size, fontsize = 16;
 
 	xu.get_att(el, "Name", name);
 	xu.get_att(el, "XPos", x);
@@ -965,8 +965,9 @@ void cInterfaceWindowXML::read_editbox_definition(TiXmlElement *el)
 	xu.get_att(el, "Width", w);
 	xu.get_att(el, "Height", h);
 	xu.get_att(el, "Border", border_size);
+	xu.get_att(el, "FontSize", fontsize, true);
 
-	AddEditBox(id, x, y, w, h, border_size);
+	AddEditBox(id, x, y, w, h, border_size, fontsize);
 	register_id(id, name);
 }
 
@@ -975,13 +976,16 @@ void cInterfaceWindowXML::read_listbox_definition(TiXmlElement *el)
 	string name;
 	XmlUtil xu(m_filename);
 	bool events = true, multi = false, show_headers = false, header_div = true, header_sort = true;
-	int id, x, y, w, h, border_size = 1;
+	int id, x, y, w, h, border_size = 1, fontsize = 10, rowheight = 20;
 
 	xu.get_att(el, "Name", name);
 	xu.get_att(el, "XPos", x);
 	xu.get_att(el, "YPos", y);
 	xu.get_att(el, "Width", w);
 	xu.get_att(el, "Height", h);
+	xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 10;
+	xu.get_att(el, "RowHeight", rowheight); if (rowheight == 0) rowheight = 20;
+
 	xu.get_att(el, "Border", border_size, Optional);
 	xu.get_att(el, "Events", events, Optional);
 	xu.get_att(el, "Multi", multi, Optional);					// Multi-select
@@ -989,7 +993,7 @@ void cInterfaceWindowXML::read_listbox_definition(TiXmlElement *el)
 	xu.get_att(el, "HeaderDiv", header_div, Optional);			// Show dividers between headers
 	xu.get_att(el, "HeaderClicksSort", header_sort, Optional);	// Sort list when user clicks on column header?
 
-	AddListBox(id, x, y, w, h, border_size, events, multi, show_headers, header_div, header_sort);
+	AddListBox(id, x, y, w, h, border_size, events, multi, show_headers, header_div, header_sort, fontsize, rowheight);
 	register_id(id, name);
 
 	// Check for column definitions
@@ -1046,7 +1050,7 @@ void cInterfaceWindowXML::read_checkbox_definition(TiXmlElement *el)
 {
 	string name, text;
 	XmlUtil xu(m_filename);
-	int id, x, y, w, h, font_size;
+	int id, x, y, w, h, fontsize;
 
 	xu.get_att(el, "Name", name);
 	xu.get_att(el, "Text", text);
@@ -1054,9 +1058,9 @@ void cInterfaceWindowXML::read_checkbox_definition(TiXmlElement *el)
 	xu.get_att(el, "YPos", y);
 	xu.get_att(el, "Width", w);
 	xu.get_att(el, "Height", h);
-	xu.get_att(el, "FontSize", font_size);
+	xu.get_att(el, "FontSize", fontsize);
 
-	AddCheckbox(id, x, y, w, h, text, font_size);
+	AddCheckbox(id, x, y, w, h, text, fontsize);
 
 	register_id(id, name);
 }

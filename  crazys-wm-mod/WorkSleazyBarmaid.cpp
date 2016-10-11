@@ -107,7 +107,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 
 	//base tips, aprox 10-20% of base wages
-	tips += (((10 + jobperformance / 22) * wages) / 100);
+	tips += (int)(((10 + jobperformance / 22) * wages) / 100);
 	
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))

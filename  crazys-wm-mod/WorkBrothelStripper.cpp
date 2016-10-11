@@ -153,7 +153,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	ss << "\n\n";
 
 	//base tips, aprox 5-40% of base wages
-	tips += (((5 + jobperformance / 6) * wages) / 100);
+	tips += (int)(((5 + jobperformance / 6) * wages) / 100);
 	
 	// lap dance code.. just test stuff for now
 	if (lapdance >= 90)

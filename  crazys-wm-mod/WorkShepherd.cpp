@@ -181,8 +181,8 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else	// `J` Pay her based on how much she brought in
 	{
-		if ((int)food > 0)		wages += food / 100;
-		if ((int)beasts > 0)	wages += beasts;
+		if (food > 0)		wages += (int)food / 100;
+		if (beasts > 0)		wages += (int)beasts;
 	}
 
 #pragma endregion

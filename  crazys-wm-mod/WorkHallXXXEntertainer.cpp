@@ -450,7 +450,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 
 
 	//base tips, aprox 5-40% of base wages
-	tips += (((5 + jobperformance / 6) * wages) / 100);
+	tips += (int)(((5 + jobperformance / 6) * wages) / 100);
 	
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))

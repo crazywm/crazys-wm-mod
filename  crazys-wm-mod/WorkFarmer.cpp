@@ -197,7 +197,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	else
 	{
-		wages += foodproduced / 100; // `J` Pay her based on how much she brought in
+		wages += (int)foodproduced / 100; // `J` Pay her based on how much she brought in
 	}
 
 #pragma endregion
