@@ -34,7 +34,7 @@ public:
 	cEditBox() {m_Next = 0;m_FocusedBackground=m_Border=m_Background=0;m_Text=0;m_HasFocus=false;}
 	~cEditBox();
 
-	bool CreateEditBox(int ID, int x, int y, int width, int height, int BorderSize);
+	bool CreateEditBox(int ID, int x, int y, int width, int height, int BorderSize, int FontSize = 16);
 	bool IsOver(int x, int y);
 	bool OnClicked(int x, int y);
 	void ClearText();

@@ -58,7 +58,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	sGirl* singeronduty = g_Brothels.GetRandomGirlOnJob(brothel->m_id, JOB_SINGER, Day0Night1);
 	string singername = (singeronduty ? "Singer " + singeronduty->m_Realname + "" : "the Singer");
 
-	double wages = 20, tips = 0;
+	int wages = 20, tips = 0;
 	int enjoy = 0, fame = 0;
 	int imagetype = IMGTYPE_PROFILE;
 	int msgtype = Day0Night1;
@@ -67,7 +67,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #pragma region //	Job Performance			//
 
 	double jobperformance = JP_BarPiano(girl, false);
-	tips = (jobperformance / 8.0) * ((g_Dice % (girl->beauty() + girl->charisma()) / 20.0) + (girl->performance() / 5.0));
+	tips = (int)((jobperformance / 8.0) * ((g_Dice % (girl->beauty() + girl->charisma()) / 20.0) + (girl->performance() / 5.0)));
 
 	if (jobperformance >= 245)
 	{
@@ -267,12 +267,12 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if (jobperformance < 125)
 		{
 			ss << "Her pessimistic mood depressed the customers making them tip less.\n"; 
-			tips *= 0.9;
+			tips = int(tips * 0.9);
 		}
 		else
 		{
 			ss << girlName << " was in a poor mood so the patrons gave her a bigger tip to try and cheer her up.\n";
-			tips *= 1.1;
+			tips = int(tips * 1.1);
 		}
 	}
 	else if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(10))
@@ -280,19 +280,19 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if (jobperformance < 125)
 		{
 			ss << girlName << " was in a cheerful mood but the patrons thought she needed to work more on her on her playing.\n"; 
-			tips *= 0.9;
+			tips = int(tips *0.9);
 		}
 		else
 		{
 			ss << "Her optimistic mood made patrons cheer up increasing the amount they tip.\n"; 
-			tips *= 1.1;
+			tips = int(tips * 1.1);
 		}
 	}
 
 	if (g_Girls.HasTrait(girl, "Psychic") && g_Dice.percent(20))
 	{
 		ss << "She used her Psychic skills to know exactly what the patrons wanted to hear her play.\n"; 
-		tips *= 1.1;
+		tips = int(tips * 1.1);
 	}
 
 	if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(5))
@@ -301,7 +301,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			ss << "A patron bumped into the piano causing her to miss a note. This pissed her off and using her Assassin skills she killed him before even thinking about it, resulting in patrons fleeing the building.\n"; 
 			wages = 0;
-			tips *= 0.5;
+			tips = int(tips * 0.5);
 		}
 		else
 		{
@@ -318,7 +318,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		else
 		{
 			ss << "A patron gasped at her Horrific Scars making her sad. Feeling bad about it as she played so well, they left a good tip.\n"; 
-			tips *= 1.1;
+			tips = int(tips * 1.1);
 		}
 	}
 
@@ -327,12 +327,12 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if (jobperformance < 125)
 		{
 			ss << girlName << " played poorly with " << singername << " making people leave.\n"; 
-			tips *= 0.8;
+			tips = int(tips * 0.8);
 		}
 		else
 		{
 			ss << girlName << " played well with " << singername << " increasing tips.\n"; 
-			tips *= 1.1;
+			tips = int(tips * 1.1);
 		}
 	}
 
@@ -344,13 +344,13 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << "Some of the patrons abused her during the shift.";
 		enjoy -= g_Dice % 3 + 1;
-		tips *= 0.9;
+		tips = int(tips * 0.9);
 	}
 	else if (roll_b >= 90)
 	{
 		ss << "She had a pleasant time working.";
 		enjoy += g_Dice % 3 + 1;
-		tips *= 1.1;
+		tips = int(tips * 1.1);
 	}
 	else
 	{
@@ -365,7 +365,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 	{
 		wages = 0;
-		tips *= 0.9;
+		tips = int(tips * 0.9);
 	}
 	else
 	{
@@ -375,8 +375,8 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #pragma region	//	Finish the shift			//
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;

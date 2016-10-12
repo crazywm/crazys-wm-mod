@@ -73,7 +73,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the patients!
 	g_Building = BUILDING_CLINIC;
 
-	double wages = 25, tips = 0;
+	int wages = 25, tips = 0;
 	int enjoy = 0, fame = 0;
 	bool hand = false, sex = false, les = false;
 
@@ -411,8 +411,8 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	g_Clinic.m_Nurse_Patient_Time += patients;
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	/* `J` this will be a place holder until a better payment system gets done
 	*  this does not take into account any of your girls in surgery

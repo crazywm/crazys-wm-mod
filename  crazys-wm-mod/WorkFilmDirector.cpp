@@ -58,6 +58,7 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
 	int wages = 50;
+	int tips = 0;
 	int enjoy = 0;
 	int numgirls = brothel->m_NumGirls;
 
@@ -84,7 +85,9 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else if (jobperformance < 0)	ss << "She did a bad job today, she reduced the scene quality " << (int)jobperformance << "% with her poor performance. \n";
 	else /*                   */	ss << "She did not really help the scene quality.\n";
 
-	girl->m_Pay = int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
+	wages += int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 	g_Studios.m_DirectorQuality += (int)jobperformance;
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, SHIFT_NIGHT);
 

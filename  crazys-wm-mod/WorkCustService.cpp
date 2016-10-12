@@ -164,6 +164,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	girl->m_Events.AddMessage(debug, IMGTYPE_PROFILE, EVENT_DEBUG);
 #endif
 	// Now pay the girl.
+	
 	girl->m_Pay += 50;
 	g_Gold.staff_wages(50);  // wages come from you
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);

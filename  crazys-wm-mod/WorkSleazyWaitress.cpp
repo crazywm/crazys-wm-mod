@@ -61,7 +61,8 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	double wages = 25, tips = 0;
+	int wages = 25;
+	double tips = 0;
 	int enjoy = 0, anal = 0, health = 0, happy = 0, oral = 0, hand = 0, fame = 0;
 	int imagetype = IMGTYPE_ECCHI;
 	int msgtype = Day0Night1;
@@ -87,7 +88,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		tips += 40;
 		imagetype = IMGTYPE_ORAL;
 	}
-	else if (g_Girls.HasTrait(girl, "Shy") || g_Girls.HasTrait(girl, "Nervous") && g_Dice.percent(20))
+	else if ((g_Girls.HasTrait(girl, "Shy") || g_Girls.HasTrait(girl, "Nervous")) && g_Dice.percent(20))
 	{
 		ss << girlName << " has serious difficulty being around all these new people, and the fact that they are all so forward about her body does nothing to help. She spends a lot of time hiding in the kitchen, petrified of going back out and talking to all those people.";
 		jobperformance -= 20;
@@ -190,7 +191,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 
 	//base tips, aprox 10-20% of base wages
-	tips += (((10 + jobperformance / 22) * wages) / 100);
+	tips += (((10.0 + jobperformance / 22.0) * (double)wages) / 100.0);
 	
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
@@ -490,7 +491,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		enjoy -= 5;
 	}
 
-	if (g_Dice.percent(25) && (g_Girls.HasTrait(girl, "Nymphomaniac")     || g_Girls.HasTrait(girl, "Succubus")) && (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 80 || g_Girls.HasTrait(girl, "Cum Addict")) && !g_Girls.HasTrait(girl, "Lesbian")  && g_Girls.GetStat(girl, STAT_LIBIDO) > 90 )
+	if (girl->libido() > 90 && g_Dice.percent(25) && !g_Girls.HasTrait(girl, "Lesbian") && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 80 || g_Girls.HasTrait(girl, "Cum Addict")))
 	{
 		ss << girlName << " thought she deserved a short break and disappeared under one of the tables when nobody was looking, in order to give one of the clients a blowjob. Kneeling under the table, she devoured his cock with ease and deepthroated him as he came to make sure she didn't make a mess. The client himself was wasted out of his mind and didn't catch as much as a glimpse of her, but he left the locale with a big tip on the table.\n";
 		tips += 50; 
@@ -499,9 +500,9 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 	}
 
-	if (g_Dice.percent(25) && !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 90  && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && (g_Girls.GetSkill(girl, SKILL_HANDJOB) > 80 || g_Girls.HasTrait(girl, "Cum Addict")))
+	if (girl->libido() > 90 && g_Dice.percent(25) && !g_Girls.HasTrait(girl, "Lesbian") && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 80 || g_Girls.HasTrait(girl, "Cum Addict")))
 	{
-		ss << "During her shift, " << girlName << " unnoticeably dived under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on it, since the patron left with a heavy tip.\n";
+		ss << "During her shift, " << girlName << " unnoticeably dove under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on it, since the patron left with a heavy tip.\n";
 		tips += 50;
 		imagetype = IMGTYPE_HAND;
 		hand += 2;
@@ -532,58 +533,88 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			ss << "Noticing the bulge under her skirt one of the customers asked for a very special service: He wanted some \"cream\" in his drink. " << girlName << " took her already hard cock out and sprinkled the drink with some of her jizz. The customer thanked her and slipped a good tip under her panties.\n";
 			g_Girls.UpdateSkill(girl, SKILL_SERVICE, 2);
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
-			tips += 30 + (g_Girls.GetSkill(girl, SKILL_SERVICE) / 5); //Not sure if this will work fine
+			tips += 30 + (int)(g_Girls.GetSkill(girl, SKILL_SERVICE) *0.2); //Not sure if this will work fine
 			imagetype = IMGTYPE_MAST;
 		}
 		else
 		{
 			ss << "Noticing the bulge under her skirt one of the customers asked " << girlName << " to spill some of her \"cream\" in his drink, but she refused, blushing.\n";
+			switch (g_Dice % 10)
+			{
+			case 1:		girl->sanity(-(g_Dice % 5));		if (g_Dice % 2) break;
+			case 2:		girl->confidence(-(g_Dice % 5));	if (g_Dice % 2) break;
+			case 3:		girl->dignity(-(g_Dice % 5));		if (g_Dice % 2) break;
+			default:	enjoy -= g_Dice % 5;	break;
+			}
 		}
 	}
 	
-	if ((g_Girls.HasTrait(girl, "Busty Boobs")              &&g_Dice.percent(5) ) ||
-		(g_Girls.HasTrait(girl, "Big Boobs")                &&g_Dice.percent(10)) ||
-		(g_Girls.HasTrait(girl, "Giant Juggs")              &&g_Dice.percent(15)) ||
-		(g_Girls.HasTrait(girl, "Massive Melons")           &&g_Dice.percent(20)) ||
-		(g_Girls.HasTrait(girl, "Abnormally Large Boobs")   &&g_Dice.percent(25)) ||
-		(g_Girls.HasTrait(girl, "Titanic Tits")             &&g_Dice.percent(30)))
+	if ((g_Girls.HasTrait(girl, "Busty Boobs") && g_Dice.percent(5)) ||
+		(g_Girls.HasTrait(girl, "Big Boobs") && g_Dice.percent(10)) ||
+		(g_Girls.HasTrait(girl, "Giant Juggs") && g_Dice.percent(15)) ||
+		(g_Girls.HasTrait(girl, "Massive Melons") && g_Dice.percent(20)) ||
+		(g_Girls.HasTrait(girl, "Abnormally Large Boobs") && g_Dice.percent(25)) ||
+		(g_Girls.HasTrait(girl, "Titanic Tits") && g_Dice.percent(30)))
 	{
-		if (g_Girls.HasTrait(girl, "Exhibitionist") || g_Girls.HasTrait(girl, "Bimbo"))
+		if (g_Dice.percent(30) && (g_Girls.HasTrait(girl, "Exhibitionist") || g_Girls.HasTrait(girl, "Bimbo")))
 		{
-			ss << "A patron was staring obviously at her large breasts, so she took off her top to show him her tits, which earned her a small tip.\n";
-			tips += 15;
-			if (g_Girls.HasTrait(girl, "Missing Nipple")) {tips -= 5;}
-			if (g_Girls.HasTrait(girl, "No Nipples")) {tips -= 5;}
-			if (g_Girls.HasTrait(girl, "Big Boobs")) {tips += 1;}
-			if (g_Girls.HasTrait(girl, "Giant Juggs")) {tips += 2;}
-			if (g_Girls.HasTrait(girl, "Massive Melons")) {tips += 3;}
-			if (g_Girls.HasTrait(girl, "Abnormally Large Boobs")) {tips += 4;}
-			if (g_Girls.HasTrait(girl, "Titanic Tits")) {tips += 5;}
-			if (g_Girls.HasTrait(girl, "Puffy Nipples")) {tips += 1;}
-			if (g_Girls.HasTrait(girl, "Perky Nipples")) {tips += 1;}
-			if (g_Girls.HasTrait(girl, "Pierced Nipples")) {tips += 2;}
+			ss << "A patron was staring obviously at her large breasts, so she took off her top to show him her tits, which earned her a ";
+			double t = 10.0;
+			if (g_Girls.HasTrait(girl, "Big Boobs")) { t *= 1.5; }
+			if (g_Girls.HasTrait(girl, "Giant Juggs")) { t *= 2; }
+			if (g_Girls.HasTrait(girl, "Massive Melons")) { t *= 3; }
+			if (g_Girls.HasTrait(girl, "Abnormally Large Boobs")) { t *= 4; }
+			if (g_Girls.HasTrait(girl, "Titanic Tits")) { t *= 5; }
+			if (g_Girls.HasTrait(girl, "No Nipples")) { t /= 3; }
+			if (g_Girls.HasTrait(girl, "Missing Nipple")) { t /= 2; }
+			if (g_Girls.HasTrait(girl, "Puffy Nipples")) { t += 1; }
+			if (g_Girls.HasTrait(girl, "Perky Nipples")) { t += 1; }
+			if (g_Girls.HasTrait(girl, "Pierced Nipples")) { t += 2; }
 			if (g_Girls.GetStat(girl, STAT_DIGNITY) > 60)
+			{
+				g_Girls.UpdateStat(girl, STAT_DIGNITY, -1);
+			}
+			tips += t;
+			/* */if (t < 10) 	ss << "small";
+			else if (t < 20) 	ss << "good";
+			else if (t < 35) 	ss << "great";
+			else  ss << "gigantic";
+			ss << " tip.\n";
+		}
+		else if (g_Dice.percent(20) && g_Girls.HasTrait(girl, "Lesbian") && (g_Girls.HasTrait(girl, "Slut") || g_Girls.HasTrait(girl, "Succubus") || girl->libido() > 60))
+		{
+			ss << "A female patron was staring obviously at her large breasts, so she grabbed her hand, slipped it under her clothes and let her play with her boobs. ";
+			if (g_Girls.HasTrait(girl, "Pierced Nipples"))
+			{
+				tips += 3;
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 1);
+				ss << "Her nipple piercings were a pleasant surprise to her, and she \n";
+			}
+			else ss << "She";
+			ss << "slipped a small tip between her tits afterwards.\n";
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2);
+			tips += 15;
+			if (g_Girls.GetStat(girl, STAT_DIGNITY) > 30)
 			{
 				g_Girls.UpdateStat(girl, STAT_DIGNITY, -1);
 			}
 		}
 		else if (!g_Girls.HasTrait(girl, "Lesbian") && (g_Girls.HasTrait(girl, "Slut") || g_Girls.HasTrait(girl, "Succubus")))
 		{
+			ss << "A patron was staring obviously at her large breasts, so she grabbed his hand, slipped it under her clothes and let him play with her boobs. ";
+			if (g_Girls.HasTrait(girl, "Pierced Nipples"))
+			{
+				tips += 3;
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 1);
+				ss << "Her nipple piercings were a pleasant surprise to him, and he \n";
+			}
+			else ss << "He";
+			ss << "slipped a small tip between her tits afterwards.\n";
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2);
 			tips += 15;
 			if (g_Girls.GetStat(girl, STAT_DIGNITY) > 30)
 			{
 				g_Girls.UpdateStat(girl, STAT_DIGNITY, -1);
-			} 
-			if (g_Girls.HasTrait(girl, "Pierced Nipples"))
-			{
-				tips += 3;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 1);
-				ss << "A patron was staring obviously at her large breasts, so she grabbed his hand, slipped it under her clothes and let him play with her boobs. Her nipple piercings were a pleasant surprise to him, and he slipped a small tip between her tits afterwards.\n";
-			}
-			else
-			{
-				ss << "A patron was staring obviously at her large breasts, so she grabbed his hand, slipped it under her clothes and let him play with her boobs. He slipped a small tip between her tits afterwards.\n";
 			}
 		}
 	}
@@ -596,24 +627,31 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			
 			(g_Girls.GetStat(girl, STAT_CONFIDENCE) > 35 && g_Girls.GetStat(girl, STAT_DIGNITY) < 50)))
 		{
-			ss << "Noticing her belly one of the customers asked for some breast milk in his coffee. " << girlName << " took one of her breasts out and put some of her milk in the drink. The customer thanked her and slipped a good tip under her skirt.\n";
+			ss << "Noticing her pregnant belly, one of the customers asked for some breast milk in his coffee. " << girlName << " took one of her breasts out and put some of her milk in the drink. The customer thanked her and slipped a good tip under her skirt.\n";
 			g_Girls.UpdateSkill(girl, SKILL_SERVICE, 2);
 			g_Girls.UpdateStat(girl, STAT_LACTATION, -30);
-			tips += 30 + (g_Girls.GetSkill(girl, SKILL_SERVICE) / 5);
+			tips += 30 + (int)(g_Girls.GetSkill(girl, SKILL_SERVICE) *0.2);
 		}
 		else if (g_Girls.GetStat(girl, STAT_LACTATION) < 50)
 		{
-			ss << "Noticing her belly one of the customers asked for some breast milk in his drink, but " << girlName << " said that she didn't have enough.\n";
+			ss << "Noticing her pregnant belly, one of the customers asked for some breast milk in his drink, but " << girlName << " said that she didn't have enough.\n";
 		}
 		else
 		{
-			ss << "Noticing her belly one of the customers asked for some breast milk in his drink, but she refused, blushing.\n";
+			ss << "Noticing her pregnant belly, one of the customers asked for some breast milk in his drink, but she refused, blushing.\n";
+			switch (g_Dice % 10)
+			{
+			case 1:		girl->sanity(-(g_Dice % 5));		if (g_Dice % 2) break;
+			case 2:		girl->confidence(-(g_Dice % 5));	if (g_Dice % 2) break;
+			case 3:		girl->dignity(-(g_Dice % 5));		if (g_Dice % 2) break;
+			default:	enjoy -= g_Dice % 5;	break;
+			}
 		}
 	}
 	
-	if (g_Girls.HasTrait(girl, "Alcoholic") && g_Dice.percent(10))
+	if (g_Girls.HasTrait(girl, "Alcoholic") && g_Dice.percent(10) && girl->health() > 5)
 	{
-		ss << girlName << " couldn't resist the offer of some patrons who invited her for a drink. And another one. And another one... When she came back to her senses she was lying in the floor half naked and covered in cum...\n";
+		ss << girlName << " couldn't resist the offer of some patrons who invited her for a drink. And another one. And another one... When she came back to her senses she was lying on the floor half naked and covered in cum...\n";
 		int NumCust = g_Dice % 6 + 1;
 		tips -= 10;
 		wages -= 50;
@@ -641,7 +679,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			g_Girls.UpdateStat(girl, STAT_HEALTH, -1);
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
 		}
-		sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel); Cust->m_Amount = NumCust;
+		sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel); Cust->m_Amount = min(1, g_Dice % 11);
 		if (!girl->calc_group_pregnancy(Cust, false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant.", 0);
@@ -649,20 +687,6 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		delete Cust;
 	}
 	
-	if (g_Brothels.GetNumGirlsOnJob(0, JOB_SLEAZYBARMAID, false) >= 1 && g_Dice.percent(25))
-	{
-		if (jobperformance > 100)
-		{
-			ss << "\nWith the help from " << barmaidname << " " << girlName << " provided a better service to the customers, increasing her tips.\n";
-			tips *= 1.2;
-		}
-	}
-	else if (g_Brothels.GetNumGirlsOnJob(0, JOB_SLEAZYBARMAID, false) == 0 && jobperformance <= 100)
-	{
-		ss << "\n" << girlName << " had a hard time attending all the customers without the help of a barmaid.\n";
-		tips *= 0.9;
-	}
-
 	if (g_Girls.HasTrait(girl, "Fleet Of Foot") && g_Dice.percent(30))
 	{
 		ss << girlName << " is fast on her feet, and makes great time navigating from table to table. She is able to serve almost twice as many customers in her shift.\n";
@@ -731,36 +755,51 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		brothel->m_Happiness += 15;
 	}
 
-	if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Sexy Air")
-				|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
-				|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") && g_Girls.GetStat(girl, STAT_DIGNITY) >= 50 && g_Dice.percent(35))
+	if (g_Dice.percent(35) && g_Girls.HasTrait(girl, "Massive Melons")
+		|| g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Sexy Air")
+		|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
+		|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
 	{
-		ss << girlName << " draws a lot of attention when she walks and bends towards patrons, and everybody strains their necks for a look down her shirt at her heavy swinging breasts. They openly make lewd comments about the things they would do to her tits, and " << girlName << " shies away and tries to cover them more fully with a menu. She swerves to avoid the many groping hands that \"accidentally\" find themselves brushing against her mammaries. The customers think this is just great fun and catcall after her whenever she tries to retreat.\n";
-		brothel->m_Happiness += 15;
+		if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 50)
+		{
+			ss << girlName << " draws a lot of attention when she walks and bends towards patrons, and everybody strains their necks for a look down her shirt at her heavy swinging breasts. They openly make lewd comments about the things they would do to her tits, and " << girlName << " shies away and tries to cover them more fully with a menu. She swerves to avoid the many groping hands that \"accidentally\" find themselves brushing against her mammaries. The customers think this is just great fun and catcall after her whenever she tries to retreat.\n";
+			brothel->m_Happiness += 15;
+		}
+		else if (g_Girls.GetStat(girl, STAT_DIGNITY) <= 0)
+		{
+			ss << girlName << " has been blessed with great tits and the wisdom to know it. She leans deep over the tables to give customers a good view down her cleavage as she takes their orders. When a customer \"accidentally\" grabs her left tit instead of his glass, she pushes the tit deeper into his hands, stares into his eyes, and smiles. \"These aren’t on the menu,\" she purrs.\n";
+			if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 60)
+			{
+				ss << "\"But they could be the daily special,\" she continues, grinding the breast against his hand. The customer grins and places a handful of coins on the table. \"That looks about right,\" " << girlName << " says as she gets down on the floor and crawls under the table. He is laughing and high-fiving his buddies in no time as she wraps his dick around her tits and starts mashing them together for his pleasure.\n";
+				if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 50)
+				{
+					ss << "He enjoys it immensely, and adds a few more coins to the table as " << girlName << " crawls back from under the table and sexily wipes the cum from her face.\n";
+					tips += 35;
+				}
+				else
+				{
+					ss << "The titfuck is not the best, but he’s hardly one to complain. \"I don’t know if I’ll order the special regularly,\" he says to her when she crawls back up and finishes wiping off the cum, \"but it was certainly a bonus for today!\"\n";
+				}
+				g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
+				imagetype = IMGTYPE_TITTY;
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+			}
+			tips += 15;
+		}
 	}
 
-	if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Sexy Air")
-				|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
-				|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") && g_Girls.GetStat(girl, STAT_DIGNITY) <= 0 && g_Dice.percent(35))
+	if (g_Brothels.GetNumGirlsOnJob(0, JOB_SLEAZYBARMAID, false) >= 1 && g_Dice.percent(25))
 	{
-		ss << girlName << " has been blessed with great tits and the wisdom to know it. She leans deep over the tables to give customers a good view down her cleavage as she takes their orders. When a customer \"accidentally\" grabs her left tit instead of his glass, she pushes the tit deeper into his hands, stares into his eyes, and smiles. \"These aren’t on the menu,\" she purrs.\n";
-		if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 60)
+		if (jobperformance > 100)
 		{
-			ss << "\"But they could be the daily special,\" she continues, grinding the breast against his hand. The customer grins and places a handful of coins on the table. \"That looks about right,\" " << girlName << " says as she gets down on the floor and crawls under the table. He is laughing and high-fiving his buddies in no time as she wraps his dick around her tits and starts mashing them together for his pleasure.\n";
-			if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 50)
-			{
-				ss << "He enjoys it immensely, and adds a few more coins to the table as " << girlName << " crawls back from under the table and sexily wipes the cum from her face.\n";
-				tips += 35;
-			}
-			else
-			{
-				ss << "The titfuck is not the best, but he’s hardly one to complain. \"I don’t know if I’ll order the special regularly,\" he says to her when she crawls back up and finishes wiping off the cum, \"but it was certainly a bonus for today!\"\n";
-			}
-			g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
-			imagetype = IMGTYPE_TITTY;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+			ss << "\nWith the help from " << barmaidname << ", " << girlName << " provided better service to the customers, increasing her tips.\n";
+			tips *= 1.2;
 		}
-		tips += 15;
+	}
+	else if (g_Brothels.GetNumGirlsOnJob(0, JOB_SLEAZYBARMAID, false) == 0 && jobperformance <= 100)
+	{
+		ss << "\n" << girlName << " had a hard time attending all the customers without the help of a barmaid.\n";
+		tips *= 0.9;
 	}
 
 
@@ -784,6 +823,12 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 #pragma endregion
 #pragma region	//	Money					//
 
+	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	roll_max /= 4;
+	wages += 10 + g_Dice%roll_max;
+
+	girl->m_Tips = max(0, (int)tips);
+	girl->m_Pay = max(0, wages);
 
 #pragma endregion
 #pragma region	//	Finish the shift			//
@@ -795,14 +840,6 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	g_Girls.UpdateSkill(girl, SKILL_ANAL, anal);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
-
-
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
-	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
-	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
 
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;

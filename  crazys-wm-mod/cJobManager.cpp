@@ -3049,8 +3049,8 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 	else if (totalGold > 0)
 	{
 		ss << girlName << " earned a total of " << totalGold << " gold";
-	
-			// if it is a player paid job and she is not a slave
+
+		// if it is a player paid job and she is not a slave
 		if ((is_job_Paid_Player(sw) && !girl->is_slave()) ||
 			// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
 			(is_job_Paid_Player(sw) && girl->is_slave() && cfg.initial.slave_pay_outofpocket()))
@@ -3067,20 +3067,84 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 		{
 			int hpay = int(double(totalPay * double(girl->m_Stats[STAT_HOUSE] * 0.01)));
 			int gpay = totalPay - hpay;
-			ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" 
-				<< 100 - girl->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay 
+			ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut ("
+				<< 100 - girl->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay
 				<< " gold.\n\nYou got " << hpay << " gold (" << girl->m_Stats[STAT_HOUSE] << "%).";
 		}
 		else
 		{
 			int hpay = int(double(totalGold * double(girl->m_Stats[STAT_HOUSE] * 0.01)));
 			int gpay = totalGold - hpay;
-			ss << ".\nShe keeps " << gpay << " gold. (" << 100 - girl->m_Stats[STAT_HOUSE] 
+			ss << ".\nShe keeps " << gpay << " gold. (" << 100 - girl->m_Stats[STAT_HOUSE]
 				<< "%)\nYou keep " << hpay << " gold (" << girl->m_Stats[STAT_HOUSE] << "%).";
 		}
 	}
 	else if (totalGold == 0)	{ ss << girlName << " made no money."; }
-	else if (totalGold < 0)		{ ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org"; }
-	
+	else if (totalGold < 0)		{ ss << "ERROR: She has a loss of " << totalGold << " gold\n\nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n" << "\nGirl Name: " << girl->m_Realname << "\nJob: " << JobName[(Day0Night1 ? girl->m_NightJob : girl->m_DayJob)] << "\nPay:     " << girl->m_Pay << "\nTips:   " << girl->m_Tips << "\nTotal: " << totalGold; }
 	return ss.str();
 }
+
+void cJobManager::FreeSlaves(sGirl* firstgirl, bool multi)
+{
+	stringstream ask, free, keep;
+	ask << "Are you sure you wish to give ";
+	if (multi)
+	{
+		ask << "these girls their";
+		free << "Grant Them Their Freedom";
+		keep << "Keep Them As Slaves";
+	}
+	else
+	{
+		ask << firstgirl->m_Realname << " her";
+		free << "Grant Her Freedom";
+		keep << "Keep Her As A Slave";
+	}
+	ask << " freedom?";
+	int length = max(free.str().length(), keep.str().length());
+
+	g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, length, 16);
+	g_MessageQue.AddToQue(ask.str(), 0);
+	g_ChoiceManager.AddChoice(0, free.str(), 0);
+	g_ChoiceManager.AddChoice(0, keep.str(), 1);
+	g_ChoiceManager.SetActive(0);
+}
+
+void cJobManager::FireGirls(sGirl* firstgirl, bool multi, int freegirls, int slavegirls, int deadgirls)
+{
+	stringstream ask, fire, free, dump, keep, fidu, fifr, frdu;
+	int length = 0;
+	int totalgirls = freegirls + slavegirls + deadgirls;
+	keep << "Nevermind, Back to work.";
+	fire << "Fire them.";
+	free << "Free the slave" << (slavegirls == 1 ? "s" : "");
+	dump << "Dump the bod" << (deadgirls == 1 ? "y" : "ies") << ".";
+
+	if (freegirls > 0 && slavegirls > 0 && deadgirls > 0)
+	{
+		ask << "You have chosen " << totalgirls << " girls, the slave" << (slavegirls == 1 ? "s" : "")
+			<< " will be dealt with later.\nFor now, do you want to fire the free girl" << (freegirls == 1 ? "" : "s")
+			<< ", remove the dead bod" << (deadgirls == 1 ? "y" : "ies") << " or both?";
+		free.str("");
+		fidu << "Get rid of them all.";
+	}
+
+
+
+	length = max((int)keep.str().length(), (int)fire.str().length());
+	length = max(length, (int)free.str().length());
+	length = max(length, (int)dump.str().length());
+
+	g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, length, 16);
+	g_MessageQue.AddToQue(ask.str(), 0);
+	g_ChoiceManager.AddChoice(0, keep.str(), 0);
+	if (fire.str().length() > 0)	g_ChoiceManager.AddChoice(0, fire.str(), 1);
+	if (free.str().length() > 0)	g_ChoiceManager.AddChoice(0, free.str(), 2);
+	if (dump.str().length() > 0)	g_ChoiceManager.AddChoice(0, dump.str(), 3);
+	if (fidu.str().length() > 0)	g_ChoiceManager.AddChoice(0, fidu.str(), 4);
+	if (fifr.str().length() > 0)	g_ChoiceManager.AddChoice(0, fifr.str(), 5);
+	if (frdu.str().length() > 0)	g_ChoiceManager.AddChoice(0, frdu.str(), 6);
+
+	g_ChoiceManager.SetActive(0);
+}
+

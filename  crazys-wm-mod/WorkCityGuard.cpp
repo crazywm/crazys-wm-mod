@@ -63,7 +63,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100();
-	int wages = 150, enjoy = 0, enjoyc = 0, sus = 0;
+	int wages = 150, tips = 0, enjoy = 0, enjoyc = 0, sus = 0;
 	int imagetype = IMGTYPE_PROFILE;
 
 	int agl = (g_Girls.GetStat(girl, STAT_AGILITY) / 2 + g_Dice % (g_Girls.GetSkill(girl, SKILL_COMBAT) / 2));
@@ -144,7 +144,8 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 	The_Player->suspicion(sus);
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 
 	// Improve girl

@@ -634,39 +634,21 @@ void cScreenGirlManagement::check_events()
 		update_image();
 		return;
 	}
-	if (g_InterfaceEvents.CheckButton(freeslave_id))
-	{
-		if (selected_girl)
-		{
-			if (IsMultiSelected(girllist_id))
-			{  // multiple girls selected
-				g_MessageQue.AddToQue(gettext("Are you sure you wish to give these girls their freedom?"), 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep as a slaves")));
-				g_ChoiceManager.AddChoice(0, gettext("Grant Freedom"), 0);
-				g_ChoiceManager.AddChoice(0, gettext("Keep as a slaves"), 1);
-				g_ChoiceManager.SetActive(0);
-				FreeGirl = true;
-			}
-			else  // only one girl selected
-			{
-				if (GirlDead(selected_girl)) return;
-				g_MessageQue.AddToQue("Are you sure you wish to give " + selected_girl->m_Realname + " her freedom?", 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen(gettext("Keep as a slave")));
-				g_ChoiceManager.AddChoice(0, gettext("Grant Freedom"), 0);
-				g_ChoiceManager.AddChoice(0, gettext("Keep as a slave"), 1);
-				g_ChoiceManager.SetActive(0);
-				FreeGirl = true;
-			}
-		}
-		return;
-	}
 	if (g_InterfaceEvents.CheckButton(transfer_id))
 	{
 		g_InitWin = true;
 		g_WinManager.Push(TransferGirls, &g_TransferGirls);
 		return;
 	}
-
+	if (g_InterfaceEvents.CheckButton(freeslave_id))
+	{
+		if (selected_girl)
+		{
+			g_Brothels.m_JobManager.FreeSlaves(selected_girl, IsMultiSelected(girllist_id));
+			FreeGirl = true;
+		}
+		return;
+	}
 	if (g_InterfaceEvents.CheckButton(firegirl_id))
 	{
 		if (selected_girl)

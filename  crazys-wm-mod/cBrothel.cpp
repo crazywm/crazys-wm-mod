@@ -38,7 +38,7 @@
 #include "cFarm.h"
 
 //#include "cDungeon.h"
-//#include "cJobManager.h"
+#include "cJobManager.h"
 //#include "cCustomers.h"
 //#include "cGirls.h"
 //#include "GameFlags.h"
@@ -1584,7 +1584,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 		else if (totalGold < 0)
 		{
 			ss.str("");
-			ss << "ERROR: She has a loss of " << totalGold << " gold\n\n Please report this to the Pink Petal Devloment Team at http://pinkpetal.org";
+			ss << "ERROR: She has a loss of " << totalGold << " gold\n\nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n" << "\nGirl Name: " << current->m_Realname << "\nJob: " << m_JobManager.JobName[(Day0Night1 ? current->m_NightJob : current->m_DayJob)] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold;
 			summary += ss.str();
 			sum = EVENT_DEBUG;
 		}

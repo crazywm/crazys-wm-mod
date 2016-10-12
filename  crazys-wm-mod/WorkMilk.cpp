@@ -60,7 +60,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	string farmmanname = (farmmanonduty ? "Farm Manager " + farmmanonduty->m_Realname + "" : "the Farm Manager");
 
 	int enjoy = 0;
-	int wages = 0;
+	int wages = 0, tips = 0;
 	int roll = g_Dice.d100();
 	/*int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();*/
 
@@ -557,14 +557,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		ss << "a trickle of ";
 		if (g_Girls.HasTrait(girl, "Cat Girl"))	ss << "Cat-Girl ";
 		ss << "breast-milk, earning just " << wages << " gold.";
-		girl->m_Pay += wages;
 	}
 	else
 	{
 		ss << "just over " << (int)milkProduced << " ounces. This fine, freshly-squeezed ";
 		if (g_Girls.HasTrait(girl, "Cat Girl"))	ss << "Cat-Girl ";
 		ss << "breast-milk earns " << wages << " gold.";
-		girl->m_Pay += wages;
 	}
 
 #else	// `J` old job function
@@ -573,19 +571,19 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	void AddItem(sInventoryItem* item);
 	sInventoryItem* GetItem(string name);
 
-	girl->m_Pay += 15;
+	wages += 15;
 
 	if (g_Girls.HasTrait(girl, "Small Boobs") || g_Girls.HasTrait(girl, "Flat Chest") || g_Girls.HasTrait(girl, "Petite Breasts"))
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
 			ss << girlName << " has small breasts, but her body still gives plenty of milk in anticipation of nursing!.";
-			girl->m_Pay += 125;
+			wages += 125;
 		}
 		else
 		{
 			ss << girlName << " has small breasts, which only yield a small amount of milk.";
-			girl->m_Pay += 25;
+			wages += 25;
 		}
 	}
 	else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
@@ -593,12 +591,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
 			ss << girlName << "'s already sizable breasts have become fat and swollen with milk in preparation for her child.";
-			girl->m_Pay += 135;
+			wages += 135;
 		}
 		else
 		{
 			ss << girlName << " has large breasts, that yield a good amount of milk to the suction machine even without pregnancy.";
-			girl->m_Pay += 35;
+			wages += 35;
 		}
 	}
 	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Titanic Tits"))
@@ -606,12 +604,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
 			ss << girlName << " has ridiculously large breasts, even without a baby in development.  With a bun in the oven, her tits are each larger than her head, and leak milk near continuously.";
-			girl->m_Pay += 140;
+			wages += 140;
 		}
 		else
 		{
 			ss << girlName << "'s massive globes don't need pregnancy to yield a profitable quantity of milk!";
-			girl->m_Pay += 40;
+			wages += 40;
 		}
 	}
 	else
@@ -619,12 +617,12 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
 			ss << girlName << " has average sized breasts, which yield a fair amount of milk with the help of pregnancy.";
-			girl->m_Pay += 130;
+			wages += 130;
 		}
 		else
 		{
 			ss << girlName << " has average sized breasts, perfect handfuls, which yield an okay amount of milk.";
-			girl->m_Pay += 30;
+			wages += 30;
 		}
 	}
 
@@ -667,6 +665,8 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_MILK, Day0Night1);
 #if 1

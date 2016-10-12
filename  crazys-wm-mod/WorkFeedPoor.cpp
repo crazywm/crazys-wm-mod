@@ -66,7 +66,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	bool blow = false, sex = false;
-	double wages = 20, tips = 0;
+	int wages = 20, tips = 0;
 	int enjoy = 0, feed = 0, fame = 0;
 
 	int imagetype = IMGTYPE_PROFILE;
@@ -337,8 +337,8 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #pragma region	//	Finish the shift			//
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	feed += (int)(jobperformance / 10);		//  1 feed per 10 point of performance
 

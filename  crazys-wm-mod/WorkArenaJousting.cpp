@@ -56,7 +56,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	ss << " worked as a jouster in the arena.\n";
 
 	int roll = g_Dice.d100();
-	int wages = 50, work = 0;
+	int wages = 50, tips = 0, work = 0;
 	//string girls = GetNumGirlsOnJob(0, JOB_JOUSTING, Day0Night1)
 	//int winner = > JP_ArenaJousting;
 
@@ -128,8 +128,8 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	int roll_max = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	if (wages < 0) wages = 0;
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 
 	// Improve stats

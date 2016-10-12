@@ -56,7 +56,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	
 	stringstream ss;
 	string girlName = girl->m_Realname;
-	int wages = 50;
+	int wages = 50, tips = 0;
 	int enjoy = 0;
 	int jobperformance = 0;
 	int bonus = 0;
@@ -148,7 +148,8 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		wages += (guys * 10);	// Extra pay per guy
 		wages += finalqual * 2;
 	}
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 
 	// Improve stats

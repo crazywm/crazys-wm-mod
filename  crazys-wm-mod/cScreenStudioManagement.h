@@ -24,15 +24,9 @@
 
 class cScreenStudioManagement : public cInterfaceWindowXML 
 {
-public:
-
 private:
-	char	buffer[256];
-
+	// interface/event IDs
 	static bool ids_set;
-/*
- *	interface/event IDs
- */
 	int back_id;		// Back button
 	int curstudio_id;	// Current Brothel text
 	int girllist_id;	// Girls listbox
@@ -40,8 +34,8 @@ private:
 	int girldesc_id;	// Girl Description text
 	int viewdetails_id;	// View Details button
 	int transfer_id;	// Transfer Girl button
-	int freeslave_id;
-	int createmovie_id;
+	int freeslave_id;	// Free Slave
+	int createmovie_id;	// Create Movie
 	int jobtypehead_id;	// Job Types header text
 	int jobtypelist_id;	// Job Types listbox
 	int jobtypedesc_id;	// Job Types Description text
@@ -57,10 +51,10 @@ private:
 	void RefreshJobList();
 	void GetSelectedGirls(vector<int> *girl_array);
 	void ViewSelectedGirl();
+
 public:
 	cScreenStudioManagement()
 	{
-		
 		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "studio_management_screen.xml";
 		m_filename = dp.c_str();
 	}

@@ -79,7 +79,7 @@ void cEditBox::Draw()
 	m_Text->DrawText(m_XPos+m_BorderSize+1, m_YPos+m_BorderSize+1);
 }
 
-bool cEditBox::CreateEditBox(int ID, int x, int y, int width, int height, int BorderSize)
+bool cEditBox::CreateEditBox(int ID, int x, int y, int width, int height, int BorderSize, int FontSize)
 {
 	m_BorderSize = BorderSize;
 	SetPosition(x,y,width,height);
@@ -93,7 +93,7 @@ bool cEditBox::CreateEditBox(int ID, int x, int y, int width, int height, int Bo
 	SDL_FillRect(m_FocusedBackground,0,SDL_MapRGB(m_Background->format,g_EditBoxSelectedR,g_EditBoxSelectedG,g_EditBoxSelectedB));
 
 	m_Text = new cFont();
-	m_Text->LoadFont(cfg.fonts.normal(), 16);
+	m_Text->LoadFont(cfg.fonts.normal(), FontSize);
 	m_Text->SetText("");
 	m_Text->SetColor(g_EditBoxTextR,g_EditBoxTextG,g_EditBoxTextB);
 	m_ID = ID;

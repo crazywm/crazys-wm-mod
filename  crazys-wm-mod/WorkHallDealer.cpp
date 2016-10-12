@@ -62,7 +62,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	double wages = 25, tips = 0;
+	int wages = 25, tips = 0;
 	int work = 0, fame = 0;
 	int imagetype = IMGTYPE_CARD;
 	int msgtype = Day0Night1;
@@ -575,7 +575,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				if (g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
 				{
 					ss << girlName << " found herself looking at " << xxxentername << "'s performance often, losing more times than usual.\n";
-					wages *= 0.9;
+					wages = int(wages * 0.9);
 				}
 				else
 				{
@@ -590,7 +590,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		else
 		{
 			ss << girlName << " took advantage of " << xxxentername << "'s show to win more hands and make some extra money.\n";
-			wages *= 1.2;
+			wages = int(wages * 1.2);
 		}
 	}
 
@@ -630,8 +630,8 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	// work out the pay between the house and the girl
 	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 
 

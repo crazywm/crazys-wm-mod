@@ -74,7 +74,7 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
-	int wages = 50;
+	int wages = 50, tips = 0;
 	int enjoy = 0;
 
 	if (roll <= 10)
@@ -112,7 +112,8 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 	g_Studios.m_FlufferQuality += (int)jobperformance;
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve girl
 	int xp = 10, libido = 1, skill = 1;

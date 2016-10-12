@@ -55,7 +55,7 @@ bool cJobManager::WorkFilmHandJob(sGirl* girl, sBrothel* brothel, bool Day0Night
 	
 	stringstream ss;
 	string girlName = girl->m_Realname;
-	double wages = 50, tips = 0;
+	int wages = 50, tips = 0;
 	int enjoy = 0;
 	int jobperformance = 0;
 	int bonus = 0;
@@ -92,8 +92,8 @@ bool cJobManager::WorkFilmHandJob(sGirl* girl, sBrothel* brothel, bool Day0Night
 		wages += finalqual * 2;
 	}
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 10, skill = 3, libido = 1;

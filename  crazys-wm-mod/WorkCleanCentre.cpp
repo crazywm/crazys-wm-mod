@@ -135,8 +135,8 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// Push out the turn report
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;

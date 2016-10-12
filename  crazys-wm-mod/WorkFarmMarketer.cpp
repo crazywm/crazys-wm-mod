@@ -53,7 +53,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	double wages = 20, tips = 0;
+	int wages = 20, tips = 0;
 	int enjoy = 0;
 	int imagetype = IMGTYPE_PROFILE;
 	int msgtype = Day0Night1;
@@ -237,8 +237,8 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 	g_Gold.farm_income(gold);
 
 	// Improve stats

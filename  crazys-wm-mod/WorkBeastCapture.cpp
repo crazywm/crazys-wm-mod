@@ -53,7 +53,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
-	double wages = 40, tips = 0;
+	int wages = 40, tips = 0;
 	int enjoy = 0;
 	int imagetype = IMGTYPE_COMBAT;
 	int msgtype = Day0Night1;
@@ -258,8 +258,8 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	g_Brothels.add_to_beasts(gain);
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve girl
 	// Base Improvement and trait modifiers

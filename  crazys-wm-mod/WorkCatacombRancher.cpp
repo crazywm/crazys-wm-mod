@@ -53,7 +53,7 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	g_Girls.EquipCombat(girl);	// This job can be dangerous so any protection is good.
 
-	double wages = 20, tips = 0;
+	int wages = 20, tips = 0;
 	int enjoy = 0;
 	int imagetype = IMGTYPE_FARM;
 	int msgtype = Day0Night1;
@@ -140,8 +140,8 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
-	if (wages < 0) wages = 0;
-	girl->m_Pay = (int)wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 
 	// Improve stats

@@ -84,7 +84,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the patients!
 
-	int enjoy = 0, wages = 100;
+	int enjoy = 0, wages = 100, tips = 0;
 
 	// this will be added to the clinic's code eventually - for now it is just used for her pay
 	int patients = 0;			// `J` how many patients the Doctor can see in a shift
@@ -133,7 +133,9 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	ss << girlName << " earned " << earned << " gold from taking care of " << patients << " patients.\n";
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
-	girl->m_Pay += wages + (patients * 10);
+	wages += (patients * 10);
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 10 + (patients / 2), libido = 1, skill = 1 + (patients / 3);

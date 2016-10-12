@@ -731,6 +731,8 @@ void cScreenItemManagement::check_events()
 			if (m_ListBoxes[owners_r_id]->GetSelected() != rightOwner)
 				SetSelectedItemInList(owners_r_id, rightOwner);
 		}
+		refresh_item_list(Left);
+
 	}
 	if (g_InterfaceEvents.CheckButton(unequip_l_id))
 	{
@@ -769,6 +771,7 @@ void cScreenItemManagement::check_events()
 			if (m_ListBoxes[owners_r_id]->GetSelected() != rightOwner)
 				SetSelectedItemInList(owners_r_id, rightOwner);
 		}
+		refresh_item_list(Right);
 	}
 	if (g_InterfaceEvents.CheckButton(unequip_r_id))
 	{

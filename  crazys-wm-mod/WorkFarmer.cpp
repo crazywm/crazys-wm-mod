@@ -53,7 +53,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	double wages = 20, tips = 0;
+	int wages = 20, tips = 0;
 	int enjoy = 0;
 	int imagetype = IMGTYPE_FARM;
 	int msgtype = Day0Night1;
@@ -197,7 +197,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	else
 	{
-		wages += foodproduced / 100; // `J` Pay her based on how much she brought in
+		wages += (int)foodproduced / 100; // `J` Pay her based on how much she brought in
 	}
 
 #pragma endregion
@@ -212,8 +212,8 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	if (goodsproduced > 0)		g_Brothels.add_to_goods((int)goodsproduced);
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Base Improvement and trait modifiers
 	int xp = 5, libido = 1, skill = 3;

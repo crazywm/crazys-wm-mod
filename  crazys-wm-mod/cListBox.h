@@ -65,7 +65,7 @@ public:
 	bool IsOver(int x, int y);
 	void OnClicked(int x, int y, bool mouseWheelDown = false, bool mouseWheelUp = false);
 
-	void CreateListbox(int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect, bool ShowHeaders = false, bool HeaderDiv = true, bool HeaderSort = true);
+	void CreateListbox(int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect, bool ShowHeaders = false, bool HeaderDiv = true, bool HeaderSort = true, int fontsize = 10, int rowheight = LISTBOX_ITEMHEIGHT);
 
 	void Draw();
 
@@ -163,6 +163,7 @@ public:
 	cFont m_Font;
 
 	int m_BorderSize;
+	int m_RowHeight = LISTBOX_ITEMHEIGHT;
 	SDL_Surface* m_Background;	// the background and border for the list item
 	SDL_Surface* m_RedBackground;	// the background used for important things
 	SDL_Surface* m_GreenBackground;	// the background used for good news

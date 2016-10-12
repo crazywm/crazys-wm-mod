@@ -61,8 +61,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	double wages = g_Girls.GetStat(girl, STAT_ASKPRICE) + 40;
-	double tips = 0;
+	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE) + 40;
+	int tips = 0;
 	int work = 0, fame = 0;
 	int imageType = IMGTYPE_PROFILE;
 	int msgtype = Day0Night1;
@@ -252,7 +252,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//base tips, aprox 5-30% of base wages
-	tips += (((5 + jobperformance / 8) * wages) / 100);
+	tips += int(((5.0 + jobperformance / 8.0) * wages) / 100.0);
 
 	if ((g_Girls.GetStat(girl, STAT_LIBIDO) > 90) && !bannedCustomer)
 		//ANON: sanity check: not gonna give 'perks' to the cust she just banned for wanting perks!
@@ -354,8 +354,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 #pragma region	//	Finish the shift			//
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 

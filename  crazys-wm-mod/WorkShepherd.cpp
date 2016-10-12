@@ -53,7 +53,7 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	double wages = 20, tips = 0;
+	int wages = 20, tips = 0;
 	int enjoy = 0;
 	int imagetype = IMGTYPE_FARM;
 	int msgtype = Day0Night1;
@@ -181,8 +181,8 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else	// `J` Pay her based on how much she brought in
 	{
-		if ((int)food > 0)		wages += food / 100;
-		if ((int)beasts > 0)	wages += beasts;
+		if (food > 0)		wages += (int)food / 100;
+		if (beasts > 0)		wages += (int)beasts;
 	}
 
 #pragma endregion
@@ -213,8 +213,8 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	// Money
-	if (wages < 0)	wages = 0;	girl->m_Pay = (int)wages;
-	if (tips < 0)	tips = 0;	girl->m_Tips = (int)tips;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 5, libido = 1, skill = 3;

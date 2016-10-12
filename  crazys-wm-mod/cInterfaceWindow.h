@@ -93,7 +93,7 @@ public:
 	
 	void PrepareImage(int girlimage_id, sGirl* selected_girl, int imagetype = IMGTYPE_PROFILE, bool rand = true, int ImageNum = -1, bool gallery = false, string ImageName = "");
 
-	void AddEditBox(int & ID, int x, int y, int width, int height, int BorderSize);
+	void AddEditBox(int & ID, int x, int y, int width, int height, int BorderSize, int FontSize = 16);
 	void HideEditBox(int id, bool hide);
 
 	void EditTextItem(string text, int ID);
@@ -118,7 +118,7 @@ public:
 	bool IsCheckboxOn(int ID);
 	void SetCheckBox(int ID, bool on);
 
-	void AddListBox(int & ID, int x, int y, int width, int height, int BorderSize, bool enableEvents, bool MultiSelect = false, bool ShowHeaders = false, bool HeaderDiv = true, bool HeaderSort = true);
+	void AddListBox(int & ID, int x, int y, int width, int height, int BorderSize, bool enableEvents, bool MultiSelect = false, bool ShowHeaders = false, bool HeaderDiv = true, bool HeaderSort = true, int fontsize = 10, int rowheight = 20);
 	void ScrollListBoxDown(int ID);
 	int GetListBoxSize(int ID);
 	void ScrollListBoxUp(int ID);

@@ -58,7 +58,7 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	stringstream ss;
 	string item;
 	string girlName = girl->m_Realname;
-	int wages = 40;
+	int wages = 40, tips = 0;
 	int enjoy = 0;
 	double jobperformance = JP_FilmMusic(girl, false);
 	int bonus = 0;
@@ -202,7 +202,8 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		wages += finalqual * 2;
 	}
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 
 	// Improve stats
 	int xp = 10, skill = 3, libido = 1;

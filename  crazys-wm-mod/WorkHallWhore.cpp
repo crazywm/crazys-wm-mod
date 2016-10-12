@@ -41,6 +41,11 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cPlayer* The_Player;
 
+//SIN	// `J` this was only in brothel whore so I copied it to hall and bar whore
+//SPICE = added a lot of spice (variety/trait/skill) to dialogues
+//1 turns them ON, 0 turns them OFF (compiles with warnings, but not errors - worth it for the easy search)
+#define SPICE 1;
+
 // `J` Job Brothel - Hall
 bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
@@ -103,22 +108,26 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	*/
 
 	stringstream fuckMessage;
-	string message = "";
+	stringstream ss;
 	string girlName = girl->m_Realname;
 	int iNum = 0;
 	int iOriginal = 0;
 	int	AskPrice = g_Girls.GetStat(girl, STAT_ASKPRICE);
-	int pay = 0;
-	int tip = 0;
+	int pay = 0;					// pay from a single customer
+	int tip = 0;					// tip from a single customer
+	int wages = 0;					// pay from all customers
+	int tips = 0;					// tips from all customers
 	int LoopCount;
-	bool group = false;	// Group sex flag
-	bool bCustCanPay;				// Customer has enough money to pay 
-	bool acceptsGirl;				// Customer will sleep girl
-	int oralcount = 0;		// how much oral she gave for use with AdjustTraitGroupGagReflex
+	bool group = false;				// Group sex flag
+	bool knowwife = false;			// if the girl is your daughter and the customer knows this
+	bool knowdaughter = false;		// if the girl is your wife and the customer knows this
+	bool bCustCanPay = true;		// Customer has enough money to pay 
+	bool acceptsGirl = false;		// Customer will sleep girl
 
+	int oralcount = 0;		// how much oral she gave for use with AdjustTraitGroupGagReflex
 	u_int SexType = 0;
 	u_int job = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
-	stringstream ss;
+
 
 	// work out how many customers the girl can service
 
@@ -128,7 +137,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	// Max number on customers the girl can fuck
 	int b = g_Girls.GetStat(girl, STAT_BEAUTY), c = g_Girls.GetStat(girl, STAT_CHARISMA), f = g_Girls.GetStat(girl, STAT_FAME);
-	int NumCusts = min(8, 2 + ((b + c + f +1) / 50));
+	int NumCusts = min(8, 2 + ((b + c + f + 1) / 50));
 	int NumSleptWith = 0;		// Total num customers she fucks this session
 
 	// Complications
@@ -146,11 +155,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	LoopCount = max(NumCusts * 2, 5);
 
 	// WD: limit to number of customers left
-	if (LoopCount >g_Customers.GetNumCustomers())
-		LoopCount = g_Customers.GetNumCustomers();
-
-	sCustomer* Cust = new sCustomer;
-
+	if (LoopCount > g_Customers.GetNumCustomers()) LoopCount = g_Customers.GetNumCustomers();
 
 	for (int i = 0; i < LoopCount; i++)	// Go through all customers
 	{
@@ -167,6 +172,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		group = false;
 		acceptsGirl = false;
 		// WD:	Create Customer
+		sCustomer* Cust = new sCustomer;
 		g_Customers.GetCustomer(Cust, brothel);
 
 		// `J` check for disease
@@ -278,6 +284,91 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
+			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	// 
+			{
+				fuckMessage << girlName << " refuses to sleep with a beast because she has too much dignity for that.\n\n";
+				brothel->m_Fame -= 5;
+				acceptsGirl = false;
+			}
+			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))
+			{
+				fuckMessage << girlName << " refuses to sleep with a beast because one of Royal blood is above that.\n\n";
+				brothel->m_Fame -= 5;
+				acceptsGirl = false;
+			}
+			else if (girl->is_pregnant() && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(35))
+			{
+				fuckMessage << girlName << " refuses because she shouldn't fuck beasts in her condition.\n\n";
+				brothel->m_Fame -= 5;
+				acceptsGirl = false;
+			}
+			else if (g_Girls.GetStat(girl, STAT_HEALTH) < 33 && g_Dice.percent(50))
+			{
+				fuckMessage << "The customer refuses because " << girlName << " looks sick and he doesn't want to catch anything.\n\n";
+				brothel->m_Fame -= 10;
+				acceptsGirl = false;
+			}
+			else if (g_Girls.HasTrait(girl, "Your Daughter") && g_Dice.percent(20))
+			{
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your daughter.\n\n";
+				knowdaughter = true;
+				acceptsGirl = true;
+			}
+			else if (g_Girls.HasTrait(girl, "Your Wife") && g_Dice.percent(20))
+			{
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your wife.\n\n";
+				knowwife = true;
+				acceptsGirl = true;
+			}
+			else if (girl->has_trait("Porn Star") && g_Dice.percent(15))
+			{
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " has seen her in porn.\n\n";
+				acceptsGirl = true;
+			}
+			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && g_Dice.percent(10))
+			{
+				fuckMessage << "The customer chooses her because she is former royalty.\n\n";
+				acceptsGirl = true;
+			}
+			else if (girl->has_trait("Teacher") && g_Dice.percent(10))
+			{
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " used to daydream about this back when "
+					<< (Cust->m_IsWoman ? "she" : "he") << " was in " << girlName << "'s class.\n\n";
+				acceptsGirl = true;
+			}
+			else if (girl->has_trait("Old") && g_Dice.percent(20))
+			{
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " likes mature women.\n\n";
+				acceptsGirl = true;
+			}
+			else if (girl->has_trait("Natural Pheromones") && g_Dice.percent(20))
+			{
+				fuckMessage << "The customer chooses her for reasons " << (Cust->m_IsWoman ? "she" : "he") << " can't explain. There's something about her.\n\n";
+				acceptsGirl = true;
+			}
+			else if (g_Dice.percent(10) && girl->has_trait("Lolita"))
+			{
+				fuckMessage << "The customer chooses her because "
+					<< (Cust->m_IsWoman ? "she wants a young woman, uncorrupted by men." : "he's hoping for a virgin, and she looks like one.\n\n");
+				acceptsGirl = true;
+			}
+			else if (g_Dice.percent(20) && girl->has_trait("Social Drinker"))
+			{
+				fuckMessage << "The customer chooses her because she's fun, flirty and half-cut.\n\n";
+				acceptsGirl = true;
+			}
+			else if (g_Dice.percent(40) && girl->has_trait("Exhibitionist") && g_Girls.GetStat(girl, STAT_BEAUTY) >= 50)
+			{
+				fuckMessage << "The customer chooses her because she walks into the waiting room naked and the customer likes what "
+					<< (Cust->m_IsWoman ? "she sees.\n\n" : "he sees.\n\n");
+				acceptsGirl = true;
+			}
+			else if (g_Dice.percent(5) && (girl->has_trait("Slut") || g_Girls.GetStat(girl, STAT_DIGNITY) >= 70))
+			{
+				fuckMessage << girlName << " gets bored of waiting for someone to step up and starts " << (Cust->m_IsWoman ? "fingering this lady" : "giving this guy a handjob")
+					<< " right there in the waiting room. The customer quickly chooses her.\n\n";
+				acceptsGirl = true;
+			}
 			else if (Cust->m_Stats[STAT_LIBIDO] >= 80)
 			{
 				fuckMessage << "Customer chooses her because they are very horny.\n\n";
@@ -328,103 +419,155 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 		// update how happy the customers are on average
 		brothel->m_Happiness += Cust->m_Stats[STAT_HAPPINESS];
-
-
+		
 		// Time for the customer to fork over some cash
 
 		// WD:	Customer can not pay
 		if (!bCustCanPay)
 		{
-			pay = 0;	// WD: maybe no money from this customer
 			if (g_Dice.percent(Cust->m_Stats[STAT_CONFIDENCE] - 25))	// Runner
 			{
 				if (g_Gangs.GetGangOnMission(MISS_GUARDING))
 				{
+					fuckMessage << " The customer couldn't pay and ";
 					if (g_Dice.percent(50))
-						fuckMessage << " The customer couldn't pay and managed to elude your guards.";
-
+					{
+						fuckMessage << "managed to elude your guards.";
+						pay = 0;
+					}
 					else
 					{
-						fuckMessage << " The customer couldn't pay and tried to run off. Your men caught him before he got out the door.";
+						fuckMessage << "tried to run off. Your men caught him before he got out the door.";
 						SetGameFlag(FLAG_CUSTNOPAY);
-						pay = (int)Cust->m_Money;	// WD: Take what customer has
-						Cust->m_Money = 0;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+						pay += (int)Cust->m_Money;	// WD: Take what customer has
+						Cust->m_Money = 0;
 					}
 				}
 				else
-					fuckMessage << " The customer couldn't pay and ran off. There were no guards!";
-
+				{
+					fuckMessage << "ran off. There were no guards!";
+					pay = 0;
+				}
 			}
 			else
 			{
 				// offers to pay the girl what he has
+				fuckMessage << " The customer couldn't pay the full amount";
 				if (g_Dice.percent(g_Girls.GetStat(girl, STAT_INTELLIGENCE)))
 				{
 					// she turns him over to the goons
-					fuckMessage << " The customer couldn't pay the full amount, so your girl turned them over to your men.";
+					fuckMessage << ", so your girl turned them over to your men.";
 					SetGameFlag(FLAG_CUSTNOPAY);
 				}
-				else
-					fuckMessage << " The customer couldn't pay the full amount.";
-
-				pay = (int)Cust->m_Money;
-				Cust->m_Money = 0;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+				else fuckMessage << ".";
+				pay += (int)Cust->m_Money;
+				Cust->m_Money = 0;
 			}
 		}
-
-
 		// WD:	Unhappy Customer tries not to pay and does a runner
 		else if (g_Dice.percent((40 - Cust->m_Stats[STAT_HAPPINESS]) / 2) && g_Dice.percent(Cust->m_Stats[STAT_CONFIDENCE] - 25))
 		{
+			fuckMessage << " The customer refused to pay and ";
 			if (g_Gangs.GetGangOnMission(MISS_GUARDING))
 			{
 				if (g_Dice.percent(50))
 				{
-					fuckMessage << " The customer refused to pay and managed to elude your guards.";
+					fuckMessage << "managed to elude your guards.";
 					pay = 0;
 				}
 				else
 				{
-					fuckMessage << " The customer refused to pay and tried to run off. Your men caught him before he got out the door and forced him to pay.";
+					fuckMessage << "tried to run off. Your men caught him before he got out the door and forced him to pay.";
 					Cust->m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
 				}
 			}
 			else
 			{
-				fuckMessage << " The customer refused to pay and ran off. There were no guards!";
+				fuckMessage << " ran off. There were no guards!";
 				pay = 0;
 			}
+			fuckMessage << "/n";
 		}
-
+		else if ((knowwife || knowdaughter) && g_Dice.percent(Cust->m_Stats[STAT_CONFIDENCE] / 5))
+		{
+			fuckMessage << " The customer wanted to screw you and your " << (knowwife ? "wife" : "daughter") << " so they made a break for it";
+			if (g_Gangs.GetGangOnMission(MISS_GUARDING))
+			{
+				if (g_Dice.percent(50))
+				{
+					fuckMessage << " and managed to elude your guards.";
+					pay = 0;
+				}
+				else
+				{
+					fuckMessage << ". Your men caught " << (Cust->m_IsWoman ? "her before she" : "him before he") << " got out the door and forced them to pay.";
+					Cust->m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+				}
+			}
+			else
+			{
+				fuckMessage << ". They got away because there were no guards!";
+				pay = 0;
+			}
+			fuckMessage << "/n";
+		}
 		else  // Customer has enough money
 		{
 			Cust->m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ??? // Yes this is necessary for TIP calculation.
-
-			if (g_Girls.HasTrait(girl, "Your Daughter") && Cust->m_Money >= 20 && g_Dice.percent(15))//may need to be moved to work right
+			if (g_Girls.HasTrait(girl, "Your Daughter") && knowdaughter && Cust->m_Money >= 20 && g_Dice.percent(50))
 			{
-				if (g_Dice.percent(50))
+				fuckMessage << "The customer tosses your daughter a bag of gold";
+				switch (g_Dice % 3)
 				{
-					message += "Learning that she was your daughter the customer tosses some extra gold down saying no dad should do this to there daughter.\n";
-				}
-				else
-				{
-					message += "A smile crossed the customer's face upon learning that she is your daughter and they threw some extra gold down. They seem to enjoy the thought of fucking the boss's daughter.\n";
+				case 0:		fuckMessage << " saying no dad should do this to their daughter.";					break;
+				case 1:		fuckMessage << ". They seem to enjoy the thought of fucking the boss's daughter.";	break;
+				default:	fuckMessage << " with a wink and a smile.";											break;
 				}
 				Cust->m_Money -= 20;
-				girl->m_Tips += 20;
+				tip += 20;
+				fuckMessage << "/n";
 			}
-			if (g_Girls.HasTrait(girl, "Your Wife") && Cust->m_Money >= 20 && g_Dice.percent(15))//may need to be moved to work right
+			else if (g_Girls.HasTrait(girl, "Your Wife") && knowwife && Cust->m_Money >= 20 && g_Dice.percent(50))
+			{
+				fuckMessage << "The customer tosses your wife a bag of gold";
+				switch (g_Dice % 3)
+				{
+				case 0:		fuckMessage << " and tells her she can do better.";		break;
+				case 1:		fuckMessage << " and asks who is better in the sack.";	break;
+				default:	fuckMessage << " with a wink and a smile.";				break;
+				}
+				Cust->m_Money -= 20;
+				tip += 20;
+				fuckMessage << "/n";
+			}
+			else if (g_Girls.HasTrait(girl, "Your Daughter") && Cust->m_Money >= 20 && g_Dice.percent(15))
 			{
 				if (g_Dice.percent(50))
 				{
-					message += "Learning that she was your wife the customer tosses some extra gold down saying no husband should do this to their wife.\n";
+					fuckMessage << "Learning that she was your daughter the customer tosses some extra gold down saying no dad should do this to their daughter.";
 				}
 				else
 				{
-					message += "A smile crossed the customer's face upon learning that she is your wife and they threw some extra gold down. They seem to enjoy the thought of fucking the boss's wife.\n";
+					fuckMessage << "A smile crossed the customer's face upon learning that she is your daughter and they threw some extra gold down. They seem to enjoy the thought of fucking the boss's daughter.";
 				}
 				Cust->m_Money -= 20;
-				girl->m_Tips += 20;
+				tip += 20;
+				fuckMessage << "/n";
+			}
+			else if (g_Girls.HasTrait(girl, "Your Wife") && Cust->m_Money >= 20 && g_Dice.percent(15))
+			{
+				if (g_Dice.percent(50))
+				{
+					fuckMessage << "Learning that she was your wife the customer tosses some extra gold down saying no husband should do this to their wife.";
+				}
+				else
+				{
+					fuckMessage << "A smile crossed the customer's face upon learning that she is your wife and they threw some extra gold down. They seem to enjoy the thought of fucking the boss's wife.";
+				}
+
+				Cust->m_Money -= 20;
+				tip += 20;
+				fuckMessage << "/n";
 			}
 
 			// if he is happy and has some extra gold he will give a tip
@@ -433,17 +576,13 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 				tip = (int)Cust->m_Money;
 				if (tip > 20)
 				{
-					Cust->m_Money -= 20;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+					Cust->m_Money -= 20;
 					tip = 20;
 				}
-				else
-					Cust->m_Money = 0;	// WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+				else Cust->m_Money = 0;
 
-				fuckMessage << "\nShe received a tip of " << tip << " gold";
-
+				fuckMessage << "\nShe received a tip of " << tip << " gold.";
 				girl->m_Tips += tip;
-
-				fuckMessage << ".";
 
 				// If the customer is a government official
 				if (Cust->m_Official == 1)
@@ -451,9 +590,9 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 					The_Player->suspicion(-5);
 					fuckMessage << " It turns out that the customer was a government official, which lowers your suspicion.";
 				}
+				fuckMessage << "/n";
 			}
 		}
-
 
 		// Match image type to the deed done
 		int imageType = IMGTYPE_SEX;
@@ -474,9 +613,11 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			pay = 0;		// WD TRACE WorkRelatedViloence {girl->m_Name} earns nothing
 
 		// WD:	Save gold earned
-		girl->m_Pay += pay;		// WD TRACE Save Pay {girl->m_Name} earns {pay} totaling {girl->m_Pay}
+		wages += pay;
+		tips += tip;
 		girl->m_Events.AddMessage(fuckMessage.str(), imageType, Day0Night1);
-	}
+		delete Cust;
+}
 
 
 	// WD:	Reduce number of availabe customers for next whore
@@ -491,6 +632,8 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (NumSleptWith < NumCusts)		{ ss << "\n\nShe ran out of customers who like her."; }
 	summary += ss.str();
 
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
 	girl->m_Events.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1);
 
 	//gain
@@ -505,7 +648,6 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (girl->oralsex() > 30 && g_Dice.percent(oralcount))
 		g_Girls.AdjustTraitGroupGagReflex(girl, +1, true, Day0Night1);
 
-	delete Cust;
 	return false;
 }
 

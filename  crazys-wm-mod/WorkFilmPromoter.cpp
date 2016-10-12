@@ -66,7 +66,7 @@ bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
-	int wages = 50;
+	int wages = 50, tips = 0;
 	int enjoy = 0;
 
 	if (roll <= 10 || (!movies && roll <= 15))
@@ -117,7 +117,9 @@ bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, SHIFT_NIGHT);
-	girl->m_Pay = wages;
+	girl->m_Tips = max(0, tips);
+	girl->m_Pay = max(0, wages);
+
 	g_Studios.m_PromoterBonus = (double)(brothel->m_AdvertisingBudget / 10) + jobperformance;
 
 
