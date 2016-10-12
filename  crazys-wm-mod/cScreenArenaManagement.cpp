@@ -410,25 +410,8 @@ void cScreenArenaManagement::check_events()
 	{
 		if (selected_girl)
 		{
-			if (IsMultiSelected(girllist_id))
-			{  // multiple girls selected
-				g_MessageQue.AddToQue("Are you sure you wish to give these girls their freedom?", 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slaves"));
-				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
-				g_ChoiceManager.AddChoice(0, "Keep as a slaves", 1);
-				g_ChoiceManager.SetActive(0);
-				FreeGirl = true;
-			}
-			else  // only one girl selected
-			{
-				if (GirlDead(selected_girl)) return;
-				g_MessageQue.AddToQue("Are you sure you wish to give " + selected_girl->m_Realname + " her freedom?", 0);
-				g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, strlen("Keep as a slave"));
-				g_ChoiceManager.AddChoice(0, "Grant Freedom", 0);
-				g_ChoiceManager.AddChoice(0, "Keep as a slave", 1);
-				g_ChoiceManager.SetActive(0);
-				FreeGirl = true;
-			}
+			g_Arena.m_JobManager.FreeSlaves(selected_girl, IsMultiSelected(girllist_id));
+			FreeGirl = true;
 		}
 		return;
 	}

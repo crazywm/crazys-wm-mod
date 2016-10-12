@@ -94,14 +94,8 @@ void cScreenNewGame::set_ids()
 void cScreenNewGame::init()
 {
 	g_CurrentScreen = SCREEN_NEWGAME;
-	if (g_InitWin)
-	{
-		Focused();
-		g_InitWin = false;
-	}
-
+	if (g_InitWin) { Focused(); g_InitWin = false; }
 	if (!g_InitWin) return;
-
 	Focused();
 	g_InitWin = false;
 }
@@ -142,8 +136,6 @@ void cScreenNewGame::check_events()
 		EditTextItem(g_Girls.GetHoroscopeName(The_Player->BirthMonth(), The_Player->BirthDay()), phn_id);
 		return;
 	}
-
-
 
 	if (g_InterfaceEvents.CheckButton(ok_id)) 
 	{

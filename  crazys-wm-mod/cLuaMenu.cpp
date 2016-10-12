@@ -419,9 +419,7 @@ void cLuaMenuInner::show()
  */
 	log.ss() << "creating choice box";
 	log.ssend();
-	g_ChoiceManager.CreateChoiceBox(
-		x, y, maxw + 20, maxh, 0, captions.size(), maxh, 0
-	);
+	g_ChoiceManager.CreateChoiceBox(x, y, maxw + 20, maxh, 0, captions.size(), maxh, 0, 16);
 /*
  *	Now: the choicemanager will call a C function when the
  *	user clicks, so we need to specify that. 

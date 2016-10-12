@@ -20,6 +20,7 @@
 #include <string>
 #include <vector>
 #include "cGirls.h"
+#include "InterfaceGlobals.h"
 using namespace std;
 
 //I need a better place for this
@@ -409,4 +410,6 @@ public:
 	bool is_job_Paid_Player(u_int Job);		//	WD:	Test for all jobs paid by player
 	bool FullTimeJob(u_int Job);			//	`J`	Test if job is takes both shifts
 	string GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, bool Day0Night1);
+	void FreeSlaves(sGirl* girl, bool multi = false);
+	void FireGirls(sGirl* firstgirl, bool multi, int freegirls, int slavegirls, int deadgirls);
 };

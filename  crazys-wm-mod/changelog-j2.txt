@@ -187,8 +187,13 @@ Added customization to Font Sizes and Row Heights for List Boxes and Edit Boxes 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.34
 
+Consolidated and cleaned up the Free Slave button
+Started Consolidation and cleaned up of fire girl button
+Cleanup of Studio management
+Added fontsize to text boxes
 
-
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.35
 
 
 
