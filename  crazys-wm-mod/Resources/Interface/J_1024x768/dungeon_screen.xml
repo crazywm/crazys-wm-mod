@@ -1,7 +1,7 @@
 <Screen>
 <Window Name="Dungeon Window"                               XPos="0"   YPos="0"   Width="800" Height="600" Border="1" />
 <Text   Name="DungeonHeader"     Text="Dungeon Screen"      XPos="200" YPos="2"   Width="680" Height="22"  FontSize="20" />
-<ListBox Name="GirlList"                                    XPos="8"   YPos="23"  Width="620" Height="500" FontSize="16" ListBoxItemHeight="31" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<ListBox Name="GirlList"                                    XPos="8"   YPos="23"  Width="620" Height="500" FontSize="10" ListBoxItemHeight="31" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column Name="Name"              Header="Girl Name"               Offset="0" />
 <Column Name="Health"            Header="Health"                  Offset="140" />
 <Column Name="Happiness"         Header="Happy"                   Offset="180" />

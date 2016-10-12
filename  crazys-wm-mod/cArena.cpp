@@ -25,11 +25,6 @@
 
 #include "cArena.h"
 #include "cGangs.h"
-#include "DirPath.h"
-#include "cMessageBox.h"
-#include "strnatcmp.h"
-#include "XmlMisc.h"
-#include "libintl.h"
 
 extern cMessageQue      g_MessageQue;
 extern cGirls           g_Girls;

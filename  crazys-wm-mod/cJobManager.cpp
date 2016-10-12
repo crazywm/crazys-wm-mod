@@ -3104,7 +3104,8 @@ void cJobManager::FreeSlaves(sGirl* firstgirl, bool multi)
 	int length = max(free.str().length(), keep.str().length());
 
 	g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, length, 16);
-	g_MessageQue.AddToQue(ask.str(), 0);
+//	g_MessageQue.AddToQue(ask.str(), 0);
+	g_ChoiceManager.Question(0, ask.str());
 	g_ChoiceManager.AddChoice(0, free.str(), 0);
 	g_ChoiceManager.AddChoice(0, keep.str(), 1);
 	g_ChoiceManager.SetActive(0);

@@ -777,7 +777,7 @@ void cInterfaceWindowXML::read_text_item(TiXmlElement *el)
 	xu.get_att(el, "YPos", y);
 	xu.get_att(el, "Width", w);
 	xu.get_att(el, "Height", h);
-	xu.get_att(el, "FontSize", fontsize);
+	xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 16;
 	xu.get_att(el, "AutoScrollbar", auto_scrollbar, Optional);	// automatically use scrollbar if text doesn't fit; otherwise, don't
 	xu.get_att(el, "ForceScrollbar", force_scrollbar, Optional);	// force scrollbar display even when not needed (shown disabled, grayed out)
 	xu.get_att(el, "Red", red, Optional);
@@ -965,7 +965,7 @@ void cInterfaceWindowXML::read_editbox_definition(TiXmlElement *el)
 	xu.get_att(el, "Width", w);
 	xu.get_att(el, "Height", h);
 	xu.get_att(el, "Border", border_size);
-	xu.get_att(el, "FontSize", fontsize, true);
+	xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 16;
 
 	AddEditBox(id, x, y, w, h, border_size, fontsize);
 	register_id(id, name);
@@ -1058,7 +1058,7 @@ void cInterfaceWindowXML::read_checkbox_definition(TiXmlElement *el)
 	xu.get_att(el, "YPos", y);
 	xu.get_att(el, "Width", w);
 	xu.get_att(el, "Height", h);
-	xu.get_att(el, "FontSize", fontsize);
+	xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 16;
 
 	AddCheckbox(id, x, y, w, h, text, fontsize);
 

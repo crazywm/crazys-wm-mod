@@ -24,6 +24,13 @@
 
 class cBuilding;
 
+struct static_brothel_data {
+	int	price;
+	int	rooms;
+	int maxrooms;
+	int business;
+};
+
 class cScreenTown : public cInterfaceWindowXML 
 {
 public:
@@ -72,6 +79,7 @@ private:
 	bool m_first_walk;
 
 	void set_ids();
+	bool buy_building(static_brothel_data* bck);
 	void check_brothel(int BrothelNum);
 	void check_clinic(int ClinicNum);
 	void check_arena(int ArenaNum);

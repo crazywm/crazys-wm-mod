@@ -133,6 +133,7 @@ unsigned char g_StaticImageR = 0, g_StaticImageG = 0, g_StaticImageB = 0;
 
 unsigned char g_ChoiceMessageTextR = 0, g_ChoiceMessageTextG = 0, g_ChoiceMessageTextB = 0;
 unsigned char g_ChoiceMessageBorderR = 0, g_ChoiceMessageBorderG = 0, g_ChoiceMessageBorderB = 0;
+unsigned char g_ChoiceMessageHeaderR = 229, g_ChoiceMessageHeaderG = 227, g_ChoiceMessageHeaderB = 52;
 unsigned char g_ChoiceMessageBackgroundR = 0, g_ChoiceMessageBackgroundG = 0, g_ChoiceMessageBackgroundB = 0;
 unsigned char g_ChoiceMessageSelectedR = 0, g_ChoiceMessageSelectedG = 0, g_ChoiceMessageSelectedB = 0;
 
@@ -315,6 +316,7 @@ void LoadInterface()
 				     if (name == "ImageBackground")						{ g_StaticImageR = r; g_StaticImageG = g; g_StaticImageB = b; }
 				else if (name == "ChoiceBoxText")						{ g_ChoiceMessageTextR = r; g_ChoiceMessageTextG = g; g_ChoiceMessageTextB = b; }
 				else if (name == "ChoiceBoxBorder")						{ g_ChoiceMessageBorderR = r; g_ChoiceMessageBorderG = g; g_ChoiceMessageBorderB = b; }
+				else if (name == "ChoiceBoxHeader")						{ g_ChoiceMessageHeaderR = r; g_ChoiceMessageHeaderG = g; g_ChoiceMessageHeaderB = b; }
 				else if (name == "ChoiceBoxBackground")					{ g_ChoiceMessageBackgroundR = r; g_ChoiceMessageBackgroundG = g; g_ChoiceMessageBackgroundB = b; }
 				else if (name == "ChoiceBoxSelected")					{ g_ChoiceMessageSelectedR = r; g_ChoiceMessageSelectedG = g; g_ChoiceMessageSelectedB = b; }
 				else if (name == "EditBoxBorder")						{ g_EditBoxBorderR = r; g_EditBoxBorderG = g; g_EditBoxBorderB = b; }
@@ -401,45 +403,46 @@ void LoadInterface()
 	else
 	{
 		g_LogFile.write("Loading Default InterfaceColors");
-		g_StaticImageR = 0;                   g_StaticImageG = 0;                   g_StaticImageB = 0;
-		g_ChoiceMessageTextR = 0;             g_ChoiceMessageTextG = 0;             g_ChoiceMessageTextB = 0;
-		g_ChoiceMessageBorderR = 0;           g_ChoiceMessageBorderG = 0;           g_ChoiceMessageBorderB = 0;
-		g_ChoiceMessageBackgroundR = 88;      g_ChoiceMessageBackgroundG = 163;     g_ChoiceMessageBackgroundB = 113;
-		g_ChoiceMessageSelectedR = 229;       g_ChoiceMessageSelectedG = 227;       g_ChoiceMessageSelectedB = 52;
-		g_EditBoxBorderR = 0;                 g_EditBoxBorderG = 0;                 g_EditBoxBorderB = 0;
-		g_EditBoxBackgroundR = 90;            g_EditBoxBackgroundG = 172;           g_EditBoxBackgroundB = 161;
-		g_EditBoxSelectedR = 114;             g_EditBoxSelectedG = 211;             g_EditBoxSelectedB = 198;
-		g_EditBoxTextR = 0;                   g_EditBoxTextG = 0;                   g_EditBoxTextB = 0;
-		g_WindowBorderR = 0;                  g_WindowBorderG = 0;                  g_WindowBorderB = 0;
-		g_WindowBackgroundR = 140;            g_WindowBackgroundG = 191;            g_WindowBackgroundB = 228;
-		g_ListBoxBorderR = 0;                 g_ListBoxBorderG = 0;                 g_ListBoxBorderB = 0;
-		g_ListBoxBackgroundR = 217;           g_ListBoxBackgroundG = 214;           g_ListBoxBackgroundB = 139;
-		g_ListBoxElementBackgroundR = 114;    g_ListBoxElementBackgroundG = 139;    g_ListBoxElementBackgroundB = 217;
-		g_ListBoxS1ElementBackgroundR = 200;  g_ListBoxS1ElementBackgroundG = 30;   g_ListBoxS1ElementBackgroundB = 30;
-		g_ListBoxS2ElementBackgroundR = 80;   g_ListBoxS2ElementBackgroundG = 80;   g_ListBoxS2ElementBackgroundB = 250;
-		g_ListBoxS3ElementBackgroundR = 30;   g_ListBoxS3ElementBackgroundG = 190;  g_ListBoxS3ElementBackgroundB = 30;
-		g_ListBoxS4ElementBackgroundR = 190;  g_ListBoxS4ElementBackgroundG = 190;  g_ListBoxS4ElementBackgroundB = 0;
-		g_ListBoxSelectedElementR = 187;      g_ListBoxSelectedElementG = 190;      g_ListBoxSelectedElementB = 224;
-		g_ListBoxSelectedS1ElementR = 255;    g_ListBoxSelectedS1ElementG = 167;    g_ListBoxSelectedS1ElementB = 180;
-		g_ListBoxSelectedS2ElementR = 187;    g_ListBoxSelectedS2ElementG = 190;    g_ListBoxSelectedS2ElementB = 224;
-		g_ListBoxSelectedS3ElementR = 0;      g_ListBoxSelectedS3ElementG = 250;    g_ListBoxSelectedS3ElementB = 0;
-		g_ListBoxSelectedS4ElementR = 250;    g_ListBoxSelectedS4ElementG = 250;    g_ListBoxSelectedS4ElementB = 250;
-		g_ListBoxElementBorderR = 79;         g_ListBoxElementBorderG = 79;         g_ListBoxElementBorderB = 111;
-		g_ListBoxElementBorderHR = 159;       g_ListBoxElementBorderHG = 175;       g_ListBoxElementBorderHB = 255;
-		g_ListBoxTextR = 0;                   g_ListBoxTextG = 0;                   g_ListBoxTextB = 0;
-		g_ListBoxHeaderBackgroundR = 25;      g_ListBoxHeaderBackgroundG = 100;     g_ListBoxHeaderBackgroundB = 144;
-		g_ListBoxHeaderBorderR = 120;         g_ListBoxHeaderBorderG = 155;         g_ListBoxHeaderBorderB = 176;
-		g_ListBoxHeaderBorderHR = 15;         g_ListBoxHeaderBorderHG = 49;         g_ListBoxHeaderBorderHB = 69;
-		g_ListBoxHeaderTextR = 255;           g_ListBoxHeaderTextG = 255;           g_ListBoxHeaderTextB = 255;
-		g_MessageBoxBorderR = 255;            g_MessageBoxBorderG = 255;            g_MessageBoxBorderB = 255;
-		g_MessageBoxBackground0R = 100;       g_MessageBoxBackground0G = 100;       g_MessageBoxBackground0B = 150;
-		g_MessageBoxBackground1R = 200;       g_MessageBoxBackground1G = 100;       g_MessageBoxBackground1B = 150;
-		g_MessageBoxBackground2R = 100;       g_MessageBoxBackground2G = 200;       g_MessageBoxBackground2B = 150;
-		g_MessageBoxBackground3R = 100;       g_MessageBoxBackground3G = 100;       g_MessageBoxBackground3B = 200;
-		g_MessageBoxBackground4R = 190;       g_MessageBoxBackground4G = 190;       g_MessageBoxBackground4B = 0;
-		g_MessageBoxTextR = 0;                g_MessageBoxTextG = 0;                g_MessageBoxTextB = 0;
-		g_CheckBoxBorderR = 0;                g_CheckBoxBorderG = 0;                g_CheckBoxBorderB = 0;
-		g_CheckBoxBackgroundR = 180;          g_CheckBoxBackgroundG = 180;          g_CheckBoxBackgroundB = 180;
+		g_StaticImageR = 0;						g_StaticImageG = 0;						g_StaticImageB = 0;
+		g_ChoiceMessageTextR = 0;				g_ChoiceMessageTextG = 0;				g_ChoiceMessageTextB = 0;
+		g_ChoiceMessageBorderR = 0;				g_ChoiceMessageBorderG = 0;				g_ChoiceMessageBorderB = 0;
+		g_ChoiceMessageHeaderR = 229;			g_ChoiceMessageHeaderG = 227;			g_ChoiceMessageHeaderB = 52;
+		g_ChoiceMessageBackgroundR = 88;		g_ChoiceMessageBackgroundG = 163;		g_ChoiceMessageBackgroundB = 113;
+		g_ChoiceMessageSelectedR = 229;			g_ChoiceMessageSelectedG = 227;			g_ChoiceMessageSelectedB = 52;
+		g_EditBoxBorderR = 0;					g_EditBoxBorderG = 0;					g_EditBoxBorderB = 0;
+		g_EditBoxBackgroundR = 90;				g_EditBoxBackgroundG = 172;				g_EditBoxBackgroundB = 161;
+		g_EditBoxSelectedR = 114;				g_EditBoxSelectedG = 211;				g_EditBoxSelectedB = 198;
+		g_EditBoxTextR = 0;						g_EditBoxTextG = 0;						g_EditBoxTextB = 0;
+		g_WindowBorderR = 0;					g_WindowBorderG = 0;					g_WindowBorderB = 0;
+		g_WindowBackgroundR = 140;				g_WindowBackgroundG = 191;				g_WindowBackgroundB = 228;
+		g_ListBoxBorderR = 0;					g_ListBoxBorderG = 0;					g_ListBoxBorderB = 0;
+		g_ListBoxBackgroundR = 217;				g_ListBoxBackgroundG = 214;				g_ListBoxBackgroundB = 139;
+		g_ListBoxElementBackgroundR = 114;		g_ListBoxElementBackgroundG = 139;		g_ListBoxElementBackgroundB = 217;
+		g_ListBoxS1ElementBackgroundR = 200;	g_ListBoxS1ElementBackgroundG = 30;		g_ListBoxS1ElementBackgroundB = 30;
+		g_ListBoxS2ElementBackgroundR = 80;		g_ListBoxS2ElementBackgroundG = 80;		g_ListBoxS2ElementBackgroundB = 250;
+		g_ListBoxS3ElementBackgroundR = 30;		g_ListBoxS3ElementBackgroundG = 190;	g_ListBoxS3ElementBackgroundB = 30;
+		g_ListBoxS4ElementBackgroundR = 190;	g_ListBoxS4ElementBackgroundG = 190;	g_ListBoxS4ElementBackgroundB = 0;
+		g_ListBoxSelectedElementR = 187;		g_ListBoxSelectedElementG = 190;		g_ListBoxSelectedElementB = 224;
+		g_ListBoxSelectedS1ElementR = 255;		g_ListBoxSelectedS1ElementG = 167;		g_ListBoxSelectedS1ElementB = 180;
+		g_ListBoxSelectedS2ElementR = 187;		g_ListBoxSelectedS2ElementG = 190;		g_ListBoxSelectedS2ElementB = 224;
+		g_ListBoxSelectedS3ElementR = 0;		g_ListBoxSelectedS3ElementG = 250;		g_ListBoxSelectedS3ElementB = 0;
+		g_ListBoxSelectedS4ElementR = 250;		g_ListBoxSelectedS4ElementG = 250;		g_ListBoxSelectedS4ElementB = 250;
+		g_ListBoxElementBorderR = 79;			g_ListBoxElementBorderG = 79;			g_ListBoxElementBorderB = 111;
+		g_ListBoxElementBorderHR = 159;			g_ListBoxElementBorderHG = 175;			g_ListBoxElementBorderHB = 255;
+		g_ListBoxTextR = 0;						g_ListBoxTextG = 0;						g_ListBoxTextB = 0;
+		g_ListBoxHeaderBackgroundR = 25;		g_ListBoxHeaderBackgroundG = 100;		g_ListBoxHeaderBackgroundB = 144;
+		g_ListBoxHeaderBorderR = 120;			g_ListBoxHeaderBorderG = 155;			g_ListBoxHeaderBorderB = 176;
+		g_ListBoxHeaderBorderHR = 15;			g_ListBoxHeaderBorderHG = 49;			g_ListBoxHeaderBorderHB = 69;
+		g_ListBoxHeaderTextR = 255;				g_ListBoxHeaderTextG = 255;				g_ListBoxHeaderTextB = 255;
+		g_MessageBoxBorderR = 255;				g_MessageBoxBorderG = 255;				g_MessageBoxBorderB = 255;
+		g_MessageBoxBackground0R = 100;			g_MessageBoxBackground0G = 100;			g_MessageBoxBackground0B = 150;
+		g_MessageBoxBackground1R = 200;			g_MessageBoxBackground1G = 100;			g_MessageBoxBackground1B = 150;
+		g_MessageBoxBackground2R = 100;			g_MessageBoxBackground2G = 200;			g_MessageBoxBackground2B = 150;
+		g_MessageBoxBackground3R = 100;			g_MessageBoxBackground3G = 100;			g_MessageBoxBackground3B = 200;
+		g_MessageBoxBackground4R = 190;			g_MessageBoxBackground4G = 190;			g_MessageBoxBackground4B = 0;
+		g_MessageBoxTextR = 0;					g_MessageBoxTextG = 0;					g_MessageBoxTextB = 0;
+		g_CheckBoxBorderR = 0;					g_CheckBoxBorderG = 0;					g_CheckBoxBorderB = 0;
+		g_CheckBoxBackgroundR = 180;			g_CheckBoxBackgroundG = 180;			g_CheckBoxBackgroundB = 180;
 	}
 
 
@@ -538,7 +541,8 @@ void LoadInterface()
 			xu.get_att(el, "Name", name);
 			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
 			xu.get_att(el, "Image", image, true); xu.get_att(el, "Transparency", Transparency, true); 
-			xu.get_att(el, "Scale", Scale, true); xu.get_att(el, "Text", text, true); xu.get_att(el, "FontSize", fontsize, true);
+			xu.get_att(el, "Scale", Scale, true); xu.get_att(el, "Text", text, true);
+			xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 16;
 
 			if (name == "GetString")	g_GetString.CreateWindow(a, b, c, d, e);
 			if (name == "Ok")			g_GetString.AddButton(image, g_interfaceid.BUTTON_OK, a, b, c, d, Transparency, Scale);

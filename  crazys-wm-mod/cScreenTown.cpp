@@ -98,12 +98,6 @@ void cScreenTown::set_ids()
 	girlimage_id =	get_id("GirlImage");
 }
 
-struct static_brothel_data {
-	int	price;
-	int	rooms;
-	int maxrooms;
-	int business;
-};
 
 // stats of each brothel: price to buy, starting rooms, maximum rooms, required # of businesses owned
 static static_brothel_data brothel_data[] = {
@@ -391,35 +385,43 @@ void cScreenTown::do_walk()
 	return;
 }
 
+bool cScreenTown::buy_building(static_brothel_data* bck)
+{
+	locale syslocale("");
+	stringstream ss;
+	ss.imbue(syslocale);
+
+	if (!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
+	{	// can't buy it
+		ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
+		if (!g_Gold.afford(bck->price))
+			ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
+		if (g_Gangs.GetNumBusinessExtorted() < bck->business)
+			ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
+		g_MessageQue.AddToQue(ss.str(), 0);
+		return false;
+	}
+	else	// can buy it
+	{
+		ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
+		g_MessageQue.AddToQue(ss.str(), 2);
+		g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8, 16);
+		g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
+		g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
+		g_ChoiceManager.SetActive(0);
+		return true;
+	}
+	return false;
+}
+
 // player clicked on one of the brothels
 void cScreenTown::check_brothel(int BrothelNum)
 {
 	if (g_Brothels.GetNumBrothels() == BrothelNum)	// player doesn't own this brothel... can he buy it? 
 	{
 		static_brothel_data *bck = brothel_data + BrothelNum;
-		locale syslocale("");
-		stringstream ss;
-		ss.imbue(syslocale);
+		if (buy_building(bck)) BuyBrothel = BrothelNum;
 
-		if (!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
-		{	// can't buy it
-			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
-			if (!g_Gold.afford(bck->price))
-				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
-			if (g_Gangs.GetNumBusinessExtorted() < bck->business)
-				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
-			g_MessageQue.AddToQue(ss.str(), 0);
-		}
-		else	// can buy it
-		{
-			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
-			g_MessageQue.AddToQue(ss.str(), 2);
-			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
-			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
-			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
-			g_ChoiceManager.SetActive(0);
-			BuyBrothel = BrothelNum;
-		}
 	}
 	else	// player owns this brothel... go to it
 	{
@@ -434,29 +436,7 @@ void cScreenTown::check_clinic(int ClinicNum)
 	if (g_Clinic.GetNumBrothels() == ClinicNum)
 	{	// player doesn't own this brothel... can he buy it? 
 		static_brothel_data *bck = clinic_data + ClinicNum;
-		locale syslocale("");
-		stringstream ss;
-		ss.imbue(syslocale);
-
-		if (!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
-		{	// can't buy it
-			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
-			if (!g_Gold.afford(bck->price))
-				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
-			if (g_Gangs.GetNumBusinessExtorted() < bck->business)
-				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
-			g_MessageQue.AddToQue(ss.str(), 0);
-		}
-		else
-		{	// can buy it
-			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
-			g_MessageQue.AddToQue(ss.str(), 2);
-			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
-			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
-			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
-			g_ChoiceManager.SetActive(0);
-			BuyClinic = ClinicNum;
-		}
+		if (buy_building(bck)) BuyClinic = ClinicNum;
 	}
 	else
 	{	// player owns this brothel... go to it
@@ -471,29 +451,7 @@ void cScreenTown::check_centre(int CentreNum)
 	if (g_Centre.GetNumBrothels() == CentreNum)
 	{	// player doesn't own this brothel... can he buy it? 
 		static_brothel_data *bck = centre_data + CentreNum;
-		locale syslocale("");
-		stringstream ss;
-		ss.imbue(syslocale);
-
-		if (!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
-		{	// can't buy it
-			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
-			if (!g_Gold.afford(bck->price))
-				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
-			if (g_Gangs.GetNumBusinessExtorted() < bck->business)
-				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
-			g_MessageQue.AddToQue(ss.str(), 0);
-		}
-		else
-		{	// can buy it
-			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
-			g_MessageQue.AddToQue(ss.str(), 2);
-			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
-			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
-			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
-			g_ChoiceManager.SetActive(0);
-			BuyCentre = CentreNum;
-		}
+		if (buy_building(bck)) 			BuyCentre = CentreNum;
 	}
 	else
 	{	// player owns this brothel... go to it
@@ -508,29 +466,7 @@ void cScreenTown::check_arena(int ArenaNum)
 	if (g_Arena.GetNumBrothels() == ArenaNum)
 	{	// player doesn't own this brothel... can he buy it? 
 		static_brothel_data *bck = arena_data + ArenaNum;
-		locale syslocale("");
-		stringstream ss;
-		ss.imbue(syslocale);
-
-		if (!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
-		{	// can't buy it
-			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
-			if (!g_Gold.afford(bck->price))
-				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
-			if (g_Gangs.GetNumBusinessExtorted() < bck->business)
-				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
-			g_MessageQue.AddToQue(ss.str(), 0);
-		}
-		else
-		{	// can buy it
-			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
-			g_MessageQue.AddToQue(ss.str(), 2);
-			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
-			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
-			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
-			g_ChoiceManager.SetActive(0);
-			BuyArena = ArenaNum;
-		}
+		if (buy_building(bck)) 			BuyArena = ArenaNum;
 	}
 	else
 	{	// player owns this brothel... go to it
@@ -545,29 +481,7 @@ void cScreenTown::check_studio(int StudioNum)
 	if (g_Studios.GetNumBrothels() == StudioNum)
 	{	// player doesn't own this Studio... can he buy it? 
 		static_brothel_data *bck = studio_data + StudioNum;
-		locale syslocale("");
-		stringstream ss;
-		ss.imbue(syslocale);
-
-		if (!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
-		{	// can't buy it
-			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
-			if (!g_Gold.afford(bck->price))
-				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
-			if (g_Gangs.GetNumBusinessExtorted() < bck->business)
-				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
-			g_MessageQue.AddToQue(ss.str(), 0);
-		}
-		else
-		{	// can buy it
-			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
-			g_MessageQue.AddToQue(ss.str(), 2);
-			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
-			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
-			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
-			g_ChoiceManager.SetActive(0);
-			BuyStudio = StudioNum;
-		}
+		if (buy_building(bck)) 			BuyStudio = StudioNum;
 	}
 	else
 	{	// player owns this brothel... go to it
@@ -582,29 +496,7 @@ void cScreenTown::check_farm(int FarmNum)
 	if (g_Farm.GetNumBrothels() == FarmNum)
 	{	// player doesn't own this Studio... can he buy it? 
 		static_brothel_data *bck = farm_data + FarmNum;
-		locale syslocale("");
-		stringstream ss;
-		ss.imbue(syslocale);
-
-		if (!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
-		{	// can't buy it
-			ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
-			if (!g_Gold.afford(bck->price))
-				ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
-			if (g_Gangs.GetNumBusinessExtorted() < bck->business)
-				ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
-			g_MessageQue.AddToQue(ss.str(), 0);
-		}
-		else
-		{	// can buy it
-			ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
-			g_MessageQue.AddToQue(ss.str(), 2);
-			g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8);
-			g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
-			g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
-			g_ChoiceManager.SetActive(0);
-			BuyFarm = FarmNum;
-		}
+		if (buy_building(bck)) 			BuyFarm = FarmNum;
 	}
 	else
 	{	// player owns this brothel... go to it

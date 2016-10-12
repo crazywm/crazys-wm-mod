@@ -195,8 +195,13 @@ Added fontsize to text boxes
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.35
 
+###  Changes 10/10-11/2016
+Consolidated and cleaned up cScreenTown::buy_building 
+Added multiline header question to choice boxes
+Added ChoiceBoxHeader to InterfaceColors.xml
 
-
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.36
 
 
 

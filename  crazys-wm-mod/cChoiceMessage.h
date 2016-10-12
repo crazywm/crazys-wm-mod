@@ -32,14 +32,15 @@ public:
 	cChoice();
 	~cChoice();
 
-	int m_NumChoices;	// The number of choices available
-	string* m_Choices;	// array of choices available
-	int m_CurrChoice;	// The choice selected at present
-	int m_ID;	// the id for this particular box
-	cChoice* m_Next;	// the next choice box in the list
-	SDL_Surface* m_Background;
-	SDL_Surface* m_Border;
-	SDL_Surface* m_ElementBackground;	// the background and border for the list elements
+	int m_NumChoices;							// The number of choices available
+	string m_Question;							// `J` The question at the top of the choice box
+	string* m_Choices;							// array of choices available
+	int m_CurrChoice;							// The choice selected at present
+	int m_ID;									// the id for this particular box
+	cChoice* m_Next;							// the next choice box in the list
+	SDL_Surface* m_Background;					// 
+	SDL_Surface* m_Border;						// 
+	SDL_Surface* m_ElementBackground;			// the background and border for the list elements
 	SDL_Surface* m_ElementSelectedBackground;	// the background and border for the list elements
 	SDL_Surface* m_HeaderBackground;
 	int m_XPos, m_YPos, m_Width, m_Height, m_FontSize;
@@ -71,6 +72,7 @@ public:
 	void CreateChoiceBox(int x, int y, int width, int height, int ID, int numChoices, int itemHeight, int MaxStrLen = 0, int fontsize = 16);
 	void CreateChoiceBoxResize(int ID, int numChoices);
 	void BuildChoiceBox(int ID, int MaxStrLen);
+	void Question(int ID, string text);
 	void AddChoice(int ID, string text, int choiceID);
 	void Draw();
 	int GetChoice(int ID);

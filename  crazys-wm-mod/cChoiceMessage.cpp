@@ -20,6 +20,8 @@
 #include "IconSurface.h"
 #include "CGraphics.h"
 #include "sConfig.h"
+#include "XmlUtil.h"
+#include "tinyxml.h"
 
 extern CGraphics g_Graphics;
 
@@ -30,6 +32,7 @@ extern	bool	g_EnterKey;
 
 extern unsigned char g_ChoiceMessageTextR, g_ChoiceMessageTextG, g_ChoiceMessageTextB;
 extern unsigned char g_ChoiceMessageBorderR, g_ChoiceMessageBorderG, g_ChoiceMessageBorderB;
+extern unsigned char g_ChoiceMessageHeaderR, g_ChoiceMessageHeaderG, g_ChoiceMessageHeaderB;
 extern unsigned char g_ChoiceMessageBackgroundR, g_ChoiceMessageBackgroundG, g_ChoiceMessageBackgroundB;
 extern unsigned char g_ChoiceMessageSelectedR, g_ChoiceMessageSelectedG, g_ChoiceMessageSelectedB;
 
@@ -116,7 +119,7 @@ void cChoiceManager::BuildChoiceBox(int ID, int MaxStrLen)
 		if (m_Font == 0)
 		{
 			m_Font = new cFont();
-			m_Font->LoadFont(cfg.fonts.normal(), m_Parent->m_FontSize);
+			m_Font->LoadFont(cfg.fonts.normal(), (m_Parent->m_FontSize > 0 ? m_Parent->m_FontSize : 16));
 			m_Font->SetText("");
 			m_Font->SetColor(g_ChoiceMessageTextR, g_ChoiceMessageTextG, g_ChoiceMessageTextB);
 		}
@@ -169,7 +172,7 @@ void cChoiceManager::BuildChoiceBox(int ID, int MaxStrLen)
 			newChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, 32, 32, 0, 0, 0, 0);
 		else
 			newChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, 120, 32, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_HeaderBackground, 0, SDL_MapRGB(newChoice->m_HeaderBackground->format, g_ChoiceMessageSelectedR, g_ChoiceMessageSelectedG, g_ChoiceMessageSelectedB));
+		SDL_FillRect(newChoice->m_HeaderBackground, 0, SDL_MapRGB(newChoice->m_HeaderBackground->format, g_ChoiceMessageHeaderR, g_ChoiceMessageHeaderG, g_ChoiceMessageHeaderB));
 
 		newChoice->m_XPos = ((g_Graphics.GetWidth() / 2) - (newChoice->m_Width / 2));
 		newChoice->m_YPos = ((g_Graphics.GetHeight() / 2) - (newChoice->m_Height / 2));
@@ -186,6 +189,31 @@ void cChoiceManager::BuildChoiceBox(int ID, int MaxStrLen)
 
 void cChoiceManager::CreateChoiceBox(int x, int y, int width, int height, int ID, int numChoices, int itemHeight, int MaxStrLen, int fontsize)
 {
+	// Load TransferGirls screen
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "ChoiceBox.xml";
+	TiXmlDocument docTransferGirls(dp.c_str());
+	int a, b, c, d, e, f;
+	if (docTransferGirls.LoadFile())
+	{
+//<Window  Name = "ChoiceBox" XPos = "224" YPos = "127" Width = "352" Height = "160" RowHeight = "32" FontSize = "16" / >
+
+		string m_filename = dp.c_str();
+		TiXmlElement *el, *root_el = docTransferGirls.RootElement();
+		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
+		{
+			XmlUtil xu(m_filename);
+			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d);
+			xu.get_att(el, "RowHeight", e); xu.get_att(el, "FontSize", f);
+		}
+		if (a > 0)	x = a;
+		if (b > 0)	y = b;
+		if (c > 0)	width = c;
+		if (d > 0)	height = d;
+		if (e > 0)	itemHeight = e;
+		if (f > 0)	fontsize = f;
+	}
+
+
 	cChoice* newChoice = 0;
 	if (m_Font == 0)
 	{
@@ -312,6 +340,20 @@ void cChoiceManager::CreateChoiceBox(int x, int y, int width, int height, int ID
 	current->m_Next = newChoice;
 }
 
+void cChoiceManager::Question(int ID, string text)
+{
+	cChoice* current = m_Parent;
+	while (current)
+	{
+		if (current->m_ID == ID)
+		{
+			current->m_Question = text;
+			break;
+		}
+		current = current->m_Next;
+	}
+}
+
 void cChoiceManager::AddChoice(int ID, string text, int choiceID)
 {
 	cChoice* current = m_Parent;
@@ -350,12 +392,23 @@ void cChoiceManager::Draw()
 		// Draw the heading text
 		if (m_ActiveChoice->m_HeaderBackground)
 		{
-			offset.x = m_ActiveChoice->m_XPos;
-			offset.y = m_ActiveChoice->m_YPos - 32;
-			SDL_BlitSurface(m_ActiveChoice->m_HeaderBackground, 0, g_Graphics.GetScreen(), &offset);
 
-			m_Font->SetText("Select Choice");
-			m_Font->DrawText(offset.x, offset.y);
+			string question = "Select Choice";
+			if (m_ActiveChoice->m_Question.length() > 0)
+				question = m_ActiveChoice->m_Question;
+			m_Font->SetText(question);
+			m_Font->SetMultiline(true, m_ActiveChoice->m_Width, m_ActiveChoice->m_Height);
+
+			offset.x = m_ActiveChoice->m_XPos;
+			offset.y = m_ActiveChoice->m_YPos - m_Font->GetHeight();
+			offset.h = m_Font->GetHeight();
+			offset.w = m_ActiveChoice->m_Border->w;
+			m_ActiveChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, offset.w, m_Font->GetHeight(), 32, 0, 0, 0, 0);
+			SDL_FillRect(m_ActiveChoice->m_HeaderBackground, 0, SDL_MapRGB(m_ActiveChoice->m_HeaderBackground->format, g_ChoiceMessageHeaderR, g_ChoiceMessageHeaderG, g_ChoiceMessageHeaderB));
+
+			//m_Font->DrawText(offset.x, offset.y);
+			SDL_BlitSurface(m_ActiveChoice->m_HeaderBackground, 0, g_Graphics.GetScreen(), &offset);
+			m_Font->DrawMultilineText(offset.x, offset.y);
 		}
 
 		for (int i = m_ActiveChoice->m_Position, j = 0; i<m_ActiveChoice->m_NumChoices && j<m_ActiveChoice->m_NumDrawnElements; i++, j++)

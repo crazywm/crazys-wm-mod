@@ -2,6 +2,7 @@
 <Color Name = "ImageBackground"                      R="0"   G="0"   B="0"   OldTXT="IMAGE BACKGROUND" />
 <Color Name = "ChoiceBoxText"                        R="0"   G="0"   B="0"   OldTXT="CHOICE BOX TEXT" />
 <Color Name = "ChoiceBoxBorder"                      R="0"   G="0"   B="0"   OldTXT="CHOICE BOX BORDER" />
+<Color Name = "ChoiceBoxHeader"                      R="229" G="227" B="52"  OldTXT="CHOICE BOX HEADER" />
 <Color Name = "ChoiceBoxBackground"                  R="88"  G="163" B="113" OldTXT="CHOICE BOX BACKGROUND" />
 <Color Name = "ChoiceBoxSelected"                    R="229" G="227" B="52"  OldTXT="CHOICE BOX SELECTED" />
 <Color Name = "EditBoxBorder"                        R="0"   G="0"   B="0"   OldTXT="EDIT BOX BORDER" />
