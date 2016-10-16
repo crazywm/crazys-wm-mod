@@ -346,15 +346,15 @@ void cGirlTorture::UpdateStats()
 	{
 		m_Girl->health(-7);
 		m_Girl->happiness(-7);
-		m_Girl->constitution(g_Dice % 1);
+		m_Girl->constitution(1 + g_Dice % 5); // 1 ~ 5
 		m_Girl->confidence(-7);
-		m_Girl->obedience(9 + g_Dice % 3);
-		m_Girl->spirit(-4 - g_Dice % 3);
-		m_Girl->tiredness(2 - g_Dice % 8);
+		m_Girl->obedience(9 + g_Dice % 3);    // 9 ~ 11
+		m_Girl->spirit(-4 - g_Dice % 3);      // -4 ~ -6
+		m_Girl->tiredness(-5 - g_Dice % 3);   // -5 ~ -7
 		m_Girl->pchate(6);
 		m_Girl->pclove(-10);
 		m_Girl->pcfear(10);
-		m_Girl->bdsm(g_Dice % 3 - 1);
+		m_Girl->bdsm(1 + g_Dice % 5);         // 1 ~ 5
 	}
 	else if (m_Girl->health() > 10)
 	{
@@ -367,7 +367,7 @@ void cGirlTorture::UpdateStats()
 		m_Girl->tiredness(-5);
 		m_Girl->pchate(3);
 		m_Girl->pclove(-5);
-		m_Girl->pcfear(7);
+		m_Girl->pcfear(5);
 		m_Girl->bdsm(1);
 	}
 

@@ -755,7 +755,7 @@ public:
 
 	bool HasTrait(sGirl* girl, string trait);
 	bool HasRememberedTrait(sGirl* girl, string trait);
-	int HasTempTrait(sGirl* girl, string trait);
+	static int HasTempTrait(sGirl* girl, string trait);
 	bool RestoreRememberedTrait(sGirl* girl, string trait);
 
 

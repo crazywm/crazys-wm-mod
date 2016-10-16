@@ -40,6 +40,7 @@ extern cInventory g_InvManager;
 extern cWindowManager g_WinManager;
 extern bool g_AllTogle;
 extern string g_ReturnText;
+extern cConfig cfg;
 
 extern	bool	g_AltKeys;	// New hotkeys --PP
 extern	bool	g_R_Key;
@@ -537,7 +538,7 @@ void cScreenItemManagement::write_item_text(sInventoryItem * item, int owner, in
 	{
 		iName << item->m_Name;
 		iCost << item->m_Cost << " gold";
-		iSell << int((float)item->m_Cost*0.5f) << " gold";
+		iSell << int(((float) item->m_Cost) * cfg.in_fact.item_sales()) << " gold";
 		iType << item->m_Type;
 		iDesc << item->m_Desc;
 	}
@@ -1036,8 +1037,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 				}
 
 				// add the gold
-				long gold = (int)(targetGirl->m_Inventory[selection]->m_Cost*0.5f);
-				g_Gold.item_sales(gold);
+				g_Gold.item_sales(targetGirl->m_Inventory[selection]->m_Cost);
 
 				// since items sold to shop are simply destroyed, no selection to track here
 				//				*item_name = targetGirl->m_Inventory[selection]->m_Name;  // note name of item, for selection tracking in target list
@@ -1063,8 +1063,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 				while (trysellnum > 0 && g_Brothels.m_NumItem[selection] > 0)
 				{
 					trysellnum--;
-					long gold = (int)((float)g_Brothels.m_Inventory[selection]->m_Cost*0.5f);
-					g_Gold.item_sales(gold);
+					g_Gold.item_sales(g_Brothels.m_Inventory[selection]->m_Cost);
 					g_Brothels.m_NumItem[selection]--;
 					if (g_Brothels.m_NumItem[selection] == 0)
 					{
