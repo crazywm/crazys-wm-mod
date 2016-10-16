@@ -53,10 +53,14 @@ extern cFarmManager  g_Farm;
 extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern	bool			g_InitWin;
+extern sGirl *selected_girl;
+extern cGold g_Gold;
+static cTariff tariff;
 
 extern	bool	g_CTRLDown;
 
 static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
+static vector<int> ffsd_choicelist;
 
 extern cPlayer* The_Player;
 
@@ -1753,6 +1757,10 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		g_MessageQue.AddToQue(gettext("There can be only one Promoter."), 0);
 	}
+	else if (u_int(JobID) == JOB_PROMOTER && Girl->is_slave())
+	{
+		g_MessageQue.AddToQue(gettext("The Promoter cannot be a slave."), 0);
+	}
 	else if (g_Studios.is_Actress_Job(JobID) &&
 		(g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 1 ||
 		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) < 1))
@@ -3104,48 +3112,526 @@ void cJobManager::FreeSlaves(sGirl* firstgirl, bool multi)
 	int length = max(free.str().length(), keep.str().length());
 
 	g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, length, 16);
-//	g_MessageQue.AddToQue(ask.str(), 0);
 	g_ChoiceManager.Question(0, ask.str());
 	g_ChoiceManager.AddChoice(0, free.str(), 0);
 	g_ChoiceManager.AddChoice(0, keep.str(), 1);
 	g_ChoiceManager.SetActive(0);
 }
 
-void cJobManager::FireGirls(sGirl* firstgirl, bool multi, int freegirls, int slavegirls, int deadgirls)
-{
-	stringstream ask, fire, free, dump, keep, fidu, fifr, frdu;
-	int length = 0;
-	int totalgirls = freegirls + slavegirls + deadgirls;
-	keep << "Nevermind, Back to work.";
-	fire << "Fire them.";
-	free << "Free the slave" << (slavegirls == 1 ? "s" : "");
-	dump << "Dump the bod" << (deadgirls == 1 ? "y" : "ies") << ".";
 
-	if (freegirls > 0 && slavegirls > 0 && deadgirls > 0)
+void cJobManager::ffsd_choice(int ffsd, vector<int> girl_array, string buildingtype, int buildingnum) // `J` added for .06.02.37
+{
+	int pos = 0, slavegirls = 0, freegirls = 0, deadgirls = 0, selltotal = 0;
+	int GSelection = girl_array[0];
+	stringstream firstgirlname;
+
+	for (int i = girl_array.size(); i-- > 0;)	// OK, we have the array, now step through it backwards
 	{
-		ask << "You have chosen " << totalgirls << " girls, the slave" << (slavegirls == 1 ? "s" : "")
-			<< " will be dealt with later.\nFor now, do you want to fire the free girl" << (freegirls == 1 ? "" : "s")
-			<< ", remove the dead bod" << (deadgirls == 1 ? "y" : "ies") << " or both?";
-		free.str("");
-		fidu << "Get rid of them all.";
+		/* */if (buildingtype == "Br") selected_girl = g_Brothels.GetGirl(buildingnum, girl_array[i]);
+		else if (buildingtype == "Ho") selected_girl = g_House.GetGirl(buildingnum, girl_array[i]);
+		else if (buildingtype == "Cl") selected_girl = g_Clinic.GetGirl(buildingnum, girl_array[i]);
+		else if (buildingtype == "St") selected_girl = g_Studios.GetGirl(buildingnum, girl_array[i]);
+		else if (buildingtype == "Ar") selected_girl = g_Arena.GetGirl(buildingnum, girl_array[i]);
+		else if (buildingtype == "Ce") selected_girl = g_Centre.GetGirl(buildingnum, girl_array[i]);
+		else if (buildingtype == "Fa") selected_girl = g_Farm.GetGirl(buildingnum, girl_array[i]);
+
+		if (firstgirlname.str().length() == 0)	firstgirlname << selected_girl->m_Realname;
+
+		if (selected_girl->is_dead())	deadgirls++;
+		else if (selected_girl->is_slave())
+		{
+			slavegirls++;
+			selltotal += tariff.slave_sell_price(selected_girl);
+		}
+		else if (selected_girl)				freegirls++;
 	}
 
+	int totalgirls = freegirls + slavegirls + deadgirls;
+	if (totalgirls == 0) return;							// No girls so quit
+
+	stringstream ask, question, keep, fire, free, dump, sell, dump1, dump2, dump3, dump4,
+		frdu1, frdu2, fidu, fise, fisd, frdu, sedu, sedu1, free1;
+	keep << "\"Nevermind, Back to work.\"";
+
+	int length = 0;
+
+	/* Free girls only */
+	if (freegirls > 0 && slavegirls == 0 && deadgirls == 0)
+	{
+		question << "Do you want to fire ";
+		/* */if (freegirls == 1)	{ question << firstgirlname.str();					fire << "Fire her."; }
+		else if (freegirls == 2)	{ question << "these two girls";					fire << "Fire them both."; }
+		else/*                */	{ question << "these " << totalgirls << " girls";	fire << "Fire them all."; }
+		question << "?";
+	}
+	/* Slave girls only */
+	else if (freegirls == 0 && slavegirls > 0 && deadgirls == 0)
+	{
+		if (ffsd == FFSD_free && The_Player->disposition() > -10)
+		{
+			question << "Do you want to free ";
+			/* */if (slavegirls == 1)	{ question << firstgirlname.str();	free << "Free her."; }
+			else if (slavegirls == 2)	{ question << "these two girls";	free << "Free them both."; }
+			else		{ question << "these " << totalgirls << " girls";	free << "Free them all."; }
+			question << "?";
+		}
+		else if (ffsd == FFSD_sell && The_Player->disposition() < 10)
+		{
+			question << "Do you want to sell ";
+			/* */if (slavegirls == 1)	{ question << firstgirlname.str();		sell << "Sell her."; }
+			else if (slavegirls == 2)	{ question << "these two girls";		sell << "Sell them both."; }
+			else		{ question << "these " << totalgirls << " girls";		sell << "Sell them all."; }
+			question << "?\nYou could get " << selltotal << " gold for selling them.";
+		}
+		else
+		{
+			question << "Do you want to free or sell ";
+			/* */if (slavegirls == 1)	{ question << firstgirlname.str();		free << "Free her.";		sell << "Sell her."; }
+			else if (slavegirls == 2)	{ question << "these two girls";		free << "Free them both.";	sell << "Sell them both."; }
+			else		{ question << "these " << totalgirls << " girls";		free << "Free them all.";	sell << "Sell them all."; }
+			question << "?\nYou could get " << selltotal << " gold for selling them.";
+		}
+	}
+	/* Dead girls only */
+	else if (freegirls == 0 && slavegirls == 0 && deadgirls > 0)
+	{
+		question << "What do you want to do with ";
+		/* */if (deadgirls == 1)	question << firstgirlname.str() << "'s dead body";
+		else if (deadgirls == 2)	question << "the two dead bodies";
+		else/*                */	question << "the " << totalgirls << " dead bodies";
+		question << "?";
+		keep << "Nevermind, I'll deal with them later.";
+		dump1 << "Give " << (deadgirls == 1 ? "her" : "them") << " a proper funeral.";
+		dump2 << "Bury the bod" << (deadgirls == 1 ? "y" : "ies") << " in a shollow unmarked grave.";
+		dump3 << "Dump the bod" << (deadgirls == 1 ? "y" : "ies") << " on the side of the road.";
+		dump4 << "Sell the bod" << (deadgirls == 1 ? "y" : "ies") << " to the highest bidder" << (deadgirls == 1 ? "" : "s") << ".";
+	}
+	/* Slave and Dead girls */
+	else if (freegirls == 0 && slavegirls > 0 && deadgirls > 0)
+	{
+		if (ffsd == FFSD_free)
+		{
+			question << "Free slaves or dispose bodies?";
+			ask << "You have chosen to free ";
+			if (slavegirls == 1) ask << "a"; else if (slavegirls == 2) ask << "two"; else ask << slavegirls;
+			ask << " slave girl" << (slavegirls > 1 ? "s" : "") << ". Do you want them to:\nDispose of the bodies of the dead girl"
+				<< (deadgirls > 1 ? "s" : "") << " as their last act as your slave" << (slavegirls > 1 ? "s?" : "?")
+				<< "\nDispose of the bodies and get back to work?";
+
+			if (The_Player->disposition() < -10)
+			{
+				ask << "\nOr you can sell all the girls, living and dead.";
+				sedu1 << "\"Show me the MONEY\"";
+			}
+			free << "Free them and deal with the bod" << (deadgirls > 1 ? "ies" : "y") << " later.";
+			frdu1 << "\"Dispose of them and you get your freedom.\"";
+			frdu2 << "\"Dispose of them then get back to work.\"";
+
+		}
+		else	// fire or sell buttons
+		{
+			question << "Sell who?";
+			ask << "You have chosen to sell ";
+			if (slavegirls == 1) ask << "a"; else if (slavegirls == 2) ask << "two"; else ask << slavegirls;
+			ask << " living slave girl" << (slavegirls > 1 ? "s" : "") << " and ";
+			if (deadgirls == 1) ask << "a"; else if (deadgirls == 2) ask << "two"; else ask << deadgirls;
+			ask << " dead bod" << (deadgirls > 1 ? "ies" : "y") << ".";
+			ask << "\nYou could get " << selltotal << " gold for selling the living girl" << (slavegirls > 1 ? "s" : "") << ".";
+
+			sell << "Sell just the living.";
+			dump4 << "Sell just the dead.";
+			sedu1 << "Sell them all.";
+		}
+	}
+	/* Free and Slave girls */
+	else if (freegirls > 0 && slavegirls > 0 && deadgirls == 0)
+	{
+		ask << "You call in " << totalgirls << " girls, " << slavegirls << " slave girl" << (slavegirls > 1 ? "s" : "") << " and " << freegirls << " free girl" << (freegirls > 1 ? "s" : "") << ".\n";
+		if (ffsd == FFSD_free)
+		{
+			ask << "Do you want to throw them a Freedom Pary or just get it over with quickly?";
+			question << "Is it Party Time?";
+			free << "Just free " << (slavegirls > 1 ? "them" : "her") << ".";
+			free1 << "Throw a Freedom Party!";
+		}
+		else	// fire or sell
+		{
+			ask << "Do you want to make room for new girls by fireing or selling some old girls?";
+			question << "Get rid of who?";
+			fire << "Fire the free girl" << (freegirls > 1 ? "s" : "") << ".";
+			sell << "Sell the slave" << (slavegirls > 1 ? "s" : "") << ".";
+			fise << "Get rid of them all.";
+		}
+
+	}
+	/* Any girls */
+	else
+	{
+		ask << "You have chosen " << totalgirls << " girls, what do you want to do with them?";
+		question << "What do you want to do?";
+		fire << "Fire the free girls.";
+		free << "Free the slaves.";
+		sell << "Sell the slaves.";
+		dump << "Dump the bodies.";
+		fisd << "Get rid of them all.";
+	}
+
+	int numchoices = 0;
+	ffsd_choicelist.clear();
+	if ((int)keep.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_keep);	if ((int)keep.str().length() > length)	length = keep.str().length(); }
+	if ((int)fire.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_fire);	if ((int)fire.str().length() > length)	length = fire.str().length(); }
+	if ((int)free.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_free);	if ((int)free.str().length() > length)	length = free.str().length(); }
+	if ((int)sell.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_sell);	if ((int)sell.str().length() > length)	length = sell.str().length(); }
+	if ((int)dump.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump);	if ((int)dump.str().length() > length)	length = dump.str().length(); }
+	if ((int)fidu.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_fidu);	if ((int)fidu.str().length() > length)	length = fidu.str().length(); }
+	if ((int)fise.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_fise);	if ((int)fise.str().length() > length)	length = fise.str().length(); }
+	if ((int)fisd.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_fisd);	if ((int)fisd.str().length() > length)	length = fisd.str().length(); }
+	if ((int)frdu.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_frdu);	if ((int)frdu.str().length() > length)	length = frdu.str().length(); }
+	if ((int)sedu.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_sedu);	if ((int)sedu.str().length() > length)	length = sedu.str().length(); }
+	if ((int)dump1.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump1);	if ((int)dump1.str().length() > length)	length = dump1.str().length(); }
+	if ((int)dump2.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump2);	if ((int)dump2.str().length() > length)	length = dump2.str().length(); }
+	if ((int)dump3.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump3);	if ((int)dump3.str().length() > length)	length = dump3.str().length(); }
+	if ((int)dump4.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump4);	if ((int)dump4.str().length() > length)	length = dump4.str().length(); }
+	if ((int)frdu1.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_frdu1);	if ((int)frdu1.str().length() > length)	length = frdu1.str().length(); }
+	if ((int)frdu2.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_frdu2);	if ((int)frdu2.str().length() > length)	length = frdu2.str().length(); }
+	if ((int)sedu1.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_sedu1);	if ((int)sedu1.str().length() > length)	length = sedu1.str().length(); }
+	if ((int)free1.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_free1);	if ((int)free1.str().length() > length)	length = free1.str().length(); }
 
 
-	length = max((int)keep.str().length(), (int)fire.str().length());
-	length = max(length, (int)free.str().length());
-	length = max(length, (int)dump.str().length());
 
-	g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, length, 16);
-	g_MessageQue.AddToQue(ask.str(), 0);
-	g_ChoiceManager.AddChoice(0, keep.str(), 0);
-	if (fire.str().length() > 0)	g_ChoiceManager.AddChoice(0, fire.str(), 1);
-	if (free.str().length() > 0)	g_ChoiceManager.AddChoice(0, free.str(), 2);
-	if (dump.str().length() > 0)	g_ChoiceManager.AddChoice(0, dump.str(), 3);
-	if (fidu.str().length() > 0)	g_ChoiceManager.AddChoice(0, fidu.str(), 4);
-	if (fifr.str().length() > 0)	g_ChoiceManager.AddChoice(0, fifr.str(), 5);
-	if (frdu.str().length() > 0)	g_ChoiceManager.AddChoice(0, frdu.str(), 6);
+	g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, numchoices, 32, length, 16);
+	if (ask.str().length() > 0)	g_MessageQue.AddToQue(ask.str(), 0);
+	g_ChoiceManager.Question(0, question.str());
+	int i = 0;
+	if (keep.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, keep.str(), i); i++; }
+	if (fire.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, fire.str(), i); i++; }
+	if (free.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, free.str(), i); i++; }
+	if (sell.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, sell.str(), i); i++; }
+	if (dump.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump.str(), i); i++; }
+	if (fidu.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, fidu.str(), i); i++; }
+	if (fise.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, fise.str(), i); i++; }
+	if (fisd.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, fisd.str(), i); i++; }
+	if (frdu.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, frdu.str(), i); i++; }
+	if (sedu.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, sedu.str(), i); i++; }
+	if (dump1.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump1.str(), i); i++; }
+	if (dump2.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump2.str(), i); i++; }
+	if (dump3.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump3.str(), i); i++; }
+	if (dump4.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump4.str(), i); i++; }
+	if (frdu1.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, frdu1.str(), i); i++; }
+	if (frdu2.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, frdu2.str(), i); i++; }
+	if (sedu1.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, sedu1.str(), i); i++; }
+	if (free1.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, free1.str(), i); i++; }
 
 	g_ChoiceManager.SetActive(0);
 }
 
+void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
+{
+	bool free = false, fire = false, sell = false, dump = false;
+	int option = ffsd_choicelist[g_ChoiceManager.GetChoice(0)];
+	switch (option)
+	{
+	case FFSD_fire:		fire = true;	break;
+
+	case FFSD_free1:	// Throw a freedom party
+	case FFSD_free:		free = true;	break;
+
+	case FFSD_sell:		sell = true;	break;
+
+	case FFSD_fidu:		fire = true;	dump = true;	break;
+
+	case FFSD_fise:		fire = true;	sell = true;	break;
+
+	case FFSD_fisd:		free = true;	sell = true;	dump = true;	break;
+
+	case FFSD_frdu1:	// dump the bodies and get your freedom
+	case FFSD_frdu:		free = true;	dump = true;	break;
+
+	case FFSD_sedu1:	// Sell all the girls, living and dead
+	case FFSD_sedu:		sell = true;	dump = true;	break;
+
+	case FFSD_dump1:	// Proper funeral
+	case FFSD_dump2:	// Unmarked grave
+	case FFSD_dump3:	// Side of the road
+	case FFSD_dump4:	// Sell the bodies
+	case FFSD_frdu2:	// Dump then get back to work
+	case FFSD_dump:		dump = true;	break;
+
+
+	default:	break;	// keep
+	}
+
+	if (free || fire || sell || dump)
+	{
+		stringstream ss;
+		vector<int>	sellgirl_price;
+		vector<string> freegirl_names; vector<string> firegirl_names; vector<string> sellgirl_names; vector<string> dumpgirl_names;
+
+		for (int i = girl_array.size(); i-- > 0;)	// OK, we have the array, now step through it backwards
+		{
+			g_InitWin = true;
+			/* */if (sub == "Br") selected_girl = g_Brothels.GetGirl(num, girl_array[i]);
+			else if (sub == "Ho") selected_girl = g_House.GetGirl(num, girl_array[i]);
+			else if (sub == "Cl") selected_girl = g_Clinic.GetGirl(num, girl_array[i]);
+			else if (sub == "St") selected_girl = g_Studios.GetGirl(num, girl_array[i]);
+			else if (sub == "Ar") selected_girl = g_Arena.GetGirl(num, girl_array[i]);
+			else if (sub == "Ce") selected_girl = g_Centre.GetGirl(num, girl_array[i]);
+			else if (sub == "Fa") selected_girl = g_Farm.GetGirl(num, girl_array[i]);
+
+			if (selected_girl->is_dead())
+			{
+				if (dump)
+				{
+					dumpgirl_names.push_back(selected_girl->m_Realname);
+					/* */if (sub == "Br") g_Brothels.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Ho") g_House.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Cl") g_Clinic.RemoveGirl(num, selected_girl, false);
+					else if (sub == "St") g_Studios.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Ar") g_Arena.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Ce") g_Centre.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Fa") g_Farm.RemoveGirl(num, selected_girl, false);
+					// dead girls get removed from the game
+					delete selected_girl;
+					selected_girl = 0;
+				}
+				continue;
+			}
+			else if (selected_girl->is_slave())
+			{
+				if (option == FFSD_free1)	// Throw a freedom party
+				{
+					freegirl_names.push_back(selected_girl->m_Realname);
+					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
+					The_Player->disposition(7);
+					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 20);
+					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -40);
+					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -50);
+					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 100);
+					g_Girls.UpdateStat(selected_girl, STAT_HEALTH, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_TIREDNESS, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_CHARISMA, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_FAME, 2);
+					g_Girls.UpdateStat(selected_girl, STAT_CONFIDENCE, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_SPIRIT, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_DIGNITY, 5);
+					selected_girl->m_AccLevel = cfg.initial.girls_accom();
+					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
+				}
+				if (option == FFSD_frdu1)	// dump the bodies and get your freedom
+				{
+					firegirl_names.push_back(selected_girl->m_Realname);
+					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
+					The_Player->disposition(3);
+					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -5);
+					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 20);
+					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 40);
+					g_Girls.UpdateStat(selected_girl, STAT_TIREDNESS, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_DIGNITY, -2);
+					selected_girl->m_AccLevel = cfg.initial.girls_accom();
+					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
+				}
+				else if (option == FFSD_frdu2)	// dump the bodies then get back to work
+				{
+					freegirl_names.push_back(selected_girl->m_Realname);
+					The_Player->disposition(-1);
+					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, -2);
+					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, -10);
+					g_Girls.UpdateStat(selected_girl, STAT_TIREDNESS, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_DIGNITY, -5);
+				}
+				else if (free)
+				{
+					freegirl_names.push_back(selected_girl->m_Realname);
+					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
+					The_Player->disposition(5);
+					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
+					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
+					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 70);
+
+					selected_girl->m_AccLevel = cfg.initial.girls_accom();
+					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
+				}
+				else if (sell)
+				{
+					sellgirl_names.push_back(selected_girl->m_Realname);
+					sellgirl_price.push_back(tariff.slave_sell_price(selected_girl));
+					g_Gold.slave_sales(tariff.slave_sell_price(selected_girl));
+
+					/* */if (sub == "Br") g_Brothels.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Ho") g_House.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Cl") g_Clinic.RemoveGirl(num, selected_girl, false);
+					else if (sub == "St") g_Studios.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Ar") g_Arena.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Ce") g_Centre.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Fa") g_Farm.RemoveGirl(num, selected_girl, false);
+
+					if (selected_girl->m_Realname.compare(selected_girl->m_Name) == 0)
+						g_Girls.AddGirl(selected_girl);  // add unique girls back to main pool
+					else
+					{  // random girls simply get removed from the game
+						delete selected_girl;
+						selected_girl = 0;
+					}
+				}
+				continue;
+			}
+			else if (selected_girl)		// the girl is free
+			{
+				if (option == FFSD_free1)	// Throw a freedom party - Guest
+				{
+					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -5);
+					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -5);
+					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 2);
+					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 100);
+					g_Girls.UpdateStat(selected_girl, STAT_HEALTH, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_TIREDNESS, 10);
+					g_Girls.UpdateStat(selected_girl, STAT_CONFIDENCE, 2);
+					g_Girls.UpdateStat(selected_girl, STAT_SPIRIT, 5);
+					g_Girls.UpdateStat(selected_girl, STAT_DIGNITY, 1);
+				}
+				else if (fire)
+				{
+					firegirl_names.push_back(selected_girl->m_Realname);
+					/* */if (sub == "Br") g_Brothels.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Ho") g_House.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Cl") g_Clinic.RemoveGirl(num, selected_girl, false);
+					else if (sub == "St") g_Studios.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Ar") g_Arena.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Ce") g_Centre.RemoveGirl(num, selected_girl, false);
+					else if (sub == "Fa") g_Farm.RemoveGirl(num, selected_girl, false);
+
+					if (selected_girl->m_Realname.compare(selected_girl->m_Name) == 0)
+						g_Girls.AddGirl(selected_girl);  // add unique girls back to main pool
+					else
+					{  // random girls simply get removed from the game
+						delete selected_girl;
+						selected_girl = 0;
+					}
+				}
+			}
+		}
+
+		if (freegirl_names.size() > 0)
+		{
+			ss << "You grant " << freegirl_names[0];
+			if (freegirl_names.size() == 1)			ss << " her";
+			else if (freegirl_names.size() == 2)	ss << " and " << freegirl_names[1] << " thier";
+			else
+			{
+				for (int i = 1; i < (int)freegirl_names.size() - 1; i++) ss << ", " << freegirl_names[i];
+				ss << " and " << freegirl_names[freegirl_names.size() - 1] << " their";
+			}
+			ss << " freedom.\n\n";
+		}
+		if (firegirl_names.size() > 0)
+		{
+			ss << "You fire " << firegirl_names[0];
+			if (firegirl_names.size() == 2)	ss << " and " << firegirl_names[1];
+			else if (firegirl_names.size() > 2)
+			{
+				for (int i = 1; i < (int)firegirl_names.size() - 1; i++) ss << ", " << firegirl_names[i];
+				ss << " and " << firegirl_names[firegirl_names.size() - 1];
+			}
+			ss << ".\n\n";
+		}
+		if (sellgirl_names.size()>0)
+		{
+			int sell = 0;
+			int sellsize = sellgirl_names.size();
+			ss << "You sell ";
+			if (sellsize == 1)		ss << sellgirl_names[0] << " for " << sellgirl_price[0] << " gold";
+			else if (sellsize == 2)	ss << "two slaves:\n" << sellgirl_names[0] << " for " << sellgirl_price[0] << " gold and\n" << sellgirl_names[1] << " for " << sellgirl_price[0] << " gold";
+			else
+			{
+				ss << sellsize << " slaves:\n" << sellgirl_names[0] << " for " << sellgirl_price[0] << " gold";
+				for (int i = 1; i < (int)sellsize - 1; i++)
+				{
+					ss << ",\n" << sellgirl_names[i] << " for " << sellgirl_price[i] << " gold";
+				}
+				ss << " and\n" << sellgirl_names[sellsize - 1] << " for " << sellgirl_price[sellsize - 1] << " gold";
+			}
+			if (sellsize > 1)
+			{
+				for (int i = 0; i < (int)sellsize; i++) sell += sellgirl_price[i];
+				ss << ".\nYour total take was " << sell << " gold";
+			}
+			ss << ".\n\n";
+		}
+		if (dumpgirl_names.size() > 0)
+		{
+			int sell = 0;
+			int dumpsize = dumpgirl_names.size();
+			switch (option)
+			{
+			case FFSD_dump1:	// proper funeral
+				if (dumpsize == 1) ss << "You spend 100 gold for a proper funeral for ";
+				else ss << "You spend 100 gold each for proper funerals for ";
+				/* */if (sub == "Br") g_Brothels.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
+				else if (sub == "Ho") g_House.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
+				else if (sub == "Cl") g_Clinic.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
+				else if (sub == "St") g_Studios.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
+				else if (sub == "Ar") g_Arena.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
+				else if (sub == "Ce") g_Centre.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
+				else if (sub == "Fa") g_Farm.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
+
+				The_Player->customerfear(-dumpsize);
+				The_Player->suspicion(-dumpsize);
+				The_Player->disposition(dumpsize);
+				break;
+			case FFSD_dump2:	// unmarked grave
+				ss << "You have your goons dig " << (dumpsize > 1 ? "graves " : "a grave") << " for ";
+				The_Player->disposition(-dumpsize);
+				break;
+			case FFSD_dump3:	// side of the road
+				ss << "You have your goons dump the bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
+				The_Player->customerfear(dumpsize);
+				The_Player->suspicion(dumpsize);
+				The_Player->disposition(-dumpsize);
+				break;
+			case FFSD_dump4:	// Sell the bodies
+			case FFSD_sedu1:	// Sell all the girls, living and dead
+				for (int i = 0; i < (int)dumpsize; i++) sell += g_Dice % 250 + g_Dice % 50 + 1;
+				ss << "You make " << sell << " gold for selling the dead bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
+				/* */if (sub == "Br") g_Brothels.GetBrothel(num)->m_Finance.slave_sales(sell);
+				else if (sub == "Ho") g_House.GetBrothel(num)->m_Finance.slave_sales(sell);
+				else if (sub == "Cl") g_Clinic.GetBrothel(num)->m_Finance.slave_sales(sell);
+				else if (sub == "St") g_Studios.GetBrothel(num)->m_Finance.slave_sales(sell);
+				else if (sub == "Ar") g_Arena.GetBrothel(num)->m_Finance.slave_sales(sell);
+				else if (sub == "Ce") g_Centre.GetBrothel(num)->m_Finance.slave_sales(sell);
+				else if (sub == "Fa") g_Farm.GetBrothel(num)->m_Finance.slave_sales(sell);
+
+				The_Player->customerfear(dumpsize * 2);
+				The_Player->suspicion(dumpsize * 2);
+				The_Player->disposition(-dumpsize * 2);
+				break;
+			default:
+				ss << "You have your goons remove the bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
+				break;
+			}
+			ss << dumpgirl_names[0];
+			if (dumpsize == 2)	ss << " and " << dumpgirl_names[1];
+			else
+			{
+				for (int i = 1; i < (int)dumpsize - 1; i++) ss << ", " << dumpgirl_names[i];
+				ss << " and " << dumpgirl_names[dumpsize - 1];
+			}
+			if (option == FFSD_dump2) ss << " and dump their bod" << (dumpsize > 1 ? "ies" : "y") << " in.";
+			if (option == FFSD_dump3) ss << " on the side of the road.";
+			ss << ".\n\n";
+		}
+		if (ss.str().length() > 0)	g_MessageQue.AddToQue(ss.str(), 0);
+		
+		freegirl_names.clear(); firegirl_names.clear(); sellgirl_names.clear(); dumpgirl_names.clear();
+		sellgirl_price.clear();
+	}
+
+}

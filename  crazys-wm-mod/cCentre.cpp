@@ -123,7 +123,7 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 	while (cgirl)
 	{
 		current->m_Filthiness++;
-		if (cgirl->health() <= 0)			// Remove any dead bodies from last week
+		if (cgirl->is_dead())			// Remove any dead bodies from last week
 		{
 			current->m_Filthiness++; // `J` Death is messy
 			sGirl* DeadGirl = 0;
@@ -234,7 +234,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	sGirl* current = brothel->m_Girls;
 	while (current)
 	{
-		if (current->health() <= 0)		// skip dead girls
+		if (current->is_dead())		// skip dead girls
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -256,7 +256,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	current = brothel->m_Girls;
 	while (current && !matrondone)
 	{
-		if (current->health() <= 0 ||
+		if (current->is_dead() ||
 			(GetNumGirlsOnJob(0, matronjob, Day0Night1) > 0 && (current->m_DayJob != matronjob || current->m_NightJob != matronjob)) ||
 			(GetNumGirlsOnJob(0, matronjob, Day0Night1) < 1 && (current->m_PrevDayJob != matronjob || current->m_PrevNightJob != matronjob)))
 		{	// Sanity check! Don't process dead girls and only process those with matron jobs
@@ -331,7 +331,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || sw != restjob)
+		if (current->is_dead() || sw != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -443,7 +443,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || sw != JOB_COUNSELOR)
+		if (current->is_dead() || sw != JOB_COUNSELOR)
 		{	// skip dead girls and anyone who is not a counselor
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -474,7 +474,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	while (current && matron && !counselor && GetNumberPatients(Day0Night1) > 0)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE))
+		if (current->is_dead() || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE))
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -501,7 +501,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	while (current && matron && !counselor && GetNumberPatients(Day0Night1) > 0)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || sw != JOB_THERAPY)
+		if (current->is_dead() || sw != JOB_THERAPY)
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -523,7 +523,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	while (current && matron && !counselor && GetNumberPatients(Day0Night1) > 0)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || (sw != JOB_ANGER && sw != JOB_EXTHERAPY))
+		if (current->is_dead() || (sw != JOB_ANGER && sw != JOB_EXTHERAPY))
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -545,7 +545,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	while (current && matron && !counselor && GetNumberPatients(Day0Night1) > 0)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || sw != JOB_REHAB)
+		if (current->is_dead() || sw != JOB_REHAB)
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -571,7 +571,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE && sw != JOB_COUNSELOR) ||
+		if (current->is_dead() || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE && sw != JOB_COUNSELOR) ||
 			// skip dead girls and anyone who is not staff
 			(sw == JOB_COUNSELOR && ((Day0Night1 == SHIFT_DAY && current->m_Refused_To_Work_Day) || (Day0Night1 == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
 		{	// and skip counselors who refused to work in the first check
@@ -617,7 +617,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || (sw != JOB_REHAB && sw != JOB_ANGER && sw != JOB_EXTHERAPY && sw != JOB_THERAPY))
+		if (current->is_dead() || (sw != JOB_REHAB && sw != JOB_ANGER && sw != JOB_EXTHERAPY && sw != JOB_THERAPY))
 		{	// skip dead girls, resting girls and the matron
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -634,7 +634,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	current = brothel->m_Girls;
 	while (current)
 	{
-		if (current->health() <= 0)
+		if (current->is_dead())
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }

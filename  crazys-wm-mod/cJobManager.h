@@ -64,12 +64,12 @@ public:
 	bool	(*JobFunc[NUM_JOBS])(sGirl*, sBrothel*, bool, string&);
 	double	(*JobPerf[NUM_JOBS])(sGirl*, bool estimate);			// `J` a replacement for job performance - work in progress
 
-	string JobName[NUM_JOBS];  // short descriptive name of job
-	string JobQkNm[NUM_JOBS];  // a shorter name of job
-	string JobDesc[NUM_JOBS];  // longer description of job
-	string JobFilterName[NUMJOBTYPES];  // short descriptive name of job filter
-	string JobFilterDesc[NUMJOBTYPES];  // longer description of job filter
-	unsigned int JobFilterIndex[NUMJOBTYPES+1];  // starting job index # for job filter
+	string JobName[NUM_JOBS];				// short descriptive name of job
+	string JobQkNm[NUM_JOBS];				// a shorter name of job
+	string JobDesc[NUM_JOBS];				// longer description of job
+	string JobFilterName[NUMJOBTYPES];		// short descriptive name of job filter
+	string JobFilterDesc[NUMJOBTYPES];		// longer description of job filter
+	int JobFilterIndex[NUMJOBTYPES + 1];	// starting job index # for job filter
 	string JobDescriptionCount(int job_id, int brothel_id, int day = SHIFT_DAY, bool isClinic = false, bool isStudio = false, bool isArena = false, bool isCentre = false, bool isHouse = false, bool isFarm = false);  // return a job description along with a count of how many girls are on it
     bool HandleSpecialJobs( int TargetBrothel, sGirl* Girl, int JobID, int OldJobID, bool Day0Night1, bool fulltime = false );  // check for and handle special job assignments
 
@@ -411,5 +411,6 @@ public:
 	bool FullTimeJob(u_int Job);			//	`J`	Test if job is takes both shifts
 	string GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, bool Day0Night1);
 	void FreeSlaves(sGirl* girl, bool multi = false);
-	void FireGirls(sGirl* firstgirl, bool multi, int freegirls, int slavegirls, int deadgirls);
+	void ffsd_choice(int ffsd, vector<int> girl_array, string buildingtype, int buildingnum);
+	void ffsd_outcome(vector<int> girl_array, string sub, int num);
 };

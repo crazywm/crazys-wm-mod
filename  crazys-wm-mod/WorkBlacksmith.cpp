@@ -137,7 +137,7 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			}
 			else
 				ss << "She burnt herself in the heat of the forge";
-			if (girl->health() <= 0)
+			if (girl->is_dead())
 			{
 				ss << " killing her.";
 				g_MessageQue.AddToQue(girlName + " was killed in an accident while working as a Blacksmith at the Arena.", COLOR_RED);

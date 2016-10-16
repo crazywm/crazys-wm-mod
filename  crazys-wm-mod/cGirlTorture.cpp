@@ -117,7 +117,7 @@ void cGirlTorture::DoTorture()
 	*/
 
 	// Sanity check. Abort on dead girl
-	if (m_Girl->health() <= 0) return;
+	if (m_Girl->is_dead()) return;
 
 	m_Fight = false;
 
@@ -230,7 +230,7 @@ void cGirlTorture::DoTorture()
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGirlTorture || DANGER DEATH"; g_LogFile.ssend(); }
 	if (m_TorturedByPlayer)
 	{
-		if (m_Girl->health() <= 0)		// Dead Girl
+		if (m_Girl->is_dead())		// Dead Girl
 			m_Message += gettext("She unfortunatly died from her wounds.\n");
 		else if (m_Girl->health() < 20)
 			m_Message += gettext("Also, she is close to death.\n");
@@ -238,7 +238,7 @@ void cGirlTorture::DoTorture()
 	}
 	else	// Tortured by Torturer Girl
 	{
-		if (m_Girl->health() <= 0)
+		if (m_Girl->is_dead())
 		{
 			sMsg = gettext("While torturing ") + sGirlName + gettext(" in the dungeon she died from her wounds.");
 			m_Torturer->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DANGER);

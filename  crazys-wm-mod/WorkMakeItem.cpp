@@ -125,7 +125,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			else
 				ss << "She injured herself with the " << (g_Dice.percent(40) ? "sharp" : "heavy") << " tools";
-			if (girl->health() <= 0)
+			if (girl->is_dead())
 			{
 				ss << " killing her.";
 				g_MessageQue.AddToQue(girlName + " was killed in an accident while making items at the Farm.", COLOR_RED);

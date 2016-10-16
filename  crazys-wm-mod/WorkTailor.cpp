@@ -124,7 +124,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 			}
 			else
 				ss << "She stabed herself while working";
-			if (girl->health() <= 0)
+			if (girl->is_dead())
 			{
 				ss << " killing her.";
 				g_MessageQue.AddToQue(girlName + " was killed in an accident while working as a Tailor at the Farm.", COLOR_RED);

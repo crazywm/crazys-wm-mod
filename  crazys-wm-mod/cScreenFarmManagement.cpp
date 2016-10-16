@@ -17,25 +17,25 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <algorithm>
-#include "cFarm.h"
 #include "cBrothel.h"
+#include "cFarm.h"
 #include "cScreenFarmManagement.h"
 #include "cWindowManager.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
-#include "libintl.h"
 #include "cScreenGirlDetails.h"
+#include "libintl.h"
 
 extern cScreenGirlDetails g_GirlDetails;
 
-extern bool g_InitWin;
 extern int g_CurrFarm;
-extern cGold g_Gold;
 extern cFarmManager g_Farm;
 extern cBrothelManager g_Brothels;
+extern bool g_InitWin;
 extern cWindowManager g_WinManager;
+extern cGold g_Gold;
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -61,9 +61,7 @@ static stringstream ss;
 
 static int lastNum = -1;
 static int ImageNum = -1;
-static bool FireGirl = false;
-static bool FreeGirl = false;
-static bool SellGirl = false;
+static int FFSD_Flag = -1;
 static int selection = -1;
 static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
@@ -71,8 +69,8 @@ static bool SetJob = false;
 extern sGirl *selected_girl;
 extern vector<int> cycle_girls;
 extern int cycle_pos;
-
 extern cPlayer* The_Player;
+
 bool cScreenFarmManagement::ids_set = false;
 
 void cScreenFarmManagement::set_ids()
@@ -82,11 +80,12 @@ void cScreenFarmManagement::set_ids()
 	curfarm_id = get_id("Farm");
 	girllist_id = get_id("GirlList");
 	girlimage_id = get_id("GirlImage");
-	walk_id = get_id("WalkButton");
 	girldesc_id = get_id("GirlDescription");
 	viewdetails_id = get_id("ViewDetailsButton");
-	freeslave_id = get_id("FreeSlaveButton");
 	transfer_id = get_id("TransferButton");
+	firegirl_id = get_id("FireButton");
+	freeslave_id = get_id("FreeSlaveButton");
+	sellslave_id = get_id("SellSlaveButton");
 	jobtypehead_id = get_id("JobTypeHeader");
 	jobtypelist_id = get_id("JobTypeList");
 	jobtypedesc_id = get_id("JobTypeDescription");
@@ -96,70 +95,47 @@ void cScreenFarmManagement::set_ids()
 	day_id = get_id("DayButton");
 	night_id = get_id("NightButton");
 
+
+
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
 }
 
 void cScreenFarmManagement::init()
 {
-
-	if (FreeGirl)
+	if (FFSD_Flag >= 0)
 	{
-		if (g_ChoiceManager.GetChoice(0) == 0)
-		{
-			vector<int> girl_array;
-			GetSelectedGirls(&girl_array);  // get and sort array of girls
-
-			for (int i = girl_array.size(); i--> 0;)	// OK, we have the array, now step through it backwards
-			{
-				selected_girl = g_Farm.GetGirl(g_CurrFarm, girl_array[i]);
-				if (GirlDead(selected_girl) || !selected_girl->is_slave()) continue;  // if dead or not a slave, can't free her
-				if (selected_girl)
-				{
-					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
-					The_Player->disposition(5);
-					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
-					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
-					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 70);
-					
-					selected_girl->m_AccLevel = cfg.initial.girls_accom();
-					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
-					g_InitWin = true;
-				}
-			}
-		}
+		vector<int> girl_array;
+		GetSelectedGirls(&girl_array);
+		g_Brothels.m_JobManager.ffsd_outcome(girl_array, "Fa", 0);
+		girl_array.clear();
 		g_ChoiceManager.Free();
-		FreeGirl = false;
+		FFSD_Flag = -1;
 	}
 
 	g_CurrentScreen = SCREEN_FARM;
 	if (!g_InitWin) return;
-
-	Focused();
 	g_InitWin = false;
-
-	////////////////////
-
+	Focused();
 	selection = GetSelectedItemFromList(girllist_id);
-	string farm;
-	farm += g_Farm.GetName(g_CurrFarm);
-	EditTextItem(farm, curfarm_id);
 
-	//selected_girl = 0;
+	stringstream buildingname;
+	buildingname << "Current Brothel: " << g_Farm.GetName(g_CurrFarm);
+	EditTextItem(buildingname.str(), curfarm_id);
 
 	// clear the lists
 	ClearListBox(girllist_id);
 	ClearListBox(jobtypelist_id);
 
 	// add the job filters
-	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_FARMSTAFF, g_Farm.m_JobManager.JobFilterName[JOBFILTER_FARMSTAFF]);
 	AddToListBox(jobtypelist_id, JOBFILTER_LABORERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_LABORERS]);
 	AddToListBox(jobtypelist_id, JOBFILTER_PRODUCERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_PRODUCERS]);
-	RefreshJobList();
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
+
+
+
+
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -168,33 +144,25 @@ void cScreenFarmManagement::init()
 	string* Data = new string[numColumns];
 
 	// Add girls to list
-	for (int i = 0; i<g_Farm.GetNumGirls(g_CurrFarm); i++)
+	for (int i = 0; i < g_Farm.GetNumGirls(g_CurrFarm); i++)
 	{
 		sGirl* gir = g_Farm.GetGirl(g_CurrFarm, i);
-		if (selected_girl == gir)
-			selection = i;
-
-		unsigned int item_color = COLOR_BLUE;
-		if (g_Girls.GetStat(gir, STAT_HEALTH) <= 30 || g_Girls.GetStat(gir, STAT_TIREDNESS) >= 80 || g_Girls.GetStat(gir, STAT_HAPPINESS) <= 30)
-			item_color = COLOR_RED;
-
+		if (selected_girl == gir) selection = i;
+		unsigned int item_color = (gir->health() <= 30 || gir->tiredness() >= 80 || gir->happiness() <= 30) ? COLOR_RED : COLOR_BLUE;
 		gir->OutputGirlRow(Data, columnNames);
 		AddToListBox(girllist_id, i, Data, numColumns, item_color);
 	}
 	delete[] Data;
 
-	lastNum = -1;
-	g_InitWin = false;
+	DisableButton(firegirl_id, true);
+	DisableButton(freeslave_id, true);
+	DisableButton(sellslave_id, true);
+	DisableButton(viewdetails_id, true);
 
-	if (selection >= 0)
-	{
-		while (selection > GetListBoxSize(girllist_id) && selection != -1)
-			selection--;
-	}
-	if (selection >= 0)
-		SetSelectedItemInList(girllist_id, selection);
-	else
-		SetSelectedItemInList(girllist_id, 0);
+	lastNum = -1;
+
+	if (selection >= 0) while (selection > GetListBoxSize(girllist_id) && selection != -1) selection--;
+	SetSelectedItemInList(girllist_id, selection >= 0 ? selection : 0);
 
 	DisableButton(day_id, (Day0Night1 == SHIFT_DAY));
 	DisableButton(night_id, (Day0Night1 == SHIFT_NIGHT));
@@ -204,53 +172,44 @@ void cScreenFarmManagement::init()
 
 void cScreenFarmManagement::process()
 {
-	// we need to make sure the ID variables are set
-	if (!ids_set)
-		set_ids();
-
-	// handle arrow keys
-	if (check_keys())
-		return;
-
-	// set up the window if needed
-	init();
-
-	// check to see if there's a button event needing handling
-	check_events();
+	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
+	if (check_keys()) return;	// handle arrow keys
+	init();						// set up the window if needed
+	check_events();				// check to see if there's a button event needing handling
 }
-
 
 bool cScreenFarmManagement::check_keys()
 {
-	if (g_UpArrow) {
-		selection = ArrowUpListBox(girllist_id);
-		g_UpArrow = false;
-		return true;
-	}
-	if (g_DownArrow) {
-		selection = ArrowDownListBox(girllist_id);
-		g_DownArrow = false;
-		return true;
-	}
-	if (g_AltKeys)
+	if (g_UpArrow || (g_AltKeys && g_A_Key))	{ selection = ArrowUpListBox(girllist_id);		g_UpArrow = g_A_Key = false;		return true; }
+	if (g_DownArrow || (g_AltKeys && g_D_Key))	{ selection = ArrowDownListBox(girllist_id);	g_DownArrow = g_D_Key = false;		return true; }
+	if (g_SpaceKey || g_EnterKey)	{ g_GirlDetails.lastsexact = -1;	ViewSelectedGirl();		g_SpaceKey = g_EnterKey = false;	return true; }
+	// Select Location
+	if (g_W_Key)	{ selection = ArrowUpListBox(jobtypelist_id);	g_W_Key = false;	return true; }
+	if (g_S_Key)	{ selection = ArrowDownListBox(jobtypelist_id);	g_S_Key = false;	return true; }
+	// Toggle Day/Night shift
+	if (g_Z_Key)	{ Day0Night1 = SHIFT_DAY;	DisableButton(day_id, true);	DisableButton(night_id, false);	RefreshSelectedJobType();	g_Z_Key = false;	return true; }
+	if (g_C_Key)	{ Day0Night1 = SHIFT_NIGHT;	DisableButton(day_id, false);	DisableButton(night_id, true);	RefreshSelectedJobType();	g_C_Key = false;	return true; }
+	if (g_Q_Key || g_E_Key)
 	{
-		if (g_A_Key) {
-			selection = ArrowUpListBox(girllist_id);
-			g_A_Key = false;
-			return true;
+		if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
+		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
+
+		bool skip = false;
+		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_FARMMANGER || selection == JOB_MARKETER))
+			skip = true;
+		if (selection == JOB_FARMMANGER && (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, 0) > 0 || g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, 1) > 0))
+			skip = true;
+		if (selection == JOB_MARKETER && (g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, 0) > 0 || g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, 1) > 0))
+			skip = true;
+
+		if (skip)
+		{
+			if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
+			if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
+			// the purpose of this is to clear the extra event from the event queue, which prevents an error --PP
+			bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
 		}
-		if (g_D_Key) {
-			selection = ArrowDownListBox(girllist_id);
-			g_D_Key = false;
-			return true;
-		}
-	}
-	// Show Girl Details
-	if (g_SpaceKey || g_EnterKey)
-	{
-		g_SpaceKey = g_EnterKey = false;
-		g_GirlDetails.lastsexact = -1;
-		ViewSelectedGirl();
+		g_Q_Key = g_E_Key = false;
 		return true;
 	}
 	return false;
@@ -258,27 +217,18 @@ bool cScreenFarmManagement::check_keys()
 
 void cScreenFarmManagement::update_image()
 {
-	// Draw a girls profile picture and description when selected
-	if (selected_girl)
+	if (selected_girl)	// Draw a girls profile picture and description when selected
 	{
 		bool Rand = false;
 		if (lastNum != selection)
 		{
-			string text = g_Girls.GetGirlMood(selected_girl);
-			text += "\n\n";
-			text += selected_girl->m_Desc;
-			// Added a little feedback here to show what character template a girl is based on --PP
-				// `J` I usually don't care about this so I made it optional
-			if (cfg.debug.log_extradetails())
-			{
-				text += "\n\nBased on: ";
-				text += selected_girl->m_Name;
-			}
-			EditTextItem(text, girldesc_id);
+			stringstream text;
+			text << g_Girls.GetGirlMood(selected_girl) << "\n\n" << selected_girl->m_Desc;
+			if (cfg.debug.log_extradetails()) text << "\n\nBased on: " << selected_girl->m_Name;
+			EditTextItem(text.str(), girldesc_id);
 			Rand = true;
 			lastNum = selection;
 		}
-
 		PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, Rand, lastNum);
 		HideImage(girlimage_id, false);
 	}
@@ -292,84 +242,55 @@ void cScreenFarmManagement::update_image()
 
 void cScreenFarmManagement::check_events()
 {
-	// no events means we can go home
-	if (g_InterfaceEvents.GetNumEvents() == 0)
-		return;
-
-	// if it's the back button, pop the window off the stack and we're done
-	if (g_InterfaceEvents.CheckButton(back_id)) {
-		g_InitWin = true;
-		g_WinManager.Pop();
-		return;
-	}
-	if (g_InterfaceEvents.CheckButton(viewdetails_id))
-	{
-		ViewSelectedGirl();
-	}
-
-
-	if (g_InterfaceEvents.CheckButton(day_id))
-	{
-		DisableButton(day_id, true);
-		DisableButton(night_id, false);
-		Day0Night1 = SHIFT_DAY;
-		RefreshSelectedJobType();
-	}
-	if (g_InterfaceEvents.CheckButton(night_id))
-	{
-		DisableButton(day_id, false);
-		DisableButton(night_id, true);
-		Day0Night1 = SHIFT_NIGHT;
-		RefreshSelectedJobType();
-	}
+	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
+	if (g_InterfaceEvents.CheckButton(back_id))	{ g_InitWin = true;		g_WinManager.Pop();		return; }
+	//if (g_InterfaceEvents.CheckButton(prev_id))	{ g_CurrBrothel--;	if (g_CurrBrothel < 0) g_CurrBrothel = g_Brothels.GetNumBrothels() - 1;	g_InitWin = true; }
+	//if (g_InterfaceEvents.CheckButton(next_id))	{ g_CurrBrothel++;	if (g_CurrBrothel >= g_Brothels.GetNumBrothels())	g_CurrBrothel = 0;	g_InitWin = true; }
+	if (g_InterfaceEvents.CheckButton(viewdetails_id))	{ g_GirlDetails.lastsexact = -1;	ViewSelectedGirl(); }
+	if (g_InterfaceEvents.CheckButton(day_id))	{ Day0Night1 = SHIFT_DAY;	DisableButton(day_id, true);	DisableButton(night_id, false);	RefreshSelectedJobType(); }
+	if (g_InterfaceEvents.CheckButton(night_id)){ Day0Night1 = SHIFT_NIGHT;	DisableButton(day_id, false);	DisableButton(night_id, true);	RefreshSelectedJobType(); }
 	if (g_InterfaceEvents.CheckListbox(jobtypelist_id))
 	{
 		selection = GetSelectedItemFromList(jobtypelist_id);
-
-		if (selection == -1)
-			EditTextItem("Nothing Selected", jobtypedesc_id);
+		if (selection == -1) EditTextItem("Nothing Selected", jobtypedesc_id);
 		else
 		{
-			// populate Jobs listbox with jobs in the selected category
-			RefreshJobList();
+			RefreshJobList();	// populate Jobs listbox with jobs in the selected category
+
+
+
+
+
 			EditTextItem(g_Farm.m_JobManager.JobFilterDesc[selection], jobtypedesc_id);
 		}
 	}
 	if (g_InterfaceEvents.CheckListbox(joblist_id))
 	{
 		bool fulltime = g_CTRLDown;
-
 		selection = GetSelectedItemFromList(joblist_id);
 		if (selection != -1)
 		{
-			// first handle the descriptions
-			EditTextItem(g_Farm.m_JobManager.JobDesc[selection], jobdesc_id);
-
-			// Now assign the job to all the selected girls
+			EditTextItem(g_Farm.m_JobManager.JobDesc[selection], jobdesc_id);		// first handle the descriptions
 			int pos = 0;
-			int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
+			int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);		// Now assign the job to all the selected girls
 			while (GSelection != -1)
 			{
-				u_int new_job = selection;
+				int new_job = selection;
 				selected_girl = g_Farm.GetGirl(g_CurrFarm, GSelection);
 				if (selected_girl)
 				{
-					int old_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
-
 					// handle special job requirements and assign
+					int old_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 					// if HandleSpecialJobs returns true, the job assignment was modified or cancelled
-
 					if (g_Farm.m_JobManager.HandleSpecialJobs(g_CurrFarm, selected_girl, new_job, old_job, Day0Night1, fulltime))
 					{
 						new_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 						SetSelectedItemInList(joblist_id, new_job, false);
 					}
 					// update the girl's listing to reflect the job change
-					ss.str("");
-					ss << g_Farm.m_JobManager.JobName[selected_girl->m_DayJob];
+					ss.str(""); ss << g_Farm.m_JobManager.JobName[selected_girl->m_DayJob];
 					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
-					ss.str("");
-					ss << g_Farm.m_JobManager.JobName[selected_girl->m_NightJob];
+					ss.str(""); ss << g_Farm.m_JobManager.JobName[selected_girl->m_NightJob];
 					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 
 					// refresh job worker counts for former job and current job
@@ -379,23 +300,49 @@ void cScreenFarmManagement::check_events()
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 			}
 		}
-		else	EditTextItem("Nothing Selected", jobdesc_id);
+		else EditTextItem("Nothing Selected", jobdesc_id);
 	}
-
 	if (g_InterfaceEvents.CheckListbox(girllist_id))
 	{
 		selection = GetSelectedItemFromList(girllist_id);
 		if (selection != -1)
 		{
 			selected_girl = g_Farm.GetGirl(g_CurrFarm, selection);
-			if (ListDoubleClicked(girllist_id)) ViewSelectedGirl();		// If double-clicked, try to bring up girl details
-			DisableButton(freeslave_id, selected_girl->is_free());
+			if (ListDoubleClicked(girllist_id))		// If double-clicked, try to bring up girl details
+			{
+				g_GirlDetails.lastsexact = -1;
+				ViewSelectedGirl();
+			}
+			if (IsMultiSelected(girllist_id))
+			{
+				bool freefound = false;
+				bool slavefound = false;
+				int pos = 0;
+				int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
+				while (GSelection != -1)
+				{
+					if (g_Farm.GetGirl(0, pos)->is_slave()) slavefound = true;
+					if (!g_Farm.GetGirl(0, pos)->is_slave()) freefound = true;
+					GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
+				}
+				DisableButton(firegirl_id, !freefound);
+				DisableButton(freeslave_id, !slavefound);
+				DisableButton(sellslave_id, !slavefound);
+			}
+			else
+			{
+				DisableButton(firegirl_id, selected_girl->is_slave());
+				DisableButton(freeslave_id, selected_girl->is_free());
+				DisableButton(sellslave_id, selected_girl->is_free());
+			}
 			DisableButton(viewdetails_id, false);
 			RefreshSelectedJobType();
 		}
 		else
 		{
+			DisableButton(firegirl_id, true);
 			DisableButton(freeslave_id, true);
+			DisableButton(sellslave_id, true);
 			DisableButton(viewdetails_id, true);
 			selected_girl = 0;
 			selection = -1;
@@ -404,33 +351,30 @@ void cScreenFarmManagement::check_events()
 		update_image();
 		return;
 	}
-	if (g_InterfaceEvents.CheckButton(freeslave_id))
-	{
-		if (selected_girl)
-		{
-			g_Farm.m_JobManager.FreeSlaves(selected_girl, IsMultiSelected(girllist_id));
-			FreeGirl = true;
-		}
-		return;
-	}
 	if (g_InterfaceEvents.CheckButton(transfer_id))
 	{
 		g_InitWin = true;
 		g_WinManager.Push(TransferGirls, &g_TransferGirls);
 		return;
 	}
-}
+	/* */if (g_InterfaceEvents.CheckButton(firegirl_id))	FFSD_Flag = FFSD_fire;
+	else if (g_InterfaceEvents.CheckButton(freeslave_id))	FFSD_Flag = FFSD_free;
+	else if (g_InterfaceEvents.CheckButton(sellslave_id))	FFSD_Flag = FFSD_sell;
 
-
-bool cScreenFarmManagement::GirlDead(sGirl *dgirl, bool sendmessage)
-{
-	if (g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
+	if (FFSD_Flag > 0)
 	{
-		if (sendmessage) g_MessageQue.AddToQue("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week.", 1);
-		return true;
+		int num = 0;
+
+		if (selected_girl)
+		{
+			vector<int> girl_array;
+			GetSelectedGirls(&girl_array);
+			g_Farm.m_JobManager.ffsd_choice(FFSD_Flag, girl_array, "Fa", 0);
+			girl_array.clear();
+		}
+		return;
 	}
-	else
-		return false;
+
 }
 
 void cScreenFarmManagement::RefreshSelectedJobType()
@@ -438,7 +382,7 @@ void cScreenFarmManagement::RefreshSelectedJobType()
 	selection = GetSelectedItemFromList(girllist_id);
 	if (selection < 0) return;
 	selected_girl = g_Farm.GetGirl(g_CurrFarm, selection);
-	u_int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
+	int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 	// set the job filter
 	if (job >= g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_LABORERS] && job < g_Farm.m_JobManager.JobFilterIndex[JOBFILTER_LABORERS + 1])
 		SetSelectedItemInList(jobtypelist_id, JOBFILTER_LABORERS);
@@ -453,13 +397,11 @@ void cScreenFarmManagement::RefreshJobList()
 	ClearListBox(joblist_id);
 	int job_filter = GetSelectedItemFromList(jobtypelist_id);
 	if (job_filter == -1) return;
-	string text = "";
 	// populate Jobs listbox with jobs in the selected category
-	for (unsigned int i = g_Farm.m_JobManager.JobFilterIndex[job_filter]; i < g_Farm.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
+	for (int i = g_Farm.m_JobManager.JobFilterIndex[job_filter]; i < g_Farm.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
 	{
 		if (g_Farm.m_JobManager.JobName[i] == "") continue;
-		text = g_Farm.m_JobManager.JobDescriptionCount(i, g_CurrFarm, Day0Night1, false, false, false, false, false, true);
-		AddToListBox(joblist_id, i, text);
+		AddToListBox(joblist_id, i, g_Farm.m_JobManager.JobDescriptionCount(i, g_CurrFarm, Day0Night1, false, false, false, false, false, true));
 	}
 	if (selected_girl)
 	{
@@ -485,16 +427,15 @@ void cScreenFarmManagement::ViewSelectedGirl()
 {
 	if (selected_girl)
 	{
-		if (GirlDead(selected_girl)) return;
-
+		if (selected_girl->is_dead()) return;
 		//load up the cycle_girls vector with the ordered list of girl IDs
 		FillSortedIDList(girllist_id, &cycle_girls, &cycle_pos);
 		for (int i = cycle_girls.size(); i-- > 0;)
 		{  // no viewing dead girls
-			if (g_Farm.GetGirl(g_CurrFarm, cycle_girls[i])->health() <= 0)
+			if (g_Farm.GetGirl(g_CurrFarm, cycle_girls[i])->is_dead())
 				cycle_girls.erase(cycle_girls.begin() + i);
 		}
-
+		g_CurrentScreen = SCREEN_GIRLDETAILS;
 		g_InitWin = true;
 		g_WinManager.push("Girl Details");
 		return;

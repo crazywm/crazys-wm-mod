@@ -25,32 +25,35 @@
 class cScreenStudioManagement : public cInterfaceWindowXML 
 {
 private:
-	// interface/event IDs
 	static bool ids_set;
-	int back_id;		// Back button
-	int curstudio_id;	// Current Brothel text
-	int girllist_id;	// Girls listbox
-	int girlimage_id;	// Girl image
-	int girldesc_id;	// Girl Description text
-	int viewdetails_id;	// View Details button
-	int transfer_id;	// Transfer Girl button
-	int freeslave_id;	// Free Slave
-	int createmovie_id;	// Create Movie
-	int jobtypehead_id;	// Job Types header text
-	int jobtypelist_id;	// Job Types listbox
-	int jobtypedesc_id;	// Job Types Description text
-	int jobhead_id;		// Job header text
-	int joblist_id;		// Job listbox
-	int jobdesc_id;		// Job Description text
-	int day_id;			// Day button
-	int night_id;		// Night button
+	// --- interface/event IDs --- //
+	int curstudio_id;		// Current Brothel text
+	int girldesc_id;		// Girl Description text
+	int girlimage_id;		// Girl image
+	int girllist_id;		// Girls listbox
+	int back_id;			// Back button
+	int day_id;				// Day button
+	int night_id;			// Night button
+	int jobdesc_id;			// Job Description text
+	int jobhead_id;			// Job header text
+	int joblist_id;			// Job listbox
+	int jobtypedesc_id;		// Job Types Description text
+	int jobtypehead_id;		// Job Types header text
+	int jobtypelist_id;		// Job Types listbox
+	int firegirl_id;		// Fire Girl button
+	int freeslave_id;		// Free Slave Button
+	int sellslave_id;		// Sell Slave button
+	int viewdetails_id;		// View Details button
+	int transfer_id;		// Transfer Girl button
+
+	int createmovie_id;		// Create Movie
+
 
 	void set_ids();
-	bool GirlDead(sGirl *dgirl, bool sendmessage = true);
-	void RefreshSelectedJobType();
-	void RefreshJobList();
 	void GetSelectedGirls(vector<int> *girl_array);
 	void ViewSelectedGirl();
+	void RefreshJobList();
+	void RefreshSelectedJobType();
 
 public:
 	cScreenStudioManagement()

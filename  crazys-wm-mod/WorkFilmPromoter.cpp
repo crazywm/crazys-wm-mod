@@ -151,6 +151,8 @@ double cJobManager::JP_FilmPromoter(sGirl* girl, bool estimate)// not used
 			g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 6.0 +
 			g_Girls.GetStat(girl, STAT_CONFIDENCE) / 10.0 +
 			g_Girls.GetStat(girl, STAT_FAME) / 10.0;
+
+		if (girl->is_slave()) jobperformance -= 1000;
 	}
 	else// for the actual check
 	{

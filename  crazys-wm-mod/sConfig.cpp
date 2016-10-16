@@ -146,7 +146,7 @@ sConfigData::sConfigData(const char *a_filename)
 	}
 	fonts.detailfontsize = 9;	// default to 9 then check if it is set in girl_details_screen.xml
 	DirPath dpt = DirPath() << "Resources" << "Interface" << resolution.resolution << "girl_details_screen.xml";
-	TiXmlDocument doct(dp.c_str());
+	TiXmlDocument doct(dpt.c_str());
 	if (doct.LoadFile())
 	{
 		string m_filename = dpt.c_str();

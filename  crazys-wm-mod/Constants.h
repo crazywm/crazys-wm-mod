@@ -54,6 +54,30 @@ enum GENDER{
 	NUM_GENDERS/*       */      //         //   Number of different genders
 };//End GENDER enum
 
+enum FFSD		// `J` Free Fire Sell Dump
+{
+	FFSD_keep = 0,
+	FFSD_fire,
+	FFSD_free,
+	FFSD_sell,
+	FFSD_dump,
+	FFSD_fidu,	// fire dump
+	FFSD_fise,	// fire sell
+	FFSD_fisd,	// fire sell dump
+	FFSD_frdu,	// free dump
+	FFSD_sedu,	// sell dump
+	FFSD_dump1, // proper funeral
+	FFSD_dump2, // dump in shollow unmarked grave
+	FFSD_dump3, // dump on side of the road
+	FFSD_dump4, // sell dead to highest bidder
+	FFSD_frdu1,	// have your slave girls dispose of the dead then free them
+	FFSD_frdu2,	// have your slave girls dispose of the dead then stay slaves
+	FFSD_sedu1,	// Sell all the girls, living and dead
+	FFSD_free1,	// Throw a freedom party
+	FFSD_,
+
+};
+
 // Editable Character Stats and skills (used for traits)
 //STATS enum
 enum STATS{

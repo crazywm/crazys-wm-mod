@@ -285,7 +285,7 @@ int cScreenDungeon::view_girl()
 		// we don't want customers or dead girls in this list
 		for (int i = cycle_girls.size(); i--> 0;)
 		{
-			if (cycle_girls[i] >= dungeon->GetNumGirls() || dungeon->GetGirl(cycle_girls[i])->m_Girl->health() <= 0)
+			if (cycle_girls[i] >= dungeon->GetNumGirls() || dungeon->GetGirl(cycle_girls[i])->m_Girl->is_dead())
 				cycle_girls.erase(cycle_girls.begin() + i);
 		}
 		g_CurrentScreen = SCREEN_GIRLDETAILS;
@@ -353,7 +353,7 @@ int cScreenDungeon::enslave()
 		sDungeonGirl* dgirl = dungeon->GetGirl(selection - numGirlsRemoved);
 		sGirl *girl = dgirl->m_Girl;
 		if (girl->is_slave()) continue;		// nothing to do if she's _already_ enslaved
-		if (girl->health() <= 0)			// likewise, dead girls can't be enslaved
+		if (girl->is_dead())				// likewise, dead girls can't be enslaved
 		{
 			deadcount++;
 			continue;
@@ -445,7 +445,7 @@ void cScreenDungeon::sell_slaves()
 		sGirl *girl = dgirl->m_Girl;
 
 		if (girl->is_slave() == false) continue;					// if she's not a slave, the player isn't allowed to sell her
-		if (girl->health() <= 0)									// likewise, dead slaves can't be sold
+		if (girl->is_dead())										// likewise, dead slaves can't be sold
 		{
 			deadcount++;
 			continue;

@@ -124,7 +124,7 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			}
 			else
 				ss << "She hurt herself while making items";
-			if (girl->health() <= 0)
+			if (girl->is_dead())
 			{
 				ss << " killing her.";
 				g_MessageQue.AddToQue(girlName + " was killed in an accident while working as a Cobbler at the Arena.", COLOR_RED);

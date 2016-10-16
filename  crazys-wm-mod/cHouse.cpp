@@ -123,7 +123,7 @@ void cHouseManager::UpdateHouse()	// Start_Building_Process_A
 	while (cgirl)
 	{
 		current->m_Filthiness++;
-		if (cgirl->health() <= 0)			// Remove any dead bodies from last week
+		if (cgirl->is_dead())			// Remove any dead bodies from last week
 		{
 			current->m_Filthiness++; // `J` Death is messy
 			sGirl* DeadGirl = 0;
@@ -236,7 +236,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	sGirl* current = brothel->m_Girls;
 	while (current)
 	{
-		if (current->health() <= 0)		// skip dead girls
+		if (current->is_dead())		// skip dead girls
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -257,7 +257,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	current = brothel->m_Girls;
 	while (current && !matrondone)
 	{
-		if (current->health() <= 0 ||
+		if (current->is_dead() ||
 			(GetNumGirlsOnJob(0, matronjob, Day0Night1) > 0 && (current->m_DayJob != matronjob || current->m_NightJob != matronjob)) ||
 			(GetNumGirlsOnJob(0, matronjob, Day0Night1) < 1 && (current->m_PrevDayJob != matronjob || current->m_PrevNightJob != matronjob)))
 		{	// Sanity check! Don't process dead girls and only process those with matron jobs
@@ -333,7 +333,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || sw != restjob)
+		if (current->is_dead() || sw != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -455,7 +455,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->health() <= 0 || sw == restjob || sw == matronjob ||	// skip dead girls, resting girls and the matron
+		if (current->is_dead() || sw == restjob || sw == matronjob ||	// skip dead girls, resting girls and the matron
 			(Day0Night1 && sw == JOB_RECRUITER))							// skip recruiters on the night shift
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
@@ -497,7 +497,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	current = brothel->m_Girls;
 	while (current)
 	{
-		if (current->health() <= 0)
+		if (current->is_dead())
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }

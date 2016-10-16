@@ -137,7 +137,7 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 	while (cgirl)
 	{
 		current->m_Filthiness++;
-		if (cgirl->health() <= 0)			// Remove any dead bodies from last week
+		if (cgirl->is_dead())			// Remove any dead bodies from last week
 		{
 			current->m_Filthiness++; // `J` Death is messy
 			sGirl* DeadGirl = 0;
@@ -284,7 +284,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 	sGirl* current = brothel->m_Girls;
 	while (current)
 	{
-		if (current->health() <= 0)		// skip dead girls
+		if (current->is_dead())		// skip dead girls
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -305,7 +305,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 	current = brothel->m_Girls;
 	while (current && !matrondone)
 	{
-		if (current->health() <= 0 ||
+		if (current->is_dead() ||
 			(GetNumGirlsOnJob(0, matronjob, SHIFT_NIGHT) > 0 && (current->m_NightJob != matronjob)) ||
 			(GetNumGirlsOnJob(0, matronjob, SHIFT_NIGHT) < 1 && (current->m_PrevNightJob != matronjob)))
 		{	// Sanity check! Don't process dead girls and only process those with matron jobs
@@ -369,7 +369,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 	current = brothel->m_Girls;
 	while (current)
 	{
-		if (current->health() <= 0 || current->m_NightJob != restjob)
+		if (current->is_dead() || current->m_NightJob != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -406,7 +406,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 					if (numgirls < 4)	// Director plus only 1 or 2 others
 					{
 						// if there are movies being sold and noone promoting them, assign a promoter.
-						if (brothel->m_NumMovies > 0 && g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_PROMOTER, 1) < 1)
+						if (brothel->m_NumMovies > 0 && current->is_free() && g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_PROMOTER, 1) < 1)
 						{
 							current->m_NightJob = JOB_PROMOTER;
 							ss << "promote the movies being sold.";
@@ -445,7 +445,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 						ss << "clean up the filmed scenes.";
 					}
 					// if there are more than 20 girls and no promoter, assign one
-					else if (g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_PROMOTER, 1) < 1 && numgirls > 20)
+					else if (g_Studios.GetNumGirlsOnJob(brothel->m_id, JOB_PROMOTER, 1) < 1 && current->is_free() && numgirls > 20)
 					{
 						current->m_NightJob = JOB_PROMOTER;
 						ss << "advertise the movies.";
@@ -522,7 +522,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 	current = brothel->m_Girls;
 	while (current)
 	{
-		if (current->health() <= 0 || (current->m_NightJob != JOB_CAMERAMAGE && current->m_NightJob != JOB_CRYSTALPURIFIER))
+		if (current->is_dead() || (current->m_NightJob != JOB_CAMERAMAGE && current->m_NightJob != JOB_CRYSTALPURIFIER))
 		{	// skip dead girls and anyone not working the jobs we are processing
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -601,7 +601,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 	current = brothel->m_Girls;
 	while (current && matron && (!camera || !crystal))
 	{	// skip dead girls, the director and anyone resting (the director would have assigned them a new job already if they were able to work)
-		if (current->health() <= 0 || current->m_NightJob == matronjob || current->m_NightJob == restjob ||
+		if (current->is_dead() || current->m_NightJob == matronjob || current->m_NightJob == restjob ||
 			// skip JOB_CAMERAMAGE and JOB_CRYSTALPURIFIER if there is only one of them
 			(current->m_NightJob == JOB_CAMERAMAGE && GetNumGirlsOnJob(brothel->m_id, JOB_CAMERAMAGE, 1) < 2) ||
 			(current->m_NightJob == JOB_CRYSTALPURIFIER && GetNumGirlsOnJob(brothel->m_id, JOB_CRYSTALPURIFIER, 1) < 2) ||
@@ -639,7 +639,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 	current = brothel->m_Girls;
 	while (current && !readytofilm)
 	{
-		if (current->health() <= 0 || current->m_NightJob == restjob || current->m_NightJob == matronjob)
+		if (current->is_dead() || current->m_NightJob == restjob || current->m_NightJob == matronjob)
 		{	// skip dead girls, resting girls and the director (if there is one)
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -683,7 +683,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 	current = brothel->m_Girls;
 	while (current && readytofilm)
 	{
-		if (current->health() <= 0 || (current->m_NightJob != JOB_PROMOTER && current->m_NightJob != JOB_STAGEHAND &&
+		if (current->is_dead() || (current->m_NightJob != JOB_PROMOTER && current->m_NightJob != JOB_STAGEHAND &&
 			current->m_NightJob != JOB_FLUFFER && current->m_NightJob != JOB_CAMERAMAGE && current->m_NightJob != JOB_CRYSTALPURIFIER)
 			// skip dead girls and anyone not working the jobs we are processing
 			|| (current->m_NightJob == JOB_CAMERAMAGE && current->m_Refused_To_Work_Night) 
@@ -731,7 +731,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 	while (current && readytofilm)
 	{
 		sw = current->m_NightJob;
-		if (current->health() <= 0 || sw == restjob || sw == JOB_FLUFFER || sw == JOB_CAMERAMAGE || sw == JOB_CRYSTALPURIFIER || sw == JOB_DIRECTOR || sw == JOB_PROMOTER || sw == JOB_STAGEHAND)
+		if (current->is_dead() || sw == restjob || sw == JOB_FLUFFER || sw == JOB_CAMERAMAGE || sw == JOB_CRYSTALPURIFIER || sw == JOB_DIRECTOR || sw == JOB_PROMOTER || sw == JOB_STAGEHAND)
 		{	// skip dead girls and already processed jobs
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -811,7 +811,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 	current = brothel->m_Girls;
 	while (current)
 	{
-		if (current->health() <= 0)
+		if (current->is_dead())
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }

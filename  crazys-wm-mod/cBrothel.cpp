@@ -1057,7 +1057,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 			string girlName = cgirl->m_Realname;
 
 			// Remove any dead bodies from last week
-			if (cgirl->health() <= 0)
+			if (cgirl->is_dead())
 			{
 				sGirl* DeadGirl = cgirl;
 				cgirl = (cgirl->m_Next) ? cgirl->m_Next : 0;
@@ -1490,7 +1490,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 		*/
 
 		// Sanity check! Don't process dead girls and check that m_Next points to something
-		if (current->health() <= 0)
+		if (current->is_dead())
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -4040,7 +4040,7 @@ void cBrothelManager::updateGirlTurnBrothelStats(sGirl* girl)
 #undef WDTEST
 
 	// Sanity check. Abort on dead girl
-	if (girl->health() <= 0) { return; }
+	if (girl->is_dead()) { return; }
 
 	stringstream ss;
 	string girlName = girl->m_Realname;

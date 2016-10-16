@@ -633,6 +633,8 @@ struct sGirl
 	void add_trait(string trait, int temptime = 0);
 	void remove_trait(string trait);
 	bool has_trait(string trait);
+	int breast_size();
+	bool is_dead(bool sendmessage = false);		// `J` replaces a few DeadGirl checks
 	bool is_addict(bool onlyhard = false);	// `J` added bool onlyhard to allow only hard drugs to be checked for
 	bool has_disease();
 	bool is_fighter(bool canbehelped = false);
@@ -755,7 +757,7 @@ public:
 
 	bool HasTrait(sGirl* girl, string trait);
 	bool HasRememberedTrait(sGirl* girl, string trait);
-	static int HasTempTrait(sGirl* girl, string trait);
+	int HasTempTrait(sGirl* girl, string trait);
 	bool RestoreRememberedTrait(sGirl* girl, string trait);
 
 

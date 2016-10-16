@@ -110,16 +110,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	bool extraEvent = false;
 	bool noAnti = girl->m_UseAntiPreg = false;
 
-	int breastsize = 4;
-	/* */if (g_Girls.HasTrait(girl, "Flat Chest"))				breastsize = 1;
-	else if (g_Girls.HasTrait(girl, "Petite Breasts"))			breastsize = 2;
-	else if (g_Girls.HasTrait(girl, "Small Boobs"))				breastsize = 3;
-	else if (g_Girls.HasTrait(girl, "Busty Boobs"))				breastsize = 5;
-	else if (g_Girls.HasTrait(girl, "Big Boobs"))				breastsize = 6;
-	else if (g_Girls.HasTrait(girl, "Giant Juggs"))				breastsize = 7;
-	else if (g_Girls.HasTrait(girl, "Massive Melons"))			breastsize = 8;
-	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	breastsize = 9;
-	else if (g_Girls.HasTrait(girl, "Titanic Tits"))			breastsize = 10;
+	int breastsize = girl->breast_size();
 
 	// Milk - a multiplier on base lactation
 	if (g_Girls.HasTrait(girl, "Dry Milk"))						{ lactation = (lactation * 4) / 10; }

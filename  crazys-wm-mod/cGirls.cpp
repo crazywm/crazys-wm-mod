@@ -2048,7 +2048,7 @@ void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 	else if (girl->m_NumCusts < girl->m_NumCusts_old)	{}	// lost customers??
 	else if (girl->m_NumCusts_old == 0 && girl->m_NumCusts > 0)
 	{
-		goodnews << girl->m_Realname << " has serviced her first";
+		goodnews << girl->m_Realname << " has serviced her first ";
 		/* */if (girl->m_NumCusts == 1)			goodnews << " customer.";
 		else if (girl->m_NumCusts == 2)		goodnews << " pair of customers.";
 		else if (girl->m_NumCusts == 12)	goodnews << " dozen customers.";
@@ -2066,6 +2066,7 @@ void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 	{
 		goodnews << girl->m_Realname << " serviced five hundred customers.";
 		if (girl->has_trait("Optimist") && girl->happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
+		girl->add_trait("Whore");
 		girl->fame(5);
 	}
 	else if (girl->m_NumCusts_old < 1000 && girl->m_NumCusts >= 1000)
@@ -2078,8 +2079,6 @@ void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 
 
 	girl->m_NumCusts_old = girl->m_NumCusts;			// prepare for next week
-		;
-
 
 	int E_mana = 0, E_libido = 0, E_lactation = 0;
 
@@ -2328,10 +2327,10 @@ string cGirls::GetGirlMood(sGirl* girl)
 	{
 		if (HateLove > 0)	ss << "but she is also ";
 		else				ss << "and she is ";
-		/* */if (GetStat(girl, STAT_PCFEAR) < 40)	ss << "afraid of him." << (girl->health() <= 0 ? " (for good reasons)." : ".");
-		else if (GetStat(girl, STAT_PCFEAR) < 60)	ss << "fearful of him." << (girl->health() <= 0 ? " (for good reasons)." : ".");
-		else if (GetStat(girl, STAT_PCFEAR) < 80)	ss << "afraid he will hurt her" << (girl->health() <= 0? " (and she was right).":".");
-		else										ss << "afraid he will kill her" << (girl->health() <= 0 ? " (and she was right)." : ".");
+		/* */if (GetStat(girl, STAT_PCFEAR) < 40)	ss << "afraid of him." << (girl->is_dead() ? " (for good reasons)." : ".");
+		else if (GetStat(girl, STAT_PCFEAR) < 60)	ss << "fearful of him." << (girl->is_dead() ? " (for good reasons)." : ".");
+		else if (GetStat(girl, STAT_PCFEAR) < 80)	ss << "afraid he will hurt her" << (girl->is_dead() ? " (and she was right)." : ".");
+		else										ss << "afraid he will kill her" << (girl->is_dead() ? " (and she was right)." : ".");
 		 
 	}
 	else	ss << "and he isn't scary.";
@@ -3590,7 +3589,7 @@ void cGirls::updateTemp(sGirl* girl)	// `J` group all the temp updates into one 
 
 void cGirls::updateTempStats(sGirl* girl)	// Normalise to zero by 30% each week
 {
-	if (girl->health() <= 0) return;		// Sanity check. Abort on dead girl
+	if (girl->is_dead()) return;		// Sanity check. Abort on dead girl
 	for (int i = 0; i < NUM_STATS; i++)
 	{
 		if (girl->m_StatTemps[i] != 0)				// normalize towards 0 by 30% each week
@@ -3695,7 +3694,7 @@ void cGirls::UpdateSkillTemp(sGirl* girl, int skill, int amount)
 void cGirls::updateTempSkills(sGirl* girl)
 {
 	// Sanity check. Abort on dead girl
-	if (girl->health() <= 0) return;
+	if (girl->is_dead()) return;
 
 	for (u_int i = 0; i < NUM_SKILLS; i++)
 	{
@@ -4884,7 +4883,7 @@ void cGirls::UseItems(sGirl* girl)
 				g_InvManager.Equip(girl, temp, false);
 				girl->m_Withdrawals = 0;
 			}
-			if (girl->health() <= 0)
+			if (girl->is_dead())
 			{
 				stringstream cancer;
 				cancer << girl->m_Realname << " has died of cancer from smoking.";
@@ -8165,7 +8164,7 @@ bool cGirls::AddTrait(sGirl* girl, string name, int temptime, bool removeitem, b
 // Update temp traits and remove expired traits
 void cGirls::updateTempTraits(sGirl* girl)
 {
-	if (girl->health() <= 0) return;		// Sanity check. Abort on dead girl
+	if (girl->is_dead()) return;		// Sanity check. Abort on dead girl
 	for (int i = 0; i < MAXNUM_TRAITS; i++)
 	{
 		if (girl->m_Traits[i] && girl->m_TempTrait[i] > 0)
@@ -8180,7 +8179,7 @@ void cGirls::updateTempTraits(sGirl* girl)
 // Update individual temp trait and remove expired trait - can not make nontemp traits temp
 void cGirls::updateTempTraits(sGirl* girl, string trait, int amount)
 {
-	if (girl->health() <= 0) return;									// Sanity check. Abort on dead girl
+	if (girl->is_dead()) return;									// Sanity check. Abort on dead girl
 
 	if (!g_Girls.HasTrait(girl, trait))									// first check if she does not have the trait already
 	{
@@ -8211,7 +8210,7 @@ void cGirls::updateTempTraits(sGirl* girl, string trait, int amount)
 // Update happiness for trait affects
 void cGirls::updateHappyTraits(sGirl* girl)
 {
-	if (girl->health() <= 0) return;	// Sanity check. Abort on dead girl
+	if (girl->is_dead()) return;	// Sanity check. Abort on dead girl
 	if (girl->has_trait("Optimist")) girl->happiness(5);
 
 	if (girl->has_trait("Pessimist"))
@@ -8824,7 +8823,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	int choice = g_Dice.d100(); //Gondra: initializing a choice variable here because god this is a mess of different ways to handle this
 	stringstream sexMessage; //Gondra: using this as a temporary storage so I have less problems when there shouldn't be girlname at the start.
 
-#if SPICE
+#if defined(SPICE)
 	//SIN- Adding will for willfull chars - they can refuse jobs they are bad at.
 	//First, a var to store her willfullness. Max (full spirit, no obed) = 50% refusal; Min (all obedience, no spirit) = 0%
 	int willfullness = ((100 + (GetStat(girl, STAT_SPIRIT) - GetStat(girl, STAT_OBEDIENCE))) / 2);
@@ -9230,7 +9229,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << "It took the customer quite a bit of effort to force himself into " << girlName << "'s tight ass, ignoring her cries when he was finally inside her, moving harshly until he finished.";
 				//Gondra: add happiness and health reduction?
 			}
-#if SPICE	//SIN - Replace/supplement...
+#if defined(SPICE)	//SIN - Replace/supplement...
 			else if (g_Dice.percent(33) && SheAintPretty)
 			{
 				sexMessage << "As he fucked her ass, the customer did it from behind, shoving " << girlName
@@ -9247,7 +9246,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " found it difficult to get it in but painfully allowed the customer to fuck her in her tight ass.";
 			}
-#if SPICE
+#if defined(SPICE)
 			//SIN - Replace/supplement...
 			else if (choice < 75)
 			{
@@ -9265,7 +9264,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " felt a bit uncomfortable as the customer's erect cock slipped between her ass-cheeks, but the customer hardly noticed as her plentiful flesh wrapped around him.";
 			}
-#if SPICE
+#if defined(SPICE)
 			//SIN - supplement...
 			else if (g_Dice.percent(75) && HasTrait(girl, "Virgin"))
 			{
@@ -9286,7 +9285,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " had to relax somewhat but had the customer fucking her in her ass.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (choice < 75)
 			{
 				sexMessage << girlName << " enjoyed it, even though she's not that good at this yet. He did most of the work.";
@@ -9307,7 +9306,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << "'s very tight butt forced him to take it slow but the vice like grip seemed to do the trick either way as he came quickly.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(20) && HasTrait(girl, "Queen"))
 			{
 				sexMessage << "As one of the rebels that once tried to overthrow " << girlName << ", the customer relished the chance to fuck her in the ass for some paltry gold coins. "
@@ -9337,7 +9336,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 80) //Gondra: the girl is VERY skilled
 		{
-#if SPICE
+#if defined(SPICE)
 			//SIN: Unnecessary testing all of these traits twice if she has none - also the "choice" was only ANDED with the "Great Arse" - so any other trait would fire whether choice passed or not
 			//Rewritten to cut overhead and fix logic. Also using 'choice' more to avoid locking into ALWAYS one message for a girl with a given trait.
 
@@ -9385,7 +9384,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "The customer slid it right into her ass and " << girlName << " loved every minute of it.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (choice < 75)	//Gondra: Vanilla Messages
 			{
 				sexMessage << girlName << " sat on the bed and placed her legs on his shoulders, as the customer plunged it deep in her ass.";
@@ -9407,7 +9406,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "The customer looked surprised when " << girlName << " slipped her ass onto his cock, the tight embrace of her backside milking him several times with exquisite motions. Not a single drop of cum leaked from her even after they had finished and she accompanied him out.";
 			}
-#if SPICE	//SIN
+#if defined(SPICE)	//SIN
 			else if (g_Dice.percent(35) && (HasTrait(girl, "Flexible") || HasTrait(girl, "Agile")))
 			{
 				sexMessage << girlName << " did the splits on the edge of the bed, her spread pussy and ass facing the customer. After a moment's indecision, he fucked her deep in the ass until they both came.";
@@ -9460,7 +9459,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				// `J` while masochist gives +50 bdsm (probably a little too high) other things could reduce it below 20
 				sexMessage << "While " << girlName << " was visibly uncomfortable, she was eager to learn more about this 'interesting' act after the fact.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(66) && girl->is_pregnant())
 			{
 				int term = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant());
@@ -9609,7 +9608,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " was frightened by being tied up and having pain inflicted on her.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (choice < 75)
 			{
 				sexMessage << girlName << " wept in pain and humilation as the customer poured hot candle-wax on her sensitive parts.";
@@ -9619,7 +9618,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Being unfamiliar with the tools of this part of the trade, " << girlName << " had a questioning look on her face that made it hard for the customer to enjoy themselves.";
 			}
-#if SPICE
+#if defined(SPICE)
 			//SIN
 			//NOT reusing "choice" here because want this to be independent of above message
 			if (g_Dice.percent(20)) //customer goes wild - unlikely and only affects lower level girls (more skilled girls can take it)
@@ -9718,7 +9717,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " eagerly let herself be bound by the customer, visibly enjoying herself as the customer began inflicting pain on her. It wasn't that great for him though.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(60) && girl->is_pregnant())
 			{
 				int term = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant());
@@ -9762,7 +9761,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " was not enjoying being bound and hurt, but endured it.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (choice < 75)
 			{
 				sexMessage << girlName << " squealed and struggled as the customer dripped sizzling candle-wax on sensitive areas.";
@@ -9772,7 +9771,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " was still a bit scared as the customer began applying the bondage gear on her body, but didn't really show it.";
 			}
-#if SPICE
+#if defined(SPICE)
 			//SIN
 			//NOT reusing "choice" here because want this to be independent of above message
 			if (g_Dice.percent(20)) //customer goes wild - unlikely and only affects lower level girls (more skilled girls can take it)
@@ -9871,7 +9870,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Once bound, " << girlName << " was already beginning to show visible arousal, that only intensified as the customer started to use the various tools available on her.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(50) && girl->is_pregnant())
 			{
 				int term = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant());
@@ -9998,7 +9997,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " was a little turned on by being tied up and having the customer hurting her.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (choice < 75)
 			{
 				sexMessage << girlName << " squealed and groaned as the customer stimulated her sensitive areas with scalding candle-wax.";
@@ -10019,7 +10018,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " found her drooling mouth filled by the customers hard, pulsing cock, as he continued to slap her bound body, enjoying his impromptu gag service by her throat.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(40) && girl->is_pregnant())
 			{
 				int term = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant());
@@ -10154,7 +10153,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Thoroughly bound, " << girlName << " found herself being teased endlessly by the customers cock and hands, coming hard under his expert care shortly before the end of the session.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (choice < 75)
 			{
 				sexMessage << girlName << " was aroused as the customer singed her sensitive areas with candle-wax, begging him for more.";
@@ -10214,7 +10213,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << "'s robotic moans along with her tearful eyes ruined the customer's boner. He didn't even manage to finish before angrily stomping out of the room.";
 				customer->m_Stats[STAT_HAPPINESS] -= 15;
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (HasTrait(girl, "Priestess") && g_Dice.percent(55))
 			{
 				sexMessage << girlName << "'s mini-sermon about sin and judgement made the sex awkward. The customer was clearly uncomfortable.";
@@ -10298,7 +10297,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << "'s sudden faked orgasm just as her customer came didn't really do it's job, but as he had already finished the customer didn't bother reprimanding her.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if ((HasTrait(girl, "Agile") || HasTrait(girl, "Flexible")) && g_Dice.percent(66))
 			{
 				sexMessage << girlName << " was okay in bed, and the positions she could twist herself into impressed the customer.";
@@ -10372,7 +10371,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << "'s increasingly audible pleasure spurns the customer to fuck her hard, pushing her over the edge before he cums himself.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(35) && SheAintPretty)
 			{
 				sexMessage << "The customer initially grumbled about getting \"some ugly skank\", but " << girlName << " showed him a damn good time.";
@@ -10452,7 +10451,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << "Although she is known to be hard to please, " << girlName << " managed to cum through a combination of her considerable skill and an particularly observant customer that left with a smile on his face.";
 				customer->m_Stats[STAT_HAPPINESS] += 5;
 			}
-#if SPICE
+#if defined(SPICE)
 			//SIN - more spice
 			else if (g_Dice.percent(35) && (HasTrait(girl, "Plump") || HasTrait(girl, "Fat")))
 			{
@@ -10598,7 +10597,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "The smell that came from the customers cock in front of her awoke " << girlName << "'s hunger for cum, which made her work his shaft with considerable greed, forgetting to be careful with her teeth, until the customer came with a pained expression, letting her swallow what she craved.";
 			}
-#if SPICE
+#if defined(SPICE)
 			//SIN
 			else if (g_Dice.percent(50) && (HasTrait(girl, "Princess") || HasTrait(girl, "Queen") || HasTrait(girl, "Goddess")
 				|| HasTrait(girl, "Fallen Goddess") || HasTrait(girl, "Demon") || HasTrait(girl, "Your Daughter")))
@@ -10716,7 +10715,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << "Although she isn't particularly good at it, the customer enjoyed seeing " << girlName << "'s lips wrapped around his cock.";
 				customer->m_Stats[STAT_HAPPINESS] += 5;
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (choice < 30)	//Vanilla 
 			{
 				sexMessage << girlName << " gave the customer a sloppy, awkward blowjob that wasn't going anywhere. Finally he finished himself off in her face.";
@@ -10738,7 +10737,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Knowing about the reward that awaited her, " << girlName << " sucked on the customers length with a singular drive that made the customer come quickly. She continued sucking until she had swallowed the last drop of his cum";
 			}
-#if SPICE
+#if defined(SPICE)
 //#if FMA		//in case min age cannot be raised.
 //			else if (g_Dice.percent(15) && (HasTrait(girl, "Lolita") || GetStat(girl, STAT_AGE) < 20)) //if looks young or is near legal limit in game...
 //#else
@@ -10831,7 +10830,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " managed to make the customer cum a second time as she continued to suck on him after she had swallowed his first load.";
 			}
-#if SPICE
+#if defined(SPICE)
 			//SIN: more spice
 			else if (g_Dice.percent(35) && (HasTrait(girl, "Old") || GetStat(girl, STAT_AGE) > 45))
 			{
@@ -10916,7 +10915,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 80) //Gondra: the girl is very skilled
 		{
-#if SPICE
+#if defined(SPICE)
 			//SIN
 			if (g_Dice.percent(65) && HasTrait(girl, "Doctor"))
 			{
@@ -10955,7 +10954,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Instead of a normal blowjob, " << girlName << " showed off just how nimble her tongue is, making him blow his load after keeping him on edge for several minutes just with the tip of her tongue.";
 			}
-#if SPICE	//SIN - and variety
+#if defined(SPICE)	//SIN - and variety
 			else if (g_Dice.percent(50) && (HasTrait(girl, "Princess") || HasTrait(girl, "Queen") || HasTrait(girl, "Goddess")
 				|| HasTrait(girl, "Fallen Goddess") || HasTrait(girl, "Demon") || HasTrait(girl, "Your Daughter")))
 			{
@@ -11007,7 +11006,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " loved sucking the customer's cock, and let him cum all over her.";
 			}
-#if SPICE	//SIN
+#if defined(SPICE)	//SIN
 			else if (choice < 75)
 			{
 				sexMessage << girlName << " licked the customer's balls and shaft so expertly, he came within seconds of her putting his cock in her mouth. "
@@ -11053,7 +11052,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " was lying on her back occasionally yelping in pain as the customer roughly fucked her quavering tits";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(35) && (HasTrait(girl, "Furry") || HasTrait(girl, "Cow Girl")))
 			{
 				sexMessage << "Despite having more breasts than most, " << (HasTrait(girl, "Furry")? "beast-girl ":"cow-girl ") << girlName << " gave poor titty-sex.";
@@ -11113,7 +11112,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Her customers cock completely disappearing between her breasts, " << girlName << " heaved her chest up and down her customers cock, until she could feel his hot cum between her breasts.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(35) && (HasTrait(girl, "Furry") || HasTrait(girl, "Cow Girl")))
 			{
 				sexMessage << "With more breasts than most girls, " << (HasTrait(girl, "Furry") ? "beast-girl " : "cow-girl ") << girlName << " gave okay titty-sex.";
@@ -11173,7 +11172,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "Moaning lightly as she 'accidentally' pushed the customers cock against one of her nipples, " << girlName << " begun to run him through a long, teasing routine, at the end of which he covered her large chest with a large load off his seed.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(40) && HasTrait(girl, "Waitress"))
 			{
 				sexMessage << girlName << " entered dressed as a topless waitress, with her breasts pushed up on a tray. She presented them to the customer, who excitedly fucked her chest.";
@@ -11771,7 +11770,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		//Gondra: reworking this part with choice variable
 		if (check < 20)		//Gondra: the girl is unskilled
 		{
-#if SPICE
+#if defined(SPICE)
 			//SIN - more spice
 			if (g_Dice.percent(33) && (HasTrait(girl, "Slut") || HasTrait(girl, "Nymphomaniac")))	//V. common traits - added roll to stop this supressing everything else
 			{
@@ -11848,7 +11847,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (check < 40) //Gondra:  if the girl is slightly skilled
 		{
-#if SPICE
+#if defined(SPICE)
 			//SIN - more spice and variety
 			if (g_Dice.percent(35) && HasTrait(girl, "Plump"))
 			{
@@ -11938,7 +11937,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					sexMessage << " which took her quite a bit of time to clean up afterwards.";
 				}
 			}
-#if SPICE
+#if defined(SPICE)
 			//SIN - a little more variety
 			else if (g_Dice.percent(66) && HasTrait(girl, "Shape Shifter"))
 			{
@@ -11995,7 +11994,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					sexMessage << " Leaving her looking a tiny bit ill because of the sheer amount of cum forced down her throat in such a small amount of time."; // Gondra: chance to gain cum addict?
 				}
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(40) && HasTrait(girl, "Natural Pheromones"))
 			{
 				sexMessage << "Her powerful pheromones drove the group insane. Luckily she was skilled enough to keep up with them all. "
@@ -12006,7 +12005,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "While it certainly isn't the only thing the group uses, " << girlName << "'s great arse sees near constant use, always a fresh cock ready to make her backside ripple when the previous one is done filling her insides with creamy white cum.";
 			}
-#if SPICE
+#if defined(SPICE)
 			else if (g_Dice.percent(50) && (HasTrait(girl, "Slut") || HasTrait(girl, "Nymphomaniac")))
 			{
 				sexMessage << girlName << " was definitely in her element surrounded by so many \"wonderful\" cocks, and she refused to stop until she had drained every one dry.";
@@ -16045,7 +16044,7 @@ void cGirls::UpdateEnjoymentTemp(sGirl* girl, int whatSheEnjoys, int amount)
 void cGirls::updateTempEnjoyment(sGirl* girl)
 {
 	// Sanity check. Abort on dead girl
-	if (girl->health() <= 0) return;
+	if (girl->is_dead()) return;
 
 	for (u_int i = 0; i < NUM_ACTIONTYPES; i++)
 	{
@@ -16108,7 +16107,7 @@ void cGirls::UpdateTrainingTemp(sGirl* girl, int whatSheTrains, int amount)
 void cGirls::updateTempTraining(sGirl* girl)
 {
 	// Sanity check. Abort on dead girl
-	if (girl->health() <= 0) return;
+	if (girl->is_dead()) return;
 
 	for (u_int i = 0; i < NUM_TRAININGTYPES; i++)
 	{
@@ -16131,7 +16130,7 @@ void cGirls::updateTempTraining(sGirl* girl)
 void cGirls::updateGirlAge(sGirl* girl, bool inc_inService)
 {
 	// Sanity check. Abort on dead girl
-	if (girl->health() <= 0) return;
+	if (girl->is_dead()) return;
 	if (inc_inService)
 	{
 		girl->m_WeeksPast++;
@@ -16153,7 +16152,7 @@ void cGirls::updateGirlAge(sGirl* girl, bool inc_inService)
 void cGirls::updateSTD(sGirl* girl)
 {
 	// Sanity check. Abort on dead girl
-	if (girl->health() <= 0) return;
+	if (girl->is_dead()) return;
 	
 	bool matron = girl_has_matron(girl, SHIFT_DAY);
 
@@ -16235,7 +16234,7 @@ void cGirls::updateSTD(sGirl* girl)
 
 
 
-	if (girl->health() <= 0)
+	if (girl->is_dead())
 	{
 		string msg = girl->m_Realname + gettext(" has died from STDs.");
 		girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
@@ -16246,7 +16245,7 @@ void cGirls::updateSTD(sGirl* girl)
 // Stat update code that is to be run every turn
 void cGirls::updateGirlTurnStats(sGirl* girl)
 {
-	if (girl->health() <= 0) return;		// Sanity check. Abort on dead girl
+	if (girl->is_dead()) return;		// Sanity check. Abort on dead girl
 
 	// TIREDNESS Really tired girls get unhappy fast
 	int bonus = girl->tiredness() - 90;
@@ -16676,6 +16675,33 @@ int cGirls::calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players)
 void sGirl::add_trait(string trait, int temptime)	{ g_GirlsPtr->AddTrait(this, trait, temptime); }
 void sGirl::remove_trait(string trait)					{ g_GirlsPtr->RemoveTrait(this, trait); }
 bool sGirl::has_trait(string trait)					{ return g_GirlsPtr->HasTrait(this, trait); }
+int sGirl::breast_size()	// `J` Breast size number, normal is 4, 1 is flat, max is 10
+{
+	/* */if (this->has_trait("Flat Chest"))				return 1;
+	else if (this->has_trait("Petite Breasts"))			return 2;
+	else if (this->has_trait("Small Boobs"))			return 3;
+	else if (this->has_trait("Busty Boobs"))			return 5;
+	else if (this->has_trait("Big Boobs"))				return 6;
+	else if (this->has_trait("Giant Juggs"))			return 7;
+	else if (this->has_trait("Massive Melons"))			return 8;
+	else if (this->has_trait("Abnormally Large Boobs"))	return 9;
+	else if (this->has_trait("Titanic Tits"))			return 10;
+	return 4;
+}
+bool sGirl::is_dead(bool sendmessage)
+{
+	if (this->health() <= 0)
+	{
+		if (sendmessage)
+		{
+			stringstream ss; ss << this->m_Realname << " is dead. She isn't going to work anymore and her body will be removed by the end of the week.";
+			g_MessageQue.AddToQue(ss.str(), 1);
+		}
+		return true;
+	}
+	return false;
+
+}
 bool sGirl::is_addict(bool onlyhard)	// `J` added bool onlyhard to allow only hard drugs to be checked for
 {
 	if (onlyhard)

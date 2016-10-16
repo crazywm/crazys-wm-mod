@@ -157,7 +157,7 @@ void cScreenGirlDetails::init()
 	g_InitWin = false;
 
 	////////////////////
-	if (selected_girl->health() <= 0)
+	if (selected_girl->is_dead())
 	{
 		// `J` instead of removing dead girls from the list which breaks the game, just skip past her in the list.
 		NextGirl();								// `J` currently this prevents scrolling backwards past her - need to fix that.
@@ -170,7 +170,7 @@ void cScreenGirlDetails::init()
 		}
 	}
 
-	u_int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
+	int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 	SetJob = true;
 
 	EditTextItem(selected_girl->m_Realname, girlname_id);
@@ -563,7 +563,7 @@ void cScreenGirlDetails::check_events()
 	{
 		if (selected_girl)
 		{
-			if (GirlDead(selected_girl)) return;
+			if (selected_girl->is_dead()) return;
 			g_InitWin = true;
 			g_AllTogle = true;
 			g_WinManager.push("Item Management");
@@ -846,17 +846,6 @@ void cScreenGirlDetails::check_events()
 	}
 }
 
-bool cScreenGirlDetails::GirlDead(sGirl *dgirl, bool sendmessage)
-{
-	if (g_Girls.GetStat(dgirl, STAT_HEALTH) == 0)
-	{
-		if (sendmessage) g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
-		return true;
-	}
-	else
-		return false;
-}
-
 void cScreenGirlDetails::RefreshJobList()
 {
 	ClearListBox(joblist_id);
@@ -865,7 +854,7 @@ void cScreenGirlDetails::RefreshJobList()
 
 	string text = "";
 	// populate Jobs listbox with jobs in the selected category
-	for (unsigned int i = g_Brothels.m_JobManager.JobFilterIndex[job_filter]; i<g_Brothels.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
+	for (int i = g_Brothels.m_JobManager.JobFilterIndex[job_filter]; i<g_Brothels.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
 	{
 		if (g_Brothels.m_JobManager.JobName[i] == "")
 			continue;

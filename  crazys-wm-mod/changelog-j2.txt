@@ -176,7 +176,6 @@ Added things to and cleaned up whore jobs.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.33
 
-
 ###  Changes 10/10-11/2016
 Fixed a few issues in wages and tips
 Added customization to Font Sizes and Row Heights for List Boxes and Edit Boxes are now editable in the interface .xmls.
@@ -202,6 +201,34 @@ Added ChoiceBoxHeader to InterfaceColors.xml
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.36
+
+Added in some WorkFilmGroup stuff by Eiri666
+Created girl->breast_size() function for breast size number, normal is 4, 1 is flat, max is 10
+
+###  Changes 10/12-15/2016
+Fixed a bug where girl_details_screen.xml font size did not load properly
+Created FFSD (free fire sell dump) functions to replace separate free girl, fire slave, sell slave functions
+ - this should allow all the buttons to work in any building.
+ - It turned into a total rewrite but it will work in all buildings
+ 
+###  Changes 10/16/2016
+Merged in Pull request #15 by mjsmagalhaes
+ - Try to achieve a better balance for the harsher form of torture.
+ -  - Feel free to change that if it has gone too much for either side.
+ - Make the item sales multiplier in the config file effective.
+ -  - Also update the sell price in the Item Management screen
+ - Expose the remaining duration of the Kidnapped trait to the (dungeon) interface.
+ -  - To achieve this i've made a member from cGirls (HasTempTrait) static because i had no instance of that class available. It would be better to add something similar to sGirl or, even better IMHO, to make them share a base class. But those two might be a lot of trouble comparing with the current change.
+ -  -  - `J` I changed this part to make it work better
+ 
+Added list box hotkeys to all buildings
+Remove multiple DeadGirl() functions replacing it with one selected_girl->is_dead() function
+Finished Free/Fire/Sell update 
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.37
+
+
 
 
 

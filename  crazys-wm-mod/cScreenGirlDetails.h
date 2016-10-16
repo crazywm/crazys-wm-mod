@@ -66,7 +66,6 @@ private:
 	int traitdesc_id;	// Trait Description text
 
 	void set_ids();
-	bool GirlDead(sGirl *dgirl, bool sendmessage = true);
 	void RefreshJobList();
 	void PrevGirl();
 	void NextGirl();

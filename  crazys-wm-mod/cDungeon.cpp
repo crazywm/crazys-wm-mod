@@ -410,12 +410,9 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
 	else if (detailName == "Tortured")			{ ss << ((m_Girl->m_Tort) ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "Kidnapped")			
 	{
-		int duration = cGirls::HasTempTrait(m_Girl, "Kidnapped");
-
-		if (duration)
-			ss << duration;
-		else 
-			ss << "-";
+		int duration = g_Girls.HasTempTrait(m_Girl, "Kidnapped"); 
+		if (duration > 0) ss << duration;
+		else ss << "-";
 	}
 	else
 	{
@@ -580,7 +577,7 @@ void cDungeon::Update()
 			msg.str("");
 
 			// Check for dead girls
-			if (girl->health() <= 0)
+			if (girl->is_dead())
 			{
 				// remove dead bodies from last week
 				if (current->m_Reason == DUNGEON_DEAD)
@@ -767,10 +764,7 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
 	string girlName = girl->m_Realname;
 
 	// Sanity check. Abort on dead girl
-	if (girl->health() <= 0)
-	{
-		return;
-	}
+	if (girl->is_dead()) return;
 
 #ifdef WDTEST // debuging
 	stringstream sum;

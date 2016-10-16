@@ -637,7 +637,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 {
 	if (num == -1) return;	// no item then ignore the call
 	
-	if (girl->health() <= 0 && (	// Allow certain Items to recover the dead
+	if (girl->is_dead() && (	// Allow certain Items to recover the dead
 		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Better Zed than Dead") ||
 		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Elixir of Ultimate Regeneration")
 		)){}
@@ -680,7 +680,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		g_Girls.CalculateGirlType(girl);
 		return;
 	}
-	else if (girl->health() <= 0 ||					// dead girls shouldn't be able to equip or use anything
+	else if (girl->is_dead() ||					// dead girls shouldn't be able to equip or use anything
 		girl->m_EquipedItems[num] == 1 ||		// if already equiped do nothing
 		girl->m_Inventory[num]->m_Special == sInventoryItem::AffectsAll || // no "AffectsAll" item should be equipable
 		ok_2_equip(girl, num, force) == false)	// of if it is not ok to equip it

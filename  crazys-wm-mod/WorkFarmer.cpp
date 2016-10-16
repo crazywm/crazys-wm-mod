@@ -116,7 +116,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 				ss << "While trying to use magic to do her work for her, the magic rebounded on her";
 			}
 			else ss << "She cut herself while working";
-			if (girl->health() <= 0)
+			if (girl->is_dead())
 			{
 				ss << " killing her.";
 				g_MessageQue.AddToQue(girlName + " was killed in an accident at the Farm.", COLOR_RED);

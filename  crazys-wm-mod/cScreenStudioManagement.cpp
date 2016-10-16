@@ -17,6 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <algorithm>
+#include "cBrothel.h"
 #include "cMovieStudio.h"
 #include "cScreenStudioManagement.h"
 #include "cWindowManager.h"
@@ -24,17 +25,17 @@
 #include "cTariff.h"
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
-#include "libintl.h"
 #include "cScreenGirlDetails.h"
+#include "libintl.h"
 
 extern cScreenGirlDetails g_GirlDetails;
 
-extern bool g_InitWin;
 extern int g_CurrStudio;
-extern cGold g_Gold;
 extern cMovieStudioManager g_Studios;
 extern cBrothelManager g_Brothels;
+extern bool g_InitWin;
 extern cWindowManager g_WinManager;
+extern cGold g_Gold;
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -43,6 +44,7 @@ extern	bool	g_DownArrow;
 extern	bool	g_AltKeys;	// New hotkeys --PP
 extern	bool	g_EnterKey;
 extern	bool	g_SpaceKey;
+extern	bool	g_CTRLDown;
 extern	bool	g_Q_Key;
 extern	bool	g_W_Key;
 extern	bool	g_E_Key;
@@ -59,9 +61,7 @@ static stringstream ss;
 
 static int lastNum = -1;
 static int ImageNum = -1;
-static bool FireGirl = false;
-static bool FreeGirl = false;
-static bool SellGirl = false;
+static int FFSD_Flag = -1;
 static int selection = -1;
 static bool Day0Night1 = SHIFT_NIGHT;	// 1 is night, 0 is day.
 static bool SetJob = false;
@@ -83,8 +83,9 @@ void cScreenStudioManagement::set_ids()
 	girldesc_id = get_id("GirlDescription");
 	viewdetails_id = get_id("ViewDetailsButton");
 	transfer_id = get_id("TransferButton");
-	createmovie_id = get_id("CreateMovieButton");
+	firegirl_id = get_id("FireButton");
 	freeslave_id = get_id("FreeSlaveButton");
+	sellslave_id = get_id("SellSlaveButton");
 	jobtypehead_id = get_id("JobTypeHeader");
 	jobtypelist_id = get_id("JobTypeList");
 	jobtypedesc_id = get_id("JobTypeDescription");
@@ -93,6 +94,8 @@ void cScreenStudioManagement::set_ids()
 	jobdesc_id = get_id("JobDescription");
 	day_id = get_id("DayButton");
 	night_id = get_id("NightButton");
+	createmovie_id = get_id("CreateMovieButton");
+
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
@@ -100,49 +103,25 @@ void cScreenStudioManagement::set_ids()
 
 void cScreenStudioManagement::init()
 {
-	if (FreeGirl)
+	if (FFSD_Flag >= 0)
 	{
-		if (g_ChoiceManager.GetChoice(0) == 0)
-		{
-			vector<int> girl_array;
-			GetSelectedGirls(&girl_array);  // get and sort array of girls
-
-			for (int i = girl_array.size(); i--> 0;)	// OK, we have the array, now step through it backwards
-			{
-				selected_girl = g_Studios.GetGirl(g_CurrStudio, girl_array[i]);
-				if (GirlDead(selected_girl) || !selected_girl->is_slave()) continue;  // if dead or not a slave, can't free her
-				if (selected_girl)
-				{
-					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
-					The_Player->disposition(5);
-					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
-					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
-					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 70);
-					
-					selected_girl->m_AccLevel = cfg.initial.girls_accom();
-					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
-					g_InitWin = true;
-				}
-			}
-		}
+		vector<int> girl_array;
+		GetSelectedGirls(&girl_array);
+		g_Brothels.m_JobManager.ffsd_outcome(girl_array, "St", 0);
+		girl_array.clear();
 		g_ChoiceManager.Free();
-		FreeGirl = false;
+		FFSD_Flag = -1;
 	}
 
 	g_CurrentScreen = SCREEN_STUDIO;
 	if (!g_InitWin) return;
-
-	Focused();
 	g_InitWin = false;
-
-
-	////////////////////
-
+	Focused();
 	selection = GetSelectedItemFromList(girllist_id);
-	string studio = g_Studios.GetName(g_CurrStudio);
-	EditTextItem(studio, curstudio_id);
+
+	stringstream buildingname;
+	buildingname << "Current Brothel: " << g_Studios.GetName(g_CurrStudio);
+	EditTextItem(buildingname.str(), curstudio_id);
 
 	// clear the lists
 	ClearListBox(girllist_id);
@@ -169,38 +148,25 @@ void cScreenStudioManagement::init()
 	{
 		sGirl* gir = g_Studios.GetGirl(g_CurrStudio, i);
 		if (selected_girl == gir) selection = i;
-
-		u_int item_color = COLOR_BLUE;
-		if (g_Girls.GetStat(gir, STAT_HEALTH) <= 30 || g_Girls.GetStat(gir, STAT_TIREDNESS) >= 80 || g_Girls.GetStat(gir, STAT_HAPPINESS) <= 30)
-			item_color = COLOR_RED;
-
+		unsigned int item_color = (gir->health() <= 30 || gir->tiredness() >= 80 || gir->happiness() <= 30) ? COLOR_RED : COLOR_BLUE;
 		gir->OutputGirlRow(Data, columnNames);
 		AddToListBox(girllist_id, i, Data, numColumns, item_color);
 	}
 	delete[] Data;
 
-	lastNum = -1;
-	g_InitWin = false;
+	DisableButton(firegirl_id, true);
+	DisableButton(freeslave_id, true);
+	DisableButton(sellslave_id, true);
+	DisableButton(viewdetails_id, true);
 
-	if (selection >= 0)
-	{
-		while (selection > GetListBoxSize(girllist_id) && selection != -1)
-			selection--;
-	}
-	if (selection >= 0)
-	{
-		SetSelectedItemInList(girllist_id, selection);
-	}
-	else
-	{
-		SetSelectedItemInList(girllist_id, 0);
-		selection = 0;
-	}
+	lastNum = -1;
+
+	if (selection >= 0) while (selection > GetListBoxSize(girllist_id) && selection != -1) selection--;
+	SetSelectedItemInList(girllist_id, selection >= 0 ? selection : 0);
 
 	HideButton(day_id, 1);
 	HideButton(night_id, 1);
-	RefreshSelectedJobType();
-	RefreshJobList();
+
 	update_image();
 }
 
@@ -214,23 +180,36 @@ void cScreenStudioManagement::process()
 
 bool cScreenStudioManagement::check_keys()
 {
-	if (g_UpArrow || (g_AltKeys && g_A_Key))
+	if (g_UpArrow || (g_AltKeys && g_A_Key))	{ selection = ArrowUpListBox(girllist_id);		g_UpArrow = g_A_Key = false;		return true; }
+	if (g_DownArrow || (g_AltKeys && g_D_Key))	{ selection = ArrowDownListBox(girllist_id);	g_DownArrow = g_D_Key = false;		return true; }
+	if (g_SpaceKey || g_EnterKey)	{ g_GirlDetails.lastsexact = -1;	ViewSelectedGirl();		g_SpaceKey = g_EnterKey = false;	return true; }
+	// Select Location
+	if (g_W_Key)	{ selection = ArrowUpListBox(jobtypelist_id);	g_W_Key = false;	return true; }
+	if (g_S_Key)	{ selection = ArrowDownListBox(jobtypelist_id);	g_S_Key = false;	return true; }
+	// Toggle Day/Night shift
+	//if (g_Z_Key)	{ Day0Night1 = SHIFT_DAY;	DisableButton(day_id, true);	DisableButton(night_id, false);	RefreshSelectedJobType();	g_Z_Key = false;	return true; }
+	//if (g_C_Key)	{ Day0Night1 = SHIFT_NIGHT;	DisableButton(day_id, false);	DisableButton(night_id, true);	RefreshSelectedJobType();	g_C_Key = false;	return true; }
+	if (g_Q_Key || g_E_Key)
 	{
-		selection = ArrowUpListBox(girllist_id);
-		g_UpArrow = g_A_Key = false;
-		return true;
-	}
-	if (g_DownArrow || (g_AltKeys && g_D_Key))
-	{
-		selection = ArrowDownListBox(girllist_id);
-		g_DownArrow = g_D_Key = false;
-		return true;
-	}
-	if (g_SpaceKey || g_EnterKey)	// Show Girl Details
-	{
-		g_SpaceKey = g_EnterKey = false;
-		g_GirlDetails.lastsexact = -1;
-		ViewSelectedGirl();
+		if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
+		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
+
+		bool skip = false;
+		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_DIRECTOR || selection == JOB_PROMOTER))
+			skip = true;
+		if (selection == JOB_DIRECTOR && (g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 0) > 0 || g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 1) > 0))
+			skip = true;
+		if (selection == JOB_PROMOTER && (g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 0) > 0 || g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 1) > 0))
+			skip = true;
+
+		if (skip)
+		{
+			if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
+			if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
+			// the purpose of this is to clear the extra event from the event queue, which prevents an error --PP
+			bool tmp = g_InterfaceEvents.CheckListbox(joblist_id);
+		}
+		g_Q_Key = g_E_Key = false;
 		return true;
 	}
 	return false;
@@ -245,12 +224,7 @@ void cScreenStudioManagement::update_image()
 		{
 			stringstream text;
 			text << g_Girls.GetGirlMood(selected_girl) << "\n\n" << selected_girl->m_Desc;
-			// Added a little feedback here to show what character template a girl is based on --PP
-			// `J` I usually don't care about this so I made it optional
-			if (cfg.debug.log_extradetails())
-			{
-				text << "\n\nBased on: " << selected_girl->m_Name;
-			}
+			if (cfg.debug.log_extradetails()) text << "\n\nBased on: " << selected_girl->m_Name;
 			EditTextItem(text.str(), girldesc_id);
 			Rand = true;
 			lastNum = selection;
@@ -261,7 +235,7 @@ void cScreenStudioManagement::update_image()
 	else
 	{
 		selection = lastNum = -1;
-		EditTextItem(gettext("No Girl Selected"), girldesc_id);
+		EditTextItem("No Girl Selected", girldesc_id);
 		HideImage(girlimage_id, true);
 	}
 }
@@ -269,58 +243,30 @@ void cScreenStudioManagement::update_image()
 void cScreenStudioManagement::check_events()
 {
 	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
-
-	if (g_InterfaceEvents.CheckButton(back_id))			// if it's the back button, pop the window off the stack and we're done
-	{
-		g_InitWin = true;
-		g_WinManager.Pop();
-		return;
-	}
-	if (g_InterfaceEvents.CheckButton(viewdetails_id))
-	{
-		ViewSelectedGirl();
-	}
-
-	if (g_InterfaceEvents.CheckButton(createmovie_id))
-	{
-		g_InitWin = true;
-		g_WinManager.push("Movie Maker");
-		return;
-	}
-	if (g_InterfaceEvents.CheckButton(day_id))
-	{
-		DisableButton(day_id, true);
-		DisableButton(night_id, false);
-		Day0Night1 = SHIFT_NIGHT;			// We only want night shifts in studio.. just a sanity check --PP
-		RefreshSelectedJobType();
-	}
-	if (g_InterfaceEvents.CheckButton(night_id))
-	{
-		DisableButton(day_id, false);
-		DisableButton(night_id, true);
-		Day0Night1 = SHIFT_NIGHT;			// We only want night shifts in studio.. just a sanity check --PP
-		RefreshSelectedJobType();
-	}
+	if (g_InterfaceEvents.CheckButton(back_id))	{ g_InitWin = true;		g_WinManager.Pop();		return; }
+	//if (g_InterfaceEvents.CheckButton(prev_id))	{ g_CurrBrothel--;	if (g_CurrBrothel < 0) g_CurrBrothel = g_Brothels.GetNumBrothels() - 1;	g_InitWin = true; }
+	//if (g_InterfaceEvents.CheckButton(next_id))	{ g_CurrBrothel++;	if (g_CurrBrothel >= g_Brothels.GetNumBrothels())	g_CurrBrothel = 0;	g_InitWin = true; }
+	if (g_InterfaceEvents.CheckButton(viewdetails_id))	{ g_GirlDetails.lastsexact = -1;	ViewSelectedGirl(); }
+	if (g_InterfaceEvents.CheckButton(day_id))	{ Day0Night1 = SHIFT_NIGHT;	DisableButton(day_id, false);	DisableButton(night_id, true);	RefreshSelectedJobType(); }
+	if (g_InterfaceEvents.CheckButton(night_id)){ Day0Night1 = SHIFT_NIGHT;	DisableButton(day_id, false);	DisableButton(night_id, true);	RefreshSelectedJobType(); }
 	if (g_InterfaceEvents.CheckListbox(jobtypelist_id))
 	{
 		selection = GetSelectedItemFromList(jobtypelist_id);
-		if (selection == -1)
-		{
-			EditTextItem(gettext("Nothing Selected"), jobtypedesc_id);
-		}
+		if (selection == -1) EditTextItem("Nothing Selected", jobtypedesc_id);
 		else
 		{
-			RefreshJobList();				// populate Jobs listbox with jobs in the selected category
-			string jdmessage = g_Studios.m_JobManager.JobFilterDesc[selection];
+			RefreshJobList();	// populate Jobs listbox with jobs in the selected category
+			stringstream jdmessage; jdmessage << g_Studios.m_JobManager.JobFilterDesc[selection];
 			if (g_Studios.CrewNeeded())
-			{
-				jdmessage += gettext("\n** At least one Camera Mage and one Crystal Purifier is required to film a scene. ");
-			}
-			EditTextItem(jdmessage, jobtypedesc_id);
+				jdmessage << gettext("\n** At least one Camera Mage and one Crystal Purifier is required to film a scene. ");
+
+
+			EditTextItem(jdmessage.str(), jobtypedesc_id);
 		}
 	}
 	if (g_InterfaceEvents.CheckListbox(joblist_id))
 	{
+
 		selection = GetSelectedItemFromList(joblist_id);
 		if (selection != -1)
 		{
@@ -329,60 +275,79 @@ void cScreenStudioManagement::check_events()
 			int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);		// Now assign the job to all the selected girls
 			while (GSelection != -1)
 			{
+				int new_job = selection;
 				selected_girl = g_Studios.GetGirl(g_CurrStudio, GSelection);
 				if (selected_girl)
 				{
-					int old_job = selected_girl->m_NightJob;
-
 					// handle special job requirements and assign
+					int old_job = selected_girl->m_NightJob;
 					// if HandleSpecialJobs returns true, the job assignment was modified or cancelled
 					if (g_Studios.m_JobManager.HandleSpecialJobs(g_CurrStudio, selected_girl, selection, old_job, false))
 					{
-						selection = selected_girl->m_NightJob;
-						SetSelectedItemInList(joblist_id, selection, false);
+						new_job = selected_girl->m_NightJob;
+						SetSelectedItemInList(joblist_id, new_job, false);
 					}
-					if (old_job != selection)
-					{
-						// update the girl's listing to reflect the job change
-						ss.str("");
-						ss << g_Studios.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
-						ss.str("");
-						ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					// update the girl's listing to reflect the job change
+					ss.str("");	ss << g_Studios.m_JobManager.JobName[selected_girl->m_DayJob];
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					ss.str("");	ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 
-						// refresh job worker counts for former job and current job
-						SetSelectedItemText(joblist_id, old_job, g_Studios.m_JobManager.JobDescriptionCount(old_job, 0, SHIFT_NIGHT, false, true));
-						SetSelectedItemText(joblist_id, selection, g_Studios.m_JobManager.JobDescriptionCount(selection, 0, SHIFT_NIGHT, false, true));
-					}
+					// refresh job worker counts for former job and current job
+					SetSelectedItemText(joblist_id, old_job, g_Studios.m_JobManager.JobDescriptionCount(old_job, 0, SHIFT_NIGHT, false, true));
+					SetSelectedItemText(joblist_id, new_job, g_Studios.m_JobManager.JobDescriptionCount(new_job, 0, SHIFT_NIGHT, false, true));
 				}
 				if (g_Studios.is_Actress_Job(selected_girl->m_NightJob))	// `J` added
 				{
-					ss.str("");
-					ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
-					if (g_Studios.CrewNeeded())	ss << " **";
+					ss.str(""); ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob] << (g_Studios.CrewNeeded() ? " **" : "");
 					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 				}
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 			}
 		}
-		else EditTextItem(gettext("Nothing Selected"), jobdesc_id);
+		else EditTextItem("Nothing Selected", jobdesc_id);
 	}
-
 	if (g_InterfaceEvents.CheckListbox(girllist_id))
 	{
 		selection = GetSelectedItemFromList(girllist_id);
 		if (selection != -1)
 		{
 			selected_girl = g_Studios.GetGirl(g_CurrStudio, selection);
-			if (ListDoubleClicked(girllist_id)) ViewSelectedGirl();		// If double-clicked, try to bring up girl details
-			DisableButton(freeslave_id, selected_girl->is_free());
+			if (ListDoubleClicked(girllist_id))		// If double-clicked, try to bring up girl details
+			{
+				g_GirlDetails.lastsexact = -1;
+				ViewSelectedGirl();
+			}
+			if (IsMultiSelected(girllist_id))
+			{
+				bool freefound = false;
+				bool slavefound = false;
+				int pos = 0;
+				int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
+				while (GSelection != -1)
+				{
+					if (g_Studios.GetGirl(0, pos)->is_slave()) slavefound = true;
+					if (!g_Studios.GetGirl(0, pos)->is_slave()) freefound = true;
+					GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
+				}
+				DisableButton(firegirl_id, !freefound);
+				DisableButton(freeslave_id, !slavefound);
+				DisableButton(sellslave_id, !slavefound);
+			}
+			else
+			{
+				DisableButton(firegirl_id, selected_girl->is_slave());
+				DisableButton(freeslave_id, selected_girl->is_free());
+				DisableButton(sellslave_id, selected_girl->is_free());
+			}
 			DisableButton(viewdetails_id, false);
 			RefreshSelectedJobType();
 		}
 		else
 		{
+			DisableButton(firegirl_id, true);
 			DisableButton(freeslave_id, true);
+			DisableButton(sellslave_id, true);
 			DisableButton(viewdetails_id, true);
 			selected_girl = 0;
 			selection = -1;
@@ -391,32 +356,30 @@ void cScreenStudioManagement::check_events()
 		update_image();
 		return;
 	}
-	if (g_InterfaceEvents.CheckButton(freeslave_id))
-	{
-		if (selected_girl)
-		{
-			g_Studios.m_JobManager.FreeSlaves(selected_girl, IsMultiSelected(girllist_id));
-			FreeGirl = true;
-		}
-		return;
-	}
 	if (g_InterfaceEvents.CheckButton(transfer_id))
 	{
-		g_CurrentScreen = SCREEN_TRANSFERGIRLS;
 		g_InitWin = true;
 		g_WinManager.Push(TransferGirls, &g_TransferGirls);
 		return;
 	}
-}
+	/* */if (g_InterfaceEvents.CheckButton(firegirl_id))	FFSD_Flag = FFSD_fire;
+	else if (g_InterfaceEvents.CheckButton(freeslave_id))	FFSD_Flag = FFSD_free;
+	else if (g_InterfaceEvents.CheckButton(sellslave_id))	FFSD_Flag = FFSD_sell;
 
-bool cScreenStudioManagement::GirlDead(sGirl *dgirl, bool sendmessage)
-{
-	if (g_Girls.GetStat(dgirl, STAT_HEALTH) <= 0)
+	if (FFSD_Flag > 0)
 	{
-		if (sendmessage) g_MessageQue.AddToQue(gettext("This girl is dead. She isn't going to work anymore and her body will be removed by the end of the week."), 1);
-		return true;
+		int num = 0;
+
+		if (selected_girl)
+		{
+			vector<int> girl_array;
+			GetSelectedGirls(&girl_array);
+			g_Studios.m_JobManager.ffsd_choice(FFSD_Flag, girl_array, "St", 0);
+			girl_array.clear();
+		}
+		return;
 	}
-	return false;
+	if (g_InterfaceEvents.CheckButton(createmovie_id))	{ g_InitWin = true;	g_WinManager.push("Movie Maker");	return; }
 }
 
 void cScreenStudioManagement::RefreshSelectedJobType()
@@ -424,7 +387,7 @@ void cScreenStudioManagement::RefreshSelectedJobType()
 	selection = GetSelectedItemFromList(girllist_id);
 	if (selection < 0) return;
 	selected_girl = g_Studios.GetGirl(0, selection);
-	u_int job = selected_girl->m_NightJob;
+	int job = selected_girl->m_NightJob;
 	// set the job filter
 	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cScreenStudioManagement.cpp > RefreshSelectedJobType
 	/* */if (job >= g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIONONSEX]	&& job < g_Studios.m_JobManager.JobFilterIndex[JOBFILTER_STUDIONONSEX + 1])		SetSelectedItemInList(jobtypelist_id, JOBFILTER_STUDIONONSEX);
@@ -441,9 +404,8 @@ void cScreenStudioManagement::RefreshJobList()
 	ClearListBox(joblist_id);
 	int job_filter = GetSelectedItemFromList(jobtypelist_id);
 	if (job_filter == -1) return;
-
 	// populate Jobs listbox with jobs in the selected category
-	for (unsigned int i = g_Studios.m_JobManager.JobFilterIndex[job_filter]; i < g_Studios.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
+	for (int i = g_Studios.m_JobManager.JobFilterIndex[job_filter]; i < g_Studios.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
 	{
 		if (g_Studios.m_JobManager.JobName[i] == "") continue;
 		AddToListBox(joblist_id, i, g_Studios.m_JobManager.JobDescriptionCount(i, g_CurrStudio, SHIFT_NIGHT, false, true));
@@ -472,16 +434,15 @@ void cScreenStudioManagement::ViewSelectedGirl()
 {
 	if (selected_girl)
 	{
-		if (GirlDead(selected_girl)) return;
-
+		if (selected_girl->is_dead()) return;
 		//load up the cycle_girls vector with the ordered list of girl IDs
 		FillSortedIDList(girllist_id, &cycle_girls, &cycle_pos);
 		for (int i = cycle_girls.size(); i-- > 0;)
 		{  // no viewing dead girls
-			if (g_Studios.GetGirl(g_CurrStudio, cycle_girls[i])->health() <= 0)
+			if (g_Studios.GetGirl(g_CurrStudio, cycle_girls[i])->is_dead())
 				cycle_girls.erase(cycle_girls.begin() + i);
 		}
-
+		g_CurrentScreen = SCREEN_GIRLDETAILS;
 		g_InitWin = true;
 		g_WinManager.push("Girl Details");
 		return;
