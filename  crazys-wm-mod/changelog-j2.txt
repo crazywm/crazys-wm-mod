@@ -228,6 +228,15 @@ Finished Free/Fire/Sell update
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.37
 
+###  Changes 10/17/2016
+Debugged the game
+ - blank.png was 1x1 pixel and the resizer did not like it - replaced it with 100x100 blank.png and most crashes stopped.
+ - Fixed a bug in the gallery - crashes when pressing up at the top or down at the bottom of the list.
+ - config.xml > "Income > ItemSales" and "Expenses > Items" were reversed
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.38
+
 
 
 

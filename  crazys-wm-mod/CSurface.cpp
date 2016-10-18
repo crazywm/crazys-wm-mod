@@ -244,7 +244,7 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 		m_Temp = 0;
 		if (!loaded)
 		{
-			if (m_Filename == ButtonPath("").c_str())	// fix disabled buttons
+			if (m_Filename == ButtonPath("").c_str() || m_Filename == "")	// fix disabled buttons
 				m_Filename = ImagePath("blank.png").c_str();
 			if (!LoadImage(m_Filename))
 			{

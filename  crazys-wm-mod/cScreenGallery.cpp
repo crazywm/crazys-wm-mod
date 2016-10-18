@@ -1,21 +1,21 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include <iostream>
 #include <locale>
 #include <sstream>
@@ -98,12 +98,12 @@ static bool changeimage = false;
 void cScreenGallery::set_ids()
 {
 	ids_set = true;
-	back_id =		get_id("BackButton");
-	next_id =		get_id("NextButton");
-	prev_id =		get_id("PrevButton");
-	image_id =		get_id("Image");
-	imagename_id =	get_id("ImageName");
-	imagelist_id =	get_id("ImageList");
+	back_id = get_id("BackButton");
+	next_id = get_id("NextButton");
+	prev_id = get_id("PrevButton");
+	image_id = get_id("Image");
+	imagename_id = get_id("ImageName");
+	imagelist_id = get_id("ImageList");
 
 	string ILColumns[] = { "ILName", "ILTotal", "ILjpg", "ILAni", "ILGif" };
 	SortColumns(imagelist_id, ILColumns, 5);
@@ -216,7 +216,6 @@ void cScreenGallery::check_events()
 		g_WinManager.Pop();
 		return;
 	}
-
 	if (g_InterfaceEvents.CheckButton(prev_id) || g_LeftArrow || g_A_Key)
 	{
 		g_A_Key = g_LeftArrow = false;
@@ -233,28 +232,15 @@ void cScreenGallery::check_events()
 		changeimage = true;
 		return;
 	}
-	if (g_W_Key || g_UpArrow)
+	if (g_W_Key || g_UpArrow || g_S_Key || g_DownArrow)
 	{
-		g_UpArrow = g_W_Key = false;
-		while (1)
+		bool up = (g_W_Key || g_UpArrow);
+		g_UpArrow = g_W_Key = g_DownArrow = g_S_Key = false;
+		while (true)
 		{
-			Mode--;
-			if (Mode < 0) Mode = NUM_IMGTYPES;
-			Img = 0;
-			if (numimages[Mode][0] > 0)
-			{
-				changeimage = true;
-				return;
-			}
-		}
-	}
-	if (g_S_Key || g_DownArrow)
-	{
-		g_DownArrow = g_S_Key = false;
-		while (1)
-		{
-			Mode++;
-			if (Mode > NUM_IMGTYPES) Mode = 0;
+			Mode += (up ? -1 : 1);
+			if (Mode < 0) Mode = NUM_IMGTYPES - 1;
+			if (Mode >= NUM_IMGTYPES) Mode = 0;
 			Img = 0;
 			if (numimages[Mode][0] > 0)
 			{
@@ -268,7 +254,6 @@ void cScreenGallery::check_events()
 		//we've gone through all categories and could not find a single image!
 		return;
 	}
-
 	if (g_InterfaceEvents.CheckListbox(imagelist_id))
 	{
 		Mode = GetSelectedItemFromList(imagelist_id);
@@ -276,5 +261,4 @@ void cScreenGallery::check_events()
 		changeimage = true;
 		return;
 	}
-
 }
