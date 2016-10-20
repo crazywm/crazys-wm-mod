@@ -866,11 +866,11 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	{
 		if (cfg.debug.log_debug())
 		{
-			g_LogFile.ss() << "Debug Alt Images";
-			if (ImageName == "blank")	g_LogFile.ss() << " || Blank image called for";
-			else if (!girl)				g_LogFile.ss() << " || No Girl";
-			else if (imagetype < 0)		g_LogFile.ss() << " || Imagetype < 0";
-			else/*                  */	g_LogFile.ss() << " || Unknown error";
+			g_LogFile.ss() << "Debug Alt Images || ";
+			if (ImageName == "blank")	g_LogFile.ss() << "Blank image called for";
+			else if (!girl)				g_LogFile.ss() << "No Girl";
+			else if (imagetype < 0)		g_LogFile.ss() << "Imagetype < 0";
+			else/*                  */	g_LogFile.ss() << "Unknown error";
 			g_LogFile.ssend();
 		}
 		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));

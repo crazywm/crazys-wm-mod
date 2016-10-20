@@ -95,7 +95,7 @@
         StripperIncome="1.0"
         BarmaidIncome="1.0"
         SlaveSales="1.0"
-        ItemSales="1.0"
+        ItemSales="0.5"
         ClinicIncome="1.0"
         ArenaIncome="1.0"
         FarmIncome="1.0" />
@@ -126,7 +126,7 @@
         StaffWages="1.0"
         GirlSupport="1.0"
         Consumables="1.0"
-        Items="0.5"
+        Items="1.0"
         SlavesBought="1.0"
         BuyBrothel="1.0"
         BrothelSupport="1.0"

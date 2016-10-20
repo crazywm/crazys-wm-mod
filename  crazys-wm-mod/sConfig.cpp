@@ -650,7 +650,7 @@ void sConfigData::set_defaults()
 	in_fact.stripper_work = 1.0;			// `J` ?not used?
 	in_fact.barmaid_work = 1.0;				// `J` ?not used?
 	in_fact.slave_sales = 1.0;
-	in_fact.item_sales = 1.0;				// `J` ?not used?
+	in_fact.item_sales = 0.5;
 	in_fact.clinic_income = 1.0;			// `J` ?not used?
 	in_fact.arena_income = 1.0;				// `J` ?not used?
 	in_fact.farm_income = 1.0;				// `J` ?not used?
