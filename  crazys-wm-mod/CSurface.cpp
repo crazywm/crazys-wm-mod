@@ -264,53 +264,39 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 	{
 		if (m_Temp == 0)
 		{
-			if (maintainRatio == true)
+			if (clip->w != m_Surface->w && clip->h != m_Surface->h)
 			{
-				if (clip->w != m_Surface->w && clip->h != m_Surface->h)
+				scaleX = ((double)clip->w / (double)m_Surface->w);
+				scaleY = ((double)clip->h / (double)m_Surface->h);
+
+				if (maintainRatio == true)
 				{
-					if (m_Surface->w > m_Surface->h)	// if the width is larger so scale down based on the width but keep aspect ratio
-						scaleX = scaleY = ((double)clip->w / (double)m_Surface->w);
-					else	// assume the height is larger
-						scaleX = scaleY = ((double)clip->h / (double)m_Surface->h);
-					m_Temp = zoomSurface(m_Surface, scaleX, scaleY, 1);
+					// Use the most restrictive scale
+					if (scaleX < scaleY) { scaleY = scaleX; }
+					else { scaleX = scaleY; }
 				}
-			}
-			else
-			{
-				if (clip->w != m_Surface->w || clip->h != m_Surface->h)
-				{
-					scaleX = ((double)clip->w / (double)m_Surface->w);
-					scaleY = ((double)clip->h / (double)m_Surface->h);
-					m_Temp = zoomSurface(m_Surface, scaleX, scaleY, 1);
-				}
+
+				m_Temp = zoomSurface(m_Surface, scaleX, scaleY, 1);
 			}
 		}
 		else
 		{
-			if (maintainRatio == true)
+			if (m_Temp->w != clip->w && m_Temp->h != clip->h)
 			{
-				if (m_Temp->w != clip->w && m_Temp->h != clip->h)
-				{
-					if (m_Temp) SDL_FreeSurface(m_Temp);// free old image
-					m_Temp = 0;
-					if (m_Surface->w > m_Surface->h)	// if the width is larger so scale down based on the width but keep aspect ratio
-						scaleX = scaleY = ((double)clip->w / (double)m_Surface->w);
-					else	// assume the height is larger
-						scaleX = scaleY = ((double)clip->h / (double)m_Surface->h);
-					m_Temp = zoomSurface(m_Surface, scaleX, scaleY, 1);
-				}
-			}
-			else
-			{
-				if (m_Temp->w != clip->w || m_Temp->h != clip->h)
-				{
-					if (m_Temp)	SDL_FreeSurface(m_Temp);	// free old image
-					m_Temp = 0;
+				if (m_Temp) SDL_FreeSurface(m_Temp);// free old image
+				m_Temp = 0;
 
-					scaleX = ((double)clip->w / (double)m_Surface->w);
-					scaleY = ((double)clip->h / (double)m_Surface->h);
-					m_Temp = zoomSurface(m_Surface, scaleX, scaleY, 1);
+				scaleX = ((double)clip->w / (double)m_Surface->w);
+				scaleY = ((double)clip->h / (double)m_Surface->h);
+
+				if (maintainRatio == true)
+				{
+					// Use the most restrictive scale
+					if (scaleX < scaleY) { scaleY = scaleX; }
+					else { scaleX = scaleY; }
 				}
+
+				m_Temp = zoomSurface(m_Surface, scaleX, scaleY, 1);
 			}
 		}
 	}
@@ -382,10 +368,6 @@ bool CSurface::DrawGifSurface(int x, int y, AG_Frame* agframes, int currentframe
 
 	// Update the display using the update rectangle.
 	SDL_UpdateRects(destination, 1, &u);
-
-
-
-
 
 	return true;
 }
