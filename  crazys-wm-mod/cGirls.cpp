@@ -78,6 +78,8 @@ extern cSurnameList g_SurnameList;
 extern cPlayer* The_Player;
 extern cConfig cfg;
 
+extern cTariff tariff;
+
 //SIN
 //SPICE = added a lot of spice (variety/trait/skill) to dialogues
 //SANITY = adding a 'craziness' stat, to be used with new events and reflect the world's impact on her sanity
@@ -2394,7 +2396,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 {
 	if (girl == 0)	return string("");
-	cTariff tariff;
+	//cTariff tariff;
 	cFont check; int w, h, size = 0;
 	check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 	stringstream ss;
@@ -16910,7 +16912,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	// bump the age - if it's still not grown, go home
 	child->m_Age++;		if (child->m_Age < cfg.pregnancy.weeks_till_grown())	return false;
 
-	cTariff tariff;
+	//cTariff tariff;
 	stringstream ss;
 
 #if 1
@@ -17414,7 +17416,7 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	*	OK, it's time to give birth
 	*	start with some basic bookkeeping.
 	*/
-	cTariff tariff;
+	//cTariff tariff;
 	stringstream ss;
 
 	girl->m_WeeksPreg = 0;
@@ -18100,6 +18102,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	else if (detailName == "has_disease")		{ ss << (has_disease() ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "is_mother")			{ ss << (is_mother() ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "is_poisoned")		{ ss << (is_poisoned() ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "Value")             { ss << (int) tariff.slave_price(this, false); }
 	else /*                            */		{ ss << gettext("Not found"); }
 	Data = ss.str();
 }
