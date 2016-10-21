@@ -790,7 +790,7 @@ const int MAXNUM_GIRL_INVENTORY		= 40;		// Maximum number of items a Girl can ha
 const int MAXNUM_RIVAL_INVENTORY	= 40;		// Maximum number of items a Rival can have in inventory
 
 const int LISTBOX_ITEMHEIGHT = 20;		//how tall (in pixels) each list item is
-const unsigned int LISTBOX_COLUMNS = 15;		//how many columns are allowed
+const unsigned int LISTBOX_COLUMNS = 25;		//how many columns are allowed
 
 // Listbox Constants moved from cListBox.h
 const unsigned int COLOR_BLUE		= 0;
