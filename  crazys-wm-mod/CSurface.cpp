@@ -191,7 +191,6 @@ bool CSurface::ResizeSprite(SDL_Surface* image, SDL_Rect* clip, bool maintainRat
 
 	if (maintainRatio == true)
 	{
-
 		if (clip->w - image->w <= clip->h - image->h)
 			scaleX = scaleY = ((double)clip->w / (double)image->w);
 		else	// assume the height is larger
@@ -230,7 +229,7 @@ bool CSurface::DrawSprite(int x, int y)
 
 bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* clip, bool resize, bool maintainRatio)
 {
-	double scaleX = 0;	double scaleY = 0;
+	double scaleX = 0;	double scaleY = 0; double deltaX = 0; double deltaY = 0;
 
 	if (m_Surface == 0)
 	{
@@ -301,10 +300,17 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 		}
 	}
 
+	// if a m_Temp doesnt exist the image fits perfectly
+	if (m_Temp)
+	{
+		deltaX = (clip->w - m_Temp->w) / 2;
+		deltaY = (clip->h - m_Temp->h) / 2;
+	}
+
 	// create and setup a SDL offset rectangle
 	SDL_Rect offset;
-	offset.x = x;
-	offset.y = y;
+	offset.x = x + (int) deltaX;
+	offset.y = y + (int) deltaY;
 
 	// Draw the source surface onto the destination
 	int error = 0;
