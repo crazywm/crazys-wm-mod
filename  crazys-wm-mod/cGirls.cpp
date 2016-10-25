@@ -78,6 +78,8 @@ extern cSurnameList g_SurnameList;
 extern cPlayer* The_Player;
 extern cConfig cfg;
 
+extern cTariff tariff;
+
 //SIN
 //SPICE = added a lot of spice (variety/trait/skill) to dialogues
 //SANITY = adding a 'craziness' stat, to be used with new events and reflect the world's impact on her sanity
@@ -2394,7 +2396,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 {
 	if (girl == 0)	return string("");
-	cTariff tariff;
+	//cTariff tariff;
 	cFont check; int w, h, size = 0;
 	check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 	stringstream ss;
@@ -2581,6 +2583,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
 	int statnumsize = 15;
 	string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Strength : ", "Fame : ", "Lactation : ", "PCFear : ", "PCLove : ", "PCHate : ", "Gold : " };
+	
+	int show = (cfg.debug.log_extradetails() && !purchase) ? statnumsize : statnumsize - 3;
 
 	if (cfg.fonts.normal() == "segoeui.ttf" && cfg.fonts.detailfontsize() == 9) // `J` if already set to my default
 	{
@@ -2594,7 +2598,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		for (u_int i = 0; i < 16; i++) { check.GetSize(statstr[i], w, h); if (w > size) size = w; }
 		size += 10; // add some padding
 		// then add extra spaces to the statstr until it is longer that the widest
-		for (u_int i = 0; i < statstr->size()-1; i++)
+		for (int i = 0; i < show; i++)
 		{
 			check.GetSize(statstr[i], w, h);
 			while (w < size)
@@ -2604,7 +2608,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			}
 		}
 	}
-	int show = (cfg.debug.log_extradetails() && !purchase) ? statnumsize : statnumsize-3;
+	
 	for (int i = 0; i < show; i++)
 	{
 		ss << "\n" << statstr[i] << GetStat(girl, statnum[i]) << sper;
@@ -16910,7 +16914,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	// bump the age - if it's still not grown, go home
 	child->m_Age++;		if (child->m_Age < cfg.pregnancy.weeks_till_grown())	return false;
 
-	cTariff tariff;
+	//cTariff tariff;
 	stringstream ss;
 
 #if 1
@@ -17414,7 +17418,7 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	*	OK, it's time to give birth
 	*	start with some basic bookkeeping.
 	*/
-	cTariff tariff;
+	//cTariff tariff;
 	stringstream ss;
 
 	girl->m_WeeksPreg = 0;
@@ -18100,6 +18104,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	else if (detailName == "has_disease")		{ ss << (has_disease() ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "is_mother")			{ ss << (is_mother() ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "is_poisoned")		{ ss << (is_poisoned() ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "Value")             { ss << (int) tariff.slave_price(this, false); }
 	else /*                            */		{ ss << gettext("Not found"); }
 	Data = ss.str();
 }
