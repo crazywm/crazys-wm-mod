@@ -2583,6 +2583,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
 	int statnumsize = 15;
 	string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Strength : ", "Fame : ", "Lactation : ", "PCFear : ", "PCLove : ", "PCHate : ", "Gold : " };
+	
+	int show = (cfg.debug.log_extradetails() && !purchase) ? statnumsize : statnumsize - 3;
 
 	if (cfg.fonts.normal() == "segoeui.ttf" && cfg.fonts.detailfontsize() == 9) // `J` if already set to my default
 	{
@@ -2596,7 +2598,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		for (u_int i = 0; i < 16; i++) { check.GetSize(statstr[i], w, h); if (w > size) size = w; }
 		size += 10; // add some padding
 		// then add extra spaces to the statstr until it is longer that the widest
-		for (u_int i = 0; i < statstr->size()-1; i++)
+		for (int i = 0; i < show; i++)
 		{
 			check.GetSize(statstr[i], w, h);
 			while (w < size)
@@ -2606,7 +2608,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			}
 		}
 	}
-	int show = (cfg.debug.log_extradetails() && !purchase) ? statnumsize : statnumsize-3;
+	
 	for (int i = 0; i < show; i++)
 	{
 		ss << "\n" << statstr[i] << GetStat(girl, statnum[i]) << sper;
