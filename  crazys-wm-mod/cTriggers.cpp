@@ -660,9 +660,12 @@ void cTriggerList::ProcessNextQueItem(string fileloc)
 	{
 		cScriptManager sm;
 
-		string file = fileloc;
-		file += top->m_Trigger->m_Script;
-		sm.Load(file, m_GirlTarget);
+		// Missing a path separator
+		//string file = fileloc;
+		//file += top->m_Trigger->m_Script;
+
+		DirPath script = DirPath(fileloc.c_str()) << top->m_Trigger->m_Script;
+		sm.Load(script, m_GirlTarget);
 	}
 	top->m_Trigger->m_Triggered++;
 	RemoveFromQue(top->m_Trigger);

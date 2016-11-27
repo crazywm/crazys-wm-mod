@@ -126,7 +126,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int earned = 0;
 	for (int i = 0; i < patients; i++)
 	{
-		earned += g_Dice % 150 + 50; // 50-200 gold per customer
+		earned += g_Dice % 50 + 50; // 50-100 gold per customer
 	}
 	brothel->m_Finance.clinic_income(earned);
 	ss.str("");

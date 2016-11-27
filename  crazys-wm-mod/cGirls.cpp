@@ -18077,7 +18077,8 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	}
 	else if (detailName == "is_pregnant")
 	{
-		if (is_pregnant())
+		if (g_Girls.CheckVirginity(this)) ss << "Vg.";
+		else if (is_pregnant())
 		{
 			int to_go = ((this)->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - (this)->m_WeeksPreg;
 			ss << gettext("Yes");
@@ -18095,8 +18096,10 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 				ss << "(" << m_PregCooldown << ")";
 		}
 		else if (has_trait("Zombie") || has_trait("Skeleton")) ss << "Ud.";
-		else if (has_trait("Sterile"))	ss << "St.";
-		else							ss << gettext("No");
+		else if (has_trait("Sterile"))	    ss << "St.";
+		else if (has_trait("Fertile"))      ss << gettext("No+");
+		else if (has_trait("Broodmother"))  ss << gettext("No++");
+		else                                ss << gettext("No");
 	}
 	else if (detailName == "is_slave")			{ ss << (is_slave() ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "carrying_human")	{ ss << (carrying_human() ? gettext("Yes") : gettext("No")); }

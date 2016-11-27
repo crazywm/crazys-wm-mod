@@ -420,7 +420,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	int earned = 0;
 	for (int i = 0; i < patients; i++)
 	{
-		earned += g_Dice % 45 + 5; // 5-50 gold per customer
+		earned += g_Dice % 35 + 5; // 5-40 gold per customer
 	}
 	brothel->m_Finance.clinic_income(earned);
 	ss.str("");
