@@ -72,6 +72,12 @@ extern int cycle_pos;
 extern cPlayer* The_Player;
 
 bool cScreenFarmManagement::ids_set = false;
+cScreenFarmManagement::cScreenFarmManagement()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "farm_management_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenFarmManagement::~cScreenFarmManagement() {}
 
 void cScreenFarmManagement::set_ids()
 {
@@ -94,8 +100,6 @@ void cScreenFarmManagement::set_ids()
 	jobdesc_id = get_id("JobDescription");
 	day_id = get_id("DayButton");
 	night_id = get_id("NightButton");
-
-
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
@@ -132,10 +136,6 @@ void cScreenFarmManagement::init()
 	AddToListBox(jobtypelist_id, JOBFILTER_LABORERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_LABORERS]);
 	AddToListBox(jobtypelist_id, JOBFILTER_PRODUCERS, g_Farm.m_JobManager.JobFilterName[JOBFILTER_PRODUCERS]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_FARMSTAFF);
-
-
-
-
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -193,7 +193,6 @@ bool cScreenFarmManagement::check_keys()
 	{
 		if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
 		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
-
 		bool skip = false;
 		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_FARMMANGER || selection == JOB_MARKETER))
 			skip = true;
@@ -201,7 +200,6 @@ bool cScreenFarmManagement::check_keys()
 			skip = true;
 		if (selection == JOB_MARKETER && (g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, 0) > 0 || g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, 1) > 0))
 			skip = true;
-
 		if (skip)
 		{
 			if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
@@ -256,11 +254,6 @@ void cScreenFarmManagement::check_events()
 		else
 		{
 			RefreshJobList();	// populate Jobs listbox with jobs in the selected category
-
-
-
-
-
 			EditTextItem(g_Farm.m_JobManager.JobFilterDesc[selection], jobtypedesc_id);
 		}
 	}

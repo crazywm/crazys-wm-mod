@@ -129,9 +129,11 @@
     <ClCompile Include="cScreenGallery.cpp" />
     <ClCompile Include="cScreenNewGame.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
+    <ClCompile Include="cScreenSettings.cpp" />
     <ClCompile Include="cScreenTurnSummary.cpp" />
     <ClCompile Include="cScrollBar.cpp" />
     <ClCompile Include="cSlider.cpp" />
+    <ClCompile Include="cTextItem.cpp" />
     <ClCompile Include="cWindowManager.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="InterfaceGlobals.cpp" />
@@ -329,7 +331,7 @@
     <ClCompile Include="WorkPeepShow.cpp" />
     <ClCompile Include="WorkPersonalBedWarmer.cpp" />
     <ClCompile Include="WorkPersonalTraining.cpp" />
-    <ClCompile Include="WorkPhysicalSurgery.cpp" />
+    <ClCompile Include="WorkCosmeticSurgery.cpp" />
     <ClCompile Include="WorkRecruiter.cpp" />
     <ClCompile Include="WorkRehab.cpp" />
     <ClCompile Include="WorkRepairShop.cpp" />
@@ -387,6 +389,7 @@
     <ClInclude Include="cScreenGallery.h" />
     <ClInclude Include="cScreenNewGame.h" />
     <ClInclude Include="cScreenPropertyManagement.h" />
+    <ClInclude Include="cScreenSettings.h" />
     <ClInclude Include="cScreenTurnSummary.h" />
     <ClInclude Include="cScrollBar.h" />
     <ClInclude Include="cSlider.h" />

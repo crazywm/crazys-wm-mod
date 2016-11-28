@@ -25,7 +25,6 @@
 #include "cTariff.h"
 #include "cScriptManager.h"
 #include "Revision.h"
-#include "libintl.h"
 #include "cScreenBrothelManagement.h"
 #include "FileList.h"
 #include "MasterFile.h"
@@ -632,7 +631,7 @@ void GameEvents()
 
 	if (CheckGameFlag(FLAG_DUNGEONGIRLDIE))	// a girl has died int the dungeon
 	{
-		g_MessageQue.AddToQue(gettext("A girl has died in the dungeon.\nHer body will be removed by the end of the week."), 1);
+		g_MessageQue.AddToQue("A girl has died in the dungeon.\nHer body will be removed by the end of the week.", 1);
 
 		if (g_Dice.percent(10))	// only 10% of being discovered
 		{
@@ -645,7 +644,7 @@ void GameEvents()
 	}
 	else if (CheckGameFlag(FLAG_DUNGEONCUSTDIE))	// a customer has died in the dungeon
 	{
-		g_MessageQue.AddToQue(gettext("A customer has died in the dungeon.\nTheir body will be removed by the end of the week."), 1);
+		g_MessageQue.AddToQue("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.", 1);
 
 		if (g_Dice.percent(10))	// only 10% chance of being found out
 		{
@@ -880,7 +879,7 @@ bool LoadGameXML(TiXmlHandle hDoc)
 
 	if (minorA != 6)
 	{
-		g_MessageQue.AddToQue(gettext("You must start a new game with this version"), 2);
+		g_MessageQue.AddToQue("You must start a new game with this version", 2);
 		return false;
 	}
 
@@ -1240,7 +1239,7 @@ void TransferGirls()
 							else color = COLOR_RED;
 						}
 						else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT
-							|| temp->m_DayJob == JOB_PHYSICALSURGERY || temp->m_NightJob == JOB_PHYSICALSURGERY
+							|| temp->m_DayJob == JOB_COSMETICSURGERY || temp->m_NightJob == JOB_COSMETICSURGERY
 							|| temp->m_DayJob == JOB_LIPO || temp->m_NightJob == JOB_LIPO
 							|| temp->m_DayJob == JOB_BREASTREDUCTION || temp->m_NightJob == JOB_BREASTREDUCTION
 							|| temp->m_DayJob == JOB_BOOBJOB || temp->m_NightJob == JOB_BOOBJOB
@@ -1420,7 +1419,7 @@ void TransferGirls()
 							else color = COLOR_RED;
 						}
 						else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT
-							|| temp->m_DayJob == JOB_PHYSICALSURGERY || temp->m_NightJob == JOB_PHYSICALSURGERY
+							|| temp->m_DayJob == JOB_COSMETICSURGERY || temp->m_NightJob == JOB_COSMETICSURGERY
 							|| temp->m_DayJob == JOB_LIPO || temp->m_NightJob == JOB_LIPO
 							|| temp->m_DayJob == JOB_BREASTREDUCTION || temp->m_NightJob == JOB_BREASTREDUCTION
 							|| temp->m_DayJob == JOB_BOOBJOB || temp->m_NightJob == JOB_BOOBJOB
@@ -1484,7 +1483,7 @@ void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 
 	if (brothel->m_NumGirls == brothel->m_NumRooms)
 	{
-		g_MessageQue.AddToQue(gettext("Left side building is full"), 1);
+		g_MessageQue.AddToQue("Left side building is full", 1);
 	}
 	else
 	{
@@ -1506,7 +1505,7 @@ void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 			// check there is still room
 			if (brothel->m_NumGirls + 1 > brothel->m_NumRooms)
 			{
-				g_MessageQue.AddToQue(gettext("Left side building is full"), 1);
+				g_MessageQue.AddToQue("Left side building is full", 1);
 				break;
 			}
 
@@ -1551,7 +1550,7 @@ void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 
 	if (brothel->m_NumGirls == brothel->m_NumRooms)
 	{
-		g_MessageQue.AddToQue(gettext("Right side building is full"), 1);
+		g_MessageQue.AddToQue("Right side building is full", 1);
 	}
 	else
 	{
@@ -1572,7 +1571,7 @@ void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel)
 			// check there is still room
 			if (brothel->m_NumGirls + 1 > brothel->m_NumRooms)
 			{
-				g_MessageQue.AddToQue(gettext("Right side building is full"), 1);
+				g_MessageQue.AddToQue("Right side building is full", 1);
 				break;
 			}
 

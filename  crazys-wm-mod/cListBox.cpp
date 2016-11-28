@@ -24,6 +24,7 @@
 #include "cInterfaceEvent.h"
 #include "strnatcmp.h"
 #include "sConfig.h"
+#include "Globals.h"
 
 SDL_Surface* cListBox::m_HeaderSortAsc = 0;
 SDL_Surface* cListBox::m_HeaderSortDesc = 0;
@@ -902,7 +903,7 @@ void cListBox::DefineColumns(string name[], string header[], int offset[], bool 
 	{
 		m_ColumnName[i] = name[i];
 		m_Header[i] = header[i];
-		m_ColumnOffset[i] = offset[i];
+		m_ColumnOffset[i] = offset[i] * _G.g_ScreenScaleX;
 		m_SkipColumn[i] = skip[i];
 	}
 

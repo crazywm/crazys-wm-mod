@@ -26,52 +26,54 @@
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
 #include "cScreenGirlDetails.h"
-#include "libintl.h"
 
-extern cScreenGirlDetails g_GirlDetails;
+extern cBrothelManager		g_Brothels;
+extern cArenaManager		g_Arena;
+extern int					g_CurrArena;
+extern cScreenGirlDetails	g_GirlDetails;
+extern cWindowManager		g_WinManager;
+extern int					g_CurrentScreen;
+extern bool					g_InitWin;
+extern cPlayer*				The_Player;
+extern sGirl				*selected_girl;
+extern vector<int>			cycle_girls;
+extern int					cycle_pos;
+extern cGold				g_Gold;
 
-extern int g_CurrArena;
-extern cArenaManager g_Arena;
-extern cBrothelManager g_Brothels;
-extern bool g_InitWin;
-extern cWindowManager g_WinManager;
-extern cGold g_Gold;
+extern	bool				g_LeftArrow;
+extern	bool				g_RightArrow;
+extern	bool				g_UpArrow;
+extern	bool				g_DownArrow;
+extern	bool				g_AltKeys;	// New hotkeys --PP
+extern	bool				g_EnterKey;
+extern	bool				g_SpaceKey;
+extern	bool				g_CTRLDown;
+extern	bool				g_Q_Key;
+extern	bool				g_W_Key;
+extern	bool				g_E_Key;
+extern	bool				g_A_Key;
+extern	bool				g_S_Key;
+extern	bool				g_D_Key;
+extern	bool				g_Z_Key;
+extern	bool				g_X_Key;
+extern	bool				g_C_Key;
 
-extern	bool	g_LeftArrow;
-extern	bool	g_RightArrow;
-extern	bool	g_UpArrow;
-extern	bool	g_DownArrow;
-extern	bool	g_AltKeys;	// New hotkeys --PP
-extern	bool	g_EnterKey;
-extern	bool	g_SpaceKey;
-extern	bool	g_CTRLDown;
-extern	bool	g_Q_Key;
-extern	bool	g_W_Key;
-extern	bool	g_E_Key;
-extern	bool	g_A_Key;
-extern	bool	g_S_Key;
-extern	bool	g_D_Key;
-extern	bool	g_Z_Key;
-extern	bool	g_X_Key;
-extern	bool	g_C_Key;
-extern	int		g_CurrentScreen;
-
-static cTariff tariff;
-static stringstream ss;
-
-static int lastNum = -1;
-static int ImageNum = -1;
-static int FFSD_Flag = -1;
-static int selection = -1;
-static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
-static bool SetJob = false;
-
-extern sGirl *selected_girl;
-extern vector<int> cycle_girls;
-extern int cycle_pos;
-extern cPlayer* The_Player;
+static cTariff				tariff;
+static stringstream			ss;
+static int					lastNum = -1;
+static int					ImageNum = -1;
+static int					FFSD_Flag = -1;
+static int					selection = -1;
+static bool					Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
+static bool					SetJob = false;
 
 bool cScreenArenaManagement::ids_set = false;
+cScreenArenaManagement::cScreenArenaManagement()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "arena_management_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenArenaManagement::~cScreenArenaManagement() {}
 
 void cScreenArenaManagement::set_ids()
 {
@@ -94,8 +96,6 @@ void cScreenArenaManagement::set_ids()
 	jobdesc_id = get_id("JobDescription");
 	day_id = get_id("DayButton");
 	night_id = get_id("NightButton");
-
-
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
@@ -128,14 +128,9 @@ void cScreenArenaManagement::init()
 	ClearListBox(jobtypelist_id);
 
 	// add the job filters
-	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_ARENASTAFF, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENASTAFF]);
 	AddToListBox(jobtypelist_id, JOBFILTER_ARENA, g_Arena.m_JobManager.JobFilterName[JOBFILTER_ARENA]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_ARENASTAFF);
-
-
-
-
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -199,9 +194,6 @@ bool cScreenArenaManagement::check_keys()
 			skip = true;
 		if (selection == JOB_DOCTORE && (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 0) > 0 || g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 1) > 0))
 			skip = true;
-
-
-
 		if (skip)
 		{
 			if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
@@ -256,10 +248,6 @@ void cScreenArenaManagement::check_events()
 		else
 		{
 			RefreshJobList();	// populate Jobs listbox with jobs in the selected category
-
-
-
-
 
 			EditTextItem(g_Arena.m_JobManager.JobFilterDesc[selection], jobtypedesc_id);
 		}

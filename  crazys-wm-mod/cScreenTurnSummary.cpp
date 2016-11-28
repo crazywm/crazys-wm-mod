@@ -36,7 +36,6 @@
 #include "cScriptManager.h"
 #include "cGetStringScreenManager.h"
 #include "cGold.h"
-#include "libintl.h"
 #include "cScreenBrothelManagement.h"
 
 #include "cWindowManager.h"
@@ -131,6 +130,13 @@ static bool	Image_Change = false;
 static int summarysortorder = 0;	// the order girls get sorted in the summary lists
 #pragma endregion
 
+cScreenTurnSummary::cScreenTurnSummary()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "TurnSummary.xml";
+	m_filename = dp.c_str();
+}
+cScreenTurnSummary::~cScreenTurnSummary() {}
+
 void cScreenTurnSummary::set_ids()
 {
 	ids_set = true;
@@ -208,7 +214,6 @@ void cScreenTurnSummary::process()
 		Item_Change = false;
 		Event_Change = true;
 		Image_Change = true;
-
 	}
 	if (Event_Change && Event >= 0)
 	{
@@ -239,7 +244,7 @@ void cScreenTurnSummary::process()
 		Event_Change = false;
 	}
 
-	string brothel = gettext("Current Brothel: ");
+	string brothel = "Current Brothel: ";
 	brothel += g_Brothels.GetName(g_CurrBrothel);
 	EditTextItem(brothel, brothel_id);
 
@@ -290,7 +295,7 @@ void cScreenTurnSummary::init()
 		else /*                                    */	Category = Summary_GIRLS;
 	}
 
-	string brothel = gettext("Current Brothel: ");
+	string brothel = "Current Brothel: ";
 	brothel += g_Brothels.GetName(g_CurrBrothel);
 	EditTextItem(brothel, brothel_id);
 
@@ -312,16 +317,16 @@ void cScreenTurnSummary::init()
 	ClearListBox(event_id);
 	EditTextItem("", labeldesc_id);
 
-	AddToListBox(category_id, 0, gettext("GIRLS"));
-	AddToListBox(category_id, 1, gettext("GANGS"));
-	AddToListBox(category_id, 2, gettext("BROTHELS"));
-	AddToListBox(category_id, 3, gettext("DUNGEON"));
-	if (g_Studios.GetNumBrothels() > 0)	AddToListBox(category_id, 4, gettext("STUDIO"));
-	if (g_Arena.GetNumBrothels() > 0)	AddToListBox(category_id, 5, gettext("ARENA"));
-	if (g_Centre.GetNumBrothels() > 0)	AddToListBox(category_id, 6, gettext("CENTRE"));
-	if (g_Clinic.GetNumBrothels() > 0)	AddToListBox(category_id, 7, gettext("CLINIC"));
-	if (g_Farm.GetNumBrothels() > 0)	AddToListBox(category_id, 8, gettext("FARM"));
-	AddToListBox(category_id, 9, gettext("HOUSE"));
+	AddToListBox(category_id, 0, "GIRLS");
+	AddToListBox(category_id, 1, "GANGS");
+	AddToListBox(category_id, 2, "BROTHELS");
+	AddToListBox(category_id, 3, "DUNGEON");
+	if (g_Studios.GetNumBrothels() > 0)	AddToListBox(category_id, 4, "STUDIO");
+	if (g_Arena.GetNumBrothels() > 0)	AddToListBox(category_id, 5, "ARENA");
+	if (g_Centre.GetNumBrothels() > 0)	AddToListBox(category_id, 6, "CENTRE");
+	if (g_Clinic.GetNumBrothels() > 0)	AddToListBox(category_id, 7, "CLINIC");
+	if (g_Farm.GetNumBrothels() > 0)	AddToListBox(category_id, 8, "FARM");
+	AddToListBox(category_id, 9, "HOUSE");
 	SetSelectedItemInList(category_id, Category);
 	Category_Change = true;
 

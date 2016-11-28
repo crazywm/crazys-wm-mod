@@ -62,6 +62,7 @@
 #include "cScreenDungeon.h"
 #include "cScreenMainMenu.h"
 #include "cScreenNewGame.h"
+#include "cScreenSettings.h"
 #include "cScreenBrothelManagement.h"
 #include "cScreenGetInput.h"
 #include "cScreenGallery.h"
@@ -77,6 +78,7 @@ extern cWindowManager g_WinManager;
 cInterfaceEventManager g_InterfaceEvents;
 cScreenMainMenu g_MainMenu;
 cScreenNewGame g_NewGame;			// NewGame.xml
+cScreenSettings g_Settings;			// `J` added
 
 cScreenBrothelManagement g_BrothelManagement;
 cScreenGirlManagement g_GirlManagement;
@@ -216,6 +218,7 @@ void FreeInterface()
 	g_ChoiceManager.Free();
 	g_MessageQue.Free();
 	g_LoadGame.Free();
+	g_Settings.Free();
 	g_PlayersHouse.Free();
 	g_TransferGirls.Free();
 	g_ItemManagement.Free();
@@ -262,6 +265,7 @@ void ResetInterface()
 	g_BankScreen.Reset();
 	g_ChoiceManager.Free();
 	g_LoadGame.Reset();
+	g_Settings.Reset();
 	g_PlayersHouse.Reset();
 	g_TransferGirls.Reset();
 	g_ItemManagement.Reset();
@@ -274,10 +278,10 @@ void LoadInterface()
 {
 	cTariff tariff;
 	stringstream ss;
-	int r = 0, g = 0, b = 0, a = 0, c = 0, d = 0, e = 0, fontsize = 10, rowheight = 20 ,
+	int r = 0, g = 0, b = 0, x = 0, y = 0, w = 0, h = 0, a = 0, c = 0, d = 0, e = 0, fontsize = 10, rowheight = 20,
 		increment = 0, min = 0, max = 0, value = 0;
 	string image = ""; string text = ""; string file = "";
-	bool Transparency = false, Scale = true, multi = false, events = false, liveUpdate = false;
+	bool Transparency = false, Scale = true, multi = false, events = false, liveUpdate = false, leftorright = false;
 	ifstream incol;
 	
 
@@ -511,6 +515,8 @@ void LoadInterface()
 		g_LoadGame.AddButton("Back", g_interfaceid.BUTTON_LOADGBACK, 176, 304, 160, 32, true);
 	}
 
+	
+
 
 	// Load GetString screen
 	int GetString = 0;		// 0=default, 1=xml, 2=txt
@@ -539,16 +545,18 @@ void LoadInterface()
 		{
 			XmlUtil xu(m_filename);	string name;
 			xu.get_att(el, "Name", name);
-			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
+			xu.get_att(el, "XPos", x); xu.get_att(el, "YPos", y); xu.get_att(el, "Width", w); xu.get_att(el, "Height", h); 
+			xu.get_att(el, "Red", r); xu.get_att(el, "Green", g); xu.get_att(el, "Blue", b); xu.get_att(el, "LeftOrRight", leftorright);
+			xu.get_att(el, "Border", e, true);
 			xu.get_att(el, "Image", image, true); xu.get_att(el, "Transparency", Transparency, true); 
 			xu.get_att(el, "Scale", Scale, true); xu.get_att(el, "Text", text, true);
 			xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 16;
 
-			if (name == "GetString")	g_GetString.CreateWindow(a, b, c, d, e);
-			if (name == "Ok")			g_GetString.AddButton(image, g_interfaceid.BUTTON_OK, a, b, c, d, Transparency, Scale);
-			if (name == "Cancel")		g_GetString.AddButton(image, g_interfaceid.BUTTON_CANCEL, a, b, c, d, Transparency, Scale);
-			if (name == "Label")		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, a, b, c, d, text, fontsize);
-			if (name == "TextField")	g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, a, b, c, d, e, fontsize);
+			if (name == "GetString")	g_GetString.CreateWindow(x, y, w, h, e);
+			if (name == "Ok")			g_GetString.AddButton(image, g_interfaceid.BUTTON_OK, x, y, w, h, Transparency, Scale);
+			if (name == "Cancel")		g_GetString.AddButton(image, g_interfaceid.BUTTON_CANCEL, x, y, w, h, Transparency, Scale);
+			if (name == "Label")		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, x, y, w, h, text, fontsize, true, false, leftorright, r, g, b);
+			if (name == "TextField")	g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, x, y, w, h, e, fontsize);
 		}
 	}
 	else if (GetString == 2)
@@ -643,10 +651,10 @@ void LoadInterface()
 
 
 	g_LogFile.write("Loading Preparing Game Screen");
-	int x = cfg.resolution.scalewidth() / 4;
-	int y = cfg.resolution.scaleheight() / 4;
-	int w = cfg.resolution.scalewidth() / 2;
-	int h = cfg.resolution.scaleheight() / 2;
+	x = cfg.resolution.scalewidth() / 4;
+	y = cfg.resolution.scaleheight() / 4;
+	w = cfg.resolution.scalewidth() / 2;
+	h = cfg.resolution.scaleheight() / 2;
 	int t = h / 14;
 	int u = w / 8;
 	g_Preparing.CreateWindow(x, y, w, h, 1);
@@ -666,6 +674,11 @@ void LoadInterface()
 	g_LogFile.write("Loading NewGame");
 	g_NewGame.load();
 	g_WinManager.add_window("New Game", &g_NewGame);
+
+	// Settings
+	g_LogFile.write("Loading Settings");
+	g_Settings.load();
+	g_WinManager.add_window("Settings", &g_Settings);
 
 	// Get Input Screen
 	g_LogFile.write("Loading Input Screen");

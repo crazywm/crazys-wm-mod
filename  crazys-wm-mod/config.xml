@@ -26,10 +26,10 @@
         PreferDefault="false" />
     <!--
 	Resolution     = the name of your interface folder
-	Width          = screen width
-	Height         = screen height
-	ScaleWidth     = screen scale width
-	ScaleHeight    = screen scale height
+	Width          = Your screen width
+	Height         = Your screen height
+	ScaleWidth     = The width  that the interface was made for
+	ScaleHeight    = The height that the interface was made for
 			The old code of the game scaled all windows down to 800x600
 			This has been fixed but any old interfaces will not display correctly
 				if the scale width and height are not set to 800x600.
@@ -37,15 +37,30 @@
 	ListScrollAmount = The number of lines to scroll in List boxes.
 	TextScrollAmount = The number of lines to scroll in Text boxes.
 	-->
+<!-- 16:9
+    <Resolution
+        Resolution="J_1920x1080"
+        Width="1366"
+        Height="768"
+        ScaleWidth="1920"
+        ScaleHeight="1080"
+        FixedScale="true"
+        FullScreen="true"
+        ListScrollAmount="3"
+        TextScrollAmount="3" />
+-->
+<!-- 4:3 -->
     <Resolution
         Resolution="J_1024x768"
         Width="1024"
         Height="768"
         ScaleWidth="800"
         ScaleHeight="600"
+        FixedScale="false"
         FullScreen="false"
         ListScrollAmount="3"
         TextScrollAmount="3" />
+
     <!--
 	Gold is how much gold you start the game with.
 	GirlMeet is the %chance you'll meet a girl when walking around town.

@@ -53,6 +53,7 @@ extern cCentreManager			g_Centre;
 extern cFarmManager				g_Farm;
 extern cWindowManager			g_WinManager;
 extern cInterfaceEventManager	g_InterfaceEvents;
+extern sGirl *selected_girl;
 extern bool						g_WalkAround;
 extern bool						g_Cheats;
 extern bool						eventrunning;
@@ -63,12 +64,25 @@ extern int						g_CurrentScreen;
 extern int						g_Building;
 extern string					ReadTextFile(DirPath path, string file);
 
-bool cScreenTown::ids_set = false;
-
 static int lastNum = -1;
 static int ImageNum = -1;
+bool cScreenTown::ids_set = false;
 
-extern sGirl *selected_girl;
+cScreenTown::cScreenTown()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "town_screen.xml";
+	m_filename = dp.c_str();
+	BuyBrothel = -1;
+	BuyClinic = -1;
+	BuyArena = -1;
+	BuyStudio = -1;
+	BuyCentre = -1;
+	BuyFarm = -1;
+	GetName = false;
+	m_first_walk = true;
+}
+cScreenTown::~cScreenTown() {}
+
 
 void cScreenTown::set_ids()
 {
@@ -98,7 +112,6 @@ void cScreenTown::set_ids()
 	girlimage_id =	get_id("GirlImage");
 }
 
-
 // stats of each brothel: price to buy, starting rooms, maximum rooms, required # of businesses owned
 static static_brothel_data brothel_data[] = {
 	{ 0, 20, 200, 0 },
@@ -109,8 +122,6 @@ static static_brothel_data brothel_data[] = {
 	{ 300000, 50, 500, 170 },
 	{ 1000000, 80, 600, 220 }
 };
-
-
 static static_brothel_data centre_data[] = {
 	{ 5000, 20, 200, 5 }
 	//{000, 10, 0 }
@@ -131,7 +142,6 @@ static static_brothel_data clinic_data[] = {
 	{ 25000, 20, 200, 25 }
 	//{000, 10, 0, 0 }
 };
-
 
 void cScreenTown::init()
 {

@@ -16,7 +16,11 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma once
+
+#include "DirPath.h"
 #include "cInterfaceWindow.h"
+#include "InterfaceGlobals.h"
 
 enum INPUT_MODE {
 	MODE_STRING,
@@ -27,34 +31,24 @@ enum INPUT_MODE {
 
 class cScreenGetInput : public cInterfaceWindowXML
 {
-
 	bool ids_set = false;
-
 	INPUT_MODE m_profile = MODE_INT; // GetInt, GetString or GetConfirm?
-
 	int id_btn_ok;
 	int id_btn_cancel;
 	int id_label;
 	int id_textfield;
-
 public:
-
 	cScreenGetInput();
 	~cScreenGetInput();
-
 	void set_ids();
 	void init();
 	void process();
 	void check_events();
 	bool check_keys();
-
-	void Free() { cInterfaceWindowXML::Free(); }
-
-	void ModeGetString() { m_profile = MODE_STRING; };
-	void ModeGetInt() { m_profile = MODE_INT; };
-	void ModeConfirm() { m_profile = MODE_CONFIRM; };
-
-	void ModeConfirmExit() { m_profile = MODE_CONFIRM_EXIT; };
+	void Free()				{ cInterfaceWindowXML::Free(); }
+	void ModeGetString()	{ m_profile = MODE_STRING; };
+	void ModeGetInt()		{ m_profile = MODE_INT; };
+	void ModeConfirm()		{ m_profile = MODE_CONFIRM; };
+	void ModeConfirmExit()	{ m_profile = MODE_CONFIRM_EXIT; };
 	void CheckEvents_ConfirmExit();
 };
-

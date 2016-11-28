@@ -499,9 +499,6 @@
     <ClCompile Include="WorkPersonalTraining.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
-    <ClCompile Include="WorkPhysicalSurgery.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
     <ClCompile Include="WorkRecruiter.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
@@ -623,6 +620,11 @@
     <ClCompile Include="WorkFilmThroat.cpp" />
     <ClCompile Include="WorkFilmTease.cpp" />
     <ClCompile Include="WorkJeweler.cpp" />
+    <ClCompile Include="cScreenSettings.cpp" />
+    <ClCompile Include="cTextItem.cpp" />
+    <ClCompile Include="WorkCosmeticSurgery.cpp">
+      <Filter>Jobs</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -1049,6 +1051,9 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="cScreenTurnSummary.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenSettings.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,27 +1,26 @@
 /*
- * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+* Copyright 2009, 2010, The Pink Petal Development Team.
+* The Pink Petal Devloment Team are defined as the game's coders
+* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 #include "cBrothel.h"
 #include "cScreenBuildingSetup.h"
 #include "cWindowManager.h"
 #include "cGold.h"
 #include "cTariff.h"
-#include "libintl.h"
 #include "cMovieStudio.h"
 #include "cClinic.h"
 #include "cArena.h"
@@ -29,24 +28,30 @@
 #include "cHouse.h"
 #include "cFarm.h"
 
-extern bool g_InitWin;
-extern int g_CurrBrothel;
-extern cGold g_Gold;
-extern cBrothelManager g_Brothels;
-extern cWindowManager g_WinManager;
-extern cMovieStudioManager g_Studios;
-extern cClinicManager g_Clinic;
-extern cArenaManager g_Arena;
-extern cCentreManager g_Centre;
-extern cHouseManager g_House;
-extern cFarmManager g_Farm;
-extern int g_CurrentScreen;
-extern int g_Building;
+extern bool					g_InitWin;
+extern int					g_CurrBrothel;
+extern cGold				g_Gold;
+extern cBrothelManager		g_Brothels;
+extern cWindowManager		g_WinManager;
+extern cMovieStudioManager	g_Studios;
+extern cClinicManager		g_Clinic;
+extern cArenaManager		g_Arena;
+extern cCentreManager		g_Centre;
+extern cHouseManager		g_House;
+extern cFarmManager			g_Farm;
+extern int					g_CurrentScreen;
+extern int					g_Building;
 
 static cTariff tariff;
 static stringstream ss;
 
 bool cScreenBuildingSetup::ids_set = false;
+cScreenBuildingSetup::cScreenBuildingSetup()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "building_setup_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenBuildingSetup::~cScreenBuildingSetup() {}
 
 void cScreenBuildingSetup::set_ids()
 {
@@ -67,7 +72,7 @@ void cScreenBuildingSetup::set_ids()
 	roomcost_id = get_id("RoomAddCost");
 	buyrooms_id = get_id("BuildRoomsButton");
 	restrict_id = get_id("SexRestrictions");
-	
+
 	noanal_id = get_id("ProhibitAnalToggleRes");
 	nobdsm_id = get_id("ProhibitBDSMToggleRes");
 	nobeast_id = get_id("ProhibitBeastToggleRes");
@@ -96,7 +101,7 @@ void cScreenBuildingSetup::init()
 	switch (g_Building)
 	{
 	case BUILDING_STUDIO:
-		brothel = gettext("The Movie Studio");
+		brothel = "The Movie Studio";
 		rooms = g_Studios.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Studios.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Studios.GetBrothel(0)->m_AntiPregPotions;
@@ -115,10 +120,10 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(nonormal_id, g_Studios.GetBrothel(0)->m_RestrictNormal);
 		SetCheckBox(nooral_id, g_Studios.GetBrothel(0)->m_RestrictOral);
 		SetCheckBox(nostrip_id, g_Studios.GetBrothel(0)->m_RestrictStrip);
-		SetCheckBox(notitty_id, g_Studios.GetBrothel(0)->m_RestrictTitty);		
+		SetCheckBox(notitty_id, g_Studios.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_CLINIC:
-		brothel = gettext("The Clinic");
+		brothel = "The Clinic";
 		rooms = g_Clinic.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Clinic.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Clinic.GetBrothel(0)->m_AntiPregPotions;
@@ -140,7 +145,7 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(notitty_id, g_Clinic.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_ARENA:
-		brothel = gettext("The Arena");
+		brothel = "The Arena";
 		rooms = g_Arena.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Arena.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Arena.GetBrothel(0)->m_AntiPregPotions;
@@ -162,7 +167,7 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(notitty_id, g_Arena.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_CENTRE:
-		brothel = gettext("The Community Centre");
+		brothel = "The Community Centre";
 		rooms = g_Centre.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Centre.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Centre.GetBrothel(0)->m_AntiPregPotions;
@@ -184,7 +189,7 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(notitty_id, g_Centre.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_HOUSE:
-		brothel = gettext("Your House");
+		brothel = "Your House";
 		rooms = g_House.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_House.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_House.GetBrothel(0)->m_AntiPregPotions;
@@ -206,7 +211,7 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(notitty_id, g_House.GetBrothel(0)->m_RestrictTitty);
 		break;
 	case BUILDING_FARM:
-		brothel = gettext("Your Farm");
+		brothel = "Your Farm";
 		rooms = g_Farm.GetBrothel(0)->m_NumRooms;
 		maxrooms = g_Farm.GetBrothel(0)->m_MaxNumRooms;
 		antipregnum = g_Farm.GetBrothel(0)->m_AntiPregPotions;
@@ -229,7 +234,7 @@ void cScreenBuildingSetup::init()
 		break;
 	case BUILDING_BROTHEL:
 	default:
-		brothel = gettext("Current Brothel: "); brothel += g_Brothels.GetName(g_CurrBrothel);
+		brothel = "Current Brothel: "; brothel += g_Brothels.GetName(g_CurrBrothel);
 		rooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms;
 		maxrooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_MaxNumRooms;
 		antipregnum = g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions;
@@ -253,34 +258,29 @@ void cScreenBuildingSetup::init()
 	}
 
 	EditTextItem(brothel, curbrothel_id);
-	ss.str("");
-	ss << gettext("Anti-Preg Potions: ") << tariff.anti_preg_price(1) << gettext(" gold each.");
+	ss.str("");	ss << "Anti-Preg Potions: " << tariff.anti_preg_price(1) << " gold each.";
 	EditTextItem(ss.str(), potioncost_id);
 
 	// let's limit advertising budget to multiples of 50 gold (~3 added customers), from 0 - 2000
 	advert = SliderRange(advertsli_id, 0, (2000 / 50), advert, 4);  // set slider min/max range
-	ss.str("");
-	ss << "Advertising Budget: " << (advert * 50) << " gold / week";
+	ss.str("");	ss << "Advertising Budget: " << (advert * 50) << " gold / week";
 	EditTextItem(ss.str(), advertamt_id);
 
 	if (antipregused < 0) antipregused = 0;
-	ss.str("");
-	ss << "         You have: " << antipregnum;
-	ss << "\nUsed Last Turn: " << antipregused;
+	ss.str("");	ss << "         You have: " << antipregnum << "\nUsed Last Turn: " << antipregused;
 	EditTextItem(ss.str(), potionavail_id);
 	DisableCheckBox(autopotions_id, antipregnum < 1);
 
-	ss.str("");
-	ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
+	ss.str("");	ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
 	EditTextItem(ss.str(), roomcost_id);
 	DisableButton(buyrooms_id, rooms >= maxrooms);
 
 	/*	ss.str("");
-	ss << gettext("Bar Staff: ") << tariff.bar_staff_wages() << gettext(" gold / week");
+	ss << "Bar Staff: " << tariff.bar_staff_wages() << " gold / week";
 	EditTextItem(ss.str(), barstaff_id);
 
 	ss.str("");
-	ss << gettext("Casino Staff: ") << tariff.casino_staff_wages() << gettext(" gold / week");
+	ss << "Casino Staff: " << tariff.casino_staff_wages() << " gold / week";
 	EditTextItem(ss.str(), casinostaff_id);
 	*/
 
@@ -302,8 +302,7 @@ void cScreenBuildingSetup::check_events()
 	int buypotions = 0;
 	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
 
-	// if it's the back button, pop the window off the stack and we're done
-	if (g_InterfaceEvents.CheckButton(back_id))
+	if (g_InterfaceEvents.CheckButton(back_id))			// if it's the back button, pop the window off the stack and we're done
 	{
 		g_Building = BUILDING_BROTHEL;
 		g_InitWin = true;
@@ -312,76 +311,63 @@ void cScreenBuildingSetup::check_events()
 	}
 	if (g_InterfaceEvents.CheckButton(buyrooms_id))
 	{
-
-		if (!g_Gold.brothel_cost(5000))
-		{
-			g_MessageQue.AddToQue(gettext("You need 5000 gold to add 5 rooms"), COLOR_RED);
-		}
+		if (!g_Gold.brothel_cost(5000))		g_MessageQue.AddToQue("You need 5000 gold to add 5 rooms", COLOR_RED);
 		else
 		{
 			int rooms = 20, maxrooms = 200;
-
 			switch (g_Building)
 			{
 			case BUILDING_STUDIO:
+				g_Studios.GetBrothel(0)->m_NumRooms += 5;
 				rooms = g_Studios.GetBrothel(0)->m_NumRooms;
 				maxrooms = g_Studios.GetBrothel(0)->m_MaxNumRooms;
-				g_Studios.GetBrothel(0)->m_NumRooms += 5;
-				rooms += 5;
 				break;
 			case BUILDING_CLINIC:
+				g_Clinic.GetBrothel(0)->m_NumRooms += 5;
 				rooms = g_Clinic.GetBrothel(0)->m_NumRooms;
 				maxrooms = g_Clinic.GetBrothel(0)->m_MaxNumRooms;
-				g_Clinic.GetBrothel(0)->m_NumRooms += 5;
-				rooms += 5;
 				break;
 			case BUILDING_ARENA:
+				g_Arena.GetBrothel(0)->m_NumRooms += 5;
 				rooms = g_Arena.GetBrothel(0)->m_NumRooms;
 				maxrooms = g_Arena.GetBrothel(0)->m_MaxNumRooms;
-				g_Arena.GetBrothel(0)->m_NumRooms += 5;
-				rooms += 5;
 				break;
 			case BUILDING_CENTRE:
+				g_Centre.GetBrothel(0)->m_NumRooms += 5;
 				rooms = g_Centre.GetBrothel(0)->m_NumRooms;
 				maxrooms = g_Centre.GetBrothel(0)->m_MaxNumRooms;
-				g_Centre.GetBrothel(0)->m_NumRooms += 5;
-				rooms += 5;
 				break;
 			case BUILDING_HOUSE:
+				g_House.GetBrothel(0)->m_NumRooms += 5;
 				rooms = g_House.GetBrothel(0)->m_NumRooms;
 				maxrooms = g_House.GetBrothel(0)->m_MaxNumRooms;
-				g_House.GetBrothel(0)->m_NumRooms += 5;
-				rooms += 5;
 				break;
 			case BUILDING_FARM:
+				g_Farm.GetBrothel(0)->m_NumRooms += 5;
 				rooms = g_Farm.GetBrothel(0)->m_NumRooms;
 				maxrooms = g_Farm.GetBrothel(0)->m_MaxNumRooms;
-				g_Farm.GetBrothel(0)->m_NumRooms += 5;
-				rooms += 5;
 				break;
 			case BUILDING_BROTHEL:
 			default:
+				g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms += 5;
 				rooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms;
 				maxrooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_MaxNumRooms;
-				g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms += 5;
-				rooms += 5;
 				break;
 			}
-			ss.str("");
-			ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
+			ss.str(""); ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
 			EditTextItem(ss.str(), roomcost_id);
 			DisableButton(buyrooms_id, rooms >= maxrooms);
 		}
 	}
 	if (g_InterfaceEvents.CheckButton(potions10_id)) buypotions = 10;
 	if (g_InterfaceEvents.CheckButton(potions20_id)) buypotions = 20;
-	if (buypotions>0)
+	if (buypotions > 0)
 	{
 		int buynum = buypotions;
-		buypotions = 0;
 		int buysum = buynum;
+		buypotions = 0;
 		int MaxSupplies = 0, antipregnum = 0;
-		if (!g_Gold.afford(tariff.anti_preg_price(buynum)))	g_MessageQue.AddToQue("You don't have enough gold", 0);
+		if (!g_Gold.afford(tariff.anti_preg_price(buynum)))	g_MessageQue.AddToQue("You don't have enough gold", COLOR_RED);
 		else
 		{
 			switch (g_Building)
@@ -432,8 +418,7 @@ void cScreenBuildingSetup::check_events()
 			}
 			if (buysum < buynum)
 			{
-				ss.str("");
-				ss << "You can only store up to " << MaxSupplies << " potions.";
+				ss.str(""); ss << "You can only store up to " << MaxSupplies << " potions.";
 				if (buysum > 0)
 				{
 					ss << "\nYou buy " << buysum << " to fill the stock.";
@@ -448,30 +433,29 @@ void cScreenBuildingSetup::check_events()
 	}
 
 	/*	if(g_InterfaceEvents.CheckButton(barhire_id))
-		{
-		g_Brothels.GetBrothel(g_CurrBrothel)->m_HasBarStaff = 1;
-		g_InitWin = true;
-		}
-		if(g_InterfaceEvents.CheckButton(barfire_id))
-		{
-		g_Brothels.GetBrothel(g_CurrBrothel)->m_HasBarStaff = 0;
-		g_InitWin = true;
-		}
-		if(g_InterfaceEvents.CheckButton(casinohire_id))
-		{
-		g_Brothels.GetBrothel(g_CurrBrothel)->m_HasGambStaff = 1;
-		g_InitWin = true;
-		}
-		if(g_InterfaceEvents.CheckButton(casinofire_id))
-		{
-		g_Brothels.GetBrothel(g_CurrBrothel)->m_HasGambStaff = 0;
-		g_InitWin = true;
-		}	*/
+	{
+	g_Brothels.GetBrothel(g_CurrBrothel)->m_HasBarStaff = 1;
+	g_InitWin = true;
+	}
+	if(g_InterfaceEvents.CheckButton(barfire_id))
+	{
+	g_Brothels.GetBrothel(g_CurrBrothel)->m_HasBarStaff = 0;
+	g_InitWin = true;
+	}
+	if(g_InterfaceEvents.CheckButton(casinohire_id))
+	{
+	g_Brothels.GetBrothel(g_CurrBrothel)->m_HasGambStaff = 1;
+	g_InitWin = true;
+	}
+	if(g_InterfaceEvents.CheckButton(casinofire_id))
+	{
+	g_Brothels.GetBrothel(g_CurrBrothel)->m_HasGambStaff = 0;
+	g_InitWin = true;
+	}	*/
 
 	if (g_InterfaceEvents.CheckSlider(advertsli_id))
 	{
-		// set advertising budget based on slider
-		switch (g_Building)
+		switch (g_Building)		// set advertising budget based on slider
 		{
 		case BUILDING_STUDIO:	g_Studios.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
 		case BUILDING_CLINIC:	g_Clinic.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
@@ -480,12 +464,10 @@ void cScreenBuildingSetup::check_events()
 		case BUILDING_HOUSE:	g_House.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;	break;
 		case BUILDING_FARM:		g_Farm.GetBrothel(0)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;		break;
 		case BUILDING_BROTHEL:
-		default:
-			g_Brothels.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;
+		default:				g_Brothels.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = SliderValue(advertsli_id) * 50;
 			break;
 		}
-		ss.str("");
-		ss << gettext("Advertising Budget: ") << (SliderValue(advertsli_id) * 50) << gettext(" gold / week");
+		ss.str(""); ss << "Advertising Budget: " << (SliderValue(advertsli_id) * 50) << " gold / week";
 		EditTextItem(ss.str(), advertamt_id);
 	}
 	switch (g_Building)

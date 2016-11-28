@@ -36,6 +36,10 @@ extern cBrothelManager g_Brothels;
 extern bool g_InitWin;
 extern cWindowManager g_WinManager;
 extern cGold g_Gold;
+extern sGirl *selected_girl;
+extern vector<int> cycle_girls;
+extern int cycle_pos;
+extern cPlayer* The_Player;
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -66,12 +70,13 @@ static int selection = -1;
 static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
-extern sGirl *selected_girl;
-extern vector<int> cycle_girls;
-extern int cycle_pos;
-extern cPlayer* The_Player;
-
 bool cScreenGirlManagement::ids_set = false;
+cScreenGirlManagement::cScreenGirlManagement()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "girl_management_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenGirlManagement::~cScreenGirlManagement() {}
 
 void cScreenGirlManagement::set_ids()
 {
@@ -133,10 +138,6 @@ void cScreenGirlManagement::init()
 		AddToListBox(jobtypelist_id, i, g_Brothels.m_JobManager.JobFilterName[i]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_GENERAL);
 
-
-
-
-
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
 	m_ListBoxes[girllist_id]->GetColumnNames(columnNames);
@@ -193,7 +194,6 @@ bool cScreenGirlManagement::check_keys()
 	{
 		if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
 		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
-
 		bool skip = false;
 		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_MATRON || selection == JOB_TORTURER))
 			skip = true;
@@ -201,7 +201,6 @@ bool cScreenGirlManagement::check_keys()
 			skip = true;
 		if (selection == JOB_TORTURER && (g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_TORTURER, 0) > 0 || g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_TORTURER, 1) > 0))
 			skip = true;
-
 		if (skip)
 		{
 			if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
@@ -256,11 +255,6 @@ void cScreenGirlManagement::check_events()
 		else
 		{
 			RefreshJobList();	// populate Jobs listbox with jobs in the selected category
-
-
-
-
-
 			EditTextItem(g_Brothels.m_JobManager.JobFilterDesc[selection], jobtypedesc_id);
 		}
 	}

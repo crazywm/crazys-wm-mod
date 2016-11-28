@@ -49,12 +49,15 @@ public:
 	int GetTotalNumberOfLines(){return m_NumLines;}
 	int GetLinesPerBox(){if(m_Lineskip>0)return (m_Height/m_Lineskip);else return m_Height/GetFontLineSkip();}
 
+	bool LeftOrRight(){ return m_LeftOrRight; }
+	void LeftOrRight(bool leftorright){ m_LeftOrRight = leftorright; }
 private:
 	TTF_Font* m_Font;
 	SDL_Color m_TextColor;
 	SDL_Surface* m_Message;	// for storing a single line message
 	SDL_Surface* m_MultilineMessage;	// for storing multiline messages
 	string m_Text;
+	bool m_LeftOrRight = false;
 	bool m_NewText;	// variable for keeping track of if it needs to be updated
 	bool m_IsMultiline;
 	int m_Width;

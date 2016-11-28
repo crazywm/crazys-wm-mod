@@ -60,9 +60,18 @@ extern	bool	g_C_Key;
 extern	int		g_CurrentScreen;
 
 static string ReleaseGirlToWhere = "Br0";
-
-bool cScreenSlaveMarket::ids_set = false;
 cTariff tariff;
+bool cScreenSlaveMarket::ids_set = false;
+cScreenSlaveMarket::cScreenSlaveMarket()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "slavemarket_screen.xml";
+	m_filename = dp.c_str();
+	selection = -1;
+	ImageNum = -1;
+	DetailLevel = 0;
+	sel_pos = 0;
+}
+cScreenSlaveMarket::~cScreenSlaveMarket() {}
 
 void cScreenSlaveMarket::set_ids()
 {
@@ -247,14 +256,12 @@ void cScreenSlaveMarket::init()
 
 	if (header_id >= 0)
 	{
-		ss.str("");
-		ss << "Slave Market, " << g_Gold.sval() << gettext(" gold");
+		ss.str(""); ss << "Slave Market, " << g_Gold.sval() << gettext(" gold");
 		EditTextItem(ss.str(), header_id);
 	}
 	if (gold_id >= 0)
 	{
-		ss.str("");
-		ss << "Gold:  " << g_Gold.sval();
+		ss.str(""); ss << "Gold:  " << g_Gold.sval();
 		EditTextItem(ss.str(), gold_id);
 	}
 	
@@ -951,20 +958,14 @@ void cScreenSlaveMarket::change_release(string towhere)
 	else if (sub == "Fa") releaseto = g_Farm.GetBrothel(sendtonum);
 	else if (sub == "Du") releaseto = g_Brothels.GetBrothel(0);
 
-	ss.str("");
-	ss << "Send Girl to: " << (sub == "Du" ? "The Dungeon" : releaseto->m_Name);
+	ss.str("");	ss << "Send Girl to: " << (sub == "Du" ? "The Dungeon" : releaseto->m_Name);
 	EditTextItem(ss.str(), releaseto_id);
-	ss.str("");
-	if (sub != "Du") ss << "Room for " << releaseto->free_rooms() << " more girls.";
+	ss.str("");	if (sub != "Du") ss << "Room for " << releaseto->free_rooms() << " more girls.";
 	EditTextItem(ss.str(), roomsfree_id);
-
-
 }
 
 void cScreenSlaveMarket::generate_unique_girl(int i, bool &unique)
 {
-	
-
 	if (g_Girls.GetNumSlaveGirls() <= 0) return;				// if there are no unique slave girls left then we can do no more here
 	if (!g_Dice.percent(cfg.slavemarket.unique_market())) return;	// otherwise - 35% chance of a unique girl. `J` added config.xml customization
 	int g = g_Dice%g_Girls.GetNumSlaveGirls();					// randomly select a slavegirl from the list
@@ -1151,7 +1152,4 @@ void cScreenSlaveMarket::preparescreenitems(sGirl* girl)
 	if (trait_list_id >= 0) SetSelectedItemInList(trait_list_id, 0);
 	if (trait_list_text_id >= 0) EditTextItem(traits_text.str(), trait_list_text_id);
 	if (girl_desc_id >= 0)	EditTextItem(girl->m_Desc, girl_desc_id);
-
-
-
 }

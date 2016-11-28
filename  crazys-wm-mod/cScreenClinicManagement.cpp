@@ -28,14 +28,17 @@
 #include "cScreenGirlDetails.h"
 #include "libintl.h"
 
-extern cScreenGirlDetails g_GirlDetails;
-
-extern int g_CurrClinic;
-extern cClinicManager g_Clinic;
-extern cBrothelManager g_Brothels;
-extern bool g_InitWin;
-extern cWindowManager g_WinManager;
-extern cGold g_Gold;
+extern cScreenGirlDetails	g_GirlDetails;
+extern int					g_CurrClinic;
+extern cClinicManager		g_Clinic;
+extern cBrothelManager		g_Brothels;
+extern bool					g_InitWin;
+extern cWindowManager		g_WinManager;
+extern cGold				g_Gold;
+extern sGirl*				selected_girl;
+extern vector<int>			cycle_girls;
+extern int					cycle_pos;
+extern cPlayer*				The_Player;
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -66,36 +69,35 @@ static int selection = -1;
 static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
-extern sGirl *selected_girl;
-extern vector<int> cycle_girls;
-extern int cycle_pos;
-extern cPlayer* The_Player;
-
 bool cScreenClinicManagement::ids_set = false;
+cScreenClinicManagement::cScreenClinicManagement()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "clinic_management_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenClinicManagement::~cScreenClinicManagement() {}
 
 void cScreenClinicManagement::set_ids()
 {
 	ids_set = true;
-	back_id = get_id("BackButton");
-	curclinic_id = get_id("Clinic");
-	girllist_id = get_id("GirlList");
-	girlimage_id = get_id("GirlImage");
-	girldesc_id = get_id("GirlDescription");
-	viewdetails_id = get_id("ViewDetailsButton");
-	transfer_id = get_id("TransferButton");
-	firegirl_id = get_id("FireButton");
-	freeslave_id = get_id("FreeSlaveButton");
-	sellslave_id = get_id("SellSlaveButton");
-	jobtypehead_id = get_id("JobTypeHeader");
-	jobtypelist_id = get_id("JobTypeList");
-	jobtypedesc_id = get_id("JobTypeDescription");
-	jobhead_id = get_id("JobHeader");
-	joblist_id = get_id("JobList");
-	jobdesc_id = get_id("JobDescription");
-	day_id = get_id("DayButton");
-	night_id = get_id("NightButton");
-
-
+	back_id			= get_id("BackButton");
+	curclinic_id	= get_id("Clinic");
+	girllist_id		= get_id("GirlList");
+	girlimage_id	= get_id("GirlImage");
+	girldesc_id		= get_id("GirlDescription");
+	viewdetails_id	= get_id("ViewDetailsButton");
+	transfer_id		= get_id("TransferButton");
+	firegirl_id		= get_id("FireButton");
+	freeslave_id	= get_id("FreeSlaveButton");
+	sellslave_id	= get_id("SellSlaveButton");
+	jobtypehead_id	= get_id("JobTypeHeader");
+	jobtypelist_id	= get_id("JobTypeList");
+	jobtypedesc_id	= get_id("JobTypeDescription");
+	jobhead_id		= get_id("JobHeader");
+	joblist_id		= get_id("JobList");
+	jobdesc_id		= get_id("JobDescription");
+	day_id			= get_id("DayButton");
+	night_id		= get_id("NightButton");
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
@@ -128,14 +130,9 @@ void cScreenClinicManagement::init()
 	ClearListBox(jobtypelist_id);
 
 	// add the job filters
-	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_CLINICSTAFF, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINICSTAFF]);
 	AddToListBox(jobtypelist_id, JOBFILTER_CLINIC, g_Clinic.m_JobManager.JobFilterName[JOBFILTER_CLINIC]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_CLINICSTAFF);
-
-
-
-
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -201,7 +198,6 @@ bool cScreenClinicManagement::check_keys()
 			skip = true;
 		if (g_Girls.HasTrait(selected_girl, "AIDS") && (selection == JOB_DOCTOR || selection == JOB_NURSE || selection == JOB_INTERN))
 			skip = true;
-
 		if (skip)
 		{
 			if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
@@ -418,7 +414,6 @@ void cScreenClinicManagement::check_events()
 		}
 		return;
 	}
-
 }
 
 void cScreenClinicManagement::RefreshSelectedJobType()

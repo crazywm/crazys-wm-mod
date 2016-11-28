@@ -115,12 +115,14 @@ void cMessageBox::CreateWindow(int x, int y, int width, int height, int BorderSi
 	y = (int)((float)y*yScale);
 	width = (int)((float)width*xScale);
 	height = (int)((float)height*yScale);
+	FontSize = (int)((float)FontSize*yScale);
 
 	m_BorderSize = BorderSize;
 	m_XPos=x;
 	m_YPos = y;
 	m_Width = width;
 	m_Height = height;
+	m_FontHeight = FontSize;
 	m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0,0,0,0);
 	SDL_FillRect(m_Border,0,SDL_MapRGB(m_Border->format,g_MessageBoxBorderR,g_MessageBoxBorderG,g_MessageBoxBorderB));
 

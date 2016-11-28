@@ -16,14 +16,16 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma once
+
+#include "DirPath.h"
 #include "cInterfaceWindow.h"
+#include "InterfaceGlobals.h"
 
 class cScreenBrothelManagement : public cInterfaceWindowXML
 {
-	void set_ids();
-	
-	static bool id_set;
-
+private:
+	static bool id_set;		// --- interface/event IDs --- //
 	int id_header;
 	int id_details;
 	int id_image;
@@ -39,8 +41,8 @@ class cScreenBrothelManagement : public cInterfaceWindowXML
 	int id_prev;
 	int id_next;
 
+	void set_ids();
 public:
-
 	cScreenBrothelManagement();
 	~cScreenBrothelManagement();
 

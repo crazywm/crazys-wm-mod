@@ -29,6 +29,7 @@
 #include "Constants.h"
 #include "XmlUtil.h"
 #include "Revision.h"
+#include "Globals.h"
 
 
 extern CLog g_LogFile;
@@ -40,8 +41,9 @@ cConfig::cConfig()
 {
 	if (!data)
 	{
-		l.ss() << "Whore Master v" << g_MajorVersion << "." << g_MinorVersionA << g_MinorVersionB << "." << g_StableVersion << " BETA" << " Svn: " << svn_revision; l.ssend();
-		l.ss() << "\n------------------------------------------------------------------------------------------------------------------------\nLoading Default configuration variables"; l.ssend();
+		l.ss() << "Whore Master v" << g_MajorVersion << "." << g_MinorVersionA << g_MinorVersionB << "." << g_StableVersion << " BETA" << " Svn: " << svn_revision
+			<< "\n------------------------------------------------------------------------------------------------------------------------\nLoading Default configuration variables"; 
+		l.ssend();
 		data = new sConfigData();
 	}
 }
@@ -372,9 +374,11 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 	if (pt = el->Attribute("ScaleWidth"))		{ get_att(el, "ScaleWidth", &resolution.scalewidth); }
 	if (pt = el->Attribute("ScaleHeight"))		{ get_att(el, "ScaleHeight", &resolution.scaleheight); }
 	if (pt = el->Attribute("FullScreen"))		{ get_att(el, "FullScreen", resolution.fullscreen); }
+	if (pt = el->Attribute("FixedScale"))		{ get_att(el, "FixedScale", resolution.fixedscale); }
 	if (pt = el->Attribute("ListScrollAmount"))	{ get_att(el, "ListScrollAmount", &resolution.list_scroll); }
 	if (pt = el->Attribute("TextScrollAmount"))	{ get_att(el, "TextScrollAmount", &resolution.text_scroll); }
 	if (pt = el->Attribute("NextTurnEnter"))	{ get_att(el, "NextTurnEnter", resolution.next_turn_enter); }
+
 }
 
 void sConfigData::get_initial_values(TiXmlElement *el)
@@ -624,6 +628,7 @@ void sConfigData::set_defaults()
 	resolution.scalewidth = 800;			// `J` added - Will be moved to interfaces
 	resolution.scaleheight = 600;			// `J` added - Will be moved to interfaces
 	resolution.fullscreen = false;			// `J` added - Will be moved to interfaces
+	resolution.fixedscale = false;			// `J` added for .06.02.39
 	resolution.configXML = false;			// `J` added - Will be changed to interfaces
 	resolution.list_scroll = 3;				// `Dagoth` added
 	resolution.text_scroll = 3;				// `Dagoth` added

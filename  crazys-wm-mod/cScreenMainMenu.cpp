@@ -24,14 +24,11 @@
 
 extern void NewGame();
 extern void LoadGameScreen();
+extern void LoadSettingsScreen();
 extern void GetString();
-
 extern void PreparingLoad();
 extern string g_ReturnText;
-
-
 extern cWindowManager g_WinManager;
-
 extern bool g_InitWin;
 extern int g_CurrentScreen;
 
@@ -67,7 +64,7 @@ void cScreenMainMenu::init()
 	{
 		Focused();
 		g_InitWin = false;
-		
+
 		DirPath location = DirPath(cfg.folders.saves().c_str());
 		const char *pattern = "autosave.gam";
 		FileList fl(location, pattern);
@@ -76,12 +73,8 @@ void cScreenMainMenu::init()
 		pattern = "*.gam";
 		FileList fla(location, pattern);
 		DisableButton(load_id, fla.size() < 1);			// `J` disable load game button if there are no save games found
-
-
-		DisableButton(settings_id, true);			// `J` disable settings button until settings page is added
-
+		DisableButton(settings_id, false);			// `J` disable settings button until settings page is added
 	}
-
 }
 
 void cScreenMainMenu::process()
@@ -94,32 +87,32 @@ void cScreenMainMenu::process()
 
 void cScreenMainMenu::check_events()
 {
-	// no events means we can go home
-	if (g_InterfaceEvents.GetNumEvents() == 0) return;
-
-	if (g_InterfaceEvents.CheckButton(new_id))
+	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
+	if (g_InterfaceEvents.CheckButton(new_id))			// the new new game code
 	{
-		// the new new game code
 		g_WinManager.push("New Game");
 		g_InitWin = true;
 		return;
 	}
-
-	if (g_InterfaceEvents.CheckButton(continue_id))		// `J` not ready yet
+	if (g_InterfaceEvents.CheckButton(continue_id))
 	{
 		g_ReturnText = "autosave.gam";
 		g_WinManager.Push(PreparingLoad, &g_Preparing);
 		g_InitWin = true;
 		return;
 	}
-
 	if (g_InterfaceEvents.CheckButton(load_id))
 	{
 		g_WinManager.Push(LoadGameScreen, &g_LoadGame);
 		g_InitWin = true;
 		return;
 	}
-
+	if (g_InterfaceEvents.CheckButton(settings_id))
+	{
+		g_WinManager.push("Settings");
+		g_InitWin = true;
+		return;
+	}
 	if (g_InterfaceEvents.CheckButton(quit_id))
 	{
 		SDL_Event evn;
@@ -145,10 +138,16 @@ bool cScreenMainMenu::check_keys()
 		g_InitWin = true;
 		return true;
 	}
+	if (g_S_Key)
+	{
+		g_S_Key = false;
+		g_WinManager.push("Settings");
+		g_InitWin = true;
+		return true;
+	}
 	if (g_N_Key)
 	{
 		g_N_Key = false;
-		// the new new game code
 		g_WinManager.push("New Game");
 		g_InitWin = true;
 		return true;
@@ -166,6 +165,5 @@ bool cScreenMainMenu::check_keys()
 		g_S_Key = false;
 		return true;
 	}
-
 	return false;
 }

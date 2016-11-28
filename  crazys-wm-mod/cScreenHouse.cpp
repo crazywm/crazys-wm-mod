@@ -23,7 +23,6 @@
 #include "cGetStringScreenManager.h"
 #include "InterfaceGlobals.h"
 #include "cGangs.h"
-#include "libintl.h"
 
 extern bool g_InitWin;
 extern int g_CurrBrothel;
@@ -39,13 +38,19 @@ extern	int		g_CurrentScreen;
 static string fmt_objective(stringstream &ss, string desc, int limit, int sofar = -1)
 {
 	ss << desc;
-	if (limit != -1) { ss << gettext(" in ") << limit << gettext(" weeks"); }
-	if (sofar > -1) { ss << gettext(", ") << sofar << gettext(" acquired so far"); }
-	ss << gettext(".");
+	if (limit != -1) { ss << " in " << limit << " weeks"; }
+	if (sofar > -1) { ss << ", " << sofar << " acquired so far"; }
+	ss << ".";
 	return ss.str();
 }
 
 bool cScreenHouse::ids_set = false;
+cScreenHouse::cScreenHouse()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "house_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenHouse::~cScreenHouse() {}
 
 void cScreenHouse::set_ids()
 {
@@ -59,29 +64,24 @@ void cScreenHouse::set_ids()
 void cScreenHouse::init()
 {
 	g_CurrentScreen = SCREEN_HOUSE;
-	if (!g_InitWin) { return; }
+	if (!g_InitWin) return;
 	Focused();
 	g_InitWin = false;
 
-	locale syslocale("");
 	stringstream ss;
-	ss.imbue(syslocale);
-
-	ss << gettext("CURRENT OBJECTIVE: ");
+	ss << "CURRENT OBJECTIVE: ";
 	sObjective* obj = g_Brothels.GetObjective();
 	if (obj)
 	{
 		switch (obj->m_Objective)
 		{
 		case OBJECTIVE_REACHGOLDTARGET:
-			ss << gettext("End the week ") << obj->m_Target << gettext(" gold in the bank");
-			if (obj->m_Limit != -1) {
-				ss << gettext(" within ") << obj->m_Limit << gettext(" weeks");
-			}
-			ss << gettext(", ") << g_Brothels.GetBankMoney() << gettext(" gathered so far.");
+			ss << "End the week " << obj->m_Target << " gold in the bank";
+			if (obj->m_Limit != -1) ss << " within " << obj->m_Limit << " weeks";
+			ss << ", " << g_Brothels.GetBankMoney() << " gathered so far.";
 			break;
 		case OBJECTIVE_GETNEXTBROTHEL:
-			fmt_objective(ss, gettext("Purchase the next brothel"), obj->m_Limit);
+			fmt_objective(ss, "Purchase the next brothel", obj->m_Limit);
 			break;
 			/*----
 			case OBJECTIVE_PURCHASENEWGAMBLINGHALL:
@@ -92,58 +92,53 @@ void cScreenHouse::init()
 			break;
 			----*/
 		case OBJECTIVE_LAUNCHSUCCESSFULATTACK:
-			fmt_objective(ss, gettext("Launch a successful attack"), obj->m_Limit);
+			fmt_objective(ss, "Launch a successful attack", obj->m_Limit);
 			break;
 		case OBJECTIVE_HAVEXGOONS:
-			ss << gettext("Have ") << obj->m_Target << gettext(" gangs");
+			ss << "Have " << obj->m_Target << " gangs";
 			fmt_objective(ss, "", obj->m_Limit);
 			break;
 		case OBJECTIVE_STEALXAMOUNTOFGOLD:
-			ss << gettext("Steal ") << obj->m_Target << gettext(" gold");
+			ss << "Steal " << obj->m_Target << " gold";
 			fmt_objective(ss, "", obj->m_Limit, obj->m_SoFar);
 			break;
 		case OBJECTIVE_CAPTUREXCATACOMBGIRLS:
-			ss << gettext("Capture ") << obj->m_Target << gettext(" girls from the catacombs");
+			ss << "Capture " << obj->m_Target << " girls from the catacombs";
 			fmt_objective(ss, "", obj->m_Limit, obj->m_SoFar);
 			break;
 		case OBJECTIVE_HAVEXMONSTERGIRLS:
-			ss << gettext("Have a total of ") << obj->m_Target << gettext(" monster (non-human) girls");
+			ss << "Have a total of " << obj->m_Target << " monster (non-human) girls";
 			fmt_objective(ss, "", obj->m_Limit, g_Brothels.GetTotalNumGirls(true));
 			break;
 		case OBJECTIVE_KIDNAPXGIRLS:
-			ss << gettext("Kidnap ") << obj->m_Target << gettext(" girls from the streets");
+			ss << "Kidnap " << obj->m_Target << " girls from the streets";
 			fmt_objective(ss, "", obj->m_Limit, obj->m_SoFar);
 			break;
 		case OBJECTIVE_EXTORTXNEWBUSINESS:
-			ss << gettext("Control ") << obj->m_Target << gettext(" city business");
+			ss << "Control " << obj->m_Target << " city business";
 			fmt_objective(ss, "", obj->m_Limit, obj->m_SoFar);
 			break;
 		case OBJECTIVE_HAVEXAMOUNTOFGIRLS:
-			ss << gettext("Have a total of ") << obj->m_Target << gettext(" girls");
+			ss << "Have a total of " << obj->m_Target << " girls";
 			fmt_objective(ss, "", obj->m_Limit, g_Brothels.GetTotalNumGirls(false));
 			break;
 		}
 	}
-	else ss << gettext("NONE\n");
+	else ss << "NONE\n";
 
-	ss << gettext("\n")
-		<< gettext("Current gold: ") << g_Gold.ival() << gettext("\n")
-		<< gettext("Bank account: ") << g_Brothels.GetBankMoney() << gettext("\n")
-		<< gettext("Businesses controlled: ")
-		<< g_Gangs.GetNumBusinessExtorted()
-		<< gettext("\n")
-		;
-
-	ss << gettext("\nCurrent number of runaways: ") << g_Brothels.GetNumRunaways() << gettext("\n");
+	ss << "\nCurrent gold: " << g_Gold.ival()
+		<< "\nBank account: " << g_Brothels.GetBankMoney()
+		<< "\nBusinesses controlled: " << g_Gangs.GetNumBusinessExtorted()
+		<< "\n\nCurrent number of runaways: " << g_Brothels.GetNumRunaways() << "\n";
 	//	`J` added while loop to add runaway's names to the list 
 	if (g_Brothels.GetNumRunaways() > 0)
 	{
 		sGirl* rgirl = g_Brothels.m_Runaways;
 		while (rgirl)
 		{
-			ss << rgirl->m_Realname << gettext(" (") << rgirl->m_RunAway << gettext(")");
+			ss << rgirl->m_Realname << " (" << rgirl->m_RunAway << ")";
 			rgirl = rgirl->m_Next;
-			if (rgirl)	ss << gettext(" ,   ");
+			if (rgirl)	ss << " ,   ";
 		}
 	}
 
@@ -157,7 +152,6 @@ void cScreenHouse::process()
 	init();						// set up the window if needed
 	check_events();				// check to see if there's a button event needing handling
 }
-
 
 void cScreenHouse::check_events()
 {

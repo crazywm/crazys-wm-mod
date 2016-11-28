@@ -55,7 +55,7 @@ public:
 	void SetActive(bool active) {m_Active = active;}
 
 private:
-	int m_XPos, m_YPos, m_Height, m_Width, m_BorderSize;
+	int m_XPos, m_YPos, m_Height, m_Width, m_BorderSize, m_FontHeight;
 
 	bool m_Active;
 	bool m_Advance;

@@ -11,17 +11,17 @@
 <Text     Name="RoomAddCost"              Text="Add Rooms: 5000 gold" XPos="365" YPos="125" Width="160" Height="60"  FontSize="13"/>
 <Button   Name="BuildRoomsButton"         Image="BuildMoreRooms"      XPos="519" YPos="134" Width="160" Height="32"  Transparency="true" Scale="true"/>
 <Define   Widget="Restrictions">
-<Checkbox Name="ProhibitNormalToggle"  Text="Prohibit Normal Sex"     XPos="20"  YPos="5"   Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitBeastToggle"   Text="Prohibit Bestiality"     XPos="190" YPos="5"   Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitOralToggle"    Text="Prohibit Oral Sex"       XPos="370" YPos="5"   Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitLesbianToggle" Text="Prohibit Lesbian"        XPos="20"  YPos="30"  Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitBDSMToggle"    Text="Prohibit BDSM"           XPos="190" YPos="30"  Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitTittyToggle"   Text="Prohibit Titty Sex"      XPos="370" YPos="30"  Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitGroupToggle"   Text="Prohibit Group Sex"      XPos="20"  YPos="55"  Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitAnalToggle"    Text="Prohibit Anal"           XPos="190" YPos="55"  Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitHandJobToggle" Text="Prohibit Handjob"        XPos="370" YPos="55"  Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitStripToggle"   Text="Prohibit Strip"          XPos="20"  YPos="80"  Width="16"  Height="16"  FontSize="12"/>
-<Checkbox Name="ProhibitFootJobToggle" Text="Prohibit Footjob"        XPos="370" YPos="80"  Width="16"  Height="16"  FontSize="12"/>
+<Checkbox Name="ProhibitNormalToggle"  Text="Prohibit Normal Sex"     XPos="20"  YPos="5"   Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitBeastToggle"   Text="Prohibit Bestiality"     XPos="190" YPos="5"   Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitOralToggle"    Text="Prohibit Oral Sex"       XPos="370" YPos="5"   Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitLesbianToggle" Text="Prohibit Lesbian"        XPos="20"  YPos="30"  Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitBDSMToggle"    Text="Prohibit BDSM"           XPos="190" YPos="30"  Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitTittyToggle"   Text="Prohibit Titty Sex"      XPos="370" YPos="30"  Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitGroupToggle"   Text="Prohibit Group Sex"      XPos="20"  YPos="55"  Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitAnalToggle"    Text="Prohibit Anal"           XPos="190" YPos="55"  Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitHandJobToggle" Text="Prohibit Handjob"        XPos="370" YPos="55"  Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitStripToggle"   Text="Prohibit Strip"          XPos="20"  YPos="80"  Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
+<Checkbox Name="ProhibitFootJobToggle" Text="Prohibit Footjob"        XPos="370" YPos="80"  Width="16"  Height="16"  FontSize="12" LeftOrRight="false"/>
 
 
 

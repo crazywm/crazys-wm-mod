@@ -250,10 +250,7 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 				g_LogFile.ss() << "ERROR - Loading Image '" << m_Filename << "'"; g_LogFile.ssend();
 				return false;
 			}
-			if (m_Cached)
-			{
-				loaded = true;
-			}
+			if (m_Cached) loaded = true;
 		}
 	}
 
@@ -267,14 +264,12 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 			{
 				scaleX = ((double)clip->w / (double)m_Surface->w);
 				scaleY = ((double)clip->h / (double)m_Surface->h);
-
 				if (maintainRatio == true)
 				{
 					// Use the most restrictive scale
 					if (scaleX < scaleY) { scaleY = scaleX; }
 					else { scaleX = scaleY; }
 				}
-
 				m_Temp = zoomSurface(m_Surface, scaleX, scaleY, 1);
 			}
 		}
@@ -282,19 +277,16 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 		{
 			if (m_Temp->w != clip->w && m_Temp->h != clip->h)
 			{
-				if (m_Temp) SDL_FreeSurface(m_Temp);// free old image
+				if (m_Temp) SDL_FreeSurface(m_Temp);	// free old image
 				m_Temp = 0;
-
 				scaleX = ((double)clip->w / (double)m_Surface->w);
 				scaleY = ((double)clip->h / (double)m_Surface->h);
-
 				if (maintainRatio == true)
 				{
 					// Use the most restrictive scale
 					if (scaleX < scaleY) { scaleY = scaleX; }
 					else { scaleX = scaleY; }
 				}
-
 				m_Temp = zoomSurface(m_Surface, scaleX, scaleY, 1);
 			}
 		}

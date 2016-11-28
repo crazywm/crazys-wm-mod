@@ -23,7 +23,6 @@
 #include "cGetStringScreenManager.h"
 #include "cScreenGetInput.h"
 #include "InterfaceGlobals.h"
-#include "libintl.h"
 
 #ifdef LINUX
 #include "linux.h"
@@ -36,11 +35,17 @@ extern cBrothelManager g_Brothels;
 extern cWindowManager g_WinManager;
 extern cInterfaceEventManager g_InterfaceEvents;
 extern long g_IntReturn;
-
 extern cScreenGetInput g_GetInput;
 extern int g_CurrentScreen;
 
 bool cScreenMayor::ids_set = false;
+cScreenMayor::cScreenMayor()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "mayor_screen.xml";
+	m_filename = dp.c_str();
+	SetBribe = false;
+}
+cScreenMayor::~cScreenMayor() {}
 
 void cScreenMayor::set_ids()
 {
@@ -57,11 +62,8 @@ void cScreenMayor::init()
 	if (!g_InitWin) { return; }
 	Focused();
 	g_InitWin = false;
-
-	////////////////////
 	stringstream ss;
-	ss << gettext("Influence Details\n");
-
+	ss << "Influence Details\n";
 	if (SetBribe)
 	{
 		if (g_IntReturn >= 0)
@@ -78,9 +80,7 @@ void cScreenMayor::init()
 	if (rival)
 	{
 		long top[4];	// the top 4 rival influences
-		for (int i = 0; i<4; i++)
-			top[i] = -1;
-
+		for (int i = 0; i < 4; i++) top[i] = -1;
 		int r = 0;
 		while (rival)	// find the top 4 rival influences of the authorities
 		{
@@ -88,12 +88,9 @@ void cScreenMayor::init()
 			{
 				if (rival->m_Influence > top[i])
 				{
-					if (i + 3 < 4)
-						top[i + 3] = top[i + 2];
-					if (i + 2 < 4)
-						top[i + 2] = top[i + 1];
-					if (i + 1 < 4)
-						top[i + 1] = top[i];
+					if (i + 3 < 4) top[i + 3] = top[i + 2];
+					if (i + 2 < 4) top[i + 2] = top[i + 1];
+					if (i + 1 < 4) top[i + 1] = top[i];
 					top[i] = r;
 					break;
 				}
@@ -101,25 +98,21 @@ void cScreenMayor::init()
 			r++;
 			rival = rival->m_Next;
 		}
+		ss << "Your influence: " << PlayersInfluence << "% costing " << g_Brothels.GetBribeRate() << " gold per week.";
 
-		ss << gettext("Your influence: ") << PlayersInfluence << gettext("% costing ") << g_Brothels.GetBribeRate() << gettext(" gold per week.");
-
-		for (int i = 0; i<4; i++)
+		for (int i = 0; i < 4; i++)
 		{
 			if (top[i] != -1)
 			{
-				ss << gettext("\n") << g_Brothels.GetRivalManager()->GetRival(top[i])->m_Name
-					<< gettext(" : ") << g_Brothels.GetRivalManager()->GetRival(top[i])->m_Influence
-					<< gettext("% influence");
+				ss << "\n" << g_Brothels.GetRivalManager()->GetRival(top[i])->m_Name << " : " << g_Brothels.GetRivalManager()->GetRival(top[i])->m_Influence << "% influence";
 			}
 		}
 	}
 	else
 	{
-		ss << gettext("Your influence: ") << PlayersInfluence << gettext("%\nNo Rivals");
+		ss << "Your influence: " << PlayersInfluence << "%\nNo Rivals";
 	}
-
-	ss << gettext("\n\nNumber of girls in prison: ") << g_Brothels.GetNumInPrison();
+	ss << "\n\nNumber of girls in prison: " << g_Brothels.GetNumInPrison();
 	EditTextItem(ss.str(), details_id);
 }
 
@@ -132,11 +125,9 @@ void cScreenMayor::process()
 
 void cScreenMayor::check_events()
 {
-	// no events means we can go home
-	if (g_InterfaceEvents.GetNumEvents() == 0) return;
+	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
 
-	// if it's the back button, pop the window off the stack and we're done
-	if (g_InterfaceEvents.CheckButton(back_id)) 
+	if (g_InterfaceEvents.CheckButton(back_id)) 		// if it's the back button, pop the window off the stack and we're done
 	{
 		g_InitWin = true;
 		g_WinManager.Pop();

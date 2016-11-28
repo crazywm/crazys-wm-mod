@@ -24,7 +24,7 @@ struct sXmlWidgetPart {
 public:
 	int x, y, w, h, r, g, b;
 	int fontsize, bordersize;
-	bool stat, alpha, scale, hidden, events, multi, hide, cache;
+	bool stat, alpha, scale, hidden, events, multi, hide, cache, leftorright;
 	string base, on, off, disabled, type, name, text, file, seq;
 };
 

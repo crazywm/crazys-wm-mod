@@ -60,6 +60,7 @@ extern cScreenMainMenu g_MainMenu;
 extern cScreenNewGame g_NewGame;
 extern cScreenBrothelManagement g_BrothelManagement;
 sInterfaceIDs g_interfaceid;
+extern sGirl *selected_girl;
 
 // Function Defs
 void NextWeek();
@@ -86,6 +87,7 @@ bool g_ShiftDown = false;	bool g_CTRLDown = false;
 bool g_LeftArrow = false;	bool g_RightArrow = false;	bool g_UpArrow = false;		bool g_DownArrow = false;
 bool g_EnterKey = false;	bool g_SpaceKey = false;	bool g_TabKey = false;		bool g_EscapeKey = false;
 bool g_HomeKey = false;		bool g_EndKey = false;		bool g_PageUpKey = false;	bool g_PageDownKey = false;
+bool g_PeriodKey = false;	bool g_SlashKey = false;	bool g_BackSlashKey = false;
 
 bool g_1_Key = false;		bool g_2_Key = false;		bool g_3_Key = false;		bool g_4_Key = false;		
 bool g_5_Key = false;		bool g_6_Key = false;		bool g_7_Key = false;		bool g_8_Key = false;		
@@ -227,6 +229,9 @@ void handle_hotkeys()
 	case SDLK_PAGEDOWN:	g_PageDownKey = true;	break;
 	case SDLK_TAB:		g_TabKey = true;		break;
 	case SDLK_ESCAPE:	g_EscapeKey = true;		break;
+	case SDLK_PERIOD:	g_PeriodKey = true;		break;
+	case SDLK_SLASH:	g_SlashKey = true;		break;
+	case SDLK_BACKSLASH:g_BackSlashKey = true;	break;
 
 	case SDLK_1:		g_1_Key = true;			break; 
 	case SDLK_2:		g_2_Key = true;			break; 
@@ -332,6 +337,7 @@ void handle_hotkeys()
 		case SDLK_g:    if (g_AltKeys)  break;
 		case SDLK_F1:
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering Brothel");
+			if (g_Building != BUILDING_BROTHEL) selected_girl = 0;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_GIRLMANAGEMENT;
@@ -345,6 +351,7 @@ void handle_hotkeys()
 		case SDLK_t:    if (g_AltKeys)  break;
 		case SDLK_F2:
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Gang Management");
+			selected_girl = 0;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_GANGMANAGEMENT;
@@ -356,6 +363,7 @@ void handle_hotkeys()
 		case SDLK_d:    if (g_AltKeys)  break;
 		case SDLK_F3:
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Dungeon");
+			selected_girl = 0;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_InitWin = true;
@@ -367,6 +375,7 @@ void handle_hotkeys()
 		case SDLK_s:    if (g_AltKeys)  break;
 		case SDLK_F4:
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Slave Market");
+			selected_girl = 0;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_InitWin = true;
@@ -384,6 +393,7 @@ void handle_hotkeys()
 			}
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Studio");
 			// Yes!
+			if (g_Building != BUILDING_STUDIO) selected_girl = 0;
 			g_Building = BUILDING_STUDIO;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_STUDIO;
@@ -406,6 +416,7 @@ void handle_hotkeys()
 			}
 			// Yes!
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Arena");
+			if (g_Building != BUILDING_ARENA) selected_girl = 0;
 			g_Building = BUILDING_ARENA;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_ARENA;
@@ -426,6 +437,7 @@ void handle_hotkeys()
 			}
 			// Yes!
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Centre");
+			if (g_Building != BUILDING_CENTRE) selected_girl = 0;
 			g_Building = BUILDING_CENTRE;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_CENTRE;
@@ -448,6 +460,7 @@ void handle_hotkeys()
 			}
 			// Yes!
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Clinic");
+			if (g_Building != BUILDING_CLINIC) selected_girl = 0;
 			g_Building = BUILDING_CLINIC;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_CLINIC;
@@ -469,6 +482,7 @@ void handle_hotkeys()
 			}
 			// Yes!
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Farm");
+			if (g_Building != BUILDING_FARM) selected_girl = 0;
 			g_Building = BUILDING_FARM;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_FARM;
@@ -549,6 +563,7 @@ void handle_hotkeys()
 			}
 		case SDLK_F12:  // House
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering House");
+			if (g_Building != BUILDING_HOUSE) selected_girl = 0;
 			g_Building = BUILDING_HOUSE;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_HOUSE;
@@ -1000,6 +1015,9 @@ void handle_hotkeys()
 		case SDLK_PAGEDOWN:	g_PageDownKey = true;	break;
 		case SDLK_TAB:		g_TabKey = true;		break;
 		case SDLK_ESCAPE:	g_EscapeKey = true;		break;
+		case SDLK_PERIOD:	g_PeriodKey = true;		break;
+		case SDLK_SLASH:	g_SlashKey = true;		break;
+		case SDLK_BACKSLASH:g_BackSlashKey = true;	break;
 
 		case SDLK_1:		g_1_Key = true;			break;
 		case SDLK_2:		g_2_Key = true;			break;
@@ -1177,18 +1195,13 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 	bool quitPending = false;
 	bool mouseDown = false;
 
-	DirPath locationch = DirPath() << "..\\";
+	DirPath locationch = DirPath() << ".." << "";
 	XMLFileList test(locationch, "config.xml");
-	if (test.size() > 0)
-	{
-		cfg.reload("..\\config.xml");
-	}
+	if (test.size() > 0) cfg.reload("..\\config.xml");
 
-
-	g_LogFile.ss()
-		<< "Startup: checking for variant config: argc = " << ac << ".\n";
+	g_LogFile.ss() << "Startup: checking for variant config: argc = " << ac << ".\n"; g_LogFile.ssend();
 	if (ac > 1) {
-		g_LogFile.ss() << "     attempting to load '" << av[1] << "'\n";
+		g_LogFile.ss() << "     attempting to load '" << av[1] << "'\n"; g_LogFile.ssend();
 		cfg.reload(av[1]);
 	}
 
@@ -1279,6 +1292,9 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 					case SDLK_PAGEDOWN:	g_PageDownKey = false;	break;
 					case SDLK_TAB:		g_TabKey = false;		break;
 					case SDLK_ESCAPE:	g_EscapeKey = false;	break;
+					case SDLK_PERIOD:	g_PeriodKey = false;	break;
+					case SDLK_SLASH:	g_SlashKey = false;		break;
+					case SDLK_BACKSLASH:g_BackSlashKey = false;	break;
 
 					case SDLK_1:		g_1_Key = false;		break;
 					case SDLK_2:		g_2_Key = false;		break;
@@ -1378,6 +1394,10 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 						if (vent.key.keysym.sym == SDLK_BACKSPACE)		g_WinManager.UpdateKeyInput('-');
 						else if (vent.key.keysym.sym == SDLK_RETURN)	g_EnterKey = true;
 						else if (vent.key.keysym.sym == SDLK_KP_ENTER)	g_EnterKey = true;
+						else if (vent.key.keysym.sym == SDLK_PERIOD || vent.key.keysym.sym == SDLK_SLASH || vent.key.keysym.sym == SDLK_BACKSLASH)
+						{
+							g_WinManager.UpdateKeyInput((char)vent.key.keysym.sym);
+						}
 						else if ((vent.key.keysym.sym >= 97 && vent.key.keysym.sym <= 122) || vent.key.keysym.sym == 39 || vent.key.keysym.sym == 32 || (vent.key.keysym.sym >= 48 && vent.key.keysym.sym <= 57) || ((vent.key.keysym.sym >= 256 && vent.key.keysym.sym <= 265)))
 						{
 							if (vent.key.keysym.sym >= 256)

@@ -27,9 +27,11 @@ extern void PreparingNew();
 extern cWindowManager g_WinManager;
 extern cBrothelManager  g_Brothels;
 extern cInterfaceWindow g_Preparing;
-
 extern bool g_InitWin;
 extern int g_CurrentScreen;
+extern string monthnames[13];
+extern string g_ReturnText;
+extern cPlayer* The_Player;
 
 extern bool g_UpArrow;
 extern bool g_DownArrow;
@@ -66,14 +68,15 @@ extern bool g_F10_Key;
 extern bool g_F11_Key;
 extern bool g_F12_Key;
 
-extern string monthnames[13];
-extern string g_ReturnText;
-
-extern cPlayer* The_Player;
-
 int currentbox=0;
 
 bool cScreenNewGame::ids_set = false;
+
+cScreenNewGame::cScreenNewGame()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "NewGame.xml";
+	m_filename = dp.c_str();
+}
 
 void cScreenNewGame::set_ids()
 {
@@ -88,7 +91,6 @@ void cScreenNewGame::set_ids()
 	pbd_id = get_id("PlayerBirthDay");
 	pbd1_id = get_id("PlayerBirthDayNum");
 	phn_id = get_id("PlayerHoroscope");
-
 }
 
 void cScreenNewGame::init()
@@ -112,7 +114,6 @@ void cScreenNewGame::check_events()
 {
 	// no events means we can go home
 	if (g_InterfaceEvents.GetNumEvents() == 0) return;
-
 	if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, cancel_id))
 	{
 		g_InitWin = true;
@@ -127,11 +128,9 @@ void cScreenNewGame::check_events()
 		SliderValue(pbd_id, The_Player->BirthDay());
 		The_Player->SetBirthMonth(SliderValue(pbm_id));
 		SliderValue(pbm_id, The_Player->BirthMonth());
-
 		ss << The_Player->BirthDay();
 		EditTextItem(ss.str(), pbd1_id);
-		ss.str("");
-		ss << monthnames[The_Player->BirthMonth()];
+		ss.str(""); ss << monthnames[The_Player->BirthMonth()];
 		EditTextItem(ss.str(), pbm1_id);
 		EditTextItem(g_Girls.GetHoroscopeName(The_Player->BirthMonth(), The_Player->BirthDay()), phn_id);
 		return;
@@ -242,11 +241,6 @@ bool cScreenNewGame::check_keys()
 	if (g_F11_Key)	{ mod = g_F11_Key = false;  The_Player->SetBirthMonth(11); }
 	if (g_F12_Key)	{ mod = g_F12_Key = false;  The_Player->SetBirthMonth(12); }
 
-
-
-
-
-
 	if (!mod)
 	{
 		stringstream ss;
@@ -269,10 +263,5 @@ bool cScreenNewGame::check_keys()
 		EditTextItem(g_Girls.GetHoroscopeName(The_Player->BirthMonth(), The_Player->BirthDay()), phn_id);
 		return true;
 	}
-
-
-
-
-
 	return false;
 }

@@ -23,6 +23,7 @@ class Globals
 public:
 	
 	int g_ScreenWidth, g_ScreenHeight;
+	float g_ScreenScaleX, g_ScreenScaleY;
 	bool g_Fullscreen;
 
 	Globals();

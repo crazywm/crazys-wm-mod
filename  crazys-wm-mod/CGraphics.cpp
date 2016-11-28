@@ -81,6 +81,8 @@ bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 		{
 			m_ScreenWidth = _G.g_ScreenWidth = cfg.resolution.width();
 			m_ScreenHeight = _G.g_ScreenHeight = cfg.resolution.height();
+			_G.g_ScreenScaleX = (float)m_ScreenWidth / (float)cfg.resolution.scalewidth();
+			_G.g_ScreenScaleY = (float)m_ScreenHeight / (float)cfg.resolution.scaleheight();
 			_G.g_Fullscreen = cfg.resolution.fullscreen();
 		}
 		else	// `J` merged ScreenMode.txt into config.xml - left this in for legacy

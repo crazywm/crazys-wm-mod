@@ -347,7 +347,7 @@ enum JOBS {
 	JOB_GETHEALING,			// takes 1 days for each wound trait received.
 	JOB_GETREPAIRS,			// construct girls can get repaired quickly
 	JOB_GETABORT,			// gets an abortion (takes 2 days)
-	JOB_PHYSICALSURGERY,	// magical plastic surgery (takes 5 days)
+	JOB_COSMETICSURGERY,	// magical plastic surgery (takes 5 days)
 	JOB_LIPO,				// magical plastic surgery (takes 5 days)
 	JOB_BREASTREDUCTION,	// magical plastic surgery (takes 5 days)
 	JOB_BOOBJOB,			// magical plastic surgery (takes 5 days)
@@ -625,7 +625,7 @@ enum Action_Types{
 	ACTION_WORKMUSIC,
 	ACTION_WORKSTRIP,
 	ACTION_WORKMILK,
-	ACTION_WORKMASSUSSE,
+	ACTION_WORKMASSEUSE,
 	ACTION_WORKFARM,
 	ACTION_WORKTRAINING,
 	ACTION_WORKREHAB,
@@ -845,11 +845,11 @@ const int SCREEN_SLAVEMARKET		= 23;
 const int SCREEN_PLAYERHOUSE		= 24; 
 const int SCREEN_GALLERY2			= 25;
 const int SCREEN_GETINPUT           = 26;
-const int SCREEN_PROPERTYMANAGEMENT = 27; // `J` added for managing all properties on 1 page
+const int SCREEN_PROPERTYMANAGEMENT = 27;	// `J` added for managing all properties on 1 page
 const int SCREEN_FARM				= 28;
 const int SCREEN_NEWGAME			= 29;
 const int SCREEN_PREPARING			= 29;
-
+const int SCREEN_SETTINGS			= 30;	// `J` added
 
 // The following constants are used with g_CurrBrothel to determine if we are currently working with a brothel or a new building. --PP
 const int BUILDING_BROTHEL			= 0;

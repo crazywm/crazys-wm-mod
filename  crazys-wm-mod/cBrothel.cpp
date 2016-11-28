@@ -4239,11 +4239,11 @@ vector<sGirl*> cBrothelManager::GirlsOnJob(int BrothelID, int JobID, bool Day0Ni
 	{
 		if (Day0Night1)
 		{
-			if (curr->m_DayJob == JobID) GirlsOnJob.push_back(curr);
+			if (curr->m_NightJob == JobID) GirlsOnJob.push_back(curr);
 		}
 		else
 		{
-			if (curr->m_NightJob == JobID) GirlsOnJob.push_back(curr);
+			if (curr->m_DayJob == JobID) GirlsOnJob.push_back(curr);
 		}
 		curr = curr->m_Next;
 	}

@@ -585,11 +585,11 @@ void cJobManager::Setup()
 	JobDesc[JOB_GETABORT] = gettext("She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)");
 	JobFunc[JOB_GETABORT] = &WorkGetAbort;
 	JobPerf[JOB_GETABORT] = &JP_GetAbort;
-	JobName[JOB_PHYSICALSURGERY] = gettext("Cosmetic Surgery");
-	JobQkNm[JOB_PHYSICALSURGERY] = "CosS";
-	JobDesc[JOB_PHYSICALSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)");
-	JobFunc[JOB_PHYSICALSURGERY] = &WorkPhysicalSurgery;
-	JobPerf[JOB_PHYSICALSURGERY] = &JP_PhysicalSurgery;
+	JobName[JOB_COSMETICSURGERY] = gettext("Cosmetic Surgery");
+	JobQkNm[JOB_COSMETICSURGERY] = "CosS";
+	JobDesc[JOB_COSMETICSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobFunc[JOB_COSMETICSURGERY] = &WorkCosmeticSurgery;
+	JobPerf[JOB_COSMETICSURGERY] = &JP_CosmeticSurgery;
 	JobName[JOB_LIPO] = gettext("Liposuction");
 	JobQkNm[JOB_LIPO] = "Lipo";
 	JobDesc[JOB_LIPO] = gettext("She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)");
@@ -1184,7 +1184,7 @@ bool cJobManager::FullTimeJob(u_int Job)
 		Job == JOB_GETHEALING ||
 		Job == JOB_GETREPAIRS ||
 		Job == JOB_GETABORT ||
-		Job == JOB_PHYSICALSURGERY ||
+		Job == JOB_COSMETICSURGERY ||
 		Job == JOB_LIPO ||
 		Job == JOB_BREASTREDUCTION ||
 		Job == JOB_BOOBJOB ||
@@ -1356,7 +1356,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		// - Clinic
 		Job ==	JOB_DOCTOR				||	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
 		Job ==	JOB_GETABORT			||	// gets an abortion (takes 2 days)
-		Job ==	JOB_PHYSICALSURGERY		||	// magical plastic surgery (takes 5 days)
+		Job ==	JOB_COSMETICSURGERY		||	// magical plastic surgery (takes 5 days)
 		Job ==	JOB_GETHEALING			||	// takes 1 days for each wound trait received.
 		Job ==	JOB_GETREPAIRS			||	// construct girls can get repaired quickly
 #endif
@@ -1586,7 +1586,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	// `J` condensed clinic surgery jobs into one check
 	else if (
 		u_int(JobID) == JOB_GETABORT ||
-		u_int(JobID) == JOB_PHYSICALSURGERY ||
+		u_int(JobID) == JOB_COSMETICSURGERY ||
 		u_int(JobID) == JOB_BREASTREDUCTION ||
 		u_int(JobID) == JOB_BOOBJOB ||
 		u_int(JobID) == JOB_ASSJOB ||
@@ -1609,7 +1609,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("Oops, the girl is not pregant."), 0);
 			jobgood = false;
 		}
-		else if (u_int(JobID) == JOB_PHYSICALSURGERY)
+		else if (u_int(JobID) == JOB_COSMETICSURGERY)
 		{
 		}
 		else if (u_int(JobID) == JOB_BREASTREDUCTION && g_Girls.HasTrait(Girl, "Flat Chest"))

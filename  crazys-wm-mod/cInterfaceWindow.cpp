@@ -450,7 +450,7 @@ void cInterfaceWindow::SliderMarkerDisable(int ID)
 	m_Sliders[ID]->RemoveMarker();
 }
 
-void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height, string text, int size)
+void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height, string text, int size, bool leftorright)
 {
 	width = (int)((float)width*m_xRatio);
 	height = (int)((float)height*m_yRatio);
@@ -460,14 +460,14 @@ void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height
 	// create checkbox item
 	ID = m_CheckBoxes.size();
 	cCheckBox* newCheckBox = new cCheckBox();
-	newCheckBox->CreateCheckBox(ID, x + m_XPos, y + m_YPos, width, height, text, size);
+	newCheckBox->CreateCheckBox(ID, x + m_XPos, y + m_YPos, width, height, text, size, leftorright);
 
 	// Store text item
 	m_CheckBoxes.push_back(newCheckBox);
 }
 
 void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height, string text, int size, bool auto_scrollbar,
-	bool force_scrollbar, int red, int green, int blue)
+	bool force_scrollbar, bool leftorright, int red, int green, int blue)
 {
 	width = (int)((float)width*m_xRatio);
 	height = (int)((float)height*m_yRatio);
@@ -477,7 +477,7 @@ void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height
 	// create text item
 	ID = m_TextItems.size();
 	cTextItem* newTextItem = new cTextItem();
-	newTextItem->CreateTextItem(ID, x + m_XPos, y + m_YPos, width, height, text, size, auto_scrollbar, force_scrollbar, red, green, blue);
+	newTextItem->CreateTextItem(ID, x + m_XPos, y + m_YPos, width, height, text, size, auto_scrollbar, force_scrollbar, leftorright, red, green, blue);
 
 	// Store text item
 	m_TextItems.push_back(newTextItem);
@@ -769,7 +769,7 @@ void cInterfaceWindowXML::read_text_item(TiXmlElement *el)
 	string name, text;
 	XmlUtil xu(m_filename);
 	int id, x, y, w, h, fontsize, red = 0, green = 0, blue = 0;
-	bool auto_scrollbar = true, force_scrollbar = false;
+	bool auto_scrollbar = true, force_scrollbar = false, leftorright = false;
 
 	xu.get_att(el, "Name", name);
 	xu.get_att(el, "Text", text);
@@ -778,15 +778,16 @@ void cInterfaceWindowXML::read_text_item(TiXmlElement *el)
 	xu.get_att(el, "Width", w);
 	xu.get_att(el, "Height", h);
 	xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 16;
-	xu.get_att(el, "AutoScrollbar", auto_scrollbar, Optional);	// automatically use scrollbar if text doesn't fit; otherwise, don't
-	xu.get_att(el, "ForceScrollbar", force_scrollbar, Optional);	// force scrollbar display even when not needed (shown disabled, grayed out)
-	xu.get_att(el, "Red", red, Optional);
-	xu.get_att(el, "Green", green, Optional);
-	xu.get_att(el, "Blue", blue, Optional);
+	xu.get_att(el, "AutoScrollbar", auto_scrollbar);	// automatically use scrollbar if text doesn't fit; otherwise, don't
+	xu.get_att(el, "ForceScrollbar", force_scrollbar);	// force scrollbar display even when not needed (shown disabled, grayed out)
+	xu.get_att(el, "Red", red);
+	xu.get_att(el, "Green", green);
+	xu.get_att(el, "Blue", blue);
+	xu.get_att(el, "LeftOrRight", leftorright);
 	/*
 	*	create the text item
 	*/
-	AddTextItem(id, x, y, w, h, text, fontsize, auto_scrollbar, force_scrollbar, red, green, blue);
+	AddTextItem(id, x, y, w, h, text, fontsize, auto_scrollbar, force_scrollbar, leftorright, red, green, blue);
 	/*
 	*	make a note of the ID
 	*/
@@ -824,6 +825,7 @@ void cInterfaceWindowXML::define_widget(TiXmlElement *base_el)
 		if (tag == "Text") { widget_text_item(el, *widget);			continue; }
 		if (tag == "Button") { widget_button_item(el, *widget);		continue; }
 		if (tag == "Image") { widget_image_item(el, *widget);		continue; }
+		if (tag == "EditBox") { widget_editbox_item(el, *widget);	continue; }
 		if (tag == "ListBox") { widget_listbox_item(el, *widget);	continue; }
 		if (tag == "Checkbox") { widget_checkbox_item(el, *widget);	continue; }
 		if (tag == "Widget") { widget_widget(el, *widget);			continue; }
@@ -920,12 +922,16 @@ void cInterfaceWindowXML::add_widget(string widget_name, int x, int y, string se
 			DisableSlider(id, xw.stat);
 		}
 		else if (tag == "Text") {
-			AddTextItem(id, full_x, full_y, xw.w, xw.h, xw.text, xw.fontsize, xw.alpha, xw.hide);
+			AddTextItem(id, full_x, full_y, xw.w, xw.h, xw.text, xw.fontsize, xw.alpha, xw.hide, xw.leftorright, xw.r, xw.g, xw.b);
 			register_id(id, name);
 			HideText(id, xw.hide);
 		}
+		else if (tag == "EditBox") {
+			AddEditBox(id, full_x, full_y, xw.w, xw.h, xw.bordersize, xw.fontsize);
+			register_id(id, name);
+		}
 		else if (tag == "Checkbox") {
-			AddCheckbox(id, full_x, full_y, xw.w, xw.h, xw.text, xw.fontsize);
+			AddCheckbox(id, full_x, full_y, xw.w, xw.h, xw.text, xw.fontsize, xw.leftorright);
 			register_id(id, name);
 		}
 		else if (tag == "Widget") {
@@ -1029,6 +1035,25 @@ void cInterfaceWindowXML::read_listbox_definition(TiXmlElement *el)
 	if (column_count > 0)	DefineColumns(id, column_name, column_header, column_offset, column_skip, column_count);
 }
 
+
+void cInterfaceWindowXML::widget_editbox_item(TiXmlElement *el, cXmlWidget &wid)
+{
+	sXmlWidgetPart xw;
+	XmlUtil xu(m_filename);
+
+	xw.type = "EditBox";
+	xu.get_att(el, "Name", xw.name);
+	xu.get_att(el, "XPos", xw.x);
+	xu.get_att(el, "YPos", xw.y);
+	xu.get_att(el, "Width", xw.w);
+	xu.get_att(el, "Height", xw.h);
+	xu.get_att(el, "FontSize", xw.fontsize); if (xw.fontsize == 0) xw.fontsize = 16;
+	xu.get_att(el, "Border", xw.bordersize, Optional);
+	xu.get_att(el, "Multi", xw.multi, Optional);
+	xu.get_att(el, "Events", xw.events, Optional);
+	wid.add(xw);
+}
+
 void cInterfaceWindowXML::widget_listbox_item(TiXmlElement *el, cXmlWidget &wid)
 {
 	sXmlWidgetPart xw;
@@ -1051,6 +1076,7 @@ void cInterfaceWindowXML::read_checkbox_definition(TiXmlElement *el)
 	string name, text;
 	XmlUtil xu(m_filename);
 	int id, x, y, w, h, fontsize;
+	bool leftorright;
 
 	xu.get_att(el, "Name", name);
 	xu.get_att(el, "Text", text);
@@ -1059,8 +1085,9 @@ void cInterfaceWindowXML::read_checkbox_definition(TiXmlElement *el)
 	xu.get_att(el, "Width", w);
 	xu.get_att(el, "Height", h);
 	xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 16;
+	xu.get_att(el, "LeftOrRight", leftorright);
 
-	AddCheckbox(id, x, y, w, h, text, fontsize);
+	AddCheckbox(id, x, y, w, h, text, fontsize, leftorright);
 
 	register_id(id, name);
 }
@@ -1079,6 +1106,7 @@ void cInterfaceWindowXML::widget_checkbox_item(TiXmlElement *el, cXmlWidget &wid
 	xu.get_att(el, "Width", xw.w);
 	xu.get_att(el, "Height", xw.h);
 	xu.get_att(el, "FontSize", xw.fontsize);
+	xu.get_att(el, "LeftOrRight", xw.leftorright);
 	wid.add(xw);
 }
 
@@ -1256,6 +1284,11 @@ void cInterfaceWindowXML::widget_text_item(TiXmlElement *el, cXmlWidget &wid)
 	xu.get_att(el, "Hidden", xw.hide, Optional);
 	xu.get_att(el, "AutoScrollbar", xw.alpha, Optional);
 	xu.get_att(el, "ForceScrollbar", xw.hide, Optional);
+	xu.get_att(el, "Red", xw.r, Optional);
+	xu.get_att(el, "Green", xw.g, Optional);
+	xu.get_att(el, "Blue", xw.b, Optional);
+	xu.get_att(el, "LeftOrRight", xw.leftorright, Optional);
+
 
 	wid.add(xw);
 }

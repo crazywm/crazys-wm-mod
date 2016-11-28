@@ -95,6 +95,13 @@ static int Img = 0;	// what image currently drawing
 static int numimages[NUM_IMGTYPES][4];
 static bool changeimage = false;
 
+cScreenGallery::cScreenGallery()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "gallery_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenGallery::~cScreenGallery() {}
+
 void cScreenGallery::set_ids()
 {
 	ids_set = true;

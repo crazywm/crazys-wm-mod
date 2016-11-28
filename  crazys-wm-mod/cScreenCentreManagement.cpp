@@ -26,35 +26,37 @@
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
 #include "cScreenGirlDetails.h"
-#include "libintl.h"
 
-extern cScreenGirlDetails g_GirlDetails;
+extern cScreenGirlDetails	g_GirlDetails;
+extern int					g_CurrCentre;
+extern cCentreManager		g_Centre;
+extern cBrothelManager		g_Brothels;
+extern bool					g_InitWin;
+extern cWindowManager		g_WinManager;
+extern cGold				g_Gold;
+extern sGirl*				selected_girl;
+extern vector<int>			cycle_girls;
+extern int					cycle_pos;
+extern cPlayer*				The_Player;
 
-extern int g_CurrCentre;
-extern cCentreManager g_Centre;
-extern cBrothelManager g_Brothels;
-extern bool g_InitWin;
-extern cWindowManager g_WinManager;
-extern cGold g_Gold;
-
-extern	bool	g_LeftArrow;
-extern	bool	g_RightArrow;
-extern	bool	g_UpArrow;
-extern	bool	g_DownArrow;
-extern	bool	g_AltKeys;	// New hotkeys --PP
-extern	bool	g_EnterKey;
-extern	bool	g_SpaceKey;
-extern	bool	g_CTRLDown;
-extern	bool	g_Q_Key;
-extern	bool	g_W_Key;
-extern	bool	g_E_Key;
-extern	bool	g_A_Key;
-extern	bool	g_S_Key;
-extern	bool	g_D_Key;
-extern	bool	g_Z_Key;
-extern	bool	g_X_Key;
-extern	bool	g_C_Key;
-extern	int		g_CurrentScreen;
+extern bool					g_LeftArrow;
+extern bool					g_RightArrow;
+extern bool					g_UpArrow;
+extern bool					g_DownArrow;
+extern bool					g_AltKeys;	// New hotkeys --PP
+extern bool					g_EnterKey;
+extern bool					g_SpaceKey;
+extern bool					g_CTRLDown;
+extern bool					g_Q_Key;
+extern bool					g_W_Key;
+extern bool					g_E_Key;
+extern bool					g_A_Key;
+extern bool					g_S_Key;
+extern bool					g_D_Key;
+extern bool					g_Z_Key;
+extern bool					g_X_Key;
+extern bool					g_C_Key;
+extern int					g_CurrentScreen;
 
 static cTariff tariff;
 static stringstream ss;
@@ -66,36 +68,35 @@ static int selection = -1;
 static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
-extern sGirl *selected_girl;
-extern vector<int> cycle_girls;
-extern int cycle_pos;
-extern cPlayer* The_Player;
-
 bool cScreenCentreManagement::ids_set = false;
+cScreenCentreManagement::cScreenCentreManagement()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "centre_management_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenCentreManagement::~cScreenCentreManagement() {}
 
 void cScreenCentreManagement::set_ids()
 {
 	ids_set = true;
-	back_id = get_id("BackButton");
-	curcentre_id = get_id("Centre");
-	girllist_id = get_id("GirlList");
-	girlimage_id = get_id("GirlImage");
-	girldesc_id = get_id("GirlDescription");
-	viewdetails_id = get_id("ViewDetailsButton");
-	transfer_id = get_id("TransferButton");
-	firegirl_id = get_id("FireButton");
-	freeslave_id = get_id("FreeSlaveButton");
-	sellslave_id = get_id("SellSlaveButton");
-	jobtypehead_id = get_id("JobTypeHeader");
-	jobtypelist_id = get_id("JobTypeList");
-	jobtypedesc_id = get_id("JobTypeDescription");
-	jobhead_id = get_id("JobHeader");
-	joblist_id = get_id("JobList");
-	jobdesc_id = get_id("JobDescription");
-	day_id = get_id("DayButton");
-	night_id = get_id("NightButton");
-
-
+	back_id 		= get_id("BackButton");
+	curcentre_id 	= get_id("Centre");
+	girllist_id 	= get_id("GirlList");
+	girlimage_id 	= get_id("GirlImage");
+	girldesc_id 	= get_id("GirlDescription");
+	viewdetails_id 	= get_id("ViewDetailsButton");
+	transfer_id 	= get_id("TransferButton");
+	firegirl_id 	= get_id("FireButton");
+	freeslave_id 	= get_id("FreeSlaveButton");
+	sellslave_id 	= get_id("SellSlaveButton");
+	jobtypehead_id 	= get_id("JobTypeHeader");
+	jobtypelist_id 	= get_id("JobTypeList");
+	jobtypedesc_id 	= get_id("JobTypeDescription");
+	jobhead_id 		= get_id("JobHeader");
+	joblist_id 		= get_id("JobList");
+	jobdesc_id 		= get_id("JobDescription");
+	day_id 			= get_id("DayButton");
+	night_id 		= get_id("NightButton");
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
@@ -128,14 +129,9 @@ void cScreenCentreManagement::init()
 	ClearListBox(jobtypelist_id);
 
 	// add the job filters
-	//	for(int i=0; i<NUMJOBTYPES; i++)  // loop through all job types
 	AddToListBox(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_COMMUNITYCENTRE]);
 	AddToListBox(jobtypelist_id, JOBFILTER_COUNSELINGCENTRE, g_Centre.m_JobManager.JobFilterName[JOBFILTER_COUNSELINGCENTRE]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_COMMUNITYCENTRE);
-
-
-
-
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -143,8 +139,7 @@ void cScreenCentreManagement::init()
 	int numColumns = columnNames.size();
 	string* Data = new string[numColumns];
 
-	// Add girls to list
-	for (int i = 0; i < g_Centre.GetNumGirls(g_CurrCentre); i++)
+	for (int i = 0; i < g_Centre.GetNumGirls(g_CurrCentre); i++)	// Add girls to list
 	{
 		sGirl* gir = g_Centre.GetGirl(g_CurrCentre, i);
 		if (selected_girl == gir) selection = i;
@@ -193,15 +188,11 @@ bool cScreenCentreManagement::check_keys()
 	{
 		if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
 		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
-
 		bool skip = false;
 		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_CENTREMANAGER || selection == JOB_COUNSELOR))
 			skip = true;
 		if (selection == JOB_CENTREMANAGER && (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 0) > 0 || g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 1) > 0))
 			skip = true;
-
-
-
 		if (skip)
 		{
 			if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
@@ -259,8 +250,6 @@ void cScreenCentreManagement::check_events()
 			stringstream jdmessage; jdmessage << g_Centre.m_JobManager.JobFilterDesc[selection];
 			if ((g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_COUNSELOR, 0) < 1 && g_Centre.GetNumberPatients(0) > 0) || (g_Centre.GetNumGirlsOnJob(g_CurrCentre, JOB_COUNSELOR, 1) < 1 && g_Centre.GetNumberPatients(1) > 0))
 				jdmessage << "\n*** A Counselor is required to guide Rehab and Therapy patients. ";
-
-
 			EditTextItem(jdmessage.str(), jobtypedesc_id);
 		}
 	}
@@ -401,7 +390,6 @@ void cScreenCentreManagement::check_events()
 		}
 		return;
 	}
-
 }
 
 void cScreenCentreManagement::RefreshSelectedJobType()

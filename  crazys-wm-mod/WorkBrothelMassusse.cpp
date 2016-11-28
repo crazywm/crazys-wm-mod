@@ -47,7 +47,7 @@ extern cJobManager m_JobManager;
 bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 #pragma region //	Job setup				//
-	int actiontype = ACTION_WORKMASSUSSE;
+	int actiontype = ACTION_WORKMASSEUSE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
@@ -78,7 +78,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (jobperformance >= 245)
 	{
-		ss << " She must be the perfect massusse she never goes too hard but never too soft. She knows just what to do and the customers can't get enough of her.\n\n";
+		ss << " She must be the perfect masseuse she never goes too hard but never too soft. She knows just what to do and the customers can't get enough of her.\n\n";
 		wages += 155;
 
 		if (roll_b <= 20)

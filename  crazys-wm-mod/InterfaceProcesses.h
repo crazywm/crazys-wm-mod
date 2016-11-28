@@ -37,6 +37,7 @@ void SaveGameXML(string filename);
 void SimpleSaveGameXML(string filename);
 bool LoadGame(string directory, string filename);
 bool LoadGameXML(TiXmlHandle hDoc);
+void LoadSettingsScreen();
 void LoadGameScreen();
 void LoadGameInfoFiles();
 void LoadGirlsFiles();

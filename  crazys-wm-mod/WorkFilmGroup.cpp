@@ -52,13 +52,21 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	
+
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50, tips = 0;
 	int enjoy = 0;
 	int jobperformance = 0;
 	int bonus = 0;
+
+	int roll = g_Dice.d100();
+	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	{
+		ss << girlName << " refused to do an orgy on film today.";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+		return true;
+	}
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
@@ -85,7 +93,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		else /*          */		guys = 10;
 		ss << " worked in a gang-bang scene with " << guys << " other people.\n\n";
 	}
-	else if (girl->has_trait("Straight") && girl->has_trait("Nymphomaniac") && girl->has_trait("Pornstar") && g_Dice.percent(30))
+	else if (!girl->has_trait("Lesbian") && girl->has_trait("Nymphomaniac") && girl->has_trait("Porn Star"))
 	{
 		jobperformance += 50;
 		guys = g_Dice % 240 + 120;
@@ -100,14 +108,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	girl->tiredness(guys - 2);	// Extra tiredness per guy
 
-	int roll = g_Dice.d100();
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
-	{
-		ss << "She refused to do an orgy on film today.\n";
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-		return true;
-	}
-	else if (roll <= 10)
+	if (roll <= 10)
 	{
 		enjoy -= ((guys > 10 ? (guys / 10) : (guys / 2)) + 1);
 		ss << "She found it unpleasant fucking that many people.\n\n";

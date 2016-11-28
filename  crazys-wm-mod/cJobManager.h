@@ -266,8 +266,8 @@ public:
 	static double JP_RepairShop(sGirl* girl, bool estimate);
 	static bool WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_GetAbort(sGirl* girl, bool estimate);
-	static bool WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
-	static double JP_PhysicalSurgery(sGirl* girl, bool estimate);
+	static bool WorkCosmeticSurgery(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CosmeticSurgery(sGirl* girl, bool estimate);
 	static bool WorkLiposuction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_Liposuction(sGirl* girl, bool estimate);
 	static bool WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);

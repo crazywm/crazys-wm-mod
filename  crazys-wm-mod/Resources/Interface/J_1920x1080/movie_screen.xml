@@ -1,0 +1,15 @@
+<Screen>
+<Window   Name="Movie Screen Window"                                           XPos="60"	YPos="40"	Width="1800"	Height="1000"	Border="1" />
+<Text     Name="Header"                Text="Movie Studio"                     XPos="20"	YPos="20"	Width="1100"	Height="50"	FontSize="32" />
+<Text     Name="MovieDetails"          Text=""                                 XPos="20"	YPos="70"	Width="310"	Height="800"	FontSize="16" />
+<Image    Name="Movies"                File="Movies.jpg"                       XPos="335"	YPos="70"	Width="1130"	Height="930" />
+<Image    Name="GirlImage"             File="blank.png"                        XPos="700"	YPos="100"	Width="400"	Height="400" Hidden="true" />
+<Button   Name="Weeks"                 Image="NextWeek"                        XPos="1510"	YPos="20"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="Turn"                  Image="TurnSum"                         XPos="1510"	YPos="120"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="Girls"                 Image="Girls"                           XPos="1510"	YPos="430"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="Staff"                 Image="Staff"                           XPos="1510"	YPos="530"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="SetUp"                 Image="Building"                        XPos="1510"	YPos="630"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="Dungeon"               Image="Dungeon"                         XPos="1510"	YPos="730"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="BackButton"            Image="Back"                            XPos="1510"	YPos="930"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="WalkButton"            Image="HoldCasting"                     XPos="40"	YPos="830"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+</Screen>

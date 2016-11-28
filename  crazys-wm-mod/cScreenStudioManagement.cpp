@@ -26,16 +26,18 @@
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
 #include "cScreenGirlDetails.h"
-#include "libintl.h"
 
 extern cScreenGirlDetails g_GirlDetails;
-
 extern int g_CurrStudio;
 extern cMovieStudioManager g_Studios;
 extern cBrothelManager g_Brothels;
 extern bool g_InitWin;
 extern cWindowManager g_WinManager;
 extern cGold g_Gold;
+extern sGirl *selected_girl;
+extern vector<int> cycle_girls;
+extern int cycle_pos;
+extern cPlayer* The_Player;
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -66,12 +68,13 @@ static int selection = -1;
 static bool Day0Night1 = SHIFT_NIGHT;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
-extern sGirl *selected_girl;
-extern vector<int> cycle_girls;
-extern int cycle_pos;
-extern cPlayer* The_Player;
-
 bool cScreenStudioManagement::ids_set = false;
+cScreenStudioManagement::cScreenStudioManagement()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "studio_management_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenStudioManagement::~cScreenStudioManagement() {}
 
 void cScreenStudioManagement::set_ids()
 {
@@ -95,7 +98,6 @@ void cScreenStudioManagement::set_ids()
 	day_id = get_id("DayButton");
 	night_id = get_id("NightButton");
 	createmovie_id = get_id("CreateMovieButton");
-
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
@@ -256,17 +258,13 @@ void cScreenStudioManagement::check_events()
 		else
 		{
 			RefreshJobList();	// populate Jobs listbox with jobs in the selected category
-			stringstream jdmessage; jdmessage << g_Studios.m_JobManager.JobFilterDesc[selection];
-			if (g_Studios.CrewNeeded())
-				jdmessage << gettext("\n** At least one Camera Mage and one Crystal Purifier is required to film a scene. ");
-
-
+			stringstream jdmessage;		jdmessage << g_Studios.m_JobManager.JobFilterDesc[selection];
+			if (g_Studios.CrewNeeded())	jdmessage << "\n** At least one Camera Mage and one Crystal Purifier is required to film a scene. ";
 			EditTextItem(jdmessage.str(), jobtypedesc_id);
 		}
 	}
 	if (g_InterfaceEvents.CheckListbox(joblist_id))
 	{
-
 		selection = GetSelectedItemFromList(joblist_id);
 		if (selection != -1)
 		{

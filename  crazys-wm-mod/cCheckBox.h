@@ -32,7 +32,7 @@ public:
 	cCheckBox() {m_Image = 0;m_Next=0;m_Border=m_Surface=0;m_StateOn=false;m_Disabled=false;}
 	~cCheckBox();
 
-	bool CreateCheckBox(int id, int x, int y, int width, int height, string text, int fontsize = 12);
+	bool CreateCheckBox(int id, int x, int y, int width, int height, string text, int fontsize = 12, bool leftorright = false);
 	bool GetState() {return m_StateOn;}
 	void ButtonClicked(int x, int y);
 	void SetState(bool on) {m_StateOn = on;}

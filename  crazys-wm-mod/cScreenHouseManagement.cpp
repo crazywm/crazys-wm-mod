@@ -36,6 +36,10 @@ extern cBrothelManager g_Brothels;
 extern bool g_InitWin;
 extern cWindowManager g_WinManager;
 extern cGold g_Gold;
+extern sGirl *selected_girl;
+extern vector<int> cycle_girls;
+extern int cycle_pos;
+extern cPlayer* The_Player;
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -66,12 +70,13 @@ static int selection = -1;
 static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
-extern sGirl *selected_girl;
-extern vector<int> cycle_girls;
-extern int cycle_pos;
-extern cPlayer* The_Player;
-
 bool cScreenHouseManagement::ids_set = false;
+cScreenHouseManagement::cScreenHouseManagement()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "house_management_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenHouseManagement::~cScreenHouseManagement() {}
 
 void cScreenHouseManagement::set_ids()
 {
@@ -94,8 +99,6 @@ void cScreenHouseManagement::set_ids()
 	jobdesc_id = get_id("JobDescription");
 	day_id = get_id("DayButton");
 	night_id = get_id("NightButton");
-
-
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
@@ -130,12 +133,6 @@ void cScreenHouseManagement::init()
 	// add the job filters
 	AddToListBox(jobtypelist_id, JOBFILTER_HOUSE, g_House.m_JobManager.JobFilterName[JOBFILTER_HOUSE]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSE);
-
-
-
-
-
-
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -256,11 +253,6 @@ void cScreenHouseManagement::check_events()
 		else
 		{
 			RefreshJobList();	// populate Jobs listbox with jobs in the selected category
-
-
-
-
-
 			EditTextItem(g_House.m_JobManager.JobFilterDesc[selection], jobtypedesc_id);
 		}
 	}

@@ -28,6 +28,9 @@ struct sInterfaceIDs
   int BUTTON_LOADGAME ; 
   int BUTTON_EXITGAME ; 
 
+// Settings Screen
+  int BUTTON_CONTINUE;
+
 // Get string dialog
   int BUTTON_OK  ;
   int BUTTON_CANCEL  ;

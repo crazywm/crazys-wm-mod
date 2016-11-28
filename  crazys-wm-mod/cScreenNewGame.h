@@ -16,25 +16,16 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma once
+
 #include "DirPath.h"
 #include "cInterfaceWindow.h"
 #include "InterfaceGlobals.h"
 
-extern cConfig cfg;
-
 class cScreenNewGame : public cInterfaceWindowXML
 {
-
-public:
-	
-	static	bool		ids_set; 
-	
-	cScreenNewGame()
-	{
-		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "NewGame.xml";
-		m_filename = dp.c_str();
-	}
-
+private:
+	static bool ids_set;	// --- interface/event IDs --- //
 	int ok_id;
 	int cancel_id;
 	int brothel_id;
@@ -47,6 +38,8 @@ public:
 	int phn_id;
 
 	void set_ids();
+public:
+	cScreenNewGame();
 
 	void init();
 	void process();

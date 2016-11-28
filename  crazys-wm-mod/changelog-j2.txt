@@ -237,8 +237,27 @@ Debugged the game
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.38
 
+###  Changes 10/17-25/2016
+Fixed a typeo in WorkFilmGroup.cpp "Porn Star" trait check
+Cleaned up cWindowManager.cpp/h
+Cleanup of cScreen* files
+Merge pull request #16 from mjsmagalhaes
+ - Image scaling and Listbox Improvements
+Started adding Settings screen
+Added LeftOrRight option for check boxes.
 
+###  Changes 10/25-11/23/2016  -- did not work on the game
 
+###  Changes 11/24-28/2016
+Created "J_1920x1080" interface
+Fixed interface scalinig issue so font sizes and list box columns scale properly
+ - Added "FixedScale" to config.xml to allow to older interfaces to still work
+Added "OwnersLeftDetails" and "OwnersRightDetails" to itemmanagement_screen.xml
+
+!!!! There were several other changes but I lost track of what they were.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.39
 
 
 

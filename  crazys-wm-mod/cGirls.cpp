@@ -139,7 +139,7 @@ const char *sGirl::enjoy_names[] =
 	"COMBAT", "SEX", "WORKESCORT", "WORKCLEANING", "WORKMATRON", "WORKBAR", "WORKHALL", "WORKSHOW", "WORKSECURITY",
 	"WORKADVERTISING", "WORKTORTURER", "WORKCARING", "WORKDOCTOR", "WORKMOVIE", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
 	"WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC", "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
-	"WORKMASSUSSE", "WORKFARM", "WORKTRAINING", "WORKREHAB", "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
+	"WORKMASSEUSE", "WORKFARM", "WORKTRAINING", "WORKREHAB", "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
 	"WORKHOUSEPET", "GENERAL"
 };
 // `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > enjoy_jobs[]
@@ -169,7 +169,7 @@ const char *sGirl::enjoy_jobs[] = {
 	"performing music",					// ACTION_WORKMUSIC		
 	"striping",							// ACTION_WORKSTRIP		
 	"having her breasts milked",		// ACTION_WORKMILK 		
-	"working as a massusse",			// ACTION_WORKMASSUSSE		
+	"working as a masseuse",			// ACTION_WORKMASSEUSE
 	"working on the farm",				// ACTION_WORKFARM			
 	"training",							// ACTION_WORKTRAINING
 	"counseling",						// ACTION_WORKREHAB		
@@ -491,7 +491,7 @@ void sGirl::setup_maps()
 	enjoy_lookup["WORKMUSIC"] = ACTION_WORKMUSIC;
 	enjoy_lookup["WORKSTRIP"] = ACTION_WORKSTRIP;
 	enjoy_lookup["WORKMILK"] = ACTION_WORKMILK;
-	enjoy_lookup["WORKMASSUSSE"] = ACTION_WORKMASSUSSE;
+	enjoy_lookup["WORKMASSEUSE"] = ACTION_WORKMASSEUSE;
 	enjoy_lookup["WORKFARM"] = ACTION_WORKFARM;
 	enjoy_lookup["WORKINTERN"] = ACTION_WORKTRAINING;		// `J` changed WORKINTERN to WORKTRAINING...
 	enjoy_lookup["WORKTRAINING"] = ACTION_WORKTRAINING;		// to allow it to be used for any training job
@@ -592,7 +592,7 @@ void sGirl::setup_maps()
 	jobs_lookup["Heal"] = JOB_GETHEALING;
 	jobs_lookup["Repr"] = JOB_GETREPAIRS;
 	jobs_lookup["Abrt"] = JOB_GETABORT;
-	jobs_lookup["CosS"] = JOB_PHYSICALSURGERY;
+	jobs_lookup["CosS"] = JOB_COSMETICSURGERY;
 	jobs_lookup["Lipo"] = JOB_LIPO;
 	jobs_lookup["BRS"] = JOB_BREASTREDUCTION;
 	jobs_lookup["BbJb"] = JOB_BOOBJOB;
@@ -2860,7 +2860,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BarStripper(girl, true), "-", "Stripper");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BarWhore(girl, true), "?", "Bar Whore");
 	Brothel_Data += "\n";
-	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelMasseuse(girl, true), "-", "Massusse");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelMasseuse(girl, true), "-", "Masseuse");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelStripper(girl, true), "-", "Brothel Stripper");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_PeepShow(girl, true), "-", "Peep Show");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_Whore(girl, true), "?", "Whore");
@@ -2951,7 +2951,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Clinic_Data += girl->JobRating(m_JobManager.JP_Healing(girl, true), "!", "Healing");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_RepairShop(girl, true), "!", "Repair Shop");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_GetAbort(girl, true), "!", "Get Abortion");
-		Clinic_Data += girl->JobRating(m_JobManager.JP_PhysicalSurgery(girl, true), "!", "Physical Surgery");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_CosmeticSurgery(girl, true), "!", "Cosmetic Surgery");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_Liposuction(girl, true), "!", "Liposuction");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_BreastReduction(girl, true), "!", "Breast Reduction");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_BoobJob(girl, true), "!", "Boob Job");

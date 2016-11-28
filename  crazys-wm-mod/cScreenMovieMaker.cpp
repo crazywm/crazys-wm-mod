@@ -31,6 +31,9 @@ extern int g_CurrStudio;
 extern cGold g_Gold;
 extern cMovieStudioManager g_Studios;
 extern cWindowManager g_WinManager;
+extern sGirl *selected_girl;
+extern vector<int> cycle_girls;
+extern int cycle_pos;
 
 extern	bool	g_LeftArrow;
 extern	bool	g_RightArrow;
@@ -50,12 +53,13 @@ static int selection = -1;
 static bool Day0Night1 = SHIFT_DAY;	// 1 is night, 0 is day.
 static bool SetJob = false;
 
-extern sGirl *selected_girl;
-extern vector<int> cycle_girls;
-extern int cycle_pos;
-
-
 bool cScreenMovieMaker::ids_set = false;
+cScreenMovieMaker::cScreenMovieMaker()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "movie_maker_screen.xml";
+	m_filename = dp.c_str();
+}
+cScreenMovieMaker::~cScreenMovieMaker() {}
 
 void cScreenMovieMaker::set_ids()
 {
@@ -71,14 +75,11 @@ void cScreenMovieMaker::set_ids()
 void cScreenMovieMaker::init()
 {
 	g_CurrentScreen = SCREEN_CREATEMOVIE;
-	if(!g_InitWin)
-		return;
-
+	if(!g_InitWin) return;
 	Focused();
 	g_InitWin = false;
 	
-	// clear the lists
-	ClearListBox(sceneslist_id);
+	ClearListBox(sceneslist_id);	// clear the lists
 
 	//get a list of all the column names, so we can find which data goes in that column
 	vector<string> columnNames;
@@ -105,41 +106,28 @@ void cScreenMovieMaker::init()
 
 void cScreenMovieMaker::process()
 {
-	// we need to make sure the ID variables are set
-	if(!ids_set)
-		set_ids();
-
-	// handle arrow keys
- 	if(check_keys())
-		return;
-
-	// set up the window if needed
-	init();
-
-	// check to see if there's a button event needing handling
-	check_events();
+	if(!ids_set) set_ids();		// we need to make sure the ID variables are set
+ 	if(check_keys()) return;	// handle arrow keys
+	init();						// set up the window if needed
+	check_events();				// check to see if there's a button event needing handling
 }
-
 
 bool cScreenMovieMaker::check_keys()
 {
 	return false;
 }
 
-
 void cScreenMovieMaker::check_events()
 {
-	// no events means we can go home
-	if(g_InterfaceEvents.GetNumEvents() == 0)
-		return;
-	// if it's the back button, pop the window off the stack and we're done
-	if(g_InterfaceEvents.CheckButton(back_id)) {
+	if(g_InterfaceEvents.GetNumEvents() == 0)	return;	// no events means we can go home
+	if(g_InterfaceEvents.CheckButton(back_id))			// if it's the back button, pop the window off the stack and we're done
+	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-	// if it's the back button, pop the window off the stack and we're done
-	if(g_InterfaceEvents.CheckButton(releasemovie_id)) {
+	if (g_InterfaceEvents.CheckButton(releasemovie_id))	// if it's the back button, pop the window off the stack and we're done
+	{
 		g_InitWin = true;
 		g_WinManager.Pop();
 		g_Studios.ReleaseCurrentMovie();
@@ -149,13 +137,13 @@ void cScreenMovieMaker::check_events()
 
 void cScreenMovieMaker::update_image()
 {
-	if((selected_girl)) //&& !IsMultiSelected(girllist_id))
+	if ((selected_girl)) //&& !IsMultiSelected(girllist_id))
 	{
 		PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, true, ImageNum);
 		HideImage(girlimage_id, false);
 	}
 	else
-	{		
-		HideImage(girlimage_id, true); 
+	{
+		HideImage(girlimage_id, true);
 	}
 }

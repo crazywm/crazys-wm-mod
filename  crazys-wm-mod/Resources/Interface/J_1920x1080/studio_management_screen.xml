@@ -1,0 +1,33 @@
+<Screen>
+<Window   Name="Studio Management Window"                                      XPos="60"	YPos="40"	Width="1800"	Height="1000"	Border="1" />
+<Text     Name="Studio"                 Text=""                                XPos="335"	YPos="20"	Width="1130"	Height="50"	FontSize="32" />
+<Image    Name="GirlImage"              File="blank.png"                       XPos="20"	YPos="20"	Width="310"	Height="310" />
+<Button   Name="ViewDetailsButton"      Image="ViewDetails"                    XPos="50"	YPos="340"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Text     Name="GirlDescription"        Text=""                                XPos="20"	YPos="400"	Width="310"	Height="470"	FontSize="14" />
+<Button   Name="FreeSlaveButton"        Image="FreeSlave"                      XPos="20"	YPos="880"	Width="160"	Height="32"	Transparency="true"	Scale="true" />
+<Button   Name="SellSlaveButton"        Image="SellSlave"                      XPos="90"	YPos="914"	Width="160"	Height="32"	Transparency="true"	Scale="true" />
+<Button   Name="FireButton"             Image="FireGirl"                       XPos="160"	YPos="948"	Width="160"	Height="32"	Transparency="true"	Scale="true" />
+<Text     Name="JobTypeHeader"          Text="Job Types"                       XPos="1480"	YPos="20"	Width="300"	Height="40"	FontSize="24" />
+<ListBox  Name="JobTypeList"                                                   XPos="1480"	YPos="60"	Width="300"	Height="146"	FontSize="16"	RowHeight="24"	Border="1"	Events="true" />
+<Text     Name="JobTypeDescription"     Text=""                                XPos="1480"	YPos="210"	Width="300"	Height="40"	FontSize="14" />
+<Text     Name="JobHeader"              Text="Jobs"                            XPos="1480"	YPos="280"	Width="300"	Height="40"	FontSize="24" />
+<Button   Name="DayButton"              Image="DayToggle"                      XPos="1580"	YPos="270"	Width="80"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="NightButton"            Image="NightToggle"                    XPos="1660"	YPos="270"	Width="100"	Height="50"	Transparency="true"	Scale="true" />
+<ListBox  Name="JobList"                                                       XPos="1480"	YPos="320"	Width="300"	Height="194"	FontSize="16"	RowHeight="24"	Border="1"	Events="true" />
+<Text     Name="JobDescription"         Text=""                                XPos="1480"	YPos="520"	Width="300"	Height="180"	FontSize="14" />
+<Button   Name="CreateMovieButton"      Image="CreateMovie"                    XPos="1510"	YPos="730"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="TransferButton"         Image="TransferGirls"                  XPos="1510"	YPos="830"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Button   Name="BackButton"             Image="Back"                           XPos="1510"	YPos="930"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<ListBox  Name="GirlList"                                                      XPos="335"	YPos="70"	Width="1130"	Height="910"	FontSize="16"	RowHeight="30"	Border="1"	Events="true"	Multi="true"	ShowHeaders="true"	HeaderDiv="true"	HeaderClicksSort="true" >
+<Column   Name="Name"                   Header="Girl Name"                     Offset="0" />
+<Column   Name="Age"                    Header="Age"                           Offset="250" />
+<Column   Name="Health"                 Header="Health"                        Offset="310" />
+<Column   Name="Happiness"              Header="Happy"                         Offset="370" />
+<Column   Name="Tiredness"              Header="Tired"                         Offset="430" />
+<Column   Name="DayJob"                 Header="Day Job"                       Offset="490" />
+<Column   Name="NightJob"               Header="Night Job"                     Offset="670" />
+<Column   Name="is_pregnant"            Header="Preg"                          Offset="850" />
+<Column   Name="is_slave"               Header="Slave"                         Offset="910" />
+<Column   Name="Rebel"                  Header="Rebel"                         Offset="970" />
+</ListBox>
+</Screen>

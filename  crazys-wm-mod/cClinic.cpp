@@ -382,7 +382,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			{
 				psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
 				if (psw == JOB_NURSE || psw == JOB_MECHANIC || psw == JOB_GETHEALING || psw == JOB_GETREPAIRS ||
-					psw == JOB_GETABORT || psw == JOB_PHYSICALSURGERY || psw == JOB_LIPO || psw == JOB_BREASTREDUCTION ||
+					psw == JOB_GETABORT || psw == JOB_COSMETICSURGERY || psw == JOB_LIPO || psw == JOB_BREASTREDUCTION ||
 					psw == JOB_BOOBJOB || psw == JOB_VAGINAREJUV || psw == JOB_FACELIFT || psw == JOB_ASSJOB ||
 					psw == JOB_TUBESTIED || psw == JOB_FERTILITY)
 					current->m_DayJob = current->m_NightJob = psw;
@@ -611,7 +611,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->is_dead() || (sw != JOB_GETHEALING && sw != JOB_GETREPAIRS && sw != JOB_GETABORT
-			&& sw != JOB_PHYSICALSURGERY && sw != JOB_LIPO && sw != JOB_BREASTREDUCTION && sw != JOB_BOOBJOB
+			&& sw != JOB_COSMETICSURGERY && sw != JOB_LIPO && sw != JOB_BREASTREDUCTION && sw != JOB_BOOBJOB
 			&& sw != JOB_VAGINAREJUV && sw != JOB_FACELIFT && sw != JOB_ASSJOB && sw != JOB_TUBESTIED
 			&& sw != JOB_FERTILITY))
 		{	// skip dead girls and anyone not a patient
@@ -980,7 +980,7 @@ bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 
 bool cClinicManager::is_Surgery_Job(int testjob){
 	if (testjob == JOB_GETABORT ||
-		testjob == JOB_PHYSICALSURGERY ||
+		testjob == JOB_COSMETICSURGERY ||
 		testjob == JOB_LIPO ||
 		testjob == JOB_BREASTREDUCTION ||
 		testjob == JOB_BOOBJOB ||
@@ -997,7 +997,7 @@ bool cClinicManager::DoctorNeeded()	// `J` added, if there is a doctor already o
 	if (GetNumGirlsOnJob(0, JOB_DOCTOR, 0) > 0 ||
 		GetNumGirlsOnJob(0, JOB_GETHEALING, 0) +
 		GetNumGirlsOnJob(0, JOB_GETABORT, 0) +
-		GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, 0) +
+		GetNumGirlsOnJob(0, JOB_COSMETICSURGERY, 0) +
 		GetNumGirlsOnJob(0, JOB_LIPO, 0) +
 		GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, 0) +
 		GetNumGirlsOnJob(0, JOB_BOOBJOB, 0) +
@@ -1014,7 +1014,7 @@ int cClinicManager::GetNumberPatients(bool Day0Night1)	// `J` added, if there is
 {
 	return (GetNumGirlsOnJob(0, JOB_GETHEALING, Day0Night1) +
 		GetNumGirlsOnJob(0, JOB_GETABORT, Day0Night1) +
-		GetNumGirlsOnJob(0, JOB_PHYSICALSURGERY, Day0Night1) +
+		GetNumGirlsOnJob(0, JOB_COSMETICSURGERY, Day0Night1) +
 		GetNumGirlsOnJob(0, JOB_LIPO, Day0Night1) +
 		GetNumGirlsOnJob(0, JOB_BREASTREDUCTION, Day0Night1) +
 		GetNumGirlsOnJob(0, JOB_BOOBJOB, Day0Night1) +

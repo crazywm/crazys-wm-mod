@@ -21,13 +21,12 @@
 #include "CLog.h"
 #include "CGraphics.h"
 #include "sConfig.h"
+#include "Globals.h"
 #include <vector>
 using namespace std;
 
 extern CLog g_LogFile;
 extern CGraphics g_Graphics;
-
-extern cConfig cfg;
 
 float FontScale = 1.0f;
 
@@ -41,6 +40,7 @@ cFont::cFont()
 	m_Height = m_Width = 0;
 	m_Lineskip = 0;
 	m_NumLines = 0;
+	m_LeftOrRight = false;
 }
 
 cFont::~cFont()
@@ -141,6 +141,7 @@ void cFont::RenderMultilineText(string text)
 
 void cFont::RenderText(string text, bool multi)
 {
+	cConfig cfg;
 	if (m_NewText == false && m_Message != 0) return;
 	if (m_Font == 0)
 	{
@@ -269,10 +270,17 @@ void cFont::SetColor(unsigned char r, unsigned char g, unsigned char b)
  */
 bool cFont::LoadFont(string font, int size)
 {
+	cConfig cfg;
 	if (m_Font) TTF_CloseFont(m_Font);
 	m_Font = 0;
 	if (cfg.debug.log_fonts()) std::cerr << "loading font: '" << font << "' at size " << size << endl;
-	if ((m_Font = TTF_OpenFont(font.c_str(), (int)(size*FontScale))) == 0)
+
+	FontScale = (cfg.resolution.fixedscale() ? _G.g_ScreenScaleY : 1.0f);
+
+	int t = int((float)size * FontScale);
+	if (FontScale < 1.0f) t += 1;
+
+	if ((m_Font = TTF_OpenFont(font.c_str(), t)) == 0)
 	{
 		g_LogFile.write("Error in LoadFont for font file: " + font);
 		g_LogFile.write(TTF_GetError());

@@ -33,14 +33,10 @@ void ResetInterface();
 
 cScreenGetInput::cScreenGetInput()
 {
-	
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "getInput.xml";
 	m_filename = dp.c_str();
 }
-
-cScreenGetInput::~cScreenGetInput()
-{
-}
+cScreenGetInput::~cScreenGetInput() {}
 
 void cScreenGetInput::set_ids()
 {
@@ -54,54 +50,42 @@ void cScreenGetInput::set_ids()
 void cScreenGetInput::process()
 {
 	g_CurrentScreen = SCREEN_BROTHEL;
-
-	if (!ids_set)
-		set_ids();
-
-	if (check_keys())
-		return;
-
+	if (!ids_set)		set_ids();
+	if (check_keys())	return;
 	init();
-
 	check_events();
 }
 
 void cScreenGetInput::init()
 {
 	g_CurrentScreen = SCREEN_GETINPUT;
+	if (!g_InitWin) return;
+	Focused();
+	g_InitWin = false;
+	g_IntReturn = 0;
+	g_EnterKey = false;
 
-	if (g_InitWin)
+	switch (m_profile)
 	{
-		Focused();
-
-		g_InitWin = false;
-		g_IntReturn = 0;
-		g_EnterKey = false;
-
-		switch (m_profile)
-		{
-			case MODE_STRING:
-			{
-				HideEditBox(id_textfield, false);
-				EditTextItem("Enter Text:", id_textfield);
-				break;
-			}
-
-			case MODE_INT:
-			{
-				HideEditBox(id_textfield, false);
-				EditTextItem("Enter Value:", id_textfield);
-				break;
-			}
-
-			case MODE_CONFIRM_EXIT:
-			case MODE_CONFIRM:
-			{
-				HideEditBox(id_textfield, true);
-				EditTextItem("Confirm?", id_textfield);
-				break;
-			}
-		}
+	case MODE_STRING:
+	{
+		HideEditBox(id_textfield, false);
+		EditTextItem("Enter Text:", id_textfield);
+		break;
+	}
+	case MODE_INT:
+	{
+		HideEditBox(id_textfield, false);
+		EditTextItem("Enter Value:", id_textfield);
+		break;
+	}
+	case MODE_CONFIRM_EXIT:
+	case MODE_CONFIRM:
+	{
+		HideEditBox(id_textfield, true);
+		EditTextItem("Confirm?", id_textfield);
+		break;
+	}
 	}
 }
 
@@ -118,7 +102,6 @@ void cScreenGetInput::check_events()
 			if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, id_btn_ok))
 			{
 				g_EnterKey = false;
-
 				g_ReturnText = GetEditBoxText(id_textfield);
 				g_IntReturn = atol(g_ReturnText.c_str());
 
@@ -144,22 +127,18 @@ void cScreenGetInput::CheckEvents_ConfirmExit()
 		Focused();
 		g_InitWin = false;
 	}
-
-	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_EnterKey) {
-		return;
-	}
-
-	if (g_InterfaceEvents.CheckButton(id_btn_cancel)) {
+	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_EnterKey)	return;
+	if (g_InterfaceEvents.CheckButton(id_btn_cancel))
+	{
 		g_ReturnText = "";
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return;
 	}
-
-	if (g_InterfaceEvents.CheckButton(id_btn_ok) || g_EnterKey) {
+	if (g_InterfaceEvents.CheckButton(id_btn_ok) || g_EnterKey)
+	{
 		g_EnterKey = false;
 		g_ReturnText = "";
-
 		g_InitWin = true;
 		g_WinManager.Pop();
 		g_WinManager.Pop();

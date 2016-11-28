@@ -40,7 +40,7 @@ cCheckBox::~cCheckBox()
 	m_Next = 0;
 }
 
-bool cCheckBox::CreateCheckBox(int id, int x, int y, int width, int height, string text, int fontsize)
+bool cCheckBox::CreateCheckBox(int id, int x, int y, int width, int height, string text, int fontsize, bool leftorright)
 {
 	m_ID = id;
 
@@ -58,6 +58,7 @@ bool cCheckBox::CreateCheckBox(int id, int x, int y, int width, int height, stri
 	m_Font.LoadFont(cfg.fonts.normal(), fontsize);
 	m_Font.SetText(text);
 	m_Font.SetColor(0, 0, 0);
+	m_Font.LeftOrRight(leftorright);
 
 	m_Next = 0;
 	return true;
@@ -67,15 +68,14 @@ void cCheckBox::Draw()
 {
 	if (m_Disabled) return;
 
-	int off = m_Font.GetWidth();
-	off += 4;
+	int off = (m_Font.LeftOrRight() ? m_Font.GetWidth() : m_Width) + 4;
 	// Draw the window
 	SDL_Rect offset;
-	offset.x = m_XPos + off;
+	offset.x = m_XPos + (m_Font.LeftOrRight() ? off : 0);
 	offset.y = m_YPos;
 	SDL_BlitSurface(m_Border, 0, g_Graphics.GetScreen(), &offset);
 
-	offset.x = m_XPos + 1 + off;
+	offset.x = m_XPos + (m_Font.LeftOrRight() ? off + 1 : 1);
 	offset.y = m_YPos + 1;
 	SDL_BlitSurface(m_Surface, 0, g_Graphics.GetScreen(), &offset);
 
@@ -85,20 +85,27 @@ void cCheckBox::Draw()
 		rect.y = rect.x = 0;
 		rect.w = m_Width;
 		rect.h = m_Height;
-		m_Image->DrawSurface(m_XPos + off, m_YPos, 0, &rect, true);
+		m_Image->DrawSurface(m_XPos + (m_Font.LeftOrRight() ? off : 0), m_YPos, 0, &rect, true);
 	}
-	m_Font.DrawText(m_XPos, m_YPos);
+	m_Font.DrawText(m_XPos + (m_Font.LeftOrRight() ? 0 : off), m_YPos);
 }
 
 void cCheckBox::ButtonClicked(int x, int y)
 {
 	if (m_Disabled) return;
 
-	int off = m_Font.GetWidth();
-	off += 4;
+	int off = (m_Font.LeftOrRight() ? m_Font.GetWidth() : m_Width) + 4;
 	bool over = false;
-	if (x > m_XPos + off && y > m_YPos && x < m_XPos + off + m_Width && y < m_YPos + m_Height)
-		over = true;
+	if (m_Font.LeftOrRight())
+	{
+		if (x > m_XPos + off && y > m_YPos && x < m_XPos + off + m_Width && y < m_YPos + m_Height)
+			over = true;
+	}
+	else
+	{
+		if (x > m_XPos && y > m_YPos && x < m_XPos + m_Width && y < m_YPos + m_Height)
+			over = true;
+	}
 
 	if (over)
 	{

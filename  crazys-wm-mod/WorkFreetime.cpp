@@ -376,7 +376,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (g_Girls.HasTrait(girl, "Lesbian"))
 				{
 					n = SKILL_LESBIAN;
-					ss << "She paid the woman massusse to intensely lick her clit until she got off.\n";
+					ss << "She paid the woman masseuse to intensely lick her clit until she got off.\n";
 				}
 				else
 				{
@@ -384,12 +384,12 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					{
 					case 0:
 						n = SKILL_ANAL;
-						ss << "She oiled up her ass and had the massusse fuck her.";
+						ss << "She oiled up her ass and had the masseuse fuck her.";
 						break;
 					case 1:
 					default:
 						n = SKILL_NORMALSEX;
-						ss << "She told the massusse to fuck her silly.";
+						ss << "She told the masseuse to fuck her silly.";
 						break;
 					}
 				}

@@ -16,28 +16,26 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#pragma once
+
 #include "DirPath.h"
 #include "cInterfaceWindow.h"
 #include "InterfaceGlobals.h"
 
 class cScreenMainMenu : public cInterfaceWindowXML
 {
-
-public:
-	
-	static	bool		ids_set; 
-	
-	cScreenMainMenu();
-
-
+private:
+	static bool ids_set;	// --- interface/event IDs --- //
 	int continue_id;
 	int load_id;
 	int new_id;
 	int settings_id;
 	int quit_id;
 
+public:
 	void set_ids();
 
+	cScreenMainMenu();
 	void init();
 	void process();
 	void check_events();
