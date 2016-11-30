@@ -40,7 +40,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << "You oversee " << girlName << "'s traning.\n\n";
+	ss << "You oversee " << girlName << "'s training.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, not needed for sex training
 	
