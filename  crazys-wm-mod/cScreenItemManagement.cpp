@@ -127,30 +127,30 @@ static bool AutoUseItems = false;
 void cScreenItemManagement::set_ids()
 {
 	ids_set = true;
-	curbrothel_id	= get_id("CurrentBrothel");
-	back_id			= get_id("BackButton");
-	sell10_l_id		= get_id("Sell10LeftButton");
-	sell10_r_id		= get_id("Sell10RightButton");
-	sellall_l_id	= get_id("SellAllLeftButton");
-	sellall_r_id	= get_id("SellAllRightButton");
-	buy10_l_id		= get_id("Buy10LeftButton");
-	buy10_r_id		= get_id("Buy10RightButton");
-	shift_l_id		= get_id("ShiftLeftButton");
-	shift_r_id		= get_id("ShiftRightButton");
-	gold_id			= get_id("PlayerGold");
-	desc_id			= get_id("ItemDesc");
-	owners_l_id		= get_id("OwnersLeftList");
-	items_l_id		= get_id("ItemsLeftList");
-	owners_r_id		= get_id("OwnersRightList");
-	items_r_id		= get_id("ItemsRightList");
-	filter_id		= get_id("FilterList");
-	autouse_id		= get_id("AutoUseItems");
-	equip_l_id		= get_id("EquipLeftButton");
-	unequip_l_id	= get_id("UnequipLeftButton");
-	equip_r_id		= get_id("EquipRightButton");
-	unequip_r_id	= get_id("UnequipRightButton");
-	detail_l_id		= get_id("OwnersLeftDetails");
-	detail_r_id		= get_id("OwnersRightDetails");
+	curbrothel_id = get_id("CurrentBrothel");
+	back_id = get_id("BackButton");
+	sell10_l_id = get_id("Sell10LeftButton");
+	sell10_r_id = get_id("Sell10RightButton");
+	sellall_l_id = get_id("SellAllLeftButton");
+	sellall_r_id = get_id("SellAllRightButton");
+	buy10_l_id = get_id("Buy10LeftButton");
+	buy10_r_id = get_id("Buy10RightButton");
+	shift_l_id = get_id("ShiftLeftButton");
+	shift_r_id = get_id("ShiftRightButton");
+	gold_id = get_id("PlayerGold");
+	desc_id = get_id("ItemDesc");
+	owners_l_id = get_id("OwnersLeftList");
+	items_l_id = get_id("ItemsLeftList");
+	owners_r_id = get_id("OwnersRightList");
+	items_r_id = get_id("ItemsRightList");
+	filter_id = get_id("FilterList");
+	autouse_id = get_id("AutoUseItems");
+	equip_l_id = get_id("EquipLeftButton");
+	unequip_l_id = get_id("UnequipLeftButton");
+	equip_r_id = get_id("EquipRightButton");
+	unequip_r_id = get_id("UnequipRightButton");
+	detail_l_id = get_id("OwnersLeftDetails");
+	detail_r_id = get_id("OwnersRightDetails");
 
 	string ORColumns[] = { "ORLName", "ORLNumber", "ORLCatNum" };
 	SortColumns(owners_r_id, ORColumns, 3);
@@ -198,7 +198,7 @@ string* ownerdata(sDungeonGirl* girl)
 string ownerdetails(sGirl* girl, int fontsize)
 {
 	if (girl == 0) return "";
-	if (fontsize < 1) fontsize = 9;
+	if (fontsize < 8) fontsize = 8;
 	stringstream ss;
 	ss << girl->m_Realname << "\n\n";
 	cFont check; int w, h, size = 0;
@@ -207,92 +207,46 @@ string ownerdetails(sGirl* girl, int fontsize)
 
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
 	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Level : ", "Exp : " };
+	int basecount = 9;
 	int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
-	string skillstr[] = { "Magic Ability : ", "Combat Ability : ", "Service Skills : ", "Medicine Skill : ", "Performance Skill : ", "Crafting Skill : ", "Herbalism Skill : ", "Farming Skill : ", "Brewing Skill : ", "Animal Handling : ", "Cooking : ", "Anal Sex : ", "BDSM Sex : ", "Normal Sex : ", "Bestiality Sex : ", "Group Sex : ", "Lesbian Sex : ", "Oral Sex : ", "Titty Sex : ", "Hand Job : ", "Stripping : ", "Foot Job : " };
-	int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION, STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
-	string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Strength : ", "Fame : ", "Lactation : ", "PCFear : ", "PCLove : ", "PCHate : " };
+	string skillstr[] = { "Magic : ", "Combat : ", "Service : ", "Medicine : ", "Performance : ", "Crafting : ", "Herbalism : ", "Farming : ", "Brewing : ", "Animal Handling : ", "Cooking : ", "Anal : ", "BDSM : ", "Normal : ", "Bestiality : ", "Group : ", "Lesbian : ", "Oral : ", "Titty : ", "Hand Job : ", "Stripping : ", "Foot Job : " };
+	int skillcount = 22;
+	int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION };
+	string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Strength : ", "Fame : ", "Lactation : " };
+	int statcount = 12;
 
 	// get the widest
-	for (int i = 0; i < 9; i++)		{ check.GetSize(basestr[i], w, h);	if (w > size) size = w; }
-	for (int i = 0; i < 22; i++)	{ check.GetSize(skillstr[i], w, h);	if (w > size) size = w; }
-	for (int i = 0; i < 15; i++)	{ check.GetSize(statstr[i], w, h);	if (w > size) size = w; }
+	for (int i = 0; i < basecount; i++)		{ check.GetSize(basestr[i], w, h);	if (w > size) size = w; }
+	for (int i = 0; i < skillcount; i++)	{ check.GetSize(skillstr[i], w, h);	if (w > size) size = w; }
+	for (int i = 0; i < statcount; i++)		{ check.GetSize(statstr[i], w, h);	if (w > size) size = w; }
 	size += 5; // add a little padding
 	// then add extra spaces until it is longer that the widest
-	for (int i = 0; i < 9; i++)
-	{
-		check.GetSize(basestr[i], w, h);
-		while (w < size)
-		{
-			basestr[i] += " ";
-			check.GetSize(basestr[i], w, h);
-		}
-	}
-	for (int i = 0; i < 22; i++)
-	{
-		check.GetSize(skillstr[i], w, h);
-		while (w < size)
-		{
-			skillstr[i] += " ";
-			check.GetSize(skillstr[i], w, h);
-		}
-	}
-	for (int i = 0; i < 15; i++)
-	{
-		check.GetSize(statstr[i], w, h);
-		while (w < size)
-		{
-			statstr[i] += " ";
-			check.GetSize(statstr[i], w, h);
-		}
-	}
-	// display looks
-	ss << basestr[2] << (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2 << sper;
+	for (int i = 0; i < basecount; i++)		{ check.GetSize(basestr[i], w, h);	while (w < size)	{ basestr[i] += " "; check.GetSize(basestr[i], w, h); } }
+	for (int i = 0; i < skillcount; i++)	{ check.GetSize(skillstr[i], w, h);	while (w < size)	{ skillstr[i] += " "; check.GetSize(skillstr[i], w, h); } }
+	for (int i = 0; i < statcount; i++)		{ check.GetSize(statstr[i], w, h);	while (w < size)	{ statstr[i] += " "; check.GetSize(statstr[i], w, h); } }
 
-	// display level and exp
-	ss << "\n" << basestr[7] << g_Girls.GetStat(girl, STAT_LEVEL);
-	ss << "\n" << basestr[8] << g_Girls.GetStat(girl, STAT_EXP);
-
-	// display Age
-	ss << "\n" << basestr[0]; if (g_Girls.GetStat(girl, STAT_AGE) == 100) ss << "Unknown"; else ss << g_Girls.GetStat(girl, STAT_AGE);
-	// display rebel
+	ss << basestr[2] << (girl->beauty() + girl->charisma()) / 2 << sper;
+	ss << "\n" << statstr[0] << girl->charisma() << sper;
+	ss << "\n" << statstr[1] << girl->beauty() << sper;
+	ss << "\n" << basestr[7] << girl->level();
+	ss << "\n" << basestr[8] << girl->exp();
+	ss << "\n" << basestr[0]; if (girl->age() == 100) ss << "Unknown"; else ss << girl->age();
 	ss << "\n" << basestr[1] << girl->rebel();
-	// display Constitution
-	ss << "\n" << basestr[3] << g_Girls.GetStat(girl, STAT_CONSTITUTION) << sper;
-
-	// display HHT and money
-	ss << "\n" << basestr[4] << g_Girls.GetStat(girl, STAT_HEALTH) << sper;
-	ss << "\n" << basestr[5] << g_Girls.GetStat(girl, STAT_HAPPINESS) << sper;
-	ss << "\n" << basestr[6] << g_Girls.GetStat(girl, STAT_TIREDNESS) << sper;
-	ss << "\n";
-	// display status
-	if (girl->m_States&(1 << STATUS_SLAVE))	ss << "Is Branded a Slave";	ss << "\n";
-	if (g_Girls.CheckVirginity(girl))		ss << "She is a Virgin";	ss << "\n";
-
-	if (girl->m_States&(1 << STATUS_PREGNANT))					{ ss << "Is pregnant"; }
+	ss << "\n" << basestr[3] << girl->constitution() << sper;
+	ss << "\n" << basestr[4] << girl->health() << sper;
+	ss << "\n" << basestr[5] << girl->happiness() << sper;
+	ss << "\n" << basestr[6] << girl->tiredness() << sper;
+	for (int i = 2; i < statcount; i++)	{ ss << "\n" << statstr[i] << g_Girls.GetStat(girl, statnum[i]) << sper; }
+	ss << "\n";	if (girl->is_slave())				{ ss << "Is Branded a Slave"; }
+	ss << "\n";	if (g_Girls.CheckVirginity(girl))	{ ss << "She is a Virgin"; }
+	ss << "\n";	if (girl->m_States&(1 << STATUS_PREGNANT))		{ ss << "Is pregnant"; }
 	else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child"; }
 	else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated"; }
-	ss << "\n";
-	// `J` moved the rest of children lines to second detail list
-
-	if (girl->is_addict() && !girl->has_disease())		ss << "Has an addiciton";
-	else if (!girl->is_addict() && girl->has_disease())	ss << "Has a disease";
-	else if (girl->is_addict() && girl->has_disease())	ss << "Has an addiciton and a disease";
-	ss << "\n";
-
-	if (girl->m_States&(1 << STATUS_BADLY_POISONED))ss << "Is badly poisoned";
-	else if (girl->m_States&(1 << STATUS_POISONED))	ss << "Is poisoned";
-
-	// display Skills
-	ss << "\n\nSKILLS";
-	for (int i = 0; i < 22; i++)
-	{
-		if (i == 11) ss << "\n\nSEX SKILLS";
-		ss << "\n" << skillstr[i] << g_Girls.GetSkill(girl, skillnum[i]) << sper;
-	}
-
-	ss << "\n\nTraits:      ";
-	// loop through her traits, populating the box
-	int trait_count = 0;
+	ss << "\n";	if (girl->is_addict() && !girl->has_disease())	{ ss << "Has an addiciton"; }
+	else if (!girl->is_addict() && girl->has_disease())			{ ss << "Has a disease"; }
+	else if (girl->is_addict() && girl->has_disease())			{ ss << "Has an addiciton and a disease"; }
+	for (int i = 0; i < skillcount; i++)	{ ss << "\n" << skillstr[i] << g_Girls.GetSkill(girl, skillnum[i]) << sper; }
+	ss << "\n\n";	int trait_count = 0;
 	for (int i = 0; i < MAXNUM_TRAITS; i++)
 	{
 		if (!girl->m_Traits[i]) continue;
@@ -366,8 +320,8 @@ void cScreenItemManagement::init()	// `J` bookmark
 	SetSelectedItemInList(filter_id, filter, false);
 	SetListTopPos(filter_id, filterpos);
 
-	// create owner lists
-#if 1
+
+#if 1	// create owner lists
 	if (true)	// add shop and player to list
 	{
 		stringstream ss, ss2;
@@ -664,7 +618,7 @@ void cScreenItemManagement::write_item_text(sInventoryItem * item, int owner, in
 	{
 		iName << item->m_Name;
 		iCost << item->m_Cost << " gold";
-		iSell << int(((float) item->m_Cost) * cfg.in_fact.item_sales()) << " gold";
+		iSell << int(((float)item->m_Cost) * cfg.in_fact.item_sales()) << " gold";
 		iType << item->m_Type;
 		iDesc << item->m_Desc;
 	}
@@ -709,7 +663,7 @@ void cScreenItemManagement::check_events()
 	if (g_InterfaceEvents.CheckListbox(items_l_id))
 	{
 		leftItem = GetLastSelectedItemFromList(items_l_id);
-		
+
 		DisableButton(shift_r_id, (leftItem < 0) || (leftOwner == 1 && !g_Gold.afford(g_InvManager.GetShopItem(leftItem)->m_Cost)));
 
 		bool disablebuy10R = true;
@@ -810,7 +764,7 @@ void cScreenItemManagement::check_events()
 					DisableButton(unequip_r_id, true);
 				}
 			}
-			write_item_text(item, rightOwner,leftOwner);
+			write_item_text(item, rightOwner, leftOwner);
 		}
 		else
 		{
@@ -1121,21 +1075,21 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 	string *item_name;
 	if (transfer_from == Left)
 	{
-		source_list			= items_l_id;
-		source_owner_list	= owners_l_id;
-		source_owner		= leftOwner;
-		target_owner_list	= owners_r_id;
-		target_owner		= rightOwner;
-		item_name			= &sel_name_r;
+		source_list = items_l_id;
+		source_owner_list = owners_l_id;
+		source_owner = leftOwner;
+		target_owner_list = owners_r_id;
+		target_owner = rightOwner;
+		item_name = &sel_name_r;
 	}
 	else
 	{
-		source_list			= items_r_id;
-		source_owner_list	= owners_r_id;
-		source_owner		= rightOwner;
-		target_owner_list	= owners_l_id;
-		target_owner		= leftOwner;
-		item_name			= &sel_name_l;
+		source_list = items_r_id;
+		source_owner_list = owners_r_id;
+		source_owner = rightOwner;
+		target_owner_list = owners_l_id;
+		target_owner = leftOwner;
+		item_name = &sel_name_l;
 	}
 
 	leftItem = GetLastSelectedItemFromList(items_l_id);
@@ -1325,9 +1279,9 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 					g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
 				}
 
-				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) 
+				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP))
 					g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]);
-				else 
+				else
 					g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]), false);
 
 				g_Brothels.m_NumItem[selection]--;
@@ -1446,7 +1400,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 	if (transfer_from == Left)
 	{
 		leftOwner = source_owner;
-		rightOwner= target_owner;
+		rightOwner = target_owner;
 	}
 	else
 	{

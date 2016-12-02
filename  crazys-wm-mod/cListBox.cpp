@@ -903,7 +903,7 @@ void cListBox::DefineColumns(string name[], string header[], int offset[], bool 
 	{
 		m_ColumnName[i] = name[i];
 		m_Header[i] = header[i];
-		m_ColumnOffset[i] = offset[i] * _G.g_ScreenScaleX;
+		m_ColumnOffset[i] = int((float)offset[i] * _G.g_ScreenScaleX);
 		m_SkipColumn[i] = skip[i];
 	}
 

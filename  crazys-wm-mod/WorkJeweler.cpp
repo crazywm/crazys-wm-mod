@@ -195,62 +195,105 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 #if 0
 		ss << g_InvManager.CraftItem(girl, JOB_JEWELER, int(craftpoints));
 #else
-		int numitems = 0, tries = 0;
+		int numitems = 0, tries = 0, random = 0;
 		sInventoryItem* item = NULL;
 
 		while (craftpoints > 0 && numitems < (1 + girl->crafting() / 15) && tries < 20)
 		{
-
 			string itemmade = "";
 			int Magic = 0, Cost = 0, NumMade = 1;
 
 			if (craftpoints < 20)						// Simple items
 			{
-				switch (g_Dice % 6)
+				random = g_Dice % 10;
+				switch (random)
 				{
-				case 0:
-					if (girl->mana() >= 10)
-					{
-						break;
-					}
-				case 1:
-					if (girl->mana() >= 5)
-					{
-						break;
-					}
-				case 2:
-					if (girl->combat() > 10)
-					{
-						break;
-					}
-				case 3:
-					if (girl->combat() > 10)
-					{
-
-						break;
-					}
-				case 4:
-
-					break;
-				default:
-
-					break;
+				case 0:		Cost = 15;	itemmade = "Nipple Barbells";			break;	// Desc = "Barbell ring nipple piercings. (+2 BDSM, +2 Confidence, +1 Titty, +1 Libido, adds Pierced Nipples)"
+				case 1:		Cost = 15;	itemmade = "Spiked Nipple Barbells";	break;	// Desc = "This set of black spiked barbell rings look dangerous and sexy at the same time. (+5 BDSM, +3 Confidence, -1 Titty, +1 Libido, +3 Spirit, adds Pierced Nipples)"
+				case 2:		Cost = 10;	itemmade = "Hooker Hoops";				break;	// Desc = "Huge hoop earrings. They are the opposite of classy but also sexy in their own special way. (+3 Cha, -1 Hap, -15 Refinement, removes Elegant)"
+				case 3:		Cost = 10;	itemmade = "Bauble Necklace";			break;	// Desc = "This necklace is basically some semi-precious stones on a string. It's pretty, but it's not the kind of jewelry you write home about. (D) (+5 Cha)"
+				case 4:		Cost = 10;	itemmade = "Belly Button Ring";			break;	// Desc = "Barbell ring usually worn by exotic dancers. (+3 Strip, +2 Charisma, +1 Beauty, Adds Pierced Navel)"
+				case 5:		Cost = 10;	itemmade = "Clit Ring";					break;	// Desc = "Clit piercing that keeps the girl in a permanent state of arousal. (+2 Normal, +2 BDSM, +7 Hate and Fear, -5 Happiness, +10 Libido, adds Pierced Clit)"
+				case 6:		Cost = 10;	itemmade = "Nipple Rings";				break;	// Desc = "Ring shaped nipple piercings. (+2 BDSM, +3 Libido and Titty, adds Pierced Nipples)"
+				case 7:		Cost = 10;	itemmade = "Nose Ring";					break;	// Desc = "A thin, silver ring that pierces the septum and hangs in between the nostrils. (+5 Best, +2 BDSM, -7 Refinement, adds Pierced nose, removes Elegant)"
+				case 8:		Cost = 10;	itemmade = "Pink Bangle";				break;	// Desc = "Pink bangle made of plastic, frequently worn by women with no class. (+3 Charisma, -6 Refinement)"
+				default:	Cost = 10;	itemmade = "Tongue Stud";				break;	// Desc = "Tongue piercing that will drive her customers crazy. (+2 BDSM, -5 Refinement,  -Elegant, adds Pierced Tongue)"
 				}
 			}
 			else if (craftpoints < 50)					// small common items
 			{
+				random = g_Dice % 10;
+				if (girl->magic() >= 30 && girl->mana() >= 30 && g_Dice.percent(girl->magic() / 3)) random = (g_Dice % 2)*2;
+				switch (random)
+				{
+				case 0:	if (girl->magic() >= 30 && girl->mana() >= 30)
+				{
+					Magic = 30;	Cost = 90;	itemmade = "Rainbow Ring";	break;	// Desc = "This magical stone ring allows its wearer to change the color of their hair at will, and even to slightly alter their skin tone to fit their whims or their partners'. (+15 Beau, +5 Happ)"
+				}
+				case 1:		Cost = 45;	itemmade = "Silver Necklace";	break;	// Desc = "This is a slender silver neck chain. It's subtle, but definitely elegant. (C) (+10 Cha)"
+				case 2:	if (girl->magic() >= 10 && girl->mana() >= 10)
+				{
+					Magic = 10;	Cost = 40;	itemmade = "Blonde Ring";	break;	// Desc = "A ring given by the cult of blondes. It can shoot lasers. (Combat +5, Beauty +5)"
+				}
+				case 3:		Cost = 35;	itemmade = "Cross Necklace";	break;	// Desc = "Necklace with a gold crucifix. One can't help but want to be good when they wear it. Unfortunately, not all sex acts are considered 'good' by most people. (+10 Spirit, +7 Charisma, +5 Morality, -20 Lesbian, -15 Group, -10 Anal/Oral)"
+				case 4:		Cost = 35;	itemmade = "Silver Bracelet";	break;	// Desc = "This handcrafted bracelet is a good complement to any outfit. (+3 Charisma, +10 Refinement)"
+				case 5:		Cost = 30;	itemmade = "Nipple Chain";		break;	// Desc = "Set of nipple rings with a metallic chain that connects them. (+3 BDSM, +3 Titty, +2 Charisma, +3 Libido, adds Pierced Nipples)"
+				case 6:		Cost = 30;	itemmade = "Belly Chain";		break;	// Desc = "Metallic chain usually worn by exotic dancers around their waist. (+5 Strip, +3 Performance, +3 Charisma, +1 Beauty)"
+				case 7:		Cost = 30;	itemmade = "Cowbell Collar";	break;	// Desc = "Moo. I hope you don't find the sound of a cowbell annoying. (+10 Best, -2 Cha, +7 Obed, -5 Happ, -15 Spi, -5 Refinement, removes Elegant)"
+				case 8:		Cost = 25;	itemmade = "Cross Earrings";	break;	// Desc = "Earrings with a dangling crucifix made of silver. Popular with all types of girls - except vampires. (+5 Spirit, +3 Charisma)"
+				default:	Cost = 25;	itemmade = "Silver Ring";		break;	// Desc = "A plain silver ring. Despite its price it doesn't have any magical properties. (+10 Refinement)"
+				}
 			}
 			else if (craftpoints < 100)					// medium items
 			{
+				random = g_Dice % 3;
+				switch (random)
+				{
+				case 0:		Cost = 90;	itemmade = "Gold Pendant";		break;	// Desc = "A finely crafted heart pendant hangs on this pair of twisting gold chains. (A) (+20 Cha)"
+				case 1:		Cost = 80;	itemmade = "Gold Bangle";		break;	// Desc = "Handcrafted gold bangle with a beautiful decoration carved around it. (+5 Charisma, +12 Refinement)"
+				default:	Cost = 70;	itemmade = "Gold Ring";			break;	// Desc = "A plain gold ring. Despite its price it doesn't have any magical properties. (+15 Refinement)"
+				}
 			}
 			else if (craftpoints < 150)					// large items
 			{
+				random = g_Dice % 7;
+				if (girl->magic() >= 50 && girl->mana() >= 50 && g_Dice.percent(girl->magic() / 3)) random = (g_Dice % 3) * 2;
+				switch (random)
+				{
+				case 0:	if (girl->magic() >= 50 && girl->mana() >= 50)
+				{
+					Magic = 50;	Cost = 130;	itemmade = "Slave Band";	break;	// Desc = "This thick steel armband affects the wearer's mind and makes it difficult for her to refuse what is asked of her. It has a frightening aura about it, and it is almost impossible to conceal the object's true nature. (+50 Obed, adds Controlled status)"
+				}
+				case 1:		Cost = 140;	itemmade = "Diamond Hairpin";	break;	// Desc = "A Diamond Hairpin. She'll feel like a million gold pieces with this, though it fortunately doesn't actually cost that much. (+5 Refinement, +10 Cha)"
+				case 2:	if (girl->magic() >= 50 && girl->mana() >= 50)
+				{
+					Magic = 30;	Cost = 140;	itemmade = "Star Pendant";	break;	// Desc = "Star-shaped pendant with a jewel at its center. (Prevents poison and heavy poison)"
+				}
+				case 3:		Cost = 140;	itemmade = "Obsidian Choker";	break;	// Desc = "This black silk choker boasts a polished obsidian medallion. Simple, but sophisticated. (B) (+10 Lib, +5 Cha, adds Elegant)"
+				case 4:	if (girl->magic() >= 50 && girl->mana() >= 50)
+				{
+					Magic = 20;	Cost = 140;	itemmade = "Elven Tiara";	break;	// Desc = "This mithril tiara is a proof of the mastery of elven blacksmiths and jewelcrafters. (+10 Charisma, +15 Refinement, +5 Magic)"
+				}
+				case 5:		Cost = 120;	itemmade = "Diamond Necklace";	break;	// Desc = "Platinum necklace with inlaid diamonds, elegant and expensive. (+15 Cha/Refine, +5 Bea, +20 Love, -10 Hate)"
+				default:	Cost = 135;	itemmade = "Engagement Ring";	break;	// Desc = "A gold ring with a big diamond in the middle. If you give a girl this, she pretty much has to say yes. (Love +50, Beauty +10)"
+				}
 			}
 			else if (craftpoints < 200)					// difficult to make items
 			{
+				random = g_Dice % 3;
+				switch (random)
+				{
+				case 0:	if (girl->magic() >= 20 && girl->mana() >= 20)
+				{
+					Magic = 20;	Cost = 180;	itemmade = "Exotic Amulet";	break;	// Desc = "This amulet gives the wearer a slight otherworldly quality. Their eyes appear unnaturally striking, and they seem more beautiful and compelling. (+10 Beauty, +Strange Eyes, +Exotic)"
+				}
+				case 1:		Cost = 160;	itemmade = "Pearl Necklace";	break;	// Desc = "A simple string of pearls, short enough to remain classy but long enough to be worth a lot of money. (B) (+15 Cha, +5 Lib)"
+				default:	Cost = 190;	itemmade = "Jeweled Poignard";	break;	// Desc = "A finely crafted dagger, inlaid with silver and bearing a precious stone on its hilt. It's almost jewelry. (C) (+5 Cha, +10 Com, -10 Fear, -5 Hate, +5 Conf)"
+				}
 			}
 			else if (craftpoints < 250)					// rare and difficult to make items
 			{
+				Cost = 240;	itemmade = "Eridium Jewelry";	break;	// Desc = "A bracelet made of the rare element Eridium. Very rare, very valuabe, and slightly magic. (Magic +5, Love +25, Hate and Fear -15)"
 			}
 			else if (craftpoints >= 250)				// unique items
 			{
@@ -265,41 +308,22 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				Magic = 0;		Cost = 0;		itemmade = "Amulet of the Cunning Linguist";//             Desc = "This tongue-shaped amulet instantly gives its wearer the ability to speak and understand all known languages perfectly, magnifying the effects of learning both mundane and arcane. It also has the curious side effect of making one intensely desire putting one's tongue on a woman's genitals. Odd. Strange. (+10 Mag, +10 Les, +10 Lib, gives Lesbian and Quick Learner)"
 				Magic = 0;		Cost = 0;		itemmade = "Amulet of the Sex Elemental";//                Desc = "This beautiful ruby amulet, hanging from a gold chain, holds a terrifying power. Any woman wearing it becomes an insatiable thing of pure lust, mentally and physically. Her breasts grow to an enormous size, an immense, permanently-erect penis appears between her legs so she can pleasure (and be pleasured by) anyone regardless of gender, and every moment of every day sees her mind obsessed with intense thoughts of sex. She also gains supernatural endurance, allowing her body to withstand the exertion of her new appetites. (+100 all sex skills, +100 Lib, Cons, Obed, removes Big Boobs, Lolita, Small Boobs, adds Fast Orgasms, Not Human, Nymphomaniac, Great Figure, Great Arse, Fearless, Sterile, Tough, Futanari, Mind Fucked, Long Legs, Puffy Nipples, Perky Nipples, Abnormally Large Boobs)"
 				Magic = 0;		Cost = 0;		itemmade = "Asexual Armlet";//                             Desc = "This inconspicuous bracelet locks onto a girl's wrist, affecting her with powerful magic. She completely loses all sexual drive and ability but retains any natural beauty. It bestows a level of intelligence and enlightenment that allows the wearer to see great joy in virtually everything. She'll also be so attuned to the world around her that the feelings of others become easily realized. (-100 All Sex Skills, -100 Lib, +10 Int, +50 Hap, +Sterile, +Optimist, +Psychic)"
-				Magic = 0;		Cost = 10;		itemmade = "Bauble Necklace";//                            Desc = "This necklace is basically some semi-precious stones on a string. It's pretty, but it's not the kind of jewelry you write home about. (D) (+5 Cha)"
-				Magic = 0;		Cost = 0;		itemmade = "Belly Button Ring";//                          Desc = "Barbell ring usually worn by exotic dancers. (+3 Strip, +2 Charisma, +1 Beauty, Adds Pierced Navel)"
-				Magic = 0;		Cost = 0;		itemmade = "Belly Chain";//                                Desc = "Metallic chain usually worn by exotic dancers around their waist. (+5 Strip, +3 Performance, +3 Charisma, +1 Beauty)"
 				Magic = 0;		Cost = 0;		itemmade = "Bestial Ring";//                               Desc = "This rough bronze ring awakens its wearer's primal instincts, suppressing their inhibitions and intellect as it draws their base passions to the surface. (+20 Lib/Str, +50 Best, -50 Strip and Serv, +10 all other sex skills, -50 Int, removes Elegant)"
 				Magic = 0;		Cost = 0;		itemmade = "Bimbo Ring";//                                 Desc = "This gold-plated tin ring considerably increases its wearer's physical beauty... at the cost of making her vapid, crude, and generally not as much fun to be around. (+50 Bea, -50 Cha, -20 Serv, removes Cool Person)"
-				Magic = 0;		Cost = 0;		itemmade = "Blonde Ring";//                                Desc = "A ring given by the cult of blondes. It can shoot lasers. (Combat +5, Beauty +5)"
 				Magic = 0;		Cost = 0;		itemmade = "Bracer of Power";//                            Desc = "This magical bracer boosts the strength of whoever wears it. (+5 Combat, +15 Strength)"
-				Magic = 0;		Cost = 0;		itemmade = "Clit Ring";//                                  Desc = "Clit piercing that keeps the girl in a permanent state of arousal. (+2 Normal, +2 BDSM, +7 Hate and Fear, -5 Happiness, +10 Libido, adds Pierced Clit)"
 				Magic = 0;		Cost = 0;		itemmade = "Cock Ring of Removal";//                       Desc = "A magic ring that is designed to be worn around a penis. When worn, the penis disappears and the ring along with it. (Removes Futanari)"
 				Magic = 0;		Cost = 0;		itemmade = "Collar of Empathy";//                          Desc = "These ornate, locking collars were originally used voluntarily by priests committed to non-violence. It causes the wearer to shun aggression and lets them psychically share the emotions of those around them. The increased empathy also leads to greater acceptance towards the will of others. (-30 Combat, +30 Obed, +Psychic, +20 Cha, +50 Spirit, -30 Hate, -Aggressive, -Sadistic, -Merciless, -Iron Will, -Tsundere/Yandere, -Assassin, -Fearless, -Twisted)"
-				Magic = 0;		Cost = 0;		itemmade = "Cowbell Collar";//                             Desc = "Moo. I hope you don't find the sound of a cowbell annoying. (+10 Best, -2 Cha, +7 Obed, -5 Happ, -15 Spi, -5 Refinement, removes Elegant)"
 				Magic = 0;		Cost = 0;		itemmade = "Cowbell Nipple Rings of Lactation";//          Desc = "Nipple rings with dangling magical cowbells that increase the girl's lactation to impressive levels. They'll also increase breast size, but only if the wearer is of below-average size. (+10 Beast, +2 BDSM, +3 Libido, +5 Titty, -5 Spirit, adds Cow Tits and Pierced Nipples, Increases breast size to Average)"
-				Magic = 0;		Cost = 0;		itemmade = "Cross Earrings";//                             Desc = "Earrings with a dangling crucifix made of silver. Popular with all types of girls - except vampires. (+5 Spirit, +3 Charisma)"
-				Magic = 0;		Cost = 0;		itemmade = "Cross Necklace";//                             Desc = "Necklace with a gold crucifix. One can't help but want to be good when they wear it. Unfortunately, not all sex acts are considered 'good' by most people. (+10 Spirit, +7 Charisma, +5 Morality, -20 Lesbian, -15 Group, -10 Anal/Oral)"
 				Magic = 0;		Cost = 0;		itemmade = "Daddy's Girl Necklace";//                      Desc = "A small necklace with the word's Daddy's Girl on it. (Obedience +5, Adds Dependant)"
-				Magic = 0;		Cost = 0;		itemmade = "Diamond Hairpin";//                            Desc = "A Diamond Hairpin. She'll feel like a million gold pieces with this, though it fortunately doesn't actually cost that much. (+5 Refinement, +10 Cha)"
-				Magic = 0;		Cost = 0;		itemmade = "Diamond Necklace";//                           Desc = "Platinum necklace with inlaid diamonds, elegant and expensive. (+15 Cha/Refine, +5 Bea, +20 Love, -10 Hate)"
 				Magic = 0;		Cost = 0;		itemmade = "Disguised Slave Band";//                       Desc = "It looks like a simple piece of jewelry, but the subtle interlocking geometrical designs on this beautiful silver armband barely hint at the object's true power: to suppress the wearer's ego and put her entirely under your will. (+50 Obed, adds Controlled status, -Iron Will)"
 				Magic = 0;		Cost = 0;		itemmade = "Doll's Ring (Greater)";//                      Desc = "This ring is somehow a tight fit on any girl's finger, regardless of her actual size. It causes the wearer to become permanently youthful, as well as making her body like smooth, delicate, flawless porcelain. In addition, her breasts will become smaller and more perky, but her sexual ability decreases. (Age never above minimum, +10 Beauty, +Lolita, +Small Boobs, +Puffy Nipples, +Fragile, -25 Constitution, -25 Sex Skills, -50 Combat)"
 				Magic = 0;		Cost = 0;		itemmade = "Doll's Ring (Lesser)";//                       Desc = "This ring makes the wearer become significantly younger, as well as giving her rather doll-like features. She becomes more fair and beautiful, but she'll also be more fragile. (-8 Age, +5 Beauty, +Lolita, +Small Boobs, -Tough, -15 Cons/Str, -30 Combat)"
-				Magic = 0;		Cost = 0;		itemmade = "Elven Tiara";//                                Desc = "This mithril tiara is a proof of the mastery of elven blacksmiths and jewelcrafters. (+10 Charisma, +15 Refinement, +5 Magic)"
-				Magic = 0;		Cost = 0;		itemmade = "Engagement Ring";//                            Desc = "A gold ring with a big diamond in the middle. If you give a girl this, she pretty much has to say yes. (Love +50, Beauty +10)"
 				Magic = 0;		Cost = 0;		itemmade = "Epic Necklace of Babeosity";//                 Desc = "A serious refinement of the initial design. (Removes Lolita, Small Boobs, Slow Orgasms. Adds Fast Orgasms, Nymphomaniac, Great Figure, Great Arse, Long Legs, Puffy Nipples, Perky Nipples, Abnormally Large Boobs, +50 cha, beauty, libido, confidence, constitution)"
-				Magic = 0;		Cost = 0;		itemmade = "Eridium Jewelry";//                            Desc = "A bracelet made of the rare element Eridium. Very rare, very valuabe, and slightly magic. (Magic +5, Love +25, Hate and Fear -15)"
-				Magic = 0;		Cost = 0;		itemmade = "Exotic Amulet";//                              Desc = "This amulet gives the wearer a slight otherworldly quality. Their eyes appear unnaturally striking, and they seem more beautiful and compelling. (+10 Beauty, +Strange Eyes, +Exotic)"
-				Magic = 0;		Cost = 0;		itemmade = "Gold Bangle";//                                Desc = "Handcrafted gold bangle with a beautiful decoration carved around it. (+5 Charisma, +12 Refinement)"
-				Magic = 0;		Cost = 0;		itemmade = "Gold Pendant";//                               Desc = "A finely crafted heart pendant hangs on this pair of twisting gold chains. (A) (+20 Cha)"
-				Magic = 0;		Cost = 0;		itemmade = "Gold Ring";//                                  Desc = "A plain gold ring. Despite its price it doesn't have any magical properties. (+15 Refinement)"
 				Magic = 0;		Cost = 0;		itemmade = "Hime Amulet";//                                Desc = "A magical amulet that makes your girl into a perfect little princess. (Adds Lolita, Cute, and Princess.)"
 				Magic = 0;		Cost = 0;		itemmade = "Hime Ring";//                                  Desc = "Removes all blemishes - physical and mental. A princess should be perfect, after all! (+10 Beauty. Removes Scars, Mind Fucked, Malformed, Retarded, Slow Learner, Twisted)"
 				Magic = 0;		Cost = 0;		itemmade = "Hime Tiara";//                                 Desc = "A cute little crown to complete a princess's ensemble. Teaches her to act like a perfect little girl. (+10 Beauty. Removes Yandere, Iron Will, Assassin. Adds Meek, Charming.)"
-				Magic = 0;		Cost = 0;		itemmade = "Hooker Hoops";//                               Desc = "Huge hoop earrings. They are the opposite of classy but also sexy in their own special way. (+3 Cha, -1 Hap, -15 Refinement, removes Elegant)"
 				Magic = 0;		Cost = 0;		itemmade = "Invincible Armlet ";//                         Desc = "Fist or flame, sword or spell, the wearer of this adamantine armlet needs fear harm no longer. Time alone will take its toll. (S) (-100 Fear, adds Incorporeal)"
 				Magic = 0;		Cost = 0;		itemmade = "Invincible Armlet";//                          Desc = "Fist or flame, sword or spell, the wearer of this adamantine armlet needs fear harm no longer. Time alone will take its toll. (S) (-100 Fear, adds Incorporeal)"
-				Magic = 0;		Cost = 0;		itemmade = "Jeweled Poignard";//                           Desc = "A finely crafted dagger, inlaid with silver and bearing a precious stone on its hilt. It's almost jewelry. (C) (+5 Cha, +10 Com, -10 Fear, -5 Hate, +5 Conf)"
 				Magic = 0;		Cost = 0;		itemmade = "Magic Belly-Button Piercing";//                Desc = "Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  The piercing and the jewelry's magic make the girl's figure seem more attractive, especially when scantily-dressed or naked. (+Great Figure and Pierced Navel, +10 Strip, +5 Fear)"
 				Magic = 0;		Cost = 0;		itemmade = "Magic Clit Hood Piercing";//                   Desc = "Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This piercing and the jewelry's magic keep the girl more aroused and compliant. (+Fast Orgasms, +15 Lib/Obed, +10 Fear)"
 				Magic = 0;		Cost = 0;		itemmade = "Magic Clit Piercing";//                        Desc = "Magic piercings are small balls that eject a spike, pierce the corresponding body part, and turn into solid jewelry removable only by a secret phrase.  Healing is painful, but only takes a few hours.  This unpleasant piercing goes straight through the clitoris, and the jewelry's magic keeps the girl too sensitive and aroused to ever be fully satisfied.  (+Fast Orgasms, +Nympho, +40 Lib, +12 Fear/Hate)"
@@ -315,21 +339,13 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				Magic = 0;		Cost = 0;		itemmade = "Necklace of Control";//                        Desc = "Worn about the neck, this discreet iron chain affects its wearer's mind, suppressing her willpower and putting her under your control. (+100 Obed, -Iron Will,  adds Controlled status)"
 				Magic = 0;		Cost = 0;		itemmade = "Necklace of Humbling";//                       Desc = "This unattractive necklace requires a magical key to be removed. Designed to teach humility, it makes anyone quite plain and dull. It's magic will cause even the most self-absorbed girl to get over herself and be think more of others. (+100 Serv, +25 Obed, -10 Beauty/Cha -50 Spirit/Conf, +10 Hate/Fear, Removes: Yandere, Tsundere, Iron Will, Aggressive, Merciless, Assassin, Fearless, Sadistic, Cute, Elegant, Sexy Air, Great Figure/Arse, Charismatic, Charming, Long Legs, Puffy/Perky Nipples, Big/Huge Breasts)"
 				Magic = 0;		Cost = 0;		itemmade = "Necklace of Pain Reversal";//                  Desc = "This sinister steel necklace transforms the wearer's pain into pleasure. It sounds good at first, but a tendency to seek bodily harm may come with its own set of problems... (-15 Comb, -15 Cons, adds Masochist and Fearless)"
-				Magic = 0;		Cost = 0;		itemmade = "Nipple Barbells";//                            Desc = "Barbell ring nipple piercings. (+2 BDSM, +2 Confidence, +1 Titty, +1 Libido, adds Pierced Nipples)"
-				Magic = 0;		Cost = 0;		itemmade = "Nipple Chain";//                               Desc = "Set of nipple rings with a metallic chain that connects them. (+3 BDSM, +3 Titty, +2 Charisma, +3 Libido, adds Pierced Nipples)"
 				Magic = 0;		Cost = 0;		itemmade = "Nipple Rings of Breast Expansion";//           Desc = "Set with crystals refined from oil of breast growth, this pair of silver rings cause a woman's chest to an impressive (if still plausible) size when placed around the nipples. Naturally well-endowed woman won't see much of a change, though. (adds Big Boobs)"
 				Magic = 0;		Cost = 0;		itemmade = "Nipple Rings of Lactation";//                  Desc = "This pair of nipple rings increase the girl lactation to impressive levels. (+1 BDSM, +1 Libido, adds Abundant Lactation and Pierced Nipples)"
 				Magic = 0;		Cost = 0;		itemmade = "Nipple Rings of Perkiness";//                  Desc = "Special rings designed to keep the nipples of her wearer erect. (+1 BDSM, +1 Libido, adds Perky Nipples and Pierced Nipples)"
 				Magic = 0;		Cost = 0;		itemmade = "Nipple Rings of Pillowy Softness";//           Desc = "When placed on a woman's nipples, this pair of gold rings causes her breasts to expand to a prodigious size. Fortunately, they are trivial to remove, allowing their wearer to go about their daily life without repercussions. (adds Abormally Large Boobs)"
 				Magic = 0;		Cost = 0;		itemmade = "Nipple Rings of Puffiness";//                  Desc = "This set of nipple rings causes a women's areolas to puff up. (+1 BDSM, +1 Libido, adds Puffy Nipples and Pierced Nipples)"
-				Magic = 0;		Cost = 0;		itemmade = "Nipple Rings";//                               Desc = "Ring shaped nipple piercings. (+2 BDSM, +3 Libido and Titty, adds Pierced Nipples)"
-				Magic = 0;		Cost = 0;		itemmade = "Nose Ring";//                                  Desc = "A thin, silver ring that pierces the septum and hangs in between the nostrils. (+5 Best, +2 BDSM, -7 Refinement, adds Pierced nose, removes Elegant)"
-				Magic = 0;		Cost = 0;		itemmade = "Obsidian Choker";//                            Desc = "This black silk choker boasts a polished obsidian medallion. Simple, but sophisticated. (B) (+10 Lib, +5 Cha, adds Elegant)"
 				Magic = 0;		Cost = 0;		itemmade = "Pacifist's Armlet";//                          Desc = "The enchantment placed on this pretty blue armband slows down the wearer's movements whenever they are attempting to harm another person for any reason. It's the bane of warriors everywhere, but also an unpleasant object for anyone to wear. (+5 Cha, -60 Comb, -40 Str, -30 BDSM, -50 Hap, -10 Conf, +60 Fear, +30 Hate)"
-				Magic = 0;		Cost = 0;		itemmade = "Pearl Necklace";//                             Desc = "A simple string of pearls, short enough to remain classy but long enough to be worth a lot of money. (B) (+15 Cha, +5 Lib)"
-				Magic = 0;		Cost = 0;		itemmade = "Pink Bangle";//                                Desc = "Pink bangle made of plastic, frequently worn by women with no class. (+3 Charisma, -6 Refinement)"
 				Magic = 0;		Cost = 0;		itemmade = "Prophylactic Ring";//                          Desc = "A common enchantment on this strange flexible ring makes it impossible for its wearer to become pregnant by any means. It can't stop non-human creatures from implanting autonomous seed in the body, however. (-10 Fear, -10 Hate, adds Sterile)"
-				Magic = 0;		Cost = 0;		itemmade = "Rainbow Ring";//                               Desc = "This magical stone ring allows its wearer to change the color of their hair at will, and even to slightly alter their skin tone to fit their whims or their partners'. (+15 Beau, +5 Happ)"
 				Magic = 0;		Cost = 0;		itemmade = "Ring of Beauty";//                             Desc = "Made of electrum, this band alters your body to make you stunningly attractive. (+50 Beauty)"
 				Magic = 0;		Cost = 0;		itemmade = "Ring of Breast Reduction";//                   Desc = "Prized by the likes of female acrobats and warriors whose assets are occasionally a liability, this simple copper ring causes a woman's chest to shrink and flatten. (adds Small Boobs)"
 				Magic = 0;		Cost = 0;		itemmade = "Ring of Charisma";//                           Desc = "This blood red band is more knowledgeable and aggressive than the minor ring in making you the life of the party. (+50 Charisma)"
@@ -345,13 +361,6 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				Magic = 0;		Cost = 0;		itemmade = "Ring of the Horndog";//                        Desc = "All day and night for the rest of time and they'll never know. (+50 Libido)"
 				Magic = 0;		Cost = 0;		itemmade = "Ring of the MILF";//                           Desc = "A mysterious ring that makes a woman slightly older and more mature. (Age +5. Adds Big Boobs and MILF. Removes Lolita.)"
 				Magic = 0;		Cost = 0;		itemmade = "Ring of the Schwarzenegger";//                 Desc = "Only the best for the Californian Governator, This ring terminates flabby muscles!. (+50 Str, +25 Cons)"
-				Magic = 0;		Cost = 0;		itemmade = "Silver Bracelet";//                            Desc = "This handcrafted bracelet is a good complement to any outfit. (+3 Charisma, +10 Refinement)"
-				Magic = 0;		Cost = 0;		itemmade = "Silver Necklace";//                            Desc = "This is a slender silver neck chain. It's subtle, but definitely elegant. (C) (+10 Cha)"
-				Magic = 0;		Cost = 0;		itemmade = "Silver Ring";//                                Desc = "A plain silver ring. Despite its price it doesn't have any magical properties. (+10 Refinement)"
-				Magic = 0;		Cost = 0;		itemmade = "Slave Band";//                                 Desc = "This thick steel armband affects the wearer's mind and makes it difficult for her to refuse what is asked of her. It has a frightening aura about it, and it is almost impossible to conceal the object's true nature. (+50 Obed, adds Controlled status)"
-				Magic = 0;		Cost = 0;		itemmade = "Spiked Nipple Barbells";//                     Desc = "This set of black spiked barbell rings look dangerous and sexy at the same time. (+5 BDSM, +3 Confidence, -1 Titty, +1 Libido, +3 Spirit, adds Pierced Nipples)"
-				Magic = 0;		Cost = 0;		itemmade = "Star Pendant";//                               Desc = "Star-shaped pendant with a jewel at its center. (Prevents poison and heavy poison)"
-				Magic = 0;		Cost = 0;		itemmade = "Tongue Stud";//                                Desc = "Tongue piercing that will drive her customers crazy. (+2 BDSM, -5 Refinement,  -Elegant, adds Pierced Tongue)"
 			}
 
 			if (itemmade == "")	{ Magic = 0;  Cost = 10; itemmade = "Bauble Necklace"; }//                 Desc = "This necklace is basically some semi-precious stones on a string. It's pretty, but it's not the kind of jewelry you write home about. (D) (+5 Cha)"

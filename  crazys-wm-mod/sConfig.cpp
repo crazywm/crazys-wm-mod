@@ -61,11 +61,14 @@ void cConfig::reload(const char *filename)
 sConfigData::sConfigData(const char *a_filename)
 	: fonts()
 {
-	DirPath dp = DirPath() << a_filename;	// `J` moved to root directory
+
+	DirPath dpnew = DirPath() << ".." << "config.xml";	// `J` Added to load user's config file first
+	DirPath dpdef = DirPath() << a_filename;	// `J` moved to root directory
 	DirPath dpold = DirPath() << "Resources" << "Data" << a_filename;
-	string filename = dp.c_str();
+	string filenamenew = dpnew.c_str();
+	string filenamedef = dpdef.c_str();
 	string filenameold = dpold.c_str();
-	l.ss() << "Loading configuration variables from '" << filename << "'"; l.ssend();
+	l.write("Attempting to load config.xml file.");
 	/*
 	*	make sure we have something playable,
 	*	even if the file doesn't load
@@ -74,23 +77,31 @@ sConfigData::sConfigData(const char *a_filename)
 	/*
 	*	open the file - moan most eloqently in its absence
 	*/
-	TiXmlDocument doc(filename);
+	TiXmlDocument docnew(filenamenew);
+	TiXmlDocument doc(filenamedef);
 	TiXmlDocument docold(filenameold);
-	if (!doc.LoadFile())
+
+	if (docnew.LoadFile())
 	{
-		l.ss() << "Can't load " << filename << " from root directory." << endl << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl << "Attempting to load old file " << filenameold << "." << endl; l.ssend();
+		l.ss() << "Loading Config file :  " << filenamenew << "  : " << endl; l.ssend();
+		doc = docnew;
+	}
+	else if (doc.LoadFile())
+	{
+		l.ss() << "Loading Config file :  " << filenamedef << "  : " << endl; l.ssend();
+	}
+	else if (docold.LoadFile())
+	{
+		l.ss() << "Loading Config file :  " << filenameold << "  : " << endl; l.ssend();
 		doc = docold;
 	}
-	if (!doc.LoadFile())
+	else
 	{
-		l.ss() << "can't load " << filename << endl << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc(); l.ssend();
-		/*
-		*		a bit of narrative for the players: makes it easier to tell
-		*		if the config isn't being found
-		*/
+		l.ss() << "Could not load any config.xml files, using defaults." << endl; l.ssend();
 		l.ss() << "*** Game will run with default pricing factors.\n*** This may seem a little easy. To fix this\n*** get a config.xml file from pinkpetal.org\n*** or make one with Whore Master Editor"; l.ssend();
 		return;
 	}
+
 	/*
 	*	get the docuement root
 	*/
@@ -762,4 +773,3 @@ void sConfigData::set_defaults()
 	debug.log_extra_details = false;
 	debug.log_show_numbers = false;
 }
-

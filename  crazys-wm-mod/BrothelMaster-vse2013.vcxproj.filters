@@ -496,9 +496,6 @@
     <ClCompile Include="WorkPersonalBedWarmer.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
-    <ClCompile Include="WorkPersonalTraining.cpp">
-      <Filter>Jobs</Filter>
-    </ClCompile>
     <ClCompile Include="WorkRecruiter.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
@@ -625,6 +622,7 @@
     <ClCompile Include="WorkCosmeticSurgery.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="WorkPersonalTraining.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

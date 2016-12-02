@@ -204,6 +204,7 @@
     <ClCompile Include="WorkMakePotions.cpp" />
     <ClCompile Include="WorkMechanic.cpp" />
     <ClCompile Include="WorkMilker.cpp" />
+    <ClCompile Include="WorkPersonalTraining.cpp" />
     <ClCompile Include="WorkRancher.cpp" />
     <ClCompile Include="WorkShepherd.cpp" />
     <ClCompile Include="WorkTailor.cpp" />
@@ -330,7 +331,6 @@
     <ClCompile Include="WorkNurse.cpp" />
     <ClCompile Include="WorkPeepShow.cpp" />
     <ClCompile Include="WorkPersonalBedWarmer.cpp" />
-    <ClCompile Include="WorkPersonalTraining.cpp" />
     <ClCompile Include="WorkCosmeticSurgery.cpp" />
     <ClCompile Include="WorkRecruiter.cpp" />
     <ClCompile Include="WorkRehab.cpp" />

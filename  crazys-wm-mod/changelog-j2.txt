@@ -259,6 +259,16 @@ Added "OwnersLeftDetails" and "OwnersRightDetails" to itemmanagement_screen.xml
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.39
 
+###  Changes 11/29-12/01/2016
+Merged 2 pull requests of a few text corrections by skriveavis.
+Changed how config.xml files are loaded to hopefully fix a couple of problems.
+Added several items to Jeweler job (more need to be added)
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.40
+
+
+
 
 
 

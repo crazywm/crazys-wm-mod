@@ -1195,16 +1195,6 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 	bool quitPending = false;
 	bool mouseDown = false;
 
-	DirPath locationch = DirPath() << ".." << "";
-	XMLFileList test(locationch, "config.xml");
-	if (test.size() > 0) cfg.reload("..\\config.xml");
-
-	g_LogFile.ss() << "Startup: checking for variant config: argc = " << ac << ".\n"; g_LogFile.ssend();
-	if (ac > 1) {
-		g_LogFile.ss() << "     attempting to load '" << av[1] << "'\n"; g_LogFile.ssend();
-		cfg.reload(av[1]);
-	}
-
 	g_LogFile.write("\n------------------------------------------------------------------------------------------------------------------------\nCalling Init");
 	// INit the program
 	if (!Init())

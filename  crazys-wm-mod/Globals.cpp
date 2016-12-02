@@ -22,6 +22,7 @@
 Globals::Globals()
 {
 	g_ScreenWidth = 1024; g_ScreenHeight = 768;
+	g_ScreenScaleX = g_ScreenScaleY = 1.0f;
 	g_Fullscreen = false;
 }
 
