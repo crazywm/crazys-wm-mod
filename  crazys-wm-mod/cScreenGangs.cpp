@@ -78,6 +78,7 @@ void cScreenGangs::set_ids()
 	ganghire_id = get_id("GangHireButton");
 	gangfire_id = get_id("GangFireButton");
 	totalcost_id = get_id("TotalCost");
+	gold_id = get_id("gold");
 	ganglist_id = get_id("GangList");
 	missionlist_id = get_id("MissionList");
 	gangdesc_id = get_id("GangDescription");
@@ -106,10 +107,10 @@ void cScreenGangs::set_ids()
 	itemspercslider_id = get_id("ItemsPercSlider");
 
 	//Set the default sort order for columns, so listboxes know the order in which data will be sent
-	string RecruitColumns[] = { "GangName", "Number", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength" };
-	SortColumns(recruitlist_id, RecruitColumns, 9);
-	string GangColumns[] = { "GangName", "Number", "Mission", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength" };
-	SortColumns(ganglist_id, GangColumns, 10);
+	string RecruitColumns[] = { "GangName", "Number", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength", "Service" };
+	SortColumns(recruitlist_id, RecruitColumns, 10);
+	string GangColumns[] = { "GangName", "Number", "Mission", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength", "Service" };
+	SortColumns(ganglist_id, GangColumns, 11);
 }
 
 void cScreenGangs::init()
@@ -134,6 +135,7 @@ void cScreenGangs::init()
 	AddToListBox(missionlist_id, 8, "CATACOMBS");
 	AddToListBox(missionlist_id, 9, "TRAINING");
 	AddToListBox(missionlist_id, 10, "RECRUITING");
+	AddToListBox(missionlist_id, 11, "SERVICE");
 
 	SetCheckBox(controlcatacombs_id, (g_Gangs.Control_Gangs()));
 	SliderRange(girlspercslider_id, 0, 100, g_Gangs.Gang_Gets_Girls(), 1);
@@ -185,6 +187,11 @@ void cScreenGangs::init()
 	}
 	ss.str(""); ss << "Weekly Cost: " << cost;
 	EditTextItem(ss.str(), totalcost_id);
+	if (gold_id >= 0)
+	{
+		ss.str(""); ss << "Your Gold: " << g_Gold.ival();
+		EditTextItem(ss.str(), gold_id);
+	}
 
 	ClearListBox(ganglist_id);
 	int num = 0;
@@ -195,7 +202,7 @@ void cScreenGangs::init()
 	for (current = g_Gangs.GetGang(0); current; current = current->m_Next)
 	{
 		// format the string with the gang name, mission and number of men
-		string Data[10];
+		string Data[11];
 		ss.str("");	ss << current->m_Name;								Data[0] = ss.str();
 		ss.str("");	ss << current->m_Num;								Data[1] = ss.str();
 		ss.str("");	ss << short_mission_desc(current->m_MissionID);		Data[2] = ss.str();
@@ -206,6 +213,7 @@ void cScreenGangs::init()
 		ss.str("");	ss << current->m_Stats[STAT_CONSTITUTION] << "%";	Data[7] = ss.str();
 		ss.str("");	ss << current->m_Stats[STAT_CHARISMA] << "%";		Data[8] = ss.str();
 		ss.str("");	ss << current->m_Stats[STAT_STRENGTH] << "%";		Data[9] = ss.str();
+		ss.str("");	ss << current->m_Skills[SKILL_SERVICE] << "%";		Data[10] = ss.str();
 
 		//		cerr << "Gang:\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
 		//			<< "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << "\t" << Data[6] << endl;
@@ -213,7 +221,9 @@ void cScreenGangs::init()
 		/*
 		*			add the box to the list; red highlight gangs that are low on numbers
 		*/
-		AddToListBox(ganglist_id, num++, Data, 10, (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE));
+		int color = (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE);
+		if (current->m_Num < 6 && (current->m_MissionID == MISS_SERVICE || current->m_MissionID == MISS_TRAINING)) color = COLOR_YELLOW;
+		AddToListBox(ganglist_id, num++, Data, 11, color);
 	}
 
 	ClearListBox(recruitlist_id);
@@ -225,7 +235,7 @@ void cScreenGangs::init()
 	for (current = g_Gangs.GetHireableGang(0); current; current = current->m_Next)
 	{
 		// format the string with the gang name, mission and number of men
-		string Data[9];
+		string Data[10];
 		ss.str("");	ss << current->m_Name;								Data[0] = ss.str();
 		ss.str("");	ss << current->m_Num;								Data[1] = ss.str();
 		ss.str("");	ss << current->m_Skills[SKILL_COMBAT] << "%";		Data[2] = ss.str();
@@ -235,6 +245,7 @@ void cScreenGangs::init()
 		ss.str("");	ss << current->m_Stats[STAT_CONSTITUTION] << "%";	Data[6] = ss.str();
 		ss.str("");	ss << current->m_Stats[STAT_CHARISMA] << "%";		Data[7] = ss.str();
 		ss.str("");	ss << current->m_Stats[STAT_STRENGTH] << "%";		Data[8] = ss.str();
+		ss.str("");	ss << current->m_Skills[SKILL_SERVICE] << "%";		Data[9] = ss.str();
 
 		//		cerr << "Recruitable\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
 		//			<< "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << endl;
@@ -242,7 +253,8 @@ void cScreenGangs::init()
 		/*
 		*			add the box to the list
 		*/
-		AddToListBox(recruitlist_id, num++, Data, 9, (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE));
+		int color = (current->m_Num < 6 ? COLOR_RED : COLOR_BLUE);
+		AddToListBox(recruitlist_id, num++, Data, 10, color);
 	}
 
 	if (selection == -1 && GetListBoxSize(ganglist_id) >= 1) selection = 0;
@@ -490,22 +502,7 @@ void cScreenGangs::check_events()
 			/*
 			*				format the display line
 			*/
-			string Data[6];
-			ss.str("");	ss << gang->m_Name;								Data[0] = ss.str();
-			ss.str("");	ss << gang->m_Num;								Data[1] = ss.str();
-			ss.str("");	ss << short_mission_desc(mission_id);			Data[2] = ss.str();
-			ss.str("");	ss << gang->m_Skills[SKILL_COMBAT] << "%";		Data[3] = ss.str();
-			ss.str("");	ss << gang->m_Skills[SKILL_MAGIC] << "%";		Data[4] = ss.str();
-			ss.str("");	ss << gang->m_Stats[STAT_INTELLIGENCE] << "%";	Data[5] = ss.str();
-
-			//		cerr << "Gang:\t" << Data[0] << "\t" << Data[1] << "\t" << Data[2]
-			//			<< "\t" << Data[3] << "\t" << Data[4] << "\t" << Data[5] << "\t" << Data[6] << endl;
-			//
-			//			cerr << "        index " << mission_id << ": " << ss.str() << endl;
-			/*
-			*				and add it to the list
-			*/
-			SetSelectedItemText(ganglist_id, selection, Data, 6);
+			g_InitWin = true;
 		}
 
 		int cost = 0;
@@ -519,6 +516,12 @@ void cScreenGangs::check_events()
 		}
 		ss.str(""); ss << "Weekly Cost: " << cost;
 		EditTextItem(ss.str(), totalcost_id);
+		if (gold_id >= 0)
+		{
+			ss.str(""); ss << "Your Gold: " << g_Gold.ival();
+			EditTextItem(ss.str(), gold_id);
+		}
+
 	}
 
 	if (g_InterfaceEvents.CheckCheckbox(controlcatacombs_id))
@@ -574,8 +577,9 @@ string cScreenGangs::mission_desc(int mid)
 	case MISS_GRANDTHEFT:	return "Your men will attempt to rob a bank or other risky place with high rewards.";
 	case MISS_KIDNAPP:		return "Your men will kidnap beggar, homeless or lost girls from the street and also lure other girls into working for you.";
 	case MISS_CATACOMBS:	return "Your men will explore the catacombs for treasure.";
-	case MISS_TRAINING:		return "Your men will improve their skills slightly.";
 	case MISS_RECRUIT:		return "Your men will replace their missing men (up to 15).";
+	case MISS_TRAINING:		return "Your men will improve their skills slightly (1-15 members ok).";
+	case MISS_SERVICE:		return "Your men will help out in the community (1-15 members ok).";
 	default:
 		break;
 	}
@@ -599,6 +603,7 @@ string cScreenGangs::short_mission_desc(int mid)
 	case MISS_CATACOMBS:	return "Exploring Catacombs";
 	case MISS_TRAINING:		return "Training Skills";
 	case MISS_RECRUIT:		return "Recruiting Men";
+	case MISS_SERVICE:		return "Serving the Community";
 	default:				return "Error: Unknown";
 	}
 }

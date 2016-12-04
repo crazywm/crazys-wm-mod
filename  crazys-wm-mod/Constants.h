@@ -462,6 +462,7 @@ enum Gang_Missions{
 	MISS_CATACOMBS,							// men go down into the catacombs to find treasures
 	MISS_TRAINING,							// men improve their skills
 	MISS_RECRUIT,							// men recuit their number better
+	MISS_SERVICE,							// men will do community service - `J` added for .06.02.41
 	MISS_DUNGEON,							// men will help break girls in the dungeon
 };
 

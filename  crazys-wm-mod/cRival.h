@@ -117,15 +117,10 @@ public:
 
 
 	int GetNumBusinesses();
-	int GetNumRivals()
-	{
-		return m_NumRivals;
-	}
+	int GetNumRivals()				{ return m_NumRivals; }
+	int GetNumRivalGangs();
 	bool NameExists(string name);
-	bool player_safe()
-	{
-		return m_PlayerSafe;
-	}
+	bool player_safe()				{ return m_PlayerSafe; }
 	cRival* get_influential_rival();
 	string rivals_plunder_pc_gold(cRival* rival);
 private:

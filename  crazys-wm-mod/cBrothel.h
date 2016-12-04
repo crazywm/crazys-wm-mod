@@ -262,6 +262,7 @@ public:
 	int			GetNumBrothelsWithVacancies();
 	int			GetFirstBrothelWithVacancies();
 	int			GetRandomBrothelWithVacancies();
+	sBrothel*	GetRandomBrothel();
 
 	void CalculatePay(sBrothel* brothel, sGirl* girl, u_int Job);
 

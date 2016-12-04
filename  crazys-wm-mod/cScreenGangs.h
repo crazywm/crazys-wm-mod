@@ -31,6 +31,7 @@ private:
 	int ganghire_id;		// Hire Gang button
 	int gangfire_id;		// Fire Gang button
 	int totalcost_id;		// Weekly Cost text
+	int gold_id;			// Player Gold
 	int ganglist_id;		// Controlled Gangs list
 	int missionlist_id;		// Missions list
 	int gangdesc_id;		// Gang Description text

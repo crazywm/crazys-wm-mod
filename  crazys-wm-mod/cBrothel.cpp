@@ -4505,6 +4505,11 @@ int cBrothelManager::GetRandomBrothelWithVacancies()
 	return choice[g_Dice%chance];
 }
 
+sBrothel* cBrothelManager::GetRandomBrothel()
+{
+	return GetBrothel(g_Dice%m_NumBrothels);
+}
+
 int cBrothelManager::GetNumGirls(int brothelID)
 {
 	sBrothel* current = m_Parent;

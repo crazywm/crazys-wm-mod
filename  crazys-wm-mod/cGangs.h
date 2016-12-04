@@ -62,12 +62,32 @@ typedef struct sGang
 
 	int magic()			{ return m_Skills[SKILL_MAGIC]; }
 	int combat()		{ return m_Skills[SKILL_COMBAT]; }
+	int service()		{ return m_Skills[SKILL_SERVICE]; }		// `J` added for .06.02.41
 	int intelligence()	{ return m_Stats[STAT_INTELLIGENCE]; }
 	int agility()		{ return m_Stats[STAT_AGILITY]; }
 	int constitution()	{ return m_Stats[STAT_CONSTITUTION]; }
 	int charisma()		{ return m_Stats[STAT_CHARISMA]; }
 	int strength()		{ return m_Stats[STAT_STRENGTH]; }
 	int happy()			{ return m_Stats[STAT_HAPPINESS]; }
+
+
+	// `J` added for .06.02.41
+	void AdjustGangSkill(sGang* gang, int skill, int amount);
+	void AdjustGangStat(sGang* gang, int stat, int amount);
+	void AdjustGangSkill(int skill, int amount);
+	void AdjustGangStat(int stat, int amount);
+
+	int magic(int amount)			{ AdjustGangSkill(SKILL_MAGIC, amount); }
+	int combat(int amount)			{ AdjustGangSkill(SKILL_COMBAT, amount); }
+	int service(int amount)			{ AdjustGangSkill(SKILL_SERVICE, amount); }
+	int intelligence(int amount)	{ AdjustGangStat(STAT_INTELLIGENCE, amount); }
+	int agility(int amount)			{ AdjustGangStat(STAT_AGILITY, amount); }
+	int constitution(int amount)	{ AdjustGangStat(STAT_CONSTITUTION, amount); }
+	int charisma(int amount)		{ AdjustGangStat(STAT_CHARISMA, amount); }
+	int strength(int amount)		{ AdjustGangStat(STAT_STRENGTH, amount); }
+	int happy(int amount)			{ AdjustGangStat(STAT_HAPPINESS, amount); }
+
+
 
 	sGang()
 	{
@@ -152,8 +172,6 @@ public:
 	int GetHealingRestock() {return m_KeepHealStocked;}					// 
 	int healing_limit();												// 
 
-
-
 	bool sabotage_mission(sGang* gang);									// 
 	bool recapture_mission(sGang* gang);								// 
 	bool extortion_mission(sGang* gang);								// 
@@ -163,7 +181,7 @@ public:
 	bool catacombs_mission(sGang* gang);								// 
 	bool gangtraining(sGang* gang);										// 
 	bool gangrecruiting(sGang* gang);									// 
-
+	bool service_mission(sGang* gang);									// 
 	bool losegang(sGang* gang);
 	void check_gang_recruit(sGang* gang);
 	void GangStartOfShift();

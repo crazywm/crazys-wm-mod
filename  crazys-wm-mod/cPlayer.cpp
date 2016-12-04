@@ -34,7 +34,6 @@ cPlayer::cPlayer()			// constructor
 	m_RealName = "";
 	m_FirstName = "";
 	m_Surname = "";
-	m_RealName = "";
 	m_BirthYear = 1190;
 	m_BirthMonth = 0;
 	m_BirthDay = 0;

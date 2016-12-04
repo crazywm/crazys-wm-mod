@@ -924,6 +924,18 @@ int cRivalManager::GetNumBusinesses()
 	return number;
 }
 
+int cRivalManager::GetNumRivalGangs()
+{
+	int gangs = 0;
+	cRival* current = m_Rivals;
+	while (current)
+	{
+		gangs+= current->m_NumGangs;
+		current = current->m_Next;
+	}
+	return gangs;
+}
+
 cRival* cRivalManager::GetRival(string name)
 {
 	cRival* current = m_Rivals;

@@ -21,13 +21,13 @@
 <Column   Name="Name"               Header="Girl Name"    Offset="0"/>
 <Column   Name="Virgin"             Header="Virgin"       Offset="100"/>
 <Column   Name="Age"                Header="Age"          Offset="140"/>
-<Column   Name="Health"             Header="Health"       Offset="180"/>
-<Column   Name="Happiness"          Header="Happy"        Offset="220"/>
-<Column   Name="Tiredness"          Header="Tired"        Offset="260"/>
-<Column   Name="DayJob"             Header="Day Job"      Offset="300"/>
-<Column   Name="NightJob"           Header="Night Job"    Offset="460"/>
-<Column   Name="is_pregnant"        Header="Preg"         Offset="620"/>
-<Column   Name="is_slave"           Header="Slave"        Offset="660"/>
-<Column   Name="Rebel"              Header="Rebel"        Offset="700"/>
+<Column   Name="Health"             Header="Health"       Offset="170"/>
+<Column   Name="Happiness"          Header="Happy"        Offset="200"/>
+<Column   Name="Tiredness"          Header="Tired"        Offset="230"/>
+<Column   Name="DayJob"             Header="Day Job"      Offset="260"/>
+<Column   Name="NightJob"           Header="Night Job"    Offset="370"/>
+<Column   Name="is_pregnant"        Header="Preg"         Offset="480"/>
+<Column   Name="is_slave"           Header="Slave"        Offset="510"/>
+<Column   Name="Rebel"              Header="Rebel"        Offset="540"/>
 </ListBox>
 </Screen>

@@ -267,6 +267,22 @@ Added several items to Jeweler job (more need to be added)
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.40
 
+###  Changes 12/02-3/2016
+Fixed a few typeos.
+Fixed some column offsets in J_1024x768 interface
+Updated gang missions:
+ - Added "Masked Vigilante" to Pety Theft
+ - Cleaned Grand Theft
+ - Added Service skill to gangs
+ - Added Service mission
+ - Allow 1 to 15 gang members in training and service instead of the minimum 5. Shows yellow if <6 members
+Added Player gold to gang screen
+Added g_Brothels.GetRandomBrothel() function
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.41
+
+
 
 
 

@@ -215,7 +215,7 @@ bool sGang::LoadGangXML(TiXmlHandle hGang)
 	LoadSkillsXML(hGang.FirstChild("Skills"), m_Skills);
 	LoadStatsXML(hGang.FirstChild("Stats"), m_Stats);
 	if (m_Skills[SKILL_MAGIC] <= 0 || m_Skills[SKILL_COMBAT] <= 0 || m_Stats[STAT_INTELLIGENCE] <= 0 || m_Stats[STAT_AGILITY] <= 0 ||
-		m_Stats[STAT_CONSTITUTION] <= 0 || m_Stats[STAT_CHARISMA] <= 0 || m_Stats[STAT_STRENGTH] <= 0)
+		m_Stats[STAT_CONSTITUTION] <= 0 || m_Stats[STAT_CHARISMA] <= 0 || m_Stats[STAT_STRENGTH] <= 0 || m_Skills[SKILL_SERVICE] <= 0)
 	{
 		int total =
 			max(0, m_Skills[SKILL_MAGIC]) +
@@ -234,17 +234,17 @@ bool sGang::LoadGangXML(TiXmlHandle hGang)
 		if (m_Stats[STAT_CONSTITUTION] <= 0)		m_Stats[STAT_CONSTITUTION] = g_Dice.bell(low, high);
 		if (m_Stats[STAT_CHARISMA] <= 0)			m_Stats[STAT_CHARISMA] = g_Dice.bell(low, high);
 		if (m_Stats[STAT_STRENGTH] <= 0)			m_Stats[STAT_STRENGTH] = g_Dice.bell(low, high);
+		if (m_Skills[SKILL_SERVICE] <= 0)			m_Skills[SKILL_SERVICE] = g_Dice.bell(low / 2, high);	// `J` added for .06.02.41
 	}
 
 	//these may not have been saved
 	//if not, the query just does not set the value
 	//so the default is used, assuming the gang was properly init
-	{
-		pGang->QueryValueAttribute<u_int>("MissionID", &m_MissionID);
-		pGang->QueryIntAttribute("LastMissID", &m_LastMissID);
-		pGang->QueryValueAttribute<bool>("Combat", &m_Combat);
-		pGang->QueryValueAttribute<bool>("AutoRecruit", &m_AutoRecruit);
-	}
+	pGang->QueryValueAttribute<u_int>("MissionID", &m_MissionID);
+	pGang->QueryIntAttribute("LastMissID", &m_LastMissID);
+	pGang->QueryValueAttribute<bool>("Combat", &m_Combat);
+	pGang->QueryValueAttribute<bool>("AutoRecruit", &m_AutoRecruit);
+
 	return true;
 }
 
@@ -733,6 +733,31 @@ void cGangManager::BoostGangSkill(int* affect_skill, int count)
 	}
 }
 
+void sGang::AdjustGangSkill(sGang* gang, int Skill, int amount)	// `J` added for .06.02.41
+{
+	gang->m_Skills[Skill] += amount;
+	if (gang->m_Skills[Skill] < 0)		gang->m_Skills[Skill] = 0;
+	if (gang->m_Skills[Skill] > 100)	gang->m_Skills[Skill] = 100;
+}
+void sGang::AdjustGangStat(sGang* gang, int Stat, int amount)	// `J` added for .06.02.41
+{
+	gang->m_Stats[Stat] += amount;
+	if (gang->m_Stats[Stat] < 0)		gang->m_Stats[Stat] = 0;
+	if (gang->m_Stats[Stat] > 100)	gang->m_Stats[Stat] = 100;
+}
+void sGang::AdjustGangSkill(int Skill, int amount)	// `J` added for .06.02.41
+{
+	this->m_Skills[Skill] += amount;
+	if (this->m_Skills[Skill] < 0)		this->m_Skills[Skill] = 0;
+	if (this->m_Skills[Skill] > 100)	this->m_Skills[Skill] = 100;
+}
+void sGang::AdjustGangStat(int Stat, int amount)	// `J` added for .06.02.41
+{
+	this->m_Stats[Stat] += amount;
+	if (this->m_Stats[Stat] < 0)		this->m_Stats[Stat] = 0;
+	if (this->m_Stats[Stat] > 100)		this->m_Stats[Stat] = 100;
+}
+
 // ----- Combat
 
 /*	GangBrawl - returns true if gang1 wins and false if gang2 wins
@@ -888,7 +913,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 	int dodge = 0;
 	u_int attack = SKILL_COMBAT;	// determined later, defaults to combat
 	u_int gattack = SKILL_COMBAT;
-	
+
 	int initalNumber = gang->m_Num;
 
 	attack = (girl->combat() >= girl->magic()) ? SKILL_COMBAT : SKILL_MAGIC;	// first determine what she will fight with
@@ -965,7 +990,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 			else
 			{
 				int damage = g_Girls.GetCombatDamage(girl, attack);
-				l.ss() << "\t\t\t" << " attack hits! base damage is" << damage << ".";l.ssend();
+				l.ss() << "\t\t\t" << " attack hits! base damage is" << damage << "."; l.ssend();
 
 				/*
 				*				she may improve a little
@@ -1417,6 +1442,7 @@ void cGangManager::UpdateGangs()
 		case MISS_CATACOMBS:	catacombs_mission(currentGang);		break;
 		case MISS_TRAINING:		gangtraining(currentGang);			break;
 		case MISS_RECRUIT:		gangrecruiting(currentGang);		break;
+		case MISS_SERVICE:		service_mission(currentGang);		break;
 		default:
 		{
 			stringstream sse;
@@ -1501,14 +1527,14 @@ sGang* cGangManager::GetGangNotFull(int roomfor, bool recruiting)
 	sGang* currentGang = m_GangStart;
 	if (recruiting)
 	{
-		int mission[4] = { MISS_RECRUIT, MISS_TRAINING, MISS_SPYGIRLS, MISS_GUARDING };
-		for (int i = 0; i < 4; i++)
+		int mission[5] = { MISS_RECRUIT, MISS_TRAINING, MISS_SPYGIRLS, MISS_GUARDING, MISS_SERVICE };
+		while (currentGang)
 		{
-			while (currentGang)
+			if (currentGang->m_Num + roomfor <= 15)
 			{
-				if (currentGang->m_MissionID == mission[i] && currentGang->m_Num < 15 - roomfor) return currentGang;
-				currentGang = currentGang->m_Next;
+				for (int i = 0; i < 5; i++) if (currentGang->m_MissionID == mission[i])	return currentGang;
 			}
+			currentGang = currentGang->m_Next;
 		}
 	}
 	else
@@ -1527,21 +1553,24 @@ sGang* cGangManager::GetGangRecruitingNotFull(int roomfor)
 {
 	sGang* currentGang = m_GangStart;
 	// first try to get a gang that can hold all that are being sent to them
-	int mission[4] = { MISS_RECRUIT, MISS_TRAINING, MISS_SPYGIRLS, MISS_GUARDING };
-	for (int i = 0; i < 4; i++)
+	int mission[5] = { MISS_RECRUIT, MISS_TRAINING, MISS_SPYGIRLS, MISS_GUARDING, MISS_SERVICE };
+	while (currentGang)
 	{
-		while (currentGang)
+		if (currentGang->m_Num + roomfor <= 15)
 		{
-			if (currentGang->m_MissionID == mission[i] && currentGang->m_Num < 15 - roomfor) return currentGang;
-			currentGang = currentGang->m_Next;
+			for (int i = 0; i < 5; i++) if (currentGang->m_MissionID == mission[i])	return currentGang;
 		}
-		// if none are found then get a gang that has room for at least 1
-		currentGang = m_GangStart;
-		while (currentGang)
+		currentGang = currentGang->m_Next;
+	}
+	// if none are found then get a gang that has room for at least 1
+	currentGang = m_GangStart;
+	while (currentGang)
+	{
+		if (currentGang->m_Num < 15)
 		{
-			if (currentGang->m_MissionID == mission[i] && currentGang->m_Num < 15) return currentGang;
-			currentGang = currentGang->m_Next;
+			for (int i = 0; i < 5; i++) if (currentGang->m_MissionID == mission[i])	return currentGang;
 		}
+		currentGang = currentGang->m_Next;
 	}
 
 	return 0;
@@ -1680,7 +1709,7 @@ bool cGangManager::sabotage_mission(sGang* gang)
 	else ss << "\nYour men encounter no resistance when you go after " << rival->m_Name << ".";
 
 	// if we had an objective to attack a rival we just achieved it
-	if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_LAUNCHSUCCESSFULATTACK) 
+	if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_LAUNCHSUCCESSFULATTACK)
 		g_Brothels.PassObjective();
 
 	// If the rival has some businesses under his control he's going to lose some of them
@@ -2086,26 +2115,92 @@ bool cGangManager::petytheft_mission(sGang* gang)
 	int startnum = gang->m_Num;
 	int numlost = 0;
 
-	if (g_Dice.percent(10))		// 10% chance of running into a rival gang
+	// `J` chance of running into a rival gang updated for .06.02.41
+	int gangs = m_Rivals->GetNumRivalGangs();
+	int chance = 5 + max(20, gangs * 2);				// 5% base +2% per gang, 25% max
+
+	if (g_Dice.percent(chance))
 	{
 		cRival* rival = m_Rivals->GetRandomRivalWithGangs();
-		if (rival && rival->m_NumGangs > 0)
+		ss << "Your men run into ";
+		if (rival && rival->m_NumGangs > 0)	ss << "a gang from " << rival->m_Name;
+		else/*                           */	ss << "group of thugs from the streets";
+		ss << " and a brawl breaks out.\n";
+
+		sGang* rival_gang = GetTempGang();
+		if (GangBrawl(gang, rival_gang)) ss << "Your men win.";
+		else
 		{
-			ss << "Your men run into a gang from " << rival->m_Name << " and a brawl breaks out.\n";
-			sGang* rival_gang = GetTempGang();
-			if (GangBrawl(gang, rival_gang)) ss << "Your men win.";
+			ss << "Your men lose the fight.";
+			gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+			return false;
+		}
+		if (rival && rival->m_NumGangs > 0 && rival_gang->m_Num <= 0) rival->m_NumGangs--;
+		delete rival_gang;
+		rival_gang = 0;
+
+		numlost += startnum - gang->m_Num;
+	}
+	else if (g_Dice.percent(1))		// `J` added for .06.02.41
+	{
+		sGirl* girl = g_Girls.GetRandomGirl();
+		if (girl->has_trait("Incorporeal"))	girl = g_Girls.GetRandomGirl();		// try not to get an incorporeal girl but only 1 check
+		if (girl)
+		{
+			string girlName = girl->m_Realname;
+			stringstream NGmsg;
+			int girlimagetype = IMGTYPE_PROFILE;
+			int eventtype = EVENT_GANG;
+			int gangeventtype = EVENT_GANG;
+			int dungeonreason = DUNGEON_GIRLKIDNAPPED;
+			int damagednets = 0;
+			
+			// `J` make sure she is ready for a fight
+			if (girl->combat() < 50)		girl->combat(10 + g_Dice % 30);
+			if (girl->magic() < 50)			girl->magic(10 + g_Dice % 20);
+			if (girl->constitution() < 50)	girl->constitution(10 + g_Dice % 20);
+			if (girl->agility() < 50)		girl->agility(10 + g_Dice % 20);
+			if (girl->confidence() < 50)	girl->agility(10 + g_Dice % 40);
+			girl->health(100);
+			girl->tiredness(-100);
+
+			ss << "Your men are confronted by a masked vigilante.\n";
+			if (!GangCombat(girl, gang))
+			{
+				numlost += startnum - gang->m_Num;
+				long gold = girl->m_Money > 0 ? girl->m_Money : g_Dice % 100 + 1;	// take all her money or 1-100 if she has none
+				girl->m_Money = 0;
+				g_Gold.petty_theft(gold);
+
+				ss << "She fights ";
+				if (numlost > startnum / 2)	ss << "well but your men still manage to capture her";
+				else if (numlost == 0)/* */	ss << "your men but loses quickly";
+				else/*                   */	ss << "your men but they take her down with only " << (numlost == 1 ? "one casualty" : "a few casualties");
+				ss << ".\nThey unmask " << girlName << ", take all her gold (" << gold << ") from her and drag her to the dungeon.\n\n";
+				girlimagetype = IMGTYPE_DEATH;
+				dungeonreason = DUNGEON_GIRLKIDNAPPED;
+				girl->m_Stats[STAT_OBEDIENCE] = 0;
+				girl->add_trait("Kidnapped", 5 + g_Dice % 11);
+
+				NGmsg << girl->m_Realname << " tried to stop " << gang->m_Name << " from comitting petty theft but lost. She was dragged back to the dungeon.";
+				BoostGangSkill(&gang->m_Skills[SKILL_COMBAT], 1);
+
+				if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_STEALXAMOUNTOFGOLD)
+				{
+					g_Brothels.GetObjective()->m_SoFar += gold;
+				}
+				if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_KIDNAPXGIRLS)
+				{
+					g_Brothels.GetObjective()->m_SoFar++;	// `J` You are technically kidnapping her
+				}
+				return true;
+			}
 			else
 			{
-				ss << "Your men lose the fight.";
+				ss << "She defeats your men and disappears back into the shadows.";
 				gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 				return false;
 			}
-
-			if (rival_gang->m_Num <= 0) rival->m_NumGangs--;
-			delete rival_gang;
-			rival_gang = 0;
-
-			numlost += startnum - gang->m_Num;
 		}
 	}
 
@@ -2158,37 +2253,40 @@ bool cGangManager::petytheft_mission(sGang* gang)
 bool cGangManager::grandtheft_mission(sGang* gang)
 {
 	stringstream ss;
-	The_Player->disposition(-3);		The_Player->customerfear(3);		The_Player->suspicion(3);
+	The_Player->disposition(-3);	The_Player->customerfear(3);	The_Player->suspicion(3);
 	bool fightrival = false;		cRival* rival = 0;				sGang *defenders = 0;
-	int difficulty = max(0, g_Dice.bell(0, 6) - 2);	// 0-4
 	string place = "place";			int defencechance = 0;			long gold = 1;
+	int difficulty = max(0, g_Dice.bell(0, 6) - 2);	// 0-4
 
-	if (difficulty == 0)	{ place = "small shop";		defencechance = 10;		gold += 10 + g_Dice % 290; }
+	if (difficulty <= 0)	{ place = "small shop";		defencechance = 10;		gold += 10 + g_Dice % 290; difficulty = 0; }
 	if (difficulty == 1)	{ place = "smithy";			defencechance = 30;		gold += 50 + g_Dice % 550; }
 	if (difficulty == 2)	{ place = "jeweler";		defencechance = 50;		gold += 200 + g_Dice % 800; }
 	if (difficulty == 3)	{ place = "trade caravan";	defencechance = 70;		gold += 500 + g_Dice % 1500; }
-	if (difficulty == 4)	{ place = "bank";			defencechance = 90;		gold += 1000 + g_Dice % 4000; }
+	if (difficulty >= 4)	{ place = "bank";			defencechance = 90;		gold += 1000 + g_Dice % 4000; difficulty = 4; }
 
 	ss << "Gang   " << gang->m_Name << "   goes out to rob a " << place << ".\n\n";
 
-	if (g_Dice.percent(10))	// ran into a rivals goons
+	// `J` chance of running into a rival gang updated for .06.02.41
+	int gangs = m_Rivals->GetNumRivalGangs();
+	int chance = 10 + max(30, gangs * 2);				// 10% base +2% per gang, 40% max
+	ss << "The " << place << " ";
+	if (g_Dice.percent(chance))
 	{
 		rival = m_Rivals->GetRandomRivalWithGangs();
 		if (rival && rival->m_NumGangs > 0)
 		{
 			fightrival = true;
-			ss << "The " << place << " is guarded by a gang from " << rival->m_Name << ".";
+			ss << "is guarded by a gang from " << rival->m_Name;
 			defenders = GetTempGang(rival->m_Power);
 		}
-		else ss << "The " << place << " is not guarded.";
 	}
-	else if (g_Dice.percent(defencechance))
+	if (defenders == 0 && g_Dice.percent(defencechance))
 	{
 		defenders = GetTempGang(difficulty * 3);
-		ss << "The " << place << " has its own guards.";
+		ss << "has its own guards";
 	}
-	else ss << "The " << place << " is unguarded.";
-	ss << "\n\n";
+	if (defenders == 0)	ss << "is unguarded";
+	ss << ".\n\n";
 
 	if (defenders)
 	{
@@ -2265,7 +2363,7 @@ bool cGangManager::kidnapp_mission(sGang* gang)
 				if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_KIDNAPXGIRLS)
 				{
 					g_Brothels.GetObjective()->m_SoFar++;						// `J` Added to make Charisma Kidnapping count
-					if (g_Dice.percent(g_Brothels.GetObjective()->m_Target*10))	// but possibly reduce the reward to gold only
+					if (g_Dice.percent(g_Brothels.GetObjective()->m_Target * 10))	// but possibly reduce the reward to gold only
 						g_Brothels.GetObjective()->m_Reward = REWARD_GOLD;
 				}
 			}
@@ -2360,13 +2458,13 @@ bool cGangManager::kidnapp_mission(sGang* gang)
 		}
 		else
 		{
-			ss << "failed to find any girls to kidnap.";
+			ss << "They failed to find any girls to kidnap.";
 			gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 		}
 	}
 	else
 	{
-		ss << "failed to find any girls to kidnap.";
+		ss << "They failed to find any girls to kidnap.";
 		gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 	}
 	return captured;
@@ -2578,7 +2676,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 					sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, true);	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 					if (!GangCombat(tempgirl, gang)) gotitem = true;
 					if (g_Dice.percent(20))		{ totalitems++; bringbacknum += 2; }
-					else if (g_Dice.percent(50))	gold += 1+ g_Dice % 200;
+					else if (g_Dice.percent(50))	gold += 1 + g_Dice % 200;
 				}
 				else gotitem = true;
 				if (gotitem)
@@ -2652,7 +2750,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 			// get catacomb girls (is "monster" if trait not human)
 			if (totalgirls > 0)
 			{
-				ss << "Your men captured " << totalgirls << " girl" << (totalgirls > 1 ? "s" : "")<<":\n";
+				ss << "Your men captured " << totalgirls << " girl" << (totalgirls > 1 ? "s" : "") << ":\n";
 				for (int i = 0; i < totalgirls; i++)
 				{
 					sGirl* ugirl = 0;
@@ -2762,19 +2860,95 @@ bool cGangManager::catacombs_mission(sGang* gang)
 	return true;
 }
 
+// `J` added for .06.02.41
+bool cGangManager::service_mission(sGang* gang)
+{
+	stringstream ss;
+	ss << "Gang   " << gang->m_Name << "   spend the week helping out the community.";
+
+	int susp = g_Dice.bell(0, 2), fear = g_Dice.bell(0, 2), disp = g_Dice.bell(0, 3), serv = g_Dice.bell(0, 3);
+	int cha = 0, intl = 0, agil = 0, mag = 0, gold = 0, sec = 0, beasts = 0;
+	int percent = max(10, min(gang->m_Num * 6, gang->service()));
+	
+	for (int i = 0; i < gang->m_Num / 2; i++)
+	{
+		if (g_Dice.percent(percent))
+		{
+			switch (g_Dice % 9)
+			{
+			case 0:		susp++;		break;
+			case 1:		fear++;		break;
+			case 2:		disp++;		break;
+			case 3:		cha++;		break;
+			case 4:		intl++;		break;
+			case 5:		agil++;		break;
+			case 6:		mag++;		break;
+			case 7:		gold += g_Dice % 10 + 1;	break;
+			default:	serv++;		break;
+			}
+		}
+	}
+
+	if (gang->m_Num < 15 && g_Dice.percent(min(50,gang->charisma())))
+	{
+		int addnum = max(1, g_Dice.bell(-2, 4));
+		if (addnum + gang->m_Num > 15)	addnum = 15 - gang->m_Num;
+		ss << "\n\n";
+		/* */if (addnum <= 1)	{ addnum = 1;	ss << "A local boy"; }
+		else if (addnum == 2)	{ ss << "Two locals"; }
+		else /*            */	{ ss << "Some locals"; }
+		ss << " decided to join your gang to help out their community.";
+		gang->m_Num += addnum;
+	}
+
+	if (g_Dice.percent(max(10, min(gang->m_Num * 6, gang->intelligence()))))
+	{
+		sBrothel* brothel = g_Brothels.GetRandomBrothel();
+		sec = max(5 + g_Dice % 26, gang->intelligence() / 4);
+		brothel->m_SecurityLevel += sec;
+		ss << "\n\nThey cleaned up around " << brothel->m_Name << "; fixing lights, removing debris and making sure the area is secure.";
+	}
+	if (g_Dice.percent(max(10, min(gang->m_Num * 6, gang->intelligence()))))
+	{
+		beasts += (max(1, g_Dice.bell(-4, 4)));
+		ss << "\n\nThey rounded up ";
+		if (beasts <= 1)		{ beasts = 1;	ss << "a"; }
+		else if (beasts == 2)	{ ss << "two"; }
+		else/*             */	{ ss << "some"; }
+		ss << " stray beast" << (beasts > 1 ? "s" : "") << " and brought " << (beasts > 1 ? "them" : "it") << " to the brothel" << (g_Brothels.m_NumBrothels > 1 ? "s" : "") << ".";
+	}
+	
+	ss << "\n";
+	if (sec > 0)	{ ss << "\nSecurity + " << sec; }
+	if (beasts > 0)	{ ss << "\nBeasts +" << beasts; }
+	if (susp > 0)	{ The_Player->suspicion(-susp);						ss << "\nSuspicion -" << susp; }
+	if (fear > 0)	{ The_Player->customerfear(-fear);					ss << "\nCustomer Fear -" << fear; }
+	if (disp > 0)	{ The_Player->disposition(disp);					ss << "\nDisposition +" << disp; }
+	if (serv > 0)	{ gang->AdjustGangSkill(SKILL_SERVICE, serv);		ss << "\nService +" << serv; }
+	if (cha > 0)	{ gang->AdjustGangStat(STAT_CHARISMA, cha);			ss << "\nCharisma +" << cha; }
+	if (intl > 0)	{ gang->AdjustGangStat(STAT_INTELLIGENCE, intl);	ss << "\nIntelligence +" << intl; }
+	if (agil > 0)	{ gang->AdjustGangStat(STAT_AGILITY, agil);			ss << "\nAgility +" << agil; }
+	if (mag > 0)	{ gang->AdjustGangSkill(SKILL_MAGIC, mag);			ss << "\nMagic +" << mag; }
+	if (gold > 0)	{ g_Gold.misc_credit(gold);	ss << "\nThey recieved " << gold << " gold in tips from grateful people."; }
+
+	gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+	return true;
+}
+
 // `J` - updated for .06.01.09
 bool cGangManager::gangtraining(sGang* gang)
 {
 	stringstream ss;
 	ss << "Gang   " << gang->m_Name << "   spend the week training and improving their skills.\n\n";
 
-	int old_combat = gang->m_Skills[SKILL_COMBAT];
-	int old_magic = gang->m_Skills[SKILL_MAGIC];
-	int old_intel = gang->m_Stats[STAT_INTELLIGENCE];
-	int old_agil = gang->m_Stats[STAT_AGILITY];
-	int old_const = gang->m_Stats[STAT_CONSTITUTION];
-	int old_char = gang->m_Stats[STAT_CHARISMA];
-	int old_str = gang->m_Stats[STAT_STRENGTH];
+	int old_combat = gang->combat();
+	int old_magic = gang->magic();
+	int old_intel = gang->intelligence();
+	int old_agil = gang->agility();
+	int old_const = gang->constitution();
+	int old_char = gang->charisma();
+	int old_str = gang->strength();
+	int old_serv = gang->service();
 
 	vector<int*> possible_skills;
 	possible_skills.push_back(&gang->m_Skills[SKILL_COMBAT]);
@@ -2784,6 +2958,7 @@ bool cGangManager::gangtraining(sGang* gang)
 	possible_skills.push_back(&gang->m_Stats[STAT_CONSTITUTION]);
 	possible_skills.push_back(&gang->m_Stats[STAT_CHARISMA]);
 	possible_skills.push_back(&gang->m_Stats[STAT_STRENGTH]);
+	possible_skills.push_back(&gang->m_Skills[SKILL_SERVICE]);
 
 	int count = (g_Dice % 3) + 2;  // get 2-4 potential skill/stats to boost
 	for (int i = 0; i < count; i++)
@@ -2800,6 +2975,7 @@ bool cGangManager::gangtraining(sGang* gang)
 	if (gang->m_Stats[STAT_CONSTITUTION] > old_const)	ss << "\n+" << (gang->m_Stats[STAT_CONSTITUTION] - old_const) << " Toughness";
 	if (gang->m_Stats[STAT_CHARISMA] > old_char)		ss << "\n+" << (gang->m_Stats[STAT_CHARISMA] - old_char) << " Charisma";
 	if (gang->m_Stats[STAT_STRENGTH] > old_str)			ss << "\n+" << (gang->m_Stats[STAT_STRENGTH] - old_str) << " Strength";
+	if (gang->m_Skills[SKILL_SERVICE] > old_serv)		ss << "\n+" << (gang->m_Skills[SKILL_SERVICE] - old_serv) << " Service";
 
 	gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 	gang->m_Combat = false;
@@ -2877,12 +3053,13 @@ bool cGangManager::gangrecruiting(sGang* gang)
 					if (passto->m_MissionID == MISS_TRAINING)	if (g_Dice.percent(50)) passnumgotthere++;
 					if (passto->m_MissionID == MISS_SPYGIRLS)	if (g_Dice.percent(95)) passnumgotthere++;
 					if (passto->m_MissionID == MISS_GUARDING)	if (g_Dice.percent(30)) passnumgotthere++;
+					if (passto->m_MissionID == MISS_SERVICE)	if (g_Dice.percent(90)) passnumgotthere++;
 				}
 				if (passnumgotthere > 0)
 				{
 					if (passnumgotthere == passnum) pss << ".\nThey " << (passnum > 1 ? "all " : "") << "arrived ";
 					else pss << ".\nOnly " << passnumgotthere << " arrived ";
-					if (passto->m_Num + passnumgotthere <= 15) 
+					if (passto->m_Num + passnumgotthere <= 15)
 						pss << "and got accepted into the gang.";
 					else
 					{
@@ -2923,6 +3100,7 @@ bool cGangManager::losegang(sGang* gang)
 		case MISS_CATACOMBS:	ss << "exploring the catacombs.";			break;
 		case MISS_TRAINING:		ss << "training?";							break;
 		case MISS_RECRUIT:		ss << "recruiting?";						break;
+		case MISS_SERVICE:		ss << "helping the community.";				break;
 		default:				ss << "on a mission.";						break;
 		}
 		g_MessageQue.AddToQue(ss.str(), COLOR_RED);
@@ -2938,7 +3116,8 @@ bool cGangManager::losegang(sGang* gang)
 void cGangManager::check_gang_recruit(sGang* gang)
 {
 	stringstream ss;
-	if (gang->m_Num <= 5 && gang->m_MissionID != MISS_RECRUIT)
+	if (gang->m_MissionID == MISS_SERVICE || gang->m_MissionID == MISS_TRAINING){}	// `J` service and training can have as few as 1 member doing it.
+	else if (gang->m_Num <= 5 && gang->m_MissionID != MISS_RECRUIT)
 	{
 		ss << "Gang   " << gang->m_Name << "   were set to recruit due to low numbers";
 		gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -3018,12 +3197,11 @@ void cGangManager::GangStartOfShift()
 	{
 		switch (currentGang->m_MissionID)
 		{
-			case MISS_TRAINING: case MISS_RECRUIT: 
-				break;
-			case MISS_SPYGIRLS: case MISS_GUARDING: case MISS_SABOTAGE: case MISS_EXTORTION: case MISS_PETYTHEFT: case MISS_GRANDTHEFT:
-				gangsneedingpots++; break;
-			case MISS_CAPTUREGIRL: case MISS_KIDNAPP: case MISS_CATACOMBS: default:
-				gangsneedingpots++;  gangsneedingnets++; break;
+		case MISS_SPYGIRLS: case MISS_GUARDING: case MISS_SABOTAGE: case MISS_EXTORTION: case MISS_PETYTHEFT: case MISS_GRANDTHEFT:
+			gangsneedingpots++; break;
+		case MISS_CAPTUREGIRL: case MISS_KIDNAPP: case MISS_CATACOMBS:
+			gangsneedingpots++;  gangsneedingnets++; break;
+		default:	break;
 		}
 		currentGang = currentGang->m_Next;
 	}
@@ -3041,14 +3219,14 @@ void cGangManager::GangStartOfShift()
 
 		switch (currentGang->m_MissionID)
 		{
-		case MISS_TRAINING: case MISS_RECRUIT:
-			break;
 		case MISS_GUARDING: case MISS_SPYGIRLS:	case MISS_SABOTAGE: case MISS_EXTORTION: case MISS_PETYTHEFT: case MISS_GRANDTHEFT:
 			currentGang->set_heal_limit(givepots);	potspassedout += givepots;
 			break;
-		case MISS_CAPTUREGIRL: case MISS_KIDNAPP: case MISS_CATACOMBS: default:
+		case MISS_CAPTUREGIRL: case MISS_KIDNAPP: case MISS_CATACOMBS:
 			currentGang->set_heal_limit(givepots);	potspassedout += givepots;
 			currentGang->set_net_limit(givenets);	netspassedout += givenets;
+			break;
+		default:
 			break;
 		}
 		currentGang = currentGang->m_Next;

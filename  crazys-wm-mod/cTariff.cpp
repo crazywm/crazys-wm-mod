@@ -95,6 +95,7 @@ int cTariff::goon_mission_cost(int mission)
 	case MISS_CATACOMBS:	cost = factor * 300;	break;
 	case MISS_TRAINING:		cost = factor * 90;		break;
 	case MISS_RECRUIT:		cost = factor * 80;		break;
+	case MISS_SERVICE:		cost = factor * 100;	break;
 		//	case MISS_SAIGON:		just kidding
 	case MISS_GUARDING:
 	default:
