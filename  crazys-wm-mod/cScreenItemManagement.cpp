@@ -195,72 +195,6 @@ string* ownerdata(sDungeonGirl* girl)
 
 	return data;
 }
-string ownerdetails(sGirl* girl, int fontsize)
-{
-	if (girl == 0) return "";
-	if (fontsize < 8) fontsize = 8;
-	stringstream ss;
-	ss << girl->m_Realname << "\n\n";
-	cFont check; int w, h, size = 0;
-	check.LoadFont(cfg.fonts.normal(), fontsize);
-	string sper = ""; if (cfg.fonts.showpercent()) sper = " %";
-
-	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
-	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Level : ", "Exp : " };
-	int basecount = 9;
-	int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
-	string skillstr[] = { "Magic : ", "Combat : ", "Service : ", "Medicine : ", "Performance : ", "Crafting : ", "Herbalism : ", "Farming : ", "Brewing : ", "Animal Handling : ", "Cooking : ", "Anal : ", "BDSM : ", "Normal : ", "Bestiality : ", "Group : ", "Lesbian : ", "Oral : ", "Titty : ", "Hand Job : ", "Stripping : ", "Foot Job : " };
-	int skillcount = 22;
-	int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION };
-	string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Strength : ", "Fame : ", "Lactation : " };
-	int statcount = 12;
-
-	// get the widest
-	for (int i = 0; i < basecount; i++)		{ check.GetSize(basestr[i], w, h);	if (w > size) size = w; }
-	for (int i = 0; i < skillcount; i++)	{ check.GetSize(skillstr[i], w, h);	if (w > size) size = w; }
-	for (int i = 0; i < statcount; i++)		{ check.GetSize(statstr[i], w, h);	if (w > size) size = w; }
-	size += 5; // add a little padding
-	// then add extra spaces until it is longer that the widest
-	for (int i = 0; i < basecount; i++)		{ check.GetSize(basestr[i], w, h);	while (w < size)	{ basestr[i] += " "; check.GetSize(basestr[i], w, h); } }
-	for (int i = 0; i < skillcount; i++)	{ check.GetSize(skillstr[i], w, h);	while (w < size)	{ skillstr[i] += " "; check.GetSize(skillstr[i], w, h); } }
-	for (int i = 0; i < statcount; i++)		{ check.GetSize(statstr[i], w, h);	while (w < size)	{ statstr[i] += " "; check.GetSize(statstr[i], w, h); } }
-
-	ss << basestr[2] << (girl->beauty() + girl->charisma()) / 2 << sper;
-	ss << "\n" << statstr[0] << girl->charisma() << sper;
-	ss << "\n" << statstr[1] << girl->beauty() << sper;
-	ss << "\n" << basestr[7] << girl->level();
-	ss << "\n" << basestr[8] << girl->exp();
-	ss << "\n" << basestr[0]; if (girl->age() == 100) ss << "Unknown"; else ss << girl->age();
-	ss << "\n" << basestr[1] << girl->rebel();
-	ss << "\n" << basestr[3] << girl->constitution() << sper;
-	ss << "\n" << basestr[4] << girl->health() << sper;
-	ss << "\n" << basestr[5] << girl->happiness() << sper;
-	ss << "\n" << basestr[6] << girl->tiredness() << sper;
-	for (int i = 2; i < statcount; i++)	{ ss << "\n" << statstr[i] << g_Girls.GetStat(girl, statnum[i]) << sper; }
-	ss << "\n";	if (girl->is_slave())				{ ss << "Is Branded a Slave"; }
-	ss << "\n";	if (g_Girls.CheckVirginity(girl))	{ ss << "She is a Virgin"; }
-	ss << "\n";	if (girl->m_States&(1 << STATUS_PREGNANT))		{ ss << "Is pregnant"; }
-	else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child"; }
-	else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated"; }
-	ss << "\n";	if (girl->is_addict() && !girl->has_disease())	{ ss << "Has an addiciton"; }
-	else if (!girl->is_addict() && girl->has_disease())			{ ss << "Has a disease"; }
-	else if (girl->is_addict() && girl->has_disease())			{ ss << "Has an addiciton and a disease"; }
-	for (int i = 0; i < skillcount; i++)	{ ss << "\n" << skillstr[i] << g_Girls.GetSkill(girl, skillnum[i]) << sper; }
-	ss << "\n\n";	int trait_count = 0;
-	for (int i = 0; i < MAXNUM_TRAITS; i++)
-	{
-		if (!girl->m_Traits[i]) continue;
-		trait_count++;
-		if (trait_count > 1) ss << ",   ";
-		ss << g_Traits.GetTranslateName(girl->m_Traits[i]->m_Name);
-	}
-	return ss.str();
-}
-string ownerdetails(sDungeonGirl* dgirl, int fontsize)
-{
-	sGirl* g = dgirl->m_Girl;
-	return ownerdetails(g, fontsize);
-}
 
 void cScreenItemManagement::init()	// `J` bookmark
 {
@@ -559,13 +493,13 @@ void cScreenItemManagement::init()	// `J` bookmark
 	if (detail_l_id > -1)
 	{
 		if (GetSelectedItemFromList(owners_l_id) > 1)
-			EditTextItem(ownerdetails(GirlSelectedFromList(GetSelectedItemFromList(owners_l_id), -100), m_TextItems[detail_l_id]->m_FontHeight), detail_l_id);
+			EditTextItem(g_Girls.GetSimpleDetails(GirlSelectedFromList(GetSelectedItemFromList(owners_l_id), -100), m_TextItems[detail_l_id]->m_FontHeight), detail_l_id);
 		else EditTextItem("-", detail_l_id);
 	}
 	if (detail_r_id > -1)
 	{
 		if (GetSelectedItemFromList(owners_r_id) > 1)
-			EditTextItem(ownerdetails(GirlSelectedFromList(GetSelectedItemFromList(owners_r_id), -100), m_TextItems[detail_r_id]->m_FontHeight), detail_r_id);
+			EditTextItem(g_Girls.GetSimpleDetails(GirlSelectedFromList(GetSelectedItemFromList(owners_r_id), -100), m_TextItems[detail_r_id]->m_FontHeight), detail_r_id);
 		else EditTextItem("-", detail_r_id);
 	}
 
@@ -937,13 +871,13 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
 	if (detail_l_id > -1)
 	{
 		if (GetSelectedItemFromList(owners_l_id) > 1)
-			EditTextItem(ownerdetails(GirlSelectedFromList(GetSelectedItemFromList(owners_l_id), -100), m_TextItems[detail_l_id]->m_FontHeight), detail_l_id);
+			EditTextItem(g_Girls.GetSimpleDetails(GirlSelectedFromList(GetSelectedItemFromList(owners_l_id), -100), m_TextItems[detail_l_id]->m_FontHeight), detail_l_id);
 		else EditTextItem("-", detail_l_id);
 	}
 	if (detail_r_id > -1)
 	{
 		if (GetSelectedItemFromList(owners_r_id) > 1)
-			EditTextItem(ownerdetails(GirlSelectedFromList(GetSelectedItemFromList(owners_r_id), -100), m_TextItems[detail_r_id]->m_FontHeight), detail_r_id);
+			EditTextItem(g_Girls.GetSimpleDetails(GirlSelectedFromList(GetSelectedItemFromList(owners_r_id), -100), m_TextItems[detail_r_id]->m_FontHeight), detail_r_id);
 		else EditTextItem("-", detail_r_id);
 	}
 
@@ -1429,7 +1363,7 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
 			{
 				message = "Are you trying to make up for being an ass dad?"; //hopefully this works.. will add more
 			}
-			else message = "You know, if you wanted to fuck, you shoulda just said.  So that way I'd have had more fun saying no.";
+			else message = "You know, if you wanted to fuck, you shoulda just said so.  That way I'd have had more fun saying no.";
 		}
 		else if (HateLove < -20)
 		{
@@ -1464,7 +1398,7 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
 		else if (HateLove < 80)		message = "She doesn't seem happy with the gift and tears can be seen in her eyes.";
 		else
 		{
-			if (g_Girls.HasTrait(girl, "Your Daughter"))	message = "She looks at you and says \"Why would you buy me such a thing daddy?\"."; //hopefully this works.. will add more
+			if (g_Girls.HasTrait(girl, "Your Daughter"))	message = "She looks at you and says \"Why would you give me such a thing daddy?\"."; //hopefully this works.. will add more
 			else /*                                   */	message = "She can't belive you would give her such a gift and runs off crying.";
 		}
 	}

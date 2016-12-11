@@ -116,6 +116,7 @@ void cScreenSlaveMarket::init()
 	if (!g_InitWin) return;
 	Focused();
 	g_InitWin = false;
+	stringstream ss;
 
 	//buttons enable/disable
 	DisableButton(more_id, true);
@@ -125,12 +126,7 @@ void cScreenSlaveMarket::init()
 	if (cfg.debug.log_girls()) g_LogFile.os() << "setting up slave market: genGirls = " << g_GenGirls << endl;
 
 	ImageNum = -1;
-	stringstream ss;
-	if (cur_brothel_id >= 0)
-	{
-		ss << "Current Brothel: " << g_Brothels.GetName(g_CurrBrothel);
-		EditTextItem(ss.str(), cur_brothel_id);
-	}
+	if (cur_brothel_id >= 0)	EditTextItem(g_Brothels.GetName(g_CurrBrothel), cur_brothel_id);
 
 	string sub = ReleaseGirlToWhere.substr(0, 2);
 	sBrothel *releaseto = g_Brothels.GetBrothel(g_CurrBrothel);
@@ -261,7 +257,7 @@ void cScreenSlaveMarket::init()
 	}
 	if (gold_id >= 0)
 	{
-		ss.str(""); ss << "Gold:  " << g_Gold.sval();
+		ss.str(""); ss << "Gold: " << g_Gold.sval();
 		EditTextItem(ss.str(), gold_id);
 	}
 	

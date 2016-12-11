@@ -397,6 +397,7 @@ struct sGirl
 	static int lookup_enjoy_code(string s);
 	static int lookup_jobs_code(string s);
 	static int lookup_training_code(string s);
+	string lookup_where_she_is();
 	/*
 	*	Strictly speaking, methods don't belong in structs.
 	*	I've always thought that more of a guideline than a hard and fast rule
@@ -848,6 +849,7 @@ public:
 	string GetMoreDetailsString(sGirl* girl, bool purchace = false);
 	string GetThirdDetailsString(sGirl* girl);
 	string GetGirlMood(sGirl* girl);
+	string GetSimpleDetails(sGirl* girl, int fontsize = 8);
 
 	bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool inrememberlist = false);
 	void AddRememberedTrait(sGirl* girl, string name);

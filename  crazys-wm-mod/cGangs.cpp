@@ -2135,6 +2135,7 @@ bool cGangManager::petytheft_mission(sGang* gang)
 			gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 			return false;
 		}
+		ss << "\n\n";
 		if (rival && rival->m_NumGangs > 0 && rival_gang->m_Num <= 0) rival->m_NumGangs--;
 		delete rival_gang;
 		rival_gang = 0;
@@ -2286,18 +2287,26 @@ bool cGangManager::grandtheft_mission(sGang* gang)
 		ss << "has its own guards";
 	}
 	if (defenders == 0)	ss << "is unguarded";
-	ss << ".\n\n";
 
 	if (defenders)
 	{
+		ss << ". They ";
+		int gstart = gang->m_Num;
 		if (!GangBrawl(gang, defenders))
 		{
-			ss << "Your men lose the fight.";
+			ss << "put up quite a fight and send your men running.";
 			gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
 			return false;
 		}
-		ss << "Your men win.\n\n";
+		float dif = (float)gstart / (float)gang->m_Num;
+		if (gstart == gang->m_Num)	ss << "turn tail and run as soon as they see your men";
+		else if (dif > 0.9)/*   */	ss << "put up little resistance as your men walk right over them";
+		else if (dif > 0.7)/*   */	ss << "put up a fight but your men win";
+		else if (dif > 0.5)/*   */	ss << "fight well but your men defeat them";
+		else if (dif > 0.3)/*   */	ss << "fight well but your men still manage to vanquish their foe";
+		else/*                  */	ss << "fight valiantly but your men still manage to vanquish their foe";
 	}
+	ss << ".\n\n";
 
 	if (fightrival && defenders->m_Num <= 0) rival->m_NumGangs--;
 	delete defenders; defenders = 0;

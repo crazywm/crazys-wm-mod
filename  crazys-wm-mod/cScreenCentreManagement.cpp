@@ -81,6 +81,7 @@ void cScreenCentreManagement::set_ids()
 	ids_set = true;
 	back_id 		= get_id("BackButton");
 	curcentre_id 	= get_id("Centre");
+	gold_id			= get_id("Gold");
 	girllist_id 	= get_id("GirlList");
 	girlimage_id 	= get_id("GirlImage");
 	girldesc_id 	= get_id("GirlDescription");
@@ -123,6 +124,12 @@ void cScreenCentreManagement::init()
 	stringstream buildingname;
 	buildingname << g_Centre.GetName(g_CurrCentre);
 	EditTextItem(buildingname.str(), curcentre_id);
+
+	if (gold_id >= 0)
+	{
+		ss.str(""); ss << "Gold: " << g_Gold.ival();
+		EditTextItem(ss.str(), gold_id);
+	}
 
 	// clear the lists
 	ClearListBox(girllist_id);

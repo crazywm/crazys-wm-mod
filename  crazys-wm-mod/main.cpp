@@ -505,11 +505,8 @@ void handle_hotkeys()
 			else
 				g_AllTogle = true;
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering Inventory");
-			g_Building = BUILDING_BROTHEL;
-			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_INVENTORY;
 			g_InitWin = true;
-			g_WinManager.push("Town");
 			g_WinManager.push("Item Management");
 			break;
 

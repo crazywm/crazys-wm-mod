@@ -27,6 +27,7 @@ class cScreenArenaManagement : public cInterfaceWindowXML
 private:
 	static bool ids_set;	// --- interface/event IDs --- //
 	int curarena_id;		// Current Brothel text
+	int gold_id;			// Player Gold
 	int girldesc_id;		// Girl Description text
 	int girlimage_id;		// Girl image
 	int girllist_id;		// Girls listbox

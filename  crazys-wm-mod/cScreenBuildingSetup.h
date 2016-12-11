@@ -28,6 +28,7 @@ private:
 	static bool ids_set;	// --- interface/event IDs --- //
 	int back_id;			// Back button
 	int curbrothel_id;		// Current Brothel text
+	int gold_id;			// Player Gold
 	int potioncost_id;		// Potion Cost text
 	int potionavail_id;		// Available Potions text
 	int potions10_id;		// Buy 10 Potions button

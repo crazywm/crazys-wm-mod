@@ -58,6 +58,7 @@ void cScreenBuildingSetup::set_ids()
 	ids_set = true;
 	back_id = get_id("BackButton");
 	curbrothel_id = get_id("CurrentBrothel");
+	gold_id = get_id("Gold");
 	potioncost_id = get_id("PotionCost");
 	potionavail_id = get_id("AvailablePotions");
 	potions10_id = get_id("10PotionsButton");
@@ -234,7 +235,7 @@ void cScreenBuildingSetup::init()
 		break;
 	case BUILDING_BROTHEL:
 	default:
-		brothel = "Current Brothel: "; brothel += g_Brothels.GetName(g_CurrBrothel);
+		brothel = g_Brothels.GetName(g_CurrBrothel);
 		rooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_NumRooms;
 		maxrooms = g_Brothels.GetBrothel(g_CurrBrothel)->m_MaxNumRooms;
 		antipregnum = g_Brothels.GetBrothel(g_CurrBrothel)->m_AntiPregPotions;
@@ -255,6 +256,12 @@ void cScreenBuildingSetup::init()
 		SetCheckBox(nostrip_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictStrip);
 		SetCheckBox(notitty_id, g_Brothels.GetBrothel(g_CurrBrothel)->m_RestrictTitty);
 		break;
+	}
+
+	if (gold_id >= 0)
+	{
+		ss.str(""); ss << "Gold: " << g_Gold.ival();
+		EditTextItem(ss.str(), gold_id);
 	}
 
 	EditTextItem(brothel, curbrothel_id);

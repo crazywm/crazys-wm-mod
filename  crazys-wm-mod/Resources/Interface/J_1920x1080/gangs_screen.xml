@@ -2,7 +2,7 @@
 <Window   Name="Gang Management Window"                                        XPos="60"	YPos="40"	Width="1800"	Height="1000"	Border="1" />
 <Text     Name="txtControlledGangs"     Text="Controlled Gangs"                XPos="20"	YPos="20"	Width="300"	Height="50"	FontSize="24" />
 <Text     Name="TotalCost"              Text="Weekly Cost: 0"                  XPos="500"	YPos="20"	Width="300"	Height="50"	FontSize="24" />
-<Text     Name="Gold"                   Text="Player Gold: 0"                  XPos="800"	YPos="20"	Width="300"	Height="50"	FontSize="24" />
+<Text     Name="Gold"                Text="Gold: 0"                            XPos="1100"	YPos="20"	Width="400"	Height="50"	FontSize="32" />
 
 <ListBox  Name="GangList"                                                      XPos="20"	YPos="70"	Width="1290"	Height="482"	FontSize="16"	RowHeight="24"	Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column   Name="GangName"               Header="Gang Name"                     Offset="0" />

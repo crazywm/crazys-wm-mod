@@ -34,6 +34,7 @@ class cScreenTown : public cInterfaceWindowXML
 private:
 	static bool	ids_set;	// --- interface/event IDs --- //
 	int back_id;			// Back button
+	int gold_id;			// Player Gold
 	int walk_id;			// Walk Around Town button
 	int curbrothel_id;		// Current Brothel text
 	int slavemarket_id;		// Slave Market map button

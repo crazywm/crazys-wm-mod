@@ -2,6 +2,7 @@
 <Window   Name="Girl Management Window"                                        XPos="60"	YPos="40"	Width="1800"	Height="1000"	Border="1" />
 <Text     Name="CurrentBrothel"         Text=""                                XPos="335"	YPos="20"	Width="1130"	Height="50"	FontSize="32" />
 <Image    Name="GirlImage"              File="blank.png"                       XPos="20"	YPos="20"	Width="310"	Height="310" />
+<Text     Name="Gold"                Text="Gold: 0"                            XPos="1100"	YPos="20"	Width="400"	Height="50"	FontSize="32" />
 <Button   Name="ViewDetailsButton"      Image="ViewDetails"                    XPos="50"	YPos="340"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
 <Text     Name="GirlDescription"        Text=""                                XPos="20"	YPos="400"	Width="310"	Height="470"	FontSize="14" />
 <Button   Name="FreeSlaveButton"        Image="FreeSlave"                      XPos="20"	YPos="880"	Width="160"	Height="32"	Transparency="true"	Scale="true" />

@@ -1,8 +1,8 @@
 <Screen>
 <Window     Name="Settings"                                             XPos="25"	YPos="25"	Width="750"	Height="550"	Border="1" />
-<Text       Name="ScreenHeader"          Text="Settings"                XPos="350"	YPos="-5"	Width="200"	Height="50"	FontSize="40" />
-<Button     Name="OkButton"              Image="Ok"                     XPos="10"	YPos="510"	Width="160"	Height="32"	Transparency="true"	Scale="true"     />
-<Button     Name="RevertButton"          Image="Revert"                 XPos="40"	YPos="470"	Width="160"	Height="32"	Transparency="true"	Scale="true"     />
+<Text       Name="ScreenHeader"          Text="Settings"                XPos="2"	YPos="0"	Width="200"	Height="50"	FontSize="40" />
+<Button     Name="OkButton"              Image="Ok"                     XPos="340"	YPos="510"	Width="128"	Height="32"	Transparency="true"	Scale="true"     />
+<Button     Name="RevertButton"          Image="Revert"                 XPos="490"	YPos="510"	Width="72"	Height="32"	Transparency="true"	Scale="true"     />
 <Button     Name="BackButton"            Image="Back"                   XPos="580"	YPos="510"	Width="160"	Height="32"	Transparency="true"	Scale="true"     />
 
 <Define     Widget="Folders">
@@ -17,6 +17,29 @@
 <Checkbox   Name="BackupSaves"           Text="Backup Saves"            XPos="0"	YPos="80"	Width="16"	Height="16"	FontSize="12" LeftOrRight="false"/>
 <Checkbox   Name="PreferDefault"         Text="Prefer Default"          XPos="100"	YPos="80"	Width="16"	Height="16"	FontSize="12" LeftOrRight="false"/>
 </Define>
+
+<Define     Widget="Catacombs">                                                           
+<Checkbox   Name="ControlGirls"              Text="Control Girls"       XPos="50"	YPos="20"	Width="16"	Height="16"	FontSize="12"	LeftOrRight="false"/>
+<Checkbox   Name="ControlGangs"              Text="Control Gangs"       XPos="150"	YPos="20"	Width="16"	Height="16"	FontSize="12"	LeftOrRight="false"/>
+<Text       Name="GirlGets"                  Text="Girl Gets What:"     XPos="0"	YPos="40"	Width="90"	Height="20"	FontSize="12" />
+<Text       Name="GirlGetsGirls"             Text="Girls: 34%"          XPos="80"	YPos="40"	Width="70"	Height="20"	FontSize="12" />
+<Text       Name="GirlGetsItems"             Text="Items: 33%"          XPos="140"	YPos="40"	Width="70"	Height="20"	FontSize="12" />
+<Text       Name="GirlGetsBeast"             Text="Beast: 33%"          XPos="210"	YPos="40"	Width="70"	Height="20"	FontSize="12" />
+<Slider     Name="GirlsGirlsPercSlider"                                 XPos="0"	YPos="63"	Width="270"	MinValue="0"	MaxValue="100"	Value="0"	Increment="1"	LiveUpdate="true"	Hidden="false"	Disabled="false"	/>
+<Slider     Name="GirlsItemsPercSlider"                                 XPos="0"	YPos="83"	Width="270"	MinValue="0"	MaxValue="100"	Value="0"	Increment="1"	LiveUpdate="true"	Hidden="false"	Disabled="false"	/>
+<Text       Name="GangGets"                  Text="Gang Gets What:"     XPos="0"	YPos="100"	Width="90"	Height="20"	FontSize="12" />
+<Text       Name="GangGetsGirls"             Text="Girls: 34%"          XPos="80"	YPos="100"	Width="70"	Height="20"	FontSize="12" />
+<Text       Name="GangGetsItems"             Text="Items: 33%"          XPos="140"	YPos="100"	Width="70"	Height="20"	FontSize="12" />
+<Text       Name="GangGetsBeast"             Text="Beast: 33%"          XPos="210"	YPos="100"	Width="70"	Height="20"	FontSize="12" />
+<Slider     Name="GangsGirlsPercSlider"                                 XPos="0"	YPos="123"	Width="270"	MinValue="0"	MaxValue="100"	Value="0"	Increment="1"	LiveUpdate="true"	Hidden="false"	Disabled="false"	/>
+<Slider     Name="GangsItemsPercSlider"                                 XPos="0"	YPos="143"	Width="270"	MinValue="0"	MaxValue="100"	Value="0"	Increment="1"	LiveUpdate="true"	Hidden="false"	Disabled="false"	/>
+<Text       Name="UniqueCatacombsLabel"      Text="Unique %"            XPos="0"	YPos="160"	Width="270"	Height="20"	FontSize="12" />
+<Slider     Name="UniqueCatacombs"                                      XPos="0"	YPos="183"	Width="270"	MinValue="0"	MaxValue="100"	Value="0"	Increment="1"	LiveUpdate="true"	Hidden="false"	Disabled="false"	/>
+</Define>                                                               
+
+
+
+
 <Define     Widget="Initial">
 <EditBox    Name="Gold"                                                 XPos="0"	YPos="0"	Width="100"	Height="20"	FontSize="10"	Border="1"	/>
 <Text       Name="GoldLabel"             Text="Initial Gold"            XPos="100"	YPos="2"	Width="100"	Height="20"	FontSize="12" />
@@ -149,22 +172,6 @@
 <EditBox    Name="MultiBirthChance"                                     XPos="0"	YPos="240"	Width="30"	Height="20"	FontSize="10"	Border="1"	/>
 <Text       Name="MultiBirthChanceLabel"     Text="Multi Birth Chance"  XPos="30"	YPos="242"	Width="120"	Height="20"	FontSize="12" />
 </Define>                                                                                 
-<Define     Widget="Catacombs">                                                           
-<EditBox    Name="UniqueCatacombs"                                      XPos="50"	YPos="0"	Width="30"	Height="20"	FontSize="10"	Border="1"	/>
-<Text       Name="UniqueCatacombsLabel"      Text="Unique Catacomb %"   XPos="80"	YPos="2"	Width="100"	Height="20"	FontSize="12" />
-<Checkbox   Name="ControlGirls"              Text="Control Girls"       XPos="50"	YPos="20"	Width="16"	Height="16"	FontSize="12"	LeftOrRight="false"/>
-<Checkbox   Name="ControlGangs"              Text="Control Gangs"       XPos="150"	YPos="20"	Width="16"	Height="16"	FontSize="12"	LeftOrRight="false"/>
-<Text       Name="GirlGetsGirls"             Text="Girls : 34%"         XPos="10"	YPos="40"	Width="90"	Height="20"	FontSize="12" />
-<Text       Name="GirlGetsItems"             Text="Items : 33%"         XPos="100"	YPos="40"	Width="90"	Height="20"	FontSize="12" />
-<Text       Name="GirlGetsBeast"             Text="Beast : 33%"         XPos="190"	YPos="40"	Width="90"	Height="20"	FontSize="12" />
-<Slider     Name="GirlsGirlsPercSlider"                                 XPos="0"	YPos="63"	Width="270"	MinValue="0"	MaxValue="100"	Value="0"	Increment="10"	LiveUpdate="true"	Hidden="false"	Disabled="false"	/>
-<Slider     Name="GirlsItemsPercSlider"                                 XPos="0"	YPos="83"	Width="270"	MinValue="0"	MaxValue="100"	Value="0"	Increment="10"	LiveUpdate="true"	Hidden="false"	Disabled="false"	/>
-<Text       Name="GangGetsGirls"             Text="Girls : 34%"         XPos="10"	YPos="100"	Width="90"	Height="20"	FontSize="12" />
-<Text       Name="GangGetsItems"             Text="Items : 33%"         XPos="100"	YPos="100"	Width="90"	Height="20"	FontSize="12" />
-<Text       Name="GangGetsBeast"             Text="Beast : 33%"         XPos="190"	YPos="100"	Width="90"	Height="20"	FontSize="12" />
-<Slider     Name="GangsGirlsPercSlider"                                 XPos="0"	YPos="123"	Width="270"	MinValue="0"	MaxValue="100"	Value="0"	Increment="10"	LiveUpdate="true"	Hidden="false"	Disabled="false"	/>
-<Slider     Name="GangsItemsPercSlider"                                 XPos="0"	YPos="143"	Width="270"	MinValue="0"	MaxValue="100"	Value="0"	Increment="10"	LiveUpdate="true"	Hidden="false"	Disabled="false"	/>
-</Define>                                                               
 <Define     Widget="SlaveMarket">                                       
 <EditBox    Name="UniqueMarket"                                         XPos="0"	YPos="0"	Width="30"	Height="20"	FontSize="10"	Border="1"	/>
 <Text       Name="UniqueMarketLabel"         Text="Unique Market"       XPos="30"	YPos="2"	Width="120"	Height="20"	FontSize="12" />
@@ -204,16 +211,18 @@
 <Checkbox   Name="LogShowNumbers"         Text="Log Show Numbers"       XPos="160"	YPos="60"	Width="16"	Height="16"	FontSize="12"	LeftOrRight="false"/>
 </Define>                                                               
                                                                         
+<Widget   Definition="Folders"          Seq="Fol"                       XPos="5"	YPos="60"/>
+<Widget   Definition="Catacombs"        Seq="Cat"                       XPos="5"	YPos="160"/>
+<!--
 <Widget   Definition="Initial"          Seq="Ini"                       XPos="10"	YPos="10"/>
 <Widget   Definition="Income"           Seq="Inc"                       XPos="10"	YPos="190"/>
 <Widget   Definition="Fonts"            Seq="Fon"                       XPos="10"	YPos="430"/>
 <Widget   Definition="Expenses"         Seq="Exp"                       XPos="160"	YPos="190"/>
-<Widget   Definition="Catacombs"        Seq="Cat"                       XPos="300"	YPos="100"/>
 <Widget   Definition="Gangs"            Seq="Gan"                       XPos="300"	YPos="280"/>
 <Widget   Definition="Debug"            Seq="Dbg"                       XPos="300"	YPos="460"/>
 <Widget   Definition="Gambling"         Seq="Gam"                       XPos="450"	YPos="280"/>
 <Widget   Definition="Tax"              Seq="Tax"                       XPos="450"	YPos="410"/>
-<Widget   Definition="Folders"          Seq="Fol"                       XPos="500"	YPos="10"/>
 <Widget   Definition="Pregnancy"        Seq="Prg"                       XPos="600"	YPos="120"/>
 <Widget   Definition="SlaveMarket"      Seq="Svm"                       XPos="600"	YPos="410"/>
+-->
 </Screen>

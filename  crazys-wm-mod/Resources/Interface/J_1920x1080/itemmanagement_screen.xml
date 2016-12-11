@@ -37,6 +37,6 @@
 <Button   Name="UnequipRightButton"     Image="Unequip"                        XPos="938"	YPos="920"	Width="112"	Height="50"	Transparency="true"	Scale="true" />
 <Text     Name="CurrentBrothel"         Text=""                                XPos="320"	YPos="930"	Width="600"	Height="40"	FontSize="16" />
 <Button   Name="BackButton"             Image="Back"                           XPos="1510"	YPos="930"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
-<Text     Name="OwnersLeftDetails"      Text=" "                               XPos="20"	YPos="20"	Width="300"	Height="960"	FontSize="12" />
-<Text     Name="OwnersRightDetails"     Text=" "                               XPos="1480"	YPos="20"	Width="300"	Height="960"	FontSize="12" />
+<Text     Name="OwnersLeftDetails"      Text=" "                               XPos="20"	YPos="20"	Width="300"	Height="900"	FontSize="12" />
+<Text     Name="OwnersRightDetails"     Text=" "                               XPos="1480"	YPos="20"	Width="300"	Height="900"	FontSize="12" />
 </Screen>

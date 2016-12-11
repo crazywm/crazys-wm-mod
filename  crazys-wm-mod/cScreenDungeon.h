@@ -30,6 +30,7 @@ private:
 	int girllist_id;		// Girls listbox
 	int girlimage_id;		// Girl image
 	int header_id;			// Dungeon header text
+	int gold_id;			// Player Gold
 	int brandslave_id;		// Brand Slave button
 	int release_id;			// Release button
 	int allowfood_id;		// Allow Food button

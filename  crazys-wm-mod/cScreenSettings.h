@@ -29,6 +29,8 @@ private:
 	int back_id;
 	int ok_id;
 	int revert_id;
+
+	// Folders
 	int characters_id;
 	int saves_id;
 	int defaultimages_id;
@@ -36,6 +38,21 @@ private:
 	int backupsaves_id;
 	int preferdefault_id;
 
+	// Catacombs
+	int uniquecatacombs_id;
+	int uniquecatacombslabel_id;
+	int controlgirls_id;
+	int controlgangs_id;
+	int girlgetsgirls_id;
+	int girlgetsitems_id;
+	int girlgetsbeast_id;
+	int girlsgirlspercslider_id;
+	int girlsitemspercslider_id;
+	int ganggetsgirls_id;
+	int ganggetsitems_id;
+	int ganggetsbeast_id;
+	int gangsgirlspercslider_id;
+	int gangsitemspercslider_id;
 
 
 

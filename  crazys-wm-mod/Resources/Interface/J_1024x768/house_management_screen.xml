@@ -1,6 +1,7 @@
 <Screen>
 <Window   Name="House Management Window"                  XPos="10"  YPos="10"  Width="880" Height="580" Border="1" />
 <Text     Name="House"              Text=""               XPos="8"   YPos="2"   Width="232" Height="30"  FontSize="16" />
+<Text     Name="Gold"               Text="Player Gold: 0" XPos="400" YPos="2"   Width="200" Height="32"  FontSize="16" />
 <Image    Name="GirlImage"          File="blank.png"      XPos="604" YPos="8"   Width="168" Height="142" />
 <Text     Name="GirlDescription"    Text=""               XPos="604" YPos="152" Width="160" Height="156" FontSize="9" />
 <Text     Name="JobTypeHeader"      Text="Job Types"      XPos="16"  YPos="438" Width="160" Height="32"  FontSize="16" />

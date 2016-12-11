@@ -282,9 +282,18 @@ Added g_Brothels.GetRandomBrothel() function
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.41
 
+###  Changes 12/04-10/2016
+Fixed a few more column offsets in J_1024x768 interface
+Rewrote sell slaves from dungeon text to itemized list
+Added Player Gold to many screens
+config.xml in release used the testing numbers, changed it back to release numbers.
+Fixed/added text in gang grand theft mission
+Removed from the settings screen all the things that were not completed
+ - Folders and Catacombs are working.
+ - (Gang gets what is overridden by the savegame so is not really needed)
 
-
-
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.42
 
 
 

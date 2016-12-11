@@ -142,6 +142,7 @@ void cScreenTurnSummary::set_ids()
 	ids_set = true;
 	brothel_id = get_id("CurrentBrothel");
 	category_id = get_id("Category");
+	gold_id = get_id("Gold");
 	labelitem_id = get_id("LabelItem");
 	item_id = get_id("Item");
 	event_id = get_id("Event");
@@ -244,9 +245,7 @@ void cScreenTurnSummary::process()
 		Event_Change = false;
 	}
 
-	string brothel = "Current Brothel: ";
-	brothel += g_Brothels.GetName(g_CurrBrothel);
-	EditTextItem(brothel, brothel_id);
+	EditTextItem(g_Brothels.GetName(g_CurrBrothel), brothel_id);
 
 	// Draw the image
 	if (Category == Summary_BROTHELS)
@@ -295,9 +294,7 @@ void cScreenTurnSummary::init()
 		else /*                                    */	Category = Summary_GIRLS;
 	}
 
-	string brothel = "Current Brothel: ";
-	brothel += g_Brothels.GetName(g_CurrBrothel);
-	EditTextItem(brothel, brothel_id);
+	EditTextItem(g_Brothels.GetName(g_CurrBrothel), brothel_id);
 
 	if (Category < 0)	Category = 0;
 	if (Category_Last == Category) Item = GetSelectedItemFromList(item_id);
@@ -310,6 +307,12 @@ void cScreenTurnSummary::init()
 		if (Category == Summary_CLINIC)	{ sorttext += " (Triage)"; }
 	}
 	EditTextItem(sorttext, item_id);
+
+	if (gold_id >= 0)
+	{
+		stringstream ss; ss << "Gold: " << g_Gold.ival();
+		EditTextItem(ss.str(), gold_id);
+	}
 
 	// Clear everything
 	ClearListBox(category_id);

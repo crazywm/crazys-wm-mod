@@ -529,17 +529,17 @@ void sConfigData::get_catacombs_data(TiXmlElement *el)
 	if (checkggirl == 0) catacombs.girl_gets_girls = catacombs.girl_gets_items = catacombs.girl_gets_beast = (100 / 3);
 	else if (checkggirl != 100)
 	{
-		catacombs.girl_gets_girls = (100.0 / checkggirl) * catacombs.girl_gets_girls;
-		catacombs.girl_gets_items = (100.0 / checkggirl) * catacombs.girl_gets_items;
-		catacombs.girl_gets_beast = 100.0 - catacombs.girl_gets_girls - catacombs.girl_gets_items;
+		catacombs.girl_gets_girls = int((100.0 / checkggirl) * (double)catacombs.girl_gets_girls);
+		catacombs.girl_gets_items = int((100.0 / checkggirl) * (double)catacombs.girl_gets_items);
+		catacombs.girl_gets_beast = int(100.0 - (double)catacombs.girl_gets_girls - (double)catacombs.girl_gets_items);
 	}
 	double checkggang = catacombs.gang_gets_girls + catacombs.gang_gets_items + catacombs.gang_gets_beast;
 	if (checkggang == 0) catacombs.gang_gets_girls = catacombs.gang_gets_items = catacombs.gang_gets_beast = (100 / 3);
 	else if (checkggang != 100)
 	{
-		catacombs.gang_gets_girls = (100.0 / checkggang) * catacombs.gang_gets_girls;
-		catacombs.gang_gets_items = (100.0 / checkggang) * catacombs.gang_gets_items;
-		catacombs.gang_gets_beast = 100.0 - catacombs.gang_gets_girls - catacombs.gang_gets_items;
+		catacombs.gang_gets_girls = int((100.0 / checkggang) * (double)catacombs.gang_gets_girls);
+		catacombs.gang_gets_items = int((100.0 / checkggang) * (double)catacombs.gang_gets_items);
+		catacombs.gang_gets_beast = int(100.0 - (double)catacombs.gang_gets_girls - (double)catacombs.gang_gets_items);
 	}									 
 }
 
@@ -728,12 +728,12 @@ void sConfigData::set_defaults()
 	catacombs.unique_catacombs = 50;
 	catacombs.control_girls = false;
 	catacombs.control_gangs = false;
-	catacombs.girl_gets_girls = 33.33;
-	catacombs.girl_gets_items = 33.33;
-	catacombs.girl_gets_beast = 33.33;
-	catacombs.gang_gets_girls = 33.33;
-	catacombs.gang_gets_items = 33.33;
-	catacombs.gang_gets_beast = 33.33;
+	catacombs.girl_gets_girls = 34;
+	catacombs.girl_gets_items = 33;
+	catacombs.girl_gets_beast = 33;
+	catacombs.gang_gets_girls = 34;
+	catacombs.gang_gets_items = 33;
+	catacombs.gang_gets_beast = 33;
 
 	slavemarket.unique_market = 35;
 	slavemarket.slavesnewweeklymin = 5;

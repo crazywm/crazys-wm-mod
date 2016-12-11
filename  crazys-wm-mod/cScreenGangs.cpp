@@ -78,7 +78,7 @@ void cScreenGangs::set_ids()
 	ganghire_id = get_id("GangHireButton");
 	gangfire_id = get_id("GangFireButton");
 	totalcost_id = get_id("TotalCost");
-	gold_id = get_id("gold");
+	gold_id = get_id("Gold");
 	ganglist_id = get_id("GangList");
 	missionlist_id = get_id("MissionList");
 	gangdesc_id = get_id("GangDescription");
@@ -189,7 +189,7 @@ void cScreenGangs::init()
 	EditTextItem(ss.str(), totalcost_id);
 	if (gold_id >= 0)
 	{
-		ss.str(""); ss << "Your Gold: " << g_Gold.ival();
+		ss.str(""); ss << "Gold: " << g_Gold.ival();
 		EditTextItem(ss.str(), gold_id);
 	}
 
@@ -518,7 +518,7 @@ void cScreenGangs::check_events()
 		EditTextItem(ss.str(), totalcost_id);
 		if (gold_id >= 0)
 		{
-			ss.str(""); ss << "Your Gold: " << g_Gold.ival();
+			ss.str(""); ss << "Gold: " << g_Gold.ival();
 			EditTextItem(ss.str(), gold_id);
 		}
 

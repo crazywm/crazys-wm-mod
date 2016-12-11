@@ -716,6 +716,17 @@ int sGirl::lookup_training_code(string s)
 	return training_lookup[s];
 }
 
+string sGirl::lookup_where_she_is()
+{
+	if (this->m_InStudio)	return "Studio";
+	if (this->m_InArena)	return "Arena";
+	if (this->m_InCentre)	return "Centre";
+	if (this->m_InClinic)	return "Clinic";
+	if (this->m_InFarm)		return "Farm";
+	if (this->m_InHouse)	return "House";
+	return g_Brothels.GetName(where_is_she);
+}
+
 // END MOD
 
 class GirlPredicate_GRG : public GirlPredicate
@@ -3029,6 +3040,73 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	data += "Jobs marked with * do not use job performace at all and are just in for completion.\n";
 	return data;
 
+}
+
+string cGirls::GetSimpleDetails(sGirl* girl, int fontsize)
+{
+	if (girl == 0) return "";
+	if (fontsize < 8) fontsize = 8;
+	stringstream ss;
+	cFont check; int w, h, size = 0;
+	check.LoadFont(cfg.fonts.normal(), fontsize);
+	string sper = ""; if (cfg.fonts.showpercent()) sper = " %";
+
+	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
+	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Level : ", "Exp : ", "Location : ", "Day Job : ", "Night Job : " };
+	int basecount = 12;
+	int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
+	string skillstr[] = { "Magic : ", "Combat : ", "Service : ", "Medicine : ", "Performance : ", "Crafting : ", "Herbalism : ", "Farming : ", "Brewing : ", "Animal Handling : ", "Cooking : ", "Anal : ", "BDSM : ", "Normal : ", "Bestiality : ", "Group : ", "Lesbian : ", "Oral : ", "Titty : ", "Hand Job : ", "Stripping : ", "Foot Job : " };
+	int skillcount = 22;
+	int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION };
+	string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Strength : ", "Fame : ", "Lactation : " };
+	int statcount = 12;
+
+	// get the widest
+	for (int i = 0; i < basecount; i++)		{ check.GetSize(basestr[i], w, h);	if (w > size) size = w; }
+	for (int i = 0; i < skillcount; i++)	{ check.GetSize(skillstr[i], w, h);	if (w > size) size = w; }
+	for (int i = 0; i < statcount; i++)		{ check.GetSize(statstr[i], w, h);	if (w > size) size = w; }
+	size += 5; // add a little padding
+	// then add extra spaces until it is longer than the widest
+	for (int i = 0; i < basecount; i++)		{ check.GetSize(basestr[i], w, h);	while (w < size)	{ basestr[i] += " "; check.GetSize(basestr[i], w, h); } }
+	for (int i = 0; i < skillcount; i++)	{ check.GetSize(skillstr[i], w, h);	while (w < size)	{ skillstr[i] += " "; check.GetSize(skillstr[i], w, h); } }
+	for (int i = 0; i < statcount; i++)		{ check.GetSize(statstr[i], w, h);	while (w < size)	{ statstr[i] += " "; check.GetSize(statstr[i], w, h); } }
+
+
+	ss << basestr[9] << girl->lookup_where_she_is();
+	ss << "\n" << basestr[10] << g_Brothels.m_JobManager.JobName[girl->m_DayJob];
+	ss << "\n" << basestr[11] << g_Brothels.m_JobManager.JobName[girl->m_NightJob];
+	ss << "\n" << basestr[2] << (girl->beauty() + girl->charisma()) / 2 << sper;
+	ss << "\n" << statstr[0] << girl->charisma() << sper;
+	ss << "\n" << statstr[1] << girl->beauty() << sper;
+	ss << "\n" << basestr[7] << girl->level();
+	ss << "\n" << basestr[8] << girl->exp();
+	ss << "\n" << basestr[0]; if (girl->age() == 100) ss << "Unknown"; else ss << girl->age();
+	ss << "\n" << basestr[1] << girl->rebel();
+	ss << "\n" << basestr[3] << girl->constitution() << sper;
+	ss << "\n" << basestr[4] << girl->health() << sper;
+	ss << "\n" << basestr[5] << girl->happiness() << sper;
+	ss << "\n" << basestr[6] << girl->tiredness() << sper;
+	for (int i = 2; i < statcount; i++)	{ ss << "\n" << statstr[i] << g_Girls.GetStat(girl, statnum[i]) << sper; }
+	ss << "\n";	if (girl->is_slave())				{ ss << "Is Branded a Slave"; }
+	ss << "\n";	if (g_Girls.CheckVirginity(girl))	{ ss << "She is a Virgin"; }
+	int to_go = (girl->carrying_monster() ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - girl->m_WeeksPreg;
+	ss << "\n";	if (girl->m_States&(1 << STATUS_PREGNANT))		{ ss << "Is pregnant " << "(" << to_go << ")"; }
+	else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child " << "(" << to_go << ")"; }
+	else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated " << "(" << to_go << ")"; }
+	ss << "\n";	if (girl->is_addict() && !girl->has_disease())	{ ss << "Has an addiciton"; }
+	else if (!girl->is_addict() && girl->has_disease())			{ ss << "Has a disease"; }
+	else if (girl->is_addict() && girl->has_disease())			{ ss << "Has an addiciton and a disease"; }
+	for (int i = 0; i < skillcount; i++)	{ ss << "\n" << skillstr[i] << g_Girls.GetSkill(girl, skillnum[i]) << sper; }
+	ss << "\n\n";	int trait_count = 0;
+	for (int i = 0; i < MAXNUM_TRAITS; i++)
+	{
+		if (!girl->m_Traits[i]) continue;
+		trait_count++;
+		if (trait_count > 1) ss << ",   ";
+		ss << g_Traits.GetTranslateName(girl->m_Traits[i]->m_Name);
+		if (girl->m_TempTrait[i] > 0) ss << " (" << girl->m_TempTrait[i] << ")";
+	}
+	return ss.str();
 }
 
 // added human check: -1 does not matter, 0 not human, 1 human
@@ -16614,15 +16692,15 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 	switch (type)
 	{
 	case STATUS_INSEMINATED:
-		text += gettext(" been inseminated.");
+		text += " been inseminated.";
 		break;
 	case STATUS_PREGNANT_BY_PLAYER:
-		text += gettext(" gotten pregnant with you.");
+		text += " has become pregnant with your child.";
 		break;
 	case STATUS_PREGNANT:
 	default:
 		type = STATUS_PREGNANT;		// `J` rearranged and added default to make sure there are no complications
-		text += gettext(" gotten pregnant.");
+		text += " has become pregnant.";
 		break;
 	}
 

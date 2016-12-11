@@ -1,6 +1,8 @@
 <Screen>
 <Window   Name="Building Setup Window"                                XPos="48"  YPos="160" Width="704" Height="312" Border="1"/>
-<Text     Name="CurrentBrothel"           Text=""                     XPos="266" YPos="0"   Width="500" Height="32"  FontSize="16"/>
+<Text     Name="CurrentBrothel"           Text=""                     XPos="100" YPos="0"   Width="500" Height="32"  FontSize="16"/>
+<Text     Name="Gold"                 Text="Player Gold: 0"           XPos="500" YPos="0"   Width="200" Height="32"  FontSize="16" />
+
 <Text     Name="PotionCost"    Text="Anti-Preg Potions: 2 gold each"  XPos="16"  YPos="38"  Width="216" Height="32"  FontSize="13"/>
 <Button   Name="10PotionsButton"          Image="Buy10"               XPos="32"  YPos="64"  Width="72"  Height="32"  Transparency="true" Scale="true"/>
 <Button   Name="20PotionsButton"          Image="Buy20"               XPos="112" YPos="64"  Width="72"  Height="32"  Transparency="true" Scale="true"/>

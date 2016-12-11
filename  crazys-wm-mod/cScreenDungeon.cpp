@@ -82,6 +82,7 @@ void cScreenDungeon::set_ids()
 	ids_set = true;
 	back_id 		= get_id("BackButton");
 	header_id 		= get_id("DungeonHeader");
+	gold_id			= get_id("Gold");
 	girllist_id 	= get_id("GirlList");
 	girlimage_id 	= get_id("GirlImage");
 	brandslave_id 	= get_id("BrandSlaveButton");
@@ -127,6 +128,12 @@ void cScreenDungeon::init()
 	vector<string> columnNames;				//get a list of all the column names, so we can find which data goes in that column
 	m_ListBoxes[girllist_id]->GetColumnNames(columnNames);
 	int numColumns = columnNames.size();
+
+	if (gold_id >= 0)
+	{
+		ss.str(""); ss << "Gold: " << g_Gold.ival();
+		EditTextItem(ss.str(), gold_id);
+	}
 
 	if (cfg.debug.log_debug())	g_LogFile.write("cScreenDungeon::init > 1");
 	ss.str("");	ss << "Your Dungeon where " << dungeon->GetNumDied() << " people have died.";
@@ -418,7 +425,8 @@ void cScreenDungeon::sell_slaves()
 	int paid = 0, count = 0, deadcount = 0;
 	vector<int> girl_array;
 	get_selected_girls(&girl_array);  // get and sort array of girls/customers
-
+	vector<string> girl_names;
+	vector<int> sell_gold;
 	for (int i = girl_array.size(); i-- > 0;)
 	{
 		selection = girl_array[i];
@@ -440,6 +448,8 @@ void cScreenDungeon::sell_slaves()
 		paid += cost;
 		count++;
 		girl = dungeon->RemoveGirl(dungeon->GetGirl(selection));	// remove her from the dungeon, add her back into the general pool
+		girl_names.push_back(girl->m_Realname);
+		sell_gold.push_back(cost);
 		if (girl->m_Realname.compare(girl->m_Name) == 0)
 		{
 			g_Girls.AddGirl(girl);									// add unique girls back to main pool
@@ -450,10 +460,17 @@ void cScreenDungeon::sell_slaves()
 	if (deadcount > 0) g_MessageQue.AddToQue("Nobody is currently in the market for dead girls.", COLOR_YELLOW);
 	if (count <= 0) return;
 
-	ss.str("You sold ");
-	if (count > 1) ss << count << " slave girls";
-	else ss << "the slave girl";
-	ss << " for " << paid << " gold.";
+	ss.str(""); ss << "You sold ";
+	if (count == 1)		{ ss << girl_names[0] << " for " << sell_gold[0] << " gold."; }
+	else
+	{
+		ss << count << " slaves:";
+		for (int i = 0; i < count; i++)
+		{
+			ss << "\n    " << girl_names[i] << "   for " << sell_gold[i] << " gold";
+		}
+		ss << "\nFor a total of " << paid << " gold.";
+	}
 	g_MessageQue.AddToQue(ss.str(), 0);
 	selection = -1;
 	g_InitWin = true;

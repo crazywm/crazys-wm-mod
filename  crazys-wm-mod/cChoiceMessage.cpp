@@ -189,16 +189,15 @@ void cChoiceManager::BuildChoiceBox(int ID, int MaxStrLen)
 
 void cChoiceManager::CreateChoiceBox(int x, int y, int width, int height, int ID, int numChoices, int itemHeight, int MaxStrLen, int fontsize)
 {
-	// Load TransferGirls screen
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "ChoiceBox.xml";
-	TiXmlDocument docTransferGirls(dp.c_str());
+	TiXmlDocument docChoiceBox(dp.c_str());
 	int a, b, c, d, e, f;
-	if (docTransferGirls.LoadFile())
+	if (docChoiceBox.LoadFile())
 	{
 //<Window  Name = "ChoiceBox" XPos = "224" YPos = "127" Width = "352" Height = "160" RowHeight = "32" FontSize = "16" / >
 
 		string m_filename = dp.c_str();
-		TiXmlElement *el, *root_el = docTransferGirls.RootElement();
+		TiXmlElement *el, *root_el = docChoiceBox.RootElement();
 		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
 		{
 			XmlUtil xu(m_filename);

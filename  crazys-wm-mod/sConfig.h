@@ -171,15 +171,15 @@ struct sConfigData
 	} prostitution;
 
 	struct CatacombsData {
-		double		unique_catacombs;
+		int			unique_catacombs;
 		bool		control_girls;
 		bool		control_gangs;
-		double		girl_gets_girls;
-		double		girl_gets_items;
-		double		girl_gets_beast;
-		double		gang_gets_girls;
-		double		gang_gets_items;
-		double		gang_gets_beast;
+		int			girl_gets_girls;
+		int			girl_gets_items;
+		int			girl_gets_beast;
+		int			gang_gets_girls;
+		int			gang_gets_items;
+		int			gang_gets_beast;
 	} catacombs;
 
 	struct SlaveMarketData {
@@ -295,15 +295,15 @@ public:
 	} prostitution;
 
 	struct CatacombsData {
-		double		unique_catacombs()		{ return data->catacombs.unique_catacombs; }
-		bool		control_girls()			{ return data->catacombs.control_girls; }
-		bool		control_gangs()			{ return data->catacombs.control_gangs; }
-		double		girl_gets_girls()		{ return data->catacombs.girl_gets_girls; }
-		double		girl_gets_items()		{ return data->catacombs.girl_gets_items; }
-		double		girl_gets_beast()		{ return data->catacombs.girl_gets_beast; }
-		double		gang_gets_girls()		{ return data->catacombs.gang_gets_girls; }
-		double		gang_gets_items()		{ return data->catacombs.gang_gets_items; }
-		double		gang_gets_beast()		{ return data->catacombs.gang_gets_beast; }
+		int&		unique_catacombs()		{ return data->catacombs.unique_catacombs; }
+		bool&		control_girls()			{ return data->catacombs.control_girls; }
+		bool&		control_gangs()			{ return data->catacombs.control_gangs; }
+		int&		girl_gets_girls()		{ return data->catacombs.girl_gets_girls; }
+		int&		girl_gets_items()		{ return data->catacombs.girl_gets_items; }
+		int&		girl_gets_beast()		{ return data->catacombs.girl_gets_beast; }
+		int&		gang_gets_girls()		{ return data->catacombs.gang_gets_girls; }
+		int&		gang_gets_items()		{ return data->catacombs.gang_gets_items; }
+		int&		gang_gets_beast()		{ return data->catacombs.gang_gets_beast; }
 	} catacombs;
 
 	struct SlaveMarketData {

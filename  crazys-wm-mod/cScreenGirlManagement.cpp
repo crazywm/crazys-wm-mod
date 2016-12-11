@@ -83,6 +83,7 @@ void cScreenGirlManagement::set_ids()
 	ids_set = true;
 	back_id = get_id("BackButton");
 	curbrothel_id = get_id("CurrentBrothel");
+	gold_id = get_id("Gold");
 	girllist_id = get_id("GirlList");
 	girlimage_id = get_id("GirlImage");
 	girldesc_id = get_id("GirlDescription");
@@ -124,9 +125,13 @@ void cScreenGirlManagement::init()
 	Focused();
 	selection = GetSelectedItemFromList(girllist_id);
 
-	stringstream buildingname;
-	buildingname << "Current Brothel: " << g_Brothels.GetName(g_CurrBrothel);
-	EditTextItem(buildingname.str(), curbrothel_id);
+	EditTextItem(g_Brothels.GetName(g_CurrBrothel), curbrothel_id);
+
+	if (gold_id >= 0)
+	{
+		ss.str(""); ss << "Gold: " << g_Gold.ival();
+		EditTextItem(ss.str(), gold_id);
+	}
 
 	// clear the lists
 	ClearListBox(girllist_id);

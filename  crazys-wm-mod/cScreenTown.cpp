@@ -88,6 +88,7 @@ void cScreenTown::set_ids()
 {
 	ids_set = true;
 	back_id = get_id("BackButton");
+	gold_id = get_id("Gold");
 	walk_id = get_id("WalkButton");
 	curbrothel_id = get_id("CurrentBrothel");
 	slavemarket_id = get_id("SlaveMarket");
@@ -146,6 +147,13 @@ static static_brothel_data clinic_data[] = {
 void cScreenTown::init()
 {
 	g_CurrentScreen = SCREEN_TOWN;
+
+	if (gold_id >= 0)
+	{
+		stringstream ss; ss << "Gold: " << g_Gold.ival();
+		EditTextItem(ss.str(), gold_id);
+	}
+
 	if (BuyClinic != -1)
 	{
 		(g_ChoiceManager.GetChoice(0) == 0 ? GetClinic = true : BuyClinic = -1);

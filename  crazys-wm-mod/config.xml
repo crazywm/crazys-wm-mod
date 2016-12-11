@@ -201,16 +201,16 @@
 	MultiBirthChance is the chance of multiple births.
 	-->
     <Pregnancy
-        PlayerChance="80%"
-        CustomerChance="50%"
-        MonsterChance="50%"
+        PlayerChance="8%"
+        CustomerChance="8%"
+        MonsterChance="8%"
         GoodSexFactor="2.0"
         ChanceOfGirl="50%"
-        WeeksPregnant="10"
-        WeeksMonsterP="5"
+        WeeksPregnant="38"
+        WeeksMonsterP="20"
         MiscarriageChance="0.1%"
         MiscarriageMonster="1.0%"
-        WeeksTillGrown="10"
+        WeeksTillGrown="60"
         CoolDown="4"
         AntiPregFailure="0.0"
         MultiBirthChance="2.0" />

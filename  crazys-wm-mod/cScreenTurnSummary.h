@@ -27,6 +27,7 @@ class cScreenTurnSummary : public cInterfaceWindowXML
 private:
 	static bool ids_set;	// --- interface/event IDs --- //
 	int brothel_id;
+	int gold_id;			// Player Gold
 	int category_id;
 	int labelitem_id;
 	int item_id;
