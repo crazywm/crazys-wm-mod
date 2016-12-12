@@ -1087,7 +1087,7 @@ bool cMovieStudioManager::LoadDataXML(TiXmlHandle hBrothelManager)
 
 bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 {
-	//no need to init this, we just created it
+	// no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
 	if (pBrothel == 0)
 	{
@@ -1325,17 +1325,17 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	string girlName = girl->m_Realname;
 
 	if (newScene == 0) return 0;
-	//NOTE i crazy added this to try and improve the movies before it only check for normalsex skill now it should check for each skill type i hope
+	// NOTE i crazy added this to try and improve the movies before it only check for normalsex skill now it should check for each skill type i hope
 	// Fixed so it will check for skill type being used --PP
 	long quality = 0;
 	quality += Bonus;
 	quality += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 
 
-	//Balance is...
-	//Evil jobs should pay better and show higher 'quality' - but damage health, happiness, love and can possibly cause injury/disease
-	//Nice jobs should pay less, but be safe and boost fame, skills, happiness and health.
-	//Normal jobs should be normal.
+	// Balance is...
+	// Evil jobs should pay better and show higher 'quality' - but damage health, happiness, love and can possibly cause injury/disease
+	// nice jobs should pay less, but be safe and boost fame, skills, happiness and health.
+	// normal jobs should be normal.
 	//
 	enum { NICE, NORMAL, EVIL };
 	int jobType = NORMAL;

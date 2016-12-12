@@ -623,6 +623,10 @@
       <Filter>Jobs</Filter>
     </ClCompile>
     <ClCompile Include="WorkPersonalTraining.cpp" />
+    <ClCompile Include="WorkSOBisexual.cpp" />
+    <ClCompile Include="WorkSOLesbian.cpp" />
+    <ClCompile Include="WorkSOStraight.cpp" />
+    <ClCompile Include="WorkFakeOrgasm.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

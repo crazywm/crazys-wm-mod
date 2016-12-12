@@ -159,7 +159,7 @@ void cTriggerList::LoadTriggersLegacy(ifstream& ifs)
 
 bool cTrigger::LoadTriggerXML(TiXmlHandle hTrigger)
 {
-	//no need to init this, we just created it
+	// no need to init this, we just created it
 	TiXmlElement* pTrigger = hTrigger.ToElement();
 	if (pTrigger == 0) return false;
 

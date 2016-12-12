@@ -383,7 +383,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 						}
 					}
 				}
-				else//normal
+				else// normal
 				{
 					if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 70)
 					{
@@ -533,7 +533,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			ss << "Noticing the bulge under her skirt one of the customers asked for a very special service: He wanted some \"cream\" in his drink. " << girlName << " took her already hard cock out and sprinkled the drink with some of her jizz. The customer thanked her and slipped a good tip under her panties.\n";
 			g_Girls.UpdateSkill(girl, SKILL_SERVICE, 2);
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
-			tips += 30 + (int)(g_Girls.GetSkill(girl, SKILL_SERVICE) *0.2); //Not sure if this will work fine
+			tips += 30 + (int)(g_Girls.GetSkill(girl, SKILL_SERVICE) *0.2); // not sure if this will work fine
 			imagetype = IMGTYPE_MAST;
 		}
 		else
@@ -887,7 +887,7 @@ double cJobManager::JP_SleazyWaitress(sGirl* girl, bool estimate)// not used
 		//add level
 		girl->level();
 
-	//next up tiredness penalty
+	// next up tiredness penalty
 #else
 	double jobperformance = ((g_Girls.GetStat(girl, STAT_CHARISMA) +
 		g_Girls.GetStat(girl, STAT_BEAUTY) +
@@ -920,7 +920,7 @@ double cJobManager::JP_SleazyWaitress(sGirl* girl, bool estimate)// not used
 
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job	
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; // needs others to do the job	
 	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 20; //spills food and breaks things often	
 	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20;  //gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 20; //don't like to be around people

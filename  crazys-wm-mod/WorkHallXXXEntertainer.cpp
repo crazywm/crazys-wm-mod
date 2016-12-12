@@ -101,7 +101,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 		}
 		else if (girl->age() > 30 && g_Dice.percent(min(90, max((girl->age() - 30) * 3, 1))) && g_Girls.GetStat(girl, STAT_BEAUTY) < 30)
 		{	//"Too old!" - chance of heckle: age<30y= 0%, then 4%/year (32y - 6%, 40y - 30%...) max 90%... (but only a 20% chance this bit even runs)
-			//Note: demons are exempt as they age differently
+			// note: demons are exempt as they age differently
 			ss << "Some customers heckle " << girlName << " over her age.";
 			ss << "\n\"Gross!\" \"Grandma is that you!?\"\n";
 			ss << "This makes it harder for her to work this shift. ";
@@ -707,7 +707,7 @@ double cJobManager::JP_HallXXXEntertainer(sGirl* girl, bool estimate)// not used
 		//add level
 		girl->level();
 
-	//next up tiredness penalty...
+	// next up tiredness penalty...
 #else	
 	double jobperformance =
 		((g_Girls.GetStat(girl, STAT_CHARISMA) +
@@ -746,7 +746,7 @@ double cJobManager::JP_HallXXXEntertainer(sGirl* girl, bool estimate)// not used
 	
 	
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job	
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; // needs others to do the job	
 	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 10; //spills food and breaks things often	
 	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people

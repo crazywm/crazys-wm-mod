@@ -211,7 +211,7 @@ public:
 	//void handle_childs();
 	//void save_data(ofstream);
 	//void write_data(ofstream);
-	//sChild* GenerateBornChild();//need to figure out what the player/customer base class is and if needed create one
+	//sChild* GenerateBornChild();// need to figure out what the player/customer base class is and if needed create one
 	//sChild* GenerateUnbornChild();
 
 };
@@ -653,6 +653,7 @@ struct sGirl
 	bool is_isdaughter()	{ return (m_States & (1 << STATUS_ISDAUGHTER)) != 0; }
 	bool is_warrior()		{ return !is_arena(); }
 	bool is_resting();
+	bool was_resting();
 
 	void fight_own_gang(bool &girl_wins);
 	void win_vs_own_gang(vector<sGang*> &v, int max_goons, bool &girl_wins);

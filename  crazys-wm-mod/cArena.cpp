@@ -840,7 +840,7 @@ bool cArenaManager::LoadDataXML(TiXmlHandle hBrothelManager)
 
 bool sArena::LoadArenaXML(TiXmlHandle hBrothel)
 {
-	//no need to init this, we just created it
+	// no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
 	if (pBrothel == 0)
 	{

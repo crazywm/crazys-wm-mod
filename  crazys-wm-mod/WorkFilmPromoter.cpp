@@ -241,7 +241,7 @@ double cJobManager::JP_FilmPromoter(sGirl* girl, bool estimate)// not used
 	if (girl->has_trait("Broken Will"))			jobperformance -= 50;
 	if (girl->has_trait("Clumsy"))				jobperformance -= 5;
 	if (girl->has_trait("Deaf"))				jobperformance -= 10;
-	if (girl->has_trait("Dependant"))			jobperformance -= 50; //needs others to do the job
+	if (girl->has_trait("Dependant"))			jobperformance -= 50; // needs others to do the job
 	if (girl->has_trait("Emprisoned Customer"))	jobperformance -= 30;	// she may be warning the other customers
 	if (girl->has_trait("Fairy Dust Addict"))	jobperformance -= 15;
 	if (girl->has_trait("Horrific Scars"))		jobperformance -= 10;	// 

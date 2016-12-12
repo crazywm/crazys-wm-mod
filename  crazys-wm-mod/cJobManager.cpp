@@ -802,11 +802,6 @@ void cJobManager::Setup()
 	JobDesc[JOB_RECRUITER] = "She will go out and try and recruit girls for you.";
 	JobFunc[JOB_RECRUITER] = &WorkRecruiter;
 	JobPerf[JOB_RECRUITER] = &JP_Recruiter;
-	JobName[JOB_PERSONALTRAINING] = gettext("Personal Training");
-	JobQkNm[JOB_PERSONALTRAINING] = "PTrn";
-	JobDesc[JOB_PERSONALTRAINING] = gettext("You will over see her training personal.");
-	JobFunc[JOB_PERSONALTRAINING] = &WorkPersonalTraining;
-	JobPerf[JOB_PERSONALTRAINING] = &JP_PersonalTraining;
 	JobName[JOB_PERSONALBEDWARMER] = gettext("Bed Warmer");
 	JobQkNm[JOB_PERSONALBEDWARMER] = "BdWm";
 	JobDesc[JOB_PERSONALBEDWARMER] = gettext("She will stay in your bed at night with you.");
@@ -817,10 +812,6 @@ void cJobManager::Setup()
 	JobDesc[JOB_HOUSECOOK] = gettext("She will cook for your house.");
 	JobFunc[JOB_HOUSECOOK] = &WorkHouseCook;
 	JobPerf[JOB_HOUSECOOK] = &JP_HouseCook;
-	JobName[JOB_HOUSEPET] = gettext("House Pet");
-	JobQkNm[JOB_HOUSEPET] = "Hpet";
-	JobDesc[JOB_HOUSEPET] = gettext("She will be trained to become the house pet.");
-	JobFunc[JOB_HOUSEPET] = &WorkHousePet;
 	//JobPerf[JOB_HOUSEPET] = &JP_HousePet;
 	//JobName[JOB_PONYGIRL] = gettext("Pony Girl");
 	//JobQkNm[JOB_PONYGIRL] = "PGil";
@@ -831,6 +822,45 @@ void cJobManager::Setup()
 	JobDesc[JOB_CLEANHOUSE] = gettext("She will clean your house.");
 	JobFunc[JOB_CLEANHOUSE] = &WorkCleanHouse;
 	JobPerf[JOB_CLEANHOUSE] = &JP_CleanHouse;
+	
+	JobFilterName[JOBFILTER_HOUSETTRAINING] = gettext("Sex Training");
+	JobFilterDesc[JOBFILTER_HOUSETTRAINING] = gettext("You will take a personal intrerst in training the girl in sexual matters.");
+	JobFilterIndex[JOBFILTER_HOUSETTRAINING] = JOB_PERSONALTRAINING;
+	JobName[JOB_PERSONALTRAINING] = gettext("Personal Training");
+	JobQkNm[JOB_PERSONALTRAINING] = "PTrn";
+	JobDesc[JOB_PERSONALTRAINING] = gettext("You will oversee her training personal.");
+	JobFunc[JOB_PERSONALTRAINING] = &WorkPersonalTraining;
+	JobPerf[JOB_PERSONALTRAINING] = &JP_PersonalTraining;
+	JobName[JOB_HOUSEPET] = gettext("House Pet");
+	JobQkNm[JOB_HOUSEPET] = "Hpet";
+	JobDesc[JOB_HOUSEPET] = gettext("She will be trained to become the house pet.");
+	JobFunc[JOB_HOUSEPET] = &WorkHousePet;
+	JobName[JOB_SO_STRAIGHT] = gettext("SO Straight");
+	JobQkNm[JOB_SO_STRAIGHT] = "SOSt";
+	JobDesc[JOB_SO_STRAIGHT] = gettext("You will make sure she only likes having sex with men.");
+	JobFunc[JOB_SO_STRAIGHT] = &WorkSOStraight;
+	JobPerf[JOB_SO_STRAIGHT] = &JP_SOStraight;
+	JobName[JOB_SO_BISEXUAL] = gettext("SO Bisexual");
+	JobQkNm[JOB_SO_BISEXUAL] = "SOBi";
+	JobDesc[JOB_SO_BISEXUAL] = gettext("You will make sure she likes having sex with both men and women.");
+	JobFunc[JOB_SO_BISEXUAL] = &WorkSOBisexual;
+	JobPerf[JOB_SO_BISEXUAL] = &JP_SOBisexual;
+	JobName[JOB_SO_LESBIAN] = gettext("SO Lesbian");
+	JobQkNm[JOB_SO_LESBIAN] = "SOLe";
+	JobDesc[JOB_SO_LESBIAN] = gettext("You will make sure she only likes having sex with women.");
+	JobFunc[JOB_SO_LESBIAN] = &WorkSOLesbian;
+	JobPerf[JOB_SO_LESBIAN] = &JP_SOLesbian;
+	JobName[JOB_FAKEORGASM] = gettext("Fake Orgasm Expert");
+	JobQkNm[JOB_FAKEORGASM] = "FOEx";
+	JobDesc[JOB_FAKEORGASM] = gettext("You will teach her how to fake her orgasms.");
+	JobFunc[JOB_FAKEORGASM] = &WorkFakeOrgasm;
+	JobPerf[JOB_FAKEORGASM] = &JP_FakeOrgasm;
+
+
+
+
+
+
 
 
 	JobFilterName[JOBFILTER_NONE] = gettext("Non-Job");
@@ -1398,9 +1428,12 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	*/
 	if (Girl->m_WorkingDay > 0)	// `J` Save it and reset it to 0 so it is only backed up once...
 	{
-		if ((Girl->m_YesterDayJob == JOB_GETABORT&& Girl->m_WorkingDay < 2) ||
-			(g_Clinic.is_Surgery_Job(Girl->m_YesterDayJob) && Girl->m_YesterDayJob != JOB_GETABORT && Girl->m_WorkingDay < 5) ||
-			(Girl->m_YesterDayJob == JOB_REHAB && Girl->m_WorkingDay < 3))
+		if ((Girl->m_WorkingDay < 2 && (Girl->m_YesterDayJob == JOB_GETABORT )) ||
+			(Girl->m_WorkingDay < 3 && (Girl->m_YesterDayJob == JOB_REHAB)) ||
+			(Girl->m_WorkingDay < 5 && Girl->m_YesterDayJob != JOB_GETABORT && g_Clinic.is_Surgery_Job(Girl->m_YesterDayJob)) ||
+			// `J` training jobs use m_WorkingDay as a percent learned
+			(Girl->m_WorkingDay < 100 && (Girl->m_YesterDayJob == JOB_FAKEORGASM || Girl->m_YesterDayJob == JOB_SO_STRAIGHT || Girl->m_YesterDayJob == JOB_SO_BISEXUAL || Girl->m_YesterDayJob == JOB_SO_LESBIAN))
+			)
 		{
 			Girl->m_PrevWorkingDay = Girl->m_WorkingDay;
 		}
@@ -1768,6 +1801,43 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		g_MessageQue.AddToQue("You must have one cameramage and one crystal purifier.", 0);
 		Girl->m_DayJob = Girl->m_NightJob = JOB_FILMFREETIME;
 	}
+	else if (u_int(JobID) == JOB_FAKEORGASM)
+	{
+		if (g_Girls.HasTrait(Girl, "Fake Orgasm Expert"))
+		{
+			g_MessageQue.AddToQue(gettext("She already has \"Fake Orgasm Expert\"."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
+		}
+		else Girl->m_DayJob = Girl->m_NightJob = JOB_FAKEORGASM;
+	}
+	else if (u_int(JobID) == JOB_SO_BISEXUAL)
+	{
+		if (g_Girls.HasTrait(Girl, "Bisexual"))
+		{
+			g_MessageQue.AddToQue(gettext("She is already Bisexual."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
+		}
+		else Girl->m_DayJob = Girl->m_NightJob = JOB_SO_BISEXUAL;
+	}
+	else if (u_int(JobID) == JOB_SO_LESBIAN)
+	{
+		if (g_Girls.HasTrait(Girl, "Lesbian"))
+		{
+			g_MessageQue.AddToQue(gettext("She is already a Lesbian."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
+		}
+		else Girl->m_DayJob = Girl->m_NightJob = JOB_SO_LESBIAN;
+	}
+	else if (u_int(JobID) == JOB_SO_STRAIGHT)
+	{
+		if (g_Girls.HasTrait(Girl, "Straight"))
+		{
+			g_MessageQue.AddToQue(gettext("She is already Straight."), 0);
+			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
+		}
+		else Girl->m_DayJob = Girl->m_NightJob = JOB_SO_STRAIGHT;
+	}
+
 // Special Studio cases were checked and don't apply, just set the studio job as requested
 	else if (Girl->m_InStudio)
 	{

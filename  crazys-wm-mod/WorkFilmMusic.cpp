@@ -235,7 +235,7 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	else if (jobperformance >= 200 && g_Dice.percent(30)) g_Girls.PossiblyGainNewTrait(girl, "Singer", 80, ACTION_WORKMOVIE, "Her singing has become quite excellent.", Day0Night1);
 
-	//Nice job bonus-------------------------------------------------------
+	// nice job bonus-------------------------------------------------------
 	//BONUS - Nice jobs show off her assets and make her happy, increasing fame and love.
 
 	int MrNiceGuy = g_Dice % 6, MrFair = g_Dice % 6;
@@ -270,7 +270,7 @@ double cJobManager::JP_FilmMusic(sGirl* girl, bool estimate)
 	//good traits
 	if (g_Girls.HasTrait(girl, "Singer"))			jobperformance += 50;	//can Sing
 	if (g_Girls.HasTrait(girl, "Angel"))			jobperformance += 40;	//like a choir of angels
-	if (g_Girls.HasTrait(girl, "Sexy Air"))			jobperformance += 25;	//nice video
+	if (g_Girls.HasTrait(girl, "Sexy Air"))			jobperformance += 25;	// nice video
 	if (g_Girls.HasTrait(girl, "Agile"))			jobperformance += 20;	//
 	if (g_Girls.HasTrait(girl, "Cool Person"))		jobperformance += 20;	//
 	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 20;	//

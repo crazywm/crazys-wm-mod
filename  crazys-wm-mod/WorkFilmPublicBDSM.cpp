@@ -97,7 +97,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		ss << girlName << gettext(" refused to have any part in this");
 		if (girl->is_slave())
 		{
-			if (The_Player->disposition() > 30)  //Nice
+			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << gettext(" \"monstrous\" scene. She was clearly horrified at the thought so you allowed her the day off.");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
@@ -128,7 +128,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 				enjoy -= 6;
 			}
 		}
-		else //not a slave
+		else // not a slave
 		{
 			ss << " \"monstrous\" scene today and left.";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);

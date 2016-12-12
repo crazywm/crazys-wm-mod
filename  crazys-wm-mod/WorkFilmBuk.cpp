@@ -82,7 +82,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		ss << girlName << gettext(" refused to have any part in this");
 		if (girl->is_slave())
 		{
-			if (The_Player->disposition() > 30)  //Nice
+			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << gettext(" \"filthy\" bukkake scene.\nShe was clearly upset so you allowed her the day off.");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
@@ -111,7 +111,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				tied = true;
 			}
 		}
-		else //not a slave
+		else // not a slave
 		{
 			ss << " \"disgusting\" bukkake scene and left the set.";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -189,7 +189,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	//For final calc
 	bonus = bonus + enjoy;
 
-	//Now we've got that done, most girls shouldn't like this...
+	// now we've got that done, most girls shouldn't like this...
 	enjoy -= 10;
 
 	// remaining modifiers are in the AddScene function --PP

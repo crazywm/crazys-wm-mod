@@ -294,7 +294,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 
 
 
-		else if (Disp > -50)			//Not nice
+		else if (Disp > -50)			// not nice
 		{
 			ss << "She is a virgin, but not for long.\n";
 			if (roll_b <= 70)		{ ss << "Wanting her for yourself, "; roll_b = 60; } // normal
@@ -372,7 +372,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		}
 		else if (roll_b > 75) roll_b -= 8;
 	}
-	else if (Disp >= 50)			//Nice
+	else if (Disp >= 50)			// nice
 	{
 		if (g_Girls.CheckVirginity(girl))		// 50 % decline
 		{
@@ -393,7 +393,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		}
 		else if (roll_b > 95) roll_b *= 0.98;
 	}
-	else if (Disp >= -10)			//Neutral
+	else if (Disp >= -10)			// neutral
 	{
 		if (g_Girls.CheckVirginity(girl))		// 80% decline
 		{
@@ -404,7 +404,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 			else					{ ss << "She refuses so instead ";	roll_b = 95; } // BDSM
 		}
 	}
-	else if (Disp > -50)			//Not nice
+	else if (Disp > -50)			// not nice
 	{
 		if (g_Girls.CheckVirginity(girl))
 		{

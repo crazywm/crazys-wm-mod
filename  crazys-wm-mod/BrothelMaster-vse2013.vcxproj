@@ -114,7 +114,6 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-
   <ItemGroup>
     <ClCompile Include="cButton.cpp" />
     <ClCompile Include="cCheckBox.cpp" />
@@ -174,6 +173,7 @@
     <ClCompile Include="WorkCobbler.cpp" />
     <ClCompile Include="WorkCounselor.cpp" />
     <ClCompile Include="WorkEscort.cpp" />
+    <ClCompile Include="WorkFakeOrgasm.cpp" />
     <ClCompile Include="WorkFarmer.cpp" />
     <ClCompile Include="WorkFarmHand.cpp" />
     <ClCompile Include="WorkFarmManager.cpp" />
@@ -208,6 +208,9 @@
     <ClCompile Include="WorkPersonalTraining.cpp" />
     <ClCompile Include="WorkRancher.cpp" />
     <ClCompile Include="WorkShepherd.cpp" />
+    <ClCompile Include="WorkSOBisexual.cpp" />
+    <ClCompile Include="WorkSOLesbian.cpp" />
+    <ClCompile Include="WorkSOStraight.cpp" />
     <ClCompile Include="WorkTailor.cpp" />
     <ClCompile Include="XmlMisc.cpp" />
     <ClCompile Include="XmlUtil.cpp" />

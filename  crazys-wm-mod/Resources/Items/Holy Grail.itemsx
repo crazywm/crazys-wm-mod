@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Holy Grail" Desc="It wasn't a myth after all. You can feel sheer power flowing through this ancient ancient artifact, and you haven't even picked it up yet. This is the legendary Holy Grail that so many have sacrificed their lives pursuing. And now it's yours. (Heals all wounds instantly. Improves all skills. Grants Divine-level status.)"
+        Type="Misc" Badness="0" Special="None" Cost="75000" Rarity="Catacomb05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Happiness" Amount="100" />
+        <Effect What="Stat" Name="Tiredness" Amount="-100" />
+        <Effect What="Stat" Name="Health" Amount="100" />
+        <Effect What="Skill" Name="Anal" Amount="30" />
+        <Effect What="Skill" Name="AnimalHandling" Amount="30" />
+        <Effect What="Skill" Name="BDSM" Amount="30" />
+        <Effect What="Skill" Name="Beastiality" Amount="30" />
+        <Effect What="Skill" Name="Brewing" Amount="30" />
+        <Effect What="Skill" Name="Cooking" Amount="30" />
+        <Effect What="Skill" Name="Combat" Amount="30" />
+        <Effect What="Skill" Name="Crafting" Amount="30" />
+        <Effect What="Skill" Name="Farming" Amount="30" />
+        <Effect What="Skill" Name="Group" Amount="30" />
+        <Effect What="Skill" Name="Handjob" Amount="30" />
+        <Effect What="Skill" Name="Footjob" Amount="30" />
+        <Effect What="Skill" Name="Herbalism" Amount="30" />
+        <Effect What="Skill" Name="Lesbian" Amount="30" />
+        <Effect What="Skill" Name="Magic" Amount="30" />
+        <Effect What="Skill" Name="Medicine" Amount="30" />
+        <Effect What="Skill" Name="NormalSex" Amount="30" />
+        <Effect What="Skill" Name="OralSex" Amount="30" />
+        <Effect What="Skill" Name="Performance" Amount="30" />
+        <Effect What="Skill" Name="Service" Amount="30" />
+        <Effect What="Skill" Name="Strip" Amount="30" />
+        <Effect What="Skill" Name="TittySex" Amount="30" />
+        <Effect What="Stat" Name="Agility" Amount="30" />
+        <Effect What="Stat" Name="Beauty" Amount="30" />
+        <Effect What="Stat" Name="Charisma" Amount="30" />
+        <Effect What="Stat" Name="Confidence" Amount="30" />
+        <Effect What="Stat" Name="Constitution" Amount="30" />
+        <Effect What="Stat" Name="Strength" Amount="30" />
+        <Effect What="Stat" Name="Dignity" Amount="30" />
+        <Effect What="Stat" Name="Fame" Amount="30" />
+        <Effect What="Stat" Name="Intelligence" Amount="30" />
+        <Effect What="Stat" Name="Lactation" Amount="30" />
+        <Effect What="Stat" Name="Libido" Amount="30" />
+        <Effect What="Stat" Name="Mana" Amount="100" />
+        <Effect What="Stat" Name="Morality" Amount="30" />
+        <Effect What="Stat" Name="Obedience" Amount="0" />
+        <Effect What="Stat" Name="PCFear" Amount="0" />
+        <Effect What="Stat" Name="PCHate" Amount="0" />
+        <Effect What="Stat" Name="PCLove" Amount="0" />
+        <Effect What="Stat" Name="Refinement" Amount="30" />
+        <Effect What="Stat" Name="Spirit" Amount="30" />
+        <Effect What="Stat" Name="Age" Amount="-10" />
+        <Effect What="Trait" Name="Incorporeal" Amount="1" />
+        <Effect What="Trait" Name="Queen" Amount="1" />
+        <Effect What="Trait" Name="Goddess" Amount="1" />
+    </Item>
+</Items>

@@ -511,7 +511,7 @@ double cJobManager::JP_Nurse(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
 	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;	//would need smoke breaks
 
-	if (g_Girls.HasTrait(girl, "Former Addict"))		jobperformance -= 25; //not good idea to let former addict around all those drugs
+	if (g_Girls.HasTrait(girl, "Former Addict"))		jobperformance -= 25; // not good idea to let former addict around all those drugs
 	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
 	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
 	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;

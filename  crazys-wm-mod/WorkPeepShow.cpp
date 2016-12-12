@@ -165,7 +165,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			ss << "\nShe was horny and she loves sex so she brought in one of the customers and had sex with him while the others watched.\n";
 			sextype = SKILL_NORMALSEX;
 		}
-		//New stuff
+		// new stuff
 		else if (g_Girls.HasTrait(girl, "Futanari"))
 		{
 			//Addiction bypasses confidence check
@@ -431,7 +431,7 @@ double cJobManager::JP_PeepShow(sGirl* girl, bool estimate)// not used
 		//add level
 		girl->level();
 
-	//next up tiredness penalty
+	// next up tiredness penalty
 #else
 	double jobperformance =
 		(g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
@@ -462,7 +462,7 @@ double cJobManager::JP_PeepShow(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Exhibitionist"))			jobperformance += 10; //likes showing off her body
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))                jobperformance -= 50;  //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Dependant"))                jobperformance -= 50;  // needs others to do the job
 	if (g_Girls.HasTrait(girl, "Clumsy"))                   jobperformance -= 20;  //spills food and breaks things often
 	if (g_Girls.HasTrait(girl, "Aggressive"))               jobperformance -= 20;  //gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Nervous"))                  jobperformance -= 30;  //don't like to be around people

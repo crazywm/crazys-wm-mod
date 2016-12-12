@@ -635,7 +635,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	if ((g_Girls.HasTrait(girl, "Deep Throat") || g_Girls.HasTrait(girl, "No Gag Reflex")) && g_Dice.percent(5))
 	{
-		ss << "Some customers were having a speed drinking contest and challenged " << girlName << " to take part./n";
+		ss << "Some customers were having a speed drinking contest and challenged " << girlName << " to take part.\n";
 		if (girl->is_pregnant()) ss << "She refused for the sake of her unborn child.";
 		else
 		{
@@ -903,7 +903,7 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 		//add level
 		girl->level();
 
-	//next up tiredness penalty
+	// next up tiredness penalty
 #else
 	double jobperformance =
 		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
@@ -935,7 +935,7 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 	
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50;  //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50;  // needs others to do the job
 	if (g_Girls.HasTrait(girl, "Clumsy")) 				jobperformance -= 20;  //spills food and breaks things often
 	if (g_Girls.HasTrait(girl, "Aggressive"))			jobperformance -= 20;  //gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Nervous"))				jobperformance -= 30;  //don't like to be around people

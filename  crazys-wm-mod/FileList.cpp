@@ -135,7 +135,7 @@ string ReadTextFile(DirPath path, string file)
 FileList::FileList(DirPath dp, const char *pattern)
 {
 	//files = 0;
-	//n_files = 0;
+	// n_files = 0;
 
 	folder = dp;
 	scan(pattern);

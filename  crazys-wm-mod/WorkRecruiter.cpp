@@ -316,7 +316,7 @@ double cJobManager::JP_Recruiter(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Natural Pheromones"))jobperformance += 10;
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; // needs others to do the job
 	if (g_Girls.HasTrait(girl, "Broken Will"))	jobperformance -= 50;
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people
 	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people

@@ -110,7 +110,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		ss << girlName << gettext(" was horrified and refused to be beaten and sexually tortured in this ");
 		if (girl->is_slave())
 		{
-			if (The_Player->disposition() > 30)  //Nice
+			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << gettext("\"monstrous\" place.\nShe was starting to panic, so you allowed her the day off.\n");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
@@ -148,7 +148,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 				enjoy -= 6;
 			}
 		}
-		else //not a slave
+		else // not a slave
 		{
 			ss << " \"monstrous\" place.\n";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);

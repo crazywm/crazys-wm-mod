@@ -224,7 +224,7 @@ void cEvents::AddMessage(string message, int type, int eve)
 	newEvent.m_MessageType	= type;
 	newEvent.m_Event		= eve;
 	newEvent.m_Message		= message;
-	//newEvent.m_Ordinal		= MakeOrdinal(eve);
+	// newEvent.m_Ordinal		= MakeOrdinal(eve);
 	events.push_back(newEvent);
 }
 

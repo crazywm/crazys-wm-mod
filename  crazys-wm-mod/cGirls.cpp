@@ -377,7 +377,7 @@ sRandomGirl::sRandomGirl()
 		m_MinSkills[i] = 0;				// Changed from 30 to 0, made no sense for all skills to be a default of 30.
 		m_MaxSkills[i] = 30;
 	}
-	//now for a few overrides
+	// now for a few overrides
 	m_MinMoney = 0;
 	m_MaxMoney = 10;
 }
@@ -2656,7 +2656,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		//ss << g_Girls.AccommodationDetails(girl, girl->m_AccLevel);
 
 		// added from Dagoth
-		if (girl->is_resting() && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
+		if (girl->is_resting() && !girl->was_resting() && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
 		{
 			ss << "\n\nOFF WORK, RESTING DUE TO TIREDNESS.";
 			ss << "\nStored Day Job:   " << g_Brothels.m_JobManager.JobName[girl->m_PrevDayJob];
@@ -3007,6 +3007,12 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	House_Data += girl->JobRating(m_JobManager.JP_HeadGirl(girl, true), "-", "Head Girl");
 	House_Data += girl->JobRating(m_JobManager.JP_Recruiter(girl, true), "-", "Recruiter");
 	House_Data += girl->JobRating(m_JobManager.JP_PersonalTraining(girl, true), "!", "PersonalTraining");
+	House_Data += girl->JobRating(m_JobManager.JP_FakeOrgasm(girl, true), "!", "Fake Orgasm");
+	House_Data += girl->JobRating(m_JobManager.JP_SOStraight(girl, true), "!", "SO Straight");
+	House_Data += girl->JobRating(m_JobManager.JP_SOBisexual(girl, true), "!", "SO Bisexual");
+	House_Data += girl->JobRating(m_JobManager.JP_SOLesbian(girl, true), "!", "SO Lesbian");
+
+
 	// House_Data += girl->JobRating(m_JobManager.JP_PersonalBedWarmer(girl, true), "* PersonalBedWarmer");
 	House_Data += div;
 
@@ -8753,7 +8759,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (SexType == SKILL_BDSM && g_Dice.percent(40))
 		{
-			//Now, what kind of person are you?
+			// now, what kind of person are you?
 			if (The_Player->disposition() < -40)	//You're related to satan, right?
 			{
 				introtext += "deep underground to your infamous dungeons.\n";
@@ -8851,7 +8857,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				break;
 			}
 		}
-		else	//Nice room = nicer for customer too, right? (Good customer likes Good)
+		else	// nice room = nicer for customer too, right? (Good customer likes Good)
 		{
 			
 			introtext += "back to her ";
@@ -8909,11 +8915,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	//SIN- Adding will for willfull chars - they can refuse jobs they are bad at.
 	//First, a var to store her willfullness. Max (full spirit, no obed) = 50% refusal; Min (all obedience, no spirit) = 0%
 	int willfullness = ((100 + (GetStat(girl, STAT_SPIRIT) - GetStat(girl, STAT_OBEDIENCE))) / 2);
-	//Next a couple of reasons why refuse
+	// next a couple of reasons why refuse
 	bool pigHeaded = HasTrait(girl, "Iron Will");
 	bool highStatus = (HasTrait(girl, "Princess") || HasTrait(girl, "Queen") || HasTrait(girl, "Noble"));
 	
-	//Now the implementation...
+	// now the implementation...
 	if ((check < 40) && !z && !HasTrait(girl, "Mute"))  //if she's bad at this sex-type (and not a zombie or mute!), pride kicks in
 	{
 		//if she's pigheaded, or thinks this is beneath her - she refuses
@@ -9207,7 +9213,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 							Day0Night1 ? sexMessage << "today,\" " : sexMessage << "tonight,\" ";
 							sexMessage << girlName << " says";
 							break;
-						default: //no way, if it doesn't match these types, it should not change.
+						default: // no way, if it doesn't match these types, it should not change.
 							sexMessage << "(E)";
 							break;
 						}
@@ -9252,7 +9258,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 						case SKILL_STRIP:
 							sexMessage << ". \"But if you promise to good from here, I'll give you a lapdance.\"";
 							break;
-						default: //no way, if it doesn't match these types, it should not change.
+						default: // no way, if it doesn't match these types, it should not change.
 							sexMessage << "(E)";
 							break;
 						}
@@ -9702,7 +9708,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 #if defined(SPICE)
 			//SIN
-			//NOT reusing "choice" here because want this to be independent of above message
+			// NOT reusing "choice" here because want this to be independent of above message
 			if (g_Dice.percent(20)) //customer goes wild - unlikely and only affects lower level girls (more skilled girls can take it)
 			{
 				sexMessage << "The customer suddenly turned sadist and started really hurting " << girlName << ". ";
@@ -9855,7 +9861,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 #if defined(SPICE)
 			//SIN
-			//NOT reusing "choice" here because want this to be independent of above message
+			// NOT reusing "choice" here because want this to be independent of above message
 			if (g_Dice.percent(20)) //customer goes wild - unlikely and only affects lower level girls (more skilled girls can take it)
 			{
 				sexMessage << "The customer suddenly turned sadist and started really hurting " << girlName << ". ";
@@ -16855,6 +16861,16 @@ bool sGirl::is_resting()
 		(m_DayJob == JOB_FARMREST		&& m_NightJob == JOB_FARMREST) ||
 		(m_DayJob == JOB_RESTING		&& m_NightJob == JOB_RESTING));
 }
+bool sGirl::was_resting()
+{
+	return ((m_PrevDayJob == JOB_FILMFREETIME	&& m_PrevNightJob == JOB_FILMFREETIME) ||
+		(m_PrevDayJob == JOB_ARENAREST		&& m_PrevNightJob == JOB_ARENAREST) ||
+		(m_PrevDayJob == JOB_CENTREREST		&& m_PrevNightJob == JOB_CENTREREST) ||
+		(m_PrevDayJob == JOB_CLINICREST		&& m_PrevNightJob == JOB_CLINICREST) ||
+		(m_PrevDayJob == JOB_HOUSEREST		&& m_PrevNightJob == JOB_HOUSEREST) ||
+		(m_PrevDayJob == JOB_FARMREST		&& m_PrevNightJob == JOB_FARMREST) ||
+		(m_PrevDayJob == JOB_RESTING		&& m_PrevNightJob == JOB_RESTING));
+}
 
 
 // Crazy found some old code to allow Canonical_Daughters
@@ -18020,6 +18036,10 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		{
 			ss << gettext("None");
 		}
+		else if (DN_Job == JOB_FAKEORGASM || DN_Job == JOB_SO_STRAIGHT || DN_Job == JOB_SO_BISEXUAL || DN_Job == JOB_SO_LESBIAN)
+		{
+			ss << g_House.m_JobManager.JobName[DN_Job] << " (" << m_WorkingDay << "%)";
+		}
 		else if (DN_Job == JOB_REHAB || DN_Job == JOB_ANGER || DN_Job == JOB_EXTHERAPY || DN_Job == JOB_THERAPY)
 		{
 			if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, DN_Day) > 0)
@@ -18096,7 +18116,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		{
 			ss << g_Brothels.m_JobManager.JobName[DN_Job] << " **";
 		}
-		else if (is_resting() && m_PrevDayJob != 255 && m_PrevNightJob != 255)
+		else if (is_resting() && !was_resting() && m_PrevDayJob != 255 && m_PrevNightJob != 255)
 		{
 			ss << g_Brothels.m_JobManager.JobName[DN_Job];
 			ss << " (" << g_Brothels.m_JobManager.JobQkNm[(DN_Day == 0 ? m_PrevDayJob : m_PrevNightJob)] << ")";

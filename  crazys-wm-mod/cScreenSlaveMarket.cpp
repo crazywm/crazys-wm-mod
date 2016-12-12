@@ -496,27 +496,27 @@ bool cScreenSlaveMarket::buy_slaves()
 				ss << girl->m_Realname;
 				{
 					int t = g_Dice % 2;	// `J` because there are currently only 2 text options per disposition this should be ok
-					if (The_Player->disposition() >= 80)				//Benevolent
+					if (The_Player->disposition() >= 80)				// Benevolent
 					{
 						if (t == 1)	ss<< " went to your current brothel with a smile on her face happy that such a nice guy bought her.";
 						else		ss << " smiled as you offered her your arm, surprised to find such a kindness waiting for her. Hopeing such kindness would continue, she went happily with you as her owner.";
 					}
-					else if (The_Player->disposition() >= 50)			//Nice
+					else if (The_Player->disposition() >= 50)			// Nice
 					{
 						if (t == 1)	ss << ", having heard about her new owner's reputation, was guided to your current brothel without giving any trouble.";
 						else		ss << " looked up at you hopefully as you refused the use of a retainer or delivery, instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air before you both return home.";
 					}
-					else if (The_Player->disposition() >= 10)			//Pleasant
+					else if (The_Player->disposition() >= 10)			// Pleasant
 					{
 						if (t == 1)	ss << " was sent to your current brothel, knowing that she could have been bought by a lot worse owner.";
 						else		ss << " was escorted home by one of your slaves who helped her settle in. She seems rather hopeful of a good life in your care.";
 					}
-					else if (The_Player->disposition() >= -10)			//Neutral
+					else if (The_Player->disposition() >= -10)			// Neutral
 					{
 						if (t == 1)	ss << " as your newest investment, she was sent to your current brothel.";
 						else		ss << " has been sent to your establishment under the supervision of your most trusted slaves.";
 					}
-					else if (The_Player->disposition() >= -50)			//Not nice
+					else if (The_Player->disposition() >= -50)			// Not nice
 					{
 						if (t == 1)	ss << " not being very happy about her new owner, was escorted to your current brothel.";
 						else		ss << " struggled as her hands were shackled in front of her. Her eyes locked on the floor, tears gathering in the corners of her eyes, as she was sent off to your brothel.";
@@ -526,7 +526,7 @@ bool cScreenSlaveMarket::buy_slaves()
 						if (t == 1)	ss << " didn't wanted to provoke you in any possible way. She went quietly to your current brothel, without any resistance.";
 						else		ss << " was dragged away to your brothel crying, one of your guards slapping her face as she tried to resist. ";
 					}
-					else											//Evil
+					else											// Evil
 					{
 						if (t == 1)	ss << " was dragged crying and screaming to your current brothel afraid of what you might do to her as her new owner.";
 						else		ss << " looked up at you in fear as you order for her to be taken to your brothel. A hint of some emotion hidden in her eyes draws your attention for a moment before she unconsciously looked away, no doubt afraid of what you'd do to her if she met your gaze.";
@@ -541,7 +541,7 @@ bool cScreenSlaveMarket::buy_slaves()
 			{
 				ss << "";
 			}
-			else if (The_Player->disposition() >= 50)			//Nice
+			else if (The_Player->disposition() >= 50)			// nice
 			{
 				ss << "";
 			}
@@ -549,11 +549,11 @@ bool cScreenSlaveMarket::buy_slaves()
 			{
 				ss << "";
 			}
-			else if (The_Player->disposition() >= -10)			//Neutral
+			else if (The_Player->disposition() >= -10)			// neutral
 			{
 				ss << "";
 			}
-			else if (The_Player->disposition() >= -50)			//Not nice
+			else if (The_Player->disposition() >= -50)			// not nice
 			{
 				ss << "";
 			}
@@ -589,7 +589,7 @@ bool cScreenSlaveMarket::buy_slaves()
 				{
 					ss << "";
 				}
-				else if (The_Player->disposition() >= 50)			//Nice
+				else if (The_Player->disposition() >= 50)			// nice
 				{
 					ss << "";
 				}
@@ -597,11 +597,11 @@ bool cScreenSlaveMarket::buy_slaves()
 				{
 					ss << "";
 				}
-				else if (The_Player->disposition() >= -10)			//Neutral
+				else if (The_Player->disposition() >= -10)			// neutral
 				{
 					ss << "";
 				}
-				else if (The_Player->disposition() >= -50)			//Not nice
+				else if (The_Player->disposition() >= -50)			// not nice
 				{
 					ss << "";
 				}
@@ -621,7 +621,7 @@ bool cScreenSlaveMarket::buy_slaves()
 			{
 				ss << "";
 			}
-			else if (The_Player->disposition() >= 50)			//Nice
+			else if (The_Player->disposition() >= 50)			// nice
 			{
 				ss << "";
 			}
@@ -629,11 +629,11 @@ bool cScreenSlaveMarket::buy_slaves()
 			{
 				ss << "";
 			}
-			else if (The_Player->disposition() >= -10)			//Neutral
+			else if (The_Player->disposition() >= -10)			// neutral
 			{
 				ss << "";
 			}
-			else if (The_Player->disposition() >= -50)			//Not nice
+			else if (The_Player->disposition() >= -50)			// not nice
 			{
 				ss << "";
 			}
@@ -808,7 +808,7 @@ bool cScreenSlaveMarket::buy_slaves()
 				girl->obedience(g_Dice.bell(-2, 5));
 			}
 		}
-		else if (The_Player->disposition() >= 50)			//Nice
+		else if (The_Player->disposition() >= 50)			// nice
 		{
 			ss << "\"Don't worry " << (numgirls == 1 ? "my dear" : "ladies") << ", you will not be in there long, I promise.\"\n";
 			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
@@ -839,7 +839,7 @@ bool cScreenSlaveMarket::buy_slaves()
 				girl->obedience(g_Dice % 3 - 1);
 			}
 		}
-		else if (The_Player->disposition() >= -10)			//Neutral
+		else if (The_Player->disposition() >= -10)			// neutral
 		{
 			ss << "\"To the Dungeon with " << (numgirls == 1 ? "you" : "them") << ", I'll see you there shortly.\"\n";
 			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
@@ -854,7 +854,7 @@ bool cScreenSlaveMarket::buy_slaves()
 				girl->obedience(g_Dice % 3 - 1);
 			}
 		}
-		else if (The_Player->disposition() >= -50)			//Not nice
+		else if (The_Player->disposition() >= -50)			// not nice
 		{
 			ss << "\"To the Dungeon with " << (numgirls == 1 ? "you" : "them") << ". I'll enjoy this, but you may not.\"\n";
 			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
@@ -1058,7 +1058,7 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 		{
 			text += " accepting her own flaws that to needed be corrected, she goes to the dungeon where she will be waiting for your guidance.";
 		}
-		else if (The_Player->disposition() >= 50)			//Nice
+		else if (The_Player->disposition() >= 50)			// nice
 		{
 			text += " in your opinion needs to work on her attitude, she has been guided to the dungeon.";
 		}
@@ -1066,11 +1066,11 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 		{
 			text += " as your newest investment, she was sent to the dungeon to work on her rebellious nature.";
 		}
-		else if (The_Player->disposition() >= -10)			//Neutral
+		else if (The_Player->disposition() >= -10)			// neutral
 		{
 			text += " has been sent to your dungeon, as she is rebellious and poorly trained.";
 		}
-		else if (The_Player->disposition() >= -50)			//Not nice
+		else if (The_Player->disposition() >= -50)			// not nice
 		{
 			text += " as your newest investment that needs your special touch, she was sent to the dungeon.";
 		}
@@ -1091,7 +1091,7 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 			if (t == 1)	text += " went to your current brothel with a smile on her face happy that such a nice guy bought her.";
 			else		text += " smiled as you offered her your arm, surprised to find such a kindness waiting for her. Hopeing such kindness would continue, she went happily with you as her owner.";
 		}
-		else if (The_Player->disposition() >= 50)			//Nice
+		else if (The_Player->disposition() >= 50)			// nice
 		{
 			if (t == 1)	text += ", having heard about her new owner's reputation, was guided to your current brothel without giving any trouble.";
 			else		text += " looked up at you hopefully as you refused the use of a retainer or delivery, instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air before you both return home.";
@@ -1101,12 +1101,12 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 			if (t == 1)	text += " was sent to your current brothel, knowing that she could have been bought by a lot worse owner.";
 			else		text += " was escorted home by one of your slaves who helped her settle in. She seems rather hopeful of a good life in your care.";
 		}
-		else if (The_Player->disposition() >= -10)			//Neutral
+		else if (The_Player->disposition() >= -10)			// neutral
 		{
 			if (t == 1)	text += " as your newest investment, she was sent to your current brothel.";
 			else		text += " has been sent to your establishment under the supervision of your most trusted slaves.";
 		}
-		else if (The_Player->disposition() >= -50)			//Not nice
+		else if (The_Player->disposition() >= -50)			// not nice
 		{
 			if (t == 1)	text += " not being very happy about her new owner, was escorted to your current brothel.";
 			else		text += " struggled as her hands were shackled in front of her. Her eyes locked on the floor, tears gathering in the corners of her eyes, as she was sent off to your brothel.";

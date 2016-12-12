@@ -181,7 +181,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks sexiness.", Day0Night1);
 	}
 
-	//Nice job bonus-------------------------------------------------------
+	// nice job bonus-------------------------------------------------------
 	//BONUS - Nice jobs show off her assets and make her happy, increasing fame and love.
 
 	int MrNiceGuy = g_Dice % 6, MrFair = g_Dice % 6;

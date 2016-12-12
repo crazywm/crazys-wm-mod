@@ -395,7 +395,7 @@ double cJobManager::JP_BrothelMasseuse(sGirl* girl, bool estimate)// not used
 		//add level
 		girl->level();
 
-	//next up tiredness penalty...
+	// next up tiredness penalty...
 #else	
 	double jobperformance =
 		(g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
@@ -426,7 +426,7 @@ double cJobManager::JP_BrothelMasseuse(sGirl* girl, bool estimate)// not used
 	
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; // needs others to do the job
 	if (g_Girls.HasTrait(girl, "Clumsy"))		jobperformance -= 20; //spills food and breaks things often
 	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people

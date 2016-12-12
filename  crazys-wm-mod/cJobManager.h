@@ -358,6 +358,14 @@ public:
 	static bool WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_HousePet(sGirl* girl, bool estimate);
 	static bool WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static bool WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_SOStraight(sGirl* girl, bool estimate);
+	static bool WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_SOBisexual(sGirl* girl, bool estimate);
+	static bool WorkSOLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_SOLesbian(sGirl* girl, bool estimate);
+	static bool WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_FakeOrgasm(sGirl* girl, bool estimate);
 
 
 
@@ -396,7 +404,7 @@ public:
 	
 	//helpers
 	static vector<sGirl*> girls_on_job(sBrothel *brothel, u_int job_wanted, bool Day0Night1);
-	//need a function for seeing if there is a girl working on a job
+	// need a function for seeing if there is a girl working on a job
 	bool is_job_employed(sBrothel * brothel, u_int job_wanted, bool Day0Night1);
 	static void get_training_set(vector<sGirl*> &v, vector<sGirl*> &set);
 	static void do_training(sBrothel* brothel, bool Day0Night1);

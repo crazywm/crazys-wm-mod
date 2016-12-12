@@ -46,7 +46,7 @@ extern cPlayer* The_Player;
 
 void AddStory(stringstream *);
 
-// Job Movie Studio - //Nice Job - Action Scene
+// Job Movie Studio - // nice Job - Action Scene
 //This film will use her combat and magic skills, and will be more popular if she's hot.
 bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
@@ -212,7 +212,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		else g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks sexiness.", Day0Night1);
 	}
 
-	//Nice job bonus-------------------------------------------------------
+	// nice job bonus-------------------------------------------------------
 	//BONUS - Nice jobs show off her assets and make her happy, increasing fame and love.
 
 	int MrNiceGuy = g_Dice % 6, MrFair = g_Dice % 6;

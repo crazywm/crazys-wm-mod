@@ -1157,6 +1157,14 @@ void TransferGirls()
 							color = COLOR_RED;
 						else if (temp->m_DayJob == JOB_HOUSEREST && temp->m_NightJob == JOB_HOUSEREST)
 							color = COLOR_GREEN;
+						else if (temp->m_DayJob == JOB_SO_STRAIGHT || temp->m_NightJob == JOB_SO_STRAIGHT ||
+							temp->m_DayJob == JOB_SO_BISEXUAL || temp->m_NightJob == JOB_SO_BISEXUAL ||
+							temp->m_DayJob == JOB_SO_LESBIAN || temp->m_NightJob == JOB_SO_LESBIAN ||
+							temp->m_DayJob == JOB_FAKEORGASM || temp->m_NightJob == JOB_FAKEORGASM)
+						{
+							if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
+							else color = COLOR_RED;
+						}
 						else color = COLOR_BLUE;
 
 						g_TransferGirls.AddToListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, i, temp->m_Realname, color);

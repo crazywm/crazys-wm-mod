@@ -227,9 +227,9 @@ double cJobManager::JP_CustService(sGirl* girl, bool estimate)
 	if (g_Girls.HasTrait(girl, "Succubus"))						jobperformance += 15;	//likes to sexually entertain
 	if (g_Girls.HasTrait(girl, "Titanic Tits"))					jobperformance += 10;	//huge distraction for customer not getting laid
 	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))		jobperformance += 10;	//huge distraction for customer not getting laid
-	if (g_Girls.HasTrait(girl, "Natural Pheromones"))			jobperformance += 10;   //Natural turnon
+	if (g_Girls.HasTrait(girl, "Natural Pheromones"))			jobperformance += 10;   // natural turnon
 	if (g_Girls.HasTrait(girl, "Charming"))						jobperformance += 10;	//good with people
-	if (g_Girls.HasTrait(girl, "Sexy Air"))						jobperformance += 10;	//Natural turnon
+	if (g_Girls.HasTrait(girl, "Sexy Air"))						jobperformance += 10;	// natural turnon
 	if (g_Girls.HasTrait(girl, "Idol"))							jobperformance += 10;	//famous
 	if (g_Girls.HasTrait(girl, "Actress"))						jobperformance += 10;	//can act the part
 	if (g_Girls.HasTrait(girl, "Fallen Goddess"))				jobperformance += 10;	//like exotic but better - not too judgemental
@@ -266,7 +266,7 @@ double cJobManager::JP_CustService(sGirl* girl, bool estimate)
 	if (g_Girls.HasTrait(girl, "Angel"))						jobperformance -= 10;	//Preachy
 	if (g_Girls.HasTrait(girl, "Deaf"))							jobperformance -= 5;	//What's the problem sir? What?! WHAT!?!
 	if (g_Girls.HasTrait(girl, "Pessimist"))					jobperformance -= 5;	//I can help you, but you probably won't like it very much.
-	if (g_Girls.HasTrait(girl, "Flat Chest"))					jobperformance -= 5;	//No natural distractions
+	if (g_Girls.HasTrait(girl, "Flat Chest"))					jobperformance -= 5;	// no natural distractions
 	
 
 	return jobperformance;

@@ -148,7 +148,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 				{
 					ss << " but, things were moving too fast and she regained control before they could take her virginity.\n";
 					g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 1);
-					g_Girls.UpdateStat(girl, STAT_LIBIDO, 2); //no satisfaction!
+					g_Girls.UpdateStat(girl, STAT_LIBIDO, 2); // no satisfaction!
 				}
 				else
 				{

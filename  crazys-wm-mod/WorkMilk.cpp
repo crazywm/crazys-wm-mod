@@ -54,7 +54,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 
-	g_Girls.UnequipCombat(girl);	//Not needed
+	g_Girls.UnequipCombat(girl);	// not needed
 
 	sGirl* farmmanonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_FARMMANGER, Day0Night1);
 	string farmmanname = (farmmanonduty ? "Farm Manager " + farmmanonduty->m_Realname + "" : "the Farm Manager");
@@ -219,7 +219,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		//This is every way I can find of asking if she's had a kid - MILF needed as this will register children prior to employment
 	if (g_Girls.HasTrait(girl, "Virgin") || ((!isPregnant) && !g_Girls.HasTrait(girl, "MILF") && (girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1)))
 	{
-		volume /= 2;											//never preg, so not producing much
+		volume /= 2;											// never preg, so not producing much
 		g_Girls.UpdateStat(girl, STAT_LACTATION, g_Dice % 3);	//all this pumping etc induces lactation
 	}
 
@@ -343,7 +343,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	//value calculations
 	int milkValue = int(milkProduced * MILKWHOLESALE);		//Base value
-	int traitBoost = milkValue;								//Now basing the boost on base value, not on inflated CG value.
+	int traitBoost = milkValue;								// now basing the boost on base value, not on inflated CG value.
 
 	if (g_Girls.HasTrait(girl, "Cat Girl"))
 	{
@@ -484,7 +484,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 				enjoy += 4;
 			}
 		}
-		else if (The_Player->disposition() < 40)   //not that good
+		else if (The_Player->disposition() < 40)   // not that good
 		{
 			ssextra << ". Looking closer, she really does have a great butt. You stop for a moment, but decide that doing anything more just wouldn't be right. "
 				<< "You give her butt a gentle pat and walk away.\n\n";

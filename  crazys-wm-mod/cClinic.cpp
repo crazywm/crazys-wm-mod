@@ -895,7 +895,7 @@ bool cClinicManager::LoadDataXML(TiXmlHandle hBrothelManager)
 
 bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 {
-	//no need to init this, we just created it
+	// no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
 	if (pBrothel == 0)
 	{

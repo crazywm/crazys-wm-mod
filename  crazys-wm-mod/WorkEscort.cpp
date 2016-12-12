@@ -958,7 +958,7 @@ case Es_Commoner:
 		}
 		else
 		{
-			//nothing probably better way to do this
+			// nothing probably better way to do this
 		}
 	}
 
@@ -1514,7 +1514,7 @@ case Es_DeadBeat:
 		}
 		else
 		{
-			//nothing probably better way to do this
+			// nothing probably better way to do this
 		}
 	}
 

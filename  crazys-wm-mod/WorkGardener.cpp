@@ -261,7 +261,7 @@ double cJobManager::JP_Gardener(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; // needs others to do the job
 	if (g_Girls.HasTrait(girl, "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
 	if (g_Girls.HasTrait(girl, "Aggressive")) 	jobperformance -= 20; //gets mad easy
 	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people	

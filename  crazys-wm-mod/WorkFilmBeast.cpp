@@ -54,7 +54,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	//No beasts = no scene
+	// no beasts = no scene
 	if (g_Brothels.GetNumBeasts() < 1)
 	{
 		girl->m_Events.AddMessage("You have no beasts for this scene, so she had the day off.", IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -87,7 +87,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		ss << girlName << gettext(" refused to be fucked by animals on film.");
 		if (girl->is_slave())
 		{
-			if (The_Player->disposition() > 30)  //Nice
+			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << gettext(" She was so passionate that you allowed her the day off.\n");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
@@ -119,7 +119,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 				tied = true;
 			}
 		}
-		else //not a slave
+		else // not a slave
 		{
 			ss << " She left the set.";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);

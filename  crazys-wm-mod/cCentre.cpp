@@ -688,7 +688,12 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 
 			if (current->m_WorkingDay > 0)
 			{
-				ss << girlName << " is not faring well in rehab.\n";
+				ss << girlName << " is not faring well";
+				/* */if (current->m_DayJob == JOB_REHAB)		ss << " in Rehab";
+				else if (current->m_DayJob == JOB_ANGER)		ss << " in Anger Management";
+				else if (current->m_DayJob == JOB_EXTHERAPY)	ss << " in Extreme Therapy";
+				else if (current->m_DayJob == JOB_THERAPY)		ss << " in Therapy";
+				ss << ".\n";
 			}
 			else if (!matron)	// do no matron first as it is the easiest
 			{
@@ -893,7 +898,7 @@ bool cCentreManager::LoadDataXML(TiXmlHandle hBrothelManager)
 
 bool sCentre::LoadCentreXML(TiXmlHandle hBrothel)
 {
-	//no need to init this, we just created it
+	// no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
 	if (pBrothel == 0)
 	{

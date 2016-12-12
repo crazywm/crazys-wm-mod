@@ -23,7 +23,7 @@ const int EVENT_BUTTONCLICKED = 1;
 const int EVENT_SELECTIONCHANGE = 2;
 const int EVENT_CHECKBOXCLICKED = 3;
 const int EVENT_SLIDERCHANGE = 4;
-//need to think about this
+// need to think about this
 class cInterfaceEvent
 {
 public:

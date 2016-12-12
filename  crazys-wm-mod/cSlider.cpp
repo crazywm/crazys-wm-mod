@@ -236,7 +236,7 @@ void cSlider::DragMove(int x)
 {  // Slider is being dragged so update button position, and send out an update event if LiveUpdate is enabled
 	// this function is called only by main.cpp mousemove when drag was initiated
 	int NPos = x - m_XPos;  // new mouse position
-	int NOffset = m_LastOffset + (NPos - m_DragInitXPos);  //new button offset
+	int NOffset = m_LastOffset + (NPos - m_DragInitXPos);  // new button offset
 
 	if(NOffset < 0)  // make sure offset is within bounds
 		NOffset = 0;

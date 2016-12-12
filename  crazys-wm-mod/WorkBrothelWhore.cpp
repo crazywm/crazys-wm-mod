@@ -537,7 +537,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				fuckMessage << " ran off. There were no guards!";
 				pay = 0;
 			}
-			fuckMessage << "/n";
+			fuckMessage << "\n";
 		}
 		else if ((knowwife || knowdaughter) && g_Dice.percent(Cust->m_Stats[STAT_CONFIDENCE] / 5))
 		{
@@ -560,7 +560,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				fuckMessage << ". They got away because there were no guards!";
 				pay = 0;
 			}
-			fuckMessage << "/n";
+			fuckMessage << "\n";
 		}
 		else  // Customer has enough money
 		{
@@ -576,7 +576,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				}
 				Cust->m_Money -= 20;
 				tip += 20;
-				fuckMessage << "/n";
+				fuckMessage << "\n";
 			}
 			else if (g_Girls.HasTrait(girl, "Your Wife") && knowwife && Cust->m_Money >= 20 && g_Dice.percent(50))
 			{
@@ -589,7 +589,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				}
 				Cust->m_Money -= 20;
 				tip += 20;
-				fuckMessage << "/n";
+				fuckMessage << "\n";
 			}
 			else if (g_Girls.HasTrait(girl, "Your Daughter") && Cust->m_Money >= 20 && g_Dice.percent(15))
 			{
@@ -603,7 +603,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				}
 				Cust->m_Money -= 20;
 				tip += 20;
-				fuckMessage << "/n";
+				fuckMessage << "\n";
 			}
 			else if (g_Girls.HasTrait(girl, "Your Wife") && Cust->m_Money >= 20 && g_Dice.percent(15))
 			{
@@ -618,7 +618,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 				Cust->m_Money -= 20;
 				tip += 20;
-				fuckMessage << "/n";
+				fuckMessage << "\n";
 			}
 
 			// if he is happy and has some extra gold he will give a tip
@@ -641,7 +641,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 					The_Player->suspicion(-5);
 					fuckMessage << " It turns out that the customer was a government official, which lowers your suspicion.";
 				}
-				fuckMessage << "/n";
+				fuckMessage << "\n";
 			}
 		}
 

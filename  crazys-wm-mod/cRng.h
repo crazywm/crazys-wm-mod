@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 //mod alter the rng for better randomness
-//note all you have to to is a global find and replace g_Dice with whatever you choose as the name of the variable.  I declared this in main as g_Dice and just let it be external.
+// note all you have to to is a global find and replace g_Dice with whatever you choose as the name of the variable.  I declared this in main as g_Dice and just let it be external.
 
 #ifndef _H_CRNG
 #define _H_CRNG

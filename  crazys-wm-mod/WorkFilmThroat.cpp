@@ -87,7 +87,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << girlName << gettext(" angrily refused to be throat-fucked on film today.");
 		if (girl->is_slave())
 		{
-			if (The_Player->disposition() > 30)  //Nice
+			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << gettext("\nThough she is a slave, she was upset so you allowed her the day off.\n");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
@@ -115,7 +115,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				enjoy -= 6;
 			}
 		}
-		else //not a slave
+		else // not a slave
 		{
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 			return true;

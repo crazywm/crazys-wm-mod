@@ -199,6 +199,7 @@ enum JOBFILTER {
   JOBFILTER_LABORERS,
   JOBFILTER_PRODUCERS,
   JOBFILTER_HOUSE,
+  JOBFILTER_HOUSETTRAINING,
   //JOBFILTER_DRUGLAB,
   JOBFILTER_NONE,
   NUMJOBTYPES
@@ -397,20 +398,28 @@ enum JOBS {
 	JOB_HOUSEREST,			//
 	JOB_HEADGIRL,			//
 	JOB_RECRUITER,			//
-	JOB_PERSONALTRAINING,	//
 	JOB_PERSONALBEDWARMER,	//
-	JOB_HOUSEPET,			//		
 	JOB_HOUSECOOK,			// cooks for the harem, (helps keep them happy, and increase job performance)
-	JOB_PONYGIRL,			//		
 	//JOB_HOUSEDATE,
 	//JOB_HOUSEVAC,
 	JOB_CLEANHOUSE,			//
+
+	// `J` Job House - Training
+	JOB_PERSONALTRAINING,	//
+	JOB_FAKEORGASM,			//
+	JOB_SO_STRAIGHT,		//
+	JOB_SO_BISEXUAL,		//
+	JOB_SO_LESBIAN,			//
+	JOB_HOUSEPET,			//		
+	JOB_PONYGIRL,			//		
+
+
 
 	// - extra unassignable
 	JOB_INDUNGEON,			//
 	JOB_RUNAWAY,			//
 
-	NUM_JOBS,				//Number of Jobs
+	NUM_JOBS,				// number of Jobs
 };// End JOBS enum
 #if 0
 // - Community Centre

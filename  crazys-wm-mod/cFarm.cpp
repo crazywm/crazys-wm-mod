@@ -784,7 +784,7 @@ bool cFarmManager::LoadDataXML(TiXmlHandle hBrothelManager)
 
 bool sFarm::LoadFarmXML(TiXmlHandle hBrothel)
 {
-	//no need to init this, we just created it
+	// no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
 	if (pBrothel == 0)
 	{

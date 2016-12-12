@@ -288,7 +288,7 @@ double cJobManager::JP_Farmer(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Quick Learner"))		jobperformance += 5;
 	
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50; //needs others to do the job
+	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50; // needs others to do the job
 	if (g_Girls.HasTrait(girl, "Nervous"))				jobperformance -= 20; //don't like to be around people	
 	if (g_Girls.HasTrait(girl, "City Girl"))			jobperformance -= 20;
 	if (g_Girls.HasTrait(girl, "Clumsy")) 				jobperformance -= 20; //spills food and breaks things often

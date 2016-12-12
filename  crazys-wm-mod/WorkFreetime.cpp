@@ -810,7 +810,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			else
 			{
-				ss << " to check on one of her friends.";//not the best
+				ss << " to check on one of her friends.";// not the best
 			}
 			U_Happiness += 5;
 			// needs more options
@@ -1361,7 +1361,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				else
 				{
-					ss << " decide to go out and look for a fight.\n";//need to add more to this
+					ss << " decide to go out and look for a fight.\n";// need to add more to this
 				}
 			}
 			else if (g_Girls.HasTrait(girl, "Actress"))
@@ -2016,7 +2016,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 										}
 									}
 						}
-						else if (girl->m_States&(1 << STATUS_DATING_NICE))//nice
+						else if (girl->m_States&(1 << STATUS_DATING_NICE))// nice
 						{
 							ss << "During dinner her date was very nice and gave her many complamints which she ";
 								if (g_Girls.HasTrait(girl, "Shy"))
@@ -2039,7 +2039,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								if (g_Girls.HasTrait(girl, "Has Boy Friend"))
 									{
 									ss << "he walks " << girlName << " home, ";
-										if (g_Dice.percent(10))//nice so lowest chance of trying to get some
+										if (g_Dice.percent(10))// nice so lowest chance of trying to get some
 											{
 												ss << "but before getting her home he decides to ask for a blow job.\n";
 											}
@@ -2051,7 +2051,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
 									{
 									ss << "she walks " << girlName << " home, ";
-										if (g_Dice.percent(10))//nice so lowest chance of trying to get some
+										if (g_Dice.percent(10))// nice so lowest chance of trying to get some
 										{
 											ss << "but before getting her home she decides to ask if she wants some pleasure.\n";
 										}
@@ -2071,7 +2071,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						else if (girl->m_States&(1 << STATUS_DATING_MEAN))//mean
 						{
 						}
-						else if (girl->m_States&(1 << STATUS_DATING_NICE))//nice
+						else if (girl->m_States&(1 << STATUS_DATING_NICE))// nice
 						{
 						}
 					}

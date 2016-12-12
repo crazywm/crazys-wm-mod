@@ -137,6 +137,7 @@ void cScreenHouseManagement::init()
 
 	// add the job filters
 	AddToListBox(jobtypelist_id, JOBFILTER_HOUSE, g_House.m_JobManager.JobFilterName[JOBFILTER_HOUSE]);
+	AddToListBox(jobtypelist_id, JOBFILTER_HOUSETTRAINING, g_House.m_JobManager.JobFilterName[JOBFILTER_HOUSETTRAINING]);
 	SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSE);
 
 	//get a list of all the column names, so we can find which data goes in that column
@@ -294,6 +295,49 @@ void cScreenHouseManagement::check_events()
 					SetSelectedItemText(joblist_id, old_job, g_House.m_JobManager.JobDescriptionCount(old_job, 0, Day0Night1, false, false, false, false, true));
 					SetSelectedItemText(joblist_id, new_job, g_House.m_JobManager.JobDescriptionCount(new_job, 0, Day0Night1, false, false, false, false, true));
 				}
+
+
+				if (selected_girl->m_DayJob == JOB_SO_STRAIGHT|| selected_girl->m_DayJob == JOB_SO_BISEXUAL|| selected_girl->m_DayJob == JOB_SO_LESBIAN || selected_girl->m_DayJob == JOB_FAKEORGASM)	// `J` added
+				{
+					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << selected_girl->m_WorkingDay << "%)";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+				}
+				else if ((selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0) && (
+					(selected_girl->m_YesterDayJob == JOB_SO_STRAIGHT	&& selected_girl->m_DayJob != JOB_SO_STRAIGHT)	||
+					(selected_girl->m_YesterDayJob == JOB_SO_BISEXUAL	&& selected_girl->m_DayJob != JOB_SO_BISEXUAL)	||
+					(selected_girl->m_YesterDayJob == JOB_SO_LESBIAN	&& selected_girl->m_DayJob != JOB_SO_LESBIAN)	||
+					(selected_girl->m_YesterDayJob == JOB_FAKEORGASM	&& selected_girl->m_DayJob != JOB_FAKEORGASM)	))
+				{
+					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_DayJob] << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+				}
+
+				if (selected_girl->m_NightJob == JOB_SO_STRAIGHT || selected_girl->m_NightJob == JOB_SO_BISEXUAL || selected_girl->m_NightJob == JOB_SO_LESBIAN || selected_girl->m_NightJob == JOB_FAKEORGASM)	// `J` added
+				{
+					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << selected_girl->m_WorkingDay << "%)";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+				}
+				else if ((selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0) && (
+					(selected_girl->m_YesterNightJob == JOB_SO_STRAIGHT	&& selected_girl->m_NightJob != JOB_SO_STRAIGHT) ||
+					(selected_girl->m_YesterNightJob == JOB_SO_BISEXUAL	&& selected_girl->m_NightJob != JOB_SO_BISEXUAL) ||
+					(selected_girl->m_YesterNightJob == JOB_SO_LESBIAN	&& selected_girl->m_NightJob != JOB_SO_LESBIAN) ||
+					(selected_girl->m_YesterNightJob == JOB_FAKEORGASM	&& selected_girl->m_NightJob != JOB_FAKEORGASM)))
+				{
+					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_NightJob] << " **";
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+				}
+
+				if ((selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0) && (
+				(selected_girl->m_YesterDayJob == JOB_SO_STRAIGHT	&& new_job != JOB_SO_STRAIGHT) ||
+				(selected_girl->m_YesterDayJob == JOB_SO_BISEXUAL	&& new_job != JOB_SO_BISEXUAL) ||
+				(selected_girl->m_YesterDayJob == JOB_SO_LESBIAN	&& new_job != JOB_SO_LESBIAN) ||
+				(selected_girl->m_YesterDayJob == JOB_FAKEORGASM	&& new_job != JOB_FAKEORGASM)))
+				{	// `J` added
+					ss.str("");	ss << g_House.m_JobManager.JobDesc[new_job] <<
+						"\n** This girl was in training for " << g_House.m_JobManager.JobName[selected_girl->m_YesterDayJob]
+						<< ", if you send her somewhere else, she will have to start her training over.";
+					EditTextItem(ss.str(), jobdesc_id);
+				}
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 			}
 		}
@@ -376,15 +420,14 @@ void cScreenHouseManagement::check_events()
 
 void cScreenHouseManagement::RefreshSelectedJobType()
 {
-	/* `J` no need for testing because there is only 1 job type in the house
 	selection = GetSelectedItemFromList(girllist_id);
 	if (selection < 0) return;
 	selected_girl = g_House.GetGirl(g_CurrHouse, selection);
 	int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 	// set the job filter
-	if (job >= g_House.m_JobManager.JobFilterIndex[JOBFILTER_HOUSE] && job < g_House.m_JobManager.JobFilterIndex[JOBFILTER_HOUSE + 1])
-	//*/
-	SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSE);
+	if (job >= g_House.m_JobManager.JobFilterIndex[JOBFILTER_HOUSETTRAINING] && job < g_House.m_JobManager.JobFilterIndex[JOBFILTER_HOUSETTRAINING + 1])
+		SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSETTRAINING);
+	else SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSE);
 	SetJob = true;
 }
 
@@ -399,7 +442,20 @@ void cScreenHouseManagement::RefreshJobList()
 		if (g_House.m_JobManager.JobName[i] == "") continue;
 		AddToListBox(joblist_id, i, g_House.m_JobManager.JobDescriptionCount(i, g_CurrHouse, Day0Night1, false, false, false, false, true));
 	}
-	if (selected_girl)
+	if (selected_girl && (selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0) && (
+		(selected_girl->m_YesterDayJob == JOB_SO_STRAIGHT	&& selected_girl->m_DayJob != JOB_SO_STRAIGHT) ||
+		(selected_girl->m_YesterDayJob == JOB_SO_BISEXUAL	&& selected_girl->m_DayJob != JOB_SO_BISEXUAL) ||
+		(selected_girl->m_YesterDayJob == JOB_SO_LESBIAN	&& selected_girl->m_DayJob != JOB_SO_LESBIAN) ||
+		(selected_girl->m_YesterDayJob == JOB_FAKEORGASM	&& selected_girl->m_DayJob != JOB_FAKEORGASM)))
+	{	// `J` added
+		int sel_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
+		SetSelectedItemInList(joblist_id, sel_job, false);
+		ss.str("");	ss << g_House.m_JobManager.JobDesc[sel_job] <<
+			"\n** This girl was in training for " << g_House.m_JobManager.JobName[selected_girl->m_YesterDayJob]
+			<< ", if you send her somewhere else, she will have to start her training over.";
+		EditTextItem(ss.str(), jobdesc_id);
+	}
+	else if (selected_girl)
 	{
 		int sel_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 		SetSelectedItemInList(joblist_id, sel_job, false);

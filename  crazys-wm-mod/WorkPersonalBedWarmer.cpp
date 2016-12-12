@@ -210,7 +210,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					HateLove = 50;  //probably best fit for next bit...
 				}
 			}
-			else //not slave
+			else // not slave
 			{	
 				// If headgirl likes girls. Again because rare combo, is at the top, so it has some chance of being seen - this time can fail
 				if (g_Girls.HasTrait(headGirl, "Lesbian") && g_Girls.HasTrait(girl, "Lesbian") && effectiveness > 10)
@@ -421,7 +421,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					HateLove = 50;  //probably best fit for next bit...
 				}
 			}
-			else //Not a slave
+			else // not a slave
 			{
 				
 				ss << girlName << gettext(" is a free woman, so you cannot legally force her. ");
@@ -557,7 +557,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	else
 	{
 #if 1
-		wages += 100; //non slaves get paid - more later if they do more
+		wages += 100; // non slaves get paid - more later if they do more
 #endif
 		/* */if (HateLove < -80)	{ wages += 150;	ss << gettext("She can't stand the sight of you and demands way more money to lay with you at night.\n\n"); }
 		else if (HateLove < -60)	{ wages += 100;	ss << gettext("She don't like you at all and wants more money to lay with you at night .\n\n"); }
@@ -604,7 +604,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	//so this is just going to include slaves
 	bool other_notslave = false, other_sick = false;
 	for (u_int i = warmers; i-- > 0; other_notslave = other_sick = false)
-		//need to walk backwards through vector, as working forward while erasing no good
+		// need to walk backwards through vector, as working forward while erasing no good
 	{
 
 		if (harem[i]->is_slave())
@@ -778,7 +778,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, libido);
 
-		//Now you get involved...
+		// now you get involved...
 		if (g_Girls.CheckVirginity(girl))
 		{
 			ss << girlName << gettext(" is a virgin");
@@ -848,7 +848,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				}
 			}
 		}
-		else   //not virgin
+		else   // not virgin
 		{
 			if ((roll_d <= 20) || (g_Girls.HasTrait(girl, "Cum Addict") && roll_d <= 50))
 			{

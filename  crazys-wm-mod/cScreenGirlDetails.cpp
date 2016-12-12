@@ -282,8 +282,11 @@ void cScreenGirlDetails::init()
 	else if (InHouse)
 	{
 		AddToListBox(jobtypelist_id, JOBFILTER_HOUSE, g_House.m_JobManager.JobFilterName[JOBFILTER_HOUSE]);
-		SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSE);
+		AddToListBox(jobtypelist_id, JOBFILTER_HOUSETTRAINING, g_House.m_JobManager.JobFilterName[JOBFILTER_HOUSETTRAINING]);
 		RefreshJobList();
+		if (job >= g_House.m_JobManager.JobFilterIndex[JOBFILTER_HOUSETTRAINING] && job < g_House.m_JobManager.JobFilterIndex[JOBFILTER_HOUSETTRAINING + 1])
+			SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSETTRAINING);
+		else SetSelectedItemInList(jobtypelist_id, JOBFILTER_HOUSE);
 	}
 	else if (InMovieStudio)
 	{

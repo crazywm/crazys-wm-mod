@@ -729,7 +729,7 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	// Load inventory
 	//         ...................................................
 	g_LogFile.write("************ Loading players inventory ************");
-	//now would be a great time to move this to cPlayer
+	// now would be a great time to move this to cPlayer
 	LoadInventoryXML(hBrothelManager.FirstChild("Inventory"), m_Inventory, m_NumInventory, m_EquipedItems, m_NumItem);
 
 	// load alcohol restock
@@ -755,7 +755,7 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 
 bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 {
-	//no need to init this, we just created it
+	// no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
 	if (pBrothel == 0) return false;
 	if (pBrothel->Attribute("Name")) m_Name = pBrothel->Attribute("Name");
@@ -2940,7 +2940,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	}
 	if (g_Girls.HasItemJ(girl, "Rainbow Underwear") != -1)
 	{
-		if (is_she_stripping(girl))  //not sure this will work like i want it to might be that i need to added them to the jobs
+		if (is_she_stripping(girl))  // not sure this will work like i want it to might be that i need to added them to the jobs
 		{
 			ss << girlName << " stripped down to reveal her Rainbow Underwear to the approval of the patrons watching her.\n\n";
 			brothel->m_Happiness += 5;

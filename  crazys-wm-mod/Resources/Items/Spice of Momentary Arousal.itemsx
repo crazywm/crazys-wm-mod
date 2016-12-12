@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Spice of Momentary Arousal" Desc="Slip this in a girl's food and she won't be able to say no tonight. It's like rape, only better! (temporary: Libido +100, Obedience +100, Love +100)"
+        Type="Food" Badness="0" Special="Temporary" Cost="1000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Obedience" Amount="100" />
+        <Effect What="Stat" Name="PCLove" Amount="100" />
+        <Effect What="Stat" Name="Libido" Amount="100" />
+    </Item>
+</Items>

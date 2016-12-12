@@ -211,7 +211,7 @@ double cJobManager::JP_FilmOral(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Exotic"))						jobperformance += 5;	//
 	if (g_Girls.HasTrait(girl, "Whore"))						jobperformance += 20;	//Knows how to work it
 	if (g_Girls.HasTrait(girl, "Porn Star"))					jobperformance += 30;	//Knows how to work it on film
-	if (g_Girls.HasTrait(girl, "No Teeth"))						jobperformance += 15;	//No chance of 'accident'
+	if (g_Girls.HasTrait(girl, "No Teeth"))						jobperformance += 15;	// no chance of 'accident'
 	if (g_Girls.HasTrait(girl, "Missing Teeth"))				jobperformance += 15;	//
 	if (g_Girls.HasTrait(girl, "Nymphomaniac"))					jobperformance += 25;	//had lots of practice
 	if (g_Girls.HasTrait(girl, "Slut"))							jobperformance += 15;	//had practice

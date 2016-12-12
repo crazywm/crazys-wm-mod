@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Water of Chastity" Desc="This blessed holy water forcibly purges a girl of her sexual desires, freeing her to pursue the path of a shrine maiden. (Lib/Lac -80, Mor +30, Spirit +10, Health -10, Tiredness +50, -Slut, -Nymphomaniac)"
+        Type="Food" Badness="0" Special="None" Cost="4000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Spirit" Amount="10" />
+        <Effect What="Stat" Name="Morality" Amount="30" />
+        <Effect What="Stat" Name="Libido" Amount="-80" />
+        <Effect What="Stat" Name="Lactation" Amount="-80" />
+        <Effect What="Trait" Name="Slut" Amount="0" />
+        <Effect What="Trait" Name="Nymphomaniac" Amount="0" />
+        <Effect What="Stat" Name="Health" Amount="-10" />
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+    </Item>
+</Items>
