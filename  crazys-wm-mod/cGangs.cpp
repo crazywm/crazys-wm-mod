@@ -1452,8 +1452,15 @@ void cGangManager::UpdateGangs()
 			else break;
 		}break;
 		}
-
-		if (losegang(currentGang)) continue;		// if they all died, move on.
+		if (currentGang->m_Num <= 0)
+		{
+			sGang* tempgang = currentGang->m_Next;
+			if (losegang(currentGang))
+			{
+				currentGang = tempgang;
+				continue;		// if they all died, move on.
+			}
+		}
 		if (currentGang->m_Combat == false && currentGang->m_Num < 15) currentGang->m_Num++;
 		check_gang_recruit(currentGang);
 
@@ -3177,9 +3184,9 @@ void cGangManager::GangStartOfShift()
 		{
 			ss << "All of the men in gang " << currentGang->m_Name << " have died.";
 			g_MessageQue.AddToQue(ss.str(), COLOR_RED);
-			sGang* temp = currentGang->m_Next;
+//			sGang* temp = currentGang->m_Next;
 			RemoveGang(currentGang);
-			currentGang = temp;
+	//		currentGang = temp;
 			continue;
 		}
 		currentGang->m_Combat = false;

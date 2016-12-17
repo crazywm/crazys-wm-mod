@@ -322,10 +322,15 @@ Added some texts to Sexual Orientation training and Fake Orgasm training
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.44
 
+### Changes 12/17/2016
+Fixed a bug in the arena with duplicate turn summary messages (my bad)
+Added EVENT_WARNING when girls get taken off work by matrons
+Fixed a crash in cGirls::AddInv() if no item is given
+ - fixed item spelling in GirlFucks (Ring of the Hivemind)
+Fixed a crash if a gang dies durring their mission.
 
-
-
-
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.45
 
 
 

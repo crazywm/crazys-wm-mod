@@ -391,8 +391,8 @@ void cScreenSlaveMarket::process()
 	if (check_keys()) return;						// handle arrow keys
 	init();											// set up the window if needed
 	check_events();									// check to see if there's a button event needing handling
-	HideImage(slave_image_id, (selection == -1));	// hide/show image based on whether a girl is selected
-	if (selection == -1)							// if no girl is selected, clear girl info
+	HideImage(slave_image_id, (selection < 0));		// hide/show image based on whether a girl is selected
+	if (selection <= 0)								// if no girl is selected, clear girl info
 	{
 		EditTextItem("No girl selected", details_id);
 		if (trait_id >= 0) EditTextItem("", trait_id);

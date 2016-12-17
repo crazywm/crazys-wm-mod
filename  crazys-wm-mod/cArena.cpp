@@ -330,7 +330,6 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		}
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
-
 		if (current->m_PregCooldown == cfg.pregnancy.cool_down())
 		{
 			ss << girlName << " is on maternity leave.";
@@ -462,41 +461,41 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	////////////////////////////////////////
 	//  Run any races the girls can run.  //
 	////////////////////////////////////////
-	current = brothel->m_Girls;
-	while (current)
-	{
-		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->is_dead())// || sw != JOB_RACING)
-		{	// skip dead girls, and anyone not racing
-			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
-		}
-
-		// do their job
-		refused = m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);
-
-		totalPay += current->m_Pay;
-		totalTips += current->m_Tips;
-		totalGold += current->m_Pay + current->m_Tips;
-		g_Brothels.CalculatePay(brothel, current, sw);
-
-		//		Summary Messages
-		if (refused)
-		{
-			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
-			ss << girlName << " refused to work so made no money.";
-		}
-		else
-		{
-			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, Day0Night1);
-			if (totalGold < 0) sum = EVENT_DEBUG;
-
-			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
-		}
-		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-
-		current = current->m_Next; // Next Girl
-	}
+//	current = brothel->m_Girls;
+//	while (current)
+//	{
+//		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+//		if (current->is_dead() || sw != JOB_RACING)
+//		{	// skip dead girls, and anyone not racing
+//			if (current->m_Next) { current = current->m_Next; continue; }
+//			else { current = 0; break; }
+//		}
+//		ss.str("");
+//		// do their job
+//		refused = m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);
+//
+//		totalPay += current->m_Pay;
+//		totalTips += current->m_Tips;
+//		totalGold += current->m_Pay + current->m_Tips;
+//		g_Brothels.CalculatePay(brothel, current, sw);
+//
+//		//		Summary Messages
+//		if (refused)
+//		{
+//			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+//			ss << girlName << " refused to work so made no money.";
+//		}
+//		else
+//		{
+//			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, Day0Night1);
+//			if (totalGold < 0) sum = EVENT_DEBUG;
+//
+//			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+//		}
+//		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+//
+//		current = current->m_Next; // Next Girl
+//	}
 
 
 
@@ -645,6 +644,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 				else if (t > 80)			ss << " is desparatly in need of rest.\nGive her some free time\n";
 				else if (h < 20)			ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
 				else if (h < 40)			ss << " is hurt.\nShe should rest and recuperate.\n";
+				sum = EVENT_WARNING;
 			}
 			else if (current->m_NightJob == matronjob && matron)	// do matron	
 			{
@@ -655,6 +655,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					current->m_DayJob = current->m_NightJob = restjob;
 					ss << "The Doctore takes herself off duty because she is just too damn sore.\n";
 					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10);
+					sum = EVENT_WARNING;
 				}
 				else
 				{
@@ -693,6 +694,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					else if (t > 80)		ss << "tiredness.\n";
 					else if (h < 40)		ss << "low health.\n";
 					else /*       */		ss << "current state.\n";
+					sum = EVENT_WARNING;
 				}
 				else	// the girl has already been taken off duty by the matron
 				{

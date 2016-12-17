@@ -5314,6 +5314,7 @@ bool cGirls::IsInvFull(sGirl* girl)
 
 int cGirls::AddInv(sGirl* girl, sInventoryItem* item)
 {
+	if (!item)	return -1;
 	int i;
 	for (i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
@@ -12851,7 +12852,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (customer->m_Stats[STAT_HAPPINESS] > 90)
 			{
-				g_Girls.AddInv(girl, g_InvManager.GetItem("Ring of Hivemind"));
+				g_Girls.AddInv(girl, g_InvManager.GetItem("Ring of the Hivemind"));
 				message += "\n\nThe grateful group were so exhausted they forgot to take their Ring of Hivemind. It's hers now.";
 			}
 			else

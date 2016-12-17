@@ -174,6 +174,8 @@ void cScreenDungeon::init()
 	DisableButton(releaseall_id, (dungeon->GetNumGirls() <= 0));	// only enable "release all girls" if there are girls to release
 	DisableButton(releasecust_id, (dungeon->GetNumCusts() <= 0));	// similarly...
 
+	HideImage(girlimage_id, dungeon->GetNumGirls() <= 0);
+
 	string sub = ReleaseGirlToWhere.substr(0, 2);
 	sBrothel *releaseto = g_Brothels.GetBrothel(g_CurrBrothel);
 	char a = ReleaseGirlToWhere[2]; char b = "0"[0]; int sendtonum = a - b;	// `J` cheap fix to get brothel number

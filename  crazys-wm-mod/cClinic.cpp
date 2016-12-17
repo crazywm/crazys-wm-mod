@@ -726,6 +726,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			if (current->m_WorkingDay > 0)
 			{
 				ss << girlName << " is not faring well in surgery.\n";
+				sum = EVENT_WARNING;
 			}
 			else if (!matron)	// do no matron first as it is the easiest
 			{
@@ -735,6 +736,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 				else if (t > 80)			ss << " is desparatly in need of rest.\nGive her some free time\n";
 				else if (h < 20)			ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
 				else if (h < 40)			ss << " is hurt.\nShe should rest and recuperate.\n";
+				sum = EVENT_WARNING;
 			}
 			else	// do all other girls with a matron working
 			{
@@ -748,6 +750,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 					else if (t > 80)		ss << "tiredness.\n";
 					else if (h < 40)		ss << "low health.\n";
 					else /*       */		ss << "current state.\n";
+					sum = EVENT_WARNING;
 				}
 				else	// the girl has already been taken off duty by the matron
 				{
