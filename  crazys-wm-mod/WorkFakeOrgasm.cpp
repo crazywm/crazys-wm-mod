@@ -105,7 +105,11 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Exhibitionist"))	girl->m_WorkingDay += g_Dice.bell(0, 2);	// She enjoys making a scene
 	// Negative Traits
 	if (girl->has_trait("Slow Learner"))	girl->m_WorkingDay -= g_Dice.bell(0, 15);	//
-	if (girl->has_trait("Broken Will"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
+	if (girl->has_trait("Broken Will"))
+	{
+		ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n";
+		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
+	}
 	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
 	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 10);	// Does she even know who is fucking her?
 	if (girl->has_trait("Fast Orgasms"))	girl->m_WorkingDay -= g_Dice.bell(2, 8);	// She cums before she can fake it

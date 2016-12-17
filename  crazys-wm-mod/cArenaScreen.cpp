@@ -175,8 +175,8 @@ void cArenaScreen::do_walk()
 		g_MessageQue.AddToQue("You can only do this once per week.", COLOR_RED);
 		return;
 	}
-	//sGirl *girl = g_Girls.GetRandomGirl(false, false, true);	// let's get a girl for the player to meet was to get arena.. dont think this should happen this is tryouts arena girl should be ready to fight. CRAZY
-	sGirl *girl = g_Girls.GetRandomGirl();						// let's get a girl for the player to meet
+	sGirl *girl = g_Girls.GetRandomGirl(false, false, true);	// let's get a girl for the player to meet was to get arena.. dont think this should happen this is tryouts arena girl should be ready to fight. CRAZY
+	//sGirl *girl = g_Girls.GetRandomGirl();						// let's get a girl for the player to meet
 	if (girl == 0)												// if there's no girl, no meeting
 	{
 		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);

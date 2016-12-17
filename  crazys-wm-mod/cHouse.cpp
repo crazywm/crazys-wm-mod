@@ -113,7 +113,7 @@ void cHouseManager::UpdateHouse()	// Start_Building_Process_A
 	u_int restjob = JOB_HOUSEREST;
 	u_int matronjob = JOB_HEADGIRL;
 	u_int firstjob = JOB_HOUSEREST;
-	u_int lastjob = JOB_PONYGIRL;
+	u_int lastjob = JOB_HOUSEPET;
 
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
@@ -216,7 +216,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	u_int restjob = JOB_HOUSEREST;
 	u_int matronjob = JOB_HEADGIRL;
 	u_int firstjob = JOB_HOUSEREST;
-	u_int lastjob = JOB_PONYGIRL;
+	u_int lastjob = JOB_HOUSEPET;
 	u_int sw = 0, psw = 0;
 
 	int totalPay = 0, totalTips = 0, totalGold = 0;

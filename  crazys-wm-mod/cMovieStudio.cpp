@@ -1367,7 +1367,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	case JOB_FILMFACEFUCK:		jobType = EVIL;		quality += 5;	Skill = SKILL_ORALSEX;		ss << "Facefucking";	break;
 	case JOB_FILMGROUP:			jobType = NORMAL;	quality += 5;	Skill = SKILL_GROUP;		ss << "Group";			break;
 	case JOB_FILMPUBLICBDSM:	jobType = EVIL;		quality += 10;	Skill = SKILL_BDSM;			ss << "Public BDSM";	break;
-	case JOB_FILMDOM:			jobType = EVIL;		quality += 8;	Skill = SKILL_BDSM;			ss << "Dominatrix";		break;
+	//case JOB_FILMDOM:			jobType = EVIL;		quality += 8;	Skill = SKILL_BDSM;			ss << "Dominatrix";		break;
 	default:
 		break;
 	}

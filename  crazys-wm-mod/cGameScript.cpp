@@ -1326,7 +1326,7 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 		if (g_Brothels.GetNumBeasts() > 0)
 		{
 			g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain 
-			if (!m_GirlTarget->calc_insemination(The_Player, false, 1.0))
+			if (!m_GirlTarget->calc_insemination(g_Girls.GetBeast(), false, 1.0))
 				g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten inseminated", 0);
 		}
 	}

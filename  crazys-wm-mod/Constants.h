@@ -293,7 +293,7 @@ enum JOBS {
 	JOB_FILMFACEFUCK,		// 
 	JOB_FILMGROUP,			// films this sort of scene in the movie
 	JOB_FILMPUBLICBDSM,		// 
-	JOB_FILMDOM,			//
+	//JOB_FILMDOM,			//
 
 	//Must go last
 	JOB_FILMRANDOM,			// Films a random sex scene ... it does NOT work like most jobs, see following note.
@@ -312,7 +312,7 @@ enum JOBS {
 	//JOB_ARMSDUEL		= ;
 	//JOB_FIGHTBATTLE	= ;
 	//JOB_ATHELETE		= ;
-	JOB_RACING,				//	
+	//JOB_RACING,				//	
 	// `J` Job Arena - Staff
 	JOB_ARENAREST,			//free time of arena
 	JOB_DOCTORE,			//Matron of arena
@@ -368,7 +368,7 @@ enum JOBS {
 	JOB_JANITOR,			// cleans clinic
 
 	// Job Clinic - Drug lab
-	JOB_DRUGDEALER,	
+	//JOB_DRUGDEALER,	
 
 	// `J` Job Farm - Staff
 	JOB_FARMREST,			//farm rest
@@ -411,7 +411,7 @@ enum JOBS {
 	JOB_SO_BISEXUAL,		//
 	JOB_SO_LESBIAN,			//
 	JOB_HOUSEPET,			//		
-	JOB_PONYGIRL,			//		
+	//JOB_PONYGIRL,			//		
 
 
 

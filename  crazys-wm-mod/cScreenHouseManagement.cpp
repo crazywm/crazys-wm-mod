@@ -200,7 +200,7 @@ bool cScreenHouseManagement::check_keys()
 		bool skip = false;
 		if (selected_girl->is_slave() && (selection == JOB_HEADGIRL || selection == JOB_RECRUITER))
 			skip = true;
-		if (selected_girl->is_free() && (selection == JOB_HOUSEPET || selection == JOB_PONYGIRL))
+		if (selected_girl->is_free() && (selection == JOB_HOUSEPET))// || selection == JOB_PONYGIRL))
 			skip = true;
 		if (selection == JOB_HEADGIRL && (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, 0) > 0 || g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, 1) > 0))
 			skip = true;

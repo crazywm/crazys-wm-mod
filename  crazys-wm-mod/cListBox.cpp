@@ -768,7 +768,7 @@ int cListBox::GetSelected()
 	//else return m_LastSelected->m_ID;
 
 	cListItem* current = m_Items;
-	while (current->m_Selected == false && current)
+	while (current && current->m_Selected == false)
 		current = current->m_Next;
 
 	if (current) return current->m_ID;

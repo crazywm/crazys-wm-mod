@@ -466,7 +466,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->is_dead() || sw != JOB_RACING)
+		if (current->is_dead())// || sw != JOB_RACING)
 		{	// skip dead girls, and anyone not racing
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -518,7 +518,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	while (current)
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-		if (current->is_dead() || sw == restjob || sw == matronjob || sw == JOB_RACING)
+		if (current->is_dead() || sw == restjob || sw == matronjob)// || sw == JOB_RACING)
 		{	// skip dead girls, resting girls and the matron and racers
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }

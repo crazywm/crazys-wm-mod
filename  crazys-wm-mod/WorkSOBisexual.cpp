@@ -126,7 +126,11 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Broodmother"))		girl->m_WorkingDay += 1;					// She prefers males who can get her pregnant
 	if (girl->has_trait("Futanari"))		girl->m_WorkingDay += 1;					// If she has a dick she can put it anywhere
 	// Negative Traits
-	if (girl->has_trait("Broken Will"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
+	if (girl->has_trait("Broken Will"))
+	{
+		ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n";
+		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
+	}
 	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
 	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 10);	// Does she even know who is fucking her?
 	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay -= 3;					// She is set in her ways

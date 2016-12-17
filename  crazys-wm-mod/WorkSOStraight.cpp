@@ -81,33 +81,41 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	girl->m_WorkingDay += girl->tittysex() / 20;
 	girl->m_WorkingDay += girl->anal() / 20;
 	girl->m_WorkingDay += girl->obedience() / 20;
-	if (girl->pcfear() > 50)			girl->m_WorkingDay += g_Dice % 3;							// She will do as she is told
-	if (girl->pclove() > 50)			girl->m_WorkingDay += g_Dice % (girl->pclove() / 20);		// She will do what you ask
+	if (girl->pcfear() > 50)				girl->m_WorkingDay += g_Dice % 3;							// She will do as she is told
+	if (girl->pclove() > 50)				girl->m_WorkingDay += g_Dice % (girl->pclove() / 20);		// She will do what you ask
 	// Negative Stats/Skills
 	girl->m_WorkingDay -= girl->spirit() / 25;
-	if (girl->pchate() > 30)			girl->m_WorkingDay -= g_Dice % (girl->pchate()/10);			// She will not do what you want
-	if (girl->happiness() < 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is not feeling like it
-	if (girl->health() < 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is feeling sick
-	if (girl->tiredness() > 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is tired
-	if (girl->has_trait("Lesbian"))		girl->m_WorkingDay -= girl->lesbian() / 5;					// it is hard to change something you are good at
-	if (girl->has_trait("Bisexual"))	girl->m_WorkingDay -= girl->lesbian() / 20;					// it is hard to change something you are good at
+	if (girl->pchate() > 30)				girl->m_WorkingDay -= g_Dice % (girl->pchate()/10);			// She will not do what you want
+	if (girl->happiness() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is not feeling like it
+	if (girl->health() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is feeling sick
+	if (girl->tiredness() > 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is tired
+	if (girl->has_trait("Lesbian"))
+	{
+		ss << "Her inate disgust of balls and shaft made her pull away from you while trying to teach her to suck it.\n";
+		girl->m_WorkingDay -= girl->lesbian() / 5;					// it is hard to change something you are good at
+	}
+	if (girl->has_trait("Bisexual"))		girl->m_WorkingDay -= girl->lesbian() / 20;					// it is hard to change something you are good at
 	// Positive Traits
-	if (girl->has_trait("Broodmother"))		girl->m_WorkingDay += g_Dice.bell(5, 15);	// She prefers males who can get her pregnant
-	if (girl->has_trait("Your Wife"))		girl->m_WorkingDay += g_Dice.bell(5, 10);	// She wants to be with you only
-	if (girl->has_trait("Succubus"))		girl->m_WorkingDay += 5;					// Males are easier to drain energy from
-	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += g_Dice.bell(-1, 5);	// She wants to be "Normal"
-	if (girl->has_trait("Virgin"))			girl->m_WorkingDay += g_Dice.bell(-2, 2);	// Having never been with a man she is a little scared
+	if (girl->has_trait("Broodmother"))		girl->m_WorkingDay += g_Dice.bell(5, 15);					// She prefers males who can get her pregnant
+	if (girl->has_trait("Your Wife"))		girl->m_WorkingDay += g_Dice.bell(5, 10);					// She wants to be with you only
+	if (girl->has_trait("Succubus"))		girl->m_WorkingDay += 5;									// Males are easier to drain energy from
+	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += g_Dice.bell(-1, 5);					// She wants to be "Normal"
+	if (girl->has_trait("Virgin"))			girl->m_WorkingDay += g_Dice.bell(-2, 2);					// Having never been with a man she is a little scared
 	// Negative Traits
-	if (girl->has_trait("Broken Will"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
-	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
-	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 10);	// Does she even know who is fucking her?
-	if (girl->has_trait("Shape Shifter"))	girl->m_WorkingDay -= g_Dice.bell(-1, 10);	// If she can become anyone can she really be straight?
-	if (girl->has_trait("Futanari"))		girl->m_WorkingDay -= g_Dice.bell(1, 5);	// If she has a dick can she really be straight?
-	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay -= 3;					// She is used to having sex with anyone her director tells her to
-	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay -= 3;					// She is set in her ways
-	if (girl->has_trait("Whore"))			girl->m_WorkingDay -= 2;					// She'll do anyone as long as they can pay
-	if (girl->has_trait("Slut"))			girl->m_WorkingDay -= 1;					// She'll do anyone 
-	if (girl->has_trait("Actress"))			girl->m_WorkingDay -= 1;					// She will do whatever her director tells her to
+	if (girl->has_trait("Broken Will"))
+	{
+		ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n";
+		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
+	}
+	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);					// Does she even know who is fucking her?
+	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 10);					// Does she even know who is fucking her?
+	if (girl->has_trait("Shape Shifter"))	girl->m_WorkingDay -= g_Dice.bell(-1, 10);					// If she can become anyone can she really be straight?
+	if (girl->has_trait("Futanari"))		girl->m_WorkingDay -= g_Dice.bell(1, 5);					// If she has a dick can she really be straight?
+	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay -= 3;									// She is used to having sex with anyone her director tells her to
+	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay -= 3;									// She is set in her ways
+	if (girl->has_trait("Whore"))			girl->m_WorkingDay -= 2;									// She'll do anyone as long as they can pay
+	if (girl->has_trait("Slut"))			girl->m_WorkingDay -= 1;									// She'll do anyone 
+	if (girl->has_trait("Actress"))			girl->m_WorkingDay -= 1;									// She will do whatever her director tells her to
 
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
 

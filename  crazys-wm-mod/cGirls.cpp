@@ -504,141 +504,136 @@ void sGirl::setup_maps()
 	enjoy_lookup["GENERAL"] = ACTION_GENERAL;
 
 
-	jobs_lookup["TOff"] = JOB_RESTING;
-	jobs_lookup["Prtc"] = JOB_TRAINING;
-	jobs_lookup["Cln"] = JOB_CLEANING;
-	jobs_lookup["Sec"] = JOB_SECURITY;
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cGirls.cpp > jobs_lookup
 	jobs_lookup["Adv"] = JOB_ADVERTISING;
-	jobs_lookup["CS"] = JOB_CUSTOMERSERVICE;
-	jobs_lookup["Mtrn"] = JOB_MATRON;
-	jobs_lookup["Trtr"] = JOB_TORTURER;
-	jobs_lookup["ExC"] = JOB_EXPLORECATACOMBS;
-	jobs_lookup["BstC"] = JOB_BEASTCARER;
-	jobs_lookup["BrMd"] = JOB_BARMAID;
-	jobs_lookup["Wtrs"] = JOB_WAITRESS;
-	jobs_lookup["Sngr"] = JOB_SINGER;
-	jobs_lookup["Pno"] = JOB_PIANO;
-	jobs_lookup["Scrt"] = JOB_ESCORT;
+	jobs_lookup["AMng"] = JOB_ANGER;
+	jobs_lookup["TOff"] = JOB_ARENAREST;
+	jobs_lookup["AssJ"] = JOB_ASSJOB;
+	jobs_lookup["Bkr"] = JOB_BAKER;
 	jobs_lookup["BrCk"] = JOB_BARCOOK;
-	jobs_lookup["Dlr"] = JOB_DEALER;
-	jobs_lookup["Entn"] = JOB_ENTERTAINMENT;
-	jobs_lookup["XXXE"] = JOB_XXXENTERTAINMENT;
-	jobs_lookup["HWhr"] = JOB_WHOREGAMBHALL;
-	jobs_lookup["SBmd"] = JOB_SLEAZYBARMAID;
-	jobs_lookup["SWtr"] = JOB_SLEAZYWAITRESS;
+	jobs_lookup["BrMd"] = JOB_BARMAID;
 	jobs_lookup["SSrp"] = JOB_BARSTRIPPER;
 	jobs_lookup["SWhr"] = JOB_BARWHORE;
-	jobs_lookup["Msus"] = JOB_MASSEUSE;
+	jobs_lookup["BCpt"] = JOB_BEASTCAPTURE;
+	jobs_lookup["BstC"] = JOB_BEASTCARER;
+	jobs_lookup["Bksm"] = JOB_BLACKSMITH;
+	jobs_lookup["BbJb"] = JOB_BOOBJOB;
+	jobs_lookup["BRS"] = JOB_BREASTREDUCTION;
+	jobs_lookup["Brwr"] = JOB_BREWER;
 	jobs_lookup["BStp"] = JOB_BROTHELSTRIPPER;
-	jobs_lookup["Peep"] = JOB_PEEP;
-	jobs_lookup["BWhr"] = JOB_WHOREBROTHEL;
-	jobs_lookup["StWr"] = JOB_WHORESTREETS;
-	jobs_lookup["TOff"] = JOB_FILMFREETIME;
-	jobs_lookup["Dir"] = JOB_DIRECTOR;
-	jobs_lookup["Prmt"] = JOB_PROMOTER;
+	jobs_lookup["Bchr"] = JOB_BUTCHER;
 	jobs_lookup["CM"] = JOB_CAMERAMAGE;
+	jobs_lookup["CRnc"] = JOB_CATACOMBRANCHER;
+	jobs_lookup["CMgr"] = JOB_CENTREMANAGER;
+	jobs_lookup["TOff"] = JOB_CENTREREST;
+	jobs_lookup["Crmn"] = JOB_CHAIRMAN;
+	jobs_lookup["CGrd"] = JOB_CITYGUARD;
+	jobs_lookup["GKpr"] = JOB_CLEANARENA;
+	jobs_lookup["ClnC"] = JOB_CLEANCENTRE;
+	jobs_lookup["ClnH"] = JOB_CLEANHOUSE;
+	jobs_lookup["Cln"] = JOB_CLEANING;
+	jobs_lookup["TOff"] = JOB_CLINICREST;
+	jobs_lookup["Cblr"] = JOB_COBBLER;
+	jobs_lookup["CmSr"] = JOB_COMUNITYSERVICE;
+	jobs_lookup["CosS"] = JOB_COSMETICSURGERY;
+	jobs_lookup["Cnsl"] = JOB_COUNSELOR;
 	jobs_lookup["CP"] = JOB_CRYSTALPURIFIER;
-	//jobs_lookup["SndT"] = JOB_SOUNDTRACK;
-	jobs_lookup["Fluf"] = JOB_FLUFFER;
-	jobs_lookup["StgH"] = JOB_STAGEHAND;
-	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cGirls.cpp > setup_maps
+	jobs_lookup["CS"] = JOB_CUSTOMERSERVICE;
+	jobs_lookup["Dlr"] = JOB_DEALER;
+	jobs_lookup["Dir"] = JOB_DIRECTOR;
+	jobs_lookup["Dtre"] = JOB_DOCTORE;
+	jobs_lookup["Doc"] = JOB_DOCTOR;
+	jobs_lookup["Entn"] = JOB_ENTERTAINMENT;
+	jobs_lookup["Scrt"] = JOB_ESCORT;
+	jobs_lookup["ExC"] = JOB_EXPLORECATACOMBS;
+	jobs_lookup["EThr"] = JOB_EXTHERAPY;
+	jobs_lookup["FLft"] = JOB_FACELIFT;
+	jobs_lookup["FOEx"] = JOB_FAKEORGASM;
+	jobs_lookup["Frmr"] = JOB_FARMER;
+	jobs_lookup["FHnd"] = JOB_FARMHAND;
+	jobs_lookup["FMgr"] = JOB_FARMMANGER;
+	jobs_lookup["TOff"] = JOB_FARMREST;
+	jobs_lookup["Feed"] = JOB_FEEDPOOR;
+	jobs_lookup["FrtT"] = JOB_FERTILITY;
+	jobs_lookup["Cage"] = JOB_FIGHTARENAGIRLS;
+	jobs_lookup["FiBs"] = JOB_FIGHTBEASTS;
+	jobs_lookup["CT"] = JOB_FIGHTTRAIN;
 	jobs_lookup["FAct"] = JOB_FILMACTION;
-	jobs_lookup["FChf"] = JOB_FILMCHEF;
-	//jobs_lookup["FCmd"] = JOB_FILMCOMEDY;
-	//jobs_lookup["FDrm"] = JOB_FILMDRAMA;
-	//jobs_lookup["FHrr"] = JOB_FILMHORROR;
-	//jobs_lookup["FIdl"] = JOB_FILMIDOL;
-	jobs_lookup["FMus"] = JOB_FILMMUSIC;
-	jobs_lookup["FMst"] = JOB_FILMMAST;
-	jobs_lookup["FStp"] = JOB_FILMSTRIP;
-	jobs_lookup["FTea"] = JOB_FILMTEASE;
 	jobs_lookup["FAnl"] = JOB_FILMANAL;
-	jobs_lookup["FFJ"] = JOB_FILMFOOTJOB;
-	//jobs_lookup["FFta"] = JOB_FILMFUTA;
-	jobs_lookup["FHJ"] = JOB_FILMHANDJOB;
-	jobs_lookup["FLes"] = JOB_FILMLESBIAN;
-	jobs_lookup["FOrl"] = JOB_FILMORAL;
-	jobs_lookup["FSex"] = JOB_FILMSEX;
-	jobs_lookup["FTit"] = JOB_FILMTITTY;
 	jobs_lookup["FBst"] = JOB_FILMBEAST;
 	jobs_lookup["FBnd"] = JOB_FILMBONDAGE;
 	jobs_lookup["FBuk"] = JOB_FILMBUKKAKE;
+	jobs_lookup["FChf"] = JOB_FILMCHEF;
 	jobs_lookup["FFac"] = JOB_FILMFACEFUCK;
+	jobs_lookup["FFJ"] = JOB_FILMFOOTJOB;
+	jobs_lookup["TOff"] = JOB_FILMFREETIME;
 	jobs_lookup["FGrp"] = JOB_FILMGROUP;
+	jobs_lookup["FHJ"] = JOB_FILMHANDJOB;
+	jobs_lookup["FLes"] = JOB_FILMLESBIAN;
+	jobs_lookup["FMst"] = JOB_FILMMAST;
+	jobs_lookup["FMus"] = JOB_FILMMUSIC;
+	jobs_lookup["FOrl"] = JOB_FILMORAL;
 	jobs_lookup["FTor"] = JOB_FILMPUBLICBDSM;
-	jobs_lookup["FDom"] = JOB_FILMDOM;
 	jobs_lookup["FRnd"] = JOB_FILMRANDOM;
-	jobs_lookup["FiBs"] = JOB_FIGHTBEASTS;
-	jobs_lookup["Cage"] = JOB_FIGHTARENAGIRLS;
-	jobs_lookup["CT"] = JOB_FIGHTTRAIN;
-	//jobs_lookup["JstM"] = JOB_JOUSTING;
-	jobs_lookup["TOff"] = JOB_ARENAREST;
-	jobs_lookup["Dtre"] = JOB_DOCTORE;
-	jobs_lookup["CGrd"] = JOB_CITYGUARD;
-	jobs_lookup["Bksm"] = JOB_BLACKSMITH;
-	jobs_lookup["Cblr"] = JOB_COBBLER;
-	jobs_lookup["Jwlr"] = JOB_JEWELER;
-	jobs_lookup["GKpr"] = JOB_CLEANARENA;
-	jobs_lookup["TOff"] = JOB_CENTREREST;
-	jobs_lookup["CMgr"] = JOB_CENTREMANAGER;
-	jobs_lookup["Feed"] = JOB_FEEDPOOR;
-	jobs_lookup["CmSr"] = JOB_COMUNITYSERVICE;
-	jobs_lookup["ClnC"] = JOB_CLEANCENTRE;
-	jobs_lookup["Cnsl"] = JOB_COUNSELOR;
-	jobs_lookup["Rehb"] = JOB_REHAB;
-	jobs_lookup["Thrp"] = JOB_THERAPY;
-	jobs_lookup["EThr"] = JOB_EXTHERAPY;
-	jobs_lookup["AMng"] = JOB_ANGER;
+	jobs_lookup["FSex"] = JOB_FILMSEX;
+	jobs_lookup["FStp"] = JOB_FILMSTRIP;
+	jobs_lookup["FTea"] = JOB_FILMTEASE;
+	jobs_lookup["FTit"] = JOB_FILMTITTY;
+	jobs_lookup["Fluf"] = JOB_FLUFFER;
+	jobs_lookup["Grdn"] = JOB_GARDENER;
+	jobs_lookup["Abrt"] = JOB_GETABORT;
 	jobs_lookup["Heal"] = JOB_GETHEALING;
 	jobs_lookup["Repr"] = JOB_GETREPAIRS;
-	jobs_lookup["Abrt"] = JOB_GETABORT;
-	jobs_lookup["CosS"] = JOB_COSMETICSURGERY;
-	jobs_lookup["Lipo"] = JOB_LIPO;
-	jobs_lookup["BRS"] = JOB_BREASTREDUCTION;
-	jobs_lookup["BbJb"] = JOB_BOOBJOB;
-	jobs_lookup["VagR"] = JOB_VAGINAREJUV;
-	jobs_lookup["FLft"] = JOB_FACELIFT;
-	jobs_lookup["AssJ"] = JOB_ASSJOB;
-	jobs_lookup["TTid"] = JOB_TUBESTIED;
-	jobs_lookup["FrtT"] = JOB_FERTILITY;
-	jobs_lookup["TOff"] = JOB_CLINICREST;
-	jobs_lookup["Crmn"] = JOB_CHAIRMAN;
-	jobs_lookup["Doc"] = JOB_DOCTOR;
-	jobs_lookup["Nurs"] = JOB_NURSE;
-	jobs_lookup["Mech"] = JOB_MECHANIC;
-	jobs_lookup["Ntrn"] = JOB_INTERN;
-	jobs_lookup["Jntr"] = JOB_JANITOR;
-	jobs_lookup["TOff"] = JOB_FARMREST;
-	jobs_lookup["FMgr"] = JOB_FARMMANGER;
-	jobs_lookup["Vet"] = JOB_VETERINARIAN;
-	jobs_lookup["Mrkt"] = JOB_MARKETER;
-	jobs_lookup["Rsrc"] = JOB_RESEARCH;
-	jobs_lookup["FHnd"] = JOB_FARMHAND;
-	jobs_lookup["Frmr"] = JOB_FARMER;
-	jobs_lookup["Grdn"] = JOB_GARDENER;
-	jobs_lookup["SHrd"] = JOB_SHEPHERD;
-	jobs_lookup["Rncr"] = JOB_RANCHER;
-	jobs_lookup["CRnc"] = JOB_CATACOMBRANCHER;
-	jobs_lookup["BCpt"] = JOB_BEASTCAPTURE;
-	jobs_lookup["Mlkr"] = JOB_MILKER;
-	jobs_lookup["Mlkd"] = JOB_MILK;
-	jobs_lookup["Bchr"] = JOB_BUTCHER;
-	jobs_lookup["Bkr"] = JOB_BAKER;
-	jobs_lookup["Brwr"] = JOB_BREWER;
-	jobs_lookup["Talr"] = JOB_TAILOR;
-	jobs_lookup["MkIt"] = JOB_MAKEITEM;
-	jobs_lookup["MkPt"] = JOB_MAKEPOTIONS;
-	jobs_lookup["TOff"] = JOB_HOUSEREST;
 	jobs_lookup["HGrl"] = JOB_HEADGIRL;
-	jobs_lookup["Rcrt"] = JOB_RECRUITER;
-	jobs_lookup["PTrn"] = JOB_PERSONALTRAINING;
-	jobs_lookup["BdWm"] = JOB_PERSONALBEDWARMER;
 	jobs_lookup["Hcok"] = JOB_HOUSECOOK;
 	jobs_lookup["Hpet"] = JOB_HOUSEPET;
-	jobs_lookup["PGil"] = JOB_PONYGIRL;
-	jobs_lookup["ClnH"] = JOB_CLEANHOUSE;
+	jobs_lookup["TOff"] = JOB_HOUSEREST;
 	jobs_lookup["Dngn"] = JOB_INDUNGEON;
+	jobs_lookup["Ntrn"] = JOB_INTERN;
+	jobs_lookup["Jntr"] = JOB_JANITOR;
+	jobs_lookup["Jwlr"] = JOB_JEWELER;
+	jobs_lookup["Lipo"] = JOB_LIPO;
+	jobs_lookup["MkIt"] = JOB_MAKEITEM;
+	jobs_lookup["MkPt"] = JOB_MAKEPOTIONS;
+	jobs_lookup["Mrkt"] = JOB_MARKETER;
+	jobs_lookup["Msus"] = JOB_MASSEUSE;
+	jobs_lookup["Mtrn"] = JOB_MATRON;
+	jobs_lookup["Mech"] = JOB_MECHANIC;
+	jobs_lookup["Mlkr"] = JOB_MILKER;
+	jobs_lookup["Mlkd"] = JOB_MILK;
+	jobs_lookup["Nurs"] = JOB_NURSE;
+	jobs_lookup["Peep"] = JOB_PEEP;
+	jobs_lookup["BdWm"] = JOB_PERSONALBEDWARMER;
+	jobs_lookup["PTrn"] = JOB_PERSONALTRAINING;
+	jobs_lookup["Pno"] = JOB_PIANO;
+	jobs_lookup["Prmt"] = JOB_PROMOTER;
+	jobs_lookup["Rncr"] = JOB_RANCHER;
+	jobs_lookup["Rcrt"] = JOB_RECRUITER;
+	jobs_lookup["Rehb"] = JOB_REHAB;
+	jobs_lookup["Rsrc"] = JOB_RESEARCH;
+	jobs_lookup["TOff"] = JOB_RESTING;
 	jobs_lookup["RunA"] = JOB_RUNAWAY;
+	jobs_lookup["Sec"] = JOB_SECURITY;
+	jobs_lookup["SHrd"] = JOB_SHEPHERD;
+	jobs_lookup["Sngr"] = JOB_SINGER;
+	jobs_lookup["SBmd"] = JOB_SLEAZYBARMAID;
+	jobs_lookup["SWtr"] = JOB_SLEAZYWAITRESS;
+	jobs_lookup["SOBi"] = JOB_SO_BISEXUAL;
+	jobs_lookup["SOLe"] = JOB_SO_LESBIAN;
+	jobs_lookup["SOSt"] = JOB_SO_STRAIGHT;
+	jobs_lookup["StgH"] = JOB_STAGEHAND;
+	jobs_lookup["Talr"] = JOB_TAILOR;
+	jobs_lookup["Thrp"] = JOB_THERAPY;
+	jobs_lookup["Trtr"] = JOB_TORTURER;
+	jobs_lookup["Prtc"] = JOB_TRAINING;
+	jobs_lookup["TTid"] = JOB_TUBESTIED;
+	jobs_lookup["VagR"] = JOB_VAGINAREJUV;
+	jobs_lookup["Vet"] = JOB_VETERINARIAN;
+	jobs_lookup["Wtrs"] = JOB_WAITRESS;
+	jobs_lookup["BWhr"] = JOB_WHOREBROTHEL;
+	jobs_lookup["HWhr"] = JOB_WHOREGAMBHALL;
+	jobs_lookup["StWr"] = JOB_WHORESTREETS;
+	jobs_lookup["XXXE"] = JOB_XXXENTERTAINMENT;
 	jobs_lookup["255"] = 255;
 
 
@@ -699,6 +694,13 @@ int sGirl::lookup_jobs_code(string s)
 	// be useful to be able to log unrecognised type names here
 	if (jobs_lookup.find(s) == jobs_lookup.end())
 	{
+		// `J` added check for missing jobs_lookup
+		for (int i = 0; i < NUM_JOBS; i++)
+		{
+			if (g_Brothels.m_JobManager.JobQkNm[i] == s)
+				return i;
+		}
+		// if still not found, send original error message
 		g_LogFile.os() << "[sGirl::jobs_enjoy_code] Error: unknown Job: " << s << endl;
 		return -1;
 	}
@@ -12758,7 +12760,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 		if (g_Brothels.GetNumBeasts() > 0)
 		{
-			contraception = girl->calc_insemination(customer, good);
+			contraception = girl->calc_insemination(GetBeast(), good);
 			STDchance += (contraception ? 2 : 20);
 		}
 		UpdateStatTemp(girl, STAT_LIBIDO, -10);
@@ -17243,6 +17245,7 @@ if (0){}
 
 		for (int i = 0; i < numchildren; i++)
 		{
+			ss.str("");
 			// we need a coming of age ceremony
 			if (!aregirls[i])	// boys first
 			{
@@ -17365,7 +17368,7 @@ if (0){}
 					int s = 0;
 					if (mom->m_Skills[i] < child->m_Skills[i])	s = child->m_Skills[i];
 					else										s = mom->m_Skills[i];
-					sprog->m_Skills[i] = g_Dice%max(s, 20);
+					sprog->m_Skills[i] = g_Dice%min(s, 20);
 				}
 
 
@@ -18687,12 +18690,21 @@ string cGirls::catacombs_look_for(int girls, int items, int beast)
 // `J` for use with beast jobs where the girl has sex with a beast
 sCustomer* cGirls::GetBeast()
 {
-	sCustomer* beast = 0;
+	sCustomer* beast = new sCustomer;
 	beast->m_Amount = 1;
 	beast->m_IsWoman = 0;
 	// get their stats generated
-	for (int j = 0; j < NUM_STATS; j++)		beast->m_Stats[j] = g_Dice.d100();
-	for (int j = 0; j < NUM_SKILLS; j++)	beast->m_Skills[j] = g_Dice.d100();
+	for (int j = 0; j < NUM_STATS; j++)		beast->m_Stats[j] = g_Dice % 100;
+	for (int j = 0; j < NUM_SKILLS; j++)	beast->m_Skills[j] = g_Dice % 10;
+
+	beast->m_Skills[SKILL_BEASTIALITY] = 40 + g_Dice % 61;
+	beast->m_Skills[SKILL_COMBAT] = 40 + g_Dice % 61;
+	beast->m_Skills[SKILL_FARMING] = g_Dice % 20;
+	beast->m_Skills[SKILL_ANIMALHANDLING] = 40 + g_Dice % 61;
+	beast->m_Stats[STAT_INTELLIGENCE] = g_Dice % 30;
+	beast->m_Stats[STAT_LEVEL] = 0;
+	beast->m_Stats[STAT_AGE] = g_Dice % 20;
+	beast->m_Stats[STAT_STRENGTH] = 20+g_Dice % 81;
 
 	beast->m_SexPref = beast->m_SexPrefB = SKILL_BEASTIALITY;
 
@@ -18702,5 +18714,6 @@ sCustomer* cGirls::GetBeast()
 	beast->m_HasHerpes = g_Dice.percent(2.5);
 	beast->m_Money = 0;
 	beast->m_Next = 0;
+	
 	return beast;
 }

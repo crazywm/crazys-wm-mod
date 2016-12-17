@@ -90,6 +90,7 @@ void cScreenTown::set_ids()
 	back_id = get_id("BackButton");
 	gold_id = get_id("Gold");
 	walk_id = get_id("WalkButton");
+	girlimage_id = get_id("GirlImage");
 	curbrothel_id = get_id("CurrentBrothel");
 	slavemarket_id = get_id("SlaveMarket");
 	shop_id = get_id("Shop");
@@ -110,7 +111,6 @@ void cScreenTown::set_ids()
 	brothel5_id = get_id("Brothel5");
 	brothel6_id = get_id("Brothel6");
 	setup_id = get_id("SetUp");
-	girlimage_id =	get_id("GirlImage");
 }
 
 // stats of each brothel: price to buy, starting rooms, maximum rooms, required # of businesses owned

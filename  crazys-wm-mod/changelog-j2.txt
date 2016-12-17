@@ -304,7 +304,23 @@ Added a bunch of items by Cavey
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.43
 
+### Changes 12/12-16/2016
+Updated WorkExploreCatacombs.cpp
+ - fixed a few bad texts
+ - allowed the control girl section to allow any girl to explore even if she can't fight.
+ - Updated the uncontroled girl failed combat check text
+Updated all calc_insemination functions to use g_Girls.GetBeast() instead of using a customer or the player
+Fixed 4 bugs reported by blx
+ - "Game crash when you deselect all girls on brothel screen by pressing Ctrl + LMB."
+ - "On girl detail screen hotkey for list girls backward (left arrow "←") list girls forward."
+ - "All progress on new "Sexual Orientation training" and "Fake Orgasm training" reset after game load."
+ - "Messages about growing children stacks: second contains the first, third contains both previous."
+Added a few texts to WorkFreetime.cpp by MuteDay
+Added some texts to Sexual Orientation training and Fake Orgasm training
 
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.44
 
 
 

@@ -86,18 +86,26 @@ bool cJobManager::WorkSOLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (girl->pclove() > 50)			girl->m_WorkingDay += g_Dice % (girl->pclove() / 20);		// She will do what you ask
 	// Negative Stats/Skills
 	girl->m_WorkingDay -= girl->spirit() / 25;
-	if (girl->pchate() > 30)			girl->m_WorkingDay -= g_Dice % (girl->pchate() / 10);		// She will not do what you want
-	if (girl->happiness() < 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is not feeling like it
-	if (girl->health() < 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is feeling sick
-	if (girl->tiredness() > 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is tired
-	if (girl->has_trait("Straight"))	girl->m_WorkingDay -= girl->normalsex() / 5;				// it is hard to change something you are good at
-	if (girl->has_trait("Bisexual"))	girl->m_WorkingDay -= girl->normalsex() / 20;					// it is hard to change something you are good at
+	if (girl->pchate() > 30)				girl->m_WorkingDay -= g_Dice % (girl->pchate() / 10);		// She will not do what you want
+	if (girl->happiness() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is not feeling like it
+	if (girl->health() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is feeling sick
+	if (girl->tiredness() > 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is tired
+	if (girl->has_trait("Straight"))
+	{
+		ss << "Being used to working with something long and hard, she wasn't really sure what she was doing with her partner.\n";
+		girl->m_WorkingDay -= girl->normalsex() / 5;				// it is hard to change something you are good at
+	}
+	if (girl->has_trait("Bisexual"))		girl->m_WorkingDay -= girl->normalsex() / 20;					// it is hard to change something you are good at
 	// Positive Traits
 	if (girl->has_trait("Virgin"))			girl->m_WorkingDay += g_Dice.bell(2, 10);	// If she has not been with a man, what could she be missing
 	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += g_Dice.bell(2, 10);	// She sees you enjoying yourself with the ladies, lead by example?
 	if (girl->has_trait("Futanari"))		girl->m_WorkingDay += 2;					// If she has a dick can she really be a lesbian?
 	// Negative Traits
-	if (girl->has_trait("Broken Will"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
+	if (girl->has_trait("Broken Will"))
+	{
+		ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n";
+		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
+	}
 	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
 	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay -= g_Dice.bell(-3, 10);	// She is used to having sex with anyone her director tells her to
 	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 15);	// Does she even know who is fucking her?

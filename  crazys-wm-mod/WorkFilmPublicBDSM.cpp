@@ -389,7 +389,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		}
 		else
 		{
-			if (!girl->calc_insemination(Cust, false, 0.75))
+			if (!girl->calc_insemination(g_Girls.GetBeast(), false, 0.75))
 			{
 				g_MessageQue.AddToQue(girl->m_Realname + " has been inseminated.", 0);
 				ss << "And she's been inseminated by a beast.\nCongratulations!\n";

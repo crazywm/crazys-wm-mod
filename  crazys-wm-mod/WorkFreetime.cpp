@@ -72,7 +72,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int U_NPCLove = 0;
 
 	// `J` NOTE: one message to tell she is resting - use a separate one to tell the anything else she does
-	ss << girlName << gettext(" rested and recovered some energy.");
+	ss << girlName << " rested and recovered some energy.";
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 	int imagetype = IMGTYPE_PROFILE;
@@ -276,10 +276,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				case FT_Club:
 				case FT_Quest:
 				case FT_Hobby:
-				//case FT_Counseling:
-				case FT_StrollInCity:	
-				case FT_Casino:			
-				case FT_CountrySide:	
+					//case FT_Counseling:
+				case FT_StrollInCity:
+				case FT_Casino:
+				case FT_CountrySide:
 				case FT_GoOnDate:
 				case FT_VisitKid:
 				case FT_MakeExtraMoney:
@@ -328,8 +328,26 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			else if (girl->tiredness() > 80)
 			{
-				ss << "She fell asleep in the tub and woke up in the cold water.\n";
-				U_Health -= 2;
+				if (g_Dice.percent(3) && girl->tiredness() > 95 && !girl->has_trait("Incorporeal") && !girl->has_trait("Undead") && !girl->has_trait("Zombie") && !girl->has_trait("Skeleton"))	// 'MUTE' this is meant to kill the girl
+				{
+					string died = girlName;
+					if (girl->is_addict(true))	died = " took an overdose of drugs and drowned in the tub.\n";
+					else died = " fell asleep in the tub and no one came to check on her so she drowned.\n";
+					ss << died;
+					girl->m_Stats[STAT_HEALTH] -= 500;
+					girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_WARNING);
+					g_MessageQue.AddToQue(died, COLOR_RED);
+					return false;
+				}
+				else
+				{
+					ss << "She fell asleep in the tub and woke up in the cold water.\n";
+					U_Health -= 2;
+				}
+			}
+			else if (g_Dice.percent(5) && (girl->has_trait("Zombie") || girl->has_trait("Skeleton")))
+			{
+				ss << "Someone knocks on the door, \"Are you cooking in there? something smells good.\"   \"What? No, I'm taking a bath.\"   \"Oh, Sorry. Wait, What? EWwwwwwwwwwwwwwwwwwwwww.\"";
 			}
 			else
 			{
@@ -368,34 +386,39 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			// add more options for more money
 			ss << girlName << " went to the salon ";
-			if (girl->libido() > 70 && girl->m_Money >= 100 && !g_Girls.HasTrait(girl, "Virgin"))
+			if (girl->libido() > 70 && girl->m_Money >= 100 && !g_Girls.HasTrait(girl, "Virgin")
+				&& (g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel) ||
+				g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel)||
+				g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel))
+				)
 			{
-				u_int n;
-				int choice = g_Dice % 2;
 				ss << "and decide to get a \"special\" message.\n";
-				if (g_Girls.HasTrait(girl, "Lesbian"))
+				int sex = g_Dice % 3;
+
+				if (g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel) && girl->has_trait("Lesbian")) sex = 0;
+				if (sex == 0 && (!g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel) || g_Girls.HasTrait(girl, "Straight"))) sex++;
+				if (sex == 1 && !g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel))		sex++;
+				if (sex == 2 && !g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel))	sex++;
+
+				switch (sex)
 				{
-					n = SKILL_LESBIAN;
+				case 0:
+					imagetype = IMGTYPE_LESBIAN;
 					ss << "She paid the woman masseuse to intensely lick her clit until she got off.\n";
+					break;
+				case 1:
+					imagetype = IMGTYPE_ANAL;
+					ss << "She had the masseuse oil up her ass and fuck her.\n";
+					break;
+				case 2:
+					imagetype = IMGTYPE_SEX;
+					ss << "She told the masseuse to fuck her silly.\n";
+					break;
+				default:
+					imagetype = IMGTYPE_MAST;
+					ss << "She told the masseuse to just focus on her pussy until she cums.\n";
+					break;
 				}
-				else
-				{
-					switch (choice)
-					{
-					case 0:
-						n = SKILL_ANAL;
-						ss << "She oiled up her ass and had the masseuse fuck her.";
-						break;
-					case 1:
-					default:
-						n = SKILL_NORMALSEX;
-						ss << "She told the masseuse to fuck her silly.";
-						break;
-					}
-				}
-				/* */if (n == SKILL_LESBIAN)	imagetype = IMGTYPE_LESBIAN;
-				else if (n == SKILL_ANAL)		imagetype = IMGTYPE_ANAL;
-				else if (n == SKILL_NORMALSEX)	imagetype = IMGTYPE_SEX;
 				U_Money -= 100;
 				U_Libido -= 25;
 				U_Happiness += 5;
@@ -1214,18 +1237,18 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 									u_int n;
 									switch (g_Dice % 10)
 									{
-										case 0:        n = SKILL_NORMALSEX;  ss << "lead singer.";			break;
-										case 1:        n = SKILL_NORMALSEX;  ss << "lead guitarist.";		break;
-										case 2:        n = SKILL_NORMALSEX;  ss << "drummer.";				break;
-										case 3:        n = SKILL_NORMALSEX;  ss << "bass player.";			break;
-										case 4:        n = SKILL_NORMALSEX;	 ss << "rythim guitarist.";		break;
-										default:	   n = SKILL_GROUP;		 ss << "whole group.";			break;
+									case 0:        n = SKILL_NORMALSEX;  ss << "lead singer.";			break;
+									case 1:        n = SKILL_NORMALSEX;  ss << "lead guitarist.";		break;
+									case 2:        n = SKILL_NORMALSEX;  ss << "drummer.";				break;
+									case 3:        n = SKILL_NORMALSEX;  ss << "bass player.";			break;
+									case 4:        n = SKILL_NORMALSEX;	 ss << "rythim guitarist.";		break;
+									default:	   n = SKILL_GROUP;		 ss << "whole group.";			break;
 									}
 									/* */if (n == SKILL_NORMALSEX)	imagetype = IMGTYPE_SEX;
 									else if (n == SKILL_GROUP)		imagetype = IMGTYPE_GROUP;
 									g_Girls.UpdateSkill(girl, n, 1);
 								}
-									U_Libido -= 10;
+								U_Libido -= 10;
 							}
 							else
 							{
@@ -1419,35 +1442,35 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					{
 						ss << "She ended up having a major breakthru and ";
 						if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
-							{
-								g_Girls.RemoveTrait(girl, "Fairy Dust Addict", true);
-								ss << "she is no longer a fairy dust addict.\n";
-							}
+						{
+							g_Girls.RemoveTrait(girl, "Fairy Dust Addict", true);
+							ss << "she is no longer a fairy dust addict.\n";
+						}
 						else if (g_Girls.HasTrait(girl, "Shroud Addict"))
-							{
-								g_Girls.RemoveTrait(girl, "Shroud Addict", true);
-								ss << "she is no longer a shroud addict.\n";
-							}
+						{
+							g_Girls.RemoveTrait(girl, "Shroud Addict", true);
+							ss << "she is no longer a shroud addict.\n";
+						}
 						else if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
-							{
-								g_Girls.RemoveTrait(girl, "Viras Blood Addict", true);
-								ss << "she is no longer a viras blood addict.\n";
-							}
+						{
+							g_Girls.RemoveTrait(girl, "Viras Blood Addict", true);
+							ss << "she is no longer a viras blood addict.\n";
+						}
 						else if (g_Girls.HasTrait(girl, "Alcoholic"))
-							{
-								g_Girls.RemoveTrait(girl, "Alcoholic", true);
-								ss << "she is no longer an alcoholic.\n";
-							}
-							else if (g_Girls.HasTrait(girl, "Smoker"))
-							{
-								g_Girls.RemoveTrait(girl, "Smoker", true);
-								ss << "she is no longer a smoker.\n";
-							}
-							else if (g_Girls.HasTrait(girl, "Cum Addict"))
-							{
-								g_Girls.RemoveTrait(girl, "Cum Addict", true);
-								ss << "she is no longer a cum addict.\n";
-							}
+						{
+							g_Girls.RemoveTrait(girl, "Alcoholic", true);
+							ss << "she is no longer an alcoholic.\n";
+						}
+						else if (g_Girls.HasTrait(girl, "Smoker"))
+						{
+							g_Girls.RemoveTrait(girl, "Smoker", true);
+							ss << "she is no longer a smoker.\n";
+						}
+						else if (g_Girls.HasTrait(girl, "Cum Addict"))
+						{
+							g_Girls.RemoveTrait(girl, "Cum Addict", true);
+							ss << "she is no longer a cum addict.\n";
+						}
 					}
 					else//doesnt
 					{
@@ -1468,20 +1491,20 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					{
 						ss << "She ended up having a major breakthru and ";
 						if (g_Girls.HasTrait(girl, "Aggressive"))
-							{
-								g_Girls.RemoveTrait(girl, "Aggressive");
-								ss << "she is no longer Aggressive.\n";
-							}
+						{
+							g_Girls.RemoveTrait(girl, "Aggressive");
+							ss << "she is no longer Aggressive.\n";
+						}
 						else if (g_Girls.HasTrait(girl, "Tsundere"))
-							{
-								g_Girls.RemoveTrait(girl, "Tsundere");
-								ss << "she is no longer a Tsundere.\n";
-							}
+						{
+							g_Girls.RemoveTrait(girl, "Tsundere");
+							ss << "she is no longer a Tsundere.\n";
+						}
 						else if (g_Girls.HasTrait(girl, "Yandere"))
-							{
-								g_Girls.RemoveTrait(girl, "Yandere");
-								ss << "she is no longer a Yandere.\n";
-							}
+						{
+							g_Girls.RemoveTrait(girl, "Yandere");
+							ss << "she is no longer a Yandere.\n";
+						}
 					}
 					else//doesnt
 					{
@@ -1673,12 +1696,12 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			/*add different types of workouts.. the type she does will affect the stat gain and maybe give a trait gain*/
 			switch (g_Dice % 10)
 			{
-			case 0:         ss << "did crunches working on her abs";			jog = true;	 break;
-			case 1:         ss << "did squats working on her ass";				ass = true;	 break;
-			case 2:			ss << "did push ups working her chest out";			str = true;  break;
-			case 3:         ss << "went for a run";								jog = true;  break;
-			case 4:         ss << "did some pull ups working her biceps";		str = true;	 break;
-			default:	    ss << "did some yoga working on her flexibility";	flex = true; break;
+			case 0:         ss << "did crunches working on her abs";		jog = true;	break;
+			case 1:         ss << "did squats working on her ass";			ass = true;	break;
+			case 2:		ss << "did push ups working her chest out";		str = true;  	break;
+			case 3:         ss << "went for a run";					jog = true;  	break;
+			case 4:         ss << "did some pull ups working her biceps";		str = true;  	break;
+			default:	ss << "did some yoga working on her flexibility";	flex = true; 	break;
 			}
 			///* */if (roll_c <= 14)	{ ss << "did crunches working on her abs";			jog = true; }
 			//else if (roll_c <= 28)	{ ss << "did squats working on her ass";			ass = true; }
@@ -1692,7 +1715,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			else if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(50))
 			{
-				ss << " but somehow she ended up hurting herself."; workout -= 2;
+				ss << " but somehow she ended up hurting herself.\n"; workout -= 2;
 				roll = 4;
 			}
 			else if (roll <= 5)//did she get a good work out?
@@ -1743,14 +1766,14 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			int enjoy = 0;
 			bool breakup = false;
 			ss << girlName << " went on a date with her ";
-				if (g_Girls.HasTrait(girl, "Has Boy Friend"))
-					{
-						ss << "boy friend.\n";
-					}
-				else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
-					{
-						ss << "girl friend.\n";
-					}
+			if (g_Girls.HasTrait(girl, "Has Boy Friend"))
+			{
+				ss << "boy friend.\n";
+			}
+			else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
+			{
+				ss << "girl friend.\n";
+			}
 			if (g_Dice.percent(10))//is she excited to go?
 			{
 				if (g_Girls.HasTrait(girl, "Optimist"))
@@ -1793,325 +1816,325 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			else
 			{
-				if (roll >= 80 )//dinner
+				if (roll >= 80)//dinner
+				{
+					ss << "They went to dinner. ";
+					if (girl->m_States&(1 << STATUS_DATING_PERV))//perv
 					{
-						ss << "They went to dinner. ";	
-						if (girl->m_States&(1 << STATUS_DATING_PERV))//perv
+						ss << "During dinner her date told several dirty jokes and made many lewd comments which she ";
+						if (g_Girls.HasTrait(girl, "Shy"))
 						{
-							ss << "During dinner her date told several dirty jokes and made many lewd comments which she ";
-							if (g_Girls.HasTrait(girl, "Shy"))
-								{
-									ss << "didn't like at all.\n"; enjoy -= 2;
-								}
-							else if (g_Girls.HasTrait(girl, "Slut"))
-								{
-									ss << "really liked.\n"; enjoy += 2;
-								}
-							else if (g_Girls.HasTrait(girl, "Bimbo"))
-								{
-									ss << "which she didn't get at all.\n";
-								}
-							else
-								{
-									ss << "didn't care for much either way.\n";
-								}
-							ss << "After dinner ";
-								if (g_Girls.HasTrait(girl, "Has Boy Friend"))
-									{
-										ss << "he walks " << girlName << " home, ";
-										if (g_Dice.percent(50))//perv so higher chance of trying to get some
-										{
-											ss << "but before getting her home he whips out his cock and asks for a blow job.\n";
-											if (g_Girls.HasTrait(girl, "Shy"))
-											{
-												if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
-												{
-													ss << "Embarrassed at the thought of it she told him it was to soon.\n";
-												}
-												else
-												{
-													ss << "She couldn't belive he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
-												}
-											}
-										else if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-											{
-												ss << "She loves cock so she agrees and sucks him off.\n"; enjoy += 2;
-												imagetype = IMGTYPE_ORAL;
-												g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
-											}
-										else if (girl->is_fighter())
-											{
-												if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
-												{
-													ss << "She told him he was lucky she kinda liked him if not he would be in a world of pain right now.\n";
-												}
-												else
-												{
-													ss << "She punched him in the junk and told him next time he might not get off so easy."; enjoy -= 2;
-												}
-											}
-										else
-											{
-												if (enjoy > 2)
-												{
-													ss << "Told him not to ruin a good night gave him a kiss on the check and walked home alone after that.\n";
-												}
-												else
-												{
-													ss << "Told him not to be an ass and walked home alone after that.\n";
-												}
-											}
-										}
-									else
-										{
-											ss << "and wishes her a good night.\n";
-										}
-									}
-								else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
-									{
-										ss << "she walks " << girlName << " home, ";
-										if (g_Dice.percent(50))//perv so higher chance of trying to get some
-										{
-											ss << "before getting her home she pulls her into an alley and whips out a didlo asking if she wants to have some fun.\n";
-											if (g_Girls.HasTrait(girl, "Shy"))
-											{
-												if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
-												{
-													ss << "Embarrassed at the thought of it she told her it was to soon.\n";
-												}
-												else
-												{
-													ss << "She couldn't belive she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
-												}
-											}
-										else if (g_Girls.HasTrait(girl, "Nymphomaniac"))
-											{
-												ss << "She loves to have fun so she agrees and they enjoy each other.\n"; enjoy += 2;
-												imagetype = IMGTYPE_LESBIAN;
-												g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
-											}
-										else if (girl->is_fighter())
-											{
-												if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
-												{
-													ss << "She told her she was lucky she kinda liked her if not she would be in a world of pain right now.\n";
-												}
-												else
-												{
-													ss << "She punched her in the cunt and told her next time she might not get off so easy."; enjoy -= 2;
-												}
-											}
-										else
-											{
-												if (enjoy > 2)
-												{
-													ss << "Told her not to ruin a good night gave her a kiss on the check and walked home alone after that.\n";
-												}
-												else
-												{
-													ss << "Told her not to be an ass and walked home alone after that.\n";
-												}
-											}
-										}
-									else
-										{
-											ss << "and wishes her a good night.\n";
-										}
-									}
+							ss << "didn't like at all.\n"; enjoy -= 2;
 						}
-						else if (girl->m_States&(1 << STATUS_DATING_MEAN))//mean
+						else if (g_Girls.HasTrait(girl, "Slut"))
 						{
-							ss << "During dinner her date was very aggressive and overly jealous of everyone which she ";
-								if (g_Girls.HasTrait(girl, "Shy"))
-									{
-										ss << "didn't like at all.\n"; enjoy -= 1;
-									}
-								else if (g_Girls.HasTrait(girl, "Bimbo"))
-									{
-										ss << "didn't seem to notice.\n";
-									}
-								else
-									{
-										ss << "didn't care for much either way.\n";
-									}
-								ss << "After dinner ";
-								if (g_Girls.HasTrait(girl, "Has Boy Friend"))
-									{
-										ss << "he walks " << girlName << " home, ";
-										if (g_Dice.percent(20))//mean so decent chance of trying to get some
-											{
-												ss << "but before getting her home he decides he deserves a blow job.\n";
-											if (g_Girls.HasTrait(girl, "Meek"))
-												{
-													ss << "Scared of what he might do if she doesn't she went along with it and sucked him off.\n";
-													imagetype = IMGTYPE_ORAL;
-													g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
-												}
-											else if (g_Girls.HasTrait(girl, "Shy"))
-												{
-													if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
-													{
-														ss << "Embarrassed at the thought of it she told him it was to soon.\n";
-													}
-													else
-													{
-														ss << "She couldn't belive he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
-													}
-												}
-											else
-												{
-													if (enjoy > 2)
-													{
-														ss << "Told him not to ruin a good night gave him a kiss on the check and walked home alone after that.\n";
-													}
-													else
-													{
-														ss << "Told him not to be an ass and walked home alone after that.\n";
-													}
-												}
-											}
-									else
-										{
-											ss << "and wishes her a good night.\n";
-										}
-									}
-								else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
-									{
-									ss << "she walks " << girlName << " home, ";
-									if (g_Dice.percent(30))//mean so decent chance of trying to get some
-										{
-											ss << "but before getting her home she decides she deserves some pleasure.\n";
-											if (g_Girls.HasTrait(girl, "Meek"))
-												{
-													ss << "Scared of what she might do if she doesn't she went along with it.\n";
-													imagetype = IMGTYPE_LESBIAN;
-													g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
-												}
-											else if (g_Girls.HasTrait(girl, "Shy"))
-												{
-													if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
-													{
-														ss << "Embarrassed at the thought of it she told her it was to soon.\n";
-													}
-													else
-													{
-														ss << "She couldn't belive she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
-													}
-												}
-											else
-												{
-													if (enjoy > 2)
-													{
-														ss << "Told her not to ruin a good night gave her a kiss on the check and walked home alone after that.\n";
-													}
-													else
-													{
-														ss << "Told her not to be an ass and walked home alone after that.\n";
-													}
-												}
-										}
-									else
-										{
-											ss << "and wishes her a good night.\n";
-										}
-									}
+							ss << "really liked.\n"; enjoy += 2;
 						}
-						else if (girl->m_States&(1 << STATUS_DATING_NICE))// nice
+						else if (g_Girls.HasTrait(girl, "Bimbo"))
 						{
-							ss << "During dinner her date was very nice and gave her many complamints which she ";
+							ss << "which she didn't get at all.\n";
+						}
+						else
+						{
+							ss << "didn't care for much either way.\n";
+						}
+						ss << "After dinner ";
+						if (g_Girls.HasTrait(girl, "Has Boy Friend"))
+						{
+							ss << "he walks " << girlName << " home, ";
+							if (g_Dice.percent(50))//perv so higher chance of trying to get some
+							{
+								ss << "but before getting her home he whips out his cock and asks for a blow job.\n";
 								if (g_Girls.HasTrait(girl, "Shy"))
+								{
+									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
 									{
-										ss << "enjoyed, even if it did embarrass her.\n"; enjoy += 1;
+										ss << "Embarrassed at the thought of it she told him it was to soon.\n";
 									}
-								else if (g_Girls.HasTrait(girl, "Bimbo"))
+									else
 									{
-										ss << "didn't seem to notice.\n";
+										ss << "She couldn't belive he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
 									}
+								}
+								else if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+								{
+									ss << "She loves cock so she agrees and sucks him off.\n"; enjoy += 2;
+									imagetype = IMGTYPE_ORAL;
+									g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+								}
 								else if (girl->is_fighter())
+								{
+									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
 									{
-										ss << "thought made them seem like a pussy.\n"; enjoy -= 1;
+										ss << "She told him he was lucky she kinda liked him if not he would be in a world of pain right now.\n";
 									}
+									else
+									{
+										ss << "She punched him in the junk and told him next time he might not get off so easy."; enjoy -= 2;
+									}
+								}
 								else
+								{
+									if (enjoy > 2)
 									{
-										ss << "didn't care for much either way.\n";
+										ss << "Told him not to ruin a good night gave him a kiss on the check and walked home alone after that.\n";
 									}
-								ss << "After dinner ";
-								if (g_Girls.HasTrait(girl, "Has Boy Friend"))
+									else
 									{
-									ss << "he walks " << girlName << " home, ";
-										if (g_Dice.percent(10))// nice so lowest chance of trying to get some
-											{
-												ss << "but before getting her home he decides to ask for a blow job.\n";
-											}
-										else
-											{
-												ss << "and wishes her a good night.\n";
-											}
+										ss << "Told him not to be an ass and walked home alone after that.\n";
 									}
-								else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
+								}
+							}
+							else
+							{
+								ss << "and wishes her a good night.\n";
+							}
+						}
+						else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
+						{
+							ss << "she walks " << girlName << " home, ";
+							if (g_Dice.percent(50))//perv so higher chance of trying to get some
+							{
+								ss << "before getting her home she pulls her into an alley and whips out a didlo asking if she wants to have some fun.\n";
+								if (g_Girls.HasTrait(girl, "Shy"))
+								{
+									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
 									{
-									ss << "she walks " << girlName << " home, ";
-										if (g_Dice.percent(10))// nice so lowest chance of trying to get some
-										{
-											ss << "but before getting her home she decides to ask if she wants some pleasure.\n";
-										}
-										else
-										{
-											ss << "and wishes her a good night.\n";
-										}
+										ss << "Embarrassed at the thought of it she told her it was to soon.\n";
 									}
+									else
+									{
+										ss << "She couldn't belive she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
+									}
+								}
+								else if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+								{
+									ss << "She loves to have fun so she agrees and they enjoy each other.\n"; enjoy += 2;
+									imagetype = IMGTYPE_LESBIAN;
+									g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
+								}
+								else if (girl->is_fighter())
+								{
+									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+									{
+										ss << "She told her she was lucky she kinda liked her if not she would be in a world of pain right now.\n";
+									}
+									else
+									{
+										ss << "She punched her in the cunt and told her next time she might not get off so easy."; enjoy -= 2;
+									}
+								}
+								else
+								{
+									if (enjoy > 2)
+									{
+										ss << "Told her not to ruin a good night gave her a kiss on the check and walked home alone after that.\n";
+									}
+									else
+									{
+										ss << "Told her not to be an ass and walked home alone after that.\n";
+									}
+								}
+							}
+							else
+							{
+								ss << "and wishes her a good night.\n";
+							}
 						}
 					}
-				else if (roll >= 60 )//movie
+					else if (girl->m_States&(1 << STATUS_DATING_MEAN))//mean
 					{
-						ss << "They go to a movie. ";
-						if (girl->m_States&(1 << STATUS_DATING_PERV))//perv
+						ss << "During dinner her date was very aggressive and overly jealous of everyone which she ";
+						if (g_Girls.HasTrait(girl, "Shy"))
 						{
+							ss << "didn't like at all.\n"; enjoy -= 1;
 						}
-						else if (girl->m_States&(1 << STATUS_DATING_MEAN))//mean
+						else if (g_Girls.HasTrait(girl, "Bimbo"))
 						{
+							ss << "didn't seem to notice.\n";
 						}
-						else if (girl->m_States&(1 << STATUS_DATING_NICE))// nice
+						else
 						{
+							ss << "didn't care for much either way.\n";
+						}
+						ss << "After dinner ";
+						if (g_Girls.HasTrait(girl, "Has Boy Friend"))
+						{
+							ss << "he walks " << girlName << " home, ";
+							if (g_Dice.percent(20))//mean so decent chance of trying to get some
+							{
+								ss << "but before getting her home he decides he deserves a blow job.\n";
+								if (g_Girls.HasTrait(girl, "Meek"))
+								{
+									ss << "Scared of what he might do if she doesn't she went along with it and sucked him off.\n";
+									imagetype = IMGTYPE_ORAL;
+									g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+								}
+								else if (g_Girls.HasTrait(girl, "Shy"))
+								{
+									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+									{
+										ss << "Embarrassed at the thought of it she told him it was to soon.\n";
+									}
+									else
+									{
+										ss << "She couldn't belive he would do that and ran off her face red from the thought.\n"; enjoy -= 2;
+									}
+								}
+								else
+								{
+									if (enjoy > 2)
+									{
+										ss << "Told him not to ruin a good night gave him a kiss on the check and walked home alone after that.\n";
+									}
+									else
+									{
+										ss << "Told him not to be an ass and walked home alone after that.\n";
+									}
+								}
+							}
+							else
+							{
+								ss << "and wishes her a good night.\n";
+							}
+						}
+						else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
+						{
+							ss << "she walks " << girlName << " home, ";
+							if (g_Dice.percent(30))//mean so decent chance of trying to get some
+							{
+								ss << "but before getting her home she decides she deserves some pleasure.\n";
+								if (g_Girls.HasTrait(girl, "Meek"))
+								{
+									ss << "Scared of what she might do if she doesn't she went along with it.\n";
+									imagetype = IMGTYPE_LESBIAN;
+									g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
+								}
+								else if (g_Girls.HasTrait(girl, "Shy"))
+								{
+									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+									{
+										ss << "Embarrassed at the thought of it she told her it was to soon.\n";
+									}
+									else
+									{
+										ss << "She couldn't belive she would do that and ran off her face red from the thought.\n"; enjoy -= 2;
+									}
+								}
+								else
+								{
+									if (enjoy > 2)
+									{
+										ss << "Told her not to ruin a good night gave her a kiss on the check and walked home alone after that.\n";
+									}
+									else
+									{
+										ss << "Told her not to be an ass and walked home alone after that.\n";
+									}
+								}
+							}
+							else
+							{
+								ss << "and wishes her a good night.\n";
+							}
 						}
 					}
-				else if (roll >= 40 )
+					else if (girl->m_States&(1 << STATUS_DATING_NICE))// nice
 					{
-						ss << ".";
+						ss << "During dinner her date was very nice and gave her many complamints which she ";
+						if (g_Girls.HasTrait(girl, "Shy"))
+						{
+							ss << "enjoyed, even if it did embarrass her.\n"; enjoy += 1;
+						}
+						else if (g_Girls.HasTrait(girl, "Bimbo"))
+						{
+							ss << "didn't seem to notice.\n";
+						}
+						else if (girl->is_fighter())
+						{
+							ss << "thought made them seem like a pussy.\n"; enjoy -= 1;
+						}
+						else
+						{
+							ss << "didn't care for much either way.\n";
+						}
+						ss << "After dinner ";
+						if (g_Girls.HasTrait(girl, "Has Boy Friend"))
+						{
+							ss << "he walks " << girlName << " home, ";
+							if (g_Dice.percent(10))// nice so lowest chance of trying to get some
+							{
+								ss << "but before getting her home he decides to ask for a blow job.\n";
+							}
+							else
+							{
+								ss << "and wishes her a good night.\n";
+							}
+						}
+						else if (g_Girls.HasTrait(girl, "Has Girl Friend"))
+						{
+							ss << "she walks " << girlName << " home, ";
+							if (g_Dice.percent(10))// nice so lowest chance of trying to get some
+							{
+								ss << "but before getting her home she decides to ask if she wants some pleasure.\n";
+							}
+							else
+							{
+								ss << "and wishes her a good night.\n";
+							}
+						}
 					}
-				else if (roll >= 20 )
+				}
+				else if (roll >= 60)//movie
+				{
+					ss << "They go to a movie. ";
+					if (girl->m_States&(1 << STATUS_DATING_PERV))//perv
 					{
-						ss << ".";
 					}
+					else if (girl->m_States&(1 << STATUS_DATING_MEAN))//mean
+					{
+					}
+					else if (girl->m_States&(1 << STATUS_DATING_NICE))// nice
+					{
+					}
+				}
+				else if (roll >= 40)
+				{
+					ss << ".";
+				}
+				else if (roll >= 20)
+				{
+					ss << ".";
+				}
 				else
-					{
-						ss << ".";
-					}
+				{
+					ss << ".";
+				}
 				g_Girls.UpdateStat(girl, STAT_NPCLOVE, enjoy);
 			}
 			if (breakup) //For if they break up removes traits and puts npclove back to 0
-				{
-					ss << "Not happy with how the date went she broke up with them.";
-					girl->clear_dating();
-					g_Girls.RemoveTrait(girl, "Has Boy Friend", true);
-					g_Girls.RemoveTrait(girl, "Has Girl Friend", true);
-					g_Girls.UpdateStat(girl, STAT_NPCLOVE, -100);
-				}
+			{
+				ss << "Not happy with how the date went she broke up with them.";
+				girl->clear_dating();
+				g_Girls.RemoveTrait(girl, "Has Boy Friend", true);
+				g_Girls.RemoveTrait(girl, "Has Girl Friend", true);
+				g_Girls.UpdateStat(girl, STAT_NPCLOVE, -100);
+			}
 		}
 		break;	// end FT_GoOnDate
 
 		case FT_VisitKid:
 		{
 			ss << girlName << " decides to go visit her ";
-			if (girl->m_States&(1 << STATUS_HAS_DAUGHTER))	
+			if (girl->m_States&(1 << STATUS_HAS_DAUGHTER))
 			{
 				ss << girlName << "daughter.";
 			}
-			else if (girl->m_States&(1 << STATUS_HAS_SON))	
+			else if (girl->m_States&(1 << STATUS_HAS_SON))
 			{
 				ss << girlName << "son.";
 			}
-			else if (girl->m_States&(1 << STATUS_HAS_DAUGHTER && STATUS_HAS_SON))	
+			else if (girl->m_States&(1 << STATUS_HAS_DAUGHTER && STATUS_HAS_SON))
 			{
 				ss << girlName << "kids.";
 			}

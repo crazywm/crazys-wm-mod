@@ -382,7 +382,7 @@ bool cScreenGirlDetails::check_keys()
 {
 	if (g_LeftArrow || g_RightArrow || (g_AltKeys && (g_A_Key || g_D_Key)))
 	{
-		if (g_UpArrow || g_A_Key) PrevGirl(); else NextGirl();
+		if (g_LeftArrow || g_A_Key) PrevGirl(); else NextGirl();
 		g_LeftArrow = g_RightArrow = g_A_Key = g_D_Key = false;
 		return true;
 	}

@@ -174,7 +174,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 	if (g_Brothels.GetNumBeasts() > 0)
 	{
-		if (!girl->calc_insemination(The_Player, false, 1.0))
+		if (!girl->calc_insemination(g_Girls.GetBeast(), false, 1.0))
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
 	}
 

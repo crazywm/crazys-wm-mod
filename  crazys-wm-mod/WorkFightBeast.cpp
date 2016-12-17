@@ -175,7 +175,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50);
 			g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
-			if (!girl->calc_insemination(The_Player, false, 1.0))
+			if (!girl->calc_insemination(g_Girls.GetBeast(), false, 1.0))
 			{
 				g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
 			}

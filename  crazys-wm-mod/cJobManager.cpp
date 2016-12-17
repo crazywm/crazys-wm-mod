@@ -812,7 +812,6 @@ void cJobManager::Setup()
 	JobDesc[JOB_HOUSECOOK] = gettext("She will cook for your house.");
 	JobFunc[JOB_HOUSECOOK] = &WorkHouseCook;
 	JobPerf[JOB_HOUSECOOK] = &JP_HouseCook;
-	//JobPerf[JOB_HOUSEPET] = &JP_HousePet;
 	//JobName[JOB_PONYGIRL] = gettext("Pony Girl");
 	//JobQkNm[JOB_PONYGIRL] = "PGil";
 	//JobDesc[JOB_PONYGIRL] = gettext("She will be trained to become a pony girl.");
@@ -1242,7 +1241,7 @@ bool cJobManager::FullTimeJob(u_int Job)
 		Job == JOB_HOUSEPET ||
 		// - Farm
 		Job == JOB_FARMMANGER ||
-		Job == JOB_PONYGIRL ||
+		//Job == JOB_PONYGIRL ||
 		false);
 }
 
@@ -1481,11 +1480,11 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		if (Girl->is_slave())	Girl->m_NightJob = Girl->m_DayJob = JOB_HOUSEPET;
 		else					g_MessageQue.AddToQue(gettext("Only slaves can take this training."), 0);
 	}
-	else if (u_int(JobID) == JOB_PONYGIRL)
-	{
-		if (Girl->is_slave())	Girl->m_NightJob = Girl->m_DayJob = JOB_PONYGIRL;
-		else					g_MessageQue.AddToQue(gettext("Only slaves can take this training."), 0);
-	}
+//	else if (u_int(JobID) == JOB_PONYGIRL)
+//	{
+//		if (Girl->is_slave())	Girl->m_NightJob = Girl->m_DayJob = JOB_PONYGIRL;
+//		else					g_MessageQue.AddToQue(gettext("Only slaves can take this training."), 0);
+//	}
 	// Special Farm Jobs
 	else if (u_int(JobID) == JOB_FARMMANGER)
 	{
