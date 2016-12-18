@@ -430,7 +430,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else
 	{
-		ss << girlName << "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
+		ss << girlName << " doesn't seem to understand the real money in stripping is selling private dances.\n";
 	}
 
 	if (wages < 0)
