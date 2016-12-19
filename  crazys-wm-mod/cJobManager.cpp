@@ -1310,17 +1310,22 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_FIGHTARENAGIRLS		||	//
 		Job ==	JOB_FIGHTBEASTS			||	//
 
+		//farm
+		Job ==	JOB_FARMMANGER			||	// 
+		Job ==	JOB_FARMHAND			||	// 
 
 		//house
-		Job ==	JOB_PERSONALBEDWARMER	||	// 
-		Job ==	JOB_CLEANHOUSE			||	// 
+		Job ==	JOB_HEADGIRL			||	// 
 		Job ==	JOB_RECRUITER			||	// 
-		Job ==	JOB_HEADGIRL			||	//
-		Job ==	JOB_PERSONALTRAINING	||	//
-
-		//farm
-		Job ==	JOB_FARMMANGER	||	// 
-		Job ==	JOB_FARMHAND	||	// 
+		Job ==	JOB_PERSONALBEDWARMER	||	// 
+		Job ==	JOB_HOUSECOOK			||	// 
+		Job ==	JOB_CLEANHOUSE			||	// 
+		Job ==	JOB_PERSONALTRAINING	||	// 
+		Job ==	JOB_FAKEORGASM			||	// 
+		Job ==	JOB_SO_STRAIGHT			||	// 
+		Job ==	JOB_SO_BISEXUAL			||	// 
+		Job ==	JOB_SO_LESBIAN			||	// 
+		Job ==	JOB_HOUSEPET			||	// 
 
 		// - Brothel
 		//Job ==	JOB_WHOREBROTHEL		||	// whore herself inside the building
@@ -1443,8 +1448,15 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		Girl->m_WorkingDay = Girl->m_PrevWorkingDay;	// `J` ...it will restore the previous days
 	}
 
+	// rest jobs
+	if (u_int(JobID) == JOB_FILMFREETIME || u_int(JobID) == JOB_ARENAREST || u_int(JobID) == JOB_CENTREREST || u_int(JobID) == JOB_CLINICREST || u_int(JobID) == JOB_HOUSEREST || u_int(JobID) == JOB_FARMREST || u_int(JobID) == JOB_RESTING)
+	{
+		/*   */if (fulltime)	Girl->m_NightJob = Girl->m_DayJob = JobID;
+		else if (Day0Night1)	Girl->m_NightJob = JobID;
+		else/*            */	Girl->m_DayJob = JobID;
+	}
 // Special Brothel Jobs
-	if (u_int(JobID) == JOB_MATRON)
+	else if (u_int(JobID) == JOB_MATRON)
 	{
 		if (g_Brothels.GetNumGirlsOnJob(TargetBrothel, JOB_MATRON, Day0Night1) > 0)
 			g_MessageQue.AddToQue(gettext("You can only have one matron per brothel."), 0);

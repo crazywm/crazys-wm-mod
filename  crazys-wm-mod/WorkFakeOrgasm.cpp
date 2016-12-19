@@ -45,7 +45,7 @@ extern cMessageQue g_MessageQue;
 
 #pragma endregion
 
-// `J` Job Centre - Therapy - Full_Time_Job
+// `J` Job House - Training - Full_Time_Job
 bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 #pragma region //	Job setup				//
@@ -74,52 +74,48 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int msgtype = Day0Night1, imagetype = IMGTYPE_MAST;
 
 	// Base adjustment
-	girl->m_WorkingDay += g_Dice % 5;
+	girl->m_WorkingDay += 10 + g_Dice % 11;
 	// Positive Stats/Skills
 	girl->m_WorkingDay += girl->performance() / 5;
 	girl->m_WorkingDay += girl->group() / 20;
 	girl->m_WorkingDay += girl->normalsex() / 20;
 	girl->m_WorkingDay += girl->lesbian() / 20;
 	girl->m_WorkingDay += girl->obedience() / 20;
-	if (girl->pcfear() > 50)			girl->m_WorkingDay += g_Dice % 3;						// She will do as she is told
-	if (girl->pclove() > 50)			girl->m_WorkingDay += g_Dice % (girl->pclove() / 20);	// She will do what you ask
+	if (girl->pcfear() > 50)				girl->m_WorkingDay += g_Dice % (girl->pcfear() / 20);		// She will do as she is told
+	if (girl->pclove() > 50)				girl->m_WorkingDay += g_Dice % (girl->pclove() / 20);		// She will do what you ask
 	// Negative Stats/Skills
 	girl->m_WorkingDay -= girl->spirit() / 25;
-	if (girl->pchate() > 30)			girl->m_WorkingDay -= g_Dice % (girl->pchate() / 10);	// She will not do what you want
-	if (girl->happiness() < 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;					// She is not feeling like it
-	if (girl->health() < 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;					// She is feeling sick
-	if (girl->tiredness() > 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;					// She is tired
-	
+	if (girl->pchate() > 30)				girl->m_WorkingDay -= g_Dice % (girl->pchate() / 10);		// She will not do what you want
+	if (girl->happiness() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is not feeling like it
+	if (girl->health() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is feeling sick
+	if (girl->tiredness() > 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is tired
+
 	// Positive Traits
-	if (girl->has_trait("Quick Learner"))	girl->m_WorkingDay += g_Dice.bell(0, 15);	//
+	if (girl->has_trait("Quick Learner"))	girl->m_WorkingDay += g_Dice % 20;			//
+	if (girl->has_trait("Actress"))			girl->m_WorkingDay += g_Dice % 20;			// Acting is just faking anyway
+	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay += g_Dice % 20;			// The director just wants everything to cum together
 	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += g_Dice % 20;			// Living in a brothel you pick up a few things over the years
 	if (girl->has_trait("Your Wife"))		girl->m_WorkingDay += g_Dice % 10;			// Most wives fake it eventually
 	if (girl->has_trait("Shape Shifter"))	girl->m_WorkingDay += g_Dice % 10;			// She is used to faking who she is
-	if (girl->has_trait("Actress"))			girl->m_WorkingDay += g_Dice % 10;			// Acting is just faking anyway
-	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay += g_Dice % 10;			// The director just wants everything to cum together
-	if (girl->has_trait("Whore"))			girl->m_WorkingDay += g_Dice % 3;			// Doing it so many times makes faking it a little easier
-	if (girl->has_trait("Slut"))			girl->m_WorkingDay += g_Dice % 3;			// Doing it so many times makes faking it a little easier
-	if (girl->has_trait("Succubus"))		girl->m_WorkingDay += g_Dice % 3;			// If faking it gets them to cum faster, do it
+	if (girl->has_trait("Exhibitionist"))	girl->m_WorkingDay += g_Dice % 5;			// She enjoys making a scene
+	if (girl->has_trait("Whore"))			girl->m_WorkingDay += g_Dice % 5;			// Doing it so many times makes faking it a little easier
+	if (girl->has_trait("Slut"))			girl->m_WorkingDay += g_Dice % 5;			// Doing it so many times makes faking it a little easier
+	if (girl->has_trait("Succubus"))		girl->m_WorkingDay += g_Dice % 5;			// If faking it gets them to cum faster, do it
 	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay += g_Dice % 3;			// She is going to finish her taks, whatever it is
-	if (girl->has_trait("Audacity"))		girl->m_WorkingDay += g_Dice.bell(0, 5);	// She doesn't care what it looks like or who sees it
-	if (girl->has_trait("Exhibitionist"))	girl->m_WorkingDay += g_Dice.bell(0, 2);	// She enjoys making a scene
+	if (girl->has_trait("Audacity"))		girl->m_WorkingDay += g_Dice % 3;			// She doesn't care what it looks like or who sees it
 	// Negative Traits
-	if (girl->has_trait("Slow Learner"))	girl->m_WorkingDay -= g_Dice.bell(0, 15);	//
-	if (girl->has_trait("Broken Will"))
-	{
-		ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n";
-		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
-	}
+	if (girl->has_trait("Broken Will"))	{	girl->m_WorkingDay -= g_Dice.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
 	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 10);	// Does she even know who is fucking her?
-	if (girl->has_trait("Fast Orgasms"))	girl->m_WorkingDay -= g_Dice.bell(2, 8);	// She cums before she can fake it
-	if (girl->has_trait("Futanari"))		girl->m_WorkingDay -= g_Dice.bell(3, 5);	// Kind of hard to fake an orgasm with a dick
-	if (girl->has_trait("Broodmother"))		girl->m_WorkingDay -= g_Dice.bell(0, 2);	// faking it kind of defeats the purpose
-	if (girl->has_trait("Bimbo"))			girl->m_WorkingDay -= g_Dice.bell(0, 10);	// She enjoys herself to much to remember to fake it
-	if (girl->has_trait("Nymphomaniac"))	girl->m_WorkingDay -= g_Dice.bell(0, 10);	// She enjoys herself to much to remember to fake it
-	if (girl->has_trait("Blind"))			girl->m_WorkingDay -= g_Dice.bell(2, 5);	// She can't see her partner to time it right
-	if (girl->has_trait("Deaf"))			girl->m_WorkingDay -= g_Dice.bell(0, 3);	// She can't hear what she sounds like
-	if (girl->has_trait("Botox Treatment"))	girl->m_WorkingDay -= g_Dice.bell(0, 2);	// Is she faking it? can't tell by her face
+	if (girl->has_trait("Slow Learner"))	girl->m_WorkingDay -= g_Dice % 10;			//
+	if (girl->has_trait("Fast Orgasms"))	girl->m_WorkingDay -= g_Dice % 10;			// She cums before she can fake it
+	if (girl->has_trait("Futanari"))		girl->m_WorkingDay -= g_Dice % 10;			// Kind of hard to fake an orgasm with a dick
+	if (girl->has_trait("Broodmother"))		girl->m_WorkingDay -= g_Dice % 10;			// faking it kind of defeats the purpose
+	if (girl->has_trait("Bimbo"))			girl->m_WorkingDay -= g_Dice % 5;			// She enjoys herself to much to remember to fake it
+	if (girl->has_trait("Nymphomaniac"))	girl->m_WorkingDay -= g_Dice % 5;			// She enjoys herself to much to remember to fake it
+	if (girl->has_trait("Blind"))			girl->m_WorkingDay -= g_Dice % 5;			// She can't see her partner to time it right
+	if (girl->has_trait("Deaf"))			girl->m_WorkingDay -= g_Dice % 5;			// She can't hear what she sounds like
+	if (girl->has_trait("Botox Treatment"))	girl->m_WorkingDay -= g_Dice % 5;			// Is she faking it? can't tell by her face
 
 	/*		traits that may help or hurt training time.
 	if (girl->has_trait("Agile"))				girl->m_WorkingDay += g_Dice.bell(0,1);		//

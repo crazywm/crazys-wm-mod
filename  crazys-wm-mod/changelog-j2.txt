@@ -332,6 +332,15 @@ Fixed a crash if a gang dies durring their mission.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.45
 
+Fixed a bug in slave market where the first girl details were not showing (my bad, <= should have been <) 
+### Changes 12/18/2016
+Started updating Slave Market send to effects
+Updated Sexual Orientation training and Fake Orgasm training numbers
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.46
+
+
 
 
 

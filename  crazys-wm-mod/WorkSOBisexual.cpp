@@ -45,7 +45,7 @@ extern cMessageQue g_MessageQue;
 
 #pragma endregion
 
-// `J` Job Centre - Therapy - Full_Time_Job
+// `J` Job House - Training - Full_Time_Job
 bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 #pragma region //	Job setup				//
@@ -74,7 +74,7 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int msgtype = Day0Night1, imagetype = IMGTYPE_SEX;
 
 	// Base adjustment
-	girl->m_WorkingDay += g_Dice % 5;
+	girl->m_WorkingDay += 10 + g_Dice % 11;
 	// Positive Stats/Skills
 
 	if (girl->has_trait("Straight"))
@@ -106,14 +106,14 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 
 	girl->m_WorkingDay += girl->obedience() / 20;
-	if (girl->pcfear() > 50)			girl->m_WorkingDay += g_Dice % 3;							// She will do as she is told
-	if (girl->pclove() > 50)			girl->m_WorkingDay += g_Dice % (girl->pclove() / 20);		// She will do what you ask
+	if (girl->pcfear() > 50)				girl->m_WorkingDay += g_Dice % (girl->pcfear() / 20);		// She will do as she is told
+	if (girl->pclove() > 50)				girl->m_WorkingDay += g_Dice % (girl->pclove() / 20);		// She will do what you ask
 	// Negative Stats/Skills
 	girl->m_WorkingDay -= girl->spirit() / 25;
-	if (girl->pchate() > 30)			girl->m_WorkingDay -= g_Dice % (girl->pchate() / 10);			// She will not do what you want
-	if (girl->happiness() < 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is not feeling like it
-	if (girl->health() < 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is feeling sick
-	if (girl->tiredness() > 50)			girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is tired
+	if (girl->pchate() > 30)				girl->m_WorkingDay -= g_Dice % (girl->pchate() / 10);		// She will not do what you want
+	if (girl->happiness() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is not feeling like it
+	if (girl->health() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is feeling sick
+	if (girl->tiredness() > 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is tired
 	// Positive Traits
 	if (girl->has_trait("Your Wife"))		girl->m_WorkingDay += g_Dice % 10;			// She wants to be with you, even if it is with another girl
 	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay += g_Dice % 10;			// She is used to having sex with anyone her director tells her to
@@ -126,14 +126,11 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Broodmother"))		girl->m_WorkingDay += 1;					// She prefers males who can get her pregnant
 	if (girl->has_trait("Futanari"))		girl->m_WorkingDay += 1;					// If she has a dick she can put it anywhere
 	// Negative Traits
-	if (girl->has_trait("Broken Will"))
-	{
-		ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n";
-		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// She seems to be just going through the motions
-	}
+	if (girl->has_trait("Broken Will"))	{	girl->m_WorkingDay -= g_Dice.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
 	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 10);	// Does she even know who is fucking her?
-	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay -= 3;					// She is set in her ways
+	if (girl->has_trait("Slow Learner"))	girl->m_WorkingDay -= g_Dice % 10;			//
+	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay -= g_Dice % 5;			// She is set in her ways
 
 
 	//	if (girl->has_trait("Virgin"))			{}
@@ -158,7 +155,7 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 		msgtype = EVENT_GOODNEWS;
-		ss << "\nShe is now Bisexual.";
+		ss << "\nHer Sexual Orientation conversion is complete. She is now Bisexual.";
 		girl->remove_trait("Lesbian");	girl->add_trait("Bisexual");	girl->remove_trait("Straight");
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_HOUSEREST;
 	}
