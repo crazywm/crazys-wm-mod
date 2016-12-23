@@ -364,6 +364,8 @@ void cScreenBuildingSetup::check_events()
 			ss.str(""); ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
 			EditTextItem(ss.str(), roomcost_id);
 			DisableButton(buyrooms_id, rooms >= maxrooms);
+			g_InitWin = true;
+
 		}
 	}
 	if (g_InterfaceEvents.CheckButton(potions10_id)) buypotions = 10;

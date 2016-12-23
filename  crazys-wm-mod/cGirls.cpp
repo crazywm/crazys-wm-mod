@@ -2295,7 +2295,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 	ss << girl->m_Realname;
 	int variable = 0;
 
-	int HateLove = GetStat(girl, STAT_PCLOVE) - GetStat(girl, STAT_PCHATE);
+	int HateLove = girl->pclove() - girl->pchate();
 	ss << " feels the player ";
 
 	if (g_Girls.HasTrait(girl, "Your Daughter"))
@@ -2680,7 +2680,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		// count the girls born
 		if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] > 0)
 		{
-			ss << girl->m_ChildrenCount[CHILD02_ALL_GIRLS] << " girl" << (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] > 1 ? "s" : "") << "\n\t";
+			ss << girl->m_ChildrenCount[CHILD02_ALL_GIRLS] << " girl" << (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] > 1 ? "s" : "") << "\n   ";
 			if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == girl->m_ChildrenCount[CHILD06_YOUR_GIRLS])
 			{
 				if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == 1)
@@ -2698,7 +2698,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 				if (girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] == 1)
 					ss << "One is yours and ";
 				else ss << girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] << " of them are yours and ";
-				ss << "\n\t";
+				ss << "\n   ";
 				if (girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] == 1)
 					ss << "One is from another man.";
 				else ss << girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] << " of them are from other men.";
@@ -2711,7 +2711,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		// count the boys born
 		if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 0)
 		{
-			ss << girl->m_ChildrenCount[CHILD03_ALL_BOYS] << " boy" << (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 1 ? "s" : "") << "\n\t";
+			ss << girl->m_ChildrenCount[CHILD03_ALL_BOYS] << " boy" << (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 1 ? "s" : "") << "\n   ";
 			if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == girl->m_ChildrenCount[CHILD07_YOUR_BOYS])
 			{
 				if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == 1)
@@ -2729,7 +2729,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 				if (girl->m_ChildrenCount[CHILD07_YOUR_BOYS] == 1)
 					ss << "One is yours and ";
 				else ss << girl->m_ChildrenCount[CHILD07_YOUR_BOYS] << " of them are yours and ";
-				ss << "\n\t";
+				ss << "\n   ";
 				if (girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] == 1)
 					ss << "One is from another man.";
 				else ss << girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] << " of them are from other men.";
@@ -5314,7 +5314,8 @@ bool cGirls::IsInvFull(sGirl* girl)
 
 int cGirls::AddInv(sGirl* girl, sInventoryItem* item)
 {
-	if (!item)	return -1;
+	
+	if (!girl || !item)	return -1;
 	int i;
 	for (i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
@@ -11261,7 +11262,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (HasTrait(girl, "Busty Boobs") || HasTrait(girl, "Big Boobs") || HasTrait(girl, "Giant Juggs") || HasTrait(girl, "Massive Melons") || HasTrait(girl, "Abnormally Large Boobs") || HasTrait(girl, "Titanic Tits")) //Gondra: Catch all for large tits for now
 			{
-				sexMessage << "Moaning lightly as she 'accidentally' pushed the customers cock against one of her nipples, " << girlName << " begun to run him through a long, teasing routine, at the end of which he covered her large chest with a large load off his seed.";
+				sexMessage << "Moaning lightly as she 'accidentally' pushed the customers cock against one of her nipples, " << girlName << " begun to run him through a long, teasing routine, at the end of which he covered her large chest with a large load of his seed.";
 			}
 #if defined(SPICE)
 			else if (g_Dice.percent(40) && HasTrait(girl, "Waitress"))
@@ -18209,7 +18210,14 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	else if (detailName == "has_disease")		{ ss << (has_disease() ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "is_mother")			{ ss << (is_mother() ? gettext("Yes") : gettext("No")); }
 	else if (detailName == "is_poisoned")		{ ss << (is_poisoned() ? gettext("Yes") : gettext("No")); }
-	else if (detailName == "Value")             { ss << (int) tariff.slave_price(this, false); }
+	else if (detailName == "Value")				{ ss << (int) tariff.slave_price(this, false); }
+	else if (detailName == "SO")
+	{
+		/* */if (has_trait("Lesbian"))	ss << "L";
+		else if (has_trait("Straight"))	ss << "S";
+		else if (has_trait("Bisexual"))	ss << "B";
+		else/*                       */	ss << "-";
+	}
 	else /*                            */		{ ss << gettext("Not found"); }
 	Data = ss.str();
 }

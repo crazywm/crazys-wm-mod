@@ -333,15 +333,26 @@ Fixed a crash if a gang dies durring their mission.
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.45
 
 Fixed a bug in slave market where the first girl details were not showing (my bad, <= should have been <) 
-### Changes 12/18/2016
+### Changes 12/18-19/2016
 Started updating Slave Market send to effects
 Updated Sexual Orientation training and Fake Orgasm training numbers
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.46
 
+### Changes 12/20-22/2016
+Fixed a few typeos
+Updated do_daily_items
+Updated WorkFreetime.cpp with a couple of items
+Fixed slave market no girl image
+Fixed a few text items in clinic jobs
+Added SO to girl lists
+Updated Gang Service mission
+ - Added cat/dog capture
+ - Added cleaning of brothel in security check sub-mission
 
-
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.47
 
 
 

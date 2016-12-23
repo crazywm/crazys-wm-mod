@@ -215,6 +215,7 @@ public:
 
 	int GetGirlsCurrentBrothel(sGirl* girl); // Used by new security guard code
 	vector<sGirl*> GirlsOnJob(int BrothelID, int JobID, bool Day0Night1);	// Also used by new security code
+	sGirl* GetRandomGirl(int BrothelID);									// `J` - added
 	sGirl* GetRandomGirlOnJob(int BrothelID, int JobID, bool Day0Night1);	// `J` - added
 	sGirl* GetFirstGirlOnJob(int BrothelID, int JobID, bool Day0Night1);	// `J` - added
 

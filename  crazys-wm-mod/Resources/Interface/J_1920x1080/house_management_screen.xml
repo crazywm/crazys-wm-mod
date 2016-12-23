@@ -29,6 +29,6 @@
 <Column   Name="is_pregnant"            Header="Preg"                          Offset="850" />
 <Column   Name="is_slave"               Header="Slave"                         Offset="910" />
 <Column   Name="Rebel"                  Header="Rebel"                         Offset="970" />
-<Column   Name="Virgin"                 Header="Virgin"                        Offset="1030" />
+<Column   Name="SO"                     Header="SO"                            Offset="1030" />
 </ListBox>
 </Screen>

@@ -2883,8 +2883,8 @@ bool cGangManager::service_mission(sGang* gang)
 	ss << "Gang   " << gang->m_Name << "   spend the week helping out the community.";
 
 	int susp = g_Dice.bell(0, 2), fear = g_Dice.bell(0, 2), disp = g_Dice.bell(0, 3), serv = g_Dice.bell(0, 3);
-	int cha = 0, intl = 0, agil = 0, mag = 0, gold = 0, sec = 0, beasts = 0;
-	int percent = max(10, min(gang->m_Num * 6, gang->service()));
+	int cha = 0, intl = 0, agil = 0, mag = 0, gold = 0, sec = 0, dirt = 0, beasts = 0;
+	int percent = max(1, min(gang->m_Num * 5, gang->service()));
 	
 	for (int i = 0; i < gang->m_Num / 2; i++)
 	{
@@ -2905,7 +2905,7 @@ bool cGangManager::service_mission(sGang* gang)
 		}
 	}
 
-	if (gang->m_Num < 15 && g_Dice.percent(min(50,gang->charisma())))
+	if (gang->m_Num < 15 && g_Dice.percent(min(25 - gang->m_Num, gang->charisma())))
 	{
 		int addnum = max(1, g_Dice.bell(-2, 4));
 		if (addnum + gang->m_Num > 15)	addnum = 15 - gang->m_Num;
@@ -2921,7 +2921,9 @@ bool cGangManager::service_mission(sGang* gang)
 	{
 		sBrothel* brothel = g_Brothels.GetRandomBrothel();
 		sec = max(5 + g_Dice % 26, gang->intelligence() / 4);
+		dirt = max(5 + g_Dice % 26, gang->service() / 4);
 		brothel->m_SecurityLevel += sec;
+		brothel->m_Filthiness -= dirt;
 		ss << "\n\nThey cleaned up around " << brothel->m_Name << "; fixing lights, removing debris and making sure the area is secure.";
 	}
 	if (g_Dice.percent(max(10, min(gang->m_Num * 6, gang->intelligence()))))
@@ -2932,10 +2934,55 @@ bool cGangManager::service_mission(sGang* gang)
 		else if (beasts == 2)	{ ss << "two"; }
 		else/*             */	{ ss << "some"; }
 		ss << " stray beast" << (beasts > 1 ? "s" : "") << " and brought " << (beasts > 1 ? "them" : "it") << " to the brothel" << (g_Brothels.m_NumBrothels > 1 ? "s" : "") << ".";
+
+		if (g_Dice.percent(beasts * 5))
+		{
+			string itemfound = "";
+			switch (g_Dice % 4)
+			{
+			case 0:		itemfound = "Black Cat";		break;
+			case 1:		itemfound = "Guard Dog";		break;
+			default:	itemfound = "Cat";				break;
+			}
+
+			sInventoryItem* item = g_InvManager.GetItem(itemfound);
+			if (item)
+			{
+				sBrothel* brothel = g_Brothels.GetRandomBrothel();
+				sGirl* girl = g_Brothels.GetRandomGirl(brothel->m_id);
+				if (g_Girls.AddInv(girl, item) != -1)						// see if a girl can take it
+				{
+					stringstream gss;
+					gss << "While " << gang->m_Name << " was bringing in the ";
+					if (beasts == 1)
+					{
+						gss << item->m_Name << " they cought, " << girl->m_Realname << " stopped them and begged them to let her keep it.";
+					}
+					else
+					{
+						gss << "beasts they captured, " << girl->m_Realname << " picked out a ";
+						if (item->m_Name == "Guard Dog")	gss << "dog from the pack";
+						else/*                        */	gss << item->m_Name;
+						gss << " and claimed it for herself.";
+					}
+					girl->m_Events.AddMessage(gss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+					beasts--;
+					ss << "\n" << gss.str() << "\n";
+				}
+				else if (g_Brothels.AddItemToInventory(item))				// otherwise put it in inventory
+				{
+					if (beasts == 1)	ss << "\nYou take the " << item->m_Name << " that they captured and put it in a cage in your office.\n";
+					else/*        */	ss << "\nOne of the beasts they catch is a " << item->m_Name << " that looks healthy enough to give to a girl. You have it put in a cage and taken to your office.\n";
+					beasts--;
+				}
+			}
+		}
 	}
+
 	
 	ss << "\n";
 	if (sec > 0)	{ ss << "\nSecurity + " << sec; }
+	if (dirt > 0)	{ ss << "\nFilthiness - " << dirt; }
 	if (beasts > 0)	{ ss << "\nBeasts +" << beasts; }
 	if (susp > 0)	{ The_Player->suspicion(-susp);						ss << "\nSuspicion -" << susp; }
 	if (fear > 0)	{ The_Player->customerfear(-fear);					ss << "\nCustomer Fear -" << fear; }

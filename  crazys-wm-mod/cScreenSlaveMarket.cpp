@@ -140,11 +140,9 @@ void cScreenSlaveMarket::init()
 	else if (sub == "Fa") releaseto = g_Farm.GetBrothel(sendtonum);
 	else if (sub == "Du") releaseto = g_Brothels.GetBrothel(0);
 
-	ss.str("");
-	ss << "Send Girl to: " << (sub == "Du" ? "The Dungeon" : releaseto->m_Name);
+	ss.str("");	ss << "Send Girl to: " << (sub == "Du" ? "The Dungeon" : releaseto->m_Name);
 	EditTextItem(ss.str(), releaseto_id);
-	ss.str("");
-	if (sub != "Du") ss << "Room for " << releaseto->free_rooms() << " more girls.";
+	ss.str("");	if (sub != "Du") ss << "Room for " << releaseto->free_rooms() << " more girls.";
 	EditTextItem(ss.str(), roomsfree_id);
 
 	HideButton(brothel1_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == 0);
@@ -749,9 +747,9 @@ bool cScreenSlaveMarket::buy_slaves()
 				ss << girl->m_Realname << " has been diagnosed with ";
 				if (diseases.size() <= 0)	ss << "an unknown disease.";
 				if (diseases.size() >= 1)	ss << diseases[0];
-				if (diseases.size() >= 2)	ss << " and "<< diseases[1];
-				if (diseases.size() >= 3)	ss << " and "<< diseases[2];
-				if (diseases.size() >= 4)	ss << " and "<< diseases[3];
+				if (diseases.size() >= 2)	ss << " and " << diseases[1];
+				if (diseases.size() >= 3)	ss << " and " << diseases[2];
+				if (diseases.size() >= 4)	ss << " and " << diseases[3];
 				ss << ".\n";
 			}
 		}
@@ -969,7 +967,7 @@ bool cScreenSlaveMarket::buy_slaves()
 	}
 #pragma endregion
 	// `J` end flavor texts
-	
+
 	// `J` send them where they need to go
 	for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
 	{
@@ -997,8 +995,15 @@ bool cScreenSlaveMarket::buy_slaves()
 	else g_MessageQue.AddToQue(ss.str(), 0);
 
 	// finish it
-	EditTextItem("", details_id);
 	selection = -1;
+	PrepareImage(slave_image_id, 0, -1, false, -1, false, "blank");
+	HideImage(slave_image_id, true);		// hide/show image based on whether a girl is selected
+	if (selection < 0)								// if no girl is selected, clear girl info
+	{
+		EditTextItem("No girl selected", details_id);
+		if (trait_id >= 0) EditTextItem("", trait_id);
+	}
+
 	g_InitWin = true;
 	return true;
 }
@@ -1059,6 +1064,15 @@ bool cScreenSlaveMarket::change_selected_girl()
 	 *	if the last clicked one is actually deselected.
 	 */
 	selection = GetSelectedItemFromList(slave_list_id);
+	if (selection < 0)
+	{
+		HideImage(slave_image_id, (selection < 0));		// hide/show image based on whether a girl is selected
+		if (selection < 0)								// if no girl is selected, clear girl info
+		{
+			EditTextItem("No girl selected", details_id);
+			if (trait_id >= 0) EditTextItem("", trait_id);
+		}
+	}
 	bool MatchSel = false;
 	int i;
 

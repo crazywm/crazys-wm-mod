@@ -64,7 +64,14 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	ss << girlName;
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		ss << " refused to see any patients during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		if (girl->tiredness() > 50 && g_Dice.percent(girl->tiredness() - 30))
+		{
+			ss << "\nShe was found sleeping ";
+			if (g_Dice % 2)		ss << "in a supply closet.";
+			else				ss << "in an empty patient bed.";
+			girl->tiredness(-(g_Dice % 40));
+		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -97,168 +104,169 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 	if (jobperformance >= 245)
 	{
-		ss << " She must be the perfect nurse, patients go on and on about her and always come to see her when she works.\n\n";
+		ss << "She must be the perfect nurse, patients go on and on about her and always come to see her when she works.\n\n";
 		wages += 155;
 		if (roll_b <= 20)
 		{
-			ss << "Just the sight of " << girlName << " brings happiness to the patients. She is a blessing to the entire ward.\n";
+			ss << "Just the sight of " << girlName << " brings happiness to the patients. She is a blessing to the entire ward.";
 		}
 		else if (roll_b <= 40)
 		{
-			ss << "Today the knowledge and swift reaction from " << girlName << " saved a patient's life!\n";
+			ss << "Today the knowledge and swift reaction from " << girlName << " saved a patient's life!";
 		}
 		else if (roll_b <= 60)
 		{
-			ss << "She was doing her routine with a wide, beautiful smile and humming a pleasant tune.\n";
+			ss << "She was doing her routine with a wide, beautiful smile and humming a pleasant tune.";
 		}
 		else if (roll_b <= 80)
 		{
-			ss << "Her work is her life. She feels fulfillment from every day working in the clinic.\n";
+			ss << "Her work is her life. She finds fulfillment in every day working in the clinic.";
 		}
 		else
 		{
-			ss << "She spent her day supervising new nurses, showing them how to do the work properly and answering tons of questions.\n";
+			ss << "She spent her day supervising new nurses, showing them how to do the work properly and answering tons of questions.";
 		}
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this and is always getting praised by the patients for her work.\n\n";
+		ss << "She's unbelievable at this and is always getting praised for her work by the patients.\n\n";
 		wages += 95;
 		if (roll_b <= 20)
 		{
-			ss << girlName << " is good at her work. Besides helping patients, she gave some pointers to younger, less experience co-nurses.\n";
+			ss << girlName << " is good at her work. Besides helping patients, she gave some pointers to younger, less experience coworkers.";
 		}
 		else if (roll_b <= 40)
 		{
-			ss << girlName << " was on her feet all day long. She was really tired but also felt fulfilled.\n";
+			ss << girlName << " was on her feet all day long. She was really tired but also felt fulfilled.";
 		}
 		else if (roll_b <= 60)
 		{
-			ss << "She managed to calm a patient before a major surgery.\n";
+			ss << "She managed to calm a patient before a major surgery.";
 		}
 		else if (roll_b <= 80)
 		{
-			ss << "When assisting in a surgery, she knew what tool will be needed, before the surgeon called for them.\n";
+			ss << "When assisting in a surgery, she knew what tool will be needed, before the surgeon called for them.";
 		}
 		else
 		{
-			ss << girlName << " is really committed to her job as a nurse. She's starting to feel enjoyment after every hard worked day.\n";
+			ss << girlName << " is really committed to her job as a nurse. She's starting to feel enjoyment after every hard worked day.";
 		}
 	}
 	else if (jobperformance >= 135)
 	{
-		ss << " She's good at this job and gets praised by the patients often.\n\n";
+		ss << "She's good at this job and gets praised by the patients often.\n\n";
 		wages += 55;
 		if (roll_b <= 20)
 		{
-			ss << "She made one of the patients heart beat dangerously high, while leaning over his face to rearrange the pillow.\n";
+			ss << "She made one of the patients heart beat dangerously high, while leaning over his face to rearrange the pillow.";
 		}
 		else if (roll_b <= 40)
 		{
-			ss << girlName << " made her rounds and spend the rest of the day chatting with other staff members.\n";
+			ss << girlName << " made her rounds and spend the rest of the day chatting with other staff members.";
 		}
 		else if (roll_b <= 60)
 		{
-			ss << "When giving medicine to the patient, " << girlName << " noticed that the dosage for one of them was wrong. She corrected her mistake immediately.\n";
+			ss << "When giving medicine to the patient, " << girlName << " noticed that the dosage for one of them was wrong. She corrected her mistake immediately.";
 		}
 		else if (roll_b <= 80)
 		{
-			ss << "Today she was assigned to the surgery room. She learnt something new.\n";
+			ss << "Today she was assigned to the surgery room. She learned something new.";
 		}
 		else
 		{
-			ss << "It was a busy day for " << girlName << ", but she manage to get thru it without any slipups.\n";
+			ss << "It was a busy day for " << girlName << ", but she manage to get thru it without any slipups.";
 		}
 	}
 	else if (jobperformance >= 85)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << "She made a few mistakes but overall she is okay at this.\n\n";
 		wages += 15;
 		if (roll_b <= 20)
 		{
-			ss << "She accidentally mistaken the dosage of the drugs! Fortunately she understated them.\n";
+			ss << "She accidentally gave a patient the wrong dosage of their drugs! Fortunately she understated them.";
 		}
 		else if (roll_b <= 40)
 		{
-			ss << girlName << " made a mistake while changing bandages of one of her patients. The head nurse scolded her.\n";
+			ss << girlName << " made a mistake while changing bandages of one of her patients. The head nurse scolded her.";
 		}
 		else if (roll_b <= 60)
 		{
-			ss << "She spent her shift fallowing the doctor and learning more about the job.\n";
+			ss << "She spent her shift following the doctor and learning more about the job.";
 		}
 		else if (roll_b <= 80)
 		{
-			ss << "She slapped an older patient for groping her ass! Good thing that the doctor was near to help him stay alive!\n";
+			ss << "She slapped an older patient for groping her ass! Good thing that the doctor was near to help him stay alive!";
 		}
 		else
 		{
-			ss << "When giving a sponge bath to one of male patients she accidentally aroused his manhood. \n";
+			ss << "When giving a sponge bath to one of male patients she accidentally aroused his manhood";
 			if (g_Girls.HasTrait(girl, "Shy") || g_Girls.HasTrait(girl, "Meek"))
 			{
-				ss << "Ashamed from the sight, she run out the room!\n";
+				ss << ". Ashamed from the sight, she run out the room!";
 			}
 			else
 			{
-				ss << "But it didn't bother her any.";
+				ss << " but it didn't bother her any.";
 			}
 		}
 	}
 	else if (jobperformance >= 65)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << "She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		wages -= 5;
 		if (roll_b <= 20)
 		{
-			ss << "When prepping her patient before a mayor surgery she described all possible bad outcomes forgetting to mentioning the low risk percentage and good sides of this treatment.\n";
+			ss << "When prepping her patient before a mayor surgery she described all possible bad outcomes forgetting to mentioning the low risk percentage and good sides of this treatment.";
 		}
 		else if (roll_b <= 40)
 		{
-			ss << girlName << " took the temperature of all patients in her block with the same thermometer without sterilizing it!\n";
+			ss << girlName << " took the temperature of all patients in her block with the same thermometer without sterilizing it!";
 		}
 		else if (roll_b <= 60)
 		{
-			ss << "She got scolded today by the doctor for laughing at the patients weight that came here for liposuction.\n";
+			ss << "She got scolded today by the doctor for laughing at the patients that came in for liposuction about their weight.";
 		}
 		else if (roll_b <= 80)
 		{
-			ss << "Being responsible for utilizing today's medical waste, " << girlName << " just flashed them in the toilet.\n";
+			ss << "Being responsible for utilizing today's medical waste, " << girlName << " just flashed them down the toilet.";
 		}
 		else
 		{
-			ss << "She spend most of her shift snoozing in the basement medical supply storage.\n";
+			ss << "She spend most of her shift snoozing in the basement medical supply storage.";
 		}
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		wages -= 15;
 		if (roll_b <= 20)
 		{
-			ss << "Some could say that her technique of drawing blood is the same way people play pin the tail on the donkey.\n";
+			ss << "Some could say that her technique of drawing blood is the same way people play pin the tail on the donkey.";
 		}
 		else if (roll_b <= 40)
 		{
-			ss << "Sponge bath and skinning someone alive. No difference for " << girlName << ".\n";
+			ss << "Sponge bath, skinning someone alive, no difference for " << girlName << ".";
 		}
 		else if (roll_b <= 60)
 		{
-			ss << girlName << " covered her mouth while sneezing several times. After that she went to assist in the ongoing surgery without changing her gloves!\n";
+			ss << girlName << " covered her mouth while sneezing several times. After that she went to assist in the ongoing surgery without changing her gloves!";
 		}
 		else if (roll_b <= 80)
 		{
-			ss << "While assisting the doctor, she giggled when the patient was telling about its health problems.\n";
+			ss << "While assisting the doctor, " << girlName << " giggled when the patient was telling about their health problems.";
 		}
 		else
 		{
-			ss << girlName << " fainted on her first sight of blood. She wasn't helpful today.\n";
+			ss << girlName << " fainted at the first sight of blood. She wasn't helpful today.";
 		}
 	}
+	ss << "\n\n";
 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
 		tips += 25;
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n";
+		ss << "Stunned by her beauty a customer left her a great tip.\n";
 	}
 
 	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(20))
@@ -302,7 +310,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	}
 
 	if (g_Dice.percent(30) && !g_Girls.HasTrait(girl, "Virgin") && !g_Girls.HasTrait(girl, "Lesbian")
-		&& (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Slut") || g_Girls.HasTrait(girl, "Succubus")))
+		&& (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Slut") || g_Girls.HasTrait(girl, "Succubus") || g_Girls.HasTrait(girl, "Bimbo")))
 	{
 		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 		{
@@ -423,8 +431,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		earned += g_Dice % 35 + 5; // 5-40 gold per customer
 	}
 	brothel->m_Finance.clinic_income(earned);
-	ss.str("");
-	ss << girlName << " earned " << earned << " gold from taking care of " << patients << " patients.";
+	ss.str("");	ss << girlName << " earned " << earned << " gold from taking care of " << patients << " patients.";
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 

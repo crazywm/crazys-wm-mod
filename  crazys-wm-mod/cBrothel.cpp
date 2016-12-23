@@ -2426,6 +2426,8 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 
 	stringstream ss;
 	string girlName = girl->m_Realname;
+	int HateLove = girl->pclove() - girl->pchate();
+
 	int mast = false;
 	int strip = false;
 	int combat = false;
@@ -2436,59 +2438,404 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 
 	// `J` zzzzzz - This list needs to be sorted into groups
 
-	// unrestricted use items
+
+	// Clothing
+#if 1
+
+	// Always worn
+	if (g_Girls.HasItemJ(girl, "Disguised Slave Band") != -1)
+	{
+		if (g_Dice.percent(20))		// it always works but doesn't always say anything
+			ss << girlName << " went around wearing her Disguised Slave Band having no idea of what it really does to her.\n\n";
+		girl->obedience(1);
+		girl->pchate(-1);
+	}
+
+
+	if (g_Girls.HasItemJ(girl, "Compelling Buttplug") != -1)
+	{
+		if (g_Dice.percent(20))		// it always works but doesn't always say anything
+			ss << girlName << " went around with her Compelling Buttplug in.\n\n";
+		girl->anal(1);
+		girl->refinement(-1);
+		girl->dignity(-1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Buttplug") != -1 && g_Dice.percent(10))
+	{
+		ss << girlName << " went around with her Buttplug in.\n\n";
+		girl->anal(1);
+		girl->refinement(-1);
+		girl->dignity(-1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Large Buttplug") != -1 && g_Dice.percent(10))
+	{
+		ss << girlName << " went around with her Large Buttplug in.\n\n";
+		girl->anal(1);
+		girl->refinement(-1);
+		girl->dignity(-1);
+	}
+
+	// Dress
+	if (g_Dice.percent(90)){}	// don't bother mentioning it most of the time
+	else if (g_Girls.HasItemJ(girl, "Noble Gown") != -1)
+	{
+		ss << girlName << " went around wearing her Noble Gown today making her look quite formal.\n\n";
+		formal = true;
+		girl->confidence(1);
+		girl->refinement(1);
+		girl->dignity(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Liquid Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Liquid Dress today making her squirm in delight at its inner workings.\n\n";
+		girl->libido(1 + g_Dice % 10);
+		girl->bdsm(1);
+		girl->dignity(-1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Dark Liquid Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Dark Liquid Dress today making her squirm at its inner workings.\n\n";
+		girl->libido(1 + g_Dice % 10);
+		girl->bdsm(1 + g_Dice % 2);
+		girl->dignity(-1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Enchanted Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Enchanted Dress today making her look quite formal.\n\n";
+		formal = true;
+		girl->magic(g_Dice % 2);
+		girl->beauty(g_Dice % 2);
+		girl->refinement(1);
+		girl->dignity(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Gemstone Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Gemstone Dress today making her look sparkely.\n\n";
+		girl->constitution(g_Dice % 2);
+		girl->refinement(1);
+		girl->dignity(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Hime Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Hime Dress today making her look quite cute.\n\n";
+		girl->confidence(1);
+		girl->refinement(1);
+		girl->dignity(1);
+		formal = true;
+	}
+	else if (g_Girls.HasItemJ(girl, "Linen Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Linen Dress today making her look casual.\n\n";
+		girl->service(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Chinese Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Chinese Dress today making her look formal.\n\n";
+		girl->confidence(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Lounge Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Lounge Dress today making her look sultry.\n\n";
+		girl->confidence(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Silken Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Silken Dress today making her look quite sleek.\n\n";
+		girl->beauty(1);
+		girl->refinement(1);
+		girl->dignity(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Trashy Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Trashy Dress today making her feel dirty.\n\n";
+		girl->refinement(-1);
+		girl->refinement(-1);
+		girl->dignity(-1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Velvet Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Velvet Dress today making her look quite elegant.\n\n";
+		girl->charisma(1);
+		girl->refinement(1);
+		girl->dignity(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Oiran Dress") != -1)
+	{
+		ss << girlName << " went around wearing her Oiran Dress today making her feel quite tough.\n\n";
+		girl->combat(1);
+		girl->confidence(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Ladonna's Dress") != -1)
+	{
+		ss << girlName << " went around wearing Ladonna's Dress today making her look fashonable but hideous.\n\n";
+		girl->pchate(g_Dice % 2);
+		girl->refinement(1);
+		girl->dignity(-1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Jessica's Dress") != -1)
+	{
+		ss << girlName << " went around wearing Jessica's Dress today making her look extremely sexy.\n\n";
+		girl->libido(g_Dice % 10);
+		girl->beauty(1);
+		girl->strip(1);
+		girl->refinement(-1);
+		girl->dignity(1);
+	}
+	else if (g_Girls.HasItemJ(girl, "Minerva's Dress") != -1)
+	{
+		ss << girlName << " went around wearing Minerva's Dress today making her look quite slinky.\n\n";
+		girl->libido(g_Dice % 10);
+		girl->beauty(1);
+		girl->strip(1);
+		girl->refinement(-1);
+		girl->dignity(1);
+	}
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+
+
+
+
+
+
+
+
+
+	if (g_Dice.percent(15) && (
+		g_Girls.HasItemJ(girl, "Chainmail Bikini") != -1 ||
+		g_Girls.HasItemJ(girl, "Goron Blessed Swimsuit") != -1 ||
+		g_Girls.HasItemJ(girl, "Kokiri Blessed Swimsuit") != -1 ||
+		g_Girls.HasItemJ(girl, "Red Swimsuit") != -1 ||
+		g_Girls.HasItemJ(girl, "Zora Blessed Swimsuit") != -1 ||
+		g_Girls.HasItemJ(girl, "White String Bikini") != -1 ||
+		g_Girls.HasItemJ(girl, "Black String Bikini") != -1))
+	{
+#if 1
+		string wearwhat = ""; string wearwhere = "";
+		while (wearwhat == "")
+		{
+			switch (g_Dice % 7)
+			{
+			case 0:		if (g_Girls.HasItemJ(girl, "Chainmail Bikini") != -1)			wearwhat = "Chainmail Bikini";			break;
+			case 1:		if (g_Girls.HasItemJ(girl, "Goron Blessed Swimsuit") != -1)		wearwhat = "Goron Blessed Swimsuit";	break;
+			case 2:		if (g_Girls.HasItemJ(girl, "Kokiri Blessed Swimsuit") != -1)	wearwhat = "Kokiri Blessed Swimsuit";	break;
+			case 3:		if (g_Girls.HasItemJ(girl, "Red Swimsuit") != -1)				wearwhat = "Red Swimsuit";				break;
+			case 4:		if (g_Girls.HasItemJ(girl, "Zora Blessed Swimsuit") != -1)		wearwhat = "Zora Blessed Swimsuit";		break;
+			case 5:		if (g_Girls.HasItemJ(girl, "White String Bikini") != -1)		wearwhat = "White String Bikini";		break;
+			default:	if (g_Girls.HasItemJ(girl, "Black String Bikini") != -1)		wearwhat = "Black String Bikini";		break;
+			}
+		}
+		while (wearwhere == "")
+		{
+			switch (g_Dice % 4)
+			{
+			case 0:		wearwhere = "down to the beach";			break;
+			case 1:		wearwhere = "down to the pool";				break;
+			case 2:		wearwhere = "up to the roof to sunbathe";	break;
+			default:	wearwhere = "around town";					break;
+			}
+		}
+		ss << girlName << " went " << wearwhere << " wearing her " << wearwhat << " today.\n\n";
+		girl->happiness(g_Dice % 10);
+		swim = true;
+#endif
+	}
+	if (g_Girls.HasItemJ(girl, "Maid Uniform") != -1 && g_Dice.percent(5) && is_she_resting(girl))
+	{
+			ss << "She put on her Maid Uniform and cleaned up.\n\n";
+			brothel->m_Filthiness -= 5;
+			maid = true;
+	}
+
+	// Legs
+	if (g_Girls.HasItemJ(girl, "Rainbow Underwear") != -1)
+	{
+	}
+	if (g_Girls.HasItemJ(girl, "Fishnet Stocking") != -1)
+	{
+		ss << girlName << " went around wearing her Fishnet Stockings today making her look sexier even if it did make her feel a litte trashy.\n\n";
+	}
+
+
+
+
+	// Part time use
+	if (g_Girls.HasItemJ(girl, "Apron") != -1 && g_Dice.percent(10))
+	{
+		ss << "She put on her Apron and cooked a meal for some of the girls.\n\n";
+		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1);
+		girl->happiness(5);
+		cook = true;
+	}
+
+
+
+
+
+
+
+#endif
+
+
+	// Robots, Decorations and things that get used without her
 #if 1
 	if (g_Girls.HasItemJ(girl, "Android, Assistance") != -1 && g_Dice.percent(50))
 	{
 		ss << "Her Assistance Android swept up and took out the trash for her.\n\n";
-		brothel->m_Filthiness -= 5;
+		brothel->m_Filthiness -= 10;
 	}
+	if (g_Girls.HasItemJ(girl, "Claptrap") != -1 && g_Dice.percent(10))
+	{
+		ss << "Thanks to Claptrap's sense of humor she is a better mood.\n\n";
+		girl->happiness(5);
+	}
+	if (g_Girls.HasItemJ(girl, "Pet Spider") != -1 && g_Dice.percent(15))
+	{
+		ss << girlName;
+		if (g_Girls.HasTrait(girl, "Nerd"))
+		{
+			ss << " watches her Pet Spider, studying it and occasionally jotting down notes.\n\n";
+			girl->happiness(1 + g_Dice % 3);
+		}
+		else if (g_Girls.HasTrait(girl, "Meek"))
+		{
+			ss << "'s Meek nature makes her cover her Pet Spiders cage so it doesn't scare her.\n\n";
+			girl->happiness(1);
+		}
+		else if (girl->has_trait("Aggressive") || girl->has_trait("Assassin") || girl->has_trait("Merciless"))
+		{
+			ss << " throws in some food to her Pet Spider and smiles while she watchs it kill its prey.\n\n";
+			girl->happiness(1 + g_Dice % 5);
+		}
+		else
+		{
+			ss << " plays with her pet spider.\n\n";
+			girl->happiness(1 + g_Dice % 5);
+		}
+	}
+	if ((g_Girls.HasItemJ(girl, "Cat") != -1 || g_Girls.HasItemJ(girl, "Black Cat") != -1) && g_Dice.percent(10))
+	{
+		if (is_she_resting(girl))
+		{
+			ss << "Spent her time off with her pet Cat.\n\n";
+			girl->happiness(1 + g_Dice % 10);
+		}
+		else
+		{
+			ss << "She cuddles with her Cat as she falls asleep.\n\n";
+			girl->happiness(1 + g_Dice % 5);
+			girl->tiredness(-1);
+		}
+	}
+	if (g_Girls.HasItemJ(girl, "Guard Dog") != -1 && g_Dice.percent(15))
+	{
+		if (g_Girls.HasTrait(girl, "Meek"))
+		{
+			ss << girlName << "'s Meek nature makes her glad she has her Guard Dog to protect her.\n\n";
+			girl->pcfear(-1);
+		}
+		else if (g_Girls.HasTrait(girl, "Aggressive"))
+		{
+			ss << girlName << " seeks her Guard Dog on some random patrons and laughs while they run scared.\n\n";
+		}
+		else
+		{
+			ss << girlName << " plays with her pet Guard Dog.\n\n";
+		}
+		girl->confidence(g_Dice % 2);
+		girl->happiness(1 + g_Dice % 5);
+	}
+
 	if (g_Girls.HasItemJ(girl, "Room Decorations") != -1 && g_Dice.percent(3))
 	{
 		ss << "She looks around at her Room Decorations and smiles, she really likes that her room is a little better then most the other girls.\n\n";
 		girl->happiness(5);
 	}
-	if (g_Girls.HasItemJ(girl, "Journal") != -1 && g_Dice.percent(15))
+	if (g_Girls.HasItemJ(girl, "Appreciation Trophy") != -1 && g_Dice.percent(5))
 	{
-		if (g_Girls.HasTrait(girl, "Nerd") && g_Dice.percent(50))
+#if 1
+		if (is_she_cleaning(girl))
 		{
-			ss << "She decide to write on her novel some today.\n\n";
-			girl->happiness(g_Dice % 2);
-			girl->intelligence(g_Dice % 2);
-		}
-		else if (g_Girls.HasTrait(girl, "Bimbo") && g_Dice.percent(50))
-		{
-			ss << "She doodled silly pictures in her journal.\n\n";
-			girl->happiness(g_Dice % 3);
+			ss << "While cleaning, " << girlName << " came across her Appreciation Trophy";
+			if (HateLove > 60)
+			{
+				ss << ". She stopped and took it down off the shelf, polished it and placed it back front and center";
+				girl->pclove(g_Dice.bell(1, 4));
+				girl->pclove(g_Dice.bell(-4, -1));
+				girl->happiness(g_Dice.bell(1, 6));
+			}
+			else if (HateLove > 10)
+			{
+				ss << " and smiled";
+				girl->pclove(1);
+				girl->pchate(-1);
+				girl->happiness(g_Dice % 4);
+			}
+			else if (HateLove > 30)
+			{
+				ss << ". She looked at it for a bit then continued cleaning";
+			}
+			else if (HateLove > 80)
+			{
+				ss << ". She looked at it incredulously for a bit then pushed it back behind some other things on the shelf";
+				girl->pclove(g_Dice.bell(-2, 0));
+				girl->pchate(g_Dice.bell(0, 2));
+			}
+			else
+			{
+				ss << ". She looked at it angerly for a bit then threw it in the trash";
+				girl->pclove(g_Dice.bell(-5, -1));
+				girl->pchate(g_Dice.bell(2, 5));
+				g_Girls.RemoveInvByNumber(girl, g_Girls.HasItemJ(girl, "Appreciation Trophy"));
+			}
 		}
 		else
 		{
-			string thoughts = "";
-			switch (g_Dice % 20)
+			ss << girlName << " took her Appreciation Trophy off the shelf";
+			if (HateLove > 50)
 			{
-			case 0:		girl->happiness(1);					thoughts = " happy";		break;
-			case 1:		girl->happiness(-1);				thoughts = " sad";			break;
-			case 2:		girl->happiness(1 + g_Dice % 3);	thoughts = " fun";			break;
-			case 3:		girl->intelligence(1);				thoughts = " interesting";	break;
-			case 4:		girl->spirit(1);					thoughts = " positive";		break;
-			case 5:		girl->spirit(-1);					thoughts = " negative";		break;
-			case 6:		girl->obedience(1);					thoughts = " helpful";		break;
-			case 7:		girl->obedience(-1);				thoughts = " anoying";		break;
-			case 8:		girl->pclove(1);					thoughts = " loving";		break;
-			case 9:		girl->pclove(-1);					thoughts = " unloving";		break;
-			case 10:	girl->pchate(1);					thoughts = " hateful";		break;
-			case 11:	girl->pchate(-1);					thoughts = " carefree";		break;
-			case 12:	girl->pcfear(1);					thoughts = " fearful";		break;
-			case 13:	girl->pcfear(-1);					thoughts = " fearless";		break;
-			case 14:	girl->dignity(1);					thoughts = " proper";		break;
-			case 15:	girl->dignity(-1);					thoughts = " slutty";		break;
-			case 16:	girl->libido(-1);					thoughts = " tame";			break;
-			case 17:	girl->libido(1);					thoughts = " sexy";			break;
-			default:	break;
+				ss << ", polished it and placed it back front and center";
+				girl->pclove(g_Dice.bell(1, 6));
+				girl->pclove(g_Dice.bell(-6, -1));
+				girl->happiness(g_Dice.bell(1, 10));
 			}
-			ss << "She used her Journal to write some of her" << thoughts << " thoughts down today.\n\n";
-
+			else if (HateLove > 0)
+			{
+				ss << ", looked at it for a while and smiled";
+				girl->pclove(g_Dice.bell(0, 3));
+				girl->pclove(g_Dice.bell(-3, 0));
+				girl->happiness(g_Dice.bell(0, 6));
+			}
+			else if (HateLove > 70)
+			{
+				ss << ". She looked at it incredulously for a bit then pushed it back behind some other things on the shelf";
+				girl->pclove(g_Dice.bell(-4, 1));
+				girl->pchate(g_Dice.bell(-1, 4));
+			}
+			else
+			{
+				ss << ". She looked at it angerly for a bit then threw it in the trash";
+				girl->pclove(g_Dice.bell(-7, -2));
+				girl->pchate(g_Dice.bell(2, 7));
+				g_Girls.RemoveInvByNumber(girl, g_Girls.HasItemJ(girl, "Appreciation Trophy"));
+			}
 		}
+		ss << ".\n\n";
+#endif
 	}
 
 	// Dream Orbs
@@ -2570,144 +2917,220 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	}
 #endif		
 
-
 #endif
 
-	// Items ONLY useable if resting
+
+	// Books and reading materials
 #if 1
-	if (is_she_resting(girl))
+	// first list all books to see if she has any
+	if (g_Girls.HasItemJ(girl, "Manual of Sex") != -1 ||
+		g_Girls.HasItemJ(girl, "Manual of Bondage") != -1 ||
+		g_Girls.HasItemJ(girl, "Manual of Two Roses") != -1 ||
+		g_Girls.HasItemJ(girl, "Manual of Arms") != -1 ||
+		g_Girls.HasItemJ(girl, "Manual of the Dancer") != -1 ||
+		g_Girls.HasItemJ(girl, "Manual of Magic") != -1 ||
+		g_Girls.HasItemJ(girl, "Manual of Health") != -1 ||
+		g_Girls.HasItemJ(girl, "Library Card") != -1)
 	{
-		if (g_Girls.HasItemJ(girl, "Free Weights") != -1 && g_Dice.percent(15))
-		{
-			ss << girl->m_Realname << " decide to spend her time working out with her Free Weights.\n\n";
-			if (g_Dice.percent(5))	g_Girls.UpdateStat(girl, STAT_BEAUTY, 1);		// working out will help her look better
-			if (g_Dice.percent(10))	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 1);	// working out will make her healthier
-			if (g_Dice.percent(50))	g_Girls.UpdateStat(girl, STAT_STRENGTH, 1);		// working out will make her stronger
-		}
-
-		// Books and reading materials
 #if 1
-		// first list all books to see if she has any
-		if (g_Girls.HasItemJ(girl, "Manual of Sex") != -1 ||
-			g_Girls.HasItemJ(girl, "Manual of Bondage") != -1 ||
-			g_Girls.HasItemJ(girl, "Manual of Two Roses") != -1 ||
-			g_Girls.HasItemJ(girl, "Manual of Arms") != -1 ||
-			g_Girls.HasItemJ(girl, "Manual of the Dancer") != -1 ||
-			g_Girls.HasItemJ(girl, "Manual of Magic") != -1 ||
-			g_Girls.HasItemJ(girl, "Manual of Health") != -1 ||
-
-			g_Girls.HasItemJ(girl, "Library Card") != -1)
+		int numbooks = girl->intelligence() / 30;	// how many books can she read?
+		if (g_Girls.HasTrait(girl, "Blind"))				numbooks = 1;
+		else
 		{
-			int numbooks = girl->intelligence() / 30;	// how many books can she read?
-			if (g_Girls.HasTrait(girl, "Blind"))				numbooks = 1;
+			if (g_Girls.HasTrait(girl, "Nerd"))				numbooks += 1;
+			if (g_Girls.HasTrait(girl, "Quick Learner"))	numbooks += 1;
+			if (g_Girls.HasTrait(girl, "Slow Learner"))		numbooks -= 2;
+			if (g_Girls.HasTrait(girl, "Bimbo"))			numbooks -= 1;
+		}
+		if (numbooks < 1)				numbooks = 1;
+
+		// then see if she wants to read any
+		if (g_Girls.HasItemJ(girl, "Manual of Sex") != -1 && girl->normalsex() < 100 && g_Dice.percent(5) && numbooks > 0)
+		{
+			ss << "Spent her time off reading her Manual of Sex.\n\n";
+			girl->normalsex(2);
+			numbooks--;
+		}
+		if (g_Girls.HasItemJ(girl, "Manual of Bondage") != -1 && girl->bdsm() < 100 && g_Dice.percent(5) && numbooks > 0)
+		{
+			ss << "Spent her time off reading her Manual of Bondage.\n\n";
+			girl->bdsm(2);
+			numbooks--;
+		}
+		if (g_Girls.HasItemJ(girl, "Manual of Two Roses") != -1 && girl->lesbian() < 100 && g_Dice.percent(5) && numbooks > 0)
+		{
+			ss << "Spent her time off reading her Manual of Two Roses.\n\n";
+			girl->lesbian(2);
+			numbooks--;
+		}
+		if (g_Girls.HasItemJ(girl, "Manual of Arms") != -1 && girl->combat() < 100 && g_Dice.percent(5) && numbooks > 0)
+		{
+			ss << "Spent her time off reading her Manual of Arms.\n\n";
+			girl->combat(2);
+			numbooks--;
+		}
+		if (g_Girls.HasItemJ(girl, "Manual of the Dancer") != -1 && girl->strip() < 100 && g_Dice.percent(5) && numbooks > 0)
+		{
+			ss << "Spent her time off reading her Manual of the Dacer.\n\n";
+			girl->strip(2);
+			numbooks--;
+		}
+		if (g_Girls.HasItemJ(girl, "Manual of Magic") != -1 && girl->magic() < 100 && g_Dice.percent(5) && numbooks > 0)
+		{
+			ss << "Spent her time off reading her Manual of Magic.\n\n";
+			girl->magic(2);
+			numbooks--;
+		}
+		if (g_Girls.HasItemJ(girl, "Manual of Health") != -1 && girl->constitution() < 100 && g_Dice.percent(5) && numbooks > 0)
+		{
+			ss << "Spent her time off reading her Manual of Health.\n\n";
+			girl->constitution(1);
+			numbooks--;
+		}
+	
+		// She may go to the library if she runs out of books to read
+		if (g_Girls.HasItemJ(girl, "Library Card") != -1 && numbooks > 0 && (g_Dice.percent(20) || (girl->has_trait("Nerd") && g_Dice.percent(50))))
+		{
+			if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+			{
+				ss << "She spent the day at the Library looking at porn making her become horny.\n\n";
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 15);
+			}
 			else
 			{
-				if (g_Girls.HasTrait(girl, "Nerd"))				numbooks += 1;
-				if (g_Girls.HasTrait(girl, "Quick Learner"))	numbooks += 1;
-				if (g_Girls.HasTrait(girl, "Slow Learner"))		numbooks -= 2;
-				if (g_Girls.HasTrait(girl, "Bimbo"))			numbooks -= 1;
-			}
-			if (numbooks < 1)				numbooks = 1;
-
-			// then see if she wants to read any
-			if (g_Girls.HasItemJ(girl, "Manual of Sex") != -1 && g_Dice.percent(5) && numbooks > 0)
-			{
-				ss << "Spent her time off reading her Manual of Sex.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
-				numbooks--;
-			}
-			if (g_Girls.HasItemJ(girl, "Manual of Bondage") != -1 && g_Dice.percent(5) && numbooks > 0)
-			{
-				ss << "Spent her time off reading her Manual of Bondage.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
-				numbooks--;
-			}
-			if (g_Girls.HasItemJ(girl, "Manual of Two Roses") != -1 && g_Dice.percent(5) && numbooks > 0)
-			{
-				ss << "Spent her time off reading her Manual of Two Roses.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
-				numbooks--;
-			}
-			if (g_Girls.HasItemJ(girl, "Manual of Arms") != -1 && g_Dice.percent(5) && numbooks > 0)
-			{
-				ss << "Spent her time off reading her Manual of Arms.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_COMBAT, 2);
-				numbooks--;
-			}
-			if (g_Girls.HasItemJ(girl, "Manual of the Dancer") != -1 && g_Dice.percent(5) && numbooks > 0)
-			{
-				ss << "Spent her time off reading her Manual of the Dacer.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
-				numbooks--;
-			}
-			if (g_Girls.HasItemJ(girl, "Manual of Magic") != -1 && g_Dice.percent(5) && numbooks > 0)
-			{
-				ss << "Spent her time off reading her Manual of Magic.\n\n";
-				g_Girls.UpdateSkill(girl, SKILL_MAGIC, 2);
-				numbooks--;
-			}
-			if (g_Girls.HasItemJ(girl, "Manual of Health") != -1 && g_Dice.percent(5) && numbooks > 0)
-			{
-				ss << "Spent her time off reading her Manual of Health.\n\n";
-				g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 1);
-				numbooks--;
-			}
-
-			// She may go to the library if she runs out of books to read
-			if (g_Girls.HasItemJ(girl, "Library Card") != -1 && g_Dice.percent(15) && numbooks > 0)
-			{
-				if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+				ss << "She spent her free time at the library reading.";
+				if (g_Dice.percent(5))		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+				if (g_Dice.percent(5))
 				{
-					ss << "She spent the day at the Library looking at porn making her become horny.\n\n";
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 15);
+					int upskill = g_Dice%NUM_SKILLS;
+					int upskillg = g_Dice % 4 - 1;
+					ss << " She found a book on " << sGirl::skill_names[upskill];
+					if (upskillg > 0)
+					{
+						ss << " and gained " << upskillg << " points in it.";
+						g_Girls.UpdateSkill(girl, upskill, upskillg);
+					}
+					else ss << "but didn't find it very useful.";
+				}
+				ss << "\n\n";
+			}
+		}
+#endif
+	}
+
+	if (g_Girls.HasItemJ(girl, "Journal") != -1 && g_Dice.percent(15))
+	{
+#if 1
+		if (g_Girls.HasTrait(girl, "Nerd") && g_Dice.percent(30))
+		{
+			ss << "She decide to write on her novel some today.\n\n";
+			girl->happiness(g_Dice % 2);
+			girl->intelligence(g_Dice % 2);
+		}
+		else if (g_Girls.HasTrait(girl, "Bimbo") && g_Dice.percent(30))
+		{
+			ss << "She doodled silly pictures in her journal.\n\n";
+			girl->happiness(g_Dice % 3);
+		}
+		else if (girl->carrying_human() && g_Dice.percent(30))
+		{
+			ss << "She wrote baby names in her journal";
+			if (girl->carrying_players_child())
+			{
+				if (HateLove > 60)
+				{
+					ss << ", all of them with your last name";
+					girl->pclove(g_Dice % 5);
+					girl->pchate(-(g_Dice % 5));
+					girl->pcfear(-(g_Dice % 3));
+					girl->happiness(g_Dice % 10);
+				}
+				else if (HateLove > 20)
+				{
+					ss << ", sometimes with your last name";
+					girl->pclove(g_Dice % 2);
+					girl->pchate(-(g_Dice % 2));
+					girl->happiness(g_Dice % 5);
+				}
+				else if (HateLove > -20)
+				{
+					ss << ", sometimes with your last name but usually with her last name or none at all";
+					girl->happiness(g_Dice % 3);
+				}
+				else if (HateLove > -60)
+				{
+					ss << ", sometimes when she uses your last name she scratches it out";
+					girl->pclove(-(g_Dice % 5));
+					girl->pchate(g_Dice % 5);
+					girl->happiness(g_Dice.bell(-3, 3));
 				}
 				else
 				{
-					ss << "She spent her free time at the library reading.";
-					if (g_Dice.percent(5))		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
-					if (g_Dice.percent(5))
-					{
-						int upskill = g_Dice%NUM_SKILLS;
-						int upskillg = g_Dice % 4 - 1;
-						ss << " She found a book on " << sGirl::skill_names[upskill];
-						if (upskillg > 0)
-						{
-							ss << " and gained " << upskillg << " points in it.";
-							g_Girls.UpdateSkill(girl, upskill, upskillg);
-						}
-						else ss << "but didn't find it very useful.";
-					}
-					ss << "\n\n";
+					ss << ", she never uses your last name or any name similar to yours";
+					girl->pclove(-(g_Dice % 10));
+					girl->pchate(g_Dice % 10);
+					girl->pcfear(g_Dice % 5);
+					girl->happiness(-(g_Dice % 5));
 				}
 			}
+			else
+			{
+				if (HateLove > 60)
+				{
+					ss << ", sometimes she would use your last name hopeing you would take her child as your own";
+					girl->pclove(g_Dice % 3);
+					girl->pchate(-(g_Dice % 3));
+					girl->pcfear(-(g_Dice % 2));
+				}
+				girl->happiness(g_Dice % 5);
+			}
+
+			ss << ".\n\n";
 		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		else
+		{
+			string thoughts = "";
+			switch (g_Dice % 20)
+			{
+			case 0:		girl->happiness(1);					thoughts = " happy";		break;
+			case 1:		girl->happiness(-1);				thoughts = " sad";			break;
+			case 2:		girl->happiness(1 + g_Dice % 3);	thoughts = " fun";			break;
+			case 3:		girl->intelligence(1);				thoughts = " interesting";	break;
+			case 4:		girl->spirit(1);					thoughts = " positive";		break;
+			case 5:		girl->spirit(-1);					thoughts = " negative";		break;
+			case 6:		girl->obedience(1);					thoughts = " helpful";		break;
+			case 7:		girl->obedience(-1);				thoughts = " anoying";		break;
+			case 8:		girl->pclove(1);					thoughts = " loving";		break;
+			case 9:		girl->pclove(-1);					thoughts = " unloving";		break;
+			case 10:	girl->pchate(1);					thoughts = " hateful";		break;
+			case 11:	girl->pchate(-1);					thoughts = " carefree";		break;
+			case 12:	girl->pcfear(1);					thoughts = " fearful";		break;
+			case 13:	girl->pcfear(-1);					thoughts = " fearless";		break;
+			case 14:	girl->dignity(1);					thoughts = " proper";		break;
+			case 15:	girl->dignity(-1);					thoughts = " slutty";		break;
+			case 16:	girl->libido(-1);					thoughts = " tame";			break;
+			case 17:	girl->libido(1);					thoughts = " sexy";			break;
+			default:	break;
+			}
+			ss << "She used her Journal to write some of her" << thoughts << " thoughts down today.\n\n";
+		}
+#endif
+	}
 
 #endif	// End Books and reading materials
-
-	}
-#endif
 
 	////////////////////
 	// Unsorted items //
 	////////////////////
 
 
+	if (g_Girls.HasItemJ(girl, "Free Weights") != -1 && g_Dice.percent(15))
+	{
+		ss << girl->m_Realname << " spent some time working out with her Free Weights.\n\n";
+		if (g_Dice.percent(5))	girl->beauty(1);		// working out will help her look better
+		if (g_Dice.percent(10))	girl->constitution(1);	// working out will make her healthier
+		if (g_Dice.percent(50))	girl->strength(1);		// working out will make her stronger
+	}
 	if (g_Girls.HasItemJ(girl, "Television Set") != -1)
 	{
 		if (is_she_resting(girl))
@@ -2722,18 +3145,73 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			girl->tiredness(-3);
 		}
 	}
-	if (g_Girls.HasItemJ(girl, "Appreciation Trophy") != -1 && is_she_cleaning(girl) && g_Dice.percent(5) && girl->pclove() > girl->pchate() - 10)
+	if (g_Girls.HasItemJ(girl, "Art Easel") != -1 && g_Dice.percent(girl->fame() / 10))
 	{
-		ss << "While cleaning, " << girlName << " came across her Appreciation Trophy and smiled.\n\n";
-		girl->pclove(1);
-	}
-	if (g_Girls.HasItemJ(girl, "Art Easel") != -1 && g_Dice.percent(2))
-	{
-		int sale = g_Dice % 30 + 1;
-		ss << girl->m_Realname << " managed to sell one of her paintings for " << sale << " gold.\n\n";
+#if 1
+		string paintingtype = "";
+		int sale = ((1 + g_Dice % 30) * max(1, (girl->fame()))) / 10;
+		switch (g_Dice % 50)											// start with simple painting types
+		{
+		case 0:		girl->happiness(1);					paintingtype = "happy";			break;
+		case 1:		girl->happiness(-1);				paintingtype = "sad";			break;
+		case 2:		girl->happiness(1 + g_Dice % 3);	paintingtype = "fun";			break;
+		case 3:		girl->intelligence(1);				paintingtype = "interesting";	break;
+		case 4:		girl->spirit(1);					paintingtype = "positive";		break;
+		case 5:		girl->spirit(-1);					paintingtype = "negative";		break;
+		case 6:		girl->animalhandling(1);			paintingtype = "animal";		break;
+		case 7:		girl->combat(1);					paintingtype = "combat";		break;
+		case 8:		girl->pclove(1);					paintingtype = "loving";		break;
+		case 9:		girl->pclove(-1);					paintingtype = "angry";			break;
+		case 10:	girl->pchate(1);					paintingtype = "hateful";		break;
+		case 11:	girl->pchate(-1);					paintingtype = "carefree";		break;
+		case 12:	girl->pcfear(1);					paintingtype = "fearful";		break;
+		case 13:	girl->pcfear(-1);					paintingtype = "fearless";		break;
+		case 14:	girl->dignity(1);					paintingtype = "proper";		break;
+		case 15:	girl->dignity(-1);					paintingtype = "slutty";		break;
+		case 16:	girl->libido(-1);					paintingtype = "tame";			break;
+		case 17:	girl->libido(1);					paintingtype = "sexy";			break;
+		default:	break;
+		}
+		if (paintingtype != "")	paintingtype += " paintings";
+		else															// if no simple type is chosen, do special types
+		{
+			if (HateLove > 50 && g_Dice.percent(10))
+			{
+				paintingtype = "protraits of you";
+				girl->pclove(g_Dice.bell(1, 4));
+				girl->happiness(g_Dice.bell(3, 10));
+			}
+			else if (girl->magic() > 50 && g_Dice.percent(10))
+			{
+				paintingtype = "magical moving paintings";
+				sale *= 3;
+				girl->magic(1);
+			}
+			else if (g_Dice.percent(10))
+			{
+				paintingtype = "self protraits";
+				girl->happiness(g_Dice.bell(3, 10));
+				sale += girl->beauty();
+			}
+			else if (g_Dice.percent(10))
+			{
+				paintingtype = "nude self protraits";
+				sale += girl->beauty() * 2;
+			}
+		}
+		if (paintingtype == "")	paintingtype = "paintings";				// if no type is chosen, just a regular painting
+
+		ss << girl->m_Realname << " managed to sell one of her " << paintingtype << " for " << sale << " gold.\n\n";
 		girl->m_Money += sale;
-		girl->happiness(sale / 5);
-		girl->fame(1);
+		girl->happiness(sale / 10);
+		girl->confidence(sale / 25);
+		girl->fame(sale / 50);
+#endif
+	}
+	if (g_Girls.HasItemJ(girl, "The Realm of Darthon") != -1 && is_she_resting(girl) && g_Dice.percent(5))
+	{
+		ss << "Spent her time playing The Realm of Darthon with some of the other girls.\n\n";
+		girl->happiness(5);
 	}
 	if (g_Girls.HasItemJ(girl, "Compelling Dildo") != -1)
 	{
@@ -2742,46 +3220,6 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			ss << girlName << "'s lust got the better of her and she spent the day using her Compelling Dildo.\n\n";
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 			mast = true;
-		}
-	}
-	if (g_Girls.HasItemJ(girl, "Pet Spider") != -1 && g_Dice.percent(15))
-	{
-		if (g_Girls.HasTrait(girl, "Meek"))
-		{
-			ss << girlName << "'s Meek nature makes her cover her Pet Spiders cage so it doesn't scare her.\n\n";
-		}
-		else if (g_Girls.HasTrait(girl, "Aggressive"))
-		{
-			ss << girlName << " throws in some food to her Pet Spider and smiles while she watchs it kill its prey.\n\n";
-		}
-		else
-		{
-			ss << girlName << " plays with her pet spider.\n\n";
-		}
-	}
-	if (g_Girls.HasItemJ(girl, "Chrono Bed") != -1)
-	{
-		ss << "Thanks to her Chrono Bed she got a great nights sleep and woke up feeling wonderful.\n\n";
-		girl->health(50);
-		girl->tiredness(-50);
-	}
-	else if (g_Girls.HasItemJ(girl, "Rejuvenation Bed") != -1)
-	{
-		ss << "Thanks to her Rejuvenation Bed she got a great nights sleep and woke up feeling better.\n\n";
-		girl->health(5);
-		girl->tiredness(-5);
-	}
-	if (g_Girls.HasItemJ(girl, "Claptrap") != -1 && g_Dice.percent(10))
-	{
-		ss << "Thanks to Claptrap's sense of humor she is a better mood.\n\n";
-		girl->happiness(5);
-	}
-	if (g_Girls.HasItemJ(girl, "The Realm of Darthon") != -1 && g_Dice.percent(2))
-	{
-		if (is_she_resting(girl))
-		{
-			ss << "Spent her time playing The Realm of Darthon with some of the other girls.\n\n";
-			girl->happiness(5);
 		}
 	}
 	if (g_Girls.HasItemJ(girl, "Stripper Pole") != -1 && g_Dice.percent(10))
@@ -2811,14 +3249,6 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			combat = true;
 		}
 	}
-	if (g_Girls.HasItemJ(girl, "Compelling Buttplug") != -1 && g_Dice.percent(10))
-	{
-		if (is_she_resting(girl))
-		{
-			ss << "Spent her time off with her Compelling Buttplug in.\n\n";
-			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
-		}
-	}
 	if (g_Girls.HasItemJ(girl, "Computer") != -1 && g_Dice.percent(15) && is_she_resting(girl))
 	{
 		if (g_Girls.HasTrait(girl, "Nymphomaniac"))
@@ -2841,95 +3271,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			if (g_Dice.percent(5))		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
 		}
 	}
-	if ((g_Girls.HasItemJ(girl, "Cat") != -1 || g_Girls.HasItemJ(girl, "Black Cat") != -1) && g_Dice.percent(10))
-	{
-		if (is_she_resting(girl))
-		{
-			ss << "Spent her time off with her pet Cat.\n\n";
-			girl->happiness(5);
-		}
-	}
-	if (g_Girls.HasItemJ(girl, "Guard Dog") != -1 && g_Dice.percent(15))
-	{
-		if (g_Girls.HasTrait(girl, "Meek"))
-		{
-			ss << girlName << "'s Meek nature makes her scared of her pet Guard Dog.\n\n";
-		}
-		else if (g_Girls.HasTrait(girl, "Aggressive"))
-		{
-			ss << girlName << " seeks her Guard Dog on some random patrons and laughs while they run scared.\n\n";
-		}
-		else
-		{
-			ss << girlName << " plays with her pet Guard Dog.\n\n";
-		}
-	}
-	if (g_Girls.HasItemJ(girl, "Noble Gown") != -1)
-	{
-		ss << girlName << " went around wearing her Noble Gown today making her look quite formal.\n\n";
-		formal = true;
-	}
-	if (g_Girls.HasItemJ(girl, "Fishnet Stocking") != -1)
-	{
-		ss << girlName << " went around wearing her Fishnet Stocking today making her sexy even if it did make her feel a litte trashy.\n\n";
-	}
-	if (g_Dice.percent(15) && (g_Girls.HasItemJ(girl, "White String Bikini") != -1 || g_Girls.HasItemJ(girl, "Black String Bikini") != -1))
-	{
-		int num = 0;
-		swim = true;
-		if (g_Girls.HasItemJ(girl, "White String Bikini") != -1 && g_Girls.HasItemJ(girl, "Black String Bikini") != -1)
-		{
-			num = g_Dice % 2;
-			if (num == 1) num = 2;
-		}
-		else if (g_Girls.HasItemJ(girl, "White String Bikini") != -1) num = 0;
-		else	num = 2;
-		if (g_Dice.percent(50) && is_she_resting(girl))
-		{
-			num++;
-			girl->happiness(5);
-		}
 
-		switch (num)
-		{
-		case 0:
-			ss << girlName << " went around wearing her White String Bikini today.\n\n";
-			break;
-		case 1:
-			ss << "Spent her time off at the local pool in her White String Bikini.\n\n";
-			break;
-		case 2:
-			ss << girlName << " went around wearing her Black String Bikini today.\n\n";
-			break;
-		case 3:
-			ss << "Spent her time off at the local pool in her Black String Bikini.\n\n";
-			break;
-		default: break;
-		}
-	}
-	if (g_Girls.HasItemJ(girl, "Apron") != -1 && g_Dice.percent(10))
-	{
-		if (is_she_resting(girl))
-		{
-			ss << "She put on her Apron and cooked a meal for some of the girls.\n\n";
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1);
-			girl->happiness(5);
-			cook = true;
-		}
-	}
-	if (g_Girls.HasItemJ(girl, "Maid Uniform") != -1 && g_Dice.percent(5))
-	{
-		if (is_she_resting(girl))
-		{
-			ss << "She put on her Maid Uniform and cleaned up.\n\n";
-			brothel->m_Filthiness -= 5;
-			maid = true;
-		}
-	}
-	if (g_Girls.HasItemJ(girl, "Disguised Slave Band") != -1)
-	{
-		ss << girlName << " went around wearing her Disguised Slave Band having no idea of what it really does to her.\n\n";
-	}
 	if (g_Girls.HasItemJ(girl, "Anger Management Tapes") != -1 && g_Dice.percent(2))
 	{
 		if (is_she_resting(girl))
@@ -2938,26 +3280,37 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, -2);
 		}
 	}
-	if (g_Girls.HasItemJ(girl, "Rainbow Underwear") != -1)
-	{
-		if (is_she_stripping(girl))  // not sure this will work like i want it to might be that i need to added them to the jobs
-		{
-			ss << girlName << " stripped down to reveal her Rainbow Underwear to the approval of the patrons watching her.\n\n";
-			brothel->m_Happiness += 5;
-		}
-	}
 	if (g_Girls.HasItemJ(girl, "Short Sword") != -1 && g_Dice.percent(5))
 	{
-		if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 65 && is_she_resting(girl))
+		if (is_she_resting(girl))
 		{
-			ss << girlName << " sharpened her Short Sword making it more ready for combat.\n\n";
-			g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, 2);
+			if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 65)
+			{
+				ss << girlName << " sharpened her Short Sword making it more ready for combat.\n\n";
+				g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, 2);
+			}
+			else
+			{
+				ss << girlName << " tried to sharpen her Short Sword but doesn't have the brains to do it right.\n\n";
+				g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, -2);
+			}
 		}
-		else
-		{
-			ss << girlName << " tried to sharpen her Short Sword but doesn't have the brains to do it right.\n\n";
-			g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, -2);
-		}
+	}
+
+
+
+
+	if (g_Girls.HasItemJ(girl, "Chrono Bed") != -1)
+	{
+		ss << "Thanks to her Chrono Bed she got a great nights sleep and woke up feeling wonderful.\n\n";
+		girl->health(25);
+		girl->tiredness(-50);
+	}
+	else if (g_Girls.HasItemJ(girl, "Rejuvenation Bed") != -1)
+	{
+		ss << "Thanks to her Rejuvenation Bed she got a great nights sleep and woke up feeling better.\n\n";
+		girl->health(10);
+		girl->tiredness(-10);
 	}
 
 	if (ss.str().length()>0)		// only pass the summary if she has any of the items listed
@@ -4222,6 +4575,7 @@ int cBrothelManager::GetGirlsCurrentBrothel(sGirl* girl)
 	return -1;
 }
 
+// `J` use (brothel, -1, 0) to return all girls
 vector<sGirl*> cBrothelManager::GirlsOnJob(int BrothelID, int JobID, bool Day0Night1)
 {
 	// Used by new security code
@@ -4237,7 +4591,11 @@ vector<sGirl*> cBrothelManager::GirlsOnJob(int BrothelID, int JobID, bool Day0Ni
 	sGirl* curr = current->m_Girls;
 	while (curr)
 	{
-		if (Day0Night1)
+		if (JobID == -1)		// `J` added so all girls can be returned
+		{
+			GirlsOnJob.push_back(curr);
+		}
+		else if (Day0Night1)
 		{
 			if (curr->m_NightJob == JobID) GirlsOnJob.push_back(curr);
 		}
@@ -4248,6 +4606,13 @@ vector<sGirl*> cBrothelManager::GirlsOnJob(int BrothelID, int JobID, bool Day0Ni
 		curr = curr->m_Next;
 	}
 	return GirlsOnJob;
+}
+sGirl* cBrothelManager::GetRandomGirl(int BrothelID)
+{
+	sGirl* girl = 0;
+	vector<sGirl *> girls = GirlsOnJob(BrothelID, -1, 0);
+	if (girls.size() > 0) girl = girls[g_Dice%girls.size()];
+	return girl;
 }
 sGirl* cBrothelManager::GetRandomGirlOnJob(int BrothelID, int JobID, bool Day0Night1)
 {

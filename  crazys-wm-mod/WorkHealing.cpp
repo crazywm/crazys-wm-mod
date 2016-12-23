@@ -46,7 +46,7 @@ extern cMessageQue g_MessageQue;
 bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_GENERAL;
-	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	stringstream ss; string girlName = girl->m_Realname;
 	g_Girls.UnequipCombat(girl);	// not for patients
 
 	if (g_Girls.HasTrait(girl, "Construct"))
@@ -74,11 +74,11 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else
 	{
-		ss << girlName << " does nothing while ";
+		ss << girlName << " rests while the";
 	}
 	if (numdocs > 0)
 	{
-		ss << "the Doctor" << (numdocs > 1 ? "s" : "");
+		ss << " Doctor" << (numdocs > 1 ? "s" : "");
 		if (g_Girls.HasTrait(girl, "Half-Construct") && girl->m_DayJob == JOB_GETHEALING && girl->m_NightJob == JOB_GETHEALING)
 		{	// if fixed by Doctor for both shifts.
 			health += 20;	// Total 40 healing per day, heals less because Doctor only fixes living tissue.
@@ -91,7 +91,7 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (numdocs > 0 && numnurse > 0) { ss << " and"; }
 	if (numnurse > 0)
 	{
-		ss << " the Nurse" << (numnurse > 1 ? "s" : "");
+		ss << " Nurse" << (numnurse > 1 ? "s" : "");
 		health += 10;
 		tiredness += 10;
 		happy += 10;

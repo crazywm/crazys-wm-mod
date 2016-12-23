@@ -359,26 +359,44 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case FT_Bed:
 		{
-			ss << girlName << " stayed in bed most of the day.\n";
+			ss << girlName;
 			imagetype = IMGTYPE_BED;
-			U_Health += 10;
-			U_Tiredness -= 10;
-			if (girl->libido() > 70 || (g_Girls.HasTrait(girl, "Nymphomaniac") && girl->libido() > 30))
+			if (g_Girls.HasItemJ(girl, "Chrono Bed") != -1)
 			{
-				ss << "While in bed the mood hit her and she proceed to pleasure herself with ";
-				if (g_Girls.HasItemJ(girl, "Compelling Dildo") != -1)
-				{
-					U_Libido -= 10;
-					ss << "her Compelling Dildo helping her get off much easier.\n";
-				}
-				else
-				{
-					ss << "her fingers.\n";
-				}
-				imagetype = IMGTYPE_MAST;
-				U_Libido -= 15;
-				U_Happiness += 5;
+				ss << " took a nap in her Chrono Bed woke up feeling wonderful";
+				U_Health += 50;
+				U_Tiredness -= 50;
 			}
+			else if (g_Girls.HasItemJ(girl, "Rejuvenation Bed") != -1)
+			{
+				ss << " took a nap in her Rejuvenation Bed and woke up feeling better";
+				U_Health += 25;
+				U_Tiredness -= 25;
+			}
+			else
+			{
+				ss << " stayed in bed most of the day";
+				U_Health += 10;
+				U_Tiredness -= 10;
+				if (girl->libido() > 70 || (g_Girls.HasTrait(girl, "Nymphomaniac") && girl->libido() > 30))
+				{
+					ss << "While in bed the mood hit her and she proceed to pleasure herself with ";
+					if (g_Girls.HasItemJ(girl, "Compelling Dildo") != -1)
+					{
+						U_Libido -= 10;
+						ss << "her Compelling Dildo helping her get off much easier";
+					}
+					else
+					{
+						ss << "her fingers";
+					}
+					imagetype = IMGTYPE_MAST;
+					U_Libido -= 15;
+					U_Happiness += 5;
+				}
+			}
+			ss << ".\n";
+
 		}
 		break;	// end FT_Bed
 
