@@ -248,7 +248,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else
 	{
-		ss << girlName << "'s doesn't seem to understand the real money in stripping is selling private dances.\n";
+		ss << girlName << " doesn't seem to understand the real money in stripping is selling private dances.\n";
 	}
 
 
