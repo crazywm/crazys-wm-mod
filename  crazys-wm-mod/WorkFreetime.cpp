@@ -345,7 +345,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					U_Health -= 2;
 				}
 			}
-			else if (g_Dice.percent(5) && (girl->has_trait("Zombie") || girl->has_trait("Skeleton")))
+			else if (g_Dice.percent(5) && (girl->has_trait("Zombie") || girl->has_trait("Skeleton")||girl->has_trait("Undead")))
 			{
 				ss << "Someone knocks on the door, \"Are you cooking in there? something smells good.\"   \"What? No, I'm taking a bath.\"   \"Oh, Sorry. Wait, What? EWwwwwwwwwwwwwwwwwwwwww.\"";
 			}
@@ -628,7 +628,28 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			imagetype = IMGTYPE_SWIM;
 			U_Happiness += 5;
 			ss << girlName << " went to the local pool.\n";
-			if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 25)
+			// 'MUTE' this is meant to kill the girl
+			if (g_Girls.GetStat(girl,STAT_TIREDNESS)>70&&g_Dice.percent(10))
+			{
+                ss<<"Not realizing how tired she was she tried to jump into to pool from the highest point but she didn't realize that,";
+                if (g_Dice.percent(25)||g_Girls.HasTrait(girl,"Mind Fucked")&&!(girl->has_trait("Undead")||girl->has_trait("Skelleton")||girl->has_trait("Vampire")))
+                {
+                    string died=girlName;
+                    died+=" died from internal bleeding due to an incident at the pool.";
+                    ss<< " the water had been drained out of the pool she landed on the pool's floor with a loud crack from all her bones shattering.";
+                    girl->m_Stats[STAT_HEALTH] -= 500;
+					girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_WARNING);
+					g_MessageQue.AddToQue(died, COLOR_RED);
+					return false;
+                }
+                else
+                {
+                    ss << " how high up the board was and hit the water in a straight belly flop.";
+                    girl->m_Stats[STAT_HEALTH]-=10;
+                    girl->m_Events.AddMessage(ss.str(),IMGTYPE_SWIM,EVENT_WARNING);
+                }
+			}
+			else if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 25)
 			{
 				ss << "Being on the tired side, she just decided to lay around the pool and get some sun.  She is going to have a tan for a few days.\n";
 				U_Beauty += 5;
@@ -1288,7 +1309,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			ss << girlName << " decides to go on a picnic.\n";
 		}
-		break;	// end FT_Picnic	
+		break;	// end FT_Picnic
 
 		case FT_VisitBar:
 		{
