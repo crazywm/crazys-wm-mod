@@ -76,7 +76,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 	int imagetype = IMGTYPE_PROFILE;
+	int messagetype = Day0Night1;
 	ss.str("");
+	stringstream girldiedmsg;
+
 
 	int roll = g_Dice.d100();
 	int roll_a = g_Dice.d100();
@@ -90,57 +93,57 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	string filename;
 	cScriptManager sm;
 
-
-
-	if (g_Dice % 2 != 1)	// half of the time she will just stay home and rest
+	int choice = 0;	bool choicemade = false;
+	/*	First we give her all the possible choices in the freetimechoice enum
+	*	start each name with "FT_"
+	*	Don't assign anything to the names, the enum will do that for you.
+	//*/
+	enum freetimechoice
 	{
-		/*	First we give her all the possible choices in the freetimechoice enum
-		*	start each name with "FT_"
-		*	Don't assign anything to the names, the enum will do that for you.
-		//*/
-		enum freetimechoice
-		{
-			FT_Nothing,			// do nothing special, standard free time only
-			FT_Shopping,		// if she has any money she will go shopping
-			FT_WindowShopping,	// if she does not have any money or does spend any money
-			FT_BuyDrugs,		// if she is an addict or unhappy, she may turn to drugs
-			FT_Bath,			// take a bath
-			FT_Bed,				// stay in bed
-			FT_Church,			// go to church - possibly update to Morality
-			FT_Salon,			// go to the salon - checks if the girl has enough money
-			FT_Pool,			// go to the local public pool
-			FT_Cook,			// cook herself dinner
-			FT_ClinicCheckup,	// go to the Clinic
-			FT_ClinicVisit,		// go to the Clinic to visit
-			FT_WorkOut,			// she works out to stay in shape
-			FT_HasTraining,		// she has been trained to be a pet
+		FT_Nothing,			// do nothing special, standard free time only
+		FT_Shopping,		// if she has any money she will go shopping
+		FT_WindowShopping,	// if she does not have any money or does spend any money
+		FT_BuyDrugs,		// if she is an addict or unhappy, she may turn to drugs
+		FT_Bath,			// take a bath
+		FT_Bed,				// stay in bed
+		FT_Church,			// go to church - possibly update to Morality
+		FT_Salon,			// go to the salon - checks if the girl has enough money
+		FT_Pool,			// go to the local public pool
+		FT_Cook,			// cook herself dinner
+		FT_ClinicCheckup,	// go to the Clinic
+		FT_ClinicVisit,		// go to the Clinic to visit
+		FT_WorkOut,			// she works out to stay in shape
+		FT_HasTraining,		// she has been trained to be a pet
 
-			// Crazy started adding these but didn't finish them yet
-			FT_WatchMovie,		// go to see a movie
-			FT_Concert,			// go see a concert
-			FT_Picnic,			// go on a picnic
-			FT_VisitBar,		// go to the bar
-			FT_Club,			// go to a dance club
-			FT_Quest,			// go on a quest
-			FT_Hobby,			// does she have a hobby?
+		// Crazy started adding these but didn't finish them yet
+		FT_WatchMovie,		// go to see a movie
+		FT_Concert,			// go see a concert
+		FT_Picnic,			// go on a picnic
+		FT_VisitBar,		// go to the bar
+		FT_Club,			// go to a dance club
+		FT_Quest,			// go on a quest
+		FT_Hobby,			// does she have a hobby?
 
-			// Suggestions to be added
-			FT_Counseling,		// she goes to counseling
-			FT_WatchFights,		// she goes to the arena as a spectator
-			FT_StrollInCity,	// she goes for a walk in the city
-			FT_Casino,			// she goes to the casino and gambles
-			FT_CountrySide,		// she goes out into the country side for a walk
-			FT_GoOnDate,		// she goes out on a date with someone
-			FT_VisitKid,		// she goes to visit her kid
-			FT_MakeExtraMoney,	// she goes and does odd jobs for extra money
+		// Suggestions to be added
+		FT_Counseling,		// she goes to counseling
+		FT_WatchFights,		// she goes to the arena as a spectator
+		FT_StrollInCity,	// she goes for a walk in the city
+		FT_Casino,			// she goes to the casino and gambles
+		FT_CountrySide,		// she goes out into the country side for a walk
+		FT_GoOnDate,		// she goes out on a date with someone
+		FT_VisitKid,		// she goes to visit her kid
+		FT_MakeExtraMoney,	// she goes and does odd jobs for extra money
 
 
 
-			FT_NumberOfFreeTimeChoices	// Leave this as the last thing on the list to allow for random choices.
-		};								// When the choice gets handled, the switch will use the "FT_name" as the case.
+		FT_NumberOfFreeTimeChoices	// Leave this as the last thing on the list to allow for random choices.
+	};								// When the choice gets handled, the switch will use the "FT_name" as the case.
+
+
+	if (g_Dice % 2)	// half of the time she will just stay home and rest
+	{
 
 		// `J` the test for if the girl can act on that choice is done next
-		int choice = 0;	bool choicemade = false;
 
 #if 0	// change this to 1 and add your choice to debug a choice
 
@@ -150,13 +153,15 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		while (!choicemade)
 		{
+#if 1
 			// First check if there are some things she will more likely do
 			if (girl->health() < 30 && g_Clinic.GetNumBrothels() > 0)	// if she is in bad health and you own a clinic
 			{
 				choice = FT_ClinicCheckup;
 				choicemade = true;
 			}
-			else if (girl->is_addict(true) && girl->happiness() < 80)	// `J` changed it so only hard drugs will trigger this
+			else if (girl->is_addict(true)								// `J` changed it so only hard drugs will trigger this
+				&& g_Dice.percent(90 - girl->happiness()))				// and the less happy she is, the more likely
 			{
 				choice = FT_BuyDrugs;
 				choicemade = true;
@@ -249,7 +254,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				case FT_Counseling:
 					if (girl->is_addict() || girl->is_fighter(true) || girl->has_trait("Shy") || girl->has_trait("Pessimist"))
 					{
-						choicemade = true;	// She has enough money for it, so continue
+						choicemade = true;
 					}
 					// if she dont need it, reroll.
 					break;
@@ -294,6 +299,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					break;
 				}
 			}
+#endif
 		};
 
 
@@ -301,6 +307,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		switch (choice)
 		{
 		case FT_Bath:
+#if 1
 		{
 			ss << girlName << " took a bath.\n";
 			imagetype = IMGTYPE_BATH;
@@ -330,14 +337,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (g_Dice.percent(3) && girl->tiredness() > 95 && !girl->has_trait("Incorporeal") && !girl->has_trait("Undead") && !girl->has_trait("Zombie") && !girl->has_trait("Skeleton"))	// 'MUTE' this is meant to kill the girl
 				{
-					string died = girlName;
-					if (girl->is_addict(true))	died = " took an overdose of drugs and drowned in the tub.\n";
-					else died = " fell asleep in the tub and no one came to check on her so she drowned.\n";
-					ss << died;
+					girldiedmsg << girlName;
+					if (girl->is_addict(true))	girldiedmsg << " took an overdose of drugs and drowned in the tub.\n";
+					else girldiedmsg << " fell asleep in the tub and no one came to check on her so she drowned.\n";
 					girl->m_Stats[STAT_HEALTH] -= 500;
-					girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_WARNING);
-					g_MessageQue.AddToQue(died, COLOR_RED);
-					return false;
+					ss << girldiedmsg.str();
 				}
 				else
 				{
@@ -355,9 +359,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				U_Tiredness -= 5;
 			}
 		}
+#endif	
 		break;	// end FT_Bath
 
 		case FT_Bed:
+#if 1
 		{
 			ss << girlName;
 			imagetype = IMGTYPE_BED;
@@ -398,9 +404,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			ss << ".\n";
 
 		}
+#endif
 		break;	// end FT_Bed
 
 		case FT_Salon:
+#if 1
 		{
 			// add more options for more money
 			ss << girlName << " went to the salon ";
@@ -472,9 +480,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				U_Money -= 10;
 			}
 		}
+#endif
 		break;	// end FT_Salon
 
 		case FT_Church:
+#if 1
 		{
 			ss << girlName << " had some free time so she went to the local temple.\n";
 			/* `J` use U_Morality to increase or decrease Morality
@@ -621,14 +631,68 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 			}
 		}
+#endif
 		break;	// end FT_Church
 
 		case FT_Pool:
+#if 1
 		{
 			imagetype = IMGTYPE_SWIM;
 			U_Happiness += 5;
 			ss << girlName << " went to the local pool.\n";
-			if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 25)
+
+			if (girl->tiredness() > 70 && g_Dice.percent(10))		// 'MUTE'
+			{
+				ss << "Not realizing how tired she was, she tried to jump into to pool from the high dive but she didn't realize ";
+				if ((g_Dice.percent(25) || girl->has_trait("Mind Fucked") || girl->has_trait("Retarded")))
+				{
+					ss << "the water had been drained out of the pool.";
+					if (girl->has_trait("Incorporeal"))
+					{
+						ss << " Lucky for her, not haveing a totally physical body allowed her to survive the sudden stop at the bottom of the pool.\n";
+					}
+					else if (girl->has_trait("Abnormally Large Boobs") && girl->health() > 50)
+					{
+						ss << " Luckily her Abnormally Large Boobs cushioned her fall. She may need reconstructive surgery but at least she will live.\n";
+						U_Health -= 45;
+						g_Girls.AdjustTraitGroupBreastSize(girl, -2);
+					}
+					else if (girl->has_trait("Zombie") && girl->health() > 30)
+					{
+						U_Health -= 25;
+						ss << " She landed with a thud on the bottom of the pool. Several people around the pool screamed at the sight and then screamed even more as your zombie girl got up and shambled her way out of the pool.\n";
+					}
+					else if (girl->has_trait("Skeleton") && girl->health() > 30)
+					{
+						U_Health -= 25;
+						ss << " She made an almost musical racket as her bare bones crashed onto the concrete pool bed. Several people around the pool looked on curiosly but then started screaming as your skeleton girl pulled herself together and made her way out of the dry pool.\n";
+					}
+					else		// 'MUTE' this is meant to kill the girl
+					{
+						if (girl->has_trait("Skeleton"))
+						{
+							ss << " She made an almost musical racket as her bare bones crashed onto the concrete pool bed.\n";
+							girldiedmsg <<"Your Skeleton girl " << girlName << " shattered all her bones in a pool accident and was unable to recover.";
+						}
+						else
+						{
+							ss << " She landed on the pool's floor with a loud crack from all her bones shattering.\n";
+							girldiedmsg << girlName << " died from internal bleeding due to an incident at the pool.";
+						}
+						U_Health -= 500;
+						imagetype = IMGTYPE_DEATH;
+						messagetype = EVENT_WARNING;
+					}
+				}
+				else
+				{
+					ss << "how high up the board was and hit the water in a straight belly flop.\n";
+					U_Health -= 10;
+					imagetype = IMGTYPE_SWIM;
+					messagetype = EVENT_WARNING;
+				}
+			}
+			else if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 25)
 			{
 				ss << "Being on the tired side, she just decided to lay around the pool and get some sun.  She is going to have a tan for a few days.\n";
 				U_Beauty += 5;
@@ -678,9 +742,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << "She took a dive into the pool and swam for awhile enjoying herself.\n";
 			}
 		}
+#endif
 		break;	// end FT_Pool
 
 		case FT_Cook:
+#if 1
 		{
 			imagetype = IMGTYPE_COOK;
 			ss << girlName << " decided to cook a meal.\nThe meal she cooked was ";
@@ -712,9 +778,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			g_Girls.UpdateSkill(girl, SKILL_COOKING, 2);
 		}
+#endif
 		break;	// end FT_Cook
 
 		case FT_BuyDrugs:	// `J` zzzzzz - this section needs work
+#if 1
 		{
 			// 1. if she is addicted she will first attempt to purchase drugs until she has no money
 			if (g_Girls.HasTrait(girl, "Viras Blood Addict") ||
@@ -740,9 +808,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				break;
 			}
 		}
+#endif
 		break;	// end FT_BuyDrugs
 
 		case FT_WindowShopping:
+#if 1
 		{
 			imagetype = IMGTYPE_SHOP;
 			int hap = g_Dice % 10 - 4;
@@ -751,9 +821,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			if (hap > 0) ss << " she enjoyed herself a " << (hap > 3 ? "bit." : "lot.");
 			else ss << " she was sad because she didn't find what she liked for a price she could afford.";
 		}
+#endif
 		break;	// end FT_WindowShopping
 
 		case FT_Shopping:
+#if 1
 		{
 			// 2. buy any items that catch her fancy
 			int numberToBuy = g_Dice % 10;	// try to buy up to 10 things
@@ -834,12 +906,97 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 			}
 		}
+#endif
 		break;	//end FT_Shopping
 
 		case FT_ClinicVisit:
+#if 1
 		{
-			ss << girlName << " goes to the Clinic";
-			if (g_Girls.GetStat(girl, STAT_MORALITY) >= 40)
+			ss << girlName << (girl->m_InClinic ? " hangs out around" : " goes to") << " the Clinic";
+
+			if (girl->is_addict(true) && girl->get_stat(STAT_MORALITY) <= -60)		// 'Mute'
+			{
+				ss << " to try and steal drugs.\n";
+				if (!g_Dice.percent((girl->agility() + girl->intelligence()) / 2))	// 'Mute' Fail to steal drugs
+				{
+					if (g_Clinic.GetNumBrothels() > 0 && g_Dice.percent(50))		// She tries staling from your clinic
+					{
+						ss << "She got caught by the guards in your clinic and they brought her to your dungeon.\n";
+						girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+						girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
+						/* */if (girl->m_InHouse)	g_House.RemoveGirl(0, girl, false);
+						else if (girl->m_InFarm)	g_Farm.RemoveGirl(0, girl, false);
+						else if (girl->m_InClinic)	g_Clinic.RemoveGirl(0, girl, false);
+						else if (girl->m_InCentre)	g_Centre.RemoveGirl(0, girl, false);
+						else if (girl->m_InArena)	g_Arena.RemoveGirl(0, girl, false);
+						else if (girl->m_InStudio)	g_Studios.RemoveGirl(0, girl, false);
+						else g_Brothels.RemoveGirl(girl->where_is_she, girl, false);
+						g_Brothels.GetDungeon()->AddGirl(girl, DUNGEON_GIRLSTEAL);
+						return false;
+					}
+					else if (girl->m_Money >= 200 && g_Dice.percent(50))			// 'Mute' Pay 200 gold fine, if not enough gold goes to prision
+					{
+						ss << "She got caught by the clinic guards and was forced to pay 200 Gold.\n";
+						girl->m_Money -= 200;
+						U_Happiness -= 50;
+					}
+					else if (g_Dice.percent(50))
+					{
+						ss << "She got caught by the clinic guards and was unable to pay so they sent her to jail.\n";
+						girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+						g_Brothels.AddGirlToPrison(girl);
+						return false;
+					}
+					else if (g_Dice.percent(20)) // 'Mute' Gets raped by guards
+					{
+						ss << "Unfortunantly she got caught and was raped by the guards.\n";
+						U_Happiness -= 50;
+						U_Health -= 10;
+						customer_rape(girl, 5);
+					}
+				}
+				else // 'Mute' Manages to steal Drugs
+				{
+					string itemname = "";
+					string itemprefix = "a";
+					/* */if (girl->has_trait("Fairy Dust Addict"))	{ itemprefix = "a vial of";	itemname = "Fairy Dust"; }
+					else if (girl->has_trait("Shroud Addict"))		{ itemprefix = "a";			itemname = "Shroud Mushroom"; }
+					else if (girl->has_trait("Viras Blood Addict"))	{ itemprefix = "a vial of";	itemname = "Vira Blood"; }
+					sInventoryItem* item = g_InvManager.GetItem(itemname);
+					while (!item)
+					{
+						int numtry = g_Dice % 6;	if (numtry >= 3)	numtry = g_Dice % 15;
+
+						itemprefix = "a ";
+						/* */if (numtry == 0 || numtry == 2)	itemprefix = "a vial of ";
+						else if (numtry == 12 || numtry == 13)	itemprefix = "an ";
+
+						switch (numtry)
+						{
+						case 0:		itemname = "Fairy Dust";			break;
+						case 1:		itemname = "Shroud Mushroom";		break;
+						case 2:		itemname = "Vira Blood";			break;
+						case 3:		if (g_Dice.percent(5))	{ itemname = "Healing Salve (L)";		break; }
+						case 4:		if (g_Dice.percent(20))	{ itemname = "Healing Salve (M)";		break; }
+						case 5:		if (g_Dice.percent(50))	{ itemname = "Healing Salve (S)";		break; }
+						case 6:		itemname = "Healing Salve (T)";			break;
+						case 7:		if (g_Dice.percent(5))	{ itemname = "Incense of Serenity(L)";	break; }
+						case 8:		if (g_Dice.percent(20))	{ itemname = "Incense of Serenity(M)";	break; }
+						case 9:		if (g_Dice.percent(50))	{ itemname = "Incense of Serenity(S)";	break; }
+						case 10:	itemname = "Incense of Serenity(T)";	break;
+						case 11:	itemname = "Mana Potion";				break;
+						case 12:	if (g_Dice.percent(5))	{ itemname = "Oil of Greater Scar Removing";	break; }
+						case 13:	if (g_Dice.percent(10))	{ itemname = "Oil of Lesser Scar Removing";	break; }
+						default:	break;
+						}
+						item = g_InvManager.GetItem(itemname);
+					}
+					ss << "She managed to steal " << itemprefix << itemname << ".\n";
+					g_Girls.AddInv(girl, item);
+				}
+			}
+
+			else if (g_Girls.GetStat(girl, STAT_MORALITY) >= 40)
 			{
 				ss << " to cheer up the patients.";
 				U_Morality += 5;
@@ -856,9 +1013,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			U_Happiness += 5;
 			// needs more options
 		}
+#endif
 		break;	// end FT_ClinicVisit
 
 		case FT_ClinicCheckup:
+#if 1
 		{
 			bool playerclinic = g_Clinic.GetNumBrothels() > 0;
 			sGirl* doctoronduty = NULL;
@@ -942,10 +1101,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 			}
 		}
+#endif
 		break;	// end FT_ClinicCheckup
 
-
 		case FT_WatchMovie:
+#if 1
 		{
 			// `CRAZY` This is movies she can watch
 			/*default*/	int mov_type = 1;    string mov_type_text = "a porno";
@@ -1082,9 +1242,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << girlName << " enjoyed herself. The movie wasn't the best she ever seen but she had a good time.\n";
 			}
 		}
+#endif
 		break;	// end FT_WatchMovie
 
 		case FT_Concert:
+#if 1
 		{
 			// `CRAZY` The type of music at the concert
 			/*default*/	int song_type = 1;    string song_type_text = "Death Metal";
@@ -1282,15 +1444,19 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 			}
 		}
+#endif
 		break;	// end FT_Concert
 
 		case FT_Picnic:
+#if 1
 		{
 			ss << girlName << " decides to go on a picnic.\n";
 		}
+#endif
 		break;	// end FT_Picnic	
 
 		case FT_VisitBar:
+#if 1
 		{
 			sGirl* barmaidonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARMAID, Day0Night1);
 			string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->m_Realname + "" : "the Barmaid");
@@ -1316,9 +1482,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << girlName << " was in a good mood so she had a few drinks and talked to the people around her.\n"; U_Happiness += 5;
 			}
 		}
+#endif
 		break;	// end FT_VisitBar
 
 		case FT_Club:
+#if 1
 		{
 			sGirl* clubbaronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_SLEAZYBARMAID, Day0Night1);
 			string clubbarname = (clubbaronduty ? "Bartender " + clubbaronduty->m_Realname + "" : "the Bartender");
@@ -1350,12 +1518,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			imagetype = IMGTYPE_FORMAL;
 		}
+#endif
 		break;	// end FT_Club
 
-		case FT_Quest:
-			break;	// end FT_Quest
-
 		case FT_Hobby:
+#if 1
 		{
 			ss << girlName << " decided to do something she really enjoys so she ";
 			if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && !g_Girls.CheckVirginity(girl))
@@ -1427,9 +1594,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << " spent the day doing varouis things she enjoys.";
 			}
 		}
+#endif
 		break;	// end FT_Hobby
 
 		case FT_Counseling:
+#if 1
 		{
 			ss << girlName << " decided to go and get some counseling for her ";
 			if (girl->is_addict())
@@ -1571,9 +1740,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 			}
 		}
+#endif
 		break;	// end FT_Counseling
 
 		case FT_WatchFights:
+#if 1
 		{
 			if (g_Arena.GetNumBrothels() < 0)
 			{
@@ -1610,12 +1781,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << "The sight of blood made her feel faint. She really didn't care for this.";
 			}
 		}
+#endif
 		break;	// end FT_WatchFights
 
-		case FT_StrollInCity:
-			break;	// end FT_StrollInCity
-
 		case FT_Casino:
+#if 1
 		{
 			sGirl* dealeronduty = g_Brothels.GetRandomGirlOnJob(0, JOB_DEALER, Day0Night1);
 			string dealername = (dealeronduty ? "Dealer " + dealeronduty->m_Realname + "" : "the Dealer");
@@ -1701,12 +1871,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 			}
 		}
+#endif
 		break;	// end FT_Casino
 
-		case FT_CountrySide:
-			break;	// end FT_CountrySide
-
 		case FT_WorkOut:
+#if 1
 		{
 			int workout = 0;
 			bool ass = false, str = false, flex = false, jog = false;
@@ -1776,10 +1945,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % workout);
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % workout);
 		}
+#endif
 		break;	// end FT_WorkOut
 
-
 		case FT_GoOnDate:
+#if 1
 		{
 			int enjoy = 0;
 			bool breakup = false;
@@ -2139,9 +2309,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.UpdateStat(girl, STAT_NPCLOVE, -100);
 			}
 		}
+#endif
 		break;	// end FT_GoOnDate
 
 		case FT_VisitKid:
+#if 1
 		{
 			ss << girlName << " decides to go visit her ";
 			if (girl->m_States&(1 << STATUS_HAS_DAUGHTER))
@@ -2157,15 +2329,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << girlName << "kids.";
 			}
 		}
+#endif
 		break;	// end FT_VisitKid
 
-		case FT_MakeExtraMoney:
-		{
-			ss << girlName << " decides to make some extra money so she ";
-		}
-		break;	// end FT_MakeExtraMoney
-
 		case FT_HasTraining:
+#if 1
 		{
 			ss << girlName << " is far enough along in her training that she has started to behave that way in her free time.";
 			if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 10)
@@ -2220,8 +2388,25 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << "";
 			}
 		}
+#endif
 		break;	// end FT_HasTraining
 
+
+
+
+		case FT_Quest:
+			break;	// end FT_Quest
+		case FT_StrollInCity:
+			break;	// end FT_StrollInCity
+		case FT_CountrySide:
+			break;	// end FT_CountrySide
+		case FT_MakeExtraMoney:
+#if 1
+		{
+			ss << girlName << " decides to make some extra money so she ";
+		}
+#endif
+		break;	// end FT_MakeExtraMoney
 
 
 
@@ -2234,13 +2419,65 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		// `J` end of the line
 	}
+
+
+
+
+
+
 	// `J` only add a new message if something new was done.
-	if (ss.str().length() > 0) girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
+	if (ss.str().length() > 0) girl->m_Events.AddMessage(ss.str(), imagetype, messagetype);
+
+	g_Girls.UpdateStat(girl, STAT_HEALTH, U_Health, false);		// do health first in case she dies
+	g_Girls.UpdateStat(girl, STAT_TIREDNESS, U_Tiredness, false);
+	g_Girls.UpdateStat(girl, STAT_HAPPINESS, U_Happiness);
+
+	if (girl->health() <= 0)
+	{
+		if (girldiedmsg.str().length() == 0)
+		{
+			girldiedmsg << girlName << " died ";
+			switch (choice)
+			{
+			case FT_Shopping:				girldiedmsg << "shopping";	break;
+			case FT_WindowShopping:			girldiedmsg << "window shopping";	break;
+			case FT_BuyDrugs:				girldiedmsg << "buying drugs";	break;
+			case FT_Bath:					girldiedmsg << "in the bath";	break;
+			case FT_Bed:					girldiedmsg << "in bed";	break;
+			case FT_Church:					girldiedmsg << "in church";	break;
+			case FT_Salon:					girldiedmsg << "at the salon";	break;
+			case FT_Pool:					girldiedmsg << "at the pool";	break;
+			case FT_Cook:					girldiedmsg << "while cooking";	break;
+			case FT_ClinicCheckup:			girldiedmsg << "in the clinic";	break;
+			case FT_ClinicVisit:			girldiedmsg << "in the clinic";	break;
+			case FT_WorkOut:				girldiedmsg << "working out";	break;
+			case FT_HasTraining:			girldiedmsg << "while puppy training";	break;
+			case FT_WatchMovie:				girldiedmsg << "at the movie theater";	break;
+			case FT_Concert:				girldiedmsg << "at a concert";	break;
+			case FT_Picnic:					girldiedmsg << "at a picnic";	break;
+			case FT_VisitBar:				girldiedmsg << "at a bar";	break;
+			case FT_Club:					girldiedmsg << "at a club";	break;
+			case FT_Quest:					girldiedmsg << "on a quest";	break;
+			case FT_Hobby:					girldiedmsg << "working on her hobby";	break;
+			case FT_Counseling:				girldiedmsg << "in counceling";	break;
+			case FT_WatchFights:			girldiedmsg << "watching fights";	break;
+			case FT_StrollInCity:			girldiedmsg << "in the city";	break;
+			case FT_Casino:					girldiedmsg << "in a casino";	break;
+			case FT_CountrySide:			girldiedmsg << "in the countryside";	break;
+			case FT_GoOnDate:				girldiedmsg << "on a date";	break;
+			case FT_VisitKid:				girldiedmsg << "visiting with her children";	break;
+			case FT_MakeExtraMoney:			girldiedmsg << "erning extra money";	break;
+			default:
+				girldiedmsg << "on her free time";
+				break;
+			}
+			girldiedmsg << ".";
+		}
+		g_MessageQue.AddToQue(girldiedmsg.str(), COLOR_RED);
+		return false;
+	}
 
 	// update stats and skills
-	g_Girls.UpdateStat(girl, STAT_TIREDNESS, U_Tiredness, false);
-	g_Girls.UpdateStat(girl, STAT_HEALTH, U_Health, false);
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, U_Happiness);
 	g_Girls.UpdateStat(girl, STAT_MANA, U_Mana);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, U_Libido);
 	g_Girls.UpdateStat(girl, STAT_EXP, U_EXP);

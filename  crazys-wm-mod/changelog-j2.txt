@@ -340,7 +340,7 @@ Updated Sexual Orientation training and Fake Orgasm training numbers
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.46
 
-### Changes 12/20-22/2016
+### Changes 12/20-23/2016
 Fixed a few typeos
 Updated do_daily_items
 Updated WorkFreetime.cpp with a couple of items
@@ -359,8 +359,16 @@ Replaced most instances of HasTrait(girl, "Virgin") with CheckVirginity(girl)
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
+### Changes 12/24/2016
 
+Fixed SO and FOE pay
+Added dark events to WorkFreetime by MuteDay
+ - I added more variations to them
+Rearranged WorkFreetime and added death message if needed
+MuteDay updated cGold.cpp/h
 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.48
 
 
 

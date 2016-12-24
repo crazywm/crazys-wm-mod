@@ -69,7 +69,7 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	g_Girls.UnequipCombat(girl);	// not for patient
 
-	int enjoy = 0;
+	int enjoy = 0, wages = 10, tips = 0;
 	int libido = 0;
 	int msgtype = Day0Night1, imagetype = IMGTYPE_SEX;
 
@@ -150,6 +150,7 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		girl->m_WorkingDay = 0;
 		msgtype = EVENT_WARNING;
 		ss << "\nShe resisted all attempts to make her Bisexual.";
+		wages = 0;
 	}
 	else if (girl->m_WorkingDay >= 100 && Day0Night1)
 	{
@@ -158,10 +159,12 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << "\nHer Sexual Orientation conversion is complete. She is now Bisexual.";
 		girl->remove_trait("Lesbian");	girl->add_trait("Bisexual");	girl->remove_trait("Straight");
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_HOUSEREST;
+		wages = 200;
 	}
 	else
 	{
 		ss << "Her Sexual Orientation conversion to Bisexual is in progress (" << girl->m_WorkingDay << "%).";
+		wages = min(100, girl->m_WorkingDay);
 	}
 
 #pragma endregion
@@ -169,7 +172,8 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
-	girl->m_Pay = girl->m_WorkingDay / 5;
+	if (girl->is_slave()) wages /= 2;
+	girl->m_Pay = wages;
 
 	// Improve girl
 	girl->lesbian(g_Dice.bell(1, 10));

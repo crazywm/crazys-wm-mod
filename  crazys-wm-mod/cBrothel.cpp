@@ -5552,8 +5552,13 @@ void cBrothelManager::AddGirlToPrison(sGirl* girl)
 	g_Girls.RemoveGirl(girl);
 
 	// remove girl from brothels if she is there
-	for (int i = 0; i<g_Brothels.GetNumBrothels(); i++)
-		g_Brothels.RemoveGirl(i, girl, false);
+	/* */if (girl->m_InHouse)	g_House.RemoveGirl(0, girl, false);
+	else if (girl->m_InFarm)	g_Farm.RemoveGirl(0, girl, false);
+	else if (girl->m_InClinic)	g_Clinic.RemoveGirl(0, girl, false);
+	else if (girl->m_InCentre)	g_Centre.RemoveGirl(0, girl, false);
+	else if (girl->m_InArena)	g_Arena.RemoveGirl(0, girl, false);
+	else if (girl->m_InStudio)	g_Studios.RemoveGirl(0, girl, false);
+	else g_Brothels.RemoveGirl(girl->where_is_she, girl, false);
 
 	girl->m_Prev = girl->m_Next = 0;
 	if (m_Prison)

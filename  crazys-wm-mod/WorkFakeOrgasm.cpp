@@ -69,7 +69,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	g_Girls.UnequipCombat(girl);	// not for patient
 
-	int enjoy = 0;
+	int enjoy = 0, wages = 10, tips = 0;
 	int libido = 0;
 	int msgtype = Day0Night1, imagetype = IMGTYPE_MAST;
 
@@ -221,6 +221,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		}
 		else ss << "She resisted all attempts to teach her";
 		ss << " to fake her orgasms.";
+		wages = 0;
 	}
 	else if (girl->m_WorkingDay >= 100 && Day0Night1)
 	{
@@ -229,10 +230,12 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << "With her training complete, she is now a \"Fake Orgasm Expert\".";
 		girl->remove_trait("Slow Orgasms");	girl->remove_trait("Fast Orgasms");	girl->add_trait("Fake Orgasm Expert");
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_HOUSEREST;
+		wages = 200;
 	}
 	else
 	{
 		ss << "Training in progress (" << girl->m_WorkingDay << "%).\n\n";
+		wages = min(100, girl->m_WorkingDay);
 		/* */if (girl->m_WorkingDay < 25)	ss << "She has no idea what she sounds like durring sex but it ain't orgasmic.";
 		else if (girl->m_WorkingDay < 50)	ss << "When she realizes she should finish, you can see it click in her mind and easily notice her changing things up.";
 		else if (girl->m_WorkingDay < 75)	ss << "She is still not getting into rhythm with " << (g_Dice % 3 ? "you" : "her partner") << " but it still seems enjoyable.";
@@ -258,7 +261,8 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
-	girl->m_Pay = girl->m_WorkingDay / 5;
+	if (girl->is_slave()) wages /= 2;
+	girl->m_Pay = wages;
 
 	// Improve girl
 	girl->performance(g_Dice.bell(3, 15));
