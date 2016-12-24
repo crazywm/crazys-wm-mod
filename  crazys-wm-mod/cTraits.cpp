@@ -19,13 +19,15 @@
 #include <iostream>
 #include "cTraits.h"
 #include "stdio.h"
-#include "libintl.h"
 #include "tinyxml.h"
 #include "XmlMisc.h"
-#include "cLog.h"
+#include "CLog.h"
 
 #ifdef LINUX
 #include "linux.h"
+#include <libintl.h>
+#else
+#include "libintl.h"
 #endif
 
 cTraits::~cTraits()

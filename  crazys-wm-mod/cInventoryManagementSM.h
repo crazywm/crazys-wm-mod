@@ -42,4 +42,5 @@ public:
 	void handle_events();
 	void item_shift_r();
 	sGirl *get_girl_from_list(int owner_idx, int list_id);
+	void upd_item_lists();
 };

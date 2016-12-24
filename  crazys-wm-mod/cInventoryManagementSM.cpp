@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+#if 0
 #include <string>
 #include <sstream>
 #include "InterfaceGlobals.h"
@@ -1331,5 +1333,5 @@ void cInventoryManagementSM::item_shift_r()
 
 	// update the item lists
 }
-
+#endif
 

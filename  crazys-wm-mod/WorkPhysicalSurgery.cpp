@@ -16,6 +16,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+#if 0
 #pragma region //	Includes and Externs			//
 #include "cJobManager.h"
 #include "cBrothel.h"
@@ -192,3 +194,5 @@ double cJobManager::JP_PhysicalSurgery(sGirl* girl, bool estimate)
 	}
 	return jobperformance;
 }
+#endif
+
