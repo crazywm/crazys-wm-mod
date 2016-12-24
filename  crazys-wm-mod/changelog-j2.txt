@@ -354,6 +354,20 @@ Updated Gang Service mission
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.47
 
+Merged pull requests by skriveavis: a few typeo fixes
+Replaced most instances of HasTrait(girl, "Virgin") with CheckVirginity(girl)
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+
+
+
+
+
+
+
+
+
 
 
 

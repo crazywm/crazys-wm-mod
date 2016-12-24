@@ -309,7 +309,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		ss << "An elderly fellow managed to convince " << girlName << " that her touch can heal! She ended up giving him a hand job!\n";
 	}
 
-	if (g_Dice.percent(30) && !g_Girls.HasTrait(girl, "Virgin") && !g_Girls.HasTrait(girl, "Lesbian")
+	if (g_Dice.percent(30) && !g_Girls.CheckVirginity(girl) && !g_Girls.HasTrait(girl, "Lesbian")
 		&& (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Slut") || g_Girls.HasTrait(girl, "Succubus") || g_Girls.HasTrait(girl, "Bimbo")))
 	{
 		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))

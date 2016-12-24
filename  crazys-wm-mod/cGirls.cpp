@@ -1035,7 +1035,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Dominatrix"))				/**/{ Dangerous += 30; Elegant += 5; Freak += 40; }
 	if (HasTrait(girl, "Nimble Tongue"))			/**/{ Sexy += 25; }
 	if (HasTrait(girl, "Open Minded"))				/**/{ Sexy += 30; Cool += 20; Elegant -= 10; }
-	if (HasTrait(girl, "Virgin"))					/**/{ Lolita += 15; }//Plus 50 for begin a virgin?  Seems odd to me so changed it CRAZY
+	if (CheckVirginity(girl))						/**/{ Lolita += 15; }//Plus 50 for begin a virgin?  Seems odd to me so changed it CRAZY
 
 
 	/****** Social Traits ******/
@@ -8124,6 +8124,7 @@ bool cGirls::RegainVirginity(sGirl* girl, int temptime, bool removeitem, bool in
 	return traitOpSuccess;
 }
 
+// returns true if she is a virgin, false if she is not
 bool cGirls::CheckVirginity(sGirl* girl)
 {
 	if (HasTrait(girl, "Virgin") && girl->m_Virgin == 1) // `J` if already correct settings then return true
@@ -8712,7 +8713,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (HasTrait(girl, "Queen"))		intro -= 3; //maybe again CRAZY
 		if (customer->m_IsWoman && HasTrait(girl, "Straight"))	intro -= 3;
 		if (HasTrait(girl, "Your Wife"))	intro -= 3; //maybe this idk CRAZY might need a love check also
-		if (HasTrait(girl, "Virgin"))		intro -= 5;
+		if (CheckVirginity(girl))		intro -= 5;
 		if (HasTrait(girl, "Kidnapped"))	intro -= 5;
 		if (HasTrait(girl, "Emprisoned Customer"))	intro -= 5;
 
@@ -9358,7 +9359,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 #if defined(SPICE)
 			//SIN - supplement...
-			else if (g_Dice.percent(75) && HasTrait(girl, "Virgin"))
+			else if (g_Dice.percent(75) && g_Girls.CheckVirginity(girl))
 			{
 				sexMessage << girlName << "'s virginity was spared, as he used her ass-hole. Considering she's a 'virgin' she seems to have done THIS before.";
 			}
@@ -11868,7 +11869,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "At first " << girlName << " seemed to be in her element surrounded by so many \"wonderful\" cocks, but it quickly became apparent that she does not have the experience to satisfy them all.";
 			}
-			else if (g_Dice.percent(60) && (HasTrait(girl, "Virgin")))
+			else if (g_Dice.percent(60) && g_Girls.CheckVirginity(girl))
 			{
 				sexMessage << girlName << " has never fucked ONE person before and had no idea how to handle this kind of group. She was completely overwhelmed and had no control over what was happening "
 					<< "as strangers twisted and dragged her around while endless cocks were shoved painfully inside her and splurted cum in her face.";
@@ -18576,7 +18577,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 	if (girl->has_trait("Tsundere"))				detectdisease += 5;		// 
 	if (girl->has_trait("Twisted"))					detectdisease -= 10;	// 
 	if (girl->has_trait("Vampire"))					detectdisease += 20;	// I can smell it in your blood
-	if (girl->has_trait("Virgin"))					detectdisease -= 20;	// not sure what to look for
+	if (CheckVirginity(girl))						detectdisease -= 20;	// not sure what to look for
 	if (girl->has_trait("Whore"))					detectdisease += 20;	// I've seen it all
 	if (girl->has_trait("Yandere"))					detectdisease += 5;		// 
 	if (girl->has_trait("Your Daughter"))			detectdisease += 30;	// you taught her what to look out for

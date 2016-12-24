@@ -133,7 +133,7 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay -= g_Dice % 5;			// She is set in her ways
 
 
-	//	if (girl->has_trait("Virgin"))			{}
+	//	if (g_Girls.CheckVirginity(girl))				{}
 
 
 

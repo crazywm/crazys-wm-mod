@@ -117,7 +117,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//try and add randomness here
-	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && !g_Girls.HasTrait(girl, "Virgin")
+	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && !g_Girls.CheckVirginity(girl)
 		&& !g_Girls.HasTrait(girl, "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 75
 		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{

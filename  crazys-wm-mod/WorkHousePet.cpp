@@ -342,7 +342,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " to her spacious kennel with her soft bed. Her belly and breasts swayed, both occasionally brushing the ground, and she back into the kennel and curled up";
 					ss << " on her bed. " << headname << " closed the door, wished her a good night, and turned off the light. " << girlName << " sighed restlessly and slowly fell asleep.";
 				}
-				else if (roll_b >= 90 && g_Girls.HasTrait(girl, "Virgin"))
+				else if (roll_b >= 90 && g_Girls.CheckVirginity(girl))
 					{
 						if (roll_c >= 85)
 						{
@@ -497,7 +497,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							ss << " the mastiff was over-eager, and bits of the scene had to be shot several times.";
 							ss << " Still, all went well, and the Director finally yelled \"Cut!\" with both " << girlName << " and the large dog's faces pressed";
 							ss << " into their meal. "; 
-							if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.HasTrait(girl, "Virgin"))
+							if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.CheckVirginity(girl))
 							{
 								ss << "Your bitch looked up, and began to crawl back over to you, but the mastiff had other ideas.";
 								ss << " " << girlName << " suddenly yelped and began to let out a series of piercing, pleading barks as the mastiff mounted her from behind, and drove";

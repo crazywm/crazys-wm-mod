@@ -341,7 +341,7 @@ double cJobManager::JP_FilmBondage(sGirl* girl, bool estimate)// not used
 	if (g_Girls.HasTrait(girl, "Elegant"))					jobperformance += 10;	//
 	if (g_Girls.HasTrait(girl, "Branded on the Forehead"))	jobperformance += 5;	//Degraded
 	if (g_Girls.HasTrait(girl, "Branded on the Ass"))		jobperformance += 5;	//
-	if (g_Girls.HasTrait(girl, "Virgin"))					jobperformance += 20;	//
+	if (g_Girls.CheckVirginity(girl))						jobperformance += 20;	//
 	if (g_Girls.HasTrait(girl, "Strong Gag Reflex"))		jobperformance += 10;	//Degrading
 	if (g_Girls.HasTrait(girl, "Gag Reflex"))				jobperformance += 5;	//
 	if (g_Girls.HasTrait(girl, "No Gag Reflex"))			jobperformance += 5;	//

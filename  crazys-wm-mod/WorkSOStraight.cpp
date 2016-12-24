@@ -100,7 +100,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Succubus"))		girl->m_WorkingDay += g_Dice % 15;			// Males are easier to drain energy from
 	if (girl->has_trait("Your Wife"))		girl->m_WorkingDay += g_Dice % 10;			// She wants to be with you only
 	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += g_Dice.bell(-1, 5);	// She wants to be "Normal"
-	if (girl->has_trait("Virgin"))			girl->m_WorkingDay += g_Dice.bell(-2, 2);	// Having never been with a man she is a little scared
+	if (g_Girls.CheckVirginity(girl))		girl->m_WorkingDay += g_Dice.bell(-2, 2);	// Having never been with a man she is a little scared
 	// Negative Traits
 	if (girl->has_trait("Broken Will"))	{	girl->m_WorkingDay -= g_Dice.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?

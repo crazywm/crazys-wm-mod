@@ -262,7 +262,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -10);
 				ss << "she doesn't understand the appeal of them, which turned her off.\n";
 			}
-			else if (!brothel->m_RestrictNormal && !g_Girls.HasTrait(girl, "Virgin") && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && g_Girls.GetStat(girl, STAT_LIBIDO) >= 80) //sex
+			else if (!brothel->m_RestrictNormal && !g_Girls.CheckVirginity(girl) && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && g_Girls.GetStat(girl, STAT_LIBIDO) >= 80) //sex
 			{
 				sextype = SKILL_NORMALSEX;
 				ss << "decided she needed to use it for her own entertainment.\n";

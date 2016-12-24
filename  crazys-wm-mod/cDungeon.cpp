@@ -650,7 +650,7 @@ void cDungeon::Update()
 			*/
 			//	`J` set the basics
 			msg.str(""); ss.str("");
-			msg << girlName << gettext(" is languish in the dungeon.\n\n");
+			msg << girlName << gettext(" is languishing in the dungeon.\n\n");
 			int msgtype = EVENT_DUNGEON;
 			int imgtype = IMGTYPE_PROFILE;
 			int	nHealth = girl->health();

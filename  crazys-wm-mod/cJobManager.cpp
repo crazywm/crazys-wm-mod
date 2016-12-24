@@ -867,7 +867,7 @@ void cJobManager::Setup()
 	JobFilterIndex[JOBFILTER_NONE] = JOB_INDUNGEON;
 	JobName[JOB_INDUNGEON]	= gettext("In the Dungeon");
 	JobQkNm[JOB_INDUNGEON]	= "Dngn";
-	JobDesc[JOB_INDUNGEON]	= gettext("She is languish in the dungeon.");
+	JobDesc[JOB_INDUNGEON]	= gettext("She is languishing in the dungeon.");
 	JobName[JOB_RUNAWAY]	= gettext("Runaway");
 	JobQkNm[JOB_RUNAWAY]	= "RunA";
 	JobDesc[JOB_RUNAWAY]	= gettext("She has run away.");
