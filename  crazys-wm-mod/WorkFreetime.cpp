@@ -193,7 +193,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 					break;
 				case FT_Shopping:
-					if (girl->m_Money >= 10||g_Dice.percent(10))
+					if (girl->m_Money >= 10)
 					{
 						choicemade = true;	// She has enough money for it, so continue
 					}
