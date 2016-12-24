@@ -860,6 +860,58 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		case FT_ClinicVisit:
 		{
 			ss << girlName << " goes to the Clinic";
+			if (girl->is_addict(true)&&girl->get_stat(STAT_MORALITY)<=-60)
+			{
+                ss<< " to try and steal drugs.";
+                if (g_Dice.percent(75))// 'Mute' Fail to steal drugs
+                {
+                    if (g_Dice.percent(60))// 'Mute' Pay 200 gold fine, if not enough gold goes to prision
+                    {
+                        if (girl->m_Money>=200)
+                        {
+                            ss<<" \n Got caught by the clinic guards and was forced to pay 200 Gold.";
+                            girl->m_Money-=200;
+                            girl->m_Stats[STAT_HAPPINESS]-=50;
+                            girl->m_stats[STAT_HEALTH]-=10;
+                        }
+                        else
+                        {
+                            ss<< "\n Got caught by the clinic guards and was unabled to pay so they sent her to jail.";
+                            // 'Mute' Need to figure out how to send to prision
+
+                        }
+                    }
+                    else if (g_Dice.percent(20)) // 'Mute' Gets raped by guards
+                    {
+                        ss<<"\n Unfortunantly she got caught and was raped by the guards."
+                        girl->m_Stats[STAT_HAPPINESS]-=50;
+                        girl->m_stats[STAT_HEALTH]-=10;
+                        customer_rape(girl,5);
+                    }
+                    else // 'Mute' Manages to steal Drugs
+                    {
+                        if (girl->has_trait("Fairy Dust Addict"))
+                        {
+                            g_Girls.AddInv(girl,g_InvManager.GetItem("Fairy Dust"));
+                            ss<< "\n She stole a Fairy Dust."
+                        }
+                        else if (girl->has_trait("Shroud Addict"))
+                        {
+                            g_Girls.AddInv(girl,g_InvManager.GetItem("Shroud"));
+                            ss<< "\n She stole a Shroud."
+                        }
+                        else if (girl->has_trait("Viras Blood Addict"))
+                        {
+                            g_Girls.AddInv(girl,g_InvManager.GetItem("Fairy Dust"));
+                            ss<< "\n She stole a Viras Blood."
+                        }
+                        else
+                        {
+                            ss<< "\n Failed to steal anything."
+                        }
+                    }
+                }
+			}
 			if (g_Girls.GetStat(girl, STAT_MORALITY) >= 40)
 			{
 				ss << " to cheer up the patients.";
