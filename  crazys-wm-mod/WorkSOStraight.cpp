@@ -69,10 +69,12 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	g_Girls.UnequipCombat(girl);	// not for patient
 
 	int enjoy = 0, wages = 10, tips = 0;
+	int startday = girl->m_WorkingDay;
 	int libido = 0;
 	int msgtype = Day0Night1, imagetype = IMGTYPE_SEX;
 
 	// Base adjustment
+	int tired = 5 + g_Dice % 11;
 	girl->m_WorkingDay += 10 + g_Dice % 11;
 	// Positive Stats/Skills
 	girl->m_WorkingDay += girl->normalsex() / 5;
@@ -93,6 +95,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		ss << "Her inate disgust of balls and shaft made her pull away from you while trying to teach her to suck it.\n";
 		girl->m_WorkingDay -= girl->lesbian() / 5;					// it is hard to change something you are good at
+		tired += girl->lesbian() / 10;
 	}
 	if (girl->has_trait("Bisexual"))		girl->m_WorkingDay -= girl->lesbian() / 20;	// it is hard to change something you are good at
 	// Positive Traits
@@ -119,11 +122,30 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 #pragma endregion
 #pragma region //	Count the Days				//
 
+	int total = girl->m_WorkingDay - startday;
+	int xp = 1 + (max(0, girl->m_WorkingDay / 20));
+	if (total <= 0)								// she lost time so more tired
+	{
+		tired += 5 + g_Dice % (-total);
+		enjoy -= g_Dice % 3;
+	}
+	else if (total > 40)						// or if she trained a lot
+	{
+		tired += (total / 4) + g_Dice % (total / 2);
+		enjoy += g_Dice % 3;
+	}
+	else										// otherwise just a bit tired
+	{
+		tired += g_Dice % (total / 3);
+		enjoy -= g_Dice.bell(-2, 2);
+	}
+
 	if (girl->m_WorkingDay <= 0)
 	{
 		girl->m_WorkingDay = 0;
 		msgtype = EVENT_WARNING;
 		ss << "\nShe resisted all attempts to make her Straight.";
+		tired += 5 + g_Dice % 11;
 		wages = 0;
 	}
 	else if (girl->m_WorkingDay >= 100 && Day0Night1)
@@ -138,7 +160,11 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else
 	{
 		ss << "Her Sexual Orientation conversion to Straight is ";
-		if (girl->m_WorkingDay >= 100)	ss << "almost complete.";
+		if (girl->m_WorkingDay >= 100)
+		{
+			ss << "almost complete.";
+			tired -= (girl->m_WorkingDay - 100) / 2;	// her last day so she rested a bit
+		}
 		else ss << "in progress (" << girl->m_WorkingDay << "%).";
 		wages = min(100, girl->m_WorkingDay);
 	}
@@ -146,23 +172,46 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 #pragma endregion
 #pragma region	//	Finish the shift			//
 
-	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
-
 	if (girl->is_slave()) wages /= 2;
 	girl->m_Pay = wages;
 
 	// Improve girl
-	girl->normalsex(g_Dice.bell(0, 10));
-	girl->group(g_Dice.bell(0, 5));
-	girl->anal(g_Dice.bell(-1, 5));
-	girl->oralsex(g_Dice.bell(-1, 5));
-	girl->handjob(g_Dice.bell(-3, 3));
-	girl->tittysex(g_Dice.bell(-3, 3));
-	girl->lesbian(g_Dice.bell(-2, -15));
+	int I_lesbian = (g_Dice.bell(-15, -2));
+	int I_normalsex = (g_Dice.bell(2, 15));
+	int I_group = (g_Dice.bell(1, 5));
+	int I_anal = (g_Dice.bell(1, 5));
+	int I_oralsex = (g_Dice.bell(1, 5));
+	int I_handjob = (g_Dice.bell(1, 5));
+	int I_tittysex = (g_Dice.bell(1, 5));
+
+	girl->exp(xp);
+	girl->tiredness(tired);
+	girl->lesbian(I_lesbian);
+	girl->normalsex(I_normalsex);
+	girl->group(I_group);
+	girl->anal(I_anal);
+	girl->oralsex(I_oralsex);
+	girl->handjob(I_handjob);
+	girl->tittysex(I_tittysex);
 
 	libido += girl->has_trait("Nymphomaniac") ? 3 : 1;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+
+	ss << "\n\nNumbers:"
+		<< "\n Wages = " << (int)wages
+		<< "\n Xp = " << xp
+		<< "\n Libido = " << libido
+		<< "\n Lesbian = " << I_lesbian
+		<< "\n Normal Sex = " << I_normalsex
+		<< "\n Group = " << I_group
+		<< "\n Anal = " << I_anal
+		<< "\n Oral Sex = " << I_oralsex
+		<< "\n Handjob = " << I_handjob
+		<< "\n Titty Sex = " << I_tittysex
+		<< "\n Enjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy;
+
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 #pragma endregion
 	return false;

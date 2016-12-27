@@ -105,15 +105,16 @@ void cCentreManager::Free()
 // ----- Update & end of turn
 void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 {
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cCentre.cpp
+	u_int restjob = JOB_CENTREREST;
+	u_int matronjob = JOB_CENTREMANAGER;
+	u_int firstjob = JOB_CENTREREST;
+	u_int lastjob = JOB_THERAPY;
 	cTariff tariff;
 	stringstream ss;
 	string girlName;
 
 	sBrothel* current = (sBrothel*)m_Parent;
-	u_int restjob = JOB_CENTREREST;
-	u_int matronjob = JOB_CENTREMANAGER;
-	u_int firstjob = JOB_CENTREREST;
-	u_int lastjob = JOB_THERAPY;
 
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
@@ -207,14 +208,13 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 // Run the shifts
 void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Building_Process_B
 {
-	
-	stringstream ss;
-	string summary, girlName;
-
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cCentre.cpp
 	u_int restjob = JOB_CENTREREST;
 	u_int matronjob = JOB_CENTREMANAGER;
 	u_int firstjob = JOB_CENTREREST;
 	u_int lastjob = JOB_THERAPY;
+	stringstream ss;
+	string summary, girlName;
 	u_int sw = 0, psw = 0;
 
 	int totalPay = 0, totalTips = 0, totalGold = 0;

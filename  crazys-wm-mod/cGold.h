@@ -114,6 +114,7 @@ class cGoldBase
 		double advertising_costs;
 		double centre_costs;
 		double arena_costs;
+		double clinic_costs;
 		double bribes;
 		double fines;
 		double tax;
@@ -209,6 +210,7 @@ public:
 	void advertising_costs(double cost);
 	void centre_costs(double cost);
 	void arena_costs(double cost);
+	void clinic_costs(double cost);
 	void bribes(double cost);
 	void fines(double cost);
 	void tax(double cost);

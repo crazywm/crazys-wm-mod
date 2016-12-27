@@ -335,7 +335,7 @@ Fixed a crash if a gang dies durring their mission.
 Fixed a bug in slave market where the first girl details were not showing (my bad, <= should have been <) 
 ### Changes 12/18-19/2016
 Started updating Slave Market send to effects
-Updated Sexual Orientation training and Fake Orgasm training numbers
+Updated Sexual Orientation training and Fake Orgasm training numbers (SO and FOE)
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.46
@@ -370,8 +370,19 @@ MuteDay updated cGold.cpp/h
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.48
 
+### Changes 12/25-26/2016
 
+Fixed Constructs not healing with item use
+Updated SO and FOE
+ - Added Tiredness, Exp and enjoy
+ - Added improvement list
+Added the list of girl folders that are used by the game to simple save .q file
+Started Updateing WorkPersonalBedWarmer.cpp but got sidetracked
+Added WorkCureDiseases.cpp
+Added Panacea's Miracle Cure.itemsx by Cavey
 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.49
 
 
 

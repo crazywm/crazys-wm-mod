@@ -52,7 +52,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 {
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKNURSE;
-	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
+	stringstream ss; string girlName = girl->m_Realname;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
 	if (g_Girls.HasTrait(girl, "AIDS"))
 	{

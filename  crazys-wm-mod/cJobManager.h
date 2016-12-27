@@ -264,6 +264,8 @@ public:
 	static double JP_Healing(sGirl* girl, bool estimate);
 	static bool WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_RepairShop(sGirl* girl, bool estimate);
+	static bool WorkCureDiseases(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static double JP_CureDiseases(sGirl* girl, bool estimate);
 	static bool WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_GetAbort(sGirl* girl, bool estimate);
 	static bool WorkCosmeticSurgery(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
@@ -348,6 +350,7 @@ public:
 	static bool WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_PersonalTraining(sGirl* girl, bool estimate);
 	static bool WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
+	static bool WorkPersonalBedWarmers(sBrothel* brothel);
 	static double JP_PersonalBedWarmer(sGirl* girl, bool estimate);
 	static bool WorkCleanHouse(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary);
 	static double JP_CleanHouse(sGirl* girl, bool estimate);

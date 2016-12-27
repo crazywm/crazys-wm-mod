@@ -1025,13 +1025,14 @@ void cBrothelManager::DestroyBrothel(int ID)
 // ----- Update & end of turn
 void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 {
-	cTariff tariff;
-	stringstream ss;
-	sBrothel* current = (sBrothel*)m_Parent;
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cBrothel.cpp
 	u_int restjob = JOB_RESTING;
 	u_int matronjob = JOB_MATRON;
 	u_int firstjob = JOB_RESTING;
 	u_int lastjob = JOB_WHORESTREETS;
+	cTariff tariff;
+	stringstream ss;
+	sBrothel* current = (sBrothel*)m_Parent;
 
 	m_TortureDoneFlag = false;							//WD: Reset flag each day is set in WorkTorture()
 
@@ -1415,11 +1416,11 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 // End of turn stuff is here
 void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Building_Process_B
 {
-	// `J` added to allow for easier copy/paste to other buildings
-	u_int firstjob = JOB_RESTING;
-	u_int lastjob = JOB_WHORESTREETS;
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cBrothel.cpp
 	u_int restjob = JOB_RESTING;
 	u_int matronjob = JOB_MATRON;
+	u_int firstjob = JOB_RESTING;
+	u_int lastjob = JOB_WHORESTREETS;
 	bool matron = (GetNumGirlsOnJob(brothel->m_id, matronjob, false) >= 1) ? true : false;
 	string MatronMsg = "", MatronWarningMsg = "";
 	stringstream ss;

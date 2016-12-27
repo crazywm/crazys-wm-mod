@@ -368,6 +368,11 @@ void cGoldBase::arena_costs(double cost)
 	m_upkeep += cost;
 	detail_out.arena_costs += cost;
 }
+void cGoldBase::clinic_costs(double cost)
+{
+	m_upkeep += cost;
+	detail_out.clinic_costs += cost;
+}
 
 void cGoldBase::rival_raids(double cost)
 {

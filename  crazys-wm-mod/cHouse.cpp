@@ -105,15 +105,16 @@ void cHouseManager::Free()
 // ----- Update & end of turn
 void cHouseManager::UpdateHouse()	// Start_Building_Process_A
 {
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cHouse.cpp
+	u_int restjob = JOB_HOUSEREST;
+	u_int matronjob = JOB_HEADGIRL;
+	u_int firstjob = JOB_HOUSEREST;
+	u_int lastjob = JOB_HOUSEPET;
 	cTariff tariff;
 	stringstream ss;
 	string girlName;
 
 	sBrothel* current = (sBrothel*)m_Parent;
-	u_int restjob = JOB_HOUSEREST;
-	u_int matronjob = JOB_HEADGIRL;
-	u_int firstjob = JOB_HOUSEREST;
-	u_int lastjob = JOB_HOUSEPET;
 
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
@@ -208,15 +209,13 @@ void cHouseManager::UpdateHouse()	// Start_Building_Process_A
 // Run the shifts
 void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Building_Process_B
 {
-	
-
-	stringstream ss;
-	string summary, girlName;
-
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cHouse.cpp
 	u_int restjob = JOB_HOUSEREST;
 	u_int matronjob = JOB_HEADGIRL;
 	u_int firstjob = JOB_HOUSEREST;
 	u_int lastjob = JOB_HOUSEPET;
+	stringstream ss;
+	string summary, girlName;
 	u_int sw = 0, psw = 0;
 
 	int totalPay = 0, totalTips = 0, totalGold = 0;
@@ -345,110 +344,150 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		{
 			ss << girlName << " is on maternity leave.";
 		}
-		else if (current->health() < 80 || current->tiredness() > 20)
+		else if (matron && (current->health() > 90 || current->tiredness() < 20))
+		{	// if there is a marton working and she is healthy enought to go back to work
+			psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
+			if (psw != restjob && psw != 255)
+			{	// if she had a previous job, put her back to work.
+				if (Day0Night1 == SHIFT_DAY)
+				{
+					current->m_DayJob = current->m_PrevDayJob;
+					if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
+						current->m_NightJob = current->m_PrevNightJob;
+				}
+				else
+				{
+					if (current->m_DayJob == restjob && current->m_PrevDayJob != restjob && current->m_PrevDayJob != 255)
+						current->m_DayJob = current->m_PrevDayJob;
+					current->m_NightJob = current->m_PrevNightJob;
+				}
+				ss << "The Head Girl puts " << girlName << " back to work.\n";
+			}
+			else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
+			{	// if they have no job at all, assign them a job
+				ss << "The Head Girl assigns " << girlName << " to ";
+
+				// Set any free girls who would do well at recruiting to recruit for you
+				if (current->is_free() && m_JobManager.JP_Recruiter(current, true) >= 185)
+				{
+					current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
+					ss << "work recruiting girls for you.";
+				}
+				// assign a slave to clean 
+				else if (current->is_slave() && GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < max(1, numgirls / 20))
+				{
+					current->m_DayJob = current->m_NightJob = JOB_CLEANHOUSE;
+					ss << "work cleaning the house.";
+				}
+				// and a free girl to recruit for you
+				else if (current->is_free() && GetNumGirlsOnJob(0, JOB_RECRUITER, Day0Night1) < 1)
+				{
+					current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
+					ss << "work recruiting girls for you.";
+				}
+				// set at least 1 bed warmer
+				else if (GetNumGirlsOnJob(0, JOB_PERSONALBEDWARMER, Day0Night1) < 1
+					&& !g_Girls.CheckVirginity(current))	// Crazy added this so that it wont set virgins to this
+				{
+					current->m_DayJob = current->m_NightJob = JOB_PERSONALBEDWARMER;
+					ss << "work warming your bed.";
+				}
+				// assign 1 cleaner per 20 girls
+				else if (GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < max(1, numgirls / 20))
+				{
+					current->m_DayJob = current->m_NightJob = JOB_CLEANHOUSE;
+					ss << "work cleaning the house.";
+				}
+				// Put every one else who is not a virgin and needs some training
+				else if (!g_Girls.CheckVirginity(current) && g_Girls.GetAverageOfSexSkills(current) < 99)
+				{
+					current->m_DayJob = current->m_NightJob = JOB_PERSONALTRAINING;
+					ss << "get personal training from you.";
+				}
+				// Set any other free girls to recruit for you
+				else if (current->is_free())
+				{
+					current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
+					ss << "work recruiting girls for you.";
+				}
+				else
+				{
+					ss << "do nothing because this part of the code has not been finished yet.";
+				}
+			}
+			current->m_PrevDayJob = current->m_PrevNightJob = 255;
+			sum = EVENT_BACKTOWORK;
+		}
+		else if (current->health() < 90 || current->tiredness() > 10)
 		{
 			m_JobManager.JobFunc[restjob](current, brothel, Day0Night1, summary);
 		}
-		else
-		{	// if she is healthy enough to go back to work... 
-			if (matron)	// and there is a marton working...
-			{
-				psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
-				if (psw != restjob && psw != 255)
-				{	// if she had a previous job, put her back to work.
-					if (Day0Night1 == SHIFT_DAY)
-					{
-						current->m_DayJob = current->m_PrevDayJob;
-						if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
-							current->m_NightJob = current->m_PrevNightJob;
-					}
-					else
-					{
-						if (current->m_DayJob == restjob && current->m_PrevDayJob != restjob && current->m_PrevDayJob != 255)
-							current->m_DayJob = current->m_PrevDayJob;
-						current->m_NightJob = current->m_PrevNightJob;
-					}
-					ss << "The Head Girl puts " << girlName << " back to work.\n";
-				}
-				else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
-				{	// if they have no job at all, assign them a job
-					ss << "The Head Girl assigns " << girlName << " to ";
-
-					// Set any free girls who would do well at recruiting to recruit for you
-					if (current->is_free() && m_JobManager.JP_Recruiter(current, true) >= 185)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
-						ss << "work recruiting girls for you.";
-					}
-					// assign a slave to clean 
-					else if (current->is_slave() && GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < max(1, numgirls / 20))
-					{
-						current->m_DayJob = current->m_NightJob = JOB_CLEANHOUSE;
-						ss << "work cleaning the house.";
-					}
-					// and a free girl to recruit for you
-					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_RECRUITER, Day0Night1) < 1)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
-						ss << "work recruiting girls for you.";
-					}
-					// set at least 1 bed warmer
-					else if (GetNumGirlsOnJob(0, JOB_PERSONALBEDWARMER, Day0Night1) < 1
-						&& !g_Girls.CheckVirginity(current))	// Crazy added this so that it wont set virgins to this
-					{
-						current->m_DayJob = current->m_NightJob = JOB_PERSONALBEDWARMER;
-						ss << "work warming your bed.";
-					}
-					// assign 1 cleaner per 20 girls
-					else if (GetNumGirlsOnJob(0, JOB_CLEANHOUSE, Day0Night1) < max(1, numgirls / 20))
-					{
-						current->m_DayJob = current->m_NightJob = JOB_CLEANHOUSE;
-						ss << "work cleaning the house.";
-					}
-					// Put every one else who is not a virgin and needs some training
-					else if (!g_Girls.CheckVirginity(current) && g_Girls.GetAverageOfSexSkills(current) < 99)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_PERSONALTRAINING;
-						ss << "get personal training from you.";
-					}
-					// Set any other free girls to recruit for you
-					else if (current->is_free())
-					{
-						current->m_DayJob = current->m_NightJob = JOB_RECRUITER;
-						ss << "work recruiting girls for you.";
-					}
-
-
-					else
-					{
-						ss << "do nothing because this part of the code has not been finished yet.";
-					}
-				}
-				current->m_PrevDayJob = current->m_PrevNightJob = 255;
-				sum = EVENT_BACKTOWORK;
-			}
-			else	// no one to send her back to work
-			{
-				ss << "WARNING " << girlName << " is doing nothing!\n";
-				sum = EVENT_WARNING;
-			}
+		else	// no one to send her back to work
+		{
+			ss << "WARNING " << girlName << " is doing nothing!\n";
+			sum = EVENT_WARNING;
 		}
 		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;
 	}
 	
-	///////////////////////////////////////////////////////////
-	//  All Jobs in the House can be done at the same time.  //
-	///////////////////////////////////////////////////////////
+	/////////////////////////////////////////////
+	//  Do all Personal Bed Warmers together.  //
+	/////////////////////////////////////////////
+
+
+	current = brothel->m_Girls;
+	while (current)
+	{
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->is_dead() || sw != JOB_PERSONALBEDWARMER)
+		{
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		totalPay = totalTips = totalGold = 0;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+		girlName = current->m_Realname;
+
+		// do their job
+		refused = m_JobManager.JobFunc[sw](current, brothel, Day0Night1, summary);
+
+		totalPay += current->m_Pay;
+		totalTips += current->m_Tips;
+		totalGold += current->m_Pay + current->m_Tips;
+		g_Brothels.CalculatePay(brothel, current, sw);
+
+		//		Summary Messages
+		if (refused)
+		{
+			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			ss << girlName << " refused to work so made no money.";
+		}
+		else
+		{
+			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, Day0Night1);
+			if (totalGold < 0) sum = EVENT_DEBUG;
+
+			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+		}
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next; // Next Girl
+	}
+
+
+
+
+	/////////////////////////////////////////////////////////////////////
+	//  All the orher Jobs in the House can be done at the same time.  //
+	/////////////////////////////////////////////////////////////////////
 	/* `J` zzzzzz - Need to split up the jobs
-	Done - JOB_HOUSEREST, JOB_HEADGIRL
+	Done - JOB_HOUSEREST, JOB_HEADGIRL, JOB_PERSONALBEDWARMER
 
 	JOB_CLEANHOUSE
-
 	JOB_RECRUITER
 	JOB_PERSONALTRAINING
-	JOB_PERSONALBEDWARMER
 
 	//*/
 	current = brothel->m_Girls;
@@ -456,6 +495,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	{
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->is_dead() || sw == restjob || sw == matronjob ||	// skip dead girls, resting girls and the matron
+			sw == JOB_PERSONALBEDWARMER ||
 			(Day0Night1 && sw == JOB_RECRUITER))							// skip recruiters on the night shift
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }

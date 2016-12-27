@@ -53,6 +53,9 @@ extern unsigned long g_Day;
 // `J` Job House - General
 bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
+	// `J` moving multiple bed warmers to a group function
+	int haremcount = g_House.GetNumGirlsOnJob(0, JOB_PERSONALBEDWARMER, Day0Night1);
+//	if (haremcount > 1)	return g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel);
 
 	int actiontype = ACTION_SEX;
 	stringstream ss; string girlName = girl->m_Realname;
@@ -60,55 +63,28 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	//cTariff tariff;
 	//g_Building = BUILDING_HOUSE;
 	g_Girls.UnequipCombat(girl);	// put that shit away, not needed for sex training
-	Image_Types WhatSheDid = IMGTYPE_PROFILE;  //Allows for imagetype stored, and image showed at end after random extras.
+	int imagetype = IMGTYPE_MAID;
+	int msgtype = Day0Night1;
 
 	ss << gettext("You tell ") << girlName << gettext(" she is going to warm your bed tonight");
 
-#if 0	//bsin - reimplementing
-	if (roll_a <= 80 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
-	{
-		ss << " but she refuses to lay with you.";
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-		return true;
-	}
-	ss << ".\n";
-
-#else		//bsin - adding more than just refusal: difference for slave vs free & headgirl or no
 	//initiate things I need 
 	int wages = 0, tips = 0;
-	bool isAddict = g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Viras Blood Addict");
-	int HateLove = 0;
-	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
-	
+	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 
-	////Headgirl can influence against refusal
-	bool headOnDuty = false;
-	sGirl* headGirl = 0;
-	string headName = "";
 
-	vector<sGirl*> heads = girls_on_job(brothel, JOB_HEADGIRL, Day0Night1);
-	if (heads.size() > 0)
-	{
-		headOnDuty = true;
-		headGirl = heads[0];
-		headName = headGirl->m_Realname;
-	}
+	// Headgirl can influence against refusal
+	sGirl* headGirl = g_House.GetFirstGirlOnJob(0, JOB_HEADGIRL, Day0Night1);
+	bool headOnDuty = (headGirl ? true : false);
+	string headName = (headOnDuty ? headGirl->m_Realname : "");
 
-	//debugging output - linked it to this variable for convenience - can delete when this is robust
-	bool amDebugging = false;
-	if (amDebugging)
+	//	refusal check
+	if (g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
 	{
-		ss << gettext("debug:");
-		if (headOnDuty) ss << headName << gettext(" is Head Girl.");
-		else ss << gettext("No Head Girl.");
-	}
-	
-	//refusal check
-	if (roll_a <= 80 && g_Girls.DisobeyCheck(girl, ACTION_WORKHAREM, brothel))
-	{
+#if 1
 		ss << gettext(" but she refuses to lay with you.");
 		int effectiveness = g_Dice.d100();
-		
+
 		if (headOnDuty)
 		{
 			ss << gettext("\n\nHead Girl ") << headName << gettext(" intervenes");
@@ -141,7 +117,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 						<< headName << gettext("'s expert tongue.\nThey're soon putting on a hell of a show together. ")
 						<< headName << gettext(" quickly drives her wild, bringing her to the brink of orgasm several times, but never quite letting her come.\n\n")
 						<< headName << gettext(" suddenly stops, leaving ") << girlName << gettext(" on your bed, wet, frustrated, horny as hell and begging to be fucked.");
-					
+
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +10);
 					g_Girls.UpdateSkill(headGirl, SKILL_LESBIAN, +4);
@@ -156,11 +132,11 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				}
 
 				//if slave is an addict
-				else if (isAddict && effectiveness > 10)
+				else if (girl->is_addict(true) && effectiveness > 10)
 				{
 					ss << gettext("Noticing the girl's shakes, and the look in her eye, ") << headName << gettext(" suggests that tonight could help ") << girlName
 						<< gettext(" raise a little \"spending money.\"\nShe agrees to stay for ") << effectiveness / 2 << gettext(" extra drug money.");
-					wages += (effectiveness / 2);
+					tips += (effectiveness / 2);
 					g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 1);
 				}
 
@@ -211,7 +187,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				}
 			}
 			else // not slave
-			{	
+			{
 				// If headgirl likes girls. Again because rare combo, is at the top, so it has some chance of being seen - this time can fail
 				if (g_Girls.HasTrait(headGirl, "Lesbian") && g_Girls.HasTrait(girl, "Lesbian") && effectiveness > 10)
 				{
@@ -247,19 +223,19 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 						g_Girls.UpdateSkill(headGirl, SKILL_LESBIAN, +4);
 					}
 				}
-				
+
 				//if headgirl is VERY persuasive, or much smarter, or persuasive and charming...
-				if (effectiveness >= 80 || g_Girls.GetStat(headGirl, STAT_INTELLIGENCE) >= (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + 20)
-					|| effectiveness > 30 && (g_Girls.HasTrait(headGirl, "Charismatic") || g_Girls.HasTrait(headGirl, "Charming") || g_Girls.GetStat(girl, STAT_CHARISMA) > 80))
+				else if (effectiveness >= 80 || g_Girls.GetStat(headGirl, STAT_INTELLIGENCE) >= g_Girls.GetStat(girl, STAT_INTELLIGENCE) + 20
+					|| (effectiveness > 30 && (g_Girls.HasTrait(headGirl, "Charismatic") || g_Girls.HasTrait(headGirl, "Charming") || g_Girls.GetStat(girl, STAT_CHARISMA) > 80)))
 				{
 					ss << gettext(" and talks her into taking part.\n");
 				}
 
 				//if girl is an addict
-				else if (isAddict && effectiveness > 20)
+				else if (girl->is_addict(true) && effectiveness > 20)
 				{
 					ss << gettext(" and offers her some drug money if she'll stay. ") << girlName << gettext(" agrees to stay for ") << effectiveness << gettext(" extra gold.\n");
-					wages += effectiveness;
+					tips += effectiveness;
 				}
 
 				//if headgirl is a bully
@@ -283,17 +259,17 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				}
 
 				//if she's worth more
-				else if (g_Girls.GetStat(girl, STAT_BEAUTY) > 95 || g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Goddess"))
+				else if (g_Girls.GetStat(girl, STAT_BEAUTY) > 95 || g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Queen") || g_Girls.HasTrait(girl, "Goddess"))
 				{
 					ss << gettext(" stopping her. Because she's rather special you offer extra money. ");
 					//
-					if (g_Dice.d100() < 50)
+					if (g_Dice.percent(50))
 					{
 						int pay = 2 * girl->askprice();
-						ss << girlName << gettext(" agrees to stay for ") << pay << gettext(" extra gold.\n"); 
-						wages += pay;
+						ss << girlName << gettext(" agrees to stay for ") << pay << gettext(" extra gold.\n");
+						tips += pay;
 					}
-										
+
 					else
 					{
 						ss << gettext("She refuses.\n");
@@ -323,11 +299,11 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				//You will persuade somehow
 
 				ss << gettext("You remind ") << girlName << gettext(" that slaves are property and should do as their master commands");
-				
+
 				//does she like you
 				if (HateLove > 80)
 				{
-					ss << gettext(". Thinking again, she agrees as  you have been an excellent master.");
+					ss << gettext(". Thinking again, she agrees as you have been an excellent master.");
 				}
 				//do you have anything she wants?
 				else if (g_Girls.HasTrait(girl, "Cum Addict") && effectiveness > 30)
@@ -344,15 +320,15 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
-				else if (isAddict && effectiveness > 10)
+				else if (girl->is_addict(true) && effectiveness > 10)
 				{
-					ss << gettext(". Noticing her shakes, and the look in her eye, you suggest tonight could help her raise a little \"spending money.\"\n")
+					ss << gettext(". Noticing her shakes and the look in her eye, you suggest tonight could help her raise a little \"spending money.\"\n")
 						<< gettext("She agrees to stay for ") << effectiveness / 2 << gettext(" extra drug money.");
-					wages += (effectiveness / 2);
+					tips += (effectiveness / 2);
 					g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 1);
 				}
 				//Are you psychopathic
-				else if ((The_Player->disposition() < -90) && effectiveness > 60)
+				else if ((The_Player->disposition() < -80) && effectiveness > 60)
 				{
 					ss << gettext(", but add that you are a kind master and she has nothing to fear from you. Over a drink, you explain how you respect your slaves and their choices, ")
 						<< gettext("and that her choice to defy you, led to your choice to drug her.\nShe smiles dreamily, rubbing her breasts against you as you strip away her clothes.")
@@ -423,9 +399,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			}
 			else // not a slave
 			{
-				
+
 				ss << girlName << gettext(" is a free woman, so you cannot legally force her. ");
-				
+
 				//  Lucky
 				if (effectiveness > 90 || ((g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 30) && effectiveness > 30))
 				{
@@ -447,23 +423,22 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
 				//if she's an addict
-				else if (isAddict && effectiveness > 40)
+				else if (girl->is_addict(true) && effectiveness > 40)
 				{
-					ss << gettext("You offer her some drug money if she'll stay. ") << girlName << gettext(" agrees to stay for ") << 2*effectiveness << gettext(" extra gold.\n");
-					wages += (2*effectiveness);
+					ss << gettext("You offer her some drug money if she'll stay. ") << girlName << gettext(" agrees to stay for ") << 2 * effectiveness << gettext(" extra gold.\n");
+					tips += (2 * effectiveness);
 				}
 				//if she's worth more
-				else if (g_Girls.GetStat(girl, STAT_BEAUTY) > 95 || g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Goddess"))
+				else if (g_Girls.GetStat(girl, STAT_BEAUTY) > 95 || g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Queen") || g_Girls.HasTrait(girl, "Goddess"))
 				{
 					ss << gettext("Because she's rather special you offer some extra money.\n");
 					//
-					if (g_Dice.d100() < 65)
+					if (g_Dice.percent(65))
 					{
 						int pay = 2 * girl->askprice();
 						ss << girlName << gettext(" agrees to stay for ") << pay << gettext(" extra gold.\n");
-						wages += pay;
+						tips += pay;
 					}
-
 					else
 					{
 						ss << gettext("She refuses.\n");
@@ -492,26 +467,15 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				}
 			}
 		}
+#endif
 	}
 	else ss << gettext(".\n\n");
-#endif
 
-
-#if 0 // BSIN moving this earlier so that refusal/persuation can modify temporarily
-	cTariff tariff;
-	g_Building = BUILDING_HOUSE;
-	g_Girls.UnequipCombat(girl);	// put that shit away, not needed for sex training
-	int HateLove = 0;
-	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
-#endif
-
-
-#if 1 //sin
+	//sin
 	bool diseased = false, risky = false;
 
 	//Disease refusal.
-	if (g_Girls.HasTrait(girl, "AIDS") || g_Girls.HasTrait(girl, "Chlamydia")
-		|| g_Girls.HasTrait(girl, "Herpes") || g_Girls.HasTrait(girl, "Syphilis"))
+	if (girl->has_disease())
 	{
 		if (HateLove > 40)  //if she doesn't want you dead...
 		{
@@ -532,44 +496,37 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 2);
 			diseased = true;
 		}
-
 	}
-#else  // BSIN: moved wages up so headgirl or player could pay to stay.
-	int wages = 150;
-#endif
 
 	if (girl->is_slave())
 	{
-#if 1 //BSIN
 		wages += 20;  //slaves just get pocket money for being here - more if they do more
-#endif
-		/* */if (HateLove < -80)	ss << gettext("She hates you more then anything but you own her so she does what she is told.\n\n");
-		else if (HateLove < -60)	ss << gettext("She hates you but knows she must listen.\n\n");
-		else if (HateLove < -40)	ss << gettext("She doesn't like you but she is your slave and does what she is told.\n\n");
-		else if (HateLove < -20)	ss << gettext("She finds you annoying but knows she must listen.\n\n");
-		else if (HateLove < 0)		ss << gettext("She finds you to be annoying but you own her.\n\n");
-		else if (HateLove < 20)		ss << gettext("She finds you be a decent master.\n\n");
-		else if (HateLove < 40)		ss << gettext("She finds you be a good master.\n\n");
-		else if (HateLove < 60)		ss << gettext("She finds you to be attractive.\n\n");
-		else if (HateLove < 80)		ss << gettext("She has really strong feelings for you.\n\n");
-		else						ss << gettext("She loves you more than anything.\n\n");
+		/* */if (HateLove < -80)	ss << gettext("She hates you more then anything but you own her so she does what she is told");
+		else if (HateLove < -60)	ss << gettext("She hates you but knows she must listen");
+		else if (HateLove < -40)	ss << gettext("She doesn't like you but she is your slave and does what she is told");
+		else if (HateLove < -20)	ss << gettext("She finds you annoying but knows she must listen");
+		else if (HateLove < 0)		ss << gettext("She finds you to be annoying but you own her");
+		else if (HateLove < 20)		ss << gettext("She finds you be a decent master");
+		else if (HateLove < 40)		ss << gettext("She finds you be a good master");
+		else if (HateLove < 60)		ss << gettext("She finds you to be attractive");
+		else if (HateLove < 80)		ss << gettext("She has really strong feelings for you");
+		else						ss << gettext("She loves you more than anything");
 	}
 	else
 	{
-#if 1
 		wages += 100; // non slaves get paid - more later if they do more
-#endif
-		/* */if (HateLove < -80)	{ wages += 150;	ss << gettext("She can't stand the sight of you and demands way more money to lay with you at night.\n\n"); }
-		else if (HateLove < -60)	{ wages += 100;	ss << gettext("She don't like you at all and wants more money to lay with you at night .\n\n"); }
-		else if (HateLove < -40)	{ wages += 75;	ss << gettext("She doesn't like you so she wants extra for the job.\n\n"); }
-		else if (HateLove < -20)	{ wages += 50;	ss << gettext("She finds you annoying so she wants extra for the job.\n\n"); }
-		else if (HateLove < 0)		{ wages += 25;	ss << gettext("She finds you to be annoying so she wants extra for the job.\n\n"); }
-		else if (HateLove < 20)		{ ss << gettext("She finds you to be okay.\n\n"); }
-		else if (HateLove < 40)		{ wages -= 20;	ss << gettext("She finds you to be nice so she gives you a discount.\n\n"); }
-		else if (HateLove < 60)		{ wages -= 40;	ss << gettext("She finds you attractive so she gives you a discount.\n\n"); }
-		else if (HateLove < 80)		{ wages -= 60;	ss << gettext("Shes has really strong feelings for you so she lays with you for less money.\n\n"); }
-		else						{ wages -= 80;	ss << gettext("She is totally in love with you and doesn't want as much money.\n\n"); }
+		/* */if (HateLove < -80)	{ wages += 150;	ss << gettext("She can't stand the sight of you and demands way more money to lay with you at night"); }
+		else if (HateLove < -60)	{ wages += 100;	ss << gettext("She don't like you at all and wants more money to lay with you at night"); }
+		else if (HateLove < -40)	{ wages += 75;	ss << gettext("She doesn't like you so she wants extra for the job"); }
+		else if (HateLove < -20)	{ wages += 50;	ss << gettext("She finds you annoying so she wants extra for the job"); }
+		else if (HateLove < 0)		{ wages += 25;	ss << gettext("She finds you to be annoying so she wants extra for the job"); }
+		else if (HateLove < 20)		{ ss << gettext("She finds you to be okay"); }
+		else if (HateLove < 40)		{ wages -= 20;	ss << gettext("She finds you to be nice so she gives you a discount"); }
+		else if (HateLove < 60)		{ wages -= 40;	ss << gettext("She finds you attractive so she gives you a discount"); }
+		else if (HateLove < 80)		{ wages -= 60;	ss << gettext("Shes has really strong feelings for you so she lays with you for less money"); }
+		else						{ wages -= 80;	ss << gettext("She is totally in love with you and doesn't want as much money"); }
 	}
+	ss << ".\n\n";
 
 	if (roll_a <= 15)
 	{
@@ -588,6 +545,17 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		ss << gettext("\nIt was as she expected.\n\n");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +1);
 	}
+
+
+
+
+
+
+
+
+
+
+
 #if 1
 
 	//*****************************************NEW
@@ -609,24 +577,18 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 
 		if (harem[i]->is_slave())
 		{	
-			if (amDebugging) ss << gettext("debug ") << i << gettext(": ") << harem[i]->m_Realname << gettext(" is a slave.\n");
 		}
 		else
 		{	//If the other girl is not slave, she will not join group action. Pop this girl off the list and check the next
-			if (amDebugging) ss << "debug " << i << gettext(": ") << harem[i]->m_Realname << gettext(" does not join (free).\n");
 			other_notslave = true;
 		}
-		
-		if (g_Girls.HasTrait(harem[i], "AIDS") || g_Girls.HasTrait(harem[i], "Chlamydia")
-			|| g_Girls.HasTrait(harem[i], "Herpes") || g_Girls.HasTrait(harem[i], "Syphilis"))
+		if (harem[i]->has_disease())
 		{
-			if (amDebugging) ss << "debug " << i << gettext(": ") << harem[i]->m_Realname << gettext(" is sick.\n");
 			other_sick = true;
 		}
 
 		if (other_sick || other_notslave)
 		{
-			if (amDebugging) ss << "debug " << i << gettext(": ") << harem[i]->m_Realname << gettext(" removed as not slave and/or sick.\n");
 			harem.erase(harem.begin() + i);
 		}
 	}
@@ -792,7 +754,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +1);
 				g_Girls.LoseVirginity(girl);
 				ss << gettext("She is no longer a virgin.\n");
-				WhatSheDid = IMGTYPE_SEX;
+				imagetype = IMGTYPE_SEX;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 
 				if (!girl->calc_pregnancy(The_Player, false, 1.0))
@@ -811,7 +773,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, 2);
 				g_Girls.LoseVirginity(girl);
 				ss << gettext("She is no longer a virgin.\n");
-				WhatSheDid = IMGTYPE_SEX;
+				imagetype = IMGTYPE_SEX;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 
 				if (!girl->calc_pregnancy(The_Player, false, 1.0))
@@ -829,21 +791,21 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				{
 					ss << gettext(", and instead have her play around with another girl in your harem.");
 					g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
-					WhatSheDid = IMGTYPE_LESBIAN;
+					imagetype = IMGTYPE_LESBIAN;
 					//girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);
 				}
 				else if (roll_c < 60)
 				{
 					ss << gettext(", and instead fuck her ass.");
 					g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
-					WhatSheDid = IMGTYPE_ANAL;
+					imagetype = IMGTYPE_ANAL;
 					//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
 				}
 				else
 				{
 					ss << gettext(", and instead have her 'clean it off' as you enjoy the other girls.");
 					g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
-					WhatSheDid = IMGTYPE_ORAL;
+					imagetype = IMGTYPE_ORAL;
 					//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 				}
 			}
@@ -854,14 +816,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			{
 				ss << gettext("While you enjoy another girl, ") << girlName << gettext(" grabs your cock and finishes you off with her mouth.\n");
 				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
-				WhatSheDid = IMGTYPE_ORAL;
+				imagetype = IMGTYPE_ORAL;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 			}
 			else if (roll_d <= 40)
 			{
 				ss << gettext("You watch ") << girlName << gettext(" play with another girl in the harem.");
 				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
-				WhatSheDid = IMGTYPE_LESBIAN;
+				imagetype = IMGTYPE_LESBIAN;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1););
 			}
 			else if (roll_d <= 60)
@@ -869,7 +831,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				ss << gettext("You enjoy the pleasures of your harem, including fucking ") << girlName << gettext(".\n");
 				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
 				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
-				WhatSheDid = IMGTYPE_SEX;
+				imagetype = IMGTYPE_SEX;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 
 				if (!girl->calc_pregnancy(The_Player, false, 1.0))
@@ -884,7 +846,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			{
 				ss << gettext("You tie up ") << girlName << gettext(" and get another girl to spank her as you fuck her.\n");
 				g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
-				WhatSheDid = IMGTYPE_BDSM;
+				imagetype = IMGTYPE_BDSM;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
 
 				if (!girl->calc_pregnancy(The_Player, false, 1.0))
@@ -899,7 +861,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			{
 				ss << gettext("You spin ") << girlName << gettext(" around, push her down and fuck her ass.");
 				g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
-				WhatSheDid = IMGTYPE_ANAL;
+				imagetype = IMGTYPE_ANAL;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
 			}
 		}
@@ -1066,28 +1028,28 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		{
 			g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
 			ss << gettext("does a little strip show for you.\n\n");
-			WhatSheDid = IMGTYPE_STRIP;
+			imagetype = IMGTYPE_STRIP;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
 		}
 		else if (roll_d <= 20 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
 		{
 			g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
 			ss << gettext("uses her tits on you.\n\n");
-			WhatSheDid = IMGTYPE_TITTY;
+			imagetype = IMGTYPE_TITTY;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, Day0Night1);
 		}
 		else if (roll_d <= 30 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
 		{
 			g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
 			ss << gettext("gives you a hand job.\n\n");
-			WhatSheDid = IMGTYPE_HAND;
+			imagetype = IMGTYPE_HAND;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_HAND, Day0Night1);
 		}
 		else if (roll_d <= 40 && is_sex_type_allowed(SKILL_FOOTJOB, brothel))
 		{
 			g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, 2);
 			ss << gettext("gives you a foot job.\n\n");
-			WhatSheDid = IMGTYPE_FOOT;
+			imagetype = IMGTYPE_FOOT;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, Day0Night1);
 		}
 		else if (roll_d <= 50 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
@@ -1095,7 +1057,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
 			ss << gettext("decided to suck your cock.\n\n");
 			if (g_Girls.HasTrait(girl, "Herpes")) risky = true;
-			WhatSheDid = IMGTYPE_ORAL;
+			imagetype = IMGTYPE_ORAL;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 			
 		}
@@ -1104,7 +1066,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
 			ss << gettext("lets you use her ass.\n\n");
 			risky = true;
-			WhatSheDid = IMGTYPE_ANAL;
+			imagetype = IMGTYPE_ANAL;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
 		}
 		else if (roll_d <= 70 && is_sex_type_allowed(SKILL_BDSM, brothel))
@@ -1117,7 +1079,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 				ss << gettext("She is no longer a virgin.\n");
 			}
-			WhatSheDid = IMGTYPE_BDSM;
+			imagetype = IMGTYPE_BDSM;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
 			if (!girl->calc_pregnancy(The_Player, false, 1.0))
 			{
@@ -1137,7 +1099,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
 				ss << gettext("She is no longer a virgin.\n");
 			}
-			WhatSheDid = IMGTYPE_SEX;
+			imagetype = IMGTYPE_SEX;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 			if (!girl->calc_pregnancy(The_Player, false, 1.0))
 			{
@@ -1159,7 +1121,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			}
 			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -15);
-			WhatSheDid = IMGTYPE_MAST;
+			imagetype = IMGTYPE_MAST;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
 		}
 		else
@@ -1173,7 +1135,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				ss << gettext("just went to sleep.\n\n");
 			}
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ECCHI, Day0Night1);
-			WhatSheDid = IMGTYPE_ECCHI;
+			imagetype = IMGTYPE_ECCHI;
 		}
 	}
 
@@ -1380,7 +1342,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 #endif
 #if 1
 	//BSIN bit more randomness
-	if (isAddict && g_Dice.percent(20))
+	if (girl->is_addict(true) && g_Dice.percent(20))
 	{
 		int theft = g_Dice.in_range(5, 50);
 		ss << gettext("\nWhile you're not looking, she steals ") << theft << gettext(" gold from your room to feed her addiction.\n");
@@ -1469,7 +1431,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	girl->m_Events.AddMessage(ss.str(), WhatSheDid, Day0Night1);
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 	return false;
 }
 
@@ -1477,4 +1439,10 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 double cJobManager::JP_PersonalBedWarmer(sGirl* girl, bool estimate)// not used
 {
 	return 0;
+}
+
+bool cJobManager::WorkPersonalBedWarmers(sBrothel* brothel)
+{
+
+	return false;
 }
