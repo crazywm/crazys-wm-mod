@@ -17991,7 +17991,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		interrupted = true;
 
 	/* */if (detailName == "Name")				{ ss << m_Realname; }
-	else if (detailName == "Health")			{ if (get_stat(STAT_HEALTH) == 0) ss << gettext("DEAD"); else ss << get_stat(STAT_HEALTH) << "%"; }
+	else if (detailName == "Health")			{ if (get_stat(STAT_HEALTH) <= 0) ss << gettext("DEAD"); else ss << get_stat(STAT_HEALTH) << "%"; }
 	else if (detailName == "Age")				{ if (get_stat(STAT_AGE) == 100) ss << "???"; else ss << get_stat(STAT_AGE); }
 	else if (detailName == "Libido")			{ ss << libido(); }
 	else if (detailName == "Rebel")				{ ss << rebel(); }

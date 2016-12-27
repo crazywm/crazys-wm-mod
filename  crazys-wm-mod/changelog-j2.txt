@@ -384,6 +384,13 @@ Added Panacea's Miracle Cure.itemsx by Cavey
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.49
 
+Fixed several bugs pointed out by blx
+ - Fixed the studio - most jobs were broken because the first/last jobs were not updated when the jobs were rearranged
+ - Fixed the Dungeon Feeding buttons
+ - Fixed -health not showing as dead
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.50
 
 
 

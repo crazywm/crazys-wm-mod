@@ -1259,6 +1259,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
  *	
  */
 
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cJobManager::is_job_Paid_Player
 	return (
 		// ALL JOBS
 
@@ -1281,19 +1282,27 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_JANITOR			    ||	//
 		
 		// - Movie Crystal Studio
-		Job ==	JOB_FILMBEAST			||	// films this sort of scene in the movie (uses beast resource)
-		Job ==	JOB_FILMSEX				||	// films this sort of scene in the movie
-		Job ==	JOB_FILMANAL			||	// films this sort of scene in the movie
-		Job ==	JOB_FILMLESBIAN			||	// films this sort of scene in the movie. thinking about changing to Lesbian
-		Job ==	JOB_FILMBONDAGE			||	// films this sort of scene in the movie
-		Job ==	JOB_FILMGROUP			||	// films this sort of scene in the movie
-		Job ==	JOB_FILMORAL			||	// films this sort of scene in the movie
-		Job ==	JOB_FILMMAST			||	// films this sort of scene in the movie
-		Job ==	JOB_FILMTITTY			||	// films this sort of scene in the movie
-		Job ==	JOB_FILMSTRIP			||	// films this sort of scene in the movie
-		Job ==	JOB_FILMHANDJOB			||	// films this sort of scene in the movie
-		Job ==	JOB_FILMFOOTJOB			||	// films this sort of scene in the movie
-		Job ==	JOB_FILMRANDOM			||	// Films a random sex scene
+		Job == JOB_FILMACTION			||	// films this sort of scene in the movie
+		Job == JOB_FILMCHEF				||	// films this sort of scene in the movie
+		Job == JOB_FILMMUSIC			||	// films this sort of scene in the movie
+		Job == JOB_FILMMAST				||	// films this sort of scene in the movie
+		Job == JOB_FILMSTRIP			||	// films this sort of scene in the movie
+		Job == JOB_FILMTEASE			||	// films this sort of scene in the movie
+		Job == JOB_FILMANAL				||	// films this sort of scene in the movie
+		Job == JOB_FILMFOOTJOB			||	// films this sort of scene in the movie
+		Job == JOB_FILMHANDJOB			||	// films this sort of scene in the movie
+		Job == JOB_FILMLESBIAN			||	// films this sort of scene in the movie
+		Job == JOB_FILMORAL				||	// films this sort of scene in the movie
+		Job == JOB_FILMSEX				||	// films this sort of scene in the movie
+		Job == JOB_FILMTITTY			||	// films this sort of scene in the movie
+		Job == JOB_FILMBEAST			||	// films this sort of scene in the movie (uses beast resource)
+		Job == JOB_FILMBONDAGE			||	// films this sort of scene in the movie
+		Job == JOB_FILMBUKKAKE			||	// films this sort of scene in the movie
+		Job == JOB_FILMFACEFUCK			||	// films this sort of scene in the movie
+		Job == JOB_FILMGROUP			||	// films this sort of scene in the movie
+		Job == JOB_FILMPUBLICBDSM		||	// films this sort of scene in the movie
+		Job == JOB_FILMRANDOM			||	// films this sort of scene in the movie
+		
 		Job ==	JOB_DIRECTOR			||	// Direcets the movies
 		Job ==	JOB_PROMOTER			||	// Advertises the studio's films
 		Job ==	JOB_CAMERAMAGE			||	// Uses magic to record the scenes to crystals (requires at least 1)
