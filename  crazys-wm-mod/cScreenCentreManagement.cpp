@@ -271,6 +271,7 @@ void cScreenCentreManagement::check_events()
 			int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);		// Now assign the job to all the selected girls
 			while (GSelection != -1)
 			{
+				// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> 
 				int new_job = selection;
 				selected_girl = g_Centre.GetGirl(g_CurrCentre, GSelection);
 				if (selected_girl)

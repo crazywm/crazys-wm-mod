@@ -243,7 +243,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 
 	if (g_Girls.HasTrait(girl, "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 75
-		&& !g_Girls.HasTrait(girl, "Lesbian") && !g_Girls.HasTrait(girl, "Virgin")
+		&& !g_Girls.HasTrait(girl, "Lesbian") && !g_Girls.CheckVirginity(girl)
 		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{
 		sex = true;

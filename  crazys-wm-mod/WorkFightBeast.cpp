@@ -169,7 +169,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << "She was unable to win the fight.";
 		enjoy -= 1;
 		//Crazy i feel there needs be more of a bad outcome for losses added this... Maybe could use some more
-		if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.HasTrait(girl, "Virgin"))
+		if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.CheckVirginity(girl))
 		{
 			ss << " So as punishment you allow the beast to have its way with her."; enjoy -= 1;
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50);

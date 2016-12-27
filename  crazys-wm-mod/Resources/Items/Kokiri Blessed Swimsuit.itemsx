@@ -2,7 +2,7 @@
 <Items>
 	<Item
 		Name="Kokiri Blessed Swimsuit"
-		Desc="The power of nature baby! Plus it makes you look a bit younger when you put it on."
+		Desc="The power of nature baby! Plus it makes you look a bit younger when you put it on. (+20 Mag/Herb, +10 AH, -2 Age)"
 		Type="Swimsuit"		Badness="0"		Special="None"		Cost="3500"		Rarity="Shop05"		Infinite="false"		GirlBuyChance="0">
 		<Effect			What="Skill"			Name="Magic"			Amount="20" />
 		<Effect			What="Skill"			Name="Herbalism"			Amount="20" />

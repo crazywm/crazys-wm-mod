@@ -345,7 +345,7 @@ void cScreenGirlDetails::init()
 	{  // if in dungeon, effectively disable job lists
 		HideDNButtons = true;
 		ClearListBox(joblist_id);
-		AddToListBox(jobtypelist_id, 0, "Languish in dungeon");
+		AddToListBox(jobtypelist_id, 0, "Languishing in dungeon");
 		SetSelectedItemInList(jobtypelist_id, 0, false);
 	}
 
@@ -491,6 +491,7 @@ void cScreenGirlDetails::check_events()
 		int selection = GetSelectedItemFromList(joblist_id);
 		if (selection != -1)
 		{
+			// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> 
 			int old_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
 			// handle special job requirements and assign - if HandleSpecialJobs returns true, the job assignment was modified or cancelled
 			if (g_Brothels.m_JobManager.HandleSpecialJobs(g_CurrBrothel, selected_girl, selection, old_job, Day0Night1, fulltime))

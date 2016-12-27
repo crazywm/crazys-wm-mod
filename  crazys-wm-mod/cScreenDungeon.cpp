@@ -252,9 +252,11 @@ void cScreenDungeon::selection_change()
 	{
 		// It's a customer! All we need to do is toggle some buttons
 		cerr << "Player selecting Dungeon Customer #" << selection << endl;	// `J` rewrote to reduce confusion
+		int num = (selection - dungeon->GetNumGirls());
+		sDungeonCust* cust = dungeon->GetCust(num);
 		DisableButton(viewdetails_id);
-		EnableButton(allowfood_id);
-		DisableButton(stopfood_id);
+		DisableButton(allowfood_id, cust->m_Feeding);
+		DisableButton(stopfood_id, !cust->m_Feeding);
 		return;
 	}
 	// Not a customer then. Must be a girl...
@@ -264,8 +266,9 @@ void cScreenDungeon::selection_change()
 	sGirl * girl = dgirl->m_Girl;
 	// again, we're just enabling and disabling buttons
 	EnableButton(viewdetails_id);
-	EnableButton(allowfood_id);
-	EnableButton(stopfood_id);
+	
+	DisableButton(allowfood_id, dgirl->m_Feeding);
+	DisableButton(stopfood_id, !dgirl->m_Feeding);
 	// some of them partly depend upon whether she's a slave or not
 	if (girl->is_slave())
 	{

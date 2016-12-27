@@ -734,7 +734,55 @@ void SimpleSaveGameXML(string filename)	// `J` zzzzzz - incomplete code
 
 	qRoot->SetAttribute("LoadedGirlsFiles", loadedGirlsFiles.size());
 
+	// Save Girls
+	vector<string> GirlNames;
 
+	TiXmlElement* pGirls = new TiXmlElement("GirlFoldersUsedInThisGame");
+	qRoot->LinkEndChild(pGirls);
+	for (int i = 0; i < 14; i++)
+	{
+		sGirl* girl = 0;
+		if (i == 0)/*                                       */	girl = g_Brothels.GetBrothel(0)->m_Girls;
+		if (i == 1 && g_Brothels.GetNumBrothels() >= 2)/*   */	girl = g_Brothels.GetBrothel(1)->m_Girls;
+		if (i == 2 && g_Brothels.GetNumBrothels() >= 3)/*   */	girl = g_Brothels.GetBrothel(2)->m_Girls;
+		if (i == 3 && g_Brothels.GetNumBrothels() >= 4)/*   */	girl = g_Brothels.GetBrothel(3)->m_Girls;
+		if (i == 4 && g_Brothels.GetNumBrothels() >= 5)/*   */	girl = g_Brothels.GetBrothel(4)->m_Girls;
+		if (i == 5 && g_Brothels.GetNumBrothels() >= 6)/*   */	girl = g_Brothels.GetBrothel(5)->m_Girls;
+		if (i == 6 && g_Brothels.GetNumBrothels() >= 7)/*   */	girl = g_Brothels.GetBrothel(6)->m_Girls;
+		if (i == 7 && g_Studios.GetNumBrothels() > 0)/*     */	girl = g_Studios.GetBrothel(0)->m_Girls;
+		if (i == 8 && g_Arena.GetNumBrothels() > 0)/*       */	girl = g_Arena.GetBrothel(0)->m_Girls;
+		if (i == 9 && g_Centre.GetNumBrothels() > 0)/*      */	girl = g_Centre.GetBrothel(0)->m_Girls;
+		if (i == 10 && g_Clinic.GetNumBrothels() > 0)/*     */	girl = g_Clinic.GetBrothel(0)->m_Girls;
+		if (i == 11 && g_Farm.GetNumBrothels() > 0)/*       */	girl = g_Farm.GetBrothel(0)->m_Girls;
+		if (i == 12)/*                                      */	girl = g_House.GetBrothel(0)->m_Girls;
+		if (i == 13 && g_Brothels.GetDungeon()->GetNumGirls())
+		{
+			sDungeonGirl* dgirl = g_Brothels.GetDungeon()->GetGirl(0);
+			while (dgirl)
+			{
+				if (find(GirlNames.begin(), GirlNames.end(), dgirl->m_Girl->m_Name) == GirlNames.end())
+					GirlNames.push_back(dgirl->m_Girl->m_Name);
+				dgirl = dgirl->m_Next;
+			}
+		}
+		else
+		{
+			while (girl)
+			{
+				if (find(GirlNames.begin(), GirlNames.end(), girl->m_Name) == GirlNames.end())
+					GirlNames.push_back(girl->m_Name);
+				girl = girl->m_Next;
+			}
+		}
+	}
+
+	sort(GirlNames.begin(), GirlNames.end());
+	for (u_int i = 0; i < GirlNames.size(); i++)
+	{
+		TiXmlElement* girlname = new TiXmlElement("Folder");
+		pGirls->LinkEndChild(girlname);
+		girlname->SetAttribute("Name", GirlNames[i]);
+	}
 
 
 	docq.SaveFile();

@@ -347,6 +347,7 @@ enum JOBS {
 	// `J` Job Clinic - Surgery
 	JOB_GETHEALING,			// takes 1 days for each wound trait received.
 	JOB_GETREPAIRS,			// construct girls can get repaired quickly
+	JOB_CUREDISEASES,		// Cure diseases
 	JOB_GETABORT,			// gets an abortion (takes 2 days)
 	JOB_COSMETICSURGERY,	// magical plastic surgery (takes 5 days)
 	JOB_LIPO,				// magical plastic surgery (takes 5 days)

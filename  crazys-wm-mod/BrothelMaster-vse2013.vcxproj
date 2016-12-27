@@ -172,6 +172,7 @@
     <ClCompile Include="WorkCentreTherapy.cpp" />
     <ClCompile Include="WorkCobbler.cpp" />
     <ClCompile Include="WorkCounselor.cpp" />
+    <ClCompile Include="WorkCureDiseases.cpp" />
     <ClCompile Include="WorkEscort.cpp" />
     <ClCompile Include="WorkFakeOrgasm.cpp" />
     <ClCompile Include="WorkFarmer.cpp" />

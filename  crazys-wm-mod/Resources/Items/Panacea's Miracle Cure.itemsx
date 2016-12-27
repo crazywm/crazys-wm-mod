@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Panacea's Miracle Cure" Desc="Made by the world-renowned alchemist, this tiny bottle of glowing syrup is guaranteed to cure all mundane diseases. It tastes vile, and will make you feel worse than the disease did for a few days, but it's hard to argue with its effectiveness. (Happiness -30, Tiredness +60, cures all diseases)"
+    Type="Food" Badness="10" Special="None" Cost="9000" Rarity="Common" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
+	<Effect What="Stat" Name="Happiness" Amount="-30" />
+	<Effect What="Stat" Name="Tiredness" Amount="60" />
+	<Effect What="Trait" Name="AIDS" Amount="0" />
+	<Effect What="Trait" Name="Chlamydia" Amount="0" />
+	<Effect What="Trait" Name="Herpes" Amount="0" />
+	<Effect What="Trait" Name="Syphilis" Amount="0" />
+    </Item>
+</Items>

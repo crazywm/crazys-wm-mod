@@ -627,6 +627,7 @@
     <ClCompile Include="WorkSOLesbian.cpp" />
     <ClCompile Include="WorkSOStraight.cpp" />
     <ClCompile Include="WorkFakeOrgasm.cpp" />
+    <ClCompile Include="WorkCureDiseases.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">

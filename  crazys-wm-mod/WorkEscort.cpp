@@ -495,7 +495,7 @@ case Es_Regular:
 		}
 		else
 		{
-			if (g_Girls.HasTrait(girl, "Virgin"))
+			if (g_Girls.CheckVirginity(girl))
 			{
 				ss << girlName << " smiles at the offer, and leans a bit over the table before answering. \"I think we would love to join you,\" she says. They all grin with anticipation, getting up to leave. As they walk out the door, " << girlName << " leaves the client's side for a moment to speak to the wife. \"I think you should know,\" she whispers, \"that I am still a virgin, and that the two of us have decided to wait until marriage.\" The wife appears disappointed, but livens as " << girlName << " continues: \"This doesn't mean that the two of us can't get to know each other a little better at your place, though. As long as the boys know that my body is off limits, I think we could still have a very enjoyable evening.\" The wife smiles and turns to whisper something to her husband while " << girlName << " discreetly informs the client of the arrangement. He smiles as well, and the four of them soon arrive at a lovely expensive home, where they soon begin undressing themselves around a large bed.\n";
 				if (g_Girls.GetSkill(girl, SKILL_LESBIAN) > 99)
@@ -652,7 +652,7 @@ case Es_Regular:
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 				}
 
-		if (roll_sex >= 50 && !g_Girls.HasTrait(girl, "Virgin"))/*sex*/
+		if (roll_sex >= 50 && !g_Girls.CheckVirginity(girl))/*sex*/
 		{
 			if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) > 99)
 				{
@@ -1150,7 +1150,7 @@ case Es_Commoner:
 		else if (ass_lover)
 		{
 			ss << "Once the two of them enter his place and close the door, " << girlName << " turns her back to him and grinds her fantastic ass against his thigh. \"I got the feeling you liked my ass,\" she purrs, writhing back and forth on his growing erection. \"Maybe you would like to get to know it a bit better?\" She turns back to face him and nibbles on his neck as she frees his cock from his pants, while she uses her hips to shimmy out of her casual skirt.\n";
-			if (g_Girls.HasTrait(girl, "Virgin"))
+			if (g_Girls.CheckVirginity(girl))
 			{
 				ss << "\"I should let you know,\" she whispers while stroking his cock, \"that I am still a virgin, and my employer considers it important that I stay one.\" The client's jaw drops with amazement. \"Don't worry, though,\" she says, spitting on her hand and rubbing it on his cock before guiding him towards her asshole, \"there are other ways of enjoying my ass tonight.\"";
 				anal = true;
@@ -1169,7 +1169,7 @@ case Es_Commoner:
 		//sex stuff needs linked up somehow
 		if (!titty_lover && !ass_lover)
 			{
-				if (roll_sex >= 50 && !g_Girls.HasTrait(girl, "Virgin") || sex)/*sex*/
+				if (roll_sex >= 50 && !g_Girls.CheckVirginity(girl) || sex)/*sex*/
 				{
 					if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) > 99)
 					{
@@ -1658,7 +1658,7 @@ case Es_DeadBeat:
 		else if (ass_lover)
 		{
 			ss << "Once the two of them enter his place and close the door, " << girlName << " turns her back to him and grinds her fantastic ass against his thigh. \"I got the feeling you liked my ass,\" she purrs, writhing back and forth on his growing erection. \"Maybe you would like to get to know it a bit better?\" She turns back to face him and nibbles on his neck as she frees his cock from his pants, while she uses her hips to shimmy out of her casual skirt.\n";
-			if (g_Girls.HasTrait(girl, "Virgin"))
+			if (g_Girls.CheckVirginity(girl))
 			{
 				ss << "\"I should let you know,\" she whispers while stroking his cock, \"that I am still a virgin, and my employer considers it important that I stay one.\" The client's jaw drops with amazement. \"Don't worry, though,\" she says, spitting on her hand and rubbing it on his cock before guiding him towards her asshole, \"there are other ways of enjoying my ass tonight.\"";
 				anal = true;
@@ -1676,7 +1676,7 @@ case Es_DeadBeat:
 		//sex stuff needs linked up somehow
 		if (!titty_lover && !ass_lover)
 		{
-			if (roll_sex >= 50 && !g_Girls.HasTrait(girl, "Virgin") || sex)/*sex*/
+			if (roll_sex >= 50 && !g_Girls.CheckVirginity(girl) || sex)/*sex*/
 			{
 				if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) > 99)
 				{

@@ -105,15 +105,16 @@ void cClinicManager::Free()
 // ----- Update & end of turn
 void cClinicManager::UpdateClinic()	// Start_Building_Process_A
 {
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cClinic.cpp
+	u_int restjob = JOB_CLINICREST;
+	u_int matronjob = JOB_CHAIRMAN;
+	u_int firstjob = JOB_GETHEALING;
+	u_int lastjob = JOB_JANITOR;
 	cTariff tariff;
 	stringstream ss;
 	string girlName;
 
 	sBrothel* current = (sBrothel*)m_Parent;
-	u_int restjob = JOB_CLINICREST;
-	u_int matronjob = JOB_CHAIRMAN;
-	u_int firstjob = JOB_GETHEALING;
-	u_int lastjob = JOB_JANITOR;
 
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
@@ -208,13 +209,14 @@ void cClinicManager::UpdateClinic()	// Start_Building_Process_A
 // Run the shifts
 void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Building_Process_B
 {
-	stringstream ss;
-	string summary, girlName;
-
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cClinic.cpp
 	u_int restjob = JOB_CLINICREST;
 	u_int matronjob = JOB_CHAIRMAN;
 	u_int firstjob = JOB_GETHEALING;
 	u_int lastjob = JOB_JANITOR;
+	stringstream ss;
+	string summary, girlName;
+
 	u_int sw = 0, psw = 0;
 
 	int totalPay = 0, totalTips = 0, totalGold = 0;
@@ -382,9 +384,9 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			{
 				psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
 				if (psw == JOB_NURSE || psw == JOB_MECHANIC || psw == JOB_GETHEALING || psw == JOB_GETREPAIRS ||
-					psw == JOB_GETABORT || psw == JOB_COSMETICSURGERY || psw == JOB_LIPO || psw == JOB_BREASTREDUCTION ||
-					psw == JOB_BOOBJOB || psw == JOB_VAGINAREJUV || psw == JOB_FACELIFT || psw == JOB_ASSJOB ||
-					psw == JOB_TUBESTIED || psw == JOB_FERTILITY)
+					psw==JOB_CUREDISEASES || psw == JOB_GETABORT || psw == JOB_COSMETICSURGERY || psw == JOB_LIPO || 
+					psw == JOB_BREASTREDUCTION || psw == JOB_BOOBJOB || psw == JOB_VAGINAREJUV || psw == JOB_FACELIFT || 
+					psw == JOB_ASSJOB || psw == JOB_TUBESTIED || psw == JOB_FERTILITY)
 					current->m_DayJob = current->m_NightJob = psw;
 				else if (psw == JOB_DOCTOR && current->is_free()) current->m_DayJob = current->m_NightJob = psw;
 				else if (psw != restjob && psw != 255 && psw != JOB_DOCTOR)
@@ -613,7 +615,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		if (current->is_dead() || (sw != JOB_GETHEALING && sw != JOB_GETREPAIRS && sw != JOB_GETABORT
 			&& sw != JOB_COSMETICSURGERY && sw != JOB_LIPO && sw != JOB_BREASTREDUCTION && sw != JOB_BOOBJOB
 			&& sw != JOB_VAGINAREJUV && sw != JOB_FACELIFT && sw != JOB_ASSJOB && sw != JOB_TUBESTIED
-			&& sw != JOB_FERTILITY))
+			&& sw != JOB_CUREDISEASES && sw != JOB_FERTILITY))
 		{	// skip dead girls and anyone not a patient
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
@@ -981,8 +983,10 @@ bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 }
 
 
+// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cClinic.cpp >> is_Surgery_Job
 bool cClinicManager::is_Surgery_Job(int testjob){
-	if (testjob == JOB_GETABORT ||
+	if (testjob == JOB_CUREDISEASES ||
+		testjob == JOB_GETABORT ||
 		testjob == JOB_COSMETICSURGERY ||
 		testjob == JOB_LIPO ||
 		testjob == JOB_BREASTREDUCTION ||

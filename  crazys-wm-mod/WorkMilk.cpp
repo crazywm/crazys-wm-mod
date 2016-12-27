@@ -121,7 +121,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 	//test code for auto preg
-	if (girl->m_WeeksPreg < 0 && g_Brothels.GetNumGirlsOnJob(0, JOB_FARMMANGER, false) >= 1 && noAnti && !g_Girls.HasTrait(girl, "Virgin"))
+	if (girl->m_WeeksPreg < 0 && g_Brothels.GetNumGirlsOnJob(0, JOB_FARMMANGER, false) >= 1 && noAnti && !g_Girls.CheckVirginity(girl))
 	{
 		sCustomer* Cust = new sCustomer;
 		g_Customers.GetCustomer(Cust, brothel);
@@ -217,7 +217,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	//Testing and seems weird that virgins and never-pregs can produce so much, so halving this
 		//This is every way I can find of asking if she's had a kid - MILF needed as this will register children prior to employment
-	if (g_Girls.HasTrait(girl, "Virgin") || ((!isPregnant) && !g_Girls.HasTrait(girl, "MILF") && (girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1)))
+	if (g_Girls.CheckVirginity(girl) || (!isPregnant && !g_Girls.HasTrait(girl, "MILF") && girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
 	{
 		volume /= 2;											// never preg, so not producing much
 		g_Girls.UpdateStat(girl, STAT_LACTATION, g_Dice % 3);	//all this pumping etc induces lactation
@@ -515,7 +515,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 				g_Brothels.GetDungeon()->AddCust(DUNGEON_CUSTBEATGIRL, 0, 0);
 				break;
 			}
-			if (g_Girls.HasTrait(girl, "Virgin")) ssextra << "Thanks to you, her virginity is intact so ";
+			if (g_Girls.CheckVirginity(girl)) ssextra << "Thanks to you, her virginity is intact so ";
 			ssextra << girlName << " comes to your office after her shift";
 			if ((HateLove <= 50) || g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Cum Addict") || g_Girls.HasTrait(girl, "Slut"))
 			{
