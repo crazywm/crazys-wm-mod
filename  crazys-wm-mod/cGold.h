@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders
+ * The Pink Petal Devloment Team are defined as the game's coders 
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -58,9 +58,9 @@ class cGoldBase
 		double farm_income;
 
 //01234567890123456789012345678901234567890123456789012345678901234567890123456789
-// --- Whores ---                              --- Sales ---
+// --- Whores ---                              --- Sales --- 
 // Brothel  Street   Movie     Bar  Casino   Items  Monster Loc'Biz   Raids P.Theft G.Theft C'combs  Reward Intr'st    Misc
-//  123456 1234567 1234567 1234567 1234567 1234567  1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567
+//  123456 1234567 1234567 1234567 1234567 1234567  1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 
 		string str(int brothel_no=-1) {
 			stringstream ss;
 			ss <<	"  --- Whores ---                              --- Sales ---";
@@ -118,12 +118,11 @@ class cGoldBase
 		double fines;
 		double tax;
 		double rival_raids;
-		double misc_debit;
 	} detail_out;
 
 //   -------     Purchase    -------  Making --  Support  --    Girl ------   Upkeep  ------
 // # Brothel  Slaves   Items Consume  Movies    Goon    Girl Train'g Build'g     Bar  Casino Adverts  Bribes   Fines Raiders
-//   1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567
+//   1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 
 
 protected:
 
@@ -273,7 +272,7 @@ friend	istream &operator>>(istream& is, cGoldBase &g);
 	int total_income()	{ return int(m_income); }
 	int total_upkeep()	{ return int(m_upkeep); }
 	int total_earned()	{ return int(m_income + m_cash_in); }
-	int total_profit()	{
+	int total_profit()	{ 
 		double d = total_earned() - total_upkeep();
 		return int(d);
 	}
@@ -296,7 +295,7 @@ public:
 /*
  *	take the brothel's cGold field (m_Finance - replaces
  *	m_Upkeep and m_Income) and add it to the record
- *	Passing the brothel struct so we can record the
+ *	Passing the brothel struct so we can record the 
  *	transactions against the brothel ID
  *
  *	(Better would be to pass m_Finance and ID separately
@@ -314,7 +313,7 @@ public:
  *	might be better
  */
 	int total_earned();//	{ return m_income + m_cash_in; }
-	int total_profit()	{
+	int total_profit()	{ 
 		return	int( total_earned() - total_upkeep() );
 	}
 	void gen_report(int month);

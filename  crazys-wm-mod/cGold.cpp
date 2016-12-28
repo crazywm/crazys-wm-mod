@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders
+ * The Pink Petal Devloment Team are defined as the game's coders 
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- *
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -100,7 +100,6 @@ void cGoldBase::slave_sales(double income)
 void cGoldBase::misc_credit(double income)
 {
 	m_value += income;
-	detail_in.misc+=income;
 }
 
 // this is for girls working at the brothel - goes into income
@@ -156,41 +155,34 @@ void cGoldBase::bar_income(double income)
 void cGoldBase::gambling_profits(double income)
 {
 	m_income += income;
-	detail_in.gambling_profits+=income;
 }
 
 // income from businesess under player control
 void cGoldBase::extortion(double income)
 {
 	m_income += income;
-	detail_in.extortion+=income;
 }
 
 // These happen at end of turn anyway - so let's do them as delayed transactions
 void cGoldBase::objective_reward(double income)
 {
 	m_income += income;
-	detail_in.objective_reward+=income;
 }
 void cGoldBase::plunder(double income)
 {
 	m_income += income;
-	detail_in.plunder+=income;
 }
 void cGoldBase::petty_theft(double income)
 {
 	m_income += income;
-	detail_in.petty_theft+=income;
 }
 void cGoldBase::grand_theft(double income)
 {
 	m_income += income;
-	detail_in.grand_theft+=income;
 }
 void cGoldBase::catacomb_loot(double income)
 {
 	m_income += income;
-	detail_in.catacomb_loot+=income;
 }
 
 /*
@@ -218,7 +210,6 @@ bool cGoldBase::debit_if_ok(double price, bool force)
 void cGoldBase::movie_cost(double price)
 {
 	m_upkeep += price;
-	detail_out.movie_cost+=price;
 }
 
 /*
@@ -229,29 +220,18 @@ void cGoldBase::movie_cost(double price)
 void cGoldBase::building_upkeep(double price)
 {
 	m_upkeep += price;
-	detail_out.building_upkeep+=price;
 }
 
 // buying stuff from the market - instant
 bool cGoldBase::item_cost(double price)
 {
-	if (debit_if_ok(price))
-    {
-        detail_out.item_cost+=price;
-        return true;
-    }
-    return false;
+	return debit_if_ok(price);
 }
 
 // counterpart of misc_credit - should probably also go away
 bool cGoldBase::misc_debit(double price)
 {
-    if (debit_if_ok(price))
-    {
-        detail_out.misc_debit+=price;
-        return true;
-    }
-    return false;
+	return debit_if_ok(price);
 }
 
 /*
@@ -262,118 +242,88 @@ bool cGoldBase::misc_debit(double price)
  */
 bool cGoldBase::consumable_cost(double price, bool force)
 {
-
-	if( debit_if_ok(price, force))
-	{
-        detail_out.consumable_cost+=price;
-        return true;
-	}
-	return false;
-
+	return debit_if_ok(price, force);
 }
 
 // buying at the slave market - you need the cash
 bool cGoldBase::slave_cost(double price)
 {
-	if (debit_if_ok(price))
-    {
-        detail_out.slave_cost+=price;
-        return true;
-    }
-    return false;
+	return debit_if_ok(price);
 }
 
 // buying a new building - cash transactions only please
 bool cGoldBase::brothel_cost(double price)
 {
-	if (debit_if_ok(price))
-    {
-        detail_out.brothel_cost+=price;
-        return true;
-    }
-    return false;
+	return debit_if_ok(price);
 }
 
 // training is a delayed cost
 void cGoldBase::girl_training(double cost)
 {
 	m_upkeep += cost;
-	detail_out.girl_training+=cost;
 }
 
 void cGoldBase::girl_support(double cost)
 {
 	m_upkeep += cost;
-	detail_out.girl_support+=cost;
 }
 
 void cGoldBase::bribes(double cost)
 {
 	m_upkeep += cost;
-	detail_out.bribes+=cost;
 }
 
 void cGoldBase::fines(double cost)
 {
 	m_value -= cost;
 	m_cash_out -= cost;
-	detail_out.fines+=cost;
 }
 
 void cGoldBase::tax(double cost)
 {
 	m_value -= cost;
 	m_cash_out -= cost;
-	detail_out.tax+=cost;
 }
 
 void cGoldBase::goon_wages(double cost)
 {
 	m_upkeep += cost;
-	detail_out.goon_wages+=cost;
 }
 
 void cGoldBase::staff_wages(double cost)
 {
 	m_upkeep += cost;
-	detail_out.staff_wages+=cost;
 }
 
 void cGoldBase::bar_upkeep(double cost)
 {
 	m_upkeep += cost;
-	detail_out.bar_upkeep+=cost;
 }
 
 void cGoldBase::casino_upkeep(double cost)
 {
 	m_upkeep += cost;
-	detail_out.casino_upkeep+=cost;
 }
 
 void cGoldBase::advertising_costs(double cost)
 {
 	m_upkeep += cost;
-	detail_out.advertising_costs+=cost;
 }
 
 void cGoldBase::centre_costs(double cost)
 {
 	m_upkeep += cost;
-	detail_out.centre_costs+=cost;
 }
 
 void cGoldBase::arena_costs(double cost)
 {
 	m_upkeep += cost;
-	detail_out.arena_costs+=cost;
 }
 
 void cGoldBase::rival_raids(double cost)
 {
 	m_value -= cost;
 	m_cash_out -= cost;
-	detail_out.rival_raids+=cost;
 }
 
 void cGoldBase::bank_interest(double income)
