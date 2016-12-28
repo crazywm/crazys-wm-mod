@@ -449,7 +449,7 @@ void sDungeonCust::OutputCustDetailString(string& Data, const string& detailName
 	static stringstream ss;
 	ss.str("");
 	if (detailName == "Name")					{ ss << gettext("Customer"); }
-	else if (detailName == gettext("Health"))	{ if (m_Health == 0) ss << gettext("DEAD"); else ss << m_Health << gettext("%"); }
+	else if (detailName == gettext("Health"))	{ if (m_Health <= 0) ss << gettext("DEAD"); else ss << m_Health << gettext("%"); }
 	else if (detailName == "Reason")
 	{
 		switch (m_Reason)

@@ -538,6 +538,7 @@ void sGirl::setup_maps()
 	jobs_lookup["CosS"] = JOB_COSMETICSURGERY;
 	jobs_lookup["Cnsl"] = JOB_COUNSELOR;
 	jobs_lookup["CP"] = JOB_CRYSTALPURIFIER;
+	jobs_lookup["Cure"] = JOB_CUREDISEASES;
 	jobs_lookup["CS"] = JOB_CUSTOMERSERVICE;
 	jobs_lookup["Dlr"] = JOB_DEALER;
 	jobs_lookup["Dir"] = JOB_DIRECTOR;
@@ -2379,7 +2380,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 
 	/* */if (sanity <= -75)	
 	{
-		/**/ if (morality < -66)		ss << "psychopathic";
+		/* */if (morality < -66)		ss << "psychopathic";
 		else if (morality < -33)		ss << "a total bunny-boiler";
 		else if (morality <	 33)		ss << "dangerous";
 		else if (morality <	 66)		ss << "a raving fundamentalist";
@@ -2387,7 +2388,7 @@ string cGirls::GetGirlMood(sGirl* girl)
 	}
 	else if (sanity <= -45)
 	{
-		/**/ if (morality < -33)		ss << "a bit of a psycho";
+		/* */if (morality < -33)		ss << "a bit of a psycho";
 		else if (morality <	 33)		ss << "scarily out-there";
 		else							ss << "scarily over-zealous";
 	}
@@ -2963,6 +2964,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Clinic_Data += "\n";
 		Clinic_Data += girl->JobRating(m_JobManager.JP_Healing(girl, true), "!", "Healing");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_RepairShop(girl, true), "!", "Repair Shop");
+		Clinic_Data += girl->JobRating(m_JobManager.JP_CureDiseases(girl, true), "!", "Cure Diseases");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_GetAbort(girl, true), "!", "Get Abortion");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_CosmeticSurgery(girl, true), "!", "Cosmetic Surgery");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_Liposuction(girl, true), "!", "Liposuction");
@@ -2983,7 +2985,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmManager(girl, true), "-", "Farm Manger");
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmVeterinarian(girl, true), "-", "Veterinarian");
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmMarketer(girl, true), "-", "Marketer");
-		Farm_Data += girl->JobRating(m_JobManager.JP_FarmResearch(girl, true), "-", "Researcher");
+		Farm_Data += girl->JobRating(m_JobManager.JP_FarmResearch(girl, true), "!", "Researcher");
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmHand(girl, true), "-", "FarmHand");
 		Farm_Data += "\n";
 		Farm_Data += girl->JobRating(m_JobManager.JP_Farmer(girl, true), "-", "Farmer");
@@ -3437,9 +3439,7 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 			girl->m_Stats[STAT_TIREDNESS] = 0;	// WD: Sanity - Incorporeal Tiredness should allways be at 0%
 			return;
 		}
-		if (stat == STAT_TIREDNESS && 
-			(g_Girls.HasTrait(girl, "Skeleton") ||
-			HasTrait(girl, "Zombie")))
+		if (stat == STAT_TIREDNESS && (girl->has_trait("Skeleton") || girl->has_trait("Zombie")))
 		{
 			girl->m_Stats[STAT_TIREDNESS] = 0;	// `J` Sanity - Zombie Tiredness should allways be at 0%
 			return;
@@ -3611,7 +3611,8 @@ void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
 		}
 		}
 		//*/
-		if (HasTrait(girl, "Construct"))	amount = (int)ceil((float)amount*0.1); // constructs take 10% damage
+		if (HasTrait(girl, "Construct") && ((stat == STAT_HEALTH && amount < 0) || (stat == STAT_TIREDNESS && amount > 0)))
+				amount = (int)ceil((float)amount * 0.1); // constructs take 10% damage
 		break;
 
 	case STAT_HAPPINESS:
@@ -8362,7 +8363,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	if (cfg.debug.log_extradetails())
 	{
 		message += "\n(Debug: Customer wants ";
-		/**/ if (SexType == SKILL_ANAL)			message += "anal";
+		/* */if (SexType == SKILL_ANAL)			message += "anal";
 		else if (SexType == SKILL_BDSM)			message += "bondage";
 		else if (SexType == SKILL_NORMALSEX)	message += "sex";
 		else if (SexType == SKILL_BEASTIALITY)	message += "beast";
@@ -8469,7 +8470,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		runawaymsg << "\n";
 
 		//What do you do...
-		/**/ if (The_Player->disposition() < -33) runawaymsg << "She's where she deserves. Why waste a gang's time going to fetch her? Unless you want to punish personally?";
+		/* */if (The_Player->disposition() < -33) runawaymsg << "She's where she deserves. Why waste a gang's time going to fetch her? Unless you want to punish personally?";
 		else if (The_Player->disposition() < 33) runawaymsg << "You could send a gang to retrieve her. Or you could leave her. No hurry.";
 		else runawaymsg << "You should send a gang right away to rescue the poor girl.";
 		
@@ -9435,7 +9436,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 			if (g_Dice.percent(60) && (HasTrait(girl, "Phat Booty") || HasTrait(girl, "Plump Tush") || HasTrait(girl, "Wide Bottom") || HasTrait(girl, "Great Arse")))
 			{
-				/**/ if (choice < 33)	sexMessage << girlName << " enjoyed showing of that she can hide the customers whole cock between her cheeks, before she lets him slip into her ass proper.";
+				/* */if (choice < 33)	sexMessage << girlName << " enjoyed showing of that she can hide the customers whole cock between her cheeks, before she lets him slip into her ass proper.";
 				else if (choice < 66)	sexMessage << "Encouraged by " << girlName << " the customer plowed her ass hard, both enjoying the sound her jiggling backside made each time he drove his cock home.";
 				else /*			   */	sexMessage << "The customer slammed his cock again and again into " << girlName << "'s asshole, loving the slap and the jiggle of flesh each time he drove it home.";
 			}
@@ -9507,7 +9508,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			else if (g_Dice.percent(40) && HasTrait(girl, "Cum Addict"))
 			{
 				sexMessage << girlName << " skillfully milked the customer's cock with her ass";
-				/**/ if (choice < 33) sexMessage << ", quickly switching to her mouth when she sensed him ready to give up his precious cum.";
+				/* */if (choice < 33) sexMessage << ", quickly switching to her mouth when she sensed him ready to give up his precious cum.";
 				else if (choice < 67) sexMessage << " until, without warning, he wasted his precious cum shooting it all up her ass. She managed to claw some back out, "
 					<< "licking it greedily off her fingers, but most was lost.\nThe customer was awed, thinking this was all part of the show.";
 				else sexMessage << " until, without warning, he threw away his precious load in her ass.\nAnnoyed, she climbed off him and squatted on the floor, squeezing, "
@@ -10705,7 +10706,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				if (choice < 25)
 				{
 					sexMessage << " he just made ";
-					/**/ if (royalty) sexMessage << "ROYALTY";
+					/* */if (royalty) sexMessage << "ROYALTY";
 					else if (divinity) sexMessage << "a GOD";
 					else if (demon) sexMessage << "a DEMON";
 					else if (yourKid) sexMessage << "your DAUGHTER";
@@ -10714,15 +10715,15 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				}
 				else
 				{
-					/**/ if (choice < 50) sexMessage << "... He just had his dick sucked by ";
+					/* */if (choice < 50) sexMessage << "... He just had his dick sucked by ";
 					else if (choice < 75) sexMessage << " he just finished face-fucking ";
-					else /**************/ sexMessage << "... He just managed to Angry Dragon ";
+					else /*            */ sexMessage << "... He just managed to Angry Dragon ";
 
-					/**/ if (royalty) sexMessage << "Royalty!";
-					else if (divinity) sexMessage << "a Goddess!";
-					else if (demon) sexMessage << "a Demon Whore!";
-					else if (yourKid) sexMessage << "your Daughter!";
-					else /**********/ sexMessage << "this girl! (E)";	//Shouldn't get here, but just in case
+					/* */if (royalty)	sexMessage << "Royalty!";
+					else if (divinity)	sexMessage << "a Goddess!";
+					else if (demon)		sexMessage << "a Demon Whore!";
+					else if (yourKid)	sexMessage << "your Daughter!";
+					else /*        */	sexMessage << "this girl! (E)";	//Shouldn't get here, but just in case
 					sexMessage << "\n";
 				}
 				customer->m_Stats[STAT_HAPPINESS] += 20;
@@ -10955,12 +10956,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					sexMessage << "with some candles";
 					break;
 				case 1:
-					/**/ if (HasItem(girl, "Cat"))			sexMessage << "involving her cat";
+					/* */if (HasItem(girl, "Cat"))			sexMessage << "involving her cat";
 					else if (HasItem(girl, "Guard Dog"))	sexMessage << "with her Guard Dog";
 					else /*****************************/	sexMessage << "with a badly timed sneeze";
 					break;
 				case 2:
-					/**/ if (HasItem(girl, "Studded Dildo") || HasItem(girl, "Dreidel Dildo") || HasItem(girl, "Dildo")) sexMessage << "with a misplaced dildo";
+					/* */if (HasItem(girl, "Studded Dildo") || HasItem(girl, "Dreidel Dildo") || HasItem(girl, "Dildo")) sexMessage << "with a misplaced dildo";
 					else if (HasItem(girl, "Lolita Wand") || HasItem(girl, "Lolita Wand (Lesser)") || HasItem(girl, "Magical Girl Wand") || HasItem(girl, "Hermione's Wand")) sexMessage << "with a misplaced wand";
 					else sexMessage << "with some chewing gum and a lava lamp";
 					break;
@@ -11061,7 +11062,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				if (choice < 25)
 				{
 					sexMessage << "and he just watched ";
-					/**/ if (royalty) sexMessage << "a ROYAL";
+					/* */if (royalty) sexMessage << "a ROYAL";
 					else if (divinity) sexMessage << "a GODDESS";
 					else if (demon) sexMessage << "a DEMON";
 					else if (yourKid) sexMessage << "your DAUGHTER";
@@ -11070,11 +11071,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				}
 				else
 				{
-					/**/ if (choice < 50) sexMessage << "and he can't wait to tell his friends he had his cock blown by ";
+					/* */if (choice < 50) sexMessage << "and he can't wait to tell his friends he had his cock blown by ";
 					else if (choice < 75) sexMessage << "- he just face-fucked ";
 					else /**************/ sexMessage << "- and the girl whose face he painted... ";
 
-					/**/ if (royalty) sexMessage << "Royalty!";
+					/* */if (royalty) sexMessage << "Royalty!";
 					else if (divinity) sexMessage << "a Goddess!";
 					else if (demon) sexMessage << "a Demon!";
 					else if (yourKid) sexMessage << "your Daughter!";
@@ -17990,7 +17991,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		interrupted = true;
 
 	/* */if (detailName == "Name")				{ ss << m_Realname; }
-	else if (detailName == "Health")			{ if (get_stat(STAT_HEALTH) == 0) ss << gettext("DEAD"); else ss << get_stat(STAT_HEALTH) << "%"; }
+	else if (detailName == "Health")			{ if (get_stat(STAT_HEALTH) <= 0) ss << gettext("DEAD"); else ss << get_stat(STAT_HEALTH) << "%"; }
 	else if (detailName == "Age")				{ if (get_stat(STAT_AGE) == 100) ss << "???"; else ss << get_stat(STAT_AGE); }
 	else if (detailName == "Libido")			{ ss << libido(); }
 	else if (detailName == "Rebel")				{ ss << rebel(); }
@@ -18038,6 +18039,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 			DN_Job = m_NightJob;
 			DN_Day = 1;
 		}
+		// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> 
 		if (DN_Job >= NUM_JOBS)
 		{
 			ss << gettext("None");
@@ -18045,6 +18047,17 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else if (DN_Job == JOB_FAKEORGASM || DN_Job == JOB_SO_STRAIGHT || DN_Job == JOB_SO_BISEXUAL || DN_Job == JOB_SO_LESBIAN)
 		{
 			ss << g_House.m_JobManager.JobName[DN_Job] << " (" << m_WorkingDay << "%)";
+		}
+		else if (DN_Job == JOB_CUREDISEASES)
+		{
+			if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, DN_Day) > 0)
+			{
+				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " (" << m_WorkingDay << "%)";
+			}
+			else
+			{
+				ss << g_House.m_JobManager.JobName[DN_Job] << " (" << m_WorkingDay << "%) **";
+			}
 		}
 		else if (DN_Job == JOB_REHAB || DN_Job == JOB_ANGER || DN_Job == JOB_EXTHERAPY || DN_Job == JOB_THERAPY)
 		{
