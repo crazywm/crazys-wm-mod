@@ -16,6 +16,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+#if 0
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cArena.h"
@@ -111,3 +113,5 @@ double cJobManager::JP_ArenaMagicDual(sGirl* girl, bool estimate)// not used
 	}
 	return jobperformance;
 }
+#endif
+

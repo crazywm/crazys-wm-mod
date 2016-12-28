@@ -18,8 +18,40 @@
 */
 #include "FileList.h"
 #include <map>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 static string clobber_extension(string s);
+
+FileList::FileList(DirPath dp, const char *pattern)
+{
+	folder = dp;
+	scan(pattern);
+}
+
+void FileList::scan(const char * pattern)
+{
+	files.clear();
+	add(pattern);
+}
+
+string ReadTextFile(DirPath path, string file)
+{
+	FileList abstest(path, file.c_str());
+	
+	stringstream ss;
+	ifstream in;
+	in.open(abstest[0].full());
+	while (in.good())
+	{
+		string m;
+		getline(in, m);
+		ss << m << "\n";
+	}
+	in.close();
+	return ss.str();
+}
 
 #ifdef LINUX
 
@@ -27,8 +59,6 @@ static string clobber_extension(string s);
 #include <dirent.h>
 #include <errno.h>
 #include <vector>
-#include <string>
-#include <iostream>
 #include <regex.h>
 #include <string.h>
 
@@ -58,24 +88,16 @@ static string& gsub(string &str, const char *pat_pt, const char *repl_pt)
 * This is the LINUX version of this func. The windows one
 * is underneath
 */
-FileList::FileList(DirPath dp, const char *pattern)
-{
-	folder = dp;
-	scan(pattern);
-}
 
-void FileList::scan(const char *pattern)
+void FileList::add(const char *pattern)
 {
 	DIR		*dpt;
-	struct dirent	*dent;
+	struct dirent *dent;
 	const char	*base_path = folder.c_str();
 	string		s_bp(folder.c_str());
 	string		s_pat(pattern);
 	s_pat += "$";
-	/*
-	*	clear the file vector
-	*/
-	files.clear();
+	
 	/*
 	*	we'll need to match regular expressions against the file name
 	*	to do that we need to turn the "." into "\\." sequences and similarly
@@ -83,11 +105,14 @@ void FileList::scan(const char *pattern)
 	*/
 	gsub(s_pat, ".", "\\.");
 	gsub(s_pat, "*", ".*");
+	gsub(s_pat, "[", "\\[");
+	
 	/*
 	*	now make a regex
 	*/
 	regex_t r;
-	regcomp(&r, s_pat.c_str(), 0);
+	regcomp(&r, s_pat.c_str(), REG_NOSUB);
+	
 	/*
 	*	open the directory. Print an error to the console if it fails
 	*/
@@ -95,16 +120,18 @@ void FileList::scan(const char *pattern)
 		cerr << "Error(" << errno << ") opening " << base_path << endl;
 		return;
 	}
+	
 	/*
 	*	loop through the files
 	*/
 	while ((dent = readdir(dpt)) != NULL) {
-		if (regexec(&r, dent->d_name, 0, 0, 0) != 0) {
+		int nmatch = strlen(dent->d_name);
+		cout << nmatch << " " << dent->d_name << " " << s_pat << endl;
+		if (regexec(&r, dent->d_name, nmatch, 0, 0) == REG_NOMATCH) {
 			continue;
 		}
-		files.push_back(
-			FileListEntry(s_bp, string(dent->d_name))
-			);
+		
+		files.push_back(FileListEntry(s_bp, string(dent->d_name)));
 	}
 	closedir(dpt);
 }
@@ -113,57 +140,8 @@ void FileList::scan(const char *pattern)
 #include"cInterfaceWindow.h"
 #include<windows.h>
 #include"interfaceIDs.h"
+
 extern cInterfaceWindow g_LoadGame;
-
-string ReadTextFile(DirPath path, string file)
-{
-	FileList abstest(path, file.c_str());
-
-	stringstream ss;
-	ifstream in;
-	in.open(abstest[0].full());
-	while (in.good())
-	{
-		string m;
-		getline(in, m);
-		ss << m << "\n";
-	}
-	in.close();
-	return ss.str();
-}
-
-FileList::FileList(DirPath dp, const char *pattern)
-{
-	//files = 0;
-	// n_files = 0;
-
-	folder = dp;
-	scan(pattern);
-
-}
-
-void FileList::scan(const char * pattern)
-{
-	files.clear();
-	WIN32_FIND_DATAA FindFileData;
-	HANDLE hFind;
-	DirPath loc = folder.c_str();
-	loc << pattern;
-	string base = folder.c_str();
-	string filename;
-	hFind = FindFirstFileA(loc.c_str(), &FindFileData);
-
-	int i = 0;
-	while (hFind != INVALID_HANDLE_VALUE) {
-		filename = FindFileData.cFileName;
-		FileListEntry tempfile(base, filename);
-		files.push_back(tempfile);
-		if (FindNextFileA(hFind, &FindFileData) == 0) {
-			break;
-		}
-	}
-	FindClose(hFind);
-}
 
 void FileList::add(const char * pattern)
 {

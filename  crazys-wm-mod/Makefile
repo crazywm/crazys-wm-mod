@@ -16,58 +16,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-CPPFILES=cScriptUtils.cpp \
-	cSlider.cpp cFont.cpp CGameObject.cpp CGraphics.cpp \
-	cJobManager.cpp CLog.cpp CRenderQue.cpp CResourceManager.cpp \
-	CSurface.cpp DirPath.cpp FileList.cpp GameFlags.cpp \
-	InterfaceGlobals.cpp InterfaceProcesses.cpp XmlUtil.cpp \
-	cScriptManager.cpp cBrothel.cpp cClinic.cpp cBuilding.cpp \
-	cMovieStudio.cpp \
-	cButton.cpp cCheckBox.cpp cChoiceMessage.cpp cCustomers.cpp \
-	cScrollBar.cpp cEditBox.cpp cEvents.cpp cGameScript.cpp \
-	cGetStringScreenManager.cpp cGirls.cpp cGold.cpp cImageItem.cpp \
-	cGangs.cpp cColor.cpp cInterfaceWindow.cpp cInventory.cpp \
-	cLuaScript.cpp cLuaMenu.cpp cListBox.cpp cMessageBox.cpp \
-	cNameList.cpp cRival.cpp cRng.cpp cScripts.cpp cTariff.cpp \
-	cTrainable.cpp cTraits.cpp cTriggers.cpp cWindowManager.cpp \
-	main.cpp sConfig.cpp sFacility.cpp sFacilityList.cpp \
-	WorkAdvertising.cpp WorkBar.cpp WorkBeastCapture.cpp \
-	WorkBrothelMassusse.cpp WorkExploreCatacombs.cpp WorkFluffer.cpp \
-	WorkFreetime.cpp WorkHall.cpp WorkMatron.cpp WorkSecurity.cpp \
-	WorkBeastCare.cpp WorkStripper.cpp WorkTorturer.cpp WorkWhore.cpp \
-	WorkDoctor.cpp WorkHealing.cpp WorkFilmAnal.cpp WorkFilmLesbian.cpp \
-	WorkFilmBondage.cpp WorkFilmBeast.cpp WorkCameraMage.cpp WorkCrystalPurifier.cpp \
-	cAnimatedSurface.cpp cWorkCleaning.cpp cScreenStudioManagement.cpp \
-	cScreenBank.cpp cScreenBuildingManagement.cpp cScreenBuildingSetup.cpp \
-	cScreenDungeon.cpp cScreenGangs.cpp cScreenGirlDetails.cpp \
-	cScreenGirlManagement.cpp cScreenClinicManagement.cpp  cScreenHouse.cpp cScreenItemManagement.cpp \
-	cScreenMovieMaker.cpp \
-	cScreenMayor.cpp cScreenPrison.cpp cScreenSlaveMarket.cpp \
-	strnatcmp.cpp cScreenTown.cpp cDungeon.cpp cPlayer.cpp \
-	cGirlTorture.cpp cGirlGangFight.cpp \
-	tinystr.cpp tinyxml.cpp tinyxmlerror.cpp tinyxmlparser.cpp
-
-LUA_CFILES=	lua/src/lapi.c lua/src/lauxlib.c lua/src/lbaselib.c \
-		lua/src/lcode.c lua/src/ldblib.c lua/src/ldebug.c \
-		lua/src/ldo.c lua/src/ldump.c lua/src/lfunc.c lua/src/lgc.c \
-		lua/src/linit.c lua/src/liolib.c lua/src/llex.c \
-		lua/src/lmathlib.c lua/src/lmem.c lua/src/loadlib.c \
-		lua/src/lobject.c lua/src/lopcodes.c lua/src/loslib.c \
-		lua/src/lparser.c lua/src/lstate.c lua/src/lstring.c \
-		lua/src/lstrlib.c lua/src/ltable.c lua/src/ltablib.c \
-		lua/src/ltm.c lua/src/lundump.c \
-		lua/src/lvm.c lua/src/lzio.c lua/src/print.c
+CPPFILES=$(wildcard *.cpp)
+LUA_CFILES=$(wildcard lua/src/*.c)
 
 
-WM_OFILES=${CPPFILES:.cpp=.o}
-LUA_OFILES=${LUA_CFILES:.c=.o}
-OFILES=${WM_OFILES} ${LUA_OFILES}
-CPPFLAGS=-D LINUX -I /usr/include/SDL -g -Wall -D LUA_USE_MKSTEMP
+WM_OFILES=build/SDL_anigif.o ${CPPFILES:%.cpp=build/%.o}
+LUA_OFILES=${LUA_CFILES:%.c=build/%.o}
+
+OFILES=${WM_OFILES}
+CFLAGS=-DLINUX -DLUA_USE_MKSTEMP -I/usr/include/SDL -I/usr/include/lua5.1 -Wno-enum-compare -Wno-unused-result -O1 -fpermissive
+CPPFLAGS=${CFLAGS} -std=c++11
+
+build/%.o: %.c
+	g++ $(CFLAGS) -c $< -o $@
+
+build/%.o: %.cpp
+	g++ $(CPPFLAGS) -c $< -o $@
 
 all: WhoreMaster
 
-WhoreMaster: ${OFILES}
-	g++ -g ${OFILES} -lSDL -lSDL_ttf -lSDL_gfx -lSDL_image -llua5.1 -o WhoreMaster
+build:
+	mkdir build
+
+WhoreMaster: build ${OFILES}
+	g++ ${OFILES} -lSDL -lSDL_ttf -lSDL_gfx -lSDL_image -llua5.1 -o WhoreMaster
 
 Revision.h:  ${OFILES}
 	mk_rev
@@ -75,7 +47,7 @@ Revision.h:  ${OFILES}
 makefile.deps:
 	g++ -M ${CPPFLAGS} ${CPPFILES} > makefile.deps
 
-include makefile.deps
+#include makefile.deps
 
 RESFILES=Resources/Data/config.xml Resources/Characters/*girlsx \
 	Resources/Data/*.itemsx Resources/Interface/*.xml \
@@ -90,6 +62,13 @@ dos:
 
 ctags:
 	ctags *.h *.cpp
+
+clean-deps:
+	rm -f makefile.deps
+
+clean: clean-deps
+	rm -f build/*.o
+	
 
 install: WhoreMaster
 	cp WhoreMaster ~/wm
