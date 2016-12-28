@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -57,7 +57,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	
+
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50;
@@ -72,17 +72,17 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		ss << gettext(" refused to shoot an action scenes today.\n");
+		ss << " refused to shoot an action scenes today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 75)
 	{
-		ss << gettext(" was too tired to take part in an action scene.\n\n");
+		ss << " was too tired to take part in an action scene.\n\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else ss << gettext(" worked as an actress in an action scene.\n\n");
+	else ss << " worked as an actress in an action scene.\n\n";
 
 
 	//JOB
@@ -90,76 +90,76 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int OPTIONS = 3; //Right now this number of options applies for all levels of job
 	if (jobperformance >= 350)
 	{
-		ss << gettext(" made an outstanding action scene,");
+		ss << " made an outstanding action scene,";
 		AddStory(&ss);
-		ss << gettext(" It will definitely win her some fans.");
+		ss << " It will definitely win her some fans.";
 		g_Girls.UpdateStat(girl, STAT_FAME, 3);
 		bonus = 12;
 	}
 	else if (jobperformance >= 245)
 	{
-		ss << gettext(" made a great action scene,");
+		ss << " made a great action scene,";
 		AddStory(&ss);
-		ss << gettext(" It should win her some fans.");
+		ss << " It should win her some fans.";
 		g_Girls.UpdateStat(girl, STAT_FAME, 2);
 		bonus = 6;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << gettext(" made a fairly good action scene,");
+		ss << " made a fairly good action scene,";
 		AddStory(&ss);
-		ss << gettext(" Her fans will enjoy it.");
+		ss << " Her fans will enjoy it.";
 		bonus = 4;
 		g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << gettext(" made an uninspired action scene,");
+		ss << " made an uninspired action scene,";
 		AddStory(&ss);
-		ss << gettext(" Her diehard fans might enjoy it.");
+		ss << " Her diehard fans might enjoy it.";
 		bonus = 2;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << gettext(" made a weak action scene,");
+		ss << " made a weak action scene,";
 		AddStory(&ss);
 		bonus = 1;
-		ss << gettext("\nThe CamerMage advised ") << girlName << gettext(" how to improve her performance");
+		ss << "\nThe CamerMage advised " << girlName << " how to improve her performance";
 		if (g_Dice.percent(40))
 		{
-			ss << gettext(" and her scene got a little better after this.");
+			ss << " and her scene got a little better after this.";
 			bonus++;
 		}
 		else
 		{
-			ss << gettext(", but she wouldn't listen.");
+			ss << ", but she wouldn't listen.";
 		}
 	}
 	else
 	{
-		ss << gettext(" made an awful action scene,");
+		ss << " made an awful action scene,";
 		AddStory(&ss);
-		ss << gettext(" Even her fans will hate it.");
+		ss << " Even her fans will hate it.";
 		g_Girls.UpdateStat(girl, STAT_FAME, -1);
 	}
 
-	ss << gettext("\n");
+	ss << "\n";
 
 	//Enjoyed? If she performed well, she'd should have enjoyed it.
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << gettext("She loved performing on film today.\n\n");
+		ss << "She loved performing on film today.\n\n";
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << gettext("She enjoyed this performance.\n\n");
+		ss << "She enjoyed this performance.\n\n";
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << gettext("She found this awkward and did not enjoy it.\n\n");
+		ss << "She found this awkward and did not enjoy it.\n\n";
 	}
 
 	// remaining modifiers are in the AddScene function --PP
@@ -195,7 +195,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
-	
+
 	//gain traits
 	if (jobperformance >= 140 && g_Dice.percent(50))
 	{
@@ -204,7 +204,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		else if (g_Girls.PossiblyGainNewTrait(girl, "Agile", 80, ACTION_COMBAT, "She has performed martial arts scenes that she is becoming agile.", Day0Night1));
 		else (g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 90, ACTION_COMBAT, "She has performed so many action scenes that she has become fast on her feet.", Day0Night1));
 	}
-		
+
 	if (jobperformance >= 140 && g_Dice.percent(50))
 	{
 		if (g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKMOVIE, "She has performed in enough movie scenes that she has become charismatic.", Day0Night1));
@@ -234,56 +234,56 @@ void AddStory(stringstream * MyStr)
 {
 	int roll = g_Dice.d100();
 	int OPTIONS = 15;
-	*MyStr << gettext(" in which she ");
+	*MyStr << " in which she ";
 	switch (roll%OPTIONS)
 	{
 	case 0:
-		*MyStr << gettext("battles a gang of demons.");
+		*MyStr << "battles a gang of demons.";
 		break;
 	case 1:
-		*MyStr << gettext("defends a village against twisted, raping marauders.");
+		*MyStr << "defends a village against twisted, raping marauders.";
 		break;
 	case 2:
-		*MyStr << gettext("avenges her mentor and defends her family's honour.");
+		*MyStr << "avenges her mentor and defends her family's honour.";
 		break;
 	case 3:
-		*MyStr << gettext("battles her evil step-brother for control of the Crimson Sceptre.");
+		*MyStr << "battles her evil step-brother for control of the Crimson Sceptre.";
 		break;
 	case 4:
-		*MyStr << gettext("saves a twisted nunnery from the evil within.");
+		*MyStr << "saves a twisted nunnery from the evil within.";
 		break;
 	case 5:
-		*MyStr << gettext("opens hella whup-ass.");
+		*MyStr << "opens hella whup-ass.";
 		break;
 	case 6:
-		*MyStr << gettext("protects the Elven Princess from the Orc Prince's evil magics.");
+		*MyStr << "protects the Elven Princess from the Orc Prince's evil magics.";
 		break;
 	case 7:
-		*MyStr << gettext("struggles to survive an island deathmatch sponsored by a corrupt state.");
+		*MyStr << "struggles to survive an island deathmatch sponsored by a corrupt state.";
 		break;
 	case 8:
-		*MyStr << gettext("dies unfairly, and is forced to beat the Challenge of the Eight Divines to earn back her place among the living.");
+		*MyStr << "dies unfairly, and is forced to beat the Challenge of the Eight Divines to earn back her place among the living.";
 		break;
 	case 9:
-		*MyStr << gettext("protects a handsome, kindly slave-master from his slaves' vicious mutiny.");
+		*MyStr << "protects a handsome, kindly slave-master from his slaves' vicious mutiny.";
 		break;
 	case 10:
-		*MyStr << gettext("is a bounty hunter, hunting down desperate criminals and dangerous escaped slaves.");
+		*MyStr << "is a bounty hunter, hunting down desperate criminals and dangerous escaped slaves.";
 		break;
 	case 11:
-		*MyStr << gettext("battles her older sister who has been corrupted by the dark power of the Ninth Ward of Amocles.");
+		*MyStr << "battles her older sister who has been corrupted by the dark power of the Ninth Ward of Amocles.";
 		break;
 	case 12:
-		*MyStr << gettext("is the last of a race of female warriors, taking vengeance against a dark Prince.");
+		*MyStr << "is the last of a race of female warriors, taking vengeance against a dark Prince.";
 		break;
 	case 13:
-		*MyStr << gettext("stars as a female monk defending a mountain temple from marauding Centaurs.");
+		*MyStr << "stars as a female monk defending a mountain temple from marauding Centaurs.";
 		break;
 	case 14:
-		*MyStr << gettext("hunts down the sadistic pirate gang who kidnapped her sister.");
+		*MyStr << "hunts down the sadistic pirate gang who kidnapped her sister.";
 		break;
 	default:
-		*MyStr << gettext("does something very unexpected.");
+		*MyStr << "does something very unexpected.";
 		break;
 	}
 	return;
@@ -340,7 +340,7 @@ double cJobManager::JP_FilmAction(sGirl* girl, bool estimate)	// not used
 	if (g_Girls.HasTrait(girl, "Yandere"))					jobperformance += 15;	//
 	if (g_Girls.HasTrait(girl, "Fearless"))					jobperformance += 15;	//
 	if (g_Girls.HasTrait(girl, "Iron Will"))				jobperformance += 10;	//
-	
+
 	//Bad
 	if (g_Girls.HasTrait(girl, "No Legs"))					jobperformance -= 80;	//Difficult to make action scene
 	if (g_Girls.HasTrait(girl, "One Leg"))					jobperformance -= 50;	//
@@ -357,6 +357,6 @@ double cJobManager::JP_FilmAction(sGirl* girl, bool estimate)	// not used
 	if (g_Girls.HasTrait(girl, "Dojikko"))					jobperformance -= 15;	//
 	if (g_Girls.HasTrait(girl, "Muggle"))					jobperformance -= 10;	//
 	if (g_Girls.HasTrait(girl, "Meek"))						jobperformance -= 5;	//
-	
+
 	return jobperformance;
 }
