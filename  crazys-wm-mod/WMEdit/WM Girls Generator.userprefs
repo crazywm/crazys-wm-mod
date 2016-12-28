@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="WMEdit/WMEdit.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="WMEdit/Traits/Trait.cs">
+    <Files>
+      <File FileName="WM Girls Generator/Form1.cs" Line="1" Column="1" />
+      <File FileName="WM Girls Generator/Program.cs" Line="1" Column="1" />
+      <File FileName="WMEdit/Program.cs" Line="1" Column="1" />
+      <File FileName="WMEdit/Traits/Trait.cs" Line="35" Column="19" />
+      <File FileName="WMEdit/EditorForms/TraitForm.cs" Line="10" Column="13" />
+      <File FileName="WMEdit/Systems/TraitManager.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
