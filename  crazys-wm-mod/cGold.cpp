@@ -467,7 +467,7 @@ void cGold::week_end()
 	{
 		(*this) += (*bpt);
 
-		ss << "Added Bothel ") << i << gettext(": value    = ") << m_value << endl;
+		ss << "Added Bothel " << i << ": value    = " << m_value << endl;
 		ss << "               : income   = " << m_income << endl;
 		ss << "               : upkeep   = " << m_upkeep << endl;
 		ss << "               : cash in  = " << m_cash_in << endl;
