@@ -457,32 +457,32 @@ void cGold::week_end()
 	cGoldBase *bpt;
 	ostream &ss = g_LogFile.ss();
 
-	ss << gettext("Week End begins: value    = ") << m_value << endl;
-	ss << gettext("               : income   = ") << m_income << endl;
-	ss << gettext("               : upkeep   = ") << m_upkeep << endl;
-	ss << gettext("               : cash in  = ") << m_cash_in << endl;
-	ss << gettext("               : cash out = ") << m_cash_out << endl;
+	ss << "Week End begins: value    = " << m_value << endl;
+	ss << "               : income   = " << m_income << endl;
+	ss << "               : upkeep   = " << m_upkeep << endl;
+	ss << "               : cash in  = " << m_cash_in << endl;
+	ss << "               : cash out = " << m_cash_out << endl;
 
 	for (int i = 0; (bpt = brothels[i]); i++)
 	{
 		(*this) += (*bpt);
 
-		ss << gettext("Added Bothel ") << i << gettext(": value    = ") << m_value << endl;
-		ss << gettext("               : income   = ") << m_income << endl;
-		ss << gettext("               : upkeep   = ") << m_upkeep << endl;
-		ss << gettext("               : cash in  = ") << m_cash_in << endl;
-		ss << gettext("               : cash out = ") << m_cash_out << endl;
+		ss << "Added Bothel ") << i << gettext(": value    = ") << m_value << endl;
+		ss << "               : income   = " << m_income << endl;
+		ss << "               : upkeep   = " << m_upkeep << endl;
+		ss << "               : cash in  = " << m_cash_in << endl;
+		ss << "               : cash out = " << m_cash_out << endl;
 		bpt->zero();
 	}
 	m_value += m_income;
 	m_value -= m_upkeep;
 	m_income = m_upkeep = m_income = m_cash_in = m_cash_out = 0;
 
-	ss << gettext("Week End Final : value    = ") << m_value << endl;
-	ss << gettext("               : income   = ") << m_income << endl;
-	ss << gettext("               : upkeep   = ") << m_upkeep << endl;
-	ss << gettext("               : cash in  = ") << m_cash_in << endl;
-	ss << gettext("               : cash out = ") << m_cash_out << endl;
+	ss << "Week End Final : value    = " << m_value << endl;
+	ss << "               : income   = " << m_income << endl;
+	ss << "               : upkeep   = " << m_upkeep << endl;
+	ss << "               : cash in  = " << m_cash_in << endl;
+	ss << "               : cash out = " << m_cash_out << endl;
 	g_LogFile.ssend();
 }
 
