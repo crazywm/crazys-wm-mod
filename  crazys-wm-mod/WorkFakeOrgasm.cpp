@@ -69,11 +69,13 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	g_Girls.UnequipCombat(girl);	// not for patient
 
-	int enjoy = 0;
+	int enjoy = 0, wages = 10, tips = 0;
+	int startday = girl->m_WorkingDay;
 	int libido = 0;
 	int msgtype = Day0Night1, imagetype = IMGTYPE_MAST;
 
 	// Base adjustment
+	int tired = 5 + g_Dice % 11;
 	girl->m_WorkingDay += 10 + g_Dice % 11;
 	// Positive Stats/Skills
 	girl->m_WorkingDay += girl->performance() / 5;
@@ -104,7 +106,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay += g_Dice % 3;			// She is going to finish her taks, whatever it is
 	if (girl->has_trait("Audacity"))		girl->m_WorkingDay += g_Dice % 3;			// She doesn't care what it looks like or who sees it
 	// Negative Traits
-	if (girl->has_trait("Broken Will"))	{	girl->m_WorkingDay -= g_Dice.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+	if (girl->has_trait("Broken Will"))	{ girl->m_WorkingDay -= g_Dice.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
 	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 10);	// Does she even know who is fucking her?
 	if (girl->has_trait("Slow Learner"))	girl->m_WorkingDay -= g_Dice % 10;			//
@@ -193,7 +195,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Yandere"))				girl->m_WorkingDay -= g_Dice.bell(0,2);		//
 	if (girl->has_trait("Zombie"))				girl->m_WorkingDay -= g_Dice.bell(0,2);		//
 
-	
+
 	*/
 
 
@@ -201,6 +203,24 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 #pragma endregion
 #pragma region //	Count the Days				//
+
+	int total = girl->m_WorkingDay - startday;
+	int xp = 1 + (max(0, girl->m_WorkingDay / 20));
+	if (total <= 0)								// she lost time so more tired
+	{
+		tired += 5 + g_Dice % (-total);
+		enjoy -= g_Dice % 3;
+	}
+	else if (total > 40)						// or if she trained a lot
+	{
+		tired += (total / 4) + g_Dice % (total / 2);
+		enjoy += g_Dice % 3;
+	}
+	else										// otherwise just a bit tired
+	{
+		tired += g_Dice % (total / 3);
+		enjoy -= g_Dice.bell(-2, 2);
+	}
 
 	if (girl->m_WorkingDay <= 0)
 	{
@@ -213,14 +233,20 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		}
 		else if (girl->has_trait("Bimbo") || girl->has_trait("Fast Orgasms") || girl->has_trait("Nymphomaniac"))
 		{
-			ss << "She was to focused on the sex to learn";
+			ss << "She was too focused on the sex to learn";
+			tired += 5 + g_Dice % 11;
 		}
 		else if (girl->has_trait("Blind") || girl->has_trait("Deaf"))
 		{
 			ss << "Her handicap kept her from learning";
 		}
-		else ss << "She resisted all attempts to teach her";
+		else
+		{
+			ss << "She resisted all attempts to teach her";
+			tired += 5 + g_Dice % 11;
+		}
 		ss << " to fake her orgasms.";
+		wages = 0;
 	}
 	else if (girl->m_WorkingDay >= 100 && Day0Night1)
 	{
@@ -229,10 +255,13 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << "With her training complete, she is now a \"Fake Orgasm Expert\".";
 		girl->remove_trait("Slow Orgasms");	girl->remove_trait("Fast Orgasms");	girl->add_trait("Fake Orgasm Expert");
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_HOUSEREST;
+		wages = 200;
 	}
 	else
 	{
-		ss << "Training in progress (" << girl->m_WorkingDay << "%).\n\n";
+		if (girl->m_WorkingDay >= 100)		tired -= (girl->m_WorkingDay - 100) / 2;	// her last day so she rested a bit
+		else	ss << "Training in progress (" << girl->m_WorkingDay << "%).\n\n";
+		wages = min(100, girl->m_WorkingDay);
 		/* */if (girl->m_WorkingDay < 25)	ss << "She has no idea what she sounds like durring sex but it ain't orgasmic.";
 		else if (girl->m_WorkingDay < 50)	ss << "When she realizes she should finish, you can see it click in her mind and easily notice her changing things up.";
 		else if (girl->m_WorkingDay < 75)	ss << "She is still not getting into rhythm with " << (g_Dice % 3 ? "you" : "her partner") << " but it still seems enjoyable.";
@@ -256,23 +285,51 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 #pragma endregion
 #pragma region	//	Finish the shift			//
 
-	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
-	girl->m_Pay = girl->m_WorkingDay / 5;
+	if (girl->is_slave()) wages /= 2;
+	girl->m_Pay = wages;
 
 	// Improve girl
-	girl->performance(g_Dice.bell(3, 15));
-	girl->normalsex(g_Dice.bell(0, 5));
-	girl->group(g_Dice.bell(0, 5));
-	girl->anal(g_Dice.bell(0, 5));
-	girl->lesbian(g_Dice.bell(0, 5));
-	girl->confidence(g_Dice.bell(-1, 5));
-	girl->constitution(max(0, g_Dice.bell(-2, 1)));
-	girl->spirit(g_Dice.bell(-5, 5));
+	int I_performance = (g_Dice.bell(3, 15));
+	int I_confidence = (g_Dice.bell(-1, 5));
+	int I_constitution = (max(0, g_Dice.bell(-2, 1)));
+	int I_spirit = (g_Dice.bell(-5, 5));
+	int I_lesbian = (g_Dice.bell(0, 5));
+	int I_normalsex = (g_Dice.bell(0, 5));
+	int I_group = (g_Dice.bell(0, 5));
+	int I_anal = (max(0, g_Dice.bell(-2, 2)));
+
+	girl->exp(xp);
+	girl->tiredness(tired);
+	girl->lesbian(I_lesbian);
+	girl->normalsex(I_normalsex);
+	girl->group(I_group);
+	girl->anal(I_anal);
+	girl->performance(I_performance);
+	girl->confidence(I_confidence);
+	girl->constitution(I_constitution);
+	girl->spirit(I_spirit);
+
 
 	libido += girl->has_trait("Nymphomaniac") ? g_Dice.bell(3, 10) : g_Dice.bell(1, 5);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+
+	ss << "\n\nNumbers:"
+		<< "\n Wages = " << (int)wages
+		<< "\n Xp = " << xp
+		<< "\n Performance = " << I_performance
+		<< "\n Confidence = " << I_confidence
+		<< "\n Spirit = " << I_spirit
+		<< "\n Constitution = " << I_constitution
+		<< "\n Libido = " << libido
+		<< "\n Lesbian = " << I_lesbian
+		<< "\n Normal Sex = " << I_normalsex
+		<< "\n Group = " << I_group
+		<< "\n Anal = " << I_anal
+		<< "\n Enjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy;
+
+	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 #pragma endregion
 	return false;

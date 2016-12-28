@@ -276,6 +276,7 @@ void cScreenClinicManagement::check_events()
 			int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);		// Now assign the job to all the selected girls
 			while (GSelection != -1)
 			{
+				// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> 
 				int new_job = selection;
 				selected_girl = g_Clinic.GetGirl(g_CurrClinic, GSelection);
 				if (selected_girl)
@@ -302,7 +303,12 @@ void cScreenClinicManagement::check_events()
 				if (selected_girl->m_YesterDayJob != selected_girl->m_DayJob && g_Clinic.is_Surgery_Job(selected_girl->m_YesterDayJob) && ((selected_girl->m_WorkingDay > 0) || selected_girl->m_PrevWorkingDay > 0))
 					interrupted = true;
 
-				if (selected_girl->m_DayJob == JOB_GETABORT)	// `J` added
+				if (selected_girl->m_DayJob == JOB_CUREDISEASES)	// `J` added
+				{
+					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << selected_girl->m_WorkingDay << "%)*" << (interrupted ? " **" : "");
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+				}
+				else if (selected_girl->m_DayJob == JOB_GETABORT)	// `J` added
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 2 - selected_girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
 					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
@@ -318,7 +324,12 @@ void cScreenClinicManagement::check_events()
 					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
 				}
 
-				if (selected_girl->m_NightJob == JOB_GETABORT)	// `J` added
+				if (selected_girl->m_NightJob == JOB_CUREDISEASES)	// `J` added
+				{
+					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << selected_girl->m_WorkingDay << "%)*" << (interrupted ? " **" : "");
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+				}
+				else if (selected_girl->m_NightJob == JOB_GETABORT)	// `J` added
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 2 - selected_girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
 					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
@@ -336,10 +347,17 @@ void cScreenClinicManagement::check_events()
 				if (interrupted)
 				{	// `J` added
 					ss.str(""); ss << g_Clinic.m_JobManager.JobDesc[new_job] << "\n** This girl was getting ";
-					if (selected_girl->m_YesterDayJob == JOB_BOOBJOB || selected_girl->m_YesterDayJob == JOB_FACELIFT)		ss << "a ";
-					else if (selected_girl->m_YesterDayJob == JOB_GETABORT || selected_girl->m_YesterDayJob == JOB_ASSJOB)	ss << "an ";
-					else if (selected_girl->m_YesterDayJob == JOB_TUBESTIED)/*                                          */	ss << "her ";
-					ss << g_Clinic.m_JobManager.JobName[selected_girl->m_YesterDayJob] << ", if you send her somewhere else, she will have to start her Surgery over.";
+					if (selected_girl->m_YesterDayJob == JOB_CUREDISEASES)
+					{
+						ss << "her disease cured, if you send her somewhere else, she will have to start her treatment over.";
+					}
+					else
+					{
+						if (selected_girl->m_YesterDayJob == JOB_BOOBJOB || selected_girl->m_YesterDayJob == JOB_FACELIFT)		ss << "a ";
+						else if (selected_girl->m_YesterDayJob == JOB_GETABORT || selected_girl->m_YesterDayJob == JOB_ASSJOB)	ss << "an ";
+						else if (selected_girl->m_YesterDayJob == JOB_TUBESTIED)/*                                          */	ss << "her ";
+						ss << g_Clinic.m_JobManager.JobName[selected_girl->m_YesterDayJob] << ", if you send her somewhere else, she will have to start her Surgery over.";
+					}
 					EditTextItem(ss.str(), jobdesc_id);
 				}
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
@@ -451,11 +469,17 @@ void cScreenClinicManagement::RefreshJobList()
 		SetSelectedItemInList(joblist_id, sel_job, false);
 
 		ss.str(""); ss << g_Clinic.m_JobManager.JobDesc[sel_job] << "\n** This girl was getting ";
-		if (selected_girl->m_YesterDayJob == JOB_BOOBJOB || selected_girl->m_YesterDayJob == JOB_FACELIFT)		ss << "a ";
-		else if (selected_girl->m_YesterDayJob == JOB_GETABORT || selected_girl->m_YesterDayJob == JOB_ASSJOB)	ss << "an ";
-		else if (selected_girl->m_YesterDayJob == JOB_TUBESTIED)/*                                          */	ss << "her ";
-
-		ss << g_Clinic.m_JobManager.JobName[selected_girl->m_YesterDayJob] << ", if you send her somewhere else, she will have to start her Surgery over.";
+		if (selected_girl->m_YesterDayJob == JOB_CUREDISEASES)
+		{
+			ss << "her disease cured, if you send her somewhere else, she will have to start her treatment over.";
+		}
+		else
+		{
+			if (selected_girl->m_YesterDayJob == JOB_BOOBJOB || selected_girl->m_YesterDayJob == JOB_FACELIFT)		ss << "a ";
+			else if (selected_girl->m_YesterDayJob == JOB_GETABORT || selected_girl->m_YesterDayJob == JOB_ASSJOB)	ss << "an ";
+			else if (selected_girl->m_YesterDayJob == JOB_TUBESTIED)/*                                          */	ss << "her ";
+			ss << g_Clinic.m_JobManager.JobName[selected_girl->m_YesterDayJob] << ", if you send her somewhere else, she will have to start her Surgery over.";
+		}
 		EditTextItem(ss.str(), jobdesc_id);
 	}
 	else if (selected_girl)

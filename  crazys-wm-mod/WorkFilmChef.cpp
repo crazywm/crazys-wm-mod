@@ -44,7 +44,7 @@ extern cGangManager g_Gangs;
 extern cMessageQue g_MessageQue;
 extern cPlayer* The_Player;
 
-// BSIN: Job Movie Studio - Actress - Teaser
+// BSIN: Job Movie Studio - Actress - Chef
 bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;
@@ -138,7 +138,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	bonus = bonus + enjoy;
 
 
-	int finalqual = g_Studios.AddScene(girl, JOB_FILMTEASE, bonus);
+	int finalqual = g_Studios.AddScene(girl, JOB_FILMCHEF, bonus);
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COOK, Day0Night1);

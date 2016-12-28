@@ -45,6 +45,7 @@ extern char             buffer[1000];
 extern bool				g_InitWin;
 extern cMovieStudioManager  g_Studios;
 
+
 // // ----- Strut sMovieStudio Create / destroy
 sMovieStudio::sMovieStudio() : m_Finance(0)	// constructor
 {
@@ -119,16 +120,16 @@ void cMovieStudioManager::Free()
 // ----- Update & end of turn
 void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 {
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cMovieStudio.cpp
+	u_int restjob = JOB_FILMFREETIME;
+	u_int matronjob = JOB_DIRECTOR;
+	u_int firstjob = JOB_FILMFREETIME;
+	u_int lastjob = JOB_FILMRANDOM;
 	cTariff tariff;
 	stringstream ss;
 	string girlName;
 
 	sBrothel* current = (sBrothel*)m_Parent;
-	u_int restjob = JOB_FILMFREETIME;
-	u_int matronjob = JOB_DIRECTOR;
-	u_int firstjob = JOB_FILMFREETIME;
-	u_int lastjob = JOB_FILMRANDOM;
-
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
 
@@ -257,14 +258,13 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 // Run the shifts
 void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Process_B
 {
-	
-	stringstream ss;
-	string summary, girlName;
-
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cMovieStudio.cpp
 	u_int restjob = JOB_FILMFREETIME;
 	u_int matronjob = JOB_DIRECTOR;
-	u_int firstjob = JOB_FILMBEAST;
-	u_int lastjob = JOB_STAGEHAND;
+	u_int firstjob = JOB_FILMFREETIME;
+	u_int lastjob = JOB_FILMRANDOM;
+	stringstream ss;
+	string summary, girlName;
 	u_int sw = 0, psw = 0;
 
 	int totalPay = 0, totalTips = 0, totalGold = 0;
@@ -1295,7 +1295,7 @@ int cMovieStudioManager::Num_Actress(int brothel)
 {
 	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cMovieStudio.cpp > Num_Actress
 	int actresses = 0;
-	for (int i = JOB_STAGEHAND + 1; i < JOB_FILMRANDOM; i++)
+	for (int i = JOB_FILMACTION; i < JOB_FILMRANDOM+1; i++)
 	{
 		actresses += GetNumGirlsOnJob(0, i, 1);
 	}

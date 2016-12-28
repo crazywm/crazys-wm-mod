@@ -35,11 +35,6 @@ extern unsigned long    g_Day;
 extern cRng             g_Dice;
 extern cGold            g_Gold;
 
-u_int restjob = JOB_ARENAREST;
-u_int matronjob = JOB_DOCTORE;
-u_int firstjob = JOB_FIGHTBEASTS;
-u_int lastjob = JOB_CLEANARENA;
-
 // // ----- Strut sArena Create / destroy
 sArena::sArena() : m_Finance(0)	// constructor
 {
@@ -104,6 +99,11 @@ void cArenaManager::Free()
 // ----- Update & end of turn
 void cArenaManager::UpdateArena()	// Start_Building_Process_A
 {
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cArena.cpp
+	u_int restjob = JOB_ARENAREST;
+	u_int matronjob = JOB_DOCTORE;
+	u_int firstjob = JOB_FIGHTBEASTS;
+	u_int lastjob = JOB_CLEANARENA;
 	cTariff tariff;
 	stringstream ss;
 	string girlName;
@@ -203,6 +203,11 @@ void cArenaManager::UpdateArena()	// Start_Building_Process_A
 // Run the shifts
 void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Building_Process_B
 {
+	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cArena.cpp
+	u_int restjob = JOB_ARENAREST;
+	u_int matronjob = JOB_DOCTORE;
+	u_int firstjob = JOB_FIGHTBEASTS;
+	u_int lastjob = JOB_CLEANARENA;
 	stringstream ss;
 	string summary, girlName;
 
