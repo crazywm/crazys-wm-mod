@@ -425,7 +425,9 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		// Time for the customer to fork over some cash
 
 		// WD:	Customer can not pay
+		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug WorkBarWhore.cpp || pre guardgang"; g_LogFile.ssend(); }
 		sGang* guardgang = g_Gangs.GetRandomGangOnMission(MISS_GUARDING);
+
 		if (!bCustCanPay)
 		{
 			if (g_Dice.percent(Cust->m_Stats[STAT_CONFIDENCE] - 25))	// Runner

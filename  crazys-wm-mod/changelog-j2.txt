@@ -406,6 +406,14 @@ Updated WorkBrothelWhore, WorkBarWhore and WorkHallWhore
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.51
 
+### Changes 12/30/2016
+Fixed 2 bugs
+ - "all consumable items are treated as temporary (at least for traits) with a duration of 20 weeks, even if they are not marked as temporary in their special parameter."
+ - GetRandomGangOnMission was missing a set of {} when it checked if a gang was on a mission
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.51
+
 
 
 

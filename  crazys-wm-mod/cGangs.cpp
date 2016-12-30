@@ -1394,6 +1394,7 @@ int cGangManager::net_limit()
 // Missions done here - Updated for .06.01.09
 void cGangManager::UpdateGangs()
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || Start"; g_LogFile.ssend(); }
 	cTariff tariff;
 	stringstream ss;
 
@@ -1412,6 +1413,7 @@ void cGangManager::UpdateGangs()
 		}
 		currentGang = currentGang->m_Next;
 	}
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || 1"; g_LogFile.ssend(); }
 	// maybe add some new gangs to the recruitable list
 	int add_min = cfg.gangs.add_new_weekly_min();
 	int add_max = cfg.gangs.add_new_weekly_max();
@@ -1422,6 +1424,7 @@ void cGangManager::UpdateGangs()
 		cerr << "Adding new recruitable gang." << endl;
 		AddNewGang(false);
 	}
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || 2"; g_LogFile.ssend(); }
 
 	// now, deal with player controlled gangs on missions
 	currentGang = m_GangStart;
@@ -1445,6 +1448,7 @@ void cGangManager::UpdateGangs()
 		case MISS_SERVICE:		service_mission(currentGang);		break;
 		default:
 		{
+			if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || bad mission " << currentGang->m_MissionID; g_LogFile.ssend(); }
 			stringstream sse;
 			sse << "Error: no mission set or mission not found : " << currentGang->m_MissionID;
 			currentGang->m_Events.AddMessage(sse.str(), IMGTYPE_PROFILE, EVENT_GANG);
@@ -1467,11 +1471,14 @@ void cGangManager::UpdateGangs()
 		currentGang = currentGang->m_Next;
 	}
 
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || 3"; g_LogFile.ssend(); }
 
 
 	m_Rivals->Update(m_BusinessesExtort);	// Update the rivals
 
 	RestockNetsAndPots();
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || end"; g_LogFile.ssend(); }
+
 }
 
 // `J` restock at the start and end of the gang shift - Added for .06.01.09
@@ -1537,8 +1544,10 @@ sGang* cGangManager::GetRandomGangOnMission(u_int missID)
 	while (currentGang)
 	{
 		if (currentGang->m_MissionID == missID && currentGang->m_Num > 0)
+		{
 			gangs.push_back(currentGang);
-		count++;
+			count++;
+		}
 		currentGang = currentGang->m_Next;
 	}
 	if (count == 0)	return 0;
@@ -1662,6 +1671,7 @@ int cGangManager::chance_to_catch(sGirl* girl)
 // `J` returns true if they succeded, false if they failed - updated for .06.01.09
 bool cGangManager::sabotage_mission(sGang* gang)
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::sabotage_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	ss << "Gang   " << gang->m_Name << "   is attacking rivals.\n\n";
 	/*
@@ -1893,6 +1903,7 @@ bool cGangManager::sabotage_mission(sGang* gang)
 // `J` returns true if they succeded, false if they failed - updated for .06.01.09
 bool cGangManager::recapture_mission(sGang* gang)
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::recapture_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	ss << "Gang   " << gang->m_Name << "   is looking for escaped girls.\n\n";
 
@@ -2007,6 +2018,7 @@ bool cGangManager::recapture_mission(sGang* gang)
 // `J` returns true if they succeded, false if they failed - updated for .06.01.09
 bool cGangManager::extortion_mission(sGang* gang)
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::extortion_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	The_Player->disposition(-1);	The_Player->customerfear(1);	The_Player->suspicion(1);
 	ss << "Gang   " << gang->m_Name << "   is capturing territory.\n\n";
@@ -2130,6 +2142,7 @@ bool cGangManager::extortion_mission(sGang* gang)
 // `J` returns true if they succeded, false if they failed - updated for .06.01.09
 bool cGangManager::petytheft_mission(sGang* gang)
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::petytheft_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	ss << "Gang   " << gang->m_Name << "   is performing petty theft.\n\n";
 	The_Player->disposition(-1);
@@ -2277,6 +2290,7 @@ bool cGangManager::petytheft_mission(sGang* gang)
 // `J` returns true if they succeded, false if they failed - updated for .06.01.09
 bool cGangManager::grandtheft_mission(sGang* gang)
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::grandtheft_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	The_Player->disposition(-3);	The_Player->customerfear(3);	The_Player->suspicion(3);
 	bool fightrival = false;		cRival* rival = 0;				sGang *defenders = 0;
@@ -2356,6 +2370,7 @@ bool cGangManager::grandtheft_mission(sGang* gang)
 // `J` returns true if they succeded, false if they failed - updated for .06.01.09
 bool cGangManager::kidnapp_mission(sGang* gang)
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::kidnapp_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	ss << "Gang   " << gang->m_Name << "   is kidnapping girls.\n\n";
 	bool captured = false;
@@ -2506,6 +2521,7 @@ bool cGangManager::kidnapp_mission(sGang* gang)
 // `J` returns true if they succeded, false if they failed - updated for .06.01.09
 bool cGangManager::catacombs_mission(sGang* gang)
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::catacombs_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	gang->m_Combat = true;
 	int num = gang->m_Num;
@@ -2896,6 +2912,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 // `J` added for .06.02.41
 bool cGangManager::service_mission(sGang* gang)
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::service_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	ss << "Gang   " << gang->m_Name << "   spend the week helping out the community.";
 
@@ -3225,6 +3242,7 @@ void cGangManager::check_gang_recruit(sGang* gang)
 // `J` - Added for .06.01.09
 void cGangManager::GangStartOfShift()
 {
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::GangStartOfShift() || Start"; g_LogFile.ssend(); }
 	cTariff tariff;
 	stringstream ss;
 
@@ -3311,4 +3329,5 @@ void cGangManager::GangStartOfShift()
 		}
 		currentGang = currentGang->m_Next;
 	}
+	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::GangStartOfShift() || end"; g_LogFile.ssend(); }
 }
