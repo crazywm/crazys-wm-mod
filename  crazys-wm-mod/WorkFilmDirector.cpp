@@ -54,7 +54,7 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	ss << girlName << " worked as a film director.\n\n";
 
-	
+
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
 	int wages = 50;
@@ -94,10 +94,10 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	// Improve girl
 	int xp = numgirls / 10, libido = 1, skill = 3, fame = (int)(jobperformance / 50);
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
-	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += numgirls / 20;
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 5; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 5; }
+	if (girl->has_trait( "Nymphomaniac"))			libido += 2;
+	if (girl->has_trait( "Lesbian"))				libido += numgirls / 20;
 
 	g_Girls.UpdateStat(girl, STAT_EXP, g_Dice%xp + 5);
 	g_Girls.UpdateStat(girl, STAT_FAME, g_Dice%fame);

@@ -183,9 +183,9 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	// Improve stats
 	int xp = 10, skill = 3, libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
@@ -319,44 +319,44 @@ double cJobManager::JP_FilmAction(sGirl* girl, bool estimate)	// not used
 	}
 
 	//Good
-	if (g_Girls.HasTrait(girl, "Actress"))					jobperformance += 60;	//Can act
-	if (g_Girls.HasTrait(girl, "Charismatic"))				jobperformance += 30;	//Can act
-	if (g_Girls.HasTrait(girl, "Incorporeal"))				jobperformance += 60;	//Can't be hurt
-	if (g_Girls.HasTrait(girl, "Construct"))				jobperformance += 50;	//
-	if (g_Girls.HasTrait(girl, "Half-Construct"))			jobperformance += 35;	//
-	if (g_Girls.HasTrait(girl, "Muscular"))					jobperformance += 35;	//
-	if (g_Girls.HasTrait(girl, "Strong"))					jobperformance += 35;	//
-	if (g_Girls.HasTrait(girl, "Tough"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Fleet of Foot"))			jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Agile"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Princess"))					jobperformance += 30;	//High-Status
-	if (g_Girls.HasTrait(girl, "Queen"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Goddess"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Angel"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Heroine"))					jobperformance += 20;	//Exciting
-	if (g_Girls.HasTrait(girl, "Brawler"))					jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Dominatrix"))				jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Tsundere"))					jobperformance += 15;	//
-	if (g_Girls.HasTrait(girl, "Yandere"))					jobperformance += 15;	//
-	if (g_Girls.HasTrait(girl, "Fearless"))					jobperformance += 15;	//
-	if (g_Girls.HasTrait(girl, "Iron Will"))				jobperformance += 10;	//
+	if (girl->has_trait( "Actress"))					jobperformance += 60;	//Can act
+	if (girl->has_trait( "Charismatic"))				jobperformance += 30;	//Can act
+	if (girl->has_trait( "Incorporeal"))				jobperformance += 60;	//Can't be hurt
+	if (girl->has_trait( "Construct"))				jobperformance += 50;	//
+	if (girl->has_trait( "Half-Construct"))			jobperformance += 35;	//
+	if (girl->has_trait( "Muscular"))					jobperformance += 35;	//
+	if (girl->has_trait( "Strong"))					jobperformance += 35;	//
+	if (girl->has_trait( "Tough"))					jobperformance += 30;	//
+	if (girl->has_trait( "Fleet of Foot"))			jobperformance += 30;	//
+	if (girl->has_trait( "Agile"))					jobperformance += 30;	//
+	if (girl->has_trait( "Princess"))					jobperformance += 30;	//High-Status
+	if (girl->has_trait( "Queen"))					jobperformance += 30;	//
+	if (girl->has_trait( "Goddess"))					jobperformance += 30;	//
+	if (girl->has_trait( "Angel"))					jobperformance += 30;	//
+	if (girl->has_trait( "Heroine"))					jobperformance += 20;	//Exciting
+	if (girl->has_trait( "Brawler"))					jobperformance += 20;	//
+	if (girl->has_trait( "Dominatrix"))				jobperformance += 20;	//
+	if (girl->has_trait( "Tsundere"))					jobperformance += 15;	//
+	if (girl->has_trait( "Yandere"))					jobperformance += 15;	//
+	if (girl->has_trait( "Fearless"))					jobperformance += 15;	//
+	if (girl->has_trait( "Iron Will"))				jobperformance += 10;	//
 
 	//Bad
-	if (g_Girls.HasTrait(girl, "No Legs"))					jobperformance -= 80;	//Difficult to make action scene
-	if (g_Girls.HasTrait(girl, "One Leg"))					jobperformance -= 50;	//
-	if (g_Girls.HasTrait(girl, "No Feet"))					jobperformance -= 80;	//
-	if (g_Girls.HasTrait(girl, "One Foot"))					jobperformance -= 50;	//
-	if (g_Girls.HasTrait(girl, "No Arms"))					jobperformance -= 50;	//
-	if (g_Girls.HasTrait(girl, "One Arm"))					jobperformance -= 30;	//
-	if (g_Girls.HasTrait(girl, "One Hand"))					jobperformance -= 20;	//
-	if (g_Girls.HasTrait(girl, "No Hands"))					jobperformance -= 25;	//
-	if (g_Girls.HasTrait(girl, "Blind"))					jobperformance -= 50;	//
-	if (g_Girls.HasTrait(girl, "Fragile"))					jobperformance -= 30;	//Tends to get hurt on set
-	if (g_Girls.HasTrait(girl, "Delicate"))					jobperformance -= 30;	//
-	if (g_Girls.HasTrait(girl, "Clumsy"))					jobperformance -= 25;	//
-	if (g_Girls.HasTrait(girl, "Dojikko"))					jobperformance -= 15;	//
-	if (g_Girls.HasTrait(girl, "Muggle"))					jobperformance -= 10;	//
-	if (g_Girls.HasTrait(girl, "Meek"))						jobperformance -= 5;	//
+	if (girl->has_trait( "No Legs"))					jobperformance -= 80;	//Difficult to make action scene
+	if (girl->has_trait( "One Leg"))					jobperformance -= 50;	//
+	if (girl->has_trait( "No Feet"))					jobperformance -= 80;	//
+	if (girl->has_trait( "One Foot"))					jobperformance -= 50;	//
+	if (girl->has_trait( "No Arms"))					jobperformance -= 50;	//
+	if (girl->has_trait( "One Arm"))					jobperformance -= 30;	//
+	if (girl->has_trait( "One Hand"))					jobperformance -= 20;	//
+	if (girl->has_trait( "No Hands"))					jobperformance -= 25;	//
+	if (girl->has_trait( "Blind"))					jobperformance -= 50;	//
+	if (girl->has_trait( "Fragile"))					jobperformance -= 30;	//Tends to get hurt on set
+	if (girl->has_trait( "Delicate"))					jobperformance -= 30;	//
+	if (girl->has_trait( "Clumsy"))					jobperformance -= 25;	//
+	if (girl->has_trait( "Dojikko"))					jobperformance -= 15;	//
+	if (girl->has_trait( "Muggle"))					jobperformance -= 10;	//
+	if (girl->has_trait( "Meek"))						jobperformance -= 5;	//
 
 	return jobperformance;
 }

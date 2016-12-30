@@ -101,7 +101,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 		ss << "The girl had an abortion.\n";
 		msgtype = EVENT_GOODNEWS;
-		
+
 		// `J` first set the base stat modifiers
 		int happy = -10, health = -20, mana = -20, spirit = -5, love = -5, hate = 5;
 
@@ -117,59 +117,59 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 
 		// `J` next, check traits
-		if (g_Girls.HasTrait(girl, "Pessimist"))	// natural adj
+		if (girl->has_trait( "Pessimist"))	// natural adj
 		{
 			happy -= 5;		health += 0;	mana += 0;	spirit -= 1;	love += 0;	hate += 0;
 		}
-		if (g_Girls.HasTrait(girl, "Optimist"))		// natural adj
+		if (girl->has_trait( "Optimist"))		// natural adj
 		{
 			happy += 5;		health += 0;	mana += 0;	spirit += 1;	love += 0;	hate += 0;
 		}
-		if (g_Girls.HasTrait(girl, "Lesbian"))		// reaffirms her dislike of men.
+		if (girl->has_trait( "Lesbian"))		// reaffirms her dislike of men.
 		{
 			happy += 5;		health += 0;	mana += 0;	spirit += 0;	love -= 1;	hate += 1;
 		}
-		if (g_Girls.HasTrait(girl, "Sadistic"))		// "If only someone had done this to your father..."
+		if (girl->has_trait( "Sadistic"))		// "If only someone had done this to your father..."
 		{
 			happy += 0;		health += 0;	mana += 0;	spirit += 1;	love -= 1;	hate += 0;
 		}
-		if (g_Girls.HasTrait(girl, "Masochist"))	// "If only someone had done this to me..."
+		if (girl->has_trait( "Masochist"))	// "If only someone had done this to me..."
 		{
 			happy += 0;		health += 0;	mana += 0;	spirit -= 1;	love -= 1;	hate -= 1;
 		}
-		if (g_Girls.HasTrait(girl, "Your Daughter"))// "Why Daddy?"
+		if (girl->has_trait( "Your Daughter"))// "Why Daddy?"
 		{
 			happy += 0;		health += 0;	mana += 0;	spirit -= 1;	love -= 3;	hate += 0;
 		}
-		if (g_Girls.HasTrait(girl, "MILF"))			// "But I want more children"
+		if (girl->has_trait( "MILF"))			// "But I want more children"
 		{
 			happy -= 5;		health += 0;	mana += 0;	spirit += 0;	love -= 1;	hate += 1;
 		}
-		if (g_Girls.HasTrait(girl, "Twisted"))		// Twisted
+		if (girl->has_trait( "Twisted"))		// Twisted
 		{
 			happy += 2;		health += 0;	mana += 0;	spirit += 1;	love += 0;	hate += 0;
 		}
-		if (g_Girls.HasTrait(girl, "Demon"))		// "I'm going to hell anyway..."
+		if (girl->has_trait( "Demon"))		// "I'm going to hell anyway..."
 		{
 			happy += 5;		health += 0;	mana += 10;	spirit += 5;	love += 0;	hate += 0;
 		}
-		if (g_Girls.HasTrait(girl, "Angel"))		// "I'm going to hell."
+		if (girl->has_trait( "Angel"))		// "I'm going to hell."
 		{
 			happy -= 10;	health += 0;	mana -= 10;	spirit -= 5;	love -= 5;	hate += 5;
 		}
-		if (g_Girls.HasTrait(girl, "Adventurer"))	// "At least a kid will not get in my way."
+		if (girl->has_trait( "Adventurer"))	// "At least a kid will not get in my way."
 		{
 			happy += 5;		health += 0;	mana += 0;	spirit += 1;	love += 0;	hate += 0;
 		}
-		if (g_Girls.HasTrait(girl, "Fragile"))		// natural adj
+		if (girl->has_trait( "Fragile"))		// natural adj
 		{
 			happy += 0;		health -= 5;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
 		}
-		if (g_Girls.HasTrait(girl, "Tough"))		// natural adj
+		if (girl->has_trait( "Tough"))		// natural adj
 		{
 			happy += 0;		health += 5;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
 		}
-		if (g_Girls.HasTrait(girl, "Shape Shifter"))// "The baby may have caused complications when I change shape."
+		if (girl->has_trait( "Shape Shifter"))// "The baby may have caused complications when I change shape."
 		{
 			happy += 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
 		}
@@ -216,7 +216,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			// `J` adjust her happiness by her hate-love for you
 			happy += int(((g_Girls.GetStat(girl, STAT_PCHATE) + hate) - (g_Girls.GetStat(girl, STAT_PCLOVE) + love)) / 2);
-			if (g_Girls.HasTrait(girl, "Your Wife"))// "Why?"
+			if (girl->has_trait( "Your Wife"))// "Why?"
 			{
 				happy -= 20;		health += 0;	mana += 0;	spirit -= 1;	love -= 3;	hate += 0;
 			}
@@ -258,39 +258,39 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		else if (girl->m_States & (1 << STATUS_INSEMINATED))
 		{
 			// `J` Some traits would react diferently to non-human pregnancys.
-			if (g_Girls.HasTrait(girl, "Adventurer"))	// "It could have been interesting to see what became of that."
+			if (girl->has_trait( "Adventurer"))	// "It could have been interesting to see what became of that."
 			{
 				happy -= 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
 			}
-			if (g_Girls.HasTrait(girl, "Angel"))		// "DEAR GOD, WHAT WAS THAT THING?"
+			if (girl->has_trait( "Angel"))		// "DEAR GOD, WHAT WAS THAT THING?"
 			{
 				happy += 5;		health += 0;	mana -= 5;	spirit -= 5;	love -= 5;	hate += 5;
 			}
-			if (g_Girls.HasTrait(girl, "Cat Girl"))		// "No kittens for me. :("
+			if (girl->has_trait( "Cat Girl"))		// "No kittens for me. :("
 			{
 				happy -= 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
 			}
-			if (g_Girls.HasTrait(girl, "Demon"))		// "I guess my evil brood will have to wait."
+			if (girl->has_trait( "Demon"))		// "I guess my evil brood will have to wait."
 			{
 				happy -= 10;	health += 0;	mana += 0;	spirit += 0;	love -= 2;	hate += 2;
 			}
-			if (g_Girls.HasTrait(girl, "Shape Shifter"))// "What would that have looked like?"
+			if (girl->has_trait( "Shape Shifter"))// "What would that have looked like?"
 			{
 				happy -= 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
 			}
-			if (g_Girls.HasTrait(girl, "Twisted"))		// "What would that have felt like?"
+			if (girl->has_trait( "Twisted"))		// "What would that have felt like?"
 			{
 				happy -= 2;		health += 0;	mana += 0;	spirit += 0;	love += 0;	hate += 0;
 			}
-			if (g_Girls.HasTrait(girl, "Queen"))		// "Thank God I didn't have to carry that."
+			if (girl->has_trait( "Queen"))		// "Thank God I didn't have to carry that."
 			{
 				happy += 40;		health += 0;	mana += 0;	spirit += 0;	love += 8;	hate -= 4;
 			}
-			if (g_Girls.HasTrait(girl, "Princess"))		// "Thank God I didn't have to carry that."
+			if (girl->has_trait( "Princess"))		// "Thank God I didn't have to carry that."
 			{
 				happy += 20;		health += 0;	mana += 0;	spirit += 0;	love += 4;	hate -= 2;
 			}
-			if (g_Girls.HasTrait(girl, "Noble"))		// "Thank God I didn't have to carry that."
+			if (girl->has_trait( "Noble"))		// "Thank God I didn't have to carry that."
 			{
 				happy += 15;		health += 0;	mana += 0;	spirit += 0;	love += 4;	hate -= 2;
 			}
@@ -336,7 +336,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, love);
 		g_Girls.UpdateStat(girl, STAT_PCHATE, hate);
-		
+
 		girl->m_ChildrenCount[CHILD09_ABORTIONS]++;
 		girl->clear_pregnancy();
 		girl->m_PregCooldown = cfg.pregnancy.cool_down();
@@ -355,9 +355,9 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	// Improve girl
 	int libido = -10;
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	if (girl->has_trait( "Lesbian"))		libido += numnurse;
+	if (girl->has_trait( "Masochist"))	libido += 1;
+	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 #pragma endregion

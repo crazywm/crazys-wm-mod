@@ -55,9 +55,9 @@ bool cJobManager::WorkGetTubesTied(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (girl->m_YesterDayJob != JOB_TUBESTIED) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_TUBESTIED;	// it is a full time job
 
-	if (girl->is_pregnant() || g_Girls.HasTrait(girl, "Sterile"))
+	if (girl->is_pregnant() || girl->has_trait( "Sterile"))
 	{
-		if (g_Girls.HasTrait(girl, "Sterile"))	ss << " is already Sterile so she was sent to the waiting room.";
+		if (girl->has_trait( "Sterile"))	ss << " is already Sterile so she was sent to the waiting room.";
 		else if (girl->is_pregnant())			ss << " is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
@@ -164,9 +164,9 @@ bool cJobManager::WorkGetTubesTied(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	// Improve girl
 	int libido = 1;
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	if (girl->has_trait( "Lesbian"))		libido += numnurse;
+	if (girl->has_trait( "Masochist"))	libido += 1;
+	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
@@ -177,9 +177,9 @@ bool cJobManager::WorkGetTubesTied(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 double cJobManager::JP_GetTubesTied(sGirl* girl, bool estimate)
 {
-	if (g_Girls.HasTrait(girl, "Sterile"))		return -1000;	// X - not needed
+	if (girl->has_trait( "Sterile"))		return -1000;	// X - not needed
 	if (girl->is_pregnant())					return 0;		// E - needs abortion or birth first
-	if (g_Girls.HasTrait(girl, "Broodmother"))	return 200;		// A
-	if (g_Girls.HasTrait(girl, "Fertile"))		return 100;		// B
+	if (girl->has_trait( "Broodmother"))	return 200;		// A
+	if (girl->has_trait( "Fertile"))		return 100;		// B
 	return 150;													// C
 }

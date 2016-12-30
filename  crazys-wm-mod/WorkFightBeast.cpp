@@ -95,7 +95,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (Weap1 > -1)		g_InvManager.Equip(girl, Weap1, false);
 	if (Weap2 > -1)		g_InvManager.Equip(girl, Weap2, false);
 
-	if (Armor == -1)	
+	if (Armor == -1)
 	{
 		ss << "The crowd can't belive you sent " << girlName << " out to fight without armor";
 		if (Weap1 == -1 && Weap2 == -1)
@@ -126,7 +126,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	ss << "\n\n";
 
-	
+
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 	Uint8 fight_outcome = 0;
 	int wages = 175, tips = 0, enjoy = 0;
@@ -250,9 +250,9 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int fightxp = (fight_outcome == 1 ? 3 : 1);
 	int xp = 3 * fightxp, libido = 2, skill = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%fightxp + skill);

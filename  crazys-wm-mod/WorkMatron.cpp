@@ -137,8 +137,8 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
             item=g_InvManager.GetItem(itemName);
         if (item)
             {
-                cost+=item.m_Cost;/
-                g_Girls.AddInv((girl,item));
+                cost+=item->m_Cost;
+                g_Girls.AddInv(girl,item);
             }
         // 'Mute' End  Change
 		if (girl->has_trait("Cum Addict"))

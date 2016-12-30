@@ -49,7 +49,7 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	g_Girls.UnequipCombat(girl);	// not for patients
 
-	if (!g_Girls.HasTrait(girl, "Construct") && !g_Girls.HasTrait(girl, "Half-Construct"))
+	if (!girl->has_trait( "Construct") && !girl->has_trait( "Half-Construct"))
 	{
 		ss << girlName << " has no artificial parts so she was sent to the Healing center.";
 		if (Day0Night1 == SHIFT_DAY) girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -66,7 +66,7 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int tiredness = 10 + g_Dice % 21;	// build up as positive then apply as negative
 	int happy = 10 + g_Dice % 11;
 	int mana = 5 + (girl->magic() / 5);
-	int libido = (g_Girls.HasTrait(girl, "Nymphomaniac") ? 15 : 5);
+	int libido = (girl->has_trait( "Nymphomaniac") ? 15 : 5);
 
 	if (nummecs + numnurse < 1)
 	{
@@ -79,7 +79,7 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (nummecs > 0)
 	{
 		ss << "the Mechanic" << (nummecs > 1 ? "s" : "");
-		if (g_Girls.HasTrait(girl, "Half-Construct") && girl->m_DayJob == JOB_GETREPAIRS && girl->m_NightJob == JOB_GETREPAIRS)
+		if (girl->has_trait( "Half-Construct") && girl->m_DayJob == JOB_GETREPAIRS && girl->m_NightJob == JOB_GETREPAIRS)
 		{	// if fixed by Mechanic for both shifts.
 			health += 20;	// Total 40 healing per day, heals less because Mechanic does not fix living tissue.
 		}
@@ -104,9 +104,9 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	ss << (((nummecs > 1 && numnurse < 1) || numnurse > 1) ? " take" : " takes") << " care of her.";
 
 	// Improve girl
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	if (girl->has_trait( "Lesbian"))		libido += numnurse;
+	if (girl->has_trait( "Masochist"))	libido += 1;
+	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 
 	g_Girls.UpdateStat(girl, STAT_HEALTH, health, false);
 	g_Girls.UpdateStat(girl, STAT_TIREDNESS, -tiredness, false);
@@ -135,7 +135,7 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 double cJobManager::JP_RepairShop(sGirl* girl, bool estimate)
 {
-	if (!g_Girls.HasTrait(girl, "Construct") && !g_Girls.HasTrait(girl, "Half-Construct")) return -1000;
+	if (!girl->has_trait( "Construct") && !girl->has_trait( "Half-Construct")) return -1000;
 	double jobperformance = 0.0;
 	jobperformance += (100 - girl->health());
 	jobperformance += (100 - girl->happiness());

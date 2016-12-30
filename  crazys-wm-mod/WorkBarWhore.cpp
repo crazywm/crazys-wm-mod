@@ -121,20 +121,20 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	bool group = false;				// Group sex flag
 	bool knowwife = false;			// if the girl is your daughter and the customer knows this
 	bool knowdaughter = false;		// if the girl is your wife and the customer knows this
-	bool bCustCanPay = true;		// Customer has enough money to pay 
+	bool bCustCanPay = true;		// Customer has enough money to pay
 	bool custout = false;	// if a male customer tries running and gets caught
 	bool femalecustcaught = false;	// if a female customer tries running and gets caught
 	bool acceptsGirl = false;		// Customer will sleep girl
 
-	
+
 	int oralcount = 0;		// how much oral she gave for use with AdjustTraitGroupGagReflex
 	u_int SexType = 0;
 	u_int job = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
 
-	
+
 	// work out how many customers the girl can service
 
-	// Changed the number of custmers stats add.. reasone was that old value, 
+	// Changed the number of custmers stats add.. reasone was that old value,
 	// it was only adding 1 customer per stat, unless stat was 100 for beauty and Charisma. Fame would add a max of 3. and only if was = 10
 	// there would be NO point in doing this, if it defaults to NumCusts++ since it is basically the same effect.	-PP
 
@@ -159,7 +159,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	// WD: limit to number of customers left
 	if (LoopCount > g_Customers.GetNumCustomers()) LoopCount = g_Customers.GetNumCustomers();
-	
+
 	for (int i = 0; i < LoopCount; i++)	// Go through all customers
 	{
 		fuckMessage.str("");
@@ -168,7 +168,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if (NumSleptWith >= NumCusts) break;
 		// Stop if she has worked the bare minimum and tiredness is high enough to get a warning, pushing too hard is bad for the business too
 		if ((girl->tiredness() > 80 || girl->health() < 20) && NumSleptWith >= 2) break;
-		
+
 		// WD:	Init Loop variables
 		pay = AskPrice;
 		SexType = 0;
@@ -207,7 +207,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			if (Cust->m_SexPref == SKILL_GROUP)	pay = (Cust->m_Amount * pay);					// full price for all of them
 			if (Cust->m_SexPref == SKILL_STRIP)	pay += (int)((Cust->m_Amount - 1) * pay / 2);	// full price for the first then half price for the rest
 			// WD: this is complicated total for 1.7 * pay * num of customers
-			// pay += (int)((float)(pay*(Cust->m_Amount))*0.7f); 
+			// pay += (int)((float)(pay*(Cust->m_Amount))*0.7f);
 		}
 
 		// WD: Has the customer have enough money
@@ -286,7 +286,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
-			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	// 
+			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	//
 			{
 				fuckMessage << girlName << " refuses to sleep with a beast because she has too much dignity for that.\n\n";
 				brothel->m_Fame -= 5;
@@ -310,13 +310,13 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				brothel->m_Fame -= 10;
 				acceptsGirl = false;
 			}
-			else if (g_Girls.HasTrait(girl, "Your Daughter") && g_Dice.percent(20))
+			else if (girl->has_trait( "Your Daughter") && g_Dice.percent(20))
 			{
 				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your daughter.\n\n";
 				knowdaughter = true;
 				acceptsGirl = true;
 			}
-			else if (g_Girls.HasTrait(girl, "Your Wife") && g_Dice.percent(20))
+			else if (girl->has_trait( "Your Wife") && g_Dice.percent(20))
 			{
 				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your wife.\n\n";
 				knowwife = true;
@@ -548,7 +548,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		else  // Customer has enough money
 		{
 			Cust->m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ??? // Yes this is necessary for TIP calculation.
-			if (g_Girls.HasTrait(girl, "Your Daughter") && knowdaughter && Cust->m_Money >= 20 && g_Dice.percent(50))
+			if (girl->has_trait( "Your Daughter") && knowdaughter && Cust->m_Money >= 20 && g_Dice.percent(50))
 			{
 				fuckMessage << "The customer tosses your daughter a bag of gold";
 				switch (g_Dice % 3)
@@ -560,7 +560,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				Cust->m_Money -= 20;
 				tip += 20;
 			}
-			else if (g_Girls.HasTrait(girl, "Your Wife") && knowwife && Cust->m_Money >= 20 && g_Dice.percent(50))
+			else if (girl->has_trait( "Your Wife") && knowwife && Cust->m_Money >= 20 && g_Dice.percent(50))
 			{
 				fuckMessage << "The customer tosses your wife a bag of gold";
 				switch (g_Dice % 3)
@@ -572,7 +572,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				Cust->m_Money -= 20;
 				tip += 20;
 			}
-			else if (g_Girls.HasTrait(girl, "Your Daughter") && Cust->m_Money >= 20 && g_Dice.percent(15))
+			else if (girl->has_trait( "Your Daughter") && Cust->m_Money >= 20 && g_Dice.percent(15))
 			{
 				if (g_Dice.percent(50))
 				{
@@ -585,7 +585,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				Cust->m_Money -= 20;
 				tip += 20;
 			}
-			else if (g_Girls.HasTrait(girl, "Your Wife") && Cust->m_Money >= 20 && g_Dice.percent(15))
+			else if (girl->has_trait( "Your Wife") && Cust->m_Money >= 20 && g_Dice.percent(15))
 			{
 				if (g_Dice.percent(50))
 				{
@@ -635,7 +635,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			itemtext << "Your gang " << guardgang->m_Name;
 			stringstream CGmsg;
 			// `J` create the customer
-			sGirl* custgirl = g_Girls.CreateRandomGirl(18 + (max(0, g_Dice % 40 - 10)), false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
+			sGirl* custgirl = g_Girls.CreateRandomGirl(18 + (max(0, g_Dice % 40 - 10)), false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 			int emprisontraittime = 1;
 			custgirl->pclove(-(g_Dice % 50 + 50));
 			custgirl->pcfear(g_Dice % 50 + 50);
@@ -759,7 +759,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 70, actiontype, girlName + " has been having so much sex she is now wanting sex all the time.", Day0Night1);
 
 	//SIN: use a few of the new traits
-	if (g_Dice.percent(1) && g_Dice.percent(girl->oralsex()) && (g_Girls.HasTrait(girl, "Nymphomaniac")))
+	if (g_Dice.percent(1) && g_Dice.percent(girl->oralsex()) && (girl->has_trait( "Nymphomaniac")))
 		g_Girls.PossiblyGainNewTrait(girl, "Cum Addict", 90, actiontype, girlName + " has tasted so much cum she now craves it at all times.", Day0Night1);
 
 	if (girl->oralsex() > 30 && g_Dice.percent(oralcount))

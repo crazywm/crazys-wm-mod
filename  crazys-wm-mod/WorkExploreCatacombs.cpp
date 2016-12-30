@@ -54,7 +54,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		return true;
 	}
 	ss << " went into the catacombs to see what she can find.\n\n";
-	
+
 	int num_monsters = 0;
 	int type_monster_girls = 0;
 	int type_unique_monster_girls = 0;
@@ -254,7 +254,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 #endif
 	{
 		// determine if they fight any monsters
-		if (!g_Dice.percent(max(girl->combat(), girl->magic())))	// WD:	Allow best of Combat or Magic skill 
+		if (!g_Dice.percent(max(girl->combat(), girl->magic())))	// WD:	Allow best of Combat or Magic skill
 		{
 			ss << "The first creature she encountered looked way to strong for her to fight so she ran away. She stops by your office later, \"I think I need more fight training before I can go back there.\"";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
@@ -493,10 +493,10 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	int num = type_monster_girls + type_unique_monster_girls + type_beasts + 1;
 	int xp = 5 * num, libido = 5, skill = num;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
-	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += type_monster_girls + type_unique_monster_girls;
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 5; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 5; }
+	if (girl->has_trait( "Nymphomaniac"))			libido += 2;
+	if (girl->has_trait( "Lesbian"))				libido += type_monster_girls + type_unique_monster_girls;
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % skill) + 1);
@@ -532,7 +532,7 @@ double cJobManager::JP_ExploreCatacombs(sGirl* girl, bool estimate)
 			girl->constitution() / 3 +
 			girl->magic() / 3;
 
-		if (g_Girls.HasTrait(girl, "Incorporeal")) jobperformance += 100;
+		if (girl->has_trait( "Incorporeal")) jobperformance += 100;
 
 	}
 	else			// for the actual check		// not used

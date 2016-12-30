@@ -53,7 +53,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	int actiontype = ACTION_COMBAT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -61,7 +61,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	ss << " was assigned to fight other girls in the arena.\n\n";
 
-	
+
 	int wages = 0, tips = 0;
 	int fight_outcome = 0, enjoy = 0, fame = 0;
 
@@ -126,31 +126,31 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		else
 		{
-			if (g_Girls.HasTrait(girl, "Exhibitionist"))
+			if (girl->has_trait( "Exhibitionist"))
 			{
 				ss << "As she enjoys showing off her body, " << girlName << " lets her opponent cut away her already-skimpy clothing, ending her match all but naked - but victorious.  Many of the patrons seem to enjoy the show.\n";
 			}
-			else if (g_Girls.HasTrait(girl, "Sadist"))
+			else if (girl->has_trait( "Sadist"))
 			{
 				ss << "As the match draws to a close, " << girlName << " stops trying to win and simply toys with her opponent, practically torturing her in front of the audience.  Many patrons disapprove, although a few respond favorably.\n";
 			}
-			else if (g_Girls.HasTrait(girl, "Dominatrix"))
+			else if (girl->has_trait( "Dominatrix"))
 			{
 				ss << girlName << "'s verbal abuse, along with her combat prowess, lead to a dramatic defeat of her opponent, although her behavior towards the loser disappoints many patrons.\n";
 			}
-			else if (g_Girls.HasTrait(girl, "Brawler"))
+			else if (girl->has_trait( "Brawler"))
 			{
 				ss << girlName << "'s preference for grappling and clinch-fighting throws her opponent off-balance and gives her an easy, if somewhat boring, victory.\n";
 			}
-			else if (g_Girls.HasTrait(girl, "Flight"))
+			else if (girl->has_trait( "Flight"))
 			{
 				ss << "Being able to fly is an almost-unfair advantage that most opponents can't counter.  Thanks to that, " << girlName << " wins handily.\n";
 			}
-			else if (g_Girls.HasTrait(girl, "Assassin"))
+			else if (girl->has_trait( "Assassin"))
 			{
 				ss << "Utilizing a no-rules, victory-at-any-cost combat style, " << girlName << " won a decisive victory over her orthodox opponent.  This was not unnoticed by some people in the audience.\n";
 			}
-			else if (g_Girls.HasTrait(girl, "Masochist"))
+			else if (girl->has_trait( "Masochist"))
 			{
 				ss << girlName << "'s cries of joy and outright pleasure upon being injured distract her opponent, and the pain-loving girl comes back from apparent defeat to achieve a dramatic victory.  Despite her many injuries, she smiles happily as she thanks her opponent for the match.\n";
 			}
@@ -173,19 +173,19 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		enjoy = -(g_Dice % 3 + 1);
 		fame = -(g_Dice % 3 + 1);
-		if (g_Girls.HasTrait(girl, "Exhibitionist"))
+		if (girl->has_trait( "Exhibitionist"))
 		{
 			ss << "As she enjoys showing off her body, " << girlName << " lets her opponent cut away her already-skimpy clothing, but either because of her lack of skill or just bad luck, she takes a real hit and is defeated.\n";
 		}
-		else if (g_Girls.HasTrait(girl, "Sadist"))
+		else if (girl->has_trait( "Sadist"))
 		{
 			ss << girlName << " tries to torment her opponent, but her overconfidence leads to a stunning defeat when the other fighter feigns injury.\n";
 		}
-		else if (g_Girls.HasTrait(girl, "Flight"))
+		else if (girl->has_trait( "Flight"))
 		{
 			ss << girlName << " was unable to leverage her greater maneuverability and yielded the match after being forced to the ground.\n";
 		}
-		else if (g_Girls.HasTrait(girl, "Masochist"))
+		else if (girl->has_trait( "Masochist"))
 		{
 			ss << "Overwhelmed by pleasure, " << girlName << " is unable to defend herself from her opponent and is easily defeated.  After the match ends, she begs the other fighter for another match - 'just like this one.'\n";
 		}
@@ -226,12 +226,12 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}
 
-	if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(15))
+	if (girl->has_trait( "Exhibitionist") && g_Dice.percent(15))
 	{
 		ss  << "A flamboyant fighter, " << girlName << " fights with as little armor and clothing as possible, and sometimes takes something off in the middle of a match, to the enjoyment of many fans.\n";
 	}
 
-	if (g_Girls.HasTrait(girl, "Idol") && g_Dice.percent(15))
+	if (girl->has_trait( "Idol") && g_Dice.percent(15))
 	{
 		ss  << girlName << " has quite the following, and the Arena is almost always packed when she fights.  People just love to watch her in action.\n";
 	}
@@ -243,9 +243,9 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	int fightxp = (fight_outcome == 1) ? 3 : 1;
 	int xp = 5 * fightxp, libido = 5, skill = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 5; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 5; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 	{

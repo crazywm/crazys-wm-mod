@@ -51,7 +51,7 @@ bool cJobManager::WorkCentreManager(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	girl->m_DayJob = girl->m_NightJob = JOB_CENTREMANAGER;	// it is a full time job
 
 	stringstream ss; string girlName = girl->m_Realname; ss <<"Centre Manager "<< girlName;
-	
+
 
 	int numgirls = brothel->m_NumGirls;
 	int wages = 0;
@@ -91,10 +91,10 @@ bool cJobManager::WorkCentreManager(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	// Improve girl
 	int xp = numgirls / 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
-	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += numgirls / 20;
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 5; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 5; }
+	if (girl->has_trait( "Nymphomaniac"))			libido += 2;
+	if (girl->has_trait( "Lesbian"))				libido += numgirls / 20;
 
 	wages = int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
 	girl->m_Tips = max(0, tips);

@@ -52,7 +52,7 @@ bool cJobManager::WorkFilmHandJob(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	
+
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50, tips = 0;
@@ -98,9 +98,9 @@ bool cJobManager::WorkFilmHandJob(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// Improve stats
 	int xp = 10, skill = 3, libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);

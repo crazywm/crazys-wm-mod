@@ -43,7 +43,7 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int actiontype = ACTION_WORKMAKEITEMS;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -63,7 +63,7 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	double jobperformance = JP_Cobbler(girl, false);
 	double craftpoints = jobperformance/10;
-	
+
 	int dirtyloss = brothel->m_Filthiness / 10;		// craftpoints lost due to repairing equipment
 	if (dirtyloss > 0)
 	{
@@ -332,7 +332,7 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido,false);
 
 	// primary improvement (+2 for single or +1 for multiple)
 	g_Girls.UpdateSkill(girl, SKILL_CRAFTING,		(g_Dice % skill) + 1);

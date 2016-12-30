@@ -55,9 +55,9 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	if (girl->m_YesterDayJob != JOB_THERAPY) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_THERAPY;	// it is a full time job
 
-	if (!g_Girls.HasTrait(girl, "Nervous") &&		//  if the girl doesnt need this
-		!g_Girls.HasTrait(girl, "Dependant") &&
-		!g_Girls.HasTrait(girl, "Pessimist"))
+	if (!girl->has_trait( "Nervous") &&		//  if the girl doesnt need this
+		!girl->has_trait( "Dependant") &&
+		!girl->has_trait( "Pessimist"))
 	{
 		ss << " doesn't need therapy for anything so she was sent to the waiting room.";
 		if (Day0Night1 == 0)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -89,7 +89,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 #pragma endregion
 #pragma region //	Count the Days				//
-	
+
 	if (!Day0Night1) girl->m_WorkingDay++;
 
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 30 - 20);
@@ -142,14 +142,14 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 			{
 			case 0:
 
-				if (g_Girls.HasTrait(girl, "Nervous"))
+				if (girl->has_trait( "Nervous"))
 				{
 					g_Girls.RemoveTrait(girl, "Nervous");
 					ss << "She is no longer nervous all the time.\n";
 					cured = true; break;
 				}
 			case 1:
-				if (g_Girls.HasTrait(girl, "Dependant"))
+				if (girl->has_trait( "Dependant"))
 				{
 					g_Girls.RemoveTrait(girl, "Dependant");
 					ss << "She is no longer Dependant on others.\n";
@@ -157,7 +157,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 				}
 			case 2:
 			default:
-				if (g_Girls.HasTrait(girl, "Pessimist"))
+				if (girl->has_trait( "Pessimist"))
 				{
 					g_Girls.RemoveTrait(girl, "Pessimist");
 					ss << "She is no longer a Pessimist about everything.\n";
@@ -166,7 +166,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 			}
 		}
 
-		if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Dependant") || g_Girls.HasTrait(girl, "Pessimist"))
+		if (girl->has_trait( "Nervous") || girl->has_trait( "Dependant") || girl->has_trait( "Pessimist"))
 		{
 			ss << "\nShe should stay in therapy to treat her other disorders.";
 		}
@@ -188,7 +188,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	// Improve girl
 	int libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
@@ -201,9 +201,9 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 double cJobManager::JP_CentreTherapy(sGirl* girl, bool estimate)
 {
 	double jobperformance = 100;
-	if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance += 100;	// if she has 1 = A
-	if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance += 100;	// if she has 2 = S
-	if (g_Girls.HasTrait(girl, "Pessimist"))	jobperformance += 100;	// if she has 3 = I
+	if (girl->has_trait( "Nervous"))		jobperformance += 100;	// if she has 1 = A
+	if (girl->has_trait( "Dependant"))	jobperformance += 100;	// if she has 2 = S
+	if (girl->has_trait( "Pessimist"))	jobperformance += 100;	// if she has 3 = I
 
 	if (jobperformance == 100)	return -1000;			// X - does not need it
 

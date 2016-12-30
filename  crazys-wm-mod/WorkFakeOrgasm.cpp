@@ -56,7 +56,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->m_WorkingDay < 0) girl->m_WorkingDay = 0;
 	girl->m_DayJob = girl->m_NightJob = JOB_FAKEORGASM;	// it is a full time job
 
-	if (g_Girls.HasTrait(girl, "Fake Orgasm Expert"))
+	if (girl->has_trait( "Fake Orgasm Expert"))
 	{
 		ss << " is already a \"Fake Orgasm Expert\".";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -337,8 +337,8 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 double cJobManager::JP_FakeOrgasm(sGirl* girl, bool estimate)// not used
 {
-	if (g_Girls.HasTrait(girl, "Fake Orgasm Expert"))	return -1000;
-	if (g_Girls.HasTrait(girl, "Slow Orgasms"))			return 500;
-	if (g_Girls.HasTrait(girl, "Fast Orgasms"))			return 500;
+	if (girl->has_trait( "Fake Orgasm Expert"))	return -1000;
+	if (girl->has_trait( "Slow Orgasms"))			return 500;
+	if (girl->has_trait( "Fast Orgasms"))			return 500;
 	return 250;
 }

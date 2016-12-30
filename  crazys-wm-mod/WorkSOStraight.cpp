@@ -56,7 +56,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->m_WorkingDay < 0) girl->m_WorkingDay = 0;
 	girl->m_DayJob = girl->m_NightJob = JOB_SO_STRAIGHT;	// it is a full time job
 
-	if (g_Girls.HasTrait(girl, "Straight"))
+	if (girl->has_trait( "Straight"))
 	{
 		ss << girlName << " is already Straight.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -114,7 +114,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Futanari"))		girl->m_WorkingDay -= g_Dice % 5;			// If she has a dick can she really be straight?
 	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay -= g_Dice % 2;			// She is used to having sex with anyone her director tells her to
 	if (girl->has_trait("Whore"))			girl->m_WorkingDay -= g_Dice % 2;			// She'll do anyone as long as they can pay
-	if (girl->has_trait("Slut"))			girl->m_WorkingDay -= g_Dice % 2;			// She'll do anyone 
+	if (girl->has_trait("Slut"))			girl->m_WorkingDay -= g_Dice % 2;			// She'll do anyone
 	if (girl->has_trait("Actress"))			girl->m_WorkingDay -= g_Dice % 2;			// She will do whatever her director tells her to
 
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
@@ -219,6 +219,6 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 double cJobManager::JP_SOStraight(sGirl* girl, bool estimate)// not used
 {
-	if (g_Girls.HasTrait(girl, "Straight"))	return -1000;
+	if (girl->has_trait( "Straight"))	return -1000;
 	return 250;
 }

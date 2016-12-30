@@ -44,7 +44,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 {
 	int actiontype = ACTION_WORKMILK;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to let her breasts be milked " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -65,7 +65,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	/*int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();*/
 
 
-#if 1	
+#if 1
 	//\\BSIN - doesn't look like this has been touched in the last year - completing
 	//\\On testing, decided to half the output volume on virgins and non-pregs without MILF trait.
 	// `J` New job function - needs work - commenting out for now
@@ -105,7 +105,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	int HateLove = 0;
 	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 	//BSIN: Update: to generate an extra message in case of certain event
-	stringstream ssextra; 
+	stringstream ssextra;
 	int extraimage = 0;
 	bool extraEvent = false;
 	bool noAnti = girl->m_UseAntiPreg = false;
@@ -113,10 +113,10 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	int breastsize = girl->breast_size();
 
 	// Milk - a multiplier on base lactation
-	if (g_Girls.HasTrait(girl, "Dry Milk"))						{ lactation = (lactation * 4) / 10; }
-	if (g_Girls.HasTrait(girl, "Scarce Lactation"))				{ lactation = (lactation * 6) / 10; }
-	if (g_Girls.HasTrait(girl, "Abundant Lactation"))			{ lactation = (lactation * 14) / 10; }
-	if (g_Girls.HasTrait(girl, "Cow Tits"))						{ lactation = (lactation * 16) / 10; }
+	if (girl->has_trait( "Dry Milk"))						{ lactation = (lactation * 4) / 10; }
+	if (girl->has_trait( "Scarce Lactation"))				{ lactation = (lactation * 6) / 10; }
+	if (girl->has_trait( "Abundant Lactation"))			{ lactation = (lactation * 14) / 10; }
+	if (girl->has_trait( "Cow Tits"))						{ lactation = (lactation * 16) / 10; }
 
 
 
@@ -217,7 +217,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	//Testing and seems weird that virgins and never-pregs can produce so much, so halving this
 		//This is every way I can find of asking if she's had a kid - MILF needed as this will register children prior to employment
-	if (g_Girls.CheckVirginity(girl) || (!isPregnant && !g_Girls.HasTrait(girl, "MILF") && girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
+	if (g_Girls.CheckVirginity(girl) || (!isPregnant && !girl->has_trait( "MILF") && girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
 	{
 		volume /= 2;											// never preg, so not producing much
 		g_Girls.UpdateStat(girl, STAT_LACTATION, g_Dice % 3);	//all this pumping etc induces lactation
@@ -264,7 +264,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			volume += (volume / 10);
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 5, true);
 		}
-		else if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(40))
+		else if (girl->has_trait( "Clumsy") && g_Dice.percent(40))
 		{
 			ss << ", who did a great job milking " << girlName << "'s breasts, but then tripped over the bucket, spilling quite a lot.";
 			volume -= (volume / 4);
@@ -293,9 +293,9 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	int ease = volume;
 	//
 	// Nipples affects ease which is used to adjust the girls enjoyment and damage
-	if (g_Girls.HasTrait(girl, "Inverted Nipples"))				ease -= 20;
-	if (g_Girls.HasTrait(girl, "Puffy Nipples"))				ease += 40;
-	if (g_Girls.HasTrait(girl, "Perky Nipples"))				ease += 20;
+	if (girl->has_trait( "Inverted Nipples"))				ease -= 20;
+	if (girl->has_trait( "Puffy Nipples"))				ease += 40;
+	if (girl->has_trait( "Perky Nipples"))				ease += 20;
 
 
 	if (ease < 75)
@@ -303,7 +303,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		enjoy -= 2 * (roll % 3 + 2);								// -8 to -4
 		g_Girls.UpdateStat(girl, STAT_HEALTH, -(roll % 6));			// 0 to 5 damage
 		ss << "She's barely lactating, so this was a slow, painful process that left her with raw, ";
-		if (g_Girls.HasTrait(girl, "Missing Nipple") || g_Girls.HasTrait(girl, "No Nipples")) ss << "aching breasts.";
+		if (girl->has_trait( "Missing Nipple") || girl->has_trait( "No Nipples")) ss << "aching breasts.";
 		else ss << "bleeding nipples.";
 	}
 	else if (ease < 150)
@@ -345,7 +345,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	int milkValue = int(milkProduced * MILKWHOLESALE);		//Base value
 	int traitBoost = milkValue;								// now basing the boost on base value, not on inflated CG value.
 
-	if (g_Girls.HasTrait(girl, "Cat Girl"))
+	if (girl->has_trait( "Cat Girl"))
 	{
 		ss << "Cat-Girl breast-milk has higher value.\n";
 		milkValue *= CATGIRLBONUS;
@@ -354,29 +354,29 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	//finally a little randomness
 	if (volume > 0)   // no point mentioning this if she doesn't produce anything
 	{
-		if (g_Dice.percent(60) && (g_Girls.HasTrait(girl, "Fallen Goddess") || g_Girls.HasTrait(girl, "Goddess")))
+		if (g_Dice.percent(60) && (girl->has_trait( "Fallen Goddess") || girl->has_trait( "Goddess")))
 		{
 			ss << "Customers are willing to pay much more to sup from the breast of a Goddess.\n";
 			milkValue += (2 * traitBoost);
 		}
-		else if (g_Dice.percent(40) && g_Girls.HasTrait(girl, "Demon"))
+		else if (g_Dice.percent(40) && girl->has_trait( "Demon"))
 		{
 			ss << "Customers are thrilled at the chance to consume the milk of a Demon.\n";
 			milkValue += (2 * traitBoost);
 		}
-		else if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Queen"))
+		else if (g_Dice.percent(50) && girl->has_trait( "Queen"))
 		{
 			ss << "Customers are willing to pay more to enjoy the breast-milk of a Queen.\n";
 			traitBoost *= (1 + g_Dice % 2);
 			milkValue += traitBoost;
 		}
-		else if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Princess"))
+		else if (g_Dice.percent(50) && girl->has_trait( "Princess"))
 		{
 			ss << "Customers are willing to pay more to enjoy the breast-milk of a Princess.\n";
 			traitBoost *= (1 + g_Dice % 2);
 			milkValue += traitBoost;
 		}
-		else if (g_Dice.percent(30) && (g_Girls.HasTrait(girl, "Priestess")))
+		else if (g_Dice.percent(30) && (girl->has_trait( "Priestess")))
 		{
 			ss << "Customers pay more to drink the breast-milk of a religious holy-woman.\n";
 			milkValue += traitBoost;
@@ -386,19 +386,19 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			ss << "Your customers eagerly gulp down the breast-milk of such a famous and well-loved girl.\n";
 			milkValue += traitBoost;
 		}
-		else if (g_Girls.HasTrait(girl, "Vampire"))
+		else if (girl->has_trait( "Vampire"))
 		{
 			ss << "Customers pay more to try the breast-milk of a Vampire. Perhaps they hope for eternal life.\n";
 			milkValue += (g_Dice % 30 + 5);
 		}
 
-		if (g_Dice.percent(30) && (g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Viras Blood Addict")))
+		if (g_Dice.percent(30) && (girl->has_trait( "Shroud Addict") || girl->has_trait( "Fairy Dust Addict") || girl->has_trait( "Viras Blood Addict")))
 		{
 			ss << "Her breast-milk has a strangely bitter flavour. However, customers find it quite addictive and end up paying extra for more.\n";
 			milkValue += (g_Dice % 30 + 10);
 		}
 
-		if (g_Dice.percent(15) && (g_Girls.HasTrait(girl, "Strong Magic") || g_Girls.HasTrait(girl, "Powerful Magic")))
+		if (g_Dice.percent(15) && (girl->has_trait( "Strong Magic") || girl->has_trait( "Powerful Magic")))
 		{
 			if ((g_Girls.GetSkill(girl, SKILL_MAGIC) > 75) && (g_Girls.GetStat(girl, STAT_MANA) > 50))
 			{
@@ -412,14 +412,14 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 				milkValue += (g_Dice % 30 + 10);
 			}
 		}
-		if (g_Girls.HasTrait(girl, "Undead") || g_Girls.HasTrait(girl, "Zombie"))
+		if (girl->has_trait( "Undead") || girl->has_trait( "Zombie"))
 		{
 			ss << "Customers are very reluctant to drink the milk of the undead. You can barely give the stuff away.\n";
 			milkValue /= 10;
 		}
 	}
 	//update to add options based on how good you are...
-	if (g_Dice.percent(3) && (g_Girls.HasTrait(girl, "Great Arse") || g_Girls.HasTrait(girl, "Tight Butt") || g_Girls.HasTrait(girl, "Phat Booty") || g_Girls.HasTrait(girl, "Deluxe Derriere")))
+	if (g_Dice.percent(3) && (girl->has_trait( "Great Arse") || girl->has_trait( "Tight Butt") || girl->has_trait( "Phat Booty") || girl->has_trait( "Deluxe Derriere")))
 	{
 		extraEvent = true;
 		ssextra << "\nAs you survey the milking area from the doorway, you can't help noticing " << girlName << "'s butt rising into the air from a milking stall";
@@ -517,7 +517,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			}
 			if (g_Girls.CheckVirginity(girl)) ssextra << "Thanks to you, her virginity is intact so ";
 			ssextra << girlName << " comes to your office after her shift";
-			if ((HateLove <= 50) || g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Cum Addict") || g_Girls.HasTrait(girl, "Slut"))
+			if ((HateLove <= 50) || girl->has_trait( "Nymphomaniac") || girl->has_trait( "Cum Addict") || girl->has_trait( "Slut"))
 			{
 				ssextra << ", pulls down your pants, and 'thanks'";
 				extraimage = IMGTYPE_ORAL;
@@ -535,7 +535,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		ss << "Something happened here today (see extra message).\n";
 	}
 	wages += milkValue;
-	
+
 	//Output
 	//
 	ss << "In the end, " << girlName << " produced ";
@@ -546,13 +546,13 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	else if ((int)milkProduced == 0)
 	{
 		ss << "a trickle of ";
-		if (g_Girls.HasTrait(girl, "Cat Girl"))	ss << "Cat-Girl ";
+		if (girl->has_trait( "Cat Girl"))	ss << "Cat-Girl ";
 		ss << "breast-milk, earning just " << wages << " gold.";
 	}
 	else
 	{
 		ss << "just over " << (int)milkProduced << " ounces. This fine, freshly-squeezed ";
-		if (g_Girls.HasTrait(girl, "Cat Girl"))	ss << "Cat-Girl ";
+		if (girl->has_trait( "Cat Girl"))	ss << "Cat-Girl ";
 		ss << "breast-milk earns " << wages << " gold.";
 	}
 
@@ -564,7 +564,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	wages += 15;
 
-	if (g_Girls.HasTrait(girl, "Small Boobs") || g_Girls.HasTrait(girl, "Flat Chest") || g_Girls.HasTrait(girl, "Petite Breasts"))
+	if (girl->has_trait( "Small Boobs") || girl->has_trait( "Flat Chest") || girl->has_trait( "Petite Breasts"))
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
@@ -577,7 +577,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			wages += 25;
 		}
 	}
-	else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
+	else if (girl->has_trait( "Big Boobs") || girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs"))
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
@@ -590,7 +590,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			wages += 35;
 		}
 	}
-	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Titanic Tits"))
+	else if (girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Massive Melons") || girl->has_trait( "Titanic Tits"))
 	{
 		if (girl->m_States&(1 << STATUS_PREGNANT) || girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 		{
@@ -667,9 +667,9 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	// Improve stats
 	int xp = 5, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
@@ -685,21 +685,21 @@ double cJobManager::JP_Milk(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance = 0.0;
 	jobperformance += girl->lactation();
-	/* */if (g_Girls.HasTrait(girl, "Flat Chest"))				jobperformance += 5;
-	else if (g_Girls.HasTrait(girl, "Petite Breasts"))			jobperformance += 10;
-	else if (g_Girls.HasTrait(girl, "Small Boobs"))				jobperformance += 15;
-	else if (g_Girls.HasTrait(girl, "Busty Boobs"))				jobperformance += 25;
-	else if (g_Girls.HasTrait(girl, "Big Boobs"))				jobperformance += 30;
-	else if (g_Girls.HasTrait(girl, "Giant Juggs"))				jobperformance += 35;
-	else if (g_Girls.HasTrait(girl, "Massive Melons"))			jobperformance += 40;
-	else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	jobperformance += 45;
-	else if (g_Girls.HasTrait(girl, "Titanic Tits"))			jobperformance += 50;
+	/* */if (girl->has_trait( "Flat Chest"))				jobperformance += 5;
+	else if (girl->has_trait( "Petite Breasts"))			jobperformance += 10;
+	else if (girl->has_trait( "Small Boobs"))				jobperformance += 15;
+	else if (girl->has_trait( "Busty Boobs"))				jobperformance += 25;
+	else if (girl->has_trait( "Big Boobs"))				jobperformance += 30;
+	else if (girl->has_trait( "Giant Juggs"))				jobperformance += 35;
+	else if (girl->has_trait( "Massive Melons"))			jobperformance += 40;
+	else if (girl->has_trait( "Abnormally Large Boobs"))	jobperformance += 45;
+	else if (girl->has_trait( "Titanic Tits"))			jobperformance += 50;
 	else /*                                               */	jobperformance += 20;
 
-	/* */if (g_Girls.HasTrait(girl, "Dry Milk"))				jobperformance /= 5;
-	else if (g_Girls.HasTrait(girl, "Scarce Lactation"))		jobperformance /= 2;
-	else if (g_Girls.HasTrait(girl, "Abundant Lactation"))		jobperformance *= 1.5;
-	else if (g_Girls.HasTrait(girl, "Cow Tits"))				jobperformance *= 2;
+	/* */if (girl->has_trait( "Dry Milk"))				jobperformance /= 5;
+	else if (girl->has_trait( "Scarce Lactation"))		jobperformance /= 2;
+	else if (girl->has_trait( "Abundant Lactation"))		jobperformance *= 1.5;
+	else if (girl->has_trait( "Cow Tits"))				jobperformance *= 2;
 
 	if (girl->is_pregnant()) jobperformance *= 2;
 

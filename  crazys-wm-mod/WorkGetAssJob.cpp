@@ -55,7 +55,7 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (girl->m_YesterDayJob != JOB_ASSJOB) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_ASSJOB;	// it is a full time job
 
-	if (g_Girls.HasTrait(girl, "Great Arse"))
+	if (girl->has_trait( "Great Arse"))
 	{
 		ss << " already has a Great Arse so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -152,7 +152,7 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(-1, 1));
 		}
 
-		if (!g_Girls.HasTrait(girl, "Great Arse"))
+		if (!girl->has_trait( "Great Arse"))
 		{
 			girl->add_trait("Great Arse", false);
 			ss << "Thanks to the surgery she now has a Great Arse.\n";
@@ -168,9 +168,9 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	// Improve girl
 	int libido = 1;
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	if (girl->has_trait( "Lesbian"))		libido += numnurse;
+	if (girl->has_trait( "Masochist"))	libido += 1;
+	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
@@ -181,6 +181,6 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 double cJobManager::JP_GetAssJob(sGirl* girl, bool estimate)
 {
-	if (g_Girls.HasTrait(girl, "Great Arse")) return -1000;	// X - not needed
+	if (girl->has_trait( "Great Arse")) return -1000;	// X - not needed
 	return 200;												// A
 }

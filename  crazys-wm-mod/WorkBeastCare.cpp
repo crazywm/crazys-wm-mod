@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -89,7 +89,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		}
 		else if (girl->animalhandling() > 50 && girl->charisma() > 50)
 		{
-			addbeasts = 
+			addbeasts =
 				g_Dice.percent(girl->combat()) +
 				g_Dice.percent(girl->charisma()) +
 				g_Dice.percent(girl->animalhandling());
@@ -108,7 +108,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 				g_Girls.UpdateStat(girl, STAT_CONFIDENCE, addbeasts);
 			}
 		}
-		else if (girl->combat() > 50 && (g_Girls.HasTrait(girl, "Adventurer") || girl->confidence() > 70))
+		else if (girl->combat() > 50 && (girl->has_trait( "Adventurer") || girl->confidence() > 70))
 		{
 			addbeasts = (g_Dice % 2);
 			ss << girlName << " stood near the entrance to the catacombs, trying to lure out a beast by making noises of an injured animal.\n";
@@ -170,9 +170,9 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	// Improve girl
 	int xp = 5 + (g_Brothels.m_Beasts / 10), libido = 1, skill = 2 + (g_Brothels.m_Beasts / 20);
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, max(1, (g_Dice % skill) - 1));
@@ -207,23 +207,23 @@ double cJobManager::JP_BeastCare(sGirl* girl, bool estimate)
 
 	//and finally some traits
 	//Good
-	if (g_Girls.HasTrait(girl, "Powerful Magic"))				jobperformance += 35;	//Animagical
-	if (g_Girls.HasTrait(girl, "Strong Magic"))					jobperformance += 30;	//Animal magic spells
-	if (g_Girls.HasTrait(girl, "Farmer"))						jobperformance += 30;	//Animal expert
-	if (g_Girls.HasTrait(girl, "Furry"))						jobperformance += 25;	//Animal instinct
-	if (g_Girls.HasTrait(girl, "Goddess"))						jobperformance += 25;	//Animal command
-	if (g_Girls.HasTrait(girl, "Natural Pheromones"))			jobperformance += 20;	//Animal attraction
-	if (g_Girls.HasTrait(girl, "Farmers Daughter"))				jobperformance += 20;	//Animal understanding
-	if (g_Girls.HasTrait(girl, "Country Gal"))					jobperformance += 15;	//Animal awareness
+	if (girl->has_trait( "Powerful Magic"))				jobperformance += 35;	//Animagical
+	if (girl->has_trait( "Strong Magic"))					jobperformance += 30;	//Animal magic spells
+	if (girl->has_trait( "Farmer"))						jobperformance += 30;	//Animal expert
+	if (girl->has_trait( "Furry"))						jobperformance += 25;	//Animal instinct
+	if (girl->has_trait( "Goddess"))						jobperformance += 25;	//Animal command
+	if (girl->has_trait( "Natural Pheromones"))			jobperformance += 20;	//Animal attraction
+	if (girl->has_trait( "Farmers Daughter"))				jobperformance += 20;	//Animal understanding
+	if (girl->has_trait( "Country Gal"))					jobperformance += 15;	//Animal awareness
 
 	//Bad
-	if (g_Girls.HasTrait(girl, "Undead"))						jobperformance -= 50;	//Animals fear her
-	if (g_Girls.HasTrait(girl, "Zombie"))						jobperformance -= 50;	//Animals fear her
-	if (g_Girls.HasTrait(girl, "Skeleton"))						jobperformance -= 40;	//Animals fear her
-	if (g_Girls.HasTrait(girl, "Muggle"))						jobperformance -= 30;	//This job uses magic a lot, so bad magic = low skill
-	if (g_Girls.HasTrait(girl, "Weak Magic"))					jobperformance -= 20;	//This job uses magic a lot, so bad magic = low skill
-	if (g_Girls.HasTrait(girl, "City Girl"))					jobperformance -= 15;	//Saw animals on TV once. They looked cute.
-	
+	if (girl->has_trait( "Undead"))						jobperformance -= 50;	//Animals fear her
+	if (girl->has_trait( "Zombie"))						jobperformance -= 50;	//Animals fear her
+	if (girl->has_trait( "Skeleton"))						jobperformance -= 40;	//Animals fear her
+	if (girl->has_trait( "Muggle"))						jobperformance -= 30;	//This job uses magic a lot, so bad magic = low skill
+	if (girl->has_trait( "Weak Magic"))					jobperformance -= 20;	//This job uses magic a lot, so bad magic = low skill
+	if (girl->has_trait( "City Girl"))					jobperformance -= 15;	//Saw animals on TV once. They looked cute.
+
 #else
 	double jobperformance = 0.0;
 	jobperformance = (g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) +

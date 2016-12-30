@@ -145,7 +145,7 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido,false);
 
 
 	// primary improvement (+2 for single or +1 for multiple)
