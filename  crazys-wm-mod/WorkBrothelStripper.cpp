@@ -171,7 +171,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
 			{
 				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				wages += 50;
 				mast = true;
 			}
@@ -204,7 +204,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
 			{
 				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				tips += 50;
 				mast = true;
 			}
@@ -366,7 +366,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			}
 		}
 		g_Girls.UpdateSkill(girl, n, 2);
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
 		// work out the pay between the house and the girl
 		wages += g_Girls.GetStat(girl, STAT_ASKPRICE);

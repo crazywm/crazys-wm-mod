@@ -456,14 +456,14 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	if (girl->get_stat(STAT_LIBIDO) > 90 && type_monster_girls + type_unique_monster_girls > 0 && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
 	{
 		ss << girl->m_Realname << " was real horny so she had a little fun with the girl" << (type_monster_girls + type_unique_monster_girls > 1 ? "s" : "") << " she captured.";
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50, true);
 		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, type_monster_girls + type_unique_monster_girls);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);
 	}
 	else if (girl->get_stat(STAT_LIBIDO) > 90 && type_beasts > 0 && m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel))
 	{
 		ss << girl->m_Realname << " was real horny so she had a little fun with the beast" << (type_beasts > 1 ? "s" : "") << " she captured.";
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50, true);
 		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, type_beasts);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 		if (!girl->calc_insemination(g_Girls.GetBeast(), false, 1.0))

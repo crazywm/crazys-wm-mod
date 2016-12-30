@@ -178,7 +178,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 			imagetype = IMGTYPE_ANAL;
 		}
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3);
 		fame += 1;
 		dispo += 6;

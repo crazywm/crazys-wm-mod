@@ -792,7 +792,7 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 	g_Girls.UpdateStat(m_GirlTarget, STAT_HAPPINESS, -5);
 	g_Girls.UpdateStat(m_GirlTarget, STAT_HEALTH, -10);
 	g_Girls.UpdateStat(m_GirlTarget, STAT_LIBIDO, -1);
-	g_Girls.UpdateStatTemp(m_GirlTarget, STAT_LIBIDO, 2);
+	g_Girls.UpdateStatTemp(m_GirlTarget, STAT_LIBIDO, 2, true);
 	g_Girls.UpdateStat(m_GirlTarget, STAT_CONFIDENCE, -1);
 	g_Girls.UpdateStat(m_GirlTarget, STAT_OBEDIENCE, 2);
 	g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, 2);

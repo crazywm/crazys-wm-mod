@@ -129,16 +129,17 @@ public:
 	void FireGang(int gangID);	// fired a gang, so send it back to recruitables (or just delete if full up)
 	void AddHireableGang(sGang* gang);
 	void AddGang(sGang* gang);
-	void RemoveHireableGang(int gangID);	// removed a recruitable gang from the list
+	void RemoveHireableGang(int gangID);								// removed a recruitable gang from the list
 	void RemoveHireableGang(sGang* gang);
-	void RemoveGang(int gangID);	// removed a controlled gang completely from service
+	void RemoveGang(int gangID);										// removed a controlled gang completely from service
 	void RemoveGang(sGang* gang);
-	void SendGang(int gangID, int missID);	// sends a gang on a mission
-	sGang* GetGang(int gangID);	// gets a gang
-	sGang* GetHireableGang(int gangID);	// gets a recruitable gang
-	sGang* GetGangOnMission(u_int missID);	// gets a gang on the current mission
+	void SendGang(int gangID, int missID);								// sends a gang on a mission
+	sGang* GetGang(int gangID);											// gets a gang
+	sGang* GetHireableGang(int gangID);									// gets a recruitable gang
+	sGang* GetGangOnMission(u_int missID);								// gets a gang on the current mission
+	sGang* GetRandomGangOnMission(u_int missID);						// gets a random gang on the current mission
 	sGang* GetGangNotFull(int roomfor = 0, bool recruiting = true);		// gets a gang with room to spare
-	sGang* GetGangRecruitingNotFull(int roomfor = 0);	// gets a gang recruiting with room to spare
+	sGang* GetGangRecruitingNotFull(int roomfor = 0);					// gets a gang recruiting with room to spare
 	void UpdateGangs();
 
 	int GetMaxNumGangs();
@@ -146,11 +147,11 @@ public:
 	int GetNumHireableGangs();
 	bool GangCombat(sGirl* girl, sGang* gang);								// returns true if the girl wins
 	bool GangBrawl(sGang* gang1, sGang* gang2, bool rivalVrival = false);	// returns true if gang1 wins
-	sGang* GetTempGang();			// creates a new gang
-	sGang* GetTempGang(int mod);	// creates a new gang with stat/skill mod
-	void BoostGangSkill(int* affect_skill, int count = 1);  // increases a specific skill/stat the specified number of times
+	sGang* GetTempGang();													// creates a new gang
+	sGang* GetTempGang(int mod);											// creates a new gang with stat/skill mod
+	void BoostGangSkill(int* affect_skill, int count = 1);					// increases a specific skill/stat the specified number of times
 	void BoostGangRandomSkill(vector<int*>* possible_skills, int count = 1, int boost_count = 1);  // chooses from the passed skills/stats and raises one or more of them
-	void BoostGangCombatSkills(sGang* gang, int count = 1);  // simple function to increase a gang's combat skills a bit
+	void BoostGangCombatSkills(sGang* gang, int count = 1);					// simple function to increase a gang's combat skills a bit
 
 	sGang* GetTempWeakGang();
 

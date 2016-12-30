@@ -1109,7 +1109,8 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				}
 				else if (amount == 1)			// add normal trait	from equiping an item
 				{
-					g_Girls.AddTrait(girl, trait, false, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// Temp = false Normal Item, removeitem = true only if not consumable
+					int d =	(duration > 0 && (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)) ? duration : 0;
+					g_Girls.AddTrait(girl, trait, d, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// Temp = false Normal Item, removeitem = true only if not consumable
 				}
 				if (trait == "Virgin")
 				{

@@ -218,7 +218,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 			ss << girlName << " spotted a relatively good-looking guy walking into the bathroom alone. She followed him inside, and as he tried to exit the bathroom stall, he got pushed back in by her. " << girlName << " didn't waste any time and in a matter of seconds was vigorously fucking the client. After the deed, the client made sure " << girlName << " had a pretty hefty wad of money stuck behind her skirt.\n"; tips += 50;
 		}
 		imagetype = IMGTYPE_SEX;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
 		sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel); Cust->m_Amount = 1;
 		if (!girl->calc_pregnancy(Cust, false, 1.0))

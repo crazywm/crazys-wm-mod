@@ -189,7 +189,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				GetMiscCustomer(brothel, Cust);
 				brothel->m_Happiness += 100;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 				// work out the pay between the house and the girl
 				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
 				fame += 1;
@@ -221,7 +221,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				GetMiscCustomer(brothel, Cust);
 				brothel->m_Happiness += 100;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 				// work out the pay between the house and the girl
 				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
 				fame += 1;
@@ -239,7 +239,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			ss << "\nShe was horny and ended up masturbating for the customers, making them very happy.";
 			GetMiscCustomer(brothel, Cust);
 			brothel->m_Happiness += 100;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 			// work out the pay between the house and the girl
 			wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
 			fame += 1;
@@ -259,7 +259,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else if (g_Girls.HasTrait(girl, "Lesbian"))
 			{
 				enjoy -= 2;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -10);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
 				ss << "she doesn't understand the appeal of them, which turned her off.\n";
 			}
 			else if (!brothel->m_RestrictNormal && !g_Girls.CheckVirginity(girl) && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && g_Girls.GetStat(girl, STAT_LIBIDO) >= 80) //sex

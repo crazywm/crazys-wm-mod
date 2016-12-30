@@ -299,7 +299,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 			}
 		}
 		g_Girls.UpdateSkill(girl, n, 2);
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25, true);
 		wages += 225;
 		tips += 30 + g_Girls.GetSkill(girl, n) / 5;
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);

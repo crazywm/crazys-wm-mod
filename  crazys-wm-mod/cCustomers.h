@@ -27,12 +27,12 @@ struct sBrothel;
 typedef struct sCustomer
 {
 	// Regular Stats
-	unsigned char m_IsWoman;		// 0 means a man, 1 means a woman
-	unsigned char m_Amount;			// how many customers this represents
-	unsigned char m_Class;			// is the person rich, poor or middle class
-	unsigned char m_Official;		// is the person an official of the town
+	bool m_IsWoman;		// 0 means a man, 1 means a woman
+	int m_Amount;			// how many customers this represents
+	int m_Class;			// is the person rich, poor or middle class
+	bool m_Official;		// is the person an official of the town
 
-	unsigned int m_Money;
+	int m_Money;
 
 	bool m_HasAIDS;					// `J` Does the customer have AIDS?
 	bool m_HasChlamydia;			// `J` Does the customer have Chlamydia?

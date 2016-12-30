@@ -70,7 +70,7 @@ public:
 	virtual bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool CheckVirginity(sGirl* girl) = 0;
 	virtual void UpdateSkillTemp(sGirl* girl, int skill, int amount) = 0;	// updates a skill temporarily
-	virtual void UpdateStatTemp(sGirl* girl, int stat, int amount) = 0;
+	virtual void UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraite = false) = 0;
 	virtual void UpdateEnjoymentTemp(sGirl* girl, int stat, int amount) = 0;
 	virtual void UpdateTrainingTemp(sGirl* girl, int stat, int amount) = 0;
 };
@@ -653,6 +653,7 @@ struct sGirl
 	bool is_isdaughter()	{ return (m_States & (1 << STATUS_ISDAUGHTER)) != 0; }
 	bool is_warrior()		{ return !is_arena(); }
 	bool is_resting();
+	bool is_havingsex();
 	bool was_resting();
 
 	void fight_own_gang(bool &girl_wins);
@@ -724,10 +725,10 @@ public:
 
 	int GetStat(sGirl* girl, int stat);
 	void SetStat(sGirl* girl, int stat, int amount);
-	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);	// updates a stat
-	void UpdateStatTemp(sGirl* girl, int stat, int amount);	// updates a stat temporarily
-	void UpdateStatMod(sGirl* girl, int stat, int amount);	// updates a statmod usually from items
-	void UpdateStatTr(sGirl* girl, int stat, int amount);	// updates a statTr from traits
+	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);		// updates a stat
+	void UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits = false);	// updates a stat temporarily
+	void UpdateStatMod(sGirl* girl, int stat, int amount);							// updates a statmod usually from items
+	void UpdateStatTr(sGirl* girl, int stat, int amount);							// updates a statTr from traits
 
 	int GetSkill(sGirl* girl, int skill);
 	void SetSkill(sGirl* girl, int skill, int amount);
