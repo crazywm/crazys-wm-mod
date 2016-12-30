@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Chastity Orb"
+        Desc="At first glance, this pretty crystal ball filled with mesmerizing tan mist seems to be simple decoration for a girl's bedroom. However, it is the focus of a powerful spell, a spell that ensures that her dreams are soothing, peaceful and more improtantly, non-sexual. (+5 Happiness/Morality/Dignity, -1 Fear/Hate, Removes Nymphomaniac, Adds Chaste)"
+        Type="Misc"        Badness="0"        Special="None"        Cost="2000"        Rarity="Shop25"        Infinite="false"        GirlBuyChance="0"        ItemWeight="0.0">
+        <Effect What="Stat"            Name="PCFear"            Amount="-1" />
+        <Effect What="Stat"            Name="PCHate"            Amount="-1" />
+        <Effect What="Stat"            Name="Morality"          Amount="5" />
+        <Effect What="Stat"            Name="Dignity"           Amount="5" />
+        <Effect What="Stat"            Name="Happiness"         Amount="5" />
+        <Effect What="Trait"           Name="Nymphomaniac"      Amount="0" />
+        <Effect What="Trait"           Name="Chaste"            Amount="1" />
+    </Item>
+</Items>

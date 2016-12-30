@@ -247,6 +247,7 @@ string cTraits::GetTranslateName(string name)
 	{
 		/* */if (trait.compare("canine") == 0)					return gettext("Canine");
 		else if (trait.compare("cat girl") == 0)				return gettext("Cat Girl");
+		else if (trait.compare("chaste") == 0)					return gettext("Chaste");
 		else if (trait.compare("charismatic") == 0)				return gettext("Charismatic");
 		else if (trait.compare("charming") == 0)				return gettext("Charming");
 		else if (trait.compare("chef") == 0)					return gettext("Chef");

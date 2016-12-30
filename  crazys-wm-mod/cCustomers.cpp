@@ -176,7 +176,7 @@ void cCustomers::GetCustomer(sCustomer* customer, sBrothel* brothel)
 		}
 	}
 
-	customer->m_Official = (g_Dice.percent(2)) ? 1 : 0;	// are they an official
+	customer->m_Official = g_Dice.percent(2);	// are they an official
 	int level = g_Dice.d100();	// what working class are they
 	/* */if (level < m_Rich)	{ customer->m_Class = 1; customer->m_Money = (g_Dice % 2000) + 600; }
 	else if (level < m_Middle)	{ customer->m_Class = 2; customer->m_Money = (g_Dice % 200) + 60; }

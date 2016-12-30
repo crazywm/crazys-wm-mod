@@ -2916,6 +2916,42 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			girl->happiness(3 + g_Dice % 3);
 		}
 	}
+	if (g_Girls.HasItemJ(girl, "Chastity Orb") != -1 && g_Dice.percent(50))
+	{
+		if (girl->pclove() > girl->pcfear() && g_Dice.percent(girl->pclove()))
+		{
+			if (g_Dice.percent(50))
+			{
+				ss << girlName << " comes to you and tells you ";
+				if (girl->is_havingsex())	ss << "she does not like having sex anymore and wants to do something more constructive with her life.\n\n";
+				else
+				{
+					ss << "is glad you are not making her have sex with anyone";
+					if (girl->pclove() > 80) ss << " but you";
+					ss << ".";
+					girl->pclove(g_Dice % 2);
+					girl->happiness(5 + g_Dice % 6);
+				}
+			}
+			girl->pcfear(-(g_Dice % 2));
+			girl->pchate(-(g_Dice % 2));
+		}
+		else	// everyone else
+		{
+			girl->happiness(3 + g_Dice % 3);
+		}
+		girl->morality(g_Dice % 3);
+		girl->dignity(g_Dice % 2);
+		girl->libido(-(5 + g_Dice % 20));
+	}
+	if (g_Girls.HasItemJ(girl, "Relaxation Orb") != -1 && g_Dice.percent(50))
+	{
+		if (g_Dice.percent(50))		ss << girlName << " looks extremely relaxed.\n\n";
+		girl->happiness(2 + g_Dice % 4);
+		girl->tiredness(-(g_Dice % 10));
+		girl->pcfear(-(g_Dice % 2));
+		girl->pchate(-(g_Dice % 2));
+	}
 #endif		
 
 #endif

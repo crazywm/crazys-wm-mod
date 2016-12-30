@@ -130,7 +130,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		default:/*                         */	{ l = 2;	imagetype = IMGTYPE_STRIP;	ss << gettext("She flashed them");	break; }
 		}
 		ss << ".\n\n";
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -l);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -l, true);
 	}
 
 	if (SecLev < 10) SecLev = 10;

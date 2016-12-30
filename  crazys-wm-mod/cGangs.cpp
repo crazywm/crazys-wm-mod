@@ -1528,6 +1528,23 @@ sGang* cGangManager::GetGangOnMission(u_int missID)
 	return currentGang;
 }
 
+sGang* cGangManager::GetRandomGangOnMission(u_int missID)
+{
+	// first find the gang with some men
+	sGang* currentGang = m_GangStart;
+	vector<sGang*> gangs;
+	int count = 0;
+	while (currentGang)
+	{
+		if (currentGang->m_MissionID == missID && currentGang->m_Num > 0)
+			gangs.push_back(currentGang);
+		count++;
+		currentGang = currentGang->m_Next;
+	}
+	if (count == 0)	return 0;
+	return gangs[g_Dice%count];
+}
+
 // `J` - Added for .06.02.18
 sGang* cGangManager::GetGangNotFull(int roomfor, bool recruiting)
 {

@@ -1403,6 +1403,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	if (g_Girls.HasTrait(girl, "Psychic"))					quality += 4;
 	if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))		quality += 1;
 
+	if (g_Girls.HasTrait(girl, "Chaste"))					quality -= 2;
 	if (g_Girls.HasTrait(girl, "Manly"))					quality -= 2;
 	if (g_Girls.HasTrait(girl, "Fragile"))					quality -= 2;
 	if (g_Girls.HasTrait(girl, "Mind Fucked"))				quality -= 4;

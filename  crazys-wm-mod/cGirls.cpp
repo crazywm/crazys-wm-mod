@@ -1104,6 +1104,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (HasTrait(girl, "Fairy Dust Addict"))			{ Dangerous += 10; Cool += 20; Nerd -= 15; Elegant -= 25; Sexy -= 25; Freak += 15; }
 	if (HasTrait(girl, "Viras Blood Addict"))			{ Dangerous += 15; Cool += 25; Nerd -= 20; Elegant -= 30; Sexy -= 30; Freak += 20; }
 	if (HasTrait(girl, "Nymphomaniac"))					{ Sexy += 15; Freak += 20; Elegant -= 5; } //kind of an addiction!
+	if (HasTrait(girl, "Chaste"))						{ Sexy -= 10; Freak += 10; Elegant += 5; Nerd += 5; }
 	if (HasTrait(girl, "Smoker"))						{ Elegant -= 5; Cool += 5; }
 	if (HasTrait(girl, "Alchoholic"))					{ Elegant -= 15; Cool += 5; Dangerous += 5; }
 	if (HasTrait(girl, "Cum Addict"))					{ Sexy += 10; Freak += 20; Elegant -= 20; }
@@ -1546,7 +1547,9 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 				if (test == "One Eye")				c += 5;
 				if (test == "Eye Patch")			c += 5;
 				if (test == "Malformed")			c += 5;
+				if (test == "Chaste")				c += 5;
 
+				if (test == "Nymphomaniac")			c -= 5;
 				if (test == "Mind Fucked")			c += -5;
 				if (test == "Retarded")				c += -5;
 				if (test == "Dependant")			c += -10;
@@ -3693,8 +3696,16 @@ void cGirls::updateTempStats(sGirl* girl)	// Normalise to zero by 30% each week
 	}
 }
 
-void cGirls::UpdateStatTemp(sGirl* girl, int stat, int amount)
+void cGirls::UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits)
 {
+	if (usetraits)
+	{
+		if (stat == STAT_LIBIDO)
+		{
+			if (girl->has_trait("Nymphomaniac"))	{ amount = int((double)amount * (amount > 0 ? 1.5 : 0.5));	if (amount == 0)	amount = 1; }
+			else if (girl->has_trait("Chaste"))		{ amount = int((double)amount * (amount > 0 ? 0.5 : 1.5));	if (amount == 0)	amount = -1; }
+		}
+	}
 	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_EXP ||
 		stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_ASKPRICE)
 	{
@@ -4808,7 +4819,7 @@ void cGirls::UseItems(sGirl* girl)
 		else
 		{
 			UpdateStat(girl, STAT_HAPPINESS, 10);
-			UpdateStatTemp(girl, STAT_LIBIDO, 10);
+			UpdateStatTemp(girl, STAT_LIBIDO, 10, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
@@ -4841,7 +4852,7 @@ void cGirls::UseItems(sGirl* girl)
 		else
 		{
 			UpdateStat(girl, STAT_HAPPINESS, 10);
-			UpdateStatTemp(girl, STAT_LIBIDO, 5);
+			UpdateStatTemp(girl, STAT_LIBIDO, 5, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
@@ -4874,7 +4885,7 @@ void cGirls::UseItems(sGirl* girl)
 		else
 		{
 			UpdateStat(girl, STAT_HAPPINESS, 10);
-			UpdateStatTemp(girl, STAT_LIBIDO, 2);
+			UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
@@ -4909,7 +4920,7 @@ void cGirls::UseItems(sGirl* girl)
 		else
 		{
 			UpdateStat(girl, STAT_HAPPINESS, 10);
-			UpdateStatTemp(girl, STAT_LIBIDO, 2);
+			UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
@@ -4970,7 +4981,7 @@ void cGirls::UseItems(sGirl* girl)
 				UpdateStat(girl, STAT_HAPPINESS, happy);
 				UpdateStat(girl, STAT_HEALTH, health);
 				UpdateStat(girl, STAT_MANA, mana);
-				UpdateStatTemp(girl, STAT_LIBIDO, libido);
+				UpdateStatTemp(girl, STAT_LIBIDO, libido, true);
 				g_InvManager.Equip(girl, temp, false);
 				girl->m_Withdrawals = 0;
 			}
@@ -5880,6 +5891,55 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 			else if (Name == "Cat Girl")
 			{
 				UpdateStatTr(girl, STAT_AGILITY, 10);
+			}
+			else if (Name == "Chaste")
+			{
+				UpdateStatTr(girl, STAT_LIBIDO, -20);
+				UpdateStatTr(girl, STAT_CHARISMA, -5);
+				UpdateStatTr(girl, STAT_REFINEMENT, 5);
+				UpdateStatTr(girl, STAT_DIGNITY, 5);
+				UpdateStatTr(girl, STAT_SPIRIT, 5);
+				UpdateStatTr(girl, STAT_CONFIDENCE, 5);
+
+				UpdateSkillTr(girl, SKILL_ANAL, -10);
+				UpdateSkillTr(girl, SKILL_BDSM, -10);
+				UpdateSkillTr(girl, SKILL_NORMALSEX, -10);
+				UpdateSkillTr(girl, SKILL_BEASTIALITY, -10);
+				UpdateSkillTr(girl, SKILL_GROUP, -10);
+				UpdateSkillTr(girl, SKILL_LESBIAN, -10);
+				UpdateSkillTr(girl, SKILL_STRIP, -10);
+				UpdateSkillTr(girl, SKILL_ORALSEX, -10);
+				UpdateSkillTr(girl, SKILL_TITTYSEX, -10);
+				UpdateSkillTr(girl, SKILL_HANDJOB, -10);
+				UpdateSkillTr(girl, SKILL_FOOTJOB, -10);
+
+				UpdateEnjoymentTR(girl, ACTION_SEX, -20);
+				UpdateEnjoymentTR(girl, ACTION_WORKHOUSEPET, -20);
+				UpdateEnjoymentTR(girl, ACTION_WORKHAREM, -20);
+				UpdateEnjoymentTR(girl, ACTION_WORKESCORT, -15);
+				UpdateEnjoymentTR(girl, ACTION_WORKSTRIP, -10);
+				UpdateEnjoymentTR(girl, ACTION_WORKMILK, -5);
+				UpdateEnjoymentTR(girl, ACTION_WORKMASSEUSE, -5);
+
+				UpdateEnjoymentTR(girl, ACTION_WORKSECURITY, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKADVERTISING, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKTORTURER, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKDOCTOR, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKCENTRE, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKNURSE, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKMECHANIC, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKCOUNSELOR, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKFARM, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKMAKEPOTIONS, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKMAKEITEMS, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKCOOKING, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKTHERAPY, 20);
+				UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, 10);
+				UpdateEnjoymentTR(girl, ACTION_WORKMATRON, 10);
+				UpdateEnjoymentTR(girl, ACTION_WORKCARING, 10);
+				UpdateEnjoymentTR(girl, ACTION_WORKMUSIC, 10);
+				UpdateEnjoymentTR(girl, ACTION_WORKCUSTSERV, 5);
+				UpdateEnjoymentTR(girl, ACTION_WORKRECRUIT, 5);
 			}
 			else if (Name == "Charismatic")
 			{
@@ -7335,6 +7395,21 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				else if (name != "Deep Throat" && HasRememberedTrait(girl, "Deep Throat"))				RestoreRememberedTrait(girl, "Deep Throat");
 			}
 		}
+		else if (	// Check need sex Traits
+			name == "Nymphomaniac" ||
+			name == "Chaste")
+		{
+			if (apply)
+			{
+				if (name != "Nymphomaniac")		RemoveTrait(girl, "Nymphomaniac", rememberflag, true);
+				if (name != "Chaste")			RemoveTrait(girl, "Chaste", rememberflag, true);
+			}
+			else
+			{
+				/* */if (name != "Nymphomaniac" && HasRememberedTrait(girl, "Nymphomaniac"))	RestoreRememberedTrait(girl, "Nymphomaniac");
+				else if (name != "Chaste" && HasRememberedTrait(girl, "Chaste"))				RestoreRememberedTrait(girl, "Chaste");
+			}
+		}
 		else if (	// Check Orgasm Traits
 			name == "Fake Orgasm Expert" ||
 			name == "Fast Orgasms" ||
@@ -8528,7 +8603,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			RemoveTrait(girl, "Optimist");
 			UpdateStat(girl, STAT_HEALTH, -5);
 			UpdateStat(girl, STAT_SPIRIT, -5);
-			UpdateStatTemp(girl, STAT_LIBIDO, -50);
+			UpdateStatTemp(girl, STAT_LIBIDO, -50, true);
 			UpdateSkill(girl, SKILL_NORMALSEX, 5);
 		}
 		else if (harm > 15)  //10% chance
@@ -8695,8 +8770,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (HasTrait(girl, "Succubus"))		intro += 5;
 		if (!customer->m_IsWoman && HasTrait(girl, "Cum Addict")) intro += 4;
 		if (customer->m_IsWoman && HasTrait(girl, "Lesbian"))	intro += 3;
+		if (HasTrait(girl, "Nymphomaniac"))	intro += 4;
 		if (HasTrait(girl, "Fast Orgasms"))	intro += 3;
-		if (HasTrait(girl, "Nymphomaniac"))	intro += 2;
 		if (HasTrait(girl, "Whore"))		intro += 2;
 		if (HasTrait(girl, "Aggressive"))	intro += 1;
 		if (HasTrait(girl, "Open Minded"))	intro += 1;
@@ -8707,6 +8782,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (HasTrait(girl, "Meek"))			intro -= 1;
 		if (HasTrait(girl, "Noble"))		intro -= 1;//maybe again CRAZY
 		if (HasTrait(girl, "Nervous"))		intro -= 2;
+		if (HasTrait(girl, "Chaste"))		intro -= 2;
 		if (HasTrait(girl, "Shy"))			intro -= 2;
 		if (HasTrait(girl, "Princess"))		intro -= 2;//maybe again CRAZY
 		if (HasTrait(girl, "Priestess"))	intro -= 2;//maybe again CRAZY guess it would depend on the type of priestess
@@ -11885,20 +11961,17 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			else if (g_Dice.percent(30) && (HasTrait(girl, "Optimist") || HasTrait(girl, "Quick Learner")))
 			{
-				sexMessage << girlName << " was completely unable to handle this group. While it was damn uncomfortable, being fucked this many ways by this many customers, "
-					<< "it was a powerful experience. She's quietly confident she'll do better next time.";
+				sexMessage << girlName << " was completely unable to handle this group. While it was damn uncomfortable, being fucked this many ways by this many customers, it was a powerful experience. She's quietly confident she'll do better next time.";
 				SetSkill(girl, SKILL_GROUP, g_Dice % 3);
 				UpdateStat(girl, STAT_HAPPINESS, 1);
 			}
 			else if (g_Dice.percent(40) && HasTrait(girl, "Natural Pheromones"))
 			{
-				sexMessage << "Her powerful pheromones drove the group insane. When the customers finally staggered out "
-					<< "one of your staff found "<< girlName << " unconscious over a desk with cum coating her face and hair, and dribbling from her pussy, mouth and asshole.";
+				sexMessage << "Her powerful pheromones drove the group insane. When the customers finally staggered out one of your staff found "<< girlName << " unconscious over a desk with cum coating her face and hair, and dribbling from her pussy, mouth and asshole.";
 			}
 			else if (g_Dice.percent(30) && SheAintPretty)
 			{
-				sexMessage << girlName << " was completely unable to handle this group. The whole experience was awful, especially the bit where "
-					"they held her to the bed and deliberately splurted stinking cum in her eyes, up her nose and all over her mouth to hide her 'ugly-bitch face.'";
+				sexMessage << girlName << " was completely unable to handle this group. The whole experience was awful, especially the bit where they held her to the bed and deliberately splurted stinking cum in her eyes, up her nose and all over her mouth to hide her 'ugly-bitch face.'";
 			}
 			else if (choice < 20)
 			{
@@ -12492,7 +12565,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_HEALTH, -3);
 			//UpdateStat(girl, STAT_SANITY, -3);
 		}
-		UpdateStatTemp(girl, STAT_LIBIDO, -10);
+		UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
 		UpdateStat(girl, STAT_SPIRIT, -1);
 		STDchance += 30;
 
@@ -12503,7 +12576,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			message += "\n\nAfterwards he stuffed a toy up " + girlName + "'s cum lubricated ass, telling her it was a 'gift.' ";
 			if (g_Girls.HasTrait(girl, "Nymphomaniac"))
 			{
-				message += "She kept it in while she dressed and tidied. She'll definitely keep ";
+				message += "She kept it in while she dressed and tidied up. She'll definitely keep ";
 				keep = true;
 			}
 			else if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
@@ -12517,6 +12590,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			if (keep)
 			{
+
 				if (g_Dice.percent(66)) g_Girls.AddInv(girl, g_InvManager.GetItem("Buttplug")), message += "this buttplug.";
 				else g_Girls.AddInv(girl, g_InvManager.GetItem("Anal Beads")), message += "these anal beads.";
 			}
@@ -12546,7 +12620,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			STDchance += (contraception ? 2 : 20);
 		}
 
-		UpdateStatTemp(girl, STAT_LIBIDO, -5);
+		UpdateStatTemp(girl, STAT_LIBIDO, -5, true);
 		UpdateStat(girl, STAT_SPIRIT, -1);
 
 	 //SIN - GIFT DROP
@@ -12617,7 +12691,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			contraception = girl->calc_pregnancy(customer, good);
 			STDchance += (contraception ? 4 : 40);
 		}
-		UpdateStatTemp(girl, STAT_LIBIDO, -15);
+		UpdateStatTemp(girl, STAT_LIBIDO, -15, true);
 
 	 //SIN - GIFT DROP
 		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
@@ -12675,7 +12749,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 		}
 		STDchance += 10;
-		UpdateStatTemp(girl, STAT_LIBIDO, -2);
+		UpdateStatTemp(girl, STAT_LIBIDO, -2, true);
 
 	 //SIN - GIFT DROP
 		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
@@ -12703,7 +12777,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//UpdateStat(girl, STAT_SANITY, -1);
 		}
 		STDchance += 1;
-		UpdateStatTemp(girl, STAT_LIBIDO, -2);
+		UpdateStatTemp(girl, STAT_LIBIDO, -2, true);
 	}break;
 
 	case SKILL_HANDJOB:
@@ -12721,7 +12795,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
 		STDchance += 1;
-		UpdateStatTemp(girl, STAT_LIBIDO, -1);
+		UpdateStatTemp(girl, STAT_LIBIDO, -1, true);
 	}break;
 
 	case SKILL_FOOTJOB:
@@ -12739,7 +12813,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_CONFIDENCE, -1);
 		}
 		STDchance += 1;
-		UpdateStatTemp(girl, STAT_LIBIDO, -1);
+		UpdateStatTemp(girl, STAT_LIBIDO, -1, true);
 	}break;
 
 	case SKILL_BEASTIALITY:
@@ -12767,7 +12841,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			contraception = girl->calc_insemination(GetBeast(), good);
 			STDchance += (contraception ? 2 : 20);
 		}
-		UpdateStatTemp(girl, STAT_LIBIDO, -10);
+		UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
 
 	//SIN - GIFT DROP
 		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 50)
@@ -12864,7 +12938,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				message += "\n\nWorryingly, as she tidied up she found a Herpes Cure dropped under the bed. It's hers now.";
 			}
 		}
-		UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 	}break;
 
 	case SKILL_LESBIAN:
@@ -12883,7 +12957,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//UpdateStat(girl, STAT_SANITY, -1);
 		}
 		STDchance += 5;
-		UpdateStatTemp(girl, STAT_LIBIDO, -10);
+		UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
 
 	 //SIN - GIFT DROP
 		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
@@ -12929,7 +13003,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			UpdateStat(girl, STAT_HEALTH, -3);
 		}
 		STDchance += 0;
-		UpdateStatTemp(girl, STAT_LIBIDO, 0);
+		UpdateStatTemp(girl, STAT_LIBIDO, 0, true);
 	}break;
 	}	// end switch
 
@@ -16867,6 +16941,38 @@ bool sGirl::is_resting()
 		(m_DayJob == JOB_FARMREST		&& m_NightJob == JOB_FARMREST) ||
 		(m_DayJob == JOB_RESTING		&& m_NightJob == JOB_RESTING));
 }
+bool sGirl::is_havingsex()
+{
+	return (
+		m_DayJob == JOB_TRAINING || m_NightJob == JOB_TRAINING ||
+		m_DayJob == JOB_ESCORT || m_NightJob == JOB_ESCORT ||
+		m_DayJob == JOB_WHOREGAMBHALL || m_NightJob == JOB_WHOREGAMBHALL ||
+		m_DayJob == JOB_BARWHORE || m_NightJob == JOB_BARWHORE ||
+		m_DayJob == JOB_WHOREBROTHEL || m_NightJob == JOB_WHOREBROTHEL ||
+		m_DayJob == JOB_WHORESTREETS || m_NightJob == JOB_WHORESTREETS ||
+		m_DayJob == JOB_FILMANAL || m_NightJob == JOB_FILMANAL ||
+		m_DayJob == JOB_FILMFOOTJOB || m_NightJob == JOB_FILMFOOTJOB ||
+		m_DayJob == JOB_FILMHANDJOB || m_NightJob == JOB_FILMHANDJOB ||
+		m_DayJob == JOB_FILMLESBIAN || m_NightJob == JOB_FILMLESBIAN ||
+		m_DayJob == JOB_FILMORAL || m_NightJob == JOB_FILMORAL ||
+		m_DayJob == JOB_FILMSEX || m_NightJob == JOB_FILMSEX ||
+		m_DayJob == JOB_FILMTITTY || m_NightJob == JOB_FILMTITTY ||
+		m_DayJob == JOB_FILMBEAST || m_NightJob == JOB_FILMBEAST ||
+		m_DayJob == JOB_FILMBONDAGE || m_NightJob == JOB_FILMBONDAGE ||
+		m_DayJob == JOB_FILMBUKKAKE || m_NightJob == JOB_FILMBUKKAKE ||
+		m_DayJob == JOB_FILMFACEFUCK || m_NightJob == JOB_FILMFACEFUCK ||
+		m_DayJob == JOB_FILMGROUP || m_NightJob == JOB_FILMGROUP ||
+		m_DayJob == JOB_FILMPUBLICBDSM || m_NightJob == JOB_FILMPUBLICBDSM ||
+		m_DayJob == JOB_FILMRANDOM || m_NightJob == JOB_FILMRANDOM ||
+		m_DayJob == JOB_PERSONALBEDWARMER || m_NightJob == JOB_PERSONALBEDWARMER ||
+		m_DayJob == JOB_PERSONALTRAINING || m_NightJob == JOB_PERSONALTRAINING ||
+		m_DayJob == JOB_FAKEORGASM || m_NightJob == JOB_FAKEORGASM ||
+		m_DayJob == JOB_SO_STRAIGHT || m_NightJob == JOB_SO_STRAIGHT ||
+		m_DayJob == JOB_SO_BISEXUAL || m_NightJob == JOB_SO_BISEXUAL ||
+		m_DayJob == JOB_SO_LESBIAN || m_NightJob == JOB_SO_LESBIAN ||
+		m_DayJob == JOB_HOUSEPET || m_NightJob == JOB_HOUSEPET
+		);
+}
 bool sGirl::was_resting()
 {
 	return ((m_PrevDayJob == JOB_FILMFREETIME	&& m_PrevNightJob == JOB_FILMFREETIME) ||
@@ -17882,7 +17988,9 @@ bool cGirls::InheritTrait(sTrait* trait)
 	string name = trait->m_Name;
 	if (trait)
 	{
-		if (name == "Malformed" ||
+		if (name == "Nymphomaniac" ||
+			name == "Chaste" ||
+			name == "Malformed" ||
 			name == "Retarded" ||
 			name == "Sterile")
 		{
@@ -17911,10 +18019,6 @@ bool cGirls::InheritTrait(sTrait* trait)
 			name == "Viras Blood Addict")
 		{
 			if (g_Dice.percent(50)) return true;
-		}
-		if (name == "Nymphomaniac")
-		{
-			if (g_Dice.percent(60)) return true;
 		}
 		if (name == "Perky Nipples" ||
 			name == "Puffy Nipples" ||
@@ -18482,6 +18586,7 @@ int cGirls::PreferredAccom(sGirl* girl)
 		if (HasItemJ(girl, "Free Weights") != -1)					preferredaccom += 0.2;	// She may like the workout but it takes up a lot of room
 		if (HasItemJ(girl, "Guard Dog") != -1)						preferredaccom += 0.2;	// Though she loves having a pet, a large dog takes up some room
 		if (HasItemJ(girl, "Happy Orb") != -1)						preferredaccom -= 0.5;	// She has happy dreams
+		if (HasItemJ(girl, "Relaxation Orb") != -1)					preferredaccom -= 0.5;	// She can relax anywhere
 		if (HasItemJ(girl, "Library Card") != -1)					preferredaccom -= 0.5;	// She has somewhere else to go and she can bring books back, they keep her mind off other things
 		if (HasItemJ(girl, "Lovers Orb") != -1)						preferredaccom -= 0.5;	// She really enjoys her dreams
 		if (HasItemJ(girl, "Nightmare Orb") != -1)					preferredaccom += 0.2;	// She does not sleep well
@@ -18533,6 +18638,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 	if (girl->has_trait("Broken Will"))				detectdisease -= 90;	// 
 	if (girl->has_trait("Canine"))					detectdisease += 20;	// I can smell it in you
 	if (girl->has_trait("Cat Girl"))				detectdisease += 10;	// 
+	if (girl->has_trait("Chaste"))					detectdisease -= 10;	// not shure what to look for
 	if (girl->has_trait("Clumsy"))					detectdisease -= 10;	// 
 	if (girl->has_trait("Construct"))				detectdisease += 5;		// 
 	if (girl->has_trait("Country Gal"))				detectdisease += 5;		// 

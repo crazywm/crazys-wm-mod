@@ -392,6 +392,19 @@ Fixed several bugs pointed out by blx
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.50
 
+### Changes 12/26-29/2016
+
+Added new trait "Chaste" to be the opposite of "Nymphomaniac"
+Added libido check in UpdateStatTemp to work with "Chaste" and "Nymphomaniac"
+Added Chastity Orb.itemsx
+Added the ability to add both permanent and temporary traits to food/makeup items
+Added GetRandomGangOnMission()
+Changed some sCustomer things from char to bool or int
+Updated WorkBrothelWhore, WorkBarWhore and WorkHallWhore
+ - added female customers that don't pay can be taken as slaves
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.51
 
 
 

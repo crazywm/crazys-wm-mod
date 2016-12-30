@@ -560,7 +560,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 								}
 								GetMiscCustomer(brothel, Cust);
 								brothel->m_Happiness += 100;
-								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 								// work out the pay between the house and the girl
 								wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
 								fame += 1;
@@ -592,7 +592,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 								}
 								GetMiscCustomer(brothel, Cust);
 								brothel->m_Happiness += 100;
-								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 								// work out the pay between the house and the girl
 								wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
 								fame += 1;
@@ -609,7 +609,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 						ss << "She was horny and ended up masturbating for the customers making them very happy.";
 						GetMiscCustomer(brothel, Cust);
 						brothel->m_Happiness += 100;
-						g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+						g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 						// work out the pay between the house and the girl
 						wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
 						fame += 1;

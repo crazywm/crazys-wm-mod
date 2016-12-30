@@ -246,7 +246,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 				ss << " and said that's only on the menu if your willing to pay up. He jumped at the chance to get to try her ass out and bent her over the table and whiping out his " << dick_type_text << " dick.";
 				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 50;
 				imagetype = IMGTYPE_ANAL;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				if (roll_c >= 90)//small
 				{
 					if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 70)
@@ -497,7 +497,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		tips += 50; 
 		imagetype = IMGTYPE_ORAL;
 		oral += 2;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 	}
 
 	if (girl->libido() > 90 && g_Dice.percent(25) && !g_Girls.HasTrait(girl, "Lesbian") && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 80 || g_Girls.HasTrait(girl, "Cum Addict")))
@@ -506,7 +506,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		tips += 50;
 		imagetype = IMGTYPE_HAND;
 		hand += 2;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 	}
 
 	if (g_Dice.percent(20) && (g_Girls.HasTrait(girl, "Exhibitionist") || g_Girls.GetStat(girl, STAT_DIGNITY) <= -20))
@@ -532,7 +532,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		{
 			ss << "Noticing the bulge under her skirt one of the customers asked for a very special service: He wanted some \"cream\" in his drink. " << girlName << " took her already hard cock out and sprinkled the drink with some of her jizz. The customer thanked her and slipped a good tip under her panties.\n";
 			g_Girls.UpdateSkill(girl, SKILL_SERVICE, 2);
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 			tips += 30 + (int)(g_Girls.GetSkill(girl, SKILL_SERVICE) *0.2); // not sure if this will work fine
 			imagetype = IMGTYPE_MAST;
 		}
@@ -587,12 +587,12 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			if (g_Girls.HasTrait(girl, "Pierced Nipples"))
 			{
 				tips += 3;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 1);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 1, true);
 				ss << "Her nipple piercings were a pleasant surprise to her, and she \n";
 			}
 			else ss << "She";
 			ss << "slipped a small tip between her tits afterwards.\n";
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
 			tips += 15;
 			if (g_Girls.GetStat(girl, STAT_DIGNITY) > 30)
 			{
@@ -605,12 +605,12 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			if (g_Girls.HasTrait(girl, "Pierced Nipples"))
 			{
 				tips += 3;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 1);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 1, true);
 				ss << "Her nipple piercings were a pleasant surprise to him, and he \n";
 			}
 			else ss << "He";
 			ss << "slipped a small tip between her tits afterwards.\n";
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
 			tips += 15;
 			if (g_Girls.GetStat(girl, STAT_DIGNITY) > 30)
 			{
@@ -655,7 +655,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		int NumCust = g_Dice % 6 + 1;
 		tips -= 10;
 		wages -= 50;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 		g_Girls.UpdateSkill(girl, SKILL_ANAL, max(0, g_Dice % 4 + 1));
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, max(0, g_Dice % 4 - 1));
 		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, max(0, g_Dice % 4 + 1));
@@ -722,7 +722,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
 			imagetype = IMGTYPE_ORAL;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 		}
 	}
 
@@ -745,7 +745,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
 			imagetype = IMGTYPE_HAND;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 		}
 	}
 
@@ -782,7 +782,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 				}
 				g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
 				imagetype = IMGTYPE_TITTY;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 			}
 			tips += 15;
 		}

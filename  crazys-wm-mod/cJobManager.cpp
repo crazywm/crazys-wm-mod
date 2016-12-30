@@ -2163,7 +2163,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	{
 		g_Girls.UpdateSkill(SecGuard, SKILL_COMBAT, 1);
 		g_Girls.UpdateSkill(SecGuard, SKILL_MAGIC, 1);
-		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
+		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, num, true);  // There's nothing like killin ta make ya horny!
 		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, num);
 		g_Girls.UpdateStat(SecGuard, STAT_FAME, num);
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num);
@@ -2294,7 +2294,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		g_Girls.UpdateStat(SecGuard, STAT_OBEDIENCE, -10);
 		g_Girls.UpdateStat(SecGuard, STAT_SPIRIT, -40);
 		g_Girls.UpdateStat(SecGuard, STAT_LIBIDO, -4);
-		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, -40);
+		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, -40, true);
 		g_Girls.UpdateStat(SecGuard, STAT_TIREDNESS, 60);
 		g_Girls.UpdateStat(SecGuard, STAT_PCFEAR, 20);
 		g_Girls.UpdateStat(SecGuard, STAT_PCLOVE, -20);
@@ -2459,7 +2459,7 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 		g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
 		g_Girls.UpdateSkill(girl, SKILL_MAGIC, 1);
 		g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, num);  // There's nothing like killin ta make ya horny!
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, num, true);  // There's nothing like killin ta make ya horny!
 		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, num);
 		g_Girls.UpdateStat(girl, STAT_FAME, num);
 
@@ -2539,7 +2539,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	g_Girls.UpdateStat(girl, STAT_OBEDIENCE, -10);
 	g_Girls.UpdateStat(girl, STAT_SPIRIT, -40);
 	g_Girls.UpdateStat(girl, STAT_LIBIDO, -4);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -40);
+	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -40, true);
 	g_Girls.UpdateStat(girl, STAT_TIREDNESS, 60);
 	g_Girls.UpdateStat(girl, STAT_PCFEAR, 20);
 	g_Girls.UpdateStat(girl, STAT_PCLOVE, -20);
@@ -3007,7 +3007,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 		}
 		ss << gettext(".");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-		if (g_Girls.HasTrait(girl, "Lesbian") && set.size() > 1) g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, set.size() - 1);
+		if (g_Girls.HasTrait(girl, "Lesbian") && set.size() > 1) g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, set.size() - 1, true);
 	}
 }
 

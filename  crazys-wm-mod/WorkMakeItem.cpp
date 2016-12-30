@@ -514,7 +514,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			if (itemmade == "")
 			{
-				switch (g_Dice % 26)
+				switch (g_Dice % 30)
 				{
 				case 0:
 					if (craftpoints >= 200 && girl->magic() > 60)
@@ -547,120 +547,132 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						break;
 					}
 				case 5:
+					if (craftpoints >= 100 && girl->magic() > 30)
+					{
+						Cost = 100;		Magic = 30;		itemmade = "Chastity Orb";//                  Desc = "At first glance, this pretty crystal ball filled with mesmerizing pink mist seems to be simple decoration for a girl's bedroom. However, it is the focus of a powerful spell, a spell that ensures that she dreams only of you... and that these dreams are erotic. (+5 Love, -1 Fear/Hate)"
+						break;
+					}
+				case 6:
+					if (craftpoints >= 100 && girl->magic() > 30)
+					{
+						Cost = 100;		Magic = 30;		itemmade = "Relaxation Orb";//                  Desc = "At first glance, this pretty crystal ball filled with mesmerizing pink mist seems to be simple decoration for a girl's bedroom. However, it is the focus of a powerful spell, a spell that ensures that she dreams only of you... and that these dreams are erotic. (+5 Love, -1 Fear/Hate)"
+						break;
+					}
+				case 7:
 					if (craftpoints >= 90 && girl->magic() > 40)
 					{
 						Cost = 90;		Magic = 40;		itemmade = "Magical Cowbell Collar";//      Desc = "A collar with a magical cowbell that turns your girl into a cow girl. The bell originally replaced her brain with an actual cow brain, but too many people complained about it, so they changed it to just eliminate small breastedness. (+15 Best, +10 Obed, -5 Refinement, -20 Spi, +5 Con, -5 Int, adds Cow Girl, Increases breast size to Average, removes Elegant)"
 						break;
 					}
-				case 6:
+				case 8:
 					if (craftpoints >= 90)
 					{
 						Cost = 90;		Magic = 0;		itemmade = "Spiked Collar";//               Desc = "This thick black leather collar is studded with shiny spikes. It looks like something you'd put on a dog, but it also looks quite intimidating. (C) (+10 BDSM, +10 Best, +2 Comb, -5 Cha)"
 						break;
 					}
-				case 7:
+				case 9:
 					if (craftpoints >= 90)
 					{
 						Cost = 90;		Magic = 0;		itemmade = "Combs of the Magi";//           Desc = "An incredibly fancy set of combs. You'll have to sell that fancy watch of yours to pay for these! (Beauty +30, Charisma +10, adds Elegant.)"
 						break;
 					}
-				case 8:
+				case 10:
 					if (craftpoints >= 80 && girl->magic() > 60)
 					{
 						Cost = 80;		Magic = 60;		itemmade = "Soul Ball";//                   Desc = "A bowling ball filled with the soul of the damned. Not useful for much aside from selling. (Fear +10)"
 						break;
 					}
-				case 9:
+				case 11:
 					if (craftpoints >= 80 && girl->magic() > 40)
 					{
 						Cost = 80;		Magic = 40;		itemmade = "Shocking Bead";//               Desc = "This tiny, round object will magically attach itself inside a girl's vagina, delivering electric shocks automatically when she becomes willful or stubborn. It's designed to produce a somewhat small, corrective amount of pain -- but the very idea of the device is enough to strongly affect most girls. Additionally, it tends to exercise the vaginal muscles, making sex more enjoyable. (+50 Obed, +Nervous, +20 Fear, +30 Norm / BDSM)"
 						break;
 					}
-				case 10:
+				case 12:
 					if (craftpoints >= 70)
 					{
 						Cost = 70;		Magic = 0;		itemmade = "Elegant Combs";//               Desc = "A fancy set of combs for your girl's hairt. (Beauty +10. Adds Elegant)"
 						break;
 					}
-				case 11:
+				case 13:
 					if (craftpoints >= 60)
 					{
 						Cost = 60;		Magic = 0;		itemmade = "Set of Combs";//                Desc = "A small set of combs and brushes so your girl can keep her hair looking its best. (Beauty +3)"
 						break;
 					}
-				case 12:
+				case 14:
 					if (craftpoints >= 50 && girl->magic() > 30)
 					{
 						Cost = 50;		Magic = 30;		itemmade = "Talon of Barren Paradise";//    Desc = "When this sharply-clawed finger is inserted into a girl's vagina, strange magic causes it to start twisting around. While oddly painless, it modifies the girl's anatomy to work solely for pleasure. She'll no longer have a usable womb, but her vagina is significantly altered and enhanced. It develops a number of twists and ridges, and her nerve endings become far more exposed and sensitive. Unfortunately, greatly increased hormones may affect her in other ways.(+Sterile, +Fast Orgasms, +50 Norm, -30 Obed, -10 Con, +10 Fear/Hate)"
 						break;
 					}
-				case 13:
+				case 15:
 					if (craftpoints >= 50 && girl->magic() > 30)
 					{
 						Cost = 50;		Magic = 30;		itemmade = "Playco Armboy";//               Desc = "An attachment that goes on your arm and makes you a good deal stronger. (+5 Cmb/Str)"
 						break;
 					}
-				case 14:
+				case 16:
 					if (craftpoints >= 50 && girl->magic() > 20)
 					{
 						Cost = 50;		Magic = 20;		itemmade = "Shock Collar";//                Desc = "A collar that negatively reinforces aggressive behavior with a shock. (Constitution -5, removes Aggressive)"
 						break;
 					}
-				case 15:
+				case 17:
 					if (craftpoints >= 50)
 					{
 						Cost = 50;		Magic = 0;		itemmade = "The Realm of Darthon";//        Desc = "A role playing game your girls can use to wind down after a long day of whoring. (-10 Tired. Adds Nerd)"
 						break;
 					}
-				case 16:
+				case 18:
 					if (craftpoints >= 40)
 					{
 						Cost = 40;		Magic = 0;		itemmade = "Slut Collar";//                 Desc = "This pink leather collar with shiny silver studs and the word slut spelled out in golden, capital letters is an insult... and a compliment, in a special way. (+8 BDSM, +5 Best, +2 Serv, +8 Obed, +7 Conf, +5 Fame, -15 Spi, -2 Cha, -2 Hap, +10 Hate, -10 Refinement, -10 Dignity, removes Elegant and adds Slut)"
 						break;
 					}
-				case 17:
+				case 19:
 					if (craftpoints >= 40)
 					{
 						Cost = 40;		Magic = 0;		itemmade = "Ponytail Plug";//               Desc = "Big anal plug in the form of a pony's tail. Not the hairstyle. (+17 Anal, +3 BDSM, +7 Best, +1 Cha, +5 Con and Obed, +8 Lib, -10 Ref, -10 Agi, -7 Com, +7 Hate, -5 Happiness, -7 Spirit, removes Elegant)"
 						break;
 					}
-				case 18:
+				case 20:
 					if (craftpoints >= 40)
 					{
 						Cost = 40;		Magic = 0;		itemmade = "Cow Tail Plug";//               Desc = "Big anal plug that ends in a cow tail. (+17 Anal, +3 BDSM, +7 Best, +2 Cha, +5 Con and Obed, +8 Lib, -10 Ref, -10 Agi -7 Com, +7 Hate, -2 Happiness, -10 Spirit, removes Elegant)"
 						break;
 					}
-				case 19:
+				case 21:
 					if (craftpoints >= 40)
 					{
 						Cost = 40;		Magic = 0;		itemmade = "Cat Tail Plug";//               Desc = "Anal plug that ends in a cute cat tail. (+15 Anal, +2 BDSM, +7 Best, +2 Con and Obed, +3 Cha, +7 Lib, -5 Agi, -2 Com, +2 Hate, -2 Happy, -5 Spirit)"
 						break;
 					}
-				case 20:
+				case 22:
 					if (craftpoints >= 40)
 					{
 						Cost = 40;		Magic = 0;		itemmade = "Cat Bell Collar";//             Desc = "A fancy collar with a little bell on it. It's the perfect thing for keeping an eye on your pet cat's location, and no kitty is complete without one. Or you could put it on a girl, whichever floats your boat. (+5 Best, +2 Cha, +3 Obed, -2 Spi)"
 						break;
 					}
-				case 21:
+				case 23:
 					if (craftpoints >= 40)
 					{
 						Cost = 40;		Magic = 0;		itemmade = "Bunny Tail Plug";//             Desc = "Anal plug that ends in a fluffy bunny tail. (+15 Anal, +2 BDSM, +2 Best, +2 Con and Obed, +3 Cha, +7 Lib, -5 Agi, -2 Com, +2 Hate, -2 Hap, -5 Spirit, adds Cute)"
 						break;
 					}
-				case 22:
+				case 24:
 					if (craftpoints >= 30 && girl->magic() > 50)
 					{
 						Cost = 30;		Magic = 50;		itemmade = "Magic ball gag";//              Desc = "For quiet time. This deluxe model also dulls the wearers combat senses. (+10 obedience +30 libido +10 most sex skills -all oral -charming/elegant -lots group/service/magic/combat)"
 						break;
 					}
-				case 23:
+				case 25:
 					if (craftpoints >= 30)
 					{
 						Cost = 30;		Magic = 0;		itemmade = "Pet Collar";//                  Desc = "This human-sized pet collar with engraved brass name-tag isn't exactly the peak of elegance, but some would find it cute, and yet other would find it sexy, in the right circumstances... (B) (+10 BDSM, +30 Best, +15 Obed, -15 Spi, -5 Cha, -5 Hap, +10 Hate, removes Elegant)"
 						break;
 					}
-				case 24:
+				case 26:
 					if (craftpoints >= 20)
 					{
 						Cost = 20;		Magic = 0;		itemmade = "Leash";//                       Desc = "This length of rope attached to a leather collar isn't just an effective physical restraint: it's an humiliating punishment. In many ways, a woman wearing this is at the complete mercy of whoever is holding it. (D) (+5 BDSM, +10 Best, +20 Obed, -20 Spi, -20 Conf, -20 Comb, -30 Agi, -30 Happ, -20 Refinement, +10 Hate, +15 Fear, removes Elegant)"

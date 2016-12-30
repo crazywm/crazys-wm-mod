@@ -504,7 +504,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								ss << " it's large red cock into her welcoming cunt. \"Should we do something?\" someone on stage asked, more out of fascination rather";
 								ss << " than actual desire. Almost certainly the cameras were still rolling at this point. \"No, he deserves his reward.\"";
 								ss << " you reply, smiling as the dog plowed heavily into " << girlName << ", and her tits began to sway violent, her tongue panting like a good dog.";
-								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 								g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
 								imagetype = IMGTYPE_BEAST;
 								if (!girl->calc_insemination(g_Girls.GetBeast(), false, 1.0))

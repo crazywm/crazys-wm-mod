@@ -262,7 +262,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		{
 			ss << ", who massaged " << girlName << "'s breasts thoroughly and was careful to thoroughly arouse the nipple with her tongue before attaching the cup. This helped with milking.";
 			volume += (volume / 10);
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 5);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 5, true);
 		}
 		else if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(40))
 		{

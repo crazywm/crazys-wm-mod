@@ -377,7 +377,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
 		}
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3);
 	}
 	else if (hand)

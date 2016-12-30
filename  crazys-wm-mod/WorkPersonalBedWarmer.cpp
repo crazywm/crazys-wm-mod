@@ -119,7 +119,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 						<< headName << gettext(" suddenly stops, leaving ") << girlName << gettext(" on your bed, wet, frustrated, horny as hell and begging to be fucked.");
 
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +10);
+					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +10, true);
 					g_Girls.UpdateSkill(headGirl, SKILL_LESBIAN, +4);
 				}
 
@@ -181,7 +181,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
 					g_Girls.UpdateStat(girl, STAT_HEALTH, -1);
 					g_Gold.misc_debit(20); //drug/spell money
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2);
+					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
 					g_Girls.UpdateStat(girl, STAT_PCHATE, 5); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
 				}
@@ -219,7 +219,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					{
 						ss << gettext(". ") << headName << gettext(" quickly drives her wild, bringing her right to the brink of orgasm, but never quite letting her come. ");
 						ss << headName << gettext(" suddenly stops, leaving ") << girlName << gettext(" on your bed, wet, frustrated, horny as hell and begging to be fucked.\n");
-						g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +10);
+						g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +10, true);
 						g_Girls.UpdateSkill(headGirl, SKILL_LESBIAN, +4);
 					}
 				}
@@ -335,7 +335,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 						<< gettext("\nYour drug delivers the perfect blend of horniness and suggestibility. ") << girlName
 						<< gettext(" will participate. Fully.\n");
 					g_Gold.misc_debit(100); //drug money
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 10);
+					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 10, true);
 					g_Girls.UpdateStat(girl, STAT_PCHATE, +10); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
 				}
@@ -392,7 +392,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
 					g_Girls.UpdateStat(girl, STAT_HEALTH, -1);
 					g_Gold.misc_debit(20); //drug/spell money
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2);
+					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
 					g_Girls.UpdateStat(girl, STAT_PCHATE, 5); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
 				}
@@ -454,7 +454,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 						<< gettext("\nYour drug delivers a perfect blend of horniness and suggestibility. ") << girlName
 						<< gettext(" will now participate. Fully.\n");
 					g_Gold.misc_debit(100); //drug money
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 10);
+					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 10, true);
 					g_Girls.UpdateStat(girl, STAT_PCHATE, +20); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
 				}
@@ -1120,7 +1120,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				ss << gettext("was horny so she just Masturbated.\n\n");
 			}
 			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -15);
+			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -15, true);
 			imagetype = IMGTYPE_MAST;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
 		}
@@ -1324,7 +1324,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			ss << gettext("was horney so she just Masturbated.\n\n");
 		}
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -15);
+		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -15, true);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, Day0Night1);
 	}
 	else
