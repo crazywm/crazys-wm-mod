@@ -3696,7 +3696,7 @@ void cGirls::updateTempStats(sGirl* girl)	// Normalise to zero by 30% each week
 	}
 }
 
-void cGirls::UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits=false)
+void cGirls::UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits)
 {
 	if (usetraits)
 	{
