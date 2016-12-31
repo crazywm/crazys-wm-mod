@@ -197,7 +197,7 @@ static void do_effects(TiXmlElement *parent, sInventoryItem *item)
 		if (pt = el->Attribute("Amount", &ival)) ept->m_Amount = ival;
 		
 		if (pt = el->Attribute("Duration", &ival)) ept->m_Duration = ival;
-		else ept->m_Duration = 20;
+		else ept->m_Duration = (item->m_Special == 2 ? 20 : 0);
 
 		item->m_Effects.push_back(*ept);
 	}
