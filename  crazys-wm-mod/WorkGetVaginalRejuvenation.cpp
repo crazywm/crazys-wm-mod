@@ -150,7 +150,7 @@ bool cJobManager::WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, boo
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(-1, 1));
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(-1, 1));
 		}
-		
+
 		g_Girls.RegainVirginity(girl);	// `J` updated for trait/status
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		ss << "\n\nShe has been released from the Clinic.";
@@ -163,9 +163,9 @@ bool cJobManager::WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, boo
 
 	// Improve girl
 	int libido = 1;
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	if (girl->has_trait( "Lesbian"))		libido += numnurse;
+	if (girl->has_trait( "Masochist"))	libido += 1;
+	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing

@@ -43,7 +43,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	int actiontype = ACTION_COMBAT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to capture beasts during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -129,10 +129,10 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (gain > 1)
 	{
 		// `J` added a switch with a use next if check fails and changed percents to (gain * 5)
-		switch (g_Dice % 10)	
+		switch (g_Dice % 10)
 		{
 		case 0:
-			if (g_Girls.HasTrait(girl, "Twisted") && g_Girls.HasTrait(girl, "Nymphomaniac") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 80))
+			if (girl->has_trait( "Twisted") && girl->has_trait( "Nymphomaniac") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 80))
 			{
 				ss << "Being a horny, twisted nymphomaniac, " << girlName << " had some fun with the beasts before she handed them over.\n";
 				g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice % gain);
@@ -141,7 +141,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 				break;
 			}
 		case 1:
-			if (g_Girls.HasTrait(girl, "Psychic") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 90) && g_Dice.percent(gain * 5))
+			if (girl->has_trait( "Psychic") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 90) && g_Dice.percent(gain * 5))
 			{
 				ss << girlName << "'s Psychic sensitivity caused her mind be overwhelmed by the creatures' lusts";
 				if (g_Girls.CheckVirginity(girl))
@@ -162,7 +162,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 				break;
 			}
 		case 2:
-			if (g_Girls.HasTrait(girl, "Assassin") && g_Dice.percent(gain * 5))
+			if (girl->has_trait( "Assassin") && g_Dice.percent(gain * 5))
 			{
 				ss << " One of the captured creatures tried to escape on the way back. Trained assassin, " << girlName << ", instantly killed it as an example to the others.\n";
 				g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
@@ -326,7 +326,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 double cJobManager::JP_BeastCapture(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance = 0.0;
-	
+
 	jobperformance +=
 		// primary - first 100
 		((girl->animalhandling() + girl->combat() + girl->strength()) / 3) +

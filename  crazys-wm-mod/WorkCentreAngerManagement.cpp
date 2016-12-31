@@ -55,9 +55,9 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 	if (girl->m_YesterDayJob != JOB_ANGER) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_ANGER;	// it is a full time job
 
-	if (!g_Girls.HasTrait(girl, "Aggressive") &&		// if the girl doesnt need this
-		!g_Girls.HasTrait(girl, "Tsundere") &&
-		!g_Girls.HasTrait(girl, "Yandere"))
+	if (!girl->has_trait( "Aggressive") &&		// if the girl doesnt need this
+		!girl->has_trait( "Tsundere") &&
+		!girl->has_trait( "Yandere"))
 	{
 		ss << " doesn't need anger management so she was sent to the waiting room.";
 		if (Day0Night1 == 0)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -81,7 +81,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 			g_Girls.UpdateEnjoyment(girl, actiontype, -5);
 			bool runaway = false;
 			// if there is no counselor, it should not get to here
-			sGirl* counselor = g_Centre.GetRandomGirlOnJob(0, JOB_COUNSELOR, Day0Night1);	
+			sGirl* counselor = g_Centre.GetRandomGirlOnJob(0, JOB_COUNSELOR, Day0Night1);
 			ss << "\n\n" << girlName << " fought hard with her counselor " << counselor->m_Realname;
 			int winner = g_Girls.girl_fights_girl(girl, counselor);
 			if (winner == 1)	// the patient won
@@ -172,7 +172,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 		enjoy += g_Dice % 10;
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice % 6 - 2);	// `J` She may want to help others with their problems
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 10);
-		
+
 		ss << "The therapy is a success.\n";
 		msgtype = EVENT_GOODNEWS;
 
@@ -185,14 +185,14 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 			switch (t)
 			{
 			case 0:
-				if (g_Girls.HasTrait(girl, "Aggressive"))
+				if (girl->has_trait( "Aggressive"))
 				{
 					g_Girls.RemoveTrait(girl, "Aggressive");
 					ss << "She is no longer Aggressive.\n";
 					cured = true; break;
 				}
 			case 1:
-				if (g_Girls.HasTrait(girl, "Tsundere"))
+				if (girl->has_trait( "Tsundere"))
 				{
 					g_Girls.RemoveTrait(girl, "Tsundere");
 					ss << "She is no longer a Tsundere.\n";
@@ -200,7 +200,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 				}
 			case 2:
 			default:
-				if (g_Girls.HasTrait(girl, "Yandere"))
+				if (girl->has_trait( "Yandere"))
 				{
 					g_Girls.RemoveTrait(girl, "Yandere");
 					ss << "She is no longer a Yandere.\n";
@@ -209,7 +209,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 			}
 		}
 
-		if (g_Girls.HasTrait(girl, "Aggressive") || g_Girls.HasTrait(girl, "Tsundere") || g_Girls.HasTrait(girl, "Yandere"))
+		if (girl->has_trait( "Aggressive") || girl->has_trait( "Tsundere") || girl->has_trait( "Yandere"))
 		{
 			ss << "\nShe should stay in anger management to treat her other anger issues.";
 		}
@@ -231,7 +231,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 	// Improve girl
 	int libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
@@ -245,9 +245,9 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 double cJobManager::JP_CentreAngerManagement(sGirl* girl, bool estimate)
 {
 	double jobperformance = 100;
-	if (g_Girls.HasTrait(girl, "Aggressive"))	jobperformance += 100;	// if she has 1 = A
-	if (g_Girls.HasTrait(girl, "Tsundere"))		jobperformance += 100;	// if she has 2 = S
-	if (g_Girls.HasTrait(girl, "Yandere"))		jobperformance += 100;	// if she has 3 = I
+	if (girl->has_trait( "Aggressive"))	jobperformance += 100;	// if she has 1 = A
+	if (girl->has_trait( "Tsundere"))		jobperformance += 100;	// if she has 2 = S
+	if (girl->has_trait( "Yandere"))		jobperformance += 100;	// if she has 3 = I
 
 	if (jobperformance == 100)	return -1000;			// X - does not need it
 

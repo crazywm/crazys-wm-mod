@@ -43,7 +43,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int actiontype = ACTION_WORKFARM;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -281,36 +281,36 @@ double cJobManager::JP_Farmer(sGirl* girl, bool estimate)// not used
 	}
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Farmer"))				jobperformance += 30;
-	if (g_Girls.HasTrait(girl, "Farmers Daughter"))		jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Country Gal"))			jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Psychic"))				jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		jobperformance += 5;
-	
+	if (girl->has_trait( "Farmer"))				jobperformance += 30;
+	if (girl->has_trait( "Farmers Daughter"))		jobperformance += 20;
+	if (girl->has_trait( "Country Gal"))			jobperformance += 10;
+	if (girl->has_trait( "Psychic"))				jobperformance += 5;
+	if (girl->has_trait( "Quick Learner"))		jobperformance += 5;
+
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))			jobperformance -= 50; // needs others to do the job
-	if (g_Girls.HasTrait(girl, "Nervous"))				jobperformance -= 20; //don't like to be around people	
-	if (g_Girls.HasTrait(girl, "City Girl"))			jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Clumsy")) 				jobperformance -= 20; //spills food and breaks things often
-	if (g_Girls.HasTrait(girl, "Aggressive")) 			jobperformance -= 20; //gets mad easy
-	if (g_Girls.HasTrait(girl, "Meek"))					jobperformance -= 20;
+	if (girl->has_trait( "Dependant"))			jobperformance -= 50; // needs others to do the job
+	if (girl->has_trait( "Nervous"))				jobperformance -= 20; //don't like to be around people
+	if (girl->has_trait( "City Girl"))			jobperformance -= 20;
+	if (girl->has_trait( "Clumsy")) 				jobperformance -= 20; //spills food and breaks things often
+	if (girl->has_trait( "Aggressive")) 			jobperformance -= 20; //gets mad easy
+	if (girl->has_trait( "Meek"))					jobperformance -= 20;
 
-	if (g_Girls.HasTrait(girl, "One Arm"))				jobperformance -= 40;
-	if (g_Girls.HasTrait(girl, "One Foot"))				jobperformance -= 40;
-	if (g_Girls.HasTrait(girl, "One Hand"))				jobperformance -= 30; 
-	if (g_Girls.HasTrait(girl, "One Leg"))				jobperformance -= 60;
-	if (g_Girls.HasTrait(girl, "No Arms"))				jobperformance -= 125;
-	if (g_Girls.HasTrait(girl, "No Feet"))				jobperformance -= 60;
-	if (g_Girls.HasTrait(girl, "No Hands"))				jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "No Legs"))				jobperformance -= 150;
-	if (g_Girls.HasTrait(girl, "Blind"))				jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Retarded"))				jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "Smoker"))				jobperformance -= 10;	//would need smoke breaks
+	if (girl->has_trait( "One Arm"))				jobperformance -= 40;
+	if (girl->has_trait( "One Foot"))				jobperformance -= 40;
+	if (girl->has_trait( "One Hand"))				jobperformance -= 30;
+	if (girl->has_trait( "One Leg"))				jobperformance -= 60;
+	if (girl->has_trait( "No Arms"))				jobperformance -= 125;
+	if (girl->has_trait( "No Feet"))				jobperformance -= 60;
+	if (girl->has_trait( "No Hands"))				jobperformance -= 50;
+	if (girl->has_trait( "No Legs"))				jobperformance -= 150;
+	if (girl->has_trait( "Blind"))				jobperformance -= 30;
+	if (girl->has_trait( "Retarded"))				jobperformance -= 30;
+	if (girl->has_trait( "Smoker"))				jobperformance -= 10;	//would need smoke breaks
 
-	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 25;
-	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
-	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
-	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
+	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
+	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
+	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
+	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
 
 	return jobperformance;
 }

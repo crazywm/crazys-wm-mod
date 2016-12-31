@@ -55,8 +55,8 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (girl->m_YesterDayJob != JOB_EXTHERAPY) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_EXTHERAPY;	// it is a full time job
 
-	if (!g_Girls.HasTrait(girl, "Mind Fucked") &&		// if the girl dosent need this
-		!g_Girls.HasTrait(girl, "Broken Will"))
+	if (!girl->has_trait( "Mind Fucked") &&		// if the girl dosent need this
+		!girl->has_trait( "Broken Will"))
 	{
 		ss << " doesn't need extreme therapy for anything so she was sent to the waiting room.";
 		if (Day0Night1 == 0)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -88,7 +88,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 
 #pragma endregion
 #pragma region //	Count the Days				//
-	
+
 	if (!Day0Night1) girl->m_WorkingDay++;
 
 	g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 30 - 20);
@@ -127,7 +127,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 		enjoy += g_Dice % 5;
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice % 6 - 2);	// `J` She may want to help others with their problems
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 5);
-		
+
 		ss << "The therapy is a success.\n";
 		msgtype = EVENT_GOODNEWS;
 
@@ -140,7 +140,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 			switch (t)
 			{
 			case 0:
-				if (g_Girls.HasTrait(girl, "Mind Fucked"))
+				if (girl->has_trait( "Mind Fucked"))
 				{
 					g_Girls.RemoveTrait(girl, "Mind Fucked");
 					ss << "She is no longer mind fucked.\n";
@@ -148,7 +148,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 				}
 			case 1:
 			default:
-				if (g_Girls.HasTrait(girl, "Broken Will"))
+				if (girl->has_trait( "Broken Will"))
 				{
 					g_Girls.RemoveTrait(girl, "Broken Will");
 					ss << "She is no longer has a broken will.\n";
@@ -157,7 +157,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 			}
 		}
 
-		if (g_Girls.HasTrait(girl, "Mind Fucked") || g_Girls.HasTrait(girl, "Broken Will"))
+		if (girl->has_trait( "Mind Fucked") || girl->has_trait( "Broken Will"))
 		{
 			ss << "\nShe should stay in extreme therapy to treat her other disorders.";
 		}
@@ -179,7 +179,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 	// Improve girl
 	int libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
@@ -192,8 +192,8 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 double cJobManager::JP_CentreExTherapy(sGirl* girl, bool estimate)
 {
 	double jobperformance = 200;
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))		jobperformance += 100;	// if she has 1 = S
-	if (g_Girls.HasTrait(girl, "Broken Will"))		jobperformance += 100;	// if she has 2 = I
+	if (girl->has_trait( "Mind Fucked"))		jobperformance += 100;	// if she has 1 = S
+	if (girl->has_trait( "Broken Will"))		jobperformance += 100;	// if she has 2 = I
 
 	if (jobperformance == 200)	return -1000;			// X - does not need it
 

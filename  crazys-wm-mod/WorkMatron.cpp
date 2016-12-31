@@ -61,7 +61,7 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		return true;
 	}
 
-	
+
 
 	int numgirls = brothel->m_NumGirls;
 	int wages = 0, tips = 0;
@@ -70,7 +70,7 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int happy = 0;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100();
 	int imagetype = IMGTYPE_PROFILE;
-	
+
 	// Complications
 	int check = g_Dice.d100();
 	if (check < 10 && numgirls >(girl->service() + girl->confidence()) * 3)
@@ -127,10 +127,20 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	{
 		int cost = 0;
 		int method = 0;	// 1 = out of pocket, 2 = brothel money, 3 = sex, 4 = bj
-		if (girl->has_trait("Viras Blood Addict"))		{ cost += 150;	g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood")); }
-		else if (girl->has_trait("Shroud Addict"))		{ cost += 100;	g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom")); }
-		else if (girl->has_trait("Fairy Dust Addict"))	{ cost += 50;	g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust")); }
-
+		// 'Mute' Added so if the cost of the item changes then the gold amout will be correct
+		sInventoryItem* item;
+		string itemName;
+		if (girl->has_trait("Viras Blood Addict"))		{ itemName="Vira Blood";}//cost += 150;	g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood")); }
+		else if (girl->has_trait("Shroud Addict"))		{ itemName="Shroud Mushroom";}// cost += 100;	g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom")); }
+		else if (girl->has_trait("Fairy Dust Addict"))	{ itemName="Fairy Dust";}//cost += 50;	g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust")); }
+		if(itemName!="")
+            item=g_InvManager.GetItem(itemName);
+        if (item)
+            {
+                cost+=item->m_Cost;
+                g_Girls.AddInv(girl,item);
+            }
+        // 'Mute' End  Change
 		if (girl->has_trait("Cum Addict"))
 			method = 4;
 		else if (girl->has_trait("Nymphomaniac") && girl->libido() > 50)
@@ -183,57 +193,57 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		}
 	}
 
-	if (g_Girls.HasTrait(girl, "Exhibitionist"))
+	if (girl->has_trait( "Exhibitionist"))
 	{
 		ss << "\n\nShe hung out in the brothel wearing barely anything.";
-		if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Horrific Scars"))
+		if (g_Dice.percent(50) && girl->has_trait( "Horrific Scars"))
 		{
 			ss << " The customers were disgusted by her horrific scars.";
 			brothel->m_Happiness -= 15;
 		}
-		else if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Small Scars"))
+		else if (g_Dice.percent(50) && girl->has_trait( "Small Scars"))
 		{
 			ss << " Some customers were disgusted by her scars.";
 			brothel->m_Happiness -= 5;
 		}
-		else if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Bruises"))
+		else if (g_Dice.percent(50) && girl->has_trait( "Bruises"))
 		{
 			ss << " The customers were disgusted by her bruises.";
 			brothel->m_Happiness -= 5;
 		}
 
-		if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Futanari"))
+		if (g_Dice.percent(50) && girl->has_trait( "Futanari"))
 		{
 			ss << " The girls and some customers couldn't stop looking at her big cock.";
 			brothel->m_Happiness += 2;
 		}
 
-		if (g_Dice.percent(50) && (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits")))
+		if (g_Dice.percent(50) && (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits")))
 		{
 			ss << " Her enormous, heaving breasts drew a lot of attention from the customers.";
 			brothel->m_Happiness += 15;
 		}
-		else if (g_Dice.percent(50) && (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs")))
+		else if (g_Dice.percent(50) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs")))
 		{
 			ss << " Her big, round breasts drew a lot of attention from the customers.";
 			brothel->m_Happiness += 10;
 		}
-		if (g_Dice.percent(50) && (g_Girls.HasTrait(girl, "Deluxe Derriere") || g_Girls.HasTrait(girl, "Great Arse")))
+		if (g_Dice.percent(50) && (girl->has_trait( "Deluxe Derriere") || girl->has_trait( "Great Arse")))
 		{
 			ss << " The customers were hypnotized by the movements of her well shaped butt.";
 			brothel->m_Happiness += 15;
 		}
-		if (g_Dice.percent(50) && (g_Girls.HasTrait(girl, "Great Figure") || g_Girls.HasTrait(girl, "Hourglass Figure")))
+		if (g_Dice.percent(50) && (girl->has_trait( "Great Figure") || girl->has_trait( "Hourglass Figure")))
 		{
 			ss << " She has such a great figure that the customers couldn't stop looking at her.";
 			brothel->m_Happiness += 15;
 		}
-		if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Sexy Air"))
+		if (g_Dice.percent(50) && girl->has_trait( "Sexy Air"))
 		{
 			ss << " She's so sexy that the customers couldn't stop looking at her.";
 			brothel->m_Happiness += 10;
 		}
-		if (g_Dice.percent(50) && (g_Girls.HasTrait(girl, "Pierced Nipples") || g_Girls.HasTrait(girl, "Pierced Navel") || g_Girls.HasTrait(girl, "Pierced Nose")))
+		if (g_Dice.percent(50) && (girl->has_trait( "Pierced Nipples") || girl->has_trait( "Pierced Navel") || girl->has_trait( "Pierced Nose")))
 		{
 			ss << " Her piercings catch the eye of some customers.";
 			brothel->m_Happiness += 5;
@@ -241,29 +251,29 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		imagetype = IMGTYPE_ECCHI;
 	}
 
-	if (g_Girls.HasTrait(girl, "Optimistic") && roll_b < g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at best
+	if (girl->has_trait( "Optimistic") && roll_b < g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at best
 	{
 		ss << "\n\nWorking with someone as cheerful as " << girlName << " makes everybody a bit happier.";
 		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, 1);
 	}
-	
-	if (g_Girls.HasTrait(girl, "Pessimistic") && roll_b > 50 + g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at worst
+
+	if (girl->has_trait( "Pessimistic") && roll_b > 50 + g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at worst
 	{
 		ss << "\n\nWorking with someone as pessimistic as " << girlName << " makes everybody a little bit sadder.";
 		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, -1);
 	}
-	
+
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	// Improve girl
 	int xp = numgirls / 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 5; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 5; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			libido += 2;
-	if (g_Girls.HasTrait(girl, "Lesbian"))				libido += numgirls / 10;
-	else  if (!g_Girls.HasTrait(girl, "Straight"))		libido += numgirls / 20;
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 5; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 5; }
+	if (girl->has_trait( "Nymphomaniac"))			libido += 2;
+	if (girl->has_trait( "Lesbian"))				libido += numgirls / 10;
+	else  if (!girl->has_trait( "Straight"))		libido += numgirls / 20;
 	wages += int(float(100.0 + (((girl->get_skill(SKILL_SERVICE) + girl->get_stat(STAT_CHARISMA) + girl->get_stat(STAT_INTELLIGENCE) + girl->get_stat(STAT_CONFIDENCE) + girl->get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
@@ -295,15 +305,15 @@ double cJobManager::JP_Matron(sGirl* girl, bool estimate)	// not used
 			girl->level(); // maybe add obedience?
 
 		if (girl->is_slave()) jobperformance -= 1000;
-		
+
 		//traits, commented for now
-		
+
 		//good traits
 		//if (girl->has_trait("Charismatic")) jobperformance += 20;
 		//if (girl->has_trait("Cool Person")) jobperformance += 5;
 		//if (girl->has_trait("Psychic")) jobperformance += 10;
 		//if (girl->has_trait("Teacher")) jobperformance += 10;
-		
+
 		//bad traits
 		//if (girl->has_trait("Dependant")) jobperformance -= 50;
 		//if (girl->has_trait("Mind Fucked")) jobperformance -= 50;

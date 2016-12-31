@@ -55,7 +55,7 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (girl->m_YesterDayJob != JOB_LIPO) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_LIPO;	// it is a full time job
 
-	if (g_Girls.HasTrait(girl, "Great Figure"))
+	if (girl->has_trait( "Great Figure"))
 	{
 		ss << " already has a Great Figure so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -152,18 +152,18 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, bool Day0Night
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(-1, 2));
 		}
 
-		if (g_Girls.HasTrait(girl, "Plump"))
+		if (girl->has_trait( "Plump"))
 		{
 			girl->remove_trait("Plump");
 			ss << "Thanks to the surgery she is no longer Plump.\n";
 		}
-		else if (!g_Girls.HasTrait(girl, "Great Figure"))
+		else if (!girl->has_trait( "Great Figure"))
 		{
 			girl->add_trait("Great Figure", false);
 			ss << "Thanks to the surgery she now has a Great Figure.\n";
 		}
 
-		if (g_Girls.HasTrait(girl, "Great Figure") && !g_Girls.HasTrait(girl, "Plump"))
+		if (girl->has_trait( "Great Figure") && !girl->has_trait( "Plump"))
 		{
 			ss << "She has been released from the Clinic.\n\n";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
@@ -177,9 +177,9 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	// Improve girl
 	int libido = 1;
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	if (girl->has_trait( "Lesbian"))		libido += numnurse;
+	if (girl->has_trait( "Masochist"))	libido += 1;
+	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
@@ -191,7 +191,7 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, bool Day0Night
 double cJobManager::JP_Liposuction(sGirl* girl, bool estimate)
 {
 	if (girl->is_pregnant())					return 80;		// D - not recommended while pregnant
-	if (g_Girls.HasTrait(girl, "Plump"))		return 400;		// I - do it
-	if (g_Girls.HasTrait(girl, "Great Figure"))	return -1000;	// X - not needed
+	if (girl->has_trait( "Plump"))		return 400;		// I - do it
+	if (girl->has_trait( "Great Figure"))	return -1000;	// X - not needed
 	return 200;													// A - can improve
 }

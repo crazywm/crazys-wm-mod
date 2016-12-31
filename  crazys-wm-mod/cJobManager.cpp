@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -345,7 +345,7 @@ void cJobManager::Setup()
 	JobDesc[JOB_FILMTEASE] = ("She will flirt and remove her clothes and tease seductively, but won't show all. If you freeze-frame you might just catch a nipple.");
 	JobFunc[JOB_FILMTEASE] = &WorkFilmTease;
 	JobPerf[JOB_FILMTEASE] = &JP_FilmTease;
-	
+
 	// Studio - Porn
 	JobFilterName[JOBFILTER_STUDIOPORN] = gettext("Porn Scenes");
 	JobFilterDesc[JOBFILTER_STUDIOPORN] = gettext("These are regular sex scenes.");
@@ -826,7 +826,7 @@ void cJobManager::Setup()
 	JobDesc[JOB_CLEANHOUSE] = gettext("She will clean your house.");
 	JobFunc[JOB_CLEANHOUSE] = &WorkCleanHouse;
 	JobPerf[JOB_CLEANHOUSE] = &JP_CleanHouse;
-	
+
 	JobFilterName[JOBFILTER_HOUSETTRAINING] = gettext("Sex Training");
 	JobFilterDesc[JOBFILTER_HOUSETTRAINING] = gettext("You will take a personal intrerst in training the girl in sexual matters.");
 	JobFilterIndex[JOBFILTER_HOUSETTRAINING] = JOB_PERSONALTRAINING;
@@ -914,9 +914,9 @@ void cJobManager::Setup()
 
 #endif
 
-	
 
-	
+
+
 # if 0
 
 	//- Community Centre
@@ -1019,7 +1019,7 @@ bool cJobManager::WorkVoid(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary, string& message)
 {
 	brothel->m_Filthiness++;
-	if (g_Girls.DisobeyCheck(girl, action, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, action, brothel))			// they refuse to work
 	{
 		string message = girl->m_Realname + gettext(" refused to work during the ");
 		message += (Day0Night1 ? "night" : "day");
@@ -1256,7 +1256,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
  *	WD:	Tests for jobs that the player pays the wages for
  *
  *	Jobs that earn money for the player are commented out
- *	
+ *
  */
 
 	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cJobManager::is_job_Paid_Player
@@ -1280,7 +1280,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_DOCTOR				||	// becomes a doctor (requires 1) (will make some extra cash for treating locals)
 		Job ==	JOB_CHAIRMAN			||	//
 		Job ==	JOB_JANITOR			    ||	//
-		
+
 		// - Movie Crystal Studio
 		Job == JOB_FILMACTION			||	// films this sort of scene in the movie
 		Job == JOB_FILMCHEF				||	// films this sort of scene in the movie
@@ -1302,7 +1302,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job == JOB_FILMGROUP			||	// films this sort of scene in the movie
 		Job == JOB_FILMPUBLICBDSM		||	// films this sort of scene in the movie
 		Job == JOB_FILMRANDOM			||	// films this sort of scene in the movie
-		
+
 		Job ==	JOB_DIRECTOR			||	// Direcets the movies
 		Job ==	JOB_PROMOTER			||	// Advertises the studio's films
 		Job ==	JOB_CAMERAMAGE			||	// Uses magic to record the scenes to crystals (requires at least 1)
@@ -1318,28 +1318,28 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		Job ==	JOB_CLEANCENTRE		    ||	// Goes around town helping where they can
 
 		//arena
-		Job ==	JOB_DOCTORE		        ||	// 
+		Job ==	JOB_DOCTORE		        ||	//
 		Job ==	JOB_CLEANARENA		    ||	//
 		Job ==	JOB_FIGHTTRAIN		    ||	//
 		Job ==	JOB_FIGHTARENAGIRLS		||	//
 		Job ==	JOB_FIGHTBEASTS			||	//
 
 		//farm
-		Job ==	JOB_FARMMANGER			||	// 
-		Job ==	JOB_FARMHAND			||	// 
+		Job ==	JOB_FARMMANGER			||	//
+		Job ==	JOB_FARMHAND			||	//
 
 		//house
-		Job ==	JOB_HEADGIRL			||	// 
-		Job ==	JOB_RECRUITER			||	// 
-		Job ==	JOB_PERSONALBEDWARMER	||	// 
-		Job ==	JOB_HOUSECOOK			||	// 
-		Job ==	JOB_CLEANHOUSE			||	// 
-		Job ==	JOB_PERSONALTRAINING	||	// 
-		Job ==	JOB_FAKEORGASM			||	// 
-		Job ==	JOB_SO_STRAIGHT			||	// 
-		Job ==	JOB_SO_BISEXUAL			||	// 
-		Job ==	JOB_SO_LESBIAN			||	// 
-		Job ==	JOB_HOUSEPET			||	// 
+		Job ==	JOB_HEADGIRL			||	//
+		Job ==	JOB_RECRUITER			||	//
+		Job ==	JOB_PERSONALBEDWARMER	||	//
+		Job ==	JOB_HOUSECOOK			||	//
+		Job ==	JOB_CLEANHOUSE			||	//
+		Job ==	JOB_PERSONALTRAINING	||	//
+		Job ==	JOB_FAKEORGASM			||	//
+		Job ==	JOB_SO_STRAIGHT			||	//
+		Job ==	JOB_SO_BISEXUAL			||	//
+		Job ==	JOB_SO_LESBIAN			||	//
+		Job ==	JOB_HOUSEPET			||	//
 
 		// - Brothel
 		//Job ==	JOB_WHOREBROTHEL		||	// whore herself inside the building
@@ -1360,12 +1360,12 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 		//Job ==	JOB_WHOREBAR			||	// offers sexual services to customers
 		//Job ==	JOB_SINGER				||	// sings int the bar (girl needs singer trait)
 
-/*		
+/*
  *		Not Implemented
  */
 
 #if 0
-		
+
 		// - Community Centre
 		Job ==	JOB_COLLECTDONATIONS	||	// collects money to help the poor
 		Job ==	JOB_ARTISAN				||	// makes cheap crappy handmade items for selling to raise money (creates handmade item resource)
@@ -1541,7 +1541,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 					g_MessageQue.AddToQue(gettext("There can be only one Farm Marketer on each shift!"), 0);
 				else Girl->m_NightJob = JOB_MARKETER;
 			}
-			
+
 		}
 	}
 	// Special Arena Jobs
@@ -1576,7 +1576,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_NightJob = Girl->m_DayJob = JOB_CHAIRMAN;
 	}
 
-	else if (g_Girls.HasTrait(Girl, "AIDS") && (u_int(JobID) == JOB_DOCTOR || u_int(JobID) == JOB_NURSE || u_int(JobID) == JOB_INTERN))
+	else if (Girl->has_trait( "AIDS") && (u_int(JobID) == JOB_DOCTOR || u_int(JobID) == JOB_NURSE || u_int(JobID) == JOB_INTERN))
 	{
 		g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
 		if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)
@@ -1623,17 +1623,17 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		Girl->m_NightJob = Girl->m_DayJob = JOB_MECHANIC;
 	}
-	else if (u_int(JobID) == JOB_GETHEALING && g_Girls.HasTrait(Girl, "Construct"))
+	else if (u_int(JobID) == JOB_GETHEALING && Girl->has_trait( "Construct"))
 	{
 		if (fulltime)
 			Girl->m_DayJob = Girl->m_NightJob = JOB_GETREPAIRS;
 		else if (Day0Night1 == SHIFT_DAY)
 			Girl->m_DayJob = JOB_GETREPAIRS;
-		else 
+		else
 			Girl->m_NightJob = JOB_GETREPAIRS;
 		g_MessageQue.AddToQue(gettext("The Doctor does not work on Constructs so she sends ") + Girl->m_Realname + gettext(" to the Mechanic."), 0);
 	}
-	else if (u_int(JobID) == JOB_GETREPAIRS && !g_Girls.HasTrait(Girl, "Construct") && !g_Girls.HasTrait(Girl, "Half-Construct"))
+	else if (u_int(JobID) == JOB_GETREPAIRS && !Girl->has_trait( "Construct") && !Girl->has_trait( "Half-Construct"))
 	{
 		if (fulltime)
 			Girl->m_DayJob = Girl->m_NightJob = JOB_GETHEALING;
@@ -1676,17 +1676,17 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		else if (u_int(JobID) == JOB_COSMETICSURGERY)
 		{
 		}
-		else if (u_int(JobID) == JOB_BREASTREDUCTION && g_Girls.HasTrait(Girl, "Flat Chest"))
+		else if (u_int(JobID) == JOB_BREASTREDUCTION && Girl->has_trait( "Flat Chest"))
 		{
 			g_MessageQue.AddToQue(gettext("Her boobs can't get no smaller."), 0);
 			jobgood = false;
 		}
-		else if (u_int(JobID) == JOB_BOOBJOB && g_Girls.HasTrait(Girl, "Titanic Tits"))
+		else if (u_int(JobID) == JOB_BOOBJOB && Girl->has_trait( "Titanic Tits"))
 		{
 			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);
 			jobgood = false;
 		}
-		else if (u_int(JobID) == JOB_ASSJOB && g_Girls.HasTrait(Girl, "Great Arse"))
+		else if (u_int(JobID) == JOB_ASSJOB && Girl->has_trait( "Great Arse"))
 		{
 			g_MessageQue.AddToQue(gettext("Her ass can't get no better."), 0);
 			jobgood = false;
@@ -1701,7 +1701,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(gettext("She is a virgin and has no need of this operation."), 0);
 			jobgood = false;
 		}
-		else if (u_int(JobID) == JOB_LIPO && g_Girls.HasTrait(Girl, "Great Figure"))
+		else if (u_int(JobID) == JOB_LIPO && Girl->has_trait( "Great Figure"))
 		{
 			g_MessageQue.AddToQue(gettext("She already has a great figure and doesn't need this."), 0);
 			jobgood = false;
@@ -1713,7 +1713,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				g_MessageQue.AddToQue(Girl->m_Realname + gettext(" is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied."), 0);
 				jobgood = false;
 			}
-			else if (g_Girls.HasTrait(Girl, "Sterile"))
+			else if (Girl->has_trait( "Sterile"))
 			{
 				g_MessageQue.AddToQue(gettext("She is already Sterile and doesn't need this."), 0);
 				jobgood = false;
@@ -1727,7 +1727,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 					" is pregant.\nShe must either have her baby or get an abortion before She can get recieve any more fertility treatments.", 0);
 				jobgood = false;
 			}
-			else if (g_Girls.HasTrait(Girl, "Broodmother"))
+			else if (Girl->has_trait( "Broodmother"))
 			{
 				g_MessageQue.AddToQue("She is already as Fertile as she can be and doesn't need any more fertility treatments.", 0);
 				jobgood = false;
@@ -1756,12 +1756,12 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 			g_MessageQue.AddToQue(gettext("You must have a counselor for rehab."), 0);
-		else if (!g_Girls.HasTrait(Girl, "Shroud Addict")
-			&& !g_Girls.HasTrait(Girl, "Smoker")
-			&& !g_Girls.HasTrait(Girl, "Cum Addict")
-			&& !g_Girls.HasTrait(Girl, "Fairy Dust Addict")
-			&& !g_Girls.HasTrait(Girl, "Alcoholic")
-			&& !g_Girls.HasTrait(Girl, "Viras Blood Addict"))
+		else if (!Girl->has_trait( "Shroud Addict")
+			&& !Girl->has_trait( "Smoker")
+			&& !Girl->has_trait( "Cum Addict")
+			&& !Girl->has_trait( "Fairy Dust Addict")
+			&& !Girl->has_trait( "Alcoholic")
+			&& !Girl->has_trait( "Viras Blood Addict"))
 			g_MessageQue.AddToQue(gettext("She has no addictions."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_REHAB;
@@ -1770,9 +1770,9 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 			g_MessageQue.AddToQue(gettext("You must have a counselor for anger management."), 0);
-		else if (!g_Girls.HasTrait(Girl, "Aggressive")
-			&& !g_Girls.HasTrait(Girl, "Tsundere")
-			&& !g_Girls.HasTrait(Girl, "Yandere"))
+		else if (!Girl->has_trait( "Aggressive")
+			&& !Girl->has_trait( "Tsundere")
+			&& !Girl->has_trait( "Yandere"))
 			g_MessageQue.AddToQue(gettext("She has no anger issues."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_ANGER;
@@ -1781,8 +1781,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 			g_MessageQue.AddToQue(gettext("You must have a counselor for extreme therapy."), 0);
-		else if (!g_Girls.HasTrait(Girl, "Mind Fucked")
-			&& !g_Girls.HasTrait(Girl, "Broken Will"))
+		else if (!Girl->has_trait( "Mind Fucked")
+			&& !Girl->has_trait( "Broken Will"))
 			g_MessageQue.AddToQue(gettext("She has no extreme issues."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_EXTHERAPY;
@@ -1791,9 +1791,9 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 			g_MessageQue.AddToQue(gettext("You must have a counselor for therapy."), 0);
-		else if (!g_Girls.HasTrait(Girl, "Nervous")
-			&& !g_Girls.HasTrait(Girl, "Dependant")
-			&& !g_Girls.HasTrait(Girl, "Pessimist"))
+		else if (!Girl->has_trait( "Nervous")
+			&& !Girl->has_trait( "Dependant")
+			&& !Girl->has_trait( "Pessimist"))
 			g_MessageQue.AddToQue(gettext("She has no need of therapy."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_THERAPY;
@@ -1824,7 +1824,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_FAKEORGASM)
 	{
-		if (g_Girls.HasTrait(Girl, "Fake Orgasm Expert"))
+		if (Girl->has_trait( "Fake Orgasm Expert"))
 		{
 			g_MessageQue.AddToQue(gettext("She already has \"Fake Orgasm Expert\"."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
@@ -1833,7 +1833,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_SO_BISEXUAL)
 	{
-		if (g_Girls.HasTrait(Girl, "Bisexual"))
+		if (Girl->has_trait( "Bisexual"))
 		{
 			g_MessageQue.AddToQue(gettext("She is already Bisexual."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
@@ -1842,7 +1842,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_SO_LESBIAN)
 	{
-		if (g_Girls.HasTrait(Girl, "Lesbian"))
+		if (Girl->has_trait( "Lesbian"))
 		{
 			g_MessageQue.AddToQue(gettext("She is already a Lesbian."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
@@ -1851,7 +1851,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 	else if (u_int(JobID) == JOB_SO_STRAIGHT)
 	{
-		if (g_Girls.HasTrait(Girl, "Straight"))
+		if (Girl->has_trait( "Straight"))
 		{
 			g_MessageQue.AddToQue(gettext("She is already Straight."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
@@ -1883,7 +1883,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (!fulltime)	// if old job was full time but new job is not, switch leftover day or night job back to resting
 		{
-			// brothel jobs - 
+			// brothel jobs -
 			if ((u_int(OldJobID) == JOB_MATRON || u_int(OldJobID) == JOB_TORTURER) &&
 				(u_int(JobID) != JOB_MATRON		&&	u_int(JobID) != JOB_TORTURER))
 			{	// if old job was full time but new job is not, switch leftover day or night job back to resting
@@ -1922,7 +1922,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			}
 			// farm jobs
 			else if (u_int(OldJobID) == JOB_FARMMANGER && u_int(JobID) != JOB_FARMMANGER)
-			{	
+			{
 				(Day0Night1 ? Girl->m_DayJob = JOB_FARMREST : Girl->m_NightJob = JOB_FARMREST);
 			}
 		}
@@ -2041,7 +2041,7 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 	 *
 	 *	But let's get what we have working first
 	 */
-	if ((girl->has_trait("Yandere") || girl->has_trait("Tsundere") || girl->has_trait("Aggressive")) && g_Dice.percent(30)) 
+	if ((girl->has_trait("Yandere") || girl->has_trait("Tsundere") || girl->has_trait("Aggressive")) && g_Dice.percent(30))
 	{
 		switch (g_Dice % 5)
 			{
@@ -2118,7 +2118,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		(g_Brothels.GetNumGirlsOnJob(GirlsBrothelNo, JOB_SECURITY, day_night == SHIFT_DAY) > 0 ||
 		g_Gangs.gangs_on_mission(MISS_GUARDING).size() > 0))
 		return true;
-	
+
 	// Security guards on duty this shift
 	vector<sGirl *> SecGrd = g_Brothels.GirlsOnJob(GirlsBrothelNo, JOB_SECURITY, day_night == SHIFT_DAY);
 	// Security guards with enough health to fight
@@ -2128,13 +2128,13 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 
 	// Remove security guards who are too wounded to fight
 	// Easier to work from the end
-	for(int i = SecGrd.size() - 1; i >= 0 ; i--) 
+	for(int i = SecGrd.size() - 1; i >= 0 ; i--)
 	{
 	  SecGuard = SecGrd[i];
 	  if (SecGuard->m_Stats[STAT_HEALTH] <= 50) SecGrd.pop_back();
 	  else
 	  {
-		SecGrdWhoCanFight.push_back(SecGrd.back()); 
+		SecGrdWhoCanFight.push_back(SecGrd.back());
 		SecGrd.pop_back();
 	  }
 	}
@@ -2208,7 +2208,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					stringstream CGmsg;
 
 					// `J` create the customer
-					sGirl* custgirl = g_Girls.CreateRandomGirl(g_Dice % 40 + 18, false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
+					sGirl* custgirl = g_Girls.CreateRandomGirl(g_Dice % 40 + 18, false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 
 					// `J` and adjust her stats
 					g_InvManager.Equip(custgirl, g_Girls.AddInv(custgirl, g_Brothels.m_Inventory[itemnum]), true);
@@ -2366,7 +2366,7 @@ bool cJobManager::gang_stops_rape(sGirl* girl, vector<sGang *> gangs_guarding, s
  */
 bool cJobManager::gang_stops_rape(sGirl* girl, sGang *gang, int chance, int day_night)
 {
-	if(g_Dice.percent(chance) == false) 
+	if(g_Dice.percent(chance) == false)
 		return false;
 
 	bool gang_wins = false;
@@ -2384,16 +2384,16 @@ bool cJobManager::gang_stops_rape(sGirl* girl, sGang *gang, int chance, int day_
 /*
  *	make the gang leader tougher
  */
-	if(gang->m_Num == 1) 
+	if(gang->m_Num == 1)
 		bonus = 10;
-	
+
 	int combat = gang->combat() + 4 * wlev + bonus;
 	int magic = gang->magic() + 4 * wlev + bonus;
 	for(int i = 0; i < 3; i++) {
 		gang_wins = g_Dice.percent(combat) || g_Dice.percent(magic) ;
-		if(gang_wins) 
+		if(gang_wins)
 						break;
-		
+
 	}
 /*
  *	if the gang member lost, tell the player about it
@@ -2402,11 +2402,11 @@ bool cJobManager::gang_stops_rape(sGirl* girl, sGang *gang, int chance, int day_
  */
 	if(!gang_wins) {
 		string s;
-		if(gang->m_Num == 1) 
+		if(gang->m_Num == 1)
 			s =	gettext("The leader of this gang is dead; killed attempting to prevent a rape. You may want to hire a new gang.");
-		else 
+		else
 			s =	gettext("One of this gang's members turned up dead. It looks like he attacked a rapist and lost.");
-		
+
 		gang->m_Num --;
 		gang->m_Events.AddMessage(s, 0, 0);
 	return false;
@@ -2447,8 +2447,8 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 
 	// Earn xp for all kills, even if defeated
 	int xp = 3;
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		xp += 2;
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	xp -= 2;
+	if (girl->has_trait( "Quick Learner"))		xp += 2;
+	else if (girl->has_trait( "Slow Learner"))	xp -= 2;
 
 	int num = OrgNumMem - enemy_gang->m_Num;
 
@@ -2488,7 +2488,7 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 	return res;
 }
 #if 0
-/* 
+/*
  * Again, we can elaborate this
  *
  * some traits should give a bonus. There should be a chance of
@@ -2502,7 +2502,7 @@ bool cJobManager::girl_fights_rape(sGirl* girl, int day_night)
 	bool res = false;
 	int roll = g_Dice%100;
 
-	if(g_Girls.HasTrait(girl, "Merciless")) {
+	if(girl->has_trait( "Merciless")) {
 		msg =	gettext("The customer tried to rape this girl.  She leaves him beaten and bloody, but still breathing.");
 		res = true;
 	}
@@ -2606,7 +2606,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 
 // MYR: Lots of different ways to say the girl had a bad day
 // doc: let's have this return a string, instead of a stringstream:
-// the caller doesn't need the stream and gcc is giving weird type coercion 
+// the caller doesn't need the stream and gcc is giving weird type coercion
 // errors
 
 string cJobManager::GetGirlAttackedString(u_int attacktype)
@@ -2740,7 +2740,7 @@ string cJobManager::GetGirlAttackedString(u_int attacktype)
 	  case 17: ss << gettext("found sleeping on the job"); break;
 	  case 18: ss << gettext("chained to the porch railing"); break;
 	  case 19: ss << gettext("tied up BDSM-style"); break;
-	  case 20: ss << gettext("stretched out on the torture table"); break;	
+	  case 20: ss << gettext("stretched out on the torture table"); break;
 	  case 21: ss << gettext("tied up and hung from the rafters"); break;
 	}
 
@@ -3007,7 +3007,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 		}
 		ss << gettext(".");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-		if (g_Girls.HasTrait(girl, "Lesbian") && set.size() > 1) g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, set.size() - 1, true);
+		if (girl->has_trait( "Lesbian") && set.size() > 1) g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, set.size() - 1, true);
 	}
 }
 
@@ -3019,7 +3019,7 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
 
 	for (u_int i = girls.size(); i-- > 0;)
 	{  // no girls sneaking in training if she gave birth
-		if ((girls[i]->m_WeeksPreg > 0 && 
+		if ((girls[i]->m_WeeksPreg > 0 &&
 			girls[i]->m_WeeksPreg + 1 >= (girls[i]->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()))
 			|| (girls[i]->m_JustGaveBirth && Day0Night1 == SHIFT_NIGHT))
 			girls.erase(girls.begin() + i);
@@ -3044,7 +3044,7 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
 	for (u_int i = 0; i < girls.size(); i++)
 	{
 		sGirl *girl = girls[i];
-		int libido = (g_Girls.HasTrait(girl, "Nymphomaniac")) ? 4 : 2;
+		int libido = (girl->has_trait( "Nymphomaniac")) ? 4 : 2;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	}
 }
@@ -3720,7 +3720,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 			ss << ".\n\n";
 		}
 		if (ss.str().length() > 0)	g_MessageQue.AddToQue(ss.str(), 0);
-		
+
 		freegirl_names.clear(); firegirl_names.clear(); sellgirl_names.clear(); dumpgirl_names.clear();
 		sellgirl_price.clear();
 	}

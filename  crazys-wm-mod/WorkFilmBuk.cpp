@@ -72,12 +72,12 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
 	int roll = g_Dice.d100();
-	if (g_Girls.HasTrait(girl, "Cum Addict"))
+	if (girl->has_trait( "Cum Addict"))
 	{
 		ss << gettext("Cum-craving ") << girlName << gettext(" couldn't wait to get sticky in this bukkake scene, and was sucking guys off before the lighting was even set up.");
 		bonus += 10;
 	}
-	else if (roll <= 10 && !g_Girls.HasTrait(girl, "Mind Fucked") && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	else if (roll <= 10 && !girl->has_trait( "Mind Fucked") && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
 		ss << girlName << gettext(" refused to have any part in this");
 		if (girl->is_slave())
@@ -160,32 +160,32 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 
 	//Enjoyed? If she's deranged, she'd should have enjoyed it.
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))
+	if (girl->has_trait( "Mind Fucked"))
 	{
 		enjoy += 16;
 		ss << gettext("Being completely mind fucked, ") << girlName << gettext(" really gets off on the depravity.\n");
 	}
-	else if (g_Girls.HasTrait(girl, "Masochist"))
+	else if (girl->has_trait( "Masochist"))
 	{
 		enjoy += 13;
 		ss << girlName << gettext(" enjoys this. She knows it's what she deserves.\n");
 	}
-	else if (g_Girls.HasTrait(girl, "Cum Addict"))
+	else if (girl->has_trait( "Cum Addict"))
 	{
 		enjoy += 13;
 		ss << girlName << gettext(" enjoys this, and spends a while licking cum off her body.\n");
 	}
-	else if (g_Girls.HasTrait(girl, "Broken Will") || g_Girls.HasTrait(girl, "Dependant"))
+	else if (girl->has_trait( "Broken Will") || girl->has_trait( "Dependant"))
 	{
 		enjoy += 11;
 		ss << girlName << gettext(" accepts this. It is Master's will.\n");
 	}
-	else if (g_Girls.HasTrait(girl, "Iron Will") || g_Girls.HasTrait(girl, "Fearless"))
+	else if (girl->has_trait( "Iron Will") || girl->has_trait( "Fearless"))
 	{
 		enjoy -= 5;
 		ss << girlName << gettext(" endures in stoic silence, determined not to let you see her suffer.\n");
 	}
-	
+
 	//For final calc
 	bonus = bonus + enjoy;
 
@@ -213,9 +213,9 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	// Improve stats
 	int xp = 10, skill = 3, libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
@@ -272,28 +272,28 @@ double cJobManager::JP_FilmBuk(sGirl* girl, bool estimate)// used
 	}
 
 	//Good
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))					jobperformance += 100;	//Enjoyment and craziness
-	if (g_Girls.HasTrait(girl, "Masochist"))					jobperformance += 35;	//
-	if (g_Girls.HasTrait(girl, "Broken Will"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Dependant"))					jobperformance += 25;	//
-	if (g_Girls.HasTrait(girl, "Twisted"))						jobperformance += 25;	//
-	if (g_Girls.HasTrait(girl, "Cum Addict"))					jobperformance += 50;	//Her kind of job
-	if (g_Girls.HasTrait(girl, "Goddess"))						jobperformance += 60;	//High-status degraded
-	if (g_Girls.HasTrait(girl, "Angel"))						jobperformance += 50;	//
-	if (g_Girls.HasTrait(girl, "Queen"))						jobperformance += 50;	//
-	if (g_Girls.HasTrait(girl, "Princess"))						jobperformance += 40;	//
-	if (g_Girls.HasTrait(girl, "Noble"))						jobperformance += 15;	//	
-	if (g_Girls.HasTrait(girl, "Idol"))							jobperformance += 25;	//
-	if (g_Girls.HasTrait(girl, "Priestess"))					jobperformance += 25;	//	
-	if (g_Girls.HasTrait(girl, "Heroine"))						jobperformance += 15;	//	
-	if (g_Girls.HasTrait(girl, "Teacher"))						jobperformance += 15;	//	
-	if (g_Girls.HasTrait(girl, "Tsundere"))						jobperformance += 30;	//beaten customers wanna see this!
-	if (g_Girls.HasTrait(girl, "Yandere"))						jobperformance += 25;	//	
-	
+	if (girl->has_trait( "Mind Fucked"))					jobperformance += 100;	//Enjoyment and craziness
+	if (girl->has_trait( "Masochist"))					jobperformance += 35;	//
+	if (girl->has_trait( "Broken Will"))					jobperformance += 30;	//
+	if (girl->has_trait( "Dependant"))					jobperformance += 25;	//
+	if (girl->has_trait( "Twisted"))						jobperformance += 25;	//
+	if (girl->has_trait( "Cum Addict"))					jobperformance += 50;	//Her kind of job
+	if (girl->has_trait( "Goddess"))						jobperformance += 60;	//High-status degraded
+	if (girl->has_trait( "Angel"))						jobperformance += 50;	//
+	if (girl->has_trait( "Queen"))						jobperformance += 50;	//
+	if (girl->has_trait( "Princess"))						jobperformance += 40;	//
+	if (girl->has_trait( "Noble"))						jobperformance += 15;	//
+	if (girl->has_trait( "Idol"))							jobperformance += 25;	//
+	if (girl->has_trait( "Priestess"))					jobperformance += 25;	//
+	if (girl->has_trait( "Heroine"))						jobperformance += 15;	//
+	if (girl->has_trait( "Teacher"))						jobperformance += 15;	//
+	if (girl->has_trait( "Tsundere"))						jobperformance += 30;	//beaten customers wanna see this!
+	if (girl->has_trait( "Yandere"))						jobperformance += 25;	//
+
 	//Bad
-	if (g_Girls.HasTrait(girl, "Iron Will"))					jobperformance += 40;	//Try not to put on a show
-	if (g_Girls.HasTrait(girl, "Fearless"))						jobperformance += 25;	//	
-	
+	if (girl->has_trait( "Iron Will"))					jobperformance += 40;	//Try not to put on a show
+	if (girl->has_trait( "Fearless"))						jobperformance += 25;	//
+
 
 	return jobperformance;
 }

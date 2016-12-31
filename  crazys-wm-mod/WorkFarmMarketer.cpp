@@ -43,7 +43,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	int actiontype = ACTION_WORKCUSTSERV;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -244,9 +244,9 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	// EXP and Libido
 	int I_xp = (g_Dice % xp) + 1;							g_Girls.UpdateStat(girl, STAT_EXP, I_xp);
@@ -311,22 +311,22 @@ double cJobManager::JP_FarmMarketer(sGirl* girl, bool estimate)// not used
 	else if (girl->morality() < -50)				jobperformance -= 5;	// too crooked to be trusted with an honest price
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 15;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))			jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Cool Person"))		jobperformance += 10;  //people love to be around her
-	if (g_Girls.HasTrait(girl, "Cute"))				jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Charming"))			jobperformance += 15;  //people like charming people
-	if (g_Girls.HasTrait(girl, "Quick Learner"))	jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Psychic"))			jobperformance += 10;
+	if (girl->has_trait( "Charismatic"))		jobperformance += 15;
+	if (girl->has_trait( "Sexy Air"))			jobperformance += 5;
+	if (girl->has_trait( "Cool Person"))		jobperformance += 10;  //people love to be around her
+	if (girl->has_trait( "Cute"))				jobperformance += 5;
+	if (girl->has_trait( "Charming"))			jobperformance += 15;  //people like charming people
+	if (girl->has_trait( "Quick Learner"))	jobperformance += 5;
+	if (girl->has_trait( "Psychic"))			jobperformance += 10;
 
 
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 50; // needs others to do the job
-	if (g_Girls.HasTrait(girl, "Clumsy")) 			jobperformance -= 20; //spills food and breaks things often
-	if (g_Girls.HasTrait(girl, "Aggressive")) 		jobperformance -= 20; //gets mad easy
-	if (g_Girls.HasTrait(girl, "Nervous"))			jobperformance -= 30; //don't like to be around people	
-	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
+	if (girl->has_trait( "Dependant"))		jobperformance -= 50; // needs others to do the job
+	if (girl->has_trait( "Clumsy")) 			jobperformance -= 20; //spills food and breaks things often
+	if (girl->has_trait( "Aggressive")) 		jobperformance -= 20; //gets mad easy
+	if (girl->has_trait( "Nervous"))			jobperformance -= 30; //don't like to be around people
+	if (girl->has_trait( "Meek"))				jobperformance -= 20;
 
 	return jobperformance;
 }

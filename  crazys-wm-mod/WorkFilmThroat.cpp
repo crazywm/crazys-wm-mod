@@ -55,7 +55,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	
+
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50, tips = 0;
@@ -72,12 +72,12 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (g_Girls.HasTrait(girl, "Mind Fucked"))
+	else if (girl->has_trait( "Mind Fucked"))
 	{
 		ss << gettext("Mind fucked ") << girlName << gettext(" was pleased to be paraded naked in public and tortured and degraded. It is natural.\n");
 		bonus += 10;
 	}
-	else if (g_Girls.HasTrait(girl, "Masochist"))
+	else if (girl->has_trait( "Masochist"))
 	{
 		ss << gettext("Masochist ") << girlName << gettext(" was pleased to be tortured, used and degraded. It is her place.\n");
 		bonus += 6;
@@ -123,7 +123,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else ss << girlName << " was filmed in facefucking scenes.\n\n";
 
-	
+
 	int OPTION = g_Dice % 3;
 	int OUTCOME = g_Dice % 3;
 	if (jobperformance >= 350)
@@ -306,7 +306,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	bonus = bonus + enjoy;
 
 	int impact = g_Dice%10;
-	if (g_Girls.HasTrait(girl, "Strong Gag Reflex"))
+	if (girl->has_trait( "Strong Gag Reflex"))
 	{
 		ss << gettext("She was gagging and retching the whole scene, and was violently sick. She was exhausted and felt awful afterward.\n\n");
 		g_Girls.UpdateStat(girl, STAT_HEALTH, (10 + impact));
@@ -314,7 +314,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		g_Girls.UpdateStat(girl, STAT_PCHATE, (2 + hate));
 		g_Girls.UpdateStat(girl, STAT_PCFEAR, (2 + hate));
 	}
-	else if (g_Girls.HasTrait(girl, "Gag Reflex"))
+	else if (girl->has_trait( "Gag Reflex"))
 	{
 		ss << gettext("She gagged and retched a lot. It was exhausting and left her feeling sick.\n\n");
 		g_Girls.UpdateStat(girl, STAT_HEALTH, (2 + impact));
@@ -344,9 +344,9 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	// Improve stats
 	int xp = 10, skill = 3, libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
@@ -364,7 +364,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	//lose
 	if (g_Dice.percent(5)) g_Girls.PossiblyLoseExistingTrait(girl, "Iron Will", 80, ACTION_SEX, "Somewhere between having a dick in her throat, balls slapping her eyes and a camera watching her retch, " + girlName + " has lost her iron will.", Day0Night1);
-	
+
 	//Evil job bonus-------------------------------------------------------
 	//BONUS - evil jobs damage her body, break her spirit and make her hate you
 
@@ -389,42 +389,42 @@ double cJobManager::JP_FilmThroat(sGirl* girl, bool estimate)
 	double jobperformance =
 		(((g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY)) / 2)
 		+ g_Girls.GetSkill(girl, SKILL_ORALSEX));
-	
+
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
 		if (t > 0)
 			jobperformance -= (t + 2) * (t / 3);
 	}
-	
+
 	//Good
-	if (g_Girls.HasTrait(girl, "Deep Throat"))					jobperformance += 80;	//better ability
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))					jobperformance += 60;	//eager to please
-	if (g_Girls.HasTrait(girl, "No Gag Reflex"))				jobperformance += 50;	//
-	if (g_Girls.HasTrait(girl, "Masochist"))					jobperformance += 50;	//
-	if (g_Girls.HasTrait(girl, "Cum Addict"))					jobperformance += 40;	//
-	if (g_Girls.HasTrait(girl, "No Teeth"))						jobperformance += 25;	//Lower resistance
-	if (g_Girls.HasTrait(girl, "Missing Teeth"))				jobperformance += 25;	//
-	if (g_Girls.HasTrait(girl, "Good Kisser"))					jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))			jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Demon Possessed"))				jobperformance += 20;	//Wild		
-	if (g_Girls.HasTrait(girl, "Nimble Tongue"))				jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Pierced Tongue"))				jobperformance += 15;	//
-	if (g_Girls.HasTrait(girl, "Exotic"))						jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Whore"))						jobperformance += 20;	//Knows how to work it
-	if (g_Girls.HasTrait(girl, "Porn Star"))					jobperformance += 30;	//Knows how to work it on film
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))					jobperformance += 25;	//had lots of practice
-	if (g_Girls.HasTrait(girl, "Slut"))							jobperformance += 15;	//had practice
-	if (g_Girls.HasTrait(girl, "Sexy Air"))						jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Open Minded"))					jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Natural Pheromones"))			jobperformance += 5;
+	if (girl->has_trait( "Deep Throat"))					jobperformance += 80;	//better ability
+	if (girl->has_trait( "Mind Fucked"))					jobperformance += 60;	//eager to please
+	if (girl->has_trait( "No Gag Reflex"))				jobperformance += 50;	//
+	if (girl->has_trait( "Masochist"))					jobperformance += 50;	//
+	if (girl->has_trait( "Cum Addict"))					jobperformance += 40;	//
+	if (girl->has_trait( "No Teeth"))						jobperformance += 25;	//Lower resistance
+	if (girl->has_trait( "Missing Teeth"))				jobperformance += 25;	//
+	if (girl->has_trait( "Good Kisser"))					jobperformance += 20;	//
+	if (girl->has_trait( "Dick-Sucking Lips"))			jobperformance += 20;	//
+	if (girl->has_trait( "Demon Possessed"))				jobperformance += 20;	//Wild
+	if (girl->has_trait( "Nimble Tongue"))				jobperformance += 10;	//
+	if (girl->has_trait( "Pierced Tongue"))				jobperformance += 15;	//
+	if (girl->has_trait( "Exotic"))						jobperformance += 10;	//
+	if (girl->has_trait( "Whore"))						jobperformance += 20;	//Knows how to work it
+	if (girl->has_trait( "Porn Star"))					jobperformance += 30;	//Knows how to work it on film
+	if (girl->has_trait( "Nymphomaniac"))					jobperformance += 25;	//had lots of practice
+	if (girl->has_trait( "Slut"))							jobperformance += 15;	//had practice
+	if (girl->has_trait( "Sexy Air"))						jobperformance += 10;
+	if (girl->has_trait( "Open Minded"))					jobperformance += 10;
+	if (girl->has_trait( "Natural Pheromones"))			jobperformance += 5;
 
 
 	//Bad
-	if (g_Girls.HasTrait(girl, "Strong Gag Reflex"))			jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Gag Reflex"))					jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Clumsy"))						jobperformance -= 25;
-	if (g_Girls.HasTrait(girl, "Nervous"))						jobperformance -= 15;
+	if (girl->has_trait( "Strong Gag Reflex"))			jobperformance -= 20;
+	if (girl->has_trait( "Gag Reflex"))					jobperformance -= 20;
+	if (girl->has_trait( "Clumsy"))						jobperformance -= 25;
+	if (girl->has_trait( "Nervous"))						jobperformance -= 15;
 
 	return jobperformance;
 }

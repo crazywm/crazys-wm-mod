@@ -108,7 +108,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	sGirl* puppyonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_HOUSEPET, Day0Night1);
 	string puppyname = (puppyonduty ? "Puppy girl " + puppyonduty->m_Realname + "" : "the Puppy girl");
 
-	if (train >= 50)			// they refuse to train 
+	if (train >= 50)			// they refuse to train
 	{
 		ss << " refused to train during the " << (Day0Night1 ? "night" : "day") << " shift.\n";
 		ss << girlName << " is still in training, and is having difficulty accepting her new role. Today she was a bad girl!\n";
@@ -249,7 +249,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			if (roll_b >= 50)
 			{
-				ss << "\"NO! What the fuck is wrong with you!\" " << girlName << " screamed up at you. \"I'm NOT your fucking dog! Let me up or you'll be sorry!\" "; 
+				ss << "\"NO! What the fuck is wrong with you!\" " << girlName << " screamed up at you. \"I'm NOT your fucking dog! Let me up or you'll be sorry!\" ";
 				ss << "\"You can't treat people like this!\" You sigh as " << girlName << " screams and raves. New pets often act out their aggression. It's not entirely their fault, ";
 				ss << "they haven't realized yet that they are nothing but little bitches. Still, whether or not they were at fault pre-training, such behavior had to be nipped in the butt early.\n";
 				if (dispmod >= 0)/*NICE DISP*/
@@ -319,7 +319,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << " trained to be a house pet.\n\n";
 		if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 70)
 			{
-				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)	
+				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)
 				{
 					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -352,17 +352,17 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								/**/
 								ss << "" << girlName << " was anxious. When ";
 								if (headonduty)
-								{ ss << "" << headname << ""; } 
+								{ ss << "" << headname << ""; }
 								else if (traningonduty)
-								{ ss << "" << traningname << "";  } 
+								{ ss << "" << traningname << "";  }
 								else if (cleaneronduty)
-								{ ss << "" << cleanername << "";  } 
+								{ ss << "" << cleanername << "";  }
 								else if (bedwarmeronduty)
-								{ ss << "" << bedname << "";  } 
+								{ ss << "" << bedname << "";  }
 								else if (recruiteronduty)
-								{ ss << "" << recruitername << "";  } 
+								{ ss << "" << recruitername << "";  }
 								else
-								{ ss << "the girl"; } 
+								{ ss << "the girl"; }
 								ss << " told her with a smile that today was a special day, she was ~so~ certain that her master would finally fuck her, and finally let her cum.";
 								ss << " She paced back and forth, shaking in anticipation, whimpering as random members of the household stopped to play with her moist, throbbing pussy.";
 								ss << " Her cunt seemed to throb as the seconds ticked on the clock, waiting for you to return home. When you returned, she greeted you at the door";
@@ -496,7 +496,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							ss << "The commercial was a little difficult to shoot. Your little bitch went through her roll with the grace trained into her, but";
 							ss << " the mastiff was over-eager, and bits of the scene had to be shot several times.";
 							ss << " Still, all went well, and the Director finally yelled \"Cut!\" with both " << girlName << " and the large dog's faces pressed";
-							ss << " into their meal. "; 
+							ss << " into their meal. ";
 							if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.CheckVirginity(girl))
 							{
 								ss << "Your bitch looked up, and began to crawl back over to you, but the mastiff had other ideas.";
@@ -520,7 +520,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 				else if (roll_b >= 40 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)
 					{
-						ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";		
+						ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 							/**/
 							ss << girlName << " spent a day with " << headname << ", as she often did when her Master was busy. Pets often became disappointed when their owners were neglectful,";
 							ss << " but " << headname << " always worked hard to keep your pets busy. Sometimes she would play with them, sometimes organize fun activities,";
@@ -600,7 +600,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		else if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 50)
 			{
-				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)	
+				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)
 				{
 					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -623,7 +623,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " to her spacious kennel with her soft bed. Her belly and breasts swayed, both occasionally brushing the ground, and she back into the kennel and curled up";
 					ss << " on her bed. " << headname << " closed the door, wished her a good night, and turned off the light. " << girlName << " sighed restlessly and slowly fell asleep.";
 				}
-				else if (roll_b >= 85 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1 && !g_Girls.HasTrait(girl, "Your Daughter") && g_Girls.HasTrait(girl, "Kidnapped"))
+				else if (roll_b >= 85 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1 && !girl->has_trait( "Your Daughter") && girl->has_trait( "Kidnapped"))
 				{
 					ss << headname << " clips a leash to " << girlName << "'s collar. She is happy with her leash being held and content that she's a pet.\n";
 					/**/
@@ -857,7 +857,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " Master mostly ignored her, drinking his evening whiskey as he went over the affairs of his household";
 						if (headonduty)
 							{
-								ss << "with " << headname << ". "; 
+								ss << "with " << headname << ". ";
 							}
 						else
 							{
@@ -916,9 +916,9 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);

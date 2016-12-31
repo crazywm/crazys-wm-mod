@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -54,7 +54,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	
+
 	stringstream ss;
 	string girlName = girl->m_Realname;
 	int wages = 50, tips = 0;
@@ -95,12 +95,12 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (g_Girls.HasTrait(girl, "Mind Fucked"))
+	else if (girl->has_trait( "Mind Fucked"))
 	{
 		ss << gettext("Mind fucked ") << girlName << gettext(" seemed at home in the dungeon, and started collecting together tools she should be punished with.\n");
 		bonus += 10;
 	}
-	else if (g_Girls.HasTrait(girl, "Masochist"))
+	else if (girl->has_trait( "Masochist"))
 	{
 		ss << gettext("Masochist ") << girlName << gettext(" was pleased to in the dungeon. It is her place.\n");
 		bonus += 6;
@@ -130,16 +130,16 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 			else if (The_Player->disposition() > -30)
 			{
 				ss << gettext("\"monstrous\" place.\nShe was starting to panic so you ordered your men to quickly grab, strip and bind her. Finally, ");
-				if (g_Girls.HasTrait(girl, "Pierced Nipples"))
+				if (girl->has_trait( "Pierced Nipples"))
 				{
 					ss << gettext("noticing her pierced nipples");
-					if (g_Girls.HasTrait(girl, "Pierced Clit"))
+					if (girl->has_trait( "Pierced Clit"))
 					{
 						ss << gettext(" and clit");
 					}
 					ss << gettext(", ");
 				}
-				else if (g_Girls.HasTrait(girl, "Pierced Clit")) ss << gettext("noticing her clittoral piercing, ");
+				else if (girl->has_trait( "Pierced Clit")) ss << gettext("noticing her clittoral piercing, ");
 				ss << gettext("you personally selected some 'fun tools' for your actor, instructing him to train your slave in humility and obedience.\n\"Master her. Intimately.\"");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -4);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, +5);
@@ -191,27 +191,27 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 
 	//Enjoyed? If she's deranged, she'd should have enjoyed it.
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))
+	if (girl->has_trait( "Mind Fucked"))
 	{
 		enjoy += 16;
 		ss << gettext("Being completely mind fucked, ") << girlName << gettext(" actually gets off on this.\n");
 	}
-	else if (g_Girls.HasTrait(girl, "Masochist"))
+	else if (girl->has_trait( "Masochist"))
 	{
 		enjoy += 10;
 		ss << girlName << gettext(" enjoys this. It's what she deserves.\n");
 	}
-	else if (g_Girls.HasTrait(girl, "Broken Will") || g_Girls.HasTrait(girl, "Dependant"))
+	else if (girl->has_trait( "Broken Will") || girl->has_trait( "Dependant"))
 	{
 		enjoy += 5;
 		ss << girlName << gettext(" accepts this. It is Master's will.\n");
 	}
-	else if (g_Girls.HasTrait(girl, "Iron Will") || g_Girls.HasTrait(girl, "Fearless"))
+	else if (girl->has_trait( "Iron Will") || girl->has_trait( "Fearless"))
 	{
 		enjoy -= 5;
 		ss << girlName << gettext(" endures in stoic silence, determined not to let you see her suffer.\n");
 	}
-	else if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+	else if (girl->has_trait( "Nymphomaniac"))
 	{
 		enjoy += 2;
 		ss << girlName << gettext(" doesn't much like the pain, but loves the sex and attention.\n");
@@ -274,8 +274,8 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// Improve stats
 	int xp = 10, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
@@ -323,42 +323,42 @@ double cJobManager::JP_FilmBondage(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))				jobperformance += 50;	//this is her home
-	if (g_Girls.HasTrait(girl, "Masochist"))				jobperformance += 30;	//she likes it
-	if (g_Girls.HasTrait(girl, "Twisted"))					jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Open Minded"))				jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Broken Will"))				jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Pierced Clit"))				jobperformance += 40;	//Piercings can be useful for this...
-	if (g_Girls.HasTrait(girl, "Pierced Nipples"))			jobperformance += 40;	//
-	if (g_Girls.HasTrait(girl, "Pierced Tongue"))			jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Pierced Nose"))				jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Pierced Navel"))			jobperformance += 5;	//
-	if (g_Girls.HasTrait(girl, "Princess"))					jobperformance += 30;	//High-Status degraded
-	if (g_Girls.HasTrait(girl, "Queen"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Goddess"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Angel"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Noble"))					jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Elegant"))					jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Branded on the Forehead"))	jobperformance += 5;	//Degraded
-	if (g_Girls.HasTrait(girl, "Branded on the Ass"))		jobperformance += 5;	//
+	if (girl->has_trait( "Mind Fucked"))				jobperformance += 50;	//this is her home
+	if (girl->has_trait( "Masochist"))				jobperformance += 30;	//she likes it
+	if (girl->has_trait( "Twisted"))					jobperformance += 10;	//
+	if (girl->has_trait( "Open Minded"))				jobperformance += 10;	//
+	if (girl->has_trait( "Broken Will"))				jobperformance += 20;	//
+	if (girl->has_trait( "Pierced Clit"))				jobperformance += 40;	//Piercings can be useful for this...
+	if (girl->has_trait( "Pierced Nipples"))			jobperformance += 40;	//
+	if (girl->has_trait( "Pierced Tongue"))			jobperformance += 20;	//
+	if (girl->has_trait( "Pierced Nose"))				jobperformance += 10;	//
+	if (girl->has_trait( "Pierced Navel"))			jobperformance += 5;	//
+	if (girl->has_trait( "Princess"))					jobperformance += 30;	//High-Status degraded
+	if (girl->has_trait( "Queen"))					jobperformance += 30;	//
+	if (girl->has_trait( "Goddess"))					jobperformance += 30;	//
+	if (girl->has_trait( "Angel"))					jobperformance += 30;	//
+	if (girl->has_trait( "Noble"))					jobperformance += 20;	//
+	if (girl->has_trait( "Elegant"))					jobperformance += 10;	//
+	if (girl->has_trait( "Branded on the Forehead"))	jobperformance += 5;	//Degraded
+	if (girl->has_trait( "Branded on the Ass"))		jobperformance += 5;	//
 	if (g_Girls.CheckVirginity(girl))						jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Strong Gag Reflex"))		jobperformance += 10;	//Degrading
-	if (g_Girls.HasTrait(girl, "Gag Reflex"))				jobperformance += 5;	//
-	if (g_Girls.HasTrait(girl, "No Gag Reflex"))			jobperformance += 5;	//
-	if (g_Girls.HasTrait(girl, "Deep Throat"))				jobperformance += 10;	//Capable
-	if (g_Girls.HasTrait(girl, "Tsundere"))					jobperformance += 15;	//Mistreated customers can see haughty girl knocked down
-	if (g_Girls.HasTrait(girl, "Yandere"))					jobperformance += 15;	//
-	if (g_Girls.HasTrait(girl, "Actress"))					jobperformance += 25;	//Can play it up for crowd
+	if (girl->has_trait( "Strong Gag Reflex"))		jobperformance += 10;	//Degrading
+	if (girl->has_trait( "Gag Reflex"))				jobperformance += 5;	//
+	if (girl->has_trait( "No Gag Reflex"))			jobperformance += 5;	//
+	if (girl->has_trait( "Deep Throat"))				jobperformance += 10;	//Capable
+	if (girl->has_trait( "Tsundere"))					jobperformance += 15;	//Mistreated customers can see haughty girl knocked down
+	if (girl->has_trait( "Yandere"))					jobperformance += 15;	//
+	if (girl->has_trait( "Actress"))					jobperformance += 25;	//Can play it up for crowd
 
-	if (g_Girls.HasTrait(girl, "Iron Will"))				jobperformance -= 30;	//Refuses to react
-	if (g_Girls.HasTrait(girl, "Incorporeal"))				jobperformance -= 60;	//Can't be hurt
-	if (g_Girls.HasTrait(girl, "Construct"))				jobperformance -= 60;	//Can't be hurt
-	if (g_Girls.HasTrait(girl, "Half-Construct"))			jobperformance -= 50;	//Can't be hurt
-	if (g_Girls.HasTrait(girl, "Skeleton"))					jobperformance -= 80;	//Can't be hurt
-	if (g_Girls.HasTrait(girl, "Undead"))					jobperformance -= 80;	//Can't be hurt
-	if (g_Girls.HasTrait(girl, "Zombie"))					jobperformance -= 80;	//Can't be hurt
-	if (g_Girls.HasTrait(girl, "Fragile"))					jobperformance -= 80;	//Too quickly damaged
-	if (g_Girls.HasTrait(girl, "Delicate"))					jobperformance -= 80;	//Too quickly damaged
+	if (girl->has_trait( "Iron Will"))				jobperformance -= 30;	//Refuses to react
+	if (girl->has_trait( "Incorporeal"))				jobperformance -= 60;	//Can't be hurt
+	if (girl->has_trait( "Construct"))				jobperformance -= 60;	//Can't be hurt
+	if (girl->has_trait( "Half-Construct"))			jobperformance -= 50;	//Can't be hurt
+	if (girl->has_trait( "Skeleton"))					jobperformance -= 80;	//Can't be hurt
+	if (girl->has_trait( "Undead"))					jobperformance -= 80;	//Can't be hurt
+	if (girl->has_trait( "Zombie"))					jobperformance -= 80;	//Can't be hurt
+	if (girl->has_trait( "Fragile"))					jobperformance -= 80;	//Too quickly damaged
+	if (girl->has_trait( "Delicate"))					jobperformance -= 80;	//Too quickly damaged
 
 	return jobperformance;
 }

@@ -53,12 +53,12 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	ss << " has been assigned to work as an Escort. She is informed that various men will ask for her to accompany them on dates, whether because they need a date for a social engagement of some kind or because of their own loneliness. Her skills in service, her beauty, her charisma, her intelligence, and her refinement may all be tested to provide the ideal date that each client requests. And, of course, should she decide to spend some \"extra\" time with the client, she will need to perform well with each of their sexual proclivities. This is her choice, however.\n\n";
 
-	if (g_Girls.HasTrait(girl, "Deaf"))
+	if (girl->has_trait( "Deaf"))
 	{
 		ss << girlName << " is deaf, meaning she would be unable to hear the conversation that is so critical to being successful as an escort. As there is practically no chance that a client will want to have an entire date in sign language, assuming he even knows it, " << girlName << " is particularly unsuited to work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
 		//end job
 	}
-	else if (g_Girls.HasTrait(girl, "Mute"))
+	else if (girl->has_trait( "Mute"))
 	{
 		ss << girlName << " is mute, and while some men enjoy a woman who stays silent, these men are not paying escorts to engage them in conversation. As it is severely unlikely that a client will want to spend the entire date deciphering sign language, even if they do know it, " << girlName << " is particularly unsuited for work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
 		//end job
@@ -114,28 +114,28 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		ss << girlName << "has some particularly aggressive tendencies that make her a poor choice for patrons seeking polite conversation. Even if she carries a conversation well, the undercurrent of restrained hostility will detract from her performance.\n";
 		escort -= 2;
 	}
-	if (g_Girls.HasTrait(girl, "Bimbo"))
+	if (girl->has_trait( "Bimbo"))
 	{
 		ss << girlName << " is a complete ditz. Her repertoire of conversation is limited to her favorite dresses and her many powerful feelings on makeup brands. This will stymy her abilities as an escort, no matter how well she does otherwise.\n";
 		escort -= 1;
 	}
-	if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Shy"))
+	if (girl->has_trait( "Nervous") || girl->has_trait( "Shy"))
 	{
 		ss << girlName << " is very shy with new people. For a job that requires meeting with new people constantly, this is a bad trait to possess. Her nervousness will translate into some awkward conversational moments, no matter how great her charisma is.\n";
 		escort -= 2;
 	}
-	if (g_Girls.HasTrait(girl, "Retarded"))
+	if (girl->has_trait( "Retarded"))
 	{
 		ss << girlName << " is retarded, and this is a natural obstacle to most conversations. For those men that do not want a prolonged conversation on her favorite colors or a description of her last \"poopy,\" which is the vast majority of men, she may have some trouble as an escort.\n";
 		escort -= 3;
 	}
 	//good
-	if (g_Girls.HasTrait(girl, "Psychic"))
+	if (girl->has_trait( "Psychic"))
 	{
 		ss << girlName << " has some psychic abilities, meaning she has a natural advantage in conversation. She knows what the client likes and can avoid the subjects that he dislikes. This may come in very handy.\n";
 		escort += 2;
 	}
-	if (g_Girls.HasTrait(girl, "Charismatic") || g_Girls.HasTrait(girl, "Charming"))
+	if (girl->has_trait( "Charismatic") || girl->has_trait( "Charming"))
 	{
 		ss << girlName << " is very personable and charming. Conversations with her will be easy, and this gives her an advantage as an escort.\n";
 		escort += 2;
@@ -151,7 +151,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 //{ cust_type = 5; cust_type_text = "Sheriff"; }
 //{ cust_type = 4; cust_type_text = "Bureaucrat"; }
 //{ cust_type = 3; cust_type_text = "Regular"; }
-//{ cust_type = 1; cust_type_text = "Deadbeat"; }	
+//{ cust_type = 1; cust_type_text = "Deadbeat"; }
 
 enum escortchoice
 		{
@@ -164,7 +164,7 @@ enum escortchoice
 			Es_Bureaucrat,*/
 			Es_Regular,
 			Es_Commoner,
-			Es_DeadBeat,			// 
+			Es_DeadBeat,			//
 
 
 			MD_NumberOfEscortChoices	// Leave this as the last thing on the list to allow for random choices.
@@ -270,13 +270,13 @@ case Es_Regular:
 
 
 	//boob event
-	if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs")
-					|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
-					|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs") && g_Dice.percent(75))
+	if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs")
+					|| girl->has_trait( "Titanic Tits") || girl->has_trait( "Big Boobs")
+					|| girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs") && g_Dice.percent(75))
 				{
 					ss << girlName << " knows that this assignation is all about pleasing the boss. So when she sees his eyes lock onto her substantial tits, she gives a quick victorious smile to her \"boyfriend.\" The boss's wife glances down at her own modest breasts with discomfort, but soon breaks the silence with a comment about the lovely weather.\n";
 					escort += 1;
-					if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(50))
+					if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
 						{
 							ss << "Being a bit of an exhibitionist, " << girlName << " decides to give the boss a quick \"accidental\" show when his wife is distracted by the menu. She leans forward enticingly to study the menu, giving him a full view of her deep cleavage.\n";
 							if (g_Dice.percent(75))
@@ -293,14 +293,14 @@ case Es_Regular:
 				}
 
 
-	if (g_Girls.HasTrait(girl, "Sexy Air") || g_Girls.HasTrait(girl, "Great Figure") || g_Girls.HasTrait(girl, "Hourglass Figure"))
+	if (girl->has_trait( "Sexy Air") || girl->has_trait( "Great Figure") || girl->has_trait( "Hourglass Figure"))
 	{
 		ss << "The boss immediately takes note of " << girlName << "'s sexy body with his eyes, and swallows hard, unable to form words for a few seconds. His wife does not seem to notice the effects on her husband as she is also staring, trying to figure out what it is that is so transfixing about her.\n";
 		escort += 1;
 	}
 
 
-	if (g_Girls.HasTrait(girl, "Bruises"))
+	if (girl->has_trait( "Bruises"))
 	{
 		ss << "The dress and makeup are not enough to hide the bruises covering " << girlName << "'s body, and both the boss and his wife share a significant look before shifting their gaze to the client, clearly expecting an answer. \"I fell down some stairs,\" offers " << girlName << " with embarrassment, though they do not seem fully convinced of her explanation.\n";
 		escort -= 1;
@@ -420,35 +420,35 @@ case Es_Regular:
 	}
 
 	//random stuff
-	if (g_Girls.HasTrait(girl, "Dominatrix"))
+	if (girl->has_trait( "Dominatrix"))
 	{
 		ss << "This conversation would have gone better in one respect: if " << girlName << " were not such a dominant girl, she would have wisely allowed the client to lead the conversation, as it is ultimately his relationship with his own boss that is ultimately most important. Her constant interjections and attempts to steer the conversation where she wants it to go did give the impression that the client had picked a particularly chatty girl with some difficulty at understanding social cues.\n";
 		escort -= 1;
 	}
 
-	if (g_Girls.HasTrait(girl, "Alcoholic"))
+	if (girl->has_trait( "Alcoholic"))
 	{
 		ss << "The conversation would have gone better if " << girlName << " had not started shooting the sake as fast as it was delivered. Her alcoholism managed to capture everyone's attention, and the boss and his wife did share one silent concerned look with the client as " << girlName << " started her fifth bottle.\n";
 		escort -= 1;
 	}
-	else if (g_Girls.HasTrait(girl, "Social Drinker"))
+	else if (girl->has_trait( "Social Drinker"))
 	{
 		ss << "The sake flowed freely throughout the dinner, and " << girlName << ", being a social drinker, energetically convinces all three others to keep pace with her. They all start enjoying themselves with the social lubricant in no time, and the dinner party took a more jovial tone than any of them had expected.\n";
 		escort += 1;
 	}
 
-	if (g_Girls.HasTrait(girl, "Porn Star"))
+	if (girl->has_trait( "Porn Star"))
 	{
 		ss << "Throughout the dinner, " << girlName << " did notice the boss occasionally staring at her with curiosity. \"I could swear I've seen you before somewhere,\" he muttered, unable to put his finger on it, but somehow all the more interested in her. " << girlName << " suspects that her work as a porn star may mean that he certainly has seen her before, and he has probably seen a lot of other people putting their fingers, and other body parts on \"it,\" too.\n";
 		escort += 1;
 	}
 
-	if (g_Girls.HasTrait(girl, "Bisexual"))
+	if (girl->has_trait( "Bisexual"))
 	{
 		ss << girlName << " is finely attuned to the sexual signals of both men and women, since she is attracted to both, and she can easily detect the vibes that the boss's wife is giving. They are both looking her over with more than casual interest, and this gives " << girlName << " some interesting ideas.\n";
 		escort += 2;
 	}
-	else if (g_Girls.HasTrait(girl, "Lesbian"))
+	else if (girl->has_trait( "Lesbian"))
 	{
 		ss << girlName << " may escort men for a living, but her real romantic interest is with other women. Consequently, she detects a certain vibe coming from the boss's wife throughout the dinner that she recognizes pretty quickly. The two of them share some lingering looks that the men do not see or understand, but they know that there is the potential for something here tonight.\n";
 		escort += 1;
@@ -585,7 +585,7 @@ case Es_Regular:
 		{
 			if (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 99)
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "\"I know you'll enjoy this,\" says " << girlName << " as she drops to her knees, pulls out his cock from his pants, and puts her masterful oral skills to work. She cannot take him deeply out of concern for her gag reflex, but she knows that her incredible mouth will be more than enough to pleasure him anyway, and licks and sucks various parts of his cock and balls as he builds towards orgasm, moaning with pleasure the whole time. She forces herself to take him deeply right before he cums, making herself gag on him but using her involuntary reflex as another way of massaging his shaft. He shoots a violent explosion of cum into her mouth and then staggers back, collapsing on his couch. \"That was amazing,\" he pants as " << girlName << " licks the cum from her lips.\n";
 							fame += 2;
@@ -598,7 +598,7 @@ case Es_Regular:
 					}
 					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 75)
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "\"I think you'll like this,\" says " << girlName << " as she lowers herself slowly and seductively to her knees while freeing his erection from his trousers. She gently begins licking his balls while wrapping her hand delicately over his shaft. After a few minutes of ball pleasuring, she begins licking his shaft with increased pressure, sucking on his tip passionately. She does not go deeper, aware that her gag reflex would cause problems, but is easily able to satisfy him with the licks and shallow sucking alone. Soon he builds to a powerful orgasm that floods her mouth after a few more minutes of her expert technique.\n";
 							fame += 1;
@@ -611,7 +611,7 @@ case Es_Regular:
 					}
 					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "\"Allow me to show my appreciation for a lovely evening,\" says " << girlName << " as she falls to her knees and pulls his cock out from his pants. She lovingly licks every part of his crotch, teasing his balls with her tongue and then engulfing his tip with her mouth as she rotates her tongue around the head. She avoids going any deeper out of concern for her gag reflex, which ultimately results in a mediocre blowjob, but the client is soon shooting semen until it leaks out of the sides of her mouth.\n";
 						}
@@ -623,7 +623,7 @@ case Es_Regular:
 					}
 					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 25)
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "\"Maybe this will help,\" she says while lowering herself to her knees and pulling his cock free from his pants. She licks the tip seductively and then engulfs the head with her mouth, sucking gently. The client groans with pleasure, and " << girlName << " keeps sucking the tip of his cock. And keeps sucking. For minutes. She does not vary her technique, or move to lick or suck anything else, or take the cock deeper into her mouth. She simply sucks as if it is a nipple and she is waiting for milk to come out, which the client supposes is not too far from the truth. Still, it is not a great blowjob, and it is not until he takes over and starts thrusting himself into her that he is able to build towards orgasm. " << girlName << "'s gag reflex suddenly kicks in, though, which is probably why she was staying so shallow on the tip in the first place, and she is soon coughing all over his cock and pulling herself away to recover. This kills the mood for a period, and it is not until she regains composure and the client masturbates himself into her mouth that he is able to cum. The whole experience leaves him slightly disappointed.\n";
 							fame -= 1;
@@ -635,7 +635,7 @@ case Es_Regular:
 					}
 					else
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "Wordlessly, " << girlName << " lowers herself to her knees and begins unbuttoning the client's pants. She grins and begins licking his erection. He sighs with satisfaction and prepares to enjoy the blowjob until he realizes that she has absolutely no idea what she is doing. She licks the cock like it is a lollipop, with the skill of a virgin and the enthusiasm of a dog going after peanut butter. Disaster strikes, however, when she tries to swallow his cock into her throat and her pronounced gag reflex kicked in. The gagging, combined with the alcohol from the bar, triggers instant and projectile vomit all over the client's cock. \"Oh no!\" cries " << girlName << "  as she recovers from her retching, staring in horror at the client, who is silently gazing at the pile of puke covering him. \"I'm so sorry! I'm so so so sorry,\" she continues looking around for something to wipe it all up. After a few minutes of mopping the vomit from his crotch, " << girlName << "  awkwardly pulls her clothes together and prepares to leave, painfully aware that the client will not be getting another erection any time soon. \"I'm so embarrassed,\" she whimpers as she moves for the door.\n";
 							fame -= 2;
@@ -854,9 +854,9 @@ case Es_Commoner:
 
 
 	//boob event
-	if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs")
-					|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
-					|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
+	if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs")
+					|| girl->has_trait( "Titanic Tits") || girl->has_trait( "Big Boobs")
+					|| girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs"))
 				{
 					ss << girlName << " catches the client's eyes going briefly to her substantial breasts,";
 					titty_lover = true;
@@ -864,7 +864,7 @@ case Es_Commoner:
 					{
 						ss << " before he realizes he has been caught in the act and snaps his head back to make eye contact with her, looking a little sheepish. She did see him smile, though. It seems the client is a bit of a breast man.\n";
 						escort += 1;
-						if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(50))
+						if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
 							{
 								ss << "Being a bit of an exhibitionist, " << girlName << " is pleased to see that her tits are getting some extra attention. She decides to reward his interest by leaning forward over the table to give him a good look, and \"accidentally\" catches her bracelet on her shirt as her hand moves down to grab her drink, flashing a nipple briefly at him. \"Whoops!\" she giggles, feigning embarrassment.\n";
 								if (g_Dice.percent(75))
@@ -893,7 +893,7 @@ case Es_Commoner:
 			ss << girlName << "  notices when the client flashes his eyes quickly over her breasts. She has always been a bit self-conscious about their small size, but she is surprised to see him smile back at her with greater appreciation. \"Aren't you just perfect,\" he smiles.\n";
 			escort += 1;
 			titty_lover = true;
-			if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(50))
+			if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
 				{
 					ss << "As a bit of an exhibitionist and pleased at this unusual attention on her small breasts, " << girlName << " decides to reward his interest by \"accidentally\" catching the top of her shirt on her bracelet, giving him a brief view of her pert tits and even a flash of nipple. \"Oh, how silly of me,\" she exclaims, readjusting herself.\n";
 					if (g_Dice.percent(75))
@@ -916,12 +916,12 @@ case Es_Commoner:
 	}
 
 	//ass
-	if (g_Girls.HasTrait(girl, "Great Arse") || g_Girls.HasTrait(girl, "Deluxe Derriere") || g_Girls.HasTrait(girl, "Phat Booty") && !titty_lover)
+	if (girl->has_trait( "Great Arse") || girl->has_trait( "Deluxe Derriere") || girl->has_trait( "Phat Booty") && !titty_lover)
 	{
 		ss << girlName << " feels the client's gaze as she rests her fantastic ass in her chair. He is clearly mesmerized by it for a second, before he forces himself to stop staring and returns to his own chair.";
 		escort += 1;
 		ass_lover = true;
-		if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(50))
+		if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
 				{
 					ss << girlName << " does not mind his gaze, however, and her exhibitionist tendencies make her decide to keep his attention on her amazing ass for a few more moments. She sits so that her skirt hitches on the chair and rides up, giving him a brief view of the contours of her ass cheeks. \"Oh my,\" she giggles, quickly—but not too quickly—settling her skirt back to normal.\n";
 					if (g_Dice.percent(75))
@@ -937,14 +937,14 @@ case Es_Commoner:
 				}
 	}
 
-	if (g_Girls.HasTrait(girl, "Sexy Air") || g_Girls.HasTrait(girl, "Great Figure") || g_Girls.HasTrait(girl, "Hourglass Figure"))
+	if (girl->has_trait( "Sexy Air") || girl->has_trait( "Great Figure") || girl->has_trait( "Hourglass Figure"))
 	{
 		ss << "\"There's something about the way you walk and carry yourself,\" he begins, \"that is just really, really attractive. It's really very enticing,\" he concludes, smiling, hoping the compliment is well-received.";
 		escort += 1;
 	}
 
 
-	if (g_Girls.HasTrait(girl, "Bruises"))
+	if (girl->has_trait( "Bruises"))
 	{
 		if (g_Dice.percent(33))
 		{
@@ -969,17 +969,17 @@ case Es_Commoner:
 	{
 		ss << "This is a restaurant for the gentry and other upper-middle class, and while that may have intimidated some other girls, " << girlName << " is quite comfortable having dinner in a palace. She is incredibly refined, and shortly this is apparent to the waiter, the other patrons, and especially the client, who is not really at home here and is trying to enjoy the way the other half lives for a night. He has invested quite a bit of money into this evening, and he is thrilled to see that " << girlName << " is perfectly at ease in this setting and even able to cleverly help him feel more at home. She subtly educates him on the way to hold the wine glass, order food, and then eat that food as any landed gentry would. This is the perfect companion for his evening, and he watches her every move with deep respect, appreciation, and affection.\n";
 		escort += 3;
-		if (g_Girls.HasTrait(girl, "Elegant"))
+		if (girl->has_trait( "Elegant"))
 		{
 			ss << girlName << " is watched by a number of other patrons as well, because her elegance and unconscious grace soon becomes the envy of every woman, and every man in the restaurant wishes he was the client. He beams with barely-contained pride and pleasure as the waiters dote over the two of them as if they are royalty.\n";
 			escort += 1;
 		}
-		else if (g_Girls.HasTrait(girl, "Dominatrix"))
+		else if (girl->has_trait( "Dominatrix"))
 		{
 			ss << "Being the dominant type, " << girlName << " soon commandeers the conversation. The client could not be happier about this, because he does not really have a working knowledge of upper-middle class entertainment, and her control over the conversation allows him to respond in generalities but still fool any observer into thinking the two of them are experts in opera, investments, and Crossgate politics. He spends a remarkably pleasant evening living as if he were already the gentry that he aspires to be, and he is deeply grateful to " << girlName << " for taking charge.\n";
 			escort += 2;
 		}
-		if (g_Girls.HasTrait(girl, "Social Drinker"))
+		if (girl->has_trait( "Social Drinker"))
 		{
 			ss << girlName << "'s deeply refined palate allows her to enjoy the expensive wine the client has ordered, which she suspects amounts to two days of an artisan's wages, and her tendency to drink more in social occasions allows her to enjoy the wine faster than he had anticipated. Conscious of his pocketbook, she suggests a second slightly less expensive bottle, known to wine experts as a hidden gem, and he is praised with newfound respect by the waiter when he orders it. The praise reduces some of the sting of the expense, and he is happy to pay it to please such a charming and refined companion, but he knows this is money that he will not have to tip her later.\n";
 			escort -= 1;
@@ -989,17 +989,17 @@ case Es_Commoner:
 	{
 		ss << "This restaurant is a favorite of the upper-middle class gentry, and fortunately, " << girlName << " is very refined and quite at home with the customs of the lesser nobility, let alone the gentry. She is also able to tell that her client is not as comfortable in this setting, and helps to guide him toward the right menu selections with such refined subterfuge that he believes his selections to be his own, and not the result of her polite suggestions. She quickly impresses the waiter with well-informed questions on the source of each dish and the style of cooking to be employed. The client gratefully follows her lead, very glad that she is able to deftly navigate a world to which he can only aspire.\n";
 		escort += 2;
-		if (g_Girls.HasTrait(girl, "Elegant"))
+		if (girl->has_trait( "Elegant"))
 		{
 			ss << "Every move " << girlName << " makes is so elegant that soon the women from nearby tables are looking at her with barely-contained jealousy, and many try to copy her graceful way of sipping the wine and delicately cutting her food. The client beams with pleasure when he realizes that everyone around him not only believes that he is one of them, but suspects he might be one of their betters, slumming it for a day.\n";
 			escort += 1;
 		}
-		else if (g_Girls.HasTrait(girl, "Dominatrix"))
+		else if (girl->has_trait( "Dominatrix"))
 		{
 			ss << "Being the dominant sort, " << girlName << " soon commandeers the conversation and deftly leads it into subjects that are appropriate for two upper-middle class patrons on the town. She declaims upon the most popular operas in Crossgate with well-informed expertise, but cleverly does so in such a way that the client, who is not really familiar with this world, is able to respond in generalities and any observer would believe the two of them are not merely gentry, but maybe some lesser nobles slumming it for the evening. He is very glad to follow her lead.\n";
 			escort += 1;
 		}
-		if (g_Girls.HasTrait(girl, "Social Drinker"))
+		if (girl->has_trait( "Social Drinker"))
 		{
 			ss << girlName << " has a very refined palate for wine, but she also enjoys it quite a bit in social situations, and soon the two of them have polished off the first bottle. Sooner than the client had anticipated, actually, since the bottle cost him two days' wages and he had hoped it would last all night. She suggests a second, slightly less expensive bottle, and he quickly orders it, knowing very well that she is far more at home in this environment than he is and suspecting that this is the normal custom for the gentry. While the waiter's praise at his selection of wine takes some of the sting out of the price, this is still money he had not anticipated spending, and it is money he will not be able to use to tip her for her excellent company later.\n";
 			escort -= 1;
@@ -1009,17 +1009,17 @@ case Es_Commoner:
 	{
 		ss << "This restaurant is a favorite for members of the gentry, which generally are considered upper-middle class. Fortunately, " << girlName << " is sufficiently refined to be very comfortable in this atmosphere, and she speaks, drinks, and eats with ease. The client is immediately grateful to see that she is in her natural element, because he is not, and while he was ready to fake it for the evening, he is much happier to follow her lead. This is his evening to live like his economic betters, even if it costs him a full week's worth of wages, and he happily notes that the waiter congratulates her for her excellent choice of perfectly pronounced French cuisine, and does his best to emulate her.\n";
 		escort += 1;
-		if (g_Girls.HasTrait(girl, "Elegant"))
+		if (girl->has_trait( "Elegant"))
 		{
 			ss << "He then beams with pleasure as " << girlName << " takes hold of her wine glass and sips with unconscious grace. She is an elegant lady, and the client soon realizes that other women at nearby tables are soon looking at her with some jealousy and trying to hold their wine glasses in just the same way. He beams with pleasure to be sitting with such a refined and elegant woman.\n";
 			escort += 1;
 		}
-		else if (g_Girls.HasTrait(girl, "Dominatrix"))
+		else if (girl->has_trait( "Dominatrix"))
 		{
 			ss << "Being a dominant type, " << girlName << " soon takes over the conversation topics and steers the two of them towards the appropriate subject matter for two upper-middle class patrons out for a night on the town. She discusses the latest operas with ease, which could have been a problem as the client does not actually know much about them, but she cleverly discusses them in such a way that she is informing him without lecturing him, and she deftly manages the conversation such that any observer would think the two of them to be quite well acquainted with the subject. He is happy to follow her lead.\n";
 			escort += 1;
 		}
-		if (g_Girls.HasTrait(girl, "Social Drinker"))
+		if (girl->has_trait( "Social Drinker"))
 		{
 			ss << girlName << " compliments the client on his excellent wine selection, which pleases him greatly, as it easily cost him two days' wages. She does tend to drink quite a bit in social situations, though, and soon the two of them have polished off the bottle that he thought would last them all night. She suggests a second, slightly less expensive, bottle to him, and he happily follows her recommendation, as her palate and refinement make her the expert out of the two of them. The waiter praises his choice of a second bottle, which takes the sting out of its price, but nevertheless, this is money that he had not anticipated spending, and it will naturally cut into the amount he is able to tip her for her pleasurable company.\n";
 			escort -= 1;
@@ -1028,16 +1028,16 @@ case Es_Commoner:
 	else if (g_Girls.GetStat(girl, STAT_REFINEMENT) >= 25)
 	{
 		ss << girlName << " has the refinement of a girl raised in the lower-middle class, and she is somewhat out of sorts in this restaurant, which is definitely upper-middle class. While the client is also out of place here, he does a much better job of hiding it. He smells the wine cork when the bottle is offered as if he has done that many times before, and as soon as the waiter leaves, " << girlName << " leans towards him and asks in a whisper what that was all about. \"Honestly,\" he replies, \"I have no idea. It's just what I see them do.\" Understanding about decorum, " << girlName << " knows enough about her own limitations to be uncomfortable here, and quietly orders the most inexpensive thing from the menu that she can. The client is slightly charmed by her discomfort, as he obviously sympathizes, but it seems that he was hoping that he would be the only one faking it, and that " << girlName << " should have been the kind of lady who would be right at home here.\n";
-		if (g_Girls.HasTrait(girl, "Elegant"))
+		if (girl->has_trait( "Elegant"))
 		{
 			ss << "However, " << girlName << " soon allows her own elegant style to overcome her unease. She might not be familiar with the customs and traditions of the gentry, but her unconscious grace and ease when lifting the wine glass to her lips soon draws the envious glances of patrons at nearby tables. The client smiles softly to himself, happy to be sitting beside such an elegant, even if unrefined, lady.\n";
 			escort += 1;
 		}
-		else if (g_Girls.HasTrait(girl, "Dominatrix"))
+		else if (girl->has_trait( "Dominatrix"))
 		{
 			ss << "Being the dominant type, " << girlName << " soon finds herself leading the conversation, whether the client wants that or not. As both are out of place in this restaurant and trying to look as if they belong, the conversation becomes awkward quickly as " << girlName << " forcefully navigates away from subjects that cause her unease and towards subjects that she believes the gentry usually discuss. This would be more successful if she was actually conversant about opera.\n";
 		}
-		if (g_Girls.HasTrait(girl, "Social Drinker"))
+		if (girl->has_trait( "Social Drinker"))
 		{
 			ss << "As " << girlName << " tends to knock back alcohol in social situations with surprising vigor, she at least looks like she is quite comfortable drinking expensive wine. The first bottle is drained long before the client had anticipated, especially since it cost approximately two days' wages for him. He is glad when " << girlName << " suggests a less expensive bottle for their next drink, but he does silently mourn for his pocketbook.\n";
 			escort -= 1;
@@ -1047,17 +1047,17 @@ case Es_Commoner:
 	{
 		ss << girlName << " has no refinement and is immediately identifiable as a fish out of water in this restaurant. She drinks the wine in large swallows, totally unaware of the client's cringes as she knocks back a bottle worth two days of work for him without any apparent recognition of its value. When the waiter arrives, she orders a moderately expensive French dish loudly, thoroughly mispronouncing it. The waiter politely confirms her order and moves away to prepare it, leaving the client alone with " << girlName << " and his own embarrassment.\n";
 		escort -= 1;
-		if (g_Girls.HasTrait(girl, "Elegant"))
+		if (girl->has_trait( "Elegant"))
 		{
 			ss << "While " << girlName << " is clearly out of her element in a middle-class environment, she at least possesses her own kind of lower-class elegance. When she chugs the wine, she does so with some grace, and her mispronunciation of the dishes is more charming than cringe-worthy. This does quite a bit to make the client, who is also out of his own element though doing an excellent job of hiding it, much more comfortable with " << girlName << ".\n";
 			escort += 1;
 		}
-		else if (g_Girls.HasTrait(girl, "Dominatrix"))
+		else if (girl->has_trait( "Dominatrix"))
 		{
 			ss << "Being a very dominant personality, " << girlName << " soon forced herself into leading the conversation between the two of them. This would not necessarily be such a bad thing with an escort, considering that she is probably more at ease with the situation than the client, but when paired with her lack of refinement in this classier establishment, the results are unfortunate. While the other tables are discussing investment portfolios and the opera, " << girlName << " is deep in a soliloquy on Crossgate professional sports gossip. Loudly. The client furtively glances from side to side, hoping the other patrons are not judging them as being out of place.\n";
 			escort -= 1;
 		}
-		if (g_Girls.HasTrait(girl, "Social Drinker"))
+		if (girl->has_trait( "Social Drinker"))
 		{
 			ss << girlName << " is a social drinker who enjoys a good bottle of wine. As her palate is as unrefined as the rest of her, however, she also really enjoys a terrible bottle of wine. Once the two of them have polished off the expensive first bottle, which happens sooner than the client expected or would have liked, " << girlName << " suggests a second bottle called \"Frankia\" that is generally considered to be grape-flavored paint thinner. While the client is glad that the second bottle is much less expensive, he is concerned that " << girlName << " may not be the right girl to join him for this kind of date.\n";
 			escort -= 1;
@@ -1276,7 +1276,7 @@ case Es_Commoner:
 				{
 					if (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 99)
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "\"I know you'll enjoy this,\" says " << girlName << " as she drops to her knees, pulls out his cock from his pants, and puts her masterful oral skills to work. She cannot take him deeply out of concern for her gag reflex, but she knows that her incredible mouth will be more than enough to pleasure him anyway, and licks and sucks various parts of his cock and balls as he builds towards orgasm, moaning with pleasure the whole time. She forces herself to take him deeply right before he cums, making herself gag on him but using her involuntary reflex as another way of massaging his shaft. He shoots a violent explosion of cum into her mouth and then staggers back, collapsing on his couch. \"That was amazing,\" he pants as " << girlName << " licks the cum from her lips.\n";
 							fame += 2;
@@ -1289,7 +1289,7 @@ case Es_Commoner:
 					}
 					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 75)
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "\"I think you'll like this,\" says " << girlName << " as she lowers herself slowly and seductively to her knees while freeing his erection from his trousers. She gently begins licking his balls while wrapping her hand delicately over his shaft. After a few minutes of ball pleasuring, she begins licking his shaft with increased pressure, sucking on his tip passionately. She does not go deeper, aware that her gag reflex would cause problems, but is easily able to satisfy him with the licks and shallow sucking alone. Soon he builds to a powerful orgasm that floods her mouth after a few more minutes of her expert technique.\n";
 							fame += 1;
@@ -1302,7 +1302,7 @@ case Es_Commoner:
 					}
 					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "\"Allow me to show my appreciation for a lovely evening,\" says " << girlName << " as she falls to her knees and pulls his cock out from his pants. She lovingly licks every part of his crotch, teasing his balls with her tongue and then engulfing his tip with her mouth as she rotates her tongue around the head. She avoids going any deeper out of concern for her gag reflex, which ultimately results in a mediocre blowjob, but the client is soon shooting semen until it leaks out of the sides of her mouth.\n";
 						}
@@ -1314,7 +1314,7 @@ case Es_Commoner:
 					}
 					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 25)
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "\"Maybe this will help,\" she says while lowering herself to her knees and pulling his cock free from his pants. She licks the tip seductively and then engulfs the head with her mouth, sucking gently. The client groans with pleasure, and " << girlName << " keeps sucking the tip of his cock. And keeps sucking. For minutes. She does not vary her technique, or move to lick or suck anything else, or take the cock deeper into her mouth. She simply sucks as if it is a nipple and she is waiting for milk to come out, which the client supposes is not too far from the truth. Still, it is not a great blowjob, and it is not until he takes over and starts thrusting himself into her that he is able to build towards orgasm. " << girlName << "'s gag reflex suddenly kicks in, though, which is probably why she was staying so shallow on the tip in the first place, and she is soon coughing all over his cock and pulling herself away to recover. This kills the mood for a period, and it is not until she regains composure and the client masturbates himself into her mouth that he is able to cum. The whole experience leaves him slightly disappointed.\n";
 							fame -= 1;
@@ -1326,7 +1326,7 @@ case Es_Commoner:
 					}
 					else
 					{
-						if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
 							ss << "Wordlessly, " << girlName << " lowers herself to her knees and begins unbuttoning the client's pants. She grins and begins licking his erection. He sighs with satisfaction and prepares to enjoy the blowjob until he realizes that she has absolutely no idea what she is doing. She licks the cock like it is a lollipop, with the skill of a virgin and the enthusiasm of a dog going after peanut butter. Disaster strikes, however, when she tries to swallow his cock into her throat and her pronounced gag reflex kicked in. The gagging, combined with the alcohol from the bar, triggers instant and projectile vomit all over the client's cock. \"Oh no!\" cries " << girlName << "  as she recovers from her retching, staring in horror at the client, who is silently gazing at the pile of puke covering him. \"I'm so sorry! I'm so so so sorry,\" she continues looking around for something to wipe it all up. After a few minutes of mopping the vomit from his crotch, " << girlName << "  awkwardly pulls her clothes together and prepares to leave, painfully aware that the client will not be getting another erection any time soon. \"I'm so embarrassed,\" she whimpers as she moves for the door.\n";
 							fame -= 2;
@@ -1408,9 +1408,9 @@ case Es_DeadBeat:
 	}
 
 	//boob event
-	if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs")
-					|| g_Girls.HasTrait(girl, "Titanic Tits") || g_Girls.HasTrait(girl, "Big Boobs")
-					|| g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
+	if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs")
+					|| girl->has_trait( "Titanic Tits") || girl->has_trait( "Big Boobs")
+					|| girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs"))
 				{
 					ss << girlName << " catches the client's eyes going briefly to her substantial breasts,";
 					titty_lover = true;
@@ -1418,7 +1418,7 @@ case Es_DeadBeat:
 					{
 						ss << " before he realizes he has been caught in the act and snaps his head back to make eye contact with her, looking a little sheepish. She did see him smile, though. It seems the client is a bit of a breast man.\n";
 						escort += 1;
-						if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(50))
+						if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
 							{
 								ss << "Being a bit of an exhibitionist, " << girlName << " is pleased to see that her tits are getting some extra attention. She decides to reward his interest by leaning forward over the table to give him a good look, and \"accidentally\" catches her bracelet on her shirt as her hand moves down to grab her drink, flashing a nipple briefly at him. \"Whoops!\" she giggles, feigning embarrassment.\n";
 								if (g_Dice.percent(75))
@@ -1447,7 +1447,7 @@ case Es_DeadBeat:
 			ss << girlName << "  notices when the client flashes his eyes quickly over her breasts. She has always been a bit self-conscious about their small size, but she is surprised to see him smile back at her with greater appreciation. \"Aren't you just perfect,\" he smiles.\n";
 			escort += 1;
 			titty_lover = true;
-			if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(50))
+			if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
 				{
 					ss << "As a bit of an exhibitionist and pleased at this unusual attention on her small breasts, " << girlName << " decides to reward his interest by \"accidentally\" catching the top of her shirt on her bracelet, giving him a brief view of her pert tits and even a flash of nipple. \"Oh, how silly of me,\" she exclaims, readjusting herself.\n";
 					if (g_Dice.percent(75))
@@ -1471,12 +1471,12 @@ case Es_DeadBeat:
 
 
 	//ass
-	if (g_Girls.HasTrait(girl, "Great Arse") || g_Girls.HasTrait(girl, "Deluxe Derriere") || g_Girls.HasTrait(girl, "Phat Booty") && !titty_lover)
+	if (girl->has_trait( "Great Arse") || girl->has_trait( "Deluxe Derriere") || girl->has_trait( "Phat Booty") && !titty_lover)
 	{
 		ss << girlName << " feels the client's gaze as she rests her fantastic ass in her chair. He is clearly mesmerized by it for a second, before he forces himself to stop staring and returns to his own chair.";
 		escort += 1;
 		ass_lover = true;
-		if (g_Girls.HasTrait(girl, "Exhibitionist") && g_Dice.percent(50))
+		if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
 				{
 					ss << girlName << " does not mind his gaze, however, and her exhibitionist tendencies make her decide to keep his attention on her amazing ass for a few more moments. She sits so that her skirt hitches on the chair and rides up, giving him a brief view of the contours of her ass cheeks. \"Oh my,\" she giggles, quickly—but not too quickly—settling her skirt back to normal.\n";
 					if (g_Dice.percent(75))
@@ -1493,14 +1493,14 @@ case Es_DeadBeat:
 	}
 
 
-	if (g_Girls.HasTrait(girl, "Sexy Air") || g_Girls.HasTrait(girl, "Great Figure") || g_Girls.HasTrait(girl, "Hourglass Figure"))
+	if (girl->has_trait( "Sexy Air") || girl->has_trait( "Great Figure") || girl->has_trait( "Hourglass Figure"))
 	{
 		ss << "\"There's something about the way you walk and carry yourself,\" he begins, \"that is just really, really attractive. It's really very enticing,\" he concludes, smiling, hoping the compliment is well-received.\n";
 		escort += 1;
 	}
 
 
-	if (g_Girls.HasTrait(girl, "Bruises"))
+	if (girl->has_trait( "Bruises"))
 	{
 		if (g_Dice.percent(33))
 		{
@@ -1525,7 +1525,7 @@ case Es_DeadBeat:
 	{
 		ss << girlName << " and the client spend the next hour joking and bantering like old friends. She is wonderfully charismatic, and while she expertly keeps the conversation on comfortable subjects for him, she knows that he would be happy talking with her about anything. By the end of the hour he is wiping tears of laughter from his eyes and smiling at her with deep appreciation.\n";
 		escort += 3;
-		if (g_Girls.HasTrait(girl, "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
 		{
 			ss << girlName << "He also appreciates the sheer volume of alcohol that " << girlName << " has consumed in the last hour. He accurately suspects that she may be an alcoholic, but she seems to be able to handle it well, and while this concerns him, it has hardly ruined his evening.\n";
 			escort -= 1;
@@ -1536,7 +1536,7 @@ case Es_DeadBeat:
 	{
 		ss << girlName << " and the client are bantering like best friends within minutes. She charismatically leads him into conversations where they share interests and deftly steers him away from controversial or uncomfortable subjects. An hour has passed before he even realizes it, and their laughter reverberates around the surrounding tables.\n";
 		escort += 2;
-		if (g_Girls.HasTrait(girl, "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
 		{
 			ss << girlName << " is laughing a bit louder than he is, though. This is probably because her desperate need for alcohol has resulted in her downing five beverages over the course of the hour. While their conversation was so engaging that the client did not seem to mind how drunk she was getting, he did notice.\n";
 			escort -= 1;
@@ -1547,7 +1547,7 @@ case Es_DeadBeat:
 	{
 		ss << girlName << " has the client laughing at jokes and talking about shared hobbies in no time. The two of them enjoy a pleasant conversation for the next forty-five minutes, and they both share another drink. After about an hour, the conversation starts slowing down as " << girlName << " runs out of ideas to keep it going, but by the end of the evening, she can tell the client enjoyed their time together.\n";
 		escort += 1;
-		if (g_Girls.HasTrait(girl, "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
 		{
 			ss << "All except for " << girlName << "'s drinking, that is. As an alcoholic, she is unable to control herself once the drinking starts, and after they share another drink, she gets a third, and then a fourth, and by the fifth she is sloppy. The silent judgment in his eyes verifies that " << girlName << "'s alcoholism has reversed any rapport she was able to gain via conversation.\n";
 			escort -= 1;
@@ -1557,7 +1557,7 @@ case Es_DeadBeat:
 	else if (g_Girls.GetStat(girl, STAT_CHARISMA) >= 25)
 	{
 		ss << girlName << " is able to lead the two of them in a few minutes of good conversation, but it begins to sputter out once she is out of ideas. The client's efforts at leading the conversation would have been successful if " << girlName << " was more charismatic and able to think and speak on her feet. The conversation is not the worst thing in the world, but it ends up being a part of the date that both of them would be happier forgetting.\n";
-		if (g_Girls.HasTrait(girl, "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
 		{
 			ss << "What he cannot forget, however, is how many drinks " << girlName << " knocks back during the hour. Her need is not social; it is clearly an addiction. She is much drunker than he is by the end of the hour, and while he is willing to forget the conversation, he does feel compelled to judge her conduct.\n";
 			escort -= 1;
@@ -1568,7 +1568,7 @@ case Es_DeadBeat:
 	{
 		ss << girlName << " has the charisma of a sponge, and the conversation grinds to a halt within minutes. Her efforts at small talk are painfully awkward, and whenever she tries to start a new conversation topic, she sounds like an alien who has just discovered the human race. After she asks him to tell her more about \"this thing called football,\" he starts ordering more drinks. He knows at this point he is not drinking to be social; he is drinking to survive.\n";
 		escort -= 1;
-		if (g_Girls.HasTrait(girl, "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
 		{
 			ss << girlName << " is more than familiar with the idea of drinking like her life depended on it, and her craving for alcohol soon has her keeping pace with the client. Soon the two are an absolute mess together.\n";
 			escort += 1;
@@ -1780,7 +1780,7 @@ case Es_DeadBeat:
 			{
 				if (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 99)
 				{
-					if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+					if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 					{
 						ss << "\"I know you'll enjoy this,\" says " << girlName << " as she drops to her knees, pulls out his cock from his pants, and puts her masterful oral skills to work. She cannot take him deeply out of concern for her gag reflex, but she knows that her incredible mouth will be more than enough to pleasure him anyway, and licks and sucks various parts of his cock and balls as he builds towards orgasm, moaning with pleasure the whole time. She forces herself to take him deeply right before he cums, making herself gag on him but using her involuntary reflex as another way of massaging his shaft. He shoots a violent explosion of cum into her mouth and then staggers back, collapsing on his couch. \"That was amazing,\" he pants as " << girlName << " licks the cum from her lips.\n";
 						fame += 2;
@@ -1793,7 +1793,7 @@ case Es_DeadBeat:
 				}
 				else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 75)
 				{
-					if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+					if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 					{
 						ss << "\"I think you'll like this,\" says " << girlName << " as she lowers herself slowly and seductively to her knees while freeing his erection from his trousers. She gently begins licking his balls while wrapping her hand delicately over his shaft. After a few minutes of ball pleasuring, she begins licking his shaft with increased pressure, sucking on his tip passionately. She does not go deeper, aware that her gag reflex would cause problems, but is easily able to satisfy him with the licks and shallow sucking alone. Soon he builds to a powerful orgasm that floods her mouth after a few more minutes of her expert technique.\n";
 						fame += 1;
@@ -1806,7 +1806,7 @@ case Es_DeadBeat:
 				}
 				else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
 				{
-					if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+					if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 					{
 						ss << "\"Allow me to show my appreciation for a lovely evening,\" says " << girlName << " as she falls to her knees and pulls his cock out from his pants. She lovingly licks every part of his crotch, teasing his balls with her tongue and then engulfing his tip with her mouth as she rotates her tongue around the head. She avoids going any deeper out of concern for her gag reflex, which ultimately results in a mediocre blowjob, but the client is soon shooting semen until it leaks out of the sides of her mouth.\n";
 					}
@@ -1818,7 +1818,7 @@ case Es_DeadBeat:
 				}
 				else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 25)
 				{
-					if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+					if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 					{
 						ss << "\"Maybe this will help,\" she says while lowering herself to her knees and pulling his cock free from his pants. She licks the tip seductively and then engulfs the head with her mouth, sucking gently. The client groans with pleasure, and " << girlName << " keeps sucking the tip of his cock. And keeps sucking. For minutes. She does not vary her technique, or move to lick or suck anything else, or take the cock deeper into her mouth. She simply sucks as if it is a nipple and she is waiting for milk to come out, which the client supposes is not too far from the truth. Still, it is not a great blowjob, and it is not until he takes over and starts thrusting himself into her that he is able to build towards orgasm. " << girlName << "'s gag reflex suddenly kicks in, though, which is probably why she was staying so shallow on the tip in the first place, and she is soon coughing all over his cock and pulling herself away to recover. This kills the mood for a period, and it is not until she regains composure and the client masturbates himself into her mouth that he is able to cum. The whole experience leaves him slightly disappointed.\n";
 						fame -= 1;
@@ -1830,7 +1830,7 @@ case Es_DeadBeat:
 				}
 				else
 				{
-					if (g_Girls.HasTrait(girl, "Strong Gag Reflex") || g_Girls.HasTrait(girl, "Gag Reflex"))
+					if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 					{
 						ss << "Wordlessly, " << girlName << " lowers herself to her knees and begins unbuttoning the client's pants. She grins and begins licking his erection. He sighs with satisfaction and prepares to enjoy the blowjob until he realizes that she has absolutely no idea what she is doing. She licks the cock like it is a lollipop, with the skill of a virgin and the enthusiasm of a dog going after peanut butter. Disaster strikes, however, when she tries to swallow his cock into her throat and her pronounced gag reflex kicked in. The gagging, combined with the alcohol from the bar, triggers instant and projectile vomit all over the client's cock. \"Oh no!\" cries " << girlName << "  as she recovers from her retching, staring in horror at the client, who is silently gazing at the pile of puke covering him. \"I'm so sorry! I'm so so so sorry,\" she continues looking around for something to wipe it all up. After a few minutes of mopping the vomit from his crotch, " << girlName << "  awkwardly pulls her clothes together and prepares to leave, painfully aware that the client will not be getting another erection any time soon. \"I'm so embarrassed,\" she whimpers as she moves for the door.\n";
 						fame -= 2;
@@ -1931,7 +1931,7 @@ break;	// end Es_DeadBeat
 	}
 #endif
 
-	
+
 
 	// work out the pay between the house and the girl
 	wages = (int)(girl->askprice() * cust_type * cust_wealth);
@@ -1945,9 +1945,9 @@ break;	// end Es_DeadBeat
 	// Improve stats
 	int xp = 20, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill + 1);

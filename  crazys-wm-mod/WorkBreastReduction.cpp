@@ -54,7 +54,7 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (girl->m_YesterDayJob != JOB_BREASTREDUCTION) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_BREASTREDUCTION;	// it is a full time job
 
-	if (g_Girls.HasTrait(girl, "Flat Chest"))
+	if (girl->has_trait( "Flat Chest"))
 	{
 		ss << " already has a Flat Chest so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -121,7 +121,7 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(-1, 1));
 		}
 
-		if (g_Girls.HasTrait(girl, "Flat Chest"))
+		if (girl->has_trait( "Flat Chest"))
 		{
 			ss << girlName << "'s breasts are as small as they can get so she was sent to the waiting room.";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
@@ -135,9 +135,9 @@ bool cJobManager::WorkBreastReduction(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	// Improve girl
 	int libido = 1;
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	if (girl->has_trait( "Lesbian"))		libido += numnurse;
+	if (girl->has_trait( "Masochist"))	libido += 1;
+	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
@@ -151,15 +151,15 @@ double cJobManager::JP_BreastReduction(sGirl* girl, bool estimate)
 	double jobperformance = 0.0;
 	if (estimate)	// for third detail string - how much do they need this?
 	{
-		/* */if (g_Girls.HasTrait(girl, "Flat Chest"))				return -1000;
-		else if (g_Girls.HasTrait(girl, "Petite Breasts"))			return 0;
-		else if (g_Girls.HasTrait(girl, "Small Boobs"))				return 70;
-		else if (g_Girls.HasTrait(girl, "Busty Boobs"))				return 100;
-		else if (g_Girls.HasTrait(girl, "Big Boobs"))				return 150;
-		else if (g_Girls.HasTrait(girl, "Giant Juggs"))				return 200;
-		else if (g_Girls.HasTrait(girl, "Massive Melons"))			return 250;
-		else if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	return 350;
-		else if (g_Girls.HasTrait(girl, "Titanic Tits"))			return 400;
+		/* */if (girl->has_trait( "Flat Chest"))				return -1000;
+		else if (girl->has_trait( "Petite Breasts"))			return 0;
+		else if (girl->has_trait( "Small Boobs"))				return 70;
+		else if (girl->has_trait( "Busty Boobs"))				return 100;
+		else if (girl->has_trait( "Big Boobs"))				return 150;
+		else if (girl->has_trait( "Giant Juggs"))				return 200;
+		else if (girl->has_trait( "Massive Melons"))			return 250;
+		else if (girl->has_trait( "Abnormally Large Boobs"))	return 350;
+		else if (girl->has_trait( "Titanic Tits"))			return 400;
 		else /*                                                  */ return 100;
 	}
 	return jobperformance;

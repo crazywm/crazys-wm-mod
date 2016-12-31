@@ -108,7 +108,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	//base tips, aprox 10-20% of base wages
 	tips += (int)(((10 + jobperformance / 22) * wages) / 100);
-	
+
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
@@ -125,12 +125,12 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		ss << girlName << " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n"; tips += 35;
 	}
 
-	if (g_Girls.HasTrait(girl, "Clumsy") && g_Dice.percent(15))
+	if (girl->has_trait( "Clumsy") && g_Dice.percent(15))
 	{
 		ss << "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n"; wages -= 15;
 	}
 
-	if (g_Girls.HasTrait(girl, "Pessimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Pessimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -142,7 +142,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 	}
 
-	if (g_Girls.HasTrait(girl, "Optimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Optimist") && g_Dice.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -154,12 +154,12 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 	}
 	// `J` slightly higher percent compared to regular barmaid, I would think sleazy barmaid's uniform is more revealing
-	if ((g_Dice.percent(5) && g_Girls.HasTrait(girl, "Busty Boobs")) ||
-		(g_Dice.percent(10) && g_Girls.HasTrait(girl, "Big Boobs")) ||
-		(g_Dice.percent(15) && g_Girls.HasTrait(girl, "Giant Juggs")) ||
-		(g_Dice.percent(20) && g_Girls.HasTrait(girl, "Massive Melons")) ||
-		(g_Dice.percent(25) && g_Girls.HasTrait(girl, "Abnormally Large Boobs")) ||
-		(g_Dice.percent(30) && g_Girls.HasTrait(girl, "Titanic Tits")))
+	if ((g_Dice.percent(5) && girl->has_trait( "Busty Boobs")) ||
+		(g_Dice.percent(10) && girl->has_trait( "Big Boobs")) ||
+		(g_Dice.percent(15) && girl->has_trait( "Giant Juggs")) ||
+		(g_Dice.percent(20) && girl->has_trait( "Massive Melons")) ||
+		(g_Dice.percent(25) && girl->has_trait( "Abnormally Large Boobs")) ||
+		(g_Dice.percent(30) && girl->has_trait( "Titanic Tits")))
 	{
 		if (jobperformance < 150)
 		{
@@ -171,7 +171,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 	}
 
-	if (g_Girls.HasTrait(girl, "Meek") && g_Dice.percent(5) && jobperformance < 125)
+	if (girl->has_trait( "Meek") && g_Dice.percent(5) && jobperformance < 125)
 	{
 		ss << girlName << " spilled a drink all over a man's lap. He told her she had to lick it up and forced her to clean him up which she Meekly accepted and went about licking his cock clean.\n";
 		imagetype = IMGTYPE_ORAL;
@@ -181,19 +181,19 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	if (g_Dice.percent(5)) //may get moved to waitress
 	{
 		ss << "A drunken patron decide to grab " << girlName << "'s boob. ";
-		if (g_Girls.HasTrait(girl, "Meek"))
+		if (girl->has_trait( "Meek"))
 		{
 			ss << "She was shocked and didn't react. The man molested her for a few minutes!\n";
 		}
-		else if (g_Girls.HasTrait(girl, "Tough"))
+		else if (girl->has_trait( "Tough"))
 		{
 			ss << "She knocked him out! You could swear that she knocked a couple of his teeth out too!\n";
 		}
-		else if (g_Girls.HasTrait(girl, "Your Daughter"))
+		else if (girl->has_trait( "Your Daughter"))
 		{
 			ss << "She screamed do you know who my dad is? He will have your head for this!\n";
 		}
-		else if (g_Girls.HasTrait(girl, "Your Wife"))
+		else if (girl->has_trait( "Your Wife"))
 		{
 			ss << "She screamed do you know who my husband is? He will have your head for this!\n";
 		}
@@ -207,7 +207,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 	}
 
-	if ((g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Succubus")) && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && g_Dice.percent(20) && !g_Girls.CheckVirginity(girl) && !g_Girls.HasTrait(girl, "Lesbian"))
+	if ((girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && g_Dice.percent(20) && !g_Girls.CheckVirginity(girl) && !girl->has_trait( "Lesbian"))
 	{
 		if (roll_b <= 50)
 		{
@@ -271,10 +271,10 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	// Improve stats
 	int xp = 15, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
-	if (!g_Girls.HasTrait(girl, "Straight"))	{ libido += min(3, g_Brothels.GetNumGirlsOnJob(0, JOB_BARSTRIPPER, false)); }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
+	if (!girl->has_trait( "Straight"))	{ libido += min(3, g_Brothels.GetNumGirlsOnJob(0, JOB_BARSTRIPPER, false)); }
 	if (girl->fame() < 10 && jobperformance >= 70)		{ fame += 1; }
 	if (girl->fame() < 20 && jobperformance >= 100)		{ fame += 1; }
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
@@ -315,48 +315,48 @@ double cJobManager::JP_SleazyBarmaid(sGirl* girl, bool estimate)// not used
 	}
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Charismatic"))			jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Mixologist"))			jobperformance += 25;
-	if (g_Girls.HasTrait(girl, "Charming"))				jobperformance += 15;	// people like charming people	
-	if (g_Girls.HasTrait(girl, "Sexy Air"))				jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cool Person"))			jobperformance += 10;	// people love to be around her	
-	if (g_Girls.HasTrait(girl, "Psychic"))				jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Cute"))					jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Great Figure"))			jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Great Arse"))			jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))	jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Long Legs"))			jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Natural Pheromones"))	jobperformance += 15;
+	if (girl->has_trait( "Charismatic"))			jobperformance += 20;
+	if (girl->has_trait( "Mixologist"))			jobperformance += 25;
+	if (girl->has_trait( "Charming"))				jobperformance += 15;	// people like charming people
+	if (girl->has_trait( "Sexy Air"))				jobperformance += 10;
+	if (girl->has_trait( "Cool Person"))			jobperformance += 10;	// people love to be around her
+	if (girl->has_trait( "Psychic"))				jobperformance += 10;
+	if (girl->has_trait( "Cute"))					jobperformance += 5;
+	if (girl->has_trait( "Great Figure"))			jobperformance += 5;
+	if (girl->has_trait( "Great Arse"))			jobperformance += 5;
+	if (girl->has_trait( "Quick Learner"))		jobperformance += 5;
+	if (girl->has_trait( "Dick-Sucking Lips"))	jobperformance += 5;
+	if (girl->has_trait( "Long Legs"))			jobperformance += 5;
+	if (girl->has_trait( "Natural Pheromones"))	jobperformance += 15;
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Dependant"))		jobperformance -= 50;	// needs others to do the job	
-	if (g_Girls.HasTrait(girl, "Alcoholic"))		jobperformance -= 40;	// bad idea let an alcoholic near booze
-	if (g_Girls.HasTrait(girl, "Nervous"))			jobperformance -= 30;	// don't like to be around people
-	if (g_Girls.HasTrait(girl, "Clumsy"))			jobperformance -= 20;	// spills food and breaks things often	
-	if (g_Girls.HasTrait(girl, "Aggressive"))		jobperformance -= 20;	// gets mad easy and may attack people
-	if (g_Girls.HasTrait(girl, "Meek"))				jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Slow Learner"))		jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Social Drinker"))	jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Bimbo"))			jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Shy"))				jobperformance -= 10;
+	if (girl->has_trait( "Dependant"))		jobperformance -= 50;	// needs others to do the job
+	if (girl->has_trait( "Alcoholic"))		jobperformance -= 40;	// bad idea let an alcoholic near booze
+	if (girl->has_trait( "Nervous"))			jobperformance -= 30;	// don't like to be around people
+	if (girl->has_trait( "Clumsy"))			jobperformance -= 20;	// spills food and breaks things often
+	if (girl->has_trait( "Aggressive"))		jobperformance -= 20;	// gets mad easy and may attack people
+	if (girl->has_trait( "Meek"))				jobperformance -= 20;
+	if (girl->has_trait( "Slow Learner"))		jobperformance -= 10;
+	if (girl->has_trait( "Social Drinker"))	jobperformance -= 10;
+	if (girl->has_trait( "Bimbo"))			jobperformance -= 5;
+	if (girl->has_trait( "Shy"))				jobperformance -= 10;
 
-	if (g_Girls.HasTrait(girl, "One Arm"))		jobperformance -= 30;
-	if (g_Girls.HasTrait(girl, "One Foot"))		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "One Hand"))		jobperformance -= 15; 
-	if (g_Girls.HasTrait(girl, "One Leg"))		jobperformance -= 40;
-	if (g_Girls.HasTrait(girl, "No Arms"))		jobperformance -= 100;
-	if (g_Girls.HasTrait(girl, "No Feet"))		jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "No Hands"))		jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "No Legs"))		jobperformance -= 40;
-	if (g_Girls.HasTrait(girl, "Blind"))		jobperformance -= 40;
-	if (g_Girls.HasTrait(girl, "Deaf"))			jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Retarded"))		jobperformance -= 60;
-	if (g_Girls.HasTrait(girl, "Smoker"))		jobperformance -= 10;//would need smoke breaks
+	if (girl->has_trait( "One Arm"))		jobperformance -= 30;
+	if (girl->has_trait( "One Foot"))		jobperformance -= 20;
+	if (girl->has_trait( "One Hand"))		jobperformance -= 15;
+	if (girl->has_trait( "One Leg"))		jobperformance -= 40;
+	if (girl->has_trait( "No Arms"))		jobperformance -= 100;
+	if (girl->has_trait( "No Feet"))		jobperformance -= 20;
+	if (girl->has_trait( "No Hands"))		jobperformance -= 50;
+	if (girl->has_trait( "No Legs"))		jobperformance -= 40;
+	if (girl->has_trait( "Blind"))		jobperformance -= 40;
+	if (girl->has_trait( "Deaf"))			jobperformance -= 20;
+	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
+	if (girl->has_trait( "Smoker"))		jobperformance -= 10;//would need smoke breaks
 
-	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 25;
-	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 25;
-	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 25;
+	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
+	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
+	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
 
 	return jobperformance;
 }

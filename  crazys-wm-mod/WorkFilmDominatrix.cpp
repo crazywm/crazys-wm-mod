@@ -16,6 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+#if 0
 #include "cJobManager.h"
 #include "cBrothel.h"
 #include "cClinic.h"
@@ -135,3 +137,6 @@ double cJobManager::JP_FilmDom(sGirl* girl, bool estimate)// not used
 {
 	return 0;
 }
+#endif
+
+

@@ -34,7 +34,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 {
 	int actiontype = ACTION_SEX, actiontype2 = ACTION_WORKTRAINING;
 	stringstream ss; string girlName = girl->m_Realname;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << girlName << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -43,7 +43,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	ss << "You oversee " << girlName << "'s training.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, not needed for sex training
-	
+
 
 
 	// first set sex restrictions
@@ -112,8 +112,8 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 
 
 	int xp = g_Dice % 8 + 4;
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ xp -= 3; }
+	if (girl->has_trait( "Quick Learner"))		{ xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ xp -= 3; }
 
 	int skill = 0;
 	/* */if (roll_a <= 1)	skill = 14;
@@ -130,8 +130,8 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	else if (roll_a <= 83)	skill = 3;
 	else /*             */	skill = 2;
 
-	/* */if (g_Girls.HasTrait(girl, "Quick Learner"))	skill += 1;
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	skill -= 1;
+	/* */if (girl->has_trait( "Quick Learner"))	skill += 1;
+	else if (girl->has_trait( "Slow Learner"))	skill -= 1;
 
 
 #if 0		// `J` zzzzzz - Work in Progress

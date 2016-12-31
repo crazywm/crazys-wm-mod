@@ -68,7 +68,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 
 	ss << gettext("You tell ") << girlName << gettext(" she is going to warm your bed tonight");
 
-	//initiate things I need 
+	//initiate things I need
 	int wages = 0, tips = 0;
 	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
 
@@ -101,17 +101,17 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				ss << gettext(" reminding ") << girlName << gettext(" that she is your property and must do as you command. ");
 
 				// If headgirl likes girls... Because this will be a rare combo this is at the top, so it has some chance of being seen
-				if (g_Girls.HasTrait(headGirl, "Lesbian") && g_Girls.HasTrait(girl, "Lesbian") && effectiveness > 10)
+				if (g_Girls.HasTrait(headGirl, "Lesbian") && girl->has_trait( "Lesbian") && effectiveness > 10)
 				{
 					ss << gettext("As ") << girlName << gettext(" continues to refuse ") << headName << gettext(" suddenly kisses her, putting a hand under her underwear and pulling back to expose her ");
-					if (g_Girls.HasTrait(girl, "Pierced Nipples")) ss << gettext("pierced nipples");
-					else if (g_Girls.HasTrait(girl, "Pierced Clit")) ss << gettext("pierced clit");
-					else if (g_Girls.HasTrait(girl, "Perky Nipples")) ss << gettext("perky nipples");
-					else if (g_Girls.HasTrait(girl, "Puffy Nipples")) ss << gettext("puffy nipples");
-					else if (g_Girls.HasTrait(girl, "Abundant Lactation") || g_Girls.HasTrait(girl, "Cow Tits")) ss << gettext("moist, milky breasts");
-					else if (g_Girls.HasTrait(girl, "Flat Chest") || g_Girls.HasTrait(girl, "Petite Breasts") || g_Girls.HasTrait(girl, "Small Boobs")) ss << gettext("small breasts");
-					else if (g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Giant Juggs")) ss << gettext("large breasts");
-					else if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits")) ss << gettext("extremely large breasts");
+					if (girl->has_trait( "Pierced Nipples")) ss << gettext("pierced nipples");
+					else if (girl->has_trait( "Pierced Clit")) ss << gettext("pierced clit");
+					else if (girl->has_trait( "Perky Nipples")) ss << gettext("perky nipples");
+					else if (girl->has_trait( "Puffy Nipples")) ss << gettext("puffy nipples");
+					else if (girl->has_trait( "Abundant Lactation") || girl->has_trait( "Cow Tits")) ss << gettext("moist, milky breasts");
+					else if (girl->has_trait( "Flat Chest") || girl->has_trait( "Petite Breasts") || girl->has_trait( "Small Boobs")) ss << gettext("small breasts");
+					else if (girl->has_trait( "Busty Boobs") || girl->has_trait( "Big Boobs") || girl->has_trait( "Giant Juggs")) ss << gettext("large breasts");
+					else if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits")) ss << gettext("extremely large breasts");
 					else ss << gettext("breasts");
 					ss << gettext(", which she eagerly licks. ") << girlName << gettext(" is initially shocked, but is quickly aroused by ")
 						<< headName << gettext("'s expert tongue.\nThey're soon putting on a hell of a show together. ")
@@ -189,17 +189,17 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			else // not slave
 			{
 				// If headgirl likes girls. Again because rare combo, is at the top, so it has some chance of being seen - this time can fail
-				if (g_Girls.HasTrait(headGirl, "Lesbian") && g_Girls.HasTrait(girl, "Lesbian") && effectiveness > 10)
+				if (g_Girls.HasTrait(headGirl, "Lesbian") && girl->has_trait( "Lesbian") && effectiveness > 10)
 				{
 					ss << gettext(" suddenly kissing ") << girlName << gettext(" and putting a hand under her underwear, pulling back to expose her ");
-					if (g_Girls.HasTrait(girl, "Pierced Nipples")) ss << gettext("pierced nipples");
-					else if (g_Girls.HasTrait(girl, "Pierced Clit")) ss << gettext("pierced clit");
-					else if (g_Girls.HasTrait(girl, "Perky Nipples")) ss << gettext("perky nipples");
-					else if (g_Girls.HasTrait(girl, "Puffy Nipples")) ss << gettext("puffy nipples");
-					else if (g_Girls.HasTrait(girl, "Abundant Lactation") || g_Girls.HasTrait(girl, "Cow Tits")) ss << gettext("moist, milky breasts");
-					else if (g_Girls.HasTrait(girl, "Flat Chest") || g_Girls.HasTrait(girl, "Petite Breasts") || g_Girls.HasTrait(girl, "Small Boobs")) ss << gettext("small breasts");
-					else if (g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Giant Juggs")) ss << gettext("large breasts");
-					else if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits")) ss << gettext("extremely large breasts");
+					if (girl->has_trait( "Pierced Nipples")) ss << gettext("pierced nipples");
+					else if (girl->has_trait( "Pierced Clit")) ss << gettext("pierced clit");
+					else if (girl->has_trait( "Perky Nipples")) ss << gettext("perky nipples");
+					else if (girl->has_trait( "Puffy Nipples")) ss << gettext("puffy nipples");
+					else if (girl->has_trait( "Abundant Lactation") || girl->has_trait( "Cow Tits")) ss << gettext("moist, milky breasts");
+					else if (girl->has_trait( "Flat Chest") || girl->has_trait( "Petite Breasts") || girl->has_trait( "Small Boobs")) ss << gettext("small breasts");
+					else if (girl->has_trait( "Busty Boobs") || girl->has_trait( "Big Boobs") || girl->has_trait( "Giant Juggs")) ss << gettext("large breasts");
+					else if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits")) ss << gettext("extremely large breasts");
 					else ss << gettext("breasts");
 					ss << gettext(", which she eagerly licks. ") << girlName << gettext(" is shocked, but is quickly aroused by ")
 						<< headName << gettext("'s expert tongue.\n\nThey're soon putting on a hell of a show together");
@@ -243,7 +243,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				{
 					ss << gettext(" grabbing her hair and threatening her");
 					// IF she refuses to go along, and she's tough enough to physically resist
-					if ((g_Girls.GetStat(girl, STAT_SPIRIT) > 60 || g_Girls.HasTrait(girl, "Aggressive") || g_Girls.HasTrait(girl, "Fearless") || g_Girls.HasTrait(girl, "Iron Will"))
+					if ((g_Girls.GetStat(girl, STAT_SPIRIT) > 60 || girl->has_trait( "Aggressive") || girl->has_trait( "Fearless") || girl->has_trait( "Iron Will"))
 						&& g_Girls.GetSkill(girl, SKILL_COMBAT) > (g_Girls.GetStat(headGirl, SKILL_COMBAT) - 30))
 					{
 						ss << gettext(". ") << girlName << gettext(" snaps, grabbing ") << headName << gettext(" by the throat and telling her to go fuck herself.\n");
@@ -259,7 +259,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				}
 
 				//if she's worth more
-				else if (g_Girls.GetStat(girl, STAT_BEAUTY) > 95 || g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Queen") || g_Girls.HasTrait(girl, "Goddess"))
+				else if (g_Girls.GetStat(girl, STAT_BEAUTY) > 95 || girl->has_trait( "Princess") || girl->has_trait( "Queen") || girl->has_trait( "Goddess"))
 				{
 					ss << gettext(" stopping her. Because she's rather special you offer extra money. ");
 					//
@@ -306,14 +306,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					ss << gettext(". Thinking again, she agrees as you have been an excellent master.");
 				}
 				//do you have anything she wants?
-				else if (g_Girls.HasTrait(girl, "Cum Addict") && effectiveness > 30)
+				else if (girl->has_trait( "Cum Addict") && effectiveness > 30)
 				{
 					ss << gettext(". Blushing, she says she'll do it... as long as she gets to finish you off with her mouth.")
 						<< gettext("\nYou do not have a problem with this.");
 					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
-				else if (g_Girls.HasTrait(girl, "Nymphomaniac") && effectiveness > 30)
+				else if (girl->has_trait( "Nymphomaniac") && effectiveness > 30)
 				{
 					ss << gettext(". She raises her eyebrows and drops her clothes to the floor.\n")
 						<< gettext("\"Then get on and fuck me already... 'Master.'\"");
@@ -408,14 +408,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					ss << gettext("However, you successfully talk her into taking part.\n");
 				}
 				//if you have anything she wants?
-				else if (g_Girls.HasTrait(girl, "Cum Addict") && effectiveness > 50)
+				else if (girl->has_trait( "Cum Addict") && effectiveness > 50)
 				{
 					ss << gettext("Blushing, she says she might do it... if you'll finish in her mouth.")
 						<< gettext("\nYou agree to this.\n");
 					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
-				else if ((g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Slut")) && effectiveness > 40)
+				else if ((girl->has_trait( "Nymphomaniac") || girl->has_trait( "Slut")) && effectiveness > 40)
 				{
 					ss << gettext("Aware of her love for sex, you quickly snake your hand between her legs and start to rub on her panties. ")
 						<< gettext("She doesn't try to stop you, instead just moving her panties aside and guiding your hand.\nShe is quickly naked, panting and aroused and is now happy to stay.\n");
@@ -429,7 +429,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					tips += (2 * effectiveness);
 				}
 				//if she's worth more
-				else if (g_Girls.GetStat(girl, STAT_BEAUTY) > 95 || g_Girls.HasTrait(girl, "Princess") || g_Girls.HasTrait(girl, "Queen") || g_Girls.HasTrait(girl, "Goddess"))
+				else if (g_Girls.GetStat(girl, STAT_BEAUTY) > 95 || girl->has_trait( "Princess") || girl->has_trait( "Queen") || girl->has_trait( "Goddess"))
 				{
 					ss << gettext("Because she's rather special you offer some extra money.\n");
 					//
@@ -564,7 +564,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 
 	//**********ONE: check for lots of bedwarmers
 	vector<sGirl*> harem = girls_on_job(brothel, JOB_PERSONALBEDWARMER, Day0Night1);
-	
+
 	//total girls on job
 	int warmers = harem.size();
 
@@ -576,7 +576,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	{
 
 		if (harem[i]->is_slave())
-		{	
+		{
 		}
 		else
 		{	//If the other girl is not slave, she will not join group action. Pop this girl off the list and check the next
@@ -676,7 +676,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		{
 		case 0:
 			ss << gettext(" share some impressively large sex toys. ");
-			if (g_Girls.HasTrait(girl, "Fast Orgasms"))
+			if (girl->has_trait( "Fast Orgasms"))
 			{
 				ss << girlName << gettext(" orgasms loudly and repeatedly.\n\n");
 				g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 1);
@@ -692,12 +692,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			break;
 		case 3:
 			ss << gettext(" compete to whip each other across the bed. ");
-			if (g_Girls.HasTrait(girl, "Sadistic"))
+			if (girl->has_trait( "Sadistic"))
 			{
 				ss << girlName << gettext(" loves this and loves the squeal every time she manages to crack her whip right on another girl's clit or nipples.\n\n");
 				g_Girls.UpdateEnjoyment(girl, ACTION_WORKTORTURER, 2);
 			}
-			else if (g_Girls.HasTrait(girl, "Masochist"))
+			else if (girl->has_trait( "Masochist"))
 			{
 				ss << girlName << gettext(" is awful at this, with a stance like she wants to be hit. She seems to be enjoying it though.\n\n");
 				g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 1);
@@ -736,7 +736,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, +(harem.size() / 2));
 		g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, +(harem.size() / 4));
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, +(harem.size() / 2));
-		int libido = (g_Girls.HasTrait(girl, "Nymphomaniac")) ? 4 : 2;
+		int libido = (girl->has_trait( "Nymphomaniac")) ? 4 : 2;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, libido);
 
@@ -787,7 +787,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			else
 			{
 				ss << gettext(". You decide to keep her virginity intact for now");
-				if (roll_c < 30 || g_Girls.HasTrait(girl, "Lesbian"))
+				if (roll_c < 30 || girl->has_trait( "Lesbian"))
 				{
 					ss << gettext(", and instead have her play around with another girl in your harem.");
 					g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
@@ -812,7 +812,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 		else   // not virgin
 		{
-			if ((roll_d <= 20) || (g_Girls.HasTrait(girl, "Cum Addict") && roll_d <= 50))
+			if ((roll_d <= 20) || (girl->has_trait( "Cum Addict") && roll_d <= 50))
 			{
 				ss << gettext("While you enjoy another girl, ") << girlName << gettext(" grabs your cock and finishes you off with her mouth.\n");
 				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
@@ -866,12 +866,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			}
 		}
 		//Some group action randomness...
-		if (g_Dice.percent(20) && g_Girls.HasTrait(girl, "Shy"))
+		if (g_Dice.percent(20) && girl->has_trait( "Shy"))
 		{
 			ss << gettext("\n") << girlName << gettext(" doesn't seem so shy tonight!\n");
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, 1);
 		}
-		if (g_Dice.percent(20) && g_Girls.HasTrait(girl, "Cum Addict"))
+		if (g_Dice.percent(20) && girl->has_trait( "Cum Addict"))
 		{
 			roll = g_Dice % 6;
 			switch (roll)
@@ -904,19 +904,19 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 		}
-		else if (g_Dice.percent(30) && HateLove > 0 && g_Girls.HasTrait(girl, "Good Kisser"))
+		else if (g_Dice.percent(30) && HateLove > 0 && girl->has_trait( "Good Kisser"))
 		{
 			ss << gettext("\n") << girlName << gettext(" gives you a mindblowing kiss afterwards.\n");
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, 1);
 			g_Girls.UpdateStat(girl, STAT_PCLOVE, 1);
 		}
-		if (g_Dice.percent(20) && (g_Girls.HasTrait(girl, "Masochist")))
+		if (g_Dice.percent(20) && (girl->has_trait( "Masochist")))
 		{
 			ss << gettext("\n\"Next time spank me please");
 			if (girl->is_slave()) ss << gettext(" master");
 			ss << gettext(",\" she whispers.\n");
 		}
-		else if (g_Dice.percent(5) && (g_Girls.HasTrait(girl, "Sadist") || g_Girls.HasTrait(girl, "Aggressive")))
+		else if (g_Dice.percent(5) && (girl->has_trait( "Sadist") || girl->has_trait( "Aggressive")))
 		{
 			ss << gettext("\n\"If you made me Head Girl, I'd keep these bitches in line for you,");
 			if (girl->is_slave()) ss << gettext(" master");
@@ -1056,10 +1056,10 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		{
 			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
 			ss << gettext("decided to suck your cock.\n\n");
-			if (g_Girls.HasTrait(girl, "Herpes")) risky = true;
+			if (girl->has_trait( "Herpes")) risky = true;
 			imagetype = IMGTYPE_ORAL;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
-			
+
 		}
 		else if (roll_d <= 60 && is_sex_type_allowed(SKILL_ANAL, brothel))
 		{
@@ -1348,18 +1348,18 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		ss << gettext("\nWhile you're not looking, she steals ") << theft << gettext(" gold from your room to feed her addiction.\n");
 		wages += theft;
 	}
-	if (g_Dice.percent(30) && g_Girls.HasTrait(girl, "Natural Pheromones"))
+	if (g_Dice.percent(30) && girl->has_trait( "Natural Pheromones"))
 	{
 		int wowfactor = g_Dice.in_range(5, 55);
 		ss << gettext("\nSomething about her drives you wild. You pay her ") << wowfactor << gettext(" gold extra.\n");
 		wages += wowfactor;
 	}
-	if (g_Dice.percent(30) && (g_Girls.HasTrait(girl, "Exotic") || g_Girls.HasTrait(girl, "Furry")))
+	if (g_Dice.percent(30) && (girl->has_trait( "Exotic") || girl->has_trait( "Furry")))
 	{
 		ss << gettext("\n") << girlName << gettext(" mentions that this reminds her of a 'coming of age' ritual back home.");
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 1);
 	}
-	else if (g_Dice.percent(20) && (g_Girls.HasTrait(girl, "Nymphomaniac") || g_Girls.HasTrait(girl, "Slut") || g_Girls.HasTrait(girl, "Open Minded")))
+	else if (g_Dice.percent(20) && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Slut") || girl->has_trait( "Open Minded")))
 	{
 		ss << gettext("\n") << girlName << gettext(" actually seems suited to this.\n\"Can I do this again");
 		if (girl->is_slave()) ss << gettext(", master?\"\n");
@@ -1370,7 +1370,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	//BSIN - disease risk, mostly a cost, but also an expensive way to cure a girl of serious disease
 	if (diseased && risky && !girl->m_UseAntiPreg)
 	{
-		if (g_Girls.HasTrait(girl, "Chlamydia") && g_Dice.percent(30))
+		if (girl->has_trait( "Chlamydia") && g_Dice.percent(30))
 		{
 			g_Gold.misc_debit(500);
 			g_Girls.RemoveTrait(girl, "Chlamydia");
@@ -1379,7 +1379,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			ss << ssm.str();
 			g_MessageQue.AddToQue(ssm.str(), 0);
 		}
-		else if (g_Girls.HasTrait(girl, "Herpes") && g_Dice.percent(30))
+		else if (girl->has_trait( "Herpes") && g_Dice.percent(30))
 		{
 			g_Gold.misc_debit(1000);
 			g_Girls.RemoveTrait(girl, "Herpes");
@@ -1390,7 +1390,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			ss << ssm.str();
 			g_MessageQue.AddToQue(ssm.str(), 0);
 		}
-		else if (g_Girls.HasTrait(girl, "Syphilis") && g_Dice.percent(30))
+		else if (girl->has_trait( "Syphilis") && g_Dice.percent(30))
 		{
 			g_Gold.misc_debit(3500);
 			g_Girls.RemoveTrait(girl, "Syphilis");
@@ -1401,7 +1401,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			ss << ssm.str();
 			g_MessageQue.AddToQue(ssm.str(), 0);
 		}
-		else if (g_Girls.HasTrait(girl, "AIDS") && g_Dice.percent(30))
+		else if (girl->has_trait( "AIDS") && g_Dice.percent(30))
 		{
 			g_Gold.misc_debit(8000);
 			g_Girls.RemoveTrait(girl, "AIDS");
@@ -1423,11 +1423,11 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	// Improve stats
 	int xp = 10, libido = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Idiot Savant"))	{ xp += 5; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ xp -= 3; }
-	else if (g_Girls.HasTrait(girl, "Retarded"))		{ xp -= 5; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ xp += 3; }
+	else if (girl->has_trait( "Idiot Savant"))	{ xp += 5; }
+	else if (girl->has_trait( "Slow Learner"))	{ xp -= 3; }
+	else if (girl->has_trait( "Retarded"))		{ xp -= 5; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);

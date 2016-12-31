@@ -42,7 +42,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		girl->m_NightJob = girl->m_DayJob = JOB_ARENAREST;
 		return false;	// not refusing
 	}
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -51,10 +51,10 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	ss << " trains for combat.\n\n";
 
 	g_Girls.EquipCombat(girl);	// Ready for combat training
-	
-	int enjoy = 0;												// 
-	int tips = 0;												// 
-	int wages = 0;												// 
+
+	int enjoy = 0;												//
+	int tips = 0;												//
+	int wages = 0;												//
 	int train = 0;												// main skill trained
 	int tcom = girl->m_Skills[SKILL_COMBAT];					// Starting level - train = 1
 	int tmag = girl->m_Skills[SKILL_MAGIC];						// Starting level - train = 2
@@ -76,8 +76,8 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	else if (roll_a <= 30)	skill = 5;
 	else if (roll_a <= 60)	skill = 4;
 	else /*             */	skill = 3;
-	/* */if (g_Girls.HasTrait(girl, "Quick Learner"))	{ skill += 1; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; }
+	/* */if (girl->has_trait( "Quick Learner"))	{ skill += 1; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; }
 	skill -= dirtyloss;
 	ss << "The Arena is ";
 	if (dirtyloss <= 0) ss << "clean and tidy";
@@ -86,7 +86,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (dirtyloss == 3) ss << "filthy and some of the equipment is broken";
 	if (dirtyloss >= 4) ss << "in complete disarray and the equipment barely usable";
 	ss << ".\n\n";
-	if (skill < 1) skill = 1;	// always at least 1 
+	if (skill < 1) skill = 1;	// always at least 1
 
 	do{		// `J` New method of selecting what job to do
 		/* */if (roll_b < 20  && tcom < 100)	train = 1;	// combat
@@ -115,19 +115,19 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	}
 
 	int trycount = 20;
-	while (gaintrait && trycount > 0)	// `J` Try to add a trait 
+	while (gaintrait && trycount > 0)	// `J` Try to add a trait
 	{
 		trycount--;
 		switch (g_Dice % 10)
 		{
 		case 0:
-			if (g_Girls.HasTrait(girl, "Fragile"))
+			if (girl->has_trait( "Fragile"))
 			{
 				g_Girls.RemoveTrait(girl, "Fragile");
 				ss << "She has had to heal from so many injuries you can't say she is fragile anymore.";
 				gaintrait = false;
 			}
-			else if (!g_Girls.HasTrait(girl, "Tough"))
+			else if (!girl->has_trait( "Tough"))
 			{
 				g_Girls.AddTrait(girl, "Tough");
 				ss << "She has become pretty Tough from her training.";
@@ -135,7 +135,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			break;
 		case 1:
-			if (!g_Girls.HasTrait(girl, "Adventurer"))
+			if (!girl->has_trait( "Adventurer"))
 			{
 				g_Girls.AddTrait(girl, "Adventurer");
 				ss << "She has been in enough tough spots to consider herself an Adventurer.";
@@ -143,21 +143,21 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			break;
 		case 2:
-			if (g_Girls.HasTrait(girl, "Nervous") || g_Girls.HasTrait(girl, "Meek") || g_Girls.HasTrait(girl, "Dependant"))
+			if (girl->has_trait( "Nervous") || girl->has_trait( "Meek") || girl->has_trait( "Dependant"))
 			{
-				if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Nervous"))
+				if (g_Dice.percent(50) && girl->has_trait( "Nervous"))
 				{
 					g_Girls.RemoveTrait(girl, "Nervous");
 					ss << "She seems to be getting over her Nervousness with her training.";
 					gaintrait = false;
 				}
-				else if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Meek"))
+				else if (g_Dice.percent(50) && girl->has_trait( "Meek"))
 				{
 					g_Girls.RemoveTrait(girl, "Meek");
 					ss << "She seems to be getting over her Meakness with her training.";
 					gaintrait = false;
 				}
-				else if (g_Dice.percent(50) && g_Girls.HasTrait(girl, "Dependant"))
+				else if (g_Dice.percent(50) && girl->has_trait( "Dependant"))
 				{
 					g_Girls.RemoveTrait(girl, "Dependant");
 					ss << "She seems to be getting over her Dependancy with her training.";
@@ -166,19 +166,19 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			else
 			{
-				if (g_Dice.percent(50) && !g_Girls.HasTrait(girl, "Aggressive"))
+				if (g_Dice.percent(50) && !girl->has_trait( "Aggressive"))
 				{
 					g_Girls.AddTrait(girl, "Aggressive");
 					ss << "She is getting rather Aggressive from her enjoyment of combat.";
 					gaintrait = false;
 				}
-				else if (g_Dice.percent(50) && !g_Girls.HasTrait(girl, "Fearless"))
+				else if (g_Dice.percent(50) && !girl->has_trait( "Fearless"))
 				{
 					g_Girls.AddTrait(girl, "Fearless");
 					ss << "She is getting rather Fearless from her enjoyment of combat.";
 					gaintrait = false;
 				}
-				else if (g_Dice.percent(50) && !g_Girls.HasTrait(girl, "Audacity"))
+				else if (g_Dice.percent(50) && !girl->has_trait( "Audacity"))
 				{
 					g_Girls.AddTrait(girl, "Audacity");
 					ss << "She is getting rather Audacious from her enjoyment of combat.";
@@ -187,7 +187,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			break;
 		case 3:
-			if (!g_Girls.HasTrait(girl, "Strong"))
+			if (!girl->has_trait( "Strong"))
 			{
 				g_Girls.AddTrait(girl, "Strong");
 				ss << "She is getting rather Strong from handling heavy weapons and armor.";
@@ -301,9 +301,9 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	// Improve stats
 	int xp = 5 + skill, libido = int(1 + skill / 2);
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ xp += 2; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ xp -= 2; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ xp += 2; }
+	else if (girl->has_trait( "Slow Learner"))	{ xp -= 2; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);

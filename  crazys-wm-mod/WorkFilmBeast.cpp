@@ -78,11 +78,11 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (g_Girls.HasTrait(girl, "Nymphomaniac"))
+	else if (girl->has_trait( "Nymphomaniac"))
 	{
 		ss << gettext("\"Bestiality? Aren't we all animals?!\"\nAs long as it will fuck her, sex addict ") << girlName << gettext(" really doesn't care WHAT it is.");
 	}
-	else if (roll <= 10 && !g_Girls.HasTrait(girl, "Mind Fucked") && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	else if (roll <= 10 && !girl->has_trait( "Mind Fucked") && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
 		ss << girlName << gettext(" refused to be fucked by animals on film.");
 		if (girl->is_slave())
@@ -159,7 +159,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	ss << gettext("\n");
 
-	
+
 	if (g_Girls.CheckVirginity(girl))
 	{
 		g_Girls.LoseVirginity(girl);
@@ -195,8 +195,8 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	// Improve stats
 	int xp = 10, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
@@ -240,26 +240,26 @@ double cJobManager::JP_FilmBeast(sGirl* girl, bool estimate)
 	}
 
 	//Good
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))					jobperformance += 100;	//Enjoyment and craziness
-	if (g_Girls.HasTrait(girl, "Masochist"))					jobperformance += 35;	//
-	if (g_Girls.HasTrait(girl, "Broken Will"))					jobperformance += 30;	//
-	if (g_Girls.HasTrait(girl, "Dependant"))					jobperformance += 25;	//
-	if (g_Girls.HasTrait(girl, "Twisted"))						jobperformance += 25;	//
-	if (g_Girls.HasTrait(girl, "Goddess"))						jobperformance += 60;	//High-status degraded
-	if (g_Girls.HasTrait(girl, "Angel"))						jobperformance += 50;	//
-	if (g_Girls.HasTrait(girl, "Queen"))						jobperformance += 50;	//
-	if (g_Girls.HasTrait(girl, "Princess"))						jobperformance += 40;	//
-	if (g_Girls.HasTrait(girl, "Noble"))						jobperformance += 15;	//	
-	if (g_Girls.HasTrait(girl, "Idol"))							jobperformance += 25;	//
-	if (g_Girls.HasTrait(girl, "Priestess"))					jobperformance += 25;	//	
-	if (g_Girls.HasTrait(girl, "Heroine"))						jobperformance += 15;	//	
-	if (g_Girls.HasTrait(girl, "Teacher"))						jobperformance += 15;	//	
-	if (g_Girls.HasTrait(girl, "Tsundere"))						jobperformance += 30;	//beaten customers wanna see this!
-	if (g_Girls.HasTrait(girl, "Yandere"))						jobperformance += 25;	//	
+	if (girl->has_trait( "Mind Fucked"))					jobperformance += 100;	//Enjoyment and craziness
+	if (girl->has_trait( "Masochist"))					jobperformance += 35;	//
+	if (girl->has_trait( "Broken Will"))					jobperformance += 30;	//
+	if (girl->has_trait( "Dependant"))					jobperformance += 25;	//
+	if (girl->has_trait( "Twisted"))						jobperformance += 25;	//
+	if (girl->has_trait( "Goddess"))						jobperformance += 60;	//High-status degraded
+	if (girl->has_trait( "Angel"))						jobperformance += 50;	//
+	if (girl->has_trait( "Queen"))						jobperformance += 50;	//
+	if (girl->has_trait( "Princess"))						jobperformance += 40;	//
+	if (girl->has_trait( "Noble"))						jobperformance += 15;	//
+	if (girl->has_trait( "Idol"))							jobperformance += 25;	//
+	if (girl->has_trait( "Priestess"))					jobperformance += 25;	//
+	if (girl->has_trait( "Heroine"))						jobperformance += 15;	//
+	if (girl->has_trait( "Teacher"))						jobperformance += 15;	//
+	if (girl->has_trait( "Tsundere"))						jobperformance += 30;	//beaten customers wanna see this!
+	if (girl->has_trait( "Yandere"))						jobperformance += 25;	//
 
 	//Bad
-	if (g_Girls.HasTrait(girl, "Iron Will"))					jobperformance += 40;	//Try not to put on a show
-	if (g_Girls.HasTrait(girl, "Fearless"))						jobperformance += 25;	//	
+	if (girl->has_trait( "Iron Will"))					jobperformance += 40;	//Try not to put on a show
+	if (girl->has_trait( "Fearless"))						jobperformance += 25;	//
 
 
 	return jobperformance;

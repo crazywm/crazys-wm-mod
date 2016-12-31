@@ -56,7 +56,7 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->m_WorkingDay < 0) girl->m_WorkingDay = 0;
 	girl->m_DayJob = girl->m_NightJob = JOB_SO_BISEXUAL;	// it is a full time job
 
-	if (g_Girls.HasTrait(girl, "Bisexual"))
+	if (girl->has_trait( "Bisexual"))
 	{
 		ss << girlName << " is already Bisexual.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -120,7 +120,7 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Your Wife"))		girl->m_WorkingDay += g_Dice % 10;			// She wants to be with you, even if it is with another girl
 	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay += g_Dice % 10;			// She is used to having sex with anyone her director tells her to
 	if (girl->has_trait("Whore"))			girl->m_WorkingDay += g_Dice % 8;			// She'll do anyone as long as they can pay
-	if (girl->has_trait("Slut"))			girl->m_WorkingDay += g_Dice % 5;			// She'll do anyone 
+	if (girl->has_trait("Slut"))			girl->m_WorkingDay += g_Dice % 5;			// She'll do anyone
 	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += 2;					// She wants to partake in all that her father has to offer
 	if (girl->has_trait("Actress"))			girl->m_WorkingDay += 2;					// She will do whatever her director tells her to
 	if (girl->has_trait("Shape Shifter"))	girl->m_WorkingDay += 2;					// If she can become anyone she can have sex with anyone
@@ -244,6 +244,6 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 double cJobManager::JP_SOBisexual(sGirl* girl, bool estimate)// not used
 {
-	if (g_Girls.HasTrait(girl, "Bisexual"))	return -1000;
+	if (girl->has_trait( "Bisexual"))	return -1000;
 	return 250;
 }

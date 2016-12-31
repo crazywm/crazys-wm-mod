@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -62,7 +62,7 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int enjoy = 0;
 	double jobperformance = JP_FilmMusic(girl, false);
 	int bonus = 0;
-	
+
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
 	//Refusal
@@ -208,9 +208,9 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	// Improve stats
 	int xp = 10, skill = 3, libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
@@ -219,14 +219,14 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMUSIC, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
-	
+
 	//gain traits
 	if (jobperformance >= 100 && g_Dice.percent(25)) g_Girls.PossiblyGainNewTrait(girl, "Charming", 80, ACTION_WORKMOVIE, "Singing and dancing on film has made her more Charming.", Day0Night1);
 	else if (jobperformance >= 140 && g_Dice.percent(25))
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks sexiness.", Day0Night1);
 	}
-	if (g_Girls.HasTrait(girl, "Singer"))
+	if (girl->has_trait( "Singer"))
 	{
 		if (jobperformance >= 245 && g_Dice.percent(30))
 		{
@@ -268,37 +268,37 @@ double cJobManager::JP_FilmMusic(sGirl* girl, bool estimate)
 
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Singer"))			jobperformance += 50;	//can Sing
-	if (g_Girls.HasTrait(girl, "Angel"))			jobperformance += 40;	//like a choir of angels
-	if (g_Girls.HasTrait(girl, "Sexy Air"))			jobperformance += 25;	// nice video
-	if (g_Girls.HasTrait(girl, "Agile"))			jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Cool Person"))		jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Charming"))			jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Audacity"))			jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Cute"))				jobperformance += 15;	//Attractive to some
-	if (g_Girls.HasTrait(girl, "Exotic"))			jobperformance += 15;	//
-	if (g_Girls.HasTrait(girl, "Idol"))				jobperformance += 15;	//
-	if (g_Girls.HasTrait(girl, "Lolita"))			jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Elegant"))			jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Great Figure"))		jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Beauty Mark"))		jobperformance += 5;	//
-	if (g_Girls.HasTrait(girl, "Porn Star"))		jobperformance += 10;	//plays to camera well
-	if (g_Girls.HasTrait(girl, "Exhibitionist"))	jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Social Drinker"))	jobperformance += 5;	//relaxed
-	
-	//bad traits
-	if (g_Girls.HasTrait(girl, "Tone Deaf"))				jobperformance -= 60;	//weakens performance
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))				jobperformance -= 40;	//too messed up
-	if (g_Girls.HasTrait(girl, "Nervous"))					jobperformance -= 25;	//weakens performance
-	if (g_Girls.HasTrait(girl, "Meek"))						jobperformance -= 25;
-	if (g_Girls.HasTrait(girl, "Shy"))						jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Retarded"))					jobperformance -= 15;
+	if (girl->has_trait( "Singer"))			jobperformance += 50;	//can Sing
+	if (girl->has_trait( "Angel"))			jobperformance += 40;	//like a choir of angels
+	if (girl->has_trait( "Sexy Air"))			jobperformance += 25;	// nice video
+	if (girl->has_trait( "Agile"))			jobperformance += 20;	//
+	if (girl->has_trait( "Cool Person"))		jobperformance += 20;	//
+	if (girl->has_trait( "Charismatic"))		jobperformance += 20;	//
+	if (girl->has_trait( "Charming"))			jobperformance += 10;	//
+	if (girl->has_trait( "Audacity"))			jobperformance += 10;	//
+	if (girl->has_trait( "Cute"))				jobperformance += 15;	//Attractive to some
+	if (girl->has_trait( "Exotic"))			jobperformance += 15;	//
+	if (girl->has_trait( "Idol"))				jobperformance += 15;	//
+	if (girl->has_trait( "Lolita"))			jobperformance += 10;	//
+	if (girl->has_trait( "Elegant"))			jobperformance += 10;	//
+	if (girl->has_trait( "Great Figure"))		jobperformance += 10;	//
+	if (girl->has_trait( "Beauty Mark"))		jobperformance += 5;	//
+	if (girl->has_trait( "Porn Star"))		jobperformance += 10;	//plays to camera well
+	if (girl->has_trait( "Exhibitionist"))	jobperformance += 10;	//
+	if (girl->has_trait( "Social Drinker"))	jobperformance += 5;	//relaxed
 
-	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance -= 5;
+	//bad traits
+	if (girl->has_trait( "Tone Deaf"))				jobperformance -= 60;	//weakens performance
+	if (girl->has_trait( "Mind Fucked"))				jobperformance -= 40;	//too messed up
+	if (girl->has_trait( "Nervous"))					jobperformance -= 25;	//weakens performance
+	if (girl->has_trait( "Meek"))						jobperformance -= 25;
+	if (girl->has_trait( "Shy"))						jobperformance -= 20;
+	if (girl->has_trait( "Retarded"))					jobperformance -= 15;
+
+	if (girl->has_trait( "Alcoholic"))			jobperformance -= 5;
+	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 5;
+	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 5;
+	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 5;
 
 	return jobperformance;
 }

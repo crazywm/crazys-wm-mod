@@ -20,6 +20,7 @@
 #define __INTERFACEPROCESSES_H
 
 #include <string>
+#include <algorithm>
 #include "tinyxml.h"
 #include "cBrothel.h"
 using namespace std;

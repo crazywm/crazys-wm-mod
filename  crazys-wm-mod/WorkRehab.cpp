@@ -55,9 +55,9 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	if (girl->m_YesterDayJob != JOB_REHAB) girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 	girl->m_DayJob = girl->m_NightJob = JOB_REHAB;	// it is a full time job
 
-	if (!g_Girls.HasTrait(girl, "Fairy Dust Addict")	&&	!g_Girls.HasTrait(girl, "Alcoholic") &&
-		!g_Girls.HasTrait(girl, "Shroud Addict")		&&	!g_Girls.HasTrait(girl, "Cum Addict") &&
-		!g_Girls.HasTrait(girl, "Viras Blood Addict")	&&	!g_Girls.HasTrait(girl, "Smoker"))
+	if (!girl->has_trait( "Fairy Dust Addict")	&&	!girl->has_trait( "Alcoholic") &&
+		!girl->has_trait( "Shroud Addict")		&&	!girl->has_trait( "Cum Addict") &&
+		!girl->has_trait( "Viras Blood Addict")	&&	!girl->has_trait( "Smoker"))
 	{
 		ss << " is not addicted to anything so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -99,7 +99,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 	int healthmod = (g_Dice % 10) - 15;
 	// `J` % chance a counselor will save her if she almost dies
-	if (girl->health() + healthmod < 1 && g_Dice.percent(95 + (girl->health() + healthmod)) && 
+	if (girl->health() + healthmod < 1 && g_Dice.percent(95 + (girl->health() + healthmod)) &&
 		(g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, true) > 0 || g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, false) > 0))
 	{	// Don't kill the girl from rehab if a Counselor is on duty
 		g_Girls.SetStat(girl, STAT_HEALTH, 1);
@@ -143,35 +143,35 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			switch (t)
 			{
 			case 0:
-				if (g_Girls.HasTrait(girl, "Viras Blood Addict"))
+				if (girl->has_trait( "Viras Blood Addict"))
 				{
 					g_Girls.RemoveTrait(girl, "Viras Blood Addict", true);
 					ss << "She is no longer a viras blood addict.\n";
 					cured = true; break;
 				}
 			case 1:
-				if (g_Girls.HasTrait(girl, "Shroud Addict"))
+				if (girl->has_trait( "Shroud Addict"))
 				{
 					g_Girls.RemoveTrait(girl, "Shroud Addict", true);
 					ss << "She is no longer a shroud addict.\n";
 					cured = true; break;
 				}
 			case 2:
-				if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))
+				if (girl->has_trait( "Fairy Dust Addict"))
 				{
 					g_Girls.RemoveTrait(girl, "Fairy Dust Addict", true);
 					ss << "She is no longer a fairy dust addict.\n";
 					cured = true; break;
 				}
 			case 3:
-				if (g_Girls.HasTrait(girl, "Alcoholic"))
+				if (girl->has_trait( "Alcoholic"))
 				{
 					g_Girls.RemoveTrait(girl, "Alcoholic", true);
 					ss << "She is no longer an alcoholic.\n";
 					cured = true; break;
 				}
 			case 4:
-				if (g_Girls.HasTrait(girl, "Cum Addict"))
+				if (girl->has_trait( "Cum Addict"))
 				{
 					g_Girls.RemoveTrait(girl, "Cum Addict", true);
 					ss << "She is no longer a cum addict.\n";
@@ -179,7 +179,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				}
 			case 5:
 			default:
-				if (g_Girls.HasTrait(girl, "Smoker"))
+				if (girl->has_trait( "Smoker"))
 				{
 					g_Girls.RemoveTrait(girl, "Smoker", true);
 					ss << "She is no longer a smoker.\n";
@@ -190,8 +190,8 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 		g_Girls.AddTrait(girl, "Former Addict", 40);
 
-		if (g_Girls.HasTrait(girl, "Fairy Dust Addict") || g_Girls.HasTrait(girl, "Shroud Addict") || g_Girls.HasTrait(girl, "Cum Addict") ||
-			g_Girls.HasTrait(girl, "Viras Blood Addict") || g_Girls.HasTrait(girl, "Alcoholic") || g_Girls.HasTrait(girl, "Smoker"))
+		if (girl->has_trait( "Fairy Dust Addict") || girl->has_trait( "Shroud Addict") || girl->has_trait( "Cum Addict") ||
+			girl->has_trait( "Viras Blood Addict") || girl->has_trait( "Alcoholic") || girl->has_trait( "Smoker"))
 		{
 			ss << "\nShe should stay in rehab to treat her other addictions.";
 		}
@@ -213,7 +213,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 	// Improve girl
 	int libido = 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
@@ -224,12 +224,12 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 double cJobManager::JP_Rehab(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance = 110;
-	if (g_Girls.HasTrait(girl, "Smoker"))				jobperformance += 40;	// if she has 1 = C
-	if (g_Girls.HasTrait(girl, "Cum Addict"))			jobperformance += 40;	// if she has 2 = B
-	if (g_Girls.HasTrait(girl, "Fairy Dust Addict"))	jobperformance += 40;	// if she has 3 = A
-	if (g_Girls.HasTrait(girl, "Shroud Addict"))		jobperformance += 40;	// if she has 4 = S
-	if (g_Girls.HasTrait(girl, "Alcoholic"))			jobperformance += 40;	// if she has 5 = S
-	if (g_Girls.HasTrait(girl, "Viras Blood Addict"))	jobperformance += 40;	// if she has 6 = I
+	if (girl->has_trait( "Smoker"))				jobperformance += 40;	// if she has 1 = C
+	if (girl->has_trait( "Cum Addict"))			jobperformance += 40;	// if she has 2 = B
+	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance += 40;	// if she has 3 = A
+	if (girl->has_trait( "Shroud Addict"))		jobperformance += 40;	// if she has 4 = S
+	if (girl->has_trait( "Alcoholic"))			jobperformance += 40;	// if she has 5 = S
+	if (girl->has_trait( "Viras Blood Addict"))	jobperformance += 40;	// if she has 6 = I
 
 	if (jobperformance == 110)	return -1000;			// X - does not need it
 

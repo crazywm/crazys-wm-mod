@@ -67,7 +67,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Dice.percent(10))
 	{
 		g_Girls.UpdateEnjoyment(girl, actiontype, -3);
-		if (g_Girls.HasTrait(girl, "Sadistic") || g_Girls.HasTrait(girl, "Merciless") || g_Girls.GetStat(girl, STAT_MORALITY) < 30)
+		if (girl->has_trait( "Sadistic") || girl->has_trait( "Merciless") || g_Girls.GetStat(girl, STAT_MORALITY) < 30)
 			ss << girlName << gettext(" hurt herself while torturing someone.\n");
 		else
 		{
@@ -122,7 +122,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 
 		//And a little randomness
-		if ((g_Girls.GetStat(girl, STAT_MORALITY) < 20 || g_Girls.HasTrait(girl, "Sadistic")) && g_Dice.percent(20))
+		if ((g_Girls.GetStat(girl, STAT_MORALITY) < 20 || girl->has_trait( "Sadistic")) && g_Dice.percent(20))
 		{
 			ss << girlName << gettext(" loved this so much she wouldn't accept any money, as long as you promise she can do it again soon.\n");
 			g_Girls.UpdateEnjoyment(girl, actiontype, +3);
@@ -164,9 +164,9 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// Improve girl
 	int xp = 15, libido = 5, skill = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	if (!forFree)
 	{
@@ -209,34 +209,34 @@ double cJobManager::JP_Torturer(sGirl* girl, bool estimate)		// not used
 
 	//and finally traits
 	//"good"
-	if (g_Girls.HasTrait(girl, "Sadistic"))					jobperformance += 30;	//how do you like... THIS!
-	if (g_Girls.HasTrait(girl, "Powerful Magic"))			jobperformance += 25;	//magical flame
-	if (g_Girls.HasTrait(girl, "Strong Magic"))				jobperformance += 20;	//magical flame
-	if (g_Girls.HasTrait(girl, "Dominatrix"))				jobperformance += 20;	//you will learn to obey me
-	if (g_Girls.HasTrait(girl, "Merciless"))				jobperformance += 20;	//"Stop"? <shrug> I don't know that word.
-	if (g_Girls.HasTrait(girl, "Demon"))					jobperformance += 20;	//satan taught me this move
-	if (g_Girls.HasTrait(girl, "Aggressive"))				jobperformance += 15;	//WHAT did you say?
-	if (g_Girls.HasTrait(girl, "Assassin"))					jobperformance += 15;	//skills
-	if (g_Girls.HasTrait(girl, "Doctor"))					jobperformance += 15;	//they call me doctor pain...
-	if (g_Girls.HasTrait(girl, "Iron Will"))				jobperformance += 15;	//I *WILL* break you
-	if (g_Girls.HasTrait(girl, "Alchoholic"))				jobperformance += 10;	//she's a mean drunk
-	if (g_Girls.HasTrait(girl, "Twisted"))					jobperformance += 10;	//twisted biatch
-	if (g_Girls.HasTrait(girl, "Broken Will"))				jobperformance += 5;	//just following orders
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))				jobperformance += 5;	//let's play together
+	if (girl->has_trait( "Sadistic"))					jobperformance += 30;	//how do you like... THIS!
+	if (girl->has_trait( "Powerful Magic"))			jobperformance += 25;	//magical flame
+	if (girl->has_trait( "Strong Magic"))				jobperformance += 20;	//magical flame
+	if (girl->has_trait( "Dominatrix"))				jobperformance += 20;	//you will learn to obey me
+	if (girl->has_trait( "Merciless"))				jobperformance += 20;	//"Stop"? <shrug> I don't know that word.
+	if (girl->has_trait( "Demon"))					jobperformance += 20;	//satan taught me this move
+	if (girl->has_trait( "Aggressive"))				jobperformance += 15;	//WHAT did you say?
+	if (girl->has_trait( "Assassin"))					jobperformance += 15;	//skills
+	if (girl->has_trait( "Doctor"))					jobperformance += 15;	//they call me doctor pain...
+	if (girl->has_trait( "Iron Will"))				jobperformance += 15;	//I *WILL* break you
+	if (girl->has_trait( "Alchoholic"))				jobperformance += 10;	//she's a mean drunk
+	if (girl->has_trait( "Twisted"))					jobperformance += 10;	//twisted biatch
+	if (girl->has_trait( "Broken Will"))				jobperformance += 5;	//just following orders
+	if (girl->has_trait( "Mind Fucked"))				jobperformance += 5;	//let's play together
 
 	//either
-	if (g_Girls.HasTrait(girl, "Psychic"))												//I feel your pain... such suffering...
+	if (girl->has_trait( "Psychic"))												//I feel your pain... such suffering...
 	{
-		if (g_Girls.HasTrait(girl, "Masochist"))			jobperformance += 30;	//... [smiles] and I like it!
+		if (girl->has_trait( "Masochist"))			jobperformance += 30;	//... [smiles] and I like it!
 		else												jobperformance -= 30;
 	}
 
 	//"bad"
-	if (g_Girls.HasTrait(girl, "Goddess"))					jobperformance -= 50;	//Wouldn't harm a soul
-	if (g_Girls.HasTrait(girl, "Angel"))					jobperformance -= 40;	//Wouldn't harm a soul
-	if (g_Girls.HasTrait(girl, "Battery Operated"))			jobperformance -= 20;	//"What is this 'pain' you feel?"
-	if (g_Girls.HasTrait(girl, "Construct"))				jobperformance -= 20;	//"What is this 'pain' you feel?"
-	if (g_Girls.HasTrait(girl, "Clumsy"))					jobperformance += 20;	//OW! I just whipped myself.
+	if (girl->has_trait( "Goddess"))					jobperformance -= 50;	//Wouldn't harm a soul
+	if (girl->has_trait( "Angel"))					jobperformance -= 40;	//Wouldn't harm a soul
+	if (girl->has_trait( "Battery Operated"))			jobperformance -= 20;	//"What is this 'pain' you feel?"
+	if (girl->has_trait( "Construct"))				jobperformance -= 20;	//"What is this 'pain' you feel?"
+	if (girl->has_trait( "Clumsy"))					jobperformance += 20;	//OW! I just whipped myself.
 
 #else
 	double jobperformance = 0.0;

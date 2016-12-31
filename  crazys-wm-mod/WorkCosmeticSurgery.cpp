@@ -143,18 +143,18 @@ bool cJobManager::WorkCosmeticSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(0, 3));
 		}
 
-		if (!g_Girls.HasTrait(girl, "Sexy Air"))
+		if (!girl->has_trait( "Sexy Air"))
 		{
 			girl->add_trait("Sexy Air", false);
 			ss << "She gains Sexy Air trait.\n";
 		}
-		else if (!g_Girls.HasTrait(girl, "Cute"))
+		else if (!girl->has_trait( "Cute"))
 		{
 			girl->add_trait("Cute", false);
 			ss << "She gains Cute trait.\n";
 		}
 
-		if (g_Girls.HasTrait(girl, "Sexy Air") && g_Girls.HasTrait(girl, "Cute") && girl->beauty() > 99)
+		if (girl->has_trait( "Sexy Air") && girl->has_trait( "Cute") && girl->beauty() > 99)
 		{
 			ss << "\n\nShe has been released from the Clinic.";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
@@ -168,9 +168,9 @@ bool cJobManager::WorkCosmeticSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	// Improve girl
 	int libido = 1;
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	if (girl->has_trait( "Lesbian"))		libido += numnurse;
+	if (girl->has_trait( "Masochist"))	libido += 1;
+	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
@@ -185,8 +185,8 @@ double cJobManager::JP_CosmeticSurgery(sGirl* girl, bool estimate)
 	double jobperformance = 0.0;
 	if (estimate)	// for third detail string - how much do they need this?
 	{
-		if (!g_Girls.HasTrait(girl, "Sexy Air"))	jobperformance += 100;
-		if (!g_Girls.HasTrait(girl, "Cute"))		jobperformance += 100;
+		if (!girl->has_trait( "Sexy Air"))	jobperformance += 100;
+		if (!girl->has_trait( "Cute"))		jobperformance += 100;
 		jobperformance += (100 - girl->m_Stats[STAT_CHARISMA]);
 		jobperformance += (100 - girl->m_Stats[STAT_BEAUTY]);
 	}

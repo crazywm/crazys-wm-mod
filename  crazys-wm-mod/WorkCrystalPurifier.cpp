@@ -72,7 +72,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss << "The Director assigned " << girlName << "to edit the scenes for the week";
 	}
 
-	
+
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
 	int roll = g_Dice.d100();
@@ -150,9 +150,9 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 	int xp = 5, skill = 3, libido = 1;
 	if (jobperformance > 5)	skill += 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	if (g_Dice % 2 == 1)
 		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);

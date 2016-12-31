@@ -56,7 +56,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		return true;
 	}
 	ss << " worked as a stagehand.\n\n";
-	
+
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 	int enjoyc = 0, enjoym = 0;
 	int wages = 50;
@@ -71,47 +71,47 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	double jobperformance = 0;
 	double CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10.0) + 5) * 5;
 
-	if (g_Girls.HasTrait(girl, "Director"))					{ CleanAmt -= 10;	jobperformance += 15; }
-	if (g_Girls.HasTrait(girl, "Actress"))					{ CleanAmt += 0;	jobperformance += 10; }
-	if (g_Girls.HasTrait(girl, "Porn Star"))				{ CleanAmt += 0;	jobperformance += 5; }
-	if (g_Girls.HasTrait(girl, "Flight"))					{ CleanAmt += 20;	jobperformance += 10; }
-	if (g_Girls.HasTrait(girl, "Maid"))						{ CleanAmt += 20;	jobperformance += 2; }
-	if (g_Girls.HasTrait(girl, "Powerful Magic"))			{ CleanAmt += 10;	jobperformance += 10; }
-	if (g_Girls.HasTrait(girl, "Strong Magic"))				{ CleanAmt += 5;	jobperformance += 5; }
-	if (g_Girls.HasTrait(girl, "Handyman"))					{ CleanAmt += 5;	jobperformance += 10; }
-	if (g_Girls.HasTrait(girl, "Waitress"))					{ CleanAmt += 5;	jobperformance += 5; }
-	if (g_Girls.HasTrait(girl, "Agile"))					{ CleanAmt += 5;	jobperformance += 10; }
-	if (g_Girls.HasTrait(girl, "Fleet of Foot"))			{ CleanAmt += 2;	jobperformance += 5; }
-	if (g_Girls.HasTrait(girl, "Strong"))					{ CleanAmt += 5;	jobperformance += 10; }
-	if (g_Girls.HasTrait(girl, "Assassin"))					{ CleanAmt += 1;	jobperformance += 1; }
-	if (g_Girls.HasTrait(girl, "Psychic"))					{ CleanAmt += 2;	jobperformance += 5; }
-	if (g_Girls.HasTrait(girl, "Manly"))					{ CleanAmt += 1;	jobperformance += 1; }
-	if (g_Girls.HasTrait(girl, "Tomboy"))					{ CleanAmt += 2;	jobperformance += 2; }
-	if (g_Girls.HasTrait(girl, "Optimist"))					{ CleanAmt += 1;	jobperformance += 1; }
-	if (g_Girls.HasTrait(girl, "Sharp-Eyed"))				{ CleanAmt += 1;	jobperformance += 5; }
-	if (g_Girls.HasTrait(girl, "Giant"))					{ CleanAmt += 2;	jobperformance += 2; }
-	if (g_Girls.HasTrait(girl, "Prehensile Tail"))			{ CleanAmt += 3;	jobperformance += 3; }
+	if (girl->has_trait( "Director"))					{ CleanAmt -= 10;	jobperformance += 15; }
+	if (girl->has_trait( "Actress"))					{ CleanAmt += 0;	jobperformance += 10; }
+	if (girl->has_trait( "Porn Star"))				{ CleanAmt += 0;	jobperformance += 5; }
+	if (girl->has_trait( "Flight"))					{ CleanAmt += 20;	jobperformance += 10; }
+	if (girl->has_trait( "Maid"))						{ CleanAmt += 20;	jobperformance += 2; }
+	if (girl->has_trait( "Powerful Magic"))			{ CleanAmt += 10;	jobperformance += 10; }
+	if (girl->has_trait( "Strong Magic"))				{ CleanAmt += 5;	jobperformance += 5; }
+	if (girl->has_trait( "Handyman"))					{ CleanAmt += 5;	jobperformance += 10; }
+	if (girl->has_trait( "Waitress"))					{ CleanAmt += 5;	jobperformance += 5; }
+	if (girl->has_trait( "Agile"))					{ CleanAmt += 5;	jobperformance += 10; }
+	if (girl->has_trait( "Fleet of Foot"))			{ CleanAmt += 2;	jobperformance += 5; }
+	if (girl->has_trait( "Strong"))					{ CleanAmt += 5;	jobperformance += 10; }
+	if (girl->has_trait( "Assassin"))					{ CleanAmt += 1;	jobperformance += 1; }
+	if (girl->has_trait( "Psychic"))					{ CleanAmt += 2;	jobperformance += 5; }
+	if (girl->has_trait( "Manly"))					{ CleanAmt += 1;	jobperformance += 1; }
+	if (girl->has_trait( "Tomboy"))					{ CleanAmt += 2;	jobperformance += 2; }
+	if (girl->has_trait( "Optimist"))					{ CleanAmt += 1;	jobperformance += 1; }
+	if (girl->has_trait( "Sharp-Eyed"))				{ CleanAmt += 1;	jobperformance += 5; }
+	if (girl->has_trait( "Giant"))					{ CleanAmt += 2;	jobperformance += 2; }
+	if (girl->has_trait( "Prehensile Tail"))			{ CleanAmt += 3;	jobperformance += 3; }
 
-	if (g_Girls.HasTrait(girl, "Blind"))					{ CleanAmt -= 20;	jobperformance -= 20; }
-	if (g_Girls.HasTrait(girl, "Queen"))					{ CleanAmt -= 20;	jobperformance -= 10; }
-	if (g_Girls.HasTrait(girl, "Princess"))					{ CleanAmt -= 10;	jobperformance -= 5; }
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))				{ CleanAmt -= 10;	jobperformance -= 5; }
-	if (g_Girls.HasTrait(girl, "Bimbo"))					{ CleanAmt -= 5;	jobperformance -= 5; }
-	if (g_Girls.HasTrait(girl, "Retarded"))					{ CleanAmt -= 5;	jobperformance -= 5; }
-	if (g_Girls.HasTrait(girl, "Smoker"))					{ CleanAmt -= 1;	jobperformance -= 1; }
-	if (g_Girls.HasTrait(girl, "Clumsy"))					{ CleanAmt -= 5;	jobperformance -= 5; }
-	if (g_Girls.HasTrait(girl, "Delicate"))					{ CleanAmt -= 1;	jobperformance -= 1; }
-	if (g_Girls.HasTrait(girl, "Elegant"))					{ CleanAmt -= 5;	jobperformance -= 1; }
-	if (g_Girls.HasTrait(girl, "Malformed"))				{ CleanAmt -= 1;	jobperformance -= 1; }
-	if (g_Girls.HasTrait(girl, "Massive Melons"))			{ CleanAmt -= 1;	jobperformance -= 1; }
-	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	{ CleanAmt -= 3;	jobperformance -= 1; }
-	if (g_Girls.HasTrait(girl, "Titanic Tits"))				{ CleanAmt -= 5;	jobperformance -= 1; }
-	if (g_Girls.HasTrait(girl, "Broken Will"))				{ CleanAmt -= 5;	jobperformance -= 10; }
-	if (g_Girls.HasTrait(girl, "Pessimist"))				{ CleanAmt -= 1;	jobperformance -= 1; }
-	if (g_Girls.HasTrait(girl, "Meek"))						{ CleanAmt -= 2;	jobperformance -= 2; }
-	if (g_Girls.HasTrait(girl, "Nervous"))					{ CleanAmt -= 2;	jobperformance -= 3; }
-	if (g_Girls.HasTrait(girl, "Dependant"))				{ CleanAmt -= 5;	jobperformance -= 5; }
-	if (g_Girls.HasTrait(girl, "Bad Eyesight"))				{ CleanAmt -= 5;	jobperformance -= 5; }
+	if (girl->has_trait( "Blind"))					{ CleanAmt -= 20;	jobperformance -= 20; }
+	if (girl->has_trait( "Queen"))					{ CleanAmt -= 20;	jobperformance -= 10; }
+	if (girl->has_trait( "Princess"))					{ CleanAmt -= 10;	jobperformance -= 5; }
+	if (girl->has_trait( "Mind Fucked"))				{ CleanAmt -= 10;	jobperformance -= 5; }
+	if (girl->has_trait( "Bimbo"))					{ CleanAmt -= 5;	jobperformance -= 5; }
+	if (girl->has_trait( "Retarded"))					{ CleanAmt -= 5;	jobperformance -= 5; }
+	if (girl->has_trait( "Smoker"))					{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (girl->has_trait( "Clumsy"))					{ CleanAmt -= 5;	jobperformance -= 5; }
+	if (girl->has_trait( "Delicate"))					{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (girl->has_trait( "Elegant"))					{ CleanAmt -= 5;	jobperformance -= 1; }
+	if (girl->has_trait( "Malformed"))				{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (girl->has_trait( "Massive Melons"))			{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (girl->has_trait( "Abnormally Large Boobs"))	{ CleanAmt -= 3;	jobperformance -= 1; }
+	if (girl->has_trait( "Titanic Tits"))				{ CleanAmt -= 5;	jobperformance -= 1; }
+	if (girl->has_trait( "Broken Will"))				{ CleanAmt -= 5;	jobperformance -= 10; }
+	if (girl->has_trait( "Pessimist"))				{ CleanAmt -= 1;	jobperformance -= 1; }
+	if (girl->has_trait( "Meek"))						{ CleanAmt -= 2;	jobperformance -= 2; }
+	if (girl->has_trait( "Nervous"))					{ CleanAmt -= 2;	jobperformance -= 3; }
+	if (girl->has_trait( "Dependant"))				{ CleanAmt -= 5;	jobperformance -= 5; }
+	if (girl->has_trait( "Bad Eyesight"))				{ CleanAmt -= 5;	jobperformance -= 5; }
 
 
 	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 ||
@@ -203,9 +203,9 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	// Improve girl
 	int xp = filming ? 10 : 5, skill = 3, libido = 1;
 	if (enjoyc + enjoym > 2)							{ xp += 1; skill += 1; }
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);

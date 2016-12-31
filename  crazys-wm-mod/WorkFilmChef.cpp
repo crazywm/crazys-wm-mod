@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -158,17 +158,17 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// Improve stats
 	int xp = 10, skill = 3, libido = 1;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
 	g_Girls.UpdateSkill(girl, SKILL_COOKING, g_Dice%skill + 1);
-	
+
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
-	
+
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 80, ACTION_WORKMOVIE, "She has become quite Charming.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Actress", 80, ACTION_WORKMOVIE, "Working on camera has improved her acting skills.", Day0Night1);
@@ -214,35 +214,35 @@ double cJobManager::JP_FilmChef(sGirl* girl, bool estimate)
 
 
 	//good traits
-	if (g_Girls.HasTrait(girl, "Chef"))				jobperformance += 40;	//Good at cooking
-	if (g_Girls.HasTrait(girl, "Mixologist"))		jobperformance += 20;	//Good with measures
-	if (g_Girls.HasTrait(girl, "Charismatic"))		jobperformance += 25;	//Charisma on film
-	if (g_Girls.HasTrait(girl, "Sexy Air"))			jobperformance += 25;	//
-	if (g_Girls.HasTrait(girl, "Charming"))			jobperformance += 20;	//
-	if (g_Girls.HasTrait(girl, "Cool Person"))		jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Social Drinker"))	jobperformance += 5;	//Drinks too
-	if (g_Girls.HasTrait(girl, "Exhibitionist"))	jobperformance += 30;	//Shows off body
-	if (g_Girls.HasTrait(girl, "MILF"))				jobperformance += 15;	//Attractive to some
-	if (g_Girls.HasTrait(girl, "Cute"))				jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Lolita"))			jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Elegant"))			jobperformance += 10;	//
-	if (g_Girls.HasTrait(girl, "Exotic"))			jobperformance += 5;	//
-	if (g_Girls.HasTrait(girl, "Beauty Mark"))		jobperformance += 5;	//
-	if (g_Girls.HasTrait(girl, "Fat"))				jobperformance += 10;	//Likes food
-	if (g_Girls.HasTrait(girl, "Plump"))			jobperformance += 5;	//
-	if (g_Girls.HasTrait(girl, "Wide Bottom"))		jobperformance += 5;	//
-	if (g_Girls.HasTrait(girl, "Plump Tush"))		jobperformance += 5;	//
-	
+	if (girl->has_trait( "Chef"))				jobperformance += 40;	//Good at cooking
+	if (girl->has_trait( "Mixologist"))		jobperformance += 20;	//Good with measures
+	if (girl->has_trait( "Charismatic"))		jobperformance += 25;	//Charisma on film
+	if (girl->has_trait( "Sexy Air"))			jobperformance += 25;	//
+	if (girl->has_trait( "Charming"))			jobperformance += 20;	//
+	if (girl->has_trait( "Cool Person"))		jobperformance += 10;	//
+	if (girl->has_trait( "Social Drinker"))	jobperformance += 5;	//Drinks too
+	if (girl->has_trait( "Exhibitionist"))	jobperformance += 30;	//Shows off body
+	if (girl->has_trait( "MILF"))				jobperformance += 15;	//Attractive to some
+	if (girl->has_trait( "Cute"))				jobperformance += 10;	//
+	if (girl->has_trait( "Lolita"))			jobperformance += 10;	//
+	if (girl->has_trait( "Elegant"))			jobperformance += 10;	//
+	if (girl->has_trait( "Exotic"))			jobperformance += 5;	//
+	if (girl->has_trait( "Beauty Mark"))		jobperformance += 5;	//
+	if (girl->has_trait( "Fat"))				jobperformance += 10;	//Likes food
+	if (girl->has_trait( "Plump"))			jobperformance += 5;	//
+	if (girl->has_trait( "Wide Bottom"))		jobperformance += 5;	//
+	if (girl->has_trait( "Plump Tush"))		jobperformance += 5;	//
+
 
 	//bad traits
-	if (g_Girls.HasTrait(girl, "Nervous"))					jobperformance -= 30;	//weakens performance
-	if (g_Girls.HasTrait(girl, "Meek"))						jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Shy"))						jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "One Arm"))					jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "One Hand"))					jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "No Arms"))					jobperformance -= 50;	//hard to strip
-	if (g_Girls.HasTrait(girl, "No Hands"))					jobperformance -= 50;
-	if (g_Girls.HasTrait(girl, "Alcoholic"))				jobperformance -= 5;
+	if (girl->has_trait( "Nervous"))					jobperformance -= 30;	//weakens performance
+	if (girl->has_trait( "Meek"))						jobperformance -= 20;
+	if (girl->has_trait( "Shy"))						jobperformance -= 20;
+	if (girl->has_trait( "One Arm"))					jobperformance -= 20;
+	if (girl->has_trait( "One Hand"))					jobperformance -= 10;
+	if (girl->has_trait( "No Arms"))					jobperformance -= 50;	//hard to strip
+	if (girl->has_trait( "No Hands"))					jobperformance -= 50;
+	if (girl->has_trait( "Alcoholic"))				jobperformance -= 5;
 
 	return jobperformance;
 }

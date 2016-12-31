@@ -386,7 +386,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			m_JobManager.JobFunc[restjob](current, brothel, SHIFT_NIGHT, summary);
 		}
 		else
-		{	// if she is healthy enough to go back to work... 
+		{	// if she is healthy enough to go back to work...
 			if (matron)	// and there is a marton working...
 			{
 				psw = current->m_PrevNightJob;
@@ -647,7 +647,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		girlName = current->m_Realname;
 		if (current->m_NightJob == JOB_STAGEHAND || current->m_NightJob == JOB_PROMOTER) // these two can still work
 		{
-			totalPay = totalTips = totalGold = 0; 
+			totalPay = totalTips = totalGold = 0;
 			refused = m_JobManager.JobFunc[current->m_NightJob](current, brothel, SHIFT_NIGHT, summary);
 			totalPay += current->m_Pay;
 			totalTips += current->m_Tips;
@@ -686,10 +686,10 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		if (current->is_dead() || (current->m_NightJob != JOB_PROMOTER && current->m_NightJob != JOB_STAGEHAND &&
 			current->m_NightJob != JOB_FLUFFER && current->m_NightJob != JOB_CAMERAMAGE && current->m_NightJob != JOB_CRYSTALPURIFIER)
 			// skip dead girls and anyone not working the jobs we are processing
-			|| (current->m_NightJob == JOB_CAMERAMAGE && current->m_Refused_To_Work_Night) 
+			|| (current->m_NightJob == JOB_CAMERAMAGE && current->m_Refused_To_Work_Night)
 			// and skip any camera or crystal who refused to work in the first check and were not reassigned
 			|| (current->m_NightJob == JOB_CRYSTALPURIFIER && current->m_Refused_To_Work_Night))
-		{	
+		{
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
@@ -879,7 +879,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 				else if (h < 40)			ss << " is hurt.\nShe should rest and recuperate.\n";
 				sum = EVENT_WARNING;
 			}
-			else if (current->m_NightJob == matronjob && matron)	// do matron	
+			else if (current->m_NightJob == matronjob && matron)	// do matron
 			{
 				if (t > 90 && h < 10)	// The matron may take herself off work if she is really bad off
 				{
@@ -954,7 +954,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 				}
 			}
 		}
-		
+
 		if (ss.str().length() > 0)	current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;		// Process next girl
@@ -1383,60 +1383,60 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> cMovieStudioManager::AddScene
 
 	//CRAZY added this to have traits play a bigger part in the movies
-	if (g_Girls.HasTrait(girl, "Porn Star"))				quality += 20;
-	if (g_Girls.HasTrait(girl, "Actress"))					quality += 10;
-	if (g_Girls.HasTrait(girl, "Shape Shifter"))			quality += 10;
+	if (girl->has_trait( "Porn Star"))				quality += 20;
+	if (girl->has_trait( "Actress"))					quality += 10;
+	if (girl->has_trait( "Shape Shifter"))			quality += 10;
 
-	if (g_Girls.HasTrait(girl, "Fake Orgasm Expert"))		quality += 5;
-	else if (g_Girls.HasTrait(girl, "Fast Orgasms"))		quality += 2;
-	else if (g_Girls.HasTrait(girl, "Slow Orgasms"))		quality -= 2;
+	if (girl->has_trait( "Fake Orgasm Expert"))		quality += 5;
+	else if (girl->has_trait( "Fast Orgasms"))		quality += 2;
+	else if (girl->has_trait( "Slow Orgasms"))		quality -= 2;
 
-	if (g_Girls.HasTrait(girl, "Great Figure"))				quality += 4;
-	if (g_Girls.HasTrait(girl, "Great Arse"))				quality += 2;
-	if (g_Girls.HasTrait(girl, "Charismatic"))				quality += 4;
-	if (g_Girls.HasTrait(girl, "Charming"))					quality += 2;
-	if (g_Girls.HasTrait(girl, "Long Legs"))				quality += 2;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))				quality += 4;
-	if (g_Girls.HasTrait(girl, "Good Kisser"))				quality += 2;
-	if (g_Girls.HasTrait(girl, "Cute"))						quality += 2;
-	if (g_Girls.HasTrait(girl, "Sexy Air"))					quality += 2;
-	if (g_Girls.HasTrait(girl, "Psychic"))					quality += 4;
-	if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))		quality += 1;
+	if (girl->has_trait( "Great Figure"))				quality += 4;
+	if (girl->has_trait( "Great Arse"))				quality += 2;
+	if (girl->has_trait( "Charismatic"))				quality += 4;
+	if (girl->has_trait( "Charming"))					quality += 2;
+	if (girl->has_trait( "Long Legs"))				quality += 2;
+	if (girl->has_trait( "Nymphomaniac"))				quality += 4;
+	if (girl->has_trait( "Good Kisser"))				quality += 2;
+	if (girl->has_trait( "Cute"))						quality += 2;
+	if (girl->has_trait( "Sexy Air"))					quality += 2;
+	if (girl->has_trait( "Psychic"))					quality += 4;
+	if (girl->has_trait( "Dick-Sucking Lips"))		quality += 1;
 
-	if (g_Girls.HasTrait(girl, "Chaste"))					quality -= 2;
-	if (g_Girls.HasTrait(girl, "Manly"))					quality -= 2;
-	if (g_Girls.HasTrait(girl, "Fragile"))					quality -= 2;
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))				quality -= 4;
-	if (g_Girls.HasTrait(girl, "Nervous"))					quality -= 2;
-	if (g_Girls.HasTrait(girl, "Horrific Scars"))			quality -= 4;
-	if (g_Girls.HasTrait(girl, "Clumsy"))					quality -= 2;
-	if (g_Girls.HasTrait(girl, "Meek"))						quality -= 2;
-	if (g_Girls.HasTrait(girl, "Aggressive"))				quality -= 2;
-	if (g_Girls.HasTrait(girl, "Broken Will"))				quality -= 4;
-	if (g_Girls.HasTrait(girl, "Dependant"))				quality -= 3;
-	if (g_Girls.HasTrait(girl, "Shy"))						quality -= 3;
+	if (girl->has_trait( "Chaste"))					quality -= 2;
+	if (girl->has_trait( "Manly"))					quality -= 2;
+	if (girl->has_trait( "Fragile"))					quality -= 2;
+	if (girl->has_trait( "Mind Fucked"))				quality -= 4;
+	if (girl->has_trait( "Nervous"))					quality -= 2;
+	if (girl->has_trait( "Horrific Scars"))			quality -= 4;
+	if (girl->has_trait( "Clumsy"))					quality -= 2;
+	if (girl->has_trait( "Meek"))						quality -= 2;
+	if (girl->has_trait( "Aggressive"))				quality -= 2;
+	if (girl->has_trait( "Broken Will"))				quality -= 4;
+	if (girl->has_trait( "Dependant"))				quality -= 3;
+	if (girl->has_trait( "Shy"))						quality -= 3;
 
 
 	// Idk if this is needed or not but can't hurt CRAZY // `J` breast size quality for non titjob is less importatnt
-	if (g_Girls.HasTrait(girl, "Flat Chest"))					quality -= (Job == JOB_FILMTITTY ? 10 : 2);
-	if (g_Girls.HasTrait(girl, "Petite Breasts"))				quality -= (Job == JOB_FILMTITTY ? 5 : 1);
-	if (g_Girls.HasTrait(girl, "Small Boobs"))					quality -= (Job == JOB_FILMTITTY ? 1 : 0);
-	if (g_Girls.HasTrait(girl, "Busty Boobs"))					quality += (Job == JOB_FILMTITTY ? 2 : 0);
-	if (g_Girls.HasTrait(girl, "Big Boobs"))					quality += (Job == JOB_FILMTITTY ? 4 : 1);
-	if (g_Girls.HasTrait(girl, "Giant Juggs"))					quality += (Job == JOB_FILMTITTY ? 6 : 2);
-	if (g_Girls.HasTrait(girl, "Massive Melons"))				quality += (Job == JOB_FILMTITTY ? 8 : 3);
-	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))		quality += (Job == JOB_FILMTITTY ? 10 : 4);
-	if (g_Girls.HasTrait(girl, "Titanic Tits"))					quality += (Job == JOB_FILMTITTY ? 12 : 5);
-	if (g_Girls.HasTrait(girl, "Perky Nipples"))				quality += (Job == JOB_FILMTITTY ? 2 : 1);
-	if (g_Girls.HasTrait(girl, "Puffy Nipples"))				quality += (Job == JOB_FILMTITTY ? 2 : 1);
-	if (g_Girls.HasTrait(girl, "Pierced Nipples"))
+	if (girl->has_trait( "Flat Chest"))					quality -= (Job == JOB_FILMTITTY ? 10 : 2);
+	if (girl->has_trait( "Petite Breasts"))				quality -= (Job == JOB_FILMTITTY ? 5 : 1);
+	if (girl->has_trait( "Small Boobs"))					quality -= (Job == JOB_FILMTITTY ? 1 : 0);
+	if (girl->has_trait( "Busty Boobs"))					quality += (Job == JOB_FILMTITTY ? 2 : 0);
+	if (girl->has_trait( "Big Boobs"))					quality += (Job == JOB_FILMTITTY ? 4 : 1);
+	if (girl->has_trait( "Giant Juggs"))					quality += (Job == JOB_FILMTITTY ? 6 : 2);
+	if (girl->has_trait( "Massive Melons"))				quality += (Job == JOB_FILMTITTY ? 8 : 3);
+	if (girl->has_trait( "Abnormally Large Boobs"))		quality += (Job == JOB_FILMTITTY ? 10 : 4);
+	if (girl->has_trait( "Titanic Tits"))					quality += (Job == JOB_FILMTITTY ? 12 : 5);
+	if (girl->has_trait( "Perky Nipples"))				quality += (Job == JOB_FILMTITTY ? 2 : 1);
+	if (girl->has_trait( "Puffy Nipples"))				quality += (Job == JOB_FILMTITTY ? 2 : 1);
+	if (girl->has_trait( "Pierced Nipples"))
 	{
 		if (Job == JOB_FILMBONDAGE || Job == JOB_FILMTITTY)
 			quality += 5;
 		if (Job == JOB_FILMSEX || Job == JOB_FILMBEAST || Job == JOB_FILMGROUP || Job == JOB_FILMLESBIAN || Job == SKILL_STRIP)
 			quality += 1;
 	}
-	if (g_Girls.HasTrait(girl, "Pierced Navel"))
+	if (girl->has_trait( "Pierced Navel"))
 	{
 		if (Job == JOB_FILMBONDAGE || Job == SKILL_STRIP)
 			quality += 5;
@@ -1445,38 +1445,38 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 		if (Job == JOB_FILMSEX || Job == JOB_FILMBEAST || Job == JOB_FILMGROUP || Job == JOB_FILMLESBIAN)
 			quality += 1;
 	}
-	if (g_Girls.HasTrait(girl, "Pierced Clit"))
+	if (girl->has_trait( "Pierced Clit"))
 	{
 		if (Job == JOB_FILMBONDAGE)		quality += 5;
 		if (Job == JOB_FILMLESBIAN)	quality += 3;
 		if (Job == JOB_FILMANAL || Job == JOB_FILMSEX || Job == JOB_FILMGROUP || Job == SKILL_STRIP)
 			quality += 1;
 	}
-	if (g_Girls.HasTrait(girl, "Hunter"))
+	if (girl->has_trait( "Hunter"))
 	{
 		if (Job == JOB_FILMBEAST)	quality += 3;
 	}
 	if (Job == JOB_FILMORAL || Job == JOB_FILMFACEFUCK)
 	{
-		if (g_Girls.HasTrait(girl, "Pierced Tongue"))		quality += 1;
-		if (g_Girls.HasTrait(girl, "Dick-Sucking Lips"))	quality += 2;
-		if (g_Girls.HasTrait(girl, "Deep Throat"))			quality += 5;
-		if (g_Girls.HasTrait(girl, "No Gag Reflex"))		quality += 2;
-		if (g_Girls.HasTrait(girl, "Gag Reflex"))			quality -= 5;
-		if (g_Girls.HasTrait(girl, "Strong Gag Reflex"))	quality -= 10;
+		if (girl->has_trait( "Pierced Tongue"))		quality += 1;
+		if (girl->has_trait( "Dick-Sucking Lips"))	quality += 2;
+		if (girl->has_trait( "Deep Throat"))			quality += 5;
+		if (girl->has_trait( "No Gag Reflex"))		quality += 2;
+		if (girl->has_trait( "Gag Reflex"))			quality -= 5;
+		if (girl->has_trait( "Strong Gag Reflex"))	quality -= 10;
 	}
 
 	if (Job == JOB_FILMANAL) //May need work FIXME CRAZY
 	{
-		if (g_Girls.HasTrait(girl, "Great Arse"))				quality += 10;
-		if (g_Girls.HasTrait(girl, "Tight Butt"))				quality += 8;
-		if (g_Girls.HasTrait(girl, "Phat Booty"))				quality += 6;
-		if (g_Girls.HasTrait(girl, "Wide Bottom"))				quality += 4;
-		if (g_Girls.HasTrait(girl, "Plump Tush"))				quality += 2;
-		if (g_Girls.HasTrait(girl, "Flat Ass"))					quality -= 10;
+		if (girl->has_trait( "Great Arse"))				quality += 10;
+		if (girl->has_trait( "Tight Butt"))				quality += 8;
+		if (girl->has_trait( "Phat Booty"))				quality += 6;
+		if (girl->has_trait( "Wide Bottom"))				quality += 4;
+		if (girl->has_trait( "Plump Tush"))				quality += 2;
+		if (girl->has_trait( "Flat Ass"))					quality -= 10;
 	}
 
-	if (g_Girls.HasTrait(girl, "Lesbian"))
+	if (girl->has_trait( "Lesbian"))
 	{
 		//a lesbian would be more into it and give a better show I would think CRAZY
 		if (Job == JOB_FILMLESBIAN)		quality += 10;
@@ -1490,7 +1490,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 		if (Job == JOB_FILMHANDJOB)		quality -= 2;
 		if (Job == JOB_FILMMAST)		quality -= 1;
 	}
-	if (g_Girls.HasTrait(girl, "Straight"))
+	if (girl->has_trait( "Straight"))
 	{
 		// `J` similarly, a straight girl would be less into doing it with another girl (but not as much)
 		if (Job == JOB_FILMLESBIAN)		quality -= 5;
@@ -1505,7 +1505,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	}
 
 
-	//CRAZY added this better looking girls should make better quality movies 
+	//CRAZY added this better looking girls should make better quality movies
 	// Changed to work with new job revision --PP
 	quality += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
 	quality += (g_Girls.GetStat(girl, STAT_CHARISMA) - 50) / 10;

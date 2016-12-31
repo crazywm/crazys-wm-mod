@@ -90,7 +90,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	sGirl* headonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_HEADGIRL, Day0Night1);
 	string headname = (headonduty ? "Head Girl " + headonduty->m_Realname + "" : "the Head girl");
 
-	if (train >= 50)			// they refuse to train 
+	if (train >= 50)			// they refuse to train
 	{
 		ss << " refused to train during the " << (Day0Night1 ? "night" : "day") << " shift.\n";
 		ss << girlName << " is still in training, and is having difficulty accepting her new role. Today she was a bad girl!\n";
@@ -117,7 +117,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			ss << "\nlow skill.";
 			if (roll_b >= 50)
 			{
-				ss << "test message 1 "; 
+				ss << "test message 1 ";
 			}
 			else
 			{
@@ -143,7 +143,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 					}
 				else if (roll_b >= 40)
 					{
-						ss << girlName << "test message 3\n";		
+						ss << girlName << "test message 3\n";
 							training += 5;
 					}
 				else if (roll_b >= 20)
@@ -253,9 +253,9 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);

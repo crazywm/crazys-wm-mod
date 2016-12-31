@@ -803,7 +803,7 @@ void cScreenItemManagement::check_buttons()
 	int disableshiftL = 0;		int disableshiftR = 0;	// 0 = hidden
 	int disablebuy10L = 0;		int disablebuy10R = 0;	// 1 = off
 	int	disablesell10L = 0;		int	disablesell10R = 0;	// 2 = on
-	int	disablesellallL = 0;	int	disablesellallR = 0;	// 
+	int	disablesellallL = 0;	int	disablesellallR = 0;	//
 
 	disableshiftR = (leftItem > -1 ? 2 : 1);
 	disableshiftL = (rightItem > -1 ? 2 : 1);
@@ -1359,7 +1359,7 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
 		else if (HateLove < -60)	message = "She takes your gift in hand, looks at it, looks at you, than walks away without a word.";
 		else if (HateLove < -40)
 		{
-			if (g_Girls.HasTrait(girl, "Your Daughter"))
+			if (girl->has_trait( "Your Daughter"))
 			{
 				message = "Are you trying to make up for being an ass dad?"; //hopefully this works.. will add more
 			}
@@ -1367,7 +1367,7 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
 		}
 		else if (HateLove < -20)
 		{
-			if (g_Girls.HasTrait(girl, "Your Daughter"))
+			if (girl->has_trait( "Your Daughter"))
 			{
 				message = "You still have a long way to go if you want me to like you dad."; //hopefully this works.. will add more CRAZY
 			}
@@ -1380,8 +1380,8 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
 		else if (HateLove < 80)		message = "She is happy with the gift and gives you a big hug and a kiss on the cheek.";
 		else
 		{
-			if (g_Girls.HasTrait(girl, "Your Daughter"))	message = "She is happy with the gift and gives you a big hug and a kiss on the cheek saying she loves her daddy."; //hopefully this works.. will add more
-			else if (g_Girls.HasTrait(girl, "Lesbian"))		message = "She is happy with the gift and gives you a big hug and a kiss on the cheek and says that if you weren't a \"man\" she might have to show you how much she loved that gift.";
+			if (girl->has_trait( "Your Daughter"))	message = "She is happy with the gift and gives you a big hug and a kiss on the cheek saying she loves her daddy."; //hopefully this works.. will add more
+			else if (girl->has_trait( "Lesbian"))		message = "She is happy with the gift and gives you a big hug and a kiss on the cheek and says that if you weren't a \"man\" she might have to show you how much she loved that gift.";
 			else /*                                   */	message = "She is happy with the gift and gives you a big hug and kisses you hard.  After the kiss she whispers to you to see her later so she can thank you \"properly\".";
 		}
 	}
@@ -1398,7 +1398,7 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
 		else if (HateLove < 80)		message = "She doesn't seem happy with the gift and tears can be seen in her eyes.";
 		else
 		{
-			if (g_Girls.HasTrait(girl, "Your Daughter"))	message = "She looks at you and says \"Why would you give me such a thing daddy?\"."; //hopefully this works.. will add more
+			if (girl->has_trait( "Your Daughter"))	message = "She looks at you and says \"Why would you give me such a thing daddy?\"."; //hopefully this works.. will add more
 			else /*                                   */	message = "She can't belive you would give her such a gift and runs off crying.";
 		}
 	}

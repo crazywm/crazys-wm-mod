@@ -55,9 +55,9 @@ bool cJobManager::WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (girl->m_YesterDayJob != JOB_FERTILITY) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_FERTILITY;	// it is a full time job
 
-	if (girl->is_pregnant() || g_Girls.HasTrait(girl, "Broodmother"))
+	if (girl->is_pregnant() || girl->has_trait( "Broodmother"))
 	{
-		if (g_Girls.HasTrait(girl, "Broodmother"))	ss << " is already as Fertile as she can be so she was sent to the waiting room.";
+		if (girl->has_trait( "Broodmother"))	ss << " is already as Fertile as she can be so she was sent to the waiting room.";
 		else if (girl->is_pregnant())				ss << " is pregant.\nShe must either have her baby or get an abortion before She can get recieve any more fertility treatments.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
@@ -154,7 +154,7 @@ bool cJobManager::WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		}
 
 		ss << g_Girls.AdjustTraitGroupFertility(girl, 1, false);
-		if (g_Girls.HasTrait(girl, "Broodmother"))
+		if (girl->has_trait( "Broodmother"))
 		{
 			ss << "\n\nShe has been released from the Clinic.";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
@@ -168,9 +168,9 @@ bool cJobManager::WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	// Improve girl
 	int libido = 1;
-	if (g_Girls.HasTrait(girl, "Lesbian"))		libido += numnurse;
-	if (g_Girls.HasTrait(girl, "Masochist"))	libido += 1;
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))	libido += 2;
+	if (girl->has_trait( "Lesbian"))		libido += numnurse;
+	if (girl->has_trait( "Masochist"))	libido += 1;
+	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
@@ -182,9 +182,9 @@ bool cJobManager::WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 double cJobManager::JP_GetFertility(sGirl* girl, bool estimate)
 {
-	if (g_Girls.HasTrait(girl, "Broodmother"))	return -1000;	// X - not needed
+	if (girl->has_trait( "Broodmother"))	return -1000;	// X - not needed
 	if (girl->is_pregnant())					return 0;		// E - needs abortion or birth first
-	if (g_Girls.HasTrait(girl, "Sterile"))		return 200;		// A - needs it to have a baby
-	if (g_Girls.HasTrait(girl, "Fertile"))		return 100;		// C - would improve chances
+	if (girl->has_trait( "Sterile"))		return 200;		// A - needs it to have a baby
+	if (girl->has_trait( "Fertile"))		return 100;		// C - would improve chances
 	return 150;													// B - would improve chances greatly
 }

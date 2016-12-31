@@ -19,12 +19,17 @@
 #include <vector>
 #include "cImageItem.h"
 #include "CGraphics.h"
-#include "libintl.h"
 #include "cGirls.h"
 #include "DirPath.h"
 #include "FileList.h"
 #include "cInterfaceWindow.h"
 #include "SDL_anigif.h"
+
+#ifdef LINUX
+#include <libintl.h>
+#else
+#include "libintl.h"
+#endif
 
 extern CGraphics	g_Graphics;
 extern cGirls		g_Girls;

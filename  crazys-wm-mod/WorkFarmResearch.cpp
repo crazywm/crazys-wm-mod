@@ -43,7 +43,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	int actiontype = ACTION_WORKTRAINING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -52,7 +52,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	ss << " worked as a reseacher on the farm.";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
-	
+
 	int wages = 20, tips = 0;
 	int enjoy = 0;
 	int imagetype = IMGTYPE_PROFILE;
@@ -78,8 +78,8 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else if (roll_a <= 30)	skill = 5;
 	else if (roll_a <= 60)	skill = 4;
 	else /*             */	skill = 3;
-	/* */if (g_Girls.HasTrait(girl, "Quick Learner"))	{ skill += 1; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; }
+	/* */if (girl->has_trait( "Quick Learner"))	{ skill += 1; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; }
 	skill -= dirtyloss;
 	ss << "The Farm Lab is ";
 	if (dirtyloss <= 0) ss << "clean and tidy";
@@ -88,7 +88,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (dirtyloss == 3) ss << "filthy and some of the equipment is broken";
 	if (dirtyloss >= 4) ss << "in complete disarray and the equipment barely usable";
 	ss << ".\n\n";
-	if (skill < 1) skill = 1;	// always at least 1 
+	if (skill < 1) skill = 1;	// always at least 1
 
 	do{		// `J` New method of selecting what job to do
 		/* */if (roll_b < 20  && tanm < 100)	train = 1;	// animalhandling
@@ -115,9 +115,9 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		if (sgHer > 0) { ss << sgHer << " Herbalism\n";			g_Girls.UpdateSkill(girl, SKILL_HERBALISM, sgHer); }
 		if (sgInt > 0) { ss << sgInt << " Intelligence\n";		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, sgInt); }
 	}
-	
+
 	int trycount = skill;
-	while (gaintrait && trycount > 0)	// `J` Try to add a trait 
+	while (gaintrait && trycount > 0)	// `J` Try to add a trait
 	{
 		trycount--;
 		switch (g_Dice % 10)
@@ -127,7 +127,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		case 1:
 			break;
 		case 2:
-			if (g_Girls.HasTrait(girl, "Dependant"))
+			if (girl->has_trait( "Dependant"))
 			{
 				g_Girls.RemoveTrait(girl, "Dependant");
 				ss << "She seems to be getting over her Dependancy with her training.";
@@ -158,7 +158,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy her time training."; }
 	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time training."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
-	
+
 	ss << "\n\n";
 
 #pragma endregion
@@ -309,7 +309,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 				break;
 			}
 		}
-		
+
 		item = g_InvManager.GetItem(itemname);
 		if (item)
 		{
@@ -331,7 +331,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 #pragma region	//	Finish the shift			//
 
 
-	
+
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
@@ -343,9 +343,9 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	// Improve stats
 	int xp = 5 + skill, libido = int(1 + skill / 2);
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ xp += 2; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ xp -= 2; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ xp += 2; }
+	else if (girl->has_trait( "Slow Learner"))	{ xp -= 2; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
@@ -379,15 +379,15 @@ double cJobManager::JP_FarmResearch(sGirl* girl, bool estimate)// not used
 		}
 
 		//good traits
-		if (g_Girls.HasTrait(girl, "Quick Learner"))  jobperformance += 5;
-		if (g_Girls.HasTrait(girl, "Psychic"))		  jobperformance += 10;
+		if (girl->has_trait( "Quick Learner"))  jobperformance += 5;
+		if (girl->has_trait( "Psychic"))		  jobperformance += 10;
 
 		//bad traits
-		if (g_Girls.HasTrait(girl, "Dependant"))	jobperformance -= 50; // needs others to do the job
-		if (g_Girls.HasTrait(girl, "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
-		if (g_Girls.HasTrait(girl, "Aggressive")) 	jobperformance -= 20; //gets mad easy
-		if (g_Girls.HasTrait(girl, "Nervous"))		jobperformance -= 30; //don't like to be around people	
-		if (g_Girls.HasTrait(girl, "Meek"))			jobperformance -= 20;
+		if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
+		if (girl->has_trait( "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
+		if (girl->has_trait( "Aggressive")) 	jobperformance -= 20; //gets mad easy
+		if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
+		if (girl->has_trait( "Meek"))			jobperformance -= 20;
 	}
 	return jobperformance;
 }

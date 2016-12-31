@@ -82,7 +82,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		jobperformance *= 0.9;
 		if (roll_b < 33)		ss << "A waiting customer chatted with her, distracting her from her job.", enjoy +=3; // net result = enjoyment + 2
 		else if (roll_b < 66)	ss << "While cleaning a bedroom, she put her hand right in a disgusting sticky patch. "
-			<< (g_Girls.HasTrait(girl, "Cum Addict") ? "It was her duty to stop and lick it clean." : "She wouldn't carry on until she had thoroughly washed her hands.");
+			<< (girl->has_trait( "Cum Addict") ? "It was her duty to stop and lick it clean." : "She wouldn't carry on until she had thoroughly washed her hands.");
 		else					ss << "She walked into a room early, surprising the customer and landing her with some accidental 'crossfire'.";
 	}
 	else if (roll_a >= 90)
@@ -108,9 +108,9 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << "\n\n" << girlName << " finished her cleaning early so ";
 		roll_a = g_Dice % 6;
 		if (roll_a == 1 && brothel->m_RestrictOral) roll_a = 0;
-		if (roll_a == 1 && g_Girls.HasTrait(girl, "Lesbian")) roll_a = 0;
+		if (roll_a == 1 && girl->has_trait( "Lesbian")) roll_a = 0;
 		if (roll_a != 2 && g_Girls.GetStat(girl, STAT_TIREDNESS) >= 80) roll_a = 2;
-		if (roll_a != 1 && g_Dice.percent(30) && g_Girls.HasTrait(girl, "Cum Addict")) roll_a = 1;
+		if (roll_a != 1 && g_Dice.percent(30) && girl->has_trait( "Cum Addict")) roll_a = 1;
 
 		switch (roll_a)
 		{
@@ -157,7 +157,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		case 5:
 		{
-			if (g_Girls.HasTrait(girl, "Your Wife") || g_Dice.percent(30) && !g_Girls.HasTrait(girl, "Your Daughter") && !g_Girls.HasTrait(girl, "Lesbian")) //Flipped to fix the daughter issue
+			if (girl->has_trait( "Your Wife") || g_Dice.percent(30) && !girl->has_trait( "Your Daughter") && !girl->has_trait( "Lesbian")) //Flipped to fix the daughter issue
 
 			{
 
@@ -169,19 +169,19 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (!brothel->m_RestrictTitty)
 				{
 					ss << " Taking care to clean your whole body carefully, She rubbed cleansing oils over your back and chest with her ";
-					if (g_Girls.HasTrait(girl, "Massive Melons") || g_Girls.HasTrait(girl, "Abnormally Large Boobs") || g_Girls.HasTrait(girl, "Titanic Tits"))
+					if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits"))
 						ss << "enormous, heaving ";
-					else if (g_Girls.HasTrait(girl, "Big Boobs") || g_Girls.HasTrait(girl, "Busty Boobs") || g_Girls.HasTrait(girl, "Giant Juggs"))
+					else if (girl->has_trait( "Big Boobs") || girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs"))
 						ss << "big, round ";
-					else if (g_Girls.HasTrait(girl, "Flat Chest") || g_Girls.HasTrait(girl, "Petite Breasts") || g_Girls.HasTrait(girl, "Small Boobs"))
+					else if (girl->has_trait( "Flat Chest") || girl->has_trait( "Petite Breasts") || girl->has_trait( "Small Boobs"))
 						ss << "cute little ";
 					else ss << "nice, firm ";
 					ss << "breasts. ";
 				}
 				if (!brothel->m_RestrictOral)
 				{
-					ss << "She finished by cleaning your cock with her " << (g_Girls.HasTrait(girl, "Dick-Sucking Lips") ? "amazing dick-sucking lips" : "mouth") << ". ";
-					if (g_Girls.HasTrait(girl, "Cum Addict"))
+					ss << "She finished by cleaning your cock with her " << (girl->has_trait( "Dick-Sucking Lips") ? "amazing dick-sucking lips" : "mouth") << ". ";
+					if (girl->has_trait( "Cum Addict"))
 					{
 						ss << "She didn't stop 'cleaning' until you came in her mouth.\nAfterward, you notice her carefully "
 							<< "crawling around and licking up every stray drop of cum. She must really love cleaning.\n";
@@ -241,9 +241,9 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// Improve girl
 	int xp = 5, libido = 1, skill = 3;
 	if (enjoy > 1)										{ xp += 1; skill += 1; }
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
@@ -300,43 +300,43 @@ double cJobManager::JP_Cleaning(sGirl* girl, bool estimate)
 	//and finally traits
 #endif
 
-	if (g_Girls.HasTrait(girl, "Maid"))						jobperformance += 20;
-	if (g_Girls.HasTrait(girl, "Powerful Magic"))			jobperformance += 10;
-	if (g_Girls.HasTrait(girl, "Waitress"))					jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Strong"))					jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Strong Magic"))				jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Handyman"))					jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Agile"))					jobperformance += 5;
-	if (g_Girls.HasTrait(girl, "Prehensile Tail"))			jobperformance += 3;
-	if (g_Girls.HasTrait(girl, "Tomboy"))					jobperformance += 2;
-	if (g_Girls.HasTrait(girl, "Psychic"))					jobperformance += 2;
-	if (g_Girls.HasTrait(girl, "Giant"))					jobperformance += 2;
-	if (g_Girls.HasTrait(girl, "Fleet of Foot"))			jobperformance += 2;
-	if (g_Girls.HasTrait(girl, "Sharp-Eyed"))				jobperformance += 1;
-	if (g_Girls.HasTrait(girl, "Optimist"))					jobperformance += 1;
-	if (g_Girls.HasTrait(girl, "Manly"))					jobperformance += 1;
-	if (g_Girls.HasTrait(girl, "Assassin"))					jobperformance += 1;
+	if (girl->has_trait( "Maid"))						jobperformance += 20;
+	if (girl->has_trait( "Powerful Magic"))			jobperformance += 10;
+	if (girl->has_trait( "Waitress"))					jobperformance += 5;
+	if (girl->has_trait( "Strong"))					jobperformance += 5;
+	if (girl->has_trait( "Strong Magic"))				jobperformance += 5;
+	if (girl->has_trait( "Handyman"))					jobperformance += 5;
+	if (girl->has_trait( "Agile"))					jobperformance += 5;
+	if (girl->has_trait( "Prehensile Tail"))			jobperformance += 3;
+	if (girl->has_trait( "Tomboy"))					jobperformance += 2;
+	if (girl->has_trait( "Psychic"))					jobperformance += 2;
+	if (girl->has_trait( "Giant"))					jobperformance += 2;
+	if (girl->has_trait( "Fleet of Foot"))			jobperformance += 2;
+	if (girl->has_trait( "Sharp-Eyed"))				jobperformance += 1;
+	if (girl->has_trait( "Optimist"))					jobperformance += 1;
+	if (girl->has_trait( "Manly"))					jobperformance += 1;
+	if (girl->has_trait( "Assassin"))					jobperformance += 1;
 
-	if (g_Girls.HasTrait(girl, "Queen"))					jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Blind"))					jobperformance -= 20;
-	if (g_Girls.HasTrait(girl, "Princess"))					jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Mind Fucked"))				jobperformance -= 10;
-	if (g_Girls.HasTrait(girl, "Titanic Tits"))				jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Retarded"))					jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Elegant"))					jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Dependant"))				jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Clumsy"))					jobperformance -= 5;
-	//if (g_Girls.HasTrait(girl, "Broken Will"))			jobperformance -= 5;	//SIN - why penalty? was thinking this could be a bonus!
-	if (g_Girls.HasTrait(girl, "Bimbo"))					jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Bad Eyesight"))				jobperformance -= 5;
-	if (g_Girls.HasTrait(girl, "Abnormally Large Boobs"))	jobperformance -= 3;
-	if (g_Girls.HasTrait(girl, "Nervous"))					jobperformance -= 2;
-	if (g_Girls.HasTrait(girl, "Meek"))						jobperformance -= 2;
-	if (g_Girls.HasTrait(girl, "Smoker"))					jobperformance -= 1;
-	if (g_Girls.HasTrait(girl, "Pessimist"))				jobperformance -= 1;
-	if (g_Girls.HasTrait(girl, "Massive Melons"))			jobperformance -= 1;
-	if (g_Girls.HasTrait(girl, "Malformed"))				jobperformance -= 1;
-	if (g_Girls.HasTrait(girl, "Delicate"))					jobperformance -= 1;
+	if (girl->has_trait( "Queen"))					jobperformance -= 20;
+	if (girl->has_trait( "Blind"))					jobperformance -= 20;
+	if (girl->has_trait( "Princess"))					jobperformance -= 10;
+	if (girl->has_trait( "Mind Fucked"))				jobperformance -= 10;
+	if (girl->has_trait( "Titanic Tits"))				jobperformance -= 5;
+	if (girl->has_trait( "Retarded"))					jobperformance -= 5;
+	if (girl->has_trait( "Elegant"))					jobperformance -= 5;
+	if (girl->has_trait( "Dependant"))				jobperformance -= 5;
+	if (girl->has_trait( "Clumsy"))					jobperformance -= 5;
+	//if (girl->has_trait( "Broken Will"))			jobperformance -= 5;	//SIN - why penalty? was thinking this could be a bonus!
+	if (girl->has_trait( "Bimbo"))					jobperformance -= 5;
+	if (girl->has_trait( "Bad Eyesight"))				jobperformance -= 5;
+	if (girl->has_trait( "Abnormally Large Boobs"))	jobperformance -= 3;
+	if (girl->has_trait( "Nervous"))					jobperformance -= 2;
+	if (girl->has_trait( "Meek"))						jobperformance -= 2;
+	if (girl->has_trait( "Smoker"))					jobperformance -= 1;
+	if (girl->has_trait( "Pessimist"))				jobperformance -= 1;
+	if (girl->has_trait( "Massive Melons"))			jobperformance -= 1;
+	if (girl->has_trait( "Malformed"))				jobperformance -= 1;
+	if (girl->has_trait( "Delicate"))					jobperformance -= 1;
 
 
 	return jobperformance;
