@@ -14,3 +14,18 @@ Updated cBrothel to remove gettext()
 06.02.53
 ====================================
 Updated cGrils.cpp removing reference to gettext()
+
+Updated WorkAdvertising to use girl->statname() and girl->statName(mod)
+
+Updated WorkTorturer to use girl->statname() and girl->statName(mod)
+Updated WorkTorturer to remove reference to gettext() although left the () 
+
+Updated WorkAdvertising to use girl->statname() and girl->statName(mod)
+
+Updated WorkArenaJousting to use girl->statname() and girl->statName(mod)
+
+Updated WorkBaker to use girl->statname() and girl->statName(mod)
+Updated WorkBaker Note on JP_Baker to correct the fact it is used
+
+Updated WorkBarCook to use girl->statname() and girl->statName(mod)
+

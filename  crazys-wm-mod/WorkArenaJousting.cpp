@@ -125,7 +125,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
-	int roll_max = (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int roll_max = (girl->fame() + girl->charisma());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	girl->m_Tips = max(0, tips);
@@ -139,11 +139,10 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%skill + 2);
+    girl->fame(1);
+    girl->exp(xp);
+    girl->animalhandling(g_Dice%skill);
+    girl->combat(g_Dice%skill+2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gained

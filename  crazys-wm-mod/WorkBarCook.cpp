@@ -398,7 +398,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	// Money
@@ -416,13 +416,13 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 60 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+    girl->fame(fame);
+    girl->exp(xp);
 	if (g_Dice % 2 == 1)
-		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+        girl->intelligence(1);
 	else
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
-	g_Girls.UpdateSkill(girl, SKILL_COOKING, g_Dice%skill + 1);
+        girl->confidence(1);
+	girl->cooking(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
