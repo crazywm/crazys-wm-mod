@@ -8,3 +8,9 @@ Updated WorkSecurity to get stripper/Whore from the propper brothel (getting Rea
 Updated cBrothel removing Referenced to g_Girls.GetStat and UpdateStat to Girl->statname() and statname(mod)
 Updated cBrothel with some much needed better text
 Updated cBrothel to remove gettext()
+
+
+====================================
+06.02.53
+====================================
+Updated cGrils.cpp removing reference to gettext()
