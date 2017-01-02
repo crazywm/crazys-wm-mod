@@ -1,0 +1,10 @@
+06.02.52
+====================================
+Updated WorkSecurity fixing refences from g_Girls.GetStat(girl,statID) to girl->statName()
+Updated WorkSecurity for more negitive events
+Updated WorkSecurity to removing references to gettext()
+Updated WorkSecurity to get stripper/Whore from the propper brothel (getting Ready for multi Brothels)
+
+Updated cBrothel removing Referenced to g_Girls.GetStat and UpdateStat to Girl->statname() and statname(mod)
+Updated cBrothel with some much needed better text
+Updated cBrothel to remove gettext()

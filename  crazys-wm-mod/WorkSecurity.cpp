@@ -65,10 +65,10 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
-	sGirl* stripperonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARSTRIPPER, Day0Night1);
+	sGirl* stripperonduty = g_Brothels.GetRandomGirlOnJob(brothel->m_id, JOB_BARSTRIPPER, Day0Night1);
 	string strippername = (stripperonduty ? "Stripper " + stripperonduty->m_Realname + "" : "the Stripper");
 
-	sGirl* whoreonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_WHOREBROTHEL, Day0Night1);
+	sGirl* whoreonduty = g_Brothels.GetRandomGirlOnJob(brothel->m_id, JOB_WHOREBROTHEL, Day0Night1);
 	string whorename = (whoreonduty ? "Whore " + whoreonduty->m_Realname + "" : "the Whore");
 
 
