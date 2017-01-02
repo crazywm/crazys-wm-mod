@@ -1243,6 +1243,10 @@ bool cJobManager::FullTimeJob(u_int Job)
 		// - House
 		Job == JOB_HEADGIRL ||
 		Job == JOB_RECRUITER ||
+		Job == JOB_FAKEORGASM ||
+		Job == JOB_SO_STRAIGHT ||
+		Job == JOB_SO_BISEXUAL ||
+		Job == JOB_SO_LESBIAN ||
 		Job == JOB_HOUSEPET ||
 		// - Farm
 		Job == JOB_FARMMANGER ||
@@ -1452,7 +1456,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			(Girl->m_WorkingDay < 3 && (Girl->m_YesterDayJob == JOB_REHAB)) ||
 			(Girl->m_WorkingDay < 5 && Girl->m_YesterDayJob != JOB_GETABORT && g_Clinic.is_Surgery_Job(Girl->m_YesterDayJob)) ||
 			// `J` training jobs use m_WorkingDay as a percent learned
-			(Girl->m_WorkingDay < 100 && (Girl->m_YesterDayJob == JOB_FAKEORGASM || Girl->m_YesterDayJob == JOB_SO_STRAIGHT || Girl->m_YesterDayJob == JOB_SO_BISEXUAL || Girl->m_YesterDayJob == JOB_SO_LESBIAN))
+			(Girl->m_YesterDayJob == JOB_FAKEORGASM || Girl->m_YesterDayJob == JOB_SO_STRAIGHT || Girl->m_YesterDayJob == JOB_SO_BISEXUAL || Girl->m_YesterDayJob == JOB_SO_LESBIAN)
 			)
 		{
 			Girl->m_PrevWorkingDay = Girl->m_WorkingDay;
@@ -1465,11 +1469,15 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	}
 
 	// rest jobs
-	if (u_int(JobID) == JOB_FILMFREETIME || u_int(JobID) == JOB_ARENAREST || u_int(JobID) == JOB_CENTREREST || u_int(JobID) == JOB_CLINICREST || u_int(JobID) == JOB_HOUSEREST || u_int(JobID) == JOB_FARMREST || u_int(JobID) == JOB_RESTING)
+	if (u_int(JobID) == JOB_ARENAREST || u_int(JobID) == JOB_CENTREREST || u_int(JobID) == JOB_CLINICREST || u_int(JobID) == JOB_HOUSEREST || u_int(JobID) == JOB_FARMREST || u_int(JobID) == JOB_RESTING)
 	{
 		/*   */if (fulltime)	Girl->m_NightJob = Girl->m_DayJob = JobID;
 		else if (Day0Night1)	Girl->m_NightJob = JobID;
 		else/*            */	Girl->m_DayJob = JobID;
+	}
+	else if (u_int(JobID) == JOB_FILMFREETIME)
+	{
+		Girl->m_NightJob = Girl->m_DayJob = JobID;
 	}
 // Special Brothel Jobs
 	else if (u_int(JobID) == JOB_MATRON)

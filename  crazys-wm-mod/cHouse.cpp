@@ -344,8 +344,12 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		{
 			ss << girlName << " is on maternity leave.";
 		}
-		else if (matron && (current->health() > 90 || current->tiredness() < 20))
-		{	// if there is a marton working and she is healthy enought to go back to work
+		else if (current->health() < 80 || current->tiredness() > 20)
+		{
+			m_JobManager.JobFunc[restjob](current, brothel, Day0Night1, summary);
+		}
+		else if (matron)	// send her back to work
+		{
 			psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
 			if (psw != restjob && psw != 255)
 			{	// if she had a previous job, put her back to work.
@@ -418,7 +422,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 			current->m_PrevDayJob = current->m_PrevNightJob = 255;
 			sum = EVENT_BACKTOWORK;
 		}
-		else if (current->health() < 90 || current->tiredness() > 10)
+		else if (current->health() < 100 || current->tiredness() > 0)	// if there is no matron to send her somewhere just do resting
 		{
 			m_JobManager.JobFunc[restjob](current, brothel, Day0Night1, summary);
 		}

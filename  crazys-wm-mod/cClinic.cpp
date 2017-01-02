@@ -350,7 +350,6 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			if (current->m_Next) { current = current->m_Next; continue; }
 			else { current = 0; break; }
 		}
-
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
@@ -358,112 +357,156 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		{
 			ss << girlName << " is on maternity leave.";
 		}
-		else if (matron && (current->health() < 70 || current->tiredness() > 30) && g_Girls.HasTrait(current, "Construct"))
+		else if (matron && (current->health() < 80 || current->tiredness() > 20))	// if she is not healthy enough to go back to work
 		{
-			ss << "The Chairman admits " << girlName << " to get repaired.\n";
-			current->m_DayJob = current->m_NightJob = JOB_GETREPAIRS;
+			ss << "The Chairman admits " << girlName << " to get ";
+			/* */if (g_Girls.HasTrait(current, "Construct"))		{ ss << "repaired";				current->m_DayJob = current->m_NightJob = JOB_GETREPAIRS; }
+			else if (g_Girls.HasTrait(current, "Half-Construct"))	{ ss << "healed and repaired";	current->m_DayJob = JOB_GETHEALING;	current->m_NightJob = JOB_GETREPAIRS; }
+			else/*                                             */	{ ss << "healed";				current->m_DayJob = current->m_NightJob = JOB_GETHEALING; }
+			ss << ".\n";
 		}
-		else if (matron && (current->health() < 70 || current->tiredness() > 30) && g_Girls.HasTrait(current, "Half-Construct"))
+		else if (current->health() < 40 || current->tiredness() > 60 && g_Dice.percent(current->intelligence()))
 		{
-			ss << "The Chairman admits " << girlName << " to get healed and repaired.\n";
-			current->m_DayJob = JOB_GETHEALING;
-			current->m_NightJob = JOB_GETREPAIRS;
+			ss << girlName << " checks herself in to get ";
+			/* */if (g_Girls.HasTrait(current, "Construct"))		{ ss << "repaired";				current->m_DayJob = current->m_NightJob = JOB_GETREPAIRS; }
+			else if (g_Girls.HasTrait(current, "Half-Construct"))	{ ss << "healed and repaired";	current->m_DayJob = JOB_GETHEALING;	current->m_NightJob = JOB_GETREPAIRS; }
+			else/*                                             */	{ ss << "healed";				current->m_DayJob = current->m_NightJob = JOB_GETHEALING; }
+			ss << ".\n";
 		}
-		else if (matron && (current->health() < 70 || current->tiredness() > 30))
+		else if (matron)	// send her back to work
 		{
-			ss << "The Chairman admits " << girlName << " to get Healing treatment.\n";
-			current->m_DayJob = current->m_NightJob = JOB_GETHEALING;
+			psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
+			bool backtowork = false;
+			if (psw == JOB_DOCTOR || psw == JOB_NURSE || psw == JOB_INTERN || psw == JOB_MECHANIC)
+			{
+				if (current->has_trait("AIDS"))
+				{
+					current->m_DayJob = current->m_NightJob = restjob;
+					ss << girlName << " could not go back to work as a";
+					if (psw == JOB_DOCTOR)	ss << " Doctor";
+					if (psw == JOB_NURSE)	ss << " Nurse";
+					if (psw == JOB_INTERN)	ss << "n Intern";
+					ss << " because she has AIDS. Instead ";
+				}
+				else if (psw == JOB_DOCTOR && current->is_slave())
+				{
+					current->m_DayJob = current->m_NightJob = restjob;
+					ss << girlName << " could not go back to work as a Doctor because she is a slave. Instead ";
+				}
+				else if (psw == JOB_INTERN)		// intern is a part time job
+				{
+					current->m_DayJob = current->m_PrevDayJob;
+					current->m_NightJob = current->m_PrevNightJob;
+					backtowork = true;
+				}
+				else							// the others are fulltime
+				{
+					current->m_DayJob = current->m_NightJob = psw;
+					backtowork = true;
+				}
+			}
+			else if (psw != restjob && psw >= firstjob && psw<=lastjob)
+			{	// if she had a previous job that shift, put her back to work.
+				if (m_JobManager.FullTimeJob(psw))
+				{
+					current->m_DayJob = current->m_NightJob = psw;
+				}
+				else if (Day0Night1)	// checking night job
+				{
+					if (current->m_DayJob == restjob && current->m_PrevDayJob != restjob && current->m_PrevDayJob != 255)
+						current->m_DayJob = current->m_PrevDayJob;
+					current->m_NightJob = psw;
+				}
+				else					// checking day job
+				{
+					current->m_DayJob = psw;
+					if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
+						current->m_NightJob = current->m_PrevNightJob;
+				}
+				backtowork = true;
+			}
+			if (backtowork)	ss << "The Chairman puts " << girlName << " back to work.\n";
+
+			if (!backtowork && current->m_DayJob == restjob && current->m_NightJob == restjob)
+			{	// if they have no job at all, assign them a job
+				ss << "The Chairman assigns " << girlName << " to ";
+				if (current->has_trait("AIDS"))										// anyone with AIDS
+				{
+					current->m_DayJob = current->m_NightJob = JOB_CUREDISEASES;		//  needs to get it treated right away
+					ss << "get her AIDS treated right away.";
+				}
+				else if (current->is_free() &&										// assign any free girl
+					(current->intelligence() > 70 && current->medicine() > 70)		// who is well qualified
+					|| (GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) < 1 &&			// or if there are no doctors yet
+					current->intelligence() >= 50 && current->medicine() >= 50))	// asign anyone who qualifies
+				{
+					current->m_DayJob = current->m_NightJob = JOB_DOCTOR;			// as a Doctor
+					ss << "work as a Doctor.";
+				}
+				else if (GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1) < 1)			// make sure there is at least 1 Nurse
+				{
+					current->m_DayJob = current->m_NightJob = JOB_NURSE;
+					ss << "work as a Nurse.";
+				}
+				else if (current->has_disease())									// treat anyone with a disease
+				{
+					current->m_DayJob = current->m_NightJob = JOB_CUREDISEASES;
+					vector<string> diseases;
+					if (current->has_trait("Herpes"))		diseases.push_back("Herpes");
+					if (current->has_trait("Chlamydia"))	diseases.push_back("Chlamydia");
+					if (current->has_trait("Syphilis"))		diseases.push_back("Syphilis");
+					if (current->has_trait("AIDS"))			diseases.push_back("AIDS");
+					int numdiseases = diseases.size();
+					ss << "get her " << (numdiseases > 1 ? "diseases" : diseases[0]) << " treated.";
+					diseases.clear();
+				}
+				// then make sure there is at least 1 Janitor and 1 Mechanic
+				else if (GetNumGirlsOnJob(0, JOB_MECHANIC, Day0Night1) < 1)
+				{
+					current->m_DayJob = current->m_NightJob = JOB_MECHANIC;
+					ss << "work as a Mechanic.";
+				}
+				else if (GetNumGirlsOnJob(0, JOB_JANITOR, Day0Night1) < 1)
+				{
+					current->m_DayJob = current->m_NightJob = JOB_JANITOR;
+					ss << "work as a Janitor.";
+				}
+				// then add more of each job as numbers permit
+				else if (current->medicine() > 30 && GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1) < numgirls / 10)
+				{
+					current->m_DayJob = current->m_NightJob = JOB_NURSE;
+					ss << "work as a Nurse.";
+				}
+				else if (GetNumGirlsOnJob(0, JOB_MECHANIC, Day0Night1) < numgirls / 20)
+				{
+					current->m_DayJob = current->m_NightJob = JOB_MECHANIC;
+					ss << "work as a Mechanic.";
+				}
+				else if (GetNumGirlsOnJob(0, JOB_JANITOR, Day0Night1) < numgirls / 20)
+				{
+					current->m_DayJob = current->m_NightJob = JOB_JANITOR;
+					ss << "work as a Janitor.";
+				}
+				else	// assign anyone else to Internship
+				{
+					current->m_DayJob = current->m_NightJob = JOB_INTERN;
+					ss << "work as an Intern.";
+				}
+			}
+			current->m_PrevDayJob = current->m_PrevNightJob = 255;
+			sum = EVENT_BACKTOWORK;
+
 		}
-		else if (current->health() < 80 || current->tiredness() > 20)
+		else if (current->health() < 100 || current->tiredness() > 0)	// should only do rest job in the clinic if there is no matron
 		{
 			m_JobManager.JobFunc[restjob](current, brothel, Day0Night1, summary);
 		}
-		else	// if she is healthy enough to go back to work... 
+		else	// she is fully healthy but there is no one to send her back to work
 		{
-			if (matron)	// and there is a marton working...
-			{
-				psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
-				if (psw == JOB_NURSE || psw == JOB_MECHANIC || psw == JOB_GETHEALING || psw == JOB_GETREPAIRS ||
-					psw==JOB_CUREDISEASES || psw == JOB_GETABORT || psw == JOB_COSMETICSURGERY || psw == JOB_LIPO || 
-					psw == JOB_BREASTREDUCTION || psw == JOB_BOOBJOB || psw == JOB_VAGINAREJUV || psw == JOB_FACELIFT || 
-					psw == JOB_ASSJOB || psw == JOB_TUBESTIED || psw == JOB_FERTILITY)
-					current->m_DayJob = current->m_NightJob = psw;
-				else if (psw == JOB_DOCTOR && current->is_free()) current->m_DayJob = current->m_NightJob = psw;
-				else if (psw != restjob && psw != 255 && psw != JOB_DOCTOR)
-				{	// if she had a previous job that shift, put her back to work.
-					if (Day0Night1 == SHIFT_DAY)
-					{
-						current->m_DayJob = current->m_PrevDayJob;
-						if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
-							current->m_NightJob = current->m_PrevNightJob;
-					}
-					else
-					{
-						if (current->m_DayJob == restjob && current->m_PrevDayJob != restjob && current->m_PrevDayJob != 255)
-							current->m_DayJob = current->m_PrevDayJob;
-						current->m_NightJob = current->m_PrevNightJob;
-					}
-					ss << "The Chairman puts " << girlName << " back to work.\n";
-				}
-				else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
-				{	// if they have no job at all, assign them a job
-					ss << "The Chairman assigns " << girlName << " to ";
-					// assign anyone who is well qualified to be a Doctor 
-					if ((current->is_free() && current->intelligence() > 70 && current->medicine() > 70) ||
-						// and make sure there is at least 1 qualified Doctor
-						(GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) < 1 &&
-						current->is_free() && current->intelligence() >= 50 && current->medicine() >= 50))
-					{
-						current->m_DayJob = current->m_NightJob = JOB_DOCTOR;
-						ss << "work as a Doctor.";
-					}
-					// make sure there is at least 1 of each Nurse, Janitor and Mechanic
-					else if (GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1) < 1)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_NURSE;
-						ss << "work as a Nurse.";
-					}
-					else if (GetNumGirlsOnJob(0, JOB_MECHANIC, Day0Night1) < 1)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_MECHANIC;
-						ss << "work as a Mechanic.";
-					}
-					else if (GetNumGirlsOnJob(0, JOB_JANITOR, Day0Night1) < 1)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_JANITOR;
-						ss << "work as a Janitor.";
-					}
-					// then add more of each job as numbers permit
-					else if (current->medicine() > 30 && GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1) < numgirls / 10)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_NURSE;
-						ss << "work as a Nurse.";
-					}
-					else if (GetNumGirlsOnJob(0, JOB_MECHANIC, Day0Night1) < numgirls / 20)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_MECHANIC;
-						ss << "work as a Mechanic.";
-					}
-					else if (GetNumGirlsOnJob(0, JOB_JANITOR, Day0Night1) < numgirls / 20)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_JANITOR;
-						ss << "work as a Janitor.";
-					}
-					else	// assign anyone else to Internship
-					{
-						current->m_DayJob = current->m_NightJob = JOB_INTERN;
-						ss << "work as an Intern.";
-					}
-				}
-				current->m_PrevDayJob = current->m_PrevNightJob = 255;
-				sum = EVENT_BACKTOWORK;
-			}
-			else	// no one to send her back to work
-			{
-				ss << "WARNING " << girlName << " is doing nothing!\n";
-				sum = EVENT_WARNING;
-			}
+			ss << "WARNING " << girlName << " is doing nothing!\n";
+			sum = EVENT_WARNING;
 		}
+		
 		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;
@@ -485,7 +528,12 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
-		if (current->is_slave())
+		if (current->has_trait("AIDS"))
+		{
+			ss << girlName << " has AIDS! She has to get it treated before she can go back to work as a Doctor.";
+			current->m_DayJob = current->m_NightJob = JOB_CUREDISEASES;
+		}
+		else if (current->is_slave())
 		{
 			ss << "Doctors can not be slaves so " << girlName << " was demoted to Nurse.";
 			current->m_DayJob = current->m_NightJob = JOB_NURSE;

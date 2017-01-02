@@ -412,7 +412,27 @@ Fixed 2 bugs
  - GetRandomGangOnMission was missing a set of {} when it checked if a gang was on a mission
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
-!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.51
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.52
+
+### Changes 12/31/2016-01/01/2017
+Fixed a bug in the Studio - Could not put girls on free time
+Updated "Back to Work" for non-brothel buildings
+ - Added Cure Diseases to the Clinic
+Cleaned WorkPersonalBedWarmer.cpp
+Merged pull request from Mute
+ - cleaned several files
+
+### Changes 01/02/2017  -  I am going back to work today so I will not have as much time to work on the game :(
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.53
+
+
+
+
+
+
+
 
 
 

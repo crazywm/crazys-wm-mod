@@ -348,64 +348,66 @@ void cFarmManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)		// Start_Bui
 		{
 			m_JobManager.JobFunc[restjob](current, brothel, Day0Night1, summary);
 		}
-		else
-		{	// if she is healthy enough to go back to work... 
-			if (matron)	// and there is a marton working...
-			{
-				psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
-				if (psw != restjob && psw != 255)
-				{	// if she had a previous job, put her back to work.
-					if (Day0Night1 == SHIFT_DAY)
-					{
-						current->m_DayJob = current->m_PrevDayJob;
-						if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
-							current->m_NightJob = current->m_PrevNightJob;
-					}
-					else
-					{
-						if (current->m_DayJob == restjob && current->m_PrevDayJob != restjob && current->m_PrevDayJob != 255)
-							current->m_DayJob = current->m_PrevDayJob;
+		else if (matron)	// send her back to work
+		{
+			psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
+			if (psw != restjob && psw != 255)
+			{	// if she had a previous job, put her back to work.
+				if (Day0Night1 == SHIFT_DAY)
+				{
+					current->m_DayJob = current->m_PrevDayJob;
+					if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
 						current->m_NightJob = current->m_PrevNightJob;
-					}
-					ss << "The Farm Manager puts " << girlName << " back to work.\n";
 				}
-				else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
-				{	// if they have no job at all, assign them a job
-					ss << "The Farm Manager assigns " << girlName << " to ";
-					// `J` zzzzzz need to add this in
-					ss << "do nothing because this part of the code has not been added yet.";
-					/*
-					JOB_MARKETER		// free girl, only one
-
-					JOB_VETERINARIAN
-					JOB_FARMHAND
-					JOB_RESEARCH
-
-					JOB_FARMER
-					JOB_GARDENER
-					JOB_SHEPHERD
-					JOB_RANCHER
-					JOB_CATACOMBRANCHER
-					JOB_BEASTCAPTURE
-					JOB_MILKER
-					JOB_MILK
-
-					JOB_BUTCHER
-					JOB_BAKER
-					JOB_BREWER
-					JOB_MAKEITEM
-					JOB_MAKEPOTIONS
-					//*/
+				else
+				{
+					if (current->m_DayJob == restjob && current->m_PrevDayJob != restjob && current->m_PrevDayJob != 255)
+						current->m_DayJob = current->m_PrevDayJob;
+					current->m_NightJob = current->m_PrevNightJob;
 				}
-				current->m_PrevDayJob = current->m_PrevNightJob = 255;
-				sum = EVENT_BACKTOWORK;
+				ss << "The Farm Manager puts " << girlName << " back to work.\n";
 			}
-			else	// no one to send her back to work
-			{
-				ss << "WARNING " << girlName << " is doing nothing!\n";
-				sum = EVENT_WARNING;
+			else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
+			{	// if they have no job at all, assign them a job
+				ss << "The Farm Manager assigns " << girlName << " to ";
+				// `J` zzzzzz need to add this in
+				ss << "do nothing because this part of the code has not been added yet.";
+				/*
+				JOB_MARKETER		// free girl, only one
+
+				JOB_VETERINARIAN
+				JOB_FARMHAND
+				JOB_RESEARCH
+
+				JOB_FARMER
+				JOB_GARDENER
+				JOB_SHEPHERD
+				JOB_RANCHER
+				JOB_CATACOMBRANCHER
+				JOB_BEASTCAPTURE
+				JOB_MILKER
+				JOB_MILK
+
+				JOB_BUTCHER
+				JOB_BAKER
+				JOB_BREWER
+				JOB_MAKEITEM
+				JOB_MAKEPOTIONS
+				//*/
 			}
+			current->m_PrevDayJob = current->m_PrevNightJob = 255;
+			sum = EVENT_BACKTOWORK;
 		}
+		else if (current->health() < 100 || current->tiredness() > 0)	// if there is no matron to send her somewhere just do resting
+		{
+			m_JobManager.JobFunc[restjob](current, brothel, Day0Night1, summary);
+		}
+		else	// no one to send her back to work
+		{
+			ss << "WARNING " << girlName << " is doing nothing!\n";
+			sum = EVENT_WARNING;
+		}
+
 		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;
