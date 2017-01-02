@@ -634,6 +634,7 @@ struct sGirl
 	void add_trait(string trait, int temptime = 0);
 	void remove_trait(string trait);
 	bool has_trait(string trait);
+	bool lose_virginity();
 	int breast_size();
 	bool is_dead(bool sendmessage = false);		// `J` replaces a few DeadGirl checks
 	bool is_addict(bool onlyhard = false);	// `J` added bool onlyhard to allow only hard drugs to be checked for

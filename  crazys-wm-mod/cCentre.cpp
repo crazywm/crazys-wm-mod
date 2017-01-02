@@ -347,90 +347,92 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		{
 			m_JobManager.JobFunc[restjob](current, brothel, Day0Night1, summary);
 		}
-		else
-		{	// if she is healthy enough to go back to work... 
-			if (matron)	// and there is a marton working...
+		else if (matron)	// send her back to work
+		{
+			psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
+			if (psw == JOB_COUNSELOR && current->is_free())
 			{
-				psw = (Day0Night1 ? current->m_PrevNightJob : current->m_PrevDayJob);
-				if (psw == JOB_COUNSELOR && current->is_free())
+				current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
+				ss << "The Centre Manager puts " << girlName << " back to work.\n";
+			}
+			else if (psw == JOB_REHAB)
+			{
+				current->m_DayJob = current->m_NightJob = psw;
+				ss << "The Centre Manager puts " << girlName << " back into Rehab.\n";
+			}
+			else if (psw == JOB_ANGER || psw == JOB_EXTHERAPY || psw == JOB_THERAPY)
+			{
+				current->m_DayJob = current->m_NightJob = psw;
+				ss << "The Centre Manager puts " << girlName << " back into Therapy.\n";
+			}
+			else if (psw != restjob && psw != 255 && psw != JOB_COUNSELOR)
+			{	// if she had a previous job, put her back to work.
+				if (Day0Night1 == SHIFT_DAY)
+				{
+					current->m_DayJob = current->m_PrevDayJob;
+					if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
+						current->m_NightJob = current->m_PrevNightJob;
+				}
+				else
+				{
+					if (current->m_DayJob == restjob && current->m_PrevDayJob != restjob && current->m_PrevDayJob != 255)
+						current->m_DayJob = current->m_PrevDayJob;
+					current->m_NightJob = current->m_PrevNightJob;
+				}
+				ss << "The Centre Manager puts " << girlName << " back to work.\n";
+			}
+			else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
+			{	// if they have no job at all, assign them a job
+				ss << "The Centre Manager assigns " << girlName << " to ";
+				// first send any addicts to rehab
+				if (current->is_addict())
+				{
+					current->m_DayJob = current->m_NightJob = JOB_REHAB;
+					ss << "go to Rehab.";
+				}
+				// Make sure there is at least 1 counselor on duty
+				else if (current->is_free() && GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
 				{
 					current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
-					ss << "The Centre Manager puts " << girlName << " back to work.\n";
+					ss << "work as a Counselor.";
 				}
-				else if (psw == JOB_REHAB)
+				// assign 1 cleaner per 20 girls
+				else if (GetNumGirlsOnJob(0, JOB_CLEANCENTRE, Day0Night1) < max(1, numgirls / 20))
 				{
-					current->m_DayJob = current->m_NightJob = psw;
-					ss << "The Centre Manager puts " << girlName << " back into Rehab.\n";
+					current->m_DayJob = current->m_NightJob = JOB_CLEANCENTRE;
+					ss << "clean the Centre.";
 				}
-				else if (psw == JOB_ANGER || psw == JOB_EXTHERAPY || psw == JOB_THERAPY)
+				// assign 1 counselor per 20 girls
+				else if (current->is_free() && GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < numgirls / 20)
 				{
-					current->m_DayJob = current->m_NightJob = psw;
-					ss << "The Centre Manager puts " << girlName << " back into Therapy.\n";
+					current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
+					ss << "work as a Counselor.";
 				}
-				else if (psw != restjob && psw != 255 && psw != JOB_COUNSELOR)
-				{	// if she had a previous job, put her back to work.
-					if (Day0Night1 == SHIFT_DAY)
-					{
-						current->m_DayJob = current->m_PrevDayJob;
-						if (current->m_NightJob == restjob && current->m_PrevNightJob != restjob && current->m_PrevNightJob != 255)
-							current->m_NightJob = current->m_PrevNightJob;
-					}
-					else
-					{
-						if (current->m_DayJob == restjob && current->m_PrevDayJob != restjob && current->m_PrevDayJob != 255)
-							current->m_DayJob = current->m_PrevDayJob;
-						current->m_NightJob = current->m_PrevNightJob;
-					}
-					ss << "The Centre Manager puts " << girlName << " back to work.\n";
+				// split all the rest between JOB_COMUNITYSERVICE and JOB_FEEDPOOR
+				else if (GetNumGirlsOnJob(0, JOB_COMUNITYSERVICE, Day0Night1) < GetNumGirlsOnJob(0, JOB_FEEDPOOR, Day0Night1))
+				{
+					current->m_DayJob = current->m_NightJob = JOB_COMUNITYSERVICE;
+					ss << "work doing comunity service.";
 				}
-				else if (current->m_DayJob == restjob && current->m_NightJob == restjob)
-				{	// if they have no job at all, assign them a job
-					ss << "The Centre Manager assigns " << girlName << " to ";
-					// first send any addicts to rehab
-					if (current->is_addict())
-					{
-						current->m_DayJob = current->m_NightJob = JOB_REHAB;
-						ss << "go to Rehab.";
-					}
-					// Make sure there is at least 1 counselor on duty
-					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
-						ss << "work as a Counselor.";
-					}
-					// assign 1 cleaner per 20 girls
-					else if (GetNumGirlsOnJob(0, JOB_CLEANCENTRE, Day0Night1) < max(1,numgirls/20))
-					{
-						current->m_DayJob = current->m_NightJob = JOB_CLEANCENTRE;
-						ss << "clean the Centre.";
-					}
-					// assign 1 counselor per 20 girls
-					else if (current->is_free() && GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < numgirls / 20)
-					{
-						current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
-						ss << "work as a Counselor.";
-					}
-					// split all the rest between JOB_COMUNITYSERVICE and JOB_FEEDPOOR
-					else if (GetNumGirlsOnJob(0, JOB_COMUNITYSERVICE, Day0Night1) < GetNumGirlsOnJob(0, JOB_FEEDPOOR, Day0Night1))
-					{
-						current->m_DayJob = current->m_NightJob = JOB_COMUNITYSERVICE;
-						ss << "work doing comunity service.";
-					}
-					else
-					{
-						current->m_DayJob = current->m_NightJob = JOB_FEEDPOOR;
-						ss << "work feeding the poor.";
-					}
+				else
+				{
+					current->m_DayJob = current->m_NightJob = JOB_FEEDPOOR;
+					ss << "work feeding the poor.";
 				}
-				current->m_PrevDayJob = current->m_PrevNightJob = 255;
-				sum = EVENT_BACKTOWORK;
 			}
-			else	// no one to send her back to work
-			{
-				ss << "WARNING " << girlName << " is doing nothing!\n";
-				sum = EVENT_WARNING;
-			}
+			current->m_PrevDayJob = current->m_PrevNightJob = 255;
+			sum = EVENT_BACKTOWORK;
 		}
+		else if (current->health() < 100 || current->tiredness() > 0)	// if there is no matron to send her somewhere just do resting
+		{
+			m_JobManager.JobFunc[restjob](current, brothel, Day0Night1, summary);
+		}
+		else	// no one to send her back to work
+		{
+			ss << "WARNING " << girlName << " is doing nothing!\n";
+			sum = EVENT_WARNING;
+		}
+
 		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;

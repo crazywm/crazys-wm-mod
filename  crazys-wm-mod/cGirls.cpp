@@ -8167,6 +8167,7 @@ bool cGirls::RemoveTrait(sGirl* girl, string name, bool addrememberlist, bool fo
 	return false;
 }
 
+bool sGirl::lose_virginity()	{ return g_GirlsPtr->LoseVirginity(this); }
 //	Usually called as just g_Girls.LoseVirginity(girl) with implied no-remember, force=true
 bool cGirls::LoseVirginity(sGirl* girl, bool addrememberlist, bool force)
 {

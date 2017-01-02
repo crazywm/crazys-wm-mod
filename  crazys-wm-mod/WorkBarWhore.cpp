@@ -697,8 +697,8 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 			// `J` do all the messages
 			CGmsg << custgirl->m_Realname << " was caught trying to run out without paying for services provided by " << girl->m_Realname << ".\n\n" << itemtext.str();
-
-			g_GirlsPtr->AddTrait(custgirl, "Emprisoned Customer", emprisontraittime);	// add temp trait
+			custgirl->add_trait("Emprisoned Customer", emprisontraittime);	// add temp trait
+			if (g_Dice.percent(75))	custgirl->lose_virginity();				// most of the time she will not be a virgin
 			The_Player->suspicion(g_Dice % 10);
 			The_Player->disposition(-(g_Dice % 10));
 			The_Player->customerfear(g_Dice % 10);
