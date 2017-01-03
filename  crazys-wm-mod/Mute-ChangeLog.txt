@@ -13,7 +13,8 @@ Updated cBrothel to remove gettext()
 ====================================
 06.02.53
 ====================================
-Updated cGrils.cpp removing reference to gettext()
+Updated cGirls.cpp removing reference to gettext()
+Updated cGirls.cpp fixing text when getting pregnant
 
 Updated WorkAdvertising to use girl->statname() and girl->statName(mod)
 

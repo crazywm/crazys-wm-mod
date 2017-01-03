@@ -16782,12 +16782,12 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 		text += " been inseminated.";
 		break;
 	case STATUS_PREGNANT_BY_PLAYER:
-		text += " has become pregnant with your child.";
+		text += " become pregnant with your child.";
 		break;
 	case STATUS_PREGNANT:
 	default:
 		type = STATUS_PREGNANT;		// `J` rearranged and added default to make sure there are no complications
-		text += " has become pregnant.";
+		text += " become pregnant.";
 		break;
 	}
 
