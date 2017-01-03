@@ -425,7 +425,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #pragma endregion
 	return false;
 }
-double cJobManager::JP_BarPiano(sGirl* girl, bool estimate)// not used
+double cJobManager::JP_BarPiano(sGirl* girl, bool estimate)// Used in cJobManager::WorkBarPiano
 {
 	double jobperformance =
 		// primary - first 100

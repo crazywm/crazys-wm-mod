@@ -29,3 +29,8 @@ Updated WorkBaker Note on JP_Baker to correct the fact it is used
 
 Updated WorkBarCook to use girl->statname() and girl->statName(mod)
 
+Updated WorkBarmaid to use cfg.in_fact.barmaid_work()
+Updated WorkBarmaid to use girl->statname() and girl->statName(mod)
+updated WorkBarmaid @ // `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found to use better math logic and hopefull will work. needs testing
+
+Updated SConfig.h with fix to note
