@@ -39,6 +39,7 @@ private:
 	int prev_id;
 	int next_id;
 	int image_id;
+	int imagename_id;
 
 	void set_ids();
 public:

@@ -89,34 +89,26 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
             customer_rape(girl,custCount);
             break;
         }
-        case 3:
-        {
-            enjoy-=g_Dice%3+1;
-            int secLvlMod=SecLev/10;
-            sGirl* rapeGirl=g_Brothels.GetRandomGirlOnJob(0,JOB_WHOREBROTHEL,Day0Night1);
-            string rapeGirlName=(rapeGirl? rapeGirl->m_Realname:"");
-            if (!rapeGirl)
-                break;
-            else
-            {
-                ss<<"She stumbled across some patrons trying to rape "<<rapeGirlName<<"\n";
-                int combatMod=(girl->combat()+girl->magic()+girl->agility())/3;
-                if (g_Dice.percent(combatMod))
-                {
-                    ss<<"She succeeded in saving "<<rapeGirlName<<" from being raped."; //'Mute" TODO add posiblity of adding female customers to dungeon
-                    SecLev+=secLvlMod;
-                }
-                else
-                {
-                    SecLev-=secLvlMod;
-                    int rapers=g_Dice%4+1;
-                    ss<<"She failed in shaving "<<rapeGirlName<<". They where both raped by "<<rapers<<".\n";
-                    customer_rape(girl,rapers);
-                    customer_rape(rapeGirl,rapers);
-                }
-                break;
-            }
-        }
+		case 3:
+		{
+			enjoy -= g_Dice % 3 + 1;
+			double secLvlMod = SecLev / 10.0;
+			ss << "She stumbled across some patrons trying to rape a female customer.\n";
+			int combatMod = (girl->combat() + girl->magic() + girl->agility()) / 3;
+			if (g_Dice.percent(combatMod))
+			{
+				ss << "She succeeded in saving the girl from being raped."; //'Mute" TODO add posiblity of adding female customers to dungeon
+				SecLev += secLvlMod;
+			}
+			else
+			{
+				SecLev -= secLvlMod;
+				int rapers = g_Dice % 4 + 1;
+				ss << "She failed in saving her. They where both raped by " << rapers << " men.\n";
+				customer_rape(girl, rapers);
+			}
+			break;
+		}
         default:
         {
             enjoy -= g_Dice % 3 + 1;
