@@ -185,7 +185,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	// primary improvement (+2 for single or +1 for multiple)
 	int I_performance	= (g_Dice % skill) + 1;				girl->performance(I_performance);
-	int I_charisma		= (g_Dice % skill) + 1;				girl->charisma(I_charisma)
+	int I_charisma		= (g_Dice % skill) + 1;				girl->charisma(I_charisma);
 
 	// secondary improvement (-1 for one then -2 for others)
 	int I_service		= max(0, (g_Dice % skill) - 1);		girl->service(I_service);

@@ -153,6 +153,7 @@ void cScreenTurnSummary::set_ids()
 	prev_id = get_id("Prev");
 	next_id = get_id("Next");
 	image_id = get_id("Background");
+	imagename_id = get_id("ImageName");
 }
 
 void cScreenTurnSummary::process()
@@ -251,10 +252,12 @@ void cScreenTurnSummary::process()
 	if (Category == Summary_BROTHELS)
 	{
 		SetImage(image_id, g_BrothelImages[Item]);
+		if (imagename_id >= 0)	m_TextItems[imagename_id]->SetText("");
 	}
 	else if (Category == Summary_GANGS)
 	{
 		SetImage(image_id, g_BrothelImages[g_CurrBrothel]);
+		if (imagename_id >= 0)	m_TextItems[imagename_id]->SetText("");
 	}
 	else if (selected_girl && Image_Change)
 	{
@@ -266,12 +269,19 @@ void cScreenTurnSummary::process()
 			Image = selected_girl->m_newRandomFixed;
 		}
 		PrepareImage(image_id, selected_girl, Image_Type, random, Image);
+		if (imagename_id >= 0)
+		{
+			string t = "";
+			if (m_Images[image_id]) t = m_Images[image_id]->m_Image->GetFilename();
+			m_TextItems[imagename_id]->SetText(t);
+		}
 	}
 	else if (Image_Change)
 	{
 		m_Images[image_id]->m_Image = new CSurface(ImagePath("blank.png"));
 		m_Images[image_id]->m_AnimatedImage = 0;
 		m_Images[image_id]->m_Image->m_Message = "";
+		if (imagename_id >= 0)	m_TextItems[imagename_id]->SetText("");
 	}
 
 }

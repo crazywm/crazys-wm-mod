@@ -3576,14 +3576,14 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 	{
 		g_Girls.RemoveTrait(girl, "Masochist", true);
 		// `J` zzzzzz - needs better text
-		ss << girl->m_Realname << " seams to have become tired of hurting people to get off and lost the \"Masocist\" trait.;
+		ss << girl->m_Realname << " seems to have grown tired of getting off hurting people and lost the \"Masocist\" trait.";
 	}
 	else if (!girl->has_trait("Masochist") && !b_dignity && !b_spirit && !b_confidence &&
 		mod <= -1 && g_Dice.percent(3 - mod))
 	{
 		g_Girls.AddTrait(girl, "Masochist");
 		// `J` zzzzzz - needs better text
-		ss << girl->m_Realname << " seems to have taken a liking to huring people in order to get off and become a \"Masocist\".";
+		ss << girl->m_Realname << " seems to have taken a liking to huring people in order to get off and became a \"Masocist\".";
 	}
 
 
@@ -3595,22 +3595,22 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 	else if (girl->has_trait("Optimist") && mod < 0 && g_Dice.percent(3))
 	{
 		g_Girls.RemoveTrait(girl, "Optimist", true);
-		ss << girl->m_Realname << " has lost her \"Optimist\" outlook on life.";
+		ss << girl->m_Realname << " has lost her \"Optimistic\" outlook on life.";
 	}
 	else if (!girl->has_trait("Optimist") && mod > 0 && g_Dice.percent(3))
 	{
 		g_Girls.AddTrait(girl, "Optimist");
-		ss << girl->m_Realname << " has started to view the world from a \"Optimist\" point of view.";
+		ss << girl->m_Realname << " has started to view the world from a more \"Optimistic\" point of view.";
 	}
 	else if (girl->has_trait("Pessimist") && mod > 0 && g_Dice.percent(3))
 	{
 		g_Girls.RemoveTrait(girl, "Pessimist", true);
-		ss << girl->m_Realname << " has lost her \"Pessimist\" way of viewing the world around her.";
+		ss << girl->m_Realname << " has lost her \"Pessimistic\" way of viewing the world around her.";
 	}
 	else if (!girl->has_trait("Pessimist") && mod < 0 && g_Dice.percent(3))
 	{
 		g_Girls.AddTrait(girl, "Pessimist");
-		ss << girl->m_Realname << " has started to view the world from a \"Pessimist\" point of view.";
+		ss << girl->m_Realname << " has started to view the world from a more \"Pessimistic\" point of view.";
 	}
 
 

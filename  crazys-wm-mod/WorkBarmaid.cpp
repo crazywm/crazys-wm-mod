@@ -698,8 +698,8 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int profit = (ds * 3) - (d3 * 1);
 	g_Brothels.add_to_drinks(-d2);
 	// 'Mute' Updated to make it so that the game uses the config settings
-	if (profit<0) profit*=cfg.in_fact.barmaid_work();
-    else/*     */ profit*=cfg.out_fact.bar_cost();
+	if (profit < 0) profit = int(profit * cfg.in_fact.barmaid_work());
+	else/*       */ profit = int(profit * cfg.out_fact.bar_cost());
 	if ((int)d1 > 0)
 	{
 		ss << "\n" << girlName;

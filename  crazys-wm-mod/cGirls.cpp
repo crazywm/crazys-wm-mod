@@ -2875,7 +2875,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	Brothel_Data += girl->JobRating(m_JobManager.JP_SleazyBarmaid(girl, true), "-", "Club Barmaid");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_SleazyWaitress(girl, true), "-", "Club Waitress");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BarStripper(girl, true), "-", "Stripper");
-	Brothel_Data += girl->JobRating(m_JobManager.JP_BarWhore(girl, true), "?", "Bar Whore");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_BarWhore(girl, true), "?", "Club Whore");
 	Brothel_Data += "\n";
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelMasseuse(girl, true), "-", "Masseuse");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelStripper(girl, true), "-", "Brothel Stripper");
@@ -15346,7 +15346,7 @@ string cGirls::GetRandomLesString()
 		else if (random <= 4)	OStr << ("EEEXXXXXPLLLOOODDDDEEEE!!!");
 		else if (random <= 6)	OStr << ("DIEEEEEE!");
 		else if (random <= 8)	OStr << ("AHHHHHHHHHHH!!!!");
-		else if (random <= 10)	OStr << "BRRRREEEEAAAAKKKKKK!!!!");
+		else if (random <= 10)	OStr << "BRRRREEEEAAAAKKKKKK!!!!";
 		else /*            */	OStr << "WAAAAHHHHHOOOOOOO!!!";
 		OStr << ("\nfrom ");
 		break;
@@ -15398,7 +15398,7 @@ string cGirls::GetRandomLesString()
 		else if (random <= 4)	OStr << "rock hard";
 		else if (random <= 6)	OStr << "hot";
 		else if (random <= 8)	OStr << "androgynous";
-		else if (random <= 10)	OStr << "spirited");
+		else if (random <= 10)	OStr << "spirited";
 		else /*            */	OStr << "exuberant";
 		OStr << " MILF.";
 		break;
@@ -18147,7 +18147,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
 		if (DN_Job >= NUM_JOBS)
 		{
-			ss << ("None");
+			ss << "None";
 		}
 		else if (DN_Job == JOB_FAKEORGASM || DN_Job == JOB_SO_STRAIGHT || DN_Job == JOB_SO_BISEXUAL || DN_Job == JOB_SO_LESBIAN)
 		{
@@ -18266,7 +18266,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else
 		{
-			ss << ("Error");
+			ss << "Error";
 		}
 	}
 	else if (detailName.find("SKILL_") != string::npos)
@@ -18280,7 +18280,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else
 		{
-			ss << Error";
+			ss << "Error";
 		}
 	}
 	else if (detailName.find("STATUS_") != string::npos)
@@ -18303,7 +18303,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else if (is_pregnant())
 		{
 			int to_go = ((this)->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - (this)->m_WeeksPreg;
-			ss << ("Yes");
+			ss << "Yes";
 			if (has_trait("Sterile") || has_trait("Zombie") || has_trait("Skeleton"))
 				ss << "?" << to_go << "?";	// how?
 			else
@@ -18311,7 +18311,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else if (m_PregCooldown > 0)
 		{
-			ss << ("No");
+			ss << "No";
 			if (has_trait("Sterile") || has_trait("Zombie") || has_trait("Skeleton"))
 				ss << "!" << m_PregCooldown << "!";
 			else
