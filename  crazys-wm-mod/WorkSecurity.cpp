@@ -65,10 +65,10 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
-	sGirl* stripperonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_BARSTRIPPER, Day0Night1);
+	sGirl* stripperonduty = g_Brothels.GetRandomGirlOnJob(brothel->m_id, JOB_BARSTRIPPER, Day0Night1);
 	string strippername = (stripperonduty ? "Stripper " + stripperonduty->m_Realname + "" : "the Stripper");
 
-	sGirl* whoreonduty = g_Brothels.GetRandomGirlOnJob(0, JOB_WHOREBROTHEL, Day0Night1);
+	sGirl* whoreonduty = g_Brothels.GetRandomGirlOnJob(brothel->m_id, JOB_WHOREBROTHEL, Day0Night1);
 	string whorename = (whoreonduty ? "Whore " + whoreonduty->m_Realname + "" : "the Whore");
 
 
@@ -76,17 +76,62 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	// Complications
-	if (roll_a <= 10)
+	if (roll_a <= 25)
 	{
-		enjoy -= g_Dice % 3 + 1;
-		SecLev -= SecLev / 10;
-		ss << "She had to deal with some very unruly patrons that gave her a hard time.";
+        switch(g_Dice%5)
+        {
+        case 2: //'Mute' Unrulely Customers rape her
+        {
+            enjoy-=g_Dice%3+1;
+            SecLev-=SecLev/10;
+            ss<< "She tried to Fight off some unruly patrons, but they turned on her and raped her.";
+            int custCount=g_Dice%4+1;
+            customer_rape(girl,custCount);
+            break;
+        }
+        case 3:
+        {
+            enjoy-=g_Dice%3+1;
+            int secLvlMod=SecLev/10;
+            sGirl* rapeGirl=g_Brothels.GetRandomGirlOnJob(0,JOB_WHOREBROTHEL,Day0Night1);
+            string rapeGirlName=(rapeGirl? rapeGirl->m_Realname:"");
+            if (!rapeGirl)
+                break;
+            else
+            {
+                ss<<"She stumbled across some patrons trying to rape "<<rapeGirlName<<"\n";
+                int combatMod=(girl->combat()+girl->magic()+girl->agility())/3;
+                if (g_Dice.percent(combatMod))
+                {
+                    ss<<"She succeeded in saving "<<rapeGirlName<<" from being raped."; //'Mute" TODO add posiblity of adding female customers to dungeon
+                    SecLev+=secLvlMod;
+                }
+                else
+                {
+                    SecLev-=secLvlMod;
+                    int rapers=g_Dice%4+1;
+                    ss<<"She failed in shaving "<<rapeGirlName<<". They where both raped by "<<rapers<<".\n";
+                    customer_rape(girl,rapers);
+                    customer_rape(rapeGirl,rapers);
+                }
+                break;
+            }
+        }
+        default:
+        {
+            enjoy -= g_Dice % 3 + 1;
+            SecLev -= SecLev / 10;
+            ss << "She had to deal with some very unruly patrons that gave her a hard time.";
+            break;
+        }
+        }
+
 	}
-	else if (roll_a >= 90)
+	else if (roll_a >= 75)
 	{
 		enjoy += g_Dice % 3 + 1;
 		SecLev += SecLev / 10;
-		ss << gettext("She successfully handled unruly patrons.");
+		ss << "She successfully handled unruly patrons.";
 	}
 	else
 	{
@@ -95,7 +140,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	ss << "\n\n";
 
-	if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 70 && g_Dice.percent(20))
+	if (girl->libido() >= 70 && g_Dice.percent(20))
 	{
 		int choice = g_Dice % 2;
 		ss << "Her libido caused her to get distracted while watching ";
@@ -119,15 +164,15 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if ((girl->libido() > 50 && g_Dice.percent(girl->libido() / 5)) || (girl->has_trait( "Nymphomaniac") && g_Dice.percent(20)))
 	{
-		ss << gettext("\nGave some bonus service to the well behaved patrons, ");
+		ss <<"\nGave some bonus service to the well behaved patrons, ";
 		int l = 0;
 		switch (g_Dice % 4)		// `J` just roll for the 4 sex options and flash only if sex is restricted
 		{
-		case 1:	if (!brothel->m_RestrictOral)	{ l = 10;	imagetype = IMGTYPE_ORAL;	ss << gettext("She sucked them off");	break; }
-		case 2:	if (!brothel->m_RestrictTitty)	{ l = 7;	imagetype = IMGTYPE_TITTY;	ss << gettext("She used her tits to get them off");	break; }
-		case 3:	if (!brothel->m_RestrictHand)	{ l = 6;	imagetype = IMGTYPE_HAND;	ss << gettext("She jerked them off");	break; }
-		case 4:	if (!brothel->m_RestrictFoot)	{ l = 4;	imagetype = IMGTYPE_FOOT;	ss << gettext("She used her feet to get them off");	break; }
-		default:/*                         */	{ l = 2;	imagetype = IMGTYPE_STRIP;	ss << gettext("She flashed them");	break; }
+		case 1:	if (!brothel->m_RestrictOral)	{ l = 10;	imagetype = IMGTYPE_ORAL;	ss << "She sucked them off";	break; }
+		case 2:	if (!brothel->m_RestrictTitty)	{ l = 7;	imagetype = IMGTYPE_TITTY;	ss << "She used her tits to get them off";	break; }
+		case 3:	if (!brothel->m_RestrictHand)	{ l = 6;	imagetype = IMGTYPE_HAND;	ss << "She jerked them off";	break; }
+		case 4:	if (!brothel->m_RestrictFoot)	{ l = 4;	imagetype = IMGTYPE_FOOT;	ss << "She used her feet to get them off";	break; }
+		default:/*                         */	{ l = 2;	imagetype = IMGTYPE_STRIP;	ss << "She flashed them";	break; }
 		}
 		ss << ".\n\n";
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -l, true);
@@ -142,32 +187,33 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// Improve girl
 	int xp = 15, libido = 1, skill = 2;
 
-	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 5; }
+	/* */if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 5; }
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 5; }
-	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
+	/* */if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	wages += 70;
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
-	//g_Gold.staff_wages(70);  // wages come from you
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % skill) + 1);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, (g_Dice % skill) + 1);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, (g_Dice % skill) + 1);
+	//g_Gold.staff_wages(70);  // wages come from
+	// 'Mute' Updated
+	girl->exp(xp);
+	girl->combat((g_Dice%skill)+1);
+	girl->magic((g_Dice%skill)+1);
+	girl->agility((g_Dice%skill)+1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
 	// Copy-pasta from WorkExploreCatacombs
-	g_Girls.PossiblyGainNewTrait(girl, "Tough", 15, actiontype, gettext("She has become pretty Tough from all of the fights she's been in."), Day0Night1);
-	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 45, actiontype, gettext("She has been in enough tough spots to consider herself Adventurer."), Day0Night1);
-	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, gettext("She is getting rather Aggressive from her enjoyment of combat."), Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Tough", 15, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 45, actiontype, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
 	return false;
 }
 
-double cJobManager::JP_Security(sGirl* girl, bool estimate)	// not used
+double cJobManager::JP_Security(sGirl* girl, bool estimate)	// Used inside the WorkSecurity
 {
 	/*	MYR: Modified security level calculation & added traits for it
 	*	A gang of 1-10 customers attack girls now in function work_related_violence.
@@ -175,17 +221,20 @@ double cJobManager::JP_Security(sGirl* girl, bool estimate)	// not used
 	*	See work_related_violence for details.
 	*/
 	int SecLev = 0;
+	// 'Mute' Updated
 	if (estimate)	// for third detail string
 	{
-		SecLev = (g_Girls.GetSkill(girl, SKILL_COMBAT))
-			+ (g_Girls.GetSkill(girl, SKILL_MAGIC) / 2)
-			+ (g_Girls.GetStat(girl, STAT_AGILITY) / 2);
+
+		SecLev = (girl->combat())
+			+ (girl->magic() / 2)
+			+ (girl->agility() / 2);
 	}
 	else			// for the actual check
 	{
-		SecLev = g_Dice % (g_Girls.GetSkill(girl, SKILL_COMBAT) / 2)
-			+ g_Dice % (g_Girls.GetSkill(girl, SKILL_MAGIC) / 4)
-			+ g_Dice % (g_Girls.GetStat(girl, STAT_AGILITY) / 4);
+
+		SecLev = g_Dice % (girl->combat() / 2)
+        /*  */ + g_Dice % (girl->magic() / 4)
+		/*  */ + g_Dice % (girl->agility() / 4);
 	}
 
 	// Good traits

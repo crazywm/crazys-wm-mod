@@ -13277,122 +13277,122 @@ string cGirls::GetRandomSexString()
 	{
 	case 1:
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("straddled");
-		else if (random <= 4)	OStr << gettext("cow-girled");
-		else if (random <= 6)	OStr << gettext("wrapped her legs around");
-		else if (random <= 8)	OStr << gettext("contorted her legs behind her head for");
-		else /*            */	OStr << gettext("scissored");
-		OStr << gettext(" the client, because it ");
+		/* */if (random <= 2)	OStr << ("straddled");
+		else if (random <= 4)	OStr << ("cow-girled");
+		else if (random <= 6)	OStr << ("wrapped her legs around");
+		else if (random <= 8)	OStr << ("contorted her legs behind her head for");
+		else /*            */	OStr << ("scissored");
+		OStr << (" the client, because it ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("turned him on");
-		else if (random <= 4)	OStr << gettext("made him crazy");
-		else if (random <= 6)	OStr << gettext("gave him a massive boner");
-		else if (random <= 8)	OStr << gettext("was more fun than talking");
-		else /*            */	OStr << gettext("made him turn red");
+		/* */if (random <= 2)	OStr << ("turned him on");
+		else if (random <= 4)	OStr << ("made him crazy");
+		else if (random <= 6)	OStr << ("gave him a massive boner");
+		else if (random <= 8)	OStr << ("was more fun than talking");
+		else /*            */	OStr << ("made him turn red");
 		break;
 	case 2:
-		OStr << gettext("was told to grab ");
+		OStr << ("was told to grab ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("her ankles");
-		else if (random <= 4)	OStr << gettext("the chair");
-		else if (random <= 6)	OStr << gettext("her knees");
-		else if (random <= 8)	OStr << gettext("the table");
-		else /*            */	OStr << gettext("the railing");
-		OStr << gettext(" and ");
+		/* */if (random <= 2)	OStr << ("her ankles");
+		else if (random <= 4)	OStr << ("the chair");
+		else if (random <= 6)	OStr << ("her knees");
+		else if (random <= 8)	OStr << ("the table");
+		else /*            */	OStr << ("the railing");
+		OStr << (" and ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("shook her hips");
-		else if (random <= 4)	OStr << gettext("spread her legs");
-		else if (random <= 6)	OStr << gettext("close her eyes");
-		else if (random <= 8)	OStr << gettext("look away");
-		else /*            */	OStr << gettext("bend waaaaayyy over");
+		/* */if (random <= 2)	OStr << ("shook her hips");
+		else if (random <= 4)	OStr << ("spread her legs");
+		else if (random <= 6)	OStr << ("close her eyes");
+		else if (random <= 8)	OStr << ("look away");
+		else /*            */	OStr << ("bend waaaaayyy over");
 		break;
 	case 3:
-		OStr << gettext("had fun with his ");
+		OStr << ("had fun with his ");
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("foot");
-		else if (random <= 4)	OStr << gettext("stocking");
-		else if (random <= 6)	OStr << gettext("hair");
-		else if (random <= 8)	OStr << gettext("lace");
-		else if (random <= 10)	OStr << gettext("butt");
-		else /*            */	OStr << gettext("food");
-		OStr << gettext(" fetish and gave him an extended ");
+		/* */if (random <= 2)	OStr << ("foot");
+		else if (random <= 4)	OStr << ("stocking");
+		else if (random <= 6)	OStr << ("hair");
+		else if (random <= 8)	OStr << ("lace");
+		else if (random <= 10)	OStr << ("butt");
+		else /*            */	OStr << ("food");
+		OStr << (" fetish and gave him an extended ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("foot");
-		else if (random <= 4)	OStr << gettext("hand");
-		else /*            */	OStr << gettext("oral");
-		OStr << gettext(" surprise");
+		/* */if (random <= 2)	OStr << ("foot");
+		else if (random <= 4)	OStr << ("hand");
+		else /*            */	OStr << ("oral");
+		OStr << (" surprise");
 		break;
 	case 4:
-		OStr << gettext("dressed as ");
+		OStr << ("dressed as ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("a school girl");
-		else if (random <= 4)	OStr << gettext("a nurse");
-		else if (random <= 6)	OStr << gettext("a nun");
-		else if (random <= 8)	OStr << gettext("an adventurer");
-		else /*            */	OStr << gettext("a dominatrix");
-		OStr << gettext(" to grease ");
+		/* */if (random <= 2)	OStr << ("a school girl");
+		else if (random <= 4)	OStr << ("a nurse");
+		else if (random <= 6)	OStr << ("a nun");
+		else if (random <= 8)	OStr << ("an adventurer");
+		else /*            */	OStr << ("a dominatrix");
+		OStr << (" to grease ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("the little man");
-		else if (random <= 4)	OStr << gettext("his pole");
-		else if (random <= 6)	OStr << gettext("his tool");
-		else if (random <= 8)	OStr << gettext("his fingers");
-		else /*            */	OStr << gettext("his toes");
+		/* */if (random <= 2)	OStr << ("the little man");
+		else if (random <= 4)	OStr << ("his pole");
+		else if (random <= 6)	OStr << ("his tool");
+		else if (random <= 8)	OStr << ("his fingers");
+		else /*            */	OStr << ("his toes");
 		break;
 	case 5:
-		OStr << gettext("decided to skip ");
+		OStr << ("decided to skip ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("the bed");
-		else if (random <= 4)	OStr << gettext("foreplay");
-		else if (random <= 6)	OStr << gettext("niceties");
-		else /*            */	OStr << gettext("greetings");
-		OStr << gettext(" and assumed position ");
+		/* */if (random <= 2)	OStr << ("the bed");
+		else if (random <= 4)	OStr << ("foreplay");
+		else if (random <= 6)	OStr << ("niceties");
+		else /*            */	OStr << ("greetings");
+		OStr << (" and assumed position ");
 		random = g_Dice % 9999 + 1;
 		OStr << random;
 		break;
 	case 6:
-		OStr << gettext("gazed in awe at ");
+		OStr << ("gazed in awe at ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("how well hung he was");
-		else if (random <= 4)	OStr << gettext("the time");
-		else if (random <= 6)	OStr << gettext("his muscles");
-		else if (random <= 8)	OStr << gettext("his handsome face");
-		else /*            */	OStr << gettext("his collection of sexual magic items");
-		OStr << gettext(" and ");
+		/* */if (random <= 2)	OStr << ("how well hung he was");
+		else if (random <= 4)	OStr << ("the time");
+		else if (random <= 6)	OStr << ("his muscles");
+		else if (random <= 8)	OStr << ("his handsome face");
+		else /*            */	OStr << ("his collection of sexual magic items");
+		OStr << (" and ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("felt inspired");
-		else if (random <= 4)	OStr << gettext("played hard to get");
-		else if (random <= 6)	OStr << gettext("squealed like a little girl");
-		else /*            */	OStr << gettext("prepared for action");
+		/* */if (random <= 2)	OStr << ("felt inspired");
+		else if (random <= 4)	OStr << ("played hard to get");
+		else if (random <= 6)	OStr << ("squealed like a little girl");
+		else /*            */	OStr << ("prepared for action");
 		break;
-	case 7: OStr << gettext("bent into ");
+	case 7: OStr << ("bent into ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("a delightful");
-		else if (random <= 4)	OStr << gettext("an awkward");
-		else if (random <= 6)	OStr << gettext("a difficult");
-		else /*            */	OStr << gettext("a crazy");
-		OStr << gettext(" position and ");
+		/* */if (random <= 2)	OStr << ("a delightful");
+		else if (random <= 4)	OStr << ("an awkward");
+		else if (random <= 6)	OStr << ("a difficult");
+		else /*            */	OStr << ("a crazy");
+		OStr << (" position and ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("squealed");
-		else if (random <= 4)	OStr << gettext("moaned");
-		else /*            */	OStr << gettext("grew hot");
-		OStr << gettext(" as he ");
+		/* */if (random <= 2)	OStr << ("squealed");
+		else if (random <= 4)	OStr << ("moaned");
+		else /*            */	OStr << ("grew hot");
+		OStr << (" as he ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("touched");
-		else if (random <= 4)	OStr << gettext("caressed");
-		else /*            */	OStr << gettext("probed");
-		OStr << gettext(" her defenseless body");
+		/* */if (random <= 2)	OStr << ("touched");
+		else if (random <= 4)	OStr << ("caressed");
+		else /*            */	OStr << ("probed");
+		OStr << (" her defenseless body");
 		break;
 	case 8:
-		OStr << gettext("lay on the ");
+		OStr << ("lay on the ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("floor");
-		else if (random <= 4)	OStr << gettext("bed");
-		else /*            */	OStr << gettext("couch");
-		OStr << gettext(" and ");
+		/* */if (random <= 2)	OStr << ("floor");
+		else if (random <= 4)	OStr << ("bed");
+		else /*            */	OStr << ("couch");
+		OStr << (" and ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("had him take off all her clothes");
-		else if (random <= 4)	OStr << gettext("told him exactly what turned her on");
-		else /*            */	OStr << gettext("encouraged him to take off her bra and panties with his teeth");
+		/* */if (random <= 2)	OStr << ("had him take off all her clothes");
+		else if (random <= 4)	OStr << ("told him exactly what turned her on");
+		else /*            */	OStr << ("encouraged him to take off her bra and panties with his teeth");
 		break;
 	}
 # pragma endregion sex1
@@ -13403,109 +13403,109 @@ string cGirls::GetRandomSexString()
 	switch (roll2)
 	{
 	case 1:
-		OStr << gettext("She ");
+		OStr << ("She ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("rode him all the way to the next town");
-		else if (random <= 4)	OStr << gettext("massaged his balls and sucked him dry");
-		else if (random <= 6)	OStr << gettext("titty fucked and sucked the well dry");
-		else /*            */	OStr << gettext("fucked him blind");
-		OStr << gettext(". He was a trooper though and rallied: She ");
+		/* */if (random <= 2)	OStr << ("rode him all the way to the next town");
+		else if (random <= 4)	OStr << ("massaged his balls and sucked him dry");
+		else if (random <= 6)	OStr << ("titty fucked and sucked the well dry");
+		else /*            */	OStr << ("fucked him blind");
+		OStr << (". He was a trooper though and rallied: She ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("was deeply penetrated");
-		else if (random <= 4)	OStr << gettext("was paralyzed with stunning sensations");
-		else if (random <= 6)	OStr << gettext("bucked like a bronko");
-		else /*            */	OStr << gettext("shook with pleasure");
-		OStr << gettext(" and ");
+		/* */if (random <= 2)	OStr << ("was deeply penetrated");
+		else if (random <= 4)	OStr << ("was paralyzed with stunning sensations");
+		else if (random <= 6)	OStr << ("bucked like a bronko");
+		else /*            */	OStr << ("shook with pleasure");
+		OStr << (" and ");
 		random = g_Dice % 4 + 1;
-		/* */if (random <= 2)	OStr << gettext("came like a fire hose from");
-		else /*            */	OStr << gettext("repeatedly shook in orgasm with");
+		/* */if (random <= 2)	OStr << ("came like a fire hose from");
+		else /*            */	OStr << ("repeatedly shook in orgasm with");
 		break;
 	case 2:
-		OStr << gettext("It took a lot of effort to stay ");
+		OStr << ("It took a lot of effort to stay ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 3)	OStr << gettext("interested in");
-		else if (random <= 7)	OStr << gettext("awake for");
-		else 	OStr << gettext("conscious for");
+		/* */if (random <= 3)	OStr << ("interested in");
+		else if (random <= 7)	OStr << ("awake for");
+		else 	OStr << ("conscious for");
 		break;
 	case 3:
-		OStr << gettext("She was fucked ");
+		OStr << ("She was fucked ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("blind");
-		else if (random <= 4)	OStr << gettext("silly twice over");
-		else if (random <= 6)	OStr << gettext("all crazy like");
-		else if (random <= 8)	OStr << gettext("for hours");
-		else /*            */	OStr << gettext("for minutes");
-		OStr << gettext(" by"); break;
+		/* */if (random <= 2)	OStr << ("blind");
+		else if (random <= 4)	OStr << ("silly twice over");
+		else if (random <= 6)	OStr << ("all crazy like");
+		else if (random <= 8)	OStr << ("for hours");
+		else /*            */	OStr << ("for minutes");
+		OStr << (" by"); break;
 	case 4:
-		OStr << gettext("She performed ");
+		OStr << ("She performed ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext("uninspired ");
-		else /*            */	OStr << gettext("inspired ");
+		/* */if (random <= 5)	OStr << ("uninspired ");
+		else /*            */	OStr << ("inspired ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("missionary ");
-		else if (random <= 4)	OStr << gettext("oral ");
-		else if (random <= 6)	OStr << gettext("foot ");
-		else /*            */	OStr << gettext("hand ");
-		OStr << gettext("sex for"); break;
+		/* */if (random <= 2)	OStr << ("missionary ");
+		else if (random <= 4)	OStr << ("oral ");
+		else if (random <= 6)	OStr << ("foot ");
+		else /*            */	OStr << ("hand ");
+		OStr << ("sex for"); break;
 	case 5:
 		//OStr <<"";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("Semen");
-		else if (random <= 4)	OStr << gettext("Praise");
-		else if (random <= 6)	OStr << gettext("Flesh");
-		else if (random <= 8)	OStr << gettext("Drool");
-		else /*            */	OStr << gettext("Chocolate sauce");
-		OStr << gettext(" rained down on her from");
+		/* */if (random <= 2)	OStr << ("Semen");
+		else if (random <= 4)	OStr << ("Praise");
+		else if (random <= 6)	OStr << ("Flesh");
+		else if (random <= 8)	OStr << ("Drool");
+		else /*            */	OStr << ("Chocolate sauce");
+		OStr << (" rained down on her from");
 		break;
 	case 6:
-		OStr << gettext("She couldn't ");
+		OStr << ("She couldn't ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("stand");
-		else if (random <= 4)	OStr << gettext("walk");
-		else if (random <= 6)	OStr << gettext("swallow");
-		else if (random <= 8)	OStr << gettext("feel her legs");
-		else /*            */	OStr << gettext("move");
-		OStr << gettext(" after screwing");
+		/* */if (random <= 2)	OStr << ("stand");
+		else if (random <= 4)	OStr << ("walk");
+		else if (random <= 6)	OStr << ("swallow");
+		else if (random <= 8)	OStr << ("feel her legs");
+		else /*            */	OStr << ("move");
+		OStr << (" after screwing");
 		break;
 	case 7:
-		OStr << gettext("It took a great deal of effort to look ");
+		OStr << ("It took a great deal of effort to look ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("interested in");
-		else if (random <= 4)	OStr << gettext("awake for");
-		else if (random <= 6)	OStr << gettext("alive for");
-		else if (random <= 8)	OStr << gettext("enthusiastic for");
-		else /*            */	OStr << gettext("hurt for");
+		/* */if (random <= 2)	OStr << ("interested in");
+		else if (random <= 4)	OStr << ("awake for");
+		else if (random <= 6)	OStr << ("alive for");
+		else if (random <= 8)	OStr << ("enthusiastic for");
+		else /*            */	OStr << ("hurt for");
 		break;
 	case 8:
-		OStr << gettext("She played 'clean up the ");
+		OStr << ("She played 'clean up the ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("tools");
-		else if (random <= 4)	OStr << gettext("customer");
-		else if (random <= 6)	OStr << gettext("sword");
-		else /*            */	OStr << gettext("sugar frosting");
-		OStr << gettext("' with");
+		/* */if (random <= 2)	OStr << ("tools");
+		else if (random <= 4)	OStr << ("customer");
+		else if (random <= 6)	OStr << ("sword");
+		else /*            */	OStr << ("sugar frosting");
+		OStr << ("' with");
 		break;
 	case 9:
-		OStr << gettext("Hopefully her ");
+		OStr << ("Hopefully her ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("cervix");
-		else if (random <= 4)	OStr << gettext("pride");
-		else if (random <= 6)	OStr << gettext("reputation");
-		else if (random <= 8)	OStr << gettext("ego");
-		else /*            */	OStr << gettext("stomach");
-		OStr << gettext(" wasn't bruised by");
+		/* */if (random <= 2)	OStr << ("cervix");
+		else if (random <= 4)	OStr << ("pride");
+		else if (random <= 6)	OStr << ("reputation");
+		else if (random <= 8)	OStr << ("ego");
+		else /*            */	OStr << ("stomach");
+		OStr << (" wasn't bruised by");
 		break;
 	case 10:
-		OStr << gettext("She called in ");
+		OStr << ("She called in ");
 		random = g_Dice % 3 + 2;
 		OStr << random;
-		OStr << gettext(" reinforcements to tame");
+		OStr << (" reinforcements to tame");
 		break;
 	case 11:
-		OStr << gettext("She orgasmed ");
+		OStr << ("She orgasmed ");
 		random = g_Dice % 100 + 30;
 		OStr << random;
-		OStr << gettext(" times with"); break;
+		OStr << (" times with"); break;
 	}
 # pragma endregion sex2
 	// Roll #3
@@ -13515,162 +13515,162 @@ string cGirls::GetRandomSexString()
 	switch (roll3)
 	{
 	case 1:
-		OStr << gettext("the guy ");
+		OStr << ("the guy ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("wearing three amulets of the sex elemental.");
-		else if (random <= 4)	OStr << gettext("wearing eight rings of the horndog.");
-		else if (random <= 6)	OStr << gettext("wearing a band of invulnerability.");
-		else if (random <= 8)	OStr << gettext("carrying a waffle iron.");
-		else /*            */	OStr << gettext("carrying a body probe of irresistable sensations.");
+		/* */if (random <= 2)	OStr << ("wearing three amulets of the sex elemental.");
+		else if (random <= 4)	OStr << ("wearing eight rings of the horndog.");
+		else if (random <= 6)	OStr << ("wearing a band of invulnerability.");
+		else if (random <= 8)	OStr << ("carrying a waffle iron.");
+		else /*            */	OStr << ("carrying a body probe of irresistable sensations.");
 		break;
-	case 2: OStr << gettext("Thor, God of Thunderfucking!!!!"); break;
+	case 2: OStr << ("Thor, God of Thunderfucking!!!!"); break;
 	case 3:
-		OStr << gettext("the frustrated ");
+		OStr << ("the frustrated ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("astronomer.");
-		else if (random <= 4)	OStr << gettext("physicist.");
-		else if (random <= 6)	OStr << gettext("chemist.");
-		else if (random <= 8)	OStr << gettext("biologist.");
-		else /*            */	OStr << gettext("engineer.");
+		/* */if (random <= 2)	OStr << ("astronomer.");
+		else if (random <= 4)	OStr << ("physicist.");
+		else if (random <= 6)	OStr << ("chemist.");
+		else if (random <= 8)	OStr << ("biologist.");
+		else /*            */	OStr << ("engineer.");
 		break;
-	case 4: OStr << gettext("the invisible something or other????"); break;
-	case 5: OStr << gettext("the butler. (He always did it.)"); break;
+	case 4: OStr << ("the invisible something or other????"); break;
+	case 5: OStr << ("the butler. (He always did it.)"); break;
 	case 6:
-		OStr << gettext("the ");
+		OStr << ("the ");
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 2)	OStr << "sentient apple tree.";
-		else if (random <= 4)	OStr << gettext("sentient sex toy.");
-		else if (random <= 6)	OStr << gettext("pan-dimensional toothbrush.");
-		else if (random <= 8)	OStr << gettext("magic motorcycle.");
-		else /*            */	OStr << gettext("regular bloke.");
+		else if (random <= 4)	OStr << ("sentient sex toy.");
+		else if (random <= 6)	OStr << ("pan-dimensional toothbrush.");
+		else if (random <= 8)	OStr << ("magic motorcycle.");
+		else /*            */	OStr << ("regular bloke.");
 		break;
 	case 7:
-		OStr << gettext("the unbelievably well behaved ");
+		OStr << ("the unbelievably well behaved ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("Pink Petal forum member.");
-		else if (random <= 4)	OStr << gettext("tentacle.");
-		else if (random <= 6)	OStr << gettext("pirate.");
-		else /*            */	OStr << gettext("sentient bottle.");
+		/* */if (random <= 2)	OStr << ("Pink Petal forum member.");
+		else if (random <= 4)	OStr << ("tentacle.");
+		else if (random <= 6)	OStr << ("pirate.");
+		else /*            */	OStr << ("sentient bottle.");
 		break;
 	case 8:
 		random = g_Dice % 20 + 1;
-		/* */if (random <= 2)	OStr << gettext("Cousin");
-		else if (random <= 4)	OStr << gettext("Brother");
-		else if (random <= 6)	OStr << gettext("Saint");
-		else if (random <= 8)	OStr << gettext("Lieutenant");
-		else if (random <= 10)	OStr << gettext("Master");
-		else if (random <= 12)	OStr << gettext("Doctor");
-		else if (random <= 14)	OStr << gettext("Mr.");
-		else if (random <= 16)	OStr << gettext("Smith");
-		else if (random <= 18)	OStr << gettext("DockMaster");
-		else /*            */	OStr << gettext("Perfect");
-		OStr << gettext(" Parkins from down the street.");
+		/* */if (random <= 2)	OStr << ("Cousin");
+		else if (random <= 4)	OStr << ("Brother");
+		else if (random <= 6)	OStr << ("Saint");
+		else if (random <= 8)	OStr << ("Lieutenant");
+		else if (random <= 10)	OStr << ("Master");
+		else if (random <= 12)	OStr << ("Doctor");
+		else if (random <= 14)	OStr << ("Mr.");
+		else if (random <= 16)	OStr << ("Smith");
+		else if (random <= 18)	OStr << ("DockMaster");
+		else /*            */	OStr << ("Perfect");
+		OStr << (" Parkins from down the street.");
 		break;
-	case 9: OStr << gettext("the master of the hidden dick technique. (Where is it? Nobody knows.)"); break;
-	case 10: OStr << gettext("cake. It isn't a lie!"); break;
+	case 9: OStr << ("the master of the hidden dick technique. (Where is it? Nobody knows.)"); break;
+	case 10: OStr << ("cake. It isn't a lie!"); break;
 	case 11:
-		OStr << gettext("the really, really macho ");
+		OStr << ("the really, really macho ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("Titan.");
-		else if (random <= 4)	OStr << gettext("Storm Giant.");
-		else if (random <= 6)	OStr << gettext("small moon.");
-		else if (random <= 8)	OStr << gettext("kobold.");
-		else /*            */	OStr << gettext("madness.");
+		/* */if (random <= 2)	OStr << ("Titan.");
+		else if (random <= 4)	OStr << ("Storm Giant.");
+		else if (random <= 6)	OStr << ("small moon.");
+		else if (random <= 8)	OStr << ("kobold.");
+		else /*            */	OStr << ("madness.");
 		break;
 	case 12:
-		OStr << gettext("the clockwork man!");
-		OStr << gettext(" (With no sensation in his clockwork ");
+		OStr << ("the clockwork man!");
+		OStr << (" (With no sensation in his clockwork ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("tool");
-		else if (random <= 4)	OStr << gettext("head");
-		else if (random <= 6)	OStr << gettext("fingers");
-		else if (random <= 8)	OStr << gettext("attachment");
-		else /*            */	OStr << gettext("clock");
-		OStr << gettext(" and no sense to ");
+		/* */if (random <= 2)	OStr << ("tool");
+		else if (random <= 4)	OStr << ("head");
+		else if (random <= 6)	OStr << ("fingers");
+		else if (random <= 8)	OStr << ("attachment");
+		else /*            */	OStr << ("clock");
+		OStr << (" and no sense to ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("stop");
-		else if (random <= 4)	OStr << gettext("slow down");
-		else if (random <= 6)	OStr << gettext("moderate");
-		else if (random <= 8)	OStr << gettext("be gentle");
+		/* */if (random <= 2)	OStr << ("stop");
+		else if (random <= 4)	OStr << ("slow down");
+		else if (random <= 6)	OStr << ("moderate");
+		else if (random <= 8)	OStr << ("be gentle");
 		else
 		{
-			OStr << gettext("stop at ");
+			OStr << ("stop at ");
 			random = g_Dice % 50 + 30;
 			OStr << random;
-			OStr << gettext(" orgasms");
+			OStr << (" orgasms");
 		}
-		OStr << gettext(".)");
+		OStr << (".)");
 		break;
 	case 13:
 		// MYR: This one gives useful advice to the players.  A gift from us to them.
-		OStr << gettext("the Brothel Master developer. ");
+		OStr << ("the Brothel Master developer. ");
 		random = g_Dice % 20 + 1;
-		/* */if (random <= 2)	OStr << gettext("(Quick learner is a great talent to have.)");
-		else if (random <= 4)	OStr << gettext("(Don't ignore the practice skills option for your girls.)");
-		else if (random <= 6)	OStr << gettext("(Train your gangs.)");
-		else if (random <= 8)	OStr << gettext("(Every time you restart the game, the shop inventory is reset.)");
-		else if (random <= 10)	OStr << gettext("(Invulnerable (incorporeal) characters should be exploring the catacombs.)");
-		else if (random <= 12)	OStr << gettext("(High dodge gear is great for characters exploring the catacombs.)");
-		else if (random <= 14)	OStr << gettext("(For a character with a high constitution, experiment with working on both shifts.)");
-		else if (random <= 16)	OStr << gettext("(Matrons need high service skills.)");
-		else if (random <= 18)	OStr << gettext("(Girls see a max of 3 people for high reputations, 3 for high appearance and 3 for high skills.)");
-		else /*            */	OStr << gettext("(Don't overlook the bribery option in the town hall and the bank.)");
+		/* */if (random <= 2)	OStr << ("(Quick learner is a great talent to have.)");
+		else if (random <= 4)	OStr << ("(Don't ignore the practice skills option for your girls.)");
+		else if (random <= 6)	OStr << ("(Train your gangs.)");
+		else if (random <= 8)	OStr << ("(Every time you restart the game, the shop inventory is reset.)");
+		else if (random <= 10)	OStr << ("(Invulnerable (incorporeal) characters should be exploring the catacombs.)");
+		else if (random <= 12)	OStr << ("(High dodge gear is great for characters exploring the catacombs.)");
+		else if (random <= 14)	OStr << ("(For a character with a high constitution, experiment with working on both shifts.)");
+		else if (random <= 16)	OStr << ("(Matrons need high service skills.)");
+		else if (random <= 18)	OStr << ("(Girls see a max of 3 people for high reputations, 3 for high appearance and 3 for high skills.)");
+		else /*            */	OStr << ("(Don't overlook the bribery option in the town hall and the bank.)");
 		break;
-	case 14: OStr << gettext("grandmaster piledriver the 17th."); break;
+	case 14: OStr << ("grandmaster piledriver the 17th."); break;
 	case 15:
-		OStr << gettext("the evolved sexual entity from ");
+		OStr << ("the evolved sexual entity from ");
 		random = g_Dice % 8 + 1;
 		if (random <= 2)
 		{
 			random = g_Dice % 200000 + 100000;
 			OStr << random;
-			OStr << gettext(" years in the future.");
+			OStr << (" years in the future.");
 		}
-		else if (random <= 4)	OStr << gettext("the closet.");
-		else if (random <= 6)	OStr << gettext("the suburbs.");
-		else /*            */	OStr << gettext("somewhere in deep space.");
+		else if (random <= 4)	OStr << ("the closet.");
+		else if (random <= 6)	OStr << ("the suburbs.");
+		else /*            */	OStr << ("somewhere in deep space.");
 		break;
 	case 16:
-		OStr << gettext("the ");
+		OStr << ("the ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("mayor");
-		else if (random <= 4)	OStr << gettext("bishop");
-		else if (random <= 6)	OStr << gettext("town treasurer");
-		else /*            */	OStr << gettext("school principle");
-		OStr << gettext(", on one of his regular health checkups.");
+		/* */if (random <= 2)	OStr << ("mayor");
+		else if (random <= 4)	OStr << ("bishop");
+		else if (random <= 6)	OStr << ("town treasurer");
+		else /*            */	OStr << ("school principle");
+		OStr << (", on one of his regular health checkups.");
 		break;
-	case 17: OStr << gettext("the letter H."); break;
-	case 18: OStr << gettext("a completely regular and unspectacular guy."); break;
+	case 17: OStr << ("the letter H."); break;
+	case 18: OStr << ("a completely regular and unspectacular guy."); break;
 	case 19:
-		OStr << gettext("the ");
+		OStr << ("the ");
 		random = g_Dice % 20 + 5;
 		OStr << random;
-		OStr << gettext(" dick, ");
+		OStr << (" dick, ");
 		random = g_Dice % 20 + 5;
 		OStr << random;
-		OStr << gettext("-armed ");
-		OStr << gettext("(Each wearing ");
+		OStr << ("-armed ");
+		OStr << ("(Each wearing ");
 		random = g_Dice % 2 + 4;
 		OStr << random;
 		OStr << " ";
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("rings of the Schwarzenegger");
-		else if (random <= 4)	OStr << gettext("rings of the horndog");
-		else if (random <= 6)	OStr << gettext("rings of beauty");
-		else /*            */	OStr << gettext("rings of potent sexual stamina");
-		OStr << gettext(") ");
+		/* */if (random <= 2)	OStr << ("rings of the Schwarzenegger");
+		else if (random <= 4)	OStr << ("rings of the horndog");
+		else if (random <= 6)	OStr << ("rings of beauty");
+		else /*            */	OStr << ("rings of potent sexual stamina");
+		OStr << (") ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("neighbor");
-		else if (random <= 4)	OStr << gettext("yugoloth");
-		else if (random <= 6)	OStr << gettext("abberation");
-		else /*            */	OStr << gettext("ancient one");
-		OStr << gettext(".");
+		/* */if (random <= 2)	OStr << ("neighbor");
+		else if (random <= 4)	OStr << ("yugoloth");
+		else if (random <= 6)	OStr << ("abberation");
+		else /*            */	OStr << ("ancient one");
+		OStr << (".");
 		break;
 	case 20:
-		OStr << gettext("the number 69."); break;
+		OStr << ("the number 69."); break;
 	}
 # pragma endregion sex3
-	OStr << gettext("\n");
+	OStr << ("\n");
 	return OStr.str();
 }
 
@@ -13687,102 +13687,102 @@ string cGirls::GetRandomOralSexString()
 	{
 	case 1:
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("knelt in front of");
-		else if (random <= 4)	OStr << gettext("bowed deeply to");
-		else if (random <= 6)	OStr << gettext("fingered herself in front of");
-		else if (random <= 8)	OStr << gettext("stripped off before");
-		else /*            */	OStr << gettext("smiled hungrily at");
-		OStr << gettext(" the client, and grabbed his ");
+		/* */if (random <= 2)	OStr << ("knelt in front of");
+		else if (random <= 4)	OStr << ("bowed deeply to");
+		else if (random <= 6)	OStr << ("fingered herself in front of");
+		else if (random <= 8)	OStr << ("stripped off before");
+		else /*            */	OStr << ("smiled hungrily at");
+		OStr << (" the client, and grabbed his ");
 		random = g_Dice % 10 + 1;
-		/* */if (random == 1)	OStr << gettext("meat");
-		else if (random == 2)	OStr << gettext("one-eyed dragon");
-		else if (random == 3)	OStr << gettext("cock");
-		else if (random == 4)	OStr << gettext("trouser-snake");
-		else if (random == 5)	OStr << gettext("love train");
-		else if (random == 6)	OStr << gettext("bald bishop");
-		else if (random == 7)	OStr << gettext("fuckpole");
-		else if (random == 8)	OStr << gettext("meaty womb raider");
-		else if (random == 9)	OStr << gettext("crankshaft");
-		else /*            */	OStr << gettext("greasy gutbuster");
+		/* */if (random == 1)	OStr << ("meat");
+		else if (random == 2)	OStr << ("one-eyed dragon");
+		else if (random == 3)	OStr << ("cock");
+		else if (random == 4)	OStr << ("trouser-snake");
+		else if (random == 5)	OStr << ("love train");
+		else if (random == 6)	OStr << ("bald bishop");
+		else if (random == 7)	OStr << ("fuckpole");
+		else if (random == 8)	OStr << ("meaty womb raider");
+		else if (random == 9)	OStr << ("crankshaft");
+		else /*            */	OStr << ("greasy gutbuster");
 		break;
 	case 2:
-		OStr << gettext("made him sit on a chair and watch as she 'fellated' a ");
+		OStr << ("made him sit on a chair and watch as she 'fellated' a ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("banana");
-		else if (random <= 4)	OStr << gettext("dildo");
-		else if (random <= 6)	OStr << gettext("bottle");
-		else if (random <= 8)	OStr << gettext("broomstick");
-		else /*            */	OStr << gettext("bedknob");
-		OStr << gettext(" while ");
+		/* */if (random <= 2)	OStr << ("banana");
+		else if (random <= 4)	OStr << ("dildo");
+		else if (random <= 6)	OStr << ("bottle");
+		else if (random <= 8)	OStr << ("broomstick");
+		else /*            */	OStr << ("bedknob");
+		OStr << (" while ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("never breaking eye-contact");
-		else if (random <= 4)	OStr << gettext("fingering her clit");
-		else if (random <= 6)	OStr << gettext("rubbing her nipples");
-		else if (random <= 8)	OStr << gettext("another girl watched");
-		else /*            */	OStr << gettext("bending waaaaayyy over");
+		/* */if (random <= 2)	OStr << ("never breaking eye-contact");
+		else if (random <= 4)	OStr << ("fingering her clit");
+		else if (random <= 6)	OStr << ("rubbing her nipples");
+		else if (random <= 8)	OStr << ("another girl watched");
+		else /*            */	OStr << ("bending waaaaayyy over");
 		break;
 	case 3:
-		OStr << gettext("had some fun with his ");
+		OStr << ("had some fun with his ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("foot");
-		else if (random <= 4)	OStr << gettext("tickle");
-		else if (random <= 6)	OStr << gettext("hair");
-		else if (random <= 8)	OStr << gettext("butt");
-		else /*            */	OStr << gettext("food");
-		OStr << gettext(" fetish and gave him an extended ");
+		/* */if (random <= 2)	OStr << ("foot");
+		else if (random <= 4)	OStr << ("tickle");
+		else if (random <= 6)	OStr << ("hair");
+		else if (random <= 8)	OStr << ("butt");
+		else /*            */	OStr << ("food");
+		OStr << (" fetish and gave him an extended ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("ball");
-		else if (random <= 4)	OStr << gettext("anal");
-		else /*            */	OStr << gettext("cock");
-		OStr << gettext(" 'massage'");
+		/* */if (random <= 2)	OStr << ("ball");
+		else if (random <= 4)	OStr << ("anal");
+		else /*            */	OStr << ("cock");
+		OStr << (" 'massage'");
 		break;
 	case 4:
-		OStr << gettext("dressed as a ");
+		OStr << ("dressed as a ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("schoolgirl");
-		else if (random <= 4)	OStr << gettext("girl-next-door");
-		else if (random <= 6)	OStr << gettext("cheerleader");
-		else if (random <= 8)	OStr << gettext("baby-sitter");
-		else /*            */	OStr << gettext("priestess");
-		OStr << gettext(" and begged him to ");
+		/* */if (random <= 2)	OStr << ("schoolgirl");
+		else if (random <= 4)	OStr << ("girl-next-door");
+		else if (random <= 6)	OStr << ("cheerleader");
+		else if (random <= 8)	OStr << ("baby-sitter");
+		else /*            */	OStr << ("priestess");
+		OStr << (" and begged him to ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("let her know what cum tastes like");
-		else if (random <= 4)	OStr << gettext("teach her how to please a man");
-		else if (random <= 6)	OStr << gettext("let her taste his love");
-		else if (random <= 8)	OStr << gettext("use her worthless face");
-		else /*            */	OStr << gettext("be gentle... but not too gentle");
+		/* */if (random <= 2)	OStr << ("let her know what cum tastes like");
+		else if (random <= 4)	OStr << ("teach her how to please a man");
+		else if (random <= 6)	OStr << ("let her taste his love");
+		else if (random <= 8)	OStr << ("use her worthless face");
+		else /*            */	OStr << ("be gentle... but not too gentle");
 		break;
 	case 5:
-		OStr << gettext("lay naked across ");
+		OStr << ("lay naked across ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("the bed");
-		else if (random <= 4)	OStr << gettext("the desk");
-		else if (random <= 6)	OStr << gettext("some cushions");
-		else if (random <= 8)	OStr << gettext("a cold table-top");
-		else /*            */	OStr << gettext("a pile of boxes");
-		OStr << gettext(" with her head hanging over the edge ");
+		/* */if (random <= 2)	OStr << ("the bed");
+		else if (random <= 4)	OStr << ("the desk");
+		else if (random <= 6)	OStr << ("some cushions");
+		else if (random <= 8)	OStr << ("a cold table-top");
+		else /*            */	OStr << ("a pile of boxes");
+		OStr << (" with her head hanging over the edge ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("and her mouth wide open");
-		else if (random <= 4)	OStr << gettext("and her throat ready");
-		else if (random <= 6)	OStr << gettext("ready for a face-fuck");
-		else if (random <= 8)	OStr << gettext("and her lips puckered");
-		else /*            */	OStr << gettext("and a craving in her eyes");
+		/* */if (random <= 2)	OStr << ("and her mouth wide open");
+		else if (random <= 4)	OStr << ("and her throat ready");
+		else if (random <= 6)	OStr << ("ready for a face-fuck");
+		else if (random <= 8)	OStr << ("and her lips puckered");
+		else /*            */	OStr << ("and a craving in her eyes");
 		break;
 	case 6:
-		OStr << gettext("warmed up by ");
+		OStr << ("warmed up by ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("shoving a giant dildo down her throat");
-		else if (random <= 4)	OStr << gettext("deepthroating a perfume bottle");
-		else if (random <= 6)	OStr << gettext("shoving her fingers down her throat");
-		else if (random <= 8)	OStr << gettext("gagging down her favourite butt-plug");
-		else /*            */	OStr << gettext("deepthroatng a sacred religious symbol");
-		OStr << gettext(", as she absently ");
+		/* */if (random <= 2)	OStr << ("shoving a giant dildo down her throat");
+		else if (random <= 4)	OStr << ("deepthroating a perfume bottle");
+		else if (random <= 6)	OStr << ("shoving her fingers down her throat");
+		else if (random <= 8)	OStr << ("gagging down her favourite butt-plug");
+		else /*            */	OStr << ("deepthroatng a sacred religious symbol");
+		OStr << (", as she absently ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("rubbed her clit");
-		else if (random <= 4)	OStr << gettext("pinched her nipples");
-		else if (random <= 6)	OStr << gettext("flicked her bean");
-		else if (random <= 8)	OStr << gettext("fisted herself");
-		else /*            */	OStr << gettext("fingered her anus");
+		/* */if (random <= 2)	OStr << ("rubbed her clit");
+		else if (random <= 4)	OStr << ("pinched her nipples");
+		else if (random <= 6)	OStr << ("flicked her bean");
+		else if (random <= 8)	OStr << ("fisted herself");
+		else /*            */	OStr << ("fingered her anus");
 		break;
 	}
 # pragma endregion oral1
@@ -13793,107 +13793,107 @@ string cGirls::GetRandomOralSexString()
 	switch (roll2)
 	{
 	case 1:
-		OStr << gettext("her ");
+		OStr << ("her ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("soft-lips made love to his");
-		else if (random <= 4)	OStr << gettext("open throat sucked down his");
-		else if (random <= 6)	OStr << gettext("tongue milked his");
-		else /*            */	OStr << gettext("mouth energetically fucked his");
-		OStr << gettext(" ");
+		/* */if (random <= 2)	OStr << ("soft-lips made love to his");
+		else if (random <= 4)	OStr << ("open throat sucked down his");
+		else if (random <= 6)	OStr << ("tongue milked his");
+		else /*            */	OStr << ("mouth energetically fucked his");
+		OStr << (" ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("rock hard cock");
-		else if (random <= 4)	OStr << gettext("slippery man-meat");
-		else if (random <= 6)	OStr << gettext("greasy sex-pole");
-		else /*            */	OStr << gettext("fat flesh-flute");
-		OStr << gettext(" until ");
+		/* */if (random <= 2)	OStr << ("rock hard cock");
+		else if (random <= 4)	OStr << ("slippery man-meat");
+		else if (random <= 6)	OStr << ("greasy sex-pole");
+		else /*            */	OStr << ("fat flesh-flute");
+		OStr << (" until ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("hot cum was forced down her throat");
-		else if (random <= 4)	OStr << gettext("cum splattered across her face");
-		else if (random <= 6)	OStr << gettext("she received a spunky facial");
-		else if (random <= 8)	OStr << gettext("cum was shooting out of her nose");
-		else /*            */	OStr << gettext("her mouth was shot full of semen");
-		OStr << gettext(" courtesy of");
+		/* */if (random <= 2)	OStr << ("hot cum was forced down her throat");
+		else if (random <= 4)	OStr << ("cum splattered across her face");
+		else if (random <= 6)	OStr << ("she received a spunky facial");
+		else if (random <= 8)	OStr << ("cum was shooting out of her nose");
+		else /*            */	OStr << ("her mouth was shot full of semen");
+		OStr << (" courtesy of");
 		break;
 	case 2:
-		OStr << gettext("her jaw felt like it was gonna lock as ");
+		OStr << ("her jaw felt like it was gonna lock as ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("she greedily gulped his meat");
-		else if (random <= 4)	OStr << gettext("she relentlessly sucked him off");
-		else if (random <= 6)	OStr << gettext("her mouth expertly milked his manhood");
-		else if (random <= 8)	OStr << gettext("his cock slipped into her throat");
-		else /*            */	OStr << gettext("she sucked and licked his cock");
-		OStr << gettext(" until ");
+		/* */if (random <= 2)	OStr << ("she greedily gulped his meat");
+		else if (random <= 4)	OStr << ("she relentlessly sucked him off");
+		else if (random <= 6)	OStr << ("her mouth expertly milked his manhood");
+		else if (random <= 8)	OStr << ("his cock slipped into her throat");
+		else /*            */	OStr << ("she sucked and licked his cock");
+		OStr << (" until ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("a warm desposit was left in her mouth");
-		else if (random <= 4)	OStr << gettext("cum was pumped directly into her stomach");
-		else if (random <= 6)	OStr << gettext("her eyes bulged as cum filled her head");
-		else if (random <= 8)	OStr << gettext("cum was blasted into her face");
-		else /*            */	OStr << gettext("sperm dripped from her mouth and nose");
-		OStr << gettext(" courtesy of");
+		/* */if (random <= 2)	OStr << ("a warm desposit was left in her mouth");
+		else if (random <= 4)	OStr << ("cum was pumped directly into her stomach");
+		else if (random <= 6)	OStr << ("her eyes bulged as cum filled her head");
+		else if (random <= 8)	OStr << ("cum was blasted into her face");
+		else /*            */	OStr << ("sperm dripped from her mouth and nose");
+		OStr << (" courtesy of");
 		break;
 	case 3:
-		OStr << gettext("she was face-fucked ");
+		OStr << ("she was face-fucked ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("blind");
-		else if (random <= 4)	OStr << gettext("raw");
-		else if (random <= 6)	OStr << gettext("senseless");
-		else if (random <= 8)	OStr << gettext("for hours");
-		else /*            */	OStr << gettext("against the wall");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("blind");
+		else if (random <= 4)	OStr << ("raw");
+		else if (random <= 6)	OStr << ("senseless");
+		else if (random <= 8)	OStr << ("for hours");
+		else /*            */	OStr << ("against the wall");
+		OStr << (" by");
 		break;
 	case 4:
-		OStr << gettext("her throat was stuffed full of ");
+		OStr << ("her throat was stuffed full of ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("hot cock");
-		else if (random <= 4)	OStr << gettext("male anatomy");
-		else if (random <= 6)	OStr << gettext("her favourite thing");
-		else if (random <= 8)	OStr << gettext("quivering pork sword");
-		else /*            */	OStr << gettext("stanky dick");
-		OStr << gettext(" until ");
+		/* */if (random <= 2)	OStr << ("hot cock");
+		else if (random <= 4)	OStr << ("male anatomy");
+		else if (random <= 6)	OStr << ("her favourite thing");
+		else if (random <= 8)	OStr << ("quivering pork sword");
+		else /*            */	OStr << ("stanky dick");
+		OStr << (" until ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("her eyes bulged");
-		else if (random <= 4)	OStr << gettext("her ears popped");
-		else if (random <= 6)	OStr << gettext(", with a shudder, cum was shot straight into her gut");
-		else if (random <= 8)	OStr << gettext("he pulled out and splurged in her face");
-		else /*            */	OStr << gettext("cum was left drooling from her mouth");
-		OStr << gettext(" thanks to");
+		/* */if (random <= 2)	OStr << ("her eyes bulged");
+		else if (random <= 4)	OStr << ("her ears popped");
+		else if (random <= 6)	OStr << (", with a shudder, cum was shot straight into her gut");
+		else if (random <= 8)	OStr << ("he pulled out and splurged in her face");
+		else /*            */	OStr << ("cum was left drooling from her mouth");
+		OStr << (" thanks to");
 		break;
 	case 5:
-		OStr << gettext("she took his cock in her mouth and expertly ");
+		OStr << ("she took his cock in her mouth and expertly ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("sucked it down");
-		else if (random <= 4)	OStr << gettext("licked from smooth head to hairy base");
-		else if (random <= 6)	OStr << gettext("pleasured the head with her soft lips");
-		else if (random <= 8)	OStr << gettext("deepthroated the lot");
-		else /*            */	OStr << gettext("massaged it with her lips while licking with her tongue");
-		OStr << gettext(" while her hands ");
+		/* */if (random <= 2)	OStr << ("sucked it down");
+		else if (random <= 4)	OStr << ("licked from smooth head to hairy base");
+		else if (random <= 6)	OStr << ("pleasured the head with her soft lips");
+		else if (random <= 8)	OStr << ("deepthroated the lot");
+		else /*            */	OStr << ("massaged it with her lips while licking with her tongue");
+		OStr << (" while her hands ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("played with his balls");
-		else if (random <= 4)	OStr << gettext("cradled his balls");
-		else if (random <= 6)	OStr << gettext("gripped his butt");
-		else if (random <= 8)	OStr << gettext("stayed behind her back");
-		else /*            */	OStr << gettext("fingered his ass-hole");
-		OStr << gettext(" until she got a hot mouthful of cum from");
+		/* */if (random <= 2)	OStr << ("played with his balls");
+		else if (random <= 4)	OStr << ("cradled his balls");
+		else if (random <= 6)	OStr << ("gripped his butt");
+		else if (random <= 8)	OStr << ("stayed behind her back");
+		else /*            */	OStr << ("fingered his ass-hole");
+		OStr << (" until she got a hot mouthful of cum from");
 		break;
 	case 6:
-		OStr << gettext("the customer climbed over, and full-on fucked her face. She ended up ");
+		OStr << ("the customer climbed over, and full-on fucked her face. She ended up ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("with a warm desposit filling her mouth");
-		else if (random <= 4)	OStr << gettext("with her gut pumped full of cum");
-		else if (random <= 6)	OStr << gettext("spunked up from nose to navel");
-		else if (random <= 8)	OStr << gettext("with cum blasted in her face");
-		else /*            */	OStr << gettext("with sperm exploding from her mouth and nose");
-		OStr << gettext(" courtesy of");
+		/* */if (random <= 2)	OStr << ("with a warm desposit filling her mouth");
+		else if (random <= 4)	OStr << ("with her gut pumped full of cum");
+		else if (random <= 6)	OStr << ("spunked up from nose to navel");
+		else if (random <= 8)	OStr << ("with cum blasted in her face");
+		else /*            */	OStr << ("with sperm exploding from her mouth and nose");
+		OStr << (" courtesy of");
 		break;
 	case 7:
-		OStr << gettext("she clamped her lips around his dick and wouldn't stop ");
+		OStr << ("she clamped her lips around his dick and wouldn't stop ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("sucking and stimulating it with her mouth");
-		else if (random <= 4)	OStr << gettext("orally fucking it");
-		else if (random <= 6)	OStr << gettext("deepthroating it");
-		else if (random <= 8)	OStr << gettext("pumping it");
-		else /*            */	OStr << gettext("gulping it down");
-		OStr << gettext(" until she had swallowed down ") << (g_Dice % 5 + 2) << gettext(" loads of cum from ");
+		/* */if (random <= 2)	OStr << ("sucking and stimulating it with her mouth");
+		else if (random <= 4)	OStr << ("orally fucking it");
+		else if (random <= 6)	OStr << ("deepthroating it");
+		else if (random <= 8)	OStr << ("pumping it");
+		else /*            */	OStr << ("gulping it down");
+		OStr << (" until she had swallowed down ") << (g_Dice % 5 + 2) << (" loads of cum from ");
 		break;
 	}
 # pragma endregion oral2
@@ -13904,131 +13904,131 @@ string cGirls::GetRandomOralSexString()
 	switch (roll3)
 	{
 	case 1:
-		OStr << gettext("the guy ");
+		OStr << ("the guy ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("wearing three amulets of the sex elemental.");
-		else if (random <= 4)	OStr << gettext("wearing eight rings of the horndog.");
-		else if (random <= 6)	OStr << gettext("wearing a band of invulnerability.");
-		else if (random <= 8)	OStr << gettext("in the Guy mask.");
-		else /*            */	OStr << gettext("with the funny eyes.");
+		/* */if (random <= 2)	OStr << ("wearing three amulets of the sex elemental.");
+		else if (random <= 4)	OStr << ("wearing eight rings of the horndog.");
+		else if (random <= 6)	OStr << ("wearing a band of invulnerability.");
+		else if (random <= 8)	OStr << ("in the Guy mask.");
+		else /*            */	OStr << ("with the funny eyes.");
 		break;
-	case 2: OStr << gettext("Poseidon, God of Salty Seamen!!!!"); break;
+	case 2: OStr << ("Poseidon, God of Salty Seamen!!!!"); break;
 	case 3:
-		OStr << gettext("the good ");
+		OStr << ("the good ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("Lord Mayor.");
-		else if (random <= 4)	OStr << gettext("samaritan.");
-		else if (random <= 6)	OStr << gettext("Reverend.");
-		else if (random <= 8)	OStr << gettext("shepherd.");
-		else /*            */	OStr << gettext("husband (a blowjob isn't cheating).");
+		/* */if (random <= 2)	OStr << ("Lord Mayor.");
+		else if (random <= 4)	OStr << ("samaritan.");
+		else if (random <= 6)	OStr << ("Reverend.");
+		else if (random <= 8)	OStr << ("shepherd.");
+		else /*            */	OStr << ("husband (a blowjob isn't cheating).");
 		break;
-	case 4: OStr << gettext("the surprisingly endowed dwarven gentleman."); break;
-	case 5: OStr << gettext("Colonel Mustard (right after he did it with the candlestick)."); break;
+	case 4: OStr << ("the surprisingly endowed dwarven gentleman."); break;
+	case 5: OStr << ("Colonel Mustard (right after he did it with the candlestick)."); break;
 	case 6:
-		OStr << gettext("the ");
+		OStr << ("the ");
 		random = g_Dice % 10 + 1;
 		/* */if (random <= 2)	OStr << "talking bear.";
-		else if (random <= 4)	OStr << gettext("bearded biker dude.");
-		else if (random <= 6)	OStr << gettext("dude who looked like a lady.");
-		else if (random <= 8)	OStr << gettext("mischievous monkey man.");
-		else /*            */	OStr << gettext("escaped pensioner.");
+		else if (random <= 4)	OStr << ("bearded biker dude.");
+		else if (random <= 6)	OStr << ("dude who looked like a lady.");
+		else if (random <= 8)	OStr << ("mischievous monkey man.");
+		else /*            */	OStr << ("escaped pensioner.");
 		break;
 	case 7:
-		OStr << gettext("the unbelievably well behaved ");
+		OStr << ("the unbelievably well behaved ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("Pink Petal forum member.");
-		else if (random <= 4)	OStr << gettext("Judge.");
-		else if (random <= 6)	OStr << gettext("pirate.");
-		else /*            */	OStr << gettext("ninja.");
+		/* */if (random <= 2)	OStr << ("Pink Petal forum member.");
+		else if (random <= 4)	OStr << ("Judge.");
+		else if (random <= 6)	OStr << ("pirate.");
+		else /*            */	OStr << ("ninja.");
 		break;
 	case 8:
 		random = g_Dice % 20 + 1;
-		OStr << gettext("the infamous ");
-		/* */if (random <= 2)	OStr << gettext("Lord");
-		else if (random <= 4)	OStr << gettext("Master");
-		else if (random <= 6)	OStr << gettext("Saint");
-		else if (random <= 8)	OStr << gettext("Lieutenant");
-		else if (random <= 10)	OStr << gettext("Master");
-		else if (random <= 12)	OStr << gettext("Doctor");
-		else if (random <= 14)	OStr << gettext("Gardener");
-		else if (random <= 16)	OStr << gettext("Blacksmith");
-		else if (random <= 18)	OStr << gettext("DockMaster");
-		else /*            */	OStr << gettext("Sherrif");
-		OStr << gettext(" Peterson.");
+		OStr << ("the infamous ");
+		/* */if (random <= 2)	OStr << ("Lord");
+		else if (random <= 4)	OStr << ("Master");
+		else if (random <= 6)	OStr << ("Saint");
+		else if (random <= 8)	OStr << ("Lieutenant");
+		else if (random <= 10)	OStr << ("Master");
+		else if (random <= 12)	OStr << ("Doctor");
+		else if (random <= 14)	OStr << ("Gardener");
+		else if (random <= 16)	OStr << ("Blacksmith");
+		else if (random <= 18)	OStr << ("DockMaster");
+		else /*            */	OStr << ("Sherrif");
+		OStr << (" Peterson.");
 		break;
-	case 9: OStr << gettext("this regular customer."); break;
-	case 10: OStr << gettext("the pesky poltergeist."); break;
+	case 9: OStr << ("this regular customer."); break;
+	case 10: OStr << ("the pesky poltergeist."); break;
 	case 11:
-		OStr << gettext("her ");
+		OStr << ("her ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("platonic guy friend, who she'd always thought of more as a brother.");
-		else if (random <= 4)	OStr << gettext("personal trainer, Buck.");
-		else if (random <= 6)	OStr << gettext("excited former-classmate.");
-		else if (random <= 8)	OStr << gettext("father's best-friend.");
-		else /*            */	OStr << gettext("kindly uncle.");
+		/* */if (random <= 2)	OStr << ("platonic guy friend, who she'd always thought of more as a brother.");
+		else if (random <= 4)	OStr << ("personal trainer, Buck.");
+		else if (random <= 6)	OStr << ("excited former-classmate.");
+		else if (random <= 8)	OStr << ("father's best-friend.");
+		else /*            */	OStr << ("kindly uncle.");
 		break;
 	case 12:
-		OStr << gettext("the clockwork man! (With no sensation in his clockwork ");
+		OStr << ("the clockwork man! (With no sensation in his clockwork ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("tool");
-		else if (random <= 4)	OStr << gettext("head");
-		else if (random <= 6)	OStr << gettext("fingers");
-		else if (random <= 8)	OStr << gettext("attachment");
-		else /*            */	OStr << gettext("clock");
-		OStr << gettext(" and no sense to ");
+		/* */if (random <= 2)	OStr << ("tool");
+		else if (random <= 4)	OStr << ("head");
+		else if (random <= 6)	OStr << ("fingers");
+		else if (random <= 8)	OStr << ("attachment");
+		else /*            */	OStr << ("clock");
+		OStr << (" and no sense to ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("stop");
-		else if (random <= 4)	OStr << gettext("slow down");
-		else if (random <= 6)	OStr << gettext("moderate");
-		else if (random <= 8)	OStr << gettext("be gentle");
+		/* */if (random <= 2)	OStr << ("stop");
+		else if (random <= 4)	OStr << ("slow down");
+		else if (random <= 6)	OStr << ("moderate");
+		else if (random <= 8)	OStr << ("be gentle");
 		else
 		{
-			OStr << gettext("stop at ");
+			OStr << ("stop at ");
 			random = g_Dice % 50 + 30;
 			OStr << random;
-			OStr << gettext(" orgasms");
+			OStr << (" orgasms");
 		}
-		OStr << gettext(".)");
+		OStr << (".)");
 		break;
 	case 13:
 		// MYR: This one gives useful advice to the players.  A gift from us to them.
-		OStr << gettext("the Brothel Master developer. ");
+		OStr << ("the Brothel Master developer. ");
 		random = g_Dice % 20 + 1;
-		/* */if (random <= 2)	OStr << gettext("(Quick learner is a great talent to have.)");
-		else if (random <= 4)	OStr << gettext("(Don't ignore the practice skills option for your girls.)");
-		else if (random <= 6)	OStr << gettext("(Train your gangs.)");
-		else if (random <= 8)	OStr << gettext("(Every time you restart the game, the shop inventory is reset.)");
-		else if (random <= 10)	OStr << gettext("(Invulnerable (incorporeal) characters should be exploring the catacombs.)");
-		else if (random <= 12)	OStr << gettext("(High dodge gear is great for characters exploring the catacombs.)");
-		else if (random <= 14)	OStr << gettext("(For a character with a high constitution, experiment with working on both shifts.)");
-		else if (random <= 16)	OStr << gettext("(Matrons need high service skills.)");
-		else if (random <= 18)	OStr << gettext("(Girls see a max of 3 people for high reputations, 3 for high appearance and 3 for high skills.)");
-		else /*            */	OStr << gettext("(Don't overlook the bribery option in the town hall and the bank.)");
+		/* */if (random <= 2)	OStr << ("(Quick learner is a great talent to have.)");
+		else if (random <= 4)	OStr << ("(Don't ignore the practice skills option for your girls.)");
+		else if (random <= 6)	OStr << ("(Train your gangs.)");
+		else if (random <= 8)	OStr << ("(Every time you restart the game, the shop inventory is reset.)");
+		else if (random <= 10)	OStr << ("(Invulnerable (incorporeal) characters should be exploring the catacombs.)");
+		else if (random <= 12)	OStr << ("(High dodge gear is great for characters exploring the catacombs.)");
+		else if (random <= 14)	OStr << ("(For a character with a high constitution, experiment with working on both shifts.)");
+		else if (random <= 16)	OStr << ("(Matrons need high service skills.)");
+		else if (random <= 18)	OStr << ("(Girls see a max of 3 people for high reputations, 3 for high appearance and 3 for high skills.)");
+		else /*            */	OStr << ("(Don't overlook the bribery option in the town hall and the bank.)");
 		break;
-	case 14: OStr << gettext("a guy she never noticed at school."); break;
+	case 14: OStr << ("a guy she never noticed at school."); break;
 	case 15:
-		OStr << gettext("a man cursed with permanent 'hardness.'");	break;
+		OStr << ("a man cursed with permanent 'hardness.'");	break;
 	case 16:
-		OStr << gettext("the ");
+		OStr << ("the ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("mayor");
-		else if (random <= 4)	OStr << gettext("bishop");
-		else if (random <= 6)	OStr << gettext("town treasurer");
-		else /*            */	OStr << gettext("school principle");
-		OStr << gettext(", on one of his regular health checkups.");
+		/* */if (random <= 2)	OStr << ("mayor");
+		else if (random <= 4)	OStr << ("bishop");
+		else if (random <= 6)	OStr << ("town treasurer");
+		else /*            */	OStr << ("school principle");
+		OStr << (", on one of his regular health checkups.");
 		break;
-	case 17: OStr << gettext("an young guy in ");
+	case 17: OStr << ("an young guy in ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("a dress.");
-		else if (random <= 4)	OStr << gettext("robes.");
-		else if (random <= 6)	OStr << gettext("handcuffs.");
-		else if (random <= 8)	OStr << gettext("a straight-jacket.");
-		else /*            */	OStr << gettext("trouble with the mob.");
+		/* */if (random <= 2)	OStr << ("a dress.");
+		else if (random <= 4)	OStr << ("robes.");
+		else if (random <= 6)	OStr << ("handcuffs.");
+		else if (random <= 8)	OStr << ("a straight-jacket.");
+		else /*            */	OStr << ("trouble with the mob.");
 		break;
-	case 18: OStr << gettext("the untapped virgin."); break;
+	case 18: OStr << ("the untapped virgin."); break;
 	}
 # pragma endregion oral3
-	OStr << gettext("\n");
+	OStr << ("\n");
 	return OStr.str();
 }
 
@@ -14043,158 +14043,158 @@ string cGirls::GetRandomGroupString()
 	switch (roll1)
 	{
 	case 1:
-		OStr << gettext("counted the number of customers: ");
+		OStr << ("counted the number of customers: ");
 		random = g_Dice % 20 + 5;
 		OStr << random;
 		OStr << ". ";
 		random = g_Dice % 14 + 1;
-		/* */if (random <= 2)	OStr << gettext("This was going to be rough");
-		else if (random <= 4)	OStr << gettext("Sweet");
-		else if (random <= 6)	OStr << gettext("It could be worse");
-		else if (random <= 8)	OStr << gettext("A smile formed on her lips. This was going to be fun");
-		else if (random <= 10)	OStr << gettext("Boring");
-		else if (random <= 12)	OStr << gettext("Not enough");
-		else /*            */	OStr << gettext("'Could you get more?' she wondered");
+		/* */if (random <= 2)	OStr << ("This was going to be rough");
+		else if (random <= 4)	OStr << ("Sweet");
+		else if (random <= 6)	OStr << ("It could be worse");
+		else if (random <= 8)	OStr << ("A smile formed on her lips. This was going to be fun");
+		else if (random <= 10)	OStr << ("Boring");
+		else if (random <= 12)	OStr << ("Not enough");
+		else /*            */	OStr << ("'Could you get more?' she wondered");
 		break;
-	case 2: OStr << gettext("was lost in ");
+	case 2: OStr << ("was lost in ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("a sea");
-		else if (random <= 4)	OStr << gettext("a storm");
-		else if (random <= 6)	OStr << gettext("an ocean");
-		else /*            */	OStr << gettext("a jungle");
-		OStr << gettext(" of hot bodies");
+		/* */if (random <= 2)	OStr << ("a sea");
+		else if (random <= 4)	OStr << ("a storm");
+		else if (random <= 6)	OStr << ("an ocean");
+		else /*            */	OStr << ("a jungle");
+		OStr << (" of hot bodies");
 		break;
 	case 3:
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("sat");
-		else if (random <= 4)	OStr << gettext("lay");
-		else if (random <= 6)	OStr << gettext("stood");
-		else /*            */	OStr << gettext("crouched");
+		/* */if (random <= 2)	OStr << ("sat");
+		else if (random <= 4)	OStr << ("lay");
+		else if (random <= 6)	OStr << ("stood");
+		else /*            */	OStr << ("crouched");
 		OStr << " ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext("blindfolded and ");
+		/* */if (random <= 5)	OStr << ("blindfolded and ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("handcuffed");
-		else if (random <= 4)	OStr << gettext("tied up");
-		else if (random <= 6)	OStr << gettext("wrists bound in rope");
-		else /*            */	OStr << gettext("wrists in chains hanging from the ceiling");
-		OStr << gettext(" in the middle of a ");
+		/* */if (random <= 2)	OStr << ("handcuffed");
+		else if (random <= 4)	OStr << ("tied up");
+		else if (random <= 6)	OStr << ("wrists bound in rope");
+		else /*            */	OStr << ("wrists in chains hanging from the ceiling");
+		OStr << (" in the middle of a ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("circle");
-		else if (random <= 4)	OStr << gettext("smouldering pile");
-		else if (random <= 6)	OStr << gettext("phalanx");
-		else /*            */	OStr << gettext("wall");
-		OStr << gettext(" of flesh");
+		/* */if (random <= 2)	OStr << ("circle");
+		else if (random <= 4)	OStr << ("smouldering pile");
+		else if (random <= 6)	OStr << ("phalanx");
+		else /*            */	OStr << ("wall");
+		OStr << (" of flesh");
 		break;
 	case 4:
-		OStr << gettext("was ");
+		OStr << ("was ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("amazed by");
-		else if (random <= 4)	OStr << gettext("disappointed by");
-		else if (random <= 6)	OStr << gettext("overjoyed with");
-		else /*            */	OStr << gettext("ecstatically happy with");
-		OStr << gettext(" the ");
+		/* */if (random <= 2)	OStr << ("amazed by");
+		else if (random <= 4)	OStr << ("disappointed by");
+		else if (random <= 6)	OStr << ("overjoyed with");
+		else /*            */	OStr << ("ecstatically happy with");
+		OStr << (" the ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("brigade");
-		else if (random <= 4)	OStr << gettext("army group");
-		else if (random <= 6)	OStr << gettext("squad");
-		else /*            */	OStr << gettext("batallion");
-		OStr << gettext(" of ");
+		/* */if (random <= 2)	OStr << ("brigade");
+		else if (random <= 4)	OStr << ("army group");
+		else if (random <= 6)	OStr << ("squad");
+		else /*            */	OStr << ("batallion");
+		OStr << (" of ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("man meat");
-		else if (random <= 4)	OStr << gettext("cock");
-		else if (random <= 6)	OStr << gettext("muscle");
-		else /*            */	OStr << gettext("horny, brainless thugs");
-		OStr << gettext(" around her");
+		/* */if (random <= 2)	OStr << ("man meat");
+		else if (random <= 4)	OStr << ("cock");
+		else if (random <= 6)	OStr << ("muscle");
+		else /*            */	OStr << ("horny, brainless thugs");
+		OStr << (" around her");
 		break;
 	}
 # pragma endregion group1
 	// Part 2
 # pragma region group2
-	OStr << gettext(". ");
+	OStr << (". ");
 	roll2 = g_Dice % 8 + 1;
 	switch (roll2)
 	{
 	case 1:
-		OStr << gettext("She was thoroughly ");
+		OStr << ("She was thoroughly ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("banged");
-		else if (random <= 4)	OStr << gettext("fucked");
-		else if (random <= 6)	OStr << gettext("disappointed");
-		else /*            */	OStr << gettext("penetrated");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("banged");
+		else if (random <= 4)	OStr << ("fucked");
+		else if (random <= 6)	OStr << ("disappointed");
+		else /*            */	OStr << ("penetrated");
+		OStr << (" by");
 		break;
 	case 2:
-		OStr << gettext("They handled her like ");
+		OStr << ("They handled her like ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext("an expensive");
-		else /*            */	OStr << gettext("a cheap");
+		/* */if (random <= 5)	OStr << ("an expensive");
+		else /*            */	OStr << ("a cheap");
 		OStr << " ";
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("hooker");
-		else if (random <= 4)	OStr << gettext("street worker");
-		else if (random <= 6)	OStr << gettext("violin");
-		else /*            */	OStr << gettext("wine");
-		OStr << gettext(" for");
+		/* */if (random <= 2)	OStr << ("hooker");
+		else if (random <= 4)	OStr << ("street worker");
+		else if (random <= 6)	OStr << ("violin");
+		else /*            */	OStr << ("wine");
+		OStr << (" for");
 		break;
 	case 3:
-		OStr << gettext("Her ");
+		OStr << ("Her ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext("holes were");
-		else /*            */	OStr << gettext("love canal was");
-		OStr << gettext(" plugged by");
+		/* */if (random <= 5)	OStr << ("holes were");
+		else /*            */	OStr << ("love canal was");
+		OStr << (" plugged by");
 		break;
 	case 4:
-		OStr << gettext("She ");
+		OStr << ("She ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("was bukkaked by");
-		else if (random <= 4)	OStr << gettext("was given pearl necklaces by");
-		else /*            */	OStr << gettext("received a thorough face/hair job from");
+		/* */if (random <= 2)	OStr << ("was bukkaked by");
+		else if (random <= 4)	OStr << ("was given pearl necklaces by");
+		else /*            */	OStr << ("received a thorough face/hair job from");
 		break;
 	case 5:
-		OStr << gettext("They demanded simultaneous hand, foot and mouth ");
+		OStr << ("They demanded simultaneous hand, foot and mouth ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("jobs");
-		else if (random <= 4)	OStr << gettext("action");
-		else /*            */	OStr << gettext("combat");
-		OStr << gettext(" for");
+		/* */if (random <= 2)	OStr << ("jobs");
+		else if (random <= 4)	OStr << ("action");
+		else /*            */	OStr << ("combat");
+		OStr << (" for");
 		break;
 	case 6:
-		OStr << gettext("There was a positive side: 'So much ");
+		OStr << ("There was a positive side: 'So much ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("meat");
-		else if (random <= 4)	OStr << gettext("cock");
-		else if (random <= 6)	OStr << gettext("testosterone");
-		else /*            */	OStr << gettext("to do");
-		OStr << gettext(", so little time' she said to");
+		/* */if (random <= 2)	OStr << ("meat");
+		else if (random <= 4)	OStr << ("cock");
+		else if (random <= 6)	OStr << ("testosterone");
+		else /*            */	OStr << ("to do");
+		OStr << (", so little time' she said to");
 		break;
 	case 7:
-		OStr << gettext("They made sure she had a nutritious meal of ");
+		OStr << ("They made sure she had a nutritious meal of ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("man meat");
-		else if (random <= 4)	OStr << gettext("cock");
-		else if (random <= 6)	OStr << gettext("penis");
-		else /*            */	OStr << gettext("meat rods");
-		OStr << gettext(" and drinks of delicious ");
+		/* */if (random <= 2)	OStr << ("man meat");
+		else if (random <= 4)	OStr << ("cock");
+		else if (random <= 6)	OStr << ("penis");
+		else /*            */	OStr << ("meat rods");
+		OStr << (" and drinks of delicious ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("semen");
-		else if (random <= 4)	OStr << gettext("man mucus");
-		else if (random <= 6)	OStr << gettext("man-love");
-		else /*            */	OStr << gettext("man-cream");
-		OStr << gettext(" from");
+		/* */if (random <= 2)	OStr << ("semen");
+		else if (random <= 4)	OStr << ("man mucus");
+		else if (random <= 6)	OStr << ("man-love");
+		else /*            */	OStr << ("man-cream");
+		OStr << (" from");
 		break;
 	case 8:
-		OStr << gettext("She was ");
+		OStr << ("She was ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("fucked");
-		else if (random <= 4)	OStr << gettext("banged");
-		else if (random <= 6)	OStr << gettext("humped");
-		else /*            */	OStr << gettext("sucked");
-		OStr << gettext(" silly ");
-		/* */if (random <= 2)	OStr << gettext("twice over");
-		else if (random <= 4)	OStr << gettext("three times over");
-		else /*            */	OStr << gettext("so many times");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("fucked");
+		else if (random <= 4)	OStr << ("banged");
+		else if (random <= 6)	OStr << ("humped");
+		else /*            */	OStr << ("sucked");
+		OStr << (" silly ");
+		/* */if (random <= 2)	OStr << ("twice over");
+		else if (random <= 4)	OStr << ("three times over");
+		else /*            */	OStr << ("so many times");
+		OStr << (" by");
 		break;
 	}
 # pragma endregion group2
@@ -14205,280 +14205,280 @@ string cGirls::GetRandomGroupString()
 	switch (roll3)
 	{
 	case 1:
-		OStr << gettext("every member of the Crossgate ");
+		OStr << ("every member of the Crossgate ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("roads crew.");
-		else if (random <= 4)	OStr << gettext("administrative staff.");
-		else if (random <= 6)	OStr << gettext("interleague volleyball team.");
-		else /*            */	OStr << gettext("short persons defense league.");
+		/* */if (random <= 2)	OStr << ("roads crew.");
+		else if (random <= 4)	OStr << ("administrative staff.");
+		else if (random <= 6)	OStr << ("interleague volleyball team.");
+		else /*            */	OStr << ("short persons defense league.");
 		; break;
 	case 2:
-		OStr << gettext("all the ");
+		OStr << ("all the ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("lieutenants");
-		else if (random <= 4)	OStr << gettext("sergeants");
-		else if (random <= 6)	OStr << gettext("captains");
-		else /*            */	OStr << gettext("junior officers");
-		OStr << gettext(" in the Mundigan ");
+		/* */if (random <= 2)	OStr << ("lieutenants");
+		else if (random <= 4)	OStr << ("sergeants");
+		else if (random <= 6)	OStr << ("captains");
+		else /*            */	OStr << ("junior officers");
+		OStr << (" in the Mundigan ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("army.");
-		else if (random <= 4)	OStr << gettext("navy.");
-		else if (random <= 6)	OStr << gettext("elite forces.");
-		else /*            */	OStr << gettext("foreign legion.");
+		/* */if (random <= 2)	OStr << ("army.");
+		else if (random <= 4)	OStr << ("navy.");
+		else if (random <= 6)	OStr << ("elite forces.");
+		else /*            */	OStr << ("foreign legion.");
 		break;
 	case 3:
-		OStr << gettext("the visiting ");
+		OStr << ("the visiting ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("half-giants. (Ouch!)");
-		else if (random <= 4)	OStr << gettext("storm giants.");
-		else if (random <= 6)	OStr << gettext("titans.");
-		else /*            */	OStr << gettext("ogres.");
+		/* */if (random <= 2)	OStr << ("half-giants. (Ouch!)");
+		else if (random <= 4)	OStr << ("storm giants.");
+		else if (random <= 6)	OStr << ("titans.");
+		else /*            */	OStr << ("ogres.");
 		break;
 	case 4:
-		OStr << gettext("the ");
+		OStr << ("the ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("Hentai Research");
-		else if (random <= 4)	OStr << gettext("Women's Rights");
-		else if (random <= 6)	OStr << gettext("Prostitution Studies");
-		else /*            */	OStr << gettext("Celibacy");
-		OStr << gettext(" club of the University of Cunning Linguists.");
+		/* */if (random <= 2)	OStr << ("Hentai Research");
+		else if (random <= 4)	OStr << ("Women's Rights");
+		else if (random <= 6)	OStr << ("Prostitution Studies");
+		else /*            */	OStr << ("Celibacy");
+		OStr << (" club of the University of Cunning Linguists.");
 		break;
 	case 5:
-		OStr << gettext("the squad of ");
+		OStr << ("the squad of ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext("hard-to-find ninjas.");
-		else /*            */	OStr << gettext("racous pirates.");
+		/* */if (random <= 5)	OStr << ("hard-to-find ninjas.");
+		else /*            */	OStr << ("racous pirates.");
 		break;
-	case 6: OStr << gettext("a group of people from some place called the 'Pink Petal forums'."); break;
+	case 6: OStr << ("a group of people from some place called the 'Pink Petal forums'."); break;
 	case 7:
-		OStr << gettext("the seemingly endless ");
+		OStr << ("the seemingly endless ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("army");
-		else if (random <= 4)	OStr << gettext("horde");
-		else if (random <= 6)	OStr << gettext("number");
-		else /*            */	OStr << gettext("group");
-		OStr << gettext(" of really");
+		/* */if (random <= 2)	OStr << ("army");
+		else if (random <= 4)	OStr << ("horde");
+		else if (random <= 6)	OStr << ("number");
+		else /*            */	OStr << ("group");
+		OStr << (" of really");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext(", really ");
+		/* */if (random <= 5)	OStr << (", really ");
 		else /*            */	OStr << " ";
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("fired up");
-		else if (random <= 4)	OStr << gettext("horny");
-		else if (random <= 6)	OStr << gettext("randy");
-		else /*            */	OStr << gettext("backed up");
+		/* */if (random <= 2)	OStr << ("fired up");
+		else if (random <= 4)	OStr << ("horny");
+		else if (random <= 6)	OStr << ("randy");
+		else /*            */	OStr << ("backed up");
 		OStr << " ";
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("gnomes.");
-		else if (random <= 4)	OStr << gettext("halflings.");
-		else if (random <= 6)	OStr << gettext("kobolds.");
-		else /*            */	OStr << gettext("office workers.");
+		/* */if (random <= 2)	OStr << ("gnomes.");
+		else if (random <= 4)	OStr << ("halflings.");
+		else if (random <= 6)	OStr << ("kobolds.");
+		else /*            */	OStr << ("office workers.");
 		break;
 	case 8:
-		OStr << gettext("CSI ");
+		OStr << ("CSI ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("New York");
-		else if (random <= 4)	OStr << gettext("Miami");
-		else if (random <= 6)	OStr << gettext("Mundigan");
-		else /*            */	OStr << gettext("Tokyo");
-		OStr << gettext(" branch.");
+		/* */if (random <= 2)	OStr << ("New York");
+		else if (random <= 4)	OStr << ("Miami");
+		else if (random <= 6)	OStr << ("Mundigan");
+		else /*            */	OStr << ("Tokyo");
+		OStr << (" branch.");
 		break;
 	case 9:
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("frosh");
-		else if (random <= 4)	OStr << gettext("seniors");
-		else if (random <= 6)	OStr << gettext("young adults");
-		else /*            */	OStr << gettext("women");
-		OStr << gettext(" on a ");
+		/* */if (random <= 2)	OStr << ("frosh");
+		else if (random <= 4)	OStr << ("seniors");
+		else if (random <= 6)	OStr << ("young adults");
+		else /*            */	OStr << ("women");
+		OStr << (" on a ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext("serious ");
+		/* */if (random <= 5)	OStr << ("serious ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("bender");
-		else if (random <= 4)	OStr << gettext("road trip");
-		else if (random <= 6)	OStr << gettext("medical study");
-		else /*            */	OStr << gettext("lark");
-		OStr << gettext(".");
+		/* */if (random <= 2)	OStr << ("bender");
+		else if (random <= 4)	OStr << ("road trip");
+		else if (random <= 6)	OStr << ("medical study");
+		else /*            */	OStr << ("lark");
+		OStr << (".");
 		break;
 	case 10:
-		OStr << gettext("all the ");
+		OStr << ("all the ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("second stringers");
-		else if (random <= 4)	OStr << gettext("has-beens");
-		else if (random <= 6)	OStr << gettext("never-weres");
-		else /*            */	OStr << gettext("victims");
-		OStr << gettext(" from the ");
+		/* */if (random <= 2)	OStr << ("second stringers");
+		else if (random <= 4)	OStr << ("has-beens");
+		else if (random <= 6)	OStr << ("never-weres");
+		else /*            */	OStr << ("victims");
+		OStr << (" from the ");
 		random = g_Dice % 20 + 1991;
 		OStr << random;
-		OStr << gettext(" H anime season.");
+		OStr << (" H anime season.");
 		break;
 	case 11:
-		OStr << gettext("Grandpa Parkins and his extended family of ");
+		OStr << ("Grandpa Parkins and his extended family of ");
 		random = g_Dice % 200 + 100;
 		OStr << random;
-		OStr << gettext(".");
+		OStr << (".");
 		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
-			OStr << gettext(" (And ");
+			OStr << (" (And ");
 			random = g_Dice % 100 + 50;
 			OStr << random;
-			OStr << gettext(" guests.)");
+			OStr << (" guests.)");
 		}
 		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
-			OStr << gettext(" (And ");
+			OStr << (" (And ");
 			random = g_Dice % 100 + 50;
 			OStr << random;
-			OStr << gettext(" more from the extended extended family.)");
+			OStr << (" more from the extended extended family.)");
 		}
 		break;
 	}
 # pragma endregion group3
-	OStr << gettext("\n");
+	OStr << ("\n");
 	return OStr.str();
 }
 string cGirls::GetRandomBDSMString()
 {
 	int roll2 = 0, roll3 = 0, random = 0;
 	stringstream OStr;
-	OStr << gettext(" was ");
+	OStr << (" was ");
 	// Part 1:
 # pragma region bdsm1
 	// MYR: Was on a roll so I completely redid the first part
 	random = g_Dice % 12 + 1;
-	/* */if (random <= 2)	OStr << gettext("dressed as a dominatrix");
-	else if (random <= 4)	OStr << gettext("stripped naked");
-	else if (random <= 6)	OStr << gettext("dressed as a (strictly legal age) school girl");
-	else if (random <= 8)	OStr << gettext("dressed as a nurse");
-	else if (random <= 10)	OStr << gettext("put in heels");
-	else /*            */	OStr << gettext("covered in oil");
+	/* */if (random <= 2)	OStr << ("dressed as a dominatrix");
+	else if (random <= 4)	OStr << ("stripped naked");
+	else if (random <= 6)	OStr << ("dressed as a (strictly legal age) school girl");
+	else if (random <= 8)	OStr << ("dressed as a nurse");
+	else if (random <= 10)	OStr << ("put in heels");
+	else /*            */	OStr << ("covered in oil");
 	random = g_Dice % 4 + 1;
 	if (random == 3)
 	{
 		random = g_Dice % 4 + 1;
-		if (random <= 2)	OStr << gettext(", rendered helpless by drugs");
-		else 	OStr << gettext(", restrained by magic");
+		if (random <= 2)	OStr << (", rendered helpless by drugs");
+		else 	OStr << (", restrained by magic");
 	}
 	random = g_Dice % 4 + 1;
-	/* */if (random == 2)	OStr << gettext(", blindfolded");
+	/* */if (random == 2)	OStr << (", blindfolded");
 	random = g_Dice % 4 + 1;
-	/* */if (random == 2)	OStr << gettext(", gagged");
-	OStr << gettext(", and ");
+	/* */if (random == 2)	OStr << (", gagged");
+	OStr << (", and ");
 	random = g_Dice % 12 + 1;
-	/* */if (random <= 2)	OStr << gettext("chained");
-	else if (random <= 4)	OStr << gettext("lashed");
-	else if (random <= 6)	OStr << gettext("tied");
-	else if (random <= 8)	OStr << gettext("bound");
-	else if (random <= 10)	OStr << gettext("cuffed");
-	else /*            */	OStr << gettext("leashed");
+	/* */if (random <= 2)	OStr << ("chained");
+	else if (random <= 4)	OStr << ("lashed");
+	else if (random <= 6)	OStr << ("tied");
+	else if (random <= 8)	OStr << ("bound");
+	else if (random <= 10)	OStr << ("cuffed");
+	else /*            */	OStr << ("leashed");
 	random = g_Dice % 4 + 1;
-	/* */if (random == 3)	OStr << gettext(", arms behind her back");
+	/* */if (random == 3)	OStr << (", arms behind her back");
 	random = g_Dice % 4 + 1;
-	/* */if (random == 2)	OStr << gettext(", fettered");
+	/* */if (random == 2)	OStr << (", fettered");
 	random = g_Dice % 4 + 1;
-	/* */if (random == 2)	OStr << gettext(", spread eagle");
+	/* */if (random == 2)	OStr << (", spread eagle");
 	random = g_Dice % 4 + 1;
-	/* */if (random == 2)	OStr << gettext(", upside down");
+	/* */if (random == 2)	OStr << (", upside down");
 	OStr << " ";
 	random = g_Dice % 16 + 1;
-	/* */if (random <= 2)	OStr << gettext("to a bed");
-	else if (random <= 4)	OStr << gettext("to a post");
-	else if (random <= 6)	OStr << gettext("to a wall");
-	else if (random <= 8)	OStr << gettext("to vertical stocks");
-	else if (random <= 10)	OStr << gettext("to a table");
-	else if (random <= 12)	OStr << gettext("on a wooden horse");
-	else if (random <= 14)	OStr << gettext("in stocks");
-	else /*            */	OStr << gettext("at the dog house");
+	/* */if (random <= 2)	OStr << ("to a bed");
+	else if (random <= 4)	OStr << ("to a post");
+	else if (random <= 6)	OStr << ("to a wall");
+	else if (random <= 8)	OStr << ("to vertical stocks");
+	else if (random <= 10)	OStr << ("to a table");
+	else if (random <= 12)	OStr << ("on a wooden horse");
+	else if (random <= 14)	OStr << ("in stocks");
+	else /*            */	OStr << ("at the dog house");
 # pragma endregion bdsm1
 	// Part 2
 # pragma region bdsm2
-	OStr << gettext(". ");
+	OStr << (". ");
 	roll2 = g_Dice % 8 + 1;
 	switch (roll2)
 	{
 	case 1:
-		OStr << gettext("She was fucked ");
+		OStr << ("She was fucked ");
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("with a rake");
-		else if (random <= 4)	OStr << gettext("with a giant dildo");
-		else if (random <= 6)	OStr << gettext("and flogged");
-		else if (random <= 8)	OStr << gettext("and lashed");
-		else if (random <= 10)	OStr << gettext("tenderly");
-		else /*            */	OStr << gettext("like a dog");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("with a rake");
+		else if (random <= 4)	OStr << ("with a giant dildo");
+		else if (random <= 6)	OStr << ("and flogged");
+		else if (random <= 8)	OStr << ("and lashed");
+		else if (random <= 10)	OStr << ("tenderly");
+		else /*            */	OStr << ("like a dog");
+		OStr << (" by");
 		break;
 	case 2:
-		OStr << gettext("Explanations were necessary before she was ");
+		OStr << ("Explanations were necessary before she was ");
 		random = g_Dice % 14 + 1;
-		/* */if (random <= 2)	OStr << gettext("screwed");
-		else if (random <= 4)	OStr << gettext("penetrated");
-		else if (random <= 6)	OStr << gettext("abused");
-		else if (random <= 8)	OStr << gettext("whipped");
-		else if (random <= 10)	OStr << gettext("yelled at");
-		else if (random <= 12)	OStr << gettext("banged repeatedly");
-		else /*            */	OStr << gettext("smacked around");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("screwed");
+		else if (random <= 4)	OStr << ("penetrated");
+		else if (random <= 6)	OStr << ("abused");
+		else if (random <= 8)	OStr << ("whipped");
+		else if (random <= 10)	OStr << ("yelled at");
+		else if (random <= 12)	OStr << ("banged repeatedly");
+		else /*            */	OStr << ("smacked around");
+		OStr << (" by");
 		break;
 	case 3:
-		OStr << gettext("Her holes were filled ");
+		OStr << ("Her holes were filled ");
 		random = g_Dice % 16 + 1;
-		/* */if (random <= 2)	OStr << gettext("with wiggly things");
-		else if (random <= 4)	OStr << gettext("with vibrating things");
-		else if (random <= 6)	OStr << gettext("with sex toys");
-		else if (random <= 8)	OStr << gettext("by things with uncomfortable edges");
-		else if (random <= 10)	OStr << gettext("with marbles");
-		else if (random <= 12)	OStr << gettext("with foreign objects");
-		else if (random <= 14)	OStr << gettext("with hopes and dreams");
-		else /*            */	OStr << gettext("with semen");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("with wiggly things");
+		else if (random <= 4)	OStr << ("with vibrating things");
+		else if (random <= 6)	OStr << ("with sex toys");
+		else if (random <= 8)	OStr << ("by things with uncomfortable edges");
+		else if (random <= 10)	OStr << ("with marbles");
+		else if (random <= 12)	OStr << ("with foreign objects");
+		else if (random <= 14)	OStr << ("with hopes and dreams");
+		else /*            */	OStr << ("with semen");
+		OStr << (" by");
 		break;
 	case 4:
-		OStr << gettext("A massive aphrodisiac was administered before she was ");
+		OStr << ("A massive aphrodisiac was administered before she was ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("teased");
-		else if (random <= 4)	OStr << gettext("fucked");
-		else if (random <= 6)	OStr << gettext("left alone");
-		else if (random <= 8)	OStr << gettext("repeatedly brought to the edge of orgasm, but not over");
-		else /*            */	OStr << gettext("mercilessly tickled by a feather wielded");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("teased");
+		else if (random <= 4)	OStr << ("fucked");
+		else if (random <= 6)	OStr << ("left alone");
+		else if (random <= 8)	OStr << ("repeatedly brought to the edge of orgasm, but not over");
+		else /*            */	OStr << ("mercilessly tickled by a feather wielded");
+		OStr << (" by");
 		break;
 	case 5:
-		OStr << gettext("Entertainment was demanded before she was ");
+		OStr << ("Entertainment was demanded before she was ");
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("humped");
-		else if (random <= 4)	OStr << gettext("rough-housed");
-		else if (random <= 6)	OStr << gettext("pinched over and over");
-		else if (random <= 8)	OStr << gettext("probed by instruments");
-		else if (random <= 10)	OStr << gettext("fondled roughly");
-		else /*            */	OStr << gettext("sent away");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("humped");
+		else if (random <= 4)	OStr << ("rough-housed");
+		else if (random <= 6)	OStr << ("pinched over and over");
+		else if (random <= 8)	OStr << ("probed by instruments");
+		else if (random <= 10)	OStr << ("fondled roughly");
+		else /*            */	OStr << ("sent away");
+		OStr << (" by");
 		break;
 	case 6:
-		OStr << gettext("She was pierced repeatedly by ");
+		OStr << ("She was pierced repeatedly by ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("needles");
-		else if (random <= 4)	OStr << gettext("magic missiles");
-		else /*            */	OStr << gettext("evil thoughts");
-		OStr << gettext(" from");
+		/* */if (random <= 2)	OStr << ("needles");
+		else if (random <= 4)	OStr << ("magic missiles");
+		else /*            */	OStr << ("evil thoughts");
+		OStr << (" from");
 		break;
 	case 7:
 		//OStr <<"She had ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("Weights");
-		else if (random <= 4)	OStr << gettext("Christmas ornaments");
-		else if (random <= 6)	OStr << gettext("Lewd signs");
-		else if (random <= 6)	OStr << gettext("Trinkets");
-		else /*            */	OStr << gettext("Abstract symbols");
-		OStr << gettext(" were hung from her unmentionables by");
+		/* */if (random <= 2)	OStr << ("Weights");
+		else if (random <= 4)	OStr << ("Christmas ornaments");
+		else if (random <= 6)	OStr << ("Lewd signs");
+		else if (random <= 6)	OStr << ("Trinkets");
+		else /*            */	OStr << ("Abstract symbols");
+		OStr << (" were hung from her unmentionables by");
 		break;
 	case 8:
-		OStr << gettext("She was ordered to ");
+		OStr << ("She was ordered to ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("flail herself");
-		else if (random <= 4)	OStr << gettext("perform fellatio");
-		else if (random <= 6)	OStr << gettext("masturbate");
-		else /*            */	OStr << gettext("beg for it");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("flail herself");
+		else if (random <= 4)	OStr << ("perform fellatio");
+		else if (random <= 6)	OStr << ("masturbate");
+		else /*            */	OStr << ("beg for it");
+		OStr << (" by");
 		break;
 	}
 # pragma endregion bdsm2
@@ -14488,129 +14488,129 @@ string cGirls::GetRandomBDSMString()
 	roll3 = g_Dice % 18 + 1;
 	switch (roll3)
 	{
-	case 1: OStr << gettext("Iron Man."); break;
+	case 1: OStr << ("Iron Man."); break;
 	case 2:
-		OStr << gettext("the ");
+		OStr << ("the ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("wizard");
-		else if (random <= 4)	OStr << gettext("sorceress");
-		else if (random <= 6)	OStr << gettext("archmage");
-		else /*            */	OStr << gettext("warlock");
-		OStr << gettext("'s ");
+		/* */if (random <= 2)	OStr << ("wizard");
+		else if (random <= 4)	OStr << ("sorceress");
+		else if (random <= 6)	OStr << ("archmage");
+		else /*            */	OStr << ("warlock");
+		OStr << ("'s ");
 		random = g_Dice % 8;
-		/* */if (random <= 2)	OStr << gettext("golem.");
-		else if (random <= 4)	OStr << gettext("familiar.");
-		else if (random <= 6)	OStr << gettext("homoculous.");
-		else /*            */	OStr << gettext("summoned monster.");
+		/* */if (random <= 2)	OStr << ("golem.");
+		else if (random <= 4)	OStr << ("familiar.");
+		else if (random <= 6)	OStr << ("homoculous.");
+		else /*            */	OStr << ("summoned monster.");
 		break;
 	case 3:
-		OStr << gettext("the amazingly hung ");
+		OStr << ("the amazingly hung ");
 		random = g_Dice % 8;
-		if (random <= 2)	OStr << gettext("goblin.");
-		else if (random <= 4)	OStr << gettext("civic worker.");
-		else if (random <= 6)	OStr << gettext("geletanious cube.");
-		else /*            */	OStr << gettext("sentient shirt.");   // MYR: I love this one.
+		if (random <= 2)	OStr << ("goblin.");
+		else if (random <= 4)	OStr << ("civic worker.");
+		else if (random <= 6)	OStr << ("geletanious cube.");
+		else /*            */	OStr << ("sentient shirt.");   // MYR: I love this one.
 		break;
-	case 4: OStr << gettext("the pirate dressed as a ninja. (Cool things are cool.)"); break;
-	case 5: OStr << gettext("Hannibal Lecter."); break;
+	case 4: OStr << ("the pirate dressed as a ninja. (Cool things are cool.)"); break;
+	case 5: OStr << ("Hannibal Lecter."); break;
 	case 6:
-		OStr << gettext("the stoned ");
+		OStr << ("the stoned ");
 		random = g_Dice % 10 + 1;
-		if (random <= 2)	OStr << gettext("dark elf.");
-		else if (random <= 4)	OStr << gettext("gargoyle.");
-		else if (random <= 6)	OStr << gettext("earth elemental.");
-		else if (random <= 8)	OStr << gettext("astral deva.");
-		else /*            */	OStr << gettext("college kid.");
+		if (random <= 2)	OStr << ("dark elf.");
+		else if (random <= 4)	OStr << ("gargoyle.");
+		else if (random <= 6)	OStr << ("earth elemental.");
+		else if (random <= 8)	OStr << ("astral deva.");
+		else /*            */	OStr << ("college kid.");
 		break;
 	case 7:
-		OStr << gettext("your hyperactive ");
+		OStr << ("your hyperactive ");
 		random = g_Dice % 10 + 1;
-		if (random <= 2)	OStr << gettext("cousin.");
-		else if (random <= 4)	OStr << gettext("grandmother.");
-		else if (random <= 6)	OStr << gettext("grandfather.");
-		else if (random <= 8)	OStr << gettext("brother.");
-		else /*            */	OStr << gettext("sister.");
+		if (random <= 2)	OStr << ("cousin.");
+		else if (random <= 4)	OStr << ("grandmother.");
+		else if (random <= 6)	OStr << ("grandfather.");
+		else if (random <= 8)	OStr << ("brother.");
+		else /*            */	OStr << ("sister.");
 		break;
-	case 8: OStr << gettext("someone who looks exactly like you!"); break;
+	case 8: OStr << ("someone who looks exactly like you!"); break;
 	case 9:
-		OStr << gettext("the horny ");
+		OStr << ("the horny ");
 		random = g_Dice % 10 + 1;
-		if (random <= 2)	OStr << gettext("genie.");
-		else if (random <= 4)	OStr << gettext("fishmonger.");
-		else if (random <= 6)	OStr << gettext("chauffeur.");
-		else if (random <= 8)	OStr << gettext("Autobot.");
-		else /*            */	OStr << gettext("thought.");
+		if (random <= 2)	OStr << ("genie.");
+		else if (random <= 4)	OStr << ("fishmonger.");
+		else if (random <= 6)	OStr << ("chauffeur.");
+		else if (random <= 8)	OStr << ("Autobot.");
+		else /*            */	OStr << ("thought.");
 		break;
 	case 10:
-		OStr << gettext("the rampaging ");
+		OStr << ("the rampaging ");
 		random = g_Dice % 10 + 1;
-		if (random <= 2)	OStr << gettext("english professor.");
-		else if (random <= 4)	OStr << gettext("peace activist.");
-		else if (random <= 6)	OStr << gettext("color red.");
-		else if (random <= 8)	OStr << gettext("special forces agent.");
-		else /*            */	OStr << gettext("chef.");
+		if (random <= 2)	OStr << ("english professor.");
+		else if (random <= 4)	OStr << ("peace activist.");
+		else if (random <= 6)	OStr << ("color red.");
+		else if (random <= 8)	OStr << ("special forces agent.");
+		else /*            */	OStr << ("chef.");
 		break;
 	case 11:
 		random = g_Dice % 10 + 1;
-		if (random <= 2)	OStr << gettext("disloyal thugs");
-		else if (random <= 4)	OStr << gettext("girls");
-		else if (random <= 6)	OStr << gettext("dissatisfied customers");
-		else if (random <= 8)	OStr << gettext("workers");
-		else /*            */	OStr << gettext("malicious agents");
-		OStr << gettext(" from a competing brothel."); break;
-	case 12: OStr << gettext("a cruel ");
+		if (random <= 2)	OStr << ("disloyal thugs");
+		else if (random <= 4)	OStr << ("girls");
+		else if (random <= 6)	OStr << ("dissatisfied customers");
+		else if (random <= 8)	OStr << ("workers");
+		else /*            */	OStr << ("malicious agents");
+		OStr << (" from a competing brothel."); break;
+	case 12: OStr << ("a cruel ");
 		random = g_Dice % 8 + 1;
-		if (random <= 2)	OStr << gettext("Cyberman.");
-		else if (random <= 4)	OStr << gettext("Dalek.");
-		else if (random <= 6)	OStr << gettext("Newtype.");
-		else /*            */	OStr << gettext("Gundam.");
+		if (random <= 2)	OStr << ("Cyberman.");
+		else if (random <= 4)	OStr << ("Dalek.");
+		else if (random <= 6)	OStr << ("Newtype.");
+		else /*            */	OStr << ("Gundam.");
 		break;
-	case 13: OStr << gettext("Sexbot Mk-");
+	case 13: OStr << ("Sexbot Mk-");
 		random = g_Dice % 200 + 50;
 		OStr << random;
-		OStr << gettext(".");
+		OStr << (".");
 		break;
 	case 14:
-		OStr << gettext("underage kids ");
+		OStr << ("underage kids ");
 		random = g_Dice % 10 + 1;
-		if (random <= 2)	OStr << gettext("(Who claim to be of age.)");
-		else if (random <= 4)	OStr << gettext("(Who snuck in.)");
-		else if (random <= 6)	OStr << gettext("(Who are somehow related to the Brothel Master, so its ok.)");
-		else if (random <= 8)	OStr << gettext("(They paid, so who cares?)");
-		else /*            */	OStr << gettext("(We must corrupt them while they're still young.)");
+		if (random <= 2)	OStr << ("(Who claim to be of age.)");
+		else if (random <= 4)	OStr << ("(Who snuck in.)");
+		else if (random <= 6)	OStr << ("(Who are somehow related to the Brothel Master, so its ok.)");
+		else if (random <= 8)	OStr << ("(They paid, so who cares?)");
+		else /*            */	OStr << ("(We must corrupt them while they're still young.)");
 		break;
-	case 15: OStr << gettext("Grandpa Parkins from down the street."); break;
+	case 15: OStr << ("Grandpa Parkins from down the street."); break;
 	case 16:
-		OStr << gettext("the ... thing living ");
+		OStr << ("the ... thing living ");
 		random = g_Dice % 10 + 1;
-		if (random <= 2)	OStr << gettext("in the underwear drawer");
-		else if (random <= 4)	OStr << gettext("in the sex-toy box");
-		else if (random <= 6)	OStr << gettext("under the bed");
-		else if (random <= 8)	OStr << gettext("in her shadow");
-		else /*            */	OStr << gettext("in her psyche");
-		OStr << gettext(".");
+		if (random <= 2)	OStr << ("in the underwear drawer");
+		else if (random <= 4)	OStr << ("in the sex-toy box");
+		else if (random <= 6)	OStr << ("under the bed");
+		else if (random <= 8)	OStr << ("in her shadow");
+		else /*            */	OStr << ("in her psyche");
+		OStr << (".");
 		break;
-	case 17: OStr << gettext("the senior member of the cult of ");
+	case 17: OStr << ("the senior member of the cult of ");
 		random = g_Dice % 10 + 1;
-		if (random <= 2)	OStr << gettext("tentacles.");
-		else if (random <= 4)	OStr << gettext("unending pain.");
-		else if (random <= 6)	OStr << gettext("joy and happiness.");
-		else if (random <= 8)	OStr << gettext("Whore Master developers.");
-		else /*            */	OStr << gettext("eunuchs.");
+		if (random <= 2)	OStr << ("tentacles.");
+		else if (random <= 4)	OStr << ("unending pain.");
+		else if (random <= 6)	OStr << ("joy and happiness.");
+		else if (random <= 8)	OStr << ("Whore Master developers.");
+		else /*            */	OStr << ("eunuchs.");
 		break;
 	case 18:
-		OStr << gettext("this wierdo who appeared out of this blue box called a ");
+		OStr << ("this wierdo who appeared out of this blue box called a ");
 		random = g_Dice % 10 + 1;
-		if (random <= 5)	OStr << gettext("TARDIS.");
-		else /*            */	OStr << gettext("TURDIS"); // How many people will say I made a spelling mistake?
+		if (random <= 5)	OStr << ("TARDIS.");
+		else /*            */	OStr << ("TURDIS"); // How many people will say I made a spelling mistake?
 		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
 			OStr << " ";
 			random = g_Dice % 10 + 1;
-			/* */if (random <= 2)	OStr << gettext("His female companion was in on the action too.");
-			else if (random <= 4)	OStr << gettext("His mechanical dog was involved as well.");
-			else if (random <= 6)	OStr << gettext("His female companion and mechanical dog did lewd things to each other while they watched.");
+			/* */if (random <= 2)	OStr << ("His female companion was in on the action too.");
+			else if (random <= 4)	OStr << ("His mechanical dog was involved as well.");
+			else if (random <= 6)	OStr << ("His female companion and mechanical dog did lewd things to each other while they watched.");
 		}
 		break;
 	}
@@ -14623,117 +14623,117 @@ string cGirls::GetRandomBeastString()
 	int roll1 = 0, roll2 = 0, roll3 = 0, random = 0;
 	stringstream OStr;
 	bool NeedAnd = false;
-	OStr << gettext(" was ");
+	OStr << (" was ");
 # pragma region beast1
 	roll1 = g_Dice % 7 + 1;   // Remember to update this when new strings are added
 	switch (roll1)
 	{
-	case 1: OStr << gettext("filled with ");
+	case 1: OStr << ("filled with ");
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("vibrating");
-		else if (random <= 4)	OStr << gettext("wiggling");
-		else if (random <= 6)	OStr << gettext("living");
-		else if (random <= 8)	OStr << gettext("energetic");
-		else if (random <= 10)	OStr << gettext("big");
-		else 	OStr << gettext("pokey");
-		OStr << gettext(" things that ");
+		/* */if (random <= 2)	OStr << ("vibrating");
+		else if (random <= 4)	OStr << ("wiggling");
+		else if (random <= 6)	OStr << ("living");
+		else if (random <= 8)	OStr << ("energetic");
+		else if (random <= 10)	OStr << ("big");
+		else 	OStr << ("pokey");
+		OStr << (" things that ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("tickled");
-		else if (random <= 4)	OStr << gettext("pleasured");
-		else if (random <= 6)	OStr << gettext("massaged");
-		else /*            */	OStr << gettext("scraped");
-		OStr << gettext(" her insides");
+		/* */if (random <= 2)	OStr << ("tickled");
+		else if (random <= 4)	OStr << ("pleasured");
+		else if (random <= 6)	OStr << ("massaged");
+		else /*            */	OStr << ("scraped");
+		OStr << (" her insides");
 		break;
 	case 2:
-		OStr << gettext("forced against ");
+		OStr << ("forced against ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("a wall");
-		else if (random <= 4)	OStr << gettext("a window");
-		else if (random <= 6)	OStr << gettext("another client");
-		else /*            */	OStr << gettext("another girl");
-		OStr << gettext(" and told to ");
+		/* */if (random <= 2)	OStr << ("a wall");
+		else if (random <= 4)	OStr << ("a window");
+		else if (random <= 6)	OStr << ("another client");
+		else /*            */	OStr << ("another girl");
+		OStr << (" and told to ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("spread her legs");
-		else if (random <= 4)	OStr << gettext("give up hope");
-		else if (random <= 6)	OStr << gettext("hold on tight");
-		else /*            */	OStr << gettext("smile through it");
+		/* */if (random <= 2)	OStr << ("spread her legs");
+		else if (random <= 4)	OStr << ("give up hope");
+		else if (random <= 6)	OStr << ("hold on tight");
+		else /*            */	OStr << ("smile through it");
 		break;
 	case 3:
-		OStr << gettext("worried by the ");
+		OStr << ("worried by the ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("huge size");
-		else if (random <= 4)	OStr << gettext("skill");
-		else if (random <= 6)	OStr << gettext("reputation");
-		else /*            */	OStr << gettext("aggressiveness");
-		OStr << gettext(" of the client");
+		/* */if (random <= 2)	OStr << ("huge size");
+		else if (random <= 4)	OStr << ("skill");
+		else if (random <= 6)	OStr << ("reputation");
+		else /*            */	OStr << ("aggressiveness");
+		OStr << (" of the client");
 		break;
 	case 4:
-		OStr << gettext("stripped down to her ");
+		OStr << ("stripped down to her ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("g-string");
-		else if (random <= 4)	OStr << gettext("panties");
-		else if (random <= 6)	OStr << gettext("bra and panties");
-		else if (random <= 8)	OStr << gettext("teddy");
-		else /*            */	OStr << gettext("skin");
-		OStr << gettext(" and covered in ");
+		/* */if (random <= 2)	OStr << ("g-string");
+		else if (random <= 4)	OStr << ("panties");
+		else if (random <= 6)	OStr << ("bra and panties");
+		else if (random <= 8)	OStr << ("teddy");
+		else /*            */	OStr << ("skin");
+		OStr << (" and covered in ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("compliments");
-		else if (random <= 4)	OStr << gettext("abuse");
-		else if (random <= 6)	OStr << gettext("peanut butter");
-		else if (random <= 8)	OStr << gettext("honey");
-		else /*            */	OStr << gettext("motor oil");
+		/* */if (random <= 2)	OStr << ("compliments");
+		else if (random <= 4)	OStr << ("abuse");
+		else if (random <= 6)	OStr << ("peanut butter");
+		else if (random <= 8)	OStr << ("honey");
+		else /*            */	OStr << ("motor oil");
 		break;
 	case 5:
-		OStr << gettext("chained up in the ");
+		OStr << ("chained up in the ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("dungeon");
-		else if (random <= 4)	OStr << gettext("den");
-		else if (random <= 6)	OStr << gettext("kitchen");
-		else if (random <= 8)	OStr << gettext("most public of places");
-		else /*            */	OStr << gettext("backyard");
-		OStr << gettext(" and her ");
+		/* */if (random <= 2)	OStr << ("dungeon");
+		else if (random <= 4)	OStr << ("den");
+		else if (random <= 6)	OStr << ("kitchen");
+		else if (random <= 8)	OStr << ("most public of places");
+		else /*            */	OStr << ("backyard");
+		OStr << (" and her ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("arms");
-		else if (random <= 4)	OStr << gettext("legs");
-		else /*            */	OStr << gettext("arms and legs");
-		OStr << gettext(" were lashed to posts");
+		/* */if (random <= 2)	OStr << ("arms");
+		else if (random <= 4)	OStr << ("legs");
+		else /*            */	OStr << ("arms and legs");
+		OStr << (" were lashed to posts");
 		break;
 	case 6:
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("tied up");
-		else if (random <= 4)	OStr << gettext("wrapped up");
-		else if (random <= 6)	OStr << gettext("trapped");
-		else if (random <= 8)	OStr << gettext("bound");
-		else /*            */	OStr << gettext("covered");
-		OStr << gettext(" in ");
+		/* */if (random <= 2)	OStr << ("tied up");
+		else if (random <= 4)	OStr << ("wrapped up");
+		else if (random <= 6)	OStr << ("trapped");
+		else if (random <= 8)	OStr << ("bound");
+		else /*            */	OStr << ("covered");
+		OStr << (" in ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("flesh");
-		else if (random <= 4)	OStr << gettext("tentacles");
-		else if (random <= 6)	OStr << gettext("cellophane");
-		else if (random <= 8)	OStr << gettext("tape");
-		else /*            */	OStr << gettext("false promises");
-		OStr << gettext(" and ");
+		/* */if (random <= 2)	OStr << ("flesh");
+		else if (random <= 4)	OStr << ("tentacles");
+		else if (random <= 6)	OStr << ("cellophane");
+		else if (random <= 8)	OStr << ("tape");
+		else /*            */	OStr << ("false promises");
+		OStr << (" and ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("groped");
-		else if (random <= 4)	OStr << gettext("tweaked");
-		else if (random <= 6)	OStr << gettext("licked");
-		else if (random <= 8)	OStr << gettext("spanked");
-		else /*            */	OStr << gettext("left alone");
-		OStr << gettext(" for hours");
+		/* */if (random <= 2)	OStr << ("groped");
+		else if (random <= 4)	OStr << ("tweaked");
+		else if (random <= 6)	OStr << ("licked");
+		else if (random <= 8)	OStr << ("spanked");
+		else /*            */	OStr << ("left alone");
+		OStr << (" for hours");
 		break;
 	case 7:
-		OStr << gettext("pushed to the limits of ");
+		OStr << ("pushed to the limits of ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("flexibility");
-		else if (random <= 4)	OStr << gettext("endurance");
-		else if (random <= 6)	OStr << gettext("patience");
-		else if (random <= 8)	OStr << gettext("consciousness");
-		else /*            */	OStr << gettext("sanity");
-		OStr << gettext(" and ");
+		/* */if (random <= 2)	OStr << ("flexibility");
+		else if (random <= 4)	OStr << ("endurance");
+		else if (random <= 6)	OStr << ("patience");
+		else if (random <= 8)	OStr << ("consciousness");
+		else /*            */	OStr << ("sanity");
+		OStr << (" and ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("cried out");
-		else if (random <= 4)	OStr << gettext("swooned");
-		else /*            */	OStr << gettext("spasmed");
+		/* */if (random <= 2)	OStr << ("cried out");
+		else if (random <= 4)	OStr << ("swooned");
+		else /*            */	OStr << ("spasmed");
 		break;
 	}
 # pragma endregion beast1
@@ -14744,115 +14744,115 @@ string cGirls::GetRandomBeastString()
 	switch (roll2)
 	{
 	case 1:
-		OStr << gettext("She ");
+		OStr << ("She ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("smoothly");
-		else if (random <= 4)	OStr << gettext("roughly");
-		else if (random <= 6)	OStr << gettext("lustily");
-		else if (random <= 8)	OStr << gettext("repeatedly");
-		else /*            */	OStr << gettext("orgasmically");
+		/* */if (random <= 2)	OStr << ("smoothly");
+		else if (random <= 4)	OStr << ("roughly");
+		else if (random <= 6)	OStr << ("lustily");
+		else if (random <= 8)	OStr << ("repeatedly");
+		else /*            */	OStr << ("orgasmically");
 		OStr << " ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("fucked");
-		else if (random <= 4)	OStr << gettext("railed");
-		else if (random <= 6)	OStr << gettext("banged");
-		else if (random <= 8)	OStr << gettext("screwed");
-		else /*            */	OStr << gettext("pleasured");
+		/* */if (random <= 2)	OStr << ("fucked");
+		else if (random <= 4)	OStr << ("railed");
+		else if (random <= 6)	OStr << ("banged");
+		else if (random <= 8)	OStr << ("screwed");
+		else /*            */	OStr << ("pleasured");
 		break;
 	case 2:
-		OStr << gettext("She was ");
+		OStr << ("She was ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("teased");
-		else if (random <= 4)	OStr << gettext("taunted");
-		else /*            */	OStr << gettext("roughed up");
-		OStr << gettext(" and ");
+		/* */if (random <= 2)	OStr << ("teased");
+		else if (random <= 4)	OStr << ("taunted");
+		else /*            */	OStr << ("roughed up");
+		OStr << (" and ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("orally");
+		/* */if (random <= 2)	OStr << ("orally");
 		else if (random <= 4)	OStr << "";         // MYR: This isn't a bug.  'physically violated' is redundant, so this just prints 'violated'
-		else if (random <= 6)	OStr << gettext("mentally");
-		else if (random <= 8)	OStr << gettext("repeatedly");
-		else /*            */	OStr << gettext("haughtily");
-		OStr << gettext(" violated by");
+		else if (random <= 6)	OStr << ("mentally");
+		else if (random <= 8)	OStr << ("repeatedly");
+		else /*            */	OStr << ("haughtily");
+		OStr << (" violated by");
 		break;
 	case 3:
-		OStr << gettext("She was drenched in ");
+		OStr << ("She was drenched in ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("cum");
-		else if (random <= 4)	OStr << gettext("sweat");
-		else if (random <= 6) 	OStr << gettext("broken hopes and dreams");
-		else if (random <= 8)	OStr << gettext("Koolaid");
-		else /*            */	OStr << gettext("sticky secretions");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("cum");
+		else if (random <= 4)	OStr << ("sweat");
+		else if (random <= 6) 	OStr << ("broken hopes and dreams");
+		else if (random <= 8)	OStr << ("Koolaid");
+		else /*            */	OStr << ("sticky secretions");
+		OStr << (" by");
 		break;
 	case 4:
-		OStr << gettext("She ");
+		OStr << ("She ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("moaned");
-		else if (random <= 4)	OStr << gettext("winced");
-		else if (random <= 6) 	OStr << gettext("swooned");
-		else if (random <= 8) 	OStr << gettext("orgasmed");
-		else /*            */	OStr << gettext("begged for more");
-		OStr << gettext(" as her stomach repeatedly poked out from ");
+		/* */if (random <= 2)	OStr << ("moaned");
+		else if (random <= 4)	OStr << ("winced");
+		else if (random <= 6) 	OStr << ("swooned");
+		else if (random <= 8) 	OStr << ("orgasmed");
+		else /*            */	OStr << ("begged for more");
+		OStr << (" as her stomach repeatedly poked out from ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("thrusts");
-		else if (random <= 4)	OStr << gettext("strokes");
-		else if (random <= 6) 	OStr << gettext("fistings");
-		else /*            */	OStr << gettext("a powerful fucking");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("thrusts");
+		else if (random <= 4)	OStr << ("strokes");
+		else if (random <= 6) 	OStr << ("fistings");
+		else /*            */	OStr << ("a powerful fucking");
+		OStr << (" by");
 		break;
 	case 5:
-		OStr << gettext("She used her ");
-		if (g_Dice % 10 + 1 <= 5)	{ NeedAnd = true;	OStr << gettext("hands, "); }
-		if (g_Dice % 10 + 1 <= 5)	{ NeedAnd = true;	OStr << gettext("feet, "); }
-		if (g_Dice % 10 + 1 <= 5)	{ NeedAnd = true;	OStr << gettext("mouth, "); }
-		if (NeedAnd == true)		{ NeedAnd = false;	OStr << gettext("and "); }
-		if (g_Dice % 10 + 1 <= 5)	OStr << gettext("pussy");
-		else /*            */	OStr << gettext("holes");
-		OStr << gettext(" to ");
+		OStr << ("She used her ");
+		if (g_Dice % 10 + 1 <= 5)	{ NeedAnd = true;	OStr << ("hands, "); }
+		if (g_Dice % 10 + 1 <= 5)	{ NeedAnd = true;	OStr << ("feet, "); }
+		if (g_Dice % 10 + 1 <= 5)	{ NeedAnd = true;	OStr << ("mouth, "); }
+		if (NeedAnd == true)		{ NeedAnd = false;	OStr << ("and "); }
+		if (g_Dice % 10 + 1 <= 5)	OStr << ("pussy");
+		else /*            */	OStr << ("holes");
+		OStr << (" to ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("please");
-		else if (random <= 4)	OStr << gettext("pleasure");
-		else /*            */	OStr << gettext("tame");
+		/* */if (random <= 2)	OStr << ("please");
+		else if (random <= 4)	OStr << ("pleasure");
+		else /*            */	OStr << ("tame");
 		break;
 	case 6:
-		OStr << gettext("She shook with ");
+		OStr << ("She shook with ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("orgasmic joy");
-		else if (random <= 4)	OStr << gettext("searing pain");
-		else if (random <= 6)	OStr << gettext("frustration");
-		else if (random <= 8)	OStr << gettext("agony");
-		else /*            */	OStr << gettext("frustrated boredom");
-		OStr << gettext(" when fondled by");
+		/* */if (random <= 2)	OStr << ("orgasmic joy");
+		else if (random <= 4)	OStr << ("searing pain");
+		else if (random <= 6)	OStr << ("frustration");
+		else if (random <= 8)	OStr << ("agony");
+		else /*            */	OStr << ("frustrated boredom");
+		OStr << (" when fondled by");
 		break;
 	case 7:
-		OStr << gettext("It felt like she was ");
+		OStr << ("It felt like she was ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("ripping apart");
-		else if (random <= 4)	OStr << gettext("exploding");
-		else if (random <= 6)	OStr << gettext("imploding");
-		else if (random <= 8)	OStr << gettext("nothing");
-		else /*            */	OStr << gettext("absent");
-		OStr << gettext(" when handled by");
+		/* */if (random <= 2)	OStr << ("ripping apart");
+		else if (random <= 4)	OStr << ("exploding");
+		else if (random <= 6)	OStr << ("imploding");
+		else if (random <= 8)	OStr << ("nothing");
+		else /*            */	OStr << ("absent");
+		OStr << (" when handled by");
 		break;
 	case 8:
-		OStr << gettext("She passed out from ");
+		OStr << ("She passed out from ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("pleasure");
-		else if (random <= 4)	OStr << gettext("pain");
-		else if (random <= 6)	OStr << gettext("boredom");
-		else if (random <= 8)	OStr << gettext("rough sex");
-		else /*            */	OStr << gettext("inactivity");
-		OStr << gettext(" from");
+		/* */if (random <= 2)	OStr << ("pleasure");
+		else if (random <= 4)	OStr << ("pain");
+		else if (random <= 6)	OStr << ("boredom");
+		else if (random <= 8)	OStr << ("rough sex");
+		else /*            */	OStr << ("inactivity");
+		OStr << (" from");
 		break;
 	case 9:
-		OStr << gettext("She screamed as ");
+		OStr << ("She screamed as ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("wrenching pain");
-		else if (random <= 4)	OStr << gettext("powerful orgasms");
-		else if (random <= 6)	OStr << gettext("incredible sensations");
-		else if (random <= 8)	OStr << gettext("freight trains");
-		else /*            */	OStr << gettext("lots and lots of nothing");
-		OStr << gettext(" thundered through her from");
+		/* */if (random <= 2)	OStr << ("wrenching pain");
+		else if (random <= 4)	OStr << ("powerful orgasms");
+		else if (random <= 6)	OStr << ("incredible sensations");
+		else if (random <= 8)	OStr << ("freight trains");
+		else /*            */	OStr << ("lots and lots of nothing");
+		OStr << (" thundered through her from");
 		break;
 	}
 # pragma endregion beast2
@@ -14863,150 +14863,150 @@ string cGirls::GetRandomBeastString()
 	switch (roll3)
 	{
 	case 1:
-		OStr << gettext("the ravenous ");
+		OStr << ("the ravenous ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("tentacles.");
-		else if (random <= 4)	OStr << gettext(", sex-starved essences of lust.");
-		else if (random <= 6)	OStr << gettext("Balhannoth. (Monster Manual 4, pg. 15.)");
-		else if (random <= 8)	OStr << gettext("priest.");
-		else /*            */	OStr << gettext("Yugoloth.");
+		/* */if (random <= 2)	OStr << ("tentacles.");
+		else if (random <= 4)	OStr << (", sex-starved essences of lust.");
+		else if (random <= 6)	OStr << ("Balhannoth. (Monster Manual 4, pg. 15.)");
+		else if (random <= 8)	OStr << ("priest.");
+		else /*            */	OStr << ("Yugoloth.");
 		break;
 	case 2:
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext("an evil");
-		else /*            */	OStr << gettext("a misunderstood");
+		/* */if (random <= 5)	OStr << ("an evil");
+		else /*            */	OStr << ("a misunderstood");
 		OStr << " ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("tengu.");
-		else if (random <= 4)	OStr << gettext("Whore Master developer.");
-		else if (random <= 6)	OStr << gettext("school girl.");
-		else if (random <= 8)	OStr << gettext("garden hose.");
-		else /*            */	OStr << gettext("thought.");
+		/* */if (random <= 2)	OStr << ("tengu.");
+		else if (random <= 4)	OStr << ("Whore Master developer.");
+		else if (random <= 6)	OStr << ("school girl.");
+		else if (random <= 8)	OStr << ("garden hose.");
+		else /*            */	OStr << ("thought.");
 		break;
 	case 3:
-		OStr << gettext("a major ");
+		OStr << ("a major ");
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("demon");
-		else if (random <= 4)	OStr << gettext("devil");
-		else if (random <= 6)	OStr << gettext("oni");
-		else if (random <= 8)	OStr << gettext("fire elemental");
-		else if (random <= 10)	OStr << gettext("god");
-		else /*            */	OStr << gettext("Mr. Coffee");
-		OStr << gettext(" from the outer planes.");
+		/* */if (random <= 2)	OStr << ("demon");
+		else if (random <= 4)	OStr << ("devil");
+		else if (random <= 6)	OStr << ("oni");
+		else if (random <= 8)	OStr << ("fire elemental");
+		else if (random <= 10)	OStr << ("god");
+		else /*            */	OStr << ("Mr. Coffee");
+		OStr << (" from the outer planes.");
 		break;
 	case 4:
-		OStr << gettext("the angel.");
+		OStr << ("the angel.");
 		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
-			OStr << gettext(" ('");
+			OStr << (" ('");
 			random = g_Dice % 8 + 1;
-			/* */if (random <= 2)	OStr << gettext("You're very pretty");
-			else if (random <= 4)	OStr << gettext("I was never here");
-			else if (random <= 6)	OStr << gettext("I had a great time");
-			else /*            */	OStr << gettext("I didn't know my body could do that");
-			OStr << gettext("' he said.)");
+			/* */if (random <= 2)	OStr << ("You're very pretty");
+			else if (random <= 4)	OStr << ("I was never here");
+			else if (random <= 6)	OStr << ("I had a great time");
+			else /*            */	OStr << ("I didn't know my body could do that");
+			OStr << ("' he said.)");
 		}
 		break;
 	case 5:
-		OStr << gettext("the ");
+		OStr << ("the ");
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("demon");
-		else if (random <= 4)	OStr << gettext("major devil");
-		else if (random <= 6)	OStr << gettext("oni");
-		else if (random <= 8)	OStr << gettext("earth elemental");
-		else if (random <= 10)	OStr << gettext("raging hormome beast");
-		else /*            */	OStr << gettext("Happy Fun Ball");
-		OStr << gettext(" with an urge to exercise his ");
+		/* */if (random <= 2)	OStr << ("demon");
+		else if (random <= 4)	OStr << ("major devil");
+		else if (random <= 6)	OStr << ("oni");
+		else if (random <= 8)	OStr << ("earth elemental");
+		else if (random <= 10)	OStr << ("raging hormome beast");
+		else /*            */	OStr << ("Happy Fun Ball");
+		OStr << (" with an urge to exercise his ");
 		random = g_Dice % 30 + 20;
 		OStr << random;
-		OStr << gettext(" cocks and ");
+		OStr << (" cocks and ");
 		random = g_Dice % 30 + 20;
 		OStr << random;
-		OStr << gettext(" claws.");
+		OStr << (" claws.");
 		break;
-	case 6: OStr << gettext("the swamp thing with (wait for it) swamp tentacles!"); break;
-	case 7: OStr << gettext("the pirnja gestalt. (The revolution is coming.)"); break;
+	case 6: OStr << ("the swamp thing with (wait for it) swamp tentacles!"); break;
+	case 7: OStr << ("the pirnja gestalt. (The revolution is coming.)"); break;
 	case 8:
-		OStr << gettext("the color ");
+		OStr << ("the color ");
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("purple");
-		else if (random <= 4)	OStr << gettext("seven");  // MYR: Not a mistake. I meant to write 'seven'.
-		else if (random <= 6)	OStr << gettext("mauve");
-		else if (random <= 8)	OStr << gettext("silver");
-		else if (random <= 10)	OStr << gettext("ochre");
-		else /*            */	OStr << gettext("pale yellow");
-		OStr << gettext(".");
+		/* */if (random <= 2)	OStr << ("purple");
+		else if (random <= 4)	OStr << ("seven");  // MYR: Not a mistake. I meant to write 'seven'.
+		else if (random <= 6)	OStr << ("mauve");
+		else if (random <= 8)	OStr << ("silver");
+		else if (random <= 10)	OStr << ("ochre");
+		else /*            */	OStr << ("pale yellow");
+		OStr << (".");
 		break;
 	case 9:
 		random = g_Dice % 10 + 5;
 		OStr << random;
-		OStr << gettext(" werewolves wearing ");
+		OStr << (" werewolves wearing ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("true");
-		else if (random <= 4)	OStr << gettext("minor artifact");
-		else if (random <= 6)	OStr << gettext("greater artifact");
-		else if (random <= 10)	OStr << gettext("godly");
-		else /*            */	OStr << gettext("near omnipitent");
-		OStr << gettext(" rings of the ");
+		/* */if (random <= 2)	OStr << ("true");
+		else if (random <= 4)	OStr << ("minor artifact");
+		else if (random <= 6)	OStr << ("greater artifact");
+		else if (random <= 10)	OStr << ("godly");
+		else /*            */	OStr << ("near omnipitent");
+		OStr << (" rings of the ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("eternal");
-		else if (random <= 4)	OStr << gettext("body breaking");
-		else if (random <= 6)	OStr << gettext("vorporal");
-		else if (random <= 10)	OStr << gettext("transcendent");
-		else /*            */	OStr << gettext("incorporeal");
-		OStr << gettext(" hard-on.");
+		/* */if (random <= 2)	OStr << ("eternal");
+		else if (random <= 4)	OStr << ("body breaking");
+		else if (random <= 6)	OStr << ("vorporal");
+		else if (random <= 10)	OStr << ("transcendent");
+		else /*            */	OStr << ("incorporeal");
+		OStr << (" hard-on.");
 		break;
 	case 10:
 		random = g_Dice % 10 + 5;
 		OStr << random;
-		OStr << gettext(" Elder Gods.");
+		OStr << (" Elder Gods.");
 		random = g_Dice % 10 + 1;
 		if (random <= 4)
 		{
-			OStr << gettext(" (She thought ");
+			OStr << (" (She thought ");
 			random = g_Dice % 12 + 1;
-			/* */if (random <= 2)	OStr << gettext("Cthulhu");
-			else if (random <= 4)	OStr << gettext("Hastur");
-			else if (random <= 6)	OStr << gettext("an Old One");
-			else if (random <= 8)	OStr << gettext("Shub-Niggurath");
-			else if (random <= 10)	OStr << gettext("Nyarlathotep");
-			else /*            */	OStr << gettext("Yog-Sothoth");
-			OStr << gettext(" was amongst them, but blacked out after a minute or so.)");
+			/* */if (random <= 2)	OStr << ("Cthulhu");
+			else if (random <= 4)	OStr << ("Hastur");
+			else if (random <= 6)	OStr << ("an Old One");
+			else if (random <= 8)	OStr << ("Shub-Niggurath");
+			else if (random <= 10)	OStr << ("Nyarlathotep");
+			else /*            */	OStr << ("Yog-Sothoth");
+			OStr << (" was amongst them, but blacked out after a minute or so.)");
 		}
 		break;
 	case 11:
-		OStr << gettext("the level ");
+		OStr << ("the level ");
 		random = g_Dice % 20 + 25;
 		OStr << random;
-		OStr << gettext(" epic paragon ");
+		OStr << (" epic paragon ");
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("troll");
-		else if (random <= 4)	OStr << gettext("beholder");
-		else if (random <= 6)	OStr << gettext("displacer beast");
-		else if (random <= 8)	OStr << gettext("ettin");
-		else if (random <= 10)	OStr << gettext("gargoyle");
-		else /*            */	OStr << gettext("fire extinguisher");
-		OStr << gettext(" with ");
+		/* */if (random <= 2)	OStr << ("troll");
+		else if (random <= 4)	OStr << ("beholder");
+		else if (random <= 6)	OStr << ("displacer beast");
+		else if (random <= 8)	OStr << ("ettin");
+		else if (random <= 10)	OStr << ("gargoyle");
+		else /*            */	OStr << ("fire extinguisher");
+		OStr << (" with ");
 		random = g_Dice % 20 + 20;
 		OStr << random;
-		OStr << gettext(" strength and ");
+		OStr << (" strength and ");
 		random = g_Dice % 20 + 20;
 		OStr << random;
-		OStr << gettext(" constitution.");
+		OStr << (" constitution.");
 		break;
 	case 12:
-		OStr << gettext("the phalanx of ");
+		OStr << ("the phalanx of ");
 		random = g_Dice % 10 + 1;
-		if (random <= 2)	OStr << gettext("horny orcs.");
-		else if (random <= 4)	OStr << gettext("goblins.");
-		else if (random <= 6)	OStr << gettext("sentient marbles.");
-		else if (random <= 8)	OStr << gettext("living garden gnomes.");
-		else /*            */	OStr << gettext("bugbears.");
+		if (random <= 2)	OStr << ("horny orcs.");
+		else if (random <= 4)	OStr << ("goblins.");
+		else if (random <= 6)	OStr << ("sentient marbles.");
+		else if (random <= 8)	OStr << ("living garden gnomes.");
+		else /*            */	OStr << ("bugbears.");
 		break;
 	}
 # pragma endregion beast3
-	OStr << gettext("\n");
+	OStr << ("\n");
 	return OStr.str();
 }
 string cGirls::GetRandomLesString()
@@ -15021,334 +15021,334 @@ string cGirls::GetRandomLesString()
 	{
 	case 1:
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("aggressively");
-		else if (random <= 4)	OStr << gettext("tenderly");
-		else if (random <= 6)	OStr << gettext("slowly");
-		else if (random <= 8) 	OStr << gettext("authoratively");
-		else /*            */	OStr << gettext("violently");
+		/* */if (random <= 2)	OStr << ("aggressively");
+		else if (random <= 4)	OStr << ("tenderly");
+		else if (random <= 6)	OStr << ("slowly");
+		else if (random <= 8) 	OStr << ("authoratively");
+		else /*            */	OStr << ("violently");
 		OStr << " ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("straddled");
-		else if (random <= 4)	OStr << gettext("scissored");
-		else if (random <= 6)	OStr << gettext("symmetrically docked with");
-		else if (random <= 8) 	OStr << gettext("cowgirled");
-		else /*            */	OStr << gettext("69ed");
-		OStr << gettext(" the woman");
+		/* */if (random <= 2)	OStr << ("straddled");
+		else if (random <= 4)	OStr << ("scissored");
+		else if (random <= 6)	OStr << ("symmetrically docked with");
+		else if (random <= 8) 	OStr << ("cowgirled");
+		else /*            */	OStr << ("69ed");
+		OStr << (" the woman");
 		break;
 	case 2:
 		random = g_Dice % 10 + 1;
-		if (random <= 5)	OStr << gettext("shaved her");
-		else /*          */	OStr << gettext("was shaved");
-		OStr << gettext(" with a +");
+		if (random <= 5)	OStr << ("shaved her");
+		else /*          */	OStr << ("was shaved");
+		OStr << (" with a +");
 		plus = g_Dice % 7 + 4;
 		OStr << plus;
 		OStr << " ";
 		random = g_Dice % 14 + 1;
-		/* */if (random <= 2)	OStr << gettext("vorporal broadsword");
+		/* */if (random <= 2)	OStr << ("vorporal broadsword");
 		else if (random <= 4)
 		{
-			OStr << gettext("dagger, +");
+			OStr << ("dagger, +");
 			plus = plus + g_Dice % 5 + 2;
 			OStr << plus;
-			OStr << gettext(" vs pubic hair");
+			OStr << (" vs pubic hair");
 		}
-		else if (random <= 6)	OStr << gettext("flaming sickle");
-		else if (random <= 8) 	OStr << gettext("lightning burst bo-staff");
-		else if (random <= 10)	OStr << gettext("human bane greatsword");
-		else if (random <= 12)	OStr << gettext("acid burst warhammer");
-		else /*            */	OStr << gettext("feral halfling");
+		else if (random <= 6)	OStr << ("flaming sickle");
+		else if (random <= 8) 	OStr << ("lightning burst bo-staff");
+		else if (random <= 10)	OStr << ("human bane greatsword");
+		else if (random <= 12)	OStr << ("acid burst warhammer");
+		else /*            */	OStr << ("feral halfling");
 		break;
 	case 3:
-		OStr << gettext("had a ");
+		OStr << ("had a ");
 		random = g_Dice % 14 + 1;
-		/* */if (random <= 2)	OStr << gettext("pleasant");
-		else if (random <= 4)	OStr << gettext("long");
-		else if (random <= 6)	OStr << gettext("heartfelt");
-		else if (random <= 8)	OStr << gettext("deeply personal");
-		else if (random <= 10)	OStr << gettext("emotional");
-		else if (random <= 12)	OStr << gettext("angry");
-		else /*            */	OStr << gettext("violent");
-		OStr << gettext(" conversation with her lady-client about ");
+		/* */if (random <= 2)	OStr << ("pleasant");
+		else if (random <= 4)	OStr << ("long");
+		else if (random <= 6)	OStr << ("heartfelt");
+		else if (random <= 8)	OStr << ("deeply personal");
+		else if (random <= 10)	OStr << ("emotional");
+		else if (random <= 12)	OStr << ("angry");
+		else /*            */	OStr << ("violent");
+		OStr << (" conversation with her lady-client about ");
 		random = g_Dice % 16 + 1;
-		/* */if (random <= 2)	OStr << gettext("sadism");
-		else if (random <= 4)	OStr << gettext("particle physics");
-		else if (random <= 6)	OStr << gettext("domination");
-		else if (random <= 8) 	OStr << gettext("submission");
-		else if (random <= 10)	OStr << gettext("brewing poisons");
-		else if (random <= 12) 	OStr << gettext("flower arranging");
-		else if (random <= 14)	OStr << gettext("the Brothel Master");
-		else /*            */	OStr << gettext("assassination techniques");
+		/* */if (random <= 2)	OStr << ("sadism");
+		else if (random <= 4)	OStr << ("particle physics");
+		else if (random <= 6)	OStr << ("domination");
+		else if (random <= 8) 	OStr << ("submission");
+		else if (random <= 10)	OStr << ("brewing poisons");
+		else if (random <= 12) 	OStr << ("flower arranging");
+		else if (random <= 14)	OStr << ("the Brothel Master");
+		else /*            */	OStr << ("assassination techniques");
 		break;
 	case 4:
-		OStr << gettext("massaged the woman with ");
+		OStr << ("massaged the woman with ");
 		// MYR: Ok, I know I'm being super-silly
 		random = g_Dice % 20 + 1;
-		/* */if (random <= 2)	OStr << gettext("bath oil");
-		else if (random <= 4)	OStr << gettext("aloe vera");
-		else if (random <= 6)	OStr << gettext("the tears of Chuck Norris's many victims");
-		else if (random <= 8)	OStr << gettext("the blood of innocent angels");
-		else if (random <= 10)	OStr << gettext("Unicorn blood");
-		else if (random <= 12)	OStr << gettext("Unicorn's tears");
-		else if (random <= 14)	OStr << gettext("a strong aphrodisiac");
-		else if (random <= 16)	OStr << gettext("oil of greater breast growth");
-		else if (random <= 18)	OStr << gettext("potent oil of massive breast growth");
-		else /*            */	OStr << gettext("oil of camel-toe growth");
+		/* */if (random <= 2)	OStr << ("bath oil");
+		else if (random <= 4)	OStr << ("aloe vera");
+		else if (random <= 6)	OStr << ("the tears of Chuck Norris's many victims");
+		else if (random <= 8)	OStr << ("the blood of innocent angels");
+		else if (random <= 10)	OStr << ("Unicorn blood");
+		else if (random <= 12)	OStr << ("Unicorn's tears");
+		else if (random <= 14)	OStr << ("a strong aphrodisiac");
+		else if (random <= 16)	OStr << ("oil of greater breast growth");
+		else if (random <= 18)	OStr << ("potent oil of massive breast growth");
+		else /*            */	OStr << ("oil of camel-toe growth");
 		break;
 	case 5:
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext("put a ball gag and blindfolded on");
-		else /*            */	OStr << gettext("put a sensory deprivation hood on");
-		OStr << gettext(", was ");
+		/* */if (random <= 5)	OStr << ("put a ball gag and blindfolded on");
+		else /*            */	OStr << ("put a sensory deprivation hood on");
+		OStr << (", was ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("lashed");
-		else if (random <= 4)	OStr << gettext("cuffed");
-		else if (random <= 6)	OStr << gettext("tied");
-		else /*            */	OStr << gettext("chained");
-		OStr << gettext(" to a ");
+		/* */if (random <= 2)	OStr << ("lashed");
+		else if (random <= 4)	OStr << ("cuffed");
+		else if (random <= 6)	OStr << ("tied");
+		else /*            */	OStr << ("chained");
+		OStr << (" to a ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("bed");
-		else if (random <= 4)	OStr << gettext("bench");
-		else if (random <= 6)	OStr << gettext("table");
-		else /*            */	OStr << gettext("post");
-		OStr << gettext(" and ");
+		/* */if (random <= 2)	OStr << ("bed");
+		else if (random <= 4)	OStr << ("bench");
+		else if (random <= 6)	OStr << ("table");
+		else /*            */	OStr << ("post");
+		OStr << (" and ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("symmetrically docked");
-		else if (random <= 4)	OStr << gettext("69ed");
-		else if (random <= 6)	OStr << gettext("straddled");
-		else /*            */	OStr << gettext("scissored");
+		/* */if (random <= 2)	OStr << ("symmetrically docked");
+		else if (random <= 4)	OStr << ("69ed");
+		else if (random <= 6)	OStr << ("straddled");
+		else /*            */	OStr << ("scissored");
 		break;
 	case 6:
 		// MYR: This is like a friggin movie! The epic story of the whore and her customer.
-		OStr << gettext("looked at the woman across from her. ");
+		OStr << ("looked at the woman across from her. ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("Position");
-		else if (random <= 4)	OStr << gettext("Toy");
-		else if (random <= 6)	OStr << gettext("Oil");
-		else if (random <= 8)	OStr << gettext("Bed sheet color");
-		else /*            */	OStr << gettext("Price");
-		OStr << gettext(" was to be ");
+		/* */if (random <= 2)	OStr << ("Position");
+		else if (random <= 4)	OStr << ("Toy");
+		else if (random <= 6)	OStr << ("Oil");
+		else if (random <= 8)	OStr << ("Bed sheet color");
+		else /*            */	OStr << ("Price");
+		OStr << (" was to be ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("a trial");
-		else if (random <= 4)	OStr << gettext("decided");
-		else if (random <= 6)	OStr << gettext("resolved");
-		else /*            */	OStr << gettext("dictated");
-		OStr << gettext(" by combat. Both had changed into ");
+		/* */if (random <= 2)	OStr << ("a trial");
+		else if (random <= 4)	OStr << ("decided");
+		else if (random <= 6)	OStr << ("resolved");
+		else /*            */	OStr << ("dictated");
+		OStr << (" by combat. Both had changed into ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("string bikinis");
-		else if (random <= 4)	OStr << gettext("lingerie");
-		else if (random <= 6)	OStr << gettext("body stockings");
-		else if (random <= 8)	OStr << gettext("their old school uniforms");
-		else /*            */	OStr << gettext("dominatrix outfits");
-		OStr << gettext(" and wielded ");
+		/* */if (random <= 2)	OStr << ("string bikinis");
+		else if (random <= 4)	OStr << ("lingerie");
+		else if (random <= 6)	OStr << ("body stockings");
+		else if (random <= 8)	OStr << ("their old school uniforms");
+		else /*            */	OStr << ("dominatrix outfits");
+		OStr << (" and wielded ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("whips");
-		else if (random <= 4)	OStr << gettext("staves");
-		else if (random <= 6)	OStr << gettext("boxing gloves");
-		else /*            */	OStr << gettext("cat-o-nine tails");
-		OStr << gettext(" of ");
+		/* */if (random <= 2)	OStr << ("whips");
+		else if (random <= 4)	OStr << ("staves");
+		else if (random <= 6)	OStr << ("boxing gloves");
+		else /*            */	OStr << ("cat-o-nine tails");
+		OStr << (" of ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("explosive orgasms");
-		else if (random <= 4)	OStr << gettext("clothes shredding");
-		else if (random <= 6)	OStr << gettext("humiliation");
-		else if (random <= 8) 	OStr << gettext("subjugation");
-		else /*            */	OStr << gettext("brutal stunning");
-		OStr << gettext(". ");
+		/* */if (random <= 2)	OStr << ("explosive orgasms");
+		else if (random <= 4)	OStr << ("clothes shredding");
+		else if (random <= 6)	OStr << ("humiliation");
+		else if (random <= 8) 	OStr << ("subjugation");
+		else /*            */	OStr << ("brutal stunning");
+		OStr << (". ");
 		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
-			OStr << gettext("They stared at each other across the ");
+			OStr << ("They stared at each other across the ");
 			random = g_Dice % 8 + 1;
-			/* */if (random <= 2)	OStr << gettext("mud");
-			else if (random <= 4)	OStr << gettext("jello");
-			else if (random <= 6)	OStr << gettext("whip cream");
-			else /*            */	OStr << gettext("clothes-eating slime");
-			OStr << gettext(" pit.");
+			/* */if (random <= 2)	OStr << ("mud");
+			else if (random <= 4)	OStr << ("jello");
+			else if (random <= 6)	OStr << ("whip cream");
+			else /*            */	OStr << ("clothes-eating slime");
+			OStr << (" pit.");
 		}
-		OStr << gettext(" A bell sounded! They charged and ");
+		OStr << (" A bell sounded! They charged and ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("dueled");
-		else if (random <= 4)	OStr << gettext("fought it out");
-		else if (random <= 6)	OStr << gettext("battled");
-		OStr << gettext("!\n");
+		/* */if (random <= 2)	OStr << ("dueled");
+		else if (random <= 4)	OStr << ("fought it out");
+		else if (random <= 6)	OStr << ("battled");
+		OStr << ("!\n");
 		random = g_Dice % 10 + 1;
-		if (random <= 6)	OStr << gettext("The customer won");
-		else /*          */	OStr << gettext("The customer was vanquished");
+		if (random <= 6)	OStr << ("The customer won");
+		else /*          */	OStr << ("The customer was vanquished");
 		break;
 	}
 # pragma endregion les1
-	OStr << gettext(". ");
+	OStr << (". ");
 	// Part 2
 # pragma region les2
 	roll2 = g_Dice % 8 + 1;
 	switch (roll2)
 	{
 	case 1:
-		OStr << gettext("She was ");
+		OStr << ("She was ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("tormented");
-		else if (random <= 4)	OStr << gettext("teased");
-		else if (random <= 6)	OStr << gettext("massaged");
-		else if (random <= 8) 	OStr << gettext("frustrated");
-		else /*            */	OStr << gettext("satisfied");
-		OStr << gettext(" with ");
+		/* */if (random <= 2)	OStr << ("tormented");
+		else if (random <= 4)	OStr << ("teased");
+		else if (random <= 6)	OStr << ("massaged");
+		else if (random <= 8) 	OStr << ("frustrated");
+		else /*            */	OStr << ("satisfied");
+		OStr << (" with ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("great care");
-		else if (random <= 4)	OStr << gettext("deva feathers");
-		else if (random <= 6)	OStr << gettext("drug-soaked sex toys");
-		else if (random <= 8) 	OStr << gettext("extreme skill");
-		else /*            */	OStr << gettext("wild abandon");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("great care");
+		else if (random <= 4)	OStr << ("deva feathers");
+		else if (random <= 6)	OStr << ("drug-soaked sex toys");
+		else if (random <= 8) 	OStr << ("extreme skill");
+		else /*            */	OStr << ("wild abandon");
+		OStr << (" by");
 		break;
 	case 2:
 		// Case 1 reversed and reworded
-		OStr << gettext("She used ");
+		OStr << ("She used ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("phoenix down");
-		else if (random <= 4)	OStr << gettext("deva feathers");
-		else if (random <= 6)	OStr << gettext("drug-soaked sex toys");
-		else if (random <= 8) 	OStr << gettext("restraints");
-		else /*            */	OStr << gettext("her wiles");
-		OStr << gettext(" to ");
+		/* */if (random <= 2)	OStr << ("phoenix down");
+		else if (random <= 4)	OStr << ("deva feathers");
+		else if (random <= 6)	OStr << ("drug-soaked sex toys");
+		else if (random <= 8) 	OStr << ("restraints");
+		else /*            */	OStr << ("her wiles");
+		OStr << (" to ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("torment");
-		else if (random <= 4)	OStr << gettext("tease");
-		else if (random <= 6)	OStr << gettext("massage");
-		else if (random <= 8) 	OStr << gettext("frustrate");
-		else /*            */	OStr << gettext("satisfy");
+		/* */if (random <= 2)	OStr << ("torment");
+		else if (random <= 4)	OStr << ("tease");
+		else if (random <= 6)	OStr << ("massage");
+		else if (random <= 8) 	OStr << ("frustrate");
+		else /*            */	OStr << ("satisfy");
 		break;
 	case 3:
-		OStr << gettext("She ");
+		OStr << ("She ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("fingered");
-		else if (random <= 4)	OStr << gettext("teased");
-		else if (random <= 6)	OStr << gettext("caressed");
-		else if (random <= 8) 	OStr << gettext("fondled");
-		else /*            */	OStr << gettext("pinched");
-		OStr << gettext(" the client's ");
+		/* */if (random <= 2)	OStr << ("fingered");
+		else if (random <= 4)	OStr << ("teased");
+		else if (random <= 6)	OStr << ("caressed");
+		else if (random <= 8) 	OStr << ("fondled");
+		else /*            */	OStr << ("pinched");
+		OStr << (" the client's ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("clit");
-		else if (random <= 4)	OStr << gettext("clitorus");
-		else /*            */	OStr << gettext("love bud");
-		OStr << gettext(" and expertly elicited orgasm after orgasm from");
+		/* */if (random <= 2)	OStr << ("clit");
+		else if (random <= 4)	OStr << ("clitorus");
+		else /*            */	OStr << ("love bud");
+		OStr << (" and expertly elicited orgasm after orgasm from");
 		break;
 	case 4:
-		OStr << gettext("Her ");
+		OStr << ("Her ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("clit");
-		else if (random <= 4)	OStr << gettext("clitorus");
-		else /*            */	OStr << gettext("love bud");
-		OStr << gettext(" was ");
+		/* */if (random <= 2)	OStr << ("clit");
+		else if (random <= 4)	OStr << ("clitorus");
+		else /*            */	OStr << ("love bud");
+		OStr << (" was ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("fingered");
-		else if (random <= 4)	OStr << gettext("teased");
-		else if (random <= 6)	OStr << gettext("caressed");
-		else if (random <= 8) 	OStr << gettext("fondled");
-		else /*            */	OStr << gettext("pinched");
-		OStr << gettext(" and she orgasmed repeatedly under the expert touch of");
+		/* */if (random <= 2)	OStr << ("fingered");
+		else if (random <= 4)	OStr << ("teased");
+		else if (random <= 6)	OStr << ("caressed");
+		else if (random <= 8) 	OStr << ("fondled");
+		else /*            */	OStr << ("pinched");
+		OStr << (" and she orgasmed repeatedly under the expert touch of");
 		break;
 	case 5:
-		OStr << gettext("She ");
+		OStr << ("She ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("clam wrestled");
-		else if (random <= 4)	OStr << gettext("rubbed");
-		else if (random <= 6)	OStr << gettext("attacked");
-		else /*            */	OStr << gettext("hammered");
-		OStr << gettext(" the client's ");
+		/* */if (random <= 2)	OStr << ("clam wrestled");
+		else if (random <= 4)	OStr << ("rubbed");
+		else if (random <= 6)	OStr << ("attacked");
+		else /*            */	OStr << ("hammered");
+		OStr << (" the client's ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("clit");
-		else if (random <= 4)	OStr << gettext("clitorus");
-		else if (random <= 6)	OStr << gettext("love bud");
-		else /*            */	OStr << gettext("vagina");
-		OStr << gettext(" causing waves of orgasms to thunder through");
+		/* */if (random <= 2)	OStr << ("clit");
+		else if (random <= 4)	OStr << ("clitorus");
+		else if (random <= 6)	OStr << ("love bud");
+		else /*            */	OStr << ("vagina");
+		OStr << (" causing waves of orgasms to thunder through");
 		break;
 	case 6:
-		OStr << gettext("She ");
+		OStr << ("She ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("single mindedly");
-		else if (random <= 4)	OStr << gettext("repeatedly");
-		else /*            */	OStr << gettext("roughly");
+		/* */if (random <= 2)	OStr << ("single mindedly");
+		else if (random <= 4)	OStr << ("repeatedly");
+		else /*            */	OStr << ("roughly");
 		OStr << " ";
 		random = g_Dice % 2 + 1;
-		/* */if (random <= 2)	OStr << gettext("rubbed");
-		else if (random <= 4)	OStr << gettext("fondled");
-		else if (random <= 6)	OStr << gettext("prodded");
-		else if (random <= 8)	OStr << gettext("attacked");
-		else if (random <= 10)	OStr << gettext("tongued");
-		else /*            */	OStr << gettext("licked");
-		OStr << gettext(" the client's g-spot. Wave after wave of ");
+		/* */if (random <= 2)	OStr << ("rubbed");
+		else if (random <= 4)	OStr << ("fondled");
+		else if (random <= 6)	OStr << ("prodded");
+		else if (random <= 8)	OStr << ("attacked");
+		else if (random <= 10)	OStr << ("tongued");
+		else /*            */	OStr << ("licked");
+		OStr << (" the client's g-spot. Wave after wave of ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("orgasms");
-		else if (random <= 4)	OStr << gettext("pleasure");
-		else if (random <= 6)	OStr << gettext("powerful sensations");
-		else /*            */	OStr << gettext("indescribable joy");
+		/* */if (random <= 2)	OStr << ("orgasms");
+		else if (random <= 4)	OStr << ("pleasure");
+		else if (random <= 6)	OStr << ("powerful sensations");
+		else /*            */	OStr << ("indescribable joy");
 		OStr << " ";
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("rushed");
-		else if (random <= 4)	OStr << gettext("thundered");
-		else if (random <= 6)	OStr << gettext("cracked");
-		else /*            */	OStr << gettext("pounded");
-		OStr << gettext(" through");
+		/* */if (random <= 2)	OStr << ("rushed");
+		else if (random <= 4)	OStr << ("thundered");
+		else if (random <= 6)	OStr << ("cracked");
+		else /*            */	OStr << ("pounded");
+		OStr << (" through");
 		break;
 	case 7:
-		OStr << gettext("Wave after wave of ");
+		OStr << ("Wave after wave of ");
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("orgasms");
-		else if (random <= 4)	OStr << gettext("back-stretching joy");
-		else if (random <= 6)	OStr << gettext("madness");
-		else /*            */	OStr << gettext("incredible feeling");
+		/* */if (random <= 2)	OStr << ("orgasms");
+		else if (random <= 4)	OStr << ("back-stretching joy");
+		else if (random <= 6)	OStr << ("madness");
+		else /*            */	OStr << ("incredible feeling");
 		OStr << " ";
 		random = g_Dice % 8 + 1;
-		/* */if (random <= 2)	OStr << gettext("throbbed");
-		else if (random <= 4)	OStr << gettext("shook");
-		else if (random <= 6)	OStr << gettext("arced");
-		else /*            */	OStr << gettext("stabbed");
-		OStr << gettext(" through her as she was ");
+		/* */if (random <= 2)	OStr << ("throbbed");
+		else if (random <= 4)	OStr << ("shook");
+		else if (random <= 6)	OStr << ("arced");
+		else /*            */	OStr << ("stabbed");
+		OStr << (" through her as she was ");
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("single mindedly");
-		else if (random <= 4)	OStr << gettext("repeatedly");
-		else /*            */	OStr << gettext("roughly");
+		/* */if (random <= 2)	OStr << ("single mindedly");
+		else if (random <= 4)	OStr << ("repeatedly");
+		else /*            */	OStr << ("roughly");
 		OStr << " ";
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("rubbed");
-		else if (random <= 4)	OStr << gettext("fondled");
-		else if (random <= 6)	OStr << gettext("prodded");
-		else if (random <= 8)	OStr << gettext("attacked");
-		else if (random <= 10)	OStr << gettext("tongued");
-		else /*            */	OStr << gettext("licked");
-		OStr << gettext(" by");
+		/* */if (random <= 2)	OStr << ("rubbed");
+		else if (random <= 4)	OStr << ("fondled");
+		else if (random <= 6)	OStr << ("prodded");
+		else if (random <= 8)	OStr << ("attacked");
+		else if (random <= 10)	OStr << ("tongued");
+		else /*            */	OStr << ("licked");
+		OStr << (" by");
 		break;
 	case 8:
 		// MYR: I just remembered about \n
-		OStr << gettext("Work stopped ");
+		OStr << ("Work stopped ");
 		random = g_Dice % 14 + 1;
-		/* */if (random <= 2)	OStr << gettext("in the brothel");
-		else if (random <= 4)	OStr << gettext("on the street");
-		else if (random <= 6)	OStr << gettext("all over the block");
-		else if (random <= 8)	OStr << gettext("in the town");
-		else if (random <= 10)	OStr << gettext("within the country");
-		else  if (random <= 12)	OStr << gettext("over the whole planet");
-		else  if (random <= 12)	OStr << gettext("within the solar system");
-		else /*            */	OStr << gettext("all over the galactic sector");
-		OStr << gettext(". Everything was drowned out by:\n\n");
-		OStr << gettext("Ahhhhh!\n\n");
+		/* */if (random <= 2)	OStr << ("in the brothel");
+		else if (random <= 4)	OStr << ("on the street");
+		else if (random <= 6)	OStr << ("all over the block");
+		else if (random <= 8)	OStr << ("in the town");
+		else if (random <= 10)	OStr << ("within the country");
+		else  if (random <= 12)	OStr << ("over the whole planet");
+		else  if (random <= 12)	OStr << ("within the solar system");
+		else /*            */	OStr << ("all over the galactic sector");
+		OStr << (". Everything was drowned out by:\n\n");
+		OStr << ("Ahhhhh!\n\n");
 		random = g_Dice % 10 + 1;
 		if (random <= 5)
 		{
 			random = g_Dice % 6 + 1;
-			/* */if (random <= 2)	OStr << gettext("For the love... of aaaaahhhhh mercy.  No nnnnnnnnh more!\n\n");
-			else if (random <= 4)	OStr << gettext("oooooOOOOOO YES! ahhhhhhHHHH!\n\n");
-			else /*            */	OStr << gettext("nnnnnhhh nnnnnhhhh NNNHHHHHH!!!!\n\n");
+			/* */if (random <= 2)	OStr << ("For the love... of aaaaahhhhh mercy.  No nnnnnnnnh more!\n\n");
+			else if (random <= 4)	OStr << ("oooooOOOOOO YES! ahhhhhhHHHH!\n\n");
+			else /*            */	OStr << ("nnnnnhhh nnnnnhhhh NNNHHHHHH!!!!\n\n");
 		}
-		OStr << gettext("Annnnnhhhhhaaa!\n\n");
-		OStr << gettext("AHHHHHHHH! I'm going to ");
+		OStr << ("Annnnnhhhhhaaa!\n\n");
+		OStr << ("AHHHHHHHH! I'm going to ");
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("CCCUUUUUUMMMMMMMM!!!!!");
-		else if (random <= 4)	OStr << gettext("EEEXXXXXPLLLOOODDDDEEEE!!!");
-		else if (random <= 6)	OStr << gettext("DIEEEEEE!");
-		else if (random <= 8)	OStr << gettext("AHHHHHHHHHHH!!!!");
-		else if (random <= 10)	OStr << gettext("BRRRREEEEAAAAKKKKKK!!!!");
-		else /*            */	OStr << gettext("WAAAAHHHHHOOOOOOO!!!");
-		OStr << gettext("\nfrom ");
+		/* */if (random <= 2)	OStr << ("CCCUUUUUUMMMMMMMM!!!!!");
+		else if (random <= 4)	OStr << ("EEEXXXXXPLLLOOODDDDEEEE!!!");
+		else if (random <= 6)	OStr << ("DIEEEEEE!");
+		else if (random <= 8)	OStr << ("AHHHHHHHHHHH!!!!");
+		else if (random <= 10)	OStr << "BRRRREEEEAAAAKKKKKK!!!!");
+		else /*            */	OStr << "WAAAAHHHHHOOOOOOO!!!";
+		OStr << ("\nfrom ");
 		break;
 	}
 # pragma endregion les2
@@ -15362,20 +15362,20 @@ string cGirls::GetRandomLesString()
 	switch (roll3)
 	{
 	case 1:
-		OStr << gettext("the ");
+		OStr << ("the ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("prostitute");
-		else if (random <= 4)	OStr << gettext("street worker");
-		else if (random <= 6)	OStr << gettext("hooker");
-		else if (random <= 8)	OStr << gettext("street walker");
-		else /*            */	OStr << gettext("working girl");
-		OStr << gettext(" from a ");
+		/* */if (random <= 2)	OStr << "prostitute";
+		else if (random <= 4)	OStr << "street worker";
+		else if (random <= 6)	OStr << "hooker";
+		else if (random <= 8)	OStr << "street walker";
+		else /*            */	OStr << "working girl";
+		OStr << (" from a ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("friendly");
-		else if (random <= 4)	OStr << gettext("rival");
-		else if (random <= 6)	OStr << gettext("hostile");
-		else 	OStr << gettext("feeder");
-		OStr << gettext(" brothel.");
+		/* */if (random <= 2)	OStr << "friendly";
+		else if (random <= 4)	OStr << "rival";
+		else if (random <= 6)	OStr << "hostile";
+		else 	OStr << "feeder";
+		OStr << " brothel.";
 		break;
 	case 2:
 		BrothelNo = g_Dice%g_Brothels.GetNumBrothels();
@@ -15384,106 +15384,106 @@ string cGirls::GetRandomLesString()
 		TempGPtr = g_Brothels.GetGirl(BrothelNo, random);
 		/* */if (TempGPtr == 0)	OStr << "a girl";
 		else /*            */	OStr << TempGPtr->m_Realname;
-		OStr << gettext(" from ");
+		OStr << " from ";
 		OStr << g_Brothels.GetName(BrothelNo);
-		OStr << gettext(" brothel.");
+		OStr << " brothel.";
 		BrothelNo = -1;        // MYR: Paranoia
 		NumGirlsInBroth = -1;
 		TempGPtr = 0;
 		break;
 	case 3:
-		OStr << gettext("the ");
+		OStr << "the ";
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("sexy");
-		else if (random <= 4)	OStr << gettext("rock hard");
-		else if (random <= 6)	OStr << gettext("hot");
-		else if (random <= 8)	OStr << gettext("androgynous");
-		else if (random <= 10)	OStr << gettext("spirited");
-		else /*            */	OStr << gettext("exuberant");
-		OStr << gettext(" MILF.");
+		/* */if (random <= 2)	OStr << "sexy";
+		else if (random <= 4)	OStr << "rock hard";
+		else if (random <= 6)	OStr << "hot";
+		else if (random <= 8)	OStr << "androgynous";
+		else if (random <= 10)	OStr << "spirited");
+		else /*            */	OStr << "exuberant";
+		OStr << " MILF.";
 		break;
 	case 4:
-		OStr << gettext("the ");
+		OStr << "the ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 5)	OStr << gettext("senior");
-		else /*            */	OStr << gettext("junior");
+		/* */if (random <= 5)	OStr << "senior";
+		else /*            */	OStr << "junior";
 		OStr << " ";
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("Sorceress");
-		else if (random <= 4)	OStr << gettext("Warrioress");
-		else if (random <= 6)	OStr << gettext("Priestess");
-		else if (random <= 8)	OStr << gettext("Huntress");
-		else if (random <= 10)	OStr << gettext("Amazon");
-		else /*            */	OStr << gettext("Druidess");
-		OStr << gettext(" of the ");
+		/* */if (random <= 2)	OStr << "Sorceress";
+		else if (random <= 4)	OStr << "Warrioress";
+		else if (random <= 6)	OStr << "Priestess";
+		else if (random <= 8)	OStr << "Huntress";
+		else if (random <= 10)	OStr << "Amazon";
+		else /*            */	OStr << "Druidess";
+		OStr << (" of the ");
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("Hidden");
-		else if (random <= 4)	OStr << gettext("Silent");
-		else if (random <= 6)	OStr << gettext("Masters");
-		else if (random <= 8)	OStr << gettext("Scarlet");
-		else /*            */	OStr << gettext("Resolute");
+		/* */if (random <= 2)	OStr << "Hidden";
+		else if (random <= 4)	OStr << "Silent";
+		else if (random <= 6)	OStr << "Masters";
+		else if (random <= 8)	OStr << "Scarlet";
+		else /*            */	OStr << "Resolute";
 		OStr << " ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("Hand");
-		else if (random <= 4)	OStr << gettext("Dagger");
-		else if (random <= 6)	OStr << gettext("Will");
-		else if (random <= 8)	OStr << gettext("League");
-		else /*            */	OStr << gettext("Hearts");
-		OStr << gettext(".");
+		/* */if (random <= 2)	OStr << "Hand";
+		else if (random <= 4)	OStr << "Dagger";
+		else if (random <= 6)	OStr << "Will";
+		else if (random <= 8)	OStr << "League";
+		else /*            */	OStr << "Hearts";
+		OStr << ".";
 		break;
 	case 5:
-		OStr << gettext("the ");
+		OStr << "the ";
 		random = g_Dice % 6 + 1;
-		/* */if (random <= 2)	OStr << gettext("high-ranking");
-		else if (random <= 4)	OStr << gettext("mid-tier");
-		else /*            */	OStr << gettext("low-ranking");
+		/* */if (random <= 2)	OStr << "high-ranking";
+		else if (random <= 4)	OStr << "mid-tier";
+		else /*            */	OStr << "low-ranking";
 		OStr << " ";
 		random = g_Dice % 14 + 1;
-		/* */if (random <= 2)	OStr << gettext("elf");
-		else if (random <= 4)	OStr << gettext("woman");     // MYR: Human assumed
-		else if (random <= 6)	OStr << gettext("dryad");
-		else if (random <= 8)	OStr << gettext("succubus");
-		else if (random <= 10)	OStr << gettext("nymph");
-		else if (random <= 12)	OStr << gettext("eyrine");
-		else /*            */	OStr << gettext("cat girl");
-		OStr << gettext(" from the ");
+		/* */if (random <= 2)	OStr << "elf";
+		else if (random <= 4)	OStr << "woman";     // MYR: Human assumed
+		else if (random <= 6)	OStr << "dryad";
+		else if (random <= 8)	OStr << "succubus";
+		else if (random <= 10)	OStr << "nymph";
+		else if (random <= 12)	OStr << "eyrine";
+		else /*            */	OStr << "cat girl";
+		OStr << " from the ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("Nymphomania");
-		else if (random <= 4)	OStr << gettext("Satyriasis");
-		else if (random <= 6)	OStr << gettext("Women Who Love Sex");
-		else if (random <= 8)	OStr << gettext("Real Women Don't Marry");
-		else /*            */	OStr << gettext("Monster Sex is Best");
+		/* */if (random <= 2)	OStr << "Nymphomania";
+		else if (random <= 4)	OStr << "Satyriasis";
+		else if (random <= 6)	OStr << "Women Who Love Sex";
+		else if (random <= 8)	OStr << "Real Women Don't Marry";
+		else /*            */	OStr << "Monster Sex is Best";
 		OStr << " ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("support group");
-		else if (random <= 4)	OStr << gettext("league");
-		else if (random <= 6)	OStr << gettext("club");
-		else if (random <= 8)	OStr << gettext("faction");
-		else /*            */	OStr << gettext("guild");
-		OStr << gettext(".");
+		/* */if (random <= 2)	OStr << "support group";
+		else if (random <= 4)	OStr << "league";
+		else if (random <= 6)	OStr << "club";
+		else if (random <= 8)	OStr << "faction";
+		else /*            */	OStr << "guild";
+		OStr << ".";
 		break;
 	case 6:
-		OStr << gettext("the ");
+		OStr << "the ";
 		random = g_Dice % 10 + 1;
-		/* */if (random <= 2)	OStr << gettext("disguised");
-		else if (random <= 4)	OStr << gettext("hot");
-		else if (random <= 6)	OStr << gettext("sexy");
-		else if (random <= 8)	OStr << gettext("curvacious");
-		else /*            */	OStr << gettext("sultry");
+		/* */if (random <= 2)	OStr << "disguised";
+		else if (random <= 4)	OStr << "hot";
+		else if (random <= 6)	OStr << "sexy";
+		else if (random <= 8)	OStr << "curvacious";
+		else /*            */	OStr << "sultry";
 		OStr << " ";
 		// MYR: Covering the big fetishes/stereotpes
 		random = g_Dice % 12 + 1;
-		/* */if (random <= 2)	OStr << gettext("idol singer");
-		else if (random <= 4)	OStr << gettext("princess");
-		else if (random <= 6)	OStr << gettext("school girl");
-		else if (random <= 8)	OStr << gettext("nurse");
-		else if (random <= 10)	OStr << gettext("maid");
-		else /*            */	OStr << gettext("waitress");
-		OStr << gettext(".");
+		/* */if (random <= 2)	OStr << "idol singer";
+		else if (random <= 4)	OStr << "princess";
+		else if (random <= 6)	OStr << "school girl";
+		else if (random <= 8)	OStr << "nurse";
+		else if (random <= 10)	OStr << "maid";
+		else /*            */	OStr << "waitress";
+		OStr << ".";
 		break;
 	}
 # pragma endregion les3
-	OStr << gettext("\n");
+	OStr << "\n";
 	return OStr.str();
 }
 // MYR: Burned out before anal. Someone else feeling creative?
@@ -15561,29 +15561,29 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 
 	if (a == 0 || b == 0)
 	{
-		l.ss() << gettext("\ngirl_fights_girl: ");
-		if (a == 0 && b == 0)	l.ss() << gettext("No one");
-		else if (a == 0)		l.ss() << gettext("Only ") << b->m_Realname;
-		else if (b == 0)		l.ss() << gettext("Only ") << a->m_Realname;
-		l.ss() << gettext(" showed up for the fight so no one wins?\n");
+		l.ss() << "\ngirl_fights_girl: ";
+		if (a == 0 && b == 0)	l.ss() << "No one";
+		else if (a == 0)		l.ss() << "Only " << b->m_Realname;
+		else if (b == 0)		l.ss() << "Only " << a->m_Realname;
+		l.ss() << " showed up for the fight so no one wins?\n";
 		return 0;
 	}
 	// MYR: Sanity checks on incorporeal. It is actually possible (but very rare)
 	//      for both girls to be incorporeal.
 	if (a->has_trait("Incorporeal") && b->has_trait("Incorporeal"))
 	{
-		l.ss() << gettext("\ngirl_fights_girl: Both ") << a->m_Realname << gettext(" and ") << b->m_Realname
-			<< gettext(" are incorporeal, so the fight is a draw.\n");
+		l.ss() << "\ngirl_fights_girl: Both " << a->m_Realname << " and " << b->m_Realname
+			<< " are incorporeal, so the fight is a draw.\n";
 		return 0;
 	}
 	else if (a->has_trait("Incorporeal"))
 	{
-		l.ss() << gettext("\ngirl_fights_girl: ") << a->m_Realname << gettext(" is incorporeal, so she wins.\n");
+		l.ss() << "\ngirl_fights_girl: " << a->m_Realname << " is incorporeal, so she wins.\n";
 		return 1;
 	}
 	else if (b->has_trait("Incorporeal"))
 	{
-		l.ss() << gettext("\ngirl_fights_girl: ") << b->m_Realname << gettext(" is incorporeal, so she wins.\n");
+		l.ss() << "\ngirl_fights_girl: " << b->m_Realname << " is incorporeal, so she wins.\n";
 		return 2;
 	}
 
@@ -15621,9 +15621,9 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 	else
 		b_dodge = (g_Girls.GetStat(b, STAT_AGILITY) - g_Girls.GetStat(b, STAT_TIREDNESS));
 
-	l.ss() << gettext("Girl vs. Girl: ") << a->m_Realname << gettext(" fights ") << b->m_Realname << gettext("\n");
-	l.ss() << gettext("\t") << a->m_Realname << gettext(": Health ") << a->health() << gettext(", Dodge ") << a_dodge << gettext(", Mana ") << a->mana() << gettext("\n");
-	l.ss() << gettext("\t") << b->m_Realname << gettext(": Health ") << b->health() << gettext(", Dodge ") << b_dodge << gettext(", Mana ") << b->mana() << gettext("\n");
+	l.ss() << "Girl vs. Girl: " << a->m_Realname << " fights " << b->m_Realname << "\n";
+	l.ss() << "\t" << a->m_Realname << ": Health " << a->health() << ", Dodge " << a_dodge << ", Mana " << a->mana() << "\n";
+	l.ss() << "\t" << b->m_Realname << ": Health " << b->health() << ", Dodge " << b_dodge << ", Mana " << b->mana() << "\n";
 	l.ssend();
 
 	sGirl* Attacker = b;
@@ -15649,7 +15649,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 
 		if (attack_count > 1000)  // if the fight's not over after 1000 blows, call it a tie
 		{
-			l.ss() << gettext("The fight has gone on for too long, over 1000 (attempted) blows either way. Calling it a draw.");
+			l.ss() << "The fight has gone on for too long, over 1000 (attempted) blows either way. Calling it a draw.";
 			l.ssend();
 
 			return 0;
@@ -15674,61 +15674,61 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 		}
 
 		// Girl attacks
-		l.ss() << gettext("\t\t") << Attacker->m_Realname << gettext(" attacks: ");
+		l.ss() << "\t\t" << Attacker->m_Realname << " attacks: ";
 
 		if (attack == SKILL_MAGIC)
 		{
 			if (Attacker->mana() < 7)
-				l.ss() << gettext("Insufficient mana: using combat");
+				l.ss() << "Insufficient mana: using combat";
 			else
 			{
 				Attacker->mana(-7);
-				l.ss() << gettext("Casts a spell (mana now ") << Attacker->mana() << gettext(")");
+				l.ss() << "Casts a spell (mana now " << Attacker->mana() << ")";
 			}
 		}
 		else
-			l.ss() << gettext("Using physical attack");
+			l.ss() << "Using physical attack";
 
 		l.ssend();
 
 		int girl_attack_chance = g_Girls.GetSkill(Attacker, attack);
 		int die_roll = g_Dice.d100();
 
-		l.ss() << gettext("\t\t") << gettext("Attack chance: ") << girl_attack_chance << gettext(" Die roll: ") << die_roll;
+		l.ss() << "\t\t" << "Attack chance: " << girl_attack_chance << " Die roll: " << die_roll;
 		l.ssend();
 
 		if (die_roll > girl_attack_chance)
-			l.ss() << gettext("\t\t\t") << gettext("Miss!");
+			l.ss() << "\t\t\tMiss!";
 		else
 		{
 			int damage = g_Girls.GetCombatDamage(Attacker, attack);
-			l.ss() << gettext("\t\t\t") << gettext("Hit! base damage is ") << damage << gettext(". ");
+			l.ss() << "\t\t\t" << "Hit! base damage is " << damage << ". ";
 
 			die_roll = g_Dice.d100();
 
 			// Defender attempts Dodge
-			l.ss() << gettext("\t\t\t\t") << Defender->m_Realname << gettext(" tries to dodge: needs ") << dodge << gettext(", gets ") << die_roll << gettext(": ");
+			l.ss() << "\t\t\t\t" << Defender->m_Realname << " tries to dodge: needs " << dodge << ", gets " << die_roll << ": ";
 
 			if (die_roll <= dodge)
 			{
-				l.ss() << gettext("Success!");
+				l.ss() << "Success!";
 				l.ssend();
 			}
 			else
 			{
-				l.ss() << gettext("Failure! ");
+				l.ss() << "Failure! ";
 				l.ssend();
 
 				//int con_mod = Defender->m_Stats[STAT_CONSTITUTION] / 10;
 				int con_mod = g_Girls.GetStat(Defender, STAT_CONSTITUTION) / 10;
 				int ActualDmg = damage - con_mod;
 				if (ActualDmg <= 0)
-					l.ss() << gettext("\t\t\t\t") << Defender->m_Realname << gettext(" shrugs it off.");
+					l.ss() << "\t\t\t\t" << Defender->m_Realname << " shrugs it off.";
 				else
 				{
 					g_Girls.UpdateStat(Defender, STAT_HEALTH, -ActualDmg);
-					l.ss() << gettext("\t\t\t\t") << Defender->m_Realname << gettext(" takes ") << damage << gettext(" damage, less ") << con_mod << gettext(" for CON\n");
-					l.ss() << gettext("\t\t\t\t\t") << gettext("New health value = ") << Defender->health();
+					l.ss() << "\t\t\t\t" << Defender->m_Realname << " takes " << damage << " damage, less " << con_mod << " for CON\n";
+					l.ss() << "\t\t\t\t\tNew health value = " << Defender->health();
 				}
 			} // Didn't dodge
 		}     // Hit
@@ -15752,7 +15752,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 	// Girls exploring catacombs: Girl is "a" - and thus wins
 	if (Attacker == a)
 	{
-		l.ss() << a->m_Realname << gettext(" WINS!");
+		l.ss() << a->m_Realname << " WINS!";
 		l.ssend();
 
 		g_Girls.UpdateEnjoyment(a, ACTION_COMBAT, +1);
@@ -15761,7 +15761,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 	}
 	if (Attacker == b)  // Catacombs: Monster wins
 	{
-		l.ss() << b->m_Realname << gettext(" WINS!");
+		l.ss() << b->m_Realname << " WINS!";
 		l.ssend();
 
 		g_Girls.UpdateEnjoyment(b, ACTION_COMBAT, +1);
@@ -15769,7 +15769,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 		return 2;
 	}
 
-	l.ss() << gettext("ERROR: cGirls::girl_fights_girl - Shouldn't reach the function bottom.");
+	l.ss() << "ERROR: cGirls::girl_fights_girl - Shouldn't reach the function bottom.";
 	l.ssend();
 
 	return 0;
@@ -15987,22 +15987,22 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 			girl->add_trait("Horrific Scars", false);
 			if (g_Dice.percent(50))
 			{
-				message = gettext("She was horribly injured, and now is now covered with Horrific Scars.");
+				message = "She was horribly injured, and now is now covered with Horrific Scars.";
 			}
 			else
 			{
-				message = gettext("She was badly injured, and now has to deal with Horrific Scars.");
+				message = "She was badly injured, and now has to deal with Horrific Scars.";
 			}
 		}
 		else if (chance <= 2)
 		{
 			girl->add_trait("Small Scars", false);
-			message = gettext("She was injured and now has a couple of Small Scars.");
+			message = "She was injured and now has a couple of Small Scars.";
 		}
 		else
 		{
 			girl->add_trait("Cool Scars", false);
-			message = gettext("She was injured and scarred. As scars go however, at least they are pretty Cool Scars.");
+			message = "She was injured and scarred. As scars go however, at least they are pretty Cool Scars.";
 		}
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 	}
@@ -16019,12 +16019,12 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 		if (chance == 0)
 		{
 			girl->add_trait("One Eye", false);
-			message = gettext("Oh, no! She was badly injured, and now only has One Eye!");
+			message = "Oh, no! She was badly injured, and now only has One Eye!";
 		}
 		else
 		{
 			girl->add_trait("Eye Patch", false);
-			message = gettext("She was injured and lost an eye, but at least she has a cool Eye Patch to wear.");
+			message = "She was injured and lost an eye, but at least she has a cool Eye Patch to wear.";
 		}
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 	}
@@ -16037,7 +16037,7 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 	{
 		//injured = true;
 		girl->add_trait("Fragile", false);
-		message = gettext("Her body has become rather Fragile due to the extent of her injuries.");
+		message = "Her body has become rather Fragile due to the extent of her injuries.";
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 	}
 
@@ -16049,7 +16049,7 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 		girl->clear_pregnancy();
 		girl->happiness(-20);
 		girl->spirit(-5);
-		message = gettext("Her unborn child has been lost due to the injuries she sustained, leaving her quite distraught.");
+		message = "Her unborn child has been lost due to the injuries she sustained, leaving her quite distraught.";
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 	}
 	if (girl->carrying_monster() && g_Dice.percent((nMod)))
@@ -16059,7 +16059,7 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier)
 		girl->clear_pregnancy();
 		girl->happiness(-10);
 		girl->spirit(-5);
-		message = gettext("The creature growing inside her has been lost due to the injuries she sustained, leaving her distraught.");
+		message = "The creature growing inside her has been lost due to the injuries she sustained, leaving her distraught.";
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_WARNING);
 	}
 
@@ -16312,7 +16312,7 @@ void cGirls::updateGirlAge(sGirl* girl, bool inc_inService)
 		if (girl->age() > 20 && girl->has_trait("Lolita")) g_Girls.RemoveTrait(girl, "Lolita");
 		if (girl->age() >= 50)
 		{
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, -(g_Dice % 3 + 1));
+			girl->beauty(-(g_Dice % 3 + 1));
 		}
 	}
 }
@@ -16405,7 +16405,7 @@ void cGirls::updateSTD(sGirl* girl)
 
 	if (girl->is_dead())
 	{
-		string msg = girl->m_Realname + gettext(" has died from STDs.");
+		string msg = girl->m_Realname + " has died from STDs.";
 		girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
 		g_MessageQue.AddToQue(msg, COLOR_RED);
 	}
@@ -16495,12 +16495,12 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 {
 	os << g.m_Name << endl;
 	os << g.m_Desc << endl;
-	os << gettext("Human? ") << (g.m_Human ? gettext("Yes") : gettext("No")) << endl;
-	os << gettext("Catacomb Dweller? ") << (g.m_Catacomb ? gettext("Yes") : gettext("No")) << endl;
-	os << gettext("Arena Girl? ") << (g.m_Arena ? gettext("Yes") : gettext("No")) << endl;
-	os << gettext("Your Daughter? ") << (g.m_YourDaughter ? gettext("Yes") : gettext("No")) << endl;
-	os << gettext("Is Daughter? ") << (g.m_IsDaughter ? gettext("Yes") : gettext("No")) << endl;
-	os << gettext("Money: Min = ") << g.m_MinMoney << gettext(". Max = ") << g.m_MaxMoney << endl;
+	os << ("Human? ") << (g.m_Human ? "Yes" : "No") << endl;
+	os << ("Catacomb Dweller? ") << (g.m_Catacomb ? "Yes" : "No") << endl;
+	os << ("Arena Girl? ") << (g.m_Arena ? "Yes" : "No") << endl;
+	os << ("Your Daughter? ") << (g.m_YourDaughter ? "Yes": "No") << endl;
+	os << ("Is Daughter? ") << (g.m_IsDaughter ? "Yes" : "No") << endl;
+	os << ("Money: Min = ") << g.m_MinMoney << ". Max = " << g.m_MaxMoney << endl;
 	/*
 	*	loop through stats
 	*	setw sets a field width for the next operation,
@@ -16508,16 +16508,16 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 	*/
 	for (unsigned int i = 0; i < sGirl::max_stats; i++)
 	{
-		os << setw(14) << left << sGirl::stat_names[i] << gettext(": Min = ") << (g.m_MinStats[i]) << endl;
-		os << setw(14) << "" << gettext(": Max = ") << (g.m_MaxStats[i]) << endl;
+		os << setw(14) << left << sGirl::stat_names[i] << ": Min = " << (g.m_MinStats[i]) << endl;
+		os << setw(14) << "" << ": Max = " << (g.m_MaxStats[i]) << endl;
 	}
 	/*
 	*	loop through skills
 	*/
 	for (unsigned int i = 0; i < sGirl::max_skills; i++)
 	{
-		os << setw(14) << left << sGirl::skill_names[i] << gettext(": Min = ") << int(g.m_MinSkills[i]) << endl;
-		os << setw(14) << "" << gettext(": Max = ") << int(g.m_MaxSkills[i]) << endl;
+		os << setw(14) << left << sGirl::skill_names[i] << ": Min = " << int(g.m_MinSkills[i]) << endl;
+		os << setw(14) << "" << ": Max = " << int(g.m_MaxSkills[i]) << endl;
 	}
 	/*
 	*	loop through traits
@@ -16526,7 +16526,7 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 	{
 		string name = g.m_Traits[i]->m_Name;
 		int percent = int(g.m_TraitChance[i]);
-		os << gettext("Trait: ") << setw(14) << left << name << ": " << percent << gettext("%") << endl;
+		os << "Trait: " << setw(14) << left << name << ": " << percent << "%" << endl;
 	}
 	/*
 	*	important to return the stream, so the next
@@ -16547,7 +16547,7 @@ ostream& operator<<(ostream& os, sGirl &g)
 	{
 		os.width(20);
 		os.flags(ios::left);
-		os << g.stat_names[i] << gettext("\t: ") << int(g.m_Stats[i]) << endl;
+		os << g.stat_names[i] << "\t: " << int(g.m_Stats[i]) << endl;
 	}
 	os << endl;
 
@@ -16555,7 +16555,7 @@ ostream& operator<<(ostream& os, sGirl &g)
 	{
 		os.width(20);
 		os.flags(ios::left);
-		os << g.skill_names[i] << gettext("\t: ") << int(g.m_Skills[i]) << endl;
+		os << g.skill_names[i] << "\t: " << int(g.m_Skills[i]) << endl;
 	}
 	os << endl;
 
@@ -16757,7 +16757,7 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 	*/
 	if (has_contraception(girl)) return true;
 
-	string text = gettext("She has");
+	string text = "She has";
 	/*
 	*	for reasons I do not understand, but nevertheless think
 	*	are kind of cool, virgins have a +10 to their pregnancy
@@ -16782,12 +16782,12 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 		text += " been inseminated.";
 		break;
 	case STATUS_PREGNANT_BY_PLAYER:
-		text += " has become pregnant with your child.";
+		text += " become pregnant with your child.";
 		break;
 	case STATUS_PREGNANT:
 	default:
 		type = STATUS_PREGNANT;		// `J` rearranged and added default to make sure there are no complications
-		text += " has become pregnant.";
+		text += " become pregnant.";
 		break;
 	}
 
@@ -18096,14 +18096,14 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		interrupted = true;
 
 	/* */if (detailName == "Name")				{ ss << m_Realname; }
-	else if (detailName == "Health")			{ if (get_stat(STAT_HEALTH) <= 0) ss << gettext("DEAD"); else ss << get_stat(STAT_HEALTH) << "%"; }
+	else if (detailName == "Health")			{ if (get_stat(STAT_HEALTH) <= 0) ss << "DEAD"; else ss << get_stat(STAT_HEALTH) << "%"; }
 	else if (detailName == "Age")				{ if (get_stat(STAT_AGE) == 100) ss << "???"; else ss << get_stat(STAT_AGE); }
 	else if (detailName == "Libido")			{ ss << libido(); }
 	else if (detailName == "Rebel")				{ ss << rebel(); }
 	else if (detailName == "Looks")				{ ss << ((get_stat(STAT_BEAUTY) + get_stat(STAT_CHARISMA)) / 2) << "%"; }
 	else if (detailName == "Tiredness")			{ ss << get_stat(STAT_TIREDNESS) << "%"; }
 	else if (detailName == "Happiness")			{ ss << get_stat(STAT_HAPPINESS) << "%"; }
-	else if (detailName == "Virgin")			{ ss << (g_Girls.CheckVirginity(this) ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "Virgin")			{ ss << (g_Girls.CheckVirginity(this) ? "Yes" : "No"); }
 	else if (detailName == "Weeks_Due")
 	{
 		if (is_pregnant())
@@ -18147,7 +18147,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
 		if (DN_Job >= NUM_JOBS)
 		{
-			ss << gettext("None");
+			ss << ("None");
 		}
 		else if (DN_Job == JOB_FAKEORGASM || DN_Job == JOB_SO_STRAIGHT || DN_Job == JOB_SO_BISEXUAL || DN_Job == JOB_SO_LESBIAN)
 		{
@@ -18266,7 +18266,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else
 		{
-			ss << gettext("Error");
+			ss << ("Error");
 		}
 	}
 	else if (detailName.find("SKILL_") != string::npos)
@@ -18280,7 +18280,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else
 		{
-			ss << gettext("Error");
+			ss << Error";
 		}
 	}
 	else if (detailName.find("STATUS_") != string::npos)
@@ -18290,11 +18290,11 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		int code = lookup_status_code(status);
 		if (code != -1)
 		{
-			ss << (m_States&(1 << code) ? gettext("Yes") : gettext("No"));
+			ss << (m_States&(1 << code) ? "Yes" : "No");
 		}
 		else
 		{
-			ss << gettext("Error");
+			ss << "Error";
 		}
 	}
 	else if (detailName == "is_pregnant")
@@ -18303,7 +18303,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else if (is_pregnant())
 		{
 			int to_go = ((this)->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - (this)->m_WeeksPreg;
-			ss << gettext("Yes");
+			ss << ("Yes");
 			if (has_trait("Sterile") || has_trait("Zombie") || has_trait("Skeleton"))
 				ss << "?" << to_go << "?";	// how?
 			else
@@ -18311,7 +18311,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else if (m_PregCooldown > 0)
 		{
-			ss << gettext("No");
+			ss << ("No");
 			if (has_trait("Sterile") || has_trait("Zombie") || has_trait("Skeleton"))
 				ss << "!" << m_PregCooldown << "!";
 			else
@@ -18319,16 +18319,16 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		}
 		else if (has_trait("Zombie") || has_trait("Skeleton")) ss << "Ud.";
 		else if (has_trait("Sterile"))	    ss << "St.";
-		else if (has_trait("Fertile"))      ss << gettext("No+");
-		else if (has_trait("Broodmother"))  ss << gettext("No++");
-		else                                ss << gettext("No");
+		else if (has_trait("Fertile"))      ss << "No+";
+		else if (has_trait("Broodmother"))  ss << "No++";
+		else                                ss << "No";
 	}
-	else if (detailName == "is_slave")			{ ss << (is_slave() ? gettext("Yes") : gettext("No")); }
-	else if (detailName == "carrying_human")	{ ss << (carrying_human() ? gettext("Yes") : gettext("No")); }
-	else if (detailName == "is_addict")			{ ss << (is_addict() ? gettext("Yes") : gettext("No")); }
-	else if (detailName == "has_disease")		{ ss << (has_disease() ? gettext("Yes") : gettext("No")); }
-	else if (detailName == "is_mother")			{ ss << (is_mother() ? gettext("Yes") : gettext("No")); }
-	else if (detailName == "is_poisoned")		{ ss << (is_poisoned() ? gettext("Yes") : gettext("No")); }
+	else if (detailName == "is_slave")			{ ss << (is_slave() ? "Yes" : "No"); }
+	else if (detailName == "carrying_human")	{ ss << (carrying_human() ? "Yes" : "No"); }
+	else if (detailName == "is_addict")			{ ss << (is_addict() ? "Yes" : "No"); }
+	else if (detailName == "has_disease")		{ ss << (has_disease() ? "Yes" : "No"); }
+	else if (detailName == "is_mother")			{ ss << (is_mother() ? "Yes" : "No"); }
+	else if (detailName == "is_poisoned")		{ ss << (is_poisoned() ? "Yes" : "No"); }
 	else if (detailName == "Value")				{ ss << (int) tariff.slave_price(this, false); }
 	else if (detailName == "SO")
 	{
@@ -18337,7 +18337,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else if (has_trait("Bisexual"))	ss << "B";
 		else/*                       */	ss << "-";
 	}
-	else /*                            */		{ ss << gettext("Not found"); }
+	else /*                            */		{ ss << "Not found"; }
 	Data = ss.str();
 }
 

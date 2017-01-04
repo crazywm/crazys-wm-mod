@@ -68,17 +68,17 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		g_Girls.UpdateEnjoyment(girl, actiontype, -3);
 		if (girl->has_trait( "Sadistic") || girl->has_trait( "Merciless") || g_Girls.GetStat(girl, STAT_MORALITY) < 30)
-			ss << girlName << gettext(" hurt herself while torturing someone.\n");
+			ss << girlName << (" hurt herself while torturing someone.\n");
 		else
 		{
 			switch (roll)
 			{
-			case 0:		ss << girlName << gettext(" felt bad torturing people as she could easily see herself in the victim.\n"); break;
-			case 1:		ss << girlName << gettext(" doesn't like this as she feels it is wrong to torture people.\n"); break;
-			case 2:		ss << girlName << gettext(" feels like a bitch after one of her torture victims wept the entire time and kept begging her to stop.\n"); break;
-			case 3:		ss << girlName << gettext(" feels awful after accidentally whipping someone in an excruciating place.\n"); break;
-			case 4:		ss << girlName << gettext(" didn't enjoy this as she felt sorry for the victim.\n"); break;
-			default:	ss << girlName << gettext(" didn't enjoy this for some illogical reason. [error]\n"); break; //shouldn't happen
+			case 0:		ss << girlName << (" felt bad torturing people as she could easily see herself in the victim.\n"); break;
+			case 1:		ss << girlName << (" doesn't like this as she feels it is wrong to torture people.\n"); break;
+			case 2:		ss << girlName << (" feels like a bitch after one of her torture victims wept the entire time and kept begging her to stop.\n"); break;
+			case 3:		ss << girlName << (" feels awful after accidentally whipping someone in an excruciating place.\n"); break;
+			case 4:		ss << girlName << (" didn't enjoy this as she felt sorry for the victim.\n"); break;
+			default:	ss << girlName << (" didn't enjoy this for some illogical reason. [error]\n"); break; //shouldn't happen
 			}
 			//And a little randomness
 			if (g_Dice.percent(40))
@@ -87,21 +87,21 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				switch (roll)
 				{
 				case 0:
-					ss << gettext("She hates you for making her do this today.\n");
+					ss << ("She hates you for making her do this today.\n");
 					g_Girls.UpdateStat(girl, STAT_PCLOVE, -(g_Dice % 2));
 					g_Girls.UpdateStat(girl, STAT_PCHATE, g_Dice % 2);
 					break;
 				case 1:
-					ss << girlName << gettext(" is terrified that you treat people like this.\n");
+					ss << girlName << (" is terrified that you treat people like this.\n");
 					g_Girls.UpdateStat(girl, STAT_PCFEAR, g_Dice % 6);
 					g_Girls.UpdateStat(girl, STAT_OBEDIENCE, g_Dice % 2);
 					break;
 				case 2:
-					ss << gettext("She learned a bit about medicine while trying to stop the pain.\n");
+					ss << ("She learned a bit about medicine while trying to stop the pain.\n");
 					g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice % 10);
 					break;
 				default:
-					ss << girlName << gettext(" did something completely unexpected. [error]");
+					ss << girlName << (" did something completely unexpected. [error]");
 					break;
 				}
 			}
@@ -113,18 +113,18 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
 		switch (roll)
 		{
-		case 0:		ss << girlName << gettext(" enjoyed her job working in the dungeon.\n"); break;
-		case 1:		ss << girlName << gettext(" is turned on by the power of torturing people.\n"); break;
-		case 2:		ss << girlName << gettext(" enjoyed trying out different torture devices and watching the effects on the victim.\n"); break;
-		case 3:		ss << girlName << gettext(" spent her time in the dungeon whipping her victim in time to music to make amusing sound effects.\n"); break;
-		case 4:		ss << girlName << gettext(" uses the victim's cries and screams to to figure out the 'best' areas to torture.\n"); break;
-		default:	ss << girlName << gettext(" enjoyed this for some illogical reason. [error]\n"); break;
+		case 0:		ss << girlName << (" enjoyed her job working in the dungeon.\n"); break;
+		case 1:		ss << girlName << (" is turned on by the power of torturing people.\n"); break;
+		case 2:		ss << girlName << (" enjoyed trying out different torture devices and watching the effects on the victim.\n"); break;
+		case 3:		ss << girlName << (" spent her time in the dungeon whipping her victim in time to music to make amusing sound effects.\n"); break;
+		case 4:		ss << girlName << (" uses the victim's cries and screams to to figure out the 'best' areas to torture.\n"); break;
+		default:	ss << girlName << (" enjoyed this for some illogical reason. [error]\n"); break;
 		}
 
 		//And a little randomness
-		if ((g_Girls.GetStat(girl, STAT_MORALITY) < 20 || girl->has_trait( "Sadistic")) && g_Dice.percent(20))
+		if ((girl->morality() < 20 || girl->has_trait( "Sadistic")) && g_Dice.percent(20))
 		{
-			ss << girlName << gettext(" loved this so much she wouldn't accept any money, as long as you promise she can do it again soon.\n");
+			ss << girlName << (" loved this so much she wouldn't accept any money, as long as you promise she can do it again soon.\n");
 			g_Girls.UpdateEnjoyment(girl, actiontype, +3);
 			forFree = true;
 		}
@@ -134,27 +134,27 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			switch (roll)
 			{
 			case 0:
-				ss << girlName << gettext(" put so much energy into this it seems to have improved her fitness.\n");
+				ss << girlName << (" put so much energy into this it seems to have improved her fitness.\n");
 				g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 3);
 				break;
 			case 1:
-				ss << girlName << gettext(" went way too far, creating a hell of a mess. Still it looks like she had fun - she hasn't stopped smiling.\n");
+				ss << girlName << (" went way too far, creating a hell of a mess. Still it looks like she had fun - she hasn't stopped smiling.\n");
 				g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 5);
 				g_Girls.UpdateEnjoyment(girl, actiontype, +1);
 				brothel->m_Filthiness += 15;
 				break;
 			case 2:
-				ss << girlName << gettext(" over-exerted herself.");
+				ss << girlName << (" over-exerted herself.");
 				g_Girls.UpdateStat(girl, STAT_HEALTH, -(g_Dice % 5));
 				g_Girls.UpdateStat(girl, STAT_TIREDNESS, g_Dice % 5);
 				break;
 			case 3:
-				ss << girlName << gettext(" appreciates that you entrust her with this kind of work.");
+				ss << girlName << (" appreciates that you entrust her with this kind of work.");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, g_Dice % 2);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, -(g_Dice % 2));
 				break;
 			default:
-				ss << girlName << gettext(" did something completely unexpected. [error]");
+				ss << girlName << (" did something completely unexpected. [error]");
 				break;
 			}
 		}
@@ -176,17 +176,17 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_MORALITY, -2);
-	g_Girls.UpdateSkill(girl, SKILL_BDSM, skill);
+	girl->exp(xp);
+	girl->morality(-2);
+	girl->bdsm(skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// WD: Update flag
 	g_Brothels.TortureDone(true);
 
 	// Check for new traits
-	g_Girls.PossiblyGainNewTrait(girl, "Sadistic", 30, actiontype, girl->m_Realname + gettext(" has come to enjoy her job so much that she has become rather Sadistic."), Day0Night1);
-	g_Girls.PossiblyGainNewTrait(girl, "Merciless", 50, actiontype, girl->m_Realname + gettext(" extensive experience with torture has made her absolutely Merciless."), Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Sadistic", 30, actiontype, girl->m_Realname + (" has come to enjoy her job so much that she has become rather Sadistic."), Day0Night1);
+	g_Girls.PossiblyGainNewTrait(girl, "Merciless", 50, actiontype, girl->m_Realname + (" extensive experience with torture has made her absolutely Merciless."), Day0Night1);
 
 	return false;
 }
@@ -210,16 +210,16 @@ double cJobManager::JP_Torturer(sGirl* girl, bool estimate)		// not used
 	//and finally traits
 	//"good"
 	if (girl->has_trait( "Sadistic"))					jobperformance += 30;	//how do you like... THIS!
-	if (girl->has_trait( "Powerful Magic"))			jobperformance += 25;	//magical flame
+	if (girl->has_trait( "Powerful Magic"))			    jobperformance += 25;	//magical flame
 	if (girl->has_trait( "Strong Magic"))				jobperformance += 20;	//magical flame
-	if (girl->has_trait( "Dominatrix"))				jobperformance += 20;	//you will learn to obey me
-	if (girl->has_trait( "Merciless"))				jobperformance += 20;	//"Stop"? <shrug> I don't know that word.
-	if (girl->has_trait( "Demon"))					jobperformance += 20;	//satan taught me this move
-	if (girl->has_trait( "Aggressive"))				jobperformance += 15;	//WHAT did you say?
+	if (girl->has_trait( "Dominatrix"))				    jobperformance += 20;	//you will learn to obey me
+	if (girl->has_trait( "Merciless"))				    jobperformance += 20;	//"Stop"? <shrug> I don't know that word.
+	if (girl->has_trait( "Demon"))					    jobperformance += 20;	//satan taught me this move
+	if (girl->has_trait( "Aggressive"))				    jobperformance += 15;	//WHAT did you say?
 	if (girl->has_trait( "Assassin"))					jobperformance += 15;	//skills
-	if (girl->has_trait( "Doctor"))					jobperformance += 15;	//they call me doctor pain...
-	if (girl->has_trait( "Iron Will"))				jobperformance += 15;	//I *WILL* break you
-	if (girl->has_trait( "Alchoholic"))				jobperformance += 10;	//she's a mean drunk
+	if (girl->has_trait( "Doctor"))					    jobperformance += 15;	//they call me doctor pain...
+	if (girl->has_trait( "Iron Will"))				    jobperformance += 15;	//I *WILL* break you
+	if (girl->has_trait( "Alchoholic"))				    jobperformance += 10;	//she's a mean drunk
 	if (girl->has_trait( "Twisted"))					jobperformance += 10;	//twisted biatch
 	if (girl->has_trait( "Broken Will"))				jobperformance += 5;	//just following orders
 	if (girl->has_trait( "Mind Fucked"))				jobperformance += 5;	//let's play together
@@ -227,16 +227,16 @@ double cJobManager::JP_Torturer(sGirl* girl, bool estimate)		// not used
 	//either
 	if (girl->has_trait( "Psychic"))												//I feel your pain... such suffering...
 	{
-		if (girl->has_trait( "Masochist"))			jobperformance += 30;	//... [smiles] and I like it!
-		else												jobperformance -= 30;
+		if (girl->has_trait( "Masochist"))			    jobperformance += 30;	//... [smiles] and I like it!
+		else											jobperformance -= 30;
 	}
 
 	//"bad"
 	if (girl->has_trait( "Goddess"))					jobperformance -= 50;	//Wouldn't harm a soul
-	if (girl->has_trait( "Angel"))					jobperformance -= 40;	//Wouldn't harm a soul
+	if (girl->has_trait( "Angel"))					    jobperformance -= 40;	//Wouldn't harm a soul
 	if (girl->has_trait( "Battery Operated"))			jobperformance -= 20;	//"What is this 'pain' you feel?"
-	if (girl->has_trait( "Construct"))				jobperformance -= 20;	//"What is this 'pain' you feel?"
-	if (girl->has_trait( "Clumsy"))					jobperformance += 20;	//OW! I just whipped myself.
+	if (girl->has_trait( "Construct"))				    jobperformance -= 20;	//"What is this 'pain' you feel?"
+	if (girl->has_trait( "Clumsy"))					    jobperformance += 20;	//OW! I just whipped myself.
 
 #else
 	double jobperformance = 0.0;

@@ -657,7 +657,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		{
 			ss << "an attempt to get a discount on their bill.";
 		}
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);//girls like compliments
+		girl->happiness(5);//girls like compliments
 	}
 
 #pragma endregion
@@ -697,7 +697,9 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int d3 = g_Brothels.m_Drinks >= d1 ? 0 : d1 - g_Brothels.m_Drinks;	// Drinks needed to be bought
 	int profit = (ds * 3) - (d3 * 1);
 	g_Brothels.add_to_drinks(-d2);
-
+	// 'Mute' Updated to make it so that the game uses the config settings
+	if (profit<0) profit*=cfg.in_fact.barmaid_work();
+    else/*     */ profit*=cfg.out_fact.bar_cost();
 	if ((int)d1 > 0)
 	{
 		ss << "\n" << girlName;
@@ -828,15 +830,15 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 
 	// tiredness
-#if 0	// `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found
+#if 1	// `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found 'Mute' Updated to fix math logic if this doesnt work feel free to switch back
 	int t0 = d1;
 	int easydrinks = (girl->constitution() + girl->service()) / 4;
 	int mediumdrinks = (girl->constitution() + girl->service()) /2;
 	int haarddrinks = (girl->constitution() + girl->service());
 	int t1 = easydrinks;					// 1 tired per 20 drinks
-	int t2 = max(0, t0 - easydrinks);		// 1 tired per 10 drinks
-	int t3 = max(0, t0 - mediumdrinks);		// 1 tired per 2 drinks
-	int tired = (t1 / 20) + (t2 / 10) + (t3 / 2);
+	int t2 = max(0, t0 - t1);		        // 1 tired per 10 drinks
+	int t3 = max(0, t0 - (t1+t2));		    // 1 tired per 2 drinks
+	int tired = max(0,(t1/20))+max(0,(t2/10))+max(0,(t3/2));
 #else
 	int tired = max(1, (600 - ((int)jobperformance + (girl->constitution() * 3))) / 10);
 
@@ -868,16 +870,15 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (girl->fame() < 20 && jobperformance >= 100)		{ fame += 1; }
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 60 && jobperformance >= 185)		{ fame += 1; }
+    girl->fame(fame);
+    girl->tiredness(tired);
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_TIREDNESS, tired);
-
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	girl->exp(xp);
 	if (g_Dice % 2 == 1)
-		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
+		girl->intelligence(g_Dice%skill);
 	else
-		g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+		girl->performance(g_Dice%skill);
+	girl->service(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
@@ -906,9 +907,9 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 	// next up tiredness penalty
 #else
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_SERVICE));
+		(girl->intelligence() / 2 +
+		girl->performance() / 2 +
+		girl->service());
 #endif
 	if (!estimate)
 	{
@@ -922,28 +923,28 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 	if (girl->has_trait( "Sexy Air"))				jobperformance += 5;
 	if (girl->has_trait( "Cool Person"))			jobperformance += 10;  //people love to be around her
 	if (girl->has_trait( "Cute"))					jobperformance += 5;
-	if (girl->has_trait( "Charming")) 			jobperformance += 15;  //people like charming people
-	if (girl->has_trait( "Quick Learner"))		jobperformance += 5;
+	if (girl->has_trait( "Charming")) 			    jobperformance += 15;  //people like charming people
+	if (girl->has_trait( "Quick Learner"))		    jobperformance += 5;
 	if (girl->has_trait( "Psychic"))				jobperformance += 10;
-	if (girl->has_trait( "Mixologist"))			jobperformance += 40;
-	if (girl->has_trait( "Dick-Sucking Lips"))	jobperformance += 5;
-	if (girl->has_trait( "Long Legs"))			jobperformance += 5;
-	if (girl->has_trait( "Fleet of Foot"))		jobperformance += 10;	//fast worker
-	if (girl->has_trait( "Agile"))				jobperformance += 5;	//fast worker
-	if (girl->has_trait( "Natural Pheromones"))	jobperformance += 15;
+	if (girl->has_trait( "Mixologist"))			    jobperformance += 40;
+	if (girl->has_trait( "Dick-Sucking Lips"))	    jobperformance += 5;
+	if (girl->has_trait( "Long Legs"))			    jobperformance += 5;
+	if (girl->has_trait( "Fleet of Foot"))		    jobperformance += 10;	//fast worker
+	if (girl->has_trait( "Agile"))				    jobperformance += 5;	//fast worker
+	if (girl->has_trait( "Natural Pheromones"))	    jobperformance += 15;
 	if (girl->has_trait( "Optimist"))				jobperformance += 5;	//cheerful
 
 
 	//bad traits
-	if (girl->has_trait( "Dependant"))			jobperformance -= 50;  // needs others to do the job
+	if (girl->has_trait( "Dependant"))			    jobperformance -= 50;  // needs others to do the job
 	if (girl->has_trait( "Clumsy")) 				jobperformance -= 20;  //spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))			jobperformance -= 20;  //gets mad easy and may attack people
+	if (girl->has_trait( "Aggressive"))			    jobperformance -= 20;  //gets mad easy and may attack people
 	if (girl->has_trait( "Nervous"))				jobperformance -= 30;  //don't like to be around people
 	if (girl->has_trait( "Meek"))					jobperformance -= 20;
 	if (girl->has_trait( "Slow Learner"))			jobperformance -= 10;
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 40;  //bad idea let an alcoholic near booze
-	if (girl->has_trait( "Social Drinker"))		jobperformance -= 10;
-	if (girl->has_trait( "Bimbo"))				jobperformance -= 5;
+	if (girl->has_trait( "Alcoholic"))			    jobperformance -= 40;  //bad idea let an alcoholic near booze
+	if (girl->has_trait( "Social Drinker"))		    jobperformance -= 10;
+	if (girl->has_trait( "Bimbo"))				    jobperformance -= 5;
 
 	if (girl->has_trait( "One Arm"))				jobperformance -= 30;
 	if (girl->has_trait( "One Foot"))				jobperformance -= 20;
@@ -953,15 +954,15 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 	if (girl->has_trait( "No Feet"))				jobperformance -= 20;
 	if (girl->has_trait( "No Hands"))				jobperformance -= 50;
 	if (girl->has_trait( "No Legs"))				jobperformance -= 40;
-	if (girl->has_trait( "Blind"))				jobperformance -= 40;
+	if (girl->has_trait( "Blind"))				    jobperformance -= 40;
 	if (girl->has_trait( "Deaf"))					jobperformance -= 20;
 	if (girl->has_trait( "Retarded"))				jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))				jobperformance -= 10;//would need smoke breaks
+	if (girl->has_trait( "Smoker"))				    jobperformance -= 10;//would need smoke breaks
 
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Cum Addict"))			jobperformance -= 5;
+	if (girl->has_trait( "Fairy Dust Addict"))	    jobperformance -= 25;
+	if (girl->has_trait( "Shroud Addict"))		    jobperformance -= 25;
+	if (girl->has_trait( "Viras Blood Addict"))	    jobperformance -= 25;
+	if (girl->has_trait( "Cum Addict"))			    jobperformance -= 5;
 
 
 	return jobperformance;

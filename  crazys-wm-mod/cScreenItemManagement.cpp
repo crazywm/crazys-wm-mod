@@ -1036,7 +1036,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 			int selectedfromlist = GetSelectedItemFromList(source_owner_list);
 			targetGirl = GirlSelectedFromList(source_owner, selectedfromlist);
 
-			HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+			HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 			// take items and transfer to shop, giving money to player
 			int pos = 0;
@@ -1143,7 +1143,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 			int selectedfromlist = GetSelectedItemFromList(source_owner_list);
 			targetGirl = GirlSelectedFromList(source_owner, selectedfromlist);
 
-			HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+			HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 			int pos = 0;
 			int selection = GetNextSelectedItemFromList(source_list, 0, pos);
@@ -1183,7 +1183,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 		int selectedfromlist = GetSelectedItemFromList(target_owner_list);
 		targetGirl = GirlSelectedFromList(target_owner, selectedfromlist);
 
-		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+		HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 		if (source_owner == 0)	// player giving gift to the girl
 		{
@@ -1301,13 +1301,13 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 				// add to target Girls inventory
 				if (goodbad < 20)
 				{
-					g_Girls.UpdateStat(fromGirl, STAT_HAPPINESS, -happiness);  // previous owner sad to lose it
+                    fromGirl->happiness(-happiness); // previous owner sad to lose it
 
-					g_Girls.UpdateStat(targetGirl, STAT_OBEDIENCE, 1);
-					g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, happiness);
-					g_Girls.UpdateStat(targetGirl, STAT_PCHATE, -2);
-					g_Girls.UpdateStat(targetGirl, STAT_PCLOVE, happiness - 1);
-					g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
+                    targetGirl->obedience(1);
+                    targetGirl->happiness(happiness);
+                    targetGirl->pchate(-2);
+                    targetGirl->pclove(happiness-1);
+                    targetGirl->pcfear(-1);
 				}
 				else
 				{

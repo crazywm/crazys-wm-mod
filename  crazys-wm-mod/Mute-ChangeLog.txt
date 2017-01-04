@@ -1,0 +1,37 @@
+06.02.52
+====================================
+Updated WorkSecurity fixing refences from g_Girls.GetStat(girl,statID) to girl->statName()
+Updated WorkSecurity for more negitive events
+Updated WorkSecurity to removing references to gettext()
+Updated WorkSecurity to get stripper/Whore from the propper brothel (getting Ready for multi Brothels)
+
+Updated cBrothel removing Referenced to g_Girls.GetStat and UpdateStat to Girl->statname() and statname(mod)
+Updated cBrothel with some much needed better text
+Updated cBrothel to remove gettext()
+
+
+====================================
+06.02.53
+====================================
+Updated cGirls.cpp removing reference to gettext()
+Updated cGirls.cpp fixing text when getting pregnant
+
+Updated WorkAdvertising to use girl->statname() and girl->statName(mod)
+
+Updated WorkTorturer to use girl->statname() and girl->statName(mod)
+Updated WorkTorturer to remove reference to gettext() although left the () 
+
+Updated WorkAdvertising to use girl->statname() and girl->statName(mod)
+
+Updated WorkArenaJousting to use girl->statname() and girl->statName(mod)
+
+Updated WorkBaker to use girl->statname() and girl->statName(mod)
+Updated WorkBaker Note on JP_Baker to correct the fact it is used
+
+Updated WorkBarCook to use girl->statname() and girl->statName(mod)
+
+Updated WorkBarmaid to use cfg.in_fact.barmaid_work()
+Updated WorkBarmaid to use girl->statname() and girl->statName(mod)
+updated WorkBarmaid @ // `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found to use better math logic and hopefull will work. needs testing
+
+Updated SConfig.h with fix to note

@@ -2,3 +2,6 @@
 /build/
 /.objs/
 /WhoreMaster
+*.cbp
+*.layout
+*.txt~

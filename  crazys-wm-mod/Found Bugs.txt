@@ -1,0 +1,2 @@
+even if changing the price of stuff in config. screen says cost 0 gold. but still removes gold﻿
+S

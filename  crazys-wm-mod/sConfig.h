@@ -117,7 +117,7 @@ struct sConfigData
 		double		slave_cost;
 		double		brothel_cost;
 		double		brothel_support;	// `J` ?not used?
-		double		bar_cost;		// `J` ?not used?
+		double		bar_cost;		// `Mute' Partialy implimented
 		double		casino_cost;		// `J` ?not used?
 		double		bribes;
 		double		fines;
