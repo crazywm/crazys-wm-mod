@@ -252,7 +252,7 @@ void cJobManager::Setup()
 	JobDesc[JOB_DIRECTOR] = "She directs the filming, and keeps the girls in line. (max 1)";
 	JobFunc[JOB_DIRECTOR] = &WorkFilmDirector;
 	JobPerf[JOB_DIRECTOR] = &JP_FilmDirector;
-	JobName[JOB_PROMOTER] = "Promoter");
+	JobName[JOB_PROMOTER] = "Promoter";
 	JobQkNm[JOB_PROMOTER] = "Prmt";
 	JobDesc[JOB_PROMOTER] = "She advertises the movies. (max 1)";
 	JobFunc[JOB_PROMOTER] = &WorkFilmPromoter;
@@ -295,7 +295,7 @@ void cJobManager::Setup()
 	JobDesc[JOB_FILMACTION] = "She will be the scantily clad heroine in fighting/magical action scenes.";
 	JobFunc[JOB_FILMACTION] = &WorkFilmAction;
 	JobPerf[JOB_FILMACTION] = &JP_FilmAction;
-	JobName[JOB_FILMCHEF] = "The Naked Chef");
+	JobName[JOB_FILMCHEF] = "The Naked Chef";
 	JobQkNm[JOB_FILMCHEF] = "FChf";
 	JobDesc[JOB_FILMCHEF] = "She will be filmed preparing food. And talking slowly. Sensuously. In sexy outfits. Because no reason.";
 	JobFunc[JOB_FILMCHEF] = &WorkFilmChef;
@@ -322,7 +322,7 @@ void cJobManager::Setup()
 	//JobPerf[JOB_FILMIDOL] = &JP_FilmIdol;
 	JobName[JOB_FILMMUSIC] = "Music";
 	JobQkNm[JOB_FILMMUSIC] = "FMus";
-	JobDesc[JOB_FILMMUSIC] = "She will make a music video.");
+	JobDesc[JOB_FILMMUSIC] = "She will make a music video.";
 	JobFunc[JOB_FILMMUSIC] = &WorkFilmMusic;
 	JobPerf[JOB_FILMMUSIC] = &JP_FilmMusic;
 
@@ -350,7 +350,7 @@ void cJobManager::Setup()
 	JobFilterName[JOBFILTER_STUDIOPORN] = "Porn Scenes";
 	JobFilterDesc[JOBFILTER_STUDIOPORN] = "These are regular sex scenes.";
 	JobFilterIndex[JOBFILTER_STUDIOPORN] = JOB_FILMANAL;
-	JobName[JOB_FILMANAL] = "Film Anal");
+	JobName[JOB_FILMANAL] = "Film Anal";
 	JobQkNm[JOB_FILMANAL] = "FAnl";
 	JobDesc[JOB_FILMANAL] = "She will film an anal scenes.";
 	JobFunc[JOB_FILMANAL] = &WorkFilmAnal;
@@ -375,7 +375,7 @@ void cJobManager::Setup()
 	JobDesc[JOB_FILMLESBIAN] = "She will do a lesbian scene.";
 	JobFunc[JOB_FILMLESBIAN] = &WorkFilmLesbian;
 	JobPerf[JOB_FILMLESBIAN] = &JP_FilmLesbian;
-	JobName[JOB_FILMORAL] = "Film Oral Sex");
+	JobName[JOB_FILMORAL] = "Film Oral Sex";
 	JobQkNm[JOB_FILMORAL] = "FOrl";
 	JobDesc[JOB_FILMORAL] = ("She will perform in an oral sex scene.");
 	JobFunc[JOB_FILMORAL] = &WorkFilmOral;

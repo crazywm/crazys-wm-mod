@@ -290,7 +290,7 @@ void cGirlTorture::AddTextPlayer()
 		break;
 	case 4:
 	default:
-		m_Message += g"you rape her many times making sure she is as uncomfotable as possible.\n";
+		m_Message += "you rape her many times making sure she is as uncomfotable as possible.\n";
 		/*
 		*		see if she was preggers before the rape
 		*		check to see if the rape made her pregnant
@@ -455,7 +455,8 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 			if (m_TorturedByPlayer)
 				m_Message += "She was injured and scarred. As scars go however, at least they are pretty Cool Scars.\n";
 			else
-				MakeEvent(sGirlName + " was injured and scarred. She now has Cool Scars.\n";
+				MakeEvent(sGirlName + " was injured and scarred. She now has Cool Scars.\n");
+        }
 	}
 
 	// in rare cases, she might even lose an eye

@@ -5,3 +5,7 @@
 *.cbp
 *.layout
 *.txt~
+/_bin/
+*.make
+*.workspace
+/Makefile
