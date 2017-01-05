@@ -188,9 +188,6 @@ unsigned long g_Day;
 // Keeping track of what screen is currently showing
 int g_CurrentScreen = 0;
 
-// the players gold
-cGold g_Gold;
-
 // Inventory manager
 cInventory g_InvManager;
 
@@ -198,6 +195,9 @@ cInventory g_InvManager;
 int IDS = 0;
 cRng g_Dice;
 cConfig cfg;
+
+// the players gold
+cGold g_Gold;
 
 cNameList		g_NameList;
 cSurnameList g_SurnameList;
