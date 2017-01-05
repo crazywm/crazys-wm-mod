@@ -13,25 +13,74 @@ Updated cBrothel to remove gettext()
 ====================================
 06.02.53
 ====================================
-Updated cGirls.cpp removing reference to gettext()
-Updated cGirls.cpp fixing text when getting pregnant
+Updated cGirls.cpp.cpp removing reference to gettext()
+Updated cGirls.cpp.cpp fixing text when getting pregnant
 
-Updated WorkAdvertising to use girl->statname() and girl->statName(mod)
+Updated WorkAdvertising.cpp to use girl->statname() and girl->statName(mod)
 
-Updated WorkTorturer to use girl->statname() and girl->statName(mod)
-Updated WorkTorturer to remove reference to gettext() although left the () 
+Updated WorkTorturer.cpp to use girl->statname() and girl->statName(mod)
+Updated WorkTorturer.cpp to remove reference to gettext() although left the () 
 
-Updated WorkAdvertising to use girl->statname() and girl->statName(mod)
+Updated WorkAdvertising.cpp to use girl->statname() and girl->statName(mod)
 
-Updated WorkArenaJousting to use girl->statname() and girl->statName(mod)
+Updated WorkArenaJousting.cpp to use girl->statname() and girl->statName(mod)
 
-Updated WorkBaker to use girl->statname() and girl->statName(mod)
-Updated WorkBaker Note on JP_Baker to correct the fact it is used
+Updated WorkBaker.cpp to use girl->statname() and girl->statName(mod)
+Updated WorkBaker.cpp Note on JP_Baker to correct the fact it is used
 
-Updated WorkBarCook to use girl->statname() and girl->statName(mod)
+Updated WorkBarCook.cpp to use girl->statname() and girl->statName(mod)
 
-Updated WorkBarmaid to use cfg.in_fact.barmaid_work()
-Updated WorkBarmaid to use girl->statname() and girl->statName(mod)
-updated WorkBarmaid @ // `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found to use better math logic and hopefull will work. needs testing
+Updated WorkBarmaid.cpp to use cfg.in_fact.barmaid_work()
+Updated WorkBarmaid.cpp to use girl->statname() and girl->statName(mod)
+updated WorkBarmaid.cpp @ // `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found to use better math logic and hopefull will work. needs testing
 
 Updated SConfig.h with fix to note
+
+
+====================================
+06.02.54
+====================================
+Updated cDungeon.cpp to remove reference to gettext()
+
+Updated cCustomers.cpp to remove reference to gettext()
+
+Updated cGetStringScreenManager.cpp removing reference to gettext
+
+Updated cGirlGangFight.cpp removing reference to gettext
+
+Updated cGirlTorture.cpp removing reference to gettext
+
+Updated cInventory.cpp removing reference to gettext
+
+Updated cJobmanager.cpp removing reference to gettext
+
+Updated cMovieStudio.cpp removing reference to gettext
+
+Updated cRival.cpp removing reference to gettext
+
+Updated cScreenBuildingManagement.cpp removing reference to gettext
+
+Updated cScreenPropertyManagement.cpp removing reference to gettext
+
+Updated cScreenSlaveMarket.cpp removing reference to gettext
+
+Updated cScreenTown.cpp removing reference to gettext
+
+Updated cScriptUtils.cpp removing reference to getttext
+
+Updated cTraits.cpp removing reference to gettext
+
+Updated main.cpp removing reference to gettext
+
+Updated WorkRecruiter.cpp removing reference to gettext
+
+Updated WorkFilmThroat.cpp removing reference to gettext
+
+Updated WorkFilmTease.cpp removing reference to gettext
+
+Updated WorkFilmPublicBDSM.cpp removing reference to gettext
+
+Updated WorkFilmOral.cpp removing reference to gettext
+
+Added TODO-Mute.txt to allow joey to ask for my help or focus me on certian Tasks
+

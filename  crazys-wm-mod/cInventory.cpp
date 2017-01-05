@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -195,7 +195,7 @@ static void do_effects(TiXmlElement *parent, sInventoryItem *item)
 			}
 		}
 		if (pt = el->Attribute("Amount", &ival)) ept->m_Amount = ival;
-		
+
 		if (pt = el->Attribute("Duration", &ival)) ept->m_Duration = ival;
 		else ept->m_Duration = (item->m_Special == 2 ? 20 : 0);
 
@@ -255,7 +255,7 @@ void cInventory::remove_trait(sGirl* girl, int num, int index)
 	string trait_name = girl->m_Inventory[num]->m_Effects[index].m_Trait;
 
 	/*
-	 *	WD:	New logic for remembering traits 
+	 *	WD:	New logic for remembering traits
 	 *		moved to AddTrait() RemoveTrait() fn's
 	 *
 	 *		Don't think this is called any more.
@@ -444,7 +444,7 @@ void cInventory::UpdateShop()
 		if ((item->m_Rarity == RARITYCOMMON ||
 			(item->m_Rarity == RARITYSHOP50 && chance <= 50) ||
 			(item->m_Rarity == RARITYSHOP25 && chance <= 25) ||
-			(item->m_Rarity == RARITYSHOP05 && chance <= 5)) && 
+			(item->m_Rarity == RARITYSHOP05 && chance <= 5)) &&
 			(item->m_Infinite == 0 || (item->m_Infinite == 1 && CheckShopItem(item->m_Name) == -1)))
 		{
 			m_ShopItems[i] = item;
@@ -514,18 +514,18 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
 		case RARITYCATACOMB15:	if (g_Dice.percent(15))		return temp;	break;
 		case RARITYCATACOMB05:	if (g_Dice.percent(5))		return temp;	break;
 		case RARITYCATACOMB01:	if (g_Dice.percent(1))		return temp;	break;
-		case RARITYSCRIPTONLY:	
-		case RARITYSCRIPTORREWARD:	
+		case RARITYSCRIPTONLY:
+		case RARITYSCRIPTORREWARD:
 			temp = 0;
 			break;	// if at the end it is a script item, no item is returned
-		case RARITYCOMMON:	
-		case RARITYSHOP50: 
-		default: 
+		case RARITYCOMMON:
+		case RARITYSHOP50:
+		default:
 			break;	// if at the end it is a common item, that item is returned
 		}
 		tries--;
 		index++;
-	} 
+	}
 	if (!temp) return 0;
 	return temp;
 }
@@ -618,7 +618,7 @@ string cInventory::CraftItem(sGirl*girl, int job, int points)
 
 	return ss.str();
 }
-#endif	
+#endif
 
 sInventoryItem* cInventory::GetItem(string name)
 {
@@ -636,7 +636,7 @@ sInventoryItem* cInventory::GetItem(string name)
 void cInventory::Equip(sGirl* girl, int num, bool force)
 {
 	if (num == -1) return;	// no item then ignore the call
-	
+
 	if (girl->is_dead() && (	// Allow certain Items to recover the dead
 		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Better Zed than Dead") ||
 		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Elixir of Ultimate Regeneration")
@@ -650,11 +650,11 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		for (int i = 0; i < NUM_STATS; i++)		girl->m_Stats[i] = 0;
 		girl->m_Stats[STAT_HEALTH]		= 100;
 		girl->m_Stats[STAT_HAPPINESS]	= 100;
-		girl->m_Stats[STAT_AGE] = (age == 100 ? 100 : 18);	// keep ageless girls ageless	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
+		girl->m_Stats[STAT_AGE] = (age == 100 ? 100 : 18);	// keep ageless girls ageless	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 		girl->m_Stats[STAT_HOUSE] = girl->is_slave() ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
 
-		g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") + girl->m_Inventory[num]->m_Name +
-			gettext(": The use of this item has reset all her stats and skills to default."), COLOR_BLUE);
+		g_MessageQue.AddToQue(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
+			": The use of this item has reset all her stats and skills to default.", COLOR_BLUE);
 		girl->m_Inventory[num] = 0;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
@@ -671,8 +671,8 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		}
 		g_Girls.RemoveAllRememberedTraits(girl);
 
-		g_MessageQue.AddToQue(girl->m_Realname + gettext(": ") + girl->m_Inventory[num]->m_Name +
-			gettext(": The use of this item has removed all her traits."), COLOR_BLUE);
+		g_MessageQue.AddToQue(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
+			": The use of this item has removed all her traits.", COLOR_BLUE);
 		girl->m_Inventory[num] = 0;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
@@ -857,7 +857,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			{
 				if (girl->m_States&(1 << STATUS_PREGNANT))
 				{
-					
+
 				}
 				else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))
 				{
@@ -1021,7 +1021,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				 *
 				 *		EQUIP Temporary Item
 				 */
-				if (amount == 0)						// remove trait temporarily from equiping an item	
+				if (amount == 0)						// remove trait temporarily from equiping an item
 					g_Girls.RemoveTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, true);		// addrememberlist = true Temporary Item trait removal
 
 				else if (amount == 1)		// add temporary trait
@@ -1192,10 +1192,10 @@ void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
 
 		else if (affects == sEffect::Trait)	// trait
 		{
-			if (amount == 0)			// remove trait temporarily from equiping an item							
+			if (amount == 0)			// remove trait temporarily from equiping an item
 				g_Girls.RemoveTrait(girl, item->m_Effects[i].m_Trait, true);	// addrememberlist = true AffectAll trait removal
 
-			else if (amount == 1)		// add temporary trait 					
+			else if (amount == 1)		// add temporary trait
 				g_Girls.AddTrait(girl, item->m_Effects[i].m_Trait, 20, true); // Temp = true AffectAll Item, removeitem = true for AffectAll trait
 
 			if (item->m_Effects[i].m_Trait == "Virgin")
@@ -1311,7 +1311,7 @@ static sInventoryItem* handle_element(TiXmlElement *el)
 	if (pt = el->Attribute("Rarity"))					item->set_rarity(pt);
 	if (pt = el->Attribute("Infinite"))					item->m_Infinite = ((string(pt) == "true") || (string(pt) == "True"));
 	else												item->m_Infinite = false;
-	
+
 
 	// `J` Incomplete Craftable code - commenting out
 #if 0
@@ -1321,7 +1321,7 @@ static sInventoryItem* handle_element(TiXmlElement *el)
 	if (pt = el->Attribute("CraftStren", &ival))		item->m_CraftStrength	 = ival;	else item->m_CraftStrength	 = 0;
 	if (pt = el->Attribute("CraftMagic", &ival))		item->m_CraftMagic		 = ival;	else item->m_CraftMagic		 = 0;
 	if (pt = el->Attribute("CraftIntel", &ival))		item->m_CraftIntel		 = ival;	else item->m_CraftIntel		 = 0;
-	if (pt = el->Attribute("CraftPoint", &ival))		item->m_CraftPoints		 = ival;	else item->m_CraftPoints	 = 0;	
+	if (pt = el->Attribute("CraftPoint", &ival))		item->m_CraftPoints		 = ival;	else item->m_CraftPoints	 = 0;
 #endif
 
 	do_effects(el, item);
@@ -1358,7 +1358,7 @@ void cInventory::LoadItems(string filename)
 	g_LogFile.os() << "loading items from '" << filename << "'" << endl;
 	ifstream in;
 	in.open(filename.c_str());
-	if(!in.good()) 
+	if(!in.good())
 		g_LogFile.os() << "LoadItems: stream not good after open" << endl;
 
 	char buffer[1000];
@@ -1372,9 +1372,9 @@ void cInventory::LoadItems(string filename)
 		if (in.peek()=='\n') in.ignore(1,'\n');
 		in.getline(buffer, sizeof(buffer), '\n');		// get the name
 		g_LogFile.os() << "LoadItems: " << buffer << endl;
-		if(buffer[0] == 0) 
+		if(buffer[0] == 0)
 			break;
-		
+
 		newItem->m_Name = buffer;
 
 		if (in.peek()=='\n') in.ignore(1,'\n');

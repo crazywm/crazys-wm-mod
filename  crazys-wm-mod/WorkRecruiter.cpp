@@ -198,7 +198,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 			else	// `J` ... She was not recruited.
 			{
-				ss << gettext(" but was unable to convince her that she should work for you.");
+				ss << " but was unable to convince her that she should work for you.";
 			}
 			if (add)
 			{

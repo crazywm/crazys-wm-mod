@@ -64,109 +64,109 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int bonus = 0;
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
-	/**/ if (g_Girls.HasItem(girl, "Cow-Print Lingerie") != -1)		item = gettext("Cow-Print Lingerie"), bonus = 6;
-	else if (g_Girls.HasItem(girl, "Designer Lingerie") != -1)		item = gettext("Designer Lingerie"), bonus = 10;
-	else if (g_Girls.HasItem(girl, "Sequin Lingerie") != -1)		item = gettext("Sequin Lingerie"), bonus = 7;
-	else if (g_Girls.HasItem(girl, "Sexy X-Mas Lingerie") != -1)	item = gettext("Sexy X-Mas Lingerie"), bonus = 7;
-	else if (g_Girls.HasItem(girl, "Leather Lingerie") != -1)		item = gettext("Leather Lingerie"), bonus = 6;
-	else if (g_Girls.HasItem(girl, "Leopard Lingerie") != -1)		item = gettext("Leopard Lingerie"), bonus = 5;
-	else if (g_Girls.HasItem(girl, "Organic Lingerie") != -1)		item = gettext("Organic Lingerie"), bonus = 5;
-	else if (g_Girls.HasItem(girl, "Sheer Lingerie") != -1)			item = gettext("Sheer Lingerie"), bonus = 5;
-	else if (g_Girls.HasItem(girl, "Lace Lingerie") != -1)			item = gettext("Lace Lingerie"), bonus = 3;
-	else if (g_Girls.HasItem(girl, "Silk Lingerie") != -1)			item = gettext("Silk Lingerie"), bonus = 2;
-	else if (g_Girls.HasItem(girl, "Plain Lingerie") != -1)			item = gettext("Plain Lingerie"), bonus = 1;
+	/**/ if (g_Girls.HasItem(girl, "Cow-Print Lingerie") != -1)		item = ("Cow-Print Lingerie"), bonus = 6;
+	else if (g_Girls.HasItem(girl, "Designer Lingerie") != -1)		item = ("Designer Lingerie"), bonus = 10;
+	else if (g_Girls.HasItem(girl, "Sequin Lingerie") != -1)		item = ("Sequin Lingerie"), bonus = 7;
+	else if (g_Girls.HasItem(girl, "Sexy X-Mas Lingerie") != -1)	item = ("Sexy X-Mas Lingerie"), bonus = 7;
+	else if (g_Girls.HasItem(girl, "Leather Lingerie") != -1)		item = ("Leather Lingerie"), bonus = 6;
+	else if (g_Girls.HasItem(girl, "Leopard Lingerie") != -1)		item = ("Leopard Lingerie"), bonus = 5;
+	else if (g_Girls.HasItem(girl, "Organic Lingerie") != -1)		item = ("Organic Lingerie"), bonus = 5;
+	else if (g_Girls.HasItem(girl, "Sheer Lingerie") != -1)			item = ("Sheer Lingerie"), bonus = 5;
+	else if (g_Girls.HasItem(girl, "Lace Lingerie") != -1)			item = ("Lace Lingerie"), bonus = 3;
+	else if (g_Girls.HasItem(girl, "Silk Lingerie") != -1)			item = ("Silk Lingerie"), bonus = 2;
+	else if (g_Girls.HasItem(girl, "Plain Lingerie") != -1)			item = ("Plain Lingerie"), bonus = 1;
 
 	int roll = g_Dice.d100();
 	ss << girlName;
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		ss << gettext(" refused to make a teaser clip today.\n");
+		ss << (" refused to make a teaser clip today.\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else ss << gettext(" worked filming teaser scenes to arouse viewers.\n\n");
+	else ss << (" worked filming teaser scenes to arouse viewers.\n\n");
 
 	if (bonus)
 	{
-		ss << gettext("To improve the scene, ") << girlName << gettext(" wore her ") << item << gettext(".\n");
+		ss << ("To improve the scene, ") << girlName << (" wore her ") << item << (".\n");
 		jobperformance += (2 * bonus);
 	}
 
 	if (jobperformance >= 350)
 	{
-		ss << gettext("She created an outstanding teaser scene. She's so stunning and flirtatious that it's somehow hotter that she never gets naked.");
+		ss << ("She created an outstanding teaser scene. She's so stunning and flirtatious that it's somehow hotter that she never gets naked.");
 		g_Girls.UpdateStat(girl, STAT_FAME, 4);
 		g_Girls.UpdateStat(girl, STAT_CHARISMA, 2);
 		bonus = 12;
 	}
 	else if (jobperformance >= 245)
 	{
-		ss << gettext("She created an amazing teaser scene. Somehow she makes the few little she has on look hotter than being naked.");
+		ss << ("She created an amazing teaser scene. Somehow she makes the few little she has on look hotter than being naked.");
 		g_Girls.UpdateStat(girl, STAT_FAME, 2);
 		g_Girls.UpdateStat(girl, STAT_CHARISMA, 1);
 		bonus = 6;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << gettext("She created a decent teaser scene. Not the best, but still arousing.");
+		ss << ("She created a decent teaser scene. Not the best, but still arousing.");
 		g_Girls.UpdateStat(girl, STAT_FAME, 1);
 		g_Girls.UpdateStat(girl, STAT_CHARISMA, 1);
 		bonus = 4;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << gettext("It wasn't a great teaser scene. By the end you wish she'd get naked and do something.");
+		ss << ("It wasn't a great teaser scene. By the end you wish she'd get naked and do something.");
 		bonus = 2;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << gettext("It was a bad teaser scene. Could someone just fuck her already?");
+		ss << ("It was a bad teaser scene. Could someone just fuck her already?");
 		bonus = 1;
-		ss << gettext("\nThe Studio Director advised ") << girlName << gettext(" how to spice up the scene");
+		ss << ("\nThe Studio Director advised ") << girlName << (" how to spice up the scene");
 		if (g_Dice.percent(40))
 		{
-			ss << gettext(" and improve her performance. The scene definitely got better after this.");
+			ss << (" and improve her performance. The scene definitely got better after this.");
 			bonus++;
 		}
 		else
 		{
-			ss << gettext(", but she wouldn't listen.");
+			ss << (", but she wouldn't listen.");
 		}
 	}
 	else
 	{
-		ss << gettext("That was nothing 'teasing' about this awkward, charmless performance. Even the CameraMage seemed to lose interest.");
+		ss << ("That was nothing 'teasing' about this awkward, charmless performance. Even the CameraMage seemed to lose interest.");
 		if (g_Brothels.GetNumGirlsOnJob(0, JOB_DIRECTOR, Day0Night1) > 0)
 		{
-			ss << gettext("\nThe Studio Director stepped in and took control ");
+			ss << ("\nThe Studio Director stepped in and took control ");
 			if (g_Dice.percent(50))
 			{
-				ss << gettext("significantly improving ") << girlName << gettext("'s performance in the scene.");
+				ss << ("significantly improving ") << girlName << ("'s performance in the scene.");
 				bonus++;
 			}
 			else
 			{
-				ss << gettext("but wasn't able to save this trainwreck of a scene.");
+				ss << ("but wasn't able to save this trainwreck of a scene.");
 			}
 		}
 	}
-	ss << gettext("\n");
+	ss << ("\n");
 
 	//Enjoyed? If she performed well, she'd should have enjoyed it.
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << gettext("She loved flirting with the camera today.\n\n");
+		ss << ("She loved flirting with the camera today.\n\n");
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << gettext("She enjoyed this performance.\n\n");
+		ss << ("She enjoyed this performance.\n\n");
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << gettext("She didn't really get what she was supposed to do, and did not enjoy making this scene.\n\n");
+		ss << ("She didn't really get what she was supposed to do, and did not enjoy making this scene.\n\n");
 	}
 	bonus = bonus + enjoy;
 

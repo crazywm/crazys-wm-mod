@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -150,7 +150,7 @@ void cBuildingManagement::IDBlock::display(
 	mgr->EditTextItem(ss.str(), type);
 	ss.str("");
 
-	ss << gettext("Space: ") << facility->space_taken() << ".";
+	ss << ("Space: ") << facility->space_taken() << ".";
 	mgr->EditTextItem(ss.str(), space);
 	ss.str("");
 
@@ -158,25 +158,25 @@ void cBuildingManagement::IDBlock::display(
 	mgr->EditTextItem(ss.str(), provides_level);
 	ss.str("");
 
-	mgr->EditTextItem(gettext("Glitz"), glitz_cap);
+	mgr->EditTextItem(("Glitz"), glitz_cap);
 	ss << facility->glitz();
 	mgr->EditTextItem(ss.str(), glitz_level);
-	cerr	<< gettext("setting glitz_level (") << glitz_level << gettext(") to ")
+	cerr	<< ("setting glitz_level (") << glitz_level << (") to ")
 		<< ss.str()
 		<< endl;
 	ss.str("");
 
-	mgr->EditTextItem(gettext("Secure"), secure_cap);
+	mgr->EditTextItem(("Secure"), secure_cap);
 	ss << facility->secure();
 	mgr->EditTextItem(ss.str(), secure_level);
 	ss.str("");
 
-	mgr->EditTextItem(gettext("Stealth"), stealth_cap);
+	mgr->EditTextItem(("Stealth"), stealth_cap);
 	ss << facility->stealth();
 	mgr->EditTextItem(ss.str(), stealth_level);
 	ss.str("");
 
-	ss << gettext("Cost: ") << facility->price() << ".";
+	ss << ("Cost: ") << facility->price() << ".";
 	mgr->EditTextItem(ss.str(), cost);
 	ss.str("");
 }
@@ -197,15 +197,15 @@ void cBuildingManagement::init()
 /*
  *	screen header
  */
-	ss << gettext("Building Management: ") << brothel->m_Name << "." ;
+	ss << ("Building Management: ") << brothel->m_Name << "." ;
 	EditTextItem(ss.str(), header_id);
 /*
  *	capacity / free / used
  */
 	ss.str("");
-	ss << gettext("Capacity: ") << building->capacity()
-	   << gettext(". Free: ")  << building->free_space()
-	   << gettext(". Used: ")  << building->used_space()
+	ss << ("Capacity: ") << building->capacity()
+	   << (". Free: ")  << building->free_space()
+	   << (". Used: ")  << building->used_space()
 	   << "."
 	;
 	EditTextItem(ss.str(), capacity_id);
@@ -213,7 +213,7 @@ void cBuildingManagement::init()
  *	player gold for reference
  */
 	ss.str("");
-	ss << gettext("Gold: ") << g_Gold.ival();
+	ss << ("Gold: ") << g_Gold.ival();
 	EditTextItem(ss.str(), gold_id);
 
 	int unum;
@@ -238,7 +238,7 @@ void cBuildingManagement::init()
 	}
 
 	ss.str("");
-	ss << gettext("Cost: ") << total_cost;
+	ss << ("Cost: ") << total_cost;
 	EditTextItem(ss.str(), total_cost_id);
 
 	DisableButton(buy_button_id, total_cost == 0);
@@ -435,14 +435,14 @@ void cBuildingManagement::process()
 	building = &brothel->building;
 
 	init();
-/* 
+/*
  *	no events means we can go home
  */
 	if(g_InterfaceEvents.GetNumEvents() == 0) {
 		return;
 	}
 /*
- *	otherwise, compare event IDs 
+ *	otherwise, compare event IDs
  *
  *	if it's the back button, pop the window off the stack
  *	and we're done
@@ -591,7 +591,7 @@ void cBuildingManagement::rename_button(int facility_idx)
  */
  	sFacility *sfac = building->item_at(facility_idx);
 /*
- *	tell the GetString screen where to store the 
+ *	tell the GetString screen where to store the
  *	string
  */
 	gssm.set_dest( sfac->m_instance_name );

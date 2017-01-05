@@ -60,9 +60,9 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 	*	more evenly for multi-select brandings and the like
 	*/
 	int index = g_Dice.in_range(0, v.size() - 1);
-	l.ss() << gettext("\ncGirlGangFight: random gang index = ") << index;	l.ssend();
+	l.ss() << "\ncGirlGangFight: random gang index = " << index;	l.ssend();
 	sGang *gang = v[index];
-	l.ss() << gettext("\ncGirlGangFight: gang = ") << gang->m_Name;	l.ssend();
+	l.ss() << "\ncGirlGangFight: gang = " << gang->m_Name;	l.ssend();
 	/*
 	*	4 + 1 for each gang on guard duty
 	*	that way there's a benefit to multiple gangs guarding
@@ -122,8 +122,8 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 	*/
 	int pc = static_cast <int> (m_odds * 100.0);
 	int roll = g_Dice.in_range(0, 100);
-	l.ss() << gettext("GirlGangFight: %    = ") << pc << gettext("\n");
-	l.ss() << gettext("GirlGangFight: roll = ") << roll;
+	l.ss() << "GirlGangFight: %    = " << pc << "\n";
+	l.ss() << "GirlGangFight: roll = " << roll;
 	l.ssend();
 	if (roll >= pc)
 	{
@@ -141,7 +141,7 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 
 void cGirlGangFight::lose_vs_own_gang(sGang* gang)
 {
-	l.ss() << gettext("GirlGangFight: girl loses");
+	l.ss() << "GirlGangFight: girl loses";
 	l.ssend();
 	m_girl_wins = false;
 	/*
@@ -183,7 +183,7 @@ void cGirlGangFight::lose_vs_own_gang(sGang* gang)
 	*/
 	int casualties = use_potions(gang, g_Dice.in_range(1, 6) - 3);
 	gang->m_Num -= casualties;
-	l.ss() << gettext("adjusted gang casualties = ") << casualties;
+	l.ss() << "adjusted gang casualties = " << casualties;
 	l.ssend();
 }
 
@@ -210,7 +210,7 @@ int cGirlGangFight::use_potions(sGang *gang, int casualties)
 
 void cGirlGangFight::win_vs_own_gang(sGang* gang)
 {
-	l.ss() << gettext("GirlGangFight: girl wins");
+	l.ss() << "GirlGangFight: girl wins";
 	l.ssend();
 	m_girl_wins = true;
 	/*

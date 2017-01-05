@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -49,7 +49,7 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
 		g_Building = BUILDING_BROTHEL;
 		return;
 	}
-	
+
 	/* MYR: For some reason I can't figure out, a number of girl's house percentages
             are at zero or set to zero when they are sent to the brothel. I'm not sure
 			how to fix it, so I'm explicitly setting the percentage to 60 here */
@@ -60,7 +60,7 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
  *	OK: how rebellious is this floozy?
  */
 	if(g_Girls.GetRebelValue(girl, false) >= 35) {
-		text += gettext(" has been sent to your dungeon, as she is rebellious and poorly trained.");
+		text += " has been sent to your dungeon, as she is rebellious and poorly trained.";
 		g_MessageQue.AddToQue(text, 0);
 		g_Brothels.GetDungeon()->AddGirl(girl, DUNGEON_NEWGIRL);
 		g_Building = BUILDING_BROTHEL;
@@ -110,7 +110,7 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
  *	now then...
  */
 	if(diff <= 0) {
-		text += gettext(" has been sent to your dungeon, since current brothel is full.");
+		text += (" has been sent to your dungeon, since current brothel is full.");
 		g_MessageQue.AddToQue(text, 0);
 		g_Brothels.GetDungeon()->AddGirl(girl, DUNGEON_NEWGIRL);
 		g_Building = BUILDING_BROTHEL;
@@ -119,7 +119,7 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
 /*
  *	otherwise, it's very simple
  */
-	text += gettext(" has been sent to your current brothel.");
+	text += (" has been sent to your current brothel.");
 
 	switch (g_Building)
 		{
