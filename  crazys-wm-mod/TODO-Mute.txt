@@ -1,8 +1,7 @@
 ﻿======================================
 |          Planned todo              |
 ======================================
-Finish removing reference to gettext
-
+Work on getting images to work on linux build
 
 
 

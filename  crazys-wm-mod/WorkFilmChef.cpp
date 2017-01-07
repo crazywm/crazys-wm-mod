@@ -67,55 +67,55 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		ss << gettext(" refused to make a kitchen show today.\n");
+		ss << " refused to make a kitchen show today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else ss << gettext(" worked filming sexy chef scenes to educate and entertain viewers.\n\n");
+	else ss << " worked filming sexy chef scenes to educate and entertain viewers.\n\n";
 
 	//What's she best at?
 	enum { COOKING, LOOKS };
-	int TopSkill = (g_Girls.GetSkill(girl, SKILL_COOKING) > ((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)) ? COOKING : LOOKS;
+	int TopSkill = (girl->cooking() > ((girl->beauty() + girl->charisma()) / 2)) ? COOKING : LOOKS;
 
 	ss << girlName;
 	if (jobperformance >= 350)
 	{
-		ss << gettext(" created an outstanding show. She's so competent and flirtatious that the show is a hit with everyone.");
+		ss << " created an outstanding show. She's so competent and flirtatious that the show is a hit with everyone.";
 		bonus = 12;
-		g_Girls.UpdateStat(girl, STAT_FAME, 3);
+		girl->fame(3);
 	}
 	else if (jobperformance >= 245)
 	{
-		ss << gettext(" created a great show. Women are impressed with her competence. Men are impressed with her... competence. It doesn't hurt that she's hot and flirtatious.");
+		ss << " created a great show. Women are impressed with her competence. Men are impressed with her... competence. It doesn't hurt that she's hot and flirtatious.";
 		bonus = 6;
-		g_Girls.UpdateStat(girl, STAT_FAME, 2);
+		girl->fame(2);
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << gettext(" created a good show. ");
-		if (TopSkill == COOKING) ss << gettext("Her skills in the kitchen are enough to carry the show.");
-		else ss << gettext("She's sexy enough that her fumbles in the kitchen go mostly unnoticed.");
+		ss << " created a good show. ";
+		if (TopSkill == COOKING) ss << "Her skills in the kitchen are enough to carry the show.";
+		else ss << "She's sexy enough that her fumbles in the kitchen go mostly unnoticed.";
 		bonus = 4;
 		g_Girls.UpdateStat(girl, STAT_FAME, 1);
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << gettext(" created an okay cooking show. ");
-		if (TopSkill == COOKING) ss << gettext("She was skilled enough in the kitchen to mostly entertain.");
-		else ss << gettext("She's cute, so it doesn't really matter that she can't cook.");
+		/*                      */ss << " created an okay cooking show. ";
+		if (TopSkill == COOKING)  ss << "She was skilled enough in the kitchen to mostly entertain.";
+		else/*                 */ ss << "She's cute, so it doesn't really matter that she can't cook.";
 		bonus = 2;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << gettext(" created a bad cooking show. ");
-		if (TopSkill == COOKING) ss << gettext("The little skill she had in the kitchen wasn't nearly enough to save it.");
-		else ss << gettext("Perhaps if she'd quit breaking all the utensils and had instead taken her clothes off it'd would've been worth watching.\nPerhaps.");
+		/*                      */ss << " created a bad cooking show. ";
+		if (TopSkill == COOKING)  ss << "The little skill she had in the kitchen wasn't nearly enough to save it.";
+		else /*                 */ss << "Perhaps if she'd quit breaking all the utensils and had instead taken her clothes off it'd would've been worth watching.\nPerhaps.";
 		bonus = 1;
 	}
 	else
 	{
-		ss << gettext(" created a really bad cooking show. ");
-		ss << gettext("She had no charisma and burned or broke basically everything she touched. It was almost funny.\nAlmost.");
+		ss << " created a really bad cooking show. ";
+		ss << "She had no charisma and burned or broke basically everything she touched. It was almost funny.\nAlmost.";
 	}
 	ss << gettext("\n");
 
@@ -123,17 +123,17 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << gettext("She loved cooking and flirting on camera.\n\n");
+		ss << "She loved cooking and flirting on camera.\n\n";
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << gettext("She enjoyed making this show.\n\n");
+		ss << "She enjoyed making this show.\n\n";
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << gettext("She was awful at this and did not enjoy making it.\n\n");
+		ss << "She was awful at this and did not enjoy making it.\n\n";
 	}
 	bonus = bonus + enjoy;
 

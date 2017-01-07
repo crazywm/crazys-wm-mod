@@ -84,3 +84,16 @@ Updated WorkFilmOral.cpp removing reference to gettext
 
 Added TODO-Mute.txt to allow joey to ask for my help or focus me on certian Tasks
 
+Updated libintl.h to remove unneeded dllinport call (gettext)
+
+Updated WorkFilmMusic to remove reference to gettext
+
+Updated WorkFilmChef to remove reference to gettext
+
+Updated WorkFilmBuk to remove reference to gettext
+
+Updated WorkFilmBondage to remove reference to gettext
+
+Updated WorkFilmBeast removing reference to gettext
+
+
