@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -122,7 +122,7 @@ void cScreenSlaveMarket::init()
 	DisableButton(more_id, true);
 	DisableButton(buy_slave_id, true);
 	selection = -1;
-	
+
 	if (cfg.debug.log_girls()) g_LogFile.os() << "setting up slave market: genGirls = " << g_GenGirls << endl;
 
 	ImageNum = -1;
@@ -250,7 +250,7 @@ void cScreenSlaveMarket::init()
 
 	if (header_id >= 0)
 	{
-		ss.str(""); ss << "Slave Market, " << g_Gold.sval() << gettext(" gold");
+		ss.str(""); ss << "Slave Market, " << g_Gold.sval() << " gold";
 		EditTextItem(ss.str(), header_id);
 	}
 	if (gold_id >= 0)
@@ -258,7 +258,7 @@ void cScreenSlaveMarket::init()
 		ss.str(""); ss << "Gold: " << g_Gold.sval();
 		EditTextItem(ss.str(), gold_id);
 	}
-	
+
 	// Finds the first girl in the selection, so she is highlighted. This stops the No girl selected that was normal before. --PP
 	for (int i = numgirls-1; i > -1; i--)
 	{

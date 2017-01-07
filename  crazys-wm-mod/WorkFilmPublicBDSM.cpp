@@ -72,34 +72,34 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	int roll = g_Dice.d100();
 	if (g_Girls.GetStat(girl, STAT_HEALTH) < 50)
 	{
-		ss << gettext("The crew refused to film a Public Torture scene with ") << girlName << gettext(" because she is not healthy enough.\n\"We are NOT filming snuff.\"");
+		ss << ("The crew refused to film a Public Torture scene with ") << girlName << (" because she is not healthy enough.\n\"We are NOT filming snuff.\"");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if (girl->is_pregnant())
 	{
-		ss << gettext("The crew refused to film a Public Torture scene with ") << girlName << gettext(" due to her pregnancy.");
+		ss << ("The crew refused to film a Public Torture scene with ") << girlName << (" due to her pregnancy.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if (girl->has_trait( "Mind Fucked"))
 	{
-		ss << gettext("Mind fucked ") << girlName << gettext(" was pleased to be paraded naked in public and tortured and degraded. It is natural.");
+		ss << ("Mind fucked ") << girlName << (" was pleased to be paraded naked in public and tortured and degraded. It is natural.");
 		bonus += 10;
 	}
 	else if (girl->has_trait( "Masochist"))
 	{
-		ss << gettext("Masochist ") << girlName << gettext(" was pleased to be tortured and degraded. It is her place.");
+		ss << ("Masochist ") << girlName << (" was pleased to be tortured and degraded. It is her place.");
 		bonus += 6;
 	}
 	else if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		ss << girlName << gettext(" refused to have any part in this");
+		ss << girlName << (" refused to have any part in this");
 		if (girl->is_slave())
 		{
 			if (The_Player->disposition() > 30)  // nice
 			{
-				ss << gettext(" \"monstrous\" scene. She was clearly horrified at the thought so you allowed her the day off.");
+				ss << (" \"monstrous\" scene. She was clearly horrified at the thought so you allowed her the day off.");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -107,7 +107,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			else if (The_Player->disposition() > -30) //pragmatic
 			{
-				ss << gettext(" \"monstrous\" scene. She was clearly horrified so you had your men drug her before stripping her down for action.");
+				ss << (" \"monstrous\" scene. She was clearly horrified so you had your men drug her before stripping her down for action.");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, 2);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, 2);
@@ -116,11 +116,11 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			}
 			else if (The_Player->disposition() > -30)
 			{
-				ss << gettext(" \"monstrous\" scene.\nShe was clearly horrified so you had your men strip her, drag her outside and ");
-				/**/ if (girl->has_trait( "Pierced Clit"))		ss << gettext("whip her clittoral piercing");
-				else if (girl->has_trait( "Pierced Nipples"))		ss << gettext("whip her nipple piercings");
-				else ss << gettext("whip some humility into her");
-				ss << gettext(" ahead of the scene.");
+				ss << (" \"monstrous\" scene.\nShe was clearly horrified so you had your men strip her, drag her outside and ");
+				/**/ if (girl->has_trait( "Pierced Clit"))		ss << ("whip her clittoral piercing");
+				else if (girl->has_trait( "Pierced Nipples"))		ss << ("whip her nipple piercings");
+				else ss << ("whip some humility into her");
+				ss << (" ahead of the scene.");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -4);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, +5);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, +5);
@@ -135,12 +135,12 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			return true;
 		}
 	}
-	else ss << girlName << gettext(" was taken for filming in public bondage and torture scenes.");
+	else ss << girlName << (" was taken for filming in public bondage and torture scenes.");
 
-	ss << gettext("\n\n");
+	ss << ("\n\n");
 
 	//SCENERY
-	ss << gettext("A crowd gathered to watch as ") << girlName;
+	ss << ("A crowd gathered to watch as ") << girlName;
 
 	//SCENARIOS
 	int NUMSCENARIOS = 9;
@@ -149,50 +149,50 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	switch (roll)
 	{
 	case 0:
-		ss << gettext(" was hogtied naked on the floor outside ") << g_Brothels.GetName(g_Dice%g_Brothels.GetNumBrothels()) << gettext(" brothel");
+		ss << (" was hogtied naked on the floor outside ") << g_Brothels.GetName(g_Dice%g_Brothels.GetNumBrothels()) << (" brothel");
 		break;
 	case 1:
-		ss << gettext(" was stripped and locked in the public stocks in the city square");
+		ss << (" was stripped and locked in the public stocks in the city square");
 		break;
 	case 2:
-		ss << gettext(" was stripped and strapped over a barrel in the market");
+		ss << (" was stripped and strapped over a barrel in the market");
 		break;
 	case 3:
-		ss << gettext(", shackled and sent into the streets in only a maid hat, was quickly surrounded");
+		ss << (", shackled and sent into the streets in only a maid hat, was quickly surrounded");
 		break;
 	case 4:
-		ss << gettext(" was dragged naked from the studio and tied to a tree");
+		ss << (" was dragged naked from the studio and tied to a tree");
 		break;
 	case 5:
-		ss << gettext(" was stripped naked and ");
+		ss << (" was stripped naked and ");
 		if (girl->has_trait( "Pierced Clit") || girl->has_trait( "Pierced Nipples") || girl->has_trait( "Pierced Tongue")
-			|| girl->has_trait( "Pierced Navel") || girl->has_trait( "Pierced Nose")) ss << gettext("tied tightly in place through the rings in her piercings");
+			|| girl->has_trait( "Pierced Navel") || girl->has_trait( "Pierced Nose")) ss << ("tied tightly in place through the rings in her piercings");
 		else
 		{
-			ss << gettext("had her arms taped-together behind her back, exposing her ");
-			if (girl->has_trait( "Perky Nipples")) ss << gettext("perky nipples");
-			else if (girl->has_trait( "Puffy Nipples")) ss << gettext("puffy nipples");
-			else if (girl->has_trait( "Abundant Lactation") || girl->has_trait( "Cow Tits")) ss << gettext("large, milky breasts");
-			else if (girl->has_trait( "Flat Chest") || girl->has_trait( "Petite Breasts") || girl->has_trait( "Small Boobs")) ss << gettext("tiny breasts");
-			else if (girl->has_trait( "Busty Boobs") || girl->has_trait( "Big Boobs") || girl->has_trait( "Giant Juggs")) ss << gettext("large breasts");
-			else if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits")) ss << gettext("huge breasts");
-			else ss << gettext("breasts");
+			ss << ("had her arms taped-together behind her back, exposing her ");
+			if (girl->has_trait( "Perky Nipples")) ss << ("perky nipples");
+			else if (girl->has_trait( "Puffy Nipples")) ss << ("puffy nipples");
+			else if (girl->has_trait( "Abundant Lactation") || girl->has_trait( "Cow Tits")) ss << ("large, milky breasts");
+			else if (girl->has_trait( "Flat Chest") || girl->has_trait( "Petite Breasts") || girl->has_trait( "Small Boobs")) ss << ("tiny breasts");
+			else if (girl->has_trait( "Busty Boobs") || girl->has_trait( "Big Boobs") || girl->has_trait( "Giant Juggs")) ss << ("large breasts");
+			else if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits")) ss << ("huge breasts");
+			else ss << ("breasts");
 		}
 		break;
 	case 6:
-		ss << gettext(" was tied to a fence and had her clothes ripped off");
+		ss << (" was tied to a fence and had her clothes ripped off");
 		break;
 	case 7:
-		ss << gettext(" was suspended in the air by chains");
+		ss << (" was suspended in the air by chains");
 		break;
 	case 8:
-		ss << gettext(" was rendered helpless and given over to the mob");
+		ss << (" was rendered helpless and given over to the mob");
 		break;
 	default:
-		ss << gettext(" was tied impossibly in the dirt");
+		ss << (" was tied impossibly in the dirt");
 		break;
 	}
-	ss << gettext(". The crowd jeered at her ");
+	ss << (". The crowd jeered at her ");
 
 	//Actions
 	int NUMACTIONS = 10;
@@ -203,90 +203,90 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	case 0:
 		if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 		{
-			ss << gettext("gags, retches and gasps");
+			ss << ("gags, retches and gasps");
 		}
-		else ss << gettext("expressions");
-		ss << gettext(" as guys competed to shove their dicks down her throat.");
+		else ss << ("expressions");
+		ss << (" as guys competed to shove their dicks down her throat.");
 		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
 		throat = true;
 		impact = 5;
 		break;
 	case 1:
-		ss << gettext("yelps as a gang of teenagers slapped her tits and spanked her ass with sticks.");
+		ss << ("yelps as a gang of teenagers slapped her tits and spanked her ass with sticks.");
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, 1);
 		impact = 1;
 		break;
 	case 2:
-		ss << gettext("cries as she was double-fisted by three angry elves.");
+		ss << ("cries as she was double-fisted by three angry elves.");
 		g_Girls.UpdateSkill(girl, SKILL_ANAL, 1);
 		impact = 5;
 		break;
 	case 3:
-		ss << gettext("gasps and squeals as a cackling old witch claiming to be her 'fairy godmother' mounted her with a thick double-dildo.");
+		ss << ("gasps and squeals as a cackling old witch claiming to be her 'fairy godmother' mounted her with a thick double-dildo.");
 		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
 		impact = 3;
 		break;
 	case 4:
-		ss << gettext("cries as a demented priest shoved 'Candles of Cleansing' in her 'unclean places', chanting prayers as he lit them.");
+		ss << ("cries as a demented priest shoved 'Candles of Cleansing' in her 'unclean places', chanting prayers as he lit them.");
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, 1);
 		impact = 8;
 		break;
 	case 5:
-		ss << gettext("screams for help as she was fucked by a pack of wild beasts.");
+		ss << ("screams for help as she was fucked by a pack of wild beasts.");
 		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 1);
 		fucked = BYBEAST;
 		hard = true;
 		impact = 8;
 		break;
 	case 6:
-		ss << gettext("struggles as a pair of ");
-		if /*  */(g_Girls.GetStat(girl, STAT_BEAUTY) > 80)		ss << gettext("ugly whores, jealous of her looks");
-		else if (g_Girls.GetStat(girl, STAT_AGE) < 25)			ss << gettext("old whores, jealous of her youth");
-		else if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 75)	ss << gettext("dumb whores, jealous of her brains");
-		else if (girl->is_free())									ss << gettext("slave whores, jealous of her freedom");
-		else													ss << gettext("sadistic rival whores");
-		ss << gettext(" spit-roasted her with some shockingly large strap-ons.");
+		ss << ("struggles as a pair of ");
+		if /*  */(g_Girls.GetStat(girl, STAT_BEAUTY) > 80)		ss << ("ugly whores, jealous of her looks");
+		else if (g_Girls.GetStat(girl, STAT_AGE) < 25)			ss << ("old whores, jealous of her youth");
+		else if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 75)	ss << ("dumb whores, jealous of her brains");
+		else if (girl->is_free())									ss << ("slave whores, jealous of her freedom");
+		else													ss << ("sadistic rival whores");
+		ss << (" spit-roasted her with some shockingly large strap-ons.");
 		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
 		impact = 5;
 		break;
 	case 7:
-		ss << gettext("cries as a large gang of ");
-		if /* */(girl->has_trait( "Tsundere") || girl->has_trait( "Yandere"))	ss << gettext("losers she's rejected over the years");
+		ss << ("cries as a large gang of ");
+		if /* */(girl->has_trait( "Tsundere") || girl->has_trait( "Yandere"))	ss << ("losers she's rejected over the years");
 		else if ((girl->has_trait( "Lolita") || girl->has_trait( "Flat Chest") || girl->has_trait( "Petite Breasts") || girl->has_trait( "Small Boobs"))
-			&& (girl->age() < 21)) ss << gettext("probable pedos");
-		else if (girl->has_trait( "Queen") || girl->has_trait( "Princess")) ss << gettext("her former subjects");
-		else if (girl->has_trait( "Idol") || (g_Girls.GetStat(girl, STAT_FAME) > 75))	ss << gettext("men from her fan-club");
-		else if (girl->has_trait( "Teacher")) ss << gettext("students from her class");
-		else if (girl->m_NumCusts > 100) ss << gettext("her former customers");
-		else if (girl->age() < 21) ss << gettext("guys she went to school with");
-		else ss << gettext("tramps, gypsies and homeless");
-		ss << gettext(" took this chance to spank her, grope her and fill her cunt with cum.");
+			&& (girl->age() < 21)) ss << ("probable pedos");
+		else if (girl->has_trait( "Queen") || girl->has_trait( "Princess")) ss << ("her former subjects");
+		else if (girl->has_trait( "Idol") || (g_Girls.GetStat(girl, STAT_FAME) > 75))	ss << ("men from her fan-club");
+		else if (girl->has_trait( "Teacher")) ss << ("students from her class");
+		else if (girl->m_NumCusts > 100) ss << ("her former customers");
+		else if (girl->age() < 21) ss << ("guys she went to school with");
+		else ss << ("tramps, gypsies and homeless");
+		ss << (" took this chance to spank her, grope her and fill her cunt with cum.");
 		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
 		fucked = BYMAN;
 		impact = 3;
 		break;
 	case 8:
-		ss << gettext("screams as the police captain stubbed out a cigar on her asshole, once he and his men were 'done with that'.");
+		ss << ("screams as the police captain stubbed out a cigar on her asshole, once he and his men were 'done with that'.");
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
 		fucked = BYMAN;
 		hard = true;
 		impact = 10;
 		break;
 	case 9:
-		ss << gettext("agonised screams as a passing battle-mage tested out flame spells on her naked form.");
+		ss << ("agonised screams as a passing battle-mage tested out flame spells on her naked form.");
 		g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
 		hard = true;
 		impact = 7;
 		break;
 	default:
-		ss << gettext("puzzled expression as something impossible happened.");
+		ss << ("puzzled expression as something impossible happened.");
 		break;
 	}
-	ss << gettext("\nYour film crew rescued her once they had enough footage.\n\n");
+	ss << ("\nYour film crew rescued her once they had enough footage.\n\n");
 
 	if (jobperformance >= 350)
 	{
-		ss << gettext("It was an outstanding scene, and definitely boosted her fame and resliience, even if it did wear her out a lot.");
+		ss << ("It was an outstanding scene, and definitely boosted her fame and resliience, even if it did wear her out a lot.");
 		bonus = 12;
 		g_Girls.UpdateStat(girl, STAT_FAME, 5);
 		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 3);
@@ -294,7 +294,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	}
 	else if (jobperformance >= 245)
 	{
-		ss << gettext("It was a great scene and should win her some fans. She looks wrecked now though.");
+		ss << ("It was a great scene and should win her some fans. She looks wrecked now though.");
 		bonus = 8;
 		g_Girls.UpdateStat(girl, STAT_FAME, 2);
 		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 2);
@@ -302,69 +302,69 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << gettext("It was a good scene, but not the best.");
+		ss << ("It was a good scene, but not the best.");
 		bonus = 4;
 		g_Girls.UpdateStat(girl, STAT_FAME, 1);
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 15 + impact);
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << gettext("It was okay, but something about the scene didn't work.");
+		ss << ("It was okay, but something about the scene didn't work.");
 		bonus = 2;
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 15 + impact);
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << gettext("It wasn't a great public scene.");
+		ss << ("It wasn't a great public scene.");
 		bonus = 1;
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 20 + impact);
 	}
 	else
 	{
-		ss << gettext("Sadly, the scene really didn't work. Even the onlookers weren't looking.");
+		ss << ("Sadly, the scene really didn't work. Even the onlookers weren't looking.");
 		g_Girls.UpdateStat(girl, STAT_FAME, -1);
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 20 + impact);
 	}
-	ss << gettext("\n");
+	ss << ("\n");
 
 	//Enjoyed? If she's deranged, she'd should have enjoyed it.
 	if (girl->has_trait( "Mind Fucked"))
 	{
 		enjoy += 16;
-		ss << gettext("Being completely mind fucked, ") << girlName << gettext(" actually gets off on this.\n");
+		ss << ("Being completely mind fucked, ") << girlName << (" actually gets off on this.\n");
 	}
 	else if (girl->has_trait( "Masochist"))
 	{
 		enjoy += 10;
-		ss << girlName << gettext(" enjoys this. It's what she deserves.\n");
+		ss << girlName << (" enjoys this. It's what she deserves.\n");
 	}
 	else if (girl->has_trait( "Broken Will") || girl->has_trait( "Dependant"))
 	{
 		enjoy += 5;
-		ss << girlName << gettext(" accepts this. It is Master's will.\n");
+		ss << girlName << (" accepts this. It is Master's will.\n");
 	}
 	else if (girl->has_trait( "Iron Will") || girl->has_trait( "Fearless"))
 	{
 		enjoy -= 5;
-		ss << girlName << gettext(" endures in stoic silence, determined not to let you see her suffer.\n");
+		ss << girlName << (" endures in stoic silence, determined not to let you see her suffer.\n");
 	}
 	else if (girl->has_trait( "Nymphomaniac"))
 	{
 		enjoy += 2;
-		ss << girlName << gettext(" doesn't much like the pain, but enjoys getting this much sex and attention.\n");
+		ss << girlName << (" doesn't much like the pain, but enjoys getting this much sex and attention.\n");
 	}
 	//Feedback enjoyment
 	if (enjoy > 10)
 	{
-		ss << gettext("She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.\n\n");
+		ss << ("She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.\n\n");
 	}
 	else if (enjoy > 0)
 	{
-		ss << gettext("She's only a little traumatised.\n\n");
+		ss << ("She's only a little traumatised.\n\n");
 	}
 	else
 	{
-		ss << gettext("From the way she's still crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.\n\n");
+		ss << ("From the way she's still crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.\n\n");
 	}
 
 	bonus = bonus + enjoy;

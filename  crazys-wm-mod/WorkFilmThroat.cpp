@@ -68,28 +68,28 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	if (g_Girls.GetStat(girl, STAT_HEALTH) < 20)
 	{
-		ss << gettext("The crew refused to film a throatjob scene because ") << girlName << gettext(" is not healthy enough.\n\"We are NOT filming snuff\".");
+		ss << ("The crew refused to film a throatjob scene because ") << girlName << (" is not healthy enough.\n\"We are NOT filming snuff\".");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if (girl->has_trait( "Mind Fucked"))
 	{
-		ss << gettext("Mind fucked ") << girlName << gettext(" was pleased to be paraded naked in public and tortured and degraded. It is natural.\n");
+		ss << ("Mind fucked ") << girlName << (" was pleased to be paraded naked in public and tortured and degraded. It is natural.\n");
 		bonus += 10;
 	}
 	else if (girl->has_trait( "Masochist"))
 	{
-		ss << gettext("Masochist ") << girlName << gettext(" was pleased to be tortured, used and degraded. It is her place.\n");
+		ss << ("Masochist ") << girlName << (" was pleased to be tortured, used and degraded. It is her place.\n");
 		bonus += 6;
 	}
 	else if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		ss << girlName << gettext(" angrily refused to be throat-fucked on film today.");
+		ss << girlName << (" angrily refused to be throat-fucked on film today.");
 		if (girl->is_slave())
 		{
 			if (The_Player->disposition() > 30)  // nice
 			{
-				ss << gettext("\nThough she is a slave, she was upset so you allowed her the day off.\n");
+				ss << ("\nThough she is a slave, she was upset so you allowed her the day off.\n");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
 				g_Girls.UpdateStat(girl, STAT_SPIRIT, 1);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
@@ -98,7 +98,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			}
 			else if (The_Player->disposition() > -30) //pragmatic
 			{
-				ss << gettext(" Amused, you over-ruled her, and gave owner's consent for her. She glared at you as they dragged her away.\n");
+				ss << (" Amused, you over-ruled her, and gave owner's consent for her. She glared at you as they dragged her away.\n");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, 2);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, 2);
@@ -107,7 +107,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			}
 			else if (The_Player->disposition() > -30)
 			{
-				ss << gettext(" Amused, you over-ruled her, and gave owner's consent.\nShe made a hell of a fuss, but you knew just the thing to shut her up.");
+				ss << (" Amused, you over-ruled her, and gave owner's consent.\nShe made a hell of a fuss, but you knew just the thing to shut her up.");
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -4);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, +5);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, +5);
@@ -131,34 +131,34 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		switch (OPTION)
 		{
 		case 0:
-			ss << girlName << gettext(" knelt in front of him, opened wide, and swallowed down his whole length, bouncing back and forward until he came ");
+			ss << girlName << (" knelt in front of him, opened wide, and swallowed down his whole length, bouncing back and forward until he came ");
 			break;
 		case 1:
-			ss << girlName << gettext(" lay on her back on the bed with her head hanging back over the edge. Gripping her breasts, he rammed his cock down her throat until cum exploded ");
+			ss << girlName << (" lay on her back on the bed with her head hanging back over the edge. Gripping her breasts, he rammed his cock down her throat until cum exploded ");
 			break;
 		case 2:
-			ss << gettext("The actor sat on a chair, with ") << girlName << gettext(" knelt before him. Gripping her head, he pulled her onto his cock, rocking her back and forward on his cock until he came ");
+			ss << ("The actor sat on a chair, with ") << girlName << (" knelt before him. Gripping her head, he pulled her onto his cock, rocking her back and forward on his cock until he came ");
 			break;
 		default:
-			ss << girlName << gettext(" did some kind of throatfuck until he came ");
+			ss << girlName << (" did some kind of throatfuck until he came ");
 			break;
 		}
 		switch (OUTCOME)
 		{
 		case 0:
-			ss << gettext("deep down her throat");
+			ss << ("deep down her throat");
 			break;
 		case 1:
-			ss << gettext("in her mouth");
+			ss << ("in her mouth");
 			break;
 		case 2:
-			ss << gettext("deep in her stomach");
+			ss << ("deep in her stomach");
 			break;
 		default:
-			ss << gettext("somewhere");
+			ss << ("somewhere");
 			break;
 		}
-		ss << gettext(".\n");
+		ss << (".\n");
 		bonus = 12;
 		hate = 1;
 		tired = 1;
@@ -168,31 +168,31 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		switch (OPTION)
 		{
 		case 0:
-			ss << girlName << gettext(" knelt in front of him and sucked his cock down, bouncing back and forward until he came ");
+			ss << girlName << (" knelt in front of him and sucked his cock down, bouncing back and forward until he came ");
 			break;
 		case 1:
-			ss << girlName << gettext(" lay back on the bed with her head over the edge. He fucked her throat until he came ");
+			ss << girlName << (" lay back on the bed with her head over the edge. He fucked her throat until he came ");
 			break;
 		case 2:
-			ss << gettext("The actor sat on a chair, with ") << girlName << gettext(" before him. Gripping her head, he pulled her onto his cock, back and forth until he came ");
+			ss << ("The actor sat on a chair, with ") << girlName << (" before him. Gripping her head, he pulled her onto his cock, back and forth until he came ");
 			break;
 		default:
-			ss << girlName << gettext(" did some kind of throatfuck until he came ");
+			ss << girlName << (" did some kind of throatfuck until he came ");
 			break;
 		}
 		switch (OUTCOME)
 		{
 		case 0:
-			ss << gettext("all over her");
+			ss << ("all over her");
 			break;
 		case 1:
-			ss << gettext("in her mouth");
+			ss << ("in her mouth");
 			break;
 		case 2:
-			ss << gettext("deep down her throat");
+			ss << ("deep down her throat");
 			break;
 		default:
-			ss << gettext("somewhere");
+			ss << ("somewhere");
 			break;
 		}
 		hate = 2;
@@ -204,31 +204,31 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		switch (OPTION)
 		{
 		case 0:
-			ss << girlName << gettext(" knelt down and let him facefuck her until he came ");
+			ss << girlName << (" knelt down and let him facefuck her until he came ");
 			break;
 		case 1:
-			ss << girlName << gettext(" lay on the bed and let him fuck her throat. He carefully facefucked her until he came ");
+			ss << girlName << (" lay on the bed and let him fuck her throat. He carefully facefucked her until he came ");
 			break;
 		case 2:
-			ss << gettext("The actor pulled ") << girlName << gettext("'s head onto his cock, rubbing his cock down her throat until he came ");
+			ss << ("The actor pulled ") << girlName << ("'s head onto his cock, rubbing his cock down her throat until he came ");
 			break;
 		default:
-			ss << girlName << gettext(" did some kind of throatfuck until he came ");
+			ss << girlName << (" did some kind of throatfuck until he came ");
 			break;
 		}
 		switch (OUTCOME)
 		{
 		case 0:
-			ss << gettext("all over her");
+			ss << ("all over her");
 			break;
 		case 1:
-			ss << gettext("in her mouth");
+			ss << ("in her mouth");
 			break;
 		case 2:
-			ss << gettext("down her throat");
+			ss << ("down her throat");
 			break;
 		default:
-			ss << gettext("somewhere");
+			ss << ("somewhere");
 			break;
 		}
 		bonus = 4;
@@ -240,31 +240,31 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		switch (OPTION)
 		{
 		case 0:
-			ss << girlName << gettext(" knelt down and get his cock down her throat. Eventually he came ");
+			ss << girlName << (" knelt down and get his cock down her throat. Eventually he came ");
 			break;
 		case 1:
-			ss << girlName << gettext(" lay on the bed and tried to take his meat in her throat. He facefucked her until he finally came ");
+			ss << girlName << (" lay on the bed and tried to take his meat in her throat. He facefucked her until he finally came ");
 			break;
 		case 2:
-			ss << gettext("The actor pulled ") << girlName << gettext("'s head onto his cock, making her gag, until he came ");
+			ss << ("The actor pulled ") << girlName << ("'s head onto his cock, making her gag, until he came ");
 			break;
 		default:
-			ss << girlName << gettext(" did some kind of throatfuck until he came ");
+			ss << girlName << (" did some kind of throatfuck until he came ");
 			break;
 		}
 		switch (OUTCOME)
 		{
 		case 0:
-			ss << gettext("in her face");
+			ss << ("in her face");
 			break;
 		case 1:
-			ss << gettext("in her mouth");
+			ss << ("in her mouth");
 			break;
 		case 2:
-			ss << gettext("over her face");
+			ss << ("over her face");
 			break;
 		default:
-			ss << gettext("somewhere");
+			ss << ("somewhere");
 			break;
 		}
 		bonus = 2;
@@ -273,42 +273,42 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << gettext("It was a pretty awkward scene, with the actor not getting much pleasure trying to fuck her throat. ");
-		ss << gettext("In the end he gave up and plunged his cock down her throat, making her throw up through her nose, as he came in her head.");
+		ss << ("It was a pretty awkward scene, with the actor not getting much pleasure trying to fuck her throat. ");
+		ss << ("In the end he gave up and plunged his cock down her throat, making her throw up through her nose, as he came in her head.");
 		bonus = 1;
 		hate = 8;
 		tired = 12;
 	}
 	else
 	{
-		ss << gettext("With her continual gagging, retching and vomittig the actor couldn't get any pleasure, and ended up wanking over her face.");
+		ss << ("With her continual gagging, retching and vomittig the actor couldn't get any pleasure, and ended up wanking over her face.");
 		hate = 8;
 		tired = 12;
 	}
-	ss << gettext("\n");
+	ss << ("\n");
 
 	//Enjoyed?! No, but some will hate it less.
 	if (jobperformance >= 200)
 	{
 		enjoy++;
-		ss << gettext("She won't say it, but you suspect she secretly gets off on the degradation.\n\n");
+		ss << ("She won't say it, but you suspect she secretly gets off on the degradation.\n\n");
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy -= (1 + g_Dice % 2);
-		ss << gettext("She's pretty raw and her makeup is everywhere.\n\n");
+		ss << ("She's pretty raw and her makeup is everywhere.\n\n");
 	}
 	else
 	{
 		enjoy -= (2 + g_Dice % 3);
-		ss << gettext("From the way she's coughing and gagging and has bright red eyes, you suspect this wasn't much fun for her.\n\n");
+		ss << ("From the way she's coughing and gagging and has bright red eyes, you suspect this wasn't much fun for her.\n\n");
 	}
 	bonus = bonus + enjoy;
 
 	int impact = g_Dice%10;
 	if (girl->has_trait( "Strong Gag Reflex"))
 	{
-		ss << gettext("She was gagging and retching the whole scene, and was violently sick. She was exhausted and felt awful afterward.\n\n");
+		ss << ("She was gagging and retching the whole scene, and was violently sick. She was exhausted and felt awful afterward.\n\n");
 		g_Girls.UpdateStat(girl, STAT_HEALTH, (10 + impact));
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, (10 + impact + tired));
 		g_Girls.UpdateStat(girl, STAT_PCHATE, (2 + hate));
@@ -316,7 +316,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else if (girl->has_trait( "Gag Reflex"))
 	{
-		ss << gettext("She gagged and retched a lot. It was exhausting and left her feeling sick.\n\n");
+		ss << ("She gagged and retched a lot. It was exhausting and left her feeling sick.\n\n");
 		g_Girls.UpdateStat(girl, STAT_HEALTH, (2 + impact));
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, (5 + impact + tired));
 		g_Girls.UpdateStat(girl, STAT_PCHATE, (hate));

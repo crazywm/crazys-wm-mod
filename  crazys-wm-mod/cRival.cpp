@@ -74,14 +74,14 @@ string cRivalManager::rivals_plunder_pc_gold(cRival* rival)
 	rival->m_Gold += gold;									// add the aount to rival coffers
 
 	stringstream ss;
-	ss << gettext("\nThey get away with ") << gold << gettext(" gold.");	// format a message and store it in the string that was passed to us
+	ss << "\nThey get away with " << gold << " gold.";	// format a message and store it in the string that was passed to us
 	return ss.str();
 }
 
 void cRivalManager::Update(int& NumPlayerBussiness)
 {
 	cRival* curr = m_Rivals;
-	
+
 
 	if (g_Year >= 1209 && g_Month > 3) m_PlayerSafe = false;
 
@@ -105,11 +105,11 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 
 		// `J` added - rival power
 		// `J` reworked to reduce the rival's power
-		curr->m_Power = 
+		curr->m_Power =
 			max(0, curr->m_NumBrothels * 5) +
 			max(0, curr->m_NumGamblingHalls * 2) +
 			max(0, curr->m_NumBars * 1);
-	
+
 		// check if a rival is in danger
 		if (curr->m_Gold <= 0 || curr->m_NumBrothels <= 0 || curr->m_NumGirls <= 0 || curr->m_NumGamblingHalls <= 0 || curr->m_NumBars <= 0)
 		{
@@ -166,9 +166,9 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		}
 
 		// process money
-		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep;
 		income = upkeep = 0;
-		
+
 		for (int i = 0; i < curr->m_NumGirls; i++)	// from girls
 		{
 			// If a rival has more girls than their brothels can handle, the rest work on the streets
@@ -255,7 +255,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		}
 
 		// process money
-		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep;
 		income = upkeep = 0;
 
 		// Work out gang missions
@@ -291,7 +291,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 				case 6:
 					missionid = MISS_CATACOMBS;		// random but dangerous
 					break;
-				default:	
+				default:
 					missionid = MISS_GUARDING;		// don't do anything but guard
 					break;
 				}
@@ -327,19 +327,19 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							sGang* miss1 = g_Gangs.GetGangOnMission(MISS_GUARDING);
 							if (miss1)									// if you have a gang guarding
 							{
-								ss << gettext("Your guards encounter ") << curr->m_Name << gettext(" going after some of your territory.");
+								ss << "Your guards encounter " << curr->m_Name << (" going after some of your territory.");
 
 								sGang* rGang = g_Gangs.GetTempGang(curr->m_Power);
 								if (g_Gangs.GangBrawl(miss1, rGang))	// if you win
 								{
 									if (rGang->m_Num == 0) curr->m_NumGangs--;
-									ss << gettext("\nBut you maintain control of the territory.");
+									ss << ("\nBut you maintain control of the territory.");
 									miss1->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 								}
 								else									// if you lose
 								{
 									if (miss1->m_Num == 0) g_Gangs.RemoveGang(miss1);
-									ss << gettext("\nYou lose the territory.");
+									ss << ("\nYou lose the territory.");
 									NumPlayerBussiness--;
 									curr->m_BusinessesExtort++;
 									g_MessageQue.AddToQue(ss.str(), COLOR_RED);
@@ -348,7 +348,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							}
 							else										// if you do not have a gang guarding
 							{
-								ss << gettext("Your rival ") << curr->m_Name << gettext(" has taken one of the undefended territories you control.");
+								ss << ("Your rival ") << curr->m_Name << (" has taken one of the undefended territories you control.");
 								g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 								NumPlayerBussiness--;
 								curr->m_BusinessesExtort++;
@@ -357,7 +357,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					}
 					else	// attack another rival
 					{
-						ss << gettext("The ") << curr->m_Name << gettext(" attacked the territories of ");
+						ss << ("The ") << curr->m_Name << (" attacked the territories of ");
 						cRival* rival = GetRival(who);
 						if (rival != curr && rival->m_BusinessesExtort > 0)
 						{
@@ -370,12 +370,12 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									rival->m_NumGangs--;
 									rival->m_BusinessesExtort--;
 									curr->m_BusinessesExtort++;
-									ss << gettext(" and won.");
+									ss << (" and won.");
 								}
 								else
 								{
 									curr->m_NumGangs--;
-									ss << gettext(" and lost.");
+									ss << (" and lost.");
 								}
 								delete rG1; rG1 = 0;	// cleanup
 							}
@@ -425,25 +425,25 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 						sGang* miss1 = g_Gangs.GetGangOnMission(MISS_GUARDING);
 						if (miss1)
 						{
-							ss << gettext("Your rival the ") << curr->m_Name << gettext(" attack your assets.");
+							ss << ("Your rival the ") << curr->m_Name << (" attack your assets.");
 
 							if (!g_Gangs.GangBrawl(miss1, cG1))
 							{
 								if (miss1->m_Num == 0) g_Gangs.RemoveGang(miss1);
-								ss << gettext("\nYour men are defeated.");
+								ss << ("\nYour men are defeated.");
 								int num = (g_Dice % 2) + 1;
 								damage = true;
 							}
 							else
 							{
 								if (cG1->m_Num == 0) curr->m_NumGangs--;
-								ss << gettext(" But they fail.");
+								ss << (" But they fail.");
 								miss1->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 							}
 						}
 						else
 						{
-							ss << gettext("You have no guards so your rival ") << curr->m_Name << gettext(" attacks.");
+							ss << ("You have no guards so your rival ") << curr->m_Name << (" attacks.");
 							if (NumPlayerBussiness > 0 || g_Gold.ival() > 0)
 							{
 								num = (g_Dice % 3) + 1;
@@ -474,7 +474,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					}
 					else
 					{
-						ss << gettext("The ") << curr->m_Name << gettext(" launched an assault on ");
+						ss << ("The ") << curr->m_Name << (" launched an assault on ");
 						cRival* rival = GetRival(who);
 						if (rival && rival != curr)
 						{
@@ -486,12 +486,12 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 								if (g_Gangs.GangBrawl(cG1, rG1, true))
 								{
 									rival->m_NumGangs--;
-									ss << gettext(" and won.");
+									ss << (" and won.");
 									num = (g_Dice % 2) + 1;
 								}
 								else
 								{
-									ss << gettext(" and lost.");
+									ss << (" and lost.");
 									curr->m_NumGangs--;
 								}
 								delete rG1; rG1 = 0;	// cleanup
@@ -595,7 +595,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					{
 						bool quit = false; bool add = false;
 						sInventoryItem* temp;
-						do { temp = g_InvManager.GetRandomItem(); 
+						do { temp = g_InvManager.GetRandomItem();
 						} while (!temp || temp->m_Rarity < RARITYSHOP25 || temp->m_Rarity > RARITYCATACOMB01);
 
 						switch (temp->m_Rarity)
@@ -630,7 +630,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		}	// end Gang Missions
 
 		// process money
-		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep;
 		income = upkeep = 0;
 
 		bool danger = false;
@@ -703,7 +703,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		}
 
 		// process money
-		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep;
 		income = upkeep = 0;
 
 		if (!danger)
@@ -743,7 +743,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 				curr->m_NumGangs++;
 				upkeep -= 90;
 			}
-			// buy a gambling hall 
+			// buy a gambling hall
 			if (g_Dice.percent(30) && curr->m_Gold + income + upkeep - 10000 >= 0 && curr->m_NumGamblingHalls < curr->m_NumBrothels)
 			{
 				curr->m_NumGamblingHalls++;
@@ -777,11 +777,11 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		}
 
 		// process money
-		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep; 
+		totalincome += income; totalupkeep += upkeep; curr->m_Gold += income; curr->m_Gold += upkeep; profit = totalincome + totalupkeep;
 		income = upkeep = 0;
 
-		// adjust their bribe rate		
-		if (profit > 1000)		curr->m_BribeRate += (long)(50);	// if doing well financially then increase 
+		// adjust their bribe rate
+		if (profit > 1000)		curr->m_BribeRate += (long)(50);	// if doing well financially then increase
 		else if (profit < 0)	curr->m_BribeRate -= (long)(50);	// if loosing money decrease
 		if (curr->m_BribeRate < 0) curr->m_BribeRate = 0;			// check 0
 		g_Brothels.UpdateBribeInfluence();							// update influence
@@ -1057,7 +1057,7 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int gangs, int power)
 {
 	ifstream in;
-	
+
 
 	cRival* rival = new cRival();
 
@@ -1075,7 +1075,7 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 
 	// `J` added - rival power
 	// `J` reworked to reduce the rival's power
-	rival->m_Power = max(power, 
+	rival->m_Power = max(power,
 		max(0, rival->m_NumBrothels * 5) +
 		max(0, rival->m_NumGamblingHalls * 2) +
 		max(0, rival->m_NumBars * 1));

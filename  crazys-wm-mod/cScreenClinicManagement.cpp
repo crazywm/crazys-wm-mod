@@ -259,9 +259,9 @@ void cScreenClinicManagement::check_events()
 			RefreshJobList();	// populate Jobs listbox with jobs in the selected category
 			stringstream jdmessage; jdmessage << g_Clinic.m_JobManager.JobFilterDesc[selection];
 			if (g_Clinic.DoctorNeeded())
-				jdmessage << gettext("\n*** A Doctor is required to perform any surgeries. ");
+				jdmessage << "\n*** A Doctor is required to perform any surgeries. ";
 			if ((g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_MECHANIC, SHIFT_DAY) < 1 && g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_GETREPAIRS, SHIFT_DAY) > 0) || (g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_MECHANIC, SHIFT_NIGHT) < 1 && g_Clinic.GetNumGirlsOnJob(g_CurrClinic, JOB_GETREPAIRS, SHIFT_NIGHT) > 0))
-				jdmessage << gettext("\n**** A Mechanic is required to perform any Repairs. ");
+				jdmessage << "\n**** A Mechanic is required to perform any Repairs. ";
 			EditTextItem(jdmessage.str(), jobtypedesc_id);
 		}
 	}
@@ -276,7 +276,7 @@ void cScreenClinicManagement::check_events()
 			int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);		// Now assign the job to all the selected girls
 			while (GSelection != -1)
 			{
-				// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> 
+				// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
 				int new_job = selection;
 				selected_girl = g_Clinic.GetGirl(g_CurrClinic, GSelection);
 				if (selected_girl)

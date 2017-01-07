@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -74,7 +74,7 @@ void cScreenPropertyManagement::set_ids()
 	casinofire_id   = get_id("CasinoFireButton");  // not used anymore?
 	roomcost_id		= get_id("RoomAddCost");
 	restrict_id		= get_id("SexRestrictions");
-	
+
 	curbrothel_id	= get_id("CurrentBrothel");
 	p_b0_id			= get_id("P_B0_Name");
 	p_b1_id			= get_id("P_B1_Name");
@@ -104,7 +104,7 @@ void cScreenPropertyManagement::set_ids()
 	p_cl_addroom	= get_id("P_Cl_AddRoom");
 	p_ho_addroom	= get_id("P_Ho_AddRoom");
 	p_fa_addroom	= get_id("P_Fa_AddRoom");
-	
+
 	potioncost_id	= get_id("PotionCost");
 	p_b0_pot_c		= get_id("P_B0_Pot_C");
 	p_b1_pot_c		= get_id("P_B1_Pot_C");
@@ -355,10 +355,10 @@ void cScreenPropertyManagement::init()
 	Focused();
 	g_InitWin = false;
 
-	ss.str(""); ss << gettext("Add Rooms: ") << tariff.add_room_cost(5) << gettext(" gold");
+	ss.str(""); ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold";
 	EditTextItem(ss.str(), roomcost_id);
 
-	ss.str(""); ss << gettext("Anti-Preg Potions: ") << tariff.anti_preg_price(1) << gettext(" gold each");
+	ss.str(""); ss << "Anti-Preg Potions: " << tariff.anti_preg_price(1) << " gold each";
 	EditTextItem(ss.str(), potioncost_id);
 
 	string brothel = "";
@@ -368,7 +368,7 @@ void cScreenPropertyManagement::init()
 
 	if (true) // Always include the house
 	{
-		EditTextItem(gettext("Your House"), p_ho_id);
+		EditTextItem("Your House", p_ho_id);
 
 		SetCheckBox(p_ho_noanal, g_House.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(p_ho_nobdsm, g_House.GetBrothel(0)->m_RestrictBDSM);
@@ -382,12 +382,12 @@ void cScreenPropertyManagement::init()
 
 		advert = g_House.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_ho_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << "Promotion Budget: " << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_ho_advamnt);
 
 		SetCheckBox(p_ho_pot_b, g_House.GetBrothel(0)->m_KeepPotionsStocked);
 		ss.str(""); number = g_House.GetBrothel(0)->m_AntiPregPotions;
-		ss << gettext("You have: ") << number;
+		ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_ho_pot_a);
 		DisableCheckBox(p_ho_pot_b, number < 1);
 	}
@@ -409,18 +409,18 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Brothels.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b0_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Advertising Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_b0_advamnt);
 
 		SetCheckBox(p_b0_pot_b, g_Brothels.GetBrothel(0)->m_KeepPotionsStocked);
 		ss.str(""); number = g_Brothels.GetBrothel(0)->m_AntiPregPotions;
-		ss << gettext("You have: ") << number;
+		ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_b0_pot_a);
 		DisableCheckBox(p_b0_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own this brothel yet.)"), p_b0_id);
+		EditTextItem("(You do not own this brothel yet.)", p_b0_id);
 	}
 
 	if (g_Brothels.GetNumBrothels() > 1)
@@ -439,19 +439,19 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Brothels.GetBrothel(1)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b1_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Advertising Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_b1_advamnt);
 
 		SetCheckBox(p_b1_pot_b, g_Brothels.GetBrothel(1)->m_KeepPotionsStocked);
 		number = g_Brothels.GetBrothel(1)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_b1_pot_a);
 		DisableCheckBox(p_b1_pot_b, number < 1);
 
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own this brothel yet.)"), p_b1_id);
+		EditTextItem(("(You do not own this brothel yet.)"), p_b1_id);
 	}
 
 	if (g_Brothels.GetNumBrothels() > 2)
@@ -470,18 +470,18 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Brothels.GetBrothel(2)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b2_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Advertising Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_b2_advamnt);
 
 		SetCheckBox(p_b2_pot_b, g_Brothels.GetBrothel(2)->m_KeepPotionsStocked);
 		number = g_Brothels.GetBrothel(2)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_b2_pot_a);
 		DisableCheckBox(p_b2_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own this brothel yet.)"), p_b2_id);
+		EditTextItem(("(You do not own this brothel yet.)"), p_b2_id);
 	}
 
 	if (g_Brothels.GetNumBrothels() > 3)
@@ -500,18 +500,18 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Brothels.GetBrothel(3)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b3_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Advertising Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_b3_advamnt);
 
 		SetCheckBox(p_b3_pot_b, g_Brothels.GetBrothel(3)->m_KeepPotionsStocked);
 		number = g_Brothels.GetBrothel(3)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_b3_pot_a);
 		DisableCheckBox(p_b3_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own this brothel yet.)"), p_b3_id);
+		EditTextItem(("(You do not own this brothel yet.)"), p_b3_id);
 	}
 
 	if (g_Brothels.GetNumBrothels() > 4)
@@ -530,18 +530,18 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Brothels.GetBrothel(4)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b4_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Advertising Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_b4_advamnt);
 
 		SetCheckBox(p_b4_pot_b, g_Brothels.GetBrothel(4)->m_KeepPotionsStocked);
 		number = g_Brothels.GetBrothel(4)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_b4_pot_a);
 		DisableCheckBox(p_b4_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own this brothel yet.)"), p_b4_id);
+		EditTextItem(("(You do not own this brothel yet.)"), p_b4_id);
 	}
 
 	if (g_Brothels.GetNumBrothels() > 5)
@@ -560,17 +560,17 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Brothels.GetBrothel(5)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b5_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Advertising Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_b5_advamnt);
 		SetCheckBox(p_b5_pot_b, g_Brothels.GetBrothel(5)->m_KeepPotionsStocked);
 		number = g_Brothels.GetBrothel(5)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_b5_pot_a);
 		DisableCheckBox(p_b5_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own this brothel yet.)"), p_b5_id);
+		EditTextItem(("(You do not own this brothel yet.)"), p_b5_id);
 	}
 
 	if (g_Brothels.GetNumBrothels() > 6)
@@ -589,23 +589,23 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Brothels.GetBrothel(6)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_b6_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Advertising Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Advertising Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_b6_advamnt);
 
 		SetCheckBox(p_b6_pot_b, g_Brothels.GetBrothel(6)->m_KeepPotionsStocked);
 		number = g_Brothels.GetBrothel(6)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_b6_pot_a);
 		DisableCheckBox(p_b6_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own this brothel yet.)"), p_b6_id);
+		EditTextItem(("(You do not own this brothel yet.)"), p_b6_id);
 	}
 
 	if (g_Studios.GetNumBrothels() > 0)
 	{
-		EditTextItem(gettext("The Movie Studio"), p_st_id);
+		EditTextItem(("The Movie Studio"), p_st_id);
 
 		SetCheckBox(p_st_noanal, g_Studios.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(p_st_nobdsm, g_Studios.GetBrothel(0)->m_RestrictBDSM);
@@ -619,23 +619,23 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Studios.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_st_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Promotion Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_st_advamnt);
 
 		SetCheckBox(p_st_pot_b, g_Studios.GetBrothel(0)->m_KeepPotionsStocked);
 		number = g_Studios.GetBrothel(0)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_st_pot_a);
 		DisableCheckBox(p_st_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own the Studio yet.)"), p_st_id);
+		EditTextItem(("(You do not own the Studio yet.)"), p_st_id);
 	}
 
 	if (g_Arena.GetNumBrothels() > 0)
 	{
-		EditTextItem(gettext("The Arena"), p_ar_id);
+		EditTextItem(("The Arena"), p_ar_id);
 
 		SetCheckBox(p_ar_noanal, g_Arena.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(p_ar_nobdsm, g_Arena.GetBrothel(0)->m_RestrictBDSM);
@@ -649,23 +649,23 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Arena.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_ar_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Promotion Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_ar_advamnt);
 
 		SetCheckBox(p_ar_pot_b, g_Arena.GetBrothel(0)->m_KeepPotionsStocked);
 		number = g_Arena.GetBrothel(0)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_ar_pot_a);
 		DisableCheckBox(p_ar_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own the Arena yet.)"), p_ar_id);
+		EditTextItem(("(You do not own the Arena yet.)"), p_ar_id);
 	}
 
 	if (g_Centre.GetNumBrothels() > 0)
 	{
-		EditTextItem(gettext("The Centre"), p_ce_id);
+		EditTextItem(("The Centre"), p_ce_id);
 
 		SetCheckBox(p_ce_noanal, g_Centre.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(p_ce_nobdsm, g_Centre.GetBrothel(0)->m_RestrictBDSM);
@@ -679,23 +679,23 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Centre.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_ce_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Promotion Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_ce_advamnt);
 
 		SetCheckBox(p_ce_pot_b, g_Centre.GetBrothel(0)->m_KeepPotionsStocked);
 		number = g_Centre.GetBrothel(0)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_ce_pot_a);
 		DisableCheckBox(p_ce_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own the Centre yet.)"), p_ce_id);
+		EditTextItem(("(You do not own the Centre yet.)"), p_ce_id);
 	}
 
 	if (g_Clinic.GetNumBrothels() > 0)
 	{
-		EditTextItem(gettext("The Clinic"), p_cl_id);
+		EditTextItem(("The Clinic"), p_cl_id);
 
 		SetCheckBox(p_cl_noanal, g_Clinic.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(p_cl_nobdsm, g_Clinic.GetBrothel(0)->m_RestrictBDSM);
@@ -709,23 +709,23 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Clinic.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_cl_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Promotion Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_cl_advamnt);
 
 		SetCheckBox(p_cl_pot_b, g_Clinic.GetBrothel(0)->m_KeepPotionsStocked);
 		number = g_Clinic.GetBrothel(0)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_cl_pot_a);
 		DisableCheckBox(p_cl_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own the Clinic yet.)"), p_cl_id);
+		EditTextItem(("(You do not own the Clinic yet.)"), p_cl_id);
 	}
 
 	if (g_Farm.GetNumBrothels() > 0)
 	{
-		EditTextItem(gettext("The Clinic"), p_cl_id);
+		EditTextItem(("The Clinic"), p_cl_id);
 
 		SetCheckBox(p_fa_noanal, g_Farm.GetBrothel(0)->m_RestrictAnal);
 		SetCheckBox(p_fa_nobdsm, g_Farm.GetBrothel(0)->m_RestrictBDSM);
@@ -739,18 +739,18 @@ void cScreenPropertyManagement::init()
 
 		advert = g_Farm.GetBrothel(0)->m_AdvertisingBudget / 50;
 		advert = SliderRange(p_fa_advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
-		ss.str(""); ss << gettext("Promotion Budget: ") << (advert * 50) << gettext(" gold / week");
+		ss.str(""); ss << ("Promotion Budget: ") << (advert * 50) << (" gold / week");
 		EditTextItem(ss.str(), p_fa_advamnt);
 
 		SetCheckBox(p_fa_pot_b, g_Farm.GetBrothel(0)->m_KeepPotionsStocked);
 		number = g_Farm.GetBrothel(0)->m_AntiPregPotions;
-		ss.str(""); ss << gettext("You have: ") << number;
+		ss.str(""); ss << ("You have: ") << number;
 		EditTextItem(ss.str(), p_fa_pot_a);
 		DisableCheckBox(p_fa_pot_b, number < 1);
 	}
 	else
 	{
-		EditTextItem(gettext("(You do not own the Farm yet.)"), p_fa_id);
+		EditTextItem(("(You do not own the Farm yet.)"), p_fa_id);
 	}
 
 }
@@ -795,7 +795,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_ho_advslid))
 		{
 			g_House.GetBrothel(0)->m_AdvertisingBudget = SliderValue(p_ho_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_ho_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_ho_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_ho_advamnt);
 		}
 	}
@@ -817,7 +817,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_b0_advslid))
 		{
 			g_Brothels.GetBrothel(0)->m_AdvertisingBudget = SliderValue(p_b0_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_b0_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_b0_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_b0_advamnt);
 		}
 	}
@@ -839,7 +839,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_b1_advslid))
 		{
 			g_Brothels.GetBrothel(1)->m_AdvertisingBudget = SliderValue(p_b1_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_b1_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_b1_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_b1_advamnt);
 		}
 	}
@@ -860,7 +860,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_b2_advslid))
 		{
 			g_Brothels.GetBrothel(2)->m_AdvertisingBudget = SliderValue(p_b2_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_b2_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_b2_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_b2_advamnt);
 		}
 	}
@@ -882,7 +882,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_b3_advslid))
 		{
 			g_Brothels.GetBrothel(3)->m_AdvertisingBudget = SliderValue(p_b3_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_b3_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_b3_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_b3_advamnt);
 		}
 	}
@@ -904,7 +904,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_b4_advslid))
 		{
 			g_Brothels.GetBrothel(4)->m_AdvertisingBudget = SliderValue(p_b4_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_b4_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_b4_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_b4_advamnt);
 		}
 	}
@@ -926,7 +926,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_b5_advslid))
 		{
 			g_Brothels.GetBrothel(5)->m_AdvertisingBudget = SliderValue(p_b5_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_b5_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_b5_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_b5_advamnt);
 		}
 	}
@@ -948,7 +948,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_b6_advslid))
 		{
 			g_Brothels.GetBrothel(6)->m_AdvertisingBudget = SliderValue(p_b6_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_b6_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_b6_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_b6_advamnt);
 		}
 	}
@@ -970,7 +970,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_st_advslid))
 		{
 			g_Studios.GetBrothel(0)->m_AdvertisingBudget = SliderValue(p_st_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_st_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_st_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_st_advamnt);
 		}
 	}
@@ -992,7 +992,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_ar_advslid))
 		{
 			g_Arena.GetBrothel(0)->m_AdvertisingBudget = SliderValue(p_ar_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_ar_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_ar_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_ar_advamnt);
 		}
 	}
@@ -1014,7 +1014,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_ce_advslid))
 		{
 			g_Centre.GetBrothel(0)->m_AdvertisingBudget = SliderValue(p_ce_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_ce_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_ce_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_ce_advamnt);
 		}
 	}
@@ -1036,7 +1036,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_cl_advslid))
 		{
 			g_Clinic.GetBrothel(0)->m_AdvertisingBudget = SliderValue(p_cl_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_cl_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_cl_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_cl_advamnt);
 		}
 	}
@@ -1058,7 +1058,7 @@ void cScreenPropertyManagement::check_events()
 		if (g_InterfaceEvents.CheckSlider(p_fa_advslid))
 		{
 			g_Farm.GetBrothel(0)->m_AdvertisingBudget = SliderValue(p_fa_advslid) * 50;
-			ss.str(""); ss << gettext("Advertising Budget: ") << (SliderValue(p_fa_advslid) * 50) << gettext(" gold / week");
+			ss.str(""); ss << ("Advertising Budget: ") << (SliderValue(p_fa_advslid) * 50) << (" gold / week");
 			EditTextItem(ss.str(), p_fa_advamnt);
 		}
 	}

@@ -92,60 +92,60 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	/*	as above - crashes game
 		if (g_Dice.percent(50) && TempGang)
 		{
-			ss << gettext("When the 'actor' didn't turn up, ") << girlName << gettext(" expertly sucked off ");
-			if (members > 1) ss << members << gettext(" lucky guys");
-			else ss << gettext("one lucky guy");
-			ss << gettext(" from your gang ") << gangName << gettext(".");
+			ss << ("When the 'actor' didn't turn up, ") << girlName << (" expertly sucked off ");
+			if (members > 1) ss << members << (" lucky guys");
+			else ss << ("one lucky guy");
+			ss << (" from your gang ") << gangName << (".");
 		}
-		else */ss << gettext("The lucky guy came uncontrollably, damn near passing out in pleasure as ") << girlName << gettext(" expertly sucked him dry.");
-		ss << gettext("\nShe savoured the cum in her mouth, rolling it around her lips and tongue before finally swallowing it down.");
+		else */ss << ("The lucky guy came uncontrollably, damn near passing out in pleasure as ") << girlName << (" expertly sucked him dry.");
+		ss << ("\nShe savoured the cum in her mouth, rolling it around her lips and tongue before finally swallowing it down.");
 		bonus = 12;
 	}
 	else if (jobperformance >= 245)
 	{
-		ss << girlName << gettext(" sucked off her man like a pro - not once breaking eye-contact - and was rewarded with ");
-		if (g_Dice.percent(50) || girl->has_trait("Cum Addict")) ss << gettext("a mouthful of semen. She kept her lips clamped to his cock to the last, thirstily swallowing down every drop of hot cum.");
-		else ss << gettext("a explosion of cum in her face. As she licked his penis clean, she rubbed cum around her skin and licked it off her fingers.");
+		ss << girlName << (" sucked off her man like a pro - not once breaking eye-contact - and was rewarded with ");
+		if (g_Dice.percent(50) || girl->has_trait("Cum Addict")) ss << ("a mouthful of semen. She kept her lips clamped to his cock to the last, thirstily swallowing down every drop of hot cum.");
+		else ss << ("a explosion of cum in her face. As she licked his penis clean, she rubbed cum around her skin and licked it off her fingers.");
 		bonus = 6;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << girlName << gettext(" gave a passable blowjob, and ended up glazed in hot cum.");
+		ss << girlName << (" gave a passable blowjob, and ended up glazed in hot cum.");
 		bonus = 4;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << gettext(" gave a fairly pleasant blowjob, but in the end the actor had to finish himself off, splatting cum on her face.");
+		ss << (" gave a fairly pleasant blowjob, but in the end the actor had to finish himself off, splatting cum on her face.");
 		bonus = 2;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << gettext("It was a pretty awkward and uncomfortable scene, with the actor not getting any kind of pleasure from her clumsy, toothy attempts. ");
-		ss << gettext("In the end he gave up and simply wanked in her face, but even then she dodged at the last moment, ruining that scene too.");
+		ss << ("It was a pretty awkward and uncomfortable scene, with the actor not getting any kind of pleasure from her clumsy, toothy attempts. ");
+		ss << ("In the end he gave up and simply wanked in her face, but even then she dodged at the last moment, ruining that scene too.");
 		bonus = 1;
 	}
 	else
 	{
-		ss << gettext("After the fourth time she 'snagged' the actor on her tooth, he cursed and stormed off set. Your gang, ") //<< gangName
-			<< gettext(" saved the day by pinning her down wanking on her face one-by-one.\nOverall it's a terrible scene.");
+		ss << ("After the fourth time she 'snagged' the actor on her tooth, he cursed and stormed off set. Your gang, ") //<< gangName
+			<< (" saved the day by pinning her down wanking on her face one-by-one.\nOverall it's a terrible scene.");
 	}
-	ss << gettext("\n");
+	ss << ("\n");
 
 	//Enjoyed? If she performed well, she'd should have enjoyed it.
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << gettext("She really enjoyed giving head today.\n\n");
+		ss << ("She really enjoyed giving head today.\n\n");
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << gettext("She enjoyed this performance.\n\n");
+		ss << ("She enjoyed this performance.\n\n");
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << gettext("She's bad at this, and the whole experience was pretty humiliating.\n\n");
+		ss << ("She's bad at this, and the whole experience was pretty humiliating.\n\n");
 	}
 	bonus = bonus + enjoy;
 

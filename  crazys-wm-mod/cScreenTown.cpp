@@ -164,7 +164,7 @@ void cScreenTown::init()
 		static_brothel_data *bpt = clinic_data + BuyClinic;
 		g_Gold.brothel_cost(bpt->price);
 		g_Clinic.NewBrothel(bpt->rooms, bpt->maxrooms);
-		g_Clinic.SetName(0, gettext("Clinic"));
+		g_Clinic.SetName(0, "Clinic");
 		GetClinic = false;
 		BuyClinic = -1;
 	}
@@ -178,7 +178,7 @@ void cScreenTown::init()
 		static_brothel_data *bpt = centre_data + BuyCentre;
 		g_Gold.brothel_cost(bpt->price);
 		g_Centre.NewBrothel(bpt->rooms, bpt->maxrooms);
-		g_Centre.SetName(0, gettext("Centre"));
+		g_Centre.SetName(0, "Centre");
 		GetCentre = false;
 		BuyCentre = -1;
 	}
@@ -193,7 +193,7 @@ void cScreenTown::init()
 
 		g_Gold.brothel_cost(bpt->price);
 		g_Arena.NewBrothel(bpt->rooms, bpt->maxrooms);
-		g_Arena.SetName(0, gettext("Arena"));
+		g_Arena.SetName(0, ("Arena"));
 
 		GetArena = false;
 		BuyArena = -1;
@@ -208,7 +208,7 @@ void cScreenTown::init()
 		static_brothel_data *bpt = studio_data + BuyStudio;
 		g_Gold.brothel_cost(bpt->price);
 		g_Studios.NewBrothel(bpt->rooms, bpt->maxrooms);
-		g_Studios.SetName(0, gettext("Studio"));
+		g_Studios.SetName(0, ("Studio"));
 		GetStudio = false;
 		BuyStudio = -1;
 	}
@@ -222,7 +222,7 @@ void cScreenTown::init()
 		static_brothel_data *bpt = farm_data + BuyFarm;
 		g_Gold.brothel_cost(bpt->price);
 		g_Farm.NewBrothel(bpt->rooms, bpt->maxrooms);
-		g_Farm.SetName(0, gettext("Farm"));
+		g_Farm.SetName(0, ("Farm"));
 		GetFarm = false;
 		BuyFarm = -1;
 	}
@@ -230,7 +230,7 @@ void cScreenTown::init()
 	{
 		if (g_ReturnText != "")
 		{
-			if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_GETNEXTBROTHEL) 
+			if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_GETNEXTBROTHEL)
 				g_Brothels.PassObjective();
 			static_brothel_data *bpt = brothel_data + BuyBrothel;
 			g_Gold.brothel_cost(bpt->price);
@@ -411,21 +411,21 @@ bool cScreenTown::buy_building(static_brothel_data* bck)
 
 	if (!g_Gold.afford(bck->price) || g_Gangs.GetNumBusinessExtorted() < bck->business)
 	{	// can't buy it
-		ss << gettext("This building costs ") << bck->price << gettext(" gold and you need to control at least ") << bck->business << gettext(" businesses.");
+		ss << ("This building costs ") << bck->price << (" gold and you need to control at least ") << bck->business << (" businesses.");
 		if (!g_Gold.afford(bck->price))
-			ss << "\n" << gettext("You need ") << (bck->price - g_Gold.ival()) << gettext(" more gold to afford it.");
+			ss << "\n" << ("You need ") << (bck->price - g_Gold.ival()) << (" more gold to afford it.");
 		if (g_Gangs.GetNumBusinessExtorted() < bck->business)
-			ss << "\n" << gettext("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << gettext(" more businesses.");
+			ss << "\n" << ("You need to control ") << (bck->business - g_Gangs.GetNumBusinessExtorted()) << (" more businesses.");
 		g_MessageQue.AddToQue(ss.str(), 0);
 		return false;
 	}
 	else	// can buy it
 	{
-		ss << gettext("Do you wish to purchase this building for ") << bck->price << gettext(" gold? It has ") << bck->rooms << gettext(" rooms.");
+		ss << ("Do you wish to purchase this building for ") << bck->price << (" gold? It has ") << bck->rooms << (" rooms.");
 		g_MessageQue.AddToQue(ss.str(), 2);
 		g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8, 16);
-		g_ChoiceManager.AddChoice(0, gettext("Buy It"), 0);
-		g_ChoiceManager.AddChoice(0, gettext("Don't Buy It"), 1);
+		g_ChoiceManager.AddChoice(0, ("Buy It"), 0);
+		g_ChoiceManager.AddChoice(0, ("Don't Buy It"), 1);
 		g_ChoiceManager.SetActive(0);
 		return true;
 	}
@@ -435,7 +435,7 @@ bool cScreenTown::buy_building(static_brothel_data* bck)
 // player clicked on one of the brothels
 void cScreenTown::check_brothel(int BrothelNum)
 {
-	if (g_Brothels.GetNumBrothels() == BrothelNum)	// player doesn't own this brothel... can he buy it? 
+	if (g_Brothels.GetNumBrothels() == BrothelNum)	// player doesn't own this brothel... can he buy it?
 	{
 		static_brothel_data *bck = brothel_data + BrothelNum;
 		if (buy_building(bck)) BuyBrothel = BrothelNum;
@@ -452,7 +452,7 @@ void cScreenTown::check_brothel(int BrothelNum)
 void cScreenTown::check_clinic(int ClinicNum)
 {	// player clicked on one of the brothels
 	if (g_Clinic.GetNumBrothels() == ClinicNum)
-	{	// player doesn't own this brothel... can he buy it? 
+	{	// player doesn't own this brothel... can he buy it?
 		static_brothel_data *bck = clinic_data + ClinicNum;
 		if (buy_building(bck)) BuyClinic = ClinicNum;
 	}
@@ -467,7 +467,7 @@ void cScreenTown::check_clinic(int ClinicNum)
 void cScreenTown::check_centre(int CentreNum)
 {	// player clicked on one of the brothels
 	if (g_Centre.GetNumBrothels() == CentreNum)
-	{	// player doesn't own this brothel... can he buy it? 
+	{	// player doesn't own this brothel... can he buy it?
 		static_brothel_data *bck = centre_data + CentreNum;
 		if (buy_building(bck)) 			BuyCentre = CentreNum;
 	}
@@ -482,7 +482,7 @@ void cScreenTown::check_centre(int CentreNum)
 void cScreenTown::check_arena(int ArenaNum)
 {	// player clicked on one of the brothels
 	if (g_Arena.GetNumBrothels() == ArenaNum)
-	{	// player doesn't own this brothel... can he buy it? 
+	{	// player doesn't own this brothel... can he buy it?
 		static_brothel_data *bck = arena_data + ArenaNum;
 		if (buy_building(bck)) 			BuyArena = ArenaNum;
 	}
@@ -497,7 +497,7 @@ void cScreenTown::check_arena(int ArenaNum)
 void cScreenTown::check_studio(int StudioNum)
 {	// player clicked on one of the brothels
 	if (g_Studios.GetNumBrothels() == StudioNum)
-	{	// player doesn't own this Studio... can he buy it? 
+	{	// player doesn't own this Studio... can he buy it?
 		static_brothel_data *bck = studio_data + StudioNum;
 		if (buy_building(bck)) 			BuyStudio = StudioNum;
 	}
@@ -512,7 +512,7 @@ void cScreenTown::check_studio(int StudioNum)
 void cScreenTown::check_farm(int FarmNum)
 {	// player clicked on one of the brothels
 	if (g_Farm.GetNumBrothels() == FarmNum)
-	{	// player doesn't own this Studio... can he buy it? 
+	{	// player doesn't own this Studio... can he buy it?
 		static_brothel_data *bck = farm_data + FarmNum;
 		if (buy_building(bck)) 			BuyFarm = FarmNum;
 	}

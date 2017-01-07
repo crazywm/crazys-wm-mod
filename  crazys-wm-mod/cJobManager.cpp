@@ -239,47 +239,47 @@ void cJobManager::Setup()
 
 
 	// Studio Crew
-	JobFilterName[JOBFILTER_STUDIOCREW] = gettext("Studio Crew");
-	JobFilterDesc[JOBFILTER_STUDIOCREW] = gettext("These are jobs for running a movie studio.");
+	JobFilterName[JOBFILTER_STUDIOCREW] = "Studio Crew";
+	JobFilterDesc[JOBFILTER_STUDIOCREW] = "These are jobs for running a movie studio.";
 	JobFilterIndex[JOBFILTER_STUDIOCREW] = JOB_FILMFREETIME;
-	JobName[JOB_FILMFREETIME] = gettext("Time off");
+	JobName[JOB_FILMFREETIME] = "Time off";
 	JobQkNm[JOB_FILMFREETIME] = "TOff";
-	JobDesc[JOB_FILMFREETIME] = gettext("She takes time off resting and recovering.");
+	JobDesc[JOB_FILMFREETIME] = "She takes time off resting and recovering.";
 	JobFunc[JOB_FILMFREETIME] = &WorkFreetime;
 	JobPerf[JOB_FILMFREETIME] = &JP_Freetime;
-	JobName[JOB_DIRECTOR] = gettext("Director");
+	JobName[JOB_DIRECTOR] = "Director";
 	JobQkNm[JOB_DIRECTOR] = "Dir";
-	JobDesc[JOB_DIRECTOR] = gettext("She directs the filming, and keeps the girls in line. (max 1)");
+	JobDesc[JOB_DIRECTOR] = "She directs the filming, and keeps the girls in line. (max 1)";
 	JobFunc[JOB_DIRECTOR] = &WorkFilmDirector;
 	JobPerf[JOB_DIRECTOR] = &JP_FilmDirector;
-	JobName[JOB_PROMOTER] = gettext("Promoter");
+	JobName[JOB_PROMOTER] = "Promoter";
 	JobQkNm[JOB_PROMOTER] = "Prmt";
-	JobDesc[JOB_PROMOTER] = gettext("She advertises the movies. (max 1)");
+	JobDesc[JOB_PROMOTER] = "She advertises the movies. (max 1)";
 	JobFunc[JOB_PROMOTER] = &WorkFilmPromoter;
 	JobPerf[JOB_PROMOTER] = &JP_FilmPromoter;
-	JobName[JOB_CAMERAMAGE] = gettext("Camera Mage");
+	JobName[JOB_CAMERAMAGE] = "Camera Mage";
 	JobQkNm[JOB_CAMERAMAGE] = "CM";
-	JobDesc[JOB_CAMERAMAGE] = gettext("She will film the scenes. (requires at least 1 to create a scene)");
+	JobDesc[JOB_CAMERAMAGE] = "She will film the scenes. (requires at least 1 to create a scene)";
 	JobFunc[JOB_CAMERAMAGE] = &WorkCameraMage;
 	JobPerf[JOB_CAMERAMAGE] = &JP_CameraMage;
-	JobName[JOB_CRYSTALPURIFIER] = gettext("Crystal Purifier");
+	JobName[JOB_CRYSTALPURIFIER] = "Crystal Purifier";
 	JobQkNm[JOB_CRYSTALPURIFIER] = "CP";
-	JobDesc[JOB_CRYSTALPURIFIER] = gettext("She will clean up the filmed scenes. (requires at least 1 to create a scene)");
+	JobDesc[JOB_CRYSTALPURIFIER] = "She will clean up the filmed scenes. (requires at least 1 to create a scene)";
 	JobFunc[JOB_CRYSTALPURIFIER] = &WorkCrystalPurifier;
 	JobPerf[JOB_CRYSTALPURIFIER] = &JP_CrystalPurifier;
-	//JobName[JOB_SOUNDTRACK] = gettext("Sound Track");
+	//JobName[JOB_SOUNDTRACK] = ("Sound Track");
 	//JobQkNm[JOB_SOUNDTRACK] = "SndT";
-	//JobDesc[JOB_SOUNDTRACK] = gettext("She will clean up the audio and add music to the scenes. (not required but helpful)");
+	//JobDesc[JOB_SOUNDTRACK] = ("She will clean up the audio and add music to the scenes. (not required but helpful)");
 	//JobFunc[JOB_SOUNDTRACK] = &WorkSoundTrack;
 	//JobPerf[JOB_SOUNDTRACK] = &JP_SoundTrack;
-	JobName[JOB_FLUFFER] = gettext("Fluffer");
+	JobName[JOB_FLUFFER] = "Fluffer";
 	JobQkNm[JOB_FLUFFER] = "Fluf";
-	JobDesc[JOB_FLUFFER] = gettext("She will keep the porn stars aroused.");
+	JobDesc[JOB_FLUFFER] = "She will keep the porn stars aroused.";
 	JobFunc[JOB_FLUFFER] = &WorkFluffer;
 	JobPerf[JOB_FLUFFER] = &JP_Fluffer;
-	JobName[JOB_STAGEHAND] = gettext("Stagehand");
+	JobName[JOB_STAGEHAND] = "Stagehand";
 	JobQkNm[JOB_STAGEHAND] = "StgH";
-	JobDesc[JOB_STAGEHAND] = gettext("She helps setup equipment, and keeps the studio clean.");
+	JobDesc[JOB_STAGEHAND] = "She helps setup equipment, and keeps the studio clean.";
 	JobFunc[JOB_STAGEHAND] = &WorkFilmStagehand;
 	JobPerf[JOB_STAGEHAND] = &JP_FilmStagehand;
 
@@ -287,17 +287,17 @@ void cJobManager::Setup()
 	// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> cJobManager.cpp > Setup
 
 	// Studio - Non-Sex Scenes
-	JobFilterName[JOBFILTER_STUDIONONSEX] = gettext("Non-Sex Scenes");
-	JobFilterDesc[JOBFILTER_STUDIONONSEX] = gettext("These are scenes without sex.");
+	JobFilterName[JOBFILTER_STUDIONONSEX] = "Non-Sex Scenes";
+	JobFilterDesc[JOBFILTER_STUDIONONSEX] = "These are scenes without sex.";
 	JobFilterIndex[JOBFILTER_STUDIONONSEX] = JOB_FILMACTION;
-	JobName[JOB_FILMACTION] = ("Action");
+	JobName[JOB_FILMACTION] = "Action";
 	JobQkNm[JOB_FILMACTION] = "FAct";
-	JobDesc[JOB_FILMACTION] = ("She will be the scantily clad heroine in fighting/magical action scenes.");
+	JobDesc[JOB_FILMACTION] = "She will be the scantily clad heroine in fighting/magical action scenes.";
 	JobFunc[JOB_FILMACTION] = &WorkFilmAction;
 	JobPerf[JOB_FILMACTION] = &JP_FilmAction;
-	JobName[JOB_FILMCHEF] = ("The Naked Chef");
+	JobName[JOB_FILMCHEF] = "The Naked Chef";
 	JobQkNm[JOB_FILMCHEF] = "FChf";
-	JobDesc[JOB_FILMCHEF] = ("She will be filmed preparing food. And talking slowly. Sensuously. In sexy outfits. Because no reason.");
+	JobDesc[JOB_FILMCHEF] = "She will be filmed preparing food. And talking slowly. Sensuously. In sexy outfits. Because no reason.";
 	JobFunc[JOB_FILMCHEF] = &WorkFilmChef;
 	JobPerf[JOB_FILMCHEF] = &JP_FilmChef;
 	//JobName[JOB_FILMCOMEDY] = ("Comedy Scene");
@@ -320,44 +320,44 @@ void cJobManager::Setup()
 	//JobDesc[JOB_FILMIDOL] = ("She will be presented to the public as an idol: a cute, sexy woman.");
 	//JobFunc[JOB_FILMIDOL] = &WorkFilmIdol;
 	//JobPerf[JOB_FILMIDOL] = &JP_FilmIdol;
-	JobName[JOB_FILMMUSIC] = ("Music");
+	JobName[JOB_FILMMUSIC] = "Music";
 	JobQkNm[JOB_FILMMUSIC] = "FMus";
-	JobDesc[JOB_FILMMUSIC] = ("She will make a music video.");
+	JobDesc[JOB_FILMMUSIC] = "She will make a music video.";
 	JobFunc[JOB_FILMMUSIC] = &WorkFilmMusic;
 	JobPerf[JOB_FILMMUSIC] = &JP_FilmMusic;
 
 	// Studio - Softcore Porn
-	JobFilterName[JOBFILTER_STUDIOSOFTCORE] = gettext("Softcore Scenes");
-	JobFilterDesc[JOBFILTER_STUDIOSOFTCORE] = gettext("These are scenes with just the one girl.");
+	JobFilterName[JOBFILTER_STUDIOSOFTCORE] = "Softcore Scenes";
+	JobFilterDesc[JOBFILTER_STUDIOSOFTCORE] = "These are scenes with just the one girl.";
 	JobFilterIndex[JOBFILTER_STUDIOSOFTCORE] = JOB_FILMMAST;
-	JobName[JOB_FILMMAST] = ("Film Masturbation");
+	JobName[JOB_FILMMAST] = "Film Masturbation";
 	JobQkNm[JOB_FILMMAST] = "FMst";
-	JobDesc[JOB_FILMMAST] = ("She will perform in a masturbation scene.");
+	JobDesc[JOB_FILMMAST] = "She will perform in a masturbation scene.";
 	JobFunc[JOB_FILMMAST] = &WorkFilmMast;
 	JobPerf[JOB_FILMMAST] = &JP_FilmMast;
-	JobName[JOB_FILMSTRIP] = ("Film Strip tease");
+	JobName[JOB_FILMSTRIP] = "Film Strip tease";
 	JobQkNm[JOB_FILMSTRIP] = "FStp";
-	JobDesc[JOB_FILMSTRIP] = ("She will perform in a strip tease scene.");
+	JobDesc[JOB_FILMSTRIP] = "She will perform in a strip tease scene.";
 	JobFunc[JOB_FILMSTRIP] = &WorkFilmStrip;
 	JobPerf[JOB_FILMSTRIP] = &JP_FilmStrip;
-	JobName[JOB_FILMTEASE] = ("Teaser Video");
+	JobName[JOB_FILMTEASE] = "Teaser Video";
 	JobQkNm[JOB_FILMTEASE] = "FTea";
-	JobDesc[JOB_FILMTEASE] = ("She will flirt and remove her clothes and tease seductively, but won't show all. If you freeze-frame you might just catch a nipple.");
+	JobDesc[JOB_FILMTEASE] = "She will flirt and remove her clothes and tease seductively, but won't show all. If you freeze-frame you might just catch a nipple.";
 	JobFunc[JOB_FILMTEASE] = &WorkFilmTease;
 	JobPerf[JOB_FILMTEASE] = &JP_FilmTease;
 
 	// Studio - Porn
-	JobFilterName[JOBFILTER_STUDIOPORN] = gettext("Porn Scenes");
-	JobFilterDesc[JOBFILTER_STUDIOPORN] = gettext("These are regular sex scenes.");
+	JobFilterName[JOBFILTER_STUDIOPORN] = "Porn Scenes";
+	JobFilterDesc[JOBFILTER_STUDIOPORN] = "These are regular sex scenes.";
 	JobFilterIndex[JOBFILTER_STUDIOPORN] = JOB_FILMANAL;
-	JobName[JOB_FILMANAL] = gettext("Film Anal");
+	JobName[JOB_FILMANAL] = "Film Anal";
 	JobQkNm[JOB_FILMANAL] = "FAnl";
-	JobDesc[JOB_FILMANAL] = gettext("She will film an anal scenes.");
+	JobDesc[JOB_FILMANAL] = "She will film an anal scenes.";
 	JobFunc[JOB_FILMANAL] = &WorkFilmAnal;
 	JobPerf[JOB_FILMANAL] = &JP_FilmAnal;
-	JobName[JOB_FILMFOOTJOB] = ("Film Foot Job");
+	JobName[JOB_FILMFOOTJOB] = "Film Foot Job";
 	JobQkNm[JOB_FILMFOOTJOB] = "FFJ";
-	JobDesc[JOB_FILMFOOTJOB] = ("She will perform in a foot job scene.");
+	JobDesc[JOB_FILMFOOTJOB] = "She will perform in a foot job scene.";
 	JobFunc[JOB_FILMFOOTJOB] = &WorkFilmFootJob;
 	JobPerf[JOB_FILMFOOTJOB] = &JP_FilmFootJob;
 //	JobName[JOB_FILMFUTA] = ("Film Futa Scene");
@@ -365,24 +365,24 @@ void cJobManager::Setup()
 //	JobDesc[JOB_FILMFUTA] = ("She will perform in a Futa scene.");
 //	JobFunc[JOB_FILMFUTA] = &WorkFilmFuta;
 //	JobPerf[JOB_FILMFUTA] = &JP_FilmFuta;
-	JobName[JOB_FILMHANDJOB] = ("Film Hand Job");
+	JobName[JOB_FILMHANDJOB] = "Film Hand Job";
 	JobQkNm[JOB_FILMHANDJOB] = "FHJ";
-	JobDesc[JOB_FILMHANDJOB] = ("She will perform in a hand job scene.");
+	JobDesc[JOB_FILMHANDJOB] = "She will perform in a hand job scene.";
 	JobFunc[JOB_FILMHANDJOB] = &WorkFilmHandJob;
 	JobPerf[JOB_FILMHANDJOB] = &JP_FilmHandJob;
-	JobName[JOB_FILMLESBIAN] = gettext("Film Lesbian");
+	JobName[JOB_FILMLESBIAN] = "Film Lesbian";
 	JobQkNm[JOB_FILMLESBIAN] = "FLes";
-	JobDesc[JOB_FILMLESBIAN] = gettext("She will do a lesbian scene.");
+	JobDesc[JOB_FILMLESBIAN] = "She will do a lesbian scene.";
 	JobFunc[JOB_FILMLESBIAN] = &WorkFilmLesbian;
 	JobPerf[JOB_FILMLESBIAN] = &JP_FilmLesbian;
-	JobName[JOB_FILMORAL] = ("Film Oral Sex");
+	JobName[JOB_FILMORAL] = "Film Oral Sex";
 	JobQkNm[JOB_FILMORAL] = "FOrl";
 	JobDesc[JOB_FILMORAL] = ("She will perform in an oral sex scene.");
 	JobFunc[JOB_FILMORAL] = &WorkFilmOral;
 	JobPerf[JOB_FILMORAL] = &JP_FilmOral;
-	JobName[JOB_FILMSEX] = gettext("Film Sex");
+	JobName[JOB_FILMSEX] = ("Film Sex");
 	JobQkNm[JOB_FILMSEX] = "FSex";
-	JobDesc[JOB_FILMSEX] = gettext("She will film a normal sex scenes.");
+	JobDesc[JOB_FILMSEX] = ("She will film a normal sex scenes.");
 	JobFunc[JOB_FILMSEX] = &WorkFilmSex;
 	JobPerf[JOB_FILMSEX] = &JP_FilmSex;
 	JobName[JOB_FILMTITTY] = ("Film Titty Fuck");
@@ -392,27 +392,27 @@ void cJobManager::Setup()
 	JobPerf[JOB_FILMTITTY] = &JP_FilmTitty;
 
 	// Studio - Hardcore porn
-	JobFilterName[JOBFILTER_STUDIOHARDCORE] = gettext("Hardcore Scenes");
-	JobFilterDesc[JOBFILTER_STUDIOHARDCORE] = gettext("These are rough scenes that not all girls would be comfortable with.");
+	JobFilterName[JOBFILTER_STUDIOHARDCORE] = ("Hardcore Scenes");
+	JobFilterDesc[JOBFILTER_STUDIOHARDCORE] = ("These are rough scenes that not all girls would be comfortable with.");
 	JobFilterIndex[JOBFILTER_STUDIOHARDCORE] = JOB_FILMBEAST;
-	JobName[JOB_FILMBEAST] = gettext("Film Bestiality");
+	JobName[JOB_FILMBEAST] = ("Film Bestiality");
 	JobQkNm[JOB_FILMBEAST] = "FBst";
-	JobDesc[JOB_FILMBEAST] = gettext("She will film a bestiality scenes.");
+	JobDesc[JOB_FILMBEAST] = ("She will film a bestiality scenes.");
 	JobFunc[JOB_FILMBEAST] = &WorkFilmBeast;
 	JobPerf[JOB_FILMBEAST] = &JP_FilmBeast;
-	JobName[JOB_FILMBONDAGE] = gettext("Film Bondage");
+	JobName[JOB_FILMBONDAGE] = ("Film Bondage");
 	JobQkNm[JOB_FILMBONDAGE] = "FBnd";
-	JobDesc[JOB_FILMBONDAGE] = gettext("She will perform a in bondage scenes.");
+	JobDesc[JOB_FILMBONDAGE] = ("She will perform a in bondage scenes.");
 	JobFunc[JOB_FILMBONDAGE] = &WorkFilmBondage;
 	JobPerf[JOB_FILMBONDAGE] = &JP_FilmBondage;
-	JobName[JOB_FILMBUKKAKE] = gettext("Cumslut/Bukkake");
+	JobName[JOB_FILMBUKKAKE] = ("Cumslut/Bukkake");
 	JobQkNm[JOB_FILMBUKKAKE] = "FBuk";											//update in cGirls.cpp
-	JobDesc[JOB_FILMBUKKAKE] = gettext("A large group of men will cum on, over and inside her.");
+	JobDesc[JOB_FILMBUKKAKE] = ("A large group of men will cum on, over and inside her.");
 	JobFunc[JOB_FILMBUKKAKE] = &WorkFilmBuk;
 	JobPerf[JOB_FILMBUKKAKE] = &JP_FilmBuk;
-	JobName[JOB_FILMFACEFUCK] = gettext("Face-fuck");
+	JobName[JOB_FILMFACEFUCK] = ("Face-fuck");
 	JobQkNm[JOB_FILMFACEFUCK] = "FFac";											//update in cGirls.cpp
-	JobDesc[JOB_FILMFACEFUCK] = gettext("She will be used in gag and face-fuck scenes.");
+	JobDesc[JOB_FILMFACEFUCK] = ("She will be used in gag and face-fuck scenes.");
 	JobFunc[JOB_FILMFACEFUCK] = &WorkFilmThroat;
 	JobPerf[JOB_FILMFACEFUCK] = &JP_FilmThroat;
 	JobName[JOB_FILMGROUP] = ("Film Group");
@@ -420,21 +420,21 @@ void cJobManager::Setup()
 	JobDesc[JOB_FILMGROUP] = ("She will film a group sex scene.");
 	JobFunc[JOB_FILMGROUP] = &WorkFilmGroup;
 	JobPerf[JOB_FILMGROUP] = &JP_FilmGroup;
-	JobName[JOB_FILMPUBLICBDSM] = gettext("Public Torture");
+	JobName[JOB_FILMPUBLICBDSM] = ("Public Torture");
 	JobQkNm[JOB_FILMPUBLICBDSM] = "FTor";											//update in cGirls.cpp
-	JobDesc[JOB_FILMPUBLICBDSM] = gettext("She will be tied up in a public place, where she will be stripped, whipped, tortured and fully-used. On film.");
+	JobDesc[JOB_FILMPUBLICBDSM] = ("She will be tied up in a public place, where she will be stripped, whipped, tortured and fully-used. On film.");
 	JobFunc[JOB_FILMPUBLICBDSM] = &WorkFilmPublicBDSM;
 	JobPerf[JOB_FILMPUBLICBDSM] = &JP_FilmPublicBDSM;
 
-	//JobName[JOB_FILMDOM] = gettext("Film Dominatrix");
+	//JobName[JOB_FILMDOM] = ("Film Dominatrix");
 	//JobQkNm[JOB_FILMDOM] = "FDom";											//update in cGirls.cpp
-	//JobDesc[JOB_FILMDOM] = gettext("She will perform in a Dominatrix scene.");
+	//JobDesc[JOB_FILMDOM] = ("She will perform in a Dominatrix scene.");
 	//JobFunc[JOB_FILMDOM] = &WorkFilmDominatrix;
 	//JobPerf[JOB_FILMDOM] = &JP_FilmDom;
 
 	// Studio - Random
-	JobFilterName[JOBFILTER_RANDSTUDIO] = gettext("Random Scenes");
-	JobFilterDesc[JOBFILTER_RANDSTUDIO] = gettext("Let the game choose what scene the girl will film.");
+	JobFilterName[JOBFILTER_RANDSTUDIO] = ("Random Scenes");
+	JobFilterDesc[JOBFILTER_RANDSTUDIO] = ("Let the game choose what scene the girl will film.");
 	JobFilterIndex[JOBFILTER_RANDSTUDIO] = JOB_FILMRANDOM;
 	JobName[JOB_FILMRANDOM] = ("Film a random scene");
 	JobQkNm[JOB_FILMRANDOM] = "FRnd";
@@ -444,234 +444,234 @@ void cJobManager::Setup()
 
 
 	// - Arena Jobs
-	JobFilterName[JOBFILTER_ARENA] = gettext("Arena");
-	JobFilterDesc[JOBFILTER_ARENA] = gettext("These are jobs for running an arena.");
+	JobFilterName[JOBFILTER_ARENA] = ("Arena");
+	JobFilterDesc[JOBFILTER_ARENA] = ("These are jobs for running an arena.");
 	JobFilterIndex[JOBFILTER_ARENA] = JOB_FIGHTBEASTS;
-	JobName[JOB_FIGHTBEASTS] = gettext("Fight Beasts");
+	JobName[JOB_FIGHTBEASTS] = ("Fight Beasts");
 	JobQkNm[JOB_FIGHTBEASTS] = "FiBs";
-	JobDesc[JOB_FIGHTBEASTS] = gettext("She will fight to the death against beasts you own. Dangerous.");
+	JobDesc[JOB_FIGHTBEASTS] = ("She will fight to the death against beasts you own. Dangerous.");
 	JobFunc[JOB_FIGHTBEASTS] = &WorkFightBeast;
 	JobPerf[JOB_FIGHTBEASTS] = &JP_FightBeast;
-	JobName[JOB_FIGHTARENAGIRLS] = gettext("Cage Match");
+	JobName[JOB_FIGHTARENAGIRLS] = ("Cage Match");
 	JobQkNm[JOB_FIGHTARENAGIRLS] = "Cage";
-	JobDesc[JOB_FIGHTARENAGIRLS] = gettext("She will fight against other girls. Dangerous.");
+	JobDesc[JOB_FIGHTARENAGIRLS] = ("She will fight against other girls. Dangerous.");
 	JobFunc[JOB_FIGHTARENAGIRLS] = &WorkFightArenaGirls;
 	JobPerf[JOB_FIGHTARENAGIRLS] = &JP_FightArenaGirls;
-	JobName[JOB_FIGHTTRAIN] = gettext("Combat Training");
+	JobName[JOB_FIGHTTRAIN] = ("Combat Training");
 	JobQkNm[JOB_FIGHTTRAIN] = "CT";
-	JobDesc[JOB_FIGHTTRAIN] = gettext("She will practice combat.");
+	JobDesc[JOB_FIGHTTRAIN] = ("She will practice combat.");
 	JobFunc[JOB_FIGHTTRAIN] = &WorkCombatTraining;
 	JobPerf[JOB_FIGHTTRAIN] = &JP_CombatTraining;
-	/*JobName[JOB_JOUSTING] = gettext("Jousting");
+	/*JobName[JOB_JOUSTING] = ("Jousting");
 	JobQkNm[JOB_JOUSTING] = "JstM";
-	JobDesc[JOB_JOUSTING] = gettext("She will put on a Jousting match.");
+	JobDesc[JOB_JOUSTING] = ("She will put on a Jousting match.");
 	JobFunc[JOB_JOUSTING] = &WorkArenaJousting;
 	JobPerf[JOB_JOUSTING] = &JP_ArenaJousting;*/
 	//- Arena Staff
-	JobFilterName[JOBFILTER_ARENASTAFF] = gettext("Arena Staff");
-	JobFilterDesc[JOBFILTER_ARENASTAFF] = gettext("These are jobs that help run an arena.");
+	JobFilterName[JOBFILTER_ARENASTAFF] = ("Arena Staff");
+	JobFilterDesc[JOBFILTER_ARENASTAFF] = ("These are jobs that help run an arena.");
 	JobFilterIndex[JOBFILTER_ARENASTAFF] = JOB_ARENAREST;
-	JobName[JOB_ARENAREST] = gettext("Time off");
+	JobName[JOB_ARENAREST] = ("Time off");
 	JobQkNm[JOB_ARENAREST] = "TOff";
-	JobDesc[JOB_ARENAREST] = gettext("She will rest.");
+	JobDesc[JOB_ARENAREST] = ("She will rest.");
 	JobFunc[JOB_ARENAREST] = &WorkFreetime;
 	JobPerf[JOB_ARENAREST] = &JP_Freetime;
-	JobName[JOB_DOCTORE] = gettext("Doctore");
+	JobName[JOB_DOCTORE] = ("Doctore");
 	JobQkNm[JOB_DOCTORE] = "Dtre";
-	JobDesc[JOB_DOCTORE] = gettext("She will watch over the girls in the arena.");
+	JobDesc[JOB_DOCTORE] = ("She will watch over the girls in the arena.");
 	JobFunc[JOB_DOCTORE] = &WorkDoctore;
 	JobPerf[JOB_DOCTORE] = &JP_Doctore;
-	JobName[JOB_CITYGUARD] = gettext("City Guard");
+	JobName[JOB_CITYGUARD] = ("City Guard");
 	JobQkNm[JOB_CITYGUARD] = "CGrd";
-	JobDesc[JOB_CITYGUARD] = gettext("She will help keep crossgate safe.");
+	JobDesc[JOB_CITYGUARD] = ("She will help keep crossgate safe.");
 	JobFunc[JOB_CITYGUARD] = &WorkCityGuard;
 	JobPerf[JOB_CITYGUARD] = &JP_CityGuard;
-	JobName[JOB_BLACKSMITH] = gettext("Blacksmith");
+	JobName[JOB_BLACKSMITH] = ("Blacksmith");
 	JobQkNm[JOB_BLACKSMITH] = "Bksm";
-	JobDesc[JOB_BLACKSMITH] = gettext("She will make weapons and armor.");
+	JobDesc[JOB_BLACKSMITH] = ("She will make weapons and armor.");
 	JobFunc[JOB_BLACKSMITH] = &WorkBlacksmith;
 	JobPerf[JOB_BLACKSMITH] = &JP_Blacksmith;
-	JobName[JOB_COBBLER] = gettext("Cobbler");
+	JobName[JOB_COBBLER] = ("Cobbler");
 	JobQkNm[JOB_COBBLER] = "Cblr";
-	JobDesc[JOB_COBBLER] = gettext("She will make shoes and leather items.");
+	JobDesc[JOB_COBBLER] = ("She will make shoes and leather items.");
 	JobFunc[JOB_COBBLER] = &WorkCobbler;
 	JobPerf[JOB_COBBLER] = &JP_Cobbler;
-	JobName[JOB_JEWELER] = gettext("Jeweler");
+	JobName[JOB_JEWELER] = ("Jeweler");
 	JobQkNm[JOB_JEWELER] = "Jwlr";
-	JobDesc[JOB_JEWELER] = gettext("She will make jewelery.");
+	JobDesc[JOB_JEWELER] = ("She will make jewelery.");
 	JobFunc[JOB_JEWELER] = &WorkJeweler;
 	JobPerf[JOB_JEWELER] = &JP_Jeweler;
-	JobName[JOB_CLEANARENA] = gettext("Grounds Keeper");
+	JobName[JOB_CLEANARENA] = ("Grounds Keeper");
 	JobQkNm[JOB_CLEANARENA] = "GKpr";
-	JobDesc[JOB_CLEANARENA] = gettext("She will clean the arena.");
+	JobDesc[JOB_CLEANARENA] = ("She will clean the arena.");
 	JobFunc[JOB_CLEANARENA] = &WorkCleanArena;
 	JobPerf[JOB_CLEANARENA] = &JP_CleanArena;
 
 	// - Community Centre Jobs
-	JobFilterName[JOBFILTER_COMMUNITYCENTRE] = gettext("Community Centre");
-	JobFilterDesc[JOBFILTER_COMMUNITYCENTRE] = gettext("These are jobs for running a community centre.");
+	JobFilterName[JOBFILTER_COMMUNITYCENTRE] = ("Community Centre");
+	JobFilterDesc[JOBFILTER_COMMUNITYCENTRE] = ("These are jobs for running a community centre.");
 	JobFilterIndex[JOBFILTER_COMMUNITYCENTRE] = JOB_CENTREREST;
-	JobName[JOB_CENTREREST] = gettext("Time off");
+	JobName[JOB_CENTREREST] = ("Time off");
 	JobQkNm[JOB_CENTREREST] = "TOff";
-	JobDesc[JOB_CENTREREST] = gettext("She will rest.");
+	JobDesc[JOB_CENTREREST] = ("She will rest.");
 	JobFunc[JOB_CENTREREST] = &WorkFreetime;
 	JobPerf[JOB_CENTREREST] = &JP_Freetime;
-	JobName[JOB_CENTREMANAGER] = gettext("Centre Manager");
+	JobName[JOB_CENTREMANAGER] = ("Centre Manager");
 	JobQkNm[JOB_CENTREMANAGER] = "CMgr";
-	JobDesc[JOB_CENTREMANAGER] = gettext("She will look after the girls working in the centre.");
+	JobDesc[JOB_CENTREMANAGER] = ("She will look after the girls working in the centre.");
 	JobFunc[JOB_CENTREMANAGER] = &WorkCentreManager;
 	JobPerf[JOB_CENTREMANAGER] = &JP_CentreManager;
-	JobName[JOB_FEEDPOOR] = gettext("Feed Poor");
+	JobName[JOB_FEEDPOOR] = ("Feed Poor");
 	JobQkNm[JOB_FEEDPOOR] = "Feed";
-	JobDesc[JOB_FEEDPOOR] = gettext("She will work in a soup kitchen.");
+	JobDesc[JOB_FEEDPOOR] = ("She will work in a soup kitchen.");
 	JobFunc[JOB_FEEDPOOR] = &WorkFeedPoor;
 	JobPerf[JOB_FEEDPOOR] = &JP_FeedPoor;
-	JobName[JOB_COMUNITYSERVICE] = gettext("Community Service");
+	JobName[JOB_COMUNITYSERVICE] = ("Community Service");
 	JobQkNm[JOB_COMUNITYSERVICE] = "CmSr";
-	JobDesc[JOB_COMUNITYSERVICE] = gettext("She will go around town and help out where she can.");
+	JobDesc[JOB_COMUNITYSERVICE] = ("She will go around town and help out where she can.");
 	JobFunc[JOB_COMUNITYSERVICE] = &WorkComunityService;
 	JobPerf[JOB_COMUNITYSERVICE] = &JP_ComunityService;
-	JobName[JOB_CLEANCENTRE] = gettext("Clean Centre");
+	JobName[JOB_CLEANCENTRE] = ("Clean Centre");
 	JobQkNm[JOB_CLEANCENTRE] = "ClnC";
-	JobDesc[JOB_CLEANCENTRE] = gettext("She will clean the centre.");
+	JobDesc[JOB_CLEANCENTRE] = ("She will clean the centre.");
 	JobFunc[JOB_CLEANCENTRE] = &WorkCleanCentre;
 	JobPerf[JOB_CLEANCENTRE] = &JP_CleanCentre;
 	// - Counseling Centre Jobs
-	JobFilterName[JOBFILTER_COUNSELINGCENTRE] = gettext("Counseling Centre");
-	JobFilterDesc[JOBFILTER_COUNSELINGCENTRE] = gettext("These are jobs for running a counseling centre.");
+	JobFilterName[JOBFILTER_COUNSELINGCENTRE] = ("Counseling Centre");
+	JobFilterDesc[JOBFILTER_COUNSELINGCENTRE] = ("These are jobs for running a counseling centre.");
 	JobFilterIndex[JOBFILTER_COUNSELINGCENTRE] = JOB_COUNSELOR;
-	JobName[JOB_COUNSELOR] = gettext("Counselor");
+	JobName[JOB_COUNSELOR] = ("Counselor");
 	JobQkNm[JOB_COUNSELOR] = "Cnsl";
-	JobDesc[JOB_COUNSELOR] = gettext("She will help girls get over their addictions and problems.");
+	JobDesc[JOB_COUNSELOR] = ("She will help girls get over their addictions and problems.");
 	JobFunc[JOB_COUNSELOR] = &WorkCounselor;
 	JobPerf[JOB_COUNSELOR] = &JP_Counselor;
-	JobName[JOB_REHAB] = gettext("Rehab");
+	JobName[JOB_REHAB] = ("Rehab");
 	JobQkNm[JOB_REHAB] = "Rehb";
-	JobDesc[JOB_REHAB] = gettext("She will go to rehab to get over her addictions.");
+	JobDesc[JOB_REHAB] = ("She will go to rehab to get over her addictions.");
 	JobFunc[JOB_REHAB] = &WorkRehab;
 	JobPerf[JOB_REHAB] = &JP_Rehab;
-	JobName[JOB_THERAPY] = gettext("Therapy");
+	JobName[JOB_THERAPY] = ("Therapy");
 	JobQkNm[JOB_THERAPY] = "Thrp";
-	JobDesc[JOB_THERAPY] = gettext("She will go to therapy to get over her mental problems. (Nervous, Dependant, Pessimist)");
+	JobDesc[JOB_THERAPY] = ("She will go to therapy to get over her mental problems. (Nervous, Dependant, Pessimist)");
 	JobFunc[JOB_THERAPY] = &WorkCentreTherapy;
 	JobPerf[JOB_THERAPY] = &JP_CentreTherapy;
-	JobName[JOB_EXTHERAPY] = gettext("Extreme Therapy");
+	JobName[JOB_EXTHERAPY] = ("Extreme Therapy");
 	JobQkNm[JOB_EXTHERAPY] = "EThr";
-	JobDesc[JOB_EXTHERAPY] = gettext("She will go to extreme therapy to get over her hardcore mental problems. (Mind Fucked, Broken Will)");
+	JobDesc[JOB_EXTHERAPY] = ("She will go to extreme therapy to get over her hardcore mental problems. (Mind Fucked, Broken Will)");
 	JobFunc[JOB_EXTHERAPY] = &WorkCentreExTherapy;
 	JobPerf[JOB_EXTHERAPY] = &JP_CentreExTherapy;
-	JobName[JOB_ANGER] = gettext("Anger Management");
+	JobName[JOB_ANGER] = ("Anger Management");
 	JobQkNm[JOB_ANGER] = "AMng";
-	JobDesc[JOB_ANGER] = gettext("She will go to anger management to get over her anger problems. (Aggressive, Tsundere, Yandere)");
+	JobDesc[JOB_ANGER] = ("She will go to anger management to get over her anger problems. (Aggressive, Tsundere, Yandere)");
 	JobFunc[JOB_ANGER] = &WorkCentreAngerManagement;
 	JobPerf[JOB_ANGER] = &JP_CentreAngerManagement;
 
 	// - Clinic Surgeries
-	JobFilterName[JOBFILTER_CLINIC] = gettext("Medical Clinic");
-	JobFilterDesc[JOBFILTER_CLINIC] = gettext("These are procerures the girls can have done in the Medical Clinic.");
+	JobFilterName[JOBFILTER_CLINIC] = ("Medical Clinic");
+	JobFilterDesc[JOBFILTER_CLINIC] = ("These are procerures the girls can have done in the Medical Clinic.");
 	JobFilterIndex[JOBFILTER_CLINIC] = JOB_GETHEALING;
-	JobName[JOB_GETHEALING] = gettext("Get Healing");
+	JobName[JOB_GETHEALING] = ("Get Healing");
 	JobQkNm[JOB_GETHEALING] = "Heal";
-	JobDesc[JOB_GETHEALING] = gettext("She will have her wounds attended.");
+	JobDesc[JOB_GETHEALING] = ("She will have her wounds attended.");
 	JobFunc[JOB_GETHEALING] = &WorkHealing;
 	JobPerf[JOB_GETHEALING] = &JP_Healing;
-	JobName[JOB_GETREPAIRS] = gettext("Get Repaired");
+	JobName[JOB_GETREPAIRS] = ("Get Repaired");
 	JobQkNm[JOB_GETREPAIRS] = "Repr";
-	JobDesc[JOB_GETREPAIRS] = gettext("Construct girls will be quickly repaired here.");
+	JobDesc[JOB_GETREPAIRS] = ("Construct girls will be quickly repaired here.");
 	JobFunc[JOB_GETREPAIRS] = &WorkRepairShop;
 	JobPerf[JOB_GETREPAIRS] = &JP_RepairShop;
-	JobName[JOB_CUREDISEASES] = gettext("Cure Diseases");
+	JobName[JOB_CUREDISEASES] = ("Cure Diseases");
 	JobQkNm[JOB_CUREDISEASES] = "Cure";
-	JobDesc[JOB_CUREDISEASES] = gettext("She will try to get her diseases cured.");
+	JobDesc[JOB_CUREDISEASES] = ("She will try to get her diseases cured.");
 	JobFunc[JOB_CUREDISEASES] = &WorkCureDiseases;
 	JobPerf[JOB_CUREDISEASES] = &JP_CureDiseases;
-	JobName[JOB_GETABORT] = gettext("Abortion");
+	JobName[JOB_GETABORT] = ("Abortion");
 	JobQkNm[JOB_GETABORT] = "Abrt";
-	JobDesc[JOB_GETABORT] = gettext("She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)");
+	JobDesc[JOB_GETABORT] = ("She will get an abortion, removing pregnancy and/or insemination.\n*(Takes 2 days or 1 if a Nurse is on duty)");
 	JobFunc[JOB_GETABORT] = &WorkGetAbort;
 	JobPerf[JOB_GETABORT] = &JP_GetAbort;
-	JobName[JOB_COSMETICSURGERY] = gettext("Cosmetic Surgery");
+	JobName[JOB_COSMETICSURGERY] = ("Cosmetic Surgery");
 	JobQkNm[JOB_COSMETICSURGERY] = "CosS";
-	JobDesc[JOB_COSMETICSURGERY] = gettext("She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobDesc[JOB_COSMETICSURGERY] = ("She will undergo magical surgery to \"enhance\" her appearance.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobFunc[JOB_COSMETICSURGERY] = &WorkCosmeticSurgery;
 	JobPerf[JOB_COSMETICSURGERY] = &JP_CosmeticSurgery;
-	JobName[JOB_LIPO] = gettext("Liposuction");
+	JobName[JOB_LIPO] = ("Liposuction");
 	JobQkNm[JOB_LIPO] = "Lipo";
-	JobDesc[JOB_LIPO] = gettext("She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobDesc[JOB_LIPO] = ("She will undergo liposuction to \"enhance\" her figure.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobFunc[JOB_LIPO] = &WorkLiposuction;
 	JobPerf[JOB_LIPO] = &JP_Liposuction;
-	JobName[JOB_BREASTREDUCTION] = gettext("Breast Reduction Surgery");
+	JobName[JOB_BREASTREDUCTION] = ("Breast Reduction Surgery");
 	JobQkNm[JOB_BREASTREDUCTION] = "BRS";
-	JobDesc[JOB_BREASTREDUCTION] = gettext("She will undergo breast reduction surgery.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobDesc[JOB_BREASTREDUCTION] = ("She will undergo breast reduction surgery.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobFunc[JOB_BREASTREDUCTION] = &WorkBreastReduction;
 	JobPerf[JOB_BREASTREDUCTION] = &JP_BreastReduction;
-	JobName[JOB_BOOBJOB] = gettext("Boob Job");
+	JobName[JOB_BOOBJOB] = ("Boob Job");
 	JobQkNm[JOB_BOOBJOB] = "BbJb";
-	JobDesc[JOB_BOOBJOB] = gettext("She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobDesc[JOB_BOOBJOB] = ("She will undergo surgery to \"enhance\" her bust.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobFunc[JOB_BOOBJOB] = &WorkBoobJob;
 	JobPerf[JOB_BOOBJOB] = &JP_BoobJob;
-	JobName[JOB_VAGINAREJUV] = gettext("Vaginal Rejuvenation");
+	JobName[JOB_VAGINAREJUV] = ("Vaginal Rejuvenation");
 	JobQkNm[JOB_VAGINAREJUV] = "VagR";
-	JobDesc[JOB_VAGINAREJUV] = gettext("She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobDesc[JOB_VAGINAREJUV] = ("She will undergo surgery to make her a virgin again.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobFunc[JOB_VAGINAREJUV] = &WorkGetVaginalRejuvenation;
 	JobPerf[JOB_VAGINAREJUV] = &JP_GetVaginalRejuvenation;
-	JobName[JOB_FACELIFT] = gettext("Face Lift");
+	JobName[JOB_FACELIFT] = ("Face Lift");
 	JobQkNm[JOB_FACELIFT] = "FLft";
-	JobDesc[JOB_FACELIFT] = gettext("She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobDesc[JOB_FACELIFT] = ("She will undergo surgery to make her younger.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobFunc[JOB_FACELIFT] = &WorkGetFacelift;
 	JobPerf[JOB_FACELIFT] = &JP_GetFacelift;
-	JobName[JOB_ASSJOB] = gettext("Arse Job");
+	JobName[JOB_ASSJOB] = ("Arse Job");
 	JobQkNm[JOB_ASSJOB] = "AssJ";
-	JobDesc[JOB_ASSJOB] = gettext("She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobDesc[JOB_ASSJOB] = ("She will undergo surgery to \"enhance\" her ass.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobFunc[JOB_ASSJOB] = &WorkGetAssJob;
 	JobPerf[JOB_ASSJOB] = &JP_GetAssJob;
-	JobName[JOB_TUBESTIED] = gettext("Tubes Tied");
+	JobName[JOB_TUBESTIED] = ("Tubes Tied");
 	JobQkNm[JOB_TUBESTIED] = "TTid";
-	JobDesc[JOB_TUBESTIED] = gettext("She will undergo surgery to make her sterile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobDesc[JOB_TUBESTIED] = ("She will undergo surgery to make her sterile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobFunc[JOB_TUBESTIED] = &WorkGetTubesTied;
 	JobPerf[JOB_TUBESTIED] = &JP_GetTubesTied;
-	JobName[JOB_FERTILITY] = gettext("Fertility Treatmeant");
+	JobName[JOB_FERTILITY] = ("Fertility Treatmeant");
 	JobQkNm[JOB_FERTILITY] = "FrtT";
-	JobDesc[JOB_FERTILITY] = gettext("She will undergo surgery to make her fertile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
+	JobDesc[JOB_FERTILITY] = ("She will undergo surgery to make her fertile.\n*(Takes up to 5 days, less if a Nurse is on duty)");
 	JobFunc[JOB_FERTILITY] = &WorkGetFertility;
 	JobPerf[JOB_FERTILITY] = &JP_GetFertility;
 	// Clinic staff
-	JobFilterName[JOBFILTER_CLINICSTAFF] = gettext("Clinic Staff");
-	JobFilterDesc[JOBFILTER_CLINICSTAFF] = gettext("These are jobs that help run a medical clinic.");
+	JobFilterName[JOBFILTER_CLINICSTAFF] = ("Clinic Staff");
+	JobFilterDesc[JOBFILTER_CLINICSTAFF] = ("These are jobs that help run a medical clinic.");
 	JobFilterIndex[JOBFILTER_CLINICSTAFF] = JOB_CLINICREST;
-	JobName[JOB_CLINICREST] = gettext("Time off");
+	JobName[JOB_CLINICREST] = ("Time off");
 	JobQkNm[JOB_CLINICREST] = "TOff";
-	JobDesc[JOB_CLINICREST] = gettext("She will rest");
+	JobDesc[JOB_CLINICREST] = ("She will rest");
 	JobFunc[JOB_CLINICREST] = &WorkFreetime;
 	JobPerf[JOB_CLINICREST] = &JP_Freetime;
-	JobName[JOB_CHAIRMAN] = gettext("Chairman");
+	JobName[JOB_CHAIRMAN] = ("Chairman");
 	JobQkNm[JOB_CHAIRMAN] = "Crmn";
-	JobDesc[JOB_CHAIRMAN] = gettext("She will watch over the staff of the clinic");
+	JobDesc[JOB_CHAIRMAN] = ("She will watch over the staff of the clinic");
 	JobFunc[JOB_CHAIRMAN] = &WorkChairMan;
 	JobPerf[JOB_CHAIRMAN] = &JP_ChairMan;
-	JobName[JOB_DOCTOR] = gettext("Doctor");
+	JobName[JOB_DOCTOR] = ("Doctor");
 	JobQkNm[JOB_DOCTOR] = "Doc";
-	JobDesc[JOB_DOCTOR] = gettext("She will become a doctor. Doctors earn extra cash from treating locals. (requires at least 1 to perform surgeries)");
+	JobDesc[JOB_DOCTOR] = ("She will become a doctor. Doctors earn extra cash from treating locals. (requires at least 1 to perform surgeries)");
 	JobFunc[JOB_DOCTOR] = &WorkDoctor;
 	JobPerf[JOB_DOCTOR] = &JP_Doctor;
-	JobName[JOB_NURSE] = gettext("Nurse");
+	JobName[JOB_NURSE] = ("Nurse");
 	JobQkNm[JOB_NURSE] = "Nurs";
-	JobDesc[JOB_NURSE] = gettext("Will help the doctor and heal sick people.");
+	JobDesc[JOB_NURSE] = ("Will help the doctor and heal sick people.");
 	JobFunc[JOB_NURSE] = &WorkNurse;
 	JobPerf[JOB_NURSE] = &JP_Nurse;
-	JobName[JOB_MECHANIC] = gettext("Mechanic");
+	JobName[JOB_MECHANIC] = ("Mechanic");
 	JobQkNm[JOB_MECHANIC] = "Mech";
-	JobDesc[JOB_MECHANIC] = gettext("Will help the doctor and repair Constructs.");
+	JobDesc[JOB_MECHANIC] = ("Will help the doctor and repair Constructs.");
 	JobFunc[JOB_MECHANIC] = &WorkMechanic;
 	JobPerf[JOB_MECHANIC] = &JP_Mechanic;
-	JobName[JOB_INTERN] = gettext("Intern");
+	JobName[JOB_INTERN] = ("Intern");
 	JobQkNm[JOB_INTERN] = "Ntrn";
-	JobDesc[JOB_INTERN] = gettext("Will train in how to be a nurse.");
+	JobDesc[JOB_INTERN] = ("Will train in how to be a nurse.");
 	JobFunc[JOB_INTERN] = &WorkIntern;
 	JobPerf[JOB_INTERN] = &JP_Intern;
-	JobName[JOB_JANITOR] = gettext("Janitor");
+	JobName[JOB_JANITOR] = ("Janitor");
 	JobQkNm[JOB_JANITOR] = "Jntr";
-	JobDesc[JOB_JANITOR] = gettext("She will clean the clinic");
+	JobDesc[JOB_JANITOR] = ("She will clean the clinic");
 	JobFunc[JOB_JANITOR] = &WorkJanitor;
 	JobPerf[JOB_JANITOR] = &JP_Janitor;
 
@@ -710,32 +710,32 @@ void cJobManager::Setup()
 	JobFunc[JOB_FARMHAND] = &WorkFarmHand;
 	JobPerf[JOB_FARMHAND] = &JP_FarmHand;
 	// - Laborers
-	JobFilterName[JOBFILTER_LABORERS] = gettext("Laborers");
-	JobFilterDesc[JOBFILTER_LABORERS] = gettext("These are jobs your girls can do at your farm.");
+	JobFilterName[JOBFILTER_LABORERS] = ("Laborers");
+	JobFilterDesc[JOBFILTER_LABORERS] = ("These are jobs your girls can do at your farm.");
 	JobFilterIndex[JOBFILTER_LABORERS] = JOB_FARMER;
-	JobName[JOB_FARMER] = gettext("Farmer");
+	JobName[JOB_FARMER] = ("Farmer");
 	JobQkNm[JOB_FARMER] = "Frmr";
-	JobDesc[JOB_FARMER] = gettext("She will tend to your crops.");
+	JobDesc[JOB_FARMER] = ("She will tend to your crops.");
 	JobFunc[JOB_FARMER] = &WorkFarmer;
 	JobPerf[JOB_FARMER] = &JP_Farmer;
-	JobName[JOB_GARDENER] = gettext("Gardener");
+	JobName[JOB_GARDENER] = ("Gardener");
 	JobQkNm[JOB_GARDENER] = "Grdn";
-	JobDesc[JOB_GARDENER] = gettext("She will produce herbs.");
+	JobDesc[JOB_GARDENER] = ("She will produce herbs.");
 	JobFunc[JOB_GARDENER] = &WorkGardener;
 	JobPerf[JOB_GARDENER] = &JP_Gardener;
-	JobName[JOB_SHEPHERD] = gettext("Shepherd");
+	JobName[JOB_SHEPHERD] = ("Shepherd");
 	JobQkNm[JOB_SHEPHERD] = "SHrd";
-	JobDesc[JOB_SHEPHERD] = gettext("She will tend to food animals.");
+	JobDesc[JOB_SHEPHERD] = ("She will tend to food animals.");
 	JobFunc[JOB_SHEPHERD] = &WorkShepherd;
 	JobPerf[JOB_SHEPHERD] = &JP_Shepherd;
-	JobName[JOB_RANCHER] = gettext("Rancher");
+	JobName[JOB_RANCHER] = ("Rancher");
 	JobQkNm[JOB_RANCHER] = "Rncr";
-	JobDesc[JOB_RANCHER] = gettext("She will tend to larger animals.");
+	JobDesc[JOB_RANCHER] = ("She will tend to larger animals.");
 	JobFunc[JOB_RANCHER] = &WorkRancher;
 	JobPerf[JOB_RANCHER] = &JP_Rancher;
-	JobName[JOB_CATACOMBRANCHER] = gettext("Catacombs Rancher");
+	JobName[JOB_CATACOMBRANCHER] = ("Catacombs Rancher");
 	JobQkNm[JOB_CATACOMBRANCHER] = "CRnc";
-	JobDesc[JOB_CATACOMBRANCHER] = gettext("She will tend to strange beasts.");
+	JobDesc[JOB_CATACOMBRANCHER] = ("She will tend to strange beasts.");
 	JobFunc[JOB_CATACOMBRANCHER] = &WorkCatacombRancher;
 	JobPerf[JOB_CATACOMBRANCHER] = &JP_CatacombRancher;
 	JobName[JOB_BEASTCAPTURE] = "Beast Capture";
@@ -743,9 +743,9 @@ void cJobManager::Setup()
 	JobDesc[JOB_BEASTCAPTURE] = "She will go out into the wilds to capture beasts.";
 	JobFunc[JOB_BEASTCAPTURE] = &WorkBeastCapture;
 	JobPerf[JOB_BEASTCAPTURE] = &JP_BeastCapture;
-	JobName[JOB_MILKER] = gettext("Milker");
+	JobName[JOB_MILKER] = ("Milker");
 	JobQkNm[JOB_MILKER] = "Mlkr";
-	JobDesc[JOB_MILKER] = gettext("She will milk the various animals and girls you own.");
+	JobDesc[JOB_MILKER] = ("She will milk the various animals and girls you own.");
 	JobFunc[JOB_MILKER] = &WorkMilker;
 	JobPerf[JOB_MILKER] = &JP_Milker;
 	JobName[JOB_MILK] = "Get Milked";
@@ -754,52 +754,52 @@ void cJobManager::Setup()
 	JobFunc[JOB_MILK] = &WorkMilk;
 	JobPerf[JOB_MILK] = &JP_Milk;
 	// - Producers
-	JobFilterName[JOBFILTER_PRODUCERS] = gettext("Producers");
-	JobFilterDesc[JOBFILTER_PRODUCERS] = gettext("These are jobs your girls can do at your farm.");
+	JobFilterName[JOBFILTER_PRODUCERS] = ("Producers");
+	JobFilterDesc[JOBFILTER_PRODUCERS] = ("These are jobs your girls can do at your farm.");
 	JobFilterIndex[JOBFILTER_PRODUCERS] = JOB_BUTCHER;
-	JobName[JOB_BUTCHER] = gettext("Butcher");
+	JobName[JOB_BUTCHER] = ("Butcher");
 	JobQkNm[JOB_BUTCHER] = "Bchr";
-	JobDesc[JOB_BUTCHER] = gettext("She will produce food from animals you own.");
+	JobDesc[JOB_BUTCHER] = ("She will produce food from animals you own.");
 	JobFunc[JOB_BUTCHER] = &WorkButcher;
 	JobPerf[JOB_BUTCHER] = &JP_Butcher;
-	JobName[JOB_BAKER] = gettext("Baker");
+	JobName[JOB_BAKER] = ("Baker");
 	JobQkNm[JOB_BAKER] = "Bkr";
-	JobDesc[JOB_BAKER] = gettext("She will produce food from the crops you own.");
+	JobDesc[JOB_BAKER] = ("She will produce food from the crops you own.");
 	JobFunc[JOB_BAKER] = &WorkBaker;
 	JobPerf[JOB_BAKER] = &JP_Baker;
-	JobName[JOB_BREWER] = gettext("Brewer");
+	JobName[JOB_BREWER] = ("Brewer");
 	JobQkNm[JOB_BREWER] = "Brwr";
-	JobDesc[JOB_BREWER] = gettext("She will make various beers and wines.");
+	JobDesc[JOB_BREWER] = ("She will make various beers and wines.");
 	JobFunc[JOB_BREWER] = &WorkBrewer;
 	JobPerf[JOB_BREWER] = &JP_Brewer;
-	JobName[JOB_TAILOR] = gettext("Tailor");
+	JobName[JOB_TAILOR] = ("Tailor");
 	JobQkNm[JOB_TAILOR] = "Talr";
-	JobDesc[JOB_TAILOR] = gettext("She will make clothes and other items from fabrics.");
+	JobDesc[JOB_TAILOR] = ("She will make clothes and other items from fabrics.");
 	JobFunc[JOB_TAILOR] = &WorkTailor;
 	JobPerf[JOB_TAILOR] = &JP_Tailor;
-	JobName[JOB_MAKEITEM] = gettext("Make Items");
+	JobName[JOB_MAKEITEM] = ("Make Items");
 	JobQkNm[JOB_MAKEITEM] = "MkIt";
-	JobDesc[JOB_MAKEITEM] = gettext("She will make various items.");
+	JobDesc[JOB_MAKEITEM] = ("She will make various items.");
 	JobFunc[JOB_MAKEITEM] = &WorkMakeItem;
 	JobPerf[JOB_MAKEITEM] = &JP_MakeItem;
-	JobName[JOB_MAKEPOTIONS] = gettext("Make Potions");
+	JobName[JOB_MAKEPOTIONS] = ("Make Potions");
 	JobQkNm[JOB_MAKEPOTIONS] = "MkPt";
-	JobDesc[JOB_MAKEPOTIONS] = gettext("She will make various potions.");
+	JobDesc[JOB_MAKEPOTIONS] = ("She will make various potions.");
 	JobFunc[JOB_MAKEPOTIONS] = &WorkMakePotions;
 	JobPerf[JOB_MAKEPOTIONS] = &JP_MakePotions;
 
 	// - House
-	JobFilterName[JOBFILTER_HOUSE] = gettext("Player House");
-	JobFilterDesc[JOBFILTER_HOUSE] = gettext("These are jobs your girls can do at your house.");
+	JobFilterName[JOBFILTER_HOUSE] = ("Player House");
+	JobFilterDesc[JOBFILTER_HOUSE] = ("These are jobs your girls can do at your house.");
 	JobFilterIndex[JOBFILTER_HOUSE] = JOB_HOUSEREST;
-	JobName[JOB_HOUSEREST] = gettext("Time off");
+	JobName[JOB_HOUSEREST] = ("Time off");
 	JobQkNm[JOB_HOUSEREST] = "TOff";
-	JobDesc[JOB_HOUSEREST] = gettext("She takes time off resting and recovering.");
+	JobDesc[JOB_HOUSEREST] = ("She takes time off resting and recovering.");
 	JobFunc[JOB_HOUSEREST] = &WorkFreetime;
 	JobPerf[JOB_HOUSEREST] = &JP_Freetime;
-	JobName[JOB_HEADGIRL] = gettext("Head Girl");
+	JobName[JOB_HEADGIRL] = ("Head Girl");
 	JobQkNm[JOB_HEADGIRL] = "HGrl";
-	JobDesc[JOB_HEADGIRL] = gettext("She takes care of the girls in your house.");
+	JobDesc[JOB_HEADGIRL] = ("She takes care of the girls in your house.");
 	JobFunc[JOB_HEADGIRL] = &WorkHeadGirl;
 	JobPerf[JOB_HEADGIRL] = &JP_HeadGirl;
 	JobName[JOB_RECRUITER] = "Recruiter";
@@ -807,56 +807,56 @@ void cJobManager::Setup()
 	JobDesc[JOB_RECRUITER] = "She will go out and try and recruit girls for you.";
 	JobFunc[JOB_RECRUITER] = &WorkRecruiter;
 	JobPerf[JOB_RECRUITER] = &JP_Recruiter;
-	JobName[JOB_PERSONALBEDWARMER] = gettext("Bed Warmer");
+	JobName[JOB_PERSONALBEDWARMER] = ("Bed Warmer");
 	JobQkNm[JOB_PERSONALBEDWARMER] = "BdWm";
-	JobDesc[JOB_PERSONALBEDWARMER] = gettext("She will stay in your bed at night with you.");
+	JobDesc[JOB_PERSONALBEDWARMER] = ("She will stay in your bed at night with you.");
 	JobFunc[JOB_PERSONALBEDWARMER] = &WorkPersonalBedWarmer;
 	JobPerf[JOB_PERSONALBEDWARMER] = &JP_PersonalBedWarmer;
-	JobName[JOB_HOUSECOOK] = gettext("House Cook");
+	JobName[JOB_HOUSECOOK] = ("House Cook");
 	JobQkNm[JOB_HOUSECOOK] = "Hcok";
-	JobDesc[JOB_HOUSECOOK] = gettext("She will cook for your house.");
+	JobDesc[JOB_HOUSECOOK] = ("She will cook for your house.");
 	JobFunc[JOB_HOUSECOOK] = &WorkHouseCook;
 	JobPerf[JOB_HOUSECOOK] = &JP_HouseCook;
-	//JobName[JOB_PONYGIRL] = gettext("Pony Girl");
+	//JobName[JOB_PONYGIRL] = ("Pony Girl");
 	//JobQkNm[JOB_PONYGIRL] = "PGil";
-	//JobDesc[JOB_PONYGIRL] = gettext("She will be trained to become a pony girl.");
+	//JobDesc[JOB_PONYGIRL] = ("She will be trained to become a pony girl.");
 	//JobFunc[JOB_PONYGIRL] = &WorkFarmPonyGirl;
-	JobName[JOB_CLEANHOUSE] = gettext("Clean House");
+	JobName[JOB_CLEANHOUSE] = ("Clean House");
 	JobQkNm[JOB_CLEANHOUSE] = "ClnH";
-	JobDesc[JOB_CLEANHOUSE] = gettext("She will clean your house.");
+	JobDesc[JOB_CLEANHOUSE] = ("She will clean your house.");
 	JobFunc[JOB_CLEANHOUSE] = &WorkCleanHouse;
 	JobPerf[JOB_CLEANHOUSE] = &JP_CleanHouse;
 
-	JobFilterName[JOBFILTER_HOUSETTRAINING] = gettext("Sex Training");
-	JobFilterDesc[JOBFILTER_HOUSETTRAINING] = gettext("You will take a personal intrerst in training the girl in sexual matters.");
+	JobFilterName[JOBFILTER_HOUSETTRAINING] = ("Sex Training");
+	JobFilterDesc[JOBFILTER_HOUSETTRAINING] = ("You will take a personal intrerst in training the girl in sexual matters.");
 	JobFilterIndex[JOBFILTER_HOUSETTRAINING] = JOB_PERSONALTRAINING;
-	JobName[JOB_PERSONALTRAINING] = gettext("Personal Training");
+	JobName[JOB_PERSONALTRAINING] = ("Personal Training");
 	JobQkNm[JOB_PERSONALTRAINING] = "PTrn";
-	JobDesc[JOB_PERSONALTRAINING] = gettext("You will oversee her training personal.");
+	JobDesc[JOB_PERSONALTRAINING] = ("You will oversee her training personal.");
 	JobFunc[JOB_PERSONALTRAINING] = &WorkPersonalTraining;
 	JobPerf[JOB_PERSONALTRAINING] = &JP_PersonalTraining;
-	JobName[JOB_HOUSEPET] = gettext("House Pet");
+	JobName[JOB_HOUSEPET] = ("House Pet");
 	JobQkNm[JOB_HOUSEPET] = "Hpet";
-	JobDesc[JOB_HOUSEPET] = gettext("She will be trained to become the house pet.");
+	JobDesc[JOB_HOUSEPET] = ("She will be trained to become the house pet.");
 	JobFunc[JOB_HOUSEPET] = &WorkHousePet;
-	JobName[JOB_SO_STRAIGHT] = gettext("SO Straight");
+	JobName[JOB_SO_STRAIGHT] = ("SO Straight");
 	JobQkNm[JOB_SO_STRAIGHT] = "SOSt";
-	JobDesc[JOB_SO_STRAIGHT] = gettext("You will make sure she only likes having sex with men.");
+	JobDesc[JOB_SO_STRAIGHT] = ("You will make sure she only likes having sex with men.");
 	JobFunc[JOB_SO_STRAIGHT] = &WorkSOStraight;
 	JobPerf[JOB_SO_STRAIGHT] = &JP_SOStraight;
-	JobName[JOB_SO_BISEXUAL] = gettext("SO Bisexual");
+	JobName[JOB_SO_BISEXUAL] = ("SO Bisexual");
 	JobQkNm[JOB_SO_BISEXUAL] = "SOBi";
-	JobDesc[JOB_SO_BISEXUAL] = gettext("You will make sure she likes having sex with both men and women.");
+	JobDesc[JOB_SO_BISEXUAL] = ("You will make sure she likes having sex with both men and women.");
 	JobFunc[JOB_SO_BISEXUAL] = &WorkSOBisexual;
 	JobPerf[JOB_SO_BISEXUAL] = &JP_SOBisexual;
-	JobName[JOB_SO_LESBIAN] = gettext("SO Lesbian");
+	JobName[JOB_SO_LESBIAN] = ("SO Lesbian");
 	JobQkNm[JOB_SO_LESBIAN] = "SOLe";
-	JobDesc[JOB_SO_LESBIAN] = gettext("You will make sure she only likes having sex with women.");
+	JobDesc[JOB_SO_LESBIAN] = ("You will make sure she only likes having sex with women.");
 	JobFunc[JOB_SO_LESBIAN] = &WorkSOLesbian;
 	JobPerf[JOB_SO_LESBIAN] = &JP_SOLesbian;
-	JobName[JOB_FAKEORGASM] = gettext("Fake Orgasm Expert");
+	JobName[JOB_FAKEORGASM] = ("Fake Orgasm Expert");
 	JobQkNm[JOB_FAKEORGASM] = "FOEx";
-	JobDesc[JOB_FAKEORGASM] = gettext("You will teach her how to fake her orgasms.");
+	JobDesc[JOB_FAKEORGASM] = ("You will teach her how to fake her orgasms.");
 	JobFunc[JOB_FAKEORGASM] = &WorkFakeOrgasm;
 	JobPerf[JOB_FAKEORGASM] = &JP_FakeOrgasm;
 
@@ -867,15 +867,15 @@ void cJobManager::Setup()
 
 
 
-	JobFilterName[JOBFILTER_NONE] = gettext("Non-Job");
-	JobFilterDesc[JOBFILTER_NONE] = gettext("These are NOT jobs. They are special cases.");
+	JobFilterName[JOBFILTER_NONE] = ("Non-Job");
+	JobFilterDesc[JOBFILTER_NONE] = ("These are NOT jobs. They are special cases.");
 	JobFilterIndex[JOBFILTER_NONE] = JOB_INDUNGEON;
-	JobName[JOB_INDUNGEON]	= gettext("In the Dungeon");
+	JobName[JOB_INDUNGEON]	= ("In the Dungeon");
 	JobQkNm[JOB_INDUNGEON]	= "Dngn";
-	JobDesc[JOB_INDUNGEON]	= gettext("She is languishing in the dungeon.");
-	JobName[JOB_RUNAWAY]	= gettext("Runaway");
+	JobDesc[JOB_INDUNGEON]	= ("She is languishing in the dungeon.");
+	JobName[JOB_RUNAWAY]	= ("Runaway");
 	JobQkNm[JOB_RUNAWAY]	= "RunA";
-	JobDesc[JOB_RUNAWAY]	= gettext("She has run away.");
+	JobDesc[JOB_RUNAWAY]	= ("She has run away.");
 
 
 
@@ -920,75 +920,75 @@ void cJobManager::Setup()
 # if 0
 
 	//- Community Centre
-	JobFilterName[JOBFILTER_COMMUNITYCENTRE] = gettext("Community Centre");
-	JobFilterDesc[JOBFILTER_COMMUNITYCENTRE] = gettext("These are jobs for running a community centre.");
+	JobFilterName[JOBFILTER_COMMUNITYCENTRE] = ("Community Centre");
+	JobFilterDesc[JOBFILTER_COMMUNITYCENTRE] = ("These are jobs for running a community centre.");
 	JobFilterIndex[JOBFILTER_COMMUNITYCENTRE] = JOB_COLLECTDONATIONS;
-	JobName[JOB_COLLECTDONATIONS] = gettext("Collect Donations");
-	JobDesc[JOB_COLLECTDONATIONS] = gettext("She will collect money to help the poor.");
-	JobName[JOB_ARTISAN] = gettext("Make Crafts");
-	JobDesc[JOB_ARTISAN] = gettext("She will craft cheap handmade items.");
-	JobName[JOB_SELLITEMS] = gettext("Sell Crafts");
-	JobDesc[JOB_SELLITEMS] = gettext("She will go out and sell previously crafted items.");
+	JobName[JOB_COLLECTDONATIONS] = ("Collect Donations");
+	JobDesc[JOB_COLLECTDONATIONS] = ("She will collect money to help the poor.");
+	JobName[JOB_ARTISAN] = ("Make Crafts");
+	JobDesc[JOB_ARTISAN] = ("She will craft cheap handmade items.");
+	JobName[JOB_SELLITEMS] = ("Sell Crafts");
+	JobDesc[JOB_SELLITEMS] = ("She will go out and sell previously crafted items.");
 
-	JobFilterName[JOBFILTER_DRUGLAB] = gettext("Drug Lab");
-	JobFilterDesc[JOBFILTER_DRUGLAB] = gettext("These are jobs for running a drug lab.");
+	JobFilterName[JOBFILTER_DRUGLAB] = ("Drug Lab");
+	JobFilterDesc[JOBFILTER_DRUGLAB] = ("These are jobs for running a drug lab.");
 	JobFilterIndex[JOBFILTER_DRUGLAB] = JOB_VIRASPLANTFUCKER;
-	JobName[JOB_VIRASPLANTFUCKER] = gettext("Fuck Viras Plants");
-	JobDesc[JOB_VIRASPLANTFUCKER] = gettext("She will allow Viras plants to inseminate her, creating Vira Blood.");
-	JobName[JOB_SHROUDGROWER] = gettext("Grow Shroud Mushrooms");
-	JobDesc[JOB_SHROUDGROWER] = gettext("She will grow Shroud Mushrooms, which require a lot of care and may explode.");
-	JobName[JOB_FAIRYDUSTER] = gettext("Fairy Duster");
-	JobDesc[JOB_FAIRYDUSTER] = gettext("She will capture fairies and grind them into a fine powder known as Fairy Dust.");
-	JobName[JOB_DRUGDEALER] = gettext("Drug Dealer");
-	JobDesc[JOB_DRUGDEALER] = gettext("She will go out and sell your drugs on the streets.");
+	JobName[JOB_VIRASPLANTFUCKER] = ("Fuck Viras Plants");
+	JobDesc[JOB_VIRASPLANTFUCKER] = ("She will allow Viras plants to inseminate her, creating Vira Blood.");
+	JobName[JOB_SHROUDGROWER] = ("Grow Shroud Mushrooms");
+	JobDesc[JOB_SHROUDGROWER] = ("She will grow Shroud Mushrooms, which require a lot of care and may explode.");
+	JobName[JOB_FAIRYDUSTER] = ("Fairy Duster");
+	JobDesc[JOB_FAIRYDUSTER] = ("She will capture fairies and grind them into a fine powder known as Fairy Dust.");
+	JobName[JOB_DRUGDEALER] = ("Drug Dealer");
+	JobDesc[JOB_DRUGDEALER] = ("She will go out and sell your drugs on the streets.");
 
-	JobFilterName[JOBFILTER_ALCHEMISTLAB] = gettext("Alchemist Lab");
-	JobFilterDesc[JOBFILTER_ALCHEMISTLAB] = gettext("These are jobs for running an alchemist lab.");
+	JobFilterName[JOBFILTER_ALCHEMISTLAB] = ("Alchemist Lab");
+	JobFilterDesc[JOBFILTER_ALCHEMISTLAB] = ("These are jobs for running an alchemist lab.");
 	JobFilterIndex[JOBFILTER_ALCHEMISTLAB] = JOB_FINDREGENTS;
-	JobName[JOB_FINDREGENTS] = gettext("Find Reagents");
-	JobDesc[JOB_FINDREGENTS] = gettext("She will go out and look for promising potion ingredients.");
-	JobName[JOB_BREWPOTIONS] = gettext("Brew Potions");
-	JobDesc[JOB_BREWPOTIONS] = gettext("She will brew a random potion using available ingredients.");
-	JobName[JOB_POTIONTESTER] = gettext("Guinea Pig");
-	JobDesc[JOB_POTIONTESTER] = gettext("She will test out random potions. Who knows what might happen? (requires 1)");
+	JobName[JOB_FINDREGENTS] = ("Find Reagents");
+	JobDesc[JOB_FINDREGENTS] = ("She will go out and look for promising potion ingredients.");
+	JobName[JOB_BREWPOTIONS] = ("Brew Potions");
+	JobDesc[JOB_BREWPOTIONS] = ("She will brew a random potion using available ingredients.");
+	JobName[JOB_POTIONTESTER] = ("Guinea Pig");
+	JobDesc[JOB_POTIONTESTER] = ("She will test out random potions. Who knows what might happen? (requires 1)");
 
-	JobFilterName[JOBFILTER_ARENA] = gettext("Arena");
-	JobFilterDesc[JOBFILTER_ARENA] = gettext("These are jobs for running an arena.");
+	JobFilterName[JOBFILTER_ARENA] = ("Arena");
+	JobFilterDesc[JOBFILTER_ARENA] = ("These are jobs for running an arena.");
 	JobFilterIndex[JOBFILTER_ARENA] = JOB_FIGHTBEASTS;
-	JobName[JOB_FIGHTBEASTS] = gettext("Fight Beasts");
-	JobDesc[JOB_FIGHTBEASTS] = gettext("She will fight to the death against beasts you own. Dangerous.");
-	JobName[JOB_WRESTLE] = gettext("Wrestle");
-	JobDesc[JOB_WRESTLE] = gettext("She will take part in a wrestling match. Not dangerous.");
-	JobName[JOB_FIGHTTODEATH] = gettext("Cage Match");
-	JobDesc[JOB_FIGHTTODEATH] = gettext("She will fight to the death against other girls. Dangerous.");
-	JobName[JOB_FIGHTVOLUNTEERS] = gettext("Fight Volunteers");
-	JobDesc[JOB_FIGHTVOLUNTEERS] = gettext("She will fight against customer volunteers for gold prizes. Not dangerous.");
-	JobName[JOB_COLLECTBETS] = gettext("Collect Bets");
-	JobDesc[JOB_COLLECTBETS] = gettext("She will collect bets from the customers. (requires 1)");
+	JobName[JOB_FIGHTBEASTS] = ("Fight Beasts");
+	JobDesc[JOB_FIGHTBEASTS] = ("She will fight to the death against beasts you own. Dangerous.");
+	JobName[JOB_WRESTLE] = ("Wrestle");
+	JobDesc[JOB_WRESTLE] = ("She will take part in a wrestling match. Not dangerous.");
+	JobName[JOB_FIGHTTODEATH] = ("Cage Match");
+	JobDesc[JOB_FIGHTTODEATH] = ("She will fight to the death against other girls. Dangerous.");
+	JobName[JOB_FIGHTVOLUNTEERS] = ("Fight Volunteers");
+	JobDesc[JOB_FIGHTVOLUNTEERS] = ("She will fight against customer volunteers for gold prizes. Not dangerous.");
+	JobName[JOB_COLLECTBETS] = ("Collect Bets");
+	JobDesc[JOB_COLLECTBETS] = ("She will collect bets from the customers. (requires 1)");
 
-	JobFilterName[JOBFILTER_TRAININGCENTRE] = gettext("Training Centre");
-	JobFilterDesc[JOBFILTER_TRAININGCENTRE] = gettext("These are jobs for running a training centre.");
+	JobFilterName[JOBFILTER_TRAININGCENTRE] = ("Training Centre");
+	JobFilterDesc[JOBFILTER_TRAININGCENTRE] = ("These are jobs for running a training centre.");
 	JobFilterIndex[JOBFILTER_TRAININGCENTRE] = JOB_TEACHBDSM;
-	JobName[JOB_TEACHBDSM] = gettext("Teach BDSM");
-	JobDesc[JOB_TEACHBDSM] = gettext("She will teach other girls in BDSM skills.");
-	JobName[JOB_TEACHSEX] = gettext("Teach Sex");
-	JobDesc[JOB_TEACHSEX] = gettext("She will teach other girls the ins and outs of regular sex.");
-	JobName[JOB_TEACHBEAST] = gettext("Teach Bestiality");
-	JobDesc[JOB_TEACHBEAST] = gettext("She will teach other girls how to safely fuck beasts.");
-	JobName[JOB_TEACHMAGIC] = gettext("Teach Magic");
-	JobDesc[JOB_TEACHMAGIC] = gettext("She will teach other girls how to wield magic.");
-	JobName[JOB_TEACHCOMBAT] = gettext("Teach Combat");
-	JobDesc[JOB_TEACHCOMBAT] = gettext("She will teach other girls how to fight.");
-	JobName[JOB_DAYCARE] = gettext("Daycare");
-	JobDesc[JOB_DAYCARE] = gettext("She will look after local children. (non-sexual)");
-	JobName[JOB_SCHOOLING] = gettext("Schooling");
-	JobDesc[JOB_SCHOOLING] = gettext("She will teach the local children. (non-sexual)");
-	JobName[JOB_TEACHDANCING] = gettext("Teach Dancing");
-	JobDesc[JOB_TEACHDANCING] = gettext("She will teach other girls dancing and social skills.");
-	JobName[JOB_TEACHSERVICE] = gettext("Teach Service");
-	JobDesc[JOB_TEACHSERVICE] = gettext("She will teach other girls a variety of service skills.");
-	JobName[JOB_TRAIN] = gettext("Student");
-	JobDesc[JOB_TRAIN] = gettext("She will learn from all of the other girls who are teaching here.");
+	JobName[JOB_TEACHBDSM] = ("Teach BDSM");
+	JobDesc[JOB_TEACHBDSM] = ("She will teach other girls in BDSM skills.");
+	JobName[JOB_TEACHSEX] = ("Teach Sex");
+	JobDesc[JOB_TEACHSEX] = ("She will teach other girls the ins and outs of regular sex.");
+	JobName[JOB_TEACHBEAST] = ("Teach Bestiality");
+	JobDesc[JOB_TEACHBEAST] = ("She will teach other girls how to safely fuck beasts.");
+	JobName[JOB_TEACHMAGIC] = ("Teach Magic");
+	JobDesc[JOB_TEACHMAGIC] = ("She will teach other girls how to wield magic.");
+	JobName[JOB_TEACHCOMBAT] = ("Teach Combat");
+	JobDesc[JOB_TEACHCOMBAT] = ("She will teach other girls how to fight.");
+	JobName[JOB_DAYCARE] = ("Daycare");
+	JobDesc[JOB_DAYCARE] = ("She will look after local children. (non-sexual)");
+	JobName[JOB_SCHOOLING] = ("Schooling");
+	JobDesc[JOB_SCHOOLING] = ("She will teach the local children. (non-sexual)");
+	JobName[JOB_TEACHDANCING] = ("Teach Dancing");
+	JobDesc[JOB_TEACHDANCING] = ("She will teach other girls dancing and social skills.");
+	JobName[JOB_TEACHSERVICE] = ("Teach Service");
+	JobDesc[JOB_TEACHSERVICE] = ("She will teach other girls a variety of service skills.");
+	JobName[JOB_TRAIN] = ("Student");
+	JobDesc[JOB_TRAIN] = ("She will learn from all of the other girls who are teaching here.");
 
 #endif
 
@@ -1011,8 +1011,8 @@ void cJobManager::free()
 
 bool cJobManager::WorkVoid(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	summary += gettext("This job isn't implemented yet");
-	girl->m_Events.AddMessage(gettext("This job isn't implemented yet"), IMGTYPE_PROFILE, EVENT_DEBUG);
+	summary += ("This job isn't implemented yet");
+	girl->m_Events.AddMessage(("This job isn't implemented yet"), IMGTYPE_PROFILE, EVENT_DEBUG);
 	return false;
 }
 
@@ -1021,9 +1021,9 @@ bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, bool
 	brothel->m_Filthiness++;
 	if (g_Girls.DisobeyCheck(girl, action, brothel))			// they refuse to work
 	{
-		string message = girl->m_Realname + gettext(" refused to work during the ");
+		string message = girl->m_Realname + (" refused to work during the ");
 		message += (Day0Night1 ? "night" : "day");
-		message += gettext(" shift.");
+		message += (" shift.");
 		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -1483,18 +1483,18 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_MATRON)
 	{
 		if (g_Brothels.GetNumGirlsOnJob(TargetBrothel, JOB_MATRON, Day0Night1) > 0)
-			g_MessageQue.AddToQue(gettext("You can only have one matron per brothel."), 0);
+			g_MessageQue.AddToQue(("You can only have one matron per brothel."), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(gettext("The matron cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("The matron cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_MATRON;
 	}
 	else if (u_int(JobID) == JOB_TORTURER)
 	{
 		if (g_Brothels.GetNumGirlsOnJob(-1, JOB_TORTURER, Day0Night1) > 0)
-			g_MessageQue.AddToQue(gettext("You can only have one torturer among all of your brothels."), 0);
+			g_MessageQue.AddToQue(("You can only have one torturer among all of your brothels."), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(gettext("The torturer cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("The torturer cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_TORTURER;
 	}
@@ -1502,51 +1502,51 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_HEADGIRL)
 	{
 		if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, Day0Night1) > 0)
-			g_MessageQue.AddToQue(gettext("There can be only one Head Girl!"), 0);
-		else if (Girl->is_slave())	g_MessageQue.AddToQue(gettext("The Head Girl cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("There can be only one Head Girl!"), 0);
+		else if (Girl->is_slave())	g_MessageQue.AddToQue(("The Head Girl cannot be a slave."), 0);
 		else						Girl->m_NightJob = Girl->m_DayJob = JOB_HEADGIRL;
 	}
 	else if (u_int(JobID) == JOB_RECRUITER)
 	{
-		if (Girl->is_slave())	g_MessageQue.AddToQue(gettext("The recruiter cannot be a slave."), 0);
+		if (Girl->is_slave())	g_MessageQue.AddToQue(("The recruiter cannot be a slave."), 0);
 		else					Girl->m_NightJob = Girl->m_DayJob = JOB_RECRUITER;
 	}
 	else if (u_int(JobID) == JOB_HOUSEPET)
 	{
 		if (Girl->is_slave())	Girl->m_NightJob = Girl->m_DayJob = JOB_HOUSEPET;
-		else					g_MessageQue.AddToQue(gettext("Only slaves can take this training."), 0);
+		else					g_MessageQue.AddToQue(("Only slaves can take this training."), 0);
 	}
 //	else if (u_int(JobID) == JOB_PONYGIRL)
 //	{
 //		if (Girl->is_slave())	Girl->m_NightJob = Girl->m_DayJob = JOB_PONYGIRL;
-//		else					g_MessageQue.AddToQue(gettext("Only slaves can take this training."), 0);
+//		else					g_MessageQue.AddToQue(("Only slaves can take this training."), 0);
 //	}
 	// Special Farm Jobs
 	else if (u_int(JobID) == JOB_FARMMANGER)
 	{
 		if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, Day0Night1) > 0)
-			g_MessageQue.AddToQue(gettext("There can be only one Farm Manager!"), 0);
+			g_MessageQue.AddToQue(("There can be only one Farm Manager!"), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(gettext("The Farm Manager cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("The Farm Manager cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_FARMMANGER;
 	}
 	else if (u_int(JobID) == JOB_MARKETER)
 	{
 		if (Girl->is_slave())
-			g_MessageQue.AddToQue(gettext("The Farm Marketer cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("The Farm Marketer cannot be a slave."), 0);
 		else
 		{
 			if (Day0Night1 == SHIFT_DAY || fulltime)
 			{
 				if (g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, SHIFT_DAY) > 0)
-					g_MessageQue.AddToQue(gettext("There can be only one Farm Marketer on each shift!"), 0);
+					g_MessageQue.AddToQue(("There can be only one Farm Marketer on each shift!"), 0);
 				else Girl->m_DayJob = JOB_MARKETER;
 			}
 			if (Day0Night1 == SHIFT_NIGHT || fulltime)
 			{
 				if (g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, SHIFT_NIGHT) > 0)
-					g_MessageQue.AddToQue(gettext("There can be only one Farm Marketer on each shift!"), 0);
+					g_MessageQue.AddToQue(("There can be only one Farm Marketer on each shift!"), 0);
 				else Girl->m_NightJob = JOB_MARKETER;
 			}
 
@@ -1556,19 +1556,19 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_DOCTORE)
 	{
 		if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, Day0Night1) > 0)
-			g_MessageQue.AddToQue(gettext("There can be only one Doctore!"), 0);
+			g_MessageQue.AddToQue(("There can be only one Doctore!"), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(gettext("The Doctore cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("The Doctore cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTORE;
 	}
 	else if (u_int(JobID) == JOB_CITYGUARD && Girl->is_slave())
 	{
-		g_MessageQue.AddToQue(gettext("Slaves can not work as City Guards."), 0);
+		g_MessageQue.AddToQue(("Slaves can not work as City Guards."), 0);
 	}
 	else if (u_int(JobID) == JOB_FIGHTTRAIN && (g_Girls.GetSkill(Girl, SKILL_COMBAT) > 99 && g_Girls.GetSkill(Girl, SKILL_MAGIC) > 99 && g_Girls.GetStat(Girl, STAT_AGILITY) > 99 && g_Girls.GetStat(Girl, STAT_CONSTITUTION) > 99))
 	{	// `J` added then modified
-		g_MessageQue.AddToQue(gettext("There is nothing more she can learn here."), 0);
+		g_MessageQue.AddToQue(("There is nothing more she can learn here."), 0);
 		if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = JOB_ARENAREST;
 		if (Girl->m_NightJob == JOB_FIGHTTRAIN)	Girl->m_NightJob = JOB_ARENAREST;
 	}
@@ -1577,16 +1577,16 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_CHAIRMAN)
 	{
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, Day0Night1)>0)
-			g_MessageQue.AddToQue(gettext("There can be only one Chairman!"), 0);
+			g_MessageQue.AddToQue(("There can be only one Chairman!"), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(gettext("The Chairman cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("The Chairman cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_CHAIRMAN;
 	}
 
 	else if (Girl->has_trait( "AIDS") && (u_int(JobID) == JOB_DOCTOR || u_int(JobID) == JOB_NURSE || u_int(JobID) == JOB_INTERN))
 	{
-		g_MessageQue.AddToQue(gettext("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
+		g_MessageQue.AddToQue(("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
 		if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)
 			Girl->m_DayJob = JOB_CLINICREST;
 		if (Girl->m_NightJob == JOB_INTERN || Girl->m_NightJob == JOB_NURSE || Girl->m_NightJob == JOB_DOCTOR)
@@ -1596,7 +1596,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (Girl->is_slave())
 		{
-			g_MessageQue.AddToQue(gettext("The Doctor cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("The Doctor cannot be a slave."), 0);
 		}
 		else if (Girl->medicine() < 50 || Girl->intelligence() < 50)
 		{
@@ -1639,7 +1639,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_DayJob = JOB_GETREPAIRS;
 		else
 			Girl->m_NightJob = JOB_GETREPAIRS;
-		g_MessageQue.AddToQue(gettext("The Doctor does not work on Constructs so she sends ") + Girl->m_Realname + gettext(" to the Mechanic."), 0);
+		g_MessageQue.AddToQue(("The Doctor does not work on Constructs so she sends ") + Girl->m_Realname + (" to the Mechanic."), 0);
 	}
 	else if (u_int(JobID) == JOB_GETREPAIRS && !Girl->has_trait( "Construct") && !Girl->has_trait( "Half-Construct"))
 	{
@@ -1649,7 +1649,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_DayJob = JOB_GETHEALING;
 		else
 			Girl->m_NightJob = JOB_GETHEALING;
-		g_MessageQue.AddToQue(gettext("The Mechanic only works on Constructs so she sends ") + Girl->m_Realname + gettext(" to the Doctor."), 0);
+		g_MessageQue.AddToQue(("The Mechanic only works on Constructs so she sends ") + Girl->m_Realname + (" to the Doctor."), 0);
 	}
 	// `J` condensed clinic surgery jobs into one check
 	else if (
@@ -1668,17 +1668,17 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		bool jobgood = true;
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) == 0)
 		{
-			g_MessageQue.AddToQue(gettext("You must have a Doctor on duty to perform surgery."), 0);
+			g_MessageQue.AddToQue(("You must have a Doctor on duty to perform surgery."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_CUREDISEASES && !Girl->has_disease())
 		{
-			g_MessageQue.AddToQue(gettext("Oops, the girl does not have any diseases."), 0);
+			g_MessageQue.AddToQue(("Oops, the girl does not have any diseases."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_GETABORT && !Girl->is_pregnant())
 		{
-			g_MessageQue.AddToQue(gettext("Oops, the girl is not pregant."), 0);
+			g_MessageQue.AddToQue(("Oops, the girl is not pregant."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_COSMETICSURGERY)
@@ -1686,44 +1686,44 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else if (u_int(JobID) == JOB_BREASTREDUCTION && Girl->has_trait( "Flat Chest"))
 		{
-			g_MessageQue.AddToQue(gettext("Her boobs can't get no smaller."), 0);
+			g_MessageQue.AddToQue(("Her boobs can't get no smaller."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_BOOBJOB && Girl->has_trait( "Titanic Tits"))
 		{
-			g_MessageQue.AddToQue(gettext("Her boobs can't get no bigger."), 0);
+			g_MessageQue.AddToQue(("Her boobs can't get no bigger."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_ASSJOB && Girl->has_trait( "Great Arse"))
 		{
-			g_MessageQue.AddToQue(gettext("Her ass can't get no better."), 0);
+			g_MessageQue.AddToQue(("Her ass can't get no better."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_FACELIFT && g_Girls.GetStat(Girl, STAT_AGE) <= 21)
 		{
-			g_MessageQue.AddToQue(gettext("She is to young for a face lift."), 0);
+			g_MessageQue.AddToQue(("She is to young for a face lift."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_VAGINAREJUV && g_Girls.CheckVirginity(Girl))
 		{
-			g_MessageQue.AddToQue(gettext("She is a virgin and has no need of this operation."), 0);
+			g_MessageQue.AddToQue(("She is a virgin and has no need of this operation."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_LIPO && Girl->has_trait( "Great Figure"))
 		{
-			g_MessageQue.AddToQue(gettext("She already has a great figure and doesn't need this."), 0);
+			g_MessageQue.AddToQue(("She already has a great figure and doesn't need this."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_TUBESTIED)
 		{
 			if (Girl->is_pregnant())
 			{
-				g_MessageQue.AddToQue(Girl->m_Realname + gettext(" is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied."), 0);
+				g_MessageQue.AddToQue(Girl->m_Realname + (" is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied."), 0);
 				jobgood = false;
 			}
 			else if (Girl->has_trait( "Sterile"))
 			{
-				g_MessageQue.AddToQue(gettext("She is already Sterile and doesn't need this."), 0);
+				g_MessageQue.AddToQue(("She is already Sterile and doesn't need this."), 0);
 				jobgood = false;
 			}
 		}
@@ -1747,81 +1747,81 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	else if (u_int(JobID) == JOB_CENTREMANAGER)
 	{
 		if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, Day0Night1) >0)
-			g_MessageQue.AddToQue(gettext("There can be only one Centre Manager!"), 0);
+			g_MessageQue.AddToQue(("There can be only one Centre Manager!"), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(gettext("The Centre Manager cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("The Centre Manager cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_CENTREMANAGER;
 	}
 	else if (u_int(JobID) == JOB_COUNSELOR)
 	{
 		if (Girl->is_slave())
-			g_MessageQue.AddToQue(gettext("The Counselor cannot be a slave."), 0);
+			g_MessageQue.AddToQue(("The Counselor cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_COUNSELOR;
 	}
 	else if (u_int(JobID) == JOB_REHAB)
 	{
 		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
-			g_MessageQue.AddToQue(gettext("You must have a counselor for rehab."), 0);
+			g_MessageQue.AddToQue(("You must have a counselor for rehab."), 0);
 		else if (!Girl->has_trait( "Shroud Addict")
 			&& !Girl->has_trait( "Smoker")
 			&& !Girl->has_trait( "Cum Addict")
 			&& !Girl->has_trait( "Fairy Dust Addict")
 			&& !Girl->has_trait( "Alcoholic")
 			&& !Girl->has_trait( "Viras Blood Addict"))
-			g_MessageQue.AddToQue(gettext("She has no addictions."), 0);
+			g_MessageQue.AddToQue(("She has no addictions."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_REHAB;
 	}
 	else if (u_int(JobID) == JOB_ANGER)
 	{
 		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
-			g_MessageQue.AddToQue(gettext("You must have a counselor for anger management."), 0);
+			g_MessageQue.AddToQue(("You must have a counselor for anger management."), 0);
 		else if (!Girl->has_trait( "Aggressive")
 			&& !Girl->has_trait( "Tsundere")
 			&& !Girl->has_trait( "Yandere"))
-			g_MessageQue.AddToQue(gettext("She has no anger issues."), 0);
+			g_MessageQue.AddToQue(("She has no anger issues."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_ANGER;
 	}
 	else if (u_int(JobID) == JOB_EXTHERAPY)
 	{
 		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
-			g_MessageQue.AddToQue(gettext("You must have a counselor for extreme therapy."), 0);
+			g_MessageQue.AddToQue(("You must have a counselor for extreme therapy."), 0);
 		else if (!Girl->has_trait( "Mind Fucked")
 			&& !Girl->has_trait( "Broken Will"))
-			g_MessageQue.AddToQue(gettext("She has no extreme issues."), 0);
+			g_MessageQue.AddToQue(("She has no extreme issues."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_EXTHERAPY;
 	}
 	else if (u_int(JobID) == JOB_THERAPY)
 	{
 		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
-			g_MessageQue.AddToQue(gettext("You must have a counselor for therapy."), 0);
+			g_MessageQue.AddToQue(("You must have a counselor for therapy."), 0);
 		else if (!Girl->has_trait( "Nervous")
 			&& !Girl->has_trait( "Dependant")
 			&& !Girl->has_trait( "Pessimist"))
-			g_MessageQue.AddToQue(gettext("She has no need of therapy."), 0);
+			g_MessageQue.AddToQue(("She has no need of therapy."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_THERAPY;
 	}
 // Special Movie Studio Jobs
 	else if (u_int(JobID) == JOB_DIRECTOR && g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, SHIFT_NIGHT) >0)
 	{
-		g_MessageQue.AddToQue(gettext("There can be only one Director!"), 0);
+		g_MessageQue.AddToQue(("There can be only one Director!"), 0);
 	}
 	else if (u_int(JobID) == JOB_DIRECTOR && Girl->is_slave())
 	{
-		g_MessageQue.AddToQue(gettext("The Director cannot be a slave."), 0);
+		g_MessageQue.AddToQue(("The Director cannot be a slave."), 0);
 	}
 	else if (u_int(JobID) == JOB_PROMOTER && g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, SHIFT_NIGHT) > 0)
 	{
-		g_MessageQue.AddToQue(gettext("There can be only one Promoter."), 0);
+		g_MessageQue.AddToQue(("There can be only one Promoter."), 0);
 	}
 	else if (u_int(JobID) == JOB_PROMOTER && Girl->is_slave())
 	{
-		g_MessageQue.AddToQue(gettext("The Promoter cannot be a slave."), 0);
+		g_MessageQue.AddToQue(("The Promoter cannot be a slave."), 0);
 	}
 	else if (g_Studios.is_Actress_Job(JobID) &&
 		(g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 1 ||
@@ -1834,7 +1834,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (Girl->has_trait( "Fake Orgasm Expert"))
 		{
-			g_MessageQue.AddToQue(gettext("She already has \"Fake Orgasm Expert\"."), 0);
+			g_MessageQue.AddToQue(("She already has \"Fake Orgasm Expert\"."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
 		}
 		else Girl->m_DayJob = Girl->m_NightJob = JOB_FAKEORGASM;
@@ -1843,7 +1843,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (Girl->has_trait( "Bisexual"))
 		{
-			g_MessageQue.AddToQue(gettext("She is already Bisexual."), 0);
+			g_MessageQue.AddToQue(("She is already Bisexual."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
 		}
 		else Girl->m_DayJob = Girl->m_NightJob = JOB_SO_BISEXUAL;
@@ -1852,7 +1852,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (Girl->has_trait( "Lesbian"))
 		{
-			g_MessageQue.AddToQue(gettext("She is already a Lesbian."), 0);
+			g_MessageQue.AddToQue(("She is already a Lesbian."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
 		}
 		else Girl->m_DayJob = Girl->m_NightJob = JOB_SO_LESBIAN;
@@ -1861,7 +1861,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (Girl->has_trait( "Straight"))
 		{
-			g_MessageQue.AddToQue(gettext("She is already Straight."), 0);
+			g_MessageQue.AddToQue(("She is already Straight."), 0);
 			Girl->m_DayJob = Girl->m_NightJob = JOB_HOUSEREST;
 		}
 		else Girl->m_DayJob = Girl->m_NightJob = JOB_SO_STRAIGHT;
@@ -2054,22 +2054,22 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 		switch (g_Dice % 5)
 			{
 			case 0:
-				girl->m_Events.AddMessage(gettext("She beat the customer silly."), IMGTYPE_COMBAT, Day0Night1);
+				girl->m_Events.AddMessage(("She beat the customer silly."), IMGTYPE_COMBAT, Day0Night1);
 				break;
 			case 1:
-				girl->m_Events.AddMessage(gettext("The customer's face annoyed her, so she punched it until it went away."), IMGTYPE_COMBAT, Day0Night1);
+				girl->m_Events.AddMessage(("The customer's face annoyed her, so she punched it until it went away."), IMGTYPE_COMBAT, Day0Night1);
 				break;
 			case 2:
-				girl->m_Events.AddMessage(gettext("The customer acted like he owned her - so she pwned him."), IMGTYPE_COMBAT, Day0Night1);
+				girl->m_Events.AddMessage(("The customer acted like he owned her - so she pwned him."), IMGTYPE_COMBAT, Day0Night1);
 				break;
 			case 3:
-				girl->m_Events.AddMessage(gettext("The customer's attitude was bad. She corrected it."), IMGTYPE_COMBAT, Day0Night1);
+				girl->m_Events.AddMessage(("The customer's attitude was bad. She corrected it."), IMGTYPE_COMBAT, Day0Night1);
 				break;
 			case 4:
-				girl->m_Events.AddMessage(gettext("He tried to insert a bottle into her, so she 'gave it' to him instead."), IMGTYPE_COMBAT, Day0Night1);
+				girl->m_Events.AddMessage(("He tried to insert a bottle into her, so she 'gave it' to him instead."), IMGTYPE_COMBAT, Day0Night1);
 				break;
 			default:
-				girl->m_Events.AddMessage(gettext("Did som(E)thing violent."), IMGTYPE_COMBAT, Day0Night1);
+				girl->m_Events.AddMessage(("Did som(E)thing violent."), IMGTYPE_COMBAT, Day0Night1);
 				break;
 			}
 		g_Girls.UpdateStat(girl, STAT_FAME, -1);
@@ -2291,8 +2291,8 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 
 
 		stringstream ss;
-		ss << gettext("Security Problem:\n") << gettext("Trying to defend ") << girl->m_Realname << gettext(". You defeated ")
-			<< num << gettext(" of ") << OrgNumMem << gettext(" before:\n") << SecGuard->m_Realname << GetGirlAttackedString(attacktype);
+		ss << ("Security Problem:\n") << ("Trying to defend ") << girl->m_Realname << (". You defeated ")
+			<< num << (" of ") << OrgNumMem << (" before:\n") << SecGuard->m_Realname << GetGirlAttackedString(attacktype);
 
 		SecGuard->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
@@ -2325,8 +2325,8 @@ bool cJobManager::gang_stops_rape(sGirl* girl, vector<sGang *> gangs_guarding, s
 
 	if (!guards_win) {
 		stringstream gang_s, girl_s;
-		gang_s << guarding_gang->m_Name << gettext(" was defeated defending ") << girl->m_Realname << gettext(".");
-		girl_s << guarding_gang->m_Name << gettext(" was defeated defending you from a gang of rapists.");
+		gang_s << guarding_gang->m_Name << (" was defeated defending ") << girl->m_Realname << (".");
+		girl_s << guarding_gang->m_Name << (" was defeated defending you from a gang of rapists.");
 		guarding_gang->m_Events.AddMessage(gang_s.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_Events.AddMessage(girl_s.str(), IMGTYPE_DEATH, EVENT_WARNING);
 		return false;
@@ -2341,21 +2341,21 @@ bool cJobManager::gang_stops_rape(sGirl* girl, vector<sGang *> gangs_guarding, s
 	int roll = g_Dice.d100();
 	if (roll < guarding_gang->intelligence() / 2)
 	{
-		gang_ss << gettext("One of the ") << guarding_gang->m_Name << gettext(" found a customer getting violent with ")
-			<< girl->m_Realname << gettext(" and sent him packing, in fear for his life.");
-		girl_ss << gettext("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << gettext(" scared him off.");
+		gang_ss << ("One of the ") << guarding_gang->m_Name << (" found a customer getting violent with ")
+			<< girl->m_Realname << (" and sent him packing, in fear for his life.");
+		girl_ss << ("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << (" scared him off.");
 	}
 	else if (roll < guarding_gang->intelligence())
 	{
-		gang_ss << gettext("One of the ") << guarding_gang->m_Name << gettext(" found a customer hurting  ") << girl->m_Realname
-			<< gettext(" and beat him bloody before sending him away.");
-		girl_ss << gettext("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << gettext(" gave him a beating.");
+		gang_ss << ("One of the ") << guarding_gang->m_Name << (" found a customer hurting  ") << girl->m_Realname
+			<< (" and beat him bloody before sending him away.");
+		girl_ss << ("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << (" gave him a beating.");
 	}
 	else
 	{
-		gang_ss << gettext("One of the ") << guarding_gang->m_Name << gettext(" killed a customer who was trying to rape ")
-			<< girl->m_Realname << gettext(".");
-		girl_ss << gettext("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << gettext(" killed them.");
+		gang_ss << ("One of the ") << guarding_gang->m_Name << (" killed a customer who was trying to rape ")
+			<< girl->m_Realname << (".");
+		girl_ss << ("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << (" killed them.");
 	}
 	cerr << "gang ss=" << gang_ss.str() << endl;
 	cerr << "girl ss=" << girl_ss.str() << endl;
@@ -2411,9 +2411,9 @@ bool cJobManager::gang_stops_rape(sGirl* girl, sGang *gang, int chance, int day_
 	if(!gang_wins) {
 		string s;
 		if(gang->m_Num == 1)
-			s =	gettext("The leader of this gang is dead; killed attempting to prevent a rape. You may want to hire a new gang.");
+			s =	("The leader of this gang is dead; killed attempting to prevent a rape. You may want to hire a new gang.");
 		else
-			s =	gettext("One of this gang's members turned up dead. It looks like he attacked a rapist and lost.");
+			s =	("One of this gang's members turned up dead. It looks like he attacked a rapist and lost.");
 
 		gang->m_Num --;
 		gang->m_Events.AddMessage(s, 0, 0);
@@ -2423,19 +2423,19 @@ bool cJobManager::gang_stops_rape(sGirl* girl, sGang *gang, int chance, int day_
 	stringstream gang_ss, girl_ss;
 	int roll = g_Dice.random(100) + 1;
 	if(roll < gang->intelligence() / 2) {
-		gang_ss <<	gettext("One of the ") <<	gang->m_Name <<	gettext(" found a customer getting violent with ")
-			<<	girl->m_Realname <<	gettext(" and sent him packing, in fear for his life");
-		girl_ss <<	gettext("Customer attempt to rape her ") <<gettext("but the guard scared him off");
+		gang_ss <<	("One of the ") <<	gang->m_Name <<	(" found a customer getting violent with ")
+			<<	girl->m_Realname <<	(" and sent him packing, in fear for his life");
+		girl_ss <<	("Customer attempt to rape her ") <<("but the guard scared him off");
 	}
 	else if(roll < gang->intelligence()) {
-		gang_ss	<<	gettext("One of the ") << gang->m_Name << gettext(" found a customer hurting  ") << girl->m_Realname
-			<< gettext(" and beat him bloody before sending him away");
-		girl_ss	<<	gettext("Customer attempt to rape her but ") << gettext("the guard gave him a beating");
+		gang_ss	<<	("One of the ") << gang->m_Name << (" found a customer hurting  ") << girl->m_Realname
+			<< (" and beat him bloody before sending him away");
+		girl_ss	<<	("Customer attempt to rape her but ") << ("the guard gave him a beating");
 	}
 	else {
-		gang_ss	<<	gettext("One of the ") << gang->m_Name << gettext(" killed a customer who was trying to rape ")
+		gang_ss	<<	("One of the ") << gang->m_Name << (" killed a customer who was trying to rape ")
 			<<	girl->m_Realname;
-		girl_ss	<<	gettext("Customer attempt to rape her but ") << gettext("the was killed by the guard.");
+		girl_ss	<<	("Customer attempt to rape her but ") << ("the was killed by the guard.");
 	}
 	cerr << "gang ss=" << gang_ss.str() << endl;
 	cerr << "girl ss=" << girl_ss.str() << endl;
@@ -2479,15 +2479,15 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 		//     gang, when it is neither.
 		if (OrgNumMem == 1)
 		{
-		  msg << gettext("A customer tried to attack her. She killed ") << (g_Dice.percent(20) ? gettext("her.") : gettext("him."));
+		  msg << ("A customer tried to attack her. She killed ") << (g_Dice.percent(20) ? ("her.") : ("him."));
 		}
 		else
 		{
 		  if (enemy_gang->m_Num == 0)
-		    msg << gettext("A group of customers tried to assault her. She thrashed all ") << OrgNumMem << gettext(" of them.");
+		    msg << ("A group of customers tried to assault her. She thrashed all ") << OrgNumMem << (" of them.");
 		  else
-			msg << gettext("A group of ") << OrgNumMem << gettext(" customers tried to assault her. They fled after she killed ")
-			<< num << gettext(" of them.");
+			msg << ("A group of ") << OrgNumMem << (" customers tried to assault her. They fled after she killed ")
+			<< num << (" of them.");
 		}
 		girl->m_Events.AddMessage(msg.str(), IMGTYPE_COMBAT, EVENT_WARNING);
 	}
@@ -2511,11 +2511,11 @@ bool cJobManager::girl_fights_rape(sGirl* girl, int day_night)
 	int roll = g_Dice%100;
 
 	if(girl->has_trait( "Merciless")) {
-		msg =	gettext("The customer tried to rape this girl.  She leaves him beaten and bloody, but still breathing.");
+		msg =	("The customer tried to rape this girl.  She leaves him beaten and bloody, but still breathing.");
 		res = true;
 	}
 	else if(roll < girl->combat() && roll < girl->magic()) {
-		msg =	gettext("The customer attempted to rape her but she remembered her self-defence training and fought him off");
+		msg =	("The customer attempted to rape her but she remembered her self-defence training and fought him off");
 		res = true;
 	}
 	girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, day_night);
@@ -2623,7 +2623,7 @@ string cJobManager::GetGirlAttackedString(u_int attacktype)
 	int maxroll1 = 21, maxroll2 = 20, maxroll3 = 21;
 
 	stringstream ss;
-	ss << gettext(" was ");
+	ss << (" was ");
 
 	if (attacktype == SKILL_GROUP)			// standard group attack
 	{
@@ -2729,80 +2729,80 @@ string cJobManager::GetGirlAttackedString(u_int attacktype)
 
 	switch (roll1)
 	{
-	  case 1: ss << gettext("cornered"); break;
-	  case 2: ss << gettext("hauled to the dungeon"); break;
-	  case 3: ss << gettext("put on the wood horse"); break;
-	  case 4: ss << gettext("tied to the bed"); break;
-	  case 5: ss << gettext("locked in the closet"); break;
-	  case 6: ss << gettext("drugged"); break;
-	  case 7: ss << gettext("tied up"); break;
-	  case 8: ss << gettext("wrestled to the floor"); break;
-	  case 9: ss << gettext("slapped in irons"); break;
-	  case 10: ss << gettext("cuffed"); break;
-	  case 11: ss << gettext("put in THAT machine"); break;
-	  case 12: ss << gettext("konked on the head"); break;
-	  case 13: ss << gettext("calmly sat down"); break;
-	  case 14: ss << gettext("hand-cuffed during kinky play"); break;
-	  case 15: ss << gettext("caught off guard during fellatio"); break;
-	  case 16: ss << gettext("caught cheating at cards"); break;
-	  case 17: ss << gettext("found sleeping on the job"); break;
-	  case 18: ss << gettext("chained to the porch railing"); break;
-	  case 19: ss << gettext("tied up BDSM-style"); break;
-	  case 20: ss << gettext("stretched out on the torture table"); break;
-	  case 21: ss << gettext("tied up and hung from the rafters"); break;
+	  case 1: ss << ("cornered"); break;
+	  case 2: ss << ("hauled to the dungeon"); break;
+	  case 3: ss << ("put on the wood horse"); break;
+	  case 4: ss << ("tied to the bed"); break;
+	  case 5: ss << ("locked in the closet"); break;
+	  case 6: ss << ("drugged"); break;
+	  case 7: ss << ("tied up"); break;
+	  case 8: ss << ("wrestled to the floor"); break;
+	  case 9: ss << ("slapped in irons"); break;
+	  case 10: ss << ("cuffed"); break;
+	  case 11: ss << ("put in THAT machine"); break;
+	  case 12: ss << ("konked on the head"); break;
+	  case 13: ss << ("calmly sat down"); break;
+	  case 14: ss << ("hand-cuffed during kinky play"); break;
+	  case 15: ss << ("caught off guard during fellatio"); break;
+	  case 16: ss << ("caught cheating at cards"); break;
+	  case 17: ss << ("found sleeping on the job"); break;
+	  case 18: ss << ("chained to the porch railing"); break;
+	  case 19: ss << ("tied up BDSM-style"); break;
+	  case 20: ss << ("stretched out on the torture table"); break;
+	  case 21: ss << ("tied up and hung from the rafters"); break;
 	}
 
-	ss << gettext(" and ");
+	ss << (" and ");
 
 	switch (roll2)
 	{
-	  case 1: ss << gettext("abused"); break;
-	  case 2: ss << gettext("whipped"); break;
-	  case 3: ss << gettext("yelled at"); break;
-	  case 4: ss << gettext("assaulted"); break;
-	  case 5: ss << gettext("raped"); break;
-	  case 6: ss << gettext("her cavities were explored"); break;
-	  case 7: ss << gettext("her hair was done"); break;
-	  case 8: ss << gettext("her feet were licked"); break;
-	  case 9: ss << gettext("relentlessly tickled"); break;
-	  case 10: ss << gettext("fisted"); break;
-	  case 11: ss << gettext("roughly fondled"); break;
-	  case 12: ss << gettext("lectured to"); break;
-	  case 13: ss << gettext("had her fleshy bits pierced"); break;
-	  case 14: ss << gettext("slapped around"); break;
-	  case 15: ss << gettext("penetrated by some object"); break;
-	  case 16: ss << gettext("shaved"); break;
-	  case 17: ss << gettext("tortured"); break;
-	  case 18: ss << gettext("forced outside"); break;
-	  case 19: ss << gettext("forced to walk on a knotted rope"); break;
-	  case 20: ss << gettext("her skin was pierced by sharp things"); break;
+	  case 1: ss << ("abused"); break;
+	  case 2: ss << ("whipped"); break;
+	  case 3: ss << ("yelled at"); break;
+	  case 4: ss << ("assaulted"); break;
+	  case 5: ss << ("raped"); break;
+	  case 6: ss << ("her cavities were explored"); break;
+	  case 7: ss << ("her hair was done"); break;
+	  case 8: ss << ("her feet were licked"); break;
+	  case 9: ss << ("relentlessly tickled"); break;
+	  case 10: ss << ("fisted"); break;
+	  case 11: ss << ("roughly fondled"); break;
+	  case 12: ss << ("lectured to"); break;
+	  case 13: ss << ("had her fleshy bits pierced"); break;
+	  case 14: ss << ("slapped around"); break;
+	  case 15: ss << ("penetrated by some object"); break;
+	  case 16: ss << ("shaved"); break;
+	  case 17: ss << ("tortured"); break;
+	  case 18: ss << ("forced outside"); break;
+	  case 19: ss << ("forced to walk on a knotted rope"); break;
+	  case 20: ss << ("her skin was pierced by sharp things"); break;
 	}
 
-	ss << gettext(" by ");
+	ss << (" by ");
 
 	switch (roll3)
 	{
-	  case 1: ss << gettext("customers."); break;
-	  case 2: ss << gettext("some sadistic monster."); break;
-	  case 3: ss << gettext("a police officer."); break;
-	  case 4: ss << gettext("the other girls."); break;
-	  case 5: ss << gettext("Batman! (Who knew?)"); break;
-	  case 6: ss << gettext("a ghost (She claims.)"); break;
-	  case 7: ss << gettext("an enemy gang member."); break;
-	  case 8: ss << gettext("priests."); break;
-	  case 9: ss << gettext("orcs. (What?)"); break;
-	  case 10: ss << gettext("a doppleganger disguised as a human."); break;
-	  case 11: ss << gettext("a jealous wife."); break;
-	  case 12: ss << gettext("a jealous husband."); break;
-	  case 13: ss << gettext("a public health official."); break;
-	  case 14: ss << gettext("you!"); break;
-	  case 15: ss << gettext("some raving loonie."); break;
-	  case 16: ss << gettext("a ninja!"); break;
-	  case 17: ss << gettext("a pirate. (Pirates rule! Ninjas drool!)"); break;
-	  case 18: ss << gettext("members of the militia."); break;
-	  case 19: ss << gettext("your mom (It runs in the family.)"); break;
-	  case 20: ss << gettext("tentacles from the sewers."); break;
-	  case 21: ss << gettext("a vengeful family member."); break;
+	  case 1: ss << ("customers."); break;
+	  case 2: ss << ("some sadistic monster."); break;
+	  case 3: ss << ("a police officer."); break;
+	  case 4: ss << ("the other girls."); break;
+	  case 5: ss << ("Batman! (Who knew?)"); break;
+	  case 6: ss << ("a ghost (She claims.)"); break;
+	  case 7: ss << ("an enemy gang member."); break;
+	  case 8: ss << ("priests."); break;
+	  case 9: ss << ("orcs. (What?)"); break;
+	  case 10: ss << ("a doppleganger disguised as a human."); break;
+	  case 11: ss << ("a jealous wife."); break;
+	  case 12: ss << ("a jealous husband."); break;
+	  case 13: ss << ("a public health official."); break;
+	  case 14: ss << ("you!"); break;
+	  case 15: ss << ("some raving loonie."); break;
+	  case 16: ss << ("a ninja!"); break;
+	  case 17: ss << ("a pirate. (Pirates rule! Ninjas drool!)"); break;
+	  case 18: ss << ("members of the militia."); break;
+	  case 19: ss << ("your mom (It runs in the family.)"); break;
+	  case 20: ss << ("tentacles from the sewers."); break;
+	  case 21: ss << ("a vengeful family member."); break;
 	}
 
 	return ss.str();
@@ -2875,13 +2875,13 @@ double cJobManager::JP_Training(sGirl* girl, bool estimate)
 void cJobManager::do_solo_training(sGirl *girl, bool Day0Night1)
 {
 	TrainableGirl trainee(girl);
-	girl->m_Events.AddMessage(gettext("She trained during this shift by herself, so learning anything worthwhile was difficult."), IMGTYPE_PROFILE, Day0Night1);
+	girl->m_Events.AddMessage(("She trained during this shift by herself, so learning anything worthwhile was difficult."), IMGTYPE_PROFILE, Day0Night1);
 /*
  *	50% chance nothing happens
  */
  	if(g_Dice.percent(50))
 	{
-		girl->m_Events.AddMessage(gettext("Sadly, she didn't manage to improve herself in any way."), IMGTYPE_PROFILE, EVENT_SUMMARY);
+		girl->m_Events.AddMessage(("Sadly, she didn't manage to improve herself in any way."), IMGTYPE_PROFILE, EVENT_SUMMARY);
 		return;
 	}
 /*
@@ -2891,7 +2891,7 @@ void cJobManager::do_solo_training(sGirl *girl, bool Day0Night1)
 	string improved = trainee.update_random(amt);
 	stringstream ss;
 	ss.str("");
-	ss << gettext("She managed to gain ") << amt << " " << improved << gettext(".");
+	ss << ("She managed to gain ") << amt << " " << improved << (".");
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
 }
 
@@ -2984,19 +2984,19 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 		*/
 		//int n_girls = set.size();
 		ss.str("");
-		ss << gettext("She trained during this shift in the following grouping: ");
+		ss << ("She trained during this shift in the following grouping: ");
 		for (u_int i = 0; i < num_girls; i++)
 		{
 			ss << girls[i]->m_Realname;
-			if (i == 0 && num_girls == 2)	ss << gettext(" and ");
-			else if (i < num_girls - 2)		ss << gettext(", ");
-			else if (i == num_girls - 2)	ss << gettext(", and ");
+			if (i == 0 && num_girls == 2)	ss << (" and ");
+			else if (i < num_girls - 2)		ss << (", ");
+			else if (i == num_girls - 2)	ss << (", and ");
 		}
-		ss << gettext(".");
+		ss << (".");
 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 		ss.str("");
-		ss << gettext("She trained during this shift");
+		ss << ("She trained during this shift");
 
 		bool raised = false;
 		for (u_int i_idx = 0; i_idx < indices.size(); i_idx++)
@@ -3007,13 +3007,13 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 			if (!raised)
 			{
 				raised = true;
-				ss << gettext(" and gained ");
+				ss << (" and gained ");
 			}
-			else ss << gettext(", ");
+			else ss << (", ");
 
-			ss << gettext("+") << gain << " " << trainee[index].name();
+			ss << ("+") << gain << " " << trainee[index].name();
 		}
-		ss << gettext(".");
+		ss << (".");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
 		if (girl->has_trait( "Lesbian") && set.size() > 1) g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, set.size() - 1, true);
 	}

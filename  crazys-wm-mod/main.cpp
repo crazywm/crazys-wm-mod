@@ -19,7 +19,7 @@
 
 #if 0	// `J` change this to 1 to enable Visual Leak Detector
 #include <vld.h>
-#endif	// if you don't have Visual Leak Detector, get it here - https://vld.codeplex.com/ 
+#endif	// if you don't have Visual Leak Detector, get it here - https://vld.codeplex.com/
 
 #include "main.h"
 #include "cScreenMainMenu.h"
@@ -89,8 +89,8 @@ bool g_EnterKey = false;	bool g_SpaceKey = false;	bool g_TabKey = false;		bool g
 bool g_HomeKey = false;		bool g_EndKey = false;		bool g_PageUpKey = false;	bool g_PageDownKey = false;
 bool g_PeriodKey = false;	bool g_SlashKey = false;	bool g_BackSlashKey = false;
 
-bool g_1_Key = false;		bool g_2_Key = false;		bool g_3_Key = false;		bool g_4_Key = false;		
-bool g_5_Key = false;		bool g_6_Key = false;		bool g_7_Key = false;		bool g_8_Key = false;		
+bool g_1_Key = false;		bool g_2_Key = false;		bool g_3_Key = false;		bool g_4_Key = false;
+bool g_5_Key = false;		bool g_6_Key = false;		bool g_7_Key = false;		bool g_8_Key = false;
 bool g_9_Key = false;		bool g_0_Key = false;
 
 bool g_F1_Key = false;		bool g_F2_Key = false;		bool g_F3_Key = false;		bool g_F4_Key = false;
@@ -214,7 +214,7 @@ void handle_hotkeys()
 	case SDLK_LCTRL:
 		g_CTRLDown = true;		// enable multi select
 		break;
-		
+
 	case SDLK_RETURN:
 	case SDLK_KP_ENTER:	g_EnterKey = true;	break;
 
@@ -233,11 +233,11 @@ void handle_hotkeys()
 	case SDLK_SLASH:	g_SlashKey = true;		break;
 	case SDLK_BACKSLASH:g_BackSlashKey = true;	break;
 
-	case SDLK_1:		g_1_Key = true;			break; 
-	case SDLK_2:		g_2_Key = true;			break; 
+	case SDLK_1:		g_1_Key = true;			break;
+	case SDLK_2:		g_2_Key = true;			break;
 	case SDLK_3:		g_3_Key = true;			break;
-	case SDLK_4:		g_4_Key = true;			break; 
-	case SDLK_5:		g_5_Key = true;			break; 
+	case SDLK_4:		g_4_Key = true;			break;
+	case SDLK_5:		g_5_Key = true;			break;
 	case SDLK_6:		g_6_Key = true;			break;
 	case SDLK_7:		g_7_Key = true;			break;
 	case SDLK_8:		g_8_Key = true;			break;
@@ -529,8 +529,8 @@ void handle_hotkeys()
 				g_AltKeys = true;
 				msg = "Alternate HotKeys Active\n";
 				g_MessageQue.AddToQue(msg, 0);
-				g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(gettext("Close")));
-				g_ChoiceManager.AddChoice(0, gettext("Close"), 0);
+				g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(("Close")));
+				g_ChoiceManager.AddChoice(0, ("Close"), 0);
 				g_ChoiceManager.SetActive(0);
 				g_ChoiceManager.Free();
 				break;
@@ -552,8 +552,8 @@ void handle_hotkeys()
 				g_AltKeys = false;
 				msg = "Default HotKeys Active\n";
 				g_MessageQue.AddToQue(msg, 0);
-				g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(gettext("Close")));
-				g_ChoiceManager.AddChoice(0, gettext("Close"), 0);
+				g_ChoiceManager.CreateChoiceBox(224, 825, 352, 600, 0, 1, 32, strlen(("Close")));
+				g_ChoiceManager.AddChoice(0, ("Close"), 0);
 				g_ChoiceManager.SetActive(0);
 				g_ChoiceManager.Free();
 				break;
@@ -949,7 +949,7 @@ void handle_hotkeys()
 
 		case SDLK_0:
 		{
-			
+
 			msg = "Global Hotkeys:\n";
 			msg += "1-7         Brothels\n";
 			msg += "Tab         Cycle Brothels\n";
@@ -1104,7 +1104,7 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 	bindtextdomain("whoremaster", base);
 	textdomain("whoremaster");
 
-	
+
 	bool running = true;
 	bool quitPending = false;
 	bool mouseDown = false;

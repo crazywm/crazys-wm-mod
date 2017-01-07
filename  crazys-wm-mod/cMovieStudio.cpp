@@ -883,7 +883,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 				else if (h < 40)			ss << " is hurt.\nShe should rest and recuperate.\n";
 				sum = EVENT_WARNING;
 			}
-			else if (current->m_NightJob == matronjob && matron)	// do matron	
+			else if (current->m_NightJob == matronjob && matron)	// do matron
 			{
 				if (t > 90 && h < 10)	// The matron may take herself off work if she is really bad off
 				{
@@ -1235,7 +1235,7 @@ void sMovieScene::OutputSceneDetailString(string& Data, const string& detailName
 	ss.str("");
 	/* */if (detailName == "Name")		{ ss << m_Name; }
 	else if (detailName == "Quality")	{ ss << m_Quality; }
-	else /*                        */	{ ss << gettext("Not found"); }
+	else /*                        */	{ ss << "Not found"; }
 	Data = ss.str();
 }
 
@@ -1509,7 +1509,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	}
 
 
-	//CRAZY added this better looking girls should make better quality movies 
+	//CRAZY added this better looking girls should make better quality movies
 	// Changed to work with new job revision --PP
 	quality += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
 	quality += (g_Girls.GetStat(girl, STAT_CHARISMA) - 50) / 10;
