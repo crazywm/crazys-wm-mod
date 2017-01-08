@@ -74,22 +74,22 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int roll = g_Dice.d100();
 	if (g_Girls.GetStat(girl, STAT_HEALTH) < 20)
 	{
-		ss << gettext("The crew refused to film a Bestiality scene with ") << girlName << gettext(" because she is not healthy enough.\n\"She could get hurt.\"");
+		ss << "The crew refused to film a Bestiality scene with " << girlName << " because she is not healthy enough.\n\"She could get hurt.\"";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if (girl->has_trait( "Nymphomaniac"))
 	{
-		ss << gettext("\"Bestiality? Aren't we all animals?!\"\nAs long as it will fuck her, sex addict ") << girlName << gettext(" really doesn't care WHAT it is.");
+		ss << "\"Bestiality? Aren't we all animals?!\"\nAs long as it will fuck her, sex addict " << girlName << " really doesn't care WHAT it is.";
 	}
 	else if (roll <= 10 && !girl->has_trait( "Mind Fucked") && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		ss << girlName << gettext(" refused to be fucked by animals on film.");
+		ss << girlName << " refused to be fucked by animals on film.";
 		if (girl->is_slave())
 		{
 			if (The_Player->disposition() > 30)  // nice
 			{
-				ss << gettext(" She was so passionate that you allowed her the day off.\n");
+				ss << " She was so passionate that you allowed her the day off.\n";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -97,8 +97,8 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 			else if (The_Player->disposition() > -30) //pragmatic
 			{
-				ss << gettext(" As her owner, you over-ruled and gave her consent.");
-				ss << gettext(" Your crew readied the cameras, while your men tied her arms behind her back and feet behind her head. \n\"Release the beasts!\"");
+				ss << " As her owner, you over-ruled and gave her consent.";
+				ss << " Your crew readied the cameras, while your men tied her arms behind her back and feet behind her head. \n\"Release the beasts!\"";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, 1);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, +1);
@@ -108,8 +108,8 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			}
 			else if (The_Player->disposition() > -30)
 			{
-				ss << gettext(" Amused, you have your men flog this slave for a while to remind her of her place.");
-				ss << gettext(" You offer the film-crew first choice of your more exotic beasts.");
+				ss << " Amused, you have your men flog this slave for a while to remind her of her place.";
+				ss << " You offer the film-crew first choice of your more exotic beasts.";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -2);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, +2);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, +4);
@@ -126,38 +126,38 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			return true;
 		}
 	}
-	else ss << girlName << gettext(" was filmed being fucked by animals.\n\n");
+	else ss << girlName << " was filmed being fucked by animals.\n\n";
 
 	if (jobperformance >= 350)
 	{
-		ss << gettext("It was an excellent scene.");
+		ss << "It was an excellent scene.";
 		bonus += 12;
 	}
 	else if (jobperformance >= 245)
 	{
-		ss << gettext("It was mostly an excellent scene.");
+		ss << "It was mostly an excellent scene.";
 		bonus += 6;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << gettext("Overall, it was an solid scene.");
+		ss << "Overall, it was an solid scene.";
 		bonus += 4;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << gettext("Overall, it wasn't a bad scene.");
+		ss << "Overall, it wasn't a bad scene.";
 		bonus += 2;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << gettext("It wasn't a great scene.");
+		ss << "It wasn't a great scene.";
 		bonus++;
 	}
 	else
 	{
-		ss << gettext("It was a poor scene.");
+		ss << "It was a poor scene.";
 	}
-	ss << gettext("\n");
+	ss << "\n";
 
 
 	if (g_Girls.CheckVirginity(girl))

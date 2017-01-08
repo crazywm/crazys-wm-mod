@@ -121,8 +121,10 @@ static inline char *gettext (const char *__msgid)
 #ifdef _INTL_REDIRECT_MACROS
 # define gettext libintl_gettext
 #endif
+#if 0
 extern LIBINTL_DLL_EXPORTED char *gettext (const char *__msgid)
        _INTL_ASM (libintl_gettext);
+#endif // 0
 #endif
 
 /* Look up MSGID in the DOMAINNAME message catalog for the current

@@ -84,3 +84,26 @@ Updated WorkFilmOral.cpp removing reference to gettext
 
 Added TODO-Mute.txt to allow joey to ask for my help or focus me on certian Tasks
 
+Updated libintl.h to remove unneeded dllinport call (gettext)
+
+Updated WorkFilmMusic to remove reference to gettext
+
+Updated WorkFilmChef to remove reference to gettext
+
+Updated WorkFilmBuk to remove reference to gettext
+
+Updated WorkFilmBondage to remove reference to gettext
+
+Updated WorkFilmBeast removing reference to gettext
+
+Updated cFarm.cpp to use girl->statname and girl->statname(mod)
+
+Updated cGirls.cpp to use girl->statname() and girl->statname(mod)
+
+Updated cScreenBuildingSetup.cpp to use tariff.add_room_cost(5) instead of 5000 (to use the setting in config)
+
+Updated cScreenBuildingSetup.cpp to use tariff.advertising_costs
+
+Updated cGirls.cpp to fix small grammer error
+
+Updated tariff.cpp to fix bug if config.out_cost.goon_cost was set to 0.0 it would say error

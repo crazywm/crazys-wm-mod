@@ -74,17 +74,17 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int roll = g_Dice.d100();
 	if (girl->has_trait( "Cum Addict"))
 	{
-		ss << gettext("Cum-craving ") << girlName << gettext(" couldn't wait to get sticky in this bukkake scene, and was sucking guys off before the lighting was even set up.");
+		ss << "Cum-craving " << girlName << " couldn't wait to get sticky in this bukkake scene, and was sucking guys off before the lighting was even set up.";
 		bonus += 10;
 	}
 	else if (roll <= 10 && !girl->has_trait( "Mind Fucked") && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		ss << girlName << gettext(" refused to have any part in this");
+		ss << girlName << " refused to have any part in this";
 		if (girl->is_slave())
 		{
 			if (The_Player->disposition() > 30)  // nice
 			{
-				ss << gettext(" \"filthy\" bukkake scene.\nShe was clearly upset so you allowed her the day off.");
+				ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you allowed her the day off.";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -92,7 +92,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			}
 			else if (The_Player->disposition() > -30) //pragmatic
 			{
-				ss << gettext(" \"filthy\" bukkake scene.\nShe was clearly upset so you had your men drug her and tie her down for action.");
+				ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you had your men drug her and tie her down for action.";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, 1);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, +1);
@@ -102,7 +102,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			}
 			else if (The_Player->disposition() > -30)
 			{
-				ss << gettext(" \"filthy\" bukkake scene.\nShe was clearly upset so you had your men whip some sense into her before the scene and tie her down for action.");
+				ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you had your men whip some sense into her before the scene and tie her down for action.";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -2);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, +2);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, +4);
@@ -118,10 +118,10 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			return true;
 		}
 	}
-	else ss << girlName << gettext(" was filmed being splattered with cum in bukkake scenes.");
+	else ss << girlName << " was filmed being splattered with cum in bukkake scenes.";
 
 
-	ss << gettext("\n");
+	ss << "\n";
 
 	//Lights, camera...
 	AndAction(&ss, girlName, tied);
@@ -129,61 +129,61 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	if (jobperformance >= 350)
 	{
-		ss << gettext("It was an excellent scene.");
+		ss << "It was an excellent scene.";
 		bonus += 12;
 	}
 	else if (jobperformance >= 245)
 	{
-		ss << gettext("It was mostly an excellent scene.");
+		ss << "It was mostly an excellent scene.";
 		bonus += 6;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << gettext("Overall, it was an solid scene.");
+		ss << "Overall, it was an solid scene.";
 		bonus += 4;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << gettext("Overall, it wasn't a bad scene.");
+		ss << "Overall, it wasn't a bad scene.";
 		bonus += 2;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << gettext("It wasn't a great scene.");
+		ss << "It wasn't a great scene.";
 		bonus ++;
 	}
 	else
 	{
-		ss << gettext("It was a poor scene.");
+		ss << "It was a poor scene.";
 	}
-	ss << gettext("\n");
+	ss << "\n";
 
 
 	//Enjoyed? If she's deranged, she'd should have enjoyed it.
 	if (girl->has_trait( "Mind Fucked"))
 	{
 		enjoy += 16;
-		ss << gettext("Being completely mind fucked, ") << girlName << gettext(" really gets off on the depravity.\n");
+		ss << "Being completely mind fucked, " << girlName << " really gets off on the depravity.\n";
 	}
 	else if (girl->has_trait( "Masochist"))
 	{
 		enjoy += 13;
-		ss << girlName << gettext(" enjoys this. She knows it's what she deserves.\n");
+		ss << girlName << " enjoys this. She knows it's what she deserves.\n";
 	}
 	else if (girl->has_trait( "Cum Addict"))
 	{
 		enjoy += 13;
-		ss << girlName << gettext(" enjoys this, and spends a while licking cum off her body.\n");
+		ss << girlName << " enjoys this, and spends a while licking cum off her body.\n";
 	}
 	else if (girl->has_trait( "Broken Will") || girl->has_trait( "Dependant"))
 	{
 		enjoy += 11;
-		ss << girlName << gettext(" accepts this. It is Master's will.\n");
+		ss << girlName << " accepts this. It is Master's will.\n";
 	}
 	else if (girl->has_trait( "Iron Will") || girl->has_trait( "Fearless"))
 	{
 		enjoy -= 5;
-		ss << girlName << gettext(" endures in stoic silence, determined not to let you see her suffer.\n");
+		ss << girlName << " endures in stoic silence, determined not to let you see her suffer.\n";
 	}
 
 	//For final calc
@@ -309,110 +309,110 @@ void AndAction(stringstream *TheAction, string TheHo, bool TiedUp)
 	int const ACTIONS = 6;
 	int const OUTCOMES = 7;
 
-	*TheAction << TheHo << gettext(" was ");
+	*TheAction << TheHo << " was ";
 	switch (roll%STARTS)
 	{
 	case 0:
-		*TheAction << gettext("dutifully gangbanged");
+		*TheAction << "dutifully gangbanged";
 		break;
 	case 1:
-		*TheAction << gettext("deeply probed");
+		*TheAction << "deeply probed";
 		break;
 	case 2:
-		*TheAction << gettext("effectively raped");
+		*TheAction << "effectively raped";
 		break;
 	case 3:
-		*TheAction << gettext("uncomfortably filled");
+		*TheAction << "uncomfortably filled";
 		break;
 	case 4:
-		*TheAction << gettext("clumsily penetrated");
+		*TheAction << "clumsily penetrated";
 		break;
 	case 5:
-		*TheAction << gettext("roughly used");
+		*TheAction << "roughly used";
 		break;
 	default:
-		*TheAction << gettext("was mysteriously acted on");
+		*TheAction << "was mysteriously acted on";
 		break;
 	}
 
-	*TheAction << gettext(" by ");
+	*TheAction << " by ";
 
 	switch (roll%STUDS)
 	{
 	case 0:
-		*TheAction << gettext("40-year-old virgins");
+		*TheAction << "40-year-old virgins";
 		break;
 	case 1:
-		*TheAction << gettext("a large gang of men");
+		*TheAction << "a large gang of men";
 		break;
 	case 2:
-		*TheAction << gettext("unenthusiastic gay men");
+		*TheAction << "unenthusiastic gay men";
 		break;
 	case 3:
-		*TheAction << gettext("straight-jacketed psychopaths");
+		*TheAction << "straight-jacketed psychopaths";
 		break;
 	case 4:
-		*TheAction << gettext("real-life ogres");
+		*TheAction << "real-life ogres";
 		break;
 	case 5:
-		*TheAction << gettext("drunken soldiers");
+		*TheAction << "drunken soldiers";
 		break;
 	default:
-		*TheAction << gettext("unknown creatures from the planet Bug");
+		*TheAction << "unknown creatures from the planet Bug";
 		break;
 	}
 
-	*TheAction << gettext(" who ");
+	*TheAction << " who ";
 
 	switch (roll%ADJECTIVES)
 	{
 	case 0:
-		*TheAction << gettext("vigorously");
+		*TheAction << "vigorously";
 		break;
 	case 1:
-		*TheAction << gettext("stoutly");
+		*TheAction << "stoutly";
 		break;
 	case 2:
-		*TheAction << gettext("casually");
+		*TheAction << "casually";
 		break;
 	case 3:
-		*TheAction << gettext("lugubriously");
+		*TheAction << "lugubriously";
 		break;
 	case 4:
-		*TheAction << gettext("excitedly");
+		*TheAction << "excitedly";
 		break;
 	case 5:
-		*TheAction << gettext("deliberately");
+		*TheAction << "deliberately";
 		break;
 	default:
-		*TheAction << gettext("ludicrously");
+		*TheAction << "ludicrously";
 		break;
 	}
 
-	*TheAction << gettext(" ");
+	*TheAction << " ";
 
 	switch (roll%ACTIONS)
 	{
 	case 0:
-		*TheAction << gettext("ejaculated their seed");
+		*TheAction << "ejaculated their seed";
 		break;
 	case 1:
-		*TheAction << gettext("splooged");
+		*TheAction << "splooged";
 		break;
 	case 2:
-		*TheAction << gettext("fired hot cum");
+		*TheAction << "fired hot cum";
 		break;
 	case 3:
-		*TheAction << gettext("shot semen");
+		*TheAction << "shot semen";
 		break;
 	case 4:
-		*TheAction << gettext("nutted");
+		*TheAction << "nutted";
 		break;
 	case 5:
-		*TheAction << gettext("came");
+		*TheAction << "came";
 		break;
 	default:
-		*TheAction << gettext("spazzed");
+		*TheAction << "spazzed";
 		break;
 	}
 
@@ -421,28 +421,28 @@ void AndAction(stringstream *TheAction, string TheHo, bool TiedUp)
 		switch (roll%OUTCOMES)
 		{
 		case 0:
-			*TheAction << gettext(" all over her tied, trembling body.");
+			*TheAction << " all over her tied, trembling body.";
 			break;
 		case 1:
-			*TheAction << gettext(" into her pried-open mouth.");
+			*TheAction << " into her pried-open mouth.";
 			break;
 		case 2:
-			*TheAction << gettext(" on her face, breasts and inside her spread-eagle cunt.");
+			*TheAction << " on her face, breasts and inside her spread-eagle cunt.";
 			break;
 		case 3:
-			*TheAction << gettext(" over her bound, naked body until she was nicely 'glazed'.");
+			*TheAction << " over her bound, naked body until she was nicely 'glazed'.";
 			break;
 		case 4:
-			*TheAction << gettext(" in her tied down, squirming face.");
+			*TheAction << " in her tied down, squirming face.";
 			break;
 		case 5:
-			*TheAction << gettext(" into her speculum-spread vagina.");
+			*TheAction << " into her speculum-spread vagina.";
 			break;
 		case 6:
-			*TheAction << gettext(" in her eyes and up her nose.");
+			*TheAction << " in her eyes and up her nose.";
 			break;
 		default:
-			*TheAction << gettext(" somewhere.");
+			*TheAction << " somewhere.";
 			break;
 		}
 	}
@@ -451,30 +451,30 @@ void AndAction(stringstream *TheAction, string TheHo, bool TiedUp)
 		switch (roll%OUTCOMES)
 		{
 		case 0:
-			*TheAction << gettext(" all over her naked body.");
+			*TheAction << " all over her naked body.";
 			break;
 		case 1:
-			*TheAction << gettext(" into her waiting mouth.");
+			*TheAction << " into her waiting mouth.";
 			break;
 		case 2:
-			*TheAction << gettext(" simultaneously in her ass, mouth and cunt.");
+			*TheAction << " simultaneously in her ass, mouth and cunt.";
 			break;
 		case 3:
-			*TheAction << gettext(" over her until she was nicely 'glazed'.");
+			*TheAction << " over her until she was nicely 'glazed'.";
 			break;
 		case 4:
-			*TheAction << gettext(" in her hair and on her face.");
+			*TheAction << " in her hair and on her face.";
 			break;
 		case 5:
-			*TheAction << gettext(" over her stomach and breasts.");
+			*TheAction << " over her stomach and breasts.";
 			break;
 		case 6:
-			*TheAction << gettext(" all in her eyes and up her nose.");
+			*TheAction << " all in her eyes and up her nose.";
 			break;
 		default:
-			*TheAction << gettext(" somewhere.");
+			*TheAction << " somewhere.";
 			break;
 		}
 	}
-	*TheAction << gettext("\n\n");
+	*TheAction << "\n\n";
 }

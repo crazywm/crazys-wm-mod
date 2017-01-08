@@ -85,34 +85,34 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	if (g_Girls.GetStat(girl, STAT_HEALTH) < 40)
 	{
-		ss << gettext("The crew refused to film a dungeon scene with ") << girlName << gettext(" because she is not healthy enough.\n\"We are NOT filming snuff.\"");
+		ss << "The crew refused to film a dungeon scene with " << girlName << " because she is not healthy enough.\n\"We are NOT filming snuff.\"";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if (girl->is_pregnant())
 	{
-		ss << gettext("The crew refused to do a BDSM scene with ") << girlName << gettext(" due to her pregnancy.");
+		ss << "The crew refused to do a BDSM scene with " << girlName << " due to her pregnancy.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
 	else if (girl->has_trait( "Mind Fucked"))
 	{
-		ss << gettext("Mind fucked ") << girlName << gettext(" seemed at home in the dungeon, and started collecting together tools she should be punished with.\n");
+		ss << "Mind fucked " << girlName << " seemed at home in the dungeon, and started collecting together tools she should be punished with.\n";
 		bonus += 10;
 	}
 	else if (girl->has_trait( "Masochist"))
 	{
-		ss << gettext("Masochist ") << girlName << gettext(" was pleased to in the dungeon. It is her place.\n");
+		ss << "Masochist " << girlName << " was pleased to in the dungeon. It is her place.\n";
 		bonus += 6;
 	}
 	else if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
 	{
-		ss << girlName << gettext(" was horrified and refused to be beaten and sexually tortured in this ");
+		ss << girlName << " was horrified and refused to be beaten and sexually tortured in this ";
 		if (girl->is_slave())
 		{
 			if (The_Player->disposition() > 30)  // nice
 			{
-				ss << gettext("\"monstrous\" place.\nShe was starting to panic, so you allowed her the day off.\n");
+				ss << "\"monstrous\" place.\nShe was starting to panic, so you allowed her the day off.\n";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -120,7 +120,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 			}
 			else if (The_Player->disposition() > -30) //pragmatic
 			{
-				ss << gettext("\"monstrous\" place.\nShe was starting to panic, so you ordered your men to grab her and bind her for action.\n");
+				ss << "\"monstrous\" place.\nShe was starting to panic, so you ordered your men to grab her and bind her for action.\n";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, 2);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, 2);
@@ -129,18 +129,18 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 			}
 			else if (The_Player->disposition() > -30)
 			{
-				ss << gettext("\"monstrous\" place.\nShe was starting to panic so you ordered your men to quickly grab, strip and bind her. Finally, ");
+				ss << "\"monstrous\" place.\nShe was starting to panic so you ordered your men to quickly grab, strip and bind her. Finally, ";
 				if (girl->has_trait( "Pierced Nipples"))
 				{
-					ss << gettext("noticing her pierced nipples");
+					ss << "noticing her pierced nipples";
 					if (girl->has_trait( "Pierced Clit"))
 					{
-						ss << gettext(" and clit");
+						ss << " and clit";
 					}
-					ss << gettext(", ");
+					ss << ", ";
 				}
-				else if (girl->has_trait( "Pierced Clit")) ss << gettext("noticing her clittoral piercing, ");
-				ss << gettext("you personally selected some 'fun tools' for your actor, instructing him to train your slave in humility and obedience.\n\"Master her. Intimately.\"");
+				else if (girl->has_trait( "Pierced Clit")) ss << "noticing her clittoral piercing, ";
+				ss << "you personally selected some 'fun tools' for your actor, instructing him to train your slave in humility and obedience.\n\"Master her. Intimately.\"";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, -4);
 				g_Girls.UpdateStat(girl, STAT_PCHATE, +5);
 				g_Girls.UpdateStat(girl, STAT_PCFEAR, +5);
@@ -155,80 +155,80 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 			return true;
 		}
 	}
-	else ss << girlName << gettext(" was taken for bondage and torture scenes in your dungeon.\n\n");
+	else ss << girlName << " was taken for bondage and torture scenes in your dungeon.\n\n";
 
 	//Qual
 	if (jobperformance >= 350)
 	{
-		ss << gettext("It was an excellent scene.");
+		ss << "It was an excellent scene.";
 		bonus += 12;
 	}
 	else if (jobperformance >= 245)
 	{
-		ss << gettext("It was mostly an excellent scene.");
+		ss << "It was mostly an excellent scene.";
 		bonus += 6;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << gettext("Overall, it was an solid scene.");
+		ss << "Overall, it was an solid scene.";
 		bonus += 4;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << gettext("Overall, it wasn't a bad scene.");
+		ss << "Overall, it wasn't a bad scene.";
 		bonus += 2;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << gettext("It wasn't a great scene.");
+		ss << "It wasn't a great scene.";
 		bonus++;
 	}
 	else
 	{
-		ss << gettext("It was a poor scene.");
+		ss << "It was a poor scene.";
 	}
-	ss << gettext("\n");
+	ss << "\n";
 
 
 	//Enjoyed? If she's deranged, she'd should have enjoyed it.
 	if (girl->has_trait( "Mind Fucked"))
 	{
 		enjoy += 16;
-		ss << gettext("Being completely mind fucked, ") << girlName << gettext(" actually gets off on this.\n");
+		ss << "Being completely mind fucked, " << girlName << " actually gets off on this.\n";
 	}
 	else if (girl->has_trait( "Masochist"))
 	{
 		enjoy += 10;
-		ss << girlName << gettext(" enjoys this. It's what she deserves.\n");
+		ss << girlName << " enjoys this. It's what she deserves.\n";
 	}
 	else if (girl->has_trait( "Broken Will") || girl->has_trait( "Dependant"))
 	{
 		enjoy += 5;
-		ss << girlName << gettext(" accepts this. It is Master's will.\n");
+		ss << girlName << " accepts this. It is Master's will.\n";
 	}
 	else if (girl->has_trait( "Iron Will") || girl->has_trait( "Fearless"))
 	{
 		enjoy -= 5;
-		ss << girlName << gettext(" endures in stoic silence, determined not to let you see her suffer.\n");
+		ss << girlName << " endures in stoic silence, determined not to let you see her suffer.\n";
 	}
 	else if (girl->has_trait( "Nymphomaniac"))
 	{
 		enjoy += 2;
-		ss << girlName << gettext(" doesn't much like the pain, but loves the sex and attention.\n");
+		ss << girlName << " doesn't much like the pain, but loves the sex and attention.\n";
 	}
 
 	//Feedback enjoyment
 	if (enjoy > 10)
 	{
-		ss << gettext("She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.\n\n");
+		ss << "She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.\n\n";
 	}
 	else if (enjoy > 0)
 	{
-		ss << gettext("She's only a little traumatised.\n\n");
+		ss << "She's only a little traumatised.\n\n";
 	}
 	else
 	{
-		ss << gettext("From the way she's crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.\n\n");
+		ss << "From the way she's crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.\n\n";
 	}
 #endif
 
