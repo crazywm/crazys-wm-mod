@@ -2462,8 +2462,8 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
 	string levelstr[] = { "Level : ", "Exp : ", "Exp to level : ", "Needs : " };
 
-	int level = GetStat(girl, STAT_LEVEL);
-	int exp = GetStat(girl, STAT_EXP);
+	int level = girl->level();
+	int exp = girl->exp();
 	int exptolv = min(32000, (level + 1) * 125);
 	int expneed = exptolv - exp;
 
@@ -2488,10 +2488,10 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	}
 
 	// display looks
-	ss << basestr[2] << (GetStat(girl, STAT_BEAUTY) + GetStat(girl, STAT_CHARISMA)) / 2 << sper;
+	ss << basestr[2] << (girl->beauty() + girl->charisma()) / 2 << sper;
 
 	// display level and exp
-	ss << "\n" << levelstr[0] << GetStat(girl, STAT_LEVEL);
+	ss << "\n" << levelstr[0] << level;
 	if (!purchase)
 	{
 		check.GetSize(levelstr[2], w, h);
@@ -2507,40 +2507,40 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	}
 
 	// display Age
-	ss << "\n" << basestr[0]; if (GetStat(girl, STAT_AGE) == 100) ss << "Unknown"; else ss << GetStat(girl, STAT_AGE);
+	ss << "\n" << basestr[0]; if (girl->age() == 100) ss << "Unknown"; else ss << girl->age();
 	// display rebel
 	ss << "\n" << basestr[1] << girl->rebel();
 	// display Constitution
-	ss << "\n" << basestr[3] << GetStat(girl, STAT_CONSTITUTION) << sper;
+	ss << "\n" << basestr[3] << girl->constitution() << sper;
 
 	// display HHT and money
 	if (!purchase)
 	{
-		ss << "\n" << basestr[4] << GetStat(girl, STAT_HEALTH) << sper;
-		ss << "\n" << basestr[5] << GetStat(girl, STAT_HAPPINESS) << sper;
-		ss << "\n" << basestr[6] << GetStat(girl, STAT_TIREDNESS) << sper;
+		ss << "\n" << basestr[4] << girl->health() << sper;
+		ss << "\n" << basestr[5] << girl->happiness() << sper;
+		ss << "\n" << basestr[6] << girl->tiredness() << sper;
 	}
 	int cost = int(tariff.slave_price(girl, purchase));
 	g_LogFile.ss() << "slave " << (purchase ? "buy" : "sell") << "price = " << cost;
 	g_LogFile.ssend();
 	ss << "\n" << basestr[7] << cost << " Gold";
 	CalculateAskPrice(girl, false);
-	cost = g_Girls.GetStat(girl, STAT_ASKPRICE);
+	cost = girl->askprice();
 	ss << "\nAvg Pay per Customer : " << cost << " gold\n";
 
 	// display status
-	if (girl->m_States&(1 << STATUS_SLAVE))			ss << "Is Branded a Slave\n";
+	/* */if (girl->m_States&(1 << STATUS_SLAVE))	ss << "Is Branded a Slave\n";
 	else if (cfg.debug.log_extradetails())			ss << "( She Is Not a Slave )\n";
 	else ss << "\n";
 
-	if (g_Girls.CheckVirginity(girl))				ss << "She is a Virgin\n";
+	/* */if (g_Girls.CheckVirginity(girl))			ss << "She is a Virgin\n";
 	else if (cfg.debug.log_extradetails())			ss << "( She Is Not a Virgin )\n";
 	else ss << "\n";
 
 	if (!purchase)
 	{
 		int to_go = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - girl->m_WeeksPreg;
-		if (girl->m_States&(1 << STATUS_PREGNANT))					{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
+		/* */if (girl->m_States&(1 << STATUS_PREGNANT))				{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
 		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
 		else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated, due: " << to_go << " weeks\n"; }
 		else if (girl->m_PregCooldown != 0)							{ ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n"; }
@@ -2549,7 +2549,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 		// `J` moved the rest of children lines to second detail list
 	}
 
-	if (girl->is_addict() && !girl->has_disease())		ss << "Has an addiciton\n";
+	/* */if (girl->is_addict() && !girl->has_disease()) ss << "Has an addiciton\n";
 	else if (!girl->is_addict() && girl->has_disease())	ss << "Has a disease\n";
 	else if (girl->is_addict() && girl->has_disease())	ss << "Has an addiciton and a disease\n";
 	else if (cfg.debug.log_extradetails())				ss << "( She Has No Addicitons or Diseases )\n";

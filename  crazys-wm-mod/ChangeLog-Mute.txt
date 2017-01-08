@@ -96,4 +96,10 @@ Updated WorkFilmBondage to remove reference to gettext
 
 Updated WorkFilmBeast removing reference to gettext
 
+Updated cFarm.cpp to use girl->statname and girl->statname(mod)
 
+Updated cGirls.cpp to use girl->statname() and girl->statname(mod)
+
+Updated cScreenBuildingSetup.cpp to use tariff.add_room_cost(5) instead of 5000 (to use the setting in config)
+
+Updated cScreenBuildingSetup.cpp to use tariff.advertising_costs
