@@ -106,7 +106,7 @@ int cTariff::goon_mission_cost(int mission)
 		break;
 	}
 
-	if (cost > 0.0)
+	if (cost >= 0.0)
 	{
 		return int(cost);
 	}

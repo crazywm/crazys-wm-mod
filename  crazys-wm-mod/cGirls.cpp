@@ -167,7 +167,7 @@ const char *sGirl::enjoy_jobs[] = {
 	"fixing things",					// ACTION_WORKMECHANIC
 	"counseling people",				// ACTION_WORKCOUNSELOR
 	"performing music",					// ACTION_WORKMUSIC
-	"striping",							// ACTION_WORKSTRIP
+	"stripping",						// ACTION_WORKSTRIP
 	"having her breasts milked",		// ACTION_WORKMILK
 	"working as a masseuse",			// ACTION_WORKMASSEUSE
 	"working on the farm",				// ACTION_WORKFARM
