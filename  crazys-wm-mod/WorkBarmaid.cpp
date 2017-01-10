@@ -832,12 +832,20 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	// tiredness
 #if 1	// `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found 'Mute' Updated to fix math logic if this doesnt work feel free to switch back
 	int t0 = d1;
-	int easydrinks = (girl->constitution() + girl->service()) / 4;
+	int easydrinks = (girl->constitution() + girl->service());
+	easydrinks=min(t0,easydrinks);
+	int drinksLeft=t0-easydrinks;
 	int mediumdrinks = (girl->constitution() + girl->service()) /2;
-	int haarddrinks = (girl->constitution() + girl->service());
+	mediumdrinks=min(drinksLeft,mediumdrinks);
+	drinksLeft-=mediumdrinks;
+	int haarddrinks = (girl->constitution() + girl->service())/ 4;
+	haarddrinks=min(drinksLeft,haarddrinks);
+	drinksLeft-=haarddrinks;
+	if (drinksLeft>0)
+        easydrinks+=drinksLeft;
 	int t1 = easydrinks;					// 1 tired per 20 drinks
-	int t2 = max(0, t0 - t1);		        // 1 tired per 10 drinks
-	int t3 = max(0, t0 - (t1+t2));		    // 1 tired per 2 drinks
+	int t2 = max(0, t0 - easydrinks+haarddrinks);		        // 1 tired per 10 drinks
+	int t3 = max(0, t0 - (easydrinks+mediumdrinks));		    // 1 tired per 2 drinks
 	int tired = max(0,(t1/20))+max(0,(t2/10))+max(0,(t3/2));
 #else
 	int tired = max(1, (600 - ((int)jobperformance + (girl->constitution() * 3))) / 10);
