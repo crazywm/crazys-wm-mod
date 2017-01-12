@@ -60,7 +60,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked doing community service.\n\n";
+	ss << " worked doing community service.\n \n";
 
 	g_Building = BUILDING_CENTRE;
 
@@ -86,32 +86,32 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	/* */if (jobperformance >= 245)
 	{
 		dispo = 12;
-		ss << " She must be perfect at this.\n\n";
+		ss << " She must be perfect at this.\n \n";
 	}
 	else if (jobperformance >= 185)
 	{
 		dispo = 10;
-		ss << " She's unbelievable at this and is always getting praised by people for her work.\n\n";
+		ss << " She's unbelievable at this and is always getting praised by people for her work.\n \n";
 	}
 	else if (jobperformance >= 145)
 	{
 		dispo = 8;
-		ss << " She's good at this job and gets praised by people often.\n\n";
+		ss << " She's good at this job and gets praised by people often.\n \n";
 	}
 	else if (jobperformance >= 100)
 	{
 		dispo = 6;
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n \n";
 	}
 	else if (jobperformance >= 70)
 	{
 		dispo = 4;
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 	}
 	else
 	{
 		dispo = 2;
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 	}
 
 
@@ -122,13 +122,13 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{
 		sex = true;
-		ss << "Her Nymphomania got the better of her today and she decided the best way to serve her community was on her back!\n\n";
+		ss << "Her Nymphomania got the better of her today and she decided the best way to serve her community was on her back!\n \n";
 	}
 
 	if (g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55)//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{
 		blow = true;
-		ss << "An elderly fellow managed to convince " << girlName << " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n\n";
+		ss << "An elderly fellow managed to convince " << girlName << " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n \n";
 	}
 
 

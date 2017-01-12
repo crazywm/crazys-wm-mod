@@ -245,7 +245,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			brothel->m_Fame -= g_Dice % 2;			// 0 to -1
 		}
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 
 	//try and add randomness here
@@ -406,7 +406,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if (cfg.debug.log_show_numbers())
 	{
-		ss << "\n\nNumbers:"
+		ss << "\n \nNumbers:"
 			<< "\n Job Performance = " << (int)jobperformance
 			<< "\n Wages = " << (int)wages
 			<< "\n Tips = " << (int)tips

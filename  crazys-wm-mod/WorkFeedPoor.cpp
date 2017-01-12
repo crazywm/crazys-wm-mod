@@ -86,7 +86,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int dispo; // `J` merged slave/free messages and moved actual dispo change to after
 	if (jobperformance >= 245)
 	{
-		ss << " She must be perfect at this.\n\n";
+		ss << " She must be perfect at this.\n \n";
 		dispo = 12;
 		if (roll_b <= 20)
 		{
@@ -111,7 +111,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this and is always getting praised by people for her work.\n\n";
+		ss << " She's unbelievable at this and is always getting praised by people for her work.\n \n";
 		dispo = 10;
 		if (roll_b <= 20)
 		{
@@ -136,7 +136,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job and gets praised by people often.\n\n";
+		ss << " She's good at this job and gets praised by people often.\n \n";
 		dispo = 8;
 		if (roll_b <= 20)
 		{
@@ -161,7 +161,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n \n";
 		dispo = 6;
 		if (roll_b <= 20)
 		{
@@ -186,7 +186,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 		dispo = 4;
 		if (roll_b <= 20)
 		{
@@ -211,7 +211,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 		dispo = 2;
 		if (roll_b <= 20)
 		{
@@ -239,7 +239,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55 && g_Dice.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{
-		blow = true;	ss << "An elderly fellow managed to convince " << girlName << " that he was full and didn't need anymore food but that she did. He told her his cock gave a special treat if she would suck on it long enough. Which she did man she isn't very smart.\n\n";
+		blow = true;	ss << "An elderly fellow managed to convince " << girlName << " that he was full and didn't need anymore food but that she did. He told her his cock gave a special treat if she would suck on it long enough. Which she did man she isn't very smart.\n \n";
 	}
 
 	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_LIBIDO) > 75

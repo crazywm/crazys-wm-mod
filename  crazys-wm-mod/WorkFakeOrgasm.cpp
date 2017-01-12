@@ -65,7 +65,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		return false;	// not refusing
 	}
 
-	ss << "You teach " << girlName << " how to fake her orgasms.\n\n";
+	ss << "You teach " << girlName << " how to fake her orgasms.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// not for patient
 
@@ -260,7 +260,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else
 	{
 		if (girl->m_WorkingDay >= 100)		tired -= (girl->m_WorkingDay - 100) / 2;	// her last day so she rested a bit
-		else	ss << "Training in progress (" << girl->m_WorkingDay << "%).\n\n";
+		else	ss << "Training in progress (" << girl->m_WorkingDay << "%).\n \n";
 		wages = min(100, girl->m_WorkingDay);
 		/* */if (girl->m_WorkingDay < 25)	ss << "She has no idea what she sounds like durring sex but it ain't orgasmic.";
 		else if (girl->m_WorkingDay < 50)	ss << "When she realizes she should finish, you can see it click in her mind and easily notice her changing things up.";
@@ -315,7 +315,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
-	ss << "\n\nNumbers:"
+	ss << "\n \nNumbers:"
 		<< "\n Wages = " << (int)wages
 		<< "\n Xp = " << xp
 		<< "\n Performance = " << I_performance

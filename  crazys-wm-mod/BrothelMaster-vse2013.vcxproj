@@ -127,6 +127,7 @@
     <ClCompile Include="cMessageBox.cpp" />
     <ClCompile Include="cScreenFarmManagement.cpp" />
     <ClCompile Include="cScreenGallery.cpp" />
+    <ClCompile Include="cScreenMovie.cpp" />
     <ClCompile Include="cScreenNewGame.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="cScreenSettings.cpp" />
@@ -253,7 +254,6 @@
     <ClCompile Include="cClinicScreen.cpp" />
     <ClCompile Include="cClinicTry.cpp" />
     <ClCompile Include="cHouseScreen.cpp" />
-    <ClCompile Include="cMovieScreen.cpp" />
     <ClCompile Include="cScreenArenaManagement.cpp" />
     <ClCompile Include="cScreenBank.cpp" />
     <ClCompile Include="cScreenBrothelManagement.cpp" />
@@ -392,6 +392,7 @@
     <ClInclude Include="cMessageBox.h" />
     <ClInclude Include="cScreenFarmManagement.h" />
     <ClInclude Include="cScreenGallery.h" />
+    <ClInclude Include="cScreenMovie.h" />
     <ClInclude Include="cScreenNewGame.h" />
     <ClInclude Include="cScreenPropertyManagement.h" />
     <ClInclude Include="cScreenSettings.h" />
@@ -471,7 +472,6 @@
     <ClInclude Include="cClinicScreen.h" />
     <ClInclude Include="cClinicTry.h" />
     <ClInclude Include="cHouseScreen.h" />
-    <ClInclude Include="cMovieScreen.h" />
     <ClInclude Include="cScreenArenaManagement.h" />
     <ClInclude Include="cScreenBank.h" />
     <ClInclude Include="cScreenBrothelManagement.h" />

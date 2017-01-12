@@ -56,7 +56,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a bartender in the strip club.\n\n";
+	ss << " worked as a bartender in the strip club.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -76,32 +76,32 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (jobperformance >= 245)
 	{
-		ss << " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n\n";
+		ss << " She must be the perfect bar tender customers go on and on about her and always come to see her when she works.\n \n";
 		wages += 155;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
+		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n \n";
 		wages += 95;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job and gets praised by the customers often.\n\n";
+		ss << " She's good at this job and gets praised by the customers often.\n \n";
 		wages += 55;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n \n";
 		wages += 15;
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 		wages -= 5;
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 		wages -= 15;
 	}
 
@@ -112,7 +112,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; tips += 25;
+		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
 
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99 && g_Dice.percent(5))

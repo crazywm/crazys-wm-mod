@@ -625,14 +625,16 @@ void handle_hotkeys()
 				case SCREEN_BROTHEL:
 					msg += "Brothel Screen:\n";
 					msg += "Right Arrow     Next Brothel\n";
-					msg += "Left Arrow      Previous Brothel\n\n";
+					msg += "Left Arrow      Previous Brothel\n";
+					msg += "\n";
 					break;
 				case SCREEN_TURNSUMMARY:
 					msg += "Turn Summary Screen:\n";
 					msg += "Up Arrow     Previous Girl\n";
 					msg += "Down Arrow   Next Girl\n";
 					msg += "Left Arrow   Previous Event\n";
-					msg += "Right Arrow  Next Event\n\n";
+					msg += "Right Arrow  Next Event\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n";
@@ -650,22 +652,26 @@ void handle_hotkeys()
 					msg += "Left Arrow     Previous Picture\n";
 					msg += "Right Arrow    Next Picture\n";
 					msg += "Up Arrow     Previous Gallery\n";
-					msg += "Down Arrow     Next Gallery\n\n";
+					msg += "Down Arrow     Next Gallery\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Picture\n";
 					msg += "D     Next Picture\n";
 					msg += "W     Previous Gallery\n";
-					msg += "S     Next Gallery\n\n";
+					msg += "S     Next Gallery\n";
+					msg += "\n";
 					break;
 				case SCREEN_TRANSFERGIRLS:
 					msg += "Transfer Screen:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_GIRLMANAGEMENT:
 					msg += "Girl Management:\n";
 					msg += "Up Arrow     Previous Girl\n";
-					msg += "Down Arrow   Next Girl\n\n";
+					msg += "Down Arrow   Next Girl\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n";
@@ -676,18 +682,22 @@ void handle_hotkeys()
 					msg += "Z     Day Shift\n";
 					msg += "C     Night Shift\n";
 					msg += "Space   Goto Girl Details\n";
-					msg += "Enter   Goto Girl Details\n\n";
+					msg += "Enter   Goto Girl Details\n";
+					msg += "\n";
 					break;
 				case SCREEN_GIRLDETAILS:
 					msg += "Girl Details:\n";
 					msg += "Up Arrow    Previous Girl\n";
-					msg += "Down Arrow  Next Girl\n\n";
+					msg += "Down Arrow  Next Girl\n";
+					msg += "\n";
 					msg += "A    Previous Girl\n";
 					msg += "D    Next Girl\n";
 					msg += "S    More Details\n";
-					msg += "Space    Gallery\n\n";
+					msg += "Space    Gallery\n";
+					msg += "\n";
 					msg += "J    House Percent Up\n";
-					msg += "H    House Percent Down\n\n";
+					msg += "H    House Percent Down\n";
+					msg += "\n";
 					break;
 				case SCREEN_INVENTORY:
 					msg += "Inventory Screen:\n";
@@ -696,16 +706,18 @@ void handle_hotkeys()
 					msg += "Owner list left :          T           G\n";
 					msg += "Owner list right :        Y           H\n";
 					msg += "Items list left :          U           J\n";
-					msg += "Items list right :         I           K\n\n\n";
+					msg += "Items list right :         I           K\n";
+					msg += "\n";
 					msg += "There are no hotkeys for buy and sell buttons\n";
 					msg += "or for equip or unequip buttons\n";
 					msg += "to prevent accidental buying, selling or equiping of items\n";
-					msg += "\n\n";
+					msg += "\n";
 					break;
 				case SCREEN_GANGMANAGEMENT:
 					msg += "Gang Management:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Gang\n";
 					msg += "D     Next Gang\n";
@@ -713,112 +725,139 @@ void handle_hotkeys()
 					msg += "S     Next Mission\n";
 					msg += "Q     Previous Recruits\n";
 					msg += "E     Next Recruits\n";
-					msg += "Space    Hire Gang\n\n";
+					msg += "Space    Hire Gang\n";
+					msg += "\n";
 					break;
 				case SCREEN_BROTHELMANAGEMENT:
 					msg += "Brothel Management:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_DUNGEON:
 					msg += "Dungeon:\n";
 					msg += "Up Arrow    Previous girl\n";
-					msg += "Down Arrow  Next Girl\n\n";
+					msg += "Down Arrow  Next Girl\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
-					msg += "D     Next Girl\n\n";
+					msg += "D     Next Girl\n";
+					msg += "\n";
 					break;
 				case SCREEN_TOWN:
 					msg += "Town:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_MAYOR:
 					msg += "Mayor:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_BANK:
 					msg += "Bank:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_JAIL:
 					msg += "Jail:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
-					msg += "D     Next Girl\n\n";
+					msg += "D     Next Girl\n";
+					msg += "\n";
 					break;
 				case SCREEN_HOUSE:
 					msg += "House:\n";
 					msg += "Space   Goto Girl Details\n";
-					msg += "Enter   Goto Girl Details\n\n";
+					msg += "Enter   Goto Girl Details\n";
+					msg += "\n";
 					break;
 				case SCREEN_CLINIC:
 					msg += "Clinic:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
-					msg += "D     Next Girl\n\n";
+					msg += "D     Next Girl\n";
+					msg += "\n";
 					msg += "Space   Goto Girl Details\n";
-					msg += "Enter   Goto Girl Details\n\n";
+					msg += "Enter   Goto Girl Details\n";
+					msg += "\n";
 					break;
 				case SCREEN_ARENA:
 					msg += "Arena:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
-					msg += "D     Next Girl\n\n";
+					msg += "D     Next Girl\n";
+					msg += "\n";
 					msg += "Space   Goto Girl Details\n";
-					msg += "Enter   Goto Girl Details\n\n";
+					msg += "Enter   Goto Girl Details\n";
+					msg += "\n";
 					break;
 				case SCREEN_TRYOUTS:
 					msg += "Try Outs:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_CENTRE:
 					msg += "Centre:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
-					msg += "D     Next Girl\n\n";
+					msg += "D     Next Girl\n";
+					msg += "\n";
 					msg += "Space   Goto Girl Details\n";
-					msg += "Enter   Goto Girl Details\n\n";
+					msg += "Enter   Goto Girl Details\n";
+					msg += "\n";
 					break;
 				case SCREEN_STUDIO:
 					msg += "Studio:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
-					msg += "D     Next Girl\n\n";
+					msg += "D     Next Girl\n";
+					msg += "\n";
 					msg += "Space   Goto Girl Details\n";
-					msg += "Enter   Goto Girl Details\n\n";
+					msg += "Enter   Goto Girl Details\n";
+					msg += "\n";
 					break;
 				case SCREEN_CREATEMOVIE:
 					msg += "Create Movie:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_BUILDINGMANAGEMENT:
 					msg += "Building Management:\n";
-					msg += "This screen is not implimented yet\n\n";
+					msg += "This screen is not implimented yet\n";
+					msg += "\n";
 					break;
 				case SCREEN_SLAVEMARKET:
 					msg += "Slave Market:\n";
 					msg += "Up Arrow    Previous girl\n";
-					msg += "Down Arrow  Next Girl\n\n";
+					msg += "Down Arrow  Next Girl\n";
+					msg += "\n";
 					msg += "For left handed control:\n";
 					msg += "A     Previous Girl\n";
 					msg += "D     Next Girl\n";
 					msg += "S     More Details\n";
-					msg += "Space   Purchase Girl\n\n";
+					msg += "Space   Purchase Girl\n";
+					msg += "\n";
 					break;
 				}
 			}
@@ -829,118 +868,141 @@ void handle_hotkeys()
 				case SCREEN_BROTHEL:
 					msg += "Brothel Screen";
 					msg += "Right Arrown    Next Brothel\n";
-					msg += "Left Arrow      Previous Brothel\n\n";
+					msg += "Left Arrow      Previous Brothel\n";
+					msg += "\n";
 					break;
 				case SCREEN_TURNSUMMARY:
 					msg += "Up Arrow     Previous Girl\n";
 					msg += "Down Arrow   Next Girl\n";
 					msg += "Left Arrow   Previous Event\n";
-					msg += "Right Arrow  Next Event\n\n";
+					msg += "Right Arrow  Next Event\n";
+					msg += "\n";
 					break;
 				case SCREEN_GALLERY:
 					msg += "Gallery:\n";
 					msg += "Left Arrow     Previous Picture\n";
-					msg += "Right Arrow    Next Picture\n\n";
+					msg += "Right Arrow    Next Picture\n";
+					msg += "\n";
 					break;
 				case SCREEN_TRANSFERGIRLS:
 					msg += "Transfer Screen:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_GIRLMANAGEMENT:
 					msg += "Girl Management:\n";
 					msg += "Up Arrow     Previous Girl\n";
-					msg += "Down Arrow   Next Girl\n\n";
+					msg += "Down Arrow   Next Girl\n";
+					msg += "\n";
 					break;
 				case SCREEN_GIRLDETAILS:
 					msg += "Girl Details\n";
 					msg += "Up Arrow    Previous Girl\n";
-					msg += "Down Arrow  Next Girl\n\n";
+					msg += "Down Arrow  Next Girl\n";
+					msg += "\n";
 					break;
 				case SCREEN_INVENTORY:
 					msg += "Inventory Screen:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_GANGMANAGEMENT:
 					msg += "Gang Management:\n";
 					msg += "Up Arrow    Previous Gang\n";
 					msg += "Down Arrow  Next Gang\n";
-					msg += "Space     Hire gang\n\n";
+					msg += "Space     Hire gang\n";
+					msg += "\n";
 					break;
 				case SCREEN_BROTHELMANAGEMENT:
 					msg += "Brothel Management:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_DUNGEON:
 					msg += "Dungeon:\n";
 					msg += "Up Arrow    Previous girl\n";
-					msg += "Down Arrow  Next Girl\n\n";
+					msg += "Down Arrow  Next Girl\n";
+					msg += "\n";
 					break;
 				case SCREEN_TOWN:
 					msg += "Town:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_MAYOR:
 					msg += "Mayor:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_BANK:
 					msg += "Bank:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_JAIL:
 					msg += "Jail:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					break;
 				case SCREEN_HOUSE:
 					msg += "House:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_CLINIC:
 					msg += "Clinic:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					break;
 				case SCREEN_ARENA:
 					msg += "Arena:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					break;
 				case SCREEN_TRYOUTS:
 					msg += "Try Outs:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_CENTRE:
 					msg += "Centre:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					break;
 				case SCREEN_STUDIO:
 					msg += "Studio:\n";
 					msg += "Up Arrow    Previous Gang\n";
-					msg += "Down Arrow  Next Gang\n\n";
+					msg += "Down Arrow  Next Gang\n";
+					msg += "\n";
 					break;
 				case SCREEN_CREATEMOVIE:
 					msg += "Create Movie:\n";
 					msg += "No special hotkeys\n";
-					msg += "Yet...\n\n";
+					msg += "Yet...\n";
+					msg += "\n";
 					break;
 				case SCREEN_BUILDINGMANAGEMENT:
 					msg += "Building Management:\n";
-					msg += "This screen is not implimented yet\n\n";
+					msg += "This screen is not implimented yet\n";
+					msg += "\n";
 					break;
 				case SCREEN_SLAVEMARKET:
 					msg += "Slave Market:\n";
 					msg += "Up Arrow    Previous girl\n";
-					msg += "Down Arrow  Next Girl\n\n";
+					msg += "Down Arrow  Next Girl\n";
+					msg += "\n";
 					break;
 				}
 			}
@@ -970,10 +1032,11 @@ void handle_hotkeys()
 			msg += "9           List Hotkeys for this screen.\n";
 			msg += "0           List Global Hotkeys.\n";
 			msg += "I           Shop Screen (Inventory)\n";
-			msg += "\n\n";
+			msg += "\n";
 			msg += "Any Key     Clears message boxes.\n";
 			msg += "Ctrl + Home Default HotKeys\n";
-			msg += "Ctrl + End  Alternate HotKeys\n\n";
+			msg += "Ctrl + End  Alternate HotKeys\n";
+			msg += "\n";
 			msg += "Choice Boxes:\n";
 			msg += "Up Arrow    Move Selection Up\n";
 			msg += "Down Arrow  Move Selection Down\n";

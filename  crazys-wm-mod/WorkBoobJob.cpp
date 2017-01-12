@@ -70,7 +70,7 @@ bool cJobManager::WorkBoobJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	ss << " is in the Clinic to get her breasts enlarged.\n\n";
+	ss << " is in the Clinic to get her breasts enlarged.\n \n";
 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient
@@ -88,7 +88,7 @@ bool cJobManager::WorkBoobJob(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		ss << "The surgery is a success.\n";
 		msgtype = EVENT_GOODNEWS;
 
-		ss << g_Girls.AdjustTraitGroupBreastSize(girl, 1, false) << "\n\n";
+		ss << g_Girls.AdjustTraitGroupBreastSize(girl, 1, false) << "\n \n";
 
 		if (numnurse > 2)
 		{

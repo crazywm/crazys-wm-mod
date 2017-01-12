@@ -55,7 +55,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a stagehand.\n\n";
+	ss << " worked as a stagehand.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 	int enjoyc = 0, enjoym = 0;
@@ -118,7 +118,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0 ||
 		g_Studios.Num_Actress(0) < 1)
 	{
-		ss << "There were no scenes being filmed, so she just cleaned the set.\n\n";
+		ss << "There were no scenes being filmed, so she just cleaned the set.\n \n";
 		filming = false;
 		imagetype = IMGTYPE_MAID;
 	}
@@ -145,7 +145,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		ss << "Otherwise, the shift passed uneventfully.";
 	}
 	jobperformance += enjoyc + enjoym;
-	ss << "\n\n";
+	ss << "\n \n";
 
 	if (filming)
 	{
@@ -164,7 +164,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 			ss << "She did a bad job today, reduceing the scene quality " << (int)jobperformance << "% with her poor performance.";
 		}
 		else ss << "She did not really help the scene quality.";
-		ss << "\n\n";
+		ss << "\n \n";
 	}
 
 
@@ -187,7 +187,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
 	{
-		ss << "\n\n" << girlName << " finished her cleaning early so she hung out around the Studio a bit.";
+		ss << "\n \n" << girlName << " finished her cleaning early so she hung out around the Studio a bit.";
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice % 3 + 1, true);
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 3 + 1);
 	}

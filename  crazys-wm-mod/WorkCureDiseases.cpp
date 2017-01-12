@@ -92,7 +92,7 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	if (numdiseases > 1)	ss << " is in the Clinic to get her diseases treated";
 	else/*            */	ss << " is in the Clinic to get treatment for " << diseases[0];
-	ss << ".\n\n";
+	ss << ".\n \n";
 
 
 	int startday = girl->m_WorkingDay;
@@ -187,7 +187,7 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		girl->m_WorkingDay -= g_Dice % 10;
 		cost = 0;	// noone to give her the medicine
 	}
-	ss << ".\n\n";
+	ss << ".\n \n";
 
 	girl->m_WorkingDay += girl->constitution() / 10;
 	if (girl->has_trait("Construct"))			girl->m_WorkingDay += 3;			// Not flesh and blood so easier to cleanse
@@ -269,7 +269,7 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 
 
-	ss << ".\n\n";
+	ss << ".\n \n";
 
 #pragma endregion
 #pragma region //	Surgery Finished			//
@@ -282,7 +282,7 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		string diseasecured = diseases[g_Dice%numdiseases];
 		girl->remove_trait(diseasecured);
 		numdiseases--;
-		ss << "You pay " << cost << " gold for last dose of the medicine used in her treatment.\n\nThe treatment is a success, " << girlName << " no longer has " << diseasecured << "!\n\n";
+		ss << "You pay " << cost << " gold for last dose of the medicine used in her treatment.\n \nThe treatment is a success, " << girlName << " no longer has " << diseasecured << "!\n \n";
 
 		if (!girl->has_disease())
 		{
@@ -312,7 +312,7 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	{
 		ss << "You pay " << cost << " gold for the medicine and equipment used in her treatment";
 	}
-	ss << ".\n\n";
+	ss << ".\n \n";
 
 	brothel->m_Finance.clinic_costs(cost);	// pay for it
 

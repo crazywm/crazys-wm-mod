@@ -49,7 +49,7 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a catacomb rancher on the farm.\n\n";
+	ss << " worked as a catacomb rancher on the farm.\n \n";
 
 	g_Girls.EquipCombat(girl);	// This job can be dangerous so any protection is good.
 
@@ -92,7 +92,7 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		wages -= 15;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//

@@ -191,9 +191,6 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 
 	UpdateGirls(current, 1);	// Run the Nighty Shift
 
-	if (current->m_Filthiness < 0)		current->m_Filthiness = 0;
-	if (current->m_SecurityLevel < 0)	current->m_SecurityLevel = 0;
-
 	g_Gold.brothel_accounts(current->m_Finance, current->m_id);
 
 	cgirl = current->m_Girls;
@@ -203,6 +200,8 @@ void cCentreManager::UpdateCentre()	// Start_Building_Process_A
 		g_Girls.EndDayGirls(current, cgirl);
 		cgirl = cgirl->m_Next;
 	}
+	if (current->m_Filthiness < 0)		current->m_Filthiness = 0;
+	if (current->m_SecurityLevel < 0)	current->m_SecurityLevel = 0;
 }
 
 // Run the shifts
@@ -244,11 +243,9 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			g_Girls.UseItems(current);				// Girl uses items she has
 			g_Girls.CalculateGirlType(current);		// update the fetish traits
 			g_Girls.CalculateAskPrice(current, true);	// Calculate the girls asking price
-
 			current = current->m_Next; // Next Girl
 		}
 	}
-
 
 	////////////////////////////////////////////////////////
 	//  Process Matron first incase she refuses to work.  //
@@ -271,7 +268,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		{
 			// if a matron was found and she is healthy, not tired and not on maternity leave... send her back to work
 			if ((current->m_PrevDayJob == matronjob || current->m_PrevNightJob == matronjob) &&
-				(g_Girls.GetStat(current, STAT_HEALTH) >= 50 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 50) &&
+				(current->health() >= 50 && current->tiredness() <= 50) &&
 				current->m_PregCooldown < cfg.pregnancy.cool_down())
 				// Matron job is more important so she will go back to work at 50% instead of regular 80% health and 20% tired
 			{
@@ -296,7 +293,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		else if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
 		{
 			(Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
-			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame -= current->fame();
 			ss << girlName << " refused to work as the Centre Manager.";
 			sum = EVENT_NOWORK;
 		}
@@ -313,12 +310,12 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			current->m_Pay += max(0, totalGold);
 			current->m_Pay = current->m_Tips = 0;
 
-			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame += current->fame();
 			/* */if (totalGold > 0)		{ ss << girlName << " earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; }
 			else if (totalGold == 0)	{ ss << girlName << " made no money."; }
-			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold\n\nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n" << "\nGirl Name: " << current->m_Realname << "\nJob: " << m_JobManager.JobName[(Day0Night1 ? current->m_NightJob : current->m_DayJob)] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold; }
+			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current->m_Realname << "\nJob: " << m_JobManager.JobName[(Day0Night1 ? current->m_NightJob : current->m_DayJob)] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold; }
 		}
-		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;	// Next Girl
 		matrondone = true;			// there can be only one matron so this ends the while loop
@@ -653,41 +650,71 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
 		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
 
-
-		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40)
+		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->happiness()< 40)
 		{
-			if (current->m_NightJob != matronjob && matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))
+			if (sw != matronjob && matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))
 			{
 				ss << "The Centre Manager helps cheer up " << girlName << " when she is feeling sad.\n";
-				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 10 + 5);
+				current->happiness(g_Dice % 10 + 5);
 			}
 			else if (brothel->m_NumGirls > 10 && g_Dice.percent(50))
 			{
 				ss << "Some of the other girls help cheer up " << girlName << " when she is feeling sad.\n";
-				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 8 + 3);
+				current->happiness(g_Dice % 8 + 3);
 			}
 			else if (brothel->m_NumGirls > 1 && g_Dice.percent(max(brothel->m_NumGirls, 50)))
 			{
 				ss << "One of the other girls helps cheer up " << girlName << " when she is feeling sad.\n";
-				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 6 + 2);
+				current->happiness(g_Dice % 6 + 2);
 			}
 			else if (brothel->m_NumGirls == 1 && g_Dice.percent(70))
 			{
 				ss << girlName << " plays around in the empty building until she feels better.\n";
-				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 10 + 10);
+				current->happiness(g_Dice % 10 + 10);
 			}
-			else if (g_Girls.GetStat(current, STAT_HAPPINESS) < 20) // no one helps her and she is really unhappy
+			else if (current->health()< 20) // no one helps her and she is really unhappy
 			{
 				ss << girlName << " is looking very depressed. You may want to do something about that before she does something drastic.\n";
 				sum = EVENT_WARNING;
 			}
 		}
 
-		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80 || g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		int t = current->tiredness();
+		int h = current->health();
+		if (sw == matronjob && (t > 60 || h < 40))
 		{
-			int t = g_Girls.GetStat(current, STAT_TIREDNESS);
-			int h = g_Girls.GetStat(current, STAT_HEALTH);
-
+			ss << "As Centre Manager, " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
+			if (t > 50 && h < 50)
+			{
+				ss << "some potions";
+				g_Girls.UpdateStat(current, STAT_HEALTH, 20 + g_Dice % 20, false);
+				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(20, true);
+			}
+			else if (t > 50)
+			{
+				ss << "a resting potion";
+				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else if (h < 50)
+			{
+				ss << "a healing potion";
+				g_Girls.UpdateStat(current, STAT_HEALTH, 20 + g_Dice % 20, false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else
+			{
+				ss << "a potion";
+				g_Girls.UpdateStat(current, STAT_HEALTH, 10 + g_Dice % 10, false);
+				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(10 + g_Dice % 10), false);
+				g_Gold.consumable_cost(5, true);
+			}
+			ss << " for herself.\n";
+		}
+		else if (t > 80 || h < 40)
+		{
 			if (current->m_WorkingDay > 0)
 			{
 				ss << girlName << " is not faring well";
@@ -701,48 +728,12 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			else if (!matron)	// do no matron first as it is the easiest
 			{
 				ss << "WARNING! " << girlName;
-				if (t > 80 && h < 20)		ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
+				/* */if (t > 80 && h < 20)	ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
 				else if (t > 80 && h < 40)	ss << " is in bad shape, she is tired and injured.\nShe should rest or she may die!\n";
-				else if (t > 80)			ss << " is desparatly in need of rest.\nGive her some free time\n";
-				else if (h < 20)			ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
-				else if (h < 40)			ss << " is hurt.\nShe should rest and recuperate.\n";
+				else if (t > 80)/*      */	ss << " is desparatly in need of rest.\nGive her some free time\n";
+				else if (h < 20)/*      */	ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
+				else if (h < 40)/*      */	ss << " is hurt.\nShe should rest and recuperate.\n";
 				sum = EVENT_WARNING;
-			}
-			else if (current->m_NightJob == matronjob && matron)	// do matron	
-			{
-				if (t > 90 && h < 10)	// The matron may take herself off work if she is really bad off
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = restjob;
-					ss << "The Centre Manager takes herself off duty because she is just too damn sore.\n";
-					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10);
-					sum = EVENT_WARNING;
-				}
-				else
-				{
-					ss << "As Centre Manager, " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
-					if (t > 80 && h < 40)
-					{
-						ss << "some potions";
-						g_Gold.consumable_cost(20, true);
-						current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 20, 100);
-						current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 20, 0);
-					}
-					else if (t > 80)
-					{
-						ss << "a resting potion";
-						g_Gold.consumable_cost(10, true);
-						current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 20, 0);
-					}
-					else if (h < 40)
-					{
-						ss << "a healing potion";
-						g_Gold.consumable_cost(10, true);
-						current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 20, 100);
-					}
-					ss << " for herself.\n";
-				}
 			}
 			else	// do all other girls with a matron working
 			{
@@ -766,18 +757,18 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 						if (t > 80 && h < 40)
 						{
 							ss << girlName << " recuperate.\n";
-							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(g_Dice % 4 + 2));
-							g_Girls.UpdateStat(current, STAT_HEALTH, (g_Dice % 4 + 2));
+							g_Girls.UpdateStat(current, STAT_HEALTH, 2 + g_Dice % 4, false);
+							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(2 + g_Dice % 4), false);
 						}
 						else if (t > 80)
 						{
 							ss << girlName << " to relax.\n";
-							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(g_Dice % 5 + 5));
+							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(5 + g_Dice % 5), false);
 						}
 						else if (h < 40)
 						{
-							ss << "heal " << girlName << ".\n";
-							g_Girls.UpdateStat(current, STAT_HEALTH, (g_Dice % 5 + 5));
+							ss << " heal " << girlName << ".\n";
+							g_Girls.UpdateStat(current, STAT_HEALTH, 5 + g_Dice % 5, false);
 						}
 					}
 				}

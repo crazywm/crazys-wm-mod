@@ -96,7 +96,7 @@ bool cJobManager::WorkRancher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		ss << girlName << " has no idea what she is doing.";
 		beasts *= 0.5; food *= 0.5; wages -= 10; roll_a -= 5; roll_b -= 10;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//

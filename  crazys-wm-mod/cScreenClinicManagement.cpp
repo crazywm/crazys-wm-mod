@@ -224,8 +224,8 @@ void cScreenClinicManagement::update_image()
 		if (lastNum != selection)
 		{
 			stringstream text;
-			text << g_Girls.GetGirlMood(selected_girl) << "\n\n" << selected_girl->m_Desc;
-			if (cfg.debug.log_extradetails()) text << "\n\nBased on: " << selected_girl->m_Name;
+			text << g_Girls.GetGirlMood(selected_girl) << "\n \n" << selected_girl->m_Desc;
+			if (cfg.debug.log_extradetails()) text << "\n \nBased on: " << selected_girl->m_Name;
 			EditTextItem(text.str(), girldesc_id);
 			Rand = true;
 			lastNum = selection;

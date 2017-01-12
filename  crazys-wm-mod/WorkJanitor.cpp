@@ -55,7 +55,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked cleaning the Clinic.\n\n";
+	ss << " worked cleaning the Clinic.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
@@ -86,7 +86,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 	// slave girls not being paid for a job that normally you would pay directly for do less work
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
@@ -101,10 +101,10 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
-	ss << "\n\nCleanliness rating improved by " << (int)CleanAmt;
+	ss << "\n \nCleanliness rating improved by " << (int)CleanAmt;
 	if (playtime)	// `J` needs more variation
 	{
-		ss << "\n\n" << girlName << " finished her cleaning early so she ";
+		ss << "\n \n" << girlName << " finished her cleaning early so she ";
 		if (girl->is_pregnant() && girl->health() < 90)
 		{
 			ss << "got a quick checkup and made sure her unborn baby was doing OK.";

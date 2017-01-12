@@ -167,6 +167,9 @@ sScript *cGameScript::Process(sScript *Script)
 	case 92: return Script_RevCowGirlTarget(Script);
 	case 93: return Script_SexDoggyTarget(Script);
 	case 94: return Script_NormalSexWithRandomTarget(Script);
+	case 95: return Script_IfGirlHasItem(Script);					// `J` new .06.02.55
+	case 96: return Script_AddItemtoGirl(Script);					// `J` new .06.02.55
+	case 97: return Script_GivePlayerItem(Script);					// `J` new .06.02.55
 
 		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
 
@@ -191,7 +194,6 @@ void cGameScript::RunScript()
 		Release();
 	}
 }
-
 sScript *cGameScript::Script_Dialog(sScript *Script)
 {
 	string text = Script->m_Entries[0].m_Text;
@@ -206,24 +208,20 @@ sScript *cGameScript::Script_Dialog(sScript *Script)
 	g_MessageQue.AddToQue(text, COLOR_BLUE);
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_Init(sScript *Script)
 {
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_EndInit(sScript *Script)
 {
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_EndScript(sScript *Script)
 {
 	m_Active = false;
 	m_Leave = true;
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_ChoiceBox(sScript *Script)
 {
 	int value[2];
@@ -252,13 +250,11 @@ sScript *cGameScript::Script_ChoiceBox(sScript *Script)
 
 	return Script; // Go to next script action
 }
-
 sScript *cGameScript::Script_Restart(sScript *Script)
 {
 	m_Leave = true;
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_SetVar(sScript *Script)
 {
 	int value[2];
@@ -269,7 +265,6 @@ sScript *cGameScript::Script_SetVar(sScript *Script)
 	m_Vars[value[0]] = value[1];
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_SetVarRandom(sScript *Script)
 {
 	int num = 0;
@@ -283,7 +278,6 @@ sScript *cGameScript::Script_SetVarRandom(sScript *Script)
 	m_Vars[value[0]] = num;
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_IfVar(sScript *Script)
 {
 	bool Skipping = false; // Flag for if...then condition
@@ -343,23 +337,19 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 	}
 	return 0; // End of script reached
 }
-
 sScript *cGameScript::Script_Else(sScript *Script)
 {
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_EndIf(sScript *Script)
 {
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_ActivateChoice(sScript *Script)
 {
 	g_ChoiceManager.SetActive(Script->m_Entries[0].m_lValue);
 	return Script->m_Next; // Go to next script action
 }
-
 sScript *cGameScript::Script_IfChoice(sScript *Script)
 {
 	bool Skipping; // Flag for if...then condition
@@ -419,7 +409,6 @@ sScript *cGameScript::Script_IfChoice(sScript *Script)
 	}
 	return 0; // End of script reached
 }
-
 sScript *cGameScript::Script_SetPlayerSuspision(sScript *Script)
 {
 	int value;
@@ -429,7 +418,6 @@ sScript *cGameScript::Script_SetPlayerSuspision(sScript *Script)
 
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_SetPlayerDisposition(sScript *Script)
 {
 	int value;
@@ -439,7 +427,6 @@ sScript *cGameScript::Script_SetPlayerDisposition(sScript *Script)
 
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_ClearGlobalFlag(sScript *Script)
 {
 	int value;
@@ -448,7 +435,6 @@ sScript *cGameScript::Script_ClearGlobalFlag(sScript *Script)
 	ClearGameFlag(value);
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_AddCustToDungeon(sScript *Script)
 {
 	bool wife = false;
@@ -466,7 +452,6 @@ sScript *cGameScript::Script_AddCustToDungeon(sScript *Script)
 
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 {
 	int value[7];
@@ -519,13 +504,11 @@ sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 	
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_SetGlobal(sScript *Script)
 {
 	SetGameFlag(Script->m_Entries[0].m_lValue, Script->m_Entries[1].m_lValue);
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_SetGirlFlag(sScript *Script)
 {
 	int value[2];
@@ -537,7 +520,6 @@ sScript *cGameScript::Script_SetGirlFlag(sScript *Script)
 	m_GirlTarget->m_Flags[value[0]] = (char)value[1];
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_AdjustGirlFlag(sScript *Script)
 {
 	int value[2];
@@ -549,8 +531,6 @@ sScript *cGameScript::Script_AdjustGirlFlag(sScript *Script)
 	m_GirlTarget->m_Flags[value[0]] += (char)value[1];
 	return Script->m_Next;
 }
-
-
 sScript *cGameScript::Script_AddRandomValueToGold(sScript *Script)
 {
 	int value[2];
@@ -562,7 +542,6 @@ sScript *cGameScript::Script_AddRandomValueToGold(sScript *Script)
 
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_AddManyRandomGirlsToDungeon(sScript *Script)
 {
 	int value[7];
@@ -597,8 +576,6 @@ sScript *cGameScript::Script_AddManyRandomGirlsToDungeon(sScript *Script)
 
 	return Script->m_Next;
 }
-
-// 
 sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 {
 	int value[6];
@@ -676,9 +653,9 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 
 		string biography = "Daughter of " + Mother->m_Realname + " and a deadbeat brothel client.";
 
-		if (value[0] > 0)	Daughter1->m_Desc = Daughter1->m_Desc + "\n\n" + biography;
-		if (value[0] > 1)	Daughter2->m_Desc = Daughter2->m_Desc + "\n\n" + biography;
-		if (value[0] > 2)	Daughter3->m_Desc = Daughter3->m_Desc + "\n\n" + biography;
+		if (value[0] > 0)	Daughter1->m_Desc = Daughter1->m_Desc + "\n \n" + biography;
+		if (value[0] > 1)	Daughter2->m_Desc = Daughter2->m_Desc + "\n \n" + biography;
+		if (value[0] > 2)	Daughter3->m_Desc = Daughter3->m_Desc + "\n \n" + biography;
 		
 		if (value[0] > 0)
 		{
@@ -744,15 +721,11 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 
 	return Script->m_Next;
 }
-
-
-
 sScript *cGameScript::Script_AddTargetGirl(sScript *Script)
 {
 	cScriptUtils::add_girl_to_brothel(m_GirlTarget);
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_AdjustTargetGirlStat(sScript *Script)
 {
 	int value[2];
@@ -767,7 +740,6 @@ sScript *cGameScript::Script_AdjustTargetGirlStat(sScript *Script)
 	}
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_AdjustTargetGirlSkill(sScript *Script)
 {
 	int value[2];
@@ -779,8 +751,6 @@ sScript *cGameScript::Script_AdjustTargetGirlSkill(sScript *Script)
 	}
 	return Script->m_Next;
 }
-
-
 sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 {
 	if (m_GirlTarget == 0) return Script->m_Next;
@@ -809,7 +779,6 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_GivePlayerRandomSpecialItem(sScript *Script)
 {
 	sInventoryItem* item = g_InvManager.GetRandomItem();
@@ -865,7 +834,6 @@ sScript *cGameScript::Script_GivePlayerRandomSpecialItem(sScript *Script)
 
 	return Script->m_Next;
 }
-
 sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 {
 	bool Skipping; // Flag for if...then condition
@@ -918,7 +886,6 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 	}
 	return 0; // End of script reached
 }
-
 sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 {
 	bool Skipping; // Flag for if...then condition
@@ -971,7 +938,6 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 	}
 	return 0; // End of script reached
 }
-
 sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 {
 	bool Skipping = false; // Flag for if...then condition
@@ -1035,7 +1001,6 @@ sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 	}
 	return 0; // End of script reached
 }
-
 sScript* cGameScript::Script_GameOver(sScript* Script)
 {
 	g_MessageQue.AddToQue("GAME OVER", COLOR_RED);
@@ -1046,7 +1011,6 @@ sScript* cGameScript::Script_GameOver(sScript* Script)
 	m_Leave = true;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 {
 	bool Skipping = false; // Flag for if...then condition
@@ -1110,7 +1074,6 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 	}
 	return 0; // End of script reached
 }
-
 sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 {
 	bool Skipping = false; // Flag for if...then condition
@@ -1174,7 +1137,6 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 	}
 	return 0; // End of script reached
 }
-
 sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 {
 	bool Skipping; // Flag for if...then condition
@@ -1224,13 +1186,6 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 	}
 	return 0; // End of script reached
 }
-
-/*
-* this ought to use common code from the dungeon screen manager
-*
-* more to the point, both of them should use code from a dungeon
-* object
-*/
 sScript* cGameScript::Script_TortureTarget(sScript* Script)
 {
 	cGirlTorture gt(m_GirlTarget);
@@ -1238,7 +1193,6 @@ sScript* cGameScript::Script_TortureTarget(sScript* Script)
 
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 {
 	if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 10)
@@ -1297,7 +1251,6 @@ sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_NormalSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
@@ -1313,7 +1266,6 @@ sScript* cGameScript::Script_NormalSexTarget(sScript* Script)
 
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
@@ -1334,7 +1286,6 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_AnalSexTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ANAL, 2);
@@ -1342,7 +1293,6 @@ sScript* cGameScript::Script_AnalSexTarget(sScript* Script)
 
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_BDSMSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
@@ -1358,7 +1308,6 @@ sScript* cGameScript::Script_BDSMSexTarget(sScript* Script)
 
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 {
 	bool Skipping; // Flag for if...then condition
@@ -1409,7 +1358,6 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 	}
 	return 0; // End of script reached
 }
-
 sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
@@ -1426,7 +1374,6 @@ sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_LesbianSexTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 2);
@@ -1656,8 +1603,6 @@ sScript* cGameScript::Script_AdjustTraitTemp(sScript* Script)					// `J` new
 	}
 	return Script->m_Next;
 }
-
-
 sScript* cGameScript::Script_GetRandomGirl(sScript* Script)						// `J` new
 {
 	m_GirlTarget = 0;
@@ -1768,84 +1713,72 @@ sScript* cGameScript::Script_GetRandomGirl(sScript* Script)						// `J` new
 	}
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_DeepTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_DEEPTHROAT;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_EatOutTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_EATOUT;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_StrapOnTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_STRAPON;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_Les69ingTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_LES69ING;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_DildoTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_DILDO;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_SubTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_SUB;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_LickTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_LICK;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_SuckBallsTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_SUCKBALLS;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_CowGirlTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_COWGIRL;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_RevCowGirlTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_REVCOWGIRL;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_SexDoggyTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_SEXDOGGY;
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
 {
 	if (m_GirlTarget)
@@ -1862,8 +1795,92 @@ sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
 
 	return Script->m_Next;
 }
+sScript* cGameScript::Script_IfGirlHasItem(sScript* Script)					// `J` new .06.02.55
+{
+	bool Skipping = false; // Flag for if...then condition
+	m_NestLevel++;
+	int Nest = m_NestLevel;
 
+	Skipping = g_Girls.HasItemJ(m_GirlTarget, Script->m_Entries[0].m_Text) == -1;
+	// At this point, Skipping states if the script actions
+	// need to be skipped due to a conditional if...then statement.
+	// Actions are further processed if skipped = false, looking
+	// for an else to flip the skip mode, or an endif to end
+	// the conditional block.
+	Script = Script->m_Next; // Go to next action to process
+	while (Script != 0)
+	{
+		if (m_Leave) break;
 
+		// if else, flip skip mode
+		if (Script->m_Type == 10)
+		{
+			if (Nest == m_NestLevel) Skipping = !Skipping;
+		}
+
+		// break on end if
+		if (Script->m_Type == 11)
+		{
+			if (Nest == m_NestLevel)
+			{
+				m_NestLevel--;
+				return Script->m_Next;
+			}
+			m_NestLevel--;
+		}
+
+		// Process script function in conditional block
+		// making sure to skip actions when condition not met.
+		if (Skipping)
+		{
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
+			Script = Script->m_Next;
+		}
+		else
+		{
+			if ((Script = Process(Script)) == 0) return 0;
+		}
+	}
+	return 0; // End of script reached
+
+}
+sScript* cGameScript::Script_AddItemtoGirl(sScript* Script)					// `J` new .06.02.55
+{
+	sInventoryItem* item = g_InvManager.GetItem(Script->m_Entries[0].m_Text);
+	int value[2];
+	value[0] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	value[1] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
+
+	g_LogFile.ss() << "Debug: New script part: AddItemtoGirl  ||  Trying to add " << value[0] << " of item: " << Script->m_Entries[0].m_Text
+		<< "  to girl: " << (m_GirlTarget ? m_GirlTarget->m_Name : " !NO GIRL! ")<< " | Item " << (item ? "Found" : " !NOT FOUND! ");
+
+	if (item && m_GirlTarget && value[0] > 0)
+	{
+		for (int i = 0; i < value[0]; i++)
+		{
+			if (value[1] == 0)	g_Girls.AddInv(m_GirlTarget, item);
+			else	g_InvManager.Equip(m_GirlTarget, g_Girls.AddInv(m_GirlTarget, item), false);
+		}
+	}
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_GivePlayerItem(sScript* Script)					// `J` new .06.02.55
+{
+	sInventoryItem* item = g_InvManager.GetItem(Script->m_Entries[0].m_Text);
+	int amount = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+
+	g_LogFile.ss() << "Debug: New script part: GivePlayerItem  ||  Trying to add " << amount << " of item: " << Script->m_Entries[0].m_Text
+		<< "  to Inventory  |  Item " << (item ? "Found" : " !NOT FOUND! ");
+
+	if (item && amount > 0)
+	{
+		for (int i = 0; i < amount; i++)
+		{
+			g_Brothels.AddItemToInventory(item);
+		}
+	}
+	return Script->m_Next;
+}
 //sScript* cGameScript::Script_GirlNameTarget(sScript* Script)
 //{
 //	if(m_GirlTarget)
@@ -1877,7 +1894,3 @@ sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
 //
 //	return Script->m_Next;
 //}
-/*
-
-
-*/

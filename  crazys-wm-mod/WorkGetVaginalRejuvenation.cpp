@@ -70,7 +70,7 @@ bool cJobManager::WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, boo
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	ss << " is in the Clinic to get her vagina tightened.\n\n";
+	ss << " is in the Clinic to get her vagina tightened.\n \n";
 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient
@@ -153,7 +153,7 @@ bool cJobManager::WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, boo
 
 		g_Girls.RegainVirginity(girl);	// `J` updated for trait/status
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
-		ss << "\n\nShe has been released from the Clinic.";
+		ss << "\n \nShe has been released from the Clinic.";
 	}
 
 #pragma endregion

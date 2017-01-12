@@ -124,7 +124,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			ss << " and with a weapon in hand. The crowd felt she was ready for battle.";
 		}
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
@@ -148,7 +148,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	if (fight_outcome == 7)
 	{
-		ss << "The beasts were not cooperating and refused to fight.\n\n";
+		ss << "The beasts were not cooperating and refused to fight.\n \n";
 		ss << "(Error: You need a Non-Human Random Girl to allow WorkFightBeast randomness)";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 	}
@@ -198,11 +198,11 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
 		{
-			ss << "\n\nAll that fighting proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
+			ss << "\n \nAll that fighting proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
 		}
 		else
 		{
-			ss << "\n\nAll that fighting proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
+			ss << "\n \nAll that fighting proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}
@@ -224,7 +224,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << " had a pleasant time fighting beasts today.";
 		enjoy += 1;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 	// Cleanup
 	if (tempgirl) delete tempgirl; tempgirl = 0;

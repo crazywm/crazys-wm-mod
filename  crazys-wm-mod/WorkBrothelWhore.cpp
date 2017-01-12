@@ -273,7 +273,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		// test for specific girls
 		if (girl->has_trait("Skeleton"))
 		{
-			fuckMessage << "The customer sees that you are offering up a Skeleton for sex and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
+			fuckMessage << "The customer sees that you are offering up a Skeleton for sex and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n \n";
 			brothel->m_Fame -= 5;
 			The_Player->customerfear(2);
 			acceptsGirl = false;
@@ -283,13 +283,13 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		{
 			if (Cust->m_ParticularGirl == g_Brothels.GetGirlPos(brothel->m_id, girl))
 			{
-				fuckMessage << "This is the customer's favorite girl.\n\n";
+				fuckMessage << "This is the customer's favorite girl.\n \n";
 				acceptsGirl = true;
 			}
 		}
 		else if (girl->has_trait("Zombie") && Cust->m_Fetish == FETISH_FREAKYGIRLS && g_Dice.percent(10))
 		{
-			fuckMessage << "This customer is intrigued to fuck a Zombie girl.\n\n";
+			fuckMessage << "This customer is intrigued to fuck a Zombie girl.\n \n";
 			acceptsGirl = true;
 		}
 		else
@@ -300,7 +300,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			// Check for fetish match
 			if (g_Girls.CheckGirlType(girl, Cust->m_Fetish))
 			{
-				fuckMessage << "The customer loves this type of girl.\n\n";
+				fuckMessage << "The customer loves this type of girl.\n \n";
 				acceptsGirl = true;
 			}
 		}
@@ -310,132 +310,131 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		{
 			if (girl->has_trait("Zombie"))
 			{
-				fuckMessage << "The customer sees that you are offering up a Zombie girl and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n\n";
+				fuckMessage << "The customer sees that you are offering up a Zombie girl and is scared, if you allow that kind of thing in your brothels, what else do you allow? They left in a hurry, afraid of what might happen if they stay.\n \n";
 				brothel->m_Fame -= 10;
 				The_Player->customerfear(5);
 				acceptsGirl = false;
 			}
 			else if (girl->has_trait("Lesbian") && Cust->m_IsWoman && g_Dice.percent(50))
 			{
-				fuckMessage << "The female customer chooses her because she is a Lesbian.\n\n";
+				fuckMessage << "The female customer chooses her because she is a Lesbian.\n \n";
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait("Straight") && Cust->m_IsWoman && g_Dice.percent(10))
 			{
-				fuckMessage << girlName << " refuses to accept a female customer because she is Straight.\n\n";
+				fuckMessage << girlName << " refuses to accept a female customer because she is Straight.\n \n";
 				brothel->m_Fame -= 2;
 				acceptsGirl = false;
 			}
 			else if (girl->has_trait("Lesbian") && !Cust->m_IsWoman && g_Dice.percent(10))
 			{
-				fuckMessage << girlName << " refuses to accept a male customer because she is a Lesbian.\n\n";
+				fuckMessage << girlName << " refuses to accept a male customer because she is a Lesbian.\n \n";
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
 			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	//
 			{
-				fuckMessage << girlName << " refuses to sleep with a beast because she has too much dignity for that.\n\n";
+				fuckMessage << girlName << " refuses to sleep with a beast because she has too much dignity for that.\n \n";
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
 			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))
 			{
-				fuckMessage << girlName << " refuses to sleep with a beast because one of Royal blood is above that.\n\n";
+				fuckMessage << girlName << " refuses to sleep with a beast because one of Royal blood is above that.\n \n";
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
 			else if (girl->is_pregnant() && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(35))
 			{
-				fuckMessage << girlName << " refuses because she shouldn't fuck beasts in her condition.\n\n";
+				fuckMessage << girlName << " refuses because she shouldn't fuck beasts in her condition.\n \n";
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
 			else if (g_Girls.GetStat(girl, STAT_HEALTH) < 33 && g_Dice.percent(50))
 			{
-				fuckMessage << "The customer refuses because " << girlName << " looks sick and he doesn't want to catch anything.\n\n";
+				fuckMessage << "The customer refuses because " << girlName << " looks sick and he doesn't want to catch anything.\n \n";
 				brothel->m_Fame -= 10;
 				acceptsGirl = false;
 			}
 			else if (girl->has_trait( "Your Daughter") && g_Dice.percent(20))
 			{
-				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your daughter.\n\n";
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your daughter.\n \n";
 				knowdaughter = true;
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait( "Your Wife") && g_Dice.percent(20))
 			{
-				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your wife.\n\n";
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your wife.\n \n";
 				knowwife = true;
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait("Porn Star") && g_Dice.percent(15))
 			{
-				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " has seen her in porn.\n\n";
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " has seen her in porn.\n \n";
 				acceptsGirl = true;
 			}
 			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && g_Dice.percent(10))
 			{
-				fuckMessage << "The customer chooses her because she is former royalty.\n\n";
+				fuckMessage << "The customer chooses her because she is former royalty.\n \n";
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait("Teacher") && g_Dice.percent(10))
 			{
 				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " used to daydream about this back when "
-					<< (Cust->m_IsWoman ? "she" : "he") << " was in " << girlName << "'s class.\n\n";
+					<< (Cust->m_IsWoman ? "she" : "he") << " was in " << girlName << "'s class.\n \n";
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait("Old") && g_Dice.percent(20))
 			{
-				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " likes mature women.\n\n";
+				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " likes mature women.\n \n";
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait("Natural Pheromones") && g_Dice.percent(20))
 			{
-				fuckMessage << "The customer chooses her for reasons " << (Cust->m_IsWoman ? "she" : "he") << " can't explain. There's something about her.\n\n";
+				fuckMessage << "The customer chooses her for reasons " << (Cust->m_IsWoman ? "she" : "he") << " can't explain. There's something about her.\n \n";
 				acceptsGirl = true;
 			}
 			else if (g_Dice.percent(10) && girl->has_trait("Lolita"))
 			{
 				fuckMessage << "The customer chooses her because "
-					<< (Cust->m_IsWoman ? "she wants a young woman, uncorrupted by men." : "he's hoping for a virgin, and she looks like one.\n\n");
+					<< (Cust->m_IsWoman ? "she wants a young woman, uncorrupted by men.\n" : "he's hoping for a virgin, and she looks like one.\n") << "\n";
 				acceptsGirl = true;
 			}
 			else if (g_Dice.percent(20) && girl->has_trait("Social Drinker"))
 			{
-				fuckMessage << "The customer chooses her because she's fun, flirty and half-cut.\n\n";
+				fuckMessage << "The customer chooses her because she's fun, flirty and half-cut.\n \n";
 				acceptsGirl = true;
 			}
 			else if (g_Dice.percent(40) && girl->has_trait("Exhibitionist") && g_Girls.GetStat(girl, STAT_BEAUTY) >= 50)
 			{
-				fuckMessage << "The customer chooses her because she walks into the waiting room naked and the customer likes what "
-					<< (Cust->m_IsWoman ? "she sees.\n\n" : "he sees.\n\n");
+				fuckMessage << "The customer chooses her because she walks into the waiting room naked and the customer likes what "					<< (Cust->m_IsWoman ? "she sees.\n": "he sees.\n") << "\n";
 				acceptsGirl = true;
 			}
 			else if (g_Dice.percent(5) && (girl->has_trait("Slut") || g_Girls.GetStat(girl, STAT_DIGNITY) >= 70))
 			{
 				fuckMessage << girlName << " gets bored of waiting for someone to step up and starts " << (Cust->m_IsWoman ? "fingering this lady" : "giving this guy a handjob")
-					<< " right there in the waiting room. The customer quickly chooses her.\n\n";
+					<< " right there in the waiting room. The customer quickly chooses her.\n \n";
 				acceptsGirl = true;
 			}
 			else if (Cust->m_Stats[STAT_LIBIDO] >= 80)
 			{
-				fuckMessage << "Customer chooses her because they are very horny.\n\n";
+				fuckMessage << "Customer chooses her because they are very horny.\n \n";
 				acceptsGirl = true;
 			}
 			else if (((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2) >= 90)	// if she is drop dead gorgeous
 			{
-				fuckMessage << "Customer chooses her because they are stunned by her beauty.\n\n";
+				fuckMessage << "Customer chooses her because they are stunned by her beauty.\n \n";
 				acceptsGirl = true;
 			}
 			else if (g_Girls.GetStat(girl, STAT_FAME) >= 80)	// if she is really famous
 			{
-				fuckMessage << "Customer chooses her because she is so famous.\n\n";
+				fuckMessage << "Customer chooses her because she is so famous.\n \n";
 				acceptsGirl = true;
 			}
 			// WD:	Use Magic only as last resort
 			else if (g_Girls.GetSkill(girl, SKILL_MAGIC) > 50 && g_Girls.GetStat(girl, STAT_MANA) >= 20)	// she can use magic to get him
 			{
-				fuckMessage << girlName << " uses magic to get the customer to choose her.\n\n";
+				fuckMessage << girlName << " uses magic to get the customer to choose her.\n \n";
 				g_Girls.UpdateStat(girl, STAT_MANA, -20);
 				acceptsGirl = true;
 			}
@@ -696,82 +695,85 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		}
 		else if (femalecustcaught)
 		{
-			sInventoryItem* item;
-			string itemname = "";
-			stringstream itemtext;
-			itemtext << "Your gang " << guardgang->m_Name;
-			stringstream CGmsg;
-			// `J` create the customer
-			sGirl* custgirl = g_Girls.CreateRandomGirl(18 + (max(0, g_Dice % 40 - 10)), false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-			int emprisontraittime = 1;
-			custgirl->pclove(-(g_Dice % 50 + 50));
-			custgirl->pcfear(g_Dice % 50 + 50);
-			custgirl->pchate(g_Dice % 50 + 50);
-			custgirl->m_Enjoyment[ACTION_COMBAT] -= (g_Dice % 50 + 20);
-			custgirl->m_Enjoyment[ACTION_SEX] -= (g_Dice % 50 + 20);
-
 			// try to find an item
-			/*           */int	itemnum = g_Brothels.HasItem("Brainwashing Oil", -1);
+			/*			 */int	itemnum = g_Brothels.HasItem("Brainwashing Oil", -1);
 			if (itemnum == -1)	itemnum = g_Brothels.HasItem("Necklace of Control", -1);
 			if (itemnum == -1)	itemnum = g_Brothels.HasItem("Slave Band", -1);
-
-			if (itemnum == -1)	// no item
+			if (itemnum >= 0 || g_Dice.percent(10))
 			{
-				itemtext << " beat up " << custgirl->m_Realname;
-				fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
-				itemtext << " until she stops fighting back. They place your brand on her and bring your new slave to the dungeon.";
-				emprisontraittime = 5 + g_Dice % 21;
-				g_Girls.SetStat(custgirl, STAT_HEALTH, 5 + g_Dice % 70);
-				g_Girls.SetStat(custgirl, STAT_HAPPINESS, g_Dice % 50);
-				g_Girls.SetStat(custgirl, STAT_TIREDNESS, 50 + g_Dice % 51);
-				girl->obedience(g_Dice % 10);
-				girl->pchate(g_Dice % 10);
-				girl->pcfear(g_Dice % 10);
-				girl->pclove(-(g_Dice % 10));
-				girl->spirit(-(g_Dice % 10));
-			}
-			else		// item was found
-			{
-				item = g_Brothels.m_Inventory[itemnum];
-				itemname = item->m_Name;
-				g_InvManager.Equip(custgirl, g_Girls.AddInv(custgirl, item), true);
-				g_Brothels.RemoveItemFromInventoryByNumber(itemnum);
-				if (itemname == "Brainwashing Oil")
-				{
-					emprisontraittime += g_Dice % 5;
-					itemtext << " forced a bottle of Brainwashing Oil down her throat";
-					fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
-					itemtext << ". After a few minutes of struggling,";
-				}
-				else if (itemname == "Necklace of Control")
-				{
-					emprisontraittime += g_Dice % 10;
-					itemtext << " placed a Necklace of Control around her neck";
-					fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
-					itemtext << ". After a few minutes of struggling, the magic in the necklace activated and";
-				}
-				else if (itemname == "Slave Band")
-				{
-					emprisontraittime += g_Dice % 15;
-					itemtext << " placed a Slave Band on her arm";
-					fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
-					itemtext << ". After a few minutes of struggling, the magic in the Slave Band activated and";
-				}
-				itemtext << " your new slave, " << custgirl->m_Realname << ", was taken to the dungeon.";
+				sInventoryItem* item;
+				string itemname = "";
+				stringstream itemtext;
+				itemtext << "Your gang " << (guardgang ? guardgang->m_Name : "");
+				stringstream CGmsg;
+				// `J` create the customer
+				sGirl* custgirl = g_Girls.CreateRandomGirl(18 + (max(0, g_Dice % 40 - 10)), false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+				int emprisontraittime = 1;
+				custgirl->pclove(-(g_Dice % 50 + 50));
+				custgirl->pcfear(g_Dice % 50 + 50);
+				custgirl->pchate(g_Dice % 50 + 50);
+				custgirl->m_Enjoyment[ACTION_COMBAT] -= (g_Dice % 50 + 20);
+				custgirl->m_Enjoyment[ACTION_SEX] -= (g_Dice % 50 + 20);
 
-			}
-			// `J` do all the messages
-			CGmsg << custgirl->m_Realname << " was caught trying to run out without paying for services provided by " << girl->m_Realname << ".\n\n" << itemtext.str();
-			custgirl->add_trait("Emprisoned Customer", emprisontraittime);	// add temp trait
-			if (g_Dice.percent(75))	custgirl->lose_virginity();				// most of the time she will not be a virgin
-			The_Player->suspicion(g_Dice % 10);
-			The_Player->disposition(-(g_Dice % 10));
-			The_Player->customerfear(g_Dice % 10);
-			custgirl->m_Money = 0;
+				if (itemnum == -1)	// no item
+				{
+					itemtext << " beat up " << custgirl->m_Realname;
+					fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
+					itemtext << " until she stops fighting back. They place your brand on her and bring your new slave to the dungeon.";
+					emprisontraittime = 5 + g_Dice % 21;
+					g_Girls.SetStat(custgirl, STAT_HEALTH, 5 + g_Dice % 70);
+					g_Girls.SetStat(custgirl, STAT_HAPPINESS, g_Dice % 50);
+					g_Girls.SetStat(custgirl, STAT_TIREDNESS, 50 + g_Dice % 51);
+					girl->obedience(g_Dice % 10);
+					girl->pchate(g_Dice % 10);
+					girl->pcfear(g_Dice % 10);
+					girl->pclove(-(g_Dice % 10));
+					girl->spirit(-(g_Dice % 10));
+				}
+				else		// item was found
+				{
+					item = g_Brothels.m_Inventory[itemnum];
+					itemname = item->m_Name;
+					g_InvManager.Equip(custgirl, g_Girls.AddInv(custgirl, item), true);
+					g_Brothels.RemoveItemFromInventoryByNumber(itemnum);
+					if (itemname == "Brainwashing Oil")
+					{
+						emprisontraittime += g_Dice % 5;
+						itemtext << " forced a bottle of Brainwashing Oil down her throat";
+						fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
+						itemtext << ". After a few minutes of struggling,";
+					}
+					else if (itemname == "Necklace of Control")
+					{
+						emprisontraittime += g_Dice % 10;
+						itemtext << " placed a Necklace of Control around her neck";
+						fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
+						itemtext << ". After a few minutes of struggling, the magic in the necklace activated and";
+					}
+					else if (itemname == "Slave Band")
+					{
+						emprisontraittime += g_Dice % 15;
+						itemtext << " placed a Slave Band on her arm";
+						fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
+						itemtext << ". After a few minutes of struggling, the magic in the Slave Band activated and";
+					}
+					itemtext << " your new slave, " << custgirl->m_Realname << ", was taken to the dungeon.";
 
-			custgirl->m_Events.AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
-			// `J` add the customer to the dungeon
-			g_Brothels.GetDungeon()->AddGirl(custgirl, DUNGEON_CUSTNOPAY);
+				}
+				// `J` do all the messages
+				CGmsg << custgirl->m_Realname << " was caught trying to run out without paying for services provided by " << girl->m_Realname << ".\n \n" << itemtext.str();
+				custgirl->add_trait("Emprisoned Customer", emprisontraittime);	// add temp trait
+				if (g_Dice.percent(75))	custgirl->lose_virginity();				// most of the time she will not be a virgin
+				The_Player->suspicion(g_Dice % 10);
+				The_Player->disposition(-(g_Dice % 10));
+				The_Player->customerfear(g_Dice % 10);
+				custgirl->m_Money = 0;
+
+				custgirl->m_Events.AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
+				// `J` add the customer to the dungeon
+				g_Brothels.GetDungeon()->AddGirl(custgirl, DUNGEON_CUSTNOPAY);
+			}
+			else SetGameFlag(FLAG_CUSTNOPAY);		// if not taken as a slave, use the old code
 		}
 		else
 		{
@@ -816,8 +818,8 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	ss << girlName << (bStreetWork ? " worked the streets and" : "") << " saw " << NumSleptWith << " customers this shift.";
 	if (!bStreetWork)
 	{
-		if (g_Customers.GetNumCustomers() == 0)	{ ss << "\n\nThere were no more customers left."; }
-		else if (NumSleptWith < NumCusts)		{ ss << "\n\nShe ran out of customers who like her."; }
+		if (g_Customers.GetNumCustomers() == 0)	{ ss << "\n \nThere were no more customers left."; }
+		else if (NumSleptWith < NumCusts)		{ ss << "\n \nShe ran out of customers who like her."; }
 	}
 	summary += ss.str();
 

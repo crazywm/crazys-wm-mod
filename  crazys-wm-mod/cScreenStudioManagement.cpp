@@ -230,8 +230,8 @@ void cScreenStudioManagement::update_image()
 		if (lastNum != selection)
 		{
 			stringstream text;
-			text << g_Girls.GetGirlMood(selected_girl) << "\n\n" << selected_girl->m_Desc;
-			if (cfg.debug.log_extradetails()) text << "\n\nBased on: " << selected_girl->m_Name;
+			text << g_Girls.GetGirlMood(selected_girl) << "\n \n" << selected_girl->m_Desc;
+			if (cfg.debug.log_extradetails()) text << "\n \nBased on: " << selected_girl->m_Name;
 			EditTextItem(text.str(), girldesc_id);
 			Rand = true;
 			lastNum = selection;
@@ -256,6 +256,7 @@ void cScreenStudioManagement::check_events()
 	if (g_InterfaceEvents.CheckButton(viewdetails_id))	{ g_GirlDetails.lastsexact = -1;	ViewSelectedGirl(); }
 	if (g_InterfaceEvents.CheckButton(day_id))	{ Day0Night1 = SHIFT_NIGHT;	DisableButton(day_id, false);	DisableButton(night_id, true);	RefreshSelectedJobType(); }
 	if (g_InterfaceEvents.CheckButton(night_id)){ Day0Night1 = SHIFT_NIGHT;	DisableButton(day_id, false);	DisableButton(night_id, true);	RefreshSelectedJobType(); }
+	if (g_InterfaceEvents.CheckButton(createmovie_id))	{ g_InitWin = true;	g_WinManager.push("Movie Maker");	return; }
 	if (g_InterfaceEvents.CheckListbox(jobtypelist_id))
 	{
 		selection = GetSelectedItemFromList(jobtypelist_id);
@@ -383,7 +384,6 @@ void cScreenStudioManagement::check_events()
 		}
 		return;
 	}
-	if (g_InterfaceEvents.CheckButton(createmovie_id))	{ g_InitWin = true;	g_WinManager.push("Movie Maker");	return; }
 }
 
 void cScreenStudioManagement::RefreshSelectedJobType()

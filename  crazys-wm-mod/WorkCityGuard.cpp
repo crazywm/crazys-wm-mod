@@ -58,7 +58,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " helps guard the city.\n\n";
+	ss << " helps guard the city.\n \n";
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
@@ -119,7 +119,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		}
 		if (fight_outcome == 7)
 		{
-			ss << "There were no criminals around for her to fight.\n\n";
+			ss << "There were no criminals around for her to fight.\n \n";
 			ss << "(Error: You need a Random Girl to allow WorkCityGuard randomness)";
 		}
 		else if (fight_outcome == 1)	// she won

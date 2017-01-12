@@ -62,7 +62,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked trying to recruit girls for you.\n\n";
+	ss << " worked trying to recruit girls for you.\n \n";
 
 	int wages = 100, tips = 0;
 	int enjoy = 0, fame = 0;
@@ -89,7 +89,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (HateLove <  60)	ss << "She finds you to be a good person.";
 	else if (HateLove <  80)	ss << "She has really strong feelings for you so she trys really hard for you.";
 	else						ss << "She loves you more then anything so she gives it her all.";
-	ss << "\n\n";
+	ss << "\n \n";
 
 	double jobperformance = JP_Recruiter(girl, false);
 	if (jobperformance >= 245)
@@ -122,7 +122,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		findchance = 4;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 	// `J` add in player's disposition so if the girl has heard of you
 	int dispmod = 0;
@@ -220,7 +220,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		ss << "But was unable to find anyone to join.";
 	}
 
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//

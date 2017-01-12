@@ -250,9 +250,6 @@
     <ClCompile Include="cHouseScreen.cpp">
       <Filter>Game Screens</Filter>
     </ClCompile>
-    <ClCompile Include="cMovieScreen.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
     <ClCompile Include="cScreenArenaManagement.cpp">
       <Filter>Game Screens</Filter>
     </ClCompile>
@@ -628,6 +625,7 @@
     <ClCompile Include="WorkSOStraight.cpp" />
     <ClCompile Include="WorkFakeOrgasm.cpp" />
     <ClCompile Include="WorkCureDiseases.cpp" />
+    <ClCompile Include="cScreenMovie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -876,9 +874,6 @@
     <ClInclude Include="cHouseScreen.h">
       <Filter>Game Screens</Filter>
     </ClInclude>
-    <ClInclude Include="cMovieScreen.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
     <ClInclude Include="cScreenArenaManagement.h">
       <Filter>Game Screens</Filter>
     </ClInclude>
@@ -1057,6 +1052,9 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="cScreenSettings.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenMovie.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

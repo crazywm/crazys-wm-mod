@@ -91,7 +91,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		ss << "\nShe stripped for a customer.";
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 
 	//Adding cust here for use in scripts...
@@ -150,7 +150,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		wages -= 15;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 	//base tips, aprox 5-40% of base wages
 	tips += (int)(((5 + jobperformance / 6) * wages) / 100);
@@ -255,7 +255,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; tips += 25;
+		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
 
 	if (girl->has_trait( "Clumsy") && g_Dice.percent(5))

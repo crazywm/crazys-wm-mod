@@ -49,7 +49,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked tending crops on the farm.\n\n";
+	ss << " worked tending crops on the farm.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -96,7 +96,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		ss << "She seems to take more of the unuseable parts of the plants than she takes the edible parts.";
 		wages -= 10; foodproduced *= 0.8; roll_a -= 5; roll_b -= 10;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
@@ -145,7 +145,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Create Items				//
@@ -242,7 +242,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	if (cfg.debug.log_show_numbers())
 	{
-		ss << "\n\nNumbers:"
+		ss << "\n \nNumbers:"
 			<< "\n Job Performance = " << (int)jobperformance
 			<< "\n Wages = " << (int)wages
 			<< "\n Tips = " << (int)tips

@@ -1673,7 +1673,7 @@ bool cGangManager::sabotage_mission(sGang* gang)
 {
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::sabotage_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
-	ss << "Gang   " << gang->m_Name << "   is attacking rivals.\n\n";
+	ss << "Gang   " << gang->m_Name << "   is attacking rivals.\n \n";
 	/*
 	*	See if they can find any enemy assets to attack
 	*
@@ -1905,7 +1905,7 @@ bool cGangManager::recapture_mission(sGang* gang)
 {
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::recapture_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
-	ss << "Gang   " << gang->m_Name << "   is looking for escaped girls.\n\n";
+	ss << "Gang   " << gang->m_Name << "   is looking for escaped girls.\n \n";
 
 
 	// check if any girls have run away, if no runnaway then the gang continues on as normal
@@ -2021,7 +2021,7 @@ bool cGangManager::extortion_mission(sGang* gang)
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::extortion_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	The_Player->disposition(-1);	The_Player->customerfear(1);	The_Player->suspicion(1);
-	ss << "Gang   " << gang->m_Name << "   is capturing territory.\n\n";
+	ss << "Gang   " << gang->m_Name << "   is capturing territory.\n \n";
 
 	// Case 1:  Neutral businesses still around
 	int numB = m_Rivals->GetNumBusinesses();
@@ -2144,7 +2144,7 @@ bool cGangManager::petytheft_mission(sGang* gang)
 {
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::petytheft_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
-	ss << "Gang   " << gang->m_Name << "   is performing petty theft.\n\n";
+	ss << "Gang   " << gang->m_Name << "   is performing petty theft.\n \n";
 	The_Player->disposition(-1);
 	The_Player->customerfear(1);
 	The_Player->suspicion(1);
@@ -2172,7 +2172,7 @@ bool cGangManager::petytheft_mission(sGang* gang)
 			gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 			return false;
 		}
-		ss << "\n\n";
+		ss << "\n \n";
 		if (rival && rival->m_NumGangs > 0 && rival_gang->m_Num <= 0) rival->m_NumGangs--;
 		delete rival_gang;
 		rival_gang = 0;
@@ -2214,7 +2214,7 @@ bool cGangManager::petytheft_mission(sGang* gang)
 				if (numlost > startnum / 2)	ss << "well but your men still manage to capture her";
 				else if (numlost == 0)/* */	ss << "your men but loses quickly";
 				else/*                   */	ss << "your men but they take her down with only " << (numlost == 1 ? "one casualty" : "a few casualties");
-				ss << ".\nThey unmask " << girlName << ", take all her gold (" << gold << ") from her and drag her to the dungeon.\n\n";
+				ss << ".\nThey unmask " << girlName << ", take all her gold (" << gold << ") from her and drag her to the dungeon.\n \n";
 				girlimagetype = IMGTYPE_DEATH;
 				dungeonreason = DUNGEON_GIRLKIDNAPPED;
 				girl->m_Stats[STAT_OBEDIENCE] = 0;
@@ -2274,7 +2274,7 @@ bool cGangManager::petytheft_mission(sGang* gang)
 	if (gang->m_Num <= 0) return false;	// they all died so return and the message will be taken care of in the losegang function
 
 	ss << "Your gang robs " << numberoftargets << " " << who << " and get " << gold << " gold from them.";
-	if (numlost > 0) { ss << "\n\n" << gang->m_Name << " lost "; if (numlost == 1) ss << "one man."; else ss << numlost << " men."; }
+	if (numlost > 0) { ss << "\n \n" << gang->m_Name << " lost "; if (numlost == 1) ss << "one man."; else ss << numlost << " men."; }
 
 	gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 
@@ -2303,7 +2303,7 @@ bool cGangManager::grandtheft_mission(sGang* gang)
 	if (difficulty == 3)	{ place = "trade caravan";	defencechance = 70;		gold += 500 + g_Dice % 1500; }
 	if (difficulty >= 4)	{ place = "bank";			defencechance = 90;		gold += 1000 + g_Dice % 4000; difficulty = 4; }
 
-	ss << "Gang   " << gang->m_Name << "   goes out to rob a " << place << ".\n\n";
+	ss << "Gang   " << gang->m_Name << "   goes out to rob a " << place << ".\n \n";
 
 	// `J` chance of running into a rival gang updated for .06.02.41
 	int gangs = m_Rivals->GetNumRivalGangs();
@@ -2344,7 +2344,7 @@ bool cGangManager::grandtheft_mission(sGang* gang)
 		else if (dif > 0.3)/*   */	ss << "fight well but your men still manage to vanquish their foe";
 		else/*                  */	ss << "fight valiantly but your men still manage to vanquish their foe";
 	}
-	ss << ".\n\n";
+	ss << ".\n \n";
 
 	if (fightrival && defenders->m_Num <= 0) rival->m_NumGangs--;
 	delete defenders; defenders = 0;
@@ -2372,7 +2372,7 @@ bool cGangManager::kidnapp_mission(sGang* gang)
 {
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::kidnapp_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
-	ss << "Gang   " << gang->m_Name << "   is kidnapping girls.\n\n";
+	ss << "Gang   " << gang->m_Name << "   is kidnapping girls.\n \n";
 	bool captured = false;
 
 	if (g_Dice.percent(min(75, gang->intelligence())))	// chance to find a girl to kidnap
@@ -2525,7 +2525,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 	stringstream ss;
 	gang->m_Combat = true;
 	int num = gang->m_Num;
-	ss << "Gang   " << gang->m_Name << "   is exploring the catacombs.\n\n";
+	ss << "Gang   " << gang->m_Name << "   is exploring the catacombs.\n \n";
 
 	if (!m_Control_Gangs)	// use old code
 	{
@@ -2546,8 +2546,8 @@ bool cGangManager::catacombs_mission(sGang* gang)
 		if (gang->m_Num <= 0) return false;
 		else
 		{
-			if (num == gang->m_Num)	ss << "All " << gang->m_Num << " of them return.\n\n";
-			else ss << gang->m_Num << " of the " << num << " who went out return.\n\n";
+			if (num == gang->m_Num)	ss << "All " << gang->m_Num << " of them return.\n \n";
+			else ss << gang->m_Num << " of the " << num << " who went out return.\n \n";
 
 			// determine loot
 			int gold = gang->m_Num;
@@ -2633,7 +2633,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 				if (unique)
 				{
 					girl++;
-					ss << "\n\nYour men also captured a girl named ";
+					ss << "\n \nYour men also captured a girl named ";
 					ss << ugirl->m_Realname;
 					ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 					stringstream NGmsg;
@@ -2648,7 +2648,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 					if (ugirl != 0)  // make sure a girl was returned
 					{
 						girl++;
-						ss << "\n\nYour men also captured a girl.";
+						ss << "\n \nYour men also captured a girl.";
 						stringstream NGmsg;
 						ugirl->add_trait("Kidnapped", 2 + g_Dice % 10);
 						NGmsg << ugirl->m_Realname << " was captured in the catacombs by " << gang->m_Name << ".";
@@ -2662,7 +2662,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 			if (girl == 0 && gang->m_Num > 13) beasts++;
 			if (beasts > 0 && g_Dice.percent(gang->m_Num * 5))
 			{
-				ss << "\n\nYour men also bring back " << beasts << " beasts.";
+				ss << "\n \nYour men also bring back " << beasts << " beasts.";
 				g_Brothels.add_to_beasts(beasts);
 			}
 		}
@@ -2787,12 +2787,12 @@ bool cGangManager::catacombs_mission(sGang* gang)
 		if (gang->m_Num < 1) return false;	// they all died
 		else
 		{
-			if (num == gang->m_Num)	ss << "All " << gang->m_Num << " of them return.\n\n";
-			else ss << gang->m_Num << " of the " << num << " who went out return.\n\n";
+			if (num == gang->m_Num)	ss << "All " << gang->m_Num << " of them return.\n \n";
+			else ss << gang->m_Num << " of the " << num << " who went out return.\n \n";
 
 			if (gold > 0)
 			{
-				ss << "They bring back with them:   " << gold << " gold\n\n";
+				ss << "They bring back with them:   " << gold << " gold\n \n";
 				g_Gold.catacomb_loot(gold);
 			}
 
@@ -2943,7 +2943,7 @@ bool cGangManager::service_mission(sGang* gang)
 	{
 		int addnum = max(1, g_Dice.bell(-2, 4));
 		if (addnum + gang->m_Num > 15)	addnum = 15 - gang->m_Num;
-		ss << "\n\n";
+		ss << "\n \n";
 		/* */if (addnum <= 1)	{ addnum = 1;	ss << "A local boy"; }
 		else if (addnum == 2)	{ ss << "Two locals"; }
 		else /*            */	{ ss << "Some locals"; }
@@ -2958,12 +2958,12 @@ bool cGangManager::service_mission(sGang* gang)
 		dirt = max(5 + g_Dice % 26, gang->service() / 4);
 		brothel->m_SecurityLevel += sec;
 		brothel->m_Filthiness -= dirt;
-		ss << "\n\nThey cleaned up around " << brothel->m_Name << "; fixing lights, removing debris and making sure the area is secure.";
+		ss << "\n \nThey cleaned up around " << brothel->m_Name << "; fixing lights, removing debris and making sure the area is secure.";
 	}
 	if (g_Dice.percent(max(10, min(gang->m_Num * 6, gang->intelligence()))))
 	{
 		beasts += (max(1, g_Dice.bell(-4, 4)));
-		ss << "\n\nThey rounded up ";
+		ss << "\n \nThey rounded up ";
 		if (beasts <= 1)		{ beasts = 1;	ss << "a"; }
 		else if (beasts == 2)	{ ss << "two"; }
 		else/*             */	{ ss << "some"; }
@@ -3036,7 +3036,7 @@ bool cGangManager::service_mission(sGang* gang)
 bool cGangManager::gangtraining(sGang* gang)
 {
 	stringstream ss;
-	ss << "Gang   " << gang->m_Name << "   spend the week training and improving their skills.\n\n";
+	ss << "Gang   " << gang->m_Name << "   spend the week training and improving their skills.\n \n";
 
 	int old_combat = gang->combat();
 	int old_magic = gang->magic();
@@ -3083,7 +3083,7 @@ bool cGangManager::gangtraining(sGang* gang)
 bool cGangManager::gangrecruiting(sGang* gang)
 {
 	stringstream ss;
-	ss << "Gang   " << gang->m_Name << "   is recruiting.\n\n";
+	ss << "Gang   " << gang->m_Name << "   is recruiting.\n \n";
 	int recruit = 0;
 	int start = g_Dice.bell(1, 6);		// 1-6 people are available for recruitment
 	int available = start;

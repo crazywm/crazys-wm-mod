@@ -427,7 +427,7 @@ Merged pull request from Mute
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.53
 
-### Changes 01/03-4/2017
+### Changes 01/03-04/2017
 Added optional image name used to turn summary screen
 Fixed a text issue in girl enjoyment list where "Club Whore" was listed as "Bar Whore"
 Merged in Mute's pull request - See ChangeLog-Mute.txt for more details
@@ -437,12 +437,35 @@ Merged in Mute's pull request - See ChangeLog-Mute.txt for more details
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.54
 
+### Changes 01/05-11/2017
+Merged in Mute's pull requests - See ChangeLog-Mute.txt for more details
+Merged in mjsmagalhaes's pull request - More linux build capabilities
+Updated a few options for girl lists:
+ - Added Traits to column options for girl lists
+ - Added CalculateAskPrice before displaying girl Value
+Added new script commands requested by Cluster:
+ - IfGirlHasItem (*itemname*)
+ - AddItemtoGirl (*itemname*) (*amount*) (*equip*)
+ - GivePlayerItem (*itemname*) (*amount*)
+Renamed cMovieScreen.cpp/h to cScreenMovie.cpp/h to match all other screen files
+Added "CreateMovieButton" to cScreenMovie as requested by Cluster
+Movie scenes now get saved and loaded
+Greatly simplified fulltime vs not fulltime job changes in HandleSpecialJobs fixing a bug
+Reduced the chance of gangs taking as slaves female customers who don't pay whores to 10%
+Started fixing a few film jobs
+ - Fixed gang interactions in FilmOral
+Cleaned and Updated UpdateGirls in all non-brothel buildings
+ - fixed a bug in the farm
+Moved filthiness to 0 to the end of building processing
+Replaced several "\n\n" with "\n \n" to fix linux text bug
 
-
-
-
-
-
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.55
+ 
+ 
+ 
+ 
+ 
 
 $$$$ TO DO - SHORT TERM - (for this version) $$$$
 
