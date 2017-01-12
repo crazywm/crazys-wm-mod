@@ -68,14 +68,14 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	bool hasCounselor = g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) > 0;
 	if (!hasCounselor)
 	{
-		ss << "She sits in rehab doing nothing. You must assign a counselor to treat her.";
+		ss << " sits in rehab doing nothing. You must assign a counselor to treat her.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;	// not refusing
 	}
 
 	if (g_Dice.percent(50) && g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << "She fought with her counselor and did not make any progress this week.";
+		ss << " fought with her counselor and did not make any progress this week.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
 		if (Day0Night1) girl->m_WorkingDay--;
