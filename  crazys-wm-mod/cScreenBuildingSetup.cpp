@@ -471,14 +471,14 @@ void cScreenBuildingSetup::check_events()
 	{
 		switch (g_Building)		// set advertising budget based on slider
 		{
-		case BUILDING_STUDIO:	g_Studios.GetBrothel(0)->m_AdvertisingBudget = tariff.advertising_costs(SliderValue(advertsli_id) * 50);	break;
-		case BUILDING_CLINIC:	g_Clinic.GetBrothel(0)->m_AdvertisingBudget = tariff.advertising_costs(SliderValue(advertsli_id) * 50);	break;
-		case BUILDING_ARENA:	g_Arena.GetBrothel(0)->m_AdvertisingBudget = tariff.advertising_costs(SliderValue(advertsli_id) * 50);	break;
-		case BUILDING_CENTRE:	g_Centre.GetBrothel(0)->m_AdvertisingBudget = tariff.advertising_costs(SliderValue(advertsli_id) * 50);	break;
-		case BUILDING_HOUSE:	g_House.GetBrothel(0)->m_AdvertisingBudget = tariff.advertising_costs(SliderValue(advertsli_id) * 50);	break;
-		case BUILDING_FARM:		g_Farm.GetBrothel(0)->m_AdvertisingBudget = tariff.advertising_costs(SliderValue(advertsli_id) * 50);		break;
+		case BUILDING_STUDIO:	g_Studios.GetBrothel(0)->m_AdvertisingBudget = (SliderValue(advertsli_id) * 50);	break;
+		case BUILDING_CLINIC:	g_Clinic.GetBrothel(0)->m_AdvertisingBudget = (SliderValue(advertsli_id) * 50);	break;
+		case BUILDING_ARENA:	g_Arena.GetBrothel(0)->m_AdvertisingBudget = (SliderValue(advertsli_id) * 50);	break;
+		case BUILDING_CENTRE:	g_Centre.GetBrothel(0)->m_AdvertisingBudget = (SliderValue(advertsli_id) * 50);	break;
+		case BUILDING_HOUSE:	g_House.GetBrothel(0)->m_AdvertisingBudget = (SliderValue(advertsli_id) * 50);	break;
+		case BUILDING_FARM:		g_Farm.GetBrothel(0)->m_AdvertisingBudget = (SliderValue(advertsli_id) * 50);		break;
 		case BUILDING_BROTHEL:
-		default:				g_Brothels.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = tariff.advertising_costs(SliderValue(advertsli_id) * 50);
+		default:				g_Brothels.GetBrothel(g_CurrBrothel)->m_AdvertisingBudget = (SliderValue(advertsli_id) * 50);
 			break;
 		}
 		ss.str(""); ss << "Advertising Budget: " << tariff.advertising_costs(SliderValue(advertsli_id) * 50) << " gold / week";

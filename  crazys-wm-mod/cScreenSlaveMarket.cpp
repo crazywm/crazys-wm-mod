@@ -479,7 +479,7 @@ bool cScreenSlaveMarket::buy_slaves()
 	/* */if (numgirls == 1)	ss << "a girl,   " << girlsnames[0] << "   and send her to " << sendtotext.str();
 	else if (numgirls == 2)	ss << "two girls,   " << girlsnames[0] << "   and   " << girlsnames[1] << ". You send them to " << sendtotext.str();
 	else /*              */	ss << numgirls << " girls and send them to " << sendtotext.str();
-	ss << ".\n\n";
+	ss << ".\n \n";
 
 	// `J` zzzzzz - add in flavor texts here
 	if (numgirls < 1) ss << "(error, no girls)";

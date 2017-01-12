@@ -4980,7 +4980,7 @@ string cBrothelManager::disposition_text()
 	else if (The_Player->disposition() >= -10)	ss << "Neutral";
 	else if (The_Player->disposition() >= -50)	ss << "Not nice";
 	else if (The_Player->disposition() >= -80)	ss << "Mean";
-	else ss << gettext("Evil");
+	else ss << "Evil";
 	if (cfg.debug.log_show_numbers()) ss << " (" << The_Player->disposition() << ")";
 	return ss.str();
 }

@@ -10,3 +10,4 @@
 *.workspace
 /Makefile
 *.depend
+/WM:Game

@@ -2523,28 +2523,28 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	int cost = int(tariff.slave_price(girl, purchase));
 	g_LogFile.ss() << "slave " << (purchase ? "buy" : "sell") << "price = " << cost;
 	g_LogFile.ssend();
-	ss << "\n" << basestr[7] << cost << " Gold";
+	ss << "\n " << basestr[7] << cost << " Gold";
 	CalculateAskPrice(girl, false);
 	cost = girl->askprice();
-	ss << "\nAvg Pay per Customer : " << cost << " gold\n";
+	ss << "\nAvg Pay per Customer : " << cost << " gold\n ";
 
 	// display status
 	/* */if (girl->m_States&(1 << STATUS_SLAVE))	ss << "Is Branded a Slave\n";
 	else if (cfg.debug.log_extradetails())			ss << "( She Is Not a Slave )\n";
-	else ss << "\n";
+	else ss << " \n ";
 
-	/* */if (g_Girls.CheckVirginity(girl))			ss << "She is a Virgin\n";
-	else if (cfg.debug.log_extradetails())			ss << "( She Is Not a Virgin )\n";
-	else ss << "\n";
+	/* */if (g_Girls.CheckVirginity(girl))			ss << "She is a Virgin\n ";
+	else if (cfg.debug.log_extradetails())			ss << "( She Is Not a Virgin )\n ";
+	else ss << " \n ";
 
 	if (!purchase)
 	{
 		int to_go = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - girl->m_WeeksPreg;
-		/* */if (girl->m_States&(1 << STATUS_PREGNANT))				{ ss << "Is pregnant, due: " << to_go << " weeks\n"; }
-		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
-		else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated, due: " << to_go << " weeks\n"; }
-		else if (girl->m_PregCooldown != 0)							{ ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n"; }
-		else if (cfg.debug.log_extradetails())						{ ss << "( She Is not Pregnant )\n"; }
+		/* */if (girl->m_States&(1 << STATUS_PREGNANT))				{ ss << "Is pregnant, due: " << to_go << " weeks\n "; }
+		else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child, due: " << to_go << " weeks\n "; }
+		else if (girl->m_States&(1 << STATUS_INSEMINATED))			{ ss << "Is inseminated, due: " << to_go << " weeks\n "; }
+		else if (girl->m_PregCooldown != 0)							{ ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n "; }
+		else if (cfg.debug.log_extradetails())						{ ss << "( She Is not Pregnant )\n "; }
 		else ss << "\n";
 		// `J` moved the rest of children lines to second detail list
 	}
@@ -2553,14 +2553,14 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	else if (!girl->is_addict() && girl->has_disease())	ss << "Has a disease\n";
 	else if (girl->is_addict() && girl->has_disease())	ss << "Has an addiciton and a disease\n";
 	else if (cfg.debug.log_extradetails())				ss << "( She Has No Addicitons or Diseases )\n";
-	else												ss << "\n";
+	else												ss << "\n ";
 
 	if (!purchase)
 	{
 		if (girl->m_States&(1 << STATUS_BADLY_POISONED))ss << "Is badly poisoned\n";
 		else if (girl->m_States&(1 << STATUS_POISONED))	ss << "Is poisoned\n";
 		else if (cfg.debug.log_extradetails())			ss << "( She Is Not Poisoned )\n";
-		else											ss << "\n";
+		else											ss << "\n ";
 	}
 
 	if (!purchase)
@@ -2570,14 +2570,18 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	}
 
 	// display Skills
-	ss << "\n\nSKILLS";
+	ss << "\n \nSKILLS";
 	if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
 
 	for (int i = 0; i < 22; i++)
 	{
 		if (i == 11)
 		{
-			ss << "\n\nSEX SKILLS";
+            #if LINUX
+			ss << "\n \nSEX SKILLS";
+			#else
+			ss<<"\n\nSEX SKILLS";
+			#endif // LINUX
 			if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
 		}
 		ss << "\n" << skillstr[i] << GetSkill(girl, skillnum[i]) << sper;
@@ -2643,11 +2647,11 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			ss << "Unknown";
 		}
 	}
-	else ss << "\n";
+	else ss << "\n ";
 
 	if (!purchase)
 	{
-		ss << "\n\nAccommodation: ";
+		ss << "\n \nAccommodation: ";
 		if (cfg.debug.log_extradetails()) ss << "( " << girl->m_AccLevel << " ) ";
 		ss << Accommodation(girl->m_AccLevel);
 		if (cfg.debug.log_extradetails())
@@ -2748,7 +2752,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		if (girl->m_ChildrenCount[CHILD09_ABORTIONS] > 0)		ss << "She has had " << girl->m_ChildrenCount[CHILD09_ABORTIONS] << " Abortion" << (girl->m_ChildrenCount[CHILD09_ABORTIONS] > 1 ? "s" : "") << ".\n";
 	}
 
-	ss << "\n\nFETISH CATEGORIES\n";
+	ss << "\n \nFETISH CATEGORIES\n ";
 	if (CheckGirlType(girl, FETISH_BIGBOOBS))		ss << " |Big Boobs| ";
 	if (CheckGirlType(girl, FETISH_CUTEGIRLS))		ss << " |Cute Girl| ";
 	if (CheckGirlType(girl, FETISH_DANGEROUSGIRLS))	ss << " |Dangerous| ";
@@ -2770,7 +2774,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 
 	if (!purchase)
 	{
-		ss << "\n\nJOB PREFERENCES";
+		ss << "\n \nJOB PREFERENCES";
 		if (cfg.debug.log_extradetails() && !purchase) ss << "\n    (base+temp+item+trait)";
 		ss << "\n";
 		string base = "She";
@@ -2804,7 +2808,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		}
 		if (cfg.debug.log_extradetails())			{ ss << "\n"; }
 		else if (enjcount > 0)						{ ss << "\nShe is indifferent to all other tasks.\n\n"; }
-		else										{ ss << "At the moment, she is indifferent to all tasks.\n\n"; }
+		else										{ ss << "At the moment, she is indifferent to all tasks.\n \n"; }
 
 		int tricount = 0;
 		for (int i = 0; i < NUM_TRAININGTYPES; ++i)
@@ -2830,12 +2834,12 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			ss << "\n";
 			tricount++;
 		}
-		if (cfg.debug.log_extradetails())			{ ss << "\n"; }
-		else if (tricount > 0)						{ ss << "\nShe hasn't started any other training.\n\n"; }
-		else										{ ss << "At the moment, she hasn't started any special training.\n\n"; }
+		if (cfg.debug.log_extradetails())			{ ss << " \n"; }
+		else if (tricount > 0)						{ ss << "\nShe hasn't started any other training.\n \n"; }
+		else										{ ss << "At the moment, she hasn't started any special training.\n \n"; }
 	}
 
-	ss << "\n\n\nBased on:  " << girl->m_Name;
+	ss << "\n \n \nBased on:  " << girl->m_Name;
 
 	return ss.str();
 }
@@ -2848,7 +2852,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cGirls.cpp > GetThirdDetailsString
 
 	// `J` spiltting the buildings so they can be sorted
-	string div = "\n------------------------------------\n\n";
+	string div = " \n------------------------------------\n \n";
 	string Brothel_Data = "";
 	Brothel_Data += "Brothel Job Ratings\n";
 	Brothel_Data += girl->JobRating(m_JobManager.JP_Matron(girl, true), "-", "Matron");
@@ -2860,23 +2864,23 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	Brothel_Data += girl->JobRating(m_JobManager.JP_Training(girl, true), "!", "Training");
 	// Brothel_Data += girl->JobRating(m_JobManager.JP_Torturer(girl, true), "* Torturer");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_Cleaning(girl, true), "?", "Cleaning");
-	Brothel_Data += "\n";
+	Brothel_Data += " \n ";
 	Brothel_Data += girl->JobRating(m_JobManager.JP_Barmaid(girl, true), "-", "Barmaid");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BarWaitress(girl, true), "-", "Bar Waitress");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BarSinger(girl, true), "-", "Singer");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BarPiano(girl, true), "-", "Piano");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_Escort(girl, true), "?", "Escort");
-	Brothel_Data += "\n";
+	Brothel_Data += " \n ";
 	Brothel_Data += girl->JobRating(m_JobManager.JP_HallDealer(girl, true), "-", "Dealer");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_HallEntertainer(girl, true), "-", "Entertainer");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_HallXXXEntertainer(girl, true), "-", "XXX Entertainer");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_HallWhore(girl, true), "?", "Hall Whore");
-	Brothel_Data += "\n";
+	Brothel_Data += " \n ";
 	Brothel_Data += girl->JobRating(m_JobManager.JP_SleazyBarmaid(girl, true), "-", "Club Barmaid");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_SleazyWaitress(girl, true), "-", "Club Waitress");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BarStripper(girl, true), "-", "Stripper");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BarWhore(girl, true), "?", "Club Whore");
-	Brothel_Data += "\n";
+	Brothel_Data += " \n ";
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelMasseuse(girl, true), "-", "Masseuse");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelStripper(girl, true), "-", "Brothel Stripper");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_PeepShow(girl, true), "-", "Peep Show");
@@ -2895,13 +2899,13 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Studio_Data += girl->JobRating(m_JobManager.JP_CrystalPurifier(girl, true), "?", "Crystal Purifier");
 		Studio_Data += girl->JobRating(m_JobManager.JP_Fluffer(girl, true), "?", "Fluffer");
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmStagehand(girl, true), "?", "FilmStagehand");
-		Studio_Data += "\n";
+		Studio_Data += "\n ";
 		//Studio_Data += girl->JobRating(m_JobManager.JP_FilmIdol(girl, true), "Idol Tape");
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmAction(girl, true), "Action Film");
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmMusic(girl, true), "Music Video");
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmChef(girl, true), "Cookery Show");
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmTease(girl, true), "Teaser Scene");
-		Studio_Data += "\n";
+		Studio_Data += "\n ";
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmStrip(girl, true), "Stripping Scene");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmSex(girl, true), "* Film Sex");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmAnal(girl, true), "* Film Anal");
@@ -2912,7 +2916,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmTitty(girl, true), "* Film Titty");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmHandJob(girl, true), "* Film HandJob");
 		// Studio_Data += girl->JobRating(m_JobManager.JP_FilmFootJob(girl, true), "* Film FootJob");
-		Studio_Data += "\n";
+		Studio_Data += "\n ";
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmThroat(girl, true), "FaceFuck");
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmBuk(girl, true), "Bukkake Scene");
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmBondage(girl, true), "Bondage Scene");
@@ -2926,13 +2930,13 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	string Arena_Data = "";
 	if (g_Arena.GetNumBrothels() > 0)
 	{
-		Arena_Data += "Arena Job Ratings\n";
+		Arena_Data += "Arena Job Ratings \n";
 		Arena_Data += girl->JobRating(m_JobManager.JP_Doctore(girl, true), "-", "Doctore");
 		Arena_Data += girl->JobRating(m_JobManager.JP_CityGuard(girl, true), "?", "City Guard");
 		Arena_Data += girl->JobRating(m_JobManager.JP_Blacksmith(girl, true), "-", "Blacksmith");
 		Arena_Data += girl->JobRating(m_JobManager.JP_Cobbler(girl, true), "-", "Cobbler");
 		Arena_Data += girl->JobRating(m_JobManager.JP_Jeweler(girl, true), "-", "Jeweler");
-		Arena_Data += "\n";
+		Arena_Data += " \n ";
 		Arena_Data += girl->JobRating(m_JobManager.JP_FightBeast(girl, true), "-", "Fight Beast");
 		Arena_Data += girl->JobRating(m_JobManager.JP_FightArenaGirls(girl, true), "-", "Cage Match");
 		Arena_Data += girl->JobRating(m_JobManager.JP_CombatTraining(girl, true), "!", "Combat Training");
@@ -2942,11 +2946,11 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	string Centre_Data = "";
 	if (g_Centre.GetNumBrothels() > 0)
 	{
-		Centre_Data += "Centre Job Ratings\n";
+		Centre_Data += "Centre Job Ratings \n";
 		Centre_Data += girl->JobRating(m_JobManager.JP_CentreManager(girl, true), "-", "Centre Manager");
 		Centre_Data += girl->JobRating(m_JobManager.JP_FeedPoor(girl, true), "-", "Feed Poor");
 		Centre_Data += girl->JobRating(m_JobManager.JP_ComunityService(girl, true), "-", "Comunity Service");
-		Centre_Data += "\n";
+		Centre_Data += " \n ";
 		Centre_Data += girl->JobRating(m_JobManager.JP_Counselor(girl, true), "-", "Counselor");
 		Centre_Data += girl->JobRating(m_JobManager.JP_Rehab(girl, true), "!", "Rehab");
 		Centre_Data += girl->JobRating(m_JobManager.JP_CentreTherapy(girl, true), "!", "Therapy");
@@ -2958,13 +2962,13 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	string Clinic_Data = "";
 	if (g_Clinic.GetNumBrothels() > 0)
 	{
-		Clinic_Data += "Clinic Job Ratings\n";
+		Clinic_Data += "Clinic Job Ratings \n";
 		Clinic_Data += girl->JobRating(m_JobManager.JP_ChairMan(girl, true), "-", "Chairman");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_Doctor(girl, true), "-", "Doctor");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_Nurse(girl, true), "-", "Nurse");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_Mechanic(girl, true), "-", "Mechanic");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_Intern(girl, true), "!", "Intern");
-		Clinic_Data += "\n";
+		Clinic_Data += " \n ";
 		Clinic_Data += girl->JobRating(m_JobManager.JP_Healing(girl, true), "!", "Healing");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_RepairShop(girl, true), "!", "Repair Shop");
 		Clinic_Data += girl->JobRating(m_JobManager.JP_CureDiseases(girl, true), "!", "Cure Diseases");
@@ -2984,13 +2988,13 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	string Farm_Data = "";
 	if (g_Farm.GetNumBrothels() > 0)
 	{
-		Farm_Data += "Farm Job Ratings\n";
+		Farm_Data += "Farm Job Ratings \n";
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmManager(girl, true), "-", "Farm Manger");
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmVeterinarian(girl, true), "-", "Veterinarian");
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmMarketer(girl, true), "-", "Marketer");
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmResearch(girl, true), "!", "Researcher");
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmHand(girl, true), "-", "FarmHand");
-		Farm_Data += "\n";
+		Farm_Data += " \n";
 		Farm_Data += girl->JobRating(m_JobManager.JP_Farmer(girl, true), "-", "Farmer");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Gardener(girl, true), "-", "Gardener");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Shepherd(girl, true), "-", "Shepherd");
@@ -2999,7 +3003,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Farm_Data += girl->JobRating(m_JobManager.JP_BeastCapture(girl, true), "-", "Beast Capture");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Milker(girl, true), "-", "Milker");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Milk(girl, true), "?", "Get Milked");
-		Farm_Data += "\n";
+		Farm_Data += " \n";
 		Farm_Data += girl->JobRating(m_JobManager.JP_Butcher(girl, true), "-", "Butcher");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Baker(girl, true), "-", "Baker");
 		Farm_Data += girl->JobRating(m_JobManager.JP_Brewer(girl, true), "-", "Brewer");
@@ -3010,7 +3014,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	}
 	//HOUSE
 	string House_Data = "";
-	House_Data += "House Job Ratings\n";
+	House_Data += "House Job Ratings \n ";
 	House_Data += girl->JobRating(m_JobManager.JP_HeadGirl(girl, true), "-", "Head Girl");
 	House_Data += girl->JobRating(m_JobManager.JP_Recruiter(girl, true), "-", "Recruiter");
 	House_Data += girl->JobRating(m_JobManager.JP_PersonalTraining(girl, true), "!", "PersonalTraining");
