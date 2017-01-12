@@ -301,7 +301,7 @@ void cFont::Free()
 string cFont::UpdateLineEndings(string text)
 {
 #ifndef LINUX
-	// for Windows, double "\n\n" newline characters were showing up as one newline and a boxy (bad) character...
+	// for Windows, double "\n \n" newline characters were showing up as one newline and a boxy (bad) character...
 	// so, here's a cheap-ass workaround to add a "\r" carriage return in front of each "\n" for Windows
 	int pos = text.find("\n", 0);
 	while (pos != string::npos)

@@ -58,7 +58,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a dealer in the gambling hall.\n\n";
+	ss << " worked as a dealer in the gambling hall.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -118,7 +118,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	if (jobperformance >= 245)
 	{
-		ss << " She's the perfect dealer. The customers love her and keep coming back to play against her, even after they lose the lose the shirts off their backs.\n\n";
+		ss << " She's the perfect dealer. The customers love her and keep coming back to play against her, even after they lose the lose the shirts off their backs.\n \n";
 		wages += 155;
 		if (roll_b <= 33)
 		{
@@ -156,7 +156,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this and is always finding new ways to beat the customer.\n\n";
+		ss << " She's unbelievable at this and is always finding new ways to beat the customer.\n \n";
 		wages += 95;
 		if (roll_b <= 20)
 		{
@@ -212,7 +212,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job and knows a few tricks to win.\n\n";
+		ss << " She's good at this job and knows a few tricks to win.\n \n";
 		wages += 55;
 		if (roll_b <= 20)
 		{
@@ -264,7 +264,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n \n";
 		wages += 15;
 		if (roll_b <= 20)
 		{
@@ -319,7 +319,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 		wages -= 5;
 		if (roll_b <= 20)
 		{
@@ -381,7 +381,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 		wages -= 15;
 		if (roll_b <= 20)
 		{
@@ -441,7 +441,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; tips += 25;
+		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
 
 	//SIN: Fixed - add all traits and moved dice roll to start so that if this returns false, the bulky bit won't be evaluated (will be short-circuited)
@@ -537,7 +537,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		if (jobperformance >= 145)
 		{
 			ss << "\nShe cleaned him out, deliberately humiliating him and taunting him into gambling more than he could afford. ";
-			ss << "He ended up losing every penny and all his clothes to this 'dumb whore'. He was finally kicked out, naked into the streets.\n\n";
+			ss << "He ended up losing every penny and all his clothes to this 'dumb whore'. He was finally kicked out, naked into the streets.\n \n";
 			ss << girlName << " enjoyed this. A lot.";
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, 3);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
@@ -559,7 +559,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			{
 				ss << "\"I'm not doing that today, sir,\" she mumbled. \"But there are other girls.\"\nHe left for the brothel.";
 			}
-			ss << "\n\nShe really hated losing at this stupid card game.";
+			ss << "\n \nShe really hated losing at this stupid card game.";
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, -3);
 			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
 			wages -= 50;

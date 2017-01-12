@@ -77,7 +77,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		guys = 2;
 		jobperformance += 5;
-		ss << " worked as an actress filming a three-way.\n\n";
+		ss << " worked as an actress filming a three-way.\n \n";
 	}
 	else if (guys < 95)
 	{
@@ -91,19 +91,19 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		else if (guys < 94)		guys = 8;
 		else if (guys < 98)		guys = 9;
 		else /*          */		guys = 10;
-		ss << " worked in a gang-bang scene with " << guys << " other people.\n\n";
+		ss << " worked in a gang-bang scene with " << guys << " other people.\n \n";
 	}
 	else if (!girl->has_trait("Lesbian") && girl->has_trait("Nymphomaniac") && girl->has_trait("Porn Star"))
 	{
 		jobperformance += 50;
 		guys = g_Dice % 240 + 120;
-		ss << " worked in a scene where she tried to set a new record by taking part in a " << guys << " men gangbang.\n\n";
+		ss << " worked in a scene where she tried to set a new record by taking part in a " << guys << " men gangbang.\n \n";
 	}
 	else
 	{
 		jobperformance += 20;
 		guys = g_Dice % 40 + 11;
-		ss << " worked in a orgy scene with " << guys << " other people.\n\n";
+		ss << " worked in a orgy scene with " << guys << " other people.\n \n";
 	}
 
 	girl->tiredness(guys - 2);	// Extra tiredness per guy
@@ -111,74 +111,74 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (roll <= 10)
 	{
 		enjoy -= ((guys > 10 ? (guys / 10) : (guys / 2)) + 1);
-		ss << "She found it unpleasant fucking that many people.\n\n";
+		ss << "She found it unpleasant fucking that many people.\n \n";
 	}
 	else if (roll >= 90 || (girl->has_trait("Nymphomaniac") && roll >= 50))
 	{
 		enjoy += (guys > 10 ? (guys / 10) : (guys / 2)) + 1;
-		ss << "She loved getting so much action, and wants more!\n\n";
+		ss << "She loved getting so much action, and wants more!\n \n";
 	}
 	else
 	{
 		enjoy += g_Dice % 2;
-		ss << "She wasn't really into having so much sex today, but managed to get through.\n\n";
+		ss << "She wasn't really into having so much sex today, but managed to get through.\n \n";
 	}
 	jobperformance = enjoy * 2;
 
 	if (girl->has_trait("Lolita") && g_Dice.percent(50))
 	{
-		ss << "With such a young looking girl on the cover, this movie is simply sure to sell out.\n\n";
+		ss << "With such a young looking girl on the cover, this movie is simply sure to sell out.\n \n";
 		jobperformance += 15;
 	}
 	if (girl->has_trait("Bimbo") && g_Dice.percent(50))
 	{
-		ss << "Her performance couldn't be considered acting. She just enjoyed a good dicking with a blissfully stupid smile on her face.\n\n";
+		ss << "Her performance couldn't be considered acting. She just enjoyed a good dicking with a blissfully stupid smile on her face.\n \n";
 		jobperformance += 5;
 	}
 	if (girl->has_trait("Cute") && g_Dice.percent(50))
 	{
-		ss << "Such a cute girl doing her best to handle the rough ponding her co-stars gave her will surely make a few hearts skip a beat.\n\n";
+		ss << "Such a cute girl doing her best to handle the rough ponding her co-stars gave her will surely make a few hearts skip a beat.\n \n";
 		jobperformance += 5;
 	}
 	if (girl->has_trait("Natural Pheromones") && g_Dice.percent(50))
 	{
-		ss << "Her scent drove the actors mad with lust. They went at it harder and wilder than the director had ordered.\n\n";
+		ss << "Her scent drove the actors mad with lust. They went at it harder and wilder than the director had ordered.\n \n";
 		jobperformance += 5;
 	}
 	if (girl->has_trait("Fast Orgasms") && g_Dice.percent(50))
 	{
-		ss << "She came the second she got two dicks inside her. That was the first of many orgasms. She barely remembered her own name by the end of the scene.\n\n";
+		ss << "She came the second she got two dicks inside her. That was the first of many orgasms. She barely remembered her own name by the end of the scene.\n \n";
 		jobperformance += 5;
 	}
 	if (girl->has_trait("Great Arse") && g_Dice.percent(50))
 	{
-		ss << "Her ass jiggling with each thrust was a sight to behold. The camera mage made sure to capture its wiggly glory in slow motion.\n\n";
+		ss << "Her ass jiggling with each thrust was a sight to behold. The camera mage made sure to capture its wiggly glory in slow motion.\n \n";
 		jobperformance += 5;
 	}
 	if (girl->has_trait("Plump") && g_Dice.percent(50))
 	{
-		ss << "She sure offered a lot of meat to work with. The wet and fleshy sound she made with each thrust is sure to drive the audience wild.\n\n";
+		ss << "She sure offered a lot of meat to work with. The wet and fleshy sound she made with each thrust is sure to drive the audience wild.\n \n";
 		jobperformance += 5;
 	}
 	if ((girl->has_trait("Fragile") || girl->has_trait("Delicate")) && g_Dice.percent(50))
 	{
-		ss << "This was somewhat rough for her, she was barely able to move by the end of the scene. Some people find that hot though.\n\n";
+		ss << "This was somewhat rough for her, she was barely able to move by the end of the scene. Some people find that hot though.\n \n";
 		jobperformance += 5;
 		enjoy -= g_Dice % 5 - 2;
 	}
 	if (girl->breast_size() > 5 && g_Dice.percent(50))
 	{
-		ss << "Her gigantic breasts stole the spotlight towards the end of the scene when she pushed them together to collect her co-star's seed.\n\n";
+		ss << "Her gigantic breasts stole the spotlight towards the end of the scene when she pushed them together to collect her co-star's seed.\n \n";
 		jobperformance += 5;
 	}
 	if (girl->has_trait("Cum Addict") && g_Dice.percent(50))
 	{
-		ss << "She insisted that her co-stars collect their semen in a cup for her to drink at the end of the scene.\n\n";
+		ss << "She insisted that her co-stars collect their semen in a cup for her to drink at the end of the scene.\n \n";
 		jobperformance += 5;
 	}
 	if (girl->has_trait("Succubus") && g_Dice.percent(50))
 	{
-		ss << "After the camera stopped running, she grabed two actors and had another round with them.\n\n";
+		ss << "After the camera stopped running, she grabed two actors and had another round with them.\n \n";
 		jobperformance += 5;
 	}
 

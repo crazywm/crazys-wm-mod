@@ -39,7 +39,7 @@
 #include "cHouseScreen.h"
 #include "cClinicScreen.h"
 #include "cCentreScreen.h"
-#include "cMovieScreen.h"
+#include "cScreenMovie.h"
 #include "cFarmScreen.h"
 #include "cClinicTry.h"
 #include "cCastingTry.h"

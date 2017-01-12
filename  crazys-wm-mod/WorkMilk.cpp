@@ -50,7 +50,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << "'s breasts were milked.\n\n";
+	ss << "'s breasts were milked.\n \n";
 
 
 
@@ -156,7 +156,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	else if (predisposition <= 10)	ss << " was led into the stall, strapped in and milked without incident.";
 	else if (predisposition <= 50)	ss << " walked into the stall, sat down and got her breasts out. She massaged her breasts in preparation for being milked.";
 	else							ss << " ran to the stall, stripped off all her clothes, and waited impatiently for the milker to get to her. She seems to like this.";
-	ss << "\n\n";
+	ss << "\n \n";
 
 
 	//Milking action - adapted from below
@@ -205,7 +205,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			ss << girlName << "'s massive globes don't need pregnancy to yield a profitable quantity of milk!";
 		}
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 	//Calculating base volume per above formula
 	volume = lactation * pregMultiplier * breastsize;	//vol in ml
@@ -339,7 +339,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		g_Girls.UpdateStat(girl, STAT_HAPPINESS, (roll % 6));		// 0 to 5 happiness
 		ss << "Her breasts were so full milk was leaking through her clothes. Finally getting milked felt incredible.";
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 	//value calculations
 	int milkValue = int(milkProduced * MILKWHOLESALE);		//Base value
@@ -461,25 +461,25 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			{
 				ssextra << "She's pissed now, telling the other girls you raped her";
 				if (girl->is_slave()) ssextra << ", almost like she's forgotten who owns her";
-				ssextra << ".\n\n";
+				ssextra << ".\n \n";
 				g_Girls.UpdateStat(girl, STAT_PCHATE, 5);
 				enjoy -= 5;
 			}
 			else if (HateLove <= 0)
 			{
-				ssextra << "She's upset you took advantage of her. She thought you were better than that.\n\n";
+				ssextra << "She's upset you took advantage of her. She thought you were better than that.\n \n";
 				g_Girls.UpdateStat(girl, STAT_PCHATE, 2);
 				enjoy -= 2;
 			}
 			else if (HateLove <= 50)
 			{
-				ssextra << "She was surprised, but pleased you noticed her. She enjoyed it.\n\n";
+				ssextra << "She was surprised, but pleased you noticed her. She enjoyed it.\n \n";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 1);
 				enjoy += 2;
 			}
 			else
 			{
-				ssextra << "She loved it! It made milking much more enjoyable.\n\n";
+				ssextra << "She loved it! It made milking much more enjoyable.\n \n";
 				g_Girls.UpdateStat(girl, STAT_PCLOVE, 4);
 				enjoy += 4;
 			}
@@ -487,7 +487,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		else if (The_Player->disposition() < 40)   // not that good
 		{
 			ssextra << ". Looking closer, she really does have a great butt. You stop for a moment, but decide that doing anything more just wouldn't be right. "
-				<< "You give her butt a gentle pat and walk away.\n\n";
+				<< "You give her butt a gentle pat and walk away.\n \n";
 			extraimage = IMGTYPE_COWGIRL;
 		}
 		else //you are good

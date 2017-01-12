@@ -129,7 +129,7 @@ void cScreenHouse::init()
 	ss << "\nCurrent gold: " << g_Gold.ival()
 		<< "\nBank account: " << g_Brothels.GetBankMoney()
 		<< "\nBusinesses controlled: " << g_Gangs.GetNumBusinessExtorted()
-		<< "\n\nCurrent number of runaways: " << g_Brothels.GetNumRunaways() << "\n";
+		<< "\n \nCurrent number of runaways: " << g_Brothels.GetNumRunaways() << "\n";
 	//	`J` added while loop to add runaway's names to the list 
 	if (g_Brothels.GetNumRunaways() > 0)
 	{

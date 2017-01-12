@@ -61,23 +61,12 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int enjoy = 0, bonus = 0;
 	double jobperformance = JP_FilmOral(girl, false);
 
-	/*
 	//BSIN - not sure what's wrong but this crashes the game.
-	sGang * TempGang = g_Gangs.GetGangOnMission(MISS_GUARDING);
-	string gangName = "";
-	int inGang = 0, members = 0;
-	if (TempGang && (TempGang->m_Num > 0))
-	{
-		gangName = TempGang->m_Name;
-		inGang = TempGang->m_Num;
-		members = ((g_Dice%inGang) + 1);
-	}
-	delete TempGang;
-	*/
+	sGang* Gang = g_Gangs.GetGangOnMission(MISS_GUARDING);
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
-	ss << girlName << " worked as an actress filming oral scenes.\n\n";
+	ss << girlName << " worked as an actress filming oral scenes.\n \n";
 
 	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
@@ -89,66 +78,66 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	if (jobperformance >= 350)
 	{
-	/*	as above - crashes game
-		if (g_Dice.percent(50) && TempGang)
+		if (Gang && Gang->m_Num > 0 && g_Dice.percent(50))
 		{
-			ss << ("When the 'actor' didn't turn up, ") << girlName << (" expertly sucked off ");
-			if (members > 1) ss << members << (" lucky guys");
-			else ss << ("one lucky guy");
-			ss << (" from your gang ") << gangName << (".");
+			int members = min(g_Dice.bell(0, Gang->m_Num * 2), Gang->m_Num);
+			ss << "When the 'actor' didn't turn up, " << girlName << " expertly sucked off ";
+			if (members >= Gang->m_Num)	ss << "everyone";
+			else if (members > 1)/*  */	ss << members << " lucky guys";
+			else/*                   */	ss << "one lucky guy";
+			ss << " from your gang " << Gang->m_Name << ".";
 		}
-		else */ss << ("The lucky guy came uncontrollably, damn near passing out in pleasure as ") << girlName << (" expertly sucked him dry.");
-		ss << ("\nShe savoured the cum in her mouth, rolling it around her lips and tongue before finally swallowing it down.");
+		else ss << "The lucky guy came uncontrollably, damn near passing out in pleasure as " << girlName 
+			<< " expertly sucked him dry.\nShe savoured the cum in her mouth, rolling it around her lips and tongue before finally swallowing it down.";
 		bonus = 12;
 	}
 	else if (jobperformance >= 245)
 	{
-		ss << girlName << (" sucked off her man like a pro - not once breaking eye-contact - and was rewarded with ");
-		if (g_Dice.percent(50) || girl->has_trait("Cum Addict")) ss << ("a mouthful of semen. She kept her lips clamped to his cock to the last, thirstily swallowing down every drop of hot cum.");
-		else ss << ("a explosion of cum in her face. As she licked his penis clean, she rubbed cum around her skin and licked it off her fingers.");
+		ss << girlName << " sucked off her man like a pro - not once breaking eye-contact - and was rewarded with ";
+		if (g_Dice.percent(50) || girl->has_trait("Cum Addict")) ss << "a mouthful of semen. She kept her lips clamped to his cock to the last, thirstily swallowing down every drop of hot cum.";
+		else ss << "a explosion of cum in her face. As she licked his penis clean, she rubbed cum around her skin and licked it off her fingers.";
 		bonus = 6;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << girlName << (" gave a passable blowjob, and ended up glazed in hot cum.");
+		ss << girlName << " gave a fairly pleasant blowjob, and ended up glazed in hot cum.";
 		bonus = 4;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << (" gave a fairly pleasant blowjob, but in the end the actor had to finish himself off, splatting cum on her face.");
+		ss << girlName << " gave a passable blowjob, but in the end the actor had to finish himself off, splatting cum on her face.";
 		bonus = 2;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << ("It was a pretty awkward and uncomfortable scene, with the actor not getting any kind of pleasure from her clumsy, toothy attempts. ");
-		ss << ("In the end he gave up and simply wanked in her face, but even then she dodged at the last moment, ruining that scene too.");
+		ss << "It was a pretty awkward and uncomfortable scene, with the actor not getting any kind of pleasure from her clumsy, toothy attempts. ";
+		ss << "In the end he gave up and simply wanked in her face, but even then she dodged at the last moment, ruining that scene too.";
 		bonus = 1;
 	}
 	else
 	{
-		ss << ("After the fourth time she 'snagged' the actor on her tooth, he cursed and stormed off set. Your gang, ") //<< gangName
-			<< (" saved the day by pinning her down wanking on her face one-by-one.\nOverall it's a terrible scene.");
+		ss << "After the fourth time she 'snagged' the actor on her tooth, he cursed and stormed off set. Your gang, " << Gang->m_Name << ", saved the day by pinning her down wanking on her face one-by-one.\nOverall it's a terrible scene.";
 	}
-	ss << ("\n");
+	ss << "\n";
 
 	//Enjoyed? If she performed well, she'd should have enjoyed it.
+	if (girl->has_trait("Cum Addict")) enjoy += 2;
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << ("She really enjoyed giving head today.\n\n");
+		ss << "She really enjoyed giving head today.\n \n";
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << ("She enjoyed this performance.\n\n");
+		ss << "She enjoyed this performance.\n \n";
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << ("She's bad at this, and the whole experience was pretty humiliating.\n\n");
+		ss << "She's bad at this, and the whole experience was pretty humiliating.\n \n";
 	}
-	bonus = bonus + enjoy;
-
+	bonus += enjoy;
 
 	// remaining modifiers are in the AddScene function --PP
 	int finalqual = g_Studios.AddScene(girl, JOB_FILMORAL, bonus);
@@ -185,6 +174,7 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 	if (g_Dice.percent(5) && (g_Girls.GetStat(girl, STAT_HAPPINESS) > 80) && (g_Girls.GetEnjoyment(girl, ACTION_WORKMOVIE) > 75))
 		g_Girls.AdjustTraitGroupGagReflex(girl, 1, true, Day0Night1);
+	delete Gang;
 	return false;
 }
 

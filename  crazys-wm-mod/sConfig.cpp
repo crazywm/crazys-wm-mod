@@ -373,7 +373,7 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 		}
 		else
 		{
-			l.ss() << "\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\n\tDefaulting to 'J_1024x768'\n\n"; l.ssend();
+			l.ss() << "\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\n\tDefaulting to 'J_1024x768'\n \n"; l.ssend();
 		}
 	}
 	else

@@ -98,7 +98,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 			return true;
 		}
 	}
-	ss << ".\n\n";
+	ss << ".\n \n";
 
 	int wages = 50;
 	int tips = 0;
@@ -107,17 +107,17 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (roll <= 10)
 	{
 		enjoy -= g_Dice % 3 + 1;
-		ss << "She did not like working in the studio today.\n\n";
+		ss << "She did not like working in the studio today.\n \n";
 	}
 	else if (roll >= 90)
 	{
 		enjoy += g_Dice % 3 + 1;
-		ss << "She had a great time working today.\n\n";
+		ss << "She had a great time working today.\n \n";
 	}
 	else
 	{
 		enjoy += g_Dice % 2;
-		ss << "Otherwise, the shift passed uneventfully.\n\n";
+		ss << "Otherwise, the shift passed uneventfully.\n \n";
 	}
 	double jobperformance = JP_CrystalPurifier(girl, false);
 	jobperformance += enjoy * 2;

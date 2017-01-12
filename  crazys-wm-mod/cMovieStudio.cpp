@@ -206,9 +206,6 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 
 	UpdateGirls(current);		// Run the Nighty Shift
 
-	if (current->m_Filthiness < 0)		current->m_Filthiness = 0;
-	if (current->m_SecurityLevel < 0)	current->m_SecurityLevel = 0;
-
 	// Update movies currently being sold
 	sMovie* movie = current->m_Movies;
 	if (current->m_NumMovies > 0)
@@ -253,6 +250,8 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 		g_Girls.EndDayGirls(current, cgirl);
 		cgirl = cgirl->m_Next;
 	}
+	if (current->m_Filthiness < 0)		current->m_Filthiness = 0;
+	if (current->m_SecurityLevel < 0)	current->m_SecurityLevel = 0;
 }
 
 // Run the shifts
@@ -294,7 +293,6 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			g_Girls.UseItems(current);				// Girl uses items she has
 			g_Girls.CalculateGirlType(current);		// update the fetish traits
 			g_Girls.CalculateAskPrice(current, true);	// Calculate the girls asking price
-
 			current = current->m_Next; // Next Girl
 		}
 	}
@@ -320,11 +318,11 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		{
 			// if a matron was found and she is healthy, not tired and not on maternity leave... send her back to work
 			if (current->m_PrevNightJob == matronjob &&
-				(g_Girls.GetStat(current, STAT_HEALTH) >= 50 && g_Girls.GetStat(current, STAT_TIREDNESS) <= 50) &&
+				(current->health() >= 50 && current->tiredness() <= 50) &&
 				current->m_PregCooldown < cfg.pregnancy.cool_down())
 				// Matron job is more important so she will go back to work at 50% instead of regular 80% health and 20% tired
 			{
-				current->m_DayJob = restjob;
+				current->m_DayJob = matronjob;
 				current->m_PrevDayJob = current->m_PrevNightJob = 255;
 				current->m_Events.AddMessage("The Director puts herself back to work.", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
 			}
@@ -339,7 +337,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
 		{
 			current->m_Refused_To_Work_Night = true;
-			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame -= current->fame();
 			ss << girlName << " refused to work as the Director.";
 			sum = EVENT_NOWORK;
 		}
@@ -349,15 +347,19 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			totalPay = totalTips = totalGold = 0;
 			m_JobManager.JobFunc[matronjob](current, brothel, SHIFT_NIGHT, summary);
 			totalGold += current->m_Pay + current->m_Tips;
+
+
+
+
 			current->m_Pay += max(0, totalGold);
 			current->m_Pay = current->m_Tips = 0;
 
-			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame += current->fame();
 			/* */if (totalGold > 0)		{ ss << girlName << " earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; }
 			else if (totalGold == 0)	{ ss << girlName << " made no money."; }
-			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold\n\nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n" << "\nGirl Name: " << current->m_Realname << "\nJob: " << m_JobManager.JobName[current->m_NightJob] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold; }
+			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current->m_Realname << "\nJob: " << m_JobManager.JobName[current->m_NightJob] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold; }
 		}
-		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;	// Next Girl
 		matrondone = true;			// there can be only one matron so this ends the while loop
@@ -839,85 +841,80 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
 		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
 
-		if (g_Girls.GetStat(current, STAT_HAPPINESS) < 40)
+		sw = current->m_NightJob;
+		if (current->happiness()< 40)
 		{
-			if (current->m_NightJob != matronjob && matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))
+			if (sw != matronjob && matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))
 			{
 				ss << "The Director helps cheer up " << girlName << " when she is feeling sad.\n";
-				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 10 + 5);
+				current->happiness(g_Dice % 10 + 5);
 			}
 			else if (brothel->m_NumGirls > 10 && g_Dice.percent(50))
 			{
 				ss << "Some of the other girls help cheer up " << girlName << " when she is feeling sad.\n";
-				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 8 + 3);
+				current->happiness(g_Dice % 8 + 3);
 			}
 			else if (brothel->m_NumGirls > 1 && g_Dice.percent(max(brothel->m_NumGirls, 50)))
 			{
 				ss << "One of the other girls helps cheer up " << girlName << " when she is feeling sad.\n";
-				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 6 + 2);
+				current->happiness(g_Dice % 6 + 2);
 			}
 			else if (brothel->m_NumGirls == 1 && g_Dice.percent(70))
 			{
-				ss << girlName << " plays around in the empty Studio until she feels better.\n";
-				g_Girls.UpdateStat(current, STAT_HAPPINESS, g_Dice % 10 + 10);
+				ss << girlName << " plays around in the empty building until she feels better.\n";
+				current->happiness(g_Dice % 10 + 10);
 			}
-			else if (g_Girls.GetStat(current, STAT_HAPPINESS) < 20) // no one helps her and she is really unhappy
+			else if (current->health()< 20) // no one helps her and she is really unhappy
 			{
 				ss << girlName << " is looking very depressed. You may want to do something about that before she does something drastic.\n";
 				sum = EVENT_WARNING;
 			}
 		}
 
-		if (g_Girls.GetStat(current, STAT_TIREDNESS) > 80 || g_Girls.GetStat(current, STAT_HEALTH) < 40)
+		int t = current->tiredness();
+		int h = current->health();
+		if (sw == matronjob && (t > 60 || h < 40))
 		{
-			int t = g_Girls.GetStat(current, STAT_TIREDNESS);
-			int h = g_Girls.GetStat(current, STAT_HEALTH);
-
+			ss << "As Director, " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
+			if (t > 50 && h < 50)
+			{
+				ss << "some potions";
+				g_Girls.UpdateStat(current, STAT_HEALTH, 20 + g_Dice % 20, false);
+				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(20, true);
+			}
+			else if (t > 50)
+			{
+				ss << "a resting potion";
+				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else if (h < 50)
+			{
+				ss << "a healing potion";
+				g_Girls.UpdateStat(current, STAT_HEALTH, 20 + g_Dice % 20, false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else
+			{
+				ss << "a potion";
+				g_Girls.UpdateStat(current, STAT_HEALTH, 10 + g_Dice % 10, false);
+				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(10 + g_Dice % 10), false);
+				g_Gold.consumable_cost(5, true);
+			}
+			ss << " for herself.\n";
+		}
+		else if (t > 80 || h < 40)
+		{
 			if (!matron)	// do no matron first as it is the easiest
 			{
 				ss << "WARNING! " << girlName;
-				if (t > 80 && h < 20)		ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
+				/* */if (t > 80 && h < 20)	ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
 				else if (t > 80 && h < 40)	ss << " is in bad shape, she is tired and injured.\nShe should rest or she may die!\n";
-				else if (t > 80)			ss << " is desparatly in need of rest.\nGive her some free time\n";
-				else if (h < 20)			ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
-				else if (h < 40)			ss << " is hurt.\nShe should rest and recuperate.\n";
+				else if (t > 80)/*      */	ss << " is desparatly in need of rest.\nGive her some free time\n";
+				else if (h < 20)/*      */	ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
+				else if (h < 40)/*      */	ss << " is hurt.\nShe should rest and recuperate.\n";
 				sum = EVENT_WARNING;
-			}
-			else if (current->m_NightJob == matronjob && matron)	// do matron
-			{
-				if (t > 90 && h < 10)	// The matron may take herself off work if she is really bad off
-				{
-					current->m_PrevDayJob = current->m_DayJob;
-					current->m_PrevNightJob = current->m_NightJob;
-					current->m_DayJob = current->m_NightJob = restjob;
-					ss << "The Director takes herself off duty because she is just too damn sore.\n";
-					g_Girls.UpdateEnjoyment(current, ACTION_WORKMATRON, -10);
-					sum = EVENT_WARNING;
-				}
-				else
-				{
-					ss << "As Director, " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
-					if (t > 80 && h < 40)
-					{
-						ss << "some potions";
-						g_Gold.consumable_cost(20, true);
-						current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 20, 100);
-						current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 20, 0);
-					}
-					else if (t > 80)
-					{
-						ss << "a resting potion";
-						g_Gold.consumable_cost(10, true);
-						current->m_Stats[STAT_TIREDNESS] = max(current->m_Stats[STAT_TIREDNESS] - 20, 0);
-					}
-					else if (h < 40)
-					{
-						ss << "a healing potion";
-						g_Gold.consumable_cost(10, true);
-						current->m_Stats[STAT_HEALTH] = min(current->m_Stats[STAT_HEALTH] + 20, 100);
-					}
-					ss << " for herself.\n";
-				}
 			}
 			else	// do all other girls with a matron working
 			{
@@ -941,18 +938,18 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 						if (t > 80 && h < 40)
 						{
 							ss << girlName << " recuperate.\n";
-							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(g_Dice % 4 + 2));
-							g_Girls.UpdateStat(current, STAT_HEALTH, (g_Dice % 4 + 2));
+							g_Girls.UpdateStat(current, STAT_HEALTH, 2 + g_Dice % 4, false);
+							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(2 + g_Dice % 4), false);
 						}
 						else if (t > 80)
 						{
 							ss << girlName << " to relax.\n";
-							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(g_Dice % 5 + 5));
+							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(5 + g_Dice % 5), false);
 						}
 						else if (h < 40)
 						{
 							ss << " heal " << girlName << ".\n";
-							g_Girls.UpdateStat(current, STAT_HEALTH, (g_Dice % 5 + 5));
+							g_Girls.UpdateStat(current, STAT_HEALTH, 5 + g_Dice % 5, false);
 						}
 					}
 				}
@@ -963,6 +960,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 
 		current = current->m_Next;		// Process next girl
 	}
+
 	m_Processing_Shift = -1;			// WD: Finished Processing Shift set flag
 }
 
@@ -970,6 +968,7 @@ TiXmlElement* cMovieStudioManager::SaveDataXML(TiXmlElement* pRoot)
 {
 	TiXmlElement* pBrothelManager = new TiXmlElement("MovieStudio_Manager");
 	pRoot->LinkEndChild(pBrothelManager);
+	pBrothelManager->SetAttribute("TotalScenesFilmed", m_TotalScenesFilmed);
 	string message;
 
 	// save Studio
@@ -1039,6 +1038,25 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 		pMovie->SetAttribute("RunWeeks", movie->m_RunWeeks);
 		movie = movie->m_Next;
 	}
+	// `J` Save Scenes added for .06.02.55
+	TiXmlElement* pScenes = new TiXmlElement("Scenes");
+	pBrothel->LinkEndChild(pScenes);
+	for (int i = 0; i < g_Studios.GetNumScenes(); i++)
+	{
+		TiXmlElement* pScene = new TiXmlElement("Scene");
+		pScenes->LinkEndChild(pScene);
+		pScene->SetAttribute("SceneNumber", g_Studios.GetScene(i)->m_SceneNum);
+		pScene->SetAttribute("Name", g_Studios.GetScene(i)->m_Name);
+		pScene->SetAttribute("Actress", g_Studios.GetScene(i)->m_Actress);
+		pScene->SetAttribute("Director", g_Studios.GetScene(i)->m_Director);
+		pScene->SetAttribute("Job", g_Brothels.m_JobManager.JobQkNm[g_Studios.GetScene(i)->m_Job]);
+		pScene->SetAttribute("Init_Quality", g_Studios.GetScene(i)->m_Init_Quality);
+		pScene->SetAttribute("Quality", g_Studios.GetScene(i)->m_Quality);
+		pScene->SetAttribute("Promo_Quality", g_Studios.GetScene(i)->m_Promo_Quality);
+		pScene->SetAttribute("Money_Made", g_Studios.GetScene(i)->m_Money_Made);
+		pScene->SetAttribute("RunWeeks", g_Studios.GetScene(i)->m_RunWeeks);
+	}
+		
 
 	// Save Girls
 	TiXmlElement* pGirls = new TiXmlElement("Girls");
@@ -1062,6 +1080,13 @@ bool cMovieStudioManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	{
 		return false;
 	}
+
+	if (pBrothelManager->Attribute("TotalScenesFilmed"))
+	{
+		int tempInt = 0;
+		pBrothelManager->QueryIntAttribute("TotalScenesFilmed", &tempInt); m_TotalScenesFilmed = tempInt; tempInt = 0;
+	}
+	else m_TotalScenesFilmed = 0;
 
 	string message = "";
 	//         ...................................................
@@ -1178,6 +1203,30 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 
 		}
 	}
+	// `J` load scenes added for .06.02.55
+	TiXmlElement* pScenes = pBrothel->FirstChildElement("Scenes");
+	if (pScenes)
+	{
+		for (TiXmlElement* pScene = pScenes->FirstChildElement("Scene");
+			pScene != 0;
+			pScene = pScene->NextSiblingElement("Scene"))
+		{
+			int scenenum; int job;
+			long init_quality = 0; long quality = 0; long promo_quality = 0; long money_made = 0; long runweeks = -1;
+
+			pScene->QueryIntAttribute("SceneNumber", &scenenum);
+			string name = (pScene->Attribute("Name") ? pScene->Attribute("Name") : "");
+			string actress = (pScene->Attribute("Actress") ? pScene->Attribute("Actress") : "");
+			string director = (pScene->Attribute("Director") ? pScene->Attribute("Director") : "");
+			job = (pScene->Attribute("Job") ? sGirl::lookup_jobs_code(pScene->Attribute("Job")) : JOB_FILMRANDOM);
+			pScene->QueryValueAttribute<long>("Init_Quality", &init_quality);
+			pScene->QueryValueAttribute<long>("Quality", &quality);
+			pScene->QueryValueAttribute<long>("Promo_Quality", &promo_quality);
+			pScene->QueryValueAttribute<long>("Money_Made", &money_made);
+			pScene->QueryValueAttribute<long>("RunWeeks", &runweeks);
+			g_Studios.LoadScene(scenenum, name, actress, director, job, init_quality, quality, promo_quality, money_made, runweeks);
+		}
+	}
 
 	// Load girls
 	m_NumGirls = 0;
@@ -1233,9 +1282,17 @@ void sMovieScene::OutputSceneDetailString(string& Data, const string& detailName
 	//given a statistic name, set a string to a value that represents that statistic
 	static stringstream ss;
 	ss.str("");
-	/* */if (detailName == "Name")		{ ss << m_Name; }
-	else if (detailName == "Quality")	{ ss << m_Quality; }
-	else /*                        */	{ ss << "Not found"; }
+	/* */if (detailName == "SceneNumber")	{ ss << m_SceneNum; }
+	else if (detailName == "Name")			{ ss << m_Name; }
+	else if (detailName == "Actress")		{ ss << m_Actress; }
+	else if (detailName == "Director")		{ ss << m_Director; }
+	else if (detailName == "Job")			{ ss << g_Brothels.m_JobManager.JobName[m_Job]; }
+	else if (detailName == "Init_Quality")	{ ss << m_Init_Quality; }
+	else if (detailName == "Quality")		{ ss << m_Quality; }
+	else if (detailName == "Promo_Quality")	{ ss << m_Promo_Quality; }
+	else if (detailName == "Money_Made")	{ ss << m_Money_Made; }
+	else if (detailName == "RunWeeks")		{ ss << m_RunWeeks; }
+	else /*                           */	{ ss << "Not found"; }
 	Data = ss.str();
 }
 
@@ -1375,10 +1432,9 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	case JOB_FILMGROUP:			jobType = NORMAL;	quality += 5;	Skill = SKILL_GROUP;		ss << "Group";			break;
 	case JOB_FILMPUBLICBDSM:	jobType = EVIL;		quality += 10;	Skill = SKILL_BDSM;			ss << "Public BDSM";	break;
 		//case JOB_FILMDOM:			jobType = EVIL;		quality += 8;	Skill = SKILL_BDSM;			ss << "Dominatrix";		break;
-	default:
-		break;
+	default:		ss << "Movie ";		break;
 	}
-	ss << " scene by  " << girlName << " (" << m_movieScenes.size() + 1 << ")";
+	ss << " scene by  " << girlName;
 
 	// `J` do job based modifiers
 	quality += g_Girls.GetSkill(girl, Skill) / 5;
@@ -1540,17 +1596,33 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 
 	quality += g_Studios.m_CameraQuality + g_Studios.m_PurifierQaulity + g_Studios.m_DirectorQuality + g_Studios.m_StagehandQuality;
 
-	newScene->m_Director = g_Studios.m_DirectorName;
+	newScene->m_SceneNum = ++g_Studios.m_TotalScenesFilmed;
+	newScene->m_Name = ss.str();
 	newScene->m_Actress = girl->m_Realname;
+	newScene->m_Director = g_Studios.m_DirectorName;
 	newScene->m_Job = Job;
 	newScene->m_Init_Quality = quality;
 	newScene->m_Quality = quality;
 	newScene->m_Promo_Quality = 0;
 	newScene->m_Money_Made = 0;
 	newScene->m_RunWeeks = 0;
-	newScene->m_Name = ss.str();
 	m_movieScenes.push_back(newScene);
 	return performance;
+}
+void cMovieStudioManager::LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks)
+{
+	sMovieScene* newScene = new sMovieScene();
+	newScene->m_SceneNum = m_SceneNum;
+	newScene->m_Name = m_Name;
+	newScene->m_Director = m_Director;
+	newScene->m_Actress = m_Actress;
+	newScene->m_Job = m_Job;
+	newScene->m_Init_Quality = m_Init_Quality;
+	newScene->m_Quality = m_Quality;
+	newScene->m_Promo_Quality = m_Promo_Quality;
+	newScene->m_Money_Made = m_Money_Made;
+	newScene->m_RunWeeks = m_RunWeeks;
+	m_movieScenes.push_back(newScene);
 }
 
 long cMovieStudioManager::calc_movie_quality()
@@ -1562,7 +1634,7 @@ long cMovieStudioManager::calc_movie_quality()
 		quality += m_movieScenes[i]->m_Quality;
 	}
 	quality += m_movieScenes.size() * 10;
-	ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n\n";
+	ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n \n";
 	ss << (g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 0) > 0 ? "Your" : "A");
 	ss << " promoter with an advertising budget will help it sell for more.";
 	g_MessageQue.AddToQue(ss.str(), COLOR_BLUE);

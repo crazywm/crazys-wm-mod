@@ -69,7 +69,7 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a fluffer.\n\n";
+	ss << " worked as a fluffer.\n \n";
 
 
 	g_Girls.UnequipCombat(girl);	// not for studio crew
@@ -80,17 +80,17 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (roll <= 10)
 	{
 		enjoy -= g_Dice % 3 + 1;
-		ss << "She didn't like having so many dicks in her mouth today.\n\n";
+		ss << "She didn't like having so many dicks in her mouth today.\n \n";
 	}
 	else if (roll >= 90)
 	{
 		enjoy += g_Dice % 3 + 1;
-		ss << "She loved sucking cock today.\n\n";
+		ss << "She loved sucking cock today.\n \n";
 	}
 	else
 	{
 		enjoy += g_Dice % 2;
-		ss << "She had a pleasant day keeping the actors ready to work.\n\n";
+		ss << "She had a pleasant day keeping the actors ready to work.\n \n";
 	}
 	double jobperformance = JP_Fluffer(girl, false);
 	jobperformance += enjoy * 2;

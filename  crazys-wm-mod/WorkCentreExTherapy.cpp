@@ -79,7 +79,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (Day0Night1) girl->m_WorkingDay--;
 		return true;
 	}
-	ss << " underwent therapy for mental issues.\n\n";
+	ss << " underwent therapy for mental issues.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// not for patient
 
@@ -105,7 +105,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, -10);
 		g_Girls.UpdateStat(girl, STAT_PCHATE, 10);
 		ss << "She almost died in rehab but the Counselor saved her.\n";
-		ss << "She hates you a little more for forcing this on her.\n\n";
+		ss << "She hates you a little more for forcing this on her.\n \n";
 		msgtype = EVENT_DANGER;
 		enjoy -= 2;
 	}

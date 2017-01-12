@@ -117,18 +117,21 @@ private:
 	sScript* Script_AdjustGirlFlag(sScript *Script);				// `J` new
 	sScript* Script_AdjustTraitTemp(sScript *Script);				// `J` new
 	sScript* Script_AdjustTargetGirlSkill(sScript *Script);			// `J` new
-	sScript* Script_DeepTarget(sScript* Script);
-	sScript* Script_EatOutTarget(sScript* Script);
-	sScript* Script_StrapOnTarget(sScript* Script);
-	sScript* Script_Les69ingTarget(sScript* Script);
-	sScript* Script_DildoTarget(sScript* Script);
-	sScript* Script_SubTarget(sScript* Script);
-	sScript* Script_LickTarget(sScript* Script);
-	sScript* Script_SuckBallsTarget(sScript* Script);
-	sScript* Script_CowGirlTarget(sScript* Script);
-	sScript* Script_RevCowGirlTarget(sScript* Script);
-	sScript* Script_SexDoggyTarget(sScript* Script);
-	sScript* Script_NormalSexWithRandomTarget(sScript* Script);
+	sScript* Script_DeepTarget(sScript* Script);					// `J` new
+	sScript* Script_EatOutTarget(sScript* Script);					// `J` new
+	sScript* Script_StrapOnTarget(sScript* Script);					// `J` new
+	sScript* Script_Les69ingTarget(sScript* Script);				// `J` new
+	sScript* Script_DildoTarget(sScript* Script);					// `J` new
+	sScript* Script_SubTarget(sScript* Script);						// `J` new
+	sScript* Script_LickTarget(sScript* Script);					// `J` new
+	sScript* Script_SuckBallsTarget(sScript* Script);				// `J` new
+	sScript* Script_CowGirlTarget(sScript* Script);					// `J` new
+	sScript* Script_RevCowGirlTarget(sScript* Script);				// `J` new
+	sScript* Script_SexDoggyTarget(sScript* Script);				// `J` new
+	sScript* Script_NormalSexWithRandomTarget(sScript* Script);		// `J` new
+	sScript* Script_IfGirlHasItem(sScript* Script);					// `J` new .06.02.55
+	sScript* Script_AddItemtoGirl(sScript* Script);					// `J` new .06.02.55
+	sScript* Script_GivePlayerItem(sScript* Script);				// `J` new .06.02.55
 	//sScript* Script_GirlNameTarget(sScript* Script);
 
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.h

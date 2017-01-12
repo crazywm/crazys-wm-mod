@@ -68,31 +68,31 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	if (jobperformance >= 245)
 	{
 		wages += 155;	fame += 2;
-		ss << " She must be the perfect at this.\n\n";
+		ss << " She must be the perfect at this.\n \n";
 	}
 	else if (jobperformance >= 185)
 	{
 		wages += 95;	fame += 1;
-		ss << " She's unbelievable at this.\n\n";
+		ss << " She's unbelievable at this.\n \n";
 	}
 	else if (jobperformance >= 145)
 	{
 		wages += 55;
-		ss << " She's good at this job.\n\n";
+		ss << " She's good at this job.\n \n";
 	}
 	else if (jobperformance >= 100)
 	{
 		wages += 15;
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n \n";
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 		wages -= 5;
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 		wages -= 15;
 	}
 

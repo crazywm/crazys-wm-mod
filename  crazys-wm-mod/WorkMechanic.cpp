@@ -59,7 +59,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a mechanic.\n\n";
+	ss << " worked as a mechanic.\n \n";
 
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
@@ -77,32 +77,32 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (jobperformance >= 245)
 	{
 		wages += 155;
-		ss << "She must be the perfect mechanic patients go on and on about her and always come to see her when she works.\n\n";
+		ss << "She must be the perfect mechanic patients go on and on about her and always come to see her when she works.\n \n";
 	}
 	else if (jobperformance >= 185)
 	{
 		wages += 95;
-		ss << "She's unbelievable at this and is always getting praised by the patients for her work.\n\n";
+		ss << "She's unbelievable at this and is always getting praised by the patients for her work.\n \n";
 	}
 	else if (jobperformance >= 135)
 	{
 		wages += 55;
-		ss << "She's good at this job and gets praised by the patients often.\n\n";
+		ss << "She's good at this job and gets praised by the patients often.\n \n";
 	}
 	else if (jobperformance >= 85)
 	{
 		wages += 15;
-		ss << "She made a few mistakes but overall she is okay at this.\n\n";
+		ss << "She made a few mistakes but overall she is okay at this.\n \n";
 	}
 	else if (jobperformance >= 65)
 	{
 		wages -= 5;
-		ss << "She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << "She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 	}
 	else
 	{
 		wages -= 15;
-		ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << "She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 	}
 
 
@@ -110,7 +110,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
 		wages += 25;
-		ss << " Stunned by her beauty a patient left her a great tip.\n\n";
+		ss << " Stunned by her beauty a patient left her a great tip.\n \n";
 	}
 	if (girl->has_trait( "Construct") && g_Dice.percent(15))
 	{

@@ -43,7 +43,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked cleaning and repairing the farm.\n\n";
+	ss << " worked cleaning and repairing the farm.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
@@ -75,7 +75,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		enjoyC += g_Dice % 2; enjoyF += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 	// slave girls not being paid for a job that normally you would pay directly for do less work
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
@@ -90,10 +90,10 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
-	ss << "\n\nCleanliness rating improved by " << int(CleanAmt);
+	ss << "\n \nCleanliness rating improved by " << int(CleanAmt);
 	if (playtime)	// `J` needs more variation
 	{
-		ss << "\n\n" << girlName << " finished her cleaning early so she ";
+		ss << "\n \n" << girlName << " finished her cleaning early so she ";
 		if (Day0Night1 == SHIFT_DAY && roll_c % 3 == 1)	// 33% chance she will watch the sunset when working day shift
 		{
 			ss << "sat beneath an oak tree and watched the sunset.";

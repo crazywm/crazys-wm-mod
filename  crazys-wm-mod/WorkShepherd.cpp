@@ -49,7 +49,7 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a shepherd in the farm.\n\n";
+	ss << " worked as a shepherd in the farm.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -96,7 +96,7 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << girlName << " has no idea what she is doing.";
 		beasts *= 0.5; food *= 0.5; wages -= 10; roll_a -= 5; roll_b -= 10;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//

@@ -55,7 +55,7 @@ bool cJobManager::WorkHouseCook(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked cooking for your house.\n\n";
+	ss << " worked cooking for your house.\n \n";
 
 	int enjoy = 0;
 	int wages = 30, tips = 0;
@@ -101,7 +101,7 @@ bool cJobManager::WorkHouseCook(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, -2);
 		wages -= 15;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//

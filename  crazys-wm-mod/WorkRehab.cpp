@@ -68,20 +68,20 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	bool hasCounselor = g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) > 0;
 	if (!hasCounselor)
 	{
-		ss << "She sits in rehab doing nothing. You must assign a counselor to treat her.";
+		ss << " sits in rehab doing nothing. You must assign a counselor to treat her.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;	// not refusing
 	}
 
 	if (g_Dice.percent(50) && g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << "She fought with her counselor and did not make any progress this week.";
+		ss << " fought with her counselor and did not make any progress this week.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
 		if (Day0Night1) girl->m_WorkingDay--;
 		return true;
 	}
-	ss << " underwent rehab for her addiction.\n\n";
+	ss << " underwent rehab for her addiction.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// not for patient
 
@@ -107,7 +107,7 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, -10);
 		g_Girls.UpdateStat(girl, STAT_PCHATE, 10);
 		ss << "She almost died in rehab but the Counselor saved her.\n";
-		ss << "She hates you a little more for forcing this on her.\n\n";
+		ss << "She hates you a little more for forcing this on her.\n \n";
 		msgtype = EVENT_DANGER;
 		enjoy -= 2;
 	}

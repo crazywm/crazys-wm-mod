@@ -59,7 +59,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " was assigned to fight other girls in the arena.\n\n";
+	ss << " was assigned to fight other girls in the arena.\n \n";
 
 
 	int wages = 0, tips = 0;
@@ -82,7 +82,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		g_LogFile.write("Error: You have no Arena Girls for your girls to fight\n");
 		g_LogFile.write("Error: You need an Arena Girl to allow WorkFightArenaGirls randomness");
-		ss << "There were no Arena Girls for her to fight.\n\n(Error: You need an Arena Girl to allow WorkFightArenaGirls randomness)";
+		ss << "There were no Arena Girls for her to fight.\n \n(Error: You need an Arena Girl to allow WorkFightArenaGirls randomness)";
 		imagetype = IMGTYPE_PROFILE;
 	}
 	else if (fight_outcome == 1)	// she won
@@ -103,17 +103,17 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 			ugirl->m_Stats[STAT_HAPPINESS] = g_Dice % 80 + 1;
 			ugirl->m_Stats[STAT_TIREDNESS] = g_Dice % 50 + 50;
 			ugirl->m_States |= (1 << STATUS_ARENA);
-			msg << girlName << " won her fight against " << ugirl->m_Realname << ".\n\n";
-			Umsg << ugirl->m_Realname << " lost her fight against your girl " << girlName << ".\n\n";
+			msg << girlName << " won her fight against " << ugirl->m_Realname << ".\n \n";
+			Umsg << ugirl->m_Realname << " lost her fight against your girl " << girlName << ".\n \n";
 			Tmsg << ugirl->m_Realname;
 			if (g_Dice.percent(50))
 			{
 				ugirl->m_States |= (1 << STATUS_SLAVE);
-				Tmsg << "'s owner could not afford to pay you your winnings so he gave her to you instead.\n\n";
+				Tmsg << "'s owner could not afford to pay you your winnings so he gave her to you instead.\n \n";
 			}
 			else
 			{
-				Tmsg << " put up a good fight so you let her live as long as she came work for you.\n\n";
+				Tmsg << " put up a good fight so you let her live as long as she came work for you.\n \n";
 				wages = 100 + g_Dice % (girl->fame() + girl->charisma());
 			}
 			msg << Tmsg.str();
@@ -217,11 +217,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
 		{
-			ss << "\n\nAll that fighting proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
+			ss << "\n \nAll that fighting proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
 		}
 		else
 		{
-			ss << "\n\nAll that fighting proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
+			ss << "\n \nAll that fighting proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}

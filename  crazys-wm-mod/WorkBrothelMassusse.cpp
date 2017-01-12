@@ -57,7 +57,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked massaging customers.\n\n";
+	ss << " worked massaging customers.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -78,7 +78,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (jobperformance >= 245)
 	{
-		ss << " She must be the perfect masseuse she never goes too hard but never too soft. She knows just what to do and the customers can't get enough of her.\n\n";
+		ss << " She must be the perfect masseuse she never goes too hard but never too soft. She knows just what to do and the customers can't get enough of her.\n \n";
 		wages += 155;
 
 		if (roll_b <= 20)
@@ -109,7 +109,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this and is always finding new ways to please the customer.\n\n";
+		ss << " She's unbelievable at this and is always finding new ways to please the customer.\n \n";
 		wages += 95;
 
 		if (roll_b <= 20)
@@ -138,7 +138,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job and knows a few tricks to drive the customers wild.\n\n";
+		ss << " She's good at this job and knows a few tricks to drive the customers wild.\n \n";
 		wages += 55;
 
 		if (roll_b <= 20)
@@ -168,7 +168,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n \n";
 		wages += 15;
 
 		if (roll_b <= 20)
@@ -194,7 +194,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 		wages -= 5;
 
 		if (roll_b <= 20)
@@ -222,7 +222,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 		wages -= 15;
 
 		if (roll_b <= 20)

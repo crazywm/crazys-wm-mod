@@ -49,7 +49,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked making and mending clothes at the farm.\n\n";
+	ss << " worked making and mending clothes at the farm.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -102,7 +102,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		wages -= 15; craftpoints *= 0.4; roll_a -= 5; roll_b -= 10;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
@@ -153,7 +153,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Money					//
@@ -426,7 +426,7 @@ bool cJobManager::WorkTailor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 				craftpoints -= Cost;
 				girl->mana(-Magic);
 				msgtype = EVENT_GOODNEWS;
-				if (numitems == 0)	ss << "\n\n" << girlName << " made:";
+				if (numitems == 0)	ss << "\n \n" << girlName << " made:";
 				ss << "\n\t" << itemmade;
 				g_Brothels.AddItemToInventory(item);
 				numitems++;

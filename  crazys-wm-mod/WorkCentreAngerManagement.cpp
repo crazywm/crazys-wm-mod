@@ -82,11 +82,11 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 			bool runaway = false;
 			// if there is no counselor, it should not get to here
 			sGirl* counselor = g_Centre.GetRandomGirlOnJob(0, JOB_COUNSELOR, Day0Night1);
-			ss << "\n\n" << girlName << " fought hard with her counselor " << counselor->m_Realname;
+			ss << "\n \n" << girlName << " fought hard with her counselor " << counselor->m_Realname;
 			int winner = g_Girls.girl_fights_girl(girl, counselor);
 			if (winner == 1)	// the patient won
 			{
-				ss << " and won.\n\n";
+				ss << " and won.\n \n";
 				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, 5);
 				g_Girls.UpdateEnjoyment(counselor, ACTION_WORKCOUNSELOR, -5);
 				g_Girls.UpdateEnjoyment(counselor, ACTION_COMBAT, -2);
@@ -107,7 +107,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 			}
 			else	// the counselor won
 			{
-				ss << " and lost.\n\n";
+				ss << " and lost.\n \n";
 				g_Girls.UpdateEnjoyment(girl, actiontype, -5);
 				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -5);
 				g_Girls.UpdateEnjoyment(counselor, ACTION_WORKCOUNSELOR, -1);
@@ -125,7 +125,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " underwent therapy for mental issues.\n\n";
+	ss << " underwent therapy for mental issues.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// not for patient
 
@@ -151,7 +151,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 		g_Girls.UpdateStat(girl, STAT_PCLOVE, -10);
 		g_Girls.UpdateStat(girl, STAT_PCHATE, 10);
 		ss << "She almost died in rehab but the Counselor saved her.\n";
-		ss << "She hates you a little more for forcing this on her.\n\n";
+		ss << "She hates you a little more for forcing this on her.\n \n";
 		msgtype = EVENT_DANGER;
 		enjoy -= 2;
 	}

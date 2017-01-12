@@ -106,7 +106,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 			g_Brothels.GetDungeon()->AddGirl(ugirl, DUNGEON_NEWGIRL);	// Either type of girl goes to the dungeon
 
-			ss << "\n\nA merchant from a far off village brought a girl from his village to trade for " << cost << " units of food.\n" << ugirl->m_Realname << " has been sent to your dungeon.\n";
+			ss << "\n \nA merchant from a far off village brought a girl from his village to trade for " << cost << " units of food.\n" << ugirl->m_Realname << " has been sent to your dungeon.\n";
 			g_Brothels.add_to_food(-cost);
 		}
 	}
@@ -116,31 +116,31 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	if (jobperformance >= 245)
 	{
-		ss << " She must be the perfect at this.\n\n";
+		ss << " She must be the perfect at this.\n \n";
 		pricemultiplier += 1.0;
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this.\n\n";
+		ss << " She's unbelievable at this.\n \n";
 		pricemultiplier += 0.5;
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job.\n\n";
+		ss << " She's good at this job.\n \n";
 		pricemultiplier += 0.2;
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n \n";
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 		pricemultiplier -= 0.2;
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 		pricemultiplier -= 0.5;
 	}
 
@@ -166,7 +166,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Money					//
@@ -226,7 +226,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			else ss << Sell_Alchemy << " of the " << ForSale_Alchemy;
 			ss << " Alchemy Items.\n";
 		}
-		ss << "She made a total of " << (int)gold << " from it all.\nShe gets 1% of the sales: " << (int)(gold / 100)<<".\nThe rest goes directly into your coffers.\n\n";
+		ss << "She made a total of " << (int)gold << " from it all.\nShe gets 1% of the sales: " << (int)(gold / 100)<<".\nThe rest goes directly into your coffers.\n \n";
 		wages += (int)(gold / 100); // `J` Pay her based on how much she brought in
 		gold -= (int)(gold / 100);
 		enjoy += (int)(wages / 100);		// the more she gets paid, the more she likes selling
@@ -269,7 +269,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	if (cfg.debug.log_show_numbers())
 	{
-		ss << "\n\nNumbers:"
+		ss << "\n \nNumbers:"
 			<< "\n Job Performance = " << (int)jobperformance
 			<< "\n Wages = " << (int)wages
 			<< "\n Tips = " << (int)tips

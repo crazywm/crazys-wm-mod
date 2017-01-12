@@ -30,6 +30,7 @@ using namespace std;
 // holds data for movies
 typedef struct sMovieScene
 {
+	int m_SceneNum;
 	string m_Name;
 	string m_Actress;
 	string m_Director;
@@ -70,20 +71,21 @@ public:
 	cMovieStudioManager();					// constructor
 	~cMovieStudioManager();					// destructor
 
-	int				m_MovieRunTime;		// see above, counter for the 7 week effect
+	int				m_MovieRunTime;			// see above, counter for the 7 week effect
 	int				m_NumMovies;
 	long			RunWeeks;
-	sMovie*			m_Movies;			// the movies currently selling
+	sMovie*			m_Movies;				// the movies currently selling
 	sMovie*			m_LastMovies;
 	sFilm *			m_CurrFilm;
 	// added the following so movie crew could effect quality of each scene. --PP
-	int				m_FlufferQuality;	// Bonus to film quality based on performance of Fluffers this shift.
-	int				m_CameraQuality;	// Bonus to film quality based on performance of Cameramages this shift.
-	int				m_PurifierQaulity;	// Bonus to film quality based on performance of CrystalPurifiers this shift.
-	int				m_DirectorQuality;	// Bonus to film quality based on performance of  the Director this shift.
-	string			m_DirectorName;	    // The Director's name.
-	int				m_StagehandQuality; // Bonus to film quality based on performance of stagehands this shift.
-	double			m_PromoterBonus;	// Bonus added directly to film sales by promoter.
+	int				m_FlufferQuality;		// Bonus to film quality based on performance of Fluffers this shift.
+	int				m_CameraQuality;		// Bonus to film quality based on performance of Cameramages this shift.
+	int				m_PurifierQaulity;		// Bonus to film quality based on performance of CrystalPurifiers this shift.
+	int				m_DirectorQuality;		// Bonus to film quality based on performance of  the Director this shift.
+	string			m_DirectorName;			// The Director's name.
+	int				m_StagehandQuality;		// Bonus to film quality based on performance of stagehands this shift.
+	double			m_PromoterBonus;		// Bonus added directly to film sales by promoter.
+	int				m_TotalScenesFilmed;	// `J` added for .06.02.55
 
 	void StartMovie(int brothelID, int Time);
 	int  GetTimeToMovie(int brothelID);
@@ -97,6 +99,7 @@ public:
 	int GetNumScenes();
 	vector<sMovieScene*> m_movieScenes;
 	int AddScene(sGirl* girl, int Job, int Bonus = 0);	// Added job parameter so different types of sex could effect film quality. --PP
+	void LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks);
 	void AddGirl(int brothelID, sGirl* girl);
 	void RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl = false);
 	void UpdateMovieStudio();

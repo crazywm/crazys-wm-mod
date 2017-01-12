@@ -72,7 +72,7 @@ bool cJobManager::WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	ss << " is in the Clinic to get fertility treatment.\n\n";
+	ss << " is in the Clinic to get fertility treatment.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// not for patient
 	int msgtype = Day0Night1;
@@ -156,7 +156,7 @@ bool cJobManager::WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		ss << g_Girls.AdjustTraitGroupFertility(girl, 1, false);
 		if (girl->has_trait( "Broodmother"))
 		{
-			ss << "\n\nShe has been released from the Clinic.";
+			ss << "\n \nShe has been released from the Clinic.";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		}
 	}

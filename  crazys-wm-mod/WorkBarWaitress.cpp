@@ -68,11 +68,11 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	ss << " has been assigned to work as a waitress at your restaurant. She is informed that this is a genteel and conservative establishment, and she should focus on providing timely and efficient service.\n";
 	if (girl->has_trait( "Mind Fucked"))
 	{
-		ss << girlName << " nods in understanding, but she also has a hand down her skirt, absent-mindedly rubbing her pussy as she listens. You are not entirely sure that she understands what \"genteel and conservative\" means here.. " << girlName << "'s mind fucked state may make this a more interesting shift than you anticipated.\n\n";
+		ss << girlName << " nods in understanding, but she also has a hand down her skirt, absent-mindedly rubbing her pussy as she listens. You are not entirely sure that she understands what \"genteel and conservative\" means here.. " << girlName << "'s mind fucked state may make this a more interesting shift than you anticipated.\n \n";
 	}
 	else
 	{
-		ss << girlName << " worked as a waitress in the bar.\n\n";
+		ss << girlName << " worked as a waitress in the bar.\n \n";
 	}
 
 	g_Girls.UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
@@ -118,7 +118,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	if (jobperformance >= 245)
 	{
-		ss << " She's the perfect waitress. Customers go on about her and many seem to come more for her than for the drinks or entertainment.\n\n";
+		ss << " She's the perfect waitress. Customers go on about her and many seem to come more for her than for the drinks or entertainment.\n \n";
 		wages += 155;
 
 		if (roll_b <= 14)
@@ -157,7 +157,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
+		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n \n";
 		wages += 95;
 
 		if (roll_b <= 16)
@@ -190,7 +190,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job and gets praised by the customers often.\n\n";
+		ss << " She's good at this job and gets praised by the customers often.\n \n";
 		wages += 55;
 
 		if (roll_b <= 14)
@@ -239,7 +239,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n \n";
 		wages += 15;
 
 		if (roll_b <= 14)
@@ -278,7 +278,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 		wages -= 5;
 		if (roll_b <= 14)
 		{
@@ -316,7 +316,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 		wages -= 15;
 		if (roll_b <= 14)
 		{
@@ -360,7 +360,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n\n";
+		ss << "Stunned by her beauty a customer left her a great tip.\n \n";
 		tips += 25;
 	}
 
@@ -487,7 +487,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	if (g_Girls.GetSkill(girl, SKILL_HERBALISM) >= 40 && g_Dice.percent(5))
 	{
-		ss << "Added a little something extra to the patrons order to spice it up. They enjoyed it greatly and she received some nice tips.\n\n";
+		ss << "Added a little something extra to the patrons order to spice it up. They enjoyed it greatly and she received some nice tips.\n \n";
 		tips += 25;
 	}
 

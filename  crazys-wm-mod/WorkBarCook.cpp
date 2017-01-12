@@ -69,19 +69,19 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	if (girl->has_trait( "No Arms") || girl->has_trait( "No Hands"))
 	{
-		ss << "You have assigned " << girlName << " to work as a cook in the kitchens this week. She stares at the kitchen, with all the pots and pans and utensils, and then back at you, and then down at her own body, as if trying to draw your attention to the fact that she has no hands. After silently waiting for a response that you never give, she turns her gaze back to the kitchen and contemplates how she will even begin with this impossible task.\n\n";
+		ss << "You have assigned " << girlName << " to work as a cook in the kitchens this week. She stares at the kitchen, with all the pots and pans and utensils, and then back at you, and then down at her own body, as if trying to draw your attention to the fact that she has no hands. After silently waiting for a response that you never give, she turns her gaze back to the kitchen and contemplates how she will even begin with this impossible task.\n \n";
 	}
 	else if (girl->has_trait( "Retarded"))
 	{
-		ss << girlName << " beams like a small child when you tell her that she is cooking today. You witness as she throws all the nearby ingredients into the same bowl, places the bowl on the stove, and then starts punching the mixture as if that is an approved cooking technique. \"I cook food good!\" she exclaims. Whatever possessed you to make a retarded girl into a cook, now you know that you are committed to seeing this through until the end.\n\n";
+		ss << girlName << " beams like a small child when you tell her that she is cooking today. You witness as she throws all the nearby ingredients into the same bowl, places the bowl on the stove, and then starts punching the mixture as if that is an approved cooking technique. \"I cook food good!\" she exclaims. Whatever possessed you to make a retarded girl into a cook, now you know that you are committed to seeing this through until the end.\n \n";
 	}
 	else if (girl->has_trait( "Assassin"))// Impact unknown; randomly very bad, maybe?
 	{
-		ss << girlName << "'s skills as an assassin have left her with a slightly skewed view towards food, which she casually refers to as \"poison masking.\" You are not sure whether you should have the waitresses serve what she cooks, and you definitely are not going to allow her to re-cook a meal that an angry customer sends back. Actually, there are a lot of knives in kitchens! You had not noticed that until right now. So many knives.\n\n";
+		ss << girlName << "'s skills as an assassin have left her with a slightly skewed view towards food, which she casually refers to as \"poison masking.\" You are not sure whether you should have the waitresses serve what she cooks, and you definitely are not going to allow her to re-cook a meal that an angry customer sends back. Actually, there are a lot of knives in kitchens! You had not noticed that until right now. So many knives.\n \n";
 	}
 	else
 	{
-		ss << girlName << " is assigned to work as a cook in the kitchen, preparing food for the customers.\n\n";
+		ss << girlName << " is assigned to work as a cook in the kitchen, preparing food for the customers.\n \n";
 	}
 
 	g_Girls.UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
@@ -130,7 +130,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	if (jobperformance >= 245)
 	{
-		ss << "  She must be the perfect at this.\n\n";
+		ss << "  She must be the perfect at this.\n \n";
 		wages += 155;
 
 		if (girl->has_trait( "No Arms") || girl->has_trait( "No Hands"))
@@ -164,7 +164,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this.\n\n";
+		ss << " She's unbelievable at this.\n \n";
 		wages += 95;
 
 		if (girl->has_trait( "No Arms") || girl->has_trait( "No Hands"))
@@ -201,7 +201,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job.\n\n";
+		ss << " She's good at this job.\n \n";
 		wages += 55;
 
 		if (girl->has_trait( "No Arms") || girl->has_trait( "No Hands"))
@@ -237,7 +237,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n\n";
+		ss << " She made a few mistakes but overall she is okay at this.\n \n";
 		wages += 15;
 
 		if (girl->has_trait( "No Arms") || girl->has_trait( "No Hands"))
@@ -273,7 +273,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
 		wages -= 5;
 
 		if (girl->has_trait( "No Arms") || girl->has_trait( "No Hands"))
@@ -309,7 +309,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
 		wages -= 15;
 
 		if (girl->has_trait( "No Arms") || girl->has_trait( "No Hands"))

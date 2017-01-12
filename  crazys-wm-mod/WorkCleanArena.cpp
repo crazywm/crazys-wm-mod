@@ -55,7 +55,7 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked cleaning the arena.\n\n";
+	ss << " worked cleaning the arena.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
@@ -87,7 +87,7 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 	// slave girls not being paid for a job that normally you would pay directly for do less work
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
@@ -102,10 +102,10 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
-	ss << "\n\nCleanliness rating improved by " << (int)CleanAmt;
+	ss << "\n \nCleanliness rating improved by " << (int)CleanAmt;
 	if (playtime)	// `J` needs more variation
 	{
-		ss << "\n\n" << girlName << " finished her cleaning early so she played around with some of the equipment.";
+		ss << "\n \n" << girlName << " finished her cleaning early so she played around with some of the equipment.";
 		g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % 3));
 		g_Girls.UpdateStat(girl, STAT_AGILITY, (g_Dice % 2));
 		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, (g_Dice % 2));

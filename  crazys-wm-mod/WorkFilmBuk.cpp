@@ -476,5 +476,5 @@ void AndAction(stringstream *TheAction, string TheHo, bool TiedUp)
 			break;
 		}
 	}
-	*TheAction << "\n\n";
+	*TheAction << "\n \n";
 }

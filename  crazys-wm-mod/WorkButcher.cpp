@@ -49,7 +49,7 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a butcher on the farm.\n\n";
+	ss << " worked as a butcher on the farm.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -92,7 +92,7 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		wages -= 15;
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
@@ -137,7 +137,7 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		enjoyC += g_Dice % 2; enjoyF += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n\n";
+	ss << "\n \n";
 #endif
 
 
@@ -172,7 +172,7 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (item)
 	{
 		msgtype = EVENT_GOODNEWS;
-		ss << "\n\n" << girlName << " made ";
+		ss << "\n \n" << girlName << " made ";
 		if (totalitemsmade == 1) ss << "one ";
 		else ss << totalitemsmade << " ";
 		ss << itemmade << " for you.";

@@ -465,7 +465,7 @@ void sDungeonCust::OutputCustDetailString(string& Data, const string& detailName
 	else if (detailName == "Tortured")			{ ss << ((m_Tort) ? "Yes" : "No"); }
 	else
 	{
-		ss << gettext("---");
+		ss << "---";
 	}
 	Data = ss.str();
 }
@@ -650,7 +650,7 @@ void cDungeon::Update()
 			*/
 			//	`J` set the basics
 			msg.str(""); ss.str("");
-			msg << girlName << " is languishing in the dungeon.\n\n";
+			msg << girlName << " is languishing in the dungeon.\n \n";
 			int msgtype = EVENT_DUNGEON;
 			int imgtype = IMGTYPE_PROFILE;
 			int	nHealth = girl->health();
@@ -659,12 +659,12 @@ void cDungeon::Update()
 			//	`J` check them for dangers or warnings
 			if (nHealth < 20 || nTired > 80)
 			{
-				msg << gettext("DANGER: ") << girlName;
+				msg << "DANGER: " << girlName;
 				msgtype = EVENT_DANGER;
 			}
 			else if (nHealth < 40 || nTired > 60)
 			{
-				msg << gettext("WARNING: ") << girlName;
+				msg << "WARNING: " << girlName;
 				msgtype = EVENT_WARNING;
 			}
 
@@ -684,7 +684,7 @@ void cDungeon::Update()
 				else									{ msg << "."; }
 				if (nTired > 80)						{ msg << " exhausted, it may effect her health."; }
 				else if (nTired > 60)					{ msg << " tired."; }
-				msg << "\n\nHer health is " << nHealth << ".\nHer tiredness is " << nTired << ".";
+				msg << "\n \nHer health is " << nHealth << ".\nHer tiredness is " << nTired << ".";
 			}
 			girl->m_Events.AddMessage(msg.str(), imgtype, msgtype);
 
@@ -842,7 +842,7 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
 	}
 
 #ifdef WDTEST // debuging
-	sum << "\n\nFinal\n"
+	sum << "\n \nFinal\n"
 		<< "   h=" << girl->happiness()
 		<< "   o=" << girl->obedience()
 		<< "   l=" << girl->pclove()

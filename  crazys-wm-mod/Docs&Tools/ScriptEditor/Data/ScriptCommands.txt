@@ -377,3 +377,12 @@ INT -255 255
 "Have RevCowGirl"
 "Have SexDoggy"
 "Have NormalSexWithRandom"
+"IfGirlHasItem ~"
+TEXT
+"AddItemtoGirl ~ ~ ~"
+TEXT
+INT 0 255
+BOOL
+"GivePlayerItem ~ ~"
+TEXT
+INT 0 255

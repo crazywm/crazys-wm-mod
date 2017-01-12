@@ -71,7 +71,7 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	ss << " is in the Clinic to get fat removed.\n\n";
+	ss << " is in the Clinic to get fat removed.\n \n";
 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient
@@ -165,7 +165,7 @@ bool cJobManager::WorkLiposuction(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 		if (girl->has_trait( "Great Figure") && !girl->has_trait( "Plump"))
 		{
-			ss << "She has been released from the Clinic.\n\n";
+			ss << "She has been released from the Clinic.\n \n";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		}
 	}

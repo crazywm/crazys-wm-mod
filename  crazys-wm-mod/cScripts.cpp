@@ -402,7 +402,7 @@ bool cScript::Load(string filename)
 	}
 	else
 	{
-		l.ss() << "\n\nError: Could not load script: '" << filename << "'\n\n";
+		l.ss() << "\n \nError: Could not load script: '" << filename << "'\n \n";
 		l.ssend(); return false;
 	}									// and return false
 	return true;
