@@ -194,7 +194,7 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	if (girl->has_trait("Exhibitionist"))
 	{
-		ss << "\n \nShe hung out in the brothel wearing barely anything.";
+		ss << "\n\nShe hung out in the brothel wearing barely anything.";
 		if (g_Dice.percent(50) && girl->has_trait("Horrific Scars"))
 		{
 			ss << " The customers were disgusted by her horrific scars.";
@@ -252,13 +252,13 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	if (girl->has_trait("Optimistic") && roll_b < g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at best
 	{
-		ss << "\n \nWorking with someone as cheerful as " << girlName << " makes everybody a bit happier.";
+		ss << "\n\nWorking with someone as cheerful as " << girlName << " makes everybody a bit happier.";
 		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, 1);
 	}
 
 	if (girl->has_trait("Pessimistic") && roll_b > 50 + g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at worst
 	{
-		ss << "\n \nWorking with someone as pessimistic as " << girlName << " makes everybody a little bit sadder.";
+		ss << "\n\nWorking with someone as pessimistic as " << girlName << " makes everybody a little bit sadder.";
 		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, -1);
 	}
 

@@ -137,7 +137,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	}
 	else ss << girlName << " was taken for filming in public bondage and torture scenes.";
 
-	ss << "\n \n";
+	ss << "\n\n";
 
 	//SCENERY
 	ss << "A crowd gathered to watch as " << girlName;
@@ -282,7 +282,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		ss << ("puzzled expression as something impossible happened.");
 		break;
 	}
-	ss << "\nYour film crew rescued her once they had enough footage.\n \n";
+	ss << "\nYour film crew rescued her once they had enough footage.\n\n";
 
 	if (jobperformance >= 350)
 	{
@@ -356,15 +356,15 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	//Feedback enjoyment
 	if (enjoy > 10)
 	{
-		ss << "She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.\n \n";
+		ss << "She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.\n\n";
 	}
 	else if (enjoy > 0)
 	{
-		ss << "She's only a little traumatised.\n \n";
+		ss << "She's only a little traumatised.\n\n";
 	}
 	else
 	{
-		ss << "From the way she's still crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.\n \n";
+		ss << "From the way she's still crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.\n\n";
 	}
 
 	bonus = bonus + enjoy;

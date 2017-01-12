@@ -230,8 +230,8 @@ void cScreenStudioManagement::update_image()
 		if (lastNum != selection)
 		{
 			stringstream text;
-			text << g_Girls.GetGirlMood(selected_girl) << "\n \n" << selected_girl->m_Desc;
-			if (cfg.debug.log_extradetails()) text << "\n \nBased on: " << selected_girl->m_Name;
+			text << g_Girls.GetGirlMood(selected_girl) << "\n\n" << selected_girl->m_Desc;
+			if (cfg.debug.log_extradetails()) text << "\n\nBased on: " << selected_girl->m_Name;
 			EditTextItem(text.str(), girldesc_id);
 			Rand = true;
 			lastNum = selection;
@@ -279,7 +279,7 @@ void cScreenStudioManagement::check_events()
 			int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);		// Now assign the job to all the selected girls
 			while (GSelection != -1)
 			{
-				// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> 
+				// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
 				int new_job = selection;
 				selected_girl = g_Studios.GetGirl(g_CurrStudio, GSelection);
 				if (selected_girl)

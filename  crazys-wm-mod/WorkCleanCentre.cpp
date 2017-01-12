@@ -55,7 +55,7 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked cleaning the Centre.\n \n";
+	ss << " worked cleaning the Centre.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
@@ -86,7 +86,7 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 	// slave girls not being paid for a job that normally you would pay directly for, do less work
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
@@ -101,26 +101,26 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < CleanAmt / 2) playtime = true;
-	ss << "\n \nCleanliness rating improved by " << (int)CleanAmt;
+	ss << "\n\nCleanliness rating improved by " << (int)CleanAmt;
 	if (playtime)	// `J` needs more variation
 	{
 		if (roll_a < 20 && roll_b < 60 && roll_c < 50)
 		{
-			ss << "\n \n" << girlName << " finished her cleaning early so took a long bath to clean herself off.";
+			ss << "\n\n" << girlName << " finished her cleaning early so took a long bath to clean herself off.";
 			girl->happiness((g_Dice % 3) + 1);
 			girl->tiredness(-(g_Dice % 3));
 			imagetype = IMGTYPE_BATH;
 		}
 		else if (roll_c < 50)
 		{
-			ss << "\n \n" << girlName << " finished her cleaning early so she played with the children a bit.";
+			ss << "\n\n" << girlName << " finished her cleaning early so she played with the children a bit.";
 			girl->happiness((g_Dice % 5) + 3);
 			girl->tiredness(g_Dice % 3);
 			girl->morality(g_Dice % 2);
 		}
 		else
 		{
-			ss << "\n \n" << girlName << " finished her cleaning early so she took nap.";
+			ss << "\n\n" << girlName << " finished her cleaning early so she took nap.";
 			girl->happiness(g_Dice % 3);
 			girl->tiredness(-1 - (g_Dice % 10));
 			girl->morality(-(g_Dice % 2));

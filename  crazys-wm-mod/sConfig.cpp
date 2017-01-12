@@ -42,7 +42,7 @@ cConfig::cConfig()
 	if (!data)
 	{
 		l.ss() << "Whore Master v" << g_MajorVersion << "." << g_MinorVersionA << g_MinorVersionB << "." << g_StableVersion << " BETA" << " Svn: " << svn_revision
-			<< "\n------------------------------------------------------------------------------------------------------------------------\nLoading Default configuration variables"; 
+			<< "\n------------------------------------------------------------------------------------------------------------------------\nLoading Default configuration variables";
 		l.ssend();
 		data = new sConfigData();
 	}
@@ -236,7 +236,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 {
 	const char *pt;
 	folders.configXMLch = false;
-	folders.configXMLsa = false; 
+	folders.configXMLsa = false;
 	folders.configXMLdi = false;
 	folders.configXMLil = false;
 
@@ -373,7 +373,7 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 		}
 		else
 		{
-			l.ss() << "\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\n\tDefaulting to 'J_1024x768'\n \n"; l.ssend();
+			l.ss() << "\nWarning: config.xml:\n'Resolution' attribute points to an invalid interface folder:\n\tDefaulting to 'J_1024x768'\n\n"; l.ssend();
 		}
 	}
 	else
@@ -540,7 +540,7 @@ void sConfigData::get_catacombs_data(TiXmlElement *el)
 		catacombs.gang_gets_girls = int((100.0 / checkggang) * (double)catacombs.gang_gets_girls);
 		catacombs.gang_gets_items = int((100.0 / checkggang) * (double)catacombs.gang_gets_items);
 		catacombs.gang_gets_beast = int(100.0 - (double)catacombs.gang_gets_girls - (double)catacombs.gang_gets_items);
-	}									 
+	}
 }
 
 void sConfigData::get_slave_market_data(TiXmlElement *el)
@@ -622,14 +622,14 @@ void sConfigData::get_debug_flags(TiXmlElement *el)
 */
 void sConfigData::set_defaults()
 {
-	folders.characters = "";				// `J` where the characters folder is located 
+	folders.characters = "";				// `J` where the characters folder is located
 	folders.configXMLch = false;			// `J` if character's location is set in config.xml
-	folders.saves = "";						// `J` where the saves folder is located 
+	folders.saves = "";						// `J` where the saves folder is located
 	folders.configXMLsa = false;			// `J` if saves's location is set in config.xml
-	folders.items = "";						// `J` where the items folder is located 
+	folders.items = "";						// `J` where the items folder is located
 	folders.configXMLil = false;			// `J` if items's location is set in config.xml
 	folders.backupsaves = false;			// `J` backup saves in the version folder incase moving to the next version breaks the save
-	folders.defaultimageloc = "";			// `J` where the default images folder is located 
+	folders.defaultimageloc = "";			// `J` where the default images folder is located
 	folders.configXMLdi = false;			// `J` if default images location is set in config.xml
 	folders.preferdefault = false;			// `J` default images will be preferred over the alttype tree
 

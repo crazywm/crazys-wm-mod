@@ -43,13 +43,13 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int actiontype = ACTION_WORKMAKEITEMS;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a Jeweler at the arena.\n \n";
+	ss << " worked as a Jeweler at the arena.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -64,7 +64,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	double jobperformance = JP_Jeweler(girl, false);
 	double craftpoints = jobperformance;
-	
+
 	int dirtyloss = brothel->m_Filthiness / 20;		// craftpoints lost due to repairing equipment
 	if (dirtyloss > 0)
 	{
@@ -103,7 +103,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		wages -= 25; craftpoints *= 0.4; roll_a -= 5; roll_b -= 10;
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
@@ -168,7 +168,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Money					//
@@ -370,7 +370,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				craftpoints -= Cost;
 				girl->mana(-Magic);
 				msgtype = EVENT_GOODNEWS;
-				if (numitems == 0)	ss << "\n \n" << girlName << " made:";
+				if (numitems == 0)	ss << "\n\n" << girlName << " made:";
 				ss << "\n\t" << itemmade;
 				g_Brothels.AddItemToInventory(item);
 				numitems++;
@@ -428,7 +428,7 @@ double cJobManager::JP_Jeweler(sGirl* girl, bool estimate)// not used
 		// primary - first 100
 		girl->crafting() +
 		// secondary - second 100
-		((girl->agility() + girl->confidence() + girl->intelligence() + girl->magic()) / 4) + 
+		((girl->agility() + girl->confidence() + girl->intelligence() + girl->magic()) / 4) +
 		// level bonus
 		girl->level();
 	if (!estimate)

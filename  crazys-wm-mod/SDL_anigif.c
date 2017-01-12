@@ -289,9 +289,13 @@ int AG_LoadGIF_RW( SDL_RWops* src, AG_Frame* frames, int maxFrames )
 
 	if ( src == NULL )
 		return 0;
-
+    #if LINUX
+    // 'Mute' had to make it this way for linux or compiler would throw fit
+	memset( malloc( sizeof(*gd)) , 0, sizeof(*gd) );
+    #else
 	gd = malloc( sizeof(*gd) );
 	memset( gd , 0, sizeof(*gd) );
+	#endif
 	gd->src = src;
 
 	start = SDL_RWtell( src );

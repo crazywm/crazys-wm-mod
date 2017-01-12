@@ -70,7 +70,7 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	ss << " is in the Clinic to get a face lift.\n \n";
+	ss << " is in the Clinic to get a face lift.\n\n";
 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient
@@ -157,7 +157,7 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 		if (girl->m_Stats[STAT_AGE] <= 18) girl->m_Stats[STAT_AGE] = 18;
 		if (g_Girls.GetStat(girl, STAT_AGE) <= 21)
 		{
-			ss << "\n \nShe has been released from the Clinic.";
+			ss << "\n\nShe has been released from the Clinic.";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		}
 	}

@@ -121,7 +121,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			return true;
 		}
 	}
-	else ss << girlName << " was filmed in facefucking scenes.\n \n";
+	else ss << girlName << " was filmed in facefucking scenes.\n\n";
 
 
 	int OPTION = g_Dice % 3;
@@ -291,24 +291,24 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (jobperformance >= 200)
 	{
 		enjoy++;
-		ss << "She won't say it, but you suspect she secretly gets off on the degradation.\n \n";
+		ss << "She won't say it, but you suspect she secretly gets off on the degradation.\n\n";
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy -= (1 + g_Dice % 2);
-		ss << "She's pretty raw and her makeup is everywhere.\n \n";
+		ss << "She's pretty raw and her makeup is everywhere.\n\n";
 	}
 	else
 	{
 		enjoy -= (2 + g_Dice % 3);
-		ss << "From the way she's coughing and gagging and has bright red eyes, you suspect this wasn't much fun for her.\n \n";
+		ss << "From the way she's coughing and gagging and has bright red eyes, you suspect this wasn't much fun for her.\n\n";
 	}
 	bonus = bonus + enjoy;
 
 	int impact = g_Dice%10;
 	if (girl->has_trait( "Strong Gag Reflex"))
 	{
-		ss << "She was gagging and retching the whole scene, and was violently sick. She was exhausted and felt awful afterward.\n \n";
+		ss << "She was gagging and retching the whole scene, and was violently sick. She was exhausted and felt awful afterward.\n\n";
 		g_Girls.UpdateStat(girl, STAT_HEALTH, (10 + impact));
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, (10 + impact + tired));
 		g_Girls.UpdateStat(girl, STAT_PCHATE, (2 + hate));
@@ -316,7 +316,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else if (girl->has_trait( "Gag Reflex"))
 	{
-		ss << "She gagged and retched a lot. It was exhausting and left her feeling sick.\n \n";
+		ss << "She gagged and retched a lot. It was exhausting and left her feeling sick.\n\n";
 		g_Girls.UpdateStat(girl, STAT_HEALTH, (2 + impact));
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, (5 + impact + tired));
 		g_Girls.UpdateStat(girl, STAT_PCHATE, (hate));

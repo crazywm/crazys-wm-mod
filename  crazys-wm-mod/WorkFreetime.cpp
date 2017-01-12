@@ -386,7 +386,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				U_Tiredness -= 10;
 				if (girl->libido() > 70 || (girl->has_trait( "Nymphomaniac") && girl->libido() > 30))
 				{
-					ss << "While in bed the mood hit her and she proceed to pleasure herself with ";
+					ss << ".\nWhile in bed the mood hit her and she proceed to pleasure herself with ";
 					if (g_Girls.HasItemJ(girl, "Compelling Dildo") != -1)
 					{
 						U_Libido -= 10;

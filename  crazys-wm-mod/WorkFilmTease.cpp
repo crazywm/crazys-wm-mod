@@ -84,7 +84,7 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else ss << " worked filming teaser scenes to arouse viewers.\n \n";
+	else ss << " worked filming teaser scenes to arouse viewers.\n\n";
 
 	if (bonus)
 	{
@@ -156,17 +156,17 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << "She loved flirting with the camera today.\n \n";
+		ss << "She loved flirting with the camera today.\n\n";
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << "She enjoyed this performance.\n \n";
+		ss << "She enjoyed this performance.\n\n";
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << "She didn't really get what she was supposed to do, and did not enjoy making this scene.\n \n";
+		ss << "She didn't really get what she was supposed to do, and did not enjoy making this scene.\n\n";
 	}
 	bonus = bonus + enjoy;
 

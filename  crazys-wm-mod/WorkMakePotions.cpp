@@ -49,7 +49,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a potions maker on the farm.\n \n";
+	ss << " worked as a potions maker on the farm.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// weapons and armor can get in the way
 
@@ -99,7 +99,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 		wages -= 15;
 		roll_a += 20;
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
@@ -130,7 +130,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 
 #pragma endregion
@@ -260,7 +260,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	if (totalitemsmade > 0)
 	{
-		ss << "\n \n" << girlName << " was able to make ";
+		ss << "\n\n" << girlName << " was able to make ";
 		if (totalitemsmade == 1) ss << "one ";
 		else ss << totalitemsmade << " items: ";
 		ss << ssitem.str();

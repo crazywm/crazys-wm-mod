@@ -62,7 +62,7 @@ bool cJobManager::WorkCosmeticSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	ss << " is in the Clinic to get general surgery.\n \n";
+	ss << " is in the Clinic to get general surgery.\n\n";
 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient
@@ -156,7 +156,7 @@ bool cJobManager::WorkCosmeticSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 
 		if (girl->has_trait( "Sexy Air") && girl->has_trait( "Cute") && girl->beauty() > 99)
 		{
-			ss << "\n \nShe has been released from the Clinic.";
+			ss << "\n\nShe has been released from the Clinic.";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		}
 	}

@@ -1892,7 +1892,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		// if old job was full time but new job is not, switch leftover day or night job back to resting
 		if (!fulltime && FullTimeJob(OldJobID) && !FullTimeJob(JobID))		// `J` greatly simplified the check
 			(Day0Night1 ? Girl->m_DayJob = rest : Girl->m_NightJob = rest);
-	
+
 		// `J` check for refresh
 
 		// `J` we only need to refresh the clinic list if there are any patients
@@ -2155,19 +2155,19 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 				{
 					itemnum = g_Brothels.HasItem("Brainwashing Oil", -1);
 					item = "Brainwashing Oil";
-					SGmsg << "\n \n" << SecName << " forced a bottle of Brainwashing Oil down her throat. After a few minutes of struggling, your new slave, ";
+					SGmsg << "\n\n" << SecName << " forced a bottle of Brainwashing Oil down her throat. After a few minutes of struggling, your new slave, ";
 				}
 				else if (g_Brothels.HasItem("Necklace of Control", -1) != -1)
 				{
 					itemnum = g_Brothels.HasItem("Necklace of Control", -1);
 					item = "Necklace of Control";
-					SGmsg << "\n \n" << SecName << " placed a Necklace of Control around her neck. After a few minutes of struggling, the magic in the necklace activated and your new slave, ";
+					SGmsg << "\n\n" << SecName << " placed a Necklace of Control around her neck. After a few minutes of struggling, the magic in the necklace activated and your new slave, ";
 				}
 				else if (g_Brothels.HasItem("Slave Band", -1) != -1)
 				{
 					itemnum = g_Brothels.HasItem("Slave Band", -1);
 					item = "Slave Band";
-					SGmsg << "\n \n" << SecName << " placed a Slave Band on her arm. After a few minutes of struggling, the magic in the Slave Band activated and your new slave, ";
+					SGmsg << "\n\n" << SecName << " placed a Slave Band on her arm. After a few minutes of struggling, the magic in the Slave Band activated and your new slave, ";
 				}
 				if (item != "" && itemnum != -1)
 				{
@@ -2211,7 +2211,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 				else if (g_Girls.HasItem(SecGuard, "Double Dildo") != -1)		dildo = 3;
 				if (dildo > 0)
 				{
-					SGmsg << "\n \n" << SecName << " decided to give this customer a taste of his own medicine and shoved her ";
+					SGmsg << "\n\n" << SecName << " decided to give this customer a taste of his own medicine and shoved her ";
 					/* */if (dildo == 1) SGmsg << "Compelling Dildo";
 					else if (dildo == 2) SGmsg << "Dreidel Dildo";
 					else if (dildo == 3) SGmsg << "Double Dildo";
@@ -2553,7 +2553,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 		ss << " calling card behind, ";
 		if (preg)			{ ss << "a baby in her belly"; }
 		if (preg && std)	{ ss << " and "; }
-		else if (preg)		{ ss << ".\n \n"; }
+		else if (preg)		{ ss << ".\n\n"; }
 		if (a || c || s || h)	{ bool _and = false;
 			if (a)	{ g_GirlsPtr->AddTrait(girl, "AIDS");		ss << "AIDS"; }
 			if (a && (c || s || h))							{	ss << " and ";		_and = true; }
@@ -2562,7 +2562,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 			if (s)	{ g_GirlsPtr->AddTrait(girl, "Syphilis");	ss << "Syphilis";	_and = false; }
 			if (!_and && (a || c || s) && h)				{	ss << " and "; }
 			if (h)	{ g_GirlsPtr->AddTrait(girl, "Herpes");		ss << "Herpes"; }
-			ss << ".\n \n";
+			ss << ".\n\n";
 		}
 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
@@ -3134,7 +3134,7 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 			int gpay = totalPay - hpay;
 			ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut ("
 				<< 100 - girl->m_Stats[STAT_HOUSE] << "%) of the payment amounting to " << gpay
-				<< " gold.\n \nYou got " << hpay << " gold (" << girl->m_Stats[STAT_HOUSE] << "%).";
+				<< " gold.\n\nYou got " << hpay << " gold (" << girl->m_Stats[STAT_HOUSE] << "%).";
 		}
 		else
 		{
@@ -3145,7 +3145,7 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 		}
 	}
 	else if (totalGold == 0)	{ ss << girlName << " made no money."; }
-	else if (totalGold < 0)		{ ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << girl->m_Realname << "\nJob: " << JobName[(Day0Night1 ? girl->m_NightJob : girl->m_DayJob)] << "\nPay:     " << girl->m_Pay << "\nTips:   " << girl->m_Tips << "\nTotal: " << totalGold; }
+	else if (totalGold < 0)		{ ss << "ERROR: She has a loss of " << totalGold << " gold\n\nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n\nGirl Name: " << girl->m_Realname << "\nJob: " << JobName[(Day0Night1 ? girl->m_NightJob : girl->m_DayJob)] << "\nPay:     " << girl->m_Pay << "\nTips:   " << girl->m_Tips << "\nTotal: " << totalGold; }
 	return ss.str();
 }
 
@@ -3587,7 +3587,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 				for (int i = 1; i < (int)freegirl_names.size() - 1; i++) ss << ", " << freegirl_names[i];
 				ss << " and " << freegirl_names[freegirl_names.size() - 1] << " their";
 			}
-			ss << " freedom.\n \n";
+			ss << " freedom.\n\n";
 		}
 		if (firegirl_names.size() > 0)
 		{
@@ -3598,7 +3598,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 				for (int i = 1; i < (int)firegirl_names.size() - 1; i++) ss << ", " << firegirl_names[i];
 				ss << " and " << firegirl_names[firegirl_names.size() - 1];
 			}
-			ss << ".\n \n";
+			ss << ".\n\n";
 		}
 		if (sellgirl_names.size()>0)
 		{
@@ -3621,7 +3621,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 				for (int i = 0; i < (int)sellsize; i++) sell += sellgirl_price[i];
 				ss << ".\nYour total take was " << sell << " gold";
 			}
-			ss << ".\n \n";
+			ss << ".\n\n";
 		}
 		if (dumpgirl_names.size() > 0)
 		{
@@ -3683,7 +3683,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 			}
 			if (option == FFSD_dump2) ss << " and dump their bod" << (dumpsize > 1 ? "ies" : "y") << " in.";
 			if (option == FFSD_dump3) ss << " on the side of the road.";
-			ss << ".\n \n";
+			ss << ".\n\n";
 		}
 		if (ss.str().length() > 0)	g_MessageQue.AddToQue(ss.str(), 0);
 

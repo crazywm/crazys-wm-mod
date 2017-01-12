@@ -65,7 +65,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 #if 0
 	//OLD version
-	ss << girlName << " worked as an actress filming BDSM scenes.\n \n";
+	ss << girlName << " worked as an actress filming BDSM scenes.\n\n";
 
 	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
@@ -74,9 +74,9 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy getting tied up and hurt today.\n \n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She had a great time getting spanked and whipped.\n \n"; }
-	else /*            */{ enjoy += g_Dice % 2;		ss << "She had just another day in the dungeon.\n \n"; }
+	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy getting tied up and hurt today.\n\n"; }
+	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She had a great time getting spanked and whipped.\n\n"; }
+	else /*            */{ enjoy += g_Dice % 2;		ss << "She had just another day in the dungeon.\n\n"; }
 	jobperformance = enjoy * 2;
 #else
 	int bonus = 0;
@@ -155,7 +155,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 			return true;
 		}
 	}
-	else ss << girlName << " was taken for bondage and torture scenes in your dungeon.\n \n";
+	else ss << girlName << " was taken for bondage and torture scenes in your dungeon.\n\n";
 
 	//Qual
 	if (jobperformance >= 350)
@@ -220,15 +220,15 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	//Feedback enjoyment
 	if (enjoy > 10)
 	{
-		ss << "She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.\n \n";
+		ss << "She won't say it, but you suspect she secretly gets off on the attention, sin and degradation.\n\n";
 	}
 	else if (enjoy > 0)
 	{
-		ss << "She's only a little traumatised.\n \n";
+		ss << "She's only a little traumatised.\n\n";
 	}
 	else
 	{
-		ss << "From the way she's crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.\n \n";
+		ss << "From the way she's crouched, rocking in a corner and silently weeping... you figure she didn't enjoy this.\n\n";
 	}
 #endif
 

@@ -71,7 +71,7 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	ss << " is in the Clinic to get her ass worked on.\n \n";
+	ss << " is in the Clinic to get her ass worked on.\n\n";
 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient
@@ -156,7 +156,7 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		{
 			girl->add_trait("Great Arse", false);
 			ss << "Thanks to the surgery she now has a Great Arse.\n";
-			ss << "\n \nShe has been released from the Clinic.";
+			ss << "\n\nShe has been released from the Clinic.";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		}
 	}

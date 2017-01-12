@@ -611,7 +611,7 @@ string cInventory::CraftItem(sGirl*girl, int job, int points)
 	}
 	if (total_made > 0)
 	{
-		ss << "\n \n" << girl->m_Realname << " made:\n";
+		ss << "\n\n" << girl->m_Realname << " made:\n";
 		for (int i = 0; i < nummade; i++)
 			ss << numItemsMade[i] << " " << ItemsMade[i] << "\n";
 	}

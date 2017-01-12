@@ -58,7 +58,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as an entertainer in the gambling hall.\n \n";
+	ss << " worked as an entertainer in the gambling hall.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -110,7 +110,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (jobperformance >= 245)
 	{
-		ss << " She must be the perfect entertainer customers go on and on about her and always come to see her when she works.\n \n";
+		ss << " She must be the perfect entertainer customers go on and on about her and always come to see her when she works.\n\n";
 		wages += 155;
 		if (roll_b <= 20)
 		{
@@ -163,7 +163,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n \n";
+		ss << " She's unbelievable at this and is always getting praised by the customers for her work.\n\n";
 		wages += 95;
 		if (roll_b <= 20)
 		{
@@ -213,7 +213,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << " She's good at this job and gets praised by the customers often.\n \n";
+		ss << " She's good at this job and gets praised by the customers often.\n\n";
 		wages += 55;
 		if (roll_b <= 20)
 		{
@@ -263,7 +263,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << " She made a few mistakes but overall she is okay at this.\n \n";
+		ss << " She made a few mistakes but overall she is okay at this.\n\n";
 		wages += 15;
 		if (roll_b <= 20)
 		{
@@ -316,7 +316,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n \n";
+		ss << " She was nervous and made a few mistakes. She isn't that good at this.\n\n";
 		wages -= 5;
 		if (roll_b <= 20)
 		{
@@ -362,7 +362,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	else
 	{
-		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n \n";
+		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.\n\n";
 		wages -= 15;
 		if (roll_b <= 20)
 		{
@@ -432,7 +432,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n \n";
+		ss << "Stunned by her beauty a customer left her a great tip.\n\n";
 		tips += 25;
 	}
 

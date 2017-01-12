@@ -126,8 +126,8 @@ int	cPlayer::Scale200(int nValue, int nStat)
 	double	fRatio = nStat / 200.0;
 	int		nRetValue = static_cast <int> (nValue * fRatio);
 
-	//printf("cPlayer::Scale200 nRetValue = %d, fRatio = %.2f.\n \n", nRetValue, fRatio);
-	if (abs(nRetValue) > 1) return nRetValue;						// Value is larger than 1				
+	//printf("cPlayer::Scale200 nRetValue = %d, fRatio = %.2f.\n\n", nRetValue, fRatio);
+	if (abs(nRetValue) > 1) return nRetValue;						// Value is larger than 1
 	return (bSign ? 1 : -1);
 }
 
@@ -143,7 +143,7 @@ int cPlayer::evil(int n)
 	if (cfg.initial.torture_mod() < 0 && n > 0)
 	{
 		n += n;		// `J` double evil if increasing it BUT NOT IF LOWERING IT
-	}	
+	}
 	return disposition(-1 * n);
 }
 
