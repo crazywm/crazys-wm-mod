@@ -50,7 +50,7 @@ bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	// DisobeyCheck is done in the building flow.
 	girl->m_DayJob = girl->m_NightJob = JOB_DOCTORE;	// it is a full time job
 
-	stringstream ss; string girlName = girl->m_Realname; ss<<"Doctore " << girlName;
+	stringstream ss; string girlName = girl->m_Realname; ss << "Doctore  " << girlName << "  ";
 
 
 	int numgirls = brothel->m_NumGirls;
@@ -65,24 +65,24 @@ bool cJobManager::WorkDoctore(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{
 		enjoy -= (g_Dice % 6 + 5);
 		conf -= 5; happy -= 10;
-		ss << " was overwhelmed by the number of girls she was required to manage and broke down crying.";
+		ss << "was overwhelmed by the number of girls she was required to manage and broke down crying.";
 	}
 	else if (check < 10)
 	{
 		enjoy -= (g_Dice % 3 + 1);
 		conf -= -1; happy -= -3;
-		ss << " had trouble dealing with some of the girls.";
+		ss << "had trouble dealing with some of the girls.";
 	}
 	else if (check > 90)
 	{
 		enjoy += (g_Dice % 3 + 1);
 		conf -= 1; happy -= 3;
-		ss << " enjoyed helping the girls with their lives.";
+		ss << "enjoyed helping the girls with their lives.";
 	}
 	else
 	{
 		enjoy += (g_Dice % 3 - 1);
-		ss << " went about her day as usual.";
+		ss << "went about her day as usual.";
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);

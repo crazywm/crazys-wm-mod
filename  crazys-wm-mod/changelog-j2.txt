@@ -462,8 +462,13 @@ Replaced several "\n\n" with "\n \n" to fix linux text bug
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.55
  
+Checked all jobs starting texts.
+Fixed a bug in workfilmoral that was crashing the game.
+Reworked Objective REWARD_ITEM to make the text look better.
  
- 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.56
+
  
  
 

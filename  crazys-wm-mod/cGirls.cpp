@@ -8361,7 +8361,7 @@ void cGirls::updateTempTraits(sGirl* girl, string trait, int amount)
 	{
 		for (int i = 0; i < MAXNUM_TRAITS; i++)							// go through her traits
 		{
-			if (trait.compare(girl->m_Traits[i]->m_Name) == 0)			// until you find the trait
+			if (girl->m_Traits[i] && trait.compare(girl->m_Traits[i]->m_Name) == 0)			// until you find the trait
 			{
 				if (girl->m_TempTrait[i] > 0)							// if the trait is temp ...
 				{

@@ -73,7 +73,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 	}
 	if (g_Dice.percent(5) && g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << "She fought with her counselor and did not make any progress this week.";
+		ss << " fought with her counselor and did not make any progress this week.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
 		if (Day0Night1) girl->m_WorkingDay--;

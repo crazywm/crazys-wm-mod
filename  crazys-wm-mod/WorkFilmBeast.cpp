@@ -48,6 +48,7 @@ extern cPlayer* The_Player;
 bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;
+	stringstream ss;	string girlName = girl->m_Realname;
 	// Taken care of in building flow, leaving it in for robustness
 	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
 	{
@@ -61,8 +62,6 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		return false;
 	}
 
-	stringstream ss;
-	string girlName = girl->m_Realname;
 	int wages = 50, tips = 0;
 	int enjoy = 0, bonus = 0;
 	double jobperformance = JP_FilmBeast(girl, false);

@@ -1528,6 +1528,7 @@ sGang* cGangManager::GetGangOnMission(u_int missID)
 	int count = 0;
 	while (currentGang)
 	{
+		if (currentGang->m_Num < 0 || currentGang->m_Num>15) return 0;	// `J` bug fix?
 		if (currentGang->m_MissionID == missID && currentGang->m_Num > 0) break;
 		count++;
 		currentGang = currentGang->m_Next;

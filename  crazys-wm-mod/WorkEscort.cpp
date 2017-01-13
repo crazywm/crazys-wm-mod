@@ -53,15 +53,15 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	ss << " has been assigned to work as an Escort. She is informed that various men will ask for her to accompany them on dates, whether because they need a date for a social engagement of some kind or because of their own loneliness. Her skills in service, her beauty, her charisma, her intelligence, and her refinement may all be tested to provide the ideal date that each client requests. And, of course, should she decide to spend some \"extra\" time with the client, she will need to perform well with each of their sexual proclivities. This is her choice, however.\n \n";
 
-	if (girl->has_trait( "Deaf"))
+	if (girl->has_trait("Deaf") && g_Dice.percent(50))
 	{
 		ss << girlName << " is deaf, meaning she would be unable to hear the conversation that is so critical to being successful as an escort. As there is practically no chance that a client will want to have an entire date in sign language, assuming he even knows it, " << girlName << " is particularly unsuited to work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
-		//end job
+		return false;
 	}
-	else if (girl->has_trait( "Mute"))
+	else if (girl->has_trait("Mute") && g_Dice.percent(50))
 	{
 		ss << girlName << " is mute, and while some men enjoy a woman who stays silent, these men are not paying escorts to engage them in conversation. As it is severely unlikely that a client will want to spend the entire date deciphering sign language, even if they do know it, " << girlName << " is particularly unsuited for work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
-		//end job
+		return false;
 	}
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!

@@ -67,7 +67,7 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			if (girl->has_trait("Construct"))	{ newjob = JOB_GETREPAIRS;	ss << "went to see the mechanic for repairs instead."; }
 			else/*                         */	{ newjob = JOB_GETHEALING;	ss << "checked herself in for treatment instead."; }
 		}
-		else/*                         */	{ ss << " so she was sent to the waiting room."; }
+		else/*                             */	{ ss << " so she was sent to the waiting room."; }
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = newjob;
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);

@@ -50,20 +50,15 @@ void AddStory(stringstream *);
 //This film will use her combat and magic skills, and will be more popular if she's hot.
 bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
-	int actiontype = ACTION_WORKMOVIE;
+	int actiontype = ACTION_WORKMOVIE;	stringstream ss;	string girlName = girl->m_Realname;
 	//Taken care of in building flow, leaving it in for robustness
 	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
 	{
-		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << "There was no crew to film the scene, so " << girlName << " took the day off";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-
-	stringstream ss;
-	string girlName = girl->m_Realname;
-	int wages = 50;
-	int tips = 0;
-	int enjoy = 0;
-	int bonus = 0;
+	int wages = 50, tips = 0, enjoy = 0, bonus = 0;
 	double jobperformance = JP_FilmAction(girl, false);
 
 	//g_Girls.UnequipCombat(girl);	// not for actress (yet)

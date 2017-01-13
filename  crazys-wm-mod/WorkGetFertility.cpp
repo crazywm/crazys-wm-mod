@@ -58,7 +58,7 @@ bool cJobManager::WorkGetFertility(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (girl->is_pregnant() || girl->has_trait( "Broodmother"))
 	{
 		if (girl->has_trait( "Broodmother"))	ss << " is already as Fertile as she can be so she was sent to the waiting room.";
-		else if (girl->is_pregnant())				ss << " is pregant.\nShe must either have her baby or get an abortion before She can get recieve any more fertility treatments.";
+		else if (girl->is_pregnant())			ss << " is pregant.\nShe must either have her baby or get an abortion before She can get recieve any more fertility treatments.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;

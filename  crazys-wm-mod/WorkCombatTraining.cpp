@@ -38,7 +38,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (girl->m_Skills[SKILL_COMBAT] + girl->m_Skills[SKILL_MAGIC] + girl->m_Stats[STAT_AGILITY] +
 		girl->m_Stats[STAT_CONSTITUTION] + girl->m_Stats[STAT_STRENGTH] >= 500)
 	{
-		ss << "There is nothing more she can learn here so she takes the rest of the day off.";
+		ss << "There is nothing more she can learn here so " << girlName << " takes the rest of the day off.";
 		girl->m_NightJob = girl->m_DayJob = JOB_ARENAREST;
 		return false;	// not refusing
 	}

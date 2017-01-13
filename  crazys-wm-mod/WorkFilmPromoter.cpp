@@ -48,7 +48,6 @@ extern cGold g_Gold;
 bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_WORKMOVIE;
-
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll = g_Dice.d100();
 	if (roll <= 20 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
@@ -59,10 +58,7 @@ bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	}
 	ss << " worked to promote the sales of the studio's films.\n \n";
 	bool movies = g_Studios.m_NumMovies > 0;
-	if (!movies)
-	{
-		ss << "There were no movies for her to promote, so she just promoted the studio in general.\n \n";
-	}
+	if (!movies)	ss << "There were no movies for her to promote, so she just promoted the studio in general.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
@@ -72,22 +68,20 @@ bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (roll <= 10 || (!movies && roll <= 15))
 	{
 		enjoy -= g_Dice % 3 + 1;
-		ss << "She had difficulties working with advertisers and theater owners" << (movies ? "" : " without movies to sell them") << ".\n \n";
+		ss << "She had difficulties working with advertisers and theater owners" << (movies ? "" : " without movies to sell them");
 	}
 	else if (roll >= 90)
 	{
 		enjoy += g_Dice % 3 + 1;
-		ss << "She found it easier " << (movies ? "selling the movies" : "promoting the studio") << " today.\n \n";
+		ss << "She found it easier " << (movies ? "selling the movies" : "promoting the studio") << " today";
 	}
 	else
 	{
 		enjoy += g_Dice % 2;
-		ss << "Otherwise, the shift passed uneventfully.\n \n";
 	}
+	ss << ".\n \n";
 	double jobperformance = JP_FilmPromoter(girl, false);
 	jobperformance += enjoy * 2;
-
-
 
 	// slave girls not being paid for a job that normally you would pay directly for do less work
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))

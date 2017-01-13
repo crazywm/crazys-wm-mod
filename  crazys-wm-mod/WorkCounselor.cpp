@@ -56,7 +56,7 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		if (roll_a <= 50 && g_Girls.DisobeyCheck(girl, actiontype, brothel))
 		{
-			ss << "She refused to counsel anyone.";
+			ss << " refused to counsel anyone.";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKREHAB, -1);
 			return true;
