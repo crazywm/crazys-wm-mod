@@ -52,8 +52,7 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	stringstream ss; string girlName = girl->m_Realname;
 	g_Studios.m_DirectorName = girl->m_Realname;
 
-	ss << girlName << " worked as a film director.\n\n";
-
+	ss << girlName << " worked as a Film Director.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// not for studio crew
 
@@ -66,18 +65,18 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (roll <= 10)
 	{
 		enjoy -= g_Dice % 3 + 1;
-		ss << "She did not like working in the studio today.\n\n";
+		ss << "She did not like working in the Studio today.\n \n";
 	}
 	else if (roll >= 90)
 	{
 		enjoy += g_Dice % 3 + 1;
-		ss << "She had a great time working today.\n\n";
+		ss << "She had a great time working today.\n \n";
 	}
 	else
 	{
 		enjoy += g_Dice % 2;
-		ss << "Otherwise, the shift passed uneventfully.\n\n";
 	}
+
 	double jobperformance = JP_FilmDirector(girl, false);
 	jobperformance += enjoy * 2;
 
