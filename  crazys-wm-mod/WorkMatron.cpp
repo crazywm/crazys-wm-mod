@@ -51,12 +51,12 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	girl->m_DayJob = girl->m_NightJob = JOB_MATRON;	// it is a full time job
 	if (Day0Night1) return false;	// and is only checked once
 
-	stringstream ss; string girlName = girl->m_Realname; ss << "Matron " << girlName;
+	stringstream ss; string girlName = girl->m_Realname; ss << "Matron  " << girlName << "  ";
 
 	// `J` zzzzzz - this needs to be updated for building flow
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
-		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
+		ss << "refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
@@ -77,24 +77,24 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	{
 		enjoy -= (g_Dice % 6 + 5);
 		conf -= 5; happy -= 10;
-		ss << " was overwhelmed by the number of girls she was required to manage and broke down crying.";
+		ss << "was overwhelmed by the number of girls she was required to manage and broke down crying.";
 	}
 	else if (check < 10)
 	{
 		enjoy -= (g_Dice % 3 + 1);
 		conf -= -1; happy -= -3;
-		ss << " had trouble dealing with some of the girls.";
+		ss << "had trouble dealing with some of the girls.";
 	}
 	else if (check > 90)
 	{
 		enjoy += (g_Dice % 3 + 1);
 		conf += 1; happy += 3;
-		ss << " enjoyed helping the girls with their lives.";
+		ss << "enjoyed helping the girls with their lives.";
 	}
 	else
 	{
 		enjoy += (g_Dice % 3 - 1);
-		ss << " went about her day as usual.";
+		ss << "went about her day as usual.";
 	}
 
 

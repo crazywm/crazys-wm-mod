@@ -58,7 +58,7 @@ bool cJobManager::WorkGetTubesTied(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (girl->is_pregnant() || girl->has_trait( "Sterile"))
 	{
 		if (girl->has_trait( "Sterile"))	ss << " is already Sterile so she was sent to the waiting room.";
-		else if (girl->is_pregnant())			ss << " is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied.";
+		else if (girl->is_pregnant())		ss << " is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;

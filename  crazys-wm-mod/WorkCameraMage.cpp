@@ -53,12 +53,14 @@ bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	// No film crew.. then go home	// `J` this will be taken care of in building flow, leaving it in for now
 	if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
 	{
-		girl->m_Events.AddMessage("There was no crew to film the scene, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << "There was no crew to film the scene, so " << girlName << " took the day off";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;	// not refusing
 	}
 	else if (g_Studios.Num_Actress(0) < 1)
 	{
-		girl->m_Events.AddMessage("There were no actresses to film, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
+		ss << "There were no actresses to film, so " << girlName << " took the day off";
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;	// not refusing
 	}
 

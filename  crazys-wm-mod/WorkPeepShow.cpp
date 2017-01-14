@@ -52,7 +52,6 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
 	{
 		//SIN - More informative mssg to show *what* she refuses
-		//ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		ss << " refused to be in your brothel's peep show " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;

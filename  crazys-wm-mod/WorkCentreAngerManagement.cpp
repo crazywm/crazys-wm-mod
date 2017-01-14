@@ -120,7 +120,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 		}
 		else
 		{
-			ss << "She fought with her counselor and did not make any progress this week.";
+			ss << " fought with her counselor and did not make any progress this week.";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;

@@ -4181,8 +4181,8 @@ void cBrothelManager::PassObjective()
 		}
 
 		stringstream ss;
-		if (m_Objective->m_Text.size() < 1)	ss << "You have completed your objective and you get ";
-		else ss << "You have completed your objective to " << m_Objective->m_Text <<"\nYou get ";
+		if (m_Objective->m_Text.size() < 1)	ss << "You have completed your objective and you";
+		else ss << "You have completed your objective to " << m_Objective->m_Text <<"\nYou";
 
 
 		switch (m_Objective->m_Reward)
@@ -4198,7 +4198,7 @@ void cBrothelManager::PassObjective()
 				mod = min(1, m_Objective->m_Target / 100);
 			if (m_Objective->m_Limit > 0) gold += mod * m_Objective->m_Limit;
 
-			ss << gold << " gold.";
+			ss << " get " << gold << " gold.";
 			g_Gold.objective_reward(gold);
 		}break;
 
@@ -4217,7 +4217,7 @@ void cBrothelManager::PassObjective()
 			if (bonus > 0 && div > 0) girls += min(bonus, m_Objective->m_Target / div);
 
 
-			ss << girls << " slave girl" << (girls > 1 ? "s" : "") << ":\n";
+			ss << " get " << girls << " slave girl" << (girls > 1 ? "s" : "") << ":\n";
 			while (girls > 0)
 			{
 				sGirl* girl = g_Girls.CreateRandomGirl(0, false, true, false, g_Dice % 3 == 1);
@@ -4235,7 +4235,7 @@ void cBrothelManager::PassObjective()
 			long gold = (rival->m_Gold > 10 ? (g_Dice % (rival->m_Gold / 2)) + 1 : 436);
 			rival->m_Gold -= gold;
 			g_Gold.objective_reward(gold);
-			ss << "to steal " << gold << " gold from the " << rival->m_Name << ".";
+			ss << " get to steal " << gold << " gold from the " << rival->m_Name << ".";
 
 			// `J` added
 			bool building = false;
@@ -4294,6 +4294,7 @@ void cBrothelManager::PassObjective()
 		{
 			int numItems = max(1, m_Objective->m_Difficulty);
 			int tries = numItems * 10;
+			vector<string> itemnames;
 			while (numItems > 0 && tries > 0)
 			{
 				tries--;
@@ -4319,9 +4320,7 @@ void cBrothelManager::PassObjective()
 					{
 						if (curI != -1)
 						{
-							ss << "a ";
-							ss << item->m_Name;
-							ss << ", ";
+							itemnames.push_back(item->m_Name);
 							g_Brothels.m_NumItem[curI]++;
 						}
 						else
@@ -4330,9 +4329,7 @@ void cBrothelManager::PassObjective()
 							{
 								if (g_Brothels.m_Inventory[j] == 0)
 								{
-									ss << "a ";
-									ss << item->m_Name;
-									ss << ", ";
+									itemnames.push_back(item->m_Name);
 									g_Brothels.m_Inventory[j] = item;
 									g_Brothels.m_EquipedItems[j] = 0;
 									g_Brothels.m_NumInventory++;
@@ -4346,9 +4343,29 @@ void cBrothelManager::PassObjective()
 					else
 					{
 						numItems = 0;
-						ss << " Your inventory is full\n";
+						ss << "r inventory is full so instead you";
 					}
 				}
+			}
+
+			if (numItems > 0)
+			{
+				ss << " get one item:\n" << itemnames[0];
+			}
+			else if (numItems > 1)
+			{
+				ss << " get " << numItems << " items:";
+				for (int i = 0; i < numItems; i++)
+				{
+					ss << "\n" << itemnames[i];
+				}
+			}
+			else		// no items so get gold instead
+			{
+				long gold = (g_Dice % 200) + 33;
+				if (m_Objective->m_Difficulty > 0) gold *= m_Objective->m_Difficulty;
+				ss << " get " << gold << " gold.";
+				g_Gold.objective_reward(gold);
 			}
 		}break;
 		}

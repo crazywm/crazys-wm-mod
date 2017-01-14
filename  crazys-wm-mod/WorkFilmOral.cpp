@@ -62,7 +62,7 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	double jobperformance = JP_FilmOral(girl, false);
 
 	//BSIN - not sure what's wrong but this crashes the game.
-	sGang* Gang = g_Gangs.GetGangOnMission(MISS_GUARDING);
+	sGang* Gang = g_Gangs.GetGangOnMission(MISS_GUARDING);//g_Gangs.GetGangOnMission(MISS_GUARDING);
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
@@ -174,7 +174,6 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 	if (g_Dice.percent(5) && (g_Girls.GetStat(girl, STAT_HAPPINESS) > 80) && (g_Girls.GetEnjoyment(girl, ACTION_WORKMOVIE) > 75))
 		g_Girls.AdjustTraitGroupGagReflex(girl, 1, true, Day0Night1);
-	delete Gang;
 	return false;
 }
 
