@@ -490,7 +490,7 @@ bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 	// Output # of script actions
 //	fwrite(&NumActions, 1, sizeof(long), fp);
 	string name = Filename;
-	int start = name.find_last_of("\\") + 1;
+	int start = name.find_last_of(DirPath.sep) + 1;
 	int end = name.find_last_of(".") - start;
 	name = name.substr(start,end);
 
