@@ -95,16 +95,6 @@ public:
 	{
 		if(text != "")
 		{
-            #if LINUX
-            size_t pos = 0;
-            string r=" \n";
-            string s="\n";
-            while((pos=text.find(s,pos))!=std::string::npos)
-            {
-                text.replace(pos,s.length(),r);
-                pos+=r.length();
-            }
-            #endif // LINUX
 			// Allocate a new process and push it on stack
 			sMessage *Ptr = new sMessage();
 

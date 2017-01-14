@@ -492,16 +492,6 @@ void cInterfaceWindow::HideText(int id, bool hide)
 void cInterfaceWindow::EditTextItem(string text, int ID)
 {
 	if (ID == -1) return;
-    #if LINUX
-	size_t pos = 0;
-	string r=" \n";
-	string s="\n";
-	while((pos=text.find(s,pos))!=std::string::npos)
-	{
-        text.replace(pos,s.length(),r);
-        pos+=r.length();
-	}
-	#endif // LINUX
 	// force width to full (no scrollbar) to properly detect if scrollbar is needed for new text
 	m_TextItems[ID]->m_Font.SetMultiline(true, m_TextItems[ID]->GetWidth(), m_TextItems[ID]->GetHeight());
 	m_TextItems[ID]->SetText(text);

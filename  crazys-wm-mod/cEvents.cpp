@@ -227,16 +227,6 @@ void cEvents::AddMessage(string message, int type, int eve)
 	CEvent newEvent;
 	newEvent.m_MessageType	= type;
 	newEvent.m_Event		= eve;
-	#if LINUX
-	size_t pos = 0;
-	string r=" \n";
-	string s="\n";
-	while((pos=message.find(s,pos))!=std::string::npos)
-	{
-        message.replace(pos,s.length(),r);
-        pos+=r.length();
-	}
-	#endif // LINUX
 	newEvent.m_Message		= message;
 	// newEvent.m_Ordinal		= MakeOrdinal(eve);
 	events.push_back(newEvent);
