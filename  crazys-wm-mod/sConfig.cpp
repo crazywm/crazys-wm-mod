@@ -334,9 +334,13 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 	{
 		DirPath abs_di = DirPath(testdi.c_str());
 		DirPath rel_di = DirPath() << testdi;
+		#if !LINUX
 		FileList abstest(abs_di, "*.*g"); abstest.add("*.ani"); abstest.add("*.gif");
 		FileList reltest(rel_di, "*.*g"); reltest.add("*.ani"); reltest.add("*.gif");
-
+        #else
+        FileList abstest(abs_di, "*.*g"); abstest.add("*.ani");
+        FileList reltest(rel_di, "*.*g"); reltest.add("*.ani");
+        #endif
 		if (abstest.size() > 0)
 		{
 			folders.defaultimageloc = abs_di.c_str();

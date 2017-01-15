@@ -716,8 +716,14 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					sInventoryItem* temp = curr->m_Inventory[i];
 					if (temp && g_Dice.percent(50))
 					{
-						if (g_Dice.percent(50)) income += (temp->m_Cost / 2);
-						RemoveRivalInvByNumber(curr, i);
+                        try
+                        {
+                            if (g_Dice.percent(50)&&temp->m_Cost) income += (temp->m_Cost / 2);
+                            RemoveRivalInvByNumber(curr, i);
+						}
+						catch(const std::exception& e)
+						{
+						}
 					}
 				}
 			}

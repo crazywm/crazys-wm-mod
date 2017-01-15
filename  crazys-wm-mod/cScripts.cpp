@@ -21,12 +21,14 @@
 #include "CLog.h"
 #include "XmlUtil.h"
 #include "FileList.h"
+#include "DirPath.h"
 
 #ifdef LINUX
 #include "linux.h"
 #endif
 
 extern CLog g_LogFile;
+extern DirPath Dir;
 static CLog &l = g_LogFile;
 
 using namespace std;
@@ -367,8 +369,8 @@ bool cScript::Load(string filename)
 	if (testscript = LoadScriptFile(filename))
 	{
 		m_ScriptParent = testscript;
-		string testpath = filename.substr(2, filename.find_last_of("\\")-1);
-		string testname = filename.substr(filename.find_last_of("\\") + 1, filename.length()) + "x";
+		string testpath = filename.substr(2, filename.find_last_of(Dir.getSep())-1);
+		string testname = filename.substr(filename.find_last_of(Dir.getSep()) + 1, filename.length()) + "x";
 		DirPath dp = DirPath() << testpath;
 		FileList test(dp, testname.c_str());
 		if (test.size() == 0)
@@ -389,8 +391,8 @@ bool cScript::Load(string filename)
 	else if ((testscript = LoadScriptXML(filename + "x")) != 0)
 	{
 		m_ScriptParent = testscript;
-		string testpath = filename.substr(2, filename.find_last_of("\\") - 1);
-		string testname = filename.substr(filename.find_last_of("\\") + 1, filename.length());
+		string testpath = filename.substr(2, filename.find_last_of(Dir.getSep()) - 1);
+		string testname = filename.substr(filename.find_last_of(Dir.getSep()) + 1, filename.length());
 		DirPath dp = DirPath() << testpath;
 		FileList test(dp, testname.c_str());
 		if (test.size() == 0)
@@ -430,15 +432,15 @@ bool SaveScriptFile(const char *Filename, sScript *ScriptRoot)
 	if ((fp = fopen(Filename, "wb")) == 0) return false; // return a failure
 
 	// Output # of script actions
-	fwrite(&NumActions, 1, sizeof(long), fp);
+	fwrite(&NumActions, 1, sizeof(int), fp);
 
 	// Loop through each script action
 	ScriptPtr = ScriptRoot;
 	for(i=0;i<NumActions;i++)
 	{
 		// Output type of action and # of entries
-		fwrite(&ScriptPtr->m_Type, 1, sizeof(long), fp);
-		fwrite(&ScriptPtr->m_NumEntries, 1, sizeof(long), fp);
+		fwrite(&ScriptPtr->m_Type, 1, sizeof(int), fp);
+		fwrite(&ScriptPtr->m_NumEntries, 1, sizeof(int), fp);
 
 		// Output entry data (if any)
 		if(ScriptPtr->m_NumEntries)
@@ -446,8 +448,8 @@ bool SaveScriptFile(const char *Filename, sScript *ScriptRoot)
 			for(j=0;j<ScriptPtr->m_NumEntries;j++)
 			{
 				// Write entry type and data
-				fwrite(&ScriptPtr->m_Entries[j].m_Type, 1,sizeof(long),fp);
-				fwrite(&ScriptPtr->m_Entries[j].m_IOValue,1,sizeof(long),fp);
+				fwrite(&ScriptPtr->m_Entries[j].m_Type, 1,sizeof(int),fp);
+				fwrite(&ScriptPtr->m_Entries[j].m_IOValue,1,sizeof(int),fp);
 				fwrite(&ScriptPtr->m_Entries[j].m_Var,1,sizeof(unsigned char),fp);
 
 				// Write text entry (if any)
@@ -490,7 +492,7 @@ bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 	// Output # of script actions
 //	fwrite(&NumActions, 1, sizeof(long), fp);
 	string name = Filename;
-	int start = name.find_last_of(DirPath.sep) + 1;
+	int start = name.find_last_of(Dir.getSep()) + 1;
 	int end = name.find_last_of(".") - start;
 	name = name.substr(start,end);
 
@@ -564,7 +566,7 @@ sScript *LoadScriptFile(string Filename)
 	if ((fp = fopen(Filename.c_str(), "rb")) == 0) return 0;
 
 	// Get # of script actions from file
-	fread(&Num, 1, sizeof(long), fp);
+	fread(&Num, 1, sizeof(int), fp);
 
 	// Loop through each script action
 	for (i = 0; i < Num; i++)
@@ -576,8 +578,8 @@ sScript *LoadScriptFile(string Filename)
 		ScriptPtr = Script;
 
 		// Get type of action and # of entries
-		fread(&Script->m_Type, 1, sizeof(long), fp);
-		fread(&Script->m_NumEntries, 1, sizeof(long), fp);
+		fread(&Script->m_Type, 1, sizeof(int), fp);
+		fread(&Script->m_NumEntries, 1, sizeof(int), fp);
 
 		// Get entry data (if any)
 		if (Script->m_NumEntries)
@@ -589,16 +591,16 @@ sScript *LoadScriptFile(string Filename)
 			for (j = 0; j < Script->m_NumEntries; j++)
 			{
 				// Get entry type and data
-				fread(&Script->m_Entries[j].m_Type, 1, sizeof(long), fp);
-				fread(&Script->m_Entries[j].m_IOValue, 1, sizeof(long), fp);
+				fread(&Script->m_Entries[j].m_Type, 1, sizeof(int), fp);
+				fread(&Script->m_Entries[j].m_IOValue, 1, sizeof(int), fp);
 				fread(&Script->m_Entries[j].m_Var, 1, sizeof(unsigned char), fp);
 
 				// Get text (if any)
-				if (Script->m_Entries[j].m_Type == _TEXT && Script->m_Entries[j].m_Length)
+				if (Script->m_Entries[j].m_Type == _TEXT && Script->m_Entries[j].m_IOValue)
 				{
 					// Allocate a buffer and get string
-					Script->m_Entries[j].m_Text = new char[Script->m_Entries[j].m_Length];
-					fread(Script->m_Entries[j].m_Text, 1, Script->m_Entries[j].m_Length, fp);
+					Script->m_Entries[j].m_Text = new char[Script->m_Entries[j].m_IOValue];
+					fread(Script->m_Entries[j].m_Text, 1, Script->m_Entries[j].m_IOValue, fp);
 				}
 			}
 		}

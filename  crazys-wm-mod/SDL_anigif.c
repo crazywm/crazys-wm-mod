@@ -145,12 +145,11 @@ int AG_LoadGIF( const char* file, AG_Frame* frames, int size )
 	int n = 0;
 
 	SDL_RWops* src = SDL_RWFromFile( file, "rb" );
-
-	if ( src )
-	{
-		n = AG_LoadGIF_RW( src, frames, size );
-		SDL_RWclose( src );
-	}
+        if ( src )
+        {
+            n = AG_LoadGIF_RW( src, frames, size );
+            SDL_RWclose( src );
+        }
 
 	return n;
 }
@@ -296,8 +295,7 @@ int AG_LoadGIF_RW( SDL_RWops* src, AG_Frame* frames, int maxFrames )
 	gd = malloc( sizeof(*gd) );
 	memset( gd , 0, sizeof(*gd) );
 	#endif
-	gd->src = src;
-
+    gd->src = src;
 	start = SDL_RWtell( src );
 
 	if ( !SDL_RWread(src,buf,6,1) )
