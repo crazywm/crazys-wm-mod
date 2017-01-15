@@ -175,13 +175,12 @@ void cScreenGallery::init()
 	{
 		if (i == IMGTYPE_PREGNANT)
 		{
-            string ext[];
             #if LINUX
             imageExtentions=2;
-            ext[imageExtentions]={"*g","ani"};
+            string ext[2]={"*g","ani"};
             #else
             imageExtentions=3;
-            ext[imageExtentions]= { "*g", "ani", "gif" };
+            string ext[3]= { "*g", "ani", "gif" };
             #endif // LINUX
 			for (u_int e = 0; e < imageExtentions; e++)
 			{
