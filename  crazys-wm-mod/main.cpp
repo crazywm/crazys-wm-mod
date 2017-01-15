@@ -1545,7 +1545,11 @@ bool Init()		// `J` Bookmark	- Initializing the game
 	*       build the caption string
 	*/
 	stringstream ss;
+	#if !LINUX
 	ss << "Whore Master v" << g_MajorVersion << "." << g_MinorVersionA << g_MinorVersionB << "." << g_StableVersion << " BETA" << " Svn: " << svn_revision;
+	#else
+	ss << "Whore Master: "<<"SVN: "<<svn_revision;
+	#endif
 	/*
 	*       init the graphics, with the caption on the titlebar
 	*/

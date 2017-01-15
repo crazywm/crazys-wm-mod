@@ -130,6 +130,7 @@ Moved Special Thanks.txt to /Build/
 Moved TODO-Mute.txt to /Dev/
 Moved config.xml to /Build/
 Moved Found Bugs.txt to /Dev/
+Moved Saves to /Build/
 
 ++++++++++++++++++++++++++++++++++++
 |       Removing Junk              |
@@ -158,6 +159,16 @@ Ignored *.old
 Ignored *.suo
 Ignored *.filters
 Ignored *.sdf
+
+
+
+
+==================================================
+|         Linux 1.0.0.0                          |
+==================================================
+Updated cGirls.cpp to stop random artifacts in game
+Updated Revision.h to include a linux Unique Version
+Updated main.cpp to give better Window Title for the Build
 
 
 

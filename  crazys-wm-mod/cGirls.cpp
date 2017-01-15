@@ -3036,8 +3036,8 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	// `J` show all the other buildings
 	data += div;
 	if (girl->m_InStudio || girl->m_InArena || girl->m_InCentre || girl->m_InClinic || girl->m_InFarm || girl->m_InHouse)
-		/*                       */	data += Brothel_Data;
-	if (!girl->m_InStudio)	data += Studio_Data;
+    /*                       */	data += Brothel_Data;
+	if (!girl->m_InStudio)	    data += Studio_Data;
 	if (!girl->m_InArena)		data += Arena_Data;
 	if (!girl->m_InCentre)		data += Centre_Data;
 	if (!girl->m_InClinic)		data += Clinic_Data;
@@ -3048,9 +3048,9 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	data += div;
 	data += "Job Ratings range from\n'I' The absolute best, 'S' Superior,\n";
 	data += "Then 'A'-'E' with 'E' being the worst.\n'X' means they can not do the job.\n\n";
-	data += "Jobs marked with ? do not really use job performace directly and is an estimate.\n";
-	data += "Jobs marked with ! are how much the girl is in need of the service of that job.\n";
-	data += "Jobs marked with * do not use job performace at all and are just in for completion.\n";
+	data += "Jobs marked with ? do not really use job performace directly and is an estimate.\n\n";
+	data += "Jobs marked with ! are how much the girl is in need of the service of that job.\n\n";
+	data += "Jobs marked with * do not use job performace at all and are just in for completion.";
 	return data;
 
 }
