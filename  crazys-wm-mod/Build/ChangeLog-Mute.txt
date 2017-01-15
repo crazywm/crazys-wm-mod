@@ -108,3 +108,71 @@ Updated cGirls.cpp to fix small grammer error
 
 Updated tariff.cpp to fix bug if config.out_cost.goon_cost was set to 0.0 it would say error
 
+===========================================
+.06.02.55-56
+===========================================
+
+Prep for Release for Linux version
+
++++++++++++++++++++++++++++++++++++++
+|       Rearanging SVN              |
++++++++++++++++++++++++++++++++++++++
+Moved File "all traits ready for job performance.txt" to Dev folder
+Moved DLL files to /Build/ Folder
+Moved Resources Folder to /Build/Resources/
+Moved Docs&Tools Folder to /Build/Docs&Tools/
+Moved ChangeLogs to /Build/
+Moved Font files to /Build/
+Moved random ideas.txt to /Dev/
+Moved readme.html to /Build/
+Moved README.TXT to /Build/
+Moved Special Thanks.txt to /Build/
+Moved TODO-Mute.txt to /Dev/
+Moved config.xml to /Build/
+Moved Found Bugs.txt to /Dev/
+
+++++++++++++++++++++++++++++++++++++
+|       Removing Junk              |
+++++++++++++++++++++++++++++++++++++
+Deleted Makefile.back
+Deleted MakeFile
+Deleted Microsoft.DTFW.DHL.manifest
+Deleted Microsoft.VC90.CRT.manifest
+Deleted mk_rev
+Deleted Revision.wcrev
+Deleted ScreenMode.txt
+Deleted UpgradeLog.htm
+Deleted UpgradeLog2.htm
+Deleted UpgradeLog3.htm
+Deleted WhoreMaster (old Linux Build)
+Deleted Whore Master.aps
+Deleted Whore Master.DPbcd
+Deleted Whore Master.rc
+Deleted Whore Master_pure.ini
+Deleted Whore Master_pure.temp
+Deleted WM.Depend
+Deleted gpl.txt
+Deleted WM.make
+Ignored *.user
+Ignored *.old
+Ignored *.suo
+Ignored *.filters
+Ignored *.sdf
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

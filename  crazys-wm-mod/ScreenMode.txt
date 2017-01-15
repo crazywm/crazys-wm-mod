@@ -1,3 +1,0 @@
-// First line is the width and height dimensions, second line is true or false for fullscreen
-1024 768
-false

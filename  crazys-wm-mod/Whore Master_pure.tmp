@@ -1,19 +1,0 @@
-Purify for Windows,
-(C) Copyright IBM Corporation. 1992, 2008. All Rights Reserved.
-PureCoverage for Windows,
-(C) Copyright IBM Corporation. 1993, 2008. All Rights Reserved.
-Version 7.0.0.0-009 (Evaluation); Build: 7076;
-WinNT 5.1 2600 Service Pack 2 Uniprocessor Free
-Instrumenting: 
-	  Whore Master.exe 721408 bytes	  NTDLL.DLL    708096 bytes	  ADVAPI32.DLL 616960 bytes	  ADVAPI32.DLL 616960 bytes	  SDL.DLL      321536 bytes	  SDL_IMAGE.DLL 40448 bytes	  SDL_TTF.DLL  19456 bytes	  SDL_GFX.DLL  52736 bytes	  KERNEL32.DLL 983552 bytes	  MSVCP90D.DLL 868864 bytes	  MSVCR90D.DLL 1180672 bytes
-Purify: While processing file C:\WINDOWS\WinSxS\x86_Microsoft.VC90.DebugCRT_1fc8b3b9a1e18e3b_9.0.21022.8_x-ww_597c3456\MSVCR90D.DLL:
-Note: Instrumentation repeating with 19 additional entry points.
-	  VLD.DLL      53248 bytes	  RPCRT4.DLL   581120 bytes	  RPCRT4.DLL   581120 bytes	  GDI32.DLL    278016 bytes	  GDI32.DLL    278016 bytes	  MSVCRT.DLL   343040 bytes
-Purify: While processing file C:\WINDOWS\system32\MSVCRT.DLL:
-Note: Instrumentation repeating with 12 additional entry points.
-	  USER32.DLL   577024 bytes	  USER32.DLL   577024 bytes	  WINMM.DLL    176128 bytes	  LIBFREETYPE-6.DLL 426496 bytes	  MSVCR90.DLL  655872 bytes
-Purify: While processing file E:\C++\BrothelMaster\BrothelMaster\MSVCR90.DLL:
-Note: Instrumentation repeating with 24 additional entry points.
-	  DBGHELP.DLL  1080672 bytes	  ZLIB1.DLL    70656 bytes	  MSVCR90.DLL  655872 bytes
-Purify: While processing file C:\WINDOWS\WinSxS\x86_Microsoft.VC90.CRT_1fc8b3b9a1e18e3b_9.0.21022.8_x-ww_d08d0375\MSVCR90.DLL:
-Note: Instrumentation repeating with 24 additional entry points.

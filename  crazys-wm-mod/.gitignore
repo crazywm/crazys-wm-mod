@@ -10,6 +10,11 @@
 *.workspace
 /Makefile
 *.depend
-
 /Linux/
 /WM:Game
+*.user
+*.old
+*.suo
+*.filters
+*.sdf
+*.gitignore~
