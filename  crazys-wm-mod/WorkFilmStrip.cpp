@@ -62,7 +62,7 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
-	ss << girlName << " worked as an actress filming strip tease scenes.\n \n";
+	ss << girlName << " worked as an actress filming strip tease scenes.\n\n";
 
 	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
@@ -74,17 +74,17 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (roll <= 10)
 	{
 		enjoy -= g_Dice % 3 + 1;
-		ss << "She stripped on film today, but didn't like it.\n \n";
+		ss << "She stripped on film today, but didn't like it.\n\n";
 	}
 	else if (roll >= 90)
 	{
 		enjoy += g_Dice % 3 + 1;
-		ss << "She loved stripping for the camera.\n \n";
+		ss << "She loved stripping for the camera.\n\n";
 	}
 	else
 	{
 		enjoy += g_Dice % 2;
-		ss << "She had a pleasant day stripping today.\n \n";
+		ss << "She had a pleasant day stripping today.\n\n";
 	}
 	jobperformance = enjoy * 2;
 	bonus = enjoy;

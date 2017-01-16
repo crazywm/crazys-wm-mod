@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Extensive Psychologist Sessions" Desc="Takes the girl to a psychologist, to help her with her personality and attitude. (Confidence +30, Tiredness +30) (Removes Aggresive, Broken Will, Shy, Tsundere and Yandere)" Type="Food" Badness="0" Special="None" Cost="15000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Confidence" Amount="30" />
+        <Effect What="Stat" Name="Tiredness" Amount="30" />
+        <Effect What="Trait" Name="Aggressive" Amount="0" />
+        <Effect What="Trait" Name="Broken Will" Amount="0" />
+        <Effect What="Trait" Name="Tsundere" Amount="0" />
+        <Effect What="Trait" Name="Yandere" Amount="0" />
+        <Effect What="Trait" Name="Shy" Amount="0" />
+    </Item>
+</Items>

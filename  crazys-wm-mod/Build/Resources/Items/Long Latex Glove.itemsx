@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Long Latex Glove" Desc="Shiny elbow-length, black latex glove. (+3 Cha, +10 BDSM, +12 Hand, +3 Group)" Type="Armband" Badness="22" Special="None" Cost="350" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Charisma" Amount="3" />
+        <Effect What="Skill" Name="BDSM" Amount="10" />
+        <Effect What="Skill" Name="Handjob" Amount="12" />
+        <Effect What="Skill" Name="Group" Amount="3" />
+    </Item>
+</Items>

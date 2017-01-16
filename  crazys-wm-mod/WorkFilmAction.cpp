@@ -73,11 +73,11 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	else if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 75)
 	{
-		ss << " was too tired to take part in an action scene.\n \n";
+		ss << " was too tired to take part in an action scene.\n\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else ss << " worked as an actress in an action scene.\n \n";
+	else ss << " worked as an actress in an action scene.\n\n";
 
 
 	//JOB
@@ -144,17 +144,17 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << "She loved performing on film today.\n \n";
+		ss << "She loved performing on film today.\n\n";
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << "She enjoyed this performance.\n \n";
+		ss << "She enjoyed this performance.\n\n";
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << "She found this awkward and did not enjoy it.\n \n";
+		ss << "She found this awkward and did not enjoy it.\n\n";
 	}
 
 	// remaining modifiers are in the AddScene function --PP

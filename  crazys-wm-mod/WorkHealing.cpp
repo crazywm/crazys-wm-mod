@@ -120,8 +120,8 @@ bool cJobManager::WorkHealing(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	// send her to the waiting room when she is healthy
 	if (girl->health() > 90 && girl->tiredness() < 10)
 	{
-		if (numdocs + numnurse < 1)	ss << "\n \nShe wanders out of the Clinic when she is feeling better.";
-		else						ss << "\n \nShe has been released from the Clinic.";
+		if (numdocs + numnurse < 1)	ss << "\n\nShe wanders out of the Clinic when she is feeling better.";
+		else						ss << "\n\nShe has been released from the Clinic.";
 		if (girl->m_DayJob == JOB_GETHEALING)	girl->m_DayJob = JOB_CLINICREST;
 		if (girl->m_NightJob == JOB_GETHEALING)	girl->m_NightJob = JOB_CLINICREST;
 		if (girl->m_DayJob == JOB_GETREPAIRS)	girl->m_DayJob = JOB_CLINICREST;

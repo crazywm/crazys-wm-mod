@@ -1,0 +1,299 @@
+<!--
+ ! Documentation at end of file
+ !-->
+<Triggers>
+	<Trigger
+		Type		= "GlobalFlag"
+		Flag		= "NoPay"
+		File		= "CustNoPay.script"
+	/>
+	<Trigger
+		Type		= "GlobalFlag"
+		Flag		= "RivalLose"
+		File		= "RivalLose.script"
+	/>
+	<Trigger
+		Type		= "GlobalFlag"
+		Flag		= "GamblingCheat"
+		File		= "CustGambCheat.script"
+	/>
+	<Trigger
+		Type		= "Money"
+		Who			= "Player"
+		Threshold	= "-5000"
+		Comparison	= "LessThan"
+		File		= "NoMoney.script"
+	/>
+</Triggers>
+
+<!--
+ ! The parameters a trigger accepts depend on the Type attribute. 
+ ! These are the recognised values for Type
+ !
+ !	"Random"	May trigger each week
+ !	"Shopping"	May trigger when shopping
+ !	"Skill"		May trigger when a skill is greater or equal to a value
+ !	"Stat"          May trigger when a stat is greater or equal to a value
+ !	"Status"	has a particular status, ie slave, pregnant etc
+ !	"Money"		May trigger when a cash is greater or equal to a value
+ !	"Meet"          Triggers when meeting girl
+ !	"Talk"          Triggered when talking to girl in dungeon on details screen
+ !	"WeeksPast"     Certain number of weeks pass while girl is in employment
+ !	"GlobalFlag"    Triggered when a global flag is set
+ !	"ScriptRun"     Triggered when a specifed script has been run
+ !	"Kidnapped"     Triggers when a girl is kidnapped
+ !
+ ! If the trigger type is "Skill" or "Stat", it needs a
+ ! "Skill" or "Stat" attribute to specify which skill/stat to
+ ! watch. Possible values for Stat:
+ !
+ !	"Charisma" 		"Happiness"
+ !	"Libido"		"Beauty"
+ !	"Constitution"		"Intelligence"
+ !	"Confidence" 		"Mana"
+ !	"Agility"		"Fame"
+ !	"Level"			"AskPrice"
+ !	"House"			"Exp"
+ !	"Age"			"Obedience"
+ !	"Spirit"		"Health"
+ !	"Tiredness"		"PCFear" 
+ !	"PCLove"		"PCHate"
+ !
+ ! Values for Skill
+ !	"Anal"		"Magic"		"BDSM"
+ !	"NormalSex"	"Beastiality"	"Group"
+ !	"Lesbian"	"Service"	"Strip"
+ !	"Combat"
+ !
+ ! All the "activate when foo > X" type triggers have a "Threshold"
+ ! attribute which specifies the value of "X"
+ !
+ ! If the type is "Status" the possible values are:
+ !
+ !	"Poisoned"     		Her health will slowly decrease 
+ !	"BadlyPoisoned"    	Her health will quickly decrease 
+ !	"Pregnant"		She is pregnant
+ !	"PregnantByPlayer"  	She is pregnant with the players child
+ !	"Slave"			She is a slave 
+ !	"HasDaughter"  		She has a daughter
+ !	"HasSon"		She has a son
+ !	"Inseminated"		Pregnant by a beast or creature
+ !	"Controled"		Subject to some obedience spell effect
+ !	"Catacombs"		Means this girl can be found in the catacombs
+ !
+ ! The other trigger attribute is "Has" and can be "True" or "False"
+ ! according to whether the girl does or does not have the status in
+ ! question. I'm not clear if this triggers each week (too much)
+ ! or on the status changing (in which case the wording is confusing).
+ ! "Has" defaults to "True"
+ !
+ ! "Meet" has a "Where" attribute with values:
+ !
+ !	"Town"			Player finds girl wandering round town
+ !	"Catacombs"		Goons(?) find girl in catacombs
+ !	"SlaveMarket"		Player finds girl for sale at market
+ !
+ ! "Talk" has a "Where attribute as well:
+ !
+ !	"Dungeon"		In the dungeon
+ !	"Brothel"		In the Brothel (header says "Details screen"
+ !				but you can access details screen from both
+ !				so I'm guessing Brothel
+ !
+ ! "GlobalFlag" has a "Flag" attribute
+ !
+ !	"NoPay"			Customer can't/won't pay
+ !	"GirlDies"		Girl dies in dungeon (or elsewhere, I assume)
+ !	"CustomerDies"		Customer dies in dungeon 
+ !	"GamblingCheat"		Customer caught cheating at gaming tables
+ !	"RivalLose"		One of your rivals is brought before you
+ !
+ ! "Money" has a "Threshold" atribute as well as "Comparison" and
+ ! "Who". "Who" can be "Player" or "Girl" (there are two separate
+ ! triggers internally) and comparison is "LessThan" or "MoreThan".
+ ! There are no "greater than or equal to" variants.
+ !
+ ! "ScriptRun" can trigger on one or two scripts having run. 
+ ! The ScriptRun parameters are undocumented numbers, so for now
+ ! I can offer no guidance on their use. Safest to ignore this for now.
+ !
+ ! Some attributes are common to all trigger types:
+ !
+ ! "Times" is how many times the trigger has fired so far.
+ ! This will be ignored when loading the config file until someone
+ ! explains why it should be otherwise.
+ !
+ ! "Chance" is %chance to trigger firing. Omitted, it defaults to 100
+ !
+ ! "OnceOnly" is "True" or "False" according to whether or not a 
+ ! trigger should be disabled after its first firing. Defaults to "False"
+ !
+ ! "File" is the script file to execute when the trigger fires.
+ !
+ ! Examples:
+ ! =========
+ !
+ ! Here are a few examples of the different trigger types.
+ ! Mainly they're here to illustrate the syntax, but there are
+ ! some suggestions as to the sort of effects you could create
+ ! These are only possibilities, and far from the only ones.
+ !
+ ! This has a 1% chance to occur every turn. The "%" on the chance
+ ! field can be omitted
+ !
+ ! <Trigger	Type	= "Random"
+ !		File	= "RandomExample.script"
+ !		Chance	= "1%"
+ ! />
+ !
+ ! To make the same event only happen once, add a OnceOnly attribute
+ !
+ ! <Trigger	Type	= "Random"
+ !		File	= "RandomExample.script"
+ !		Chance	= "1%"
+ !		OnceOnly= "True"
+ ! />
+ !
+ ! To make a trigger that fires every round, leave off the Chance field
+ ! so it defaults to 100%
+ !
+ ! <Trigger	Type	= "Random"
+ !		File	= "RandomExample.script"
+ ! />
+ !
+ ! Shopping triggers when the girl shops in her free time
+ ! at the brothel. You could use this to make a kelptomaniac
+ ! girl, who was forever being caught shoplifting. 
+ ! Or a witch with an unfortunate knack for finding cursed
+ ! artifacts in the bargain bin at Thaumaturgical Supplies...
+ !
+ ! <Trigger	Type	= "Shopping"
+ !		File	= "ShoppingExample.script"
+ !		Chance	= "10%"
+ ! />
+ ! 
+ ! Skill: triggers when calue exceeds a threshold. There
+ ! Doesn't seem to be a way to check for it dropping below a
+ ! certain value.
+ !
+ ! You could use this to make a girl who trains her combat skill to
+ ! 100% and then: "H'lo. My name is Iniga Montoya. You raped my mother
+ ! Prepare to die"
+ ! 
+ ! <Trigger	Type		= "Skill"
+ !		Skill		= "Combat"
+ !		Threshold	= "100"
+ !		File		= "SkillExample.script"
+ !		OnceOnly	= "True"
+ ! />
+ !
+ ! Stats work the same way: Here's a girl who eventually tries,
+ ! unsuccessfully, to open a portal to her home dimension once
+ ! her mana reaches 70 or higher.
+ !
+ ! <Trigger	Type		= "Stat"
+ !		Stat		= "Mana"
+ !		Threshold	= "70"
+ !		Chance		= "20%"
+ !		File		= "StatExample.script"
+ !		OnceOnly	= "True"
+ ! />
+ !
+ ! ... and who will also *sucessfully* open a portal and teleport home
+ ! just as soon as her mana gets to 100. (You'd have to watch that one...)
+ !
+ ! <Trigger	Type		= "Stat"
+ !		Stat		= "Mana"
+ !		Threshold	= "100"
+ !		Chance		= "50%"
+ !		File		= "StatExample2.script"
+ !		OnceOnly	= "True"
+ ! />
+ !
+ ! Status: How about a robot girl whose mechanical nature quickly shorts out
+ ! magical necklaces of control and the like?
+ !
+ ! <Trigger	Type		= "Status"
+ !		Status		= "Controlled"
+ !		Has		= "True"
+ !		Chance		= "35%"
+ !		File		= "StatusExample.script"
+ ! />
+ !
+ ! Money: Maybe a girl goes begging the player for pocket money
+ ! if she runs short. This could get annoying really quickly...
+ ! Comparison can be "LessThan" or "MoreThan". >= and <=
+ ! equivalents don't exist, but that shouldn't matter.
+ !
+ ! <Trigger	Type		= "Money"
+ !		Who		= "Girl"
+ !		Threshold	= "10"
+ !		Comparison	= "LessThan"
+ !		Chance		= "3%"
+ !		File		= "MoneyExample.script"
+ ! />
+ !
+ ! You can write money triggers for the player as well
+ ! Maybe have a salesman that comes to visit if cash exceeds
+ ! 100k
+ !
+ ! <Trigger	Type		= "Money"
+ !		Who		= "Player"
+ !		Threshold	= "100000"
+ !		Comparison	= "MoreThan"
+ !		Chance		= "3%"
+ !		File		= "MoneyExample2.script"
+ ! />
+ !
+ ! Meet: this is the trigger that fires when you find Cammy
+ ! wandinging around Crossgate: Let's think of something
+ ! different to do...
+ !
+ ! Suppose a catacomb squad found a demon girl who 
+ ! asked for their protection because something
+ ! really, really scary was chasing her. So the Squad
+ ! captain, not having any orders covering this occurence
+ ! brought her back so you could talk to her. Are you
+ ! going to put her to work? brand her? throw her back?
+ ! And is there *really* something scary following her?
+ !
+ ! <Trigger	Type		= "Meet"
+ !		Where		= "Catacomb"
+ !		File		= "MeetExample.script"
+ ! />
+ !
+ ! 
+ ! Talk: use this to override a girl's interaction
+ ! options in the brothel or dungeon.
+ !
+ ! <Trigger	Type		= "Talk"
+ !		Where		= "Bothel"
+ !		File		= "TalkExample.script"
+ ! />
+ !
+ ! WeeksPast: Have something happen after she's been
+ ! working for you for so many weeks. Maybe this girl
+ ! starts asking to be freed (or to retire) after she's
+ ! been in the business a couple of years...
+ !
+ ! <Trigger	Type		= "WeeksPast"
+ !		Threshold	= "102"
+ !		Chance		= "3%"
+ !		File		= "WeeksPastExample.script"
+ ! />
+ !
+ ! GlobalFlag: fairly straight forward. How about a script to
+ ! give you the option of having a dead girl resurrected?
+ !
+ ! <Trigger	Type		= "GirlDies"
+ !		File		= "WeeksPastExample.script"
+ ! />
+ !
+ ! Last one: kidnapped. Let's you make something interesting happen
+ ! when a girl is abducted. No special parameters.
+ !
+ ! <Trigger	Type		= "Kidnapped"
+ !		File		= "KidnapExample.script"
+ ! />
+ !
+ !-->

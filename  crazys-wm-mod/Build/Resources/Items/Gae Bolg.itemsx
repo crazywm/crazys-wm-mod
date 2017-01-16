@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Gae Bolg" Desc="A spear said to kill with a single strike.  Terribly ugly, though." Type="Weapon" Badness="0" Special="None" Cost="30000" Rarity="Catacomb01" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="60" />
+        <Effect What="Stat" Name="Charisma" Amount="-30" />
+        <Effect What="Stat" Name="Beauty" Amount="-10" />
+        <Effect What="Stat" Name="Spirit" Amount="25" />
+        <Effect What="Trait" Name="Agile" Amount="1" />
+        <Effect What="Trait" Name="Merciless" Amount="1" />
+        <Effect What="Trait" Name="Fearless" Amount="1" />
+    </Item>
+</Items>

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Sword of the Lost"
+		Desc="This blade is said to have many stories about it. Some say it's the successor to Soul Edge, while others say it's a blade of dreams. Even though the blade seems harmless, combine with the other set and they will have the power to split mountains......(Up on combat stats, down on emotion.)"
+		Type="Weapon"	Badness="80"	Special="None"	Cost="10000"	Rarity="Catacomb01"	Infinite="false"	GirlBuyChance="0">
+		<Effect			What="Skill"		Name="Combat"			Amount="25" />
+		<Effect			What="Stat"			Name="Agility"			Amount="25" />
+		<Effect			What="Stat"			Name="Constitution"		Amount="25" />
+		<Effect			What="Stat"			Name="Strength"			Amount="25" />
+		<Effect			What="Stat"			Name="Morality"			Amount="-15" />
+		<Effect			What="Stat"			Name="Refinement"		Amount="-15" />
+		<Effect			What="Stat"			Name="Dignity"			Amount="-15" />
+		<Effect			What="Stat"			Name="Obedience"		Amount="-15" />
+		<Effect			What="Stat"			Name="PCHate"			Amount="65" />
+		<Effect			What="Stat"			Name="PCFear"			Amount="-100" />
+		<Effect			What="GirlStatus"			Name="Controlled"			Amount="1" />
+	</Item>
+</Items>

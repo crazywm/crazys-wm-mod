@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Jeweled Poignard" Desc="A finely crafted dagger, inlaid with silver and bearing a precious stone on its hilt. It's almost jewelry. (C) (+5 Cha, +10 Com, -10 Fear, -5 Hate, +5 Conf)" 
+	Type="Small Weapon" Badness="0" Special="None" Cost="250" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="10" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="Charisma" Amount="5" />
+        <Effect What="Stat" Name="PCFear" Amount="-10" />
+        <Effect What="Stat" Name="PCHate" Amount="-5" />
+    </Item>
+    <Item Name="Jeweled Poignard" Desc="A finely crafted dagger, inlaid with silver and bearing a precious stone on its hilt. It's almost jewelry. (C) (+5 Cha, +10 Com, -10 Fear, -5 Hate, +5 Conf)" 
+	Type="Small Weapon" Badness="0" Special="None" Cost="250" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="10" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="Charisma" Amount="5" />
+        <Effect What="Stat" Name="PCFear" Amount="-10" />
+        <Effect What="Stat" Name="PCHate" Amount="-5" />
+    </Item>
+</Items>

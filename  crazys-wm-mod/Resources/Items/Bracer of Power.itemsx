@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Bracer of Power" Desc="This magical bracer boosts the strength of whoever wears it. (+5 Combat, +15 Strength)"
-    Type="Armband" Badness="0" Special="None" Cost="2500" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
-        <Effect What="Skill" Name="Combat" Amount="5" />
-        <Effect What="Stat" Name="Strength" Amount="15" />
-    </Item>
-</Items>

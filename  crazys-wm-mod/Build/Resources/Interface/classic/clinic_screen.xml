@@ -1,0 +1,109 @@
+<Screen>
+
+	<Window	Name= "Clinic Screen Window"
+		XPos	= "15"
+		YPos	= "12"
+		Width	= "770"
+		Height	= "578"
+		Border	= "1"
+	/>
+
+  <Image Name	= "Clinic"
+    File		= "Clinic.png"
+    XPos		= "8"
+    YPos		= "48"
+    Width		= "584"
+    Height		= "480"
+	/>
+
+ <Text	Name	= "ClinicDetails"
+		Text	= ""
+		XPos	= "600"
+		YPos	= "20"
+		Width	= "160"
+		Height	= "170"
+		FontSize= "10"
+	/>
+
+  <Button	Name	= "BackButton"
+		Image		= "Back"
+		XPos		= "8"
+		YPos		= "540"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "WalkButton"
+		Image		= "WalkAroundER"
+		XPos		= "176"
+		YPos		= "540"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "Girls"
+		Image		= "Girls"
+		XPos		= "600"
+		YPos		= "258"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+ <Button	Name	= "Staff"
+		Image		= "Staff"
+		XPos		= "600"
+		YPos		= "298"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+ <Button	Name	= "Dungeon"
+		Image		= "Dungeon"
+		XPos		= "600"
+		YPos		= "398"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+ <Button	Name	= "Turn"
+		Image		= "TurnSum"
+		XPos		= "432"
+		YPos		= "536"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+ <Button	Name	= "Weeks"
+		Image		= "NextWeek"
+		XPos		= "600"
+		YPos		= "536"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+ <Button	Name	= "SetUp"
+		Image		= "Building"
+		XPos		= "600"
+		YPos		= "338"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+</Screen>
+

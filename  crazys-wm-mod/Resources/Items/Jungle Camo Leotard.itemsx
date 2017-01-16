@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Jungle Camo Leotard" Desc="Thong Leotard with a green and brown camouflage pattern. (+5 Cha/Comb/Agi)"
-    Type="Dress" Badness="0" Special="None" Cost="400" Rarity="Shop25" Infinite="false" GirlBuyChance="2" ItemWeight="0.0">
-        <Effect What="Stat" Name="Charisma" Amount="5" />
-        <Effect What="Stat" Name="Agility" Amount="5" />
-        <Effect What="Skill" Name="Combat" Amount="5" />
-    </Item>
-</Items>

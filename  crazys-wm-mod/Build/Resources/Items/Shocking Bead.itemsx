@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Shocking Bead"    
+      Desc="This tiny, round object will magically attach itself inside a girl's vagina, delivering electric shocks automatically when she becomes willful or stubborn. It's designed to produce a somewhat small, corrective amount of pain -- but the very idea of the device is enough to strongly affect most girls. Additionally, it tends to exercise the vaginal muscles, making sex more enjoyable. (+50 Obed, +Nervous, +20 Fear, +30 Norm / BDSM)" 
+      Type="Misc" 
+      Badness="45" 
+      Special="None" 
+      Cost="800" 
+      Rarity="Shop25" 
+      Infinite="false">
+   <Effect What="Stat" Name="PCFear" Amount="20" />
+   <Effect What="Stat" Name="Obedience" Amount="50" />
+   <Effect What="Skill" Name="NormalSex" Amount="30" />
+   <Effect What="Skill" Name="BDSM" Amount="30" />
+   <Effect What="Trait" Name="Nervous" Amount="1" />
+</Item>
+</Items>

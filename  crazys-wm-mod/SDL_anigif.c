@@ -145,12 +145,11 @@ int AG_LoadGIF( const char* file, AG_Frame* frames, int size )
 	int n = 0;
 
 	SDL_RWops* src = SDL_RWFromFile( file, "rb" );
-
-	if ( src )
-	{
-		n = AG_LoadGIF_RW( src, frames, size );
-		SDL_RWclose( src );
-	}
+        if ( src )
+        {
+            n = AG_LoadGIF_RW( src, frames, size );
+            SDL_RWclose( src );
+        }
 
 	return n;
 }
@@ -289,11 +288,14 @@ int AG_LoadGIF_RW( SDL_RWops* src, AG_Frame* frames, int maxFrames )
 
 	if ( src == NULL )
 		return 0;
-
+    #if LINUX
+    // 'Mute' had to make it this way for linux or compiler would throw fit
+	memset( malloc( sizeof(*gd)) , 0, sizeof(*gd) );
+    #else
 	gd = malloc( sizeof(*gd) );
 	memset( gd , 0, sizeof(*gd) );
-	gd->src = src;
-
+	#endif
+    gd->src = src;
 	start = SDL_RWtell( src );
 
 	if ( !SDL_RWread(src,buf,6,1) )

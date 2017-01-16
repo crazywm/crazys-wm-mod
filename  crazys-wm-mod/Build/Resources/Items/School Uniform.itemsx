@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="School Uniform"
+      Desc="An elementary or middle school uniform. (+10 Intelligence, Charisma. Adds Quick Learner, Lolita, Cute.)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="975"
+      Rarity="Common"
+      Infinite="false"
+      GirlBuyChance="15">
+   <Effect What="Stat"  Name="Intelligence"            Amount="10"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="10"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+   <Effect What="Trait" Name="Lolita"                  Amount="1"    />
+   <Effect What="Trait" Name="Cute"                    Amount="1"    />
+</Item>
+</Items>

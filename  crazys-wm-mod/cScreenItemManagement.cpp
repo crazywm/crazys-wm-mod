@@ -566,7 +566,7 @@ void cScreenItemManagement::write_item_text(sInventoryItem * item, int owner, in
 	ss << "\nCost:  " << iCost.str();
 	if (owner != 1 && owner >= 0 && target == 1) ss << "Sell for:  " << iSell.str();
 	ss << "\nType:  " << iType.str();
-	ss << "\n \n" << iDesc.str();
+	ss << "\n\n" << iDesc.str();
 
 	EditTextItem(ss.str(), desc_id);
 };

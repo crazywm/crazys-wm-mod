@@ -488,7 +488,7 @@ sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 	if (minage == 100 || maxage == 100)	age = 100;
 	else
 	{
-		if (minage < 18) minage = 18;			// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
+		if (minage < 18) minage = 18;			// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 		if (minage > 80) minage = 80;
 		if (maxage < minage) maxage = minage;
 		if (maxage > 80) maxage = 80;
@@ -501,7 +501,7 @@ sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 	newgirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 
 	g_Brothels.GetDungeon()->AddGirl(newgirl, reason);
-	
+
 	return Script->m_Next;
 }
 sScript *cGameScript::Script_SetGlobal(sScript *Script)
@@ -514,7 +514,7 @@ sScript *cGameScript::Script_SetGirlFlag(sScript *Script)
 	int value[2];
 	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
-	
+
 	if (m_GirlTarget == 0) return Script->m_Next;	// this shouldn't happen
 
 	m_GirlTarget->m_Flags[value[0]] = (char)value[1];
@@ -615,7 +615,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 	stringstream NGmsg3;
 	stringstream NGmsgM;
 
-	int oldest = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
+	int oldest = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 	if (value[0] > 0)
 	{
 		Daughter1 = g_Girls.CreateRandomGirl((g_Dice % 13) + 13, false, slave, false, allowNonHuman, kidnaped, arena);
@@ -645,7 +645,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 
 	if (value[1])	// there is a mother
 	{
-		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, false, allowNonHuman, kidnaped, arena);	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
+		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, false, allowNonHuman, kidnaped, arena);	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 		Mother->m_Surname = surname;
 		g_Girls.CreateRealName(Mother);
 		if (!g_Dice.percent(Mother->age())) g_Girls.AddTrait(Mother, "MILF");	// the younger the mother the more likely she will be a MILF
@@ -653,10 +653,10 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 
 		string biography = "Daughter of " + Mother->m_Realname + " and a deadbeat brothel client.";
 
-		if (value[0] > 0)	Daughter1->m_Desc = Daughter1->m_Desc + "\n \n" + biography;
-		if (value[0] > 1)	Daughter2->m_Desc = Daughter2->m_Desc + "\n \n" + biography;
-		if (value[0] > 2)	Daughter3->m_Desc = Daughter3->m_Desc + "\n \n" + biography;
-		
+		if (value[0] > 0)	Daughter1->m_Desc = Daughter1->m_Desc + "\n\n" + biography;
+		if (value[0] > 1)	Daughter2->m_Desc = Daughter2->m_Desc + "\n\n" + biography;
+		if (value[0] > 2)	Daughter3->m_Desc = Daughter3->m_Desc + "\n\n" + biography;
+
 		if (value[0] > 0)
 		{
 			Mother->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] += value[0];
@@ -1270,14 +1270,14 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain 
+		g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain
 
 		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 		if (g_Brothels.GetNumBeasts() > 0)
 		{
-			g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain 
+			g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain
 			if (!m_GirlTarget->calc_insemination(g_Girls.GetBeast(), false, 1.0))
 				g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten inseminated", 0);
 		}

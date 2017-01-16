@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Public Show"
+      Desc="Have your girl work overtime and strip on the streets to get her name and face out there. (Fame +5, Tiredness +10, Stripping +5, Hate +5)"
+      Type="Food"
+      Badness="8"
+      Special="None"
+      Cost="400"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="Tiredness"               Amount="10"    />
+   <Effect What="Skill" Name="Strip"                   Amount="5"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="5"    />
+   <Effect What="Stat"  Name="Fame"                    Amount="5"    />
+</Item>
+</Items>

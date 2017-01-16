@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Puppy Training"
+      Desc="Walking on two legs is so passe. Turn your girl into a real bitch with this! (+Puppy girl)"
+      Type="Food"
+      Badness="100"
+      Special="None"
+      Cost="2500"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Beastiality"             Amount="100"    />
+   <Effect What="Skill" Name="Service"                 Amount="-100"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="100"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="100"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
+   <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="750"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Retarded"                Amount="1"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Twisted"                 Amount="1"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
+   <Effect What="Trait" Name="Broken Will"             Amount="1"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="0"    />
+   <Effect What="Trait" Name="Tsundere"                Amount="0"    />
+   <Effect What="Trait" Name="Yandere"                 Amount="0"    />
+</Item>
+<Item Name="Puppy Training"
+      Desc="Walking on two legs is so passe. Turn your girl into a real bitch with this! (+Puppy girl)"
+      Type="Food"
+      Badness="100"
+      Special="None"
+      Cost="2500"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Beastiality"             Amount="100"    />
+   <Effect What="Skill" Name="Service"                 Amount="-100"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="100"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="100"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
+   <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Retarded"                Amount="1"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Twisted"                 Amount="1"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
+   <Effect What="Trait" Name="Broken Will"             Amount="1"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="0"    />
+   <Effect What="Trait" Name="Tsundere"                Amount="0"    />
+   <Effect What="Trait" Name="Yandere"                 Amount="0"    />
+   <Effect What="Trait" Name="Merciless"               Amount="0"    />
+   <Effect What="Trait" Name="Fearless"                Amount="0"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="0"    />
+</Item>
+</Items>

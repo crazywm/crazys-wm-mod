@@ -1,0 +1,107 @@
+<Screen>
+
+	<Window	Name= "Slave Market Window"
+		XPos	= "16"
+		YPos	= "12"
+		Width	= "768"
+		Height	= "576"
+		Border	= "1"
+	/>
+
+  <Button	Name	= "BackButton"
+		Image		= "Back"
+		XPos		= "576"
+		YPos		= "528"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "ShowMoreButton"
+		Image		= "ShowMore"
+		XPos		= "376"
+		YPos		= "528"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Button	Name	= "BuySlaveButton"
+		Image		= "BuySlave"
+		XPos		= "184"
+		YPos		= "528"
+		Width		= "160"
+		Height		= "32"
+		Transparency= "true"
+		Scale		= "true"
+	/>
+
+  <Text	Name	= "CurrentBrothel"
+		Text	= ""
+		XPos	= "4"
+		YPos	= "0"
+		Width	= "232"
+		Height	= "30"
+		FontSize= "14"
+	/>
+
+  <Text	Name	= "ScreenHeader"
+		Text	= "Slave Market"
+		XPos	= "256"
+		YPos	= "8"
+		Width	= "304"
+		Height	= "32"
+		FontSize= "20"
+	/>
+
+  <ListBox
+		Name	= "SlaveList"
+		XPos	= "8"
+		YPos	= "398"
+		Width	= "160"
+		Height	= "162"
+		Border	= "1"
+		Events	= "true"
+		Multi	= "true"
+	/>
+
+  <ListBox
+		Name	= "TraitList"
+		XPos	= "616"
+		YPos	= "8"
+		Width	= "144"
+		Height	= "363"
+		Border	= "1"
+		Events	= "true"
+		Multi	= "false"
+	/>
+
+  <Text	Name	= "SlaveDetails"
+		Text	= ""
+		XPos	= "8"
+		YPos	= "40"
+		Width	= "160"
+		Height	= "350"
+		FontSize= "9"
+	/>
+
+  <Text	Name	= "TraitDesc"
+		Text	= ""
+		XPos	= "616"
+		YPos	= "371"
+		Width	= "144"
+		Height	= "149"
+		FontSize= "10"
+	/>
+
+  <Image Name	= "SlaveImage"
+    File		= "blank.png"
+    XPos		= "176"
+    YPos		= "40"
+    Width		= "432"
+    Height		= "480"
+	/>
+
+</Screen>

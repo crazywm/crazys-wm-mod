@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Armor of the Berserk"
+      Desc="This armor is possessed by malevolent forces, including the hate, rage, pain, and fear of those who have worn it before.  While its wearer is nigh undefeatable, it runs off the suffering and pain of its wearer."
+      Type="Armor"
+      Badness="100"
+      Special="None"
+      Cost="3500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="100"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="20"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-100"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-80"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="100"    />
+   <Effect What="Stat"  Name="Strength"                Amount="100"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="100"    />
+   <Effect What="Stat"  Name="Exp"                     Amount="100"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-40"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="30"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="30"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="45"    />
+
+   <Effect What="Trait" Name="Optimist"                Amount="0"    />
+   <Effect What="Trait" Name="Dependant"               Amount="0"    />
+   <Effect What="Trait" Name="Meek"                    Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="1"    />
+   <Effect What="Trait" Name="Strong"                  Amount="1"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="1"    />
+   <Effect What="Trait" Name="Adventurer"              Amount="1"    />
+   <Effect What="Trait" Name="Sadistic"                Amount="1"    />
+   <Effect What="Trait" Name="Yandere"                 Amount="1"    />
+   <Effect What="Trait" Name="Merciless"               Amount="1"    />
+   <Effect What="Trait" Name="Fearless"                Amount="1"    />
+   <Effect What="Trait" Name="Twisted"                 Amount="1"    />
+   <Effect What="Trait" Name="Tough"                   Amount="1"    />
+   <Effect What="Trait" Name="Demon"                   Amount="1"    />
+</Item>
+</Items>

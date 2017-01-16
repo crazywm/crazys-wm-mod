@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Mega Buster"
+      Desc="No Way! A real working Mega Buster! I thought they were destroyed! Oh wait....this lets a girl obliterate her target but it also attaches to the arm as long as they have it. Many people will be fans of you if you have this item. For some reason, it has 25 on the side... (+20 Agi, +10 Spirit, -20 Fear/Hate, +20 Combat, +30 Magic, +Cool/Half-Construct)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="7500"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Agility"                 Amount="20"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-20"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-20"    />
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+   <Effect What="Skill" Name="Magic"                   Amount="30"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="40"    />
+   <Effect What="Trait" Name="Cool Person"             Amount="1"    />
+   <Effect What="Trait" Name="Half-Construct"          Amount="1"    />
+</Item>
+</Items>

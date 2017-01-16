@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Oil of Lesser Scar Removing"
+      Desc="This magical oil removes all traces of past wounds from the user's entire body, though it is not potent enough to affect very large or deep scars. It also has a slight healing effect on current injuries, and provides a momentary feeling of euphoria. (+3 HP, +3 Hap, cures all non-Horrific scars)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="3"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="3"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+</Item>
+<Item Name="Oil of Lesser Scar Removing"
+      Desc="This magical oil removes all traces of past wounds from the user's entire body, though it is not potent enough to affect very large or deep scars. It also has a slight healing effect on current injuries, and provides a momentary feeling of euphoria. (+3 HP, +3 Hap, cures all non-Horrific scars)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="3"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="3"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+</Item>
+</Items>

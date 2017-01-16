@@ -50,7 +50,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " is assigned to advertize the brothel.\n \n";
+	ss << " is assigned to advertize the brothel.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
@@ -202,7 +202,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	if (cfg.debug.log_show_numbers())
 	{
-		ss << "\n \nNumbers:"
+		ss << "\n\nNumbers:"
 			<< "\n Ad Multiplier = " << multiplier
 			<< "\n Wages = " << (int)wages
 			<< "\n Tips = " << (int)tips

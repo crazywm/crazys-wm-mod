@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Blessing of Life"
+        Desc="Magical gem blessed by the goddess of fertility. In the interest of ultimate fertility, any female who uses it will grow a large, fully functional penis (which produces especially potent sperm). (+20 Hap, +10 Libido, Removes Sterile and adds Fertile and Futanari)"
+        Type="Food"
+        Badness="19"
+        Special="None"
+        Cost="3500"
+        Rarity="Catacomb05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Happiness"
+            Amount="20" />
+        <Effect
+            What="Stat"
+            Name="Libido"
+            Amount="10" />
+        <Effect
+            What="Trait"
+            Name="Sterile"
+            Amount="0" />
+        <Effect
+            What="Trait"
+            Name="Fertile"
+            Amount="1" />
+        <Effect
+            What="Trait"
+            Name="Futanari"
+            Amount="1" />
+    </Item>
+</Items>

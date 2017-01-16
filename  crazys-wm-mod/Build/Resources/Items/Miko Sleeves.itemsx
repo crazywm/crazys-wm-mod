@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Miko Sleeves"
+        Desc="A pair of detachable sleeves that usually accompany the traditional outfit of a shrine maiden. (+3 Charisma, +5 Spirit)"
+        Type="Armband"
+        Badness="0"
+        Special="None"
+        Cost="250"
+        Rarity="Shop25"
+        Infinite="true"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="3" />
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="5" />
+    </Item>
+</Items>

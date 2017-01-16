@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Oil of Greater Scar Removing"
+      Desc="This powerful magical oil instantly removes all traces of past wounds from the user's entire body upon application. However, the purification process is tremendously exhausting and more than a little painful. (+50 Tired, cures all scars)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2500"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Tiredness"               Amount="50"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
+</Item>
+<Item Name="Oil of Greater Scar Removing"
+      Desc="This powerful magical oil instantly removes all traces of past wounds from the user's entire body upon application. However, the purification process is tremendously exhausting and more than a little painful. (+50 Tired, cures all scars)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="2500"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Tiredness"               Amount="50"    />
+   <Effect What="Trait" Name="Small Scars"             Amount="0"    />
+   <Effect What="Trait" Name="Cool Scars"              Amount="0"    />
+   <Effect What="Trait" Name="Horrific Scars"          Amount="0"    />
+</Item>
+</Items>

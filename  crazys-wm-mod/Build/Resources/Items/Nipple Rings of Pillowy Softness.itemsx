@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Nipple Rings of Pillowy Softness"
+      Desc="When placed on a woman's nipples, this pair of gold rings causes her breasts to expand to a prodigious size. Fortunately, they are trivial to remove, allowing their wearer to go about their daily life without repercussions. (adds Abormally Large Boobs)"
+      Type="Ring"
+      Badness="10"
+      Special="None"
+      Cost="2500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
+</Item>
+</Items>

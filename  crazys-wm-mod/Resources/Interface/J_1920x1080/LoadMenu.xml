@@ -1,6 +1,0 @@
-<Screen>
-<Window   Name="LoadMenu"                                                      XPos="560"	YPos="140"	Width="800"	Height="800"	Border="1" />
-<ListBox  Name="FileName"                                                      XPos="20"	YPos="20"	Width="760"	Height="660"	Border="1" RowHeight="32"	FontSize="20" />
-<Button   Name="LoadGame"  Image="Load"                                        XPos="20"	YPos="716"	Width="320"	Height="64"	Transparency="true"	Scale="true" />
-<Button   Name="Back"      Image="Back"                                        XPos="460"	YPos="716"	Width="320"	Height="64"	Transparency="true"	Scale="true" />
-</Screen>

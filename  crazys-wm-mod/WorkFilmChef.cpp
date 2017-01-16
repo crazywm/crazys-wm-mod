@@ -71,7 +71,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else ss << " worked filming sexy chef scenes to educate and entertain viewers.\n \n";
+	else ss << " worked filming sexy chef scenes to educate and entertain viewers.\n\n";
 
 	//What's she best at?
 	enum { COOKING, LOOKS };
@@ -123,17 +123,17 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << "She loved cooking and flirting on camera.\n \n";
+		ss << "She loved cooking and flirting on camera.\n\n";
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << "She enjoyed making this show.\n \n";
+		ss << "She enjoyed making this show.\n\n";
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << "She was awful at this and did not enjoy making it.\n \n";
+		ss << "She was awful at this and did not enjoy making it.\n\n";
 	}
 	bonus = bonus + enjoy;
 

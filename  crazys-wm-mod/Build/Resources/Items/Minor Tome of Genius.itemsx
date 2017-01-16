@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Minor Tome of Genius"    
+      Desc="Although a far cry from a true Tome of Genius, this book still increases intellect by a fair amount. When read, the words inside are magically imprinted into the mind, leaving behind only blank pages. While this renders the tome useless, the effects on the reader permanently remain. (+10 Intelligence)" 
+      Type="Food" 
+      Badness="0" 
+      Special="None" 
+      Cost="3000" 
+      Rarity="Shop05" 
+      Infinite="false" 
+      GirlBuyChance="20">
+   <Effect What="Stat" Name="Intelligence" Amount="10" />
+</Item>
+</Items>

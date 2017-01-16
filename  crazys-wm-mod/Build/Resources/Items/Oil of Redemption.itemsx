@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Oil of Redemption"
+      Desc="This is a tiny vial of rare oil, shining with tremendous holy power. When applied to the forehead of a demon, it purifies their soul and body, giving them the life of a mortal and a shot at redemption. The process is horribly painful and many demons don't survive it, let alone agree to it. (-100 Happ, +100 Tired, +50 Love, +50 Hate, removes Demon and Strange Eyes, 50% chance of -99 HP, 50% chance of -100 HP)"
+      Type="Food"
+      Badness="100"
+      Special="None"
+      Cost="2500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Happiness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="100"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-99"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="50"    />
+   <Effect What="Trait" Name="Demon"                   Amount="0"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="0"    />
+</Item>
+<Item Name="Oil of Redemption"
+      Desc="This is a tiny vial of rare oil, shining with tremendous holy power. When applied to the forehead of a demon, it purifies their soul and body, giving them the life of a mortal and a shot at redemption. The process is horribly painful and many demons don't survive it, let alone agree to it. (-100 Happ, +100 Tired, +50 Love, +50 Hate, removes Demon and Strange Eyes, 50% chance of -99 HP, 50% chance of -100 HP)"
+      Type="Food"
+      Badness="100"
+      Special="None"
+      Cost="2500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Happiness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="100"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-99"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="50"    />
+   <Effect What="Trait" Name="Demon"                   Amount="0"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="0"    />
+</Item>
+<Item Name="Oil of Redemption"
+      Desc="This is a tiny vial of rare oil, shining with tremendous holy power. When applied to the forehead of a demon, it purifies their soul and body, giving them the life of a mortal and a shot at redemption. The process is horribly painful and many demons don't survive it, let alone agree to it. (-100 Happ, +100 Tired, +50 Love, +50 Hate, removes Demon and Strange Eyes, 50% chance of -99 HP, 50% chance of -100 HP)"
+      Type="Food"
+      Badness="100"
+      Special="None"
+      Cost="2500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Happiness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="100"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-99"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="50"    />
+   <Effect What="Trait" Name="Demon"                   Amount="0"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="0"    />
+</Item>
+<Item Name="Oil of Redemption"
+      Desc="This is a tiny vial of rare oil, shining with tremendous holy power. When applied to the forehead of a demon, it purifies their soul and body, giving them the life of a mortal and a shot at redemption. The process is horribly painful and many demons don't survive it, let alone agree to it. (-100 Happ, +100 Tired, +50 Love, +50 Hate, removes Demon and Strange Eyes, 50% chance of -99 HP, 50% chance of -100 HP)"
+      Type="Food"
+      Badness="100"
+      Special="None"
+      Cost="2500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Happiness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="100"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-99"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="50"    />
+   <Effect What="Trait" Name="Demon"                   Amount="0"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="0"    />
+</Item>
+</Items>

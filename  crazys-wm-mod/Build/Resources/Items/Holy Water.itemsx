@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Holy Water (T)"
+      Desc="Jeez! You out whoring? Have some holy water! (-5 Sex, Lib,  +2 Int, Spi, Cnf, Mana)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="50"
+      Rarity="Common"
+      Infinite="false">
+   <Effect What="Stat"  Name="Confidence"              Amount="2" />
+   <Effect What="Stat"  Name="Intelligence"            Amount="2" />
+   <Effect What="Stat"  Name="Spirit"                  Amount="2" />
+   <Effect What="Stat"  Name="Mana"                    Amount="2" />
+   <Effect What="Stat"  Name="Libido"                  Amount="-5" />
+   <Effect What="Skill" Name="Anal"                    Amount="-5" />
+   <Effect What="Skill" Name="BDSM"                    Amount="-5" />
+   <Effect What="Skill" Name="NormalSex"               Amount="-5" />
+   <Effect What="Skill" Name="Beastiality"             Amount="-5" />
+   <Effect What="Skill" Name="Group"                   Amount="-5" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-5"    />
+   <Effect What="Skill" Name="Footjob"                 Amount="-5"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-5"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-5" />
+   <Effect What="Skill" Name="OralSex"                 Amount="-5" />
+   <Effect What="Skill" Name="Strip"                   Amount="-5" />
+</Item>
+
+<Item Name="Holy Water (S)"
+      Desc="Jeez! You out whoring? Have some holy water! (-10 Sex, Lib,  +5 Int, Spi, Cnf, Mana)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="100"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="Confidence"              Amount="5" />
+   <Effect What="Stat"  Name="Intelligence"            Amount="5" />
+   <Effect What="Stat"  Name="Spirit"                  Amount="5" />
+   <Effect What="Stat"  Name="Mana"                    Amount="5" />
+   <Effect What="Stat"  Name="Libido"                  Amount="-10" />
+   <Effect What="Skill" Name="Anal"                    Amount="-10" />
+   <Effect What="Skill" Name="BDSM"                    Amount="-10" />
+   <Effect What="Skill" Name="NormalSex"               Amount="-10" />
+   <Effect What="Skill" Name="Beastiality"             Amount="-10" />
+   <Effect What="Skill" Name="Group"                   Amount="-10" />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-10" />
+   <Effect What="Skill" Name="OralSex"                 Amount="-10" />
+   <Effect What="Skill" Name="Footjob"                 Amount="-10"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="-10"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-10"    />
+   <Effect What="Skill" Name="Strip"                   Amount="-10" />
+</Item>
+
+<Item Name="Holy Water (M)"
+      Desc="Jeez! You out whoring? Have some holy water! (Cures: Small Scars/Nervousness/Clumsiness, -20 Sex, Lib,  +10 Int, Spi, Cnf, Mana)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="500"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Stat"  Name="Confidence"              Amount="10" />
+   <Effect What="Stat"  Name="Intelligence"            Amount="10" />
+   <Effect What="Stat"  Name="Spirit"                  Amount="10" />
+   <Effect What="Stat"  Name="Mana"                    Amount="10" />
+   <Effect What="Stat"  Name="Libido"                  Amount="-20" />
+   <Effect What="Skill" Name="Anal"                    Amount="-20" />
+   <Effect What="Skill" Name="BDSM"                    Amount="-20" />
+   <Effect What="Skill" Name="NormalSex"               Amount="-20" />
+   <Effect What="Skill" Name="Beastiality"             Amount="-20" />
+   <Effect What="Skill" Name="Footjob"                 Amount="-20"    />
+   <Effect What="Skill" Name="Group"                   Amount="-20" />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-20" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-20"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-20"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="-20" />
+   <Effect What="Skill" Name="Strip"                   Amount="-20" />
+   <Effect What="Trait" Name="Small Scars"             Amount="0" />
+   <Effect What="Trait" Name="Clumsy"                  Amount="0" />
+   <Effect What="Trait" Name="Nervous"                 Amount="0" />
+</Item>
+
+<Item Name="Holy Water (L)"
+      Desc="Jeez! You out whoring? Have some holy water! (Cures: Small Scars/Nervousness/Clumsiness, Adds Optimist, -30 Sex, Lib,  +20 Int, Spi, Cnf, Mana)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Confidence"              Amount="20" />
+   <Effect What="Stat"  Name="Intelligence"            Amount="20" />
+   <Effect What="Stat"  Name="Spirit"                  Amount="20" />
+   <Effect What="Stat"  Name="Mana"                    Amount="20" />
+   <Effect What="Stat"  Name="Libido"                  Amount="-30" />
+   <Effect What="Skill" Name="Anal"                    Amount="-30" />
+   <Effect What="Skill" Name="BDSM"                    Amount="-30" />
+   <Effect What="Skill" Name="NormalSex"               Amount="-30" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-30"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-30"    />
+   <Effect What="Skill" Name="Footjob"                 Amount="-30"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="-30" />
+   <Effect What="Skill" Name="Group"                   Amount="-30" />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-30" />
+   <Effect What="Skill" Name="OralSex"                 Amount="-30" />
+   <Effect What="Skill" Name="Strip"                   Amount="-30" />
+   <Effect What="Trait" Name="Small Scars"             Amount="0" />
+   <Effect What="Trait" Name="Clumsy"                  Amount="0" />
+   <Effect What="Trait" Name="Nervous"                 Amount="0" />
+   <Effect What="Trait" Name="Optimist"                Amount="1" />
+</Item>
+<Item Name="Holy Water (L)"
+      Desc="Jeez! You out whoring? Have some holy water! (Cures: Small Scars/Nervousness/Clumsiness, Adds Optimist, -30 Sex, Lib,  +20 Int, Spi, Cnf, Mana)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Confidence"              Amount="20" />
+   <Effect What="Stat"  Name="Intelligence"            Amount="20" />
+   <Effect What="Stat"  Name="Spirit"                  Amount="20" />
+   <Effect What="Stat"  Name="Mana"                    Amount="20" />
+   <Effect What="Stat"  Name="Libido"                  Amount="-30" />
+   <Effect What="Skill" Name="Anal"                    Amount="-30" />
+   <Effect What="Skill" Name="BDSM"                    Amount="-30" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-30"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-30"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="-30" />
+   <Effect What="Skill" Name="Beastiality"             Amount="-30" />
+   <Effect What="Skill" Name="Group"                   Amount="-30" />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-30" />
+   <Effect What="Skill" Name="Footjob"                 Amount="-30"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="-30" />
+   <Effect What="Skill" Name="Strip"                   Amount="-30" />
+   <Effect What="Trait" Name="Small Scars"             Amount="0" />
+   <Effect What="Trait" Name="Clumsy"                  Amount="0" />
+   <Effect What="Trait" Name="Nervous"                 Amount="0" />
+   <Effect What="Trait" Name="Optimist"                Amount="1" />
+</Item>
+
+<Item Name="Holy Water (D)"
+      Desc="Jeez! You out whoring? Have some holy water! (Removes Demon, Cures: Small Scars/Nervousness/Clumsiness, Adds Optimist, -40 Sex, Lib,  +30 Int, Spi, Cnf, Mana)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Confidence"              Amount="30" />
+   <Effect What="Stat"  Name="Intelligence"            Amount="30" />
+   <Effect What="Stat"  Name="Spirit"                  Amount="30" />
+   <Effect What="Stat"  Name="Mana"                    Amount="30" />
+   <Effect What="Stat"  Name="Libido"                  Amount="-40" />
+   <Effect What="Skill" Name="Anal"                    Amount="-40" />
+   <Effect What="Skill" Name="BDSM"                    Amount="-40" />
+   <Effect What="Skill" Name="NormalSex"               Amount="-40" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-40"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-40"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="-40" />
+   <Effect What="Skill" Name="Group"                   Amount="-40" />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-40" />
+   <Effect What="Skill" Name="Footjob"                 Amount="-40"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="-40" />
+   <Effect What="Skill" Name="Strip"                   Amount="-40" />
+   <Effect What="Trait" Name="Small Scars"             Amount="0" />
+   <Effect What="Trait" Name="Clumsy"                  Amount="0" />
+   <Effect What="Trait" Name="Nervous"                 Amount="0" />
+   <Effect What="Trait" Name="Demon"                   Amount="0" />
+</Item>
+<Item Name="Holy Water (D)"
+      Desc="Jeez! You out whoring? Have some holy water! (Removes Demon, Cures: Small Scars/Nervousness/Clumsiness, Adds Optimist, -40 Sex, Lib,  +30 Int, Spi, Cnf, Mana)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Confidence"              Amount="30" />
+   <Effect What="Stat"  Name="Intelligence"            Amount="30" />
+   <Effect What="Stat"  Name="Spirit"                  Amount="30" />
+   <Effect What="Stat"  Name="Mana"                    Amount="30" />
+   <Effect What="Stat"  Name="Libido"                  Amount="-40" />
+   <Effect What="Skill" Name="Anal"                    Amount="-40" />
+   <Effect What="Skill" Name="BDSM"                    Amount="-40" />
+   <Effect What="Skill" Name="NormalSex"               Amount="-40" />
+   <Effect What="Skill" Name="Handjob"                 Amount="-40"    />
+   <Effect What="Skill" Name="TittySex"                Amount="-40"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="-40" />
+   <Effect What="Skill" Name="Group"                   Amount="-40" />
+   <Effect What="Skill" Name="Lesbian"                 Amount="-40" />
+   <Effect What="Skill" Name="Footjob"                 Amount="-40"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="-40" />
+   <Effect What="Skill" Name="Strip"                   Amount="-40" />
+   <Effect What="Trait" Name="Small Scars"             Amount="0" />
+   <Effect What="Trait" Name="Clumsy"                  Amount="0" />
+   <Effect What="Trait" Name="Nervous"                 Amount="0" />
+   <Effect What="Trait" Name="Demon"                   Amount="0" />
+</Item>
+</Items>

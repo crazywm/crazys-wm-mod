@@ -43,13 +43,13 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int actiontype = ACTION_WORKMAKEITEMS;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work 
+	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " was assigned to make items at the farm.\n \n";
+	ss << " was assigned to make items at the farm.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -103,7 +103,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		wages -= 15; craftpoints *= 0.4; roll_a -= 5; roll_b -= 10;
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
@@ -153,7 +153,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Money					//
@@ -691,7 +691,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				craftpoints -= Cost;
 				girl->mana(-Magic);
 				msgtype = EVENT_GOODNEWS;
-				if (numitems == 0)	ss << "\n \n" << girlName << " made:";
+				if (numitems == 0)	ss << "\n\n" << girlName << " made:";
 				ss << "\n\t" << itemmade;
 				g_Brothels.AddItemToInventory(item);
 				numitems++;
@@ -704,7 +704,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 #endif
 	}
-	
+
 
 #pragma endregion
 #pragma region	//	Finish the shift			//

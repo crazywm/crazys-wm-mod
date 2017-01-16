@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Polish"
+      Desc="The small things that make the difference (+ Good kisser, great figure/arse, long legs, puffy/perky nipples, strange eyes)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="20000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Trait" Name="Good Kisser"             Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+   <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="0"    />
+</Item>
+</Items>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Boob reduction A"
+      Desc="Back pain? This might help. (-5 health, +5 Tiredness. Reduces breast size to Small.)"
+      Type="Food"
+      Badness="5"
+      Special="None"
+      Cost="750"
+      Rarity="Shop50"
+      Infinite="false">
+   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-5"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="5"    />
+   <Effect What="Trait" Name="Busty Boobs"             Amount="0" />
+   <Effect What="Trait" Name="Big Boobs"               Amount="0" />
+   <Effect What="Trait" Name="Giant Juggs"             Amount="0" />
+   <Effect What="Trait" Name="Massive Melons"          Amount="0" />
+   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="0" />
+   <Effect What="Trait" Name="Titanic Tits"            Amount="0" />
+   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Small Boobs"             Amount="1"    />
+</Item>
+</Items>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Exotic Bouquet"
+      Desc="This tastefully-arranged bouquet is comprised of many types of flowers that usually only grow in far-away lands. It's colorful, it's gorgeous, and it shows that you're willing to spend a lot of money to impress. (B) (+15 Love, -20 Hate, +10 Hap)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="300"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="15"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-20"    />
+</Item>
+<Item Name="Exotic Bouquet"
+      Desc="This tastefully-arranged bouquet is comprised of many types of flowers that usually only grow in far-away lands. It's colorful, it's gorgeous, and it shows that you're willing to spend a lot of money to impress. (B) (+15 Love, -20 Hate, +10 Hap)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="300"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="15"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-20"    />
+</Item>
+</Items>

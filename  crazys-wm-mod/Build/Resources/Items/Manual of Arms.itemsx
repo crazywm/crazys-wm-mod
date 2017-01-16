@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Manual of Arms"
+      Desc="This easy-to-read book contains explanations of basic combat stances and forms for a variety of bare-handed and weapon fighting styles. It's nothing fancy, but even seasoned warriors can use a refresher sometimes. (B) (+20 Com)"
+      Type="Misc" Badness="0" Special="None" Cost="800" Rarity="Shop05" Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="20"    />
+</Item>
+</Items>

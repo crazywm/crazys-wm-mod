@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Sequin Lingerie" Desc="This skimpy and colorful set of bra and panties is decorated with shimmering sequins. (+15 Strip, +12 Perf, +7 Service, +5 all other sex skills, +7 Cha, +5 Lib)"
+    Type="Underwear" Badness="15" Special="None" Cost="400" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Charisma" Amount="7" />
+        <Effect What="Stat" Name="Libido" Amount="5" />
+        <Effect What="Skill" Name="Beastiality" Amount="5" />
+        <Effect What="Skill" Name="Anal" Amount="5" />
+        <Effect What="Skill" Name="BDSM" Amount="5" />
+        <Effect What="Skill" Name="Footjob" Amount="5" />
+        <Effect What="Skill" Name="NormalSex" Amount="5" />
+        <Effect What="Skill" Name="Group" Amount="5" />
+        <Effect What="Skill" Name="Lesbian" Amount="5" />
+        <Effect What="Skill" Name="Service" Amount="7" />
+        <Effect What="Skill" Name="Strip" Amount="15" />
+        <Effect What="Skill" Name="Performance" Amount="12" />
+        <Effect What="Skill" Name="OralSex" Amount="5" />
+        <Effect What="Skill" Name="TittySex" Amount="5" />
+        <Effect What="Skill" Name="Handjob" Amount="5" />
+    </Item>
+</Items>

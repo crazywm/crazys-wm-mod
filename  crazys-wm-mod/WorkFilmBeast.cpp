@@ -125,7 +125,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			return true;
 		}
 	}
-	else ss << girlName << " was filmed being fucked by animals.\n \n";
+	else ss << girlName << " was filmed being fucked by animals.\n\n";
 
 	if (jobperformance >= 350)
 	{

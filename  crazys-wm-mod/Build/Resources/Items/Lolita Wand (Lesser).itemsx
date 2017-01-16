@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Lolita Wand (Lesser)"    
+      Desc="More powerful lolita wands are extremely rare, and their source and creation process is unknown. These wands were designed to create a similar effect that would be easier to replicate. Although they're still rather powerful, their creation is far less refined and produces a smaller effect. Because they lack the subtle quality of the originals, mental and physical development also gets reversed. (-12 age, +Small Boobs, +Lolita, -MILF, -10 Cons/Str, -30 All skills)" 
+      Type="Food" 
+      Badness="10" 
+      Special="None" 
+      Cost="6000" 
+      Rarity="Shop05" 
+      Infinite="false" 
+      GirlBuyChance="0">
+   <Effect What="Stat" Name="Age" Amount="-12" />
+   <Effect What="Stat" Name="Constitution" Amount="-10" />
+   <Effect What="Stat" Name="Strength" Amount="-10" />
+   <Effect What="Skill" Name="Combat" Amount="-30" />
+   <Effect What="Skill" Name="Magic" Amount="-30" />
+   <Effect What="Skill" Name="Service" Amount="-30" />
+   <Effect What="Skill" Name="Anal" Amount="-30" />
+   <Effect What="Skill" Name="BDSM" Amount="-30" />
+   <Effect What="Skill" Name="Beastiality" Amount="-30" />
+   <Effect What="Skill" Name="Group" Amount="-30" />
+   <Effect What="Skill" Name="Lesbian" Amount="-30" />
+   <Effect What="Skill" Name="Footjob"                 Amount="-30"    />
+   <Effect What="Skill" Name="Handjob" Amount="-30"    />
+   <Effect What="Skill" Name="NormalSex" Amount="-30" />
+   <Effect What="Skill" Name="OralSex" Amount="-30" />
+   <Effect What="Skill" Name="Strip" Amount="-30" />
+   <Effect What="Skill" Name="TittySex" Amount="-30" />
+   <Effect What="Trait" Name="MILF" Amount="0" />
+   <Effect What="Trait" Name="Lolita" Amount="1" />
+   <Effect What="Trait" Name="Big Boobs" Amount="0" />
+   <Effect What="Trait" Name="Abnormally Large Boobs" Amount="0" />
+   <Effect What="Trait" Name="Small Boobs" Amount="1" />
+</Item>
+</Items>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Manual of Magic"
+      Desc="This beginner's spellbook includes various tricks on concentration and meditation techniques that even experienced mages would do well to remember. (B) (+20 Mag)"
+      Type="Misc" Badness="0" Special="None" Cost="800" Rarity="Shop05" Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="20"    />
+</Item>
+</Items>

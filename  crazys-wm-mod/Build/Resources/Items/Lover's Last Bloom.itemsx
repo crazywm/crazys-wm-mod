@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Lover's Last Bloom" Desc="This rose carries the last wishes and emotions of two lovers just before they were separated for eternity. Give this to a girl and those ancient feelings of desire will become hers. (+80 Love, +50 Happiness/Libido, -50 Hate, adds Spirit Possessed)."
+        Type="Food" Badness="0" Special="None" Cost="12000" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Happiness" Amount="50" />
+        <Effect What="Stat" Name="Libido" Amount="50" />
+        <Effect What="Stat" Name="PCHate" Amount="-50" />
+        <Effect What="Stat" Name="PCLove" Amount="80" />
+        <Effect What="Trait" Name="Spirit Possessed" Amount="5" />
+    </Item>
+</Items>

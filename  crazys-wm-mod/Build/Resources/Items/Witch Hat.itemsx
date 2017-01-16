@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Witch Hat"
+        Desc="Black pointed hat which is said to have magical properties. (+2 Charisma, +5 Magic)"
+        Type="Hat"
+        Badness="10"
+        Special="None"
+        Cost="300"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="2" />
+        <Effect
+            What="Skill"
+            Name="Magic"
+            Amount="5" />
+    </Item>
+</Items>

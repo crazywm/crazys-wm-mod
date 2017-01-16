@@ -49,7 +49,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " equipped herself and went out to hunt for exotic beasts and animals.\n \n";
+	ss << " equipped herself and went out to hunt for exotic beasts and animals.\n\n";
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
@@ -79,7 +79,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (tempgirl) delete tempgirl; tempgirl = 0;	// Cleanup
 	if (fight_outcome == 7)
 	{
-		ss << "She came back with just one animal today.\n \n";
+		ss << "She came back with just one animal today.\n\n";
 		ss << "(Error: You need a Non-Human Random Girl to allow WorkBeastCapture randomness)";
 		gain = 1;
 		msgtype = EVENT_WARNING;
@@ -114,7 +114,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		enjoy -= g_Dice % 3 + 1;
 		tired = g_Dice % (10 * gain) + 20;
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	A Little Randomness			//
@@ -299,7 +299,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	if (cfg.debug.log_show_numbers())
 	{
-		ss << "\n \nNumbers:"
+		ss << "\n\nNumbers:"
 			<< "\n Wages = " << (int)wages
 			<< "\n Tips = " << (int)tips
 			<< "\n Xp = " << I_xp

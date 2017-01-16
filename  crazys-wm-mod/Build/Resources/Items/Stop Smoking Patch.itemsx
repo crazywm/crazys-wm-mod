@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Stop Smoking Patch" Desc="This item usually worn on the arm will keep the girl from having the urge to smoke. (Removes Smoker, -10 Tired, +5 Happy, +1 Health, +1 Conf)"
+    Type="Misc" Badness="0" Special="None" Cost="500" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="-10" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="1" />
+        <Effect What="Stat" Name="Confidence" Amount="1" />
+        <Effect What="Trait" Name="Smoker" Amount="0" />
+    </Item>
+</Items>

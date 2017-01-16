@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="High Quality Cowgirl Milk" Desc="Delicious milk from selected cowgirls. Naturally enchanted to immediately and permanently eliminate small-breastedness. (+30 Health, +1 Cons, removes Delicate, Increases breast size to Average)"
+      Type="Food" Badness="0" Special="None" Cost="1000" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect             What="Stat"             Name="Health"             Amount="30" />
+        <Effect             What="Stat"             Name="Constitution"             Amount="1" />
+        <Effect             What="Trait"             Name="Flat Chest"             Amount="0" />
+        <Effect             What="Trait"             Name="Petite Breasts"             Amount="0" />
+        <Effect             What="Trait"             Name="Small Boobs"             Amount="0" />
+        <Effect             What="Trait"             Name="Delicate"             Amount="0" />
+    </Item>
+</Items>

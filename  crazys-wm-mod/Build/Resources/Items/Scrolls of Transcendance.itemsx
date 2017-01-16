@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Scrolls of Transcendance"
+      Desc="To read the words of power within these pages is to change the universe. You are unchanged; all flows around you. This is the lesson. (+100 Hap, -100 Tired, +255 Exp, adds Quick Learner, Optimist, removes Mind Fucked, Retarded)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="10000"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Happiness"               Amount="100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Exp"                     Amount="255"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+</Item>
+<Item Name="Scrolls of Transcendance"
+      Desc="To read the words of power within these pages is to change the universe. You are unchanged; all flows around you. This is the lesson. (+100 Hap, -100 Tired, +255 Exp, adds Quick Learner, Optimist, removes Mind Fucked, Retarded)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="10000"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Happiness"               Amount="100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
+   <Effect What="Stat"  Name="Exp"                     Amount="255"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+</Item>
+<Item Name="Scrolls of Transcendance"
+      Desc="To read the words of power within these pages is to change the universe. You are unchanged. All flows around you.  This is the lesson.. (+Quick learner, xp, optimist, happy - Mind Fucked, Retarded, tired)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="20000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Happiness"               Amount="100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="0"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Effect What="Trait" Name="Pessimist"               Amount="0"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
+   <Effect What="Stat"  Name="Exp"                     Amount="255"    />
+</Item>
+<Item Name="Scrolls of Transcendance"
+      Desc="To read the words of power within these pages is to change the universe. You are unchanged. All flows around you.  This is the lesson.. (+Quick learner, xp, optimist, happy - Mind Fucked, Retarded, tired)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="20000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Happiness"               Amount="100"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="0"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Effect What="Trait" Name="Pessimist"               Amount="0"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
+   <Effect What="Trait" Name="Retarded"                Amount="0"    />
+   <Effect What="Stat"  Name="Exp"                     Amount="255"    />
+</Item>
+</Items>

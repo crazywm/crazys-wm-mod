@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Fragment of the Other Side" Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="0" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="50" />
+        <Effect What="Stat" Name="PCLove" Amount="10" />
+        <Effect What="Stat" Name="Confidence" Amount="10" />
+        <Effect What="Stat" Name="Spirit" Amount="20" />
+        <Effect What="Stat" Name="Intelligence" Amount="80" />
+        <Effect What="Trait" Name="Quick Learner" Amount="1" />
+        <Effect What="Trait" Name="Slow Learner" Amount="0" />
+        <Effect What="Trait" Name="Retarded" Amount="0" />
+        <Effect What="Trait" Name="Bimbo" Amount="0" />
+    </Item>
+    <Item Name="Fragment of the Other Side " Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="1" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="-10" />
+        <Effect What="Stat" Name="Confidence" Amount="0" />
+        <Effect What="Stat" Name="Spirit" Amount="0" />
+        <Effect What="Stat" Name="Intelligence" Amount="30" />
+        <Effect What="Trait" Name="Quick Learner" Amount="1" />
+        <Effect What="Trait" Name="Slow Learner" Amount="0" />
+        <Effect What="Trait" Name="Retarded" Amount="0" />
+    </Item>
+    <Item Name="Fragment of the Other Side  " Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="5" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="-20" />
+        <Effect What="Stat" Name="Confidence" Amount="-10" />
+        <Effect What="Stat" Name="Spirit" Amount="-20" />
+        <Effect What="Stat" Name="Intelligence" Amount="30" />
+        <Effect What="Trait" Name="Quick Learner" Amount="1" />
+        <Effect What="Trait" Name="Slow Learner" Amount="0" />
+        <Effect What="Trait" Name="Retarded" Amount="0" />
+    </Item>
+    <Item Name="Fragment of the Other Side." Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="5" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="-20" />
+        <Effect What="Stat" Name="Confidence" Amount="-10" />
+        <Effect What="Stat" Name="Spirit" Amount="-20" />
+        <Effect What="Stat" Name="Intelligence" Amount="25" />
+        <Effect What="Trait" Name="Quick Learner" Amount="1" />
+        <Effect What="Trait" Name="Slow Learner" Amount="0" />
+        <Effect What="Trait" Name="Retarded" Amount="0" />
+    </Item>
+    <Item Name="Fragment of the Other Side," Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="5" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="-20" />
+        <Effect What="Stat" Name="Confidence" Amount="-10" />
+        <Effect What="Stat" Name="Spirit" Amount="-20" />
+        <Effect What="Stat" Name="Intelligence" Amount="20" />
+        <Effect What="Trait" Name="Quick Learner" Amount="1" />
+        <Effect What="Trait" Name="Slow Learner" Amount="0" />
+        <Effect What="Trait" Name="Retarded" Amount="0" />
+    </Item>
+    <Item Name="Fragment of the Other Side ." Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="0" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="50" />
+        <Effect What="Stat" Name="PCLove" Amount="20" />
+        <Effect What="Stat" Name="Health" Amount="-20" />
+        <Effect What="Stat" Name="Confidence" Amount="-10" />
+        <Effect What="Stat" Name="Spirit" Amount="-20" />
+        <Effect What="Stat" Name="Intelligence" Amount="-60" />
+        <Effect What="Trait" Name="Idiot Savant" Amount="1" />
+    </Item>
+    <Item Name="Fragment of the Other Side ," Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="30" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="-20" />
+        <Effect What="Stat" Name="Confidence" Amount="-10" />
+        <Effect What="Stat" Name="Spirit" Amount="-20" />
+        <Effect What="Stat" Name="Intelligence" Amount="-40" />
+        <Effect What="Trait" Name="Slow Learner" Amount="1" />
+        <Effect What="Trait" Name="Quick Learner" Amount="0" />
+    </Item>
+    <Item Name="Fragment of the Other Side . " Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="40" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="-20" />
+        <Effect What="Stat" Name="Confidence" Amount="-40" />
+        <Effect What="Stat" Name="Spirit" Amount="-50" />
+        <Effect What="Stat" Name="Intelligence" Amount="-50" />
+        <Effect What="Trait" Name="Mind Fucked" Amount="1" />
+    </Item>
+    <Item Name="Fragment of the Other Side , " Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="15" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="-20" />
+        <Effect What="Stat" Name="Confidence" Amount="-10" />
+        <Effect What="Stat" Name="Spirit" Amount="-20" />
+        <Effect What="Stat" Name="Libido" Amount="60" />
+        <Effect What="Stat" Name="Lactation" Amount="50" />
+        <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
+        <Effect What="Trait" Name="Slut" Amount="1" />
+        <Effect What="Trait" Name="Sexy Air" Amount="1" />
+        <Effect What="Trait" Name="Natural Pheromones" Amount="1" />
+        <Effect What="Trait" Name="Flexible" Amount="1" />
+        <Effect What="Trait" Name="Fast Orgasms" Amount="1" />
+        <Effect What="Trait" Name="Strange Eyes" Amount="1" />
+        <Effect What="Trait" Name="Spirit Possessed" Amount="1" />
+    </Item>
+    <Item Name="Fragment of the Other Side  ." Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="50" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="50" />
+        <Effect What="Stat" Name="Happiness" Amount="-60" />
+        <Effect What="Stat" Name="Health" Amount="-50" />
+        <Effect What="Stat" Name="Confidence" Amount="50" />
+        <Effect What="Stat" Name="Spirit" Amount="50" />
+        <Effect What="Stat" Name="Morality" Amount="-80" />
+        <Effect What="Skill" Name="Magic" Amount="60" />
+        <Effect What="Stat" Name="Agility" Amount="30" />
+        <Effect What="Skill" Name="Combat" Amount="10" />
+        <Effect What="Stat" Name="PCHate" Amount="30" />
+        <Effect What="Trait" Name="Not Human" Amount="1" />
+        <Effect What="Trait" Name="Demon" Amount="1" />
+        <Effect What="Trait" Name="Powerful Magic" Amount="1" />
+        <Effect What="Trait" Name="Prehensile Tail" Amount="1" />
+        <Effect What="Trait" Name="Flight" Amount="1" />
+        <Effect What="Trait" Name="Audacity" Amount="1" />
+        <Effect What="Trait" Name="Twisted" Amount="1" />
+        <Effect What="Trait" Name="Sadistic" Amount="1" />
+        <Effect What="Trait" Name="Merciless" Amount="1" />
+        <Effect What="Trait" Name="Slow Learner" Amount="0" />
+        <Effect What="Trait" Name="Retarded" Amount="0" />
+        <Effect What="Trait" Name="Bimbo" Amount="0" />
+    </Item>
+    <Item Name="Fragment of the Other Side  ," Desc="This mysterious piece of jagged crystal seems to be from another dimension. If only you examined it, unlimited knowledge could be yours. But there are risks... (Substantial good or bad changes to stats/traits)"
+        Type="Food" Badness="0" Special="None" Cost="6000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="80" />
+        <Effect What="Stat" Name="Happiness" Amount="30" />
+        <Effect What="Stat" Name="Health" Amount="-60" />
+        <Effect What="Stat" Name="Confidence" Amount="70" />
+        <Effect What="Stat" Name="Spirit" Amount="70" />
+        <Effect What="Stat" Name="Morality" Amount="20" />
+        <Effect What="Stat" Name="Charisma" Amount="20" />
+        <Effect What="Stat" Name="Strength" Amount="50" />
+        <Effect What="Skill" Name="Magic" Amount="30" />
+        <Effect What="Stat" Name="Intelligence" Amount="40" />
+        <Effect What="Stat" Name="Agility" Amount="50" />
+        <Effect What="Skill" Name="Combat" Amount="60" />
+        <Effect What="Stat" Name="Age" Amount="10" />
+        <Effect What="Trait" Name="Tough" Amount="1" />
+        <Effect What="Trait" Name="Strong" Amount="1" />
+        <Effect What="Trait" Name="Muscular" Amount="1" />
+        <Effect What="Trait" Name="Agile" Amount="1" />
+        <Effect What="Trait" Name="Fleet of Foot" Amount="1" />
+        <Effect What="Trait" Name="Charismatic" Amount="1" />
+        <Effect What="Trait" Name="Heroine" Amount="1" />
+        <Effect What="Trait" Name="Cool Scars" Amount="1" />
+        <Effect What="Trait" Name="Half-Construct" Amount="1" />
+        <Effect What="Trait" Name="Bimbo" Amount="0" />
+        <Effect What="Trait" Name="Retarded" Amount="0" />
+    </Item>
+</Items>

@@ -217,8 +217,8 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 	int numgirls = GetNumGirls(brothel->m_id);
 
 	bool matron = false, matrondone = false;
-	
-	
+
+
 	bool refused = false;
 
 	m_Processing_Shift = Day0Night1;		// WD:	Set processing flag to shift type
@@ -280,7 +280,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		totalPay = totalTips = totalGold = 0;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
-		// `J` she can refuse the first shift then decide to work the second shift 
+		// `J` she can refuse the first shift then decide to work the second shift
 		if (!current->m_Refused_To_Work_Day && Day0Night1 == SHIFT_NIGHT)	// but if she worked the first shift she continues the rest of the night
 		{
 			matron = true;
@@ -309,14 +309,14 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 			brothel->m_Fame += current->fame();
 			/* */if (totalGold > 0)		{ ss << girlName << " earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; }
 			else if (totalGold == 0)	{ ss << girlName << " made no money."; }
-			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold.\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current->m_Realname << "\nJob: " << m_JobManager.JobName[(Day0Night1 ? current->m_NightJob : current->m_DayJob)] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold; }
+			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold.\n\nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n\nGirl Name: " << current->m_Realname << "\nJob: " << m_JobManager.JobName[(Day0Night1 ? current->m_NightJob : current->m_DayJob)] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold; }
 		}
 		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
 		current = current->m_Next;	// Next Girl
 		matrondone = true;			// there can be only one matron so this ends the while loop
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//  Now If there is a matron and she is not refusing to work, then she can delegate the girls in this building.  //
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////

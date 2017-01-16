@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Relaxation Orb"
+        Desc="At first glance, this pretty crystal ball filled with mesmerizing blue mist seems to be simple decoration for a girl's bedroom. However, it is the focus of a powerful spell, a spell that ensures that her dreams are soothing and peaceful. (-10 Tiredness, +5 Happiness, +1 Sanity, -1 Fear/Hate, Removes Aggressive)"
+        Type="Misc"        Badness="0"        Special="None"        Cost="2000"        Rarity="Shop25"        Infinite="false"        GirlBuyChance="0"        ItemWeight="0.0">
+        <Effect What="Stat"            Name="Tiredness"         Amount="-10" />
+        <Effect What="Stat"            Name="Happiness"         Amount="5" />
+        <Effect What="Stat"            Name="Sanity"            Amount="1" />
+        <Effect What="Stat"            Name="PCFear"            Amount="-1" />
+        <Effect What="Stat"            Name="PCHate"            Amount="-1" />
+        <Effect What="Trait"           Name="Aggressive"        Amount="0" />
+        <Effect What="Trait"           Name="Open Minded"        Amount="1"   Duration="10" />
+    </Item>
+</Items>

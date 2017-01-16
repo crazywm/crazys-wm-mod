@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ring of Minor Intellect"    
+      Desc="This ring is enchanted to moderately increase the wearer's intelligence. Magic users often learn this as one of their first enchantments, which makes rings like this one readily available. (+8 Int)" 
+      Type="Ring" 
+      Badness="0" 
+      Special="None" 
+      Cost="2000" 
+      Rarity="Shop25" 
+      Infinite="false" 
+      GirlBuyChance="40">
+   <Effect What="Stat" Name="Intelligence" Amount="8" />
+</Item>
+</Items>

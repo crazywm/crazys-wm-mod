@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Epic Bracer of Seduction"
+      Desc="This rare silver bracer will make any girl into a magnificent woman who will take all you want to give her and then beg for more. (+50 Cons, Cha, Bea, Lib and Conf, removes Lolita, adds Fast Orgasms, Nymphomaniac, Great Figure, Great Arse, Long Legs, Puffy Nipples, Perky Nipples, Big Boobs, Tough)"
+      Type="Armband"
+      Badness="50"
+      Special="None"
+      Cost="15000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Charisma"                Amount="50"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="50"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="50"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="50"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="50"    />
+   <Effect What="Trait" Name="Lolita"                  Amount="0"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+   <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
+   <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
+   <Effect What="Trait" Name="Tough"                   Amount="1"    />
+</Item>
+</Items>

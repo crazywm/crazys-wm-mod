@@ -49,7 +49,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a brewer on the farm.\n \n";
+	ss << " worked as a brewer on the farm.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -95,7 +95,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		wages -= 15;
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 
 
@@ -141,7 +141,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		enjoyC += g_Dice % 2; enjoyF += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 #endif
 
 
@@ -192,7 +192,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	if (item)
 	{
 		msgtype = EVENT_GOODNEWS;
-		ss << "\n \n" << girlName << " made ";
+		ss << "\n\n" << girlName << " made ";
 		if (numbermade == 1) ss << "one ";
 		else ss << numbermade << " ";
 		ss << itemmade << " for you.";

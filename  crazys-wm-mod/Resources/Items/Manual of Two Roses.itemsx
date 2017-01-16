@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Items>
-<Item Name="Manual of Two Roses"
-      Desc="This plainly-written book offers basic pointers on lesbian sex. The first printing was titled &quot;Clam-Wrestling For Dummies&quot;, but it failed commercially for obvious reasons. (B) (+20 Les)"
-      Type="Misc" Badness="15" Special="None" Cost="800" Rarity="Shop05" Infinite="false" GirlBuyChance="5">
-   <Effect What="Skill" Name="Lesbian"                 Amount="20"    />
-</Item>
-</Items>

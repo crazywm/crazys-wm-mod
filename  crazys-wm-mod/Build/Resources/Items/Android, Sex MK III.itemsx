@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Android, Sex MK III"
+      Desc="An android that can train your girl for you. This one can switch between male and female, giving your girl a lot of experience! (Sex +10, Tiredness +10, Lesbian +10, Experience +10.)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="12990"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="10"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
+   <Effect What="Stat"  Name="Exp"                     Amount="10"    />
+</Item>
+</Items>

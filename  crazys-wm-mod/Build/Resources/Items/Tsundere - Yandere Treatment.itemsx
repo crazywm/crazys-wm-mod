@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Tsundere - Yandere Treatment" Desc="Cures Tsundere and Yandere traits (Removes Tsundere and Yandere) (Confidence - 30, Obedience + 15)" Type="Food" Badness="5" Special="None" Cost="2000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Confidence" Amount="-30" />
+        <Effect What="Stat" Name="Obedience" Amount="15" />
+        <Effect What="Trait" Name="Tsundere" Amount="0" />
+        <Effect What="Trait" Name="Yandere" Amount="0" />
+    </Item>
+</Items>

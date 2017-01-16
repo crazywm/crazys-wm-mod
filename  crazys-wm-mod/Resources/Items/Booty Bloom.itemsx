@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Booty Bloom" Desc="This flower blossoms in the strangest places, from bird's nests to elderly men's body hair. Sages warn that the gods intended for only women to ingest it. (+Deluxe Derriere) (+80 Libido)" 
-    Type="Food" Badness="5" Special="None" Cost="10000" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
-        <Effect What="Trait" Name="Deluxe Derriere" Amount="1" />
-        <Effect What="Stat" Name="Libido" Amount="80" />
-    </Item>
-</Items>

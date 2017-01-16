@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Rose-tinted Glasses"
+        Desc="They make the whole world look better. (B) +5 Hap/Lib/Conf/Spir/Mor, -15 Int, adds Open Minded, Optimist."
+        Type="Glasses"
+        Badness="5"
+        Special="None"
+        Cost="210"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="1">
+    <Effect     What="Stat"     Name="Happiness"        Amount="5" />
+    <Effect     What="Stat"     Name="Libido"           Amount="5" />
+    <Effect     What="Stat"     Name="Confidence"       Amount="5" />
+    <Effect     What="Stat"     Name="Spirit"           Amount="5" />
+    <Effect     What="Stat"     Name="Morality"         Amount="5" />
+    <Effect     What="Stat"     Name="Intelligence"     Amount="-15" />
+    <Effect     What="Trait"    Name="Open Minded"      Amount="1" />
+    <Effect     What="Trait"    Name="Optimist"         Amount="1" />
+    </Item>
+</Items>

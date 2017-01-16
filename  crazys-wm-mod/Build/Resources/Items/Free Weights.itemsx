@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Free Weights" Desc="This is a set of free weights a girl can train with during her spare time. (+10 Cons/Str/BDSM, +15 Gro)"
+	Type="Misc" Badness="0" Special="None" Cost="500" Rarity="Shop50" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Constitution" Amount="10" />
+        <Effect What="Stat" Name="Strength" Amount="10" />
+        <Effect What="Skill" Name="BDSM" Amount="10" />
+        <Effect What="Skill" Name="Group" Amount="15" />
+    </Item>
+</Items>

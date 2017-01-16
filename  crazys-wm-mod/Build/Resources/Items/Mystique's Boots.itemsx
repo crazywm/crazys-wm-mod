@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Mystique's Boots"
+      Desc="Boots once belonging to the Brotherhood of Evil Mutants leader, Mystique. They somehow gained her power of shapeshifting and allow to wearer to use it, too. (Adds Shapeshifter.)"
+      Type="Shoes"
+      Badness="0"
+      Special="None"
+      Cost="8500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Trait" Name="Shape Shifter"           Amount="1"    />
+</Item>
+</Items>

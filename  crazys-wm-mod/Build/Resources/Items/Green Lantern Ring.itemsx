@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Green Lantern Ring"
+      Desc="A ring that can make anything the user imagines. (Combat +50. Adds Fearless)"
+      Type="Ring"
+      Badness="0"
+      Special="None"
+      Cost="12700"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="50"    />
+   <Effect What="Trait" Name="Fearless"                Amount="1"    />
+</Item>
+</Items>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Big Goron's Sword" Desc="A massive blade once wielded by the famous half-giant Goron. Later stolen by a green-capped warrior. (Combat +25, Strength/Constitution +10, Agility -5, Hate -40, Fear -20)"
+        Type="Weapon" Badness="0" Special="None" Cost="4000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="25" />
+        <Effect What="Stat" Name="Strength" Amount="10" />
+        <Effect What="Stat" Name="Constitution" Amount="10" />
+        <Effect What="Stat" Name="Agility" Amount="-5" />
+        <Effect What="Stat" Name="PCFear" Amount="-40" />
+        <Effect What="Stat" Name="PCHate" Amount="-20" />
+    </Item>
+</Items>

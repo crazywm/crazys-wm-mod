@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ritual of Domination"
+      Desc="Shady mages occasionally offer their services to destroy a person's sense of self through arcane means. The process is silent and invisible, but the effects are dramatic: even the hardiest targets are instantly transformed into meek, timid versions of themselves, almost incapable of judgement or self-determination. (+100 Obed, -100 Conf, -100 Spi, -100 Hate, adds Controlled status, Meek, Mind Fucked and Broken Will, removes Iron Will and Fearless)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="3000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Confidence"              Amount="-100"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="100"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-100"    />
+   <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="0"    />
+   <Effect What="Trait" Name="Fearless"                Amount="0"    />
+   <Effect What="Trait" Name="Meek"                    Amount="1"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
+   <Effect What="Trait" Name="Broken Will"             Amount="1"    />
+</Item>
+<Item Name="Ritual of Domination"
+      Desc="Shady mages occasionally offer their services to destroy a person's sense of self through arcane means. The process is silent and invisible, but the effects are dramatic: even the hardiest targets are instantly transformed into meek, timid versions of themselves, almost incapable of judgement or self-determination. (+100 Obed, -100 Conf, -100 Spi, -100 Hate, adds Controlled status, Meek, Mind Fucked and Broken Will, removes Iron Will and Fearless)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="3000"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Confidence"              Amount="-100"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="100"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-100"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-100"    />
+   <Effect What="GirlStatus" Name="Controlled"         Amount="1"    />
+   <Effect What="Trait" Name="Iron Will"               Amount="0"    />
+   <Effect What="Trait" Name="Fearless"                Amount="0"    />
+   <Effect What="Trait" Name="Meek"                    Amount="1"    />
+   <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
+   <Effect What="Trait" Name="Broken Will"             Amount="1"    />
+</Item>
+</Items>

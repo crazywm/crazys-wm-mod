@@ -357,7 +357,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			brothel->m_Fame += current->fame();
 			/* */if (totalGold > 0)		{ ss << girlName << " earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; }
 			else if (totalGold == 0)	{ ss << girlName << " made no money."; }
-			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current->m_Realname << "\nJob: " << m_JobManager.JobName[current->m_NightJob] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold; }
+			else if (totalGold < 0)		{ sum = EVENT_DEBUG; ss << "ERROR: She has a loss of " << totalGold << " gold\n\nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n\nGirl Name: " << current->m_Realname << "\nJob: " << m_JobManager.JobName[current->m_NightJob] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold; }
 		}
 		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
@@ -1056,7 +1056,7 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 		pScene->SetAttribute("Money_Made", g_Studios.GetScene(i)->m_Money_Made);
 		pScene->SetAttribute("RunWeeks", g_Studios.GetScene(i)->m_RunWeeks);
 	}
-		
+
 
 	// Save Girls
 	TiXmlElement* pGirls = new TiXmlElement("Girls");
@@ -1634,7 +1634,7 @@ long cMovieStudioManager::calc_movie_quality()
 		quality += m_movieScenes[i]->m_Quality;
 	}
 	quality += m_movieScenes.size() * 10;
-	ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n \n";
+	ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n\n";
 	ss << (g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 0) > 0 ? "Your" : "A");
 	ss << " promoter with an advertising budget will help it sell for more.";
 	g_MessageQue.AddToQue(ss.str(), COLOR_BLUE);

@@ -49,7 +49,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as a gardener on the farm.\n \n";
+	ss << " worked as a gardener on the farm.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -93,7 +93,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		ss << " She was nervous and constantly making mistakes. She really isn't very good at this job.";
 		wages -= 15;
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
@@ -165,7 +165,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (additemnum > 0)
 	{
 		msgtype = EVENT_GOODNEWS;
-		ss << "\n \n" << girlName << " was able to harvest ";
+		ss << "\n\n" << girlName << " was able to harvest ";
 		if (additemnum == 1)
 		{
 			ss << "one " << additems[0] << ".";

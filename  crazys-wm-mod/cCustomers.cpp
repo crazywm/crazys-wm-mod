@@ -217,7 +217,7 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
  *	punters after dark it seems to me
  */
 	int num = int(brothel->m_NumGirls * (Day0Night1 ? 2.0 : 1.5));
-	ss << "The number of girls in this brothel attracted " << num << " initial " << daynighttime << " customers.\n \n";
+	ss << "The number of girls in this brothel attracted " << num << " initial " << daynighttime << " customers.\n\n";
 /*
  *	the customers attracted by the places fame (for this shift)
  *	is the fame divided by 4 (so a max of 25 people)
@@ -225,7 +225,7 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
  *	(halved the number -- doc)
  */
 	int fame_customers = brothel->m_Fame / 4;
-	ss << "This brothel's fame enticed " << fame_customers << " additional " << daynighttime << " customers to visit.\n \n";
+	ss << "This brothel's fame enticed " << fame_customers << " additional " << daynighttime << " customers to visit.\n\n";
 	num += fame_customers;
 
 	// each 100 gold of advertising adds 6 customers which is then randomized a little
@@ -236,7 +236,7 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 		advert *= brothel->m_AdvertisingLevel;						// apply multiplier from girls working on advertising
 		int custsFromAds = int(advert * 0.06);						// 6 customers per 100 gold or so
 		custsFromAds = g_Dice%custsFromAds + (custsFromAds / 2);	// randomized from 50% to 150%
-		ss << "You brought in " << custsFromAds << " more " << daynighttime << " customers through advertising.\n \n";
+		ss << "You brought in " << custsFromAds << " more " << daynighttime << " customers through advertising.\n\n";
 		num += custsFromAds;
 	}
 
@@ -244,8 +244,8 @@ void cCustomers::GenerateCustomers(sBrothel * brothel, bool Day0Night1)
 	int LostCustomers = max(0, int(brothel->m_Filthiness / 10));		// was /3, but that was overly harsh; changed to /10
 	num -= LostCustomers;
 
-	if (LostCustomers <= 0)	ss << "Your brothel was spotlessly clean, so you didn't lose any " << daynighttime << " customers due to filthiness.\n \n";
-	else/*               */	ss << "You lost " << LostCustomers << " " << daynighttime << " customers due to the filthiness of your brothel.\n \n";
+	if (LostCustomers <= 0)	ss << "Your brothel was spotlessly clean, so you didn't lose any " << daynighttime << " customers due to filthiness.\n\n";
+	else/*               */	ss << "You lost " << LostCustomers << " " << daynighttime << " customers due to the filthiness of your brothel.\n\n";
 
 	// `J` Too much security will scare away customers
 	int ScareCustomers = int(brothel->m_SecurityLevel / 500);	// this number will need to be tweaked a bit

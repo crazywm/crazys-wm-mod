@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Guard Dog"
+      Desc="This large dog has been bred and trained to watch over and protect its owner. It is quite strong and entirely capable of tearing a human being to shreds, but it is unfaillingly loyal and obedient to its charge. (+15 Comb, +5 Best, +5 Happ, +5 Conf, +5 Obed, -20 Fear)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="800"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="15"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="5"    />
+   <Effect What="Skill" Name="AnimalHandling"          Amount="5"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="5"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+</Item>
+<Item Name="Guard Dog"
+      Desc="This large dog has been bred and trained to watch over and protect its owner. It is quite strong and entirely capable of tearing a human being to shreds, but it is unfaillingly loyal and obedient to its charge. (+15 Comb, +5 Best, +5 Happ, +5 Conf, +5 Obed, -20 Fear)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="800"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="15"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="5"    />
+   <Effect What="Skill" Name="AnimalHandling"          Amount="5"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="5"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="5"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+</Item>
+</Items>

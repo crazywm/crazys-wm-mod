@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Mystic Anal Beads"
+      Desc="This toy will not only make a girl's ass better suited, but it will straighten her out as well. Even if she has the troubles....(Anal +40, Libedo +20, Happiness +10, Constitution +20, Charisma +20, +Great Arse)"
+      Type="Misc"
+      Badness="25"
+      Special="None"
+      Cost="500"
+      Rarity="Shop50"
+      Infinite="false"
+      GirlBuyChance="5">
+   <Effect What="Skill" Name="Anal"                    Amount="40"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="20"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="20"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="20"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+</Item>
+<Item Name="Mystic Anal Beads"
+      Desc="This toy will not only make a girl's ass better suited, but it will straighten her out as well. Even if she has the troubles....(Anal +40, Libedo +20, Happiness +10, Constitution +20, Charisma +20, +Great Arse)"
+      Type="Misc"
+      Badness="25"
+      Special="None"
+      Cost="500"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="5">
+   <Effect What="Skill" Name="Anal"                    Amount="40"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="20"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="20"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="20"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+</Item>
+</Items>

@@ -64,7 +64,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 		return false;	// not refusing
 	}
-	ss << "You procede to change " << girlName << "'s sexual orientation to Straight.\n \n";
+	ss << "You procede to change " << girlName << "'s sexual orientation to Straight.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// not for patient
 
@@ -198,7 +198,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
-	ss << "\n \nNumbers:"
+	ss << "\n\nNumbers:"
 		<< "\n Wages = " << (int)wages
 		<< "\n Xp = " << xp
 		<< "\n Libido = " << libido

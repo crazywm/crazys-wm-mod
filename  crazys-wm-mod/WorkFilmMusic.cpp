@@ -76,11 +76,11 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	else if (girl->tiredness() > 75)
 	{
-		ss << " was too exhausted to make a music video scene.\n \n";
+		ss << " was too exhausted to make a music video scene.\n\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else ss << " worked on a music video showcasing her singing and dancing talent.\n \n";
+	else ss << " worked on a music video showcasing her singing and dancing talent.\n\n";
 
 
 	//What's she best at?
@@ -173,17 +173,17 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << "She loved singing and performing today.\n \n";
+		ss << "She loved singing and performing today.\n\n";
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << "She enjoyed this performance.\n \n";
+		ss << "She enjoyed this performance.\n\n";
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << "She isn't much of a performer and did not enjoy making this scene.\n \n";
+		ss << "She isn't much of a performer and did not enjoy making this scene.\n\n";
 	}
 	bonus = bonus + enjoy;
 

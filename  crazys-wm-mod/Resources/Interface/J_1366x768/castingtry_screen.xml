@@ -1,6 +1,0 @@
-<Screen>
-<Window	Name="Casting Try Window"		XPos="15"	YPos="12"	Width="770"	Height="578"	Border="1"/>
-<Image	Name="Casting"File="Casting.jpg"	XPos="1"	YPos="1"	Width="768"	Height="536"/>
-<Button  	Name="BackButton"	Image="Back"	XPos="600"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"/>
-<Button  	Name="WalkButton"	Image="Begin"	XPos="176"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"/>
-</Screen>

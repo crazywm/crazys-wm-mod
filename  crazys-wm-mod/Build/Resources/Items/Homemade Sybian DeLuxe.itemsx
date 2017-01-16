@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Homemade Sybian DeLuxe"
+        Desc="It looks like someone spent his saturday AND sunday glueing a dildo onto a saddle. Less prone to breaking or injury. (+15 sex, +10 perf/lib, +5 anal/beast, +5 obed, +3 fear/hate, -15 conf)"
+        Type="Misc"
+        Badness="40"
+        Special="None"
+        Cost="1100"
+        Rarity="Shop25"
+        Infinite="false">
+    <Effect     What="Skill"    Name="Anal"             Amount="5" />
+    <Effect     What="Skill"    Name="NormalSex"        Amount="15" />
+    <Effect     What="Skill"    Name="Beastiality"      Amount="5" />
+    <Effect     What="Skill"    Name="Performance"      Amount="10" />
+    <Effect     What="Stat"     Name="Libido"           Amount="10" />
+    <Effect     What="Stat"     Name="Confidence"       Amount="-15" />
+    <Effect     What="Stat"     Name="Obedience"        Amount="5" />
+    <Effect     What="Stat"     Name="PCHate"           Amount="3" />
+    <Effect     What="Stat"     Name="PCFear"           Amount="3" />
+    </Item>
+</Items>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Mother Emerald Fragment" Desc="The opposite of the Chaos emerald, the Mother Emerald seeks to create life. And it does this by turning the owner into a sex starved woman. This is a smaller, less potent fragment. (Removes Sterile, Futanari. Adds Fertile.)"
+    Type="Misc" Badness="0" Special="None" Cost="13000" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Trait" Name="Sterile" Amount="0" />
+        <Effect What="Trait" Name="Futanari" Amount="0" />
+        <Effect What="Trait" Name="Fertile" Amount="1" />
+    </Item>
+    <Item Name="Mother Emerald Fragment" Desc="The opposite of the Chaos emerald, the Mother Emerald seeks to create life. And it does this by turning the owner into a sex starved woman. This is a smaller, less potent fragment. (Removes Sterile, Futanari. Adds Fertile.)"
+    Type="Misc" Badness="0" Special="None" Cost="13000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Trait" Name="Sterile" Amount="0" />
+        <Effect What="Trait" Name="Futanari" Amount="0" />
+        <Effect What="Trait" Name="Fertile" Amount="1" />
+    </Item>
+</Items>

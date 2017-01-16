@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Manual of Sex"
+      Desc="This simple book mostly details basic heterosexual positions, but it does contain a few tricks even an experienced lover can use. (B) (+15 Norm, +10 Oral, +5 Anal)"
+      Type="Misc" Badness="10" Special="None" Cost="750" Rarity="Shop05" Infinite="false">
+   <Effect What="Skill" Name="NormalSex"               Amount="15"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="10"    />
+   <Effect What="Skill" Name="Anal"                    Amount="5"    />
+</Item>
+</Items>

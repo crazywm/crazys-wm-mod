@@ -53,7 +53,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " went into the catacombs to see what she can find.\n \n";
+	ss << " went into the catacombs to see what she can find.\n\n";
 
 	int num_monsters = 0;
 	int type_monster_girls = 0;
@@ -284,7 +284,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				if (g_Dice%girl->get_skill(SKILL_COMBAT) < 5) raped = true;
 				else
 				{
-					ss << "She came back with one animal today.\n \n";
+					ss << "She came back with one animal today.\n\n";
 					ss << "(Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness)";
 					girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 					g_Brothels.add_to_beasts(1);
@@ -437,14 +437,14 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		}
 		if (type_beasts > 0)
 			ss << type_beasts << " beast" << (type_beasts > 1 ? "s." : ".");
-		ss << "\n \n";
+		ss << "\n\n";
 	}
 	if (num_items > 0)
 	{
 		ss << (num_monsters > 0 ? "Further, she" : "She") << " came out with ";
 		if (num_items == 1) ss << "one item:\n";
 		else	ss << num_items << " items:\n";
-		ss << item_list << ".\n \n";
+		ss << item_list << ".\n\n";
 	}
 	if (gold > 0) ss << "She " << (num_monsters + num_items > 0 ? "also " : "") << "came out with " << gold << " gold.";
 
@@ -476,11 +476,11 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	{
 		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
 		{
-			ss << "\n \nFighting monsters and exploring the catacombs proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
+			ss << "\n\nFighting monsters and exploring the catacombs proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
 		}
 		else
 		{
-			ss << "\n \nFighting monsters and exploring the catacombs was quite exhausting for a pregnant girl like " << girlName << " .\n";
+			ss << "\n\nFighting monsters and exploring the catacombs was quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}

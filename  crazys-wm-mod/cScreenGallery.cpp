@@ -150,6 +150,7 @@ void cScreenGallery::init()
 
 	int usefolder = 0;	// 0=none, 1=cfg, 2=original
 	int startmode = -1;
+	int imageExtentions=0; //The number of extentions (for crossPlatform)
 	// start with what the config has set
 	DirPath imagedir = DirPath(cfg.folders.characters().c_str()) << selected_girl->m_Name;
 	FileList testall(imagedir, "*.*");
@@ -174,8 +175,14 @@ void cScreenGallery::init()
 	{
 		if (i == IMGTYPE_PREGNANT)
 		{
-			string ext[3] = { "*g", "ani", "gif" };
-			for (u_int e = 0; e < 3; e++)
+            #if LINUX
+            imageExtentions=2;
+            string ext[2]={"*g","ani"};
+            #else
+            imageExtentions=3;
+            string ext[3]= { "*g", "ani", "gif" };
+            #endif // LINUX
+			for (u_int e = 0; e < imageExtentions; e++)
 			{
 				string t = ("preg." + ext[e]);
 				FileList testmode(imagedir, t.c_str());
@@ -191,7 +198,9 @@ void cScreenGallery::init()
 		{
 			FileList testmode1(imagedir, (pic_types[i] + "*g").c_str());	numimages[i][1] = testmode1.size();
 			FileList testmode2(imagedir, (pic_types[i] + "ani").c_str());	numimages[i][2] = testmode2.size();
+			#if !LINUX
 			FileList testmode3(imagedir, (pic_types[i] + "gif").c_str());	numimages[i][3] = testmode3.size();
+			#endif
 		}
 		numimages[i][0] = numimages[i][1] + numimages[i][2] + numimages[i][3];
 		if (numimages[i][0] > 0)
@@ -215,7 +224,7 @@ void cScreenGallery::check_events()
 {
 	if (g_LeftArrow || g_A_Key || g_RightArrow || g_D_Key || g_W_Key || g_UpArrow || g_S_Key || g_DownArrow){}
 	else if (g_InterfaceEvents.GetNumEvents() == 0)	return;		// no events means we can go home
-	// otherwise, compare event IDs 
+	// otherwise, compare event IDs
 
 	if (g_InterfaceEvents.CheckButton(back_id))		// if it's the back button, pop the window off the stack and we're done
 	{

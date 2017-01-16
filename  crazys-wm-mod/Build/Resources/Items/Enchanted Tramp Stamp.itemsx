@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Enchanted Tramp Stamp"
+      Desc="A magical tattoo placed in the small of a girl's back. (+30 Libido, +10 beauty. Adds Great Arse. Removes Elegant.)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="3850"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Libido"                  Amount="30"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="10"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+</Item>
+</Items>

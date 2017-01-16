@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Star Pendant" Desc="Star-shaped pendant with a jewel at its center. (Prevents poison and heavy poison)"
-    Type="Necklace" Badness="0" Special="None" Cost="1500" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
-        <Effect What="GirlStatus" Name="Poisoned" Amount="0" />
-        <Effect What="GirlStatus" Name="Badly Poisoned" Amount="0" />
-    </Item>
-</Items>

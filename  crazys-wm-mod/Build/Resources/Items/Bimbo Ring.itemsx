@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bimbo Ring"
+      Desc="This gold-plated tin ring considerably increases its wearer's physical beauty... at the cost of making her vapid, crude, and generally not as much fun to be around. (+50 Bea, -50 Cha, -20 Serv, removes Cool Person)"
+      Type="Ring"
+      Badness="45"
+      Special="None"
+      Cost="500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Stat"  Name="Charisma"                Amount="-50"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="50"    />
+   <Effect What="Skill" Name="Service"                 Amount="-20"    />
+   <Effect What="Trait" Name="Cool Person"             Amount="0"    />
+   <Effect What="Trait" Name="Bimbo"                   Amount="1"    />
+</Item>
+</Items>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Sexologist Session (Bisexual)" Desc="Takes a girl to a sexologist, to rethink her sexual orientation. (Adds Bisexual, removes Lesbian and Straight along with a boost on some skills)" Type="Food" Badness="5" Special="None" Cost="5000" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="NormalSex" Amount="10" />
+        <Effect What="Skill" Name="Anal" Amount="10" />
+        <Effect What="Skill" Name="Lesbian" Amount="10" />
+        <Effect What="Trait" Name="Straight" Amount="0" />
+        <Effect What="Trait" Name="Lesbian" Amount="0" />
+        <Effect What="Trait" Name="Bisexual" Amount="1" />
+    </Item>
+</Items>

@@ -54,7 +54,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked as Customer Service.\n \n";
+	ss << " worked as Customer Service.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -118,7 +118,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (bonus < 5)
 	{
 		bonus = -20;
-		ss << "\n \nHer efforts only made the customers angrier.";
+		ss << "\n\nHer efforts only made the customers angrier.";
 		//And she's REALLY not going to like this job if she's failing at it, so...
 		g_Girls.UpdateEnjoyment(girl, actiontype, -5);
 	}
@@ -149,7 +149,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 	// So in the end, customer service can take care of lots of customers, but won't do it
 	// as well as good service from a whore. This is acceptable to me.
-	ss << "\n \n" << girlName << " took care of " << serviced << " customers this shift.";
+	ss << "\n\n" << girlName << " took care of " << serviced << " customers this shift.";
 
 	/* Note that any customers that aren't handled by either customer service or a whore count as a 0 in the
 	 * average for the brothel's customer happiness. So customer service leaving customers with 27-60 in their

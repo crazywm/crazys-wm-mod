@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Large Anal Beads"
+        Desc="Extra large anal beads for anal sex lovers. (+18 Anal, +5 BDSM, +8 Con, +2 Obed, +12 Lib, -10 Ref, -10 Agi, -5 Com, +5 Hate, -2 Happiness, -5 Spirit, removes Fleet of Foot)"
+        Type="Misc"
+        Badness="30"
+        Special="None"
+        Cost="600"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="Anal"
+            Amount="18" />
+        <Effect
+            What="Skill"
+            Name="BDSM"
+            Amount="5" />
+        <Effect
+            What="Skill"
+            Name="Combat"
+            Amount="-5" />
+        <Effect
+            What="Stat"
+            Name="Obedience"
+            Amount="2" />
+        <Effect
+            What="Stat"
+            Name="Constitution"
+            Amount="8" />
+        <Effect
+            What="Stat"
+            Name="Libido"
+            Amount="12" />
+        <Effect
+            What="Stat"
+            Name="Refinement"
+            Amount="-10" />
+        <Effect
+            What="Stat"
+            Name="Agility"
+            Amount="-10" />
+        <Effect
+            What="Stat"
+            Name="PCHate"
+            Amount="5" />
+        <Effect
+            What="Stat"
+            Name="Happiness"
+            Amount="-2" />
+        <Effect
+            What="Stat"
+            Name="Spirit"
+            Amount="-5" />
+        <Effect
+            What="Trait"
+            Name="Fleet of Foot"
+            Amount="0" />
+    </Item>
+</Items>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Eye Replacement Candy"
+      Desc="This hard gumball is a potent magical remedy that prompts the body to instantly regenerate a lost eye. It looks like a creepily realistic eyeball and faintly tastes like strawberry. (cures One Eye and Eye Patch)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+</Item>
+<Item Name="Eye Replacement Candy"
+      Desc="This hard gumball is a potent magical remedy that prompts the body to instantly regenerate a lost eye. It looks like a creepily realistic eyeball and faintly tastes like strawberry. (cures One Eye and Eye Patch)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1500"
+      Rarity="Shop05"
+      Infinite="false"
+      GirlBuyChance="0">
+   <Effect What="Trait" Name="One Eye"                 Amount="0"    />
+   <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+</Item>
+</Items>

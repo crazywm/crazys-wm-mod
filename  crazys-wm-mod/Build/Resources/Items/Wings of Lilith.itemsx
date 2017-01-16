@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Wings of Lilith"
+      Desc="This pair of majestic black wings, worn around the body like a cloak, are a prize occasionally offered by demons to mighty witches and enchantresses that they wish to tempt and turn to their side. They contain immense power, but inevitably taint their wearer's soul. (S) (+60 Mag, +15 Cha, +25 Int, +25 Spi, -15 Hate, -60 Fear, +10 to all sex skills, adds Quick Learner, Elegant, Psychic, Sadistic, Merciless, Twisted, Strange Eyes)"
+      Type="Dress"
+      Badness="30"
+      Special="None"
+      Cost="15000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="60"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="15"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-60"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="25"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="25"    />
+   <Effect What="Skill" Name="Service"                 Amount="10"    />
+   <Effect What="Skill" Name="Footjob"                 Amount="10"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="10"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="10"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="10"    />
+   <Effect What="Skill" Name="TittySex"                Amount="10"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="10"    />
+   <Effect What="Skill" Name="Group"                   Amount="10"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
+   <Effect What="Skill" Name="Strip"                   Amount="10"    />
+   <Effect What="Skill" Name="Anal"                    Amount="10"    />
+
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+   <Effect What="Trait" Name="Psychic"                 Amount="1"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="1"    />
+   <Effect What="Trait" Name="Sadistic"                Amount="1"    />
+   <Effect What="Trait" Name="Merciless"               Amount="1"    />
+   <Effect What="Trait" Name="Twisted"                 Amount="1"    />
+   <Effect What="Trait" Name="Strange Eyes"            Amount="1"    />
+</Item>
+</Items>

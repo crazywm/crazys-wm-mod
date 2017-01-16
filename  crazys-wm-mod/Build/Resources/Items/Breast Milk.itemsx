@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Breast Milk" Desc="One ounce of Crossgate's number two export, milk from a woman's breasts. Number one, of course, would be Mail-Order Brides. (+1 health/happiness, +2 libedo)"
+    Type="Food" Badness="0" Special="Temporary" Cost="50" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="1" />
+        <Effect What="Stat" Name="Happiness" Amount="1" />
+        <Effect What="Stat" Name="Libido" Amount="2" />
+    </Item>
+    <Item Name="Breast Milk" Desc="One ounce of Crossgate's number two export, milk from a woman's breasts. Number one, of course, would be Mail-Order Brides. (+1 health/happiness, +2 libedo)"
+    Type="Food" Badness="0" Special="Temporary" Cost="50" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="1" />
+        <Effect What="Stat" Name="Happiness" Amount="1" />
+        <Effect What="Stat" Name="Libido" Amount="2" />
+    </Item>
+    <Item Name="Breast Milk (g)" Desc="One gallon of Crossgate's number two export, milk from a woman's breasts. Number one, of course, would be Mail-Order Brides. (+20 health/happiness, +30 libedo)"
+    Type="Food" Badness="5" Special="Temporary" Cost="400" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="20" />
+        <Effect What="Stat" Name="Happiness" Amount="20" />
+        <Effect What="Stat" Name="Libido" Amount="30" />
+    </Item>
+    <Item Name="Breast Milk (pt)" Desc="One pint of Crossgate's number two export, milk from a woman's breasts. Number one, of course, would be Mail-Order Brides. (+5 health/happiness, +10 libedo)"
+    Type="Food" Badness="3" Special="Temporary" Cost="100" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Libido" Amount="10" />
+    </Item>
+    <Item Name="Breast Milk (pt)" Desc="One pint of Crossgate's number two export, milk from a woman's breasts. Number one, of course, would be Mail-Order Brides. (+5 health/happiness, +10 libedo)"
+    Type="Food" Badness="3" Special="Temporary" Cost="100" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Libido" Amount="10" />
+    </Item>
+    <Item Name="Breast Milk (qt)" Desc="One quart of Crossgate's number two export, milk from a woman's breasts. Number one, of course, would be Mail-Order Brides. (+10 health/happiness, +20 libedo)"
+    Type="Food" Badness="5" Special="Temporary" Cost="200" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Health" Amount="10" />
+        <Effect What="Stat" Name="Happiness" Amount="10" />
+        <Effect What="Stat" Name="Libido" Amount="20" />
+    </Item>
+</Items>

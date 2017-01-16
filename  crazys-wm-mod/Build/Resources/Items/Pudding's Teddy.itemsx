@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Pudding's Teddy"
+      Desc="The see through teddy worn by sex warrior Pudding. (Sex +30, Beauty +20, Age -5. Adds Sexy Air, Nymphomaniac.)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="20000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Beauty"                  Amount="20"    />
+   <Effect What="Stat"  Name="Age"                     Amount="-5"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="30"    />
+   <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+</Item>
+</Items>

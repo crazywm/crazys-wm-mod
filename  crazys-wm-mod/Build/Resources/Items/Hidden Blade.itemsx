@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Hidden Blade" Desc="A small, razor sharp blade with delicate machinery worked into the hilt, allowing it to extend or retract with the touch of a button. (+8 Combat/BDSM, -5 Fear, small chance to add Assassin)"
+        Type="Small Weapon" Badness="0" Special="None" Cost="480" Rarity="Shop25" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="8" />
+        <Effect What="Skill" Name="BDSM" Amount="8" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+    </Item>
+    <Item Name="Hidden Blade" Desc="A small, razor sharp blade with delicate machinery worked into the hilt, allowing it to extend or retract with the touch of a button. (+8 Combat/BDSM, -5 Fear, small chance to add Assassin)"
+        Type="Small Weapon" Badness="0" Special="None" Cost="480" Rarity="Shop25" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="8" />
+        <Effect What="Skill" Name="BDSM" Amount="8" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+    </Item>
+    <Item Name="Hidden Blade" Desc="A small, razor sharp blade with delicate machinery worked into the hilt, allowing it to extend or retract with the touch of a button. (+8 Combat/BDSM, -5 Fear, small chance to add Assassin)"
+        Type="Small Weapon" Badness="0" Special="None" Cost="480" Rarity="Shop25" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="8" />
+        <Effect What="Skill" Name="BDSM" Amount="8" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+    </Item>
+    <Item Name="Hidden Blade" Desc="A small, razor sharp blade with delicate machinery worked into the hilt, allowing it to extend or retract with the touch of a button. (+8 Combat/BDSM, -5 Fear, small chance to add Assassin)"
+        Type="Small Weapon" Badness="0" Special="None" Cost="480" Rarity="Shop25" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="8" />
+        <Effect What="Skill" Name="BDSM" Amount="8" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+    </Item>
+    <Item Name="Hidden Blade" Desc="A small, razor sharp blade with delicate machinery worked into the hilt, allowing it to extend or retract with the touch of a button. (+8 Combat/BDSM, -5 Fear, small chance to add Assassin)"
+        Type="Small Weapon" Badness="0" Special="None" Cost="480" Rarity="Shop25" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="8" />
+        <Effect What="Skill" Name="BDSM" Amount="8" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+    </Item>
+    <Item Name="Hidden Blade" Desc="A small, razor sharp blade with delicate machinery worked into the hilt, allowing it to extend or retract with the touch of a button. (+8 Combat/BDSM, -5 Fear, small chance to add Assassin)"
+        Type="Small Weapon" Badness="0" Special="None" Cost="480" Rarity="Shop25" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="8" />
+        <Effect What="Skill" Name="BDSM" Amount="8" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+    </Item>
+    <Item Name="Hidden Blade " Desc="A small, razor sharp blade with delicate machinery worked into the hilt, allowing it to extend or retract with the touch of a button. (+8 Combat/BDSM, -5 Fear, small chance to add Assassin)"
+        Type="Small Weapon" Badness="0" Special="None" Cost="480" Rarity="Shop25" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="8" />
+        <Effect What="Skill" Name="BDSM" Amount="8" />
+        <Effect What="Stat" Name="PCFear" Amount="-5" />
+        <Effect What="Trait" Name="Assassin" Amount="1" />
+    </Item>
+</Items>

@@ -87,7 +87,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (dirtyloss == 2) ss << "messy. The equipment is damaged and strewn about the building";
 	if (dirtyloss == 3) ss << "filthy and some of the equipment is broken";
 	if (dirtyloss >= 4) ss << "in complete disarray and the equipment barely usable";
-	ss << ".\n \n";
+	ss << ".\n\n";
 	if (skill < 1) skill = 1;	// always at least 1
 
 	do{		// `J` New method of selecting what job to do
@@ -148,7 +148,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		default:	break;	// no trait gained
 		}
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
@@ -159,7 +159,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time training."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Create Items				//

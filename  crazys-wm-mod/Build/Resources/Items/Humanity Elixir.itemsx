@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Humanity Elixir"
+      Desc="A potion that turns a girl human again. Be careful - the transformation hurts. (Health -50. Removes Not Human)"
+      Type="Food"
+      Badness="50"
+      Special="None"
+      Cost="12000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Health"                  Amount="-50"    />
+   <Effect What="Trait" Name="Not Human"               Amount="0"    />
+</Item>
+</Items>

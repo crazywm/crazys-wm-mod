@@ -78,7 +78,7 @@ string galtxt[] =
 	"Pregnant Craft", "Pregnant Swim", "Pregnant Bath", "Pregnant Nurse", "Pregnant Formal", "Pregnant Shop",
 	"Pregnant Magic", "Pregnant Sign", "Pregnant Presented", "Pregnant Dominatrix", "Pregnant Deepthroat",
 	"Pregnant Eatout", "Pregnant Dildo", "Pregnant Sub", "Pregnant Strapon", "Pregnant Les69ing", "Pregnant Lick",
-	"Pregnant Balls", "Pregnant Cowgirl", "Pregnant Revcowgirl", "Pregnant Sexdoggy", "Pregnant Jail", 
+	"Pregnant Balls", "Pregnant Cowgirl", "Pregnant Revcowgirl", "Pregnant Sexdoggy", "Pregnant Jail",
 	"Pregnant Puppygirl", "Pregnant Ponygirl", "Pregnant Catgirl"
 };
 
@@ -896,7 +896,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	FileList tiCo(imagedirCo, "*.*");
 	FileList tiDc(imagedirDc, "*.*");
 	FileList tiDo(imagedirDo, "*.*");
-	
+
 	int totalimagesCc = tiCc.size();
 	int totalimagesCo = tiCo.size();
 	int totalimagesDc = tiDc.size();
@@ -1079,7 +1079,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 
 #else
 	// `J` added for .06.02.29
-	
+
 
 
 
@@ -1139,28 +1139,32 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		}
 		else if (ext == "gif")
 		{
- 			const char* n = file.c_str();
-			int frames = AG_LoadGIF(n, NULL, 0);
-			if (frames)
-			{
-				cImage* newImage = new cImage();
-				newImage->m_Surface = new CSurface();
-				newImage->m_Surface->LoadImage(file);
-				newImage->m_AniSurface = new cAnimatedSurface();
-				AG_Frame* gpAG = new AG_Frame[frames];
-				AG_LoadGIF(n, gpAG, frames);
-				m_Images[id]->m_Image = newImage->m_Surface;
-				m_Images[id]->m_Image->m_Message = file;
-				m_Images[id]->m_AnimatedImage = new cAnimatedSurface();
-				m_Images[id]->m_AnimatedImage->SetGifData(0, 0, frames, gpAG, newImage->m_Surface);
-				imagechosen = true;
-			}
-			else	// if it does not read as a gif, just load it as a normal image
-			{
-				m_Images[id]->m_Image = new CSurface(file);
-				m_Images[id]->m_AnimatedImage = 0;
-				imagechosen = true;
-			}
+            #if !LINUX
+                const char* n = file.c_str();
+                int frames = AG_LoadGIF(n, NULL, 0);
+                if (frames)
+                {
+                    cImage* newImage = new cImage();
+                    newImage->m_Surface = new CSurface();
+                    newImage->m_Surface->LoadImage(file);
+                    newImage->m_AniSurface = new cAnimatedSurface();
+                    AG_Frame* gpAG = new AG_Frame[frames];
+                    AG_LoadGIF(n, gpAG, frames);
+                    m_Images[id]->m_Image = newImage->m_Surface;
+                    m_Images[id]->m_Image->m_Message = file;
+                    m_Images[id]->m_AnimatedImage = new cAnimatedSurface();
+                    m_Images[id]->m_AnimatedImage->SetGifData(0, 0, frames, gpAG, newImage->m_Surface);
+                    imagechosen = true;
+                }
+                else	// if it does not read as a gif, just load it as a normal image
+                {
+                    m_Images[id]->m_Image = new CSurface(file);
+                    m_Images[id]->m_AnimatedImage = 0;
+                    imagechosen = true;
+                }
+            #else
+            imagechosen=false;
+            #endif
 		}
 		else if (ext == "jpg" || ext == "jpeg" || ext == "png")
 		{
@@ -1260,7 +1264,7 @@ bool cImageItem::CreateAnimatedImage(int id, string filename, string dataFilenam
 void cImageItem::Draw()
 {
 	if (m_Hidden) return;
-	
+
 	if (m_AnimatedImage && m_AnimatedImage->m_Gif)
 	{
 		SDL_Rect rect;

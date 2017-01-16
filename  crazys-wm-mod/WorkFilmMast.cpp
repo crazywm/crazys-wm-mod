@@ -62,7 +62,7 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
-	ss << girlName << " worked as an actress filming Masturbation scenes.\n \n";
+	ss << girlName << " worked as an actress filming Masturbation scenes.\n\n";
 
 	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
@@ -71,11 +71,11 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She didn't want to make the film, but the director persuaded her.\n \n"; }
-	else if (roll >= 90 && girl->has_trait( "Futanari")) { enjoy += g_Dice % 3 + 1;	ss << "She cummed hard while playing with her cock!\n \n"; }
-	else if (roll >= 90 && !girl->has_trait( "Futanari")) { enjoy += g_Dice % 3 + 1;	ss << "She had intense orgasms while playing with her pussy!\n \n"; }
-	else if (girl->has_trait( "Futanari")){ enjoy += g_Dice % 2;		ss << girlName << " spent the session rubbing her dick until she came.\n \n"; }
-	else /*            */{ enjoy += g_Dice % 2;		ss << "She spent the afternoon fingering herself.\n \n"; }
+	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She didn't want to make the film, but the director persuaded her.\n\n"; }
+	else if (roll >= 90 && girl->has_trait( "Futanari")) { enjoy += g_Dice % 3 + 1;	ss << "She cummed hard while playing with her cock!\n\n"; }
+	else if (roll >= 90 && !girl->has_trait( "Futanari")) { enjoy += g_Dice % 3 + 1;	ss << "She had intense orgasms while playing with her pussy!\n\n"; }
+	else if (girl->has_trait( "Futanari")){ enjoy += g_Dice % 2;		ss << girlName << " spent the session rubbing her dick until she came.\n\n"; }
+	else /*            */{ enjoy += g_Dice % 2;		ss << "She spent the afternoon fingering herself.\n\n"; }
 	jobperformance = enjoy * 2;
 
 	if (g_Girls.CheckVirginity(girl))

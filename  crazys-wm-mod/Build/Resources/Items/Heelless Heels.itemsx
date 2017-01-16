@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Heelless Heels"
+        Desc="The doo doo doo, the GaGaGa. (B) (Cha +2, Bea +3, Lib +25, Conf +10, Fam +10, Int -10, Comb -30, Perf +5, removes Agile, adds Clumsy, Retarded, Great Arse, Long Legs, Fallen Goddes)."
+        Type="Shoes"
+        Badness="50"
+        Special="None"
+        Cost="1500"
+        Rarity="Shop05"
+        Infinite="false"
+        GirlBuyChance="2">
+    <Effect     What="Stat"     Name="Charisma"         Amount="2" />
+    <Effect     What="Stat"     Name="Beauty"           Amount="3" />
+    <Effect     What="Stat"     Name="Libido"           Amount="25" />
+    <Effect     What="Stat"     Name="Confidence"       Amount="10" />
+    <Effect     What="Stat"     Name="Fame"             Amount="10" />
+    <Effect     What="Stat"     Name="Intelligence"     Amount="-10" />
+    <Effect     What="Skill"    Name="Combat"           Amount="-30" />
+    <Effect     What="Skill"    Name="Performance"      Amount="5" />
+    <Effect     What="Trait"    Name="Agile"            Amount="0" />
+    <Effect     What="Trait"    Name="Clumsy"           Amount="1" />
+    <Effect     What="Trait"    Name="Retarded"         Amount="1" />
+    <Effect     What="Trait"    Name="Great Arse"       Amount="1" />
+    <Effect     What="Trait"    Name="Long Legs"        Amount="1" />
+    <Effect     What="Trait"    Name="Fallen Goddess"   Amount="1" />
+    </Item>
+</Items>

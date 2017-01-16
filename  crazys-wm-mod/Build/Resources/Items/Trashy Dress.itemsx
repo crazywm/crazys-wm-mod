@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Trashy Dress"
+      Desc="This cheap, gaudy dress shows off too much skin and demonstrates a total lack of class. It's only worn by women who don't know better, and it's only appreciated by men with no taste. (E) (+10 Cha, +10 Lib, +2 Hate, -5 Int, -20 Refinement, removes Elegant)"
+      Type="Dress"
+      Badness="18"
+      Special="None"
+      Cost="30"
+      Rarity="Shop50"
+      Infinite="false"
+      GirlBuyChance="20">
+   <Effect What="Stat"  Name="Charisma"                Amount="10"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="-5"    />
+   <Effect What="Stat"  Name="Refinement"              Amount="-20"   />
+   <Effect What="Stat"  Name="Libido"                  Amount="10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="2"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+</Item>
+</Items>

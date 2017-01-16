@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Yummi Gummi Lingere"
+      Desc="This ensemble gives the girl a very kinky sense of life for anyone that want to get in her pants. They look pretty tasty and make the girl see your side a bit more......pleasurable. (Sex, Strip, Serv, Anal, Hap, Conf, Obed, Spirit, Love +10 (Fear and Hate -10) (Adds Cute)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Skill" Name="NormalSex" Amount="10" />
+   <Effect What="Skill" Name="Strip" Amount="10" />
+   <Effect What="Skill" Name="Service" Amount="10" />
+   <Effect What="Skill" Name="Anal" Amount="10" />
+   <Effect What="Stat" Name="Happiness" Amount="10" />
+   <Effect What="Stat" Name="Confidence" Amount="10" />
+   <Effect What="Stat" Name="Obedience" Amount="10" />
+   <Effect What="Stat" Name="Spirit" Amount="10" />
+   <Effect What="Stat" Name="PCFear" Amount="-10" />
+   <Effect What="Stat" Name="PCLove" Amount="10" />
+   <Effect What="Stat" Name="PCHate" Amount="-10" />
+   <Effect What="Trait" Name="Cute" Amount="1" />
+</Item>
+</Items>

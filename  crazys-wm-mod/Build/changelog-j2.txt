@@ -1,0 +1,510 @@
+### Changes before 12/27/2015
+I kindof dropped out of working on the game because work was draining me too much mentally and physically.
+As a result I did not work on the game at all for 2 months but other people did.
+Much of what they have done I have not really gone through yet so I can't really comment on it for now.
+Several new image types and a few new jobs have been added as well as a lot of new texts for jobs.
+
+
+### Changes 12/27/2015 - I'm back :)
+Added color configuration to text items in interface xmls
+* Add Red, Green and Blue tags to the<Text>block with numbers 0-255 to add hex colors
+**<Text Name="Label1" Text="Brothel Name" XPos="32" YPos="32" Width="128" Height="32" FontSize="16" Red="250" Green="0" Blue="0" />
+Added popup_message.xml to the interface so it can be customized.
+Added more debug lines to torture code to narrow down the cause of crashes.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.21
+
+### Changes 12/28/2015
+Fixed a few unfinished additions 
+* fixed new image types not displaying in gallery
+Updated a few items with changes I made before.
+Updated WorkMatron.cpp with changes I made before:
+* updated Addict and Exhibitionist events
+Cleaned a few things in cGirls.cpp,h
+* Added has_weapon(); to see if the girl has a weapon or small weapon
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.22
+
+### Changes 12/29/2015
+Fixed a bug in workSecurity.cpp and did a little updating
+* Reduced the base security level so it is not too over powered
+* HHT plays a little part in security level now
+Updated ScriptCommands.txt so the old script editor can use the new image types
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.23
+
+### Changes 12/30/2015
+Added m_ChildrenCount to Script_AddFamilyToDungeon so the mother will actually show the daughters
+Cleaned up some unneeded log spam ("Brothel # not found in list!")
+Fixed GetTotalNumGirls() to count girls in every building
+Updated ScriptCommands.txt so the old script editor can use the new stats
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.24
+
+### Changes 12/31/2015
+Checked Blacksmith, Cobbler, Jeweler and Tailor for adding item creation
+
+### Changes 1/1-2/2016
+Started reworking slave buying code
+* Made buy_slaves() function to remove duplicate code in events and keys.
+* Total rewrite of transfer of girls out of the Slave Market
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.25
+
+### Changes 1/3/2016
+Added some flavor texts to the Slave Market.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.26
+
+### Changes 1/4-7/2016 - I don't have much time to work on the game durring the week
+Continued adding flavor texts to the Slave Market.
+Fixed a bug in cJobManager.cpp where Boob Job would not allow girls with "Abnormally Large Boobs" to start, fixed to "Titanic Tits"
+ * Also fixed breast reduction.
+Fixed a bug in .ani files causing a crash.
+Fixed a bug in girl details (hopefully)
+ 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.27
+ 
+### Changes 1/8-10/2016
+Added framework to the rest of the Slave Market flavor texts - still need the actual texts written.
+
+### Changes 1/20/2016
+WME - Fixed a bug with NPCLove loading and storing it as Strength overwriting Strength.
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version .08.31
+
+### Changes 1/27/2016
+WME - fixed a bug on item screen add and remove buttons crashing if nothing is selected.
+WME - Fixed a bug with traits not loading on Girls page
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master Editor version .08.32
+
+### Changes 2/3/2016
+Added save/load lines for happiness and fame to the non-brothel buildings
+Added FixFreeTimeJobs() to the girls loading section to correct for bad free time jobs.
+Adjusted Anger Management to make it use m_WorkingDay like the other therapy jobs
+Changed level up trait report to EVENT_GOODNEWS
+Added a part to PossiblyGainNewTrait() to make the event type customizeable so that slut will be added as EVENT_WARNING instead of EVENT_GOODNEWS.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.28 - removed
+Forgot to include load checks for new happiness and fame for non-brothel buildings
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.28
+
+### Changes 2/4/2016
+Adjusted cleaner's pay and fixed a summary message throwing out decimals.
+Added girl's name into beastsex>80 random text.
+Did a little cleanup of claning jobs.
+
+### Changes 2/5/2016
+Cleaned FixFreeTimeJobs() and moved it to a better place in the code so it works better.
+
+### Changes 2/14/2016
+Added IMGTYPE_SUCKBALLS check so either "balls*.*" or "suckballs*.*" images will work.
+Started rewriting image handling again.
+
+### Changes 2/16/2016
+Crazy added in changes by bsin - Mostly movie stuff.
+
+### Changes 2/18/2016
+Started cleaning bsin's stuff to make sure it works.
+
+### Changes 3/5/2016
+Rewrite Studio job handling, rearranged job categories and jobs
+Fixing several film jobs.
+
+
+### Changes 3/31/2016
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+### Changes 4/2/2016
+Fixed a bug in EquipCombat crashing with items adding/removing traits while there are remembereed traits.
+ - Added RestoreRememberedTrait to fix this.
+Fixed a bug in UpdateGangs if their mission is not normal
+Cleaned a few minor things in Studio code.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.29
+
+########## I have not been able to do anything here because work is taking too much out of me.
+########## Crazy, bsin and the other guys have done a lot while I was gone but I have not really looked at it too much so I can't comment on it.
+
+### Changes 10/1/2016
+Included all the changes done by the other guys while I was gone.
+Moved and expanded customer count milestone messages.
+Fixed accommodation trait add/remove checks.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.30
+
+Merged Pull Request by mjsmagalhaes in GitHub 
+ - Condensed Inventory screen item text into one "write_item_text" function.
+ - Added "Enter" key to start next week on the Turn Summary screen 
+!!!!!!!!!!!!!!!!!!!! merged in GitHub
+
+Expanded on the "write_item_text" function
+Fixed the Inventory list boxes to correct next item selection after moving an item.
+Added "NextTurnEnter" to "Resolution" section of config.xml for those who don't want to use it.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.31
+
+### Changes 10/2/2016
+Fixed a bug in the Inventory screen where the owner list would reset to Player | Shop when moving items.
+Added several keybord interactions:
+ - Any key will clear a message box.
+ - Enter key on girl lists will go to the girl details page.
+ - Up and Down arrows move choice boxes and Enter selects the choice.
+ - Updated Hotkey lists (9 and 0).
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.32
+
+### Changes 10/2-9/2016
+Fixed a bug in the inventory screen - using consumable items did not refresh the item list
+Added items to the Tailor job
+Normalized wages and tips across most jobs
+Added things to and cleaned up whore jobs.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.33
+
+### Changes 10/10-11/2016
+Fixed a few issues in wages and tips
+Added customization to Font Sizes and Row Heights for List Boxes and Edit Boxes are now editable in the interface .xmls.
+ - Add FontSize and RowHeight to the ListBox and EditBox lines and adjust list column widths to compensate for the larger text.
+ -<ListBox Name="FileName" XPos="8" YPos="8" Width="328" Height="288" Border="1" FontSize="15" RowHeight="30"/>
+ - If they are not specified, they use the default numbers.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.34
+
+Consolidated and cleaned up the Free Slave button
+Started Consolidation and cleaned up of fire girl button
+Cleanup of Studio management
+Added fontsize to text boxes
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.35
+
+### Changes 10/10-11/2016
+Consolidated and cleaned up cScreenTown::buy_building 
+Added multiline header question to choice boxes
+Added ChoiceBoxHeader to InterfaceColors.xml
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.36
+
+Added in some WorkFilmGroup stuff by Eiri666
+Created girl->breast_size() function for breast size number, normal is 4, 1 is flat, max is 10
+
+### Changes 10/12-15/2016
+Fixed a bug where girl_details_screen.xml font size did not load properly
+Created FFSD (free fire sell dump) functions to replace separate free girl, fire slave, sell slave functions
+ - this should allow all the buttons to work in any building.
+ - It turned into a total rewrite but it will work in all buildings
+ 
+### Changes 10/16/2016
+Merged in Pull request #15 by mjsmagalhaes
+ - Try to achieve a better balance for the harsher form of torture.
+ - - Feel free to change that if it has gone too much for either side.
+ - Make the item sales multiplier in the config file effective.
+ - - Also update the sell price in the Item Management screen
+ - Expose the remaining duration of the Kidnapped trait to the (dungeon) interface.
+ - - To achieve this i've made a member from cGirls (HasTempTrait) static because i had no instance of that class available. It would be better to add something similar to sGirl or, even better IMHO, to make them share a base class. But those two might be a lot of trouble comparing with the current change.
+ - - - `J` I changed this part to make it work better
+ 
+Added list box hotkeys to all buildings
+Remove multiple DeadGirl() functions replacing it with one selected_girl->is_dead() function
+Finished Free/Fire/Sell update 
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.37
+
+### Changes 10/17/2016
+Debugged the game
+ - blank.png was 1x1 pixel and the resizer did not like it - replaced it with 100x100 blank.png and most crashes stopped.
+ - Fixed a bug in the gallery - crashes when pressing up at the top or down at the bottom of the list.
+ - config.xml >"Income >ItemSales" and "Expenses >Items" were reversed
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.38
+
+### Changes 10/17-25/2016
+Fixed a typeo in WorkFilmGroup.cpp "Porn Star" trait check
+Cleaned up cWindowManager.cpp/h
+Cleanup of cScreen* files
+Merge pull request #16 from mjsmagalhaes
+ - Image scaling and Listbox Improvements
+Started adding Settings screen
+Added LeftOrRight option for check boxes.
+
+### Changes 10/25-11/23/2016 -- did not work on the game
+
+### Changes 11/24-28/2016
+Created "J_1920x1080" interface
+Fixed interface scalinig issue so font sizes and list box columns scale properly
+ - Added "FixedScale" to config.xml to allow to older interfaces to still work
+Added "OwnersLeftDetails" and "OwnersRightDetails" to itemmanagement_screen.xml
+
+!!!! There were several other changes but I lost track of what they were.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.39
+
+### Changes 11/29-12/01/2016
+Merged 2 pull requests of a few text corrections by skriveavis.
+Changed how config.xml files are loaded to hopefully fix a couple of problems.
+Added several items to Jeweler job (more need to be added)
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.40
+
+### Changes 12/02-3/2016
+Fixed a few typeos.
+Fixed some column offsets in J_1024x768 interface
+Updated gang missions:
+ - Added "Masked Vigilante" to Pety Theft
+ - Cleaned Grand Theft
+ - Added Service skill to gangs
+ - Added Service mission
+ - Allow 1 to 15 gang members in training and service instead of the minimum 5. Shows yellow if<6 members
+Added Player gold to gang screen
+Added g_Brothels.GetRandomBrothel() function
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.41
+
+### Changes 12/04-10/2016
+Fixed a few more column offsets in J_1024x768 interface
+Rewrote sell slaves from dungeon text to itemized list
+Added Player Gold to many screens
+config.xml in release used the testing numbers, changed it back to release numbers.
+Fixed/added text in gang grand theft mission
+Removed from the settings screen all the things that were not completed
+ - Folders and Catacombs are working.
+ - (Gang gets what is overridden by the savegame so is not really needed)
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.42
+
+### Changes 12/11/2016
+Fixed several "/n" to "\n" in texts
+Separated house jobs into main and training
+Added Sexual Orientation training and Fake Orgasm training to the house
+Added a bunch of items by Cavey
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.43
+
+### Changes 12/12-16/2016
+Updated WorkExploreCatacombs.cpp
+ - fixed a few bad texts
+ - allowed the control girl section to allow any girl to explore even if she can't fight.
+ - Updated the uncontroled girl failed combat check text
+Updated all calc_insemination functions to use g_Girls.GetBeast() instead of using a customer or the player
+Fixed 4 bugs reported by blx
+ - "Game crash when you deselect all girls on brothel screen by pressing Ctrl + LMB."
+ - "On girl detail screen hotkey for list girls backward (left arrow "←") list girls forward."
+ - "All progress on new "Sexual Orientation training" and "Fake Orgasm training" reset after game load."
+ - "Messages about growing children stacks: second contains the first, third contains both previous."
+Added a few texts to WorkFreetime.cpp by MuteDay
+Added some texts to Sexual Orientation training and Fake Orgasm training
+
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.44
+
+### Changes 12/17/2016
+Fixed a bug in the arena with duplicate turn summary messages (my bad)
+Added EVENT_WARNING when girls get taken off work by matrons
+Fixed a crash in cGirls::AddInv() if no item is given
+ - fixed item spelling in GirlFucks (Ring of the Hivemind)
+Fixed a crash if a gang dies durring their mission.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.45
+
+Fixed a bug in slave market where the first girl details were not showing (my bad, <= should have been <) 
+### Changes 12/18-19/2016
+Started updating Slave Market send to effects
+Updated Sexual Orientation training and Fake Orgasm training numbers (SO and FOE)
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.46
+
+### Changes 12/20-23/2016
+Fixed a few typeos
+Updated do_daily_items
+Updated WorkFreetime.cpp with a couple of items
+Fixed slave market no girl image
+Fixed a few text items in clinic jobs
+Added SO to girl lists
+Updated Gang Service mission
+ - Added cat/dog capture
+ - Added cleaning of brothel in security check sub-mission
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.47
+
+Merged pull requests by skriveavis: a few typeo fixes
+Replaced most instances of HasTrait(girl, "Virgin") with CheckVirginity(girl)
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+### Changes 12/24/2016
+
+Fixed SO and FOE pay
+Added dark events to WorkFreetime by MuteDay
+ - I added more variations to them
+Rearranged WorkFreetime and added death message if needed
+MuteDay updated cGold.cpp/h
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.48
+
+### Changes 12/25-26/2016
+
+Fixed Constructs not healing with item use
+Updated SO and FOE
+ - Added Tiredness, Exp and enjoy
+ - Added improvement list
+Added the list of girl folders that are used by the game to simple save .q file
+Started Updateing WorkPersonalBedWarmer.cpp but got sidetracked
+Added WorkCureDiseases.cpp
+Added Panacea's Miracle Cure.itemsx by Cavey
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.49
+
+Fixed several bugs pointed out by blx
+ - Fixed the studio - most jobs were broken because the first/last jobs were not updated when the jobs were rearranged
+ - Fixed the Dungeon Feeding buttons
+ - Fixed -health not showing as dead
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.50
+
+### Changes 12/26-29/2016
+
+Added new trait "Chaste" to be the opposite of "Nymphomaniac"
+Added libido check in UpdateStatTemp to work with "Chaste" and "Nymphomaniac"
+Added Chastity Orb.itemsx
+Added the ability to add both permanent and temporary traits to food/makeup items
+Added GetRandomGangOnMission()
+Changed some sCustomer things from char to bool or int
+Updated WorkBrothelWhore, WorkBarWhore and WorkHallWhore
+ - added female customers that don't pay can be taken as slaves
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.51
+
+### Changes 12/30/2016
+Fixed 2 bugs
+ - "all consumable items are treated as temporary (at least for traits) with a duration of 20 weeks, even if they are not marked as temporary in their special parameter."
+ - GetRandomGangOnMission was missing a set of {} when it checked if a gang was on a mission
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.52
+
+### Changes 12/31/2016-01/01/2017
+Fixed a bug in the Studio - Could not put girls on free time
+Updated "Back to Work" for non-brothel buildings
+ - Added Cure Diseases to the Clinic
+Cleaned WorkPersonalBedWarmer.cpp
+Merged pull request from Mute
+ - cleaned several files
+
+### Changes 01/02/2017  -  I am going back to work today so I will not have as much time to work on the game :(
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.53
+
+### Changes 01/03-04/2017
+Added optional image name used to turn summary screen
+Fixed a text issue in girl enjoyment list where "Club Whore" was listed as "Bar Whore"
+Merged in Mute's pull request - See ChangeLog-Mute.txt for more details
+ - Fixed a couple of typeos
+ - Changed security catches rape from your girl to customer girl
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.54
+
+### Changes 01/05-11/2017
+Merged in Mute's pull requests - See ChangeLog-Mute.txt for more details
+Merged in mjsmagalhaes's pull request - More linux build capabilities
+Updated a few options for girl lists:
+ - Added Traits to column options for girl lists
+ - Added CalculateAskPrice before displaying girl Value
+Added new script commands requested by Cluster:
+ - IfGirlHasItem (*itemname*)
+ - AddItemtoGirl (*itemname*) (*amount*) (*equip*)
+ - GivePlayerItem (*itemname*) (*amount*)
+Renamed cMovieScreen.cpp/h to cScreenMovie.cpp/h to match all other screen files
+Added "CreateMovieButton" to cScreenMovie as requested by Cluster
+Movie scenes now get saved and loaded
+Greatly simplified fulltime vs not fulltime job changes in HandleSpecialJobs fixing a bug
+Reduced the chance of gangs taking as slaves female customers who don't pay whores to 10%
+Started fixing a few film jobs
+ - Fixed gang interactions in FilmOral
+Cleaned and Updated UpdateGirls in all non-brothel buildings
+ - fixed a bug in the farm
+Moved filthiness to 0 to the end of building processing
+Replaced several "\n\n" with "\n \n" to fix linux text bug
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.55
+ 
+Checked all jobs starting texts.
+Fixed a bug in workfilmoral that was crashing the game.
+Reworked Objective REWARD_ITEM to make the text look better.
+ 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.56
+
+ 
+ 
+
+$$$$ TO DO - SHORT TERM - (for this version) $$$$
+
+$$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
+
+$$$$ TO DO - SHORT TERM - (Soon) $$$$
+
+$$$$ TO DO - MID TERM - (for the next few versions) $$$$
+Keep expanding on simple-save
+food and drink
+
+Make config in_fact and out_fact do something
+
+Change the way the game handles images
+ - Make cfg.folders.preferdefault() work
+
+
+New Script Stuff:
+ - Picture_Sequence -- needs image rework before it can be implemented
+ - Make_Movie_Scene -- needs movie and scene rework before it can be implemented
+ - And/Or
+New Default Interacts for each building
+ - DefaultInteractStudio.script
+ - DefaultInteractArena.script
+ - DefaultInteractCentre.script
+ - DefaultInteractClinic.script
+ - DefaultInteractFarm.script
+ - DefaultInteractHouse.script
+New Meet Try for the buildings that don't have them
+ - MeetCentreTry.script (homeless, addicts, psychpatients, etc.)
+ - MeetFarmTry.script (beast girls, farmers, craftsmen, etc.)
+ - MeetHouseTry.script (House party? - Costs money to do, adds lots of filthiness to the house, etc.)
+
+
+$$$$ TO DO - LONG TERM $$$$
+Update from SDL1.2 to SDL2.0 (or something else)
+Expand the map and allow multiples of all buildings

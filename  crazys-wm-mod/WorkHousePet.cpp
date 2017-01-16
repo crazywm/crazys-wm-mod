@@ -316,7 +316,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else /*She did the training*/
 	{
-		ss << " trained to be a house pet.\n \n";
+		ss << " trained to be a house pet.\n\n";
 		if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 70)
 			{
 				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)

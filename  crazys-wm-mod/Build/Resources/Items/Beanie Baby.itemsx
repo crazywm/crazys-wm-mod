@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Beanie Baby" Desc="Cute! Cuddly! Plushy! What's not to love? Collect them all! (Happy +3, Love +2, Hate -2)"
+        Type="Misc" Badness="0" Special="None" Cost="20" Rarity="Common" Infinite="false" GirlBuyChance="3" ItemWeight="0.0">
+        <Effect What="Stat" Name="Happiness" Amount="3" />
+        <Effect What="Stat" Name="PCLove" Amount="2" />
+        <Effect What="Stat" Name="PCFear" Amount="-2" />
+    </Item>
+</Items>

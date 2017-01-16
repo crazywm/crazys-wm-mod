@@ -1,0 +1,189 @@
+06.02.52
+====================================
+Updated WorkSecurity fixing refences from g_Girls.GetStat(girl,statID) to girl->statName()
+Updated WorkSecurity for more negitive events
+Updated WorkSecurity to removing references to gettext()
+Updated WorkSecurity to get stripper/Whore from the propper brothel (getting Ready for multi Brothels)
+
+Updated cBrothel removing Referenced to g_Girls.GetStat and UpdateStat to Girl->statname() and statname(mod)
+Updated cBrothel with some much needed better text
+Updated cBrothel to remove gettext()
+
+
+====================================
+06.02.53
+====================================
+Updated cGirls.cpp.cpp removing reference to gettext()
+Updated cGirls.cpp.cpp fixing text when getting pregnant
+
+Updated WorkAdvertising.cpp to use girl->statname() and girl->statName(mod)
+
+Updated WorkTorturer.cpp to use girl->statname() and girl->statName(mod)
+Updated WorkTorturer.cpp to remove reference to gettext() although left the () 
+
+Updated WorkAdvertising.cpp to use girl->statname() and girl->statName(mod)
+
+Updated WorkArenaJousting.cpp to use girl->statname() and girl->statName(mod)
+
+Updated WorkBaker.cpp to use girl->statname() and girl->statName(mod)
+Updated WorkBaker.cpp Note on JP_Baker to correct the fact it is used
+
+Updated WorkBarCook.cpp to use girl->statname() and girl->statName(mod)
+
+Updated WorkBarmaid.cpp to use cfg.in_fact.barmaid_work()
+Updated WorkBarmaid.cpp to use girl->statname() and girl->statName(mod)
+updated WorkBarmaid.cpp @ // `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found to use better math logic and hopefull will work. needs testing
+
+Updated SConfig.h with fix to note
+
+
+====================================
+06.02.54
+====================================
+Updated cDungeon.cpp to remove reference to gettext()
+
+Updated cCustomers.cpp to remove reference to gettext()
+
+Updated cGetStringScreenManager.cpp removing reference to gettext
+
+Updated cGirlGangFight.cpp removing reference to gettext
+
+Updated cGirlTorture.cpp removing reference to gettext
+
+Updated cInventory.cpp removing reference to gettext
+
+Updated cJobmanager.cpp removing reference to gettext
+
+Updated cMovieStudio.cpp removing reference to gettext
+
+Updated cRival.cpp removing reference to gettext
+
+Updated cScreenBuildingManagement.cpp removing reference to gettext
+
+Updated cScreenPropertyManagement.cpp removing reference to gettext
+
+Updated cScreenSlaveMarket.cpp removing reference to gettext
+
+Updated cScreenTown.cpp removing reference to gettext
+
+Updated cScriptUtils.cpp removing reference to getttext
+
+Updated cTraits.cpp removing reference to gettext
+
+Updated main.cpp removing reference to gettext
+
+Updated WorkRecruiter.cpp removing reference to gettext
+
+Updated WorkFilmThroat.cpp removing reference to gettext
+
+Updated WorkFilmTease.cpp removing reference to gettext
+
+Updated WorkFilmPublicBDSM.cpp removing reference to gettext
+
+Updated WorkFilmOral.cpp removing reference to gettext
+
+Added TODO-Mute.txt to allow joey to ask for my help or focus me on certian Tasks
+
+Updated libintl.h to remove unneeded dllinport call (gettext)
+
+Updated WorkFilmMusic to remove reference to gettext
+
+Updated WorkFilmChef to remove reference to gettext
+
+Updated WorkFilmBuk to remove reference to gettext
+
+Updated WorkFilmBondage to remove reference to gettext
+
+Updated WorkFilmBeast removing reference to gettext
+
+Updated cFarm.cpp to use girl->statname and girl->statname(mod)
+
+Updated cGirls.cpp to use girl->statname() and girl->statname(mod)
+
+Updated cScreenBuildingSetup.cpp to use tariff.add_room_cost(5) instead of 5000 (to use the setting in config)
+
+Updated cScreenBuildingSetup.cpp to use tariff.advertising_costs
+
+Updated cGirls.cpp to fix small grammer error
+
+Updated tariff.cpp to fix bug if config.out_cost.goon_cost was set to 0.0 it would say error
+
+===========================================
+.06.02.55-56
+===========================================
+
+Prep for Release for Linux version
+
++++++++++++++++++++++++++++++++++++++
+|       Rearanging SVN              |
++++++++++++++++++++++++++++++++++++++
+Moved File "all traits ready for job performance.txt" to Dev folder
+Moved DLL files to /Build/ Folder
+Moved Resources Folder to /Build/Resources/
+Moved Docs&Tools Folder to /Build/Docs&Tools/
+Moved ChangeLogs to /Build/
+Moved Font files to /Build/
+Moved random ideas.txt to /Dev/
+Moved readme.html to /Build/
+Moved README.TXT to /Build/
+Moved Special Thanks.txt to /Build/
+Moved TODO-Mute.txt to /Dev/
+Moved config.xml to /Build/
+Moved Found Bugs.txt to /Dev/
+Moved Saves to /Build/
+
+++++++++++++++++++++++++++++++++++++
+|       Removing Junk              |
+++++++++++++++++++++++++++++++++++++
+Deleted Makefile.back
+Deleted MakeFile
+Deleted Microsoft.DTFW.DHL.manifest
+Deleted Microsoft.VC90.CRT.manifest
+Deleted mk_rev
+Deleted Revision.wcrev
+Deleted ScreenMode.txt
+Deleted UpgradeLog.htm
+Deleted UpgradeLog2.htm
+Deleted UpgradeLog3.htm
+Deleted WhoreMaster (old Linux Build)
+Deleted Whore Master.aps
+Deleted Whore Master.DPbcd
+Deleted Whore Master.rc
+Deleted Whore Master_pure.ini
+Deleted Whore Master_pure.temp
+Deleted WM.Depend
+Deleted gpl.txt
+Deleted WM.make
+Ignored *.user
+Ignored *.old
+Ignored *.suo
+Ignored *.filters
+Ignored *.sdf
+
+
+
+
+==================================================
+|         Linux 1.0.0.0                          |
+==================================================
+Updated cGirls.cpp to stop random artifacts in game
+Updated Revision.h to include a linux Unique Version
+Updated main.cpp to give better Window Title for the Build
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

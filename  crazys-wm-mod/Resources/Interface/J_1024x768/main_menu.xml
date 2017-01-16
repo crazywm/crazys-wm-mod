@@ -1,9 +1,0 @@
-<Screen>
-<Window  Name="Main Menu"                                  XPos="250" YPos="100" Width="300" Height="400" Border="1" />
-<Button  Name="Continue"     Image="Continue"              XPos="22"  YPos="28"  Width="256" Height="64"  Transparency="true" Scale="true" />
-<Button  Name="Load Game"    Image="LoadGame"              XPos="22"  YPos="100" Width="256" Height="64"  Transparency="true" Scale="true" />
-<Button  Name="New Game"     Image="NewGame"               XPos="22"  YPos="172" Width="256" Height="64"  Transparency="true" Scale="true" />
-<Button  Name="Settings"     Image="Settings"              XPos="22"  YPos="244" Width="256" Height="64"  Transparency="true" Scale="true" />
-<Button  Name="Quit Game"    Image="QuitGame"              XPos="22"  YPos="316" Width="256" Height="64"  Transparency="true" Scale="true" />
-<Text    Name="ReadMe" Text="Please read the readme.html"  XPos="150" YPos="385" Width="150" Height="12"  FontSize="10" />
-</Screen>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Codex of Mars"
+      Desc="This highly sought-after book contains many secret fighting techniques from several martial art styles. (A) (+40 Com, Adds Brawler)"
+      Type="Misc" Badness="0" Special="None" Cost="3000" Rarity="Catacomb15" Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="40"    />
+   <Effect What="Trait" Name="Brawler"                 Amount="1"    />
+</Item>
+</Items>

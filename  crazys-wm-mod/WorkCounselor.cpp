@@ -62,7 +62,7 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			return true;
 		}
 	}
-	ss << " counceled patients.\n \n";
+	ss << " counceled patients.\n\n";
 
 
 

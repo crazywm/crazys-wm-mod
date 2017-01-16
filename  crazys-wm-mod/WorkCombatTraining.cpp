@@ -48,7 +48,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " trains for combat.\n \n";
+	ss << " trains for combat.\n\n";
 
 	g_Girls.EquipCombat(girl);	// Ready for combat training
 
@@ -85,7 +85,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (dirtyloss == 2) ss << "messy. The equipment is damaged and strewn about the building";
 	if (dirtyloss == 3) ss << "filthy and some of the equipment is broken";
 	if (dirtyloss >= 4) ss << "in complete disarray and the equipment barely usable";
-	ss << ".\n \n";
+	ss << ".\n\n";
 	if (skill < 1) skill = 1;	// always at least 1
 
 	do{		// `J` New method of selecting what job to do
@@ -274,11 +274,11 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	{
 		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
 		{
-			ss << "\n \nAll that training proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
+			ss << "\n\nAll that training proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
 		}
 		else
 		{
-			ss << "\n \nAll that training proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
+			ss << "\n\nAll that training proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
 		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}

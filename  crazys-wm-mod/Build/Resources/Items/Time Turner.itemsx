@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Time Turner"
+      Desc="An hourglass that has the power to go back in time. Practically, it is usually used to get much more done during a day than possible. (Tired -100)"
+      Type="Necklace"
+      Badness="0"
+      Special="None"
+      Cost="22000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
+</Item>
+</Items>

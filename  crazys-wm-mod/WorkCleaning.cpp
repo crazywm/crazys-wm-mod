@@ -55,7 +55,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked cleaning the brothel.\n \n";
+	ss << " worked cleaning the brothel.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
@@ -98,14 +98,14 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		enjoy += g_Dice % 2;
 		ss << "The shift passed uneventfully.";
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 	// `J` if she can clean more than is needed, she has a little free time after her shift
 	if (brothel->m_Filthiness < jobperformance / 2) playtime = true;
-	ss << "\n \nCleanliness rating improved by " << int(jobperformance);
+	ss << "\n\nCleanliness rating improved by " << int(jobperformance);
 	if (playtime)	//SIN: a bit more variation
 	{
-		ss << "\n \n" << girlName << " finished her cleaning early so ";
+		ss << "\n\n" << girlName << " finished her cleaning early so ";
 		roll_a = g_Dice % 6;
 		if (roll_a == 1 && brothel->m_RestrictOral) roll_a = 0;
 		if (roll_a == 1 && girl->has_trait( "Lesbian")) roll_a = 0;
@@ -163,7 +163,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 				tips = 20; // you tip her for cleaning you
-				ss << "she came to your room and cleaned you.\n \n" << girlName << " ran you a hot bath and bathed naked with you.";/* Need a check here so your daughters won't do this zzzzz FIXME*/
+				ss << "she came to your room and cleaned you.\n\n" << girlName << " ran you a hot bath and bathed naked with you.";/* Need a check here so your daughters won't do this zzzzz FIXME*/
 				imagetype = IMGTYPE_BATH;
 
 				if (!brothel->m_RestrictTitty)

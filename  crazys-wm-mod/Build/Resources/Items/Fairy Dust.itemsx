@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Fairy Dust"
+      Desc="Made from grinding the wings of fairies to dust, this stuff is highly addictive and can be dangerous. (+7 Hap, +7 Obed, -7 Spi, -12 Cha, -2 HP, addictive)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="100"
+      Rarity="Shop50"
+      Infinite="false"
+      GirlBuyChance="2">
+   <Effect What="Stat"  Name="Charisma"                Amount="-12"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="7"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="7"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-7"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-2"    />
+   <Effect What="Trait" Name="Fairy Dust Addict"       Amount="1"    />
+</Item>
+<Item Name="Fairy Dust"
+      Desc="Made from grinding the wings of fairies to dust, this stuff is highly addictive and can be dangerous. (+7 Hap, +7 Obed, -7 Spi, -12 Cha, -2 HP, addictive)"
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="100"
+      Rarity="Shop50"
+      Infinite="false"
+      GirlBuyChance="2">
+   <Effect What="Stat"  Name="Charisma"                Amount="-12"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="7"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="7"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-7"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-2"    />
+   <Effect What="Trait" Name="Fairy Dust Addict"       Amount="1"    />
+</Item>
+</Items>

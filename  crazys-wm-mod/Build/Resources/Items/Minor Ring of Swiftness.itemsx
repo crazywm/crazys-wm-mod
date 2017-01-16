@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Minor Ring of Swiftness" Desc="Magical ring that improves the agility of its wearer. (+15 Agility)" Type="Ring" Badness="0" Special="None" Cost="5000" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Agility" Amount="15" />
+    </Item>
+</Items>

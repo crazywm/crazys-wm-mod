@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Minor Ring of the Horndog"
+      Desc="All night, every night and they'll never know. (+30 Libido)"
+      Type="Ring"
+      Badness="10"
+      Special="None"
+      Cost="2000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Libido"                  Amount="30"    />
+</Item>
+</Items>

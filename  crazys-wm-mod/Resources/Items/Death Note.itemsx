@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Death Note" Desc="Whenever you write someone's name in this notebook, they die. (Magic +50)" 
-	Type="Small Weapon" Badness="0" Special="None" Cost="23000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
-        <Effect What="Skill" Name="Magic" Amount="50" />
-    </Item>
-</Items>

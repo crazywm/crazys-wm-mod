@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Wool Slippers"
+      Desc="Warm, comfortable woolen slippers. They're not much to look at, but as far as nice places to put your feet in go, they're hard to beat. (D) (+5 Hap, +5 Love, -5 Tired, -5 Fear, -5 Hate)"
+      Type="Shoes"
+      Badness="0"
+      Special="None"
+      Cost="20"
+      Rarity="Common"
+      Infinite="true">
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-15"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="10"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
+</Item>
+</Items>

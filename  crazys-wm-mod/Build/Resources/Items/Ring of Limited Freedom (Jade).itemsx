@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ring of Limited Freedom (Jade)"    
+      Desc="These rings are designed to allow a slave to temporarily live as a free person, albeit with strong limitations. While worn, it neutralizes any slave branding or marks, but also imposes effects to ensure the slave remains subservient to their master. The effects only go away if the master is the one to remove the ring. This variation causes a slave to feel increasingly unbearable anxiety if away from their master for any length of time. (-Slave, +10 Obedience, +Nervous, +Dependent)" 
+      Type="Ring" 
+      Badness="28" 
+      Special="None" 
+      Cost="1200" 
+      Rarity="Shop05" 
+      Infinite="false" 
+      GirlBuyChance="0">
+   <Effect What="GirlStatus" Name="Slave" Amount="0" />
+   <Effect What="Stat" Name="Obedience" Amount="10" />
+   <Effect What="Trait" Name="Dependant" Amount="1" />
+   <Effect What="Trait" Name="Nervous" Amount="1" />
+   <Effect What="Trait" Name="Nervous" Amount="1" />
+</Item>
+</Items>

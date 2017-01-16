@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Blue Bunny Egg"
+      Desc="A mysterious blue egg, when eaten, gives a person enhanced male qualities. Of course, if a female eats it they will lose some of their female charm and grow a nice sized penis."
+      Type="Food"
+      Badness="40"
+      Special="None"
+      Cost="250"
+      Rarity="Shop05"
+      Infinite="true">
+   <Effect What="Stat"  Name="Libido"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="10"    />
+   <Effect What="Stat"  Name="Strength"                Amount="-10"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="-5"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="10"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="-5"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="10"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="-10"    />
+   <Effect What="Stat"  Name="Tiredness"               Amount="-25"    />
+   <Effect What="Trait" Name="Manly"                   Amount="1"    />
+   <Effect What="Trait" Name="Futanari"                Amount="1"    />
+   <Effect What="Trait" Name="Tough"                   Amount="1"    />
+</Item>
+</Items>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Amy's Hammer"
+      Desc="The hammer used by Amy Rose. Makes the user fall in love with whoever gave it to them. (Combat +25, Love +100)"
+      Type="Weapon"
+      Badness="0"
+      Special="None"
+      Cost="9100"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Combat"                  Amount="25"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="100"    />
+</Item>
+</Items>

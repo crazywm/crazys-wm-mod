@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Doll's Ring (Lesser)"    
+      Desc="This ring makes the wearer become significantly younger, as well as giving her rather doll-like features. She becomes more fair and beautiful, but she'll also be more fragile. (-8 Age, +5 Beauty, +Lolita, +Small Boobs, -Tough, -15 Cons/Str, -30 Combat)" 
+      Type="Ring" 
+      Badness="15" 
+      Special="None" 
+      Cost="2000" 
+      Rarity="Shop05" 
+      Infinite="false" 
+      GirlBuyChance="0">
+   <Effect What="Stat" Name="Age" Amount="-8" />
+   <Effect What="Stat" Name="Constitution" Amount="-15" />
+   <Effect What="Stat" Name="Strength" Amount="-15" />
+   <Effect What="Stat" Name="Beauty" Amount="5" />
+   <Effect What="Skill" Name="Combat" Amount="-30" />
+   <Effect What="Trait" Name="Lolita" Amount="1" />
+   <Effect What="Trait" Name="Big Boobs" Amount="0" />
+   <Effect What="Trait" Name="Abnormally Large Boobs" Amount="0" />
+   <Effect What="Trait" Name="Small Boobs" Amount="1" />
+   <Effect What="Trait" Name="Tough" Amount="0" />
+</Item>
+</Items>

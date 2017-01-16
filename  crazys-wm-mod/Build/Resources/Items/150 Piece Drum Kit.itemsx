@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="150 Piece Drum Kit"
+      Desc="A 150 piece percussion set, including 360 degree ascending sky cage. (+10 Happiness, Charisma, Confidence, +5 Spirit.)"
+      Type="Misc"
+      Badness="0"
+      Special="None"
+      Cost="15000"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="10"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="10"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="5"    />
+</Item>
+</Items>

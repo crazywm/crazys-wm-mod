@@ -1,0 +1,180 @@
+Basic .girlsx file layout
+
+<?xml version="1.0" encoding="utf-8"?>
+<Girls>
+<Girl Name="@"
+      Desc="@"
+      Gold="#"
+      Virgin="!0"
+      Catacombs="!0"
+      Slave="!0"
+      Arena="!0"
+      YourDaughter="!0"
+
+      Charisma="#"
+      Happiness="#"
+      Libido="#"
+      Constitution="#"
+      Intelligence="#"
+      Confidence="#"
+      Mana="#"
+      Agility="#"
+      Fame="#"
+      Level="#"
+      AskPrice="#"
+      House="#"
+      Exp="#"
+      Age="#"
+      Obedience="#"
+      Spirit="#"
+      Beauty="#"
+      Tiredness="#"
+      Health="#"
+      PCFear="#"
+      PCLove="#"
+      PCHate="#"
+
+      Anal="#"
+      Magic="#"
+      BDSM="#"
+      NormalSex="#"
+      Beastiality="#"
+      Group="#"
+      Lesbian="#"
+      Service="#"
+      Strip="#"
+      Combat="#"
+      OralSex="#"
+      TittySex="#"
+      Medicine="#"
+      Performance="#"
+      Handjob="#"
+
+      >
+   <Trait Name="%" />
+</Girl>
+</Girls>
+
+Replace @ with text.
+Replace # with a number.
+Replace ! either Yes or No.
+Replace !0 either (Yes or 1) for Yes or (No or 0) for No.
+Replace % with a choice from a list below.
+
+The first line in the file must be the "<?xml version="1.0" encoding="utf-8"?>" line followed by the "<Girls>" line
+Each Girl must have the "<Girl ... >" with:
+ - Girl Name and Description
+ - All the Stats and Skills that are listed will be set to the # provided. If not provided, they will be set to 0.
+Each Girl must end with "</Girl>"
+The File must end with "</Girls>"
+
+After loading all the traits, the game cleans out any that are overridden by others.
+
+   <Trait Name="Small Boobs" />
+   <Trait Name="Big Boobs" />
+   <Trait Name="Abnormally Large Boobs" />
+
+   <Trait Name="Pessimist" />
+   <Trait Name="Optimist" />
+
+   <Trait Name="Broken Will" />
+   <Trait Name="Iron Will" />
+
+   <Trait Name="Lolita" />
+   <Trait Name="MILF" />
+
+   <Trait Name="Fragile" />
+   <Trait Name="Tough" />
+
+   <Trait Name="Quick Learner" />
+   <Trait Name="Slow Learner" />
+
+   <Trait Name="Gag Reflex" />
+   <Trait Name="No Gag Reflex" />
+   <Trait Name="Deep Throat" />
+
+   <Trait Name="Fake Orgasm Expert" />
+   <Trait Name="Slow Orgasms" />
+   <Trait Name="Fast Orgasms" />
+
+   <Trait Name="Princess" />
+   <Trait Name="Queen" />
+
+   <Trait Name="Aggressive" />
+   <Trait Name="Fearless" />
+   <Trait Name="Meek" />
+   <Trait Name="Dependant" />
+   <Trait Name="Nervous" />
+
+   <Trait Name="Perky Nipples" />
+   <Trait Name="Puffy Nipples" />
+
+   <Trait Name="Different Colored Eyes" />
+   <Trait Name="Eye Patch" />
+   <Trait Name="One Eye" />
+   <Trait Name="Strange Eyes" />
+
+   <Trait Name="Not Human" />
+   <Trait Name="Cat Girl" />
+   <Trait Name="Demon" />
+   <Trait Name="Futanari" />
+   <Trait Name="Shape Shifter" />
+   <Trait Name="Construct" />
+   <Trait Name="Half-Construct" />
+   <Trait Name="Incorporeal" />
+
+   <Trait Name="Cool Scars" />
+   <Trait Name="Small Scars" />
+   <Trait Name="Horrific Scars" />
+
+
+   
+Other Traits that probably do not have conflicts with any others
+   <Trait Name="Adventurer" />
+   <Trait Name="Assassin" />
+   <Trait Name="Charismatic" />
+   <Trait Name="Charming" />
+   <Trait Name="Clumsy" />
+   <Trait Name="Cool Person" />
+   <Trait Name="Cute" />
+   <Trait Name="Elegant" />
+   <Trait Name="Fleet of Foot" />
+   <Trait Name="Good Kisser" />
+   <Trait Name="Great Arse" />
+   <Trait Name="Great Figure" />
+   <Trait Name="Lesbian" />
+   <Trait Name="Long Legs" />
+   <Trait Name="Malformed" />
+   <Trait Name="Manly" />
+   <Trait Name="Masochist" />
+   <Trait Name="Merciless" />
+   <Trait Name="Mind Fucked" />
+   <Trait Name="Nerd" />
+   <Trait Name="Nymphomaniac" />
+   <Trait Name="Pierced Clit" />
+   <Trait Name="Pierced Nipples" />
+   <Trait Name="Pierced Tongue" />
+   <Trait Name="Psychic" />
+   <Trait Name="Retarded" />
+   <Trait Name="Sadistic" />
+   <Trait Name="Sexy Air" />
+   <Trait Name="Sterile" />
+   <Trait Name="Strong Magic" />
+   <Trait Name="Strong" />
+   <Trait Name="Tsundere" />
+   <Trait Name="Twisted" />
+   <Trait Name="Yandere" />
+
+   <Trait Name="Virgin" />
+   <Trait Name="Incest" />
+   <Trait Name="Your Daughter" />
+   
+STDs and Diseases
+   <Trait Name="AIDS" />
+   <Trait Name="Chlamydia" />
+   <Trait Name="Syphilis" />
+   <Trait Name="Fairy Dust Addict" />
+   <Trait Name="Shroud Addict" />
+   <Trait Name="Viras Blood Addict" />
+
+   

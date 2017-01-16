@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Eggscellent Hat"
+      Desc="A trucker cap that says I'm Eggscellent. You can't just buy this with money. (Happiness, Charisma, Constitution, Fame, Beauty +10.)"
+      Type="Hat"
+      Badness="0"
+      Special="None"
+      Cost="9990"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="10"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="10"    />
+   <Effect What="Stat"  Name="Fame"                    Amount="10"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="10"    />
+</Item>
+</Items>

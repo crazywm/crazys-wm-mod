@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Stop Smoking Now Patch" Desc="If you want a girl to quit smoking all together, slap one of these on her arm and it will draw out all the nicotine from her body. This may have some side effects.  (Removes Smoker, +10 Tired, +5 Happy/Health/Conf)"
+    Type="Food" Badness="0" Special="None" Cost="2000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="10" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Trait" Name="Smoker" Amount="0" />
+    </Item>
+    <Item Name="Stop  Smoking Now Patch" Desc="If you want a girl to quit smoking all together, slap one of these on her arm and it will draw out all the nicotine from her body. This may have some side effects.  (Removes Smoker, +10 Tired, +5 Happy/Health/Conf)"
+    Type="Food" Badness="0" Special="None" Cost="2000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="10" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="Morality" Amount="-3" />
+        <Effect What="Trait" Name="Smoker" Amount="0" />
+    </Item>
+    <Item Name="Stop Smoking  Now Patch" Desc="If you want a girl to quit smoking all together, slap one of these on her arm and it will draw out all the nicotine from her body. This may have some side effects.  (Removes Smoker, +10 Tired, +5 Happy/Health/Conf)"
+    Type="Food" Badness="0" Special="None" Cost="2000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="10" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Trait" Name="Smoker" Amount="0" />
+        <Effect What="Trait" Name="Small Scars" Amount="1" />
+    </Item>
+    <Item Name="Stop Smoking Now  Patch" Desc="If you want a girl to quit smoking all together, slap one of these on her arm and it will draw out all the nicotine from her body. This may have some side effects.  (Removes Smoker, +10 Tired, +5 Happy/Health/Conf)"
+    Type="Food" Badness="0" Special="None" Cost="2000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="10" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="Constitution" Amount="-1" />
+        <Effect What="Trait" Name="Smoker" Amount="0" />
+    </Item>
+    <Item Name="Stop Smoking Now  Patch " Desc="If you want a girl to quit smoking all together, slap one of these on her arm and it will draw out all the nicotine from her body. This may have some side effects.  (Removes Smoker, +10 Tired, +5 Happy/Health/Conf)"
+    Type="Food" Badness="0" Special="None" Cost="2000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="10" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="Intelligence" Amount="-2" />
+        <Effect What="Trait" Name="Smoker" Amount="0" />
+    </Item>
+    <Item Name="Stop Smoking Now Patch " Desc="If you want a girl to quit smoking all together, slap one of these on her arm and it will draw out all the nicotine from her body. This may have some side effects.  (Removes Smoker, +10 Tired, +5 Happy/Health/Conf)"
+    Type="Food" Badness="0" Special="None" Cost="2000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Tiredness" Amount="10" />
+        <Effect What="Stat" Name="Happiness" Amount="5" />
+        <Effect What="Stat" Name="Health" Amount="5" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+        <Effect What="Stat" Name="Intelligence" Amount="2" />
+        <Effect What="Trait" Name="Smoker" Amount="0" />
+    </Item>
+</Items>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Plugsuit"
+      Desc="A skin-tight wonder of modern technology, the plugsuit was created by a techno-mage to help pilots connect with massive biosteel golems.  Now, their curve-hugging properties are put to a slightly different use... (Strip +20, Com +5, Str +5, Cha +30, Bea +35, Con +10, Adds Great Figure/Arse, Long Legs)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="1750"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Strip"                   Amount="20"    />
+   <Effect What="Skill" Name="Combat"                  Amount="5"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="30"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="35"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="10"    />
+   <Effect What="Stat"  Name="Strength"                Amount="5" />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+</Item>
+<Item Name="Plugsuit X"
+      Desc="A skin-tight wonder of modern technology, the plugsuit was created by a techno-mage to help pilots connect with massive biosteel golems.  Now, their curve-hugging properties are put to a slightly different use... but this suit has a hidden use. She gains bigger boobs!(Strip +20, Com +5, Str +5, Cha +30, Bea +35, Con +10, Adds Great Figure/Arse, Long Legs, Big Boobs)"
+      Type="Dress"
+      Badness="0"
+      Special="None"
+      Cost="2750"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Strip"                   Amount="20"    />
+   <Effect What="Skill" Name="Combat"                  Amount="5"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="30"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="35"    />
+   <Effect What="Stat"  Name="Constitution"            Amount="10"    />
+   <Effect What="Stat"  Name="Strength"                Amount="5" />
+   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
+   <Effect What="Trait" Name="Small Boobs"             Amount="0" />
+   <Effect What="Trait" Name="Big Boobs"               Amount="1" />
+</Item>
+</Items>

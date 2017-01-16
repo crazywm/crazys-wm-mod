@@ -1,0 +1,12 @@
+<Screen>
+<Window   Name="Transfer Girls"                                                XPos="60"	YPos="40"	Width="1800"	Height="1000"	Border="1" />
+<Text     Name="LabelLeft"              Text="BROTHELS"                        XPos="50"	YPos="50"	Width="300"	Height="50"	FontSize="32" />
+<ListBox  Name="BrothelLeft"                                                   XPos="50"	YPos="100"	Width="300"	Height="400"	FontSize="16"	RowHeight="30"	Border="1" />
+<ListBox  Name="ListLeft"                                                      XPos="400"	YPos="50"	Width="400"	Height="900"	FontSize="16"	RowHeight="30"	Border="1" />
+<Button   Name="ShiftLeft"              Image="ShiftLeft"                      XPos="850"	YPos="350"	Width="100"	Height="100"	Transparency="true"	Scale="true" />
+<Button   Name="ShiftRight"             Image="ShiftRight"                     XPos="850"	YPos="550"	Width="100"	Height="100"	Transparency="true"	Scale="true" />
+<ListBox  Name="ListRight"                                                     XPos="1000"	YPos="50"	Width="400"	Height="900"	FontSize="16"	RowHeight="30"	Border="1" />
+<Text     Name="LabelRight"             Text="BROTHELS"                        XPos="1450"	YPos="50"	Width="300"	Height="50"	FontSize="32" />
+<ListBox  Name="BrothelRight"                                                  XPos="1450"	YPos="100"	Width="300"	Height="400"	FontSize="16"	RowHeight="30"	Border="1" />
+<Button   Name="Back"                   Image="Back"                           XPos="1510"	YPos="930"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+</Screen>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Elven Tiara"
+		Desc="This mithril tiara is a proof of the mastery of elven blacksmiths and jewelcrafters. (+10 Charisma, +15 Refinement, +5 Magic)"
+		Type="Hat"
+		Badness="0"
+		Special="None"
+		Cost="4000"
+		Rarity="Catacomb15"
+		Infinite="false"
+		ItemWeight="0.0">
+		<Effect
+			What="Skill"
+			Name="Magic"
+			Amount="5" />
+		<Effect
+			What="Stat"
+			Name="Charisma"
+			Amount="10" />
+		<Effect
+			What="Stat"
+			Name="Refinement"
+			Amount="15" />
+	</Item>
+</Items>

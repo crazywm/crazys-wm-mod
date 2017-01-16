@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Thigh-High Latex Boots" Desc="Shiny thigh-high, black latex boots with high heels. (+7 Cha, +2 Beauty, +8 BDSM, -10 Agi, -10 Comb, +5 Conf)" Type="Shoes" Badness="22" Special="None" Cost="550" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Charisma" Amount="7" />
+        <Effect What="Stat" Name="Beauty" Amount="2" />
+        <Effect What="Skill" Name="BDSM" Amount="8" />
+        <Effect What="Stat" Name="Agility" Amount="-10" />
+        <Effect What="Skill" Name="Combat" Amount="-10" />
+        <Effect What="Stat" Name="Confidence" Amount="5" />
+    </Item>
+</Items>

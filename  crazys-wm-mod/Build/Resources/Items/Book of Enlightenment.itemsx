@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Book of Enlightenment"
+      Desc="Read within these pages and be enlightened, seeker. (+Quick learner -Slow learner)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="0"    />
+</Item>
+<Item Name="Book of Enlightenment"
+      Desc="Read within these pages and be enlightened, seeker. (+Quick learner -Slow learner)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="5000"
+      Rarity="Shop25"
+      Infinite="false">
+   <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+   <Effect What="Trait" Name="Slow Learner"            Amount="0"    />
+</Item>
+</Items>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Diamond Necklace" Desc="Platinum necklace with inlaid diamonds, elegant and expensive. (+15 Cha/Refine, +5 Bea, +20 Love, -10 Hate)"
+    Type="Necklace" Badness="0" Special="None" Cost="3000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Charisma" Amount="15" />
+        <Effect What="Stat" Name="Refinement" Amount="15" />
+        <Effect What="Stat" Name="PCLove" Amount="20" />
+        <Effect What="Stat" Name="PCHate" Amount="-10" />
+        <Effect What="Stat" Name="Beauty" Amount="5" />
+    </Item>
+</Items>

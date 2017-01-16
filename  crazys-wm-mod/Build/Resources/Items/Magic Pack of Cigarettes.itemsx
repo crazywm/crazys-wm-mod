@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Magic Pack of Cigarettes" Desc="Ground tobacco rolled in small paper tubes, full of nicotine. Pack of 10. This magical pack is always full. Highly addictive. (+5 Hap, -2 HP, -5 Tired, -10 Mana)"
+    Type="Food" Badness="20" Special="None" Cost="2000" Rarity="Shop05" Infinite="false" GirlBuyChance="1" ItemWeight="0.01">
+        <Effect What="Stat"  Name="Happiness"   Amount="5" />
+        <Effect What="Stat"  Name="Health"      Amount="-2" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-5" />
+        <Effect What="Stat"  Name="Mana"        Amount="-10" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+    <Item Name="Magic Pack of Cigarettes" Desc="Ground tobacco rolled in small paper tubes, full of nicotine. Pack of 10. This magical pack is always full. Highly addictive. (+5 Hap, -2 HP, -5 Tired, -10 Mana)"
+    Type="Food" Badness="20" Special="None" Cost="2000" Rarity="Catacomb15" Infinite="false" GirlBuyChance="1" ItemWeight="0.01">
+        <Effect What="Stat"  Name="Happiness"   Amount="5" />
+        <Effect What="Stat"  Name="Health"      Amount="-2" />
+        <Effect What="Stat"  Name="Tiredness"   Amount="-5" />
+        <Effect What="Stat"  Name="Mana"        Amount="-10" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+        <Effect What="Trait" Name="Smoker"      Amount="1" />
+    </Item>
+</Items>

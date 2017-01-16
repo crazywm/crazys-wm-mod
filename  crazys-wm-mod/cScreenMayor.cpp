@@ -112,7 +112,7 @@ void cScreenMayor::init()
 	{
 		ss << "Your influence: " << PlayersInfluence << "%\nNo Rivals";
 	}
-	ss << "\n \nNumber of girls in prison: " << g_Brothels.GetNumInPrison();
+	ss << "\n\nNumber of girls in prison: " << g_Brothels.GetNumInPrison();
 	EditTextItem(ss.str(), details_id);
 }
 

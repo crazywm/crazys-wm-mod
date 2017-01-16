@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Wooden Buckler"
+		Desc="This small shields looks more like the lid of a small barrel, but it might still catch a few blows. (adds Brawler)"
+		Type="Shield"
+		Badness="15"
+		Special="None"
+		Cost="70"
+		Rarity="Common"
+		Infinite="false"
+		GirlBuyChance="3">
+		<Effect
+			What="Trait"
+			Name="Brawler"
+			Amount="1" />
+	</Item>
+</Items>

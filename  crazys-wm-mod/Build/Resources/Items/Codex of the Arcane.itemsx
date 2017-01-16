@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Codex of the Arcane"
+      Desc="This black-bound book details ancient rituals used by long-forgotten mages to enhance their power. The instructions are clear enough for anyone to read, and even a complete novice could become a competent mage by following the mental exercises it details. (A) (+40 Mag)"
+      Type="Misc" Badness="0" Special="None" Cost="3000" Rarity="Catacomb15" Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="40"    />
+</Item>
+</Items>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Chatty Flowers"
+      Desc="This is a bouquet of colorful flowers... that talk.  They're decent conversationalists, quite knowledgeable, and they usually know a song or two! Even better, they don't mind when they're told to shut up and be pretty for a while. (S) (+50 Love, +50 Hap, +2 Int +optimist)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="3500"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
+   <Effect What="Stat"  Name="Intelligence"            Amount="2"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="50"    />
+   <Effect What="Trait" Name="Optimist"                Amount="1"    />
+</Item>
+</Items>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ring of Charisma"
+      Desc="This blood red band is more knowledgeable and aggressive than the minor ring in making you the life of the party. (+50 Charisma)"
+      Type="Ring"
+      Badness="0"
+      Special="None"
+      Cost="6000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Charisma"                Amount="50"    />
+</Item>
+</Items>

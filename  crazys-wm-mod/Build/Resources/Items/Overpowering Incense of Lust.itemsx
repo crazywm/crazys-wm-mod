@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Overpowering Incense of Lust" Desc="This specially-formulated incense will make your girls crazy about sex. It is so potent that, so long as the scent lingers, everyone in the building will be so horny they can't see straight. (temporary, all girls: libido +80, intelligence -30, adds slut)"
+        Type="Food" Badness="0" Special="AffectsAll" Cost="3000" Rarity="Shop05" Infinite="false" GirlBuyChance="0.0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Libido" Amount="80" />
+        <Effect What="Stat" Name="Intelligence" Amount="-30" />
+        <Effect What="Trait" Name="Slut" Amount="1" />
+    </Item>
+</Items>

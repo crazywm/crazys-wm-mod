@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Corset of Illusion"    
+      Desc="When placed around a girl's body, this corset constricts very tightly, accentuating her form. In addition, it creates the illusion of a tight, attractive dress that the wearer can customize at will. The tightness can be rather uncomfortable and makes normal movement more difficult, though. (+15 Cha, +6 Beauty, -25 Agi, +5 Fear, +Great Figure, +Great Arse)" 
+      Type="Dress" 
+      Badness="21" 
+      Special="None" 
+      Cost="2200" 
+      Rarity="Shop25" 
+      Infinite="false">
+   <Effect What="Stat" Name="Charisma" Amount="15" />
+   <Effect What="Stat" Name="Beauty" Amount="6" />
+   <Effect What="Stat" Name="Agility" Amount="-25" />
+   <Effect What="Stat" Name="PCFear" Amount="5" />
+   <Effect What="Trait" Name="Great Figure" Amount="1" />
+   <Effect What="Trait" Name="Great Arse" Amount="1" />
+</Item>
+</Items>

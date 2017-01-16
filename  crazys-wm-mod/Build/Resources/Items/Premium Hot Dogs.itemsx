@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Premium Hot Dogs"
+      Desc="Made with real ingredients! (Health +3, Happiness +1, Love +1)"
+      Type="Food"
+      Badness="0"
+      Special="None"
+      Cost="170"
+      Rarity="Common"
+      Infinite="true">
+   <Effect What="Stat"  Name="PCLove"                  Amount="1"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="1"    />
+   <Effect What="Stat"  Name="Health"                  Amount="3"    />
+</Item>
+</Items>

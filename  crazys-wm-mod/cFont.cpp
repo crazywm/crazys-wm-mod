@@ -1,18 +1,18 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Devloment Team are defined as the game's coders
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
@@ -74,7 +74,7 @@ void cFont::RenderMultilineText(string text)
 	int charwidth, charheight;
 	int width = m_Width - 10;  // pad the sides a bit, it was otherwise slightly overflowing
 
-	// -- Get until either ' ' or '\n' 
+	// -- Get until either ' ' or '\n'
 	while (n != -1)
 	{
 		string strSub;
@@ -300,8 +300,7 @@ void cFont::Free()
 
 string cFont::UpdateLineEndings(string text)
 {
-#ifndef LINUX
-	// for Windows, double "\n \n" newline characters were showing up as one newline and a boxy (bad) character...
+	// for Windows, double "\n\n" newline characters were showing up as one newline and a boxy (bad) character...
 	// so, here's a cheap-ass workaround to add a "\r" carriage return in front of each "\n" for Windows
 	int pos = text.find("\n", 0);
 	while (pos != string::npos)
@@ -309,6 +308,5 @@ string cFont::UpdateLineEndings(string text)
 		text.insert(pos, "\r");
 		pos = text.find("\n", pos + 2);
 	}
-#endif
 	return text;
 }

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Nightmare Orb"
+        Desc="At first glance, this pretty crystal ball filled with mesmerizing purple mist seems to be simple decoration for a girl's bedroom. However, it is the focus of a powerful spell, a spell that ensures that she dreams only of you... and that these dreams are terrifying. (+10 Fear -Fearless)"
+        Type="Misc"
+        Badness="0"
+        Special="None"
+        Cost="700"
+        Rarity="Shop25"
+        Infinite="false"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Stat"
+            Name="PCFear"
+            Amount="10" />
+        <Effect
+            What="Trait"
+            Name="Fearless"
+            Amount="0" />
+    </Item>
+</Items>

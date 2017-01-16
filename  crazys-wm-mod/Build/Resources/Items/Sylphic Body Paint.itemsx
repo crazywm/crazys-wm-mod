@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Sylphic Body Paint"
+      Desc="When applied to the bare skin, this sweet-smelling paste seems to reshape the body, creating beauty where it may have been lacking and leaving no flaw behind. (+100 Beauty, temporary)"
+      Type="Food"
+      Badness="0"
+      Special="Temporary"
+      Cost="10000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="Beauty"                  Amount="100"    />
+</Item>
+</Items>

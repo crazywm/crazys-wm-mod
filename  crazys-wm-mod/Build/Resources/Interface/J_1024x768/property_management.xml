@@ -1,0 +1,161 @@
+<Screen>
+<Window	Name="Property Setup Window"						XPos="15"	YPos="12"	Width="770"	Height="578"	Border="1"	/>
+
+<Text    	Name="PotionCost"	Text="Anti-Preg Potions: 2 gold each"	XPos="450"	YPos="25"	Width="200"	Height="20"	FontSize="10"/>
+
+
+
+
+<Text    	Name="P_Ho_Name"		Text=""					XPos="10"	YPos="50"	Width="200"	Height="50"	FontSize="16"/>
+<Checkbox	Name="P_Ho_NoAnal"	Text="."					XPos="220"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_NoBDSM"	Text="."					XPos="240"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_NoNorm"	Text="."					XPos="260"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_NoBeast"	Text="."					XPos="280"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_NoGroup"	Text="."					XPos="300"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_NoLes"		Text="."					XPos="320"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_NoOral"	Text="."					XPos="340"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_NoTitty"	Text="."					XPos="360"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_NoHandJob"	Text="."					XPos="380"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_Ho_Pot_B"		Text="."					XPos="450"	YPos="50"	Width="16"	Height="16"	FontSize="1"/>
+<Text    	Name="P_Ho_Pot_A"		Text="You have: 0"			XPos="470"	YPos="50"	Width="160"	Height="32"	FontSize="10"/>
+<Slider	Name="P_Ho_AdvSlid"							XPos="220"	YPos="70"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
+<Text    	Name="P_Ho_AdvAmnt"	Text="0 gold / week"			XPos="420"	YPos="70"	Width="200"	Height="16"	FontSize="10"/>
+
+<Text    	Name="P_B0_Name"		Text=""					XPos="10"	YPos="100"	Width="200"	Height="50"	FontSize="16"/>
+<Checkbox	Name="P_B0_NoAnal"	Text="."					XPos="220"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_NoBDSM"	Text="."					XPos="240"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_NoNorm"	Text="."					XPos="260"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_NoBeast"	Text="."					XPos="280"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_NoGroup"	Text="."					XPos="300"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_NoLes"		Text="."					XPos="320"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_NoOral"	Text="."					XPos="340"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_NoTitty"	Text="."					XPos="360"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_NoHandJob"	Text="."					XPos="380"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B0_Pot_B"		Text="."					XPos="450"	YPos="100"	Width="16"	Height="16"	FontSize="1"/>
+<Text    	Name="P_B0_Pot_A"		Text="You have: 0"			XPos="470"	YPos="100"	Width="160"	Height="32"	FontSize="10"/>
+<Slider	Name="P_B0_AdvSlid"							XPos="220"	YPos="120"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
+<Text    	Name="P_B0_AdvAmnt"	Text="0 gold / week"			XPos="420"	YPos="120"	Width="200"	Height="16"	FontSize="10"/>
+
+<Text    	Name="P_B1_Name"		Text=""					XPos="10"	YPos="150"	Width="200"	Height="50"	FontSize="16"/>
+<Checkbox	Name="P_B1_NoAnal"	Text="."					XPos="220"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_NoBDSM"	Text="."					XPos="240"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_NoNorm"	Text="."					XPos="260"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_NoBeast"	Text="."					XPos="280"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_NoGroup"	Text="."					XPos="300"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_NoLes"		Text="."					XPos="320"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_NoOral"	Text="."					XPos="340"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_NoTitty"	Text="."					XPos="360"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_NoHandJob"	Text="."					XPos="380"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B1_Pot_B"		Text="."					XPos="450"	YPos="150"	Width="16"	Height="16"	FontSize="1"/>
+<Text    	Name="P_B1_Pot_A"		Text="You have: 0"			XPos="470"	YPos="150"	Width="160"	Height="32"	FontSize="10"/>
+<Slider	Name="P_B1_AdvSlid"							XPos="220"	YPos="170"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
+<Text    	Name="P_B1_AdvAmnt"	Text="0 gold / week"			XPos="420"	YPos="170"	Width="200"	Height="16"	FontSize="10"/>
+
+<Text    	Name="P_B2_Name"		Text=""					XPos="10"	YPos="200"	Width="200"	Height="50"	FontSize="16"/>
+<Checkbox	Name="P_B2_NoAnal"	Text="."					XPos="220"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_NoBDSM"	Text="."					XPos="240"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_NoNorm"	Text="."					XPos="260"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_NoBeast"	Text="."					XPos="280"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_NoGroup"	Text="."					XPos="300"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_NoLes"		Text="."					XPos="320"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_NoOral"	Text="."					XPos="340"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_NoTitty"	Text="."					XPos="360"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_NoHandJob"	Text="."					XPos="380"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B2_Pot_B"		Text="."					XPos="450"	YPos="200"	Width="16"	Height="16"	FontSize="1"/>
+<Text    	Name="P_B2_Pot_A"		Text="You have: 0"			XPos="470"	YPos="200"	Width="160"	Height="32"	FontSize="10"/>
+<Slider	Name="P_B2_AdvSlid"							XPos="220"	YPos="220"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
+<Text    	Name="P_B2_AdvAmnt"	Text="0 gold / week"			XPos="420"	YPos="220"	Width="200"	Height="16"	FontSize="10"/>
+
+<Text    	Name="P_B3_Name"		Text=""					XPos="10"	YPos="250"	Width="200"	Height="50"	FontSize="16"/>
+<Checkbox	Name="P_B3_NoAnal"	Text="."					XPos="220"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_NoBDSM"	Text="."					XPos="240"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_NoNorm"	Text="."					XPos="260"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_NoBeast"	Text="."					XPos="280"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_NoGroup"	Text="."					XPos="300"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_NoLes"		Text="."					XPos="320"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_NoOral"	Text="."					XPos="340"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_NoTitty"	Text="."					XPos="360"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_NoHandJob"	Text="."					XPos="380"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B3_Pot_B"		Text="."					XPos="450"	YPos="250"	Width="16"	Height="16"	FontSize="1"/>
+<Text    	Name="P_B3_Pot_A"		Text="You have: 0"			XPos="470"	YPos="250"	Width="160"	Height="32"	FontSize="10"/>
+<Slider	Name="P_B3_AdvSlid"							XPos="220"	YPos="270"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
+<Text    	Name="P_B3_AdvAmnt"	Text="0 gold / week"			XPos="420"	YPos="270"	Width="200"	Height="16"	FontSize="10"/>
+
+<Text    	Name="P_B4_Name"		Text=""					XPos="10"	YPos="300"	Width="200"	Height="50"	FontSize="16"/>
+<Checkbox	Name="P_B4_NoAnal"	Text="."					XPos="220"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_NoBDSM"	Text="."					XPos="240"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_NoNorm"	Text="."					XPos="260"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_NoBeast"	Text="."					XPos="280"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_NoGroup"	Text="."					XPos="300"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_NoLes"		Text="."					XPos="320"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_NoOral"	Text="."					XPos="340"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_NoTitty"	Text="."					XPos="360"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_NoHandJob"	Text="."					XPos="380"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B4_Pot_B"		Text="."					XPos="450"	YPos="300"	Width="16"	Height="16"	FontSize="1"/>
+<Text    	Name="P_B4_Pot_A"		Text="You have: 0"			XPos="470"	YPos="300"	Width="160"	Height="32"	FontSize="10"/>
+<Slider	Name="P_B4_AdvSlid"							XPos="220"	YPos="320"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
+<Text    	Name="P_B4_AdvAmnt"	Text="0 gold / week"			XPos="420"	YPos="320"	Width="200"	Height="16"	FontSize="10"/>
+
+<Text    	Name="P_B5_Name"		Text=""					XPos="10"	YPos="350"	Width="200"	Height="50"	FontSize="16"/>
+<Checkbox	Name="P_B5_NoAnal"	Text="."					XPos="220"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_NoBDSM"	Text="."					XPos="240"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_NoNorm"	Text="."					XPos="260"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_NoBeast"	Text="."					XPos="280"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_NoGroup"	Text="."					XPos="300"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_NoLes"		Text="."					XPos="320"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_NoOral"	Text="."					XPos="340"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_NoTitty"	Text="."					XPos="360"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_NoHandJob"	Text="."					XPos="380"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B5_Pot_B"		Text="."					XPos="450"	YPos="350"	Width="16"	Height="16"	FontSize="1"/>
+<Text    	Name="P_B5_Pot_A"		Text="You have: 0"			XPos="470"	YPos="350"	Width="160"	Height="32"	FontSize="10"/>
+<Slider	Name="P_B5_AdvSlid"							XPos="220"	YPos="370"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
+<Text    	Name="P_B5_AdvAmnt"	Text="0 gold / week"			XPos="420"	YPos="370"	Width="200"	Height="16"	FontSize="10"/>
+
+<Text    	Name="P_B6_Name"		Text=""					XPos="10"	YPos="400"	Width="200"	Height="50"	FontSize="16"/>
+<Checkbox	Name="P_B6_NoAnal"	Text="."					XPos="220"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_NoBDSM"	Text="."					XPos="240"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_NoNorm"	Text="."					XPos="260"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_NoBeast"	Text="."					XPos="280"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_NoGroup"	Text="."					XPos="300"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_NoLes"		Text="."					XPos="320"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_NoOral"	Text="."					XPos="340"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_NoTitty"	Text="."					XPos="360"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_NoHandJob"	Text="."					XPos="380"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Checkbox	Name="P_B6_Pot_B"		Text="."					XPos="450"	YPos="400"	Width="16"	Height="16"	FontSize="1"/>
+<Text    	Name="P_B6_Pot_A"		Text="You have: 0"			XPos="470"	YPos="400"	Width="160"	Height="32"	FontSize="10"/>
+<Slider	Name="P_B6_AdvSlid"							XPos="220"	YPos="420"	Width="200"	MinValue="0"	MaxValue="2000"	Value="0"	Increment="100"	LiveUpdate="true"	Hidden="false"	Disabled="false"/>
+<Text    	Name="P_B6_AdvAmnt"	Text="0 gold / week"			XPos="420"	YPos="420"	Width="200"	Height="16"	FontSize="10"/>
+
+
+
+
+
+
+<Text    	Name="P_B1_Name"	Text=""						XPos="10"	YPos="240"	Width="200"	Height="32"	FontSize="16"/>
+<Text    	Name="P_B2_Name"	Text=""						XPos="10"	YPos="260"	Width="200"	Height="32"	FontSize="16"/>
+<Text    	Name="P_B3_Name"	Text=""						XPos="10"	YPos="280"	Width="200"	Height="32"	FontSize="16"/>
+<Text    	Name="P_B4_Name"	Text=""						XPos="10"	YPos="300"	Width="200"	Height="32"	FontSize="16"/>
+<Text    	Name="P_B5_Name"	Text=""						XPos="10"	YPos="320"	Width="200"	Height="32"	FontSize="16"/>
+<Text    	Name="P_B6_Name"	Text=""						XPos="10"	YPos="340"	Width="200"	Height="32"	FontSize="16"/>
+<Text    	Name="P_St_Name"	Text=""						XPos="10"	YPos="360"	Width="200"	Height="32"	FontSize="16"/>
+<Text    	Name="P_Ar_Name"	Text=""						XPos="10"	YPos="380"	Width="200"	Height="32"	FontSize="16"/>
+<Text    	Name="P_Ce_Name"	Text=""						XPos="10"	YPos="400"	Width="200"	Height="32"	FontSize="16"/>
+<Text    	Name="P_Cl_Name"	Text=""						XPos="10"	YPos="420"	Width="200"	Height="32"	FontSize="16"/>
+
+
+<Button  	Name="BackButton"	Image="Back"					XPos="600"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+
+<!--
+<Text    	Name="SexRestrictions"	Text="Sex Restrictions:"		XPos="230"	YPos="170"	Width="200"	Height="32"	FontSize="19"/>
+
+
+
+<Button  	Name="10PotionsButton"	Image="Buy10"				XPos="32"	YPos="64"	Width="72"	Height="32"	Transparency="true"	Scale="true"/>
+<Button  	Name="20PotionsButton"	Image="Buy20"				XPos="112"	YPos="64"	Width="72"	Height="32"	Transparency="true"	Scale="true"/>
+<Text    	Name="AvailablePotions"	Text="You have: 0"			XPos="118"	YPos="102"	Width="160"	Height="32"	FontSize="13"/>
+<Text    	Name="RoomAddCost"	Text="Add Rooms: 5000 gold"		XPos="365"	YPos="139"	Width="160"	Height="32"	FontSize="13"/>
+<Button  	Name="BuildRoomsButton"	Image="BuildMoreRooms"			XPos="519"	YPos="134"	Width="160"	Height="32"	Transparency="true"	Scale="true"/>
+-->
+
+
+</Screen>

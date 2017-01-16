@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Mage Slippers"    
+      Desc="These shoes are designed to be a true dream for any magic user. They're quite comfortable, and they slightly enhance the magic ability of the wearer. Better still, they're enchanted to appear like whatever footwear the owner desires, ensuring they'll always look good with anything. (+10 Cha, +5 Magic, +5 Agi, -5 Fear)" 
+      Type="Shoes" 
+      Badness="10" 
+      Special="None" 
+      Cost="700" 
+      Rarity="Shop25" 
+      Infinite="false" 
+      GirlBuyChance="10">
+   <Effect What="Stat" Name="PCFear" Amount="-5" />
+   <Effect What="Stat" Name="Charisma" Amount="10" />
+   <Effect What="Stat" Name="Agility" Amount="5" />
+   <Effect What="Skill" Name="Magic" Amount="5" />
+</Item>
+</Items>

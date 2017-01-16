@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Gold Bangle" Desc="Handcrafted gold bangle with a beautiful decoration carved around it. (+5 Charisma, +12 Refinement)"
+    Type="Armband" Badness="0" Special="None" Cost="1500" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Charisma" Amount="5" />
+        <Effect What="Stat" Name="Refinement" Amount="12" />
+    </Item>
+</Items>

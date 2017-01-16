@@ -72,7 +72,7 @@ bool cJobManager::WorkGetTubesTied(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	ss << " is in the Clinic to get her tubes tied.\n \n";
+	ss << " is in the Clinic to get her tubes tied.\n\n";
 
 	int msgtype = Day0Night1;
 	g_Girls.UnequipCombat(girl);	// not for patient

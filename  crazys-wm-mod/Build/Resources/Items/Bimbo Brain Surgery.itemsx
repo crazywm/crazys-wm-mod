@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Bimbo Brain Surgery"
+      Desc="Does your girl look right, but you just wish she acted a little differently? Well, here's your solution! (+Bimbofication)"
+      Type="Food"
+      Badness="25"
+      Special="None"
+      Cost="2200"
+      Rarity="Shop05"
+      Infinite="false">
+   <Effect What="Stat"  Name="Intelligence"            Amount="-100"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="100"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="50"    />
+   <Effect What="Stat"  Name="Health"                  Amount="-20"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="-20"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="50"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-50"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-10"    />
+   <Effect What="Skill" Name="Medicine"                Amount="-30"    />
+   <Effect What="Skill" Name="Crafting"                Amount="-10"    />
+   <Effect What="Skill" Name="Herbalism"               Amount="-20"    />
+   <Effect What="Skill" Name="Farming"                 Amount="-10"    />
+   <Effect What="Skill" Name="Brewing"                 Amount="-10"    />
+   <Effect What="Trait" Name="Bimbo"                   Amount="1"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+   <Effect What="Trait" Name="Retarded"                Amount="1"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="1"    />
+   <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Effect What="Trait" Name="Nerd"                    Amount="0"    />
+   <Effect What="Trait" Name="Assassin"                Amount="0"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+   <Effect What="Trait" Name="Meek"                    Amount="0"    />
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+   <Effect What="Trait" Name="Slow Orgasms"            Amount="0"    />
+   <Effect What="Trait" Name="Cool Person"             Amount="0"    />
+</Item>
+</Items>

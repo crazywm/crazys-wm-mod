@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Tonfa" Desc="A weapon from a far away land. It looks somewhat like a police baton with a handle sticking out of the side. (+2 Con, +5 Com, -10 Fear, -5 Hate, +2 Conf)" 
+	Type="Small Weapon" Badness="0" Special="None" Cost="250" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="5" />
+        <Effect What="Stat" Name="Confidence" Amount="2" />
+        <Effect What="Stat" Name="Constitution" Amount="2" />
+        <Effect What="Stat" Name="PCFear" Amount="-10" />
+        <Effect What="Stat" Name="PCHate" Amount="-5" />
+    </Item>
+    <Item Name="Tonfa" Desc="A weapon from a far away land. It looks somewhat like a police baton with a handle sticking out of the side. (+2 Con, +5 Com, -10 Fear, -5 Hate, +2 Conf)" 
+	Type="Small Weapon" Badness="0" Special="None" Cost="250" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Combat" Amount="5" />
+        <Effect What="Stat" Name="Confidence" Amount="2" />
+        <Effect What="Stat" Name="Constitution" Amount="2" />
+        <Effect What="Stat" Name="PCFear" Amount="-10" />
+        <Effect What="Stat" Name="PCHate" Amount="-5" />
+    </Item>
+</Items>

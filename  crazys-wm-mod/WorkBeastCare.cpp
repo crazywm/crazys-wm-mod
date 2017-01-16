@@ -48,11 +48,11 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked taking care of beasts.\n \n";
+	ss << " worked taking care of beasts.\n\n";
 
 	if (g_Brothels.m_Beasts < 1)
 	{
-		ss << "There were no beasts in the brothel to take care of.\n \n";
+		ss << "There were no beasts in the brothel to take care of.\n\n";
 	}
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
@@ -117,7 +117,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			g_Girls.UpdateSkill(girl, SKILL_COMBAT, addbeasts);
 		}
 	}
-	if (addbeasts >= 0) ss << "\n \n";
+	if (addbeasts >= 0) ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Enjoyment and Tiredness		//
@@ -136,7 +136,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else
 	{
 		enjoy += g_Dice % 2;
-		ss << (addbeasts>=0 ? "Otherwise, the" : "The") << " shift passed uneventfully.\n \n";
+		ss << (addbeasts>=0 ? "Otherwise, the" : "The") << " shift passed uneventfully.\n\n";
 	}
 
 #pragma endregion

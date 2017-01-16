@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Underwear of Arousal"    
+      Desc="In order to create this underwear, a very experienced mage has to work for several hours. This causes them to be quite expensive and somewhat uncommon. While worn, they cause a slow, steady magical resonance within the wearers nipples and clitoris. The effect begins to wane after they've been removed for a few hours, but otherwise the wearer will be in a constant state of arousal with a strong desire for sex. (+60 Libido, +Nymphomaniac, +Fast Orgasms, +4 Cha)" 
+      Type="Underwear" 
+      Badness="18" 
+      Special="None" 
+      Cost="10000" 
+      Rarity="Catacomb15" 
+      Infinite="false">
+   <Effect What="Stat" Name="Libido" Amount="60" />
+   <Effect What="Stat" Name="Charisma" Amount="4" />
+   <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
+   <Effect What="Trait" Name="Fast Orgasms" Amount="1" />
+</Item>
+</Items>

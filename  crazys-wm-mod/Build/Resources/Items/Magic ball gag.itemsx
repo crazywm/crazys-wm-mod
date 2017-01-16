@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Magic ball gag"
+      Desc="For quiet time. This deluxe model also dulls the wearers combat senses. (+10 obedience +30 libido +10 most sex skills -all oral -charming/elegant -lots group/service/magic/combat)"
+      Type="Misc"
+      Badness="30"
+      Special="None"
+      Cost="20000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Stat"  Name="PCLove"                  Amount="-10"    />
+   <Effect What="Stat"  Name="PCFear"                  Amount="10"    />
+   <Effect What="Stat"  Name="PCHate"                  Amount="10"    />
+   <Effect What="Stat"  Name="Charisma"                Amount="-10"    />
+   <Effect What="Stat"  Name="Happiness"               Amount="-10"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="10"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="30"    />
+   <Effect What="Skill" Name="BDSM"                    Amount="25"    />
+   <Effect What="Skill" Name="NormalSex"               Amount="10"    />
+   <Effect What="Skill" Name="Beastiality"             Amount="10"    />
+   <Effect What="Skill" Name="Group"                   Amount="-20"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="-100"    />
+   <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
+   <Effect What="Skill" Name="Strip"                   Amount="10"    />
+   <Effect What="Skill" Name="Anal"                    Amount="10"    />
+   <Effect What="Skill" Name="Footjob"                 Amount="10"    />
+   <Effect What="Skill" Name="Handjob"                 Amount="10"    />
+   <Effect What="Skill" Name="TittySex"                Amount="10"    />
+   <Effect What="Skill" Name="Magic"                   Amount="-500"    />
+   <Effect What="Skill" Name="Combat"                  Amount="-500"    />
+   <Effect What="Skill" Name="Service"                 Amount="-50"    />
+   <Effect What="Trait" Name="Charming"                Amount="0"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+</Item>
+</Items>

@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Bonding Session " Desc="Cast a spell of weakness on your girl and spend the night...bonding...with her. Some girls will hate you for the rough treatment, while others will be dominated utterly. (Love/Fear/Obedience +50 OR Love/Obedience -50, Hate +50. Chance to add Dependant)"
+        Type="Food" Badness="20" Special="Temporary" Cost="3000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Obedience" Amount="50" />
+        <Effect What="Stat" Name="PCLove" Amount="50" />
+        <Effect What="Stat" Name="PCFear" Amount="50" />
+        <Effect What="Trait" Name="Dependant" Amount="1" Duration="20" />
+    </Item>
+    <Item Name="Bonding Session" Desc="Cast a spell of weakness on your girl and spend the night...bonding...with her. Some girls will hate you for the rough treatment, while others will be dominated utterly. (Love/Fear/Obedience +50 OR Love/Obedience -50, Hate +50. Chance to add Dependant)"
+        Type="Food" Badness="20" Special="Temporary" Cost="3000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Obedience" Amount="50" />
+        <Effect What="Stat" Name="PCLove" Amount="50" />
+        <Effect What="Stat" Name="PCFear" Amount="50" />
+    </Item>
+    <Item Name="Bonding Session" Desc="Cast a spell of weakness on your girl and spend the night...bonding...with her. Some girls will hate you for the rough treatment, while others will be dominated utterly. (Love/Fear/Obedience +50 OR Love/Obedience -50, Hate +50. Chance to add Dependant)"
+        Type="Food" Badness="20" Special="Temporary" Cost="3000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Obedience" Amount="-50" />
+        <Effect What="Stat" Name="PCLove" Amount="-50" />
+        <Effect What="Stat" Name="PCHate" Amount="50" />
+    </Item>
+    <Item Name="Bonding Session" Desc="Cast a spell of weakness on your girl and spend the night...bonding...with her. Some girls will hate you for the rough treatment, while others will be dominated utterly. (Love/Fear/Obedience +50 OR Love/Obedience -50, Hate +50. Chance to add Dependant)"
+        Type="Food" Badness="20" Special="Temporary" Cost="3000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Obedience" Amount="-50" />
+        <Effect What="Stat" Name="PCLove" Amount="-50" />
+        <Effect What="Stat" Name="PCHate" Amount="50" />
+    </Item>
+</Items>

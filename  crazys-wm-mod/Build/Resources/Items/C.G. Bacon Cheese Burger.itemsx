@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="C.G. Bacon Cheese Burger"
+      Desc="A fan of burger eaters everywhere. With Cheese and Bacon, and will definetly make you sluggish. (+15 Com/Conf/Spirit/Love, -15 Agil, +20 Happiness)"
+      Type="Food"
+      Badness="5"
+      Special="None"
+      Cost="200"
+      Rarity="Shop50"
+      Infinite="false"
+      GirlBuyChance="10">
+   <Effect What="Stat"  Name="Happiness"               Amount="20"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="15"    />
+   <Effect What="Stat"  Name="Spirit"                  Amount="15"    />
+   <Effect What="Stat"  Name="PCLove"                  Amount="15"    />
+   <Effect What="Skill" Name="Combat"                  Amount="15"    />
+   <Effect What="Stat"  Name="Agility"                 Amount="-15"    />
+</Item>
+</Items>

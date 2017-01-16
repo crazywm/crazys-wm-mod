@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Maid Uniform"
+      Desc="This outfit consists of a short-skirted clean black cotton dress, a frilly white apron and matching bonnet, and white thigh-high stockings, all of the highest quality. It has an irresistible air of quiet, willing submission about it. (B) (+12 Cha, +18 Lib, +20 Obed, +30 Serv/Cook, adds Elegant, removes Aggressive)"
+      Type="Dress"
+      Badness="10"
+      Special="None"
+      Cost="1000"
+      Rarity="Shop25"
+      Infinite="true"
+      GirlBuyChance="5">
+   <Effect What="Stat"  Name="Charisma"                Amount="12"    />
+   <Effect What="Stat"  Name="Libido"                  Amount="18"    />
+   <Effect What="Stat"  Name="Obedience"               Amount="20"    />
+   <Effect What="Skill" Name="OralSex"                 Amount="20"    />
+   <Effect What="Skill" Name="Cooking"                 Amount="30"    />
+   <Effect What="Skill" Name="Service"                 Amount="30"    />
+   <Effect What="Trait" Name="Aggressive"              Amount="0"    />
+   <Effect What="Trait" Name="Elegant"                 Amount="1"    />
+</Item>
+</Items>

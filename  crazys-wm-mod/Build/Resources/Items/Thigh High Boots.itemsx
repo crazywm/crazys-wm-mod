@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Thigh High Boots"
+      Desc="Leather boots that go up to a girl's thigh. (+10 Charisma, +5 Beauty and Confidence)"
+      Type="Shoes"
+      Badness="0"
+      Special="None"
+      Cost="550"
+      Rarity="Shop25"
+      Infinite="false"
+      GirlBuyChance="50">
+   <Effect What="Stat"  Name="Charisma"                Amount="10"    />
+   <Effect What="Stat"  Name="Beauty"                  Amount="5"    />
+   <Effect What="Stat"  Name="Confidence"              Amount="5"    />
+</Item>
+</Items>

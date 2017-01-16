@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item
+        Name="Spiked Wrist"
+        Desc="Chun-Li's favourite. It is a wristband that is spiked, shockingly enough. (+3 BDSM, +3 Combat, -1 Charisma, +2 Constitution)"
+        Type="Armband"
+        Badness="15"
+        Special="None"
+        Cost="400"
+        Rarity="Shop25"
+        Infinite="true"
+        GirlBuyChance="0"
+        ItemWeight="0.0">
+        <Effect
+            What="Skill"
+            Name="BDSM"
+            Amount="3" />
+        <Effect
+            What="Skill"
+            Name="Combat"
+            Amount="3" />
+        <Effect
+            What="Stat"
+            Name="Charisma"
+            Amount="-1" />
+        <Effect
+            What="Stat"
+            Name="Constitution"
+            Amount="2" />
+    </Item>
+</Items>

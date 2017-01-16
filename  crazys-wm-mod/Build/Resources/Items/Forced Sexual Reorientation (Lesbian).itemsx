@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Forced Sexual Reorientation (Lesbian)" Desc="Pay a woman to torture and rape your girl until she turns a lesbian. (Adds Lesbian, removes Straight and Bisexual) (Lesbian +50, All other sex skills except Strip -30, Love -20, Hate and Fear +50, Constitution and Confidence -30, Happiness -20) (Health -50, Tiredness +30)" Type="Food" Badness="100" Special="None" Cost="2000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Happiness" Amount="-20" />
+        <Effect What="Stat" Name="Constitution" Amount="-30" />
+        <Effect What="Stat" Name="Confidence" Amount="-30" />
+        <Effect What="Stat" Name="Health" Amount="-50" />
+        <Effect What="Stat" Name="Tiredness" Amount="30" />
+        <Effect What="Stat" Name="PCFear" Amount="50" />
+        <Effect What="Stat" Name="PCHate" Amount="50" />
+        <Effect What="Skill" Name="Anal" Amount="-30" />
+        <Effect What="Skill" Name="BDSM" Amount="-30" />
+        <Effect What="Skill" Name="NormalSex" Amount="-30" />
+        <Effect What="Skill" Name="Beastiality" Amount="-30" />
+        <Effect What="Skill" Name="Group" Amount="-30" />
+        <Effect What="Skill" Name="OralSex" Amount="-30" />
+        <Effect What="Skill" Name="TittySex" Amount="-30" />
+        <Effect What="Skill" Name="Handjob" Amount="-30" />
+        <Effect What="Skill" Name="Footjob" Amount="-30" />
+        <Effect What="Stat" Name="PCLove" Amount="-20" />
+        <Effect What="Trait" Name="Bisexual" Amount="0" />
+        <Effect What="Trait" Name="Straight" Amount="0" />
+        <Effect What="Trait" Name="Lesbian" Amount="1" />
+    </Item>
+</Items>

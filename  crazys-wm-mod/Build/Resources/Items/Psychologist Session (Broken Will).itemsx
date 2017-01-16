@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Psychologist Session (Broken Will)" Desc="Takes the girl to a psychologist, to help her with her personality and attitude. (Confidence +10, Tiredness +10) (Removes Broken Will)" Type="Food" Badness="0" Special="None" Cost="5000" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Stat" Name="Confidence" Amount="10" />
+        <Effect What="Stat" Name="Tiredness" Amount="10" />
+        <Effect What="Trait" Name="Broken Will" Amount="0" />
+    </Item>
+</Items>

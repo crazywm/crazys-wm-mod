@@ -131,7 +131,9 @@ public:
 		if (file_extensions.size() == 0) {
 			file_extensions.push_back(string(".jp*g"));
 			file_extensions.push_back(".png");
+			#if !LINUX
 			file_extensions.push_back(".gif");
+			#endif
 		}
 		scan(pattern);
 	}

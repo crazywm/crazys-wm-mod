@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+	<Item
+		Name="Leather Cap"
+		Desc="This might make a fighter look like a dork, but a glancing blow will no longer knock that fighter unconcious either. (adds Brawler, Nerd)"
+		Type="Hat"
+		Badness="20"
+		Special="None"
+		Cost="30"
+		Rarity="Common"
+		Infinite="false"
+		GirlBuyChance="0">
+		<Effect
+			What="Trait"
+			Name="Brawler"
+			Amount="1" />
+		<Effect
+			What="Trait"
+			Name="Nerd"
+			Amount="1" />
+	</Item>
+</Items>

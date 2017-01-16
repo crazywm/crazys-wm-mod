@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Ring of Pleasure"
+      Desc="This magical ring affects the wearer's nervous system, heightening the effects of sexual stimulation and allowing her to reach orgasm much faster than most. (adds Fast Orgasms)"
+      Type="Ring"
+      Badness="0"
+      Special="None"
+      Cost="3000"
+      Rarity="Catacomb15"
+      Infinite="false"
+      GirlBuyChance="30">
+   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+</Item>
+</Items>

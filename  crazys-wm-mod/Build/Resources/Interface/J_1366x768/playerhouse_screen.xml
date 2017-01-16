@@ -1,0 +1,19 @@
+<Screen>
+<Window   Name="Player House Window"                      XPos="26"   YPos="26"  Width="1314" Height="716" Border="0" />
+<Text     Name="Your House"         Text="Your House"     XPos="8"    YPos="2"   Width="232"  Height="30"  FontSize="16" />
+<Image    Name="House"              File="House.jpg"      XPos="8"    YPos="48"  Width="878"  Height="660" />
+
+<Button   Name="Weeks"              Image="NextWeek"      XPos="1126" YPos="8"   Width="180"  Height="36"  Transparency="true" Scale="true" />
+<Text     Name="HouseDetails"       Text=""               XPos="1066" YPos="50"  Width="240"  Height="240" FontSize="10" />
+
+<Button   Name="Girls"              Image="Girls"         XPos="1126" YPos="298" Width="180"  Height="36"  Transparency="true" Scale="true" />
+<Button   Name="Staff"              Image="Staff"         XPos="1126" YPos="338" Width="180"  Height="36"  Transparency="true" Scale="true" />
+<Button   Name="Dungeon"            Image="Dungeon"       XPos="1126" YPos="438" Width="180"  Height="36"  Transparency="true" Scale="true" />
+<Button   Name="House"              Image="Building"      XPos="1126" YPos="378" Width="180"  Height="36"  Transparency="true" Scale="true" />
+<Button   Name="BackButton"         Image="Back"          XPos="1126" YPos="672"  Width="180"  Height="36"  Transparency="true" Scale="true" />
+
+<Button   Name="WalkButton"         Image=""              XPos="176"  YPos="540" Width="160"  Height="32"  Transparency="true" Scale="true" />
+<Button   Name="Turn"               Image="TurnSum"       XPos="432"  YPos="540" Width="160"  Height="32"  Transparency="true" Scale="true" />
+
+<Button   Name="SetUp"              Image="ShowMore"      XPos="176"  YPos="540" Width="160"  Height="32"  Transparency="true" Scale="true" />
+</Screen>

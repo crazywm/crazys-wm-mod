@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Onimurasa Armor"
+      Desc="This armor contains the soul of a succubus that has seen many creatures in her lifetime. Even though this has evil in it, the uses should surpass the guilt. (Stat boosts and Love for you but gives the girl a TWISTED view on sex and making her attack anyone on site.)"
+      Type="Armor"
+      Badness="20"
+      Special="None"
+      Cost="5550"
+      Rarity="ScriptOrReward"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="30" />
+   <Effect What="Skill" Name="Combat"                  Amount="30" />
+   <Effect What="Skill" Name="Service"                 Amount="30" />
+   <Effect What="Skill" Name="NormalSex"               Amount="30" />
+   <Effect What="Stat"  Name="Charisma"                Amount="10" />
+   <Effect What="Stat"  Name="Constitution"            Amount="10" />
+   <Effect What="Stat"  Name="Strength"                Amount="10" />
+   <Effect What="Stat"  Name="Intelligence"            Amount="10" />
+   <Effect What="Stat"  Name="Confidence"              Amount="10" />
+   <Effect What="Stat"  Name="Mana"                    Amount="10" />
+   <Effect What="Stat"  Name="Agility"                 Amount="10" />
+   <Effect What="Stat"  Name="Fame"                    Amount="10" />
+   <Effect What="Stat"  Name="Exp"                     Amount="10" />
+   <Effect What="Stat"  Name="Spirit"                  Amount="10" />
+   <Effect What="Stat"  Name="Beauty"                  Amount="10" />
+   <Effect What="Stat"  Name="PCLove"                  Amount="30" />
+   <Effect What="Trait" Name="Yandere"                 Amount="1" />
+   <Effect What="Trait" Name="Twisted"                 Amount="1" />
+</Item>
+</Items>

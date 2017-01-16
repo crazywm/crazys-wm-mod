@@ -64,7 +64,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		return false;
 	}
 
-	ss << " worked as a singer in the bar.\n \n";
+	ss << " worked as a singer in the bar.\n\n";
 
 	g_Girls.UnequipCombat(girl); // put that shit away, you'll scare off the customers!
 
@@ -115,7 +115,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	if (jobperformance >= 245)
 	{
-		ss << "She must have the voice of an angel, the customers go on and on about her and always come to listen when she sings.\n \n";
+		ss << "She must have the voice of an angel, the customers go on and on about her and always come to listen when she sings.\n\n";
 		wages += 155;
 		if (roll_b <= 20)
 		{
@@ -142,7 +142,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	else if (jobperformance >= 185)
 	{
-		ss << "She's unbelievable at this and is always getting praised by the customers for her voice.\n \n";
+		ss << "She's unbelievable at this and is always getting praised by the customers for her voice.\n\n";
 		wages += 95;
 		if (roll_b <= 25)
 		{
@@ -166,7 +166,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	else if (jobperformance >= 145)
 	{
-		ss << "Her voice is really good and gets praised by the customers often.\n \n";
+		ss << "Her voice is really good and gets praised by the customers often.\n\n";
 		wages += 55;
 		if (roll_b <= 20)
 		{
@@ -192,7 +192,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	else if (jobperformance >= 100)
 	{
-		ss << "She hits a few right notes but she still has room to improve.\n \n";
+		ss << "She hits a few right notes but she still has room to improve.\n\n";
 		wages += 15;
 		if (roll_b <= 25)
 		{
@@ -213,7 +213,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	else if (jobperformance >= 70)
 	{
-		ss << "She almost never hits a right note. Lucky for you most of your customers are drunks.\n \n";
+		ss << "She almost never hits a right note. Lucky for you most of your customers are drunks.\n\n";
 		wages -= 5;
 		if (roll_b <= 20)
 		{
@@ -240,7 +240,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	else
 	{
-		ss << "Her voice sounds like nails on a chalk board.  She could be the worst singer ever.\n \n";
+		ss << "Her voice sounds like nails on a chalk board.  She could be the worst singer ever.\n\n";
 		wages -= 15;
 		if (roll_b <= 14)
 		{
@@ -281,12 +281,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 15;
+		ss << "Stunned by her beauty a customer left her a great tip.\n\n"; tips += 15;
 	}
 
 	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 80 && g_Dice.percent(15))
 	{
-		ss << "Her charisma shone through as she chatted to customers between songs.\n \n"; tips += 15; happy += 5;
+		ss << "Her charisma shone through as she chatted to customers between songs.\n\n"; tips += 15; happy += 5;
 	}
 
 	if (girl->has_trait( "Clumsy") && g_Dice.percent(5))

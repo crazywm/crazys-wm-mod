@@ -57,7 +57,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " trains in the Medical field.\n \n";
+	ss << " trains in the Medical field.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away
 
@@ -95,7 +95,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	if (dirtyloss == 2) ss << "messy. The equipment is damaged and strewn about the building";
 	if (dirtyloss == 3) ss << "filthy and some of the equipment is broken";
 	if (dirtyloss >= 4) ss << "in complete disarray and the equipment barely usable";
-	ss << ".\n \n";
+	ss << ".\n\n";
 	if (skill < 1) skill = 1;	// always at least 1
 
 	do{		// `J` New method of selecting what job to do

@@ -66,7 +66,7 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 
-	ss << girlName << " worked as an actress filming oral scenes.\n \n";
+	ss << girlName << " worked as an actress filming oral scenes.\n\n";
 
 	int roll = g_Dice.d100();
 	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
@@ -87,7 +87,7 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else/*                   */	ss << "one lucky guy";
 			ss << " from your gang " << Gang->m_Name << ".";
 		}
-		else ss << "The lucky guy came uncontrollably, damn near passing out in pleasure as " << girlName 
+		else ss << "The lucky guy came uncontrollably, damn near passing out in pleasure as " << girlName
 			<< " expertly sucked him dry.\nShe savoured the cum in her mouth, rolling it around her lips and tongue before finally swallowing it down.";
 		bonus = 12;
 	}
@@ -125,17 +125,17 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (jobperformance >= 200)
 	{
 		enjoy += (g_Dice % 3 + 1);
-		ss << "She really enjoyed giving head today.\n \n";
+		ss << "She really enjoyed giving head today.\n\n";
 	}
 	else if (jobperformance >= 100)
 	{
 		enjoy += g_Dice % 2;
-		ss << "She enjoyed this performance.\n \n";
+		ss << "She enjoyed this performance.\n\n";
 	}
 	else
 	{
 		enjoy -= (g_Dice % 3 + 2);
-		ss << "She's bad at this, and the whole experience was pretty humiliating.\n \n";
+		ss << "She's bad at this, and the whole experience was pretty humiliating.\n\n";
 	}
 	bonus += enjoy;
 

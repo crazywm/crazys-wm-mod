@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Lois's Thong"
+      Desc="The thong worn by Lois Griffin during her wild high school days. (Sex +40. Adds MILF, Great Arse, Nymphomaniac.)"
+      Type="Underwear"
+      Badness="0"
+      Special="None"
+      Cost="19000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="NormalSex"               Amount="40"    />
+   <Effect What="Trait" Name="MILF"                    Amount="1"    />
+   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
+   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+</Item>
+</Items>

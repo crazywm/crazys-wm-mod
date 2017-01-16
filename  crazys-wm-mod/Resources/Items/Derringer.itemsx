@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Derringer" Desc="A small, disposable firearm. (+6 Combat, temporary)" 
-	Type="Small Weapon" Badness="0" Special="None" Cost="199" Rarity="Common" Infinite="false" GirlBuyChance="10" ItemWeight="0.0">
-        <Effect What="Skill" Name="Combat" Amount="6" />
-    </Item>
-</Items>

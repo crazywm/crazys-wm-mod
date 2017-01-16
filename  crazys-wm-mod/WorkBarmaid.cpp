@@ -74,7 +74,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
 	}
-	ss << " worked as a barmaid.\n \n";
+	ss << " worked as a barmaid.\n\n";
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
@@ -129,7 +129,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		/* */if (bg < 0)	ss << "A few customers did not really like " << girlName << "'s Bourgeoise Gown.";
 		else if (bg > 0)	ss << "A few customers complimented " << girlName << "'s Bourgeoise Gown.";
 		else/*        */	ss << girlName << "'s Bourgeoise Gown didn't really help or hurt her tips.";
-		ss << "\n \n";
+		ss << "\n\n";
 	}
 	else if (g_Girls.HasItemJ(girl, "Maid Uniform") != -1)
 	{
@@ -138,7 +138,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		/* */if (bg < 0)	ss << "A few customers teased " << girlName << " for wearing a Maid's Uniform in a bar.";
 		else if (bg > 0)	ss << girlName << "'s Maid Uniform didn't do much for most of the patrons, but a few of them seemed to really like it.";
 		else/*        */	ss << girlName << "'s Maid Uniform didn't do much to help her.";
-		ss << "\n \n";
+		ss << "\n\n";
 	}
 
 	//a little pre-game randomness
@@ -150,7 +150,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			jobperformance -= 50;
 			drinkswasted += 10 + g_Dice % 11;
 		}
-		ss << "\n \n";
+		ss << "\n\n";
 	}
 
 	if (jobperformance >= 245)
@@ -433,7 +433,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			Bfilth += 5;
 		}
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 #pragma endregion
 #pragma region	//	Tips and Adjustments		//
@@ -443,7 +443,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	//try and add randomness here
 	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
 	{
-		ss << "Stunned by her beauty a customer left her a great tip.\n \n";
+		ss << "Stunned by her beauty a customer left her a great tip.\n\n";
 		tips += 25;
 	}
 
@@ -681,7 +681,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		enjoy += g_Dice % 2;
 		ss << "\nOtherwise, the shift passed uneventfully.";
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
 		drinkssold *= 0.9;
@@ -709,7 +709,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		/* */if ((int)dw > 0)	ss << "\n" << dw << " were not paid for or were spilled.";
 		/* */if (d2 > 0)/*           */ ss << "\n" << d2 << " drinks were taken from the bar's stock.";
 		/* */if (d3 > 0)/*           */ ss << "\n" << d3 << " drinks had to be restocked durring the week at a cost of 1 gold each.";
-		ss << "\n \n" << girlName;
+		ss << "\n\n" << girlName;
 		/* */if (profit > 0)/*       */	ss << " made you a profit of " << profit << " gold.";
 		else if (profit < 0)/*       */	ss << " cost you " << profit << " gold.";
 		else if (d1 > 0)/*           */ ss << " broke even for the week.";
@@ -752,7 +752,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	{
 		if (profit >= 10)	// base pay is 10 unless she makes less
 		{
-			ss << "\n \n"<< girlName<< " made the bar a profit so she gets paid 10 gold for the shift.";
+			ss << "\n\n"<< girlName<< " made the bar a profit so she gets paid 10 gold for the shift.";
 			wages += 10;
 			profit -= 10;
 		}
@@ -821,7 +821,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				ss << "leaving her with ";
 				/* */if ((int)wages + (int)tips < 1)	ss << "nothing";
 				else if ((int)wages + (int)tips < 2)	ss << "just one gold";
-				else/*                            */	ss << (int)wages + (int)tips << "gold";
+				else/*                            */	ss << (int)wages + (int)tips << " gold.";
 			}
 			ss << ".";
 		}
@@ -832,13 +832,26 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	// tiredness
 #if 1	// `J` had some issues with tiredness so replacing it with a less complicated method until a better way is found 'Mute' Updated to fix math logic if this doesnt work feel free to switch back
 	int t0 = d1;
-	int easydrinks = (girl->constitution() + girl->service()) / 4;
+	int easydrinks = (girl->constitution() + girl->service());
+	easydrinks=min(t0,easydrinks);
+	int drinksLeft=t0-easydrinks;
 	int mediumdrinks = (girl->constitution() + girl->service()) /2;
-	int haarddrinks = (girl->constitution() + girl->service());
+	mediumdrinks=min(drinksLeft,mediumdrinks);
+	drinksLeft-=mediumdrinks;
+	int haarddrinks = (girl->constitution() + girl->service())/ 4;
+	haarddrinks=min(drinksLeft,haarddrinks);
+	drinksLeft-=haarddrinks;
+	if (drinksLeft>0)
+        easydrinks+=drinksLeft;
 	int t1 = easydrinks;					// 1 tired per 20 drinks
-	int t2 = max(0, t0 - t1);		        // 1 tired per 10 drinks
-	int t3 = max(0, t0 - (t1+t2));		    // 1 tired per 2 drinks
-	int tired = max(0,(t1/20))+max(0,(t2/10))+max(0,(t3/2));
+	int t2 = max(0, t0 - easydrinks+haarddrinks);		        // 1 tired per 10 drinks
+	int t3 = max(0, t0 - (easydrinks+mediumdrinks));		    // 1 tired per 2 drinks
+	int tired = max(0,1+(t1/20))+max(0,(t2/10))+max(0,(t3/2));
+	#if DEBUG
+	ss<<"\n\n"<<girlName<< " gained a total of "<< tired<< " Tiredness.\n\n";
+	ss<<"Easy Drinks: "<<t1<<"\nMedium Drinks: "<<t2 <<"\nHard Drinks: "<<t3<<"\n\n";
+	ss<<"Easy Tiredness: "<<max(0,1+(t1/20))<<"\nMedium Tiredness: "<<max(0,(t2/10))<<"\nHard Tiredness: "<<max(0,(t3/2));
+	#endif // DEBUG
 #else
 	int tired = max(1, (600 - ((int)jobperformance + (girl->constitution() * 3))) / 10);
 

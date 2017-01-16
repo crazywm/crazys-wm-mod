@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Items>
+<Item Name="Hermione's Wand"
+      Desc="A magic wand belonging to the famous witch, Hermione Granger. (Magic +70)"
+      Type="Small Weapon"
+      Badness="0"
+      Special="None"
+      Cost="19000"
+      Rarity="Catacomb15"
+      Infinite="false">
+   <Effect What="Skill" Name="Magic"                   Amount="70"    />
+</Item>
+</Items>

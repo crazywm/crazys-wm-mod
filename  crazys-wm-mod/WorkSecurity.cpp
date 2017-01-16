@@ -52,7 +52,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	ss << " worked Security in the brothel.\n \n";
+	ss << " worked Security in the brothel.\n\n";
 
 
 
@@ -130,7 +130,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		enjoy += g_Dice % 2;
 		ss << "She had an uneventful day watching over the brothel.";
 	}
-	ss << "\n \n";
+	ss << "\n\n";
 
 	if (girl->libido() >= 70 && g_Dice.percent(20))
 	{
@@ -150,7 +150,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			break;
 		}
 		SecLev -= 20;
-		ss << "\n \n";
+		ss << "\n\n";
 
 	}
 
@@ -166,7 +166,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		case 4:	if (!brothel->m_RestrictFoot)	{ l = 4;	imagetype = IMGTYPE_FOOT;	ss << "She used her feet to get them off";	break; }
 		default:/*                         */	{ l = 2;	imagetype = IMGTYPE_STRIP;	ss << "She flashed them";	break; }
 		}
-		ss << ".\n \n";
+		ss << ".\n\n";
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -l, true);
 	}
 
