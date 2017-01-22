@@ -3576,19 +3576,15 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 		g_Girls.RemoveTrait(girl, "Homeless", true);
 		ss << girl->m_Realname << " has gotten used to better surroundings and has lost the \"Homeless\" trait.";
 	}
-	else if (girl->has_trait("Masochist") && b_intelligence && b_spirit && b_confidence &&
-		mod >= 2 && g_Dice.percent(girl->m_AccLevel - 7))
+	else if (girl->has_trait("Masochist") && b_intelligence && b_spirit && b_confidence && mod >= 2 && g_Dice.percent(girl->m_AccLevel - 7))
 	{
 		g_Girls.RemoveTrait(girl, "Masochist", true);
-		// `J` zzzzzz - needs better text
-		ss << girl->m_Realname << " seems to have grown tired of getting off hurting people and lost the \"Masocist\" trait.";
+		ss << girl->m_Realname << " seems to be getting used to being treated well and has lost the \"Masochist\" trait.";
 	}
-	else if (!girl->has_trait("Masochist") && !b_dignity && !b_spirit && !b_confidence &&
-		mod <= -1 && g_Dice.percent(3 - mod))
+	else if (!girl->has_trait("Masochist") && !b_dignity && !b_spirit && !b_confidence && mod <= -1 && g_Dice.percent(3 - mod))
 	{
 		g_Girls.AddTrait(girl, "Masochist");
-		// `J` zzzzzz - needs better text
-		ss << girl->m_Realname << " seems to have taken a liking to huring people in order to get off and became a \"Masocist\".";
+		ss << girl->m_Realname << " seems to be getting used to being treated poorly and has become a \"Masochist\".";
 	}
 
 

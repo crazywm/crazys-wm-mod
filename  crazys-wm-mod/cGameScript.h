@@ -132,6 +132,17 @@ private:
 	sScript* Script_IfGirlHasItem(sScript* Script);					// `J` new .06.02.55
 	sScript* Script_AddItemtoGirl(sScript* Script);					// `J` new .06.02.55
 	sScript* Script_GivePlayerItem(sScript* Script);				// `J` new .06.02.55
+	sScript* Script_IfPlayerHasItem(sScript* Script);				// `J` new .06.02.57
+	sScript* Script_GiveGirlInvItem(sScript* Script);				// `J` new .06.02.57
+	sScript* Script_IfGirlIsSlave(sScript* Script);					// `J` new .06.02.57
+	sScript* Script_IfGirlIsFree(sScript* Script);					// `J` new .06.02.57
+	sScript* Script_GiveGoldToGirl(sScript* Script);				// `J` new .06.02.57
+	sScript* Script_AdjustTargetGirlStatR(sScript* Script);			// `J` new .06.02.57
+	sScript* Script_AdjustTargetGirlSkillR(sScript* Script);		// `J` new .06.02.57
+
+	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.h
+
+
 	//sScript* Script_GirlNameTarget(sScript* Script);
 
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.h
@@ -141,7 +152,7 @@ private:
 
 	bool IsIfStatement(int type)
 	{
-		if(type == 40 || type == 9 || type == 13 || type == 27 || type == 28 || type == 29 || type == 31 || type == 32 || type == 33)
+		if (type == 9 || type == 13 || type == 27 || type == 28 || type == 29 || type == 31 || type == 32 || type == 33 || type == 40 || type == 95 || type == 98 || type == 100 || type == 101)
 			return true;
 		return false;
 	}

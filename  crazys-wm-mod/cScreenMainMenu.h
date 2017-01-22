@@ -31,6 +31,7 @@ private:
 	int new_id;
 	int settings_id;
 	int quit_id;
+	int version_id;
 
 public:
 	void set_ids();

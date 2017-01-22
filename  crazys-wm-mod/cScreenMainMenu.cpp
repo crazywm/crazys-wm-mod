@@ -21,6 +21,7 @@
 #include "cScriptManager.h"
 #include "cWindowManager.h"
 #include "FileList.h"
+#include "Revision.h"
 
 extern void NewGame();
 extern void LoadGameScreen();
@@ -48,6 +49,7 @@ void cScreenMainMenu::set_ids()
 	new_id = get_id("New Game");
 	settings_id = get_id("Settings");
 	quit_id = get_id("Quit Game");
+	version_id = get_id("Version");
 }
 
 cScreenMainMenu::cScreenMainMenu()
@@ -74,6 +76,7 @@ void cScreenMainMenu::init()
 		FileList fla(location, pattern);
 		DisableButton(load_id, fla.size() < 1);			// `J` disable load game button if there are no save games found
 		DisableButton(settings_id, false);			// `J` disable settings button until settings page is added
+		if (version_id >= 0) EditTextItem(svn_revision, version_id);
 	}
 }
 

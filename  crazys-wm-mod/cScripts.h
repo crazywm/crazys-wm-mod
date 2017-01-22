@@ -19,6 +19,7 @@
 #ifndef __CSCRIPTS_H
 #define __CSCRIPTS_H
 
+#include <map>
 #include <stdio.h>
 #include <string>
 #include "tinyxml.h"
@@ -220,7 +221,14 @@ public:
 
 	bool Load(string filename); // Load a script
 	bool Free(); // Free loaded script
-/*
+	static bool		m_script_maps_setup;
+	static map<string, unsigned int>	script_lookup;
+	static const char	*script_names[];
+	static const char	*script_entry_types[];
+	static const char	*script_compare_types[];
+
+	static void setup_maps();
+	/*
  *	no idea if this stub needs to return true or false
  *	picked one at random to silence a compiler warning
  */

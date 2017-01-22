@@ -92,8 +92,8 @@ public:
 	void NewMovie(sMovieStudio* brothel, int Init_Quality, int Quality, int Promo_Quality, int Money_Made, int RunWeeks);
 	void EndMovie(sBrothel* brothel);
 	bool CheckMovieGirls(sBrothel* brothel);	// checks if any girls are working on the movie
-	long calc_movie_quality();
-	void ReleaseCurrentMovie();
+	long calc_movie_quality(bool autoreleased = false);
+	void ReleaseCurrentMovie(bool autoreleased = false);
 
 	sMovieScene* GetScene(int num);
 	int GetNumScenes();

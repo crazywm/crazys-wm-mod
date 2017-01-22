@@ -49,6 +49,7 @@ struct sConfigData
 		bool		auto_combat_equip;
 		int			torture_mod;
 		int			horoscopetype;
+		bool		autocreatemovies;
 	} initial;
 
 
@@ -379,6 +380,7 @@ public:
 		bool		auto_combat_equip()		{ return data->initial.auto_combat_equip; }
 		int			torture_mod()			{ return data->initial.torture_mod; }
 		int			horoscopetype()			{ return data->initial.horoscopetype; }
+		bool		autocreatemovies()		{ return data->initial.autocreatemovies; }
 	} initial;
 
 	struct Folders{

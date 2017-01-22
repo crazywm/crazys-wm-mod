@@ -461,6 +461,8 @@ Replaced several "\n\n" with "\n \n" to fix linux text bug
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.55
+
+### Changes 01/12/2017
  
 Checked all jobs starting texts.
 Fixed a bug in workfilmoral that was crashing the game.
@@ -469,6 +471,33 @@ Reworked Objective REWARD_ITEM to make the text look better.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.56
 
+### Changes 01/13-21/2017
+
+Added automatic movie creation if there are 10 or more scenes at the start of the movie studio turn.
+ - config.xml > Initial > AutoCreateMovies="true"/"false"
+ - cfg.initial.autocreatemovies() 
+Updated script editing
+ - Added options:
+ -  - IfPlayerHasItem (*item*)
+ -  - GiveGirlInvItem (*item*) (*equip*)
+ -  - IfGirlIsSlave
+ -  - IfGirlIsFree
+ -  - GiveGoldToGirl (*min*) (*max*)
+ -  - AdjustTargetGirlStatR (*stat*) (*min*) (*max*) (*temp*)
+ -  - AdjustTargetGirlSkillR (*skill*) (*min*) (*max*) (*temp*)
+ - Updated .scriptx to save and load text instead of numbers for most options for easier reading
+ - Updated DefaultInteractDetails.script a bit, fixing mismatched stats/skills and updated training section
+ 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.57
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
 

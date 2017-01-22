@@ -72,106 +72,113 @@ sScript *cGameScript::Process(sScript *Script)
 	// Jump to function based on action type
 	switch (Script->m_Type)
 	{
-	case 0: return Script_Dialog(Script);
-	case 1: return Script_Init(Script);
-	case 2: return Script_EndInit(Script);
-	case 3: return Script_EndScript(Script);
-	case 4: return Script_Restart(Script);
-	case 5: return Script_ChoiceBox(Script);
-	case 6: return Script->m_Next;	// the TEXT command only is used for adding choice box options, so shouldn't ever be executed
-	case 7: return Script_SetVar(Script);
-	case 8: return Script_SetVarRandom(Script);
-	case 9: return Script_IfVar(Script);
-	case 10: return Script_Else(Script);
-	case 11: return Script_EndIf(Script);
-	case 12: return Script_ActivateChoice(Script);
-	case 13: return Script_IfChoice(Script);
-	case 14: return Script_SetPlayerSuspision(Script);
-	case 15: return Script_SetPlayerDisposition(Script);
-	case 16: return Script_ClearGlobalFlag(Script);
-	case 17: return Script_AddCustToDungeon(Script);
-	case 18: return Script_AddRandomGirlToDungeon(Script);
-	case 19: return Script_SetGlobal(Script);
-	case 20: return Script_SetGirlFlag(Script);
-	case 21: return Script_AddRandomValueToGold(Script);
-	case 22: return Script_AddManyRandomGirlsToDungeon(Script);
-	case 23: return Script_AddTargetGirl(Script);
-	case 24: return Script_AdjustTargetGirlStat(Script);
-	case 25: return Script_PlayerRapeTargetGirl(Script);
-	case 26: return Script_GivePlayerRandomSpecialItem(Script);
-	case 27: return Script_IfPassSkillCheck(Script);
-	case 28: return Script_IfPassStatCheck(Script);
-	case 29: return Script_IfGirlFlag(Script);
-	case 30: return Script_GameOver(Script);
-	case 31: return Script_IfGirlStat(Script);
-	case 32: return Script_IfGirlSkill(Script);
-	case 33: return Script_IfHasTrait(Script);
-	case 34: return Script_TortureTarget(Script);
-	case 35: return Script_ScoldTarget(Script);
-	case 36: return Script_NormalSexTarget(Script);
-	case 37: return Script_BeastSexTarget(Script);
-	case 38: return Script_AnalSexTarget(Script);
-	case 39: return Script_BDSMSexTarget(Script);
-	case 40: return Script_IfNotDisobey(Script);
-	case 41: return Script_GroupSexTarget(Script);
-	case 42: return Script_LesbianSexTarget(Script);
-	case 43: return Script_OralSexTarget(Script);
-	case 44: return Script_StripTarget(Script);
-	case 45: return Script_CleanTarget(Script);
-	case 46: return Script_NudeTarget(Script);
-	case 47: return Script_MastTarget(Script);
-	case 48: return Script_CombatTarget(Script);
-	case 49: return Script_TittyTarget(Script);
-	case 50: return Script_DeathTarget(Script);
-	case 51: return Script_ProfileTarget(Script);
-	case 52: return Script_HandJobTarget(Script);
-	case 53: return Script_EcchiTarget(Script);
-	case 54: return Script_BunnyTarget(Script);
-	case 55: return Script_CardTarget(Script);
-	case 56: return Script_MilkTarget(Script);
-	case 57: return Script_WaitTarget(Script);
-	case 58: return Script_SingTarget(Script);
-	case 59: return Script_TorturePicTarget(Script);
-	case 60: return Script_FootTarget(Script);
-	case 61: return Script_BedTarget(Script);
-	case 62: return Script_FarmTarget(Script);
-	case 63: return Script_HerdTarget(Script);
-	case 64: return Script_CookTarget(Script);
-	case 65: return Script_CraftTarget(Script);
-	case 66: return Script_SwimTarget(Script);
-	case 67: return Script_BathTarget(Script);
-	case 68: return Script_NurseTarget(Script);
-	case 69: return Script_FormalTarget(Script);
-	case 70: return Script_AddFamilyToDungeon(Script);
-	case 71: return Script_AddTrait(Script);
-	case 72: return Script_RemoveTrait(Script);
-	case 73: return Script_AddTraitTemp(Script);
-	case 74: return Script_ShopTarget(Script);
-	case 75: return Script_MagicTarget(Script);
-	case 76: return Script_SignTarget(Script);
-	case 77: return Script_PresentedTarget(Script);
-	case 78: return Script_GetRandomGirl(Script);
-	case 79: return Script_DomTarget(Script);
-	case 80: return Script_AdjustGirlFlag(Script);
-	case 81: return Script_AdjustTraitTemp(Script);
-	case 82: return Script_AdjustTargetGirlSkill(Script);
-	case 83: return Script_DeepTarget(Script);
-	case 84: return Script_EatOutTarget(Script);
-	case 85: return Script_StrapOnTarget(Script);
-	case 86: return Script_Les69ingTarget(Script);
-	case 87: return Script_DildoTarget(Script);
-	case 88: return Script_SubTarget(Script);
-	case 89: return Script_LickTarget(Script);
-	case 90: return Script_SuckBallsTarget(Script);
-	case 91: return Script_CowGirlTarget(Script);
-	case 92: return Script_RevCowGirlTarget(Script);
-	case 93: return Script_SexDoggyTarget(Script);
-	case 94: return Script_NormalSexWithRandomTarget(Script);
-	case 95: return Script_IfGirlHasItem(Script);					// `J` new .06.02.55
-	case 96: return Script_AddItemtoGirl(Script);					// `J` new .06.02.55
-	case 97: return Script_GivePlayerItem(Script);					// `J` new .06.02.55
+	case 0:		return Script_Dialog(Script);
+	case 1:		return Script_Init(Script);
+	case 2:		return Script_EndInit(Script);
+	case 3:		return Script_EndScript(Script);
+	case 4:		return Script_Restart(Script);
+	case 5:		return Script_ChoiceBox(Script);
+	case 6:		return Script->m_Next;	// the TEXT command only is used for adding choice box options, so shouldn't ever be executed
+	case 7:		return Script_SetVar(Script);
+	case 8:		return Script_SetVarRandom(Script);
+	case 9:		return Script_IfVar(Script);
+	case 10:	return Script_Else(Script);
+	case 11:	return Script_EndIf(Script);
+	case 12:	return Script_ActivateChoice(Script);
+	case 13:	return Script_IfChoice(Script);
+	case 14:	return Script_SetPlayerSuspision(Script);
+	case 15:	return Script_SetPlayerDisposition(Script);
+	case 16:	return Script_ClearGlobalFlag(Script);
+	case 17:	return Script_AddCustToDungeon(Script);
+	case 18:	return Script_AddRandomGirlToDungeon(Script);
+	case 19:	return Script_SetGlobal(Script);
+	case 20:	return Script_SetGirlFlag(Script);
+	case 21:	return Script_AddRandomValueToGold(Script);
+	case 22:	return Script_AddManyRandomGirlsToDungeon(Script);
+	case 23:	return Script_AddTargetGirl(Script);
+	case 24:	return Script_AdjustTargetGirlStat(Script);
+	case 25:	return Script_PlayerRapeTargetGirl(Script);
+	case 26:	return Script_GivePlayerRandomSpecialItem(Script);
+	case 27:	return Script_IfPassSkillCheck(Script);
+	case 28:	return Script_IfPassStatCheck(Script);
+	case 29:	return Script_IfGirlFlag(Script);
+	case 30:	return Script_GameOver(Script);
+	case 31:	return Script_IfGirlStat(Script);
+	case 32:	return Script_IfGirlSkill(Script);
+	case 33:	return Script_IfHasTrait(Script);
+	case 34:	return Script_TortureTarget(Script);
+	case 35:	return Script_ScoldTarget(Script);
+	case 36:	return Script_NormalSexTarget(Script);
+	case 37:	return Script_BeastSexTarget(Script);
+	case 38:	return Script_AnalSexTarget(Script);
+	case 39:	return Script_BDSMSexTarget(Script);
+	case 40:	return Script_IfNotDisobey(Script);
+	case 41:	return Script_GroupSexTarget(Script);
+	case 42:	return Script_LesbianSexTarget(Script);
+	case 43:	return Script_OralSexTarget(Script);
+	case 44:	return Script_StripTarget(Script);
+	case 45:	return Script_CleanTarget(Script);
+	case 46:	return Script_NudeTarget(Script);
+	case 47:	return Script_MastTarget(Script);
+	case 48:	return Script_CombatTarget(Script);
+	case 49:	return Script_TittyTarget(Script);
+	case 50:	return Script_DeathTarget(Script);
+	case 51:	return Script_ProfileTarget(Script);
+	case 52:	return Script_HandJobTarget(Script);
+	case 53:	return Script_EcchiTarget(Script);
+	case 54:	return Script_BunnyTarget(Script);
+	case 55:	return Script_CardTarget(Script);
+	case 56:	return Script_MilkTarget(Script);
+	case 57:	return Script_WaitTarget(Script);
+	case 58:	return Script_SingTarget(Script);
+	case 59:	return Script_TorturePicTarget(Script);
+	case 60:	return Script_FootTarget(Script);
+	case 61:	return Script_BedTarget(Script);
+	case 62:	return Script_FarmTarget(Script);
+	case 63:	return Script_HerdTarget(Script);
+	case 64:	return Script_CookTarget(Script);
+	case 65:	return Script_CraftTarget(Script);
+	case 66:	return Script_SwimTarget(Script);
+	case 67:	return Script_BathTarget(Script);
+	case 68:	return Script_NurseTarget(Script);
+	case 69:	return Script_FormalTarget(Script);
+	case 70:	return Script_AddFamilyToDungeon(Script);
+	case 71:	return Script_AddTrait(Script);
+	case 72:	return Script_RemoveTrait(Script);
+	case 73:	return Script_AddTraitTemp(Script);
+	case 74:	return Script_ShopTarget(Script);
+	case 75:	return Script_MagicTarget(Script);
+	case 76:	return Script_SignTarget(Script);
+	case 77:	return Script_PresentedTarget(Script);
+	case 78:	return Script_GetRandomGirl(Script);
+	case 79:	return Script_DomTarget(Script);
+	case 80:	return Script_AdjustGirlFlag(Script);
+	case 81:	return Script_AdjustTraitTemp(Script);
+	case 82:	return Script_AdjustTargetGirlSkill(Script);
+	case 83:	return Script_DeepTarget(Script);
+	case 84:	return Script_EatOutTarget(Script);
+	case 85:	return Script_StrapOnTarget(Script);
+	case 86:	return Script_Les69ingTarget(Script);
+	case 87:	return Script_DildoTarget(Script);
+	case 88:	return Script_SubTarget(Script);
+	case 89:	return Script_LickTarget(Script);
+	case 90:	return Script_SuckBallsTarget(Script);
+	case 91:	return Script_CowGirlTarget(Script);
+	case 92:	return Script_RevCowGirlTarget(Script);
+	case 93:	return Script_SexDoggyTarget(Script);
+	case 94:	return Script_NormalSexWithRandomTarget(Script);
+	case 95:	return Script_IfGirlHasItem(Script);					// `J` new .06.02.55
+	case 96:	return Script_AddItemtoGirl(Script);					// `J` new .06.02.55
+	case 97:	return Script_GivePlayerItem(Script);					// `J` new .06.02.55
+	case 98:	return Script_IfPlayerHasItem(Script);					// `J` new .06.02.57
+	case 99:	return Script_GiveGirlInvItem(Script);					// `J` new .06.02.57
+	case 100:	return Script_IfGirlIsSlave(Script);					// `J` new .06.02.57
+	case 101:	return Script_IfGirlIsFree(Script);						// `J` new .06.02.57
+	case 102:	return Script_GiveGoldToGirl(Script);					// `J` new .06.02.57
+	case 103:	return Script_AdjustTargetGirlStatR(Script);			// `J` new .06.02.57
+	case 104:	return Script_AdjustTargetGirlSkillR(Script);			// `J` new .06.02.57
 
-		// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.cpp
+	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.cpp
 
 	default: return Script->m_Next;	// `J` if a script type is not found, skip it.
 	}
@@ -269,7 +276,6 @@ sScript *cGameScript::Script_SetVarRandom(sScript *Script)
 {
 	int num = 0;
 	int value[3];
-
 	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
@@ -747,7 +753,7 @@ sScript *cGameScript::Script_AdjustTargetGirlSkill(sScript *Script)
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 	if (m_GirlTarget)
 	{
-			g_Girls.UpdateSkill(m_GirlTarget, value[0], value[1]);
+		g_Girls.UpdateSkill(m_GirlTarget, value[0], value[1]);
 	}
 	return Script->m_Next;
 }
@@ -1853,7 +1859,12 @@ sScript* cGameScript::Script_AddItemtoGirl(sScript* Script)					// `J` new .06.0
 
 	g_LogFile.ss() << "Debug: New script part: AddItemtoGirl  ||  Trying to add " << value[0] << " of item: " << Script->m_Entries[0].m_Text
 		<< "  to girl: " << (m_GirlTarget ? m_GirlTarget->m_Name : " !NO GIRL! ")<< " | Item " << (item ? "Found" : " !NOT FOUND! ");
-
+	if (g_Girls.IsInvFull(m_GirlTarget))
+	{
+		g_LogFile.ss() << "Her inventory is full"; g_LogFile.ssend();
+		g_MessageQue.AddToQue("Her inventory is full", 0);
+		return Script->m_Next;
+	}
 	if (item && m_GirlTarget && value[0] > 0)
 	{
 		for (int i = 0; i < value[0]; i++)
@@ -1862,6 +1873,7 @@ sScript* cGameScript::Script_AddItemtoGirl(sScript* Script)					// `J` new .06.0
 			else	g_InvManager.Equip(m_GirlTarget, g_Girls.AddInv(m_GirlTarget, item), false);
 		}
 	}
+	g_LogFile.ssend();
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_GivePlayerItem(sScript* Script)					// `J` new .06.02.55
@@ -1878,6 +1890,254 @@ sScript* cGameScript::Script_GivePlayerItem(sScript* Script)					// `J` new .06.
 		{
 			g_Brothels.AddItemToInventory(item);
 		}
+	}
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_IfPlayerHasItem(sScript* Script)
+{
+	bool Skipping; // Flag for if...then condition
+	m_NestLevel++;
+	int Nest = m_NestLevel;
+
+	Skipping = g_Brothels.HasItem(Script->m_Entries[0].m_Text) == -1;
+		
+
+	// At this point, Skipping states if the script actions
+	// need to be skipped due to a conditional if...then statement.
+	// Actions are further processed if skipped = false, looking
+	// for an else to flip the skip mode, or an endif to end
+	// the conditional block.
+	Script = Script->m_Next; // Go to next action to process
+	while (Script != 0)
+	{
+		if (m_Leave) break;
+
+		// if else, flip skip mode
+		if (Script->m_Type == 10)
+		{
+			if (Nest == m_NestLevel) Skipping = !Skipping;
+		}
+
+		// break on end if
+		if (Script->m_Type == 11)
+		{
+			if (Nest == m_NestLevel)
+			{
+				m_NestLevel--;
+				return Script->m_Next;
+			}
+			m_NestLevel--;
+		}
+
+		// Process script function in conditional block
+		// making sure to skip actions when condition not met.
+		if (Skipping)
+		{
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
+			Script = Script->m_Next;
+		}
+		else
+		{
+			if ((Script = Process(Script)) == 0) return 0;
+		}
+	}
+	return 0; // End of script reached
+}
+sScript* cGameScript::Script_GiveGirlInvItem(sScript* Script)
+{
+	int selection = g_Brothels.HasItem(Script->m_Entries[0].m_Text);
+	bool equip = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue) == 1;
+	sInventoryItem* item = g_Brothels.m_Inventory[selection];
+
+	g_LogFile.ss() << "Debug: New script part: GiveGirlInvItem  ||  Trying to give item: " << Script->m_Entries[0].m_Text << "  to girl: ";
+	if (selection == -1 || !item)
+	{
+		g_LogFile.ss() << " |  !ITEM NOT FOUND! ";
+	}
+	else if (!m_GirlTarget)
+	{
+		g_LogFile.ss() << " |  !GIRL NOT FOUND! ";
+	}
+	else if (g_Girls.IsInvFull(m_GirlTarget))
+	{
+		g_LogFile.ss() << " |  " << m_GirlTarget->m_Name << "'s inventory is full!";
+		g_MessageQue.AddToQue("Her inventory is full", 0);
+	}
+	else if (item && m_GirlTarget)
+	{
+		g_LogFile.ss() << " |  " << m_GirlTarget->m_Name << " recieved item";
+
+		if (!equip)	g_Girls.AddInv(m_GirlTarget, item);
+		else
+		{
+			g_LogFile.ss() << " and used it.";
+			g_InvManager.Equip(m_GirlTarget, g_Girls.AddInv(m_GirlTarget, item), false);
+		}
+
+		g_Brothels.m_NumItem[selection]--;
+		if (g_Brothels.m_NumItem[selection] == 0)
+		{
+			g_LogFile.ss() << " That was the last of that item in Player Inventory.";
+			g_Brothels.m_Inventory[selection] = 0;
+			g_Brothels.m_EquipedItems[selection] = 0;
+			g_Brothels.m_NumInventory--;
+		}
+	}
+
+
+	g_LogFile.ssend();
+	return Script->m_Next; // End of script reached
+}
+sScript* cGameScript::Script_IfGirlIsSlave(sScript* Script)
+{
+	bool Skipping; // Flag for if...then condition
+	m_NestLevel++;
+	int Nest = m_NestLevel;
+
+	Skipping = !m_GirlTarget->is_slave();
+
+	// At this point, Skipping states if the script actions
+	// need to be skipped due to a conditional if...then statement.
+	// Actions are further processed if skipped = false, looking
+	// for an else to flip the skip mode, or an endif to end
+	// the conditional block.
+	Script = Script->m_Next; // Go to next action to process
+	while (Script != 0)
+	{
+		if (m_Leave) break;
+
+		// if else, flip skip mode
+		if (Script->m_Type == 10)
+		{
+			if (Nest == m_NestLevel) Skipping = !Skipping;
+		}
+
+		// break on end if
+		if (Script->m_Type == 11)
+		{
+			if (Nest == m_NestLevel)
+			{
+				m_NestLevel--;
+				return Script->m_Next;
+			}
+			m_NestLevel--;
+		}
+
+		// Process script function in conditional block
+		// making sure to skip actions when condition not met.
+		if (Skipping)
+		{
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
+			Script = Script->m_Next;
+		}
+		else
+		{
+			if ((Script = Process(Script)) == 0) return 0;
+		}
+	}
+	return 0; // End of script reached
+}
+sScript* cGameScript::Script_IfGirlIsFree(sScript* Script)
+{
+	bool Skipping; // Flag for if...then condition
+	m_NestLevel++;
+	int Nest = m_NestLevel;
+
+	Skipping = !m_GirlTarget->is_free();
+
+	// At this point, Skipping states if the script actions
+	// need to be skipped due to a conditional if...then statement.
+	// Actions are further processed if skipped = false, looking
+	// for an else to flip the skip mode, or an endif to end
+	// the conditional block.
+	Script = Script->m_Next; // Go to next action to process
+	while (Script != 0)
+	{
+		if (m_Leave) break;
+
+		// if else, flip skip mode
+		if (Script->m_Type == 10)
+		{
+			if (Nest == m_NestLevel) Skipping = !Skipping;
+		}
+
+		// break on end if
+		if (Script->m_Type == 11)
+		{
+			if (Nest == m_NestLevel)
+			{
+				m_NestLevel--;
+				return Script->m_Next;
+			}
+			m_NestLevel--;
+		}
+
+		// Process script function in conditional block
+		// making sure to skip actions when condition not met.
+		if (Skipping)
+		{
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
+			Script = Script->m_Next;
+		}
+		else
+		{
+			if ((Script = Process(Script)) == 0) return 0;
+		}
+	}
+	return 0; // End of script reached
+}
+
+sScript* cGameScript::Script_GiveGoldToGirl(sScript* Script)
+{
+	int value[2];
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	long gold = (value[0] == 0 ? (g_Dice % (value[1] + 1)) + value[0] : (g_Dice % (value[1] + 1)) + value[0] - 1);
+
+	if (gold < 0 && m_GirlTarget->m_Money <= -gold)	// If taking money and she does not have much
+	{
+		gold = m_GirlTarget->m_Money;				// you can only take what she has
+		m_GirlTarget->m_Money = 0;
+	}
+	else m_GirlTarget->m_Money += gold;
+
+	g_Gold.misc_credit(-gold);
+
+	return Script->m_Next;
+}
+
+sScript* cGameScript::Script_AdjustTargetGirlStatR(sScript* Script)
+{
+	int num = 0;
+	int value[4];
+
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_Selection] : Script->m_Entries[0].m_Selection);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
+	value[3] = (Script->m_Entries[3].m_Var == 1 ? m_Vars[Script->m_Entries[3].m_Selection] : Script->m_Entries[3].m_Selection);
+	num = (Script->m_Entries[1].m_lValue == 0 ? (g_Dice % (value[2] + 1)) + value[1] : (g_Dice % (value[2] + 1)) + value[1] - 1);
+
+	if (m_GirlTarget)
+	{
+		if (value[3])	g_Girls.UpdateStatTemp(m_GirlTarget, value[0], num);
+		else/*     */	g_Girls.UpdateStat(m_GirlTarget, value[0], num);
+	}
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_AdjustTargetGirlSkillR(sScript* Script)
+{
+	int num = 0;
+	int value[4];
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_Selection] : Script->m_Entries[0].m_Selection);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
+	value[3] = (Script->m_Entries[3].m_Var == 1 ? m_Vars[Script->m_Entries[3].m_Selection] : Script->m_Entries[3].m_Selection);
+	num = (Script->m_Entries[1].m_lValue == 0 ? (g_Dice % (value[2] + 1)) + value[1] : (g_Dice % (value[2] + 1)) + value[1] - 1);
+
+	if (m_GirlTarget)
+	{
+		if (value[3])	g_Girls.UpdateSkillTemp(m_GirlTarget, value[0], num);
+		else/*     */	g_Girls.UpdateSkill(m_GirlTarget, value[0], num);
 	}
 	return Script->m_Next;
 }

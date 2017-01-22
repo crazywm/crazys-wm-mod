@@ -133,6 +133,14 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 	current->m_Finance.zero();
 	current->m_AntiPregUsed = 0;
 
+	// `J` autocreatemovies added for .06.02.57
+	if (GetNumScenes() < 10){}		// don't worry about it if there are less than 10 scenes
+	else if (cfg.initial.autocreatemovies())	{ ReleaseCurrentMovie(true); }
+	else if (GetNumScenes() > 0)
+	{
+		ss.str("");	ss << "You have " << GetNumScenes() << " unused scenes in the Movie Studio ready to be put into movies.";
+		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
+	}
 
 	sGirl* cgirl = current->m_Girls;
 	while (cgirl)
@@ -1625,15 +1633,69 @@ void cMovieStudioManager::LoadScene(int m_SceneNum, string m_Name, string m_Actr
 	m_movieScenes.push_back(newScene);
 }
 
-long cMovieStudioManager::calc_movie_quality()
+long cMovieStudioManager::calc_movie_quality(bool autoreleased)
 {
 	stringstream ss;
 	long quality = 0;
+	int numscenes = m_movieScenes.size();
+
+	if (autoreleased)
+	{
+		int makerqual = g_Dice % 10 + 1;
+		int thrownout = 0;
+		int edited = 0;
+		sGirl* maker = GetFirstGirlOnJob(0, JOB_DIRECTOR, SHIFT_NIGHT);
+		if (!maker)	{ makerqual = g_Dice % 5 + 1;	maker = GetFirstGirlOnJob(0, JOB_PROMOTER, SHIFT_NIGHT); }
+		if (!maker)	{ makerqual = g_Dice % 3;		maker = GetRandomGirlOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT); }
+		if (!maker)	{ makerqual = g_Dice % 3;		maker = GetRandomGirlOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT); }
+
+		if (!maker)
+		{
+			makerqual = 0;
+			ss << "A movie was automatically made from the scenes that are ready for use";
+		}
+		else
+		{
+			quality += makerqual;
+			if (maker->m_NightJob == JOB_DIRECTOR)			ss << "Director ";
+			if (maker->m_NightJob == JOB_PROMOTER)			ss << "Promoter ";
+			ss << maker->m_Realname << " produced a movie from the scenes shot last week";
+			for (int i = 0; i < (int)m_movieScenes.size(); i++)
+			{
+				if (m_movieScenes[i]->m_Quality < 0)
+				{
+					m_movieScenes[i]->m_Quality = 0;
+					thrownout++;
+				}
+			}
+			if (thrownout >= numscenes * 8 / 10)
+			{
+				ss << ".\nThe movie was total crap but " << maker->m_Realname << " chopped it up and put it out as a blooper reel";
+				numscenes = thrownout + g_Dice%thrownout;
+			}
+			else if (thrownout>numscenes / 2)
+			{
+				ss << ".\nMore than half of the scenes were crap but " << maker->m_Realname << " chopped them up and added them as a blooper reel at the end of the movie";
+				numscenes -= thrownout;
+				numscenes += g_Dice%thrownout;
+			}
+			else if (thrownout > 0)
+			{
+				ss << ".\nShe threw out ";
+				/* */if (thrownout == 1)	ss << "one";
+				else if (thrownout == 1)	ss << "two";
+				else/*                */	ss << "several";
+				ss << " scenes that didn't meet her standards";
+				numscenes -= thrownout;
+			}
+		}
+		ss << ".\n \n";
+	}
 	for (int i = 0; i < (int)m_movieScenes.size(); i++)
 	{
 		quality += m_movieScenes[i]->m_Quality;
 	}
-	quality += m_movieScenes.size() * 10;
+	quality += numscenes * 10;
 	ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n \n";
 	ss << (g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 0) > 0 ? "Your" : "A");
 	ss << " promoter with an advertising budget will help it sell for more.";
@@ -1642,10 +1704,10 @@ long cMovieStudioManager::calc_movie_quality()
 	return quality;
 }
 
-void cMovieStudioManager::ReleaseCurrentMovie()
+void cMovieStudioManager::ReleaseCurrentMovie(bool autoreleased)
 {
 	sMovieStudio* current = (sMovieStudio*)m_Parent;
-	long init_quality = calc_movie_quality();
+	long init_quality = calc_movie_quality(autoreleased);
 	long quality = init_quality;	// calculate movie quality
 	long promo_quality = 0;
 	long money_made = 0;

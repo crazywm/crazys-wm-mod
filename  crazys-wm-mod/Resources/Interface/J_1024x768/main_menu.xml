@@ -5,5 +5,6 @@
 <Button  Name="New Game"     Image="NewGame"               XPos="22"  YPos="172" Width="256" Height="64"  Transparency="true" Scale="true" />
 <Button  Name="Settings"     Image="Settings"              XPos="22"  YPos="244" Width="256" Height="64"  Transparency="true" Scale="true" />
 <Button  Name="Quit Game"    Image="QuitGame"              XPos="22"  YPos="316" Width="256" Height="64"  Transparency="true" Scale="true" />
-<Text    Name="ReadMe" Text="Please read the readme.html"  XPos="150" YPos="385" Width="150" Height="12"  FontSize="10" />
+<Text    Name="Version" Text="Version"                     XPos="5"   YPos="385" Width="160" Height="12"  FontSize="10" />
+<Text    Name="ReadMe" Text="Please read the readme.html"  XPos="170" YPos="385" Width="150" Height="12"  FontSize="10" />
 </Screen>

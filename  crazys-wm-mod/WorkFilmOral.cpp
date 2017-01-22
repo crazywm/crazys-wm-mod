@@ -116,7 +116,7 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else
 	{
-		ss << "After the fourth time she 'snagged' the actor on her tooth, he cursed and stormed off set. Your gang, " << Gang->m_Name << ", saved the day by pinning her down wanking on her face one-by-one.\nOverall it's a terrible scene.";
+		ss << "After the fourth time she 'snagged' the actor on her tooth, he cursed and stormed off set. Your gang, " << (Gang ? Gang->m_Name : "") << ", saved the day by pinning her down wanking on her face one-by-one.\nOverall it's a terrible scene.";
 	}
 	ss << "\n";
 
