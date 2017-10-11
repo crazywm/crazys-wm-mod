@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="No-Choke Choker" Desc="Tired of your girl always gagging on your dong? This state of the art choker has over a hunred tiny needles that stick in to your girls neck. The needles deliver a tiny dose of neurotoxin which prevents the muscles from contracting! (Adds No Gag Reflex, removes Gag Reflex and Strong Gag Reflex)" Type="Necklace" Badness="50" Special="None" Cost="2450" Rarity="Catacomb05" Infinite="false" GirlBuyChance="0.0" ItemWeight="0.0">
+        <Effect What="Trait" Name="No Gag Reflex" Amount="1" />
+        <Effect What="Trait" Name="Strong Gag Reflex" Amount="0" />
+        <Effect What="Trait" Name="Gag Reflex" Amount="0" />
+    </Item>
+</Items>

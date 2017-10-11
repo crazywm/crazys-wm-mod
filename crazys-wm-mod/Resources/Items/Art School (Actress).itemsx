@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Art School (Actress)" Desc="Pay for your girl to get a formal education in drama from a reputable school. She'll be grateful, but also know how to get her way. (Performance +40, Adds Actress, Iron Will)" Type="Food" Badness="0" Special="None" Cost="30000" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
+        <Effect What="Skill" Name="Performance" Amount="40" />
+        <Effect What="Trait" Name="Actress" Amount="1" />
+        <Effect What="Trait" Name="Iron Will" Amount="1" />
+    </Item>
+</Items>
