@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Apprenticeship (Singer)" Desc="Pay for your girl to get be taught by the best in the business. Most of the best in the business use drugs. A lot of drugs. (Performance +40, Adds Singer, Fairy Dust Addict, Bimbo)" Type="Food" Badness="0" Special="None" Cost="15000" Rarity="Common" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
-        <Effect What="Skill" Name="Performance" Amount="40" />
-        <Effect What="Trait" Name="Singer" Amount="1" />
-        <Effect What="Trait" Name="Fairy Dust Addict" Amount="1" />
-        <Effect What="Trait" Name="Bimbo" Amount="1" />
-    </Item>
-</Items>

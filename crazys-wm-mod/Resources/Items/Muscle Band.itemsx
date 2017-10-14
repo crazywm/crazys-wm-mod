@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Items>
-    <Item Name="Muscle Band" Desc="This tight band makes your girl's muscles look larger and more defined. (Adds Muscular)" Type="Armband" Badness="8" Special="None" Cost="1200" Rarity="Shop05" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
-        <Effect What="Trait" Name="Muscular" Amount="1" />
-    </Item>
-</Items>
