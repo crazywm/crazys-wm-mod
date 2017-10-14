@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+    <Item Name="Scroll of Merchantile Sex" Desc="Summons the ghost of a departed pimp to fuck your girl. Turns any girl in to a true whore. (Adds Whore)" Type="Food" Badness="30" Special="None" Cost="2500" Rarity="Catacomb01" Infinite="false" GirlBuyChance="0.0" ItemWeight="0.0">
+        <Effect What="Trait" Name="Whore" Amount="1" />
+    </Item>
+</Items>
