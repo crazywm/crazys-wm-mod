@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Potion of Androgyny"
-      Desc="This rare potion permanently transforms its user into a half-man, half-woman version of themselves. In the case of a woman, the transformation includes the apparition of a fully functional set of male genitals, a reduction of her breast size, a thinning of the hips, and a slight increase in physical constitution. (+25 Lib, +15 Cons, +10 Str, -10 Cha, reduces breasts to Flat Chest, removes Cute, Lolita, Great Figure, Great Arse, adds Manly, Futanari)"
+      Desc="This rare potion permanently transforms its user into a half-man, half-woman version of themselves. In the case of a woman, the transformation includes the apparition of a fully functional set of male genitals, a reduction of her breast size, a thinning of the hips, and a slight increase in physical constitution. (+25 Lib, +15 Cons, +10 Str, -10 Cha, reduces breasts to Flat Chest, removes  Cute, Lolita, Great Figure, Great Arse, Manly, Futanari)"
       Type="Food"
       Badness="50"
       Special="None"
@@ -32,7 +32,7 @@
    
 </Item>
 <Item Name="Potion of Androgyny"
-      Desc="This rare potion permanently transforms its user into a half-man, half-woman version of themselves. In the case of a woman, the transformation includes the apparition of a fully functional set of male genitals, a reduction of her breast size, a thinning of the hips, and a slight increase in physical constitution. (+25 Lib, +15 Cons, +10 Str, -10 Cha, reduces breasts to Flat Chest, removes Cute, Lolita, Great Figure, Great Arse, adds Manly, Futanari)"
+      Desc="This rare potion permanently transforms its user into a half-man, half-woman version of themselves. In the case of a woman, the transformation includes the apparition of a fully functional set of male genitals, a reduction of her breast size, a thinning of the hips, and a slight increase in physical constitution. (+25 Lib, +15 Cons, +10 Str, -10 Cha, reduces breasts to Flat Chest, removes Cute, Lolita, Great Figure, Great Arse, Manly, Futanari)"
       Type="Food"
       Badness="50"
       Special="None"
