@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Items>
 <Item Name="Mecha Bunny Egg"
-      Desc="From a strange futuristic version of Mareth, this rare bunny egg actually changes you into a cyborg. This universe phases in and out of existance so it would be a bad idea to try and go there. "
+      Desc="From a strange futuristic version of Mareth, this rare bunny egg actually changes you into a cyborg. This universe fazes in and out of existance so it would be a bad idea to try and go there. "
       Type="Food"
       Badness="10"
       Special="None"
