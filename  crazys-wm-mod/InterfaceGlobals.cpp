@@ -61,6 +61,7 @@
 #include "cScreenGirlDetails.h"
 #include "cScreenDungeon.h"
 #include "cScreenMainMenu.h"
+#include "cScreenPreparingGame.h"
 #include "cScreenNewGame.h"
 #include "cScreenSettings.h"
 #include "cScreenBrothelManagement.h"
@@ -77,6 +78,7 @@ extern cWindowManager g_WinManager;
 
 cInterfaceEventManager g_InterfaceEvents;
 cScreenMainMenu g_MainMenu;
+cScreenPreparingGame g_Preparing;
 cScreenNewGame g_NewGame;			// NewGame.xml
 cScreenSettings g_Settings;			// `J` added
 
@@ -124,7 +126,6 @@ cInterfaceWindow g_TransferGirls;	// Hard coded
 //cInterfaceWindow g_Gallery2;		// Hard coded
 cInterfaceWindow g_ChangeJobs;		// Hard coded
 //cInterfaceWindow g_Turnsummary;		// Hard coded
-cInterfaceWindow g_Preparing;
 
 cMessageBox g_MessageBox;
 cChoiceManager g_ChoiceManager;
@@ -182,6 +183,7 @@ unsigned char g_MessageBoxTextR = 0, g_MessageBoxTextG = 0, g_MessageBoxTextB = 
 void FreeInterface()
 {
 	g_MainMenu.Free();
+	g_Preparing.Free();
 	g_GetString.Free();
 	g_BrothelManagement.Free();
 	g_ClinicManagement.Free();
@@ -230,6 +232,7 @@ void FreeInterface()
 void ResetInterface()
 {
 	g_MainMenu.Reset();
+	g_Preparing.Reset();
 	g_GetString.Reset();
 	g_BrothelManagement.Reset();
 	g_ClinicManagement.Reset();
@@ -650,19 +653,10 @@ void LoadInterface()
 	}
 
 
-	g_LogFile.write("Loading Preparing Game Screen");
-	x = cfg.resolution.scalewidth() / 4;
-	y = cfg.resolution.scaleheight() / 4;
-	w = cfg.resolution.scalewidth() / 2;
-	h = cfg.resolution.scaleheight() / 2;
-	int t = h / 14;
-	int u = w / 8;
-	g_Preparing.CreateWindow(x, y, w, h, 1);
-	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, u*1, t*2,  u*4, t*2, "Preparing", t, true, false);
-	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, u*2, t*5,  u*4, t*2, "Game", t, true, false);
-	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, u*4, t*8,  u*4, t*2, "Please", t, true, false);
-	g_Preparing.AddTextItem(g_interfaceid.STATIC_STATIC, u*5, t*11, u*4, t*2, "Wait", t, true, false);
 
+	g_LogFile.write("Loading Preparing Game Screen");
+	g_Preparing.load();
+	g_WinManager.add_window("Preparing Game", &g_Preparing);
 	// `J` Bookmark - Loading the screens
 
 	// Main Menu

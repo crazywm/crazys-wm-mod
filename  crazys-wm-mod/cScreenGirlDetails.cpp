@@ -50,7 +50,6 @@ extern	int	g_TalkCount;
 extern bool g_AllTogle;
 extern cGangManager g_Gangs;
 extern bool g_Cheats;
-extern string g_ReturnText;
 extern	bool	eventrunning;
 extern cTraits g_Traits;
 extern sGirl *selected_girl;

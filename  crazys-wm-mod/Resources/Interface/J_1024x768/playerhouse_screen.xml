@@ -1,5 +1,5 @@
 <Screen>
-<Window	Name="Player House Window"			XPos="15"	YPos="12"	Width="770"	Height="578"	Border="1"	/>
+<Window	Name="Player House Window"			XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
 <Image	Name="House"	File="House.jpg"		XPos="8"	YPos="48"	Width="584"	Height="480"	/>
 <Text    	Name="HouseDetails"	Text=""		XPos="600"	YPos="50"	Width="160"	Height="170"	FontSize="10"	/>
 <Text    	Name="Your House"	Text="Your House"		XPos="8"	YPos="2"	Width="232"	Height="30"	FontSize="16"	/>

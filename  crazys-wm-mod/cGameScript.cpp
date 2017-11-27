@@ -177,8 +177,13 @@ sScript *cGameScript::Process(sScript *Script)
 	case 102:	return Script_GiveGoldToGirl(Script);					// `J` new .06.02.57
 	case 103:	return Script_AdjustTargetGirlStatR(Script);			// `J` new .06.02.57
 	case 104:	return Script_AdjustTargetGirlSkillR(Script);			// `J` new .06.02.57
+	case 105:	return Script_EndIfNew(Script);							// `J` new .06.03.00 to correct for shifting of lines in the old editor
+	case 106:	return Script_IfGirlStatus(Script);						// `J` new .06.03.00
+	case 107:	return Script_SetGirlStatus(Script);					// `J` new .06.03.00
+	case 108:	return Script_EndPregnancy(Script);						// `J` new .06.03.00
+	case 109:	return Script_CreatePregnancy(Script);					// `J` new .06.03.00
 
-	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.cpp
+		// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.cpp
 
 	default: return Script->m_Next;	// `J` if a script type is not found, skip it.
 	}
@@ -193,8 +198,10 @@ void cGameScript::RunScript()
 	sScript* curr = m_CurrPos;
 
 	// Scan through script and process functions
-	while (curr != 0 && !m_Leave && m_Active) curr = Process(curr);
-
+	while (curr != 0 && !m_Leave && m_Active)
+	{
+		curr = Process(curr);
+	}
 	if (m_Active == false)
 	{
 		g_ChoiceManager.Free();
@@ -319,7 +326,7 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 		if (Script->m_Type == 10 && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -351,6 +358,10 @@ sScript *cGameScript::Script_EndIf(sScript *Script)
 {
 	return Script->m_Next; // Go to next script action
 }
+sScript *cGameScript::Script_EndIfNew(sScript *Script)
+{
+	return Script->m_Next; // Go to next script action
+}
 sScript *cGameScript::Script_ActivateChoice(sScript *Script)
 {
 	g_ChoiceManager.SetActive(Script->m_Entries[0].m_lValue);
@@ -358,7 +369,7 @@ sScript *cGameScript::Script_ActivateChoice(sScript *Script)
 }
 sScript *cGameScript::Script_IfChoice(sScript *Script)
 {
-	bool Skipping; // Flag for if...then condition
+	bool Skipping = false; // Flag for if...then condition
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 	int value[2];
@@ -390,7 +401,7 @@ sScript *cGameScript::Script_IfChoice(sScript *Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -507,7 +518,7 @@ sScript *cGameScript::Script_AddRandomGirlToDungeon(sScript *Script)
 	newgirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 
 	g_Brothels.GetDungeon()->AddGirl(newgirl, reason);
-	
+
 	return Script->m_Next;
 }
 sScript *cGameScript::Script_SetGlobal(sScript *Script)
@@ -520,7 +531,7 @@ sScript *cGameScript::Script_SetGirlFlag(sScript *Script)
 	int value[2];
 	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
-	
+
 	if (m_GirlTarget == 0) return Script->m_Next;	// this shouldn't happen
 
 	m_GirlTarget->m_Flags[value[0]] = (char)value[1];
@@ -612,10 +623,10 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 	}
 
 	// `J` zzzzzz - this can probably be done easier
-    sGirl* Daughter1 = nullptr;
-    sGirl* Daughter2 = nullptr;
-    sGirl* Daughter3 = nullptr;
-    sGirl* Mother = nullptr;
+	sGirl* Daughter1 = nullptr;
+	sGirl* Daughter2 = nullptr;
+	sGirl* Daughter3 = nullptr;
+	sGirl* Mother = nullptr;
 	stringstream NGmsg1;
 	stringstream NGmsg2;
 	stringstream NGmsg3;
@@ -662,7 +673,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 		if (value[0] > 0)	Daughter1->m_Desc = Daughter1->m_Desc + "\n \n" + biography;
 		if (value[0] > 1)	Daughter2->m_Desc = Daughter2->m_Desc + "\n \n" + biography;
 		if (value[0] > 2)	Daughter3->m_Desc = Daughter3->m_Desc + "\n \n" + biography;
-		
+
 		if (value[0] > 0)
 		{
 			Mother->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] += value[0];
@@ -842,7 +853,7 @@ sScript *cGameScript::Script_GivePlayerRandomSpecialItem(sScript *Script)
 }
 sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 {
-	bool Skipping; // Flag for if...then condition
+	bool Skipping = false; // Flag for if...then condition
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
@@ -868,7 +879,7 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -894,7 +905,7 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 }
 sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 {
-	bool Skipping; // Flag for if...then condition
+	bool Skipping = false; // Flag for if...then condition
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
@@ -920,7 +931,7 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -983,7 +994,7 @@ sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -1056,7 +1067,7 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -1119,7 +1130,7 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -1145,7 +1156,7 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 }
 sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 {
-	bool Skipping; // Flag for if...then condition
+	bool Skipping = false; // Flag for if...then condition
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
@@ -1168,7 +1179,7 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -1316,7 +1327,7 @@ sScript* cGameScript::Script_BDSMSexTarget(sScript* Script)
 }
 sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 {
-	bool Skipping; // Flag for if...then condition
+	bool Skipping = false; // Flag for if...then condition
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
@@ -1340,7 +1351,7 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -1586,7 +1597,7 @@ sScript* cGameScript::Script_DomTarget(sScript* Script)
 sScript* cGameScript::Script_AddTrait(sScript* Script)						// `J` new
 {
 	if (m_GirlTarget && !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
-			g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_RemoveTrait(sScript* Script)					// `J` new
@@ -1710,7 +1721,7 @@ sScript* cGameScript::Script_GetRandomGirl(sScript* Script)						// `J` new
 		}
 		else choosegirl -= g_House.GetBrothel(0)->m_NumGirls;
 	}
-		break;
+	break;
 	}
 	if (m_GirlTarget == 0)
 	{
@@ -1825,7 +1836,7 @@ sScript* cGameScript::Script_IfGirlHasItem(sScript* Script)					// `J` new .06.0
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -1858,7 +1869,7 @@ sScript* cGameScript::Script_AddItemtoGirl(sScript* Script)					// `J` new .06.0
 	value[1] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
 
 	g_LogFile.ss() << "Debug: New script part: AddItemtoGirl  ||  Trying to add " << value[0] << " of item: " << Script->m_Entries[0].m_Text
-		<< "  to girl: " << (m_GirlTarget ? m_GirlTarget->m_Name : " !NO GIRL! ")<< " | Item " << (item ? "Found" : " !NOT FOUND! ");
+		<< "  to girl: " << (m_GirlTarget ? m_GirlTarget->m_Name : " !NO GIRL! ") << " | Item " << (item ? "Found" : " !NOT FOUND! ");
 	if (g_Girls.IsInvFull(m_GirlTarget))
 	{
 		g_LogFile.ss() << "Her inventory is full"; g_LogFile.ssend();
@@ -1895,12 +1906,12 @@ sScript* cGameScript::Script_GivePlayerItem(sScript* Script)					// `J` new .06.
 }
 sScript* cGameScript::Script_IfPlayerHasItem(sScript* Script)
 {
-	bool Skipping; // Flag for if...then condition
+	bool Skipping = false; // Flag for if...then condition
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
 	Skipping = g_Brothels.HasItem(Script->m_Entries[0].m_Text) == -1;
-		
+
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1919,7 +1930,7 @@ sScript* cGameScript::Script_IfPlayerHasItem(sScript* Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -1990,7 +2001,7 @@ sScript* cGameScript::Script_GiveGirlInvItem(sScript* Script)
 }
 sScript* cGameScript::Script_IfGirlIsSlave(sScript* Script)
 {
-	bool Skipping; // Flag for if...then condition
+	bool Skipping = false; // Flag for if...then condition
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
@@ -2013,7 +2024,7 @@ sScript* cGameScript::Script_IfGirlIsSlave(sScript* Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -2039,7 +2050,7 @@ sScript* cGameScript::Script_IfGirlIsSlave(sScript* Script)
 }
 sScript* cGameScript::Script_IfGirlIsFree(sScript* Script)
 {
-	bool Skipping; // Flag for if...then condition
+	bool Skipping = false; // Flag for if...then condition
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
@@ -2062,7 +2073,7 @@ sScript* cGameScript::Script_IfGirlIsFree(sScript* Script)
 		}
 
 		// break on end if
-		if (Script->m_Type == 11)
+		if (Script->m_Type == 11 || Script->m_Type == 105)
 		{
 			if (Nest == m_NestLevel)
 			{
@@ -2086,7 +2097,6 @@ sScript* cGameScript::Script_IfGirlIsFree(sScript* Script)
 	}
 	return 0; // End of script reached
 }
-
 sScript* cGameScript::Script_GiveGoldToGirl(sScript* Script)
 {
 	int value[2];
@@ -2105,7 +2115,6 @@ sScript* cGameScript::Script_GiveGoldToGirl(sScript* Script)
 
 	return Script->m_Next;
 }
-
 sScript* cGameScript::Script_AdjustTargetGirlStatR(sScript* Script)
 {
 	int num = 0;
@@ -2141,6 +2150,129 @@ sScript* cGameScript::Script_AdjustTargetGirlSkillR(sScript* Script)
 	}
 	return Script->m_Next;
 }
+sScript* cGameScript::Script_IfGirlStatus(sScript* Script)			// `J` new .06.03.00
+{
+	bool Skipping = false; // Flag for if...then condition
+	m_NestLevel++;
+	int Nest = m_NestLevel;
+	int value = Script->m_Entries[0].m_Selection;
+
+	// See if variable matches second entry
+	Skipping = !(m_GirlTarget->m_States&(1 << value));
+
+	// At this point, Skipping states if the script actions
+	// need to be skipped due to a conditional if...then statement.
+	// Actions are further processed if skipped = false, looking
+	// for an else to flip the skip mode, or an endif to end
+	// the conditional block.
+	Script = Script->m_Next; // Go to next action to process
+	while (Script != 0)
+	{
+		if (m_Leave) break;
+
+		// if else, flip skip mode
+		if (Script->m_Type == 10)
+		{
+			if (Nest == m_NestLevel) Skipping = !Skipping;
+		}
+
+		// break on end if
+		if (Script->m_Type == 11 || Script->m_Type == 105)
+		{
+			if (Nest == m_NestLevel)
+			{
+				m_NestLevel--;
+				return Script->m_Next;
+			}
+			m_NestLevel--;
+		}
+
+		// Process script function in conditional block
+		// making sure to skip actions when condition not met.
+		if (Skipping)
+		{
+			if (IsIfStatement(Script->m_Type)) m_NestLevel++;
+			Script = Script->m_Next;
+		}
+		else
+		{
+			if ((Script = Process(Script)) == 0) return 0;
+		}
+	}
+	return 0; // End of script reached
+}
+sScript* cGameScript::Script_SetGirlStatus(sScript* Script)			// `J` new .06.03.00
+{
+	int status = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	int setto = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
+
+	if (status == STATUS_PREGNANT || status == STATUS_PREGNANT_BY_PLAYER || status == STATUS_INSEMINATED)	// if creating pregnancy, remove old pregnancies
+	{
+		if (!setto)		// trying to end any pregnancy type will end all pregnancy types
+		{
+			m_GirlTarget->clear_pregnancy();
+		}
+		else if (m_GirlTarget->is_pregnant()){}	// she is already pregnant so do nothing
+		else if (status == STATUS_PREGNANT_BY_PLAYER)
+		{
+			g_Girls.CreatePregnancy(m_GirlTarget, 1, status, The_Player->m_Stats, The_Player->m_Skills);
+		}
+		else
+		{
+			sCustomer* Cust = new sCustomer;
+			int num = (status == STATUS_INSEMINATED ? max(1, g_Dice.bell(-4, 5)) : 1);
+			g_Girls.CreatePregnancy(m_GirlTarget, 1, status, Cust->m_Stats, Cust->m_Skills);
+		}
+	}
+	else
+	{
+		// Set value
+		if (setto)	m_GirlTarget->m_States |= (1 << status);
+		else 		m_GirlTarget->m_States &= (1 << status);
+	}
+	return Script->m_Next; // Go to next script action
+
+
+}
+sScript* cGameScript::Script_EndPregnancy(sScript* Script)			// `J` new .06.03.00
+{
+	m_GirlTarget->clear_pregnancy();
+	return Script->m_Next; // Go to next script action
+}
+sScript* cGameScript::Script_CreatePregnancy(sScript* Script)		// `J` new .06.03.00
+{
+	int value[3];
+	value[0] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
+	value[1] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
+
+	if (value[2])							// force==true remove old pregnancies
+	{
+		m_GirlTarget->clear_pregnancy();
+	}
+	if (m_GirlTarget->is_pregnant()){}		// she is already pregnant so do nothing
+	else if (!g_Dice.percent(value[1])){}	// if the percent fails do nothing
+	else if (value[0] == 0)					// STATUS_PREGNANT_BY_PLAYER
+	{
+		g_Girls.CreatePregnancy(m_GirlTarget, 1, STATUS_PREGNANT_BY_PLAYER, The_Player->m_Stats, The_Player->m_Skills);
+	}
+	else
+	{
+		sCustomer* Cust = new sCustomer;
+		int status = (value[0] == 1 ? STATUS_PREGNANT : STATUS_INSEMINATED);
+		int num = (status == STATUS_INSEMINATED ? max(1, g_Dice.bell(-4, 5)) : 1);
+		g_Girls.CreatePregnancy(m_GirlTarget, 1, status, Cust->m_Stats, Cust->m_Skills);
+	}
+	return Script->m_Next; // Go to next script action
+
+}
+
+
+
+
+
+
+
 //sScript* cGameScript::Script_GirlNameTarget(sScript* Script)
 //{
 //	if(m_GirlTarget)

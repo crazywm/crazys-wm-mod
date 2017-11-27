@@ -1509,6 +1509,13 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 		*/
 		u_int sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 
+		// Sanity check! Don't process runaways and check that m_Next points to something
+		if (sw == JOB_RUNAWAY)		// `J` added for .06.03.00 
+		{
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+
 		// do their job
 		//	if((sw != JOB_ADVERTISING) && (sw != JOB_WHOREGAMBHALL) && (sw != JOB_WHOREBROTHEL) && (sw != JOB_BARWHORE))		// advertising and whoring are handled earlier.
 		// Was not testing for some jobs which were already handled, changed to a switch case statement just for ease of reading, and expansion -PP

@@ -31,7 +31,6 @@
 #include "cArena.h"
 #include "cArenaScreen.h"
 
-extern	string					g_ReturnText;
 extern	string					ReadTextFile(DirPath path, string file);
 extern	int						g_CurrentScreen;
 extern	int						g_CurrBrothel;

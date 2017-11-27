@@ -23,7 +23,6 @@
 #include "FileList.h"
 
 extern cWindowManager g_WinManager;
-extern string g_ReturnText;
 extern bool g_InitWin;
 extern int g_CurrentScreen;
 

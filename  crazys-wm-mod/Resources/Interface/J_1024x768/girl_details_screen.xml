@@ -1,5 +1,5 @@
 <Screen>
-<Window   Name="Girl Details Window"                                   XPos="16"  YPos="12"  Width="768" Height="576" Border="1" />
+<Window   Name="Girl Details Window"                                   XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
 <Text     Name="GirlName"             Text=""                          XPos="8"   YPos="8"   Width="752" Height="25"  FontSize="16" />
 <Text     Name="GirlDescription"      Text=""                          XPos="8"   YPos="35"  Width="160" Height="425" FontSize="9" />
 <Image    Name="GirlImage"            File="blank.png"                 XPos="176" YPos="8"   Width="432" Height="472" />

@@ -1,5 +1,5 @@
 <Screen>
-<Window   Name="Transfer Girls"                             XPos="16"  YPos="16"  Width="768" Height="576" Border="1" />
+<Window   Name="Transfer Girls"                             XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
 <Button   Name="Back"           Image="Back"                XPos="308" YPos="536" Width="160" Height="32"  Transparency="true" Scale="true" />
 <Button   Name="ShiftLeft"      Image="ShiftLeft"           XPos="366" YPos="214" Width="48"  Height="48"  Transparency="true" Scale="true" />
 <Button   Name="ShiftRight"     Image="ShiftRight"          XPos="366" YPos="304" Width="48"  Height="48"  Transparency="true" Scale="true" />

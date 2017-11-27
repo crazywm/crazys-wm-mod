@@ -143,7 +143,13 @@ const char *cScript::script_names[] =
 	"Script_IfGirlIsFree",
 	"Script_GiveGoldToGirl",
 	"Script_AdjustTargetGirlStatR",
-	"Script_AdjustTargetGirlSkillR"
+	"Script_AdjustTargetGirlSkillR",
+	"Script_EndIfNew",
+	"Script_IfGirlStatus",
+	"Script_SetGirlStatus",
+	"Script_EndPregnancy",
+	"Script_CreatePregnancy"
+	
 	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cScripts.cpp > script_names[]
 };
 const char *cScript::script_entry_types[] =
@@ -264,6 +270,12 @@ void cScript::setup_maps()
 	script_lookup["script_givegoldtogirl"] = 102;
 	script_lookup["script_adjusttargetgirlstatr"] = 103;
 	script_lookup["script_adjusttargetgirlskillr"] = 104;
+	script_lookup["Script_EndIfNew"] = 105;
+	script_lookup["Script_IfGirlStatus"] = 106;
+	script_lookup["Script_SetGirlStatus"] = 107;
+	script_lookup["Script_EndPregnancy"] = 108;
+	script_lookup["Script_CreatePregnancy"] = 109;
+	
 	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cScripts.cpp > setup_maps()
 
 	script_lookup["_none"] = 0;

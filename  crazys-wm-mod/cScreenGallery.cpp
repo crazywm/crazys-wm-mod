@@ -59,7 +59,6 @@ extern	cInterfaceEventManager	g_InterfaceEvents;
 //extern	cInterfaceWindow		g_Gallery;
 extern	bool					g_Cheats;
 extern	bool					eventrunning;
-extern	string					g_ReturnText;
 extern	bool					g_AllTogle;
 extern	sInterfaceIDs			g_interfaceid;
 

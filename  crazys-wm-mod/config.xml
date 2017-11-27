@@ -52,8 +52,8 @@
 <!-- 4:3 -->
     <Resolution
         Resolution="J_1024x768"
-        Width="1024"
-        Height="768"
+        Width="960"
+        Height="720"
         ScaleWidth="800"
         ScaleHeight="600"
         FixedScale="false"

@@ -129,6 +129,7 @@
     <ClCompile Include="cScreenGallery.cpp" />
     <ClCompile Include="cScreenMovie.cpp" />
     <ClCompile Include="cScreenNewGame.cpp" />
+    <ClCompile Include="cScreenPreparingGame.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="cScreenSettings.cpp" />
     <ClCompile Include="cScreenTurnSummary.cpp" />
@@ -394,6 +395,7 @@
     <ClInclude Include="cScreenGallery.h" />
     <ClInclude Include="cScreenMovie.h" />
     <ClInclude Include="cScreenNewGame.h" />
+    <ClInclude Include="cScreenPreparingGame.h" />
     <ClInclude Include="cScreenPropertyManagement.h" />
     <ClInclude Include="cScreenSettings.h" />
     <ClInclude Include="cScreenTurnSummary.h" />

@@ -626,6 +626,7 @@
     <ClCompile Include="WorkFakeOrgasm.cpp" />
     <ClCompile Include="WorkCureDiseases.cpp" />
     <ClCompile Include="cScreenMovie.cpp" />
+    <ClCompile Include="cScreenPreparingGame.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -1055,6 +1056,9 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="cScreenMovie.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenPreparingGame.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

@@ -121,6 +121,25 @@ bool cJobManager::WorkSOLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	//	if (g_Girls.CheckVirginity(girl))				{}
 
+	if (is_sex_type_allowed(SKILL_ANAL, brothel))			girl->m_WorkingDay += g_Dice % 2;
+	if (is_sex_type_allowed(SKILL_BDSM, brothel))			girl->m_WorkingDay -= g_Dice % 5 + 5;
+	if (is_sex_type_allowed(SKILL_BEASTIALITY, brothel))	girl->m_WorkingDay -= g_Dice % 2;
+	if (is_sex_type_allowed(SKILL_FOOTJOB, brothel))		girl->m_WorkingDay -= g_Dice % 2;
+	if (is_sex_type_allowed(SKILL_GROUP, brothel))			girl->m_WorkingDay += g_Dice % 5 + 5;
+	if (is_sex_type_allowed(SKILL_HANDJOB, brothel))		girl->m_WorkingDay -= g_Dice % 5;
+	if (is_sex_type_allowed(SKILL_LESBIAN, brothel))		girl->m_WorkingDay -= g_Dice % 20 + 10;
+	if (is_sex_type_allowed(SKILL_NORMALSEX, brothel))		girl->m_WorkingDay += g_Dice % 10 + 10;
+	if (is_sex_type_allowed(SKILL_ORALSEX, brothel))		girl->m_WorkingDay -= g_Dice % 5;
+	if (is_sex_type_allowed(SKILL_TITTYSEX, brothel))		girl->m_WorkingDay -= g_Dice % 2;
+
+
+
+
+
+
+
+
+
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
 
 #pragma endregion

@@ -121,7 +121,6 @@ extern CSurface* g_BrothelImages[7];
 extern bool g_InitWin;
 extern sGirl* MarketSlaveGirls[20];
 extern int MarketSlaveGirlsDel[20];
-extern string g_ReturnText;
 
 
 // SDL Graphics interface
@@ -199,7 +198,8 @@ cConfig cfg;
 // the players gold
 cGold g_Gold;
 
-cNameList		g_NameList;
+cNameList	g_GirlNameList;
+cNameList	g_BoysNameList;
 cSurnameList g_SurnameList;
 
 void handle_hotkeys()

@@ -461,3 +461,46 @@ CHOICE 22
 INT -100 100
 INT -100 100
 BOOL
+"EndIfNew"
+"IfGirlStatus ~ is ~"
+CHOICE 14
+"None"
+"Poisoned"
+"Badly Poisoned"
+"Pregnant"
+"Pregnant By Player"
+"Slave"
+"Has Daughter"
+"Has Son"
+"Inseminated"
+"Controlled"
+"Catacombs"
+"Arena"
+"Your Daughter"
+"Is Daughter"
+BOOL
+"SetGirlStatus ~ to ~"
+CHOICE 14
+"None"
+"Poisoned"
+"Badly Poisoned"
+"Pregnant"
+"Pregnant By Player"
+"Slave"
+"Has Daughter"
+"Has Son"
+"Inseminated"
+"Controlled"
+"Catacombs"
+"Arena"
+"Your Daughter"
+"Is Daughter"
+BOOL
+"EndPregnancy"
+"CreatePregnancy type ~ chance ~ force ~"
+CHOICE 3
+"Player"
+"Customer"
+"Beast"
+INT 0 255
+BOOL

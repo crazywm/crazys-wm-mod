@@ -491,7 +491,9 @@ Updated script editing
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.02.57
  
- 
+Fixed a few typeos
+Updated SO and FOE
+ - Added adjustments for banned sex types
  
  
  

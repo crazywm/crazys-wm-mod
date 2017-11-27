@@ -139,7 +139,12 @@ private:
 	sScript* Script_GiveGoldToGirl(sScript* Script);				// `J` new .06.02.57
 	sScript* Script_AdjustTargetGirlStatR(sScript* Script);			// `J` new .06.02.57
 	sScript* Script_AdjustTargetGirlSkillR(sScript* Script);		// `J` new .06.02.57
-
+	sScript* Script_EndIfNew(sScript* Script);						// `J` new .06.03.00
+	sScript* Script_IfGirlStatus(sScript* Script);					// `J` new .06.03.00
+	sScript* Script_SetGirlStatus(sScript* Script);					// `J` new .06.03.00
+	sScript* Script_EndPregnancy(sScript* Script);					// `J` new .06.03.00
+	sScript* Script_CreatePregnancy(sScript* Script);				// `J` new .06.03.00
+	
 	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.h
 
 

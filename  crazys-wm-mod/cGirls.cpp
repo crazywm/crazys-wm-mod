@@ -72,7 +72,8 @@ extern unsigned long    g_Year;
 extern unsigned long    g_Month;
 extern unsigned long    g_Day;
 
-extern cNameList	g_NameList;
+extern cNameList	g_GirlNameList;
+extern cNameList	g_BoysNameList;
 extern cSurnameList g_SurnameList;
 
 extern cPlayer* The_Player;
@@ -1821,10 +1822,14 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	string name = "", name1 = "", name2 = "";
 	for (int i = 0; i < 5; i++)
 	{
-		name = name1 = g_NameList.random();
+		/* `J` Added g_BoysNameList for .06.03.00
+			for now just using true to force girls names but when male slaves are added
+			some way to choose random boys names will be added
+		*/ 
+		name = name1 = (true ? g_GirlNameList.random() : g_BoysNameList.random());
 		if (i > 3)
 		{
-			name2 = g_NameList.random();
+			name2 = (true ? g_GirlNameList.random() : g_BoysNameList.random());
 			name = name1 + " " + name2; // `J` added second name to further reduce chance of multiple names
 		}
 		if (NameExists(name)) continue;
@@ -4327,7 +4332,7 @@ void sRandomGirl::load_from_xml(TiXmlElement *el)
 			process_trait_xml(child);
 			continue;
 		}
-		// surely a trait then?
+		// surely a item then?
 		if (child->ValueStr() == "Item")
 		{
 			process_item_xml(child);

@@ -137,6 +137,15 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	//	if (g_Girls.CheckVirginity(girl))				{}
 
+	if (!is_sex_type_allowed(SKILL_ANAL, brothel))			girl->m_WorkingDay -= g_Dice % 3;
+	if (!is_sex_type_allowed(SKILL_BDSM, brothel))			girl->m_WorkingDay -= g_Dice % 5;
+	if (!is_sex_type_allowed(SKILL_FOOTJOB, brothel))		girl->m_WorkingDay -= g_Dice % 2;
+	if (!is_sex_type_allowed(SKILL_GROUP, brothel))			girl->m_WorkingDay -= g_Dice % 15;
+	if (!is_sex_type_allowed(SKILL_HANDJOB, brothel))		girl->m_WorkingDay -= g_Dice % 5;
+	if (!is_sex_type_allowed(SKILL_LESBIAN, brothel))		girl->m_WorkingDay -= g_Dice % 10;
+	if (!is_sex_type_allowed(SKILL_NORMALSEX, brothel))		girl->m_WorkingDay -= g_Dice % 10;
+	if (!is_sex_type_allowed(SKILL_ORALSEX, brothel))		girl->m_WorkingDay -= g_Dice % 5;
+	if (!is_sex_type_allowed(SKILL_TITTYSEX, brothel))		girl->m_WorkingDay -= g_Dice % 2;
 
 
 

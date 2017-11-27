@@ -1,5 +1,5 @@
 <Screen>
-<Window   Name="Gang Management Window"                                 XPos="7"   YPos="28"  Width="786" Height="544" Border="1" />
+<Window   Name="Gang Management Window"                                 XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
 <Text     Name="txtControlledGangs"   Text="Controlled Gangs"           XPos="16"  YPos="8"   Width="200" Height="32"  FontSize="18" />
 <Text     Name="TotalCost"            Text="Weekly Cost: 0"             XPos="200" YPos="8"   Width="200" Height="32"  FontSize="16" />
 <Text     Name="Gold"                 Text="Player Gold: 0"             XPos="400" YPos="8"   Width="200" Height="32"  FontSize="16" />

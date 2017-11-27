@@ -182,17 +182,32 @@ bool cTrigger::LoadTriggerXML(TiXmlHandle hTrigger)
 	// load additional data
 	if (m_Type == TRIGGER_SKILL)
 	{
-		pTrigger->QueryIntAttribute("Skill", &m_Values[0]);			// skill/stat id
-		pTrigger->QueryIntAttribute("Type", &m_Values[1]);			// what value it must reach
+		string skill = pTrigger->Attribute("Skill");				// Check if the trigger is sending a name
+		if (skill.size() > 2)
+		{
+			m_Values[0] = sGirl::lookup_skill_code(skill);
+		}
+		else  pTrigger->QueryIntAttribute("Skill", &m_Values[0]);	// otherwise get the number
+		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// what value it must reach
 	}
 	else if (m_Type == TRIGGER_STAT)
 	{
-		pTrigger->QueryIntAttribute("Stat", &m_Values[0]);			// skill/stat id
+		string stat = pTrigger->Attribute("Stat");				// Check if the trigger is sending a name
+		if (stat.size() > 2)
+		{
+			m_Values[0] = sGirl::lookup_stat_code(stat);
+		}
+		else  pTrigger->QueryIntAttribute("Stat", &m_Values[0]);	// otherwise get the number
 		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// what value it must reach
 	}
 	else if (m_Type == TRIGGER_STATUS)
 	{
-		pTrigger->QueryIntAttribute("Status", &m_Values[0]);		// status number id
+		string status = pTrigger->Attribute("Status");				// Check if the trigger is sending a name
+		if (status.size() > 2)
+		{
+			m_Values[0] = sGirl::lookup_status_code(status);
+		}
+		else  pTrigger->QueryIntAttribute("Status", &m_Values[0]);	// otherwise get the number
 		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// 0 means has status, 1 means doesn't have status
 	}
 	else if (m_Type == TRIGGER_MONEY)

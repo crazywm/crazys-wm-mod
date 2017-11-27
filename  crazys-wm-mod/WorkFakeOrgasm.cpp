@@ -56,7 +56,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->m_WorkingDay < 0) girl->m_WorkingDay = 0;
 	girl->m_DayJob = girl->m_NightJob = JOB_FAKEORGASM;	// it is a full time job
 
-	if (girl->has_trait( "Fake Orgasm Expert"))
+	if (girl->has_trait("Fake Orgasm Expert"))
 	{
 		ss << " is already a \"Fake Orgasm Expert\".";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -197,6 +197,14 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 
 	*/
+
+
+	if (!is_sex_type_allowed(SKILL_ANAL, brothel))			girl->m_WorkingDay -= g_Dice % 3;
+	if (!is_sex_type_allowed(SKILL_BDSM, brothel))			girl->m_WorkingDay -= g_Dice % 3;
+	if (!is_sex_type_allowed(SKILL_BEASTIALITY, brothel))	girl->m_WorkingDay -= g_Dice % 2;
+	if (!is_sex_type_allowed(SKILL_GROUP, brothel))			girl->m_WorkingDay -= g_Dice % 10;
+	if (!is_sex_type_allowed(SKILL_LESBIAN, brothel))		girl->m_WorkingDay -= g_Dice % 10;
+	if (!is_sex_type_allowed(SKILL_NORMALSEX, brothel))		girl->m_WorkingDay -= g_Dice % 10 + 5;
 
 
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted

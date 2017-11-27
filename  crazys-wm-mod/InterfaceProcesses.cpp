@@ -72,6 +72,7 @@ extern int g_CurrentScreen;
 
 // globals used for the interface
 string g_ReturnText = "";
+int g_ReturnInt = -1;
 bool g_InitWin = true;
 bool g_AllTogle = false;	// used on screens when wishing to apply something to all items
 long g_IntReturn;
@@ -234,22 +235,15 @@ void LoadGameScreen()
 	int selected = 0;
 	if (g_InitWin)
 	{
+		g_InitWin = false;
 		g_LoadGame.Focused();
-		/*
-		*		clear the list box with the save games
-		*/
-		g_LoadGame.ClearListBox(g_interfaceid.LIST_LOADGSAVES);
-		/*
-		*		loop through the files, adding them to the box
-		*/
-		for (int i = 0; i < fl.size(); i++)
+		g_LoadGame.ClearListBox(g_interfaceid.LIST_LOADGSAVES);	// clear the list box with the save games
+		for (int i = 0; i < fl.size(); i++)						// loop through the files, adding them to the box
 		{
-			if (fl[i].leaf() != "autosave.gam")
-				g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
-			else if (i == selected) selected++;
+			if (fl[i].leaf() != "autosave.gam")	g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
+			else if (i == selected) selected++;	// make sure autosave.gam is not the selected item
 		}
 		g_LoadGame.SetSelectedItemInList(g_interfaceid.LIST_LOADGSAVES, selected);
-		g_InitWin = false;
 	}
 
 	/*
@@ -310,10 +304,10 @@ void LoadGameScreen()
 	*/
 	g_Cheats = (temp == "Cheat.gam");
 
-
+	g_ReturnInt = 0;
 	g_InitWin = true;
 	g_WinManager.Pop();
-	g_WinManager.Push(PreparingLoad, &g_Preparing);
+	g_WinManager.push("Preparing Game");
 	return;
 }
 // interim loader to load XML files, and then non-xml ones if there was no xml version.
@@ -448,9 +442,13 @@ void LoadGameInfoFiles()
 
 	// `J` load names lists
 	DirPath location_N = DirPath() << "Resources" << "Data" << "RandomGirlNames.txt";
-	g_NameList.load(location_N);
+	g_GirlNameList.load(location_N);
 	DirPath location_SN = DirPath() << "Resources" << "Data" << "RandomLastNames.txt";
 	g_SurnameList.load(location_SN);
+	// `J` Added g_BoysNameList for .06.03.00
+	DirPath location_B = DirPath() << "Resources" << "Data" << "RandomBoysNames.txt";
+	g_BoysNameList.load(location_B);
+
 
 
 }
@@ -663,7 +661,7 @@ void PreparingNew()
 	if (g_InitWin)
 	{
 		g_InitWin = false;
-		g_Preparing.Focused();
+//		g_Preparing.Focused();
 	}
 	else
 	{
@@ -677,7 +675,7 @@ void PreparingLoad()
 	if (g_InitWin)
 	{
 		g_InitWin = false;
-		g_Preparing.Focused();
+	//	g_Preparing.Focused();
 	}
 	else
 	{
@@ -890,7 +888,6 @@ bool LoadGame(string directory, string filename)	// `J` Bookmark - Loading a gam
 	g_Centre.Free();
 	g_House.Free();
 	g_Farm.Free();
-
 
 	//load items database, traits info, etc
 	LoadGameInfoFiles();

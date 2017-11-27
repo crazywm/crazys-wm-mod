@@ -1,0 +1,75 @@
+### Changes before 11/24/2017
+Fixed a few typeos
+Updated SO and FOE
+- Added adjustments for banned sex types
+
+
+
+### I stopped working on the game for 9-10 months but I'm back again.
+# Since I am starting again after a long break, I decided to up the version number from .06.02.57 to .06.03.00
+
+### Changes 11/24-26/2017
+
+Fixed the main menu
+- If there were no save games and the load button was turned off, you could still get to the load screen by pressing L.
+- Fixed it so autosave.gam by itself does not activate the load game button.
+Added g_BoysNameList to allow for male naming in the future
+Fixed a bug where the game would try running the job for runaways
+Removers a few "\t"s that render as squares in a few places
+
+Added new commands to scripts:
+- "Script_EndIfNew",		added to fix a problem in the old script editor not shifting lines to the right for the newer If statements
+- "Script_IfGirlStatus",
+- "Script_SetGirlStatus",
+- "Script_EndPregnancy",
+- "Script_CreatePregnancy"
+
+Started remaking the loading screen.
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.00
+
+
+
+
+
+
+
+
+
+$$$$ TO DO - SHORT TERM - (for this version) $$$$
+
+$$$$ NOTE TO SELF - When updating items to recalculate stats/skills when loading girls - don't modify temp stuff $$$$
+
+$$$$ TO DO - SHORT TERM - (Soon) $$$$
+
+$$$$ TO DO - MID TERM - (for the next few versions) $$$$
+Keep expanding on simple-save
+food and drink
+
+Make config in_fact and out_fact do something
+
+Change the way the game handles images
+ - Make cfg.folders.preferdefault() work
+
+
+New Script Stuff:
+ - Picture_Sequence -- needs image rework before it can be implemented
+ - Make_Movie_Scene -- needs movie and scene rework before it can be implemented
+ - And/Or
+New Default Interacts for each building
+ - DefaultInteractStudio.script
+ - DefaultInteractArena.script
+ - DefaultInteractCentre.script
+ - DefaultInteractClinic.script
+ - DefaultInteractFarm.script
+ - DefaultInteractHouse.script
+New Meet Try for the buildings that don't have them
+ - MeetCentreTry.script (homeless, addicts, psychpatients, etc.)
+ - MeetFarmTry.script (beast girls, farmers, craftsmen, etc.)
+ - MeetHouseTry.script (House party? - Costs money to do, adds lots of filthiness to the house, etc.)
+
+
+$$$$ TO DO - LONG TERM $$$$
+Update from SDL1.2 to SDL2.0 (or something else)
+Expand the map and allow multiples of all buildings

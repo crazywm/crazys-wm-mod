@@ -41,7 +41,6 @@ extern	cInterfaceEventManager	g_InterfaceEvents;
 extern	bool					g_TryOuts;
 extern	bool					g_Cheats;
 extern	bool					eventrunning;
-extern	string					g_ReturnText;
 extern	cGangManager			g_Gangs;
 extern	bool					g_AllTogle;
 extern	int						g_CurrentScreen;

@@ -38,7 +38,6 @@ extern cHouseManager g_House;
 extern cInventory g_InvManager;
 extern cWindowManager g_WinManager;
 extern bool g_AllTogle;
-extern string g_ReturnText;
 extern cConfig cfg;
 extern bool playershopinventory;
 extern sGirl *selected_girl;
@@ -481,7 +480,6 @@ void cScreenItemManagement::init()	// `J` bookmark
 	HouseIndex = NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls + NumClinicGirls + NumFarmGirls;
 	DungeonIndex = NumBrothelGirls + NumStudioGirls + NumArenaGirls + NumCentreGirls + NumClinicGirls + NumFarmGirls + NumHouseGirls;
 
-	g_ReturnText = "";
 	g_AllTogle = false;
 #endif	// create owner lists
 

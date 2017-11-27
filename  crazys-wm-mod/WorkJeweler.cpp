@@ -371,7 +371,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				girl->mana(-Magic);
 				msgtype = EVENT_GOODNEWS;
 				if (numitems == 0)	ss << "\n \n" << girlName << " made:";
-				ss << "\n\t" << itemmade;
+				ss << "\n" << itemmade;
 				g_Brothels.AddItemToInventory(item);
 				numitems++;
 			}

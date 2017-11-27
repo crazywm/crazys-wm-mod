@@ -18,7 +18,6 @@
 */
 #include "cScreenNewGame.h"
 #include "cGetStringScreenManager.h"
-#include "cScriptManager.h"
 #include "cWindowManager.h"
 #include "cBrothel.h"
 
@@ -26,11 +25,11 @@ extern void PreparingNew();
 
 extern cWindowManager g_WinManager;
 extern cBrothelManager  g_Brothels;
-extern cInterfaceWindow g_Preparing;
 extern bool g_InitWin;
 extern int g_CurrentScreen;
 extern string monthnames[13];
 extern string g_ReturnText;
+extern int g_ReturnInt;
 extern cPlayer* The_Player;
 
 extern bool g_UpArrow;
@@ -148,6 +147,7 @@ void cScreenNewGame::check_events()
 		}
 		else	// ready to start the game now
 		{
+			g_ReturnInt = 1;
 			g_ReturnText = b;
 			The_Player->SetFirstName(p);
 			The_Player->SetSurname(s);
@@ -155,7 +155,7 @@ void cScreenNewGame::check_events()
 
 			g_InitWin = true;
 			g_WinManager.Pop();
-			g_WinManager.Push(PreparingNew, &g_Preparing);
+			g_WinManager.push("Preparing Game");
 			return;
 		}
 	}

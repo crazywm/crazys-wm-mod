@@ -56,7 +56,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->m_WorkingDay < 0) girl->m_WorkingDay = 0;
 	girl->m_DayJob = girl->m_NightJob = JOB_SO_STRAIGHT;	// it is a full time job
 
-	if (girl->has_trait( "Straight"))
+	if (girl->has_trait("Straight"))
 	{
 		ss << girlName << " is already Straight.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -105,7 +105,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += g_Dice.bell(-1, 5);	// She wants to be "Normal"
 	if (g_Girls.CheckVirginity(girl))		girl->m_WorkingDay += g_Dice.bell(-2, 2);	// Having never been with a man she is a little scared
 	// Negative Traits
-	if (girl->has_trait("Broken Will"))	{	girl->m_WorkingDay -= g_Dice.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+	if (girl->has_trait("Broken Will"))		{ girl->m_WorkingDay -= g_Dice.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
 	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 10);	// Does she even know who is fucking her?
 	if (girl->has_trait("Slow Learner"))	girl->m_WorkingDay -= g_Dice % 10;			//
@@ -116,6 +116,26 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Whore"))			girl->m_WorkingDay -= g_Dice % 2;			// She'll do anyone as long as they can pay
 	if (girl->has_trait("Slut"))			girl->m_WorkingDay -= g_Dice % 2;			// She'll do anyone
 	if (girl->has_trait("Actress"))			girl->m_WorkingDay -= g_Dice % 2;			// She will do whatever her director tells her to
+
+
+
+	if (is_sex_type_allowed(SKILL_ANAL, brothel))			girl->m_WorkingDay -= g_Dice % 10;
+	if (is_sex_type_allowed(SKILL_BDSM, brothel))			girl->m_WorkingDay -= g_Dice % 10;
+	if (is_sex_type_allowed(SKILL_BEASTIALITY, brothel))	girl->m_WorkingDay += g_Dice % 2;
+	if (is_sex_type_allowed(SKILL_FOOTJOB, brothel))		girl->m_WorkingDay -= g_Dice % 3;
+	if (is_sex_type_allowed(SKILL_GROUP, brothel))			girl->m_WorkingDay -= g_Dice % 10;
+	if (is_sex_type_allowed(SKILL_HANDJOB, brothel))		girl->m_WorkingDay -= g_Dice % 5;
+	if (is_sex_type_allowed(SKILL_LESBIAN, brothel))		girl->m_WorkingDay += g_Dice % 10 + 10;
+	if (is_sex_type_allowed(SKILL_NORMALSEX, brothel))		girl->m_WorkingDay -= g_Dice % 20 + 10;
+	if (is_sex_type_allowed(SKILL_ORALSEX, brothel))		girl->m_WorkingDay -= g_Dice % 10;
+	if (is_sex_type_allowed(SKILL_TITTYSEX, brothel))		girl->m_WorkingDay -= g_Dice % 4;
+
+
+
+
+
+
+
 
 	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
 
@@ -144,7 +164,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		girl->m_WorkingDay = 0;
 		msgtype = EVENT_WARNING;
-		ss << "\nShe resisted all attempts to make her Straight.";
+		ss << "She resisted all attempts to make her Straight.\n";
 		tired += 5 + g_Dice % 11;
 		wages = 0;
 	}
@@ -152,7 +172,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	{
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 		msgtype = EVENT_GOODNEWS;
-		ss << "\nHer Sexual Orientation conversion is complete. She is now Straight.";
+		ss << "Her Sexual Orientation conversion is complete. She is now Straight.\n";
 		girl->remove_trait("Lesbian");	girl->remove_trait("Bisexual");	girl->add_trait("Straight");
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_HOUSEREST;
 		wages = 200;

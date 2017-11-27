@@ -29,6 +29,7 @@ extern void LoadSettingsScreen();
 extern void GetString();
 extern void PreparingLoad();
 extern string g_ReturnText;
+extern int g_ReturnInt;
 extern cWindowManager g_WinManager;
 extern bool g_InitWin;
 extern int g_CurrentScreen;
@@ -68,14 +69,13 @@ void cScreenMainMenu::init()
 		g_InitWin = false;
 
 		DirPath location = DirPath(cfg.folders.saves().c_str());
-		const char *pattern = "autosave.gam";
-		FileList fl(location, pattern);
-		DisableButton(continue_id, fl.size() < 1);		// `J` disable continue button if autosave.gam is not found
-
-		pattern = "*.gam";
-		FileList fla(location, pattern);
-		DisableButton(load_id, fla.size() < 1);			// `J` disable load game button if there are no save games found
-		DisableButton(settings_id, false);			// `J` disable settings button until settings page is added
+		FileList fl(location, "autosave.gam");
+		FileList fla(location, "*.gam");
+		bool d_continue = fl.size() < 1;
+		bool d_load = (fla.size() < 1 || (fla.size() == 1 && !d_continue));
+		DisableButton(continue_id, d_continue);	// `J` disable continue button if autosave.gam is not found
+		DisableButton(load_id, d_load);			// `J` disable load game button if there are no save games found
+		DisableButton(settings_id, false);		// `J` disable settings button until settings page is added
 		if (version_id >= 0) EditTextItem(svn_revision, version_id);
 	}
 }
@@ -99,8 +99,9 @@ void cScreenMainMenu::check_events()
 	}
 	if (g_InterfaceEvents.CheckButton(continue_id))
 	{
+		g_ReturnInt = 0;
 		g_ReturnText = "autosave.gam";
-		g_WinManager.Push(PreparingLoad, &g_Preparing);
+		g_WinManager.push("Preparing Game");
 		g_InitWin = true;
 		return;
 	}
@@ -129,12 +130,13 @@ bool cScreenMainMenu::check_keys()
 	if (g_C_Key && !m_Buttons[continue_id]->m_Disabled)
 	{
 		g_C_Key = false;
+		g_ReturnInt = 0;
 		g_ReturnText = "autosave.gam";
-		g_WinManager.Push(PreparingLoad, &g_Preparing);
+		g_WinManager.push("Preparing Game");
 		g_InitWin = true;
 		return true;
 	}
-	if (g_L_Key)
+	if (g_L_Key && !m_Buttons[load_id]->m_Disabled)
 	{
 		g_L_Key = false;
 		g_WinManager.Push(LoadGameScreen, &g_LoadGame);
@@ -161,11 +163,6 @@ bool cScreenMainMenu::check_keys()
 		SDL_Event evn;
 		evn.type = SDL_QUIT;
 		SDL_PushEvent(&evn);
-		return true;
-	}
-	if (g_S_Key)
-	{
-		g_S_Key = false;
 		return true;
 	}
 	return false;

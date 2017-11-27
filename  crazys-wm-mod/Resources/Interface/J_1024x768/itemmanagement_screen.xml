@@ -1,5 +1,5 @@
 <Screen>
-<Window   Name="Item Management Window"                      XPos="16"  YPos="12"  Width="768" Height="576" Border="1" />
+<Window   Name="Item Management Window"                      XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
 <Text     Name="OwnersLeftHeader"   Text="Owner"             XPos="101" YPos="0"   Width="120" Height="32"  FontSize="18" />
 
 <ListBox  Name="OwnersLeftList"                              XPos="8"   YPos="24"  Width="250" Height="222" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >

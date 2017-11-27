@@ -60,7 +60,7 @@ extern cFarmManager			g_Farm;
 
 #pragma endregion
 
-// `J` Job House - General
+// `J` Job Farm - General
 bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	if (Day0Night1) return false;

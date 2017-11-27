@@ -1,5 +1,5 @@
 <Screen>
-<Window  Name="Studio Management Window"                     XPos="10"	YPos="10"	Width="880"	Height="580"	Border="1"           />
+<Window  Name="Studio Management Window"                     XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
 <Text    Name="Studio"              Text=""                  XPos="8"	YPos="2"	Width="232"	Height="30"           FontSize="16"           />           
 <ListBox Name="ScenesList"                                   XPos="15"	YPos="26"	Width="588"	Height="500"	Border="1"           Events="true"           Multi="true"           ShowHeaders="true"           HeaderDiv="true"           HeaderClicksSort="true"           >
 <Column  Name="SceneNumber"         Header="#"               Offset="0" />

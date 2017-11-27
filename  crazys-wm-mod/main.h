@@ -104,7 +104,8 @@ extern cCustomers g_Customers;
 // The global trigger manager
 extern cTriggerList g_GlobalTriggers;
 
-extern cNameList	g_NameList;
+extern cNameList	g_GirlNameList;
+extern cNameList	g_BoysNameList;
 extern cSurnameList g_SurnameList;
 
 

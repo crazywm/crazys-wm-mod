@@ -90,7 +90,7 @@ bool sEffect::set_girl_status(string s)
 	int nID = sGirl::lookup_status_code(s);
 	if (nID == -1)		// ERROR
 	{
-		g_LogFile.os() << "[sEffect::lookup_status_code] Error: unknown Status: " << s << ". Skill ID: " << nID << endl;
+		g_LogFile.os() << "[sEffect::lookup_status_code] Error: unknown Status: " << s << ". Status ID: " << nID << endl;
 		return false;
 	}
 	m_EffectID = nID;
@@ -101,7 +101,7 @@ bool sEffect::set_stat(string s)
 	int nID = sGirl::lookup_stat_code(s);
 	if (nID == -1)		// ERROR
 	{
-		g_LogFile.os() << "[sEffect::set_stat] Error: unknown Stat: " << s << ". Skill ID: " << nID << endl;
+		g_LogFile.os() << "[sEffect::set_stat] Error: unknown Stat: " << s << ". Stat ID: " << nID << endl;
 		return false;
 	}
 	m_EffectID = nID;

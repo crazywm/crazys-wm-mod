@@ -1,5 +1,5 @@
 <Screen>
-<Window   Name="Turn Summary"                               XPos="8"   YPos="8"   Width="786" Height="584" Border="1" />
+<Window   Name="Turn Summary"                               XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
 <Text     Name="CurrentBrothel" Text=""                     XPos="0"   YPos="0"   Width="900" Height="32"  FontSize="15" />
 <Text     Name="LabelCategory"  Text="Category"             XPos="8"   YPos="20"  Width="120" Height="20"  FontSize="15" />
 <ListBox  Name="Category"                                   XPos="8"   YPos="40"  Width="120" Height="66"  Border="1"          Events="true" Multi="false" />

@@ -18,10 +18,12 @@
 */
 #include "cScreenGetInput.h"
 #include "cWindowManager.h"
+#include "cScreenMainMenu.h"
 
 extern cWindowManager g_WinManager;
 
 extern string g_ReturnText;
+extern cScreenMainMenu g_MainMenu;
 extern int g_CurrentScreen;
 extern long g_IntReturn;
 extern bool g_EnterKey;
@@ -140,9 +142,7 @@ void cScreenGetInput::CheckEvents_ConfirmExit()
 		g_EnterKey = false;
 		g_ReturnText = "";
 		g_InitWin = true;
-		g_WinManager.Pop();
-		g_WinManager.Pop();
-
+		g_WinManager.PopToWindow(&g_MainMenu);
 		ResetInterface();
 
 		// Schedule Quit Event -- To quit

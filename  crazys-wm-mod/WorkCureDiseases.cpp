@@ -45,7 +45,7 @@ extern cMessageQue g_MessageQue;
 
 #pragma endregion
 
-// `J` Job House - Training - Full_Time_Job
+// `J` Job Clinic - Full_Time_Job
 bool cJobManager::WorkCureDiseases(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 #pragma region //	Job setup				//

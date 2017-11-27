@@ -1,5 +1,5 @@
 <Screen>
-<Window Name="Dungeon Window"                               XPos="0"   YPos="0"   Width="800" Height="600" Border="1" />
+<Window Name="Dungeon Window"                               XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
 <Text   Name="DungeonHeader"     Text="Dungeon Screen"      XPos="10"  YPos="2"   Width="680" Height="22"  FontSize="20" />
 <Text   Name="Gold"              Text="Player Gold: 0"      XPos="400" YPos="2"   Width="200" Height="32"  FontSize="16" />
 <ListBox Name="GirlList"                                    XPos="8"   YPos="23"  Width="620" Height="500" FontSize="10" ListBoxItemHeight="31" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >

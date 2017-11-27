@@ -1,5 +1,5 @@
 <Screen>
-<Window	Name="Brothel Management"			XPos="16"	YPos="12"	Width="768"	Height="576"	Border="1"	/>
+<Window	Name="Brothel Management"			XPos="10"	YPos="10"	Width="780"	Height="580"	Border="1" />
 <Image	Name="Image"	File="building_mgt_bg.jpg"		XPos="8"	YPos="48"	Width="584"	Height="480"	/>
 <Text		Name="Details"	Text="Details"		XPos="600"	YPos="50"	Width="160"	Height="170"	FontSize="10"	/>
 <Text		Name="Header"	Text="Name"			XPos="8"	YPos="8"	Width="584"	Height="40"	FontSize="20"	/>

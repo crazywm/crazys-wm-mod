@@ -68,7 +68,6 @@ extern	cInterfaceEventManager	g_InterfaceEvents;
 extern	cScreenGirlDetails		g_GirlDetails;
 extern	bool					g_Cheats;
 extern	bool					eventrunning;
-extern	string					g_ReturnText;
 extern	bool					g_AllTogle;
 
 extern	CSurface*				g_BrothelImages[];
@@ -822,16 +821,11 @@ void cScreenTurnSummary::Fill_Items_STUDIO()
 			case JOB_STAGEHAND:
 				tmpStudioStaff.push_back(pTmpGirl);
 				break;
-			case JOB_FILMBEAST:			case JOB_FILMSEX:			case JOB_FILMANAL:
-			case JOB_FILMLESBIAN:		case JOB_FILMBONDAGE:		case JOB_FILMGROUP:
-			case JOB_FILMORAL:			case JOB_FILMMAST:			case JOB_FILMTITTY:
-			case JOB_FILMSTRIP:			case JOB_FILMHANDJOB:		case JOB_FILMFOOTJOB:
-			case JOB_FILMRANDOM:
-				tmpStudioActress.push_back(pTmpGirl);
-				break;
 			case JOB_FILMFREETIME:
-			default:
 				tmpStudioFree.push_back(pTmpGirl);
+				break;
+			default:	// all others get sorted as actress
+				tmpStudioActress.push_back(pTmpGirl);
 				break;
 			}
 		}

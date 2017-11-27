@@ -1,5 +1,5 @@
 <Screen>
-<Window  Name="Slave Market Window"                           XPos="0"   YPos="0"   Width="800" Height="600" Border="1"         />
+<Window  Name="Slave Market Window"                           XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
 <Text    Name="SlaveMarket"     Text="Slave Market"           XPos="16"   YPos="8"   Width="140" Height="32"  FontSize="25" Red="128"         />
 <Text    Name="Gold"            Text="Gold: 0"                XPos="630" YPos="8"   Width="220" Height="32"  FontSize="20"         />
 
