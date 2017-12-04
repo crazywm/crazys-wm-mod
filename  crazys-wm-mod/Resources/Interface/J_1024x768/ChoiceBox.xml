@@ -1,3 +1,3 @@
 <Screen>
-<Window  Name="ChoiceBox"                 XPos="224" YPos="127" Width="352" Height="160" RowHeight="20" FontSize="16" />
+<Window     Name="ChoiceBox"                                                XPos="250"      YPos="250"      Width="370"     Height="20"    RowHeight="20"  FontSize="16"  />
 </Screen>

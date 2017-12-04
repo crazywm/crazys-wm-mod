@@ -182,8 +182,26 @@ sScript *cGameScript::Process(sScript *Script)
 	case 107:	return Script_SetGirlStatus(Script);					// `J` new .06.03.00
 	case 108:	return Script_EndPregnancy(Script);						// `J` new .06.03.00
 	case 109:	return Script_CreatePregnancy(Script);					// `J` new .06.03.00
+	case 110:	return Script_ElseNew(Script);								// `J` new .06.03.01
+	case 111:	return Script_BrandTarget(Script);						// `J` new .06.03.01 for DarkArk
+	case 112:	return Script_RapeTarget(Script);						// `J` new .06.03.01 for DarkArk
+	case 113:	return Script_RapeBeastTarget(Script);					// `J` new .06.03.01 for DarkArk
+	case 114:	return Script_BirthHumanTarget(Script);					// `J` new .06.03.01 for DarkArk
+	case 115:	return Script_BirthHumanMultipleTarget(Script);			// `J` new .06.03.01 for DarkArk
+	case 116:	return Script_BirthBeastTarget(Script);					// `J` new .06.03.01 for DarkArk
+	case 117:	return Script_ImpregSexTarget(Script);					// `J` new .06.03.01 for DarkArk
+	case 118:	return Script_ImpregGroupTarget(Script);				// `J` new .06.03.01 for DarkArk
+	case 119:	return Script_ImpregBDSMTarget(Script);					// `J` new .06.03.01 for DarkArk
+	case 120:	return Script_ImpregBeastTarget(Script);				// `J` new .06.03.01 for DarkArk
+	case 121:	return Script_VirginSexTarget(Script);					// `J` new .06.03.01 for DarkArk
+	case 122:	return Script_VirginGroupTarget(Script);				// `J` new .06.03.01 for DarkArk
+	case 123:	return Script_VirginBDSMTarget(Script);					// `J` new .06.03.01 for DarkArk
+	case 124:	return Script_VirginBeastTarget(Script);				// `J` new .06.03.01 for DarkArk
 
-		// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.cpp
+
+
+	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.h
+	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.h
 
 	default: return Script->m_Next;	// `J` if a script type is not found, skip it.
 	}
@@ -323,7 +341,7 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
-		if (Script->m_Type == 10 && Nest == m_NestLevel) Skipping = !Skipping;
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -351,6 +369,10 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 	return 0; // End of script reached
 }
 sScript *cGameScript::Script_Else(sScript *Script)
+{
+	return Script->m_Next; // Go to next script action
+}
+sScript *cGameScript::Script_ElseNew(sScript *Script)
 {
 	return Script->m_Next; // Go to next script action
 }
@@ -390,15 +412,9 @@ sScript *cGameScript::Script_IfChoice(sScript *Script)
 	Script = Script->m_Next; // Go to next action to process
 	while (Script != 0)
 	{
-		if (m_Leave)
-			break;
-
+		if (m_Leave) break;
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel)
-				Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -871,12 +887,8 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -923,12 +935,8 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -986,12 +994,8 @@ sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -1059,12 +1063,8 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -1122,12 +1122,8 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -1171,12 +1167,8 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -1343,12 +1335,8 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -1828,12 +1816,8 @@ sScript* cGameScript::Script_IfGirlHasItem(sScript* Script)					// `J` new .06.0
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -1922,12 +1906,8 @@ sScript* cGameScript::Script_IfPlayerHasItem(sScript* Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -2016,12 +1996,8 @@ sScript* cGameScript::Script_IfGirlIsSlave(sScript* Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -2065,12 +2041,8 @@ sScript* cGameScript::Script_IfGirlIsFree(sScript* Script)
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -2169,12 +2141,8 @@ sScript* cGameScript::Script_IfGirlStatus(sScript* Script)			// `J` new .06.03.0
 	while (Script != 0)
 	{
 		if (m_Leave) break;
-
 		// if else, flip skip mode
-		if (Script->m_Type == 10)
-		{
-			if (Nest == m_NestLevel) Skipping = !Skipping;
-		}
+		if ((Script->m_Type == 10 || Script->m_Type == 110) && Nest == m_NestLevel) Skipping = !Skipping;
 
 		// break on end if
 		if (Script->m_Type == 11 || Script->m_Type == 105)
@@ -2267,6 +2235,102 @@ sScript* cGameScript::Script_CreatePregnancy(sScript* Script)		// `J` new .06.03
 
 }
 
+sScript* cGameScript::Script_BrandTarget(sScript* Script)
+{
+	if (m_GirlTarget)
+	{
+		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, g_Dice % 3 + 1);
+		g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, g_Dice % 3 + 1);
+		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -(g_Dice % 3));
+	}
+	g_GirlDetails.lastsexact = IMPTYPE_BRAND;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_RapeTarget(sScript* Script)
+{
+	if (m_GirlTarget)
+	{
+		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, g_Dice % 5 + 1);
+		g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, g_Dice % 5 + 1);
+		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -(g_Dice % 5));
+	}
+	g_GirlDetails.lastsexact = IMPTYPE_RAPE;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_RapeBeastTarget(sScript* Script)
+{
+	if (m_GirlTarget)
+	{
+		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, g_Dice % 4 + 1);
+		g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, g_Dice % 6 + 1);
+		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -(g_Dice % 3));
+	}
+	g_GirlDetails.lastsexact = IMPTYPE_RAPEBEAST;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_BirthHumanTarget(sScript* Script)
+{
+	g_GirlDetails.lastsexact = IMGTYPE_BIRTHHUMAN;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_BirthHumanMultipleTarget(sScript* Script)
+{
+	g_GirlDetails.lastsexact = IMGTYPE_BIRTHHUMANMULTIPLE;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_BirthBeastTarget(sScript* Script)
+{
+	g_GirlDetails.lastsexact = IMPTYPE_BIRTHBEAST;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_ImpregSexTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, g_Dice % 3 + 1);
+	g_GirlDetails.lastsexact = IMPTYPE_IMPREGSEX;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_ImpregGroupTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_GROUP, g_Dice % 3 + 1);
+	g_GirlDetails.lastsexact = IMPTYPE_IMPREGGROUP;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_ImpregBDSMTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, g_Dice % 3 + 1);
+	g_GirlDetails.lastsexact = IMPTYPE_IMPREGBDSM;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_ImpregBeastTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, g_Dice % 3 + 1);
+	g_GirlDetails.lastsexact = IMPTYPE_IMPREGBEAST;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_VirginSexTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
+	g_GirlDetails.lastsexact = IMPTYPE_VIRGINSEX;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_VirginGroupTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_GROUP, 1);
+	g_GirlDetails.lastsexact = IMPTYPE_VIRGINGROUP;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_VirginBDSMTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 1);
+	g_GirlDetails.lastsexact = IMPTYPE_VIRGINBDSM;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_VirginBeastTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);
+	g_GirlDetails.lastsexact = IMPTYPE_VIRGINBEAST;
+	return Script->m_Next;
+}
 
 
 

@@ -196,7 +196,7 @@ bool cScreenCentreManagement::check_keys()
 		if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
 		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
 		bool skip = false;
-		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_CENTREMANAGER || selection == JOB_COUNSELOR))
+		if (selected_girl && selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_CENTREMANAGER || selection == JOB_COUNSELOR))
 			skip = true;
 		if (selection == JOB_CENTREMANAGER && (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 0) > 0 || g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, 1) > 0))
 			skip = true;

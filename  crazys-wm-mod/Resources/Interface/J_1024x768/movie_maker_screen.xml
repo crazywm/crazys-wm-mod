@@ -1,14 +1,15 @@
 <Screen>
-<Window  Name="Studio Management Window"                     XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
-<Text    Name="Studio"              Text=""                  XPos="8"	YPos="2"	Width="232"	Height="30"           FontSize="16"           />           
-<ListBox Name="ScenesList"                                   XPos="15"	YPos="26"	Width="588"	Height="500"	Border="1"           Events="true"           Multi="true"           ShowHeaders="true"           HeaderDiv="true"           HeaderClicksSort="true"           >
-<Column  Name="SceneNumber"         Header="#"               Offset="0" />
-<Column  Name="Name"                Header="Scene Name"      Offset="20" />
-<Column  Name="Actress"             Header="Actress"         Offset="250" />
-<Column  Name="Director"            Header="Director"        Offset="350" />
-<Column  Name="Job"                 Header="Job"             Offset="450" />
-<Column  Name="Quality"             Header="Quality"         Offset="550" />
-</ListBox>                                                   
-<Button  Name="ReleaseMovieButton"  Image="ReleaseMovie"     XPos="600"	YPos="464"	Width="160"	Height="32"           Transparency="true"           Scale="true"           />           
-<Button  Name="BackButton"          Image="Back"             XPos="600"	YPos="540"	Width="160"	Height="32"           Transparency="true"           Scale="true"           />
+<Window     Name="Studio Management Window"                                 XPos="12"       YPos="14"       Width="1000"    Height="740"    Border="1"  />
+<Text       Name="Studio"               Text=""                             XPos="10"       YPos="2"        Width="790"     Height="30"           FontSize="16"            />           
+<Button     Name="ReleaseMovieButton"   Image="ReleaseMovie"                XPos="815"      YPos="650"      Width="160"     Height="32"           Transparency="true"           Scale="true"            />           
+<Button     Name="BackButton"           Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
+
+<ListBox    Name="ScenesList"                                               XPos="10"       YPos="35"       Width="790"     Height="695"    Border="1"           Events="true"           Multi="true"           ShowHeaders="true"           HeaderDiv="true"           HeaderClicksSort="true"           >
+<Column     Name="SceneNumber"          Header="#"                          Offset="0"  />                                   
+<Column     Name="Name"                 Header="Scene Name"                 Offset="20"  />                                  
+<Column     Name="Actress"              Header="Actress"                    Offset="250"  />                                 
+<Column     Name="Director"             Header="Director"                   Offset="400"  />                                 
+<Column     Name="Job"                  Header="Job"                        Offset="550"  />                                 
+<Column     Name="Quality"              Header="Quality"                    Offset="650"  />                                 
+</ListBox>                                                                                                                  
 </Screen>

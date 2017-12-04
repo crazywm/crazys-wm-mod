@@ -47,9 +47,11 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"wait*.", "card*.", "bunny*.", "nude*.", "mast*.", "titty*.", "milk*.", "hand*.",
 	"foot*.", "bed*.", "farm*.", "herd*.", "cook*.", "craft*.", "swim*.", "bath*.",
 	"nurse*.", "formal*.", "shop*.", "magic*.", "sign*.", "presented*.", "dom*.",
-	"deep*.", "eatout*.", "dildo*.", "sub*.", "strapon*.", "les69ing*.", "lick*.",
-	"balls*.", "cowgirl*.", "revcowgirl*.", "sexdoggy*.", "jail*.", "puppygirl*.", "ponygirl*.",
-	"catgirl*.",
+	"deep*.", "eatout*.", "dildo*.", "sub*.", "strapon*.", "les69ing*.", "lick*.", "balls*.",
+	"cowgirl*.", "revcowgirl*.", "sexdoggy*.", "jail*.", "puppygirl*.", "ponygirl*.", "catgirl*.",
+	"brand*.", "rape*.", "rapebeast*.", "birthhuman*.", "birthhumanmultiple*.", "birthbeast*.",					// `J` new .06.03.01 for DarkArk
+	"impregsex*.", "impreggroup*.", "impregbdsm*.", "impregbeast*.", 											// `J` new .06.03.01 for DarkArk
+	"virginsex*.", "virgingroup*.", "virginbdsm*.", "virginbeast*.",											// `J` new .06.03.01 for DarkArk
 	"preg*.",	// pregnant varients
 	"preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
 	"pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
@@ -59,7 +61,11 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"pregshop*.", "pregmagic*.", "pregsign*.", "pregpresented*.", "pregdom*.", "pregdeep*.",
 	"pregeatout*.", "pregdildo*.", "pregsub*.", "pregstrapon*.", "pregles69ing*.", "preglick*.",
 	"pregballs*.", "pregcowgirl*.", "pregrevcowgirl*.", "pregsexdoggy*.", "pregjail*.", "pregpuppygirl*.",
-	"pregponygirl*.", "pregcatgirl*."
+	"pregponygirl*.", "pregcatgirl*.", 
+	"pregbrand*.", "pregrape*.", "pregrapebeast*.",																// `J` new .06.03.01 for DarkArk
+	"pregbirthhuman*.", "pregbirthhumanmultiple*.", "pregbirthbeast*.", 										// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"pregimpregsex*.", "pregimpreggroup*.", "pregimpregbdsm*.", "pregimpregbeast*.", 							// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*."								// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 };
 string galtxt[] =
 {
@@ -69,6 +75,10 @@ string galtxt[] =
 	"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic", "Sign",
 	"Presented", "Dominatrix", "Deepthroat", "Eatout", "Dildo", "Sub", "Strapon", "Les69ing", "Lick",
 	"Balls", "Cowgirl", "Revcowgirl", "Sexdoggy", "Jail", "Puppygirl", "Ponygirl", "Catgirl",
+	"Branding", "Rape", "Beast Rape", "Human Birth", "Human Birth Multiple", "Monster Birth",							// `J` new .06.03.01 for DarkArk
+	"Impregnate Sex", "Impregnate Group", "Impregnate Bondage", "Impregnate Beast", 									// `J` new .06.03.01 for DarkArk
+	"Virgin Sex", "Virgin Group", "Virgin Bondage", "Virgin Beast",														// `J` new .06.03.01 for DarkArk
+
 	"Pregnant",	// pregnant varients
 	"Pregnant Anal", "Pregnant BDSM", "Pregnant Sex", "Pregnant Beast", "Pregnant Group",
 	"Pregnant Lesbian", "Pregnant Torture", "Pregnant Death", "Pregnant Profile", "Pregnant Combat",
@@ -79,7 +89,12 @@ string galtxt[] =
 	"Pregnant Magic", "Pregnant Sign", "Pregnant Presented", "Pregnant Dominatrix", "Pregnant Deepthroat",
 	"Pregnant Eatout", "Pregnant Dildo", "Pregnant Sub", "Pregnant Strapon", "Pregnant Les69ing", "Pregnant Lick",
 	"Pregnant Balls", "Pregnant Cowgirl", "Pregnant Revcowgirl", "Pregnant Sexdoggy", "Pregnant Jail", 
-	"Pregnant Puppygirl", "Pregnant Ponygirl", "Pregnant Catgirl"
+	"Pregnant Puppygirl", "Pregnant Ponygirl", "Pregnant Catgirl",
+	"Pregnant Branding", "Pregnant Rape", "Pregnant Beast Rape",														// `J` new .06.03.01 for DarkArk
+	"Pregnant Human Birth", "Pregnant Human Birth Multiple", "Pregnant Monster Birth",									// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"Pregnant Impregnate Sex", "Pregnant Impregnate Group", "Pregnant Impregnate Bondage", "Pregnant Impregnate Beast",	// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"Pregnant Virgin Sex", "Pregnant Virgin Group", "Pregnant Virgin Bondage", "Pregnant Virgin Beast"					// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+
 };
 
 // Constructors, Deconstructors and Free
@@ -154,8 +169,8 @@ int TryImageType(int imagetype, int tries)
 		if (t < 15)	return IMGTYPE_ECCHI;
 		return IMGTYPE_SEX;
 	}break;
-	case	IMGTYPE_PREGBDSM:
 	case	IMGTYPE_PREGANAL:
+	case	IMGTYPE_PREGBDSM:
 	case	IMGTYPE_PREGBEAST:
 	case	IMGTYPE_PREGGROUP:
 	{
@@ -788,21 +803,114 @@ int TryImageType(int imagetype, int tries)
 		if (tries > 11 || tries == 2) return IMGTYPE_PREGNANT;
 	}break;
 
+
+
+	case IMPTYPE_BRAND:
+	case IMPTYPE_PREGBRAND:
+	{
+		if (t < 10)	return IMGTYPE_TORTURE;
+		return IMPTYPE_BRAND;
+	}break;
+
+	case IMPTYPE_RAPE:
+	case IMPTYPE_PREGRAPE:
+	{
+		if (t < 5)	return IMGTYPE_DEATH;
+		if (t < 10)	return IMGTYPE_GROUP;
+		if (t < 15)	return IMGTYPE_TORTURE;
+		return IMPTYPE_RAPE;
+	}break;
+
+	case IMPTYPE_RAPEBEAST:
+	case IMPTYPE_PREGRAPEBEAST:
+	{
+		if (t < 5)	return IMGTYPE_DEATH;
+		if (t < 10)	return IMGTYPE_TORTURE;
+		if (t < 15)	return IMGTYPE_BEAST;
+		return IMPTYPE_RAPEBEAST;
+	}break;
+
+
+	case IMGTYPE_BIRTHHUMAN:
+	case IMGTYPE_PREGBIRTHHUMAN:
+	{
+		if (t < 15)	return IMPTYPE_BIRTHBEAST;
+		return IMGTYPE_BIRTHHUMAN;
+	}break;
+	case IMGTYPE_BIRTHHUMANMULTIPLE:
+	case IMGTYPE_PREGBIRTHHUMANMULTIPLE:
+	{
+		if (t < 15)	return IMPTYPE_BIRTHBEAST;
+		if (t < 20)	return IMGTYPE_BIRTHHUMAN;
+		return IMGTYPE_BIRTHHUMANMULTIPLE;
+	}break;
+	case IMPTYPE_BIRTHBEAST:
+	case IMPTYPE_PREGBIRTHBEAST:
+	{
+		if (t < 15)	return IMGTYPE_BIRTHHUMAN;
+		return IMPTYPE_BIRTHBEAST;
+	}break;
+	case IMPTYPE_IMPREGSEX:
+	case IMPTYPE_PREGIMPREGSEX:
+	{
+		if (t < 15)	return IMGTYPE_SEX;
+		return IMPTYPE_IMPREGSEX;
+	}break;
+	case IMPTYPE_IMPREGGROUP:
+	case IMPTYPE_PREGIMPREGGROUP:
+	{
+		if (t < 15)	return IMGTYPE_GROUP;
+		return IMPTYPE_IMPREGGROUP;
+	}break;
+	case IMPTYPE_IMPREGBDSM:
+	case IMPTYPE_PREGIMPREGBDSM:
+	{
+		if (t < 15)	return IMGTYPE_BDSM;
+		return IMPTYPE_IMPREGBDSM;
+	}break;
+	case IMPTYPE_IMPREGBEAST:
+	case IMPTYPE_PREGIMPREGBEAST:
+	{
+		if (t < 15)	return IMGTYPE_BEAST;
+		return IMPTYPE_IMPREGBEAST;
+	}break;
+	case IMPTYPE_VIRGINSEX:
+	case IMPTYPE_PREGVIRGINSEX:
+	{
+		if (t < 15)	return IMGTYPE_SEX;
+		return IMPTYPE_VIRGINSEX;
+	}break;
+	case IMPTYPE_VIRGINGROUP:
+	case IMPTYPE_PREGVIRGINGROUP:
+	{
+		if (t < 15)	return IMGTYPE_GROUP;
+		return IMPTYPE_VIRGINGROUP;
+	}break;
+	case IMPTYPE_VIRGINBDSM:
+	case IMPTYPE_PREGVIRGINBDSM:
+	{
+		if (t < 15)	return IMGTYPE_BDSM;
+		return IMPTYPE_VIRGINBDSM;
+	}break;
+	case IMPTYPE_VIRGINBEAST:
+	case IMPTYPE_PREGVIRGINBEAST:
+	{
+		if (t < 15)	return IMGTYPE_BEAST;
+		return IMPTYPE_VIRGINBEAST;
+	}break;
+
+	
+
+
+
+	// any preg varients not coded in yet just returns pregnant
+
 	case IMGTYPE_PREGNANT:
 	{
 		if (tries > 15) tries = 15;
 		if (tries < 5)	return IMGTYPE_PROFILE;
 		else 			return IMGTYPE_PREGPROFILE;
 	}break;
-
-
-
-
-
-	// any preg varients not coded in yet just returns pregnant
-
-
-
 
 	case IMGTYPE_PREGPROFILE:
 	{
@@ -920,9 +1028,17 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	{
 		if (cfg.folders.preferdefault() || totalimagesCc + totalimagesCo < 1)	tries = 10;
 		if (imagetype < 0 || imagetype > NUM_IMGTYPES)				imagetype = IMGTYPE_PROFILE;
-		if (girl->is_pregnant() && imagetype < IMGTYPE_PREGNANT)	imagetype += PREG_OFFSET;
-		if (!girl->is_pregnant() && imagetype == IMGTYPE_PREGNANT)	imagetype = IMGTYPE_PROFILE;
-		if (!girl->is_pregnant() && imagetype > IMGTYPE_PREGNANT)	imagetype -= PREG_OFFSET;
+		/* */if (imagetype >= IMGTYPE_PREGBIRTHHUMAN && imagetype <= IMPTYPE_PREGVIRGINBEAST) imagetype -= PREG_OFFSET;		// `J` new .06.03.01 for DarkArk - These should not have preg varients 
+		else if (imagetype >= IMGTYPE_BIRTHHUMAN && imagetype <= IMPTYPE_VIRGINBEAST) {}									// `J` new .06.03.01 for DarkArk - These should not have preg varients 
+		else if (girl->is_pregnant())
+		{
+			if (imagetype < IMGTYPE_PREGNANT)	imagetype += PREG_OFFSET;
+		}
+		else
+		{
+			if (imagetype == IMGTYPE_PREGNANT)	imagetype = IMGTYPE_PROFILE;
+			if (imagetype > IMGTYPE_PREGNANT)	imagetype -= PREG_OFFSET;
+		}
 	}
 
 	do

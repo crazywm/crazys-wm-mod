@@ -1,12 +1,16 @@
+
 <Screen>
-<Window   Name="Transfer Girls"                             XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
-<Button   Name="Back"           Image="Back"                XPos="308" YPos="536" Width="160" Height="32"  Transparency="true" Scale="true" />
-<Button   Name="ShiftLeft"      Image="ShiftLeft"           XPos="366" YPos="214" Width="48"  Height="48"  Transparency="true" Scale="true" />
-<Button   Name="ShiftRight"     Image="ShiftRight"          XPos="366" YPos="304" Width="48"  Height="48"  Transparency="true" Scale="true" />
-<ListBox  Name="ListLeft"                                   XPos="168" YPos="48"  Width="190" Height="482" Border="1" />
-<ListBox  Name="ListRight"                                  XPos="418" YPos="48"  Width="190" Height="482" Border="1" />
-<ListBox  Name="BrothelLeft"                                XPos="8"   YPos="48"  Width="126" Height="234" Border="1" />
-<ListBox  Name="BrothelRight"                               XPos="632" YPos="48"  Width="126" Height="234" Border="1" />
-<Text     Name="LabelLeft"      Text="BROTHELS"             XPos="8"   YPos="8"   Width="160" Height="32"  FontSize="15" />
-<Text     Name="LabelRight"     Text="BROTHELS"             XPos="632" YPos="8"   Width="160" Height="32"  FontSize="15" />
+<Window     Name="Transfer Girls"                                           XPos="12"       YPos="14"       Width="1000"    Height="740"    Border="1"  />
+<Text       Name="LabelLeft"            Text="Buildings"                    XPos="10"       YPos="2"        Width="160"     Height="32"  FontSize="15"  />
+<Text       Name="LabelRight"           Text="Buildings"                    XPos="850"      YPos="2"        Width="160"     Height="32"  FontSize="15"  />
+
+<ListBox    Name="BrothelLeft"                                              XPos="10"       YPos="40"       Width="140"     Height="300" Border="1"  />
+<ListBox    Name="ListLeft"                                                 XPos="160"      YPos="10"       Width="310"     Height="663" Border="1"  />
+<ListBox    Name="ListRight"                                                XPos="530"      YPos="10"       Width="310"     Height="663" Border="1"  />
+<ListBox    Name="BrothelRight"                                             XPos="850"      YPos="40"       Width="140"     Height="300" Border="1"  />
+
+<Button     Name="ShiftRight"           Image="ShiftRight"                  XPos="475"      YPos="300"      Width="50"      Height="50"  Transparency="true" Scale="true"  />
+<Button     Name="ShiftLeft"            Image="ShiftLeft"                   XPos="475"      YPos="400"      Width="50"      Height="50"  Transparency="true" Scale="true"  />
+<Button     Name="Back"                 Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
+
 </Screen>

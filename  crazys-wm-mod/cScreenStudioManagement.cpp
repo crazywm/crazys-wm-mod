@@ -202,7 +202,7 @@ bool cScreenStudioManagement::check_keys()
 		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
 
 		bool skip = false;
-		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_DIRECTOR || selection == JOB_PROMOTER))
+		if (selected_girl && selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_DIRECTOR || selection == JOB_PROMOTER))
 			skip = true;
 		if (selection == JOB_DIRECTOR && (g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 0) > 0 || g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 1) > 0))
 			skip = true;

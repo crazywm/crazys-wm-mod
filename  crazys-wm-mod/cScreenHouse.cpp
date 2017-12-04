@@ -76,7 +76,7 @@ void cScreenHouse::init()
 		switch (obj->m_Objective)
 		{
 		case OBJECTIVE_REACHGOLDTARGET:
-			ss << "End the week " << obj->m_Target << " gold in the bank";
+			ss << "End the week with " << obj->m_Target << " gold in the bank";
 			if (obj->m_Limit != -1) ss << " within " << obj->m_Limit << " weeks";
 			ss << ", " << g_Brothels.GetBankMoney() << " gathered so far.";
 			break;

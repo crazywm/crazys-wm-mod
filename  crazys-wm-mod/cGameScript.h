@@ -144,12 +144,24 @@ private:
 	sScript* Script_SetGirlStatus(sScript* Script);					// `J` new .06.03.00
 	sScript* Script_EndPregnancy(sScript* Script);					// `J` new .06.03.00
 	sScript* Script_CreatePregnancy(sScript* Script);				// `J` new .06.03.00
-	
+	sScript* Script_ElseNew(sScript* Script);						// `J` new .06.03.01
+	sScript* Script_BrandTarget(sScript* Script);					// `J` new .06.03.01 for DarkArk
+	sScript* Script_RapeTarget(sScript* Script);					// `J` new .06.03.01 for DarkArk
+	sScript* Script_RapeBeastTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_BirthHumanTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_BirthHumanMultipleTarget(sScript* Script);		// `J` new .06.03.01 for DarkArk
+	sScript* Script_BirthBeastTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_ImpregSexTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_ImpregGroupTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_ImpregBDSMTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_ImpregBeastTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_VirginSexTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_VirginGroupTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_VirginBDSMTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+	sScript* Script_VirginBeastTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
+
+
 	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.h
-
-
-	//sScript* Script_GirlNameTarget(sScript* Script);
-
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.h
 
 	// The overloaded process function

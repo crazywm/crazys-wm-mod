@@ -29,7 +29,15 @@ Started remaking the loading screen.
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.00
 
+### Changes 11/27-12/03/2017
+Updated J_1024x768 interface
+- Found and fixed a couple of bugs
+Added m_interest_rate (not used yet)
+Added several image types for DarkArk
+Started rewriting Objectives (not active yet)
 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.01
 
 
 

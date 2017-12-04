@@ -25,6 +25,7 @@
 #include "cScreenMainMenu.h"
 #include "cScreenNewGame.h"
 #include "cScreenBrothelManagement.h"
+#include "cScreenPreparingGame.h"
 #include "InterfaceGlobals.h"
 #include "GameFlags.h"
 #include "InterfaceProcesses.h"
@@ -58,6 +59,7 @@ Globals _G;
 
 extern cScreenMainMenu g_MainMenu;
 extern cScreenNewGame g_NewGame;
+extern cScreenPreparingGame g_Preparing;
 extern cScreenBrothelManagement g_BrothelManagement;
 sInterfaceIDs g_interfaceid;
 extern sGirl *selected_girl;
@@ -290,7 +292,7 @@ void handle_hotkeys()
 
 
 	// Process the keys for every screen except MainMenu, LoadGame and NewGame - they have their own keys
-	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame && g_WinManager.GetWindow() != &g_NewGame)
+	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame && g_WinManager.GetWindow() != &g_Preparing && g_WinManager.GetWindow() != &g_NewGame)
 	{
 		int br_no = 0;
 		string msg = "";
@@ -1356,6 +1358,10 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 								|| vent.key.keysym.sym == SDLK_ESCAPE || vent.key.keysym.sym == SDLK_KP_ENTER
 								|| vent.key.keysym.sym == SDLK_RETURN)
 								handle_hotkeys();
+						}
+						if (g_WinManager.GetWindow() == &g_Preparing)
+						{
+
 						}
 
 						if (vent.key.keysym.sym == SDLK_BACKSPACE)		g_WinManager.UpdateKeyInput('-');

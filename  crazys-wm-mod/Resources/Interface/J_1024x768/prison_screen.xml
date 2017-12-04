@@ -1,10 +1,13 @@
+
 <Screen>
-<Window	Name="Prison Screen Window"				XPos="168"	YPos="72"	Width="448"	Height="448"	Border="1"	/>
-<Button  	Name="BackButton"	Image="Back"			XPos="280"	YPos="408"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="ShowMoreButton"	Image="ShowMore"		XPos="280"	YPos="368"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="ReleaseButton"	Image="Release"		XPos="280"	YPos="328"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<ListBox	Name="PrisonList"						XPos="8"	YPos="46"	Width="264"	Height="394"	Border="1"	Events="true"	Multi="false"	/>
-<Text    	Name="GirlDescription"	Text="None Selected"	XPos="280"	YPos="8"	Width="160"	Height="308"	FontSize="10"	/>
-<Text    	Name="ScreenHeader"	Text="Town Prison"	XPos="56"	YPos="8"	Width="160"	Height="32"	FontSize="20"	/>
-<Image	Name="PrisonIcon"	File="Prison.png"			XPos="6"	YPos="6"	Width="32"	Height="32"	/>
+<Window     Name="Prison Screen Window"                                     XPos="300"      YPos="170"      Width="400"     Height="400" Border="1"  />
+<Image      Name="PrisonIcon"           File="Prison.png"                   XPos="10"       YPos="10"       Width="50"      Height="50"                   />
+<Text       Name="ScreenHeader"         Text="Town Prison"                  XPos="70"       YPos="10"       Width="160"     Height="32"                  FontSize="20"                   />
+<ListBox    Name="PrisonList"                                               XPos="10"       YPos="60"       Width="210"     Height="330"                  Border="1"                  Events="true"                  Multi="false"                   />
+
+<Text       Name="GirlDescription"      Text="None Selected"                XPos="230"      YPos="10"       Width="160"     Height="300"                  FontSize="10"                   />
+<Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="230"      YPos="310"      Width="160"     Height="32"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="ReleaseButton"        Image="Release"                     XPos="230"      YPos="358"      Width="160"     Height="32"                  Transparency="true"                  Scale="true"                   />
+
+<Button     Name="BackButton"           Image="Back"                        XPos="512"      YPos="536"      Width="190"     Height="38"  Transparency="true"    Scale="true"  />
 </Screen>

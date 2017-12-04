@@ -18143,6 +18143,19 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	}
 	else if (detailName == "Pay")				{ ss << m_Pay; }
 
+	// 'J' Added for .06.03.01
+	else if (detailName == "DayJobShort" || detailName == "NightJobShort")
+	{
+		int DN_Job = m_DayJob;
+		bool DN_Day = 0;
+		if (detailName == "NightJob")
+		{
+			DN_Job = m_NightJob;
+			DN_Day = 1;
+		}
+		ss << g_Brothels.m_JobManager.JobQkNm[DN_Day];
+	}
+
 	// 'J' Girl Table job text
 	else if (detailName == "DayJob" || detailName == "NightJob")
 	{

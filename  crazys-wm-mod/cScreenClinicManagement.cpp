@@ -197,7 +197,7 @@ bool cScreenClinicManagement::check_keys()
 		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
 
 		bool skip = false;
-		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_CHAIRMAN || selection == JOB_DOCTOR))
+		if (selected_girl && selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_CHAIRMAN || selection == JOB_DOCTOR))
 			skip = true;
 		if (selection == JOB_CHAIRMAN && (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 0) > 0 || g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 1) > 0))
 			skip = true;

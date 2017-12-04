@@ -161,6 +161,9 @@ protected:
 	*	with the actual debit, streamlining cash expediture
 	*/
 	bool	debit_if_ok(double price, bool force = false);
+	// `J` added interest rate for .06.03.01
+	double m_interest_rate;
+
 public:
 	cGoldBase();
 	cGoldBase(int initial);
@@ -240,6 +243,13 @@ public:
 	*	accounting purposes
 	*/
 	void bank_interest(double income);
+	// `J` added interest rate for .06.03.01
+	double interest_rate();
+	double reset_interest_rate();
+	double increase_interest_rate();
+	double decrease_interest_rate();
+
+
 	/*
 	*	the "misc" methods never get factored
 	*	they're for gold that's already in the system

@@ -49,6 +49,9 @@ typedef struct sObjective
 	int m_Limit;		// the number of weeks must be done by
 	int m_Difficulty;	// a number representing how hard it is
 	string m_Text;		// save the text for pass objective report.
+	string m_FailText;	// save the text for fail objective report.
+	string m_PassText;	// save the text for fail objective report.
+
 }sObjective;
 
 bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID);

@@ -1,8 +1,11 @@
+
 <Screen>
-<Window	Name="Mayor Office Window"			XPos="216"	YPos="136"	Width="344"	Height="296"	Border="1"	/>
-<Image	Name="MayorIcon"	File="MayorsOffice.png"	XPos="6"	YPos="6"	Width="32"	Height="32"	/>
-<Text    	Name="ScreenHeader"	Text="Town Hall"	XPos="48"	YPos="8"	Width="280"	Height="32"	FontSize="20"	/>
-<Text    	Name="MayorDetails"	Text=""		XPos="8"	YPos="56"	Width="328"	Height="192"	FontSize="14"	/>
-<Button  	Name="BribeButton"	Image="Bribe"	XPos="8"	YPos="256"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="BackButton"	Image="Back"		XPos="176"	YPos="256"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+<Window     Name="Mayor Office Window"                                      XPos="300"      YPos="170"      Width="400"     Height="400" Border="1"  />
+<Image      Name="MayorIcon"            File="MayorsOffice.png"             XPos="10"       YPos="10"       Width="50"      Height="50"                   />
+<Text       Name="ScreenHeader"         Text="Town Hall"                    XPos="70"       YPos="10"       Width="320"     Height="32"                  FontSize="20"                   />
+<Text       Name="MayorDetails"         Text=""                             XPos="10"       YPos="60"       Width="380"     Height="290"                  FontSize="14"                   />
+
+
+<Button     Name="BribeButton"          Image="Bribe"                       XPos="120"      YPos="358"      Width="160"     Height="32"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="BackButton"           Image="Back"                        XPos="512"      YPos="536"      Width="190"     Height="38"  Transparency="true"    Scale="true"  />
 </Screen>

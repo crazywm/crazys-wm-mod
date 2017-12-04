@@ -386,6 +386,29 @@ void cGoldBase::bank_interest(double income)
 	// do nothing for now - placeholder until accounting
 	// stuff is added
 }
+// `J` added interest rate for .06.03.01
+double cGoldBase::interest_rate()
+{
+	if (m_interest_rate > 0.01)	m_interest_rate = 0.01;
+	return m_interest_rate;
+}
+double cGoldBase::reset_interest_rate()
+{
+	m_interest_rate = 0.002;
+	return m_interest_rate;
+}
+double cGoldBase::increase_interest_rate()
+{
+	m_interest_rate += 0.0005;
+	if (m_interest_rate > 0.01)	m_interest_rate = 0.01;
+	return m_interest_rate;
+}
+double cGoldBase::decrease_interest_rate()
+{
+	m_interest_rate -= 0.0005;
+	if (m_interest_rate < 0.0000)	m_interest_rate = 0.0000;
+	return m_interest_rate;
+}
 
 string cGoldBase::sval()
 {
@@ -408,6 +431,7 @@ TiXmlElement* cGoldBase::saveGoldXML(TiXmlElement* pRoot)
 	pGold->SetDoubleAttribute("upkeep", m_upkeep);
 	pGold->SetDoubleAttribute("cash_in", m_cash_in);
 	pGold->SetDoubleAttribute("cash_out", m_cash_out);
+	pGold->SetDoubleAttribute("interest_rate", m_interest_rate);
 	return pGold;
 }
 
@@ -424,6 +448,7 @@ bool cGoldBase::loadGoldXML(TiXmlHandle hGold)
 	pGold->QueryDoubleAttribute("upkeep", &m_upkeep);
 	pGold->QueryDoubleAttribute("cash_in", &m_cash_in);
 	pGold->QueryDoubleAttribute("cash_out", &m_cash_out);
+	pGold->QueryDoubleAttribute("interest_rate", &m_interest_rate);
 	return true;
 }
 

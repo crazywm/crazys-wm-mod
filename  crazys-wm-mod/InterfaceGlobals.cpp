@@ -479,16 +479,23 @@ void LoadInterface()
 		{
 			XmlUtil xu(m_filename); string name;
 			xu.get_att(el, "Name", name);
-			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
+			xu.get_att(el, "XPos", x); xu.get_att(el, "YPos", y); xu.get_att(el, "Width", w); xu.get_att(el, "Height", h); xu.get_att(el, "Border", e, true);
 			xu.get_att(el, "Image", image, true); xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
-			
+			xu.get_att(el, "File", file, true); xu.get_att(el, "Text", text, true);
 			xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 10;
 			xu.get_att(el, "RowHeight", rowheight); if (rowheight == 0) rowheight = 20;
+			xu.get_att(el, "Red", r, true); xu.get_att(el, "Green", g, true); xu.get_att(el, "Blue", b, true);
 
-			if (name == "LoadMenu")	g_LoadGame.CreateWindow(a, b, c, d, e);
-			if (name == "FileName")	g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true, false, false, true, true, fontsize, rowheight);
-			if (name == "LoadGame")	g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGLOAD, a, b, c, d, Transparency, Scale);
-			if (name == "Back")		g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGBACK, a, b, c, d, Transparency, Scale);
+			if (name == "LoadMenu")		g_LoadGame.CreateWindow(x, y, w, h, e);
+			if (name == "WhoreMaster")	g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, x, y, w, h, text, fontsize, false, false, false, r, g, b);
+			if (name == "FileName")		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, x, y, w, h, e, true, false, false, true, true, fontsize, rowheight);
+			if (name == "LoadGame")		g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGLOAD, x, y, w, h, Transparency, Scale);
+			if (name == "Back")			g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGBACK, x, y, w, h, Transparency, Scale);
+			if (name == "Background")
+			{
+				DirPath dp = ImagePath(file);
+				g_LoadGame.AddImage(g_interfaceid.IMAGE_BGIMAGE, dp, x, y, w, h);
+			}
 		}
 	}
 	else if (loadmenu == 2)

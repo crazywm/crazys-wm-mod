@@ -266,7 +266,8 @@ struct sInterfaceIDs
   int LIST_GGLIST  ;
 
 // Load Game Screen
-  int LIST_LOADGSAVES;  
+  int IMAGE_BGIMAGE;
+  int LIST_LOADGSAVES;
   int BUTTON_LOADGLOAD;  
   int BUTTON_LOADGBACK ; 
 

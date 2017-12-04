@@ -1,12 +1,13 @@
+
 <Screen>
-<Window	Name="Bank Window"					XPos="280"	YPos="152"	Width="240"	Height="296"	Border="1"	/>
-<Image	Name="BankIcon"	File="Bank.png"			XPos="6"	YPos="6"	Width="32"	Height="32"	/>
-<Text   	Name="ScreenHeader"	Text="Town Bank"		XPos="70"	YPos="8"	Width="100"	Height="32"	FontSize="20"	/>
-<Text   	Name="BankDetails"	Text=" "			XPos="16"	YPos="48"	Width="216"	Height="56"	FontSize="13"	/>
-<Button 	Name="DepositButton"	Image="Deposit"		XPos="40"	YPos="80"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button 	Name="DepositAllButton"	Image="DepositAll"	XPos="40"	YPos="115"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button 	Name="WithdrawButton"	Image="Withdraw"		XPos="40"	YPos="150"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button 	Name="WithdrawAllButton" Image="WithdrawAll"	XPos="40"	YPos="185"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-  
-  <Button  	Name="BackButton"	Image="Back"			XPos="40"	YPos="232"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+<Window     Name="Bank Window"                                              XPos="300"      YPos="170"      Width="400"     Height="400" Border="1"  />
+<Image      Name="BankIcon"             File="Bank.png"                     XPos="10"       YPos="10"       Width="50"      Height="50"                   />
+<Text       Name="ScreenHeader"         Text="Town Bank"                    XPos="70"       YPos="10"       Width="320"     Height="32"                  FontSize="20"                   />
+<Text       Name="BankDetails"          Text=" "                            XPos="10"       YPos="60"       Width="380"     Height="100"                 FontSize="13"                   />
+
+<Button     Name="DepositButton"        Image="Deposit"                     XPos="10"       YPos="310"      Width="160"     Height="32"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="DepositAllButton"     Image="DepositAll"                  XPos="10"       YPos="358"      Width="160"     Height="32"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="WithdrawButton"       Image="Withdraw"                    XPos="230"      YPos="310"      Width="160"     Height="32"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="WithdrawAllButton"    Image="WithdrawAll"                 XPos="230"      YPos="358"      Width="160"     Height="32"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="BackButton"           Image="Back"                        XPos="512"      YPos="536"      Width="190"     Height="38"  Transparency="true"    Scale="true"  />
 </Screen>

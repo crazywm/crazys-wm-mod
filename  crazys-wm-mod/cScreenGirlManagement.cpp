@@ -200,7 +200,7 @@ bool cScreenGirlManagement::check_keys()
 		if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);
 		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
 		bool skip = false;
-		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_MATRON || selection == JOB_TORTURER))
+		if (selected_girl && selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_MATRON || selection == JOB_TORTURER))
 			skip = true;
 		if (selection == JOB_MATRON && (g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 0) > 0 || g_Brothels.GetNumGirlsOnJob(g_CurrBrothel, JOB_MATRON, 1) > 0))
 			skip = true;

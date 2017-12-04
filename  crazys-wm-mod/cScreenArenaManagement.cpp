@@ -197,7 +197,7 @@ bool cScreenArenaManagement::check_keys()
 		if (g_E_Key)	selection = ArrowDownListBox(joblist_id);
 
 		bool skip = false;
-		if (selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_DOCTORE || selection == JOB_CITYGUARD))
+		if (selected_girl && selected_girl->m_States&(1 << STATUS_SLAVE) && (selection == JOB_DOCTORE || selection == JOB_CITYGUARD))
 			skip = true;
 		if (selection == JOB_DOCTORE && (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 0) > 0 || g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 1) > 0))
 			skip = true;

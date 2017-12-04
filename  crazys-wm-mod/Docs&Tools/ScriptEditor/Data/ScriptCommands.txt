@@ -504,3 +504,18 @@ CHOICE 3
 "Beast"
 INT 0 255
 BOOL
+"ElseNew"
+"Have Branding"
+"Have Rape"
+"Have Beast Rape"
+"Have Human Birth"
+"Have Human Birth Multiple"
+"Have Monster Birth"
+"Have Impregnate Sex"
+"Have Impregnate Group"
+"Have Impregnate Bondage"
+"Have Impregnate Beast"
+"Have Virgin Sex"
+"Have Virgin Group"
+"Have Virgin Bondage"
+"Have Virgin Beast"

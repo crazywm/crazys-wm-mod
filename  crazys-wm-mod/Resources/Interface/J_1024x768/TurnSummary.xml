@@ -1,17 +1,19 @@
 <Screen>
-<Window   Name="Turn Summary"                               XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
-<Text     Name="CurrentBrothel" Text=""                     XPos="0"   YPos="0"   Width="900" Height="32"  FontSize="15" />
-<Text     Name="LabelCategory"  Text="Category"             XPos="8"   YPos="20"  Width="120" Height="20"  FontSize="15" />
-<ListBox  Name="Category"                                   XPos="8"   YPos="40"  Width="120" Height="66"  Border="1"          Events="true" Multi="false" />
-<Text     Name="LabelItem"      Text="Item"                 XPos="8"   YPos="110" Width="120" Height="20"  FontSize="15" />
-<ListBox  Name="Item"                                       XPos="8"   YPos="136" Width="120" Height="128" Border="1"          Events="true" Multi="false" />
-<Text     Name="LabelEvent"     Text="Event"                XPos="8"   YPos="270" Width="120" Height="20"  FontSize="15" />
-<ListBox  Name="Event"                                      XPos="8"   YPos="296" Width="120" Height="282" Border="1"          Events="true" Multi="false" />
-<Text     Name="LabelDesc"      Text=""                     XPos="575" YPos="8"   Width="202" Height="406" FontSize="12" />
-<Button   Name="GoTo"           Image="GoTo"                XPos="600" YPos="462" Width="160" Height="32"  Transparency="true" Scale="true" />
-<Button   Name="NextWeek"       Image="NextWeek"            XPos="600" YPos="504" Width="160" Height="32"  Transparency="true" Scale="true" />
-<Button   Name="Back"           Image="Back"                XPos="600" YPos="540" Width="160" Height="32"  Transparency="true" Scale="true" />
-<Button   Name="Prev"           Image="Prev"                XPos="600" YPos="422" Width="72"  Height="32"  Transparency="true" Scale="true" />
-<Button   Name="Next"           Image="Next"                XPos="686" YPos="422" Width="72"  Height="32"  Transparency="true" Scale="true" />
-<Image    Name="Background"     File="building_mgt_bg.jpg"  XPos="136" YPos="20"  Width="434" Height="570" />
+<Window     Name="Turn Summary"                                             XPos="12"       YPos="14"       Width="1000"    Height="740"    Border="1"  />
+<Text       Name="CurrentBrothel"       Text=""                             XPos="10"       YPos="2"        Width="790"     Height="32"     FontSize="15"  />
+
+<ListBox    Name="Category"                                                 XPos="10"       YPos="30"       Width="190"     Height="102"     Border="1"          Events="true" Multi="false"  />
+<Text       Name="LabelItem"            Text="Item"                         XPos="10"       YPos="140"      Width="190"     Height="20"     FontSize="15"  />
+<ListBox    Name="Item"                                                     XPos="10"       YPos="160"      Width="190"     Height="161"    Border="1"          Events="true" Multi="false"  />
+<Text       Name="LabelEvent"           Text="Event"                        XPos="10"       YPos="330"      Width="190"     Height="20"     FontSize="15"  />
+<ListBox    Name="Event"                                                    XPos="10"       YPos="350"      Width="190"     Height="380"    Border="1"          Events="true" Multi="false"  />
+
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="200"      YPos="20"       Width="600"     Height="700"  />
+
+<Button     Name="NextWeek"             Image="NextWeek"                    XPos="815"      YPos="10"       Width="160"     Height="32"     Transparency="true"     Scale="true"     />
+<Text       Name="LabelDesc"            Text=""                             XPos="800"      YPos="50"       Width="200"     Height="550"    FontSize="12"  />
+<Button     Name="Prev"                 Image="Prev"                        XPos="815"      YPos="600"      Width="72"      Height="32"     Transparency="true"     Scale="true"     />
+<Button     Name="Next"                 Image="Next"                        XPos="903"      YPos="600"      Width="72"      Height="32"     Transparency="true"     Scale="true"     />
+<Button     Name="GoTo"                 Image="GoTo"                        XPos="815"      YPos="650"      Width="160"     Height="32"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
 </Screen>

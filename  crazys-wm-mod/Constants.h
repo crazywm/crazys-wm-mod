@@ -717,6 +717,20 @@ enum Image_Types{
 	IMGTYPE_PUPPYGIRL,					// 
 	IMGTYPE_PONYGIRL,					// 
 	IMGTYPE_CATGIRL,					// 
+	IMPTYPE_BRAND,						// `J` new .06.03.01 for DarkArk
+	IMPTYPE_RAPE,						// `J` new .06.03.01 for DarkArk
+	IMPTYPE_RAPEBEAST,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_BIRTHHUMAN,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_BIRTHHUMANMULTIPLE,			// `J` new .06.03.01 for DarkArk
+	IMPTYPE_BIRTHBEAST,					// `J` new .06.03.01 for DarkArk
+	IMPTYPE_IMPREGSEX,					// `J` new .06.03.01 for DarkArk
+	IMPTYPE_IMPREGGROUP,				// `J` new .06.03.01 for DarkArk
+	IMPTYPE_IMPREGBDSM,					// `J` new .06.03.01 for DarkArk
+	IMPTYPE_IMPREGBEAST,				// `J` new .06.03.01 for DarkArk
+	IMPTYPE_VIRGINSEX,					// `J` new .06.03.01 for DarkArk
+	IMPTYPE_VIRGINGROUP,				// `J` new .06.03.01 for DarkArk
+	IMPTYPE_VIRGINBDSM,					// `J` new .06.03.01 for DarkArk
+	IMPTYPE_VIRGINBEAST,				// `J` new .06.03.01 for DarkArk
 
 	/*
 IMGTYPE_WATER			- "water*."			- "Watersports"		- watersports
@@ -789,6 +803,21 @@ IMGTYPE_PETLICK			- "petlick*."		- "PetLick"			- lick, oral, petprofile, bdsm, n
 	IMGTYPE_PREGPUPPYGIRL,				// 
 	IMGTYPE_PREGPONYGIRL,				// 
 	IMGTYPE_PREGCATGIRL,				// 
+	IMPTYPE_PREGBRAND,					// `J` new .06.03.01 for DarkArk
+	IMPTYPE_PREGRAPE,					// `J` new .06.03.01 for DarkArk
+	IMPTYPE_PREGRAPEBEAST,				// `J` new .06.03.01 for DarkArk
+	IMGTYPE_PREGBIRTHHUMAN,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGBIRTHHUMANMULTIPLE,		// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMPTYPE_PREGBIRTHBEAST,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMPTYPE_PREGIMPREGSEX,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMPTYPE_PREGIMPREGGROUP,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMPTYPE_PREGIMPREGBDSM,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMPTYPE_PREGIMPREGBEAST,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMPTYPE_PREGVIRGINSEX,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMPTYPE_PREGVIRGINGROUP,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMPTYPE_PREGVIRGINBDSM,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMPTYPE_PREGVIRGINBEAST,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+
 	NUM_IMGTYPES	// `J` All image types can have a pregnant variation (except pregnant-pregnant)
 };
 const int PREG_OFFSET = IMGTYPE_PREGNANT + 1;

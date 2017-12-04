@@ -714,11 +714,11 @@ bool cBrothelManager::LoadDataXML(TiXmlHandle hBrothelManager)
 		pObjective->QueryIntAttribute("SoFar", &m_Objective->m_SoFar);
 		pObjective->QueryIntAttribute("Target", &m_Objective->m_Target);
 
-		if (pObjective->Attribute("Text"))	// `J` added
-		{
-			m_Objective->m_Text = pObjective->Attribute("Text");
-		}
-		else m_Objective->m_Text = "";
+		// `J` added
+		if (pObjective->Attribute("Text")) { m_Objective->m_Text = pObjective->Attribute("Text"); } else m_Objective->m_Text = "";
+		// `J` added .06.03.01
+		if (pObjective->Attribute("FailText")) { m_Objective->m_FailText = pObjective->Attribute("FailText"); }	else m_Objective->m_FailText = "";
+		if (pObjective->Attribute("PassText")) { m_Objective->m_PassText = pObjective->Attribute("PassText"); }	else m_Objective->m_PassText = "";
 	}
 
 	// load rivals
@@ -875,6 +875,8 @@ TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 		pObjective->SetAttribute("SoFar", m_Objective->m_SoFar);
 		pObjective->SetAttribute("Target", m_Objective->m_Target);
 		pObjective->SetAttribute("Text", m_Objective->m_Text);
+		pObjective->SetAttribute("FailText", m_Objective->m_FailText);
+		pObjective->SetAttribute("PassText", m_Objective->m_PassText);
 	}
 
 	g_LogFile.write("***************** Saving rivals *******************");
@@ -3962,7 +3964,8 @@ void cBrothelManager::UpdateObjective()
 		if (m_Objective != 0 && m_Objective->m_Limit == 0)
 		{
 			stringstream ss;
-			if (m_Objective->m_Text.size() < 1)	ss << "You have failed an objective.";
+			if (m_Objective->m_FailText.size() > 0)		ss << "You have failed your objective:\n" << m_Objective->m_FailText;
+			else if (m_Objective->m_Text.size() < 1)	ss << "You have failed an objective.";
 			else ss << "You have failed your objective to " << m_Objective->m_Text;
 			g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 			delete m_Objective;
@@ -3982,16 +3985,20 @@ void cBrothelManager::CreateNewObjective()
 	if (m_Objective)
 	{
 		stringstream ss;
+		stringstream ssf;
+		stringstream ssp;
 		stringstream sst;
 
-		sst << "You have a new objective, you must ";
+		sst << "You have a new objective:\n";
 		bool done = false;
-		m_Objective->m_Difficulty = g_Year - 1209;
+		m_Objective->m_Difficulty = max(0, ((int)g_Year - 1209));
 		m_Objective->m_SoFar = 0;
 		m_Objective->m_Reward = g_Dice%NUM_REWARDS;
 		m_Objective->m_Limit = -1;
 		m_Objective->m_Target = 0;
 		m_Objective->m_Text = "";
+		m_Objective->m_FailText = "";
+		m_Objective->m_PassText = "";
 
 		while (!done)
 		{
@@ -4000,17 +4007,32 @@ void cBrothelManager::CreateNewObjective()
 			{
 			case OBJECTIVE_REACHGOLDTARGET:
 			{
-				ss << "Acquire ";
-				if (m_Objective->m_Difficulty >= 3)
+				if (true)
 				{
-					m_Objective->m_Limit = (g_Dice % 20) + 10;
-					m_Objective->m_Target = m_Objective->m_Limit * 1000;
-					ss << m_Objective->m_Target << " gold within " << m_Objective->m_Limit << " weeks.";
+					ss << "Acquire ";
+					if (m_Objective->m_Difficulty >= 3)
+					{
+						m_Objective->m_Limit = (g_Dice % 20) + 10;
+						m_Objective->m_Target = m_Objective->m_Limit * 1000;
+						ss << m_Objective->m_Target << " gold within " << m_Objective->m_Limit << " weeks.";
+					}
+					else
+					{
+						m_Objective->m_Target = ((g_Dice % 20) + 1) * 200;
+						ss << m_Objective->m_Target << " gold.";
+					}
 				}
 				else
 				{
-					m_Objective->m_Target = ((g_Dice % 20) + 1) * 200;
-					ss << m_Objective->m_Target << " gold.";
+					m_Objective->m_Target = ((g_Dice % 20) + 1) * ((m_Objective->m_Difficulty + 2) * 100) * (m_Objective->m_Difficulty + 1);
+					ss << "The bank has requested that you deposit " << m_Objective->m_Target << " gold into your account";
+					if (m_Objective->m_Difficulty >= 3)
+					{
+						m_Objective->m_Limit = max(3, (g_Dice % 10) - m_Objective->m_Difficulty);
+						ss << " within " << m_Objective->m_Limit << " weeks.";
+					}
+					ssf << "The bank has determined that you are not a serious investor and has reduced your interest rate. (Not implemented yet)";
+					ssp << "The bank is pleased to hold on to your gold for you";
 				}
 				done = true;
 			}break;
@@ -4020,6 +4042,10 @@ void cBrothelManager::CreateNewObjective()
 				cRivalManager r;
 				if (r.GetNumRivals() > 0)
 				{
+					if (g_Gangs.GetNumGangs() > 0)
+					{
+						ss << "Your gang" << (g_Gangs.GetNumGangs() > 1 ? "s are" : " is") << " getting restless and itching for a fight. ";
+					}
 					ss << "Launch a successful attack mission within ";
 					m_Objective->m_Limit = (m_Objective->m_Difficulty >= 3 ? (g_Dice % 5) + 3 : (g_Dice % 10) + 10);
 					ss << m_Objective->m_Limit << " weeks.";
@@ -4147,6 +4173,7 @@ void cBrothelManager::CreateNewObjective()
 			{
 				if (GetNumBrothels() < 6)
 				{
+//					ss << "The seller of a brothel is offering a bonus mystery prize to whoever buys it";
 					ss << "Purchase a new brothel";
 					if (m_Objective->m_Difficulty >= 2)
 					{
@@ -4162,6 +4189,8 @@ void cBrothelManager::CreateNewObjective()
 
 		sst << ss.str();
 		m_Objective->m_Text = ss.str();
+		m_Objective->m_FailText = ssf.str();
+		m_Objective->m_PassText = ssp.str();
 
 		if (sst.str().length() > 0)
 		{
