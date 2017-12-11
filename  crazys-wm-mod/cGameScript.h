@@ -159,7 +159,10 @@ private:
 	sScript* Script_VirginGroupTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
 	sScript* Script_VirginBDSMTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
 	sScript* Script_VirginBeastTarget(sScript* Script);				// `J` new .06.03.01 for DarkArk
-
+	sScript* Script_EscortTarget(sScript* Script);					// `J` new .06.03.02 for grishnak
+	sScript* Script_SportTarget(sScript* Script);					// `J` new .06.03.02 for grishnak
+	sScript* Script_StudyTarget(sScript* Script);					// `J` new .06.03.02 for grishnak
+	sScript* Script_TeacherTarget(sScript* Script);					// `J` new .06.03.02 for grishnak
 
 	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.h
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.h

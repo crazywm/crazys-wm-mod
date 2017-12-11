@@ -38,7 +38,7 @@ extern cInterfaceWindow g_ChangeJobs;
 //extern cInterfaceWindow g_Gallery2;
 extern cInterfaceWindow g_GetInt;
 extern cInterfaceWindow g_LoadGame;
-extern cInterfaceWindow g_TransferGirls;
+//extern cInterfaceWindow g_TransferGirls;
 extern cMessageBox g_MessageBox;
 extern cChoiceManager g_ChoiceManager;
 extern cMessageQue g_MessageQue;

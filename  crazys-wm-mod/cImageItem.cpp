@@ -52,6 +52,7 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"brand*.", "rape*.", "rapebeast*.", "birthhuman*.", "birthhumanmultiple*.", "birthbeast*.",					// `J` new .06.03.01 for DarkArk
 	"impregsex*.", "impreggroup*.", "impregbdsm*.", "impregbeast*.", 											// `J` new .06.03.01 for DarkArk
 	"virginsex*.", "virgingroup*.", "virginbdsm*.", "virginbeast*.",											// `J` new .06.03.01 for DarkArk
+	"escort*.", "sport*.", "study*.", "teacher*.",																// `J` new .06.03.02 for grishnak
 	"preg*.",	// pregnant varients
 	"preganal*.", "pregbdsm*.", "pregsex*.", "pregbeast*.", "preggroup*.", "pregles*.",
 	"pregtorture*.", "pregdeath*.", "pregprofile*.", "pregcombat*.", "pregoral*.", "pregecchi*.",
@@ -65,7 +66,9 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"pregbrand*.", "pregrape*.", "pregrapebeast*.",																// `J` new .06.03.01 for DarkArk
 	"pregbirthhuman*.", "pregbirthhumanmultiple*.", "pregbirthbeast*.", 										// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	"pregimpregsex*.", "pregimpreggroup*.", "pregimpregbdsm*.", "pregimpregbeast*.", 							// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	"pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*."								// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*.",							// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"pregescort*.", "pregsport*.", "pregstudy*.", "pregteacher*."												// `J` new .06.03.02 for grishnak
+
 };
 string galtxt[] =
 {
@@ -75,9 +78,10 @@ string galtxt[] =
 	"Foot", "Bed", "Farm", "Herd", "Cook", "Craft", "Swim", "Bath", "Nurse", "Formal", "Shop", "Magic", "Sign",
 	"Presented", "Dominatrix", "Deepthroat", "Eatout", "Dildo", "Sub", "Strapon", "Les69ing", "Lick",
 	"Balls", "Cowgirl", "Revcowgirl", "Sexdoggy", "Jail", "Puppygirl", "Ponygirl", "Catgirl",
-	"Branding", "Rape", "Beast Rape", "Human Birth", "Human Birth Multiple", "Monster Birth",							// `J` new .06.03.01 for DarkArk
-	"Impregnate Sex", "Impregnate Group", "Impregnate Bondage", "Impregnate Beast", 									// `J` new .06.03.01 for DarkArk
-	"Virgin Sex", "Virgin Group", "Virgin Bondage", "Virgin Beast",														// `J` new .06.03.01 for DarkArk
+	"Branding", "Rape", "Beast Rape", "Human Birth", "Human Birth Multiple", "Monster Birth",					// `J` new .06.03.01 for DarkArk
+	"Impregnate Sex", "Impregnate Group", "Impregnate Bondage", "Impregnate Beast", 							// `J` new .06.03.01 for DarkArk
+	"Virgin Sex", "Virgin Group", "Virgin Bondage", "Virgin Beast",												// `J` new .06.03.01 for DarkArk
+	"Escort", "Sport", "Study", "Teacher",																		// `J` new .06.03.02 for grishnak
 
 	"Pregnant",	// pregnant varients
 	"Pregnant Anal", "Pregnant BDSM", "Pregnant Sex", "Pregnant Beast", "Pregnant Group",
@@ -94,6 +98,7 @@ string galtxt[] =
 	"Pregnant Human Birth", "Pregnant Human Birth Multiple", "Pregnant Monster Birth",									// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	"Pregnant Impregnate Sex", "Pregnant Impregnate Group", "Pregnant Impregnate Bondage", "Pregnant Impregnate Beast",	// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	"Pregnant Virgin Sex", "Pregnant Virgin Group", "Pregnant Virgin Bondage", "Pregnant Virgin Beast"					// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"Pregnant Escort*.", "Pregnant Sport*.", "Pregnant Study*.", "Pregnant Teacher*."									// `J` new .06.03.02 for grishnak
 
 };
 
@@ -669,6 +674,8 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_SING:
 	case	IMGTYPE_CARD:
 	case	IMGTYPE_BUNNY:
+	case	IMGTYPE_ESCORT:
+	case	IMGTYPE_TEACHER:
 	{
 		if (tries > 6 && tries < 10)	return trytype;
 		return IMGTYPE_FORMAL;
@@ -676,6 +683,8 @@ int TryImageType(int imagetype, int tries)
 	case	IMGTYPE_PREGSING:
 	case	IMGTYPE_PREGCARD:
 	case	IMGTYPE_PREGBUNNY:
+	case	IMGTYPE_PREGESCORT:
+	case	IMGTYPE_PREGTEACHER:
 	{
 		if (tries == 8)	return trytype;					// try with defaults
 		if (tries > 22 || tries == 6 || tries == 7)		// try preg vars
@@ -926,6 +935,8 @@ int TryImageType(int imagetype, int tries)
 	case IMGTYPE_PREGDEATH:
 	case IMGTYPE_PREGSHOP:
 	case IMGTYPE_PREGSIGN:
+	case IMGTYPE_PREGSPORT:
+	case IMGTYPE_PREGSTUDY:
 	{
 		if (tries > 25)	// try nonpreg base
 		{
@@ -952,6 +963,8 @@ int TryImageType(int imagetype, int tries)
 	case IMGTYPE_PUPPYGIRL:
 	case IMGTYPE_PONYGIRL:
 	case IMGTYPE_CATGIRL:
+	case IMGTYPE_SPORT:
+	case IMGTYPE_STUDY:
 	default:
 		return IMGTYPE_PROFILE;
 		break;

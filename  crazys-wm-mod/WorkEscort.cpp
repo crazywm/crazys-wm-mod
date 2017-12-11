@@ -68,7 +68,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	int wages = 0, tips = 0;
 	double jobperformance = 0, escort = 0, fame = 0;
-	int imagetype = IMGTYPE_FORMAL;
+	int imagetype = IMGTYPE_ESCORT;
 
 	int agl = (g_Girls.GetStat(girl, STAT_AGILITY));
 	int roll_a = g_Dice.d100();							// customer type

@@ -106,7 +106,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 			}
 		}
-		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+		girl->m_Events.AddMessage(ss.str(), IMGTYPE_DOM, Day0Night1);
 	}
 	else
 	{

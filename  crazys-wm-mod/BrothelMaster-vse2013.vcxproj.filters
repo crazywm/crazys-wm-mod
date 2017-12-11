@@ -627,6 +627,7 @@
     <ClCompile Include="WorkCureDiseases.cpp" />
     <ClCompile Include="cScreenMovie.cpp" />
     <ClCompile Include="cScreenPreparingGame.cpp" />
+    <ClCompile Include="cScreenTransfer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -1061,14 +1062,14 @@
     <ClInclude Include="cScreenPreparingGame.h">
       <Filter>Misc</Filter>
     </ClInclude>
+    <ClInclude Include="cScreenTransfer.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="EXE_icon.res">
       <Filter>Resources</Filter>
     </Resource>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ScreenMode.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="msvcp120d.dll" />

@@ -75,39 +75,13 @@ bool CGraphics::End()
 
 bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 {
-	if (Width == 0 || Height == 0)
+	if ((Width == 0 || Height == 0) && cfg.resolution.configXML())
 	{
-		if (cfg.resolution.configXML())
-		{
-			m_ScreenWidth = _G.g_ScreenWidth = cfg.resolution.width();
-			m_ScreenHeight = _G.g_ScreenHeight = cfg.resolution.height();
-			_G.g_ScreenScaleX = (float)m_ScreenWidth / (float)cfg.resolution.scalewidth();
-			_G.g_ScreenScaleY = (float)m_ScreenHeight / (float)cfg.resolution.scaleheight();
-			_G.g_Fullscreen = cfg.resolution.fullscreen();
-		}
-		else	// `J` merged ScreenMode.txt into config.xml - left this in for legacy
-		{
-			char buffer[1000];
-			ifstream incol;
-			// WD: Typecast to resolve ambiguous call in VS 2010
-			DirPath dp = DirPath() << "ScreenMode.txt";
-			g_LogFile.write("Reading Screen Mode");
-			incol.open(dp.c_str());
-			if (incol)
-			{
-				incol.ignore(1000, '\n');	// ignore first line
-				incol >> _G.g_ScreenWidth >> _G.g_ScreenHeight;
-				incol.ignore(1000, '\n');	// width/height
-				incol.getline(buffer, 1000, '\n');
-				if (strcmp(buffer, "true") == 0)
-					_G.g_Fullscreen = true;
-				else
-					_G.g_Fullscreen = false;
-			}
-			incol.close();
-			m_ScreenWidth = _G.g_ScreenWidth;
-			m_ScreenHeight = _G.g_ScreenHeight;
-		}
+		m_ScreenWidth = _G.g_ScreenWidth = cfg.resolution.width();
+		m_ScreenHeight = _G.g_ScreenHeight = cfg.resolution.height();
+		_G.g_ScreenScaleX = (float)m_ScreenWidth / (float)cfg.resolution.scalewidth();
+		_G.g_ScreenScaleY = (float)m_ScreenHeight / (float)cfg.resolution.scaleheight();
+		_G.g_Fullscreen = cfg.resolution.fullscreen();
 	}
 	else
 	{

@@ -255,6 +255,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("chef") == 0)					return ("Chef");
 		else if (trait.compare("chlamydia") == 0)				return ("Chlamydia");
 		else if (trait.compare("city girl") == 0)				return ("City Girl");
+		else if (trait.compare("clipped tendons") == 0)			return ("Clipped Tendons");
 		else if (trait.compare("clumsy") == 0)					return ("Clumsy");
 		else if (trait.compare("construct") == 0)				return ("Construct");
 		else if (trait.compare("cool person") == 0)				return ("Cool Person");
@@ -406,6 +407,7 @@ string cTraits::GetTranslateName(string name)
 		else if (trait.compare("no legs") == 0)					return ("No Legs");
 		else if (trait.compare("no nipples") == 0)				return ("No Nipples");
 		else if (trait.compare("no teeth") == 0)				return ("No Teeth");
+		else if (trait.compare("no tongue") == 0)				return ("No Tongue");
 		else if (trait.compare("noble") == 0)					return ("Noble");
 		else if (trait.compare("not human") == 0)				return ("Not Human");
 		else if (trait.compare("nymphomaniac") == 0)			return ("Nymphomaniac");

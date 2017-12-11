@@ -51,6 +51,7 @@ public:
 	void init();
 	void process();
 	void resetScreen();
+	void clearall();
 	void loadFailed();
 	void stringEmUp();
 

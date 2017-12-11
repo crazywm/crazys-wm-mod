@@ -544,7 +544,7 @@ void handle_hotkeys()
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_TURNSUMMARY;
 			g_InitWin = true;
-			g_WinManager.push("TurnSummary");
+			g_WinManager.push("Turn Summary");
 			break;
 
 		case SDLK_HOME:

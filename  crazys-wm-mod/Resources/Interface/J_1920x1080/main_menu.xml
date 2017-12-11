@@ -6,7 +6,7 @@
 <Button     Name="New Game"             Image="NewGame"                     XPos="410"      YPos="436"      Width="512"     Height="128"    Transparency="true"     Scale="true" />
 <Button     Name="Settings"             Image="Settings"                    XPos="410"      YPos="624"      Width="512"     Height="128"    Transparency="true"     Scale="true" />
 <Button     Name="Quit Game"            Image="QuitGame"                    XPos="410"      YPos="812"      Width="512"     Height="128"    Transparency="true"     Scale="true" />
-<Text       Name="ReadMe"       Text="Please read the readme.html"          XPos="100"      YPos="930"      Width="300"     Height="30"     FontSize="15" />
-<Text       Name="VisitUs"      Text="Visit us at PinkPetal.org"            XPos="1000"     YPos="930"      Width="300"     Height="30"     FontSize="15" />
-<Text       Name="Version"              Text="Version"                      XPos="5"        YPos="5"        Width="160"     Height="30"     FontSize="15" />
+<Text       Name="ReadMe"       Text="Please read the readme.html"          XPos="100"      YPos="930"      Width="300"     Height="300"     FontSize="15" />
+<Text       Name="VisitUs"      Text="Visit us at PinkPetal.org"            XPos="1000"     YPos="930"      Width="300"     Height="300"     FontSize="15" />
+<Text       Name="Version"              Text="Version"                      XPos="5"        YPos="5"        Width="160"     Height="300"     FontSize="15" />
 </Screen>

@@ -1,9 +1,9 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http:  //pinkpetal.org     // old site:   http:  //pinkpetal .co.cc
 *
-* This program is free software: you can redistribute it and/or modify
+* This program is free software:   you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
 * the Free Software Foundation, either version 3 of the License, or
 * (at your option) any later version.
@@ -14,7 +14,7 @@
 * GNU General Public License for more details.
 *
 * You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+* along with this program.  If not, see <http:  //www.gnu.org/licenses/>.
 */
 #include "cScreenPreparingGame.h"
 #include "main.h"
@@ -48,6 +48,7 @@ extern int MarketSlaveGirlsDel[20];
 
 bool cScreenPreparingGame::ids_set = false;
 bool loading = true;
+int load0new1 = 0;
 int prep_step = -1;
 DirPath			location;
 DirPath			thefile;
@@ -59,6 +60,27 @@ stringstream ss2;
 stringstream ss3;
 stringstream ss4;
 stringstream ss5;
+
+enum Load_Step {
+l_freecache = 1,
+l_traits,
+l_items,
+l_names,
+l_gamexml,
+l_girlfiles,
+l_girls,
+l_gangs,
+l_brothels,
+l_clinic,
+l_studio,
+l_arena,
+l_centre,
+l_house,
+l_farm,
+l_finalstuff,
+l_finished
+};
+
 
 cScreenPreparingGame::cScreenPreparingGame()
 {
@@ -81,20 +103,20 @@ void cScreenPreparingGame::set_ids()
 //	counter5_id = get_id("Counter5");
 
 	cancel_id = get_id("BackButton");
-
-	prep_step = -1;
 }
 
 void cScreenPreparingGame::init()
 {
-	if (g_CurrentScreen != SCREEN_PREPARING)
-	{
-		prep_step = -1;
-		loading = true;
-		resetScreen();
-	}
-
 	g_CurrentScreen = SCREEN_PREPARING;
+	if (g_ReturnInt >= 0)
+	{
+		prep_step = 0;
+		loading = true;
+		load0new1 = g_ReturnInt;
+		g_ReturnInt = -1;
+		resetScreen();
+		return;
+	}
 	if (!g_InitWin) return;
 	Focused();
 	g_InitWin = false;
@@ -125,11 +147,72 @@ void cScreenPreparingGame::stringEmUp()
 	EditTextItem(ss4.str(), text4_id);
 	EditTextItem(ss5.str(), text5_id);
 }
+void cScreenPreparingGame::clearall()
+{
+	g_Traits.Free();
+	g_Girls.Free();
+	g_InvManager.Free();
+	g_Brothels.Free();
+	g_Clinic.Free();
+	g_Studios.Free();
+	g_Arena.Free();
+	g_Centre.Free();
+	g_House.Free();
+	g_Farm.Free();
+}
+static string clobber_extension(string s)	// `J` debug logging
+{
+
+	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension:   s = " << s << endl;
+	size_t pos = s.rfind(".");
+	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension:   pos = " << pos << endl;
+	string base = s.substr(0, pos);
+	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension:   s = " << s << endl;
+	if (cfg.debug.log_debug())	g_LogFile.os() << "clobber_extension:   base = " << base << endl;
+	return base;
+}
+static void LoadXMLItems(FileList &fl)
+{
+	map<string, string> lookup;
+	int loglevel = 0;
+
+	if (cfg.debug.log_items())			loglevel++;
+	if (cfg.debug.log_extradetails())	loglevel++;
+
+	g_LogFile.os() << "itemsx files:  " << endl;
+	fl.scan("*.itemsx");
+	for (int i = 0; i < fl.size(); i++)
+	{
+
+		string str = fl[i].full();
+		string key = clobber_extension(str);
+		lookup[key] = str;
+		if (loglevel>0)
+			g_LogFile.os() << "	adding " << str << endl;
+		if (loglevel > 1)
+		{
+			g_LogFile.os() << "	under " << key << endl;
+			g_LogFile.os() << "	result " << lookup[key] << endl;
+		}
+	}
+
+	// Iterate over the map and print out all key/value pairs. kudos:   wikipedia
+	if (loglevel > 0)	g_LogFile.os() << "walking map..." << endl;
+	for (map<string, string>::const_iterator it = lookup.begin(); it != lookup.end(); ++it)
+	{
+		string full_path = it->second;
+		if (loglevel > 1)	g_LogFile.os() << "\tkey = " << it->first << endl;
+		if (loglevel > 1)	g_LogFile.os() << "\tpath = " << full_path << endl;
+		if (loglevel > 0)	g_LogFile.os() << "\t\tLoading xml Item:   " << full_path << endl;
+		g_InvManager.LoadItemsXML(full_path);
+	}
+}
+
 void cScreenPreparingGame::process()
 {
 	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
 	init();						// set up the window if needed
-	if (prep_step > 100) loading = false;	// incase something breaks
+	if (prep_step >(l_finished * 4) + 70) loading = false;	// incase something breaks
 	DisableButton(cancel_id, loading);
 	if (!loading)
 	{
@@ -140,23 +223,54 @@ void cScreenPreparingGame::process()
 			loading = true;
 			g_InitWin = true;
 			g_WinManager.PopToWindow(&g_MainMenu);
-			return;
 		}
 		return;
 	}
-	prep_step++;
-	if (prep_step < 1) { resetScreen(); return; }
-	if (g_ReturnInt == 0)		// load game
+	if (load0new1 == 0)		// load game
 	{
-		if (prep_step == 2)		{ ss1 << "Loading Game: " << g_ReturnText; ss2 << "Freeing Cache.\n"; }
-		if (prep_step == 4)		{ g_Traits.Free(); g_Girls.Free(); g_InvManager.Free(); g_Brothels.Free(); g_Clinic.Free(); g_Studios.Free(); g_Arena.Free(); g_Centre.Free(); g_House.Free(); g_Farm.Free(); }
-		if (prep_step == 6)		{ ss2 << "Load Game Info Files.\n"; }
-		if (prep_step == 8)
-		{ 
-			LoadGameInfoFiles(); 
+		switch (prep_step)
+		{
+		case (l_freecache * 4) - 2:  	{ ss1 << "Loading Game:   " << g_ReturnText; ss2 << "Freeing Cache.\n"; break; }
+		case (l_freecache * 4):		{ clearall(); break; }
+		case (l_traits * 4) - 2:  	{ ss2 << "Loading Traits.\n"; break; }
+		case (l_traits * 4):  
+		{
+			DirPath core = DirPath() << "Resources" << "Data" << "CoreTraits.traitsx";
+			TiXmlDocument docTraits(core.c_str());
+			if (docTraits.LoadFile())	{ g_Traits.LoadXMLTraits(core); }
+			else
+			{
+				DirPath traitdir = DirPath() << "Resources" << "Data";
+				FileList fl_t(traitdir, "*.traitsx");				// get a file list
+				if (fl_t.size() > 0)
+				{
+					for (int i = 0; i < fl_t.size(); i++)				// loop over the list, loading the files
+					{
+						g_Traits.LoadXMLTraits(fl_t[i].full());
+					}
+				}
+			}
+			break;
 		}
-		if (prep_step == 10)	{ ss2 << "Loading the Game XML.\n"; }
-		if (prep_step == 12)
+		case (l_items * 4) - 2:  	{ ss2 << "Loading Items.\n"; break; }
+		case (l_items * 4):  
+		{
+			DirPath location_i = DirPath(cfg.folders.items().c_str());
+			FileList fl_i(location_i, "*.itemsx");
+			if (cfg.debug.log_items())	g_LogFile.os() << "Found " << fl_i.size() << " itemsx files" << endl;
+			LoadXMLItems(fl_i);
+			break;
+		}
+		case (l_names * 4) - 2:  	{ ss2 << "Loading Names.\n"; break; }
+		case (l_names * 4):  
+		{
+			DirPath location_N = DirPath() << "Resources" << "Data" << "RandomGirlNames.txt";		g_GirlNameList.load(location_N);
+			DirPath location_SN = DirPath() << "Resources" << "Data" << "RandomLastNames.txt";		g_SurnameList.load(location_SN);
+			DirPath location_B = DirPath() << "Resources" << "Data" << "RandomBoysNames.txt";		g_BoysNameList.load(location_B);	// `J` Added g_BoysNameList for .06.03.00
+			break;
+		}
+		case (l_gamexml * 4) - 2:  	{ ss2 << "Loading the Game XML.\n"; break; }
+		case (l_gamexml * 4):  
 		{
 			location = DirPath(cfg.folders.saves().c_str());
 			thefile = location.c_str();
@@ -172,34 +286,26 @@ void cScreenPreparingGame::process()
 			string version("<blank>");
 			if (pRoot->Attribute("ExeVersion")) { version = pRoot->Attribute("ExeVersion"); }
 			if (version != "official") { g_MessageQue.AddToQue("Warning, the exe was not detected as official, it was detected as " + version + ".  Attempting to load anyways.", 1); }
-			
+			break;
 		}
-		if (prep_step == 14)	{ ss2 << "Loading Girl Files.\n"; }
-		if (prep_step == 16)
+		case (l_girlfiles * 4) - 2:  { ss2 << "Loading Girl Files.\n"; break; }
+		case (l_girlfiles * 4):  
 		{
 			loadedGirlsFiles.LoadXML(hRoot.FirstChild("Loaded_Files"));
 			LoadGirlsFiles();
+			break;
 		}
-		if (prep_step == 18)	{ ss2 << "Loading Girls.\n"; }
-		if (prep_step == 20)	{ g_Girls.LoadGirlsXML(hRoot.FirstChildElement("Girls")); }
-		if (prep_step == 22)	{ ss2 << "Loading Gangs.\n"; }
-		if (prep_step == 24)	{ g_Gangs.LoadGangsXML(hRoot.FirstChildElement("Gang_Manager")); }
-		if (prep_step == 26)	{ ss2 << "Loading Brothels.\n"; }
-		if (prep_step == 28)	{ g_Brothels.LoadDataXML(hRoot.FirstChildElement("Brothel_Manager")); }
-		if (prep_step == 30)	{ ss2 << "Loading Clinic.\n"; }
-		if (prep_step == 32)	{ g_Clinic.LoadDataXML(hRoot.FirstChildElement("Clinic_Manager")); }
-		if (prep_step == 34)	{ ss2 << "Loading Studio.\n"; }
-		if (prep_step == 36)	{ g_Studios.LoadDataXML(hRoot.FirstChildElement("MovieStudio_Manager")); }
-		if (prep_step == 38)	{ ss2 << "Loading Arena.\n"; }
-		if (prep_step == 40)	{ g_Arena.LoadDataXML(hRoot.FirstChildElement("Arena_Manager")); }
-		if (prep_step == 42)	{ ss2 << "Loading Centre.\n"; }
-		if (prep_step == 44)	{ g_Centre.LoadDataXML(hRoot.FirstChildElement("Centre_Manager")); }
-		if (prep_step == 46)	{ ss2 << "Loading House.\n"; }
-		if (prep_step == 48)	{ g_House.LoadDataXML(hRoot.FirstChildElement("House_Manager")); }
-		if (prep_step == 50)	{ ss2 << "Loading Farm.\n"; } 
-		if (prep_step == 52)	{ g_Farm.LoadDataXML(hRoot.FirstChildElement("Farm_Manager")); }
-		if (prep_step == 54)	{ ss2 << "Loading Final Stuff.\n"; }
-		if (prep_step == 56)
+		case (l_girls * 4) - 2:			{ ss2 << "Loading Girls.\n"; break; }		case (l_girls * 4):		{ g_Girls.LoadGirlsXML(hRoot.FirstChildElement("Girls")); break; }
+		case (l_gangs * 4) - 2:			{ ss2 << "Loading Gangs.\n"; break; }		case (l_gangs * 4):		{ g_Gangs.LoadGangsXML(hRoot.FirstChildElement("Gang_Manager")); break; }
+		case (l_brothels * 4) - 2:		{ ss2 << "Loading Brothels.\n"; break; }	case (l_brothels * 4):	{ g_Brothels.LoadDataXML(hRoot.FirstChildElement("Brothel_Manager")); break; }
+		case (l_clinic * 4) - 2:		{ ss2 << "Loading Clinic.\n"; break; }		case (l_clinic * 4):	{ g_Clinic.LoadDataXML(hRoot.FirstChildElement("Clinic_Manager")); break; }
+		case (l_studio * 4) - 2:		{ ss2 << "Loading Studio.\n"; break; }		case (l_studio * 4):	{ g_Studios.LoadDataXML(hRoot.FirstChildElement("MovieStudio_Manager")); break; }
+		case (l_arena * 4) - 2:			{ ss2 << "Loading Arena.\n"; break; }		case (l_arena * 4):		{ g_Arena.LoadDataXML(hRoot.FirstChildElement("Arena_Manager")); break; }
+		case (l_centre * 4) - 2:		{ ss2 << "Loading Centre.\n"; break; }		case (l_centre * 4):	{ g_Centre.LoadDataXML(hRoot.FirstChildElement("Centre_Manager")); break; }
+		case (l_house * 4) - 2:			{ ss2 << "Loading House.\n"; break; }		case (l_house * 4):		{ g_House.LoadDataXML(hRoot.FirstChildElement("House_Manager")); break; }
+		case (l_farm * 4) - 2:			{ ss2 << "Loading Farm.\n"; break; }		case (l_farm * 4):  	{ g_Farm.LoadDataXML(hRoot.FirstChildElement("Farm_Manager")); break; }
+		case (l_finalstuff * 4) - 2:	{ ss2 << "Loading Final Stuff.\n"; break; }
+		case (l_finalstuff * 4):  
 		{
 			g_CurrBrothel = 0;
 			g_WalkAround = false;	pRoot->QueryValueAttribute<bool>("WalkAround", &g_WalkAround);
@@ -217,14 +323,15 @@ void cScreenPreparingGame::process()
 			g_GlobalTriggers.LoadTriggersXML(hRoot.FirstChildElement("Triggers"));
 			selected_girl = 0;
 			for (int i = 0; i < 20; i++)
-			{ 
+			{
 				MarketSlaveGirls[i] = 0;
 				MarketSlaveGirlsDel[i] = -1;
 			}
 			g_InvManager.UpdateShop();
+			break;
 		}
-		if (prep_step == 62)	{ ss2 << "Finished Loading.\n"; }
-		if (prep_step == 99)
+		case (l_finished * 4) - 2:  	{ ss2 << "Finished Loading.\n"; break; }
+		case (l_finished * 4) + 40:  
 		{
 
 			loading = false;
@@ -233,6 +340,10 @@ void cScreenPreparingGame::process()
 			g_InitWin = true;
 			prep_step = -1;
 			return;
+			break;
+		}
+		default:  
+			break;
 		}
 		stringEmUp();
 	}
@@ -240,8 +351,10 @@ void cScreenPreparingGame::process()
 	{
 		if (true)				// run the old new game
 		{
+			loading = true;
+			clearall();
 			stringstream ss;
-			ss << "Starting New Game: " << g_ReturnText;
+			ss << "Starting New Game:   " << g_ReturnText;
 			EditTextItem(ss.str(), text1_id);
 
 			if (prep_step == 4)	NewGame();
@@ -252,5 +365,6 @@ void cScreenPreparingGame::process()
 
 		}
 	}
+	prep_step++;
 }
 

@@ -18,11 +18,11 @@ Fixed a bug where the game would try running the job for runaways
 Removers a few "\t"s that render as squares in a few places
 
 Added new commands to scripts:
-- "Script_EndIfNew",		added to fix a problem in the old script editor not shifting lines to the right for the newer If statements
-- "Script_IfGirlStatus",
-- "Script_SetGirlStatus",
-- "Script_EndPregnancy",
-- "Script_CreatePregnancy"
+- Script_EndIfNew,		added to fix a problem in the old script editor not shifting lines to the right for the newer If statements
+- Script_IfGirlStatus,
+- Script_SetGirlStatus,
+- Script_EndPregnancy,
+- Script_CreatePregnancy
 
 Started remaking the loading screen.
 
@@ -39,7 +39,48 @@ Started rewriting Objectives (not active yet)
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.01
 
+### Changes 12/04-10/2017
+Updated settings.xml in J_1024x768 interface
+Updated loading screen more
+- Fixed a bug in new game if starting a new game after quitting out of old game. (loading not setting to true on new game)
+- changed the load list from if statements to a switch set
+- split the loading info files into traits, items and names
+Removed legacy file types: .traits, .items
+Removed legacy interface files: GetString.txt, InterfaceColors.txt, LoadMenu.txt and ScreenMode.txt
+Changes by grishnak:
+- changed girl in dungeon image from profile to jail
+- Changed torturer in dungeon image from profile to dom
+- IMGTYPE_ESCORT,		// clothed with a client, should replace formal in escort job, because i used formal as clothed single profile
+- IMGTYPE_SPORT,		// for the free time job, doing sports
+- IMGTYPE_STUDY,		// reading a book or looking clever
+- IMGTYPE_TEACHER,		// dressed or acting as a teacher
+- Added in 2 new traits: Clipped Tendons and No Tongue
 
+Started updating transfer screen
+- moved the transfer screen to its own file
+- (It took a while to work out all the bugs so I didn't update anything yet, just transfered it. Updates will have to wait for the next version.)
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.01
+
+
+
+
+
+
+
+$$$$ Changes by grishnak - not yet added in
+
+FETISH_OBEDIENCE,					// likes broken in obedient girls
+FETISH_REBELLIOUS,					// likes rebellious nonconsensual girls
+FETISH_DEGRADATION,					// likes degraded humiliated girls
+FETISH_MUTILATION,					// likes mutilated girls
+FETISH_BONDAGE,						// likes restrained helpless girls
+FETISH_UNIFORM,						// likes girls in uniform
+
+
+$$$$ Changes by grishnak - too large of a change to add in now
+Image varients (like preg): slave, livestock, pet
 
 
 

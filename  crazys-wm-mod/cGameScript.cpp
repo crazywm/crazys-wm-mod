@@ -197,8 +197,10 @@ sScript *cGameScript::Process(sScript *Script)
 	case 122:	return Script_VirginGroupTarget(Script);				// `J` new .06.03.01 for DarkArk
 	case 123:	return Script_VirginBDSMTarget(Script);					// `J` new .06.03.01 for DarkArk
 	case 124:	return Script_VirginBeastTarget(Script);				// `J` new .06.03.01 for DarkArk
-
-
+	case 125:	return Script_EscortTarget(Script);						// `J` new .06.03.02 for grishnak
+	case 126:	return Script_SportTarget(Script);						// `J` new .06.03.02 for grishnak
+	case 127:	return Script_StudyTarget(Script);						// `J` new .06.03.02 for grishnak
+	case 128:	return Script_TeacherTarget(Script);					// `J` new .06.03.02 for grishnak
 
 	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cGameScript.h
 	// `J` When modifying Image types, search for "J-Change-Image-Types"  :  found in >> cGameScript.h
@@ -2329,6 +2331,30 @@ sScript* cGameScript::Script_VirginBeastTarget(sScript* Script)
 {
 	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);
 	g_GirlDetails.lastsexact = IMPTYPE_VIRGINBEAST;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_EscortTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, STAT_CHARISMA, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_ESCORT;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_SportTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, STAT_CONSTITUTION, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_SPORT;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_StudyTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, STAT_INTELLIGENCE, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_STUDY;
+	return Script->m_Next;
+}
+sScript* cGameScript::Script_TeacherTarget(sScript* Script)
+{
+	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	g_GirlDetails.lastsexact = IMGTYPE_TEACHER;
 	return Script->m_Next;
 }
 

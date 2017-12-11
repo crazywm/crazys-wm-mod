@@ -70,6 +70,7 @@
 #include "sConfig.h"
 #include "XmlUtil.h"
 #include "cScreenTurnSummary.h"
+#include "cScreenTransfer.h"
 
 using namespace std;
 
@@ -116,12 +117,13 @@ cScreenPrison g_PrisonScreen;
 cBuildingManagement g_BuildingManagementScreen;
 cScreenPropertyManagement g_PropertyManagementScreen;	// `J` added
 cScreenTurnSummary g_TurnSummary;
+cScreenTransfer g_TransferScreen;	// `J` added for .06.03.02
 
 cScreenGetInput g_GetInput;
 
-cInterfaceWindow g_GetString;		// GetString.txt
-cInterfaceWindow g_LoadGame;		// LoadMenu.txt
-cInterfaceWindow g_TransferGirls;	// Hard coded
+cInterfaceWindow g_GetString;		// GetString.xml
+cInterfaceWindow g_LoadGame;		// LoadMenu.xml
+//cInterfaceWindow g_TransferGirls;	// Hard coded
 //cInterfaceWindow g_Gallery;			// Hard coded
 //cInterfaceWindow g_Gallery2;		// Hard coded
 cInterfaceWindow g_ChangeJobs;		// Hard coded
@@ -222,7 +224,8 @@ void FreeInterface()
 	g_LoadGame.Free();
 	g_Settings.Free();
 	g_PlayersHouse.Free();
-	g_TransferGirls.Free();
+//	g_TransferGirls.Free();
+	g_TransferScreen.Free();
 	g_ItemManagement.Free();
 	g_PrisonScreen.Free();
 	g_MovieMaker.Free();
@@ -270,7 +273,8 @@ void ResetInterface()
 	g_LoadGame.Reset();
 	g_Settings.Reset();
 	g_PlayersHouse.Reset();
-	g_TransferGirls.Reset();
+//	g_TransferGirls.Reset();
+	g_TransferScreen.Reset();
 	g_ItemManagement.Reset();
 	g_PrisonScreen.Reset();
 	g_MovieMaker.Reset();
@@ -294,20 +298,7 @@ void LoadInterface()
 	int loadcolors = 0;		// 0=default, 1=xml, 2=txt
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.xml";
 	TiXmlDocument docInterfaceColors(dp.c_str());
-	if (docInterfaceColors.LoadFile())	loadcolors = 1;
-	else // try txt
-	{
-		if (cfg.debug.log_debug())
-		{
-			g_LogFile.ss() << "Error: line " << docInterfaceColors.ErrorRow() << ", col " << docInterfaceColors.ErrorCol() << ": " << docInterfaceColors.ErrorDesc() << endl;
-			g_LogFile.ssend();
-		}
-		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.txt";
-		incol.open(dp.c_str());
-		loadcolors = (incol.good()) ? 2 : 0;
-		incol.close();
-	}
-	if (loadcolors == 1)	// load "InterfaceColors.xml"
+	if (docInterfaceColors.LoadFile())
 	{
 		g_LogFile.write("Loading InterfaceColors.xml");
 		string m_filename = dp.c_str();
@@ -364,49 +355,6 @@ void LoadInterface()
 			}
 		}
 	}
-	else if (loadcolors==2)
-	{
-		g_LogFile.write("Loading InterfaceColors.txt");
-		incol.open(dp.c_str());
-		incol.seekg(0);
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_StaticImageR = r;                g_StaticImageG = g;                g_StaticImageB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ChoiceMessageTextR = r;          g_ChoiceMessageTextG = g;          g_ChoiceMessageTextB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ChoiceMessageBorderR = r;        g_ChoiceMessageBorderG = g;        g_ChoiceMessageBorderB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ChoiceMessageBackgroundR = r;    g_ChoiceMessageBackgroundG = g;    g_ChoiceMessageBackgroundB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ChoiceMessageSelectedR = r;      g_ChoiceMessageSelectedG = g;      g_ChoiceMessageSelectedB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_EditBoxBorderR = r;              g_EditBoxBorderG = g;              g_EditBoxBorderB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_EditBoxBackgroundR = r;          g_EditBoxBackgroundG = g;          g_EditBoxBackgroundB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_EditBoxSelectedR = r;            g_EditBoxSelectedG = g;            g_EditBoxSelectedB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_EditBoxTextR = r;                g_EditBoxTextG = g;                g_EditBoxTextB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_WindowBorderR = r;               g_WindowBorderG = g;               g_WindowBorderB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_WindowBackgroundR = r;           g_WindowBackgroundG = g;           g_WindowBackgroundB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxBorderR = r;              g_ListBoxBorderG = g;              g_ListBoxBorderB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxBackgroundR = r;          g_ListBoxBackgroundG = g;          g_ListBoxBackgroundB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxElementBackgroundR = r;   g_ListBoxElementBackgroundG = g;   g_ListBoxElementBackgroundB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxS1ElementBackgroundR = r; g_ListBoxS1ElementBackgroundG = g; g_ListBoxS1ElementBackgroundB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxS2ElementBackgroundR = r; g_ListBoxS2ElementBackgroundG = g; g_ListBoxS2ElementBackgroundB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxS3ElementBackgroundR = r; g_ListBoxS3ElementBackgroundG = g; g_ListBoxS3ElementBackgroundB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxSelectedElementR = r;     g_ListBoxSelectedElementG = g;     g_ListBoxSelectedElementB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxSelectedS1ElementR = r;   g_ListBoxSelectedS1ElementG = g;   g_ListBoxSelectedS1ElementB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxSelectedS2ElementR = r;   g_ListBoxSelectedS2ElementG = g;   g_ListBoxSelectedS2ElementB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxSelectedS3ElementR = r;   g_ListBoxSelectedS3ElementG = g;   g_ListBoxSelectedS3ElementB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxElementBorderR = r;       g_ListBoxElementBorderG = g;       g_ListBoxElementBorderB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxElementBorderHR = r;      g_ListBoxElementBorderHG = g;      g_ListBoxElementBorderHB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxTextR = r;                g_ListBoxTextG = g;                g_ListBoxTextB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxHeaderBackgroundR = r;    g_ListBoxHeaderBackgroundG = g;    g_ListBoxHeaderBackgroundB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxHeaderBorderR = r;        g_ListBoxHeaderBorderG = g;        g_ListBoxHeaderBorderB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxHeaderBorderHR = r;       g_ListBoxHeaderBorderHG = g;       g_ListBoxHeaderBorderHB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_ListBoxHeaderTextR = r;          g_ListBoxHeaderTextG = g;          g_ListBoxHeaderTextB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBorderR = r;           g_MessageBoxBorderG = g;           g_MessageBoxBorderB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBackground0R = r;      g_MessageBoxBackground0G = g;      g_MessageBoxBackground0B = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBackground1R = r;      g_MessageBoxBackground1G = g;      g_MessageBoxBackground1B = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBackground2R = r;      g_MessageBoxBackground2G = g;      g_MessageBoxBackground2B = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxBackground3R = r;      g_MessageBoxBackground3G = g;      g_MessageBoxBackground3B = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_MessageBoxTextR = r;             g_MessageBoxTextG = g;             g_MessageBoxTextB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_CheckBoxBorderR = r;             g_CheckBoxBorderG = g;             g_CheckBoxBorderB = b;
-		incol >> r >> g >> b; incol.ignore(1000, '\n'); g_CheckBoxBackgroundR = r;         g_CheckBoxBackgroundG = g;         g_CheckBoxBackgroundB = b;
-		incol.close();
-	}
 	else
 	{
 		g_LogFile.write("Loading Default InterfaceColors");
@@ -454,23 +402,9 @@ void LoadInterface()
 
 
 	// Load game screen
-	int loadmenu = 0;		// 0=default, 1=xml, 2=txt
 	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "LoadMenu.xml";
 	TiXmlDocument docLoadMenu(dp.c_str());
-	if (docLoadMenu.LoadFile())	loadmenu = 1;
-	else // try txt
-	{
-		if (cfg.debug.log_debug())
-		{
-			g_LogFile.ss() << "Error: line " << docLoadMenu.ErrorRow() << ", col " << docLoadMenu.ErrorCol() << ": " << docLoadMenu.ErrorDesc() << endl;
-			g_LogFile.ssend();
-		}
-		dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "LoadMenu.txt";
-		incol.open(dp.c_str());
-		loadmenu = (incol.good()) ? 2 : loadmenu = 0;
-		incol.close();
-	}
-	if (loadmenu == 1)
+	if (docLoadMenu.LoadFile())
 	{
 		g_LogFile.write("Loading LoadMenu.xml");
 		string m_filename = dp.c_str();
@@ -498,23 +432,6 @@ void LoadInterface()
 			}
 		}
 	}
-	else if (loadmenu == 2)
-	{
-		g_LogFile.write("Loading LoadMenu.txt");
-		dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "LoadMenu.txt";
-		incol.open(dp.c_str());
-		incol.seekg(0);
-		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
-		g_LoadGame.CreateWindow(a, b, c, d, e);
-		g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, d - 10, c, 12, "Please read the readme.html", 10);
-		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
-		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, a, b, c, d, e, true, false, false, true, true, fontsize, rowheight);
-		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
-		g_LoadGame.AddButton("Load", g_interfaceid.BUTTON_LOADGLOAD, a, b, c, d, true);
-		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
-		g_LoadGame.AddButton("Back", g_interfaceid.BUTTON_LOADGBACK, a, b, c, d, true);
-		incol.close();
-	}
 	else
 	{
 		g_LogFile.write("Loading Default LoadMenu");
@@ -529,23 +446,9 @@ void LoadInterface()
 
 
 	// Load GetString screen
-	int GetString = 0;		// 0=default, 1=xml, 2=txt
 	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "GetString.xml";
 	TiXmlDocument docGetString(dp.c_str());
-	if (docGetString.LoadFile())	GetString = 1;
-	else // try txt
-	{
-		if (cfg.debug.log_debug())
-		{
-			g_LogFile.ss() << "Error: line " << docGetString.ErrorRow() << ", col " << docGetString.ErrorCol() << ": " << docGetString.ErrorDesc() << endl;
-			g_LogFile.ssend();
-		}
-		dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "GetString.txt";
-		incol.open(dp.c_str());
-		GetString = (incol.good()) ? 2 : GetString = 0;
-		incol.close();
-	}
-	if (GetString == 1)
+	if (docGetString.LoadFile())
 	{
 		g_LogFile.write("Loading GetString.xml");
 		string m_filename = dp.c_str();
@@ -569,24 +472,6 @@ void LoadInterface()
 			if (name == "TextField")	g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, x, y, w, h, e, fontsize);
 		}
 	}
-	else if (GetString == 2)
-	{
-		g_LogFile.write("Loading GetString.txt");
-		dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "GetString.txt";
-		incol.open(dp.c_str());
-		incol.seekg(0);
-		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
-		g_GetString.CreateWindow(a, b, c, d, e);
-		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
-		g_GetString.AddButton("Ok", g_interfaceid.BUTTON_OK, a, b, c, d, true);
-		incol >> a >> b >> c >> d; incol.ignore(1000, '\n');
-		g_GetString.AddButton("Cancel", g_interfaceid.BUTTON_CANCEL, a, b, c, d, true);
-		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
-		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, a, b, c, d, "Enter Text:", e);
-		incol >> a >> b >> c >> d >> e; incol.ignore(1000, '\n');
-		g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, a, b, c, d, e, fontsize);
-		incol.close();
-	}
 	else
 	{
 		g_LogFile.write("Loading Default GetString");
@@ -609,56 +494,6 @@ void LoadInterface()
 	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJNIGHTTIME, 152, 48, 144, 192, 1, true, false, false, true, true, fontsize, rowheight);
 	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 128, 32, "Day Shift");
 	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 152, 8, 128, 32, "Night Shift");
-
-
-	// Load TransferGirls screen
-	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "TransferGirls.xml";
-	TiXmlDocument docTransferGirls(dp.c_str());
-	if (docTransferGirls.LoadFile())
-	{
-		g_LogFile.write("Loading TransferGirls.xml");
-		string m_filename = dp.c_str();
-		TiXmlElement *el, *root_el = docTransferGirls.RootElement();
-
-		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
-		{
-			XmlUtil xu(m_filename);	string name = "";
-			xu.get_att(el, "Name", name);
-			xu.get_att(el, "XPos", a); xu.get_att(el, "YPos", b); xu.get_att(el, "Width", c); xu.get_att(el, "Height", d); xu.get_att(el, "Border", e, true);
-			xu.get_att(el, "Image", image, true); xu.get_att(el, "File", file, true);
-			xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
-			xu.get_att(el, "Text", text, true);
-			xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 10;
-			xu.get_att(el, "RowHeight", rowheight); if (rowheight == 0) rowheight = 20;
-
-			if (name == "Transfer Girls")	g_TransferGirls.CreateWindow(a, b, c, d, e);
-			if (name == "Back")				g_TransferGirls.AddButton(image, g_interfaceid.BUTTON_TRANSGBACK, a, b, c, d, Transparency, Scale);
-			if (name == "ShiftLeft")		g_TransferGirls.AddButton(image, g_interfaceid.BUTTON_TRANSGSHIFTL, a, b, c, d, Transparency, Scale);
-			if (name == "ShiftRight")		g_TransferGirls.AddButton(image, g_interfaceid.BUTTON_TRANSGSHIFTR, a, b, c, d, Transparency, Scale);
-			if (name == "ListLeft")			g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, a, b, c, d, e, true, true, false, true, true, fontsize, rowheight);
-			if (name == "ListRight")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, a, b, c, d, e, true, true, false, true, true, fontsize, rowheight);
-			if (name == "BrothelLeft")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, a, b, c, d, e, true, false, false, true, true, fontsize, rowheight);
-			if (name == "BrothelRight")		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, a, b, c, d, e, true, false, false, true, true, fontsize, rowheight);
-			if (name == "LabelLeft")		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
-			if (name == "LabelRight")		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, a, b, c, d, text, fontsize);
-		}
-	}
-	else // because there never was a TransferGirls.txt, just do defaults if there is no xml
-	{
-		g_LogFile.write("Loading Default TransferGirls");
-
-		g_TransferGirls.CreateWindow(16, 16, 768, 576, 1);
-		g_TransferGirls.AddButton("Back", g_interfaceid.BUTTON_TRANSGBACK, 308, 536, 160, 32, true);
-		g_TransferGirls.AddButton("ShiftLeft", g_interfaceid.BUTTON_TRANSGSHIFTL, 366, 214, 48, 48, true);
-		g_TransferGirls.AddButton("ShiftRight", g_interfaceid.BUTTON_TRANSGSHIFTR, 366, 304, 48, 48, true);
-		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTGIRLS, 168, 48, 190, 482, 1, true, true, false, true, true, fontsize, rowheight);
-		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTGIRLS, 418, 48, 190, 482, 1, true, true, false, true, true, fontsize, rowheight);
-		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGLEFTBROTHEL, 8, 48, 126, 234, 1, true, false, false, true, true, fontsize, rowheight);
-		g_TransferGirls.AddListBox(g_interfaceid.LIST_TRANSGRIGHTBROTHEL, 632, 48, 126, 234, 1, true, false, false, true, true, fontsize, rowheight);
-		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 160, 32, "BROTHELS");
-		g_TransferGirls.AddTextItem(g_interfaceid.STATIC_STATIC, 632, 8, 160, 32, "BROTHELS");
-	}
-
 
 
 	g_LogFile.write("Loading Preparing Game Screen");
@@ -741,10 +576,15 @@ void LoadInterface()
 	g_GangManagement.load();
 	g_WinManager.add_window("Gangs", &g_GangManagement);
 
-	// Gang Management
+	// Transfer Screen
+	g_LogFile.write("Loading Transfer Screen");
+	g_TransferScreen.load();
+	g_WinManager.add_window("Transfer Screen", &g_TransferScreen);
+
+	// Turn Summary Management
 	g_LogFile.write("Loading Turn Summary Screen");
 	g_TurnSummary.load();
-	g_WinManager.add_window("TurnSummary", &g_TurnSummary);
+	g_WinManager.add_window("Turn Summary", &g_TurnSummary);
 
 	// Dungeon Screen
 	g_LogFile.write("Loading Dungeon Screen");

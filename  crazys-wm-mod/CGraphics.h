@@ -30,7 +30,7 @@ public:
 	CGraphics();
 	~CGraphics();
 
-	bool InitGraphics(string caption, int Width, int Height, int BPP);
+	bool InitGraphics(string caption, int Width = 0, int Height = 0, int BPP = 32);
 	void Free();
 	bool End();		// End Drawing Stuff
 	void Begin();	// begins drawing stuff

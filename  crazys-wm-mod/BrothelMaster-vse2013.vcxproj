@@ -132,6 +132,7 @@
     <ClCompile Include="cScreenPreparingGame.cpp" />
     <ClCompile Include="cScreenPropertyManagement.cpp" />
     <ClCompile Include="cScreenSettings.cpp" />
+    <ClCompile Include="cScreenTransfer.cpp" />
     <ClCompile Include="cScreenTurnSummary.cpp" />
     <ClCompile Include="cScrollBar.cpp" />
     <ClCompile Include="cSlider.cpp" />
@@ -398,6 +399,7 @@
     <ClInclude Include="cScreenPreparingGame.h" />
     <ClInclude Include="cScreenPropertyManagement.h" />
     <ClInclude Include="cScreenSettings.h" />
+    <ClInclude Include="cScreenTransfer.h" />
     <ClInclude Include="cScreenTurnSummary.h" />
     <ClInclude Include="cScrollBar.h" />
     <ClInclude Include="cSlider.h" />
@@ -526,9 +528,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="EXE_icon.res" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="ScreenMode.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="msvcp120d.dll" />

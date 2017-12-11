@@ -15,5 +15,5 @@
 <Button     Name="Prev"                 Image="Prev"                        XPos="815"      YPos="600"      Width="72"      Height="32"     Transparency="true"     Scale="true"     />
 <Button     Name="Next"                 Image="Next"                        XPos="903"      YPos="600"      Width="72"      Height="32"     Transparency="true"     Scale="true"     />
 <Button     Name="GoTo"                 Image="GoTo"                        XPos="815"      YPos="650"      Width="160"     Height="32"     Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
+<Button     Name="Back"                 Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
 </Screen>

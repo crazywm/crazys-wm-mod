@@ -55,7 +55,7 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	int wages = 20, tips = 0;
 	int enjoy = 0;
-	int imagetype = IMGTYPE_FARM;
+	int imagetype = IMGTYPE_HERD;
 	int msgtype = Day0Night1;
 
 #pragma endregion

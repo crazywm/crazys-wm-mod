@@ -27,7 +27,6 @@ extern void NewGame();
 extern void LoadGameScreen();
 extern void LoadSettingsScreen();
 extern void GetString();
-extern void PreparingLoad();
 extern string g_ReturnText;
 extern int g_ReturnInt;
 extern cWindowManager g_WinManager;

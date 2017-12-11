@@ -652,7 +652,7 @@ void cDungeon::Update()
 			msg.str(""); ss.str("");
 			msg << girlName << " is languishing in the dungeon.\n \n";
 			int msgtype = EVENT_DUNGEON;
-			int imgtype = IMGTYPE_PROFILE;
+			int imgtype = IMGTYPE_JAIL;
 			int	nHealth = girl->health();
 			int	nTired = girl->tiredness();
 
@@ -702,7 +702,7 @@ void cDungeon::Update()
 		{
 			msg.str("");
 			msg << TorturerGirlref->m_Realname << " has tortured " << m_NumGirlsTort << " girls in the Dungeon.";
-			TorturerGirlref->m_Events.AddMessage(msg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+			TorturerGirlref->m_Events.AddMessage(msg.str(), IMGTYPE_DOM, EVENT_DUNGEON);
 
 		}
 	}

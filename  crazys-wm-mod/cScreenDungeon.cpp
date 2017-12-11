@@ -744,7 +744,7 @@ void cScreenDungeon::update_image()
 	}
 	else if ((selected_girl) && !IsMultiSelected(girllist_id))
 	{
-		PrepareImage(girlimage_id, selected_girl, selected_girl->m_Tort ? IMGTYPE_TORTURE : IMGTYPE_PROFILE, true, ImageNum);
+		PrepareImage(girlimage_id, selected_girl, selected_girl->m_Tort ? IMGTYPE_TORTURE : IMGTYPE_JAIL, true, ImageNum);
 		HideImage(girlimage_id, false);
 	}
 	else

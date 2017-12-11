@@ -3,7 +3,7 @@
 <Text       Name="DungeonHeader"        Text="Dungeon Screen"               XPos="10"       YPos="2"        Width="500"     Height="32"     FontSize="24"  />
 <Text       Name="Gold"                 Text="Player Gold: 0"               XPos="550"      YPos="2"        Width="250"     Height="32"     FontSize="24"  />
 <Image      Name="GirlImage"            File="blank.png"                    XPos="800"      YPos="10"       Width="190"     Height="190"     />
-<Button     Name="ViewDetailsButton"    Image="ViewDetails"                 XPos="815"      YPos="205"      Width="160"     Height="32"     Transparency="true" Scale="true"  />
+<Button     Name="DetailsButton"        Image="ViewDetails"                 XPos="815"      YPos="205"      Width="160"     Height="32"     Transparency="true" Scale="true"  />
 
 <Button     Name="StopFeedingButton"    Image="NoFeed"                      XPos="815"      YPos="300"      Width="120"     Height="24" Transparency="true" Scale="true"  />
 <Button     Name="AllowFoodButton"      Image="Feed"                        XPos="855"      YPos="330"      Width="120"     Height="24" Transparency="true" Scale="true"  />

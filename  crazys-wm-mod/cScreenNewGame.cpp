@@ -21,8 +21,6 @@
 #include "cWindowManager.h"
 #include "cBrothel.h"
 
-extern void PreparingNew();
-
 extern cWindowManager g_WinManager;
 extern cBrothelManager  g_Brothels;
 extern bool g_InitWin;

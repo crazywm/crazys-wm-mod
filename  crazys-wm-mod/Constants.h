@@ -731,6 +731,10 @@ enum Image_Types{
 	IMPTYPE_VIRGINGROUP,				// `J` new .06.03.01 for DarkArk
 	IMPTYPE_VIRGINBDSM,					// `J` new .06.03.01 for DarkArk
 	IMPTYPE_VIRGINBEAST,				// `J` new .06.03.01 for DarkArk
+	IMGTYPE_ESCORT,						// `J` new .06.03.02 for grishnak - clothed with a client
+	IMGTYPE_SPORT,						// `J` new .06.03.02 for grishnak - for the free time job, doing sports
+	IMGTYPE_STUDY,						// `J` new .06.03.02 for grishnak - reading a book or looking clever
+	IMGTYPE_TEACHER,					// `J` new .06.03.02 for grishnak - dressed or acting as a teacher
 
 	/*
 IMGTYPE_WATER			- "water*."			- "Watersports"		- watersports
@@ -817,6 +821,10 @@ IMGTYPE_PETLICK			- "petlick*."		- "PetLick"			- lick, oral, petprofile, bdsm, n
 	IMPTYPE_PREGVIRGINGROUP,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	IMPTYPE_PREGVIRGINBDSM,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	IMPTYPE_PREGVIRGINBEAST,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGESCORT,					// `J` new .06.03.02 for grishnak - clothed with a client
+	IMGTYPE_PREGSPORT,					// `J` new .06.03.02 for grishnak - for the free time job, doing sports
+	IMGTYPE_PREGSTUDY,					// `J` new .06.03.02 for grishnak - reading a book or looking clever
+	IMGTYPE_PREGTEACHER,				// `J` new .06.03.02 for grishnak - dressed or acting as a teacher
 
 	NUM_IMGTYPES	// `J` All image types can have a pregnant variation (except pregnant-pregnant)
 };

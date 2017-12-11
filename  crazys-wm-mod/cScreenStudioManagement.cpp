@@ -364,7 +364,7 @@ void cScreenStudioManagement::check_events()
 	if (g_InterfaceEvents.CheckButton(transfer_id))
 	{
 		g_InitWin = true;
-		g_WinManager.Push(TransferGirls, &g_TransferGirls);
+		g_WinManager.push("Transfer Screen");
 		return;
 	}
 	/* */if (g_InterfaceEvents.CheckButton(firegirl_id))	FFSD_Flag = FFSD_fire;

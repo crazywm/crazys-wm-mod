@@ -519,3 +519,7 @@ BOOL
 "Have Virgin Group"
 "Have Virgin Bondage"
 "Have Virgin Beast"
+"Have Escort"
+"Have Sport"
+"Have Study"
+"Have Teacher"

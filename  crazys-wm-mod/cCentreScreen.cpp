@@ -133,7 +133,7 @@ void cCentreScreen::process()
 	else if (g_InterfaceEvents.CheckButton(turns_id))
 	{
 		g_InitWin = true;
-		g_WinManager.push("TurnSummary");
+		g_WinManager.push("Turn Summary");
 		return;
 	}
 	else if (g_InterfaceEvents.CheckButton(setup_id))
@@ -154,7 +154,7 @@ void cCentreScreen::process()
 		g_InitWin = true;
 		if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
 		NextWeek();
-		g_WinManager.push("TurnSummary");
+		g_WinManager.push("Turn Summary");
 		return;
 	}
 	else if (g_InterfaceEvents.CheckButton(nextbrothel_id))

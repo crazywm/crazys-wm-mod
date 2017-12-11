@@ -5279,6 +5279,25 @@ bool cBrothelManager::FightsBack(sGirl* girl)
 	if (girl->has_trait("Nervous"))/*                    */	chance -= 5;
 	if (girl->has_trait("Retarded"))/*                   */	chance -= 10;
 	if (girl->has_trait("Shy"))/*                        */	chance -= 10;
+	if (girl->has_trait("One Eye"))/*                    */	chance -= 1;
+	if (girl->has_trait("No Hands"))/*                   */	chance -= 8;
+	if (girl->has_trait("One Arm"))/*                    */	chance -= 3;
+	if (girl->has_trait("No Arms"))/*                    */	chance -= 10;
+	if (girl->has_trait("One Foot"))/*                   */	chance -= 3;
+	if (girl->has_trait("No Feet"))/*                    */	chance -= 6;
+	if (girl->has_trait("One Leg"))/*                    */	chance -= 4;
+	if (girl->has_trait("No Legs"))/*                    */	chance -= 10;
+	if (girl->has_trait("Clipped Tendons"))/*            */	chance -= 8;
+
+
+
+
+
+
+
+
+
+
 
 	if (g_Dice.percent(chance))		return true;
 
