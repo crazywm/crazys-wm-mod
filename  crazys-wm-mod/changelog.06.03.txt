@@ -61,9 +61,16 @@ Started updating transfer screen
 - (It took a while to work out all the bugs so I didn't update anything yet, just transfered it. Updates will have to wait for the next version.)
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
-!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.01
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.02
 
+Fixed a couple of bugs in gallery
+Found and fixed a bug in the studio if the interface does not have day job column
+Cleaned and updated the transfer code a bit
+- When you go to the transfer screen, it now starts the left column where you came from.
+- number keys 1-7 switch between the brothels (have not gotten the other buildings yet, not sure if I will/can)
 
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.03
 
 
 

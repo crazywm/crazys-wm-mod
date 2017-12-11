@@ -156,6 +156,13 @@ void cScreenTransfer::set_ids()
 	shiftright_id	= get_id("ShiftRight");
 	shiftleft_id	= get_id("ShiftLeft");
 	back_id			= get_id("Back");
+
+
+	//Set the default sort order for columns, so listbox knows the order in which data will be sent
+	SortColumns(listleft_id, m_ListBoxes[listleft_id]->m_ColumnName, m_ListBoxes[listleft_id]->m_ColumnCount);
+	//Set the default sort order for columns, so listbox knows the order in which data will be sent
+	SortColumns(listright_id, m_ListBoxes[listright_id]->m_ColumnName, m_ListBoxes[listright_id]->m_ColumnCount);
+
 }
 
 void cScreenTransfer::process()
@@ -167,10 +174,29 @@ void cScreenTransfer::process()
 }
 void cScreenTransfer::init()
 {
+
+	if (g_CurrentScreen != SCREEN_TRANSFERGIRLS)
+	{
+		switch (g_CurrentScreen)
+		{
+		case SCREEN_STUDIO:			leftBrothel = 0;	break;
+		case SCREEN_ARENA:			leftBrothel = 1;	break;
+		case SCREEN_CENTRE:			leftBrothel = 2;	break;
+		case SCREEN_CLINIC:			leftBrothel = 3;	break;
+		case SCREEN_FARM:			leftBrothel = 4;	break;
+		case SCREEN_HOUSE:			leftBrothel = 5;	break;
+		case SCREEN_GIRLMANAGEMENT:	leftBrothel = 6 + g_CurrBrothel;	break;
+		default:
+			leftBrothel = 0;
+			break;
+		}
+	}
+	else leftBrothel = 6 + g_CurrBrothel;
+	rightBrothel = 0;
+
 	g_CurrentScreen = SCREEN_TRANSFERGIRLS;
 	Focused();
 
-	leftBrothel = rightBrothel = 0;
 	// clear list boxes
 	ClearListBox(brothelleft_id);
 	ClearListBox(brothelright_id);
@@ -179,7 +205,7 @@ void cScreenTransfer::init()
 
 	// list all the brothels
 	sBrothel* current = g_Brothels.GetBrothel(0);
-	int i = 6;
+	int i = 6;			// there are 6 other buildings using 0-5 so the brothels start at 6
 	while (current)
 	{
 		AddToListBox(brothelleft_id, i, current->m_Name);
@@ -188,19 +214,6 @@ void cScreenTransfer::init()
 		current = current->m_Next;
 	}
 
-	SetSelectedItemInList(brothelleft_id, 6);
-	SetSelectedItemInList(brothelright_id, 6);
-
-	if (g_Clinic.GetNumBrothels() > 0)		// add the clinic
-	{
-		sClinic* currentClinic = (sClinic*)g_Clinic.GetBrothel(0);
-		while (currentClinic)
-		{
-			AddToListBox(brothelleft_id, 3, currentClinic->m_Name);
-			AddToListBox(brothelright_id, 3, currentClinic->m_Name);
-			currentClinic = (sClinic*)currentClinic->m_Next;
-		}
-	}
 	if (g_Studios.GetNumBrothels() > 0)		// add the movie studio studio
 	{
 		sMovieStudio* currentStudio = (sMovieStudio*)g_Studios.GetBrothel(0);
@@ -231,6 +244,16 @@ void cScreenTransfer::init()
 			currentCentre = (sCentre*)currentCentre->m_Next;
 		}
 	}
+	if (g_Clinic.GetNumBrothels() > 0)		// add the clinic
+	{
+		sClinic* currentClinic = (sClinic*)g_Clinic.GetBrothel(0);
+		while (currentClinic)
+		{
+			AddToListBox(brothelleft_id, 3, currentClinic->m_Name);
+			AddToListBox(brothelright_id, 3, currentClinic->m_Name);
+			currentClinic = (sClinic*)currentClinic->m_Next;
+		}
+	}
 	if (g_Farm.GetNumBrothels() > 0)	// add the farm
 	{
 		sFarm* currentFarm = (sFarm*)g_Farm.GetBrothel(0);
@@ -249,6 +272,9 @@ void cScreenTransfer::init()
 		AddToListBox(brothelright_id, 5, currentHouse->m_Name);
 		currentHouse = (sHouse*)currentHouse->m_Next;
 	}
+
+	SetSelectedItemInList(brothelleft_id, leftBrothel);
+	SetSelectedItemInList(brothelright_id, 6);
 
 	g_InitWin = false;
 
@@ -285,189 +311,92 @@ void cScreenTransfer::check_events()
 		int color = COLOR_BLUE;
 		ClearListBox(listleft_id);
 		leftBrothel = GetSelectedItemFromList(brothelleft_id);
+		sGirl* temp;
 		if (leftBrothel != -1)
 		{
-			if (leftBrothel > 5){
-				// add the girls to the list
-				sGirl* temp = g_Brothels.GetGirl(leftBrothel - 6, 0);
-				int i = 0;
-				while (temp)
-				{
-					if (temp->m_DayJob == JOB_MATRON || temp->m_NightJob == JOB_MATRON)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_RESTING && temp->m_NightJob == JOB_RESTING)
-						color = COLOR_GREEN;
-					else color = COLOR_BLUE;
+			if (leftBrothel > 5)		{ temp = g_Brothels.GetGirl(leftBrothel - 6, 0); }
+			else if (leftBrothel == 5)	{ temp = g_House.GetGirl(0, 0); }
+			else if (leftBrothel == 4)	{ temp = g_Farm.GetGirl(0, 0); }
+			else if (leftBrothel == 3)	{ temp = g_Clinic.GetGirl(0, 0); }
+			else if (leftBrothel == 2)	{ temp = g_Centre.GetGirl(0, 0); }
+			else if (leftBrothel == 1)	{ temp = g_Arena.GetGirl(0, 0); }
+			else if (leftBrothel == 0)	{ temp = g_Studios.GetGirl(0, 0); }
+			else temp = 0;
 
-					AddToListBox(listleft_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
-				}
-			}
-			else if (leftBrothel == 4)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Farm.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
-				{
-					if (temp->m_DayJob == JOB_FARMMANGER || temp->m_NightJob == JOB_FARMMANGER)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_FARMREST && temp->m_NightJob == JOB_FARMREST)
-						color = COLOR_GREEN;
-					else color = COLOR_BLUE;
 
-					AddToListBox(listleft_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
-				}
-			}
-			else if (leftBrothel == 5)
+			int i = 0;
+			while (temp)
 			{
-				// add the girls to the list
-				sGirl* temp = g_House.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
+				color = COLOR_BLUE;
+				if (temp->m_DayJob == JOB_CENTREMANAGER || temp->m_NightJob == JOB_CENTREMANAGER
+					|| temp->m_DayJob == JOB_CHAIRMAN || temp->m_NightJob == JOB_CHAIRMAN
+					|| temp->m_DayJob == JOB_DOCTORE || temp->m_NightJob == JOB_DOCTORE
+					|| temp->m_DayJob == JOB_FARMMANGER || temp->m_NightJob == JOB_FARMMANGER
+					|| temp->m_DayJob == JOB_HEADGIRL || temp->m_NightJob == JOB_HEADGIRL
+					|| temp->m_DayJob == JOB_MATRON || temp->m_NightJob == JOB_MATRON
+					|| temp->m_NightJob == JOB_DIRECTOR)
+					color = COLOR_RED;
+				else if ((temp->m_DayJob == JOB_ARENAREST && temp->m_NightJob == JOB_ARENAREST)
+					|| (temp->m_DayJob == JOB_CENTREREST && temp->m_NightJob == JOB_CENTREREST)
+					|| (temp->m_DayJob == JOB_CLINICREST && temp->m_NightJob == JOB_CLINICREST)
+					|| (temp->m_DayJob == JOB_FARMREST && temp->m_NightJob == JOB_FARMREST)
+					|| (temp->m_DayJob == JOB_HOUSEREST && temp->m_NightJob == JOB_HOUSEREST)
+					|| (temp->m_DayJob == JOB_RESTING && temp->m_NightJob == JOB_RESTING)
+					|| (temp->m_NightJob == JOB_FILMFREETIME))
+					color = COLOR_GREEN;
+				else if (temp->m_DayJob == JOB_COUNSELOR || temp->m_NightJob == JOB_COUNSELOR)
 				{
-					if (temp->m_DayJob == JOB_HEADGIRL || temp->m_NightJob == JOB_HEADGIRL)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_HOUSEREST && temp->m_NightJob == JOB_HOUSEREST)
-						color = COLOR_GREEN;
-					else if (temp->m_DayJob == JOB_SO_STRAIGHT || temp->m_NightJob == JOB_SO_STRAIGHT ||
-						temp->m_DayJob == JOB_SO_BISEXUAL || temp->m_NightJob == JOB_SO_BISEXUAL ||
-						temp->m_DayJob == JOB_SO_LESBIAN || temp->m_NightJob == JOB_SO_LESBIAN ||
-						temp->m_DayJob == JOB_FAKEORGASM || temp->m_NightJob == JOB_FAKEORGASM)
-					{
-						if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else color = COLOR_BLUE;
+					if (g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, SHIFT_NIGHT) < 1) color = COLOR_YELLOW;
+					else color = COLOR_RED;
+				}
+				else if (temp->m_DayJob == JOB_DOCTOR || temp->m_NightJob == JOB_DOCTOR)
+				{
+					if (g_Clinic.GetNumberPatients(0) < 1 && g_Clinic.GetNumberPatients(1) < 1)
+						color = COLOR_YELLOW;
+					else color = COLOR_RED;
+				}
+				else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT			|| temp->m_DayJob == JOB_COSMETICSURGERY || temp->m_NightJob == JOB_COSMETICSURGERY
+					|| temp->m_DayJob == JOB_LIPO || temp->m_NightJob == JOB_LIPO					|| temp->m_DayJob == JOB_BREASTREDUCTION || temp->m_NightJob == JOB_BREASTREDUCTION
+					|| temp->m_DayJob == JOB_BOOBJOB || temp->m_NightJob == JOB_BOOBJOB				|| temp->m_DayJob == JOB_VAGINAREJUV || temp->m_NightJob == JOB_VAGINAREJUV
+					|| temp->m_DayJob == JOB_FACELIFT || temp->m_NightJob == JOB_FACELIFT			|| temp->m_DayJob == JOB_ASSJOB || temp->m_NightJob == JOB_ASSJOB
+					|| temp->m_DayJob == JOB_TUBESTIED || temp->m_NightJob == JOB_TUBESTIED			|| temp->m_DayJob == JOB_FERTILITY || temp->m_NightJob == JOB_FERTILITY)
+				{
+					if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
+				}
+				else if (temp->m_DayJob == JOB_GETHEALING || temp->m_NightJob == JOB_GETHEALING
+					|| temp->m_DayJob == JOB_GETREPAIRS || temp->m_NightJob == JOB_GETREPAIRS)
+				{
+					if (temp->health() > 70 && temp->tiredness() < 30) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
+				}
+				else if (temp->m_DayJob == JOB_MECHANIC || temp->m_NightJob == JOB_MECHANIC)
+				{
+					if (g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 0) < 1 && g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 1) < 1)
+						color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
+				}
+				else if (temp->m_DayJob == JOB_REHAB || temp->m_NightJob == JOB_REHAB || temp->m_DayJob == JOB_SO_STRAIGHT || temp->m_NightJob == JOB_SO_STRAIGHT
+					|| temp->m_DayJob == JOB_SO_BISEXUAL || temp->m_NightJob == JOB_SO_BISEXUAL || temp->m_DayJob == JOB_SO_LESBIAN || temp->m_NightJob == JOB_SO_LESBIAN
+					|| temp->m_DayJob == JOB_FAKEORGASM || temp->m_NightJob == JOB_FAKEORGASM)
+				{
+					if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
+				}
+				else if (temp->m_NightJob == JOB_CAMERAMAGE)
+				{
+					if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
+				}
+				else if (temp->m_NightJob == JOB_CRYSTALPURIFIER)
+				{
+					if (g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
+				}
 
-					AddToListBox(listleft_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
-				}
-			}
-			else if (leftBrothel == 2)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Centre.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
-				{
-					if (temp->m_DayJob == JOB_CENTREMANAGER || temp->m_NightJob == JOB_CENTREMANAGER)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_COUNSELOR || temp->m_NightJob == JOB_COUNSELOR)
-					{
-						if (g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, SHIFT_NIGHT) < 1) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_DayJob == JOB_CENTREREST && temp->m_NightJob == JOB_CENTREREST)
-						color = COLOR_GREEN;
-					else if (temp->m_DayJob == JOB_REHAB || temp->m_NightJob == JOB_REHAB)
-					{
-						if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else color = COLOR_BLUE;
-
-					AddToListBox(listleft_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
-				}
-			}
-			else if (leftBrothel == 1)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Arena.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
-				{
-					if (temp->m_DayJob == JOB_DOCTORE || temp->m_NightJob == JOB_DOCTORE)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_ARENAREST && temp->m_NightJob == JOB_ARENAREST)
-						color = COLOR_GREEN;
-					else color = COLOR_BLUE;
-					AddToListBox(listleft_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
-				}
-			}
-			else if (leftBrothel == 3)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Clinic.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
-				{
-					if (temp->m_DayJob == JOB_CHAIRMAN || temp->m_NightJob == JOB_CHAIRMAN)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_CLINICREST && temp->m_NightJob == JOB_CLINICREST)
-						color = COLOR_GREEN;
-					else if (temp->m_DayJob == JOB_DOCTOR || temp->m_NightJob == JOB_DOCTOR)
-					{
-						if (g_Clinic.GetNumberPatients(0) < 1 && g_Clinic.GetNumberPatients(1) < 1)
-							color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_DayJob == JOB_MECHANIC || temp->m_NightJob == JOB_MECHANIC)
-					{
-						if (g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 0) < 1 && g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 1) < 1)
-							color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_DayJob == JOB_GETHEALING || temp->m_NightJob == JOB_GETHEALING
-						|| temp->m_DayJob == JOB_GETREPAIRS || temp->m_NightJob == JOB_GETREPAIRS)
-					{
-						if (temp->health() > 70 && temp->tiredness() < 30) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT
-						|| temp->m_DayJob == JOB_COSMETICSURGERY || temp->m_NightJob == JOB_COSMETICSURGERY
-						|| temp->m_DayJob == JOB_LIPO || temp->m_NightJob == JOB_LIPO
-						|| temp->m_DayJob == JOB_BREASTREDUCTION || temp->m_NightJob == JOB_BREASTREDUCTION
-						|| temp->m_DayJob == JOB_BOOBJOB || temp->m_NightJob == JOB_BOOBJOB
-						|| temp->m_DayJob == JOB_VAGINAREJUV || temp->m_NightJob == JOB_VAGINAREJUV
-						|| temp->m_DayJob == JOB_FACELIFT || temp->m_NightJob == JOB_FACELIFT
-						|| temp->m_DayJob == JOB_ASSJOB || temp->m_NightJob == JOB_ASSJOB
-						|| temp->m_DayJob == JOB_TUBESTIED || temp->m_NightJob == JOB_TUBESTIED
-						|| temp->m_DayJob == JOB_FERTILITY || temp->m_NightJob == JOB_FERTILITY)
-					{
-						if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else color = COLOR_BLUE;
-
-					AddToListBox(listleft_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
-				}
-			}
-			else if (leftBrothel == 0)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Studios.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
-				{
-					if (temp->m_NightJob == JOB_DIRECTOR)					color = COLOR_RED;
-					else if (temp->m_NightJob == JOB_FILMFREETIME)			color = COLOR_GREEN;
-					else if (temp->m_NightJob == JOB_CAMERAMAGE)
-					{
-						if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_NightJob == JOB_CRYSTALPURIFIER)
-					{
-						if (g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else color = COLOR_BLUE;
-
-					AddToListBox(listleft_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
-				}
+				AddToListBox(listleft_id, i, temp->m_Realname, color);
+				i++;
+				temp = temp->m_Next;
 			}
 		}
 	}
@@ -476,183 +405,94 @@ void cScreenTransfer::check_events()
 		int color = COLOR_BLUE;
 		ClearListBox(listright_id);
 		rightBrothel = GetSelectedItemFromList(brothelright_id);
+		sGirl* temp;
 		if (rightBrothel != -1)
 		{
-			if (rightBrothel > 5){
-				// add the girls to the list
-				sGirl* temp = g_Brothels.GetGirl(rightBrothel - 6, 0);
-				int i = 0;
-				while (temp)
-				{
-					if (temp->m_DayJob == JOB_MATRON || temp->m_NightJob == JOB_MATRON)			color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_RESTING && temp->m_NightJob == JOB_RESTING)	color = COLOR_GREEN;
-					else color = COLOR_BLUE;
-					AddToListBox(listright_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
-				}
-			}
-			else if (rightBrothel == 4)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Farm.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
-				{
-					if (temp->m_DayJob == JOB_FARMMANGER || temp->m_NightJob == JOB_FARMMANGER)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_FARMREST && temp->m_NightJob == JOB_FARMREST)
-						color = COLOR_GREEN;
-					else color = COLOR_BLUE;
+			if (rightBrothel > 5)		{ temp = g_Brothels.GetGirl(rightBrothel - 6, 0); }
+			else if (rightBrothel == 5)	{ temp = g_House.GetGirl(0, 0); }
+			else if (rightBrothel == 4)	{ temp = g_Farm.GetGirl(0, 0); }
+			else if (rightBrothel == 3)	{ temp = g_Clinic.GetGirl(0, 0); }
+			else if (rightBrothel == 2)	{ temp = g_Centre.GetGirl(0, 0); }
+			else if (rightBrothel == 1)	{ temp = g_Arena.GetGirl(0, 0); }
+			else if (rightBrothel == 0)	{ temp = g_Studios.GetGirl(0, 0); }
+			else temp = 0;
 
-					AddToListBox(listright_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
-				}
-			}
-			else if (rightBrothel == 5)
+			int i = 0;
+			while (temp)
 			{
-				// add the girls to the list
-				sGirl* temp = g_House.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
+				color = COLOR_BLUE;
+				if (temp->m_DayJob == JOB_CENTREMANAGER || temp->m_NightJob == JOB_CENTREMANAGER
+					|| temp->m_DayJob == JOB_CHAIRMAN || temp->m_NightJob == JOB_CHAIRMAN
+					|| temp->m_DayJob == JOB_DOCTORE || temp->m_NightJob == JOB_DOCTORE
+					|| temp->m_DayJob == JOB_FARMMANGER || temp->m_NightJob == JOB_FARMMANGER
+					|| temp->m_DayJob == JOB_HEADGIRL || temp->m_NightJob == JOB_HEADGIRL
+					|| temp->m_DayJob == JOB_MATRON || temp->m_NightJob == JOB_MATRON
+					|| temp->m_NightJob == JOB_DIRECTOR)
+					color = COLOR_RED;
+				else if ((temp->m_DayJob == JOB_ARENAREST && temp->m_NightJob == JOB_ARENAREST)
+					|| (temp->m_DayJob == JOB_CENTREREST && temp->m_NightJob == JOB_CENTREREST)
+					|| (temp->m_DayJob == JOB_CLINICREST && temp->m_NightJob == JOB_CLINICREST)
+					|| (temp->m_DayJob == JOB_FARMREST && temp->m_NightJob == JOB_FARMREST)
+					|| (temp->m_DayJob == JOB_HOUSEREST && temp->m_NightJob == JOB_HOUSEREST)
+					|| (temp->m_DayJob == JOB_RESTING && temp->m_NightJob == JOB_RESTING)
+					|| (temp->m_NightJob == JOB_FILMFREETIME))
+					color = COLOR_GREEN;
+				else if (temp->m_DayJob == JOB_COUNSELOR || temp->m_NightJob == JOB_COUNSELOR)
 				{
-					if (temp->m_DayJob == JOB_HEADGIRL || temp->m_NightJob == JOB_HEADGIRL)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_HOUSEREST && temp->m_NightJob == JOB_HOUSEREST)
-						color = COLOR_GREEN;
-					else color = COLOR_BLUE;
-
-					AddToListBox(listright_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
+					if (g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, SHIFT_NIGHT) < 1) color = COLOR_YELLOW;
+					else color = COLOR_RED;
 				}
-			}
-			else if (rightBrothel == 2)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Centre.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
+				else if (temp->m_DayJob == JOB_DOCTOR || temp->m_NightJob == JOB_DOCTOR)
 				{
-					if (temp->m_DayJob == JOB_CENTREMANAGER || temp->m_NightJob == JOB_CENTREMANAGER)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_COUNSELOR || temp->m_NightJob == JOB_COUNSELOR)
-					{
-						if (g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, SHIFT_NIGHT) < 1) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_DayJob == JOB_CENTREREST && temp->m_NightJob == JOB_CENTREREST)
-						color = COLOR_GREEN;
-					else if (temp->m_DayJob == JOB_REHAB || temp->m_NightJob == JOB_REHAB)
-					{
-						if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else color = COLOR_BLUE;
-
-					AddToListBox(listright_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
+					if (g_Clinic.GetNumberPatients(0) < 1 && g_Clinic.GetNumberPatients(1) < 1)
+						color = COLOR_YELLOW;
+					else color = COLOR_RED;
 				}
-			}
-			else if (rightBrothel == 1)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Arena.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
+				else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT || temp->m_DayJob == JOB_COSMETICSURGERY || temp->m_NightJob == JOB_COSMETICSURGERY
+					|| temp->m_DayJob == JOB_LIPO || temp->m_NightJob == JOB_LIPO || temp->m_DayJob == JOB_BREASTREDUCTION || temp->m_NightJob == JOB_BREASTREDUCTION
+					|| temp->m_DayJob == JOB_BOOBJOB || temp->m_NightJob == JOB_BOOBJOB || temp->m_DayJob == JOB_VAGINAREJUV || temp->m_NightJob == JOB_VAGINAREJUV
+					|| temp->m_DayJob == JOB_FACELIFT || temp->m_NightJob == JOB_FACELIFT || temp->m_DayJob == JOB_ASSJOB || temp->m_NightJob == JOB_ASSJOB
+					|| temp->m_DayJob == JOB_TUBESTIED || temp->m_NightJob == JOB_TUBESTIED || temp->m_DayJob == JOB_FERTILITY || temp->m_NightJob == JOB_FERTILITY)
 				{
-					if (temp->m_DayJob == JOB_DOCTORE || temp->m_NightJob == JOB_DOCTORE)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_ARENAREST && temp->m_NightJob == JOB_ARENAREST)
-						color = COLOR_GREEN;
-					else color = COLOR_BLUE;
-					AddToListBox(listright_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
+					if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
 				}
-			}
-			else if (rightBrothel == 3)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Clinic.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
+				else if (temp->m_DayJob == JOB_GETHEALING || temp->m_NightJob == JOB_GETHEALING
+					|| temp->m_DayJob == JOB_GETREPAIRS || temp->m_NightJob == JOB_GETREPAIRS)
 				{
-					if (temp->m_DayJob == JOB_CHAIRMAN || temp->m_NightJob == JOB_CHAIRMAN)
-						color = COLOR_RED;
-					else if (temp->m_DayJob == JOB_CLINICREST && temp->m_NightJob == JOB_CLINICREST)
-						color = COLOR_GREEN;
-					else if (temp->m_DayJob == JOB_DOCTOR || temp->m_NightJob == JOB_DOCTOR)
-					{
-						if (g_Clinic.GetNumberPatients(0) < 1 && g_Clinic.GetNumberPatients(1) < 1)
-							color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_DayJob == JOB_MECHANIC || temp->m_NightJob == JOB_MECHANIC)
-					{
-						if (g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 0) < 1 && g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 1) < 1)
-							color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_DayJob == JOB_GETHEALING || temp->m_NightJob == JOB_GETHEALING
-						|| temp->m_DayJob == JOB_GETREPAIRS || temp->m_NightJob == JOB_GETREPAIRS)
-					{
-						if (temp->health() > 70 && temp->tiredness() < 30) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT
-						|| temp->m_DayJob == JOB_COSMETICSURGERY || temp->m_NightJob == JOB_COSMETICSURGERY
-						|| temp->m_DayJob == JOB_LIPO || temp->m_NightJob == JOB_LIPO
-						|| temp->m_DayJob == JOB_BREASTREDUCTION || temp->m_NightJob == JOB_BREASTREDUCTION
-						|| temp->m_DayJob == JOB_BOOBJOB || temp->m_NightJob == JOB_BOOBJOB
-						|| temp->m_DayJob == JOB_VAGINAREJUV || temp->m_NightJob == JOB_VAGINAREJUV
-						|| temp->m_DayJob == JOB_FACELIFT || temp->m_NightJob == JOB_FACELIFT
-						|| temp->m_DayJob == JOB_ASSJOB || temp->m_NightJob == JOB_ASSJOB
-						|| temp->m_DayJob == JOB_TUBESTIED || temp->m_NightJob == JOB_TUBESTIED
-						|| temp->m_DayJob == JOB_FERTILITY || temp->m_NightJob == JOB_FERTILITY)
-					{
-						if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else color = COLOR_BLUE;
-
-					AddToListBox(listright_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
+					if (temp->health() > 70 && temp->tiredness() < 30) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
 				}
-			}
-			else if (rightBrothel == 0)
-			{
-				// add the girls to the list
-				sGirl* temp = g_Studios.GetGirl(0, 0);
-				int i = 0;
-				while (temp)
+				else if (temp->m_DayJob == JOB_MECHANIC || temp->m_NightJob == JOB_MECHANIC)
 				{
-
-					if (temp->m_NightJob == JOB_DIRECTOR)					color = COLOR_RED;
-					else if (temp->m_NightJob == JOB_FILMFREETIME)			color = COLOR_GREEN;
-					else if (temp->m_NightJob == JOB_CAMERAMAGE)
-					{
-						if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else if (temp->m_NightJob == JOB_CRYSTALPURIFIER)
-					{
-						if (g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
-						else color = COLOR_RED;
-					}
-					else color = COLOR_BLUE;
-
-					AddToListBox(listright_id, i, temp->m_Realname, color);
-					i++;
-					temp = temp->m_Next;
+					if (g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 0) < 1 && g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, 1) < 1)
+						color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
 				}
+				else if (temp->m_DayJob == JOB_REHAB || temp->m_NightJob == JOB_REHAB || temp->m_DayJob == JOB_SO_STRAIGHT || temp->m_NightJob == JOB_SO_STRAIGHT
+					|| temp->m_DayJob == JOB_SO_BISEXUAL || temp->m_NightJob == JOB_SO_BISEXUAL || temp->m_DayJob == JOB_SO_LESBIAN || temp->m_NightJob == JOB_SO_LESBIAN 
+					|| temp->m_DayJob == JOB_FAKEORGASM || temp->m_NightJob == JOB_FAKEORGASM)
+				{
+					if (temp->m_WorkingDay == 0) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
+				}
+				else if (temp->m_NightJob == JOB_CAMERAMAGE)
+				{
+					if (g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
+				}
+				else if (temp->m_NightJob == JOB_CRYSTALPURIFIER)
+				{
+					if (g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) color = COLOR_DARKBLUE;
+					else color = COLOR_RED;
+				}
+
+				AddToListBox(listright_id, i, temp->m_Realname, color);
+				i++;
+				temp = temp->m_Next;
 			}
 		}
-	}
-	return;
+	}	return;
 }
 void cScreenTransfer::TransferGirlsLeftToRight(int rightBrothel, int leftBrothel)
 {

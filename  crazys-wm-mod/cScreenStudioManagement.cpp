@@ -293,8 +293,11 @@ void cScreenStudioManagement::check_events()
 						SetSelectedItemInList(joblist_id, new_job, false);
 					}
 					// update the girl's listing to reflect the job change
-					ss.str("");	ss << g_Studios.m_JobManager.JobName[selected_girl->m_DayJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					if (m_ListBoxes[girllist_id]->DayJobColumn() >= 0)
+					{
+						ss.str("");	ss << g_Studios.m_JobManager.JobName[selected_girl->m_DayJob];
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					}
 					ss.str("");	ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
 					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
 
