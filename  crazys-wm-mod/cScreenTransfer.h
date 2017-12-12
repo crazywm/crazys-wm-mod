@@ -46,6 +46,6 @@ public:
 	void process();
 	void check_events();
 	void TransferGirls();
-	void TransferGirlsLeftToRight(int rightBrothel, int leftBrothel);
-	void TransferGirlsRightToLeft(int rightBrothel, int leftBrothel);
+	void TransferGirlsRightToLeft(bool rightfirst, int rightBrothel, int leftBrothel);
+	int checkjobcolor(sGirl* temp);
 };

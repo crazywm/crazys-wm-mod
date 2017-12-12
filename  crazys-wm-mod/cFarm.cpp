@@ -65,7 +65,7 @@ sFarm::~sFarm()			// destructor
 	m_Girls = 0;
 }
 
-void cFarmManager::AddGirl(int brothelID, sGirl* girl)
+void cFarmManager::AddGirl(int brothelID, sGirl* girl, bool keepjob)
 {
 	girl->where_is_she = 0;
 	girl->m_InStudio = false;
@@ -74,7 +74,7 @@ void cFarmManager::AddGirl(int brothelID, sGirl* girl)
 	girl->m_InClinic = false;
 	girl->m_InFarm = true;
 	girl->m_InHouse = false;
-	cBrothelManager::AddGirl(brothelID, girl);
+	cBrothelManager::AddGirl(brothelID, girl, keepjob);
 }
 
 void cFarmManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)

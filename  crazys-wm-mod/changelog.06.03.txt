@@ -72,6 +72,11 @@ Cleaned and updated the transfer code a bit
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.03
 
+Cleaned and updated the transfer code a bit more
+- When you go to the transfer screen, it now starts the selected girl in the left list who you came from.
+- Added keepjob to addgirl() so transferring to the same building will keep their job
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
 
 
 

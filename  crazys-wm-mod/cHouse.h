@@ -52,7 +52,7 @@ public:
 	cHouseManager();					// constructor
 	~cHouseManager();					// destructor
 
-	void AddGirl(int brothelID, sGirl* girl);
+	void AddGirl(int brothelID, sGirl* girl, bool keepjob = false);
 	void RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl = false);	// Removes a girl from the list (only used with editor where all girls are available)
 	void UpdateHouse();
 	void UpdateGirls(sBrothel* brothel, bool Day0Night1);

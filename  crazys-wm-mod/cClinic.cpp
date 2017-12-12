@@ -65,7 +65,7 @@ sClinic::~sClinic()			// destructor
 	m_Girls = 0;
 }
 
-void cClinicManager::AddGirl(int brothelID, sGirl* girl)
+void cClinicManager::AddGirl(int brothelID, sGirl* girl, bool keepjob)
 {
 	girl->where_is_she = 0;
 	girl->m_InStudio = false;
@@ -74,7 +74,7 @@ void cClinicManager::AddGirl(int brothelID, sGirl* girl)
 	girl->m_InClinic = true;
 	girl->m_InFarm = false;
 	girl->m_InHouse = false;
-	cBrothelManager::AddGirl(brothelID, girl);
+	cBrothelManager::AddGirl(brothelID, girl, keepjob);
 }
 
 void cClinicManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)

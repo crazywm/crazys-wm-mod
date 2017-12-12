@@ -546,10 +546,11 @@ void sBrothel::AddAntiPreg(int amount) // unused
 
 
 // ----- Add / remove
-void cBrothelManager::AddGirl(int brothelID, sGirl* girl)
+void cBrothelManager::AddGirl(int brothelID, sGirl* girl, bool keepjob)
 {
 	if (girl == 0)	return;
-	/* */if (girl->m_InStudio)	girl->m_DayJob = girl->m_NightJob = JOB_FILMFREETIME;
+	if (keepjob) {}
+	else if (girl->m_InStudio)	girl->m_DayJob = girl->m_NightJob = JOB_FILMFREETIME;
 	else if (girl->m_InArena)	girl->m_DayJob = girl->m_NightJob = JOB_ARENAREST;
 	else if (girl->m_InCentre)	girl->m_DayJob = girl->m_NightJob = JOB_CENTREREST;
 	else if (girl->m_InClinic)	girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;

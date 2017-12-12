@@ -59,7 +59,7 @@ sArena::~sArena()			// destructor
 	m_Girls = 0;
 }
 
-void cArenaManager::AddGirl(int brothelID, sGirl* girl)
+void cArenaManager::AddGirl(int brothelID, sGirl* girl, bool keepjob)
 {
 	girl->where_is_she = 0;
 	girl->m_InStudio = false;
@@ -68,7 +68,7 @@ void cArenaManager::AddGirl(int brothelID, sGirl* girl)
 	girl->m_InClinic = false;
 	girl->m_InFarm = false;
 	girl->m_InHouse = false;
-	cBrothelManager::AddGirl(brothelID, girl);
+	cBrothelManager::AddGirl(brothelID, girl, keepjob);
 }
 
 void cArenaManager::RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl)

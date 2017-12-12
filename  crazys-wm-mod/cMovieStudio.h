@@ -100,7 +100,7 @@ public:
 	vector<sMovieScene*> m_movieScenes;
 	int AddScene(sGirl* girl, int Job, int Bonus = 0);	// Added job parameter so different types of sex could effect film quality. --PP
 	void LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks);
-	void AddGirl(int brothelID, sGirl* girl);
+	void AddGirl(int brothelID, sGirl* girl, bool keepjob = false);
 	void RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl = false);
 	void UpdateMovieStudio();
 	void UpdateGirls(sBrothel* brothel);

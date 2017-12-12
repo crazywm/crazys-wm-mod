@@ -54,7 +54,7 @@ public:
 
 	int m_Rehab_Patient_Time = 0;		// `J` basically how many Rehab patients the counselors at the centre can take care of
 
-	void AddGirl(int brothelID, sGirl* girl);
+	void AddGirl(int brothelID, sGirl* girl, bool keepjob = false);
 	void RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl = false);	// Removes a girl from the list (only used with editor where all girls are available)
 	void UpdateCentre();
 	void UpdateGirls(sBrothel* brothel, bool Day0Night1);

@@ -238,7 +238,7 @@ public:
 	void UpgradeSupplySheds()				{ m_SupplyShedLevel++; }
 	int  GetSupplyShedLevel()				{ return m_SupplyShedLevel; }
 
-	void	AddGirl(int brothelID, sGirl* girl);
+	void	AddGirl(int brothelID, sGirl* girl, bool keepjob = false);
 	void	RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl = true);
 	sGirl*	GetFirstRunaway();
 	void	sort(sBrothel* brothel);		// sorts the list of girls
