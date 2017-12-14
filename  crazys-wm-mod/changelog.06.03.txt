@@ -63,6 +63,8 @@ Started updating transfer screen
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.02
 
+### Changes 12/11/2017
+
 Fixed a couple of bugs in gallery
 Found and fixed a bug in the studio if the interface does not have day job column
 Cleaned and updated the transfer code a bit
@@ -72,11 +74,30 @@ Cleaned and updated the transfer code a bit
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.03
 
+### Changes 12/12/2017
+
 Cleaned and updated the transfer code a bit more
 - When you go to the transfer screen, it now starts the selected girl in the left list who you came from.
 - Added keepjob to addgirl() so transferring to the same building will keep their job
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
+
+Added in some more updates by grishnak
+- check items equipped and adjust profile pictures
+- changed image type used in some jobs
+Fixed transfer screen in J_1920x1080 interface
+
+### Changes 12/13-14/2017
+
+Added columns to transfer screen
+Fixed a couple of typeos
+Corrected the GetString.xml and getInput.xml in J_1024x768 to make the text above the box so length of the text will not matter.
+Fixed a bug in scripts and added some missing lookup/names
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.04
+
+
 
 
 

@@ -148,7 +148,26 @@ const char *cScript::script_names[] =
 	"Script_IfGirlStatus",
 	"Script_SetGirlStatus",
 	"Script_EndPregnancy",
-	"Script_CreatePregnancy"
+	"Script_CreatePregnancy",
+	"Script_ElseNew",
+	"Script_BrandTarget",
+	"Script_RapeTarget",
+	"Script_RapeBeastTarget",
+	"Script_BirthHumanTarget",
+	"Script_BirthHumanMultipleTarget",
+	"Script_BirthBeastTarget",
+	"Script_ImpregSexTarget",
+	"Script_ImpregGroupTarget",
+	"Script_ImpregBDSMTarget",
+	"Script_ImpregBeastTarget",
+	"Script_VirginSexTarget",
+	"Script_VirginGroupTarget",
+	"Script_VirginBDSMTarget",
+	"Script_VirginBeastTarget",
+	"Script_EscortTarget",
+	"Script_SportTarget",
+	"Script_StudyTarget",
+	"Script_TeacherTarget"
 	
 	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cScripts.cpp > script_names[]
 };
@@ -275,7 +294,26 @@ void cScript::setup_maps()
 	script_lookup["Script_SetGirlStatus"] = 107;
 	script_lookup["Script_EndPregnancy"] = 108;
 	script_lookup["Script_CreatePregnancy"] = 109;
-	
+	script_lookup["Script_ElseNew"] = 110;
+	script_lookup["Script_BrandTarget"] = 111;
+	script_lookup["Script_RapeTarget"] = 112;
+	script_lookup["Script_RapeBeastTarget"] = 113;
+	script_lookup["Script_BirthHumanTarget"] = 114;
+	script_lookup["Script_BirthHumanMultipleTarget"] = 115;
+	script_lookup["Script_BirthBeastTarget"] = 116;
+	script_lookup["Script_ImpregSexTarget"] = 117;
+	script_lookup["Script_ImpregGroupTarget"] = 118;
+	script_lookup["Script_ImpregBDSMTarget"] = 119;
+	script_lookup["Script_ImpregBeastTarget"] = 120;
+	script_lookup["Script_VirginSexTarget"] = 121;
+	script_lookup["Script_VirginGroupTarget"] = 122;
+	script_lookup["Script_VirginBDSMTarget"] = 123;
+	script_lookup["Script_VirginBeastTarget"] = 124;
+	script_lookup["Script_EscortTarget"] = 125;
+	script_lookup["Script_SportTarget"] = 126;
+	script_lookup["Script_StudyTarget"] = 127;
+	script_lookup["Script_TeacherTarget"] = 128;
+
 	// `J` When modifying Scripts, search for "J-Change-Scripts"  :  found in >> cScripts.cpp > setup_maps()
 
 	script_lookup["_none"] = 0;

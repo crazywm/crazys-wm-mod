@@ -175,17 +175,16 @@ void cScreenTransfer::init()
 	{
 		switch (g_CurrentScreen)
 		{
-		case SCREEN_STUDIO:			leftBrothel = 0;	break;
-		case SCREEN_ARENA:			leftBrothel = 1;	break;
-		case SCREEN_CENTRE:			leftBrothel = 2;	break;
-		case SCREEN_CLINIC:			leftBrothel = 3;	break;
-		case SCREEN_FARM:			leftBrothel = 4;	break;
-		case SCREEN_HOUSE:			leftBrothel = 5;	break;
-		default:	leftBrothel = 6 + g_CurrBrothel;	break;
+		case SCREEN_STUDIO:			leftBrothel = rightBrothel = 0;	break;
+		case SCREEN_ARENA:			leftBrothel = rightBrothel = 1;	break;
+		case SCREEN_CENTRE:			leftBrothel = rightBrothel = 2;	break;
+		case SCREEN_CLINIC:			leftBrothel = rightBrothel = 3;	break;
+		case SCREEN_FARM:			leftBrothel = rightBrothel = 4;	break;
+		case SCREEN_HOUSE:			leftBrothel = rightBrothel = 5;	break;
+		default:	leftBrothel = rightBrothel = 6 + g_CurrBrothel;	break;
 		}
 	}
-	else leftBrothel = 6 + g_CurrBrothel;
-	rightBrothel = 0;
+	else leftBrothel = rightBrothel = 6 + g_CurrBrothel;
 
 	g_CurrentScreen = SCREEN_TRANSFERGIRLS;
 	Focused();
@@ -265,7 +264,7 @@ void cScreenTransfer::init()
 	}
 
 	SetSelectedItemInList(brothelleft_id, leftBrothel);
-	SetSelectedItemInList(brothelright_id, 6);
+	SetSelectedItemInList(brothelright_id, rightBrothel);
 
 	g_InitWin = false;
 }
@@ -295,6 +294,11 @@ void cScreenTransfer::check_events()
 	}
 	else if (g_InterfaceEvents.CheckEvent(EVENT_SELECTIONCHANGE, brothelleft_id))
 	{
+		vector<string> columnNames;
+		m_ListBoxes[listleft_id]->GetColumnNames(columnNames);
+		int numColumns = columnNames.size();
+		string* Data = new string[numColumns];
+
 		ClearListBox(listleft_id);
 		leftBrothel = GetSelectedItemFromList(brothelleft_id);
 		sGirl* temp;
@@ -314,7 +318,8 @@ void cScreenTransfer::check_events()
 			while (temp)
 			{
 				if (selected_girl == temp) selection = i;
-				AddToListBox(listleft_id, i, temp->m_Realname, checkjobcolor(temp));
+				temp->OutputGirlRow(Data, columnNames);
+				AddToListBox(listleft_id, i, Data, numColumns, checkjobcolor(temp));
 				i++;
 				temp = temp->m_Next;
 			}
@@ -324,6 +329,11 @@ void cScreenTransfer::check_events()
 	}
 	else if (g_InterfaceEvents.CheckEvent(EVENT_SELECTIONCHANGE, brothelright_id))
 	{
+		vector<string> columnNames;
+		m_ListBoxes[listleft_id]->GetColumnNames(columnNames);
+		int numColumns = columnNames.size();
+		string* Data = new string[numColumns];
+
 		ClearListBox(listright_id);
 		rightBrothel = GetSelectedItemFromList(brothelright_id);
 		sGirl* temp;
@@ -343,13 +353,13 @@ void cScreenTransfer::check_events()
 			while (temp)
 			{
 				if (selected_girl == temp) selection = i;
-				AddToListBox(listright_id, i, temp->m_Realname, checkjobcolor(temp));
+				temp->OutputGirlRow(Data, columnNames);
+				AddToListBox(listright_id, i, Data, numColumns, checkjobcolor(temp));
 				i++;
 				temp = temp->m_Next;
 			}
 			if (selection >= 0) while (selection > GetListBoxSize(listright_id) && selection != -1) selection--;
 			SetSelectedItemInList(listright_id, selection >= 0 ? selection : 0);
-
 		}
 	}	return;
 }

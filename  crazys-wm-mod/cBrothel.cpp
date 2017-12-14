@@ -1557,15 +1557,7 @@ void cBrothelManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_B
 		else if (sw == JOB_TORTURER && Day0Night1 == SHIFT_NIGHT)	sum = -1;
 
 		// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() &&
-#if 0	// `J` until all jobs have this part added to them, use the individual job list instead of this
-			m_JobManager.is_job_Paid_Player(sw))
-#else
-			(
-			sw == JOB_BEASTCARER ||
-			sw == JOB_CLEANING
-			))
-#endif
+		else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() && m_JobManager.is_job_Paid_Player(sw))
 		{
 			summary += "\nYou own her and you don't pay your slaves.";
 		}

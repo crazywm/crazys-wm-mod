@@ -3107,7 +3107,7 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 	u_int sw = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
 
 	// `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-	if (is_job_Paid_Player(sw) && girl->is_slave() && !cfg.initial.slave_pay_outofpocket())
+	if (girl->is_slave() && is_job_Paid_Player(sw) && !cfg.initial.slave_pay_outofpocket())
 	{
 		ss << "\nYou own her and you don't pay your slaves.";
 	}
@@ -3115,10 +3115,8 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 	{
 		ss << girlName << " earned a total of " << totalGold << " gold";
 
-		// if it is a player paid job and she is not a slave
-		if ((is_job_Paid_Player(sw) && !girl->is_slave()) ||
-			// or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-			(is_job_Paid_Player(sw) && girl->is_slave() && cfg.initial.slave_pay_outofpocket()))
+		// if it is a player paid job and she is not a slave or she is a slave but you pay slaves out of pocket.
+		if (is_job_Paid_Player(sw) && (!girl->is_slave() ||	(girl->is_slave() && cfg.initial.slave_pay_outofpocket())))
 		{
 			ss << " directly from you.\nShe gets to keep it all.";
 		}

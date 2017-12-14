@@ -37,7 +37,7 @@
 	ListScrollAmount = The number of lines to scroll in List boxes.
 	TextScrollAmount = The number of lines to scroll in Text boxes.
 	-->
-<!-- 16:9 
+<!-- 16:9
     <Resolution
         Resolution="J_1920x1080"
         Width="1920"
@@ -45,11 +45,11 @@
         ScaleWidth="1920"
         ScaleHeight="1080"
         FixedScale="true"
-        FullScreen="true"
+        FullScreen="false"
         ListScrollAmount="3"
         TextScrollAmount="3" />
--->
-<!-- 4:3 -->
+ -->
+<!-- 4:3-->
     <Resolution
         Resolution="J_1024x768"
         Width="1024"

@@ -18158,26 +18158,15 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	// 'J' Added for .06.03.01
 	else if (detailName == "DayJobShort" || detailName == "NightJobShort")
 	{
-		int DN_Job = m_DayJob;
-		bool DN_Day = 0;
-		if (detailName == "NightJob")
-		{
-			DN_Job = m_NightJob;
-			DN_Day = 1;
-		}
-		ss << g_Brothels.m_JobManager.JobQkNm[DN_Day];
+		ss << g_Brothels.m_JobManager.JobQkNm[(detailName == "DayJobShort" ? m_DayJob : m_NightJob)];
 	}
 
 	// 'J' Girl Table job text
 	else if (detailName == "DayJob" || detailName == "NightJob")
 	{
-		int DN_Job = m_DayJob;
-		bool DN_Day = 0;
-		if (detailName == "NightJob")
-		{
-			DN_Job = m_NightJob;
-			DN_Day = 1;
-		}
+		bool DN_Day = detailName == "NightJob";
+		int DN_Job = (DN_Day ? m_NightJob : m_DayJob);
+
 		// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
 		if (DN_Job >= NUM_JOBS)
 		{

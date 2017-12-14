@@ -172,7 +172,8 @@ private:
 
 	bool IsIfStatement(int type)
 	{
-		if (type == 9 || type == 13 || type == 27 || type == 28 || type == 29 || type == 31 || type == 32 || type == 33 || type == 40 || type == 95 || type == 98 || type == 100 || type == 101)
+		if (type == 9 || type == 13 || type == 27 || type == 28 || type == 29 || type == 31 || type == 32 || type == 33 || type == 40 || type == 95 || type == 98 
+			|| type == 100 || type == 101 || type == 106)
 			return true;
 		return false;
 	}

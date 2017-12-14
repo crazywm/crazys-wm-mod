@@ -1035,12 +1035,34 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	string ext = "";
 	bool imagechosen = false;
 
+	bool armor = g_Girls.GetNumItemEquiped(girl, INVARMOR) >= 1;
+	bool dress = g_Girls.GetNumItemEquiped(girl, INVDRESS) >= 1;
+	bool swim = g_Girls.GetNumItemEquiped(girl, INVSWIMSUIT) >= 1;
+	bool lingerie = g_Girls.GetNumItemEquiped(girl, INVUNDERWEAR) >= 1;
+	bool nude = (!armor && !dress && !swim && !lingerie);
+
 	int tries = 40;
 	if (gallery) tries = 0;
 	else	// try some corrections
 	{
 		if (cfg.folders.preferdefault() || totalimagesCc + totalimagesCo < 1)	tries = 10;
 		if (imagetype < 0 || imagetype > NUM_IMGTYPES)				imagetype = IMGTYPE_PROFILE;
+
+		if (imagetype == IMGTYPE_PROFILE && g_Dice.percent(10))
+		{
+			if (armor)	{ imagetype = IMGTYPE_COMBAT; }
+			else if (dress)
+			{
+				/* */if (girl->has_trait("Elegant"))		imagetype = IMGTYPE_FORMAL;
+				else if (girl->has_trait("Dominatrix"))		imagetype = IMGTYPE_DOM;
+				else if (girl->has_trait("Maid"))			imagetype = IMGTYPE_MAID;
+				else if (girl->has_trait("Teacher"))		imagetype = IMGTYPE_TEACHER;
+				else if (girl->has_trait("Doctor"))			imagetype = IMGTYPE_NURSE;
+			}
+			else if (swim)            { imagetype = IMGTYPE_SWIM; }
+			else if (lingerie)        { imagetype = IMGTYPE_ECCHI; }
+		}
+
 		/* */if (imagetype >= IMGTYPE_PREGBIRTHHUMAN && imagetype <= IMPTYPE_PREGVIRGINBEAST) imagetype -= PREG_OFFSET;		// `J` new .06.03.01 for DarkArk - These should not have preg varients 
 		else if (imagetype >= IMGTYPE_BIRTHHUMAN && imagetype <= IMPTYPE_VIRGINBEAST) {}									// `J` new .06.03.01 for DarkArk - These should not have preg varients 
 		else if (girl->is_pregnant())

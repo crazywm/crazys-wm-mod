@@ -205,7 +205,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		}
 		else
 		{
-			ss << girlName << " knows a note.  To bad its the only one she knows and plays it over and over.";
+			ss << girlName << " knows a note.  Too bad it's the only one she knows and plays it over and over.";
 		}
 	}
 	else

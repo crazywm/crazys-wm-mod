@@ -182,7 +182,7 @@ sScript *cGameScript::Process(sScript *Script)
 	case 107:	return Script_SetGirlStatus(Script);					// `J` new .06.03.00
 	case 108:	return Script_EndPregnancy(Script);						// `J` new .06.03.00
 	case 109:	return Script_CreatePregnancy(Script);					// `J` new .06.03.00
-	case 110:	return Script_ElseNew(Script);								// `J` new .06.03.01
+	case 110:	return Script_ElseNew(Script);							// `J` new .06.03.01
 	case 111:	return Script_BrandTarget(Script);						// `J` new .06.03.01 for DarkArk
 	case 112:	return Script_RapeTarget(Script);						// `J` new .06.03.01 for DarkArk
 	case 113:	return Script_RapeBeastTarget(Script);					// `J` new .06.03.01 for DarkArk
@@ -2212,8 +2212,8 @@ sScript* cGameScript::Script_EndPregnancy(sScript* Script)			// `J` new .06.03.0
 sScript* cGameScript::Script_CreatePregnancy(sScript* Script)		// `J` new .06.03.00
 {
 	int value[3];
-	value[0] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
-	value[1] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
+	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_Selection] : Script->m_Entries[0].m_Selection);
+	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 	value[2] = (Script->m_Entries[2].m_Var == 1 ? m_Vars[Script->m_Entries[2].m_lValue] : Script->m_Entries[2].m_lValue);
 
 	if (value[2])							// force==true remove old pregnancies

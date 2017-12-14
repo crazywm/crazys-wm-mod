@@ -1557,6 +1557,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				else
 				{
 					ss << " stayed inside and read a book.\n";
+					imagetype = IMGTYPE_STUDY;
 				}
 			}
 			else if (girl->is_fighter())
@@ -1941,6 +1942,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 			}
 			if (workout < 0) workout = 0;
+			imagetype = IMGTYPE_SPORT;
 			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % workout);
 			g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % workout);
 			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % workout);
