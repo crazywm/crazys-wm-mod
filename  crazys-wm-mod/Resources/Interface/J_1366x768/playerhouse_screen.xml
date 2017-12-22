@@ -1,19 +1,22 @@
 <Screen>
-<Window   Name="Player House Window"                      XPos="26"   YPos="26"  Width="1314" Height="716" Border="0" />
-<Text     Name="Your House"         Text="Your House"     XPos="8"    YPos="2"   Width="232"  Height="30"  FontSize="16" />
-<Image    Name="House"              File="House.jpg"      XPos="8"    YPos="48"  Width="878"  Height="660" />
+<Window     Name="Player House Window"                                      XPos="13"       YPos="14"       Width="1340"    Height="740"    Border="1"  />
+<Text       Name="BuildingLabel"        Text="Your House"                   XPos="10"       YPos="2"        Width="700"     Height="40"     FontSize="20"            />
+<Image      Name="Background"           File="House.jpg"                    XPos="10"       YPos="35"       Width="1020"    Height="660"     />
+<Button     Name="WalkButton"           Image=""                            XPos="250"      YPos="698"      Width="160"     Height="32"     Transparency="true"     Scale="true"     />
 
-<Button   Name="Weeks"              Image="NextWeek"      XPos="1126" YPos="8"   Width="180"  Height="36"  Transparency="true" Scale="true" />
-<Text     Name="HouseDetails"       Text=""               XPos="1066" YPos="50"  Width="240"  Height="240" FontSize="10" />
+<Button     Name="Next Week"            Image="NextWeek"                    XPos="1100"     YPos="10"       Width="160"     Height="32"     Transparency="true"     Scale="true"     />
+<Text       Name="BuildingDetails"      Text="Details"                      XPos="1030"     YPos="50"       Width="310"     Height="300"    FontSize="10"  />    
+<Button     Name="Girl Management"      Image="Girls"                       XPos="1100"     YPos="400"      Width="160"     Height="32"     Transparency="true"     Scale="true"     />
+<Button     Name="Staff Management"     Image="Staff"                       XPos="1100"     YPos="450"      Width="160"     Height="32"     Transparency="true"     Scale="true"     />
+<Button     Name="Setup"                Image="Building"                    XPos="1100"     YPos="500"      Width="160"     Height="32"     Transparency="true"     Scale="true"     />
+<Button     Name="Dungeon"              Image="Dungeon"                     XPos="1100"     YPos="550"      Width="160"     Height="32"     Transparency="true"     Scale="true"     />
+<Button     Name="Turn Summary"         Image="TurnSum"                     XPos="820"      YPos="698"      Width="160"     Height="32"     Transparency="true"     Scale="true"  />
 
-<Button   Name="Girls"              Image="Girls"         XPos="1126" YPos="298" Width="180"  Height="36"  Transparency="true" Scale="true" />
-<Button   Name="Staff"              Image="Staff"         XPos="1126" YPos="338" Width="180"  Height="36"  Transparency="true" Scale="true" />
-<Button   Name="Dungeon"            Image="Dungeon"       XPos="1126" YPos="438" Width="180"  Height="36"  Transparency="true" Scale="true" />
-<Button   Name="House"              Image="Building"      XPos="1126" YPos="378" Width="180"  Height="36"  Transparency="true" Scale="true" />
-<Button   Name="BackButton"         Image="Back"          XPos="1126" YPos="672"  Width="180"  Height="36"  Transparency="true" Scale="true" />
+<Button     Name="House"                Image="ShowMore"                    XPos="1100"     YPos="650"      Width="160"     Height="32"     Transparency="true"     Scale="true"     />
 
-<Button   Name="WalkButton"         Image=""              XPos="176"  YPos="540" Width="160"  Height="32"  Transparency="true" Scale="true" />
-<Button   Name="Turn"               Image="TurnSum"       XPos="432"  YPos="540" Width="160"  Height="32"  Transparency="true" Scale="true" />
 
-<Button   Name="SetUp"              Image="ShowMore"      XPos="176"  YPos="540" Width="160"  Height="32"  Transparency="true" Scale="true" />
+
+
+<Button     Name="BackButton"           Image="Back"                        XPos="1130"      YPos="690"      Width="200"     Height="40"     Transparency="true" Scale="true"  />
+<Image      Name="GirlImage"            File="blank.png"                    XPos="152"      YPos="15"       Width="200"     Height="200"    Hidden="true"  />
 </Screen>

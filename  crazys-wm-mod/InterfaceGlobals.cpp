@@ -33,20 +33,20 @@
 #include "cScreenPropertyManagement.h"	// `J` added
 #include "cScreenPrison.h"
 #include "cScreenTown.h"
-#include "cAuctionScreen.h"
-#include "cArenaScreen.h"
-#include "cArenaTry.h"
-#include "cHouseScreen.h"
-#include "cClinicScreen.h"
-#include "cCentreScreen.h"
+#include "cScreenAuction.h"
+#include "cScreenArena.h"
+#include "cScreenArenaTry.h"
+#include "cScreenHouse.h"
+#include "cScreenClinic.h"
+#include "cScreenCentre.h"
 #include "cScreenMovie.h"
-#include "cFarmScreen.h"
-#include "cClinicTry.h"
-#include "cCastingTry.h"
+#include "cScreenFarm.h"
+#include "cScreenClinicTry.h"
+#include "cScreenCastingTry.h"
 #include "cScreenSlaveMarket.h"
 #include "cScreenMayor.h"
 #include "cScreenBank.h"
-#include "cScreenHouse.h"
+#include "cScreenHouseDetails.h"
 #include "cScreenItemManagement.h"
 #include "cScreenBuildingSetup.h"
 #include "cScreenGangs.h"
@@ -98,20 +98,20 @@ cScreenDungeon g_Dungeon;
 cScreenSlaveMarket g_SlaveMarket;
 cScreenTown g_TownScreen;
 cScreenGallery g_GalleryScreen;
-cArenaTry g_ArenaTry;
-cClinicScreen g_ClinicScreen;
-cCentreScreen g_CentreScreen;
-cHouseScreen g_HouseScreen;
-cFarmScreen g_FarmScreen;
+cScreenArenaTry g_ArenaTry;
+cScreenClinic g_ClinicScreen;
+cScreenCentre g_CentreScreen;
+cScreenHouse g_HouseScreen;
+cScreenFarm g_FarmScreen;
 cMovieScreen g_MovieScreen;
-cClinicTry g_ClinicTry;
-cCastingTry g_CastingTry;
-cArenaScreen g_ArenaScreen;
-cAuctionScreen g_AuctionScreen;
+cScreenClinicTry g_ClinicTry;
+cScreenCastingTry g_CastingTry;
+cScreenArena g_ArenaScreen;
+cScreenAuction g_AuctionScreen;
 cScreenBuildingSetup g_BuildingSetupScreen;
 cScreenMayor g_MayorsOfficeScreen;
 cScreenBank g_BankScreen;
-cScreenHouse g_PlayersHouse;
+cScreenHouseDetails g_PlayersHouse;
 cScreenItemManagement g_ItemManagement;
 cScreenPrison g_PrisonScreen;
 cBuildingManagement g_BuildingManagementScreen;
@@ -424,7 +424,7 @@ void LoadInterface()
 			if (name == "WhoreMaster")	g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, x, y, w, h, text, fontsize, false, false, false, r, g, b);
 			if (name == "FileName")		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, x, y, w, h, e, true, false, false, true, true, fontsize, rowheight);
 			if (name == "LoadGame")		g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGLOAD, x, y, w, h, Transparency, Scale);
-			if (name == "Back")			g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGBACK, x, y, w, h, Transparency, Scale);
+			if (name == "BackButton")	g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGBACK, x, y, w, h, Transparency, Scale);
 			if (name == "Background")
 			{
 				DirPath dp = ImagePath(file);

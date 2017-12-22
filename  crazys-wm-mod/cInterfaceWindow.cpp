@@ -1356,12 +1356,22 @@ void cInterfaceWindowXML::register_id(int id, string name)
 	id_to_name[id] = name;
 }
 
-int cInterfaceWindowXML::get_id(string s, bool essential)
+int cInterfaceWindowXML::get_id(string a, string b, string c, string d, string e)
 {
-	if (name_to_id.find(s) != name_to_id.end())	return name_to_id[s];
-	if (!essential) 								return -1;
-	g_LogFile.ss() << "Error: no ID for interface name '" << s << "'.";
-	g_LogFile.ssend();
+	if (name_to_id.find(a) != name_to_id.end())	return name_to_id[a];
+	if (name_to_id.find(b) != name_to_id.end())	return name_to_id[b];
+	if (name_to_id.find(c) != name_to_id.end())	return name_to_id[c];
+	if (name_to_id.find(d) != name_to_id.end())	return name_to_id[d];
+	if (name_to_id.find(e) != name_to_id.end())	return name_to_id[e];
+
+	bool un = false;
+	if (a == "*Unused*" || a == "*Optional*")	{ un=true; a=""; }
+	if (b == "*Unused*" || b == "*Optional*")	{ un=true; b=""; }
+	if (c == "*Unused*" || c == "*Optional*")	{ un=true; c=""; }
+	if (d == "*Unused*" || d == "*Optional*")	{ un=true; d=""; }
+	if (e == "*Unused*" || e == "*Optional*")	{ un=true; e=""; }
+
+	if (!un || cfg.debug.log_debug()) { g_LogFile.ss() << "Error setting ids for interface " << (un ? " but it is not used or optional " : "") << "- acceptable names for this item are : '" << a << "', '" << b << "', '" << c << "', '" << d << "', '" << e << "'.";	g_LogFile.ssend(); }
 	return -1;
 }
 

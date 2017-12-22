@@ -146,16 +146,18 @@ cScreenTransfer::~cScreenTransfer() {}
 
 void cScreenTransfer::set_ids()
 {
-	ids_set = true;
-	labelleft_id	= get_id("LabelLeft");
-	labelright_id	= get_id("LabelRight");
-	brothelleft_id	= get_id("BrothelLeft"); //0
-	listleft_id		= get_id("ListLeft");
-	listright_id	= get_id("ListRight");
-	brothelright_id	= get_id("BrothelRight"); //3
-	shiftright_id	= get_id("ShiftRight");
-	shiftleft_id	= get_id("ShiftLeft");
-	back_id			= get_id("Back");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenTransfer");
+
+	labelleft_id	/**/ = get_id("LabelLeft");
+	labelright_id	/**/ = get_id("LabelRight");
+	brothelleft_id	/**/ = get_id("BrothelLeft"); //0
+	listleft_id		/**/ = get_id("ListLeft");
+	listright_id	/**/ = get_id("ListRight");
+	brothelright_id	/**/ = get_id("BrothelRight"); //3
+	shiftright_id	/**/ = get_id("ShiftRight");
+	shiftleft_id	/**/ = get_id("ShiftLeft");
+	back_id			/**/ = get_id("BackButton","Back");
 
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent

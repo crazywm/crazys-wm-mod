@@ -45,14 +45,16 @@ cScreenBank::~cScreenBank() {}
 
 void cScreenBank::set_ids()
 {
-	ids_set = true;
-	back_id = get_id("BackButton");
-	details_id = get_id("BankDetails");
-	header_id = get_id("ScreenHeader");
-	deposit_id = get_id("DepositButton");
-	depositall_id = get_id("DepositAllButton");
-	withdraw_id = get_id("WithdrawButton");
-	withdrawall_id = get_id("WithdrawAllButton");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenBank");
+
+	back_id			/**/ = get_id("BackButton", "Back");
+	details_id		/**/ = get_id("BankDetails");
+	header_id		/**/ = get_id("ScreenHeader");
+	deposit_id		/**/ = get_id("DepositButton");
+	depositall_id	/**/ = get_id("DepositAllButton");
+	withdraw_id		/**/ = get_id("WithdrawButton");
+	withdrawall_id	/**/ = get_id("WithdrawAllButton");
 }
 
 void cScreenBank::init()

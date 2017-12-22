@@ -42,11 +42,13 @@ cScreenGetInput::~cScreenGetInput() {}
 
 void cScreenGetInput::set_ids()
 {
-	ids_set = true;
-	id_btn_ok = get_id("Ok");
-	id_btn_cancel = get_id("Cancel");
-	id_label = get_id("Label");
-	id_textfield = get_id("TextField");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenGetInput");
+
+	id_btn_ok		/**/ = get_id("Ok");
+	id_btn_cancel	/**/ = get_id("Cancel");
+	id_label		/**/ = get_id("Label");
+	id_textfield	/**/ = get_id("TextField");
 }
 
 void cScreenGetInput::process()

@@ -75,39 +75,41 @@ cScreenSlaveMarket::~cScreenSlaveMarket() {}
 
 void cScreenSlaveMarket::set_ids()
 {
-	ids_set = true;
-	back_id	= get_id("BackButton");
-	more_id = get_id("ShowMoreButton");
-	buy_slave_id = get_id("BuySlaveButton");
-	cur_brothel_id = get_id("CurrentBrothel");
-	slave_list_id = get_id("SlaveList");
-	trait_list_id = get_id("TraitList");
-	trait_list_text_id = get_id("TraitListT");
-	details_id = get_id("SlaveDetails");
-	trait_id = get_id("TraitDesc");
-	girl_desc_id = get_id("GirlDesc");
-	slave_image_id = get_id("SlaveImage");
-	header_id = get_id("ScreenHeader");
-	gold_id = get_id("Gold");
-	slave_market_id = get_id("SlaveMarket");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenSlaveMarket");
 
-	releaseto_id = get_id("ReleaseTo");
-	roomsfree_id = get_id("RoomsFree");
+	back_id				/**/ = get_id("BackButton", "Back");
+	more_id				/**/ = get_id("ShowMoreButton");
+	buy_slave_id		/**/ = get_id("BuySlaveButton");
+	cur_brothel_id		/**/ = get_id("CurrentBrothel","*Unused*");//
+	slave_list_id		/**/ = get_id("SlaveList");
+	trait_list_id		/**/ = get_id("TraitList","*Unused*");//
+	trait_list_text_id	/**/ = get_id("TraitListT");
+	details_id			/**/ = get_id("SlaveDetails");
+	trait_id			/**/ = get_id("TraitDesc","*Unused*");//
+	girl_desc_id		/**/ = get_id("GirlDesc");
+	image_id			/**/ = get_id("GirlImage");
+	header_id			/**/ = get_id("ScreenHeader","*Unused*");//
+	gold_id				/**/ = get_id("Gold", "*Unused*");
+	slave_market_id		/**/ = get_id("SlaveMarket");
 
-	brothel0_id = get_id("Brothel0");
-	brothel1_id = get_id("Brothel1");
-	brothel2_id = get_id("Brothel2");
-	brothel3_id = get_id("Brothel3");
-	brothel4_id = get_id("Brothel4");
-	brothel5_id = get_id("Brothel5");
-	brothel6_id = get_id("Brothel6");
-	house_id = get_id("House");
-	clinic_id = get_id("Clinic");
-	studio_id = get_id("Studio");
-	arena_id = get_id("Arena");
-	centre_id = get_id("Centre");
-	farm_id = get_id("Farm");
-	dungeon_id = get_id("Dungeon");
+	releaseto_id		/**/ = get_id("ReleaseTo");
+	roomsfree_id		/**/ = get_id("RoomsFree");
+
+	brothel0_id			/**/ = get_id("Brothel0");
+	brothel1_id			/**/ = get_id("Brothel1");
+	brothel2_id			/**/ = get_id("Brothel2");
+	brothel3_id			/**/ = get_id("Brothel3");
+	brothel4_id			/**/ = get_id("Brothel4");
+	brothel5_id			/**/ = get_id("Brothel5");
+	brothel6_id			/**/ = get_id("Brothel6");
+	house_id			/**/ = get_id("House");
+	clinic_id			/**/ = get_id("Clinic");
+	studio_id			/**/ = get_id("Studio");
+	arena_id			/**/ = get_id("Arena");
+	centre_id			/**/ = get_id("Centre");
+	farm_id				/**/ = get_id("Farm");
+	dungeon_id			/**/ = get_id("Dungeon");
 }
 
 void cScreenSlaveMarket::init()
@@ -389,7 +391,7 @@ void cScreenSlaveMarket::process()
 	if (check_keys()) return;						// handle arrow keys
 	init();											// set up the window if needed
 	check_events();									// check to see if there's a button event needing handling
-	HideImage(slave_image_id, (selection < 0));		// hide/show image based on whether a girl is selected
+	HideImage(image_id, (selection < 0));		// hide/show image based on whether a girl is selected
 	if (selection < 0)								// if no girl is selected, clear girl info
 	{
 		EditTextItem("No girl selected", details_id);
@@ -996,8 +998,8 @@ bool cScreenSlaveMarket::buy_slaves()
 
 	// finish it
 	selection = -1;
-	PrepareImage(slave_image_id, 0, -1, false, -1, false, "blank");
-	HideImage(slave_image_id, true);		// hide/show image based on whether a girl is selected
+	PrepareImage(image_id, 0, -1, false, -1, false, "blank");
+	HideImage(image_id, true);		// hide/show image based on whether a girl is selected
 	if (selection < 0)								// if no girl is selected, clear girl info
 	{
 		EditTextItem("No girl selected", details_id);
@@ -1066,7 +1068,7 @@ bool cScreenSlaveMarket::change_selected_girl()
 	selection = GetSelectedItemFromList(slave_list_id);
 	if (selection < 0)
 	{
-		HideImage(slave_image_id, (selection < 0));		// hide/show image based on whether a girl is selected
+		HideImage(image_id, (selection < 0));		// hide/show image based on whether a girl is selected
 		if (selection < 0)								// if no girl is selected, clear girl info
 		{
 			EditTextItem("No girl selected", details_id);
@@ -1117,7 +1119,7 @@ bool cScreenSlaveMarket::change_selected_girl()
 	ImageNum = -1;										// I don't understand where this is used...
 
 	preparescreenitems(girl);
-	PrepareImage(slave_image_id, girl, IMGTYPE_PRESENTED, true, ImageNum);
+	PrepareImage(image_id, girl, IMGTYPE_PRESENTED, true, ImageNum);
 
 	return true;
 }

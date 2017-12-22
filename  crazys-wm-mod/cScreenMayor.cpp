@@ -49,11 +49,13 @@ cScreenMayor::~cScreenMayor() {}
 
 void cScreenMayor::set_ids()
 {
-	ids_set = true;
-	back_id = get_id("BackButton");
-	bribe_id = get_id("BribeButton");
-	details_id = get_id("MayorDetails");
-	header_id = get_id("ScreenHeader");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenMayor");
+
+	back_id			/**/ = get_id("BackButton", "Back");
+	bribe_id		/**/ = get_id("BribeButton");
+	details_id		/**/ = get_id("MayorDetails");
+	header_id		/**/ = get_id("ScreenHeader");
 }
 
 void cScreenMayor::init()

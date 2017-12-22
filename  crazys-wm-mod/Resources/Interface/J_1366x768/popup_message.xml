@@ -1,0 +1,3 @@
+<Screen>
+<Window     Name="Message Box"                                              XPos="321"      YPos="375"      Width="700"     Height="225"    Border="1"  FontSize="16"   Scale="true"  />
+</Screen>

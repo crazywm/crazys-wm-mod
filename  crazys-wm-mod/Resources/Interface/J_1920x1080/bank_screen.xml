@@ -1,11 +1,11 @@
 <Screen>
-<Window   Name="Bank Window"                                                   XPos="560"	YPos="240"	Width="800"	Height="600"	Border="1" />
-<Image    Name="BankIcon"           File="Bank.png"                            XPos="650"	YPos="50"	Width="100"	Height="100" />
-<Text     Name="ScreenHeader"       Text="Town Bank"                           XPos="50"	YPos="50"	Width="600"	Height="50"	FontSize="32" />
-<Text     Name="BankDetails"        Text=""                                    XPos="50"	YPos="100"	Width="600"	Height="200"	FontSize="24" />
-<Button   Name="DepositButton"      Image="Deposit"                            XPos="100"	YPos="300"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
-<Button   Name="DepositAllButton"   Image="DepositAll"                         XPos="450"	YPos="300"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
-<Button   Name="WithdrawButton"     Image="Withdraw"                           XPos="100"	YPos="400"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
-<Button   Name="WithdrawAllButton"  Image="WithdrawAll"                        XPos="450"	YPos="400"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
-<Button   Name="BackButton"          Image="Back"                              XPos="275"	YPos="500"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Window   Name="Bank Window"                                                   XPos="560"           YPos="240"           Width="800"           Height="600"           Border="1" />
+<Image    Name="BankIcon"           File="Bank.png"                            XPos="650"           YPos="50"           Width="100"           Height="100" />
+<Text     Name="ScreenHeader"       Text="Town Bank"                           XPos="50"           YPos="50"           Width="600"           Height="50"           FontSize="32" />
+<Text     Name="BankDetails"        Text=""                                    XPos="50"           YPos="100"           Width="600"           Height="200"           FontSize="24" />
+<Button   Name="DepositButton"      Image="Deposit"                            XPos="100"           YPos="300"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
+<Button   Name="DepositAllButton"   Image="DepositAll"                         XPos="450"           YPos="300"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
+<Button   Name="WithdrawButton"     Image="Withdraw"                           XPos="100"           YPos="400"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
+<Button   Name="WithdrawAllButton"  Image="WithdrawAll"                        XPos="450"           YPos="400"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
+<Button   Name="BackButton"          Image="Back"                              XPos="275"           YPos="500"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
 </Screen>

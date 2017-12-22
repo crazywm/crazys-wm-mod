@@ -4,5 +4,5 @@
 <Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="194"      YPos="0"        Width="800"     Height="80"  FontSize="64"  Red="200"   Green="30"  Blue="30"    />
 <ListBox    Name="FileName"                                                 XPos="258"      YPos="100"      Width="300"     Height="400" Border="1"  />
 <Button     Name="LoadGame"             Image="Load"                        XPos="200"      YPos="530"      Width="160"     Height="32"  Transparency="true" Scale="true"  />
-<Button     Name="Back"                 Image="Back"                        XPos="440"      YPos="530"      Width="160"     Height="32"  Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="440"      YPos="530"      Width="160"     Height="32"  Transparency="true" Scale="true"  />
 </Screen>

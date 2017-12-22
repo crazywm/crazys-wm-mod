@@ -1,8 +1,8 @@
 <Screen>
-<Window     Name="Farm Screen Window"                                       XPos="12"       YPos="14"       Width="1000"    Height="740"    Border="1"  />
-<Text       Name="FarmLabel"            Text="The Farm"                     XPos="10"       YPos="2"        Width="700"     Height="40"     FontSize="20"            />
-<Image      Name="Farm"                 File="Farm.png"                     XPos="10"       YPos="35"       Width="780"     Height="660"     />
-                                                                            
+<Window     Name="Farm Window"                                              XPos="12"       YPos="14"       Width="1000"    Height="740"    Border="1"  />
+<Text       Name="BuildingLabel"        Text="The Farm"                     XPos="10"       YPos="2"        Width="700"     Height="40"     FontSize="20"            />
+<Image      Name="Background"           File="Farm.png"                     XPos="10"       YPos="35"       Width="780"     Height="660"     />
+
 <Button     Name="Weeks"                Image="NextWeek"                    XPos="815"      YPos="10"       Width="160"     Height="32"     Transparency="true"     Scale="true"     />
 <Text       Name="FarmDetails"          Text=""                             XPos="795"      YPos="50"       Width="205"     Height="300"    FontSize="10"  />    
 

@@ -253,15 +253,17 @@ void cBuildingManagement::set_ids()
 {
 	stringstream ss;
 
-	ids_set		= true;
-	header_id	= get_id("ScreenHeader");
-	back_id		= get_id("BackButton");
-	capacity_id	= get_id("Capacity");
-	narrative_id	= get_id("Narrative");
-	new_id		= get_id("NewButton");
-	gold_id		= get_id("Gold");
-	total_cost_id	= get_id("TotalCost");
-	buy_button_id	= get_id("BuyButton");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cBuildingManagement");
+
+	header_id = get_id("ScreenHeader");
+	back_id				= get_id("BackButton","Back");
+	capacity_id			= get_id("Capacity");
+	narrative_id		= get_id("Narrative");
+	new_id				= get_id("NewButton");
+	gold_id				= get_id("Gold");
+	total_cost_id		= get_id("TotalCost");
+	buy_button_id		= get_id("BuyButton");
 	revert_button_id	= get_id("RevertButton");
 	for(int i = 0; i < 6; i++) {
 		ss.str("");

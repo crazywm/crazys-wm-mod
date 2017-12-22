@@ -230,7 +230,7 @@ virtual	void process()=0;
 	void widget_widget(TiXmlElement *el, cXmlWidget &vw);
 	void widget_image_item(TiXmlElement *el, cXmlWidget &vw);
 	void widget_slider_item(TiXmlElement *el, cXmlWidget &vw);
-	int get_id(string name, bool essential=false);
+	int get_id(string a, string b = "", string c = "", string d = "", string e = "");
 
 	cXmlWidget* new_widget(string name);
 	cXmlWidget* find_widget(string name);

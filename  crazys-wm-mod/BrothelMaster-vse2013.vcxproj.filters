@@ -226,30 +226,6 @@
     <ClCompile Include="CSurface.cpp">
       <Filter>Graphics Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="cArenaScreen.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="cArenaTry.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="cAuctionScreen.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="cCastingTry.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="cCentreScreen.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="cClinicScreen.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="cClinicTry.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="cHouseScreen.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
     <ClCompile Include="cScreenArenaManagement.cpp">
       <Filter>Game Screens</Filter>
     </ClCompile>
@@ -284,9 +260,6 @@
       <Filter>Game Screens</Filter>
     </ClCompile>
     <ClCompile Include="cScreenGirlManagement.cpp">
-      <Filter>Game Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="cScreenHouse.cpp">
       <Filter>Game Screens</Filter>
     </ClCompile>
     <ClCompile Include="cScreenHouseManagement.cpp">
@@ -540,7 +513,6 @@
       <Filter>Jobs</Filter>
     </ClCompile>
     <ClCompile Include="cFarm.cpp" />
-    <ClCompile Include="cFarmScreen.cpp" />
     <ClCompile Include="cScreenFarmManagement.cpp" />
     <ClCompile Include="WorkFarmHand.cpp" />
     <ClCompile Include="WorkFarmManager.cpp" />
@@ -628,6 +600,16 @@
     <ClCompile Include="cScreenMovie.cpp" />
     <ClCompile Include="cScreenPreparingGame.cpp" />
     <ClCompile Include="cScreenTransfer.cpp" />
+    <ClCompile Include="cScreenArena.cpp" />
+    <ClCompile Include="cScreenCentre.cpp" />
+    <ClCompile Include="cScreenClinic.cpp" />
+    <ClCompile Include="cScreenFarm.cpp" />
+    <ClCompile Include="cScreenHouseDetails.cpp" />
+    <ClCompile Include="cScreenHouse.cpp" />
+    <ClCompile Include="cScreenCastingTry.cpp" />
+    <ClCompile Include="cScreenClinicTry.cpp" />
+    <ClCompile Include="cScreenArenaTry.cpp" />
+    <ClCompile Include="cScreenAuction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cButton.h">
@@ -852,30 +834,6 @@
     <ClInclude Include="CSurface.h">
       <Filter>Graphics Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="cArenaScreen.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="cArenaTry.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="cAuctionScreen.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="cCastingTry.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="cCentreScreen.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="cClinicScreen.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="cClinicTry.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="cHouseScreen.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
     <ClInclude Include="cScreenArenaManagement.h">
       <Filter>Game Screens</Filter>
     </ClInclude>
@@ -910,9 +868,6 @@
       <Filter>Game Screens</Filter>
     </ClInclude>
     <ClInclude Include="cScreenGirlManagement.h">
-      <Filter>Game Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="cScreenHouse.h">
       <Filter>Game Screens</Filter>
     </ClInclude>
     <ClInclude Include="cScreenHouseManagement.h">
@@ -958,9 +913,6 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="sFacilityList.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="cFarmScreen.h">
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="cScreenFarmManagement.h">
@@ -1063,6 +1015,36 @@
       <Filter>Misc</Filter>
     </ClInclude>
     <ClInclude Include="cScreenTransfer.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenArena.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenCentre.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenClinic.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenFarm.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenHouseDetails.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenHouse.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenCastingTry.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenClinicTry.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenAuction.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="cScreenArenaTry.h">
       <Filter>Misc</Filter>
     </ClInclude>
   </ItemGroup>

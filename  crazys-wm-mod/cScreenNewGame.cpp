@@ -77,17 +77,19 @@ cScreenNewGame::cScreenNewGame()
 
 void cScreenNewGame::set_ids()
 {
-	ids_set = true;
-	ok_id = get_id("Ok");
-	cancel_id = get_id("Cancel");
-	brothel_id = get_id("BrothelName");
-	pname_id = get_id("PlayerName");
-	psname_id = get_id("PlayerSurname");
-	pbm_id = get_id("PlayerBirthMonth");
-	pbm1_id = get_id("PlayerBirthMonthNum");
-	pbd_id = get_id("PlayerBirthDay");
-	pbd1_id = get_id("PlayerBirthDayNum");
-	phn_id = get_id("PlayerHoroscope");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenNewGame");
+
+	ok_id			/**/ = get_id("Ok");
+	cancel_id		/**/ = get_id("Cancel");
+	brothel_id		/**/ = get_id("BrothelName");
+	pname_id		/**/ = get_id("PlayerName");
+	psname_id		/**/ = get_id("PlayerSurname");
+	pbm_id			/**/ = get_id("PlayerBirthMonth");
+	pbm1_id			/**/ = get_id("PlayerBirthMonthNum");
+	pbd_id			/**/ = get_id("PlayerBirthDay");
+	pbd1_id			/**/ = get_id("PlayerBirthDayNum");
+	phn_id			/**/ = get_id("PlayerHoroscope");
 }
 
 void cScreenNewGame::init()

@@ -98,36 +98,38 @@ cScreenGirlDetails::~cScreenGirlDetails() {}
 
 void cScreenGirlDetails::set_ids()
 {
-	ids_set = true;
-	back_id = get_id("BackButton");
-	girlname_id = get_id("GirlName");
-	girldesc_id = get_id("GirlDescription");
-	girlimage_id = get_id("GirlImage");
-	more_id = get_id("MoreButton");
-	antipreg_id = get_id("UseAntiPregToggle");
-	prev_id = get_id("PrevButton");
-	next_id = get_id("NextButton");
-	inventory_id = get_id("InventoryButton");
-	senddungeon_id = get_id("SendDungeonButton");
-	reldungeon_id = get_id("ReleaseDungeonButton");
-	interact_id = get_id("InteractButton");
-	takegold_id = get_id("TakeGoldButton");
-	accomup_id = get_id("AccomUpButton");
-	accomdown_id = get_id("AccomDownButton");
-	accom_id = get_id("AccomSlider");
-	accomval_id = get_id("AccomValue");
-	houseperc_id = get_id("HousePercSlider");
-	housepercval_id = get_id("HousePercValue");
-	gallery_id = get_id("GalleryButton");
-	jobtypehead_id = get_id("JobTypeHeader");
-	jobtypelist_id = get_id("JobTypeList");
-	jobhead_id = get_id("JobHeader");
-	joblist_id = get_id("JobList");
-	day_id = get_id("DayButton");
-	night_id = get_id("NightButton");
-	traithead_id = get_id("TraitHeader");
-	traitlist_id = get_id("TraitList");
-	traitdesc_id = get_id("TraitDescription");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenGirlDetails");
+
+	back_id			/**/ = get_id("BackButton", "Back");
+	girlname_id		/**/ = get_id("GirlName");
+	girldesc_id		/**/ = get_id("GirlDescription");
+	girlimage_id	/**/ = get_id("GirlImage");
+	more_id			/**/ = get_id("MoreButton");
+	antipreg_id		/**/ = get_id("UseAntiPregToggle");
+	prev_id			/**/ = get_id("PrevButton","Prev");
+	next_id			/**/ = get_id("NextButton","Next");
+	inventory_id	/**/ = get_id("InventoryButton");
+	senddungeon_id	/**/ = get_id("SendDungeonButton");
+	reldungeon_id	/**/ = get_id("ReleaseDungeonButton");
+	interact_id		/**/ = get_id("InteractButton");
+	takegold_id		/**/ = get_id("TakeGoldButton");
+	accomup_id		/**/ = get_id("AccomUpButton");//
+	accomdown_id	/**/ = get_id("AccomDownButton");//
+	accom_id		/**/ = get_id("AccomSlider");
+	accomval_id		/**/ = get_id("AccomValue");
+	houseperc_id	/**/ = get_id("HousePercSlider");
+	housepercval_id	/**/ = get_id("HousePercValue");
+	gallery_id		/**/ = get_id("GalleryButton");
+	jobtypehead_id	/**/ = get_id("JobTypeHeader");
+	jobtypelist_id	/**/ = get_id("JobTypeList");
+	jobhead_id		/**/ = get_id("JobHeader");
+	joblist_id		/**/ = get_id("JobList");
+	day_id			/**/ = get_id("DayButton");
+	night_id		/**/ = get_id("NightButton");
+	traithead_id	/**/ = get_id("TraitHeader");
+	traitlist_id	/**/ = get_id("TraitList");
+	traitdesc_id	/**/ = get_id("TraitDescription");
 }
 
 void cScreenGirlDetails::Free()
@@ -923,7 +925,7 @@ sGirl *cScreenGirlDetails::remove_selected_girl()		// the selected girl is to be
 {
 	sGirl *next_girl = 0;
 	if (cycle_girls.size() == 0) return 0;
-	int cur_id = cycle_girls[cycle_pos];
+	int cur_id			= cycle_girls[cycle_pos];
 	cycle_girls.erase(cycle_girls.begin() + cycle_pos);  // remove her
 	if (cycle_pos >= (int)cycle_girls.size())
 	{												

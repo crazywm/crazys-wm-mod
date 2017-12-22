@@ -63,13 +63,15 @@ cScreenMovieMaker::~cScreenMovieMaker() {}
 
 void cScreenMovieMaker::set_ids()
 {
-	ids_set = true;
-	curstudio_id =		get_id("Studio");
-	back_id =			get_id("BackButton");
-	sceneslist_id =		get_id("ScenesList");
-	releasemovie_id =	get_id("ReleaseMovieButton");
-	girlimage_id =		get_id("GirlImage");
-	removescene_id =	get_id("RemoveScene");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenMovieMaker");
+
+	curstudio_id		/**/ = get_id("Studio");
+	back_id				/**/ = get_id("BackButton");
+	sceneslist_id		/**/ = get_id("ScenesList");
+	releasemovie_id		/**/ = get_id("ReleaseMovieButton");
+	girlimage_id		/**/ = get_id("GirlImage");//
+	removescene_id		/**/ = get_id("RemoveScene");//
 }
 
 void cScreenMovieMaker::init()

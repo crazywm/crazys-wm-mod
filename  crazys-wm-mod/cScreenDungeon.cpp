@@ -78,39 +78,40 @@ cScreenDungeon::~cScreenDungeon() {}
 
 void cScreenDungeon::set_ids()
 {
-	if (cfg.debug.log_debug())	g_LogFile.write("cScreenDungeon::set_ids > Start");
-	ids_set = true;
-	back_id 		= get_id("BackButton");
-	header_id 		= get_id("DungeonHeader");
-	gold_id			= get_id("Gold");
-	girllist_id 	= get_id("GirlList");
-	girlimage_id 	= get_id("GirlImage");
-	brandslave_id 	= get_id("BrandSlaveButton");
-	release_id 		= get_id("ReleaseButton");
-	allowfood_id 	= get_id("AllowFoodButton");
-	torture_id 		= get_id("TortureButton");
-	stopfood_id 	= get_id("StopFeedingButton");
-	interact_id 	= get_id("InteractButton");
-	releaseall_id 	= get_id("ReleaseAllButton");
-	releasecust_id 	= get_id("ReleaseCustButton");
-	viewdetails_id 	= get_id("DetailsButton");
-	sellslave_id 	= get_id("SellButton");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenDungeon");
 
-	releaseto_id 	= get_id("ReleaseTo");
-	roomsfree_id 	= get_id("RoomsFree");
-	brothel0_id 	= get_id("Brothel0");
-	brothel1_id 	= get_id("Brothel1");
-	brothel2_id 	= get_id("Brothel2");
-	brothel3_id 	= get_id("Brothel3");
-	brothel4_id 	= get_id("Brothel4");
-	brothel5_id 	= get_id("Brothel5");
-	brothel6_id 	= get_id("Brothel6");
-	house_id 		= get_id("House");
-	clinic_id 		= get_id("Clinic");
-	studio_id 		= get_id("Studio");
-	arena_id 		= get_id("Arena");
-	centre_id 		= get_id("Centre");
-	farm_id 		= get_id("Farm");
+	back_id 		/**/ = get_id("BackButton", "Back");
+	header_id 		/**/ = get_id("DungeonHeader");
+	gold_id			/**/ = get_id("Gold");
+	girllist_id 	/**/ = get_id("GirlList");
+	girlimage_id 	/**/ = get_id("GirlImage");
+	brandslave_id 	/**/ = get_id("BrandSlaveButton");
+	release_id 		/**/ = get_id("ReleaseButton");
+	allowfood_id 	/**/ = get_id("AllowFoodButton");
+	torture_id 		/**/ = get_id("TortureButton");
+	stopfood_id 	/**/ = get_id("StopFeedingButton");
+	interact_id 	/**/ = get_id("InteractButton");
+	releaseall_id 	/**/ = get_id("ReleaseAllButton");
+	releasecust_id 	/**/ = get_id("ReleaseCustButton");
+	viewdetails_id 	/**/ = get_id("DetailsButton");
+	sellslave_id 	/**/ = get_id("SellButton");
+
+	releaseto_id 	/**/ = get_id("ReleaseTo");
+	roomsfree_id 	/**/ = get_id("RoomsFree");
+	brothel0_id 	/**/ = get_id("Brothel0");
+	brothel1_id 	/**/ = get_id("Brothel1");
+	brothel2_id 	/**/ = get_id("Brothel2");
+	brothel3_id 	/**/ = get_id("Brothel3");
+	brothel4_id 	/**/ = get_id("Brothel4");
+	brothel5_id 	/**/ = get_id("Brothel5");
+	brothel6_id 	/**/ = get_id("Brothel6");
+	house_id 		/**/ = get_id("House");
+	clinic_id 		/**/ = get_id("Clinic");
+	studio_id 		/**/ = get_id("Studio");
+	arena_id 		/**/ = get_id("Arena");
+	centre_id 		/**/ = get_id("Centre");
+	farm_id 		/**/ = get_id("Farm");
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);

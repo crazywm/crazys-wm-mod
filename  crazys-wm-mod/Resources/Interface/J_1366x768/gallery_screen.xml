@@ -1,15 +1,17 @@
 <Screen>
-<Window  Name="Gallery"                    XPos="10"  YPos="10"  Width="780" Height="580" Border="1" />
-<Image   Name="Image"      File=""         XPos="8"   YPos="30"  Width="584" Height="540" />
-<Text    Name="ImageName"  Text="aaaa"     XPos="8"   YPos="8"   Width="584" Height="170" FontSize="10" />
-<Button  Name="BackButton" Image="Back"    XPos="605" YPos="540" Width="160" Height="32"  Transparency="true" Scale="true" />
-<Button  Name="PrevButton" Image="Prev"    XPos="605" YPos="500" Width="72"  Height="32"  Transparency="true" Scale="true" />
-<Button  Name="NextButton" Image="Next"    XPos="693" YPos="500" Width="72"  Height="32"  Transparency="true" Scale="true" />
-<ListBox Name="ImageList"                  XPos="600" YPos="10"  Width="170" Height="480" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
-<Column  Name="Name"  Header="Image Types" Offset="0"/>
-<Column  Name="All"   Header="All"         Offset="90"/>
-<Column  Name="jpg"   Header="*g"          Offset="120"/>
-<Column  Name="Ani"   Header="Ani"         Offset="145"/>
-<Column  Name="Gif"   Header="Gif"         Offset="170"/>
+<Window     Name="Gallery"                                                  XPos="13"       YPos="14"       Width="1340"    Height="740"    Border="1"  />
+
+<Text       Name="ImageName"            Text="Image"                        XPos="10"       YPos="2"        Width="790"     Height="24" FontSize="10"  />
+<Image      Name="GirlImage"            File="blank.png"                    XPos="10"       YPos="30"       Width="1100"     Height="700"  />
+<Button     Name="PrevButton"           Image="Prev"                        XPos="1148"      YPos="650"      Width="72"      Height="32"     Transparency="true"     Scale="true"     />
+<Button     Name="NextButton"           Image="Next"                        XPos="1240"      YPos="650"      Width="72"      Height="32"     Transparency="true"     Scale="true"     />
+<Button     Name="BackButton"           Image="Back"                        XPos="1130"      YPos="690"      Width="200"     Height="40"     Transparency="true" Scale="true"  />
+
+<ListBox    Name="ImageList"                                                XPos="1130"      YPos="10"       Width="200"     Height="622" FontSize="9" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<Column     Name="Name"                 Header="Image Types"                Offset="0" />
+<Column     Name="All"                  Header="All"                        Offset="100" />
+<Column     Name="jpg"                  Header="*g"                         Offset="121" />
+<Column     Name="Ani"                  Header="Ani"                        Offset="142" />
+<Column     Name="Gif"                  Header="Gif"                        Offset="163" />
 </ListBox>
 </Screen>

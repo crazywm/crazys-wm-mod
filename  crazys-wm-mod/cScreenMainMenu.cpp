@@ -43,13 +43,15 @@ bool cScreenMainMenu::ids_set = false;
 
 void cScreenMainMenu::set_ids()
 {
-	ids_set = true;
-	continue_id = get_id("Continue");
-	load_id = get_id("Load Game");
-	new_id = get_id("New Game");
-	settings_id = get_id("Settings");
-	quit_id = get_id("Quit Game");
-	version_id = get_id("Version");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenMainMenu");
+
+	continue_id		/**/ = get_id("Continue");
+	load_id			/**/ = get_id("Load Game");
+	new_id			/**/ = get_id("New Game");
+	settings_id		/**/ = get_id("Settings");
+	quit_id			/**/ = get_id("Quit Game");
+	version_id		/**/ = get_id("Version");
 }
 
 cScreenMainMenu::cScreenMainMenu()

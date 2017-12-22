@@ -26,16 +26,20 @@ class cScreenBrothelManagement : public cInterfaceWindowXML
 {
 private:
 	static bool id_set;		// --- interface/event IDs --- //
-	int id_header;
+	
+	int buildinglabel_id;
+	int background_id;
+	int walk_id;
+
+	int id_week;
 	int id_details;
-	int id_image;
 	int id_girls;
 	int id_staff;
 	int id_setup;
 	int id_dungeon;
-	int id_town;
 	int id_turn;
-	int id_week;
+
+	int id_town;
 	int id_save;
 	int id_quit;
 	int id_prev;

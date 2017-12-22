@@ -33,24 +33,25 @@ private:
 	bool GetName;
 
 	static	bool		ids_set;
-/*
- *	interface/event IDs
- */
-	int	back_id;			// Back button
-	int	curbrothel_id;		// Current Brothel text
-	int	dungeon_id;			// dungeon map button
-	int	girlimage_id;		// Girl image
-	int	girls_id;			// girl managment map button
-	int	info_id;			// Clinic's info
-	int	nextbrothel_id;		// next brothel button
-	int	prevbrothel_id;		// prev brothel button
-	int	setup_id;			// setup map button
-	int	staff_id;			// gang map button
-	int	turns_id;			// turn summary map button
-	int	walk_id;			// Walk Around Town button
-	int	weeks_id;			// next week map button
-	int	movie_id;			// Movie's House map button
-	int	moviedetails_id;	// movie description text
+
+	int buildinglabel_id;
+	int background_id;		
+	int walk_id;			// Walk Around Town button
+
+	int weeks_id;			// next week map button
+	int moviedetails_id;	// movie description text
+	int girls_id;			// girl managment map button
+	int staff_id;			// gang map button
+	int setup_id;			// setup map button
+	int dungeon_id;			// 
+	int turns_id;			// turn summary map button
+
+	int girlimage_id;		// Girl image
+	int back_id;			// 
+
+	int nextbrothel_id;		// next brothel button
+	int prevbrothel_id;		// prev brothel button
+	int movie_id;			// Movie's House map button
 	int createmovie_id;		// Create Movie
 
 	bool m_first_walk;

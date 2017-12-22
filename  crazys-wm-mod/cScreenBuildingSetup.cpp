@@ -55,39 +55,41 @@ cScreenBuildingSetup::~cScreenBuildingSetup() {}
 
 void cScreenBuildingSetup::set_ids()
 {
-	ids_set = true;
-	back_id = get_id("BackButton");
-	curbrothel_id = get_id("CurrentBrothel");
-	gold_id = get_id("Gold");
-	potioncost_id = get_id("PotionCost");
-	potionavail_id = get_id("AvailablePotions");
-	potions10_id = get_id("10PotionsButton");
-	potions20_id = get_id("20PotionsButton");
-	autopotions_id = get_id("AutoBuyPotionToggle");
-	barstaff_id = get_id("BarStaffCost");
-	barhire_id = get_id("BarHireButton");
-	barfire_id = get_id("BarFireButton");
-	casinostaff_id = get_id("CasinoStaffCost");
-	casinohire_id = get_id("CasinoHireButton");
-	casinofire_id = get_id("CasinoFireButton");
-	roomcost_id = get_id("RoomAddCost");
-	buyrooms_id = get_id("BuildRoomsButton");
-	restrict_id = get_id("SexRestrictions");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenBuildingSetup");
 
-	noanal_id = get_id("ProhibitAnalToggleRes");
-	nobdsm_id = get_id("ProhibitBDSMToggleRes");
-	nobeast_id = get_id("ProhibitBeastToggleRes");
-	nofoot_id = get_id("ProhibitFootJobToggleRes");
-	nogroup_id = get_id("ProhibitGroupToggleRes");
-	nohand_id = get_id("ProhibitHandJobToggleRes");
-	nolesbian_id = get_id("ProhibitLesbianToggleRes");
-	nonormal_id = get_id("ProhibitNormalToggleRes");
-	nooral_id = get_id("ProhibitOralToggleRes");
-	nostrip_id = get_id("ProhibitStripToggleRes");
-	notitty_id = get_id("ProhibitTittyToggleRes");
+	back_id			/**/ = get_id("BackButton", "Back");
+	curbrothel_id	/**/ = get_id("CurrentBrothel");
+	gold_id			/**/ = get_id("Gold");
+	potioncost_id	/**/ = get_id("PotionCost");
+	potionavail_id	/**/ = get_id("AvailablePotions");
+	potions10_id	/**/ = get_id("10PotionsButton");
+	potions20_id	/**/ = get_id("20PotionsButton");
+	autopotions_id	/**/ = get_id("AutoBuyPotionToggle");
+	barstaff_id		/**/ = get_id("BarStaffCost", "*Unused*");//
+	barhire_id		/**/ = get_id("BarHireButton", "*Unused*");//
+	barfire_id		/**/ = get_id("BarFireButton", "*Unused*");//
+	casinostaff_id	/**/ = get_id("CasinoStaffCost", "*Unused*");//
+	casinohire_id	/**/ = get_id("CasinoHireButton", "*Unused*");//
+	casinofire_id	/**/ = get_id("CasinoFireButton", "*Unused*");//
+	roomcost_id		/**/ = get_id("RoomAddCost");
+	buyrooms_id		/**/ = get_id("BuildRoomsButton");
+	restrict_id		/**/ = get_id("SexRestrictions", "*Unused*");//
 
-	advertsli_id = get_id("AdvertisingSlider");
-	advertamt_id = get_id("AdvertisingValue");
+	noanal_id		/**/ = get_id("ProhibitAnalToggleRes");
+	nobdsm_id		/**/ = get_id("ProhibitBDSMToggleRes");
+	nobeast_id		/**/ = get_id("ProhibitBeastToggleRes");
+	nofoot_id		/**/ = get_id("ProhibitFootJobToggleRes");
+	nogroup_id		/**/ = get_id("ProhibitGroupToggleRes");
+	nohand_id		/**/ = get_id("ProhibitHandJobToggleRes");
+	nolesbian_id	/**/ = get_id("ProhibitLesbianToggleRes");
+	nonormal_id		/**/ = get_id("ProhibitNormalToggleRes");
+	nooral_id		/**/ = get_id("ProhibitOralToggleRes");
+	nostrip_id		/**/ = get_id("ProhibitStripToggleRes");
+	notitty_id		/**/ = get_id("ProhibitTittyToggleRes");
+
+	advertsli_id	/**/ = get_id("AdvertisingSlider");
+	advertamt_id	/**/ = get_id("AdvertisingValue");
 }
 
 void cScreenBuildingSetup::init()

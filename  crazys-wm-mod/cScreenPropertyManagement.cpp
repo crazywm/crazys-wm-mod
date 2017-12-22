@@ -64,8 +64,10 @@ cScreenPropertyManagement::~cScreenPropertyManagement() {}
 
 void cScreenPropertyManagement::set_ids()
 {
-	ids_set = true;
-	back_id         = get_id("BackButton");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenPropertyManagement");
+
+	back_id = get_id("BackButton", "Back");
 	barstaff_id     = get_id("BarStaffCost");  // not used anymore?
 	barhire_id      = get_id("BarHireButton");  // not used anymore?
 	barfire_id      = get_id("BarFireButton");  // not used anymore?

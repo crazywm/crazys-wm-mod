@@ -3,8 +3,8 @@
 <Image      Name="TownMap"              File="townmap.png"                  XPos="10"       YPos="10"       Width="980"     Height="684"  />
 <Button     Name="BackButton"           Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
 <Button     Name="WalkButton"           Image="WalkAround"                  XPos="200"      YPos="698"      Width="160"     Height="32"     Transparency="true"     Scale="true"  />
-<Text       Name="CurrentBrothel"       Text=""                             XPos="400"      YPos="700"      Width="400"     Height="32"  FontSize="16"  />
 
+<Text       Name="CurrentBrothel"       Text=""                             XPos="400"      YPos="700"      Width="400"     Height="32"  FontSize="16"  />
 <Button     Name="SlaveMarket"          Image="SlaveMarket"     Disabled="" XPos="520"      YPos="410"      Width="48"      Height="48"  Transparency="true" Scale="true"  />
 <Button     Name="Shop"                 Image="Shop"            Disabled="" XPos="680"      YPos="350"      Width="48"      Height="48"  Transparency="true" Scale="true"  />
 <Button     Name="MayorsOffice"         Image="MayorsOffice"    Disabled="" XPos="670"      YPos="20"       Width="48"      Height="48"  Transparency="true" Scale="true"  />
@@ -24,7 +24,4 @@
 <Button     Name="Brothel5"             Image="Brothel6"        Disabled="" XPos="900"      YPos="60"       Width="48"      Height="48"  Transparency="true" Scale="true"  />
 <Button     Name="Brothel6"             Image="Brothel7"        Disabled="" XPos="400"      YPos="30"       Width="48"      Height="48"  Transparency="true" Scale="true"  />
 <Image      Name="GirlImage"            File="blank.png"                    XPos="200"      YPos="40"       Width="250"     Height="250" Hidden="true"  />
-<!--                                                                                                                        
-<Button     Name="SetUp"                Image="Building"                    XPos="8"        YPos="540"      Width="160"     Height="32"      Transparency="true"      Scale="true"  />
--->
 </Screen>

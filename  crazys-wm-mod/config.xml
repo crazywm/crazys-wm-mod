@@ -49,7 +49,19 @@
         ListScrollAmount="3"
         TextScrollAmount="3" />
  -->
-<!-- 4:3-->
+<!-- 16:9 -->
+    <Resolution
+        Resolution="J_1366x768"
+        Width="1366"
+        Height="768"
+        ScaleWidth="1366"
+        ScaleHeight="768"
+        FixedScale="true"
+        FullScreen="false"
+        ListScrollAmount="3"
+        TextScrollAmount="3" />
+ -->
+<!-- 4:3
     <Resolution
         Resolution="J_1024x768"
         Width="1024"
@@ -60,7 +72,7 @@
         FullScreen="false"
         ListScrollAmount="3"
         TextScrollAmount="3" />
-
+-->
     <!--
 	Gold is how much gold you start the game with.
 	GirlMeet is the %chance you'll meet a girl when walking around town.

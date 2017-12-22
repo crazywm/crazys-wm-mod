@@ -95,17 +95,17 @@ bool cScreenPrison::ids_set = false;
 
 void cScreenPrison::set_ids()
 {
-	stringstream ss;
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenPrison");
 
-	ids_set = true;
-	header_id = get_id("ScreenHeader");
-	back_id = get_id("BackButton");
-	more_id = get_id("ShowMoreButton");
-	release_id = get_id("ReleaseButton");
-	prison_list_id = get_id("PrisonList");
-	girl_desc_id = get_id("GirlDescription");
-	girlimage_id = get_id("GirlImage");
-	DetailLevel = 0;
+	header_id			/**/ = get_id("ScreenHeader");
+	back_id				/**/ = get_id("BackButton","Back");
+	more_id				/**/ = get_id("ShowMoreButton");
+	release_id			/**/ = get_id("ReleaseButton");
+	prison_list_id		/**/ = get_id("PrisonList");
+	girl_desc_id		/**/ = get_id("GirlDescription");
+	girlimage_id		/**/ = get_id("GirlImage", "*Unused*");//
+	DetailLevel			/**/ = 0;
 }
 
 bool cScreenPrison::check_keys()

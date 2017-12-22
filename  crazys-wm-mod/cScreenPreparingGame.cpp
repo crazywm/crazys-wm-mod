@@ -89,20 +89,22 @@ cScreenPreparingGame::cScreenPreparingGame()
 }
 void cScreenPreparingGame::set_ids()
 {
-	ids_set = true;
-	text1_id = get_id("Text1");
-	text2_id = get_id("Text2");
-	text3_id = get_id("Text3");
-	text4_id = get_id("Text4");
-	text5_id = get_id("Text5");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenPreparingGame");
 
-//	counter1_id = get_id("Counter1");
-//	counter2_id = get_id("Counter2");
-//	counter3_id = get_id("Counter3");
-//	counter4_id = get_id("Counter4");
-//	counter5_id = get_id("Counter5");
+	text1_id			/**/ = get_id("Text1");
+	text2_id			/**/ = get_id("Text2");
+	text3_id			/**/ = get_id("Text3");
+	text4_id			/**/ = get_id("Text4");
+	text5_id			/**/ = get_id("Text5");
 
-	cancel_id = get_id("BackButton");
+//	counter1_id			/**/ = get_id("Counter1");
+//	counter2_id			/**/ = get_id("Counter2");	
+//	counter3_id			/**/ = get_id("Counter3");
+//	counter4_id			/**/ = get_id("Counter4");
+//	counter5_id			/**/ = get_id("Counter5");
+
+	cancel_id			/**/ = get_id("BackButton","Back");
 }
 
 void cScreenPreparingGame::init()

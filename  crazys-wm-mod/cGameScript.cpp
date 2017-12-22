@@ -221,6 +221,7 @@ void cGameScript::RunScript()
 	while (curr != 0 && !m_Leave && m_Active)
 	{
 		curr = Process(curr);
+		g_InitWin = true;
 	}
 	if (m_Active == false)
 	{

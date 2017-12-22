@@ -16,66 +16,63 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <iostream>
-#include <locale>
-#include <sstream>
-#include "cBrothel.h"
 #include "cWindowManager.h"
-#include "cGold.h"
-#include "sFacilityList.h"
-#include "cGetStringScreenManager.h"
-#include "InterfaceProcesses.h"
 #include "cScriptManager.h"
-#include "cGangs.h"
-#include "FileList.h"
+#include "InterfaceProcesses.h"
 #include "cMovieStudio.h"
 #include "cScreenMovie.h"
+#include "FileList.h"
 
-extern	string					ReadTextFile(DirPath path, string file);
-extern	int						g_CurrentScreen;
-extern	int						g_CurrBrothel;
-extern	int						g_Building;
-extern	cWindowManager			g_WinManager;
-extern	cInterfaceEventManager	g_InterfaceEvents;
-extern	cGold					g_Gold;
-extern	cGangManager			g_Gangs;
-extern	cBrothelManager			g_Brothels;
-extern	bool					g_InitWin;
-extern	bool					g_Cheats;
-extern	bool					g_CTRLDown;
-extern	bool					g_AllTogle;
-extern	bool					eventrunning;
-extern	cMovieStudioManager		g_Studios;
-extern	bool					g_TryCast;
+extern cInterfaceEventManager g_InterfaceEvents;
+extern cWindowManager g_WinManager;
+extern cBrothelManager g_Brothels;
+extern cMovieStudioManager g_Studios;
+
+extern int g_Building;
+extern int g_CurrBrothel;
+extern int g_CurrentScreen;
+extern string ReadTextFile(DirPath path, string file);
+extern bool g_TryCast;
+extern bool eventrunning;
+extern bool g_InitWin;
+extern bool g_Cheats;
+
+extern bool g_CTRLDown;
 
 bool cMovieScreen::ids_set = false;
 
 void cMovieScreen::set_ids()
 {
-	ids_set = true;
-	back_id = get_id("BackButton");
-	curbrothel_id = get_id("CurrentBrothel");
-	dungeon_id = get_id("Dungeon");
-	girlimage_id = get_id("GirlImage");
-	girls_id = get_id("Girls");
-	info_id = get_id("Info");
-	nextbrothel_id = get_id("Next");
-	prevbrothel_id = get_id("Prev");
-	setup_id = get_id("SetUp");
-	staff_id = get_id("Staff");
-	turns_id = get_id("Turn");
-	walk_id = get_id("WalkButton");
-	weeks_id = get_id("Weeks");
-	movie_id = get_id("Movie");
-	moviedetails_id = get_id("MovieDetails");
-	createmovie_id = get_id("CreateMovieButton");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cMovieScreen");
+
+
+	buildinglabel_id/**/ = get_id("BuildingLabel", "Header");
+	background_id	/**/ = get_id("Background", "Movies");
+	walk_id			/**/ = get_id("WalkButton");
+
+	weeks_id		/**/ = get_id("Next Week","Weeks");
+	moviedetails_id	/**/ = get_id("BuildingDetails", "Details", "MovieDetails");
+	girls_id		/**/ = get_id("Girl Management","Girls");
+	staff_id		/**/ = get_id("Staff Management","Staff");
+	setup_id		/**/ = get_id("Setup", "SetUp");
+	dungeon_id		/**/ = get_id("Dungeon");
+	turns_id		/**/ = get_id("Turn Summary","Turn");
+
+	girlimage_id	/**/ = get_id("GirlImage");
+	back_id			/**/ = get_id("BackButton","Back");
+
+	nextbrothel_id	/**/ = get_id("PrevButton", "Prev", "*Unused*");
+	prevbrothel_id	/**/ = get_id("NextButton", "Next", "*Unused*");
+	movie_id		/**/ = get_id("Movie", "*Unused*");//
+	createmovie_id	/**/ = get_id("CreateMovieButton", "*Unused*");//
 }
 
 void cMovieScreen::init()
 {
 	g_CurrentScreen = SCREEN_STUDIO;
 	g_Building = BUILDING_STUDIO;
-	// buttons enable/disable
+
 	DisableButton(walk_id, g_TryCast);
 }
 
@@ -87,13 +84,13 @@ void cMovieScreen::process()
 
 	if (g_InitWin)
 	{
+
 		EditTextItem(g_Studios.GetBrothelString(0), moviedetails_id);
 		g_InitWin = false;
 	}
 	if (g_InterfaceEvents.GetNumEvents() == 0)	return;	// no events means we can go home
 
 	// otherwise, compare event IDs
-	if (g_InterfaceEvents.CheckButton(createmovie_id))	{ g_InitWin = true;	g_WinManager.push("Movie Maker");	return; }
 	if (g_InterfaceEvents.CheckButton(back_id))			// if it's the back button, pop the window off the stack and we're done
 	{
 		g_CurrentScreen = SCREEN_TOWN;
@@ -145,6 +142,12 @@ void cMovieScreen::process()
 		if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
 		NextWeek();
 		g_WinManager.push("Turn Summary");
+		return;
+	}
+	else if (g_InterfaceEvents.CheckButton(createmovie_id))
+	{
+		g_InitWin = true;
+		g_WinManager.push("Movie Maker");
 		return;
 	}
 }

@@ -79,26 +79,28 @@ cScreenClinicManagement::~cScreenClinicManagement() {}
 
 void cScreenClinicManagement::set_ids()
 {
-	ids_set = true;
-	back_id			= get_id("BackButton");
-	curclinic_id	= get_id("Clinic");
-	gold_id			= get_id("Gold");
-	girllist_id		= get_id("GirlList");
-	girlimage_id	= get_id("GirlImage");
-	girldesc_id		= get_id("GirlDescription");
-	viewdetails_id	= get_id("ViewDetailsButton");
-	transfer_id		= get_id("TransferButton");
-	firegirl_id		= get_id("FireButton");
-	freeslave_id	= get_id("FreeSlaveButton");
-	sellslave_id	= get_id("SellSlaveButton");
-	jobtypehead_id	= get_id("JobTypeHeader");
-	jobtypelist_id	= get_id("JobTypeList");
-	jobtypedesc_id	= get_id("JobTypeDescription");
-	jobhead_id		= get_id("JobHeader");
-	joblist_id		= get_id("JobList");
-	jobdesc_id		= get_id("JobDescription");
-	day_id			= get_id("DayButton");
-	night_id		= get_id("NightButton");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenClinicManagement");
+
+	back_id			/**/ = get_id("BackButton", "Back");
+	curclinic_id	/**/ = get_id("Clinic");
+	gold_id			/**/ = get_id("Gold");
+	girllist_id		/**/ = get_id("GirlList");
+	girlimage_id	/**/ = get_id("GirlImage");
+	girldesc_id		/**/ = get_id("GirlDescription");
+	viewdetails_id	/**/ = get_id("ViewDetailsButton");
+	transfer_id		/**/ = get_id("TransferButton");
+	firegirl_id		/**/ = get_id("FireButton");
+	freeslave_id	/**/ = get_id("FreeSlaveButton");
+	sellslave_id	/**/ = get_id("SellSlaveButton");
+	jobtypehead_id	/**/ = get_id("JobTypeHeader");
+	jobtypelist_id	/**/ = get_id("JobTypeList");
+	jobtypedesc_id	/**/ = get_id("JobTypeDescription");
+	jobhead_id		/**/ = get_id("JobHeader");
+	joblist_id		/**/ = get_id("JobList");
+	jobdesc_id		/**/ = get_id("JobDescription");
+	day_id			/**/ = get_id("DayButton");
+	night_id		/**/ = get_id("NightButton");
 
 	//Set the default sort order for columns, so listbox knows the order in which data will be sent
 	SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);

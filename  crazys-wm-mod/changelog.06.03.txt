@@ -97,6 +97,29 @@ Fixed a bug in scripts and added some missing lookup/names
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.04
 
+### Changes 12/14/2017
+Changed all c*Screen.cpp/h files to cScreen*.cpp/h to put the in line with the other cScreen*.cpp/h files
+Checked interface files and tried to make all tags the same across various files.
+Updated J_1920x1080 main menu, load game and processing screens as well as a few other small changes.
+
+### Changes 12/15-21/2017
+Renamed 4 image filetypes for * correction
+- "birthmultiplehuman*." to "birthmultiplehuman*."
+- "pregbirthmultiplehuman*." to "pregbirthmultiplehuman*."
+- "rapebeast*." to "beastrape*."
+- "pregrapebeast*." to "pregbeastrape*."
+- - beastrape* will be found in beast*, that is more apt than beastrape being found in rape
+- - les picks up les69ing and sex picks up sexdoggy which should be fine
+shortened text output for unused preg types
+Updated is_pregnant output for list boxes
+Added SexAverage, NonSexAverage and SkillAverage as options for list boxes
+
+Updated all 3 interface that come with the game
+- rewrote the get_id() function to allow up to 5 choices for interface items to allow for old interfaces
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.05
+
 
 
 

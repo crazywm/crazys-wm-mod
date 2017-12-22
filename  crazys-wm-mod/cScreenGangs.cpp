@@ -73,38 +73,40 @@ int cScreenGangs::multi_next()
 
 void cScreenGangs::set_ids()
 {
-	ids_set = true;
-	back_id = get_id("BackButton");
-	ganghire_id = get_id("GangHireButton");
-	gangfire_id = get_id("GangFireButton");
-	totalcost_id = get_id("TotalCost");
-	gold_id = get_id("Gold");
-	ganglist_id = get_id("GangList");
-	missionlist_id = get_id("MissionList");
-	gangdesc_id = get_id("GangDescription");
-	missiondesc_id = get_id("MissionDescription");
-	weaponlevel_id = get_id("WeaponDescription");
-	weaponup_id = get_id("WeaponUpButton");
-	netdesc_id = get_id("NetDescription");
-	netbuy_id = get_id("BuyNetsButton");
-	netbuy10_id = get_id("BuyNetsButton10");
-	netbuy20_id = get_id("BuyNetsButton20");
-	netautobuy_id = get_id("AutoBuyNetsToggle");
-	healdesc_id = get_id("HealPotDescription");
-	healbuy_id = get_id("BuyHealPotButton");
-	healbuy10_id = get_id("BuyHealPotButton10");
-	healbuy20_id = get_id("BuyHealPotButton20");
-	healautobuy_id = get_id("AutoBuyHealToggle");
-	recruitlist_id = get_id("RecruitList");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenGangs");
+
+	back_id				/**/ = get_id("BackButton", "Back");
+	ganghire_id			/**/ = get_id("GangHireButton");
+	gangfire_id			/**/ = get_id("GangFireButton");
+	totalcost_id		/**/ = get_id("TotalCost");
+	gold_id				/**/ = get_id("Gold");
+	ganglist_id			/**/ = get_id("GangList");
+	missionlist_id		/**/ = get_id("MissionList");
+	gangdesc_id			/**/ = get_id("GangDescription","*Unused*");//
+	missiondesc_id		/**/ = get_id("MissionDescription");
+	weaponlevel_id		/**/ = get_id("WeaponDescription");
+	weaponup_id			/**/ = get_id("WeaponUpButton");
+	netdesc_id			/**/ = get_id("NetDescription");
+	netbuy_id			/**/ = get_id("BuyNetsButton");
+	netbuy10_id			/**/ = get_id("BuyNetsButton10");
+	netbuy20_id			/**/ = get_id("BuyNetsButton20");
+	netautobuy_id		/**/ = get_id("AutoBuyNetsToggle");
+	healdesc_id			/**/ = get_id("HealPotDescription");
+	healbuy_id			/**/ = get_id("BuyHealPotButton");
+	healbuy10_id		/**/ = get_id("BuyHealPotButton10");
+	healbuy20_id		/**/ = get_id("BuyHealPotButton20");
+	healautobuy_id		/**/ = get_id("AutoBuyHealToggle");
+	recruitlist_id		/**/ = get_id("RecruitList");
 
 	// `J` added for .06.01.10
-	controlcatacombs_id = get_id("ControlCatacombs");
-	catacombslabel_id = get_id("Catacombs");
-	ganggetsgirls_id = get_id("GangGetsGirls");
-	ganggetsitems_id = get_id("GangGetsItems");
-	ganggetsbeast_id = get_id("GangGetsBeast");
-	girlspercslider_id = get_id("GirlsPercSlider");
-	itemspercslider_id = get_id("ItemsPercSlider");
+	controlcatacombs_id	/**/ = get_id("ControlCatacombs");
+	catacombslabel_id	/**/ = get_id("Catacombs");
+	ganggetsgirls_id	/**/ = get_id("GangGetsGirls");
+	ganggetsitems_id	/**/ = get_id("GangGetsItems");
+	ganggetsbeast_id	/**/ = get_id("GangGetsBeast");
+	girlspercslider_id	/**/ = get_id("GirlsPercSlider");
+	itemspercslider_id	/**/ = get_id("ItemsPercSlider");
 
 	//Set the default sort order for columns, so listboxes know the order in which data will be sent
 	string RecruitColumns[] = { "GangName", "Number", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength", "Service" };
@@ -461,7 +463,7 @@ void cScreenGangs::check_events()
 	if (g_InterfaceEvents.CheckListbox(missionlist_id))
 	{
 		// get the index into the missions list
-		int mission_id = GetLastSelectedItemFromList(missionlist_id);
+		int mission_id			= GetLastSelectedItemFromList(missionlist_id);
 		g_LogFile.ss() << "selchange: mid = " << mission_id << endl; g_LogFile.ssend();
 		set_mission_desc(mission_id);		// set the textfield with the long description and price for this mission
 		g_LogFile.ss() << "selection change: rebuilding gang list box" << endl; g_LogFile.ssend();

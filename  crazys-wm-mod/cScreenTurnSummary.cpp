@@ -138,21 +138,23 @@ cScreenTurnSummary::~cScreenTurnSummary() {}
 
 void cScreenTurnSummary::set_ids()
 {
-	ids_set = true;
-	brothel_id = get_id("CurrentBrothel");
-	category_id = get_id("Category");
-	gold_id = get_id("Gold");
-	labelitem_id = get_id("LabelItem");
-	item_id = get_id("Item");
-	event_id = get_id("Event");
-	labeldesc_id = get_id("LabelDesc");
-	goto_id = get_id("GoTo");
-	nextweek_id = get_id("NextWeek");
-	back_id = get_id("Back");
-	prev_id = get_id("Prev");
-	next_id = get_id("Next");
-	image_id = get_id("Background");
-	imagename_id = get_id("ImageName");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenTurnSummary");
+
+	back_id			/**/ = get_id("BackButton", "Back");
+	brothel_id		/**/ = get_id("CurrentBrothel");
+	category_id		/**/ = get_id("Category");
+	gold_id			/**/ = get_id("Gold", "*Unused*");//
+	labelitem_id	/**/ = get_id("LabelItem");
+	item_id			/**/ = get_id("Item");
+	event_id		/**/ = get_id("Event");
+	labeldesc_id	/**/ = get_id("LabelDesc");
+	goto_id			/**/ = get_id("GoTo");
+	nextweek_id		/**/ = get_id("NextWeek");
+	prev_id			/**/ = get_id("PrevButton","Prev");
+	next_id			/**/ = get_id("NextButton","Next");
+	image_id		/**/ = get_id("Background");
+	imagename_id	/**/ = get_id("ImageName", "*Unused*");//
 }
 
 void cScreenTurnSummary::process()

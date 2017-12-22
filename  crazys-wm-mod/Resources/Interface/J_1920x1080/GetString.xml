@@ -1,7 +1,7 @@
 <Screen>
-<Window   Name="GetString"                                                     XPos="560"	YPos="450"	Width="800"	Height="300"	Border="1" />
-<Text     Name="Label"     Text="Name"                                         XPos="100"	YPos="100"	Width="250"	Height="50"	FontSize="24" />
-<EditBox  Name="TextField"                                                     XPos="200"	YPos="100"	Width="500"	Height="50"	FontSize="24	Border="1" />
-<Button   Name="Ok"        Image="Ok"                                          XPos="50"	YPos="200"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
-<Button   Name="Cancel"    Image="Cancel"                                      XPos="500"	YPos="200"	Width="250"	Height="50"	Transparency="true"	Scale="true" />
+<Window   Name="GetString"                                                     XPos="560"           YPos="450"           Width="800"           Height="300"           Border="1" />
+<Text     Name="Label"     Text="Name"                                         XPos="100"           YPos="100"           Width="250"           Height="50"           FontSize="24" />
+<EditBox  Name="TextField"                                                     XPos="200"           YPos="100"           Width="500"           Height="50"           FontSize="24           Border="1" />
+<Button   Name="Ok"        Image="Ok"                                          XPos="50"           YPos="200"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
+<Button   Name="Cancel"    Image="Cancel"                                      XPos="500"           YPos="200"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
 </Screen>

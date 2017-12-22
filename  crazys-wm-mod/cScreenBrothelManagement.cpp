@@ -44,21 +44,26 @@ bool cScreenBrothelManagement::id_set = false;
 
 void cScreenBrothelManagement::set_ids()
 {
-	id_set = true;
-	id_header	= get_id("Header");
-	id_details	= get_id("Details");
-	id_image	= get_id("Image");
-	id_girls	= get_id("Girl Management");
-	id_staff	= get_id("Staff Management");
-	id_setup	= get_id("Setup");
-	id_dungeon	= get_id("Dungeon");
-	id_town		= get_id("Visit Town");
-	id_week		= get_id("Next Week");
-	id_save		= get_id("Save");
-	id_turn		= get_id("Turn Summary");
-	id_quit		= get_id("Quit");
-	id_prev		= get_id("Prev");
-	id_next		= get_id("Next");
+	id_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenBrothelManagement");
+
+	buildinglabel_id/**/ = get_id("BuildingLabel","Header");
+	background_id	/**/ = get_id("Background");
+	walk_id			/**/ = get_id("WalkButton", "*Unused*");
+
+	id_week			/**/ = get_id("Next Week","Weeks");
+	id_details		/**/ = get_id("BuildingDetails","Details");
+	id_girls		/**/ = get_id("Girl Management","Girls");
+	id_staff		/**/ = get_id("Staff Management");
+	id_setup		/**/ = get_id("Setup", "SetUp");
+	id_dungeon		/**/ = get_id("Dungeon");
+	id_turn			/**/ = get_id("Turn Summary","Turn");
+
+	id_town			/**/ = get_id("Visit Town");
+	id_save			/**/ = get_id("Save");
+	id_quit			/**/ = get_id("Quit");
+	id_prev			/**/ = get_id("PrevButton","Prev");
+	id_next			/**/ = get_id("NextButton","Next");
 }
 
 cScreenBrothelManagement::cScreenBrothelManagement()
@@ -77,10 +82,10 @@ void cScreenBrothelManagement::init()
 		g_Building = BUILDING_BROTHEL;
 		stringstream ss;
 		ss << "Day: " << g_Day << " Month: " << g_Month << " Year: " << g_Year << " -- Brothel: " << g_Brothels.GetName(g_CurrBrothel);
-		EditTextItem(ss.str(), id_header);
+		EditTextItem(ss.str(), buildinglabel_id);
 		EditTextItem(g_Brothels.GetBrothelString(g_CurrBrothel), id_details);
 		g_InitWin = false;
-		SetImage(id_image, g_BrothelImages[g_CurrBrothel]);
+		SetImage(background_id, g_BrothelImages[g_CurrBrothel]);
 	}
 }
 

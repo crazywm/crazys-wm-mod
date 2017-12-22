@@ -33,38 +33,36 @@ bool cScreenSettings::ids_set = false;
 
 void cScreenSettings::set_ids()
 {
-	ids_set = true;
-	back_id				= get_id("BackButton");
-	ok_id				= get_id("OkButton");
-	revert_id			= get_id("RevertButton");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenSettings");
+
+	back_id					/**/ = get_id("BackButton", "Back");
+	ok_id					/**/ = get_id("OkButton");
+	revert_id				/**/ = get_id("RevertButton");
 
 	// Folders
-	characters_id = get_id("CharactersFol");
-	saves_id = get_id("SavesFol");
-	defaultimages_id = get_id("DefaultImagesFol");
-	items_id = get_id("ItemsFol");
-	backupsaves_id = get_id("BackupSavesFol");
-	preferdefault_id = get_id("PreferDefaultFol");
+	characters_id			/**/ = get_id("CharactersFol");
+	saves_id				/**/ = get_id("SavesFol");
+	defaultimages_id		/**/ = get_id("DefaultImagesFol");
+	items_id				/**/ = get_id("ItemsFol");
+	backupsaves_id			/**/ = get_id("BackupSavesFol");
+	preferdefault_id		/**/ = get_id("PreferDefaultFol");
 
 	// Catacombs
-	uniquecatacombs_id = get_id("UniqueCatacombsCat");
-	uniquecatacombslabel_id = get_id("UniqueCatacombsLabelCat");
-	controlgirls_id = get_id("ControlGirlsCat");
-	controlgangs_id = get_id("ControlGangsCat");
-	girlgetsgirls_id = get_id("GirlGetsGirlsCat");
-	girlgetsitems_id = get_id("GirlGetsItemsCat");
-	girlgetsbeast_id = get_id("GirlGetsBeastCat");
-	girlsgirlspercslider_id = get_id("GirlsGirlsPercSliderCat");
-	girlsitemspercslider_id = get_id("GirlsItemsPercSliderCat");
-	ganggetsgirls_id = get_id("GangGetsGirlsCat");
-	ganggetsitems_id = get_id("GangGetsItemsCat");
-	ganggetsbeast_id = get_id("GangGetsBeastCat");
-	gangsgirlspercslider_id = get_id("GangsGirlsPercSliderCat");
-	gangsitemspercslider_id = get_id("GangsItemsPercSliderCat");
-
-
-
-
+	uniquecatacombs_id		/**/ = get_id("UniqueCatacombsCat");
+	uniquecatacombslabel_id	/**/ = get_id("UniqueCatacombsLabelCat");
+	controlgirls_id			/**/ = get_id("ControlGirlsCat");
+	controlgangs_id			/**/ = get_id("ControlGangsCat");
+	girlgetsgirls_id		/**/ = get_id("GirlGetsGirlsCat");
+	girlgetsitems_id		/**/ = get_id("GirlGetsItemsCat");
+	girlgetsbeast_id		/**/ = get_id("GirlGetsBeastCat");
+	girlsgirlspercslider_id	/**/ = get_id("GirlsGirlsPercSliderCat");
+	girlsitemspercslider_id	/**/ = get_id("GirlsItemsPercSliderCat");
+	ganggetsgirls_id		/**/ = get_id("GangGetsGirlsCat");
+	ganggetsitems_id		/**/ = get_id("GangGetsItemsCat");
+	ganggetsbeast_id		/**/ = get_id("GangGetsBeastCat");
+	gangsgirlspercslider_id	/**/ = get_id("GangsGirlsPercSliderCat");
+	gangsitemspercslider_id	/**/ = get_id("GangsItemsPercSliderCat");
 }
 
 cScreenSettings::cScreenSettings()

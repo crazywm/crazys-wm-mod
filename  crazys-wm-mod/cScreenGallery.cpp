@@ -103,13 +103,15 @@ cScreenGallery::~cScreenGallery() {}
 
 void cScreenGallery::set_ids()
 {
-	ids_set = true;
-	back_id = get_id("BackButton");
-	next_id = get_id("NextButton");
-	prev_id = get_id("PrevButton");
-	image_id = get_id("Image");
-	imagename_id = get_id("ImageName");
-	imagelist_id = get_id("ImageList");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenGallery");
+
+	back_id			/**/ = get_id("BackButton", "Back");
+	prev_id			/**/ = get_id("PrevButton","Prev");
+	next_id			/**/ = get_id("NextButton","Next");
+	image_id		/**/ = get_id("GirlImage");
+	imagename_id	/**/ = get_id("ImageName");
+	imagelist_id	/**/ = get_id("ImageList");
 
 	string ILColumns[] = { "ILName", "ILTotal", "ILjpg", "ILAni", "ILGif" };
 	SortColumns(imagelist_id, ILColumns, 5);

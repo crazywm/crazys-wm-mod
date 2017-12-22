@@ -36,7 +36,7 @@ private:
 	int details_id;			// Girl Details text
 	int girl_desc_id;		// Girl desc text
 	int trait_id;			// Trait text
-	int slave_image_id;		// Image of selected slave
+	int image_id;			// Image of selected slave
 	int header_id;			// page header text ("Slave Market")
 	int slave_market_id;	// "Slave Market" text
 	int gold_id;			// Player's Gold

@@ -1,19 +1,18 @@
 <Screen>
 <Window     Name="Slave Market Window"                                      XPos="12"       YPos="14"       Width="1000"    Height="740"    Border="1"  />
-
 <Text       Name="SlaveMarket"          Text="Slave Market"                 XPos="10"       YPos="2"        Width="190"     Height="32"     FontSize="24"   Red="128"          />
 <Text       Name="SlaveDetails"         Text=""                             XPos="10"       YPos="35"       Width="190"     Height="500"    FontSize="9"          />
 <Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="45"       YPos="540"      Width="120"     Height="24"     Transparency="true"         Scale="true"          />
 <Text       Name="TraitListT"                                               XPos="10"       YPos="570"      Width="190"     Height="100"    FontSize="9"          />
 
-<Image      Name="SlaveImage"           File="blank.png"                    XPos="200"      YPos="10"       Width="600"     Height="650"  />
+<Image      Name="GirlImage"            File="blank.png"                    XPos="200"      YPos="10"       Width="600"     Height="650"  />
 
 <Text       Name="Gold"                 Text="Gold: 0"                      XPos="800"      YPos="2"        Width="220"     Height="32"     FontSize="20"          />
 <ListBox    Name="SlaveList"                                                XPos="800"      YPos="35"       Width="190"     Height="255" Border="1"         Events="true"         Multi="true"          />
 <Button     Name="BuySlaveButton"       Image="BuySlave"                    XPos="815"      YPos="300"      Width="160"     Height="32"  Transparency="true"         Scale="true"          />
 <Text       Name="GirlDesc"             Text=""                             XPos="800"      YPos="340"      Width="190"     Height="200" FontSize="10"          />
 
-<Text       Name="ReleaseTo"            Text="Release Girl to: Brothel 0"   XPos="10"       YPos="660"      Width="350"     Height="24"  FontSize="16"  />
+<Text       Name="ReleaseTo"            Text="Send Girl to: Brothel 0"      XPos="10"       YPos="660"      Width="350"     Height="24"  FontSize="16"  />
 <Text       Name="RoomsFree"            Text="Room for # more girls."       XPos="500"      YPos="660"      Width="200"     Height="24"  FontSize="16"  />
 <Button     Name="Brothel0"             Image="Brothel"         Disabled="" XPos="025"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
 <Button     Name="Brothel1"             Image="Brothel2"        Disabled="" XPos="075"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />      

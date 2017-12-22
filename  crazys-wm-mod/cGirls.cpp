@@ -18339,7 +18339,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else if (is_pregnant())
 		{
 			int to_go = ((this)->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - (this)->m_WeeksPreg;
-			ss << "Yes";
+			if (carrying_players_child())	ss << "Yours";
+			else if (carrying_monster())	ss << "Beast";
+			else /*                      */	ss << "Yes";
 			if (has_trait("Sterile") || has_trait("Zombie") || has_trait("Skeleton"))
 				ss << "?" << to_go << "?";	// how?
 			else
@@ -18376,6 +18378,18 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else if (has_trait("Straight"))	ss << "S";
 		else if (has_trait("Bisexual"))	ss << "B";
 		else/*                       */	ss << "-";
+	}
+	else if (detailName == "SexAverage")
+	{
+		ss << (int)g_Girls.GetAverageOfSexSkills(this);
+	}
+	else if (detailName == "NonSexAverage")
+	{
+		ss << (int)g_Girls.GetAverageOfNSxSkills(this);
+	}
+	else if (detailName == "SkillAverage")
+	{
+		ss << (int)g_Girls.GetAverageOfAllSkills(this);
 	}
 	else /*                            */		{ ss << "Not found"; }
 	Data = ss.str();

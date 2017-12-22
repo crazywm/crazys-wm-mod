@@ -125,31 +125,33 @@ static bool AutoUseItems = false;
 
 void cScreenItemManagement::set_ids()
 {
-	ids_set = true;
-	curbrothel_id = get_id("CurrentBrothel");
-	back_id = get_id("BackButton");
-	sell10_l_id = get_id("Sell10LeftButton");
-	sell10_r_id = get_id("Sell10RightButton");
-	sellall_l_id = get_id("SellAllLeftButton");
-	sellall_r_id = get_id("SellAllRightButton");
-	buy10_l_id = get_id("Buy10LeftButton");
-	buy10_r_id = get_id("Buy10RightButton");
-	shift_l_id = get_id("ShiftLeftButton");
-	shift_r_id = get_id("ShiftRightButton");
-	gold_id = get_id("PlayerGold");
-	desc_id = get_id("ItemDesc");
-	owners_l_id = get_id("OwnersLeftList");
-	items_l_id = get_id("ItemsLeftList");
-	owners_r_id = get_id("OwnersRightList");
-	items_r_id = get_id("ItemsRightList");
-	filter_id = get_id("FilterList");
-	autouse_id = get_id("AutoUseItems");
-	equip_l_id = get_id("EquipLeftButton");
-	unequip_l_id = get_id("UnequipLeftButton");
-	equip_r_id = get_id("EquipRightButton");
-	unequip_r_id = get_id("UnequipRightButton");
-	detail_l_id = get_id("OwnersLeftDetails");
-	detail_r_id = get_id("OwnersRightDetails");
+	ids_set			/**/ = true;
+	g_LogFile.write("set_ids in cScreenItemManagement");
+
+	curbrothel_id	/**/ = get_id("CurrentBrothel");
+	back_id			/**/ = get_id("BackButton","Back");
+	sell10_l_id		/**/ = get_id("Sell10LeftButton");
+	sell10_r_id		/**/ = get_id("Sell10RightButton");
+	sellall_l_id	/**/ = get_id("SellAllLeftButton");
+	sellall_r_id	/**/ = get_id("SellAllRightButton");
+	buy10_l_id		/**/ = get_id("Buy10LeftButton");
+	buy10_r_id		/**/ = get_id("Buy10RightButton");
+	shift_l_id		/**/ = get_id("ShiftLeftButton");
+	shift_r_id		/**/ = get_id("ShiftRightButton");
+	gold_id			/**/ = get_id("PlayerGold");
+	desc_id			/**/ = get_id("ItemDesc");
+	owners_l_id		/**/ = get_id("OwnersLeftList");
+	items_l_id		/**/ = get_id("ItemsLeftList");
+	owners_r_id		/**/ = get_id("OwnersRightList");
+	items_r_id		/**/ = get_id("ItemsRightList");
+	filter_id		/**/ = get_id("FilterList");
+	autouse_id		/**/ = get_id("AutoUseItems");
+	equip_l_id		/**/ = get_id("EquipLeftButton");
+	unequip_l_id	/**/ = get_id("UnequipLeftButton");
+	equip_r_id		/**/ = get_id("EquipRightButton");
+	unequip_r_id	/**/ = get_id("UnequipRightButton");
+	detail_l_id		/**/ = get_id("OwnersLeftDetails", "*Optional*");
+	detail_r_id		/**/ = get_id("OwnersRightDetails", "*Optional*");
 
 	string ORColumns[] = { "ORLName", "ORLNumber", "ORLCatNum" };
 	SortColumns(owners_r_id, ORColumns, 3);

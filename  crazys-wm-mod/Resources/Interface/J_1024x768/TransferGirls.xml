@@ -20,6 +20,6 @@
 <ListBox    Name="BrothelRight"                                             XPos="850"      YPos="40"       Width="140"     Height="300"    Border="1"  Multi="false"   Events="true" />
 <Button     Name="ShiftRight"           Image="ShiftRight"                  XPos="650"      YPos="300"      Width="50"      Height="50"     Transparency="true" Scale="true"  />
 <Button     Name="ShiftLeft"            Image="ShiftLeft"                   XPos="650"      YPos="400"      Width="50"      Height="50"     Transparency="true" Scale="true"  />
-<Button     Name="Back"                 Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
 
 </Screen>

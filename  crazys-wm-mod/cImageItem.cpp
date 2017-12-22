@@ -49,7 +49,7 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"nurse*.", "formal*.", "shop*.", "magic*.", "sign*.", "presented*.", "dom*.",
 	"deep*.", "eatout*.", "dildo*.", "sub*.", "strapon*.", "les69ing*.", "lick*.", "balls*.",
 	"cowgirl*.", "revcowgirl*.", "sexdoggy*.", "jail*.", "puppygirl*.", "ponygirl*.", "catgirl*.",
-	"brand*.", "rape*.", "rapebeast*.", "birthhuman*.", "birthhumanmultiple*.", "birthbeast*.",					// `J` new .06.03.01 for DarkArk
+	"brand*.", "rape*.", "beastrape*.", "birthhuman*.", "birthmultiplehuman*.", "birthbeast*.",					// `J` new .06.03.01 for DarkArk
 	"impregsex*.", "impreggroup*.", "impregbdsm*.", "impregbeast*.", 											// `J` new .06.03.01 for DarkArk
 	"virginsex*.", "virgingroup*.", "virginbdsm*.", "virginbeast*.",											// `J` new .06.03.01 for DarkArk
 	"escort*.", "sport*.", "study*.", "teacher*.",																// `J` new .06.03.02 for grishnak
@@ -63,8 +63,8 @@ string pic_types[] =	// `J` moved this out to global and removed file extensions
 	"pregeatout*.", "pregdildo*.", "pregsub*.", "pregstrapon*.", "pregles69ing*.", "preglick*.",
 	"pregballs*.", "pregcowgirl*.", "pregrevcowgirl*.", "pregsexdoggy*.", "pregjail*.", "pregpuppygirl*.",
 	"pregponygirl*.", "pregcatgirl*.", 
-	"pregbrand*.", "pregrape*.", "pregrapebeast*.",																// `J` new .06.03.01 for DarkArk
-	"pregbirthhuman*.", "pregbirthhumanmultiple*.", "pregbirthbeast*.", 										// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"pregbrand*.", "pregrape*.", "pregbeastrape*.",																// `J` new .06.03.01 for DarkArk
+	"pregbirthhuman*.", "pregbirthmultiplehuman*.", "pregbirthbeast*.", 										// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	"pregimpregsex*.", "pregimpreggroup*.", "pregimpregbdsm*.", "pregimpregbeast*.", 							// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	"pregvirginsex*.", "pregvirgingroup*.", "pregvirginbdsm*.", "pregvirginbeast*.",							// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	"pregescort*.", "pregsport*.", "pregstudy*.", "pregteacher*."												// `J` new .06.03.02 for grishnak
@@ -94,11 +94,11 @@ string galtxt[] =
 	"Pregnant Eatout", "Pregnant Dildo", "Pregnant Sub", "Pregnant Strapon", "Pregnant Les69ing", "Pregnant Lick",
 	"Pregnant Balls", "Pregnant Cowgirl", "Pregnant Revcowgirl", "Pregnant Sexdoggy", "Pregnant Jail", 
 	"Pregnant Puppygirl", "Pregnant Ponygirl", "Pregnant Catgirl",
-	"Pregnant Branding", "Pregnant Rape", "Pregnant Beast Rape",														// `J` new .06.03.01 for DarkArk
-	"Pregnant Human Birth", "Pregnant Human Birth Multiple", "Pregnant Monster Birth",									// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	"Pregnant Impregnate Sex", "Pregnant Impregnate Group", "Pregnant Impregnate Bondage", "Pregnant Impregnate Beast",	// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	"Pregnant Virgin Sex", "Pregnant Virgin Group", "Pregnant Virgin Bondage", "Pregnant Virgin Beast"					// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	"Pregnant Escort*.", "Pregnant Sport*.", "Pregnant Study*.", "Pregnant Teacher*."									// `J` new .06.03.02 for grishnak
+	"Pregnant Branding", "Pregnant Rape", "Pregnant Beast Rape",												// `J` new .06.03.01 for DarkArk
+	"P Human Birth", "P Human Multi-Birth", "P Monster Birth",													// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"P Impreg Sex", "P Impreg Group", "P Impreg Bondage", "P Impreg Beast",										// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"P Virgin Sex", "P Virgin Group", "P Virgin Bondage", "P Virgin Beast",										// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	"Pregnant Escort", "Pregnant Sport", "Pregnant Study", "Pregnant Teacher"									// `J` new .06.03.02 for grishnak
 
 };
 
@@ -1046,7 +1046,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	else	// try some corrections
 	{
 		if (cfg.folders.preferdefault() || totalimagesCc + totalimagesCo < 1)	tries = 10;
-		if (imagetype < 0 || imagetype > NUM_IMGTYPES)				imagetype = IMGTYPE_PROFILE;
+		if (imagetype < 0 || imagetype > NUM_IMGTYPES)		imagetype = IMGTYPE_PROFILE;
 
 		if (imagetype == IMGTYPE_PROFILE && g_Dice.percent(10))
 		{
