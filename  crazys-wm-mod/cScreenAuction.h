@@ -26,8 +26,6 @@ class cBuilding;
 
 class cScreenAuction : public cInterfaceWindowXML 
 {
-public:
-
 private:
 	int BuyBrothel;
 	bool GetName;

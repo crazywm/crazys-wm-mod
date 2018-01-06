@@ -106,6 +106,7 @@ void cScreenArenaManagement::set_ids()
 
 void cScreenArenaManagement::init()
 {
+	g_CurrentScreen = SCREEN_ARENA;
 	if (FFSD_Flag >= 0)
 	{
 		vector<int> girl_array;
@@ -116,7 +117,6 @@ void cScreenArenaManagement::init()
 		FFSD_Flag = -1;
 	}
 
-	g_CurrentScreen = SCREEN_ARENA;
 	if (!g_InitWin) return;
 	g_InitWin = false;
 	Focused();

@@ -26,8 +26,6 @@ class cBuilding;
 
 class cMovieScreen : public cInterfaceWindowXML 
 {
-public:
-
 private:
 	int BuyBrothel;
 	bool GetName;
@@ -60,17 +58,12 @@ private:
 	void check_brothel(int BrothelNum);
 	void check_movie(int MovieNum);
 public:
-	cMovieScreen()
-	{
-		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "movie_screen.xml";
-		m_filename = dp.c_str();
-		GetName = false;
-		m_first_walk = true;
-	}
-	~cMovieScreen() {}
+	cMovieScreen();
+	~cMovieScreen();
 
 	void init();
 	void process();
+	void check_events();
 	void more_button();
 	void release_button();
 	void update_details();

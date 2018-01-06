@@ -676,230 +676,234 @@ sScript *LoadScriptFile(string Filename)
 bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 {
 	sScript *ScriptPtr;
-	// Make sure there are some script actions
-	if ((ScriptPtr = ScriptRoot) == 0) return false;
-
+	if ((ScriptPtr = ScriptRoot) == 0) return false;	// Make sure there are some script actions
 	TiXmlDocument doc(Filename);
-	TiXmlDeclaration* decl = new TiXmlDeclaration("1.0", "", "yes");
+	TiXmlDeclaration* decl = new TiXmlDeclaration("2.0", "", "yes");
 	doc.LinkEndChild(decl);
 	TiXmlElement* pRoot = new TiXmlElement("Root");
 	doc.LinkEndChild(pRoot);
 
-	//		FILE *fp;
-
-	int NumActions = 0; int i = 0; int j = 0;
-
-	// Count the number of actions
-	while (ScriptPtr != 0)
-	{
-		NumActions++; // Increase count
-		ScriptPtr = ScriptPtr->m_Next; // Next action
-	}
-
-	// Output # of script actions
-	//	fwrite(&NumActions, 1, sizeof(long), fp);
 	string name = Filename;
 	int start = name.find_last_of("\\") + 1;
 	int end = name.find_last_of(".") - start;
 	name = name.substr(start, end);
-
-
 	pRoot->SetAttribute("ScriptName", name);
+
+	int NumActions = 0;
+	while (ScriptPtr != 0) { NumActions++; ScriptPtr = ScriptPtr->m_Next; }	// Count the number of actions
 	pRoot->SetAttribute("NumActions", NumActions);
 
-
-#if 1
-	// Loop through each script action
+	int i = 0; int j = 0;
 	ScriptPtr = ScriptRoot;
-	for (i = 0; i<NumActions; i++)
+	for (i = 0; i < NumActions; i++)		// Loop through each script action
 	{
-		// Output type of action and # of entries
-		//		fwrite(&ScriptPtr->m_Type, 1, sizeof(long), fp);
-		//		fwrite(&ScriptPtr->m_NumEntries, 1, sizeof(long), fp);
 		TiXmlElement* action = new TiXmlElement("Action");
 		pRoot->LinkEndChild(action);
-		action->SetAttribute("ActionNumber", i);
-		action->SetAttribute("Type", cScript::script_names[ScriptPtr->m_Type]);	// `J` save human readable
+
 		int maintype = ScriptPtr->m_Type;
-		action->SetAttribute("NumEntries", ScriptPtr->m_NumEntries);
-		switch (maintype)
-		{
-		case 5:	// choicebox should have 2 entries
-			action->SetAttribute("Info", "The Actions after the Choicebox must be the choices available.");
-			break;
-		case 31:	// Script_IfGirlStat has 3 entries
-			break;
+		if (maintype == 24 && ScriptPtr->m_Entries[0].m_IOValue >= NUM_STATS) { ScriptPtr->m_Entries[0].m_IOValue -= NUM_STATS; maintype = ScriptPtr->m_Type = 82; }
 
-		default: break;
-		}
+		action->SetAttribute("Type", cScript::script_names[maintype]);	// `J` save human readable
 
-#if 1
-		// Output entry data (if any)
 		if (ScriptPtr->m_NumEntries)
 		{
-			for (j = 0; j<ScriptPtr->m_NumEntries; j++)
+			for (j = 0; j < ScriptPtr->m_NumEntries; j++)
 			{
-				// Write entry type and data
-				//				fwrite(&ScriptPtr->m_Entries[j].m_Type, 1, sizeof(long), fp);
-				//				fwrite(&ScriptPtr->m_Entries[j].m_IOValue, 1, sizeof(long), fp);
-				//				fwrite(&ScriptPtr->m_Entries[j].m_Var, 1, sizeof(unsigned char), fp);
-
-				TiXmlElement* entry = new TiXmlElement("Entry");
-				action->LinkEndChild(entry);
-				stringstream info;
-				stringstream iovalue;
 				switch (maintype)
 				{
-				case 5:	// Script_ChoiceBox
-					if (j == 0) info << "ID of the choicebox";
-					if (j == 1) info << "Number of choices";
-					break;
-				case 9:		// Script_IfVar(Script);
-				case 29:	// Script_IfGirlFlag(Script);
-					if (j == 1) { iovalue << cScript::script_compare_types[ScriptPtr->m_Entries[j].m_IOValue]; info << "IOValue Options:   e , l , le , g , ge , ne"; }
-					break;
-				case 12:	// Script_ActivateChoice(Script);
-					if (j == 0) info << "Activate what choicebox ID?";
-					break;
-				case 13:	// Script_IfChoice(Script);
-					if (j == 0) info << "What choicebox ID was used?";
-					if (j == 1) info << "What was the choice?";
-					break;
-				case 17:	// Script_AddCustToDungeon(Script);
-					if (j == 0) { info << "Reason:   0 = for not paying, 1 = beating a girl"; }
-					if (j == 1) { info << "Number of Daughters"; }
-					if (j == 2) { info << "Has Wife? 0 = no, 1 = yes"; }
-					break;
-				case 18:	// Script_AddRandomGirlToDungeon(Script);
-					if (j == 0) { info << "Reason:  0 = Kidnaped, 1 = Captured"; }
-					if (j == 1) { info << "Min Age?"; }
-					if (j == 2) { info << "Max Age?"; }
-					if (j == 3) { info << "Slave?   0 = no, 1 = yes"; }
-					if (j == 4) { info << "NonHuman?   0 = no, 1 = yes"; }
-					if (j == 5) { info << "Arena?   0 = no, 1 = yes"; }
-					if (j == 6) { info << "Make her your daughter?   0 = no, 1 = yes"; }
-					break;
-				case 22:	// Script_AddManyRandomGirlsToDungeon(Script);
-					if (j == 0) { info << "How Many?"; }
-					if (j == 1) { info << "Reason:  0 = Kidnaped, 1 = Captured"; }
-					if (j == 2) { info << "Min Age?"; }
-					if (j == 3) { info << "Max Age?"; }
-					if (j == 4) { info << "Slave?   0 = no, 1 = yes"; }
-					if (j == 5) { info << "NonHuman?   0 = no, 1 = yes"; }
-					if (j == 6) { info << "Arena?   0 = no, 1 = yes"; }
-					break;
-				case 24:	// Script_AdjustTargetGirlStat(Script);
-					if (j == 0)
-					{
-						if (ScriptPtr->m_Entries[j].m_IOValue < NUM_STATS)
-							iovalue << sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue];
-						else
-							iovalue << sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue - NUM_STATS];
-						info << "Stat/Skill";
-					}
-					break;
-				case 27:	// Script_IfPassSkillCheck(Script);
-					if (j == 0) { iovalue << sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]; info << "Skill"; }
-					break;
-				case 28:	// Script_IfPassStatCheck(Script);
-					if (j == 0) { iovalue << sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]; info << "Stat"; }
-					break;
-				case 31:	// Script_IfGirlStat
-					if (j == 0) { iovalue << sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]; info << "Stat"; }
-					if (j == 1) { iovalue << cScript::script_compare_types[ScriptPtr->m_Entries[j].m_IOValue]; info << "IOValue Options:   e , l , le , g , ge , ne"; }
-					if (j == 2) { info << "Amount"; }
-					break;
-				case 32:	// Script_IfGirlSkill(Script);
-					if (j == 0) { iovalue << sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]; info << "Skill"; }
-					if (j == 1) { iovalue << cScript::script_compare_types[ScriptPtr->m_Entries[j].m_IOValue]; info << "IOValue Options:   e , l , le , g , ge , ne"; }
-					if (j == 2) { info << "Amount"; }
-					break;
-				case 70:	// Script_AddFamilyToDungeon(Script);
-					if (j == 0) { info << "How Many Daughters?"; }
-					if (j == 1) { info << "Take Mother?   0 = no, 1 = yes"; }
-					if (j == 2) { info << "Reason:  0 = Kidnaped, 1 = Captured"; }
-					if (j == 3) { info << "Slave?   0 = no, 1 = yes"; }
-					if (j == 4) { info << "NonHuman?   0 = no, 1 = yes"; }
-					if (j == 5) { info << "Arena?   0 = no, 1 = yes"; }
-					break;
-				case 73:	// Script_AddTraitTemp(Script);
-					if (j == 1) { info << "How long will it last?"; }
-					break;
-				case 78:	// Script_GetRandomGirl(Script);
-					if (j == 0) { info << "From where?  0 = Anywhere, 1 = Brothel, 2 = Studio, 3 = Arena, 4 = Centre, 5 = Clinic, 6 = Farm, 7 = House"; }
-					if (j == 1) { info << "If Brothel, which one?"; }
-					break;
-				case 82:	// Script_AdjustTargetGirlSkill(Script);
-					if (j == 0) { iovalue << sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]; info << "Skill"; }
-					if (j == 1) { info << "Amount"; }
-					break;
-				case 96:	// Script_AddItemtoGirl(Script);
-					if (j == 0) { info << "What Item?"; }
-					if (j == 1) { info << "How Many?"; }
-					if (j == 2) { info << "Use/Equip?   0 = no, 1 = yes"; }
-					break;
-				case 97:	// Script_GivePlayerItem(Script);
-					if (j == 0) { info << "What Item?"; }
-					if (j == 1) { info << "How Many?"; }
-					break;
-				case 99:	// Script_GiveGirlInvItem(Script);
-					if (j == 0) { info << "What Item?"; }
-					if (j == 1) { info << "Use/Equip?   0 = no, 1 = yes"; }
-					break;
-				case 102:	// Script_GiveGoldToGirl(Script);
-					if (j == 0) { info << "Min Amount"; }
-					if (j == 1) { info << "Max Amount"; }
-					break;
-				case 103:	// Script_AdjustTargetGirlStatR(Script);
-					if (j == 0) { iovalue << sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]; info << "Stat"; }
-					if (j == 1) { info << "Min Amount"; }
-					if (j == 2) { info << "Max Amount"; }
-					if (j == 3) { info << "Temporary?   0 = no, 1 = yes"; }
-					break;
-				case 104:	// Script_AdjustTargetGirlSkillR(Script);
-					if (j == 0) { iovalue << sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]; info << "Skill"; }
-					if (j == 1) { info << "Min Amount"; }
-					if (j == 2) { info << "Max Amount"; }
-					if (j == 3) { info << "Temporary?   0 = no, 1 = yes"; }
-					break;
-
-
-				default:
-					break;
-				}
-				if (iovalue.str().size() == 0)	iovalue << ScriptPtr->m_Entries[j].m_IOValue;
-
-				entry->SetAttribute("ActionNumber", i);
-				entry->SetAttribute("EntryNumber", j);
-				entry->SetAttribute("Type", cScript::script_entry_types[ScriptPtr->m_Entries[j].m_Type]);	// `J` save human readable
-				entry->SetAttribute("IOValue", iovalue.str());
-				entry->SetAttribute("Var", ScriptPtr->m_Entries[j].m_Var);
-				if (info.str().size() > 0) entry->SetAttribute("Info", info.str());
-
-
-
-				// Write text entry (if any)
-				if (ScriptPtr->m_Entries[j].m_Type == _TEXT && ScriptPtr->m_Entries[j].m_Text != NULL)
+				case  0: // "Dialog ~"
+				case  6: // "TEXT ~"
 				{
 					stringstream ss; ss << ScriptPtr->m_Entries[j].m_Text;
-					entry->SetAttribute("IOValue", ss.str().length());
-					entry->SetAttribute("Text", ss.str());
+					action->SetAttribute("Text", ss.str());
+				} break;
+				case   5: // "CHOICEBOX ~ ~"
+				case  12: // "ActivateChoice ~"
+				case  13: // "If Choice from ChoiceBox ~ is ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("ID", ScriptPtr->m_Entries[j].m_IOValue);
+					if (maintype == 5 && j == 1)								/**/ action->SetAttribute("Num", ScriptPtr->m_Entries[j].m_IOValue);
+					if (maintype == 13 && j == 1)								/**/ action->SetAttribute("Val", ScriptPtr->m_Entries[j].m_IOValue);
+				} break;
+				case 7: //"SetVar ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Var", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("Val", ScriptPtr->m_Entries[j].m_IOValue);
+				} break;
+				case   8: //"SetVarRandom ~ ~ ~"
+				case 103: //"AdjustTargetGirlStatR ~ ~ ~ ~"
+				case 104: //"AdjustTargetGirlSkillR ~ ~ ~ ~"
+				{
+					if (maintype == 8 && j == 0)								/**/ action->SetAttribute("Var", ScriptPtr->m_Entries[j].m_IOValue);
+					if (maintype == 103 && j == 0)								/**/ action->SetAttribute("Stat", sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (maintype == 104 && j == 0)								/**/ action->SetAttribute("Skill", sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (j == 1)													/**/ action->SetAttribute("Min", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 2)													/**/ action->SetAttribute("Max", ScriptPtr->m_Entries[j].m_IOValue);
+					if ((maintype == 103 || maintype == 104) && j == 3)			/**/ action->SetAttribute("Temp", ScriptPtr->m_Entries[j].m_IOValue);
+					if ((maintype == 103 || maintype == 104) && j == 3)			/**/ action->SetAttribute("Info", "Temp:  0 = false, 1 = true");
+				} break;
 
+				case   9: //"IfVar ~ ~ ~"
+				case  31: //"IfGirlStat ~ ~ ~"
+				case  29: //"IfGirlFlag ~ ~ ~"
+				case  32: //"IfSkill ~ ~ ~"
+				{
+					if (maintype == 9 && j == 0)								/**/ action->SetAttribute("Var", ScriptPtr->m_Entries[j].m_IOValue);
+					if (maintype == 29 && j == 0)								/**/ action->SetAttribute("Flag", ScriptPtr->m_Entries[j].m_IOValue);
+					if (maintype == 31 && j == 0)								/**/ action->SetAttribute("Stat", sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (maintype == 32 && j == 0)								/**/ action->SetAttribute("Skill", sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (j == 1)													/**/ action->SetAttribute("Compare", cScript::script_compare_types[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (j == 2)													/**/ action->SetAttribute("Amount", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 2)													/**/ action->SetAttribute("Info", "Compare Options:   e , l , le , g , ge , ne");
+				} break;
+				case  14: //"SetPlayerSuspicion ~"
+				case  15: //"SetPlayerDisposition ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Val", ScriptPtr->m_Entries[j].m_IOValue);
+				} break;
+				case  16: //"ClearGlobalFlag ~"
+				case  19: //"Set Global ~ ~"
+				case  20: //"SetGirlFlag ~ ~"
+				case  80: //"AdjustGirlFlag ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Flag", ScriptPtr->m_Entries[j].m_IOValue);
+					if ((maintype == 19 || maintype == 20) && j == 1)			/**/ action->SetAttribute("SetTo", ScriptPtr->m_Entries[j].m_IOValue);
+					if (maintype == 80 && j == 1)								/**/ action->SetAttribute("Amount", ScriptPtr->m_Entries[j].m_IOValue);
+				} break;
+				case  17: //"AddCustomerToDungeon ~ ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Reason", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("NumDaughters", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 2)													/**/ action->SetAttribute("HasWife", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 2)													/**/ action->SetAttribute("Info", "Reason: 0 = for not paying, 1 = beating a girl   |   Has Wife? 0 = no, 1 = yes");
+				} break;
+				case  18: // "AddRandomGirlToDungeon ~ ~ ~ ~ ~ ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Reason", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("MinAge", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 2)													/**/ action->SetAttribute("MaxAge", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 3)													/**/ action->SetAttribute("Slave_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 4)													/**/ action->SetAttribute("NonHuman_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 5)													/**/ action->SetAttribute("Arena_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 6)													/**/ action->SetAttribute("YourDaughter_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 6)													/**/ action->SetAttribute("Info", "Reason:  0 = Kidnapped, 1 = Captured   |   _01:  0 = no, 1 = yes");
+				} break;
+				case  21: //"AddRandomValueToGold ~ ~"
+				case 102: //"GiveGoldToGirl ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Min", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("Max", ScriptPtr->m_Entries[j].m_IOValue);
+				} break;
+				case  22: //"AddManyRandomGirlsToDungeon ~ ~ ~ ~ ~ ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("HowMany", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("Reason", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 2)													/**/ action->SetAttribute("MinAge", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 3)													/**/ action->SetAttribute("MaxAge", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 4)													/**/ action->SetAttribute("Slave_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 5)													/**/ action->SetAttribute("NonHuman_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 6)													/**/ action->SetAttribute("Arena_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 6)													/**/ action->SetAttribute("Info", "Reason:  0 = Kidnapped, 1 = Captured   |   _01:  0 = no, 1 = yes");
+				} break;
+				case  24: //"AdjustTargetGirlStat ~ ~"
+				case  82: //"AdjustTargetGirlSkill ~ ~"
+				{
+					if (maintype == 24 && j == 0)								/**/ action->SetAttribute("Stat", sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (maintype == 82 && j == 0)								/**/ action->SetAttribute("Skill", sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (j == 1)													/**/ action->SetAttribute("Amount", ScriptPtr->m_Entries[j].m_IOValue);
+				} break;
+				case  27: //"IfPassSkillCheck ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Skill", sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]);
+				} break;
+				case  28: // "IfPassStatCheck ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Stat", sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]);
+				} break;
+				case  33: // "IfHasTrait ~"
+				case  71: // "AddTrait ~"
+				case  72: // "RemoveTrait ~"
+				case  73: // "AddTraitTemp ~ ~"
+				case  81: // "AdjustTraitTemp ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Trait", ScriptPtr->m_Entries[j].m_Text);
+					if ((maintype == 73 || maintype == 81) && j == 1)			/**/ action->SetAttribute("Temp", ScriptPtr->m_Entries[j].m_IOValue);
+				} break;
+				case  70: //"AddFamilyToDungeon ~ ~ ~ ~ ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("NumDaughters", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("TakeMother_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 2)													/**/ action->SetAttribute("Reason", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 3)													/**/ action->SetAttribute("Slave_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 4)													/**/ action->SetAttribute("NonHuman_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 5)													/**/ action->SetAttribute("Arena_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 5)													/**/ action->SetAttribute("Info", "Reason:  0 = Kidnapped, 1 = Captured   |   _01   0 = no, 1 = yes");
+				} break;
+				case  78: //"Get Random Girl ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("From", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("Num", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("Info", "From where?  0 = Anywhere, 1 = Brothel, 2 = Studio, 3 = Arena, 4 = Centre, 5 = Clinic, 6 = Farm, 7 = House   |   If Brothel, which one?");
+				} break;
+				case  95: //"IfGirlHasItem ~"
+				case  96: //"AddItemtoGirl ~ ~ ~"
+				case  97: //"GivePlayerItem ~ ~"
+				case  98: //"IfPlayerHasItem ~"
+				case  99: //"GiveGirlInvItem ~ ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Item", ScriptPtr->m_Entries[j].m_IOValue);
+					if ((maintype == 96 || maintype == 97) && j == 1)			/**/ action->SetAttribute("Num", ScriptPtr->m_Entries[j].m_IOValue);
+					if (maintype == 99 && j == 1)								/**/ action->SetAttribute("Use_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (maintype == 96 && j == 2)								/**/ action->SetAttribute("Use_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (maintype == 96 && j == 2)								/**/ action->SetAttribute("Info", "_01:  0 = no, 1 = yes");
+					if (maintype == 99 && j == 1)								/**/ action->SetAttribute("Info", "_01:  0 = no, 1 = yes");
+				} break;
+				case 106: //"IfGirlStatus ~ is ~"
+				case 107: //"SetGirlStatus ~ to ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Status", sGirl::status_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (j == 1)													/**/ action->SetAttribute("Val_01", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("Info", "_01: 0 = no, 1 = yes");
+				} break;
+				case 109: //"CreatePregnancy type ~ chance ~ force ~"
+				{
+					if (j == 0)													/**/ action->SetAttribute("Type", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 1)													/**/ action->SetAttribute("Chance", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 2)													/**/ action->SetAttribute("Force", ScriptPtr->m_Entries[j].m_IOValue);
+					if (j == 2)													/**/ action->SetAttribute("Info", "Type: 0 = Player, 1 = Customer, 2 = Beast   |   Force:  0 = no, 1 = yes");
+				} break;
+				default:	// left in for anything that I may have missed
+				{
+					action->SetAttribute("NumEntries", ScriptPtr->m_NumEntries);
+					TiXmlElement* entry = new TiXmlElement("Entry");
+					action->LinkEndChild(entry);
+					stringstream info;
+					stringstream iovalue;
+					if (iovalue.str().size() == 0)	iovalue << ScriptPtr->m_Entries[j].m_IOValue;
+
+					entry->SetAttribute("EntryNumber", j);
+					entry->SetAttribute("Type", cScript::script_entry_types[ScriptPtr->m_Entries[j].m_Type]);	// `J` save human readable
+					entry->SetAttribute("IOValue", iovalue.str());
+					entry->SetAttribute("Var", ScriptPtr->m_Entries[j].m_Var);
+					if (info.str().size() > 0) entry->SetAttribute("Info", info.str());
+
+					// Write text entry (if any)
+					if (ScriptPtr->m_Entries[j].m_Type == _TEXT && ScriptPtr->m_Entries[j].m_Text != NULL)
+					{
+						stringstream ss; ss << ScriptPtr->m_Entries[j].m_Text;
+						entry->SetAttribute("IOValue", ss.str().length());
+						entry->SetAttribute("Text", ss.str());
+					}
+				} break;
 				}
 			}
 		}
-#endif
-
-		// Go to next script structure in linked list
 		ScriptPtr = ScriptPtr->m_Next;
 	}
-
-#endif
-	//	fclose(fp);
 	doc.SaveFile();
-
 	return true; // return a success!
 }
+
 
 sScript *LoadScriptXML(string Filename)
 {
@@ -913,81 +917,343 @@ sScript *LoadScriptXML(string Filename)
 	XmlUtil xu(Filename);
 	TiXmlElement *ela = NULL;
 	TiXmlElement *ele = NULL;
+	string ver=	doc.FirstChild()->ToDeclaration()->Version();
+
 	TiXmlElement *root_el = doc.RootElement();
 	const char *pt;
-	int Num = 0;
 	sScript *ScriptRoot = 0, *Script = 0, *ScriptPtr = 0;
-
+	if (!cScript::m_script_maps_setup)	cScript::setup_maps();									// only need to do this once
+	int Num = 0;
 	if (pt = root_el->Attribute("NumActions"))		xu.get_att(root_el, "NumActions", Num);
 	if (!Num) return 0;
 
-#if 1
-	if (!cScript::m_script_maps_setup)	cScript::setup_maps();									// only need to do this once
-
-	// Loop through each script action
-	for (ela = root_el->FirstChildElement(); ela; ela = ela->NextSiblingElement())
+	if (ver == "2.0")
 	{
-		// Allocate a script structure and link in
-		Script = new sScript();
-
-		if (ScriptPtr == 0) ScriptRoot = Script; // Assign root
-		else ScriptPtr->m_Next = Script;
-		ScriptPtr = Script;
-
-		if (pt = ela->Attribute("Type"))	// `J` check for human readable
+		// Loop through each script action
+		for (ela = root_el->FirstChildElement(); ela; ela = ela->NextSiblingElement())
 		{
-			string ty = ""; xu.get_att(ela, "Type", ty); ty = stringtolower(ty);
-			if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())				// `J` if human readable not found
-				xu.get_att(ela, "Type", Script->m_Type);										// `J` old script so get the number
-			else Script->m_Type = cScript::script_lookup[ty];
-		}
-		if (pt = ela->Attribute("NumEntries"))	xu.get_att(ela, "NumEntries", Script->m_NumEntries);
-		int maintype = Script->m_Type;
-		// Get entry data (if any)
-		if (Script->m_NumEntries)
-		{
-			// Allocate entry array
-			Script->m_Entries = new sScriptEntry[Script->m_NumEntries]();
-			int entrynum = -1;
-			for (ele = ela->FirstChildElement(); ele; ele = ele->NextSiblingElement())
+			Script = new sScript();																// Allocate a script structure and link in
+			if (ScriptPtr == 0) ScriptRoot = Script;											// Assign root
+			else ScriptPtr->m_Next = Script;
+			ScriptPtr = Script;
+			if (pt = ela->Attribute("Type"))													// `J` check for human readable
 			{
-				if (pt = ele->Attribute("EntryNumber"))		xu.get_att(ele, "EntryNumber", entrynum);
-				else entrynum++;
+				string ty = ""; xu.get_att(ela, "Type", ty); ty = stringtolower(ty);
+				if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())			// `J` if human readable not found
+					xu.get_att(ela, "Type", Script->m_Type);									// `J` old script so get the number
+				else Script->m_Type = cScript::script_lookup[ty];
+			}
+			int maintype = Script->m_Type;
 
-				if (pt = ele->Attribute("Type"))	// `J` check for human readable
-				{
-					string ty = ""; xu.get_att(ele, "Type", ty); ty = stringtolower(ty);
-					if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())		// `J` if human readable not found
-						xu.get_att(ele, "Type", Script->m_Entries[entrynum].m_Type);			// `J` old script so get the number
-					else Script->m_Entries[entrynum].m_Type = cScript::script_lookup[ty];
-				}
-				if (pt = ele->Attribute("IOValue"))
-				{
-					string ty = ""; xu.get_att(ele, "IOValue", ty); string tyl = stringtolower(ty);
-					if (cScript::script_lookup.find(ty) != cScript::script_lookup.end())					Script->m_Entries[entrynum].m_IOValue = cScript::script_lookup[tyl];
-					else if (maintype == 24 && sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())	Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty] + NUM_STATS;
-					else if (sGirl::stat_lookup.find(ty) != sGirl::stat_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::stat_lookup[ty];
-					else if (sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty];
-					else xu.get_att(ele, "IOValue", Script->m_Entries[entrynum].m_IOValue);		// `J` old script so get the number
-				}
-				if (pt = ele->Attribute("Var"))			xu.get_att(ele, "Var", Script->m_Entries[entrynum].m_Var);
+			switch (maintype)
+			{
+			case 0:	case 6:	case 12:	case 14:	case 15:	case 16:	case 27:	case 28:	case 33:	case 71:	case 72:	case 95:	case 98:
+				Script->m_NumEntries = 1;
+				break;
+			case 5:	case 7:	case 13:	case 19:	case 20:	case 21:	case 24:	case 73:	case 78:	case 80:	case 81:	case 82:	case 97:	case 99:	case 102:	case 106:	case 107:
+				Script->m_NumEntries = 2;
+				break;
+			case 8:	case 9:	case 17:	case 29:	case 31:	case 32:	case 96:	case 109:
+				Script->m_NumEntries = 3;
+				break;
+			case 103:	case 104:
+				Script->m_NumEntries = 4;
+				break;
+			case 70:
+				Script->m_NumEntries = 6;
+				break;
+			case 18:	case 22:
+				Script->m_NumEntries = 7;
+				break;
+			default:
+				Script->m_NumEntries = 0;
+				break;
+			}
 
-				// Get text (if any)
-				if (Script->m_Entries[entrynum].m_Type == _TEXT && Script->m_Entries[entrynum].m_Length)
+			// Get entry data (if any)
+			if (Script->m_NumEntries)
+			{
+				Script->m_Entries = new sScriptEntry[Script->m_NumEntries]();
+				
+				// most are of type _INT so we set that as the default so we only need to change the non _INTs
+				for (int vv = 0; vv < Script->m_NumEntries; vv++)	{ Script->m_Entries[vv].m_Type = _INT;  }
+
+				string t = "";
+				switch (maintype)
 				{
-					if (ele->Attribute("Text"))
+				case 0:	case 6:
+					Script->m_Entries[0].m_Type = _TEXT;
+					t = ela->Attribute("Text");
+					Script->m_Entries[0].m_Text = new char[t.length()];
+					strcpy(Script->m_Entries[0].m_Text, ela->Attribute("Text"));
+					Script->m_Entries[0].m_IOValue = t.length() + 1;
+					break;
+				case   5: // "CHOICEBOX ~ ~"
+				case  12: // "ActivateChoice ~"
+				case  13: // "If Choice from ChoiceBox ~ is ~"
+					ela->QueryIntAttribute("ID", &Script->m_Entries[0].m_IOValue);
+					if (maintype == 5)	ela->QueryIntAttribute("Num", &Script->m_Entries[1].m_IOValue);
+					if (maintype == 13)	ela->QueryIntAttribute("Val", &Script->m_Entries[1].m_IOValue);
+					break;
+				case   7: // "SetVar ~ ~"
+					ela->QueryIntAttribute("Var", &Script->m_Entries[0].m_IOValue);
+					ela->QueryIntAttribute("Val", &Script->m_Entries[1].m_IOValue);
+					break;
+				case   8: // "SetVarRandom ~ ~ ~"
+					ela->QueryIntAttribute("Var", &Script->m_Entries[0].m_IOValue);
+					ela->QueryIntAttribute("Min", &Script->m_Entries[1].m_IOValue);
+					ela->QueryIntAttribute("Max", &Script->m_Entries[2].m_IOValue);
+					break;
+				case 103: //"AdjustTargetGirlStatR ~ ~ ~ ~"
+				case 104: //"AdjustTargetGirlSkillR ~ ~ ~ ~"
+					Script->m_Entries[0].m_Type = _CHOICE;
+					if (maintype == 103)	{ t = ela->Attribute("Stat");	Script->m_Entries[0].m_IOValue = sGirl::stat_lookup[t]; }
+					if (maintype == 104)	{ t = ela->Attribute("Skill");	Script->m_Entries[0].m_IOValue = sGirl::skill_lookup[t]; }
+					ela->QueryIntAttribute("Min", &Script->m_Entries[1].m_IOValue);
+					ela->QueryIntAttribute("Max", &Script->m_Entries[2].m_IOValue);
+					ela->QueryIntAttribute("Temp", &Script->m_Entries[3].m_IOValue);	Script->m_Entries[3].m_Type = _BOOL;
+					break;
+				case   9: // "IfVar ~ ~ ~"
+				case  29: // "IfGirlFlag ~ ~ ~"
+				case  31: // "IfStat ~ ~ ~"
+				case  32: // "IfSkill ~ ~ ~"
+					if (maintype == 9)	ela->QueryIntAttribute("Var", &Script->m_Entries[0].m_IOValue);
+					if (maintype == 29)	ela->QueryIntAttribute("Flag", &Script->m_Entries[0].m_IOValue);
+					if (maintype == 31)	{ t = ela->Attribute("Stat");		Script->m_Entries[0].m_IOValue = sGirl::stat_lookup[t]; Script->m_Entries[0].m_Type = _CHOICE; }
+					if (maintype == 32)	{ t = ela->Attribute("Skill");		Script->m_Entries[0].m_IOValue = sGirl::skill_lookup[t]; Script->m_Entries[0].m_Type = _CHOICE; }
+					t = ela->Attribute("Compare");	Script->m_Entries[1].m_IOValue = cScript::script_lookup[stringtolower(t)];	Script->m_Entries[1].m_Type = _CHOICE;
+					ela->QueryIntAttribute("Amount", &Script->m_Entries[2].m_IOValue);
+					break;
+				case  14: // "SetPlayerSuspicion ~"
+				case  15: // "SetPlayerDisposition ~"
+					ela->QueryIntAttribute("Val", &Script->m_Entries[0].m_IOValue);
+					break;
+				case  16: //"ClearGlobalFlag ~"
+				case  19: //"Set Global ~ ~"
+				case  20: //"SetGirlFlag ~ ~"
+				case  80: //"AdjustGirlFlag ~ ~"
+					ela->QueryIntAttribute("Flag", &Script->m_Entries[0].m_IOValue);
+					if (maintype == 19 || maintype == 20)	ela->QueryIntAttribute("SetTo", &Script->m_Entries[1].m_IOValue);
+					if (maintype == 80)						ela->QueryIntAttribute("Amount", &Script->m_Entries[1].m_IOValue);
+					break;
+				case  21: // "AddRandomValueToGold ~ ~"
+				case 102: // "GiveGoldToGirl ~ ~"
+					ela->QueryIntAttribute("Min", &Script->m_Entries[0].m_IOValue);
+					ela->QueryIntAttribute("Max", &Script->m_Entries[1].m_IOValue);
+					break;
+
+				case  24: // "AdjustTargetGirlStat ~ ~"
+				case  82: // "AdjustTargetGirlSkill ~ ~"
+					ela->QueryIntAttribute("Amount", &Script->m_Entries[1].m_IOValue);
+				case  27: // "IfPassSkillCheck ~"
+				case  28: // "IfPassStatCheck ~"
+					Script->m_Entries[0].m_Type = _CHOICE;
+					if (maintype == 24 || maintype == 28)
 					{
-						Script->m_Entries[entrynum].m_Text = new char[Script->m_Entries[entrynum].m_Length];
-						strcpy(Script->m_Entries[entrynum].m_Text, ele->Attribute("Text"));
-						string a = ele->Attribute("Text");
-						Script->m_Entries[entrynum].m_IOValue = a.length()+1;
-							
+						t = ela->Attribute("Stat");
+						if (maintype == 24 && sGirl::skill_lookup.find(t) != sGirl::skill_lookup.end())		Script->m_Entries[0].m_IOValue = sGirl::skill_lookup[t] + NUM_STATS;
+						else if (maintype == 24 && sGirl::stat_lookup.find(t) != sGirl::stat_lookup.end())	Script->m_Entries[0].m_IOValue = sGirl::stat_lookup[t];
+						else Script->m_Entries[0].m_IOValue = sGirl::stat_lookup[t];
+					}
+					if (maintype == 27 || maintype == 82)	{ t = ela->Attribute("Skill");	Script->m_Entries[0].m_IOValue = sGirl::skill_lookup[t]; }
+					break;
+
+				case  73: // "AddTraitTemp ~ ~"
+				case  81: // "AdjustTraitTemp ~ ~"
+					Script->m_Entries[1].m_Type = _BOOL;
+					ela->QueryIntAttribute("Temp", &Script->m_Entries[1].m_IOValue);
+				case  33: // "IfHasTrait ~"
+				case  71: // "AddTrait ~"
+				case  72: // "RemoveTrait ~"
+					Script->m_Entries[0].m_Type = _TEXT;
+					t = ela->Attribute("Trait");
+					Script->m_Entries[0].m_Text = new char[t.length()];
+					strcpy(Script->m_Entries[0].m_Text, ela->Attribute("Trait"));
+					Script->m_Entries[0].m_IOValue = t.length() + 1;
+					break;
+				case  78: // "Get Random Girl ~ ~"
+					Script->m_Entries[0].m_Type = _CHOICE;
+					ela->QueryIntAttribute("From", &Script->m_Entries[1].m_IOValue);
+					ela->QueryIntAttribute("Temp", &Script->m_Entries[1].m_IOValue);
+					break;
+				case  96: // "AddItemtoGirl ~ ~ ~"
+					Script->m_Entries[2].m_Type = _BOOL;
+					ela->QueryIntAttribute("Use_01", &Script->m_Entries[2].m_IOValue);
+				case  97: // "GivePlayerItem ~ ~"
+					ela->QueryIntAttribute("Num", &Script->m_Entries[1].m_IOValue);
+				case  99: // "GiveGirlInvItem ~ ~"
+					if (maintype == 99)
+					{
+						Script->m_Entries[1].m_Type = _BOOL;
+						ela->QueryIntAttribute("Use_01", &Script->m_Entries[1].m_IOValue);
+					}
+				case  98: // "IfPlayerHasItem ~"
+				case  95: // "IfGirlHasItem ~"
+					Script->m_Entries[0].m_Type = _TEXT;
+					t = ela->Attribute("Item");
+					Script->m_Entries[0].m_Text = new char[t.length()];
+					strcpy(Script->m_Entries[0].m_Text, ela->Attribute("Item"));
+					Script->m_Entries[0].m_IOValue = t.length() + 1;
+					break;
+				case 106: // "IfGirlStatus ~ is ~"
+				case 107: // "SetGirlStatus ~ to ~"
+					t = ela->Attribute("Status");			
+					Script->m_Entries[0].m_IOValue = sGirl::status_lookup[t];			Script->m_Entries[0].m_Type = _CHOICE;
+					ela->QueryIntAttribute("Val_01", &Script->m_Entries[1].m_IOValue);	Script->m_Entries[1].m_Type = _BOOL;
+					break;
+				case 109: // "CreatePregnancy type ~ chance ~ force ~"
+					ela->QueryIntAttribute("Type", &Script->m_Entries[0].m_IOValue);	Script->m_Entries[0].m_Type = _CHOICE;
+					ela->QueryIntAttribute("Chance", &Script->m_Entries[1].m_IOValue);
+					ela->QueryIntAttribute("Force", &Script->m_Entries[2].m_IOValue);	Script->m_Entries[2].m_Type = _BOOL;
+				break;
+
+
+				case  17: // "AddCustomerToDungeon ~ ~ ~"
+					Script->m_Entries[0].m_Type = _CHOICE;	Script->m_Entries[2].m_Type = _BOOL;
+					ela->QueryIntAttribute("Reason",			&Script->m_Entries[0].m_IOValue);
+					ela->QueryIntAttribute("NumDaughters",		&Script->m_Entries[1].m_IOValue);
+					ela->QueryIntAttribute("HasWife",			&Script->m_Entries[2].m_IOValue);
+					break;
+				case  18: // "AddRandomGirlToDungeon ~ ~ ~ ~ ~ ~ ~"
+					Script->m_Entries[0].m_Type = _CHOICE;	Script->m_Entries[3].m_Type = Script->m_Entries[4].m_Type = Script->m_Entries[5].m_Type = Script->m_Entries[6].m_Type = _BOOL;
+					ela->QueryIntAttribute("Reason",			&Script->m_Entries[0].m_IOValue);
+					ela->QueryIntAttribute("MinAge",			&Script->m_Entries[1].m_IOValue);
+					ela->QueryIntAttribute("MaxAge",			&Script->m_Entries[2].m_IOValue);
+					ela->QueryIntAttribute("Slave_01",			&Script->m_Entries[3].m_IOValue);
+					ela->QueryIntAttribute("NonHuman_01",		&Script->m_Entries[4].m_IOValue);
+					ela->QueryIntAttribute("Arena_01",			&Script->m_Entries[5].m_IOValue);
+					ela->QueryIntAttribute("YourDaughter_01",	&Script->m_Entries[6].m_IOValue);
+					break;
+				case  22: // "AddManyRandomGirlsToDungeon ~ ~ ~ ~ ~ ~ ~"
+					Script->m_Entries[1].m_Type = _CHOICE;	Script->m_Entries[4].m_Type = Script->m_Entries[5].m_Type = Script->m_Entries[6].m_Type = _BOOL;
+					ela->QueryIntAttribute("HowMany",			&Script->m_Entries[0].m_IOValue);
+					ela->QueryIntAttribute("Reason",			&Script->m_Entries[1].m_IOValue);
+					ela->QueryIntAttribute("MinAge",			&Script->m_Entries[2].m_IOValue);
+					ela->QueryIntAttribute("MaxAge",			&Script->m_Entries[3].m_IOValue);
+					ela->QueryIntAttribute("Slave_01",			&Script->m_Entries[4].m_IOValue);
+					ela->QueryIntAttribute("NonHuman_01",		&Script->m_Entries[5].m_IOValue);
+					ela->QueryIntAttribute("Arena_01",			&Script->m_Entries[6].m_IOValue);
+
+					break;
+				case  70: // "AddFamilyToDungeon ~ ~ ~ ~ ~ ~"
+					Script->m_Entries[2].m_Type = _CHOICE;	Script->m_Entries[1].m_Type = Script->m_Entries[3].m_Type = Script->m_Entries[4].m_Type = Script->m_Entries[5].m_Type = _BOOL;
+					ela->QueryIntAttribute("NumDaughters",		&Script->m_Entries[0].m_IOValue);
+					ela->QueryIntAttribute("TakeMother_01",		&Script->m_Entries[1].m_IOValue);
+					ela->QueryIntAttribute("Reason",			&Script->m_Entries[2].m_IOValue);
+					ela->QueryIntAttribute("Slave_01",			&Script->m_Entries[3].m_IOValue);
+					ela->QueryIntAttribute("NonHuman_01",		&Script->m_Entries[4].m_IOValue);
+					ela->QueryIntAttribute("Arena_01",			&Script->m_Entries[5].m_IOValue);
+					break;
+				default:		// left in for anything that I may have missed
+				{
+					int entrynum = -1;
+					for (ele = ela->FirstChildElement(); ele; ele = ele->NextSiblingElement())
+					{
+						if (pt = ele->Attribute("EntryNumber"))		xu.get_att(ele, "EntryNumber", entrynum);
+						else entrynum++;
+
+						if (pt = ele->Attribute("Type"))	// `J` check for human readable
+						{
+							string ty = ""; xu.get_att(ele, "Type", ty); ty = stringtolower(ty);
+							if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())		// `J` if human readable not found
+								xu.get_att(ele, "Type", Script->m_Entries[entrynum].m_Type);			// `J` old script so get the number
+							else Script->m_Entries[entrynum].m_Type = cScript::script_lookup[ty];
+						}
+						if (pt = ele->Attribute("IOValue"))
+						{
+							string ty = ""; xu.get_att(ele, "IOValue", ty); string tyl = stringtolower(ty);
+							if (cScript::script_lookup.find(ty) != cScript::script_lookup.end())					Script->m_Entries[entrynum].m_IOValue = cScript::script_lookup[tyl];
+							else if (maintype == 24 && sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())	Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty] + NUM_STATS;
+							else if (sGirl::stat_lookup.find(ty) != sGirl::stat_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::stat_lookup[ty];
+							else if (sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty];
+							else if (sGirl::status_lookup.find(ty) != sGirl::status_lookup.end())					Script->m_Entries[entrynum].m_IOValue = sGirl::status_lookup[ty];
+							else xu.get_att(ele, "IOValue", Script->m_Entries[entrynum].m_IOValue);		// `J` old script so get the number
+						}
+						if (pt = ele->Attribute("Var"))			xu.get_att(ele, "Var", Script->m_Entries[entrynum].m_Var);
+
+						// Get text (if any)
+						if (Script->m_Entries[entrynum].m_Type == _TEXT && Script->m_Entries[entrynum].m_Length)
+						{
+							if (ele->Attribute("Text"))
+							{
+								Script->m_Entries[entrynum].m_Text = new char[Script->m_Entries[entrynum].m_Length];
+								strcpy(Script->m_Entries[entrynum].m_Text, ele->Attribute("Text"));
+								string a = ele->Attribute("Text");
+								Script->m_Entries[entrynum].m_IOValue = a.length() + 1;
+							}
+						}
+					}
+				}	break;
+				}
+			}
+		}
+	}
+	else // if (ver == "1.0")
+	{
+
+		// Loop through each script action
+		for (ela = root_el->FirstChildElement(); ela; ela = ela->NextSiblingElement())
+		{
+			// Allocate a script structure and link in
+			Script = new sScript();
+
+			if (ScriptPtr == 0) ScriptRoot = Script; // Assign root
+			else ScriptPtr->m_Next = Script;
+			ScriptPtr = Script;
+
+			if (pt = ela->Attribute("Type"))	// `J` check for human readable
+			{
+				string ty = ""; xu.get_att(ela, "Type", ty); ty = stringtolower(ty);
+				if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())				// `J` if human readable not found
+					xu.get_att(ela, "Type", Script->m_Type);										// `J` old script so get the number
+				else Script->m_Type = cScript::script_lookup[ty];
+			}
+			if (pt = ela->Attribute("NumEntries"))	xu.get_att(ela, "NumEntries", Script->m_NumEntries);
+			int maintype = Script->m_Type;
+			// Get entry data (if any)
+			if (Script->m_NumEntries)
+			{
+				// Allocate entry array
+				Script->m_Entries = new sScriptEntry[Script->m_NumEntries]();
+				int entrynum = -1;
+				for (ele = ela->FirstChildElement(); ele; ele = ele->NextSiblingElement())
+				{
+					if (pt = ele->Attribute("EntryNumber"))		xu.get_att(ele, "EntryNumber", entrynum);
+					else entrynum++;
+
+					if (pt = ele->Attribute("Type"))	// `J` check for human readable
+					{
+						string ty = ""; xu.get_att(ele, "Type", ty); ty = stringtolower(ty);
+						if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())		// `J` if human readable not found
+							xu.get_att(ele, "Type", Script->m_Entries[entrynum].m_Type);			// `J` old script so get the number
+						else Script->m_Entries[entrynum].m_Type = cScript::script_lookup[ty];
+					}
+					if (pt = ele->Attribute("IOValue"))
+					{
+						string ty = ""; xu.get_att(ele, "IOValue", ty); string tyl = stringtolower(ty);
+						if (cScript::script_lookup.find(ty) != cScript::script_lookup.end())					Script->m_Entries[entrynum].m_IOValue = cScript::script_lookup[tyl];
+						else if (maintype == 24 && sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())	Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty] + NUM_STATS;
+						else if (sGirl::stat_lookup.find(ty) != sGirl::stat_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::stat_lookup[ty];
+						else if (sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty];
+						else xu.get_att(ele, "IOValue", Script->m_Entries[entrynum].m_IOValue);		// `J` old script so get the number
+					}
+					if (pt = ele->Attribute("Var"))			xu.get_att(ele, "Var", Script->m_Entries[entrynum].m_Var);
+
+					// Get text (if any)
+					if (Script->m_Entries[entrynum].m_Type == _TEXT && Script->m_Entries[entrynum].m_Length)
+					{
+						if (ele->Attribute("Text"))
+						{
+							Script->m_Entries[entrynum].m_Text = new char[Script->m_Entries[entrynum].m_Length];
+							strcpy(Script->m_Entries[entrynum].m_Text, ele->Attribute("Text"));
+							string a = ele->Attribute("Text");
+							Script->m_Entries[entrynum].m_IOValue = a.length() + 1;
+
+						}
 					}
 				}
 			}
 		}
 	}
-#endif
-
 	return ScriptRoot;
 }

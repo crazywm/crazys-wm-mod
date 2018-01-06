@@ -120,6 +120,19 @@ Updated all 3 interface that come with the game
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.05
 
+### Changes 12/22/2017-01/05/2018  -  Not doing much over the holidays
+Cleaned code a bit
+Rewrote .scriptx read/write code
+Fixed some typeos
+
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.06
+
+
+
+
+
+
 
 
 

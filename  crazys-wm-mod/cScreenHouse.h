@@ -26,8 +26,6 @@ class cBuilding;
 
 class cScreenHouse : public cInterfaceWindowXML 
 {
-public:
-
 private:
 	int BuyBrothel;
 	bool GetName;
@@ -59,17 +57,12 @@ private:
 	void check_brothel(int BrothelNum);
 	void check_house(int HouseNum);
 public:
-	cScreenHouse()
-	{
-		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "playerhouse_screen.xml";
-		m_filename = dp.c_str();
-		GetName = false;
-		m_first_walk = true;
-	}
-	~cScreenHouse() {}
+	cScreenHouse();
+	~cScreenHouse();
 
 	void init();
 	void process();
+	void check_events();
 	void more_button();
 	void release_button();
 	void update_details();

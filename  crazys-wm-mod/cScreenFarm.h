@@ -26,8 +26,6 @@ class cBuilding;
 
 class cScreenFarm : public cInterfaceWindowXML 
 {
-public:
-
 private:
 	int BuyBrothel;
 	bool GetName;
@@ -59,18 +57,12 @@ private:
 	void check_brothel(int BrothelNum);
 	void check_farm(int FarmNum);
 public:
-	cScreenFarm()
-	{
-		DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "farm_screen.xml";
-		m_filename = dp.c_str();
-		GetName = false;
-		m_first_walk = true;
-	}
-
-	~cScreenFarm() { g_LogFile.write("Farm Shutdown"); }
+	cScreenFarm();
+	~cScreenFarm();
 
 	void init();
 	void process();
+	void check_events();
 	void more_button();
 	void release_button();
 	void update_details();

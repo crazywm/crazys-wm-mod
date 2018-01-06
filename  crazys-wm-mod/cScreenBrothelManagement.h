@@ -29,21 +29,25 @@ private:
 	
 	int buildinglabel_id;
 	int background_id;
-	int walk_id;
+	int walk_id;			// Walk Around Town button
 
-	int id_week;
-	int id_details;
-	int id_girls;
-	int id_staff;
-	int id_setup;
-	int id_dungeon;
-	int id_turn;
+	int weeks_id;			// next week map button
+	int	buildingdetails_id;	// centre description text
+	int girls_id;			// girl managment map button
+	int staff_id;			// gang map button
+	int setup_id;			// setup map button
+	int dungeon_id;			// 
+	int turns_id;			// turn summary map button
 
-	int id_town;
-	int id_save;
-	int id_quit;
-	int id_prev;
-	int id_next;
+	int girlimage_id;		// Girl image
+	int back_id;			// 
+
+	int nextbrothel_id;		// next brothel button
+	int prevbrothel_id;		// prev brothel button
+
+	int town_id;
+	int save_id;
+	int quit_id;
 
 	void set_ids();
 public:

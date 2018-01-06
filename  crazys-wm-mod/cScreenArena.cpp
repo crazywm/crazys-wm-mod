@@ -18,6 +18,7 @@
 */
 #include "cWindowManager.h"
 #include "cScriptManager.h"
+
 #include "InterfaceProcesses.h"
 #include "cArena.h"
 #include "cScreenArena.h"
@@ -28,6 +29,7 @@ extern cWindowManager g_WinManager;
 extern cBrothelManager g_Brothels;
 extern cArenaManager g_Arena;
 
+
 extern int g_Building;
 extern int g_CurrBrothel;
 extern int g_CurrentScreen;
@@ -36,6 +38,8 @@ extern bool g_TryOuts;
 extern bool eventrunning;
 extern bool g_InitWin;
 extern bool g_Cheats;
+
+
 
 extern bool g_CTRLDown;
 
@@ -61,15 +65,32 @@ void cScreenArena::set_ids()
 	girlimage_id	/**/ = get_id("GirlImage");
 	back_id			/**/ = get_id("BackButton", "Back");
 
-	nextbrothel_id	/**/ = get_id("PrevButton", "Prev","*Unused*");
-	prevbrothel_id	/**/ = get_id("NextButton", "Next","*Unused*");
+	nextbrothel_id	/**/ = get_id("PrevButton", "Prev", "*Unused*");
+	prevbrothel_id	/**/ = get_id("NextButton", "Next", "*Unused*");
+
 
 }
+cScreenArena::cScreenArena()
+{
+	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "arena_screen.xml";
+	m_filename = dp.c_str();
+	GetName = false;
+	m_first_walk = true;
+}
+cScreenArena::~cScreenArena() { g_LogFile.write("Arena Shutdown"); }
 
 void cScreenArena::init()
 {
 	g_CurrentScreen = SCREEN_ARENA;
 	g_Building = BUILDING_ARENA;
+	if (g_InitWin)
+	{
+		Focused();
+
+		EditTextItem(g_Arena.GetBrothelString(0), arenadetails_id);
+		g_InitWin = false;
+	}
+
 
 	DisableButton(walk_id, g_TryOuts);
 }
@@ -79,68 +100,29 @@ void cScreenArena::process()
 	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
 	if (girlimage_id != -1 && !eventrunning)	HideImage(girlimage_id, true);
 	init();
+	if (g_InterfaceEvents.GetNumEvents() != 0)	check_events();
+}
 
-	if (g_InitWin)
-	{
-
-		EditTextItem(g_Arena.GetBrothelString(0), arenadetails_id);
-		g_InitWin = false;
-	}
-	if (g_InterfaceEvents.GetNumEvents() == 0)	return;	// no events means we can go home
-
-	// otherwise, compare event IDs
-	if (g_InterfaceEvents.CheckButton(back_id))			// if it's the back button, pop the window off the stack and we're done
-	{
-		g_CurrentScreen = SCREEN_TOWN;
-		g_InitWin = true;
-		g_WinManager.Pop();
-		return;
-	}
+void cScreenArena::check_events()
+{
+	g_InitWin = true;
+	if (g_InterfaceEvents.CheckButton(back_id))				{ g_WinManager.Pop(); }
+	else if (g_InterfaceEvents.CheckButton(girls_id))		{ g_WinManager.push("Arena"); }
+	else if (g_InterfaceEvents.CheckButton(staff_id))		{ g_WinManager.push("Gangs"); }
+	else if (g_InterfaceEvents.CheckButton(turns_id))		{ g_WinManager.push("Turn Summary"); }
+	else if (g_InterfaceEvents.CheckButton(setup_id))		{ g_WinManager.push("Building Setup"); }
+	else if (g_InterfaceEvents.CheckButton(dungeon_id))		{ g_WinManager.push("Dungeon"); }
 	else if (g_InterfaceEvents.CheckButton(walk_id))
 	{
 		do_walk();
 		if (!g_Cheats) g_TryOuts = true;
-		g_InitWin = true;
-		return;
-	}
-	else if (g_InterfaceEvents.CheckButton(girls_id))
-	{
-		g_InitWin = true;
-		g_WinManager.push("Arena");
-		return;
-	}
-	else if (g_InterfaceEvents.CheckButton(staff_id))
-	{
-		g_InitWin = true;
-		g_WinManager.push("Gangs");
-		return;
-	}
-	else if (g_InterfaceEvents.CheckButton(turns_id))
-	{
-		g_InitWin = true;
-		g_WinManager.push("Turn Summary");
-		return;
-	}
-	else if (g_InterfaceEvents.CheckButton(setup_id))
-	{
-		g_Building = BUILDING_ARENA;
-		g_InitWin = true;
-		g_WinManager.push("Building Setup");
-		return;
-	}
-	else if (g_InterfaceEvents.CheckButton(dungeon_id))
-	{
-		g_InitWin = true;
-		g_WinManager.push("Dungeon");
-		return;
 	}
 	else if (g_InterfaceEvents.CheckButton(weeks_id))
 	{
-		g_InitWin = true;
 		if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
 		NextWeek();
 		g_WinManager.push("Turn Summary");
-		return;
+
 	}
 }
 
