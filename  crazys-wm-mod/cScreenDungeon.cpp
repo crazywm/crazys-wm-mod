@@ -92,6 +92,7 @@ void cScreenDungeon::set_ids()
 	torture_id 		/**/ = get_id("TortureButton");
 	stopfood_id 	/**/ = get_id("StopFeedingButton");
 	interact_id 	/**/ = get_id("InteractButton");
+	interactc_id	/**/ = get_id("InteractCount");
 	releaseall_id 	/**/ = get_id("ReleaseAllButton");
 	releasecust_id 	/**/ = get_id("ReleaseCustButton");
 	viewdetails_id 	/**/ = get_id("DetailsButton");
@@ -166,6 +167,14 @@ void cScreenDungeon::init()
 	DisableButton(allowfood_id);
 	DisableButton(stopfood_id);
 	DisableButton(interact_id);
+	if (interactc_id >= 0)
+	{
+		ss.str(""); ss << "Interactions Left: ";
+		if (g_Cheats) ss << "Infinate Cheat";
+		else if (g_TalkCount <= 0) ss << "0 (buy in House screen)";
+		else ss << g_TalkCount;
+		EditTextItem(ss.str(), interactc_id);
+	}
 	DisableButton(release_id);
 	DisableButton(brandslave_id);
 	DisableButton(torture_id);

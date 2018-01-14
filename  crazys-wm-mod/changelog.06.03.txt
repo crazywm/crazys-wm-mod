@@ -128,8 +128,12 @@ Fixed some typeos
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 !!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.06
 
+### Changes 01/06-14/2018
+Some code clean up
+Added buy interactions buttons to House Details screen
 
-
+!!!!!!!!!!!!!!!!!!!! pushed to GitHub
+!!!!!!!!!!!!!!!!!!!! pushed Whore Master version .06.03.07
 
 
 

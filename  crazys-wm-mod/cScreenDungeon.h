@@ -37,6 +37,7 @@ private:
 	int torture_id;			// Torture button
 	int stopfood_id;		// Stop Feeding button
 	int interact_id;		// Interact With button
+	int interactc_id;		// Interact Count
 	int releaseall_id;		// Release All Girls button
 	int releasecust_id;		// Release All Customers button
 	int viewdetails_id;		// Girl Details button

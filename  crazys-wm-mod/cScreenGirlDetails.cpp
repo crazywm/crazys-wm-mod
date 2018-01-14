@@ -46,10 +46,10 @@ extern cHouseManager g_House;
 extern cFarmManager g_Farm;
 extern cWindowManager g_WinManager;
 extern long g_IntReturn;
+extern bool g_Cheats;
 extern	int	g_TalkCount;
 extern bool g_AllTogle;
 extern cGangManager g_Gangs;
-extern bool g_Cheats;
 extern	bool	eventrunning;
 extern cTraits g_Traits;
 extern sGirl *selected_girl;
@@ -113,6 +113,7 @@ void cScreenGirlDetails::set_ids()
 	senddungeon_id	/**/ = get_id("SendDungeonButton");
 	reldungeon_id	/**/ = get_id("ReleaseDungeonButton");
 	interact_id		/**/ = get_id("InteractButton");
+	interactc_id	/**/ = get_id("InteractCount");
 	takegold_id		/**/ = get_id("TakeGoldButton");
 	accomup_id		/**/ = get_id("AccomUpButton");//
 	accomdown_id	/**/ = get_id("AccomDownButton");//
@@ -228,6 +229,14 @@ void cScreenGirlDetails::init()
 		EditTextItem(ss.str(), accomval_id);
 	}
 	DisableButton(interact_id, (g_TalkCount <= 0));
+	if (interactc_id >= 0)
+	{
+		ss.str(""); ss << "Interactions Left: ";
+		if (g_Cheats) ss << "Infinate Cheat";
+		else if (g_TalkCount <= 0) ss << "0 (buy in House screen)";
+		else ss << g_TalkCount;
+		EditTextItem(ss.str(), interactc_id);
+	}
 	DisableButton(takegold_id, (selected_girl->m_Money <= 0));
 	DisableButton(accomup_id, (selected_girl->m_AccLevel >= 9));
 	DisableButton(accomdown_id, (selected_girl->m_AccLevel <= 0));

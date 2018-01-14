@@ -32,6 +32,8 @@ extern cWindowManager g_WinManager;
 extern cInterfaceEventManager g_InterfaceEvents;
 extern long g_IntReturn;
 extern cGangManager g_Gangs;
+extern bool g_Cheats;
+extern	int	g_TalkCount;
 
 extern	int		g_CurrentScreen;
 
@@ -56,11 +58,20 @@ void cScreenHouseDetails::set_ids()
 {
 	ids_set			/**/ = true;
 	g_LogFile.write("set_ids in cScreenHouseDetails");
-
-	back_id			/**/ = get_id("BackButton", "Back");
-	details_id		/**/ = get_id("HouseDetails");
 	header_id		/**/ = get_id("ScreenHeader");
+	interact_id		/**/ = get_id("InteractText");
+	interactb_id	/**/ = get_id("BuyInteract");
+	interactb10_id	/**/ = get_id("BuyInteract10");
 	slavedate_id	/**/ = get_id("SlaveDate", "*Unused*");//
+	details_id		/**/ = get_id("HouseDetails");
+	back_id			/**/ = get_id("BackButton", "Back");
+}
+
+void cScreenHouseDetails::process()
+{
+	if (!ids_set) set_ids();										// we need to make sure the ID variables are set
+	init();															// set up the window if needed
+	if (g_InterfaceEvents.GetNumEvents() != 0)	check_events();		// check to see if there's a button event needing handling
 }
 
 void cScreenHouseDetails::init()
@@ -143,27 +154,23 @@ void cScreenHouseDetails::init()
 			if (rgirl)	ss << " ,   ";
 		}
 	}
-
 	EditTextItem(ss.str(), details_id);
+	if (interact_id >= 0)
+	{
+		ss.str(""); ss << "Interactions Left: ";
+		if (g_Cheats) ss << "\nInfinate Cheat";
+		else ss << g_TalkCount << "\nBuy more for 1000 each.";
+		EditTextItem(ss.str(), interact_id);
+	}
+	if (interactb_id >= 0)		DisableButton(interactb_id, g_Cheats || g_Gold.ival() < 1000);
+	if (interactb10_id >= 0)	DisableButton(interactb10_id, g_Cheats || g_Gold.ival() < 10000);
 	obj = 0;
-}
-
-void cScreenHouseDetails::process()
-{
-	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
-	init();						// set up the window if needed
-	check_events();				// check to see if there's a button event needing handling
 }
 
 void cScreenHouseDetails::check_events()
 {
-	if (g_InterfaceEvents.GetNumEvents() == 0) return;	// no events means we can go home
-
-	// if it's the back button, pop the window off the stack and we're done
-	if (g_InterfaceEvents.CheckButton(back_id))
-	{
-		g_InitWin = true;
-		g_WinManager.Pop();
-		return;
-	}
+	if (g_InterfaceEvents.CheckButton(back_id))			{ g_InitWin = true; g_WinManager.Pop(); return; }
+	if (g_InterfaceEvents.CheckButton(interactb_id))	{ if (g_Gold.misc_debit(1000))	g_TalkCount++; }
+	if (g_InterfaceEvents.CheckButton(interactb10_id))	{ if (g_Gold.misc_debit(10000))	g_TalkCount += 10; }
+	g_InitWin = true;
 }

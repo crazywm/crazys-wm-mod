@@ -54,7 +54,7 @@ typedef struct sObjective
 
 }sObjective;
 
-bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int BrothelID);
+bool UseAntiPreg(sGirl *girl);
 
 // holds data for movies
 typedef struct sMovie
@@ -94,8 +94,6 @@ struct sBrothel
 	int				m_AntiPregPotions;			// `J` added so all buildings save their own number of potions
 	int				m_AntiPregUsed;				// `J` number of potions used last turn
 	bool			m_KeepPotionsStocked;		// `J` and if they get restocked
-//	bool UseAntiPreg(bool use, int brothelID);
-//	bool UseAntiPreg(bool use);
 	void AddAntiPreg(int amount);
 	int  GetNumPotions()					{ return m_AntiPregPotions; }
 	void KeepPotionsStocked(bool stocked)	{ m_KeepPotionsStocked = stocked; }
@@ -221,15 +219,6 @@ public:
 	sGirl* GetRandomGirl(int BrothelID);									// `J` - added
 	sGirl* GetRandomGirlOnJob(int BrothelID, int JobID, bool Day0Night1);	// `J` - added
 	sGirl* GetFirstGirlOnJob(int BrothelID, int JobID, bool Day0Night1);	// `J` - added
-
-/*	// `J` AntiPreg Potions rewriten and moved to individual buildings
-	bool UseAntiPreg(bool use, int brothelID);
-	bool UseAntiPreg(bool use);
-	void AddAntiPreg(int amount);
-	int  GetNumPotions()					{ return m_AntiPregPotions; }
-	void KeepPotionsStocked(bool stocked)	{ m_KeepPotionsStocked = stocked; }
-	bool GetPotionRestock()					{ return m_KeepPotionsStocked; }
-/* */
 
 	int GetTotalNumGirls(bool monster = false);
 	int GetFreeRooms(sBrothel* brothel);

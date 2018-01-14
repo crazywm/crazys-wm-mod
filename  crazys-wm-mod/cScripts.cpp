@@ -376,7 +376,6 @@ bool cActionTemplate::GetNextQuotedLine(char *Data, FILE *fp, long MaxSize)
 		}
 	}
 }
-
 bool cActionTemplate::GetNextWord(char *Data, FILE *fp, long MaxSize)
 {
 	int c;
@@ -417,7 +416,6 @@ bool cActionTemplate::GetNextWord(char *Data, FILE *fp, long MaxSize)
 		}
 	}
 }
-
 sScript *cActionTemplate::CreateScriptAction(long Type)
 {
 	long i;
@@ -458,7 +456,6 @@ sScript *cActionTemplate::CreateScriptAction(long Type)
 	}
 	return Script;
 }
-
 sAction *cActionTemplate::GetAction(long Num)
 {
 	sAction* current = m_ActionParent;
@@ -472,7 +469,6 @@ sAction *cActionTemplate::GetAction(long Num)
 
 	return current;
 }
-
 long cActionTemplate::GetNumEntries(long ActionNum)
 {
 	sAction* current = m_ActionParent;
@@ -486,7 +482,6 @@ long cActionTemplate::GetNumEntries(long ActionNum)
 
 	return current->m_NumEntries;
 }
-
 sEntry *cActionTemplate::GetEntry(long ActionNum, long EntryNum)
 {
 	sAction* current = m_ActionParent;
@@ -500,12 +495,10 @@ sEntry *cActionTemplate::GetEntry(long ActionNum, long EntryNum)
 
 	return &current->m_Entries[EntryNum];
 }
-
 bool cActionTemplate::ExpandDefaultActionText(char *Buffer, sAction *Action)
 {
 	return true;
 }
-
 bool cActionTemplate::ExpandActionText(char *Buffer, sScript *Script)
 {
 	return true;

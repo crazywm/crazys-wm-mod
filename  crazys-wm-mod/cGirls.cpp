@@ -4010,7 +4010,7 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	pGirl->SetAttribute("Name", m_Name);						// save the name
 	pGirl->SetAttribute("Realname", m_Realname);				// save the real name
 	pGirl->SetAttribute("FirstName", m_FirstName);				// save the first name
-	pGirl->SetAttribute("MiddleName", m_MiddleName);			// save the first name
+	pGirl->SetAttribute("MiddleName", m_MiddleName);			// save the middle name
 	pGirl->SetAttribute("Surname", m_Surname);					// save the surname
 	pGirl->SetAttribute("Desc", m_Desc);						// save the description
 	pGirl->SetAttribute("DaysUnhappy", m_DaysUnhappy);			// save the amount of days they are unhappy
@@ -4043,41 +4043,24 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 	pGirl->SetAttribute("PrevWorkingDay", m_PrevWorkingDay);	// `J` added
 	pGirl->SetAttribute("SpecialJobGoal", m_SpecialJobGoal);	// `J` added
 
-	// `J` changeing jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
-	if (!cfg.folders.backupsaves())
-	{
-		// save day/night jobs
-		if (m_DayJob < 0 || m_DayJob > NUM_JOBS) pGirl->SetAttribute("DayJob", "255");
-		else pGirl->SetAttribute("DayJob", g_Brothels.m_JobManager.JobQkNm[m_DayJob]);
-		if (m_NightJob < 0 || m_NightJob > NUM_JOBS) pGirl->SetAttribute("NightJob", "255");
-		else pGirl->SetAttribute("NightJob", g_Brothels.m_JobManager.JobQkNm[m_NightJob]);
+	// `J` changed jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
+	// save day/night jobs
+	if (m_DayJob < 0 || m_DayJob > NUM_JOBS) pGirl->SetAttribute("DayJob", "255");
+	else pGirl->SetAttribute("DayJob", g_Brothels.m_JobManager.JobQkNm[m_DayJob]);
+	if (m_NightJob < 0 || m_NightJob > NUM_JOBS) pGirl->SetAttribute("NightJob", "255");
+	else pGirl->SetAttribute("NightJob", g_Brothels.m_JobManager.JobQkNm[m_NightJob]);
 
-		// save prev day/night jobs
-		if (m_PrevDayJob < 0 || m_PrevDayJob > NUM_JOBS) pGirl->SetAttribute("PrevDayJob", "255");
-		else pGirl->SetAttribute("PrevDayJob", g_Brothels.m_JobManager.JobQkNm[m_PrevDayJob]);
-		if (m_PrevNightJob < 0 || m_PrevNightJob > NUM_JOBS) pGirl->SetAttribute("PrevNightJob", "255");
-		else pGirl->SetAttribute("PrevNightJob", g_Brothels.m_JobManager.JobQkNm[m_PrevNightJob]);
+	// save prev day/night jobs
+	if (m_PrevDayJob < 0 || m_PrevDayJob > NUM_JOBS) pGirl->SetAttribute("PrevDayJob", "255");
+	else pGirl->SetAttribute("PrevDayJob", g_Brothels.m_JobManager.JobQkNm[m_PrevDayJob]);
+	if (m_PrevNightJob < 0 || m_PrevNightJob > NUM_JOBS) pGirl->SetAttribute("PrevNightJob", "255");
+	else pGirl->SetAttribute("PrevNightJob", g_Brothels.m_JobManager.JobQkNm[m_PrevNightJob]);
 
-		// save prev day/night jobs
-		if (m_YesterDayJob < 0 || m_YesterDayJob > NUM_JOBS) pGirl->SetAttribute("YesterDayJob", "255");
-		else pGirl->SetAttribute("YesterDayJob", g_Brothels.m_JobManager.JobQkNm[m_YesterDayJob]);
-		if (m_YesterNightJob < 0 || m_YesterNightJob > NUM_JOBS) pGirl->SetAttribute("YesterNightJob", "255");
-		else pGirl->SetAttribute("YesterNightJob", g_Brothels.m_JobManager.JobQkNm[m_YesterNightJob]);
-	}
-	else
-	{
-		// save day/night jobs
-		pGirl->SetAttribute("DayJob", m_DayJob);
-		pGirl->SetAttribute("NightJob", m_NightJob);
-
-		// save prev day/night jobs
-		pGirl->SetAttribute("PrevDayJob", m_PrevDayJob);
-		pGirl->SetAttribute("PrevNightJob", m_PrevNightJob);
-
-		// save prev day/night jobs
-		if (m_YesterDayJob < 0)		m_YesterDayJob = 255;	pGirl->SetAttribute("YesterDayJob", m_YesterDayJob);
-		if (m_YesterNightJob < 0)	m_YesterNightJob = 255;	pGirl->SetAttribute("YesterNightJob", m_YesterNightJob);
-	}
+	// save prev day/night jobs
+	if (m_YesterDayJob < 0 || m_YesterDayJob > NUM_JOBS) pGirl->SetAttribute("YesterDayJob", "255");
+	else pGirl->SetAttribute("YesterDayJob", g_Brothels.m_JobManager.JobQkNm[m_YesterDayJob]);
+	if (m_YesterNightJob < 0 || m_YesterNightJob > NUM_JOBS) pGirl->SetAttribute("YesterNightJob", "255");
+	else pGirl->SetAttribute("YesterNightJob", g_Brothels.m_JobManager.JobQkNm[m_YesterNightJob]);
 
 	pGirl->SetAttribute("RunAway", m_RunAway);					// save runnayway vale
 	pGirl->SetAttribute("Spotted", m_Spotted);					// save spotted
@@ -16599,11 +16582,7 @@ static bool has_contraception(sGirl *girl)
 		girl->m_InStudio = girl->m_InCentre = girl->m_InClinic = girl->m_InHouse = girl->m_InArena = girl->m_InFarm = false;
 		girl->where_is_she = 0;
 	}
-	if (UseAntiPreg(girl->m_UseAntiPreg, girl->m_InClinic, girl->m_InStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she))
-	{
-		return true;
-	}
-	return false;
+	return UseAntiPreg(girl);
 }
 
 bool sGirl::calc_pregnancy(int chance, cPlayer *player)
@@ -17370,16 +17349,14 @@ if (0){}
 	{
 		// prepare for the checks
 		int numchildren = child->m_MultiBirth;
-		// default them all to girls
-		bool aregirls[5] = { child->is_girl(), child->is_girl(), child->is_girl(), child->is_girl(), child->is_girl() };
-		// and set any
-		for (int i = child->m_GirlsBorn; i < 5; i++)	aregirls[i] = child->is_boy();
+		int aregirls[5] = { -1, -1, -1, -1, -1 };
+		for (int i = 0; i < child->m_MultiBirth; i++)	aregirls[i] = 1;
+		for (int i = 0; i < child->m_GirlsBorn; i++)	aregirls[i] = 0;
 
 		for (int i = 0; i < numchildren; i++)
 		{
 			ss.str("");
-			// we need a coming of age ceremony
-			if (!aregirls[i])	// boys first
+			if (aregirls[i] == 1)	// boys first
 			{
 				summary += "A son has grown of age. ";
 				mom->m_States |= (1 << STATUS_HAS_SON);
@@ -17401,7 +17378,7 @@ if (0){}
 				}
 				mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 			}
-			else	// girls next
+			else if (aregirls[i] == 0)	// girls next
 			{
 				bool playerfather = child->m_IsPlayers;		// is 1 if father is player
 				summary += "A daughter has grown of age. ";
@@ -17673,13 +17650,12 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 
 		girl->tiredness(100);
 		girl->happiness(10 + g_Dice % 91);
-		girl->health(-(child->m_MultiBirth + g_Dice % 10));
+		girl->health(-(child->m_MultiBirth + g_Dice % 10 + healthFactor));
 
 		// `J` If/when the baby gets moved somewhere else in the code, then the maother can die from giving birth
 		// For now don't kill her, it causes too many problems with the baby.
 		if (girl->health() < 1) SetStat(girl, STAT_HEALTH, 1);
 
-#if 1
 		if (child->m_MultiBirth == 1)	// only 1 baby so use the old code
 		{
 			if (g_Dice.percent(cfg.pregnancy.miscarriage_chance()))	// the baby dies
@@ -17757,7 +17733,6 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 			}
 		}
 		else	// multiple births
-#endif
 		{
 			int unbornbabies = child->m_MultiBirth;
 			healthFactor += child->m_MultiBirth;

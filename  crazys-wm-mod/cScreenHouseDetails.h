@@ -26,10 +26,13 @@ class cScreenHouseDetails : public cInterfaceWindowXML
 {
 private:
 	static bool ids_set;	// --- interface/event IDs --- //
-	int back_id;			// Back button
-	int details_id;			// House Details text
 	int header_id;			// page header text ("Your House")
+	int interact_id;		// Interact Text
+	int interactb_id;		// Interact Buy 1
+	int interactb10_id;		// Interact Buy 10
+	int details_id;			// House Details text
 	int slavedate_id;		// Set if slaves can date or not
+	int back_id;			// Back button
 
 	void set_ids();
 public:

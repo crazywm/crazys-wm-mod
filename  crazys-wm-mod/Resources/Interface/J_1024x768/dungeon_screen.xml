@@ -11,6 +11,7 @@
 <Button     Name="SellButton"           Image="SellSlave"                   XPos="855"      YPos="430"      Width="120"     Height="24" Transparency="true" Scale="true"  />
 <Button     Name="TortureButton"        Image="Torture"                     XPos="815"      YPos="500"      Width="160"     Height="32" Transparency="true" Scale="true"  />
 <Button     Name="InteractButton"       Image="Talk"                        XPos="815"      YPos="550"      Width="160"     Height="32" Transparency="true" Scale="true"  />
+<Text       Name="InteractCount"        Text="Interactions Left: 0"         XPos="815"     YPos="582"      Width="160"     Height="15"     FontSize="8"  />
 
 <Button     Name="ReleaseButton"        Image="Release"                     XPos="815"      YPos="600"      Width="120"     Height="24" Transparency="true" Scale="true"  />
 <Button     Name="ReleaseAllButton"     Image="ReleaseAllGirls"             XPos="835"      YPos="630"      Width="120"     Height="24" Transparency="true" Scale="true"  />

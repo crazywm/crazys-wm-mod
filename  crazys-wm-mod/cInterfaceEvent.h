@@ -59,8 +59,11 @@ public:
 
 	bool CheckEvent(int EventID, int ObjectID)
 	{
-		if(!m_Events)
+		if (!m_Events)
+		{
+			m_NumEvents = 0;
 			return false;
+		}
 
 		cInterfaceEvent* current = m_Events;
 		cInterfaceEvent* last = 0;

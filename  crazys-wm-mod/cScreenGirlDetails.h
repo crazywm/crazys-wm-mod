@@ -38,6 +38,7 @@ private:
 	int senddungeon_id;		// Send To Dungeon button
 	int reldungeon_id;		// Release From Dungeon button
 	int interact_id;		// Interact button
+	int interactc_id;		// Interact Count
 	int takegold_id;		// Take Gold button
 	int accomup_id;			// Accom Up button
 	int accomdown_id;		// Accom Down button

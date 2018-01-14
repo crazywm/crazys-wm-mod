@@ -382,9 +382,10 @@ bool cBrothelManager::CheckScripts()
 }
 
 //bool cBrothelManager::UseAntiPreg(bool use)
-bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int whereisshe)
+bool UseAntiPreg(sGirl *girl)
+//	bool use, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm, int whereisshe)
 {
-	if (!use) return false;
+	if (!girl->m_UseAntiPreg) return false;
 	/*
 	*	anti-preg potions, we probably should allow
 	*	on-the-fly restocks. You can imagine someone
@@ -407,7 +408,7 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	*/
 	cTariff tariff;
 	int cost = tariff.anti_preg_price(1);
-	if (isClinic)
+	if (girl->m_InClinic)
 	{
 		if (g_Clinic.GetBrothel(0)->m_KeepPotionsStocked)
 		{
@@ -425,7 +426,7 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			return true;
 		}
 	}
-	else if (isStudio)
+	else if (girl->m_InStudio)
 	{
 		if (g_Studios.GetBrothel(0)->m_KeepPotionsStocked)
 		{
@@ -443,7 +444,7 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			return true;
 		}
 	}
-	else if (isArena)
+	else if (girl->m_InArena)
 	{
 		if (g_Arena.GetBrothel(0)->m_KeepPotionsStocked)
 		{
@@ -461,7 +462,7 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			return true;
 		}
 	}
-	else if (isCentre)
+	else if (girl->m_InCentre)
 	{
 		if (g_Centre.GetBrothel(0)->m_KeepPotionsStocked)
 		{
@@ -479,7 +480,7 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			return true;
 		}
 	}
-	else if (isHouse)
+	else if (girl->m_InHouse)
 	{
 		if (g_House.GetBrothel(0)->m_KeepPotionsStocked)
 		{
@@ -497,7 +498,7 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 			return true;
 		}
 	}
-	else if (isFarm)
+	else if (girl->m_InFarm)
 	{
 		if (g_Farm.GetBrothel(0)->m_KeepPotionsStocked)
 		{
@@ -517,6 +518,7 @@ bool UseAntiPreg(bool use, bool isClinic, bool isStudio, bool isArena, bool isCe
 	}
 	else
 	{
+		int whereisshe = girl->where_is_she;
 		if (g_Brothels.GetBrothel(whereisshe)->m_KeepPotionsStocked)
 		{
 			if (g_Brothels.GetBrothel(whereisshe)->m_AntiPregPotions < g_Brothels.GetBrothel(whereisshe)->m_AntiPregUsed) cost *= 5;

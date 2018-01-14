@@ -17,6 +17,7 @@
 <ListBox    Name="TraitList"                                                XPos="800"      YPos="305"      Width="190"     Height="202"    Border="1"          Events="true"  />
 <Text       Name="TraitDescription"     Text="Trait Description"            XPos="800"      YPos="510"      Width="190"     Height="90"     FontSize="10"  />
 <Button     Name="InteractButton"       Image="Talk"                        XPos="815"      YPos="600"      Width="160"     Height="32"     Transparency="true" Scale="true"  />
+<Text       Name="InteractCount"        Text="Interactions Left: 0"         XPos="815"     YPos="632"      Width="160"     Height="15"     FontSize="8"  />
 <Button     Name="PrevButton"           Image="Prev"                        XPos="815"      YPos="650"      Width="72"      Height="32"     Transparency="true"     Scale="true"     />
 <Button     Name="NextButton"           Image="Next"                        XPos="903"      YPos="650"      Width="72"      Height="32"     Transparency="true"     Scale="true"     />
 
