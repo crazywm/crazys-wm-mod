@@ -1079,6 +1079,13 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 		max(0, rival->m_NumBrothels * 5) +
 		max(0, rival->m_NumGamblingHalls * 2) +
 		max(0, rival->m_NumBars * 1));
+        
+                //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
+                  rival->m_NumInventory = 0;
+                  for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
+                  {
+                                    rival->m_Inventory[i] = 0;
+                  }
 
 
 
@@ -1129,6 +1136,13 @@ void cRivalManager::CreateRandomRival()
 	while (rival->m_NumGirls == 0)
 		rival->m_NumGirls = (g_Dice % ((rival->m_NumBrothels) * 20)) + 20;
 	rival->m_NumGangs = g_Dice % 5+3;
+        
+                   //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
+                  rival->m_NumInventory = 0;
+                  for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
+                  {
+                                    rival->m_Inventory[i] = 0;
+                  }
 
 	for (;;) {
 		rival->m_Name = names.random();

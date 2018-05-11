@@ -77,15 +77,15 @@ typedef struct sGang
 	void AdjustGangSkill(int skill, int amount);
 	void AdjustGangStat(int stat, int amount);
 
-	int magic(int amount)			{ AdjustGangSkill(SKILL_MAGIC, amount); }
-	int combat(int amount)			{ AdjustGangSkill(SKILL_COMBAT, amount); }
-	int service(int amount)			{ AdjustGangSkill(SKILL_SERVICE, amount); }
-	int intelligence(int amount)	{ AdjustGangStat(STAT_INTELLIGENCE, amount); }
-	int agility(int amount)			{ AdjustGangStat(STAT_AGILITY, amount); }
-	int constitution(int amount)	{ AdjustGangStat(STAT_CONSTITUTION, amount); }
-	int charisma(int amount)		{ AdjustGangStat(STAT_CHARISMA, amount); }
-	int strength(int amount)		{ AdjustGangStat(STAT_STRENGTH, amount); }
-	int happy(int amount)			{ AdjustGangStat(STAT_HAPPINESS, amount); }
+	void magic(int amount)			{ AdjustGangSkill(SKILL_MAGIC, amount); }
+	void combat(int amount)			{ AdjustGangSkill(SKILL_COMBAT, amount); }
+	void service(int amount)			{ AdjustGangSkill(SKILL_SERVICE, amount); }
+	void intelligence(int amount)	{ AdjustGangStat(STAT_INTELLIGENCE, amount); }
+	void agility(int amount)			{ AdjustGangStat(STAT_AGILITY, amount); }
+	void constitution(int amount)	{ AdjustGangStat(STAT_CONSTITUTION, amount); }
+	void charisma(int amount)		{ AdjustGangStat(STAT_CHARISMA, amount); }
+	void strength(int amount)		{ AdjustGangStat(STAT_STRENGTH, amount); }
+	void happy(int amount)			{ AdjustGangStat(STAT_HAPPINESS, amount); }
 
 
 

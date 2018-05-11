@@ -96,7 +96,8 @@ void FileList::add(const char *pattern)
 	const char	*base_path = folder.c_str();
 	string		s_bp(folder.c_str());
 	string		s_pat(pattern);
-	s_pat += "$";
+                //match from beginning of string - stops preg* images from being sorted into normal image groups
+	s_pat = "^" + s_pat + "$"; 
 	
 	/*
 	*	we'll need to match regular expressions against the file name
@@ -111,7 +112,7 @@ void FileList::add(const char *pattern)
 	*	now make a regex
 	*/
 	regex_t r;
-	regcomp(&r, s_pat.c_str(), REG_NOSUB);
+	regcomp(&r, s_pat.c_str(), REG_NOSUB|REG_ICASE); //ignoring case so images work properly
 	
 	/*
 	*	open the directory. Print an error to the console if it fails
