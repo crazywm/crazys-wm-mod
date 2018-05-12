@@ -1044,6 +1044,13 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 			// `J` cleanup rival power for .06.01.17
 			if (current->m_Power > 50) current->m_Power = max(0, current->m_NumBrothels * 5) + max(0, current->m_NumGamblingHalls * 2) + max(0, current->m_NumBars * 1);
 
+                                                    //jim: re-initializing rival inventory to zero (hopefully fixes Linux segfaults)
+                                                    current->m_NumInventory = 0;
+                                                    for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
+                                                    {
+                                                                      current->m_Inventory[i] = 0;
+                                                    }
+                        
 			message = "loaded rival: ";
 			message += current->m_Name;
 			g_LogFile.write(message);
