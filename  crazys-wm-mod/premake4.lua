@@ -20,7 +20,9 @@ function main()
 		"*.h",
 		"SDL_anigif.c"
 	})
-
+	
+	excludes({"cMovieScreen.*"})
+	
 	includedirs({
 		"/usr/include/SDL",
 		"/usr/include/lua5.1"

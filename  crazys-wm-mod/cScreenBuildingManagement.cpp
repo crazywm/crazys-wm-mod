@@ -299,16 +299,16 @@ void cBuildingManagement::set_ids()
 		blocks[i].stealth_up = get_id(string("UpStealth") + istr);
 
 		blocks[i].bevel_t = get_id(
-			string("BevelTop") + istr, false
+			string("BevelTop") + istr, "*Unused*"
 		);
 		blocks[i].bevel_b = get_id(
-			string("BevelBottom") + istr, false
+			string("BevelBottom") + istr, "*Unused*"
 		);
 		blocks[i].bevel_r = get_id(
-			string("BevelRight") + istr, false
+			string("BevelRight") + istr, "*Unused*"
 		);
 		blocks[i].bevel_l = get_id(
-			string("BevelLeft") + istr, false
+			string("BevelLeft") + istr, "*Unused*"
 		);
 		blocks[i].newsplash	= get_id(string("NewSplash") + istr);
 	}
