@@ -62,8 +62,6 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	int numCusts = 0; // The number of customers she can handle
 	int serviced = 0;
-	sCustomer* Cust = new sCustomer;
-
 
 	// Complications
 	int roll = g_Dice%100;
@@ -128,14 +126,14 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		if (g_Customers.GetNumCustomers() > 0)
 		{
-			g_Customers.GetCustomer(Cust, brothel);
+            sCustomer Cust = g_Customers.GetCustomer(*brothel);
 			// Let's find out how much happiness they started with.
 			// They're not going to start out very happy. They're seeing customer service, after all.
-			Cust->m_Stats[STAT_HAPPINESS] = 22 + g_Dice%10 + g_Dice%10; // average 31 range 22 to 40
+			Cust.m_Stats[STAT_HAPPINESS] = 22 + g_Dice%10 + g_Dice%10; // average 31 range 22 to 40
 			// Now apply her happiness bonus.
-			Cust->m_Stats[STAT_HAPPINESS] += bonus;
+			Cust.m_Stats[STAT_HAPPINESS] += bonus;
 			// update how happy the customers are on average
-			brothel->m_Happiness += Cust->m_Stats[STAT_HAPPINESS];
+			brothel->m_Happiness += Cust.m_Stats[STAT_HAPPINESS];
 			// And decrement the number of customers to be taken care of
 			g_Customers.AdjustNumCustomers(-1);
 			serviced++;
@@ -185,7 +183,6 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
-	delete Cust;
 	return false;
 }
 

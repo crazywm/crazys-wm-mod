@@ -8621,7 +8621,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		//does she get knocked up?
 		bool antiPregStatus = girl->m_UseAntiPreg;
 		girl->m_UseAntiPreg = false;					//won't have access to this
-		girl->calc_group_pregnancy(customer, false, 2);
+		girl->calc_group_pregnancy(*customer, false, 2);
 		girl->m_UseAntiPreg = antiPregStatus;			//afterwards she'll go back to normal
 
 		// player has 6 weeks to retreive
@@ -12621,7 +12621,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		if (!customer->m_IsWoman)
 		{
-			contraception = girl->calc_pregnancy(customer, false, 0.75);
+			contraception = girl->calc_pregnancy(*customer, false, 0.75);
 			STDchance += (contraception ? 2 : 20);
 		}
 
@@ -12685,7 +12685,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			message += "\n \nShe got over-excited by her desire for cum, and failed to use her anti-preg. ";
 			girl->m_UseAntiPreg = false;	// turn off anti
-			contraception = girl->calc_pregnancy(customer, good);
+			contraception = girl->calc_pregnancy(*customer, good);
 			STDchance += (contraception ? 4 : 40);
 			if (contraception) message += "Luckily she didn't get pregnant.\n";
 			else message += "Sure enough, she got pregnant.";
@@ -12693,7 +12693,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else
 		{
-			contraception = girl->calc_pregnancy(customer, good);
+			contraception = girl->calc_pregnancy(*customer, good);
 			STDchance += (contraception ? 4 : 40);
 		}
 		UpdateStatTemp(girl, STAT_LIBIDO, -15, true);
@@ -12843,7 +12843,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 		if (g_Brothels.GetNumBeasts() > 0)
 		{
-			contraception = girl->calc_insemination(GetBeast(), good);
+			contraception = girl->calc_insemination(*GetBeast(), good);
 			STDchance += (contraception ? 2 : 20);
 		}
 		UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
@@ -12900,7 +12900,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			message += "\n \nShe got over-excited by her desire for cum, and failed to use her anti-preg. ";
 			girl->m_UseAntiPreg = false;	// turn off anti
-			contraception = girl->calc_group_pregnancy(customer, good, 1.5);
+			contraception = girl->calc_group_pregnancy(*customer, good, 1.5);
 			STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
 			if (contraception) message += "Luckily she didn't get pregnant.\n";
 			else message += "Sure enough, she got pregnant.";
@@ -12909,7 +12909,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else
 		{
 			//50% bonus to the chance of pregnancy since there's more than one partner involved
-			contraception = girl->calc_group_pregnancy(customer, good, 1.5);
+			contraception = girl->calc_group_pregnancy(*customer, good, 1.5);
 			STDchance += ((4 + customer->m_Amount) * (contraception ? 1 : 10));
 		}
 	 //GIFT DROP
@@ -16685,22 +16685,22 @@ bool sGirl::calc_group_pregnancy(cPlayer *player, bool good, double factor)
 	// now do the calculation
 	return g_GirlsPtr->CalcPregnancy(this, int(chance), father, player->m_Stats, player->m_Skills);
 }
-bool sGirl::calc_group_pregnancy(sCustomer *cust, bool good, double factor)
+bool sGirl::calc_group_pregnancy(const sCustomer& cust, bool good, double factor)
 {
 	double chance = preg_chance(cfg.pregnancy.customer_chance(), good, factor);
-	chance += cust->m_Amount;
+	chance += cust.m_Amount;
 	// now do the calculation
-	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
+	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust.m_Stats, cust.m_Skills);
 }
-bool sGirl::calc_pregnancy(sCustomer *cust, bool good, double factor)
+bool sGirl::calc_pregnancy(const sCustomer& cust, bool good, double factor)
 {
 	double chance = preg_chance(cfg.pregnancy.customer_chance(), good, factor);
-	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
+	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust.m_Stats, cust.m_Skills);
 }
-bool sGirl::calc_insemination(sCustomer *cust, bool good, double factor)
+bool sGirl::calc_insemination(const sCustomer& cust, bool good, double factor)
 {
 	double chance = preg_chance(cfg.pregnancy.monster_chance(), good, factor);
-	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, cust->m_Stats, cust->m_Skills);
+	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, cust.m_Stats, cust.m_Skills);
 }
 bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 {
@@ -16744,7 +16744,7 @@ void sGirl::clear_pregnancy()
 
 
 // returns false if she becomes pregnant or true if she does not
-bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS])
+bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS])
 {
 	/*
 	*	If there's a condition that would stop her getting preggers
@@ -16796,7 +16796,7 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STAT
 	return false;
 }
 
-void cGirls::CreatePregnancy(sGirl* girl, int numchildren, int type, int stats[NUM_STATS], int skills[NUM_SKILLS])
+void cGirls::CreatePregnancy(sGirl* girl, int numchildren, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS])
 {
 	girl->m_States |= (1 << type);	// set the pregnant status
 

@@ -221,52 +221,52 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		group = false;
 		acceptsGirl = false;
 		// WD:	Create Customer
-		sCustomer* Cust = new sCustomer;
-		g_Customers.GetCustomer(Cust, brothel);
+		sCustomer Cust = g_Customers.GetCustomer(*brothel);
 
 		// `J` check for disease
-		if (g_Girls.detect_disease_in_customer(brothel, girl, Cust)) continue;
+		if (g_Girls.detect_disease_in_customer(brothel, girl, &Cust)) continue;
 
 		// filter out unwanted sex types (unless it is street work)
-		if (!bStreetWork && !is_sex_type_allowed(Cust->m_SexPref, brothel) && !is_sex_type_allowed(Cust->m_SexPrefB, brothel))
+		if (!bStreetWork && !is_sex_type_allowed(Cust.m_SexPref, brothel) && !is_sex_type_allowed(Cust.m_SexPrefB,
+                                                                                                  brothel))
 		{
 			brothel->m_RejectCustomersRestrict++;
 			continue;	// `J` if both their sexprefs are banned then they leave
 		}
-		else if (!bStreetWork && !is_sex_type_allowed(Cust->m_SexPref, brothel)) // it their first sexpref is banned then switch to the second
+		else if (!bStreetWork && !is_sex_type_allowed(Cust.m_SexPref, brothel)) // it their first sexpref is banned then switch to the second
 		{
-			SexType = Cust->m_SexPref = Cust->m_SexPrefB;
-			Cust->m_Stats[STAT_HAPPINESS] = 32 + g_Dice % 9 + g_Dice % 9;	// `J` and they are less happy
+			SexType = Cust.m_SexPref = Cust.m_SexPrefB;
+			Cust.m_Stats[STAT_HAPPINESS] = 32 + g_Dice % 9 + g_Dice % 9;	// `J` and they are less happy
 		}
 		else	// `J` otherwise they are happy with their first choice.
 		{
 			// WD:	Set the customers begining happiness/satisfaction
-			Cust->m_Stats[STAT_HAPPINESS] = 42 + g_Dice % 10 + g_Dice % 10; // WD: average 51 range 42 to 60
-			SexType = Cust->m_SexPref;
+			Cust.m_Stats[STAT_HAPPINESS] = 42 + g_Dice % 10 + g_Dice % 10; // WD: average 51 range 42 to 60
+			SexType = Cust.m_SexPref;
 		}
 
 		// WD:	Consolidate GROUP Sex Calcs here
 		//		adjust price by number of parcitipants
-		if (Cust->m_Amount > 1)
+		if (Cust.m_Amount > 1)
 		{
 			group = true;
-			if (Cust->m_SexPref == SKILL_GROUP)	pay = (Cust->m_Amount * pay);					// full price for all of them
-			if (Cust->m_SexPref == SKILL_STRIP)	pay += (int)((Cust->m_Amount - 1) * pay / 2);	// full price for the first then half price for the rest
+			if (Cust.m_SexPref == SKILL_GROUP)	pay = (Cust.m_Amount * pay);					// full price for all of them
+			if (Cust.m_SexPref == SKILL_STRIP)	pay += (int)((Cust.m_Amount - 1) * pay / 2);	// full price for the first then half price for the rest
 			// WD: this is complicated total for 1.7 * pay * num of customers
-			// pay += (int)((float)(pay*(Cust->m_Amount))*0.7f);
+			// pay += (int)((float)(pay*(Cust.m_Amount))*0.7f);
 		}
 
 		// WD: Has the customer have enough money
-		bCustCanPay = Cust->m_Money >= pay;
+		bCustCanPay = Cust.m_Money >= pay;
 
-		// WD:	TRACE Customer Money = {Cust->m_Money}, Pay = {pay}, Can Pay = {bCustCanPay}
+		// WD:	TRACE Customer Money = {Cust.m_Money}, Pay = {pay}, Can Pay = {bCustCanPay}
 
 		// WD:	If the customer doesn't have enough money, he will only sleep with her if he is stupid
-		if (!bCustCanPay && !g_Dice.percent((50 - Cust->m_Stats[STAT_INTELLIGENCE]) / 5))
+		if (!bCustCanPay && !g_Dice.percent((50 - Cust.m_Stats[STAT_INTELLIGENCE]) / 5))
 		{
 			//continue;
 			// WD: Hack to avoid many newcustomer() calls
-			Cust->m_Money += pay;
+			Cust.m_Money += pay;
 			bCustCanPay = true;
 		}
 
@@ -279,15 +279,15 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			acceptsGirl = false;
 			continue;
 		}
-		if (Cust->m_Fetish == FETISH_SPECIFICGIRL)
+		if (Cust.m_Fetish == FETISH_SPECIFICGIRL)
 		{
-			if (Cust->m_ParticularGirl == g_Brothels.GetGirlPos(brothel->m_id, girl))
+			if (Cust.m_ParticularGirl == g_Brothels.GetGirlPos(brothel->m_id, girl))
 			{
 				fuckMessage << "This is the customer's favorite girl.\n \n";
 				acceptsGirl = true;
 			}
 		}
-		else if (girl->has_trait("Zombie") && Cust->m_Fetish == FETISH_FREAKYGIRLS && g_Dice.percent(10))
+		else if (girl->has_trait("Zombie") && Cust.m_Fetish == FETISH_FREAKYGIRLS && g_Dice.percent(10))
 		{
 			fuckMessage << "This customer is intrigued to fuck a Zombie girl.\n \n";
 			acceptsGirl = true;
@@ -295,10 +295,10 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		else
 		{
 			// 50% chance of getting something a little weirder during the night
-			if (Day0Night1 && Cust->m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust->m_Fetish += 2;
+			if (Day0Night1 && Cust.m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust.m_Fetish += 2;
 
 			// Check for fetish match
-			if (g_Girls.CheckGirlType(girl, Cust->m_Fetish))
+			if (g_Girls.CheckGirlType(girl, Cust.m_Fetish))
 			{
 				fuckMessage << "The customer loves this type of girl.\n \n";
 				acceptsGirl = true;
@@ -315,36 +315,36 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				The_Player->customerfear(5);
 				acceptsGirl = false;
 			}
-			else if (girl->has_trait("Lesbian") && Cust->m_IsWoman && g_Dice.percent(50))
+			else if (girl->has_trait("Lesbian") && Cust.m_IsWoman && g_Dice.percent(50))
 			{
 				fuckMessage << "The female customer chooses her because she is a Lesbian.\n \n";
 				acceptsGirl = true;
 			}
-			else if (girl->has_trait("Straight") && Cust->m_IsWoman && g_Dice.percent(10))
+			else if (girl->has_trait("Straight") && Cust.m_IsWoman && g_Dice.percent(10))
 			{
 				fuckMessage << girlName << " refuses to accept a female customer because she is Straight.\n \n";
 				brothel->m_Fame -= 2;
 				acceptsGirl = false;
 			}
-			else if (girl->has_trait("Lesbian") && !Cust->m_IsWoman && g_Dice.percent(10))
+			else if (girl->has_trait("Lesbian") && !Cust.m_IsWoman && g_Dice.percent(10))
 			{
 				fuckMessage << girlName << " refuses to accept a male customer because she is a Lesbian.\n \n";
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
-			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	//
+			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust.m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	//
 			{
 				fuckMessage << girlName << " refuses to sleep with a beast because she has too much dignity for that.\n \n";
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
-			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))
+			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && Cust.m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))
 			{
 				fuckMessage << girlName << " refuses to sleep with a beast because one of Royal blood is above that.\n \n";
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
-			else if (girl->is_pregnant() && Cust->m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(35))
+			else if (girl->is_pregnant() && Cust.m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(35))
 			{
 				fuckMessage << girlName << " refuses because she shouldn't fuck beasts in her condition.\n \n";
 				brothel->m_Fame -= 5;
@@ -358,19 +358,19 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			}
 			else if (girl->has_trait( "Your Daughter") && g_Dice.percent(20))
 			{
-				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your daughter.\n \n";
+				fuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " wants to fuck your daughter.\n \n";
 				knowdaughter = true;
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait( "Your Wife") && g_Dice.percent(20))
 			{
-				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " wants to fuck your wife.\n \n";
+				fuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " wants to fuck your wife.\n \n";
 				knowwife = true;
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait("Porn Star") && g_Dice.percent(15))
 			{
-				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " has seen her in porn.\n \n";
+				fuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " has seen her in porn.\n \n";
 				acceptsGirl = true;
 			}
 			else if ((girl->has_trait("Queen") || girl->has_trait("Princess")) && g_Dice.percent(10))
@@ -380,24 +380,24 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			}
 			else if (girl->has_trait("Teacher") && g_Dice.percent(10))
 			{
-				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " used to daydream about this back when "
-					<< (Cust->m_IsWoman ? "she" : "he") << " was in " << girlName << "'s class.\n \n";
+				fuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " used to daydream about this back when "
+					<< (Cust.m_IsWoman ? "she" : "he") << " was in " << girlName << "'s class.\n \n";
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait("Old") && g_Dice.percent(20))
 			{
-				fuckMessage << "The customer chooses her because " << (Cust->m_IsWoman ? "she" : "he") << " likes mature women.\n \n";
+				fuckMessage << "The customer chooses her because " << (Cust.m_IsWoman ? "she" : "he") << " likes mature women.\n \n";
 				acceptsGirl = true;
 			}
 			else if (girl->has_trait("Natural Pheromones") && g_Dice.percent(20))
 			{
-				fuckMessage << "The customer chooses her for reasons " << (Cust->m_IsWoman ? "she" : "he") << " can't explain. There's something about her.\n \n";
+				fuckMessage << "The customer chooses her for reasons " << (Cust.m_IsWoman ? "she" : "he") << " can't explain. There's something about her.\n \n";
 				acceptsGirl = true;
 			}
 			else if (g_Dice.percent(10) && girl->has_trait("Lolita"))
 			{
 				fuckMessage << "The customer chooses her because "
-					<< (Cust->m_IsWoman ? "she wants a young woman, uncorrupted by men.\n" : "he's hoping for a virgin, and she looks like one.\n") << "\n";
+					<< (Cust.m_IsWoman ? "she wants a young woman, uncorrupted by men.\n" : "he's hoping for a virgin, and she looks like one.\n") << "\n";
 				acceptsGirl = true;
 			}
 			else if (g_Dice.percent(20) && girl->has_trait("Social Drinker"))
@@ -407,16 +407,16 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			}
 			else if (g_Dice.percent(40) && girl->has_trait("Exhibitionist") && g_Girls.GetStat(girl, STAT_BEAUTY) >= 50)
 			{
-				fuckMessage << "The customer chooses her because she walks into the waiting room naked and the customer likes what "					<< (Cust->m_IsWoman ? "she sees.\n": "he sees.\n") << "\n";
+				fuckMessage << "The customer chooses her because she walks into the waiting room naked and the customer likes what "					<< (Cust.m_IsWoman ? "she sees.\n": "he sees.\n") << "\n";
 				acceptsGirl = true;
 			}
 			else if (g_Dice.percent(5) && (girl->has_trait("Slut") || g_Girls.GetStat(girl, STAT_DIGNITY) >= 70))
 			{
-				fuckMessage << girlName << " gets bored of waiting for someone to step up and starts " << (Cust->m_IsWoman ? "fingering this lady" : "giving this guy a handjob")
+				fuckMessage << girlName << " gets bored of waiting for someone to step up and starts " << (Cust.m_IsWoman ? "fingering this lady" : "giving this guy a handjob")
 					<< " right there in the waiting room. The customer quickly chooses her.\n \n";
 				acceptsGirl = true;
 			}
-			else if (Cust->m_Stats[STAT_LIBIDO] >= 80)
+			else if (Cust.m_Stats[STAT_LIBIDO] >= 80)
 			{
 				fuckMessage << "Customer chooses her because they are very horny.\n \n";
 				acceptsGirl = true;
@@ -451,7 +451,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 		// Horizontal boogy
 		string fm = "";
-		g_Girls.GirlFucks(girl, Day0Night1, Cust, group, fm, SexType);
+		g_Girls.GirlFucks(girl, Day0Night1, &Cust, group, fm, SexType);
 		fuckMessage << fm;
 
 		/* */if (SexType == SKILL_ORALSEX)		oralcount += 5;
@@ -465,7 +465,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		if (!bStreetWork) brothel->m_Filthiness++;
 
 		// update how happy the customers are on average
-		brothel->m_Happiness += Cust->m_Stats[STAT_HAPPINESS];
+		brothel->m_Happiness += Cust.m_Stats[STAT_HAPPINESS];
 
 		// Time for the customer to fork over some cash
 
@@ -473,7 +473,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		sGang* guardgang = g_Gangs.GetRandomGangOnMission(MISS_GUARDING);
 		if (!bCustCanPay)
 		{
-			if (g_Dice.percent(Cust->m_Stats[STAT_CONFIDENCE] - 25))	// Runner
+			if (g_Dice.percent(Cust.m_Stats[STAT_CONFIDENCE] - 25))	// Runner
 			{
 
 
@@ -481,7 +481,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 				if (guardgang)
 				{
-					if (g_Dice%Cust->m_Stats[STAT_AGILITY] > guardgang->m_Num + g_Dice%guardgang->agility())
+					if (g_Dice%Cust.m_Stats[STAT_AGILITY] > guardgang->m_Num + g_Dice%guardgang->agility())
 					{
 						fuckMessage << "managed to elude your guards.";
 						pay = 0;
@@ -490,10 +490,10 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 					{
 
 
-						pay = (int)Cust->m_Money;	// WD: Take what customer has
-						Cust->m_Money = 0;
+						pay = (int)Cust.m_Money;	// WD: Take what customer has
+						Cust.m_Money = 0;
 						fuckMessage << "tried to run off.";
-						if (Cust->m_IsWoman)	femalecustcaught = true;
+						if (Cust.m_IsWoman)	femalecustcaught = true;
 						else
 						{
 							fuckMessage << " Your men caught him before he got out the door.";
@@ -516,40 +516,40 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 					fuckMessage << " so your girl turned them over to your men";
 
-					if (Cust->m_IsWoman)	femalecustcaught = true;
+					if (Cust.m_IsWoman)	femalecustcaught = true;
 					else/*            */	custout = true;
 				}
 				fuckMessage << ".";
-				pay = Cust->m_Money;
-				Cust->m_Money = 0;
+				pay = Cust.m_Money;
+				Cust.m_Money = 0;
 			}
 		}
 		// WD:	Unhappy Customer tries not to pay and does a runner
-		else if (g_Dice.percent((40 - Cust->m_Stats[STAT_HAPPINESS]) / 2) && g_Dice.percent(Cust->m_Stats[STAT_CONFIDENCE] - 25))
+		else if (g_Dice.percent((40 - Cust.m_Stats[STAT_HAPPINESS]) / 2) && g_Dice.percent(Cust.m_Stats[STAT_CONFIDENCE] - 25))
 		{
 			fuckMessage << " The customer refused to pay and ";
 
 			if (guardgang)
 			{
 
-				if (g_Dice%Cust->m_Stats[STAT_AGILITY] > guardgang->m_Num + g_Dice%guardgang->agility())
+				if (g_Dice%Cust.m_Stats[STAT_AGILITY] > guardgang->m_Num + g_Dice%guardgang->agility())
 				{
 					fuckMessage << "managed to elude your guards.";
 					pay = 0;
 				}
-				else if (Cust->m_Money > pay + 10)
+				else if (Cust.m_Money > pay + 10)
 				{
-					Cust->m_Money -= pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
-					int extra = 10 + g_Dice%Cust->m_Money;
+					Cust.m_Money -= pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+					int extra = 10 + g_Dice%Cust.m_Money;
 					fuckMessage << "tried to run off. Your men caught him before he got out the door and forced him to pay the full amount plus " << extra << " extra for not throwing them in the dungeon.";
 					pay += extra;
 				}
 				else
 				{
-					pay = (int)Cust->m_Money;	// WD: Take what customer has
-					Cust->m_Money = 0;
+					pay = (int)Cust.m_Money;	// WD: Take what customer has
+					Cust.m_Money = 0;
 					fuckMessage << "tried to run off.";
-					if (Cust->m_IsWoman)	femalecustcaught = true;
+					if (Cust.m_IsWoman)	femalecustcaught = true;
 					else
 					{
 						fuckMessage << " Your men caught him before he got out the door.";
@@ -565,22 +565,22 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			}
 
 		}
-		else if ((knowwife || knowdaughter) && g_Dice.percent(Cust->m_Stats[STAT_CONFIDENCE] / 5))
+		else if ((knowwife || knowdaughter) && g_Dice.percent(Cust.m_Stats[STAT_CONFIDENCE] / 5))
 		{
 			fuckMessage << " The customer wanted to screw you and your " << (knowwife ? "wife" : "daughter") << " so they made a break for it";
 
 			if (guardgang)
 			{
 
-				if (g_Dice%Cust->m_Stats[STAT_AGILITY] > guardgang->m_Num + g_Dice%guardgang->agility())
+				if (g_Dice%Cust.m_Stats[STAT_AGILITY] > guardgang->m_Num + g_Dice%guardgang->agility())
 				{
 					fuckMessage << " and managed to elude your guards.";
 					pay = 0;
 				}
-				else if (Cust->m_Money > pay + 10)
+				else if (Cust.m_Money > pay + 10)
 				{
-					Cust->m_Money -= pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
-					int extra = 10 + g_Dice%Cust->m_Money;
+					Cust.m_Money -= pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ???
+					int extra = 10 + g_Dice%Cust.m_Money;
 					fuckMessage << " tried to run off. Your men caught him before he got out the door and forced him to pay the full amount plus " << extra << " extra for not throwing them in the dungeon.";
 					pay += extra;
 				}
@@ -588,10 +588,10 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				{
 
 
-					pay = (int)Cust->m_Money;	// WD: Take what customer has
-					Cust->m_Money = 0;
+					pay = (int)Cust.m_Money;	// WD: Take what customer has
+					Cust.m_Money = 0;
 					fuckMessage << " tried to run off.";
-					if (Cust->m_IsWoman)	femalecustcaught = true;
+					if (Cust.m_IsWoman)	femalecustcaught = true;
 					else
 					{
 						fuckMessage << " Your men caught him before he got out the door.";
@@ -608,8 +608,8 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		}
 		else  // Customer has enough money
 		{
-			Cust->m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ??? // Yes this is necessary for TIP calculation.
-			if (girl->has_trait( "Your Daughter") && knowdaughter && Cust->m_Money >= 20 && g_Dice.percent(50))
+			Cust.m_Money -= (unsigned)pay; // WD: ??? not needed Cust record is not saved when this fn ends!  Leave for now just in case ??? // Yes this is necessary for TIP calculation.
+			if (girl->has_trait( "Your Daughter") && knowdaughter && Cust.m_Money >= 20 && g_Dice.percent(50))
 			{
 				fuckMessage << "The customer tosses your daughter a bag of gold";
 				switch (g_Dice % 3)
@@ -618,11 +618,11 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				case 1:		fuckMessage << ". They seem to enjoy the thought of fucking the boss's daughter.";	break;
 				default:	fuckMessage << " with a wink and a smile.";											break;
 				}
-				Cust->m_Money -= 20;
+				Cust.m_Money -= 20;
 				tip += 20;
 
 			}
-			else if (girl->has_trait( "Your Wife") && knowwife && Cust->m_Money >= 20 && g_Dice.percent(50))
+			else if (girl->has_trait( "Your Wife") && knowwife && Cust.m_Money >= 20 && g_Dice.percent(50))
 			{
 				fuckMessage << "The customer tosses your wife a bag of gold";
 				switch (g_Dice % 3)
@@ -631,11 +631,11 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				case 1:		fuckMessage << " and asks who is better in the sack.";	break;
 				default:	fuckMessage << " with a wink and a smile.";				break;
 				}
-				Cust->m_Money -= 20;
+				Cust.m_Money -= 20;
 				tip += 20;
 
 			}
-			else if (girl->has_trait( "Your Daughter") && Cust->m_Money >= 20 && g_Dice.percent(15))
+			else if (girl->has_trait( "Your Daughter") && Cust.m_Money >= 20 && g_Dice.percent(15))
 			{
 				if (g_Dice.percent(50))
 				{
@@ -645,11 +645,11 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				{
 					fuckMessage << "A smile crossed the customer's face upon learning that she is your daughter and they threw some extra gold down. They seem to enjoy the thought of fucking the boss's daughter.";
 				}
-				Cust->m_Money -= 20;
+				Cust.m_Money -= 20;
 				tip += 20;
 
 			}
-			else if (girl->has_trait( "Your Wife") && Cust->m_Money >= 20 && g_Dice.percent(15))
+			else if (girl->has_trait( "Your Wife") && Cust.m_Money >= 20 && g_Dice.percent(15))
 			{
 				if (g_Dice.percent(50))
 				{
@@ -660,27 +660,27 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 					fuckMessage << "A smile crossed the customer's face upon learning that she is your wife and they threw some extra gold down. They seem to enjoy the thought of fucking the boss's wife.";
 				}
 
-				Cust->m_Money -= 20;
+				Cust.m_Money -= 20;
 				tip += 20;
 
 			}
 
 			// if he is happy and has some extra gold he will give a tip
-			if (Cust->m_Money >= 20 && Cust->m_Stats[STAT_HAPPINESS] > 90)
+			if (Cust.m_Money >= 20 && Cust.m_Stats[STAT_HAPPINESS] > 90)
 			{
-				tip = (int)Cust->m_Money;
+				tip = (int)Cust.m_Money;
 				if (tip > 20)
 				{
-					Cust->m_Money -= 20;
+					Cust.m_Money -= 20;
 					tip = 20;
 				}
-				else Cust->m_Money = 0;
+				else Cust.m_Money = 0;
 
 				fuckMessage << "\nShe received a tip of " << tip << " gold.";
 				girl->m_Tips += tip;
 
 				// If the customer is a government official
-				if (Cust->m_Official == 1)
+				if (Cust.m_Official == 1)
 				{
 					The_Player->suspicion(-5);
 					fuckMessage << " It turns out that the customer was a government official, which lowers your suspicion.";
@@ -800,7 +800,6 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		wages += pay;
 		tips += tip;
 		girl->m_Events.AddMessage(fuckMessage.str(), imageType, Day0Night1);
-		delete Cust;
 	}
 
 

@@ -71,8 +71,6 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #pragma endregion
 #pragma region //	Job Performance			//
 
-	sCustomer* Cust = new sCustomer;
-
 	double jobperformance = JP_PeepShow(girl, false);
 	double mod = 0.0;
 
@@ -186,7 +184,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
 					tips += 10;
 				}
-				GetMiscCustomer(brothel, Cust);
+				GetMiscCustomer(*brothel);
 				brothel->m_Happiness += 100;
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 				// work out the pay between the house and the girl
@@ -218,7 +216,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << "\n" << girlName << "'s cock was hard all the time and she ended up cumming on stage. The customers enjoyed it but the cleaning crew won't be happy.";
 					brothel->m_Filthiness += 1;
 				}
-				GetMiscCustomer(brothel, Cust);
+				GetMiscCustomer(*brothel);
 				brothel->m_Happiness += 100;
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 				// work out the pay between the house and the girl
@@ -236,7 +234,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			//GirlFucks handles all the stuff for the other events but it isn't used here so everything has to be added manually
 			//It's is the same text as the XXX entertainer masturbation event, so I'll just copy the rest
 			ss << "\nShe was horny and ended up masturbating for the customers, making them very happy.";
-			GetMiscCustomer(brothel, Cust);
+			GetMiscCustomer(*brothel);
 			brothel->m_Happiness += 100;
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 			// work out the pay between the house and the girl
@@ -314,25 +312,25 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (sextype != SKILL_STRIP)
 	{
 		// `J` get the customer and configure them to what is already known about them
-		GetMiscCustomer(brothel, Cust);
-		Cust->m_Amount = 1;										// always only 1
-		Cust->m_SexPref = sextype;								// they don't get a say in this
-		if (sextype == SKILL_LESBIAN) Cust->m_IsWoman = true;	// make sure it is a lesbian
+		sCustomer Cust = GetMiscCustomer(*brothel);
+		Cust.m_Amount = 1;										// always only 1
+		Cust.m_SexPref = sextype;								// they don't get a say in this
+		if (sextype == SKILL_LESBIAN) Cust.m_IsWoman = true;	// make sure it is a lesbian
 
 		string message = ss.str();
-		g_Girls.GirlFucks(girl, Day0Night1, Cust, false, message, sextype);
+		g_Girls.GirlFucks(girl, Day0Night1, &Cust, false, message, sextype);
 		ss.str(""); ss << message;
-		brothel->m_Happiness += Cust->m_Stats[STAT_HAPPINESS];
+		brothel->m_Happiness += Cust.m_Stats[STAT_HAPPINESS];
 
 		/* `J` g_Girls.GirlFucks handles libido and customer happiness
-		Cust->m_Stats[STAT_HAPPINESS] = max(100, Cust->m_Stats[STAT_HAPPINESS] + 50);
+		Cust.m_Stats[STAT_HAPPINESS] = max(100, Cust.m_Stats[STAT_HAPPINESS] + 50);
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		//*/
 
-		int sexwages = min(g_Dice % (Cust->m_Money / 4) + g_Girls.GetStat(girl, STAT_ASKPRICE), int(Cust->m_Money));
-		Cust->m_Money -= sexwages;
-		int sextips = max(0, int(g_Dice%Cust->m_Money - (Cust->m_Money / 2)));
-		Cust->m_Money -= sextips;
+		int sexwages = min(g_Dice % (Cust.m_Money / 4) + g_Girls.GetStat(girl, STAT_ASKPRICE), int(Cust.m_Money));
+		Cust.m_Money -= sexwages;
+		int sextips = max(0, int(g_Dice%Cust.m_Money - (Cust.m_Money / 2)));
+		Cust.m_Money -= sextips;
 		wages += sexwages;
 		tips += sextips;
 
@@ -411,8 +409,6 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	//lose
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKSTRIP, girlName + " has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
-
-	delete Cust;
 
 #pragma endregion
 	return false;

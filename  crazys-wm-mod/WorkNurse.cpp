@@ -99,8 +99,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	double jobperformance = JP_Nurse(girl, false);
 
 	//Adding cust here for use in scripts...
-	sCustomer* Cust = new sCustomer;
-	GetMiscCustomer(brothel, Cust);
+	sCustomer Cust = GetMiscCustomer(*brothel);
 
 	if (jobperformance >= 245)
 	{
@@ -459,8 +458,6 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1);
 	//lose traits
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
-
-	delete Cust;
 
 #pragma endregion
 	return false;

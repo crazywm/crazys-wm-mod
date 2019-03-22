@@ -1131,7 +1131,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 
 		// Generate customers for the brothel for the day shift and update girls
 		m_JobManager.do_advertising(current, 0);
-		g_Customers.GenerateCustomers(current, 0);
+		g_Customers.GenerateCustomers(*current, 0);
 		current->m_TotalCustomers += g_Customers.GetNumCustomers();
 
 #if 1
@@ -1147,7 +1147,7 @@ void cBrothelManager::UpdateBrothels()	// Start_Building_Process_A
 
 		// update the girls and satisfy the customers for this brothel during the night
 		m_JobManager.do_advertising(current, 1);
-		g_Customers.GenerateCustomers(current, 1);
+		g_Customers.GenerateCustomers(*current, 1);
 		current->m_TotalCustomers += g_Customers.GetNumCustomers();
 #if 1
 		m_JobManager.do_whorejobs(current, 1);

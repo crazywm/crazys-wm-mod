@@ -95,11 +95,10 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//Adding cust here for use in scripts...
-	sCustomer* Cust = new sCustomer;
-	g_Customers.GetCustomer(Cust, brothel);
+	sCustomer Cust = g_Customers.GetCustomer(*brothel);
 
 	//A little more randomness
-	if (Cust->m_IsWoman && (girl->has_trait( "Lesbian") || g_Girls.GetSkill(girl, SKILL_LESBIAN) > 60))
+	if (Cust.m_IsWoman && (girl->has_trait( "Lesbian") || g_Girls.GetSkill(girl, SKILL_LESBIAN) > 60))
 	{
 		ss << girlName << " was overjoyed to perform for a woman, and gave a much more sensual, personal performance.\n";
 		jobperformance += 25;
@@ -328,7 +327,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss << "In one of the private shows, she ended up ";
 		brothel->m_Happiness += 100;
 		//int imageType = IMGTYPE_SEX;
-		if (Cust->m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
+		if (Cust.m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
 		{
 			n = SKILL_LESBIAN;
 			ss << "licking the customer's clit until she screamed out in pleasure, making her very happy.";
@@ -445,9 +444,6 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 #pragma endregion
 #pragma region	//	Finish the shift			//
-
-
-	delete Cust;
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);

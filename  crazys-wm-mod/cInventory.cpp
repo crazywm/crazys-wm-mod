@@ -929,9 +929,8 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					numchildren = 1 + g_Dice % pregbyC;
 					pregmsg << "\nThe item has gotten her pregnant.";
 				}
-				sCustomer* Cust = new sCustomer;
-				g_Girls.CreatePregnancy(girl, numchildren, type, Cust->m_Stats, Cust->m_Skills);
-				delete Cust;
+				sCustomer Cust{};
+				g_Girls.CreatePregnancy(girl, numchildren, type, Cust.m_Stats, Cust.m_Skills);
 			}
 		}
 

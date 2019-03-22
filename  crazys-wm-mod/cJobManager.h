@@ -388,7 +388,7 @@ public:
 
 
 	static bool Preprocessing(int action, sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary, string& message);
-	static void GetMiscCustomer(sBrothel* brothel, sCustomer* cust);
+	static sCustomer GetMiscCustomer(sBrothel& brothel);
 
 	bool work_show(sGirl* girl,sBrothel* brothel,string& summary,bool Day0Night1);
 	void update_film(sBrothel *);

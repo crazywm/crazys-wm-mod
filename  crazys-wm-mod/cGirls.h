@@ -62,7 +62,7 @@ public:
 	virtual void UpdateSkill(sGirl* girl, int skill, int amount) = 0;
 	virtual void UpdateEnjoyment(sGirl* girl, int skill, int amount) = 0;
 	virtual void UpdateTraining(sGirl* girl, int skill, int amount) = 0;
-	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]) = 0;
+	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]) = 0;
 	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
 	virtual bool HasTrait(sGirl* girl, string name) = 0;
@@ -624,9 +624,9 @@ struct sGirl
 	bool calc_group_pregnancy(cPlayer* player, bool good = false, double factor = 1.0);
 
 	bool calc_pregnancy(int, sCustomer*);
-	bool calc_pregnancy(sCustomer* cust, bool good = false, double factor = 1.0);
-	bool calc_insemination(sCustomer* cust, bool good = false, double factor = 1.0);
-	bool calc_group_pregnancy(sCustomer* cust, bool good = false, double factor = 1.0);
+	bool calc_pregnancy(const sCustomer& cust, bool good = false, double factor = 1.0);
+	bool calc_insemination(const sCustomer& cust, bool good = false, double factor = 1.0);
+	bool calc_group_pregnancy(const sCustomer& cust, bool good = false, double factor = 1.0);
 	/*
 	*	let's overload that...
 	*	should be able to do the same using sCustomer as well...
@@ -875,8 +875,9 @@ public:
 	bool child_is_grown(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	bool child_is_due(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	void HandleChildren(sGirl* girl, string& summary, bool PlayerControlled = true);	// ages children and handles pregnancy
-	bool CalcPregnancy(sGirl* girl, int chance, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]);	// checks if a girl gets pregnant
-	void CreatePregnancy(sGirl* girl, int numchildren, int type, int stats[NUM_STATS], int skills[NUM_SKILLS]);	// create the actual pregnancy
+	bool CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]);
+	// checks if a girl gets pregnant
+	void CreatePregnancy(sGirl* girl, int numchildren, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]);	// create the actual pregnancy
 
 	void UncontrolledPregnancies();	// ages children and handles pregnancy for all girls not controlled by player
 

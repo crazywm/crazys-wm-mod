@@ -377,7 +377,8 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			g_Girls.LoseVirginity(girl);
 			bonus += 5;
 		}
-		sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel); Cust->m_Amount = 1;
+		sCustomer Cust = g_Customers.GetCustomer(*brothel);
+		Cust.m_Amount = 1;
 		if (fucked == BYMAN)
 		{
 
@@ -389,13 +390,12 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		}
 		else
 		{
-			if (!girl->calc_insemination(g_Girls.GetBeast(), false, 0.75))
+			if (!girl->calc_insemination(*g_Girls.GetBeast(), false, 0.75))
 			{
 				g_MessageQue.AddToQue(girl->m_Realname + " has been inseminated.", 0);
 				ss << "And she's been inseminated by a beast.\nCongratulations!\n";
 			}
 		}
-		delete Cust;
 	}
 
 	//BSIN: Chaned .AddScene fn to use JOB_FILMxxxxx instead of SKILL as it makes much more sense.

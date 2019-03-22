@@ -156,7 +156,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 					g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice % gain);
 					g_Girls.UpdateStat(girl, STAT_LIBIDO, -2 * (g_Dice % gain));
 					g_Girls.UpdateStat(girl, STAT_TIREDNESS, gain);
-					girl->calc_insemination(g_Girls.GetBeast(), 1);
+					girl->calc_insemination(*g_Girls.GetBeast(), 1);
 				}
 				tired += gain;
 				break;

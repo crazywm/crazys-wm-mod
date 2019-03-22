@@ -259,10 +259,9 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		u_int n;
 		ss << "Because she was quite horny, she ended up ";
-		sCustomer* Cust = new sCustomer;
-		g_Customers.GetCustomer(Cust, brothel);
+		sCustomer Cust = g_Customers.GetCustomer(*brothel);
 		brothel->m_Happiness += 100;
-		if (Cust->m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
+		if (Cust.m_IsWoman && m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel))
 		{
 			n = SKILL_LESBIAN, ss << "intensely licking the female customer's clit until she got off, making the lady very happy.\n";
 		}
@@ -305,7 +304,6 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
 		fame += 1;
 		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
-		delete Cust;
 	}
 	//SIN - bit more spice - roll_c doesn't seem to be used anywhere else so ok here
 	else if (girl->has_trait( "Doctor") && roll_c > 95)

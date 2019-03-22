@@ -679,12 +679,12 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			g_Girls.UpdateStat(girl, STAT_HEALTH, -1);
 			g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
 		}
-		sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel); Cust->m_Amount = min(1, g_Dice % 11);
+		sCustomer Cust = g_Customers.GetCustomer(*brothel);
+		Cust.m_Amount = min(1, g_Dice % 11);
 		if (!girl->calc_group_pregnancy(Cust, false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant.", 0);
 		}
-		delete Cust;
 	}
 
 	if (girl->has_trait( "Fleet Of Foot") && g_Dice.percent(30))
