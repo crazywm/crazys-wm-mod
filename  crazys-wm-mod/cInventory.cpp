@@ -487,13 +487,13 @@ sInventoryItem* cInventory::GetRandomItem()
 	if (items.size() == 1)
 	{
 		ipt = items[0];
-		if (log > 1) g_LogFile.os() << "	returning 0x" << hex << int(ipt) << endl;
+		if (log > 1) g_LogFile.os() << "	returning 0x" << hex << long(ipt) << endl;
 		return items[0];
 	}
 	int index = g_Dice % (items.size() - 1);	// fixed crash with going outside vector size - necro
 	if (log > 1) g_LogFile.os() << "	returning item at index " << index << endl;
 	ipt = items[index];
-	if (log > 1) g_LogFile.os() << "	returning 0x" << hex << int(ipt) << dec << endl;
+	if (log > 1) g_LogFile.os() << "	returning 0x" << hex << long(ipt) << dec << endl;
 	return ipt;
 }
 sInventoryItem* cInventory::GetRandomCatacombItem()
