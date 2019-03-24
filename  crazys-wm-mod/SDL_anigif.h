@@ -21,7 +21,7 @@
 #ifndef _SDL_ANIGIF_H
 #define _SDL_ANIGIF_H
 
-#include "sdl.h"
+#include "SDL.h"
 #include "begin_code.h"
 #ifdef __cplusplus
 	extern "C" {
