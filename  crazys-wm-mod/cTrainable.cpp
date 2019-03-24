@@ -41,9 +41,9 @@ void cTrainable::upd(int increment)
 {
 	m_gain += increment;
 	if(m_type == Stat) {
-		g_Girls.UpdateStat(m_girl, m_index, increment);
+		m_girl->upd_stat(m_index, increment);
 	}
-	g_Girls.UpdateSkill(m_girl, m_index, increment);
+	m_girl->upd_skill(m_index, increment);
 }
 
 TrainableGirl::TrainableGirl(sGirl *girl)

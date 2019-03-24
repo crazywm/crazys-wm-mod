@@ -1046,11 +1046,11 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 				if (targetGirl->m_EquipedItems[selection] == 1)	// unequip item if it is equiped
 					g_InvManager.Unequip(targetGirl, selection);
 				if (targetGirl->m_Inventory[selection]->m_Badness >= 20)	// happy to get rid of bad items
-					g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, 5);
+					targetGirl->happiness(5);
 				else	// sad to see good items go
 				{
 					int happiness = g_InvManager.HappinessFromItem(targetGirl->m_Inventory[selection]);
-					g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, -happiness);
+					targetGirl->happiness(-happiness);
 				}
 
 				// add the gold
@@ -1159,11 +1159,11 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 				if (targetGirl->m_EquipedItems[selection] == 1)	// unequip item if it is equiped
 					g_InvManager.Unequip(targetGirl, selection);
 				if (targetGirl->m_Inventory[selection]->m_Badness >= 20)	// happy to get rid of bad items
-					g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, 5);
+					targetGirl->happiness(5);
 				else	// sad to see good items go
 				{
 					int happiness = g_InvManager.HappinessFromItem(targetGirl->m_Inventory[selection]);
-					g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, -happiness);
+					targetGirl->happiness(-happiness);
 				}
 
 				*item_name = targetGirl->m_Inventory[selection]->m_Name;  // note name of item, for selection tracking in target list
@@ -1206,11 +1206,11 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 				{
 					int happiness = g_InvManager.HappinessFromItem(g_Brothels.m_Inventory[selection]);
 
-					g_Girls.UpdateStat(targetGirl, STAT_OBEDIENCE, 1);
-					g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, happiness);
-					g_Girls.UpdateStat(targetGirl, STAT_PCHATE, -2);
-					g_Girls.UpdateStat(targetGirl, STAT_PCLOVE, happiness - 1);
-					g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
+					targetGirl->obedience(1);
+					targetGirl->happiness(happiness);
+					targetGirl->pchate(-2);
+					targetGirl->pclove(happiness - 1);
+					targetGirl->pcfear(-1);
 				}
 
 				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP))
@@ -1258,11 +1258,11 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 				if (ShopItem->m_Badness < 20)
 				{
 					int happiness = g_InvManager.HappinessFromItem(ShopItem);
-					g_Girls.UpdateStat(targetGirl, STAT_OBEDIENCE, 1);
-					g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, happiness);
-					g_Girls.UpdateStat(targetGirl, STAT_PCHATE, -2);
-					g_Girls.UpdateStat(targetGirl, STAT_PCLOVE, happiness - 1);
-					g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
+					targetGirl->obedience(1);
+					targetGirl->happiness(happiness);
+					targetGirl->pchate(-2);
+					targetGirl->pclove(happiness - 1);
+					targetGirl->pcfear(-1);
 				}
 
 				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) g_Girls.AddInv(targetGirl, ShopItem);
@@ -1311,7 +1311,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 				}
 				else
 				{
-					g_Girls.UpdateStat(fromGirl, STAT_HAPPINESS, 5);  // previous owner happy to see it go
+					fromGirl->happiness(5);  // previous owner happy to see it go
 				}
 
 				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]);

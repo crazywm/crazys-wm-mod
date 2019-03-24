@@ -107,11 +107,11 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (sgCmb + sgMag + sgAgi + sgCns + sgStr > 0)
 	{
 		ss << "She managed to gain:\n";
-		if (sgCmb > 0) { ss << sgCmb << " Combat\n";		g_Girls.UpdateSkill(girl, SKILL_COMBAT, sgCmb); }
-		if (sgMag > 0) { ss << sgMag << " Magic\n";			g_Girls.UpdateSkill(girl, SKILL_MAGIC, sgMag); }
-		if (sgAgi > 0) { ss << sgAgi << " Agility\n";		g_Girls.UpdateStat(girl, STAT_AGILITY, sgAgi); }
-		if (sgCns > 0) { ss << sgCns << " Constitution\n";	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, sgCns); }
-		if (sgStr > 0) { ss << sgStr << " Strength\n";		g_Girls.UpdateStat(girl, STAT_STRENGTH, sgStr); }
+		if (sgCmb > 0) { ss << sgCmb << " Combat\n";		girl->combat(sgCmb); }
+		if (sgMag > 0) { ss << sgMag << " Magic\n";			girl->magic(sgMag); }
+		if (sgAgi > 0) { ss << sgAgi << " Agility\n";		girl->agility(sgAgi); }
+		if (sgCns > 0) { ss << sgCns << " Constitution\n";	girl->constitution(sgCns); }
+		if (sgStr > 0) { ss << sgStr << " Strength\n";		girl->strength(sgStr); }
 	}
 
 	int trycount = 20;
@@ -280,7 +280,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		{
 			ss << "\n \nAll that training proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+		girl->tiredness(10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}
 
 
@@ -305,7 +305,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	else if (girl->has_trait( "Slow Learner"))	{ xp -= 2; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;

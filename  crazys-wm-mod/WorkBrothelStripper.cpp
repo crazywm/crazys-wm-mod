@@ -72,9 +72,9 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	double jobperformance = JP_BrothelStripper(girl, false);
 
 
-	int lapdance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_STRIP)) / 2;
+	int lapdance = (girl->intelligence() / 2 +
+		girl->performance() / 2 +
+		girl->strip()) / 2;
 	bool mast = false, sex = false, contraception = false;
 
 	if (girl->beauty() > 90)
@@ -98,13 +98,13 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	sCustomer Cust = g_Customers.GetCustomer(*brothel);
 
 	//A little more randomness
-	if (Cust.m_IsWoman && (girl->has_trait( "Lesbian") || g_Girls.GetSkill(girl, SKILL_LESBIAN) > 60))
+	if (Cust.m_IsWoman && (girl->has_trait( "Lesbian") || girl->lesbian() > 60))
 	{
 		ss << girlName << " was overjoyed to perform for a woman, and gave a much more sensual, personal performance.\n";
 		jobperformance += 25;
 	}
 
-	if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 70)
+	if (girl->tiredness() > 70)
 	{
 		ss << girlName << " was too exhausted to give her best tonight";
 		if (jobperformance >= 120)
@@ -167,7 +167,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			ss << "She sold a shower dance.\n";
 			tips += 125;
-			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
+			if (girl->libido() > 70)
 			{
 				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
@@ -200,7 +200,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			ss << "She convinced a patron to buy a shower dance.\n";
 			tips += 75;
-			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70)
+			if (girl->libido() > 70)
 			{
 				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
@@ -252,7 +252,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
@@ -364,12 +364,12 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 				g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
 			}
 		}
-		g_Girls.UpdateSkill(girl, n, 2);
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
+		girl->upd_skill(n, 2);
+		girl->upd_temp_stat(STAT_LIBIDO, -25, true);
+		girl->upd_Enjoyment( ACTION_SEX, +1);
 		// work out the pay between the house and the girl
-		wages += g_Girls.GetStat(girl, STAT_ASKPRICE);
-		int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+		wages += girl->askprice();
+		int roll_max = (girl->beauty() + girl->charisma());
 		roll_max /= 4;
 		wages += 50 + g_Dice%roll_max;
 		fame += 1;
@@ -379,7 +379,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		brothel->m_Happiness += (g_Dice % 70) + 60;
 		// work out the pay between the house and the girl
-		int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+		int roll_max = (girl->beauty() + girl->charisma());
 		roll_max /= 4;
 		wages += 50 + g_Dice%roll_max;
 		fame += 1;
@@ -390,7 +390,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		brothel->m_Happiness += (g_Dice % 70) + 30;
 		// work out the pay between the house and the girl
-		int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+		int roll_max = (girl->beauty() + girl->charisma());
 		roll_max /= 4;
 		wages += 10 + g_Dice%roll_max;
 		//girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
@@ -407,7 +407,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			ss << "\nPole dancing proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 
 		}
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+		girl->tiredness(10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}
 
 #pragma endregion
@@ -463,10 +463,10 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (girl->fame() < 60 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 80 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 2);
+	girl->fame(fame);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->strip(g_Dice%skill + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gained
@@ -476,13 +476,13 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Agile", 40, actiontype, girlName + " has been working the pole long enough to become quite Agile.", Day0Night1);
 	}
-	if (sex == true && g_Girls.GetStat(girl, STAT_DIGNITY) < 0 && g_Dice.percent(25))
+	if (sex == true && girl->dignity() < 0 && g_Dice.percent(25))
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1, EVENT_WARNING);
 	}
 	//lose
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, girlName + " has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
-	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65)
+	if (jobperformance > 150 && girl->confidence() > 65)
 	{
 		g_Girls.PossiblyLoseExistingTrait(girl, "Shy", 60, actiontype, girlName + " has been stripping for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);
 	}
@@ -506,10 +506,10 @@ double cJobManager::JP_BrothelStripper(sGirl* girl, bool estimate)// not used
 	// next up tiredness penalty...
 #else
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_CHARISMA) / 4 +
-		g_Girls.GetStat(girl, STAT_BEAUTY) / 4 +
-		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_STRIP));
+		(girl->charisma() / 4 +
+		girl->beauty() / 4 +
+		girl->performance() / 2 +
+		girl->strip());
 #endif
 	if (!estimate)
 	{
@@ -520,7 +520,7 @@ double cJobManager::JP_BrothelStripper(sGirl* girl, bool estimate)// not used
 
 	//good traits
 	if (girl->has_trait( "Charismatic"))		jobperformance += 15;
-	if (g_Girls.GetStat(girl, STAT_FAME) > 85)		jobperformance += 10; //more people willing to see her
+	if (girl->fame() > 85)		jobperformance += 10; //more people willing to see her
 	if (girl->has_trait( "Sexy Air"))			jobperformance += 10;
 	if (girl->has_trait( "Cool Person"))		jobperformance += 10; //people love to be around her
 	if (girl->has_trait( "Charming"))			jobperformance += 10; //people like charming people

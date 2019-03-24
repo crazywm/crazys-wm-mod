@@ -486,7 +486,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 //		//		Summary Messages
 //		if (refused)
 //		{
-//			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+//			brothel->m_Fame -= current->fame();
 //			ss << girlName << " refused to work so made no money.";
 //		}
 //		else
@@ -494,7 +494,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 //			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, Day0Night1);
 //			if (totalGold < 0) sum = EVENT_DEBUG;
 //
-//			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+//			brothel->m_Fame += current->fame();
 //		}
 //		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 //
@@ -567,7 +567,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		//		Summary Messages
 		if (refused)
 		{
-			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame -= current->fame();
 			ss << girlName << " refused to work so made no money.";
 		}
 		else
@@ -575,7 +575,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, Day0Night1);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
-			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame += current->fame();
 		}
 		if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
@@ -602,8 +602,8 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		// Level the girl up if nessessary
 		g_Girls.LevelUp(current);
 		// Natural healing, 2% health and 2% tiredness per day
-		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
-		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
+		current->upd_stat(STAT_HEALTH, 2, false);
+		current->upd_stat(STAT_TIREDNESS, -2, false);
 
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 		if (current->happiness()< 40)
@@ -643,27 +643,27 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 			if (t > 50 && h < 50)
 			{
 				ss << "some potions";
-				g_Girls.UpdateStat(current, STAT_HEALTH, 20 + g_Dice % 20, false);
-				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
+				current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
 				g_Gold.consumable_cost(20, true);
 			}
 			else if (t > 50)
 			{
 				ss << "a resting potion";
-				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
 				g_Gold.consumable_cost(10, true);
 			}
 			else if (h < 50)
 			{
 				ss << "a healing potion";
-				g_Girls.UpdateStat(current, STAT_HEALTH, 20 + g_Dice % 20, false);
+				current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
 				g_Gold.consumable_cost(10, true);
 			}
 			else
 			{
 				ss << "a potion";
-				g_Girls.UpdateStat(current, STAT_HEALTH, 10 + g_Dice % 10, false);
-				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(10 + g_Dice % 10), false);
+				current->upd_stat(STAT_HEALTH, 10 + g_Dice % 10, false);
+				current->upd_stat(STAT_TIREDNESS, -(10 + g_Dice % 10), false);
 				g_Gold.consumable_cost(5, true);
 			}
 			ss << " for herself.\n";
@@ -702,18 +702,18 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 						if (t > 80 && h < 40)
 						{
 							ss << girlName << " recuperate.\n";
-							g_Girls.UpdateStat(current, STAT_HEALTH, 2 + g_Dice % 4, false);
-							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(2 + g_Dice % 4), false);
+							current->upd_stat(STAT_HEALTH, 2 + g_Dice % 4, false);
+							current->upd_stat(STAT_TIREDNESS, -(2 + g_Dice % 4), false);
 						}
 						else if (t > 80)
 						{
 							ss << girlName << " to relax.\n";
-							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(5 + g_Dice % 5), false);
+							current->upd_stat(STAT_TIREDNESS, -(5 + g_Dice % 5), false);
 						}
 						else if (h < 40)
 						{
 							ss << " heal " << girlName << ".\n";
-							g_Girls.UpdateStat(current, STAT_HEALTH, 5 + g_Dice % 5, false);
+							current->upd_stat(STAT_HEALTH, 5 + g_Dice % 5, false);
 						}
 					}
 				}

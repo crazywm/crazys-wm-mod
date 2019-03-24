@@ -69,7 +69,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	// `J` - jobperformance and CleanAmt need to be worked out specially for this job.
 	double jobperformance = 0;
-	double CleanAmt = ((g_Girls.GetSkill(girl, SKILL_SERVICE) / 10.0) + 5) * 5;
+	double CleanAmt = ((girl->service() / 10.0) + 5) * 5;
 
 	if (girl->has_trait( "Director"))					{ CleanAmt -= 10;	jobperformance += 15; }
 	if (girl->has_trait( "Actress"))					{ CleanAmt += 0;	jobperformance += 10; }
@@ -150,7 +150,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	if (filming)
 	{
 		jobperformance += (((girl->spirit() - 50) / 10) + ((girl->intelligence() - 50) / 10) + (girl->service() / 10)) / 3;
-		jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
+		jobperformance += girl->level();
 		jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 
 		if (jobperformance > 0)
@@ -189,7 +189,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	{
 		ss << "\n \n" << girlName << " finished her cleaning early so she hung out around the Studio a bit.";
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice % 3 + 1, true);
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 3 + 1);
+		girl->happiness(g_Dice % 3 + 1);
 	}
 
 
@@ -207,8 +207,8 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
+	girl->exp(xp);
+	girl->service((g_Dice % skill) + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	if (filming) g_Girls.UpdateEnjoyment(girl, actiontype, enjoym);

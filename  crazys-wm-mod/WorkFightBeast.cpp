@@ -162,7 +162,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		wages += 10 + g_Dice%roll_max;
 		girl->m_Tips = max(0, tips);
 		girl->m_Pay = max(0, wages);
-		g_Girls.UpdateStat(girl, STAT_FAME, 2);
+		girl->fame(2);
 	}
 	else  // she lost or it was a draw
 	{
@@ -173,7 +173,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		{
 			ss << " So as punishment you allow the beast to have its way with her."; enjoy -= 1;
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50, true);
-			g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
+			girl->beastiality(2);
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 			if (!girl->calc_insemination(*g_Girls.GetBeast(), false, 1.0))
 			{
@@ -184,7 +184,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		{
 			ss << " So you send your men in to cage the beast before it can harm her.";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
-			g_Girls.UpdateStat(girl, STAT_FAME, -1);
+			girl->fame(-1);
 		}
 	}
 
@@ -204,7 +204,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		{
 			ss << "\n \nAll that fighting proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+		girl->tiredness(10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}
 
 
@@ -254,18 +254,18 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%fightxp + skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%fightxp + skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
+	girl->exp(xp);
+	girl->combat(g_Dice%fightxp + skill);
+	girl->magic(g_Dice%fightxp + skill);
+	girl->agility(g_Dice%fightxp + skill);
+	girl->constitution(g_Dice%fightxp + skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%fightxp * 2 + skill);
+	girl->beastiality(g_Dice%fightxp * 2 + skill);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 30, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
-	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 60 && g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
+	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 60 && girl->combat() > girl->magic())
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, girlName + " has become pretty Strong from all of the fights she's been in.", Day0Night1);
 	}
@@ -291,7 +291,7 @@ double cJobManager::JP_FightBeast(sGirl* girl, bool estimate)// not used
 	}
 	else// for the actual check
 	{
-		jobperformance += (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2;
+		jobperformance += (girl->fame() + girl->charisma()) / 2;
 		if (!estimate)
 		{
 			int t = girl->tiredness() - 80;

@@ -247,15 +247,15 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % skill) + 2);
+	girl->animalhandling((g_Dice % skill) + 2);
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateSkill(girl, SKILL_HANDJOB, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
+	girl->handjob(max(0, (g_Dice % skill) - 1));
+	girl->farming(max(0, (g_Dice % skill) - 2));
+	girl->intelligence(max(0, (g_Dice % skill) - 2));
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 

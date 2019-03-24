@@ -221,16 +221,16 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	int I_xp = (g_Dice % xp) + 1;							g_Girls.UpdateStat(girl, STAT_EXP, I_xp);
+	int I_xp = (g_Dice % xp) + 1;							girl->exp(I_xp);
 	int I_libido = (g_Dice % libido) + 1;					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, I_libido);
 	if (tired > 0) girl->tiredness(tired);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	int I_farming = (g_Dice % skill) + 2;					g_Girls.UpdateSkill(girl, SKILL_FARMING, I_farming);
+	int I_farming = (g_Dice % skill) + 2;					girl->farming(I_farming);
 	// secondary improvement (-1 for one then -2 for others)
-	int I_strength = max(0, (g_Dice % skill) - 1);			g_Girls.UpdateStat(girl, STAT_STRENGTH, I_strength);
-	int I_constitution = max(0, (g_Dice % skill) - 2);		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, I_constitution);
-	int I_intelligence = max(0, (g_Dice % skill) - 2);		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, I_intelligence);
+	int I_strength = max(0, (g_Dice % skill) - 1);			girl->strength(I_strength);
+	int I_constitution = max(0, (g_Dice % skill) - 2);		girl->constitution(I_constitution);
+	int I_intelligence = max(0, (g_Dice % skill) - 2);		girl->intelligence(I_intelligence);
 
 	// Update Enjoyment
 	if (jobperformance < 50) enjoy -= 1; if (jobperformance < 0) enjoy -= 1;	// if she doesn't do well at the job, she enjoys it less

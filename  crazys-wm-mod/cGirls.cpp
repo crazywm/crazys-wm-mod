@@ -313,6 +313,21 @@ sGirl::~sGirl()		// destructor
 
 }
 
+int sGirl::has_item(const std::string& item)
+{
+    return g_Girls.HasItem(this, item);
+}
+
+int sGirl::has_item_j(const std::string& item)
+{
+	return g_Girls.HasItemJ(this, item);
+}
+
+int sGirl::sGirl::add_inv(sInventoryItem* item)
+{
+    return g_Girls.AddInv(this, item);
+}
+
 sRandomGirl::sRandomGirl()
 {
 	m_Name = "";
@@ -2243,14 +2258,14 @@ void cGirls::AddTiredness(sGirl* girl)
 		g_Girls.SetStat(girl, STAT_TIREDNESS, 0);	return;
 	}
 	int tiredness = 10;
-	if (g_Girls.GetStat(girl, STAT_CONSTITUTION) > 0)
-		tiredness -= (g_Girls.GetStat(girl, STAT_CONSTITUTION)) / 10;
+	if (girl->constitution() > 0)
+		tiredness -= (girl->constitution()) / 10;
 	if (tiredness <= 0)	tiredness = 0;
-	g_Girls.UpdateStat(girl, STAT_TIREDNESS, tiredness, false);
-	if (g_Girls.GetStat(girl, STAT_TIREDNESS) == 100)
+	girl->upd_stat(STAT_TIREDNESS, tiredness, false);
+	if (girl->tiredness() == 100)
 	{
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -1, false);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -1, false);
+		girl->upd_stat(STAT_HAPPINESS, -1, false);
+		girl->upd_stat(STAT_HEALTH, -1, false);
 	}
 }
 
@@ -11806,18 +11821,18 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			else
 			{
 				sexMessage << " was irrational and aggressive. With an angry grunt she lurched and clawed at the amorous beast";
-				if (g_Dice.percent(g_Girls.GetSkill(girl, SKILL_COMBAT)))
+				if (g_Dice.percent(girl->combat()))
 				{
 					sexMessage << " quickly tearing the poor creature apart and feasting on its flesh.\nThe customer seemed a little shocked.\n";
 					g_Brothels.add_to_beasts(-1);
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, +5);
-					g_Girls.UpdateStat(girl, STAT_HEALTH, +5);
+					girl->happiness(+5);
+					girl->health(+5);
 					customer->m_Stats[STAT_HAPPINESS] -= 10;
 				}
 				else
 				{
 					sexMessage << ", but your beast easily overpowered her.\nThe customer is thrilled to watch as your beast pins and fucks this furious, snarling zombie-girl.\n";
-					g_Girls.UpdateStat(girl, STAT_HEALTH, -10);
+					girl->health(-10);
 					customer->m_Stats[STAT_HAPPINESS] += 50;
 				}
 			}
@@ -12584,7 +12599,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				message += "She kept it in while she dressed and tidied up. She'll definitely keep ";
 				keep = true;
 			}
-			else if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+			else if (g_Dice.percent(girl->dignity())) //higher dig = higher chance
 			{
 				message += "As soon as he was gone, she pulled out the stinking thing and threw it in the trash.";
 			}
@@ -12638,7 +12653,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				message += "She agreed. It's exactly what she deserves: a ";
 				keep = true;
 			}
-			else if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+			else if (g_Dice.percent(girl->dignity())) //higher dig = higher chance
 			{
 				message += "\nA collar?! As soon as he was gone, she ripped it off and threw it in the trash.";
 			}
@@ -12708,7 +12723,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				message += "While he was getting dressed, she noisily tried out the new ";
 				keep = true;
 			}
-			else if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+			else if (g_Dice.percent(girl->dignity())) //higher dig = higher chance
 			{
 				message += "As soon as he was gone, she pulled out the filthy thing and threw it in the trash.";
 			}
@@ -12855,7 +12870,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (g_Dice.percent(90))
 			{
 				message += "\n \nAfterward the customer gave " + girlName + " a pet collar as a gift.";
-				if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+				if (g_Dice.percent(girl->dignity())) //higher dig = higher chance
 				{
 					message += "Annoyed, she later threw out this demeaning trash.";
 					keep = false;
@@ -12922,7 +12937,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				{
 					message += "She immediately swallowed it all down.";
 				}
-				else if (g_Dice.percent(g_Girls.GetStat(girl, STAT_DIGNITY))) //higher dig = higher chance
+				else if (g_Dice.percent(girl->dignity())) //higher dig = higher chance
 				{
 					message += "Annoyed, she threw the goblet, and its disgusting contents, in the trash.";
 				}
@@ -15730,7 +15745,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 					l.ss() << "\t\t\t\t" << Defender->m_Realname << " shrugs it off.";
 				else
 				{
-					g_Girls.UpdateStat(Defender, STAT_HEALTH, -ActualDmg);
+					Defender->health(-ActualDmg);
 					l.ss() << "\t\t\t\t" << Defender->m_Realname << " takes " << damage << " damage, less " << con_mod << " for CON\n";
 					l.ss() << "\t\t\t\t\tNew health value = " << Defender->health();
 				}
@@ -17633,7 +17648,7 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 
 	//ADB low health is risky for pregnancy!
 	//80 health will add 2 to percent chance of sterility and death, 10 health will add 9 percent!
-	int healthFactor = (100 - g_Girls.GetStat(girl, STAT_HEALTH)) / 10;
+	int healthFactor = (100 - girl->health()) / 10;
 	/*
 	*	the human-baby case is marginally easier than the
 	*	tentacle-beast-monstrosity one, so we do that first
@@ -18187,11 +18202,11 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 		else if (DN_Job == JOB_GETREPAIRS)
 		{
 			if (g_Clinic.GetNumGirlsOnJob(0, JOB_MECHANIC, DN_Day) > 0 &&
-				(g_Girls.HasTrait(this, "Construct") || g_Girls.HasTrait(this, "Half-Construct")))
+				(this->has_trait("Construct") || this->has_trait("Half-Construct")))
 			{
 				ss << g_Brothels.m_JobManager.JobName[DN_Job];
 			}
-			else if (g_Girls.HasTrait(this, "Construct"))
+			else if (this->has_trait("Construct"))
 			{
 				ss << g_Brothels.m_JobManager.JobName[DN_Job] << " ****";
 			}

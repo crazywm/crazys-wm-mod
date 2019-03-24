@@ -109,11 +109,11 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (sgAnm + sgFar + sgMag + sgHer + sgInt > 0)
 	{
 		ss << "She managed to gain:\n";
-		if (sgAnm > 0) { ss << sgAnm << " Animal Handling\n";	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, sgAnm); }
-		if (sgFar > 0) { ss << sgFar << " Farming\n";			g_Girls.UpdateSkill(girl, SKILL_FARMING, sgFar); }
-		if (sgMag > 0) { ss << sgMag << " Magic\n";				g_Girls.UpdateSkill(girl, SKILL_MAGIC, sgMag); }
-		if (sgHer > 0) { ss << sgHer << " Herbalism\n";			g_Girls.UpdateSkill(girl, SKILL_HERBALISM, sgHer); }
-		if (sgInt > 0) { ss << sgInt << " Intelligence\n";		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, sgInt); }
+		if (sgAnm > 0) { ss << sgAnm << " Animal Handling\n";	girl->animalhandling(sgAnm); }
+		if (sgFar > 0) { ss << sgFar << " Farming\n";			girl->farming(sgFar); }
+		if (sgMag > 0) { ss << sgMag << " Magic\n";				girl->magic(sgMag); }
+		if (sgHer > 0) { ss << sgHer << " Herbalism\n";			girl->herbalism(sgHer); }
+		if (sgInt > 0) { ss << sgInt << " Intelligence\n";		girl->intelligence(sgInt); }
 	}
 
 	int trycount = skill;
@@ -347,7 +347,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else if (girl->has_trait( "Slow Learner"))	{ xp -= 2; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 #pragma endregion
@@ -368,9 +368,9 @@ double cJobManager::JP_FarmResearch(sGirl* girl, bool estimate)// not used
 	}
 	else// for the actual check
 	{
-		jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-			g_Girls.GetSkill(girl, SKILL_HERBALISM) / 2 +
-			g_Girls.GetSkill(girl, SKILL_BREWING));
+		jobperformance = (girl->intelligence() / 2 +
+			girl->herbalism() / 2 +
+			girl->brewing());
 		if (!estimate)
 		{
 			int t = girl->tiredness() - 80;

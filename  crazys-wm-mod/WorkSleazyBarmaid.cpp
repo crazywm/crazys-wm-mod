@@ -61,7 +61,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 	int HateLove = 0;
-	HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
+	HateLove = girl->pclove() - girl->pchate();
 	int wages = 15, tips = 0;
 	int enjoy = 0, fame = 0;
 	int imagetype = IMGTYPE_ECCHI;
@@ -110,17 +110,17 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	tips += (int)(((10 + jobperformance / 22) * wages) / 100);
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
 
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99 && g_Dice.percent(5))
+	if (girl->beauty() > 99 && g_Dice.percent(5))
 	{
 		ss << girlName << " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't glue their eyes off her face, and spent a lot more than usual on tipping her.\n"; tips += 50;
 	}
 
-	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 85 && g_Dice.percent(20))
+	if (girl->charisma() > 85 && g_Dice.percent(20))
 	{
 		ss << girlName << " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n"; tips += 35;
 	}
@@ -207,7 +207,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 	}
 
-	if ((girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && g_Dice.percent(20) && !g_Girls.CheckVirginity(girl) && !girl->has_trait( "Lesbian"))
+	if ((girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && girl->libido() > 80 && g_Dice.percent(20) && !g_Girls.CheckVirginity(girl) && !girl->has_trait( "Lesbian"))
 	{
 		if (roll_b <= 50)
 		{
@@ -219,7 +219,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 		imagetype = IMGTYPE_SEX;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
-		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
+		girl->normalsex(1);
 		sCustomer Cust = g_Customers.GetCustomer(*brothel);
 		Cust.m_Amount = 1;
 		if (!girl->calc_pregnancy(Cust, false, 1.0))
@@ -261,7 +261,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	// Money
@@ -280,16 +280,16 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 60 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+	girl->fame(fame);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->service(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gained
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with customers at the bar and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1);
 	if (jobperformance < 100 && roll_a <= 2) { g_Girls.PossiblyGainNewTrait(girl, "Assassin", 10, actiontype, girlName + "'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", Day0Night1); }
-	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_DIGNITY) < 0 && (imagetype == IMGTYPE_SEX || imagetype == IMGTYPE_ORAL))
+	if (g_Dice.percent(25) && girl->dignity() < 0 && (imagetype == IMGTYPE_SEX || imagetype == IMGTYPE_ORAL))
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1, EVENT_WARNING);
 	}

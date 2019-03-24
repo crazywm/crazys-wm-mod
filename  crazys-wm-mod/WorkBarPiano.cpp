@@ -249,7 +249,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n";
 		tips += 15 + g_Dice % 26;					// +15 to +40
@@ -384,15 +384,15 @@ bool cJobManager::WorkBarPiano(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	int I_xp = (g_Dice % xp) + 1;							g_Girls.UpdateStat(girl, STAT_EXP, I_xp);
+	int I_xp = (g_Dice % xp) + 1;							girl->exp(I_xp);
 	int I_libido = (g_Dice % libido) + 1;					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, I_libido);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	int I_performance = (g_Dice % skill) + 2;			 	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, I_performance);
+	int I_performance = (g_Dice % skill) + 2;			 	girl->performance(I_performance);
 	// secondary improvement (-1 for one then -2 for others)
-	int I_confidence = max(0, (g_Dice % skill) - 1);		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, I_confidence);
-	int I_intelligence = max(0, (g_Dice % skill) - 2);		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, I_intelligence);
-	int I_fame = fame;										g_Girls.UpdateStat(girl, STAT_FAME, I_fame);
+	int I_confidence = max(0, (g_Dice % skill) - 1);		girl->confidence(I_confidence);
+	int I_intelligence = max(0, (g_Dice % skill) - 2);		girl->intelligence(I_intelligence);
+	int I_fame = fame;										girl->fame(I_fame);
 
 	// Update Enjoyment
 	if (jobperformance < 50) enjoy -= 1; if (jobperformance < 0) enjoy -= 1;	// if she doesn't do well at the job, she enjoys it less

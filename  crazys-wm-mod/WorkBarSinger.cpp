@@ -279,12 +279,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	tips += (int)(((5 + jobperformance / 8) * wages) / 100);
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) >85 && g_Dice.percent(20))
+	if (girl->beauty() >85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 15;
 	}
 
-	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 80 && g_Dice.percent(15))
+	if (girl->charisma() > 80 && g_Dice.percent(15))
 	{
 		ss << "Her charisma shone through as she chatted to customers between songs.\n \n"; tips += 15; happy += 5;
 	}
@@ -347,26 +347,26 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		}
 	}
 
-	if (girl->has_trait( "Idol") && g_Girls.GetStat(girl, STAT_FAME) > 75 && g_Dice.percent(25))
+	if (girl->has_trait( "Idol") && girl->fame() > 75 && g_Dice.percent(25))
 	{
 		ss << "Today a large group of " << girlName << "'s followers came to listen to her sing, leaving very generous tips behind.\n";
 		wages += 15;
-		tips += 25 + g_Girls.GetStat(girl, STAT_FAME) / 4;
-		g_Girls.UpdateStat(girl, STAT_FAME, 1);
+		tips += 25 + girl->fame() / 4;
+		girl->fame(1);
 	}
 	else if (girl->has_trait( "Idol") && g_Dice.percent(25))
 	{
 		ss << "A group of " << girlName << "'s fans came to listen to her sing, leaving good tips behind.\n";
 		wages += 10;
-		tips += 20 + g_Girls.GetStat(girl, STAT_FAME) / 5;
-		g_Girls.UpdateStat(girl, STAT_FAME, 1);
+		tips += 20 + girl->fame() / 5;
+		girl->fame(1);
 	}
-	else if (!girl->has_trait( "Idol") && g_Girls.GetStat(girl, STAT_FAME) > 75 && g_Dice.percent(15))
+	else if (!girl->has_trait( "Idol") && girl->fame() > 75 && g_Dice.percent(15))
 	{
 		ss << girlName << " is quite popular in Crossgate so a small crowd of people came in just to listen to her.\n";
 		wages += 5;
 		tips += 15;
-		g_Girls.UpdateStat(girl, STAT_FAME, 1);
+		girl->fame(1);
 	}
 
 	if (g_Brothels.GetNumGirlsOnJob(0, JOB_PIANO, Day0Night1) >= 1 && g_Dice.percent(25))
@@ -391,7 +391,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	else if (roll_a <= 25)
 	{
-		ss << "\nShe had a pleasant time working."; enjoy += 3; g_Girls.UpdateStat(girl, STAT_CONFIDENCE, 1);
+		ss << "\nShe had a pleasant time working."; enjoy += 3; girl->confidence(1);
 	}
 	else
 	{
@@ -410,7 +410,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 
@@ -430,15 +430,15 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (girl->fame() < 60 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 90 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	girl->exp(xp);
 	if (g_Dice % 2 == 1)
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill + 1);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
+		girl->confidence(g_Dice%skill + 1);
+	girl->performance(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Singing on a daily basis has made " + girlName + " more Charismatic.", Day0Night1);
-	if (g_Girls.GetStat(girl, STAT_FAME) >= 70 && g_Dice.percent(25))
+	if (girl->fame() >= 70 && g_Dice.percent(25))
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Idol", 50, actiontype, "Her fame and singing skills has made " + girlName + " an Idol in Crossgate.", Day0Night1);
 	}

@@ -1001,7 +1001,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				{
 					l.ss() << "\t\t" << girl->m_Realname << " gains +" << gain << " to attack skill";
 					l.ssend();
-					g_Girls.UpdateSkill(girl, attack, gain);
+					girl->upd_skill(attack, gain);
 				}
 
 				die_roll = g_Dice.d100();
@@ -1068,8 +1068,8 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				// girl attempts Dodge
 				if (!g_Dice.percent(dodge))
 				{
-					damage = max(1, (damage - (g_Girls.GetStat(girl, STAT_CONSTITUTION) / 15)));
-					g_Girls.UpdateStat(girl, STAT_HEALTH, -damage);
+					damage = max(1, (damage - (girl->constitution() / 15)));
+					girl->health(-damage);
 				}
 			}
 
@@ -1087,7 +1087,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 			}
 		}
 
-		if (g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
+		if (girl->health() <= 20)
 		{
 			BoostGangCombatSkills(gang, 2);
 			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1);
@@ -1145,8 +1145,8 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 		return true;
 	}
 
-	int dodge = g_Girls.GetStat(girl, STAT_AGILITY);  // MYR: Was 0
-	int mana = g_Girls.GetStat(girl, STAT_MANA);      // MYR: Like agility, mana is now per battle
+	int dodge = girl->agility();  // MYR: Was 0
+	int mana = girl->mana();      // MYR: Like agility, mana is now per battle
 
 	u_int attack = SKILL_COMBAT;	// determined later, defaults to combat
 	u_int goon_attack = SKILL_COMBAT;
@@ -1157,7 +1157,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 		return true;
 
 	// first determine what she will fight with
-	if (g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
+	if (girl->combat() > girl->magic())
 		attack = SKILL_COMBAT;
 	else
 		attack = SKILL_MAGIC;
@@ -1175,7 +1175,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 
 	l.ss() << "\nGirl vs. Goons: " << girl->m_Realname << " fights " << initial_num << " opponents!";
 	l.ssend();
-	l.ss() << girl->m_Realname << ": Health " << girl->health() << ", Dodge " << g_Girls.GetStat(girl, STAT_AGILITY)
+	l.ss() << girl->m_Realname << ": Health " << girl->health() << ", Dodge " << girl->agility()
 		<< ", Mana " << girl->mana();
 	l.ssend();
 
@@ -1190,7 +1190,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 		int gDodge = enemy_gang->m_Stats[STAT_AGILITY];
 		int gMana = enemy_gang->m_Stats[STAT_MANA];
 
-		while (g_Girls.GetStat(girl, STAT_HEALTH) >= 20 && gHealth > 0)
+		while (girl->health() >= 20 && gHealth > 0)
 		{
 			// Girl attacks
 			//l.ss()	<< "\t" << girl->m_Realname << " attacks the goon.";
@@ -1319,7 +1319,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 				gDodge--;
 		}  // While loop
 
-		if (g_Girls.GetStat(girl, STAT_HEALTH) <= 20)
+		if (girl->health() <= 20)
 		{
 			l.ss() << "The gang overwhelmed and defeated " << girl->m_Realname << ". She lost the battle.";
 			l.ssend();

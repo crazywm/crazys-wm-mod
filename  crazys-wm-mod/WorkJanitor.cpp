@@ -108,23 +108,23 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		if (girl->is_pregnant() && girl->health() < 90)
 		{
 			ss << "got a quick checkup and made sure her unborn baby was doing OK.";
-			g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 4) + 2);
+			girl->health(10);
+			girl->happiness((g_Dice % 4) + 2);
 		}
 		else if (girl->health() < 80)
 		{
 			ss << "got a quick checkup.";
-			g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
+			girl->health(10);
 		}
 		else if (girl->is_pregnant() || g_Dice.percent(40))
 		{
 			ss << "hung out in the maternity ward watching the babies.";
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 6) - 2);
+			girl->happiness((g_Dice % 6) - 2);
 		}
 		else if (girl->tiredness() > 50 && brothel->free_rooms() > 10)
 		{
 			ss << "found an empty room and took a nap.";
-			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -((g_Dice % 10) + 5));
+			girl->tiredness(-((g_Dice % 10) + 5));
 		}
 		else
 		{
@@ -134,7 +134,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			if (d + n < 1)
 			{
 				ss << "people wander about the Clinic.";
-				g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 3) - 1);
+				girl->happiness((g_Dice % 3) - 1);
 			}
 			else
 			{
@@ -142,7 +142,7 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				if (d > 0 && n > 0)	ss << " and ";
 				if (n > 0)			ss << "nurse" << (n > 1 ? "s" : "");
 				ss << " do their job" << (d + n > 1 ? "s" : "");
-				g_Girls.UpdateSkill(girl, SKILL_MEDICINE, (g_Dice % 2));
+				girl->medicine((g_Dice % 2));
 			}
 		}
 	}
@@ -161,8 +161,8 @@ bool cJobManager::WorkJanitor(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
+	girl->exp((g_Dice % xp) + 2);
+	girl->service((g_Dice % skill) + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);

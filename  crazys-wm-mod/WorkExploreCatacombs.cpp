@@ -166,9 +166,9 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				health -= 1, happy -= 10, spirit -= 4, sex -= 4, combat -= 2, injury += 2;
 			}
 
-			g_Girls.UpdateStat(girl, STAT_HEALTH, health);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
+			girl->health(health);
+			girl->happiness(happy);
+			girl->spirit(spirit);
 			g_Girls.GirlInjured(girl, injury);
 			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, sex);
 			g_Girls.UpdateEnjoyment(girl, actiontype, combat);
@@ -370,9 +370,9 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				health -= 1, happy -= 10, spirit -= 4, sex -= 4, combat -= 2, injury += 2;
 			}
 
-			g_Girls.UpdateStat(girl, STAT_HEALTH, health);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
+			girl->health(health);
+			girl->happiness(happy);
+			girl->spirit(spirit);
 			g_Girls.GirlInjured(girl, injury);
 			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, sex);
 			g_Girls.UpdateEnjoyment(girl, actiontype, combat);
@@ -457,14 +457,14 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	{
 		ss << girl->m_Realname << " was real horny so she had a little fun with the girl" << (type_monster_girls + type_unique_monster_girls > 1 ? "s" : "") << " she captured.";
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50, true);
-		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, type_monster_girls + type_unique_monster_girls);
+		girl->lesbian(type_monster_girls + type_unique_monster_girls);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);
 	}
 	else if (girl->get_stat(STAT_LIBIDO) > 90 && type_beasts > 0 && m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel))
 	{
 		ss << girl->m_Realname << " was real horny so she had a little fun with the beast" << (type_beasts > 1 ? "s" : "") << " she captured.";
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50, true);
-		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, type_beasts);
+		girl->beastiality(type_beasts);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 		if (!girl->calc_insemination(*g_Girls.GetBeast(), false, 1.0))
 		{
@@ -482,7 +482,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		{
 			ss << "\n \nFighting monsters and exploring the catacombs was quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+		girl->tiredness(10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}
 
 	wages += gold;
@@ -498,12 +498,12 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	if (girl->has_trait( "Nymphomaniac"))			libido += 2;
 	if (girl->has_trait( "Lesbian"))				libido += type_monster_girls + type_unique_monster_girls;
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % skill) + 1);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, (g_Dice % skill) + 1);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
-	g_Girls.UpdateStat(girl, STAT_STRENGTH, g_Dice % skill);
+	girl->exp(xp);
+	girl->combat((g_Dice % skill) + 1);
+	girl->magic((g_Dice % skill) + 1);
+	girl->agility(g_Dice % skill);
+	girl->constitution(g_Dice % skill);
+	girl->strength(g_Dice % skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, (g_Dice % skill) + 2);
 
@@ -511,7 +511,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself an Adventurer.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
-	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 60 && g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
+	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 60 && girl->combat() > girl->magic())
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, girlName + " has become pretty Strong from all of the fights she's been in.", Day0Night1);
 	}

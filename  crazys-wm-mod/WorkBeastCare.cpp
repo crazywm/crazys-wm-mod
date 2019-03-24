@@ -84,8 +84,8 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			if (addbeasts < 2) ss << "a beast";
 			else ss << addbeasts << " beasts";
 			ss << " for the brothel" << (addbeasts > 0 ? "." : " but failed.");
-			g_Girls.UpdateSkill(girl, SKILL_MAGIC, addbeasts);
-			g_Girls.UpdateStat(girl, STAT_MANA, -30 * max(1, addbeasts));
+			girl->magic(addbeasts);
+			girl->mana(-30 * max(1, addbeasts));
 		}
 		else if (girl->animalhandling() > 50 && girl->charisma() > 50)
 		{
@@ -105,7 +105,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 				if (addbeasts == 1) ss << "a stray beast";
 				else ss << addbeasts << " stray beasts";
 				ss << " for the brothel.";
-				g_Girls.UpdateStat(girl, STAT_CONFIDENCE, addbeasts);
+				girl->confidence(addbeasts);
 			}
 		}
 		else if (girl->combat() > 50 && (girl->has_trait( "Adventurer") || girl->confidence() > 70))
@@ -114,7 +114,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			ss << girlName << " stood near the entrance to the catacombs, trying to lure out a beast by making noises of an injured animal.\n";
 			if (addbeasts > 0) ss << "After some time, a beast came out of the catacombs. " << girlName << " threw a net over it and wrestled it into submission.\n";
 			else ss << "After a few hours, she gave up.";
-			g_Girls.UpdateSkill(girl, SKILL_COMBAT, addbeasts);
+			girl->combat(addbeasts);
 		}
 	}
 	if (addbeasts >= 0) ss << "\n \n";
@@ -174,10 +174,10 @@ bool cJobManager::WorkBeastCare(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, max(1, (g_Dice % skill) - 1));
+	girl->exp(xp);
+	girl->service(max(1, (g_Dice % skill) - 1));
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, max(1, (g_Dice % skill) + 1));
+	girl->animalhandling(max(1, (g_Dice % skill) + 1));
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	g_Girls.PossiblyLoseExistingTrait(girl, "Elegant", 40, actiontype, " Working with dirty, smelly beasts has damaged " + girlName + "'s hair, skin and nails making her less Elegant.", Day0Night1);
@@ -226,10 +226,10 @@ double cJobManager::JP_BeastCare(sGirl* girl, bool estimate)
 
 #else
 	double jobperformance = 0.0;
-	jobperformance = (g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) +
-		g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 3 +
-		g_Girls.GetSkill(girl, SKILL_SERVICE) / 3 +
-		g_Girls.GetSkill(girl, SKILL_MAGIC) / 3);
+	jobperformance = (girl->animalhandling() +
+		girl->intelligence() / 3 +
+		girl->service() / 3 +
+		girl->magic() / 3);
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;

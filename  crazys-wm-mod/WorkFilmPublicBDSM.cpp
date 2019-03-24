@@ -70,7 +70,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
 	int roll = g_Dice.d100();
-	if (g_Girls.GetStat(girl, STAT_HEALTH) < 50)
+	if (girl->health() < 50)
 	{
 		ss << ("The crew refused to film a Public Torture scene with ") << girlName << (" because she is not healthy enough.\n\"We are NOT filming snuff.\"");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -100,17 +100,17 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << (" \"monstrous\" scene. She was clearly horrified at the thought so you allowed her the day off.");
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
+				girl->pclove(2);
+				girl->pchate(-1);
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 				return true;
 			}
 			else if (The_Player->disposition() > -30) //pragmatic
 			{
 				ss << (" \"monstrous\" scene. She was clearly horrified so you had your men drug her before stripping her down for action.");
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, 2);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, 2);
+				girl->pclove(-1);
+				girl->pchate(2);
+				girl->pcfear(2);
 				The_Player->disposition(-1);
 				enjoy -= 2;
 			}
@@ -121,9 +121,9 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 				else if (girl->has_trait( "Pierced Nipples"))		ss << ("whip her nipple piercings");
 				else ss << ("whip some humility into her");
 				ss << (" ahead of the scene.");
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -4);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, +5);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, +5);
+				girl->pclove(-4);
+				girl->pchate(+5);
+				girl->pcfear(+5);
 				The_Player->disposition(-2);
 				enjoy -= 6;
 			}
@@ -207,46 +207,46 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		}
 		else ss << ("expressions");
 		ss << (" as guys competed to shove their dicks down her throat.");
-		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+		girl->oralsex(1);
 		throat = true;
 		impact = 5;
 		break;
 	case 1:
 		ss << ("yelps as a gang of teenagers slapped her tits and spanked her ass with sticks.");
-		g_Girls.UpdateSkill(girl, SKILL_BDSM, 1);
+		girl->bdsm(1);
 		impact = 1;
 		break;
 	case 2:
 		ss << ("cries as she was double-fisted by three angry elves.");
-		g_Girls.UpdateSkill(girl, SKILL_ANAL, 1);
+		girl->anal(1);
 		impact = 5;
 		break;
 	case 3:
 		ss << ("gasps and squeals as a cackling old witch claiming to be her 'fairy godmother' mounted her with a thick double-dildo.");
-		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
+		girl->lesbian(1);
 		impact = 3;
 		break;
 	case 4:
 		ss << ("cries as a demented priest shoved 'Candles of Cleansing' in her 'unclean places', chanting prayers as he lit them.");
-		g_Girls.UpdateSkill(girl, SKILL_BDSM, 1);
+		girl->bdsm(1);
 		impact = 8;
 		break;
 	case 5:
 		ss << ("screams for help as she was fucked by a pack of wild beasts.");
-		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 1);
+		girl->beastiality(1);
 		fucked = BYBEAST;
 		hard = true;
 		impact = 8;
 		break;
 	case 6:
 		ss << ("struggles as a pair of ");
-		if /*  */(g_Girls.GetStat(girl, STAT_BEAUTY) > 80)		ss << ("ugly whores, jealous of her looks");
-		else if (g_Girls.GetStat(girl, STAT_AGE) < 25)			ss << ("old whores, jealous of her youth");
-		else if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 75)	ss << ("dumb whores, jealous of her brains");
+		if /*  */(girl->beauty() > 80)		ss << ("ugly whores, jealous of her looks");
+		else if (girl->age() < 25)			ss << ("old whores, jealous of her youth");
+		else if (girl->intelligence() > 75)	ss << ("dumb whores, jealous of her brains");
 		else if (girl->is_free())									ss << ("slave whores, jealous of her freedom");
 		else													ss << ("sadistic rival whores");
 		ss << (" spit-roasted her with some shockingly large strap-ons.");
-		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
+		girl->lesbian(1);
 		impact = 5;
 		break;
 	case 7:
@@ -255,26 +255,26 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		else if ((girl->has_trait( "Lolita") || girl->has_trait( "Flat Chest") || girl->has_trait( "Petite Breasts") || girl->has_trait( "Small Boobs"))
 			&& (girl->age() < 21)) ss << ("probable pedos");
 		else if (girl->has_trait( "Queen") || girl->has_trait( "Princess")) ss << ("her former subjects");
-		else if (girl->has_trait( "Idol") || (g_Girls.GetStat(girl, STAT_FAME) > 75))	ss << ("men from her fan-club");
+		else if (girl->has_trait( "Idol") || (girl->fame() > 75))	ss << ("men from her fan-club");
 		else if (girl->has_trait( "Teacher")) ss << ("students from her class");
 		else if (girl->m_NumCusts > 100) ss << ("her former customers");
 		else if (girl->age() < 21) ss << ("guys she went to school with");
 		else ss << ("tramps, gypsies and homeless");
 		ss << (" took this chance to spank her, grope her and fill her cunt with cum.");
-		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
+		girl->normalsex(1);
 		fucked = BYMAN;
 		impact = 3;
 		break;
 	case 8:
 		ss << ("screams as the police captain stubbed out a cigar on her asshole, once he and his men were 'done with that'.");
-		g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
+		girl->bdsm(2);
 		fucked = BYMAN;
 		hard = true;
 		impact = 10;
 		break;
 	case 9:
 		ss << ("agonised screams as a passing battle-mage tested out flame spells on her naked form.");
-		g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
+		girl->bdsm(2);
 		hard = true;
 		impact = 7;
 		break;
@@ -288,42 +288,42 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	{
 		ss << ("It was an outstanding scene, and definitely boosted her fame and resliience, even if it did wear her out a lot.");
 		bonus = 12;
-		g_Girls.UpdateStat(girl, STAT_FAME, 5);
-		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 3);
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 + impact);
+		girl->fame(5);
+		girl->constitution(3);
+		girl->tiredness(10 + impact);
 	}
 	else if (jobperformance >= 245)
 	{
 		ss << ("It was a great scene and should win her some fans. She looks wrecked now though.");
 		bonus = 8;
-		g_Girls.UpdateStat(girl, STAT_FAME, 2);
-		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 2);
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 15 + impact);
+		girl->fame(2);
+		girl->constitution(2);
+		girl->tiredness(15 + impact);
 	}
 	else if (jobperformance >= 185)
 	{
 		ss << ("It was a good scene, but not the best.");
 		bonus = 4;
-		g_Girls.UpdateStat(girl, STAT_FAME, 1);
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 15 + impact);
+		girl->fame(1);
+		girl->tiredness(15 + impact);
 	}
 	else if (jobperformance >= 145)
 	{
 		ss << ("It was okay, but something about the scene didn't work.");
 		bonus = 2;
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 15 + impact);
+		girl->tiredness(15 + impact);
 	}
 	else if (jobperformance >= 100)
 	{
 		ss << ("It wasn't a great public scene.");
 		bonus = 1;
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 20 + impact);
+		girl->tiredness(20 + impact);
 	}
 	else
 	{
 		ss << ("Sadly, the scene really didn't work. Even the onlookers weren't looking.");
-		g_Girls.UpdateStat(girl, STAT_FAME, -1);
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 20 + impact);
+		girl->fame(-1);
+		girl->tiredness(20 + impact);
 	}
 	ss << ("\n");
 
@@ -422,16 +422,16 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
 	//Hate
-	g_Girls.UpdateStat(girl, STAT_PCHATE, (impact - enjoy));
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, (impact - enjoy));
+	girl->pchate((impact - enjoy));
+	girl->pcfear((impact - enjoy));
 	//Health
-	g_Girls.UpdateStat(girl, STAT_HEALTH, (4 * impact));
+	girl->health((4 * impact));
 
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_BDSM, g_Dice%skill + 1);
-	g_Girls.UpdateStat(girl, STAT_OBEDIENCE, impact / 2);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->bdsm(g_Dice%skill + 1);
+	girl->obedience(impact / 2);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
@@ -453,12 +453,12 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	int MrEvil = g_Dice % 8, MrNasty = g_Dice % 8;
 	MrEvil = (MrEvil+ MrNasty) / 2;				//Should come out around 3 most of the time.
 
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_DIGNITY, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, MrEvil);
+	girl->confidence(-MrEvil);
+	girl->spirit(-MrEvil);
+	girl->dignity(-MrEvil);
+	girl->pclove(-MrEvil);
+	girl->pchate(MrEvil);
+	girl->pcfear(MrEvil);
 	The_Player->disposition(-MrEvil);
 
 	//----------------------------------------------------------------------
@@ -469,7 +469,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 double cJobManager::JP_FilmPublicBDSM(sGirl* girl, bool estimate)
 {
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_DIGNITY));
+		(girl->charisma() + girl->beauty() + girl->dignity());
 
 	if (!estimate)
 	{

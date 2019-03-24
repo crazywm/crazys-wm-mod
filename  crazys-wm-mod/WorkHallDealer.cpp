@@ -86,12 +86,12 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			ss << " " << girlName << "'s strange eyes were somehow hypnotic, giving her some advantage.";
 			jobperformance += 15;
 		}
-		if (girl->has_trait( "Nymphomaniac") && g_Girls.GetStat(girl, STAT_LIBIDO) > 75)
+		if (girl->has_trait( "Nymphomaniac") && girl->libido() > 75)
 		{
 			ss << " " << girlName << " had very high libido, making it hard for her to concentrate.";
 			jobperformance -= 10;
 		}
-		if (g_Girls.GetSkill(girl, SKILL_FOOTJOB) > 50)
+		if (girl->footjob() > 50)
 		{
 			ss << " " << girlName << " skillfully used her feet under the table to break customers' concentration.";
 			jobperformance += 5;
@@ -345,7 +345,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		}
 		else if (roll_b <= 60)
 		{
-			if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) > 70)
+			if (girl->intelligence() > 70)
 			{
 				ss << girlName << " is smart enough to understand the game. But seems not to have the luck to win.\n";
 			}
@@ -439,7 +439,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
@@ -517,15 +517,15 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 
 	//SIN: a bit more randomness
-	if (g_Dice.percent(20) && wages < 20 && g_Girls.GetStat(girl, STAT_CHARISMA) > 60)
+	if (g_Dice.percent(20) && wages < 20 && girl->charisma() > 60)
 	{
 		ss << girlName << " did so badly, a customer felt sorry for her and left her a few coins from his winnings.\n";
 		wages += ((g_Dice % 18) + 3);
 	}
-	if (g_Dice.percent(5) && g_Girls.GetSkill(girl, SKILL_NORMALSEX) > 50 && g_Girls.GetStat(girl, STAT_FAME) > 30)
+	if (g_Dice.percent(5) && girl->normalsex() > 50 && girl->fame() > 30)
 	{
 		ss << "A customer taunted " << girlName << ", saying the best use for a dumb whore like her is bent over the gambling table.";
-		bool spirited = (g_Girls.GetStat(girl, STAT_SPIRIT) + g_Girls.GetStat(girl, STAT_SPIRIT) > 80);
+		bool spirited = (girl->spirit() + girl->spirit() > 80);
 		if (spirited)
 		{
 			ss << "\n\"But this way\"" << girlName << " smiled, \"I can take your money, without having to try and find your penis.\"";
@@ -540,7 +540,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			ss << "He ended up losing every penny and all his clothes to this 'dumb whore'. He was finally kicked out, naked into the streets.\n \n";
 			ss << girlName << " enjoyed this. A lot.";
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, 3);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
+			girl->happiness(5);
 			wages += 100;
 		}
 		else if (jobperformance >= 99)
@@ -561,7 +561,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			}
 			ss << "\n \nShe really hated losing at this stupid card game.";
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, -3);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
+			girl->happiness(-5);
 			wages -= 50;
 		}
 	}
@@ -572,7 +572,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		{
 			if (!girl->has_trait( "Straight"))
 			{
-				if (g_Girls.GetStat(girl, STAT_LIBIDO) > 90)
+				if (girl->libido() > 90)
 				{
 					ss << girlName << " found herself looking at " << xxxentername << "'s performance often, losing more times than usual.\n";
 					wages = int(wages * 0.9);
@@ -628,7 +628,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	// work out the pay between the house and the girl
-	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
+	wages += (g_Dice % ((int)(((girl->beauty() + girl->charisma()) / 2)*0.5f))) + 10;
 	// Money
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
@@ -647,13 +647,13 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 50 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	girl->fame(fame);
+	girl->exp(xp);
 	int gain = g_Dice % 3;
-	/* */if (gain == 0)	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
-	else if (gain == 1)	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%skill);
-	else /*          */	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+	/* */if (gain == 0)	girl->intelligence(g_Dice%skill);
+	else if (gain == 1)	girl->agility(g_Dice%skill);
+	else /*          */	girl->performance(g_Dice%skill);
+	girl->service(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
@@ -675,10 +675,10 @@ double cJobManager::JP_HallDealer(sGirl* girl, bool estimate)
 	// next up tiredness penalty...
 #else
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 + 	// intel makes her smart enough to know when to cheat
-		g_Girls.GetStat(girl, STAT_AGILITY) / 2 +			// agility makes her fast enough to cheat
-		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +	// performance helps her get away with it
-		g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
+		(girl->intelligence() / 2 + 	// intel makes her smart enough to know when to cheat
+		girl->agility() / 2 +			// agility makes her fast enough to cheat
+		girl->performance() / 2 +	// performance helps her get away with it
+		girl->service() / 2);
 #endif
 	if (!estimate)
 	{

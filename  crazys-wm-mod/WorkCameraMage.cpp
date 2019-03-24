@@ -156,9 +156,9 @@ bool cJobManager::WorkCameraMage(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	if (g_Dice % 2 == 1)
-		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+		girl->intelligence(g_Dice%skill);
+	girl->service(g_Dice%skill + 1);
+	girl->exp(xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
@@ -185,10 +185,10 @@ double cJobManager::JP_CameraMage(sGirl* girl, bool estimate)// not used
 
 		jobperformance += (girl->spirit() - 50) / 10;
 		jobperformance += (girl->intelligence() - 50) / 10;
-		jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
+		jobperformance += girl->service() / 10;
 		jobperformance /= 3;
-		jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
-		jobperformance += g_Girls.GetStat(girl, STAT_FAME) / 10;
+		jobperformance += girl->level();
+		jobperformance += girl->fame() / 10;
 		jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 
 	}

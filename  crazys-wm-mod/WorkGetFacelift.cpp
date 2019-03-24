@@ -54,7 +54,7 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (girl->m_YesterDayJob != JOB_FACELIFT) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_FACELIFT;	// it is a full time job
 
-	if (g_Girls.GetStat(girl, STAT_AGE) <= 21)
+	if (girl->age() <= 21)
 	{
 		ss << " is too young to get a Face Lift so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -87,9 +87,9 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
 		{
 			girl->m_WorkingDay++;
-			g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 10);
-			g_Girls.UpdateStat(girl, STAT_MANA, 10);
+			girl->health(10);
+			girl->happiness(10);
+			girl->mana(10);
 		}
 	}
 
@@ -123,39 +123,39 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 		if (numnurse > 2)
 		{
 			ss << "The Nurses kept her healthy and happy during her recovery.\n";
-			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 20));
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(0, 10));
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(0, 10));
-			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(0, 20));
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(8, 16));
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(0, 2));
-			g_Girls.UpdateStat(girl, STAT_AGE, g_Dice.bell(-4, -1));
+			girl->health(g_Dice.bell(0, 20));
+			girl->happiness(g_Dice.bell(0, 10));
+			girl->spirit(g_Dice.bell(0, 10));
+			girl->mana(g_Dice.bell(0, 20));
+			girl->beauty(g_Dice.bell(8, 16));
+			girl->charisma(g_Dice.bell(0, 2));
+			girl->age(g_Dice.bell(-4, -1));
 		}
 		else if (numnurse > 0)
 		{
 			ss << "The Nurse" << (numnurse > 1 ? "s" : "") << " helped her during her recovery.\n";
-			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 10));
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(0, 5));
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(0, 5));
-			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(0, 10));
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(6, 12));
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice % 2);
-			g_Girls.UpdateStat(girl, STAT_AGE, g_Dice.bell(-3, -1));
+			girl->health(g_Dice.bell(0, 10));
+			girl->happiness(g_Dice.bell(0, 5));
+			girl->spirit(g_Dice.bell(0, 5));
+			girl->mana(g_Dice.bell(0, 10));
+			girl->beauty(g_Dice.bell(6, 12));
+			girl->charisma(g_Dice % 2);
+			girl->age(g_Dice.bell(-3, -1));
 		}
 		else
 		{
 			ss << "She is sad and has lost some health during the operation.\n";
-			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(-20, 2));
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(-10, 1));
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(-5, 1));
-			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(-20, 3));
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(4, 10));
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(-1, 1));
-			g_Girls.UpdateStat(girl, STAT_AGE, g_Dice.bell(-2, -1));
+			girl->health(g_Dice.bell(-20, 2));
+			girl->happiness(g_Dice.bell(-10, 1));
+			girl->spirit(g_Dice.bell(-5, 1));
+			girl->mana(g_Dice.bell(-20, 3));
+			girl->beauty(g_Dice.bell(4, 10));
+			girl->charisma(g_Dice.bell(-1, 1));
+			girl->age(g_Dice.bell(-2, -1));
 		}
 
 		if (girl->m_Stats[STAT_AGE] <= 18) girl->m_Stats[STAT_AGE] = 18;
-		if (g_Girls.GetStat(girl, STAT_AGE) <= 21)
+		if (girl->age() <= 21)
 		{
 			ss << "\n \nShe has been released from the Clinic.";
 			girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
@@ -174,7 +174,7 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
-		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
+		girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
 
 #pragma endregion
 	return false;

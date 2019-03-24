@@ -99,7 +99,7 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	}
 	if (nummecs + numnurse >= 4 && g_Dice.percent(50))	// lots of people making sure she is in good working order
 	{
-		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, 1);
+		girl->constitution(1);
 	}
 	ss << (((nummecs > 1 && numnurse < 1) || numnurse > 1) ? " take" : " takes") << " care of her.";
 
@@ -108,14 +108,14 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait( "Masochist"))	libido += 1;
 	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 
-	g_Girls.UpdateStat(girl, STAT_HEALTH, health, false);
-	g_Girls.UpdateStat(girl, STAT_TIREDNESS, -tiredness, false);
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
-	g_Girls.UpdateStat(girl, STAT_MANA, mana);
+	girl->upd_stat(STAT_HEALTH, health, false);
+	girl->upd_stat(STAT_TIREDNESS, -tiredness, false);
+	girl->happiness(happy);
+	girl->mana(mana);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	if (g_Dice % 10 == 0) g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
+	if (g_Dice % 10 == 0) girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
 
-	g_Girls.UpdateStat(girl, STAT_EXP, 1);   // Just because!
+	girl->exp(1);   // Just because!
 
 	// send her to the waiting room when she is healthy
 	if (girl->health() > 90 && girl->tiredness() < 10)

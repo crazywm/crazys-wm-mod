@@ -88,9 +88,9 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (g_Dice.percent(33))
 	{
 		int dildo = 0;
-		/* */if (g_Girls.HasItem(girl, "Compelling Dildo") != -1)	dildo = 1;
-		else if (g_Girls.HasItem(girl, "Dreidel Dildo") != -1)	dildo = 2;
-		else if (g_Girls.HasItem(girl, "Double Dildo") != -1)		dildo = 3;
+		/* */if (girl->has_item("Compelling Dildo") != -1)	dildo = 1;
+		else if (girl->has_item("Dreidel Dildo") != -1)	dildo = 2;
+		else if (girl->has_item("Double Dildo") != -1)		dildo = 3;
 		if (dildo > 0)
 		{
 			ss << girl << " finished the scene by pounding herself with her ";
@@ -126,9 +126,9 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->service(g_Dice%skill + 1);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);

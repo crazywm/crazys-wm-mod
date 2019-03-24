@@ -79,9 +79,9 @@ bool cJobManager::WorkCosmeticSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
 		{
 			girl->m_WorkingDay++;
-			g_Girls.UpdateStat(girl, STAT_HEALTH, 10);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 10);
-			g_Girls.UpdateStat(girl, STAT_MANA, 10);
+			girl->health(10);
+			girl->happiness(10);
+			girl->mana(10);
 		}
 	}
 
@@ -115,32 +115,32 @@ bool cJobManager::WorkCosmeticSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (numnurse > 2)
 		{
 			ss << "The Nurses kept her healthy and happy during her recovery.\n";
-			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 20));
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(0, 10));
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(0, 10));
-			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(0, 20));
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(10, 20));
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(1, 10));
+			girl->health(g_Dice.bell(0, 20));
+			girl->happiness(g_Dice.bell(0, 10));
+			girl->spirit(g_Dice.bell(0, 10));
+			girl->mana(g_Dice.bell(0, 20));
+			girl->beauty(g_Dice.bell(10, 20));
+			girl->charisma(g_Dice.bell(1, 10));
 		}
 		else if (numnurse > 0)
 		{
 			ss << "The Nurse" << (numnurse > 1 ? "s" : "") << " helped her during her recovery.\n";
-			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(0, 10));
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(0, 5));
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(0, 5));
-			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(0, 10));
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(8, 15));
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(1, 5));
+			girl->health(g_Dice.bell(0, 10));
+			girl->happiness(g_Dice.bell(0, 5));
+			girl->spirit(g_Dice.bell(0, 5));
+			girl->mana(g_Dice.bell(0, 10));
+			girl->beauty(g_Dice.bell(8, 15));
+			girl->charisma(g_Dice.bell(1, 5));
 		}
 		else
 		{
 			ss << "She is sad and has lost some health during the operation.\n";
-			g_Girls.UpdateStat(girl, STAT_HEALTH, g_Dice.bell(-20, 2));
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice.bell(-10, 1));
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice.bell(-5, 1));
-			g_Girls.UpdateStat(girl, STAT_MANA, g_Dice.bell(-20, 3));
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice.bell(5, 12));
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice.bell(0, 3));
+			girl->health(g_Dice.bell(-20, 2));
+			girl->happiness(g_Dice.bell(-10, 1));
+			girl->spirit(g_Dice.bell(-5, 1));
+			girl->mana(g_Dice.bell(-20, 3));
+			girl->beauty(g_Dice.bell(5, 12));
+			girl->charisma(g_Dice.bell(0, 3));
 		}
 
 		if (!girl->has_trait( "Sexy Air"))
@@ -173,7 +173,7 @@ bool cJobManager::WorkCosmeticSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
-		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, 1);	// `J` she watched what the doctors and nurses were doing
+		girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
 
 #pragma endregion
 	return false;

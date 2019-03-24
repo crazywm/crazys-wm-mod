@@ -71,7 +71,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 75)
+	else if (girl->tiredness() > 75)
 	{
 		ss << " was too tired to take part in an action scene.\n \n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -88,7 +88,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << " made an outstanding action scene,";
 		AddStory(&ss);
 		ss << " It will definitely win her some fans.";
-		g_Girls.UpdateStat(girl, STAT_FAME, 3);
+		girl->fame(3);
 		bonus = 12;
 	}
 	else if (jobperformance >= 245)
@@ -96,7 +96,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << " made a great action scene,";
 		AddStory(&ss);
 		ss << " It should win her some fans.";
-		g_Girls.UpdateStat(girl, STAT_FAME, 2);
+		girl->fame(2);
 		bonus = 6;
 	}
 	else if (jobperformance >= 185)
@@ -105,7 +105,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		AddStory(&ss);
 		ss << " Her fans will enjoy it.";
 		bonus = 4;
-		g_Girls.UpdateStat(girl, STAT_FAME, 1);
+		girl->fame(1);
 	}
 	else if (jobperformance >= 145)
 	{
@@ -135,7 +135,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << " made an awful action scene,";
 		AddStory(&ss);
 		ss << " Even her fans will hate it.";
-		g_Girls.UpdateStat(girl, STAT_FAME, -1);
+		girl->fame(-1);
 	}
 
 	ss << "\n";
@@ -182,10 +182,10 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%skill + 1);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->combat(g_Dice%skill + 1);
+	girl->magic(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, enjoy);
@@ -213,11 +213,11 @@ bool cJobManager::WorkFilmAction(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int MrNiceGuy = g_Dice % 6, MrFair = g_Dice % 6;
 	MrNiceGuy = (MrNiceGuy + MrFair)/3;				//Should come out around 1-2 most of the time.
 
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_FAME, MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, -MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, -MrNiceGuy);
+	girl->happiness(MrNiceGuy);
+	girl->fame(MrNiceGuy);
+	girl->pclove(MrNiceGuy);
+	girl->pchate(-MrNiceGuy);
+	girl->pcfear(-MrNiceGuy);
 	The_Player->disposition(MrNiceGuy);
 
 	//----------------------------------------------------------------------
@@ -299,11 +299,11 @@ double cJobManager::JP_FilmAction(sGirl* girl, bool estimate)	// not used
 
 		Second factor is looks: (beau + char)/ 2
 	*/
-	int	CombatSkill = g_Girls.GetSkill(girl, SKILL_COMBAT);
-	int	MagicSkill = g_Girls.GetSkill(girl, SKILL_MAGIC);
+	int	CombatSkill = girl->combat();
+	int	MagicSkill = girl->magic();
 	int TopSkill = ((CombatSkill > MagicSkill) ? CombatSkill : MagicSkill);
 	double jobperformance =
-		(((g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY)) / 2)		//looks component
+		(((girl->charisma() + girl->beauty()) / 2)		//looks component
 		+ (((CombatSkill + MagicSkill)/4) + (TopSkill/2)));										//Skills component
 
 	if (!estimate)

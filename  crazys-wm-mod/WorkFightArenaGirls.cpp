@@ -154,11 +154,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 			{
 				ss << girlName << "'s cries of joy and outright pleasure upon being injured distract her opponent, and the pain-loving girl comes back from apparent defeat to achieve a dramatic victory.  Despite her many injuries, she smiles happily as she thanks her opponent for the match.\n";
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && g_Girls.GetSkill(girl, SKILL_COMBAT) < 50))
+			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && girl->combat() < 50))
 			{
 				ss << girlName << "'s powerful magic demonstrates precisely why mages are feared by many.  She even manages to look good while doing it!\n";
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && g_Girls.GetSkill(girl, SKILL_COMBAT) >= 75))
+			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && girl->combat() >= 75))
 			{
 				ss << "Having mastered both weapons and sorcery, " << girlName << " is a nearly unstoppable force of nature in the Arena, easily dispatching opponents who focus on one branch of combat over the other.\n";
 			}
@@ -189,11 +189,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			ss << "Overwhelmed by pleasure, " << girlName << " is unable to defend herself from her opponent and is easily defeated.  After the match ends, she begs the other fighter for another match - 'just like this one.'\n";
 		}
-		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && g_Girls.GetSkill(girl, SKILL_COMBAT) < 50))
+		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && girl->combat() < 50))
 		{
 			ss << "Lacking the physical prowess to hold her opponent off while she readies her spells, " << girlName << " is quickly defeated by her opponent.\n";
 		}
-		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && g_Girls.GetSkill(girl, SKILL_COMBAT) >= 75))
+		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && girl->combat() >= 75))
 		{
 			ss << "You can't belive, " << girlName << " lost. With her skill in combat and magic you thought her unbeatable.\n";
 		}
@@ -223,7 +223,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			ss << "\n \nAll that fighting proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+		girl->tiredness(10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
 	}
 
 	if (girl->has_trait( "Exhibitionist") && g_Dice.percent(15))
@@ -258,12 +258,12 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice%fightxp + skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice%fightxp + skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice%fightxp + skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice%fightxp + skill);
+	girl->fame(fame);
+	girl->exp(xp);
+	girl->combat(g_Dice%fightxp + skill);
+	girl->magic(g_Dice%fightxp + skill);
+	girl->agility(g_Dice%fightxp + skill);
+	girl->constitution(g_Dice%fightxp + skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 
@@ -285,11 +285,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 65, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
-	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 65 && g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
+	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 65 && girl->combat() > girl->magic())
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, girlName + " has become pretty Strong from all of the fights she's been in.", Day0Night1);
 	}
-	if (g_Dice.percent(25) && g_Girls.GetSkill(girl, SKILL_COMBAT) >= 60 && g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
+	if (g_Dice.percent(25) && girl->combat() >= 60 && girl->combat() > girl->magic())
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Brawler", 60, ACTION_COMBAT, girlName + " has become pretty good at fighting.", Day0Night1);
 	}
@@ -315,7 +315,7 @@ double cJobManager::JP_FightArenaGirls(sGirl* girl, bool estimate)// not used
 	}
 	else// for the actual check
 	{
-		jobperformance += (g_Girls.GetStat(girl, STAT_FAME) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2;
+		jobperformance += (girl->fame() + girl->charisma()) / 2;
 		if (!estimate)
 		{
 			int t = girl->tiredness() - 80;

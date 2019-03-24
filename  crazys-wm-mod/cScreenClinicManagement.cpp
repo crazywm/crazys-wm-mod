@@ -203,7 +203,7 @@ bool cScreenClinicManagement::check_keys()
 			skip = true;
 		if (selection == JOB_CHAIRMAN && (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 0) > 0 || g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, 1) > 0))
 			skip = true;
-		if (g_Girls.HasTrait(selected_girl, "AIDS") && (selection == JOB_DOCTOR || selection == JOB_NURSE || selection == JOB_INTERN))
+		if (selected_girl->has_trait("AIDS") && (selection == JOB_DOCTOR || selection == JOB_NURSE || selection == JOB_INTERN))
 			skip = true;
 		if (skip)
 		{

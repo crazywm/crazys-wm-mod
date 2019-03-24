@@ -122,8 +122,8 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	girl->exp(xp);
+	girl->service(skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
@@ -147,9 +147,9 @@ double cJobManager::JP_Fluffer(sGirl* girl, bool estimate)// not used
 		int t = girl->tiredness() - 80;
 		if (t > 0)
 			jobperformance -= t / 4;
-		jobperformance += (g_Girls.GetSkill(girl, SKILL_ORALSEX) + g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_SPIRIT)) / 30;
-		jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
-		jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
+		jobperformance += (girl->oralsex() + girl->beauty() + girl->spirit()) / 30;
+		jobperformance += girl->service() / 10;
+		jobperformance += girl->level();
 		jobperformance += g_Dice % 4 - 1;       // should add a -1 to +3 random element --PP
 	}
 	return jobperformance;

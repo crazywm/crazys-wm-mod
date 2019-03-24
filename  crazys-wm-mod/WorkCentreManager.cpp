@@ -100,12 +100,12 @@ bool cJobManager::WorkCentreManager(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	girl->m_Pay = max(0, wages);
 
 	if (conf>-1) conf += g_Dice%skill;
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, conf);
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
+	girl->confidence(conf);
+	girl->happiness(happy);
 
-	g_Girls.UpdateStat(girl, STAT_EXP, g_Dice%xp + 5);
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
+	girl->exp(g_Dice%xp + 5);
+	girl->medicine(g_Dice%skill);
+	girl->service(g_Dice%skill + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice%libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);

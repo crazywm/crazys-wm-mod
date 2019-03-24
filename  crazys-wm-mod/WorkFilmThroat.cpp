@@ -66,7 +66,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 	int roll = g_Dice.d100();
 
-	if (g_Girls.GetStat(girl, STAT_HEALTH) < 20)
+	if (girl->health() < 20)
 	{
 		ss << ("The crew refused to film a throatjob scene because ") << girlName << (" is not healthy enough.\n\"We are NOT filming snuff\".");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -90,27 +90,27 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << ("\nThough she is a slave, she was upset so you allowed her the day off.\n");
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
-				g_Girls.UpdateStat(girl, STAT_SPIRIT, 1);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
+				girl->pclove(2);
+				girl->spirit(1);
+				girl->pchate(-1);
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 				return true;
 			}
 			else if (The_Player->disposition() > -30) //pragmatic
 			{
 				ss << (" Amused, you over-ruled her, and gave owner's consent for her. She glared at you as they dragged her away.\n");
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, 2);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, 2);
+				girl->pclove(-1);
+				girl->pchate(2);
+				girl->pcfear(2);
 				The_Player->disposition(-1);
 				enjoy -= 2;
 			}
 			else if (The_Player->disposition() > -30)
 			{
 				ss << (" Amused, you over-ruled her, and gave owner's consent.\nShe made a hell of a fuss, but you knew just the thing to shut her up.");
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -4);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, +5);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, +5);
+				girl->pclove(-4);
+				girl->pchate(+5);
+				girl->pcfear(+5);
 				The_Player->disposition(-2);
 				enjoy -= 6;
 			}
@@ -309,18 +309,18 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait( "Strong Gag Reflex"))
 	{
 		ss << "She was gagging and retching the whole scene, and was violently sick. She was exhausted and felt awful afterward.\n \n";
-		g_Girls.UpdateStat(girl, STAT_HEALTH, (10 + impact));
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, (10 + impact + tired));
-		g_Girls.UpdateStat(girl, STAT_PCHATE, (2 + hate));
-		g_Girls.UpdateStat(girl, STAT_PCFEAR, (2 + hate));
+		girl->health((10 + impact));
+		girl->tiredness((10 + impact + tired));
+		girl->pchate((2 + hate));
+		girl->pcfear((2 + hate));
 	}
 	else if (girl->has_trait( "Gag Reflex"))
 	{
 		ss << "She gagged and retched a lot. It was exhausting and left her feeling sick.\n \n";
-		g_Girls.UpdateStat(girl, STAT_HEALTH, (2 + impact));
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, (5 + impact + tired));
-		g_Girls.UpdateStat(girl, STAT_PCHATE, (hate));
-		g_Girls.UpdateStat(girl, STAT_PCFEAR, (hate));
+		girl->health((2 + impact));
+		girl->tiredness((5 + impact + tired));
+		girl->pchate((hate));
+		girl->pcfear((hate));
 	}
 
 	// remaining modifiers are in the AddScene function --PP
@@ -349,9 +349,9 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_ORALSEX, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->oralsex(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
@@ -359,7 +359,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	g_Girls.PossiblyGainNewTrait(girl, "Masochist", 75, ACTION_SEX, girlName + " has turned into a Masochist from filming so many BDSM scenes.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Mind Fucked", 90, ACTION_WORKMOVIE, "She has been abused so much she is now completely Mind Fucked.", Day0Night1);
 	if (jobperformance > 200) g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
-	if (g_Dice.percent(5) && (g_Girls.GetStat(girl, STAT_HAPPINESS) > 80) && (g_Girls.GetEnjoyment(girl, ACTION_WORKMOVIE) > 75))
+	if (g_Dice.percent(5) && (girl->happiness() > 80) && (g_Girls.GetEnjoyment(girl, ACTION_WORKMOVIE) > 75))
 		g_Girls.AdjustTraitGroupGagReflex(girl, 1, true, Day0Night1);
 
 	//lose
@@ -371,12 +371,12 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int MrEvil = g_Dice % 8, MrNasty = g_Dice % 8;
 	MrEvil = (MrEvil + MrNasty) / 2;				//Should come out around 3 most of the time.
 
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_DIGNITY, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, MrEvil);
+	girl->confidence(-MrEvil);
+	girl->spirit(-MrEvil);
+	girl->dignity(-MrEvil);
+	girl->pclove(-MrEvil);
+	girl->pchate(MrEvil);
+	girl->pcfear(MrEvil);
 	The_Player->disposition(-MrEvil);
 
 	//----------------------------------------------------------------------
@@ -387,8 +387,8 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 double cJobManager::JP_FilmThroat(sGirl* girl, bool estimate)
 {
 	double jobperformance =
-		(((g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY)) / 2)
-		+ g_Girls.GetSkill(girl, SKILL_ORALSEX));
+		(((girl->charisma() + girl->beauty()) / 2)
+		+ girl->oralsex());
 
 	if (!estimate)
 	{

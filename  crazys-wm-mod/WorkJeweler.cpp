@@ -404,17 +404,17 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->exp((g_Dice % xp) + 1);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_CRAFTING,		(g_Dice % skill) + 2);
+	girl->upd_skill(SKILL_CRAFTING,	(g_Dice % skill) + 2);
 	// secondary improvement (-1 for one then -2 for others)
-	g_Girls.UpdateStat(girl, STAT_AGILITY, (g_Dice % skill) - 1);
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, max(0, (g_Dice % skill) - 2));
+	girl->agility((g_Dice % skill) - 1);
+	girl->confidence(max(0, (g_Dice % skill) - 2));
 
 	// Update Enjoyment
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	// Gain Traits
 	g_Girls.PossiblyGainNewTrait(girl, "Sharp-Eyed", 50, actiontype, "Working on such small items has made " + girlName + " rather Sharp-Eyed.", Day0Night1);
 

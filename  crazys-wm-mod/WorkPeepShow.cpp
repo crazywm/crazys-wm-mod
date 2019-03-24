@@ -61,7 +61,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 
-	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE) + g_Dice % 50;
+	int wages = girl->askprice() + g_Dice % 50;
 	int tips = max((g_Dice % 50) - 10, 0);
 	int enjoy = 0, fame = 0;
 	u_int sextype = SKILL_STRIP;
@@ -131,14 +131,14 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_LIBIDO) > 80)
+	if (girl->libido() > 80)
 	{
 		if (girl->has_trait( "Lesbian") && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")))
 		{
 			ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.\n";
 			sextype = SKILL_LESBIAN;
 			/* `J` g_Girls.GirlFucks handles skill gain from sex
-			g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
+			girl->lesbian(1);
 			//*/
 		}
 		else if (girl->has_trait( "Bisexual") && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")))
@@ -148,7 +148,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << "\nShe was horny and she loves sex so she brought in another girl and had sex with her while the customers watched.\n";
 				sextype = SKILL_LESBIAN;
 				/* `J` g_Girls.GirlFucks handles skill gain from sex
-				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
+				girl->lesbian(1);
 				//*/
 			}
 			else
@@ -172,8 +172,8 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (girl->has_trait( "Flexible") && !(girl->is_pregnant()) && g_Dice.percent(50))
 				{
 					ss << "\nDuring her shift " << girlName << " couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
-					g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
+					girl->oralsex(1);
+					girl->happiness(1);
 					fame += 1;
 					tips += 30;
 				}
@@ -181,31 +181,31 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 					//default Cum Addict
 					ss << "\n" << girlName << " won't miss a chance to taste some yummy cum. She came up on the stage with a goblet, cummed in it and then drank the content to entertain the customers.";
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
+					girl->happiness(1);
 					tips += 10;
 				}
 				GetMiscCustomer(*brothel);
 				brothel->m_Happiness += 100;
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 				// work out the pay between the house and the girl
-				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+				wages += girl->askprice() + 60;
 				fame += 1;
 				imagetype = IMGTYPE_MAST;
 			}
 			//Let's see if she has what it takes to do it: Confidence > 65 or Exhibitionist trait, maybe shy girls should be excluded
-			else if (!girl->has_trait( "Cum Addict") && girl->has_trait( "Exhibitionist") || !girl->has_trait( "Cum Addict") && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65)
+			else if (!girl->has_trait( "Cum Addict") && girl->has_trait( "Exhibitionist") || !girl->has_trait( "Cum Addict") && girl->confidence() > 65)
 			{
 				//Some variety
 				//Autopaizuri, requires very big breasts
 				if (g_Dice.percent(25) && girl->has_trait( "Abnormally Large Boobs") || g_Dice.percent(25) && (girl->has_trait( "Titanic Tits")))
 				{
 					ss << "\n" << girlName << " was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
-					g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 1);
+					girl->tittysex(1);
 					fame += 1;
 					tips += 30;
 				}
 				//cums over self
-				else if (g_Girls.GetStat(girl, STAT_DIGNITY) < -40 && g_Dice.percent(25))
+				else if (girl->dignity() < -40 && g_Dice.percent(25))
 				{
 					ss << "\nThe customers were really impressed when " << girlName << " finished her show by cumming all over herself";
 					tips += 10;
@@ -220,7 +220,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				brothel->m_Happiness += 100;
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 				// work out the pay between the house and the girl
-				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+				wages += girl->askprice() + 60;
 				fame += 1;
 				imagetype = IMGTYPE_MAST;
 			}
@@ -238,7 +238,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			brothel->m_Happiness += 100;
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
 			// work out the pay between the house and the girl
-			wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 60;
+			wages += girl->askprice() + 60;
 			fame += 1;
 			imagetype = IMGTYPE_MAST;
 		}
@@ -259,23 +259,23 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
 				ss << "she doesn't understand the appeal of them, which turned her off.\n";
 			}
-			else if (!brothel->m_RestrictNormal && !g_Girls.CheckVirginity(girl) && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && g_Girls.GetStat(girl, STAT_LIBIDO) >= 80) //sex
+			else if (!brothel->m_RestrictNormal && !g_Girls.CheckVirginity(girl) && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && girl->libido() >= 80) //sex
 			{
 				sextype = SKILL_NORMALSEX;
 				ss << "decided she needed to use it for her own entertainment.\n";
 			}
-			else if (!brothel->m_RestrictOral && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus") || girl->has_trait( "Cum Addict")) && g_Girls.GetStat(girl, STAT_LIBIDO) >= 60) //oral
+			else if (!brothel->m_RestrictOral && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus") || girl->has_trait( "Cum Addict")) && girl->libido() >= 60) //oral
 			{
 				sextype = SKILL_ORALSEX;
 				ss << "decided she needed to taste it.\n";
 			}
-			else if (!brothel->m_RestrictFoot && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus") || g_Girls.GetStat(girl, STAT_DIGNITY) < -30) && g_Girls.GetStat(girl, STAT_LIBIDO) >= 40) //foot
+			else if (!brothel->m_RestrictFoot && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus") || girl->dignity() < -30) && girl->libido() >= 40) //foot
 			{
 				sextype = SKILL_FOOTJOB;
 				imagetype = IMGTYPE_FOOT;
 				ss << "decided she would give him a foot job for being so brave.\n";
 			}
-			else if (!brothel->m_RestrictHand && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus") || g_Girls.GetStat(girl, STAT_DIGNITY) < -30))	//hand job
+			else if (!brothel->m_RestrictHand && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus") || girl->dignity() < -30))	//hand job
 			{
 				sextype = SKILL_HANDJOB;
 				ss << "decided she would give him a hand job for being so brave.\n";
@@ -286,7 +286,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 
 			/* `J` suggest adding bad stuff,
-			else if (girl->has_trait( "Merciless") && g_Girls.HasItem(girl, "Dagger") != -1 && g_Dice.percent(10))
+			else if (girl->has_trait( "Merciless") && girl->has_item("Dagger") != -1 && g_Dice.percent(10))
 			{
 			imagetype = IMGTYPE_COMBAT;
 			ss << "decided she would teach this guy a lesson and cut his dick off.\n";
@@ -303,7 +303,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	tips = max(0, int(tips * mod));
 	wages = max(0, int(wages * mod));
 
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty, a customer left her a great tip.\n \n";
 		tips += g_Dice % 50 + 10;
@@ -327,7 +327,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
 		//*/
 
-		int sexwages = min(g_Dice % (Cust.m_Money / 4) + g_Girls.GetStat(girl, STAT_ASKPRICE), int(Cust.m_Money));
+		int sexwages = min(g_Dice % (Cust.m_Money / 4) + girl->askprice(), int(Cust.m_Money));
 		Cust.m_Money -= sexwages;
 		int sextips = max(0, int(g_Dice%Cust.m_Money - (Cust.m_Money / 2)));
 		Cust.m_Money -= sextips;
@@ -391,10 +391,10 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (girl->fame() < 60 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 80 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 1);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
+	girl->fame(fame);
+	girl->exp(xp);
+	girl->strip(g_Dice%skill + 1);
+	girl->performance(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
@@ -402,7 +402,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
 	}
-	if (sextype != SKILL_STRIP && g_Girls.GetStat(girl, STAT_DIGNITY) < 0 && g_Dice.percent(25))
+	if (sextype != SKILL_STRIP && girl->dignity() < 0 && g_Dice.percent(25))
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1, EVENT_WARNING);
 	}
@@ -429,10 +429,10 @@ double cJobManager::JP_PeepShow(sGirl* girl, bool estimate)// not used
 	// next up tiredness penalty
 #else
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
-		g_Girls.GetStat(girl, STAT_BEAUTY) / 2 +
-		g_Girls.GetSkill(girl, SKILL_STRIP) / 2 +
-		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2);
+		(girl->charisma() / 2 +
+		girl->beauty() / 2 +
+		girl->strip() / 2 +
+		girl->performance() / 2);
 #endif
 	if (!estimate)
 	{

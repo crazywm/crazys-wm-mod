@@ -112,7 +112,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	string girlName = girl->m_Realname;
 	int iNum = 0;
 	int iOriginal = 0;
-	int	AskPrice = g_Girls.GetStat(girl, STAT_ASKPRICE);
+	int	AskPrice = girl->askprice();
 	int pay = 0;					// pay from a single customer
 	int tip = 0;					// tip from a single customer
 	int wages = 0;					// pay from all customers
@@ -139,7 +139,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	// there would be NO point in doing this, if it defaults to NumCusts++ since it is basically the same effect.	-PP
 
 	// Max number on customers the girl can fuck
-	int b = g_Girls.GetStat(girl, STAT_BEAUTY), c = g_Girls.GetStat(girl, STAT_CHARISMA), f = g_Girls.GetStat(girl, STAT_FAME);
+	int b = girl->beauty(), c = girl->charisma(), f = girl->fame();
 	int NumCusts = min(8, 2 + ((b + c + f + 1) / 50));
 	int NumSleptWith = 0;		// Total num customers she fucks this session
 
@@ -285,7 +285,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
-			else if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 70 && Cust.m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	//
+			else if (girl->dignity() >= 70 && Cust.m_SexPref == SKILL_BEASTIALITY && g_Dice.percent(20))	//
 			{
 				fuckMessage << girlName << " refuses to sleep with a beast because she has too much dignity for that.\n \n";
 				brothel->m_Fame -= 5;
@@ -303,7 +303,7 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				brothel->m_Fame -= 5;
 				acceptsGirl = false;
 			}
-			else if (g_Girls.GetStat(girl, STAT_HEALTH) < 33 && g_Dice.percent(50))
+			else if (girl->health() < 33 && g_Dice.percent(50))
 			{
 				fuckMessage << "The customer refuses because " << girlName << " looks sick and he doesn't want to catch anything.\n \n";
 				brothel->m_Fame -= 10;
@@ -358,13 +358,13 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				fuckMessage << "The customer chooses her because she's fun, flirty and half-cut.\n \n";
 				acceptsGirl = true;
 			}
-			else if (g_Dice.percent(40) && girl->has_trait("Exhibitionist") && g_Girls.GetStat(girl, STAT_BEAUTY) >= 50)
+			else if (g_Dice.percent(40) && girl->has_trait("Exhibitionist") && girl->beauty() >= 50)
 			{
 				fuckMessage << "The customer chooses her because she walks into the waiting room naked and the customer likes what "
 					<< (Cust.m_IsWoman ? "she sees.\n" : "he sees.\n") << "\n";
 				acceptsGirl = true;
 			}
-			else if (g_Dice.percent(5) && (girl->has_trait("Slut") || g_Girls.GetStat(girl, STAT_DIGNITY) >= 70))
+			else if (g_Dice.percent(5) && (girl->has_trait("Slut") || girl->dignity() >= 70))
 			{
 				fuckMessage << girlName << " gets bored of waiting for someone to step up and starts " << (Cust.m_IsWoman ? "fingering this lady" : "giving this guy a handjob")
 					<< " right there in the waiting room. The customer quickly chooses her.\n \n";
@@ -375,21 +375,21 @@ bool cJobManager::WorkBarWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				fuckMessage << "Customer chooses her because they are very horny.\n \n";
 				acceptsGirl = true;
 			}
-			else if (((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2) >= 90)	// if she is drop dead gorgeous
+			else if (((girl->beauty() + girl->charisma()) / 2) >= 90)	// if she is drop dead gorgeous
 			{
 				fuckMessage << "Customer chooses her because they are stunned by her beauty.\n \n";
 				acceptsGirl = true;
 			}
-			else if (g_Girls.GetStat(girl, STAT_FAME) >= 80)	// if she is really famous
+			else if (girl->fame() >= 80)	// if she is really famous
 			{
 				fuckMessage << "Customer chooses her because she is so famous.\n \n";
 				acceptsGirl = true;
 			}
 			// WD:	Use Magic only as last resort
-			else if (g_Girls.GetSkill(girl, SKILL_MAGIC) > 50 && g_Girls.GetStat(girl, STAT_MANA) >= 20)	// she can use magic to get him
+			else if (girl->magic() > 50 && girl->mana() >= 20)	// she can use magic to get him
 			{
 				fuckMessage << girlName << " uses magic to get the customer to choose her.\n \n";
-				g_Girls.UpdateStat(girl, STAT_MANA, -20);
+				girl->mana(-20);
 				acceptsGirl = true;
 			}
 		}

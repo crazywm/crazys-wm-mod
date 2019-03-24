@@ -120,7 +120,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 #pragma region	//	A Little Randomness			//
 
 	//SIN: A little randomness
-	if (((g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) + g_Girls.GetStat(girl, STAT_CHARISMA)) > 125) && g_Dice.percent(30))
+	if (((girl->animalhandling() + girl->charisma()) > 125) && g_Dice.percent(30))
 	{
 		ss << girlName << " has a way with animals, a" << (gain > 1 ? "nother" : "") << " beast freely follows her back.\n";
 		gain++;
@@ -132,30 +132,30 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		switch (g_Dice % 10)
 		{
 		case 0:
-			if (girl->has_trait( "Twisted") && girl->has_trait( "Nymphomaniac") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 80))
+			if (girl->has_trait( "Twisted") && girl->has_trait( "Nymphomaniac") && (girl->libido() >= 80))
 			{
 				ss << "Being a horny, twisted nymphomaniac, " << girlName << " had some fun with the beasts before she handed them over.\n";
-				g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice % gain);
-				g_Girls.UpdateStat(girl, STAT_LIBIDO, -(g_Dice % gain));
+				girl->beastiality(g_Dice % gain);
+				girl->libido(-(g_Dice % gain));
 				tired += gain;
 				break;
 			}
 		case 1:
-			if (girl->has_trait( "Psychic") && (g_Girls.GetStat(girl, STAT_LIBIDO) >= 90) && g_Dice.percent(gain * 5))
+			if (girl->has_trait( "Psychic") && (girl->libido() >= 90) && g_Dice.percent(gain * 5))
 			{
 				ss << girlName << "'s Psychic sensitivity caused her mind be overwhelmed by the creatures' lusts";
 				if (g_Girls.CheckVirginity(girl))
 				{
 					ss << " but, things were moving too fast and she regained control before they could take her virginity.\n";
-					g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 1);
-					g_Girls.UpdateStat(girl, STAT_LIBIDO, 2); // no satisfaction!
+					girl->beastiality(1);
+					girl->libido(2); // no satisfaction!
 				}
 				else
 				{
 					ss << ". Many hours later she staggered in to present the creatures to you.\n";
-					g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice % gain);
-					g_Girls.UpdateStat(girl, STAT_LIBIDO, -2 * (g_Dice % gain));
-					g_Girls.UpdateStat(girl, STAT_TIREDNESS, gain);
+					girl->beastiality(g_Dice % gain);
+					girl->libido(-2 * (g_Dice % gain));
+					girl->tiredness(gain);
 					girl->calc_insemination(*g_Girls.GetBeast(), 1);
 				}
 				tired += gain;
@@ -165,12 +165,12 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			if (girl->has_trait( "Assassin") && g_Dice.percent(gain * 5))
 			{
 				ss << " One of the captured creatures tried to escape on the way back. Trained assassin, " << girlName << ", instantly killed it as an example to the others.\n";
-				g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
+				girl->combat(1);
 				gain--;
 				break;
 			}
 		case 3:
-			if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 50 && g_Dice.percent(gain * 5))
+			if (girl->tiredness() > 50 && g_Dice.percent(gain * 5))
 			{
 				ss << girlName << " was so exhausted she couldn't concentrate. One of the creatures escaped.\n";
 				gain--;
@@ -268,19 +268,19 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	int I_xp = (g_Dice % xp) + 1;							g_Girls.UpdateStat(girl, STAT_EXP, I_xp);
+	int I_xp = (g_Dice % xp) + 1;							girl->exp(I_xp);
 	int I_libido = (g_Dice % libido) + 1;					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, I_libido);
 	if (tired > 0) girl->tiredness(tired);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	int I_combat		= (g_Dice % skill) + 1;				g_Girls.UpdateSkill(girl, SKILL_COMBAT, I_combat);
-	int I_animalh		= (g_Dice % skill) + 1;				g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, I_animalh);
-	int I_strength		= (g_Dice % skill) + 1;				g_Girls.UpdateStat(girl, STAT_STRENGTH, I_strength);
+	int I_combat		= (g_Dice % skill) + 1;				girl->combat(I_combat);
+	int I_animalh		= (g_Dice % skill) + 1;				girl->animalhandling(I_animalh);
+	int I_strength		= (g_Dice % skill) + 1;				girl->strength(I_strength);
 	// secondary improvement (-1 for one then -2 for others)
-	int I_constitution	= max(0, (g_Dice % skill) - 1);		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, I_constitution);
-	int I_beastiality	= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, I_beastiality);
-	int I_agility		= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateStat(girl, STAT_AGILITY, I_agility);
-	int I_magic			= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateSkill(girl, SKILL_MAGIC, I_magic);
+	int I_constitution	= max(0, (g_Dice % skill) - 1);		girl->constitution(I_constitution);
+	int I_beastiality	= max(0, (g_Dice % skill) - 2);		girl->beastiality(I_beastiality);
+	int I_agility		= max(0, (g_Dice % skill) - 2);		girl->agility(I_agility);
+	int I_magic			= max(0, (g_Dice % skill) - 2);		girl->magic(I_magic);
 
 	// Update Enjoyment
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
@@ -289,7 +289,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
-	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 60 && g_Girls.GetSkill(girl, SKILL_COMBAT) > g_Girls.GetSkill(girl, SKILL_MAGIC))
+	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 60 && girl->combat() > girl->magic())
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, girlName + " has become pretty Strong from all of the fights she's been in.", Day0Night1);
 	}

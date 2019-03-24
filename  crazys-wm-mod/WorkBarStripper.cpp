@@ -69,19 +69,19 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 #pragma region //	Job Performance			//
 
 	double jobperformance = JP_BarStripper(girl, false);
-	int lapdance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_STRIP)) / 2;
+	int lapdance = (girl->intelligence() / 2 +
+		girl->performance() / 2 +
+		girl->strip()) / 2;
 	//int drinks;
 
 
 	//what is she wearing?
-	if (g_Girls.HasItemJ(girl, "Rainbow Underwear") != -1)
+	if (girl->has_item_j("Rainbow Underwear") != -1)
 	{
 		ss << girlName << " stripped down to reveal her Rainbow Underwear to the approval of the patrons watching her.\n \n";
 		brothel->m_Happiness += 5; jobperformance += 5; tips += 10;
 	}
-	else if (g_Girls.HasItemJ(girl, "Black Leather Underwear") != -1)
+	else if (girl->has_item_j("Black Leather Underwear") != -1)
 	{
 		ss << girlName << " stripped down to reveal her Black Leather Underwear ";
 		if (girl->has_trait( "Sadistic"))
@@ -97,12 +97,12 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 			ss << "which the patrons seemed to enjoy.\n \n";
 		}
 	}
-	else if (g_Girls.HasItemJ(girl, "Adorable Underwear") != -1)
+	else if (girl->has_item_j("Adorable Underwear") != -1)
 	{
 		ss << girlName << " stripped down to reveal her Adorable Underwear which slightly help her out on tips.\n \n";
 		tips += 5;
 	}
-	else if (g_Girls.HasItemJ(girl, "Classy Underwear") != -1)
+	else if (girl->has_item_j("Classy Underwear") != -1)
 	{
 		ss << girlName << " stripped down to reveal her Classy Underwear which some people seemed to like ";
 		if (roll_c <= 50)
@@ -114,17 +114,17 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 			ss << "and it helped her tips.\n \n"; tips += 20;
 		}
 	}
-	else if (g_Girls.HasItemJ(girl, "Comfortable Underwear") != -1)
+	else if (girl->has_item_j("Comfortable Underwear") != -1)
 	{
 		ss << girlName << "'s Comfortable Underwear help her move better while on stage.\n \n";
 		jobperformance += 5;
 	}
-	else if (g_Girls.HasItemJ(girl, "Plain Underwear") != -1)
+	else if (girl->has_item_j("Plain Underwear") != -1)
 	{
 		ss << girlName << " stripped down to reveal her Plain Underwear which didn't help her performance as the patrons found them boring.\n \n";
 		jobperformance -= 5;
 	}
-	else if (g_Girls.HasItemJ(girl, "Sexy Underwear") != -1)
+	else if (girl->has_item_j("Sexy Underwear") != -1)
 	{
 		ss << girlName << " stripped down to reveal her Sexy Underwear which brought many people to the stage to watch her.\n \n";
 		jobperformance += 5; tips += 15;
@@ -314,7 +314,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	tips += (int)(((5 + jobperformance / 6) * wages) / 100);
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
@@ -456,7 +456,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		{
 			ss << "\nPole dancing proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, 10 - (g_Girls.GetStat(girl, STAT_STRENGTH) / 20));
+		girl->tiredness(10 - (g_Girls.GetStat(girl, STAT_STRENGTH) / 20));
 	}
 
 
@@ -502,7 +502,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	// Money
@@ -520,10 +520,10 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (girl->fame() < 60 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 80 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 2);
+	girl->fame(fame);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->strip(g_Dice%skill + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateStatTemp(girl, STAT_CONFIDENCE, g_Dice % 2); //SIN - slow boost to confidence
 
@@ -537,7 +537,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	//lose
 	g_Girls.PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, girlName + " has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
-	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONFIDENCE) > 65)
+	if (jobperformance > 150 && girl->confidence() > 65)
 	{
 		g_Girls.PossiblyLoseExistingTrait(girl, "Shy", 60, actiontype, girlName + " has been stripping for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);
 	}
@@ -560,10 +560,10 @@ double cJobManager::JP_BarStripper(sGirl* girl, bool estimate)// not used
 	// next up tiredness penalty
 #else
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
-		g_Girls.GetStat(girl, STAT_BEAUTY) / 2 +
-		g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_STRIP) / 2);
+		(girl->charisma() / 2 +
+		girl->beauty() / 2 +
+		girl->performance() / 2 +
+		girl->strip() / 2);
 #endif
 	if (!estimate)
 	{
@@ -584,7 +584,7 @@ double cJobManager::JP_BarStripper(sGirl* girl, bool estimate)// not used
 	if (girl->has_trait( "Psychic"))		  jobperformance += 10;
 	if (girl->has_trait( "Long Legs"))	  jobperformance += 10;
 	if (girl->has_trait( "Exhibitionist"))  jobperformance += 10; //SIN - likes showing off her body
-	if (g_Girls.GetStat(girl, STAT_FAME) > 85)	  jobperformance += 10;
+	if (girl->fame() > 85)	  jobperformance += 10;
 	if (girl->has_trait( "Dick-Sucking Lips"))jobperformance += 5;
 	if (girl->has_trait( "Fearless"))		  jobperformance += 5;
 	if (girl->has_trait( "Flexible"))		  jobperformance += 10;

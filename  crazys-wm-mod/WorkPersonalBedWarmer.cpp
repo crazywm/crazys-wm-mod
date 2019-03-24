@@ -120,14 +120,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +10, true);
-					g_Girls.UpdateSkill(headGirl, SKILL_LESBIAN, +4);
+					headGirl->lesbian(+4);
 				}
 
 				//If headgirl has some charm and turns it on a little...
 				else if ((headGirl->has_trait("Cool Person") || headGirl->has_trait("Charismatic") || headGirl->has_trait("Charming") || headGirl->charisma() > 70) && effectiveness > 20)
 				{
 					ss << "Because " << headName << " is so cool with her and makes it all seem exciting, " << girlName << " soon agrees.";
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
+					girl->happiness(5);
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
 
@@ -137,14 +137,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					ss << "Noticing the girl's shakes, and the look in her eye, " << headName << " suggests that tonight could help " << girlName
 						<< " raise a little \"spending money.\"\nShe agrees to stay for " << effectiveness / 2 << " extra drug money.";
 					tips += (effectiveness / 2);
-					g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 1);
+					girl->obedience(1);
 				}
 
 				//If the reminder of her status changes her mind
 				else if (effectiveness > 70)
 				{
 					ss << "Remembering she is a slave, " << girlName << " reluctantly submits.\n";
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, -2);
+					girl->happiness(-2);
 				}
 
 				//if head is a bully
@@ -157,17 +157,17 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 							<< " naked into the streets and chains her over a large crate. She smiles, slapping and spreading " << girlName << "'s exposed ass.\n\"Guess I'll leave you out for the "
 							<< "city's dogs and homeless. Have a great night!\"\nAs she starts to walk away, " << girlName << " finally breaks and screams to be let back in. She'll do whatever you want.\n"
 							<< headName << " reluctantly agrees.";
-						g_Girls.UpdateStat(girl, STAT_HAPPINESS, -15);
-						g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 5);
-						g_Girls.UpdateStat(girl, STAT_SPIRIT, -5);
-						g_Girls.UpdateStat(girl, STAT_PCFEAR, 5);
+						girl->happiness(-15);
+						girl->obedience(5);
+						girl->spirit(-5);
+						girl->pcfear(5);
 						g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 1);  //relief
 					}
 					else
 					{
 						ss << headName << " grabs her hair and threatens her. She sees no choice but to stay.";
-						g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
-						g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 1);
+						girl->happiness(-5);
+						girl->obedience(1);
 						g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, -1);
 					}
 				}
@@ -177,12 +177,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				{
 					ss << "After some argument, your Head Girl makes clear there is no choice for a slave in this, and offers "
 						<< girlName << " something to 'make it all feel like a nice warm dream.'\n" << girlName << " finally nods.";
-					g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 1);
-					g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
-					g_Girls.UpdateStat(girl, STAT_HEALTH, -1);
+					girl->obedience(1);
+					girl->spirit(-1);
+					girl->health(-1);
 					g_Gold.misc_debit(20); //drug/spell money
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
-					g_Girls.UpdateStat(girl, STAT_PCHATE, 5); //she'll hate you later
+					girl->pchate(5); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
 				}
 			}
@@ -210,8 +210,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 						ss << ", licking, rubbing, and bringing each other to orgasm after orgasm there on your bed.\n \n"
 							<< "You're a bit annoyed when " << girlName << " leaves, exhausted, to spend the night in " << headName
 							<< "'s room.\nStill they did put on quite a show, and she probably learned something tonight.\n";
-						g_Girls.UpdateSkill(headGirl, SKILL_LESBIAN, +2);
-						g_Girls.UpdateSkill(girl, SKILL_LESBIAN, +2);
+						headGirl->lesbian(+2);
+						girl->lesbian(+2);
 						girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, EVENT_NOWORK);
 						return true;
 					}
@@ -220,7 +220,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 						ss << ". " << headName << " quickly drives her wild, bringing her right to the brink of orgasm, but never quite letting her come. ";
 						ss << headName << " suddenly stops, leaving " << girlName << " on your bed, wet, frustrated, horny as hell and begging to be fucked.\n";
 						g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +10, true);
-						g_Girls.UpdateSkill(headGirl, SKILL_LESBIAN, +4);
+						headGirl->lesbian(+4);
 					}
 				}
 
@@ -253,7 +253,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					else
 					{
 						ss << " leaving her no choice but to stay.\n";
-						g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
+						girl->happiness(-20);
 						g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, -5);
 					}
 				}
@@ -310,14 +310,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				{
 					ss << ". Blushing, she says she'll do it... as long as she gets to finish you off with her mouth."
 						<< "\nYou do not have a problem with this.";
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
+					girl->happiness(5);
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
 				else if (girl->has_trait("Nymphomaniac") && effectiveness > 30)
 				{
 					ss << ". She raises her eyebrows and drops her clothes to the floor.\n"
 						<< "\"Then get on and fuck me already... 'Master.'\"";
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
+					girl->happiness(5);
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
 				else if (girl->is_addict(true) && effectiveness > 10)
@@ -325,7 +325,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					ss << ". Noticing her shakes and the look in her eye, you suggest tonight could help her raise a little \"spending money.\"\n"
 						<< "She agrees to stay for " << effectiveness / 2 << " extra drug money.";
 					tips += (effectiveness / 2);
-					g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 1);
+					girl->obedience(1);
 				}
 				//Are you psychopathic
 				else if ((The_Player->disposition() < -80) && effectiveness > 60)
@@ -336,7 +336,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 						<< " will participate. Fully.\n";
 					g_Gold.misc_debit(100); //drug money
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 10, true);
-					g_Girls.UpdateStat(girl, STAT_PCHATE, +10); //she'll hate you later
+					girl->pchate(+10); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
 				}
 				//Lucky?
@@ -344,8 +344,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				{
 					ss << ". You are very persuasive and recognizing the truth of your words, "
 						<< girlName << " apologizes, promising to do better in future.\n";
-					g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 4);
-					g_Girls.UpdateStat(girl, STAT_SPIRIT, -4);
+					girl->obedience(4);
+					girl->spirit(-4);
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
 				//does she like you
@@ -359,41 +359,41 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 					ss << ", adding that you are a kind master she should trust that you would only ever act in her best interests.\nWhile you respect that she is uncomfortable, " << girlName
 						<< " must broaden her mind, adjust to this life and learn the skills.\nShe WILL share your bed tonight, and she will learn something too.\n"
 						<< "\"One day you will thank me,\" you tell her.\nShe looks up at you, closes her eyes and nods.\n";
-					g_Girls.UpdateStat(girl, STAT_PCFEAR, -2);
-					g_Girls.UpdateStat(girl, STAT_PCLOVE, +1);
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, -1);
+					girl->pcfear(-2);
+					girl->pclove(+1);
+					girl->happiness(-1);
 				}
 				//or just mean?
 				else if (The_Player->disposition() < -50)
 				{
 					ss << ", adding that slaves who defy you here, get to enjoy a much more intimate and much less pleasant night down in the dungeon...\n";
 					ss << "\"Less pleasant for YOU, at least,\" you smile.\n \n";
-					g_Girls.UpdateStat(girl, STAT_PCFEAR, 5);
+					girl->pcfear(5);
 					if (effectiveness > 35)
 					{
 						ss << "Terrified, she agrees to spend the night.\n";
-						g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 2);
-						g_Girls.UpdateStat(girl, STAT_SPIRIT, -2);
-						g_Girls.UpdateStat(girl, STAT_HAPPINESS, -10);
+						girl->obedience(2);
+						girl->spirit(-2);
+						girl->happiness(-10);
 					}
 					else
 					{
 						ss << "She doesn't say a word. She doesn't leave either.\n";
-						g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 1);
-						g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
-						g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
+						girl->obedience(1);
+						girl->spirit(-1);
+						girl->happiness(-5);
 					}
 				}
 				else
 				{
 					ss << ". Finally, you explain that as a slave she doesn't have a choice in this. You offer "
 						<< girlName << " a little something to 'make it all feel like a nice warm dream.'\n" << girlName << " finally nods.";
-					g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 1);
-					g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
-					g_Girls.UpdateStat(girl, STAT_HEALTH, -1);
+					girl->obedience(1);
+					girl->spirit(-1);
+					girl->health(-1);
 					g_Gold.misc_debit(20); //drug/spell money
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
-					g_Girls.UpdateStat(girl, STAT_PCHATE, 5); //she'll hate you later
+					girl->pchate(5); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
 				}
 			}
@@ -412,14 +412,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				{
 					ss << "Blushing, she says she might do it... if you'll finish in her mouth."
 						<< "\nYou agree to this.\n";
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
+					girl->happiness(5);
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
 				else if ((girl->has_trait("Nymphomaniac") || girl->has_trait("Slut")) && effectiveness > 40)
 				{
 					ss << "Aware of her love for sex, you quickly snake your hand between her legs and start to rub on her panties. "
 						<< "She doesn't try to stop you, instead just moving her panties aside and guiding your hand.\nShe is quickly naked, panting and aroused and is now happy to stay.\n";
-					g_Girls.UpdateStat(girl, STAT_HAPPINESS, 2);
+					girl->happiness(2);
 					g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 				}
 				//if she's an addict
@@ -455,7 +455,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 						<< " will now participate. Fully.\n";
 					g_Gold.misc_debit(100); //drug money
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 10, true);
-					g_Girls.UpdateStat(girl, STAT_PCHATE, +20); //she'll hate you later
+					girl->pchate(+20); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
 				}
 				//if nothing can change her mind
@@ -480,7 +480,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		if (HateLove > 40)  //if she doesn't want you dead...
 		{
 			ss << girlName << " is diseased and refuses to put you at risk.\n";
-			g_Girls.UpdateStat(girl, STAT_MORALITY, 2);
+			girl->morality(2);
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 			return true;
 		}
@@ -492,8 +492,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		else  //if she actively wants you dead
 		{
 			ss << girlName << " is happy for the chance to share her disease with you.\n";
-			g_Girls.UpdateStat(girl, STAT_MORALITY, -2);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 2);
+			girl->morality(-2);
+			girl->happiness(2);
 			diseased = true;
 		}
 	}
@@ -532,13 +532,13 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	{
 		ss << "\nYou did something to piss her off.\n \n";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, -1);
-		g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
+		girl->pclove(-1);
 	}
 	else if (roll_a >= 90)
 	{
 		ss << "\nShe had a pleasant time with you.\n \n";
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +3);
-		g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
+		girl->pclove(2);
 	}
 	else
 	{
@@ -680,7 +680,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			{
 				ss << girlName << " orgasms loudly and repeatedly.\n \n";
 				g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 1);
-				g_Girls.UpdateStat(girl, STAT_HAPPINESS, 1);
+				girl->happiness(1);
 			}
 			else ss << "\n \n";
 			break;
@@ -721,11 +721,11 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			break;
 		case 9:
 			ss << " make excellent use of your 12-ended tentacle-beast dildo.\n \n";
-			g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, +1);
+			girl->beastiality(+1);
 			break;
 		case 10:
 			ss << " train together, inserting and then 'squeezing out' eggs.\n \n";
-			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, +1);
+			girl->normalsex(+1);
 			break;
 		default:
 			ss << " do something unimaginable. (error)\n \n";
@@ -733,9 +733,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 
 		//Benefits of group
-		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, +(harem.size() / 2));
-		g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, +(harem.size() / 4));
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, +(harem.size() / 2));
+		girl->lesbian(+(harem.size() / 2));
+		girl->performance(+(harem.size() / 4));
+		girl->tiredness(+(harem.size() / 2));
 		int libido = (girl->has_trait("Nymphomaniac")) ? 4 : 2;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, libido);
@@ -749,8 +749,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			if (roll_d <= 20)
 			{
 				ss << " so you fuck her gently and with extra care.\n";
-				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, 1);
+				girl->normalsex(1);
+				girl->pclove(1);
 				g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, +1);
 				g_Girls.LoseVirginity(girl);
 				ss << "She is no longer a virgin.\n";
@@ -769,8 +769,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			else if (roll_d <= 35)
 			{
 				ss << " with a tight pussy you can't resist. You break her in hard.\n";
-				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, 2);
+				girl->normalsex(2);
+				girl->pcfear(2);
 				g_Girls.LoseVirginity(girl);
 				ss << "She is no longer a virgin.\n";
 				imagetype = IMGTYPE_SEX;
@@ -790,21 +790,21 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				if (roll_c < 30 || girl->has_trait("Lesbian"))
 				{
 					ss << ", and instead have her play around with another girl in your harem.";
-					g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
+					girl->lesbian(2);
 					imagetype = IMGTYPE_LESBIAN;
 					//girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);
 				}
 				else if (roll_c < 60)
 				{
 					ss << ", and instead fuck her ass.";
-					g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+					girl->anal(2);
 					imagetype = IMGTYPE_ANAL;
 					//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
 				}
 				else
 				{
 					ss << ", and instead have her 'clean it off' as you enjoy the other girls.";
-					g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+					girl->oralsex(2);
 					imagetype = IMGTYPE_ORAL;
 					//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 				}
@@ -815,22 +815,22 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			if ((roll_d <= 20) || (girl->has_trait("Cum Addict") && roll_d <= 50))
 			{
 				ss << "While you enjoy another girl, " << girlName << " grabs your cock and finishes you off with her mouth.\n";
-				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+				girl->oralsex(2);
 				imagetype = IMGTYPE_ORAL;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 			}
 			else if (roll_d <= 40)
 			{
 				ss << "You watch " << girlName << " play with another girl in the harem.";
-				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
+				girl->lesbian(2);
 				imagetype = IMGTYPE_LESBIAN;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1););
 			}
 			else if (roll_d <= 60)
 			{
 				ss << "You enjoy the pleasures of your harem, including fucking " << girlName << ".\n";
-				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
-				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
+				girl->normalsex(2);
+				girl->lesbian(1);
 				imagetype = IMGTYPE_SEX;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 
@@ -845,7 +845,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			else if (roll_d <= 80)
 			{
 				ss << "You tie up " << girlName << " and get another girl to spank her as you fuck her.\n";
-				g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
+				girl->bdsm(2);
 				imagetype = IMGTYPE_BDSM;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
 
@@ -860,7 +860,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			else if (roll_d <= 100)
 			{
 				ss << "You spin " << girlName << " around, push her down and fuck her ass.";
-				g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+				girl->anal(2);
 				imagetype = IMGTYPE_ANAL;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
 			}
@@ -869,7 +869,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		if (g_Dice.percent(20) && girl->has_trait("Shy"))
 		{
 			ss << "\n" << girlName << " doesn't seem so shy tonight!\n";
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, 1);
+			girl->charisma(1);
 		}
 		if (g_Dice.percent(20) && girl->has_trait("Cum Addict"))
 		{
@@ -879,15 +879,15 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			case 0:
 				ss << "\n" << girlName << " gets upset when she sees you cum inside another girl. "
 					<< "She acts quickly, spreading the girl's pussy and getting her tongue deep inside to lick and suck all the cum out.\n";
-				g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
+				girl->spirit(-1);
 				break;
 			case 1:
 				ss << "\n" << girlName << " gets upset when she sees you cum in another girl's mouth. She aggressively kisses the girl, trying to lick the cum right out of her mouth.\n";
 				break;
 			case 2:
 				ss << "\n" << girlName << " gets upset when she sees you cum inside another girl's ass. She quickly spreads the girl's ass and tries to suck the cum out.\n";
-				g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
-				g_Girls.UpdateStat(girl, STAT_DIGNITY, -1);
+				girl->spirit(-1);
+				girl->dignity(-1);
 				break;
 			case 3:
 				ss << "\n" << girlName << " gets upset when she sees you cum on a girl's face. She immediately pounces on the girl, licking the cum off the girl's eyes, cheek and nose.\n";
@@ -901,14 +901,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			default:
 				ss << "\n" << girlName << " is a Cum Addict doing something totally wild and unexpected (error).";
 			}
-			g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
+			girl->lesbian(2);
 			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHAREM, 2);
 		}
 		else if (g_Dice.percent(30) && HateLove > 0 && girl->has_trait("Good Kisser"))
 		{
 			ss << "\n" << girlName << " gives you a mindblowing kiss afterwards.\n";
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, 1);
-			g_Girls.UpdateStat(girl, STAT_PCLOVE, 1);
+			girl->charisma(1);
+			girl->pclove(1);
 		}
 		if (g_Dice.percent(20) && (girl->has_trait("Masochist")))
 		{
@@ -1003,35 +1003,35 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 
 		if (roll_d <= 10)
 		{
-			g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
+			girl->strip(2);
 			ss << "does a little strip show for you.\n \n";
 			imagetype = IMGTYPE_STRIP;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
 		}
 		else if (roll_d <= 20 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
 		{
-			g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
+			girl->tittysex(2);
 			ss << "uses her tits on you.\n \n";
 			imagetype = IMGTYPE_TITTY;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, Day0Night1);
 		}
 		else if (roll_d <= 30 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
 		{
-			g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
+			girl->handjob(2);
 			ss << "gives you a hand job.\n \n";
 			imagetype = IMGTYPE_HAND;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_HAND, Day0Night1);
 		}
 		else if (roll_d <= 40 && is_sex_type_allowed(SKILL_FOOTJOB, brothel))
 		{
-			g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, 2);
+			girl->footjob(2);
 			ss << "gives you a foot job.\n \n";
 			imagetype = IMGTYPE_FOOT;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, Day0Night1);
 		}
 		else if (roll_d <= 50 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
 		{
-			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+			girl->oralsex(2);
 			ss << "decided to suck your cock.\n \n";
 			if (girl->has_trait("Herpes")) risky = true;
 			imagetype = IMGTYPE_ORAL;
@@ -1040,7 +1040,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 		else if (roll_d <= 60 && is_sex_type_allowed(SKILL_ANAL, brothel))
 		{
-			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+			girl->anal(2);
 			ss << "lets you use her ass.\n \n";
 			risky = true;
 			imagetype = IMGTYPE_ANAL;
@@ -1048,7 +1048,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 		else if (roll_d <= 70 && is_sex_type_allowed(SKILL_BDSM, brothel))
 		{
-			g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
+			girl->bdsm(2);
 			ss << "lets you tie her up.\n \n";
 			risky = true;
 			if (g_Girls.CheckVirginity(girl))
@@ -1068,7 +1068,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 		else if (roll_d <= 80 && is_sex_type_allowed(SKILL_NORMALSEX, brothel))
 		{
-			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
+			girl->normalsex(2);
 			ss << "has sex with you.\n \n";
 			risky = true;
 			if (g_Girls.CheckVirginity(girl))
@@ -1198,43 +1198,43 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 
 	if (roll_d <= 10)
 	{
-		g_Girls.UpdateSkill(girl, SKILL_STRIP, 2);
+		girl->strip(2);
 		ss << "does a little strip show for you.\n \n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_STRIP, Day0Night1);
 	}
 	else if (roll_d <= 20 && is_sex_type_allowed(SKILL_TITTYSEX, brothel))
 	{
-		g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
+		girl->tittysex(2);
 		ss << "uses her tits on you.\n \n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_TITTY, Day0Night1);
 	}
 	else if (roll_d <= 30 && is_sex_type_allowed(SKILL_HANDJOB, brothel))
 	{
-		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
+		girl->handjob(2);
 		ss << "gives you a hand job.\n \n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_HAND, Day0Night1);
 	}
 	else if (roll_d <= 40 && is_sex_type_allowed(SKILL_FOOTJOB, brothel))
 	{
-		g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, 2);
+		girl->footjob(2);
 		ss << "gives you a foot job.\n \n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_FOOT, Day0Night1);
 	}
 	else if (roll_d <= 50 && is_sex_type_allowed(SKILL_ORALSEX, brothel))
 	{
-		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+		girl->oralsex(2);
 		ss << "decided to suck your cock.\n \n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
 	}
 	else if (roll_d <= 60 && is_sex_type_allowed(SKILL_ANAL, brothel))
 	{
-		g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+		girl->anal(2);
 		ss << "lets you use her ass.\n \n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_ANAL, Day0Night1);
 	}
 	else if (roll_d <= 70 && is_sex_type_allowed(SKILL_BDSM, brothel))
 	{
-		g_Girls.UpdateSkill(girl, SKILL_BDSM, 2);
+		girl->bdsm(2);
 		ss << "lets you tie her up.\n \n";
 		if (g_Girls.CheckVirginity(girl))
 		{
@@ -1252,7 +1252,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	}
 	else if (roll_d <= 80 && is_sex_type_allowed(SKILL_NORMALSEX, brothel))
 	{
-		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
+		girl->normalsex(2);
 		ss << "has sex with you.\n \n";
 		if (g_Girls.CheckVirginity(girl))
 		{
@@ -1338,8 +1338,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		{
 			g_Gold.misc_debit(1000);
 			g_Girls.RemoveTrait(girl, "Herpes");
-			g_Girls.UpdateStat(girl, STAT_PCLOVE, 1);
-			g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
+			girl->pclove(1);
+			girl->pchate(-1);
 			stringstream ssm;
 			ssm << girlName << " gave you herpes.\nMedicine for it costs you 1,000 gold.\nYou use the medicine to clear her up too.\n";
 			ss << ssm.str();
@@ -1349,8 +1349,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		{
 			g_Gold.misc_debit(3500);
 			g_Girls.RemoveTrait(girl, "Syphilis");
-			g_Girls.UpdateStat(girl, STAT_PCLOVE, 3);
-			g_Girls.UpdateStat(girl, STAT_PCHATE, -3);
+			girl->pclove(3);
+			girl->pchate(-3);
 			stringstream ssm;
 			ssm << girlName << " gave you syphilis.\nMedicine for it is hard to track down, costing you 3,500 gold.\nYou share it with her.\n";
 			ss << ssm.str();
@@ -1360,8 +1360,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		{
 			g_Gold.misc_debit(8000);
 			g_Girls.RemoveTrait(girl, "AIDS");
-			g_Girls.UpdateStat(girl, STAT_PCLOVE, 6);
-			g_Girls.UpdateStat(girl, STAT_PCHATE, -6);
+			girl->pclove(6);
+			girl->pchate(-6);
 			stringstream ssm;
 			ssm << girlName << " gave you AIDS.\n8,000 gold later and the wizards' incantations have finally cleansed you both.\n";
 			ss << ssm.str();
@@ -1384,7 +1384,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	else if (girl->has_trait("Retarded"))		{ xp -= 5; }
 	if (girl->has_trait("Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	girl->exp(xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 	return false;

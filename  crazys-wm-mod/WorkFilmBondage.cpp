@@ -83,7 +83,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int roll = g_Dice.d100();
 
 
-	if (g_Girls.GetStat(girl, STAT_HEALTH) < 40)
+	if (girl->health() < 40)
 	{
 		ss << "The crew refused to film a dungeon scene with " << girlName << " because she is not healthy enough.\n\"We are NOT filming snuff.\"";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -113,17 +113,17 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << "\"monstrous\" place.\nShe was starting to panic, so you allowed her the day off.\n";
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
+				girl->pclove(2);
+				girl->pchate(-1);
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 				return true;
 			}
 			else if (The_Player->disposition() > -30) //pragmatic
 			{
 				ss << "\"monstrous\" place.\nShe was starting to panic, so you ordered your men to grab her and bind her for action.\n";
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, 2);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, 2);
+				girl->pclove(-1);
+				girl->pchate(2);
+				girl->pcfear(2);
 				The_Player->disposition(-1);
 				enjoy -= 2;
 			}
@@ -141,9 +141,9 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 				}
 				else if (girl->has_trait( "Pierced Clit")) ss << "noticing her clittoral piercing, ";
 				ss << "you personally selected some 'fun tools' for your actor, instructing him to train your slave in humility and obedience.\n\"Master her. Intimately.\"";
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -4);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, +5);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, +5);
+				girl->pclove(-4);
+				girl->pchate(+5);
+				girl->pcfear(+5);
 				The_Player->disposition(-2);
 				enjoy -= 6;
 			}
@@ -278,9 +278,9 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_BDSM, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->bdsm(g_Dice%skill + 1);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
@@ -297,12 +297,12 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int MrEvil = g_Dice % 8, MrNasty = g_Dice % 8;
 	MrEvil = (MrEvil + MrNasty) / 2;				//Should come out around 3 most of the time.
 
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_DIGNITY, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, MrEvil);
+	girl->confidence(-MrEvil);
+	girl->spirit(-MrEvil);
+	girl->dignity(-MrEvil);
+	girl->pclove(-MrEvil);
+	girl->pchate(MrEvil);
+	girl->pcfear(MrEvil);
 	The_Player->disposition(-MrEvil);
 
 	//----------------------------------------------------------------------
@@ -312,8 +312,8 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 double cJobManager::JP_FilmBondage(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY)
-		+ g_Girls.GetStat(girl, STAT_DIGNITY));
+		(girl->charisma() + girl->beauty()
+		+ girl->dignity());
 
 	if (!estimate)
 	{

@@ -107,7 +107,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		wages += 25;
 		ss << " Stunned by her beauty a patient left her a great tip.\n \n";
@@ -185,7 +185,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
-	int roll_max = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int roll_max = (girl->intelligence() + girl->service());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	wages += 5 * g_Clinic.GetNumGirlsOnJob(0, JOB_GETREPAIRS, Day0Night1);	// `J` pay her 5 for each patient you send to her
@@ -205,11 +205,11 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 50 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill + 1);
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
+	girl->fame(fame);
+	girl->exp(xp);
+	girl->intelligence(g_Dice%skill + 1);
+	girl->medicine(g_Dice%skill);
+	girl->service(g_Dice%skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
@@ -229,9 +229,9 @@ bool cJobManager::WorkMechanic(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 double cJobManager::JP_Mechanic(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance
-		= (g_Girls.GetStat(girl, STAT_INTELLIGENCE) +
-		g_Girls.GetSkill(girl, SKILL_MEDICINE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
+		= (girl->intelligence() +
+		girl->medicine() / 2 +
+		girl->service() / 2);
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;

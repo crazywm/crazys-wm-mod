@@ -61,7 +61,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
-	int wages = g_Girls.GetStat(girl, STAT_ASKPRICE) + 40;
+	int wages = girl->askprice() + 40;
 	int tips = 0;
 	int work = 0, fame = 0;
 	int imageType = IMGTYPE_PROFILE;
@@ -254,7 +254,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	//base tips, aprox 5-30% of base wages
 	tips += int(((5.0 + jobperformance / 8.0) * wages) / 100.0);
 
-	if ((g_Girls.GetStat(girl, STAT_LIBIDO) > 90) && !bannedCustomer)
+	if ((girl->libido() > 90) && !bannedCustomer)
 		//ANON: sanity check: not gonna give 'perks' to the cust she just banned for wanting perks!
 	{
 		u_int n;
@@ -297,11 +297,11 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 				g_MessageQue.AddToQue(girlName + " has gotten pregnant", 0);
 			}
 		}
-		g_Girls.UpdateSkill(girl, n, 2);
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -25, true);
+		girl->upd_skill(n, 2);
+		girl->upd_temp_stat(STAT_LIBIDO, -25, true);
 		wages += 225;
-		tips += 30 + g_Girls.GetSkill(girl, n) / 5;
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
+		tips += 30 + girl->get_skill(n) / 5;
+		girl->upd_Enjoyment( ACTION_SEX, +1);
 		fame += 1;
 		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 	}
@@ -309,7 +309,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	else if (girl->has_trait( "Doctor") && roll_c > 95)
 	{
 		ss << "Due to " << girlName << "'s training as a Doctor, she was able to discover an undetected medical condition in her client during the massage. ";
-		if (g_Girls.GetStat(girl, STAT_CHARISMA) < 50)
+		if (girl->charisma() < 50)
 		{
 			ss << "The customer was devastated to get such news from a massage and numbly accepted the referral for treatment.\n";
 		}
@@ -371,10 +371,10 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 60 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+	girl->fame(fame);
+	girl->exp(xp);
+	girl->medicine(g_Dice%skill);
+	girl->service(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
@@ -396,10 +396,10 @@ double cJobManager::JP_BrothelMasseuse(sGirl* girl, bool estimate)// not used
 	// next up tiredness penalty...
 #else
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
-		g_Girls.GetStat(girl, STAT_BEAUTY) / 2 +
-		g_Girls.GetSkill(girl, SKILL_MEDICINE) / 2 +
-		g_Girls.GetSkill(girl, SKILL_SERVICE) / 2);
+		(girl->charisma() / 2 +
+		girl->beauty() / 2 +
+		girl->medicine() / 2 +
+		girl->service() / 2);
 #endif
 	if (!estimate)
 	{

@@ -76,7 +76,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	g_Girls.UnequipCombat(girl);	// put that shit away, are you are trying to recruit for the military?
 
-	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
+	int HateLove = girl->pclove() - girl->pchate();
 	int findchance = 0;
 
 	/* */if (HateLove < -80)	ss << "She hates you more then anything so she doesn't try that hard.";
@@ -252,7 +252,7 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
-	int roll_max = (g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetSkill(girl, SKILL_SERVICE));
+	int roll_max = (girl->charisma() + girl->service());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	// Money
@@ -271,12 +271,12 @@ bool cJobManager::WorkRecruiter(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 50 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if (g_Dice % 2)	g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 1);
-	else			g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
-	if (g_Dice % 2)	g_Girls.UpdateStat(girl, STAT_CHARISMA, skill);
-	else			g_Girls.UpdateSkill(girl, SKILL_SERVICE, skill);
+	girl->fame(fame);
+	girl->exp(xp);
+	if (g_Dice % 2)	girl->lesbian(1);
+	else			girl->intelligence(1);
+	if (g_Dice % 2)	girl->charisma(skill);
+	else			girl->service(skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
@@ -294,9 +294,9 @@ double cJobManager::JP_Recruiter(sGirl* girl, bool estimate)// not used
 {
 	if (girl->is_slave()) return -1000;
 
-	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
+	int HateLove = girl->pclove() - girl->pchate();
 	double jobperformance =
-		(HateLove + g_Girls.GetStat(girl, STAT_CHARISMA));
+		(HateLove + girl->charisma());
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;

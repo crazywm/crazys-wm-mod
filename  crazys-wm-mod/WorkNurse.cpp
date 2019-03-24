@@ -262,7 +262,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	ss << "\n \n";
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		tips += 25;
 		ss << "Stunned by her beauty a customer left her a great tip.\n";
@@ -302,7 +302,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 45 && g_Dice.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
+	if (girl->intelligence() < 45 && g_Dice.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{
 		hand = true;
 		ss << "An elderly fellow managed to convince " << girlName << " that her touch can heal! She ended up giving him a hand job!\n";
@@ -311,7 +311,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	if (g_Dice.percent(30) && !g_Girls.CheckVirginity(girl) && !girl->has_trait( "Lesbian")
 		&& (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Slut") || girl->has_trait( "Succubus") || girl->has_trait( "Bimbo")))
 	{
-		if (g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
+		if (girl->libido() > 65 && (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 		{
 			tips += 50;
 			sex = true;
@@ -325,7 +325,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	}
 
 	if (girl->has_trait( "Lesbian") && girl->has_trait( "Aggressive") &&
-		g_Girls.GetStat(girl, STAT_LIBIDO) > 65 && g_Dice.percent(10))
+		girl->libido() > 65 && g_Dice.percent(10))
 	{
 		les = true;
 		enjoy += 1;
@@ -359,7 +359,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		if (!brothel->m_RestrictNormal && (roll_b <= 50 || brothel->m_RestrictAnal)) //Tweak to avoid an issue when roll > 50 && anal is restricted
 		{
 			imagetype = IMGTYPE_SEX;
-			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
+			girl->normalsex(2);
 			if (g_Girls.CheckVirginity(girl))
 			{
 				g_Girls.LoseVirginity(girl);
@@ -373,7 +373,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		else if (!brothel->m_RestrictAnal)
 		{
 			imagetype = IMGTYPE_ANAL;
-			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+			girl->anal(2);
 		}
 		brothel->m_Happiness += 100;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
@@ -382,14 +382,14 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	else if (hand)
 	{
 		brothel->m_Happiness += (g_Dice % 70) + 60;
-		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
+		girl->handjob(2);
 		imagetype = IMGTYPE_HAND;
 	}
 	else if (les)
 	{
 		brothel->m_Happiness += (g_Dice % 70) + 30;
 		imagetype = IMGTYPE_LESBIAN;
-		g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
+		girl->lesbian(2);
 	}
 
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))
@@ -446,11 +446,11 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 50 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if (g_Dice % 2 == 1)	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
-	else				g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill + 1);
+	girl->fame(fame);
+	girl->exp(xp);
+	if (g_Dice % 2 == 1)	girl->intelligence(g_Dice%skill);
+	else				girl->charisma(g_Dice%skill);
+	girl->medicine(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
@@ -465,10 +465,10 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 double cJobManager::JP_Nurse(sGirl* girl, bool estimate)// not used
 {
-	double jobperformance = (g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
-		g_Girls.GetSkill(girl, SKILL_MEDICINE) +
-		g_Girls.GetStat(girl, STAT_LEVEL) / 5);
+	double jobperformance = (girl->intelligence() / 2 +
+		girl->charisma() / 2 +
+		girl->medicine() +
+		girl->level() / 5);
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;

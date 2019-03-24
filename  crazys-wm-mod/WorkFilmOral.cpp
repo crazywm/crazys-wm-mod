@@ -164,15 +164,15 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_ORALSEX, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->oralsex(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
-	if (g_Dice.percent(5) && (g_Girls.GetStat(girl, STAT_HAPPINESS) > 80) && (g_Girls.GetEnjoyment(girl, ACTION_WORKMOVIE) > 75))
+	if (g_Dice.percent(5) && (girl->happiness() > 80) && (g_Girls.GetEnjoyment(girl, ACTION_WORKMOVIE) > 75))
 		g_Girls.AdjustTraitGroupGagReflex(girl, 1, true, Day0Night1);
 	return false;
 }
@@ -180,8 +180,8 @@ bool cJobManager::WorkFilmOral(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 double cJobManager::JP_FilmOral(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		(((g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY)) / 2)
-		+ g_Girls.GetSkill(girl, SKILL_ORALSEX));
+		(((girl->charisma() + girl->beauty()) / 2)
+		+ girl->oralsex());
 
 	if (!estimate)
 	{

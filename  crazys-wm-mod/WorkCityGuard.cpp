@@ -66,7 +66,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int wages = 150, tips = 0, enjoy = 0, enjoyc = 0, sus = 0;
 	int imagetype = IMGTYPE_PROFILE;
 
-	int agl = (g_Girls.GetStat(girl, STAT_AGILITY) / 2 + g_Dice % (g_Girls.GetSkill(girl, SKILL_COMBAT) / 2));
+	int agl = (girl->agility() / 2 + g_Dice % (girl->combat() / 2));
 
 
 	sGirl* tempgirl = g_Girls.CreateRandomGirl(18, false, false, false, false, false, true);
@@ -155,11 +155,11 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % skill);
-	g_Girls.UpdateSkill(girl, SKILL_MAGIC, g_Dice % skill);
-	g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % skill);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
+	girl->exp(xp);
+	girl->combat(g_Dice % skill);
+	girl->magic(g_Dice % skill);
+	girl->agility(g_Dice % skill);
+	girl->constitution(g_Dice % skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
@@ -178,15 +178,15 @@ double cJobManager::JP_CityGuard(sGirl* girl, bool estimate)// not used
 	int SecLev = 0;
 	if (estimate)	// for third detail string
 	{
-		SecLev = (g_Girls.GetSkill(girl, SKILL_COMBAT))
-			+ (g_Girls.GetSkill(girl, SKILL_MAGIC) / 2)
-			+ (g_Girls.GetStat(girl, STAT_AGILITY) / 2);
+		SecLev = (girl->combat())
+			+ (girl->magic() / 2)
+			+ (girl->agility() / 2);
 	}
 	else			// for the actual check
 	{
-		SecLev = g_Dice % (g_Girls.GetSkill(girl, SKILL_COMBAT))
-			+ g_Dice % (g_Girls.GetSkill(girl, SKILL_MAGIC) / 3)
-			+ g_Dice % (g_Girls.GetStat(girl, STAT_AGILITY) / 3);
+		SecLev = g_Dice % (girl->combat())
+			+ g_Dice % (girl->magic() / 3)
+			+ g_Dice % (girl->agility() / 3);
 
 		int t = girl->tiredness() - 80;
 		if (t > 0)

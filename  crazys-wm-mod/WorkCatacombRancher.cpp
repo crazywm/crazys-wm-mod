@@ -137,7 +137,7 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_HERD, Day0Night1);
 
 
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	girl->m_Tips = max(0, tips);
@@ -151,15 +151,15 @@ bool cJobManager::WorkCatacombRancher(sGirl* girl, sBrothel* brothel, bool Day0N
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, skill);
+	girl->animalhandling(skill);
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateStat(girl, STAT_STRENGTH, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, max(0, (g_Dice % skill) - 2));
+	girl->strength(max(0, (g_Dice % skill) - 1));
+	girl->confidence(max(0, (g_Dice % skill) - 2));
+	girl->constitution(max(0, (g_Dice % skill) - 2));
 
 #pragma endregion
 	return false;

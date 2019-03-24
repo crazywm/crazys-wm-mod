@@ -94,16 +94,16 @@ bool cJobManager::WorkFarmManager(sGirl* girl, sBrothel* brothel, bool Day0Night
 	girl->m_Pay = max(0, wages);
 
 	if (conf>-1) conf += g_Dice%skill;
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, conf);
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
+	girl->confidence(conf);
+	girl->happiness(happy);
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
+	girl->medicine(g_Dice%skill);
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
+	girl->service(g_Dice%skill + 2);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
