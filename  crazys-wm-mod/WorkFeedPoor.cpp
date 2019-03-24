@@ -79,8 +79,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 	//Adding cust here for use in scripts...
-	sCustomer* Cust = new sCustomer;
-	GetMiscCustomer(brothel, Cust);
+	sCustomer Cust = GetMiscCustomer(*brothel);
 
 
 	int dispo; // `J` merged slave/free messages and moved actual dispo change to after
@@ -373,9 +372,6 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-
-
-	delete Cust;
 
 #pragma endregion
 	return false;

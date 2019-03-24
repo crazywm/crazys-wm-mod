@@ -1290,7 +1290,7 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 		if (g_Brothels.GetNumBeasts() > 0)
 		{
 			g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain 
-			if (!m_GirlTarget->calc_insemination(g_Girls.GetBeast(), false, 1.0))
+			if (!m_GirlTarget->calc_insemination(*g_Girls.GetBeast(), false, 1.0))
 				g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten inseminated", 0);
 		}
 	}
@@ -1794,8 +1794,7 @@ sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
 		g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 2);
 
 		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
-		sCustomer* Cust = new sCustomer;
-		g_Customers.GetCustomer(Cust, g_Brothels.GetBrothel(g_CurrBrothel));
+		sCustomer Cust = g_Customers.GetCustomer(*g_Brothels.GetBrothel(g_CurrBrothel));
 		if (!m_GirlTarget->calc_pregnancy(Cust, false, 1.0))
 			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
 	}
@@ -2190,9 +2189,9 @@ sScript* cGameScript::Script_SetGirlStatus(sScript* Script)			// `J` new .06.03.
 		}
 		else
 		{
-			sCustomer* Cust = new sCustomer;
+			sCustomer Cust{};
 			int num = (status == STATUS_INSEMINATED ? max(1, g_Dice.bell(-4, 5)) : 1);
-			g_Girls.CreatePregnancy(m_GirlTarget, 1, status, Cust->m_Stats, Cust->m_Skills);
+			g_Girls.CreatePregnancy(m_GirlTarget, 1, status, Cust.m_Stats, Cust.m_Skills);
 		}
 	}
 	else
@@ -2229,10 +2228,10 @@ sScript* cGameScript::Script_CreatePregnancy(sScript* Script)		// `J` new .06.03
 	}
 	else
 	{
-		sCustomer* Cust = new sCustomer;
+		sCustomer Cust;
 		int status = (value[0] == 1 ? STATUS_PREGNANT : STATUS_INSEMINATED);
 		int num = (status == STATUS_INSEMINATED ? max(1, g_Dice.bell(-4, 5)) : 1);
-		g_Girls.CreatePregnancy(m_GirlTarget, 1, status, Cust->m_Stats, Cust->m_Skills);
+		g_Girls.CreatePregnancy(m_GirlTarget, 1, status, Cust.m_Stats, Cust.m_Skills);
 	}
 	return Script->m_Next; // Go to next script action
 

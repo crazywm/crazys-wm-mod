@@ -487,13 +487,13 @@ sInventoryItem* cInventory::GetRandomItem()
 	if (items.size() == 1)
 	{
 		ipt = items[0];
-		if (log > 1) g_LogFile.os() << "	returning 0x" << hex << long(ipt) << endl;
+		if (log > 1) g_LogFile.os() << "	returning 0x" << hex << int(ipt) << endl;
 		return items[0];
 	}
 	int index = g_Dice % (items.size() - 1);	// fixed crash with going outside vector size - necro
 	if (log > 1) g_LogFile.os() << "	returning item at index " << index << endl;
 	ipt = items[index];
-	if (log > 1) g_LogFile.os() << "	returning 0x" << hex << long(ipt) << dec << endl;
+	if (log > 1) g_LogFile.os() << "	returning 0x" << hex << int(ipt) << dec << endl;
 	return ipt;
 }
 sInventoryItem* cInventory::GetRandomCatacombItem()
@@ -929,9 +929,8 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					numchildren = 1 + g_Dice % pregbyC;
 					pregmsg << "\nThe item has gotten her pregnant.";
 				}
-				sCustomer* Cust = new sCustomer;
-				g_Girls.CreatePregnancy(girl, numchildren, type, Cust->m_Stats, Cust->m_Skills);
-				delete Cust;
+				sCustomer Cust{};
+				g_Girls.CreatePregnancy(girl, numchildren, type, Cust.m_Stats, Cust.m_Skills);
 			}
 		}
 

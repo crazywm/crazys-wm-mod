@@ -189,7 +189,8 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		ss << "She is no longer a virgin.\n";
 	}
 
-	sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel);	Cust->m_Amount = guys;
+	sCustomer Cust = g_Customers.GetCustomer(*brothel);
+	Cust.m_Amount = guys;
 	if (!girl->calc_group_pregnancy(Cust, false, 1.0))
 	{
 		g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant", 0);
@@ -235,7 +236,6 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 	//lose
 
-	delete Cust;
 	return false;
 }
 

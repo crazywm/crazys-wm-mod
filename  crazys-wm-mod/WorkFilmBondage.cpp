@@ -238,8 +238,9 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 		jobperformance += 50;
 		ss << "She is no longer a virgin.\n";
 	}
-	sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel); Cust->m_Amount = 1;
-	if (Cust->m_IsWoman)	// FemDom
+	sCustomer Cust = g_Customers.GetCustomer(*brothel);
+	Cust.m_Amount = 1;
+	if (Cust.m_IsWoman)	// FemDom
 	{
 		jobperformance += 20;
 		/* */if (girl->has_trait("Lesbian"))	jobperformance += 20;
@@ -289,8 +290,6 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 	//lose
-
-	delete Cust;
 
 	//Evil job bonus-------------------------------------------------------
 	//BONUS - evil jobs damage her body, break her spirit and make her hate you

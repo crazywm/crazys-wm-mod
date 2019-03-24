@@ -507,7 +507,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 								g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
 								imagetype = IMGTYPE_BEAST;
-								if (!girl->calc_insemination(g_Girls.GetBeast(), false, 1.0))
+								if (!girl->calc_insemination(*g_Girls.GetBeast(), false, 1.0))
 								{
 									g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
 								}

@@ -123,15 +123,14 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	//test code for auto preg
 	if (girl->m_WeeksPreg < 0 && g_Brothels.GetNumGirlsOnJob(0, JOB_FARMMANGER, false) >= 1 && noAnti && !g_Girls.CheckVirginity(girl))
 	{
-		sCustomer* Cust = new sCustomer;
-		g_Customers.GetCustomer(Cust, brothel);
+		sCustomer Cust = g_Customers.GetCustomer(*brothel);
 		ss << farmmanname <<" noticing that " << girlName << " wasn't pregnant decided to take it upon herself to make sure she got knocked up.\n";
 		if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && g_Brothels.GetNumBeasts() >= 1 && g_Dice.percent(50))
 		{
 			ss << "She sends in one of your beasts to get the job done.";
 			g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
-			if (!girl->calc_insemination(g_Girls.GetBeast(), false, 1.0))
+			if (!girl->calc_insemination(*g_Girls.GetBeast(), false, 1.0))
 			{
 				g_MessageQue.AddToQue(girl->m_Realname + " has gotten inseminated", 0);
 			}

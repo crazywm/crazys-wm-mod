@@ -73,11 +73,11 @@ public:
 
 	void Free();
 
-	void GenerateCustomers(sBrothel* brothel, bool Day0Night1 = SHIFT_DAY);	// generates a random amount of possible customers based on the number of poor, rich, and middle class
-	sCustomer* CreateCustomer(sBrothel* brothel);
+	void GenerateCustomers(sBrothel& brothel, bool Day0Night1 = SHIFT_DAY);	// generates a random amount of possible customers based on the number of poor, rich, and middle class
+	sCustomer* CreateCustomer(sBrothel& brothel);
 
 	//	sCustomer* GetParentCustomer();		// Gets a random customer from the customer base
-	void GetCustomer(sCustomer* customer, sBrothel *brothel);
+	sCustomer GetCustomer(sBrothel& brothel); // Creates a new customer.
 	void ChangeCustomerBase();	// Changes customer base, it is based on how much money the player is bring into the town
 	int GetNumCustomers() { return m_NumCustomers; }
 	void AdjustNumCustomers(int amount) { m_NumCustomers += amount; }

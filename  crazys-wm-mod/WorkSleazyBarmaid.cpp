@@ -220,12 +220,12 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		imagetype = IMGTYPE_SEX;
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
-		sCustomer* Cust = new sCustomer; g_Customers.GetCustomer(Cust, brothel); Cust->m_Amount = 1;
+		sCustomer Cust = g_Customers.GetCustomer(*brothel);
+		Cust.m_Amount = 1;
 		if (!girl->calc_pregnancy(Cust, false, 1.0))
 		{
 			g_MessageQue.AddToQue(girl->m_Realname + " has gotten pregnant.", 0);
 		}
-		delete Cust;
 	}
 
 #pragma endregion

@@ -79,8 +79,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	double jobperformance = JP_ComunityService(girl, false);
 
 	//Adding cust here for use in scripts...
-	sCustomer* Cust = new sCustomer;
-	GetMiscCustomer(brothel, Cust);
+	sCustomer Cust = GetMiscCustomer(*brothel);
 
 	// `J` merged slave/free messages and moved actual dispo change to after
 	/* */if (jobperformance >= 245)
@@ -223,9 +222,6 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	ss.str("");
 	ss << girlName << " helped " << help << " people today.";
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
-
-
-	delete Cust;
 
 	// Improve stats
 	int xp = 10, libido = 1, skill = 3;

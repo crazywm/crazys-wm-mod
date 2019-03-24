@@ -1030,10 +1030,11 @@ bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, bool
 	return false;
 }
 
-void cJobManager::GetMiscCustomer(sBrothel* brothel, sCustomer* cust)
+sCustomer cJobManager::GetMiscCustomer(sBrothel& brothel)
 {
-	g_Customers.GetCustomer(cust, brothel);
-	brothel->m_MiscCustomers+=1;
+    sCustomer cust = g_Customers.GetCustomer(brothel);
+	brothel.m_MiscCustomers+=1;
+	return cust;
 }
 
 bool cJobManager::is_sex_type_allowed(unsigned int sex_type, sBrothel* brothel)
@@ -2515,26 +2516,25 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 
 	// `J` do Pregnancy and/or STDs
 	bool preg = false, std = false, a = false, c = false, h = false, s = false;
-	sCustomer* Cust = new sCustomer;
-	GetMiscCustomer(g_Brothels.GetBrothel(0), Cust);
-	Cust->m_Amount = numberofattackers;
+	sCustomer Cust = GetMiscCustomer(*g_Brothels.GetBrothel(0));
+	Cust.m_Amount = numberofattackers;
 
 	if (attacktype == SKILL_GROUP || attacktype == SKILL_NORMALSEX)
 	{
-		Cust->m_IsWoman = false;
-		preg = !g_GirlsPtr->CalcPregnancy(girl, 5 + (Cust->m_Amount * 5), STATUS_PREGNANT, Cust->m_Stats, Cust->m_Skills);
+		Cust.m_IsWoman = false;
+		preg = !g_GirlsPtr->CalcPregnancy(girl, 5 + (Cust.m_Amount * 5), STATUS_PREGNANT, Cust.m_Stats, Cust.m_Skills);
 	}
 	if (attacktype == SKILL_LESBIAN)
 	{
-		Cust->m_IsWoman = true;
+		Cust.m_IsWoman = true;
 	}
-	if (Cust->m_HasAIDS || Cust->m_HasChlamydia || Cust->m_HasHerpes || Cust->m_HasSyphilis || g_Dice.percent(5))
+	if (Cust.m_HasAIDS || Cust.m_HasChlamydia || Cust.m_HasHerpes || Cust.m_HasSyphilis || g_Dice.percent(5))
 	{
 		std = true;
-		if (Cust->m_HasAIDS)			a = true;
-		if (Cust->m_HasChlamydia)	c = true;
-		if (Cust->m_HasSyphilis)		s = true;
-		if (Cust->m_HasHerpes)		h = true;
+		if (Cust.m_HasAIDS)			a = true;
+		if (Cust.m_HasChlamydia)	c = true;
+		if (Cust.m_HasSyphilis)		s = true;
+		if (Cust.m_HasHerpes)		h = true;
 		if (!a && !c && !s && !h)
 		{
 			/* */if (g_Dice.percent(20))	a = true;
@@ -2549,7 +2549,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 		ss.str("");
 		ss << girl->m_Realname << "'s rapist";
 		if (numberofattackers > 1) ss << "s left their";
-		else ss << " left " << (Cust->m_IsWoman ? "her" : "his");
+		else ss << " left " << (Cust.m_IsWoman ? "her" : "his");
 		ss << " calling card behind, ";
 		if (preg)			{ ss << "a baby in her belly"; }
 		if (preg && std)	{ ss << " and "; }
@@ -2567,7 +2567,6 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 	}
-	delete Cust;
 }
 
 // MYR: Lots of different ways to say the girl had a bad day
