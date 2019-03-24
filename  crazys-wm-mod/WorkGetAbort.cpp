@@ -88,8 +88,8 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if (g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, 1) > 0)
 		{
 			girl->m_WorkingDay++;
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, 5);
-			g_Girls.UpdateStat(girl, STAT_MANA, 5);
+			girl->happiness(5);
+			girl->mana(5);
 		}
 	}
 
@@ -215,7 +215,7 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		else if (girl->m_States & (1 << STATUS_PREGNANT_BY_PLAYER))
 		{
 			// `J` adjust her happiness by her hate-love for you
-			happy += int(((g_Girls.GetStat(girl, STAT_PCHATE) + hate) - (g_Girls.GetStat(girl, STAT_PCLOVE) + love)) / 2);
+			happy += int(((girl->pchate() + hate) - (girl->pclove() + love)) / 2);
 			if (girl->has_trait( "Your Wife"))// "Why?"
 			{
 				happy -= 20;		health += 0;	mana += 0;	spirit -= 1;	love -= 3;	hate += 0;
@@ -330,12 +330,12 @@ bool cJobManager::WorkGetAbort(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			}
 		}
 		// `J` now apply all the stat changes and finalize the transaction
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, health);
-		g_Girls.UpdateStat(girl, STAT_MANA, mana);
-		g_Girls.UpdateStat(girl, STAT_SPIRIT, spirit);
-		g_Girls.UpdateStat(girl, STAT_PCLOVE, love);
-		g_Girls.UpdateStat(girl, STAT_PCHATE, hate);
+		girl->happiness(happy);
+		girl->health(health);
+		girl->mana(mana);
+		girl->spirit(spirit);
+		girl->pclove(love);
+		girl->pchate(hate);
 
 		girl->m_ChildrenCount[CHILD09_ABORTIONS]++;
 		girl->clear_pregnancy();

@@ -109,7 +109,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		roll_a = g_Dice % 6;
 		if (roll_a == 1 && brothel->m_RestrictOral) roll_a = 0;
 		if (roll_a == 1 && girl->has_trait( "Lesbian")) roll_a = 0;
-		if (roll_a != 2 && g_Girls.GetStat(girl, STAT_TIREDNESS) >= 80) roll_a = 2;
+		if (roll_a != 2 && girl->tiredness() >= 80) roll_a = 2;
 		if (roll_a != 1 && g_Dice.percent(30) && girl->has_trait( "Cum Addict")) roll_a = 1;
 
 		switch (roll_a)
@@ -121,7 +121,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			if (tips > 0)
 			{
 				brothel->m_Happiness += (tips);
-				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, tips / 2);
+				girl->oralsex(tips / 2);
 				tips *= 5; //customers tip 5 gold each
 				ss << "She got " << tips << " in tips for this extra service.\n";
 				imagetype = IMGTYPE_ORAL;
@@ -135,24 +135,24 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		case 2:
 		{
 			ss << "she had a rest.";
-			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -(g_Dice % 10 + 1));
+			girl->tiredness(-(g_Dice % 10 + 1));
 		}break;
 
 		case 3:
 		{
 			ss << "she hung out around the brothel chatting with staff and patrons.\n";
-			g_Girls.UpdateStat(girl, STAT_CHARISMA, (g_Dice % 3) + 1);
-			g_Girls.UpdateStat(girl, STAT_CONFIDENCE, (g_Dice % 2) + 1);
+			girl->charisma((g_Dice % 3) + 1);
+			girl->confidence((g_Dice % 2) + 1);
 		}break;
 
 		case 4:
 		{
 			ss << "she spent some time training and getting herself fitter.\n";
-			g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 2);
-			g_Girls.UpdateStat(girl, STAT_AGILITY, g_Dice % 2);
-			g_Girls.UpdateStat(girl, STAT_BEAUTY, g_Dice % 2);
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice % 2);
-			g_Girls.UpdateSkill(girl, SKILL_COMBAT, g_Dice % 2);
+			girl->constitution(g_Dice % 2);
+			girl->agility(g_Dice % 2);
+			girl->beauty(g_Dice % 2);
+			girl->spirit(g_Dice % 2);
+			girl->combat(g_Dice % 2);
 		}break;
 
 		case 5:
@@ -185,32 +185,32 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					{
 						ss << "She didn't stop 'cleaning' until you came in her mouth.\nAfterward, you notice her carefully "
 							<< "crawling around and licking up every stray drop of cum. She must really love cleaning.\n";
-						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, g_Dice % 2);
-						g_Girls.UpdateStat(girl, STAT_SPIRIT, -(g_Dice % 2));
+						girl->oralsex(g_Dice % 2);
+						girl->spirit(-(g_Dice % 2));
 						tips += (g_Dice % 20);  // tip her for hotness
 					}
 					imagetype = IMGTYPE_ORAL;
 				}
-				g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice % 5);
-				g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice % 2);
-				g_Girls.UpdateStat(girl, STAT_OBEDIENCE, g_Dice % 4);
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, g_Dice % 5);
+				girl->service(g_Dice % 5);
+				girl->medicine(g_Dice % 2);
+				girl->obedience(g_Dice % 4);
+				girl->pclove(g_Dice % 5);
 			}
 			else
 			{
 				ss << "she hung out around the brothel, watching the other girls and trying to learn tricks and techniques.\n";
-				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, g_Dice % 2);
-				g_Girls.UpdateSkill(girl, SKILL_ANAL, g_Dice % 2);
-				g_Girls.UpdateSkill(girl, SKILL_ORALSEX, g_Dice % 2);
-				g_Girls.UpdateSkill(girl, SKILL_BDSM, g_Dice % 2);
-				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, g_Dice % 2);
+				girl->normalsex(g_Dice % 2);
+				girl->anal(g_Dice % 2);
+				girl->oralsex(g_Dice % 2);
+				girl->bdsm(g_Dice % 2);
+				girl->lesbian(g_Dice % 2);
 			}
 		}break;
 
 		default:
 			ss << "she hung out around the brothel a bit.";
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice % 3 + 1, true);
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 3) + 1);
+			girl->happiness((g_Dice % 3) + 1);
 			break;
 		}
 	}
@@ -243,9 +243,9 @@ bool cJobManager::WorkCleaning(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % skill);
+	girl->exp((g_Dice % xp) + 2);
+	girl->service((g_Dice % skill) + 2);
+	girl->constitution(g_Dice % skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);

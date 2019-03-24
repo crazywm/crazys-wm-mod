@@ -71,7 +71,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 
 	int roll = g_Dice.d100();
-	if (g_Girls.GetStat(girl, STAT_HEALTH) < 20)
+	if (girl->health() < 20)
 	{
 		ss << "The crew refused to film a Bestiality scene with " << girlName << " because she is not healthy enough.\n\"She could get hurt.\"";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -89,8 +89,8 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << " She was so passionate that you allowed her the day off.\n";
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
+				girl->pclove(2);
+				girl->pchate(-1);
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 				return true;
 			}
@@ -98,9 +98,9 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			{
 				ss << " As her owner, you over-ruled and gave her consent.";
 				ss << " Your crew readied the cameras, while your men tied her arms behind her back and feet behind her head. \n\"Release the beasts!\"";
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, 1);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, +1);
+				girl->pclove(-1);
+				girl->pchate(1);
+				girl->pcfear(+1);
 				The_Player->disposition(-1);
 				tied = true;
 				enjoy -= 2;
@@ -109,10 +109,10 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			{
 				ss << " Amused, you have your men flog this slave for a while to remind her of her place.";
 				ss << " You offer the film-crew first choice of your more exotic beasts.";
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -2);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, +2);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, +4);
-				g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
+				girl->pclove(-2);
+				girl->pchate(+2);
+				girl->pcfear(+4);
+				girl->spirit(-1);
 				The_Player->disposition(-2);
 				enjoy -= 6;
 				tied = true;
@@ -197,9 +197,9 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->beastiality(g_Dice%skill + 1);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
@@ -212,12 +212,12 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int MrEvil = g_Dice % 8, MrNasty = g_Dice % 8;
 	MrEvil = (MrEvil + MrNasty) / 2;				//Should come out around 3 most of the time.
 
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_DIGNITY, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, MrEvil);
+	girl->confidence(-MrEvil);
+	girl->spirit(-MrEvil);
+	girl->dignity(-MrEvil);
+	girl->pclove(-MrEvil);
+	girl->pchate(MrEvil);
+	girl->pcfear(MrEvil);
 	The_Player->disposition(-MrEvil);
 
 	//----------------------------------------------------------------------
@@ -228,8 +228,8 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 double cJobManager::JP_FilmBeast(sGirl* girl, bool estimate)
 {
 	double jobperformance =
-		((g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY)/2)
-		+ g_Girls.GetSkill(girl, SKILL_ANIMALHANDLING) + g_Girls.GetSkill(girl, SKILL_BEASTIALITY));
+		((girl->charisma() + girl->beauty()/2)
+		+ girl->animalhandling() + girl->beastiality());
 
 	if (!estimate)
 	{

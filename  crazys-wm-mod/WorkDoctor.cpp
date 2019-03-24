@@ -145,10 +145,10 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 	if (girl->has_trait( "Lesbian"))				{ libido += patients / 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, skill);
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, 1);
+	girl->exp(xp);
+	girl->intelligence(skill);
+	girl->medicine(skill);
+	girl->service(1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
@@ -160,9 +160,9 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 double cJobManager::JP_Doctor(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) +
-		g_Girls.GetSkill(girl, SKILL_MEDICINE) +
-		g_Girls.GetStat(girl, STAT_LEVEL) / 5);
+		(girl->intelligence() +
+		girl->medicine() +
+		girl->level() / 5);
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;

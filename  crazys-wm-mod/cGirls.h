@@ -425,9 +425,9 @@ struct sGirl
 	{
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
-	int upd_temp_stat(int stat_id, int amount)
+	int upd_temp_stat(int stat_id, int amount, bool usetraits=false)
 	{
-		g_GirlsPtr->UpdateStatTemp(this, stat_id, amount);
+		g_GirlsPtr->UpdateStatTemp(this, stat_id, amount, usetraits);
 		return g_GirlsPtr->GetStat(this, stat_id);
 	}
 	int upd_stat(int stat_id, int amount, bool usetraits = true)
@@ -665,6 +665,11 @@ struct sGirl
 	void OutputGirlDetailString(string& Data, const string& detailName);
 
 	// END MOD
+
+	// more useful functions
+	int has_item(const std::string& item);
+	int has_item_j(const std::string& item);
+	int add_inv(sInventoryItem* item);
 };
 
 class GirlPredicate {

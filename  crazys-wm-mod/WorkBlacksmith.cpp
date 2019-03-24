@@ -454,18 +454,18 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido,false);
+	girl->exp((g_Dice % xp) + 1);
+	girl->upd_temp_stat(STAT_LIBIDO, libido, false);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_CRAFTING,		(g_Dice % skill) + 1);
-	g_Girls.UpdateStat(girl, STAT_STRENGTH,			(g_Dice % skill) + 1);
+	girl->upd_skill(SKILL_CRAFTING,	(g_Dice % skill) + 1);
+	girl->upd_stat(STAT_STRENGTH, (g_Dice % skill) + 1);
 	// secondary improvement (-1 for one then -2 for others)
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION,	max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT,		max(0, (g_Dice % skill) - 2));
+	girl->upd_stat(STAT_CONSTITUTION,	max(0, (g_Dice % skill) - 1));
+	girl->upd_skill(SKILL_COMBAT,		max(0, (g_Dice % skill) - 2));
 
 	// Update Enjoyment
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	// Gain Traits
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the forge has made " + girlName + " rather Tough.", Day0Night1);
 

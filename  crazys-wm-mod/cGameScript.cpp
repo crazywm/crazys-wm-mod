@@ -770,9 +770,9 @@ sScript *cGameScript::Script_AdjustTargetGirlStat(sScript *Script)
 	if (m_GirlTarget)
 	{
 		if (value[0] - (NUM_STATS) > 0)	// `J` correcting for old scripts for the new STAT_NPCLOVE
-			g_Girls.UpdateSkill(m_GirlTarget, value[0] - NUM_STATS, value[1]);
+			m_GirlTarget->upd_stat(value[0] - NUM_STATS, value[1]);
 		else
-			g_Girls.UpdateStat(m_GirlTarget, value[0], value[1]);
+			m_GirlTarget->upd_stat(value[0], value[1]);
 	}
 	return Script->m_Next;
 }
@@ -783,7 +783,7 @@ sScript *cGameScript::Script_AdjustTargetGirlSkill(sScript *Script)
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, value[0], value[1]);
+		m_GirlTarget->upd_skill(value[0], value[1]);
 	}
 	return Script->m_Next;
 }
@@ -791,19 +791,19 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 {
 	if (m_GirlTarget == 0) return Script->m_Next;
 
-	g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 2);
-	g_Girls.UpdateSkill(m_GirlTarget, SKILL_ANAL, 2);
-	g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 2);
+	m_GirlTarget->bdsm(2);
+	m_GirlTarget->anal(2);
+	m_GirlTarget->normalsex(2);
 
-	g_Girls.UpdateStat(m_GirlTarget, STAT_HAPPINESS, -5);
-	g_Girls.UpdateStat(m_GirlTarget, STAT_HEALTH, -10);
-	g_Girls.UpdateStat(m_GirlTarget, STAT_LIBIDO, -1);
+	m_GirlTarget->happiness(-5);
+	m_GirlTarget->health(-10);
+	m_GirlTarget->libido(-1);
 	g_Girls.UpdateStatTemp(m_GirlTarget, STAT_LIBIDO, 2, true);
-	g_Girls.UpdateStat(m_GirlTarget, STAT_CONFIDENCE, -1);
-	g_Girls.UpdateStat(m_GirlTarget, STAT_OBEDIENCE, 2);
-	g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, 2);
-	g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -2);
-	g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, 3);
+	m_GirlTarget->confidence(-1);
+	m_GirlTarget->obedience(2);
+	m_GirlTarget->pcfear(2);
+	m_GirlTarget->pclove(-2);
+	m_GirlTarget->pchate(3);
 
 	if (g_Dice.percent(2)) g_Girls.AddTrait(m_GirlTarget, "Broken Will");
 
@@ -1210,55 +1210,55 @@ sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 	if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 10)
 	{
 		g_MessageQue.AddToQue("She is bawling the entire time you yell at her, obviously wanting to do her best", 0);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_HAPPINESS, -5);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_CONFIDENCE, -5);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_OBEDIENCE, 10);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_SPIRIT, -3);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -4);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, 2);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, 2);
+		m_GirlTarget->happiness(-5);
+		m_GirlTarget->confidence(-5);
+		m_GirlTarget->obedience(10);
+		m_GirlTarget->spirit(-3);
+		m_GirlTarget->pclove(-4);
+		m_GirlTarget->pcfear(2);
+		m_GirlTarget->pchate(2);
 	}
 	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 20)
 	{
 		g_MessageQue.AddToQue("She sobs a lot while you yell at her and fearfully listens to your every word", 0);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_HAPPINESS, -2);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_CONFIDENCE, -2);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_OBEDIENCE, 6);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_SPIRIT, -2);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, 1);
+		m_GirlTarget->happiness(-2);
+		m_GirlTarget->confidence(-2);
+		m_GirlTarget->obedience(6);
+		m_GirlTarget->spirit(-2);
+		m_GirlTarget->pclove(-1);
+		m_GirlTarget->pcfear(1);
 	}
 	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 30)
 	{
 		g_MessageQue.AddToQue("She listens with attention and promises to do better", 0);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_HAPPINESS, -1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_CONFIDENCE, -1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_OBEDIENCE, 5);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_SPIRIT, -2);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -1);
+		m_GirlTarget->happiness(-1);
+		m_GirlTarget->confidence(-1);
+		m_GirlTarget->obedience(5);
+		m_GirlTarget->spirit(-2);
+		m_GirlTarget->pclove(-1);
 	}
 	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 50)
 	{
 		g_MessageQue.AddToQue("She listens to what you say but barely pays attention", 0);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_OBEDIENCE, 3);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_SPIRIT, -2);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, 1);
+		m_GirlTarget->obedience(3);
+		m_GirlTarget->spirit(-2);
+		m_GirlTarget->pchate(1);
 	}
 	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 80)
 	{
 		g_MessageQue.AddToQue("She looks at you defiantly while you yell at her", 0);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_OBEDIENCE, 2);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_SPIRIT, -1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -3);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, 2);
+		m_GirlTarget->obedience(2);
+		m_GirlTarget->spirit(-1);
+		m_GirlTarget->pclove(-3);
+		m_GirlTarget->pchate(2);
 	}
 	else
 	{
 		g_MessageQue.AddToQue("She stares you down while you yell at her, daring you to hit her", 0);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_OBEDIENCE, -1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_SPIRIT, -1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -4);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, 5);
+		m_GirlTarget->obedience(-1);
+		m_GirlTarget->spirit(-1);
+		m_GirlTarget->pclove(-4);
+		m_GirlTarget->pchate(5);
 	}
 
 	return Script->m_Next;
@@ -1267,7 +1267,7 @@ sScript* cGameScript::Script_NormalSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 2);
+		m_GirlTarget->normalsex(2);
 
 		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
@@ -1282,14 +1282,14 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain 
+		m_GirlTarget->beastiality(1);	// `J` divided skill gain
 
 		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 		if (g_Brothels.GetNumBeasts() > 0)
 		{
-			g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);	// `J` divided skill gain 
+			m_GirlTarget->beastiality(1);	// `J` divided skill gain
 			if (!m_GirlTarget->calc_insemination(*g_Girls.GetBeast(), false, 1.0))
 				g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten inseminated", 0);
 		}
@@ -1300,7 +1300,7 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 }
 sScript* cGameScript::Script_AnalSexTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ANAL, 2);
+	if (m_GirlTarget) m_GirlTarget->anal(2);
 	g_GirlDetails.lastsexact = IMGTYPE_ANAL;
 
 	return Script->m_Next;
@@ -1309,7 +1309,7 @@ sScript* cGameScript::Script_BDSMSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 2);
+		m_GirlTarget->bdsm(2);
 
 		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 	}
@@ -1370,7 +1370,7 @@ sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_GROUP, 2);
+		m_GirlTarget->group(2);
 
 		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 
@@ -1384,19 +1384,19 @@ sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 }
 sScript* cGameScript::Script_LesbianSexTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 2);
+	if (m_GirlTarget) m_GirlTarget->lesbian(2);
 	g_GirlDetails.lastsexact = IMGTYPE_LESBIAN;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_OralSexTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 2);
+	if (m_GirlTarget) m_GirlTarget->oralsex(2);
 	g_GirlDetails.lastsexact = IMGTYPE_ORAL;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_StripTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_STRIP, 2);
+	if (m_GirlTarget) m_GirlTarget->strip(2);
 	g_GirlDetails.lastsexact = IMGTYPE_STRIP;
 	return Script->m_Next;
 }
@@ -1411,7 +1411,7 @@ sScript* cGameScript::Script_CleanTarget(sScript* Script)
 		brothel->m_Filthiness -= CleanAmt;
 		stringstream sstemp;
 		sstemp << "Cleanliness rating improved by " << (int)CleanAmt;
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 1);
+		m_GirlTarget->service(1);
 	}
 	g_GirlDetails.lastsexact = IMGTYPE_MAID;
 
@@ -1419,31 +1419,31 @@ sScript* cGameScript::Script_CleanTarget(sScript* Script)
 }
 sScript* cGameScript::Script_NudeTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_STRIP, 1);
+	if (m_GirlTarget) m_GirlTarget->strip(1);
 	g_GirlDetails.lastsexact = IMGTYPE_NUDE;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_MastTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 2);
+	if (m_GirlTarget) m_GirlTarget->service(2);
 	g_GirlDetails.lastsexact = IMGTYPE_MAST;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CombatTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_COMBAT, 1);
+	if (m_GirlTarget) m_GirlTarget->combat(1);
 	g_GirlDetails.lastsexact = IMGTYPE_COMBAT;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_TittyTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_TITTYSEX, 2);
+	if (m_GirlTarget) m_GirlTarget->tittysex(2);
 	g_GirlDetails.lastsexact = IMGTYPE_TITTY;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_DeathTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_COMBAT, 0);
+	if (m_GirlTarget) m_GirlTarget->combat(0);
 	g_GirlDetails.lastsexact = IMGTYPE_DEATH;
 	return Script->m_Next;
 }
@@ -1454,109 +1454,109 @@ sScript* cGameScript::Script_ProfileTarget(sScript* Script)
 }
 sScript* cGameScript::Script_HandJobTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 2);
+	if (m_GirlTarget) m_GirlTarget->handjob(2);
 	g_GirlDetails.lastsexact = IMGTYPE_HAND;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_EcchiTarget(sScript* Script)
 {
-	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
+	if (m_GirlTarget){}		//m_GirlTarget->handjob(1);
 	g_GirlDetails.lastsexact = IMGTYPE_ECCHI;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_BunnyTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	if (m_GirlTarget) m_GirlTarget->performance(1);
 	g_GirlDetails.lastsexact = IMGTYPE_BUNNY;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CardTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	if (m_GirlTarget) m_GirlTarget->performance(1);
 	g_GirlDetails.lastsexact = IMGTYPE_CARD;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_MilkTarget(sScript* Script)
 {
-	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_HANDJOB, 1);
+	if (m_GirlTarget){}		//m_GirlTarget->handjob(1);
 	g_GirlDetails.lastsexact = IMGTYPE_MILK;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_WaitTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 1);
+	if (m_GirlTarget) m_GirlTarget->service(1);
 	g_GirlDetails.lastsexact = IMGTYPE_WAIT;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_SingTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	if (m_GirlTarget) m_GirlTarget->performance(1);
 	g_GirlDetails.lastsexact = IMGTYPE_SING;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_TorturePicTarget(sScript* Script)
 {
-	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	if (m_GirlTarget){}		//m_GirlTarget->performance(1);
 	g_GirlDetails.lastsexact = IMGTYPE_TORTURE;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_FootTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_FOOTJOB, 1);
+	if (m_GirlTarget) m_GirlTarget->footjob(1);
 	g_GirlDetails.lastsexact = IMGTYPE_FOOT;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_BedTarget(sScript* Script)
 {
-	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	if (m_GirlTarget){}		//m_GirlTarget->performance(1);
 	g_GirlDetails.lastsexact = IMGTYPE_BED;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_FarmTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_FARMING, 1);
+	if (m_GirlTarget) m_GirlTarget->farming(1);
 	g_GirlDetails.lastsexact = IMGTYPE_FARM;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_HerdTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ANIMALHANDLING, 1);
+	if (m_GirlTarget) m_GirlTarget->animalhandling(1);
 	g_GirlDetails.lastsexact = IMGTYPE_HERD;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CookTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_COOKING, 1);
+	if (m_GirlTarget) m_GirlTarget->cooking(1);
 	g_GirlDetails.lastsexact = IMGTYPE_COOK;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CraftTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_CRAFTING, 1);
+	if (m_GirlTarget) m_GirlTarget->crafting(1);
 	g_GirlDetails.lastsexact = IMGTYPE_CRAFT;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_SwimTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateStat(m_GirlTarget, STAT_STRENGTH, 1);
+	if (m_GirlTarget) m_GirlTarget->strength(1);
 	g_GirlDetails.lastsexact = IMGTYPE_SWIM;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_BathTarget(sScript* Script)
 {
-	if (m_GirlTarget){}		//g_Girls.UpdateSkill(m_GirlTarget, SKILL_CRAFTING, 1);
+	if (m_GirlTarget){}		//m_GirlTarget->crafting(1);
 	g_GirlDetails.lastsexact = IMGTYPE_BATH;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_NurseTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_MEDICINE, 1);
+	if (m_GirlTarget) m_GirlTarget->medicine(1);
 	g_GirlDetails.lastsexact = IMGTYPE_NURSE;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_FormalTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateStat(m_GirlTarget, STAT_REFINEMENT, 1);
+	if (m_GirlTarget) m_GirlTarget->refinement(1);
 	g_GirlDetails.lastsexact = IMGTYPE_FORMAL;
 	return Script->m_Next;
 }
@@ -1723,67 +1723,67 @@ sScript* cGameScript::Script_GetRandomGirl(sScript* Script)						// `J` new
 }
 sScript* cGameScript::Script_DeepTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 1);
+	if (m_GirlTarget) m_GirlTarget->oralsex(1);
 	g_GirlDetails.lastsexact = IMGTYPE_DEEPTHROAT;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_EatOutTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 1);
+	if (m_GirlTarget) m_GirlTarget->lesbian(1);
 	g_GirlDetails.lastsexact = IMGTYPE_EATOUT;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_StrapOnTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 1);
+	if (m_GirlTarget) m_GirlTarget->lesbian(1);
 	g_GirlDetails.lastsexact = IMGTYPE_STRAPON;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_Les69ingTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_LESBIAN, 1);
+	if (m_GirlTarget) m_GirlTarget->lesbian(1);
 	g_GirlDetails.lastsexact = IMGTYPE_LES69ING;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_DildoTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_SERVICE, 1);
+	if (m_GirlTarget) m_GirlTarget->service(1);
 	g_GirlDetails.lastsexact = IMGTYPE_DILDO;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_SubTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 1);
+	if (m_GirlTarget) m_GirlTarget->bdsm(1);
 	g_GirlDetails.lastsexact = IMGTYPE_SUB;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_LickTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 1);
+	if (m_GirlTarget) m_GirlTarget->oralsex(1);
 	g_GirlDetails.lastsexact = IMGTYPE_LICK;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_SuckBallsTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_ORALSEX, 1);
+	if (m_GirlTarget) m_GirlTarget->oralsex(1);
 	g_GirlDetails.lastsexact = IMGTYPE_SUCKBALLS;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_CowGirlTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
+	if (m_GirlTarget) m_GirlTarget->normalsex(1);
 	g_GirlDetails.lastsexact = IMGTYPE_COWGIRL;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_RevCowGirlTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
+	if (m_GirlTarget) m_GirlTarget->normalsex(1);
 	g_GirlDetails.lastsexact = IMGTYPE_REVCOWGIRL;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_SexDoggyTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
+	if (m_GirlTarget) m_GirlTarget->normalsex(1);
 	g_GirlDetails.lastsexact = IMGTYPE_SEXDOGGY;
 	return Script->m_Next;
 }
@@ -1791,7 +1791,7 @@ sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 2);
+		m_GirlTarget->normalsex(2);
 
 		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
 		sCustomer Cust = g_Customers.GetCustomer(*g_Brothels.GetBrothel(g_CurrBrothel));
@@ -2241,9 +2241,9 @@ sScript* cGameScript::Script_BrandTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, g_Dice % 3 + 1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, g_Dice % 3 + 1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -(g_Dice % 3));
+		m_GirlTarget->pchate(g_Dice % 3 + 1);
+		m_GirlTarget->pcfear(g_Dice % 3 + 1);
+		m_GirlTarget->pclove(-(g_Dice % 3));
 	}
 	g_GirlDetails.lastsexact = IMPTYPE_BRAND;
 	return Script->m_Next;
@@ -2252,9 +2252,9 @@ sScript* cGameScript::Script_RapeTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, g_Dice % 5 + 1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, g_Dice % 5 + 1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -(g_Dice % 5));
+		m_GirlTarget->pchate(g_Dice % 5 + 1);
+		m_GirlTarget->pcfear(g_Dice % 5 + 1);
+		m_GirlTarget->pclove(-(g_Dice % 5));
 	}
 	g_GirlDetails.lastsexact = IMPTYPE_RAPE;
 	return Script->m_Next;
@@ -2263,9 +2263,9 @@ sScript* cGameScript::Script_RapeBeastTarget(sScript* Script)
 {
 	if (m_GirlTarget)
 	{
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCHATE, g_Dice % 4 + 1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCFEAR, g_Dice % 6 + 1);
-		g_Girls.UpdateStat(m_GirlTarget, STAT_PCLOVE, -(g_Dice % 3));
+		m_GirlTarget->pchate(g_Dice % 4 + 1);
+		m_GirlTarget->pcfear(g_Dice % 6 + 1);
+		m_GirlTarget->pclove(-(g_Dice % 3));
 	}
 	g_GirlDetails.lastsexact = IMPTYPE_RAPEBEAST;
 	return Script->m_Next;
@@ -2287,73 +2287,73 @@ sScript* cGameScript::Script_BirthBeastTarget(sScript* Script)
 }
 sScript* cGameScript::Script_ImpregSexTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, g_Dice % 3 + 1);
+	if (m_GirlTarget) m_GirlTarget->normalsex(g_Dice % 3 + 1);
 	g_GirlDetails.lastsexact = IMPTYPE_IMPREGSEX;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_ImpregGroupTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_GROUP, g_Dice % 3 + 1);
+	if (m_GirlTarget) m_GirlTarget->group(g_Dice % 3 + 1);
 	g_GirlDetails.lastsexact = IMPTYPE_IMPREGGROUP;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_ImpregBDSMTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, g_Dice % 3 + 1);
+	if (m_GirlTarget) m_GirlTarget->bdsm(g_Dice % 3 + 1);
 	g_GirlDetails.lastsexact = IMPTYPE_IMPREGBDSM;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_ImpregBeastTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, g_Dice % 3 + 1);
+	if (m_GirlTarget) m_GirlTarget->beastiality(g_Dice % 3 + 1);
 	g_GirlDetails.lastsexact = IMPTYPE_IMPREGBEAST;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_VirginSexTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_NORMALSEX, 1);
+	if (m_GirlTarget) m_GirlTarget->normalsex(1);
 	g_GirlDetails.lastsexact = IMPTYPE_VIRGINSEX;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_VirginGroupTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_GROUP, 1);
+	if (m_GirlTarget) m_GirlTarget->group(1);
 	g_GirlDetails.lastsexact = IMPTYPE_VIRGINGROUP;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_VirginBDSMTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BDSM, 1);
+	if (m_GirlTarget) m_GirlTarget->bdsm(1);
 	g_GirlDetails.lastsexact = IMPTYPE_VIRGINBDSM;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_VirginBeastTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_BEASTIALITY, 1);
+	if (m_GirlTarget) m_GirlTarget->beastiality(1);
 	g_GirlDetails.lastsexact = IMPTYPE_VIRGINBEAST;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_EscortTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, STAT_CHARISMA, 1);
+	if (m_GirlTarget) m_GirlTarget->upd_skill(STAT_CHARISMA, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_ESCORT;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_SportTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, STAT_CONSTITUTION, 1);
+	if (m_GirlTarget) m_GirlTarget->upd_skill(STAT_CONSTITUTION, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_SPORT;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_StudyTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, STAT_INTELLIGENCE, 1);
+	if (m_GirlTarget) m_GirlTarget->upd_skill(STAT_INTELLIGENCE, 1);
 	g_GirlDetails.lastsexact = IMGTYPE_STUDY;
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_TeacherTarget(sScript* Script)
 {
-	if (m_GirlTarget) g_Girls.UpdateSkill(m_GirlTarget, SKILL_PERFORMANCE, 1);
+	if (m_GirlTarget) m_GirlTarget->performance(1);
 	g_GirlDetails.lastsexact = IMGTYPE_TEACHER;
 	return Script->m_Next;
 }

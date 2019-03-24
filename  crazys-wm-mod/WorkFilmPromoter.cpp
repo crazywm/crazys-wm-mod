@@ -124,9 +124,9 @@ bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill);
+	girl->exp(xp);
+	girl->charisma(g_Dice%skill);
+	girl->service(g_Dice%skill);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
@@ -138,13 +138,13 @@ double cJobManager::JP_FilmPromoter(sGirl* girl, bool estimate)// not used
 	if (estimate)// for third detail string
 	{
 		jobperformance =
-			g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 6.0 +
-			g_Girls.GetSkill(girl, SKILL_SERVICE) / 6.0 +
-			g_Girls.GetStat(girl, STAT_CHARISMA) / 6.0 +
-			g_Girls.GetStat(girl, STAT_BEAUTY) / 10.0 +
-			g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 6.0 +
-			g_Girls.GetStat(girl, STAT_CONFIDENCE) / 10.0 +
-			g_Girls.GetStat(girl, STAT_FAME) / 10.0;
+			girl->performance() / 6.0 +
+			girl->service() / 6.0 +
+			girl->charisma() / 6.0 +
+			girl->beauty() / 10.0 +
+			girl->intelligence() / 6.0 +
+			girl->confidence() / 10.0 +
+			girl->fame() / 10.0;
 
 		if (girl->is_slave()) jobperformance -= 1000;
 	}
@@ -152,43 +152,43 @@ double cJobManager::JP_FilmPromoter(sGirl* girl, bool estimate)// not used
 	{
 		// How much will she help stretch your advertising budget? Let's find out
 		double cval = 0.0;
-		cval = g_Girls.GetSkill(girl, SKILL_SERVICE);
+		cval = girl->service();
 		if (cval > 0)
 		{
 			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
 			jobperformance += (cval / 3);  // add ~33% of service skill to jobperformance
 		}
-		cval = g_Girls.GetStat(girl, STAT_CHARISMA);
+		cval = girl->charisma();
 		if (cval > 0)
 		{
 			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
 			jobperformance += (cval / 6);  // add ~17% of charisma to jobperformance
 		}
-		cval = g_Girls.GetStat(girl, STAT_BEAUTY);
+		cval = girl->beauty();
 		if (cval > 0)
 		{
 			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
 			jobperformance += (cval / 10);  // add 10% of beauty to jobperformance
 		}
-		cval = g_Girls.GetStat(girl, STAT_INTELLIGENCE);
+		cval = girl->intelligence();
 		if (cval > 0)
 		{
 			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
 			jobperformance += (cval / 6);  // add ~17% of intelligence to jobperformance
 		}
-		cval = g_Girls.GetStat(girl, STAT_CONFIDENCE);
+		cval = girl->confidence();
 		if (cval > 0)
 		{
 			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
 			jobperformance += (cval / 10);  // add 10% of confidence to jobperformance
 		}
-		cval = g_Girls.GetStat(girl, STAT_FAME);
+		cval = girl->fame();
 		if (cval > 0)
 		{
 			cval = g_Dice % (int)cval + (cval / 2);  // random 50%-150% range
 			jobperformance += (cval / 4);  // add 25% of fame to jobperformance
 		}
-		cval = g_Girls.GetStat(girl, STAT_LEVEL);
+		cval = girl->level();
 		if (cval > 0)
 		{
 			jobperformance += (cval / 2);  // add 50% of level to jobperformance

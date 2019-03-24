@@ -595,7 +595,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			else
 			{
 				current->m_Refused_To_Work_Night = true;
-				brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+				brothel->m_Fame -= current->fame();
 				ss << girlName << " refused to work so made no money.";
 			}
 		}
@@ -671,14 +671,14 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			//		Summary Messages
 			if (refused)
 			{
-				brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+				brothel->m_Fame -= current->fame();
 				ss << girlName << " refused to work so made no money.";
 			}
 			else
 			{
 				ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
 				if (totalGold < 0) sum = EVENT_DEBUG;
-				brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+				brothel->m_Fame += current->fame();
 			}
 		}
 		else
@@ -723,7 +723,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		//		Summary Messages
 		if (refused)
 		{
-			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame -= current->fame();
 			ss << girlName << " refused to work so made no money.";
 		}
 		else
@@ -731,7 +731,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
-			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame += current->fame();
 		}
 		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
@@ -803,7 +803,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		//	Summary Messages
 		if (refused)
 		{
-			brothel->m_Fame -= g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame -= current->fame();
 			ss << girlName << " refused to work so made no money.";
 		}
 		else
@@ -811,7 +811,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			ss << m_JobManager.GirlPaymentText(brothel, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
-			brothel->m_Fame += g_Girls.GetStat(current, STAT_FAME);
+			brothel->m_Fame += current->fame();
 		}
 		current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
 
@@ -846,8 +846,8 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		// Level the girl up if nessessary
 		g_Girls.LevelUp(current);
 		// Natural healing, 2% health and 2% tiredness per day
-		g_Girls.UpdateStat(current, STAT_HEALTH, 2, false);
-		g_Girls.UpdateStat(current, STAT_TIREDNESS, -2, false);
+		current->upd_stat(STAT_HEALTH, 2, false);
+		current->upd_stat(STAT_TIREDNESS, -2, false);
 
 		sw = current->m_NightJob;
 		if (current->happiness()< 40)
@@ -887,27 +887,27 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			if (t > 50 && h < 50)
 			{
 				ss << "some potions";
-				g_Girls.UpdateStat(current, STAT_HEALTH, 20 + g_Dice % 20, false);
-				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
+				current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
 				g_Gold.consumable_cost(20, true);
 			}
 			else if (t > 50)
 			{
 				ss << "a resting potion";
-				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
 				g_Gold.consumable_cost(10, true);
 			}
 			else if (h < 50)
 			{
 				ss << "a healing potion";
-				g_Girls.UpdateStat(current, STAT_HEALTH, 20 + g_Dice % 20, false);
+				current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
 				g_Gold.consumable_cost(10, true);
 			}
 			else
 			{
 				ss << "a potion";
-				g_Girls.UpdateStat(current, STAT_HEALTH, 10 + g_Dice % 10, false);
-				g_Girls.UpdateStat(current, STAT_TIREDNESS, -(10 + g_Dice % 10), false);
+				current->upd_stat(STAT_HEALTH, 10 + g_Dice % 10, false);
+				current->upd_stat(STAT_TIREDNESS, -(10 + g_Dice % 10), false);
 				g_Gold.consumable_cost(5, true);
 			}
 			ss << " for herself.\n";
@@ -946,18 +946,18 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 						if (t > 80 && h < 40)
 						{
 							ss << girlName << " recuperate.\n";
-							g_Girls.UpdateStat(current, STAT_HEALTH, 2 + g_Dice % 4, false);
-							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(2 + g_Dice % 4), false);
+							current->upd_stat(STAT_HEALTH, 2 + g_Dice % 4, false);
+							current->upd_stat(STAT_TIREDNESS, -(2 + g_Dice % 4), false);
 						}
 						else if (t > 80)
 						{
 							ss << girlName << " to relax.\n";
-							g_Girls.UpdateStat(current, STAT_TIREDNESS, -(5 + g_Dice % 5), false);
+							current->upd_stat(STAT_TIREDNESS, -(5 + g_Dice % 5), false);
 						}
 						else if (h < 40)
 						{
 							ss << " heal " << girlName << ".\n";
-							g_Girls.UpdateStat(current, STAT_HEALTH, 5 + g_Dice % 5, false);
+							current->upd_stat(STAT_HEALTH, 5 + g_Dice % 5, false);
 						}
 					}
 				}
@@ -1575,11 +1575,11 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 
 	//CRAZY added this better looking girls should make better quality movies
 	// Changed to work with new job revision --PP
-	quality += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 10;
-	quality += (g_Girls.GetStat(girl, STAT_CHARISMA) - 50) / 10;
-	quality += (g_Girls.GetStat(girl, STAT_BEAUTY) - 50) / 10;
-	quality += g_Girls.GetStat(girl, STAT_FAME);
-	quality += g_Girls.GetStat(girl, STAT_LEVEL);
+	quality += girl->performance() / 10;
+	quality += (girl->charisma() - 50) / 10;
+	quality += (girl->beauty() - 50) / 10;
+	quality += girl->fame();
+	quality += girl->level();
 
 #if 0
 	int performance = quality;

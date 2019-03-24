@@ -197,9 +197,9 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (girl->is_slave() && !cfg.initial.slave_pay_outofpocket()) wages = 0;    // You own her so you don't have to pay her.
 	else
 	{
-		int roll_max = (g_Girls.GetStat(girl, STAT_INTELLIGENCE)
+		int roll_max = (girl->intelligence()
 			+ g_Girls.GetStat(girl, SKILL_HERBALISM)
-			+ g_Girls.GetSkill(girl, SKILL_FARMING));
+			+ girl->farming());
 		roll_max /= 6;
 		wages += 10 + g_Dice%roll_max;
 	}
@@ -226,15 +226,15 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, (g_Dice%skill) + 2);
+	girl->herbalism((g_Dice%skill) + 2);
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, max(0, (g_Dice % skill) - 2));
+	girl->farming(max(0, (g_Dice % skill) - 1));
+	girl->intelligence(max(0, (g_Dice % skill) - 2));
+	girl->constitution(max(0, (g_Dice % skill) - 2));
 
 #pragma endregion
 	return false;

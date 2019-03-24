@@ -2031,7 +2031,7 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 				girl->m_Events.AddMessage(("Did som(E)thing violent."), IMGTYPE_COMBAT, Day0Night1);
 				break;
 			}
-		g_Girls.UpdateStat(girl, STAT_FAME, -1);
+		girl->fame(-1);
 	}
 	return false;
 }
@@ -2120,19 +2120,19 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	// Earn xp for all kills, even if defeated
 	int xp = 3;
 
-	if (g_Girls.HasTrait(SecGuard, "Quick Learner"))		xp += 2;
-	else if (g_Girls.HasTrait(SecGuard, "Slow Learner"))	xp -= 2;
+	if (SecGuard->has_trait("Quick Learner"))		xp += 2;
+	else if (SecGuard->has_trait("Slow Learner"))	xp -= 2;
 
 	int num = OrgNumMem - enemy_gang->m_Num;
-	g_Girls.UpdateStat(SecGuard, STAT_EXP, num * xp);
+	SecGuard->exp(num * xp);
 
 	if (res)  // Security guard wins
 	{
-		g_Girls.UpdateSkill(SecGuard, SKILL_COMBAT, 1);
-		g_Girls.UpdateSkill(SecGuard, SKILL_MAGIC, 1);
+		SecGuard->combat(1);
+		SecGuard->magic(1);
 		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, num, true);  // There's nothing like killin ta make ya horny!
-		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, num);
-		g_Girls.UpdateStat(SecGuard, STAT_FAME, num);
+		SecGuard->confidence(num);
+		SecGuard->fame(num);
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num);
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, num);
 
@@ -2207,9 +2207,9 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 				Gmsg << "him.";
 				SGmsg << "him.";
 				int dildo = 0;
-				/* */if (g_Girls.HasItem(SecGuard, "Compelling Dildo") != -1)	dildo = 1;
-				else if (g_Girls.HasItem(SecGuard, "Dreidel Dildo") != -1)	dildo = 2;
-				else if (g_Girls.HasItem(SecGuard, "Double Dildo") != -1)		dildo = 3;
+				/* */if (SecGuard->has_item("Compelling Dildo") != -1)	dildo = 1;
+				else if (SecGuard->has_item("Dreidel Dildo") != -1)	dildo = 2;
+				else if (SecGuard->has_item("Double Dildo") != -1)		dildo = 3;
 				if (dildo > 0)
 				{
 					SGmsg << "\n \n" << SecName << " decided to give this customer a taste of his own medicine and shoved her ";
@@ -2256,16 +2256,16 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		SecGuard->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
 		// Bad stuff
-		g_Girls.UpdateStat(SecGuard, STAT_HAPPINESS, -40);
-		g_Girls.UpdateStat(SecGuard, STAT_CONFIDENCE, -40);
-		g_Girls.UpdateStat(SecGuard, STAT_OBEDIENCE, -10);
-		g_Girls.UpdateStat(SecGuard, STAT_SPIRIT, -40);
-		g_Girls.UpdateStat(SecGuard, STAT_LIBIDO, -4);
+		SecGuard->happiness(-40);
+		SecGuard->confidence(-40);
+		SecGuard->obedience(-10);
+		SecGuard->spirit(-40);
+		SecGuard->libido(-4);
 		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, -40, true);
-		g_Girls.UpdateStat(SecGuard, STAT_TIREDNESS, 60);
-		g_Girls.UpdateStat(SecGuard, STAT_PCFEAR, 20);
-		g_Girls.UpdateStat(SecGuard, STAT_PCLOVE, -20);
-		g_Girls.UpdateStat(SecGuard, STAT_PCHATE, 20);
+		SecGuard->tiredness(60);
+		SecGuard->pcfear(20);
+		SecGuard->pclove(-20);
+		SecGuard->pchate(20);
 		g_Girls.GirlInjured(SecGuard, 10); // MYR: Note
 		g_Girls.UpdateEnjoyment(SecGuard, ACTION_WORKSECURITY, -30);
 		g_Girls.UpdateEnjoyment(SecGuard, ACTION_COMBAT, -30);
@@ -2419,16 +2419,16 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 
 	int num = OrgNumMem - enemy_gang->m_Num;
 
-	g_Girls.UpdateStat(girl, STAT_EXP, num * xp);
+	girl->exp(num * xp);
 
 	if (res)  // She wins.  Yay!
 	{
-		g_Girls.UpdateSkill(girl, SKILL_COMBAT, 1);
-		g_Girls.UpdateSkill(girl, SKILL_MAGIC, 1);
-		g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
+		girl->combat(1);
+		girl->magic(1);
+		girl->agility(1);
 		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, num, true);  // There's nothing like killin ta make ya horny!
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, num);
-		g_Girls.UpdateStat(girl, STAT_FAME, num);
+		girl->confidence(num);
+		girl->fame(num);
 
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num);
 
@@ -2500,17 +2500,17 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
 	// Made this more harsh, so the player hopefully notices it
-	//g_Girls.UpdateStat(girl, STAT_HEALTH, -(g_Dice%10 + 5));  // Oops, can drop health below zero after combat is considered
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, -40);
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -40);
-	g_Girls.UpdateStat(girl, STAT_OBEDIENCE, -10);
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, -40);
-	g_Girls.UpdateStat(girl, STAT_LIBIDO, -4);
+	//girl->health(-(g_Dice%10 + 5));  // Oops, can drop health below zero after combat is considered
+	girl->happiness(-40);
+	girl->confidence(-40);
+	girl->obedience(-10);
+	girl->spirit(-40);
+	girl->libido(-4);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -40, true);
-	g_Girls.UpdateStat(girl, STAT_TIREDNESS, 60);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, 20);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, -20);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, 20);
+	girl->tiredness(60);
+	girl->pcfear(20);
+	girl->pclove(-20);
+	girl->pchate(20);
 	g_Girls.GirlInjured(girl, 10); // MYR: Note
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -30);
 
@@ -3457,18 +3457,18 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 					freegirl_names.push_back(selected_girl->m_Realname);
 					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
 					The_Player->disposition(7);
-					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 20);
-					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -40);
-					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -50);
-					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 100);
-					g_Girls.UpdateStat(selected_girl, STAT_HEALTH, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_TIREDNESS, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_CHARISMA, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_FAME, 2);
-					g_Girls.UpdateStat(selected_girl, STAT_CONFIDENCE, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_SPIRIT, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_DIGNITY, 5);
+					selected_girl->pclove(20);
+					selected_girl->pcfear(-40);
+					selected_girl->pchate(-50);
+					selected_girl->obedience(10);
+					selected_girl->happiness(100);
+					selected_girl->health(10);
+					selected_girl->tiredness(10);
+					selected_girl->charisma(5);
+					selected_girl->fame(2);
+					selected_girl->confidence(5);
+					selected_girl->obedience(10);
+					selected_girl->dignity(5);
 					selected_girl->m_AccLevel = cfg.initial.girls_accom();
 					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
 				}
@@ -3477,13 +3477,13 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 					firegirl_names.push_back(selected_girl->m_Realname);
 					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
 					The_Player->disposition(3);
-					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -5);
-					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 20);
-					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 40);
-					g_Girls.UpdateStat(selected_girl, STAT_TIREDNESS, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_DIGNITY, -2);
+					selected_girl->pclove(5);
+					selected_girl->pcfear(5);
+					selected_girl->pchate(-5);
+					selected_girl->obedience(20);
+					selected_girl->happiness(40);
+					selected_girl->tiredness(5);
+					selected_girl->dignity(-2);
 					selected_girl->m_AccLevel = cfg.initial.girls_accom();
 					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
 				}
@@ -3491,24 +3491,24 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 				{
 					freegirl_names.push_back(selected_girl->m_Realname);
 					The_Player->disposition(-1);
-					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, -2);
-					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, -10);
-					g_Girls.UpdateStat(selected_girl, STAT_TIREDNESS, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_DIGNITY, -5);
+					selected_girl->pclove(-2);
+					selected_girl->pcfear(10);
+					selected_girl->pchate(5);
+					selected_girl->obedience(5);
+					selected_girl->happiness(-10);
+					selected_girl->tiredness(5);
+					selected_girl->dignity(-5);
 				}
 				else if (free)
 				{
 					freegirl_names.push_back(selected_girl->m_Realname);
 					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
 					The_Player->disposition(5);
-					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -20);
-					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -25);
-					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 70);
+					selected_girl->pclove(10);
+					selected_girl->pcfear(-20);
+					selected_girl->pchate(-25);
+					selected_girl->obedience(10);
+					selected_girl->happiness(70);
 
 					selected_girl->m_AccLevel = cfg.initial.girls_accom();
 					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
@@ -3541,16 +3541,16 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 			{
 				if (option == FFSD_free1)	// Throw a freedom party - Guest
 				{
-					g_Girls.UpdateStat(selected_girl, STAT_PCLOVE, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_PCFEAR, -5);
-					g_Girls.UpdateStat(selected_girl, STAT_PCHATE, -5);
-					g_Girls.UpdateStat(selected_girl, STAT_OBEDIENCE, 2);
-					g_Girls.UpdateStat(selected_girl, STAT_HAPPINESS, 100);
-					g_Girls.UpdateStat(selected_girl, STAT_HEALTH, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_TIREDNESS, 10);
-					g_Girls.UpdateStat(selected_girl, STAT_CONFIDENCE, 2);
-					g_Girls.UpdateStat(selected_girl, STAT_SPIRIT, 5);
-					g_Girls.UpdateStat(selected_girl, STAT_DIGNITY, 1);
+					selected_girl->pclove(5);
+					selected_girl->pcfear(-5);
+					selected_girl->pchate(-5);
+					selected_girl->obedience(2);
+					selected_girl->happiness(100);
+					selected_girl->health(10);
+					selected_girl->tiredness(10);
+					selected_girl->confidence(2);
+					selected_girl->spirit(5);
+					selected_girl->dignity(1);
 				}
 				else if (fire)
 				{

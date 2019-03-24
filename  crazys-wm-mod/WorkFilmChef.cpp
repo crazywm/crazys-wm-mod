@@ -96,7 +96,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if (TopSkill == COOKING) ss << "Her skills in the kitchen are enough to carry the show.";
 		else ss << "She's sexy enough that her fumbles in the kitchen go mostly unnoticed.";
 		bonus = 4;
-		g_Girls.UpdateStat(girl, STAT_FAME, 1);
+		girl->fame(1);
 	}
 	else if (jobperformance >= 145)
 	{
@@ -162,9 +162,9 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_COOKING, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->cooking(g_Dice%skill + 1);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
@@ -187,11 +187,11 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int MrNiceGuy = g_Dice % 6, MrFair = g_Dice % 6;
 	MrNiceGuy = (MrNiceGuy + MrFair) / 3;				//Should come out around 1-2 most of the time.
 
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_FAME, MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, -MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, -MrNiceGuy);
+	girl->happiness(MrNiceGuy);
+	girl->fame(MrNiceGuy);
+	girl->pclove(MrNiceGuy);
+	girl->pchate(-MrNiceGuy);
+	girl->pcfear(-MrNiceGuy);
 	The_Player->disposition(MrNiceGuy);
 
 	//----------------------------------------------------------------------
@@ -202,7 +202,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 double cJobManager::JP_FilmChef(sGirl* girl, bool estimate)
 {
 	double jobperformance =
-		((g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CONFIDENCE)) / 3
+		((girl->charisma() + girl->beauty() + girl->confidence()) / 3
 		+ g_Girls.GetSkill(girl, SKILL_COOKING));
 
 	if (!estimate)

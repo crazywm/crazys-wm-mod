@@ -114,12 +114,12 @@ bool cJobManager::WorkFilmDominatrix(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	// Improve stats
 	int xp = 10, skill = 3;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{ skill += 1; xp += 3; }
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{ skill -= 1; xp -= 3; }
+	if (girl->has_trait("Quick Learner"))		{ skill += 1; xp += 3; }
+	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_BDSM, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->bdsm(g_Dice%skill + 1);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);

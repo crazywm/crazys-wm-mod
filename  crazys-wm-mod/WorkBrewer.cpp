@@ -227,15 +227,15 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_BREWING, (g_Dice % skill) + 2);
+	girl->brewing((g_Dice % skill) + 2);
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateSkill(girl, SKILL_HERBALISM, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateSkill(girl, SKILL_COOKING, max(0, (g_Dice % skill) - 2));
+	girl->herbalism(max(0, (g_Dice % skill) - 1));
+	girl->intelligence(max(0, (g_Dice % skill) - 2));
+	girl->cooking(max(0, (g_Dice % skill) - 2));
 
 #pragma endregion
 	return false;

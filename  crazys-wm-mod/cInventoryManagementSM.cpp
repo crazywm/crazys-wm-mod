@@ -129,11 +129,11 @@ void cInventoryManagementSM::handle_events()
 							g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_InvManager.BuyShopItem(selection)), false);
 						else
 							g_Girls.AddInv(targetGirl, g_InvManager.BuyShopItem(selection));
-						g_Girls.UpdateStat(targetGirl, STAT_OBEDIENCE, 1);
-						g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, happiness);
-						g_Girls.UpdateStat(targetGirl, STAT_PCHATE, -2);
-						g_Girls.UpdateStat(targetGirl, STAT_PCLOVE, happiness-1);
-						g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
+						targetGirl->obedience(1);
+						targetGirl->happiness(happiness);
+						targetGirl->pchate(-2);
+						targetGirl->pclove(happiness-1);
+						targetGirl->pcfear(-1);
 					}
 				}
 				else	// player buying from shop
@@ -216,11 +216,11 @@ void cInventoryManagementSM::handle_events()
 								g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]), false);
 							else
 								g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]);
-							g_Girls.UpdateStat(targetGirl, STAT_OBEDIENCE, 1);
-							g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, happiness);
-							g_Girls.UpdateStat(targetGirl, STAT_PCHATE, -2);
-							g_Girls.UpdateStat(targetGirl, STAT_PCLOVE, happiness-1);
-							g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
+							targetGirl->obedience(1);
+							targetGirl->happiness(happiness);
+							targetGirl->pchate(-2);
+							targetGirl->pclove(happiness-1);
+							targetGirl->pcfear(-1);
 						}
 						else
 						{
@@ -267,11 +267,11 @@ void cInventoryManagementSM::handle_events()
 						if(targetGirl->m_EquipedItems[selection] == 1)	// unequip item if it is equiped
 							g_InvManager.Unequip(targetGirl, selection);
 						if(targetGirl->m_Inventory[selection]->m_Badness >= 20)	// happy to get rid of bad items
-							g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, 5);
+							targetGirl->happiness(5);
 						else	// sad to see good items go
 						{
 							int happiness = targetGirl->m_Inventory[selection]->m_Cost/50;
-							g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, -happiness);
+							targetGirl->happiness(-happiness);
 						}
 
 						// remove the item from the girl
@@ -292,11 +292,11 @@ void cInventoryManagementSM::handle_events()
 						if(targetGirl->m_EquipedItems[selection] == 1)	// unequip item if it is equiped
 							g_InvManager.Unequip(targetGirl, selection);
 						if(targetGirl->m_Inventory[selection]->m_Badness >= 20)	// happy to get rid of bad items
-							g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, 5);
+							targetGirl->happiness(5);
 						else	// sad to see good items go
 						{
 							int happiness = targetGirl->m_Inventory[selection]->m_Cost/50;
-							g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, -happiness);
+							targetGirl->happiness(-happiness);
 						}
 
 						// add the gold
@@ -333,11 +333,11 @@ void cInventoryManagementSM::handle_events()
 						if(targetGirl->m_EquipedItems[selection] == 1)	// unequip item if it is equiped
 							g_InvManager.Unequip(fromGirl, selection);
 						if(targetGirl->m_Inventory[selection]->m_Badness >= 20)	// happy to get rid of bad items
-							g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, 5);
+							targetGirl->happiness(5);
 						else	// sad to see good items go
 						{
 							int happiness = targetGirl->m_Inventory[selection]->m_Cost/50;
-							g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, -happiness);
+							targetGirl->happiness(-happiness);
 						}
 
 						// add to target Girls inventory
@@ -356,11 +356,11 @@ void cInventoryManagementSM::handle_events()
 								g_InvManager.Equip(fromGirl, g_Girls.AddInv(fromGirl, targetGirl->m_Inventory[selection]), false);
 							else
 								g_Girls.AddInv(fromGirl, targetGirl->m_Inventory[selection]);
-							g_Girls.UpdateStat(targetGirl, STAT_OBEDIENCE, 1);
-							g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, happiness);
-							g_Girls.UpdateStat(targetGirl, STAT_PCHATE, -2);
-							g_Girls.UpdateStat(targetGirl, STAT_PCLOVE, happiness-1);
-							g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
+							targetGirl->obedience(1);
+							targetGirl->happiness(happiness);
+							targetGirl->pchate(-2);
+							targetGirl->pclove(happiness-1);
+							targetGirl->pcfear(-1);
 						}
 						else
 						{
@@ -968,11 +968,11 @@ void cInventoryManagementSM::take_from_girl(sGirl *girl, int index)
  *	Losing a good item will make her sad, as well
  */
 	if(item->m_Badness >= 20) {
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, item->m_Badness/5);
+		girl->happiness(item->m_Badness/5);
 	}
 	else {
 		int happiness = item->m_Cost/50;
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -happiness);
+		girl->happiness(-happiness);
 	}
 /*
  *	remove the item
@@ -1068,7 +1068,7 @@ void cInventoryManagementSM::give_to_girl(sGirl *girl, sInventoryItem *item)
 		if(item->m_Type != INVFOOD && item->m_Type != INVMAKEUP) 
 			g_InvManager.Equip(girl, slot2, false);
 		g_MessageQue.AddToQue(gettext("She doesn't seem happy with the gift."), 0);
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, item->m_Badness/5);
+		girl->happiness(item->m_Badness/5);
 		return;
 	}
 /*
@@ -1283,11 +1283,11 @@ void cInventoryManagementSM::item_shift_r()
 				if(fromGirl->m_EquipedItems[selection] == 1)	// unequip item if it is equiped
 					g_InvManager.Unequip(fromGirl, selection);
 				if(fromGirl->m_Inventory[selection]->m_Badness >= 20)	// happy to get rid of bad items
-					g_Girls.UpdateStat(fromGirl, STAT_HAPPINESS, 5);
+					fromGirl->happiness(5);
 				else	// sad to see good items go
 				{
 					int happiness = fromGirl->m_Inventory[selection]->m_Cost/50;
-					g_Girls.UpdateStat(fromGirl, STAT_HAPPINESS, -happiness);
+					fromGirl->happiness(-happiness);
 				}
 
 				// add to target Girls inventory
@@ -1306,11 +1306,11 @@ void cInventoryManagementSM::item_shift_r()
 						g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]), false);
 					else
 						g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]);
-					g_Girls.UpdateStat(targetGirl, STAT_OBEDIENCE, 1);
-					g_Girls.UpdateStat(targetGirl, STAT_HAPPINESS, happiness);
-					g_Girls.UpdateStat(targetGirl, STAT_PCHATE, -2);
-					g_Girls.UpdateStat(targetGirl, STAT_PCLOVE, happiness-1);
-					g_Girls.UpdateStat(targetGirl, STAT_PCFEAR, -1);
+					targetGirl->obedience(1);
+					targetGirl->happiness(happiness);
+					targetGirl->pchate(-2);
+					targetGirl->pclove(happiness-1);
+					targetGirl->pcfear(-1);
 				}
 				else
 				{

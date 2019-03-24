@@ -155,8 +155,8 @@ bool cJobManager::WorkHouseCook(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
-	g_Girls.UpdateSkill(girl, SKILL_COOKING, (g_Dice % skill) + 2);
+	girl->exp((g_Dice % xp) + 2);
+	girl->cooking((g_Dice % skill) + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);

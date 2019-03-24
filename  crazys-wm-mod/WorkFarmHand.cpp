@@ -97,25 +97,25 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if (Day0Night1 == SHIFT_DAY && roll_c % 3 == 1)	// 33% chance she will watch the sunset when working day shift
 		{
 			ss << "sat beneath an oak tree and watched the sunset.";
-			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -((g_Dice % 5) + 2));
+			girl->tiredness(-((g_Dice % 5) + 2));
 		}
 		else if (roll_c < 25)
 		{
 			ss << "played with the baby animals a bit.";
-			g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % 2) + 1);
+			girl->animalhandling((g_Dice % 2) + 1);
 		}
 		else if (roll_c < 50)
 		{
 			ss << "played in the dirt a bit.";
-			g_Girls.UpdateSkill(girl, SKILL_FARMING, (g_Dice % 2));
+			girl->farming((g_Dice % 2));
 		}
 		else
 		{
 			ss << "sat in a rocking chair on the farm house front porch whittling.";
-			g_Girls.UpdateSkill(girl, SKILL_CRAFTING, (g_Dice % 3));
-			g_Girls.UpdateStat(girl, STAT_TIREDNESS, -(g_Dice % 3));
+			girl->crafting((g_Dice % 3));
+			girl->tiredness(-(g_Dice % 3));
 		}
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 4) + 2);
+		girl->happiness((g_Dice % 4) + 2);
 	}
 
 #if 0
@@ -157,15 +157,15 @@ bool cJobManager::WorkFarmHand(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill));
+	girl->service((g_Dice % skill));
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateSkill(girl, SKILL_FARMING, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateStat(girl, STAT_STRENGTH, max(0, (g_Dice % skill) - 2));
+	girl->crafting(max(0, (g_Dice % skill) - 1));
+	girl->farming(max(0, (g_Dice % skill) - 2));
+	girl->strength(max(0, (g_Dice % skill) - 2));
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoyF);
 	g_Girls.UpdateEnjoyment(girl, actiontype2, enjoyC);

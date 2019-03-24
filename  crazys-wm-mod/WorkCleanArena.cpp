@@ -106,10 +106,10 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (playtime)	// `J` needs more variation
 	{
 		ss << "\n \n" << girlName << " finished her cleaning early so she played around with some of the equipment.";
-		g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % 3));
-		g_Girls.UpdateStat(girl, STAT_AGILITY, (g_Dice % 2));
-		g_Girls.UpdateStat(girl, STAT_CONSTITUTION, (g_Dice % 2));
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, (g_Dice % 2));
+		girl->combat((g_Dice % 3));
+		girl->agility((g_Dice % 2));
+		girl->constitution((g_Dice % 2));
+		girl->confidence((g_Dice % 2));
 		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, 1);
 	}
 
@@ -131,10 +131,10 @@ bool cJobManager::WorkCleanArena(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
-	g_Girls.UpdateSkill(girl, SKILL_COMBAT, (g_Dice % 2));
-	g_Girls.UpdateSkill(girl, SKILL_CRAFTING, (g_Dice % 2));
+	girl->exp((g_Dice % xp) + 2);
+	girl->service((g_Dice % skill) + 2);
+	girl->combat((g_Dice % 2));
+	girl->crafting((g_Dice % 2));
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);

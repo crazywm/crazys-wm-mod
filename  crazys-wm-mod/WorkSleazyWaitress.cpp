@@ -194,7 +194,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	tips += (((10.0 + jobperformance / 22.0) * (double)wages) / 100.0);
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
@@ -241,15 +241,15 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		if (jobperformance >= 185) //great
 		{
 			ss << "A patron reached out to grab her ass. But she skillfully avoided it";
-			if (g_Girls.GetStat(girl, STAT_LIBIDO) > 70 && !girl->has_trait( "Lesbian"))
+			if (girl->libido() > 70 && !girl->has_trait( "Lesbian"))
 			{
 				ss << " and said that's only on the menu if your willing to pay up. He jumped at the chance to get to try her ass out and bent her over the table and whiping out his " << dick_type_text << " dick.";
-				wages += g_Girls.GetStat(girl, STAT_ASKPRICE) + 50;
+				wages += girl->askprice() + 50;
 				imagetype = IMGTYPE_ANAL;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				if (roll_c >= 90)//small
 				{
-					if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 70)
+					if (girl->anal() >= 70)
 					{
 						ss << " It slide right in her well trained ass with no problems."; anal += 1;
 						if (girl->has_trait( "Fast Orgasms"))
@@ -265,7 +265,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 							ss << " She slightly enjoyed herself.\n";
 						}
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 40)
+					else if (girl->anal() >= 40)
 					{
 						ss << " It slide into her ass with little trouble as she is slight trained in the anal arts."; anal += 2;
 						if (girl->has_trait( "Fast Orgasms"))
@@ -300,7 +300,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 				}
 				else if (roll_c <= 10)//huge
 				{
-					if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 70)
+					if (girl->anal() >= 70)
 					{
 						ss << " Her well trained ass was able to take the huge dick with little trouble."; anal += 3;
 						if (girl->has_trait( "Fast Orgasms"))
@@ -316,9 +316,9 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 							ss << " She orgasmed many times and loved every inch of his huge dick.\n";
 						}
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 40)
+					else if (girl->anal() >= 40)
 					{
-						if ((g_Girls.HasItemJ(girl, "Booty Lube") != -1 || g_Girls.HasItemJ(girl, "Deluxe Booty Lube") != -1) && g_Girls.GetStat(girl, STAT_INTELLIGENCE) >= 60)
+						if ((girl->has_item_j("Booty Lube") != -1 || girl->has_item_j("Deluxe Booty Lube") != -1) && girl->intelligence() >= 60)
 						{
 							ss << " Upon seeing his huge dick she grabbed her Booty Lube and lubed up so that it could fit in easier."; anal += 3;
 							if (girl->has_trait( "Fast Orgasms"))
@@ -353,7 +353,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 					}
 					else
 					{
-						if ((g_Girls.HasItemJ(girl, "Booty Lube") != -1 || g_Girls.HasItemJ(girl, "Deluxe Booty Lube") != -1) && g_Girls.GetStat(girl, STAT_INTELLIGENCE) >= 60)
+						if ((girl->has_item_j("Booty Lube") != -1 || girl->has_item_j("Deluxe Booty Lube") != -1) && girl->intelligence() >= 60)
 						{
 							ss << " Upon seeing his huge dick she grabbed her Booty Lube and lubed up so that it could fit in her tight ass easier."; anal += 3;
 							if (girl->has_trait( "Fast Orgasms"))
@@ -385,7 +385,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 				}
 				else// normal
 				{
-					if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 70)
+					if (girl->anal() >= 70)
 					{
 						ss << " It slide right in her well trained ass."; anal += 2;
 						if (girl->has_trait( "Fast Orgasms"))
@@ -401,7 +401,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 							ss << " She was able to get off by the end.\n";
 						}
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 40)
+					else if (girl->anal() >= 40)
 					{
 						ss << " It was a good fit for her slightly trained ass."; anal += 3;
 						if (girl->has_trait( "Fast Orgasms"))
@@ -419,7 +419,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 					}
 					else
 					{
-						if ((g_Girls.HasItemJ(girl, "Booty Lube") != -1 || g_Girls.HasItemJ(girl, "Deluxe Booty Lube") != -1) && g_Girls.GetStat(girl, STAT_INTELLIGENCE) >= 60)
+						if ((girl->has_item_j("Booty Lube") != -1 || girl->has_item_j("Deluxe Booty Lube") != -1) && girl->intelligence() >= 60)
 						{
 							ss << " Upon seeing his dick she grabbed her Booty Lube and lubed up so that it could fit in her tight ass easier."; anal += 3;
 							if (girl->has_trait( "Fast Orgasms"))
@@ -491,25 +491,27 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		enjoy -= 5;
 	}
 
-	if (girl->libido() > 90 && g_Dice.percent(25) && !girl->has_trait( "Lesbian") && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 80 || girl->has_trait( "Cum Addict")))
+	if (girl->libido() > 90 && g_Dice.percent(25) && !girl->has_trait( "Lesbian") && (girl->has_trait(
+			"Nymphomaniac") || girl->has_trait( "Succubus")) && (girl->oralsex() > 80 || girl->has_trait( "Cum Addict")))
 	{
 		ss << girlName << " thought she deserved a short break and disappeared under one of the tables when nobody was looking, in order to give one of the clients a blowjob. Kneeling under the table, she devoured his cock with ease and deepthroated him as he came to make sure she didn't make a mess. The client himself was wasted out of his mind and didn't catch as much as a glimpse of her, but he left the locale with a big tip on the table.\n";
 		tips += 50;
 		imagetype = IMGTYPE_ORAL;
 		oral += 2;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 	}
 
-	if (girl->libido() > 90 && g_Dice.percent(25) && !girl->has_trait( "Lesbian") && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 80 || girl->has_trait( "Cum Addict")))
+	if (girl->libido() > 90 && g_Dice.percent(25) && !girl->has_trait( "Lesbian") && (girl->has_trait(
+			"Nymphomaniac") || girl->has_trait( "Succubus")) && (girl->oralsex() > 80 || girl->has_trait( "Cum Addict")))
 	{
 		ss << "During her shift, " << girlName << " unnoticeably dove under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on it, since the patron left with a heavy tip.\n";
 		tips += 50;
 		imagetype = IMGTYPE_HAND;
 		hand += 2;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 	}
 
-	if (g_Dice.percent(20) && (girl->has_trait( "Exhibitionist") || g_Girls.GetStat(girl, STAT_DIGNITY) <= -20))
+	if (g_Dice.percent(20) && (girl->has_trait( "Exhibitionist") || girl->dignity() <= -20))
 	{
 		if (roll_b <= 50)
 		{
@@ -521,19 +523,21 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Giant Juggs") || girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits"))) //updated for the new breast traits
+	if (girl->dignity() <= -20 && g_Dice.percent(20) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Giant Juggs") ||
+										   girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits"))) //updated for the new breast traits
 	{
 		ss << "A drunk patron \"accidentally\" fell onto " << girlName << " and buried his face between her breasts. To his joy and surprise, " << girlName << " flirtatiously encouraged him to motorboat them for awhile, which he gladly did, before slipping some cash between the titties and staggering out on his way.\n"; tips += 40;
 	}
 
-	if (girl->has_trait( "Futanari") && g_Girls.GetStat(girl, STAT_LIBIDO) > 80 && g_Dice.percent(5))
+	if (girl->has_trait( "Futanari") && girl->libido() > 80 && g_Dice.percent(5))
 	{
-		if (girl->has_trait( "Open Minded") || girl->has_trait( "Exhibitionist") || girl->has_trait( "Slut") || girl->has_trait( "Succubus") || (g_Girls.GetStat(girl, STAT_CONFIDENCE) > 35 && g_Girls.GetStat(girl, STAT_DIGNITY) < 35))
+		if (girl->has_trait( "Open Minded") || girl->has_trait( "Exhibitionist") || girl->has_trait( "Slut") ||
+			girl->has_trait( "Succubus") || (girl->confidence() > 35 && girl->dignity() < 35))
 		{
 			ss << "Noticing the bulge under her skirt one of the customers asked for a very special service: He wanted some \"cream\" in his drink. " << girlName << " took her already hard cock out and sprinkled the drink with some of her jizz. The customer thanked her and slipped a good tip under her panties.\n";
-			g_Girls.UpdateSkill(girl, SKILL_SERVICE, 2);
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
-			tips += 30 + (int)(g_Girls.GetSkill(girl, SKILL_SERVICE) *0.2); // not sure if this will work fine
+			girl->upd_skill(SKILL_SERVICE, 2);
+			girl->upd_temp_stat(STAT_LIBIDO, -30, true);;
+			tips += 30 + (int)(girl->service() * 0.2); // not sure if this will work fine
 			imagetype = IMGTYPE_MAST;
 		}
 		else
@@ -570,9 +574,9 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			if (girl->has_trait( "Puffy Nipples")) { t += 1; }
 			if (girl->has_trait( "Perky Nipples")) { t += 1; }
 			if (girl->has_trait( "Pierced Nipples")) { t += 2; }
-			if (g_Girls.GetStat(girl, STAT_DIGNITY) > 60)
+			if (girl->dignity() > 60)
 			{
-				g_Girls.UpdateStat(girl, STAT_DIGNITY, -1);
+				girl->dignity(-1);
 			}
 			tips += t;
 			/* */if (t < 10) 	ss << "small";
@@ -587,16 +591,16 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			if (girl->has_trait( "Pierced Nipples"))
 			{
 				tips += 3;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 1, true);
+				girl->upd_temp_stat(STAT_LIBIDO, 1, true);
 				ss << "Her nipple piercings were a pleasant surprise to her, and she \n";
 			}
 			else ss << "She";
 			ss << "slipped a small tip between her tits afterwards.\n";
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
+			girl->upd_temp_stat(STAT_LIBIDO, 2, true);
 			tips += 15;
-			if (g_Girls.GetStat(girl, STAT_DIGNITY) > 30)
+			if (girl->dignity() > 30)
 			{
-				g_Girls.UpdateStat(girl, STAT_DIGNITY, -1);
+				girl->dignity(-1);
 			}
 		}
 		else if (!girl->has_trait( "Lesbian") && (girl->has_trait( "Slut") || girl->has_trait( "Succubus")))
@@ -605,34 +609,34 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			if (girl->has_trait( "Pierced Nipples"))
 			{
 				tips += 3;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 1, true);
+				girl->upd_temp_stat(STAT_LIBIDO, 1, true);
 				ss << "Her nipple piercings were a pleasant surprise to him, and he \n";
 			}
 			else ss << "He";
 			ss << "slipped a small tip between her tits afterwards.\n";
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
+			girl->upd_temp_stat(STAT_LIBIDO, 2, true);
 			tips += 15;
-			if (g_Girls.GetStat(girl, STAT_DIGNITY) > 30)
+			if (girl->dignity() > 30)
 			{
-				g_Girls.UpdateStat(girl, STAT_DIGNITY, -1);
+				girl->dignity(-1);
 			}
 		}
 	}
 
 	if (girl->is_pregnant() && g_Dice.percent(15))
 	{
-		if (g_Girls.GetStat(girl, STAT_LACTATION) > 50 &&
+		if (girl->lactation() > 50 &&
 			(girl->has_trait( "Open Minded") || girl->has_trait( "Exhibitionist") || girl->has_trait( "Slut")
 			|| girl->has_trait( "Succubus") ||
 
-			(g_Girls.GetStat(girl, STAT_CONFIDENCE) > 35 && g_Girls.GetStat(girl, STAT_DIGNITY) < 50)))
+			(girl->confidence() > 35 && girl->dignity() < 50)))
 		{
 			ss << "Noticing her pregnant belly, one of the customers asked for some breast milk in his coffee. " << girlName << " took one of her breasts out and put some of her milk in the drink. The customer thanked her and slipped a good tip under her skirt.\n";
-			g_Girls.UpdateSkill(girl, SKILL_SERVICE, 2);
-			g_Girls.UpdateStat(girl, STAT_LACTATION, -30);
-			tips += 30 + (int)(g_Girls.GetSkill(girl, SKILL_SERVICE) *0.2);
+			girl->service(2);
+			girl->lactation(-30);
+			tips += 30 + (int)(girl->service() *0.2);
 		}
-		else if (g_Girls.GetStat(girl, STAT_LACTATION) < 50)
+		else if (girl->lactation() < 50)
 		{
 			ss << "Noticing her pregnant belly, one of the customers asked for some breast milk in his drink, but " << girlName << " said that she didn't have enough.\n";
 		}
@@ -655,29 +659,29 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		int NumCust = g_Dice % 6 + 1;
 		tips -= 10;
 		wages -= 50;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
-		g_Girls.UpdateSkill(girl, SKILL_ANAL, max(0, g_Dice % 4 + 1));
-		g_Girls.UpdateSkill(girl, SKILL_BDSM, max(0, g_Dice % 4 - 1));
-		g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, max(0, g_Dice % 4 + 1));
-		g_Girls.UpdateSkill(girl, SKILL_GROUP, max(2, g_Dice % 4 + 2));
-		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, max(0, g_Dice % 4 + 0));
-		g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, max(0, g_Dice % 4 - 1));
-		g_Girls.UpdateSkill(girl, SKILL_HANDJOB, max(0, g_Dice % 4 + 0));
-		g_Girls.UpdateSkill(girl, SKILL_FOOTJOB, max(0, g_Dice % 4 - 1));
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -5);
-		g_Girls.UpdateStat(girl, STAT_HEALTH, -1);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -2);
-		g_Girls.UpdateStat(girl, STAT_SPIRIT, -2);
+		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
+		girl->anal(max(0, g_Dice % 4 + 1));
+		girl->bdsm(max(0, g_Dice % 4 - 1));
+		girl->normalsex(max(0, g_Dice % 4 + 1));
+		girl->group(max(2, g_Dice % 4 + 2));
+		girl->oralsex(max(0, g_Dice % 4 + 0));
+		girl->tittysex(max(0, g_Dice % 4 - 1));
+		girl->handjob(max(0, g_Dice % 4 + 0));
+		girl->footjob(max(0, g_Dice % 4 - 1));
+		girl->happiness(-5);
+		girl->health(-1);
+		girl->upd_Enjoyment( ACTION_SEX, -2);
+		girl->spirit(-2);
 		imagetype = IMGTYPE_GROUP;
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, EVENT_DANGER);
 		if (g_Girls.CheckVirginity(girl))
 		{
 			g_Girls.LoseVirginity(girl);
 			ss << "\nShe is no longer a virgin.\n";
-			g_Girls.UpdateStat(girl, STAT_HAPPINESS, -10);
-			g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -2);
-			g_Girls.UpdateStat(girl, STAT_HEALTH, -1);
-			g_Girls.UpdateStat(girl, STAT_SPIRIT, -1);
+			girl->happiness(-10);
+			girl->upd_Enjoyment( ACTION_SEX, -2);
+			girl->health(-1);
+			girl->spirit(-1);
 		}
 		sCustomer Cust = g_Customers.GetCustomer(*brothel);
 		Cust.m_Amount = min(1, g_Dice % 11);
@@ -702,14 +706,14 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (girl->has_trait( "Dojikko") && g_Dice.percent(35))
 	{
 		ss << girlName << "  is clumsy in the most adorable way, and when she trips and falls face-first into a patron's lap, spilling a tray all over the floor, he just laughs and asks if there is anything he can do to help.\n";
-		if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 50 || g_Girls.GetStat(girl, STAT_LIBIDO) <= 50)
+		if (girl->dignity() >= 50 || girl->libido() <= 50)
 		{
 			ss << girlName << " gives him a nervous smile as she gets back up and dusts herself off. \"I'm so sorry, sir,\" she mutters, and he waves the whole thing away as if nothing happened. \"I'm happy to wait for another drink, for you, cutie,\" he says.\n";
 		}
 		else
 		{
 			ss << "\"There might be something I can do for you while I'm here,\" replies " << girlName << ". She places her mouth over the bulge in his pants and starts sucking the pants until he unzips himself and pulls out his dick for her. \"I hope this makes up for me spilling that drink,\" she says before she locks her mouth around his dick.\n";
-			if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
+			if (girl->oralsex() >= 50)
 			{
 				ss << "\"It certainly does,\" responds the customer. \"You're very good at this, you clumsy little minx.\" " << girlName << " murmurs appreciably around his cock but does not stop until she has milked out his cum and swallowed it. She stands back up, dusts herself off, and starts picking up the dropped tray and the glasses. \"Allow me to get you another drink, sir,\" she states as she saunters away.\n";
 				tips += 35;
@@ -720,19 +724,19 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 				ss << "The customer initially thinks that this is way better than having his drink, but then realizes that " << girlName << " is a bit inexperienced with her efforts around his shaft. \"Looks like you're clumsy in just about everything you do,\" he comments, \"but somehow, that's still super adorable. Keep going, and I'll finish in a few minutes.\" She takes a little longer than she should to bring him to orgasm, and then stands, wipes the cum off her lips, and picks up the dropped tray. \"I'll get you another drink immediately,\" she announces as she walks back to the kitchen.\n";
 				tips += 15;
 			}
-			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+			girl->oralsex(2);
 			imagetype = IMGTYPE_ORAL;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+			girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 		}
 	}
 
 	if (girl->has_trait( "Sexy Air") && g_Dice.percent(35))
 	{
 		ss << "Customers enjoy watching " << girlName << " work. Her sexy body and her indefinably attractive way of carrying herself draw attention, whether she likes it or not. It is uncanny how many drinks the customers accidentally spill on their laps, and they would all like her help drying themselves off.\n";
-		if (g_Girls.GetStat(girl, STAT_DIGNITY) <= 0 || g_Girls.GetStat(girl, STAT_LIBIDO) >= 60)
+		if (girl->dignity() <= 0 || girl->libido() >= 60)
 		{
 			ss << "\"What a terrible spill,\" she cries in mock indignation as she kneels down beside one of them. \"Maybe I can deal with all of this.. wetness..\" she continues, quickly working her hand down his pants, stroking vigorously and using the spilled drink as lubrication.\n";
-			if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 50)
+			if (girl->handjob() >= 50)
 			{
 				ss << "The customer sighs with satisfaction and then erupts with an ecstatic cry as she finishes him with her skilled fingers. " << girlName << " stands back up and smiles as she asks him if that solves the problem. He assures her that it did and thanks her by placing a handful of coins on the table.\n";
 				tips += 35;
@@ -743,9 +747,9 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 				ss << "The customer is thrilled until he realizes that " << girlName << " is not very good at handjobs. Still, she is so sexy that he does not have to make a lot of effort to cum on her palm. \"Thank you,\" he smiles. \"I think it's all dry now.\"\n";
 				brothel->m_Happiness += 5;
 			}
-			g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
+			girl->handjob(2);
 			imagetype = IMGTYPE_HAND;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+			girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 		}
 	}
 
@@ -760,29 +764,29 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		|| girl->has_trait( "Titanic Tits") || girl->has_trait( "Big Boobs")
 		|| girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs"))
 	{
-		if (g_Girls.GetStat(girl, STAT_DIGNITY) >= 50)
+		if (girl->dignity() >= 50)
 		{
 			ss << girlName << " draws a lot of attention when she walks and bends towards patrons, and everybody strains their necks for a look down her shirt at her heavy swinging breasts. They openly make lewd comments about the things they would do to her tits, and " << girlName << " shies away and tries to cover them more fully with a menu. She swerves to avoid the many groping hands that \"accidentally\" find themselves brushing against her mammaries. The customers think this is just great fun and catcall after her whenever she tries to retreat.\n";
 			brothel->m_Happiness += 15;
 		}
-		else if (g_Girls.GetStat(girl, STAT_DIGNITY) <= 0)
+		else if (girl->dignity() <= 0)
 		{
-			ss << girlName << " has been blessed with great tits and the wisdom to know it. She leans deep over the tables to give customers a good view down her cleavage as she takes their orders. When a customer \"accidentally\" grabs her left tit instead of his glass, she pushes the tit deeper into his hands, stares into his eyes, and smiles. \"These aren’t on the menu,\" she purrs.\n";
-			if (g_Girls.GetStat(girl, STAT_LIBIDO) >= 60)
+			ss << girlName << " has been blessed with great tits and the wisdom to know it. She leans deep over the tables to give customers a good view down her cleavage as she takes their orders. When a customer \"accidentally\" grabs her left tit instead of his glass, she pushes the tit deeper into his hands, stares into his eyes, and smiles. \"These arenï¿½t on the menu,\" she purrs.\n";
+			if (girl->libido() >= 60)
 			{
 				ss << "\"But they could be the daily special,\" she continues, grinding the breast against his hand. The customer grins and places a handful of coins on the table. \"That looks about right,\" " << girlName << " says as she gets down on the floor and crawls under the table. He is laughing and high-fiving his buddies in no time as she wraps his dick around her tits and starts mashing them together for his pleasure.\n";
-				if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 50)
+				if (girl->tittysex() >= 50)
 				{
 					ss << "He enjoys it immensely, and adds a few more coins to the table as " << girlName << " crawls back from under the table and sexily wipes the cum from her face.\n";
 					tips += 35;
 				}
 				else
 				{
-					ss << "The titfuck is not the best, but he’s hardly one to complain. \"I don’t know if I’ll order the special regularly,\" he says to her when she crawls back up and finishes wiping off the cum, \"but it was certainly a bonus for today!\"\n";
+					ss << "The titfuck is not the best, but heï¿½s hardly one to complain. \"I donï¿½t know if Iï¿½ll order the special regularly,\" he says to her when she crawls back up and finishes wiping off the cum, \"but it was certainly a bonus for today!\"\n";
 				}
-				g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
+				girl->tittysex(2);
 				imagetype = IMGTYPE_TITTY;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 			}
 			tips += 15;
 		}
@@ -823,7 +827,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 #pragma endregion
 #pragma region	//	Money					//
 
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 
@@ -834,11 +838,10 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 #pragma region	//	Finish the shift			//
 
 
-
-	g_Girls.UpdateSkill(girl, SKILL_ORALSEX, oral);
-	g_Girls.UpdateSkill(girl, SKILL_HANDJOB, hand);
-	g_Girls.UpdateSkill(girl, SKILL_ANAL, anal);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->oralsex(oral);
+	girl->handjob(hand);
+	girl->anal(anal);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	// Improve stats
@@ -853,16 +856,17 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 60 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->fame(fame);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->service(g_Dice%skill + 1);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
+
 
 	//gained traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, actiontype, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
-	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, actiontype, girlName + " has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", Day0Night1); }
-	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_DIGNITY) < 0 && (anal > 0 || oral > 0 || hand > 0))
+	if (jobperformance > 150 && girl->constitution() > 65) { g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, actiontype, girlName + " has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", Day0Night1); }
+	if (g_Dice.percent(25) && girl->dignity() < 0 && (anal > 0 || oral > 0 || hand > 0))
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1, EVENT_WARNING);
 	}
@@ -889,10 +893,10 @@ double cJobManager::JP_SleazyWaitress(sGirl* girl, bool estimate)// not used
 
 	// next up tiredness penalty
 #else
-	double jobperformance = ((g_Girls.GetStat(girl, STAT_CHARISMA) +
-		g_Girls.GetStat(girl, STAT_BEAUTY) +
-		g_Girls.GetSkill(girl, SKILL_PERFORMANCE)) / 3 +
-		g_Girls.GetSkill(girl, SKILL_SERVICE));
+	double jobperformance = ((girl->charisma() +
+		girl->beauty() +
+		girl->performance()) / 3 +
+		girl->service());
 #endif
 	if (!estimate)
 	{

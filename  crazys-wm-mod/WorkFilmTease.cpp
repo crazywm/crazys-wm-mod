@@ -64,17 +64,17 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int bonus = 0;
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
-	/**/ if (g_Girls.HasItem(girl, "Cow-Print Lingerie") != -1)		item = ("Cow-Print Lingerie"), bonus = 6;
-	else if (g_Girls.HasItem(girl, "Designer Lingerie") != -1)		item = ("Designer Lingerie"), bonus = 10;
-	else if (g_Girls.HasItem(girl, "Sequin Lingerie") != -1)		item = ("Sequin Lingerie"), bonus = 7;
-	else if (g_Girls.HasItem(girl, "Sexy X-Mas Lingerie") != -1)	item = ("Sexy X-Mas Lingerie"), bonus = 7;
-	else if (g_Girls.HasItem(girl, "Leather Lingerie") != -1)		item = ("Leather Lingerie"), bonus = 6;
-	else if (g_Girls.HasItem(girl, "Leopard Lingerie") != -1)		item = ("Leopard Lingerie"), bonus = 5;
-	else if (g_Girls.HasItem(girl, "Organic Lingerie") != -1)		item = ("Organic Lingerie"), bonus = 5;
-	else if (g_Girls.HasItem(girl, "Sheer Lingerie") != -1)			item = ("Sheer Lingerie"), bonus = 5;
-	else if (g_Girls.HasItem(girl, "Lace Lingerie") != -1)			item = ("Lace Lingerie"), bonus = 3;
-	else if (g_Girls.HasItem(girl, "Silk Lingerie") != -1)			item = ("Silk Lingerie"), bonus = 2;
-	else if (g_Girls.HasItem(girl, "Plain Lingerie") != -1)			item = ("Plain Lingerie"), bonus = 1;
+	/**/ if (girl->has_item("Cow-Print Lingerie") != -1)		item = ("Cow-Print Lingerie"), bonus = 6;
+	else if (girl->has_item("Designer Lingerie") != -1)		item = ("Designer Lingerie"), bonus = 10;
+	else if (girl->has_item("Sequin Lingerie") != -1)		item = ("Sequin Lingerie"), bonus = 7;
+	else if (girl->has_item("Sexy X-Mas Lingerie") != -1)	item = ("Sexy X-Mas Lingerie"), bonus = 7;
+	else if (girl->has_item("Leather Lingerie") != -1)		item = ("Leather Lingerie"), bonus = 6;
+	else if (girl->has_item("Leopard Lingerie") != -1)		item = ("Leopard Lingerie"), bonus = 5;
+	else if (girl->has_item("Organic Lingerie") != -1)		item = ("Organic Lingerie"), bonus = 5;
+	else if (girl->has_item("Sheer Lingerie") != -1)			item = ("Sheer Lingerie"), bonus = 5;
+	else if (girl->has_item("Lace Lingerie") != -1)			item = ("Lace Lingerie"), bonus = 3;
+	else if (girl->has_item("Silk Lingerie") != -1)			item = ("Silk Lingerie"), bonus = 2;
+	else if (girl->has_item("Plain Lingerie") != -1)			item = ("Plain Lingerie"), bonus = 1;
 
 	int roll = g_Dice.d100();
 	ss << girlName;
@@ -95,22 +95,22 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (jobperformance >= 350)
 	{
 		ss << ("She created an outstanding teaser scene. She's so stunning and flirtatious that it's somehow hotter that she never gets naked.");
-		g_Girls.UpdateStat(girl, STAT_FAME, 4);
-		g_Girls.UpdateStat(girl, STAT_CHARISMA, 2);
+		girl->fame(4);
+		girl->charisma(2);
 		bonus = 12;
 	}
 	else if (jobperformance >= 245)
 	{
 		ss << ("She created an amazing teaser scene. Somehow she makes the few little she has on look hotter than being naked.");
-		g_Girls.UpdateStat(girl, STAT_FAME, 2);
-		g_Girls.UpdateStat(girl, STAT_CHARISMA, 1);
+		girl->fame(2);
+		girl->charisma(1);
 		bonus = 6;
 	}
 	else if (jobperformance >= 185)
 	{
 		ss << ("She created a decent teaser scene. Not the best, but still arousing.");
-		g_Girls.UpdateStat(girl, STAT_FAME, 1);
-		g_Girls.UpdateStat(girl, STAT_CHARISMA, 1);
+		girl->fame(1);
+		girl->charisma(1);
 		bonus = 4;
 	}
 	else if (jobperformance >= 145)
@@ -195,9 +195,9 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_STRIP, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->strip(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, enjoy);
@@ -217,11 +217,11 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int MrNiceGuy = g_Dice % 6, MrFair = g_Dice % 6;
 	MrNiceGuy = (MrNiceGuy + MrFair) / 3;				//Should come out around 1-2 most of the time.
 
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_FAME, MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, -MrNiceGuy);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, -MrNiceGuy);
+	girl->happiness(MrNiceGuy);
+	girl->fame(MrNiceGuy);
+	girl->pclove(MrNiceGuy);
+	girl->pchate(-MrNiceGuy);
+	girl->pcfear(-MrNiceGuy);
 	The_Player->disposition(MrNiceGuy);
 
 	//----------------------------------------------------------------------
@@ -232,8 +232,8 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 double cJobManager::JP_FilmTease(sGirl* girl, bool estimate)
 {
 	double jobperformance =
-		((g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CONFIDENCE)) / 3
-		+ (g_Girls.GetSkill(girl, SKILL_PERFORMANCE) + g_Girls.GetSkill(girl, SKILL_STRIP) / 2));
+		((girl->charisma() + girl->beauty() + girl->confidence()) / 3
+		+ (girl->performance() + girl->strip() / 2));
 
 	if (!estimate)
 	{

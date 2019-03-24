@@ -68,7 +68,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	int actiontype = ACTION_WORKHOUSEPET;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	int train = roll_a - g_Girls.GetStat(girl, STAT_OBEDIENCE) - g_Girls.GetTraining(girl, TRAINING_PUPPY);
+	int train = roll_a - girl->obedience() - g_Girls.GetTraining(girl, TRAINING_PUPPY);
 
 	int wages = 100, tips = 0;
 	int enjoy = 0, fame = 0, training = 0, ob = 0, fear = 0, love = 0;
@@ -205,18 +205,18 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 				}
 				else
 				{
-					if (g_Girls.GetSkill(girl, SKILL_ORALSEX) < 35)
+					if (girl->oralsex() < 35)
 					{
 						ss << "test line 3 low oral skill\n";
 						training += 5;
-						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+						girl->oralsex(2);
 						imagetype = IMGTYPE_ORAL;
 					}
 					else
 					{
 						ss << girlName << " test line 3 high oral skill.";
 						training += 5;
-						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+						girl->oralsex(1);
 						imagetype = IMGTYPE_ORAL;
 					}
 			}
@@ -257,11 +257,11 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	girl->exp(xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	g_Girls.UpdateTraining(girl, TRAINING_PUPPY, training);
-	g_Girls.UpdateStat(girl, STAT_OBEDIENCE, ob);
+	girl->obedience(ob);
 
 	return false;
 }

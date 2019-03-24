@@ -105,8 +105,8 @@ bool cJobManager::WorkCleanHouse(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (playtime)	// `J` needs more variation
 	{
 		ss << "\n \n" << girlName << " finished her cleaning early so she just sat around the house.";
-		g_Girls.UpdateStat(girl, STAT_TIREDNESS, -((g_Dice % 5) + 2));
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, (g_Dice % 5) + 2);
+		girl->tiredness(-((g_Dice % 5) + 2));
+		girl->happiness((g_Dice % 5) + 2);
 	}
 
 	// do all the output
@@ -123,9 +123,9 @@ bool cJobManager::WorkCleanHouse(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 2);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
-	g_Girls.UpdateStat(girl, STAT_CONSTITUTION, (g_Dice % skill));
+	girl->exp((g_Dice % xp) + 2);
+	girl->service((g_Dice % skill) + 2);
+	girl->constitution((g_Dice % skill));
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);

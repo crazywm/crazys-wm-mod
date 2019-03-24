@@ -226,7 +226,7 @@ void cScreenPrison::release_button()
 int cScreenPrison::PrisonReleaseCost(sGirl* girl)
 {
 	g_Girls.CalculateAskPrice(girl, false);
-	int cost = g_Girls.GetStat(girl, STAT_ASKPRICE) * 15;
+	int cost = girl->askprice() * 15;
 	cost += g_Girls.GetSkillWorth(girl);
 	if (g_Girls.CheckVirginity(girl)) cost += int(cost / 2);	//	`J` fixed virgin adds half cost more
 	cost *= 2;

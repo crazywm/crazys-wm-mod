@@ -88,20 +88,20 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int TopSkill = (girl->performance() > (girl->beastiality() + girl->charisma() / 2)) ? PERFORMANCE : LOOKS;
 
 	//What's she carrying?
-	/**/ if (g_Girls.HasItem(girl, "Liquid Dress") != -1)			item = "Liquid Dress", bonus += 10;
-	else if (g_Girls.HasItem(girl, "Dark Liquid Dress") != -1)		item = "Dark Liquid Dress", bonus += 10;
-	else if (g_Girls.HasItem(girl, "Gemstone Dress") != -1)			item = "Gemstone Dress", bonus += 10;
-	else if (g_Girls.HasItem(girl, "Hime Dress") != -1)				item = "Hime Dress", bonus += 12;
-	else if (g_Girls.HasItem(girl, "Enchanted Dress") != -1)		item = "Enchanted Dress", bonus += 10;
-	else if (g_Girls.HasItem(girl, "Leopard Lingerie") != -1)		item = "Leopard Lingerie", bonus += 10;
-	else if (g_Girls.HasItem(girl, "Designer Lingerie") != -1)		item = "Designer Lingerie", bonus += 10;
-	else if (g_Girls.HasItem(girl, "Sheer Lingerie") != -1)			item = "Sheer Lingerie", bonus += 6;
-	else if (g_Girls.HasItem(girl, "Oiran Dress") != -1)			item = "Oiran Dress", bonus += 5;
-	else if (g_Girls.HasItem(girl, "Silk Lingerie") != -1)			item = "Bunny Outfit", bonus += 3;
-	else if (g_Girls.HasItem(girl, "Empress' New Clothes") != -1)	item = "Empress' New Clothes", bonus += 10;
-	else if (g_Girls.HasItem(girl, "Faerie Gown") != -1)			item = "Faerie Gown", bonus += 10;
-	else if (g_Girls.HasItem(girl, "Royal Gown") != -1)				item = "Royal Gown", bonus += 10;
-	else if (g_Girls.HasItem(girl, "Classy Underwear") != -1)		item = "Classy Underwear", bonus += 10;
+	/**/ if (girl->has_item("Liquid Dress") != -1)			item = "Liquid Dress", bonus += 10;
+	else if (girl->has_item("Dark Liquid Dress") != -1)		item = "Dark Liquid Dress", bonus += 10;
+	else if (girl->has_item("Gemstone Dress") != -1)			item = "Gemstone Dress", bonus += 10;
+	else if (girl->has_item("Hime Dress") != -1)				item = "Hime Dress", bonus += 12;
+	else if (girl->has_item("Enchanted Dress") != -1)		item = "Enchanted Dress", bonus += 10;
+	else if (girl->has_item("Leopard Lingerie") != -1)		item = "Leopard Lingerie", bonus += 10;
+	else if (girl->has_item("Designer Lingerie") != -1)		item = "Designer Lingerie", bonus += 10;
+	else if (girl->has_item("Sheer Lingerie") != -1)			item = "Sheer Lingerie", bonus += 6;
+	else if (girl->has_item("Oiran Dress") != -1)			item = "Oiran Dress", bonus += 5;
+	else if (girl->has_item("Silk Lingerie") != -1)			item = "Bunny Outfit", bonus += 3;
+	else if (girl->has_item("Empress' New Clothes") != -1)	item = "Empress' New Clothes", bonus += 10;
+	else if (girl->has_item("Faerie Gown") != -1)			item = "Faerie Gown", bonus += 10;
+	else if (girl->has_item("Royal Gown") != -1)				item = "Royal Gown", bonus += 10;
+	else if (girl->has_item("Classy Underwear") != -1)		item = "Classy Underwear", bonus += 10;
 
 	if (bonus)
 	{

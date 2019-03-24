@@ -194,7 +194,7 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 
@@ -209,16 +209,16 @@ bool cJobManager::WorkButcher(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % skill) + 1);
-	g_Girls.UpdateStat(girl, STAT_STRENGTH, (g_Dice % skill) + 1);
+	girl->animalhandling((g_Dice % skill) + 1);
+	girl->strength((g_Dice % skill) + 1);
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateSkill(girl, SKILL_COOKING, max(0, (g_Dice % skill) - 2));
+	girl->medicine(max(0, (g_Dice % skill) - 1));
+	girl->intelligence(max(0, (g_Dice % skill) - 2));
+	girl->cooking(max(0, (g_Dice % skill) - 2));
 
 #pragma endregion
 	return false;

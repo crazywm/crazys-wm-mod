@@ -64,22 +64,22 @@ bool cJobManager::WorkHouseVacation(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	ss << "You send her to " << vac_type_text << " for the week.\n";
 
-	g_Girls.UpdateStat(girl, STAT_TIREDNESS, -100);
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, 100);
-	g_Girls.UpdateStat(girl, STAT_HEALTH, 100);
-	g_Girls.UpdateStat(girl, STAT_MANA, 100);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, 10);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, -5);
+	girl->tiredness(-100);
+	girl->happiness(100);
+	girl->health(100);
+	girl->mana(100);
+	girl->pclove(10);
+	girl->pchate(-5);
 
 
 	// Improve stats
 	int xp = 10, libido = 5;
 
-	if (g_Girls.HasTrait(girl, "Quick Learner"))		{xp += 3;}
-	else if (g_Girls.HasTrait(girl, "Slow Learner"))	{xp -= 3;}
-	if (g_Girls.HasTrait(girl, "Nymphomaniac"))			{ libido += 2; }
+	if (girl->has_trait("Quick Learner"))		{xp += 3;}
+	else if (girl->has_trait("Slow Learner"))	{xp -= 3;}
+	if (girl->has_trait("Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	girl->exp(xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;

@@ -428,11 +428,11 @@ public:
 
 	/*bool has_dildo()
 	{
-		return	g_Girls.HasItemJ(girl, "Compelling Dildo") != -1) ||
-			g_Girls.HasItemJ(girl, "Dildo") != -1) ||
-			g_Girls.HasItemJ(girl, "Studded Dildo") != -1) ||
-			g_Girls.HasItemJ(girl, "Double Dildo") != -1) ||
-			g_Girls.HasItemJ(girl, "Dreidel Dildo") != -1);
+		return	girl->has_item_j("Compelling Dildo") != -1) ||
+			girl->has_item_j("Dildo") != -1) ||
+			girl->has_item_j("Studded Dildo") != -1) ||
+			girl->has_item_j("Double Dildo") != -1) ||
+			girl->has_item_j("Dreidel Dildo") != -1);
 	}*/
 
 

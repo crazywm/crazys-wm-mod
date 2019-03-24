@@ -89,7 +89,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	int imagetype = IMGTYPE_WAIT;
 	int msgtype = Day0Night1;
-	int HateLove = g_Girls.GetStat(girl, STAT_PCLOVE) - g_Girls.GetStat(girl, STAT_PCHATE);
+	int HateLove = girl->pclove() - girl->pchate();
 
 #pragma endregion
 #pragma region //	Job Performance			//
@@ -358,7 +358,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	tips += (int)(((10 + jobperformance / 22) * wages) / 100);
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n";
 		tips += 25;
@@ -460,7 +460,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_LIBIDO) > 90 && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus") || girl->has_trait( "Slut")))
+	if (girl->libido() > 90 && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus") || girl->has_trait( "Slut")))
 	{
 		ss << "During her shift, " << girlName << " couldn't help but instinctively and excessively rub her ass against the crotches of the clients whenever she got the chance. Her slutty behavior earned her some extra tips, as a couple of patrons noticed her intentional butt grinding.\n";
 		tips += 30;
@@ -468,13 +468,13 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	if (g_Dice.percent(5))
 	{
-		/*if (g_Girls.GetSkill(girl, SKILL_MEDICINE) >= 90)
+		/*if (girl->medicine() >= 90)
 		{ ss << "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n";
 		wages += 15; }
-		else if (g_Girls.GetSkill(girl, SKILL_MEDICINE) >= 60)
+		else if (girl->medicine() >= 60)
 		{ ss << "She used her Psychic skills to know excatally what the patrons wanted to order making them happy and increasing her tips.\n";
 		wages += 15; }
-		else*/ if (g_Girls.GetSkill(girl, SKILL_MEDICINE) >= 30)
+		else*/ if (girl->medicine() >= 30)
 		{
 			ss << "A customer started chocking on his food so " << girlName << " performed the heimlich maneuver on him. Grateful the man left her a better tip.\n";
 			tips += 15;
@@ -485,7 +485,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 		}
 	}
 
-	if (g_Girls.GetSkill(girl, SKILL_HERBALISM) >= 40 && g_Dice.percent(5))
+	if (girl->herbalism() >= 40 && g_Dice.percent(5))
 	{
 		ss << "Added a little something extra to the patrons order to spice it up. They enjoyed it greatly and she received some nice tips.\n \n";
 		tips += 25;
@@ -535,21 +535,21 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 						ss << girlName << " lifts up her skirt so you can see that she is not wearing underwear. \"I was hoping that you might put your birthday present in my ass,\" she whispers into your ear, deftly opening your pants and lowering herself onto your suddenly and ragingly erect cock. She whimpers briefly as your dick penetrates her, then she spits on her hand and rubs the lubricant onto your tip before impaling herself again. \"You have no idea how often I fantasize about this when dealing with those stodgy customers all day,\" she pants, reveling as you ream her ass. \"Use me like a dirty backstreet whore,\" she continues, wrapping her asshole around you and bouncing up and down. It does not take long to cum for both of you. " << girlName << " smiles";
 						ss << " with fulfillment as she lifts herself off your cock, semen leaking onto the table. \"I guess I'll need to clean that up,\" she comments, before turning back to you. \"Happy birthday to me,\" she grins. \"Let's do it again sometime.\"";
 						imagetype = IMGTYPE_ANAL;
-						g_Girls.UpdateSkill(girl, SKILL_ANAL, 1);
+						girl->anal(1);
 					}
 					else if (roll_c >= 50)//SEX
 					{
 						ss << girlName << " lies flat on her back on the cleared table, hiking up her dress so you have direct access to her wet pussy and placing the cake on her stomach. \"If you want dessert, I think you should come and get it,\" she purrs. You insert your hard-on into her and slowly fuck her as she moans, stopping only for a moment to take a piece of cake. You eat a bite and then feed her the rest as you pump with increasing speed, and as she takes the last bite, you spurt deep inside her. \"Happy birthday to me,\" she smiles.";
 						imagetype = IMGTYPE_SEX;
-						g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
+						girl->normalsex(1);
 					}
 					else//ORAL
 					{
-						if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50 && girl->has_trait( "Deep Throat"))
+						if (girl->oralsex() >= 50 && girl->has_trait( "Deep Throat"))
 						{
 							ss << girlName << " does not even wait for a reply before she moves her hand to your cock, deftly opening your pants and working you to a raging hard-on. She smiles mischievously at you and then dives down, swallowing your whole cock with one quick motion. She stays there, locked with her tongue on your balls and your shaft buried in her throat, massaging your cock with swallowing motions while staring with watering eyes into yours, until she begins to lose oxygen. You cum buckets straight down her throat as she begins to choke herself on you, and when she has secured every drop in her stomach, she pulls back, takes a deep breath, and smiles. \"Happy birthday to me,\" she says.";
 						}
-						else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
+						else if (girl->oralsex() >= 50)
 						{
 							ss << girlName << " kisses you once on the lips, and then once on the chest, and then slowly works her way down to your pants. She gently pulls out your cock and surrounds it with her velvety mouth, sucking gently. The blowjob is excellent, and you relish every moment, taking an occasional bite of cake as she latches onto your dick.";
 						}
@@ -558,7 +558,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 							ss << girlName << " kisses you once on the lips, and then once on the chest, and then slowly works her way down to your pants. She gently pulls out your cock and surrounds it with her velvety mouth, sucking gently. The blowjob is not amazing, but it is delivered with such tenderness and love that you find yourself very satisfied regardless.";
 						}
 						imagetype = IMGTYPE_ORAL;
-						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+						girl->oralsex(1);
 					}
 				}
 				else
@@ -605,7 +605,7 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
-	int roll_max = (g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA));
+	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
 	wages += 10 + g_Dice%roll_max;
 	// Money
@@ -623,18 +623,18 @@ bool cJobManager::WorkBarWaitress(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 60 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	girl->fame(fame);
+	girl->exp(xp);
 	if (g_Dice % 2 == 1)
-		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, 1);
+		girl->intelligence(1);
 	else
-		g_Girls.UpdateStat(girl, STAT_AGILITY, 1);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+		girl->agility(1);
+	girl->service(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 70, actiontype, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
-	if (jobperformance > 150 && g_Girls.GetStat(girl, STAT_CONSTITUTION) > 65)
+	if (jobperformance > 150 && girl->constitution() > 65)
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 60, actiontype, girlName + " has been dodging between tables and avoiding running into customers for so long she has become Fleet of Foot.", Day0Night1);
 	}
@@ -659,9 +659,9 @@ double cJobManager::JP_BarWaitress(sGirl* girl, bool estimate)// not used
 	// next up tiredness penalty
 #else
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetStat(girl, STAT_AGILITY) / 2 +
-		g_Girls.GetSkill(girl, SKILL_SERVICE));
+		(girl->intelligence() / 2 +
+		girl->agility() / 2 +
+		girl->service());
 #endif
 	if (!estimate)
 	{

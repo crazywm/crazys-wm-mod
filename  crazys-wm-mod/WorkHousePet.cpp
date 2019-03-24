@@ -68,7 +68,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int actiontype = ACTION_WORKHOUSEPET;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	int train = roll_a - g_Girls.GetStat(girl, STAT_OBEDIENCE) - g_Girls.GetTraining(girl, TRAINING_PUPPY);
+	int train = roll_a - girl->obedience() - g_Girls.GetTraining(girl, TRAINING_PUPPY);
 
 	int wages = 100, tips = 0;
 	int enjoy = 0, fame = 0, training = 0, ob = 0, fear = 0, love = 0;
@@ -505,7 +505,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								ss << " than actual desire. Almost certainly the cameras were still rolling at this point. \"No, he deserves his reward.\"";
 								ss << " you reply, smiling as the dog plowed heavily into " << girlName << ", and her tits began to sway violent, her tongue panting like a good dog.";
 								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
-								g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, 2);
+								girl->beastiality(2);
 								imagetype = IMGTYPE_BEAST;
 								if (!girl->calc_insemination(*g_Girls.GetBeast(), false, 1.0))
 								{
@@ -555,9 +555,9 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " at the cries of pain, but instead of enduring punishment, she is led to a room with five girls, all young, frog-tied and placed";
 						ss << " on their backs. " << girlName << " looked up at the gang member and yipped questioningly, nuzzling his thigh like a good puppy.\n";
 						/**/
-						ss << "“Often your Master gets girls that are virgins,” he explained, stroking " << girlName << "'s hair, “And this is part of their....";
+						ss << "ï¿½Often your Master gets girls that are virgins,ï¿½ he explained, stroking " << girlName << "'s hair, ï¿½And this is part of their....";
 						ss << " tenderizing process. We won't fuck them for a couple weeks yet at least, after they are branded, but we like to keep them excited.";
-						ss << " That's your job today.” Not quite gently, the man grabbed her hair and pushed " << girlName << "'s face into the first girl's cunt. " << girlName << " began to lick";
+						ss << " That's your job today.ï¿½ Not quite gently, the man grabbed her hair and pushed " << girlName << "'s face into the first girl's cunt. " << girlName << " began to lick";
 						ss << " in earnest, both happy with her task, and that she was not being punished. Little muffled cries and moans came from the hooded girl";
 						ss << " as she bucked her hips into the pet's lips and tongue. Clearly the girl had not had release in some some time. When the young slave-to-be's";
 						ss << " nipples were hard as could be and she was on the cusp, the man tugged " << girlName << " away, leaving the teen thrashing, unfulfilled.\n";
@@ -798,7 +798,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " \"Wait, girl, just a moment. You're doing so well, but it's time we work on your posture.\"";
 					ss << " " << girlName << " looked up at the woman that was now stroking her hair and gently licked " << headname << "'s fingers.\n";
 					/**/
-					ss << "“A good puppy must have the right submissive posture at all times, even while eating.” " << headname << " explained.";
+					ss << "ï¿½A good puppy must have the right submissive posture at all times, even while eating.ï¿½ " << headname << " explained.";
 					ss << " She pressed " << girlName << "'s body with her hands, showing her the proper form.";
 					ss << " Soon " << girlName << " had her tits pressed to the ground, just in front of her knees which were curled up beneath her.";
 					ss << " " << headname << " then showed her how her paws, forearms, and elbows were to remain pressed to the ground at all times.";
@@ -818,7 +818,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				else
 				{
-					if (g_Girls.GetSkill(girl, SKILL_ORALSEX) < 35)
+					if (girl->oralsex() < 35)
 					{
 						ss << "You clip a leash to " << girlName << "'s collar and she barks uneasily. She knows she's just your pet bitch, but she remembers when she wasn't. She hasn't quite embraced this life yet.\n";
 						/**/
@@ -848,7 +848,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " taste so good, but there was so little! Was it to be like this every time? Dinner was already over, her food bowl was sure";
 						ss << " to have been picked up by now. She felt the dick growing flaccid again, and quickly began licking it teasingly. She had a long, long way to go.";
 						training += 2;
-						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+						girl->oralsex(2);
 						imagetype = IMGTYPE_ORAL;
 					}
 					else
@@ -879,7 +879,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << " \"Well, go on!\" " << girlName << " jolted back to reality with a gentle slap on her ass, realizing the leash had been unclipped. She crawled obediently to the bed, first sniffing and nuzzling it, then doing a couple turns as she crawled on top of it's fluff.";
 						ss << " She plopped down, curled up like a precious puppy, her face resting between her paws, right on her old panties. Strangely she had no tears. This is what she was. \"Do you like it?\" She barked.";
 						training += 2;
-						g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+						girl->oralsex(1);
 						imagetype = IMGTYPE_ORAL;
 					}
 			}
@@ -920,11 +920,11 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	girl->exp(xp);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	g_Girls.UpdateTraining(girl, TRAINING_PUPPY, training);
-	g_Girls.UpdateStat(girl, STAT_OBEDIENCE, ob);
+	girl->obedience(ob);
 
 	return false;
 }

@@ -78,24 +78,24 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	//SIN: A little pre-randomness
 	if (g_Dice.percent(50))
 	{
-		if (g_Girls.GetStat(girl, STAT_TIREDNESS) > 75)
+		if (girl->tiredness() > 75)
 		{
 			ss << "She was very tired, negatively affecting her performance.\n";
 			jobperformance -= 10;
 		}
-		else if (g_Girls.GetStat(girl, STAT_HAPPINESS) > 90)
+		else if (girl->happiness() > 90)
 		{
 			ss << "Her cheeriness improved her performance.\n";
 			jobperformance += 5;
 		}
 		if (g_Dice.percent(10))
 		{
-			if (g_Girls.GetSkill(girl, SKILL_STRIP) > 60)
+			if (girl->strip() > 60)
 			{
 				ss << "A born stripper, " << girlName << " wears her clothes just short of showing flesh, just the way the customers like it.\n";
 				jobperformance += 15;
 			}
-			if (g_Girls.GetStat(girl, STAT_PCHATE) > g_Girls.GetStat(girl, STAT_PCFEAR))
+			if (girl->pchate() > girl->pcfear())
 			{
 				ss << " " << girlName << " opened with some rather rude jokes about you. While this annoys you a little, ";
 				if (girl->has_trait( "Your Daughter"))
@@ -430,7 +430,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	tips += (int)(((5 + jobperformance / 8) * wages) / 100);
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n";
 		tips += 25;
@@ -545,7 +545,7 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 
-	wages += (g_Dice % ((int)(((g_Girls.GetStat(girl, STAT_BEAUTY) + g_Girls.GetStat(girl, STAT_CHARISMA)) / 2)*0.5f))) + 10;
+	wages += (g_Dice % ((int)(((girl->beauty() + girl->charisma()) / 2)*0.5f))) + 10;
 	// Money
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
@@ -562,10 +562,10 @@ bool cJobManager::WorkHallEntertainer(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (girl->fame() < 50 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 70 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
+	girl->fame(fame);
+	girl->exp(xp);
+	girl->confidence(g_Dice%skill);
+	girl->performance(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
@@ -587,10 +587,10 @@ double cJobManager::JP_HallEntertainer(sGirl* girl, bool estimate)
 	// next up tiredness penalty...
 #else
 	double jobperformance =
-		((g_Girls.GetStat(girl, STAT_CHARISMA) +
-		g_Girls.GetStat(girl, STAT_BEAUTY) +
-		g_Girls.GetStat(girl, STAT_CONFIDENCE)) / 3 +
-		g_Girls.GetSkill(girl, SKILL_PERFORMANCE));
+		((girl->charisma() +
+		girl->beauty() +
+		girl->confidence()) / 3 +
+		girl->performance());
 #endif
 	if (!estimate)
 	{

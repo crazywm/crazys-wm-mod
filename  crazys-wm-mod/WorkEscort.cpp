@@ -70,13 +70,13 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	double jobperformance = 0, escort = 0, fame = 0;
 	int imagetype = IMGTYPE_ESCORT;
 
-	int agl = (g_Girls.GetStat(girl, STAT_AGILITY));
+	int agl = (girl->agility());
 	int roll_a = g_Dice.d100();							// customer type
 	int roll_b = g_Dice.d100();							// customer wealth
 	int roll_c = g_Dice.d100() + agl;					// agility adjustment
 	int roll_d = g_Dice.d100();
 	int roll_sex = g_Dice.d100();
-	int prepare = (g_Girls.GetStat(girl, STAT_AGILITY) + g_Girls.GetStat(girl, SKILL_SERVICE)/2);
+	int prepare = (girl->agility() + g_Girls.GetStat(girl, SKILL_SERVICE)/2);
 	double cust_wealth = 1;
 	int cust_type = 0;
 	string cust_type_text = "";
@@ -243,22 +243,22 @@ case Es_Regular:
 
 	//beauty check
 	ss << girlName << " enters the restaurant and locates the client, his boss, and his boss's wife sitting at a table for four in a quiet corner. She approaches the table, ready to make her first impression.\n";
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99)
+	if (girl->beauty() > 99)
 	{
 		ss << girlName << " is not merely beautiful, she is absolutely stunning. The client knows this already, and while he is still somewhat transfixed by her charms, he is able to focus on his boss, who is practically drooling himself. The wife moves uncomfortably in her seat as this moment draws out longer. \"My goodness,\" says the boss to the client. \"You certainly did well for yourself!\" What only " << girlName << " can see during their little exchange, however, is that the wife continues shifting in her chair uncomfortably, staring deep into her eyes while casually rubbing her lips with one finger. Interesting.\n";
 		escort += 3;
 	}
-	else if (g_Girls.GetStat(girl, STAT_BEAUTY) >= 75)
+	else if (girl->beauty() >= 75)
 	{
 		ss << girlName << " is a very attractive woman, and while the boss's wife is a little threatened and perturbed by how long her husband stares at his employee's \"girlfriend,\" the client is pleased by the wink of congratulations that his boss shares with him a moment later. What neither the boss nor the client see, however, is the long interested stare that the wife gives her. There is an interest in that glance that goes beyond the professional kind.\n";
 		escort += 2;
 	}
-	else if (g_Girls.GetStat(girl, STAT_BEAUTY) >= 50)
+	else if (girl->beauty() >= 50)
 	{
 		ss << girlName << " is attractive, but not enough so to be threatening to the boss's wife, and while the boss gives her an appraising and thorough review with his eyes, his wife simply smiles pleasantly at her and asks that she tell her all about where she gets her makeup.\n";
 		escort += 1;
 	}
-	else if (g_Girls.GetStat(girl, STAT_BEAUTY) >= 25)
+	else if (girl->beauty() >= 25)
 	{
 		ss << "While " << girlName << " is not blessed with a lot of natural beauty, this certainly does no harm here. The client has already met her and been impressed by her other attributes, and while his boss does not pay much attention to her, his wife seems happy that she is the most attractive woman at the table.\n";
 	}
@@ -307,57 +307,57 @@ case Es_Regular:
 	}
 
 
-	if (g_Girls.HasItemJ(girl, "Bad Nurse Costume") != -1 || g_Girls.HasItemJ(girl, "Sexy Nurse Costume") != -1)
+	if (girl->has_item_j("Bad Nurse Costume") != -1 || girl->has_item_j("Sexy Nurse Costume") != -1)
 	{
 		ss << "The three of them do spend a moment staring at the revealing \"nurse\" costume that " << girlName << " has decided to wear to this assignation. \"You didn't tell me that she was in the medical profession,\" says the boss, his gaze lingering on her very short skirt while his wife chokes on her drink.\n";
 		escort -= 1;
 	}
-	else if (g_Girls.HasItemJ(girl, "Black Knight Uniform Coat") != -1)
+	else if (girl->has_item_j("Black Knight Uniform Coat") != -1)
 	{
 		ss << "\"My goodness, you didn't tell me that your lovely girlfriend was with the Royal Guards,\" states the boss as they all pass their eyes over " << girlName << "'s Black Knight Uniform Coat. \"We must be on good behavior this evening,\" he jokes.\n";
 	}
-	else if (g_Girls.HasItemJ(girl, "Chinese Dress") != -1 || g_Girls.HasItemJ(girl, "Enchanted Dress") != -1 || g_Girls.HasItemJ(girl, "Hime Dress") != -1 || g_Girls.HasItemJ(girl, "Linen Dress") != -1 || g_Girls.HasItemJ(girl, "Miko Dress") != -1 || g_Girls.HasItemJ(girl, "Bourgeoise Gown") != -1 || g_Girls.HasItemJ(girl, "Faerie Gown") != -1 || g_Girls.HasItemJ(girl, "Peasant Gown") != -1)
+	else if (girl->has_item_j("Chinese Dress") != -1 || girl->has_item_j("Enchanted Dress") != -1 || girl->has_item_j("Hime Dress") != -1 || girl->has_item_j("Linen Dress") != -1 || girl->has_item_j("Miko Dress") != -1 || girl->has_item_j("Bourgeoise Gown") != -1 || girl->has_item_j("Faerie Gown") != -1 || girl->has_item_j("Peasant Gown") != -1)
 	{
 		ss << "\"What a lovely dress, darling,\" the wife begins with a compliment. " << girlName << " is happy to see that the client is pleased with her choice of attire.";
 		escort += 1;
 	}
-	else if (g_Girls.HasItemJ(girl, "Brothel Gown") != -1 || g_Girls.HasItemJ(girl, "Trashy Dress") != -1)
+	else if (girl->has_item_j("Brothel Gown") != -1 || girl->has_item_j("Trashy Dress") != -1)
 	{
 		ss << "\"What a.. lovely.. dress,\" says the wife, elbowing her husband, who is staring with an open mouth at " << girlName << "'s trashy brothel attire. The client winces slightly.";
 		escort -= 1;
 	}
-	else if (g_Girls.HasItemJ(girl, "Bunny Outfit") != -1)
+	else if (girl->has_item_j("Bunny Outfit") != -1)
 	{
 		ss << "All three patrons stare with consternation at the revealing bunny outfit that " << girlName << " is wearing. The boss sweats a little while locking eyes on her cleavage, and his wife politely inquires if perhaps she just got off of work at a casino. The client hides his face and deep embarrassment in his hands.";
 		escort -= 2;
 	}
-	else if (g_Girls.HasItemJ(girl, "Dancer Costume") != -1)
+	else if (girl->has_item_j("Dancer Costume") != -1)
 	{
 		ss << "\"Oh, you're a dancer!\" cries the wife with pleasure, looking at " << girlName << "'s dancer costume. \"How wonderful! I always wanted to be a dancer when I was younger. You must tell me everything about it!\"\n";
 		escort += 1;
 	}
-	else if (g_Girls.HasItemJ(girl, "Gantz Suit") != -1 || g_Girls.HasItemJ(girl, "Plug Suit") != -1)
+	else if (girl->has_item_j("Gantz Suit") != -1 || girl->has_item_j("Plug Suit") != -1)
 	{
 		ss << "Nobody says anything as " << girlName << " sits, but they are all staring speechless at the skin-tight leather/latex dress she is wearing. \"Oh my,\" whispers the boss, loosening his collar and turning red. His wife just continues staring as the client buries his face in his hands.\n";
 		escort -= 3;
 	}
-	else if (g_Girls.HasItemJ(girl, "Gemstone Dress") != -1 || g_Girls.HasItemJ(girl, "Noble Gown") != -1 || g_Girls.HasItemJ(girl, "Royal Gown") != -1 || g_Girls.HasItemJ(girl, "Silken Dress") != -1 || g_Girls.HasItemJ(girl, "Velvet Dress") != -1)
+	else if (girl->has_item_j("Gemstone Dress") != -1 || girl->has_item_j("Noble Gown") != -1 || girl->has_item_j("Royal Gown") != -1 || girl->has_item_j("Silken Dress") != -1 || girl->has_item_j("Velvet Dress") != -1)
 	{
 		ss << "\"My goodness, what a beautiful dress!\" cries the wife, gazing at " << girlName << "'s expensive attire. While she is clearly overdressed for the occasion, both the boss and his wife simply chalk it up as a charming attempt to support her boyfriend by being extra presentable.\n";
 	}
-	else if (g_Girls.HasItemJ(girl, "Maid Uniform") != -1)
+	else if (girl->has_item_j("Maid Uniform") != -1)
 	{
 		ss << "\"Do you work at one of the nearby estates?\" inquires the wife, looking at " << girlName << "'s maid uniform. \"I'm so glad you were able to join us with your work schedule.\" The client is surprised, but not disappointed, with the choice of attire, and quickly invents a story about her job.\n";
 	}
-	else if (g_Girls.HasItemJ(girl, "Nurse Uniform") != -1)
+	else if (girl->has_item_j("Nurse Uniform") != -1)
 	{
 		ss << "\"Oh, you must be coming straight from the hospital,\" exclaims the wife, looking over " << girlName << "'s nurse uniform. \"I'm so glad you could join us. I know how demanding those poor nurses work over there.\" The client is surprised at the choice of attire, but quickly runs with it, inventing a story about her job.\n";
 	}
-	else if (g_Girls.HasItemJ(girl, "School Uniform") != -1)
+	else if (girl->has_item_j("School Uniform") != -1)
 	{
 		ss << "\"Aren't you a pretty young thing,\" says the wife, looking over " << girlName << "'s school uniform, and then back at the client. \"You didn't tell me she was continuing her education! What school do you attend, darling?\" she inquires, and the client quickly invents a story to justify the outfit.\n";
 	}
-	else if (g_Girls.HasItemJ(girl, "Slave Rags") != -1)
+	else if (girl->has_item_j("Slave Rags") != -1)
 	{
 		ss << "\"Oh, you poor thing,\" says the wife softly, taking in the slave rags that " << girlName << " is wearing. \"Is everything.. all right.. with your, um, job?\" asks the boss, awkwardly trying to navigate around the fact that " << girlName << " is apparently a slave who does not possess anything more than these revealing rags. The client struggles valiantly to explain how he has come to fall in love with a poor slave and is trying to buy her freedom. Everyone sits in uncomfortable silence for a moment.\n";
 		escort -= 1;
@@ -367,22 +367,22 @@ case Es_Regular:
 
 	//CONVERSATION PHASE (CHARISMA CHECK)
 	ss << "The four order a few bottles of sake to share amongst themselves and a veritable pile of sushi. For once in her work as an Escort, the focus of the attention tonight is not on " << girlName << " but on her client, and her only role is to appear supportive of her \"boyfriend\" in front of her boss, and to make their relationship believable.\n";
-	if (g_Girls.GetSkill(girl, SKILL_SERVICE) > 99)
+	if (girl->service() > 99)
 	{
-		ss << girlName << " knows everything about this fictitious relationship. She also knows about the details of the job that the client just got, and is able to talk with great specificity about the circumstances of their meeting, where they enjoy going on dates, and how proud she was when he came home—here, with perfect details of his house—to tell her about his new job.\n";
+		ss << girlName << " knows everything about this fictitious relationship. She also knows about the details of the job that the client just got, and is able to talk with great specificity about the circumstances of their meeting, where they enjoy going on dates, and how proud she was when he came homeï¿½here, with perfect details of his houseï¿½to tell her about his new job.\n";
 		escort += 3;
 	}
-	else if (g_Girls.GetSkill(girl, SKILL_SERVICE) >= 75)
+	else if (girl->service() >= 75)
 	{
 		ss << "Given the amount of research that " << girlName << " conducted prior to arriving, the relationship is easily believable. She knows everything about the two of them, and is able to describe with great accuracy how they met, and all of their previous dates. When the conversation drifts towards her job, she is able to provide substantial details about her fictitious employment.\n";
 		escort += 2;
 	}
-	else if (g_Girls.GetSkill(girl, SKILL_SERVICE) >= 50)
+	else if (girl->service() >= 50)
 	{
 		ss << "Fortunately, " << girlName << "'s study of their relationship before arriving gives her plenty of details. Whenever the conversation drifts towards their own history, such as where they met and what they like to do together, she is able to provide the answers that the client expects, which makes the process run smoothly. She has to invent quite a bit about her own job, however.\n";
 		escort += 1;
 	}
-	else if (g_Girls.GetSkill(girl, SKILL_SERVICE) >= 25)
+	else if (girl->service() >= 25)
 	{
 		ss << "The relationship has only the barest hint of believability with the level of details that " << girlName << " managed to memorize before arriving. She knows where they met and what she does for a living, but that is about all. She is forced to improvise the remainder, and while the client is visibly upset for a moment at some of her answers during the conversation, he manages to roll with it and follows her lead.\n";
 	}
@@ -394,22 +394,22 @@ case Es_Regular:
 
 
 
-	if (g_Girls.GetSkill(girl, SKILL_PERFORMANCE) > 99)
+	if (girl->performance() > 99)
 	{
 		ss << girlName << " is the perfect actress. Every lie comes across with such conviction, replete with minute detail, that soon even the client is convinced that this relationship is a real thing. She positively sparkles when she talks about the magical evening when they first met, and she paints a picture of her own daily life that they are all soon engrossed with her narrative of the interpersonal dramas of her own fictitious workplace.\n";
 		escort += 3;
 	}
-	else if (g_Girls.GetSkill(girl, SKILL_PERFORMANCE) >= 75)
+	else if (girl->performance() >= 75)
 	{
 		ss << girlName << " is trained as an actress, so when she starts talking about their relationship and her own life, she paints a vivid and thoroughly believable picture of all of it. She is able to improvise some details that were not in the client's list, and all three of them listen appreciably while she describes the night that they met and how happy she was when he told her all about his new job.\n";
 		escort += 2;
 	}
-	else if (g_Girls.GetSkill(girl, SKILL_PERFORMANCE) >= 50)
+	else if (girl->performance() >= 50)
 	{
 		ss << girlName << " is a decent performer, so when she begins telling all of these details to the boss and his wife, she manages to make it sound convincing. The two of them are thoroughly persuaded that the relationship is real, though the lack of conviction and detail in the performance makes " << girlName << " seem bland and forgettable as the dinner concludes, primarily with the other three leading most of the conversation.\n";
 		escort += 1;
 	}
-	else if (g_Girls.GetSkill(girl, SKILL_PERFORMANCE) >= 25)
+	else if (girl->performance() >= 25)
 	{
 		ss <<  girlName << " cannot perform well as an actress, and no matter what details she may know about the relationship, she has a difficult time making it believable. She shares her part of the conversation like she is reading from a hidden teleprompter. Fortunately, while her performance is not very convincing, the client is able to keep everything believable, but only barely, as the dinner comes fortuitously to an end.\n";
 	}
@@ -484,12 +484,12 @@ case Es_Regular:
 	//SEX PHASE (LIBIDO CHECK)
 	if (group_offer)
 	{
-		if (g_Girls.GetStat(girl, STAT_MORALITY) >= 50)
+		if (girl->morality() >= 50)
 		{
 			ss << girlName << " is savvy enough to know what they are suggesting, but is too conservative in her morals to consider having sex with all of them. She politely declines, much to the client's regret, but tells them that she did have a wonderful evening. The client escorts her outside and thanks her for her incredible performance. \"I know that the group offer might not be your thing,\" he says, \"but I thought maybe you and I might keep our little fake relationship going for another hour or two, if you're interested,\" he concludes, waiting hopefully for her answer.\n";
 			sex_offer = true;
 		}
-		else if (g_Girls.GetStat(girl, STAT_LIBIDO) <= 50)
+		else if (girl->libido() <= 50)
 		{
 			ss << girlName << " politely considers the offer, but the fact of the matter is that she has no interest in sex with anyone tonight. She invents an excuse about having a work event to get to, apologizing profusely, but suggesting that maybe the four of them grab another dinner sometime soon. The client is surprised at the suggestion, since it means that he may have to pay for another group date with his \"girlfriend,\" but he is hardly angry, as the possibility of fucking his boss's wife is a bit too enticing for him to ignore. The client escorts her outside and discreetly hands her an envelope with a substantial tip for her excellent work tonight.";
 		}
@@ -498,22 +498,22 @@ case Es_Regular:
 			if (g_Girls.CheckVirginity(girl))
 			{
 				ss << girlName << " smiles at the offer, and leans a bit over the table before answering. \"I think we would love to join you,\" she says. They all grin with anticipation, getting up to leave. As they walk out the door, " << girlName << " leaves the client's side for a moment to speak to the wife. \"I think you should know,\" she whispers, \"that I am still a virgin, and that the two of us have decided to wait until marriage.\" The wife appears disappointed, but livens as " << girlName << " continues: \"This doesn't mean that the two of us can't get to know each other a little better at your place, though. As long as the boys know that my body is off limits, I think we could still have a very enjoyable evening.\" The wife smiles and turns to whisper something to her husband while " << girlName << " discreetly informs the client of the arrangement. He smiles as well, and the four of them soon arrive at a lovely expensive home, where they soon begin undressing themselves around a large bed.\n";
-				if (g_Girls.GetSkill(girl, SKILL_LESBIAN) > 99)
+				if (girl->lesbian() > 99)
 				{
 					ss << "Within minutes, the wife has her lips wrapped around her husband's cock as the client spears her ass. She writhes in pleasure, pulling " << girlName << "'s head towards her open pussy. " << girlName << " licks with masterful skill, nibbling with expertise on the clitoris as she thrusts her fingers into the pussy, timing each thrust with the attacks on her ass and mouth. She is truly a master at cunnilingus, and by the time the men have exploded their semen into the sweaty woman, she is screaming with passion on her fifth powerful orgasm, spraying her juices everywhere. They all lie panting on the bed afterwards, with the wife purring in ecstasy.\n";
 					fame += 3;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_LESBIAN) >= 75)
+				else if (girl->lesbian() >= 75)
 				{
 					ss << "Within minutes, the wife has her lips wrapped around her husband's cock as the client spears her ass. She writhes in pleasure, pulling " << girlName << "'s head towards her open pussy. " << girlName << " passionately attacks her clitoris between the thrusts, fingering her pussy vigorously. The four fuck in ecstasy for half an hour, with the wife rocking back and forth with three powerful orgasms, spurting her juices all over " << girlName << "'s face just as the client explodes in her ass and she swallows deeply from her husband's cum. The four lay there, panting, on the bed.\n";
 					fame += 2;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_LESBIAN) >= 50)
+				else if (girl->lesbian() >= 50)
 				{
 					ss << "Within minutes, the wife has her lips wrapped around her husband's cock as the client spears her ass. She writhes in pleasure, pulling " << girlName << "'s head towards her open pussy. " << girlName << " licks with skill, timing her tongue to hit with the client's thrusts into her ass. She inserts a few fingers as she nibbles on the clitoris, and by the time the wife has collapsed onto the bed, leaking cum from her ass and mouth, she has enjoyed two powerful orgasms.\n";
 					fame += 1;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_LESBIAN) >= 25)
+				else if (girl->lesbian() >= 25)
 				{
 					ss << "Within minutes, the wife has her lips wrapped around her husband's cock as the client spears her ass. She writhes in pleasure, pulling " << girlName << "'s head towards her open pussy. " << girlName << " licks with the limited skill she possesses, being somewhat new to the act of pleasuring another woman. Fortunately, with the help of the two men, " << girlName << " is able to bring one good orgasm out of her before the wife collapses on the bed, covered in their cum.\n";
 				}
@@ -523,28 +523,28 @@ case Es_Regular:
 					fame -= 1;
 				}
 				imagetype = IMGTYPE_LESBIAN;
-				g_Girls.UpdateSkill(girl, SKILL_LESBIAN, 2);
+				girl->lesbian(2);
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 			}
 			else
 			{
 				ss << "\"What a wonderful idea,\" announces " << girlName << ", bringing anticipatory grins from the other three. \"I'm sure we would love to share ourselves with you this evening.\" The four of them are soon entering the door of the boss's lovely expensive home, and within minutes they are all undressing each other on a large bed. \"The best business arrangements are about sharing, after all,\" smiles " << girlName << " as she positions herself to pleasure all three of them.\n";
-				if (g_Girls.GetSkill(girl, SKILL_GROUP) > 99)
+				if (girl->group() > 99)
 				{
 					ss << "While some women might be at a loss as to how to pleasure two cocks and a pussy at the same time, " << girlName << " is a master at group fucking and soon shows her expertise. She rotates herself constantly between the other three, sometimes just sucking them alternately with her mouth, sometimes enjoying a cock in her mouth and another in her ass as the wife fists her with reckless abandon. Both women have orgasmed at least a handful of times by the time the men pull out of them, push their heads together, and shoot their loads violently into " << girlName << "'s mouth. She swallows with a wan smile, giving the wife's asshole onoe last vigorous fingering. The four collapse in an ecstatic pile on the bed, with all three of the others staring with incredulity at " << girlName << ". \"You are incredible,\" they agree, panting and gasping for air.\n";
 					fame += 3;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_GROUP) >= 75)
+				else if (girl->group() >= 75)
 				{
 					ss << girlName << " definitely knows her way around a group fuck, and soon she is rotating the two men between her ass and pussy as she furiously nibbles on the wife's clit. They roll around each other, moaning with pleasure, as " << girlName << " brings orgasm after orgasm from the other woman, whilst simultaneously bouncing with enthusiasm on the two cocks buried inside her. Soon " << girlName << " is leaking with cum from her lower holes and streaked with pussy juices on her mouth. The three others collapse in ecstasy around her, amazed by her incredible performance. \"What a night,\" says the boss, gasping for air on his corner of the bed.\n";
 					fame += 2;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_GROUP) >= 50)
+				else if (girl->group() >= 50)
 				{
 					ss << girlName << " is not a stranger to group sex, and she is soon enjoying the boss's cock in her ass and the client's in her pussy as she licks voraciously at the wife's clit. The four of them rotate between each other for a blissful half hour before the men pull out, just in time for both women to kiss and stroke each other passionately as the men shoot their loads all over their sensuously mashing tits. The four collapse happily into the bed, panting with ecstasy.\n";
 					fame += 1;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_GROUP) >= 25)
+				else if (girl->group() >= 25)
 				{
 					ss << girlName << " has only limited experience in these kinds of situations, however, and her efforts at fucking the cock in her ass while licking the wife's pussy are merely amateurish. Nevertheless, the four of them are able to enjoy the time together, and as the client explodes his cum deep into the wife's ass, " << girlName << " feels a spray of the wife's pussy juices in her mouth as the boss shoots his load deep into her womb. The four collapse contended into the bed.\n";
 				}
@@ -554,7 +554,7 @@ case Es_Regular:
 					fame -= 1;
 				}
 				imagetype = IMGTYPE_GROUP;
-				g_Girls.UpdateSkill(girl, SKILL_GROUP, 2);
+				girl->group(2);
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 			}
 			ss << "Once they have recovered, " << girlName << " and the client dress themselves, thank the other two for a truly wonderful night, and begin the walk back towards their own destinations. Before they part, the client kisses " << girlName << " again and hands her an envelope with her fee, plus a hefty bonus for her incredible performance. \"I only wish you were actually my girlfriend,\" he says sheepishly. \"Well,\" she replies, giving him another kiss, \"if you ever want to have a fake girlfriend again some night, you know where to find me.\"\n";
@@ -563,12 +563,12 @@ case Es_Regular:
 
 	if (sex_offer)
 	{
-		if (g_Girls.GetStat(girl, STAT_MORALITY) >= 50)
+		if (girl->morality() >= 50)
 		{
 			ss << girlName << " blinks with surprise. \"I am a nice conservative girl,\" she says, weighing this in her mind, \"but this is not a first date for us, and I guess you could say that you are my boyfriend tonight, if only in pretend.\" She thinks it over for a minute before surrendering to her own desires. \"Listen,\" she begins, \"we can't have sex, but I think I might be able to help you in some other ways.\" The client grins with pleasure and escorts her back to his place, opening the door and inviting her inside. She smiles nervously and silently reaches down to caress his manhood through his pants.";
 			oral = true;
 		}
-		else if (g_Girls.GetStat(girl, STAT_LIBIDO) <= 50)
+		else if (girl->libido() <= 50)
 		{
 			ss << girlName << " is flattered, but not interested in anything with this client. She politely declines his offer, mentioning that her work does not permit it and her employer has already assigned her other work for the night, and lightens the mood with a final few jokes before departing the restaurant to return to your establishment. He takes it well, if a little disappointed that he cannot consummate their fictional relationship, but is grateful that at least his plan worked.";
 		}
@@ -583,7 +583,7 @@ case Es_Regular:
 	{
 		if (oral)
 		{
-			if (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 99)
+			if (girl->oralsex() > 99)
 					{
 						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
@@ -596,7 +596,7 @@ case Es_Regular:
 							fame += 3;
 						}
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 75)
+					else if (girl->oralsex() >= 75)
 					{
 						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
@@ -609,7 +609,7 @@ case Es_Regular:
 							fame += 2;
 						}
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
+					else if (girl->oralsex() >= 50)
 					{
 						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
@@ -621,7 +621,7 @@ case Es_Regular:
 							fame += 1;
 						}
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 25)
+					else if (girl->oralsex() >= 25)
 					{
 						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
@@ -642,34 +642,34 @@ case Es_Regular:
 						}
 						else
 						{
-							ss << "Wordlessly, " << girlName << " lowers herself to her knees and begins unbuttoning the client's pants. She grins and begins licking his erection. He sighs with satisfaction and prepares to enjoy the blowjob until he realizes that she has absolutely no idea what she is doing. She licks the cock like it is a lollipop, with the skill of a virgin and the enthusiasm of a dog going after peanut butter. She tries to swallow his shaft but does not get too far. The icing on the cake is when she starts blowing on his dick, as if someone fundamentally failed to explain what a ‘blowjob' was. Still, with enough enthusiasm from her and enough manual stimulation from himself, he is able to eventually bring himself to cum in her inexperienced mouth. He is happy to have gotten a load off, but he can barely contain his surprise at how bad she is at giving head.\n";
+							ss << "Wordlessly, " << girlName << " lowers herself to her knees and begins unbuttoning the client's pants. She grins and begins licking his erection. He sighs with satisfaction and prepares to enjoy the blowjob until he realizes that she has absolutely no idea what she is doing. She licks the cock like it is a lollipop, with the skill of a virgin and the enthusiasm of a dog going after peanut butter. She tries to swallow his shaft but does not get too far. The icing on the cake is when she starts blowing on his dick, as if someone fundamentally failed to explain what a ï¿½blowjob' was. Still, with enough enthusiasm from her and enough manual stimulation from himself, he is able to eventually bring himself to cum in her inexperienced mouth. He is happy to have gotten a load off, but he can barely contain his surprise at how bad she is at giving head.\n";
 							fame -= 1;
 						}
 					}
 					ss << girlName << " licks the remaining cum from her lips with a smile. \"If you happen to have a real girlfriend, I hope she can do that as well as I can,\" she flirts as she grabs her clothing and prepares to go. \"And if you ever need a fake girlfriend again for a night, give me a call.\"";
 					imagetype = IMGTYPE_ORAL;
-					g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+					girl->oralsex(2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				}
 
 		if (roll_sex >= 50 && !g_Girls.CheckVirginity(girl))/*sex*/
 		{
-			if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) > 99)
+			if (girl->normalsex() > 99)
 				{
 					ss << "\"Let me do the work,\" she suggests, as she straddles him on the couch and envelops him with her hot, wet, pulsing pussy. She runs her fingernails gently over his chest as she circles herself on his cock. After a minute of heated teasing she begins to scratch him ever so slightly with her fingernails as she bounces up and down. She expertly matches the tempo to his thrusts, slowing when he gets close to orgasm, and picking it back up as he recovers. Then, when she feels he is ready, she deftly throws her left leg over his head and rotates so that now she is riding him with his back to her. She gyrates and humps like a wild woman, screaming in passion, until he erupts violently inside her. The two collapse in the couch together, sweating and panting, but very, very satisfied.\n";
 					fame += 3;
 				}
-			else if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) >= 75)
+			else if (girl->normalsex() >= 75)
 				{
 					ss << "\"Fill me,\" she whispers, gently pushing him until he is seated on the couch and then guiding his erection into her wet pussy. He moans with pleasure as she begins to slowly gyrate on his cock, both gasping as she picks up the pace and begins to ride him in an increasingly furious tempo. She is able to prolong the experience by slowing down when he gets close, and then picking it back up, so that eventually the client erupts into her like a raging volcano. The two collapse onto each other in a sweaty pile. \"That was amazing,\" he says.\n";
 					fame += 2;
 				}
-			else if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) >= 50)
+			else if (girl->normalsex() >= 50)
 				{
 					ss << "\"I'm so wet,\" she whispers, bending over while guiding his cock into her pussy with one solid thrust. Both of them moan with satisfaction as he finds that she is right, and soon she is pumping pleasurably back and forth, rocking her body to match his thrusts. After a few minutes of sexual pleasure he shoots his load deep into her uterus, and collapses onto his couch with a contented sigh.\n";
 					fame += 1;
 				}
-			else if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) >= 25)
+			else if (girl->normalsex() >= 25)
 				{
 					ss << "\"Take me,\" she whispers, lying on his couch and spreading her legs so he can access her pussy. He grins and thrusts quickly inside her, finding her wet enough to continue but dry enough to cause some discomfort. She moans at all the right times, but other than keeping her legs spread, " << girlName << " does not do much else to help with this, and ends up just lying there. While the client is easily able to spurt cum deep inside her after a few minutes, he is surprised at how mediocre her sexual abilities are compared to the rest of the evening.\n";
 				}
@@ -680,37 +680,37 @@ case Es_Regular:
 				}
 				ss << "After she wipes the cum from her thighs, she lies there for a moment beside him, stroking his chest with her fingers. \"I had a great time, love, but I do have to go,\" she whispers. \"But if you ever need a girlfriend for a night to do that again, you know where to find me.\"";
 				imagetype = IMGTYPE_SEX;
-				g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
+				girl->normalsex(2);
 				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 			}
 		else if (roll_sex >= 40 || anal)/*Anal*/
 				{
-					if (g_Girls.HasItemJ(girl, "Compelling Buttplug") != -1)
+					if (girl->has_item_j("Compelling Buttplug") != -1)
 					{
 						ss << girlName << " turns around, lifting her dress and giving him a good view of her ass. For the first time, the client is able to see a faint outline of plastic against her panties. \"I bet you didn't know I had this in me the whole time,\" " << girlName << " giggles as she deftly moves the crotch of her panties to the side, revealing the base of a buttplug sticking out of her ass. \"I'm nice and ready for you to take its place,\" she purrs, pulling out the plug and presenting her gaping ass to him.\n";
 						fame += 1;
 					}
-					else if (g_Girls.HasItemJ(girl, "Large Buttplug") != -1)
+					else if (girl->has_item_j("Large Buttplug") != -1)
 					{
 						ss << girlName << " turns around, lifting her dress and giving him a good view of her ass. For the first time, the client is able to see a faint outline of plastic against her panties. \"I bet you didn't know I had this in me the whole time,\" " << girlName << " giggles as she deftly moves the crotch of her panties to the side, revealing the base of a buttplug sticking out of her ass. \"I'm nice and ready for you to take its place,\" she purrs, tugging with her hand at the base of the buttplug. As she pulls it out, her ass clutches the plug and expands dramatically. The client is amazed at how far it keeps stretching, until the full massive plug plops down onto the floor, leaving her ass wide open and gaping in front of him. He pauses in wonder, having never realized that a girl's ass could carry anything so massive.";
 						fame += 2;
 					}
-					if (g_Girls.GetSkill(girl, SKILL_ANAL) > 99)
+					if (girl->anal() > 99)
 					{
 						ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " sighs with immense pleasure, truly happy to have her ass filled by his cock. She holds him back with her hand, asking that she be able to do the work for him. Soon she is gently massaging his dick with perfectly-timed squeezes of her asshole, purring with rapture. She then begins pumping herself back and forth on him, forcing him deep inside her, picking up the pace to a furious level and then slowing it down to keep him from cumming too early. After twenty heavenly minutes inside her, she begins throwing her hips backwards and forwards, riding his cock like the anal master that she is. He screams with bliss as he erupts violently into her ass, shooting string after string of cum deep inside her. \"Incredible!\" he exclaims, collapsing panting onto his couch.\n";
 						fame += 3;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 75)
+					else if (girl->anal() >= 75)
 					{
 						ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " moans with pleasure and begins to pump herself expertly around his manhood. \"Fuck my ass,\" she purrs, massaging him with well-timed squeezes as she forces him deeper into her with increasing thrusts. She gyrates herself expertly around him, and within a matter of minutes, the client is sweating and panting towards climax. \"Cum in me!\" she cries, as he fills her bowels with a violent eruption of cum.\n";
 						fame += 2;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 50)
+					else if (girl->anal() >= 50)
 					{
 						ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " moans with pleasure at the invasion and begins gyrating her hips around his cock, forcing him deeper into her and enticing him with the vision of her ass bouncing against his thighs. She does not know how to squeeze her ass at the right moments, but with her efforts and the mere fact that his cock in her ass is plenty of encouragement enough, soon he is shooting cum deep inside her bowels. \"Whoa,\" he pants, collapsing on the couch afterwards.\n";
 						fame += 1;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 25)
+					else if (girl->anal() >= 25)
 					{
 						ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " moans with a combination of pleasure and pain and tries to push herself back and forth to stimulate his cock. Her motions are amateurish and not very pleasurable, but the client can hardly complain, and soon he is shooting his cum deep inside her bowels.\n";
 					}
@@ -721,30 +721,30 @@ case Es_Regular:
 					}
 					ss << girlName << " lies beside the client for a moment, stroking his chest with her fingers as the cum leaks from her ass. \"That was amazing,\" she purrs, before she stands to gather her clothes to leave. \"If you have a real girlfriend, I hope she lets you do that to her ass from time to time,\" she flirts. \"But if you need a fake girlfriend again some night, you know where to find me.\"";
 					imagetype = IMGTYPE_ANAL;
-					g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+					girl->anal(2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				}
 		else if (roll_sex >= 25)/*titty job*/
 				{
 					ss << girlName << " is quickly stripping out of her dress to reveal her tits, and in a matter of seconds she has freed his cock from his pants and dropped to her knees to bury it between her cleavage.\n";
-					if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) > 99)
+					if (girl->tittysex() > 99)
 					{
 						ss << girlName << " gently rubs her nipples with the head of his cock while whispering dirty talk, then gives his tip a few teasing licks as she guides him into her oiled cleavage. She pushes her breasts together and begins to slowly rock back and forth on him, building tension and increasing the tempo as he moans louder and louder. Her tongue darts out at the perfect moment in each pump, right as the tip approaches her mouth, and by the time the client is screaming with rapture, she is pumping him with her tits at a furious pace. He almost passes out when he shoots string after string of cum into her open mouth. \"Where did you learn how to do that?\" he asks in amazement, collapsing on his couch.\n";
 						fame += 3;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 75)
+					else if (girl->tittysex() >= 75)
 					{
 						ss << girlName << " is an expert titty-fucker, and she alternates the head of his cock deftly from nipple to nipple, rubbing it seductively, between quick darts of tongue licks. Once he is fully primed, she guides him into her oiled cleavage and pushes her breasts together, pumping him back and forth and licking his tip every time it comes near her mouth. He moans with deep satisfaction as he shoots his load into her open and welcoming mouth.\n";
 						fame += 2;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 50)
+					else if (girl->tittysex() >= 50)
 					{
 						ss << "Fortunately, " << girlName << " knows what she is doing, and after sensuously rubbing the head of his cock over each nipple, she guides him into her oiled cleavage and shrugs her tits together. She bounces back and forth on his cock, purring dirty talk as he builds towards climax, and lowers her mouth to his tip just in time for a healthy dose of semen.\n";
 						fame += 1;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 25)
+					else if (girl->tittysex() >= 25)
 					{
-						ss << "While " << girlName << " is enthusiastic, she has some difficulty using her breasts to bring him off. Her lack of skills result in her spending more time smacking his dick with her nipples than building up a good pace. He is not very upset—few men in his position would be—but he does need to use his own hands a little to build up enough tension that he can cum.\n";
+						ss << "While " << girlName << " is enthusiastic, she has some difficulty using her breasts to bring him off. Her lack of skills result in her spending more time smacking his dick with her nipples than building up a good pace. He is not very upsetï¿½few men in his position would beï¿½but he does need to use his own hands a little to build up enough tension that he can cum.\n";
 					}
 					else
 					{
@@ -753,27 +753,27 @@ case Es_Regular:
 					}
 					ss << "After he erupts cum all over her face, " << girlName << " smiles, cleans herself off, and turns to collect her things to go. \"I'm afraid that's all our relationship can enjoy for tonight,\" she continues. \"Though if you ever need me to be your girlfriend again for the night, please give me a call.\"";
 					imagetype = IMGTYPE_TITTY;
-					g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
+					girl->tittysex(2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				}
 		else /*Hand job*/
 				{
-					if (g_Girls.GetSkill(girl, SKILL_HANDJOB) > 99)
+					if (girl->handjob() > 99)
 					{
 						ss << "\"Don't worry,\" she purrs as she licks her hand and fingers, \"you're in good hands.\" She delicately teases his erection with her fingers, grasping him between them and rotating her hand back and form before she expertly massages his balls. She kisses him passionately as she grasps him with a full grip, and then begins pulsing back and forth on his cock, increasing her pressure as she builds him skillfully to climax. \"3..\" she begins, moving faster around him. \"2..\" she continues, gripping with perfect pressure and timing her pulls with quick kisses on his mouth. \"1..\" she moans seductively, moving the pressure to the level of no return. \"Now,\" she declares, and instantly he cannot help but cum all over her fingers. \"That was AMAZING,\" he declares, collapsing on his couch.\n";
 						fame += 3;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 75)
+					else if (girl->handjob() >= 75)
 					{
 						ss << "\"Allow me to get a handle on things,\" she jokes as she licks her palm and fingers. Then she gently wraps them around his erection, pulling ever so slightly and then moving her fingers to massage his balls. She kisses him deeply as she slowly builds up the pace, timing each pull to his increasing pleasure, until he is gasping around her lips. She increases the pressure to a critical level once he hits the point of no return, and finishes the kiss just in time for his sperm to shoot all over her expert fingers. \"Wow,\" he grunts.\n";
 						fame += 2;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 50)
+					else if (girl->handjob() >= 50)
 					{
 						ss << "\"I think you'll find I'm quite handy to have around,\" she whispers before she licks her right palm and wraps her fingers around his pulsing manhood. She kisses him deeply as her hands maneuver around his cock, pulling at just the right pressure and using her fingers to tease his balls from time to time. As she finishes a last deep kiss, she escalates the pace and sends a violent stream of cum into her palm. \"That was something,\" he says.\n";
 						fame += 1;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 25)
+					else if (girl->handjob() >= 25)
 					{
 						ss << "\"Perhaps you'd like my hand to do a little more than hold yours?\" she continues, lifting her right hand to spit on the palm before grabbing his cock and pulling back and forth on it. He is surprised by her eagerness, but also by her lack of skill, as she bumbles back and forth, gripping far too tight and pulling far too hard. Still, it is enough to bring him to climax, and while he is amused at how badly she is at handjobs, he was aroused enough to send a wad of semen shooting forth onto her fingers. \"You certainly are enthusiastic,\" he says.\n";
 					}
@@ -784,7 +784,7 @@ case Es_Regular:
 					}
 					ss << girlName << " sensuously licks the semen from her fingers while the client recovers himself. \"If you have a real girlfriend, I hope she can do that as well as your pretend one,\" she smiles, packing her things to leave. \"And if you ever need a fake girlfriend again for a night, give me a call.\"";
 					imagetype = IMGTYPE_HAND;
-					g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
+					girl->handjob(2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				}
 	}
@@ -827,22 +827,22 @@ case Es_Commoner:
 
 	//beauty check
 	ss << girlName << " enters the restaurant and locates the artisan, sitting at a table for two in a quiet candlelit corner.\n";
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99)
+	if (girl->beauty() > 99)
 	{
 		ss << "He looks up as she approaches, and then he just stares in silence for an awkward silence. \"I'm sorry,\" he stammers, collecting himself. \"You are radiantly beautiful, and I lost my words for a moment.\" " << girlName << " smiles politely in response and makes a kind remark in return as he stands, pulls out her chair, and informs her that he has ordered a bottle of wine for them to share while they consider their food choices.\n";
 		escort += 3;
 	}
-	else if (g_Girls.GetStat(girl, STAT_BEAUTY) >= 75)
+	else if (girl->beauty() >= 75)
 	{
 		ss << "He looks up as she approaches and smiles radiantly. \"You are absolutely lovely, " << girlName << ". I'm so glad you could join me this evening.\" He stands and pulls out the seat for her, and she can feel his eyes quickly scanning her backside. " << girlName << " smiles politely and sits.\n";
 		escort += 2;
 	}
-	else if (g_Girls.GetStat(girl, STAT_BEAUTY) >= 50)
+	else if (girl->beauty() >= 50)
 	{
 		ss << "He looks up as she approaches and smiles. " << girlName << " is not a bombshell looker, but she can hold her own, and she smiles back, allowing him to take her all in. \"I'm so glad you could join me,\" he begins, his eyes returning to her face. \"Please have a seat.  I've ordered us a bottle of wine, and I hope you'll like it.\"\n";
 		escort += 1;
 	}
-	else if (g_Girls.GetStat(girl, STAT_BEAUTY) >= 25)
+	else if (girl->beauty() >= 25)
 	{
 		ss << "He looks up as she approaches and smiles politely. She can detect that he is disappointed with her looks, but he hides it well. \"Please have a seat,\" he says.\n";
 	}
@@ -923,7 +923,7 @@ case Es_Commoner:
 		ass_lover = true;
 		if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
 				{
-					ss << girlName << " does not mind his gaze, however, and her exhibitionist tendencies make her decide to keep his attention on her amazing ass for a few more moments. She sits so that her skirt hitches on the chair and rides up, giving him a brief view of the contours of her ass cheeks. \"Oh my,\" she giggles, quickly—but not too quickly—settling her skirt back to normal.\n";
+					ss << girlName << " does not mind his gaze, however, and her exhibitionist tendencies make her decide to keep his attention on her amazing ass for a few more moments. She sits so that her skirt hitches on the chair and rides up, giving him a brief view of the contours of her ass cheeks. \"Oh my,\" she giggles, quicklyï¿½but not too quicklyï¿½settling her skirt back to normal.\n";
 					if (g_Dice.percent(75))
 						{
 							ss << "The client fans himself for a moment with the menu and smiles. \"My,\" he begins, \"did it just get hot in here?\"\n";
@@ -965,7 +965,7 @@ case Es_Commoner:
 
 	//CONVERSATION PHASE (REFINEMENT  CHECK)
 	ss << "The two of them enjoy a bottle of wine while chatting amiably in the lovely restaurant. While the client is merely a commoner, the rest of the patrons here are members of the gentry and middle class, and it seems that he has decided to spend a significant portion of his weekly wages to come here with " << girlName << ". An impeccably polite waiter arrives to discuss the wine list and then take their orders for food.\n";
-	if (g_Girls.GetStat(girl, STAT_REFINEMENT) > 99)
+	if (girl->refinement() > 99)
 	{
 		ss << "This is a restaurant for the gentry and other upper-middle class, and while that may have intimidated some other girls, " << girlName << " is quite comfortable having dinner in a palace. She is incredibly refined, and shortly this is apparent to the waiter, the other patrons, and especially the client, who is not really at home here and is trying to enjoy the way the other half lives for a night. He has invested quite a bit of money into this evening, and he is thrilled to see that " << girlName << " is perfectly at ease in this setting and even able to cleverly help him feel more at home. She subtly educates him on the way to hold the wine glass, order food, and then eat that food as any landed gentry would. This is the perfect companion for his evening, and he watches her every move with deep respect, appreciation, and affection.\n";
 		escort += 3;
@@ -985,7 +985,7 @@ case Es_Commoner:
 			escort -= 1;
 		}
 	}
-	else if (g_Girls.GetStat(girl, STAT_REFINEMENT) >= 75)
+	else if (girl->refinement() >= 75)
 	{
 		ss << "This restaurant is a favorite of the upper-middle class gentry, and fortunately, " << girlName << " is very refined and quite at home with the customs of the lesser nobility, let alone the gentry. She is also able to tell that her client is not as comfortable in this setting, and helps to guide him toward the right menu selections with such refined subterfuge that he believes his selections to be his own, and not the result of her polite suggestions. She quickly impresses the waiter with well-informed questions on the source of each dish and the style of cooking to be employed. The client gratefully follows her lead, very glad that she is able to deftly navigate a world to which he can only aspire.\n";
 		escort += 2;
@@ -1005,7 +1005,7 @@ case Es_Commoner:
 			escort -= 1;
 		}
 	}
-	else if (g_Girls.GetStat(girl, STAT_REFINEMENT) >= 50)
+	else if (girl->refinement() >= 50)
 	{
 		ss << "This restaurant is a favorite for members of the gentry, which generally are considered upper-middle class. Fortunately, " << girlName << " is sufficiently refined to be very comfortable in this atmosphere, and she speaks, drinks, and eats with ease. The client is immediately grateful to see that she is in her natural element, because he is not, and while he was ready to fake it for the evening, he is much happier to follow her lead. This is his evening to live like his economic betters, even if it costs him a full week's worth of wages, and he happily notes that the waiter congratulates her for her excellent choice of perfectly pronounced French cuisine, and does his best to emulate her.\n";
 		escort += 1;
@@ -1025,7 +1025,7 @@ case Es_Commoner:
 			escort -= 1;
 		}
 	}
-	else if (g_Girls.GetStat(girl, STAT_REFINEMENT) >= 25)
+	else if (girl->refinement() >= 25)
 	{
 		ss << girlName << " has the refinement of a girl raised in the lower-middle class, and she is somewhat out of sorts in this restaurant, which is definitely upper-middle class. While the client is also out of place here, he does a much better job of hiding it. He smells the wine cork when the bottle is offered as if he has done that many times before, and as soon as the waiter leaves, " << girlName << " leans towards him and asks in a whisper what that was all about. \"Honestly,\" he replies, \"I have no idea. It's just what I see them do.\" Understanding about decorum, " << girlName << " knows enough about her own limitations to be uncomfortable here, and quietly orders the most inexpensive thing from the menu that she can. The client is slightly charmed by her discomfort, as he obviously sympathizes, but it seems that he was hoping that he would be the only one faking it, and that " << girlName << " should have been the kind of lady who would be right at home here.\n";
 		if (girl->has_trait( "Elegant"))
@@ -1094,11 +1094,11 @@ case Es_Commoner:
 	//SEX PHASE (LIBIDO CHECK)
 	if (sex_offer)
 	{
-		if (g_Girls.GetStat(girl, STAT_MORALITY) >= 50)
+		if (girl->morality() >= 50)
 		{
 			ss << girlName << " blinks in surprise at the offer. \"I'm afraid I just couldn't,\" she begins, doing her best to politely decline the offer. \"Thank you, but I'm a conservative kind of girl, and since we just met, I feel it would be wrong to do anything more.\" She blushes and makes ready to leave. \"Of course, I understand,\" stammers the client. \"A woman of your class and refinement would naturally be surprised by so forward an advance. A million apologies,\" he finishes, but " << girlName << " brushes the apology away with tenderness, sparing his ego, as she turns to begin her trek back to your establishment.";
 		}
-		else if (g_Girls.GetStat(girl, STAT_LIBIDO) <= 50)
+		else if (girl->libido() <= 50)
 		{
 			ss << girlName << " is flattered, but not interested in anything with this client. She politely declines his offer, mentioning that her work does not permit it and her employer has already assigned her other work for the night, and lightens the mood with a final few jokes before departing the restaurant to return to your establishment. He takes it well, as her gentle delivery spares his ego, and he thanks her again for a wonderful evening.";
 		}
@@ -1117,25 +1117,25 @@ case Es_Commoner:
 	{
 		if (titty_lover)
 		{
-			ss << "Once the two enter his place and shut the door, " << girlName << " starts seductively stripping away her shirt to reveal her beautiful breasts. \"I got the feeling you like these,\" she purrs, leaning close and bringing her hand to grab her left tit. \"Maybe you'd like to get to know them a bit better, too,\" she continues, using her other hand to free his cock from his pants. " << girlName << " disappears briefly into his kitchen and returns a moment later carrying a jar. \"I found some olive oil… I hope you don't mind if I borrow some,\" she smiles. \"Not at all,\" he pants in response, eagerly waiting. Soon she has lathered up her breasts in oil and is rubbing them up and down his cock while she moans seductively.\n";
-			if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) > 99)
+			ss << "Once the two enter his place and shut the door, " << girlName << " starts seductively stripping away her shirt to reveal her beautiful breasts. \"I got the feeling you like these,\" she purrs, leaning close and bringing her hand to grab her left tit. \"Maybe you'd like to get to know them a bit better, too,\" she continues, using her other hand to free his cock from his pants. " << girlName << " disappears briefly into his kitchen and returns a moment later carrying a jar. \"I found some olive oilï¿½ I hope you don't mind if I borrow some,\" she smiles. \"Not at all,\" he pants in response, eagerly waiting. Soon she has lathered up her breasts in oil and is rubbing them up and down his cock while she moans seductively.\n";
+			if (girl->tittysex() > 99)
 			{
 				ss << girlName << " gently rubs her nipples with the head of his cock while whispering dirty talk, then gives his tip a few teasing licks as she guides him into her oiled cleavage. She pushes her breasts together and begins to slowly rock back and forth on him, building tension and increasing the tempo as he moans louder and louder. Her tongue darts out at the perfect moment in each pump, right as the tip approaches her mouth, and by the time the client is screaming with rapture, she is pumping him with her tits at a furious pace. He almost passes out when he shoots string after string of cum into her open mouth. \"Where did you learn how to do that?\" he asks in amazement, collapsing on his couch.\n";
 				fame += 3;
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 75)
+			else if (girl->tittysex() >= 75)
 			{
 				ss << girlName << " is an expert titty-fucker, and she alternates the head of his cock deftly from nipple to nipple, rubbing it seductively, between quick darts of tongue licks. Once he is fully primed, she guides him into her oiled cleavage and pushes her breasts together, pumping him back and forth and licking his tip every time it comes near her mouth. He moans with deep satisfaction as he shoots his load into her open and welcoming mouth.\n";
 				fame += 2;
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 50)
+			else if (girl->tittysex() >= 50)
 			{
 				ss << "Fortunately, " << girlName << " knows what she is doing, and after sensuously rubbing the head of his cock over each nipple, she guides him into her oiled cleavage and shrugs her tits together. She bounces back and forth on his cock, purring dirty talk as he builds towards climax, and lowers her mouth to his tip just in time for a healthy dose of semen.\n";
 				fame += 1;
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 25)
+			else if (girl->tittysex() >= 25)
 			{
-				ss << "While " << girlName << " is enthusiastic, she has some difficulty using her breasts to bring him off. Her lack of skills result in her spending more time smacking his dick with her nipples than building up a good pace. He is not very upset—few men in his position would be—but he does need to use his own hands a little to build up enough tension that he can cum.\n";
+				ss << "While " << girlName << " is enthusiastic, she has some difficulty using her breasts to bring him off. Her lack of skills result in her spending more time smacking his dick with her nipples than building up a good pace. He is not very upsetï¿½few men in his position would beï¿½but he does need to use his own hands a little to build up enough tension that he can cum.\n";
 			}
 			else
 			{
@@ -1144,7 +1144,7 @@ case Es_Commoner:
 			}
 			ss << "After he erupts cum all over her face, " << girlName << " smiles, cleans herself off, and turns to collect her things to go. \"Thank you for that,\" she says as she approaches the door. \"You should know that, at the very least in this respect, you are better than any of the gentry I have known.\"";
 			imagetype = IMGTYPE_TITTY;
-			g_Girls.UpdateSkill(girl, SKILL_TITTYSEX, 2);
+			girl->tittysex(2);
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 		}
 		else if (ass_lover)
@@ -1171,22 +1171,22 @@ case Es_Commoner:
 			{
 				if (roll_sex >= 50 && !g_Girls.CheckVirginity(girl) || sex)/*sex*/
 				{
-					if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) > 99)
+					if (girl->normalsex() > 99)
 					{
 						ss << "\"Let me do the work,\" she suggests, as she straddles him on the couch and envelops him with her hot, wet, pulsing pussy. She runs her fingernails gently over his chest as she circles herself on his cock. After a minute of heated teasing she begins to scratch him ever so slightly with her fingernails as she bounces up and down. She expertly matches the tempo to his thrusts, slowing when he gets close to orgasm, and picking it back up as he recovers. Then, when she feels he is ready, she deftly throws her left leg over his head and rotates so that now she is riding him with his back to her. She gyrates and humps like a wild woman, screaming in passion, until he erupts violently inside her. The two collapse in the couch together, sweating and panting, but very, very satisfied.\n";
 						fame += 3;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) >= 75)
+					else if (girl->normalsex() >= 75)
 					{
 						ss << "\"Fill me,\" she whispers, gently pushing him until he is seated on the couch and then guiding his erection into her wet pussy. He moans with pleasure as she begins to slowly gyrate on his cock, both gasping as she picks up the pace and begins to ride him in an increasingly furious tempo. She is able to prolong the experience by slowing down when he gets close, and then picking it back up, so that eventually the client erupts into her like a raging volcano. The two collapse onto each other in a sweaty pile. \"That was amazing,\" he says.\n";
 						fame += 2;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) >= 50)
+					else if (girl->normalsex() >= 50)
 					{
 						ss << "\"I'm so wet,\" she whispers, bending over while guiding his cock into her pussy with one solid thrust. Both of them moan with satisfaction as he finds that she is right, and soon she is pumping pleasurably back and forth, rocking her body to match his thrusts. After a few minutes of sexual pleasure he shoots his load deep into her uterus, and collapses onto his couch with a contented sigh.\n";
 						fame += 1;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) >= 25)
+					else if (girl->normalsex() >= 25)
 					{
 						ss << "\"Maybe you would like some of this,\" she whispers, lying on his couch and spreading her legs so he can access her pussy. He grins and thrusts quickly inside her, finding her wet enough to continue but dry enough to cause some discomfort. She moans at all the right times, but other than keeping her legs spread, " << girlName << " does not do much else to help with this, and ends up just lying there. While the client is easily able to spurt cum deep inside her after a few minutes, he is surprised at how mediocre her sexual abilities are compared to the rest of the evening.\n";
 					}
@@ -1197,37 +1197,37 @@ case Es_Commoner:
 					}
 					ss << "After she wipes the cum from her thighs, she lies there for a moment beside him, stroking his chest with her fingers. \"I had a great time, love, but I do have to go,\" she whispers. \"I hope you know that, at least as far as sex is concerned, and in many other ways, you are better than practically every gentry I have ever met.\"";
 					imagetype = IMGTYPE_SEX;
-					g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
+					girl->normalsex(2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				}
 				else if (roll_sex >= 40 || anal)/*Anal*/
 				{
-					if (g_Girls.HasItemJ(girl, "Compelling Buttplug") != -1)
+					if (girl->has_item_j("Compelling Buttplug") != -1)
 					{
 						ss << girlName << " turns around, lifting her casual skirt and giving him a good view of her ass. For the first time, the client is able to see a faint outline of plastic against her panties. \"I bet you didn't know I had this in me the whole time,\" " << girlName << " giggles as she deftly moves the crotch of her panties to the side, revealing the base of a buttplug sticking out of her ass. \"I'm nice and ready for you to take its place,\" she purrs, pulling out the plug and presenting her gaping ass to him.";
 						fame += 1;
 					}
-					else if (g_Girls.HasItemJ(girl, "Large Buttplug") != -1)
+					else if (girl->has_item_j("Large Buttplug") != -1)
 					{
 						ss << girlName << " turns around, lifting her casual skirt and giving him a good view of her ass. For the first time, the client is able to see a faint outline of plastic against her panties. \"I bet you didn't know I had this in me the whole time,\" " << girlName << " giggles as she deftly moves the crotch of her panties to the side, revealing the base of a buttplug sticking out of her ass. \"I'm nice and ready for you to take its place,\" she purrs, tugging with her hand at the base of the buttplug. As she pulls it out, her ass clutches the plug and expands dramatically. The client is amazed at how far it keeps stretching, until the full massive plug plops down onto the floor, leaving her ass wide open and gaping in front of him. He pauses in wonder, having never realized that a girl's ass could carry anything so massive.";
 						fame += 2;
 					}
-					if (g_Girls.GetSkill(girl, SKILL_ANAL) > 99)
+					if (girl->anal() > 99)
 					{
 						ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " sighs with immense pleasure, truly happy to have her ass filled by his cock. She holds him back with her hand, asking that she be able to do the work for him. Soon she is gently massaging his dick with perfectly-timed squeezes of her asshole, purring with rapture. She then begins pumping herself back and forth on him, forcing him deep inside her, picking up the pace to a furious level and then slowing it down to keep him from cumming too early. After twenty heavenly minutes inside her, she begins throwing her hips backwards and forwards, riding his cock like the anal master that she is. He screams with bliss as he erupts violently into her ass, shooting string after string of cum deep inside her. \"Incredible!\" he exclaims, collapsing panting onto his couch.\n";
 						fame += 3;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 75)
+					else if (girl->anal() >= 75)
 					{
 						ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " moans with pleasure and begins to pump herself expertly around his manhood. \"Fuck my ass,\" she purrs, massaging him with well-timed squeezes as she forces him deeper into her with increasing thrusts. She gyrates herself expertly around him, and within a matter of minutes, the client is sweating and panting towards climax. \"Cum in me!\" she cries, as he fills her bowels with a violent eruption of cum.\n";
 						fame += 2;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 50)
+					else if (girl->anal() >= 50)
 					{
 						ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " moans with pleasure at the invasion and begins gyrating her hips around his cock, forcing him deeper into her and enticing him with the vision of her ass bouncing against his thighs. She does not know how to squeeze her ass at the right moments, but with her efforts and the mere fact that his cock in her ass is plenty of encouragement enough, soon he is shooting cum deep inside her bowels. \"Whoa,\" he pants, collapsing on the couch afterwards.\n";
 						fame += 1;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 25)
+					else if (girl->anal() >= 25)
 					{
 						ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " moans with a combination of pleasure and pain and tries to push herself back and forth to stimulate his cock. Her motions are amateurish and not very pleasurable, but the client can hardly complain, and soon he is shooting his cum deep inside her bowels.\n";
 					}
@@ -1238,27 +1238,27 @@ case Es_Commoner:
 					}
 					ss << girlName << " lies beside the client for a moment, stroking his chest with her fingers as the cum leaks from her ass. \"That was amazing,\" she purrs, before she stands to gather her clothes to leave. \"I'm glad we got to know each other a little better, and I hope you know that when it comes to tearing my ass open, you are better than any gentry I have ever met.\"";
 					imagetype = IMGTYPE_ANAL;
-					g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+					girl->anal(2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				}
 				else if (roll_sex >= 25)/*Hand job*/
 				{
-					if (g_Girls.GetSkill(girl, SKILL_HANDJOB) > 99)
+					if (girl->handjob() > 99)
 					{
 						ss << "\"Don't worry,\" she purrs as she licks her hand and fingers, \"you're in good hands.\" She delicately teases his erection with her fingers, grasping him between them and rotating her hand back and form before she expertly massages his balls. She kisses him passionately as she grasps him with a full grip, and then begins pulsing back and forth on his cock, increasing her pressure as she builds him skillfully to climax. \"3..\" she begins, moving faster around him. \"2..\" she continues, gripping with perfect pressure and timing her pulls with quick kisses on his mouth. \"1..\" she moans seductively, moving the pressure to the level of no return. \"Now,\" she declares, and instantly he cannot help but cum all over her fingers. \"That was AMAZING,\" he declares, collapsing on his couch.\n";
 						fame += 3;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 75)
+					else if (girl->handjob() >= 75)
 					{
 						ss << "\"Allow me to get a handle on things,\" she jokes as she licks her palm and fingers. Then she gently wraps them around his erection, pulling ever so slightly and then moving her fingers to massage his balls. She kisses him deeply as she slowly builds up the pace, timing each pull to his increasing pleasure, until he is gasping around her lips. She increases the pressure to a critical level once he hits the point of no return, and finishes the kiss just in time for his sperm to shoot all over her expert fingers. \"Wow,\" he grunts.\n";
 						fame += 2;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 50)
+					else if (girl->handjob() >= 50)
 					{
 						ss << "\"I think you'll find I'm quite handy to have around,\" she whispers before she licks her right palm and wraps her fingers around his pulsing manhood. She kisses him deeply as her hands maneuver around his cock, pulling at just the right pressure and using her fingers to tease his balls from time to time. As she finishes a last deep kiss, she escalates the pace and sends a violent stream of cum into her palm. \"That was something,\" he says.\n";
 						fame += 1;
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 25)
+					else if (girl->handjob() >= 25)
 					{
 						ss << "\"Perhaps you'd like my hand to do a little more than hold yours?\" she continues, lifting her right hand to spit on the palm before grabbing his cock and pulling back and forth on it. He is surprised by her eagerness, but also by her lack of skill, as she bumbles back and forth, gripping far too tight and pulling far too hard. Still, it is enough to bring him to climax, and while he is amused at how badly she is at handjobs, he was aroused enough to send a wad of semen shooting forth onto her fingers. \"You certainly are enthusiastic,\" he says.\n";
 					}
@@ -1269,12 +1269,12 @@ case Es_Commoner:
 					}
 					ss << girlName << " sensuously licks the semen from her fingers while the client recovers himself. \"I think I got that drink you were talking about,\" she says as she finishes the last string of cum. \"And I'm happy we got to know each other a bit better. I hope a gentleman such as yourself is kind enough to call on me again,\" she suggests as she gathers her clothes to leave.";
 					imagetype = IMGTYPE_HAND;
-					g_Girls.UpdateSkill(girl, SKILL_HANDJOB, 2);
+					girl->handjob(2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				}
 				else/*oral*/
 				{
-					if (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 99)
+					if (girl->oralsex() > 99)
 					{
 						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
@@ -1287,7 +1287,7 @@ case Es_Commoner:
 							fame += 3;
 						}
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 75)
+					else if (girl->oralsex() >= 75)
 					{
 						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
@@ -1300,7 +1300,7 @@ case Es_Commoner:
 							fame += 2;
 						}
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
+					else if (girl->oralsex() >= 50)
 					{
 						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
@@ -1312,7 +1312,7 @@ case Es_Commoner:
 							fame += 1;
 						}
 					}
-					else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 25)
+					else if (girl->oralsex() >= 25)
 					{
 						if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 						{
@@ -1333,13 +1333,13 @@ case Es_Commoner:
 						}
 						else
 						{
-							ss << "Wordlessly, " << girlName << " lowers herself to her knees and begins unbuttoning the client's pants. She grins and begins licking his erection. He sighs with satisfaction and prepares to enjoy the blowjob until he realizes that she has absolutely no idea what she is doing. She licks the cock like it is a lollipop, with the skill of a virgin and the enthusiasm of a dog going after peanut butter. She tries to swallow his shaft but does not get too far. The icing on the cake is when she starts blowing on his dick, as if someone fundamentally failed to explain what a ‘blowjob' was. Still, with enough enthusiasm from her and enough manual stimulation from himself, he is able to eventually bring himself to cum in her inexperienced mouth. He is happy to have gotten a load off, but he can barely contain his surprise at how bad she is at giving head.\n";
+							ss << "Wordlessly, " << girlName << " lowers herself to her knees and begins unbuttoning the client's pants. She grins and begins licking his erection. He sighs with satisfaction and prepares to enjoy the blowjob until he realizes that she has absolutely no idea what she is doing. She licks the cock like it is a lollipop, with the skill of a virgin and the enthusiasm of a dog going after peanut butter. She tries to swallow his shaft but does not get too far. The icing on the cake is when she starts blowing on his dick, as if someone fundamentally failed to explain what a ï¿½blowjob' was. Still, with enough enthusiasm from her and enough manual stimulation from himself, he is able to eventually bring himself to cum in her inexperienced mouth. He is happy to have gotten a load off, but he can barely contain his surprise at how bad she is at giving head.\n";
 							fame -= 1;
 						}
 					}
 					ss << girlName << " licks the remaining cum from her lips with a smile. \"Thanks for the drink,\" she says, as she begins gathering her clothes to leave. \"I hope a gentleman like yourself is kind enough to call for me again sometime,\" she suggests as she heads for the door to return to your establishment.";
 					imagetype = IMGTYPE_ORAL;
-					g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+					girl->oralsex(2);
 					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
 				}
 		}
@@ -1382,22 +1382,22 @@ case Es_DeadBeat:
 
 	//beauty check
 	ss << girlName << " enters the bar and quickly locates the client.\n";
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99)
+	if (girl->beauty() > 99)
 	{
 		ss << "He looks up as she approaches, and then he just stares in silence for an awkward silence. \"I'm sorry,\" he stammers, collecting himself. \"You are just the most beautiful woman I've ever seen. I don't mean that as some kind of lame line.. I mean it.\" " << girlName << " smiles politely in response and makes a kind remark in return as he stands, pulls out her chair, and asks her if she would like to join him for a drink.\n";
 		escort += 3;
 	}
-	else if (g_Girls.GetStat(girl, STAT_BEAUTY) >= 75)
+	else if (girl->beauty() >= 75)
 	{
 		ss << "He looks up as she approaches and smiles radiantly. \"You are absolutely lovely, " << girlName << ". I'm so glad you could join me this evening.\" He stands and pulls out the seat for her, and she can feel his eyes quickly scanning her backside. " << girlName << " smiles politely and sits.\n";
 		escort += 2;
 	}
-	else if (g_Girls.GetStat(girl, STAT_BEAUTY) >= 50)
+	else if (girl->beauty() >= 50)
 	{
 		ss << "He looks up as she approaches and smiles. " << girlName << " is not a bombshell looker, but she can hold her own, and she smiles back, allowing him to take her all in. \"I'm so glad you could join me,\" he begins, his eyes returning to her face. \"Please have a seat and I'll get you a drink.\"\n";
 		escort += 1;
 	}
-	else if (g_Girls.GetStat(girl, STAT_BEAUTY) >= 25)
+	else if (girl->beauty() >= 25)
 	{
 		ss << "He looks up as she approaches and smiles politely. She can detect that he is disappointed with her looks, but he hides it well. \"Please have a seat,\" he says.\n";
 	}
@@ -1478,7 +1478,7 @@ case Es_DeadBeat:
 		ass_lover = true;
 		if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
 				{
-					ss << girlName << " does not mind his gaze, however, and her exhibitionist tendencies make her decide to keep his attention on her amazing ass for a few more moments. She sits so that her skirt hitches on the chair and rides up, giving him a brief view of the contours of her ass cheeks. \"Oh my,\" she giggles, quickly—but not too quickly—settling her skirt back to normal.\n";
+					ss << girlName << " does not mind his gaze, however, and her exhibitionist tendencies make her decide to keep his attention on her amazing ass for a few more moments. She sits so that her skirt hitches on the chair and rides up, giving him a brief view of the contours of her ass cheeks. \"Oh my,\" she giggles, quicklyï¿½but not too quicklyï¿½settling her skirt back to normal.\n";
 					if (g_Dice.percent(75))
 						{
 							ss << "The client fans himself for a moment with the menu and smiles. \"My,\" he begins, \"did it just get hot in here?\"\n";
@@ -1521,7 +1521,7 @@ case Es_DeadBeat:
 
 	//CONVERSATION PHASE (CHARISMA CHECK)
 	ss << "The two of them order a drink and engage in small talk. They keep the conversation light and easy, avoiding complicated subjects.\n";
-	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 99)
+	if (girl->charisma() > 99)
 	{
 		ss << girlName << " and the client spend the next hour joking and bantering like old friends. She is wonderfully charismatic, and while she expertly keeps the conversation on comfortable subjects for him, she knows that he would be happy talking with her about anything. By the end of the hour he is wiping tears of laughter from his eyes and smiling at her with deep appreciation.\n";
 		escort += 3;
@@ -1532,7 +1532,7 @@ case Es_DeadBeat:
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +20, true);
 		}
 	}
-	else if (g_Girls.GetStat(girl, STAT_CHARISMA) >= 75)
+	else if (girl->charisma() >= 75)
 	{
 		ss << girlName << " and the client are bantering like best friends within minutes. She charismatically leads him into conversations where they share interests and deftly steers him away from controversial or uncomfortable subjects. An hour has passed before he even realizes it, and their laughter reverberates around the surrounding tables.\n";
 		escort += 2;
@@ -1543,7 +1543,7 @@ case Es_DeadBeat:
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +20);
 		}
 	}
-	else if (g_Girls.GetStat(girl, STAT_CHARISMA) >= 50)
+	else if (girl->charisma() >= 50)
 	{
 		ss << girlName << " has the client laughing at jokes and talking about shared hobbies in no time. The two of them enjoy a pleasant conversation for the next forty-five minutes, and they both share another drink. After about an hour, the conversation starts slowing down as " << girlName << " runs out of ideas to keep it going, but by the end of the evening, she can tell the client enjoyed their time together.\n";
 		escort += 1;
@@ -1554,7 +1554,7 @@ case Es_DeadBeat:
 			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +20, true);
 		}
 	}
-	else if (g_Girls.GetStat(girl, STAT_CHARISMA) >= 25)
+	else if (girl->charisma() >= 25)
 	{
 		ss << girlName << " is able to lead the two of them in a few minutes of good conversation, but it begins to sputter out once she is out of ideas. The client's efforts at leading the conversation would have been successful if " << girlName << " was more charismatic and able to think and speak on her feet. The conversation is not the worst thing in the world, but it ends up being a part of the date that both of them would be happier forgetting.\n";
 		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
@@ -1605,11 +1605,11 @@ case Es_DeadBeat:
 	//SEX PHASE (LIBIDO CHECK)
 	if (sex_offer)
 	{
-		if (g_Girls.GetStat(girl, STAT_MORALITY) >= 50)
+		if (girl->morality() >= 50)
 		{
 			ss << girlName << " blinks in surprise at the offer. \"I'm afraid I just couldn't,\" she begins, doing her best to politely decline the offer. \"Thank you, but I'm a conservative kind of girl, and since we just met, I feel it would be wrong to do anything more.\" She blushes and makes ready to leave. \"Maybe a second date, then?\" he asks, hopefully. \"Maybe,\" she responds as she walks away.";
 		}
-		else if (g_Girls.GetStat(girl, STAT_LIBIDO) <= 50)
+		else if (girl->libido() <= 50)
 		{
 			ss << girlName << " is flattered, but not interested in anything with this client. She politely declines his offer, mentioning that her work does not permit it, and lightens the mood with a final few jokes before departing the bar to return to your establishment.";
 		}
@@ -1626,25 +1626,25 @@ case Es_DeadBeat:
 	{
 		if (titty_lover)
 		{
-			ss << "Once the two enter his place and shut the door, " << girlName << " starts seductively stripping away her shirt to reveal her beautiful breasts. \"I got the feeling you like these,\" she purrs, leaning close and bringing her hand to grab her left tit. \"Maybe you'd like to get to know them a bit better, too,\" she continues, using her other hand to free his cock from his pants. " << girlName << " disappears briefly into his kitchen and returns a moment later carrying a jar. \"I found some olive oil… I hope you don't mind if I borrow some,\" she smiles. \"Not at all,\" he pants in response, eagerly waiting. Soon she has lathered up her breasts in oil and is rubbing them up and down his cock while she moans seductively.\n";
-			if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) > 99)
+			ss << "Once the two enter his place and shut the door, " << girlName << " starts seductively stripping away her shirt to reveal her beautiful breasts. \"I got the feeling you like these,\" she purrs, leaning close and bringing her hand to grab her left tit. \"Maybe you'd like to get to know them a bit better, too,\" she continues, using her other hand to free his cock from his pants. " << girlName << " disappears briefly into his kitchen and returns a moment later carrying a jar. \"I found some olive oilï¿½ I hope you don't mind if I borrow some,\" she smiles. \"Not at all,\" he pants in response, eagerly waiting. Soon she has lathered up her breasts in oil and is rubbing them up and down his cock while she moans seductively.\n";
+			if (girl->tittysex() > 99)
 			{
 				ss << girlName << " gently rubs her nipples with the head of his cock while whispering dirty talk, then gives his tip a few teasing licks as she guides him into her oiled cleavage. She pushes her breasts together and begins to slowly rock back and forth on him, building tension and increasing the tempo as he moans louder and louder. Her tongue darts out at the perfect moment in each pump, right as the tip approaches her mouth, and by the time the client is screaming with rapture, she is pumping him with her tits at a furious pace. He almost passes out when he shoots string after string of cum into her open mouth. \"Where did you learn how to do that?\" he asks in amazement, collapsing on his couch.\n";
 				fame += 3;
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 75)
+			else if (girl->tittysex() >= 75)
 			{
 				ss << girlName << " is an expert titty-fucker, and she alternates the head of his cock deftly from nipple to nipple, rubbing it seductively, between quick darts of tongue licks. Once he is fully primed, she guides him into her oiled cleavage and pushes her breasts together, pumping him back and forth and licking his tip every time it comes near her mouth. He moans with deep satisfaction as he shoots his load into her open and welcoming mouth.\n";
 				fame += 2;
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 50)
+			else if (girl->tittysex() >= 50)
 			{
 				ss << "Fortunately, " << girlName << " knows what she is doing, and after sensuously rubbing the head of his cock over each nipple, she guides him into her oiled cleavage and shrugs her tits together. She bounces back and forth on his cock, purring dirty talk as he builds towards climax, and lowers her mouth to his tip just in time for a healthy dose of semen.\n";
 				fame += 1;
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_TITTYSEX) >= 25)
+			else if (girl->tittysex() >= 25)
 			{
-				ss << "While " << girlName << " is enthusiastic, she has some difficulty using her breasts to bring him off. Her lack of skills result in her spending more time smacking his dick with her nipples than building up a good pace. He is not very upset—few men in his position would be—but he does need to use his own hands a little to build up enough tension that he can cum.\n";
+				ss << "While " << girlName << " is enthusiastic, she has some difficulty using her breasts to bring him off. Her lack of skills result in her spending more time smacking his dick with her nipples than building up a good pace. He is not very upsetï¿½few men in his position would beï¿½but he does need to use his own hands a little to build up enough tension that he can cum.\n";
 			}
 			else
 			{
@@ -1678,22 +1678,22 @@ case Es_DeadBeat:
 		{
 			if (roll_sex >= 50 && !g_Girls.CheckVirginity(girl) || sex)/*sex*/
 			{
-				if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) > 99)
+				if (girl->normalsex() > 99)
 				{
 					ss << "\"Let me do the work,\" she suggests, as she straddles him on the couch and envelops him with her hot, wet, pulsing pussy. She runs her fingernails gently over his chest as she circles herself on his cock. After a minute of heated teasing she begins to scratch him ever so slightly with her fingernails as she bounces up and down. She expertly matches the tempo to his thrusts, slowing when he gets close to orgasm, and picking it back up as he recovers. Then, when she feels he is ready, she deftly throws her left leg over his head and rotates so that now she is riding him with his back to her. She gyrates and humps like a wild woman, screaming in passion, until he erupts violently inside her. The two collapse in the couch together, sweating and panting, but very, very satisfied.\n";
 					fame += 3;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) >= 75)
+				else if (girl->normalsex() >= 75)
 				{
 					ss << "\"Fill me,\" she whispers, gently pushing him until he is seated on the couch and then guiding his erection into her wet pussy. He moans with pleasure as she begins to slowly gyrate on his cock, both gasping as she picks up the pace and begins to ride him in an increasingly furious tempo. She is able to prolong the experience by slowing down when he gets close, and then picking it back up, so that eventually the client erupts into her like a raging volcano. The two collapse onto each other in a sweaty pile. \"That was amazing,\" he says.\n";
 					fame += 2;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) >= 50)
+				else if (girl->normalsex() >= 50)
 				{
 					ss << "\"I'm so wet,\" she whispers, bending over while guiding his cock into her pussy with one solid thrust. Both of them moan with satisfaction as he finds that she is right, and soon she is pumping pleasurably back and forth, rocking her body to match his thrusts. After a few minutes of sexual pleasure he shoots his load deep into her uterus, and collapses onto his couch with a contented sigh.\n";
 					fame += 1;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_NORMALSEX) >= 25)
+				else if (girl->normalsex() >= 25)
 				{
 					ss << "\"Maybe you would like some of this,\" she whispers, lying on his couch and spreading her legs so he can access her pussy. He grins and thrusts quickly inside her, finding her wet enough to continue but dry enough to cause some discomfort. She moans at all the right times, but other than keeping her legs spread, " << girlName << " does not do much else to help with this, and ends up just lying there. While the client is easily able to spurt cum deep inside her after a few minutes, he is surprised at how mediocre her sexual abilities are compared to the rest of the evening.\n";
 				}
@@ -1708,32 +1708,32 @@ case Es_DeadBeat:
 			}
 			else if (roll_sex >= 40 || anal)/*Anal*/
 			{
-				if (g_Girls.HasItemJ(girl, "Compelling Buttplug") != -1)
+				if (girl->has_item_j("Compelling Buttplug") != -1)
 				{
 					ss << girlName << " turns around, lifting her casual skirt and giving him a good view of her ass. For the first time, the client is able to see a faint outline of plastic against her panties. \"I bet you didn't know I had this in me the whole time,\" " << girlName << " giggles as she deftly moves the crotch of her panties to the side, revealing the base of a buttplug sticking out of her ass. \"I'm nice and ready for you to take its place,\" she purrs, pulling out the plug and presenting her gaping ass to him.";
 					fame += 1;
 				}
-				else if (g_Girls.HasItemJ(girl, "Large Buttplug") != -1)
+				else if (girl->has_item_j("Large Buttplug") != -1)
 				{
 					ss << girlName << " turns around, lifting her casual skirt and giving him a good view of her ass. For the first time, the client is able to see a faint outline of plastic against her panties. \"I bet you didn't know I had this in me the whole time,\" " << girlName << " giggles as she deftly moves the crotch of her panties to the side, revealing the base of a buttplug sticking out of her ass. \"I'm nice and ready for you to take its place,\" she purrs, tugging with her hand at the base of the buttplug. As she pulls it out, her ass clutches the plug and expands dramatically. The client is amazed at how far it keeps stretching, until the full massive plug plops down onto the floor, leaving her ass wide open and gaping in front of him. He pauses in wonder, having never realized that a girl's ass could carry anything so massive.";
 					fame += 2;
 				}
-				if (g_Girls.GetSkill(girl, SKILL_ANAL) > 99)
+				if (girl->anal() > 99)
 				{
 					ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " sighs with immense pleasure, truly happy to have her ass filled by his cock. She holds him back with her hand, asking that she be able to do the work for him. Soon she is gently massaging his dick with perfectly-timed squeezes of her asshole, purring with rapture. She then begins pumping herself back and forth on him, forcing him deep inside her, picking up the pace to a furious level and then slowing it down to keep him from cumming too early. After twenty heavenly minutes inside her, she begins throwing her hips backwards and forwards, riding his cock like the anal master that she is. He screams with bliss as he erupts violently into her ass, shooting string after string of cum deep inside her. \"Incredible!\" he exclaims, collapsing panting onto his couch.\n";
 					fame += 3;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 75)
+				else if (girl->anal() >= 75)
 				{
 					ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " moans with pleasure and begins to pump herself expertly around his manhood. \"Fuck my ass,\" she purrs, massaging him with well-timed squeezes as she forces him deeper into her with increasing thrusts. She gyrates herself expertly around him, and within a matter of minutes, the client is sweating and panting towards climax. \"Cum in me!\" she cries, as he fills her bowels with a violent eruption of cum.\n";
 					fame += 2;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 50)
+				else if (girl->anal() >= 50)
 				{
 					ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " moans with pleasure at the invasion and begins gyrating her hips around his cock, forcing him deeper into her and enticing him with the vision of her ass bouncing against his thighs. She does not know how to squeeze her ass at the right moments, but with her efforts and the mere fact that his cock in her ass is plenty of encouragement enough, soon he is shooting cum deep inside her bowels. \"Whoa,\" he pants, collapsing on the couch afterwards.\n";
 					fame += 1;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_ANAL) >= 25)
+				else if (girl->anal() >= 25)
 				{
 					ss << "Once " << girlName << " has turned around, lifted her skirt, and displayed her ass to the client, he grins devilishly, spits on his hand, lubricates his cock, and then plunges into her. " << girlName << " moans with a combination of pleasure and pain and tries to push herself back and forth to stimulate his cock. Her motions are amateurish and not very pleasurable, but the client can hardly complain, and soon he is shooting his cum deep inside her bowels.\n";
 				}
@@ -1748,22 +1748,22 @@ case Es_DeadBeat:
 			}
 			else if (roll_sex >= 25)/*Hand job*/
 			{
-				if (g_Girls.GetSkill(girl, SKILL_HANDJOB) > 99)
+				if (girl->handjob() > 99)
 				{
 					ss << "\"Don't worry,\" she purrs as she licks her hand and fingers, \"you're in good hands.\" She delicately teases his erection with her fingers, grasping him between them and rotating her hand back and form before she expertly massages his balls. She kisses him passionately as she grasps him with a full grip, and then begins pulsing back and forth on his cock, increasing her pressure as she builds him skillfully to climax. \"3..\" she begins, moving faster around him. \"2..\" she continues, gripping with perfect pressure and timing her pulls with quick kisses on his mouth. \"1..\" she moans seductively, moving the pressure to the level of no return. \"Now,\" she declares, and instantly he cannot help but cum all over her fingers. \"That was AMAZING,\" he declares, collapsing on his couch.\n";
 					fame += 3;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 75)
+				else if (girl->handjob() >= 75)
 				{
 					ss << "\"Allow me to get a handle on things,\" she jokes as she licks her palm and fingers. Then she gently wraps them around his erection, pulling ever so slightly and then moving her fingers to massage his balls. She kisses him deeply as she slowly builds up the pace, timing each pull to his increasing pleasure, until he is gasping around her lips. She increases the pressure to a critical level once he hits the point of no return, and finishes the kiss just in time for his sperm to shoot all over her expert fingers. \"Wow,\" he grunts.\n";
 					fame += 2;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 50)
+				else if (girl->handjob() >= 50)
 				{
 					ss << "\"I think you'll find I'm quite handy to have around,\" she whispers before she licks her right palm and wraps her fingers around his pulsing manhood. She kisses him deeply as her hands maneuver around his cock, pulling at just the right pressure and using her fingers to tease his balls from time to time. As she finishes a last deep kiss, she escalates the pace and sends a violent stream of cum into her palm. \"That was something,\" he says.\n";
 					fame += 1;
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_HANDJOB) >= 25)
+				else if (girl->handjob() >= 25)
 				{
 					ss << "\"Perhaps you'd like my hand to do a little more than hold yours?\" she continues, lifting her right hand to spit on the palm before grabbing his cock and pulling back and forth on it. He is surprised by her eagerness, but also by her lack of skill, as she bumbles back and forth, gripping far too tight and pulling far too hard. Still, it is enough to bring him to climax, and while he is amused at how badly she is at handjobs, he was aroused enough to send a wad of semen shooting forth onto her fingers. \"You certainly are enthusiastic,\" he says.\n";
 				}
@@ -1778,7 +1778,7 @@ case Es_DeadBeat:
 			}
 			else/*oral*/
 			{
-				if (g_Girls.GetSkill(girl, SKILL_ORALSEX) > 99)
+				if (girl->oralsex() > 99)
 				{
 					if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 					{
@@ -1791,7 +1791,7 @@ case Es_DeadBeat:
 						fame += 3;
 					}
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 75)
+				else if (girl->oralsex() >= 75)
 				{
 					if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 					{
@@ -1804,7 +1804,7 @@ case Es_DeadBeat:
 						fame += 2;
 					}
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 50)
+				else if (girl->oralsex() >= 50)
 				{
 					if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 					{
@@ -1816,7 +1816,7 @@ case Es_DeadBeat:
 						fame += 1;
 					}
 				}
-				else if (g_Girls.GetSkill(girl, SKILL_ORALSEX) >= 25)
+				else if (girl->oralsex() >= 25)
 				{
 					if (girl->has_trait( "Strong Gag Reflex") || girl->has_trait( "Gag Reflex"))
 					{
@@ -1837,7 +1837,7 @@ case Es_DeadBeat:
 					}
 					else
 					{
-						ss << "Wordlessly, " << girlName << " lowers herself to her knees and begins unbuttoning the client's pants. She grins and begins licking his erection. He sighs with satisfaction and prepares to enjoy the blowjob until he realizes that she has absolutely no idea what she is doing. She licks the cock like it is a lollipop, with the skill of a virgin and the enthusiasm of a dog going after peanut butter. She tries to swallow his shaft but does not get too far. The icing on the cake is when she starts blowing on his dick, as if someone fundamentally failed to explain what a ‘blowjob' was. Still, with enough enthusiasm from her and enough manual stimulation from himself, he is able to eventually bring himself to cum in her inexperienced mouth. He is happy to have gotten a load off, but he can barely contain his surprise at how bad she is at giving head.\n";
+						ss << "Wordlessly, " << girlName << " lowers herself to her knees and begins unbuttoning the client's pants. She grins and begins licking his erection. He sighs with satisfaction and prepares to enjoy the blowjob until he realizes that she has absolutely no idea what she is doing. She licks the cock like it is a lollipop, with the skill of a virgin and the enthusiasm of a dog going after peanut butter. She tries to swallow his shaft but does not get too far. The icing on the cake is when she starts blowing on his dick, as if someone fundamentally failed to explain what a ï¿½blowjob' was. Still, with enough enthusiasm from her and enough manual stimulation from himself, he is able to eventually bring himself to cum in her inexperienced mouth. He is happy to have gotten a load off, but he can barely contain his surprise at how bad she is at giving head.\n";
 						fame -= 1;
 					}
 				}
@@ -1914,7 +1914,7 @@ break;	// end Es_DeadBeat
 		else
 		{
 			// offers to pay the girl what he has
-			if (g_Dice.percent(g_Girls.GetStat(girl, STAT_INTELLIGENCE)))
+			if (g_Dice.percent(girl->intelligence()))
 			{
 				// she turns him over to the goons
 				ss << " The customer couldn't pay the full amount, so your girl turned them over to your men.";
@@ -1949,11 +1949,11 @@ break;	// end Es_DeadBeat
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill + 1);
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill + 1);
-	g_Girls.UpdateStat(girl, STAT_FAME, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill + 1);
+	girl->exp(xp);
+	girl->intelligence(g_Dice%skill + 1);
+	girl->confidence(g_Dice%skill + 1);
+	girl->fame(g_Dice%skill);
+	girl->performance(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);

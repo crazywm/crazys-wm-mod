@@ -1038,7 +1038,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			{
 				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
 				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
-					g_Girls.UpdateSkill(girl, eff_id, amount);
+					girl->upd_skill(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
 				else g_Girls.UpdateSkillMod(girl, eff_id, amount);
 			}
@@ -1046,7 +1046,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			{
 				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
 				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
-					g_Girls.UpdateStat(girl, eff_id, amount);
+					girl->upd_stat(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
 				else g_Girls.UpdateStatMod(girl, eff_id, amount);
 			}

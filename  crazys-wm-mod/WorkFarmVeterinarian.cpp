@@ -154,18 +154,18 @@ bool cJobManager::WorkFarmVeterinarian(sGirl* girl, sBrothel* brothel, bool Day0
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
+	girl->fame(fame);
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, (g_Dice % skill) + 1);
-	g_Girls.UpdateSkill(girl, SKILL_ANIMALHANDLING, (g_Dice % skill) + 1);
+	girl->medicine((g_Dice % skill) + 1);
+	girl->animalhandling((g_Dice % skill) + 1);
 	// secondary (-1 for one then -2 for others)
-	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, max(0, (g_Dice % skill) - 1));
-	g_Girls.UpdateStat(girl, STAT_CHARISMA, max(0, (g_Dice % skill) - 2));
-	g_Girls.UpdateSkill(girl, SKILL_BEASTIALITY, max(0, (g_Dice % skill) - 2));
+	girl->intelligence(max(0, (g_Dice % skill) - 1));
+	girl->charisma(max(0, (g_Dice % skill) - 2));
+	girl->beastiality(max(0, (g_Dice % skill) - 2));
 
 #pragma endregion
 	return false;

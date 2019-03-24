@@ -114,9 +114,9 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	if (sgMed + sgInt + sgCha > 0)
 	{
 		ss << "She managed to gain:\n";
-		if (sgMed > 0) { ss << sgMed << " Medicine.\n";		g_Girls.UpdateSkill(girl, SKILL_MEDICINE, sgMed); }
-		if (sgInt > 0) { ss << sgInt << " Intelligence.\n";	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, sgInt); }
-		if (sgCha > 0) { ss << sgCha << " Charisma.\n";		g_Girls.UpdateStat(girl, STAT_CHARISMA, sgCha); }
+		if (sgMed > 0) { ss << sgMed << " Medicine.\n";		girl->medicine(sgMed); }
+		if (sgInt > 0) { ss << sgInt << " Intelligence.\n";	girl->intelligence(sgInt); }
+		if (sgCha > 0) { ss << sgCha << " Charisma.\n";		girl->charisma(sgCha); }
 	}
 
 	int trycount = 10;
@@ -192,7 +192,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	else if (girl->has_trait( "Slow Learner"))	{ xp -= 2; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	if (girl->m_Skills[SKILL_MEDICINE] + girl->m_Stats[STAT_INTELLIGENCE] + girl->m_Stats[STAT_CHARISMA] >= 300) promote = true;

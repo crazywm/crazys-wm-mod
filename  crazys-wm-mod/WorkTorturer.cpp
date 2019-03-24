@@ -67,7 +67,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Dice.percent(10))
 	{
 		g_Girls.UpdateEnjoyment(girl, actiontype, -3);
-		if (girl->has_trait( "Sadistic") || girl->has_trait( "Merciless") || g_Girls.GetStat(girl, STAT_MORALITY) < 30)
+		if (girl->has_trait( "Sadistic") || girl->has_trait( "Merciless") || girl->morality() < 30)
 			ss << girlName << (" hurt herself while torturing someone.\n");
 		else
 		{
@@ -88,17 +88,17 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 				case 0:
 					ss << ("She hates you for making her do this today.\n");
-					g_Girls.UpdateStat(girl, STAT_PCLOVE, -(g_Dice % 2));
-					g_Girls.UpdateStat(girl, STAT_PCHATE, g_Dice % 2);
+					girl->pclove(-(g_Dice % 2));
+					girl->pchate(g_Dice % 2);
 					break;
 				case 1:
 					ss << girlName << (" is terrified that you treat people like this.\n");
-					g_Girls.UpdateStat(girl, STAT_PCFEAR, g_Dice % 6);
-					g_Girls.UpdateStat(girl, STAT_OBEDIENCE, g_Dice % 2);
+					girl->pcfear(g_Dice % 6);
+					girl->obedience(g_Dice % 2);
 					break;
 				case 2:
 					ss << ("She learned a bit about medicine while trying to stop the pain.\n");
-					g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice % 10);
+					girl->medicine(g_Dice % 10);
 					break;
 				default:
 					ss << girlName << (" did something completely unexpected. [error]");
@@ -135,23 +135,23 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 			case 0:
 				ss << girlName << (" put so much energy into this it seems to have improved her fitness.\n");
-				g_Girls.UpdateStat(girl, STAT_CONSTITUTION, g_Dice % 3);
+				girl->constitution(g_Dice % 3);
 				break;
 			case 1:
 				ss << girlName << (" went way too far, creating a hell of a mess. Still it looks like she had fun - she hasn't stopped smiling.\n");
-				g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 5);
+				girl->happiness(g_Dice % 5);
 				g_Girls.UpdateEnjoyment(girl, actiontype, +1);
 				brothel->m_Filthiness += 15;
 				break;
 			case 2:
 				ss << girlName << (" over-exerted herself.");
-				g_Girls.UpdateStat(girl, STAT_HEALTH, -(g_Dice % 5));
-				g_Girls.UpdateStat(girl, STAT_TIREDNESS, g_Dice % 5);
+				girl->health(-(g_Dice % 5));
+				girl->tiredness(g_Dice % 5);
 				break;
 			case 3:
 				ss << girlName << (" appreciates that you entrust her with this kind of work.");
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, g_Dice % 2);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, -(g_Dice % 2));
+				girl->pclove(g_Dice % 2);
+				girl->pchate(-(g_Dice % 2));
 				break;
 			default:
 				ss << girlName << (" did something completely unexpected. [error]");

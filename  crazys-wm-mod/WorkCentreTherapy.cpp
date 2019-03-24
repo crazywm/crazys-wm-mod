@@ -92,9 +92,9 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (!Day0Night1) girl->m_WorkingDay++;
 
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 30 - 20);
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice % 5 - 10);
-	g_Girls.UpdateStat(girl, STAT_MANA, g_Dice % 5 - 10);
+	girl->happiness(g_Dice % 30 - 20);
+	girl->spirit(g_Dice % 5 - 10);
+	girl->mana(g_Dice % 5 - 10);
 
 	// `J` % chance a counselor will save her if she almost dies
 	int healthmod = (g_Dice % 6) - 4;
@@ -102,9 +102,9 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		(g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, true) > 0 || g_Centre.GetNumGirlsOnJob(brothel->m_id, JOB_COUNSELOR, false) > 0))
 	{	// Don't kill the girl from therapy if a Counselor is on duty
 		g_Girls.SetStat(girl, STAT_HEALTH, 1);
-		g_Girls.UpdateStat(girl, STAT_PCFEAR, 5);
-		g_Girls.UpdateStat(girl, STAT_PCLOVE, -10);
-		g_Girls.UpdateStat(girl, STAT_PCHATE, 10);
+		girl->pcfear(5);
+		girl->pclove(-10);
+		girl->pchate(10);
 		ss << "She almost died in rehab but the Counselor saved her.\n";
 		ss << "She hates you a little more for forcing this on her.\n \n";
 		msgtype = EVENT_DANGER;
@@ -112,7 +112,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	}
 	else
 	{
-		g_Girls.UpdateStat(girl, STAT_HEALTH, healthmod);
+		girl->health(healthmod);
 		enjoy += (healthmod / 5) + 1;
 	}
 
@@ -127,7 +127,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 		enjoy += g_Dice % 5;
 		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice % 6 - 2);	// `J` She may want to help others with their problems
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, g_Dice % 5);
+		girl->happiness(g_Dice % 5);
 
 		ss << "The therapy is a success.\n";
 		msgtype = EVENT_GOODNEWS;

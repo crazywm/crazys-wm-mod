@@ -117,14 +117,14 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	//try and add randomness here
 	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && !g_Girls.CheckVirginity(girl)
-		&& !girl->has_trait( "Lesbian") && g_Girls.GetStat(girl, STAT_LIBIDO) > 75
+		&& !girl->has_trait( "Lesbian") && girl->libido() > 75
 		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{
 		sex = true;
 		ss << "Her Nymphomania got the better of her today and she decided the best way to serve her community was on her back!\n \n";
 	}
 
-	if (g_Dice.percent(30) && g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 55)//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
+	if (g_Dice.percent(30) && girl->intelligence() < 55)//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{
 		blow = true;
 		ss << "An elderly fellow managed to convince " << girlName << " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n \n";
@@ -159,7 +159,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		if (!brothel->m_RestrictNormal && (roll_b <= 50 || brothel->m_RestrictAnal)) //Tweak to avoid an issue when roll > 50 && anal is restricted
 		{
-			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 2);
+			girl->normalsex(2);
 			imagetype = IMGTYPE_SEX;
 			if (g_Girls.CheckVirginity(girl))
 			{
@@ -173,7 +173,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		}
 		else if (!brothel->m_RestrictAnal)
 		{
-			g_Girls.UpdateSkill(girl, SKILL_ANAL, 2);
+			girl->anal(2);
 			imagetype = IMGTYPE_ANAL;
 		}
 		brothel->m_Happiness += 100;
@@ -186,7 +186,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		brothel->m_Happiness += (g_Dice % 70) + 60;
 		dispo += 4;
-		g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 2);
+		girl->oralsex(2);
 		fame += 1;
 		imagetype = IMGTYPE_ORAL;
 	}
@@ -234,11 +234,11 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (girl->fame() < 40 && jobperformance >= 145)		{ fame += 1; }
 	if (girl->fame() < 50 && jobperformance >= 185)		{ fame += 1; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, fame);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	if (g_Dice % 2 == 1)	g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, g_Dice%skill);
-	else				g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 1);
+	girl->fame(fame);
+	girl->exp(xp);
+	if (g_Dice % 2 == 1)	girl->intelligence(g_Dice%skill);
+	else				girl->charisma(g_Dice%skill);
+	girl->service(g_Dice%skill + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 
@@ -249,9 +249,9 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 double cJobManager::JP_ComunityService(sGirl* girl, bool estimate)// not used
 {
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_INTELLIGENCE) / 2 +
-		g_Girls.GetStat(girl, STAT_CHARISMA) / 2 +
-		g_Girls.GetSkill(girl, SKILL_SERVICE));
+		(girl->intelligence() / 2 +
+		girl->charisma() / 2 +
+		girl->service());
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;

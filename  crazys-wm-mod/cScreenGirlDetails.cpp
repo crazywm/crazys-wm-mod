@@ -401,7 +401,7 @@ bool cScreenGirlDetails::check_keys()
 		if (g_H_Key || g_J_Key)
 		{
 			int mod = (g_H_Key ? -1 : 1);
-			g_Girls.UpdateStat(selected_girl, STAT_HOUSE, mod);
+			selected_girl->house(mod);
 			g_H_Key = g_J_Key = false;
 			SliderValue(houseperc_id, g_Girls.GetStat(selected_girl, STAT_HOUSE));
 			ss.str(""); ss << "House Percentage: " << g_Girls.GetStat(selected_girl, STAT_HOUSE) << "%";
@@ -1099,23 +1099,23 @@ void cScreenGirlDetails::take_gold(sGirl *girl)
 	*/
 	if (girl->m_States&(1 << STATUS_SLAVE))
 	{
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -1);
-		g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 5);
-		g_Girls.UpdateStat(girl, STAT_SPIRIT, -2);
-		g_Girls.UpdateStat(girl, STAT_PCHATE, 5);
-		g_Girls.UpdateStat(girl, STAT_PCLOVE, -5);
-		g_Girls.UpdateStat(girl, STAT_PCFEAR, 5);
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -20);
+		girl->confidence(-1);
+		girl->obedience(5);
+		girl->spirit(-2);
+		girl->pchate(5);
+		girl->pclove(-5);
+		girl->pcfear(5);
+		girl->happiness(-20);
 	}
 	else
 	{
-		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -5);
-		g_Girls.UpdateStat(girl, STAT_OBEDIENCE, 5);
-		g_Girls.UpdateStat(girl, STAT_SPIRIT, -10);
-		g_Girls.UpdateStat(girl, STAT_PCHATE, 30);
-		g_Girls.UpdateStat(girl, STAT_PCLOVE, -30);
-		g_Girls.UpdateStat(girl, STAT_PCFEAR, 10);
-		g_Girls.UpdateStat(girl, STAT_HAPPINESS, -50);
+		girl->confidence(-5);
+		girl->obedience(5);
+		girl->spirit(-10);
+		girl->pchate(30);
+		girl->pclove(-30);
+		girl->pcfear(10);
+		girl->happiness(-50);
 	}
 	/*
 	*	and queue the message again

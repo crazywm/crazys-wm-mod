@@ -249,16 +249,16 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	// EXP and Libido
-	int I_xp = (g_Dice % xp) + 1;							g_Girls.UpdateStat(girl, STAT_EXP, I_xp);
+	int I_xp = (g_Dice % xp) + 1;							girl->exp(I_xp);
 	int I_libido = (g_Dice % libido) + 1;					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, I_libido);
 
 	// primary (+2 for single or +1 for multiple)
-	int I_charisma		= max(0, (g_Dice % skill) + 1);		g_Girls.UpdateStat(girl, STAT_CHARISMA, I_charisma);
-	int I_confidence	= max(0, (g_Dice % skill) + 1);		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, I_confidence);
+	int I_charisma		= max(0, (g_Dice % skill) + 1);		girl->charisma(I_charisma);
+	int I_confidence	= max(0, (g_Dice % skill) + 1);		girl->confidence(I_confidence);
 	// secondary (-1 for one then -2 for others)
-	int I_intelligence	= max(0, (g_Dice % skill) - 1);		g_Girls.UpdateStat(girl, STAT_INTELLIGENCE, I_intelligence);
-	int I_fame			= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateStat(girl, STAT_FAME, I_fame);
-	int I_farming		= max(0, (g_Dice % skill) - 2);		g_Girls.UpdateSkill(girl, SKILL_FARMING, I_farming);
+	int I_intelligence	= max(0, (g_Dice % skill) - 1);		girl->intelligence(I_intelligence);
+	int I_fame			= max(0, (g_Dice % skill) - 2);		girl->fame(I_fame);
+	int I_farming		= max(0, (g_Dice % skill) - 2);		girl->farming(I_farming);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl,		"Charismatic",	30, actiontype, girlName + " has been selling long enough that she has learned to be more Charismatic.", Day0Night1);

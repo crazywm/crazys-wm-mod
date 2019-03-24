@@ -94,9 +94,9 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateStat(girl, STAT_CHARISMA, (g_Dice%skill) + 1);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice%skill) + 1);
+	girl->exp(xp);
+	girl->charisma((g_Dice%skill) + 1);
+	girl->service((g_Dice%skill) + 1);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
 	//gain traits

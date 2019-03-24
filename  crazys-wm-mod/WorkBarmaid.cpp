@@ -122,7 +122,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 
 	//what is she wearing?
-	if (g_Girls.HasItemJ(girl, "Bourgeoise Gown") != -1 && g_Dice.percent(60))
+	if (girl->has_item_j("Bourgeoise Gown") != -1 && g_Dice.percent(60))
 	{
 		int bg = g_Dice.bell(-1, 1);
 		roll_e += bg;					// enjoy adj
@@ -131,7 +131,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		else/*        */	ss << girlName << "'s Bourgeoise Gown didn't really help or hurt her tips.";
 		ss << "\n \n";
 	}
-	else if (g_Girls.HasItemJ(girl, "Maid Uniform") != -1)
+	else if (girl->has_item_j("Maid Uniform") != -1)
 	{
 		int bg = g_Dice.bell(-1, 1);
 		roll_e += bg;					// enjoy adj
@@ -441,25 +441,25 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	tips += (drinkssold - drinkswasted) * ((double)roll_e / 100.0);	//base tips
 
 	//try and add randomness here
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && g_Dice.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n";
 		tips += 25;
 	}
 
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 99 && g_Dice.percent(5))
+	if (girl->beauty() > 99 && g_Dice.percent(5))
 	{
 		tips += 50;
 		ss << girlName << " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't take their eyes off her face, and spent a lot more than usual on tipping her.\n";
 	}
 
-	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 85 && g_Dice.percent(20))
+	if (girl->charisma() > 85 && g_Dice.percent(20))
 	{
 		tips += 35;
 		ss << girlName << " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n";
 	}
 
-	if (g_Girls.GetStat(girl, STAT_INTELLIGENCE) < 30 && g_Dice.percent(20))
+	if (girl->intelligence() < 30 && g_Dice.percent(20))
 	{
 		ss << girlName << " got confused when calculating the tabs, and seems to have damn near given away most of the alcohol.\n";
 		drinkswasted += 5 + g_Dice % 26;
@@ -554,7 +554,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_MORALITY) >= 80 && g_Dice.percent(20))
+	if (girl->morality() >= 80 && g_Dice.percent(20))
 	{
 		if (roll_jp <= 50)
 		{
@@ -568,7 +568,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Dice.percent(20))
+	if (girl->morality() <= -20 && g_Dice.percent(20))
 	{
 		if (roll_jp <= 33)
 		{
@@ -587,13 +587,13 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
+	if (girl->morality() <= -20 && girl->dignity() <= -20 && g_Dice.percent(20))
 	{
 		tips += 40;
 		ss << "A drunk patron suddenly walked up to " << girlName << " and just started groping her body. Instead of pushing him away immediately, " << girlName << " allowed him to take his time with her tits and butt while she helped herself to his pockets and all the money inside them. The rowdy client left with a dumb glee on his face, probably to find out his fondling was much, much overpriced.\n";
 	}
 
-	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20))
+	if (girl->dignity() <= -20 && g_Dice.percent(20))
 	{
 		if (roll_jp <= 50)
 		{
@@ -607,16 +607,16 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		}
 	}
 
-	if (g_Girls.GetStat(girl, STAT_DIGNITY) <= -20 && g_Dice.percent(20) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits") || girl->has_trait( "Massive Melons") || girl->has_trait( "Giant Juggs")))
+	if (girl->dignity() <= -20 && g_Dice.percent(20) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits") || girl->has_trait( "Massive Melons") || girl->has_trait( "Giant Juggs")))
 	{
 		tips += 25;
 		ss << girlName << " got an odd request from a client to carry a small drink he ordered between her tits to his table. After pouring the drink in a thin glass, " << girlName << " handled the task with minimal difficulty and earned a bigger tip.\n";
 	}
 
-	if (g_Girls.GetStat(girl, STAT_MORALITY) <= -20 && g_Dice.percent(10))
+	if (girl->morality() <= -20 && g_Dice.percent(10))
 	{
 		ss << "A patron came up to her and said he wanted to order some milk but that he wanted it straight from the source. ";
-		if (g_Girls.GetStat(girl, STAT_LACTATION) >= 20)
+		if (girl->lactation() >= 20)
 		{
 			ss << "With a smile she said she was willing to do it for an extra charge. The patron quickly agreed and " << girlName << " proceed to take out one of her tits and let the patron suck out some milk.\n";
 			girl->lactation(-20);
@@ -644,7 +644,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		}
 	}
 
-	if (g_Girls.HasItemJ(girl, "Golden Pendant") != -1 && g_Dice.percent(10))//zzzzz FIXME need more CRAZY
+	if (girl->has_item_j("Golden Pendant") != -1 && g_Dice.percent(10))//zzzzz FIXME need more CRAZY
 	{
 		ss << "A patron complimented her gold necklace, you're not sure if it was an actual compliment or ";
 		if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs")

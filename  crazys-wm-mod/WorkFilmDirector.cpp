@@ -98,10 +98,10 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	if (girl->has_trait( "Nymphomaniac"))			libido += 2;
 	if (girl->has_trait( "Lesbian"))				libido += numgirls / 20;
 
-	g_Girls.UpdateStat(girl, STAT_EXP, g_Dice%xp + 5);
-	g_Girls.UpdateStat(girl, STAT_FAME, g_Dice%fame);
-	g_Girls.UpdateStat(girl, STAT_CHARISMA, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
+	girl->exp(g_Dice%xp + 5);
+	girl->fame(g_Dice%fame);
+	girl->charisma(g_Dice%skill);
+	girl->service(g_Dice%skill + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice%libido);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
@@ -131,10 +131,10 @@ double cJobManager::JP_FilmDirector(sGirl* girl, bool estimate)// not used
 
 		jobperformance += (girl->spirit() - 50) / 10;
 		jobperformance += (girl->intelligence() - 50) / 10;
-		jobperformance += g_Girls.GetSkill(girl, SKILL_SERVICE) / 10;
+		jobperformance += girl->service() / 10;
 		jobperformance /= 3;
-		jobperformance += g_Girls.GetStat(girl, STAT_LEVEL);
-		jobperformance += g_Girls.GetStat(girl, STAT_FAME) / 10;
+		jobperformance += girl->level();
+		jobperformance += girl->fame() / 10;
 		jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
 
 	}

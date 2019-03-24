@@ -174,7 +174,7 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 				warning << girlName << " saw a customer with drugs and offered to fuck him for some. He accepted, so she took him out of sight of security and banged him.\n";
 				warningimage = IMGTYPE_SEX;
 			}
-			g_Girls.UpdateSkill(girl, SKILL_NORMALSEX, 1);
+			girl->normalsex(1);
 			break;
 		default:
 			if (!g_Dice.percent(girl->agility()))	// you only get to know about it if she fails an agility check
@@ -182,7 +182,7 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 				warning << girlName << " saw a customer with drugs and offered to give him a blowjob for some. He accepted, so she took him out of sight of security and sucked him off.\n";
 				warningimage = IMGTYPE_ORAL;
 			}
-			g_Girls.UpdateSkill(girl, SKILL_ORALSEX, 1);
+			girl->oralsex(1);
 			break;
 		}
 		if (warning.str().length() > 0)
@@ -250,13 +250,13 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		imagetype = IMGTYPE_ECCHI;
 	}
 
-	if (girl->has_trait("Optimistic") && roll_b < g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at best
+	if (girl->has_trait("Optimistic") && roll_b < girl->happiness() / 2) // 50% chance at best
 	{
 		ss << "\n \nWorking with someone as cheerful as " << girlName << " makes everybody a bit happier.";
 		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, 1);
 	}
 
-	if (girl->has_trait("Pessimistic") && roll_b > 50 + g_Girls.GetStat(girl, STAT_HAPPINESS) / 2) // 50% chance at worst
+	if (girl->has_trait("Pessimistic") && roll_b > 50 + girl->happiness() / 2) // 50% chance at worst
 	{
 		ss << "\n \nWorking with someone as pessimistic as " << girlName << " makes everybody a little bit sadder.";
 		g_Brothels.UpdateAllGirlsStat(brothel, STAT_HAPPINESS, -1);
@@ -278,12 +278,12 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	girl->m_Pay = max(0, wages);
 
 	if (conf>-1) conf += g_Dice%skill;
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, conf);
-	g_Girls.UpdateStat(girl, STAT_HAPPINESS, happy);
+	girl->confidence(conf);
+	girl->happiness(happy);
 
-	g_Girls.UpdateStat(girl, STAT_EXP, g_Dice%xp + 5);
-	g_Girls.UpdateSkill(girl, SKILL_MEDICINE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill + 2);
+	girl->exp(g_Dice%xp + 5);
+	girl->medicine(g_Dice%skill);
+	girl->service(g_Dice%skill + 2);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice%libido);
 
 	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);

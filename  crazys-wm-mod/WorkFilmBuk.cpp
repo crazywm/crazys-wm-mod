@@ -85,17 +85,17 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			if (The_Player->disposition() > 30)  // nice
 			{
 				ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you allowed her the day off.";
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, 2);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, -1);
+				girl->pclove(2);
+				girl->pchate(-1);
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 				return true;
 			}
 			else if (The_Player->disposition() > -30) //pragmatic
 			{
 				ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you had your men drug her and tie her down for action.";
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -1);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, 1);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, +1);
+				girl->pclove(-1);
+				girl->pchate(1);
+				girl->pcfear(+1);
 				The_Player->disposition(-1);
 				tied = true;
 				enjoy -= 2;
@@ -103,9 +103,9 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 			else if (The_Player->disposition() > -30)
 			{
 				ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you had your men whip some sense into her before the scene and tie her down for action.";
-				g_Girls.UpdateStat(girl, STAT_PCLOVE, -2);
-				g_Girls.UpdateStat(girl, STAT_PCHATE, +2);
-				g_Girls.UpdateStat(girl, STAT_PCFEAR, +4);
+				girl->pclove(-2);
+				girl->pchate(+2);
+				girl->pcfear(+4);
 				The_Player->disposition(-2);
 				enjoy -= 6;
 				tied = true;
@@ -217,17 +217,17 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
-	g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_BDSM, g_Dice%skill + 1);
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -(g_Dice%skill + 1));
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, -(g_Dice%skill + 1));
+	girl->exp(xp);
+	girl->performance(g_Dice%skill);
+	girl->bdsm(g_Dice%skill + 1);
+	girl->confidence(-(g_Dice%skill + 1));
+	girl->spirit(-(g_Dice%skill + 1));
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, enjoy);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, enjoy);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, -enjoy);
+	girl->pclove(enjoy);
+	girl->pcfear(enjoy);
+	girl->pchate(-enjoy);
 
 
 	g_Girls.PossiblyGainNewTrait(girl, "Masochist", 75, ACTION_SEX, girlName + " has turned into a Masochist from all the degradation.", Day0Night1);
@@ -246,12 +246,12 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int MrEvil = g_Dice % 8, MrNasty = g_Dice % 8;
 	MrEvil = (MrEvil + MrNasty) / 2;				//Should come out around 3 most of the time.
 
-	g_Girls.UpdateStat(girl, STAT_CONFIDENCE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_SPIRIT, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_DIGNITY, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCLOVE, -MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCHATE, MrEvil);
-	g_Girls.UpdateStat(girl, STAT_PCFEAR, MrEvil);
+	girl->confidence(-MrEvil);
+	girl->spirit(-MrEvil);
+	girl->dignity(-MrEvil);
+	girl->pclove(-MrEvil);
+	girl->pchate(MrEvil);
+	girl->pcfear(MrEvil);
 	The_Player->disposition(-MrEvil);
 
 	//----------------------------------------------------------------------
@@ -262,7 +262,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 double cJobManager::JP_FilmBuk(sGirl* girl, bool estimate)// used
 {
 	double jobperformance =
-		(g_Girls.GetStat(girl, STAT_CHARISMA) + g_Girls.GetStat(girl, STAT_BEAUTY));
+		(girl->charisma() + girl->beauty());
 
 	if (!estimate)
 	{

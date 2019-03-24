@@ -144,15 +144,15 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	g_Girls.UpdateStat(girl, STAT_EXP, (g_Dice % xp) + 1);
+	girl->exp((g_Dice % xp) + 1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido,false);
 
 
 	// primary improvement (+2 for single or +1 for multiple)
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, (g_Dice % skill) + 2);
+	girl->service((g_Dice % skill) + 2);
 	// secondary improvement (-1 for one then -2 for others)
-	g_Girls.UpdateStat(girl, STAT_MORALITY, max(-1, (g_Dice % skill) - 1));		// possibly go down but mostly go up
-	g_Girls.UpdateStat(girl, STAT_REFINEMENT, max(-1, (g_Dice % skill) - 2));	// possibly go up or down
+	girl->morality(max(-1, (g_Dice % skill) - 1));		// possibly go down but mostly go up
+	girl->refinement(max(-1, (g_Dice % skill) - 2));	// possibly go up or down
 
 
 	// Update Enjoyment

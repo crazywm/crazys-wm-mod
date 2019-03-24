@@ -86,12 +86,12 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 		ss << "The shift passed uneventfully.";
 	}
 	// Decide how many customers the girl can handle
-	if (g_Girls.GetStat(girl, STAT_CONFIDENCE) > 0)
-		numCusts += g_Girls.GetStat(girl, STAT_CONFIDENCE) / 10; // 0-10 customers for confidence
-	if (g_Girls.GetStat(girl, STAT_SPIRIT) > 0)
-		numCusts += g_Girls.GetStat(girl, STAT_SPIRIT) / 20; // 0-5 customers for spirit
-	if (g_Girls.GetSkill(girl, SKILL_SERVICE) > 0)
-		numCusts += g_Girls.GetSkill(girl, SKILL_SERVICE) / 25; // 0-4 customers for service
+	if (girl->confidence() > 0)
+		numCusts += girl->confidence() / 10; // 0-10 customers for confidence
+	if (girl->spirit() > 0)
+		numCusts += girl->spirit() / 20; // 0-5 customers for spirit
+	if (girl->service() > 0)
+		numCusts += girl->service() / 25; // 0-4 customers for service
 	numCusts++;
 	// A single girl working customer service can take care of 1-20 customers in a week.
 	// So she can take care of lots of customers. It's not like she's fucking them.
@@ -99,15 +99,15 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	// Add a small amount of happiness to each serviced customer
 	// First, let's find out what her happiness bonus is
 	int bonus = 0;
-	if (g_Girls.GetStat(girl, STAT_CHARISMA) > 0)
-		bonus += g_Girls.GetStat(girl, STAT_CHARISMA) / 20;
-	if (g_Girls.GetStat(girl, STAT_BEAUTY) > 0)
-		bonus += g_Girls.GetStat(girl, STAT_BEAUTY) / 20;
+	if (girl->charisma() > 0)
+		bonus += girl->charisma() / 20;
+	if (girl->beauty() > 0)
+		bonus += girl->beauty() / 20;
 	// Beauty and charisma will only take you so far, if you don't know how to do service.
-	if (g_Girls.GetSkill(girl, SKILL_PERFORMANCE) > 0)			// `J` added
-		bonus += g_Girls.GetSkill(girl, SKILL_PERFORMANCE) / 20;
-	if (g_Girls.GetSkill(girl, SKILL_SERVICE) > 0)
-		bonus += g_Girls.GetSkill(girl, SKILL_SERVICE) / 20;
+	if (girl->performance() > 0)			// `J` added
+		bonus += girl->performance() / 20;
+	if (girl->service() > 0)
+		bonus += girl->service() / 20;
 	// So this means a maximum of 20 extra points of happiness to each
 	// customer serviced by customer service, if a girl has 100 charisma,
 	// beauty, performance and service.
@@ -174,13 +174,13 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStat(girl, STAT_FAME, 1);
-	g_Girls.UpdateStat(girl, STAT_EXP, xp);
+	girl->fame(1);
+	girl->exp(xp);
 	int gain = g_Dice % skill;
-	if (gain == 1)		g_Girls.UpdateStat(girl, STAT_CONFIDENCE, g_Dice%skill);
-	else if(gain == 2)	g_Girls.UpdateStat(girl, STAT_SPIRIT, g_Dice%skill);
-	else				g_Girls.UpdateSkill(girl, SKILL_PERFORMANCE, g_Dice%skill);
-	g_Girls.UpdateSkill(girl, SKILL_SERVICE, g_Dice%skill+1);
+	if (gain == 1)		girl->confidence(g_Dice%skill);
+	else if(gain == 2)	girl->spirit(g_Dice%skill);
+	else				girl->performance(g_Dice%skill);
+	girl->service(g_Dice%skill+1);
 	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
 
 	return false;
