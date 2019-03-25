@@ -2522,7 +2522,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	if (attacktype == SKILL_GROUP || attacktype == SKILL_NORMALSEX)
 	{
 		Cust.m_IsWoman = false;
-		preg = !g_GirlsPtr->CalcPregnancy(girl, 5 + (Cust.m_Amount * 5), STATUS_PREGNANT, Cust.m_Stats, Cust.m_Skills);
+		preg = !girl->calc_pregnancy(5 + (Cust.m_Amount * 5), STATUS_PREGNANT, Cust.m_Stats, Cust.m_Skills);
 	}
 	if (attacktype == SKILL_LESBIAN)
 	{

@@ -54,7 +54,6 @@ struct  sGang;
 
 class cAbstractGirls {
 public:
-	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]) = 0;
 	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
 };
@@ -650,6 +649,7 @@ struct sGirl
 	void clear_dating();
 
 	int preg_chance(int base_pc, bool good = false, double factor = 1.0);
+	bool calc_pregnancy(int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]);
 
 	bool calc_pregnancy(int, cPlayer*);
 	bool calc_pregnancy(cPlayer* player, bool good = false, double factor = 1.0);
@@ -906,7 +906,6 @@ public:
 	bool child_is_grown(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	bool child_is_due(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	void HandleChildren(sGirl* girl, string& summary, bool PlayerControlled = true);	// ages children and handles pregnancy
-	bool CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]);
 	// checks if a girl gets pregnant
 	void CreatePregnancy(sGirl* girl, int numchildren, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]);	// create the actual pregnancy
 

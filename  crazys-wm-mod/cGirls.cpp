@@ -16142,11 +16142,11 @@ static bool has_contraception(sGirl *girl)
 
 bool sGirl::calc_pregnancy(int chance, cPlayer *player)
 {
-	return g_GirlsPtr->CalcPregnancy(this, chance, STATUS_PREGNANT_BY_PLAYER, player->m_Stats, player->m_Skills);
+	return calc_pregnancy(chance, STATUS_PREGNANT_BY_PLAYER, player->m_Stats, player->m_Skills);
 }
 bool sGirl::calc_pregnancy(int chance, sCustomer *cust)
 {
-	return g_GirlsPtr->CalcPregnancy(this, chance, STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
+	return calc_pregnancy(chance, STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
 }
 
 sChild::sChild(bool is_players, Gender gender, int MultiBirth)
@@ -16229,7 +16229,7 @@ bool sGirl::calc_pregnancy(cPlayer *player, bool good, double factor)
 {
 	double chance = preg_chance(cfg.pregnancy.player_chance(), good, factor);
 	//	now do the calculation
-	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT_BY_PLAYER, player->m_Stats, player->m_Skills);
+	return calc_pregnancy(int(chance), STATUS_PREGNANT_BY_PLAYER, player->m_Stats, player->m_Skills);
 }
 bool sGirl::calc_group_pregnancy(cPlayer *player, bool good, double factor)
 {
@@ -16238,29 +16238,29 @@ bool sGirl::calc_group_pregnancy(cPlayer *player, bool good, double factor)
 	int father = STATUS_PREGNANT;
 	if (g_Dice.percent(25)) father = STATUS_PREGNANT_BY_PLAYER;
 	// now do the calculation
-	return g_GirlsPtr->CalcPregnancy(this, int(chance), father, player->m_Stats, player->m_Skills);
+	return calc_pregnancy(int(chance), father, player->m_Stats, player->m_Skills);
 }
 bool sGirl::calc_group_pregnancy(const sCustomer& cust, bool good, double factor)
 {
 	double chance = preg_chance(cfg.pregnancy.customer_chance(), good, factor);
 	chance += cust.m_Amount;
 	// now do the calculation
-	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust.m_Stats, cust.m_Skills);
+	return calc_pregnancy(int(chance), STATUS_PREGNANT, cust.m_Stats, cust.m_Skills);
 }
 bool sGirl::calc_pregnancy(const sCustomer& cust, bool good, double factor)
 {
 	double chance = preg_chance(cfg.pregnancy.customer_chance(), good, factor);
-	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_PREGNANT, cust.m_Stats, cust.m_Skills);
+	return calc_pregnancy(int(chance), STATUS_PREGNANT, cust.m_Stats, cust.m_Skills);
 }
 bool sGirl::calc_insemination(const sCustomer& cust, bool good, double factor)
 {
 	double chance = preg_chance(cfg.pregnancy.monster_chance(), good, factor);
-	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, cust.m_Stats, cust.m_Skills);
+	return calc_pregnancy(int(chance), STATUS_INSEMINATED, cust.m_Stats, cust.m_Skills);
 }
 bool sGirl::calc_insemination(cPlayer *player, bool good, double factor)
 {
 	double chance = preg_chance(cfg.pregnancy.monster_chance(), good, factor);
-	return g_GirlsPtr->CalcPregnancy(this, int(chance), STATUS_INSEMINATED, player->m_Stats, player->m_Skills);
+	return calc_pregnancy(int(chance), STATUS_INSEMINATED, player->m_Stats, player->m_Skills);
 }
 
 
@@ -16297,59 +16297,6 @@ void sGirl::clear_pregnancy()
 
 }
 
-
-// returns false if she becomes pregnant or true if she does not
-bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS])
-{
-	/*
-	*	If there's a condition that would stop her getting preggers
-	*	then we get to go home early
-	*
-	*	return TRUE to indicate that pregnancy is FALSE
-	*	(actually, supposed to mean that contraception is true,
-	*	but it also applies for things like being pregnant,
-	*	or just blowing the dice roll. That gets confusing too.
-	*/
-	if (has_contraception(girl)) return true;
-
-	string text = "She has";
-	/*
-	*	for reasons I do not understand, but nevertheless think
-	*	are kind of cool, virgins have a +10 to their pregnancy
-	*	chance
-	*/
-	if (girl->check_virginity() && chance > 0) chance += 10;
-	/*
-	*	the other effective form of contraception, of course,
-	*	is failing the dice roll. Let's check the chance of
-	*	her NOT getting preggers here
-	*/
-	if (girl->has_trait( "Broodmother") && chance > 0)	chance += 60;//this should work CRAZY
-	else if (girl->has_trait( "Fertile") && chance > 0)	chance += 30;//this should work CRAZY
-	if (g_Dice.percent(100 - chance)) return true;
-	/*
-	*	narrative depends on what it was that Did The Deed
-	*	specifically, was it human or not?
-	*/
-	switch (type)
-	{
-	case STATUS_INSEMINATED:
-		text += " been inseminated.";
-		break;
-	case STATUS_PREGNANT_BY_PLAYER:
-		text += " become pregnant with your child.";
-		break;
-	case STATUS_PREGNANT:
-	default:
-		type = STATUS_PREGNANT;		// `J` rearranged and added default to make sure there are no complications
-		text += " become pregnant.";
-		break;
-	}
-
-	girl->m_Events.AddMessage(text, IMGTYPE_PREGNANT, EVENT_DANGER);
-	CreatePregnancy(girl, 1, type, stats, skills);
-	return false;
-}
 
 void cGirls::CreatePregnancy(sGirl* girl, int numchildren, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS])
 {
@@ -18778,4 +18725,56 @@ bool sGirl::regain_virginity() {
 	//	Let's avoid re-inventing the wheel
 	traitOpSuccess = g_Girls.AddTrait(this, "Virgin", false, false, false);
 	return traitOpSuccess;
+}
+
+// returns false if she becomes pregnant or true if she does not
+bool sGirl::calc_pregnancy(int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]) {
+    /*
+	*	If there's a condition that would stop her getting preggers
+	*	then we get to go home early
+	*
+	*	return TRUE to indicate that pregnancy is FALSE
+	*	(actually, supposed to mean that contraception is true,
+	*	but it also applies for things like being pregnant,
+	*	or just blowing the dice roll. That gets confusing too.
+	*/
+    if (has_contraception(this)) return true;
+
+    string text = "She has";
+    /*
+    *	for reasons I do not understand, but nevertheless think
+    *	are kind of cool, virgins have a +10 to their pregnancy
+    *	chance
+    */
+    if (check_virginity() && chance > 0) chance += 10;
+    /*
+    *	the other effective form of contraception, of course,
+    *	is failing the dice roll. Let's check the chance of
+    *	her NOT getting preggers here
+    */
+    if (has_trait( "Broodmother") && chance > 0)	chance += 60;//this should work CRAZY
+    else if (has_trait( "Fertile") && chance > 0)	chance += 30;//this should work CRAZY
+    if (g_Dice.percent(100 - chance)) return true;
+    /*
+    *	narrative depends on what it was that Did The Deed
+    *	specifically, was it human or not?
+    */
+    switch (type)
+    {
+        case STATUS_INSEMINATED:
+            text += " been inseminated.";
+            break;
+        case STATUS_PREGNANT_BY_PLAYER:
+            text += " become pregnant with your child.";
+            break;
+        case STATUS_PREGNANT:
+        default:
+            type = STATUS_PREGNANT;		// `J` rearranged and added default to make sure there are no complications
+            text += " become pregnant.";
+            break;
+    }
+
+    m_Events.AddMessage(text, IMGTYPE_PREGNANT, EVENT_DANGER);
+    g_Girls.CreatePregnancy(this, 1, type, stats, skills);
+    return false;
 }
