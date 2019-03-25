@@ -1968,7 +1968,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				if (girl->has_trait( "Optimist"))
 				{
-					if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+					if (girl->npclove() > 15)
 					{
 						//ss << "Embarrassed at the thought of it she told her it was to soon.\n";
 					}
@@ -1979,7 +1979,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				else if (girl->has_trait( "Pessimist"))
 				{
-					if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+					if (girl->npclove() > 15)
 					{
 						//ss << "Embarrassed at the thought of it she told her it was to soon.\n";
 					}
@@ -1992,16 +1992,16 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 				}
 			}
-			if (g_Girls.GetStat(girl, STAT_NPCLOVE) >= 80)
+			if (girl->npclove() >= 80)
 			{
 			}
-			else if (g_Girls.GetStat(girl, STAT_NPCLOVE) >= 60)
+			else if (girl->npclove() >= 60)
 			{
 			}
-			else if (g_Girls.GetStat(girl, STAT_NPCLOVE) >= 40)
+			else if (girl->npclove() >= 40)
 			{
 			}
-			else if (g_Girls.GetStat(girl, STAT_NPCLOVE) >= 20)
+			else if (girl->npclove() >= 20)
 			{
 			}
 			else
@@ -2037,7 +2037,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								ss << "but before getting her home he whips out his cock and asks for a blow job.\n";
 								if (girl->has_trait( "Shy"))
 								{
-									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+									if (girl->npclove() > 15)
 									{
 										ss << "Embarrassed at the thought of it she told him it was to soon.\n";
 									}
@@ -2054,7 +2054,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								}
 								else if (girl->is_fighter())
 								{
-									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+									if (girl->npclove() > 15)
 									{
 										ss << "She told him he was lucky she kinda liked him if not he would be in a world of pain right now.\n";
 									}
@@ -2088,7 +2088,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								ss << "before getting her home she pulls her into an alley and whips out a didlo asking if she wants to have some fun.\n";
 								if (girl->has_trait( "Shy"))
 								{
-									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+									if (girl->npclove() > 15)
 									{
 										ss << "Embarrassed at the thought of it she told her it was to soon.\n";
 									}
@@ -2105,7 +2105,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								}
 								else if (girl->is_fighter())
 								{
-									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+									if (girl->npclove() > 15)
 									{
 										ss << "She told her she was lucky she kinda liked her if not she would be in a world of pain right now.\n";
 									}
@@ -2162,7 +2162,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								}
 								else if (girl->has_trait( "Shy"))
 								{
-									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+									if (girl->npclove() > 15)
 									{
 										ss << "Embarrassed at the thought of it she told him it was to soon.\n";
 									}
@@ -2202,7 +2202,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								}
 								else if (girl->has_trait( "Shy"))
 								{
-									if (g_Girls.GetStat(girl, STAT_NPCLOVE) > 15)
+									if (girl->npclove() > 15)
 									{
 										ss << "Embarrassed at the thought of it she told her it was to soon.\n";
 									}

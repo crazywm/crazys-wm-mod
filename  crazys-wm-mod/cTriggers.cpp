@@ -486,7 +486,7 @@ void cTriggerList::ProcessTriggers()
 		case TRIGGER_STAT:
 		{
 			if (m_GirlTarget
-				&& g_Girls.GetStat(m_GirlTarget, curr->m_Values[0]) >= curr->m_Values[1]
+				&& m_GirlTarget->get_stat(curr->m_Values[0]) >= curr->m_Values[1]
 				&& (curr->m_Chance >= 100 || g_Dice.percent(curr->m_Chance)))
 				AddToQue(curr);
 		}break;

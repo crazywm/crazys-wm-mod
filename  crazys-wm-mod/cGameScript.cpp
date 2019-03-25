@@ -927,7 +927,7 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 	int value = Script->m_Entries[0].m_Selection;
 
 	// See if variable matches second entry
-	Skipping = !g_Dice.percent(g_Girls.GetStat(m_GirlTarget, value));
+	Skipping = !g_Dice.percent(m_GirlTarget->get_stat(value));
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1049,12 +1049,12 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 	int sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
 	switch (sel)
 	{
-	case 0:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) == value[1]);		break;
-	case 1:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) <  value[1]);		break;
-	case 2:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) <= value[1]);		break;
-	case 3:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) >  value[1]);		break;
-	case 4:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) >= value[1]);		break;
-	case 5:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) != value[1]);		break;
+	case 0:		Skipping = !(m_GirlTarget->get_stat(value[0]) == value[1]);		break;
+	case 1:		Skipping = !(m_GirlTarget->get_stat(value[0]) <  value[1]);		break;
+	case 2:		Skipping = !(m_GirlTarget->get_stat(value[0]) <= value[1]);		break;
+	case 3:		Skipping = !(m_GirlTarget->get_stat(value[0]) >  value[1]);		break;
+	case 4:		Skipping = !(m_GirlTarget->get_stat(value[0]) >= value[1]);		break;
+	case 5:		Skipping = !(m_GirlTarget->get_stat(value[0]) != value[1]);		break;
 	}
 
 	// At this point, Skipping states if the script actions
@@ -1159,7 +1159,7 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
-	Skipping = !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+	Skipping = !m_GirlTarget->has_trait(Script->m_Entries[0].m_Text);
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1207,7 +1207,7 @@ sScript* cGameScript::Script_TortureTarget(sScript* Script)
 }
 sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 {
-	if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 10)
+	if (m_GirlTarget->spirit() <= 10)
 	{
 		g_MessageQue.AddToQue("She is bawling the entire time you yell at her, obviously wanting to do her best", 0);
 		m_GirlTarget->happiness(-5);
@@ -1218,7 +1218,7 @@ sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 		m_GirlTarget->pcfear(2);
 		m_GirlTarget->pchate(2);
 	}
-	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 20)
+	else if (m_GirlTarget->spirit() <= 20)
 	{
 		g_MessageQue.AddToQue("She sobs a lot while you yell at her and fearfully listens to your every word", 0);
 		m_GirlTarget->happiness(-2);
@@ -1228,7 +1228,7 @@ sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 		m_GirlTarget->pclove(-1);
 		m_GirlTarget->pcfear(1);
 	}
-	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 30)
+	else if (m_GirlTarget->spirit() <= 30)
 	{
 		g_MessageQue.AddToQue("She listens with attention and promises to do better", 0);
 		m_GirlTarget->happiness(-1);
@@ -1237,14 +1237,14 @@ sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 		m_GirlTarget->spirit(-2);
 		m_GirlTarget->pclove(-1);
 	}
-	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 50)
+	else if (m_GirlTarget->spirit() <= 50)
 	{
 		g_MessageQue.AddToQue("She listens to what you say but barely pays attention", 0);
 		m_GirlTarget->obedience(3);
 		m_GirlTarget->spirit(-2);
 		m_GirlTarget->pchate(1);
 	}
-	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 80)
+	else if (m_GirlTarget->spirit() <= 80)
 	{
 		g_MessageQue.AddToQue("She looks at you defiantly while you yell at her", 0);
 		m_GirlTarget->obedience(2);
@@ -1587,19 +1587,19 @@ sScript* cGameScript::Script_DomTarget(sScript* Script)
 }
 sScript* cGameScript::Script_AddTrait(sScript* Script)						// `J` new
 {
-	if (m_GirlTarget && !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
+	if (m_GirlTarget && !m_GirlTarget->has_trait(Script->m_Entries[0].m_Text))
 		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_RemoveTrait(sScript* Script)					// `J` new
 {
-	if (m_GirlTarget && g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
+	if (m_GirlTarget && m_GirlTarget->has_trait(Script->m_Entries[0].m_Text))
 		g_Girls.RemoveTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_AddTraitTemp(sScript* Script)						// `J` new
 {
-	if (m_GirlTarget && !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
+	if (m_GirlTarget && !m_GirlTarget->has_trait(Script->m_Entries[0].m_Text))
 		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text, Script->m_Entries[1].m_lValue);
 	return Script->m_Next;
 }

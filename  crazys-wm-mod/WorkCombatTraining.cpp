@@ -272,7 +272,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	if (girl->is_pregnant())
 	{
-		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
+		if (girl->strength() >= 60)
 		{
 			ss << "\n \nAll that training proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
 		}
@@ -280,7 +280,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		{
 			ss << "\n \nAll that training proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
-		girl->tiredness(10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+		girl->tiredness(10 - girl->strength() / 20 );
 	}
 
 

@@ -76,7 +76,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int roll_c = g_Dice.d100() + agl;					// agility adjustment
 	int roll_d = g_Dice.d100();
 	int roll_sex = g_Dice.d100();
-	int prepare = (girl->agility() + g_Girls.GetStat(girl, SKILL_SERVICE)/2);
+	int prepare = (girl->agility() + girl->service()/2);
 	double cust_wealth = 1;
 	int cust_type = 0;
 	string cust_type_text = "";

@@ -54,8 +54,7 @@ struct  sGang;
 
 class cAbstractGirls {
 public:
-	virtual int GetStat(sGirl* girl, int stat) = 0;
-	virtual int GetSkill(sGirl* girl, int skill) = 0;
+    virtual int GetSkill(sGirl* girl, int skill) = 0;
 	virtual int GetEnjoyment(sGirl* girl, int skill) = 0;
 	virtual int GetTraining(sGirl* girl, int skill) = 0;
 	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
@@ -65,7 +64,7 @@ public:
 	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]) = 0;
 	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
-	virtual bool HasTrait(sGirl* girl, string name) = 0;
+
 	virtual bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool CheckVirginity(sGirl* girl) = 0;
@@ -423,17 +422,39 @@ struct sGirl
 	*/
 	int get_stat(int stat_id)
 	{
-		return g_GirlsPtr->GetStat(this, stat_id);
+        // returns the total of stat + statmod + tempstat + stattr
+
+        if (stat_id < 0) return 0;
+        u_int stat = stat_id;
+        int value = 0, min = 0, max = 100;
+        /* */if (stat == STAT_AGE) min = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+        else if (stat == STAT_EXP) max = 32000;
+        else if (stat == STAT_LEVEL) max = 255;
+        else if (stat == STAT_HEALTH	&& has_trait( "Incorporeal"))	return 100;
+        else if (stat == STAT_TIREDNESS &&
+                 (has_trait( "Incorporeal") ||
+                  has_trait( "Skeleton") ||
+                  has_trait( "Zombie")))
+            return 0;
+        else if (stat == STAT_PCLOVE || stat == STAT_PCFEAR || stat == STAT_PCHATE || stat == STAT_MORALITY ||
+                 stat == STAT_REFINEMENT || stat == STAT_DIGNITY || stat == STAT_LACTATION) min = -100;
+        // Generic calculation
+        value = m_Stats[stat] + m_StatMods[stat] + m_StatTemps[stat] + m_StatTr[stat];
+
+        if (value < min) value = min;
+        else if (value > max) value = max;
+        return value;
 	}
+
 	int upd_temp_stat(int stat_id, int amount, bool usetraits=false)
 	{
 		g_GirlsPtr->UpdateStatTemp(this, stat_id, amount, usetraits);
-		return g_GirlsPtr->GetStat(this, stat_id);
+		return get_stat(stat_id);
 	}
 	int upd_stat(int stat_id, int amount, bool usetraits = true)
 	{
 		g_GirlsPtr->UpdateStat(this, stat_id, amount, usetraits);
-		return g_GirlsPtr->GetStat(this, stat_id);
+		return get_stat(stat_id);
 	}
 
 	int upd_temp_Enjoyment(int stat_id, int amount)
@@ -731,8 +752,7 @@ public:
 
 	void EndDayGirls(sBrothel* brothel, sGirl* girl);
 
-	int GetStat(sGirl* girl, int stat);
-	void SetStat(sGirl* girl, int stat, int amount);
+    void SetStat(sGirl* girl, int stat, int amount);
 	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);		// updates a stat
 	void UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits = false);	// updates a stat temporarily
 	void UpdateStatMod(sGirl* girl, int stat, int amount);							// updates a statmod usually from items
@@ -766,7 +786,6 @@ public:
 	double GetAverageOfSexSkills(sGirl* girl);	// `J` added
 	double GetAverageOfNSxSkills(sGirl* girl);	// `J` added
 
-	bool HasTrait(sGirl* girl, string trait);
 	bool HasRememberedTrait(sGirl* girl, string trait);
 	int HasTempTrait(sGirl* girl, string trait);
 	bool RestoreRememberedTrait(sGirl* girl, string trait);

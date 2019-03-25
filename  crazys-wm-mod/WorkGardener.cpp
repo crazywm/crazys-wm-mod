@@ -198,7 +198,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else
 	{
 		int roll_max = (girl->intelligence()
-			+ g_Girls.GetStat(girl, SKILL_HERBALISM)
+			+ girl->herbalism()
 			+ girl->farming());
 		roll_max /= 6;
 		wages += 10 + g_Dice%roll_max;
