@@ -49,7 +49,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	int actiontype = ACTION_WORKCLUB;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		//SIN - More informative mssg to show *what* she refuses
 		ss << " refused to be a waitress for the creeps in your strip club " << (Day0Night1 ? "tonight." : "today.");

@@ -49,7 +49,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int actiontype = ACTION_WORKSTRIP;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		//SIN - More informative mssg to show *what* she refuses
 		ss << " refused to be in your brothel's peep show " << (Day0Night1 ? "tonight." : "today.");
@@ -186,7 +186,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				GetMiscCustomer(*brothel);
 				brothel->m_Happiness += 100;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -30, true);
 				// work out the pay between the house and the girl
 				wages += girl->askprice() + 60;
 				fame += 1;
@@ -218,7 +218,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				GetMiscCustomer(*brothel);
 				brothel->m_Happiness += 100;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -30, true);
 				// work out the pay between the house and the girl
 				wages += girl->askprice() + 60;
 				fame += 1;
@@ -236,7 +236,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			ss << "\nShe was horny and ended up masturbating for the customers, making them very happy.";
 			GetMiscCustomer(*brothel);
 			brothel->m_Happiness += 100;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
+			girl->upd_temp_stat(STAT_LIBIDO, -30, true);
 			// work out the pay between the house and the girl
 			wages += girl->askprice() + 60;
 			fame += 1;
@@ -256,7 +256,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			else if (girl->has_trait( "Lesbian"))
 			{
 				enjoy -= 2;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -10, true);
 				ss << "she doesn't understand the appeal of them, which turned her off.\n";
 			}
 			else if (!brothel->m_RestrictNormal && !g_Girls.CheckVirginity(girl) && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && girl->libido() >= 80) //sex
@@ -324,7 +324,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 		/* `J` g_Girls.GirlFucks handles libido and customer happiness
 		Cust.m_Stats[STAT_HAPPINESS] = max(100, Cust.m_Stats[STAT_HAPPINESS] + 50);
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		girl->upd_temp_stat(STAT_LIBIDO, -20);
 		//*/
 
 		int sexwages = min(g_Dice % (Cust.m_Money / 4) + girl->askprice(), int(Cust.m_Money));
@@ -372,7 +372,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKSTRIP, enjoy);
 
 	// work out the pay between the house and the girl
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
@@ -395,7 +395,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	girl->exp(xp);
 	girl->strip(g_Dice%skill + 1);
 	girl->performance(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	//gain traits
 		if (jobperformance >= 140 && g_Dice.percent(25))

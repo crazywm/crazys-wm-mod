@@ -44,7 +44,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 {
 	int actiontype = ACTION_WORKMILK;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
+	if (girl->disobey_check(actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to let her breasts be milked " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -261,7 +261,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		{
 			ss << ", who massaged " << girlName << "'s breasts thoroughly and was careful to thoroughly arouse the nipple with her tongue before attaching the cup. This helped with milking.";
 			volume += (volume / 10);
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 5, true);
+			girl->upd_temp_stat(STAT_LIBIDO, 5, true);
 		}
 		else if (girl->has_trait( "Clumsy") && g_Dice.percent(40))
 		{
@@ -654,7 +654,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
@@ -671,7 +671,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp((g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary
 	girl->service((g_Dice % skill) + 1);

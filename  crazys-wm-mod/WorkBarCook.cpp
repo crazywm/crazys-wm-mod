@@ -49,7 +49,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	int actiontype = ACTION_WORKBAR;
 	stringstream ss; string girlName = girl->m_Realname;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		//SIN - replaced with more informative mssg
 		//ss << girlName << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -314,7 +314,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 		if (girl->has_trait( "No Arms") || girl->has_trait( "No Hands"))
 		{
-			ss << "The results are what you would expect for a girl who has to carry, cut, cook, and plate everything with her mouth. It is awful. You consider telling the staff to 'give her a hand,’ but conclude that the remark would be considered in poor taste. Not as poor taste as " << girlName << "'s cooking, of course, but pretty close.\n";
+			ss << "The results are what you would expect for a girl who has to carry, cut, cook, and plate everything with her mouth. It is awful. You consider telling the staff to 'give her a hand,ï¿½ but conclude that the remark would be considered in poor taste. Not as poor taste as " << girlName << "'s cooking, of course, but pretty close.\n";
 		}
 		else if (roll_b >= 66)
 		{
@@ -395,7 +395,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 #pragma region	//	Finish the shift			//
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	int roll_max = (girl->beauty() + girl->charisma());
@@ -423,7 +423,7 @@ bool cJobManager::WorkBarCook(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	else
         girl->confidence(1);
 	girl->cooking(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	//gain traits
 

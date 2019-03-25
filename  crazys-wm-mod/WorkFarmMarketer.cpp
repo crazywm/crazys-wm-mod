@@ -43,7 +43,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	int actiontype = ACTION_WORKCUSTSERV;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
+	if (girl->disobey_check(actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -250,7 +250,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 
 	// EXP and Libido
 	int I_xp = (g_Dice % xp) + 1;							girl->exp(I_xp);
-	int I_libido = (g_Dice % libido) + 1;					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, I_libido);
+	int I_libido = (g_Dice % libido) + 1;					girl->upd_temp_stat(STAT_LIBIDO, I_libido);
 
 	// primary (+2 for single or +1 for multiple)
 	int I_charisma		= max(0, (g_Dice % skill) + 1);		girl->charisma(I_charisma);
@@ -260,7 +260,7 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	int I_fame			= max(0, (g_Dice % skill) - 2);		girl->fame(I_fame);
 	int I_farming		= max(0, (g_Dice % skill) - 2);		girl->farming(I_farming);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl,		"Charismatic",	30, actiontype, girlName + " has been selling long enough that she has learned to be more Charismatic.", Day0Night1);
 	g_Girls.PossiblyLoseExistingTrait(girl, "Meek",			40, actiontype, girlName + "'s having to work with customers every day has forced her to get over her meekness.", Day0Night1);
 	g_Girls.PossiblyLoseExistingTrait(girl, "Shy",			50, actiontype, girlName + " has been selling for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);

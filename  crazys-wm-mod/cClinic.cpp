@@ -303,7 +303,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			matron = true;
 			ss << girlName << " continued to help the other girls throughout the night.";
 		}
-		else if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
+		else if (current->disobey_check(ACTION_WORKMATRON, brothel))
 		{
 			(Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
 			brothel->m_Fame -= current->fame();
@@ -538,7 +538,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			ss << girlName << " is not qualified to be a Doctor so she was sent back to being an Intern.";
 			current->m_DayJob = current->m_NightJob = JOB_NURSE;
 		}
-		else if (g_Girls.DisobeyCheck(current, ACTION_WORKDOCTOR, brothel))
+		else if (current->disobey_check(ACTION_WORKDOCTOR, brothel))
 		{
 			(Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
 			brothel->m_Fame -= current->fame();
@@ -569,7 +569,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
-		if (!g_Girls.DisobeyCheck(current, ACTION_WORKDOCTOR, brothel))
+		if (!current->disobey_check(ACTION_WORKDOCTOR, brothel))
 		{
 			numDoctors++;
 			ss << "There was no Doctor available to work so " << girlName << " was promoted to Doctor.";
@@ -591,7 +591,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
-		if (!g_Girls.DisobeyCheck(current, ACTION_WORKDOCTOR, brothel))
+		if (!current->disobey_check(ACTION_WORKDOCTOR, brothel))
 		{
 			numDoctors++;
 			ss << "There was no Doctor available to work so " << girlName << " was promoted to Doctor.";
@@ -811,7 +811,7 @@ bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 {
 	// no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
-	if (pBrothel == 0)
+	if (!pBrothel)
 	{
 		return false;
 	}

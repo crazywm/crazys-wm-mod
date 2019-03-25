@@ -44,7 +44,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int actiontype = ACTION_WORKADVERTISING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		ss << " refused to advertise the brothel today.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -181,7 +181,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
 	int I_xp = (g_Dice % xp) + 1;							girl->exp(I_xp);
-	int I_libido = (g_Dice % libido) + 1;					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, I_libido,false);//g_Girls.UpdateStatTemp(girl,STAT_LIBIDO,I_libido);
+	int I_libido = (g_Dice % libido) + 1;					girl->upd_temp_stat(STAT_LIBIDO, I_libido,false);//g_Girls.UpdateStatTemp(girl,STAT_LIBIDO,I_libido);
 
 	// primary improvement (+2 for single or +1 for multiple)
 	int I_performance	= (g_Dice % skill) + 1;				girl->performance(I_performance);
@@ -193,7 +193,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int I_fame			= fame;								girl->fame(I_fame);
 
 	// Update Enjoyment
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	if (girl->strip() > 50)
 		g_Girls.PossiblyGainNewTrait(girl, "Exhibitionist", 50, actiontype, girlName +" has become quite the Exhibitionist, she seems to prefer Advertising topless whenever she can.", Day0Night1 == SHIFT_NIGHT);
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Advertising on a daily basis has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);

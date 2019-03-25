@@ -328,6 +328,75 @@ int sGirl::sGirl::add_inv(sInventoryItem* item)
     return g_Girls.AddInv(this, item);
 }
 
+bool sGirl::disobey_check(int action, sBrothel* brothel)
+{
+	int diff;
+	int chance_to_obey = 0;							// high value - more likely to obey
+	chance_to_obey = -g_Girls.GetRebelValue(this, false);	// let's start out with the basic rebelliousness
+	chance_to_obey += 100;							// make it range from 0 to 200
+	chance_to_obey /= 2;							// get a conventional percentage value
+	/*
+	*	OK, let's factor in having a matron: normally this is done in GetRebelValue
+	*	but matrons have shifts now, so really we want twice the effect for a matron
+	*	on each shift as we'd get from just one. //corrected:(Either that, or we need to make this
+	*	check shift dependent.)//
+	*
+	*	Anyway, the old version added 15 for a matron either shift. Let's add
+	*	10 for each shift. Full coverage gets you 20 points
+	*/
+	if (brothel)
+	{ // `J` added building checks
+		if (brothel->matron_on_shift(SHIFT_DAY, m_InClinic, m_InStudio, m_InArena, m_InCentre, m_InHouse, m_InFarm, where_is_she)) chance_to_obey += 10;
+		if (brothel->matron_on_shift(SHIFT_NIGHT, m_InClinic, m_InStudio, m_InArena, m_InCentre, m_InHouse, m_InFarm, where_is_she)) chance_to_obey += 10;
+	}
+	/*
+	*	This is still confusing - at least it still confuses me
+	*	why not normalise the rebellion -100 to 100 value so it runs
+	*	0 to 100, and invert it so it's basically an obedience check
+	*/
+
+	switch (action)
+	{
+	case ACTION_COMBAT:
+		// WD use best stat as many girls have only one stat high
+		diff = max(combat(), magic()) - 50;
+		diff /= 3;
+		chance_to_obey += diff;
+		break;
+	case ACTION_SEX:
+		// Let's do the same thing here
+		diff = libido();
+		diff /= 5;
+		chance_to_obey += diff;
+		break;
+	case ACTION_WORKCLEANING:
+		//
+		break;
+	default:
+		break;
+	}
+	chance_to_obey += m_Enjoyment[action];			// add in her enjoyment level
+	chance_to_obey += pclove() / 10;					// let's add in some mods for love, fear and hate
+	chance_to_obey += pcfear() / 10;
+	chance_to_obey -= pchate() / 10;
+	chance_to_obey += 30;									// Let's add a blanket 30% to all of that
+	int roll = g_Dice.d100();								// let's get a percentage roll
+	diff = chance_to_obey - roll;
+	bool girl_obeys = (diff >= 0);
+	if (girl_obeys)											// there's a price to be paid for relying on love or fear
+	{
+		if (diff < (pclove() / 10)) pclove(-1);	// if the only reason she obeys is love it wears away that love
+		if (diff < (pcfear() / 10)) pcfear(-1);	// just a little bit. And if she's only doing it out of fear
+	}
+	/*
+	*	do we need any more than this, really?
+	*	we can add in some shaping factors if desired
+	*/
+
+	return !girl_obeys;
+}
+
+
 sRandomGirl::sRandomGirl()
 {
 	m_Name = "";
@@ -823,75 +892,6 @@ static char *n_strdup(const char *s)
 sGirl *sRandomGirl::lookup = new sGirl();  // used to look up stat and skill IDs
 
 // ----- Misc
-
-// if this returns true, the girl will disobey
-bool cGirls::DisobeyCheck(sGirl* girl, int action, sBrothel* brothel)
-{
-	int diff;
-	int chance_to_obey = 0;							// high value - more likely to obey
-	chance_to_obey = -GetRebelValue(girl, false);	// let's start out with the basic rebelliousness
-	chance_to_obey += 100;							// make it range from 0 to 200
-	chance_to_obey /= 2;							// get a conventional percentage value
-	/*
-	*	OK, let's factor in having a matron: normally this is done in GetRebelValue
-	*	but matrons have shifts now, so really we want twice the effect for a matron
-	*	on each shift as we'd get from just one. //corrected:(Either that, or we need to make this
-	*	check shift dependent.)//
-	*
-	*	Anyway, the old version added 15 for a matron either shift. Let's add
-	*	10 for each shift. Full coverage gets you 20 points
-	*/
-	if (brothel)
-	{ // `J` added building checks
-		if (brothel->matron_on_shift(SHIFT_DAY, girl->m_InClinic, girl->m_InStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she)) chance_to_obey += 10;
-		if (brothel->matron_on_shift(SHIFT_NIGHT, girl->m_InClinic, girl->m_InStudio, girl->m_InArena, girl->m_InCentre, girl->m_InHouse, girl->m_InFarm, girl->where_is_she)) chance_to_obey += 10;
-	}
-	/*
-	*	This is still confusing - at least it still confuses me
-	*	why not normalise the rebellion -100 to 100 value so it runs
-	*	0 to 100, and invert it so it's basically an obedience check
-	*/
-
-	switch (action)
-	{
-	case ACTION_COMBAT:
-		// WD use best stat as many girls have only one stat high
-		diff = max(girl->combat(), girl->magic()) - 50;
-		diff /= 3;
-		chance_to_obey += diff;
-		break;
-	case ACTION_SEX:
-		// Let's do the same thing here
-		diff = girl->libido();
-		diff /= 5;
-		chance_to_obey += diff;
-		break;
-	case ACTION_WORKCLEANING:
-		//
-		break;
-	default:
-		break;
-	}
-	chance_to_obey += girl->m_Enjoyment[action];			// add in her enjoyment level
-	chance_to_obey += girl->pclove() / 10;					// let's add in some mods for love, fear and hate
-	chance_to_obey += girl->pcfear() / 10;
-	chance_to_obey -= girl->pchate() / 10;
-	chance_to_obey += 30;									// Let's add a blanket 30% to all of that
-	int roll = g_Dice.d100();								// let's get a percentage roll
-	diff = chance_to_obey - roll;
-	bool girl_obeys = (diff >= 0);
-	if (girl_obeys)											// there's a price to be paid for relying on love or fear
-	{
-		if (diff < (girl->pclove() / 10)) girl->pclove(-1);	// if the only reason she obeys is love it wears away that love
-		if (diff < (girl->pcfear() / 10)) girl->pcfear(-1);	// just a little bit. And if she's only doing it out of fear
-	}
-	/*
-	*	do we need any more than this, really?
-	*	we can add in some shaping factors if desired
-	*/
-
-	return !girl_obeys;
-}
 
 void cGirls::CalculateGirlType(sGirl* girl)
 {
@@ -12611,8 +12611,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (keep)
 			{
 
-				if (g_Dice.percent(66)) g_Girls.AddInv(girl, g_InvManager.GetItem("Buttplug")), message += "this buttplug.";
-				else g_Girls.AddInv(girl, g_InvManager.GetItem("Anal Beads")), message += "these anal beads.";
+				if (g_Dice.percent(66)) girl->add_inv(g_InvManager.GetItem("Buttplug")), message += "this buttplug.";
+				else girl->add_inv(g_InvManager.GetItem("Anal Beads")), message += "these anal beads.";
 			}
 		}
 	}break;
@@ -12664,8 +12664,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			if (keep)
 			{
-				if (g_Dice.percent(66)) g_Girls.AddInv(girl, g_InvManager.GetItem("Spiked Collar")), message += "spiked collar.";
-				else g_Girls.AddInv(girl, g_InvManager.GetItem("Slut Collar")), message += "'slut' collar.";
+				if (g_Dice.percent(66)) girl->add_inv(g_InvManager.GetItem("Spiked Collar")), message += "spiked collar.";
+				else girl->add_inv(g_InvManager.GetItem("Slut Collar")), message += "'slut' collar.";
 			}
 		}
 	}break;
@@ -12734,8 +12734,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			if (keep)
 			{
-				if (g_Dice.percent(66)) g_Girls.AddInv(girl, g_InvManager.GetItem("Dildo")), message += "dildo.";
-				else g_Girls.AddInv(girl, g_InvManager.GetItem("Studded Dildo")), message += "studded dildo.";
+				if (g_Dice.percent(66)) girl->add_inv(g_InvManager.GetItem("Dildo")), message += "dildo.";
+				else girl->add_inv(g_InvManager.GetItem("Studded Dildo")), message += "studded dildo.";
 			}
 		}
 	}break;
@@ -12776,8 +12776,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			bool keep = false;
 			message += "\n \nAfterwards he gave " + girlName + " a gift to help her give head in future. She got ";
-			if (g_Dice.percent(50)) g_Girls.AddInv(girl, g_InvManager.GetItem("Oral Sex Candy")), message += "some delicious oral sex candies.";
-			else g_Girls.AddInv(girl, g_InvManager.GetItem("Knee Pads")), message += "some comfortable knee pads.";
+			if (g_Dice.percent(50)) girl->add_inv(g_InvManager.GetItem("Oral Sex Candy")), message += "some delicious oral sex candies.";
+			else girl->add_inv(g_InvManager.GetItem("Knee Pads")), message += "some comfortable knee pads.";
 		}
 	}break;
 
@@ -12875,12 +12875,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					message += "Annoyed, she later threw out this demeaning trash.";
 					keep = false;
 				}
-				if (keep) g_Girls.AddInv(girl, g_InvManager.GetItem("Pet Collar"));
+				if (keep) girl->add_inv(g_InvManager.GetItem("Pet Collar"));
 			}
 			else
 			{
 				message += "\n \nAfterward the customer gave " + girlName + " some cute Paw-Print Teddy lingerie as a gift.";
-				g_Girls.AddInv(girl, g_InvManager.GetItem("Paw-Print Teddy"));
+				girl->add_inv(g_InvManager.GetItem("Paw-Print Teddy"));
 			}
 		}
 	}break;
@@ -12944,17 +12944,17 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				else
 				{
 					message += "She decided to keep it.";
-					g_Girls.AddInv(girl, g_InvManager.GetItem("Goblet of Cum"));
+					girl->add_inv(g_InvManager.GetItem("Goblet of Cum"));
 				}
 			}
 			else if (customer->m_Stats[STAT_HAPPINESS] > 90)
 			{
-				g_Girls.AddInv(girl, g_InvManager.GetItem("Ring of the Hivemind"));
+				girl->add_inv(g_InvManager.GetItem("Ring of the Hivemind"));
 				message += "\n \nThe grateful group were so exhausted they forgot to take their Ring of Hivemind. It's hers now.";
 			}
 			else
 			{
-				g_Girls.AddInv(girl, g_InvManager.GetItem("Herpes Cure"));
+				girl->add_inv(g_InvManager.GetItem("Herpes Cure"));
 				message += "\n \nWorryingly, as she tidied up she found a Herpes Cure dropped under the bed. It's hers now.";
 			}
 		}
@@ -12991,7 +12991,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					message += "\nBeing straight, she had no desire to keep it and threw it out later.";
 					keep = false;
 				}
-				if (keep) g_Girls.AddInv(girl, g_InvManager.GetItem("Dildo"));
+				if (keep) girl->add_inv(g_InvManager.GetItem("Dildo"));
 			}
 			else
 			{
@@ -13001,7 +13001,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					message += "\nBeing straight, she found it kinda gross and threw it out.";
 					keep = false;
 				}
-				if (keep) g_Girls.AddInv(girl, g_InvManager.GetItem("Manual of Two Roses"));
+				if (keep) girl->add_inv(g_InvManager.GetItem("Manual of Two Roses"));
 			}
 		}
 	}break;
@@ -13265,7 +13265,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		enjoy -= 30;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
+	girl->upd_Enjoyment(ACTION_SEX, enjoy);
 
 	if (cfg.debug.log_debug())
 	{
@@ -15655,13 +15655,13 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 	{
 		if (g_Girls.GetStat(a, STAT_HEALTH) <= 20)
 		{
-			g_Girls.UpdateEnjoyment(a, ACTION_COMBAT, -1);
+			a->upd_Enjoyment(ACTION_COMBAT, -1);
 			winner = 2;
 			break;
 		}
 		else if (g_Girls.GetStat(b, STAT_HEALTH) <= 20)
 		{
-			g_Girls.UpdateEnjoyment(b, ACTION_COMBAT, -1);
+			b->upd_Enjoyment(ACTION_COMBAT, -1);
 			winner = 1;
 			break;
 		}
@@ -15763,7 +15763,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 		// Highest damage is 27 pts.  Checking for health between 20 and 30 is a bug as it can be stepped over.
 		if (g_Girls.GetStat(Defender, STAT_HEALTH) <= 40 && g_Girls.GetStat(Defender, STAT_HEALTH) >= 10)
 		{
-			g_Girls.UpdateEnjoyment(Defender, ACTION_COMBAT, -1);
+			Defender->upd_Enjoyment(ACTION_COMBAT, -1);
 			break;
 		}  // if defeated
 	}  // while (1)
@@ -15774,7 +15774,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 		l.ss() << a->m_Realname << " WINS!";
 		l.ssend();
 
-		g_Girls.UpdateEnjoyment(a, ACTION_COMBAT, +1);
+		a->upd_Enjoyment(ACTION_COMBAT, +1);
 
 		return 1;
 	}
@@ -15783,7 +15783,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 		l.ss() << b->m_Realname << " WINS!";
 		l.ssend();
 
-		g_Girls.UpdateEnjoyment(b, ACTION_COMBAT, +1);
+		b->upd_Enjoyment(ACTION_COMBAT, +1);
 
 		return 2;
 	}

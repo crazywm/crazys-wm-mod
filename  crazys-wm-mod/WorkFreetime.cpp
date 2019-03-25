@@ -754,7 +754,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				ss << "amazing. She really knows how to cook.\n";
 				U_Health += 5;
-				g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1);
+				girl->upd_Enjoyment(ACTION_WORKCOOKING, 1);
 
 			}
 			else if (g_Girls.GetSkill(girl, SKILL_COOKING) > 50)
@@ -770,7 +770,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				ss << "awful. It can't really be called food it was so bad.\n";
 				U_Health -= 2;
-				g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, -1);
+				girl->upd_Enjoyment(ACTION_WORKCOOKING, -1);
 			}
 			if (HateLove >= 80 && g_Dice.percent(10))//loves you
 			{
@@ -840,7 +840,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				int cost = g_InvManager.GetShopItem(item)->m_Cost;
 				string itemName = g_InvManager.GetShopItem(item)->m_Name;
 
-				if (g_Girls.HasItem(girl, itemName) > -1	// if she already has one
+				if (girl->has_item(itemName) > -1	        // if she already has one
 					|| girl->m_Money - cost < 0) 			// or if she can't afford it
 					continue;								// skip it
 
@@ -992,7 +992,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						item = g_InvManager.GetItem(itemname);
 					}
 					ss << "She managed to steal " << itemprefix << itemname << ".\n";
-					g_Girls.AddInv(girl, item);
+					girl->add_inv(item);
 				}
 			}
 
@@ -1323,15 +1323,15 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << "\nNoticing her addiction, someone offered her some drugs. She accepted, and got baked for the concert.\n";
 				if (girl->has_trait( "Shroud Addict"))
 				{
-					g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom"));
+					girl->add_inv(g_InvManager.GetItem("Shroud Mushroom"));
 				}
 				if (girl->has_trait( "Fairy Dust Addict"))
 				{
-					g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust"));
+					girl->add_inv(g_InvManager.GetItem("Fairy Dust"));
 				}
 				if (girl->has_trait( "Viras Blood Addict"))
 				{
-					g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood"));
+					girl->add_inv(g_InvManager.GetItem("Vira Blood"));
 				}
 				/* May added in a sex event here where they try to take advatage of the high girl*/
 				if (g_Dice.percent(10) && girl->beauty() > 85 && !g_Girls.CheckVirginity(girl))
@@ -1610,17 +1610,17 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << "But on her way their she ran into an old friend who invited her to do some ";
 					if (girl->has_trait( "Shroud Addict"))
 					{
-						g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom"));
+						girl->add_inv(g_InvManager.GetItem("Shroud Mushroom"));
 						ss << "Shroud Mushrooms.";
 					}
 					if (girl->has_trait( "Fairy Dust Addict"))
 					{
-						g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust"));
+						girl->add_inv(g_InvManager.GetItem("Fairy Dust"));
 						ss << "Fairy Dust.";
 					}
 					if (girl->has_trait( "Viras Blood Addict"))
 					{
-						g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood"));
+						girl->add_inv(g_InvManager.GetItem("Vira Blood"));
 						ss << "Vira Blood.";
 					}
 				}
@@ -2481,9 +2481,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	// update stats and skills
 	girl->mana(U_Mana);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, U_Libido);
+	girl->upd_temp_stat(STAT_LIBIDO, U_Libido);
 	girl->exp(U_EXP);
-	g_Girls.UpdateStatTemp(girl, STAT_BEAUTY, U_Beauty);
+	girl->upd_temp_stat(STAT_BEAUTY, U_Beauty);
 	girl->morality(U_Morality);
 	girl->npclove(U_NPCLove);
 
@@ -2515,7 +2515,7 @@ bool cJobManager::AddictBuysDrugs(string Addiction, string Drug, sGirl* girl, sB
 	}
 	else
 	{
-		g_Girls.AddInv(girl, g_InvManager.BuyShopItem(id));
+		girl->add_inv(g_InvManager.BuyShopItem(id));
 		return true;
 	}
 

@@ -55,11 +55,11 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	if (girl->libido() >= 90 && girl->has_trait( "Nymphomaniac") && g_Dice.percent(20))
 	{
 		ss << " let lust get the better of her and she ended up missing her " << (Day0Night1 ? "night" : "day") << " shift.";
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+		girl->upd_temp_stat(STAT_LIBIDO, -20);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_MAST, EVENT_NOWORK);
 		return true;
 	}
-	else if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	else if (girl->disobey_check(actiontype, brothel))
 	{
 		//Making mssg more informative (what was refused?)
 		ss << " refused to work as a barmaid in your bar " << (Day0Night1 ? "tonight." : "today.");
@@ -879,9 +879,9 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	else
 		girl->performance(g_Dice%skill);
 	girl->service(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1);

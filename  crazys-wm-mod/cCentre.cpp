@@ -290,7 +290,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			matron = true;
 			ss << girlName << " continued to help the other girls throughout the night.";
 		}
-		else if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
+		else if (current->disobey_check(ACTION_WORKMATRON, brothel))
 		{
 			(Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
 			brothel->m_Fame -= current->fame();
@@ -451,7 +451,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 		
-		if (g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
+		if (current->disobey_check(ACTION_WORKCOUNSELOR, brothel))
 		{
 			(Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
 			brothel->m_Fame -= current->fame();
@@ -481,7 +481,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
-		if (!g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
+		if (!current->disobey_check(ACTION_WORKCOUNSELOR, brothel))
 		{
 			counselor = true;
 			ss << "There was no Counselor available to work so " << girlName << " was assigned to do it.";
@@ -508,7 +508,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
-		if (!g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
+		if (!current->disobey_check(ACTION_WORKCOUNSELOR, brothel))
 		{
 			counselor = true;
 			ss << "There was no Counselor available to work so " << girlName << " was assigned to do it.";
@@ -530,7 +530,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
-		if (!g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
+		if (!current->disobey_check(ACTION_WORKCOUNSELOR, brothel))
 		{
 			counselor = true;
 			ss << "There was no Counselor available to work so " << girlName << " was assigned to do it.";
@@ -552,7 +552,7 @@ void cCentreManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
 
-		if (!g_Girls.DisobeyCheck(current, ACTION_WORKCOUNSELOR, brothel))
+		if (!current->disobey_check(ACTION_WORKCOUNSELOR, brothel))
 		{
 			counselor = true;
 			ss << "There was no Counselor available to work so " << girlName << " was assigned to do it.";

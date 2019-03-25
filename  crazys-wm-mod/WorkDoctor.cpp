@@ -72,7 +72,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	}
 	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
 	{
-		if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
+		if (girl->disobey_check(actiontype, brothel))			// they refuse to work
 		{
 			ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -149,10 +149,10 @@ bool cJobManager::WorkDoctor(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	girl->intelligence(skill);
 	girl->medicine(skill);
 	girl->service(1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 	return false;
 }

@@ -78,7 +78,7 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 	int roll = g_Dice.d100();
 	ss << girlName;
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << (" refused to make a teaser clip today.\n");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -198,10 +198,10 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	girl->exp(xp);
 	girl->performance(g_Dice%skill);
 	girl->strip(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, enjoy);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKSTRIP, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 80, ACTION_WORKMOVIE, "Flirting and seducing on film has made her Charming.", Day0Night1);

@@ -39,7 +39,7 @@ bool cJobManager::WorkSheapherd(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 {
 	int actiontype = ACTION_WORKFARM;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -125,7 +125,7 @@ bool cJobManager::WorkSheapherd(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work);
+	girl->upd_Enjoyment(actiontype, work);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_HERD, Day0Night1);
 
 
@@ -144,7 +144,7 @@ bool cJobManager::WorkSheapherd(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (girl->has_trait("Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp((g_Dice%xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 	
 	// primary (+2 for single or +1 for multiple)
 	girl->animalhandling((g_Dice % skill) + 2);

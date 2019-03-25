@@ -279,7 +279,7 @@ bool cInventory::GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoE
 			// found a worse item of the same type in her inventory
 			g_Girls.SellInvItem(girl, nicerThan);
 			girl->m_Money -= item->m_Cost;
-			int temp = g_Girls.AddInv(girl, item);
+			int temp = girl->add_inv(item);
 			if (temp != -1 && AutoEquip) Equip(girl, temp, false); // MYR: Check temp value
 			return true;
 		}
@@ -287,7 +287,7 @@ bool cInventory::GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoE
 	else
 	{
 		girl->m_Money -= item->m_Cost;
-		int temp = g_Girls.AddInv(girl, item);
+		int temp = girl->add_inv(item);
 		if (temp != -1 && AutoEquip) Equip(girl, temp, false);	// MYR: Check temp value
 		return true;
 	}
@@ -1054,7 +1054,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			{
 				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
 				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
-					g_Girls.UpdateEnjoyment(girl, eff_id, amount);
+					girl->upd_Enjoyment(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
 				else g_Girls.UpdateEnjoymentMod(girl, eff_id, amount);
 			}

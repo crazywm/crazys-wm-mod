@@ -342,7 +342,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		totalPay = totalTips = totalGold = 0;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 
-		if (g_Girls.DisobeyCheck(current, ACTION_WORKMATRON, brothel))
+		if (current->disobey_check(ACTION_WORKMATRON, brothel))
 		{
 			current->m_Refused_To_Work_Night = true;
 			brothel->m_Fame -= current->fame();
@@ -545,7 +545,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		girlName = current->m_Realname;
 
 		// will they do their job?
-		if (g_Girls.DisobeyCheck(current, ACTION_WORKMOVIE, brothel))
+		if (current->disobey_check(ACTION_WORKMOVIE, brothel))
 		{
 			// if there is a Director and a camera or crystal refuses to work the director will not be happy.
 			if (matron)
@@ -626,7 +626,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			else { current = 0; break; }
 		}
 		//		Summary Messages
-		if (!g_Girls.DisobeyCheck(current, ACTION_WORKMOVIE, brothel))	// if she did not refuse to work...
+		if (!current->disobey_check(ACTION_WORKMOVIE, brothel))	// if she did not refuse to work...
 		{
 			// setting day job as an easy way of tracking what the girl was doing before the director tries to reassign her
 			current->m_DayJob = current->m_NightJob;

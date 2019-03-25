@@ -50,7 +50,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	int actiontype = ACTION_WORKSTRIP;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		//SIN - More informative mssg to show *what* she refuses
 		ss << " refused to strip for customers in your brothel " << (Day0Night1 ? "tonight." : "today.");
@@ -170,7 +170,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			if (girl->libido() > 70)
 			{
 				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				wages += 50;
 				mast = true;
 			}
@@ -203,7 +203,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 			if (girl->libido() > 70)
 			{
 				ss << "She was in the mood so she put on quite a show, taking herself to orgasm right in front of the customer.";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				tips += 50;
 				mast = true;
 			}
@@ -315,9 +315,9 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		string warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
 		ss << "\n" << warning << "\n";
-		if (girl->has_trait( "Shroud Addict"))		g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom"));
-		if (girl->has_trait( "Fairy Dust Addict"))	g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust"));
-		if (girl->has_trait( "Viras Blood Addict"))	g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood"));
+		if (girl->has_trait( "Shroud Addict"))		girl->add_inv(g_InvManager.GetItem("Shroud Mushroom"));
+		if (girl->has_trait( "Fairy Dust Addict"))	girl->add_inv(g_InvManager.GetItem("Fairy Dust"));
+		if (girl->has_trait( "Viras Blood Addict"))	girl->add_inv(g_InvManager.GetItem("Vira Blood"));
 		girl->m_Events.AddMessage(warning, IMGTYPE_ORAL, EVENT_WARNING);
 	}
 
@@ -445,7 +445,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 #pragma endregion
 #pragma region	//	Finish the shift			//
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	// Money
@@ -467,7 +467,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	girl->exp(xp);
 	girl->performance(g_Dice%skill);
 	girl->strip(g_Dice%skill + 2);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	//gained
 	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, actiontype, girlName + " has been stripping and having to be sexy for so long she now reeks of sexiness.", Day0Night1);

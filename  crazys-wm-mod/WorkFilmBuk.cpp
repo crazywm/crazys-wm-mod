@@ -77,7 +77,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		ss << "Cum-craving " << girlName << " couldn't wait to get sticky in this bukkake scene, and was sucking guys off before the lighting was even set up.";
 		bonus += 10;
 	}
-	else if (roll <= 10 && !girl->has_trait( "Mind Fucked") && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	else if (roll <= 10 && !girl->has_trait( "Mind Fucked") && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << girlName << " refused to have any part in this";
 		if (girl->is_slave())
@@ -222,9 +222,9 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	girl->bdsm(g_Dice%skill + 1);
 	girl->confidence(-(g_Dice%skill + 1));
 	girl->spirit(-(g_Dice%skill + 1));
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 	girl->pclove(enjoy);
 	girl->pcfear(enjoy);
 	girl->pchate(-enjoy);

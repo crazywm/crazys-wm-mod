@@ -49,7 +49,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	int actiontype = ACTION_WORKMOVIE; int actiontype2 = ACTION_WORKCLEANING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (roll_a <= 50 && (g_Girls.DisobeyCheck(girl, actiontype, brothel) || g_Girls.DisobeyCheck(girl, actiontype2, brothel)))
+	if (roll_a <= 50 && (girl->disobey_check(actiontype, brothel) || girl->disobey_check(actiontype2, brothel)))
 	{
 		ss << " refused to work as a stagehand today.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -188,7 +188,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
 	{
 		ss << "\n \n" << girlName << " finished her cleaning early so she hung out around the Studio a bit.";
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice % 3 + 1, true);
+		girl->upd_temp_stat(STAT_LIBIDO, g_Dice % 3 + 1, true);
 		girl->happiness(g_Dice % 3 + 1);
 	}
 
@@ -209,10 +209,10 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	girl->exp(xp);
 	girl->service((g_Dice % skill) + 2);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
-	if (filming) g_Girls.UpdateEnjoyment(girl, actiontype, enjoym);
-	g_Girls.UpdateEnjoyment(girl, actiontype2, enjoyc);
+	if (filming) girl->upd_Enjoyment(actiontype, enjoym);
+	girl->upd_Enjoyment(actiontype2, enjoyc);
 	// Gain Traits
 	if (g_Dice.percent(girl->service()))
 		g_Girls.PossiblyGainNewTrait(girl, "Maid", 90, actiontype2, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);

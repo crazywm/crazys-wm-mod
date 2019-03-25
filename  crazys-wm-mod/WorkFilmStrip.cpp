@@ -65,7 +65,7 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	ss << girlName << " worked as an actress filming strip tease scenes.\n \n";
 
 	int roll = g_Dice.d100();
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << "She refused to strip on film today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -117,10 +117,10 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	girl->exp(xp);
 	girl->performance(g_Dice%skill);
 	girl->strip(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, enjoy); //I've changed this to workstrip, it make more sense than sex
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKSTRIP, enjoy); //I've changed this to workstrip, it make more sense than sex
+	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 
 	//gain traits
 	if (girl->performance() > 50 && girl->strip() > 50 && g_Dice.percent(25))

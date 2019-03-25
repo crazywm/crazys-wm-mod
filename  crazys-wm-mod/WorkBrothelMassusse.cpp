@@ -50,7 +50,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	int actiontype = ACTION_WORKMASSEUSE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		//SIN - More informative mssg to show *what* she refuses
 		ss << " refused to massage customers in your brothel " << (Day0Night1 ? "tonight." : "today.");
@@ -355,7 +355,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, work);
+	girl->upd_Enjoyment(actiontype, work);
 
 	girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 
@@ -375,7 +375,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 	girl->exp(xp);
 	girl->medicine(g_Dice%skill);
 	girl->service(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 
 #pragma endregion

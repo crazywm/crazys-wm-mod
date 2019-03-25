@@ -45,7 +45,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 {
 	int actiontype = ACTION_WORKESCORT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -524,7 +524,7 @@ case Es_Regular:
 				}
 				imagetype = IMGTYPE_LESBIAN;
 				girl->lesbian(2);
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 			}
 			else
 			{
@@ -555,7 +555,7 @@ case Es_Regular:
 				}
 				imagetype = IMGTYPE_GROUP;
 				girl->group(2);
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 			}
 			ss << "Once they have recovered, " << girlName << " and the client dress themselves, thank the other two for a truly wonderful night, and begin the walk back towards their own destinations. Before they part, the client kisses " << girlName << " again and hands her an envelope with her fee, plus a hefty bonus for her incredible performance. \"I only wish you were actually my girlfriend,\" he says sheepishly. \"Well,\" she replies, giving him another kiss, \"if you ever want to have a fake girlfriend again some night, you know where to find me.\"\n";
 		}
@@ -649,7 +649,7 @@ case Es_Regular:
 					ss << girlName << " licks the remaining cum from her lips with a smile. \"If you happen to have a real girlfriend, I hope she can do that as well as I can,\" she flirts as she grabs her clothing and prepares to go. \"And if you ever need a fake girlfriend again for a night, give me a call.\"";
 					imagetype = IMGTYPE_ORAL;
 					girl->oralsex(2);
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+					girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				}
 
 		if (roll_sex >= 50 && !g_Girls.CheckVirginity(girl))/*sex*/
@@ -681,7 +681,7 @@ case Es_Regular:
 				ss << "After she wipes the cum from her thighs, she lies there for a moment beside him, stroking his chest with her fingers. \"I had a great time, love, but I do have to go,\" she whispers. \"But if you ever need a girlfriend for a night to do that again, you know where to find me.\"";
 				imagetype = IMGTYPE_SEX;
 				girl->normalsex(2);
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 			}
 		else if (roll_sex >= 40 || anal)/*Anal*/
 				{
@@ -722,7 +722,7 @@ case Es_Regular:
 					ss << girlName << " lies beside the client for a moment, stroking his chest with her fingers as the cum leaks from her ass. \"That was amazing,\" she purrs, before she stands to gather her clothes to leave. \"If you have a real girlfriend, I hope she lets you do that to her ass from time to time,\" she flirts. \"But if you need a fake girlfriend again some night, you know where to find me.\"";
 					imagetype = IMGTYPE_ANAL;
 					girl->anal(2);
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+					girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				}
 		else if (roll_sex >= 25)/*titty job*/
 				{
@@ -754,7 +754,7 @@ case Es_Regular:
 					ss << "After he erupts cum all over her face, " << girlName << " smiles, cleans herself off, and turns to collect her things to go. \"I'm afraid that's all our relationship can enjoy for tonight,\" she continues. \"Though if you ever need me to be your girlfriend again for the night, please give me a call.\"";
 					imagetype = IMGTYPE_TITTY;
 					girl->tittysex(2);
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+					girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				}
 		else /*Hand job*/
 				{
@@ -785,7 +785,7 @@ case Es_Regular:
 					ss << girlName << " sensuously licks the semen from her fingers while the client recovers himself. \"If you have a real girlfriend, I hope she can do that as well as your pretend one,\" she smiles, packing her things to leave. \"And if you ever need a fake girlfriend again for a night, give me a call.\"";
 					imagetype = IMGTYPE_HAND;
 					girl->handjob(2);
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+					girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				}
 	}
 }
@@ -1145,7 +1145,7 @@ case Es_Commoner:
 			ss << "After he erupts cum all over her face, " << girlName << " smiles, cleans herself off, and turns to collect her things to go. \"Thank you for that,\" she says as she approaches the door. \"You should know that, at the very least in this respect, you are better than any of the gentry I have known.\"";
 			imagetype = IMGTYPE_TITTY;
 			girl->tittysex(2);
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+			girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 		}
 		else if (ass_lover)
 		{
@@ -1198,7 +1198,7 @@ case Es_Commoner:
 					ss << "After she wipes the cum from her thighs, she lies there for a moment beside him, stroking his chest with her fingers. \"I had a great time, love, but I do have to go,\" she whispers. \"I hope you know that, at least as far as sex is concerned, and in many other ways, you are better than practically every gentry I have ever met.\"";
 					imagetype = IMGTYPE_SEX;
 					girl->normalsex(2);
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+					girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				}
 				else if (roll_sex >= 40 || anal)/*Anal*/
 				{
@@ -1239,7 +1239,7 @@ case Es_Commoner:
 					ss << girlName << " lies beside the client for a moment, stroking his chest with her fingers as the cum leaks from her ass. \"That was amazing,\" she purrs, before she stands to gather her clothes to leave. \"I'm glad we got to know each other a little better, and I hope you know that when it comes to tearing my ass open, you are better than any gentry I have ever met.\"";
 					imagetype = IMGTYPE_ANAL;
 					girl->anal(2);
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+					girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				}
 				else if (roll_sex >= 25)/*Hand job*/
 				{
@@ -1270,7 +1270,7 @@ case Es_Commoner:
 					ss << girlName << " sensuously licks the semen from her fingers while the client recovers himself. \"I think I got that drink you were talking about,\" she says as she finishes the last string of cum. \"And I'm happy we got to know each other a bit better. I hope a gentleman such as yourself is kind enough to call on me again,\" she suggests as she gathers her clothes to leave.";
 					imagetype = IMGTYPE_HAND;
 					girl->handjob(2);
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+					girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				}
 				else/*oral*/
 				{
@@ -1340,7 +1340,7 @@ case Es_Commoner:
 					ss << girlName << " licks the remaining cum from her lips with a smile. \"Thanks for the drink,\" she says, as she begins gathering her clothes to leave. \"I hope a gentleman like yourself is kind enough to call for me again sometime,\" she suggests as she heads for the door to return to your establishment.";
 					imagetype = IMGTYPE_ORAL;
 					girl->oralsex(2);
-					g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+					girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 				}
 		}
 	}
@@ -1529,7 +1529,7 @@ case Es_DeadBeat:
 		{
 			ss << girlName << "He also appreciates the sheer volume of alcohol that " << girlName << " has consumed in the last hour. He accurately suspects that she may be an alcoholic, but she seems to be able to handle it well, and while this concerns him, it has hardly ruined his evening.\n";
 			escort -= 1;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +20, true);
+			girl->upd_temp_stat(STAT_LIBIDO, +20, true);
 		}
 	}
 	else if (girl->charisma() >= 75)
@@ -1540,7 +1540,7 @@ case Es_DeadBeat:
 		{
 			ss << girlName << " is laughing a bit louder than he is, though. This is probably because her desperate need for alcohol has resulted in her downing five beverages over the course of the hour. While their conversation was so engaging that the client did not seem to mind how drunk she was getting, he did notice.\n";
 			escort -= 1;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +20);
+			girl->upd_temp_stat(STAT_LIBIDO, +20);
 		}
 	}
 	else if (girl->charisma() >= 50)
@@ -1551,7 +1551,7 @@ case Es_DeadBeat:
 		{
 			ss << "All except for " << girlName << "'s drinking, that is. As an alcoholic, she is unable to control herself once the drinking starts, and after they share another drink, she gets a third, and then a fourth, and by the fifth she is sloppy. The silent judgment in his eyes verifies that " << girlName << "'s alcoholism has reversed any rapport she was able to gain via conversation.\n";
 			escort -= 1;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +20, true);
+			girl->upd_temp_stat(STAT_LIBIDO, +20, true);
 		}
 	}
 	else if (girl->charisma() >= 25)
@@ -1561,7 +1561,7 @@ case Es_DeadBeat:
 		{
 			ss << "What he cannot forget, however, is how many drinks " << girlName << " knocks back during the hour. Her need is not social; it is clearly an addiction. She is much drunker than he is by the end of the hour, and while he is willing to forget the conversation, he does feel compelled to judge her conduct.\n";
 			escort -= 1;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +20, true);
+			girl->upd_temp_stat(STAT_LIBIDO, +20, true);
 		}
 	}
 	else
@@ -1572,7 +1572,7 @@ case Es_DeadBeat:
 		{
 			ss << girlName << " is more than familiar with the idea of drinking like her life depended on it, and her craving for alcohol soon has her keeping pace with the client. Soon the two are an absolute mess together.\n";
 			escort += 1;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, +20, true);
+			girl->upd_temp_stat(STAT_LIBIDO, +20, true);
 		}
 	}
 
@@ -1653,7 +1653,7 @@ case Es_DeadBeat:
 			}
 			ss << "After he erupts cum all over her face, " << girlName << " smiles, cleans herself off, and turns to collect her things to go. \"No need for another drink,\" she grins, \"because I think I just got one. I really do hope you'll call for me again, cutie.\"";
 			imagetype = IMGTYPE_TITTY;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+			girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 		}
 		else if (ass_lover)
 		{
@@ -1704,7 +1704,7 @@ case Es_DeadBeat:
 				}
 				ss << "After she wipes the cum from her thighs, she lies there for a moment beside him, stroking his chest with her fingers. \"I had a great time, cutie, but I do have to go,\" she whispers. \"I hope you call for me again, though.\"";
 				imagetype = IMGTYPE_SEX;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 			}
 			else if (roll_sex >= 40 || anal)/*Anal*/
 			{
@@ -1744,7 +1744,7 @@ case Es_DeadBeat:
 				}
 				ss << girlName << " lies beside the client for a moment, stroking his chest with her fingers as the cum leaks from her ass. \"That was amazing,\" she purrs, before she stands to gather her clothes to leave. \"I'm glad we got to know each other a little better, cutie, and I really do hope you call for me again sometime soon.\"";
 				imagetype = IMGTYPE_ANAL;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 			}
 			else if (roll_sex >= 25)/*Hand job*/
 			{
@@ -1774,7 +1774,7 @@ case Es_DeadBeat:
 				}
 				ss << girlName << " sensuously licks the semen from her fingers while the client recovers himself. \"I think I got that drink you were talking about,\" she says as she finishes the last string of cum. \"And I'm happy we got to know each other a bit better. Call me again sometime, cutie,\" she suggests as she gathers her clothes to leave.\"";
 				imagetype = IMGTYPE_HAND;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 			}
 			else/*oral*/
 			{
@@ -1843,7 +1843,7 @@ case Es_DeadBeat:
 				}
 				ss << girlName << " licks the remaining cum from her lips with a smile. \"Thanks for the drink,\" she says, as she begins gathering her clothes to leave. \"I had a great time tonight as well, cutie. You should call on me again,\" she suggests as she heads for the door to return to your establishment.";
 				imagetype = IMGTYPE_ORAL;
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+				girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 			}
 		}
 	}
@@ -1954,7 +1954,7 @@ break;	// end Es_DeadBeat
 	girl->confidence(g_Dice%skill + 1);
 	girl->fame(g_Dice%skill);
 	girl->performance(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 

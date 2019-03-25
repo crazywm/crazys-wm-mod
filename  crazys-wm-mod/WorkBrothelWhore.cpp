@@ -734,7 +734,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 				{
 					item = g_Brothels.m_Inventory[itemnum];
 					itemname = item->m_Name;
-					g_InvManager.Equip(custgirl, g_Girls.AddInv(custgirl, item), true);
+					g_InvManager.Equip(custgirl, custgirl->add_inv(item), true);
 					g_Brothels.RemoveItemFromInventoryByNumber(itemnum);
 					if (itemname == "Brainwashing Oil")
 					{

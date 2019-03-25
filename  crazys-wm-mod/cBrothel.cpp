@@ -817,6 +817,7 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 	return true;
 }
 
+
 TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 {
 	TiXmlElement* pBrothelManager = new TiXmlElement("Brothel_Manager");
@@ -2260,7 +2261,7 @@ bool cBrothelManager::AutomaticItemUse(sGirl * girl, int InvNum, string message)
 {
 	int EquipSlot = -1;
 
-	EquipSlot = g_Girls.AddInv(girl, m_Inventory[InvNum]);
+	EquipSlot = girl->add_inv(m_Inventory[InvNum]);
 	if (EquipSlot != -1)
 	{
 		if (g_InvManager.equip_singleton_ok(girl, EquipSlot, false))  // Don't force equipment
@@ -2286,7 +2287,7 @@ bool cBrothelManager::AutomaticSlotlessItemUse(sGirl * girl, int InvNum, string 
 	// Slotless items include manuals, stripper poles, free weights, etc...
 	int EquipSlot = -1;
 
-	EquipSlot = g_Girls.AddInv(girl, m_Inventory[InvNum]);
+	EquipSlot = girl->add_inv(m_Inventory[InvNum]);
 	if (EquipSlot != -1)
 	{
 		RemoveItemFromInventoryByNumber(InvNum);  // Remove from general inventory
@@ -2302,7 +2303,7 @@ bool cBrothelManager::AutomaticFoodItemUse(sGirl * girl, int InvNum, string mess
 {
 	int EquipSlot = -1;
 
-	EquipSlot = g_Girls.AddInv(girl, m_Inventory[InvNum]);
+	EquipSlot = girl->add_inv(m_Inventory[InvNum]);
 	if (EquipSlot != -1)
 	{
 		RemoveItemFromInventoryByNumber(InvNum);
@@ -2687,7 +2688,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	if (girl->has_item_j("Apron") != -1 && g_Dice.percent(10))
 	{
 		ss << "She put on her Apron and cooked a meal for some of the girls.\n \n";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1);
+		girl->upd_Enjoyment(ACTION_WORKCOOKING, 1);
 		girl->happiness(5);
 		cook = true;
 	}
@@ -2887,8 +2888,8 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 				ss << girlName << " comes to you and tells you she had a sexy dream about you.";
 				if (girl->has_trait("Lesbian") && The_Player->Gender() >= GENDER_HERMFULL && g_Dice.percent(girl->pclove() / 10))
 				{
-					g_Girls.RemoveTrait(girl, "Lesbian");
-					g_Girls.AddTrait(girl, "Bisexual");
+					girl->remove_trait("Lesbian");
+					girl->add_trait("Bisexual");
 					ss << "  \"Normally I don't like men but for you I'll make an exception.\"";
 				}
 				if (girl->has_trait("Straight") && The_Player->Gender() <= GENDER_FUTAFULL && g_Dice.percent(girl->pclove() / 10))
@@ -3040,7 +3041,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			if (girl->has_trait( "Nymphomaniac"))
 			{
 				ss << "She spent the day at the Library looking at porn making her become horny.\n \n";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 15);
+				girl->upd_temp_stat(STAT_LIBIDO, 15);
 			}
 			else
 			{
@@ -3264,7 +3265,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		if (girl->libido() > 65 && is_she_resting(girl))
 		{
 			ss << girlName << "'s lust got the better of her and she spent the day using her Compelling Dildo.\n \n";
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+			girl->upd_temp_stat(STAT_LIBIDO, -20);
 			mast = true;
 		}
 	}
@@ -3302,13 +3303,13 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			if (girl->libido() > 65)
 			{
 				ss << girlName << "'s lust got the better of her while she was on the her Computer looking at porn.\n \n";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+				girl->upd_temp_stat(STAT_LIBIDO, -20);
 				mast = true;
 			}
 			else
 			{
 				ss << "She spent the day on her Computer looking at porn making her become horny.\n \n";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 15);
+				girl->upd_temp_stat(STAT_LIBIDO, 15);
 			}
 		}
 		else
@@ -5220,7 +5221,7 @@ bool cBrothelManager::FightsBack(sGirl* girl)
 	if (girl->has_trait("Broken Will"))/*                */	return false;
 	if (girl->has_trait("Mind Fucked"))/*                */	return false;
 
-	if (g_Girls.DisobeyCheck(girl, ACTION_COMBAT))/*     */	return true;
+	if (girl->disobey_check(ACTION_COMBAT))/*            */	return true;
 	int chance = 0;
 	if (girl->has_trait("Adventurer"))/*                 */	chance += 5;
 	if (girl->has_trait("Aggressive"))/*                 */	chance += 10;
@@ -5528,7 +5529,7 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	/*
 	*	mainly here, we're interested in the chance that she might run away
 	*/
-	if (g_Girls.DisobeyCheck(girl, ACTION_GENERAL))	// check if the girl will run away
+	if (girl->disobey_check(ACTION_GENERAL))	// check if the girl will run away
 	{
 		if (g_Dice.percent(m_JobManager.guard_coverage() - girl->m_DaysUnhappy)) return false;
 

@@ -670,6 +670,8 @@ struct sGirl
 	int has_item(const std::string& item);
 	int has_item_j(const std::string& item);
 	int add_inv(sInventoryItem* item);
+
+	bool disobey_check(int action, sBrothel* brothel = nullptr);
 };
 
 class GirlPredicate {
@@ -711,13 +713,13 @@ public:
 
 	void GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType);	// does the logic for fucking
 	// MYR: Millions of ways to say, [girl] does [act] to [customer]
-	string GetRandomGroupString();
-	string GetRandomSexString();
-	string GetRandomOralSexString();
-	string GetRandomLesString();
-	string GetRandomBDSMString();
-	string GetRandomBeastString();
-	string GetRandomAnalString();
+	static string GetRandomGroupString();
+	static string GetRandomSexString();
+	static string GetRandomOralSexString();
+	static string GetRandomLesString();
+	static string GetRandomBDSMString();
+	static string GetRandomBeastString();
+	static string GetRandomAnalString();
 
 	// MYR: More functions for attack/defense/agility-style combat.
 	bool GirlInjured(sGirl* girl, unsigned int modifier);
@@ -849,7 +851,6 @@ public:
 
 	int GetSkillWorth(sGirl* girl);
 
-	bool DisobeyCheck(sGirl* girl, int action, sBrothel* brothel = 0);
 	bool AskedOutChance(sGirl* girl, int action, sBrothel* brothel = 0);
 	bool SayYesChance(sGirl* girl, int action, sBrothel* brothel = 0);
 

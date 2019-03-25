@@ -57,7 +57,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		return false;	// not refusing
 	}
 	int roll = g_Dice.d100();
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (roll <= 10 && girl->disobey_check(actiontype, brothel))
 	{
 		ss << " refused to fight beasts today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -172,7 +172,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.CheckVirginity(girl))
 		{
 			ss << " So as punishment you allow the beast to have its way with her."; enjoy -= 1;
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -50, true);
+			girl->upd_temp_stat(STAT_LIBIDO, -50, true);
 			girl->beastiality(2);
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 			if (!girl->calc_insemination(*g_Girls.GetBeast(), false, 1.0))
@@ -245,7 +245,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	ss << girlName << " drew in " << jobperformance << " people to watch her and you earned " << earned << " from it.";
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	// Improve girl
 	int fightxp = (fight_outcome == 1 ? 3 : 1);
 	int xp = 3 * fightxp, libido = 2, skill = 1;
@@ -259,7 +259,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	girl->magic(g_Dice%fightxp + skill);
 	girl->agility(g_Dice%fightxp + skill);
 	girl->constitution(g_Dice%fightxp + skill);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 	girl->beastiality(g_Dice%fightxp * 2 + skill);
 
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);

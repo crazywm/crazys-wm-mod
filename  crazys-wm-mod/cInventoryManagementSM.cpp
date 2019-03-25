@@ -109,9 +109,9 @@ void cInventoryManagementSM::handle_events()
 							// DK: Change default behaviour to equipping an item even if she doesn't like it.
 							// (Saves the player some clicking)
 							if(g_InvManager.GetShopItem(selection)->m_Type != INVFOOD && g_InvManager.GetShopItem(selection)->m_Type != INVMAKEUP)
-							     g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_InvManager.BuyShopItem(selection)), false);
+							     g_InvManager.Equip(targetGirl, targetGirl->add_inv(g_InvManager.BuyShopItem(selection)), false);
 						    else
-							     g_Girls.AddInv(targetGirl, g_InvManager.BuyShopItem(selection));
+							     targetGirl->add_inv(g_InvManager.BuyShopItem(selection));
 							g_InvManager.BuyShopItem(selection);
 							g_MessageQue.AddToQue(gettext("She doesn't seem happy with the gift."), 0);
 							continue;
@@ -126,9 +126,9 @@ void cInventoryManagementSM::handle_events()
 						g_MessageQue.AddToQue(gettext("She is happy with the gift and gives you a big hug and a kiss on the cheek."), 0);
 
 						if(g_InvManager.GetShopItem(selection)->m_Type != INVFOOD && g_InvManager.GetShopItem(selection)->m_Type != INVMAKEUP)
-							g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_InvManager.BuyShopItem(selection)), false);
+							g_InvManager.Equip(targetGirl, targetGirl->add_inv(g_InvManager.BuyShopItem(selection)), false);
 						else
-							g_Girls.AddInv(targetGirl, g_InvManager.BuyShopItem(selection));
+							targetGirl->add_inv(g_InvManager.BuyShopItem(selection));
 						targetGirl->obedience(1);
 						targetGirl->happiness(happiness);
 						targetGirl->pchate(-2);
@@ -213,9 +213,9 @@ void cInventoryManagementSM::handle_events()
 							g_MessageQue.AddToQue(gettext("She is happy with the gift and gives you a big hug and a kiss on the cheek."), 0);
 
 							if(g_Brothels.m_Inventory[selection]->m_Type != INVFOOD && g_Brothels.m_Inventory[selection]->m_Type != INVMAKEUP)
-								g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]), false);
+								g_InvManager.Equip(targetGirl, targetGirl->add_inv(g_Brothels.m_Inventory[selection]), false);
 							else
-								g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]);
+								targetGirl->add_inv(g_Brothels.m_Inventory[selection]);
 							targetGirl->obedience(1);
 							targetGirl->happiness(happiness);
 							targetGirl->pchate(-2);
@@ -225,9 +225,9 @@ void cInventoryManagementSM::handle_events()
 						else
 						{
 							if(g_Brothels.m_Inventory[selection]->m_Type != INVFOOD && g_Brothels.m_Inventory[selection]->m_Type != INVMAKEUP)
-								g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]), false);
+								g_InvManager.Equip(targetGirl, targetGirl->add_inv(g_Brothels.m_Inventory[selection]), false);
 							else
-							g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]);
+							targetGirl->add_inv(g_Brothels.m_Inventory[selection]);
 							g_MessageQue.AddToQue(gettext("She doesn't seem happy with the gift."), 0);
 						}
 
@@ -353,9 +353,9 @@ void cInventoryManagementSM::handle_events()
 							g_MessageQue.AddToQue(gettext("She is happy with the gift and gives you a big hug and a kiss on the cheek."), 0);
 
 							if(targetGirl->m_Inventory[selection]->m_Type != INVFOOD && targetGirl->m_Inventory[selection]->m_Type != INVMAKEUP)
-								g_InvManager.Equip(fromGirl, g_Girls.AddInv(fromGirl, targetGirl->m_Inventory[selection]), false);
+								g_InvManager.Equip(fromGirl, fromGirl->add_inv(targetGirl->m_Inventory[selection]), false);
 							else
-								g_Girls.AddInv(fromGirl, targetGirl->m_Inventory[selection]);
+								fromGirl->add_inv(targetGirl->m_Inventory[selection]);
 							targetGirl->obedience(1);
 							targetGirl->happiness(happiness);
 							targetGirl->pchate(-2);
@@ -365,9 +365,9 @@ void cInventoryManagementSM::handle_events()
 						else
 						{
 							if(targetGirl->m_Inventory[selection]->m_Type != INVFOOD && targetGirl->m_Inventory[selection]->m_Type != INVMAKEUP)
-								g_InvManager.Equip(fromGirl, g_Girls.AddInv(fromGirl, targetGirl->m_Inventory[selection]), false);
+								g_InvManager.Equip(fromGirl, fromGirl->add_inv(targetGirl->m_Inventory[selection]), false);
 							else
-							g_Girls.AddInv(fromGirl, targetGirl->m_Inventory[selection]);
+							fromGirl->add_inv(targetGirl->m_Inventory[selection]);
 							g_MessageQue.AddToQue(gettext("She doesn't seem happy with the gift."), 0);
 						}
 
@@ -1064,7 +1064,7 @@ void cInventoryManagementSM::give_to_girl(sGirl *girl, sInventoryItem *item)
  *	also very bad items will upset her more
  */
 	if(item->m_Badness >= 20) {
-		int slot2 = g_Girls.AddInv(girl, item);
+		int slot2 = girl->add_inv(item);
 		if(item->m_Type != INVFOOD && item->m_Type != INVMAKEUP) 
 			g_InvManager.Equip(girl, slot2, false);
 		g_MessageQue.AddToQue(gettext("She doesn't seem happy with the gift."), 0);
@@ -1080,7 +1080,7 @@ void cInventoryManagementSM::give_to_girl(sGirl *girl, sInventoryItem *item)
  */
 	g_MessageQue.AddToQue(nice_item_message(), 0);
 
-	int slot = g_Girls.AddInv(girl, item);
+	int slot = girl->add_inv(item);
 	if(item->m_Type != INVFOOD && item->m_Type != INVMAKEUP) {
 		g_InvManager.Equip(girl, slot, false);
 	}
@@ -1303,9 +1303,9 @@ void cInventoryManagementSM::item_shift_r()
 					g_MessageQue.AddToQue(gettext("She is happy with the gift and gives you a big hug and a kiss on the cheek."), 0);
 
 					if(fromGirl->m_Inventory[selection]->m_Type != INVFOOD && fromGirl->m_Inventory[selection]->m_Type != INVMAKEUP)
-						g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]), false);
+						g_InvManager.Equip(targetGirl, targetGirl->add_inv(fromGirl->m_Inventory[selection]), false);
 					else
-						g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]);
+						targetGirl->add_inv(fromGirl->m_Inventory[selection]);
 					targetGirl->obedience(1);
 					targetGirl->happiness(happiness);
 					targetGirl->pchate(-2);
@@ -1315,9 +1315,9 @@ void cInventoryManagementSM::item_shift_r()
 				else
 				{
 					if(fromGirl->m_Inventory[selection]->m_Type != INVFOOD && fromGirl->m_Inventory[selection]->m_Type != INVMAKEUP)
-						g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]), false);
+						g_InvManager.Equip(targetGirl, targetGirl->add_inv(fromGirl->m_Inventory[selection]), false);
 					else
-					g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]);
+					targetGirl->add_inv(fromGirl->m_Inventory[selection]);
 					g_MessageQue.AddToQue(gettext("She doesn't seem happy with the gift."), 0);
 				}
 

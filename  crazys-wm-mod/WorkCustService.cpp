@@ -46,7 +46,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 {
 	int actiontype = ACTION_WORKCUSTSERV;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		//SIN - More informative mssg to show *what* she refuses
 		//ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -68,18 +68,18 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (roll <= 5)
 	{
 		ss << "Some of the patrons abused her during the shift.";
-		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
+		girl->upd_Enjoyment(actiontype, -1);
 	}
 #if 1
 	if (roll <= 15)
 	{
 		ss << "A customer mistook her for a whore and was abusive when she wouldn't provide THAT service.";
-		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
+		girl->upd_Enjoyment(actiontype, -1);
 	}
 #endif
 	else if (roll >= 75) {
 		ss << "She had a pleasant time working.";
-		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
+		girl->upd_Enjoyment(actiontype, +3);
 	}
 	else
 	{
@@ -118,7 +118,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 		bonus = -20;
 		ss << "\n \nHer efforts only made the customers angrier.";
 		//And she's REALLY not going to like this job if she's failing at it, so...
-		g_Girls.UpdateEnjoyment(girl, actiontype, -5);
+		girl->upd_Enjoyment(actiontype, -5);
 	}
 
 	// Now let's take care of our neglected customers.
@@ -181,7 +181,7 @@ bool cJobManager::WorkCustService(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else if(gain == 2)	girl->spirit(g_Dice%skill);
 	else				girl->performance(g_Dice%skill);
 	girl->service(g_Dice%skill+1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	return false;
 }

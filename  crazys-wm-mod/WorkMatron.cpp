@@ -54,7 +54,7 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	stringstream ss; string girlName = girl->m_Realname; ss << "Matron  " << girlName << "  ";
 
 	// `J` zzzzzz - this needs to be updated for building flow
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		ss << "refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -130,14 +130,14 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		// 'Mute' Added so if the cost of the item changes then the gold amout will be correct
 		sInventoryItem* item = 0;
 		string itemName = "";
-		/* */if (girl->has_trait("Viras Blood Addict"))	{ itemName = "Vira Blood"; }		// cost += 150;	g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood")); }
-		else if (girl->has_trait("Shroud Addict"))		{ itemName = "Shroud Mushroom"; }	// cost += 100;	g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom")); }
-		else if (girl->has_trait("Fairy Dust Addict"))	{ itemName = "Fairy Dust"; }		// cost += 50;	g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust")); }
+		/* */if (girl->has_trait("Viras Blood Addict"))	{ itemName = "Vira Blood"; }		// cost += 150;	girl->add_inv(g_InvManager.GetItem("Vira Blood")); }
+		else if (girl->has_trait("Shroud Addict"))		{ itemName = "Shroud Mushroom"; }	// cost += 100;	girl->add_inv(g_InvManager.GetItem("Shroud Mushroom")); }
+		else if (girl->has_trait("Fairy Dust Addict"))	{ itemName = "Fairy Dust"; }		// cost += 50;	girl->add_inv(g_InvManager.GetItem("Fairy Dust")); }
 		if (itemName != "")		item = g_InvManager.GetItem(itemName);
 		if (item)
 		{
 			cost += item->m_Cost;
-			g_Girls.AddInv(girl, item);
+			girl->add_inv(item);
 		}
 		// 'Mute' End  Change
 		if (girl->has_trait("Cum Addict"))
@@ -284,9 +284,9 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	girl->exp(g_Dice%xp + 5);
 	girl->medicine(g_Dice%skill);
 	girl->service(g_Dice%skill + 2);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, g_Dice%libido);
+	girl->upd_temp_stat(STAT_LIBIDO, g_Dice%libido);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Psychic", 60, actiontype, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
 

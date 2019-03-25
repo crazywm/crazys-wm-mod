@@ -42,7 +42,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		girl->m_NightJob = girl->m_DayJob = JOB_ARENAREST;
 		return false;	// not refusing
 	}
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
+	if (girl->disobey_check(actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -288,8 +288,8 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "\nShe did not enjoy her time training."; }
 	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "\nShe had a pleasant time training."; }
 	else /*             */	{ enjoy += g_Dice % 2;		ss << "\nOtherwise, the shift passed uneventfully."; }
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-	g_Girls.UpdateEnjoyment(girl, actiontype2, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype2, enjoy);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	brothel->m_Filthiness += 2;	// fighting is dirty
@@ -306,7 +306,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp((g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	return false;
 }

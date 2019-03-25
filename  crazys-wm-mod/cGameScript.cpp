@@ -798,7 +798,7 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 	m_GirlTarget->happiness(-5);
 	m_GirlTarget->health(-10);
 	m_GirlTarget->libido(-1);
-	g_Girls.UpdateStatTemp(m_GirlTarget, STAT_LIBIDO, 2, true);
+	m_GirlTarget->upd_temp_stat(STAT_LIBIDO, 2, true);
 	m_GirlTarget->confidence(-1);
 	m_GirlTarget->obedience(2);
 	m_GirlTarget->pcfear(2);
@@ -1327,7 +1327,7 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 	int Nest = m_NestLevel;
 
 	// See if choice flag matches second entry
-	Skipping = g_Girls.DisobeyCheck(m_GirlTarget, ACTION_GENERAL, g_Brothels.GetBrothel(g_CurrBrothel));
+	Skipping = m_GirlTarget->disobey_check(ACTION_GENERAL, g_Brothels.GetBrothel(g_CurrBrothel));
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1866,8 +1866,8 @@ sScript* cGameScript::Script_AddItemtoGirl(sScript* Script)					// `J` new .06.0
 	{
 		for (int i = 0; i < value[0]; i++)
 		{
-			if (value[1] == 0)	g_Girls.AddInv(m_GirlTarget, item);
-			else	g_InvManager.Equip(m_GirlTarget, g_Girls.AddInv(m_GirlTarget, item), false);
+			if (value[1] == 0)	m_GirlTarget->add_inv(item);
+			else	g_InvManager.Equip(m_GirlTarget, m_GirlTarget->add_inv(item), false);
 		}
 	}
 	g_LogFile.ssend();
@@ -1960,11 +1960,11 @@ sScript* cGameScript::Script_GiveGirlInvItem(sScript* Script)
 	{
 		g_LogFile.ss() << " |  " << m_GirlTarget->m_Name << " recieved item";
 
-		if (!equip)	g_Girls.AddInv(m_GirlTarget, item);
+		if (!equip)	m_GirlTarget->add_inv(item);
 		else
 		{
 			g_LogFile.ss() << " and used it.";
-			g_InvManager.Equip(m_GirlTarget, g_Girls.AddInv(m_GirlTarget, item), false);
+			g_InvManager.Equip(m_GirlTarget, m_GirlTarget->add_inv(item), false);
 		}
 
 		g_Brothels.m_NumItem[selection]--;
@@ -2102,7 +2102,7 @@ sScript* cGameScript::Script_AdjustTargetGirlStatR(sScript* Script)
 
 	if (m_GirlTarget)
 	{
-		if (value[3])	g_Girls.UpdateStatTemp(m_GirlTarget, value[0], num);
+		if (value[3])	m_GirlTarget->upd_temp_stat(value[0], num);
 		else/*     */	g_Girls.UpdateStat(m_GirlTarget, value[0], num);
 	}
 	return Script->m_Next;
