@@ -839,8 +839,6 @@ public:
 	int GetNumItemType(sGirl* girl, int Type, bool splitsubtype = false);
 	void SellInvItem(sGirl* girl, int num);
 	void UseItems(sGirl* girl);
-	int HasItem(sGirl* girl, string name);
-	int HasItemJ(sGirl* girl, string name);	// `J` added
 	//	void RemoveTrait(sGirl* girl, string name, bool addrememberlist = false, bool force = false);
 	bool RemoveTrait(sGirl* girl, string name, bool addrememberlist = false, bool force = false, bool keepinrememberlist = false);
 	void RemoveRememberedTrait(sGirl* girl, string name);

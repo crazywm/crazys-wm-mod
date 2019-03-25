@@ -315,12 +315,42 @@ sGirl::~sGirl()		// destructor
 
 int sGirl::has_item(const std::string& item)
 {
-    return g_Girls.HasItem(this, item);
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
+	{
+		if (m_Inventory[i])
+		{
+			if (m_Inventory[i]->m_Name == item) return i;
+		}
+	}
+	return -1;
+}
+
+string stringtolowerj(string name)
+{
+	string s = "", t = "";
+	for (u_int i = 0; i < name.length(); i++)
+	{
+		if (tolower(name[i]) != tolower(" "[0]) && tolower(name[i]) != tolower("."[0]) && tolower(name[i]) != tolower(","[0]))
+		{
+			t[0] = tolower(name[i]);
+			s += t[0];
+		}
+	}
+	return s;
 }
 
 int sGirl::has_item_j(const std::string& item)
 {
-	return g_Girls.HasItemJ(this, item);
+	string s = stringtolowerj(item);
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
+	{
+		if (m_Inventory[i])
+		{
+			string t = stringtolowerj(m_Inventory[i]->m_Name);
+			if (t == s)	return i;
+		}
+	}
+	return -1;
 }
 
 int sGirl::sGirl::add_inv(sInventoryItem* item)
@@ -4579,18 +4609,6 @@ void sRandomGirl::process_cash_xml(TiXmlElement *el)
 
 // ----- Equipment & inventory
 
-int cGirls::HasItem(sGirl* girl, string name)
-{
-	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
-	{
-		if (girl->m_Inventory[i])
-		{
-			if (girl->m_Inventory[i]->m_Name == name) return i;
-		}
-	}
-	return -1;
-}
-
 string stringtolower(string name)
 {
 	string s = name;
@@ -4599,34 +4617,6 @@ string stringtolower(string name)
 		s[i] = tolower(name[i]);
 	}
 	return s;
-}
-
-string stringtolowerj(string name)
-{
-	string s = "", t = "";
-	for (u_int i = 0; i < name.length(); i++)
-	{
-		if (tolower(name[i]) != tolower(" "[0]) && tolower(name[i]) != tolower("."[0]) && tolower(name[i]) != tolower(","[0]))
-		{
-			t[0] = tolower(name[i]);
-			s += t[0];
-		}
-	}
-	return s;
-}
-
-int cGirls::HasItemJ(sGirl* girl, string name)	// `J` added to compare item names removing spaces commas and periods
-{
-	string s = stringtolowerj(name);
-	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
-	{
-		if (girl->m_Inventory[i])
-		{
-			string t = stringtolowerj(girl->m_Inventory[i]->m_Name);
-			if (t == s)	return i;
-		}
-	}
-	return -1;
 }
 
 /*	`J` Updated from Akia's suggestion and expanded return values
@@ -4793,7 +4783,7 @@ void cGirls::UseItems(sGirl* girl)
 	// uses drugs first
 	if (HasTrait(girl, "Viras Blood Addict"))
 	{
-		int temp = HasItem(girl, "Vira Blood");
+		int temp = girl->has_item("Vira Blood");
 		if (temp == -1)	// withdrawals for a week
 		{
 			if (girl->m_Withdrawals >= 30)
@@ -4826,7 +4816,7 @@ void cGirls::UseItems(sGirl* girl)
 	}
 	if (HasTrait(girl, "Fairy Dust Addict"))
 	{
-		int temp = HasItem(girl, "Fairy Dust");
+		int temp = girl->has_item("Fairy Dust");
 		if (temp == -1)	// withdrawals for a week
 		{
 			if (girl->m_Withdrawals >= 20)
@@ -4859,7 +4849,7 @@ void cGirls::UseItems(sGirl* girl)
 	}
 	if (HasTrait(girl, "Shroud Addict"))
 	{
-		int temp = HasItem(girl, "Shroud Mushroom");
+		int temp = girl->has_item("Shroud Mushroom");
 		if (temp == -1)	// withdrawals for a week
 		{
 			if (girl->m_Withdrawals >= 20)
@@ -4892,7 +4882,7 @@ void cGirls::UseItems(sGirl* girl)
 	}
 	if (HasTrait(girl, "Alcoholic"))
 	{
-		int temp = HasItem(girl, "Alcohol");
+		int temp = girl->has_item("Alcohol");
 		if (temp == -1)	// withdrawals for a week
 		{
 			if (girl->m_Withdrawals >= 15)
@@ -4927,53 +4917,53 @@ void cGirls::UseItems(sGirl* girl)
 	}
 	if (HasTrait(girl, "Smoker")) // `Gondra` added this since this seemed to be missing IMPORTANT: requires the item
 	{
-		if (HasItemJ(girl, "Stop Smoking Now Patch") > -1)
+		if (girl->has_item_j("Stop Smoking Now Patch") > -1)
 		{
-			g_InvManager.Equip(girl, HasItemJ(girl, "Stop Smoking Now Patch"), false);
+			g_InvManager.Equip(girl, girl->has_item_j("Stop Smoking Now Patch"), false);
 			girl->m_Withdrawals = 0;
 		}
-		else if (HasItemJ(girl, "Stop Smoking Patch") > -1)
+		else if (girl->has_item_j("Stop Smoking Patch") > -1)
 		{
-			g_InvManager.Equip(girl, HasItemJ(girl, "Stop Smoking Patch"), false);
+			g_InvManager.Equip(girl, girl->has_item_j("Stop Smoking Patch"), false);
 			girl->m_Withdrawals = 0;
 		}
-		else if (HasItemJ(girl, "Cigarette") > -1 ||
-			HasItemJ(girl, "Small pack of Cigarettes") > -1 ||
-			HasItemJ(girl, "Pack of Cigarettes") > -1 ||
-			HasItemJ(girl, "Carton of Cigarettes") > -1 ||
-			HasItemJ(girl, "Magic Pack of Cigarettes") > -1 ||
-			HasItemJ(girl, "Magic Carton of Cigarettes") > -1)
+		else if (girl->has_item_j("Cigarette") > -1 ||
+			girl->has_item_j("Small pack of Cigarettes") > -1 ||
+			girl->has_item_j("Pack of Cigarettes") > -1 ||
+			girl->has_item_j("Carton of Cigarettes") > -1 ||
+			girl->has_item_j("Magic Pack of Cigarettes") > -1 ||
+			girl->has_item_j("Magic Carton of Cigarettes") > -1)
 		{
 			int temp = -1; int happy = 0; int health = 0; int libido = 0; int mana = 0;
 			// `J` go through the list of available items and if she has more than one of them use only the "best"
-			if (HasItemJ(girl, "Cigarette") > -1)
+			if (girl->has_item_j("Cigarette") > -1)
 			{
-				temp = HasItemJ(girl, "Cigarette");
+				temp = girl->has_item_j("Cigarette");
 				happy += g_Dice % 2; health = 0; libido += g_Dice % 2;
 			}
-			if (HasItemJ(girl, "Small pack of Cigarettes") > -1)
+			if (girl->has_item_j("Small pack of Cigarettes") > -1)
 			{
-				temp = HasItemJ(girl, "Small pack of Cigarettes");
+				temp = girl->has_item_j("Small pack of Cigarettes");
 				happy += g_Dice % 4; health -= g_Dice % 2; libido += g_Dice % 3;
 			}
-			if (HasItemJ(girl, "Pack of Cigarettes") > -1)
+			if (girl->has_item_j("Pack of Cigarettes") > -1)
 			{
-				temp = HasItemJ(girl, "Pack of Cigarettes");
+				temp = girl->has_item_j("Pack of Cigarettes");
 				happy += g_Dice % 5 + 1; health -= g_Dice % 3; libido += g_Dice % 4;
 			}
-			if (HasItemJ(girl, "Carton of Cigarettes") > -1)
+			if (girl->has_item_j("Carton of Cigarettes") > -1)
 			{
-				temp = HasItemJ(girl, "Carton of Cigarettes");
+				temp = girl->has_item_j("Carton of Cigarettes");
 				happy += g_Dice % 6 + 3; health -= g_Dice % 3 + 1; libido += g_Dice % 5 + 1;
 			}
-			if (HasItemJ(girl, "Magic Pack of Cigarettes") > -1)
+			if (girl->has_item_j("Magic Pack of Cigarettes") > -1)
 			{
-				temp = HasItemJ(girl, "Magic Pack of Cigarettes");
+				temp = girl->has_item_j("Magic Pack of Cigarettes");
 				happy += g_Dice % 6 + 4; health -= g_Dice % 4; libido += g_Dice % 4 + 2; mana -= 1;
 			}
-			if (HasItemJ(girl, "Magic Carton of Cigarettes") > -1)
+			if (girl->has_item_j("Magic Carton of Cigarettes") > -1)
 			{
-				temp = HasItemJ(girl, "Magic Carton of Cigarettes");
+				temp = girl->has_item_j("Magic Carton of Cigarettes");
 				happy += g_Dice % 11 + 5; health -= g_Dice % 6 + 1; libido += g_Dice % 8 + 4; mana -= 2;
 			}
 			if (temp > -1)
@@ -11052,13 +11042,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					sexMessage << "with some candles";
 					break;
 				case 1:
-					/* */if (HasItem(girl, "Cat"))			sexMessage << "involving her cat";
-					else if (HasItem(girl, "Guard Dog"))	sexMessage << "with her Guard Dog";
+					/* */if (girl->has_item("Cat"))			sexMessage << "involving her cat";
+					else if (girl->has_item("Guard Dog"))	sexMessage << "with her Guard Dog";
 					else /*****************************/	sexMessage << "with a badly timed sneeze";
 					break;
 				case 2:
-					/* */if (HasItem(girl, "Studded Dildo") || HasItem(girl, "Dreidel Dildo") || HasItem(girl, "Dildo")) sexMessage << "with a misplaced dildo";
-					else if (HasItem(girl, "Lolita Wand") || HasItem(girl, "Lolita Wand (Lesser)") || HasItem(girl, "Magical Girl Wand") || HasItem(girl, "Hermione's Wand")) sexMessage << "with a misplaced wand";
+					/* */if (girl->has_item("Studded Dildo") || girl->has_item("Dreidel Dildo") || girl->has_item("Dildo")) sexMessage << "with a misplaced dildo";
+					else if (girl->has_item("Lolita Wand") || girl->has_item("Lolita Wand (Lesser)") || girl->has_item("Magical Girl Wand") || girl->has_item("Hermione's Wand")) sexMessage << "with a misplaced wand";
 					else sexMessage << "with some chewing gum and a lava lamp";
 					break;
 				case 3:
@@ -18615,35 +18605,35 @@ int cGirls::PreferredAccom(sGirl* girl)
 
 	if (girl->m_NumInventory > 0)	// only bother checking items if the girl has at least 1
 	{
-		if (HasItemJ(girl, "Chrono Bed") != -1)						preferredaccom -= 2.0;	// She gets a great night sleep so she is happier when she wakes up
-		else if (HasItemJ(girl, "Rejuvenation Bed") != -1)			preferredaccom -= 1.0;	// She gets a good night sleep so she is happier when she wakes up
-		if (HasItemJ(girl, "150 Piece Drum Kit") != -1)				preferredaccom += 0.5;	// Though she may annoy her neighbors and it takes a lot of space, it it fun
-		if (HasItemJ(girl, "Android, Assistance") != -1)			preferredaccom -= 0.5;	// This little guy cleans up for her
-		if (HasItemJ(girl, "Anger Management Tapes") != -1)			preferredaccom -= 0.1;	// When she listens to these it takes her mind off other things
-		if (HasItemJ(girl, "Appreciation Trophy") != -1)			preferredaccom -= 0.1;	// Something nice to look at
-		if (HasItemJ(girl, "Art Easel") != -1)						preferredaccom -= 1.0;	// She can make her room nicer by herself.
-		if (HasItemJ(girl, "Black Cat") != -1)						preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
-		if (HasItemJ(girl, "Cat") != -1)							preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
-		if (HasItemJ(girl, "Claptrap") != -1)						preferredaccom -= 0.1;	// An annoying little guy but he does help a little
-		if (HasItemJ(girl, "Computer") != -1)						preferredaccom -= 1.5;	// Something to do but it takes up a little room
-		if (HasItemJ(girl, "Death Bear") != -1)						preferredaccom += 2.0;	// Having a large bear living with her she needs a little more room.
-		if (HasItemJ(girl, "Deathtrap") != -1)						preferredaccom += 1.0;	// Having a large robot guarding her her she needs a little more room.
-		if (HasItemJ(girl, "Free Weights") != -1)					preferredaccom += 0.2;	// She may like the workout but it takes up a lot of room
-		if (HasItemJ(girl, "Guard Dog") != -1)						preferredaccom += 0.2;	// Though she loves having a pet, a large dog takes up some room
-		if (HasItemJ(girl, "Happy Orb") != -1)						preferredaccom -= 0.5;	// She has happy dreams
-		if (HasItemJ(girl, "Relaxation Orb") != -1)					preferredaccom -= 0.5;	// She can relax anywhere
-		if (HasItemJ(girl, "Library Card") != -1)					preferredaccom -= 0.5;	// She has somewhere else to go and she can bring books back, they keep her mind off other things
-		if (HasItemJ(girl, "Lovers Orb") != -1)						preferredaccom -= 0.5;	// She really enjoys her dreams
-		if (HasItemJ(girl, "Nightmare Orb") != -1)					preferredaccom += 0.2;	// She does not sleep well
-		if (HasItemJ(girl, "Pet Spider") != -1)						preferredaccom -= 0.1;	// A little spider, she may be afraid of it but it takes her mind off her room
-		if (HasItemJ(girl, "Room Decorations") != -1)				preferredaccom -= 0.5;	// They make her like her room more.
-		if (HasItemJ(girl, "Safe by Marcus") != -1)					preferredaccom -= 0.3;	// Somewhere to keep her stuff where ske knows no one can get to it.
-		if (HasItemJ(girl, "Smarty Pants") != -1)					preferredaccom -= 0.2;	// A little stuffed animal to hug and squeeze
-		if (HasItemJ(girl, "Stick Hockey Game") != -1)				preferredaccom += 0.3;	// While fun, it takes a lot of room to not break things
-		if (HasItemJ(girl, "Stripper Pole") != -1)					preferredaccom += 0.1;	// She may like the workout but it takes up a lot of room
-		if (HasItemJ(girl, "Television Set") != -1)					preferredaccom -= 2.0;	// When she stares at this, she doesn't notice anything else
-		if (HasItemJ(girl, "The Realm of Darthon") != -1)			preferredaccom -= 0.1;	// She and her friends can have fun together but they need some space to play it
-		if (HasItemJ(girl, "Weekly Social Therapy Session") != -1)	preferredaccom -= 0.1;	// She has somewhere to go and get her troubles off her chest.
+		if (girl->has_item_j("Chrono Bed") != -1)						preferredaccom -= 2.0;	// She gets a great night sleep so she is happier when she wakes up
+		else if (girl->has_item_j("Rejuvenation Bed") != -1)			preferredaccom -= 1.0;	// She gets a good night sleep so she is happier when she wakes up
+		if (girl->has_item_j("150 Piece Drum Kit") != -1)				preferredaccom += 0.5;	// Though she may annoy her neighbors and it takes a lot of space, it it fun
+		if (girl->has_item_j("Android, Assistance") != -1)			preferredaccom -= 0.5;	// This little guy cleans up for her
+		if (girl->has_item_j("Anger Management Tapes") != -1)			preferredaccom -= 0.1;	// When she listens to these it takes her mind off other things
+		if (girl->has_item_j("Appreciation Trophy") != -1)			preferredaccom -= 0.1;	// Something nice to look at
+		if (girl->has_item_j("Art Easel") != -1)						preferredaccom -= 1.0;	// She can make her room nicer by herself.
+		if (girl->has_item_j("Black Cat") != -1)						preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
+		if (girl->has_item_j("Cat") != -1)							preferredaccom -= 0.3;	// Small and soft, it mostly cares for itself
+		if (girl->has_item_j("Claptrap") != -1)						preferredaccom -= 0.1;	// An annoying little guy but he does help a little
+		if (girl->has_item_j("Computer") != -1)						preferredaccom -= 1.5;	// Something to do but it takes up a little room
+		if (girl->has_item_j("Death Bear") != -1)						preferredaccom += 2.0;	// Having a large bear living with her she needs a little more room.
+		if (girl->has_item_j("Deathtrap") != -1)						preferredaccom += 1.0;	// Having a large robot guarding her her she needs a little more room.
+		if (girl->has_item_j("Free Weights") != -1)					preferredaccom += 0.2;	// She may like the workout but it takes up a lot of room
+		if (girl->has_item_j("Guard Dog") != -1)						preferredaccom += 0.2;	// Though she loves having a pet, a large dog takes up some room
+		if (girl->has_item_j("Happy Orb") != -1)						preferredaccom -= 0.5;	// She has happy dreams
+		if (girl->has_item_j("Relaxation Orb") != -1)					preferredaccom -= 0.5;	// She can relax anywhere
+		if (girl->has_item_j("Library Card") != -1)					preferredaccom -= 0.5;	// She has somewhere else to go and she can bring books back, they keep her mind off other things
+		if (girl->has_item_j("Lovers Orb") != -1)						preferredaccom -= 0.5;	// She really enjoys her dreams
+		if (girl->has_item_j("Nightmare Orb") != -1)					preferredaccom += 0.2;	// She does not sleep well
+		if (girl->has_item_j("Pet Spider") != -1)						preferredaccom -= 0.1;	// A little spider, she may be afraid of it but it takes her mind off her room
+		if (girl->has_item_j("Room Decorations") != -1)				preferredaccom -= 0.5;	// They make her like her room more.
+		if (girl->has_item_j("Safe by Marcus") != -1)					preferredaccom -= 0.3;	// Somewhere to keep her stuff where ske knows no one can get to it.
+		if (girl->has_item_j("Smarty Pants") != -1)					preferredaccom -= 0.2;	// A little stuffed animal to hug and squeeze
+		if (girl->has_item_j("Stick Hockey Game") != -1)				preferredaccom += 0.3;	// While fun, it takes a lot of room to not break things
+		if (girl->has_item_j("Stripper Pole") != -1)					preferredaccom += 0.1;	// She may like the workout but it takes up a lot of room
+		if (girl->has_item_j("Television Set") != -1)					preferredaccom -= 2.0;	// When she stares at this, she doesn't notice anything else
+		if (girl->has_item_j("The Realm of Darthon") != -1)			preferredaccom -= 0.1;	// She and her friends can have fun together but they need some space to play it
+		if (girl->has_item_j("Weekly Social Therapy Session") != -1)	preferredaccom -= 0.1;	// She has somewhere to go and get her troubles off her chest.
 	}
 
 	if (preferredaccom <= 0.0) return 0;

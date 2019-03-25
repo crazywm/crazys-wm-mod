@@ -1808,7 +1808,7 @@ sScript* cGameScript::Script_IfGirlHasItem(sScript* Script)					// `J` new .06.0
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
-	Skipping = g_Girls.HasItemJ(m_GirlTarget, Script->m_Entries[0].m_Text) == -1;
+	Skipping = m_GirlTarget->has_item_j(Script->m_Entries[0].m_Text) == -1;
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
 	// Actions are further processed if skipped = false, looking
