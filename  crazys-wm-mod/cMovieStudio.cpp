@@ -1306,7 +1306,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 	ss << " scene by  " << girlName;
 
 	// `J` do job based modifiers
-	quality += g_Girls.GetSkill(girl, Skill) / 5;
+	quality += girl->get_skill(Skill) / 5;
 
 
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> cMovieStudioManager::AddScene

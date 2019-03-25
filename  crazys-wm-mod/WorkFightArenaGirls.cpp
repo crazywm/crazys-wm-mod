@@ -154,11 +154,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 			{
 				ss << girlName << "'s cries of joy and outright pleasure upon being injured distract her opponent, and the pain-loving girl comes back from apparent defeat to achieve a dramatic victory.  Despite her many injuries, she smiles happily as she thanks her opponent for the match.\n";
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && girl->combat() < 50))
+			else if (girl->magic() >= 50 && girl->combat() < 50)
 			{
 				ss << girlName << "'s powerful magic demonstrates precisely why mages are feared by many.  She even manages to look good while doing it!\n";
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && girl->combat() >= 75))
+			else if (girl->magic() >= 75 && girl->combat() >= 75)
 			{
 				ss << "Having mastered both weapons and sorcery, " << girlName << " is a nearly unstoppable force of nature in the Arena, easily dispatching opponents who focus on one branch of combat over the other.\n";
 			}
@@ -189,11 +189,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			ss << "Overwhelmed by pleasure, " << girlName << " is unable to defend herself from her opponent and is easily defeated.  After the match ends, she begs the other fighter for another match - 'just like this one.'\n";
 		}
-		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && girl->combat() < 50))
+		else if (girl->magic() >= 50 && girl->combat() < 50)
 		{
 			ss << "Lacking the physical prowess to hold her opponent off while she readies her spells, " << girlName << " is quickly defeated by her opponent.\n";
 		}
-		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && girl->combat() >= 75))
+		else if (girl->magic() >= 75 && girl->combat() >= 75)
 		{
 			ss << "You can't belive, " << girlName << " lost. With her skill in combat and magic you thought her unbeatable.\n";
 		}

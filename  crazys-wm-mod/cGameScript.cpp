@@ -879,7 +879,7 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 	int value = Script->m_Entries[0].m_Selection;
 
 	// See if variable matches second entry
-	Skipping = !g_Dice.percent(g_Girls.GetSkill(m_GirlTarget, value));
+	Skipping = !g_Dice.percent(m_GirlTarget->get_skill(value));
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1108,12 +1108,12 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 	int sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
 	switch (sel)
 	{
-	case 0:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) == value[1]);		break;
-	case 1:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) < value[1]);		break;
-	case 2:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) <= value[1]);		break;
-	case 3:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) > value[1]);		break;
-	case 4:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) >= value[1]);		break;
-	case 5:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) != value[1]);		break;
+	case 0:		Skipping = !(m_GirlTarget->get_skill(value[0]) == value[1]);		break;
+	case 1:		Skipping = !(m_GirlTarget->get_skill(value[0]) < value[1]);		break;
+	case 2:		Skipping = !(m_GirlTarget->get_skill(value[0]) <= value[1]);		break;
+	case 3:		Skipping = !(m_GirlTarget->get_skill(value[0]) > value[1]);		break;
+	case 4:		Skipping = !(m_GirlTarget->get_skill(value[0]) >= value[1]);		break;
+	case 5:		Skipping = !(m_GirlTarget->get_skill(value[0]) != value[1]);		break;
 	}
 
 	// At this point, Skipping states if the script actions
@@ -1407,7 +1407,7 @@ sScript* cGameScript::Script_CleanTarget(sScript* Script)
 
 	if (m_GirlTarget)
 	{
-		int CleanAmt = (g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) >= 10 ? ((g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) / 10) + 5) * 10 : 50);
+		int CleanAmt = (m_GirlTarget->service() >= 10 ? ((m_GirlTarget->service() / 10) + 5) * 10 : 50);
 		brothel->m_Filthiness -= CleanAmt;
 		stringstream sstemp;
 		sstemp << "Cleanliness rating improved by " << (int)CleanAmt;

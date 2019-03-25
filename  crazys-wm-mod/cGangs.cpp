@@ -974,7 +974,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				l.ssend();
 			}
 
-			int girl_attack_chance = g_Girls.GetSkill(girl, attack);
+			int girl_attack_chance = girl->get_skill(attack);
 			int die_roll = g_Dice.d100();
 
 			l.ss() << "\t\t" << " attack chance = " << girl_attack_chance;
@@ -1215,7 +1215,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 				//l.ssend();
 			}
 
-			int girl_attack_chance = g_Girls.GetSkill(girl, attack);
+			int girl_attack_chance = girl->get_skill(attack);
 
 			int die_roll = g_Dice.d100();
 

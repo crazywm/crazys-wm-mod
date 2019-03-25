@@ -54,7 +54,6 @@ struct  sGang;
 
 class cAbstractGirls {
 public:
-    virtual int GetSkill(sGirl* girl, int skill) = 0;
 	virtual int GetEnjoyment(sGirl* girl, int skill) = 0;
 	virtual int GetTraining(sGirl* girl, int skill) = 0;
 	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
@@ -555,19 +554,17 @@ struct sGirl
 	*
 	*	similarly...
 	*/
-	int get_skill(int skill_id)
-	{
-		return g_GirlsPtr->GetSkill(this, skill_id);
-	}
+	int get_skill(int skill_id);
+
 	int upd_temp_skill(int skill_id, int amount)
 	{
 		g_GirlsPtr->UpdateSkillTemp(this, skill_id, amount);
-		return g_GirlsPtr->GetSkill(this, skill_id);
+		return get_skill(skill_id);
 	}
 	int upd_skill(int skill_id, int amount)
 	{
 		g_GirlsPtr->UpdateSkill(this, skill_id, amount);
-		return g_GirlsPtr->GetSkill(this, skill_id);
+		return get_skill(skill_id);
 	}
 	int	anal()					{ return get_skill(SKILL_ANAL); }
 	int	anal(int n)				{ return upd_skill(SKILL_ANAL, n); }
@@ -758,7 +755,6 @@ public:
 	void UpdateStatMod(sGirl* girl, int stat, int amount);							// updates a statmod usually from items
 	void UpdateStatTr(sGirl* girl, int stat, int amount);							// updates a statTr from traits
 
-	int GetSkill(sGirl* girl, int skill);
 	void SetSkill(sGirl* girl, int skill, int amount);
 	void UpdateSkill(sGirl* girl, int skill, int amount);		// updates a skill
 	void UpdateSkillTemp(sGirl* girl, int skill, int amount);	// updates a skill temporarily

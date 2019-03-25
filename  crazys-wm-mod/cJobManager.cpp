@@ -1600,7 +1600,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		g_MessageQue.AddToQue(("Slaves can not work as City Guards."), 0);
 	}
-	else if (u_int(JobID) == JOB_FIGHTTRAIN && (g_Girls.GetSkill(Girl, SKILL_COMBAT) > 99 && g_Girls.GetSkill(Girl, SKILL_MAGIC) > 99 && Girl->agility() > 99 && Girl->constitution() > 99))
+	else if (u_int(JobID) == JOB_FIGHTTRAIN && (Girl->combat() > 99 && Girl->magic() > 99 && Girl->agility() > 99 && Girl->constitution() > 99))
 	{	// `J` added then modified
 		g_MessageQue.AddToQue(("There is nothing more she can learn here."), 0);
 		if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = rest;
@@ -1641,7 +1641,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTOR;
 	}
-	else if (u_int(JobID) == JOB_INTERN && g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && Girl->intelligence() > 99 && Girl->charisma() > 99)
+	else if (u_int(JobID) == JOB_INTERN && Girl->medicine() > 99 && Girl->intelligence() > 99 && Girl->charisma() > 99)
 	{
 		stringstream ss;
 		ss << "There is nothing more she can learn here.\n";

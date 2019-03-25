@@ -34,7 +34,7 @@ int cTrainable::value()
 	if(m_type == Stat) {
 		return m_girl->get_stat(m_index);
 	}
-	return g_Girls.GetSkill(m_girl, m_index);
+	return m_girl->get_skill(m_index);
 }
 
 void cTrainable::upd(int increment)

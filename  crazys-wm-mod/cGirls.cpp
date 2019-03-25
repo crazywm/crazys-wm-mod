@@ -2622,7 +2622,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 			ss << "\n \nSEX SKILLS";
 			if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
 		}
-		ss << "\n" << skillstr[i] << GetSkill(girl, skillnum[i]) << sper;
+		ss << "\n" << skillstr[i] << girl->get_skill(skillnum[i]) << sper;
 		if (cfg.debug.log_extradetails() && !purchase) ss << "    (" << girl->m_Skills[skillnum[i]] << "+" << girl->m_SkillTemps[skillnum[i]] << "+" << girl->m_SkillMods[skillnum[i]] << "+" << girl->m_SkillTr[skillnum[i]] << ")";
 	}
 	return ss.str();
@@ -3156,7 +3156,7 @@ string cGirls::GetSimpleDetails(sGirl* girl, int fontsize)
 	ss << "\n";	if (girl->is_addict() && !girl->has_disease())	{ ss << "Has an addiciton"; }
 	else if (!girl->is_addict() && girl->has_disease())			{ ss << "Has a disease"; }
 	else if (girl->is_addict() && girl->has_disease())			{ ss << "Has an addiciton and a disease"; }
-	for (int i = 0; i < skillcount; i++)	{ ss << "\n" << skillstr[i] << g_Girls.GetSkill(girl, skillnum[i]) << sper; }
+	for (int i = 0; i < skillcount; i++)	{ ss << "\n" << skillstr[i] << girl->get_skill(skillnum[i]) << sper; }
 	ss << "\n \n";	int trait_count = 0;
 	for (int i = 0; i < MAXNUM_TRAITS; i++)
 	{
@@ -3739,20 +3739,6 @@ void cGirls::UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits)
 
 // ----- Skill
 
-// returns total of skill + mod + temp + trait
-int cGirls::GetSkill(sGirl* girl, int skill)
-{
-	int value = (girl->m_Skills[skill]) + girl->m_SkillTemps[skill] + girl->m_SkillMods[skill] + girl->m_SkillTr[skill];
-	if (value > 100)	value = 100;
-	if (girl->has_trait("Vampire"))
-	{
-		if (g_Brothels.m_Processing_Shift == 0)			value -= 10;
-		else if (g_Brothels.m_Processing_Shift == 1)	value += 10;
-	}
-	if (value < 0)			value = 0;
-	else if (value > 100)	value = 100;
-	return value;
-}
 double cGirls::GetAverageOfAllSkills(sGirl* girl)
 {
 	return ((girl->anal() + girl->animalhandling() + girl->bdsm() + girl->beastiality() + girl->brewing()
@@ -8394,7 +8380,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 
 void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType)
 {
-	int check = GetSkill(girl, SexType);
+	int check = girl->get_skill(SexType);
 	string girlName = girl->m_Realname;
 
 	if (cfg.debug.log_extradetails())
@@ -8679,12 +8665,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	}
 
 	// If the girls skill < 50 then it will be unsatisfying otherwise it will be satisfying
-	happymod += (GetSkill(girl, SexType) - 50) / 5;
+	happymod += (girl->get_skill(SexType) - 50) / 5;
 	// If the girl is famous then he will be slightly happier
 	happymod += girl->fame() / 5;
 
 	// her service ability will also make him happier (I.e. does she help clean him well)
-	happymod += GetSkill(girl, SKILL_SERVICE) / 10;
+	happymod += girl->service() / 10;
 
 	int value = customer->m_Stats[STAT_HAPPINESS] + happymod;			// `J` now set customers happiness
 	if (value > 100)	{ customer->m_Stats[STAT_HAPPINESS] = 100; }
@@ -8693,11 +8679,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	// her magic ability can make him think he enjoyed it more if she has mana
 
-	int happycost = 3 - int(GetSkill(girl, SKILL_MAGIC) / 40);	// `J` how many mana will each point of happy cost her
+	int happycost = 3 - int(girl->magic() / 40);	// `J` how many mana will each point of happy cost her
 	if (happycost < 1) happycost = 1;		// so [magic:cost] [<10:can't] [10-39:3] [40-79:2] [80+:1] (probably, I hate math)
 	if (customer->m_Stats[STAT_HAPPINESS] < 100 &&			// If they are not fully happy
 		girl->mana() >= happycost &&		// If she has enough mana to actually try
-		GetSkill(girl, SKILL_MAGIC) > 9)				// If she has at least 10 magic
+		girl->magic() > 9)				// If she has at least 10 magic
 	{
 		int happymana = girl->mana();					// check her mana
 		if (happymana > 20) happymana = 20;							// and only max of 20 will be used
@@ -9037,14 +9023,15 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//Find top skill - what 'skill' is she most comfortable with? Working from the most extreme down...
 			int TopSkillID = 0, TopSkillLev = 0;
 
-			if (TopSkillLev < GetSkill(girl, SKILL_BEASTIALITY))TopSkillID = SKILL_BEASTIALITY, TopSkillLev = (GetSkill(girl, TopSkillID));
-			if (TopSkillLev < GetSkill(girl, SKILL_ANAL))		TopSkillID = SKILL_ANAL,		TopSkillLev = (GetSkill(girl, TopSkillID));
-			if (TopSkillLev < GetSkill(girl, SKILL_NORMALSEX))	TopSkillID = SKILL_NORMALSEX,	TopSkillLev = (GetSkill(girl, TopSkillID));
-			if (TopSkillLev < GetSkill(girl, SKILL_ORALSEX))	TopSkillID = SKILL_ORALSEX,		TopSkillLev = (GetSkill(girl, TopSkillID));
-			if (TopSkillLev < GetSkill(girl, SKILL_TITTYSEX))	TopSkillID = SKILL_TITTYSEX,	TopSkillLev = (GetSkill(girl, TopSkillID));
-			if (TopSkillLev < GetSkill(girl, SKILL_HANDJOB))	TopSkillID = SKILL_HANDJOB,		TopSkillLev = (GetSkill(girl, TopSkillID));
-			if (TopSkillLev < GetSkill(girl, SKILL_FOOTJOB))	TopSkillID = SKILL_FOOTJOB,		TopSkillLev = (GetSkill(girl, TopSkillID));
-			if (TopSkillLev < GetSkill(girl, SKILL_STRIP))		TopSkillID = SKILL_STRIP,		TopSkillLev = (GetSkill(girl, TopSkillID));
+			if (TopSkillLev < girl->beastiality())	TopSkillID = SKILL_BEASTIALITY;
+			if (TopSkillLev < girl->anal())			TopSkillID = SKILL_ANAL;
+			if (TopSkillLev < girl->normalsex())	TopSkillID = SKILL_NORMALSEX;
+			if (TopSkillLev < girl->oralsex())		TopSkillID = SKILL_ORALSEX;
+			if (TopSkillLev < girl->tittysex())		TopSkillID = SKILL_TITTYSEX;
+			if (TopSkillLev < girl->handjob())		TopSkillID = SKILL_HANDJOB;
+			if (TopSkillLev < girl->footjob())		TopSkillID = SKILL_FOOTJOB;
+			if (TopSkillLev < girl->strip())		TopSkillID = SKILL_STRIP;
+			TopSkillLev = girl->get_skill(TopSkillID);
 
 			//is the thing she's being asked for already her top skill?
 			if (TopSkillID == SexType) askedForHerTopSkill = true;
@@ -9084,7 +9071,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 						<< "She resists";
 					angry = true;
 					if (g_Dice.percent(girl->strength())) sexMessage << " and in her fury, overpowers him.";
-					else if (g_Dice.percent(GetSkill(girl, SKILL_COMBAT))) sexMessage << ", and in her fury fights him off.";
+					else if (g_Dice.percent(girl->combat())) sexMessage << ", and in her fury fights him off.";
 					else
 					{
 						sexMessage << ", but he is too strong, and with his arm locked on her throat, she can't even scream. "
@@ -9161,7 +9148,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 						<< "She thrashes to shake him off";
 					angry = true;
 					if (g_Dice.percent(girl->strength())) sexMessage << ", and in a frenzy, throws him clean across the room.";
-					else if (g_Dice.percent(GetSkill(girl, SKILL_COMBAT))) sexMessage << ", a hammer-fist between her legs catching him right in the balls. He falls back with a whimper.";
+					else if (g_Dice.percent(girl->combat())) sexMessage << ", a hammer-fist between her legs catching him right in the balls. He falls back with a whimper.";
 					else
 					{
 						sexMessage << "But he is too strong, and pinned under all his weight, she can't even wriggle away. "
@@ -11794,7 +11781,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else
 		{
-			int harmchance = -(GetSkill(girl, SKILL_BEASTIALITY) + GetSkill(girl, SKILL_ANIMALHANDLING) - 50);  // 50% chance at 0 skill, 1% chance at 49 skill
+			int harmchance = -(girl->beastiality() + girl->animalhandling() - 50);  // 50% chance at 0 skill, 1% chance at 49 skill
 			if (g_Dice.percent(harmchance))
 			{
 				sexMessage << girlName << " accidentally harmed some beasts during the act.\n";
@@ -12693,7 +12680,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			message += "(Z text not done)\n";
 			//break;
 		}
-		if (GetSkill(girl, SexType) <= 20)	// if unexperienced then will get hurt
+		if (girl->get_skill(SexType) <= 20)	// if unexperienced then will get hurt
 		{
 			if (girl->has_trait("Gag Reflex") || girl->has_trait("Strong Gag Reflex"))
 			{
@@ -15562,13 +15549,13 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 
 	// first determine what skills they will fight with
 	// girl a
-	if (g_Girls.GetSkill(a, SKILL_COMBAT) >= g_Girls.GetSkill(a, SKILL_MAGIC))
+	if (a->combat() >= a->magic())
 		a_attack = SKILL_COMBAT;
 	else
 		a_attack = SKILL_MAGIC;
 
 	// girl b
-	if (g_Girls.GetSkill(b, SKILL_COMBAT) >= g_Girls.GetSkill(b, SKILL_MAGIC))
+	if (b->combat() >= b->magic())
 		b_attack = SKILL_COMBAT;
 	else
 		b_attack = SKILL_MAGIC;
@@ -15656,7 +15643,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 
 		l.ssend();
 
-		int girl_attack_chance = g_Girls.GetSkill(Attacker, attack);
+		int girl_attack_chance = Attacker->get_skill(attack);
 		int die_roll = g_Dice.d100();
 
 		l.ss() << "\t\t" << "Attack chance: " << girl_attack_chance << " Die roll: " << die_roll;
@@ -18848,4 +18835,19 @@ sCustomer* cGirls::GetBeast()
 	beast->m_Next = 0;
 
 	return beast;
+}
+
+
+int sGirl::get_skill(int skill_id)
+{
+	int value = (m_Skills[skill_id]) + m_SkillTemps[skill_id] + m_SkillMods[skill_id] + m_SkillTr[skill_id];
+	if (value > 100)	value = 100;
+	if (has_trait("Vampire"))
+	{
+		if (g_Brothels.m_Processing_Shift == 0)			value -= 10;
+		else if (g_Brothels.m_Processing_Shift == 1)	value += 10;
+	}
+	if (value < 0)			value = 0;
+	else if (value > 100)	value = 100;
+	return value;
 }

@@ -203,7 +203,7 @@ double cJobManager::JP_FilmChef(sGirl* girl, bool estimate)
 {
 	double jobperformance =
 		((girl->charisma() + girl->beauty() + girl->confidence()) / 3
-		+ g_Girls.GetSkill(girl, SKILL_COOKING));
+		+ girl->cooking());
 
 	if (!estimate)
 	{

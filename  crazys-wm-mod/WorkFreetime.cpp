@@ -750,19 +750,19 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			imagetype = IMGTYPE_COOK;
 			ss << girlName << " decided to cook a meal.\nThe meal she cooked was ";
-			if (g_Girls.GetSkill(girl, SKILL_COOKING) >= 85)//use service for now on how well she can cook.. if cooking skill ever gets added can be changed then
+			if (girl->cooking() >= 85)//use service for now on how well she can cook.. if cooking skill ever gets added can be changed then
 			{
 				ss << "amazing. She really knows how to cook.\n";
 				U_Health += 5;
 				girl->upd_Enjoyment(ACTION_WORKCOOKING, 1);
 
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_COOKING) > 50)
+			else if (girl->cooking() > 50)
 			{
 				ss << "pretty good. She isn't the best but with some work she could be.\n";
 				U_Health += 2;
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_COOKING) > 10)
+			else if (girl->cooking() > 10)
 			{
 				ss << "plain. She really needs some practice at this.\n";
 			}
