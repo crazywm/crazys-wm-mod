@@ -149,7 +149,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 	//Lets get some scenario...
-	int predisposition = g_Girls.GetEnjoyment(girl, JOB_MILK);
+	int predisposition = girl->get_enjoyment(JOB_MILK);
 	ss << girlName;
 	/**/ if (predisposition <= -50)	ss << " froze when she saw the milking area. She had to be strapped in securely for milking.";
 	else if (predisposition <= 10)	ss << " was led into the stall, strapped in and milked without incident.";

@@ -16118,18 +16118,6 @@ int cGirls::TakeCombatDamage(sGirl* girl, int amt)
 
 // ----- Update
 
-int cGirls::GetEnjoyment(sGirl* girl, int whatSheEnjoys)
-{
-	if (whatSheEnjoys < 0) return 0;
-	// Generic calculation
-	int value = girl->m_Enjoyment[whatSheEnjoys] + girl->m_EnjoymentTR[whatSheEnjoys] +
-		girl->m_EnjoymentMods[whatSheEnjoys] + girl->m_EnjoymentTemps[whatSheEnjoys];
-
-	if (value < -100) value = -100;
-	else if (value > 100) value = 100;
-	return value;
-}
-
 void cGirls::SetEnjoyment(sGirl* girl, int whatSheEnjoys, int amount)										// `J` added
 {
 	girl->m_Enjoyment[whatSheEnjoys] = amount;
@@ -16182,17 +16170,6 @@ void cGirls::updateTempEnjoyment(sGirl* girl)
 	}
 }
 
-int cGirls::GetTraining(sGirl* girl, int whatSheTrains)
-{
-	if (whatSheTrains < 0) return 0;
-	// Generic calculation
-	int value = girl->m_Training[whatSheTrains] + girl->m_TrainingTR[whatSheTrains] +
-		girl->m_TrainingMods[whatSheTrains] + girl->m_TrainingTemps[whatSheTrains];
-
-	if (value < 0) value = 0;
-	else if (value > 100) value = 100;
-	return value;
-}
 void cGirls::SetTraining(sGirl* girl, int whatSheTrains, int amount)										// `CRAZY` added
 {
 	girl->m_Training[whatSheTrains] = amount;

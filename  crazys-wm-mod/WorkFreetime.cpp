@@ -166,7 +166,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				choice = FT_BuyDrugs;
 				choicemade = true;
 			}
-			else if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 35)	//
+			else if (girl->get_training(TRAINING_PUPPY) >= 35)	//
 			{
 				choice = FT_HasTraining;
 				choicemade = true;
@@ -2338,7 +2338,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #if 1
 		{
 			ss << girlName << " is far enough along in her training that she has started to behave that way in her free time.";
-			if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 10)
+			if (girl->get_training(TRAINING_PUPPY) >= 10)
 			{
 				if (roll >= 60)
 				{
@@ -2385,7 +2385,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					}
 				}
 			}
-			else if (g_Girls.GetTraining(girl, TRAINING_PONY) >= 10)
+			else if (girl->get_training(TRAINING_PONY) >= 10)
 			{
 				ss << "";
 			}

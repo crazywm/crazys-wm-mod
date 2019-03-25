@@ -68,7 +68,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int actiontype = ACTION_WORKHOUSEPET;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	int train = roll_a - girl->obedience() - g_Girls.GetTraining(girl, TRAINING_PUPPY);
+	int train = roll_a - girl->obedience() - girl->get_training(TRAINING_PUPPY);
 
 	int wages = 100, tips = 0;
 	int enjoy = 0, fame = 0, training = 0, ob = 0, fear = 0, love = 0;
@@ -112,7 +112,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " refused to train during the " << (Day0Night1 ? "night" : "day") << " shift.\n";
 		ss << girlName << " is still in training, and is having difficulty accepting her new role. Today she was a bad girl!\n";
-		if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 50)
+		if (girl->get_training(TRAINING_PUPPY) >= 50)
 		{
 			if (roll_b >= 66)
 			{
@@ -317,7 +317,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else /*She did the training*/
 	{
 		ss << " trained to be a house pet.\n \n";
-		if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 70)
+		if (girl->get_training(TRAINING_PUPPY) >= 70)
 			{
 				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)
 				{
@@ -598,7 +598,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						training += 2;
 					}
 			}
-		else if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 50)
+		else if (girl->get_training(TRAINING_PUPPY) >= 50)
 			{
 				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)
 				{

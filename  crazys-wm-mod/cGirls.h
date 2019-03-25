@@ -54,9 +54,7 @@ struct  sGang;
 
 class cAbstractGirls {
 public:
-	virtual int GetEnjoyment(sGirl* girl, int skill) = 0;
-	virtual int GetTraining(sGirl* girl, int skill) = 0;
-	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
+    virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
 	virtual void UpdateSkill(sGirl* girl, int skill, int amount) = 0;
 	virtual void UpdateEnjoyment(sGirl* girl, int skill, int amount) = 0;
 	virtual void UpdateTraining(sGirl* girl, int skill, int amount) = 0;
@@ -459,23 +457,23 @@ struct sGirl
 	int upd_temp_Enjoyment(int stat_id, int amount)
 	{
 		g_GirlsPtr->UpdateEnjoymentTemp(this, stat_id, amount);
-		return g_GirlsPtr->GetEnjoyment(this, stat_id);
+		return get_enjoyment(stat_id);
 	}
 	int upd_Enjoyment(int stat_id, int amount, bool usetraits = true)
 	{
 		g_GirlsPtr->UpdateEnjoyment(this, stat_id, amount);
-		return g_GirlsPtr->GetEnjoyment(this, stat_id);
+		return get_enjoyment(stat_id);
 	}
 
 	int upd_temp_Training(int stat_id, int amount)
 	{
 		g_GirlsPtr->UpdateTrainingTemp(this, stat_id, amount);
-		return g_GirlsPtr->GetTraining(this, stat_id);
+		return get_training(stat_id);
 	}
 	int upd_Training(int stat_id, int amount, bool usetraits = true)
 	{
 		g_GirlsPtr->UpdateTraining(this, stat_id, amount);
-		return g_GirlsPtr->GetTraining(this, stat_id);
+		return get_training(stat_id);
 	}
 
 
@@ -613,11 +611,25 @@ struct sGirl
 
 	int get_enjoyment(int actiontype)
 	{
-		return g_GirlsPtr->GetEnjoyment(this, actiontype);
+		if (actiontype < 0) return 0;
+		// Generic calculation
+		int value = m_Enjoyment[actiontype] + m_EnjoymentTR[actiontype] +
+					m_EnjoymentMods[actiontype] + m_EnjoymentTemps[actiontype];
+
+		if (value < -100) value = -100;
+		else if (value > 100) value = 100;
+		return value;
 	}
 	int get_training(int actiontype)
 	{
-		return g_GirlsPtr->GetTraining(this, actiontype);
+        if (actiontype < 0) return 0;
+        // Generic calculation
+        int value = m_Training[actiontype] + m_TrainingTR[actiontype] +
+                    m_TrainingMods[actiontype] + m_TrainingTemps[actiontype];
+
+        if (value < 0) value = 0;
+        else if (value > 100) value = 100;
+        return value;
 	}
 
 	/*
@@ -761,7 +773,7 @@ public:
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods usually from items
 	void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
 
-	int GetEnjoyment(sGirl* girl, int a_Enjoy);													// `J` added
+	// `J` added
 	void SetEnjoyment(sGirl* girl, int a_Enjoy, int amount);									// `J` added
 	void SetEnjoymentTR(sGirl* girl, int a_Enjoy, int amount);									// `J` added for traits
 	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount);	// updates what she enjoys
@@ -769,7 +781,7 @@ public:
 	void UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 	void UpdateEnjoymentTemp(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 
-	int GetTraining(sGirl* girl, int a_Training);													// `CRAZY` added
+    // `CRAZY` added
 	void SetTraining(sGirl* girl, int a_Training, int amount);									// `CRAZY` added
 	void SetTrainingTR(sGirl* girl, int a_Training, int amount);									// `CRAZY` added for traits
 	void UpdateTraining(sGirl* girl, int whatSheTrains, int amount);	// updates what she enjoys

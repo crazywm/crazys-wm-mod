@@ -68,7 +68,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	int actiontype = ACTION_WORKHOUSEPET;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	int train = roll_a - girl->obedience() - g_Girls.GetTraining(girl, TRAINING_PUPPY);
+	int train = roll_a - girl->obedience() - girl->get_training(TRAINING_PUPPY);
 
 	int wages = 100, tips = 0;
 	int enjoy = 0, fame = 0, training = 0, ob = 0, fear = 0, love = 0;
@@ -94,7 +94,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	{
 		ss << " refused to train during the " << (Day0Night1 ? "night" : "day") << " shift.\n";
 		ss << girlName << " is still in training, and is having difficulty accepting her new role. Today she was a bad girl!\n";
-		if (g_Girls.GetTraining(girl, TRAINING_PONY) >= 50)
+		if (girl->get_training(TRAINING_PONY) >= 50)
 		{
 			ss << "high skill";
 			if (roll_b >= 66)
@@ -128,7 +128,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	else /*She did the training*/
 	{
 		ss << " trained to be a pony girl.\n \n";
-		if (g_Girls.GetTraining(girl, TRAINING_PONY) >= 70)
+		if (girl->get_training(TRAINING_PONY) >= 70)
 			{
 				ss << "has over 70 training";
 				if (roll_b >= 80)
@@ -157,7 +157,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 						training += 5;
 					}
 			}
-		else if (g_Girls.GetTraining(girl, TRAINING_PONY) >= 50)
+		else if (girl->get_training(TRAINING_PONY) >= 50)
 			{
 				ss << "has over 50";
 				 if (roll_b >= 85)
