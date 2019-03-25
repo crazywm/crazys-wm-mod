@@ -159,9 +159,9 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	ss << "\n";
 
 
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
-		g_Girls.LoseVirginity(girl);
+		girl->lose_virginity();
 		jobperformance += 50;
 		ss << "She is no longer a virgin.\n";
 	}

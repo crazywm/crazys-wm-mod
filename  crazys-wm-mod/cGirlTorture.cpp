@@ -315,7 +315,7 @@ void cGirlTorture::AddTextPlayer()
 		{
 			m_Message += " She is now pregnant.";
 		}
-		g_Girls.LoseVirginity(m_Girl);
+		m_Girl->lose_virginity();
 		break;
 	}
 }

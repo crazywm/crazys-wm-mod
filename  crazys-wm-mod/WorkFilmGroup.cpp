@@ -182,9 +182,9 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		jobperformance += 5;
 	}
 
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
-		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+		girl->lose_virginity();	// `J` updated for trait/status
 		jobperformance += 50;
 		ss << "She is no longer a virgin.\n";
 	}

@@ -685,7 +685,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 		Mother->m_Surname = surname;
 		g_Girls.CreateRealName(Mother);
 		if (!g_Dice.percent(Mother->age())) g_Girls.AddTrait(Mother, "MILF");	// the younger the mother the more likely she will be a MILF
-		g_Girls.LoseVirginity(Mother);
+		Mother->lose_virginity();
 
 		string biography = "Daughter of " + Mother->m_Realname + " and a deadbeat brothel client.";
 
@@ -807,7 +807,7 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 
 	if (g_Dice.percent(2)) g_Girls.AddTrait(m_GirlTarget, "Broken Will");
 
-	if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+	if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 
 	bool preg = !m_GirlTarget->calc_pregnancy(The_Player, false, 1.0);
 	if (preg) g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", COLOR_BLUE);
@@ -1269,7 +1269,7 @@ sScript* cGameScript::Script_NormalSexTarget(sScript* Script)
 	{
 		m_GirlTarget->normalsex(2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 
 		if (!m_GirlTarget->calc_pregnancy(The_Player, false, 1.0))
 			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
@@ -1284,7 +1284,7 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 	{
 		m_GirlTarget->beastiality(1);	// `J` divided skill gain
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 		if (g_Brothels.GetNumBeasts() > 0)
@@ -1311,7 +1311,7 @@ sScript* cGameScript::Script_BDSMSexTarget(sScript* Script)
 	{
 		m_GirlTarget->bdsm(2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 	}
 
 	if (!m_GirlTarget->calc_pregnancy(The_Player, false, 0.75))
@@ -1372,7 +1372,7 @@ sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 	{
 		m_GirlTarget->group(2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 
 		if (!m_GirlTarget->calc_group_pregnancy(The_Player, false, 1.0))
 			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
@@ -1793,7 +1793,7 @@ sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
 	{
 		m_GirlTarget->normalsex(2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 		sCustomer Cust = g_Customers.GetCustomer(*g_Brothels.GetBrothel(g_CurrBrothel));
 		if (!m_GirlTarget->calc_pregnancy(Cust, false, 1.0))
 			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);

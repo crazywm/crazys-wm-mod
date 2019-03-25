@@ -232,9 +232,9 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, sBrothel* brothel, bool Day0Night
 	}
 #endif
 
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
-		g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+		girl->lose_virginity();	// `J` updated for trait/status
 		jobperformance += 50;
 		ss << "She is no longer a virgin.\n";
 	}
@@ -340,7 +340,7 @@ double cJobManager::JP_FilmBondage(sGirl* girl, bool estimate)// not used
 	if (girl->has_trait( "Elegant"))					jobperformance += 10;	//
 	if (girl->has_trait( "Branded on the Forehead"))	jobperformance += 5;	//Degraded
 	if (girl->has_trait( "Branded on the Ass"))		jobperformance += 5;	//
-	if (g_Girls.CheckVirginity(girl))						jobperformance += 20;	//
+	if (girl->check_virginity())						jobperformance += 20;	//
 	if (girl->has_trait( "Strong Gag Reflex"))		jobperformance += 10;	//Degrading
 	if (girl->has_trait( "Gag Reflex"))				jobperformance += 5;	//
 	if (girl->has_trait( "No Gag Reflex"))			jobperformance += 5;	//

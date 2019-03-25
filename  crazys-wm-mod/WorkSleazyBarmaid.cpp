@@ -207,7 +207,7 @@ bool cJobManager::WorkSleazyBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		}
 	}
 
-	if ((girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && girl->libido() > 80 && g_Dice.percent(20) && !g_Girls.CheckVirginity(girl) && !girl->has_trait( "Lesbian"))
+	if ((girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && girl->libido() > 80 && g_Dice.percent(20) && !girl->check_virginity() && !girl->has_trait( "Lesbian"))
 	{
 		if (roll_b <= 50)
 		{

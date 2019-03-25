@@ -152,10 +152,10 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			ss << girl->m_Realname << " was defeated then" << ((NumMon <= 3) ? "" : " gang") << " raped and abused by " << NumMon << " monsters.";
 			int health = -NumMon, happy = -NumMon * 5, spirit = -NumMon, sex = -NumMon * 2, combat = -NumMon * 2, injury = 9 + NumMon;
 
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
 				ss << " That's a hell of a way to lose your virginity; naturally, she's rather distressed by this fact.";
-				g_Girls.LoseVirginity(girl);					// Virginity both attrib & trait now, 04/15/13
+				girl->lose_virginity();					// Virginity both attrib & trait now, 04/15/13
 				health -= 1, happy -= 10, spirit -= 2, sex -= 2, combat -= 2, injury += 2;
 			}
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
@@ -356,10 +356,10 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			ss << girl->m_Realname << " was defeated then" << ((NumMon <= 3) ? "" : " gang") << " raped and abused by " << NumMon << " monsters.";
 			int health = -NumMon, happy = -NumMon * 5, spirit = -NumMon, sex = -NumMon * 2, combat = -NumMon * 2, injury = 9 + NumMon;
 
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
 				ss << " That's a hell of a way to lose your virginity; naturally, she's rather distressed by this fact.";
-				g_Girls.LoseVirginity(girl);					// Virginity both attrib & trait now, 04/15/13
+				girl->lose_virginity();					// Virginity both attrib & trait now, 04/15/13
 				health -= 1, happy -= 10, spirit -= 2, sex -= 2, combat -= 2, injury += 2;
 			}
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);

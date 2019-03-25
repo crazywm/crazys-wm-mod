@@ -674,9 +674,9 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		girl->spirit(-2);
 		imagetype = IMGTYPE_GROUP;
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, EVENT_DANGER);
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
-			g_Girls.LoseVirginity(girl);
+			girl->lose_virginity();
 			ss << "\nShe is no longer a virgin.\n";
 			girl->happiness(-10);
 			girl->upd_Enjoyment( ACTION_SEX, -2);

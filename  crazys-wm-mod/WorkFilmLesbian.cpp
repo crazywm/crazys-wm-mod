@@ -77,7 +77,7 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day playing with her girlfriend.\n \n"; }
 	jobperformance = enjoy * 2;
 
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
 		jobperformance += 20;
 		ss << "No 'Man' has been with her, She is still a virgin.\n";

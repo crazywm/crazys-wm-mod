@@ -78,7 +78,7 @@ bool cJobManager::WorkFilmMast(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else /*            */{ enjoy += g_Dice % 2;		ss << "She spent the afternoon fingering herself.\n \n"; }
 	jobperformance = enjoy * 2;
 
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
 		jobperformance += 20;
 		ss << "Her pussy is so tight she is undeniably a virgin.\n";

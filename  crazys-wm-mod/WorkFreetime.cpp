@@ -412,7 +412,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			// add more options for more money
 			ss << girlName << " went to the salon ";
-			if (girl->libido() > 70 && girl->m_Money >= 100 && !g_Girls.CheckVirginity(girl)
+			if (girl->libido() > 70 && girl->m_Money >= 100 && !girl->check_virginity()
 				&& (g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel) ||
 				g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel)||
 				g_Brothels.m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel))
@@ -1188,7 +1188,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						if (roll_d <= 20)
 						{
 							ss << "A man noticed and approched her asking if she wanted the real thing instead of her fingers.";
-							if (g_Girls.CheckVirginity(girl))
+							if (girl->check_virginity())
 							{
 								ss << " She informs him she is a Virgin and that she won't be having sex with him.";
 							}
@@ -1334,7 +1334,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					girl->add_inv(g_InvManager.GetItem("Vira Blood"));
 				}
 				/* May added in a sex event here where they try to take advatage of the high girl*/
-				if (g_Dice.percent(10) && girl->beauty() > 85 && !g_Girls.CheckVirginity(girl))
+				if (g_Dice.percent(10) && girl->beauty() > 85 && !girl->check_virginity())
 				{
 					ss << "After noticing her great beauty and the fact that she is baked, a group of guys take her off alone somewhere and have their way with her.\n";
 					imagetype = IMGTYPE_GROUP;
@@ -1369,7 +1369,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				{
 					ss << girlName << " accepted with great joy.\n"; U_Happiness += 5;
 					/* add anything from them trying to have sex with her to just talking*/
-					if (g_Dice.percent(30) && !g_Girls.CheckVirginity(girl))
+					if (g_Dice.percent(30) && !girl->check_virginity())
 					{
 						ss << "After talking for awhile they asked if she wanted to have sex with them. ";
 						if (girl->libido() >= 50 && !girl->has_trait( "Lesbian"))
@@ -1399,7 +1399,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					{
 						ss << girlName << " enjoyed herself so she accepted.\n";
 						/* add anything from them trying to have sex with her to just talking*/
-						if (g_Dice.percent(20) && !g_Girls.CheckVirginity(girl))
+						if (g_Dice.percent(20) && !girl->check_virginity())
 						{
 							ss << "After talking for awhile they asked if she wanted to have sex with them. ";
 							if (girl->libido() >= 70)
@@ -1525,7 +1525,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #if 1
 		{
 			ss << girlName << " decided to do something she really enjoys so she ";
-			if (girl->has_trait( "Nymphomaniac") && girl->libido() > 80 && !g_Girls.CheckVirginity(girl))
+			if (girl->has_trait( "Nymphomaniac") && girl->libido() > 80 && !girl->check_virginity())
 			{
 				ss << " went out looking to get laid.\n";
 				if (g_Dice.percent(35))//finds someone

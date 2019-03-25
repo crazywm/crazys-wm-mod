@@ -80,9 +80,9 @@ bool cJobManager::WorkFilmDominatrix(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day dominating her co-star.\n\n"; }
 	jobperformance = enjoy * 2;
 
-	//if (g_Girls.CheckVirginity(girl))
+	//if (girl->check_virginity())
 	//{
-	//	g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+	//	girl->lose_virginity();	// `J` updated for trait/status
 	//	jobperformance += 50;
 	//	ss << "She is no longer a virgin.\n";
 	//}

@@ -36,7 +36,7 @@ double cTariff::slave_base_price(sGirl *girl)
 	{
 		cost += (unsigned int)girl->m_Skills[i];
 	}
-	if (g_Girls.CheckVirginity(girl))	cost *= 1.5;	// virgins fetch a premium
+	if (girl->check_virginity())	cost *= 1.5;	// virgins fetch a premium
 	lf.ss() << "CTariff: base price for slave '" << girl->m_Name << "' = " << int(cost);	lf.ssend();
 	return cost;
 }

@@ -116,7 +116,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//try and add randomness here
-	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && !g_Girls.CheckVirginity(girl)
+	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && !girl->check_virginity()
 		&& !girl->has_trait( "Lesbian") && girl->libido() > 75
 		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{
@@ -161,9 +161,9 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			girl->normalsex(2);
 			imagetype = IMGTYPE_SEX;
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
-				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+				girl->lose_virginity();	// `J` updated for trait/status
 				ss << "\nShe is no longer a virgin.\n";
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))

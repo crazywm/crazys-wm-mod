@@ -242,7 +242,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 
 	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && girl->libido() > 75
-		&& !girl->has_trait( "Lesbian") && !g_Girls.CheckVirginity(girl)
+		&& !girl->has_trait( "Lesbian") && !girl->check_virginity()
 		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{
 		sex = true;
@@ -294,9 +294,9 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 			girl->normalsex(2);
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
-				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+				girl->lose_virginity();	// `J` updated for trait/status
 				ss << "She is no longer a virgin.\n";
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))

@@ -371,10 +371,10 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	if (fucked == BYMAN || fucked == BYBEAST)
 	{
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
 			ss << "Somewhere in all this, she lost her virginity.\n";
-			g_Girls.LoseVirginity(girl);
+			girl->lose_virginity();
 			bonus += 5;
 		}
 		sCustomer Cust = g_Customers.GetCustomer(*brothel);
@@ -496,7 +496,7 @@ double cJobManager::JP_FilmPublicBDSM(sGirl* girl, bool estimate)
 	if (girl->has_trait( "Elegant"))					jobperformance += 10;	//
 	if (girl->has_trait( "Branded on the Forehead"))	jobperformance += 5;	//Degraded
 	if (girl->has_trait( "Branded on the Ass"))		jobperformance += 5;	//
-	if (g_Girls.CheckVirginity(girl))						jobperformance += 20;	//
+	if (girl->check_virginity())						jobperformance += 20;	//
 	if (girl->has_trait( "Strong Gag Reflex"))		jobperformance += 10;	//Degrading
 	if (girl->has_trait( "Gag Reflex"))				jobperformance += 5;	//
 	if (girl->has_trait( "No Gag Reflex"))			jobperformance += 5;	//

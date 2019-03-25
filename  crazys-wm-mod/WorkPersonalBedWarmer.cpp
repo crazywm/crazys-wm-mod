@@ -741,7 +741,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		girl->upd_Enjoyment(ACTION_WORKHAREM, libido);
 
 		// now you get involved...
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
 			ss << girlName << " is a virgin";
 			wages += 20;
@@ -752,7 +752,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				girl->normalsex(1);
 				girl->pclove(1);
 				girl->upd_Enjoyment(ACTION_WORKHAREM, +1);
-				g_Girls.LoseVirginity(girl);
+				girl->lose_virginity();
 				ss << "She is no longer a virgin.\n";
 				imagetype = IMGTYPE_SEX;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
@@ -771,7 +771,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 				ss << " with a tight pussy you can't resist. You break her in hard.\n";
 				girl->normalsex(2);
 				girl->pcfear(2);
-				g_Girls.LoseVirginity(girl);
+				girl->lose_virginity();
 				ss << "She is no longer a virgin.\n";
 				imagetype = IMGTYPE_SEX;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
@@ -927,7 +927,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	{
 		if (HateLove >= 80) //loves you
 		{
-			if (g_Girls.CheckVirginity(girl))		// 25% decline
+			if (girl->check_virginity())		// 25% decline
 			{
 				ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe loves you greatly ";
 				if (roll_d <= 25)	{ ss << "but says she isn't ready so instead she "; roll_d *= 2; }
@@ -940,7 +940,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 		else if (HateLove >= 60)			//find u attractive
 		{
-			if (g_Girls.CheckVirginity(girl))		// 50 % decline
+			if (girl->check_virginity())		// 50 % decline
 			{
 				ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe finds you to be attractive ";
 				if (roll_d <= 50)		{ ss << "but declines so instead she ";	roll_d *= 2; }
@@ -953,7 +953,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 		else if (HateLove > 20)			//your okay
 		{
-			if (g_Girls.CheckVirginity(girl))		// 70% decline
+			if (girl->check_virginity())		// 70% decline
 			{
 				ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe finds you to be an okay guy ";
 				if (roll_d <= 70)	{ ss << "but declines anyway. So she "; roll_d = 100; }
@@ -966,7 +966,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 		else if (HateLove >= -20)			//annoying
 		{
-			if (g_Girls.CheckVirginity(girl))		// 80% decline
+			if (girl->check_virginity())		// 80% decline
 			{
 				ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe finds you to be rather annoying ";
 				if (roll_d <= 80)	{ ss << "so she declines and she "; roll_d = 100; }
@@ -979,7 +979,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 		else if (HateLove > -60)			//dont like u at all
 		{
-			if (g_Girls.CheckVirginity(girl))		// 95% decline
+			if (girl->check_virginity())		// 95% decline
 			{
 				ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe doesn't really like you ";
 				if (roll_d <= 95)	{ ss << "and declines so she "; roll_d = 100; }
@@ -990,7 +990,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		}
 		else											//cant stand the site of u
 		{
-			if (g_Girls.CheckVirginity(girl))		// 100% decline
+			if (girl->check_virginity())		// 100% decline
 			{
 				ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe ";
 				ss << "laughs hard at the thought of you touching her.\nShe ";
@@ -1051,9 +1051,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			girl->bdsm(2);
 			ss << "lets you tie her up.\n \n";
 			risky = true;
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
-				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+				girl->lose_virginity();	// `J` updated for trait/status
 				ss << "She is no longer a virgin.\n";
 			}
 			imagetype = IMGTYPE_BDSM;
@@ -1071,9 +1071,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 			girl->normalsex(2);
 			ss << "has sex with you.\n \n";
 			risky = true;
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
-				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+				girl->lose_virginity();	// `J` updated for trait/status
 				ss << "She is no longer a virgin.\n";
 			}
 			imagetype = IMGTYPE_SEX;
@@ -1119,7 +1119,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 #else //BSIN - this was the prev version - have linked this up to 'no harem' action
 	if (HateLove >= 80) //loves you
 	{
-		if (g_Girls.CheckVirginity(girl))		// 25% decline
+		if (girl->check_virginity())		// 25% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe loves you greatly ";
 			if (roll_d <= 25)	{ ss << "but says she isn't ready so instead she "; roll_d *= 2; }
@@ -1132,7 +1132,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	}
 	else if (HateLove >= 60)			//find u attractive
 	{
-		if (g_Girls.CheckVirginity(girl))		// 50 % decline
+		if (girl->check_virginity())		// 50 % decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe finds you to be attractive ";
 			if (roll_d <= 50)		{ ss << "but declines so instead she ";	roll_d *= 2; }
@@ -1145,7 +1145,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	}
 	else if (HateLove > 20)			//your okay
 	{
-		if (g_Girls.CheckVirginity(girl))		// 70% decline
+		if (girl->check_virginity())		// 70% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe finds you to be an okay guy ";
 			if (roll_d <= 70)	{ ss << "but declines anyway. So she "; roll_d = 100; }
@@ -1158,7 +1158,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	}
 	else if (HateLove >= -20)			//annoying
 	{
-		if (g_Girls.CheckVirginity(girl))		// 80% decline
+		if (girl->check_virginity())		// 80% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe finds you to be rather annoying ";
 			if (roll_d <= 80)	{ ss << "so she declines and she "; roll_d = 100; }
@@ -1171,7 +1171,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	}
 	else if (HateLove > -60)			//dont like u at all
 	{
-		if (g_Girls.CheckVirginity(girl))		// 95% decline
+		if (girl->check_virginity())		// 95% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe doesn't really like you ";
 			if (roll_d <= 95)	{ ss << "and declines so she "; roll_d = 100; }
@@ -1183,7 +1183,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	}
 	else											//cant stand the site of u
 	{
-		if (g_Girls.CheckVirginity(girl))		// 100% decline
+		if (girl->check_virginity())		// 100% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe ";
 			ss << "laughs hard at the thought of you touching her.\nShe ";
@@ -1236,9 +1236,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	{
 		girl->bdsm(2);
 		ss << "lets you tie her up.\n \n";
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
-			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			girl->lose_virginity();	// `J` updated for trait/status
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
@@ -1254,9 +1254,9 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 	{
 		girl->normalsex(2);
 		ss << "has sex with you.\n \n";
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
-			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			girl->lose_virginity();	// `J` updated for trait/status
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);

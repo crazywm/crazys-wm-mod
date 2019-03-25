@@ -156,7 +156,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 
 
 
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
 		// if she loves you and she is still a virgin, she will ask you to be her first.
 		if (girl->pclove() > 50
@@ -364,7 +364,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	// will also skip down the list if the girl has 100 in the skill
 	if (Disp >= 80)				//Benevolent
 	{
-		if (g_Girls.CheckVirginity(girl))		// 25% decline
+		if (girl->check_virginity())		// 25% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe ";
 			if (roll_b <= 25)	{ ss << "declines so "; roll_b *= 2; }
@@ -374,7 +374,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	}
 	else if (Disp >= 50)			// nice
 	{
-		if (g_Girls.CheckVirginity(girl))		// 50 % decline
+		if (girl->check_virginity())		// 50 % decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\nShe ";
 			if (roll_b <= 50)		{ ss << "declines so "; }
@@ -384,7 +384,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	}
 	else if (Disp > 10)			//Pleasant
 	{
-		if (g_Girls.CheckVirginity(girl))		// 70% decline
+		if (girl->check_virginity())		// 70% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\n";
 			if (roll_b <= 50)		{ ss << "She declines so "; }
@@ -395,7 +395,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	}
 	else if (Disp >= -10)			// neutral
 	{
-		if (g_Girls.CheckVirginity(girl))		// 80% decline
+		if (girl->check_virginity())		// 80% decline
 		{
 			ss << "She is a virgin so you ask her if she wants to let you be her first.\n";
 			if (roll_b <= 50)		{ ss << "She declines so "; }
@@ -406,7 +406,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	}
 	else if (Disp > -50)			// not nice
 	{
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
 			ss << "She is a virgin, but not for long.\n";
 			if (roll_b <= 70)		{ ss << "Wanting her for yourself, "; roll_b = 60; } // normal
@@ -417,7 +417,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	}
 	else if (Disp > -80)			//Mean
 	{
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
 			ss << "She is a virgin, but not for long.\n";
 			if (roll_b <= 60)		{ ss << "Wanting her for yourself, "; roll_b = 60; } // normal
@@ -428,7 +428,7 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 	}
 	else											//Evil
 	{
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
 			ss << "She is a virgin, but not for long.\n";
 			if (roll_b <= 50)		{ ss << "Wanting her for yourself, "; roll_b = 60; } // normal
@@ -487,9 +487,9 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		girl->normalsex(skill);
 		ss << "You decide to teach her how to ride a dick like a pro.\n \n";
 		ss << "She managed to gain " << skill << " Normal Sex.\n \n";
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
-			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			girl->lose_virginity();	// `J` updated for trait/status
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
@@ -510,9 +510,9 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		girl->group(skill);
 		ss << "You decide to over see her skill in a gang bang.\n \n";
 		ss << "She managed to gain " << skill << " Group Sex.\n \n";
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
-			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			girl->lose_virginity();	// `J` updated for trait/status
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_GROUP, Day0Night1);
@@ -526,9 +526,9 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		girl->bdsm(skill);
 		ss << "You decide to teach her the fine art of BDSM.\n \n";
 		ss << "She managed to gain " << skill << " BDSM.\n \n";
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
-			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			girl->lose_virginity();	// `J` updated for trait/status
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
@@ -542,9 +542,9 @@ bool cJobManager::WorkPersonalTraining(sGirl* girl, sBrothel* brothel, bool Day0
 		girl->beastiality(skill);
 		ss << "You decide to have her get acquainted with some animals.\n \n";
 		ss << "She managed to gain " << skill << " Beastiality.\n \n";
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
-			g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+			girl->lose_virginity();	// `J` updated for trait/status
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);

@@ -259,7 +259,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				girl->upd_temp_stat(STAT_LIBIDO, -10, true);
 				ss << "she doesn't understand the appeal of them, which turned her off.\n";
 			}
-			else if (!brothel->m_RestrictNormal && !g_Girls.CheckVirginity(girl) && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && girl->libido() >= 80) //sex
+			else if (!brothel->m_RestrictNormal && !girl->check_virginity() && (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Succubus")) && girl->libido() >= 80) //sex
 			{
 				sextype = SKILL_NORMALSEX;
 				ss << "decided she needed to use it for her own entertainment.\n";

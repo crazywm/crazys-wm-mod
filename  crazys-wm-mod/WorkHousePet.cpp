@@ -342,7 +342,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " to her spacious kennel with her soft bed. Her belly and breasts swayed, both occasionally brushing the ground, and she back into the kennel and curled up";
 					ss << " on her bed. " << headname << " closed the door, wished her a good night, and turned off the light. " << girlName << " sighed restlessly and slowly fell asleep.";
 				}
-				else if (roll_b >= 90 && g_Girls.CheckVirginity(girl))
+				else if (roll_b >= 90 && girl->check_virginity())
 					{
 						if (roll_c >= 85)
 						{
@@ -387,7 +387,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								ss << " been taught. When you finally open your eyes, " << girlName << "'s cheeks are resting between your cock and your thigh, smiling as you pet her hair. \"Good girl.\"";
 								training += 4;
 								ob += 4;
-								g_Girls.LoseVirginity(girl);
+								girl->lose_virginity();
 								imagetype = IMGTYPE_SEX;
 							}
 							else
@@ -418,7 +418,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								ss << " \"Have a good first time, bitch?\" " << girlName << "'s eyes streamed with tears, but she barked an affirmation. She was, after all, just a bitch dog. This is what she was.";
 								training += 4;
 								ob += 4;
-								g_Girls.LoseVirginity(girl);
+								girl->lose_virginity();
 								imagetype = IMGTYPE_BEAST;
 							}
 						}
@@ -497,7 +497,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							ss << " the mastiff was over-eager, and bits of the scene had to be shot several times.";
 							ss << " Still, all went well, and the Director finally yelled \"Cut!\" with both " << girlName << " and the large dog's faces pressed";
 							ss << " into their meal. ";
-							if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.CheckVirginity(girl))
+							if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !girl->check_virginity())
 							{
 								ss << "Your bitch looked up, and began to crawl back over to you, but the mastiff had other ideas.";
 								ss << " " << girlName << " suddenly yelped and began to let out a series of piercing, pleading barks as the mastiff mounted her from behind, and drove";

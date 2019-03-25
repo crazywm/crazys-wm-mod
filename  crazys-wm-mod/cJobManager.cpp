@@ -1739,7 +1739,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(("She is to young for a face lift."), 0);
 			jobgood = false;
 		}
-		else if (u_int(JobID) == JOB_VAGINAREJUV && g_Girls.CheckVirginity(Girl))
+		else if (u_int(JobID) == JOB_VAGINAREJUV && Girl->check_virginity())
 		{
 			g_MessageQue.AddToQue(("She is a virgin and has no need of this operation."), 0);
 			jobgood = false;

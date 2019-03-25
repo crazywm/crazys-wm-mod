@@ -388,7 +388,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 				}
 				// set at least 1 bed warmer
 				else if (GetNumGirlsOnJob(0, JOB_PERSONALBEDWARMER, Day0Night1) < 1
-					&& !g_Girls.CheckVirginity(current))	// Crazy added this so that it wont set virgins to this
+					&& !current->check_virginity())	// Crazy added this so that it wont set virgins to this
 				{
 					current->m_DayJob = current->m_NightJob = JOB_PERSONALBEDWARMER;
 					ss << "work warming your bed.";
@@ -400,7 +400,7 @@ void cHouseManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 					ss << "work cleaning the house.";
 				}
 				// Put every one else who is not a virgin and needs some training
-				else if (!g_Girls.CheckVirginity(current) && g_Girls.GetAverageOfSexSkills(current) < 99)
+				else if (!current->check_virginity() && g_Girls.GetAverageOfSexSkills(current) < 99)
 				{
 					current->m_DayJob = current->m_NightJob = JOB_PERSONALTRAINING;
 					ss << "get personal training from you.";

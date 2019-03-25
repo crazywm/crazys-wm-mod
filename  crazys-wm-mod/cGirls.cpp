@@ -1078,7 +1078,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 	if (girl->has_trait("Dominatrix"))					{ Dangerous += 30; Elegant += 5; Freak += 40; }
 	if (girl->has_trait("Nimble Tongue"))				{ Sexy += 25; }
 	if (girl->has_trait("Open Minded"))					{ Sexy += 30; Cool += 20; Elegant -= 10; }
-	if (CheckVirginity(girl))							{ Lolita += 15; }//Plus 50 for begin a virgin?  Seems odd to me so changed it CRAZY
+	if (girl->check_virginity())						{ Lolita += 15; }//Plus 50 for begin a virgin?  Seems odd to me so changed it CRAZY
 
 
 	/****** Social Traits ******/
@@ -1780,7 +1780,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Stats[STAT_PCHATE] = hate;
 	}
 
-	if (CheckVirginity(newGirl))	// `J` check random girl's virginity
+	if (newGirl->check_virginity())	// `J` check random girl's virginity
 	{
 		newGirl->m_Virgin = 1;
 		AddTrait(newGirl, "Virgin");
@@ -1828,7 +1828,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Stats[STAT_HOUSE] = 0;	// your daughter gets to keep all she gets
 		AddTrait(newGirl, "Your Daughter");
 		newGirl->m_Stats[STAT_OBEDIENCE] = max(newGirl->m_Stats[STAT_OBEDIENCE], 80);	// She starts out obedient
-		if (g_Girls.CheckVirginity(newGirl))
+		if (newGirl->check_virginity())
 		{		// you made sure she stayed pure
 			// `J` needs work
 		}
@@ -2575,7 +2575,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	else if (cfg.debug.log_extradetails())			ss << "( She Is Not a Slave )\n";
 	else ss << "\n";
 
-	/* */if (g_Girls.CheckVirginity(girl))			ss << "She is a Virgin\n";
+	/* */if (girl->check_virginity())			ss << "She is a Virgin\n";
 	else if (cfg.debug.log_extradetails())			ss << "( She Is Not a Virgin )\n";
 	else ss << "\n";
 
@@ -3148,7 +3148,7 @@ string cGirls::GetSimpleDetails(sGirl* girl, int fontsize)
 	ss << "\n" << basestr[6] << girl->tiredness() << sper;
 	for (int i = 2; i < statcount; i++)	{ ss << "\n" << statstr[i] << girl->get_stat(statnum[i]) << sper; }
 	ss << "\n";	if (girl->is_slave())				{ ss << "Is Branded a Slave"; }
-	ss << "\n";	if (g_Girls.CheckVirginity(girl))	{ ss << "She is a Virgin"; }
+	ss << "\n";	if (girl->check_virginity())	{ ss << "She is a Virgin"; }
 	int to_go = (girl->carrying_monster() ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - girl->m_WeeksPreg;
 	ss << "\n";	if (girl->m_States&(1 << STATUS_PREGNANT))		{ ss << "Is pregnant " << "(" << to_go << ")"; }
 	else if (girl->m_States&(1 << STATUS_PREGNANT_BY_PLAYER))	{ ss << "Is pregnant with your child " << "(" << to_go << ")"; }
@@ -4142,7 +4142,7 @@ void cGirls::LoadGirlsXML(string filename)
 		girl->load_from_xml(el);			// uses sGirl::load_from_xml
 		if (cfg.debug.log_girls() && cfg.debug.log_extradetails()) g_LogFile.os() << *girl << endl;
 
-		if (CheckVirginity(girl))			// `J` check girl's virginity
+		if (girl->check_virginity())			// `J` check girl's virginity
 		{
 			girl->m_Virgin = 1; AddTrait(girl, "Virgin");
 		}
@@ -7843,10 +7843,7 @@ bool cGirls::RemoveTrait(sGirl* girl, string name, bool addrememberlist, bool fo
 	return false;
 }
 
-bool sGirl::lose_virginity()	{ return g_GirlsPtr->LoseVirginity(this); }
-//	Usually called as just g_Girls.LoseVirginity(girl) with implied no-remember, force=true
-bool cGirls::LoseVirginity(sGirl* girl, bool addrememberlist, bool force)
-{
+bool sGirl::lose_virginity()	{
 	/*  Very similar to (and uses) RemoveTrait(). Added since trait "Virgin" created 04/14/2013.
 	*	This includes capability for items, magic or other processes
 	*	to have a "remove but remember" effect, like a "Belt of False Defloration"
@@ -7855,87 +7852,9 @@ bool cGirls::LoseVirginity(sGirl* girl, bool addrememberlist, bool force)
 	*/
 
 	bool traitOpSuccess = false;
-	girl->m_Virgin = 0;
-	traitOpSuccess = RemoveTrait(girl, "Virgin", addrememberlist, force);
+	m_Virgin = 0;
+	traitOpSuccess = remove_trait("Virgin");
 	return traitOpSuccess;
-}
-
-//	Usually called as just g_Girls.RegainVirginity(girl) with implied temp=false, removeitem=false, inrememberlist=falsee
-bool cGirls::RegainVirginity(sGirl* girl, int temptime, bool removeitem, bool inrememberlist)
-{
-	/*  Very similar to (and uses) AddTrait(). Added since trait "Virgin" created 04/14/2013.
-	*	This includes capability for items, magic or other processes
-	*	to have a "remove but remember" effect, like a "Belt of False Defloration"
-	*	that provides a magical substitute vagina, preserving the original while worn.
-	*	Well, why not?		DustyDan
-	*/
-
-	bool traitOpSuccess = false;
-	girl->m_Virgin = 1;
-	//	Let's avoid re-inventing the wheel
-	traitOpSuccess = AddTrait(girl, "Virgin", temptime, removeitem, inrememberlist);
-	return traitOpSuccess;
-}
-
-// returns true if she is a virgin, false if she is not
-bool cGirls::CheckVirginity(sGirl* girl)
-{
-	if (girl->has_trait("Virgin") && girl->m_Virgin == 1) // `J` if already correct settings then return true
-	{
-		return true;
-	}
-	else if (girl->has_trait("Virgin"))	// `J` if not set correctly, set it correctly and return true
-	{
-		girl->m_Virgin = 1;
-		return true;
-	}
-	else if (girl->m_Virgin == 1)	// `J` if not set correctly, set it correctly and return true
-	{
-		AddTrait(girl, "Virgin");
-		return true;
-	}
-	else if (girl->m_Virgin == 0) // `J` if already correct settings then return false
-	{
-		return false;
-	}
-	else if (girl->m_Stats[STAT_AGE] < 18)	// `J` If she just turned 18 she should not legally have had sex yet
-	{
-		girl->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-		girl->m_Virgin = 1;
-		AddTrait(girl, "Virgin");
-		RemoveTrait(girl, "MILF");
-		return true;
-	}
-	else	// `J` average all sex skills plus age
-	{
-		int totalsex = girl->m_Stats[STAT_AGE];
-		int div = 1;
-		for (u_int i = 0; i < NUM_SKILLS; i++)
-		{
-			// `J` removed nonsex from virginity check
-			if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT && i != SKILL_MEDICINE && i != SKILL_PERFORMANCE && i != SKILL_COOKING &&
-				i != SKILL_CRAFTING && i != SKILL_HERBALISM && i != SKILL_FARMING && i != SKILL_BREWING && i != SKILL_ANIMALHANDLING)
-			{
-				totalsex += girl->m_Skills[i];
-				div++;	// `J` added to allow new skills
-			}
-		}
-		int avg = totalsex / div;	// `J` fixed to allow new skills
-		if (avg < 20)
-		{
-			girl->m_Virgin = 1;
-			AddTrait(girl, "Virgin");
-			return true;
-		}
-		else
-		{
-			girl->m_Virgin = 0;
-			return false;
-		}
-	}
-	if (girl->m_Virgin == 1) AddTrait(girl, "Virgin");
-	else { girl->m_Virgin = 0; RemoveTrait(girl, "Virgin"); }
-	return (girl->m_Virgin == 1);
 }
 
 void cGirls::AddRememberedTrait(sGirl* girl, string name)
@@ -8229,7 +8148,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		runawaymsg << "(When you find her, she may be... changed.)";
 
 		//If she was a virgin, she won't be now...
-		LoseVirginity(girl);
+		girl->lose_virginity();
 
 		//What damage?
 		int harm = g_Dice.d100();
@@ -8467,7 +8386,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (girl->has_trait("Queen"))		intro -= 3; //maybe again CRAZY
 		if (customer->m_IsWoman && girl->has_trait("Straight"))	intro -= 3;
 		if (girl->has_trait("Your Wife"))	intro -= 3; //maybe this idk CRAZY might need a love check also
-		if (CheckVirginity(girl))		intro -= 5;
+		if (girl->check_virginity())		intro -= 5;
 		if (girl->has_trait("Kidnapped"))	intro -= 5;
 		if (girl->has_trait("Emprisoned Customer"))	intro -= 5;
 
@@ -9118,7 +9037,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 #if defined(SPICE)
 			//SIN - supplement...
-			else if (g_Dice.percent(75) && g_Girls.CheckVirginity(girl))
+			else if (g_Dice.percent(75) && girl->check_virginity())
 			{
 				sexMessage << girlName << "'s virginity was spared, as he used her ass-hole. Considering she's a 'virgin' she seems to have done THIS before.";
 			}
@@ -11628,7 +11547,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << "At first " << girlName << " seemed to be in her element surrounded by so many \"wonderful\" cocks, but it quickly became apparent that she does not have the experience to satisfy them all.";
 			}
-			else if (g_Dice.percent(60) && g_Girls.CheckVirginity(girl))
+			else if (g_Dice.percent(60) && girl->check_virginity())
 			{
 				sexMessage << girlName << " has never fucked ONE person before and had no idea how to handle this kind of group. She was completely overwhelmed and had no control over what was happening "
 					<< "as strangers twisted and dragged her around while endless cocks were shoved painfully inside her and splurted cum in her face.";
@@ -12690,7 +12609,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	}	// end switch
 
 	// lose virginity unless it was anal sex -- or lesbian, or Oral also customer is happy no matter what. -PP
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
 		bool virgincheck = false;
 		int chappy = 0;
@@ -12741,7 +12660,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		if (chappy > 0) customer->m_Stats[STAT_HAPPINESS] += chappy;
 		if (girl->is_pregnant()) virgincheck = true;
-		if (virgincheck) g_Girls.LoseVirginity(girl);
+		if (virgincheck) girl->lose_virginity();
 	}
 
 	//SIN - poor accomodation minus...
@@ -16399,7 +16318,7 @@ bool cGirls::CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NU
 	*	are kind of cool, virgins have a +10 to their pregnancy
 	*	chance
 	*/
-	if (g_Girls.CheckVirginity(girl) && chance > 0) chance += 10;
+	if (girl->check_virginity() && chance > 0) chance += 10;
 	/*
 	*	the other effective form of contraception, of course,
 	*	is failing the dice roll. Let's check the chance of
@@ -16478,7 +16397,7 @@ int cGirls::calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players)
 }
 
 void sGirl::add_trait(string trait, int temptime)	{ g_GirlsPtr->AddTrait(this, trait, temptime); }
-void sGirl::remove_trait(string trait)					{ g_GirlsPtr->RemoveTrait(this, trait); }
+bool sGirl::remove_trait(string trait)					{ g_GirlsPtr->RemoveTrait(this, trait); }
 
 bool sGirl::has_trait(string trait)
 {
@@ -17747,7 +17666,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	else if (detailName == "Looks")				{ ss << ((get_stat(STAT_BEAUTY) + get_stat(STAT_CHARISMA)) / 2) << "%"; }
 	else if (detailName == "Tiredness")			{ ss << get_stat(STAT_TIREDNESS) << "%"; }
 	else if (detailName == "Happiness")			{ ss << get_stat(STAT_HAPPINESS) << "%"; }
-	else if (detailName == "Virgin")			{ ss << (g_Girls.CheckVirginity(this) ? "Yes" : "No"); }
+	else if (detailName == "Virgin")			{ ss << (this->check_virginity() ? "Yes" : "No"); }
 	else if (detailName == "Weeks_Due")
 	{
 		if (is_pregnant())
@@ -17958,7 +17877,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	}
 	else if (detailName == "is_pregnant")
 	{
-		if (g_Girls.CheckVirginity(this)) ss << "Vg.";
+		if (this->check_virginity()) ss << "Vg.";
 		else if (is_pregnant())
 		{
 			int to_go = ((this)->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - (this)->m_WeeksPreg;
@@ -18374,7 +18293,7 @@ bool cGirls::detect_disease_in_customer(sBrothel * brothel, sGirl* girl, sCustom
 	if (girl->has_trait("Tsundere"))				detectdisease += 5;		//
 	if (girl->has_trait("Twisted"))					detectdisease -= 10;	//
 	if (girl->has_trait("Vampire"))					detectdisease += 20;	// I can smell it in your blood
-	if (CheckVirginity(girl))						detectdisease -= 20;	// not sure what to look for
+	if (girl->check_virginity())					detectdisease -= 20;	// not sure what to look for
 	if (girl->has_trait("Whore"))					detectdisease += 20;	// I've seen it all
 	if (girl->has_trait("Yandere"))					detectdisease += 5;		//
 	if (girl->has_trait("Your Daughter"))			detectdisease += 30;	// you taught her what to look out for
@@ -18785,4 +18704,78 @@ int sGirl::upd_skill(int skill_id, int amount) {
 		m_Skills[skill_id] = max(0, amount + m_Skills[skill_id]);
 	}
 	return get_skill(skill_id);
+}
+
+bool sGirl::check_virginity() {
+	if (has_trait("Virgin") && m_Virgin == 1) // `J` if already correct settings then return true
+	{
+		return true;
+	}
+	else if (has_trait("Virgin"))	// `J` if not set correctly, set it correctly and return true
+	{
+		m_Virgin = 1;
+		return true;
+	}
+	else if (m_Virgin == 1)	// `J` if not set correctly, set it correctly and return true
+	{
+		add_trait("Virgin");
+		return true;
+	}
+	else if (m_Virgin == 0) // `J` if already correct settings then return false
+	{
+		return false;
+	}
+	else if (m_Stats[STAT_AGE] < 18)	// `J` If she just turned 18 she should not legally have had sex yet
+	{
+		m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+		m_Virgin = 1;
+		add_trait("Virgin");
+		remove_trait("MILF");
+		return true;
+	}
+	else	// `J` average all sex skills plus age
+	{
+		int totalsex = m_Stats[STAT_AGE];
+		int div = 1;
+		for (u_int i = 0; i < NUM_SKILLS; i++)
+		{
+			// `J` removed nonsex from virginity check
+			if (i != SKILL_SERVICE && i != SKILL_MAGIC && i != SKILL_COMBAT && i != SKILL_MEDICINE && i != SKILL_PERFORMANCE && i != SKILL_COOKING &&
+				i != SKILL_CRAFTING && i != SKILL_HERBALISM && i != SKILL_FARMING && i != SKILL_BREWING && i != SKILL_ANIMALHANDLING)
+			{
+				totalsex += m_Skills[i];
+				div++;	// `J` added to allow new skills
+			}
+		}
+		int avg = totalsex / div;	// `J` fixed to allow new skills
+		if (avg < 20)
+		{
+			m_Virgin = 1;
+			add_trait("Virgin");
+			return true;
+		}
+		else
+		{
+			m_Virgin = 0;
+			return false;
+		}
+	}
+	if (m_Virgin == 1) add_trait("Virgin");
+	else { m_Virgin = 0; remove_trait("Virgin"); }
+	return (m_Virgin == 1);
+}
+
+bool sGirl::regain_virginity() {
+	/*  Very similar to (and uses) AddTrait(). Added since trait "Virgin" created 04/14/2013.
+    *	This includes capability for items, magic or other processes
+    *	to have a "remove but remember" effect, like a "Belt of False Defloration"
+    *	that provides a magical substitute vagina, preserving the original while worn.
+    *	Well, why not?		DustyDan
+    */
+
+	bool traitOpSuccess = false;
+	m_Virgin = 1;
+	//	Let's avoid re-inventing the wheel
+	traitOpSuccess = g_Girls.AddTrait(this, "Virgin", false, false, false);
+	return traitOpSuccess;
 }

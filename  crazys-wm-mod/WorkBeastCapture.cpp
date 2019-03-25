@@ -144,7 +144,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 			if (girl->has_trait( "Psychic") && (girl->libido() >= 90) && g_Dice.percent(gain * 5))
 			{
 				ss << girlName << "'s Psychic sensitivity caused her mind be overwhelmed by the creatures' lusts";
-				if (g_Girls.CheckVirginity(girl))
+				if (girl->check_virginity())
 				{
 					ss << " but, things were moving too fast and she regained control before they could take her virginity.\n";
 					girl->beastiality(1);

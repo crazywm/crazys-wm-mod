@@ -100,7 +100,7 @@ bool cJobManager::WorkSOLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	if (girl->has_trait("Bisexual"))		girl->m_WorkingDay -= girl->normalsex() / 20;					// it is hard to change something you are good at
 	// Positive Traits
-	if (g_Girls.CheckVirginity(girl))		girl->m_WorkingDay += g_Dice.bell(2, 10);	// If she has not been with a man, what could she be missing
+	if (girl->check_virginity())		girl->m_WorkingDay += g_Dice.bell(2, 10);	// If she has not been with a man, what could she be missing
 	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += g_Dice.bell(2, 10);	// She sees you enjoying yourself with the ladies, lead by example?
 	if (girl->has_trait("Futanari"))		girl->m_WorkingDay += 2;					// If she has a dick can she really be a lesbian?
 	// Negative Traits
@@ -119,7 +119,7 @@ bool cJobManager::WorkSOLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (girl->has_trait("Slut"))			girl->m_WorkingDay -= g_Dice % 5;			// She'll do anyone
 	if (girl->has_trait("Actress"))			girl->m_WorkingDay -= g_Dice % 5;			// She will do whatever her director tells her to
 
-	//	if (g_Girls.CheckVirginity(girl))				{}
+	//	if (girl->check_virginity())				{}
 
 	if (is_sex_type_allowed(SKILL_ANAL, brothel))			girl->m_WorkingDay += g_Dice % 2;
 	if (is_sex_type_allowed(SKILL_BDSM, brothel))			girl->m_WorkingDay -= g_Dice % 5 + 5;

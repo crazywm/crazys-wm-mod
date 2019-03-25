@@ -287,9 +287,9 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, sBrothel* brothel, bool Day0N
 		else if (n == SKILL_NORMALSEX)	imageType = IMGTYPE_SEX;
 		if (n == SKILL_NORMALSEX)
 		{
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
-				g_Girls.LoseVirginity(girl);
+				girl->lose_virginity();
 				ss << "\nShe is no longer a virgin.\n";
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))

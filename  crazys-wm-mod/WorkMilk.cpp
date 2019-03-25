@@ -121,7 +121,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 	//test code for auto preg
-	if (girl->m_WeeksPreg < 0 && g_Brothels.GetNumGirlsOnJob(0, JOB_FARMMANGER, false) >= 1 && noAnti && !g_Girls.CheckVirginity(girl))
+	if (girl->m_WeeksPreg < 0 && g_Brothels.GetNumGirlsOnJob(0, JOB_FARMMANGER, false) >= 1 && noAnti && !girl->check_virginity())
 	{
 		sCustomer Cust = g_Customers.GetCustomer(*brothel);
 		ss << farmmanname <<" noticing that " << girlName << " wasn't pregnant decided to take it upon herself to make sure she got knocked up.\n";
@@ -216,7 +216,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	//Testing and seems weird that virgins and never-pregs can produce so much, so halving this
 		//This is every way I can find of asking if she's had a kid - MILF needed as this will register children prior to employment
-	if (g_Girls.CheckVirginity(girl) || (!isPregnant && !girl->has_trait( "MILF") && girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
+	if (girl->check_virginity() || (!isPregnant && !girl->has_trait( "MILF") && girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
 	{
 		volume /= 2;											// never preg, so not producing much
 		girl->lactation(g_Dice % 3);	//all this pumping etc induces lactation
@@ -433,7 +433,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 				girl->bdsm(1);
 				extraimage = IMGTYPE_ANAL;
 			}
-			else if (g_Girls.CheckVirginity(girl))
+			else if (girl->check_virginity())
 			{
 				ssextra << " and you are about to enter her when you remember she is a virgin. Reluctantly, you switch and instead fuck her ass.\n";
 				girl->anal(1);
@@ -514,7 +514,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 				g_Brothels.GetDungeon()->AddCust(DUNGEON_CUSTBEATGIRL, 0, 0);
 				break;
 			}
-			if (g_Girls.CheckVirginity(girl)) ssextra << "Thanks to you, her virginity is intact so ";
+			if (girl->check_virginity()) ssextra << "Thanks to you, her virginity is intact so ";
 			ssextra << girlName << " comes to your office after her shift";
 			if ((HateLove <= 50) || girl->has_trait( "Nymphomaniac") || girl->has_trait( "Cum Addict") || girl->has_trait( "Slut"))
 			{

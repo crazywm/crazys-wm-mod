@@ -57,10 +57,6 @@ public:
 	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]) = 0;
 	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
-
-	virtual bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false) = 0;
-	virtual bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
-	virtual bool CheckVirginity(sGirl* girl) = 0;
 };
 extern cAbstractGirls* g_GirlsPtr;
 
@@ -669,9 +665,11 @@ struct sGirl
 	*	should be able to do the same using sCustomer as well...
 	*/
 	void add_trait(string trait, int temptime = 0);
-	void remove_trait(string trait);
+	bool remove_trait(string trait);
 	bool has_trait(string trait);
+	bool check_virginity();
 	bool lose_virginity();
+	bool regain_virginity();
 	int breast_size();
 	bool is_dead(bool sendmessage = false);		// `J` replaces a few DeadGirl checks
 	bool is_addict(bool onlyhard = false);	// `J` added bool onlyhard to allow only hard drugs to be checked for
@@ -892,9 +890,6 @@ public:
 
 	bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool inrememberlist = false);
 	void AddRememberedTrait(sGirl* girl, string name);
-	bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false);
-	bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool inrememberlist = false);
-	bool CheckVirginity(sGirl* girl);
 
 	void CalculateAskPrice(sGirl* girl, bool vari);
 

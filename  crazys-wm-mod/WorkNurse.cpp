@@ -308,7 +308,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		ss << "An elderly fellow managed to convince " << girlName << " that her touch can heal! She ended up giving him a hand job!\n";
 	}
 
-	if (g_Dice.percent(30) && !g_Girls.CheckVirginity(girl) && !girl->has_trait( "Lesbian")
+	if (g_Dice.percent(30) && !girl->check_virginity() && !girl->has_trait( "Lesbian")
 		&& (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Slut") || girl->has_trait( "Succubus") || girl->has_trait( "Bimbo")))
 	{
 		if (girl->libido() > 65 && (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
@@ -360,9 +360,9 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		{
 			imagetype = IMGTYPE_SEX;
 			girl->normalsex(2);
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
-				g_Girls.LoseVirginity(girl);
+				girl->lose_virginity();
 				ss << "She is no longer a virgin.\n";
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))
