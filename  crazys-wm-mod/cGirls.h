@@ -61,10 +61,6 @@ public:
 	virtual bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool CheckVirginity(sGirl* girl) = 0;
-	virtual void UpdateSkillTemp(sGirl* girl, int skill, int amount) = 0;	// updates a skill temporarily
-	virtual void UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraite = false) = 0;
-	virtual void UpdateEnjoymentTemp(sGirl* girl, int stat, int amount) = 0;
-	virtual void UpdateTrainingTemp(sGirl* girl, int stat, int amount) = 0;
 };
 extern cAbstractGirls* g_GirlsPtr;
 
@@ -441,14 +437,30 @@ struct sGirl
 
 	int upd_temp_stat(int stat_id, int amount, bool usetraits=false)
 	{
-		g_GirlsPtr->UpdateStatTemp(this, stat_id, amount, usetraits);
+        if (usetraits)
+        {
+            if (stat_id == STAT_LIBIDO)
+            {
+                if (has_trait("Nymphomaniac"))	{ amount = int((double)amount * (amount > 0 ? 1.5 : 0.5));	if (amount == 0)	amount = 1; }
+                else if (has_trait("Chaste"))		{ amount = int((double)amount * (amount > 0 ? 0.5 : 1.5));	if (amount == 0)	amount = -1; }
+            }
+        }
+        // TODO Does it really make sense to silently change some stats non temporarily in upd_temp_stat?
+        if (stat_id == STAT_HEALTH || stat_id == STAT_HAPPINESS || stat_id == STAT_TIREDNESS || stat_id == STAT_EXP ||
+                stat_id == STAT_LEVEL || stat_id == STAT_HOUSE || stat_id == STAT_ASKPRICE)
+        {
+            upd_stat(stat_id, amount);
+            return get_stat(stat_id);
+        }
+        m_StatTemps[stat_id] += amount;
+
 		return get_stat(stat_id);
 	}
 	int upd_stat(int stat_id, int amount, bool usetraits = true);
 
 	int upd_temp_Enjoyment(int stat_id, int amount)
 	{
-		g_GirlsPtr->UpdateEnjoymentTemp(this, stat_id, amount);
+		m_EnjoymentTemps[stat_id] += amount;
 		return get_enjoyment(stat_id);
 	}
 	int upd_Enjoyment(int stat_id, int amount, bool usetraits = true)
@@ -462,7 +474,7 @@ struct sGirl
 
 	int upd_temp_Training(int stat_id, int amount)
 	{
-		g_GirlsPtr->UpdateTrainingTemp(this, stat_id, amount);
+		m_TrainingTemps[stat_id] += amount;
 		return get_training(stat_id);
 	}
 	int upd_Training(int stat_id, int amount, bool usetraits = true)
@@ -553,7 +565,7 @@ struct sGirl
 
 	int upd_temp_skill(int skill_id, int amount)
 	{
-		g_GirlsPtr->UpdateSkillTemp(this, skill_id, amount);
+        m_SkillTemps[skill_id] += amount;
 		return get_skill(skill_id);
 	}
 
@@ -757,14 +769,12 @@ public:
 	void EndDayGirls(sBrothel* brothel, sGirl* girl);
 
     void SetStat(sGirl* girl, int stat, int amount);
-	// updates a stat
-	void UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits = false);	// updates a stat temporarily
+	// updates a stat temporarily
 	void UpdateStatMod(sGirl* girl, int stat, int amount);							// updates a statmod usually from items
 	void UpdateStatTr(sGirl* girl, int stat, int amount);							// updates a statTr from traits
 
 	void SetSkill(sGirl* girl, int skill, int amount);
-	// updates a skill
-	void UpdateSkillTemp(sGirl* girl, int skill, int amount);	// updates a skill temporarily
+    // updates a skill temporarily
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods usually from items
 	void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
 
@@ -774,7 +784,7 @@ public:
 	// updates what she enjoys
 	void UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 	void UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
-	void UpdateEnjoymentTemp(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
+    // `J` added for traits
 
     // `CRAZY` added
 	void SetTraining(sGirl* girl, int a_Training, int amount);									// `CRAZY` added
@@ -782,7 +792,7 @@ public:
 	// updates what she enjoys
 	void UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
 	void UpdateTrainingMod(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
-	void UpdateTrainingTemp(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
+	// `CRAZY` added for traits
 
 
 	double GetAverageOfAllSkills(sGirl* girl);	// `J` added

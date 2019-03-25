@@ -3334,12 +3334,12 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			if (girl->intelligence() > 65)
 			{
 				ss << girlName << " sharpened her Short Sword making it more ready for combat.\n \n";
-				g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, 2);
+				girl->upd_temp_skill(SKILL_COMBAT, 2);
 			}
 			else
 			{
 				ss << girlName << " tried to sharpen her Short Sword but doesn't have the brains to do it right.\n \n";
-				g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, -2);
+				girl->upd_temp_skill(SKILL_COMBAT, -2);
 			}
 		}
 	}

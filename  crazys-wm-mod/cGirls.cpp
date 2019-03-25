@@ -3483,25 +3483,6 @@ void cGirls::updateTempStats(sGirl* girl)	// Normalise to zero by 30% each week
 	}
 }
 
-void cGirls::UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits)
-{
-	if (usetraits)
-	{
-		if (stat == STAT_LIBIDO)
-		{
-			if (girl->has_trait("Nymphomaniac"))	{ amount = int((double)amount * (amount > 0 ? 1.5 : 0.5));	if (amount == 0)	amount = 1; }
-			else if (girl->has_trait("Chaste"))		{ amount = int((double)amount * (amount > 0 ? 0.5 : 1.5));	if (amount == 0)	amount = -1; }
-		}
-	}
-	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_EXP ||
-		stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_ASKPRICE)
-	{
-		girl->upd_stat(stat, amount);
-		return;
-	}
-	girl->m_StatTemps[stat] += amount;
-}
-
 // ----- Skill
 
 double cGirls::GetAverageOfAllSkills(sGirl* girl)
@@ -3546,12 +3527,6 @@ void cGirls::UpdateSkillMod(sGirl* girl, int skill, int amount)
 void cGirls::UpdateSkillTr(sGirl* girl, int skill, int amount)
 {
 	girl->m_SkillTr[skill] += amount;
-}
-
-// add amount to tempskill
-void cGirls::UpdateSkillTemp(sGirl* girl, int skill, int amount)
-{
-	girl->m_SkillTemps[skill] += amount;
 }
 
 // Normalise to zero by 30%
@@ -4524,7 +4499,7 @@ void cGirls::UseItems(sGirl* girl)
 		else
 		{
 			girl->upd_stat(STAT_HAPPINESS, 10);
-			UpdateStatTemp(girl, STAT_LIBIDO, 10, true);
+			girl->upd_temp_stat(STAT_LIBIDO, 10, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
@@ -4557,7 +4532,7 @@ void cGirls::UseItems(sGirl* girl)
 		else
 		{
 			girl->upd_stat(STAT_HAPPINESS, 10);
-			UpdateStatTemp(girl, STAT_LIBIDO, 5, true);
+			girl->upd_temp_stat(STAT_LIBIDO, 5, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
@@ -4590,7 +4565,7 @@ void cGirls::UseItems(sGirl* girl)
 		else
 		{
 			girl->upd_stat(STAT_HAPPINESS, 10);
-			UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
+			girl->upd_temp_stat(STAT_LIBIDO, 2, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
@@ -4625,7 +4600,7 @@ void cGirls::UseItems(sGirl* girl)
 		else
 		{
 			girl->upd_stat(STAT_HAPPINESS, 10);
-			UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
+			girl->upd_temp_stat(STAT_LIBIDO, 2, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
@@ -4686,7 +4661,7 @@ void cGirls::UseItems(sGirl* girl)
 				girl->upd_stat(STAT_HAPPINESS, happy);
 				girl->upd_stat(STAT_HEALTH, health);
 				girl->upd_stat(STAT_MANA, mana);
-				UpdateStatTemp(girl, STAT_LIBIDO, libido, true);
+				girl->upd_temp_stat(STAT_LIBIDO, libido, true);
 				g_InvManager.Equip(girl, temp, false);
 				girl->m_Withdrawals = 0;
 			}
@@ -4715,7 +4690,7 @@ void cGirls::UseItems(sGirl* girl)
 			// `Gondra` not sure if Nicotine withdrawal should harm her health, left it at (-2, -1, 0 or +1) like alcohol
 			girl->upd_stat(STAT_HEALTH, g_Dice % 4 - 2);
 			// `Gondra` nicotine withdrawal includes as symptoms difficulty to concentrate and fatigue
-			UpdateStatTemp(girl, STAT_INTELLIGENCE, -2);
+			girl->upd_temp_stat(STAT_INTELLIGENCE, -2);
 			girl->upd_stat(STAT_TIREDNESS, 5);
 			if (!withdraw)
 			{
@@ -8305,7 +8280,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			RemoveTrait(girl, "Optimist");
 			girl->upd_stat(STAT_HEALTH, -5);
 			girl->upd_stat(STAT_SPIRIT, -5);
-			UpdateStatTemp(girl, STAT_LIBIDO, -50, true);
+			girl->upd_temp_stat(STAT_LIBIDO, -50, true);
 			girl->upd_skill(SKILL_NORMALSEX, 5);
 		}
 		else if (harm > 15)  //10% chance
@@ -12272,7 +12247,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			girl->upd_stat(STAT_HEALTH, -3);
 			//girl->upd_stat(STAT_SANITY, -3);
 		}
-		UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -10, true);
 		girl->upd_stat(STAT_SPIRIT, -1);
 		STDchance += 30;
 
@@ -12327,7 +12302,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			STDchance += (contraception ? 2 : 20);
 		}
 
-		UpdateStatTemp(girl, STAT_LIBIDO, -5, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -5, true);
 		girl->upd_stat(STAT_SPIRIT, -1);
 
 	 //SIN - GIFT DROP
@@ -12398,7 +12373,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			contraception = girl->calc_pregnancy(*customer, good);
 			STDchance += (contraception ? 4 : 40);
 		}
-		UpdateStatTemp(girl, STAT_LIBIDO, -15, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -15, true);
 
 	 //SIN - GIFT DROP
 		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
@@ -12456,7 +12431,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 		}
 		STDchance += 10;
-		UpdateStatTemp(girl, STAT_LIBIDO, -2, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -2, true);
 
 	 //SIN - GIFT DROP
 		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
@@ -12484,7 +12459,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//girl->upd_stat(STAT_SANITY, -1);
 		}
 		STDchance += 1;
-		UpdateStatTemp(girl, STAT_LIBIDO, -2, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -2, true);
 	}break;
 
 	case SKILL_HANDJOB:
@@ -12502,7 +12477,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			girl->upd_stat(STAT_CONFIDENCE, -1);
 		}
 		STDchance += 1;
-		UpdateStatTemp(girl, STAT_LIBIDO, -1, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -1, true);
 	}break;
 
 	case SKILL_FOOTJOB:
@@ -12520,7 +12495,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			girl->upd_stat(STAT_CONFIDENCE, -1);
 		}
 		STDchance += 1;
-		UpdateStatTemp(girl, STAT_LIBIDO, -1, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -1, true);
 	}break;
 
 	case SKILL_BEASTIALITY:
@@ -12548,7 +12523,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			contraception = girl->calc_insemination(*GetBeast(), good);
 			STDchance += (contraception ? 2 : 20);
 		}
-		UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -10, true);
 
 	//SIN - GIFT DROP
 		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 50)
@@ -12645,7 +12620,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				message += "\n \nWorryingly, as she tidied up she found a Herpes Cure dropped under the bed. It's hers now.";
 			}
 		}
-		UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 	}break;
 
 	case SKILL_LESBIAN:
@@ -12664,7 +12639,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//girl->upd_stat(STAT_SANITY, -1);
 		}
 		STDchance += 5;
-		UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -10, true);
 
 	 //SIN - GIFT DROP
 		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
@@ -12710,7 +12685,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			girl->upd_stat(STAT_HEALTH, -3);
 		}
 		STDchance += 0;
-		UpdateStatTemp(girl, STAT_LIBIDO, 0, true);
+		girl->upd_temp_stat(STAT_LIBIDO, 0, true);
 	}break;
 	}	// end switch
 
@@ -12826,7 +12801,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	int enjoy = 1;
 	if (girl->has_trait("Nymphomaniac"))
 	{
-		UpdateStatTemp(girl, STAT_LIBIDO, 15);		// she just had sex and she wants more
+		girl->upd_temp_stat(STAT_LIBIDO, 15);		// she just had sex and she wants more
 		switch (SexType)
 		{
 		case SKILL_GROUP:			enjoy += 3; break;
@@ -15893,10 +15868,7 @@ void cGirls::UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount)
 {
 	girl->m_EnjoymentMods[whatSheEnjoys] += amount;
 }
-void cGirls::UpdateEnjoymentTemp(sGirl* girl, int whatSheEnjoys, int amount)
-{
-	girl->m_EnjoymentTemps[whatSheEnjoys] += amount;
-}
+
 // Normalise to zero by 30%
 void cGirls::updateTempEnjoyment(sGirl* girl)
 {
@@ -15939,10 +15911,7 @@ void cGirls::UpdateTrainingMod(sGirl* girl, int whatSheTrains, int amount)
 {
 	girl->m_TrainingMods[whatSheTrains] += amount;
 }
-void cGirls::UpdateTrainingTemp(sGirl* girl, int whatSheTrains, int amount)
-{
-	girl->m_TrainingTemps[whatSheTrains] += amount;
-}
+
 // Normalise to zero by 30%
 void cGirls::updateTempTraining(sGirl* girl)
 {
