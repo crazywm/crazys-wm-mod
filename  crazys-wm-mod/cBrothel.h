@@ -341,6 +341,8 @@ public:
 	// WD:	Update code of girls stats
 	void updateGirlTurnBrothelStats(sGirl* girl);
 
+
+
 	//private:
 	int TotalFame(sBrothel *);
 	cPlayer m_Player;				// the stats for the player owning these brothels
@@ -393,6 +395,22 @@ public:
 	int  m_Processing_Shift;		// WD:	Store Day0Night1 value when processing girls
 
 	void AddBrothel(sBrothel* newBroth);
+
+/*
+int FoodAnimal[6] = { 0, 0, 0, 0, 0, 0 };
+string FoodAnimalName[6] = { "Egg", "Chicken", "Goat", "Sheep", "Ostrich", "Cow" };
+int FoodAnimalFoodValue[6] = { 1, 2, 3, 3, 6, 10 };
+
+int FoodPlant[6] = { 0, 0, 0, 0, 0, 0 };
+string FoodPlantName[6] = { "Wheat", "Corn", "Potato", "Tomato", "Lettuce", "Hops" };
+
+int GardenPlant[10] = { 10, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+string GardenPlantName[10] = { "Weeds", "Easy", "Simple", "Common", "Uncommon", "Special", "Very Special", "Rare", "Very Rare", "Unique" };
+*/
+
+void
+EndOfDay(sBrothel * brothel, const string& matron_title, bool Day0Night1, u_int restjob, u_int matronjob,
+         bool has_matron);
 };
 
 

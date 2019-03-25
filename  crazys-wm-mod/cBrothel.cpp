@@ -5713,6 +5713,152 @@ sGirl* cBrothelManager::WhoHasTorturerJob()
 	return 0;										// WD: Not Found
 }
 
+void cBrothelManager::EndOfDay(sBrothel * brothel, const string& matron_title, bool Day0Night1, u_int restjob,
+							   u_int matronjob, bool has_matron)
+{
+	sGirl* current = brothel->m_Girls;
+    while (current)
+	{
+		if (current->is_dead())
+		{	// skip dead girls
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = nullptr; break; }
+		}
+		string girlName = current->m_Realname;
+		int sum = EVENT_SUMMARY;
+		stringstream ss;
+		ss.str("");
+
+		// update for girls items that are not used up
+		do_daily_items(brothel, current);					// `J` added
+
+		// Level the girl up if nessessary
+		g_Girls.LevelUp(current);
+		// Natural healing, 2% health and 2% tiredness per day
+		current->upd_stat(STAT_HEALTH, 2, false);
+		current->upd_stat(STAT_TIREDNESS, -2, false);
+
+		u_int sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->happiness()< 40)
+		{
+			if (sw != matronjob && has_matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))
+			{
+				ss << "The " << matron_title << " helps cheer up " << girlName << " when she is feeling sad.\n";
+				current->happiness(g_Dice % 10 + 5);
+			}
+			else if (brothel->m_NumGirls > 10 && g_Dice.percent(50))
+			{
+				ss << "Some of the other girls help cheer up " << girlName << " when she is feeling sad.\n";
+				current->happiness(g_Dice % 8 + 3);
+			}
+			else if (brothel->m_NumGirls > 1 && g_Dice.percent(max(brothel->m_NumGirls, 50)))
+			{
+				ss << "One of the other girls helps cheer up " << girlName << " when she is feeling sad.\n";
+				current->happiness(g_Dice % 6 + 2);
+			}
+			else if (brothel->m_NumGirls == 1 && g_Dice.percent(70))
+			{
+				ss << girlName << " plays around in the empty building until she feels better.\n";
+				current->happiness(g_Dice % 10 + 10);
+			}
+			else if (current->health()< 20) // no one helps her and she is really unhappy
+			{
+				ss << girlName << " is looking very depressed. You may want to do something about that before she does something drastic.\n";
+				sum = EVENT_WARNING;
+			}
+		}
+
+		int t = current->tiredness();
+		int h = current->health();
+		if (sw == matronjob && (t > 60 || h < 40))
+		{
+			ss << "As " << matron_title << ", " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
+			if (t > 50 && h < 50)
+			{
+				ss << "some potions";
+				current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
+				current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(20, true);
+			}
+			else if (t > 50)
+			{
+				ss << "a resting potion";
+				current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else if (h < 50)
+			{
+				ss << "a healing potion";
+				current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else
+			{
+				ss << "a potion";
+				current->upd_stat(STAT_HEALTH, 10 + g_Dice % 10, false);
+				current->upd_stat(STAT_TIREDNESS, -(10 + g_Dice % 10), false);
+				g_Gold.consumable_cost(5, true);
+			}
+			ss << " for herself.\n";
+		}
+		else if (t > 80 || h < 40)
+		{
+			if (!has_matron)	// do no matron first as it is the easiest
+			{
+				ss << "WARNING! " << girlName;
+				/* */if (t > 80 && h < 20)	ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
+				else if (t > 80 && h < 40)	ss << " is in bad shape, she is tired and injured.\nShe should rest or she may die!\n";
+				else if (t > 80)/*      */	ss << " is desparatly in need of rest.\nGive her some free time\n";
+				else if (h < 20)/*      */	ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
+				else if (h < 40)/*      */	ss << " is hurt.\nShe should rest and recuperate.\n";
+				sum = EVENT_WARNING;
+			}
+			else	// do all other girls with a matron working
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255) // the girl has been working
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = restjob;
+					ss << "The " << matron_title << " takes " << girlName << " off duty to rest due to her ";
+					if (t > 80 && h < 40)	ss << "exhaustion.\n";
+					else if (t > 80)		ss << "tiredness.\n";
+					else if (h < 40)		ss << "low health.\n";
+					else /*       */		ss << "current state.\n";
+					sum = EVENT_WARNING;
+				}
+				else	// the girl has already been taken off duty by the matron
+				{
+					if (g_Dice.percent(70))
+					{
+						ss << "The " << matron_title << "helps ";
+						if (t > 80 && h < 40)
+						{
+							ss << girlName << " recuperate.\n";
+							current->upd_stat(STAT_HEALTH, 2 + g_Dice % 4, false);
+							current->upd_stat(STAT_TIREDNESS, -(2 + g_Dice % 4), false);
+						}
+						else if (t > 80)
+						{
+							ss << girlName << " to relax.\n";
+							current->upd_stat(STAT_TIREDNESS, -(5 + g_Dice % 5), false);
+						}
+						else if (h < 40)
+						{
+							ss << " heal " << girlName << ".\n";
+							current->upd_stat(STAT_HEALTH, 5 + g_Dice % 5, false);
+						}
+					}
+				}
+			}
+		}
+
+		if (ss.str().length() > 0)	current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next;		// Process next girl
+	}
+}
+
 #if 0
 /*
 * best way to comment out a large block of code is with
