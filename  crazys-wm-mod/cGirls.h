@@ -54,10 +54,6 @@ struct  sGang;
 
 class cAbstractGirls {
 public:
-    virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
-	virtual void UpdateSkill(sGirl* girl, int skill, int amount) = 0;
-	virtual void UpdateEnjoyment(sGirl* girl, int skill, int amount) = 0;
-	virtual void UpdateTraining(sGirl* girl, int skill, int amount) = 0;
 	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]) = 0;
 	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
 	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
@@ -448,11 +444,7 @@ struct sGirl
 		g_GirlsPtr->UpdateStatTemp(this, stat_id, amount, usetraits);
 		return get_stat(stat_id);
 	}
-	int upd_stat(int stat_id, int amount, bool usetraits = true)
-	{
-		g_GirlsPtr->UpdateStat(this, stat_id, amount, usetraits);
-		return get_stat(stat_id);
-	}
+	int upd_stat(int stat_id, int amount, bool usetraits = true);
 
 	int upd_temp_Enjoyment(int stat_id, int amount)
 	{
@@ -461,7 +453,10 @@ struct sGirl
 	}
 	int upd_Enjoyment(int stat_id, int amount, bool usetraits = true)
 	{
-		g_GirlsPtr->UpdateEnjoyment(this, stat_id, amount);
+		m_Enjoyment[amount] += amount;
+		/* */if (m_Enjoyment[amount] > 100) 	m_Enjoyment[amount] = 100;
+		else if (m_Enjoyment[amount] < -100) 	m_Enjoyment[amount] = -100;
+
 		return get_enjoyment(stat_id);
 	}
 
@@ -472,7 +467,9 @@ struct sGirl
 	}
 	int upd_Training(int stat_id, int amount, bool usetraits = true)
 	{
-		g_GirlsPtr->UpdateTraining(this, stat_id, amount);
+		m_Training[stat_id] += amount;
+		/* */if (m_Training[stat_id] > 100) 	m_Training[stat_id] = 100;
+		else if (m_Training[stat_id] < 0) 		m_Training[stat_id] = 0;
 		return get_training(stat_id);
 	}
 
@@ -559,11 +556,9 @@ struct sGirl
 		g_GirlsPtr->UpdateSkillTemp(this, skill_id, amount);
 		return get_skill(skill_id);
 	}
-	int upd_skill(int skill_id, int amount)
-	{
-		g_GirlsPtr->UpdateSkill(this, skill_id, amount);
-		return get_skill(skill_id);
-	}
+
+	int upd_skill(int skill_id, int amount);
+
 	int	anal()					{ return get_skill(SKILL_ANAL); }
 	int	anal(int n)				{ return upd_skill(SKILL_ANAL, n); }
 	int	bdsm()					{ return get_skill(SKILL_BDSM); }
@@ -762,13 +757,13 @@ public:
 	void EndDayGirls(sBrothel* brothel, sGirl* girl);
 
     void SetStat(sGirl* girl, int stat, int amount);
-	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);		// updates a stat
+	// updates a stat
 	void UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits = false);	// updates a stat temporarily
 	void UpdateStatMod(sGirl* girl, int stat, int amount);							// updates a statmod usually from items
 	void UpdateStatTr(sGirl* girl, int stat, int amount);							// updates a statTr from traits
 
 	void SetSkill(sGirl* girl, int skill, int amount);
-	void UpdateSkill(sGirl* girl, int skill, int amount);		// updates a skill
+	// updates a skill
 	void UpdateSkillTemp(sGirl* girl, int skill, int amount);	// updates a skill temporarily
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods usually from items
 	void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
@@ -776,7 +771,7 @@ public:
 	// `J` added
 	void SetEnjoyment(sGirl* girl, int a_Enjoy, int amount);									// `J` added
 	void SetEnjoymentTR(sGirl* girl, int a_Enjoy, int amount);									// `J` added for traits
-	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount);	// updates what she enjoys
+	// updates what she enjoys
 	void UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 	void UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 	void UpdateEnjoymentTemp(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
@@ -784,7 +779,7 @@ public:
     // `CRAZY` added
 	void SetTraining(sGirl* girl, int a_Training, int amount);									// `CRAZY` added
 	void SetTrainingTR(sGirl* girl, int a_Training, int amount);									// `CRAZY` added for traits
-	void UpdateTraining(sGirl* girl, int whatSheTrains, int amount);	// updates what she enjoys
+	// updates what she enjoys
 	void UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
 	void UpdateTrainingMod(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
 	void UpdateTrainingTemp(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits

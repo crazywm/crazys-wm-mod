@@ -2037,7 +2037,7 @@ void cGirls::LevelUp(sGirl* girl)
 	if (xp < xpneeded) return;
 
 	SetStat(girl, STAT_EXP, xp - xpneeded);
-	UpdateStat(girl, STAT_LEVEL, 1);
+	girl->upd_stat(STAT_LEVEL, 1);
 
 	if (girl->level() <= 20)	LevelUpStats(girl);
 
@@ -2089,10 +2089,10 @@ void cGirls::LevelUpStats(sGirl* girl)
 	else if (girl->has_trait("Slow Learner"))	DiceSize = 2;
 
 	// level up stats (only first 8 advance in levelups)
-	for (int i = 0; i < 8; i++)	UpdateStat(girl, i, g_Dice%DiceSize);
+	for (int i = 0; i < 8; i++)	girl->upd_stat(i, g_Dice%DiceSize);
 
 	// level up skills
-	for (u_int i = 0; i < NUM_SKILLS; i++)	UpdateSkill(girl, i, g_Dice%DiceSize);
+	for (u_int i = 0; i < NUM_SKILLS; i++)	girl->upd_skill(i, g_Dice%DiceSize);
 }
 
 /*
@@ -2148,7 +2148,7 @@ void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 	else if (girl->has_trait("Strong Magic"))	E_mana = girl->magic() / 5;		// max 20 per day
 	else if (girl->has_trait("Powerful Magic"))	E_mana = girl->magic() / 2;		// max 50 per day
 	else /*                                 */	E_mana = girl->magic() / 10;	// max 10 per day
-	UpdateStat(girl, STAT_MANA, E_mana);
+	girl->upd_stat(STAT_MANA, E_mana);
 
 
 	// `J` update the girls base libido
@@ -2158,7 +2158,7 @@ void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 	if (total_libido > 90)	E_libido++;
 	if (total_libido < 10)	E_libido--;
 	if (total_libido < (base_libido / 3)) E_libido--;
-	UpdateStat(girl, STAT_LIBIDO, E_libido);
+	girl->upd_stat(STAT_LIBIDO, E_libido);
 
 
 	/* `J` lactation is not really thought out fully
@@ -2176,34 +2176,34 @@ void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 		else /*                                     */	E_lactation = 10;
 		/* */if (girl->is_pregnant())					E_lactation *= 2;
 		else if (girl->m_PregCooldown>0)				E_lactation = int((float)E_lactation * 2.5f);
-		UpdateStat(girl, STAT_LACTATION, E_lactation);
+		girl->upd_stat(STAT_LACTATION, E_lactation);
 	}
 
 
 
-	int a = g_Dice.d100();	if (a < 5 || (a < 10 && !m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel)))	UpdateSkill(girl, SKILL_BEASTIALITY, -1);
-	int b = g_Dice.d100();	if (b < 5 || (b < 10 && !m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel)))		UpdateSkill(girl, SKILL_BDSM, -1);
-	int c = g_Dice.d100();	if (c < 5 || (c < 10 && !m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel)))		UpdateSkill(girl, SKILL_GROUP, -1);
-	int d = g_Dice.d100();	if (d < 5 || (d < 10 && !m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel)))	UpdateSkill(girl, SKILL_NORMALSEX, -1);
-	int e = g_Dice.d100();	if (e < 5 || (e < 10 && !m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel)))		UpdateSkill(girl, SKILL_ANAL, -1);
-	int f = g_Dice.d100();	if (f < 5 || (f < 10 && !m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel)))		UpdateSkill(girl, SKILL_LESBIAN, -1);
-	int g = g_Dice.d100();	if (g < 5 || (g < 10 && !m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel)))		UpdateSkill(girl, SKILL_FOOTJOB, -1);
-	int h = g_Dice.d100();	if (h < 5 || (h < 10 && !m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel)))		UpdateSkill(girl, SKILL_HANDJOB, -1);
-	int i = g_Dice.d100();	if (i < 5 || (i < 10 && !m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel)))		UpdateSkill(girl, SKILL_ORALSEX, -1);
-	int j = g_Dice.d100();	if (j < 5 || (j < 10 && !m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel)))	UpdateSkill(girl, SKILL_TITTYSEX, -1);
-	int k = g_Dice.d100();	if (k < 5 || (k < 10 && !m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel)))		UpdateSkill(girl, SKILL_STRIP, -1);
+	int a = g_Dice.d100();	if (a < 5 || (a < 10 && !m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel)))	girl->upd_skill(SKILL_BEASTIALITY, -1);
+	int b = g_Dice.d100();	if (b < 5 || (b < 10 && !m_JobManager.is_sex_type_allowed(SKILL_BDSM, brothel)))		girl->upd_skill(SKILL_BDSM, -1);
+	int c = g_Dice.d100();	if (c < 5 || (c < 10 && !m_JobManager.is_sex_type_allowed(SKILL_GROUP, brothel)))		girl->upd_skill(SKILL_GROUP, -1);
+	int d = g_Dice.d100();	if (d < 5 || (d < 10 && !m_JobManager.is_sex_type_allowed(SKILL_NORMALSEX, brothel)))	girl->upd_skill(SKILL_NORMALSEX, -1);
+	int e = g_Dice.d100();	if (e < 5 || (e < 10 && !m_JobManager.is_sex_type_allowed(SKILL_ANAL, brothel)))		girl->upd_skill(SKILL_ANAL, -1);
+	int f = g_Dice.d100();	if (f < 5 || (f < 10 && !m_JobManager.is_sex_type_allowed(SKILL_LESBIAN, brothel)))		girl->upd_skill(SKILL_LESBIAN, -1);
+	int g = g_Dice.d100();	if (g < 5 || (g < 10 && !m_JobManager.is_sex_type_allowed(SKILL_FOOTJOB, brothel)))		girl->upd_skill(SKILL_FOOTJOB, -1);
+	int h = g_Dice.d100();	if (h < 5 || (h < 10 && !m_JobManager.is_sex_type_allowed(SKILL_HANDJOB, brothel)))		girl->upd_skill(SKILL_HANDJOB, -1);
+	int i = g_Dice.d100();	if (i < 5 || (i < 10 && !m_JobManager.is_sex_type_allowed(SKILL_ORALSEX, brothel)))		girl->upd_skill(SKILL_ORALSEX, -1);
+	int j = g_Dice.d100();	if (j < 5 || (j < 10 && !m_JobManager.is_sex_type_allowed(SKILL_TITTYSEX, brothel)))	girl->upd_skill(SKILL_TITTYSEX, -1);
+	int k = g_Dice.d100();	if (k < 5 || (k < 10 && !m_JobManager.is_sex_type_allowed(SKILL_STRIP, brothel)))		girl->upd_skill(SKILL_STRIP, -1);
 
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_MAGIC, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_SERVICE, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_COMBAT, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_MEDICINE, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_PERFORMANCE, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_CRAFTING, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_HERBALISM, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_FARMING, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_BREWING, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_ANIMALHANDLING, -1);
-	if (g_Dice.percent(5))	UpdateSkill(girl, SKILL_COOKING, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_MAGIC, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_SERVICE, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_COMBAT, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_MEDICINE, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_PERFORMANCE, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_CRAFTING, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_HERBALISM, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_FARMING, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_BREWING, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_ANIMALHANDLING, -1);
+	if (g_Dice.percent(5))	girl->upd_skill(SKILL_COOKING, -1);
 }
 
 // ----- Add remove
@@ -3438,247 +3438,12 @@ void cGirls::SetStat(sGirl* girl, int a_stat, int amount)
 	girl->m_Stats[stat] = amt;
 }
 
-// update the girls stat by amount, if usetraits is false, most traits will not affect the amount
-void cGirls::UpdateStat(sGirl* girl, int a_stat, int amount, bool usetraits)
-{
-	u_int stat = a_stat;
-	int value = 0, min = 0, max = 100;
-	switch (stat)
-	{
-		// `J` first do special cases that do not follow standard stat 0 to 100 rule
-	case STAT_AGE:
-		if (girl->m_Stats[STAT_AGE] != 100 && amount != 0)	// WD: Dont change imortal age = 100
-		{
-			value = girl->m_Stats[stat] + amount;
-			if (value > 80)			value = 80;
-			else if (value < 18)	value = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-			girl->m_Stats[stat] = value;
-		}
-		return; break;
-		// now for the stats with modifiers
-	case STAT_HEALTH:
-	case STAT_TIREDNESS:
-		if (girl->has_trait("Incorporeal"))
-		{
-			girl->m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporeal health should allways be at 100%
-			girl->m_Stats[STAT_TIREDNESS] = 0;	// WD: Sanity - Incorporeal Tiredness should allways be at 0%
-			return;
-		}
-		if (stat == STAT_TIREDNESS && (girl->has_trait("Skeleton") || girl->has_trait("Zombie")))
-		{
-			girl->m_Stats[STAT_TIREDNESS] = 0;	// `J` Sanity - Zombie Tiredness should allways be at 0%
-			return;
-		}
-		if (!usetraits) break;
-
-		if (girl->has_trait("Fragile"))	// 20% health and 10% tired penalties
-		{
-			if (stat == STAT_HEALTH)
-			{
-				if (amount > 0)			// gain health - a little less than normal
-				{	// reduce the intended amount healed by 20% or at least 1 except keeping at least 1 point healed
-					int mod = amount / 5;
-					if (mod < 1) mod = 1;
-					amount -= mod;
-					if (amount < 1) amount = 1;
-				}
-				else if (amount < 0)	// lose health - a little more than normal
-				{	// increase the amound of damage taken by 20% or at least 1 extra point lost
-					int mod = -amount / 5;
-					if (mod < 1) mod = 1;
-					amount -= mod;
-				}
-				else // (amount == 0)	// no change intended but possibly injure her anyway
-				{	// based on her constitution
-					if (!g_Dice.percent(girl->constitution()))
-						amount -= 1;
-				}
-			}
-			else	// STAT_TIREDNESS
-			{
-				if (amount > 0)			// gain tiredness
-				{	// increase the amound of tiredness gained by 10% (+0 ok)
-					int mod = amount / 10;
-					amount += mod;
-				}
-				else if (amount < 0)	// lose tiredness
-				{	// reduce the intended rest gained by 10% (-0 ok)
-					int mod = -amount / 10;
-					amount += mod;
-				}
-				else // (amount == 0)	// no change intended but possibly tire her anyway
-				{	// based on her constitution but only 50% of the time
-					if (!g_Dice.percent(girl->constitution()) && g_Dice.percent(50))
-						amount += 1;
-				}
-			}
-		}
-		if (girl->has_trait("Delicate"))	// 20% tired and 10% health penalties
-		{
-			if (stat == STAT_HEALTH)
-			{
-				if (amount > 0)			// gain health - a little less than normal
-				{	// reduce the intended amount healed by 10% (-0 ok) keeping at least 1 point healed
-					int mod = amount / 10;
-					amount -= mod;
-					if (amount < 1) amount = 1;
-				}
-				else if (amount < 0)	// lose health - a little more than normal
-				{	// increase the amound of damage taken by 10% (+0 ok)
-					int mod = -amount / 10;
-					amount -= mod;
-				}
-				else // (amount == 0)	// no change intended but possibly injure her anyway
-				{	// based on her constitution but only 50% of the time
-					if (!g_Dice.percent(girl->constitution()) && g_Dice.percent(50))
-						amount -= 1;
-				}
-			}
-			else	// STAT_TIREDNESS
-			{
-				if (amount > 0)			// gain tiredness
-				{	// increase the amound of tiredness gained by 20% and at least 1
-					int mod = amount / 5;
-					if (mod < 1) mod = 1;
-					amount += mod;
-				}
-				else if (amount < 0)	// lose tiredness
-				{	// decrease the amound of tiredness recovered by 20% and at least 1 but recovering at least 1
-					int mod = -amount / 5;
-					if (mod < 1) mod = 1;
-					amount += mod;
-					if (amount > -1) amount = -1;
-				}
-				else // (amount == 0)	// no change intended but possibly tire her anyway
-				{	// based on her constitution
-					if (!g_Dice.percent(girl->constitution()))
-						amount += 1;
-				}
-			}
-		}
-		if (girl->has_trait("Tough"))	// 20% health and 10% tired bonuses
-		{
-			if (stat == STAT_HEALTH)
-			{
-				if (amount > 0)			// gain health
-				{	// increase the amount of health gained by 20% and at least 1 point
-					int mod = amount / 5;
-					if (mod < 1) mod = 1;
-					amount += mod;
-				}
-				else if (amount < 0)	// lose health
-				{	// reduce the amount of health lost by 20% and at least 1 but lose at least 1
-					int mod = -amount / 5;
-					if (mod < 1) mod = 1;
-					amount += mod;
-					if (amount > -1) amount = -1;
-				}
-				else // (amount == 0)	// no change intended but possibly heal her anyway
-				{	// based on her constitution
-					if (g_Dice.percent(girl->constitution()))
-						amount += 1;
-				}
-			}
-			else	// STAT_TIREDNESS
-			{
-				if (amount > 0)			// gain tiredness
-				{	// decrease the amount of tiredness gained by 10% (-0 ok) but gain at least 1
-					int mod = amount / 10;
-					amount -= mod;
-					if (amount < 1) amount = 1;
-				}
-				else if (amount < 0)	// lose tiredness
-				{	// increase the amount of tiredness lost by 10% (+0 ok)
-					int mod = -amount / 10;
-					amount -= mod;
-				}
-				else // (amount == 0)	// no change intended but possibly rest her anyway
-				{	// based on her constitution but only 50% of the time
-					if (g_Dice.percent(girl->constitution()) && g_Dice.percent(50))
-						amount -= 1;
-				}
-			}
-		}
-		/*		`J` need another trait that will cover this
-		if (girl->has_trait("????????????"))		// 20% tired and 10% health bonuses
-		{
-		if (stat == STAT_HEALTH)
-		{
-		if (amount > 0)			// gain health
-		{
-
-		}
-		else if (amount < 0)	// lose health
-		{
-
-		}
-		else // (amount == 0)	// no change
-		{
-
-		}
-		amount -= 2;
-		}
-		else	// STAT_TIREDNESS
-		{
-		if (amount > 0)			// gain tiredness
-		{
-
-		}
-		else if (amount < 0)	// lose tiredness
-		{
-
-		}
-		else // (amount == 0)	// no change
-		{
-
-		}
-		amount += 2;
-		}
-		}
-		//*/
-		if (girl->has_trait("Construct") && ((stat == STAT_HEALTH && amount < 0) || (stat == STAT_TIREDNESS && amount > 0)))
-				amount = (int)ceil((float)amount * 0.1); // constructs take 10% damage
-		break;
-
-	case STAT_HAPPINESS:
-		if (girl->has_trait("Pessimist") && g_Dice % 5 == 1 && usetraits)	amount -= 1; // `J` added
-		if (girl->has_trait("Optimist") && g_Dice % 5 == 1 && usetraits)		amount += 1; // `J` added
-		break;
-
-	case STAT_LEVEL:
-		max = 255;
-		break;
-	case STAT_EXP:
-		max = 32000;
-		break;
-	case STAT_PCFEAR:
-	case STAT_PCLOVE:
-	case STAT_PCHATE:
-	case STAT_MORALITY:
-	case STAT_REFINEMENT:
-	case STAT_DIGNITY:
-	case STAT_LACTATION:
-		min = -100;
-		break;
-		// and the rest
-	default:
-		break;
-	}
-	if (amount != 0)
-	{
-		value = girl->m_Stats[stat] + amount;
-		if (value > max)		value = max;
-		else if (value < min)	value = min;
-		girl->m_Stats[stat] = value;
-	}
-}
-
 void cGirls::UpdateStatMod(sGirl* girl, int stat, int amount)
 {
 	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_EXP ||
 		stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_ASKPRICE)
 	{
-		UpdateStat(girl, stat, amount);
+		girl->upd_stat(stat, amount);
 		return;
 	}
 	girl->m_StatMods[stat] += amount;
@@ -3689,7 +3454,7 @@ void cGirls::UpdateStatTr(sGirl* girl, int stat, int amount)
 	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_EXP ||
 		stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_ASKPRICE)
 	{
-		UpdateStat(girl, stat, amount);
+		girl->upd_stat(stat, amount);
 		return;
 	}
 	girl->m_StatTr[stat] += amount;
@@ -3731,7 +3496,7 @@ void cGirls::UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits)
 	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_EXP ||
 		stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_ASKPRICE)
 	{
-		UpdateStat(girl, stat, amount);
+		girl->upd_stat(stat, amount);
 		return;
 	}
 	girl->m_StatTemps[stat] += amount;
@@ -3771,18 +3536,7 @@ int cGirls::GetSkillWorth(sGirl* girl)
 	for (u_int i = 0; i < NUM_SKILLS; i++) num += (int)girl->m_Skills[i];
 	return num;
 }
-// add amount to skill
-void cGirls::UpdateSkill(sGirl* girl, int skill, int amount)
-{
-	if (amount >= 0)
-	{
-		girl->m_Skills[skill] = min(100, amount + girl->m_Skills[skill]);
-	}
-	else
-	{
-		girl->m_Skills[skill] = max(0, amount + girl->m_Skills[skill]);
-	}
-}
+
 // add amount to skillmod
 void cGirls::UpdateSkillMod(sGirl* girl, int skill, int amount)
 {
@@ -4757,9 +4511,9 @@ void cGirls::UseItems(sGirl* girl)
 			}
 			else
 			{
-				UpdateStat(girl, STAT_HAPPINESS, -30);
-				UpdateStat(girl, STAT_OBEDIENCE, -30);
-				UpdateStat(girl, STAT_HEALTH, -4);
+				girl->upd_stat(STAT_HAPPINESS, -30);
+				girl->upd_stat(STAT_OBEDIENCE, -30);
+				girl->upd_stat(STAT_HEALTH, -4);
 				if (!withdraw)
 				{
 					girl->m_Withdrawals++;
@@ -4769,7 +4523,7 @@ void cGirls::UseItems(sGirl* girl)
 		}
 		else
 		{
-			UpdateStat(girl, STAT_HAPPINESS, 10);
+			girl->upd_stat(STAT_HAPPINESS, 10);
 			UpdateStatTemp(girl, STAT_LIBIDO, 10, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
@@ -4790,9 +4544,9 @@ void cGirls::UseItems(sGirl* girl)
 			}
 			else
 			{
-				UpdateStat(girl, STAT_HAPPINESS, -30);
-				UpdateStat(girl, STAT_OBEDIENCE, -30);
-				UpdateStat(girl, STAT_HEALTH, -4);
+				girl->upd_stat(STAT_HAPPINESS, -30);
+				girl->upd_stat(STAT_OBEDIENCE, -30);
+				girl->upd_stat(STAT_HEALTH, -4);
 				if (!withdraw)
 				{
 					girl->m_Withdrawals++;
@@ -4802,7 +4556,7 @@ void cGirls::UseItems(sGirl* girl)
 		}
 		else
 		{
-			UpdateStat(girl, STAT_HAPPINESS, 10);
+			girl->upd_stat(STAT_HAPPINESS, 10);
 			UpdateStatTemp(girl, STAT_LIBIDO, 5, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
@@ -4823,9 +4577,9 @@ void cGirls::UseItems(sGirl* girl)
 			}
 			else
 			{
-				UpdateStat(girl, STAT_HAPPINESS, -30);
-				UpdateStat(girl, STAT_OBEDIENCE, -30);
-				UpdateStat(girl, STAT_HEALTH, -4);
+				girl->upd_stat(STAT_HAPPINESS, -30);
+				girl->upd_stat(STAT_OBEDIENCE, -30);
+				girl->upd_stat(STAT_HEALTH, -4);
 				if (!withdraw)
 				{
 					girl->m_Withdrawals++;
@@ -4835,7 +4589,7 @@ void cGirls::UseItems(sGirl* girl)
 		}
 		else
 		{
-			UpdateStat(girl, STAT_HAPPINESS, 10);
+			girl->upd_stat(STAT_HAPPINESS, 10);
 			UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
@@ -4856,11 +4610,11 @@ void cGirls::UseItems(sGirl* girl)
 			}
 			else
 			{
-				UpdateStat(girl, STAT_HAPPINESS, -10);
-				UpdateStat(girl, STAT_OBEDIENCE, -10);
+				girl->upd_stat(STAT_HAPPINESS, -10);
+				girl->upd_stat(STAT_OBEDIENCE, -10);
 
 				// `J` alchohol withdrawl should not really harm her health, changed it to (-2, -1, 0 or +1) instead
-				UpdateStat(girl, STAT_HEALTH, g_Dice % 4 - 2);
+				girl->upd_stat(STAT_HEALTH, g_Dice % 4 - 2);
 				if (!withdraw)
 				{
 					girl->m_Withdrawals++;
@@ -4870,7 +4624,7 @@ void cGirls::UseItems(sGirl* girl)
 		}
 		else
 		{
-			UpdateStat(girl, STAT_HAPPINESS, 10);
+			girl->upd_stat(STAT_HAPPINESS, 10);
 			UpdateStatTemp(girl, STAT_LIBIDO, 2, true);
 			g_InvManager.Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
@@ -4929,9 +4683,9 @@ void cGirls::UseItems(sGirl* girl)
 			}
 			if (temp > -1)
 			{
-				UpdateStat(girl, STAT_HAPPINESS, happy);
-				UpdateStat(girl, STAT_HEALTH, health);
-				UpdateStat(girl, STAT_MANA, mana);
+				girl->upd_stat(STAT_HAPPINESS, happy);
+				girl->upd_stat(STAT_HEALTH, health);
+				girl->upd_stat(STAT_MANA, mana);
 				UpdateStatTemp(girl, STAT_LIBIDO, libido, true);
 				g_InvManager.Equip(girl, temp, false);
 				girl->m_Withdrawals = 0;
@@ -4955,14 +4709,14 @@ void cGirls::UseItems(sGirl* girl)
 		}
 		else
 		{
-			UpdateStat(girl, STAT_HAPPINESS, -10);
-			UpdateStat(girl, STAT_OBEDIENCE, -5);
+			girl->upd_stat(STAT_HAPPINESS, -10);
+			girl->upd_stat(STAT_OBEDIENCE, -5);
 
 			// `Gondra` not sure if Nicotine withdrawal should harm her health, left it at (-2, -1, 0 or +1) like alcohol
-			UpdateStat(girl, STAT_HEALTH, g_Dice % 4 - 2);
+			girl->upd_stat(STAT_HEALTH, g_Dice % 4 - 2);
 			// `Gondra` nicotine withdrawal includes as symptoms difficulty to concentrate and fatigue
 			UpdateStatTemp(girl, STAT_INTELLIGENCE, -2);
-			UpdateStat(girl, STAT_TIREDNESS, 5);
+			girl->upd_stat(STAT_TIREDNESS, 5);
 			if (!withdraw)
 			{
 				girl->m_Withdrawals++;
@@ -8539,9 +8293,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			AdjustTraitGroupGagReflex(girl, +1);
 
 			RemoveTrait(girl, "Optimist");
-			UpdateStat(girl, STAT_DIGNITY, -10);
-			UpdateStat(girl, STAT_SPIRIT, -10);
-			UpdateSkill(girl, SKILL_ORALSEX, 5);
+			girl->upd_stat(STAT_DIGNITY, -10);
+			girl->upd_stat(STAT_SPIRIT, -10);
+			girl->upd_skill(SKILL_ORALSEX, 5);
 		}
 		else if (harm > 25)  //25% chance
 		{
@@ -8549,10 +8303,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			AddTrait(girl, "Whore");
 
 			RemoveTrait(girl, "Optimist");
-			UpdateStat(girl, STAT_HEALTH, -5);
-			UpdateStat(girl, STAT_SPIRIT, -5);
+			girl->upd_stat(STAT_HEALTH, -5);
+			girl->upd_stat(STAT_SPIRIT, -5);
 			UpdateStatTemp(girl, STAT_LIBIDO, -50, true);
-			UpdateSkill(girl, SKILL_NORMALSEX, 5);
+			girl->upd_skill(SKILL_NORMALSEX, 5);
 		}
 		else if (harm > 15)  //10% chance
 		{
@@ -8696,7 +8450,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (happymana < 0) happymana = 1;							// will spend at least 1 mana just for trying
 
 		customer->m_Stats[STAT_HAPPINESS] += happygain;				// now apply happy
-		UpdateStat(girl, STAT_MANA, -happymana);					// and apply mana
+		girl->upd_stat(STAT_MANA, -happymana);					// and apply mana
 	}
 
 
@@ -9077,9 +8831,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 						sexMessage << ", but he is too strong, and with his arm locked on her throat, she can't even scream. "
 							<< "As he tortures and rapes her, her blood runs cold with impotent fury.";
 						forced = true;
-						UpdateStat(girl, STAT_HAPPINESS, -5);	//sad
-						UpdateStat(girl, STAT_SPIRIT, 2);		//angry
-						//UpdateStat(girl, STAT_SANITY, -4);		//and a bit crazy
+						girl->upd_stat(STAT_HAPPINESS, -5);	//sad
+						girl->upd_stat(STAT_SPIRIT, 2);		//angry
+						//girl->upd_stat(STAT_SANITY, -4);		//and a bit crazy
 					}
 				}
 				else if (choice < 67)
@@ -9154,9 +8908,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 						sexMessage << "But he is too strong, and pinned under all his weight, she can't even wriggle away. "
 							<< "As his filthy cock slides into her, she refuses to give him any pleasure.";
 						forced = true;
-						UpdateStat(girl, STAT_HAPPINESS, -5);	//sad
-						UpdateStat(girl, STAT_SPIRIT, 2);		//angry
-						//UpdateStat(girl, STAT_SANITY, -2);		//crazy
+						girl->upd_stat(STAT_HAPPINESS, -5);	//sad
+						girl->upd_stat(STAT_SPIRIT, 2);		//angry
+						//girl->upd_stat(STAT_SANITY, -2);		//crazy
 						check -= 40;							//deliberately underperforms
 					}
 				}
@@ -9435,7 +9189,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << "As one of the rebels that once tried to overthrow " << girlName << ", the customer relished the chance to fuck her in the ass for some paltry gold coins. "
 					<< "He left boasting to everyone about how good it had been to buttfuck a notorious Queen! (Leading to lots of sniggering and rumours that would follow him for years)\n";
 				customer->m_Stats[STAT_HAPPINESS] += 10;
-				UpdateStat(girl, STAT_FAME, 5);
+				girl->upd_stat(STAT_FAME, 5);
 			}
 			else if (g_Dice.percent(33) && SheAintPretty)
 			{
@@ -9478,7 +9232,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << "As one of the rebels that once tried to overthrow " << girlName << ", the customer relished the chance to fuck her in the ass for some gold coins. "
 					<< "He left telling to everyone about how amazing it felt to buttfuck a Queen! (Leading to lots of sniggering, and rumours that would follow him for years)\n";
 				customer->m_Stats[STAT_HAPPINESS] += 10;
-				UpdateStat(girl, STAT_FAME, 5);
+				girl->upd_stat(STAT_FAME, 5);
 			}
 			else if (g_Dice.percent(33) && SheAintPretty)
 			{
@@ -9595,8 +9349,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				{
 					sexMessage << girlName << " was bound and roughly used by some sicko who seemed to get off on her pregnancy.";
 					customer->m_Stats[STAT_HAPPINESS] += 20;
-					UpdateEnjoyment(girl, ACTION_SEX, -5);
-					UpdateStat(girl, STAT_HAPPINESS, -5);
+					girl->upd_Enjoyment(ACTION_SEX, -5);
+					girl->upd_stat(STAT_HAPPINESS, -5);
 				}
 				else
 				{
@@ -9643,14 +9397,14 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " was tied down for a BDSM session.\nNot realising " << girlName << " was mute, the customer took her silence as a challenge, and grew increasingly "
 					<< "brutal in his efforts to get a scream out of 'this insolent bitch.'\nHe was frustrated, and she won't sit comfortably for a few weeks.";
-				UpdateStat(girl, STAT_HEALTH, -10);
+				girl->upd_stat(STAT_HEALTH, -10);
 			}
 			else if (g_Dice.percent(25) && girl->has_trait("Shy"))
 			{
 				sexMessage << "Annoyed by " << girlName << "'s boring shyness, the customer finally jacked off in her face, zipped up, angrily flung open the door and left, "
 					<< "leaving waiting customers with a clear view of her butt-naked, chained spread-eagled to a rack, as cum ran down her face. A number of them wolf-whistled.";
-				UpdateStat(girl, STAT_DIGNITY, -5);
-				UpdateStat(girl, STAT_FAME, 5);
+				girl->upd_stat(STAT_DIGNITY, -5);
+				girl->upd_stat(STAT_FAME, 5);
 			}
 			//else if (g_Dice.percent(25) && GetStat(girl, STAT_SANITY) < 25)
 			//{
@@ -9720,7 +9474,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//		sexMessage << "urging him to make her stronger, and muttering about the strong consuming the unworthy.";
 			//	}
 			//	sexMessage << " It was just weird.\n";
-			//	UpdateStat(girl, STAT_FAME, 5);
+			//	girl->upd_stat(STAT_FAME, 5);
 			//}
 			else if (choice < 25)
 			{
@@ -9786,7 +9540,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					else
 					{
 						sexMessage << "Your guard, " << guardName << ", heard " << girlName << "'s screams, but didn't care to do anything. It's bought and paid for.\n";
-						//UpdateStat(girl, STAT_SANITY, -4);
+						//girl->upd_stat(STAT_SANITY, -4);
 					}
 				}
 				else if (guardingGang)
@@ -9811,7 +9565,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					else
 					{
 						sexMessage << "Your guards heard " << girlName << "'s screams, but didn't care to do anything. It's bought and paid for.\n";
-						//UpdateStat(girl, STAT_SANITY, -4);
+						//girl->upd_stat(STAT_SANITY, -4);
 					}
 				}
 				else if (girl->has_trait("Psychic") && (girl->mana() > 60))	//If girl can sway customer
@@ -9820,17 +9574,17 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					damage -= 2;
 					upset -= 2;
 					customer->m_Stats[STAT_HAPPINESS] += 5; //magical bliss
-					UpdateStat(girl, STAT_MANA, -50);	//BIG mana hit
+					girl->upd_stat(STAT_MANA, -50);	//BIG mana hit
 				}
 				else
 				{
 					sexMessage << "No one was around to stop him, so she ended up taking some damage.";
-					//UpdateStat(girl, STAT_SANITY, -4);
+					//girl->upd_stat(STAT_SANITY, -4);
 				}
-				UpdateStat(girl, STAT_PCFEAR, PCFear);
-				UpdateStat(girl, STAT_PCLOVE, PCLove);
-				UpdateStat(girl, STAT_HEALTH, -damage);
-				UpdateStat(girl, STAT_HAPPINESS, -upset);
+				girl->upd_stat(STAT_PCFEAR, PCFear);
+				girl->upd_stat(STAT_PCLOVE, PCLove);
+				girl->upd_stat(STAT_HEALTH, -damage);
+				girl->upd_stat(STAT_HAPPINESS, -upset);
 		}
 #endif
 		}
@@ -9853,8 +9607,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				{
 					sexMessage << girlName << " was bound and roughly used by some sicko who seemed to get off on her pregnancy.";
 					customer->m_Stats[STAT_HAPPINESS] += 20;
-					UpdateEnjoyment(girl, ACTION_SEX, -2);
-					UpdateStat(girl, STAT_HAPPINESS, -2);
+					girl->upd_Enjoyment(ACTION_SEX, -2);
+					girl->upd_stat(STAT_HAPPINESS, -2);
 				}
 				else
 				{
@@ -9939,7 +9693,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					else
 					{
 						sexMessage << "Your guard, " << guardName << ", heard " << girlName << "'s screams, but didn't care to do anything. It's bought and paid for.\n";
-						//UpdateStat(girl, STAT_SANITY, -4);
+						//girl->upd_stat(STAT_SANITY, -4);
 					}
 				}
 				else if (guardingGang)
@@ -9964,7 +9718,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					else
 					{
 						sexMessage << "Your guards heard " << girlName << "'s screams, but didn't care to do anything. It's bought and paid for.\n";
-						//UpdateStat(girl, STAT_SANITY, -4);
+						//girl->upd_stat(STAT_SANITY, -4);
 					}
 				}
 				else if (girl->has_trait("Psychic") && (girl->mana() > 60))	//If girl can sway customer
@@ -9973,17 +9727,17 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					damage -= 2;
 					upset -= 2;
 					customer->m_Stats[STAT_HAPPINESS] += 5; //magical bliss
-					UpdateStat(girl, STAT_MANA, -50);	//BIG mana hit
+					girl->upd_stat(STAT_MANA, -50);	//BIG mana hit
 				}
 				else
 				{
 					sexMessage << "No one was around to stop him, so she ended up taking some damage.";
-					//UpdateStat(girl, STAT_SANITY, -4);
+					//girl->upd_stat(STAT_SANITY, -4);
 				}
-				UpdateStat(girl, STAT_PCFEAR, PCFear);
-				UpdateStat(girl, STAT_PCLOVE, PCLove);
-				UpdateStat(girl, STAT_HEALTH, -damage);
-				UpdateStat(girl, STAT_HAPPINESS, -upset);
+				girl->upd_stat(STAT_PCFEAR, PCFear);
+				girl->upd_stat(STAT_PCLOVE, PCLove);
+				girl->upd_stat(STAT_HEALTH, -damage);
+				girl->upd_stat(STAT_HAPPINESS, -upset);
 			}
 #endif
 		}
@@ -10109,7 +9863,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				}
 
 				sexMessage << " This really got him in the mood.\n";
-				UpdateStat(girl, STAT_FAME, 5);
+				girl->upd_stat(STAT_FAME, 5);
 			}
 			else if (choice < 25)
 			{
@@ -10155,7 +9909,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					sexMessage << girlName << " was bound and roughly used by some sicko who got off on her pregnancy. She loved it: "
 						<< "it was great to be treated like a real whore again, and not some little china doll. She completely forgot herself and gave him an amazing time.";
 					customer->m_Stats[STAT_HAPPINESS] += 20;
-					UpdateStat(girl, STAT_HEALTH, -4);
+					girl->upd_stat(STAT_HEALTH, -4);
 				}
 				else
 				{
@@ -10164,13 +9918,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 						sexMessage << "Due to her obvious pregnancy, the customer was reluctant to do bondage.\n" << girlName << " shoved her hands into his pants and grabbed him by the balls. "
 							<< "\"If you're not man enough, I can take charge?\"\nWith just the right blend of goading and encouragement, " << girlName << " pushed the customer past his inhibitions, "
 							<< "and they had an amazing time.";
-						UpdateStat(girl, STAT_HEALTH, -1);
+						girl->upd_stat(STAT_HEALTH, -1);
 					}
 					else		//if she's about to drop
 					{
 						sexMessage << "Seeing her advanced pregnancy, the customer figured bondage was impossibe. " << girlName << " helped him see there were lots of fun things he could still do to her."
 							<< " She squeezed her breasts, squirting milk in his eye.\n\"Mister,\" she smiled, impudently. \"Are you going to let me get away with that?!\"";
-						UpdateStat(girl, STAT_HEALTH, -1);
+						girl->upd_stat(STAT_HEALTH, -1);
 					}
 				}
 			}
@@ -10255,7 +10009,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				}
 
 				sexMessage << " He didn't need to be told twice, and got so into the session.\n";
-				UpdateStat(girl, STAT_FAME, 10);
+				girl->upd_stat(STAT_FAME, 10);
 			}
 			else if (g_Dice.percent(30) && (girl->has_trait("Flat Chest") || girl->has_trait("Petite Breasts") || girl->has_trait("Small Boobs")))
 			{
@@ -10372,9 +10126,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " is not great at sex. However, inspired by your goodness and not wanting to let you down, she tried her best to give the customer a decent fuck.";
 				customer->m_Stats[STAT_HAPPINESS] += 20;
-				UpdateStat(girl, STAT_HAPPINESS, 2);
-				UpdateStat(girl, STAT_OBEDIENCE, 2);
-				UpdateEnjoyment(girl, ACTION_SEX, 2);
+				girl->upd_stat(STAT_HAPPINESS, 2);
+				girl->upd_stat(STAT_OBEDIENCE, 2);
+				girl->upd_Enjoyment(ACTION_SEX, 2);
 			}
 			else if (g_Dice.percent(35) && girl->refinement() > 66)
 			{
@@ -10451,9 +10205,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " is inspired by your kindness and wants you to succeed. She tried her best to give the customer great sex.";
 				customer->m_Stats[STAT_HAPPINESS] += 20;
-				UpdateStat(girl, STAT_HAPPINESS, 2);
-				UpdateStat(girl, STAT_OBEDIENCE, 2);
-				UpdateEnjoyment(girl, ACTION_SEX, 2);
+				girl->upd_stat(STAT_HAPPINESS, 2);
+				girl->upd_stat(STAT_OBEDIENCE, 2);
+				girl->upd_Enjoyment(ACTION_SEX, 2);
 			}
 			else if (g_Dice.percent(35) && HateLove > 60)	//if she likes you
 			{
@@ -10529,9 +10283,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << " knows you are the best " << (girl->is_slave() ? "master" : "brother owner")
 					<< " in town, and pulls out all the stops to give the customer amazing sex.";
 				customer->m_Stats[STAT_HAPPINESS] += 20;
-				UpdateStat(girl, STAT_HAPPINESS, 2);
-				UpdateStat(girl, STAT_OBEDIENCE, 2);
-				UpdateEnjoyment(girl, ACTION_SEX, 2);
+				girl->upd_stat(STAT_HAPPINESS, 2);
+				girl->upd_stat(STAT_OBEDIENCE, 2);
+				girl->upd_Enjoyment(ACTION_SEX, 2);
 			}
 			else if (g_Dice.percent(35) && HateLove > 60)	//if she likes you
 			{
@@ -10648,9 +10402,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << " knows you are the kindest " << (girl->is_slave() ? "master" : "brother owner")
 					<< " in town, and feels like she owes you. She uses all her skills to make sure the customer has an incredible time.";
 				customer->m_Stats[STAT_HAPPINESS] += 20;
-				UpdateStat(girl, STAT_HAPPINESS, 2);
-				UpdateStat(girl, STAT_OBEDIENCE, 2);
-				UpdateEnjoyment(girl, ACTION_SEX, 2);
+				girl->upd_stat(STAT_HAPPINESS, 2);
+				girl->upd_stat(STAT_OBEDIENCE, 2);
+				girl->upd_Enjoyment(ACTION_SEX, 2);
 			}
 			else if (choice < 25)	//Vanilla Messages
 			{
@@ -10960,7 +10714,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << " sucked on his cock until his cum splattered across her face. She rubbed it into her skin - explaining that it's her secret ingredient for youthful looks.\n"
 					<< "The customer joked that she could probably use some more.";
 				customer->m_Stats[STAT_HAPPINESS] += 2;
-				UpdateStat(girl, STAT_HAPPINESS, -2);
+				girl->upd_stat(STAT_HAPPINESS, -2);
 			}
 			/*else if (g_Dice.percent(5) && girl->has_trait("Lolita"))
 			{
@@ -11053,7 +10807,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					<< "He carried out a thorough test and finally rated her skills 'Excellent' - \"A girl who can do that,\" he said. \"Is definitely old enough in my book.\"\n"
 					<< "He rated her age 'Legal' and left praising her skills - this reduces suspicion around your establishments and improves her fame.";
 				The_Player->suspicion(-15);
-				UpdateStat(girl, STAT_FAME, 5);
+				girl->upd_stat(STAT_FAME, 5);
 		}*/
 			else if (g_Dice.percent(65) && girl->has_trait("Cum Addict")) //added a roll, just so that it doesn't always overpower all other options
 			{
@@ -11118,7 +10872,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << "'s former subject, the customer was overjoyed to have his Monarch suck his dick, and felt great pride when she swallowed his cum. "
 					<< "He left to tell all his friends how he had been expertly sucked off by a Queen! (Leading to lots sniggering, and rumours that would follow him for years to come)\n";
 				customer->m_Stats[STAT_HAPPINESS] += 10;
-				UpdateStat(girl, STAT_FAME, 5);
+				girl->upd_stat(STAT_FAME, 5);
 			}
 			else if (choice < 25)	//Gondra: Vanilla Messages
 			{
@@ -11903,20 +11657,20 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			{
 				sexMessage << girlName << " has never fucked ONE person before and had no idea how to handle this kind of group. She was completely overwhelmed and had no control over what was happening "
 					<< "as strangers twisted and dragged her around while endless cocks were shoved painfully inside her and splurted cum in her face.";
-				UpdateStat(girl, STAT_HEALTH, -5);
-				UpdateStat(girl, STAT_HAPPINESS, -5);
+				girl->upd_stat(STAT_HEALTH, -5);
+				girl->upd_stat(STAT_HAPPINESS, -5);
 			}
 			else if (g_Dice.percent(60) && (girl->has_trait("Delicate") || girl->has_trait("Lolita")))
 			{
 				sexMessage << "This was far too much for a delicate flower like " << girlName << ". By the end she had no control over what happened, as endless cocks rammed into her.";
-				UpdateStat(girl, STAT_HEALTH, -3);
-				UpdateStat(girl, STAT_HAPPINESS, -1);
+				girl->upd_stat(STAT_HEALTH, -3);
+				girl->upd_stat(STAT_HAPPINESS, -1);
 			}
 			else if (g_Dice.percent(30) && (girl->has_trait("Optimist") || girl->has_trait("Quick Learner")))
 			{
 				sexMessage << girlName << " was completely unable to handle this group. While it was damn uncomfortable, being fucked this many ways by this many customers, it was a powerful experience. She's quietly confident she'll do better next time.";
 				SetSkill(girl, SKILL_GROUP, g_Dice % 3);
-				UpdateStat(girl, STAT_HAPPINESS, 1);
+				girl->upd_stat(STAT_HAPPINESS, 1);
 			}
 			else if (g_Dice.percent(40) && girl->has_trait("Natural Pheromones"))
 			{
@@ -11979,18 +11733,18 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				if (choice < 33)
 				{
 					sexMessage << "pretty nauseous from all the cum she swallowed down.";
-					UpdateStat(girl, STAT_HEALTH, -2);
+					girl->upd_stat(STAT_HEALTH, -2);
 				}
 				else if (choice < 67)
 				{
 					sexMessage << "with a raw throat and cum all over her face and hair.";
-					UpdateStat(girl, STAT_HEALTH, -1);
-					UpdateStat(girl, STAT_DIGNITY, -1);
+					girl->upd_stat(STAT_HEALTH, -1);
+					girl->upd_stat(STAT_DIGNITY, -1);
 				}
 				else
 				{
 					sexMessage << "broken, slumped naked in a corner, with cum and drool running from her mouth.";
-					UpdateStat(girl, STAT_SPIRIT, -2);
+					girl->upd_stat(STAT_SPIRIT, -2);
 				}
 			}
 			else if (g_Dice.percent(35) && (girl->has_trait("Busty Boobs") || girl->has_trait("Big Boobs") || girl->has_trait("Giant Juggs") ||
@@ -12457,7 +12211,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else /*                                       */	message += "thought it was crap.";
 
 	// WD: update Fame based on Customer HAPPINESS
-	UpdateStat(girl, STAT_FAME, (customer->m_Stats[STAT_HAPPINESS] - 1) / 33);
+	girl->upd_stat(STAT_FAME, (customer->m_Stats[STAT_HAPPINESS] - 1) / 33);
 
 	// The girls STAT_CONSTITUTION and STAT_AGILITY modify how tired she gets
 	AddTiredness(girl);
@@ -12466,30 +12220,30 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	if (girl->has_trait("Succubus"))
 	{
 		message += "\nIt seems that she lives for this sort of thing.";//succubus does live for sex lol.. Idk if this will work like i want it to CRAZY
-		UpdateStat(girl, STAT_HEALTH, 10);//Idk where I should put this really but succubus gain live force or whatever from sex
-		UpdateStat(girl, STAT_HAPPINESS, 5);
+		girl->upd_stat(STAT_HEALTH, 10);//Idk where I should put this really but succubus gain live force or whatever from sex
+		girl->upd_stat(STAT_HAPPINESS, 5);
 	}
 	else if (girl->libido() > 5)
 	{
 		/* */if (check < 20)	message += "\nThough she had a tough time with it, she was horny and still managed to gain some little enjoyment.";
 		else if (check < 40)	message += "\nShe considered it a learning experience and enjoyed it a bit.";
 		else if (check < 60)	message += "\nShe enjoyed it a lot and wanted more.";
-		else if (check < 80)	message += "\nIt was nothing new for her, but she really does appreciate such work.";//UpdateStat(girl, STAT_SANITY, 1);
-		else /*           */	message += "\nIt seems that she lives for this sort of thing.";//UpdateStat(girl, STAT_SANITY, 2);
-		UpdateStat(girl, STAT_HAPPINESS, girl->libido() / 5);
+		else if (check < 80)	message += "\nIt was nothing new for her, but she really does appreciate such work.";//girl->upd_stat(STAT_SANITY, 1);
+		else /*           */	message += "\nIt seems that she lives for this sort of thing.";//girl->upd_stat(STAT_SANITY, 2);
+		girl->upd_stat(STAT_HAPPINESS, girl->libido() / 5);
 	}
 	else
 	{
 		if (check < 30)
 		{
 			message += "\nShe wasn't in the mood at all and didn't enjoy being used this way.";
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			//UpdateStat(girl, STAT_SANITY, -1);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			//girl->upd_stat(STAT_SANITY, -1);
 		}
 		else if (check < 60)
 		{
 			message += "\nShe wasn't really in the mood.";
-			UpdateStat(girl, STAT_HAPPINESS, -1);
+			girl->upd_stat(STAT_HAPPINESS, -1);
 		}
 		else
 		{
@@ -12512,14 +12266,14 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
 			else /*              */	message += "\nHer inexperience hurt her. It's now quite painful to sit down.";
-			UpdateStat(girl, STAT_HAPPINESS, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_HEALTH, -3);
-			//UpdateStat(girl, STAT_SANITY, -3);
+			girl->upd_stat(STAT_HAPPINESS, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_HEALTH, -3);
+			//girl->upd_stat(STAT_SANITY, -3);
 		}
 		UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
-		UpdateStat(girl, STAT_SPIRIT, -1);
+		girl->upd_stat(STAT_SPIRIT, -1);
 		STDchance += 30;
 
 	 //SIN - GIFT DROP
@@ -12561,11 +12315,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
 			else /*              */	message += "\nHer inexperience hurt her a little. She's not used to having pain in those places.";
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
-			UpdateStat(girl, STAT_HEALTH, -3);
-			//UpdateStat(girl, STAT_SANITY, -5);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
+			girl->upd_stat(STAT_HEALTH, -3);
+			//girl->upd_stat(STAT_SANITY, -5);
 		}
 		if (!customer->m_IsWoman)
 		{
@@ -12574,7 +12328,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 
 		UpdateStatTemp(girl, STAT_LIBIDO, -5, true);
-		UpdateStat(girl, STAT_SPIRIT, -1);
+		girl->upd_stat(STAT_SPIRIT, -1);
 
 	 //SIN - GIFT DROP
 		if (g_Dice.percent(5) && customer->m_Stats[STAT_HAPPINESS] > 75)
@@ -12614,11 +12368,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
 			else /*              */	message += "\nShe's inexperienced and got poked in the eye.";/*Wouldnt this work better in oral? CRAZY*/
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
-			UpdateStat(girl, STAT_HEALTH, -3);
-			//UpdateStat(girl, STAT_SANITY, -2);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
+			girl->upd_stat(STAT_HEALTH, -3);
+			//girl->upd_stat(STAT_SANITY, -2);
 		}
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
@@ -12685,20 +12439,20 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (girl->has_trait("Gag Reflex") || girl->has_trait("Strong Gag Reflex"))
 			{
 				message += "\nHer throat is raw from gagging on the customer's cock. She was nearly sick.";
-				UpdateStat(girl, STAT_HAPPINESS, -4);
-				UpdateStat(girl, STAT_SPIRIT, -3);
-				UpdateStat(girl, STAT_CONFIDENCE, -1);
-				UpdateStat(girl, STAT_HEALTH, -3);
-				//UpdateStat(girl, STAT_SANITY, -3);
+				girl->upd_stat(STAT_HAPPINESS, -4);
+				girl->upd_stat(STAT_SPIRIT, -3);
+				girl->upd_stat(STAT_CONFIDENCE, -1);
+				girl->upd_stat(STAT_HEALTH, -3);
+				//girl->upd_stat(STAT_SANITY, -3);
 			}
 			else
 			{
 				if (g_Dice.percent(40)) message += "\nHer inexperience caused her some embarrassment."; // Changed... being new at oral doesn't hurt, but can be embarrasing. --PP
 				else /*              */	message += "\nShe's inexperienced and got poked in the eye.";/*CRAZY*/
-				UpdateStat(girl, STAT_HAPPINESS, -2);
-				UpdateStat(girl, STAT_SPIRIT, -3);
-				UpdateStat(girl, STAT_CONFIDENCE, -1);
-				//UpdateStat(girl, STAT_SANITY, -1);
+				girl->upd_stat(STAT_HAPPINESS, -2);
+				girl->upd_stat(STAT_SPIRIT, -3);
+				girl->upd_stat(STAT_CONFIDENCE, -1);
+				//girl->upd_stat(STAT_SANITY, -1);
 			}
 		}
 		STDchance += 10;
@@ -12724,10 +12478,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (check <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at oral doesn't hurt, but can be embarrasing. --PP
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
-			//UpdateStat(girl, STAT_SANITY, -1);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
+			//girl->upd_stat(STAT_SANITY, -1);
 		}
 		STDchance += 1;
 		UpdateStatTemp(girl, STAT_LIBIDO, -2, true);
@@ -12743,9 +12497,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (check <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at handjob doesn't hurt, but can be embarrasing. --PP
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
 		}
 		STDchance += 1;
 		UpdateStatTemp(girl, STAT_LIBIDO, -1, true);
@@ -12761,9 +12515,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (check <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at footjob doesn't hurt, but can be embarrasing. --PP
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
 		}
 		STDchance += 1;
 		UpdateStatTemp(girl, STAT_LIBIDO, -1, true);
@@ -12779,13 +12533,13 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (check <= 30)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience hurt her a little.";
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
-			UpdateStat(girl, STAT_HEALTH, -3);
-			//UpdateStat(girl, STAT_SANITY, -4);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
+			girl->upd_stat(STAT_HEALTH, -3);
+			//girl->upd_stat(STAT_SANITY, -4);
 		}
-		UpdateStat(girl, STAT_SPIRIT, -1);	// is pretty degrading
+		girl->upd_stat(STAT_SPIRIT, -1);	// is pretty degrading
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
@@ -12829,11 +12583,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			if (g_Dice.percent(30)) message += "\nHer inexperience hurt her a little.";
 			else /*              */	message += "\nShe's inexperienced and got rubbed pretty raw.";
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
-			UpdateStat(girl, STAT_HEALTH, -3);
-			//UpdateStat(girl, STAT_SANITY, -3);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
+			girl->upd_stat(STAT_HEALTH, -3);
+			//girl->upd_stat(STAT_SANITY, -3);
 		}
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
@@ -12904,10 +12658,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (check <= 20)	// if unexperienced then will get hurt
 		{
 			message += "\nHer inexperience caused her some embarrassment.";	// Changed... being new at lesbian doesn't hurt, but can be embarrasing. --PP
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
-			//UpdateStat(girl, STAT_SANITY, -1);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
+			//girl->upd_stat(STAT_SANITY, -1);
 		}
 		STDchance += 5;
 		UpdateStatTemp(girl, STAT_LIBIDO, -10, true);
@@ -12950,10 +12704,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (check <= 20)	// if inexperienced then will get hurt
 		{
 			message += "\nShe got tangled in her clothes and fell on her face.";
-			UpdateStat(girl, STAT_HAPPINESS, -2);
-			UpdateStat(girl, STAT_SPIRIT, -3);
-			UpdateStat(girl, STAT_CONFIDENCE, -1);
-			UpdateStat(girl, STAT_HEALTH, -3);
+			girl->upd_stat(STAT_HAPPINESS, -2);
+			girl->upd_stat(STAT_SPIRIT, -3);
+			girl->upd_stat(STAT_CONFIDENCE, -1);
+			girl->upd_stat(STAT_HEALTH, -3);
 		}
 		STDchance += 0;
 		UpdateStatTemp(girl, STAT_LIBIDO, 0, true);
@@ -13050,24 +12804,24 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else if (girl->has_trait("Slow Learner"))	{ skillgain -= 1; exp -= 2; }
 	if (SexType == SKILL_GROUP)
 	{
-		UpdateSkill(girl, SKILL_ANAL, max(0, g_Dice % skillgain + 1));
-		UpdateSkill(girl, SKILL_BDSM, max(0, g_Dice % skillgain - 1));
-		UpdateSkill(girl, SKILL_NORMALSEX, max(0, g_Dice % skillgain + 1));
-		UpdateSkill(girl, SKILL_BEASTIALITY, max(0, g_Dice % skillgain - 3));
-		UpdateSkill(girl, SKILL_GROUP, max(2, g_Dice % skillgain + 2));
-		UpdateSkill(girl, SKILL_LESBIAN, max(0, g_Dice % skillgain - 2));
-		UpdateSkill(girl, SKILL_STRIP, max(0, g_Dice % skillgain - 2));
-		UpdateSkill(girl, SKILL_ORALSEX, max(0, g_Dice % skillgain + 0));
-		UpdateSkill(girl, SKILL_TITTYSEX, max(0, g_Dice % skillgain - 1));
-		UpdateSkill(girl, SKILL_HANDJOB, max(0, g_Dice % skillgain + 0));
-		UpdateSkill(girl, SKILL_FOOTJOB, max(0, g_Dice % skillgain - 1));
+		girl->upd_skill(SKILL_ANAL, max(0, g_Dice % skillgain + 1));
+		girl->upd_skill(SKILL_BDSM, max(0, g_Dice % skillgain - 1));
+		girl->upd_skill(SKILL_NORMALSEX, max(0, g_Dice % skillgain + 1));
+		girl->upd_skill(SKILL_BEASTIALITY, max(0, g_Dice % skillgain - 3));
+		girl->upd_skill(SKILL_GROUP, max(2, g_Dice % skillgain + 2));
+		girl->upd_skill(SKILL_LESBIAN, max(0, g_Dice % skillgain - 2));
+		girl->upd_skill(SKILL_STRIP, max(0, g_Dice % skillgain - 2));
+		girl->upd_skill(SKILL_ORALSEX, max(0, g_Dice % skillgain + 0));
+		girl->upd_skill(SKILL_TITTYSEX, max(0, g_Dice % skillgain - 1));
+		girl->upd_skill(SKILL_HANDJOB, max(0, g_Dice % skillgain + 0));
+		girl->upd_skill(SKILL_FOOTJOB, max(0, g_Dice % skillgain - 1));
 	}
 	else	// single sex act focus gets more base gain
 	{
-		UpdateSkill(girl, SexType, g_Dice % (skillgain + 2) + 1);
+		girl->upd_skill(SexType, g_Dice % (skillgain + 2) + 1);
 	}
-	UpdateSkill(girl, SKILL_SERVICE, max(0, g_Dice % skillgain - 1));	// everyone gets some service gain
-	UpdateStat(girl, STAT_EXP, max(1, (g_Dice % (exp * 3))));
+	girl->upd_skill(SKILL_SERVICE, max(0, g_Dice % skillgain - 1));	// everyone gets some service gain
+	girl->upd_stat(STAT_EXP, max(1, (g_Dice % (exp * 3))));
 
 	int enjoy = 1;
 	if (girl->has_trait("Nymphomaniac"))
@@ -16111,7 +15865,7 @@ int cGirls::TakeCombatDamage(sGirl* girl, int amt)
 	//  Can't heal when damage is dealed and always at least 1 damage inflicted
 	if (value >= 0) value = -1;
 
-	UpdateStat(girl, STAT_HEALTH, value, false);
+	girl->upd_stat(STAT_HEALTH, value, false);
 
 	return girl->m_Stats[STAT_HEALTH];
 }
@@ -16131,12 +15885,6 @@ void cGirls::SetEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount)									
 	else if (girl->m_EnjoymentTR[whatSheEnjoys] < -100) 	girl->m_EnjoymentTR[whatSheEnjoys] = -100;
 }
 
-void cGirls::UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount)
-{
-	girl->m_Enjoyment[whatSheEnjoys] += amount;
-	/* */if (girl->m_Enjoyment[whatSheEnjoys] > 100) 	girl->m_Enjoyment[whatSheEnjoys] = 100;
-	else if (girl->m_Enjoyment[whatSheEnjoys] < -100) 	girl->m_Enjoyment[whatSheEnjoys] = -100;
-}
 void cGirls::UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount)
 {
 	girl->m_EnjoymentTR[whatSheEnjoys] += amount;
@@ -16183,12 +15931,6 @@ void cGirls::SetTrainingTR(sGirl* girl, int whatSheTrains, int amount)									/
 	else if (girl->m_TrainingTR[whatSheTrains] < 0) 	girl->m_TrainingTR[whatSheTrains] = 0;
 }
 
-void cGirls::UpdateTraining(sGirl* girl, int whatSheTrains, int amount)
-{
-	girl->m_Training[whatSheTrains] += amount;
-	/* */if (girl->m_Training[whatSheTrains] > 100) 	girl->m_Training[whatSheTrains] = 100;
-	else if (girl->m_Training[whatSheTrains] < 0) 	girl->m_Training[whatSheTrains] = 0;
-}
 void cGirls::UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount)
 {
 	girl->m_TrainingTR[whatSheTrains] += amount;
@@ -18827,4 +18569,251 @@ int sGirl::get_skill(int skill_id)
 	if (value < 0)			value = 0;
 	else if (value > 100)	value = 100;
 	return value;
+}
+
+int sGirl::upd_stat(int stat_id, int amount, bool usetraits) {
+	u_int stat = stat_id;
+	int value = 0, min = 0, max = 100;
+	switch (stat)
+	{
+		// `J` first do special cases that do not follow standard stat 0 to 100 rule
+		case STAT_AGE:
+			if (m_Stats[STAT_AGE] != 100 && amount != 0)	// WD: Dont change imortal age = 100
+			{
+				value = m_Stats[stat] + amount;
+				if (value > 80)			value = 80;
+				else if (value < 18)	value = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+				m_Stats[stat] = value;
+			}
+			return get_stat(stat_id);
+			break;
+			// now for the stats with modifiers
+		case STAT_HEALTH:
+		case STAT_TIREDNESS:
+			if (has_trait("Incorporeal"))
+			{
+				m_Stats[STAT_HEALTH] = 100;	// WD: Sanity - Incorporeal health should allways be at 100%
+				m_Stats[STAT_TIREDNESS] = 0;	// WD: Sanity - Incorporeal Tiredness should allways be at 0%
+				return get_stat(stat_id);
+			}
+			if (stat == STAT_TIREDNESS && (has_trait("Skeleton") || has_trait("Zombie")))
+			{
+				m_Stats[STAT_TIREDNESS] = 0;	// `J` Sanity - Zombie Tiredness should allways be at 0%
+				return get_stat(stat_id);
+			}
+			if (!usetraits) break;
+
+			if (has_trait("Fragile"))	// 20% health and 10% tired penalties
+			{
+				if (stat == STAT_HEALTH)
+				{
+					if (amount > 0)			// gain health - a little less than normal
+					{	// reduce the intended amount healed by 20% or at least 1 except keeping at least 1 point healed
+						int mod = amount / 5;
+						if (mod < 1) mod = 1;
+						amount -= mod;
+						if (amount < 1) amount = 1;
+					}
+					else if (amount < 0)	// lose health - a little more than normal
+					{	// increase the amound of damage taken by 20% or at least 1 extra point lost
+						int mod = -amount / 5;
+						if (mod < 1) mod = 1;
+						amount -= mod;
+					}
+					else // (amount == 0)	// no change intended but possibly injure her anyway
+					{	// based on her constitution
+						if (!g_Dice.percent(constitution()))
+							amount -= 1;
+					}
+				}
+				else	// STAT_TIREDNESS
+				{
+					if (amount > 0)			// gain tiredness
+					{	// increase the amound of tiredness gained by 10% (+0 ok)
+						int mod = amount / 10;
+						amount += mod;
+					}
+					else if (amount < 0)	// lose tiredness
+					{	// reduce the intended rest gained by 10% (-0 ok)
+						int mod = -amount / 10;
+						amount += mod;
+					}
+					else // (amount == 0)	// no change intended but possibly tire her anyway
+					{	// based on her constitution but only 50% of the time
+						if (!g_Dice.percent(constitution()) && g_Dice.percent(50))
+							amount += 1;
+					}
+				}
+			}
+			if (has_trait("Delicate"))	// 20% tired and 10% health penalties
+			{
+				if (stat == STAT_HEALTH)
+				{
+					if (amount > 0)			// gain health - a little less than normal
+					{	// reduce the intended amount healed by 10% (-0 ok) keeping at least 1 point healed
+						int mod = amount / 10;
+						amount -= mod;
+						if (amount < 1) amount = 1;
+					}
+					else if (amount < 0)	// lose health - a little more than normal
+					{	// increase the amound of damage taken by 10% (+0 ok)
+						int mod = -amount / 10;
+						amount -= mod;
+					}
+					else // (amount == 0)	// no change intended but possibly injure her anyway
+					{	// based on her constitution but only 50% of the time
+						if (!g_Dice.percent(constitution()) && g_Dice.percent(50))
+							amount -= 1;
+					}
+				}
+				else	// STAT_TIREDNESS
+				{
+					if (amount > 0)			// gain tiredness
+					{	// increase the amound of tiredness gained by 20% and at least 1
+						int mod = amount / 5;
+						if (mod < 1) mod = 1;
+						amount += mod;
+					}
+					else if (amount < 0)	// lose tiredness
+					{	// decrease the amound of tiredness recovered by 20% and at least 1 but recovering at least 1
+						int mod = -amount / 5;
+						if (mod < 1) mod = 1;
+						amount += mod;
+						if (amount > -1) amount = -1;
+					}
+					else // (amount == 0)	// no change intended but possibly tire her anyway
+					{	// based on her constitution
+						if (!g_Dice.percent(constitution()))
+							amount += 1;
+					}
+				}
+			}
+			if (has_trait("Tough"))	// 20% health and 10% tired bonuses
+			{
+				if (stat == STAT_HEALTH)
+				{
+					if (amount > 0)			// gain health
+					{	// increase the amount of health gained by 20% and at least 1 point
+						int mod = amount / 5;
+						if (mod < 1) mod = 1;
+						amount += mod;
+					}
+					else if (amount < 0)	// lose health
+					{	// reduce the amount of health lost by 20% and at least 1 but lose at least 1
+						int mod = -amount / 5;
+						if (mod < 1) mod = 1;
+						amount += mod;
+						if (amount > -1) amount = -1;
+					}
+					else // (amount == 0)	// no change intended but possibly heal her anyway
+					{	// based on her constitution
+						if (g_Dice.percent(constitution()))
+							amount += 1;
+					}
+				}
+				else	// STAT_TIREDNESS
+				{
+					if (amount > 0)			// gain tiredness
+					{	// decrease the amount of tiredness gained by 10% (-0 ok) but gain at least 1
+						int mod = amount / 10;
+						amount -= mod;
+						if (amount < 1) amount = 1;
+					}
+					else if (amount < 0)	// lose tiredness
+					{	// increase the amount of tiredness lost by 10% (+0 ok)
+						int mod = -amount / 10;
+						amount -= mod;
+					}
+					else // (amount == 0)	// no change intended but possibly rest her anyway
+					{	// based on her constitution but only 50% of the time
+						if (g_Dice.percent(constitution()) && g_Dice.percent(50))
+							amount -= 1;
+					}
+				}
+			}
+			/*		`J` need another trait that will cover this
+            if (has_trait("????????????"))		// 20% tired and 10% health bonuses
+            {
+            if (stat == STAT_HEALTH)
+            {
+            if (amount > 0)			// gain health
+            {
+
+            }
+            else if (amount < 0)	// lose health
+            {
+
+            }
+            else // (amount == 0)	// no change
+            {
+
+            }
+            amount -= 2;
+            }
+            else	// STAT_TIREDNESS
+            {
+            if (amount > 0)			// gain tiredness
+            {
+
+            }
+            else if (amount < 0)	// lose tiredness
+            {
+
+            }
+            else // (amount == 0)	// no change
+            {
+
+            }
+            amount += 2;
+            }
+            }
+            //*/
+			if (has_trait("Construct") && ((stat == STAT_HEALTH && amount < 0) || (stat == STAT_TIREDNESS && amount > 0)))
+				amount = (int)ceil((float)amount * 0.1); // constructs take 10% damage
+			break;
+
+		case STAT_HAPPINESS:
+			if (has_trait("Pessimist") && g_Dice % 5 == 1 && usetraits)	amount -= 1; // `J` added
+			if (has_trait("Optimist") && g_Dice % 5 == 1 && usetraits)		amount += 1; // `J` added
+			break;
+
+		case STAT_LEVEL:
+			max = 255;
+			break;
+		case STAT_EXP:
+			max = 32000;
+			break;
+		case STAT_PCFEAR:
+		case STAT_PCLOVE:
+		case STAT_PCHATE:
+		case STAT_MORALITY:
+		case STAT_REFINEMENT:
+		case STAT_DIGNITY:
+		case STAT_LACTATION:
+			min = -100;
+			break;
+			// and the rest
+		default:
+			break;
+	}
+	if (amount != 0)
+	{
+		value = m_Stats[stat] + amount;
+		if (value > max)		value = max;
+		else if (value < min)	value = min;
+		m_Stats[stat] = value;
+	}
+	return get_stat(stat_id);
+}
+
+int sGirl::upd_skill(int skill_id, int amount) {
+	if (amount >= 0)
+	{
+		m_Skills[skill_id] = min(100, amount + m_Skills[skill_id]);
+	}
+	else
+	{
+		m_Skills[skill_id] = max(0, amount + m_Skills[skill_id]);
+	}
+	return get_skill(skill_id);
 }

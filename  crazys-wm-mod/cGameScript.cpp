@@ -2103,7 +2103,7 @@ sScript* cGameScript::Script_AdjustTargetGirlStatR(sScript* Script)
 	if (m_GirlTarget)
 	{
 		if (value[3])	m_GirlTarget->upd_temp_stat(value[0], num);
-		else/*     */	g_Girls.UpdateStat(m_GirlTarget, value[0], num);
+		else/*     */	m_GirlTarget->upd_stat(value[0], num);
 	}
 	return Script->m_Next;
 }
@@ -2120,7 +2120,7 @@ sScript* cGameScript::Script_AdjustTargetGirlSkillR(sScript* Script)
 	if (m_GirlTarget)
 	{
 		if (value[3])	g_Girls.UpdateSkillTemp(m_GirlTarget, value[0], num);
-		else/*     */	g_Girls.UpdateSkill(m_GirlTarget, value[0], num);
+		else/*     */	m_GirlTarget->upd_skill(value[0], num);
 	}
 	return Script->m_Next;
 }

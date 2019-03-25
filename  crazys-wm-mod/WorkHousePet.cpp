@@ -923,7 +923,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	girl->exp(xp);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 	girl->upd_Enjoyment(actiontype, enjoy);
-	g_Girls.UpdateTraining(girl, TRAINING_PUPPY, training);
+	girl->upd_Training(TRAINING_PUPPY, training);
 	girl->obedience(ob);
 
 	return false;
