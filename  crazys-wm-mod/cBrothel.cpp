@@ -2894,8 +2894,8 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 				}
 				if (girl->has_trait("Straight") && The_Player->Gender() <= GENDER_FUTAFULL && g_Dice.percent(girl->pclove() / 10))
 				{
-					g_Girls.RemoveTrait(girl, "Straight");
-					g_Girls.AddTrait(girl, "Bisexual");
+					girl->remove_trait("Straight");
+					girl->add_trait("Bisexual");
 					ss << "  \"Normally I don't like women but for you I'll make an exception.\"";
 				}
 				ss << "\n \n";
@@ -3578,17 +3578,17 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 	if (girl->has_trait("Homeless") && b_refinement && b_dignity && b_confidence &&
 		mod >= 0 && girl->m_AccLevel >= 5 && g_Dice.percent(girl->m_AccLevel))
 	{
-		g_Girls.RemoveTrait(girl, "Homeless", true);
+		girl->remove_trait("Homeless", true);
 		ss << girl->m_Realname << " has gotten used to better surroundings and has lost the \"Homeless\" trait.";
 	}
 	else if (girl->has_trait("Masochist") && b_intelligence && b_spirit && b_confidence && mod >= 2 && g_Dice.percent(girl->m_AccLevel - 7))
 	{
-		g_Girls.RemoveTrait(girl, "Masochist", true);
+		girl->remove_trait("Masochist", true);
 		ss << girl->m_Realname << " seems to be getting used to being treated well and has lost the \"Masochist\" trait.";
 	}
 	else if (!girl->has_trait("Masochist") && !b_dignity && !b_spirit && !b_confidence && mod <= -1 && g_Dice.percent(3 - mod))
 	{
-		g_Girls.AddTrait(girl, "Masochist");
+		girl->add_trait("Masochist");
 		ss << girl->m_Realname << " seems to be getting used to being treated poorly and has become a \"Masochist\".";
 	}
 
@@ -3600,22 +3600,22 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 #endif
 	else if (girl->has_trait("Optimist") && mod < 0 && g_Dice.percent(3))
 	{
-		g_Girls.RemoveTrait(girl, "Optimist", true);
+		girl->remove_trait("Optimist", true);
 		ss << girl->m_Realname << " has lost her \"Optimistic\" outlook on life.";
 	}
 	else if (!girl->has_trait("Optimist") && mod > 0 && g_Dice.percent(3))
 	{
-		g_Girls.AddTrait(girl, "Optimist");
+		girl->add_trait("Optimist");
 		ss << girl->m_Realname << " has started to view the world from a more \"Optimistic\" point of view.";
 	}
 	else if (girl->has_trait("Pessimist") && mod > 0 && g_Dice.percent(3))
 	{
-		g_Girls.RemoveTrait(girl, "Pessimist", true);
+		girl->remove_trait("Pessimist", true);
 		ss << girl->m_Realname << " has lost her \"Pessimistic\" way of viewing the world around her.";
 	}
 	else if (!girl->has_trait("Pessimist") && mod < 0 && g_Dice.percent(3))
 	{
-		g_Girls.AddTrait(girl, "Pessimist");
+		girl->add_trait("Pessimist");
 		ss << girl->m_Realname << " has started to view the world from a more \"Pessimistic\" point of view.";
 	}
 
@@ -5596,8 +5596,8 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 		return false;
 	}
 
-	g_Girls.AddTrait(girl, drug);
-	g_Girls.RemoveTrait(girl, "Former Addict");
+	girl->add_trait(drug);
+	girl->remove_trait("Former Addict");
 
 	/*
 	*	otherwise, report the sad occurrence

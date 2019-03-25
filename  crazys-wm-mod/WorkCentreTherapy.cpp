@@ -144,14 +144,14 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 				if (girl->has_trait( "Nervous"))
 				{
-					g_Girls.RemoveTrait(girl, "Nervous");
+					girl->remove_trait("Nervous");
 					ss << "She is no longer nervous all the time.\n";
 					cured = true; break;
 				}
 			case 1:
 				if (girl->has_trait( "Dependant"))
 				{
-					g_Girls.RemoveTrait(girl, "Dependant");
+					girl->remove_trait("Dependant");
 					ss << "She is no longer Dependant on others.\n";
 					cured = true; break;
 				}
@@ -159,7 +159,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 			default:
 				if (girl->has_trait( "Pessimist"))
 				{
-					g_Girls.RemoveTrait(girl, "Pessimist");
+					girl->remove_trait("Pessimist");
 					ss << "She is no longer a Pessimist about everything.\n";
 					cured = true; break;
 				}

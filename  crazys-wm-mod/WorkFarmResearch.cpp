@@ -129,7 +129,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		case 2:
 			if (girl->has_trait( "Dependant"))
 			{
-				g_Girls.RemoveTrait(girl, "Dependant");
+				girl->remove_trait("Dependant");
 				ss << "She seems to be getting over her Dependancy with her training.";
 				gaintrait = false;
 			}

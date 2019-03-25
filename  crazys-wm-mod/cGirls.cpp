@@ -1719,7 +1719,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			{
 				if (name == "Virgin") newGirl->m_Virgin = 1;
 				if (!newGirl->has_trait(name))
-					AddTrait(newGirl, name);
+					newGirl->add_trait(name);
 			}
 			else
 			{
@@ -1757,8 +1757,8 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		}
 	}
 
-	if (current->m_Human == 0)			AddTrait(newGirl, "Not Human");
-	if (current->m_YourDaughter == 1)	AddTrait(newGirl, "Your Daughter");
+	if (current->m_Human == 0)			newGirl->add_trait("Not Human");
+	if (current->m_YourDaughter == 1)	newGirl->add_trait("Your Daughter");
 
 	newGirl->m_Stats[STAT_FAME] = 0;
 	if (age != 0)	newGirl->m_Stats[STAT_AGE] = age;
@@ -1768,7 +1768,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 
 	if (childnaped)	// this girl has been taken against her will so make her rebelious
 	{
-		AddTrait(newGirl, "Kidnapped", max(5, g_Dice.bell(0, 25)));		// 5-25 turn temp trait
+		newGirl->add_trait("Kidnapped", max(5, g_Dice.bell(0, 25)));		// 5-25 turn temp trait
 		int spirit = g_Dice.bell(50, 125);
 		int conf = g_Dice.bell(50, 125);
 		int obey = g_Dice.bell(-50, 50);
@@ -1783,22 +1783,22 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	if (newGirl->check_virginity())	// `J` check random girl's virginity
 	{
 		newGirl->m_Virgin = 1;
-		AddTrait(newGirl, "Virgin");
+		newGirl->add_trait("Virgin");
 	}
 	else
 	{
 		newGirl->m_Virgin = 0;
-		RemoveTrait(newGirl, "Virgin");
+		newGirl->remove_trait("Virgin");
 	}
 	if (newGirl->m_Stats[STAT_AGE] < 18) newGirl->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-	if (g_Dice.percent(5))		AddTrait(newGirl, "Former Addict");
+	if (g_Dice.percent(5))		newGirl->add_trait("Former Addict");
 	else
 	{
-		if (g_Dice.percent(5))		AddTrait(newGirl, "Smoker");
-		if (g_Dice.percent(4))		AddTrait(newGirl, "Alcoholic");
-		if (g_Dice.percent(2))		AddTrait(newGirl, "Fairy Dust Addict");
-		if (g_Dice.percent(1))		AddTrait(newGirl, "Shroud Addict");
-		if (g_Dice.percent(0.5))	AddTrait(newGirl, "Viras Blood Addict");
+		if (g_Dice.percent(5))		newGirl->add_trait("Smoker");
+		if (g_Dice.percent(4))		newGirl->add_trait("Alcoholic");
+		if (g_Dice.percent(2))		newGirl->add_trait("Fairy Dust Addict");
+		if (g_Dice.percent(1))		newGirl->add_trait("Shroud Addict");
+		if (g_Dice.percent(0.5))	newGirl->add_trait("Viras Blood Addict");
 	}
 
 	if (daughter)				newGirl->m_Stats[STAT_HOUSE] = 0;	// your daughter gets to keep all she gets
@@ -1826,7 +1826,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_AccLevel = 9;			// pamper her
 		newGirl->m_Money = 1000;
 		newGirl->m_Stats[STAT_HOUSE] = 0;	// your daughter gets to keep all she gets
-		AddTrait(newGirl, "Your Daughter");
+		newGirl->add_trait("Your Daughter");
 		newGirl->m_Stats[STAT_OBEDIENCE] = max(newGirl->m_Stats[STAT_OBEDIENCE], 80);	// She starts out obedient
 		if (newGirl->check_virginity())
 		{		// you made sure she stayed pure
@@ -2073,7 +2073,7 @@ void cGirls::LevelUp(sGirl* girl)
 			if (trait != "" && !girl->has_trait(trait))
 			{
 				addedtrait = 0;
-				AddTrait(girl, trait);
+				girl->add_trait(trait);
 				ss << " She has gained the " << trait << " trait.";
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 			}
@@ -4144,12 +4144,12 @@ void cGirls::LoadGirlsXML(string filename)
 
 		if (girl->check_virginity())			// `J` check girl's virginity
 		{
-			girl->m_Virgin = 1; AddTrait(girl, "Virgin");
+			girl->m_Virgin = 1; girl->add_trait("Virgin");
 		}
 		else
 		{
 			girl->m_Virgin = 0;
-			RemoveTrait(girl, "Virgin");
+			girl->remove_trait("Virgin");
 		}
 		if (girl->m_Stats[STAT_AGE] < 18) girl->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 		MutuallyExclusiveTraits(girl, 1);	// make sure all the trait effects are applied
@@ -4478,8 +4478,8 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			if (girl->m_Withdrawals >= 30)
 			{
-				RemoveTrait(girl, "Viras Blood Addict", true);
-				AddTrait(girl, "Former Addict");
+				girl->remove_trait("Viras Blood Addict", true);
+				girl->add_trait("Former Addict");
 				stringstream goodnews;
 				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Viras Blood.";
 				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -4511,8 +4511,8 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			if (girl->m_Withdrawals >= 20)
 			{
-				RemoveTrait(girl, "Fairy Dust Addict", true);
-				AddTrait(girl, "Former Addict");
+				girl->remove_trait("Fairy Dust Addict", true);
+				girl->add_trait("Former Addict");
 				stringstream goodnews;
 				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Fairy Dust.";
 				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -4544,8 +4544,8 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			if (girl->m_Withdrawals >= 20)
 			{
-				RemoveTrait(girl, "Shroud Addict", true);
-				AddTrait(girl, "Former Addict");
+				girl->remove_trait("Shroud Addict", true);
+				girl->add_trait("Former Addict");
 				stringstream goodnews;
 				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Shroud Mushrooms.";
 				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -4577,8 +4577,8 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			if (girl->m_Withdrawals >= 15)
 			{
-				RemoveTrait(girl, "Alcoholic", true);
-				AddTrait(girl, "Former Addict");
+				girl->remove_trait("Alcoholic", true);
+				girl->add_trait("Former Addict");
 				stringstream goodnews;
 				goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Alcohol.";
 				girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -4676,8 +4676,8 @@ void cGirls::UseItems(sGirl* girl)
 		else if (girl->m_Withdrawals >= 15)
 		{
 			girl->m_Withdrawals = 0;
-			RemoveTrait(girl, "Smoker", true);
-			AddTrait(girl, "Former Addict");
+			girl->remove_trait("Smoker", true);
+			girl->add_trait("Former Addict");
 			stringstream goodnews;
 			goodnews << "Good News, " << girl->m_Realname << " has overcome her addiction to Nicotine.";
 			girl->m_Events.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -5147,26 +5147,26 @@ string cGirls::AdjustTraitGroupGagReflex(sGirl* girl, int adjustment, bool showm
 	{
 		if (adjustment < 0) return "";	// can't go lower
 		newGR = -2 + adjustment;
-		g_Girls.RemoveTrait(girl, "Strong Gag Reflex", true, true);
+		girl->remove_trait("Strong Gag Reflex", true, true);
 		ss << " has lost the trait 'Strong Gag Reflex' ";
 	}
 	else if (girl->has_trait( "Gag Reflex"))		// step -1
 	{
 		newGR = -1 + adjustment;
-		g_Girls.RemoveTrait(girl, "Gag Reflex", true, true);
+		girl->remove_trait("Gag Reflex", true, true);
 		ss << " has lost the trait 'Gag Reflex' ";
 	}
 	else if (girl->has_trait( "No Gag Reflex"))	// step +1
 	{
 		newGR = 1 + adjustment;
-		g_Girls.RemoveTrait(girl, "No Gag Reflex", true, true);
+		girl->remove_trait("No Gag Reflex", true, true);
 		ss << " has lost the trait 'No Gag Reflex' ";
 	}
 	else if (girl->has_trait( "Deep Throat"))		// step +2
 	{
 		if (adjustment > 0) return "";	// can't go higher
 		newGR = 2 + adjustment;
-		g_Girls.RemoveTrait(girl, "Deep Throat", true, true);
+		girl->remove_trait("Deep Throat", true, true);
 		ss << " has lost the trait 'Deep Throat' ";
 	}
 	else /* No trait                              */	// step 0
@@ -5178,12 +5178,12 @@ string cGirls::AdjustTraitGroupGagReflex(sGirl* girl, int adjustment, bool showm
 	/* */if (newGR <= -2)
 	{
 		newGR = -2;
-		g_Girls.AddTrait(girl, "Strong Gag Reflex");
+		girl->add_trait("Strong Gag Reflex");
 		ss << " has gained the trait 'Strong Gag Reflex'";
 	}
 	else if (newGR == -1)
 	{
-		g_Girls.AddTrait(girl, "Gag Reflex");
+		girl->add_trait("Gag Reflex");
 		ss << " has gained the trait 'Gag Reflex'";
 	}
 	else if (newGR == 0)
@@ -5192,13 +5192,13 @@ string cGirls::AdjustTraitGroupGagReflex(sGirl* girl, int adjustment, bool showm
 	}
 	else if (newGR == 1)
 	{
-		g_Girls.AddTrait(girl, "No Gag Reflex");
+		girl->add_trait("No Gag Reflex");
 		ss << " has gained the trait 'No Gag Reflex'";
 	}
 	else // if (newGR >= 2)
 	{
 		newGR = 2;
-		g_Girls.AddTrait(girl, "Deep Throat");
+		girl->add_trait("Deep Throat");
 		ss << " has gained the trait 'Deep Throat'";
 	}
 
@@ -5220,56 +5220,56 @@ string cGirls::AdjustTraitGroupBreastSize(sGirl* girl, int adjustment, bool show
 	{
 		if (adjustment < 0) return "";	// can't go lower
 		newGR = -3 + adjustment;
-		g_Girls.RemoveTrait(girl, "Flat Chest", true, true);
+		girl->remove_trait("Flat Chest", true, true);
 		ss << " breast size has changed from 'Flat Chest' ";
 	}
 	else if (girl->has_trait( "Petite Breasts"))				// step -2
 	{
 		newGR = -2 + adjustment;
-		g_Girls.RemoveTrait(girl, "Petite Breasts", true, true);
+		girl->remove_trait("Petite Breasts", true, true);
 		ss << " breast size has changed from 'Petite Breasts' ";
 	}
 	else if (girl->has_trait( "Small Boobs"))					// step -1
 	{
 		newGR = -1 + adjustment;
-		g_Girls.RemoveTrait(girl, "Small Boobs", true, true);
+		girl->remove_trait("Small Boobs", true, true);
 		ss << " breast size has changed from 'Small Boobs' ";
 	}
 	else if (girl->has_trait( "Busty Boobs"))					// step +1
 	{
 		newGR = 1 + adjustment;
-		g_Girls.RemoveTrait(girl, "Busty Boobs", true, true);
+		girl->remove_trait("Busty Boobs", true, true);
 		ss << " breast size has changed from 'Busty Boobs' ";
 	}
 	else if (girl->has_trait( "Big Boobs"))					// step +2
 	{
 		newGR = 2 + adjustment;
-		g_Girls.RemoveTrait(girl, "Big Boobs", true, true);
+		girl->remove_trait("Big Boobs", true, true);
 		ss << " breast size has changed from 'Big Boobs' ";
 	}
 	else if (girl->has_trait( "Giant Juggs"))					// step +3
 	{
 		newGR = 3 + adjustment;
-		g_Girls.RemoveTrait(girl, "Giant Juggs", true, true);
+		girl->remove_trait("Giant Juggs", true, true);
 		ss << " breast size has changed from 'Giant Juggs' ";
 	}
 	else if (girl->has_trait( "Massive Melons"))				// step +4
 	{
 		newGR = 4 + adjustment;
-		g_Girls.RemoveTrait(girl, "Massive Melons", true, true);
+		girl->remove_trait("Massive Melons", true, true);
 		ss << " breast size has changed from 'Massive Melons' ";
 	}
 	else if (girl->has_trait( "Abnormally Large Boobs"))		// step +5
 	{
 		newGR = 5 + adjustment;
-		g_Girls.RemoveTrait(girl, "Abnormally Large Boobs", true, true);
+		girl->remove_trait("Abnormally Large Boobs", true, true);
 		ss << " breast size has changed from 'Abnormally Large Boobs' ";
 	}
 	else if (girl->has_trait( "Titanic Tits"))				// step +6
 	{
 		if (adjustment > 0) return "";	// can't go higher
 		newGR = 6 + adjustment;
-		g_Girls.RemoveTrait(girl, "Titanic Tits", true, true);
+		girl->remove_trait("Titanic Tits", true, true);
 		ss << " breast size has changed from 'Titanic Tits' ";
 	}
 	else /* No trait                                          */	// step 0
@@ -5283,53 +5283,53 @@ string cGirls::AdjustTraitGroupBreastSize(sGirl* girl, int adjustment, bool show
 	if (newGR <= -3)
 	{
 		newGR = -3;
-		g_Girls.AddTrait(girl, "Flat Chest");
+		girl->add_trait("Flat Chest");
 		ss << " to 'Flat Chest'";
 	}
 	else if (newGR == -2)
 	{
-		g_Girls.AddTrait(girl, "Petite Breasts");
+		girl->add_trait("Petite Breasts");
 		ss << " to 'Petite Breasts'";
 	}
 	else if (newGR == -1)
 	{
-		g_Girls.AddTrait(girl, "Small Boobs");
+		girl->add_trait("Small Boobs");
 		ss << " to 'Small Boobs'";
 	}
 	else if (newGR == 0)
 	{
-		g_Girls.AddTrait(girl, "Average");
+		girl->add_trait("Average");
 		ss << " to 'Average'";
 	}
 	else if (newGR == +1)
 	{
-		g_Girls.AddTrait(girl, "Busty Boobs");
+		girl->add_trait("Busty Boobs");
 		ss << " to 'Busty Boobs'";
 	}
 	else if (newGR == +2)
 	{
-		g_Girls.AddTrait(girl, "Big Boobs");
+		girl->add_trait("Big Boobs");
 		ss << " to 'Big Boobs'";
 	}
 	else if (newGR == +3)
 	{
-		g_Girls.AddTrait(girl, "Giant Juggs");
+		girl->add_trait("Giant Juggs");
 		ss << " to 'Giant Juggs'";
 	}
 	else if (newGR == +4)
 	{
-		g_Girls.AddTrait(girl, "Massive Melons");
+		girl->add_trait("Massive Melons");
 		ss << " to 'Massive Melons'";
 	}
 	else if (newGR == +5)
 	{
-		g_Girls.AddTrait(girl, "Abnormally Large Boobs");
+		girl->add_trait("Abnormally Large Boobs");
 		ss << " to 'Abnormally Large Boobs'";
 	}
 	else if (newGR >= +6)
 	{
 		newGR = 6;
-		g_Girls.AddTrait(girl, "Titanic Tits");
+		girl->add_trait("Titanic Tits");
 		ss << " to 'Titanic Tits'";
 	}
 
@@ -5351,18 +5351,18 @@ string cGirls::AdjustTraitGroupFertility(sGirl* girl, int adjustment, bool showm
 	// first we check what she has and remove it if it is changing
 	/* */if (girl->has_trait( "Sterile")) {
 		if (adjustment < 0) return "";	// can't go lower
-		g_Girls.RemoveTrait(girl, "Sterile", true, true);
+		girl->remove_trait("Sterile", true, true);
 		ss << " has lost the trait 'Sterile' ";
 		newGR = -1 + adjustment;
 	}
 	else if (girl->has_trait( "Fertile")) {	// step +1
-		g_Girls.RemoveTrait(girl, "Fertile", true, true);
+		girl->remove_trait("Fertile", true, true);
 		ss << " has lost the trait 'Fertile' ";
 		newGR = 1 + adjustment;
 	}
 	else if (girl->has_trait( "Broodmother")) {
 		if (adjustment > 0) return "";	// can't go higher
-		g_Girls.RemoveTrait(girl, "Broodmother", true, true);
+		girl->remove_trait("Broodmother", true, true);
 		ss << " has lost the trait 'Broodmother' ";
 		newGR = 2 + adjustment;
 	}
@@ -5375,7 +5375,7 @@ string cGirls::AdjustTraitGroupFertility(sGirl* girl, int adjustment, bool showm
 	if (newGR <= -1)
 	{
 		newGR = -1;
-		g_Girls.AddTrait(girl, "Sterile");
+		girl->add_trait("Sterile");
 		ss << " has gained the trait 'Sterile'";
 	}
 	else if (newGR == 0)
@@ -5384,13 +5384,13 @@ string cGirls::AdjustTraitGroupFertility(sGirl* girl, int adjustment, bool showm
 	}
 	else if (newGR == 1)
 	{
-		g_Girls.AddTrait(girl, "Fertile");
+		girl->add_trait("Fertile");
 		ss << " has gained the trait 'Fertile'";
 	}
 	else // if (newGR >= 2)
 	{
 		newGR = 2;
-		g_Girls.AddTrait(girl, "Broodmother");
+		girl->add_trait("Broodmother");
 		ss << " has gained the trait 'Broodmother'";
 	}
 
@@ -6883,10 +6883,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "")			RemoveTrait(girl, "", rememberflag, true);
-				if (name != "")			RemoveTrait(girl, "", rememberflag, true);
-				if (name != "")			RemoveTrait(girl, "", rememberflag, true);
-				if (name != "")			RemoveTrait(girl, "", rememberflag, true);
+				if (name != "")			girl->remove_trait("", rememberflag, true);
+				if (name != "")			girl->remove_trait("", rememberflag, true);
+				if (name != "")			girl->remove_trait("", rememberflag, true);
+				if (name != "")			girl->remove_trait("", rememberflag, true);
 			}
 			else
 			{
@@ -6914,15 +6914,15 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Flat Chest")				RemoveTrait(girl, "Flat Chest", rememberflag, true);
-				if (name != "Petite Breasts")			RemoveTrait(girl, "Petite Breasts", rememberflag, true);
-				if (name != "Small Boobs")				RemoveTrait(girl, "Small Boobs", rememberflag, true);
-				if (name != "Busty Boobs")				RemoveTrait(girl, "Busty Boobs", rememberflag, true);
-				if (name != "Big Boobs")				RemoveTrait(girl, "Big Boobs", rememberflag, true);
-				if (name != "Giant Juggs")				RemoveTrait(girl, "Giant Juggs", rememberflag, true);
-				if (name != "Massive Melons")			RemoveTrait(girl, "Massive Melons", rememberflag, true);
-				if (name != "Abnormally Large Boobs")	RemoveTrait(girl, "Abnormally Large Boobs", rememberflag, true);
-				if (name != "Titanic Tits")				RemoveTrait(girl, "Titanic Tits", rememberflag, true);
+				if (name != "Flat Chest")				girl->remove_trait("Flat Chest", rememberflag, true);
+				if (name != "Petite Breasts")			girl->remove_trait("Petite Breasts", rememberflag, true);
+				if (name != "Small Boobs")				girl->remove_trait("Small Boobs", rememberflag, true);
+				if (name != "Busty Boobs")				girl->remove_trait("Busty Boobs", rememberflag, true);
+				if (name != "Big Boobs")				girl->remove_trait("Big Boobs", rememberflag, true);
+				if (name != "Giant Juggs")				girl->remove_trait("Giant Juggs", rememberflag, true);
+				if (name != "Massive Melons")			girl->remove_trait("Massive Melons", rememberflag, true);
+				if (name != "Abnormally Large Boobs")	girl->remove_trait("Abnormally Large Boobs", rememberflag, true);
+				if (name != "Titanic Tits")				girl->remove_trait("Titanic Tits", rememberflag, true);
 			}
 			else
 			{
@@ -6949,17 +6949,17 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				if (girl->has_trait("No Nipples"))
 				{
 					// if she has no nipples she can not produce milk, but remember that is has changed in case she grows nipples
-					RemoveTrait(girl, "Dry Milk", false, true, name == "Dry Milk");
-					RemoveTrait(girl, "Scarce Lactation", false, true, name == "Scarce Lactation");
-					RemoveTrait(girl, "Abundant Lactation", false, true, name == "Abundant Lactation");
-					RemoveTrait(girl, "Cow Tits", false, true, name == "Cow Tits");
+					girl->remove_trait("Dry Milk", false, true, name == "Dry Milk");
+					girl->remove_trait("Scarce Lactation", false, true, name == "Scarce Lactation");
+					girl->remove_trait("Abundant Lactation", false, true, name == "Abundant Lactation");
+					girl->remove_trait("Cow Tits", false, true, name == "Cow Tits");
 				}
 				else
 				{
-					if (name != "Dry Milk")				RemoveTrait(girl, "Dry Milk", rememberflag, true);
-					if (name != "Scarce Lactation")		RemoveTrait(girl, "Scarce Lactation", rememberflag, true);
-					if (name != "Abundant Lactation")	RemoveTrait(girl, "Abundant Lactation", rememberflag, true);
-					if (name != "Cow Tits")				RemoveTrait(girl, "Cow Tits", rememberflag, true);
+					if (name != "Dry Milk")				girl->remove_trait("Dry Milk", rememberflag, true);
+					if (name != "Scarce Lactation")		girl->remove_trait("Scarce Lactation", rememberflag, true);
+					if (name != "Abundant Lactation")	girl->remove_trait("Abundant Lactation", rememberflag, true);
+					if (name != "Cow Tits")				girl->remove_trait("Cow Tits", rememberflag, true);
 				}
 			}
 			else
@@ -6973,10 +6973,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				if (girl->has_trait("No Nipples"))
 				{
 					// if she has no nipples she can not produce milk, but remember that is has changed in case she grows nipples
-					RemoveTrait(girl, "Dry Milk", true, true, girl->has_trait("Dry Milk"));
-					RemoveTrait(girl, "Scarce Lactation", true, true, girl->has_trait("Scarce Lactation"));
-					RemoveTrait(girl, "Abundant Lactation", true, true, girl->has_trait("Abundant Lactation"));
-					RemoveTrait(girl, "Cow Tits", true, true, girl->has_trait("Cow Tits"));
+					girl->remove_trait("Dry Milk", true, true, girl->has_trait("Dry Milk"));
+					girl->remove_trait("Scarce Lactation", true, true, girl->has_trait("Scarce Lactation"));
+					girl->remove_trait("Abundant Lactation", true, true, girl->has_trait("Abundant Lactation"));
+					girl->remove_trait("Cow Tits", true, true, girl->has_trait("Cow Tits"));
 				}
 			}
 		}
@@ -6992,21 +6992,21 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				// if adding "No Nipples" remove all other nipple traits but remember them
 				if (name == "No Nipples" || girl->has_trait("No Nipples"))
 				{
-					if (girl->has_trait("Dry Milk"))				RemoveTrait(girl, "Dry Milk", true, true, true);
-					if (girl->has_trait("Scarce Lactation"))		RemoveTrait(girl, "Scarce Lactation", true, true, true);
-					if (girl->has_trait("Abundant Lactation"))	RemoveTrait(girl, "Abundant Lactation", true, true, true);
-					if (girl->has_trait("Cow Tits"))				RemoveTrait(girl, "Cow Tits", true, true, true);
+					if (girl->has_trait("Dry Milk"))				girl->remove_trait("Dry Milk", true, true, true);
+					if (girl->has_trait("Scarce Lactation"))		girl->remove_trait("Scarce Lactation", true, true, true);
+					if (girl->has_trait("Abundant Lactation"))	girl->remove_trait("Abundant Lactation", true, true, true);
+					if (girl->has_trait("Cow Tits"))				girl->remove_trait("Cow Tits", true, true, true);
 
-					if (name == "Missing Nipple" || girl->has_trait("Missing Nipple"))	RemoveTrait(girl, "Missing Nipple", rememberflag, true, true);
-					if (name == "Puffy Nipples" || girl->has_trait("Puffy Nipples"))		RemoveTrait(girl, "Puffy Nipples", rememberflag, true, true);
-					if (name == "Inverted Nipples" || girl->has_trait("Perky Nipples"))	RemoveTrait(girl, "Perky Nipples", rememberflag, true, true);
-					if (name == "Perky Nipples" || girl->has_trait("Inverted Nipples"))	RemoveTrait(girl, "Inverted Nipples", rememberflag, true, true);
+					if (name == "Missing Nipple" || girl->has_trait("Missing Nipple"))	girl->remove_trait("Missing Nipple", rememberflag, true, true);
+					if (name == "Puffy Nipples" || girl->has_trait("Puffy Nipples"))		girl->remove_trait("Puffy Nipples", rememberflag, true, true);
+					if (name == "Inverted Nipples" || girl->has_trait("Perky Nipples"))	girl->remove_trait("Perky Nipples", rememberflag, true, true);
+					if (name == "Perky Nipples" || girl->has_trait("Inverted Nipples"))	girl->remove_trait("Inverted Nipples", rememberflag, true, true);
 				}
 				else
 				{
 					// she can not have both Inverted and Perky but Puffy can go with either
-					if (name == "Inverted Nipples")		RemoveTrait(girl, "Perky Nipples", rememberflag, true);
-					if (name == "Perky Nipples")		RemoveTrait(girl, "Inverted Nipples", rememberflag, true);
+					if (name == "Inverted Nipples")		girl->remove_trait("Perky Nipples", rememberflag, true);
+					if (name == "Perky Nipples")		girl->remove_trait("Inverted Nipples", rememberflag, true);
 				}
 			}
 			else
@@ -7040,9 +7040,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Sterile")		RemoveTrait(girl, "Sterile", rememberflag, true);
-				if (name != "Broodmother")	RemoveTrait(girl, "Broodmother", rememberflag, true);
-				if (name != "Fertile")		RemoveTrait(girl, "Fertile", rememberflag, true);
+				if (name != "Sterile")		girl->remove_trait("Sterile", rememberflag, true);
+				if (name != "Broodmother")	girl->remove_trait("Broodmother", rememberflag, true);
+				if (name != "Fertile")		girl->remove_trait("Fertile", rememberflag, true);
 			}
 			else
 			{
@@ -7058,9 +7058,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Bisexual")		RemoveTrait(girl, "Bisexual", rememberflag, true);
-				if (name != "Lesbian")		RemoveTrait(girl, "Lesbian", rememberflag, true);
-				if (name != "Straight")		RemoveTrait(girl, "Straight", rememberflag, true);
+				if (name != "Bisexual")		girl->remove_trait("Bisexual", rememberflag, true);
+				if (name != "Lesbian")		girl->remove_trait("Lesbian", rememberflag, true);
+				if (name != "Straight")		girl->remove_trait("Straight", rememberflag, true);
 			}
 			else
 			{
@@ -7077,10 +7077,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Strong Gag Reflex")		RemoveTrait(girl, "Strong Gag Reflex", rememberflag, true);
-				if (name != "Gag Reflex")				RemoveTrait(girl, "Gag Reflex", rememberflag, true);
-				if (name != "No Gag Reflex")			RemoveTrait(girl, "No Gag Reflex", rememberflag, true);
-				if (name != "Deep Throat")				RemoveTrait(girl, "Deep Throat", rememberflag, true);
+				if (name != "Strong Gag Reflex")		girl->remove_trait("Strong Gag Reflex", rememberflag, true);
+				if (name != "Gag Reflex")				girl->remove_trait("Gag Reflex", rememberflag, true);
+				if (name != "No Gag Reflex")			girl->remove_trait("No Gag Reflex", rememberflag, true);
+				if (name != "Deep Throat")				girl->remove_trait("Deep Throat", rememberflag, true);
 			}
 			else
 			{
@@ -7096,8 +7096,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Nymphomaniac")		RemoveTrait(girl, "Nymphomaniac", rememberflag, true);
-				if (name != "Chaste")			RemoveTrait(girl, "Chaste", rememberflag, true);
+				if (name != "Nymphomaniac")		girl->remove_trait("Nymphomaniac", rememberflag, true);
+				if (name != "Chaste")			girl->remove_trait("Chaste", rememberflag, true);
 			}
 			else
 			{
@@ -7113,8 +7113,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			if (apply)
 			{
 				// "Fake Orgasm Expert" overrides the other 2 so if adding it, remove the others but if adding the others don't remove it
-				if (name != "Fast Orgasms")			RemoveTrait(girl, "Fast Orgasms", rememberflag, true);
-				if (name != "Slow Orgasms")			RemoveTrait(girl, "Slow Orgasms", rememberflag, true);
+				if (name != "Fast Orgasms")			girl->remove_trait("Fast Orgasms", rememberflag, true);
+				if (name != "Slow Orgasms")			girl->remove_trait("Slow Orgasms", rememberflag, true);
 			}
 			else
 			{
@@ -7134,8 +7134,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Fragile")			RemoveTrait(girl, "Fragile", rememberflag, true);
-				if (name != "Tough")			RemoveTrait(girl, "Tough", rememberflag, true);
+				if (name != "Fragile")			girl->remove_trait("Fragile", rememberflag, true);
+				if (name != "Tough")			girl->remove_trait("Tough", rememberflag, true);
 			}
 			else
 			{
@@ -7149,8 +7149,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Construct")			RemoveTrait(girl, "Construct", rememberflag, true);
-				if (name != "Half-Construct")		RemoveTrait(girl, "Half-Construct", rememberflag, true);
+				if (name != "Construct")			girl->remove_trait("Construct", rememberflag, true);
+				if (name != "Half-Construct")		girl->remove_trait("Half-Construct", rememberflag, true);
 			}
 			else
 			{
@@ -7168,12 +7168,12 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Flat Ass")				RemoveTrait(girl, "Flat Ass", rememberflag, true);
-				if (name != "Tight Butt")			RemoveTrait(girl, "Tight Butt", rememberflag, true);
-				if (name != "Plump Tush")			RemoveTrait(girl, "Plump Tush", rememberflag, true);
-				if (name != "Great Arse")			RemoveTrait(girl, "Great Arse", rememberflag, true);
-				if (name != "Phat Booty")			RemoveTrait(girl, "Phat Booty", rememberflag, true);
-				if (name != "Deluxe Derriere")		RemoveTrait(girl, "Deluxe Derriere", rememberflag, true);
+				if (name != "Flat Ass")				girl->remove_trait("Flat Ass", rememberflag, true);
+				if (name != "Tight Butt")			girl->remove_trait("Tight Butt", rememberflag, true);
+				if (name != "Plump Tush")			girl->remove_trait("Plump Tush", rememberflag, true);
+				if (name != "Great Arse")			girl->remove_trait("Great Arse", rememberflag, true);
+				if (name != "Phat Booty")			girl->remove_trait("Phat Booty", rememberflag, true);
+				if (name != "Deluxe Derriere")		girl->remove_trait("Deluxe Derriere", rememberflag, true);
 			}
 			else
 			{
@@ -7191,8 +7191,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Missing Teeth")	RemoveTrait(girl, "Missing Teeth", rememberflag, true);
-				if (name != "No Teeth")			RemoveTrait(girl, "No Teeth", rememberflag, true);
+				if (name != "Missing Teeth")	girl->remove_trait("Missing Teeth", rememberflag, true);
+				if (name != "No Teeth")			girl->remove_trait("No Teeth", rememberflag, true);
 			}
 			else
 			{
@@ -7208,10 +7208,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Giant")		RemoveTrait(girl, "Giant", rememberflag, true);
-				if (name != "Tall")			RemoveTrait(girl, "Tall", rememberflag, true);
-				if (name != "Short")		RemoveTrait(girl, "Short", rememberflag, true);
-				if (name != "Dwarf")		RemoveTrait(girl, "Dwarf", rememberflag, true);
+				if (name != "Giant")		girl->remove_trait("Giant", rememberflag, true);
+				if (name != "Tall")			girl->remove_trait("Tall", rememberflag, true);
+				if (name != "Short")		girl->remove_trait("Short", rememberflag, true);
+				if (name != "Dwarf")		girl->remove_trait("Dwarf", rememberflag, true);
 			}
 			else
 			{
@@ -7229,10 +7229,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Great Figure")		RemoveTrait(girl, "Great Figure", rememberflag, true);
-				if (name != "Hourglass Figure")	RemoveTrait(girl, "Hourglass Figure", rememberflag, true);
-				if (name != "Plump")			RemoveTrait(girl, "Plump", rememberflag, true);
-				if (name != "Fat")				RemoveTrait(girl, "Fat", rememberflag, true);
+				if (name != "Great Figure")		girl->remove_trait("Great Figure", rememberflag, true);
+				if (name != "Hourglass Figure")	girl->remove_trait("Hourglass Figure", rememberflag, true);
+				if (name != "Plump")			girl->remove_trait("Plump", rememberflag, true);
+				if (name != "Fat")				girl->remove_trait("Fat", rememberflag, true);
 			}
 			else
 			{
@@ -7255,9 +7255,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Small Tattoos")		RemoveTrait(girl, "Small Tattoos", rememberflag, true);
-				if (name != "Tattooed")				RemoveTrait(girl, "Tattooed", rememberflag, true);
-				if (name != "Heavily Tattooed")		RemoveTrait(girl, "Heavily Tattooed", rememberflag, true);
+				if (name != "Small Tattoos")		girl->remove_trait("Small Tattoos", rememberflag, true);
+				if (name != "Tattooed")				girl->remove_trait("Tattooed", rememberflag, true);
+				if (name != "Heavily Tattooed")		girl->remove_trait("Heavily Tattooed", rememberflag, true);
 			}
 			else
 			{
@@ -7279,10 +7279,10 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Muggle")			RemoveTrait(girl, "Muggle", rememberflag, true);
-				if (name != "Weak Magic")		RemoveTrait(girl, "Weak Magic", rememberflag, true);
-				if (name != "Strong Magic")		RemoveTrait(girl, "Strong Magic", rememberflag, true);
-				if (name != "Powerful Magic")	RemoveTrait(girl, "Powerful Magic", rememberflag, true);
+				if (name != "Muggle")			girl->remove_trait("Muggle", rememberflag, true);
+				if (name != "Weak Magic")		girl->remove_trait("Weak Magic", rememberflag, true);
+				if (name != "Strong Magic")		girl->remove_trait("Strong Magic", rememberflag, true);
+				if (name != "Powerful Magic")	girl->remove_trait("Powerful Magic", rememberflag, true);
 			}
 			else
 			{
@@ -7303,8 +7303,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Princess")			RemoveTrait(girl, "Princess", rememberflag, true);
-				if (name != "Queen")			RemoveTrait(girl, "Queen", rememberflag, true);
+				if (name != "Princess")			girl->remove_trait("Princess", rememberflag, true);
+				if (name != "Queen")			girl->remove_trait("Queen", rememberflag, true);
 			}
 			else
 			{
@@ -7323,13 +7323,13 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				// If adding Lolita remove the others but if adding the others only remove Lolita
 				if (name == "Lolita")
 				{
-					RemoveTrait(girl, "MILF", rememberflag, true);
-					RemoveTrait(girl, "Old", rememberflag, true);
-					RemoveTrait(girl, "Middle Aged", rememberflag, true);
+					girl->remove_trait("MILF", rememberflag, true);
+					girl->remove_trait("Old", rememberflag, true);
+					girl->remove_trait("Middle Aged", rememberflag, true);
 				}
-				if (name == "MILF")			RemoveTrait(girl, "Lolita", rememberflag, true);
-				if (name == "Old")			RemoveTrait(girl, "Lolita", rememberflag, true);
-				if (name == "Middle Aged")	RemoveTrait(girl, "Lolita", rememberflag, true);
+				if (name == "MILF")			girl->remove_trait("Lolita", rememberflag, true);
+				if (name == "Old")			girl->remove_trait("Lolita", rememberflag, true);
+				if (name == "Middle Aged")	girl->remove_trait("Lolita", rememberflag, true);
 			}
 			else
 			{
@@ -7354,8 +7354,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Shy")				RemoveTrait(girl, "Shy", rememberflag, true);
-				if (name != "Exhibitionist")	RemoveTrait(girl, "Exhibitionist", rememberflag, true);
+				if (name != "Shy")				girl->remove_trait("Shy", rememberflag, true);
+				if (name != "Exhibitionist")	girl->remove_trait("Exhibitionist", rememberflag, true);
 			}
 			else
 			{
@@ -7374,8 +7374,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Optimist")			RemoveTrait(girl, "Optimist", rememberflag, true);
-				if (name != "Pessimist")		RemoveTrait(girl, "Pessimist", rememberflag, true);
+				if (name != "Optimist")			girl->remove_trait("Optimist", rememberflag, true);
+				if (name != "Pessimist")		girl->remove_trait("Pessimist", rememberflag, true);
 			}
 			else
 			{
@@ -7389,8 +7389,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Singer")			RemoveTrait(girl, "Singer", rememberflag, true);
-				if (name != "Tone Deaf")		RemoveTrait(girl, "Tone Deaf", rememberflag, true);
+				if (name != "Singer")			girl->remove_trait("Singer", rememberflag, true);
+				if (name != "Tone Deaf")		girl->remove_trait("Tone Deaf", rememberflag, true);
 			}
 			else
 			{
@@ -7404,8 +7404,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Broken Will")			RemoveTrait(girl, "Broken Will", rememberflag, true);
-				if (name != "Iron Will")			RemoveTrait(girl, "Iron Will", rememberflag, true);
+				if (name != "Broken Will")			girl->remove_trait("Broken Will", rememberflag, true);
+				if (name != "Iron Will")			girl->remove_trait("Iron Will", rememberflag, true);
 			}
 			else
 			{
@@ -7419,8 +7419,8 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Slow Learner")			RemoveTrait(girl, "Slow Learner", rememberflag, true);
-				if (name != "Quick Learner")		RemoveTrait(girl, "Quick Learner", rememberflag, true);
+				if (name != "Slow Learner")			girl->remove_trait("Slow Learner", rememberflag, true);
+				if (name != "Quick Learner")		girl->remove_trait("Quick Learner", rememberflag, true);
 			}
 			else
 			{
@@ -7440,33 +7440,33 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 			{
 				if (name == "Audacity")
 				{
-					RemoveTrait(girl, "Meek", rememberflag, true);
-					RemoveTrait(girl, "Nervous", rememberflag, true);
-					RemoveTrait(girl, "Dependant", rememberflag, true);
+					girl->remove_trait("Meek", rememberflag, true);
+					girl->remove_trait("Nervous", rememberflag, true);
+					girl->remove_trait("Dependant", rememberflag, true);
 				}
 				if (name == "Fearless")
 				{
-					RemoveTrait(girl, "Meek", rememberflag, true);
-					RemoveTrait(girl, "Nervous", rememberflag, true);
+					girl->remove_trait("Meek", rememberflag, true);
+					girl->remove_trait("Nervous", rememberflag, true);
 				}
 				if (name == "Aggressive")
 				{
-					RemoveTrait(girl, "Meek", rememberflag, true);
+					girl->remove_trait("Meek", rememberflag, true);
 				}
 				if (name == "Meek")
 				{
-					RemoveTrait(girl, "Aggressive", rememberflag, true);
-					RemoveTrait(girl, "Fearless", rememberflag, true);
-					RemoveTrait(girl, "Audacity", rememberflag, true);
+					girl->remove_trait("Aggressive", rememberflag, true);
+					girl->remove_trait("Fearless", rememberflag, true);
+					girl->remove_trait("Audacity", rememberflag, true);
 				}
 				if (name == "Nervous")
 				{
-					RemoveTrait(girl, "Fearless", rememberflag, true);
-					RemoveTrait(girl, "Audacity", rememberflag, true);
+					girl->remove_trait("Fearless", rememberflag, true);
+					girl->remove_trait("Audacity", rememberflag, true);
 				}
 				if (name == "Dependant")
 				{
-					RemoveTrait(girl, "Audacity", rememberflag, true);
+					girl->remove_trait("Audacity", rememberflag, true);
 				}
 			}
 			else
@@ -7514,9 +7514,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Blind")			RemoveTrait(girl, "Blind", rememberflag, true);
-				if (name != "Bad Eyesight")		RemoveTrait(girl, "Bad Eyesight", rememberflag, true);
-				if (name != "Sharp-Eyed")		RemoveTrait(girl, "Sharp-Eyed", rememberflag, true);
+				if (name != "Blind")			girl->remove_trait("Blind", rememberflag, true);
+				if (name != "Bad Eyesight")		girl->remove_trait("Bad Eyesight", rememberflag, true);
+				if (name != "Sharp-Eyed")		girl->remove_trait("Sharp-Eyed", rememberflag, true);
 			}
 			else
 			{
@@ -7543,29 +7543,29 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 				// If she becomes a Cyclops, remove all the other traits and forget them, if she changes back later we assume the new eyes are good and the same color
 				if (name == "Cyclops")
 				{
-					RemoveTrait(girl, "Different Colored Eyes", false, true);
-					RemoveTrait(girl, "Eye Patch", false, true);
-					RemoveTrait(girl, "One Eye", false, true);
+					girl->remove_trait("Different Colored Eyes", false, true);
+					girl->remove_trait("Eye Patch", false, true);
+					girl->remove_trait("One Eye", false, true);
 				}
 				else if (name == "Different Colored Eyes")	// If something tries to give a girl DCE and she only has 1 eye...
 				{
 					// if she only has 1 eye because she is a Cyclops (naturally only has space on her face for 1 eye)...
 					if (girl->has_trait("Cyclops"))
-						RemoveTrait(girl, "Different Colored Eyes", false, true);	// Forget having tried to get it.
+						girl->remove_trait("Different Colored Eyes", false, true);	// Forget having tried to get it.
 					// but if she had 2 eyes but lost 1...
 					else if (girl->has_trait("Eye Patch") || girl->has_trait("One Eye"))
-						RemoveTrait(girl, "Different Colored Eyes", true, true);	// Remember having tried to get it.
+						girl->remove_trait("Different Colored Eyes", true, true);	// Remember having tried to get it.
 				}
 				// If something tries to give her the "One Eye" trait but she is a Cyclops, don't give her "One Eye"
 				if (name == "One Eye" && girl->has_trait("Cyclops"))
 				{
-					RemoveTrait(girl, "One Eye", false, true);
+					girl->remove_trait("One Eye", false, true);
 				}
 				// If she loses an eye or covers it up with an eye patch and she is not a Cyclops, remove DCE but remember it
 				if ((name == "Eye Patch" || name == "One Eye") &&
 					(girl->has_trait("Eye Patch") || girl->has_trait("One Eye")) && !girl->has_trait("Cyclops"))
 				{
-					RemoveTrait(girl, "Different Colored Eyes", true, true);
+					girl->remove_trait("Different Colored Eyes", true, true);
 				}
 			}
 			else
@@ -7609,24 +7609,24 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		{
 			if (apply)
 			{
-				if (name != "Succubus")			RemoveTrait(girl, "Succubus", rememberflag, true);
-				if (name != "Angel")			RemoveTrait(girl, "Angel", rememberflag, true);
-				if (name != "Battery Operated")	RemoveTrait(girl, "Battery Operated", rememberflag, true);
-				if (name != "Canine")			RemoveTrait(girl, "Canine", rememberflag, true);
-				if (name != "Cat Girl")			RemoveTrait(girl, "Cat Girl", rememberflag, true);
-				if (name != "Cow Girl")			RemoveTrait(girl, "Cow Girl", rememberflag, true);
-				if (name != "Demon")			RemoveTrait(girl, "Demon", rememberflag, true);
-				if (name != "Dryad")			RemoveTrait(girl, "Dryad", rememberflag, true);
-				if (name != "Elf")				RemoveTrait(girl, "Elf", rememberflag, true);
-				if (name != "Equine")			RemoveTrait(girl, "Equine", rememberflag, true);
-				if (name != "Fallen Goddess")	RemoveTrait(girl, "Fallen Goddess", rememberflag, true);
-				if (name != "Furry")			RemoveTrait(girl, "Furry", rememberflag, true);
-				if (name != "Goddess")			RemoveTrait(girl, "Goddess", rememberflag, true);
-				if (name != "Half-Breed")		RemoveTrait(girl, "Half-Breed", rememberflag, true);
-				if (name != "Not Human")		RemoveTrait(girl, "Not Human", rememberflag, true);
-				if (name != "Reptilian")		RemoveTrait(girl, "Reptilian", rememberflag, true);
-				if (name != "Slitherer")		RemoveTrait(girl, "Slitherer", rememberflag, true);
-				if (name != "Solar Powered")	RemoveTrait(girl, "Solar Powered", rememberflag, true);
+				if (name != "Succubus")			girl->remove_trait("Succubus", rememberflag, true);
+				if (name != "Angel")			girl->remove_trait("Angel", rememberflag, true);
+				if (name != "Battery Operated")	girl->remove_trait("Battery Operated", rememberflag, true);
+				if (name != "Canine")			girl->remove_trait("Canine", rememberflag, true);
+				if (name != "Cat Girl")			girl->remove_trait("Cat Girl", rememberflag, true);
+				if (name != "Cow Girl")			girl->remove_trait("Cow Girl", rememberflag, true);
+				if (name != "Demon")			girl->remove_trait("Demon", rememberflag, true);
+				if (name != "Dryad")			girl->remove_trait("Dryad", rememberflag, true);
+				if (name != "Elf")				girl->remove_trait("Elf", rememberflag, true);
+				if (name != "Equine")			girl->remove_trait("Equine", rememberflag, true);
+				if (name != "Fallen Goddess")	girl->remove_trait("Fallen Goddess", rememberflag, true);
+				if (name != "Furry")			girl->remove_trait("Furry", rememberflag, true);
+				if (name != "Goddess")			girl->remove_trait("Goddess", rememberflag, true);
+				if (name != "Half-Breed")		girl->remove_trait("Half-Breed", rememberflag, true);
+				if (name != "Not Human")		girl->remove_trait("Not Human", rememberflag, true);
+				if (name != "Reptilian")		girl->remove_trait("Reptilian", rememberflag, true);
+				if (name != "Slitherer")		girl->remove_trait("Slitherer", rememberflag, true);
+				if (name != "Solar Powered")	girl->remove_trait("Solar Powered", rememberflag, true);
 			}
 			else
 			{
@@ -7774,75 +7774,6 @@ void cGirls::RemoveAllRememberedTraits(sGirl* girl)
 	girl->m_NumRememTraits = 0;
 }
 
-bool cGirls::RemoveTrait(sGirl* girl, string name, bool addrememberlist, bool force, bool keepinrememberlist)
-{
-	/*
-	*	WD: Added logic for remembered trait
-	*
-	*		addrememberlist = true = will move the trait from active to the remember list
-	*		addrememberlist = false = will remove the trait from active but not add it to the remember list
-	*
-	*		force = false = will ignore this check
-	*		force = true = will remove the trait entirely
-	*
-	*		keepinrememberlist = false = will ignore this check
-	*		keepinrememberlist = true will add it to the remember list even if it is completely removed
-	*		`J` added - this is for when an item tries to add a trait that the girl can not possible get because she has a trait that precludes it
-	*			ie. adding "Perky Nipples" to a girl who has "No Nipples", if "No Nipples" gets removed the "Perky Nipples" will show themselves
-	*
-	*		Returns true if there was a active trait or remember list entry removed
-	*
-	*		This should fix items with duplicate traits and loss of original trait if
-	*		overwritten by a trait from an item that is later removed
-	*/
-
-	bool hasRemTrait = HasRememberedTrait(girl, name);
-
-	if (!girl->has_trait(name))							// WD:	no active trait to remove
-	{
-		if (hasRemTrait && !keepinrememberlist)
-		{	// WD:	try remembered trait // `J` only if we want to remove it
-			RemoveRememberedTrait(girl, name);
-			return true;
-			// `J` explain - she had the trait removed before and it is getting removed again so remove it for good
-		}
-		if (!hasRemTrait && keepinrememberlist)
-		{	// `J` if she does not have it at all but we want her to remember trying to get it
-			AddRememberedTrait(girl, name);
-		}
-		return false;	// otherwise just return false
-	}
-	// `J` - so she has the trait active at this point...
-
-	if (!force && hasRemTrait)	//	WD:	has remembered trait so don't touch active trait unless we are forcing removal of active trait
-	{
-		RemoveRememberedTrait(girl, name);
-		return true;
-		// `J` explain - she had the trait in both active and remembered so instead of removing active and replacing with remembered, just remove remembered
-	}
-
-	//	WD:	save trait to remember list before removing
-	if (addrememberlist || keepinrememberlist) AddRememberedTrait(girl, name);
-
-	//	WD: Remove trait
-	sTrait* trait = g_Traits.GetTrait(name);
-	for (int i = 0; i < MAXNUM_TRAITS; i++)			// remove the traits
-	{
-		if (girl->m_Traits[i] && girl->m_Traits[i] == trait)
-		{
-			girl->m_NumTraits--;
-
-			MutuallyExclusiveTraits(girl, 0, girl->m_Traits[i]);
-			ApplyTraits(girl);
-
-			if (girl->m_TempTrait[i] > 0) girl->m_TempTrait[i] = 0;
-			girl->m_Traits[i] = 0;
-			return true;
-		}
-	}
-	return false;
-}
-
 bool sGirl::lose_virginity()	{
 	/*  Very similar to (and uses) RemoveTrait(). Added since trait "Virgin" created 04/14/2013.
 	*	This includes capability for items, magic or other processes
@@ -7870,62 +7801,6 @@ void cGirls::AddRememberedTrait(sGirl* girl, string name)
 	}
 }
 
-bool cGirls::AddTrait(sGirl* girl, string name, int temptime, bool removeitem, bool inrememberlist)
-{
-	/*
-	*	WD: Added logic for remembered trait
-	*
-	*		removeitem = true Will add to Remember
-	*		trait list if the trait is already active
-	*		Used with items / efects may be removed
-	*		later eg items - rings
-	*
-	*		inrememberlist = true only add trait if
-	*		exists in the remember list and remove
-	*		from the list. Use mainly with unequiping
-	*		items and Trait overiding in ApplyTraits()
-	*
-	*		Returns true if trait made active or added
-	*		trait remember list.
-	*
-	*		This should fix items with duplicate
-	*		traits and loss of original trait if
-	*		overwritten by a trait from an item
-	*		that is later removed
-	*
-	*/
-
-	if (girl->has_trait(name))
-	{
-		if (removeitem)								//	WD: Overwriting existing trait with removable item / effect
-			AddRememberedTrait(girl, name);			//	WD:	Save trait for when item is removed
-		return true;
-	}
-
-	if (inrememberlist)								// WD: Add trait only if it is in the Remember List
-	{
-		if (HasRememberedTrait(girl, name)) RemoveRememberedTrait(girl, name);
-		else return false;							//	WD:	No trait to add
-	}
-
-	for (int i = 0; i < MAXNUM_TRAITS; i++)				// add the trait
-	{
-		if (girl->m_Traits[i] == 0)
-		{
-			if (temptime>0) girl->m_TempTrait[i] = temptime;
-			girl->m_NumTraits++;
-			sTrait *addthistrait = g_Traits.GetTrait(g_Traits.GetTranslateName(name)); // `J` added translation check
-			girl->m_Traits[i] = addthistrait;
-
-			MutuallyExclusiveTraits(girl, 1, girl->m_Traits[i], removeitem);
-			ApplyTraits(girl, addthistrait);
-
-			return true;
-		}
-	}
-	return false;
-}
-
 // Update temp traits and remove expired traits
 void cGirls::updateTempTraits(sGirl* girl)
 {
@@ -7936,7 +7811,7 @@ void cGirls::updateTempTraits(sGirl* girl)
 		{
 			girl->m_TempTrait[i]--;
 			if (girl->m_TempTrait[i] == 0)
-				g_Girls.RemoveTrait(girl, girl->m_Traits[i]->m_Name);
+				girl->remove_trait(girl->m_Traits[i]->m_Name);
 		}
 	}
 }
@@ -7949,7 +7824,7 @@ void cGirls::updateTempTraits(sGirl* girl, string trait, int amount)
 	if (!girl->has_trait( trait))									// first check if she does not have the trait already
 	{
 		if (amount > 0)													// add it if modifier is positive
-			g_Girls.AddTrait(girl, trait, amount);
+			girl->add_trait(trait, amount);
 		return;
 	}
 	else																// if she does have it, check if it is permanent or temp
@@ -8155,38 +8030,38 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (harm > 95) //5% multi STDS
 		{
 			harm = g_Dice.d100();
-			if (harm == 100) AddTrait(girl, "AIDS"), AddTrait(girl, "Syphilis"), AddTrait(girl, "Herpes"), AddTrait(girl, "Chlamydia");
-			else if (harm > 95) AddTrait(girl, "AIDS"),		AddTrait(girl, "Syphilis");
-			else if (harm > 85) AddTrait(girl, "AIDS"),		AddTrait(girl, "Herpes");
-			else if (harm > 70) AddTrait(girl, "Syphilis"),	AddTrait(girl, "Herpes");
-			else if (harm > 50) AddTrait(girl, "Syphilis"),	AddTrait(girl, "Chlamydia");
-			else				AddTrait(girl, "Herpes"),	AddTrait(girl, "Chlamydia");
+			if (harm == 100) girl->add_trait("AIDS"), girl->add_trait("Syphilis"), girl->add_trait("Herpes"), girl->add_trait("Chlamydia");
+			else if (harm > 95) girl->add_trait("AIDS"),		girl->add_trait("Syphilis");
+			else if (harm > 85) girl->add_trait("AIDS"),		girl->add_trait("Herpes");
+			else if (harm > 70) girl->add_trait("Syphilis"),	girl->add_trait("Herpes");
+			else if (harm > 50) girl->add_trait("Syphilis"),	girl->add_trait("Chlamydia");
+			else				girl->add_trait("Herpes"),	girl->add_trait("Chlamydia");
 		}
 		else if (harm > 90)  //5% an STD
 		{
 			harm = g_Dice.d100();
-			if (harm > 95)		AddTrait(girl, "AIDS");
-			else if (harm > 80)	AddTrait(girl, "Syphilis");
-			else if (harm > 50) AddTrait(girl, "Herpes");
-			else				AddTrait(girl, "Chlamydia");
+			if (harm > 95)		girl->add_trait("AIDS");
+			else if (harm > 80)	girl->add_trait("Syphilis");
+			else if (harm > 50) girl->add_trait("Herpes");
+			else				girl->add_trait("Chlamydia");
 		}
 		else if (harm > 85)  //10% scars
 		{
-			if (!girl->has_trait("Small Scars") && !girl->has_trait("Cool Scars") && !girl->has_trait("Horrific Scars")) AddTrait(girl, "Small Scars");
-			else if (girl->has_trait("Small Scars")) AddTrait(girl, "Cool Scars");
-			else if (girl->has_trait("Cool Scars")) AddTrait(girl, "Horrific Scars");
+			if (!girl->has_trait("Small Scars") && !girl->has_trait("Cool Scars") && !girl->has_trait("Horrific Scars")) girl->add_trait("Small Scars");
+			else if (girl->has_trait("Small Scars")) girl->add_trait("Cool Scars");
+			else if (girl->has_trait("Cool Scars")) girl->add_trait("Horrific Scars");
 		}
 		else if (harm > 75)  //10% traumatised
 		{
-			AddTrait(girl, "Mind Fucked");
+			girl->add_trait("Mind Fucked");
 		}
 		else if (harm > 50)  //25% chance
 		{
 			//overused face
-			AddTrait(girl, "Missing Teeth");
+			girl->add_trait("Missing Teeth");
 			AdjustTraitGroupGagReflex(girl, +1);
 
-			RemoveTrait(girl, "Optimist");
+			girl->remove_trait("Optimist");
 			girl->upd_stat(STAT_DIGNITY, -10);
 			girl->upd_stat(STAT_SPIRIT, -10);
 			girl->upd_skill(SKILL_ORALSEX, 5);
@@ -8194,9 +8069,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else if (harm > 25)  //25% chance
 		{
 			//overused behind
-			AddTrait(girl, "Whore");
+			girl->add_trait("Whore");
 
-			RemoveTrait(girl, "Optimist");
+			girl->remove_trait("Optimist");
 			girl->upd_stat(STAT_HEALTH, -5);
 			girl->upd_stat(STAT_SPIRIT, -5);
 			girl->upd_temp_stat(STAT_LIBIDO, -50, true);
@@ -8204,8 +8079,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 		else if (harm > 15)  //10% chance
 		{
-			AddTrait(girl, "Broken Will");
-			AddTrait(girl, "Branded on the Ass");
+			girl->add_trait("Broken Will");
+			girl->add_trait("Branded on the Ass");
 		}
 		else //15% no damage
 		{
@@ -12797,7 +12672,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else if (!girl->has_trait("AIDS") && customer->m_HasAIDS && g_Dice.percent(STDchance))
 	{
 		girl->m_Events.AddMessage(girlName + " has caught the disease AIDS! She will likely die, but a rare cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
-		AddTrait(girl, "AIDS");
+		girl->add_trait("AIDS");
 		girl->happiness(-50);
 		enjoy -= 30;
 	}
@@ -12811,7 +12686,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else if (!girl->has_trait("Chlamydia") && customer->m_HasChlamydia && g_Dice.percent(STDchance))
 	{
 		girl->m_Events.AddMessage(girlName + " has caught the disease Chlamydia! A cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
-		AddTrait(girl, "Chlamydia");
+		girl->add_trait("Chlamydia");
 		girl->happiness(-30);
 		enjoy -= 30;
 	}
@@ -12826,7 +12701,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else if (!girl->has_trait("Syphilis") && customer->m_HasSyphilis && g_Dice.percent(STDchance))
 	{
 		girl->m_Events.AddMessage(girlName + " has caught the disease Syphilis! This can be deadly, but a cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
-		AddTrait(girl, "Syphilis");
+		girl->add_trait("Syphilis");
 		girl->happiness(-30);
 		enjoy -= 30;
 	}
@@ -12841,7 +12716,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	else if (!girl->has_trait("Herpes") && customer->m_HasHerpes && g_Dice.percent(STDchance))
 	{
 		girl->m_Events.AddMessage(girlName + " has caught the disease Herpes! A cure can sometimes be found in the shop.", IMGTYPE_PROFILE, EVENT_DANGER);
-		AddTrait(girl, "Herpes");
+		girl->add_trait("Herpes");
 		girl->happiness(-30);
 		enjoy -= 30;
 	}
@@ -15868,7 +15743,7 @@ void cGirls::updateGirlAge(sGirl* girl, bool inc_inService)
 	{
 		girl->m_BDay = 0;
 		girl->age(1);
-		if (girl->age() > 20 && girl->has_trait("Lolita")) g_Girls.RemoveTrait(girl, "Lolita");
+		if (girl->age() > 20 && girl->has_trait("Lolita")) girl->remove_trait("Lolita");
 		if (girl->age() >= 50)
 		{
 			girl->beauty(-(g_Dice % 3 + 1));
@@ -16343,8 +16218,129 @@ int cGirls::calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players)
 	return 5;
 }
 
-void sGirl::add_trait(string trait, int temptime)	{ g_GirlsPtr->AddTrait(this, trait, temptime); }
-bool sGirl::remove_trait(string trait)					{ g_GirlsPtr->RemoveTrait(this, trait); }
+bool sGirl::add_trait(string name, int temptime, bool removeitem, bool remember)
+{
+	/*
+*	WD: Added logic for remembered trait
+*
+*		removeitem = true Will add to Remember
+*		trait list if the trait is already active
+*		Used with items / efects may be removed
+*		later eg items - rings
+*
+*		inrememberlist = true only add trait if
+*		exists in the remember list and remove
+*		from the list. Use mainly with unequiping
+*		items and Trait overiding in ApplyTraits()
+*
+*		Returns true if trait made active or added
+*		trait remember list.
+*
+*		This should fix items with duplicate
+*		traits and loss of original trait if
+*		overwritten by a trait from an item
+*		that is later removed
+*
+*/
+
+	if (has_trait(name))
+	{
+		if (removeitem)								//	WD: Overwriting existing trait with removable item / effect
+			g_Girls.AddRememberedTrait(this, name);			//	WD:	Save trait for when item is removed
+		return true;
+	}
+
+	if (remember)								// WD: Add trait only if it is in the Remember List
+	{
+		if (g_Girls.HasRememberedTrait(this, name)) g_Girls.RemoveRememberedTrait(this, name);
+		else return false;							//	WD:	No trait to add
+	}
+
+	for (int i = 0; i < MAXNUM_TRAITS; i++)				// add the trait
+	{
+		if (m_Traits[i] == 0)
+		{
+			if (temptime>0) m_TempTrait[i] = temptime;
+			m_NumTraits++;
+			sTrait *addthistrait = g_Traits.GetTrait(g_Traits.GetTranslateName(name)); // `J` added translation check
+			m_Traits[i] = addthistrait;
+
+			g_Girls.MutuallyExclusiveTraits(this, 1, m_Traits[i], removeitem);
+			g_Girls.ApplyTraits(this, addthistrait);
+
+			return true;
+		}
+	}
+	return false;
+}
+bool sGirl::remove_trait(string name,  bool addrememberlist, bool force, bool keepinrememberlist)
+{
+	/*
+*	WD: Added logic for remembered trait
+*
+*		addrememberlist = true = will move the trait from active to the remember list
+*		addrememberlist = false = will remove the trait from active but not add it to the remember list
+*
+*		force = false = will ignore this check
+*		force = true = will remove the trait entirely
+*
+*		keepinrememberlist = false = will ignore this check
+*		keepinrememberlist = true will add it to the remember list even if it is completely removed
+*		`J` added - this is for when an item tries to add a trait that the girl can not possible get because she has a trait that precludes it
+*			ie. adding "Perky Nipples" to a girl who has "No Nipples", if "No Nipples" gets removed the "Perky Nipples" will show themselves
+*
+*		Returns true if there was a active trait or remember list entry removed
+*
+*		This should fix items with duplicate traits and loss of original trait if
+*		overwritten by a trait from an item that is later removed
+*/
+
+	bool hasRemTrait = g_Girls.HasRememberedTrait(this, name);
+
+	if (!has_trait(name))							// WD:	no active trait to remove
+	{
+		if (hasRemTrait && !keepinrememberlist)
+		{	// WD:	try remembered trait // `J` only if we want to remove it
+			g_Girls.RemoveRememberedTrait(this, name);
+			return true;
+			// `J` explain - she had the trait removed before and it is getting removed again so remove it for good
+		}
+		if (!hasRemTrait && keepinrememberlist)
+		{	// `J` if she does not have it at all but we want her to remember trying to get it
+			g_Girls.AddRememberedTrait(this, name);
+		}
+		return false;	// otherwise just return false
+	}
+	// `J` - so she has the trait active at this point...
+
+	if (!force && hasRemTrait)	//	WD:	has remembered trait so don't touch active trait unless we are forcing removal of active trait
+	{
+		g_Girls.RemoveRememberedTrait(this, name);
+		return true;
+		// `J` explain - she had the trait in both active and remembered so instead of removing active and replacing with remembered, just remove remembered
+	}
+
+	//	WD:	save trait to remember list before removing
+	if (addrememberlist || keepinrememberlist) g_Girls.AddRememberedTrait(this, name);
+
+	//	WD: Remove trait
+	sTrait* trait = g_Traits.GetTrait(name);
+	for (int i = 0; i < MAXNUM_TRAITS; i++)			// remove the traits
+	{
+		if (m_Traits[i] && m_Traits[i] == trait)
+		{
+			m_NumTraits--;
+
+			g_Girls.MutuallyExclusiveTraits(this, 0, m_Traits[i]);
+			g_Girls.ApplyTraits(this);
+
+			if (m_TempTrait[i] > 0) m_TempTrait[i] = 0;
+			m_Traits[i] = 0;
+			return true;
+		}
+	}
+	return false;
+}
 
 bool sGirl::has_trait(string trait)
 {
@@ -16697,8 +16693,8 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
 		if (g_Dice.percent(abnormal_pc))
 		{
-			if (g_Dice.percent(50)) g_Girls.AddTrait(sprog, "Malformed");
-			else 					g_Girls.AddTrait(sprog, "Retarded");
+			if (g_Dice.percent(50)) sprog->add_trait("Malformed");
+			else 					sprog->add_trait("Retarded");
 		}
 		// loop throught the mom's traits, inheriting where appropriate
 		for (int i = 0; i < mom->m_NumTraits && sprog->m_NumTraits < 30; i++)
@@ -16707,31 +16703,31 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 			{
 				if (mom->m_Traits[i]->m_Name == "Queen")
 				{
-					/* */if (g_Dice.percent(60))	g_Girls.AddTrait(sprog, "Princess");
-					else if (g_Dice.percent(60))	g_Girls.AddTrait(sprog, "Noble");
+					/* */if (g_Dice.percent(60))	sprog->add_trait("Princess");
+					else if (g_Dice.percent(60))	sprog->add_trait("Noble");
 				}
 				else if (mom->m_Traits[i]->m_Name == "Princess" || mom->m_Traits[i]->m_Name == "Noble")
 				{
-					if (g_Dice.percent(40))			g_Girls.AddTrait(sprog, "Noble");
+					if (g_Dice.percent(40))			sprog->add_trait("Noble");
 				}
 				else if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
 				{
 					if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
 					{
-						g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+						sprog->add_trait(mom->m_Traits[i]->m_Name);
 					}
 				}
 				else	// old method
 				{
 					string tname = mom->m_Traits[i]->m_Name;
 					if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
-						g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+						sprog->add_trait(mom->m_Traits[i]->m_Name);
 				}
 			}
 		}
 		if (playerfather)
 		{
-			g_Girls.AddTrait(sprog, "Your Daughter");
+			sprog->add_trait("Your Daughter");
 		}
 
 		g_Girls.MutuallyExclusiveTraits(sprog, 1);	// make sure all the trait effects are applied
@@ -16918,8 +16914,8 @@ if (0){}
 				int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
 				if (g_Dice.percent(abnormal_pc))
 				{
-					if (g_Dice.percent(50)) g_Girls.AddTrait(sprog, "Malformed");
-					else 					g_Girls.AddTrait(sprog, "Retarded");
+					if (g_Dice.percent(50)) sprog->add_trait("Malformed");
+					else 					sprog->add_trait("Retarded");
 				}
 				// loop throught the mom's traits, inheriting where appropriate
 				for (int i = 0; i < mom->m_NumTraits && sprog->m_NumTraits < 30; i++)
@@ -16928,31 +16924,31 @@ if (0){}
 					{
 						if (mom->m_Traits[i]->m_Name == "Queen")
 						{
-							/* */if (g_Dice.percent(60))	g_Girls.AddTrait(sprog, "Princess");
-							else if (g_Dice.percent(60))	g_Girls.AddTrait(sprog, "Noble");
+							/* */if (g_Dice.percent(60))	sprog->add_trait("Princess");
+							else if (g_Dice.percent(60))	sprog->add_trait("Noble");
 						}
 						else if (mom->m_Traits[i]->m_Name == "Princess" || mom->m_Traits[i]->m_Name == "Noble")
 						{
-							if (g_Dice.percent(40))			g_Girls.AddTrait(sprog, "Noble");
+							if (g_Dice.percent(40))			sprog->add_trait("Noble");
 						}
 						else if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
 						{
 							if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
 							{
-								g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+								sprog->add_trait(mom->m_Traits[i]->m_Name);
 							}
 						}
 						else
 						{
 							string tname = mom->m_Traits[i]->m_Name;
 							if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
-								g_Girls.AddTrait(sprog, mom->m_Traits[i]->m_Name);
+								sprog->add_trait(mom->m_Traits[i]->m_Name);
 						}
 					}
 				}
 				if (playerfather)
 				{
-					g_Girls.AddTrait(sprog, "Your Daughter");
+					sprog->add_trait("Your Daughter");
 				}
 
 				g_Girls.MutuallyExclusiveTraits(sprog, 1);	// make sure all the trait effects are applied
@@ -17160,7 +17156,7 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 		*/
 		girl->clear_pregnancy();
 		girl->m_JustGaveBirth = true;
-		AddTrait(girl, "MILF");
+		girl->add_trait("MILF");
 
 		girl->tiredness(100);
 		girl->happiness(10 + g_Dice % 91);
@@ -18723,7 +18719,7 @@ bool sGirl::regain_virginity() {
 	bool traitOpSuccess = false;
 	m_Virgin = 1;
 	//	Let's avoid re-inventing the wheel
-	traitOpSuccess = g_Girls.AddTrait(this, "Virgin", false, false, false);
+	traitOpSuccess = add_trait("Virgin", false, false, false);
 	return traitOpSuccess;
 }
 

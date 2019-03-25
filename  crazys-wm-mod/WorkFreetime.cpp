@@ -1631,32 +1631,32 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << "She ended up having a major breakthru and ";
 						if (girl->has_trait( "Fairy Dust Addict"))
 						{
-							g_Girls.RemoveTrait(girl, "Fairy Dust Addict", true);
+							girl->remove_trait("Fairy Dust Addict", true);
 							ss << "she is no longer a fairy dust addict.\n";
 						}
 						else if (girl->has_trait( "Shroud Addict"))
 						{
-							g_Girls.RemoveTrait(girl, "Shroud Addict", true);
+							girl->remove_trait("Shroud Addict", true);
 							ss << "she is no longer a shroud addict.\n";
 						}
 						else if (girl->has_trait( "Viras Blood Addict"))
 						{
-							g_Girls.RemoveTrait(girl, "Viras Blood Addict", true);
+							girl->remove_trait("Viras Blood Addict", true);
 							ss << "she is no longer a viras blood addict.\n";
 						}
 						else if (girl->has_trait( "Alcoholic"))
 						{
-							g_Girls.RemoveTrait(girl, "Alcoholic", true);
+							girl->remove_trait("Alcoholic", true);
 							ss << "she is no longer an alcoholic.\n";
 						}
 						else if (girl->has_trait( "Smoker"))
 						{
-							g_Girls.RemoveTrait(girl, "Smoker", true);
+							girl->remove_trait("Smoker", true);
 							ss << "she is no longer a smoker.\n";
 						}
 						else if (girl->has_trait( "Cum Addict"))
 						{
-							g_Girls.RemoveTrait(girl, "Cum Addict", true);
+							girl->remove_trait("Cum Addict", true);
 							ss << "she is no longer a cum addict.\n";
 						}
 					}
@@ -1680,17 +1680,17 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						ss << "She ended up having a major breakthru and ";
 						if (girl->has_trait( "Aggressive"))
 						{
-							g_Girls.RemoveTrait(girl, "Aggressive");
+							girl->remove_trait("Aggressive");
 							ss << "she is no longer Aggressive.\n";
 						}
 						else if (girl->has_trait( "Tsundere"))
 						{
-							g_Girls.RemoveTrait(girl, "Tsundere");
+							girl->remove_trait("Tsundere");
 							ss << "she is no longer a Tsundere.\n";
 						}
 						else if (girl->has_trait( "Yandere"))
 						{
-							g_Girls.RemoveTrait(girl, "Yandere");
+							girl->remove_trait("Yandere");
 							ss << "she is no longer a Yandere.\n";
 						}
 					}
@@ -1712,7 +1712,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					if (g_Dice.percent(2))//helps
 					{
 						ss << "She ended up having a major breakthru and she is no longer shy.\n";
-						g_Girls.RemoveTrait(girl, "Shy", true);
+						girl->remove_trait("Shy", true);
 					}
 					else//doesnt
 					{
@@ -1732,7 +1732,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					if (g_Dice.percent(2))//helps
 					{
 						ss << "She ended up having a major breakthru and she is no longer a Pessimist.\n";
-						g_Girls.RemoveTrait(girl, "Pessimist", true);
+						girl->remove_trait("Pessimist", true);
 					}
 					else//doesnt
 					{
@@ -1923,22 +1923,22 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				if (jog && !girl->has_trait( "Great Figure") && g_Dice.percent(5))
 				{
 					ss << "With the help of her workouts she has got quite a Great Figure now.";
-					g_Girls.AddTrait(girl, "Great Figure");
+					girl->add_trait("Great Figure");
 				}
 				else if (ass && !girl->has_trait( "Great Arse") && g_Dice.percent(5))
 				{
 					ss << "With the help of crunches her ass has become a sight to behold.";
-					g_Girls.AddTrait(girl, "Great Arse");
+					girl->add_trait("Great Arse");
 				}
 				else if (str && !girl->has_trait( "Strong") && g_Dice.percent(5))
 				{
 					ss << "With the help of her work out she has become Strong.";
-					g_Girls.AddTrait(girl, "Strong");
+					girl->add_trait("Strong");
 				}
 				else if (flex && !girl->has_trait( "Flexible") && g_Dice.percent(15))
 				{
 					ss << "With the help of yoga she has become quite Flexible.";
-					g_Girls.AddTrait(girl, "Flexible");
+					girl->add_trait("Flexible");
 				}
 			}
 			if (workout < 0) workout = 0;
@@ -2306,8 +2306,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			{
 				ss << "Not happy with how the date went she broke up with them.";
 				girl->clear_dating();
-				g_Girls.RemoveTrait(girl, "Has Boy Friend", true);
-				g_Girls.RemoveTrait(girl, "Has Girl Friend", true);
+				girl->remove_trait("Has Boy Friend", true);
+				girl->remove_trait("Has Girl Friend", true);
 				girl->npclove(-100);
 			}
 		}

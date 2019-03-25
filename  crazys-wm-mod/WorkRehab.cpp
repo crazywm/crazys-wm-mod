@@ -145,35 +145,35 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			case 0:
 				if (girl->has_trait( "Viras Blood Addict"))
 				{
-					g_Girls.RemoveTrait(girl, "Viras Blood Addict", true);
+					girl->remove_trait("Viras Blood Addict", true);
 					ss << "She is no longer a viras blood addict.\n";
 					cured = true; break;
 				}
 			case 1:
 				if (girl->has_trait( "Shroud Addict"))
 				{
-					g_Girls.RemoveTrait(girl, "Shroud Addict", true);
+					girl->remove_trait("Shroud Addict", true);
 					ss << "She is no longer a shroud addict.\n";
 					cured = true; break;
 				}
 			case 2:
 				if (girl->has_trait( "Fairy Dust Addict"))
 				{
-					g_Girls.RemoveTrait(girl, "Fairy Dust Addict", true);
+					girl->remove_trait("Fairy Dust Addict", true);
 					ss << "She is no longer a fairy dust addict.\n";
 					cured = true; break;
 				}
 			case 3:
 				if (girl->has_trait( "Alcoholic"))
 				{
-					g_Girls.RemoveTrait(girl, "Alcoholic", true);
+					girl->remove_trait("Alcoholic", true);
 					ss << "She is no longer an alcoholic.\n";
 					cured = true; break;
 				}
 			case 4:
 				if (girl->has_trait( "Cum Addict"))
 				{
-					g_Girls.RemoveTrait(girl, "Cum Addict", true);
+					girl->remove_trait("Cum Addict", true);
 					ss << "She is no longer a cum addict.\n";
 					cured = true; break;
 				}
@@ -181,14 +181,14 @@ bool cJobManager::WorkRehab(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			default:
 				if (girl->has_trait( "Smoker"))
 				{
-					g_Girls.RemoveTrait(girl, "Smoker", true);
+					girl->remove_trait("Smoker", true);
 					ss << "She is no longer a smoker.\n";
 					cured = true; break;
 				}
 			}
 		}
 
-		g_Girls.AddTrait(girl, "Former Addict", 40);
+		girl->add_trait("Former Addict", 40);
 
 		if (girl->has_trait( "Fairy Dust Addict") || girl->has_trait( "Shroud Addict") || girl->has_trait( "Cum Addict") ||
 			girl->has_trait( "Viras Blood Addict") || girl->has_trait( "Alcoholic") || girl->has_trait( "Smoker"))

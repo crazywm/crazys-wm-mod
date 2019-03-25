@@ -187,14 +187,14 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 			case 0:
 				if (girl->has_trait( "Aggressive"))
 				{
-					g_Girls.RemoveTrait(girl, "Aggressive");
+					girl->remove_trait("Aggressive");
 					ss << "She is no longer Aggressive.\n";
 					cured = true; break;
 				}
 			case 1:
 				if (girl->has_trait( "Tsundere"))
 				{
-					g_Girls.RemoveTrait(girl, "Tsundere");
+					girl->remove_trait("Tsundere");
 					ss << "She is no longer a Tsundere.\n";
 					cured = true; break;
 				}
@@ -202,7 +202,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, sBrothel* brothel, bool
 			default:
 				if (girl->has_trait( "Yandere"))
 				{
-					g_Girls.RemoveTrait(girl, "Yandere");
+					girl->remove_trait("Yandere");
 					ss << "She is no longer a Yandere.\n";
 					cured = true; break;
 				}

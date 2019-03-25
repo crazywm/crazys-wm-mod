@@ -123,13 +123,13 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		case 0:
 			if (girl->has_trait( "Fragile"))
 			{
-				g_Girls.RemoveTrait(girl, "Fragile");
+				girl->remove_trait("Fragile");
 				ss << "She has had to heal from so many injuries you can't say she is fragile anymore.";
 				gaintrait = false;
 			}
 			else if (!girl->has_trait( "Tough"))
 			{
-				g_Girls.AddTrait(girl, "Tough");
+				girl->add_trait("Tough");
 				ss << "She has become pretty Tough from her training.";
 				gaintrait = false;
 			}
@@ -137,7 +137,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		case 1:
 			if (!girl->has_trait( "Adventurer"))
 			{
-				g_Girls.AddTrait(girl, "Adventurer");
+				girl->add_trait("Adventurer");
 				ss << "She has been in enough tough spots to consider herself an Adventurer.";
 				gaintrait = false;
 			}
@@ -147,19 +147,19 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			{
 				if (g_Dice.percent(50) && girl->has_trait( "Nervous"))
 				{
-					g_Girls.RemoveTrait(girl, "Nervous");
+					girl->remove_trait("Nervous");
 					ss << "She seems to be getting over her Nervousness with her training.";
 					gaintrait = false;
 				}
 				else if (g_Dice.percent(50) && girl->has_trait( "Meek"))
 				{
-					g_Girls.RemoveTrait(girl, "Meek");
+					girl->remove_trait("Meek");
 					ss << "She seems to be getting over her Meakness with her training.";
 					gaintrait = false;
 				}
 				else if (g_Dice.percent(50) && girl->has_trait( "Dependant"))
 				{
-					g_Girls.RemoveTrait(girl, "Dependant");
+					girl->remove_trait("Dependant");
 					ss << "She seems to be getting over her Dependancy with her training.";
 					gaintrait = false;
 				}
@@ -168,19 +168,19 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 			{
 				if (g_Dice.percent(50) && !girl->has_trait( "Aggressive"))
 				{
-					g_Girls.AddTrait(girl, "Aggressive");
+					girl->add_trait("Aggressive");
 					ss << "She is getting rather Aggressive from her enjoyment of combat.";
 					gaintrait = false;
 				}
 				else if (g_Dice.percent(50) && !girl->has_trait( "Fearless"))
 				{
-					g_Girls.AddTrait(girl, "Fearless");
+					girl->add_trait("Fearless");
 					ss << "She is getting rather Fearless from her enjoyment of combat.";
 					gaintrait = false;
 				}
 				else if (g_Dice.percent(50) && !girl->has_trait( "Audacity"))
 				{
-					g_Girls.AddTrait(girl, "Audacity");
+					girl->add_trait("Audacity");
 					ss << "She is getting rather Audacious from her enjoyment of combat.";
 					gaintrait = false;
 				}
@@ -189,7 +189,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		case 3:
 			if (!girl->has_trait( "Strong"))
 			{
-				g_Girls.AddTrait(girl, "Strong");
+				girl->add_trait("Strong");
 				ss << "She is getting rather Strong from handling heavy weapons and armor.";
 				gaintrait = false;
 			}

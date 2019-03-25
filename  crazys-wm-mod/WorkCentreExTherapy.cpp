@@ -142,7 +142,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 			case 0:
 				if (girl->has_trait( "Mind Fucked"))
 				{
-					g_Girls.RemoveTrait(girl, "Mind Fucked");
+					girl->remove_trait("Mind Fucked");
 					ss << "She is no longer mind fucked.\n";
 					cured = true; break;
 				}
@@ -150,7 +150,7 @@ bool cJobManager::WorkCentreExTherapy(sGirl* girl, sBrothel* brothel, bool Day0N
 			default:
 				if (girl->has_trait( "Broken Will"))
 				{
-					g_Girls.RemoveTrait(girl, "Broken Will");
+					girl->remove_trait("Broken Will");
 					ss << "She is no longer has a broken will.\n";
 					cured = true; break;
 				}

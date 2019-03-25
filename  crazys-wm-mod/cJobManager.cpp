@@ -2180,7 +2180,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					// `J` and adjust her stats
 					g_InvManager.Equip(custgirl, custgirl->add_inv(g_Brothels.m_Inventory[itemnum]), true);
 					g_Brothels.RemoveItemFromInventoryByNumber(itemnum);
-					g_GirlsPtr->AddTrait(custgirl, "Emprisoned Customer", max(5, g_Dice.bell(0, 20)));	// add temp trait
+                    custgirl->add_trait("Emprisoned Customer", max(5, g_Dice.bell(0, 20)));	// add temp trait
 					custgirl->pclove(-(g_Dice % 50 + 50));
 					custgirl->pcfear(g_Dice % 50 + 50);
 					custgirl->pchate(g_Dice % 50 + 50);
@@ -2555,13 +2555,13 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 		if (preg && std)	{ ss << " and "; }
 		else if (preg)		{ ss << ".\n \n"; }
 		if (a || c || s || h)	{ bool _and = false;
-			if (a)	{ g_GirlsPtr->AddTrait(girl, "AIDS");		ss << "AIDS"; }
+			if (a)	{ girl->add_trait("AIDS");		ss << "AIDS"; }
 			if (a && (c || s || h))							{	ss << " and ";		_and = true; }
-			if (c)	{ g_GirlsPtr->AddTrait(girl, "Chlamydia");	ss << "Chlamydia";	_and = false; }
+			if (c)	{ girl->add_trait("Chlamydia");	ss << "Chlamydia";	_and = false; }
 			if (!_and && (a || c) && (s || h))				{	ss << " and ";		_and = true; }
-			if (s)	{ g_GirlsPtr->AddTrait(girl, "Syphilis");	ss << "Syphilis";	_and = false; }
+			if (s)	{ girl->add_trait("Syphilis");	ss << "Syphilis";	_and = false; }
 			if (!_and && (a || c || s) && h)				{	ss << " and "; }
-			if (h)	{ g_GirlsPtr->AddTrait(girl, "Herpes");		ss << "Herpes"; }
+			if (h)	{ girl->add_trait("Herpes");		ss << "Herpes"; }
 			ss << ".\n \n";
 		}
 

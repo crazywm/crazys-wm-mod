@@ -684,7 +684,7 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, false, allowNonHuman, kidnaped, arena);	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 		Mother->m_Surname = surname;
 		g_Girls.CreateRealName(Mother);
-		if (!g_Dice.percent(Mother->age())) g_Girls.AddTrait(Mother, "MILF");	// the younger the mother the more likely she will be a MILF
+		if (!g_Dice.percent(Mother->age())) Mother->add_trait("MILF");	// the younger the mother the more likely she will be a MILF
 		Mother->lose_virginity();
 
 		string biography = "Daughter of " + Mother->m_Realname + " and a deadbeat brothel client.";
@@ -805,7 +805,7 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 	m_GirlTarget->pclove(-2);
 	m_GirlTarget->pchate(3);
 
-	if (g_Dice.percent(2)) g_Girls.AddTrait(m_GirlTarget, "Broken Will");
+	if (g_Dice.percent(2)) m_GirlTarget->add_trait("Broken Will");
 
 	if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 
@@ -1588,19 +1588,19 @@ sScript* cGameScript::Script_DomTarget(sScript* Script)
 sScript* cGameScript::Script_AddTrait(sScript* Script)						// `J` new
 {
 	if (m_GirlTarget && !m_GirlTarget->has_trait(Script->m_Entries[0].m_Text))
-		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+		m_GirlTarget->add_trait(Script->m_Entries[0].m_Text);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_RemoveTrait(sScript* Script)					// `J` new
 {
 	if (m_GirlTarget && m_GirlTarget->has_trait(Script->m_Entries[0].m_Text))
-		g_Girls.RemoveTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+		m_GirlTarget->remove_trait(Script->m_Entries[0].m_Text);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_AddTraitTemp(sScript* Script)						// `J` new
 {
 	if (m_GirlTarget && !m_GirlTarget->has_trait(Script->m_Entries[0].m_Text))
-		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text, Script->m_Entries[1].m_lValue);
+		m_GirlTarget->add_trait(Script->m_Entries[0].m_Text, Script->m_Entries[1].m_lValue);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_AdjustTraitTemp(sScript* Script)					// `J` new

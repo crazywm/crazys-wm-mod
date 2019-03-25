@@ -488,7 +488,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	{
 		if (g_Dice.percent(nMod))
 		{
-			g_Girls.RemoveTrait(m_Girl, "Tough", false);
+			m_Girl->remove_trait("Tough", false);
 			if (m_TorturedByPlayer)
 				m_Message += "Her body has become less Tough due to the extent of her injuries.\n";
 			else

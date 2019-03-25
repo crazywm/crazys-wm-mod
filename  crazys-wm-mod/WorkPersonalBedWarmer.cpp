@@ -1328,7 +1328,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		if (girl->has_trait("Chlamydia") && g_Dice.percent(30))
 		{
 			g_Gold.misc_debit(500);
-			g_Girls.RemoveTrait(girl, "Chlamydia");
+			girl->remove_trait("Chlamydia");
 			stringstream ssm;
 			ssm << girlName << " gave you Chlamydia.\nYou spend 500 gold getting your shit cleaned up.\nYou use the medicine to clear her up too.\n";
 			ss << ssm.str();
@@ -1337,7 +1337,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		else if (girl->has_trait("Herpes") && g_Dice.percent(30))
 		{
 			g_Gold.misc_debit(1000);
-			g_Girls.RemoveTrait(girl, "Herpes");
+			girl->remove_trait("Herpes");
 			girl->pclove(1);
 			girl->pchate(-1);
 			stringstream ssm;
@@ -1348,7 +1348,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		else if (girl->has_trait("Syphilis") && g_Dice.percent(30))
 		{
 			g_Gold.misc_debit(3500);
-			g_Girls.RemoveTrait(girl, "Syphilis");
+			girl->remove_trait("Syphilis");
 			girl->pclove(3);
 			girl->pchate(-3);
 			stringstream ssm;
@@ -1359,7 +1359,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, sBrothel* brothel, bool Day
 		else if (girl->has_trait("AIDS") && g_Dice.percent(30))
 		{
 			g_Gold.misc_debit(8000);
-			g_Girls.RemoveTrait(girl, "AIDS");
+			girl->remove_trait("AIDS");
 			girl->pclove(6);
 			girl->pchate(-6);
 			stringstream ssm;

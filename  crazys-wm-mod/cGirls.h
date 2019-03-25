@@ -52,13 +52,6 @@ class   cPlayer;
 struct  sCustomer;
 struct  sGang;
 
-class cAbstractGirls {
-public:
-	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
-	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
-};
-extern cAbstractGirls* g_GirlsPtr;
-
 // structure to hold randomly generated girl information
 typedef struct sRandomGirl
 {
@@ -664,8 +657,8 @@ struct sGirl
 	*	let's overload that...
 	*	should be able to do the same using sCustomer as well...
 	*/
-	void add_trait(string trait, int temptime = 0);
-	bool remove_trait(string trait);
+	bool add_trait(string trait, int temptime = 0, bool removeitem = false, bool remember = false);
+	bool remove_trait(string trait,  bool addrememberlist = false, bool force = false, bool keepinrememberlist = false);
 	bool has_trait(string trait);
 	bool check_virginity();
 	bool lose_virginity();
@@ -715,7 +708,7 @@ public:
 };
 
 // Keeps track of all the available (not used by player) girls in the game.
-class cGirls : public cAbstractGirls
+class cGirls
 {
 public:
 	cGirls();
@@ -869,9 +862,8 @@ public:
 	int GetNumItemType(sGirl* girl, int Type, bool splitsubtype = false);
 	void SellInvItem(sGirl* girl, int num);
 	void UseItems(sGirl* girl);
-	//	void RemoveTrait(sGirl* girl, string name, bool addrememberlist = false, bool force = false);
-	bool RemoveTrait(sGirl* girl, string name, bool addrememberlist = false, bool force = false, bool keepinrememberlist = false);
-	void RemoveRememberedTrait(sGirl* girl, string name);
+
+    void RemoveRememberedTrait(sGirl* girl, string name);
 	void RemoveAllRememberedTraits(sGirl* girl);					// WD: Cleanup remembered traits on new girl creation
 	int GetNumItemEquiped(sGirl* girl, int Type);
 	bool IsItemEquipable(sGirl* girl, int num);
@@ -888,8 +880,7 @@ public:
 	string GetGirlMood(sGirl* girl);
 	string GetSimpleDetails(sGirl* girl, int fontsize = 8);
 
-	bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool inrememberlist = false);
-	void AddRememberedTrait(sGirl* girl, string name);
+    void AddRememberedTrait(sGirl* girl, string name);
 
 	void CalculateAskPrice(sGirl* girl, bool vari);
 

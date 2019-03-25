@@ -142,7 +142,6 @@ cTraits g_Traits;
 
 // Girl manager
 cGirls g_Girls;
-cAbstractGirls *g_GirlsPtr = &g_Girls;
 
 // Brothel Manager
 cBrothelManager g_Brothels;

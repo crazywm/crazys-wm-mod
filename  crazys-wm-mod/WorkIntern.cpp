@@ -128,7 +128,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		case 0:
 			if (girl->has_trait( "Nervous"))
 			{
-				g_Girls.RemoveTrait(girl, "Nervous");
+				girl->remove_trait("Nervous");
 				ss << "She seems to be getting over her Nervousness with her training.";
 				gaintrait = false;
 			}
@@ -136,7 +136,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		case 1:
 			if (girl->has_trait( "Meek"))
 			{
-				g_Girls.RemoveTrait(girl, "Meek");
+				girl->remove_trait("Meek");
 				ss << "She seems to be getting over her Meakness with her training.";
 				gaintrait = false;
 			}
@@ -144,7 +144,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		case 2:
 			if (girl->has_trait( "Dependant"))
 			{
-				g_Girls.RemoveTrait(girl, "Dependant");
+				girl->remove_trait("Dependant");
 				ss << "She seems to be getting over her Dependancy with her training.";
 				gaintrait = false;
 			}
@@ -152,7 +152,7 @@ bool cJobManager::WorkIntern(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		case 3:
 			if (!girl->has_trait( "Charismatic"))
 			{
-				g_Girls.AddTrait(girl, "Charismatic");
+				girl->add_trait("Charismatic");
 				ss << "Dealing with patients and talking with them about their problems has made " << girlName << " more Charismatic.";
 				gaintrait = false;
 			}
