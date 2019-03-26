@@ -100,7 +100,7 @@ bool cJobManager::WorkSOLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 	if (girl->has_trait("Bisexual"))		girl->m_WorkingDay -= girl->normalsex() / 20;					// it is hard to change something you are good at
 	// Positive Traits
-	if (g_Girls.CheckVirginity(girl))		girl->m_WorkingDay += g_Dice.bell(2, 10);	// If she has not been with a man, what could she be missing
+	if (girl->check_virginity())		girl->m_WorkingDay += g_Dice.bell(2, 10);	// If she has not been with a man, what could she be missing
 	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += g_Dice.bell(2, 10);	// She sees you enjoying yourself with the ladies, lead by example?
 	if (girl->has_trait("Futanari"))		girl->m_WorkingDay += 2;					// If she has a dick can she really be a lesbian?
 	// Negative Traits
@@ -119,7 +119,7 @@ bool cJobManager::WorkSOLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	if (girl->has_trait("Slut"))			girl->m_WorkingDay -= g_Dice % 5;			// She'll do anyone
 	if (girl->has_trait("Actress"))			girl->m_WorkingDay -= g_Dice % 5;			// She will do whatever her director tells her to
 
-	//	if (g_Girls.CheckVirginity(girl))				{}
+	//	if (girl->check_virginity())				{}
 
 	if (is_sex_type_allowed(SKILL_ANAL, brothel))			girl->m_WorkingDay += g_Dice % 2;
 	if (is_sex_type_allowed(SKILL_BDSM, brothel))			girl->m_WorkingDay -= g_Dice % 5 + 5;
@@ -140,7 +140,7 @@ bool cJobManager::WorkSOLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 
 
 
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
+	if (girl->disobey_check(actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
 
 #pragma endregion
 #pragma region //	Count the Days				//
@@ -219,8 +219,8 @@ bool cJobManager::WorkSOLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	girl->tittysex(I_tittysex);
 
 	libido += girl->has_trait("Nymphomaniac") ? 3 : 1;
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 	ss << "\n \nNumbers:"
 		<< "\n Wages = " << (int)wages

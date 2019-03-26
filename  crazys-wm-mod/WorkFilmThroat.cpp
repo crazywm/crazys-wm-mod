@@ -82,7 +82,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << ("Masochist ") << girlName << (" was pleased to be tortured, used and degraded. It is her place.\n");
 		bonus += 6;
 	}
-	else if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	else if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << girlName << (" angrily refused to be throat-fucked on film today.");
 		if (girl->is_slave())
@@ -352,14 +352,14 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	girl->exp(xp);
 	girl->performance(g_Dice%skill);
 	girl->oralsex(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
+	girl->upd_Enjoyment(ACTION_SEX, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl, "Masochist", 75, ACTION_SEX, girlName + " has turned into a Masochist from filming so many BDSM scenes.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Mind Fucked", 90, ACTION_WORKMOVIE, "She has been abused so much she is now completely Mind Fucked.", Day0Night1);
 	if (jobperformance > 200) g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
-	if (g_Dice.percent(5) && (girl->happiness() > 80) && (g_Girls.GetEnjoyment(girl, ACTION_WORKMOVIE) > 75))
+	if (g_Dice.percent(5) && (girl->happiness() > 80) && (girl->get_enjoyment(ACTION_WORKMOVIE) > 75))
 		g_Girls.AdjustTraitGroupGagReflex(girl, 1, true, Day0Night1);
 
 	//lose

@@ -63,7 +63,7 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		return false;	// not refusing
 	}
 	int roll = g_Dice.d100();
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << " refused to work as a fluffer today";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -124,7 +124,7 @@ bool cJobManager::WorkFluffer(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 	girl->exp(xp);
 	girl->service(skill);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	return false;
 }

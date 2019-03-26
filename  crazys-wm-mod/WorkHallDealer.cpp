@@ -50,7 +50,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int actiontype = ACTION_WORKHALL;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		//SIN - More informative mssg to show *what* she refuses
 		//ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -102,15 +102,15 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 		ss << "\nNoticing her addiction, a customer offered her drugs. She accepted, and had an awful day at the card table.\n";
 		if (girl->has_trait( "Shroud Addict"))
 		{
-			g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom"));
+			girl->add_inv(g_InvManager.GetItem("Shroud Mushroom"));
 		}
 		if (girl->has_trait( "Fairy Dust Addict"))
 		{
-			g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust"));
+			girl->add_inv(g_InvManager.GetItem("Fairy Dust"));
 		}
 		if (girl->has_trait( "Viras Blood Addict"))
 		{
-			g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood"));
+			girl->add_inv(g_InvManager.GetItem("Vira Blood"));
 		}
 		jobperformance -= 50;
 	}
@@ -539,7 +539,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 			ss << "\nShe cleaned him out, deliberately humiliating him and taunting him into gambling more than he could afford. ";
 			ss << "He ended up losing every penny and all his clothes to this 'dumb whore'. He was finally kicked out, naked into the streets.\n \n";
 			ss << girlName << " enjoyed this. A lot.";
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, 3);
+			girl->upd_Enjoyment(ACTION_WORKHALL, 3);
 			girl->happiness(5);
 			wages += 100;
 		}
@@ -560,7 +560,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 				ss << "\"I'm not doing that today, sir,\" she mumbled. \"But there are other girls.\"\nHe left for the brothel.";
 			}
 			ss << "\n \nShe really hated losing at this stupid card game.";
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, -3);
+			girl->upd_Enjoyment(ACTION_WORKHALL, -3);
 			girl->happiness(-5);
 			wages -= 50;
 		}
@@ -624,7 +624,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 #pragma region	//	Finish the shift			//
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work);
+	girl->upd_Enjoyment(ACTION_WORKHALL, work);
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	// work out the pay between the house and the girl
@@ -654,7 +654,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	else if (gain == 1)	girl->agility(g_Dice%skill);
 	else /*          */	girl->performance(g_Dice%skill);
 	girl->service(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 
 #pragma endregion

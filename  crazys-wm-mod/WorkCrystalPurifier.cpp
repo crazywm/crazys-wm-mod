@@ -80,7 +80,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 	int roll = g_Dice.d100();
 	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
 	{
-		if (roll <= 10 && g_Girls.DisobeyCheck(girl, actiontype, brothel))
+		if (roll <= 10 && girl->disobey_check(actiontype, brothel))
 		{
 			if (girl->m_DayJob == JOB_FILMFREETIME)
 			{
@@ -160,7 +160,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, sBrothel* brothel, bool Day0N
 		girl->intelligence(g_Dice%skill);
 	girl->service(g_Dice%skill + 1);
 	girl->exp(xp);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	return false;
 }

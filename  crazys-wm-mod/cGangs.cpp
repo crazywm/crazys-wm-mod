@@ -974,7 +974,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				l.ssend();
 			}
 
-			int girl_attack_chance = g_Girls.GetSkill(girl, attack);
+			int girl_attack_chance = girl->get_skill(attack);
 			int die_roll = g_Dice.d100();
 
 			l.ss() << "\t\t" << " attack chance = " << girl_attack_chance;
@@ -1081,7 +1081,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 				if (g_Dice.percent(girl->agility()))
 				{
 					BoostGangCombatSkills(gang, 2);
-					g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1);
+					girl->upd_Enjoyment(ACTION_COMBAT, -1);
 					return false;
 				}
 			}
@@ -1090,7 +1090,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 		if (girl->health() <= 20)
 		{
 			BoostGangCombatSkills(gang, 2);
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -1);
+			girl->upd_Enjoyment(ACTION_COMBAT, -1);
 			return false;
 		}
 		else
@@ -1100,13 +1100,13 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 		{
 			if (g_Dice.percent(40))
 			{
-				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1);
+				girl->upd_Enjoyment(ACTION_COMBAT, +1);
 				return true;	// the men run away
 			}
 		}
 		if (gang->m_Num == 0)
 		{
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1);
+			girl->upd_Enjoyment(ACTION_COMBAT, +1);
 			return true;
 		}
 	}
@@ -1114,7 +1114,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 	l.ss() << "No more opponents: " << girl->m_Realname << " WINS!";
 	l.ssend();
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +1);
+	girl->upd_Enjoyment(ACTION_COMBAT, +1);
 
 	return true;
 }
@@ -1215,7 +1215,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 				//l.ssend();
 			}
 
-			int girl_attack_chance = g_Girls.GetSkill(girl, attack);
+			int girl_attack_chance = girl->get_skill(attack);
 
 			int die_roll = g_Dice.d100();
 
@@ -1323,7 +1323,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 		{
 			l.ss() << "The gang overwhelmed and defeated " << girl->m_Realname << ". She lost the battle.";
 			l.ssend();
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, -5);
+			girl->upd_Enjoyment(ACTION_COMBAT, -5);
 			return false;
 		}
 		else
@@ -1337,7 +1337,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 			{
 				l.ss() << "The gang ran away after losing too many members. " << girl->m_Realname << " WINS!";
 				l.ssend();
-				g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5);
+				girl->upd_Enjoyment(ACTION_COMBAT, +5);
 				return true;	// the men run away
 			}
 		}
@@ -1346,7 +1346,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 		{
 			l.ss() << "The gang fought to bitter end. They are all dead. " << girl->m_Realname << " WINS!";
 			l.ssend();
-			g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5);
+			girl->upd_Enjoyment(ACTION_COMBAT, +5);
 			return true;
 		}
 	}
@@ -1354,7 +1354,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 	l.ss() << "No more opponents: " << girl->m_Realname << " WINS!";
 	l.ssend();
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, +5);
+	girl->upd_Enjoyment(ACTION_COMBAT, +5);
 
 	return true;
 }
@@ -2985,7 +2985,7 @@ bool cGangManager::service_mission(sGang* gang)
 			{
 				sBrothel* brothel = g_Brothels.GetRandomBrothel();
 				sGirl* girl = g_Brothels.GetRandomGirl(brothel->m_id);
-				if (g_Girls.AddInv(girl, item) != -1)						// see if a girl can take it
+				if (girl->add_inv(item) != -1)						// see if a girl can take it
 				{
 					stringstream gss;
 					gss << "While " << gang->m_Name << " was bringing in the ";

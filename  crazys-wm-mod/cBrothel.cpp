@@ -817,6 +817,7 @@ bool sBrothel::LoadBrothelXML(TiXmlHandle hBrothel)
 	return true;
 }
 
+
 TiXmlElement* cBrothelManager::SaveDataXML(TiXmlElement* pRoot)
 {
 	TiXmlElement* pBrothelManager = new TiXmlElement("Brothel_Manager");
@@ -2260,7 +2261,7 @@ bool cBrothelManager::AutomaticItemUse(sGirl * girl, int InvNum, string message)
 {
 	int EquipSlot = -1;
 
-	EquipSlot = g_Girls.AddInv(girl, m_Inventory[InvNum]);
+	EquipSlot = girl->add_inv(m_Inventory[InvNum]);
 	if (EquipSlot != -1)
 	{
 		if (g_InvManager.equip_singleton_ok(girl, EquipSlot, false))  // Don't force equipment
@@ -2286,7 +2287,7 @@ bool cBrothelManager::AutomaticSlotlessItemUse(sGirl * girl, int InvNum, string 
 	// Slotless items include manuals, stripper poles, free weights, etc...
 	int EquipSlot = -1;
 
-	EquipSlot = g_Girls.AddInv(girl, m_Inventory[InvNum]);
+	EquipSlot = girl->add_inv(m_Inventory[InvNum]);
 	if (EquipSlot != -1)
 	{
 		RemoveItemFromInventoryByNumber(InvNum);  // Remove from general inventory
@@ -2302,7 +2303,7 @@ bool cBrothelManager::AutomaticFoodItemUse(sGirl * girl, int InvNum, string mess
 {
 	int EquipSlot = -1;
 
-	EquipSlot = g_Girls.AddInv(girl, m_Inventory[InvNum]);
+	EquipSlot = girl->add_inv(m_Inventory[InvNum]);
 	if (EquipSlot != -1)
 	{
 		RemoveItemFromInventoryByNumber(InvNum);
@@ -2687,7 +2688,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 	if (girl->has_item_j("Apron") != -1 && g_Dice.percent(10))
 	{
 		ss << "She put on her Apron and cooked a meal for some of the girls.\n \n";
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, 1);
+		girl->upd_Enjoyment(ACTION_WORKCOOKING, 1);
 		girl->happiness(5);
 		cook = true;
 	}
@@ -2887,14 +2888,14 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 				ss << girlName << " comes to you and tells you she had a sexy dream about you.";
 				if (girl->has_trait("Lesbian") && The_Player->Gender() >= GENDER_HERMFULL && g_Dice.percent(girl->pclove() / 10))
 				{
-					g_Girls.RemoveTrait(girl, "Lesbian");
-					g_Girls.AddTrait(girl, "Bisexual");
+					girl->remove_trait("Lesbian");
+					girl->add_trait("Bisexual");
 					ss << "  \"Normally I don't like men but for you I'll make an exception.\"";
 				}
 				if (girl->has_trait("Straight") && The_Player->Gender() <= GENDER_FUTAFULL && g_Dice.percent(girl->pclove() / 10))
 				{
-					g_Girls.RemoveTrait(girl, "Straight");
-					g_Girls.AddTrait(girl, "Bisexual");
+					girl->remove_trait("Straight");
+					girl->add_trait("Bisexual");
 					ss << "  \"Normally I don't like women but for you I'll make an exception.\"";
 				}
 				ss << "\n \n";
@@ -3040,7 +3041,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			if (girl->has_trait( "Nymphomaniac"))
 			{
 				ss << "She spent the day at the Library looking at porn making her become horny.\n \n";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 15);
+				girl->upd_temp_stat(STAT_LIBIDO, 15);
 			}
 			else
 			{
@@ -3264,7 +3265,7 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 		if (girl->libido() > 65 && is_she_resting(girl))
 		{
 			ss << girlName << "'s lust got the better of her and she spent the day using her Compelling Dildo.\n \n";
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+			girl->upd_temp_stat(STAT_LIBIDO, -20);
 			mast = true;
 		}
 	}
@@ -3302,13 +3303,13 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			if (girl->libido() > 65)
 			{
 				ss << girlName << "'s lust got the better of her while she was on the her Computer looking at porn.\n \n";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20);
+				girl->upd_temp_stat(STAT_LIBIDO, -20);
 				mast = true;
 			}
 			else
 			{
 				ss << "She spent the day on her Computer looking at porn making her become horny.\n \n";
-				g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 15);
+				girl->upd_temp_stat(STAT_LIBIDO, 15);
 			}
 		}
 		else
@@ -3333,12 +3334,12 @@ void cBrothelManager::do_daily_items(sBrothel *brothel, sGirl *girl) // `J` adde
 			if (girl->intelligence() > 65)
 			{
 				ss << girlName << " sharpened her Short Sword making it more ready for combat.\n \n";
-				g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, 2);
+				girl->upd_temp_skill(SKILL_COMBAT, 2);
 			}
 			else
 			{
 				ss << girlName << " tried to sharpen her Short Sword but doesn't have the brains to do it right.\n \n";
-				g_Girls.UpdateSkillTemp(girl, SKILL_COMBAT, -2);
+				girl->upd_temp_skill(SKILL_COMBAT, -2);
 			}
 		}
 	}
@@ -3577,17 +3578,17 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 	if (girl->has_trait("Homeless") && b_refinement && b_dignity && b_confidence &&
 		mod >= 0 && girl->m_AccLevel >= 5 && g_Dice.percent(girl->m_AccLevel))
 	{
-		g_Girls.RemoveTrait(girl, "Homeless", true);
+		girl->remove_trait("Homeless", true);
 		ss << girl->m_Realname << " has gotten used to better surroundings and has lost the \"Homeless\" trait.";
 	}
 	else if (girl->has_trait("Masochist") && b_intelligence && b_spirit && b_confidence && mod >= 2 && g_Dice.percent(girl->m_AccLevel - 7))
 	{
-		g_Girls.RemoveTrait(girl, "Masochist", true);
+		girl->remove_trait("Masochist", true);
 		ss << girl->m_Realname << " seems to be getting used to being treated well and has lost the \"Masochist\" trait.";
 	}
 	else if (!girl->has_trait("Masochist") && !b_dignity && !b_spirit && !b_confidence && mod <= -1 && g_Dice.percent(3 - mod))
 	{
-		g_Girls.AddTrait(girl, "Masochist");
+		girl->add_trait("Masochist");
 		ss << girl->m_Realname << " seems to be getting used to being treated poorly and has become a \"Masochist\".";
 	}
 
@@ -3599,22 +3600,22 @@ void cBrothelManager::do_food_and_digs(sBrothel *brothel, sGirl *girl)
 #endif
 	else if (girl->has_trait("Optimist") && mod < 0 && g_Dice.percent(3))
 	{
-		g_Girls.RemoveTrait(girl, "Optimist", true);
+		girl->remove_trait("Optimist", true);
 		ss << girl->m_Realname << " has lost her \"Optimistic\" outlook on life.";
 	}
 	else if (!girl->has_trait("Optimist") && mod > 0 && g_Dice.percent(3))
 	{
-		g_Girls.AddTrait(girl, "Optimist");
+		girl->add_trait("Optimist");
 		ss << girl->m_Realname << " has started to view the world from a more \"Optimistic\" point of view.";
 	}
 	else if (girl->has_trait("Pessimist") && mod > 0 && g_Dice.percent(3))
 	{
-		g_Girls.RemoveTrait(girl, "Pessimist", true);
+		girl->remove_trait("Pessimist", true);
 		ss << girl->m_Realname << " has lost her \"Pessimistic\" way of viewing the world around her.";
 	}
 	else if (!girl->has_trait("Pessimist") && mod < 0 && g_Dice.percent(3))
 	{
-		g_Girls.AddTrait(girl, "Pessimist");
+		girl->add_trait("Pessimist");
 		ss << girl->m_Realname << " has started to view the world from a more \"Pessimistic\" point of view.";
 	}
 
@@ -5220,7 +5221,7 @@ bool cBrothelManager::FightsBack(sGirl* girl)
 	if (girl->has_trait("Broken Will"))/*                */	return false;
 	if (girl->has_trait("Mind Fucked"))/*                */	return false;
 
-	if (g_Girls.DisobeyCheck(girl, ACTION_COMBAT))/*     */	return true;
+	if (girl->disobey_check(ACTION_COMBAT))/*            */	return true;
 	int chance = 0;
 	if (girl->has_trait("Adventurer"))/*                 */	chance += 5;
 	if (girl->has_trait("Aggressive"))/*                 */	chance += 10;
@@ -5528,7 +5529,7 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 	/*
 	*	mainly here, we're interested in the chance that she might run away
 	*/
-	if (g_Girls.DisobeyCheck(girl, ACTION_GENERAL))	// check if the girl will run away
+	if (girl->disobey_check(ACTION_GENERAL))	// check if the girl will run away
 	{
 		if (g_Dice.percent(m_JobManager.guard_coverage() - girl->m_DaysUnhappy)) return false;
 
@@ -5595,8 +5596,8 @@ bool cBrothelManager::runaway_check(sBrothel *brothel, sGirl *girl)
 		return false;
 	}
 
-	g_Girls.AddTrait(girl, drug);
-	g_Girls.RemoveTrait(girl, "Former Addict");
+	girl->add_trait(drug);
+	girl->remove_trait("Former Addict");
 
 	/*
 	*	otherwise, report the sad occurrence
@@ -5711,6 +5712,152 @@ sGirl* cBrothelManager::WhoHasTorturerJob()
 		curBrothel = curBrothel->m_Next;
 	}
 	return 0;										// WD: Not Found
+}
+
+void cBrothelManager::EndOfDay(sBrothel * brothel, const string& matron_title, bool Day0Night1, u_int restjob,
+							   u_int matronjob, bool has_matron)
+{
+	sGirl* current = brothel->m_Girls;
+    while (current)
+	{
+		if (current->is_dead())
+		{	// skip dead girls
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = nullptr; break; }
+		}
+		string girlName = current->m_Realname;
+		int sum = EVENT_SUMMARY;
+		stringstream ss;
+		ss.str("");
+
+		// update for girls items that are not used up
+		do_daily_items(brothel, current);					// `J` added
+
+		// Level the girl up if nessessary
+		g_Girls.LevelUp(current);
+		// Natural healing, 2% health and 2% tiredness per day
+		current->upd_stat(STAT_HEALTH, 2, false);
+		current->upd_stat(STAT_TIREDNESS, -2, false);
+
+		u_int sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
+		if (current->happiness()< 40)
+		{
+			if (sw != matronjob && has_matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))
+			{
+				ss << "The " << matron_title << " helps cheer up " << girlName << " when she is feeling sad.\n";
+				current->happiness(g_Dice % 10 + 5);
+			}
+			else if (brothel->m_NumGirls > 10 && g_Dice.percent(50))
+			{
+				ss << "Some of the other girls help cheer up " << girlName << " when she is feeling sad.\n";
+				current->happiness(g_Dice % 8 + 3);
+			}
+			else if (brothel->m_NumGirls > 1 && g_Dice.percent(max(brothel->m_NumGirls, 50)))
+			{
+				ss << "One of the other girls helps cheer up " << girlName << " when she is feeling sad.\n";
+				current->happiness(g_Dice % 6 + 2);
+			}
+			else if (brothel->m_NumGirls == 1 && g_Dice.percent(70))
+			{
+				ss << girlName << " plays around in the empty building until she feels better.\n";
+				current->happiness(g_Dice % 10 + 10);
+			}
+			else if (current->health()< 20) // no one helps her and she is really unhappy
+			{
+				ss << girlName << " is looking very depressed. You may want to do something about that before she does something drastic.\n";
+				sum = EVENT_WARNING;
+			}
+		}
+
+		int t = current->tiredness();
+		int h = current->health();
+		if (sw == matronjob && (t > 60 || h < 40))
+		{
+			ss << "As " << matron_title << ", " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
+			if (t > 50 && h < 50)
+			{
+				ss << "some potions";
+				current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
+				current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(20, true);
+			}
+			else if (t > 50)
+			{
+				ss << "a resting potion";
+				current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else if (h < 50)
+			{
+				ss << "a healing potion";
+				current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else
+			{
+				ss << "a potion";
+				current->upd_stat(STAT_HEALTH, 10 + g_Dice % 10, false);
+				current->upd_stat(STAT_TIREDNESS, -(10 + g_Dice % 10), false);
+				g_Gold.consumable_cost(5, true);
+			}
+			ss << " for herself.\n";
+		}
+		else if (t > 80 || h < 40)
+		{
+			if (!has_matron)	// do no matron first as it is the easiest
+			{
+				ss << "WARNING! " << girlName;
+				/* */if (t > 80 && h < 20)	ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
+				else if (t > 80 && h < 40)	ss << " is in bad shape, she is tired and injured.\nShe should rest or she may die!\n";
+				else if (t > 80)/*      */	ss << " is desparatly in need of rest.\nGive her some free time\n";
+				else if (h < 20)/*      */	ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
+				else if (h < 40)/*      */	ss << " is hurt.\nShe should rest and recuperate.\n";
+				sum = EVENT_WARNING;
+			}
+			else	// do all other girls with a matron working
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255) // the girl has been working
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = restjob;
+					ss << "The " << matron_title << " takes " << girlName << " off duty to rest due to her ";
+					if (t > 80 && h < 40)	ss << "exhaustion.\n";
+					else if (t > 80)		ss << "tiredness.\n";
+					else if (h < 40)		ss << "low health.\n";
+					else /*       */		ss << "current state.\n";
+					sum = EVENT_WARNING;
+				}
+				else	// the girl has already been taken off duty by the matron
+				{
+					if (g_Dice.percent(70))
+					{
+						ss << "The " << matron_title << "helps ";
+						if (t > 80 && h < 40)
+						{
+							ss << girlName << " recuperate.\n";
+							current->upd_stat(STAT_HEALTH, 2 + g_Dice % 4, false);
+							current->upd_stat(STAT_TIREDNESS, -(2 + g_Dice % 4), false);
+						}
+						else if (t > 80)
+						{
+							ss << girlName << " to relax.\n";
+							current->upd_stat(STAT_TIREDNESS, -(5 + g_Dice % 5), false);
+						}
+						else if (h < 40)
+						{
+							ss << " heal " << girlName << ".\n";
+							current->upd_stat(STAT_HEALTH, 5 + g_Dice % 5, false);
+						}
+					}
+				}
+			}
+		}
+
+		if (ss.str().length() > 0)	current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next;		// Process next girl
+	}
 }
 
 #if 0

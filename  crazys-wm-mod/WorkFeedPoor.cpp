@@ -54,7 +54,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int actiontype = ACTION_WORKCENTRE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, ACTION_WORKCENTRE, brothel))			// they refuse to work
+	if (girl->disobey_check(ACTION_WORKCENTRE, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -242,7 +242,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 
 	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && girl->libido() > 75
-		&& !girl->has_trait( "Lesbian") && !g_Girls.CheckVirginity(girl)
+		&& !girl->has_trait( "Lesbian") && !girl->check_virginity()
 		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{
 		sex = true;
@@ -294,9 +294,9 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		{
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 			girl->normalsex(2);
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
-				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+				girl->lose_virginity();	// `J` updated for trait/status
 				ss << "She is no longer a virgin.\n";
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))
@@ -310,8 +310,8 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			girl->anal(2);
 		}
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3);
+		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
+		girl->upd_Enjoyment(ACTION_SEX, +3);
 		fame += 1;
 		dispo += 6;
 	}
@@ -369,9 +369,9 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (g_Dice % 2)
 		girl->intelligence(1);
 	girl->service(skill);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 #pragma endregion
 	return false;

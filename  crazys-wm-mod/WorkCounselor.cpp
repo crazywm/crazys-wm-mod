@@ -54,11 +54,11 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int roll_a = g_Dice.d100();
 	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
 	{
-		if (roll_a <= 50 && g_Girls.DisobeyCheck(girl, actiontype, brothel))
+		if (roll_a <= 50 && girl->disobey_check(actiontype, brothel))
 		{
 			ss << " refused to counsel anyone.";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-			g_Girls.UpdateEnjoyment(girl, ACTION_WORKREHAB, -1);
+			girl->upd_Enjoyment(ACTION_WORKREHAB, -1);
 			return true;
 		}
 	}
@@ -98,7 +98,7 @@ bool cJobManager::WorkCounselor(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	girl->charisma((g_Dice%skill) + 1);
 	girl->service((g_Dice%skill) + 1);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
 	//lose traits

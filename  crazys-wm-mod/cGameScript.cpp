@@ -684,8 +684,8 @@ sScript *cGameScript::Script_AddFamilyToDungeon(sScript *Script)
 		Mother = g_Girls.CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, false, slave, false, allowNonHuman, kidnaped, arena);	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live 
 		Mother->m_Surname = surname;
 		g_Girls.CreateRealName(Mother);
-		if (!g_Dice.percent(Mother->age())) g_Girls.AddTrait(Mother, "MILF");	// the younger the mother the more likely she will be a MILF
-		g_Girls.LoseVirginity(Mother);
+		if (!g_Dice.percent(Mother->age())) Mother->add_trait("MILF");	// the younger the mother the more likely she will be a MILF
+		Mother->lose_virginity();
 
 		string biography = "Daughter of " + Mother->m_Realname + " and a deadbeat brothel client.";
 
@@ -798,16 +798,16 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 	m_GirlTarget->happiness(-5);
 	m_GirlTarget->health(-10);
 	m_GirlTarget->libido(-1);
-	g_Girls.UpdateStatTemp(m_GirlTarget, STAT_LIBIDO, 2, true);
+	m_GirlTarget->upd_temp_stat(STAT_LIBIDO, 2, true);
 	m_GirlTarget->confidence(-1);
 	m_GirlTarget->obedience(2);
 	m_GirlTarget->pcfear(2);
 	m_GirlTarget->pclove(-2);
 	m_GirlTarget->pchate(3);
 
-	if (g_Dice.percent(2)) g_Girls.AddTrait(m_GirlTarget, "Broken Will");
+	if (g_Dice.percent(2)) m_GirlTarget->add_trait("Broken Will");
 
-	if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+	if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 
 	bool preg = !m_GirlTarget->calc_pregnancy(The_Player, false, 1.0);
 	if (preg) g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", COLOR_BLUE);
@@ -879,7 +879,7 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 	int value = Script->m_Entries[0].m_Selection;
 
 	// See if variable matches second entry
-	Skipping = !g_Dice.percent(g_Girls.GetSkill(m_GirlTarget, value));
+	Skipping = !g_Dice.percent(m_GirlTarget->get_skill(value));
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -927,7 +927,7 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 	int value = Script->m_Entries[0].m_Selection;
 
 	// See if variable matches second entry
-	Skipping = !g_Dice.percent(g_Girls.GetStat(m_GirlTarget, value));
+	Skipping = !g_Dice.percent(m_GirlTarget->get_stat(value));
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1049,12 +1049,12 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 	int sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
 	switch (sel)
 	{
-	case 0:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) == value[1]);		break;
-	case 1:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) <  value[1]);		break;
-	case 2:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) <= value[1]);		break;
-	case 3:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) >  value[1]);		break;
-	case 4:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) >= value[1]);		break;
-	case 5:		Skipping = !(g_Girls.GetStat(m_GirlTarget, value[0]) != value[1]);		break;
+	case 0:		Skipping = !(m_GirlTarget->get_stat(value[0]) == value[1]);		break;
+	case 1:		Skipping = !(m_GirlTarget->get_stat(value[0]) <  value[1]);		break;
+	case 2:		Skipping = !(m_GirlTarget->get_stat(value[0]) <= value[1]);		break;
+	case 3:		Skipping = !(m_GirlTarget->get_stat(value[0]) >  value[1]);		break;
+	case 4:		Skipping = !(m_GirlTarget->get_stat(value[0]) >= value[1]);		break;
+	case 5:		Skipping = !(m_GirlTarget->get_stat(value[0]) != value[1]);		break;
 	}
 
 	// At this point, Skipping states if the script actions
@@ -1108,12 +1108,12 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 	int sel = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_Selection] : Script->m_Entries[1].m_Selection);
 	switch (sel)
 	{
-	case 0:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) == value[1]);		break;
-	case 1:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) < value[1]);		break;
-	case 2:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) <= value[1]);		break;
-	case 3:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) > value[1]);		break;
-	case 4:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) >= value[1]);		break;
-	case 5:		Skipping = !(g_Girls.GetSkill(m_GirlTarget, value[0]) != value[1]);		break;
+	case 0:		Skipping = !(m_GirlTarget->get_skill(value[0]) == value[1]);		break;
+	case 1:		Skipping = !(m_GirlTarget->get_skill(value[0]) < value[1]);		break;
+	case 2:		Skipping = !(m_GirlTarget->get_skill(value[0]) <= value[1]);		break;
+	case 3:		Skipping = !(m_GirlTarget->get_skill(value[0]) > value[1]);		break;
+	case 4:		Skipping = !(m_GirlTarget->get_skill(value[0]) >= value[1]);		break;
+	case 5:		Skipping = !(m_GirlTarget->get_skill(value[0]) != value[1]);		break;
 	}
 
 	// At this point, Skipping states if the script actions
@@ -1159,7 +1159,7 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
-	Skipping = !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+	Skipping = !m_GirlTarget->has_trait(Script->m_Entries[0].m_Text);
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1207,7 +1207,7 @@ sScript* cGameScript::Script_TortureTarget(sScript* Script)
 }
 sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 {
-	if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 10)
+	if (m_GirlTarget->spirit() <= 10)
 	{
 		g_MessageQue.AddToQue("She is bawling the entire time you yell at her, obviously wanting to do her best", 0);
 		m_GirlTarget->happiness(-5);
@@ -1218,7 +1218,7 @@ sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 		m_GirlTarget->pcfear(2);
 		m_GirlTarget->pchate(2);
 	}
-	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 20)
+	else if (m_GirlTarget->spirit() <= 20)
 	{
 		g_MessageQue.AddToQue("She sobs a lot while you yell at her and fearfully listens to your every word", 0);
 		m_GirlTarget->happiness(-2);
@@ -1228,7 +1228,7 @@ sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 		m_GirlTarget->pclove(-1);
 		m_GirlTarget->pcfear(1);
 	}
-	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 30)
+	else if (m_GirlTarget->spirit() <= 30)
 	{
 		g_MessageQue.AddToQue("She listens with attention and promises to do better", 0);
 		m_GirlTarget->happiness(-1);
@@ -1237,14 +1237,14 @@ sScript* cGameScript::Script_ScoldTarget(sScript* Script)
 		m_GirlTarget->spirit(-2);
 		m_GirlTarget->pclove(-1);
 	}
-	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 50)
+	else if (m_GirlTarget->spirit() <= 50)
 	{
 		g_MessageQue.AddToQue("She listens to what you say but barely pays attention", 0);
 		m_GirlTarget->obedience(3);
 		m_GirlTarget->spirit(-2);
 		m_GirlTarget->pchate(1);
 	}
-	else if (g_Girls.GetStat(m_GirlTarget, STAT_SPIRIT) <= 80)
+	else if (m_GirlTarget->spirit() <= 80)
 	{
 		g_MessageQue.AddToQue("She looks at you defiantly while you yell at her", 0);
 		m_GirlTarget->obedience(2);
@@ -1269,7 +1269,7 @@ sScript* cGameScript::Script_NormalSexTarget(sScript* Script)
 	{
 		m_GirlTarget->normalsex(2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 
 		if (!m_GirlTarget->calc_pregnancy(The_Player, false, 1.0))
 			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
@@ -1284,7 +1284,7 @@ sScript* cGameScript::Script_BeastSexTarget(sScript* Script)
 	{
 		m_GirlTarget->beastiality(1);	// `J` divided skill gain
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
 		if (g_Brothels.GetNumBeasts() > 0)
@@ -1311,7 +1311,7 @@ sScript* cGameScript::Script_BDSMSexTarget(sScript* Script)
 	{
 		m_GirlTarget->bdsm(2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 	}
 
 	if (!m_GirlTarget->calc_pregnancy(The_Player, false, 0.75))
@@ -1327,7 +1327,7 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 	int Nest = m_NestLevel;
 
 	// See if choice flag matches second entry
-	Skipping = g_Girls.DisobeyCheck(m_GirlTarget, ACTION_GENERAL, g_Brothels.GetBrothel(g_CurrBrothel));
+	Skipping = m_GirlTarget->disobey_check(ACTION_GENERAL, g_Brothels.GetBrothel(g_CurrBrothel));
 
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
@@ -1372,7 +1372,7 @@ sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 	{
 		m_GirlTarget->group(2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 
 		if (!m_GirlTarget->calc_group_pregnancy(The_Player, false, 1.0))
 			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
@@ -1407,7 +1407,7 @@ sScript* cGameScript::Script_CleanTarget(sScript* Script)
 
 	if (m_GirlTarget)
 	{
-		int CleanAmt = (g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) >= 10 ? ((g_Girls.GetSkill(m_GirlTarget, SKILL_SERVICE) / 10) + 5) * 10 : 50);
+		int CleanAmt = (m_GirlTarget->service() >= 10 ? ((m_GirlTarget->service() / 10) + 5) * 10 : 50);
 		brothel->m_Filthiness -= CleanAmt;
 		stringstream sstemp;
 		sstemp << "Cleanliness rating improved by " << (int)CleanAmt;
@@ -1587,20 +1587,20 @@ sScript* cGameScript::Script_DomTarget(sScript* Script)
 }
 sScript* cGameScript::Script_AddTrait(sScript* Script)						// `J` new
 {
-	if (m_GirlTarget && !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
-		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+	if (m_GirlTarget && !m_GirlTarget->has_trait(Script->m_Entries[0].m_Text))
+		m_GirlTarget->add_trait(Script->m_Entries[0].m_Text);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_RemoveTrait(sScript* Script)					// `J` new
 {
-	if (m_GirlTarget && g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
-		g_Girls.RemoveTrait(m_GirlTarget, Script->m_Entries[0].m_Text);
+	if (m_GirlTarget && m_GirlTarget->has_trait(Script->m_Entries[0].m_Text))
+		m_GirlTarget->remove_trait(Script->m_Entries[0].m_Text);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_AddTraitTemp(sScript* Script)						// `J` new
 {
-	if (m_GirlTarget && !g_Girls.HasTrait(m_GirlTarget, Script->m_Entries[0].m_Text))
-		g_Girls.AddTrait(m_GirlTarget, Script->m_Entries[0].m_Text, Script->m_Entries[1].m_lValue);
+	if (m_GirlTarget && !m_GirlTarget->has_trait(Script->m_Entries[0].m_Text))
+		m_GirlTarget->add_trait(Script->m_Entries[0].m_Text, Script->m_Entries[1].m_lValue);
 	return Script->m_Next;
 }
 sScript* cGameScript::Script_AdjustTraitTemp(sScript* Script)					// `J` new
@@ -1793,7 +1793,7 @@ sScript* cGameScript::Script_NormalSexWithRandomTarget(sScript* Script)
 	{
 		m_GirlTarget->normalsex(2);
 
-		if (g_Girls.CheckVirginity(m_GirlTarget)) g_Girls.LoseVirginity(m_GirlTarget);	// `J` updated for trait/status
+		if (m_GirlTarget->check_virginity()) m_GirlTarget->lose_virginity();	// `J` updated for trait/status
 		sCustomer Cust = g_Customers.GetCustomer(*g_Brothels.GetBrothel(g_CurrBrothel));
 		if (!m_GirlTarget->calc_pregnancy(Cust, false, 1.0))
 			g_MessageQue.AddToQue(m_GirlTarget->m_Realname + " has gotten pregnant", 0);
@@ -1808,7 +1808,7 @@ sScript* cGameScript::Script_IfGirlHasItem(sScript* Script)					// `J` new .06.0
 	m_NestLevel++;
 	int Nest = m_NestLevel;
 
-	Skipping = g_Girls.HasItemJ(m_GirlTarget, Script->m_Entries[0].m_Text) == -1;
+	Skipping = m_GirlTarget->has_item_j(Script->m_Entries[0].m_Text) == -1;
 	// At this point, Skipping states if the script actions
 	// need to be skipped due to a conditional if...then statement.
 	// Actions are further processed if skipped = false, looking
@@ -1866,8 +1866,8 @@ sScript* cGameScript::Script_AddItemtoGirl(sScript* Script)					// `J` new .06.0
 	{
 		for (int i = 0; i < value[0]; i++)
 		{
-			if (value[1] == 0)	g_Girls.AddInv(m_GirlTarget, item);
-			else	g_InvManager.Equip(m_GirlTarget, g_Girls.AddInv(m_GirlTarget, item), false);
+			if (value[1] == 0)	m_GirlTarget->add_inv(item);
+			else	g_InvManager.Equip(m_GirlTarget, m_GirlTarget->add_inv(item), false);
 		}
 	}
 	g_LogFile.ssend();
@@ -1960,11 +1960,11 @@ sScript* cGameScript::Script_GiveGirlInvItem(sScript* Script)
 	{
 		g_LogFile.ss() << " |  " << m_GirlTarget->m_Name << " recieved item";
 
-		if (!equip)	g_Girls.AddInv(m_GirlTarget, item);
+		if (!equip)	m_GirlTarget->add_inv(item);
 		else
 		{
 			g_LogFile.ss() << " and used it.";
-			g_InvManager.Equip(m_GirlTarget, g_Girls.AddInv(m_GirlTarget, item), false);
+			g_InvManager.Equip(m_GirlTarget, m_GirlTarget->add_inv(item), false);
 		}
 
 		g_Brothels.m_NumItem[selection]--;
@@ -2102,8 +2102,8 @@ sScript* cGameScript::Script_AdjustTargetGirlStatR(sScript* Script)
 
 	if (m_GirlTarget)
 	{
-		if (value[3])	g_Girls.UpdateStatTemp(m_GirlTarget, value[0], num);
-		else/*     */	g_Girls.UpdateStat(m_GirlTarget, value[0], num);
+		if (value[3])	m_GirlTarget->upd_temp_stat(value[0], num);
+		else/*     */	m_GirlTarget->upd_stat(value[0], num);
 	}
 	return Script->m_Next;
 }
@@ -2119,8 +2119,8 @@ sScript* cGameScript::Script_AdjustTargetGirlSkillR(sScript* Script)
 
 	if (m_GirlTarget)
 	{
-		if (value[3])	g_Girls.UpdateSkillTemp(m_GirlTarget, value[0], num);
-		else/*     */	g_Girls.UpdateSkill(m_GirlTarget, value[0], num);
+		if (value[3])	m_GirlTarget->upd_temp_skill(value[0], num);
+		else/*     */	m_GirlTarget->upd_skill(value[0], num);
 	}
 	return Script->m_Next;
 }

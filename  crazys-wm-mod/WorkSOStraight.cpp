@@ -103,7 +103,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (girl->has_trait("Succubus"))		girl->m_WorkingDay += g_Dice % 15;			// Males are easier to drain energy from
 	if (girl->has_trait("Your Wife"))		girl->m_WorkingDay += g_Dice % 10;			// She wants to be with you only
 	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += g_Dice.bell(-1, 5);	// She wants to be "Normal"
-	if (g_Girls.CheckVirginity(girl))		girl->m_WorkingDay += g_Dice.bell(-2, 2);	// Having never been with a man she is a little scared
+	if (girl->check_virginity())		girl->m_WorkingDay += g_Dice.bell(-2, 2);	// Having never been with a man she is a little scared
 	// Negative Traits
 	if (girl->has_trait("Broken Will"))		{ girl->m_WorkingDay -= g_Dice.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
 	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
@@ -137,7 +137,7 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 
 
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
+	if (girl->disobey_check(actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
 
 #pragma endregion
 #pragma region //	Count the Days				//
@@ -215,8 +215,8 @@ bool cJobManager::WorkSOStraight(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	girl->tittysex(I_tittysex);
 
 	libido += girl->has_trait("Nymphomaniac") ? 3 : 1;
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 	ss << "\n \nNumbers:"
 		<< "\n Wages = " << (int)wages

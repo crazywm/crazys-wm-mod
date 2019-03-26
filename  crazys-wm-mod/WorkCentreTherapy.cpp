@@ -72,11 +72,11 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false; // not refusing
 	}
-	if (g_Dice.percent(10) && g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (g_Dice.percent(10) && girl->disobey_check(actiontype, brothel))
 	{
 		ss << " fought with her counselor and did not make any progress this week.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-		g_Girls.UpdateEnjoyment(girl, actiontype, -1);
+		girl->upd_Enjoyment(actiontype, -1);
 		if (Day0Night1) girl->m_WorkingDay--;
 		return true;
 	}
@@ -126,7 +126,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 	{
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
 		enjoy += g_Dice % 5;
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOUNSELOR, g_Dice % 6 - 2);	// `J` She may want to help others with their problems
+		girl->upd_Enjoyment(ACTION_WORKCOUNSELOR, g_Dice % 6 - 2);	// `J` She may want to help others with their problems
 		girl->happiness(g_Dice % 5);
 
 		ss << "The therapy is a success.\n";
@@ -144,14 +144,14 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 				if (girl->has_trait( "Nervous"))
 				{
-					g_Girls.RemoveTrait(girl, "Nervous");
+					girl->remove_trait("Nervous");
 					ss << "She is no longer nervous all the time.\n";
 					cured = true; break;
 				}
 			case 1:
 				if (girl->has_trait( "Dependant"))
 				{
-					g_Girls.RemoveTrait(girl, "Dependant");
+					girl->remove_trait("Dependant");
 					ss << "She is no longer Dependant on others.\n";
 					cured = true; break;
 				}
@@ -159,7 +159,7 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 			default:
 				if (girl->has_trait( "Pessimist"))
 				{
-					g_Girls.RemoveTrait(girl, "Pessimist");
+					girl->remove_trait("Pessimist");
 					ss << "She is no longer a Pessimist about everything.\n";
 					cured = true; break;
 				}
@@ -190,9 +190,9 @@ bool cJobManager::WorkCentreTherapy(sGirl* girl, sBrothel* brothel, bool Day0Nig
 
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, msgtype);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 #pragma endregion
 	return false;

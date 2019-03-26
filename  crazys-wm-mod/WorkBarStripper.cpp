@@ -49,7 +49,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	int actiontype = ACTION_WORKSTRIP;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		//SIN - More informative mssg to show *what* she refuses
 		ss << " refused to strip off in front of the creeps in your club " << (Day0Night1 ? "tonight." : "today.");
@@ -440,15 +440,15 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	{
 		string warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
 		ss << "\n" << warning << "\n";
-		if (girl->has_trait( "Shroud Addict"))		g_Girls.AddInv(girl, g_InvManager.GetItem("Shroud Mushroom"));
-		if (girl->has_trait( "Fairy Dust Addict"))	g_Girls.AddInv(girl, g_InvManager.GetItem("Fairy Dust"));
-		if (girl->has_trait( "Viras Blood Addict"))	g_Girls.AddInv(girl, g_InvManager.GetItem("Vira Blood"));
+		if (girl->has_trait( "Shroud Addict"))		girl->add_inv(g_InvManager.GetItem("Shroud Mushroom"));
+		if (girl->has_trait( "Fairy Dust Addict"))	girl->add_inv(g_InvManager.GetItem("Fairy Dust"));
+		if (girl->has_trait( "Viras Blood Addict"))	girl->add_inv(g_InvManager.GetItem("Vira Blood"));
 		girl->m_Events.AddMessage(warning, IMGTYPE_ORAL, EVENT_WARNING);
 	}
 
 	if (girl->is_pregnant())
 	{
-		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
+		if (girl->strength() >= 60)
 		{
 			ss << "\nPole dancing proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
 		}
@@ -456,7 +456,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 		{
 			ss << "\nPole dancing proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
-		girl->tiredness(10 - (g_Girls.GetStat(girl, STAT_STRENGTH) / 20));
+		girl->tiredness(10 - girl->strength() / 20);
 	}
 
 
@@ -498,7 +498,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 
@@ -524,8 +524,8 @@ bool cJobManager::WorkBarStripper(sGirl* girl, sBrothel* brothel, bool Day0Night
 	girl->exp(xp);
 	girl->performance(g_Dice%skill);
 	girl->strip(g_Dice%skill + 2);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateStatTemp(girl, STAT_CONFIDENCE, g_Dice % 2); //SIN - slow boost to confidence
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_CONFIDENCE, g_Dice % 2); //SIN - slow boost to confidence
 
 	//gained
 	g_Girls.PossiblyGainNewTrait(girl, "Sexy Air", 80, actiontype, girlName + " has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1);

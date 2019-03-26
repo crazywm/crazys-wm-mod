@@ -52,7 +52,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	int actiontype = ACTION_WORKSTRIP;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		//SIN - More informative mssg to show *what* she refuses
 		//ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -559,7 +559,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 								}
 								GetMiscCustomer(*brothel);
 								brothel->m_Happiness += 100;
-								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
+								girl->upd_temp_stat(STAT_LIBIDO, -30, true);
 								// work out the pay between the house and the girl
 								wages += girl->askprice() + 60;
 								fame += 1;
@@ -591,7 +591,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 								}
 								GetMiscCustomer(*brothel);
 								brothel->m_Happiness += 100;
-								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -30, true);
+								girl->upd_temp_stat(STAT_LIBIDO, -30, true);
 								// work out the pay between the house and the girl
 								wages += girl->askprice() + 60;
 								fame += 1;
@@ -608,7 +608,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 						ss << "She was horny and ended up masturbating for the customers making them very happy.";
 						GetMiscCustomer(*brothel);
 						brothel->m_Happiness += 100;
-						g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+						girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 						// work out the pay between the house and the girl
 						wages += girl->askprice() + 60;
 						fame += 1;
@@ -648,8 +648,8 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 #pragma region	//	Finish the shift			//
 
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKHALL, work);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKSTRIP, work);
+	girl->upd_Enjoyment(ACTION_WORKHALL, work);
+	girl->upd_Enjoyment(ACTION_WORKSTRIP, work);
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
@@ -678,7 +678,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, sBrothel* brothel, bool Da
 	girl->confidence(g_Dice%skill);
 	girl->strip(g_Dice%skill + 1);
 	girl->performance(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to perform sexual entertainment for patrons every day has made " + girlName + " quite the nympho.", Day0Night1);

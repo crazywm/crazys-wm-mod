@@ -630,7 +630,7 @@ void cScreenItemManagement::check_events()
 				sGirl* targetGirl = 0;
 				targetGirl = GirlSelectedFromList(leftOwner);
 				item = targetGirl->m_Inventory[leftItem];
-				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+				HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[leftItem]))
 				{
@@ -685,7 +685,7 @@ void cScreenItemManagement::check_events()
 				sGirl* targetGirl = 0;
 				targetGirl = GirlSelectedFromList(rightOwner);
 				item = targetGirl->m_Inventory[rightItem];
-				HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+				HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 				if (g_InvManager.IsItemEquipable(targetGirl->m_Inventory[rightItem]))
 				{
@@ -721,7 +721,7 @@ void cScreenItemManagement::check_events()
 		sGirl* targetGirl = 0;
 		targetGirl = GirlSelectedFromList(leftOwner);
 
-		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+		HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 		leftItem = GetLastSelectedItemFromList(items_l_id);
 		if (leftItem != -1)
@@ -741,7 +741,7 @@ void cScreenItemManagement::check_events()
 		sGirl* targetGirl = 0;
 		targetGirl = GirlSelectedFromList(leftOwner);
 
-		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+		HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 		leftItem = GetLastSelectedItemFromList(items_l_id);
 		if (leftItem != -1)
@@ -760,7 +760,7 @@ void cScreenItemManagement::check_events()
 		sGirl* targetGirl = 0;
 		targetGirl = GirlSelectedFromList(rightOwner);
 
-		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+		HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 		rightItem = GetLastSelectedItemFromList(items_r_id);
 		if (rightItem != -1)
@@ -780,7 +780,7 @@ void cScreenItemManagement::check_events()
 		sGirl* targetGirl = 0;
 		targetGirl = GirlSelectedFromList(rightOwner);
 
-		HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+		HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 		rightItem = GetLastSelectedItemFromList(items_r_id);
 		if (rightItem != -1)
@@ -1214,9 +1214,9 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 				}
 
 				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP))
-					g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]);
+					targetGirl->add_inv(g_Brothels.m_Inventory[selection]);
 				else
-					g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, g_Brothels.m_Inventory[selection]), false);
+					g_InvManager.Equip(targetGirl, targetGirl->add_inv(g_Brothels.m_Inventory[selection]), false);
 
 				g_Brothels.m_NumItem[selection]--;
 				if (g_Brothels.m_NumItem[selection] == 0)
@@ -1265,8 +1265,8 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 					targetGirl->pcfear(-1);
 				}
 
-				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) g_Girls.AddInv(targetGirl, ShopItem);
-				else g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, ShopItem), false);
+				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) targetGirl->add_inv(ShopItem);
+				else g_InvManager.Equip(targetGirl, targetGirl->add_inv(ShopItem), false);
 				g_InvManager.BuyShopItem(selection);
 
 				selection = GetNextSelectedItemFromList(source_list, pos + 1, pos);
@@ -1278,7 +1278,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 			int selectedfromlist = GetSelectedItemFromList(source_owner_list);
 			fromGirl = GirlSelectedFromList(source_owner, selectedfromlist);
 
-			int HateLove = g_Girls.GetStat(targetGirl, STAT_PCLOVE) - g_Girls.GetStat(targetGirl, STAT_PCHATE);
+			int HateLove = targetGirl->pclove() - targetGirl->pchate();
 
 			int pos = 0;
 			int selection = GetNextSelectedItemFromList(source_list, 0, pos);
@@ -1314,8 +1314,8 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
 					fromGirl->happiness(5);  // previous owner happy to see it go
 				}
 
-				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]);
-				else g_InvManager.Equip(targetGirl, g_Girls.AddInv(targetGirl, fromGirl->m_Inventory[selection]), false);
+				if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP)) targetGirl->add_inv(fromGirl->m_Inventory[selection]);
+				else g_InvManager.Equip(targetGirl, targetGirl->add_inv(fromGirl->m_Inventory[selection]), false);
 
 				// remove the item from the girl
 				fromGirl->m_Inventory[selection] = 0;

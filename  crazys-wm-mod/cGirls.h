@@ -52,30 +52,6 @@ class   cPlayer;
 struct  sCustomer;
 struct  sGang;
 
-class cAbstractGirls {
-public:
-	virtual int GetStat(sGirl* girl, int stat) = 0;
-	virtual int GetSkill(sGirl* girl, int skill) = 0;
-	virtual int GetEnjoyment(sGirl* girl, int skill) = 0;
-	virtual int GetTraining(sGirl* girl, int skill) = 0;
-	virtual void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true) = 0;
-	virtual void UpdateSkill(sGirl* girl, int skill, int amount) = 0;
-	virtual void UpdateEnjoyment(sGirl* girl, int skill, int amount) = 0;
-	virtual void UpdateTraining(sGirl* girl, int skill, int amount) = 0;
-	virtual bool CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]) = 0;
-	virtual bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
-	virtual bool RemoveTrait(sGirl* girl, string name, bool removeitem = false, bool remember = false, bool keepinrememberlist = false) = 0;
-	virtual bool HasTrait(sGirl* girl, string name) = 0;
-	virtual bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false) = 0;
-	virtual bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool remember = false) = 0;
-	virtual bool CheckVirginity(sGirl* girl) = 0;
-	virtual void UpdateSkillTemp(sGirl* girl, int skill, int amount) = 0;	// updates a skill temporarily
-	virtual void UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraite = false) = 0;
-	virtual void UpdateEnjoymentTemp(sGirl* girl, int stat, int amount) = 0;
-	virtual void UpdateTrainingTemp(sGirl* girl, int stat, int amount) = 0;
-};
-extern cAbstractGirls* g_GirlsPtr;
-
 // structure to hold randomly generated girl information
 typedef struct sRandomGirl
 {
@@ -423,39 +399,78 @@ struct sGirl
 	*/
 	int get_stat(int stat_id)
 	{
-		return g_GirlsPtr->GetStat(this, stat_id);
+        // returns the total of stat + statmod + tempstat + stattr
+
+        if (stat_id < 0) return 0;
+        u_int stat = stat_id;
+        int value = 0, min = 0, max = 100;
+        /* */if (stat == STAT_AGE) min = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+        else if (stat == STAT_EXP) max = 32000;
+        else if (stat == STAT_LEVEL) max = 255;
+        else if (stat == STAT_HEALTH	&& has_trait( "Incorporeal"))	return 100;
+        else if (stat == STAT_TIREDNESS &&
+                 (has_trait( "Incorporeal") ||
+                  has_trait( "Skeleton") ||
+                  has_trait( "Zombie")))
+            return 0;
+        else if (stat == STAT_PCLOVE || stat == STAT_PCFEAR || stat == STAT_PCHATE || stat == STAT_MORALITY ||
+                 stat == STAT_REFINEMENT || stat == STAT_DIGNITY || stat == STAT_LACTATION) min = -100;
+        // Generic calculation
+        value = m_Stats[stat] + m_StatMods[stat] + m_StatTemps[stat] + m_StatTr[stat];
+
+        if (value < min) value = min;
+        else if (value > max) value = max;
+        return value;
 	}
+
 	int upd_temp_stat(int stat_id, int amount, bool usetraits=false)
 	{
-		g_GirlsPtr->UpdateStatTemp(this, stat_id, amount, usetraits);
-		return g_GirlsPtr->GetStat(this, stat_id);
+        if (usetraits)
+        {
+            if (stat_id == STAT_LIBIDO)
+            {
+                if (has_trait("Nymphomaniac"))	{ amount = int((double)amount * (amount > 0 ? 1.5 : 0.5));	if (amount == 0)	amount = 1; }
+                else if (has_trait("Chaste"))		{ amount = int((double)amount * (amount > 0 ? 0.5 : 1.5));	if (amount == 0)	amount = -1; }
+            }
+        }
+        // TODO Does it really make sense to silently change some stats non temporarily in upd_temp_stat?
+        if (stat_id == STAT_HEALTH || stat_id == STAT_HAPPINESS || stat_id == STAT_TIREDNESS || stat_id == STAT_EXP ||
+                stat_id == STAT_LEVEL || stat_id == STAT_HOUSE || stat_id == STAT_ASKPRICE)
+        {
+            upd_stat(stat_id, amount);
+            return get_stat(stat_id);
+        }
+        m_StatTemps[stat_id] += amount;
+
+		return get_stat(stat_id);
 	}
-	int upd_stat(int stat_id, int amount, bool usetraits = true)
-	{
-		g_GirlsPtr->UpdateStat(this, stat_id, amount, usetraits);
-		return g_GirlsPtr->GetStat(this, stat_id);
-	}
+	int upd_stat(int stat_id, int amount, bool usetraits = true);
 
 	int upd_temp_Enjoyment(int stat_id, int amount)
 	{
-		g_GirlsPtr->UpdateEnjoymentTemp(this, stat_id, amount);
-		return g_GirlsPtr->GetEnjoyment(this, stat_id);
+		m_EnjoymentTemps[stat_id] += amount;
+		return get_enjoyment(stat_id);
 	}
 	int upd_Enjoyment(int stat_id, int amount, bool usetraits = true)
 	{
-		g_GirlsPtr->UpdateEnjoyment(this, stat_id, amount);
-		return g_GirlsPtr->GetEnjoyment(this, stat_id);
+		m_Enjoyment[amount] += amount;
+		/* */if (m_Enjoyment[amount] > 100) 	m_Enjoyment[amount] = 100;
+		else if (m_Enjoyment[amount] < -100) 	m_Enjoyment[amount] = -100;
+
+		return get_enjoyment(stat_id);
 	}
 
 	int upd_temp_Training(int stat_id, int amount)
 	{
-		g_GirlsPtr->UpdateTrainingTemp(this, stat_id, amount);
-		return g_GirlsPtr->GetTraining(this, stat_id);
+		m_TrainingTemps[stat_id] += amount;
+		return get_training(stat_id);
 	}
 	int upd_Training(int stat_id, int amount, bool usetraits = true)
 	{
-		g_GirlsPtr->UpdateTraining(this, stat_id, amount);
-		return g_GirlsPtr->GetTraining(this, stat_id);
+		m_Training[stat_id] += amount;
+		/* */if (m_Training[stat_id] > 100) 	m_Training[stat_id] = 100;
+		else if (m_Training[stat_id] < 0) 		m_Training[stat_id] = 0;
+		return get_training(stat_id);
 	}
 
 
@@ -534,20 +549,16 @@ struct sGirl
 	*
 	*	similarly...
 	*/
-	int get_skill(int skill_id)
-	{
-		return g_GirlsPtr->GetSkill(this, skill_id);
-	}
+	int get_skill(int skill_id);
+
 	int upd_temp_skill(int skill_id, int amount)
 	{
-		g_GirlsPtr->UpdateSkillTemp(this, skill_id, amount);
-		return g_GirlsPtr->GetSkill(this, skill_id);
+        m_SkillTemps[skill_id] += amount;
+		return get_skill(skill_id);
 	}
-	int upd_skill(int skill_id, int amount)
-	{
-		g_GirlsPtr->UpdateSkill(this, skill_id, amount);
-		return g_GirlsPtr->GetSkill(this, skill_id);
-	}
+
+	int upd_skill(int skill_id, int amount);
+
 	int	anal()					{ return get_skill(SKILL_ANAL); }
 	int	anal(int n)				{ return upd_skill(SKILL_ANAL, n); }
 	int	bdsm()					{ return get_skill(SKILL_BDSM); }
@@ -595,11 +606,25 @@ struct sGirl
 
 	int get_enjoyment(int actiontype)
 	{
-		return g_GirlsPtr->GetEnjoyment(this, actiontype);
+		if (actiontype < 0) return 0;
+		// Generic calculation
+		int value = m_Enjoyment[actiontype] + m_EnjoymentTR[actiontype] +
+					m_EnjoymentMods[actiontype] + m_EnjoymentTemps[actiontype];
+
+		if (value < -100) value = -100;
+		else if (value > 100) value = 100;
+		return value;
 	}
 	int get_training(int actiontype)
 	{
-		return g_GirlsPtr->GetTraining(this, actiontype);
+        if (actiontype < 0) return 0;
+        // Generic calculation
+        int value = m_Training[actiontype] + m_TrainingTR[actiontype] +
+                    m_TrainingMods[actiontype] + m_TrainingTemps[actiontype];
+
+        if (value < 0) value = 0;
+        else if (value > 100) value = 100;
+        return value;
 	}
 
 	/*
@@ -617,6 +642,7 @@ struct sGirl
 	void clear_dating();
 
 	int preg_chance(int base_pc, bool good = false, double factor = 1.0);
+	bool calc_pregnancy(int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]);
 
 	bool calc_pregnancy(int, cPlayer*);
 	bool calc_pregnancy(cPlayer* player, bool good = false, double factor = 1.0);
@@ -631,10 +657,12 @@ struct sGirl
 	*	let's overload that...
 	*	should be able to do the same using sCustomer as well...
 	*/
-	void add_trait(string trait, int temptime = 0);
-	void remove_trait(string trait);
+	bool add_trait(string trait, int temptime = 0, bool removeitem = false, bool remember = false);
+	bool remove_trait(string trait,  bool addrememberlist = false, bool force = false, bool keepinrememberlist = false);
 	bool has_trait(string trait);
+	bool check_virginity();
 	bool lose_virginity();
+	bool regain_virginity();
 	int breast_size();
 	bool is_dead(bool sendmessage = false);		// `J` replaces a few DeadGirl checks
 	bool is_addict(bool onlyhard = false);	// `J` added bool onlyhard to allow only hard drugs to be checked for
@@ -670,6 +698,8 @@ struct sGirl
 	int has_item(const std::string& item);
 	int has_item_j(const std::string& item);
 	int add_inv(sInventoryItem* item);
+
+	bool disobey_check(int action, sBrothel* brothel = nullptr);
 };
 
 class GirlPredicate {
@@ -678,7 +708,7 @@ public:
 };
 
 // Keeps track of all the available (not used by player) girls in the game.
-class cGirls : public cAbstractGirls
+class cGirls
 {
 public:
 	cGirls();
@@ -711,13 +741,13 @@ public:
 
 	void GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType);	// does the logic for fucking
 	// MYR: Millions of ways to say, [girl] does [act] to [customer]
-	string GetRandomGroupString();
-	string GetRandomSexString();
-	string GetRandomOralSexString();
-	string GetRandomLesString();
-	string GetRandomBDSMString();
-	string GetRandomBeastString();
-	string GetRandomAnalString();
+	static string GetRandomGroupString();
+	static string GetRandomSexString();
+	static string GetRandomOralSexString();
+	static string GetRandomLesString();
+	static string GetRandomBDSMString();
+	static string GetRandomBeastString();
+	static string GetRandomAnalString();
 
 	// MYR: More functions for attack/defense/agility-style combat.
 	bool GirlInjured(sGirl* girl, unsigned int modifier);
@@ -729,42 +759,37 @@ public:
 
 	void EndDayGirls(sBrothel* brothel, sGirl* girl);
 
-	int GetStat(sGirl* girl, int stat);
-	void SetStat(sGirl* girl, int stat, int amount);
-	void UpdateStat(sGirl* girl, int stat, int amount, bool usetraits = true);		// updates a stat
-	void UpdateStatTemp(sGirl* girl, int stat, int amount, bool usetraits = false);	// updates a stat temporarily
+    void SetStat(sGirl* girl, int stat, int amount);
+	// updates a stat temporarily
 	void UpdateStatMod(sGirl* girl, int stat, int amount);							// updates a statmod usually from items
 	void UpdateStatTr(sGirl* girl, int stat, int amount);							// updates a statTr from traits
 
-	int GetSkill(sGirl* girl, int skill);
 	void SetSkill(sGirl* girl, int skill, int amount);
-	void UpdateSkill(sGirl* girl, int skill, int amount);		// updates a skill
-	void UpdateSkillTemp(sGirl* girl, int skill, int amount);	// updates a skill temporarily
+    // updates a skill temporarily
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods usually from items
 	void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
 
-	int GetEnjoyment(sGirl* girl, int a_Enjoy);													// `J` added
+	// `J` added
 	void SetEnjoyment(sGirl* girl, int a_Enjoy, int amount);									// `J` added
 	void SetEnjoymentTR(sGirl* girl, int a_Enjoy, int amount);									// `J` added for traits
-	void UpdateEnjoyment(sGirl* girl, int whatSheEnjoys, int amount);	// updates what she enjoys
+	// updates what she enjoys
 	void UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 	void UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
-	void UpdateEnjoymentTemp(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
+    // `J` added for traits
 
-	int GetTraining(sGirl* girl, int a_Training);													// `CRAZY` added
+    // `CRAZY` added
 	void SetTraining(sGirl* girl, int a_Training, int amount);									// `CRAZY` added
 	void SetTrainingTR(sGirl* girl, int a_Training, int amount);									// `CRAZY` added for traits
-	void UpdateTraining(sGirl* girl, int whatSheTrains, int amount);	// updates what she enjoys
+	// updates what she enjoys
 	void UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
 	void UpdateTrainingMod(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
-	void UpdateTrainingTemp(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
+	// `CRAZY` added for traits
 
 
 	double GetAverageOfAllSkills(sGirl* girl);	// `J` added
 	double GetAverageOfSexSkills(sGirl* girl);	// `J` added
 	double GetAverageOfNSxSkills(sGirl* girl);	// `J` added
 
-	bool HasTrait(sGirl* girl, string trait);
 	bool HasRememberedTrait(sGirl* girl, string trait);
 	int HasTempTrait(sGirl* girl, string trait);
 	bool RestoreRememberedTrait(sGirl* girl, string trait);
@@ -837,11 +862,8 @@ public:
 	int GetNumItemType(sGirl* girl, int Type, bool splitsubtype = false);
 	void SellInvItem(sGirl* girl, int num);
 	void UseItems(sGirl* girl);
-	int HasItem(sGirl* girl, string name);
-	int HasItemJ(sGirl* girl, string name);	// `J` added
-	//	void RemoveTrait(sGirl* girl, string name, bool addrememberlist = false, bool force = false);
-	bool RemoveTrait(sGirl* girl, string name, bool addrememberlist = false, bool force = false, bool keepinrememberlist = false);
-	void RemoveRememberedTrait(sGirl* girl, string name);
+
+    void RemoveRememberedTrait(sGirl* girl, string name);
 	void RemoveAllRememberedTraits(sGirl* girl);					// WD: Cleanup remembered traits on new girl creation
 	int GetNumItemEquiped(sGirl* girl, int Type);
 	bool IsItemEquipable(sGirl* girl, int num);
@@ -849,7 +871,6 @@ public:
 
 	int GetSkillWorth(sGirl* girl);
 
-	bool DisobeyCheck(sGirl* girl, int action, sBrothel* brothel = 0);
 	bool AskedOutChance(sGirl* girl, int action, sBrothel* brothel = 0);
 	bool SayYesChance(sGirl* girl, int action, sBrothel* brothel = 0);
 
@@ -859,11 +880,7 @@ public:
 	string GetGirlMood(sGirl* girl);
 	string GetSimpleDetails(sGirl* girl, int fontsize = 8);
 
-	bool AddTrait(sGirl* girl, string name, int temptime = 0, bool removeitem = false, bool inrememberlist = false);
-	void AddRememberedTrait(sGirl* girl, string name);
-	bool LoseVirginity(sGirl* girl, bool removeitem = false, bool remember = false);
-	bool RegainVirginity(sGirl* girl, int temptime = 0, bool removeitem = false, bool inrememberlist = false);
-	bool CheckVirginity(sGirl* girl);
+    void AddRememberedTrait(sGirl* girl, string name);
 
 	void CalculateAskPrice(sGirl* girl, bool vari);
 
@@ -880,7 +897,6 @@ public:
 	bool child_is_grown(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	bool child_is_due(sGirl* girl, sChild* child, string& summary, bool PlayerControlled = true);
 	void HandleChildren(sGirl* girl, string& summary, bool PlayerControlled = true);	// ages children and handles pregnancy
-	bool CalcPregnancy(sGirl* girl, int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]);
 	// checks if a girl gets pregnant
 	void CreatePregnancy(sGirl* girl, int numchildren, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]);	// create the actual pregnancy
 

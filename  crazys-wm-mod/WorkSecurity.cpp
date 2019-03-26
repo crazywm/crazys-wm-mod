@@ -46,7 +46,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 {
 	int actiontype = ACTION_WORKSECURITY;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		ss << " refused to work security in your brothel " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -167,7 +167,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		default:/*                         */	{ l = 2;	imagetype = IMGTYPE_STRIP;	ss << "She flashed them";	break; }
 		}
 		ss << ".\n \n";
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -l, true);
+		girl->upd_temp_stat(STAT_LIBIDO, -l, true);
 	}
 
 	if (SecLev < 10) SecLev = 10;
@@ -193,10 +193,10 @@ bool cJobManager::WorkSecurity(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	girl->combat((g_Dice%skill)+1);
 	girl->magic((g_Dice%skill)+1);
 	girl->agility((g_Dice%skill)+1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 	// Copy-pasta from WorkExploreCatacombs
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 15, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);

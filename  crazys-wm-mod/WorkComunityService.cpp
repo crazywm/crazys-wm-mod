@@ -54,7 +54,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	int actiontype = ACTION_WORKCENTRE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
+	if (girl->disobey_check(actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -116,7 +116,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 
 
 	//try and add randomness here
-	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && !g_Girls.CheckVirginity(girl)
+	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && !girl->check_virginity()
 		&& !girl->has_trait( "Lesbian") && girl->libido() > 75
 		&& (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
 	{
@@ -152,7 +152,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		enjoy += 1;
 	}
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 
 	if (sex)
@@ -161,9 +161,9 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			girl->normalsex(2);
 			imagetype = IMGTYPE_SEX;
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
-				g_Girls.LoseVirginity(girl);	// `J` updated for trait/status
+				girl->lose_virginity();	// `J` updated for trait/status
 				ss << "\nShe is no longer a virgin.\n";
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))
@@ -177,8 +177,8 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 			imagetype = IMGTYPE_ANAL;
 		}
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3);
+		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
+		girl->upd_Enjoyment(ACTION_SEX, +3);
 		fame += 1;
 		dispo += 6;
 	}
@@ -239,7 +239,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (g_Dice % 2 == 1)	girl->intelligence(g_Dice%skill);
 	else				girl->charisma(g_Dice%skill);
 	girl->service(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 
 #pragma endregion

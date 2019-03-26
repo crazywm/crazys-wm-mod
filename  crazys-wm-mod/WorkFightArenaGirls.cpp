@@ -53,7 +53,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	int actiontype = ACTION_COMBAT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
+	if (girl->disobey_check(actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -154,11 +154,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 			{
 				ss << girlName << "'s cries of joy and outright pleasure upon being injured distract her opponent, and the pain-loving girl comes back from apparent defeat to achieve a dramatic victory.  Despite her many injuries, she smiles happily as she thanks her opponent for the match.\n";
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && girl->combat() < 50))
+			else if (girl->magic() >= 50 && girl->combat() < 50)
 			{
 				ss << girlName << "'s powerful magic demonstrates precisely why mages are feared by many.  She even manages to look good while doing it!\n";
 			}
-			else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && girl->combat() >= 75))
+			else if (girl->magic() >= 75 && girl->combat() >= 75)
 			{
 				ss << "Having mastered both weapons and sorcery, " << girlName << " is a nearly unstoppable force of nature in the Arena, easily dispatching opponents who focus on one branch of combat over the other.\n";
 			}
@@ -189,11 +189,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			ss << "Overwhelmed by pleasure, " << girlName << " is unable to defend herself from her opponent and is easily defeated.  After the match ends, she begs the other fighter for another match - 'just like this one.'\n";
 		}
-		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 50 && girl->combat() < 50))
+		else if (girl->magic() >= 50 && girl->combat() < 50)
 		{
 			ss << "Lacking the physical prowess to hold her opponent off while she readies her spells, " << girlName << " is quickly defeated by her opponent.\n";
 		}
-		else if (g_Girls.GetSkill(girl, SKILL_MAGIC >= 75 && girl->combat() >= 75))
+		else if (girl->magic() >= 75 && girl->combat() >= 75)
 		{
 			ss << "You can't belive, " << girlName << " lost. With her skill in combat and magic you thought her unbeatable.\n";
 		}
@@ -215,7 +215,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 
 	if (girl->is_pregnant())
 	{
-		if (g_Girls.GetStat(girl, STAT_STRENGTH) >= 60)
+		if (girl->strength() >= 60)
 		{
 			ss << "\n \nAll that fighting proved to be quite exhausting for a pregnant girl, even for one as strong as " << girlName << " .\n";
 		}
@@ -223,7 +223,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		{
 			ss << "\n \nAll that fighting proved to be quite exhausting for a pregnant girl like " << girlName << " .\n";
 		}
-		girl->tiredness(10 - g_Girls.GetStat(girl, STAT_STRENGTH) / 20 );
+		girl->tiredness(10 - girl->strength() / 20 );
 	}
 
 	if (girl->has_trait( "Exhibitionist") && g_Dice.percent(15))
@@ -264,8 +264,8 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	girl->magic(g_Dice%fightxp + skill);
 	girl->agility(g_Dice%fightxp + skill);
 	girl->constitution(g_Dice%fightxp + skill);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 	/* `J` this will be a place holder until a better payment system gets done
 	*
@@ -285,7 +285,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	g_Girls.PossiblyGainNewTrait(girl, "Tough", 65, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Fleet of Foot", 55, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Aggressive", 70, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
-	if (g_Dice.percent(25) && g_Girls.GetStat(girl, STAT_STRENGTH) >= 65 && girl->combat() > girl->magic())
+	if (g_Dice.percent(25) && girl->strength() >= 65 && girl->combat() > girl->magic())
 	{
 		g_Girls.PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, girlName + " has become pretty Strong from all of the fights she's been in.", Day0Night1);
 	}

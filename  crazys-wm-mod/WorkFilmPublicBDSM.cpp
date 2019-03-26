@@ -92,7 +92,7 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		ss << ("Masochist ") << girlName << (" was pleased to be tortured and degraded. It is her place.");
 		bonus += 6;
 	}
-	else if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	else if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << girlName << (" refused to have any part in this");
 		if (girl->is_slave())
@@ -371,10 +371,10 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 
 	if (fucked == BYMAN || fucked == BYBEAST)
 	{
-		if (g_Girls.CheckVirginity(girl))
+		if (girl->check_virginity())
 		{
 			ss << "Somewhere in all this, she lost her virginity.\n";
-			g_Girls.LoseVirginity(girl);
+			girl->lose_virginity();
 			bonus += 5;
 		}
 		sCustomer Cust = g_Customers.GetCustomer(*brothel);
@@ -433,8 +433,8 @@ bool cJobManager::WorkFilmPublicBDSM(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	girl->bdsm(g_Dice%skill + 1);
 	girl->obedience(impact / 2);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
+	girl->upd_Enjoyment(ACTION_SEX, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 	//gain
 	g_Girls.PossiblyGainNewTrait(girl, "Masochist", 75, ACTION_SEX, girlName + " has turned into a Masochist from filming so many BDSM scenes.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
@@ -496,7 +496,7 @@ double cJobManager::JP_FilmPublicBDSM(sGirl* girl, bool estimate)
 	if (girl->has_trait( "Elegant"))					jobperformance += 10;	//
 	if (girl->has_trait( "Branded on the Forehead"))	jobperformance += 5;	//Degraded
 	if (girl->has_trait( "Branded on the Ass"))		jobperformance += 5;	//
-	if (g_Girls.CheckVirginity(girl))						jobperformance += 20;	//
+	if (girl->check_virginity())						jobperformance += 20;	//
 	if (girl->has_trait( "Strong Gag Reflex"))		jobperformance += 10;	//Degrading
 	if (girl->has_trait( "Gag Reflex"))				jobperformance += 5;	//
 	if (girl->has_trait( "No Gag Reflex"))			jobperformance += 5;	//

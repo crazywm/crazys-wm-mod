@@ -1019,7 +1019,7 @@ bool cJobManager::WorkVoid(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary, string& message)
 {
 	brothel->m_Filthiness++;
-	if (g_Girls.DisobeyCheck(girl, action, brothel))			// they refuse to work
+	if (girl->disobey_check(action, brothel))			// they refuse to work
 	{
 		string message = girl->m_Realname + (" refused to work during the ");
 		message += (Day0Night1 ? "night" : "day");
@@ -1600,7 +1600,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		g_MessageQue.AddToQue(("Slaves can not work as City Guards."), 0);
 	}
-	else if (u_int(JobID) == JOB_FIGHTTRAIN && (g_Girls.GetSkill(Girl, SKILL_COMBAT) > 99 && g_Girls.GetSkill(Girl, SKILL_MAGIC) > 99 && g_Girls.GetStat(Girl, STAT_AGILITY) > 99 && g_Girls.GetStat(Girl, STAT_CONSTITUTION) > 99))
+	else if (u_int(JobID) == JOB_FIGHTTRAIN && (Girl->combat() > 99 && Girl->magic() > 99 && Girl->agility() > 99 && Girl->constitution() > 99))
 	{	// `J` added then modified
 		g_MessageQue.AddToQue(("There is nothing more she can learn here."), 0);
 		if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = rest;
@@ -1641,7 +1641,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTOR;
 	}
-	else if (u_int(JobID) == JOB_INTERN && g_Girls.GetSkill(Girl, SKILL_MEDICINE) > 99 && g_Girls.GetStat(Girl, STAT_INTELLIGENCE) > 99 && g_Girls.GetStat(Girl, STAT_CHARISMA) > 99)
+	else if (u_int(JobID) == JOB_INTERN && Girl->medicine() > 99 && Girl->intelligence() > 99 && Girl->charisma() > 99)
 	{
 		stringstream ss;
 		ss << "There is nothing more she can learn here.\n";
@@ -1734,12 +1734,12 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			g_MessageQue.AddToQue(("Her ass can't get no better."), 0);
 			jobgood = false;
 		}
-		else if (u_int(JobID) == JOB_FACELIFT && g_Girls.GetStat(Girl, STAT_AGE) <= 21)
+		else if (u_int(JobID) == JOB_FACELIFT && Girl->age() <= 21)
 		{
 			g_MessageQue.AddToQue(("She is to young for a face lift."), 0);
 			jobgood = false;
 		}
-		else if (u_int(JobID) == JOB_VAGINAREJUV && g_Girls.CheckVirginity(Girl))
+		else if (u_int(JobID) == JOB_VAGINAREJUV && Girl->check_virginity())
 		{
 			g_MessageQue.AddToQue(("She is a virgin and has no need of this operation."), 0);
 			jobgood = false;
@@ -1998,7 +1998,7 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 		customer_rape(girl, enemy_gang->m_Num);
 		return true;
 	}
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +1);
+	girl->upd_Enjoyment(ACTION_SEX, +1);
 	/*
 	 *	the fame thing could work either way.
 	 *	of course, that road leads to us keeping reputation for
@@ -2130,11 +2130,11 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	{
 		SecGuard->combat(1);
 		SecGuard->magic(1);
-		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, num, true);  // There's nothing like killin ta make ya horny!
+		SecGuard->upd_temp_stat(STAT_LIBIDO, num, true);  // There's nothing like killin ta make ya horny!
 		SecGuard->confidence(num);
 		SecGuard->fame(num);
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num);
-		g_Girls.UpdateEnjoyment(girl, ACTION_WORKSECURITY, num);
+		girl->upd_Enjoyment(ACTION_COMBAT, num);
+		girl->upd_Enjoyment(ACTION_WORKSECURITY, num);
 
 		stringstream Gmsg;
 		stringstream SGmsg;
@@ -2178,9 +2178,9 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					sGirl* custgirl = g_Girls.CreateRandomGirl(g_Dice % 40 + 18, false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 
 					// `J` and adjust her stats
-					g_InvManager.Equip(custgirl, g_Girls.AddInv(custgirl, g_Brothels.m_Inventory[itemnum]), true);
+					g_InvManager.Equip(custgirl, custgirl->add_inv(g_Brothels.m_Inventory[itemnum]), true);
 					g_Brothels.RemoveItemFromInventoryByNumber(itemnum);
-					g_GirlsPtr->AddTrait(custgirl, "Emprisoned Customer", max(5, g_Dice.bell(0, 20)));	// add temp trait
+                    custgirl->add_trait("Emprisoned Customer", max(5, g_Dice.bell(0, 20)));	// add temp trait
 					custgirl->pclove(-(g_Dice % 50 + 50));
 					custgirl->pcfear(g_Dice % 50 + 50);
 					custgirl->pchate(g_Dice % 50 + 50);
@@ -2261,14 +2261,14 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		SecGuard->obedience(-10);
 		SecGuard->spirit(-40);
 		SecGuard->libido(-4);
-		g_Girls.UpdateStatTemp(SecGuard, STAT_LIBIDO, -40, true);
+		SecGuard->upd_temp_stat(STAT_LIBIDO, -40, true);
 		SecGuard->tiredness(60);
 		SecGuard->pcfear(20);
 		SecGuard->pclove(-20);
 		SecGuard->pchate(20);
 		g_Girls.GirlInjured(SecGuard, 10); // MYR: Note
-		g_Girls.UpdateEnjoyment(SecGuard, ACTION_WORKSECURITY, -30);
-		g_Girls.UpdateEnjoyment(SecGuard, ACTION_COMBAT, -30);
+		SecGuard->upd_Enjoyment(ACTION_WORKSECURITY, -30);
+		SecGuard->upd_Enjoyment(ACTION_COMBAT, -30);
 	}
 	return res;
 }
@@ -2426,11 +2426,11 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 		girl->combat(1);
 		girl->magic(1);
 		girl->agility(1);
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, num, true);  // There's nothing like killin ta make ya horny!
+		girl->upd_temp_stat(STAT_LIBIDO, num, true);  // There's nothing like killin ta make ya horny!
 		girl->confidence(num);
 		girl->fame(num);
 
-		g_Girls.UpdateEnjoyment(girl, ACTION_COMBAT, num);
+		girl->upd_Enjoyment(ACTION_COMBAT, num);
 
 		stringstream msg;
 
@@ -2506,13 +2506,13 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	girl->obedience(-10);
 	girl->spirit(-40);
 	girl->libido(-4);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -40, true);
+	girl->upd_temp_stat(STAT_LIBIDO, -40, true);
 	girl->tiredness(60);
 	girl->pcfear(20);
 	girl->pclove(-20);
 	girl->pchate(20);
 	g_Girls.GirlInjured(girl, 10); // MYR: Note
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, -30);
+	girl->upd_Enjoyment(ACTION_SEX, -30);
 
 	// `J` do Pregnancy and/or STDs
 	bool preg = false, std = false, a = false, c = false, h = false, s = false;
@@ -2522,7 +2522,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	if (attacktype == SKILL_GROUP || attacktype == SKILL_NORMALSEX)
 	{
 		Cust.m_IsWoman = false;
-		preg = !g_GirlsPtr->CalcPregnancy(girl, 5 + (Cust.m_Amount * 5), STATUS_PREGNANT, Cust.m_Stats, Cust.m_Skills);
+		preg = !girl->calc_pregnancy(5 + (Cust.m_Amount * 5), STATUS_PREGNANT, Cust.m_Stats, Cust.m_Skills);
 	}
 	if (attacktype == SKILL_LESBIAN)
 	{
@@ -2555,13 +2555,13 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 		if (preg && std)	{ ss << " and "; }
 		else if (preg)		{ ss << ".\n \n"; }
 		if (a || c || s || h)	{ bool _and = false;
-			if (a)	{ g_GirlsPtr->AddTrait(girl, "AIDS");		ss << "AIDS"; }
+			if (a)	{ girl->add_trait("AIDS");		ss << "AIDS"; }
 			if (a && (c || s || h))							{	ss << " and ";		_and = true; }
-			if (c)	{ g_GirlsPtr->AddTrait(girl, "Chlamydia");	ss << "Chlamydia";	_and = false; }
+			if (c)	{ girl->add_trait("Chlamydia");	ss << "Chlamydia";	_and = false; }
 			if (!_and && (a || c) && (s || h))				{	ss << " and ";		_and = true; }
-			if (s)	{ g_GirlsPtr->AddTrait(girl, "Syphilis");	ss << "Syphilis";	_and = false; }
+			if (s)	{ girl->add_trait("Syphilis");	ss << "Syphilis";	_and = false; }
 			if (!_and && (a || c || s) && h)				{	ss << " and "; }
-			if (h)	{ g_GirlsPtr->AddTrait(girl, "Herpes");		ss << "Herpes"; }
+			if (h)	{ girl->add_trait("Herpes");		ss << "Herpes"; }
 			ss << ".\n \n";
 		}
 
@@ -2972,7 +2972,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 		}
 		ss << (".");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-		if (girl->has_trait( "Lesbian") && set.size() > 1) g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, set.size() - 1, true);
+		if (girl->has_trait( "Lesbian") && set.size() > 1) girl->upd_temp_stat(STAT_LIBIDO, set.size() - 1, true);
 	}
 }
 
@@ -3010,7 +3010,7 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
 	{
 		sGirl *girl = girls[i];
 		int libido = (girl->has_trait( "Nymphomaniac")) ? 4 : 2;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+		girl->upd_temp_stat(STAT_LIBIDO, libido);
 	}
 }
 

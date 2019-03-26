@@ -44,7 +44,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 {
 	int actiontype = ACTION_WORKMILK;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
+	if (girl->disobey_check(actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to let her breasts be milked " << (Day0Night1 ? "tonight." : "today.");
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -121,7 +121,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 	//test code for auto preg
-	if (girl->m_WeeksPreg < 0 && g_Brothels.GetNumGirlsOnJob(0, JOB_FARMMANGER, false) >= 1 && noAnti && !g_Girls.CheckVirginity(girl))
+	if (girl->m_WeeksPreg < 0 && g_Brothels.GetNumGirlsOnJob(0, JOB_FARMMANGER, false) >= 1 && noAnti && !girl->check_virginity())
 	{
 		sCustomer Cust = g_Customers.GetCustomer(*brothel);
 		ss << farmmanname <<" noticing that " << girlName << " wasn't pregnant decided to take it upon herself to make sure she got knocked up.\n";
@@ -149,7 +149,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 
 	//Lets get some scenario...
-	int predisposition = g_Girls.GetEnjoyment(girl, JOB_MILK);
+	int predisposition = girl->get_enjoyment(JOB_MILK);
 	ss << girlName;
 	/**/ if (predisposition <= -50)	ss << " froze when she saw the milking area. She had to be strapped in securely for milking.";
 	else if (predisposition <= 10)	ss << " was led into the stall, strapped in and milked without incident.";
@@ -216,7 +216,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 
 	//Testing and seems weird that virgins and never-pregs can produce so much, so halving this
 		//This is every way I can find of asking if she's had a kid - MILF needed as this will register children prior to employment
-	if (g_Girls.CheckVirginity(girl) || (!isPregnant && !girl->has_trait( "MILF") && girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
+	if (girl->check_virginity() || (!isPregnant && !girl->has_trait( "MILF") && girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
 	{
 		volume /= 2;											// never preg, so not producing much
 		girl->lactation(g_Dice % 3);	//all this pumping etc induces lactation
@@ -261,7 +261,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 		{
 			ss << ", who massaged " << girlName << "'s breasts thoroughly and was careful to thoroughly arouse the nipple with her tongue before attaching the cup. This helped with milking.";
 			volume += (volume / 10);
-			g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, 5, true);
+			girl->upd_temp_stat(STAT_LIBIDO, 5, true);
 		}
 		else if (girl->has_trait( "Clumsy") && g_Dice.percent(40))
 		{
@@ -433,7 +433,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 				girl->bdsm(1);
 				extraimage = IMGTYPE_ANAL;
 			}
-			else if (g_Girls.CheckVirginity(girl))
+			else if (girl->check_virginity())
 			{
 				ssextra << " and you are about to enter her when you remember she is a virgin. Reluctantly, you switch and instead fuck her ass.\n";
 				girl->anal(1);
@@ -514,7 +514,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 				g_Brothels.GetDungeon()->AddCust(DUNGEON_CUSTBEATGIRL, 0, 0);
 				break;
 			}
-			if (g_Girls.CheckVirginity(girl)) ssextra << "Thanks to you, her virginity is intact so ";
+			if (girl->check_virginity()) ssextra << "Thanks to you, her virginity is intact so ";
 			ssextra << girlName << " comes to your office after her shift";
 			if ((HateLove <= 50) || girl->has_trait( "Nymphomaniac") || girl->has_trait( "Cum Addict") || girl->has_trait( "Slut"))
 			{
@@ -654,7 +654,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 #endif
 
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
@@ -671,7 +671,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp((g_Dice % xp) + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary
 	girl->service((g_Dice % skill) + 1);

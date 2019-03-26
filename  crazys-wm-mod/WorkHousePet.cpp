@@ -68,7 +68,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int actiontype = ACTION_WORKHOUSEPET;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
-	int train = roll_a - girl->obedience() - g_Girls.GetTraining(girl, TRAINING_PUPPY);
+	int train = roll_a - girl->obedience() - girl->get_training(TRAINING_PUPPY);
 
 	int wages = 100, tips = 0;
 	int enjoy = 0, fame = 0, training = 0, ob = 0, fear = 0, love = 0;
@@ -112,7 +112,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	{
 		ss << " refused to train during the " << (Day0Night1 ? "night" : "day") << " shift.\n";
 		ss << girlName << " is still in training, and is having difficulty accepting her new role. Today she was a bad girl!\n";
-		if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 50)
+		if (girl->get_training(TRAINING_PUPPY) >= 50)
 		{
 			if (roll_b >= 66)
 			{
@@ -317,7 +317,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else /*She did the training*/
 	{
 		ss << " trained to be a house pet.\n \n";
-		if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 70)
+		if (girl->get_training(TRAINING_PUPPY) >= 70)
 			{
 				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)
 				{
@@ -342,7 +342,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					ss << " to her spacious kennel with her soft bed. Her belly and breasts swayed, both occasionally brushing the ground, and she back into the kennel and curled up";
 					ss << " on her bed. " << headname << " closed the door, wished her a good night, and turned off the light. " << girlName << " sighed restlessly and slowly fell asleep.";
 				}
-				else if (roll_b >= 90 && g_Girls.CheckVirginity(girl))
+				else if (roll_b >= 90 && girl->check_virginity())
 					{
 						if (roll_c >= 85)
 						{
@@ -387,7 +387,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								ss << " been taught. When you finally open your eyes, " << girlName << "'s cheeks are resting between your cock and your thigh, smiling as you pet her hair. \"Good girl.\"";
 								training += 4;
 								ob += 4;
-								g_Girls.LoseVirginity(girl);
+								girl->lose_virginity();
 								imagetype = IMGTYPE_SEX;
 							}
 							else
@@ -418,7 +418,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 								ss << " \"Have a good first time, bitch?\" " << girlName << "'s eyes streamed with tears, but she barked an affirmation. She was, after all, just a bitch dog. This is what she was.";
 								training += 4;
 								ob += 4;
-								g_Girls.LoseVirginity(girl);
+								girl->lose_virginity();
 								imagetype = IMGTYPE_BEAST;
 							}
 						}
@@ -497,14 +497,14 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 							ss << " the mastiff was over-eager, and bits of the scene had to be shot several times.";
 							ss << " Still, all went well, and the Director finally yelled \"Cut!\" with both " << girlName << " and the large dog's faces pressed";
 							ss << " into their meal. ";
-							if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !g_Girls.CheckVirginity(girl))
+							if (m_JobManager.is_sex_type_allowed(SKILL_BEASTIALITY, brothel) && !girl->check_virginity())
 							{
 								ss << "Your bitch looked up, and began to crawl back over to you, but the mastiff had other ideas.";
 								ss << " " << girlName << " suddenly yelped and began to let out a series of piercing, pleading barks as the mastiff mounted her from behind, and drove";
 								ss << " it's large red cock into her welcoming cunt. \"Should we do something?\" someone on stage asked, more out of fascination rather";
 								ss << " than actual desire. Almost certainly the cameras were still rolling at this point. \"No, he deserves his reward.\"";
 								ss << " you reply, smiling as the dog plowed heavily into " << girlName << ", and her tits began to sway violent, her tongue panting like a good dog.";
-								g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
+								girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 								girl->beastiality(2);
 								imagetype = IMGTYPE_BEAST;
 								if (!girl->calc_insemination(*g_Girls.GetBeast(), false, 1.0))
@@ -598,7 +598,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 						training += 2;
 					}
 			}
-		else if (g_Girls.GetTraining(girl, TRAINING_PUPPY) >= 50)
+		else if (girl->get_training(TRAINING_PUPPY) >= 50)
 			{
 				if (girl->m_WeeksPreg >= 38 && g_Brothels.GetNumGirlsOnJob(0, JOB_HEADGIRL, false) >= 1)
 				{
@@ -921,9 +921,9 @@ bool cJobManager::WorkHousePet(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
-	g_Girls.UpdateTraining(girl, TRAINING_PUPPY, training);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
+	girl->upd_Enjoyment(actiontype, enjoy);
+	girl->upd_Training(TRAINING_PUPPY, training);
 	girl->obedience(ob);
 
 	return false;

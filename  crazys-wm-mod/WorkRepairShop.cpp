@@ -112,7 +112,7 @@ bool cJobManager::WorkRepairShop(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	girl->upd_stat(STAT_TIREDNESS, -tiredness, false);
 	girl->happiness(happy);
 	girl->mana(mana);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0) girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
 
 	girl->exp(1);   // Just because!

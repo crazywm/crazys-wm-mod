@@ -172,7 +172,7 @@ bool cJobManager::WorkGetFacelift(sGirl* girl, sBrothel* brothel, bool Day0Night
 	if (girl->has_trait( "Lesbian"))		libido += numnurse;
 	if (girl->has_trait( "Masochist"))	libido += 1;
 	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
 

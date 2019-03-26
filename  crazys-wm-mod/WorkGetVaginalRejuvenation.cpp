@@ -54,7 +54,7 @@ bool cJobManager::WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, boo
 	if (girl->m_YesterDayJob != JOB_VAGINAREJUV) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_VAGINAREJUV;	// it is a full time job
 
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
 		ss << " is already a Virgin so she was sent to the waiting room.";
 		if (Day0Night1 == SHIFT_DAY)	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -151,7 +151,7 @@ bool cJobManager::WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, boo
 			girl->charisma(g_Dice.bell(-1, 1));
 		}
 
-		g_Girls.RegainVirginity(girl);	// `J` updated for trait/status
+		girl->regain_virginity();	// `J` updated for trait/status
 		girl->m_PrevDayJob = girl->m_PrevNightJob = girl->m_YesterDayJob = girl->m_YesterNightJob = girl->m_DayJob = girl->m_NightJob = JOB_CLINICREST;
 		ss << "\n \nShe has been released from the Clinic.";
 	}
@@ -166,7 +166,7 @@ bool cJobManager::WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, boo
 	if (girl->has_trait("Lesbian"))		libido += numnurse;
 	if (girl->has_trait("Masochist"))	libido += 1;
 	if (girl->has_trait("Nymphomaniac"))	libido += 2;
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 	if (g_Dice % 10 == 0)
 		girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
 
@@ -177,7 +177,7 @@ bool cJobManager::WorkGetVaginalRejuvenation(sGirl* girl, sBrothel* brothel, boo
 
 double cJobManager::JP_GetVaginalRejuvenation(sGirl* girl, bool estimate)
 {
-	if (g_Girls.CheckVirginity(girl))	return -1000;	// X - not needed
+	if (girl->check_virginity())	return -1000;	// X - not needed
 	if (girl->is_pregnant())			return 80;		// D - is her name Mary?
 	return 400;											// I - needs it
 }

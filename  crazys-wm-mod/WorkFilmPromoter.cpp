@@ -50,7 +50,7 @@ bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	int actiontype = ACTION_WORKMOVIE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 	int roll = g_Dice.d100();
-	if (roll <= 20 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	if (roll <= 20 && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << " refused to work as a promoter today.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -127,7 +127,7 @@ bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	girl->exp(xp);
 	girl->charisma(g_Dice%skill);
 	girl->service(g_Dice%skill);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	return false;
 }

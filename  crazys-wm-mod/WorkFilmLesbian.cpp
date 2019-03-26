@@ -66,7 +66,7 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night
 	ss << girlName << " worked as an actress filming lesbian scenes.\n \n";
 
 	int roll = g_Dice.d100();
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << "She refused to film a lesbian scene today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -77,7 +77,7 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night
 	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day playing with her girlfriend.\n \n"; }
 	jobperformance = enjoy * 2;
 
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
 		jobperformance += 20;
 		ss << "No 'Man' has been with her, She is still a virgin.\n";
@@ -110,8 +110,8 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, sBrothel* brothel, bool Day0Night
 	girl->performance(g_Dice%skill);
 	girl->lesbian(g_Dice%skill + 1);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
+	girl->upd_Enjoyment(ACTION_SEX, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 

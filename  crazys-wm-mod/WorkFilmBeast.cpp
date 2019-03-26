@@ -81,7 +81,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	{
 		ss << "\"Bestiality? Aren't we all animals?!\"\nAs long as it will fuck her, sex addict " << girlName << " really doesn't care WHAT it is.";
 	}
-	else if (roll <= 10 && !girl->has_trait( "Mind Fucked") && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	else if (roll <= 10 && !girl->has_trait( "Mind Fucked") && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << girlName << " refused to be fucked by animals on film.";
 		if (girl->is_slave())
@@ -159,9 +159,9 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	ss << "\n";
 
 
-	if (g_Girls.CheckVirginity(girl))
+	if (girl->check_virginity())
 	{
-		g_Girls.LoseVirginity(girl);
+		girl->lose_virginity();
 		jobperformance += 50;
 		ss << "She is no longer a virgin.\n";
 	}
@@ -201,8 +201,8 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	girl->performance(g_Dice%skill);
 	girl->beastiality(g_Dice%skill + 1);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_SEX, enjoy);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
+	girl->upd_Enjoyment(ACTION_SEX, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 	g_Girls.PossiblyGainNewTrait(girl, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker.", Day0Night1);
 	g_Girls.PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
 

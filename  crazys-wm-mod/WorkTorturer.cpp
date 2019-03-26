@@ -47,7 +47,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int actiontype = ACTION_WORKTORTURER;
 	if (Day0Night1) return false;		// Do this only once a day
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))
+	if (girl->disobey_check(actiontype, brothel))
 	{
 		ss << " refused to torture anyone.";
 		girl->morality(1);
@@ -66,7 +66,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	bool forFree = false;
 	if (g_Dice.percent(10))
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, -3);
+		girl->upd_Enjoyment(actiontype, -3);
 		if (girl->has_trait( "Sadistic") || girl->has_trait( "Merciless") || girl->morality() < 30)
 			ss << girlName << (" hurt herself while torturing someone.\n");
 		else
@@ -110,7 +110,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	}
 	else
 	{
-		g_Girls.UpdateEnjoyment(girl, actiontype, +3);
+		girl->upd_Enjoyment(actiontype, +3);
 		switch (roll)
 		{
 		case 0:		ss << girlName << (" enjoyed her job working in the dungeon.\n"); break;
@@ -125,7 +125,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		if ((girl->morality() < 20 || girl->has_trait( "Sadistic")) && g_Dice.percent(20))
 		{
 			ss << girlName << (" loved this so much she wouldn't accept any money, as long as you promise she can do it again soon.\n");
-			g_Girls.UpdateEnjoyment(girl, actiontype, +3);
+			girl->upd_Enjoyment(actiontype, +3);
 			forFree = true;
 		}
 		if (g_Dice.percent(20))
@@ -140,7 +140,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			case 1:
 				ss << girlName << (" went way too far, creating a hell of a mess. Still it looks like she had fun - she hasn't stopped smiling.\n");
 				girl->happiness(g_Dice % 5);
-				g_Girls.UpdateEnjoyment(girl, actiontype, +1);
+				girl->upd_Enjoyment(actiontype, +1);
 				brothel->m_Filthiness += 15;
 				break;
 			case 2:
@@ -179,7 +179,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	girl->exp(xp);
 	girl->morality(-2);
 	girl->bdsm(skill);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// WD: Update flag
 	g_Brothels.TortureDone(true);

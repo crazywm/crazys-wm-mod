@@ -207,7 +207,7 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	if (!is_sex_type_allowed(SKILL_NORMALSEX, brothel))		girl->m_WorkingDay -= g_Dice % 10 + 5;
 
 
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
+	if (girl->disobey_check(actiontype, brothel))	girl->m_WorkingDay /= 2;	// if she disobeys, half her time is wasted
 
 #pragma endregion
 #pragma region //	Count the Days				//
@@ -320,8 +320,8 @@ bool cJobManager::WorkFakeOrgasm(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 
 	libido += girl->has_trait("Nymphomaniac") ? g_Dice.bell(3, 10) : g_Dice.bell(1, 5);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
+	girl->upd_Enjoyment(actiontype, enjoy);
 
 	ss << "\n \nNumbers:"
 		<< "\n Wages = " << (int)wages

@@ -62,7 +62,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		return false;
 	}
 	ss << girlName;
-	if (g_Girls.DisobeyCheck(girl, actiontype, brothel))			// they refuse to work
+	if (girl->disobey_check(actiontype, brothel))			// they refuse to work
 	{
 		ss << " refused to see any patients during the " << (Day0Night1 ? "night" : "day") << " shift.";
 		if (girl->tiredness() > 50 && g_Dice.percent(girl->tiredness() - 30))
@@ -308,7 +308,7 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		ss << "An elderly fellow managed to convince " << girlName << " that her touch can heal! She ended up giving him a hand job!\n";
 	}
 
-	if (g_Dice.percent(30) && !g_Girls.CheckVirginity(girl) && !girl->has_trait( "Lesbian")
+	if (g_Dice.percent(30) && !girl->check_virginity() && !girl->has_trait( "Lesbian")
 		&& (girl->has_trait( "Nymphomaniac") || girl->has_trait( "Slut") || girl->has_trait( "Succubus") || girl->has_trait( "Bimbo")))
 	{
 		if (girl->libido() > 65 && (!brothel->m_RestrictNormal || !brothel->m_RestrictAnal))
@@ -360,9 +360,9 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		{
 			imagetype = IMGTYPE_SEX;
 			girl->normalsex(2);
-			if (g_Girls.CheckVirginity(girl))
+			if (girl->check_virginity())
 			{
-				g_Girls.LoseVirginity(girl);
+				girl->lose_virginity();
 				ss << "She is no longer a virgin.\n";
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))
@@ -376,8 +376,8 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			girl->anal(2);
 		}
 		brothel->m_Happiness += 100;
-		g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, -20, true);
-		g_Girls.UpdateEnjoyment(girl, ACTION_SEX, +3);
+		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
+		girl->upd_Enjoyment(ACTION_SEX, +3);
 	}
 	else if (hand)
 	{
@@ -451,9 +451,9 @@ bool cJobManager::WorkNurse(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 	if (g_Dice % 2 == 1)	girl->intelligence(g_Dice%skill);
 	else				girl->charisma(g_Dice%skill);
 	girl->medicine(g_Dice%skill + 1);
-	g_Girls.UpdateStatTemp(girl, STAT_LIBIDO, libido);
+	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
-	g_Girls.UpdateEnjoyment(girl, actiontype, enjoy);
+	girl->upd_Enjoyment(actiontype, enjoy);
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made " + girlName + " more Charismatic.", Day0Night1);
 	//lose traits

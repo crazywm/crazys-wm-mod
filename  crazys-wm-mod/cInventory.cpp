@@ -263,7 +263,7 @@ void cInventory::remove_trait(sGirl* girl, int num, int index)
 	 */
 	if (trait_name == "Virgin") girl->m_Virgin = 0;
 
-	g_Girls.RemoveTrait(girl, trait_name,					// Remove Traits
+	girl->remove_trait(trait_name,					// Remove Traits
 		item_type != INVFOOD && item_type != INVMAKEUP);	// Remember if not consumable
 }
 bool cInventory::GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoEquip)
@@ -279,7 +279,7 @@ bool cInventory::GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoE
 			// found a worse item of the same type in her inventory
 			g_Girls.SellInvItem(girl, nicerThan);
 			girl->m_Money -= item->m_Cost;
-			int temp = g_Girls.AddInv(girl, item);
+			int temp = girl->add_inv(item);
 			if (temp != -1 && AutoEquip) Equip(girl, temp, false); // MYR: Check temp value
 			return true;
 		}
@@ -287,7 +287,7 @@ bool cInventory::GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoE
 	else
 	{
 		girl->m_Money -= item->m_Cost;
-		int temp = g_Girls.AddInv(girl, item);
+		int temp = girl->add_inv(item);
 		if (temp != -1 && AutoEquip) Equip(girl, temp, false);	// MYR: Check temp value
 		return true;
 	}
@@ -487,13 +487,13 @@ sInventoryItem* cInventory::GetRandomItem()
 	if (items.size() == 1)
 	{
 		ipt = items[0];
-		if (log > 1) g_LogFile.os() << "	returning 0x" << hex << int(ipt) << endl;
+		if (log > 1) g_LogFile.os() << "	returning 0x" << hex << long(ipt) << endl;
 		return items[0];
 	}
 	int index = g_Dice % (items.size() - 1);	// fixed crash with going outside vector size - necro
 	if (log > 1) g_LogFile.os() << "	returning item at index " << index << endl;
 	ipt = items[index];
-	if (log > 1) g_LogFile.os() << "	returning 0x" << hex << int(ipt) << dec << endl;
+	if (log > 1) g_LogFile.os() << "	returning 0x" << hex << long(ipt) << dec << endl;
 	return ipt;
 }
 sInventoryItem* cInventory::GetRandomCatacombItem()
@@ -667,7 +667,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		girl->m_Stats[STAT_HEALTH] = 100;	// `J` revive dead girls
 		for (int i = 0; i < MAXNUM_TRAITS; i++)
 		{
-			if (girl->m_Traits[i]) g_Girls.RemoveTrait(girl, girl->m_Traits[i]->m_Name, false, true, false);
+			if (girl->m_Traits[i]) girl->remove_trait(girl->m_Traits[i]->m_Name, false, true, false);
 		}
 		g_Girls.RemoveAllRememberedTraits(girl);
 
@@ -1021,10 +1021,10 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				 *		EQUIP Temporary Item
 				 */
 				if (amount == 0)						// remove trait temporarily from equiping an item
-					g_Girls.RemoveTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, true);		// addrememberlist = true Temporary Item trait removal
+					girl->remove_trait(girl->m_Inventory[num]->m_Effects[i].m_Trait, true);		// addrememberlist = true Temporary Item trait removal
 
 				else if (amount == 1)		// add temporary trait
-					g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, duration, true);	// Temp = true Temporary Item, removeitem = true for Temporary Item trait addition
+					girl->add_trait(girl->m_Inventory[num]->m_Effects[i].m_Trait, duration, true);	// Temp = true Temporary Item, removeitem = true for Temporary Item trait addition
 
 				if (girl->m_Inventory[num]->m_Effects[i].m_Trait == "Virgin")
 				{
@@ -1054,7 +1054,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			{
 				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
 				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
-					g_Girls.UpdateEnjoyment(girl, eff_id, amount);
+					girl->upd_Enjoyment(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
 				else g_Girls.UpdateEnjoymentMod(girl, eff_id, amount);
 			}
@@ -1104,12 +1104,12 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 							if (trait == "Chlamydia") The_Player->evil(-2);
 						}
 					}
-					g_Girls.RemoveTrait(girl, trait, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// addrememberlist = true only if not consumable
+					girl->remove_trait(trait, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// addrememberlist = true only if not consumable
 				}
 				else if (amount == 1)			// add normal trait	from equiping an item
 				{
 					int d =	(duration > 0 && (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)) ? duration : 0;
-					g_Girls.AddTrait(girl, trait, d, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// Temp = false Normal Item, removeitem = true only if not consumable
+					girl->add_trait(trait, d, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// Temp = false Normal Item, removeitem = true only if not consumable
 				}
 				if (trait == "Virgin")
 				{
@@ -1163,10 +1163,10 @@ void cInventory::Unequip(sGirl* girl, int num)
 				girl->m_Virgin = 0; // `J` unequiping an item will not make her a virgin again
 			}
 			else if (amount == 0)					// possibly add remembered trait from unequiping an item
-				g_Girls.AddTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait, false, false, true);	// inrememberlist = true Add trait only if it is in the rememebered list
+				girl->add_trait(girl->m_Inventory[num]->m_Effects[i].m_Trait, false, false, true);	// inrememberlist = true Add trait only if it is in the rememebered list
 
 			else if (amount == 1)				// remove item trait from unequiping an item
-				g_Girls.RemoveTrait(girl, girl->m_Inventory[num]->m_Effects[i].m_Trait);
+				girl->remove_trait(girl->m_Inventory[num]->m_Effects[i].m_Trait);
 		}
 	}
 	// set it as unequiped
@@ -1192,10 +1192,10 @@ void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
 		else if (affects == sEffect::Trait)	// trait
 		{
 			if (amount == 0)			// remove trait temporarily from equiping an item
-				g_Girls.RemoveTrait(girl, item->m_Effects[i].m_Trait, true);	// addrememberlist = true AffectAll trait removal
+				girl->remove_trait(item->m_Effects[i].m_Trait, true);	// addrememberlist = true AffectAll trait removal
 
 			else if (amount == 1)		// add temporary trait
-				g_Girls.AddTrait(girl, item->m_Effects[i].m_Trait, 20, true); // Temp = true AffectAll Item, removeitem = true for AffectAll trait
+				girl->add_trait(item->m_Effects[i].m_Trait, 20, true); // Temp = true AffectAll Item, removeitem = true for AffectAll trait
 
 			if (item->m_Effects[i].m_Trait == "Virgin")
 			{

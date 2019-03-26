@@ -65,7 +65,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 	ss << girlName;
 	int roll = g_Dice.d100();
-	if (roll <= 10 && g_Girls.DisobeyCheck(girl, ACTION_WORKMOVIE, brothel))
+	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << " refused to make a kitchen show today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -166,8 +166,8 @@ bool cJobManager::WorkFilmChef(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	girl->performance(g_Dice%skill);
 	girl->cooking(g_Dice%skill + 1);
 
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKCOOKING, enjoy);
-	g_Girls.UpdateEnjoyment(girl, ACTION_WORKMOVIE, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKCOOKING, enjoy);
+	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 
 	//gain traits
 	g_Girls.PossiblyGainNewTrait(girl, "Charming", 80, ACTION_WORKMOVIE, "She has become quite Charming.", Day0Night1);
@@ -203,7 +203,7 @@ double cJobManager::JP_FilmChef(sGirl* girl, bool estimate)
 {
 	double jobperformance =
 		((girl->charisma() + girl->beauty() + girl->confidence()) / 3
-		+ g_Girls.GetSkill(girl, SKILL_COOKING));
+		+ girl->cooking());
 
 	if (!estimate)
 	{

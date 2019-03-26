@@ -204,7 +204,7 @@ void cScreenGirlDetails::init()
 		}
 	}
 
-	SliderRange(houseperc_id, 0, 100, g_Girls.GetStat(selected_girl, STAT_HOUSE), 10);
+	SliderRange(houseperc_id, 0, 100, selected_girl->house(), 10);
 	ss.str("");	ss << "House Percentage: " << SliderValue(houseperc_id) << "%";
 	EditTextItem(ss.str(), housepercval_id);
 
@@ -403,8 +403,8 @@ bool cScreenGirlDetails::check_keys()
 			int mod = (g_H_Key ? -1 : 1);
 			selected_girl->house(mod);
 			g_H_Key = g_J_Key = false;
-			SliderValue(houseperc_id, g_Girls.GetStat(selected_girl, STAT_HOUSE));
-			ss.str(""); ss << "House Percentage: " << g_Girls.GetStat(selected_girl, STAT_HOUSE) << "%";
+			SliderValue(houseperc_id, selected_girl->house());
+			ss.str(""); ss << "House Percentage: " << selected_girl->house() << "%";
 			EditTextItem(ss.str(), housepercval_id);
 			// Rebelliousness might have changed, so update details
 			if (DetailLevel == 0)
