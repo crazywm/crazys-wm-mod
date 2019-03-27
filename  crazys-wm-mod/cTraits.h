@@ -26,28 +26,29 @@
 #include <vector>
 #include <list>
 
+class TiXmlElement;
+
 
 // Represents a single trait
-struct sTrait
+class sTrait
 {
-	std::string m_Name;				// the name and unique ID of the trait
-	std::string m_Desc;				// a description of the trait
-	std::string m_Type ;				// a description of the trait
-	int		m_InheritChance = -1;	// chance of inheriting the trait
-	int		m_RandomChance = -1;	// chance of a random girl to get the trait
+public:
+	sTrait(std::string name, std::string description, std::string type,
+	        int inherit_chance=-1, int random_chance=-1);
 
-	sTrait()
-	{
-		m_Name = m_Desc = m_Type = "";
-		m_InheritChance = -1;
-		m_RandomChance = -1;
-	}
+	static sTrait from_xml(TiXmlElement* el);
 
-	~sTrait()
-	{
-		m_InheritChance = 0;
-		m_RandomChance = 0;
-	}
+	const std::string& name() const { return m_Name; }
+	const std::string& desc() const { return m_Desc; }
+	int random_chance() const { return m_RandomChance; }
+	int inherit_chance() const { return m_InheritChance; }
+private:
+    std::string m_Name;				// the name and unique ID of the trait
+    std::string m_Desc;				// a description of the trait
+    std::string m_Type ;				// a description of the trait
+    int		m_InheritChance = -1;	// chance of inheriting the trait
+    int		m_RandomChance = -1;	// chance of a random girl to get the trait
+
 };
 
 // Manages and loads the traits file
@@ -63,7 +64,7 @@ public:
 
 	void LoadXMLTraits(const std::string& filename);	// Loads the traits from an XML file (adding them to the existing traits)
 
-	void AddTrait(sTrait* trait);
+	void AddTrait(sTrait trait);
 	void RemoveTrait(const std::string& name);
 	sTrait* GetTrait(const std::string& name);
 

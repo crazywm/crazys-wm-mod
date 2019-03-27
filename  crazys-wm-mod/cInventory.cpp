@@ -667,7 +667,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		girl->m_Stats[STAT_HEALTH] = 100;	// `J` revive dead girls
 		for (int i = 0; i < MAXNUM_TRAITS; i++)
 		{
-			if (girl->m_Traits[i]) girl->remove_trait(girl->m_Traits[i]->m_Name, false, true, false);
+			if (girl->m_Traits[i]) girl->remove_trait(girl->m_Traits[i]->name(), false, true, false);
 		}
 		g_Girls.RemoveAllRememberedTraits(girl);
 

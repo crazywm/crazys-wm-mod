@@ -31,12 +31,46 @@
 #include "libintl.h"
 #endif
 
+sTrait::sTrait(std::string name, std::string description, std::string type, int inherit_chance, int random_chance) :
+		m_Name(std::move(name)),
+		m_Desc(std::move(description)),
+		m_Type(std::move(type)),
+		m_InheritChance(inherit_chance),
+		m_RandomChance(random_chance)
+{
+}
+
+
+sTrait sTrait::from_xml(TiXmlElement* el) {
+    const char *pt;
+    std::string name;
+    std::string desc;
+    std::string type;
+    int inherit = -1;
+    int random = -1;
+    if (pt = el->Attribute("Name"))				name = pt;
+    if (pt = el->Attribute("Desc"))				desc = pt;
+    if (pt = el->Attribute("Type"))				type = pt;
+    if (pt = el->Attribute("InheritChance"))
+    {
+        pt = el->Attribute("InheritChance", &inherit);
+    }
+    if (pt = el->Attribute("RandomChance"))
+    {
+        pt = el->Attribute("RandomChance", &random);
+    }
+    return sTrait(name, desc, type, inherit, random);
+}
+
 cTraits::~cTraits()
 {
+	Free();
 }
 
 void cTraits::Free()
 {
+	for(auto trait : m_Traits)
+		delete trait;
 	m_Traits.clear();
 }
 
@@ -53,37 +87,17 @@ void cTraits::LoadXMLTraits(const string& filename)
 		return;
 	}
 
-	const char *pt;
-	sTrait* newTrait = 0;
-
 	TiXmlElement *el, *root_el = doc.RootElement();
 	// loop over the elements attached to the root
 	for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
 	{
-		newTrait = new sTrait;
-		if (pt = el->Attribute("Name"))				newTrait->m_Name = pt;
-		if (pt = el->Attribute("Desc"))				newTrait->m_Desc = pt;
-		if (pt = el->Attribute("Type"))				newTrait->m_Type = pt;
-		if (pt = el->Attribute("InheritChance"))
-		{
-			int ival = -1;
-			pt = el->Attribute("InheritChance", &ival);
-			newTrait->m_InheritChance = ival;
-		}
-		if (pt = el->Attribute("RandomChance"))
-		{
-			int ival = -1;
-			pt = el->Attribute("RandomChance", &ival);
-			newTrait->m_RandomChance = ival;
-		}
-		AddTrait(newTrait);
-		newTrait = 0;
+		AddTrait(sTrait::from_xml(el));
 	}
 }
 
-void cTraits::AddTrait(sTrait* trait)
+void cTraits::AddTrait(sTrait trait)
 {
-	m_Traits.push_back(trait);
+	m_Traits.push_back(new sTrait(std::move(trait)));
 }
 
 void cTraits::RemoveTrait(const string& name)
@@ -98,7 +112,7 @@ void cTraits::RemoveTrait(const string& name)
 cTraits::trait_list_t::iterator cTraits::find_trait_by_name(const std::string& name)
 {
 	return std::find_if(begin(m_Traits), end(m_Traits),
-			[&](const sTrait* trait) {return trait->m_Name == name; });
+			[&](const sTrait* trait) { return trait->name() == name; });
 }
 
 sTrait* cTraits::GetTrait(const string& name)
@@ -442,3 +456,4 @@ string cTraits::GetTranslateName(const string& name)
 	}
 	return name;
 }
+

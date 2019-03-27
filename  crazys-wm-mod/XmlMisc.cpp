@@ -266,7 +266,7 @@ TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int 
 	{
 		if (traits[i])
 		{
-			TiXmlElement* pTrait = new TiXmlElement(XMLifyString(traits[i]->m_Name));  // Trait name
+			TiXmlElement* pTrait = new TiXmlElement(XMLifyString(traits[i]->name()));  // Trait name
 			pTraits->LinkEndChild(pTrait);
 			if (tempTraits)	pTrait->SetAttribute("Temp", tempTraits[i]);  // Is temporary
 		}
@@ -284,7 +284,7 @@ bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits
 	//however, it's coupled more tightly to traits, and seems to do more processing
 	for(auto pTrait : g_Traits.all_traits())
 	{
-		TiXmlElement* pTraitElement = pTraits->FirstChildElement(XMLifyString(pTrait->m_Name));
+		TiXmlElement* pTraitElement = pTraits->FirstChildElement(XMLifyString(pTrait->name()));
 		if (pTraitElement)
 		{
 			int tempInt = 0;

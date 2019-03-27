@@ -359,7 +359,7 @@ bool cScreenSlaveMarket::check_events()
 		if (tmp != -1 && selection != -1 && MarketSlaveGirls[selection]->m_NumTraits > 0)
 		{
 			if (tmp > MarketSlaveGirls[selection]->m_NumTraits)	tmp = 0;
-			if (trait_id >= 0)	EditTextItem(MarketSlaveGirls[selection]->m_Traits[tmp]->m_Desc, trait_id);
+			if (trait_id >= 0)	EditTextItem(MarketSlaveGirls[selection]->m_Traits[tmp]->desc(), trait_id);
 		}
 		else if (trait_id >= 0)	EditTextItem("", trait_id);
 		return true;
@@ -1218,11 +1218,11 @@ void cScreenSlaveMarket::preparescreenitems(sGirl* girl)
 	{
 		if (!girl->m_Traits[i]) continue;
 		trait_count++;
-		if (trait_list_id >= 0) AddToListBox(trait_list_id, i, g_Traits.GetTranslateName(girl->m_Traits[i]->m_Name));
+		if (trait_list_id >= 0) AddToListBox(trait_list_id, i, g_Traits.GetTranslateName(girl->m_Traits[i]->name()));
 		if (trait_list_text_id)
 		{
 			if (trait_count > 1) traits_text << ",   ";
-			traits_text << g_Traits.GetTranslateName(girl->m_Traits[i]->m_Name);
+			traits_text << g_Traits.GetTranslateName(girl->m_Traits[i]->name());
 		}
 	}
 	// and finally, highlight the selected entry?

@@ -1540,8 +1540,8 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		    if(current->m_NumTraits >= MAXNUM_TRAITS - 10)
 		        break;
 
-            int c = trait->m_RandomChance;
-            string test = trait->m_Name;
+            int c = trait->random_chance();
+            string test = trait->name();
 
 			// first check if it is a daughter or Human0Monster1 trait
 			if (test == "Your Daughter")	c = (daughter) ? 100 : 0;
@@ -3166,7 +3166,7 @@ string cGirls::GetSimpleDetails(sGirl* girl, int fontsize)
 		if (!girl->m_Traits[i]) continue;
 		trait_count++;
 		if (trait_count > 1) ss << ",   ";
-		ss << g_Traits.GetTranslateName(girl->m_Traits[i]->m_Name);
+		ss << g_Traits.GetTranslateName(girl->m_Traits[i]->name());
 		if (girl->m_TempTrait[i] > 0) ss << " (" << girl->m_TempTrait[i] << ")";
 	}
 	return ss.str();
@@ -4209,15 +4209,15 @@ TiXmlElement* cGirls::SaveGirlsXML(TiXmlElement* pRoot)
 void sRandomGirl::process_trait_xml(TiXmlElement *el)
 {
 	int ival; const char *pt;
-	sTrait *trait = new sTrait();													// we need to allocate a new sTrait scruct,
-	if (pt = el->Attribute("Name"))
-	{
-		trait->m_Name = pt;					// get the trait name
-		stringstream ss;
-		ss << trait->m_Name;
-		m_TraitNames[m_NumTraitNames] = ss.str();
-	}
-	else return;	// `J` if there is no name why continue?
+	if (!(pt = el->Attribute("Name"))) // `J` if there is no name why continue?
+	    return;
+
+    sTrait* trait = new sTrait(pt, "", "", -1, -1);       // we need to allocate a new sTrait scruct,
+    stringstream ss;
+    ss << trait->name();
+    m_TraitNames[m_NumTraitNames] = ss.str();
+
+
 	if (m_NumTraitNames<MAXNUM_TRAITS) m_Traits[m_NumTraits] = trait;					// store that in the next free index slot
 	if ((pt = el->Attribute("Percent", &ival)))							// get the percentage chance
 	{
@@ -5420,11 +5420,11 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 	}
 	for (int i = 0; i < girl->m_NumTraits || doOnce; i++)
 	{
-		sTrait* tr = 0;
+		sTrait* tr = nullptr;
 		tr = (doOnce) ? trait : girl->m_Traits[i];
 		if (tr == 0) continue;
 		stringstream ss;
-		ss << tr->m_Name;
+		ss << tr->name();
 		string Name = ss.str();
 		string first = "";
 		first = tolower(Name[0]);
@@ -6871,7 +6871,7 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, boo
 		sTrait* tr = 0;
 		tr = (doOnce) ? trait : girl->m_Traits[i];
 		if (tr == 0) continue;
-		string name = tr->m_Name;
+		string name = tr->name();
 		if (name == "") continue;
 
 		// `J` base for adding new mutually exclusive traits
@@ -7690,7 +7690,7 @@ bool cGirls::HasRememberedTrait(sGirl* girl, string trait)
 	{
 		if (girl->m_RememTraits[i])
 		{
-			if (trait.compare(girl->m_RememTraits[i]->m_Name) == 0) return true;
+			if (trait.compare(girl->m_RememTraits[i]->name()) == 0) return true;
 		}
 	}
 	return false;
@@ -7725,7 +7725,7 @@ int cGirls::HasTempTrait(sGirl* girl, string trait)
 		{
 			if (girl->m_Traits[i] && girl->m_TempTrait[i] > 0)
 			{
-				if (trait.compare(girl->m_Traits[i]->m_Name) == 0)
+				if (trait.compare(girl->m_Traits[i]->name()) == 0)
 				{
 					return girl->m_TempTrait[i];
 				}
@@ -7814,7 +7814,7 @@ void cGirls::updateTempTraits(sGirl* girl)
 		{
 			girl->m_TempTrait[i]--;
 			if (girl->m_TempTrait[i] == 0)
-				girl->remove_trait(girl->m_Traits[i]->m_Name);
+				girl->remove_trait(girl->m_Traits[i]->name());
 		}
 	}
 }
@@ -7834,13 +7834,13 @@ void cGirls::updateTempTraits(sGirl* girl, string trait, int amount)
 	{
 		for (int i = 0; i < MAXNUM_TRAITS; i++)							// go through her traits
 		{
-			if (girl->m_Traits[i] && trait.compare(girl->m_Traits[i]->m_Name) == 0)			// until you find the trait
+			if (girl->m_Traits[i] && trait.compare(girl->m_Traits[i]->name()) == 0)			// until you find the trait
 			{
 				if (girl->m_TempTrait[i] > 0)							// if the trait is temp ...
 				{
 					girl->m_TempTrait[i] += amount;						// ... adjust the temp time
 					if (girl->m_TempTrait[i] <= 0)						// if the temp trait is reduced below 1 ...
-						girl->remove_trait(girl->m_Traits[i]->m_Name);	// ... remove it
+						girl->remove_trait(girl->m_Traits[i]->name());	// ... remove it
 					if (girl->m_TempTrait[i] > 100)						// if the temp trait goes above 100 ...
 						girl->m_TempTrait[i] = 0;						// ... make it permanet
 				}
@@ -15961,7 +15961,7 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
 	*/
 	for (int i = 0; i < g.m_NumTraits; i++)
 	{
-		string name = g.m_Traits[i]->m_Name;
+		string name = g.m_Traits[i]->name();
 		int percent = int(g.m_TraitChance[i]);
 		os << "Trait: " << setw(14) << left << name << ": " << percent << "%" << endl;
 	}
@@ -16351,7 +16351,7 @@ bool sGirl::has_trait(string trait)
 	{
 		if (m_Traits[i])
 		{
-			if (trait.compare(m_Traits[i]->m_Name) == 0) return true;
+			if (trait.compare(m_Traits[i]->name()) == 0) return true;
 		}
 	}
 	return false;
@@ -16704,27 +16704,27 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		{
 			if (mom->m_Traits[i])
 			{
-				if (mom->m_Traits[i]->m_Name == "Queen")
+				if (mom->m_Traits[i]->name() == "Queen")
 				{
 					/* */if (g_Dice.percent(60))	sprog->add_trait("Princess");
 					else if (g_Dice.percent(60))	sprog->add_trait("Noble");
 				}
-				else if (mom->m_Traits[i]->m_Name == "Princess" || mom->m_Traits[i]->m_Name == "Noble")
+				else if (mom->m_Traits[i]->name() == "Princess" || mom->m_Traits[i]->name() == "Noble")
 				{
 					if (g_Dice.percent(40))			sprog->add_trait("Noble");
 				}
-				else if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
+				else if (mom->m_Traits[i]->inherit_chance() != -1)	// `J` new method for xml traits
 				{
-					if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
+					if (g_Dice.percent(mom->m_Traits[i]->inherit_chance()))
 					{
-						sprog->add_trait(mom->m_Traits[i]->m_Name);
+						sprog->add_trait(mom->m_Traits[i]->name());
 					}
 				}
 				else	// old method
 				{
-					string tname = mom->m_Traits[i]->m_Name;
+					string tname = mom->m_Traits[i]->name();
 					if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
-						sprog->add_trait(mom->m_Traits[i]->m_Name);
+						sprog->add_trait(mom->m_Traits[i]->name());
 				}
 			}
 		}
@@ -16925,27 +16925,27 @@ if (0){}
 				{
 					if (mom->m_Traits[i])
 					{
-						if (mom->m_Traits[i]->m_Name == "Queen")
+						if (mom->m_Traits[i]->name() == "Queen")
 						{
 							/* */if (g_Dice.percent(60))	sprog->add_trait("Princess");
 							else if (g_Dice.percent(60))	sprog->add_trait("Noble");
 						}
-						else if (mom->m_Traits[i]->m_Name == "Princess" || mom->m_Traits[i]->m_Name == "Noble")
+						else if (mom->m_Traits[i]->name() == "Princess" || mom->m_Traits[i]->name() == "Noble")
 						{
 							if (g_Dice.percent(40))			sprog->add_trait("Noble");
 						}
-						else if (mom->m_Traits[i]->m_InheritChance != -1)	// `J` new method for xml traits
+						else if (mom->m_Traits[i]->inherit_chance() != -1)	// `J` new method for xml traits
 						{
-							if (g_Dice.percent(mom->m_Traits[i]->m_InheritChance))
+							if (g_Dice.percent(mom->m_Traits[i]->inherit_chance()))
 							{
-								sprog->add_trait(mom->m_Traits[i]->m_Name);
+								sprog->add_trait(mom->m_Traits[i]->name());
 							}
 						}
 						else
 						{
-							string tname = mom->m_Traits[i]->m_Name;
+							string tname = mom->m_Traits[i]->name();
 							if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
-								sprog->add_trait(mom->m_Traits[i]->m_Name);
+								sprog->add_trait(mom->m_Traits[i]->name());
 						}
 					}
 				}
@@ -17495,7 +17495,7 @@ bool cGirls::InheritTrait(sTrait* trait)
 {
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> InheritTrait
 
-	string name = trait->m_Name;
+	string name = trait->name();
 	if (trait)
 	{
 		if (name == "Nymphomaniac" ||

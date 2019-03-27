@@ -372,7 +372,7 @@ void cScreenGirlDetails::init()
 	{
 		if (selected_girl->m_Traits[i])
 		{
-			ss.str(""); ss << selected_girl->m_Traits[i]->m_Name;
+			ss.str(""); ss << selected_girl->m_Traits[i]->name();
 			if (selected_girl->m_TempTrait[i] > 0) ss << "   (" << selected_girl->m_TempTrait[i] << ")";
 			AddToListBox(traitlist_id, i, g_Traits.GetTranslateName(ss.str()));
 		}
@@ -488,7 +488,7 @@ void cScreenGirlDetails::check_events()
 	if (g_InterfaceEvents.CheckListbox(traitlist_id))
 	{
 		int selection = GetLastSelectedItemFromList(traitlist_id);
-		EditTextItem((selection != -1 ? selected_girl->m_Traits[selection]->m_Desc : ""), traitdesc_id);
+		EditTextItem((selection != -1 ? selected_girl->m_Traits[selection]->desc() : ""), traitdesc_id);
 	}
 	if (g_InterfaceEvents.CheckListbox(jobtypelist_id))
 	{
