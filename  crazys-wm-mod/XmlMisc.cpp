@@ -22,7 +22,7 @@
 #include "cBrothel.h"
 extern cBrothelManager g_Brothels;
 extern CLog g_LogFile;
-extern cTraitManager g_Traits;
+extern cTraits g_Traits;
 extern cInventory g_InvManager;
 
 const char* actionTypeNames[] =

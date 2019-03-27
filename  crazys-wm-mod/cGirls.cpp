@@ -5435,48 +5435,52 @@ void cGirls::ApplyTraits(sGirl* girl, TraitSpec* trait)
 	}
 }
 
-void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, TraitSpec* trait, bool rememberflag)
+void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply)
 {
-	bool doOnce = (trait) ? true : false;
-	for (int i = 0; i < girl->m_NumTraits || doOnce; i++)
-	{
-		TraitSpec* tr = 0;
-		tr = (doOnce) ? trait : girl->m_Traits[i];
-		if (tr == 0) continue;
-		string name = tr->name();
-		if (name == "") continue;
+	for(int i = 0; i < girl->m_NumTraits; ++i) {
+		if(girl->m_Traits[i])
+		{
+			MutuallyExclusiveTrait(girl, apply, girl->m_Traits[i], false);
+		}
+	}
+}
+
+void cGirls::MutuallyExclusiveTrait(sGirl* girl, bool apply, TraitSpec* trait, bool rememberflag)
+{
+	string name = trait->name();
+	if (name == "") return;
 
 		// `J` base for adding new mutually exclusive traits
 
 		// no need to comment this out because it will always fail to be true because of the first if check
 
-		else if (	// Check _type_ Traits
+	else if (	// Check _type_ Traits
 			name == "" ||
 			name == "" ||
 			name == "" ||
 			name == "")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "")			girl->remove_trait("", rememberflag, true);
-				if (name != "")			girl->remove_trait("", rememberflag, true);
-				if (name != "")			girl->remove_trait("", rememberflag, true);
-				if (name != "")			girl->remove_trait("", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
-				else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
-				else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
-				else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
-			}
+			if (name != "")			girl->remove_trait("", rememberflag, true);
+			if (name != "")			girl->remove_trait("", rememberflag, true);
+			if (name != "")			girl->remove_trait("", rememberflag, true);
+			if (name != "")			girl->remove_trait("", rememberflag, true);
 		}
+		else
+		{
+			/* */if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+			else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+			else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+			else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+		}
+	}
 
 		//	`J` end of base for adding new mutually exclusive traits
 
 #if 1	// Start of Breast traits
 
-		else if (	// Check Breast size traits
+	else if (	// Check Breast size traits
 			name == "Flat Chest" ||
 			name == "Petite Breasts" ||
 			name == "Small Boobs" ||
@@ -5486,620 +5490,620 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, TraitSpec* trait, 
 			name == "Massive Melons" ||
 			name == "Abnormally Large Boobs" ||
 			name == "Titanic Tits")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Flat Chest")				girl->remove_trait("Flat Chest", rememberflag, true);
-				if (name != "Petite Breasts")			girl->remove_trait("Petite Breasts", rememberflag, true);
-				if (name != "Small Boobs")				girl->remove_trait("Small Boobs", rememberflag, true);
-				if (name != "Busty Boobs")				girl->remove_trait("Busty Boobs", rememberflag, true);
-				if (name != "Big Boobs")				girl->remove_trait("Big Boobs", rememberflag, true);
-				if (name != "Giant Juggs")				girl->remove_trait("Giant Juggs", rememberflag, true);
-				if (name != "Massive Melons")			girl->remove_trait("Massive Melons", rememberflag, true);
-				if (name != "Abnormally Large Boobs")	girl->remove_trait("Abnormally Large Boobs", rememberflag, true);
-				if (name != "Titanic Tits")				girl->remove_trait("Titanic Tits", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Flat Chest" && HasRememberedTrait(girl, "Flat Chest"))							RestoreRememberedTrait(girl, "Flat Chest");
-				else if (name != "Petite Breasts" && HasRememberedTrait(girl, "Petite Breasts"))					RestoreRememberedTrait(girl, "Petite Breasts");
-				else if (name != "Small Boobs" && HasRememberedTrait(girl, "Small Boobs"))							RestoreRememberedTrait(girl, "Small Boobs");
-				else if (name != "Busty Boobs" && HasRememberedTrait(girl, "Busty Boobs"))							RestoreRememberedTrait(girl, "Busty Boobs");
-				else if (name != "Big Boobs" && HasRememberedTrait(girl, "Big Boobs"))								RestoreRememberedTrait(girl, "Big Boobs");
-				else if (name != "Giant Juggs" && HasRememberedTrait(girl, "Giant Juggs"))							RestoreRememberedTrait(girl, "Giant Juggs");
-				else if (name != "Massive Melons" && HasRememberedTrait(girl, "Massive Melons"))					RestoreRememberedTrait(girl, "Massive Melons");
-				else if (name != "Abnormally Large Boobs" && HasRememberedTrait(girl, "Abnormally Large Boobs"))	RestoreRememberedTrait(girl, "Abnormally Large Boobs");
-				else if (name != "Titanic Tits" && HasRememberedTrait(girl, "Titanic Tits"))						RestoreRememberedTrait(girl, "Titanic Tits");
-			}
+			if (name != "Flat Chest")				girl->remove_trait("Flat Chest", rememberflag, true);
+			if (name != "Petite Breasts")			girl->remove_trait("Petite Breasts", rememberflag, true);
+			if (name != "Small Boobs")				girl->remove_trait("Small Boobs", rememberflag, true);
+			if (name != "Busty Boobs")				girl->remove_trait("Busty Boobs", rememberflag, true);
+			if (name != "Big Boobs")				girl->remove_trait("Big Boobs", rememberflag, true);
+			if (name != "Giant Juggs")				girl->remove_trait("Giant Juggs", rememberflag, true);
+			if (name != "Massive Melons")			girl->remove_trait("Massive Melons", rememberflag, true);
+			if (name != "Abnormally Large Boobs")	girl->remove_trait("Abnormally Large Boobs", rememberflag, true);
+			if (name != "Titanic Tits")				girl->remove_trait("Titanic Tits", rememberflag, true);
 		}
-		else if (	// Check Lactation Traits
+		else
+		{
+			/* */if (name != "Flat Chest" && HasRememberedTrait(girl, "Flat Chest"))							RestoreRememberedTrait(girl, "Flat Chest");
+			else if (name != "Petite Breasts" && HasRememberedTrait(girl, "Petite Breasts"))					RestoreRememberedTrait(girl, "Petite Breasts");
+			else if (name != "Small Boobs" && HasRememberedTrait(girl, "Small Boobs"))							RestoreRememberedTrait(girl, "Small Boobs");
+			else if (name != "Busty Boobs" && HasRememberedTrait(girl, "Busty Boobs"))							RestoreRememberedTrait(girl, "Busty Boobs");
+			else if (name != "Big Boobs" && HasRememberedTrait(girl, "Big Boobs"))								RestoreRememberedTrait(girl, "Big Boobs");
+			else if (name != "Giant Juggs" && HasRememberedTrait(girl, "Giant Juggs"))							RestoreRememberedTrait(girl, "Giant Juggs");
+			else if (name != "Massive Melons" && HasRememberedTrait(girl, "Massive Melons"))					RestoreRememberedTrait(girl, "Massive Melons");
+			else if (name != "Abnormally Large Boobs" && HasRememberedTrait(girl, "Abnormally Large Boobs"))	RestoreRememberedTrait(girl, "Abnormally Large Boobs");
+			else if (name != "Titanic Tits" && HasRememberedTrait(girl, "Titanic Tits"))						RestoreRememberedTrait(girl, "Titanic Tits");
+		}
+	}
+	else if (	// Check Lactation Traits
 			name == "Dry Milk" ||
 			name == "Scarce Lactation" ||
 			name == "Abundant Lactation" ||
 			name == "Cow Tits")
-		{
+	{
 
-			if (apply)
+		if (apply)
+		{
+			if (girl->has_trait("No Nipples"))
 			{
-				if (girl->has_trait("No Nipples"))
-				{
-					// if she has no nipples she can not produce milk, but remember that is has changed in case she grows nipples
-					girl->remove_trait("Dry Milk", false, true, name == "Dry Milk");
-					girl->remove_trait("Scarce Lactation", false, true, name == "Scarce Lactation");
-					girl->remove_trait("Abundant Lactation", false, true, name == "Abundant Lactation");
-					girl->remove_trait("Cow Tits", false, true, name == "Cow Tits");
-				}
-				else
-				{
-					if (name != "Dry Milk")				girl->remove_trait("Dry Milk", rememberflag, true);
-					if (name != "Scarce Lactation")		girl->remove_trait("Scarce Lactation", rememberflag, true);
-					if (name != "Abundant Lactation")	girl->remove_trait("Abundant Lactation", rememberflag, true);
-					if (name != "Cow Tits")				girl->remove_trait("Cow Tits", rememberflag, true);
-				}
+				// if she has no nipples she can not produce milk, but remember that is has changed in case she grows nipples
+				girl->remove_trait("Dry Milk", false, true, name == "Dry Milk");
+				girl->remove_trait("Scarce Lactation", false, true, name == "Scarce Lactation");
+				girl->remove_trait("Abundant Lactation", false, true, name == "Abundant Lactation");
+				girl->remove_trait("Cow Tits", false, true, name == "Cow Tits");
 			}
 			else
 			{
-				/* */if (name != "Dry Milk" && HasRememberedTrait(girl, "Dry Milk"))						RestoreRememberedTrait(girl, "Dry Milk");
-				else if (name != "Scarce Lactation" && HasRememberedTrait(girl, "Scarce Lactation"))		RestoreRememberedTrait(girl, "Scarce Lactation");
-				else if (name != "Abundant Lactation" && HasRememberedTrait(girl, "Abundant Lactation"))	RestoreRememberedTrait(girl, "Abundant Lactation");
-				else if (name != "Cow Tits" && HasRememberedTrait(girl, "Cow Tits"))						RestoreRememberedTrait(girl, "Cow Tits");
-
-				// make it easy by adding the trait as usual and then move it to remembered if she has no nipples
-				if (girl->has_trait("No Nipples"))
-				{
-					// if she has no nipples she can not produce milk, but remember that is has changed in case she grows nipples
-					girl->remove_trait("Dry Milk", true, true, girl->has_trait("Dry Milk"));
-					girl->remove_trait("Scarce Lactation", true, true, girl->has_trait("Scarce Lactation"));
-					girl->remove_trait("Abundant Lactation", true, true, girl->has_trait("Abundant Lactation"));
-					girl->remove_trait("Cow Tits", true, true, girl->has_trait("Cow Tits"));
-				}
+				if (name != "Dry Milk")				girl->remove_trait("Dry Milk", rememberflag, true);
+				if (name != "Scarce Lactation")		girl->remove_trait("Scarce Lactation", rememberflag, true);
+				if (name != "Abundant Lactation")	girl->remove_trait("Abundant Lactation", rememberflag, true);
+				if (name != "Cow Tits")				girl->remove_trait("Cow Tits", rememberflag, true);
 			}
 		}
-		else if (	// Check Nipple Traits
+		else
+		{
+			/* */if (name != "Dry Milk" && HasRememberedTrait(girl, "Dry Milk"))						RestoreRememberedTrait(girl, "Dry Milk");
+			else if (name != "Scarce Lactation" && HasRememberedTrait(girl, "Scarce Lactation"))		RestoreRememberedTrait(girl, "Scarce Lactation");
+			else if (name != "Abundant Lactation" && HasRememberedTrait(girl, "Abundant Lactation"))	RestoreRememberedTrait(girl, "Abundant Lactation");
+			else if (name != "Cow Tits" && HasRememberedTrait(girl, "Cow Tits"))						RestoreRememberedTrait(girl, "Cow Tits");
+
+			// make it easy by adding the trait as usual and then move it to remembered if she has no nipples
+			if (girl->has_trait("No Nipples"))
+			{
+				// if she has no nipples she can not produce milk, but remember that is has changed in case she grows nipples
+				girl->remove_trait("Dry Milk", true, true, girl->has_trait("Dry Milk"));
+				girl->remove_trait("Scarce Lactation", true, true, girl->has_trait("Scarce Lactation"));
+				girl->remove_trait("Abundant Lactation", true, true, girl->has_trait("Abundant Lactation"));
+				girl->remove_trait("Cow Tits", true, true, girl->has_trait("Cow Tits"));
+			}
+		}
+	}
+	else if (	// Check Nipple Traits
 			name == "No Nipples" ||
 			name == "Missing Nipple" ||
 			name == "Inverted Nipples" ||
 			name == "Perky Nipples" ||
 			name == "Puffy Nipples")
+	{
+		if (apply)
 		{
-			if (apply)
+			// if adding "No Nipples" remove all other nipple traits but remember them
+			if (name == "No Nipples" || girl->has_trait("No Nipples"))
 			{
-				// if adding "No Nipples" remove all other nipple traits but remember them
-				if (name == "No Nipples" || girl->has_trait("No Nipples"))
-				{
-					if (girl->has_trait("Dry Milk"))				girl->remove_trait("Dry Milk", true, true, true);
-					if (girl->has_trait("Scarce Lactation"))		girl->remove_trait("Scarce Lactation", true, true, true);
-					if (girl->has_trait("Abundant Lactation"))	girl->remove_trait("Abundant Lactation", true, true, true);
-					if (girl->has_trait("Cow Tits"))				girl->remove_trait("Cow Tits", true, true, true);
+				if (girl->has_trait("Dry Milk"))				girl->remove_trait("Dry Milk", true, true, true);
+				if (girl->has_trait("Scarce Lactation"))		girl->remove_trait("Scarce Lactation", true, true, true);
+				if (girl->has_trait("Abundant Lactation"))	girl->remove_trait("Abundant Lactation", true, true, true);
+				if (girl->has_trait("Cow Tits"))				girl->remove_trait("Cow Tits", true, true, true);
 
-					if (name == "Missing Nipple" || girl->has_trait("Missing Nipple"))	girl->remove_trait("Missing Nipple", rememberflag, true, true);
-					if (name == "Puffy Nipples" || girl->has_trait("Puffy Nipples"))		girl->remove_trait("Puffy Nipples", rememberflag, true, true);
-					if (name == "Inverted Nipples" || girl->has_trait("Perky Nipples"))	girl->remove_trait("Perky Nipples", rememberflag, true, true);
-					if (name == "Perky Nipples" || girl->has_trait("Inverted Nipples"))	girl->remove_trait("Inverted Nipples", rememberflag, true, true);
-				}
-				else
-				{
-					// she can not have both Inverted and Perky but Puffy can go with either
-					if (name == "Inverted Nipples")		girl->remove_trait("Perky Nipples", rememberflag, true);
-					if (name == "Perky Nipples")		girl->remove_trait("Inverted Nipples", rememberflag, true);
-				}
+				if (name == "Missing Nipple" || girl->has_trait("Missing Nipple"))	girl->remove_trait("Missing Nipple", rememberflag, true, true);
+				if (name == "Puffy Nipples" || girl->has_trait("Puffy Nipples"))		girl->remove_trait("Puffy Nipples", rememberflag, true, true);
+				if (name == "Inverted Nipples" || girl->has_trait("Perky Nipples"))	girl->remove_trait("Perky Nipples", rememberflag, true, true);
+				if (name == "Perky Nipples" || girl->has_trait("Inverted Nipples"))	girl->remove_trait("Inverted Nipples", rememberflag, true, true);
 			}
 			else
 			{
-				// if removing "No Nipples" try adding back the others
-				/* */if (name == "No Nipples")
-				{
-					/* */if (HasRememberedTrait(girl, "Dry Milk"))				RestoreRememberedTrait(girl, "Dry Milk");
-					else if (HasRememberedTrait(girl, "Scarce Lactation"))		RestoreRememberedTrait(girl, "Scarce Lactation");
-					else if (HasRememberedTrait(girl, "Abundant Lactation"))	RestoreRememberedTrait(girl, "Abundant Lactation");
-					else if (HasRememberedTrait(girl, "Cow Tits"))				RestoreRememberedTrait(girl, "Cow Tits");
-					/* */if (HasRememberedTrait(girl, "Puffy Nipples"))			RestoreRememberedTrait(girl, "Puffy Nipples");
-				}
-				/* */if ((name == "No Nipples" || (!girl->has_trait("No Nipples") && name == "Inverted Nipples"))
-					&& HasRememberedTrait(girl, "Perky Nipples"))
-					RestoreRememberedTrait(girl, "Perky Nipples");
-				else if ((name == "No Nipples" || (!girl->has_trait("No Nipples") && name == "Perky Nipples"))
-					&& HasRememberedTrait(girl, "Inverted Nipples"))
-					RestoreRememberedTrait(girl, "Inverted Nipples");
+				// she can not have both Inverted and Perky but Puffy can go with either
+				if (name == "Inverted Nipples")		girl->remove_trait("Perky Nipples", rememberflag, true);
+				if (name == "Perky Nipples")		girl->remove_trait("Inverted Nipples", rememberflag, true);
 			}
 		}
+		else
+		{
+			// if removing "No Nipples" try adding back the others
+			/* */if (name == "No Nipples")
+			{
+				/* */if (HasRememberedTrait(girl, "Dry Milk"))				RestoreRememberedTrait(girl, "Dry Milk");
+				else if (HasRememberedTrait(girl, "Scarce Lactation"))		RestoreRememberedTrait(girl, "Scarce Lactation");
+				else if (HasRememberedTrait(girl, "Abundant Lactation"))	RestoreRememberedTrait(girl, "Abundant Lactation");
+				else if (HasRememberedTrait(girl, "Cow Tits"))				RestoreRememberedTrait(girl, "Cow Tits");
+				/* */if (HasRememberedTrait(girl, "Puffy Nipples"))			RestoreRememberedTrait(girl, "Puffy Nipples");
+			}
+			/* */if ((name == "No Nipples" || (!girl->has_trait("No Nipples") && name == "Inverted Nipples"))
+					 && HasRememberedTrait(girl, "Perky Nipples"))
+				RestoreRememberedTrait(girl, "Perky Nipples");
+			else if ((name == "No Nipples" || (!girl->has_trait("No Nipples") && name == "Perky Nipples"))
+					 && HasRememberedTrait(girl, "Inverted Nipples"))
+				RestoreRememberedTrait(girl, "Inverted Nipples");
+		}
+	}
 
 #endif	// End of Breast traits
 
 #if 1	// Start of Traits that affect sex
 
-		else if (	// Check Fertility Traits
+	else if (	// Check Fertility Traits
 			name == "Sterile" ||
 			name == "Broodmother" ||
 			name == "Fertile")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Sterile")		girl->remove_trait("Sterile", rememberflag, true);
-				if (name != "Broodmother")	girl->remove_trait("Broodmother", rememberflag, true);
-				if (name != "Fertile")		girl->remove_trait("Fertile", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Sterile" && HasRememberedTrait(girl, "Sterile"))			RestoreRememberedTrait(girl, "Sterile");
-				else if (name != "Broodmother" && HasRememberedTrait(girl, "Broodmother"))	RestoreRememberedTrait(girl, "Broodmother");
-				else if (name != "Fertile" && HasRememberedTrait(girl, "Fertile"))			RestoreRememberedTrait(girl, "Fertile");
-			}
+			if (name != "Sterile")		girl->remove_trait("Sterile", rememberflag, true);
+			if (name != "Broodmother")	girl->remove_trait("Broodmother", rememberflag, true);
+			if (name != "Fertile")		girl->remove_trait("Fertile", rememberflag, true);
 		}
-		else if (	// Check Sexuality Traits
+		else
+		{
+			/* */if (name != "Sterile" && HasRememberedTrait(girl, "Sterile"))			RestoreRememberedTrait(girl, "Sterile");
+			else if (name != "Broodmother" && HasRememberedTrait(girl, "Broodmother"))	RestoreRememberedTrait(girl, "Broodmother");
+			else if (name != "Fertile" && HasRememberedTrait(girl, "Fertile"))			RestoreRememberedTrait(girl, "Fertile");
+		}
+	}
+	else if (	// Check Sexuality Traits
 			name == "Bisexual" ||
 			name == "Lesbian" ||
 			name == "Straight")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Bisexual")		girl->remove_trait("Bisexual", rememberflag, true);
-				if (name != "Lesbian")		girl->remove_trait("Lesbian", rememberflag, true);
-				if (name != "Straight")		girl->remove_trait("Straight", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Bisexual" && HasRememberedTrait(girl, "Bisexual"))	RestoreRememberedTrait(girl, "Bisexual");
-				else if (name != "Lesbian" && HasRememberedTrait(girl, "Lesbian"))		RestoreRememberedTrait(girl, "Lesbian");
-				else if (name != "Straight" && HasRememberedTrait(girl, "Straight"))	RestoreRememberedTrait(girl, "Straight");
-			}
+			if (name != "Bisexual")		girl->remove_trait("Bisexual", rememberflag, true);
+			if (name != "Lesbian")		girl->remove_trait("Lesbian", rememberflag, true);
+			if (name != "Straight")		girl->remove_trait("Straight", rememberflag, true);
 		}
-		else if (	// Check Gag Reflex Traits
+		else
+		{
+			/* */if (name != "Bisexual" && HasRememberedTrait(girl, "Bisexual"))	RestoreRememberedTrait(girl, "Bisexual");
+			else if (name != "Lesbian" && HasRememberedTrait(girl, "Lesbian"))		RestoreRememberedTrait(girl, "Lesbian");
+			else if (name != "Straight" && HasRememberedTrait(girl, "Straight"))	RestoreRememberedTrait(girl, "Straight");
+		}
+	}
+	else if (	// Check Gag Reflex Traits
 			name == "Strong Gag Reflex" ||
 			name == "Gag Reflex" ||
 			name == "No Gag Reflex" ||
 			name == "Deep Throat")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Strong Gag Reflex")		girl->remove_trait("Strong Gag Reflex", rememberflag, true);
-				if (name != "Gag Reflex")				girl->remove_trait("Gag Reflex", rememberflag, true);
-				if (name != "No Gag Reflex")			girl->remove_trait("No Gag Reflex", rememberflag, true);
-				if (name != "Deep Throat")				girl->remove_trait("Deep Throat", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Strong Gag Reflex" && HasRememberedTrait(girl, "Strong Gag Reflex"))	RestoreRememberedTrait(girl, "Strong Gag Reflex");
-				else if (name != "Gag Reflex" && HasRememberedTrait(girl, "Gag Reflex"))				RestoreRememberedTrait(girl, "Gag Reflex");
-				else if (name != "No Gag Reflex" && HasRememberedTrait(girl, "No Gag Reflex"))			RestoreRememberedTrait(girl, "No Gag Reflex");
-				else if (name != "Deep Throat" && HasRememberedTrait(girl, "Deep Throat"))				RestoreRememberedTrait(girl, "Deep Throat");
-			}
+			if (name != "Strong Gag Reflex")		girl->remove_trait("Strong Gag Reflex", rememberflag, true);
+			if (name != "Gag Reflex")				girl->remove_trait("Gag Reflex", rememberflag, true);
+			if (name != "No Gag Reflex")			girl->remove_trait("No Gag Reflex", rememberflag, true);
+			if (name != "Deep Throat")				girl->remove_trait("Deep Throat", rememberflag, true);
 		}
-		else if (	// Check need sex Traits
+		else
+		{
+			/* */if (name != "Strong Gag Reflex" && HasRememberedTrait(girl, "Strong Gag Reflex"))	RestoreRememberedTrait(girl, "Strong Gag Reflex");
+			else if (name != "Gag Reflex" && HasRememberedTrait(girl, "Gag Reflex"))				RestoreRememberedTrait(girl, "Gag Reflex");
+			else if (name != "No Gag Reflex" && HasRememberedTrait(girl, "No Gag Reflex"))			RestoreRememberedTrait(girl, "No Gag Reflex");
+			else if (name != "Deep Throat" && HasRememberedTrait(girl, "Deep Throat"))				RestoreRememberedTrait(girl, "Deep Throat");
+		}
+	}
+	else if (	// Check need sex Traits
 			name == "Nymphomaniac" ||
 			name == "Chaste")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Nymphomaniac")		girl->remove_trait("Nymphomaniac", rememberflag, true);
-				if (name != "Chaste")			girl->remove_trait("Chaste", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Nymphomaniac" && HasRememberedTrait(girl, "Nymphomaniac"))	RestoreRememberedTrait(girl, "Nymphomaniac");
-				else if (name != "Chaste" && HasRememberedTrait(girl, "Chaste"))				RestoreRememberedTrait(girl, "Chaste");
-			}
+			if (name != "Nymphomaniac")		girl->remove_trait("Nymphomaniac", rememberflag, true);
+			if (name != "Chaste")			girl->remove_trait("Chaste", rememberflag, true);
 		}
-		else if (	// Check Orgasm Traits
+		else
+		{
+			/* */if (name != "Nymphomaniac" && HasRememberedTrait(girl, "Nymphomaniac"))	RestoreRememberedTrait(girl, "Nymphomaniac");
+			else if (name != "Chaste" && HasRememberedTrait(girl, "Chaste"))				RestoreRememberedTrait(girl, "Chaste");
+		}
+	}
+	else if (	// Check Orgasm Traits
 			name == "Fake Orgasm Expert" ||
 			name == "Fast Orgasms" ||
 			name == "Slow Orgasms")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				// "Fake Orgasm Expert" overrides the other 2 so if adding it, remove the others but if adding the others don't remove it
-				if (name != "Fast Orgasms")			girl->remove_trait("Fast Orgasms", rememberflag, true);
-				if (name != "Slow Orgasms")			girl->remove_trait("Slow Orgasms", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Fake Orgasm Expert" && HasRememberedTrait(girl, "Fake Orgasm Expert"))	RestoreRememberedTrait(girl, "Fake Orgasm Expert");
-				else if (name != "Fast Orgasms" && HasRememberedTrait(girl, "Fast Orgasms"))				RestoreRememberedTrait(girl, "Fast Orgasms");
-				else if (name != "Slow Orgasms" && HasRememberedTrait(girl, "Slow Orgasms"))				RestoreRememberedTrait(girl, "Slow Orgasms");
-			}
+			// "Fake Orgasm Expert" overrides the other 2 so if adding it, remove the others but if adding the others don't remove it
+			if (name != "Fast Orgasms")			girl->remove_trait("Fast Orgasms", rememberflag, true);
+			if (name != "Slow Orgasms")			girl->remove_trait("Slow Orgasms", rememberflag, true);
 		}
+		else
+		{
+			/* */if (name != "Fake Orgasm Expert" && HasRememberedTrait(girl, "Fake Orgasm Expert"))	RestoreRememberedTrait(girl, "Fake Orgasm Expert");
+			else if (name != "Fast Orgasms" && HasRememberedTrait(girl, "Fast Orgasms"))				RestoreRememberedTrait(girl, "Fast Orgasms");
+			else if (name != "Slow Orgasms" && HasRememberedTrait(girl, "Slow Orgasms"))				RestoreRememberedTrait(girl, "Slow Orgasms");
+		}
+	}
 
 #endif	// End of Traits that affect sex
 
 #if 1	// Start of Physical traits
 
-		else if (	// Check Fragile/Tough Traits
+	else if (	// Check Fragile/Tough Traits
 			name == "Fragile" ||
 			name == "Tough")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Fragile")			girl->remove_trait("Fragile", rememberflag, true);
-				if (name != "Tough")			girl->remove_trait("Tough", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Fragile" && HasRememberedTrait(girl, "Fragile"))	RestoreRememberedTrait(girl, "Fragile");
-				else if (name != "Tough" && HasRememberedTrait(girl, "Tough"))		RestoreRememberedTrait(girl, "Tough");
-			}
+			if (name != "Fragile")			girl->remove_trait("Fragile", rememberflag, true);
+			if (name != "Tough")			girl->remove_trait("Tough", rememberflag, true);
 		}
-		else if (	// Check Construct Traits
+		else
+		{
+			/* */if (name != "Fragile" && HasRememberedTrait(girl, "Fragile"))	RestoreRememberedTrait(girl, "Fragile");
+			else if (name != "Tough" && HasRememberedTrait(girl, "Tough"))		RestoreRememberedTrait(girl, "Tough");
+		}
+	}
+	else if (	// Check Construct Traits
 			name == "Construct" ||
 			name == "Half-Construct")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Construct")			girl->remove_trait("Construct", rememberflag, true);
-				if (name != "Half-Construct")		girl->remove_trait("Half-Construct", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Construct" && HasRememberedTrait(girl, "Construct"))				RestoreRememberedTrait(girl, "Construct");
-				else if (name != "Half-Construct" && HasRememberedTrait(girl, "Half-Construct"))	RestoreRememberedTrait(girl, "Half-Construct");
-			}
+			if (name != "Construct")			girl->remove_trait("Construct", rememberflag, true);
+			if (name != "Half-Construct")		girl->remove_trait("Half-Construct", rememberflag, true);
 		}
-		else if (	// Check Ass Traits
+		else
+		{
+			/* */if (name != "Construct" && HasRememberedTrait(girl, "Construct"))				RestoreRememberedTrait(girl, "Construct");
+			else if (name != "Half-Construct" && HasRememberedTrait(girl, "Half-Construct"))	RestoreRememberedTrait(girl, "Half-Construct");
+		}
+	}
+	else if (	// Check Ass Traits
 			name == "Flat Ass" ||
 			name == "Tight Butt" ||
 			name == "Plump Tush" ||
 			name == "Great Arse" ||
 			name == "Phat Booty" ||
 			name == "Deluxe Derriere")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Flat Ass")				girl->remove_trait("Flat Ass", rememberflag, true);
-				if (name != "Tight Butt")			girl->remove_trait("Tight Butt", rememberflag, true);
-				if (name != "Plump Tush")			girl->remove_trait("Plump Tush", rememberflag, true);
-				if (name != "Great Arse")			girl->remove_trait("Great Arse", rememberflag, true);
-				if (name != "Phat Booty")			girl->remove_trait("Phat Booty", rememberflag, true);
-				if (name != "Deluxe Derriere")		girl->remove_trait("Deluxe Derriere", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Flat Ass" && HasRememberedTrait(girl, "Flat Ass"))				RestoreRememberedTrait(girl, "Flat Ass");
-				else if (name != "Tight Butt" && HasRememberedTrait(girl, "Tight Butt"))			RestoreRememberedTrait(girl, "Tight Butt");
-				else if (name != "Plump Tush" && HasRememberedTrait(girl, "Plump Tush"))			RestoreRememberedTrait(girl, "Plump Tush");
-				else if (name != "Great Arse" && HasRememberedTrait(girl, "Great Arse"))			RestoreRememberedTrait(girl, "Great Arse");
-				else if (name != "Phat Booty" && HasRememberedTrait(girl, "Phat Booty"))			RestoreRememberedTrait(girl, "Phat Booty");
-				else if (name != "Deluxe Derriere" && HasRememberedTrait(girl, "Deluxe Derriere"))	RestoreRememberedTrait(girl, "Deluxe Derriere");
-			}
+			if (name != "Flat Ass")				girl->remove_trait("Flat Ass", rememberflag, true);
+			if (name != "Tight Butt")			girl->remove_trait("Tight Butt", rememberflag, true);
+			if (name != "Plump Tush")			girl->remove_trait("Plump Tush", rememberflag, true);
+			if (name != "Great Arse")			girl->remove_trait("Great Arse", rememberflag, true);
+			if (name != "Phat Booty")			girl->remove_trait("Phat Booty", rememberflag, true);
+			if (name != "Deluxe Derriere")		girl->remove_trait("Deluxe Derriere", rememberflag, true);
 		}
-		else if (	// Check Teeth Traits
+		else
+		{
+			/* */if (name != "Flat Ass" && HasRememberedTrait(girl, "Flat Ass"))				RestoreRememberedTrait(girl, "Flat Ass");
+			else if (name != "Tight Butt" && HasRememberedTrait(girl, "Tight Butt"))			RestoreRememberedTrait(girl, "Tight Butt");
+			else if (name != "Plump Tush" && HasRememberedTrait(girl, "Plump Tush"))			RestoreRememberedTrait(girl, "Plump Tush");
+			else if (name != "Great Arse" && HasRememberedTrait(girl, "Great Arse"))			RestoreRememberedTrait(girl, "Great Arse");
+			else if (name != "Phat Booty" && HasRememberedTrait(girl, "Phat Booty"))			RestoreRememberedTrait(girl, "Phat Booty");
+			else if (name != "Deluxe Derriere" && HasRememberedTrait(girl, "Deluxe Derriere"))	RestoreRememberedTrait(girl, "Deluxe Derriere");
+		}
+	}
+	else if (	// Check Teeth Traits
 			name == "Missing Teeth" ||
 			name == "No Teeth")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Missing Teeth")	girl->remove_trait("Missing Teeth", rememberflag, true);
-				if (name != "No Teeth")			girl->remove_trait("No Teeth", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Missing Teeth" && HasRememberedTrait(girl, "Missing Teeth"))	RestoreRememberedTrait(girl, "Missing Teeth");
-				else if (name != "No Teeth" && HasRememberedTrait(girl, "No Teeth"))			RestoreRememberedTrait(girl, "No Teeth");
-			}
+			if (name != "Missing Teeth")	girl->remove_trait("Missing Teeth", rememberflag, true);
+			if (name != "No Teeth")			girl->remove_trait("No Teeth", rememberflag, true);
 		}
-		else if (	// Check Height
+		else
+		{
+			/* */if (name != "Missing Teeth" && HasRememberedTrait(girl, "Missing Teeth"))	RestoreRememberedTrait(girl, "Missing Teeth");
+			else if (name != "No Teeth" && HasRememberedTrait(girl, "No Teeth"))			RestoreRememberedTrait(girl, "No Teeth");
+		}
+	}
+	else if (	// Check Height
 			name == "Giant" ||
 			name == "Tall" ||
 			name == "Short" ||
 			name == "Dwarf")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Giant")		girl->remove_trait("Giant", rememberflag, true);
-				if (name != "Tall")			girl->remove_trait("Tall", rememberflag, true);
-				if (name != "Short")		girl->remove_trait("Short", rememberflag, true);
-				if (name != "Dwarf")		girl->remove_trait("Dwarf", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Giant" && HasRememberedTrait(girl, "Giant"))			RestoreRememberedTrait(girl, "Giant");
-				else if (name != "Tall" && HasRememberedTrait(girl, "Tall"))			RestoreRememberedTrait(girl, "Tall");
-				else if (name != "Short" && HasRememberedTrait(girl, "Short"))			RestoreRememberedTrait(girl, "Short");
-				else if (name != "Dwarf" && HasRememberedTrait(girl, "Dwarf"))			RestoreRememberedTrait(girl, "Dwarf");
-			}
+			if (name != "Giant")		girl->remove_trait("Giant", rememberflag, true);
+			if (name != "Tall")			girl->remove_trait("Tall", rememberflag, true);
+			if (name != "Short")		girl->remove_trait("Short", rememberflag, true);
+			if (name != "Dwarf")		girl->remove_trait("Dwarf", rememberflag, true);
 		}
-		else if (	// Check Figure
+		else
+		{
+			/* */if (name != "Giant" && HasRememberedTrait(girl, "Giant"))			RestoreRememberedTrait(girl, "Giant");
+			else if (name != "Tall" && HasRememberedTrait(girl, "Tall"))			RestoreRememberedTrait(girl, "Tall");
+			else if (name != "Short" && HasRememberedTrait(girl, "Short"))			RestoreRememberedTrait(girl, "Short");
+			else if (name != "Dwarf" && HasRememberedTrait(girl, "Dwarf"))			RestoreRememberedTrait(girl, "Dwarf");
+		}
+	}
+	else if (	// Check Figure
 			name == "Great Figure" ||
 			name == "Hourglass Figure" ||
 			name == "Plump" ||
 			name == "Fat")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Great Figure")		girl->remove_trait("Great Figure", rememberflag, true);
-				if (name != "Hourglass Figure")	girl->remove_trait("Hourglass Figure", rememberflag, true);
-				if (name != "Plump")			girl->remove_trait("Plump", rememberflag, true);
-				if (name != "Fat")				girl->remove_trait("Fat", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Great Figure" && HasRememberedTrait(girl, "Great Figure"))			RestoreRememberedTrait(girl, "Great Figure");
-				else if (name != "Hourglass Figure" && HasRememberedTrait(girl, "Hourglass Figure"))	RestoreRememberedTrait(girl, "Hourglass Figure");
-				else if (name != "Plump" && HasRememberedTrait(girl, "Plump"))							RestoreRememberedTrait(girl, "Plump");
-				else if (name != "Fat" && HasRememberedTrait(girl, "Fat"))								RestoreRememberedTrait(girl, "Fat");
-			}
+			if (name != "Great Figure")		girl->remove_trait("Great Figure", rememberflag, true);
+			if (name != "Hourglass Figure")	girl->remove_trait("Hourglass Figure", rememberflag, true);
+			if (name != "Plump")			girl->remove_trait("Plump", rememberflag, true);
+			if (name != "Fat")				girl->remove_trait("Fat", rememberflag, true);
 		}
+		else
+		{
+			/* */if (name != "Great Figure" && HasRememberedTrait(girl, "Great Figure"))			RestoreRememberedTrait(girl, "Great Figure");
+			else if (name != "Hourglass Figure" && HasRememberedTrait(girl, "Hourglass Figure"))	RestoreRememberedTrait(girl, "Hourglass Figure");
+			else if (name != "Plump" && HasRememberedTrait(girl, "Plump"))							RestoreRememberedTrait(girl, "Plump");
+			else if (name != "Fat" && HasRememberedTrait(girl, "Fat"))								RestoreRememberedTrait(girl, "Fat");
+		}
+	}
 
 
 #endif	// End of Physical traits
 
 #if 1	// Start of Appearance traits
 
-		else if (	// Check Tattoo Traits
+	else if (	// Check Tattoo Traits
 			name == "Small Tattoos" ||
 			name == "Tattooed" ||
 			name == "Heavily Tattooed")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Small Tattoos")		girl->remove_trait("Small Tattoos", rememberflag, true);
-				if (name != "Tattooed")				girl->remove_trait("Tattooed", rememberflag, true);
-				if (name != "Heavily Tattooed")		girl->remove_trait("Heavily Tattooed", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Small Tattoos" && HasRememberedTrait(girl, "Small Tattoos"))			RestoreRememberedTrait(girl, "Small Tattoos");
-				else if (name != "Tattooed" && HasRememberedTrait(girl, "Tattooed"))					RestoreRememberedTrait(girl, "Tattooed");
-				else if (name != "Heavily Tattooed" && HasRememberedTrait(girl, "Heavily Tattooed"))	RestoreRememberedTrait(girl, "Heavily Tattooed");
-			}
+			if (name != "Small Tattoos")		girl->remove_trait("Small Tattoos", rememberflag, true);
+			if (name != "Tattooed")				girl->remove_trait("Tattooed", rememberflag, true);
+			if (name != "Heavily Tattooed")		girl->remove_trait("Heavily Tattooed", rememberflag, true);
 		}
+		else
+		{
+			/* */if (name != "Small Tattoos" && HasRememberedTrait(girl, "Small Tattoos"))			RestoreRememberedTrait(girl, "Small Tattoos");
+			else if (name != "Tattooed" && HasRememberedTrait(girl, "Tattooed"))					RestoreRememberedTrait(girl, "Tattooed");
+			else if (name != "Heavily Tattooed" && HasRememberedTrait(girl, "Heavily Tattooed"))	RestoreRememberedTrait(girl, "Heavily Tattooed");
+		}
+	}
 
 #endif	// End of Appearance traits
 
 #if 1	// Start of Magical traits
 
-		else if (	// Check Magic Strength Traits
+	else if (	// Check Magic Strength Traits
 			name == "Muggle" ||
 			name == "Weak Magic" ||
 			name == "Strong Magic" ||
 			name == "Powerful Magic")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Muggle")			girl->remove_trait("Muggle", rememberflag, true);
-				if (name != "Weak Magic")		girl->remove_trait("Weak Magic", rememberflag, true);
-				if (name != "Strong Magic")		girl->remove_trait("Strong Magic", rememberflag, true);
-				if (name != "Powerful Magic")	girl->remove_trait("Powerful Magic", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Muggle" && HasRememberedTrait(girl, "Muggle"))					RestoreRememberedTrait(girl, "Muggle");
-				else if (name != "Weak Magic" && HasRememberedTrait(girl, "Weak Magic"))			RestoreRememberedTrait(girl, "Weak Magic");
-				else if (name != "Strong Magic" && HasRememberedTrait(girl, "Strong Magic"))		RestoreRememberedTrait(girl, "Strong Magic");
-				else if (name != "Powerful Magic" && HasRememberedTrait(girl, "Powerful Magic"))	RestoreRememberedTrait(girl, "Powerful Magic");
-			}
+			if (name != "Muggle")			girl->remove_trait("Muggle", rememberflag, true);
+			if (name != "Weak Magic")		girl->remove_trait("Weak Magic", rememberflag, true);
+			if (name != "Strong Magic")		girl->remove_trait("Strong Magic", rememberflag, true);
+			if (name != "Powerful Magic")	girl->remove_trait("Powerful Magic", rememberflag, true);
 		}
+		else
+		{
+			/* */if (name != "Muggle" && HasRememberedTrait(girl, "Muggle"))					RestoreRememberedTrait(girl, "Muggle");
+			else if (name != "Weak Magic" && HasRememberedTrait(girl, "Weak Magic"))			RestoreRememberedTrait(girl, "Weak Magic");
+			else if (name != "Strong Magic" && HasRememberedTrait(girl, "Strong Magic"))		RestoreRememberedTrait(girl, "Strong Magic");
+			else if (name != "Powerful Magic" && HasRememberedTrait(girl, "Powerful Magic"))	RestoreRememberedTrait(girl, "Powerful Magic");
+		}
+	}
 
 #endif	// End of Magical traits
 
 #if 1	// Start of Social Traits
 
-		else if (	// Check Princess/Queen Traits
+	else if (	// Check Princess/Queen Traits
 			name == "Princess" ||
 			name == "Queen")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Princess")			girl->remove_trait("Princess", rememberflag, true);
-				if (name != "Queen")			girl->remove_trait("Queen", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Princess" && HasRememberedTrait(girl, "Princess"))	RestoreRememberedTrait(girl, "Princess");
-				else if (name != "Queen" && HasRememberedTrait(girl, "Queen"))			RestoreRememberedTrait(girl, "Queen");
-			}
+			if (name != "Princess")			girl->remove_trait("Princess", rememberflag, true);
+			if (name != "Queen")			girl->remove_trait("Queen", rememberflag, true);
 		}
-		else if (	// Check Lolita/MILF Traits
+		else
+		{
+			/* */if (name != "Princess" && HasRememberedTrait(girl, "Princess"))	RestoreRememberedTrait(girl, "Princess");
+			else if (name != "Queen" && HasRememberedTrait(girl, "Queen"))			RestoreRememberedTrait(girl, "Queen");
+		}
+	}
+	else if (	// Check Lolita/MILF Traits
 			name == "Lolita" ||
 			name == "MILF" ||
 			name == "Middle Aged" ||//zzzzz FIXME
 			name == "Old")
+	{
+		if (apply)
 		{
-			if (apply)
+			// If adding Lolita remove the others but if adding the others only remove Lolita
+			if (name == "Lolita")
 			{
-				// If adding Lolita remove the others but if adding the others only remove Lolita
-				if (name == "Lolita")
-				{
-					girl->remove_trait("MILF", rememberflag, true);
-					girl->remove_trait("Old", rememberflag, true);
-					girl->remove_trait("Middle Aged", rememberflag, true);
-				}
-				if (name == "MILF")			girl->remove_trait("Lolita", rememberflag, true);
-				if (name == "Old")			girl->remove_trait("Lolita", rememberflag, true);
-				if (name == "Middle Aged")	girl->remove_trait("Lolita", rememberflag, true);
+				girl->remove_trait("MILF", rememberflag, true);
+				girl->remove_trait("Old", rememberflag, true);
+				girl->remove_trait("Middle Aged", rememberflag, true);
 			}
+			if (name == "MILF")			girl->remove_trait("Lolita", rememberflag, true);
+			if (name == "Old")			girl->remove_trait("Lolita", rememberflag, true);
+			if (name == "Middle Aged")	girl->remove_trait("Lolita", rememberflag, true);
+		}
+		else
+		{
+			// if removing Lolita add back both Old and MILF
+			if (name == "Lolita")
+			{
+				RestoreRememberedTrait(girl, "Old");
+				RestoreRememberedTrait(girl, "MILF");
+			}
+				// if removing Old or MILF try to add the other one and if neither are there then try adding Lolita
 			else
 			{
-				// if removing Lolita add back both Old and MILF
-				if (name == "Lolita")
-				{
-					RestoreRememberedTrait(girl, "Old");
-					RestoreRememberedTrait(girl, "MILF");
-				}
-				// if removing Old or MILF try to add the other one and if neither are there then try adding Lolita
-				else
-				{
-					if (name != "Old" && HasRememberedTrait(girl, "Old"))	RestoreRememberedTrait(girl, "Old");
-					if (name != "MILF" && HasRememberedTrait(girl, "MILF"))	RestoreRememberedTrait(girl, "MILF");
-					if (!girl->has_trait("Old") && !girl->has_trait("MILF"))			RestoreRememberedTrait(girl, "Lolita");
-				}
+				if (name != "Old" && HasRememberedTrait(girl, "Old"))	RestoreRememberedTrait(girl, "Old");
+				if (name != "MILF" && HasRememberedTrait(girl, "MILF"))	RestoreRememberedTrait(girl, "MILF");
+				if (!girl->has_trait("Old") && !girl->has_trait("MILF"))			RestoreRememberedTrait(girl, "Lolita");
 			}
 		}
-		else if (	// Check Shy/Exhibitionist Traits
+	}
+	else if (	// Check Shy/Exhibitionist Traits
 			name == "Shy" ||
 			name == "Exhibitionist")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Shy")				girl->remove_trait("Shy", rememberflag, true);
-				if (name != "Exhibitionist")	girl->remove_trait("Exhibitionist", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Shy" && HasRememberedTrait(girl, "Shy"))						RestoreRememberedTrait(girl, "Shy");
-				else if (name != "Exhibitionist" && HasRememberedTrait(girl, "Exhibitionist"))	RestoreRememberedTrait(girl, "Exhibitionist");
-			}
+			if (name != "Shy")				girl->remove_trait("Shy", rememberflag, true);
+			if (name != "Exhibitionist")	girl->remove_trait("Exhibitionist", rememberflag, true);
 		}
+		else
+		{
+			/* */if (name != "Shy" && HasRememberedTrait(girl, "Shy"))						RestoreRememberedTrait(girl, "Shy");
+			else if (name != "Exhibitionist" && HasRememberedTrait(girl, "Exhibitionist"))	RestoreRememberedTrait(girl, "Exhibitionist");
+		}
+	}
 
 #endif	// End of Social Traits
 
 #if 1	// Start of Mental Traits
 
-		else if (	// Check Optimist/Pessimist Traits
+	else if (	// Check Optimist/Pessimist Traits
 			name == "Optimist" ||
 			name == "Pessimist")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Optimist")			girl->remove_trait("Optimist", rememberflag, true);
-				if (name != "Pessimist")		girl->remove_trait("Pessimist", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Optimist" && HasRememberedTrait(girl, "Optimist"))	RestoreRememberedTrait(girl, "Optimist");
-				else if (name != "Pessimist" && HasRememberedTrait(girl, "Pessimist"))	RestoreRememberedTrait(girl, "Pessimist");
-			}
+			if (name != "Optimist")			girl->remove_trait("Optimist", rememberflag, true);
+			if (name != "Pessimist")		girl->remove_trait("Pessimist", rememberflag, true);
 		}
-		else if (	// singer/tone deaf
+		else
+		{
+			/* */if (name != "Optimist" && HasRememberedTrait(girl, "Optimist"))	RestoreRememberedTrait(girl, "Optimist");
+			else if (name != "Pessimist" && HasRememberedTrait(girl, "Pessimist"))	RestoreRememberedTrait(girl, "Pessimist");
+		}
+	}
+	else if (	// singer/tone deaf
 			name == "Singer" ||
 			name == "Tone Deaf")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Singer")			girl->remove_trait("Singer", rememberflag, true);
-				if (name != "Tone Deaf")		girl->remove_trait("Tone Deaf", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Singer" && HasRememberedTrait(girl, "Singer"))	RestoreRememberedTrait(girl, "Singer");
-				else if (name != "Tone Deaf" && HasRememberedTrait(girl, "Tone Deaf"))	RestoreRememberedTrait(girl, "Tone Deaf");
-			}
+			if (name != "Singer")			girl->remove_trait("Singer", rememberflag, true);
+			if (name != "Tone Deaf")		girl->remove_trait("Tone Deaf", rememberflag, true);
 		}
-		else if (	// Check Willpower Traits
+		else
+		{
+			/* */if (name != "Singer" && HasRememberedTrait(girl, "Singer"))	RestoreRememberedTrait(girl, "Singer");
+			else if (name != "Tone Deaf" && HasRememberedTrait(girl, "Tone Deaf"))	RestoreRememberedTrait(girl, "Tone Deaf");
+		}
+	}
+	else if (	// Check Willpower Traits
 			name == "Broken Will" ||
 			name == "Iron Will")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Broken Will")			girl->remove_trait("Broken Will", rememberflag, true);
-				if (name != "Iron Will")			girl->remove_trait("Iron Will", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Broken Will" && HasRememberedTrait(girl, "Broken Will"))	RestoreRememberedTrait(girl, "Broken Will");
-				else if (name != "Iron Will" && HasRememberedTrait(girl, "Iron Will"))		RestoreRememberedTrait(girl, "Iron Will");
-			}
+			if (name != "Broken Will")			girl->remove_trait("Broken Will", rememberflag, true);
+			if (name != "Iron Will")			girl->remove_trait("Iron Will", rememberflag, true);
 		}
-		else if (	// Check Learning Traits
+		else
+		{
+			/* */if (name != "Broken Will" && HasRememberedTrait(girl, "Broken Will"))	RestoreRememberedTrait(girl, "Broken Will");
+			else if (name != "Iron Will" && HasRememberedTrait(girl, "Iron Will"))		RestoreRememberedTrait(girl, "Iron Will");
+		}
+	}
+	else if (	// Check Learning Traits
 			name == "Slow Learner" ||
 			name == "Quick Learner")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Slow Learner")			girl->remove_trait("Slow Learner", rememberflag, true);
-				if (name != "Quick Learner")		girl->remove_trait("Quick Learner", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Slow Learner" && HasRememberedTrait(girl, "Slow Learner"))	RestoreRememberedTrait(girl, "Slow Learner");
-				else if (name != "Quick Learner" && HasRememberedTrait(girl, "Quick Learner"))	RestoreRememberedTrait(girl, "Quick Learner");
-			}
+			if (name != "Slow Learner")			girl->remove_trait("Slow Learner", rememberflag, true);
+			if (name != "Quick Learner")		girl->remove_trait("Quick Learner", rememberflag, true);
 		}
-		else if (	// Check Social Force Traits
+		else
+		{
+			/* */if (name != "Slow Learner" && HasRememberedTrait(girl, "Slow Learner"))	RestoreRememberedTrait(girl, "Slow Learner");
+			else if (name != "Quick Learner" && HasRememberedTrait(girl, "Quick Learner"))	RestoreRememberedTrait(girl, "Quick Learner");
+		}
+	}
+	else if (	// Check Social Force Traits
 			name == "Audacity" ||
 			name == "Fearless" ||
 			name == "Aggressive" ||
 			name == "Meek" ||
 			name == "Dependant" ||
 			name == "Nervous")
+	{
+		if (apply)
 		{
-			if (apply)
+			if (name == "Audacity")
 			{
-				if (name == "Audacity")
-				{
-					girl->remove_trait("Meek", rememberflag, true);
-					girl->remove_trait("Nervous", rememberflag, true);
-					girl->remove_trait("Dependant", rememberflag, true);
-				}
-				if (name == "Fearless")
-				{
-					girl->remove_trait("Meek", rememberflag, true);
-					girl->remove_trait("Nervous", rememberflag, true);
-				}
-				if (name == "Aggressive")
-				{
-					girl->remove_trait("Meek", rememberflag, true);
-				}
-				if (name == "Meek")
-				{
-					girl->remove_trait("Aggressive", rememberflag, true);
-					girl->remove_trait("Fearless", rememberflag, true);
-					girl->remove_trait("Audacity", rememberflag, true);
-				}
-				if (name == "Nervous")
-				{
-					girl->remove_trait("Fearless", rememberflag, true);
-					girl->remove_trait("Audacity", rememberflag, true);
-				}
-				if (name == "Dependant")
-				{
-					girl->remove_trait("Audacity", rememberflag, true);
-				}
+				girl->remove_trait("Meek", rememberflag, true);
+				girl->remove_trait("Nervous", rememberflag, true);
+				girl->remove_trait("Dependant", rememberflag, true);
 			}
-			else
+			if (name == "Fearless")
 			{
-				// if removing a trait from group a try to add back the others from that
-				if ((name == "Audacity" || name == "Fearless" || name == "Aggressive") &&
-					!girl->has_trait("Audacity") && !girl->has_trait("Fearless") && !girl->has_trait("Aggressive"))
-				{
-					RestoreRememberedTrait(girl, "Meek");
-				}
-				if ((name == "Audacity" || name == "Fearless") &&
-					!girl->has_trait("Audacity") && !girl->has_trait("Fearless"))
-				{
-					RestoreRememberedTrait(girl, "Nervous");
-				}
-				if (name == "Audacity")
-				{
-					RestoreRememberedTrait(girl, "Dependant");
-				}
-				if ((name == "Meek" || name == "Nervous" || name == "Dependant") &&
-					!girl->has_trait("Meek") && !girl->has_trait("Nervous") && !girl->has_trait("Dependant"))
-				{
-					RestoreRememberedTrait(girl, "Audacity");
-				}
-				if ((name == "Meek" || name == "Nervous") &&
-					!girl->has_trait("Meek") && !girl->has_trait("Nervous"))
-				{
-					RestoreRememberedTrait(girl, "Fearless");
-				}
-				if (name == "Meek")
-				{
-					RestoreRememberedTrait(girl, "Aggressive");
-				}
+				girl->remove_trait("Meek", rememberflag, true);
+				girl->remove_trait("Nervous", rememberflag, true);
+			}
+			if (name == "Aggressive")
+			{
+				girl->remove_trait("Meek", rememberflag, true);
+			}
+			if (name == "Meek")
+			{
+				girl->remove_trait("Aggressive", rememberflag, true);
+				girl->remove_trait("Fearless", rememberflag, true);
+				girl->remove_trait("Audacity", rememberflag, true);
+			}
+			if (name == "Nervous")
+			{
+				girl->remove_trait("Fearless", rememberflag, true);
+				girl->remove_trait("Audacity", rememberflag, true);
+			}
+			if (name == "Dependant")
+			{
+				girl->remove_trait("Audacity", rememberflag, true);
 			}
 		}
+		else
+		{
+			// if removing a trait from group a try to add back the others from that
+			if ((name == "Audacity" || name == "Fearless" || name == "Aggressive") &&
+				!girl->has_trait("Audacity") && !girl->has_trait("Fearless") && !girl->has_trait("Aggressive"))
+			{
+				RestoreRememberedTrait(girl, "Meek");
+			}
+			if ((name == "Audacity" || name == "Fearless") &&
+				!girl->has_trait("Audacity") && !girl->has_trait("Fearless"))
+			{
+				RestoreRememberedTrait(girl, "Nervous");
+			}
+			if (name == "Audacity")
+			{
+				RestoreRememberedTrait(girl, "Dependant");
+			}
+			if ((name == "Meek" || name == "Nervous" || name == "Dependant") &&
+				!girl->has_trait("Meek") && !girl->has_trait("Nervous") && !girl->has_trait("Dependant"))
+			{
+				RestoreRememberedTrait(girl, "Audacity");
+			}
+			if ((name == "Meek" || name == "Nervous") &&
+				!girl->has_trait("Meek") && !girl->has_trait("Nervous"))
+			{
+				RestoreRememberedTrait(girl, "Fearless");
+			}
+			if (name == "Meek")
+			{
+				RestoreRememberedTrait(girl, "Aggressive");
+			}
+		}
+	}
 
 #endif	// End of Mental Traits
 
 #if 1	// Start of Action Traits
 
-		else if (	// Check Eyesight Traits
+	else if (	// Check Eyesight Traits
 			name == "Blind" ||
 			name == "Bad Eyesight" ||
 			name == "Sharp-Eyed")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Blind")			girl->remove_trait("Blind", rememberflag, true);
-				if (name != "Bad Eyesight")		girl->remove_trait("Bad Eyesight", rememberflag, true);
-				if (name != "Sharp-Eyed")		girl->remove_trait("Sharp-Eyed", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Blind" && HasRememberedTrait(girl, "Blind"))					RestoreRememberedTrait(girl, "Blind");
-				else if (name != "Bad Eyesight" && HasRememberedTrait(girl, "Bad Eyesight"))	RestoreRememberedTrait(girl, "Bad Eyesight");
-				else if (name != "Sharp-Eyed" && HasRememberedTrait(girl, "Sharp-Eyed"))		RestoreRememberedTrait(girl, "Sharp-Eyed");
-			}
+			if (name != "Blind")			girl->remove_trait("Blind", rememberflag, true);
+			if (name != "Bad Eyesight")		girl->remove_trait("Bad Eyesight", rememberflag, true);
+			if (name != "Sharp-Eyed")		girl->remove_trait("Sharp-Eyed", rememberflag, true);
 		}
+		else
+		{
+			/* */if (name != "Blind" && HasRememberedTrait(girl, "Blind"))					RestoreRememberedTrait(girl, "Blind");
+			else if (name != "Bad Eyesight" && HasRememberedTrait(girl, "Bad Eyesight"))	RestoreRememberedTrait(girl, "Bad Eyesight");
+			else if (name != "Sharp-Eyed" && HasRememberedTrait(girl, "Sharp-Eyed"))		RestoreRememberedTrait(girl, "Sharp-Eyed");
+		}
+	}
 
 #endif	// End of Action Traits
 
@@ -6107,124 +6111,124 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, TraitSpec* trait, 
 #if 1	// Start of Special Group Traits
 
 
-		else if (	// Check Eye Traits
+	else if (	// Check Eye Traits
 			name == "Different Colored Eyes" ||
 			name == "Eye Patch" ||
 			name == "One Eye" ||
 			name == "Cyclops")
+	{
+		if (apply)
 		{
-			if (apply)
+			// If she becomes a Cyclops, remove all the other traits and forget them, if she changes back later we assume the new eyes are good and the same color
+			if (name == "Cyclops")
 			{
-				// If she becomes a Cyclops, remove all the other traits and forget them, if she changes back later we assume the new eyes are good and the same color
-				if (name == "Cyclops")
-				{
-					girl->remove_trait("Different Colored Eyes", false, true);
-					girl->remove_trait("Eye Patch", false, true);
-					girl->remove_trait("One Eye", false, true);
-				}
-				else if (name == "Different Colored Eyes")	// If something tries to give a girl DCE and she only has 1 eye...
-				{
-					// if she only has 1 eye because she is a Cyclops (naturally only has space on her face for 1 eye)...
-					if (girl->has_trait("Cyclops"))
-						girl->remove_trait("Different Colored Eyes", false, true);	// Forget having tried to get it.
-					// but if she had 2 eyes but lost 1...
-					else if (girl->has_trait("Eye Patch") || girl->has_trait("One Eye"))
-						girl->remove_trait("Different Colored Eyes", true, true);	// Remember having tried to get it.
-				}
-				// If something tries to give her the "One Eye" trait but she is a Cyclops, don't give her "One Eye"
-				if (name == "One Eye" && girl->has_trait("Cyclops"))
-				{
-					girl->remove_trait("One Eye", false, true);
-				}
-				// If she loses an eye or covers it up with an eye patch and she is not a Cyclops, remove DCE but remember it
-				if ((name == "Eye Patch" || name == "One Eye") &&
-					(girl->has_trait("Eye Patch") || girl->has_trait("One Eye")) && !girl->has_trait("Cyclops"))
-				{
-					girl->remove_trait("Different Colored Eyes", true, true);
-				}
+				girl->remove_trait("Different Colored Eyes", false, true);
+				girl->remove_trait("Eye Patch", false, true);
+				girl->remove_trait("One Eye", false, true);
 			}
-			else
+			else if (name == "Different Colored Eyes")	// If something tries to give a girl DCE and she only has 1 eye...
 			{
-				// If she removes Cyclops, basically growing a second eye, we assume the new eye is good and the same color as the original one
-
-				// If removing "Different Colored Eyes", we assume this means her eyes have become the same color
-
-				// If removing "Eye Patch" or "One Eye", this may give back DCE if she does not have the others
-				if ((name == "Eye Patch" || name == "One Eye") &&
-					!girl->has_trait("Eye Patch") && !girl->has_trait("One Eye") && !girl->has_trait("Cyclops"))
-				{
-					RestoreRememberedTrait(girl, "Different Colored Eyes");
-				}
+				// if she only has 1 eye because she is a Cyclops (naturally only has space on her face for 1 eye)...
+				if (girl->has_trait("Cyclops"))
+					girl->remove_trait("Different Colored Eyes", false, true);	// Forget having tried to get it.
+					// but if she had 2 eyes but lost 1...
+				else if (girl->has_trait("Eye Patch") || girl->has_trait("One Eye"))
+					girl->remove_trait("Different Colored Eyes", true, true);	// Remember having tried to get it.
+			}
+			// If something tries to give her the "One Eye" trait but she is a Cyclops, don't give her "One Eye"
+			if (name == "One Eye" && girl->has_trait("Cyclops"))
+			{
+				girl->remove_trait("One Eye", false, true);
+			}
+			// If she loses an eye or covers it up with an eye patch and she is not a Cyclops, remove DCE but remember it
+			if ((name == "Eye Patch" || name == "One Eye") &&
+				(girl->has_trait("Eye Patch") || girl->has_trait("One Eye")) && !girl->has_trait("Cyclops"))
+			{
+				girl->remove_trait("Different Colored Eyes", true, true);
 			}
 		}
+		else
+		{
+			// If she removes Cyclops, basically growing a second eye, we assume the new eye is good and the same color as the original one
+
+			// If removing "Different Colored Eyes", we assume this means her eyes have become the same color
+
+			// If removing "Eye Patch" or "One Eye", this may give back DCE if she does not have the others
+			if ((name == "Eye Patch" || name == "One Eye") &&
+				!girl->has_trait("Eye Patch") && !girl->has_trait("One Eye") && !girl->has_trait("Cyclops"))
+			{
+				RestoreRememberedTrait(girl, "Different Colored Eyes");
+			}
+		}
+	}
 
 #endif	// End of Eye Traits
 
 #if 0	// Start of Species Traits
 
-		else if (	// Check Eyesight Traits
-			name == "Succubus" ||
-			name == "Angel" ||
-			name == "Battery Operated" ||
-			name == "Canine" ||
-			name == "Cat Girl" ||
-			name == "Cow Girl" ||
-			name == "Demon" ||
-			name == "Dryad" ||
-			name == "Elf" ||
-			name == "Equine" ||
-			name == "Fallen Goddess" ||
-			name == "Furry" ||
-			name == "Goddess" ||
-			name == "Half-Breed" ||
-			name == "Not Human" ||
-			name == "Reptilian" ||
-			name == "Slitherer" ||
-			name == "Solar Powered")
+	else if (	// Check Eyesight Traits
+		name == "Succubus" ||
+		name == "Angel" ||
+		name == "Battery Operated" ||
+		name == "Canine" ||
+		name == "Cat Girl" ||
+		name == "Cow Girl" ||
+		name == "Demon" ||
+		name == "Dryad" ||
+		name == "Elf" ||
+		name == "Equine" ||
+		name == "Fallen Goddess" ||
+		name == "Furry" ||
+		name == "Goddess" ||
+		name == "Half-Breed" ||
+		name == "Not Human" ||
+		name == "Reptilian" ||
+		name == "Slitherer" ||
+		name == "Solar Powered")
+	{
+		if (apply)
 		{
-			if (apply)
-			{
-				if (name != "Succubus")			girl->remove_trait("Succubus", rememberflag, true);
-				if (name != "Angel")			girl->remove_trait("Angel", rememberflag, true);
-				if (name != "Battery Operated")	girl->remove_trait("Battery Operated", rememberflag, true);
-				if (name != "Canine")			girl->remove_trait("Canine", rememberflag, true);
-				if (name != "Cat Girl")			girl->remove_trait("Cat Girl", rememberflag, true);
-				if (name != "Cow Girl")			girl->remove_trait("Cow Girl", rememberflag, true);
-				if (name != "Demon")			girl->remove_trait("Demon", rememberflag, true);
-				if (name != "Dryad")			girl->remove_trait("Dryad", rememberflag, true);
-				if (name != "Elf")				girl->remove_trait("Elf", rememberflag, true);
-				if (name != "Equine")			girl->remove_trait("Equine", rememberflag, true);
-				if (name != "Fallen Goddess")	girl->remove_trait("Fallen Goddess", rememberflag, true);
-				if (name != "Furry")			girl->remove_trait("Furry", rememberflag, true);
-				if (name != "Goddess")			girl->remove_trait("Goddess", rememberflag, true);
-				if (name != "Half-Breed")		girl->remove_trait("Half-Breed", rememberflag, true);
-				if (name != "Not Human")		girl->remove_trait("Not Human", rememberflag, true);
-				if (name != "Reptilian")		girl->remove_trait("Reptilian", rememberflag, true);
-				if (name != "Slitherer")		girl->remove_trait("Slitherer", rememberflag, true);
-				if (name != "Solar Powered")	girl->remove_trait("Solar Powered", rememberflag, true);
-			}
-			else
-			{
-				/* */if (name != "Succubus" && HasRememberedTrait(girl, "Succubus"))					RestoreRememberedTrait(girl, "Succubus");
-				else if (name != "Angel" && HasRememberedTrait(girl, "Angel"))							RestoreRememberedTrait(girl, "Angel");
-				else if (name != "Battery Operated" && HasRememberedTrait(girl, "Battery Operated"))	RestoreRememberedTrait(girl, "Battery Operated");
-				else if (name != "Canine" && HasRememberedTrait(girl, "Canine"))						RestoreRememberedTrait(girl, "Canine");
-				else if (name != "Cat Girl" && HasRememberedTrait(girl, "Cat Girl"))					RestoreRememberedTrait(girl, "Cat Girl");
-				else if (name != "Cow Girl" && HasRememberedTrait(girl, "Cow Girl"))					RestoreRememberedTrait(girl, "Cow Girl");
-				else if (name != "Demon" && HasRememberedTrait(girl, "Demon"))							RestoreRememberedTrait(girl, "Demon");
-				else if (name != "Dryad" && HasRememberedTrait(girl, "Dryad"))							RestoreRememberedTrait(girl, "Dryad");
-				else if (name != "Elf" && HasRememberedTrait(girl, "Elf"))								RestoreRememberedTrait(girl, "Elf");
-				else if (name != "Equine" && HasRememberedTrait(girl, "Equine"))						RestoreRememberedTrait(girl, "Equine");
-				else if (name != "Fallen Goddess" && HasRememberedTrait(girl, "Fallen Goddess"))		RestoreRememberedTrait(girl, "Fallen Goddess");
-				else if (name != "Furry" && HasRememberedTrait(girl, "Furry"))							RestoreRememberedTrait(girl, "Furry");
-				else if (name != "Goddess" && HasRememberedTrait(girl, "Goddess"))						RestoreRememberedTrait(girl, "Goddess");
-				else if (name != "Half-Breed" && HasRememberedTrait(girl, "Half-Breed"))				RestoreRememberedTrait(girl, "Half-Breed");
-				else if (name != "Not Human" && HasRememberedTrait(girl, "Not Human"))					RestoreRememberedTrait(girl, "Not Human");
-				else if (name != "Reptilian" && HasRememberedTrait(girl, "Reptilian"))					RestoreRememberedTrait(girl, "Reptilian");
-				else if (name != "Slitherer" && HasRememberedTrait(girl, "Slitherer"))					RestoreRememberedTrait(girl, "Slitherer");
-				else if (name != "Solar Powered" && HasRememberedTrait(girl, "Solar Powered"))			RestoreRememberedTrait(girl, "Solar Powered");
-			}
+			if (name != "Succubus")			girl->remove_trait("Succubus", rememberflag, true);
+			if (name != "Angel")			girl->remove_trait("Angel", rememberflag, true);
+			if (name != "Battery Operated")	girl->remove_trait("Battery Operated", rememberflag, true);
+			if (name != "Canine")			girl->remove_trait("Canine", rememberflag, true);
+			if (name != "Cat Girl")			girl->remove_trait("Cat Girl", rememberflag, true);
+			if (name != "Cow Girl")			girl->remove_trait("Cow Girl", rememberflag, true);
+			if (name != "Demon")			girl->remove_trait("Demon", rememberflag, true);
+			if (name != "Dryad")			girl->remove_trait("Dryad", rememberflag, true);
+			if (name != "Elf")				girl->remove_trait("Elf", rememberflag, true);
+			if (name != "Equine")			girl->remove_trait("Equine", rememberflag, true);
+			if (name != "Fallen Goddess")	girl->remove_trait("Fallen Goddess", rememberflag, true);
+			if (name != "Furry")			girl->remove_trait("Furry", rememberflag, true);
+			if (name != "Goddess")			girl->remove_trait("Goddess", rememberflag, true);
+			if (name != "Half-Breed")		girl->remove_trait("Half-Breed", rememberflag, true);
+			if (name != "Not Human")		girl->remove_trait("Not Human", rememberflag, true);
+			if (name != "Reptilian")		girl->remove_trait("Reptilian", rememberflag, true);
+			if (name != "Slitherer")		girl->remove_trait("Slitherer", rememberflag, true);
+			if (name != "Solar Powered")	girl->remove_trait("Solar Powered", rememberflag, true);
 		}
+		else
+		{
+			/* */if (name != "Succubus" && HasRememberedTrait(girl, "Succubus"))					RestoreRememberedTrait(girl, "Succubus");
+			else if (name != "Angel" && HasRememberedTrait(girl, "Angel"))							RestoreRememberedTrait(girl, "Angel");
+			else if (name != "Battery Operated" && HasRememberedTrait(girl, "Battery Operated"))	RestoreRememberedTrait(girl, "Battery Operated");
+			else if (name != "Canine" && HasRememberedTrait(girl, "Canine"))						RestoreRememberedTrait(girl, "Canine");
+			else if (name != "Cat Girl" && HasRememberedTrait(girl, "Cat Girl"))					RestoreRememberedTrait(girl, "Cat Girl");
+			else if (name != "Cow Girl" && HasRememberedTrait(girl, "Cow Girl"))					RestoreRememberedTrait(girl, "Cow Girl");
+			else if (name != "Demon" && HasRememberedTrait(girl, "Demon"))							RestoreRememberedTrait(girl, "Demon");
+			else if (name != "Dryad" && HasRememberedTrait(girl, "Dryad"))							RestoreRememberedTrait(girl, "Dryad");
+			else if (name != "Elf" && HasRememberedTrait(girl, "Elf"))								RestoreRememberedTrait(girl, "Elf");
+			else if (name != "Equine" && HasRememberedTrait(girl, "Equine"))						RestoreRememberedTrait(girl, "Equine");
+			else if (name != "Fallen Goddess" && HasRememberedTrait(girl, "Fallen Goddess"))		RestoreRememberedTrait(girl, "Fallen Goddess");
+			else if (name != "Furry" && HasRememberedTrait(girl, "Furry"))							RestoreRememberedTrait(girl, "Furry");
+			else if (name != "Goddess" && HasRememberedTrait(girl, "Goddess"))						RestoreRememberedTrait(girl, "Goddess");
+			else if (name != "Half-Breed" && HasRememberedTrait(girl, "Half-Breed"))				RestoreRememberedTrait(girl, "Half-Breed");
+			else if (name != "Not Human" && HasRememberedTrait(girl, "Not Human"))					RestoreRememberedTrait(girl, "Not Human");
+			else if (name != "Reptilian" && HasRememberedTrait(girl, "Reptilian"))					RestoreRememberedTrait(girl, "Reptilian");
+			else if (name != "Slitherer" && HasRememberedTrait(girl, "Slitherer"))					RestoreRememberedTrait(girl, "Slitherer");
+			else if (name != "Solar Powered" && HasRememberedTrait(girl, "Solar Powered"))			RestoreRememberedTrait(girl, "Solar Powered");
+		}
+	}
 
 #endif	// End of Species Traits
 
@@ -6232,28 +6236,9 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, TraitSpec* trait, 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #endif	// End of Unsorted Traits
-
-		if (doOnce)
-		{
-			break;
-		}
-	}
 }
+
 
 
 bool cGirls::HasRememberedTrait(sGirl* girl, string trait)
@@ -14840,7 +14825,7 @@ bool sGirl::add_trait(string name, int temptime, bool removeitem, bool remember)
 			TraitSpec *addthistrait = g_Traits.GetTrait(name);
 			m_Traits[i] = addthistrait;
 
-			g_Girls.MutuallyExclusiveTraits(this, 1, m_Traits[i], removeitem);
+			g_Girls.MutuallyExclusiveTrait(this, 1, m_Traits[i], removeitem);
 			g_Girls.ApplyTraits(this, addthistrait);
 
 			return true;
@@ -14906,7 +14891,7 @@ bool sGirl::remove_trait(string name,  bool addrememberlist, bool force, bool ke
 		{
 			m_NumTraits--;
 
-			g_Girls.MutuallyExclusiveTraits(this, 0, m_Traits[i]);
+			g_Girls.MutuallyExclusiveTrait(this, 0, m_Traits[i]);
 			g_Girls.ApplyTraits(this);
 
 			if (m_TempTrait[i] > 0) m_TempTrait[i] = 0;

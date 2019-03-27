@@ -795,7 +795,8 @@ public:
 
 
 	static void ApplyTraits(sGirl* girl, TraitSpec* trait = 0);	// applys the stat bonuses for traits to a girl
-	static void MutuallyExclusiveTraits(sGirl* girl, bool apply, TraitSpec* trait = 0, bool rememberflag = false);
+	static void MutuallyExclusiveTraits(sGirl* girl, bool apply);
+	static void MutuallyExclusiveTrait(sGirl* girl, bool apply, TraitSpec* trait, bool rememberflag = false);
 
 	static bool PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, int eventtype = EVENT_GOODNEWS);
 	static bool PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
@@ -806,11 +807,6 @@ public:
 	static string AdjustTraitGroupGagReflex(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
 	static string AdjustTraitGroupBreastSize(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
 	static string AdjustTraitGroupFertility(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
-
-	int DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random = true, int img = 0);	// draws a image of a girl
-	CSurface* GetImageSurface(sGirl* girl, int ImgType, bool random, int& img, bool gallery = false);	// draws a image of a girl
-	cAnimatedSurface* GetAnimatedSurface(sGirl* girl, int ImgType, int& img);
-	bool IsAnimatedSurface(sGirl* girl, int ImgType, int& img);
 
 	int GetNumSlaveGirls();
 	int GetNumCatacombGirls();
