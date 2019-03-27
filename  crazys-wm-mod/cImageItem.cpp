@@ -814,98 +814,98 @@ int TryImageType(int imagetype, int tries)
 
 
 
-	case IMPTYPE_BRAND:
-	case IMPTYPE_PREGBRAND:
+	case IMGTYPE_BRAND:
+	case IMGTYPE_PREGBRAND:
 	{
 		if (t < 10)	return IMGTYPE_TORTURE;
-		return IMPTYPE_BRAND;
+		return IMGTYPE_BRAND;
 	}break;
 
-	case IMPTYPE_RAPE:
-	case IMPTYPE_PREGRAPE:
+	case IMGTYPE_RAPE:
+	case IMGTYPE_PREGRAPE:
 	{
 		if (t < 5)	return IMGTYPE_DEATH;
 		if (t < 10)	return IMGTYPE_GROUP;
 		if (t < 15)	return IMGTYPE_TORTURE;
-		return IMPTYPE_RAPE;
+		return IMGTYPE_RAPE;
 	}break;
 
-	case IMPTYPE_RAPEBEAST:
-	case IMPTYPE_PREGRAPEBEAST:
+	case IMGTYPE_RAPEBEAST:
+	case IMGTYPE_PREGRAPEBEAST:
 	{
 		if (t < 5)	return IMGTYPE_DEATH;
 		if (t < 10)	return IMGTYPE_TORTURE;
 		if (t < 15)	return IMGTYPE_BEAST;
-		return IMPTYPE_RAPEBEAST;
+		return IMGTYPE_RAPEBEAST;
 	}break;
 
 
 	case IMGTYPE_BIRTHHUMAN:
 	case IMGTYPE_PREGBIRTHHUMAN:
 	{
-		if (t < 15)	return IMPTYPE_BIRTHBEAST;
+		if (t < 15)	return IMGTYPE_BIRTHBEAST;
 		return IMGTYPE_BIRTHHUMAN;
 	}break;
 	case IMGTYPE_BIRTHHUMANMULTIPLE:
 	case IMGTYPE_PREGBIRTHHUMANMULTIPLE:
 	{
-		if (t < 15)	return IMPTYPE_BIRTHBEAST;
+		if (t < 15)	return IMGTYPE_BIRTHBEAST;
 		if (t < 20)	return IMGTYPE_BIRTHHUMAN;
 		return IMGTYPE_BIRTHHUMANMULTIPLE;
 	}break;
-	case IMPTYPE_BIRTHBEAST:
-	case IMPTYPE_PREGBIRTHBEAST:
+	case IMGTYPE_BIRTHBEAST:
+	case IMGTYPE_PREGBIRTHBEAST:
 	{
 		if (t < 15)	return IMGTYPE_BIRTHHUMAN;
-		return IMPTYPE_BIRTHBEAST;
+		return IMGTYPE_BIRTHBEAST;
 	}break;
-	case IMPTYPE_IMPREGSEX:
-	case IMPTYPE_PREGIMPREGSEX:
+	case IMGTYPE_IMPREGSEX:
+	case IMGTYPE_PREGIMPREGSEX:
 	{
 		if (t < 15)	return IMGTYPE_SEX;
-		return IMPTYPE_IMPREGSEX;
+		return IMGTYPE_IMPREGSEX;
 	}break;
-	case IMPTYPE_IMPREGGROUP:
-	case IMPTYPE_PREGIMPREGGROUP:
+	case IMGTYPE_IMPREGGROUP:
+	case IMGTYPE_PREGIMPREGGROUP:
 	{
 		if (t < 15)	return IMGTYPE_GROUP;
-		return IMPTYPE_IMPREGGROUP;
+		return IMGTYPE_IMPREGGROUP;
 	}break;
-	case IMPTYPE_IMPREGBDSM:
-	case IMPTYPE_PREGIMPREGBDSM:
+	case IMGTYPE_IMPREGBDSM:
+	case IMGTYPE_PREGIMPREGBDSM:
 	{
 		if (t < 15)	return IMGTYPE_BDSM;
-		return IMPTYPE_IMPREGBDSM;
+		return IMGTYPE_IMPREGBDSM;
 	}break;
-	case IMPTYPE_IMPREGBEAST:
-	case IMPTYPE_PREGIMPREGBEAST:
+	case IMGTYPE_IMPREGBEAST:
+	case IMGTYPE_PREGIMPREGBEAST:
 	{
 		if (t < 15)	return IMGTYPE_BEAST;
-		return IMPTYPE_IMPREGBEAST;
+		return IMGTYPE_IMPREGBEAST;
 	}break;
-	case IMPTYPE_VIRGINSEX:
-	case IMPTYPE_PREGVIRGINSEX:
+	case IMGTYPE_VIRGINSEX:
+	case IMGTYPE_PREGVIRGINSEX:
 	{
 		if (t < 15)	return IMGTYPE_SEX;
-		return IMPTYPE_VIRGINSEX;
+		return IMGTYPE_VIRGINSEX;
 	}break;
-	case IMPTYPE_VIRGINGROUP:
-	case IMPTYPE_PREGVIRGINGROUP:
+	case IMGTYPE_VIRGINGROUP:
+	case IMGTYPE_PREGVIRGINGROUP:
 	{
 		if (t < 15)	return IMGTYPE_GROUP;
-		return IMPTYPE_VIRGINGROUP;
+		return IMGTYPE_VIRGINGROUP;
 	}break;
-	case IMPTYPE_VIRGINBDSM:
-	case IMPTYPE_PREGVIRGINBDSM:
+	case IMGTYPE_VIRGINBDSM:
+	case IMGTYPE_PREGVIRGINBDSM:
 	{
 		if (t < 15)	return IMGTYPE_BDSM;
-		return IMPTYPE_VIRGINBDSM;
+		return IMGTYPE_VIRGINBDSM;
 	}break;
-	case IMPTYPE_VIRGINBEAST:
-	case IMPTYPE_PREGVIRGINBEAST:
+	case IMGTYPE_VIRGINBEAST:
+	case IMGTYPE_PREGVIRGINBEAST:
 	{
 		if (t < 15)	return IMGTYPE_BEAST;
-		return IMPTYPE_VIRGINBEAST;
+		return IMGTYPE_VIRGINBEAST;
 	}break;
 
 	
@@ -1063,8 +1063,8 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 			else if (lingerie)        { imagetype = IMGTYPE_ECCHI; }
 		}
 
-		/* */if (imagetype >= IMGTYPE_PREGBIRTHHUMAN && imagetype <= IMPTYPE_PREGVIRGINBEAST) imagetype -= PREG_OFFSET;		// `J` new .06.03.01 for DarkArk - These should not have preg varients 
-		else if (imagetype >= IMGTYPE_BIRTHHUMAN && imagetype <= IMPTYPE_VIRGINBEAST) {}									// `J` new .06.03.01 for DarkArk - These should not have preg varients 
+		/* */if (imagetype >= IMGTYPE_PREGBIRTHHUMAN && imagetype <= IMGTYPE_PREGVIRGINBEAST) imagetype -= PREG_OFFSET;		// `J` new .06.03.01 for DarkArk - These should not have preg varients 
+		else if (imagetype >= IMGTYPE_BIRTHHUMAN && imagetype <= IMGTYPE_VIRGINBEAST) {}									// `J` new .06.03.01 for DarkArk - These should not have preg varients 
 		else if (girl->is_pregnant())
 		{
 			if (imagetype < IMGTYPE_PREGNANT)	imagetype += PREG_OFFSET;

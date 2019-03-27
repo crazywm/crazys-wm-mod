@@ -301,7 +301,7 @@ bool cJobManager::WorkBrothelStripper(sGirl* girl, sBrothel* brothel, bool Day0N
 	//if (g_Dice.percent(10))//ruffe event
 	//{
 	//	ss << "A patron keep buying her drinks \n";
-	//	if (g_Girls.GetStat(girl, SKILL_HERBALISM) > 35)
+	//	if (girl->herbalism > 35)
 	//	{
 	//		ss << "but she noticed an extra taste that she knew was a drug to make her pass out. She reported him to secuirty and he was escorted out. Good news is she made a good amount of money off him before this.\n"; wages += 25;
 	//	}

@@ -428,11 +428,11 @@ public:
 
 	/*bool has_dildo()
 	{
-		return	girl->has_item_j("Compelling Dildo") != -1) ||
-			girl->has_item_j("Dildo") != -1) ||
-			girl->has_item_j("Studded Dildo") != -1) ||
-			girl->has_item_j("Double Dildo") != -1) ||
-			girl->has_item_j("Dreidel Dildo") != -1);
+		return	girl->has_item_j( "Compelling Dildo") != -1) ||
+			girl->has_item_j( "Dildo") != -1) ||
+			girl->has_item_j( "Studded Dildo") != -1) ||
+			girl->has_item_j( "Double Dildo") != -1) ||
+			girl->has_item_j( "Dreidel Dildo") != -1);
 	}*/
 
 

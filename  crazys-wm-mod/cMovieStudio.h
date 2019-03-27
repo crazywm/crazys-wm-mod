@@ -31,9 +31,14 @@ using namespace std;
 typedef struct sMovieScene
 {
 	int m_SceneNum;
+	int m_MovieSceneNum;
+	int m_Row;
+	int m_RowM;
 	string m_Name;
 	string m_Actress;
 	string m_Director;
+	string m_CM;
+	string m_CP;
 	int m_Job;
 	long m_Init_Quality;
 	long m_Quality;
@@ -89,17 +94,30 @@ public:
 
 	void StartMovie(int brothelID, int Time);
 	int  GetTimeToMovie(int brothelID);
-	void NewMovie(sMovieStudio* brothel, int Init_Quality, int Quality, int Promo_Quality, int Money_Made, int RunWeeks);
+	void NewMovie(sMovieStudio* brothel, string Name, string Director, string Cast, string Crew, int Init_Quality, int Quality, int Promo_Quality, int Money_Made, int RunWeeks);
 	void EndMovie(sBrothel* brothel);
 	bool CheckMovieGirls(sBrothel* brothel);	// checks if any girls are working on the movie
 	long calc_movie_quality(bool autoreleased = false);
-	void ReleaseCurrentMovie(bool autoreleased = false);
+	void ReleaseCurrentMovie(bool autoreleased = false, bool save = false);
+	string BuildDirectorList(bool autoreleased = false, bool save = false);
+	string BuildCastList(bool autoreleased = false, bool save = false);
+	string BuildCrewList(bool autoreleased = false, bool save = false);
 
 	sMovieScene* GetScene(int num);
+	sMovieScene* GetMovieScene(int num);
 	int GetNumScenes();
+	int GetNumMovieScenes();
+	vector<int> AddSceneToMovie(int num);
+	vector<int> RemoveSceneFromMovie(int num);
+	int MovieSceneUp(int num);
+	int MovieSceneDown(int num);
+	int DeleteScene(int num);
+	void SortMovieScenes();
+
+	vector<sMovieScene*> m_availableScenes;
 	vector<sMovieScene*> m_movieScenes;
-	int AddScene(sGirl* girl, int Job, int Bonus = 0);	// Added job parameter so different types of sex could effect film quality. --PP
-	void LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks);
+	int AddScene(sGirl* girl, int Job, int Bonus = 0, sGirl* Director = NULL, sGirl* CM = NULL, sGirl* CP = NULL);	// Added job parameter so different types of sex could effect film quality. --PP
+	void LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks, int m_MovieSceneNum, string m_CM = "", string m_CP = "");
 	void AddGirl(int brothelID, sGirl* girl, bool keepjob = false);
 	void RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl = false);
 	void UpdateMovieStudio();

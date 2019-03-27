@@ -28,10 +28,18 @@ private:
 	static bool ids_set;	// --- interface/event IDs --- //
 	int curstudio_id;		// Current Brothel text
 	int back_id;			// Back button
+	int autocreatemovies_id;// auto create movies checkbox
 	int sceneslist_id;		// Scenes listbox
+	int makethismovie_id;	// Make this movie
 	int releasemovie_id;	// Release movie
 	int girlimage_id;		// Girl image
+	int scrapscene_id;		// Scrap scene
+	int moveup_id;			// Move scene up in the movie
+	int movedown_id;		// Move scene down in the movie
+	int addscene_id;		// add selected scene
 	int removescene_id;		// removes selected scene
+	int scenedetails_id;	// scene details
+	int moviedetails_id;	// movie details
 
 	void set_ids();
 public:

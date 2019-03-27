@@ -57,7 +57,7 @@ bool cJobManager::WorkFilmPromoter(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		return true;
 	}
 	ss << " worked to promote the sales of the studio's films.\n \n";
-	bool movies = g_Studios.m_NumMovies > 0;
+	bool movies = brothel->m_NumMovies > 0;
 	if (!movies)	ss << "There were no movies for her to promote, so she just promoted the studio in general.\n \n";
 
 	g_Girls.UnequipCombat(girl);	// not for studio crew

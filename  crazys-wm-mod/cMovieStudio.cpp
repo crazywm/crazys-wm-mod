@@ -45,7 +45,6 @@ extern char             buffer[1000];
 extern bool				g_InitWin;
 extern cMovieStudioManager  g_Studios;
 
-
 // // ----- Strut sMovieStudio Create / destroy
 sMovieStudio::sMovieStudio() : m_Finance(0)	// constructor
 {
@@ -595,7 +594,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			else
 			{
 				current->m_Refused_To_Work_Night = true;
-				brothel->m_Fame -= current->fame();
+				brothel->m_Fame -= current->fame()/10;
 				ss << girlName << " refused to work so made no money.";
 			}
 		}
@@ -818,17 +817,156 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		current = current->m_Next;	// Process next girl
 	}
 
+
+	///////////////////////////////////
+	//  Finaly do end of day stuff.  //
+	///////////////////////////////////
 	current = brothel->m_Girls;
 	while (current)
 	{
+		if (current->is_dead())
+		{	// skip dead girls
+			if (current->m_Next) { current = current->m_Next; continue; }
+			else { current = 0; break; }
+		}
+		girlName = current->m_Realname;
+		sum = EVENT_SUMMARY; summary = ""; ss.str("");
+
 		// reset temporary matron reassignment if any
 		if (current->m_DayJob != restjob)
 		{
 			current->m_NightJob = current->m_DayJob;
 			current->m_DayJob = restjob;
 		}
+
+		// update for girls items that are not used up
+		do_daily_items(brothel, current);					// `J` added
+
+		// Level the girl up if nessessary
+		g_Girls.LevelUp(current);
+		// Natural healing, 2% health and 2% tiredness per day
+		current->health(2, false);
+		current->tiredness(-2, false);
+
+		sw = current->m_NightJob;
+		if (current->happiness()< 40)
+		{
+			if (sw != matronjob && matron && brothel->m_NumGirls > 1 && g_Dice.percent(70))
+			{
+				ss << "The Director helps cheer up " << girlName << " when she is feeling sad.\n";
+				current->happiness(g_Dice % 10 + 5);
+			}
+			else if (brothel->m_NumGirls > 10 && g_Dice.percent(50))
+			{
+				ss << "Some of the other girls help cheer up " << girlName << " when she is feeling sad.\n";
+				current->happiness(g_Dice % 8 + 3);
+			}
+			else if (brothel->m_NumGirls > 1 && g_Dice.percent(max(brothel->m_NumGirls, 50)))
+			{
+				ss << "One of the other girls helps cheer up " << girlName << " when she is feeling sad.\n";
+				current->happiness(g_Dice % 6 + 2);
+			}
+			else if (brothel->m_NumGirls == 1 && g_Dice.percent(70))
+			{
+				ss << girlName << " plays around in the empty building until she feels better.\n";
+				current->happiness(g_Dice % 10 + 10);
+			}
+			else if (current->health()< 20) // no one helps her and she is really unhappy
+			{
+				ss << girlName << " is looking very depressed. You may want to do something about that before she does something drastic.\n";
+				sum = EVENT_WARNING;
+			}
+		}
+
+		int t = current->tiredness();
+		int h = current->health();
+		if (sw == matronjob && (t > 60 || h < 40))
+		{
+			ss << "As Director, " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
+			if (t > 50 && h < 50)
+			{
+				ss << "some potions";
+				current->health(20 + g_Dice % 20, false);
+				current->tiredness(-(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(20, true);
+			}
+			else if (t > 50)
+			{
+				ss << "a resting potion";
+				current->tiredness(-(20 + g_Dice % 20), false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else if (h < 50)
+			{
+				ss << "a healing potion";
+				current->health(20 + g_Dice % 20, false);
+				g_Gold.consumable_cost(10, true);
+			}
+			else
+			{
+				ss << "a potion";
+				current->health(10 + g_Dice % 10, false);
+				current->tiredness(-(10 + g_Dice % 10), false);
+				g_Gold.consumable_cost(5, true);
+			}
+			ss << " for herself.\n";
+		}
+		else if (t > 80 || h < 40)
+		{
+			if (!matron)	// do no matron first as it is the easiest
+			{
+				ss << "WARNING! " << girlName;
+				/* */if (t > 80 && h < 20)	ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
+				else if (t > 80 && h < 40)	ss << " is in bad shape, she is tired and injured.\nShe should rest or she may die!\n";
+				else if (t > 80)/*      */	ss << " is desparatly in need of rest.\nGive her some free time\n";
+				else if (h < 20)/*      */	ss << " is badly injured.\nShe should rest or go to the Clinic.\n";
+				else if (h < 40)/*      */	ss << " is hurt.\nShe should rest and recuperate.\n";
+				sum = EVENT_WARNING;
+			}
+			else	// do all other girls with a matron working
+			{
+				if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255) // the girl has been working
+				{
+					current->m_PrevDayJob = current->m_DayJob;
+					current->m_PrevNightJob = current->m_NightJob;
+					current->m_DayJob = current->m_NightJob = restjob;
+					ss << "The Director takes " << girlName << " off duty to rest due to her ";
+					if (t > 80 && h < 40)	ss << "exhaustion.\n";
+					else if (t > 80)		ss << "tiredness.\n";
+					else if (h < 40)		ss << "low health.\n";
+					else /*       */		ss << "current state.\n";
+					sum = EVENT_WARNING;
+				}
+				else	// the girl has already been taken off duty by the matron
+				{
+					if (g_Dice.percent(70))
+					{
+						ss << "The Director helps ";
+						if (t > 80 && h < 40)
+						{
+							ss << girlName << " recuperate.\n";
+							current->health(2 + g_Dice % 4, false);
+							current->tiredness(-(2 + g_Dice % 4), false);
+						}
+						else if (t > 80)
+						{
+							ss << girlName << " to relax.\n";
+							current->tiredness(-(5 + g_Dice % 5), false);
+						}
+						else if (h < 40)
+						{
+							ss << " heal " << girlName << ".\n";
+							current->health(5 + g_Dice % 5, false);
+						}
+					}
+				}
+			}
+		}
+
+		if (ss.str().length() > 0)	current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+
+		current = current->m_Next;		// Process next girl
 	}
-    EndOfDay(brothel, "Director", 1, restjob, matronjob, matron);
 
 	m_Processing_Shift = -1;			// WD: Finished Processing Shift set flag
 }
@@ -892,6 +1030,8 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 	pBrothel->SetAttribute("AntiPregPotions", m_AntiPregPotions);
 	pBrothel->SetAttribute("AntiPregUsed", m_AntiPregUsed);
 	pBrothel->SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
+	pBrothel->SetAttribute("AutoCreateMovies", cfg.initial.autocreatemovies());
+
 
 	TiXmlElement* pMovies = new TiXmlElement("Movies");
 	pBrothel->LinkEndChild(pMovies);
@@ -900,6 +1040,10 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 	{
 		TiXmlElement* pMovie = new TiXmlElement("Movie");
 		pMovies->LinkEndChild(pMovie);
+		pMovie->SetAttribute("Name", movie->m_Name);
+		pMovie->SetAttribute("Director", movie->m_Director);
+		pMovie->SetAttribute("Cast", movie->m_Cast);
+		pMovie->SetAttribute("Crew", movie->m_Crew);
 		pMovie->SetAttribute("Init_Qual", movie->m_Init_Quality);
 		pMovie->SetAttribute("Qual", movie->m_Quality);
 		pMovie->SetAttribute("Promo_Qual", movie->m_Promo_Quality);
@@ -918,12 +1062,31 @@ TiXmlElement* sMovieStudio::SaveMovieStudioXML(TiXmlElement* pRoot)
 		pScene->SetAttribute("Name", g_Studios.GetScene(i)->m_Name);
 		pScene->SetAttribute("Actress", g_Studios.GetScene(i)->m_Actress);
 		pScene->SetAttribute("Director", g_Studios.GetScene(i)->m_Director);
+		pScene->SetAttribute("CM", g_Studios.GetScene(i)->m_CM);
+		pScene->SetAttribute("CP", g_Studios.GetScene(i)->m_CP);
 		pScene->SetAttribute("Job", g_Brothels.m_JobManager.JobQkNm[g_Studios.GetScene(i)->m_Job]);
 		pScene->SetAttribute("Init_Quality", g_Studios.GetScene(i)->m_Init_Quality);
 		pScene->SetAttribute("Quality", g_Studios.GetScene(i)->m_Quality);
 		pScene->SetAttribute("Promo_Quality", g_Studios.GetScene(i)->m_Promo_Quality);
 		pScene->SetAttribute("Money_Made", g_Studios.GetScene(i)->m_Money_Made);
 		pScene->SetAttribute("RunWeeks", g_Studios.GetScene(i)->m_RunWeeks);
+	}
+	for (int i = 0; i < g_Studios.GetNumMovieScenes(); i++)
+	{
+		TiXmlElement* pScene = new TiXmlElement("Scene");
+		pScenes->LinkEndChild(pScene);
+		pScene->SetAttribute("SceneNumber", g_Studios.GetMovieScene(i)->m_SceneNum);
+		pScene->SetAttribute("Name", g_Studios.GetMovieScene(i)->m_Name);
+		pScene->SetAttribute("Actress", g_Studios.GetMovieScene(i)->m_Actress);
+		pScene->SetAttribute("Director", g_Studios.GetMovieScene(i)->m_Director);
+		pScene->SetAttribute("CM", g_Studios.GetMovieScene(i)->m_CM);
+		pScene->SetAttribute("CP", g_Studios.GetMovieScene(i)->m_CP);
+		pScene->SetAttribute("Job", g_Brothels.m_JobManager.JobQkNm[g_Studios.GetMovieScene(i)->m_Job]);
+		pScene->SetAttribute("Init_Quality", g_Studios.GetMovieScene(i)->m_Init_Quality);
+		pScene->SetAttribute("Quality", g_Studios.GetMovieScene(i)->m_Quality);
+		pScene->SetAttribute("Promo_Quality", g_Studios.GetMovieScene(i)->m_Promo_Quality);
+		pScene->SetAttribute("Money_Made", g_Studios.GetMovieScene(i)->m_Money_Made);
+		pScene->SetAttribute("RunWeeks", g_Studios.GetMovieScene(i)->m_RunWeeks);
 	}
 		
 
@@ -1041,6 +1204,10 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 	pBrothel->QueryIntAttribute("AntiPregPotions", &m_AntiPregPotions);
 	pBrothel->QueryIntAttribute("AntiPregUsed", &m_AntiPregUsed);
 	pBrothel->QueryValueAttribute<bool>("KeepPotionsStocked", &m_KeepPotionsStocked);
+	
+	bool m_autocreatemovies = false;
+	pBrothel->QueryValueAttribute<bool>("AutoCreateMovies", &m_autocreatemovies);
+	cfg.initial.autocreatemovies() = m_autocreatemovies;
 
 	m_NumMovies = 0;
 	TiXmlElement* pMovies = pBrothel->FirstChildElement("Movies");
@@ -1050,6 +1217,10 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 			pMovie != 0;
 			pMovie = pMovie->NextSiblingElement("Movie"))
 		{
+			string Name		= (pMovie->Attribute("Name") ? pMovie->Attribute("Name") : "");
+			string Director = (pMovie->Attribute("Director") ? pMovie->Attribute("Director") : "");
+			string Cast		= (pMovie->Attribute("Cast") ? pMovie->Attribute("Cast") : "");
+			string Crew		= (pMovie->Attribute("Crew") ? pMovie->Attribute("Crew") : "");
 			long init_quality = 0;
 			long quality = 0;
 			long promo_quality = 0;
@@ -1068,7 +1239,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 			//but you directly save m_Quality, so this undoes the division
 			// --PP Changed quality to be equal instead of half, to increase movie value.
 			// quality *= 2;
-			g_Studios.NewMovie(this, init_quality, quality, promo_quality, money_made, runweeks);
+			g_Studios.NewMovie(this, Name, Director, Cast, Crew, init_quality, quality, promo_quality, money_made, runweeks);
 
 		}
 	}
@@ -1080,20 +1251,25 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 			pScene != 0;
 			pScene = pScene->NextSiblingElement("Scene"))
 		{
-			int scenenum; int job;
+			int scenenum; int mscenenum; int job;
 			long init_quality = 0; long quality = 0; long promo_quality = 0; long money_made = 0; long runweeks = -1;
 
 			pScene->QueryIntAttribute("SceneNumber", &scenenum);
+			if (pScene->Attribute("MovieSceneNumber")) 
+				{ pScene->QueryIntAttribute("MovieSceneNumber", &mscenenum); }
+			else { mscenenum = -1; }
 			string name = (pScene->Attribute("Name") ? pScene->Attribute("Name") : "");
 			string actress = (pScene->Attribute("Actress") ? pScene->Attribute("Actress") : "");
 			string director = (pScene->Attribute("Director") ? pScene->Attribute("Director") : "");
+			string cm = (pScene->Attribute("CM") ? pScene->Attribute("CM") : "");
+			string cp = (pScene->Attribute("CP") ? pScene->Attribute("CP") : "");
 			job = (pScene->Attribute("Job") ? sGirl::lookup_jobs_code(pScene->Attribute("Job")) : JOB_FILMRANDOM);
 			pScene->QueryValueAttribute<long>("Init_Quality", &init_quality);
 			pScene->QueryValueAttribute<long>("Quality", &quality);
 			pScene->QueryValueAttribute<long>("Promo_Quality", &promo_quality);
 			pScene->QueryValueAttribute<long>("Money_Made", &money_made);
 			pScene->QueryValueAttribute<long>("RunWeeks", &runweeks);
-			g_Studios.LoadScene(scenenum, name, actress, director, job, init_quality, quality, promo_quality, money_made, runweeks);
+			g_Studios.LoadScene(scenenum, name, actress, director, job, init_quality, quality, promo_quality, money_made, runweeks, mscenenum, cm, cp);
 		}
 	}
 
@@ -1129,13 +1305,99 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 // ----- Get / Set
 sMovieScene* cMovieStudioManager::GetScene(int num)
 {
-	return g_Studios.m_movieScenes.at(num);
+	return g_Studios.m_availableScenes.at(num);
 }
 
 int cMovieStudioManager::GetNumScenes()
 {
+	return g_Studios.m_availableScenes.size();
+}
+sMovieScene* cMovieStudioManager::GetMovieScene(int num)
+{
+	return g_Studios.m_movieScenes.at(num);
+}
+int cMovieStudioManager::GetNumMovieScenes()
+{
 	return g_Studios.m_movieScenes.size();
 }
+
+vector<int> cMovieStudioManager::AddSceneToMovie(int num)
+{
+	if (num >= 0)
+	{
+		sMovieScene* scene = g_Studios.GetScene(num);
+		scene->m_RowM = g_Studios.GetNumMovieScenes();
+		scene->m_MovieSceneNum = g_Studios.GetNumMovieScenes() + 1;
+		m_availableScenes.erase(m_availableScenes.begin() + num);
+		m_movieScenes.push_back(scene);
+		SortMovieScenes();
+	}
+	return{ (num >= g_Studios.GetNumScenes() ? g_Studios.GetNumScenes() - 1 : num), g_Studios.GetNumMovieScenes() - 1 };
+}
+vector<int> cMovieStudioManager::RemoveSceneFromMovie(int num)
+{
+	if (num >= 0)
+	{
+		sMovieScene* scene = g_Studios.GetMovieScene(num);
+		scene->m_RowM = -1;
+		scene->m_MovieSceneNum = -1;
+		m_movieScenes.erase(m_movieScenes.begin() + num);
+		m_availableScenes.push_back(scene);
+		SortMovieScenes();
+	}
+	return { g_Studios.GetNumScenes() - 1, num - 1 };
+}
+int cMovieStudioManager::MovieSceneUp(int num)
+{
+	if (num > 0)
+	{
+		m_movieScenes[num]->m_RowM--;
+		m_movieScenes[num]->m_MovieSceneNum--;
+		m_movieScenes[num - 1]->m_RowM++;
+		m_movieScenes[num - 1]->m_MovieSceneNum++;
+		SortMovieScenes();
+	}
+	return num - 1;
+}
+int cMovieStudioManager::MovieSceneDown(int num)
+{
+	if (num >= 0 && num < g_Studios.GetNumMovieScenes() - 1)
+	{
+		m_movieScenes[num]->m_RowM++;
+		m_movieScenes[num]->m_MovieSceneNum++;
+		m_movieScenes[num + 1]->m_RowM--;
+		m_movieScenes[num + 1]->m_MovieSceneNum--;
+		SortMovieScenes();
+	}
+	return num + 1;
+}
+int cMovieStudioManager::DeleteScene(int num)
+{
+	if (num >= 0)
+	{
+		m_availableScenes.erase(m_availableScenes.begin() + num);
+	}
+	if (num >= g_Studios.GetNumScenes()) num = g_Studios.GetNumScenes();
+	return num;
+}
+bool SortMovieScene(sMovieScene* a, sMovieScene* b)
+{
+	return (a->m_RowM < b->m_RowM);
+}
+void cMovieStudioManager::SortMovieScenes()
+{
+	if (g_Studios.GetNumMovieScenes() < 1) { return; }										// if there are none we don't need to sort it.
+	std::sort(m_movieScenes.begin(), m_movieScenes.end(), SortMovieScene);
+
+	for (int i = 0; i < g_Studios.GetNumMovieScenes(); i++)									// we need to go through the scenes and find out what order they are in
+	{
+		sMovieScene* scene = g_Studios.GetMovieScene(i);
+		scene->m_RowM = i;
+		scene->m_MovieSceneNum = i + 1;
+	}
+
+}
+
 
 void sMovieScene::OutputSceneRow(string* Data, const vector<string>& columnNames)
 {
@@ -1151,17 +1413,28 @@ void sMovieScene::OutputSceneDetailString(string& Data, const string& detailName
 	//given a statistic name, set a string to a value that represents that statistic
 	static stringstream ss;
 	ss.str("");
-	/* */if (detailName == "SceneNumber")	{ ss << m_SceneNum; }
-	else if (detailName == "Name")			{ ss << m_Name; }
-	else if (detailName == "Actress")		{ ss << m_Actress; }
-	else if (detailName == "Director")		{ ss << m_Director; }
-	else if (detailName == "Job")			{ ss << g_Brothels.m_JobManager.JobName[m_Job]; }
-	else if (detailName == "Init_Quality")	{ ss << m_Init_Quality; }
-	else if (detailName == "Quality")		{ ss << m_Quality; }
-	else if (detailName == "Promo_Quality")	{ ss << m_Promo_Quality; }
-	else if (detailName == "Money_Made")	{ ss << m_Money_Made; }
-	else if (detailName == "RunWeeks")		{ ss << m_RunWeeks; }
-	else /*                           */	{ ss << "Not found"; }
+	/* */if (detailName == "SceneNumber")		{ ss << m_SceneNum; }
+	else if (detailName == "MovieSceneNumber")	{ ss << m_MovieSceneNum; }
+	else if (detailName == "Name")				{ ss << m_Name; }
+	else if (detailName == "Actress")			{ ss << m_Actress; }
+	else if (detailName == "Director")			{ ss << m_Director; }
+	else if (detailName == "Camera Mage")		{ ss << m_CM; }
+	else if (detailName == "CameraMage")		{ ss << m_CM; }
+	else if (detailName == "Camera_Mage")		{ ss << m_CM; }
+	else if (detailName == "Camera")			{ ss << m_CM; }
+	else if (detailName == "CM")				{ ss << m_CM; }
+	else if (detailName == "Crystal Purifier")	{ ss << m_CP; }
+	else if (detailName == "CrystalPurifier")	{ ss << m_CP; }
+	else if (detailName == "Crystal_Purifier")	{ ss << m_CP; }
+	else if (detailName == "Crystal")			{ ss << m_CP; }
+	else if (detailName == "CP")				{ ss << m_CP; }
+	else if (detailName == "Job")				{ ss << g_Brothels.m_JobManager.JobName[m_Job]; }
+	else if (detailName == "Init_Quality")		{ ss << m_Init_Quality; }
+	else if (detailName == "Quality")			{ ss << m_Quality; }
+	else if (detailName == "Promo_Quality")		{ ss << m_Promo_Quality; }
+	else if (detailName == "Money_Made")		{ ss << m_Money_Made; }
+	else if (detailName == "RunWeeks")			{ ss << m_RunWeeks; }
+	else /*                               */	{ ss << "Not found"; }
 	Data = ss.str();
 }
 
@@ -1189,9 +1462,13 @@ int cMovieStudioManager::GetTimeToMovie(int brothelID)
 	return current->m_ShowTime;
 }
 
-void cMovieStudioManager::NewMovie(sMovieStudio* brothel, int Init_Quality, int Quality, int Promo_Quality, int Money_Made, int RunWeeks)
+void cMovieStudioManager::NewMovie(sMovieStudio* brothel, string Name, string Director, string Cast, string Crew, int Init_Quality, int Quality, int Promo_Quality, int Money_Made, int RunWeeks)
 {
 	sMovie* newMovie = new sMovie();
+	newMovie->m_Name = Name;
+	newMovie->m_Director = Director;
+	newMovie->m_Cast = Cast;
+	newMovie->m_Crew = Crew;
 	newMovie->m_Init_Quality = Init_Quality;
 	newMovie->m_Promo_Quality = Promo_Quality;
 	newMovie->m_Quality = Quality;
@@ -1250,14 +1527,17 @@ bool cMovieStudioManager::CrewNeeded()	// `J` added, if CM and CP both on duty o
 }
 
 // ----- Add / remove
-int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
+int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus, sGirl* Director, sGirl* CM, sGirl* CP)
 {
 	sMovieStudio* current = (sMovieStudio*)m_Parent;
-	sMovieScene* newScene = new sMovieScene();
+                                           
 	stringstream ss;
 	string girlName = girl->m_Realname;
 
-	if (newScene == 0) return 0;
+	if (!Director) { Director = g_Studios.GetRandomGirlOnJob(0, JOB_DIRECTOR, SHIFT_NIGHT); }
+	if (!CM) { CM = g_Studios.GetRandomGirlOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT); }
+	if (!CP) { CP = g_Studios.GetRandomGirlOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT); }
+
 	// NOTE i crazy added this to try and improve the movies before it only check for normalsex skill now it should check for each skill type i hope
 	// Fixed so it will check for skill type being used --PP
 	long quality = 0;
@@ -1303,7 +1583,7 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 		//case JOB_FILMDOM:			jobType = EVIL;		quality += 8;	Skill = SKILL_BDSM;			ss << "Dominatrix";		break;
 	default:		ss << "Movie ";		break;
 	}
-	ss << " scene by  " << girlName;
+	ss << " scene by " << girlName;
 
 	// `J` do job based modifiers
 	quality += girl->get_skill(Skill) / 5;
@@ -1397,40 +1677,40 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 
 	if (Job == JOB_FILMANAL) //May need work FIXME CRAZY
 	{
-		if (girl->has_trait("Great Arse"))				quality += 10;
-		if (girl->has_trait("Tight Butt"))				quality += 8;
-		if (girl->has_trait("Phat Booty"))				quality += 6;
-		if (girl->has_trait("Wide Bottom"))				quality += 4;
-		if (girl->has_trait("Plump Tush"))				quality += 2;
-		if (girl->has_trait("Flat Ass"))					quality -= 10;
+		if (girl->has_trait("Great Arse"))			quality += 10;
+		if (girl->has_trait("Tight Butt"))			quality += 8;
+		if (girl->has_trait("Phat Booty"))			quality += 6;
+		if (girl->has_trait("Wide Bottom"))			quality += 4;
+		if (girl->has_trait("Plump Tush"))			quality += 2;
+		if (girl->has_trait("Flat Ass"))			quality -= 10;
 	}
 
 	if (girl->has_trait("Lesbian"))
 	{
 		//a lesbian would be more into it and give a better show I would think CRAZY
-		if (Job == JOB_FILMLESBIAN)		quality += 10;
+		if (Job == JOB_FILMLESBIAN)					quality += 10;
 		// `J` and she would be less into doing it with a guy
-		if (Job == JOB_FILMANAL)			quality -= 10;
-		if (Job == JOB_FILMGROUP)			quality -= 10;
-		if (Job == JOB_FILMORAL)		quality -= 10;
-		if (Job == JOB_FILMSEX)			quality -= 5;
-		if (Job == JOB_FILMTITTY)		quality -= 4;
-		if (Job == JOB_FILMFOOTJOB)		quality -= 2;
-		if (Job == JOB_FILMHANDJOB)		quality -= 2;
-		if (Job == JOB_FILMMAST)		quality -= 1;
+		if (Job == JOB_FILMANAL)					quality -= 10;
+		if (Job == JOB_FILMGROUP)					quality -= 10;
+		if (Job == JOB_FILMORAL)					quality -= 10;
+		if (Job == JOB_FILMSEX)						quality -= 5;
+		if (Job == JOB_FILMTITTY)					quality -= 4;
+		if (Job == JOB_FILMFOOTJOB)					quality -= 2;
+		if (Job == JOB_FILMHANDJOB)					quality -= 2;
+		if (Job == JOB_FILMMAST)					quality -= 1;
 	}
 	if (girl->has_trait("Straight"))
 	{
 		// `J` similarly, a straight girl would be less into doing it with another girl (but not as much)
-		if (Job == JOB_FILMLESBIAN)		quality -= 5;
-		if (Job == JOB_FILMANAL)			quality += 2;
-		if (Job == JOB_FILMSEX)		quality += 5;
-		if (Job == JOB_FILMGROUP)			quality += 1;
-		if (Job == JOB_FILMORAL)		quality += 1;
-		if (Job == JOB_FILMTITTY)		quality += 2;
-		if (Job == JOB_FILMFOOTJOB)		quality += 2;
-		if (Job == JOB_FILMHANDJOB)		quality += 2;
-		if (Job == JOB_FILMMAST)		quality += 1;	// foot job needs to be added so will use service until then
+		if (Job == JOB_FILMLESBIAN)					quality -= 5;
+		if (Job == JOB_FILMANAL)					quality += 2;
+		if (Job == JOB_FILMSEX)						quality += 5;
+		if (Job == JOB_FILMGROUP)					quality += 1;
+		if (Job == JOB_FILMORAL)					quality += 1;
+		if (Job == JOB_FILMTITTY)					quality += 2;
+		if (Job == JOB_FILMFOOTJOB)					quality += 2;
+		if (Job == JOB_FILMHANDJOB)					quality += 2;
+		if (Job == JOB_FILMMAST)					quality += 1;	// foot job needs to be added so will use service until then
 	}
 
 
@@ -1461,47 +1741,61 @@ int cMovieStudioManager::AddScene(sGirl* girl, int Job, int Bonus)
 
 	// Add bonus for Fluffer, CameraMage and CrystalPurifier --PP
 	if (Job != JOB_FILMMAST && Job != JOB_FILMLESBIAN && Job != JOB_FILMSTRIP)	// No fluffers needed --PP no need for strip either CRAZY
-		quality += g_Studios.m_FlufferQuality;
+	quality += g_Studios.m_FlufferQuality;
 
-	quality += g_Studios.m_CameraQuality + g_Studios.m_PurifierQaulity + g_Studios.m_DirectorQuality + g_Studios.m_StagehandQuality;
+	quality += g_Studios.m_CameraQuality;
+	quality += g_Studios.m_PurifierQaulity;
+	quality += g_Studios.m_DirectorQuality;
 
-	newScene->m_SceneNum = ++g_Studios.m_TotalScenesFilmed;
-	newScene->m_Name = ss.str();
-	newScene->m_Actress = girl->m_Realname;
-	newScene->m_Director = g_Studios.m_DirectorName;
-	newScene->m_Job = Job;
-	newScene->m_Init_Quality = quality;
-	newScene->m_Quality = quality;
-	newScene->m_Promo_Quality = 0;
-	newScene->m_Money_Made = 0;
-	newScene->m_RunWeeks = 0;
-	m_movieScenes.push_back(newScene);
+	quality += g_Studios.m_StagehandQuality;
+
+
+	LoadScene(
+		 /* int m_SceneNum			*/	++g_Studios.m_TotalScenesFilmed
+		,/* string m_Name 			*/	ss.str()
+		,/* string m_Actress 		*/	girl->m_Realname
+		,/* string m_Director 		*/	Director->m_Realname
+		,/* int m_Job 				*/	Job
+		,/* long m_Init_Quality 	*/	quality
+		,/* long m_Quality 			*/	quality
+		,/* long m_Promo_Quality 	*/	0
+		,/* long m_Money_Made 		*/	0
+		,/* long m_RunWeeks 		*/	0
+		,/* int m_MovieSceneNum 	*/	-1
+		,/* string m_CM 			*/	CM->m_Realname
+		,/* string m_CP				*/	CP->m_Realname
+		);
 	return performance;
 }
-void cMovieStudioManager::LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks)
+void cMovieStudioManager::LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks, int m_MovieSceneNum, string m_CM, string m_CP)
 {
 	sMovieScene* newScene = new sMovieScene();
 	newScene->m_SceneNum = m_SceneNum;
+	newScene->m_MovieSceneNum = m_MovieSceneNum;
 	newScene->m_Name = m_Name;
-	newScene->m_Director = m_Director;
+                                   
 	newScene->m_Actress = m_Actress;
+	newScene->m_Director = m_Director;
+	newScene->m_CM = m_CM;
+	newScene->m_CP = m_CP;
 	newScene->m_Job = m_Job;
 	newScene->m_Init_Quality = m_Init_Quality;
 	newScene->m_Quality = m_Quality;
 	newScene->m_Promo_Quality = m_Promo_Quality;
 	newScene->m_Money_Made = m_Money_Made;
 	newScene->m_RunWeeks = m_RunWeeks;
-	m_movieScenes.push_back(newScene);
+	m_availableScenes.push_back(newScene);
 }
 
 long cMovieStudioManager::calc_movie_quality(bool autoreleased)
 {
 	stringstream ss;
 	long quality = 0;
-	int numscenes = m_movieScenes.size();
+
 
 	if (autoreleased)
 	{
+		int numscenes = m_availableScenes.size();
 		int makerqual = g_Dice % 10 + 1;
 		int thrownout = 0;
 		int edited = 0;
@@ -1521,11 +1815,11 @@ long cMovieStudioManager::calc_movie_quality(bool autoreleased)
 			if (maker->m_NightJob == JOB_DIRECTOR)			ss << "Director ";
 			if (maker->m_NightJob == JOB_PROMOTER)			ss << "Promoter ";
 			ss << maker->m_Realname << " produced a movie from the scenes shot last week";
-			for (int i = 0; i < (int)m_movieScenes.size(); i++)
+			for (int i = 0; i < (int)m_availableScenes.size(); i++)
 			{
-				if (m_movieScenes[i]->m_Quality < 0)
+				if (m_availableScenes[i]->m_Quality < 0)
 				{
-					m_movieScenes[i]->m_Quality = 0;
+					m_availableScenes[i]->m_Quality = 0;
 					thrownout++;
 				}
 			}
@@ -1551,28 +1845,168 @@ long cMovieStudioManager::calc_movie_quality(bool autoreleased)
 			}
 		}
 		ss << ".\n \n";
+  
+		for (int i = 0; i < (int)m_availableScenes.size(); i++)
+		{
+			quality += m_availableScenes[i]->m_Quality;
+		}
+		quality += numscenes * 10;
+		ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n \n";
+		ss << (g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 0) > 0 ? "Your" : "A");
+		ss << " promoter with an advertising budget will help it sell for more.";
 	}
-	for (int i = 0; i < (int)m_movieScenes.size(); i++)
+	else
 	{
-		quality += m_movieScenes[i]->m_Quality;
+		int numscenes = m_movieScenes.size();
+		for (int i = 0; i < numscenes; i++)
+		{
+			quality += m_movieScenes[i]->m_Quality;
+		}
+		quality += numscenes * 10;
+		ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n \n";
+		ss << (g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 0) > 0 ? "Your" : "A");
+		ss << " promoter with an advertising budget will help it sell for more.";
+
 	}
-	quality += numscenes * 10;
-	ss << "This movie will sell at " << quality << " gold, for 35 weeks, but it's value will drop over time.\n \n";
-	ss << (g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, 0) > 0 ? "Your" : "A");
-	ss << " promoter with an advertising budget will help it sell for more.";
 	g_MessageQue.AddToQue(ss.str(), COLOR_BLUE);
 	g_InitWin = true;
 	return quality;
 }
 
-void cMovieStudioManager::ReleaseCurrentMovie(bool autoreleased)
+void cMovieStudioManager::ReleaseCurrentMovie(bool autoreleased, bool save)
 {
 	sMovieStudio* current = (sMovieStudio*)m_Parent;
+	string Name = "";
+	string Director = BuildDirectorList(autoreleased,true);
+	string Cast = BuildCastList(autoreleased, true);
+	string Crew = BuildCrewList(autoreleased, true);
 	long init_quality = calc_movie_quality(autoreleased);
 	long quality = init_quality;	// calculate movie quality
 	long promo_quality = 0;
 	long money_made = 0;
 	long runweeks = 0;
-	m_movieScenes.clear();					// clear scene list
-	NewMovie(current, init_quality, quality, promo_quality, money_made, runweeks);	//add new movie
+
+	if (autoreleased) {	// old code
+		m_availableScenes.clear();					// clear scene list
+	}
+	else
+	{
+		m_movieScenes.clear();						// clear scene list
+                                                                                               
+	}
+	NewMovie(current, Name, Director, Cast, Crew, init_quality, quality, promo_quality, money_made, runweeks);	//add new movie
+
+}
+string cMovieStudioManager::BuildDirectorList(bool autoreleased, bool save)
+{
+	vector<string> names;
+	vector<string> namesB;
+	stringstream ss;
+	if (autoreleased)
+	{
+		for (int i = 0; i < (int)m_availableScenes.size(); i++)
+		{
+			
+			if (m_availableScenes[i]->m_Director != "") names.push_back(m_availableScenes[i]->m_Director);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < (int)m_movieScenes.size(); i++)
+		{
+			if (m_movieScenes[i]->m_Director != "") names.push_back(m_movieScenes[i]->m_Director);
+		}
+	}
+	if (names.size() <= 0) { return ""; }
+	namesB = names;
+	std::sort(names.begin(), names.end());
+	names.resize(std::distance(names.begin(),std::unique(names.begin(), names.end())));
+
+	if (!save)
+	{
+		ss << "Director" << (names.size() == 1 ? ":  " : "s:  ");
+	}
+	for (int i = 0; i < (int)names.size(); i++)
+	{
+		ss << names[i];
+		if ((int)names.size() > 1 && i < (int)names.size() - 1) ss << ", ";
+	}
+
+	return ss.str();
+}
+string cMovieStudioManager::BuildCastList(bool autoreleased, bool save)
+{
+	vector<string> names;
+	vector<string> namesB;
+	stringstream ss;
+	if (autoreleased)
+	{
+		for (int i = 0; i < (int)m_availableScenes.size(); i++)
+		{
+			if (m_availableScenes[i]->m_Actress != "") names.push_back(m_availableScenes[i]->m_Actress);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < (int)m_movieScenes.size(); i++)
+		{
+			if (m_movieScenes[i]->m_Actress != "") names.push_back(m_movieScenes[i]->m_Actress);
+		}
+	}
+	if (names.size() <= 0) { return ""; }
+
+	namesB = names;
+	std::sort(names.begin(), names.end());
+	names.resize(std::distance(names.begin(), std::unique(names.begin(), names.end())));
+
+	if (!save)
+	{
+		ss << "Actress" << (names.size() == 1 ? ":  " : "es:  ");
+	}
+	for (int i = 0; i < (int)names.size(); i++)
+	{
+		ss << names[i];
+		if ((int)names.size() > 1 && i < (int)names.size() - 1) ss << ", ";
+	}
+
+	return ss.str();
+}
+string cMovieStudioManager::BuildCrewList(bool autoreleased, bool save)
+{
+	vector<string> names;
+	vector<string> namesB;
+	stringstream ss;
+	if (autoreleased)
+	{
+		for (int i = 0; i < (int)m_availableScenes.size(); i++)
+		{
+			if (m_availableScenes[i]->m_CM != "") names.push_back(m_availableScenes[i]->m_CM);
+			if (m_availableScenes[i]->m_CP != "") names.push_back(m_availableScenes[i]->m_CP);
+		}
+	}
+	else
+	{
+		for (int i = 0; i < (int)m_movieScenes.size(); i++)
+		{
+			if (m_movieScenes[i]->m_CM != "") names.push_back(m_movieScenes[i]->m_CM);
+			if (m_movieScenes[i]->m_CP != "") names.push_back(m_movieScenes[i]->m_CP);
+		}
+	}
+	if (names.size() <= 0) { return ""; }
+
+	namesB = names;
+	std::sort(names.begin(), names.end());
+	names.resize(std::distance(names.begin(), std::unique(names.begin(), names.end())));
+
+	if (!save)
+	{
+		ss << "Crew:  ";
+	}
+	for (int i = 0; i < (int)names.size(); i++)
+	{
+		ss << names[i];
+		if ((int)names.size() > 1 && i < (int)names.size() - 1) ss << ", ";
+	}
+
+	return ss.str();
 }

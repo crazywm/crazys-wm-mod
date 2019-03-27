@@ -836,11 +836,19 @@ void handle_hotkeys()
 					msg += "Space   Goto Girl Details\n";
 					msg += "Enter   Goto Girl Details\n";
 					msg += "\n";
+					msg += "C     Create Movie\n";
+					msg += "\n";
 					break;
 				case SCREEN_CREATEMOVIE:
 					msg += "Create Movie:\n";
-					msg += "No special hotkeys\n";
-					msg += "Yet...\n";
+					msg += "Q     Available Scene Select Up\n";
+					msg += "A     Available Scene Select Down\n";
+					msg += "W     Current Movie Select Up\n";
+					msg += "S     Current Movie Select Down\n";
+					msg += "E     Current Movie Move Up \n";
+					msg += "D     Current Movie Move Down\n";
+					msg += "R     Add Scene\n";
+					msg += "F     Remove Scene\n";
 					msg += "\n";
 					break;
 				case SCREEN_BUILDINGMANAGEMENT:

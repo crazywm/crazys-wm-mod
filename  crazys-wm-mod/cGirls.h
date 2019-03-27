@@ -478,65 +478,64 @@ struct sGirl
 	*	Now then:
 	*/
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.h
-	int charisma()				{ return get_stat(STAT_CHARISMA); }
-	int charisma(int n)			{ return upd_stat(STAT_CHARISMA, n); }
-	int happiness()				{ return get_stat(STAT_HAPPINESS); }
-	int happiness(int n)		{ return upd_stat(STAT_HAPPINESS, n); }
-	int libido()				{ return get_stat(STAT_LIBIDO); }
-	int libido(int n)			{ return upd_stat(STAT_LIBIDO, n); }
-	int constitution()			{ return get_stat(STAT_CONSTITUTION); }
-	int constitution(int n)		{ return upd_stat(STAT_CONSTITUTION, n); }
-	int intelligence()			{ return get_stat(STAT_INTELLIGENCE); }
-	int intelligence(int n)		{ return upd_stat(STAT_INTELLIGENCE, n); }
-	int confidence()			{ return get_stat(STAT_CONFIDENCE); }
-	int confidence(int n)		{ return upd_stat(STAT_CONFIDENCE, n); }
-	int mana()					{ return get_stat(STAT_MANA); }
-	int mana(int n)				{ return upd_stat(STAT_MANA, n); }
-	int agility()				{ return get_stat(STAT_AGILITY); }
-	int agility(int n)			{ return upd_stat(STAT_AGILITY, n); }
-	int strength()				{ return get_stat(STAT_STRENGTH); }
-	int strength(int n)			{ return upd_stat(STAT_STRENGTH, n); }
-	int fame()					{ return get_stat(STAT_FAME); }
-	int fame(int n)				{ return upd_stat(STAT_FAME, n); }
-	int level()					{ return get_stat(STAT_LEVEL); }
-	int level(int n)			{ return upd_stat(STAT_LEVEL, n); }
-	int askprice()				{ return get_stat(STAT_ASKPRICE); }
-	int askprice(int n)			{ return upd_stat(STAT_ASKPRICE, n); }
-	/* It's NOT lupus! */
-	int house()					{ return get_stat(STAT_HOUSE); }
-	int house(int n)			{ return upd_stat(STAT_HOUSE, n); }
-	int exp()					{ return get_stat(STAT_EXP); }
-	int exp(int n)				{ return upd_stat(STAT_EXP, n); }
-	int age()					{ return get_stat(STAT_AGE); }
-	int age(int n)				{ return upd_stat(STAT_AGE, n); }
-	int obedience()				{ return get_stat(STAT_OBEDIENCE); }
-	int obedience(int n)		{ return upd_stat(STAT_OBEDIENCE, n); }
-	int spirit()				{ return get_stat(STAT_SPIRIT); }
-	int spirit(int n)			{ return upd_stat(STAT_SPIRIT, n); }
-	int beauty()				{ return get_stat(STAT_BEAUTY); }
-	int beauty(int n)			{ return upd_stat(STAT_BEAUTY, n); }
-	int tiredness()				{ return get_stat(STAT_TIREDNESS); }
-	int tiredness(int n)		{ return upd_stat(STAT_TIREDNESS, n); }
-	int health()				{ return get_stat(STAT_HEALTH); }
-	int health(int n)			{ return upd_stat(STAT_HEALTH, n); }
-	int pcfear()				{ return get_stat(STAT_PCFEAR); }
-	int pcfear(int n)			{ return upd_stat(STAT_PCFEAR, n); }
-	int pclove()				{ return get_stat(STAT_PCLOVE); }
-	int pclove(int n)			{ return upd_stat(STAT_PCLOVE, n); }
-	int pchate()				{ return get_stat(STAT_PCHATE); }
-	int pchate(int n)			{ return upd_stat(STAT_PCHATE, n); }
-	int morality()				{ return get_stat(STAT_MORALITY); }
-	int morality(int n)			{ return upd_stat(STAT_MORALITY, n); }
-	int refinement()			{ return get_stat(STAT_REFINEMENT); }
-	int refinement(int n)		{ return upd_stat(STAT_REFINEMENT, n); }
-	int dignity()				{ return get_stat(STAT_DIGNITY); }
-	int dignity(int n)			{ return upd_stat(STAT_DIGNITY, n); }
-	int lactation()				{ return get_stat(STAT_LACTATION); }
-	int lactation(int n)		{ return upd_stat(STAT_LACTATION, n); }
-	int npclove()				{ return get_stat(STAT_NPCLOVE); }
-	int npclove(int n)			{ return upd_stat(STAT_NPCLOVE, n); }
-	int sanity()				{ return get_stat(STAT_SANITY); }
-	int sanity(int n)			{ return upd_stat(STAT_SANITY, n); }
+	int charisma()									{ return get_stat(STAT_CHARISMA); }
+	int charisma(int n, bool usetraits = true)		{ return upd_stat(STAT_CHARISMA, n, usetraits); }
+	int happiness()									{ return get_stat(STAT_HAPPINESS); }
+	int happiness(int n, bool usetraits = true)		{ return upd_stat(STAT_HAPPINESS, n, usetraits); }
+	int libido()									{ return get_stat(STAT_LIBIDO); }
+	int libido(int n, bool usetraits = true)		{ return upd_stat(STAT_LIBIDO, n, usetraits); }
+	int constitution()								{ return get_stat(STAT_CONSTITUTION); }
+	int constitution(int n, bool usetraits = true)	{ return upd_stat(STAT_CONSTITUTION, n, usetraits); }
+	int intelligence()								{ return get_stat(STAT_INTELLIGENCE); }
+	int intelligence(int n, bool usetraits = true)	{ return upd_stat(STAT_INTELLIGENCE, n, usetraits); }
+	int confidence()								{ return get_stat(STAT_CONFIDENCE); }
+	int confidence(int n, bool usetraits = true)	{ return upd_stat(STAT_CONFIDENCE, n, usetraits); }
+	int mana()										{ return get_stat(STAT_MANA); }
+	int mana(int n, bool usetraits = true)			{ return upd_stat(STAT_MANA, n, usetraits); }
+	int agility()									{ return get_stat(STAT_AGILITY); }
+	int agility(int n, bool usetraits = true)		{ return upd_stat(STAT_AGILITY, n, usetraits); }
+	int strength()									{ return get_stat(STAT_STRENGTH); }
+	int strength(int n, bool usetraits = true)		{ return upd_stat(STAT_STRENGTH, n, usetraits); }
+	int fame()										{ return get_stat(STAT_FAME); }
+	int fame(int n, bool usetraits = true)			{ return upd_stat(STAT_FAME, n, usetraits); }
+	int level()										{ return get_stat(STAT_LEVEL); }
+	int level(int n, bool usetraits = true)			{ return upd_stat(STAT_LEVEL, n, usetraits); }
+	int askprice()									{ return get_stat(STAT_ASKPRICE); }
+	int askprice(int n, bool usetraits = true)		{ return upd_stat(STAT_ASKPRICE, n, usetraits); }
+	int house()										{ return get_stat(STAT_HOUSE); }				/* It's NOT lupus! */
+	int house(int n, bool usetraits = true)			{ return upd_stat(STAT_HOUSE, n, usetraits); }
+	int exp()										{ return get_stat(STAT_EXP); }
+	int exp(int n, bool usetraits = true)			{ return upd_stat(STAT_EXP, n, usetraits); }
+	int age()										{ return get_stat(STAT_AGE); }
+	int age(int n, bool usetraits = true)			{ return upd_stat(STAT_AGE, n, usetraits); }
+	int obedience()									{ return get_stat(STAT_OBEDIENCE); }
+	int obedience(int n, bool usetraits = true)		{ return upd_stat(STAT_OBEDIENCE, n, usetraits); }
+	int spirit()									{ return get_stat(STAT_SPIRIT); }
+	int spirit(int n, bool usetraits = true)		{ return upd_stat(STAT_SPIRIT, n, usetraits); }
+	int beauty()									{ return get_stat(STAT_BEAUTY); }
+	int beauty(int n, bool usetraits = true)		{ return upd_stat(STAT_BEAUTY, n, usetraits); }
+	int tiredness()									{ return get_stat(STAT_TIREDNESS); }
+	int tiredness(int n, bool usetraits = true)		{ return upd_stat(STAT_TIREDNESS, n, usetraits); }
+	int health()									{ return get_stat(STAT_HEALTH); }
+	int health(int n, bool usetraits = true)		{ return upd_stat(STAT_HEALTH, n, usetraits); }
+	int pcfear()									{ return get_stat(STAT_PCFEAR); }
+	int pcfear(int n, bool usetraits = true)		{ return upd_stat(STAT_PCFEAR, n, usetraits); }
+	int pclove()									{ return get_stat(STAT_PCLOVE); }
+	int pclove(int n, bool usetraits = true)		{ return upd_stat(STAT_PCLOVE, n, usetraits); }
+	int pchate()									{ return get_stat(STAT_PCHATE); }
+	int pchate(int n, bool usetraits = true)		{ return upd_stat(STAT_PCHATE, n, usetraits); }
+	int morality()									{ return get_stat(STAT_MORALITY); }
+	int morality(int n, bool usetraits = true)		{ return upd_stat(STAT_MORALITY, n, usetraits); }
+	int refinement()								{ return get_stat(STAT_REFINEMENT); }
+	int refinement(int n, bool usetraits = true)	{ return upd_stat(STAT_REFINEMENT, n, usetraits); }
+	int dignity()									{ return get_stat(STAT_DIGNITY); }
+	int dignity(int n, bool usetraits = true)		{ return upd_stat(STAT_DIGNITY, n, usetraits); }
+	int lactation()									{ return get_stat(STAT_LACTATION); }
+	int lactation(int n, bool usetraits = true)		{ return upd_stat(STAT_LACTATION, n, usetraits); }
+	int npclove()									{ return get_stat(STAT_NPCLOVE); }
+	int npclove(int n, bool usetraits = true)		{ return upd_stat(STAT_NPCLOVE, n, usetraits); }
+	int sanity()									{ return get_stat(STAT_SANITY); }
+	int sanity(int n, bool usetraits = true)		{ return upd_stat(STAT_SANITY, n, usetraits); }
 
 
 	int rebel();
@@ -557,52 +556,52 @@ struct sGirl
 		return get_skill(skill_id);
 	}
 
-	int upd_skill(int skill_id, int amount);
+	int upd_skill(int skill_id, int amount, bool usetraits = true);
 
-	int	anal()					{ return get_skill(SKILL_ANAL); }
-	int	anal(int n)				{ return upd_skill(SKILL_ANAL, n); }
-	int	bdsm()					{ return get_skill(SKILL_BDSM); }
-	int	bdsm(int n)				{ return upd_skill(SKILL_BDSM, n); }
-	int	beastiality()			{ return get_skill(SKILL_BEASTIALITY); }
-	int	beastiality(int n)		{ return upd_skill(SKILL_BEASTIALITY, n); }
-	int	combat()				{ return get_skill(SKILL_COMBAT); }
-	int	combat(int n)			{ return upd_skill(SKILL_COMBAT, n); }
-	int	group()					{ return get_skill(SKILL_GROUP); }
-	int	group(int n)			{ return upd_skill(SKILL_GROUP, n); }
-	int	lesbian()				{ return get_skill(SKILL_LESBIAN); }
-	int	lesbian(int n)			{ return upd_skill(SKILL_LESBIAN, n); }
-	int	magic()					{ return get_skill(SKILL_MAGIC); }
-	int	magic(int n)			{ return upd_skill(SKILL_MAGIC, n); }
-	int	normalsex()				{ return get_skill(SKILL_NORMALSEX); }
-	int	normalsex(int n)		{ return upd_skill(SKILL_NORMALSEX, n); }
-	int oralsex()				{ return get_skill(SKILL_ORALSEX); }
-	int oralsex(int n)			{ return upd_skill(SKILL_ORALSEX, n); }
-	int tittysex()				{ return get_skill(SKILL_TITTYSEX); }
-	int tittysex(int n)			{ return upd_skill(SKILL_TITTYSEX, n); }
-	int handjob()				{ return get_skill(SKILL_HANDJOB); }
-	int handjob(int n)			{ return upd_skill(SKILL_HANDJOB, n); }
-	int footjob()				{ return get_skill(SKILL_FOOTJOB); }
-	int footjob(int n)			{ return upd_skill(SKILL_FOOTJOB, n); }
-	int	service()				{ return get_skill(SKILL_SERVICE); }
-	int	service(int n)			{ return upd_skill(SKILL_SERVICE, n); }
-	int	strip()					{ return get_skill(SKILL_STRIP); }
-	int	strip(int n)			{ return upd_skill(SKILL_STRIP, n); }
-	int	medicine()				{ return get_skill(SKILL_MEDICINE); }
-	int	medicine(int n)			{ return upd_skill(SKILL_MEDICINE, n); }
-	int	performance()			{ return get_skill(SKILL_PERFORMANCE); }
-	int	performance(int n)		{ return upd_skill(SKILL_PERFORMANCE, n); }
-	int	crafting()				{ return get_skill(SKILL_CRAFTING); }
-	int	crafting(int n)			{ return upd_skill(SKILL_CRAFTING, n); }
-	int	herbalism()				{ return get_skill(SKILL_HERBALISM); }
-	int	herbalism(int n)		{ return upd_skill(SKILL_HERBALISM, n); }
-	int	farming()				{ return get_skill(SKILL_FARMING); }
-	int	farming(int n)			{ return upd_skill(SKILL_FARMING, n); }
-	int	brewing()				{ return get_skill(SKILL_BREWING); }
-	int	brewing(int n)			{ return upd_skill(SKILL_BREWING, n); }
-	int	animalhandling()		{ return get_skill(SKILL_ANIMALHANDLING); }
-	int	animalhandling(int n)	{ return upd_skill(SKILL_ANIMALHANDLING, n); }
-	int	cooking()				{ return get_skill(SKILL_COOKING); }
-	int	cooking(int n)			{ return upd_skill(SKILL_COOKING, n); }
+	int	anal()										{ return get_skill(SKILL_ANAL); }
+	int	anal(int n, bool usetraits = true)			{ return upd_skill(SKILL_ANAL, n, usetraits); }
+	int	bdsm()										{ return get_skill(SKILL_BDSM); }
+	int	bdsm(int n, bool usetraits = true)			{ return upd_skill(SKILL_BDSM, n, usetraits); }
+	int	beastiality()								{ return get_skill(SKILL_BEASTIALITY); }
+	int	beastiality(int n, bool usetraits = true)	{ return upd_skill(SKILL_BEASTIALITY, n, usetraits); }
+	int	combat()									{ return get_skill(SKILL_COMBAT); }
+	int	combat(int n, bool usetraits = true)		{ return upd_skill(SKILL_COMBAT, n, usetraits); }
+	int	group()										{ return get_skill(SKILL_GROUP); }
+	int	group(int n, bool usetraits = true)			{ return upd_skill(SKILL_GROUP, n, usetraits); }
+	int	lesbian()									{ return get_skill(SKILL_LESBIAN); }
+	int	lesbian(int n, bool usetraits = true)		{ return upd_skill(SKILL_LESBIAN, n, usetraits); }
+	int	magic()										{ return get_skill(SKILL_MAGIC); }
+	int	magic(int n, bool usetraits = true)			{ return upd_skill(SKILL_MAGIC, n, usetraits); }
+	int	normalsex()									{ return get_skill(SKILL_NORMALSEX); }
+	int	normalsex(int n, bool usetraits = true)		{ return upd_skill(SKILL_NORMALSEX, n, usetraits); }
+	int oralsex()									{ return get_skill(SKILL_ORALSEX); }
+	int oralsex(int n, bool usetraits = true)		{ return upd_skill(SKILL_ORALSEX, n, usetraits); }
+	int tittysex()									{ return get_skill(SKILL_TITTYSEX); }
+	int tittysex(int n, bool usetraits = true)		{ return upd_skill(SKILL_TITTYSEX, n, usetraits); }
+	int handjob()									{ return get_skill(SKILL_HANDJOB); }
+	int handjob(int n, bool usetraits = true)		{ return upd_skill(SKILL_HANDJOB, n, usetraits); }
+	int footjob()									{ return get_skill(SKILL_FOOTJOB); }
+	int footjob(int n, bool usetraits = true)			{ return upd_skill(SKILL_FOOTJOB, n, usetraits); }
+	int	service()									{ return get_skill(SKILL_SERVICE); }
+	int	service(int n, bool usetraits = true)			{ return upd_skill(SKILL_SERVICE, n, usetraits); }
+	int	strip()										{ return get_skill(SKILL_STRIP); }
+	int	strip(int n, bool usetraits = true)			{ return upd_skill(SKILL_STRIP, n, usetraits); }
+	int	medicine()									{ return get_skill(SKILL_MEDICINE); }
+	int	medicine(int n, bool usetraits = true)			{ return upd_skill(SKILL_MEDICINE, n, usetraits); }
+	int	performance()								{ return get_skill(SKILL_PERFORMANCE); }
+	int	performance(int n, bool usetraits = true)		{ return upd_skill(SKILL_PERFORMANCE, n, usetraits); }
+	int	crafting()									{ return get_skill(SKILL_CRAFTING); }
+	int	crafting(int n, bool usetraits = true)			{ return upd_skill(SKILL_CRAFTING, n, usetraits); }
+	int	herbalism()									{ return get_skill(SKILL_HERBALISM); }
+	int	herbalism(int n, bool usetraits = true)		{ return upd_skill(SKILL_HERBALISM, n, usetraits); }
+	int	farming()									{ return get_skill(SKILL_FARMING); }
+	int	farming(int n, bool usetraits = true)			{ return upd_skill(SKILL_FARMING, n, usetraits); }
+	int	brewing()									{ return get_skill(SKILL_BREWING); }
+	int	brewing(int n, bool usetraits = true)			{ return upd_skill(SKILL_BREWING, n, usetraits); }
+	int	animalhandling()							{ return get_skill(SKILL_ANIMALHANDLING); }
+	int	animalhandling(int n, bool usetraits = true)	{ return upd_skill(SKILL_ANIMALHANDLING, n, usetraits); }
+	int	cooking()									{ return get_skill(SKILL_COOKING); }
+	int	cooking(int n, bool usetraits = true)			{ return upd_skill(SKILL_COOKING, n, usetraits); }
 
 	int get_enjoyment(int actiontype)
 	{

@@ -223,15 +223,10 @@ bool cJobManager::WorkShepherd(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice%xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	girl->animalhandling((g_Dice % skill) + 2);
 	// secondary (-1 for one then -2 for others)
-	girl->charisma(max(0, (g_Dice % skill) - 1));
-	girl->intelligence(max(0, (g_Dice % skill) - 2));
-	girl->confidence(max(0, (g_Dice % skill) - 2));
 
 #pragma endregion
 	return false;

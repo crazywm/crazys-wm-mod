@@ -122,6 +122,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 	}
 
 	//what is she wearing?
+	
 	if (girl->has_item_j("Bourgeoise Gown") != -1 && g_Dice.percent(60))
 	{
 		int bg = g_Dice.bell(-1, 1);

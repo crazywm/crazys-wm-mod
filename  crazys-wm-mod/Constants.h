@@ -717,20 +717,20 @@ enum Image_Types{
 	IMGTYPE_PUPPYGIRL,					// 
 	IMGTYPE_PONYGIRL,					// 
 	IMGTYPE_CATGIRL,					// 
-	IMPTYPE_BRAND,						// `J` new .06.03.01 for DarkArk
-	IMPTYPE_RAPE,						// `J` new .06.03.01 for DarkArk
-	IMPTYPE_RAPEBEAST,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_BRAND,						// `J` new .06.03.01 for DarkArk
+	IMGTYPE_RAPE,						// `J` new .06.03.01 for DarkArk
+	IMGTYPE_RAPEBEAST,					// `J` new .06.03.01 for DarkArk
 	IMGTYPE_BIRTHHUMAN,					// `J` new .06.03.01 for DarkArk
 	IMGTYPE_BIRTHHUMANMULTIPLE,			// `J` new .06.03.01 for DarkArk
-	IMPTYPE_BIRTHBEAST,					// `J` new .06.03.01 for DarkArk
-	IMPTYPE_IMPREGSEX,					// `J` new .06.03.01 for DarkArk
-	IMPTYPE_IMPREGGROUP,				// `J` new .06.03.01 for DarkArk
-	IMPTYPE_IMPREGBDSM,					// `J` new .06.03.01 for DarkArk
-	IMPTYPE_IMPREGBEAST,				// `J` new .06.03.01 for DarkArk
-	IMPTYPE_VIRGINSEX,					// `J` new .06.03.01 for DarkArk
-	IMPTYPE_VIRGINGROUP,				// `J` new .06.03.01 for DarkArk
-	IMPTYPE_VIRGINBDSM,					// `J` new .06.03.01 for DarkArk
-	IMPTYPE_VIRGINBEAST,				// `J` new .06.03.01 for DarkArk
+	IMGTYPE_BIRTHBEAST,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_IMPREGSEX,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_IMPREGGROUP,				// `J` new .06.03.01 for DarkArk
+	IMGTYPE_IMPREGBDSM,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_IMPREGBEAST,				// `J` new .06.03.01 for DarkArk
+	IMGTYPE_VIRGINSEX,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_VIRGINGROUP,				// `J` new .06.03.01 for DarkArk
+	IMGTYPE_VIRGINBDSM,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_VIRGINBEAST,				// `J` new .06.03.01 for DarkArk
 	IMGTYPE_ESCORT,						// `J` new .06.03.02 for grishnak - clothed with a client
 	IMGTYPE_SPORT,						// `J` new .06.03.02 for grishnak - for the free time job, doing sports
 	IMGTYPE_STUDY,						// `J` new .06.03.02 for grishnak - reading a book or looking clever
@@ -807,20 +807,20 @@ IMGTYPE_PETLICK			- "petlick*."		- "PetLick"			- lick, oral, petprofile, bdsm, n
 	IMGTYPE_PREGPUPPYGIRL,				// 
 	IMGTYPE_PREGPONYGIRL,				// 
 	IMGTYPE_PREGCATGIRL,				// 
-	IMPTYPE_PREGBRAND,					// `J` new .06.03.01 for DarkArk
-	IMPTYPE_PREGRAPE,					// `J` new .06.03.01 for DarkArk
-	IMPTYPE_PREGRAPEBEAST,				// `J` new .06.03.01 for DarkArk
+	IMGTYPE_PREGBRAND,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_PREGRAPE,					// `J` new .06.03.01 for DarkArk
+	IMGTYPE_PREGRAPEBEAST,				// `J` new .06.03.01 for DarkArk
 	IMGTYPE_PREGBIRTHHUMAN,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	IMGTYPE_PREGBIRTHHUMANMULTIPLE,		// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	IMPTYPE_PREGBIRTHBEAST,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	IMPTYPE_PREGIMPREGSEX,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	IMPTYPE_PREGIMPREGGROUP,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	IMPTYPE_PREGIMPREGBDSM,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	IMPTYPE_PREGIMPREGBEAST,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	IMPTYPE_PREGVIRGINSEX,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	IMPTYPE_PREGVIRGINGROUP,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	IMPTYPE_PREGVIRGINBDSM,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
-	IMPTYPE_PREGVIRGINBEAST,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGBIRTHBEAST,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGIMPREGSEX,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGIMPREGGROUP,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGIMPREGBDSM,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGIMPREGBEAST,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGVIRGINSEX,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGVIRGINGROUP,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGVIRGINBDSM,				// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
+	IMGTYPE_PREGVIRGINBEAST,			// `J` new .06.03.01 for DarkArk - these are just in here for completion, they probably should not be used
 	IMGTYPE_PREGESCORT,					// `J` new .06.03.02 for grishnak - clothed with a client
 	IMGTYPE_PREGSPORT,					// `J` new .06.03.02 for grishnak - for the free time job, doing sports
 	IMGTYPE_PREGSTUDY,					// `J` new .06.03.02 for grishnak - reading a book or looking clever

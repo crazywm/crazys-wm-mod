@@ -198,6 +198,8 @@ bool cScreenStudioManagement::check_keys()
 	// Toggle Day/Night shift
 	//if (g_Z_Key)	{ Day0Night1 = SHIFT_DAY;	DisableButton(day_id, true);	DisableButton(night_id, false);	RefreshSelectedJobType();	g_Z_Key = false;	return true; }
 	//if (g_C_Key)	{ Day0Night1 = SHIFT_NIGHT;	DisableButton(day_id, false);	DisableButton(night_id, true);	RefreshSelectedJobType();	g_C_Key = false;	return true; }
+	if (g_C_Key)	{ g_C_Key = false;	g_InitWin = true;	g_WinManager.push("Movie Maker");	return true; }
+
 	if (g_Q_Key || g_E_Key)
 	{
 		if (g_Q_Key)	selection = ArrowUpListBox(joblist_id);

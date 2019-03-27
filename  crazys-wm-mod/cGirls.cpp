@@ -353,7 +353,7 @@ int sGirl::has_item_j(const std::string& item)
 	return -1;
 }
 
-int sGirl::sGirl::add_inv(sInventoryItem* item)
+int sGirl::add_inv(sInventoryItem* item)
 {
     return g_Girls.AddInv(this, item);
 }
@@ -18637,7 +18637,7 @@ int sGirl::upd_stat(int stat_id, int amount, bool usetraits) {
 	return get_stat(stat_id);
 }
 
-int sGirl::upd_skill(int skill_id, int amount) {
+int sGirl::upd_skill(int skill_id, int amount, bool usetraits) {
 	if (amount >= 0)
 	{
 		m_Skills[skill_id] = min(100, amount + m_Skills[skill_id]);

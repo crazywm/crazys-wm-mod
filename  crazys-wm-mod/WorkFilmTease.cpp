@@ -64,6 +64,7 @@ bool cJobManager::WorkFilmTease(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	int bonus = 0;
 
 	g_Girls.UnequipCombat(girl);	// not for actress (yet)
+	
 	/**/ if (girl->has_item("Cow-Print Lingerie") != -1)		item = ("Cow-Print Lingerie"), bonus = 6;
 	else if (girl->has_item("Designer Lingerie") != -1)		item = ("Designer Lingerie"), bonus = 10;
 	else if (girl->has_item("Sequin Lingerie") != -1)		item = ("Sequin Lingerie"), bonus = 7;

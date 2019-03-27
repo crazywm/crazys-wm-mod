@@ -321,7 +321,7 @@ case Es_Regular:
 		ss << "\"What a lovely dress, darling,\" the wife begins with a compliment. " << girlName << " is happy to see that the client is pleased with her choice of attire.";
 		escort += 1;
 	}
-	else if (girl->has_item_j("Brothel Gown") != -1 || girl->has_item_j("Trashy Dress") != -1)
+	else if (girl->has_item_j( "Brothel Gown") != -1 || girl->has_item_j("Trashy Dress") != -1)
 	{
 		ss << "\"What a.. lovely.. dress,\" says the wife, elbowing her husband, who is staring with an open mouth at " << girlName << "'s trashy brothel attire. The client winces slightly.";
 		escort -= 1;

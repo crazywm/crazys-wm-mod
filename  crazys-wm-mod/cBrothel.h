@@ -59,6 +59,10 @@ bool UseAntiPreg(sGirl *girl);
 // holds data for movies
 typedef struct sMovie
 {
+	string m_Name;
+	string m_Director;
+	string m_Cast;
+	string m_Crew;
 	long m_Init_Quality;
 	long m_Promo_Quality;
 	long m_Quality;
