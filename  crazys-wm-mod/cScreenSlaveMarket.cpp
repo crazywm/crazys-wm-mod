@@ -1218,11 +1218,11 @@ void cScreenSlaveMarket::preparescreenitems(sGirl* girl)
 	{
 		if (!girl->m_Traits[i]) continue;
 		trait_count++;
-		if (trait_list_id >= 0) AddToListBox(trait_list_id, i, g_Traits.GetTranslateName(girl->m_Traits[i]->name()));
+		if (trait_list_id >= 0) AddToListBox(trait_list_id, i, girl->m_Traits[i]->display_name());
 		if (trait_list_text_id)
 		{
 			if (trait_count > 1) traits_text << ",   ";
-			traits_text << g_Traits.GetTranslateName(girl->m_Traits[i]->name());
+			traits_text << girl->m_Traits[i]->display_name();
 		}
 	}
 	// and finally, highlight the selected entry?

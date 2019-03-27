@@ -40,7 +40,6 @@ sTrait::sTrait(std::string name, std::string description, std::string type, int 
 {
 }
 
-
 sTrait sTrait::from_xml(TiXmlElement* el) {
     const char *pt;
     std::string name;
@@ -60,6 +59,10 @@ sTrait sTrait::from_xml(TiXmlElement* el) {
         pt = el->Attribute("RandomChance", &random);
     }
     return sTrait(name, desc, type, inherit, random);
+}
+
+std::string sTrait::display_name() const {
+    ;
 }
 
 cTraits::~cTraits()

@@ -39,6 +39,7 @@ public:
 	static sTrait from_xml(TiXmlElement* el);
 
 	const std::string& name() const { return m_Name; }
+	std::string display_name() const;
 	const std::string& desc() const { return m_Desc; }
 	int random_chance() const { return m_RandomChance; }
 	int inherit_chance() const { return m_InheritChance; }
@@ -68,7 +69,7 @@ public:
 	void RemoveTrait(const std::string& name);
 	sTrait* GetTrait(const std::string& name);
 
-    std::string GetTranslateName(const std::string& name);
+    static std::string GetTranslateName(const std::string& name);
 
 	const std::list<sTrait*>& all_traits() const { return m_Traits; }
 

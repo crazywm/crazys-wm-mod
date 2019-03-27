@@ -372,9 +372,9 @@ void cScreenGirlDetails::init()
 	{
 		if (selected_girl->m_Traits[i])
 		{
-			ss.str(""); ss << selected_girl->m_Traits[i]->name();
+			ss.str(""); ss << selected_girl->m_Traits[i]->display_name();
 			if (selected_girl->m_TempTrait[i] > 0) ss << "   (" << selected_girl->m_TempTrait[i] << ")";
-			AddToListBox(traitlist_id, i, g_Traits.GetTranslateName(ss.str()));
+			AddToListBox(traitlist_id, i, ss.str());
 		}
 	}
 	EditTextItem("", traitdesc_id);

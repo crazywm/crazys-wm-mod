@@ -1718,7 +1718,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		if (g_Dice.percent(current->m_TraitChanceB[i]))
 		{
 			string name = current->m_TraitNames[i];
-			if (g_Traits.GetTrait(g_Traits.GetTranslateName(name))) // `J` added translation check
+			if (g_Traits.GetTrait(current->m_Traits[i]->display_name())) // `J` added translation check
 			{
 				if (name == "Virgin") newGirl->m_Virgin = 1;
 				if (!newGirl->has_trait(name))
@@ -3166,7 +3166,7 @@ string cGirls::GetSimpleDetails(sGirl* girl, int fontsize)
 		if (!girl->m_Traits[i]) continue;
 		trait_count++;
 		if (trait_count > 1) ss << ",   ";
-		ss << g_Traits.GetTranslateName(girl->m_Traits[i]->name());
+		ss << girl->m_Traits[i]->display_name();
 		if (girl->m_TempTrait[i] > 0) ss << " (" << girl->m_TempTrait[i] << ")";
 	}
 	return ss.str();
@@ -3966,7 +3966,7 @@ void sGirl::load_from_xml(TiXmlElement *el)
 		if (child->ValueStr() == "Trait")	//get the trait name
 		{
 			pt = child->Attribute("Name");
-			m_Traits[m_NumTraits] = g_Traits.GetTrait(g_Traits.GetTranslateName(n_strdup(pt))); // `J` added translation check
+			m_Traits[m_NumTraits] = g_Traits.GetTrait(cTraits::GetTranslateName(n_strdup(pt))); // `J` added translation check
 			m_NumTraits++;
 		}
 		if (child->ValueStr() == "Item")	//get the item name
@@ -7705,7 +7705,7 @@ bool cGirls::RestoreRememberedTrait(sGirl* girl, string trait)
 		if (girl->m_Traits[i] == 0)
 		{
 			girl->m_NumTraits++;
-			sTrait *addthistrait = g_Traits.GetTrait(g_Traits.GetTranslateName(trait)); // `J` added translation check
+			sTrait *addthistrait = g_Traits.GetTrait(cTraits::GetTranslateName(trait)); // `J` added translation check
 			girl->m_Traits[i] = addthistrait;
 
 			return true;
@@ -7798,7 +7798,7 @@ void cGirls::AddRememberedTrait(sGirl* girl, string name)
 		if (girl->m_RememTraits[i] == 0)
 		{
 			girl->m_NumRememTraits++;
-			girl->m_RememTraits[i] = g_Traits.GetTrait(g_Traits.GetTranslateName(name)); // `J` added translation check
+			girl->m_RememTraits[i] = g_Traits.GetTrait(cTraits::GetTranslateName(name)); // `J` added translation check
 			return;
 		}
 	}
@@ -16265,7 +16265,7 @@ bool sGirl::add_trait(string name, int temptime, bool removeitem, bool remember)
 		{
 			if (temptime>0) m_TempTrait[i] = temptime;
 			m_NumTraits++;
-			sTrait *addthistrait = g_Traits.GetTrait(g_Traits.GetTranslateName(name)); // `J` added translation check
+			sTrait *addthistrait = g_Traits.GetTrait(cTraits::GetTranslateName(name)); // `J` added translation check
 			m_Traits[i] = addthistrait;
 
 			g_Girls.MutuallyExclusiveTraits(this, 1, m_Traits[i], removeitem);
