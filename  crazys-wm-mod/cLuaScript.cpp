@@ -403,7 +403,7 @@ static void add_trait_table(lua_State *L, sGirl *girl, int table)
 /*
  *		store the description keyed under the trait name
  */
-		add_to_table(L, trait_table, trait->m_Name, trait->m_Desc);
+		add_to_table(L, trait_table, trait->m_Name.c_str(), trait->m_Desc.c_str());
 	}
 /*
  *	and now add the trait table to the girl table

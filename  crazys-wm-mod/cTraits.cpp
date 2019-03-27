@@ -17,6 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <iostream>
+#include <algorithm>
 #include "cTraits.h"
 #include "stdio.h"
 #include "tinyxml.h"
@@ -32,54 +33,14 @@
 
 cTraits::~cTraits()
 {
-	Free();
 }
 
 void cTraits::Free()
 {
-	if (m_ParentTrait) delete m_ParentTrait;
-	m_ParentTrait = m_LastTrait = 0;
+	m_Traits.clear();
 }
 
-void cTraits::LoadTraits(string filename)
-{
-	ifstream in;
-	in.open(filename.c_str());
-	char *pt, buffer[500];
-	sTrait* newTrait = 0;
-
-	while (in.good())
-	{
-		newTrait = new sTrait;
-		if (in.peek() == '\n') in.ignore(1, '\n');
-		in.getline(buffer, sizeof(buffer), '\n');		// get the name
-		if ((pt = strrchr(buffer, '\r')))
-		{
-			*pt = 0;
-		}
-		newTrait->m_Name = new char[strlen(buffer) + 1];
-		strcpy(newTrait->m_Name, buffer);
-		if (in.peek() == '\n') in.ignore(1, '\n');
-		if (in.peek() == '\r') in.ignore(1, '\r');
-		in.getline(buffer, sizeof(buffer), '\n');		// get the description
-		if ((pt = strrchr(buffer, '\r')))			*pt = 0;
-		if (strcmp(buffer, "na") != 0)
-		{
-			newTrait->m_Desc = new char[strlen(buffer) + 1];
-			strcpy(newTrait->m_Desc, buffer);
-		}
-		else newTrait->m_Desc = 0;
-		AddTrait(newTrait);
-		newTrait = 0;
-	}
-	in.close();
-}
-static char *n_strdup(const char *s)
-{
-	return strcpy(new char[strlen(s) + 1], s);
-}
-
-void cTraits::LoadXMLTraits(string filename)
+void cTraits::LoadXMLTraits(const string& filename)
 {
 	CLog l;
 	l.ss() << "loading " << filename; l.ssend();
@@ -100,9 +61,9 @@ void cTraits::LoadXMLTraits(string filename)
 	for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
 	{
 		newTrait = new sTrait;
-		if (pt = el->Attribute("Name"))				newTrait->m_Name = n_strdup(pt);
-		if (pt = el->Attribute("Desc"))				newTrait->m_Desc = n_strdup(pt);
-		if (pt = el->Attribute("Type"))				newTrait->m_Type = n_strdup(pt);
+		if (pt = el->Attribute("Name"))				newTrait->m_Name = pt;
+		if (pt = el->Attribute("Desc"))				newTrait->m_Desc = pt;
+		if (pt = el->Attribute("Type"))				newTrait->m_Type = pt;
 		if (pt = el->Attribute("InheritChance"))
 		{
 			int ival = -1;
@@ -120,95 +81,45 @@ void cTraits::LoadXMLTraits(string filename)
 	}
 }
 
-
-void cTraits::SaveTraits(string filename)
-{
-	ofstream out;
-	sTrait* current = m_ParentTrait;
-	out.open(filename.c_str());
-	while(current != 0)
-	{
-		out<<current->m_Name<<"\n";
-		out<<current->m_Desc<<"\n";
-		current = current->m_Next;
-	}
-	out.flush();
-	out.close();
-}
-
 void cTraits::AddTrait(sTrait* trait)
 {
-	trait->m_Next = 0;
-	if (m_ParentTrait)	m_LastTrait->m_Next = trait;
-	else				m_ParentTrait = trait;
-	m_LastTrait = trait;
-	m_NumTraits++;
+	m_Traits.push_back(trait);
 }
 
-void cTraits::RemoveTrait(string name)
+void cTraits::RemoveTrait(const string& name)
 {
-	if (m_ParentTrait == 0)		return;
-	sTrait* current = m_ParentTrait;
-	sTrait* last = 0;
-	if (strcmp(current->m_Name, name.c_str()) == 0)
-	{
-		m_ParentTrait = current->m_Next;
-		current->m_Next = 0;
-		delete current;
+	auto trait_iter = find_trait_by_name(name);
+	if(trait_iter != m_Traits.end()) {
+		delete *trait_iter;
+		m_Traits.erase(trait_iter);
 	}
-	else
-	{
-		last = current;
-		current = current->m_Next;
-		while (strcmp(current->m_Name, name.c_str()) == 0)
-		{
-			last = current;
-			current = current->m_Next;
-		}
-		last->m_Next = current->m_Next;
-		current->m_Next = 0;
-		delete current;
-	}
-	m_NumTraits--;
-	current = last = 0;
 }
 
-sTrait* cTraits::GetTrait(string name)
+cTraits::trait_list_t::iterator cTraits::find_trait_by_name(const std::string& name)
 {
-	if (m_ParentTrait == 0)	return 0;
+	return std::find_if(begin(m_Traits), end(m_Traits),
+			[&](const sTrait* trait) {return trait->m_Name == name; });
+}
 
-	sTrait* current = m_ParentTrait;
-	/*
-	*	MOD docclox
-	*	changed the way the loop works to make it easier to include
-	*	debug print statements
-	*/
-	// g_LogFile.os() << "Looking up trait '" << name << "'" << endl;
-	for (current = m_ParentTrait; current; current = current->m_Next)
-	{
-//		g_LogFile.os() << "	testing '" << current->m_Name << "'" << endl;
-		if (name == current->m_Name)
-		{
-			//g_LogFile.os() << "		gotit!" << endl;
-			return current;
-		}
-		//g_LogFile.os() << "		nope!" << endl;
-	}
-	// END MOD
-	return 0;
+sTrait* cTraits::GetTrait(const string& name)
+{
+	auto found = find_trait_by_name(name);
+	if(found == m_Traits.end())
+		return nullptr;
+
+	return *found;
 }
 
 string traittolower(string name)
 {
-	string s = name;
-	for (u_int i = 0; i < name.length(); i++)
-	{
-		s[i] = tolower(name[i]);
+	for (char& c : name) {
+        c = tolower(c);
 	}
-	return s;
+	return name;
 }
 
-string cTraits::GetTranslateName(string name)
+
+string cTraits::GetTranslateName(const string& name)
 {
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> GetTranslateName
 	string trait = traittolower(name);
@@ -530,19 +441,4 @@ string cTraits::GetTranslateName(string name)
 		/* */if (trait.compare("zombie") == 0)					return ("Zombie");
 	}
 	return name;
-}
-
-sTrait* cTraits::GetTraitNum(int num)
-{
-	int count = 0;
-	if (m_ParentTrait == 0) return 0;
-	sTrait* current = m_ParentTrait;
-	while (current)
-	{
-		if (count == num) break;
-		count++;
-		current = current->m_Next;
-		if (current == 0) break;
-	}
-	return current;
 }

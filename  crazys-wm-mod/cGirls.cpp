@@ -1535,10 +1535,13 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> CreateRandomGirl > hardcoded rgirl
 		current->m_NumTraits = 0;
 		current->m_NumTraitNames = 0;
-		for (int i = 0; i < g_Traits.GetNumTraits() && current->m_NumTraits < MAXNUM_TRAITS - 10; i++)
-		{
-			int c = g_Traits.GetTraitNum(i)->m_RandomChance;
-			string test = g_Traits.GetTraitNum(i)->m_Name;
+		for(auto trait : g_Traits.all_traits())
+        {
+		    if(current->m_NumTraits >= MAXNUM_TRAITS - 10)
+		        break;
+
+            int c = trait->m_RandomChance;
+            string test = trait->m_Name;
 
 			// first check if it is a daughter or Human0Monster1 trait
 			if (test == "Your Daughter")	c = (daughter) ? 100 : 0;
@@ -1666,7 +1669,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			{
 				if (current->m_NumTraitNames < MAXNUM_TRAITS)	// first 40
 				{
-					current->m_Traits[current->m_NumTraits] = g_Traits.GetTraitNum(i);
+                    current->m_Traits[current->m_NumTraits] = trait;
 					current->m_TraitChance[current->m_NumTraits] = c;
 				}
 				current->m_TraitNames[current->m_NumTraitNames] = test;
@@ -4209,7 +4212,7 @@ void sRandomGirl::process_trait_xml(TiXmlElement *el)
 	sTrait *trait = new sTrait();													// we need to allocate a new sTrait scruct,
 	if (pt = el->Attribute("Name"))
 	{
-		trait->m_Name = n_strdup(pt);					// get the trait name
+		trait->m_Name = pt;					// get the trait name
 		stringstream ss;
 		ss << trait->m_Name;
 		m_TraitNames[m_NumTraitNames] = ss.str();

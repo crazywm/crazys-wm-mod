@@ -282,8 +282,7 @@ bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits
 
 	//this loop does not need UnXMLifyString, which is a bit of a hack currently
 	//however, it's coupled more tightly to traits, and seems to do more processing
-	sTrait* pTrait = g_Traits.GetTraitNum(0);
-	while (pTrait)
+	for(auto pTrait : g_Traits.all_traits())
 	{
 		TiXmlElement* pTraitElement = pTraits->FirstChildElement(XMLifyString(pTrait->m_Name));
 		if (pTraitElement)
@@ -296,29 +295,7 @@ bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits
 			}
 			++numTraits;
 		}
-		pTrait = pTrait->m_Next;
 	}
-
-#if 0
-	//old loop, not sure which way is better
-	//also, this loop method has not been tested
-	for (TiXmlElement* pTrait = pTraits->FirstChildElement();
-		pTrait != 0;
-		pTrait = pTrait->NextSiblingElement())
-	{
-		std::string traitName = pTrait->ValueStr();
-		if (traitName.empty() == false)
-		{
-			int tempInt = 0;
-			traits[numTraits] = g_Traits.GetTrait(UnXMLifyString(traitName));
-			if (tempTraits)
-			{
-				pTrait->QueryIntAttribute("Temp", &tempInt); tempTraits[numTraits] = tempInt; tempInt = 0;
-			}
-			++numTraits;
-		}
-	}
-#endif
 	return true;
 }
 
