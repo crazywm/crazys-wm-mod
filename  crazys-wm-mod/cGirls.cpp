@@ -1535,7 +1535,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> CreateRandomGirl > hardcoded rgirl
 		current->m_NumTraits = 0;
 		current->m_NumTraitNames = 0;
-		for(auto trait : g_Traits.all_traits())
+		for(const auto& trait : g_Traits.all_traits())
         {
 		    if(current->m_NumTraits >= MAXNUM_TRAITS - 10)
 		        break;
@@ -1669,7 +1669,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			{
 				if (current->m_NumTraitNames < MAXNUM_TRAITS)	// first 40
 				{
-                    current->m_Traits[current->m_NumTraits] = trait;
+                    current->m_Traits[current->m_NumTraits] = trait.get();
 					current->m_TraitChance[current->m_NumTraits] = c;
 				}
 				current->m_TraitNames[current->m_NumTraitNames] = test;
@@ -3966,7 +3966,7 @@ void sGirl::load_from_xml(TiXmlElement *el)
 		if (child->ValueStr() == "Trait")	//get the trait name
 		{
 			pt = child->Attribute("Name");
-			m_Traits[m_NumTraits] = g_Traits.GetTrait(cTraits::GetTranslateName(n_strdup(pt))); // `J` added translation check
+			m_Traits[m_NumTraits] = g_Traits.GetTrait(pt);
 			m_NumTraits++;
 		}
 		if (child->ValueStr() == "Item")	//get the item name
@@ -4212,7 +4212,7 @@ void sRandomGirl::process_trait_xml(TiXmlElement *el)
 	if (!(pt = el->Attribute("Name"))) // `J` if there is no name why continue?
 	    return;
 
-    sTrait* trait = new sTrait(pt, "", "", -1, -1);       // we need to allocate a new sTrait scruct,
+    TraitSpec* trait = new TraitSpec(pt, "", "", -1, -1);       // we need to allocate a new sTrait scruct,
     stringstream ss;
     ss << trait->name();
     m_TraitNames[m_NumTraitNames] = ss.str();
@@ -5402,7 +5402,7 @@ string cGirls::AdjustTraitGroupFertility(sGirl* girl, int adjustment, bool showm
 	return ss.str();
 }
 
-void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
+void cGirls::ApplyTraits(sGirl* girl, TraitSpec* trait)
 {
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in > ApplyTraits
 	/* WD:
@@ -5420,7 +5420,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 	}
 	for (int i = 0; i < girl->m_NumTraits || doOnce; i++)
 	{
-		sTrait* tr = nullptr;
+		TraitSpec* tr = nullptr;
 		tr = (doOnce) ? trait : girl->m_Traits[i];
 		if (tr == 0) continue;
 
@@ -5435,12 +5435,12 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 	}
 }
 
-void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait, bool rememberflag)
+void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply, TraitSpec* trait, bool rememberflag)
 {
 	bool doOnce = (trait) ? true : false;
 	for (int i = 0; i < girl->m_NumTraits || doOnce; i++)
 	{
-		sTrait* tr = 0;
+		TraitSpec* tr = 0;
 		tr = (doOnce) ? trait : girl->m_Traits[i];
 		if (tr == 0) continue;
 		string name = tr->name();
@@ -6277,7 +6277,7 @@ bool cGirls::RestoreRememberedTrait(sGirl* girl, string trait)
 		if (girl->m_Traits[i] == 0)
 		{
 			girl->m_NumTraits++;
-			sTrait *addthistrait = g_Traits.GetTrait(cTraits::GetTranslateName(trait)); // `J` added translation check
+			TraitSpec *addthistrait = g_Traits.GetTrait(trait);
 			girl->m_Traits[i] = addthistrait;
 
 			return true;
@@ -6315,7 +6315,7 @@ void cGirls::RemoveRememberedTrait(sGirl* girl, string name)
 {
 	if (girl)
 	{
-		sTrait* trait = g_Traits.GetTrait(name);
+		TraitSpec* trait = g_Traits.GetTrait(name);
 		for (int i = 0; i < MAXNUM_TRAITS * 2; i++)	// remove the traits
 		{
 			if (girl->m_RememTraits[i])
@@ -6370,7 +6370,7 @@ void cGirls::AddRememberedTrait(sGirl* girl, string name)
 		if (girl->m_RememTraits[i] == 0)
 		{
 			girl->m_NumRememTraits++;
-			girl->m_RememTraits[i] = g_Traits.GetTrait(cTraits::GetTranslateName(name)); // `J` added translation check
+			girl->m_RememTraits[i] = g_Traits.GetTrait(name);
 			return;
 		}
 	}
@@ -14837,7 +14837,7 @@ bool sGirl::add_trait(string name, int temptime, bool removeitem, bool remember)
 		{
 			if (temptime>0) m_TempTrait[i] = temptime;
 			m_NumTraits++;
-			sTrait *addthistrait = g_Traits.GetTrait(cTraits::GetTranslateName(name)); // `J` added translation check
+			TraitSpec *addthistrait = g_Traits.GetTrait(name);
 			m_Traits[i] = addthistrait;
 
 			g_Girls.MutuallyExclusiveTraits(this, 1, m_Traits[i], removeitem);
@@ -14899,7 +14899,7 @@ bool sGirl::remove_trait(string name,  bool addrememberlist, bool force, bool ke
 	if (addrememberlist || keepinrememberlist) g_Girls.AddRememberedTrait(this, name);
 
 	//	WD: Remove trait
-	sTrait* trait = g_Traits.GetTrait(name);
+	TraitSpec* trait = g_Traits.GetTrait(name);
 	for (int i = 0; i < MAXNUM_TRAITS; i++)			// remove the traits
 	{
 		if (m_Traits[i] && m_Traits[i] == trait)
@@ -16063,7 +16063,7 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 }
 
 // `J` this has been replased by trait->m_InheritChance - this is still used if the trait does not have it
-bool cGirls::InheritTrait(sTrait* trait)
+bool cGirls::InheritTrait(TraitSpec* trait)
 {
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> InheritTrait
 

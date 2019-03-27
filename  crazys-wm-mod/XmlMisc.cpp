@@ -22,7 +22,7 @@
 #include "cBrothel.h"
 extern cBrothelManager g_Brothels;
 extern CLog g_LogFile;
-extern cTraits g_Traits;
+extern cTraitManager g_Traits;
 extern cInventory g_InvManager;
 
 const char* actionTypeNames[] =
@@ -258,7 +258,7 @@ TiXmlElement* SaveJobsXML(TiXmlElement* pRoot, int buildingQualities[])
 	return pJobs;
 }
 
-TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int numTraits, sTrait* traits[], int tempTraits[])
+TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int numTraits, TraitSpec* traits[], int tempTraits[])
 {
 	TiXmlElement* pTraits = new TiXmlElement(TagName);
 	pRoot->LinkEndChild(pTraits);
@@ -274,7 +274,7 @@ TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int 
 	return pTraits;
 }
 
-bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits[], int tempTraits[])
+bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, TraitSpec* traits[], int tempTraits[])
 {
 	numTraits = 0;
 	TiXmlElement* pTraits = hTraits.ToElement();
@@ -282,13 +282,13 @@ bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits
 
 	//this loop does not need UnXMLifyString, which is a bit of a hack currently
 	//however, it's coupled more tightly to traits, and seems to do more processing
-	for(auto pTrait : g_Traits.all_traits())
+	for(const auto& pTrait : g_Traits.all_traits())
 	{
 		TiXmlElement* pTraitElement = pTraits->FirstChildElement(XMLifyString(pTrait->name()));
 		if (pTraitElement)
 		{
 			int tempInt = 0;
-			traits[numTraits] = pTrait;
+			traits[numTraits] = pTrait.get();
 			if (tempTraits)
 			{
 				pTraitElement->QueryIntAttribute("Temp", &tempInt); tempTraits[numTraits] = tempInt; tempInt = 0;

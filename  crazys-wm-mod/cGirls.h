@@ -78,7 +78,7 @@ typedef struct sRandomGirl
 
 	int m_NumTraits;						// number of traits they are assigned
 	int m_NumTraitNames;					// number of traits they are assigned
-	sTrait* m_Traits[MAXNUM_TRAITS];		// List of traits they may start with
+	TraitSpec* m_Traits[MAXNUM_TRAITS];		// List of traits they may start with
 	int m_TraitChance[MAXNUM_TRAITS];		// the percentage change for each trait
 	int m_TraitChanceB[200];
 	string m_TraitNames[200];				// `J` fix for more than MAXNUM_TRAITS in .rgirlsx files
@@ -217,11 +217,11 @@ struct sGirl
 	string m_Desc;								// Short story about the girl
 
 	unsigned char m_NumTraits;					// current number of traits they have
-	sTrait* m_Traits[MAXNUM_TRAITS];			// List of traits they have
+	TraitSpec* m_Traits[MAXNUM_TRAITS];			// List of traits they have
 	int m_TempTrait[MAXNUM_TRAITS];	// a temp trait if not 0. Trait removed when == 0. traits last for 20 weeks.
 
 	unsigned char m_NumRememTraits;				// number of traits that are apart of the girls starting traits
-	sTrait* m_RememTraits[MAXNUM_TRAITS * 2];		// List of traits they have inbuilt
+	TraitSpec* m_RememTraits[MAXNUM_TRAITS * 2];		// List of traits they have inbuilt
 
 	unsigned int m_DayJob;						// id for what job the girl is currently doing
 	unsigned int m_NightJob;					// id for what job the girl is currently doing
@@ -794,8 +794,8 @@ public:
 	static bool RestoreRememberedTrait(sGirl* girl, string trait);
 
 
-	static void ApplyTraits(sGirl* girl, sTrait* trait = 0);	// applys the stat bonuses for traits to a girl
-	static void MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait = 0, bool rememberflag = false);
+	static void ApplyTraits(sGirl* girl, TraitSpec* trait = 0);	// applys the stat bonuses for traits to a girl
+	static void MutuallyExclusiveTraits(sGirl* girl, bool apply, TraitSpec* trait = 0, bool rememberflag = false);
 
 	static bool PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, int eventtype = EVENT_GOODNEWS);
 	static bool PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
@@ -826,7 +826,7 @@ public:
 
 	Uint8 girl_fights_girl(sGirl* a, sGirl* b);
 
-	bool InheritTrait(sTrait* trait);
+	bool InheritTrait(TraitSpec* trait);
 
 	void AddRandomGirl(sRandomGirl* girl);
 	/*

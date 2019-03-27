@@ -25,6 +25,7 @@
 #include <fstream>
 #include <vector>
 #include <list>
+#include <memory>
 
 class sGirl;
 class TiXmlElement;
@@ -43,13 +44,13 @@ struct TraitEffect
 
 
 // Represents a single trait
-class sTrait
+class TraitSpec
 {
 public:
-	sTrait(std::string name, std::string description, std::string type,
+	TraitSpec(std::string name, std::string description, std::string type,
 	        int inherit_chance=-1, int random_chance=-1);
 
-	static sTrait from_xml(TiXmlElement* el);
+	static TraitSpec from_xml(TiXmlElement* el);
 
 	const std::string& name() const { return m_Name; }
 	std::string display_name() const;
@@ -73,7 +74,7 @@ private:
 // Manages and loads the traits file
 class cTraits
 {
-    using trait_list_t = std::list<sTrait*>;
+    using trait_list_t = std::list<std::unique_ptr<TraitSpec>>;
 public:
 	cTraits() = default;
 
@@ -83,18 +84,16 @@ public:
 
 	void LoadXMLTraits(const std::string& filename);	// Loads the traits from an XML file (adding them to the existing traits)
 
-	void AddTrait(sTrait trait);
+	void AddTrait(TraitSpec trait);
 	void RemoveTrait(const std::string& name);
-	sTrait* GetTrait(const std::string& name);
+	TraitSpec* GetTrait(const std::string& name);
 
-    static std::string GetTranslateName(const std::string& name);
-
-	const std::list<sTrait*>& all_traits() const { return m_Traits; }
+	const trait_list_t& all_traits() const { return m_Traits; }
 
 private:
 
     trait_list_t::iterator find_trait_by_name(const std::string& name);
-	std::list<sTrait*> m_Traits;
+    trait_list_t m_Traits;
 };
 
 #endif
