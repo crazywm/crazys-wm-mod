@@ -30,6 +30,18 @@ class sGirl;
 class TiXmlElement;
 
 
+struct TraitEffect
+{
+    enum Type {
+        STAT, SKILL, ENJOYMENT
+    } type;
+    unsigned target;
+    int value;
+
+    static TraitEffect from_xml(TiXmlElement* el);
+};
+
+
 // Represents a single trait
 class sTrait
 {
@@ -45,14 +57,17 @@ public:
 	int random_chance() const { return m_RandomChance; }
 	int inherit_chance() const { return m_InheritChance; }
 
-	void apply_effect(sGirl* target) const;
+	void apply_effects(sGirl* target) const;
 private:
+
     std::string m_Name;				// the name and unique ID of the trait
     std::string m_Desc;				// a description of the trait
     std::string m_Type ;				// a description of the trait
     int		m_InheritChance = -1;	// chance of inheriting the trait
     int		m_RandomChance = -1;	// chance of a random girl to get the trait
 
+    void add_effect(TraitEffect);
+    std::vector<TraitEffect> m_Effects;
 };
 
 // Manages and loads the traits file

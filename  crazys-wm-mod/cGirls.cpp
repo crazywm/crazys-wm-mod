@@ -5424,7 +5424,7 @@ void cGirls::ApplyTraits(sGirl* girl, sTrait* trait)
 		tr = (doOnce) ? trait : girl->m_Traits[i];
 		if (tr == 0) continue;
 
-		tr->apply_effect(girl);
+		tr->apply_effects(girl);
 
 		if (doOnce)
 		{
