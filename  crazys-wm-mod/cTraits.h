@@ -26,6 +26,7 @@
 #include <vector>
 #include <list>
 
+class sGirl;
 class TiXmlElement;
 
 
@@ -43,6 +44,8 @@ public:
 	const std::string& desc() const { return m_Desc; }
 	int random_chance() const { return m_RandomChance; }
 	int inherit_chance() const { return m_InheritChance; }
+
+	void apply_effect(sGirl* target) const;
 private:
     std::string m_Name;				// the name and unique ID of the trait
     std::string m_Desc;				// a description of the trait

@@ -23,6 +23,7 @@
 #include "tinyxml.h"
 #include "XmlMisc.h"
 #include "CLog.h"
+#include "cGirls.h"
 
 #ifdef LINUX
 #include "linux.h"
@@ -278,7 +279,7 @@ string cTraits::GetTranslateName(const string& name)
 		else if (trait.compare("idol") == 0)					return ("Idol");
 		else if (trait.compare("incest") == 0)					return ("Incest");
 		else if (trait.compare("incorporeal") == 0)				return ("Incorporeal");
-		else if (trait.compare("incorporial") == 0)				return ("Incorporeal");		// put this back in for those too lazy to update their (r)girlsx files
+		else if (trait.compare("incorporial") == 0)				return ("Incorporeal");		// put this back in for those too lazy to cGirls::Update their (r)girlsx files
 		else if (trait.compare("inverted nipples") == 0)		return ("Inverted Nipples");
 		else if (trait.compare("iron will") == 0)				return ("Iron Will");
 	}
@@ -460,3 +461,1437 @@ string cTraits::GetTranslateName(const string& name)
 	return name;
 }
 
+
+void sTrait::apply_effect(sGirl* girl) const
+{
+	stringstream ss;
+	ss << name();
+	string Name = ss.str();
+	string first = "";
+	first = tolower(Name[0]);
+
+
+	if (first == "a")
+	{
+		/* */if (Name == "Abnormally Large Boobs")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 20);
+		}
+		else if (Name == "Actress")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMOVIE, 10);
+		}
+		else if (Name == "Adventurer")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 10);
+		}
+		else if (Name == "Aggressive")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 10);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKSECURITY, 20);
+		}
+		else if (Name == "Agile")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 20);
+		}
+		else if (Name == "Alcoholic")
+		{
+			cGirls::UpdateStatTr(girl, STAT_SANITY, -10);
+		}
+		else if (Name == "Angel")
+		{
+			cGirls::UpdateStatTr(girl, STAT_MORALITY, 20);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 10);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, 10);
+		}
+		else if (Name == "Assassin")
+		{
+			cGirls::UpdateStatTr(girl, STAT_MORALITY, -20);
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 15);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 15);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKSECURITY, 20);
+		}
+		else if (Name == "Audacity")
+		{
+			cGirls::UpdateStatTr(girl, STAT_PCFEAR, -30);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, 30);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, -40);
+		}
+	}
+	else if (first == "b")
+	{
+		/* */if (Name == "Bad Eyesight")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_CRAFTING, -5);
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, -5);
+		}
+		else if (Name == "Battery Operated")
+		{
+			//
+		}
+		else if (Name == "Beauty Mark")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+		}
+		else if (Name == "Big Boobs")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 15);
+		}
+		else if (Name == "Bimbo")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 8);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 10);
+			cGirls::UpdateStatTr(girl, STAT_INTELLIGENCE, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_MEDICINE, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKTRAINING, -10);
+		}
+		else if (Name == "Blind")
+		{
+			//
+		}
+		else if (Name == "Branded on the Ass")
+		{
+			//
+		}
+		else if (Name == "Branded on the Forehead")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -10);
+		}
+		else if (Name == "Brawler")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 10);
+		}
+		else if (Name == "Broken Will")
+		{
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -100);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, -100);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 100);
+		}
+		else if (Name == "Broodmother")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 10);
+		}
+		else if (Name == "Bruises")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, -5);
+		}
+		else if (Name == "Busty Boobs")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 8);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 10);
+		}
+	}
+	else if (first == "c")
+	{
+		/* */if (Name == "Canine")
+		{
+			//
+		}
+		else if (Name == "Cat Girl")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 10);
+		}
+		else if (Name == "Chaste")
+		{
+			cGirls::UpdateStatTr(girl, STAT_LIBIDO, -20);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -5);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 5);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, 5);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, 5);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 5);
+
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_LESBIAN, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_STRIP, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_HANDJOB, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, -10);
+
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHOUSEPET, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHAREM, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKESCORT, -15);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKSTRIP, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMILK, -5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMASSEUSE, -5);
+
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKSECURITY, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKADVERTISING, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKTORTURER, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKDOCTOR, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCENTRE, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKNURSE, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMECHANIC, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOUNSELOR, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMAKEPOTIONS, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMAKEITEMS, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOOKING, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKTHERAPY, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMATRON, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCARING, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMUSIC, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCUSTSERV, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKRECRUIT, 5);
+		}
+		else if (Name == "Charismatic")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 50);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, 20);
+		}
+		else if (Name == "Charming")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 30);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 15);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, 10);
+		}
+		else if (Name == "City Girl")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_FARMING, -30);
+			cGirls::UpdateSkillTr(girl, SKILL_HERBALISM, -20);
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_COOKING, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, -10);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, -5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, -20);
+		}
+		else if (Name == "Chef")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_COOKING, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOOKING, 20);
+		}
+		else if (Name == "Clumsy")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_LESBIAN, -10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, -20);
+		}
+		else if (Name == "Cool Person")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 10);
+		}
+		else if (Name == "Cool Scars")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 2);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 2);
+		}
+		else if (Name == "Country Gal")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_FARMING, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, 5);
+		}
+		else if (Name == "Cow Girl")
+		{
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, -5);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMILK, 20);
+		}
+		else if (Name == "Cow Tits")
+		{
+			//
+		}
+		else if (Name == "Cum Addict")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 30);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, 10);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 20);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 10);
+		}
+		else if (Name == "Cute")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLUB, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, 15);
+		}
+		else if (Name == "Cyclops")
+		{
+			//
+		}
+	}
+	else if (first == "d")
+	{
+		/* */if (Name == "Deaf")
+		{
+			//
+		}
+		else if (Name == "Deep Throat")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 50);
+		}
+		else if (Name == "Delicate")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, -15);
+		}
+		else if (Name == "Deluxe Derriere")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 10);
+		}
+		else if (Name == "Demon Possessed")
+		{
+			cGirls::UpdateStatTr(girl, STAT_MORALITY, -25);
+			cGirls::UpdateStatTr(girl, STAT_SANITY, -30);
+		}
+		else if (Name == "Demon")
+		{
+			cGirls::UpdateStatTr(girl, STAT_MORALITY, -40);
+		}
+		else if (Name == "Dependant")
+		{
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -30);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 50);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLUB, -20);
+		}
+		else if (Name == "Dick-Sucking Lips")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 5);
+		}
+		else if (Name == "Director")
+		{
+			cGirls::UpdateStatTr(girl, STAT_INTELLIGENCE, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMOVIE, 20);
+		}
+		else if (Name == "Doctor")
+		{
+			cGirls::UpdateStatTr(girl, STAT_INTELLIGENCE, 15);
+			cGirls::UpdateSkillTr(girl, SKILL_MEDICINE, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKDOCTOR, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKNURSE, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKTRAINING, 10);
+		}
+		else if (Name == "Dojikko")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -5);
+		}
+		else if (Name == "Dominatrix")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKTORTURER, 20);
+		}
+		else if (Name == "Dry Milk")
+		{
+			//
+		}
+		else if (Name == "Dryad")
+		{
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, 10);
+		}
+	}
+	else if (first == "e")
+	{
+		/* */if (Name == "Egg Layer")
+		{
+			//
+		}
+		else if (Name == "Elegant")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 5);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMATRON, 20);
+		}
+		else if (Name == "Elf")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 10);
+			cGirls::UpdateStatTr(girl, STAT_INTELLIGENCE, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, -5);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 5);
+		}
+		else if (Name == "Equine")
+		{
+			cGirls::UpdateStatTr(girl, STAT_STRENGTH, 20);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, 10);
+		}
+		else if (Name == "Exhibitionist")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_STRIP, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 20);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 10);
+			cGirls::UpdateStatTr(girl, STAT_MORALITY, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMUSIC, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKSTRIP, 30);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMOVIE, 30);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLUB, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKESCORT, 10);
+		}
+		else if (Name == "Exotic")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+		}
+	}
+	else if (first == "f")
+	{
+		/* */if (Name == "Eye Patch")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -5);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+		}
+		else if (Name == "Fairy Dust Addict")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -10);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 5);
+		}
+		else if (Name == "Fake Orgasm Expert")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_LESBIAN, 2);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 10);
+		}
+		else if (Name == "Fallen Goddess")
+		{
+			cGirls::UpdateStatTr(girl, STAT_SANITY, -10);
+		}
+		else if (Name == "Farmer")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_FARMING, 40);
+			cGirls::UpdateSkillTr(girl, SKILL_HERBALISM, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_CRAFTING, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_COOKING, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_MEDICINE, 5);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, -20);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, 50);
+		}
+		else if (Name == "Farmers Daughter")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_FARMING, 15);
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, 5);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, 20);
+		}
+		else if (Name == "Fast Orgasms")
+		{
+			cGirls::UpdateStatTr(girl, STAT_LIBIDO, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_LESBIAN, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 10);
+		}
+		else if (Name == "Fearless")
+		{
+			cGirls::UpdateStatTr(girl, STAT_PCFEAR, -200);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, 30);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 20);
+			cGirls::UpdateStatTr(girl, STAT_SANITY, 10);
+		}
+		else if (Name == "Fertile")
+		{
+			//
+		}
+		else if (Name == "Flat Ass")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -5);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, -10);
+		}
+		else if (Name == "Flat Chest")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, -50);
+		}
+		else if (Name == "Fleet of Foot")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 50);
+		}
+		else if (Name == "Flexible")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 5);
+		}
+		else if (Name == "Flight")
+		{
+			//
+		}
+		else if (Name == "Former Addict")
+		{
+			//
+		}
+		else if (Name == "Former Official")
+		{
+			cGirls::UpdateStatTr(girl, STAT_FAME, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMATRON, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCUSTSERV, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCENTRE, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKRECRUIT, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOUNSELOR, 5);
+
+		}
+		else if (Name == "Furry")
+		{
+			//
+		}
+	}
+	else if (first == "g")
+	{
+		/* */if (Name == "Gag Reflex")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, -30);
+		}
+		else if (Name == "Giant Juggs")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 8);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 15);
+		}
+		else if (Name == "Giant")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 20);
+			cGirls::UpdateStatTr(girl, STAT_STRENGTH, 20);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -10);
+
+		}
+		else if (Name == "Goddess")
+		{
+			//
+		}
+		else if (Name == "Good Kisser")
+		{
+			cGirls::UpdateStatTr(girl, STAT_LIBIDO, 2);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 2);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 2);
+			cGirls::UpdateSkillTr(girl, SKILL_SERVICE, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 5);
+		}
+		else if (Name == "Great Arse")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 10);
+		}
+		else if (Name == "Great Figure")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLUB, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, 10);
+		}
+	}
+	else if (first == "h")
+	{
+		/* */if (Name == "Half-Breed")
+		{
+			//
+		}
+		else if (Name == "Half-Construct")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMECHANIC, 10);
+		}
+		else if (Name == "Handyman")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_SERVICE, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_CRAFTING, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMECHANIC, 10);
+		}
+		else if (Name == "Heavily Tattooed")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -15);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -15);
+		}
+		else if (Name == "Heroine")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateStatTr(girl, STAT_STRENGTH, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 5);
+			cGirls::UpdateStatTr(girl, STAT_MORALITY, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 10);
+		}
+		else if (Name == "Homeless")
+		{
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, -10);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, -5);
+		}
+		else if (Name == "Horrific Scars")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -5);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -10);
+		}
+		else if (Name == "Hourglass Figure")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLUB, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, 10);
+		}
+		else if (Name == "Hunter")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, 30);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_COOKING, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, -5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 10);
+		}
+	}
+	else if (first == "i")
+	{
+		/* */if (Name == "Idiot Savant")
+		{
+			cGirls::UpdateStatTr(girl, STAT_INTELLIGENCE, -15);
+		}
+		else if (Name == "Idol")
+		{
+			cGirls::UpdateStatTr(girl, STAT_FAME, 25);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMOVIE, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMUSIC, 10);
+		}
+		else if (Name == "Incorporeal")
+		{
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 20);
+		}
+		else if (Name == "Iron Will")
+		{
+			cGirls::UpdateStatTr(girl, STAT_PCFEAR, -60);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, 60);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, -90);
+		}
+	}
+	else if (first == "j")
+	{
+		/* */
+	}
+	else if (first == "k")
+	{
+		/* */
+	}
+	else if (first == "l")
+	{
+		/* */ if (Name == "Large Hips")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 5);
+		}
+			//starts with M
+		else if (Name == "Lesbian")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_LESBIAN, 40);
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, -10);
+		}
+		else if (Name == "Lolita")
+		{
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 20);
+		}
+		else if (Name == "Long Legs")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+		}
+	}
+	else if (first == "m")
+	{
+		/* */if (Name == "Maid")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_SERVICE, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_COOKING, 5);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOOKING, 5);
+		}
+		else if (Name == "Malformed")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -20);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -20);
+			cGirls::UpdateStatTr(girl, STAT_INTELLIGENCE, -10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -20);
+		}
+		else if (Name == "Manly")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 10);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, -10);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, 10);
+		}
+		else if (Name == "Masochist")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, 50);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 50);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 30);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKTORTURER, 5);
+		}
+		else if (Name == "Massive Melons")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 18);
+		}
+		else if (Name == "Meek")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -20);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 20);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -20);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMATRON, -30);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCUSTSERV, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLUB, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOUNSELOR, -10);
+		}
+		else if (Name == "Merciless")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKTORTURER, 10);
+		}
+		else if (Name == "Middle Aged")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -5);
+		}
+		else if (Name == "Mind Fucked")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -50);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 100);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -50);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, -35);
+			cGirls::UpdateStatTr(girl, STAT_SANITY, -40);
+		}
+		else if (Name == "Mixologist")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_SERVICE, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_BREWING, 15);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, 25);
+		}
+		else if (Name == "Muggle")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_MAGIC, -30);
+			cGirls::UpdateStatTr(girl, STAT_MANA, -30);
+		}
+		else if (Name == "Muscular")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 5);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateStatTr(girl, STAT_STRENGTH, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, 10);
+		}
+		else if (Name == "Mute")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_MAGIC, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -5);
+		}
+	}
+	else if (first == "n")
+	{
+		/* */if (Name == "Natural Pheromones")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 10);
+		}
+		else if (Name == "Nerd")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -10);
+			cGirls::UpdateStatTr(girl, STAT_INTELLIGENCE, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_MEDICINE, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKTRAINING, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMAKEITEMS, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_COMBAT, -10);
+		}
+		else if (Name == "Nervous")
+		{
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLUB, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, -5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, -5);
+		}
+		else if (Name == "Nimble Tongue")
+		{
+			cGirls::UpdateStatTr(girl, STAT_LIBIDO, 2);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 2);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 2);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 5);
+		}
+		else if (Name == "No Arms")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -30);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -30);
+			cGirls::UpdateSkillTr(girl, SKILL_HANDJOB, -100);
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, -50);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, -20);
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, 30);
+		}
+		else if (Name == "No Clit")
+		{
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, -10);
+		}
+		else if (Name == "No Feet")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, -100);
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, -50);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, -20);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -30);
+		}
+		else if (Name == "No Gag Reflex")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 25);
+		}
+		else if (Name == "No Hands")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_HANDJOB, -100);
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, -20);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, 20);
+		}
+		else if (Name == "No Legs")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -40);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -40);
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, -100);
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, -75);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, -20);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -70);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, -10);
+		}
+		else if (Name == "No Nipples")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, -5);
+			cGirls::UpdateStatTr(girl, STAT_LACTATION, -200);
+		}
+		else if (Name == "No Teeth")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 10);
+		}
+		else if (Name == "No Tongue")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, -5);
+			cGirls::UpdateSkillTr(girl, SKILL_MAGIC, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -5);
+		}
+		else if (Name == "Noble")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 5);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, -5);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 10);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, 10);
+			cGirls::UpdateStatTr(girl, STAT_FAME, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMAKEITEMS, -5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOOKING, -5);
+		}
+		else if (Name == "Nymphomaniac")
+		{
+			cGirls::UpdateStatTr(girl, STAT_LIBIDO, 20);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 30);
+		}
+	}
+	else if (first == "o")
+	{
+		/* */if (Name == "Old")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -15);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -15);
+		}
+		else if (Name == "One Arm")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -15);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -15);
+		}
+		else if (Name == "One Eye")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -5);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -10);
+		}
+		else if (Name == "One Foot")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, -15);
+		}
+		else if (Name == "One Hand")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -10);
+		}
+		else if (Name == "One Leg")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -15);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -15);
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, -20);
+		}
+		else if (Name == "Open Minded")
+		{
+			//
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 15);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 10);
+		}
+		else if (Name == "Optimist")
+		{
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKADVERTISING, 10);
+		}
+	}
+	else if (first == "p")
+	{
+		/* */if (Name == "Perky Nipples")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 5);
+		}
+		else if (Name == "Pessimist")
+		{
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -60);
+		}
+		else if (Name == "Petite Breasts")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, -20);
+		}
+		else if (Name == "Phat Booty")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 10);
+		}
+		else if (Name == "Pierced Clit")
+		{
+			cGirls::UpdateStatTr(girl, STAT_LIBIDO, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 10);
+		}
+		else if (Name == "Pierced Nipples")
+		{
+			cGirls::UpdateStatTr(girl, STAT_LIBIDO, 10);
+			cGirls::UpdateStatTr(girl, STAT_LACTATION, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMILK, -10);
+		}
+		else if (Name == "Pierced Navel")
+		{
+			//
+		}
+		else if (Name == "Pierced Nose")
+		{
+			//
+		}
+		else if (Name == "Pierced Tongue")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 10);
+		}
+		else if (Name == "Playful Tail")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+		}
+		else if (Name == "Plump Tush")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 10);
+		}
+		else if (Name == "Plump")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -10);
+		}
+		else if (Name == "Porn Star")
+		{
+			cGirls::UpdateStatTr(girl, STAT_FAME, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMOVIE, 30);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 20);
+		}
+		else if (Name == "Powerful Magic")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_MAGIC, 30);
+			cGirls::UpdateStatTr(girl, STAT_MANA, 30);
+		}
+		else if (Name == "Prehensile Tail")
+		{
+			//
+		}
+		else if (Name == "Priestess")
+		{
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 20);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOUNSELOR, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKADVERTISING, 10);
+		}
+		else if (Name == "Princess")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 10);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 10);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, -5);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 20);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, 20);
+			cGirls::UpdateStatTr(girl, STAT_FAME, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, -30);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, -30);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMAKEITEMS, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOOKING, -10);
+		}
+		else if (Name == "Puffy Nipples")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 5);
+		}
+	}
+	else if (first == "q")
+	{
+		/* */if (Name == "Queen")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 20);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 20);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 10);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, -15);
+			cGirls::UpdateStatTr(girl, STAT_REFINEMENT, 30);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, 30);
+			cGirls::UpdateStatTr(girl, STAT_FAME, 15);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLEANING, -40);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, -40);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMAKEITEMS, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOOKING, -20);
+		}
+	}
+	else if (first == "r")
+	{
+		/* */if (Name == "Retarded")
+		{
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -20);
+			cGirls::UpdateStatTr(girl, STAT_INTELLIGENCE, -50);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -60);
+		}
+	}
+	else if (first == "s")
+	{
+		if (Name == "Sadistic")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKTORTURER, 25);
+		}
+		else if (Name == "Scarce Lactation")
+		{
+			cGirls::UpdateStatTr(girl, STAT_LACTATION, -50);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMILK, -10);
+		}
+		else if (Name == "Sexy Air")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 2);
+		}
+		else if (Name == "Shape Shifter")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 20);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 20);
+			cGirls::UpdateStatTr(girl, STAT_STRENGTH, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 30);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMOVIE, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKADVERTISING, 10);
+		}
+		else if (Name == "Sharp-Eyed")
+		{
+			//
+		}
+		else if (Name == "Shroud Addict")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -5);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 5);
+		}
+		else if (Name == "Shy")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, -20);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKADVERTISING, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKRECRUIT, -20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCUSTSERV, -10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCLUB, -10);
+		}
+		else if (Name == "Singer")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, 30);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 30);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+		}
+		else if (Name == "Skeleton")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -100);		//
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 50);		//
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -20);			//
+			cGirls::UpdateStatTr(girl, STAT_ASKPRICE, -1000);		//
+			cGirls::UpdateStatTr(girl, STAT_HOUSE, 100);			// skeletons don't need money
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -50);			// She may have great bone structure but thats all she has
+			cGirls::UpdateStatTr(girl, STAT_TIREDNESS, -100);		// skeletons don't get tired
+			cGirls::UpdateStatTr(girl, STAT_LACTATION, -1000);		//
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, -50);	// animals are afraid of her
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, -50);	// animals are afraid of her
+			cGirls::UpdateSkillTr(girl, SKILL_SERVICE, -10);		//
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, -1000);			//
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, -1000);			//
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, -1000);	//
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, -1000);	//
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, -1000);		//
+			cGirls::UpdateSkillTr(girl, SKILL_LESBIAN, -1000);		//
+			cGirls::UpdateSkillTr(girl, SKILL_STRIP, -1000);		// what exactly is she covering up?
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, -1000);		//
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, -1000);		//
+			cGirls::UpdateSkillTr(girl, SKILL_HANDJOB, -1000);		//
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, -1000);		//
+		}
+		else if (Name == "Slitherer")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, -100);		//
+		}
+		else if (Name == "Slow Orgasms")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, -2);
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, -2);
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, -2);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, -2);
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, -2);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, -2);
+			cGirls::UpdateSkillTr(girl, SKILL_LESBIAN, -2);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -2);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, -10);
+		}
+		else if (Name == "Slut")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+			cGirls::UpdateStatTr(girl, STAT_DIGNITY, -5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 10);
+		}
+		else if (Name == "Small Boobs")
+		{
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, -15);
+		}
+		else if (Name == "Small Scars")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -2);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 2);
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, -2);
+		}
+		else if (Name == "Small Tattoos")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -5);
+		}
+		else if (Name == "Smoker")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -5);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, -5);
+		}
+		else if (Name == "Social Drinker")
+		{
+			//
+		}
+		else if (Name == "Solar Powered")
+		{
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKFARM, 10);	// works outdoors
+		}
+		else if (Name == "Spirit Possessed")
+		{
+			//
+		}
+		else if (Name == "Straight")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_LESBIAN, -15);
+		}
+		else if (Name == "Strong Gag Reflex")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, -50);
+		}
+		else if (Name == "Strong Magic")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_MAGIC, 20);
+			cGirls::UpdateStatTr(girl, STAT_MANA, 20);
+		}
+		else if (Name == "Strong")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_COMBAT, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 10);
+			cGirls::UpdateStatTr(girl, STAT_STRENGTH, 10);
+		}
+		else if (Name == "Succubus")
+		{
+			cGirls::UpdateStatTr(girl, STAT_LIBIDO, 35);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 40);
+		}
+	}
+	else if (first == "t")
+	{
+		/* */if (Name == "Tattooed")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -10);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+		}
+		else if (Name == "Teacher")
+		{
+			cGirls::UpdateStatTr(girl, STAT_INTELLIGENCE, 20);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOUNSELOR, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKMATRON, 10);
+		}
+		else if (Name == "Tight Butt")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 8);
+		}
+		else if (Name == "Titanic Tits")
+		{
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 10);
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateStatTr(girl, STAT_AGILITY, -15);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 25);
+		}
+		else if (Name == "Tomboy")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 10);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+		}
+		else if (Name == "Tone Deaf")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE, -30);
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -30);
+		}
+		else if (Name == "Tsundere")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 20);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, -20);
+		}
+		else if (Name == "Twisted")
+		{
+			cGirls::UpdateStatTr(girl, STAT_SANITY, -20);
+		}
+	}
+	else if (first == "u")
+	{
+		/* */if (Name == "Undead")
+		{
+			/* */
+		}
+
+	}
+	else if (first == "v")
+	{
+		/* */if (Name == "Vampire")
+		{
+			// `J` zzzzzz - more needs to be added for this
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, 10);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, -5);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, 10);
+		}
+		else if (Name == "Viras Blood Addict")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONFIDENCE, -15);
+			cGirls::UpdateStatTr(girl, STAT_OBEDIENCE, 20);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+		}
+	}
+	else if (first == "w")
+	{
+		/* */if (Name == "Waitress")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_SERVICE, 30);
+			cGirls::UpdateSkillTr(girl, SKILL_COOKING, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKBAR, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKHALL, 10);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_WORKCOOKING, 5);
+		}
+		else if (Name == "Weak Magic")
+		{
+			cGirls::UpdateSkillTr(girl, SKILL_MAGIC, -20);
+			cGirls::UpdateStatTr(girl, STAT_MANA, -20);
+		}
+		else if (Name == "Whore")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, -5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, -10);
+			cGirls::UpdateStatTr(girl, STAT_CHARISMA, -10);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_BDSM, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_NORMALSEX, 30);
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_GROUP, 30);
+			cGirls::UpdateSkillTr(girl, SKILL_LESBIAN, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_STRIP, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX, 20);
+			cGirls::UpdateSkillTr(girl, SKILL_TITTYSEX, 10);
+			cGirls::UpdateSkillTr(girl, SKILL_HANDJOB, 30);
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB, 5);
+			cGirls::UpdateEnjoymentTR(girl, ACTION_SEX, 30);
+		}
+		else if (Name == "Wide Bottom")
+		{
+			cGirls::UpdateStatTr(girl, STAT_CONSTITUTION, 5);
+			cGirls::UpdateStatTr(girl, STAT_BEAUTY, 5);
+			cGirls::UpdateSkillTr(girl, SKILL_ANAL, 5);
+		}
+		else if (Name == "Wings")
+		{
+			//
+		}
+	}
+	else if (first == "x")
+	{
+		/* */
+	}
+	else if (first == "y")
+	{
+		/* */if (Name == "Yandere")
+		{
+			cGirls::UpdateStatTr(girl, STAT_SPIRIT, 20);
+		}
+	}
+	else if (first == "z")
+	{
+		/* */if (Name == "Zombie")
+		{
+			cGirls::UpdateStatTr(girl,  STAT_CHARISMA		, -50);		//
+			cGirls::UpdateStatTr(girl, 	STAT_CONSTITUTION	, 20);		//
+			cGirls::UpdateStatTr(girl, 	STAT_INTELLIGENCE	, -50);		//
+			cGirls::UpdateStatTr(girl, 	STAT_AGILITY		, -20);		//
+			cGirls::UpdateStatTr(girl, 	STAT_ASKPRICE		, -1000);	//
+			cGirls::UpdateStatTr(girl, 	STAT_BEAUTY			, -20);		//
+			cGirls::UpdateStatTr(girl, 	STAT_TIREDNESS		, -100);	// zombies don't get tired
+			cGirls::UpdateStatTr(girl, 	STAT_MORALITY		, -50);		// zombies eat people
+			cGirls::UpdateStatTr(girl, 	STAT_REFINEMENT		, -50);		//
+			cGirls::UpdateStatTr(girl, 	STAT_LACTATION		, -1000);	//
+			cGirls::UpdateStatTr(girl, 	STAT_STRENGTH		, 20);		//
+			cGirls::UpdateSkillTr(girl, SKILL_BEASTIALITY	, -50);		// animals are afraid of her
+			cGirls::UpdateSkillTr(girl, SKILL_ANIMALHANDLING, -50);		// animals are afraid of her
+			cGirls::UpdateSkillTr(girl, SKILL_SERVICE		, -20);		//
+			cGirls::UpdateSkillTr(girl, SKILL_STRIP			, -50);		// zombies don't care about clothes
+			cGirls::UpdateSkillTr(girl, SKILL_ORALSEX		, -50);		// You want to put what where?
+			cGirls::UpdateSkillTr(girl, SKILL_MEDICINE		, -50);		//
+			cGirls::UpdateSkillTr(girl, SKILL_PERFORMANCE	, -50);		//
+			cGirls::UpdateSkillTr(girl, SKILL_HANDJOB		, -50);		// less control over hands and feet
+			cGirls::UpdateSkillTr(girl, SKILL_CRAFTING		, -50);		//
+			cGirls::UpdateSkillTr(girl, SKILL_HERBALISM		, -50);		//
+			cGirls::UpdateSkillTr(girl, SKILL_FARMING		, -10);		//
+			cGirls::UpdateSkillTr(girl, SKILL_BREWING		, -50);		//
+			cGirls::UpdateSkillTr(girl, SKILL_FOOTJOB		, -50);		// less control over hands and feet
+			cGirls::UpdateSkillTr(girl, SKILL_COOKING		, -50);		//
+		}
+	}
+}
