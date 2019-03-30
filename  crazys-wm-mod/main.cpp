@@ -54,6 +54,7 @@
 
 #include "IconSurface.h"
 #include "Globals.h"
+#include "cSlider.h"
 
 Globals _G;
 

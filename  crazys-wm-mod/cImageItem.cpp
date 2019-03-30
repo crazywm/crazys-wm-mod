@@ -120,7 +120,6 @@ cImage::~cImage()
 cImageItem::cImageItem()
 {
 	m_Image = 0;
-	m_Next = 0;
 	m_Surface = 0;
 	m_AnimatedImage = 0;
 	m_loaded = false;
@@ -128,10 +127,10 @@ cImageItem::cImageItem()
 }
 cImageItem::~cImageItem()
 {
-	if (m_Next)				delete m_Next;					m_Next = 0;
-	if (m_Image)			delete m_Image;					m_Image = 0;
-	if (m_Surface)			SDL_FreeSurface(m_Surface);		m_Surface = 0;
-	if (m_AnimatedImage)	delete m_AnimatedImage;			m_AnimatedImage = 0;
+    delete m_Image;
+	if (m_Surface)
+	    SDL_FreeSurface(m_Surface);
+	delete m_AnimatedImage;
 }
 
 /* `J` image tree for each image type
@@ -1252,7 +1251,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 				if (gallery)
 				{
 					m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-					m_Images[id]->m_AnimatedImage = 0;
+					m_Images[id]->m_AnimatedImage = nullptr;
 					m_Images[id]->m_Image->m_Message = "Bad ani file: Missing its matching jpg file: " + file;
 					return;
 				}
@@ -1291,7 +1290,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		else if (ext == "gif")
 		{
  			const char* n = file.c_str();
-			int frames = AG_LoadGIF(n, NULL, 0);
+			int frames = AG_LoadGIF(n, nullptr, 0);
 			if (frames)
 			{
 				cImage* newImage = new cImage();
@@ -1327,12 +1326,12 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 
 
 
-	if (m_Images[id]->m_Image->m_Message == "")
+	if (m_Images[id]->m_Image->m_Message.empty())
 	{
 		m_Images[id]->m_Image->m_Message = m_Images[id]->m_Image->GetFilename();
 	}
 
-	if (ext == "")	// unrecognised extension
+	if (ext.empty())	// unrecognised extension
 	{
 		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
 		m_Images[id]->m_AnimatedImage = 0;
@@ -1351,11 +1350,11 @@ bool cImageItem::CreateImage(int id, string filename, int x, int y, int width, i
 	if (statImage)
 	{
 		m_Surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
-		SDL_FillRect(m_Surface, 0, SDL_MapRGB(m_Surface->format, R, G, B));
+		SDL_FillRect(m_Surface, nullptr, SDL_MapRGB(m_Surface->format, R, G, B));
 	}
 	SetPosition(x, y, width, height);
 
-	if (filename != "")
+	if (!filename.empty())
 	{
 		m_loaded = true;
 		m_Image = new CSurface(filename);
@@ -1363,8 +1362,6 @@ bool cImageItem::CreateImage(int id, string filename, int x, int y, int width, i
 	}
 	else
 		m_loaded = false;
-
-	m_Next = 0;
 
 	return true;
 }
@@ -1374,7 +1371,7 @@ bool cImageItem::CreateAnimatedImage(int id, string filename, string dataFilenam
 	m_ID = id;
 	SetPosition(x, y, width, height);
 
-	if (filename != "")
+	if (!filename.empty())
 	{
 		m_loaded = true;
 		m_Image = new CSurface(filename);
@@ -1403,8 +1400,6 @@ bool cImageItem::CreateAnimatedImage(int id, string filename, string dataFilenam
 		return false;
 	}
 
-	m_Next = 0;
-
 	return true;
 }
 
@@ -1430,7 +1425,7 @@ void cImageItem::Draw()
 		rect.y = rect.x = 0;
 		rect.w = m_Width;
 		rect.h = m_Height;
-		m_Image->DrawSurface(m_XPos, m_YPos, 0, &rect, true);
+		m_Image->DrawSurface(m_XPos, m_YPos, nullptr, &rect, true);
 	}
 	else if (m_Surface)
 	{
@@ -1440,6 +1435,6 @@ void cImageItem::Draw()
 		offset.y = m_YPos;
 
 		// blit to the screen
-		SDL_BlitSurface(m_Surface, 0, g_Graphics.GetScreen(), &offset);
+		SDL_BlitSurface(m_Surface, nullptr, g_Graphics.GetScreen(), &offset);
 	}
 }

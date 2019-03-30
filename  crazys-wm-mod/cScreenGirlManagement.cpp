@@ -25,6 +25,7 @@
 #include "cTariff.h"
 #include "cJobManager.h"
 #include "InterfaceProcesses.h"
+#include "cListBox.h"
 #include "cScreenGirlDetails.h"
 #include "libintl.h"
 
@@ -291,9 +292,9 @@ void cScreenGirlManagement::check_events()
 					}
 					// update the girl's listing to reflect the job change
 					ss.str(""); ss << g_Brothels.m_JobManager.JobName[selected_girl->m_DayJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 					ss.str(""); ss << g_Brothels.m_JobManager.JobName[selected_girl->m_NightJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 
 					// refresh job worker counts for former job and current job
 					SetSelectedItemText(joblist_id, old_job, g_Brothels.m_JobManager.JobDescriptionCount(old_job, g_CurrBrothel, Day0Night1));

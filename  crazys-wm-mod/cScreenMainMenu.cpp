@@ -20,6 +20,7 @@
 #include "cGetStringScreenManager.h"
 #include "cScriptManager.h"
 #include "cWindowManager.h"
+#include "cButton.h"
 #include "FileList.h"
 #include "Revision.h"
 

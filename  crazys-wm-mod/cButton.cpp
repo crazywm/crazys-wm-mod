@@ -21,57 +21,7 @@
 extern cInterfaceEventManager g_InterfaceEvents;
 extern CResourceManager rmanager;
 
-cButton::~cButton()
-{
-	if (m_Next) delete m_Next;
-	m_Next = 0;
-	m_CurrImage = 0;
-	if (m_OffImage) delete m_OffImage;
-	m_OffImage = 0;
-	if (m_DisabledImage) delete m_DisabledImage;
-	m_DisabledImage = 0;
-	if (m_OnImage) delete m_OnImage;
-	m_OnImage = 0;
-}
-
-bool cButton::CreateButton(string OffImage, string DisabledImage, string OnImage, int ID, int x, int y, int width, int height, bool transparency, bool cached)
-{
-	if (OffImage != "")
-	{
-		m_OffImage = new CSurface(OffImage);
-		m_OffImage->m_Cached = cached;
-	}
-	else m_OffImage = 0;
-
-	if (DisabledImage != "")
-	{
-		m_DisabledImage = new CSurface(DisabledImage);
-		m_DisabledImage->m_Cached = cached;
-	}
-	else m_DisabledImage = 0;
-
-	if (OnImage != "")
-	{
-		m_OnImage = new CSurface(OnImage);
-		m_OnImage->m_Cached = cached;
-	}
-	else m_OnImage = 0;
-
-	m_CurrImage = m_OffImage;
-	SetPosition(x, y, width, height);
-
-	if (transparency)
-	{
-		if (m_OffImage)			m_OffImage->SetAlpha(true);
-		if (m_DisabledImage)	m_DisabledImage->SetAlpha(true);
-		if (m_OnImage)			m_OnImage->SetAlpha(true);
-	}
-
-	m_Next = 0;
-	m_ID = ID;
-
-	return true;
-}
+cButton::~cButton() = default;
 
 bool cButton::IsOver(int x, int y)
 {
@@ -79,10 +29,10 @@ bool cButton::IsOver(int x, int y)
 	bool over = false;
 	if (x > m_XPos && y > m_YPos && x < m_XPos + m_Width && y < m_YPos + m_Height)
 	{
-		m_CurrImage = m_OnImage;
+		m_CurrImage = m_OnImage.get();
 		over = true;
 	}
-	else m_CurrImage = m_OffImage;
+	else m_CurrImage = m_OffImage.get();
 	return over;
 }
 
@@ -97,15 +47,46 @@ bool cButton::ButtonClicked(int x, int y)
 	return false;
 }
 
-void cButton::Draw()
+void cButton::DrawWidget()
 {
-	if (m_Hidden) return;
 	if (m_CurrImage)
 	{
 		SDL_Rect rect;
 		rect.y = rect.x = 0;
 		rect.w = m_Width;
 		rect.h = m_Height;
-		m_CurrImage->DrawSurface(m_XPos, m_YPos, 0, &rect, true);
+		m_CurrImage->DrawSurface(m_XPos, m_YPos, nullptr, &rect, true);
 	}
+}
+
+cButton::cButton(const string& OffImage, const string& DisabledImage, const string& OnImage, int ID,
+        int x, int y, int width, int height, bool transparency, bool cached):
+    cUIWidget(ID, x, y, width, height)
+{
+    if (!OffImage.empty())
+    {
+        m_OffImage = std::unique_ptr<CSurface>(new CSurface(OffImage));
+        m_OffImage->m_Cached = cached;
+    }
+
+    if (!DisabledImage.empty())
+    {
+        m_DisabledImage = std::unique_ptr<CSurface>(new CSurface(DisabledImage));
+        m_DisabledImage->m_Cached = cached;
+    }
+
+    if (!OnImage.empty())
+    {
+        m_OnImage = std::unique_ptr<CSurface>(new CSurface(OnImage));
+        m_OnImage->m_Cached = cached;
+    }
+
+    m_CurrImage = m_OffImage.get();
+
+    if (transparency)
+    {
+        if (m_OffImage)			m_OffImage->SetAlpha(true);
+        if (m_DisabledImage)	m_DisabledImage->SetAlpha(true);
+        if (m_OnImage)			m_OnImage->SetAlpha(true);
+    }
 }

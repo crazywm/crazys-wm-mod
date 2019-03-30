@@ -39,6 +39,7 @@
 #include "cScreenBrothelManagement.h"
 
 #include "cWindowManager.h"
+#include "cTextItem.h"
 #include "sFacilityList.h"
 #include "FileList.h"
 

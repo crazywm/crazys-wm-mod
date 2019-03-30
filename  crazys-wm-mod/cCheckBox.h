@@ -19,34 +19,31 @@
 #ifndef __CCHECKBOX_H
 #define __CCHECKBOX_H
 
-#include "CSurface.h"
+#include <memory>
 #include "cInterfaceObject.h"
 #include "cInterfaceEvent.h"
 #include "cFont.h"
 
 class CSurface;
 
-class cCheckBox : public cInterfaceObject
+class cCheckBox : public cUIWidget
 {
 public:
-	cCheckBox() {m_Image = 0;m_Next=0;m_Border=m_Surface=0;m_StateOn=false;m_Disabled=false;}
+	cCheckBox(int id, int x, int y, int width, int height, string text, int fontsize = 12, bool leftorright = false);
 	~cCheckBox();
 
-	bool CreateCheckBox(int id, int x, int y, int width, int height, string text, int fontsize = 12, bool leftorright = false);
 	bool GetState() {return m_StateOn;}
 	void ButtonClicked(int x, int y);
 	void SetState(bool on) {m_StateOn = on;}
 
-	void Draw();
+	void DrawWidget() override;
 
-	CSurface* m_Image;
-	SDL_Surface* m_Surface;
-	SDL_Surface* m_Border;
-	int m_ID;
-	bool m_StateOn;
-	cCheckBox* m_Next;	// next button on the window
+	std::unique_ptr<CSurface> m_Image;
+	SDL_Surface* m_Surface = nullptr;
+	SDL_Surface* m_Border = nullptr;
+	bool m_StateOn = false;
 	cFont m_Font;
-	bool m_Disabled;
+	bool m_Disabled = false;
 };
 
 #endif

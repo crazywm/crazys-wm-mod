@@ -20,6 +20,7 @@
 #include "cBrothel.h"
 #include "cHouse.h"
 #include "cScreenHouseManagement.h"
+#include "cListBox.h"
 #include "cWindowManager.h"
 #include "cGold.h"
 #include "cTariff.h"
@@ -290,9 +291,9 @@ void cScreenHouseManagement::check_events()
 					}
 					// update the girl's listing to reflect the job change
 					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_DayJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_NightJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 
 					// refresh job worker counts for former job and current job
 					SetSelectedItemText(joblist_id, old_job, g_House.m_JobManager.JobDescriptionCount(old_job, 0, Day0Night1, false, false, false, false, true));
@@ -303,7 +304,7 @@ void cScreenHouseManagement::check_events()
 				if (selected_girl->m_DayJob == JOB_SO_STRAIGHT|| selected_girl->m_DayJob == JOB_SO_BISEXUAL|| selected_girl->m_DayJob == JOB_SO_LESBIAN || selected_girl->m_DayJob == JOB_FAKEORGASM)	// `J` added
 				{
 					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << selected_girl->m_WorkingDay << "%)";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 				}
 				else if ((selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0) && (
 					(selected_girl->m_YesterDayJob == JOB_SO_STRAIGHT	&& selected_girl->m_DayJob != JOB_SO_STRAIGHT)	||
@@ -312,13 +313,13 @@ void cScreenHouseManagement::check_events()
 					(selected_girl->m_YesterDayJob == JOB_FAKEORGASM	&& selected_girl->m_DayJob != JOB_FAKEORGASM)	))
 				{
 					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_DayJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 				}
 
 				if (selected_girl->m_NightJob == JOB_SO_STRAIGHT || selected_girl->m_NightJob == JOB_SO_BISEXUAL || selected_girl->m_NightJob == JOB_SO_LESBIAN || selected_girl->m_NightJob == JOB_FAKEORGASM)	// `J` added
 				{
 					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << selected_girl->m_WorkingDay << "%)";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 				}
 				else if ((selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0) && (
 					(selected_girl->m_YesterNightJob == JOB_SO_STRAIGHT	&& selected_girl->m_NightJob != JOB_SO_STRAIGHT) ||
@@ -327,7 +328,7 @@ void cScreenHouseManagement::check_events()
 					(selected_girl->m_YesterNightJob == JOB_FAKEORGASM	&& selected_girl->m_NightJob != JOB_FAKEORGASM)))
 				{
 					ss.str("");	ss << g_House.m_JobManager.JobName[selected_girl->m_NightJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 				}
 
 				if ((selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0) && (

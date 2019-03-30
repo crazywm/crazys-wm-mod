@@ -28,6 +28,7 @@
 #include "cHouse.h"
 #include "cScreenGallery.h"
 #include "cWindowManager.h"
+#include "cTextItem.h"
 #include "cGold.h"
 #include "sFacilityList.h"
 #include "cGetStringScreenManager.h"

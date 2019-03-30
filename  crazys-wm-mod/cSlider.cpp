@@ -31,58 +31,24 @@ SDL_Surface* cSlider::m_ImgButtonOn=0;
 SDL_Surface* cSlider::m_ImgButtonDisabled=0;
 SDL_Surface* cSlider::m_ImgMarker=0;
 
-cSlider::cSlider() {
-	m_ImgButton = 0;
-	m_ImgRail = 0;
-	m_MinVal = 0;
-	m_MaxVal = 100;
-	m_Value = m_Offset = m_MaxOffset = m_LastOffset = 0;
-	m_IncrementAmount = 5;
-	m_Disabled=false;
-	m_Hidden=false;
-	m_LiveUpdate=true;
-	m_ShowMarker = false;
-	m_MarkerOffset = 0;
-	BGLeft = new SDL_Rect;
-	BGRight = new SDL_Rect;
-}
-
-cSlider::~cSlider()
+cSlider::cSlider(int ID, int x, int y, int width, int min, int max, int increment, int value, float height):
+    cUIWidget(ID, x ,y, width, CalcHeight(height)), m_MinVal(min), m_MaxVal(max), m_Value(value), m_IncrementAmount(increment),
+    BGLeft(new SDL_Rect), BGRight(new SDL_Rect)
 {
-	m_ImgButton = 0;
-	m_ImgRail = 0;
-	delete BGLeft;
-	delete BGRight;
-}
-
-bool cSlider::CreateSlider(int ID, int x, int y, int width, int min, int max, int increment, int value, float height)
-{
-	// see if static class-wide default images are loaded; if not, do so
-	if (!m_ImgRailDefault)
-		LoadInitial();
-
-	SetPosition(x, y, width, int(m_ImgRailDefault->h * height));
-
-	m_MinVal = min;
-	m_MaxVal = max;
-	m_Value = value;
-	m_IncrementAmount = increment;
 	m_MaxOffset = m_Width - m_ImgButtonOff->w;
 
-	Disable(false);
-	ValueToOffset();
+    Disable(false);
+    ValueToOffset();
 
-	m_ID = ID;
-
-	// set up SDL_Rects indicating left and right halves of displayed background from source background images
-	BGLeft->x = BGLeft->y = BGRight->y = 0;
-	BGLeft->h = BGRight->h = m_ImgRailDefault->h;
-	BGLeft->w = (m_Width / 2);
-	BGRight->w = m_Width - BGLeft->w;
-	BGRight->x = m_ImgRailDefault->w - BGRight->w;
-
-	return true;
+    // set up SDL_Rects indicating left and right halves of displayed background from source background images
+    BGLeft->x = BGLeft->y = BGRight->y = 0;
+    BGLeft->h = BGRight->h = m_ImgRailDefault->h;
+    BGLeft->w = (m_Width / 2);
+    BGRight->w = m_Width - BGLeft->w;
+    BGRight->x = m_ImgRailDefault->w - BGRight->w;
 }
+
+cSlider::~cSlider() = default;
 
 void cSlider::LoadInitial()
 {  // load static class-wide shared base images into memory; only called once by first slider created
@@ -92,7 +58,7 @@ void cSlider::LoadInitial()
 	m_ImgRailDefault = LoadAlphaImageFromFile("SliderRail.png");
 	m_ImgRailDisabled = LoadAlphaImageFromFile("SliderRailDisabled.png");
 	m_ImgMarker = LoadAlphaImageFromFile("SliderMarker.png");
-	if (m_ImgMarker == 0) m_ImgMarker = LoadAlphaImageFromFile("SliderButtonDisabled.png");
+	if (m_ImgMarker == nullptr) m_ImgMarker = LoadAlphaImageFromFile("SliderButtonDisabled.png");
 }
 
 SDL_Surface* cSlider::LoadAlphaImageFromFile(string filepath)
@@ -100,10 +66,10 @@ SDL_Surface* cSlider::LoadAlphaImageFromFile(string filepath)
 	SDL_Surface* TmpImg;
 	SDL_Surface* surface;
 	TmpImg = IMG_Load(ImagePath(filepath));
-	if (TmpImg == 0)
+	if (TmpImg == nullptr)
 	{
 		g_LogFile.ss() << "Error Loading Slider image " << filepath; g_LogFile.ssend();
-		return 0;
+		return nullptr;
 	}
 	surface = SDL_DisplayFormatAlpha(TmpImg);
 	SDL_FreeSurface(TmpImg);
@@ -260,7 +226,7 @@ void cSlider::EndDrag()
 
 bool cSlider::ButtonClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 {
-	if(m_Disabled || m_Hidden)
+	if(m_Disabled)
 		return false;
 
 	if(IsOver(x,y))
@@ -286,19 +252,17 @@ bool cSlider::ButtonClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp
 	return false;
 }
 
-void cSlider::Draw()
+void cSlider::DrawWidget()
 {
-	if(m_Hidden || !m_ImgButton)
+	if(!m_ImgButton)
 		return;
 
 	SDL_Rect dstRect;
 	dstRect.x = m_XPos;
 	dstRect.y = m_YPos;
 
-	int error = 0;
-
 	// draw left half of background rail
-	error = SDL_BlitSurface(m_ImgRail, BGLeft, g_Graphics.GetScreen(), &dstRect);
+    int error = SDL_BlitSurface(m_ImgRail, BGLeft.get(), g_Graphics.GetScreen(), &dstRect);
 	if(error == -1)
 	{
 		LogSliderError("Error blitting slider background (left half)");
@@ -306,7 +270,7 @@ void cSlider::Draw()
 	}
 	// draw right half of background rail
 	dstRect.x += BGLeft->w;
-	error = SDL_BlitSurface(m_ImgRail, BGRight, g_Graphics.GetScreen(), &dstRect);
+	error = SDL_BlitSurface(m_ImgRail, BGRight.get(), g_Graphics.GetScreen(), &dstRect);
 	if(error == -1)
 	{
 		LogSliderError("Error blitting slider background (right half)");
@@ -317,7 +281,7 @@ void cSlider::Draw()
 	if (m_ShowMarker)
 	{
 		dstRect.x = m_XPos + m_MarkerOffset;
-		error = SDL_BlitSurface(m_ImgMarker, 0, g_Graphics.GetScreen(), &dstRect);
+		error = SDL_BlitSurface(m_ImgMarker, nullptr, g_Graphics.GetScreen(), &dstRect);
 		if (error == -1)
 		{
 			LogSliderError("Error blitting slider marker");
@@ -327,7 +291,7 @@ void cSlider::Draw()
 
 	// draw slider drag button
 	dstRect.x = m_XPos + m_Offset;
-	error = SDL_BlitSurface(m_ImgButton, 0, g_Graphics.GetScreen(), &dstRect);
+	error = SDL_BlitSurface(m_ImgButton, nullptr, g_Graphics.GetScreen(), &dstRect);
 	if(error == -1)
 	{
 		LogSliderError("Error blitting slider drag button");
@@ -335,9 +299,17 @@ void cSlider::Draw()
 	}
 }
 
-void cSlider::LogSliderError(string description)
+void cSlider::LogSliderError(const string& description)
 {
 	CLog l;
 	l.ss() << description << " - " << SDL_GetError();
 	l.ssend();
+}
+
+int cSlider::CalcHeight(float height) {
+    // see if static class-wide default images are loaded; if not, do so
+    if (!m_ImgRailDefault)
+        LoadInitial();
+
+    return int(m_ImgRailDefault->h * height);
 }

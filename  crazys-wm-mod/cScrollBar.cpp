@@ -20,8 +20,6 @@
 #include "CResourceManager.h"
 #include "DirPath.h"
 #include "main.h"
-extern cInterfaceEventManager g_InterfaceEvents;
-extern CResourceManager rmanager;
 
 //these static vars defined in the header file need to be specified here
 SDL_Surface* cScrollBar::m_ImgBarBG=0;
@@ -37,110 +35,64 @@ SDL_Surface* cScrollBar::m_ImgButtonDownOn=0;
 SDL_Surface* cScrollBar::m_ImgButtonDownOff=0;
 SDL_Surface* cScrollBar::m_ImgButtonDownDisabled=0;
 	
-cScrollBar::cScrollBar()
+cScrollBar::cScrollBar(int ID, int x, int y, int width, int height, int visibleitems) :
+    cUIWidget(ID, x, y, width, height),
+    m_RectBGTop(new SDL_Rect),
+    m_RectBGBottom(new SDL_Rect),
+    m_RectTop(new SDL_Rect),
+    m_RectBottom(new SDL_Rect)
 {
-	m_BarHeight = m_SectionHeight = m_BarTop = m_ItemTop = 0;
-	m_ItemsTotal = m_ItemsVisible = m_ItemsTotalLast = 0;
-	ParentPosition = 0;
-	m_ScrollAmount = 1;
-	m_PageAmount = 3;
-	m_UpdateSelf = true;
-	m_Disabled = false;
-	m_Hidden = false;
-	m_RectBGTop = new SDL_Rect;
-	m_RectBGBottom = new SDL_Rect;
-	m_RectTop = new SDL_Rect;
-	m_RectBottom = new SDL_Rect;
-	m_ImgBar = m_ImgButtonUp = m_ImgButtonDown = 0;
+    // see if static class-wide default images are loaded; if not, do so
+    if (!m_ImgNotches)
+        LoadInitial();
+
+    m_SectionHeight = height - m_ImgButtonDownOff->h - m_ImgButtonDownOff->h;
+    m_BarHeight = m_SectionHeight;
+    m_ItemsVisible = visibleitems;
+    m_PageAmount = visibleitems - 1;
+
+    // set up SDL_Rects indicating top and bottom halves of displayed background from source background images
+    m_RectBGTop->x = m_RectBGTop->y = m_RectBGBottom->x = 0;
+    m_RectBGTop->w = m_RectBGBottom->w = m_ImgBarBG->w;
+    m_RectBGTop->h = (m_SectionHeight / 2);
+    m_RectBGBottom->h = m_SectionHeight - m_RectBGTop->h;
+    m_RectBGBottom->y = m_ImgBarBG->h - m_RectBGBottom->h;
+
+    // set up initial base data for SDL_Rects indicating top and bottom halves of displayed bar from source bar images
+    m_RectTop->x = m_RectTop->y = m_RectBottom->x = 0;
+    m_RectTop->w = m_RectBottom->w = m_ImgBarBG->w;
+
+    // go ahead and prepare initial "disabled" state
+    UpdateScrollBar();
 }
 
-cScrollBar::~cScrollBar()
-{
-	delete m_RectBGTop;
-	delete m_RectBGBottom;
-	delete m_RectTop;
-	delete m_RectBottom;
-	m_ImgBar = m_ImgButtonUp = m_ImgButtonDown = 0;
-}
+cScrollBar::~cScrollBar() = default;
 
-bool cScrollBar::CreateScrollBar(int ID, int x, int y, int width, int height, int visibleitems)
-{
-	// see if static class-wide default images are loaded; if not, do so
-	if (!m_ImgNotches)
-		LoadInitial();
 
-	SetPosition(x, y, width, height);
-	m_SectionHeight = height - m_ImgButtonDownOff->h - m_ImgButtonDownOff->h;
-	m_BarHeight = m_SectionHeight;
-	m_ItemsVisible = visibleitems;
-	m_PageAmount = visibleitems - 1;
-
-	// set up SDL_Rects indicating top and bottom halves of displayed background from source background images
-	m_RectBGTop->x = m_RectBGTop->y = m_RectBGBottom->x = 0;
-	m_RectBGTop->w = m_RectBGBottom->w = m_ImgBarBG->w;
-	m_RectBGTop->h = (m_SectionHeight / 2);
-	m_RectBGBottom->h = m_SectionHeight - m_RectBGTop->h;
-	m_RectBGBottom->y = m_ImgBarBG->h - m_RectBGBottom->h;
-
-	// set up initial base data for SDL_Rects indicating top and bottom halves of displayed bar from source bar images
-	m_RectTop->x = m_RectTop->y = m_RectBottom->x = 0;
-	m_RectTop->w = m_RectBottom->w = m_ImgBarBG->w;
-
-	// go ahead and prepare initial "disabled" state
-	UpdateScrollBar();
-
-	m_ID = ID;
-
-	return true;
+SDL_Surface* LoadWithAlpha(const string& image) {
+    std::string file_name = ImagePath("Scroll").str() + image;
+    SDL_Surface* TmpImg = IMG_Load(file_name.c_str());
+    auto surface = SDL_DisplayFormatAlpha(TmpImg);
+    SDL_FreeSurface(TmpImg);
+    return surface;
 }
 
 void cScrollBar::LoadInitial()
 {  // load static class-wide shared base images into memory; only called once by first scrollbar created
-	DirPath dp = ImagePath("Scroll");
-	string disabled = string(dp.c_str()) + "LongDisabled.png";
-	string off = string(dp.c_str()) + "LongOff.png";
-	string on = string(dp.c_str()) + "LongOn.png";
-	string bg = string(dp.c_str()) + "LongBackground.png";
-	string notches = string(dp.c_str()) + "Notches.png";
+	string bg = ImagePath("Scroll").str() + "LongBackground.png";
 	m_ImgBarBG = IMG_Load(bg.c_str());
-	SDL_Surface* TmpImg;
-	TmpImg = IMG_Load(disabled.c_str());
-	m_ImgBarDisabled = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(off.c_str());
-	m_ImgBarOff = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(on.c_str());
-	m_ImgBarOn = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(notches.c_str());
-	m_ImgNotches = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	m_NotchOffset = int(((double)m_ImgNotches->h / 2));
-	string updisabled = string(dp.c_str()) + "UpDisabled.png";
-	string upoff = string(dp.c_str()) + "UpOff.png";
-	string upon = string(dp.c_str()) + "UpOn.png";
-	string downdisabled = string(dp.c_str()) + "DownDisabled.png";
-	string downoff = string(dp.c_str()) + "DownOff.png";
-	string downon = string(dp.c_str()) + "DownOn.png";
-	TmpImg = IMG_Load(updisabled.c_str());
-	m_ImgButtonUpDisabled = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(upoff.c_str());
-	m_ImgButtonUpOff = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(upon.c_str());
-	m_ImgButtonUpOn = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(downdisabled.c_str());
-	m_ImgButtonDownDisabled = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(downoff.c_str());
-	m_ImgButtonDownOff = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
-	TmpImg = IMG_Load(downon.c_str());
-	m_ImgButtonDownOn = SDL_DisplayFormatAlpha(TmpImg);
-	SDL_FreeSurface(TmpImg);
+    m_ImgBarDisabled = LoadWithAlpha("LongDisabled.png");
+    m_ImgBarOff = LoadWithAlpha("LongOff.png");
+    m_ImgBarOn = LoadWithAlpha("LongOn.png");
+    m_ImgNotches = LoadWithAlpha("Notches.png");
+	m_ImgButtonUpDisabled = LoadWithAlpha("UpDisabled.png");
+    m_ImgButtonUpOff = LoadWithAlpha("UpOff.png");
+    m_ImgButtonUpOn = LoadWithAlpha("UpOn.png");
+    m_ImgButtonDownDisabled = LoadWithAlpha("DownDisabled.png");
+    m_ImgButtonDownOff = LoadWithAlpha("DownOff.png");
+    m_ImgButtonDownOn = LoadWithAlpha("DownOn.png");
+    
+    m_NotchOffset = int(((double)m_ImgNotches->h / 2));
 }
 
 void cScrollBar::UpdateScrollBar()
@@ -203,23 +155,22 @@ bool cScrollBar::IsOver(int x, int y)
 	if(m_Disabled || m_Hidden)
 		return false;
 
-	bool over = false;
 	m_ImgBar = m_ImgBarOff;
 	m_ImgButtonUp = m_ImgButtonUpOff;
 	m_ImgButtonDown = m_ImgButtonDownOff;
 
 	if(x > m_XPos && y > m_YPos && x < m_XPos+m_Width && y < m_YPos+m_Height)
 	{
-		over = true;
 		if(y > m_YPos+m_ImgButtonUp->h && y < m_YPos+m_Height-m_ImgButtonDown->h)
 			m_ImgBar = m_ImgBarOn;  // over scroll section
 		else if(y <= m_YPos+m_ImgButtonUp->h)
 			m_ImgButtonUp = m_ImgButtonUpOn;  // over up button
 		else if(y >= m_YPos+m_Height-m_ImgButtonDown->h)
 			m_ImgButtonDown = m_ImgButtonDownOn;  // over down button
+		return true;	
 	}
 
-	return over;
+	return false;
 }
 
 bool cScrollBar::MouseDown(int x, int y)
@@ -314,9 +265,9 @@ bool cScrollBar::ButtonClicked(int x, int y, bool mouseWheelDown, bool mouseWhee
 	return false;
 }
 
-void cScrollBar::Draw()
+void cScrollBar::DrawWidget()
 {
-	if(m_Hidden || !m_ImgBar)
+	if(!m_ImgBar)
 		return;
 	
 	//if total # of list items changed, update bar rects
@@ -330,7 +281,7 @@ void cScrollBar::Draw()
 
 	// draw "up" button
 	dstRect.y = m_YPos;
-	error = SDL_BlitSurface(m_ImgButtonUp, 0, g_Graphics.GetScreen(), &dstRect);
+	error = SDL_BlitSurface(m_ImgButtonUp, nullptr, g_Graphics.GetScreen(), &dstRect);
 	if(error == -1)
 	{
 		LogScrollBarError("Error blitting scrollbar up button");
@@ -338,7 +289,7 @@ void cScrollBar::Draw()
 	}
 	// draw "down" button
 	dstRect.y = m_YPos + m_Height - m_ImgButtonDown->h;
-	error = SDL_BlitSurface(m_ImgButtonDown, 0, g_Graphics.GetScreen(), &dstRect);
+	error = SDL_BlitSurface(m_ImgButtonDown, nullptr, g_Graphics.GetScreen(), &dstRect);
 	if(error == -1)
 	{
 		LogScrollBarError("Error blitting scrollbar down button");
@@ -346,7 +297,7 @@ void cScrollBar::Draw()
 	}
 	// draw top half of background
 	dstRect.y = m_YPos + m_ImgButtonUp->h;
-	error = SDL_BlitSurface(m_ImgBarBG, m_RectBGTop, g_Graphics.GetScreen(), &dstRect);
+	error = SDL_BlitSurface(m_ImgBarBG, m_RectBGTop.get(), g_Graphics.GetScreen(), &dstRect);
 	if(error == -1)
 	{
 		LogScrollBarError("Error blitting scrollbar background (top half)");
@@ -354,7 +305,7 @@ void cScrollBar::Draw()
 	}
 	// draw bottom half of background
 	dstRect.y += m_RectBGTop->h;
-	error = SDL_BlitSurface(m_ImgBarBG, m_RectBGBottom, g_Graphics.GetScreen(), &dstRect);
+	error = SDL_BlitSurface(m_ImgBarBG, m_RectBGBottom.get(), g_Graphics.GetScreen(), &dstRect);
 	if(error == -1)
 	{
 		LogScrollBarError("Error blitting scrollbar background (bottom half)");
@@ -363,7 +314,7 @@ void cScrollBar::Draw()
 
 	// draw top half of bar
 	dstRect.y = m_YPos + m_ImgButtonUp->h + m_BarTop;
-	error = SDL_BlitSurface(m_ImgBar, m_RectTop, g_Graphics.GetScreen(), &dstRect);
+	error = SDL_BlitSurface(m_ImgBar, m_RectTop.get(), g_Graphics.GetScreen(), &dstRect);
 	if(error == -1)
 	{
 		LogScrollBarError("Error blitting scrollbar bar (top half)");
@@ -371,7 +322,7 @@ void cScrollBar::Draw()
 	}
 	// draw bottom half of bar
 	dstRect.y += m_RectTop->h;
-	error = SDL_BlitSurface(m_ImgBar, m_RectBottom, g_Graphics.GetScreen(), &dstRect);
+	error = SDL_BlitSurface(m_ImgBar, m_RectBottom.get(), g_Graphics.GetScreen(), &dstRect);
 	if(error == -1)
 	{
 		LogScrollBarError("Error blitting scrollbar bar (bottom half)");
@@ -381,7 +332,7 @@ void cScrollBar::Draw()
 	if(!m_Disabled)
 	{  // draw notches in the center
 		dstRect.y -= m_NotchOffset;
-		error = SDL_BlitSurface(m_ImgNotches, 0, g_Graphics.GetScreen(), &dstRect);
+		error = SDL_BlitSurface(m_ImgNotches, nullptr, g_Graphics.GetScreen(), &dstRect);
 		if(error == -1)
 		{
 			LogScrollBarError("Error blitting scrollbar notches");
@@ -390,9 +341,17 @@ void cScrollBar::Draw()
 	}
 }
 
-void cScrollBar::LogScrollBarError(string description)
+void cScrollBar::LogScrollBarError(const string& description)
 {
 	CLog l;
 	l.ss() << description << " - " << SDL_GetError();
 	l.ssend();
+}
+
+void cScrollBar::SetDisabled(bool disable) {
+    m_Disabled = disable;
+    if(disable)
+        m_ImgBar = m_ImgBarDisabled;
+    else
+        m_ImgBar = m_ImgBarOff;
 }

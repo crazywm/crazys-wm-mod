@@ -34,4 +34,30 @@ protected:
 	int m_Width, m_Height;
 };
 
+/*
+ * Common code for the different UI Widgets
+ */
+class cUIWidget: public cInterfaceObject
+{
+public:
+    cUIWidget(int id, int x, int y, int width, int height) : m_ID(id) {
+        SetPosition(x, y, width, height);
+    }
+    void hide()		{ SetHidden(true); }
+    void unhide()	{ SetHidden(false); }
+    void toggle()	{ SetHidden(!m_Hidden); }
+    virtual void SetHidden(bool mode) { m_Hidden = mode; }
+    bool IsHidden() const { return m_Hidden; }
+
+    void Draw() final {
+        if(!m_Hidden)
+            DrawWidget();
+    }
+protected:
+    bool m_Hidden = false;
+
+    int m_ID;
+    virtual void DrawWidget() = 0;
+};
+
 #endif
