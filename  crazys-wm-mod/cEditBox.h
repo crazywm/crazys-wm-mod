@@ -26,15 +26,12 @@ using namespace std;
 #include "cInterfaceEvent.h"
 #include "cFont.h"
 
-class cEditBox : public cInterfaceObject
+class cEditBox : public cUIWidget
 {
-	bool m_Hidden = false;
-
 public:
-	cEditBox() {m_Next = 0;m_FocusedBackground=m_Border=m_Background=0;m_Text=0;m_HasFocus=false;}
+	cEditBox(int ID, int x, int y, int width, int height, int BorderSize, int FontSize = 16);
 	~cEditBox();
 
-	bool CreateEditBox(int ID, int x, int y, int width, int height, int BorderSize, int FontSize = 16);
 	bool IsOver(int x, int y);
 	bool OnClicked(int x, int y);
 	void ClearText();
@@ -42,22 +39,15 @@ public:
 
 	void UpdateText(char key, bool upper);
 
-	void Draw();
+	void DrawWidget() override;
 
-	void hide()	{ m_Hidden = true; }
-	void unhide()	{ m_Hidden = false; }
-	void toggle()	{ m_Hidden = !m_Hidden; }
-
-	int m_ID;
 	cFont* m_Text;
-	bool m_HasFocus;
+	bool m_HasFocus = false;
 
-	SDL_Surface* m_FocusedBackground;
-	SDL_Surface* m_Background;
-	SDL_Surface* m_Border;
+	SDL_Surface* m_FocusedBackground = nullptr;
+	SDL_Surface* m_Background = nullptr;
+	SDL_Surface* m_Border = nullptr;
 	int m_BorderSize;
-	
-	cEditBox* m_Next;	// next button on the window
 };
 
 #endif

@@ -21,6 +21,7 @@
 #include "cClinic.h"
 #include "cScreenClinicManagement.h"
 #include "cWindowManager.h"
+#include "cListBox.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "cJobManager.h"
@@ -293,9 +294,9 @@ void cScreenClinicManagement::check_events()
 					}
 					// update the girl's listing to reflect the job change
 					ss.str("");	ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 					ss.str("");	ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 
 					// refresh job worker counts for former job and current job
 					SetSelectedItemText(joblist_id, old_job, g_Clinic.m_JobManager.JobDescriptionCount(old_job, 0, Day0Night1, true));
@@ -308,43 +309,43 @@ void cScreenClinicManagement::check_events()
 				if (selected_girl->m_DayJob == JOB_CUREDISEASES)	// `J` added
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << selected_girl->m_WorkingDay << "%)*" << (interrupted ? " **" : "");
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 				}
 				else if (selected_girl->m_DayJob == JOB_GETABORT)	// `J` added
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 2 - selected_girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 				}
 				else if (g_Clinic.is_Surgery_Job(selected_girl->m_DayJob))	// `J` added
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 5 - selected_girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 				}
 				else if (interrupted)
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_DayJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 				}
 
 				if (selected_girl->m_NightJob == JOB_CUREDISEASES)	// `J` added
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << selected_girl->m_WorkingDay << "%)*" << (interrupted ? " **" : "");
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 				}
 				else if (selected_girl->m_NightJob == JOB_GETABORT)	// `J` added
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 2 - selected_girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 				}
 				else if (g_Clinic.is_Surgery_Job(selected_girl->m_NightJob))	// `J` added
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 5 - selected_girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 				}
 				else if (interrupted)
 				{
 					ss.str(""); ss << g_Clinic.m_JobManager.JobName[selected_girl->m_NightJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 				}
 				if (interrupted)
 				{	// `J` added

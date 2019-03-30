@@ -59,6 +59,10 @@ private:
 	};
 
 	void set_ids();
+
+	std::vector<sGirl*> m_GirlList;
+
+    void AddGirlsFromBuilding(sGirl* temp);
 public:
 	cScreenItemManagement();
 	~cScreenItemManagement();
@@ -72,23 +76,7 @@ public:
 	void attempt_transfer(Side transfer_from, int num = 1);
 	void refresh_item_list(Side which_list);
 	string GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, string ItemName = "");
-	sGirl* GirlSelectedFromList(int owner, int selectedfromlist = -100);
+	sGirl* GirlSelectedFromList(int owner);
 
 	void write_item_text(sInventoryItem * item, int owner, int target);
-
-	// XML screen replacement for cSelector, for multi-select listboxes
-	int multi_left_first() {
-		sel_pos_l = 0;
-		return GetNextSelectedItemFromList(items_l_id, 0, sel_pos_l);
-	}
-	int multi_left_next() {
-		return GetNextSelectedItemFromList(items_l_id, sel_pos_l + 1, sel_pos_l);
-	}
-	int multi_right_first() {
-		sel_pos_r = 0;
-		return GetNextSelectedItemFromList(items_r_id, 0, sel_pos_r);
-	}
-	int multi_right_next() {
-		return GetNextSelectedItemFromList(items_r_id, sel_pos_r + 1, sel_pos_r);
-	}
 };

@@ -20,6 +20,8 @@
 #include "cMovieStudio.h"
 #include "cScreenMovieMaker.h"
 #include "cWindowManager.h"
+#include "cListBox.h"
+#include "cCheckBox.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "cJobManager.h"

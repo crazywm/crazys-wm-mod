@@ -21,6 +21,7 @@
 #include "cMovieStudio.h"
 #include "cScreenStudioManagement.h"
 #include "cWindowManager.h"
+#include "cListBox.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "cJobManager.h"
@@ -297,13 +298,13 @@ void cScreenStudioManagement::check_events()
 						SetSelectedItemInList(joblist_id, new_job, false);
 					}
 					// update the girl's listing to reflect the job change
-					if (m_ListBoxes[girllist_id]->DayJobColumn() >= 0)
+					if ("DayJob" >= 0)
 					{
 						ss.str("");	ss << g_Studios.m_JobManager.JobName[selected_girl->m_DayJob];
-						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+						SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 					}
 					ss.str("");	ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 
 					// refresh job worker counts for former job and current job
 					SetSelectedItemText(joblist_id, old_job, g_Studios.m_JobManager.JobDescriptionCount(old_job, 0, SHIFT_NIGHT, false, true));
@@ -312,7 +313,7 @@ void cScreenStudioManagement::check_events()
 				if (g_Studios.is_Actress_Job(selected_girl->m_NightJob))	// `J` added
 				{
 					ss.str(""); ss << g_Studios.m_JobManager.JobName[selected_girl->m_NightJob] << (g_Studios.CrewNeeded() ? " **" : "");
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 				}
 				GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
 			}

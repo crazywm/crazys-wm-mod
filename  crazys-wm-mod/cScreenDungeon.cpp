@@ -20,6 +20,7 @@
 #include <sstream>
 #include <algorithm>
 #include "InterfaceIDs.h"
+#include "cListBox.h"
 #include "InterfaceGlobals.h"
 #include "cScreenDungeon.h"
 #include "cScriptManager.h"

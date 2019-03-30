@@ -20,51 +20,37 @@
 #define __CBUTTON_H
 
 #include <string>
-using namespace std;
+#include <memory>
+
 #include "CSurface.h"
 #include "cInterfaceObject.h"
 #include "cInterfaceEvent.h"
 
 class CSurface;
 
-class cButton : public cInterfaceObject
+class cButton : public cUIWidget
 {
-	bool m_Hidden;
 public:
-	cButton()
-	{
-		m_CurrImage = m_OffImage = m_DisabledImage = m_OnImage = 0;
-		m_Next = 0;
-		m_Disabled = false;
-		m_Hidden = false;
-	}
+	cButton(const std::string& OffImage, const std::string& DisabledImage, const std::string& OnImage, int ID,
+	        int x, int y, int width, int height, bool transparency = false, bool cached = false);
 	~cButton();
 
-	bool CreateButton(string OffImage, string DisabledImage, string OnImage, int ID, int x, int y, int width, int height, bool transparency = false, bool cached = false);
 	bool IsOver(int x, int y);
 	bool ButtonClicked(int x, int y);
 	void SetDisabled(bool disable)
 	{
 		m_Disabled = disable;
-		m_CurrImage = (disable) ? m_DisabledImage : m_OffImage;
+		m_CurrImage = (disable) ? m_DisabledImage.get() : m_OffImage.get();
 	}
 
-	virtual void Draw();
+	void DrawWidget() override;
 
-	void hide()		{ m_Hidden = true; }
-	void unhide()	{ m_Hidden = false; }
-	void toggle()	{ m_Hidden = !m_Hidden; }
-
-	CSurface* m_OffImage;
-	CSurface* m_DisabledImage;
-	CSurface* m_OnImage;
+	std::unique_ptr<CSurface> m_OffImage;
+	std::unique_ptr<CSurface> m_DisabledImage;
+	std::unique_ptr<CSurface> m_OnImage;
 	CSurface* m_CurrImage;
 
-	bool m_Disabled;
-
-	int m_ID;
-
-	cButton* m_Next;	// next button on the window
+	bool m_Disabled = false;
 };
 
 

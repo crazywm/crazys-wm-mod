@@ -24,6 +24,7 @@
 #include "cFont.h"
 #include "DirPath.h"
 #include "Constants.h"
+#include <list>
 
 using namespace std;
 
@@ -42,36 +43,28 @@ const unsigned int LISTBOX_COLUMNS = 15;
 
 class cScrollBar;
 
-class cListItem
+struct cListItem
 {
-public:
-	cListItem() {m_Next = 0;m_Color=0;m_TextColor=0;m_Selected = false;}
-	~cListItem() {if(m_Next) delete m_Next; m_Next = 0;}
-
-	int m_Color;
-	bool m_Selected;
+	int m_Color = 0;
+	bool m_Selected = false;
 	string m_Data[LISTBOX_COLUMNS+1];	// the text to display, up to LISTBOX_COLUMNS number of columns (+1 is used for "original sort" slot)
 	int m_ID;	// the id for the item
-	SDL_Color* m_TextColor;
-	cListItem* m_Next;	// pointer to the next object in the list
+	SDL_Color* m_TextColor = nullptr;
 };
 
-class cListBox : public cInterfaceObject
+class cListBox : public cUIWidget
 {
 public:
-	cListBox();
+	cListBox(int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect, bool ShowHeaders = false,
+	        bool HeaderDiv = true, bool HeaderSort = true, int fontsize = 10, int rowheight = LISTBOX_ITEMHEIGHT);
 	~cListBox();
 
 	bool IsOver(int x, int y);
 	void OnClicked(int x, int y, bool mouseWheelDown = false, bool mouseWheelUp = false);
 
-	void CreateListbox(int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect, bool ShowHeaders = false, bool HeaderDiv = true, bool HeaderSort = true, int fontsize = 10, int rowheight = LISTBOX_ITEMHEIGHT);
+	void DrawWidget() override;
 
-	void Draw();
-
-	void AddElement(int ID, string data, int color = COLOR_BLUE);
-	void SetElementText(int ID, string data);
-//	void RemoveElement(int ID);
+    void SetElementText(int ID, string data);
 
 	void ClearList();
 
@@ -98,13 +91,11 @@ public:
 
 	int DayJobColumn();				// `J` returns the column number of "DayJob"
 	int NightJobColumn();			// `J` returns the column number of "NightJob"
-	int JobColumn(bool Day0Night1);	// `J` returns the column number of either 0="DayJob" 1="NightJob"
 
+	using item_list_t = std::list<cListItem>;
+    item_list_t m_Items;
+    item_list_t::iterator m_LastSelected;
 
-	int m_ID;
-	cListItem* m_Items;	// The list of elements in the list
-	cListItem* m_LastItem;	// The last elements of the list
-	cListItem* m_LastSelected;
 	int m_Position;	// What element is at position 0 on the list
 	int m_NumElements;	// number of elements in the list
 	int m_NumDrawnElements;	// how many elements can be rendered at a time
@@ -129,7 +120,7 @@ public:
 	void SetColumnSort(string column_name[], int columns);	// Update column sorting based on expected default order
 	void AddElement(int ID, string data[], int columns, int color = COLOR_BLUE);
 	void SetElementText(int ID, string data[], int columns);
-	void SetElementColumnText(int ID, string data, int column);
+	void SetElementColumnText(int ID, string data, const string& column);
 	void SetElementTextColor(int ID, SDL_Color* text_color);
 
 	SDL_Surface* m_HeaderBackground;		// the background and border for the multi-column header box
@@ -147,8 +138,7 @@ public:
 	void SortByColumn(string ColumnName, bool Descending = false);  // re-sort list items based on specified column
 	void ReSortList();						// re-sort list again, if needed
 	void UnSortList();						// un-sort list back to the order the elements were originally added in
-	cListItem* BubbleSortList(cListItem *head, int count, int col_id, bool Descending);
-	bool StrCmpIn(const string &left, const string &right);
+    bool StrCmpIn(const string &left, const string &right);
 
 	// Double-click detection
 	bool DoubleClicked();
@@ -184,8 +174,8 @@ public:
 	bool m_HasMultiSelect;
 
 	cScrollBar* m_ScrollBar; // pointer to the associated scrollbar
-
-	cListBox* m_Next;
+    item_list_t::iterator FindItemAtPosition(int x, int y);
+    item_list_t::iterator FindSelected(const item_list_t::iterator& start);
 };
 
 #endif

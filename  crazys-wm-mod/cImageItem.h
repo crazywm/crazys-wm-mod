@@ -59,7 +59,6 @@ public:
 	SDL_Surface* m_Surface;
 	int m_ID;
 	bool m_loaded;
-	cImageItem* m_Next;	// next button on the window
 
 	void hide()	{ m_Hidden = true; }
 	void unhide()	{ m_Hidden = false; }

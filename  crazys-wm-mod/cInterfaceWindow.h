@@ -19,17 +19,10 @@
 #ifndef __CINTERFACEWINDOW_H
 #define __CINTERFACEWINDOW_H
 
-#include "cButton.h"
 #include "GameSystem.h"
 #include "CSurface.h"
 #include "cInterfaceObject.h"
-#include "cEditBox.h"
 #include "cImageItem.h"
-#include "cTextItem.h"
-#include "cListBox.h"
-#include "cScrollBar.h"
-#include "cCheckBox.h"
-#include "cSlider.h"
 #include "cXmlWidget.h"
 #include "DirPath.h"
 #include "cGirls.h"
@@ -51,7 +44,10 @@ class TiXmlElement;
 class cInterfaceWindow : public cInterfaceObject
 {
 public:
-	cInterfaceWindow() {m_Background=m_Border=0;m_BackgroundSurface=0;}
+	cInterfaceWindow() {
+	    m_Background=m_Border=nullptr;
+	    m_BackgroundSurface=nullptr;
+	}
 	virtual ~cInterfaceWindow();
 
 	virtual void Free();
@@ -74,7 +70,7 @@ public:
 	void AddButtonND(string image, int & ID, int x, int y, int width, int height, bool transparency = false, bool scale = true,bool cached=false);
 	void AddButtonND(const char *image, int & ID, int x, int y, int width, int height, bool transparency = false, bool scale = true,bool cached=false);
 	// END MOD
-	void AddButton(string OffImage, string DisabledImage, string OnImage, int & ID, int x, int y, int width, int height, bool transparency = false, bool scale = true,bool cached=false);
+	void AddButton(string OffImage, string DisabledImage, const string& OnImage, int & ID, int x, int y, int width, int height, bool transparency = false, bool scale = true,bool cached=false);
 	void AddScrollBar(int & ID, int x, int y, int width, int height, int visibleitems);
 
 	void HideButton(int id, bool hide);
@@ -139,7 +135,8 @@ public:
 	bool IsMultiSelected(int ID);	// returns true if list has more than one item selected
 	void AddToListBox(int listBoxID, int dataID, string data[], int columns, int color = COLOR_BLUE);
 	void SetSelectedItemText(int listBoxID, int itemID, string data[], int columns);
-	void SetSelectedItemColumnText(int listBoxID, int itemID, string data, int column);
+
+    void SetSelectedItemColumnText(int listBoxID, int itemID, string data, const std::string& column);
 	void SortColumns(int listBoxID, string column_name[], int columns);
 	void DefineColumns(int listBoxID, string name[], string header[], int offset[], bool skip[], int columns);
 	void SortListItems(int listBoxID, string column_name, bool Desc = false);

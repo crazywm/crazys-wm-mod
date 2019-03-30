@@ -28,6 +28,7 @@ extern int g_CurrentScreen;
 extern long g_IntReturn;
 extern bool g_EnterKey;
 extern bool g_InitWin;
+extern cConfig cfg;
 
 bool g_ReturnConfirm;
 

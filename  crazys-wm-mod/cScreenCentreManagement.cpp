@@ -21,6 +21,7 @@
 #include "cCentre.h"
 #include "cScreenCentreManagement.h"
 #include "cWindowManager.h"
+#include "cListBox.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "cJobManager.h"
@@ -288,9 +289,9 @@ void cScreenCentreManagement::check_events()
 					}
 					// update the girl's listing to reflect the job change
 					ss.str("");	ss << g_Centre.m_JobManager.JobName[selected_girl->m_DayJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 					ss.str("");	ss << g_Centre.m_JobManager.JobName[selected_girl->m_NightJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 
 					// refresh job worker counts for former job and current job
 					SetSelectedItemText(joblist_id, old_job, g_Centre.m_JobManager.JobDescriptionCount(old_job, 0, Day0Night1, false, false, false, true));
@@ -299,23 +300,23 @@ void cScreenCentreManagement::check_events()
 				if (selected_girl->m_DayJob == JOB_REHAB)	// `J` added
 				{
 					ss.str("");	ss << g_Centre.m_JobManager.JobName[selected_girl->m_DayJob] << " (" << 3 - selected_girl->m_WorkingDay << ")";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 				}
 				else if (selected_girl->m_YesterDayJob == JOB_REHAB && selected_girl->m_DayJob != JOB_REHAB && ((selected_girl->m_WorkingDay > 0) || selected_girl->m_PrevWorkingDay > 0))
 				{
 					ss.str("");	ss << g_Centre.m_JobManager.JobName[selected_girl->m_DayJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 				}
 
 				if (selected_girl->m_NightJob == JOB_REHAB)	// `J` added
 				{
 					ss.str("");	ss << g_Centre.m_JobManager.JobName[selected_girl->m_NightJob] << " (" << 3 - selected_girl->m_WorkingDay << ")";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 				}
 				else if (selected_girl->m_YesterNightJob == JOB_REHAB && selected_girl->m_NightJob != JOB_REHAB && ((selected_girl->m_WorkingDay > 0) || selected_girl->m_PrevWorkingDay > 0))
 				{
 					ss.str("");	ss << g_Centre.m_JobManager.JobName[selected_girl->m_NightJob] << " **";
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 				}
 
 				if (selected_girl->m_YesterDayJob == JOB_REHAB && new_job != JOB_REHAB && (selected_girl->m_WorkingDay > 0 || selected_girl->m_PrevWorkingDay > 0))

@@ -21,6 +21,7 @@
 #include "cFarm.h"
 #include "cScreenFarmManagement.h"
 #include "cWindowManager.h"
+#include "cListBox.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "cJobManager.h"
@@ -290,9 +291,9 @@ void cScreenFarmManagement::check_events()
 					}
 					// update the girl's listing to reflect the job change
 					ss.str(""); ss << g_Farm.m_JobManager.JobName[selected_girl->m_DayJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->DayJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "DayJob");
 					ss.str(""); ss << g_Farm.m_JobManager.JobName[selected_girl->m_NightJob];
-					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), m_ListBoxes[girllist_id]->NightJobColumn());
+					SetSelectedItemColumnText(girllist_id, GSelection, ss.str(), "NightJob");
 
 					// refresh job worker counts for former job and current job
 					SetSelectedItemText(joblist_id, old_job, g_Farm.m_JobManager.JobDescriptionCount(old_job, 0, Day0Night1, false, false, false, false, false, true));

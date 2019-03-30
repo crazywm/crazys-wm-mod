@@ -19,6 +19,8 @@
 #include "cScreenNewGame.h"
 #include "cGetStringScreenManager.h"
 #include "cWindowManager.h"
+#include "cEditBox.h"
+#include "cSlider.h"
 #include "cBrothel.h"
 
 extern cWindowManager g_WinManager;

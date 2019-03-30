@@ -58,60 +58,172 @@ extern unsigned char g_ListBoxHeaderBorderR, g_ListBoxHeaderBorderG, g_ListBoxHe
 extern unsigned char g_ListBoxHeaderBorderHR, g_ListBoxHeaderBorderHG, g_ListBoxHeaderBorderHB;
 extern unsigned char g_ListBoxHeaderTextR, g_ListBoxHeaderTextG, g_ListBoxHeaderTextB;
 
-cListBox::cListBox()
+cListBox::cListBox(int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect,
+        bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight):
+    cUIWidget(ID, x, y, width, height)
 {
-	m_Items = 0;
-	m_NumDrawnElements = m_NumElements = m_Position = 0;
-	m_LastSelected = 0;
-	m_ScrollChange = -1;
+    m_NumDrawnElements = m_NumElements = m_Position = 0;
+    m_LastSelected = m_Items.end();
+    m_ScrollChange = -1;
 
-	m_ColumnCount = 1;
-	m_ShowHeaders = false;
-	m_HeaderDividers = true;
-	for (unsigned int i = 0; i<LISTBOX_COLUMNS; i++)
-	{
-		m_ColumnOffset[i] = 0;
-		m_ColumnSort[i] = i;
-		m_Header[i] = "";
-		m_ColumnName[i] = "";
-		m_SkipColumn[i] = false;
-	}
+    m_ColumnCount = 1;
+    m_ShowHeaders = false;
+    m_HeaderDividers = true;
+    for (unsigned int i = 0; i<LISTBOX_COLUMNS; i++)
+    {
+        m_ColumnOffset[i] = 0;
+        m_ColumnSort[i] = i;
+        m_Header[i] = "";
+        m_ColumnName[i] = "";
+        m_SkipColumn[i] = false;
+    }
 
-	m_HeaderBackground = 0;
+    m_HeaderBackground = 0;
 
-	m_HeaderClicksSort = true;
-	m_SortedColumn = "";
-	m_SortedDescending = false;
+    m_HeaderClicksSort = true;
+    m_SortedColumn = "";
+    m_SortedDescending = false;
 
-	m_LastClickX = 0;
-	m_LastClickY = 0;
-	m_LastClickTime = 0;
-	m_CurrentClickX = 0;
-	m_CurrentClickY = 0;
-	m_CurrentClickTime = 0;
+    m_LastClickX = 0;
+    m_LastClickY = 0;
+    m_LastClickTime = 0;
+    m_CurrentClickX = 0;
+    m_CurrentClickY = 0;
+    m_CurrentClickTime = 0;
 
-	m_Background = 0;
-	m_Border = 0;
+    m_Background = 0;
+    m_Border = 0;
 
-	m_DarkBlueBackground = m_RedBackground = m_GreenBackground = m_ElementBackground = m_YellowBackground = 0;
-	m_SelectedRedBackground = m_SelectedDarkBlueBackground = m_SelectedGreenBackground = m_SelectedYellowBackground = m_ElementSelectedBackground = 0;
-	m_ElementBorder = 0;
+    m_DarkBlueBackground = m_RedBackground = m_GreenBackground = m_ElementBackground = m_YellowBackground = 0;
+    m_SelectedRedBackground = m_SelectedDarkBlueBackground = m_SelectedGreenBackground = m_SelectedYellowBackground = m_ElementSelectedBackground = 0;
+    m_ElementBorder = 0;
 
-	m_Next = 0;
-	m_EnableEvents = false;
-	m_MultiSelect = false;
-	m_HasMultiSelect = false;
-	m_LastItem = 0;
+    m_EnableEvents = false;
+    m_MultiSelect = false;
+    m_HasMultiSelect = false;
+
+    SDL_Rect dest_rect;
+
+    m_ShowHeaders = ShowHeaders;
+    m_HeaderDividers = HeaderDiv;
+    m_HeaderClicksSort = HeaderSort;
+
+    m_BorderSize = BorderSize;
+    m_RowHeight = (rowheight == 0 ? LISTBOX_ITEMHEIGHT : rowheight);
+    SetPosition(x, y, width, height);
+    m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_Border, 0, SDL_MapRGB(m_Border->format, g_ListBoxBorderR, g_ListBoxBorderG, g_ListBoxBorderB));
+
+    m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, width - (BorderSize * 2) - 16, height - (BorderSize * 2), 32, 0, 0, 0, 0);
+    SDL_FillRect(m_Background, 0, SDL_MapRGB(m_Background->format, g_ListBoxBackgroundR, g_ListBoxBackgroundG, g_ListBoxBackgroundB));
+
+    m_NumDrawnElements = height / m_RowHeight;
+    if (m_ShowHeaders) // Account for headers if shown
+        m_NumDrawnElements--;
+    m_eWidth = (width - (BorderSize * 2));
+    m_eHeight = m_RowHeight;
+
+    m_RedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_RedBackground, 0, SDL_MapRGB(m_RedBackground->format, g_ListBoxS1ElementBackgroundR, g_ListBoxS1ElementBackgroundG, g_ListBoxS1ElementBackgroundB));
+
+    m_DarkBlueBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_DarkBlueBackground, 0, SDL_MapRGB(m_DarkBlueBackground->format, g_ListBoxS2ElementBackgroundR, g_ListBoxS2ElementBackgroundG, g_ListBoxS2ElementBackgroundB));
+
+    m_GreenBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_GreenBackground, 0, SDL_MapRGB(m_GreenBackground->format, g_ListBoxS3ElementBackgroundR, g_ListBoxS3ElementBackgroundG, g_ListBoxS3ElementBackgroundB));
+
+    m_YellowBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_YellowBackground, 0, SDL_MapRGB(m_YellowBackground->format, g_ListBoxS4ElementBackgroundR, g_ListBoxS4ElementBackgroundG, g_ListBoxS4ElementBackgroundB));
+
+    m_ElementBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_ElementBackground, 0, SDL_MapRGB(m_ElementBackground->format, g_ListBoxElementBackgroundR, g_ListBoxElementBackgroundG, g_ListBoxElementBackgroundB));
+
+    m_ElementSelectedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_ElementSelectedBackground, 0, SDL_MapRGB(m_ElementSelectedBackground->format, g_ListBoxSelectedElementR, g_ListBoxSelectedElementG, g_ListBoxSelectedElementB));
+
+    m_SelectedRedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_SelectedRedBackground, 0, SDL_MapRGB(m_SelectedRedBackground->format, g_ListBoxSelectedS1ElementR, g_ListBoxSelectedS1ElementG, g_ListBoxSelectedS1ElementB));
+
+    m_SelectedDarkBlueBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_SelectedDarkBlueBackground, 0, SDL_MapRGB(m_SelectedDarkBlueBackground->format, g_ListBoxSelectedS2ElementR, g_ListBoxSelectedS2ElementG, g_ListBoxSelectedS2ElementB));
+
+    m_SelectedGreenBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_SelectedGreenBackground, 0, SDL_MapRGB(m_SelectedGreenBackground->format, g_ListBoxSelectedS3ElementR, g_ListBoxSelectedS3ElementG, g_ListBoxSelectedS3ElementB));
+
+    m_SelectedYellowBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_SelectedYellowBackground, 0, SDL_MapRGB(m_SelectedYellowBackground->format, g_ListBoxSelectedS3ElementR, g_ListBoxSelectedS3ElementG, g_ListBoxSelectedS3ElementB));
+
+    m_ElementBorder = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 16, m_eHeight, 32, 0, 0, 0, 0);
+    SDL_FillRect(m_ElementBorder, 0, SDL_MapRGB(m_ElementBorder->format, g_ListBoxElementBorderR, g_ListBoxElementBorderG, g_ListBoxElementBorderB));
+
+    // "beveled" looking border for bottom & right sides of list element
+    dest_rect.x = m_BorderSize;
+    dest_rect.y = m_BorderSize;
+    dest_rect.h = m_eHeight - m_BorderSize;
+    dest_rect.w = m_eWidth - m_BorderSize - 16;
+    SDL_FillRect(m_ElementBorder, &dest_rect, SDL_MapRGB(m_ElementBorder->format, g_ListBoxElementBorderHR, g_ListBoxElementBorderHG, g_ListBoxElementBorderHB));
+
+    if (ShowHeaders)
+    {
+        // background for optional column header box
+        int scroll_space = (HeaderSort) ? 0 : 16;
+        dest_rect.w = m_eWidth - m_BorderSize - scroll_space;
+        m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - scroll_space, m_eHeight, 32, 0, 0, 0, 0);
+        SDL_FillRect(m_HeaderBackground, 0, SDL_MapRGB(m_HeaderBackground->format, g_ListBoxHeaderBorderR, g_ListBoxHeaderBorderG, g_ListBoxHeaderBorderB));
+        SDL_FillRect(m_HeaderBackground, &dest_rect, SDL_MapRGB(m_HeaderBackground->format, g_ListBoxHeaderBorderHR, g_ListBoxHeaderBorderHG, g_ListBoxHeaderBorderHB));
+        dest_rect.h = m_eHeight - (m_BorderSize * 2);
+        dest_rect.w = m_eWidth - (m_BorderSize * 2) - scroll_space;
+        SDL_FillRect(m_HeaderBackground, &dest_rect, SDL_MapRGB(m_HeaderBackground->format, g_ListBoxHeaderBackgroundR, g_ListBoxHeaderBackgroundG, g_ListBoxHeaderBackgroundB));
+
+        DirPath dp = ImagePath("ListboxSort");
+        string Asc = string(dp.c_str()) + "Asc.png";
+        string Desc = string(dp.c_str()) + "Desc.png";
+        string None = string(dp.c_str()) + "None.png";
+        if (m_HeaderSortAsc == 0)	m_HeaderSortAsc = IMG_Load(Asc.c_str());
+        if (m_HeaderSortDesc == 0)	m_HeaderSortDesc = IMG_Load(Desc.c_str());
+        if (m_HeaderUnSort == 0)	m_HeaderUnSort = IMG_Load(None.c_str());
+
+        // draw the "un-sort" clickable header
+        if (HeaderSort)
+        {
+            m_Divider.x = m_eWidth - 17;
+            m_Divider.w = 2;
+            SDL_FillRect(
+                    m_HeaderBackground,
+                    &m_Divider,
+                    SDL_MapRGB(
+                            m_HeaderBackground->format,
+                            g_ListBoxHeaderBorderHR,
+                            g_ListBoxHeaderBorderHG,
+                            g_ListBoxHeaderBorderHB
+                    )
+            );
+            m_Divider.x++;
+            m_Divider.w = 1;
+            m_Divider.h--;
+            SDL_FillRect(m_HeaderBackground, &m_Divider, SDL_MapRGB(m_HeaderBackground->format, g_ListBoxHeaderBorderR, g_ListBoxHeaderBorderG, g_ListBoxHeaderBorderB));
+            m_Divider.h++;
+
+            dest_rect.x = m_eWidth - 15;
+            dest_rect.y = m_BorderSize;
+            dest_rect.h = m_eHeight - 2;
+            dest_rect.w = 14;
+            SDL_BlitSurface(m_HeaderUnSort, 0, m_HeaderBackground, &dest_rect);
+        }
+    }
+
+    m_Font.LoadFont(cfg.fonts.normal(), (fontsize == 0 ? 10 : fontsize));
+    m_Font.SetText("");
+    m_Font.SetColor(g_ListBoxTextR, g_ListBoxTextG, g_ListBoxTextB);
+
+    m_MultiSelect = MultiSelect;
+
+    m_Divider.h = m_eHeight - (m_BorderSize * 2) - 3;
+    m_Divider.y = m_BorderSize + 1;
 }
 
 cListBox::~cListBox()
 {
-	if (m_Items)
-		delete m_Items;
-	m_Items = 0;
-	m_LastItem = 0;
-	m_LastSelected = 0;
-
 	if (m_Background)					SDL_FreeSurface(m_Background);					m_Background = 0;
 	if (m_Border)						SDL_FreeSurface(m_Border);						m_Border = 0;
 	if (m_RedBackground)				SDL_FreeSurface(m_RedBackground);				m_RedBackground = 0;
@@ -127,18 +239,12 @@ cListBox::~cListBox()
 	if (m_ElementBackground)			SDL_FreeSurface(m_ElementBackground);			m_ElementBackground = 0;
 	if (m_ElementSelectedBackground)	SDL_FreeSurface(m_ElementSelectedBackground);	m_ElementSelectedBackground = 0;
 	if (m_ElementBorder)				SDL_FreeSurface(m_ElementBorder);				m_ElementBorder = 0;
-
-	if (m_Next)
-		delete m_Next;
-	m_Next = 0;
 }
 
 void cListBox::ClearList()
 {
-	if (m_Items)
-		delete m_Items;
-	m_LastItem = m_Items = 0;
-	m_LastSelected = 0;
+	m_Items.clear();
+    m_LastSelected = m_Items.end();
 	m_Position = 0;
 	m_NumElements = 0;
 	m_ScrollBar->SetTopValue(0);
@@ -146,74 +252,60 @@ void cListBox::ClearList()
 
 int cListBox::ArrowDownList()
 {
-	int selection = GetSelected();
-	cListItem* current = m_Items;
-	if (m_Items == 0)		return -1;
+    if(m_Items.empty())
+        return -1;
 
+	int selection = GetSelected();
 	if (selection == -1)
 	{
-		current = m_Items;
-		SetSelected(current->m_ID);
-		return current->m_ID;
+		SetSelected(m_Items.front().m_ID);
+		return m_Items.front().m_ID;
 	}
 
-	while (1)
-	{
-		if (current == 0)		return -1;
-		if (current->m_ID == selection)
-		{
-			if (current->m_Next == 0)
-			{
-				SetSelected(m_Items->m_ID);
-				current = m_Items;
-			}
-			else
-			{
-				SetSelected(current->m_Next->m_ID);
-				current = current->m_Next;
-			}
-			break;
-		}
-		current = current->m_Next;
-	}
+	auto current = std::find_if(begin(m_Items), end(m_Items),
+	        [selection](const cListItem& item) { return item.m_ID == selection; });
 
-	if (current == 0) return -1;
+	if(current == m_Items.end())
+	    return -1;
 
-	return current->m_ID;
+	++current;
+
+    // If there is not next item, jump back to the top.
+	if(current == m_Items.end()) {
+        SetSelected(m_Items.front().m_ID);
+        return m_Items.front().m_ID;
+    }
+
+    SetSelected(current->m_ID);
+    return current->m_ID;
 }
 
 int cListBox::ArrowUpList()
 {
-	int selection = GetSelected();
-	cListItem* current = m_Items;
+    if(m_Items.empty())
+        return -1;
 
-	if (m_Items == 0) return -1;
-	if (selection == -1)
-	{
-		current = m_LastItem;
-		SetSelected(current->m_ID);
-		return current->m_ID;
-	}
+    int selection = GetSelected();
+    if (selection == -1)
+    {
+        SetSelected(m_Items.back().m_ID);
+        return m_Items.back().m_ID;
+    }
 
-	while (1)
-	{
-		if (current->m_ID == selection)
-		{
-			current = m_LastItem;
-			SetSelected(current->m_ID);
-			break;
-		}
+    auto current = std::find_if(begin(m_Items), end(m_Items),
+                                [selection](const cListItem& item) { return item.m_ID == selection; });
 
-		if (current->m_Next->m_ID == selection)
-		{
-			SetSelected(current->m_ID);
-			break;
-		}
-		current = current->m_Next;
-		if (current == 0) return -1;
-	}
+    if(current == m_Items.end())
+        return -1;
 
-	return current->m_ID;
+    if(current == m_Items.begin()) {
+        SetSelected(m_Items.back().m_ID);
+        return m_Items.back().m_ID;
+    }
+
+    --current;
+    SetSelected(current->m_ID);
+    return current->m_ID;
 }
 
 bool cListBox::HasMultiSelected()
@@ -326,9 +418,9 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 		}
 
 		bool deselect = false;
-		if (m_MultiSelect == true)
+		if (m_MultiSelect)
 		{
-			if (g_ShiftDown == false && g_CTRLDown == false)
+			if (!g_ShiftDown && !g_CTRLDown)
 			{
 				m_HasMultiSelect = false;
 				deselect = true;
@@ -340,254 +432,83 @@ void cListBox::OnClicked(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 		// first unselect any currently selected items
 		if (deselect)
 		{
-			m_LastSelected = 0;
-			current = m_Items;
-			while (current)
-			{
-				current->m_Selected = false;
-				current = current->m_Next;
-			}
+		    for(auto& item : m_Items)
+		        item.m_Selected = false;
+			m_LastSelected = m_Items.end();
 		}
 
 		bool singleSelect = true;
-		if (m_MultiSelect == true)
+		if (m_MultiSelect)
 		{
-			if (g_ShiftDown == true)
+			if (g_ShiftDown)
 				singleSelect = false;
 		}
 		else singleSelect = true;
 
 		if (singleSelect)	// find the first element displayed
 		{
-			current = m_Items;
-			int count = 0;
-			while (current)
-			{
-				if (count == m_Position) break;
-				count++;
-				current = current->m_Next;
-			}
+            auto clicked = FindItemAtPosition(x, y);
+            if(clicked != m_Items.end()) {
+                clicked->m_Selected = !clicked->m_Selected;
+                m_LastSelected = clicked;
 
-			// Check each element to see if mouse is over it
-			int temp = 0;
-			while (current)
-			{
-				if ((count - m_Position) >= m_NumDrawnElements)	// stop if running past the visible list
-					break;
-
-				int cX = m_XPos + m_BorderSize;
-				int cY = (m_YPos + m_BorderSize) + (m_RowHeight*temp);
-				if (m_ShowHeaders) // Account for headers if shown
-					cY += m_RowHeight;
-
-				// Check if over the item
-				if (x > cX && y > cY && x < cX + m_eWidth && y <= cY + m_eHeight)
-				{
-					// then select it
-					current->m_Selected = !current->m_Selected;
-					m_LastSelected = current;
-
-					// update info for tracking double-clicks
-					m_LastClickTime = m_CurrentClickTime;
-					m_LastClickX = m_CurrentClickX;
-					m_LastClickY = m_CurrentClickY;
-					m_CurrentClickTime = SDL_GetTicks();
-					m_CurrentClickX = x;
-					m_CurrentClickY = y;
-
-					break;
-				}
-
-				count++; temp++;
-				current = current->m_Next;
-			}
-		}
+                // update info for tracking double-clicks
+                m_LastClickTime = m_CurrentClickTime;
+                m_LastClickX = m_CurrentClickX;
+                m_LastClickY = m_CurrentClickY;
+                m_CurrentClickTime = SDL_GetTicks();
+                m_CurrentClickX = x;
+                m_CurrentClickY = y;
+            }
+        }
 		else
 		{
-			if (g_ShiftDown == true)	// select from first to last
+			if (g_ShiftDown)	// select from first to last
 			{
-				current = m_Items;
-				cListItem* select_first = 0;
-				cListItem* select_last = 0;
-				int count = 0;
-				// scan through to find both last-clicked-on item and currently-clicked-on item
-				while (current)
-				{
-					if (select_first && select_last)  // if we have both now, we're done here
-						break;
-
-					// was this the last item the user clicked on earlier?
-					if (current == m_LastSelected)
-					{
-						if (!select_first)
-							select_first = current;
-						else
-							select_last = current;
-					}
-
-					// is this the current item the user just clicked on?
-					if (count >= m_Position && count - m_Position < m_NumDrawnElements)
-					{
-						int cX = m_XPos + m_BorderSize;
-						int cY = (m_YPos + m_BorderSize) + (m_RowHeight*(count - m_Position));
-						if (m_ShowHeaders) // Account for headers if shown
-							cY += m_RowHeight;
-
-						// Check if over the item
-						if (x > cX && y > cY && x < cX + m_eWidth && y <= cY + m_eHeight)
-						{
-							if (!select_first)
-								select_first = current;
-							else
-								select_last = current;
-						}
-					}
-
-					count++;
-					current = current->m_Next;
-				}
-
-				current = select_first;
-				while (current)	// now simply select each one ranging from first to last
-				{
-					current->m_Selected = true;	// select the item
-					if (current == select_last)
-					{
-						m_LastSelected = current;
-						break;
-					}
-					current = current->m_Next;
+				auto clicked = FindItemAtPosition(x, y);
+				bool select = false;
+				for(auto item = m_Items.begin(); item != m_Items.end(); ++item) {
+                    if(item == clicked || item == m_LastSelected) {
+                        if(select) {
+                            m_LastSelected = item;
+                            item->m_Selected = true;
+                            break;
+                        }
+                        select = true;
+                    }
+                    if(select) {
+                        item->m_Selected = true;
+                    }
 				}
 			}
 		}
 	}
 }
 
-void cListBox::CreateListbox(int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect, bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight)
-{
-	SDL_Rect dest_rect;
+auto cListBox::FindItemAtPosition(int x, int y) -> item_list_t::iterator {
+    int pos = 0;
+    for (auto item = m_Items.begin(); item != m_Items.end(); ++item, ++pos) {
+        if (pos < m_Position) continue;
 
-	m_ShowHeaders = ShowHeaders;
-	m_HeaderDividers = HeaderDiv;
-	m_HeaderClicksSort = HeaderSort;
+        if ((pos - m_Position) >= m_NumDrawnElements)    // stop if running past the visible list
+            break;
 
-	m_ID = ID;
+        int cX = m_XPos + m_BorderSize;
+        int cY = (m_YPos + m_BorderSize) + (m_RowHeight * (pos - m_Position));
+        if (m_ShowHeaders) // Account for headers if shown
+            cY += m_RowHeight;
 
-	m_BorderSize = BorderSize;
-	m_RowHeight = (rowheight == 0 ? LISTBOX_ITEMHEIGHT : rowheight);
-	SetPosition(x, y, width, height);
-	m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_Border, 0, SDL_MapRGB(m_Border->format, g_ListBoxBorderR, g_ListBoxBorderG, g_ListBoxBorderB));
+        // Check if over the item
+        if (x > cX && y > cY && x < cX + m_eWidth && y <= cY + m_eHeight) {
+            // then select it
+            return item;
+        }
+    }
 
-	m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, width - (BorderSize * 2) - 16, height - (BorderSize * 2), 32, 0, 0, 0, 0);
-	SDL_FillRect(m_Background, 0, SDL_MapRGB(m_Background->format, g_ListBoxBackgroundR, g_ListBoxBackgroundG, g_ListBoxBackgroundB));
-
-	m_NumDrawnElements = height / m_RowHeight;
-	if (m_ShowHeaders) // Account for headers if shown
-		m_NumDrawnElements--;
-	m_eWidth = (width - (BorderSize * 2));
-	m_eHeight = m_RowHeight;
-
-	m_RedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_RedBackground, 0, SDL_MapRGB(m_RedBackground->format, g_ListBoxS1ElementBackgroundR, g_ListBoxS1ElementBackgroundG, g_ListBoxS1ElementBackgroundB));
-
-	m_DarkBlueBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_DarkBlueBackground, 0, SDL_MapRGB(m_DarkBlueBackground->format, g_ListBoxS2ElementBackgroundR, g_ListBoxS2ElementBackgroundG, g_ListBoxS2ElementBackgroundB));
-
-	m_GreenBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_GreenBackground, 0, SDL_MapRGB(m_GreenBackground->format, g_ListBoxS3ElementBackgroundR, g_ListBoxS3ElementBackgroundG, g_ListBoxS3ElementBackgroundB));
-
-	m_YellowBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_YellowBackground, 0, SDL_MapRGB(m_YellowBackground->format, g_ListBoxS4ElementBackgroundR, g_ListBoxS4ElementBackgroundG, g_ListBoxS4ElementBackgroundB));
-
-	m_ElementBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_ElementBackground, 0, SDL_MapRGB(m_ElementBackground->format, g_ListBoxElementBackgroundR, g_ListBoxElementBackgroundG, g_ListBoxElementBackgroundB));
-
-	m_ElementSelectedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_ElementSelectedBackground, 0, SDL_MapRGB(m_ElementSelectedBackground->format, g_ListBoxSelectedElementR, g_ListBoxSelectedElementG, g_ListBoxSelectedElementB));
-
-	m_SelectedRedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_SelectedRedBackground, 0, SDL_MapRGB(m_SelectedRedBackground->format, g_ListBoxSelectedS1ElementR, g_ListBoxSelectedS1ElementG, g_ListBoxSelectedS1ElementB));
-
-	m_SelectedDarkBlueBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_SelectedDarkBlueBackground, 0, SDL_MapRGB(m_SelectedDarkBlueBackground->format, g_ListBoxSelectedS2ElementR, g_ListBoxSelectedS2ElementG, g_ListBoxSelectedS2ElementB));
-
-	m_SelectedGreenBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_SelectedGreenBackground, 0, SDL_MapRGB(m_SelectedGreenBackground->format, g_ListBoxSelectedS3ElementR, g_ListBoxSelectedS3ElementG, g_ListBoxSelectedS3ElementB));
-
-	m_SelectedYellowBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 2 - 16, m_eHeight - 2, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_SelectedYellowBackground, 0, SDL_MapRGB(m_SelectedYellowBackground->format, g_ListBoxSelectedS3ElementR, g_ListBoxSelectedS3ElementG, g_ListBoxSelectedS3ElementB));
-
-	m_ElementBorder = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - 16, m_eHeight, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_ElementBorder, 0, SDL_MapRGB(m_ElementBorder->format, g_ListBoxElementBorderR, g_ListBoxElementBorderG, g_ListBoxElementBorderB));
-
-	// "beveled" looking border for bottom & right sides of list element
-	dest_rect.x = m_BorderSize;
-	dest_rect.y = m_BorderSize;
-	dest_rect.h = m_eHeight - m_BorderSize;
-	dest_rect.w = m_eWidth - m_BorderSize - 16;
-	SDL_FillRect(m_ElementBorder, &dest_rect, SDL_MapRGB(m_ElementBorder->format, g_ListBoxElementBorderHR, g_ListBoxElementBorderHG, g_ListBoxElementBorderHB));
-
-	if (ShowHeaders)
-	{
-		// background for optional column header box
-		int scroll_space = (HeaderSort) ? 0 : 16;
-		dest_rect.w = m_eWidth - m_BorderSize - scroll_space;
-		m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, m_eWidth - scroll_space, m_eHeight, 32, 0, 0, 0, 0);
-		SDL_FillRect(m_HeaderBackground, 0, SDL_MapRGB(m_HeaderBackground->format, g_ListBoxHeaderBorderR, g_ListBoxHeaderBorderG, g_ListBoxHeaderBorderB));
-		SDL_FillRect(m_HeaderBackground, &dest_rect, SDL_MapRGB(m_HeaderBackground->format, g_ListBoxHeaderBorderHR, g_ListBoxHeaderBorderHG, g_ListBoxHeaderBorderHB));
-		dest_rect.h = m_eHeight - (m_BorderSize * 2);
-		dest_rect.w = m_eWidth - (m_BorderSize * 2) - scroll_space;
-		SDL_FillRect(m_HeaderBackground, &dest_rect, SDL_MapRGB(m_HeaderBackground->format, g_ListBoxHeaderBackgroundR, g_ListBoxHeaderBackgroundG, g_ListBoxHeaderBackgroundB));
-
-		DirPath dp = ImagePath("ListboxSort");
-		string Asc = string(dp.c_str()) + "Asc.png";
-		string Desc = string(dp.c_str()) + "Desc.png";
-		string None = string(dp.c_str()) + "None.png";
-		if (m_HeaderSortAsc == 0)	m_HeaderSortAsc = IMG_Load(Asc.c_str());
-		if (m_HeaderSortDesc == 0)	m_HeaderSortDesc = IMG_Load(Desc.c_str());
-		if (m_HeaderUnSort == 0)	m_HeaderUnSort = IMG_Load(None.c_str());
-
-		// draw the "un-sort" clickable header
-		if (HeaderSort)
-		{
-			m_Divider.x = m_eWidth - 17;
-			m_Divider.w = 2;
-			SDL_FillRect(
-				m_HeaderBackground,
-				&m_Divider,
-				SDL_MapRGB(
-				m_HeaderBackground->format,
-				g_ListBoxHeaderBorderHR,
-				g_ListBoxHeaderBorderHG,
-				g_ListBoxHeaderBorderHB
-				)
-				);
-			m_Divider.x++;
-			m_Divider.w = 1;
-			m_Divider.h--;
-			SDL_FillRect(m_HeaderBackground, &m_Divider, SDL_MapRGB(m_HeaderBackground->format, g_ListBoxHeaderBorderR, g_ListBoxHeaderBorderG, g_ListBoxHeaderBorderB));
-			m_Divider.h++;
-
-			dest_rect.x = m_eWidth - 15;
-			dest_rect.y = m_BorderSize;
-			dest_rect.h = m_eHeight - 2;
-			dest_rect.w = 14;
-			SDL_BlitSurface(m_HeaderUnSort, 0, m_HeaderBackground, &dest_rect);
-		}
-	}
-
-	m_Font.LoadFont(cfg.fonts.normal(), (fontsize == 0 ? 10 : fontsize));
-	m_Font.SetText("");
-	m_Font.SetColor(g_ListBoxTextR, g_ListBoxTextG, g_ListBoxTextB);
-
-	m_MultiSelect = MultiSelect;
-
-	m_Divider.h = m_eHeight - (m_BorderSize * 2) - 3;
-	m_Divider.y = m_BorderSize + 1;
+    return m_Items.end();
 }
 
-void cListBox::Draw()
+void cListBox::DrawWidget()
 {
 	if (m_ScrollChange >= 0)
 	{  // scrollbar has changed top position
@@ -646,35 +567,26 @@ void cListBox::Draw()
 		m_Font.SetColor(g_ListBoxTextR, g_ListBoxTextG, g_ListBoxTextB);
 	}
 
-	// find the first element displayed
-	cListItem* current = m_Items;
-	while (current)
-	{
-		if (count == m_Position) break;
-		count++;
-		current = current->m_Next;
-	}
-
 	// draw the elements
-	int temp = 0;
-	while (current)
-	{
-		if ((count - m_Position) >= m_NumDrawnElements) break;
+    int pos = 0;
+    for (auto item = m_Items.begin(); item != m_Items.end(); ++item, ++pos)
+    {
+		if ((pos - m_Position) >= m_NumDrawnElements) break;
 
 		// Draw the window
 		offset.x = m_XPos + m_BorderSize;
-		offset.y = (m_YPos + m_BorderSize) + (m_RowHeight*temp);
+		offset.y = (m_YPos + m_BorderSize) + (m_RowHeight*(pos - m_Position));
 		if (m_ShowHeaders) // Account for headers if shown
 			offset.y += m_RowHeight;
 
 		// blit to the screen
-		SDL_BlitSurface(m_ElementBorder, 0, g_Graphics.GetScreen(), &offset);
+		SDL_BlitSurface(m_ElementBorder, nullptr, g_Graphics.GetScreen(), &offset);
 
 		offset.x = offset.x + 1;
 		offset.y = offset.y + 1;
-		if (current->m_Selected)
+		if (item->m_Selected)
 		{
-			switch (current->m_Color)
+			switch (item->m_Color)
 			{
 			case 1:		SDL_BlitSurface(m_SelectedRedBackground, 0, g_Graphics.GetScreen(), &offset);		break;
 			case 2:		SDL_BlitSurface(m_SelectedDarkBlueBackground, 0, g_Graphics.GetScreen(), &offset);	break;
@@ -685,7 +597,7 @@ void cListBox::Draw()
 		}
 		else
 		{
-			switch (current->m_Color)
+			switch (item->m_Color)
 			{
 			case 1:		SDL_BlitSurface(m_RedBackground, 0, g_Graphics.GetScreen(), &offset);				break;
 			case 2:		SDL_BlitSurface(m_DarkBlueBackground, 0, g_Graphics.GetScreen(), &offset);			break;
@@ -696,21 +608,18 @@ void cListBox::Draw()
 		}
 
 		// if we have a custom text color specified, use it
-		if (current->m_TextColor != 0)
-			m_Font.SetColor(current->m_TextColor->r, current->m_TextColor->g, current->m_TextColor->b);
+		if (item->m_TextColor != 0)
+			m_Font.SetColor(item->m_TextColor->r, item->m_TextColor->g, item->m_TextColor->b);
 
 		// draw the text
 		for (int i = 0; i<m_ColumnCount; i++)
 		{
 			if (m_SkipColumn[i]) continue;
-			m_Font.SetText(current->m_Data[m_ColumnSort[i]]);
+			m_Font.SetText(item->m_Data[m_ColumnSort[i]]);
 			m_Font.DrawText(offset.x + 2 + m_ColumnOffset[i], offset.y + 1);
 		}
 
 		m_Font.SetColor(0, 0, 0);
-
-		count++; temp++;
-		current = current->m_Next;
 	}
 }
 
@@ -734,85 +643,65 @@ void cListBox::ScrollUp(int amount, bool updatebar)
 
 int cListBox::GetNextSelected(int from, int& pos)
 {
-	if (m_MultiSelect == false) return -1;
+	if (!m_MultiSelect) return -1;
 
-	cListItem* current = m_Items;
-	int count = 0;
-	while (current)
-	{
-		if (count >= from)
-		{
-			if (current->m_Selected == true)
-			{
-				pos = count;
-				break;
-			}
-		}
-		count++;
-		current = current->m_Next;
-	}
+	auto start = begin(m_Items);
+	std::advance(start, from);
+    auto selected = FindSelected(start);
 
-	if (current) return current->m_ID;
+    pos = std::distance(begin(m_Items), selected);
+
+	if (selected != m_Items.end()) return selected->m_ID;
 	return -1;
+}
+
+auto cListBox::FindSelected(const list<cListItem, std::allocator<cListItem>>::iterator& start) -> item_list_t::iterator
+{
+    auto selected = find_if(start, end(m_Items),
+                            [](const cListItem& item) { return item.m_Selected; });
+    return selected;
 }
 
 int cListBox::GetLastSelected()
 {
-	if (m_LastSelected) return m_LastSelected->m_ID;
+	if (m_LastSelected != m_Items.end()) return m_LastSelected->m_ID;
 	return -1;
 }
 
 int cListBox::GetSelected()
 {
-	if (m_LastSelected == 0) return -1;
+	if (m_LastSelected == m_Items.end()) return -1;
 	//else return m_LastSelected->m_ID;
 
-	cListItem* current = m_Items;
-	while (current && current->m_Selected == false)
-		current = current->m_Next;
+    auto selected = FindSelected(begin(m_Items));
+	if(selected == m_Items.end())
+    	return -1;
 
-	if (current) return current->m_ID;
-	return -1;
+	return selected->m_ID;
 }
 
 string cListBox::GetSelectedText()
 {
-	if (m_LastSelected == 0) return "";
-	else return m_LastSelected->m_Data->c_str();
-
-	cListItem* current = m_Items;
-	while (current->m_Selected == false && current)
-		current = current->m_Next;
-
-	if (current) return current->m_Data->c_str();
-	return "";
+	if (m_LastSelected == m_Items.end())
+	    return "";
+	else
+	    return m_LastSelected->m_Data->c_str();
 }
 
 bool cListBox::IsSelected()
 {
-	cListItem* current = m_Items;
-	if (!m_Items) return false;
-	while (current->m_Selected == false && current)
-	{
-		current = current->m_Next;
-		if (!current) return false;
-	}
-	if (current) return true;
-	return false;
+    return FindSelected(begin(m_Items)) != end(m_Items);
 }
 
 void cListBox::GetSortedIDList(vector<int> *id_vec, int *vec_pos)
 {
 	id_vec->clear();
-	int count = 0;
-	cListItem* current = m_Items;
-	while (current)
-	{
-		id_vec->push_back(current->m_ID);
-		if (current == m_LastSelected) *vec_pos = count;
-		count++;
-		current = current->m_Next;
+	id_vec->reserve(m_Items.size());
+	for(auto& item : m_Items) {
+	    id_vec->push_back(item.m_ID);
 	}
+
+	*vec_pos = std::distance(begin(m_Items), m_LastSelected);
 }
 
 void cListBox::SetElementText(int ID, string data)
@@ -821,76 +710,66 @@ void cListBox::SetElementText(int ID, string data)
 	SetElementText(ID, datarray, 1);
 }
 
-void cListBox::AddElement(int ID, string data, int color)
-{
-	string datarray[] = { data };
-	AddElement(ID, datarray, 1, color);
-}
-
 void cListBox::SetElementText(int ID, string data[], int columns)
 {
-	cListItem* current = m_Items;
-	while (current)
-	{
-		if (current->m_ID == ID)
+	for(auto& item : m_Items) {
+	    if (item.m_ID == ID)
 		{
 			for (int i = 0; i < columns; i++)
-				current->m_Data[i] = data[i];
+				item.m_Data[i] = data[i];
 			break;
 		}
-		current = current->m_Next;
 	}
 	ReSortList();
 }
 
-void cListBox::SetElementColumnText(int ID, string data, int column)
+void cListBox::SetElementColumnText(int ID, string data, const string& column)
 {
-	cListItem* current = m_Items;
-	while (current)
-	{
-		if (current->m_ID == ID)
-		{
-			current->m_Data[column] = data;
+    int column_id = -1;
+    for (int i = 0; i < m_ColumnCount; i++)
+    {
+        if (m_ColumnName[i] == column) {
+            column_id = i;
+            break;
+        }
+    }
+
+    if(column_id == -1) return;
+
+    for(auto& item : m_Items) {
+        if (item.m_ID == ID)
+        {
+			item.m_Data[column_id] = std::move(data);
 			break;
 		}
-		current = current->m_Next;
-	}
+    }
 	ReSortList();
 }
 
 void cListBox::SetElementTextColor(int ID, SDL_Color* text_color)
 {
-	cListItem* current = m_Items;
-	while (current)
-	{
-		if (current->m_ID == ID)
-		{
-			current->m_TextColor = text_color;
+    for(auto& item : m_Items) {
+        if (item.m_ID == ID)
+        {
+			item.m_TextColor = text_color;
 			break;
 		}
-		current = current->m_Next;
 	}
 }
 void cListBox::AddElement(int ID, string data[], int columns, int color)
 {
-	cListItem* newItem = new cListItem();
-	for (int i = 0; i<columns; i++)
-		newItem->m_Data[i] = data[i];
-	newItem->m_ID = ID;
-	newItem->m_Color = color;
-	newItem->m_Next = (class cListItem*)NULL;
-
-	if (!m_Items) m_LastItem = m_Items = newItem;
-	else
-	{
-		m_LastItem->m_Next = newItem;
-		m_LastItem = newItem;
-	}
+    m_Items.emplace_back();
+    auto& newItem = m_Items.back();
+    for (int i = 0; i<columns; i++) {
+        newItem.m_Data[i] = data[i];
+    }
+    newItem.m_ID = ID;
+    newItem.m_Color = color;
 
 	// for the purposes of allowing restoration of the default sort, store the count of this list item
 	stringstream ss;
 	ss << m_NumElements;
-	newItem->m_Data[LISTBOX_COLUMNS] = ss.str();
+	newItem.m_Data[LISTBOX_COLUMNS] = ss.str();
 
 	m_NumElements++;
 	ReSortList();
@@ -941,58 +820,19 @@ void cListBox::SetColumnSort(string column_name[], int columns)
 	}
 }
 
-/*void cListBox::RemoveElement(int ID)
-{
-if(m_NumElements == 0)
-return;
-
-if(m_Items->m_ID != ID &&  !m_Items->m_Next)
-return;
-
-if(m_Items->m_ID == ID)
-{
-cListItem* current = m_Items;
-m_Items = current->m_Next;
-delete current;
-current = 0;
-}
-else
-{
-cListItem* current = m_Items;
-while(current->m_Next)
-{
-if(current->m_Next->m_ID == ID)
-break;
-current = current->m_Next;
-}
-
-if(current)
-{
-cListItem* temp = current->m_Next;
-
-current->m_Next = temp->m_Next;
-
-delete temp;
-temp = 0;
-}
-}
-
-m_NumElements--;
-}*/
-
 void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 {
-	cListItem* current = m_Items;
-	m_LastSelected = 0;
+
+	m_LastSelected = m_Items.end();
 	m_HeaderClicked = "";
 
-	if (!current) return;
+	if (m_Items.empty()) return;
 
 	// special case if ID "-2" is sent, select first actual list item (not based on ID)
 	if (ID == -2)
 	{
-		current->m_Selected = true;
-		m_LastSelected = current;
+        m_Items.front().m_Selected = true;
+		m_LastSelected = m_Items.begin();
 		m_Position = 0;
 		m_ScrollBar->SetTopValue(m_Position);
 		if (ev) g_InterfaceEvents.AddEvent(EVENT_SELECTIONCHANGE, m_ID);
@@ -1000,8 +840,7 @@ void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 	}
 
 	int count = 0; int posit = 0;
-	while (current)
-	{
+	for(auto current = m_Items.begin(); current != m_Items.end(); ++current) {
 		if (current->m_ID == ID)
 		{
 			if (ev) g_InterfaceEvents.AddEvent(EVENT_SELECTIONCHANGE, m_ID);
@@ -1015,7 +854,6 @@ void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 			if (deselect_others) current->m_Selected = false;
 		}
 		count++;
-		current = current->m_Next;
 	}
 
 	if (count <= m_NumDrawnElements)
@@ -1044,10 +882,12 @@ void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 
 int cListBox::GetAfterSelected()
 {
-	if (m_LastSelected)
+	if (m_LastSelected != m_Items.end())
 	{
-		if (m_LastSelected->m_Next)
-			return m_LastSelected->m_Next->m_ID;
+	    auto copy = m_LastSelected;
+	    ++copy;
+		if (copy != m_Items.end())
+			return copy->m_ID;
 	}
 
 	return -1;
@@ -1056,7 +896,7 @@ int cListBox::GetAfterSelected()
 
 void cListBox::ReSortList()
 {
-	if (m_SortedColumn == "" || m_NumElements <= 0)
+	if (m_SortedColumn.empty() || m_NumElements <= 0)
 		return;
 	SortByColumn(m_SortedColumn, m_SortedDescending);
 }
@@ -1072,7 +912,7 @@ void cListBox::UnSortList()
 
 void cListBox::SortByColumn(string ColumnName, bool Descending)
 {
-	if (m_Items == 0)  // any items in list?
+	if (m_Items.empty())  // any items in list?
 		return;
 
 	// Find the column id from the supplied column name
@@ -1098,14 +938,16 @@ void cListBox::SortByColumn(string ColumnName, bool Descending)
 	}
 
 	// Sort the list
-	m_Items = BubbleSortList(m_Items, m_NumElements, col_id, Descending);
+	m_Items.sort([col_id, Descending](const cListItem& a, const cListItem& b){
+        bool cmp = strnatcasecmp(a.m_Data[col_id].c_str(), b.m_Data[col_id].c_str()) > 0;
+        return Descending == cmp;
+	});
 
-	// Update m_LastItem and m_Position
-	cListItem* current = m_Items;
+	// Update m_Position
 	int count = 0;
-	while (current)
-	{
-		if (current->m_Selected)
+	for(auto & m_Item : m_Items)
+    {
+		if (m_Item.m_Selected)
 		{
 			if (count < m_Position)
 				m_Position = count;
@@ -1116,13 +958,7 @@ void cListBox::SortByColumn(string ColumnName, bool Descending)
 				m_Position++;
 			}
 		}
-		if (current->m_Next == 0)
-		{
-			m_LastItem = current;
-			break;
-		}
 		count++;
-		current = current->m_Next;
 	}
 
 	if (m_ShowHeaders && col_ref > -1)
@@ -1143,57 +979,6 @@ void cListBox::SortByColumn(string ColumnName, bool Descending)
 	}
 
 	m_ScrollBar->SetTopValue(m_Position);
-}
-
-cListItem* cListBox::BubbleSortList(cListItem *head, int count, int col_id, bool Descending)
-{
-	int i, j;
-	cListItem *p0, *p1, *p2, *p3;
-	bool MisOrdered;
-
-	for (i = 1; i < count; i++)
-	{
-		p0 = (class cListItem*)NULL;
-		p1 = head;
-		p2 = head->m_Next;
-		p3 = p2->m_Next;
-
-		for (j = 1; j <= (count - i); j++)
-		{
-			// MisOrdered = Ascending sort check
-			MisOrdered = (strnatcasecmp(p1->m_Data[col_id].c_str(), p2->m_Data[col_id].c_str()) > 0);
-			//MisOrdered = StrCmpIn(p2->m_Data[col_id], p1->m_Data[col_id]);
-
-			if ((!Descending && MisOrdered) || (Descending && !MisOrdered))
-			{
-				// Adjust the pointers...
-				p1->m_Next = p3;
-				p2->m_Next = p1;
-				if (p0)
-					p0->m_Next = p2;
-
-				// Set the head pointer if it was changed...
-				if (head == p1)
-					head = p2;
-
-				// Progress the pointers
-				p0 = p2;
-				p2 = p1->m_Next;
-				if (j < (count - i))
-					p3 = (p3->m_Next != (class cListItem*)NULL) ? p3->m_Next : (class cListItem*)NULL;
-			}
-			else
-			{
-				// Nothing to swap, just progress the pointers...
-				p0 = p1;
-				p1 = p2;
-				p2 = p3;
-				if (j < (count - i))
-					p3 = (p3->m_Next != (class cListItem*)NULL) ? p3->m_Next : (class cListItem*)NULL;
-			}
-		}
-	}
-	return head;
 }
 
 void cListBox::GetColumnNames(vector<string>& columnNames)
@@ -1219,16 +1004,6 @@ int cListBox::NightJobColumn()
 	for (int i = 0; i < m_ColumnCount; i++)
 	{
 		if (m_ColumnName[i] == "NightJob") return i;
-	}
-	return -1;
-}
-
-int cListBox::JobColumn(bool Day0Night1)
-{
-	for (int i = 0; i < m_ColumnCount; i++)
-	{
-		if (m_ColumnName[i] == "DayJob" && Day0Night1 == SHIFT_DAY) return i;
-		if (m_ColumnName[i] == "NightJob" && Day0Night1 == SHIFT_NIGHT) return i;
 	}
 	return -1;
 }

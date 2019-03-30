@@ -20,6 +20,10 @@
 #include "cGetStringScreenManager.h"
 #include "cScriptManager.h"
 #include "cWindowManager.h"
+#include "cEditBox.h"
+#include "cCheckBox.h"
+#include "cTextItem.h"
+#include "cSlider.h"
 #include "FileList.h"
 
 extern cWindowManager g_WinManager;

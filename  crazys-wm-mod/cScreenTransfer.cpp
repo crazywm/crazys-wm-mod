@@ -33,6 +33,7 @@
 #include "cGangs.h"
 #include "cScreenGirlDetails.h"
 #include "InterfaceProcesses.h"
+#include "cListBox.h"
 #include "cScriptManager.h"
 #include "cGetStringScreenManager.h"
 #include "cGold.h"

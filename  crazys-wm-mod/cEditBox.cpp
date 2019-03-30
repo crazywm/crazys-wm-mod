@@ -33,29 +33,17 @@ cEditBox::~cEditBox()
 {
 	if(m_Background)
 		SDL_FreeSurface(m_Background);
-	m_Background = 0;
 
 	if(m_FocusedBackground)
 		SDL_FreeSurface(m_FocusedBackground);
-	m_FocusedBackground = 0;
 
 	if(m_Border)
 		SDL_FreeSurface(m_Border);
-	m_Border = 0;
-
-	if(m_Text)
-		delete m_Text;
-	m_Text= 0;
-
-	if(m_Next)
-		delete m_Next;
-	m_Next = 0;
+	delete m_Text;
 }
 
-void cEditBox::Draw()
+void cEditBox::DrawWidget()
 {
-	if (m_Hidden) { return; }
-
 	if(m_Background && m_Border)
 	{
 		// Draw the window
@@ -64,50 +52,42 @@ void cEditBox::Draw()
 		offset.y = m_YPos;
 
 		// blit to the screen
-		SDL_BlitSurface(m_Border, 0, g_Graphics.GetScreen(), &offset);
+		SDL_BlitSurface(m_Border, nullptr, g_Graphics.GetScreen(), &offset);
 
 		offset.x = m_XPos+m_BorderSize;
 		offset.y = m_YPos+m_BorderSize;
 
 		if(m_HasFocus)
-			SDL_BlitSurface(m_FocusedBackground, 0, g_Graphics.GetScreen(), &offset);
+			SDL_BlitSurface(m_FocusedBackground, nullptr, g_Graphics.GetScreen(), &offset);
 		else
-			SDL_BlitSurface(m_Background, 0, g_Graphics.GetScreen(), &offset);
+			SDL_BlitSurface(m_Background, nullptr, g_Graphics.GetScreen(), &offset);
 	}
 
 	// draw the text
 	m_Text->DrawText(m_XPos+m_BorderSize+1, m_YPos+m_BorderSize+1);
 }
 
-bool cEditBox::CreateEditBox(int ID, int x, int y, int width, int height, int BorderSize, int FontSize)
+cEditBox::cEditBox(int ID, int x, int y, int width, int height, int BorderSize, int FontSize):
+    cUIWidget(ID, x, y, width, height), m_BorderSize(BorderSize)
 {
-	m_BorderSize = BorderSize;
-	SetPosition(x,y,width,height);
 	m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0,0,0,0);
-	SDL_FillRect(m_Border,0,SDL_MapRGB(m_Border->format,g_EditBoxBorderR,g_EditBoxBorderG,g_EditBoxBorderB));
+	SDL_FillRect(m_Border,nullptr,SDL_MapRGB(m_Border->format,g_EditBoxBorderR,g_EditBoxBorderG,g_EditBoxBorderB));
 		
 	m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, width-(BorderSize*2), height-(BorderSize*2), 32, 0,0,0,0);
-	SDL_FillRect(m_Background,0,SDL_MapRGB(m_Background->format,g_EditBoxBackgroundR,g_EditBoxBackgroundG,g_EditBoxBackgroundB));
+	SDL_FillRect(m_Background,nullptr,SDL_MapRGB(m_Background->format,g_EditBoxBackgroundR,g_EditBoxBackgroundG,g_EditBoxBackgroundB));
 
 	m_FocusedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, width-(BorderSize*2), height-(BorderSize*2), 32, 0,0,0,0);
-	SDL_FillRect(m_FocusedBackground,0,SDL_MapRGB(m_Background->format,g_EditBoxSelectedR,g_EditBoxSelectedG,g_EditBoxSelectedB));
+	SDL_FillRect(m_FocusedBackground,nullptr,SDL_MapRGB(m_Background->format,g_EditBoxSelectedR,g_EditBoxSelectedG,g_EditBoxSelectedB));
 
 	m_Text = new cFont();
 	m_Text->LoadFont(cfg.fonts.normal(), FontSize);
 	m_Text->SetText("");
 	m_Text->SetColor(g_EditBoxTextR,g_EditBoxTextG,g_EditBoxTextB);
-	m_ID = ID;
-
-	return true;
 }
 
 bool cEditBox::IsOver(int x, int y)
 {
-	bool over = false;
-	if(x > m_XPos && y > m_YPos && x < m_XPos+m_Width && y < m_YPos+m_Height)
-		over = true;
-
-	return over;
+    return x > m_XPos && y > m_YPos && x < m_XPos + m_Width && y < m_YPos + m_Height;
 }
 
 bool cEditBox::OnClicked(int x, int y)

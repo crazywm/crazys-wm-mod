@@ -26,18 +26,16 @@
 
 extern cConfig cfg;
 
-class cTextItem : public cInterfaceObject
+class cTextItem : public cUIWidget
 {
-	bool m_Hide;
 	bool m_AutoScrollBar;	// automatically use scrollbar if text is too tall?
 	bool m_ForceScrollBar;	// force scrollbar display even if text fits?
 
 public:
-	cTextItem();
+	cTextItem(int ID, int x, int y, int width, int height, string text, int size, bool auto_scrollbar = true,
+              bool force_scrollbar = false, bool leftorright = false, int red = 0, int green = 0, int blue = 0);
 	~cTextItem();
 
-	void CreateTextItem(int ID, int x, int y, int width, int height, string text, int size, bool auto_scrollbar = true,
-		bool force_scrollbar = false, bool leftorright = false, int red = 0, int green = 0, int blue = 0);
 	void DisableAutoScroll(bool disable);
 	void ForceScrollBar(bool force);
 
@@ -55,16 +53,12 @@ public:
 	void ChangeFontSize(int FontSize, int red = 0, int green = 0, int blue = 0);
 
 	void SetText(string text);
-	void Draw();
-
-	void hide();
-	void unhide();
+	void DrawWidget() override;
+    void SetHidden(bool mode) override;
 
 	//int m_CharsPerLine, m_LinesPerBox, m_CharHeight;
 	string m_Text;
-	int m_ID;
-	cTextItem* m_Next;
-	cFont m_Font;
+    cFont m_Font;
 	int m_FontHeight;		// height of the font
 
 	cScrollBar* m_ScrollBar;  // pointer to the associated scrollbar, if any
