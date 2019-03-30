@@ -39,5 +39,8 @@
             What="Stat"
             Name="Constitution"
             Amount="2" />
+        <Crafting CraftPoints="30" ManaCost="0">
+            <Job Name="Blacksmith"/>
+        </Crafting>
     </Item>
 </Items>

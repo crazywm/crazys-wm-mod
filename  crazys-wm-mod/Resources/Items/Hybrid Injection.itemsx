@@ -10,5 +10,9 @@
       Infinite="false"
       GirlBuyChance="10">
    <Effect What="Trait" Name="Not Human"               Amount="1"    />
+   <Crafting CraftPoints="100" ManaCost="30">
+      <Job Name="Make Potions"/>
+      <Skill Name="Brewing" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

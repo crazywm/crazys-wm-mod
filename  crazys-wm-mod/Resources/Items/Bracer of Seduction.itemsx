@@ -18,24 +18,8 @@
    <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
    <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
    <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
-</Item>
-<Item Name="Bracer of Seduction"
-      Desc="This flashy brass armband can make any woman into a gorgeous babe, and it enhances her sex drive to boot. Created as a prank by freshman mages, it caught on in certain circles. (Removes Lolita, adds Fast Orgasms, Nymphomaniac, Great Figure, Great Arse, Long Legs, Puffy Nipples, Perky Nipples, Big Boobs)"
-      Type="Armband"
-      Badness="30"
-      Special="None"
-      Cost="9000"
-      Rarity="Shop05"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Trait" Name="Lolita"                  Amount="0"    />
-   <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
-   <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
-   <Effect What="Trait" Name="Great Arse"              Amount="1"    />
-   <Effect What="Trait" Name="Great Figure"            Amount="1"    />
-   <Effect What="Trait" Name="Long Legs"               Amount="1"    />
-   <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
-   <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
-   <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
+   <Crafting CraftPoints="200" ManaCost="50">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

@@ -19,10 +19,14 @@
 #ifndef __CGRAPHICS_H
 #define __CGRAPHICS_H
 
-#include "SDLStuff.h"
 #include "CTimer.h"
 #include <string>
-using namespace std;
+#include <memory>
+#include <vector>
+#include <map>
+
+class SDL_Surface;
+class CSurface;
 
 class CGraphics
 {
@@ -30,21 +34,40 @@ public:
 	CGraphics();
 	~CGraphics();
 
-	bool InitGraphics(string caption, int Width = 0, int Height = 0, int BPP = 32);
+	bool InitGraphics(std::string caption, int Width = 0, int Height = 0, int BPP = 32);
 	void Free();
 	bool End();		// End Drawing Stuff
 	void Begin();	// begins drawing stuff
 
-	// Accessors
-	SDL_Surface* GetScreen() {return m_Screen;}
-	unsigned int GetTicks() {return m_CurrentTime;}
+	// Drawing helpers
+	int BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Rect *dstrect) const;
 
-	int GetWidth() {return m_ScreenWidth;}
-	int GetHeight() {return m_ScreenHeight;}
+	// Accessors
+	SDL_Surface* GetScreen() const {return m_Screen;}
+	unsigned int GetTicks() const {return m_CurrentTime;}
+
+	// absolute screen size
+	int GetWidth() const {return m_ScreenWidth;}
+	int GetHeight() const {return m_ScreenHeight;}
+
+	float GetScaleX() const { return m_ScreenScaleX;}
+	float GetScaleY() const { return m_ScreenScaleY;}
+
+	// Gets a pointer to a brothel image
+	CSurface* LoadBrothelImage(const std::string& name);
 
 private:
+    // scaling
+    bool m_Fullscreen = false;
+    float m_ScreenScaleX = 1.0f;
+    float m_ScreenScaleY = 1.0f;
+
 	// Screen
-	SDL_Surface* m_Screen;
+	SDL_Surface* m_Screen = nullptr;
+
+	// Images
+    std::unique_ptr<CSurface> m_BackgroundImage;
+    std::map<std::string, std::unique_ptr<CSurface>> m_BrothelImages;
 
 	// screen attributes
 	int m_ScreenWidth;

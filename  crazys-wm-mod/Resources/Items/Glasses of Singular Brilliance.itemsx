@@ -12,5 +12,9 @@
    <Effect What="Stat" Name="Charisma" Amount="5" />
    <Effect What="Trait" Name="Optimist" Amount="1" />
    <Effect What="Trait" Name="One Eye" Amount="1" />
+   <Crafting CraftPoints="150" ManaCost="60">
+      <Job Name="Make Items"/>
+      <Stat Name="Intelligence" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

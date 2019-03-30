@@ -13,5 +13,8 @@
    <Effect What="Trait" Name="Lolita"                  Amount="1"    />
    <Effect What="Trait" Name="Small Boobs"             Amount="1"    />
    <Effect What="Trait" Name="MILF"                    Amount="0"    />
+   <Crafting CraftPoints="150" ManaCost="90">
+      <Job Name="Make Items"/>
+   </Crafting>
 </Item>
 </Items>

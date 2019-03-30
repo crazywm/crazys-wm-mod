@@ -9,17 +9,10 @@
       Rarity="Shop25"
       Infinite="false"
       GirlBuyChance="75">
-   <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
-</Item>
-<Item Name="Oil of Lesser Breast Growth"
-      Desc="When carefully massaged onto a woman's chest, this magical oil temporarily increases the size of her breasts. It will give even the flattest girl a generous D cup, but already well-endowed women will not see much of a change. (adds Big Boobs)"
-      Type="Food"
-      Badness="10"
-      Special="Temporary"
-      Cost="400"
-      Rarity="Shop25"
-      Infinite="false"
-      GirlBuyChance="75">
-   <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
+   <Effect What="Trait" Name="Big Boobs" Amount="1"    />
+   <Crafting CraftPoints="100" ManaCost="0">
+      <Job Name="Make Potions"/>
+      <Skill Name="Brewing" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

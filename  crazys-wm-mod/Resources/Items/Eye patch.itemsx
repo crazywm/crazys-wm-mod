@@ -9,5 +9,8 @@
       Rarity="Shop50"
       Infinite="false">
    <Effect What="Trait" Name="Eye Patch"               Amount="1"    />
+   <Crafting CraftPoints="10" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

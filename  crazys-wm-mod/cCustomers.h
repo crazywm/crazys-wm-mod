@@ -19,8 +19,11 @@
 #ifndef __CCUSTOMERS_H
 #define __CCUSTOMERS_H
 
-#include "cGirls.h"
+#include <memory>
+#include <vector>
+#include "Constants.h"
 
+class IBuilding;
 struct sBrothel;
 
 // Individual customers are randomly generated
@@ -53,9 +56,6 @@ typedef struct sCustomer
 
 	unsigned char m_ParticularGirl;	// the id of the girl he wants
 
-	sCustomer* m_Next;
-	sCustomer* m_Prev;
-
 	sCustomer();
 	~sCustomer();
 	int happiness()
@@ -73,17 +73,16 @@ public:
 
 	void Free();
 
-	void GenerateCustomers(sBrothel& brothel, bool Day0Night1 = SHIFT_DAY);	// generates a random amount of possible customers based on the number of poor, rich, and middle class
-	sCustomer* CreateCustomer(sBrothel& brothel);
+	void GenerateCustomers(IBuilding& brothel, bool Day0Night1 = SHIFT_DAY);	// generates a random amount of possible customers based on the number of poor, rich, and middle class
+    std::unique_ptr<sCustomer> CreateCustomer(IBuilding& brothel);
 
-	//	sCustomer* GetParentCustomer();		// Gets a random customer from the customer base
-	sCustomer GetCustomer(sBrothel& brothel); // Creates a new customer.
+	sCustomer GetCustomer(IBuilding& brothel); // Creates a new customer.
 	void ChangeCustomerBase();	// Changes customer base, it is based on how much money the player is bring into the town
-	int GetNumCustomers() { return m_NumCustomers; }
-	void AdjustNumCustomers(int amount) { m_NumCustomers += amount; }
-	void Add(sCustomer* cust);
-	void Remove(sCustomer* cust);
-	void SetGoals(sCustomer* cust);
+	int GetNumCustomers();
+	/// TODO(fix) restore the behaviour that this function was responsible for.
+	void AdjustNumCustomers(int amount) { }
+	void Add(std::unique_ptr<sCustomer> cust);
+    void SetGoals(sCustomer* cust);
 	//	int GetHappiness();	//mod
 
 private:
@@ -91,9 +90,7 @@ private:
 	int m_Middle;	// percentage of middle class people in the town
 	int m_Rich;		// percentage of rich people in the town
 
-	int m_NumCustomers;
-	sCustomer* m_Parent;
-	sCustomer* m_Last;
+	std::vector<std::unique_ptr<sCustomer>> m_Customers;
 };
 
 #endif

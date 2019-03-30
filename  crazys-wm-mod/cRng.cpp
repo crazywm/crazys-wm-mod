@@ -100,4 +100,9 @@ bool cRng::is_girl(int mod)
 	return percent(chance);
 }
 
+cRng::cRng()
+{
+    srand((int)time(nullptr));
+}
+
 //end mod

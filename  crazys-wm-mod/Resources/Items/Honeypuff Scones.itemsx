@@ -11,5 +11,10 @@
       GirlBuyChance="25">
    <Effect What="Stat"  Name="Happiness"               Amount="30"    />
    <Effect What="Trait" Name="Puffy Nipples"           Amount="1"    />
+   <Crafting CraftPoints="40" ManaCost="0" Weight="10">
+      <Job Name="Baker"/>
+      <Skill Name="Cooking" Minimum="50" />
+      <Skill Name="Herbalism" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

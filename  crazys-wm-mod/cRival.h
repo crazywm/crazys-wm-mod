@@ -21,18 +21,18 @@
 
 #include <string>
 #include "Constants.h"
-#include "cInventory.h"
-
 #include "cNameList.h"
-#include "tinyxml.h"
-using namespace std;
+#include <memory>
+
+class sInventoryItem;
+class TiXmlElement;
+class TiXmlHandle;
 
 class cRival
 {
 public:
 	cRival()
 	{
-		m_Next = m_Prev = 0;
 		m_Name = "";
 		m_Power = 0;					// `J` added
 		m_Influence = 0;
@@ -46,15 +46,14 @@ public:
 		m_BusinessesExtort = 0;
 		m_Inventory[MAXNUM_RIVAL_INVENTORY];
 	}
-	~cRival()
-	{
-		if (m_Next) delete m_Next;
-		m_Next = 0;
-		m_Prev = 0;
-	}
+	~cRival()	{	}
+
+	bool is_defeated() const;
+	bool remove_from_inventory(int num);
+	int add_to_inventory(sInventoryItem* item);
 
 	// variables
-	string m_Name;
+	std::string m_Name;
 	int m_Power;						// `J` added
 	int m_NumGangs;
 	int m_NumBrothels;
@@ -67,10 +66,6 @@ public:
 	int m_Influence;	// based on the bribe rate this is the percentage of influence you have
 	int m_NumInventory;										// current amount of inventory the brothel has
 	sInventoryItem* m_Inventory[MAXNUM_RIVAL_INVENTORY];	// List of inventory items they have (40 max)
-
-
-	cRival* m_Next;
-	cRival* m_Prev;
 };
 
 class cRivalManager
@@ -79,31 +74,22 @@ public:
 	cRivalManager();
 	~cRivalManager()
 	{
-		Free();
 	}
-	void Free()
-	{
-		if (m_Rivals) delete m_Rivals;
-		m_Rivals = 0;
-		m_Last = 0;
-		m_NumRivals = 0;
-	}
+
 	void Update(int& NumPlayerBussiness);
 	cRival* GetRandomRival();
 	cRival* GetRandomRivalWithGangs();
 	cRival* GetRandomRivalWithBusinesses();
 	cRival* GetRandomRivalToSabotage();
-	cRival* GetRivals() { return m_Rivals; }
-	cRival* GetRival(string name);
-	cRival* GetRival(int number);
+	auto&   GetRivals() { return m_Rivals; }
+    cRival* GetRival(int number);
 	TiXmlElement* SaveRivalsXML(TiXmlElement* pRoot);
 	bool LoadRivalsXML(TiXmlHandle hRivalManager);
 	void CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int gangs, int age);
-	void AddRival(cRival* rival);
 	void RemoveRival(cRival* rival);
 	void CreateRandomRival();
 	void check_rivals();		// `J` moved from cBrothel
-	string new_rival_text();	// `J` moved from cBrothel
+	std::string new_rival_text();	// `J` moved from cBrothel
 	void peace_breaks_out();	// `J` moved from cBrothel
 
 
@@ -117,16 +103,14 @@ public:
 
 
 	int GetNumBusinesses();
-	int GetNumRivals()				{ return m_NumRivals; }
+	int GetNumRivals()				{ return m_Rivals.size(); }
 	int GetNumRivalGangs();
-	bool NameExists(string name);
+	bool NameExists(std::string name);
 	bool player_safe()				{ return m_PlayerSafe; }
 	cRival* get_influential_rival();
-	string rivals_plunder_pc_gold(cRival* rival);
+	std::string rivals_plunder_pc_gold(cRival* rival);
 private:
-	int m_NumRivals;
-	cRival* m_Rivals;
-	cRival* m_Last;
+	std::vector<std::unique_ptr<cRival>> m_Rivals;
 	bool m_PlayerSafe;
 	cDoubleNameList names;
 };

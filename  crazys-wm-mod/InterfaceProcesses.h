@@ -20,27 +20,18 @@
 #define __INTERFACEPROCESSES_H
 
 #include <string>
-#include <algorithm>
-#include "tinyxml.h"
-#include "cBrothel.h"
-using namespace std;
 
-void MainMenu();
-void GetString();
-void GetInt();
-void NewGame();
-void BrothelScreen();
+class sGirl;
+class MasterFile;
+
 void NextWeek();
 void GameEvents();
 void AutoSaveGame();
 void SaveGame(bool saveCSV = false);
-void SaveGameXML(string filename);
-void SimpleSaveGameXML(string filename);
-void LoadSettingsScreen();
-void LoadGameScreen();
+void SaveGameXML(std::string filename);
 void LoadGameInfoFiles();
-void LoadGirlsFiles();
-void SaveGirlsCSV(string filename);
-string Girl2CSV(sGirl* girl);
-string CSVifyString(string name);
+void LoadGirlsFiles(MasterFile& master);
+void SaveGirlsCSV(std::string filename);
+std::string Girl2CSV(sGirl* girl);
+std::string CSVifyString(std::string name);
 #endif

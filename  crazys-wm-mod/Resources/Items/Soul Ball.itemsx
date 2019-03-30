@@ -9,5 +9,8 @@
       Rarity="Catacomb15"
       Infinite="false">
    <Effect What="Stat"  Name="PCFear"                  Amount="10"    />
+   <Crafting CraftPoints="80" ManaCost="60">
+      <Job Name="Make Items"/>
+   </Crafting>
 </Item>
 </Items>

@@ -19,20 +19,13 @@
 
 #include "cGirls.h"
 #include "cGirlTorture.h"
-#include "cMessageBox.h"
-#include "cBrothel.h"
-#include "cDungeon.h"
+#include "src/buildings/cBrothel.h"
+#include "src/buildings/cDungeon.h"
 #include "cGirlGangFight.h"
-#include "libintl.h"
+#include "src/Game.hpp"
 
 extern	cRng			g_Dice;
-extern	cGirls			g_Girls;
-extern	cMessageQue		g_MessageQue;
-extern	cBrothelManager	g_Brothels;
 extern	bool			g_Cheats;
-extern	int				g_CurrBrothel;
-extern	CLog			g_LogFile;
-extern	cPlayer*		The_Player;
 
 /*
 * ideally, we'd keep a queue of message strings and
@@ -48,7 +41,7 @@ cGirlTorture::~cGirlTorture()		// deconstructor
 	{
 		if (m_TorturedByPlayer)
 		{
-			g_MessageQue.AddToQue(m_Message, color);
+			g_Game.push_message(m_Message, color);
 			m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);	// `J` added
 		}
 		else
@@ -64,7 +57,7 @@ cGirlTorture::cGirlTorture(sGirl* a_girl)		// Torture girl by player
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGirlTorture || cGirlTorture(sGirl* a_girl)"; g_LogFile.ssend(); }
 	// Init for DoTorture()
 	m_TorturedByPlayer = true;
-	m_Dungeon = g_Brothels.GetDungeon();
+	m_Dungeon = &g_Game.dungeon();
 	m_Girl = a_girl;
 	int nTemp = m_Dungeon->GetGirlPos(m_Girl);
 	if (nTemp > -1)
@@ -85,8 +78,8 @@ cGirlTorture::cGirlTorture(sDungeonGirl* a_girl)	// Torture Dungeon girl by play
 	// Init for DoTorture()
 	m_TorturedByPlayer = true;
 	m_DungeonGirl = a_girl;
-	m_Girl = m_DungeonGirl->m_Girl;
-	m_Dungeon = g_Brothels.GetDungeon();
+	m_Girl = m_DungeonGirl->m_Girl.get();
+	m_Dungeon = &g_Game.dungeon();
 
 	DoTorture();
 }
@@ -98,8 +91,8 @@ cGirlTorture::cGirlTorture(sDungeonGirl* a_girl, sGirl* Tourturer)
 	m_TorturedByPlayer = false;
 	m_DungeonGirl = a_girl;
 	m_Torturer = Tourturer;
-	m_Girl = m_DungeonGirl->m_Girl;
-	m_Dungeon = g_Brothels.GetDungeon();
+	m_Girl = m_DungeonGirl->m_Girl.get();
+	m_Dungeon = &g_Game.dungeon();
 
 	DoTorture();
 }
@@ -122,7 +115,7 @@ void cGirlTorture::DoTorture()
 	m_Fight = false;
 
 	string sGirlName = m_Girl->m_Realname;
-	string sMsg = "";
+	string sMsg;
 
 	if (cfg.debug.log_torture())
 	{
@@ -186,11 +179,11 @@ void cGirlTorture::DoTorture()
 	*/
 	if (m_TorturedByPlayer)
 	{
-		The_Player->evil(m_Girl->is_slave() ? 5 : 10);
+        g_Game.player().evil(m_Girl->is_slave() ? 5 : 10);
 	}
 	else	// Tortured by Girl
 	{
-		The_Player->evil(m_Girl->is_slave() ? 2 : 4);
+        g_Game.player().evil(m_Girl->is_slave() ? 2 : 4);
 	}
 	/*
 	*	now add one of a number of torture messages...
@@ -220,8 +213,8 @@ void cGirlTorture::DoTorture()
 	UpdateTraits();
 
 	// `J` wear down rebellion
-	g_Girls.updateTempTraits(m_Girl, "Kidnapped", -1);
-	g_Girls.updateTempTraits(m_Girl, "Emprisoned Customer", -1);
+	cGirls::updateTempTraits(m_Girl, "Kidnapped", -1);
+	cGirls::updateTempTraits(m_Girl, "Emprisoned Customer", -1);
 
 	/*
 	*	DANGER DEATH and low health warnings
@@ -305,7 +298,7 @@ void cGirlTorture::AddTextPlayer()
 		*		and assigning any progeny to the player.
 		*		Lazy, I know :)
 		*/
-		m_Girl->calc_pregnancy(The_Player, false, 1.5);
+		m_Girl->calc_pregnancy(&g_Game.player(), false, 1.5);
 		is = m_Girl->is_pregnant();
 		/*
 		*		if she was not, but is now, then the player
@@ -420,7 +413,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	// Post any outstanding Player messages
 	if (m_TorturedByPlayer && !m_Message.empty())
 	{
-		g_MessageQue.AddToQue(m_Message, 0);
+		g_Game.push_message(m_Message, 0);
 		m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);	// `J` added
 
 		m_Message = sGirlName + ": ";
@@ -531,7 +524,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	// Post any new Player messages in Red Message Box Colour 1
 	if (m_TorturedByPlayer && !m_Message.empty() && m_Message != sGirlName + ": ")
 	{
-		g_MessageQue.AddToQue(m_Message, COLOR_RED);
+		g_Game.push_message(m_Message, COLOR_RED);
 		m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_DAYSHIFT);	// `J` added
 
 		m_Message = sGirlName + ": ";
@@ -575,15 +568,9 @@ bool cGirlTorture::girl_escapes()
 
 	// If girl wins she escapes and leaves the brothel
 	m_Message += "And after defeating you as well she escapes to the outside world.\n";
-	m_Girl->m_RunAway = 6;	// player has 6 weeks to retreive
-	if (m_Girl->m_NightJob == JOB_INDUNGEON)
-		m_Dungeon->RemoveGirl(m_Girl);
-	else
-		g_Brothels.RemoveGirl(g_CurrBrothel, m_Girl, false);
-	m_Girl->m_NightJob = m_Girl->m_DayJob = JOB_RUNAWAY;
-	g_Brothels.AddGirlToRunaways(m_Girl);
-	The_Player->evil(5);							// Add evilness for girl telling the tale
-	The_Player->suspicion(15);
+	m_Girl->run_away();
+    g_Game.player().evil(5);							// Add evilness for girl telling the tale
+    g_Game.player().suspicion(15);
 	return true;
 }
 
@@ -637,7 +624,7 @@ void cGirlTorture::add_trait(string trait, int pc)
 
 	if (m_TorturedByPlayer)
 	{
-		g_MessageQue.AddToQue(sMsg, 2);
+		g_Game.push_message(sMsg, 2);
 		m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
 	}
 	else MakeEvent(sMsg);

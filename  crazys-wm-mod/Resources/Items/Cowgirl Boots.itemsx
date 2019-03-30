@@ -31,5 +31,8 @@
             What="Skill"
             Name="AnimalHandling"
             Amount="7" />
+        <Crafting CraftPoints="15" ManaCost="10">
+            <Job Name="Cobbler"/>
+        </Crafting>
     </Item>
 </Items>

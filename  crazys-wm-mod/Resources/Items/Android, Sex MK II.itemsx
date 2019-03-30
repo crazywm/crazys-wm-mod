@@ -11,5 +11,8 @@
    <Effect What="Stat"  Name="Tiredness"               Amount="10"    />
    <Effect What="Skill" Name="Lesbian"                 Amount="10"    />
    <Effect What="Trait" Name="Lesbian"                 Amount="1"    />
+   <Crafting CraftPoints="220" ManaCost="50">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

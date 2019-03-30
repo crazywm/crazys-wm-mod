@@ -11,5 +11,8 @@
         <Effect What="Stat"            Name="PCHate"            Amount="-1" />
         <Effect What="Trait"           Name="Aggressive"        Amount="0" />
         <Effect What="Trait"           Name="Open Minded"        Amount="1"   Duration="10" />
+        <Crafting CraftPoints="100" ManaCost="30">
+            <Job Name="Make Items"/>
+        </Crafting>
     </Item>
 </Items>

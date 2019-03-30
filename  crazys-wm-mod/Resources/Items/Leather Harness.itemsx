@@ -95,5 +95,8 @@
             What="Stat"
             Name="Happiness"
             Amount="-15" />
+        <Crafting CraftPoints="90" ManaCost="20">
+            <Job Name="Cobbler"/>
+        </Crafting>
     </Item>
 </Items>

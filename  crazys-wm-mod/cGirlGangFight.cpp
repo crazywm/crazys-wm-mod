@@ -17,12 +17,12 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cGirlGangFight.h"
-#include "cBrothel.h"
 #include "cGangs.h"
-#include "libintl.h"
+#include "Game.hpp"
+#include "sGirl.hpp"
+#include "cPlayer.h"
 
-extern cBrothelManager  g_Brothels;
-extern cGangManager     g_Gangs;
+extern cRng g_Dice;
 
 cGirlGangFight::cGirlGangFight(sGirl *girl)
 {
@@ -42,14 +42,14 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 	m_player_wins = false;
 
 	// decide if she's going to fight or flee
-	if (!g_Brothels.FightsBack(m_girl))		return;
+	if (!m_girl->fights_back())		return;
 
 	m_girl_fights = true;
 	m_girl_wins = false;
 
 	// ok, she fights. Find all the gangs on guard duty
-	vector<sGang*> v = g_Gangs.gangs_on_mission(MISS_GUARDING);
-	if (v.size() == 0)
+	vector<sGang*> v = g_Game.gang_manager().gangs_on_mission(MISS_GUARDING);
+	if (v.empty())
 	{	// no gang, so girl wins. PC combat is outside this class ATM
 		m_girl_wins = true;
 		m_unopposed = true;
@@ -62,7 +62,7 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 	int index = g_Dice.in_range(0, v.size() - 1);
 	l.ss() << "\ncGirlGangFight: random gang index = " << index;	l.ssend();
 	sGang *gang = v[index];
-	l.ss() << "\ncGirlGangFight: gang = " << gang->m_Name;	l.ssend();
+	l.ss() << "\ncGirlGangFight: gang = " << gang->name();	l.ssend();
 	/*
 	*	4 + 1 for each gang on guard duty
 	*	that way there's a benefit to multiple gangs guarding
@@ -71,8 +71,8 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 	/*
 	*	to the maximum of the number in the gang
 	*/
-	if (m_max_goons > gang->m_Num)
-		m_max_goons = gang->m_Num;
+	if (m_max_goons > gang->members())
+		m_max_goons = gang->members();
 	/*
 	*	now - sum the girl and gang stats
 	*	we're not going to average the gangs.
@@ -89,7 +89,7 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 	*
 	*	Annnnyway....
 	*/
-	m_goon_stats = *g_Gangs.GetWeaponLevel() * 5 * m_max_goons;
+	m_goon_stats = *g_Game.gang_manager().GetWeaponLevel() * 5 * m_max_goons;
 	for (int i = 0; i < m_max_goons; i++)
 	{
 		m_goon_stats += gang->combat() + gang->magic() + gang->intelligence();
@@ -130,7 +130,7 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 		lose_vs_own_gang(gang);
 		return;
 	}
-	if (!g_Brothels.PlayerCombat(girl))
+	if (!g_Game.player().Combat(girl))
 	{
 		m_girl_wins = false;
 		m_player_wins = true;
@@ -196,13 +196,15 @@ int cGirlGangFight::use_potions(sGang *gang, int casualties)
 	*	or the total number of potions - whichever is less
 	*/
 	int max = casualties - 1;
-	int *pots_pt = g_Gangs.GetHealingPotions();
-	if (*pots_pt < max)		max = *pots_pt;
+	int pots_pt = gang->num_potions();
+	if (pots_pt < max)		max = pots_pt;
 	/*
 	*	reduction random number in that range
 	*/
 	int reduction = g_Dice.in_range(1, max);
-	*pots_pt -= reduction;
+	for(int i = 0; i < reduction; ++i) {
+	    gang->use_potion();
+	}
 	casualties -= reduction;
 	if (casualties < 0) casualties = 0;
 	return casualties;

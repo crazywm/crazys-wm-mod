@@ -22,5 +22,8 @@
 			What="Trait"
 			Name="Clumsy"
 			Amount="1" />
+		<Crafting CraftPoints="30" ManaCost="0">
+			<Job Name="Tailor"/>
+		</Crafting>
 	</Item>
 </Items>

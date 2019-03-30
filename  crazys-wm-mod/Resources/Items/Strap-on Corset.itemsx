@@ -51,5 +51,8 @@
             What="Skill"
             Name="Footjob"
             Amount="8" />
+        <Crafting CraftPoints="120" ManaCost="0">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
 </Items>

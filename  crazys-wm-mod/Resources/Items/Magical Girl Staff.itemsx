@@ -8,5 +8,8 @@
         <Effect What="Trait" Name="Fearless" Amount="1" />
         <Effect What="Trait" Name="Heroine" Amount="1" />
         <Effect What="Trait" Name="Strong Magic" Amount="1" />
+        <Crafting CraftPoints="200" ManaCost="90">
+            <Job Name="Make Items"/>
+        </Crafting>
     </Item>
 </Items>

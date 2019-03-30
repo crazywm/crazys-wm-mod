@@ -16,144 +16,226 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include "src/screens/cScreenGetInput.h"
 #include "cWindowManager.h"
 #include "CLog.h"
+#include "cMessageBox.h"
 
-extern CLog g_LogFile;
+extern cScreenGetInput*	g_GetInput;
+extern CGraphics g_Graphics;
 
-sWindow::sWindow()
-{
-	m_Next = 0;
-	m_Interface = 0;
-}
-sWindow::~sWindow()
-{
-	if (m_Next) delete m_Next;
-	m_Next = 0;
-	m_Interface = 0;
-}
 
 cWindowManager::cWindowManager()
 {
-	m_Parent = 0;
-}
-cWindowManager::~cWindowManager()
-{
-	if (m_Parent) delete m_Parent;
-	m_Parent = 0;
-}
 
-void cWindowManager::push(string window_name)
+};
+
+cWindowManager::~cWindowManager() = default;
+
+void cWindowManager::push(const std::string& window_name)
 {
 	if (windows.find(window_name) == windows.end())						//check the screen exists
 	{
 		g_LogFile.ss() << "cWindowManager::Push: can't find window named '" << window_name << "'" ; g_LogFile.ssend();
 		return;
 	}
-	cInterfaceWindowXML *wpt = windows[window_name];					//look up the manager object
-	push(process_funcxml(wpt->handler_func), (cInterfaceWindow*)wpt);	//push the static handler and the window pointer onto the stack
+
+    m_WindowStack.push_back(windows[window_name].get());
+	try {
+        m_WindowStack.back()->init(false);
+    } catch(...) {
+        m_WindowStack.pop_back();
+        throw;
+	}
 }
 
-void cInterfaceWindowXML::handler_func(cInterfaceWindowXML *wpt)
+void cWindowManager::replace(const std::string& window_name)
 {
-	wpt->process();
+    auto current = m_WindowStack.back();
+    m_WindowStack.pop_back();
+    try {
+        push(window_name);
+    } catch(...) {
+        // in case of exception, roll back the pop
+        m_WindowStack.push_back(current);
+        throw;
+    }
 }
 
-void cWindowManager::Push(process_func Process, cInterfaceWindow* Interface)
-{
-	if (Process == 0) return;					// Don't push a NULL value
-	sWindow *InterfacePtr = new sWindow();		// Allocate a new process and push it on stack
-	InterfacePtr->m_Next = m_Parent;
-	m_Parent = InterfacePtr;
-	//if(xmlf)
-	//	InterfacePtr->XmlFunction=void (_cdelc *)(cInterfaceWindow *)Process;
-	//else
-	InterfacePtr->Function = Process;
-	InterfacePtr->m_Interface = Interface;
-	InterfacePtr->xmlfunc = false;
-}
-
-void cWindowManager::push(process_funcxml Process, cInterfaceWindow* Interface)
-{
-	if (Process == 0) return;					// Don't push a NULL value
-	sWindow *InterfacePtr = new sWindow();		// Allocate a new process and push it on stack
-	InterfacePtr->m_Next = m_Parent;
-	m_Parent = InterfacePtr;
-	//if(xmlf)
-	//	InterfacePtr->XmlFunction=void (_cdelc *)(cInterfaceWindow *)Process;
-	//else
-	InterfacePtr->XmlFunction = Process;
-	InterfacePtr->m_Interface = Interface;
-	InterfacePtr->xmlfunc = true;
-}
 
 // remove function from the stack
 void cWindowManager::Pop()
 {
-	if (m_Parent != 0)
-	{
-		sWindow *InterfacePtr = m_Parent;
-		m_Parent = m_Parent->m_Next;
-		InterfacePtr->m_Next = 0;
-		delete InterfacePtr;
-		InterfacePtr = 0;
-	}
+    m_WindowStack.pop_back();
+    if(m_WindowStack.empty())
+        m_WindowStack.back()->init(true);
 }
 
 void cWindowManager::PopToWindow(cInterfaceWindow* Interface)
 {
-	if (m_Parent != 0)
-	{
-		while (m_Parent->m_Interface != Interface) Pop();
-	}
+    while (!m_WindowStack.empty() && m_WindowStack.back() != Interface) {
+        m_WindowStack.pop_back();
+    }
+
+    if(m_WindowStack.empty()) {
+        m_WindowStack.push_back(Interface);
+    }
+
+    m_WindowStack.back()->init(true);
+}
+
+void cWindowManager::PopToWindow(const std::string& window_name)
+{
+    if (windows.find(window_name) == windows.end())						//check the screen exists
+    {
+        g_LogFile.ss() << "cWindowManager::Push: can't find window named '" << window_name << "'" ; g_LogFile.ssend();
+        return;
+    }
+    PopToWindow(windows[window_name].get());
 }
 
 void cWindowManager::UpdateCurrent()
 {
-	if (!m_Parent) return;
-	if (m_Parent->xmlfunc) m_Parent->XmlFunction(m_Parent->m_Interface);
-	else m_Parent->Function();
+    // Draw Any message boxes
+    if (m_MessageBox->IsActive()) {
+        m_MessageBox->Draw();
+    } else if (!m_WindowStack.empty()) {
+        m_WindowStack.back()->update();
+    }
 }
 
 void cWindowManager::UpdateMouseMovement(int x, int y)
 {
-	if (m_Parent) m_Parent->m_Interface->UpdateWindow(x, y);
+    if (m_MessageBox->IsActive())
+        return;
+    if(!m_WindowStack.empty())
+        m_WindowStack.back()->UpdateWindow(x, y);
 }
 
 void cWindowManager::UpdateMouseDown(int x, int y)
 {
-	if (m_Parent) m_Parent->m_Interface->MouseDown(x, y);
+    if(!m_WindowStack.empty())
+        m_WindowStack.back()->MouseDown(x, y);
 }
 
 void cWindowManager::UpdateMouseClick(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 {
-	if (m_Parent) m_Parent->m_Interface->Click(x, y, mouseWheelDown, mouseWheelUp);
+    if (m_MessageBox->IsActive())
+        m_MessageBox->Advance();
+    else if(!m_WindowStack.empty())
+        m_WindowStack.back()->Click(x, y, mouseWheelDown, mouseWheelUp);
 }
 
 void cWindowManager::UpdateKeyInput(char key, bool upper)
 {
-	if (m_Parent) m_Parent->m_Interface->UpdateEditBoxes(key, upper);
+    if(!m_WindowStack.empty())
+        m_WindowStack.back()->UpdateEditBoxes(key, upper);
 }
 
 bool cWindowManager::HasEditBox()
 {
-	if (!m_Parent) return false;
-	return m_Parent->m_Interface->HasEditBox();
+    if(m_WindowStack.empty())
+        return false;
+	return m_WindowStack.back()->HasEditBox();
 }
 
 cInterfaceWindow* cWindowManager::GetWindow()
 {
-	if (!m_Parent) return 0;
-	return m_Parent->m_Interface;
+    if(m_WindowStack.empty())
+        return nullptr;
+	return m_WindowStack.back();
 }
 
 void cWindowManager::Draw()
 {
-	if (m_Parent) m_Parent->m_Interface->Draw();
+    if(!m_WindowStack.empty())
+        m_WindowStack.back()->Draw(g_Graphics);
+
+    if (m_MessageBox->IsActive()) {
+        m_MessageBox->Draw();
+    }
 }
 
-/*
+void cWindowManager::FreeAllWindows()
+{
+    for(auto& w : windows) {
+        w.second->Free();
+    }
+}
 
-make: *** [cWindowManager.o] Error 1
+void cWindowManager::ResetAllWindows()
+{
+    for(auto& w : windows) {
+        w.second->Reset();
+    }
+}
 
-*/
+void cWindowManager::OnKeyPress(SDL_keysym key)
+{
+    if (m_MessageBox->IsActive()) {
+        m_MessageBox->Advance();
+    } else {
+        GetWindow()->OnKeyPress(key);
+    }
+}
+
+void cWindowManager::add_window(string name, std::unique_ptr<cInterfaceWindow> win)
+{
+    windows[std::move(name)] = std::move(win);
+}
+
+IBuilding * cWindowManager::GetActiveBuilding() const
+{
+    return m_ActiveBuilding;
+}
+
+void cWindowManager::SetActiveBuilding(IBuilding * building)
+{
+    m_ActiveBuilding = building;
+}
+
+void cWindowManager::InputInteger(std::function<void(int)> callback)
+{
+    g_GetInput->ModeGetInt(std::move(callback));
+    push("GetInput");
+}
+
+void cWindowManager::InputConfirm(std::function<void()> callback)
+{
+    g_GetInput->ModeConfirm(std::move(callback));
+    push("GetInput");
+}
+
+void cWindowManager::InputString(std::function<void(const std::string&)> callback)
+{
+    g_GetInput->ModeGetString(std::move(callback));
+    push("GetInput");
+}
+
+void cWindowManager::PushMessage(std::string text, int color)
+{
+    m_MessageBox->PushMessage(std::move(text), color);
+}
+
+bool cWindowManager::HasActiveModal() const
+{
+    return m_MessageBox->IsActive();
+}
+
+void cWindowManager::load()
+{
+    m_MessageBox = std::make_unique<cMessageBox>();
+}
+
+sGirl * cWindowManager::GetActiveGirl() const
+{
+    if(m_SelectedGirls.empty())
+        return nullptr;
+    return m_SelectedGirls.front();
+}
+
+void cWindowManager::SetActiveGirl(sGirl * girl)
+{
+    m_SelectedGirls.clear();
+    m_SelectedGirls.push_back(girl);
+}

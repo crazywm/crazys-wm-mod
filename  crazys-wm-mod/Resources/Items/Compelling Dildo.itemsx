@@ -11,5 +11,9 @@
       GirlBuyChance="10">
    <Effect What="Skill" Name="NormalSex" Amount="30" />
    <Effect What="Stat" Name="Libido" Amount="20" />
+   <Crafting CraftPoints="120" ManaCost="30">
+      <Job Name="Make Items"/>
+      <Stat Name="Libido" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

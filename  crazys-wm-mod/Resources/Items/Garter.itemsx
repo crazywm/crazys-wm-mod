@@ -11,5 +11,8 @@
       GirlBuyChance="50">
    <Effect What="Stat"  Name="Beauty"                  Amount="3"    />
    <Effect What="Stat"  Name="Charisma"                Amount="2"    />
+   <Crafting CraftPoints="10" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

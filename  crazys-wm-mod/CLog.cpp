@@ -50,4 +50,12 @@ void CLogInner::write(string text)
 #endif
 }
 
-CLogInner *CLog::inner = 0;
+CLogInner *CLog::inner = nullptr;
+
+CLog::~CLog()
+{
+    if(!m_glob) {
+        return;
+    }
+    delete inner;
+}

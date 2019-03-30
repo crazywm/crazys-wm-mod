@@ -14,5 +14,8 @@
    <Effect What="Stat" Name="Beauty" Amount="8" />
    <Effect What="Stat" Name="Charisma" Amount="24" />
    <Effect What="Trait" Name="Great Figure" Amount="1" />
+   <Crafting CraftPoints="160" ManaCost="40">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

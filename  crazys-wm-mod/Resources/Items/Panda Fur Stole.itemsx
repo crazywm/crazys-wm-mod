@@ -21,5 +21,8 @@
     <Effect     What="Stat"     Name="Charisma"         Amount="-15" />
     <Effect     What="Trait"    Name="Elegant"          Amount="1" />
     <Effect     What="Trait"    Name="Twisted"          Amount="1" />
+        <Crafting CraftPoints="150" ManaCost="0">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
 </Items>

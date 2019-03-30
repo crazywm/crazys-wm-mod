@@ -12,5 +12,8 @@
    <Effect What="Trait" Name="Clumsy"                  Amount="0"    />
    <Effect What="Trait" Name="Long Legs"               Amount="1"    />
    <Effect What="Trait" Name="Aggressive"              Amount="0"    />
+   <Crafting CraftPoints="150" ManaCost="20">
+      <Job Name="Cobbler"/>
+   </Crafting>
 </Item>
 </Items>

@@ -14,6 +14,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Charismatic"             Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -28,6 +33,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Dependant"               Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -42,6 +52,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Fleet of Foot"           Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -56,6 +71,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Fragile"                 Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -70,6 +90,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Fearless"                Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -84,6 +109,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Iron Will"               Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -98,6 +128,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Mind Fucked"             Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -112,6 +147,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Meek"                    Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -126,6 +166,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Merciless"               Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -140,6 +185,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -154,6 +204,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Pessimist"               Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -168,6 +223,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Retarded"                Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -182,6 +242,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Sterile"                 Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -196,6 +261,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Tough"                   Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 
@@ -210,6 +280,11 @@
    <Effect What="Stat"  Name="Health"                  Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Trait" Name="Twisted"                 Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 
 

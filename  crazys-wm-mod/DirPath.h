@@ -40,7 +40,7 @@ static	const char	sep[];
 public:
 /*
  *	constructor takes a single path component,
- *	defaulting to "," since that seems to be the most common case
+ *	defaulting to "." since that seems to be the most common case
  *
  *	If you want an absolute pathanme (/foo/bar or \FOO\BAR)
  *	construct the path with an empty string
@@ -53,7 +53,7 @@ public:
 		}
 	}
 /*
- *	copy contstructor, probably not needed...
+ *	copy constructor, probably not needed...
  */
 #if 0
 	DirPath(DirPath& dp) {
@@ -74,7 +74,7 @@ public:
  *
  *	this is the string operator
  */
-	DirPath& operator << (string &s) {
+	DirPath& operator << (const std::string& s) {
 		path += sep;
 		path += s;
 		return *this;
@@ -98,7 +98,12 @@ public:
  *	a c_str() method so I can drop this sucker in where 
  *	the code used to use a string
  */
-	const char *c_str()	{ return path.c_str(); }
+	const char *c_str()	const { return path.c_str(); }
+
+/*
+ * Get the path as a string
+ */
+	const std::string& str() const { return path; }
 /*
  *	and a couple of type coercion operators, so I shouldn't
  *	even need to do that
@@ -173,7 +178,7 @@ public:
 
 class ImagePath : public DirPath {
 public:
-	ImagePath(string filename)
+	ImagePath(const string& filename)
 	: DirPath()
 	{
 		(*this) << "Resources" << "Images" << filename;

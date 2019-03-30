@@ -30,14 +30,17 @@
 struct sGirl;
 class TiXmlElement;
 
-
 struct TraitEffect
 {
     enum Type {
-        STAT, SKILL, ENJOYMENT
+        STAT, SKILL, ENJOYMENT, FETISH, SEX_QUALITY, ACCOM
+        // TODO add TRAINING here?
     } type;
     unsigned target;
     int value;
+
+    // this is only used for SEX_QUALITY
+    Fetishs condition;
 
     static TraitEffect from_xml(TiXmlElement* el);
 };
@@ -59,6 +62,8 @@ public:
 	int inherit_chance() const { return m_InheritChance; }
 
 	void apply_effects(sGirl* target) const;
+	void get_fetish_rating(std::array<int, NUM_FETISH>& rating) const;
+	int get_sex_mod(Fetishs fetish) const;
 private:
 
     std::string m_Name;				// the name and unique ID of the trait

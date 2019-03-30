@@ -19,9 +19,11 @@
 #pragma once
 
 #include "CSurface.h"
-#include "cFont.h"
 #include <string>
-using namespace std;
+#include <memory>
+#include <vector>
+
+class cFont;
 
 typedef void(*menu_callback_type)(int);
 
@@ -29,20 +31,20 @@ class cChoice	// represents a list of text selections and the currently selected
 {
 public:
 
-	cChoice();
+	cChoice(int ID, int num_choices);
 	~cChoice();
 
-	int m_NumChoices;							// The number of choices available
-	string m_Question;							// `J` The question at the top of the choice box
-	string* m_Choices;							// array of choices available
+	int num_choices() const;
+
+	std::string m_Question;						// `J` The question at the top of the choice box
+	std::vector<std::string> m_Choices;			// array of choices available
 	int m_CurrChoice;							// The choice selected at present
 	int m_ID;									// the id for this particular box
-	cChoice* m_Next;							// the next choice box in the list
-	SDL_Surface* m_Background;					// 
-	SDL_Surface* m_Border;						// 
-	SDL_Surface* m_ElementBackground;			// the background and border for the list elements
-	SDL_Surface* m_ElementSelectedBackground;	// the background and border for the list elements
-	SDL_Surface* m_HeaderBackground;
+	SDL_Surface* m_Background           = nullptr;
+	SDL_Surface* m_Border               = nullptr;
+	SDL_Surface* m_ElementBackground    = nullptr;		// the background and border for the list elements
+	SDL_Surface* m_ElementSelectedBackground = nullptr;	// the background and border for the list elements
+	SDL_Surface* m_HeaderBackground     = nullptr;
 	int m_XPos, m_YPos, m_Width, m_Height, m_FontSize;
 
 	int m_NumDrawnElements;
@@ -58,15 +60,8 @@ class cChoiceManager
 {
 	menu_callback_type m_callback;
 public:
-	cChoiceManager() {
-		m_Parent = 0;
-		m_ActiveChoice = 0;
-		m_DownOn = m_UpOn = m_UpOff = m_DownOff = 0;
-		m_CurrUp = m_CurrDown = 0;
-		m_Font = 0;
-		m_callback = 0;
-	}
-	~cChoiceManager() { Free(); }
+	cChoiceManager();
+	~cChoiceManager();
 
 	void Free();
 	void CreateChoiceBox(int x, int y, int width, int height, int ID, int numChoices, int itemHeight, int MaxStrLen = 0, int fontsize = 16);
@@ -88,16 +83,16 @@ public:
 	bool find_active(int x, int y);
 
 private:
-	cChoice* m_Parent;
-	cChoice* m_ActiveChoice;
+    std::vector<std::unique_ptr<cChoice>> m_ChoiceBoxes;
+    cChoice* m_ActiveChoice = nullptr;
 
-	cFont* m_Font;
+	std::unique_ptr<cFont> m_Font;
 
-	CSurface* m_UpOn;
-	CSurface* m_DownOn;
-	CSurface* m_UpOff;
-	CSurface* m_DownOff;
-	CSurface* m_CurrUp;
-	CSurface* m_CurrDown;
+	CSurface* m_UpOn = nullptr;
+	CSurface* m_DownOn = nullptr;
+	CSurface* m_UpOff = nullptr;
+	CSurface* m_DownOff = nullptr;
+	CSurface* m_CurrUp = nullptr;
+	CSurface* m_CurrDown = nullptr;
 };
 

@@ -2,60 +2,6 @@
 <Items>
 	<Item
 		Name="Alcohol"
-		Desc="Used to get drunk, (+7 Hap, +7 Obed, -7 Spi,  -2 HP, Can be addictive)"
-		Type="Food"
-		Badness="10"
-		Special="None"
-		Cost="50"
-		Rarity="Common"
-		Infinite="false"
-		GirlBuyChance="2">
-		<Effect
-			What="Stat"
-			Name="Happiness"
-			Amount="7" />
-		<Effect
-			What="Stat"
-			Name="Obedience"
-			Amount="7" />
-		<Effect
-			What="Stat"
-			Name="Spirit"
-			Amount="-7" />
-		<Effect
-			What="Stat"
-			Name="Health"
-			Amount="-2" />
-	</Item>
-	<Item
-		Name="Alcohol"
-		Desc="Used to get drunk, (+7 Hap, +7 Obed, -7 Spi,  -2 HP, Can be addictive)"
-		Type="Food"
-		Badness="10"
-		Special="None"
-		Cost="50"
-		Rarity="Common"
-		Infinite="false"
-		GirlBuyChance="2">
-		<Effect
-			What="Stat"
-			Name="Happiness"
-			Amount="7" />
-		<Effect
-			What="Stat"
-			Name="Obedience"
-			Amount="7" />
-		<Effect
-			What="Stat"
-			Name="Spirit"
-			Amount="-7" />
-		<Effect
-			What="Stat"
-			Name="Health"
-			Amount="-2" />
-	</Item>
-	<Item
-		Name="Alcohol "
 		Desc="Used to get drunk. (+7 Hap, +7 Obed, -7 Spi,  -2 HP. Can be addictive)"
 		Type="Food"
 		Badness="20"
@@ -83,6 +29,10 @@
 		<Effect
 			What="Trait"
 			Name="Alcoholic"
-			Amount="1" />
+			Amount="1" Chance="10" />
+		<Crafting CraftPoints="10" ManaCost="0" Weight="25">
+			<Job Name="Brewer"/>
+			<Skill Name="Brewing" Minimum="20" />
+		</Crafting>
 	</Item>
 </Items>

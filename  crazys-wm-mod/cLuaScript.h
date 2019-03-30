@@ -86,7 +86,7 @@ class cLuaScript {
 public:
 	cLuaScript() {
 		running = false;
-		girl	= 0;
+		girl	= nullptr;
 		init_ref= -1;
 		run_ref	= -1;
 	}
@@ -105,6 +105,6 @@ public:
 	void set_wm_girl(sGirl *girl);
 	void set_wm_player();
 
-	~cLuaScript() {}
+	~cLuaScript() = default;
 };
 

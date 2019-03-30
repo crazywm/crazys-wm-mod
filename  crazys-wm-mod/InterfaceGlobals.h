@@ -20,9 +20,7 @@
 #define __INTERFACEGLOBALS_H
 
 #include "cInterfaceWindow.h"
-#include "cInterfaceEvent.h"
 #include "cMessageBox.h"
-#include "InterfaceIDs.h"
 #include "cChoiceMessage.h"
 
 #ifdef LINUX
@@ -30,20 +28,8 @@
 #endif
 
 // Globals
-extern cInterfaceEventManager g_InterfaceEvents;
-extern cInterfaceWindow g_GetString;
-extern cInterfaceWindow g_ChangeJobs;
-//extern cInterfaceWindow g_Turnsummary;
-//extern cInterfaceWindow g_Gallery;
-//extern cInterfaceWindow g_Gallery2;
-extern cInterfaceWindow g_GetInt;
-extern cInterfaceWindow g_LoadGame;
-//extern cInterfaceWindow g_TransferGirls;
-extern cMessageBox g_MessageBox;
+extern cInterfaceWindow* g_LoadGame;
 extern cChoiceManager g_ChoiceManager;
-extern cMessageQue g_MessageQue;
-
-extern 
 
 void LoadInterface();	// Function for loading the interface
 void FreeInterface();

@@ -9,5 +9,8 @@
       Rarity="Common"
       Infinite="false">
    <Effect What="Trait" Name="Cute"                    Amount="1"    />
+   <Crafting CraftPoints="15" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

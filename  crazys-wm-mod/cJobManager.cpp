@@ -18,51 +18,25 @@
  */
 #include <algorithm>
 #include "cJobManager.h"
-#include "cBrothel.h"
-#include "cClinic.h"
-#include "cMovieStudio.h"
-#include "cArena.h"
-#include "cCentre.h"
-#include "cHouse.h"
-#include "cFarm.h"
+#include "src/buildings/cBrothel.h"
+#include "src/buildings/queries.hpp"
 #include "cCustomers.h"
 #include "cRng.h"
 #include "cInventory.h"
 #include "sConfig.h"
-#include "cRival.h"
 #include <sstream>
 #include "CLog.h"
 #include "cTrainable.h"
 #include "cTariff.h"
 #include "cGold.h"
 #include "cGangs.h"
-#include "cMessageBox.h"
-#include "libintl.h"
+#include "src/Game.hpp"
 
 extern cRng g_Dice;
-extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cInventory g_InvManager;
-extern cBrothelManager g_Brothels;
-extern cClinicManager  g_Clinic;
-extern cMovieStudioManager  g_Studios;
-extern cArenaManager  g_Arena;
-extern cCentreManager  g_Centre;
-extern cHouseManager  g_House;
-extern cFarmManager  g_Farm;
-extern cGangManager g_Gangs;
-extern cMessageQue g_MessageQue;
-extern	bool			g_InitWin;
-extern sGirl *selected_girl;
-extern cGold g_Gold;
 static cTariff tariff;
 
+
 extern	bool	g_CTRLDown;
-
-static cDungeon* m_Dungeon = g_Brothels.GetDungeon();
-static vector<int> ffsd_choicelist;
-
-extern cPlayer* The_Player;
 
 void cJobManager::Setup()
 {
@@ -1009,116 +983,46 @@ void cJobManager::free()
 
 // ----- Misc
 
-bool cJobManager::WorkVoid(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
+bool cJobManager::WorkVoid(sGirl* girl, bool Day0Night1, string& summary)
 {
 	summary += ("This job isn't implemented yet");
 	girl->m_Events.AddMessage(("This job isn't implemented yet"), IMGTYPE_PROFILE, EVENT_DEBUG);
 	return false;
 }
 
-bool cJobManager::Preprocessing(int action, sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary, string& message)
+sCustomer cJobManager::GetMiscCustomer(IBuilding& brothel)
 {
-	brothel->m_Filthiness++;
-	if (girl->disobey_check(action, brothel))			// they refuse to work
-	{
-		string message = girl->m_Realname + (" refused to work during the ");
-		message += (Day0Night1 ? "night" : "day");
-		message += (" shift.");
-		girl->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_NOWORK);
-		return true;
-	}
-	return false;
-}
-
-sCustomer cJobManager::GetMiscCustomer(sBrothel& brothel)
-{
-    sCustomer cust = g_Customers.GetCustomer(brothel);
+    sCustomer cust = g_Game.GetCustomer(brothel);
 	brothel.m_MiscCustomers+=1;
 	return cust;
 }
 
-bool cJobManager::is_sex_type_allowed(unsigned int sex_type, sBrothel* brothel)
-{
-	if ((sex_type == SKILL_ANAL			&& brothel->m_RestrictAnal) ||
-		(sex_type == SKILL_BDSM			&& brothel->m_RestrictBDSM) ||
-		(sex_type == SKILL_BEASTIALITY	&& brothel->m_RestrictBeast) ||
-		(sex_type == SKILL_FOOTJOB		&& brothel->m_RestrictFoot) ||
-		(sex_type == SKILL_GROUP		&& brothel->m_RestrictGroup) ||
-		(sex_type == SKILL_HANDJOB		&& brothel->m_RestrictHand) ||
-		(sex_type == SKILL_LESBIAN		&& brothel->m_RestrictLesbian) ||
-		(sex_type == SKILL_NORMALSEX	&& brothel->m_RestrictNormal) ||
-		(sex_type == SKILL_ORALSEX		&& brothel->m_RestrictOral) ||
-		(sex_type == SKILL_STRIP		&& brothel->m_RestrictStrip) ||
-		(sex_type == SKILL_TITTYSEX		&& brothel->m_RestrictTitty))
-		return false;
-	return true;
-}
-bool cJobManager::nothing_banned(sBrothel* brothel)
-{
-	if (brothel->m_RestrictAnal || brothel->m_RestrictBDSM || brothel->m_RestrictBeast || brothel->m_RestrictFoot ||
-		brothel->m_RestrictGroup || brothel->m_RestrictHand || brothel->m_RestrictLesbian || brothel->m_RestrictNormal ||
-		brothel->m_RestrictOral || brothel->m_RestrictStrip || brothel->m_RestrictTitty)
-		return false;
-	return true;
-}
-
 // ----- Job related
 
-vector<sGirl*> cJobManager::girls_on_job(sBrothel *brothel, u_int job_wanted, bool Day0Night1)
-{
-	u_int job_id;
-	sGirl* girl;
-	vector<sGirl*> v;
-
-	for (girl = brothel->m_Girls; girl; girl = girl->m_Next)
-	{
-		job_id = (Day0Night1 == 0) ? girl->m_DayJob : girl->m_NightJob;
-		if (job_id != job_wanted) continue;
-		v.push_back(girl);
-	}
-	return v;
-}
-
-bool cJobManager::is_job_employed(sBrothel * brothel, u_int job_wanted, bool Day0Night1)
-{
-	u_int job_id;
-	sGirl* girl;
-	for (girl = brothel->m_Girls; girl; girl = girl->m_Next)
-	{
-		job_id = (Day0Night1 == 0) ? girl->m_DayJob : girl->m_NightJob;
-		if (job_id == job_wanted) return true;
-	}
-	return false;
-}
-
-void cJobManager::do_advertising(sBrothel* brothel, bool Day0Night1)
+void cJobManager::do_advertising(IBuilding& brothel, bool Day0Night1)
 {  // advertising jobs are handled before other jobs, more particularly before customer generation
-	brothel->m_AdvertisingLevel = 1.0;  // base multiplier
-	sGirl* current = brothel->m_Girls;
-	while (current)
-	{
-		string summary = "";
+	brothel.m_AdvertisingLevel = 1.0;  // base multiplier
+    for (auto& current : brothel.girls())
+    {
+		string summary;
 		bool refused = false;
 		// Added test for current shift, was running each shift twice -PP
 		if ((current->m_DayJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_DAY))
 		{
-			current->m_Refused_To_Work_Day = WorkAdvertising(current, brothel, 0, summary);
+			current->m_Refused_To_Work_Day = WorkAdvertising(current, false, summary);
 		}
 		if ((current->m_NightJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_NIGHT))
 		{
-			current->m_Refused_To_Work_Night = WorkAdvertising(current, brothel, 1, summary);
+			current->m_Refused_To_Work_Night = WorkAdvertising(current, true, summary);
 		}
-		current = current->m_Next;
 	}
 }
 
-void cJobManager::do_whorejobs(sBrothel* brothel, bool Day0Night1)
+void cJobManager::do_whorejobs(IBuilding& brothel, bool Day0Night1)
 { // Whores get first crack at any customers.
-	sGirl* current = brothel->m_Girls;
-
-	while (current)
-	{
-		string summary = "";
+    for (auto& current : brothel.girls())
+    {
+		string summary;
 		u_int sw = 0;						//	Job type
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 
@@ -1126,29 +1030,26 @@ void cJobManager::do_whorejobs(sBrothel* brothel, bool Day0Night1)
 		switch (sw)
 		{
 		case JOB_WHOREBROTHEL:
-			refused = WorkWhore(current, brothel, Day0Night1, summary);
+			refused = WorkWhore(current, Day0Night1, summary);
 			break;
 		case JOB_BARWHORE:
-			refused = WorkBarWhore(current, brothel, Day0Night1, summary);
+			refused = WorkBarWhore(current, Day0Night1, summary);
 			break;
 		case JOB_WHOREGAMBHALL:
-			refused = WorkHallWhore(current, brothel, Day0Night1, summary);
+			refused = WorkHallWhore(current, Day0Night1, summary);
 			break;
 		default:
 			break;
 		}
 		if (refused) (Day0Night1 ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
-		current = current->m_Next;
 	}
 }
 
-void cJobManager::do_custjobs(sBrothel* brothel, bool Day0Night1)
+void cJobManager::do_custjobs(IBuilding& brothel, bool Day0Night1)
 { // Customer taking jobs get first crack at any customers before customer service.
-	sGirl* current = brothel->m_Girls;
-
-	while (current)
-	{
-		string summary = "";
+    for (auto& current : brothel.girls())
+    {
+		string summary;
 		u_int sw = 0;						//	Job type
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 
@@ -1156,56 +1057,48 @@ void cJobManager::do_custjobs(sBrothel* brothel, bool Day0Night1)
 		switch (sw)
 		{
 		case JOB_BARMAID:
-			refused = WorkBarmaid(current, brothel, Day0Night1, summary);
+			refused = WorkBarmaid(current, Day0Night1, summary);
 			break;
 		case JOB_WAITRESS:
-			refused = WorkBarWaitress(current, brothel, Day0Night1, summary);
+			refused = WorkBarWaitress(current, Day0Night1, summary);
 			break;
 		case JOB_SINGER:
-			refused = WorkBarSinger(current, brothel, Day0Night1, summary);
+			refused = WorkBarSinger(current, Day0Night1, summary);
 			break;
 		case JOB_PIANO:
-			refused = WorkBarPiano(current, brothel, Day0Night1, summary);
+			refused = WorkBarPiano(current, Day0Night1, summary);
 			break;
 		case JOB_DEALER:
-			refused = WorkHallDealer(current, brothel, Day0Night1, summary);
+			refused = WorkHallDealer(current, Day0Night1, summary);
 			break;
 		case JOB_ENTERTAINMENT:
-			refused = WorkHallEntertainer(current, brothel, Day0Night1, summary);
+			refused = WorkHallEntertainer(current, Day0Night1, summary);
 			break;
 		case JOB_XXXENTERTAINMENT:
-			refused = WorkHallXXXEntertainer(current, brothel, Day0Night1, summary);
+			refused = WorkHallXXXEntertainer(current, Day0Night1, summary);
 			break;
 		case JOB_SLEAZYBARMAID:
-			refused = WorkSleazyBarmaid(current, brothel, Day0Night1, summary);
+			refused = WorkSleazyBarmaid(current, Day0Night1, summary);
 			break;
 		case JOB_SLEAZYWAITRESS:
-			refused = WorkSleazyWaitress(current, brothel, Day0Night1, summary);
+			refused = WorkSleazyWaitress(current, Day0Night1, summary);
 			break;
 		case JOB_BARSTRIPPER:
-			refused = WorkBarStripper(current, brothel, Day0Night1, summary);
+			refused = WorkBarStripper(current, Day0Night1, summary);
 			break;
 		case JOB_MASSEUSE:
-			refused = WorkBrothelMasseuse(current, brothel, Day0Night1, summary);
+			refused = WorkBrothelMasseuse(current, Day0Night1, summary);
 			break;
 		case JOB_BROTHELSTRIPPER:
-			refused = WorkBrothelStripper(current, brothel, Day0Night1, summary);
+			refused = WorkBrothelStripper(current, Day0Night1, summary);
 			break;
 		case JOB_PEEP:
-			refused = WorkPeepShow(current, brothel, Day0Night1, summary);
+			refused = WorkPeepShow(current, Day0Night1, summary);
 			break;
 		default:
 			break;
 		}
-		current = current->m_Next;
 	}
-}
-
-int cJobManager::get_num_on_job(sBrothel* brothel, int job_wanted, bool Day0Night1)
-{
-	vector<sGirl*> girls = girls_on_job(brothel, job_wanted, Day0Night1);
-	int num = girls.size();
-	return num;
 }
 
 bool cJobManager::FullTimeJob(u_int Job)
@@ -1423,28 +1316,10 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 
 }
 
-string cJobManager::JobDescriptionCount(int job_id, int brothel_id, int day, bool isClinic, bool isStudio, bool isArena, bool isCentre, bool isHouse, bool isFarm)
-{
-	stringstream text;
-	text << JobName[job_id];
-	text << " (";
-	     if (isStudio)	{	text << g_Studios.GetNumGirlsOnJob(0, job_id, day);	}
-	else if (isClinic)	{	text << g_Clinic.GetNumGirlsOnJob(0, job_id, day);	}
-	else if (isArena)	{	text << g_Arena.GetNumGirlsOnJob(0, job_id, day);	}
-	else if (isCentre)	{	text << g_Centre.GetNumGirlsOnJob(0, job_id, day);	}
-	else if (isHouse)	{	text << g_House.GetNumGirlsOnJob(0, job_id, day);	}
-	else if (isFarm)	{	text << g_Farm.GetNumGirlsOnJob(0, job_id, day);	}
-	else				{	text << g_Brothels.GetNumGirlsOnJob(brothel_id, job_id, day);	}
-	text << ")";
-	return text.str();
-}
-
-
 // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cJobManager.cpp > HandleSpecialJobs
-bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, int OldJobID, bool Day0Night1, bool fulltime)
+bool cJobManager::HandleSpecialJobs(sGirl* Girl, int JobID, int OldJobID, bool Day0Night1, bool fulltime)
 {
 	bool MadeChanges = true;  // whether a special case applies to specified job or not
-	bool refresh = g_InitWin;
 	g_CTRLDown = false;
 
 	/*	`J` added to reset working days only if her job actually changes
@@ -1455,7 +1330,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if ((Girl->m_WorkingDay < 2 && (Girl->m_YesterDayJob == JOB_GETABORT )) ||
 			(Girl->m_WorkingDay < 3 && (Girl->m_YesterDayJob == JOB_REHAB)) ||
-			(Girl->m_WorkingDay < 5 && Girl->m_YesterDayJob != JOB_GETABORT && g_Clinic.is_Surgery_Job(Girl->m_YesterDayJob)) ||
+			(Girl->m_WorkingDay < 5 && Girl->m_YesterDayJob != JOB_GETABORT && cJobManager::is_Surgery_Job(Girl->m_YesterDayJob)) ||
 			// `J` training jobs use m_WorkingDay as a percent learned
 			(Girl->m_YesterDayJob == JOB_FAKEORGASM || Girl->m_YesterDayJob == JOB_SO_STRAIGHT || Girl->m_YesterDayJob == JOB_SO_BISEXUAL || Girl->m_YesterDayJob == JOB_SO_LESBIAN)
 			)
@@ -1469,12 +1344,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		Girl->m_WorkingDay = Girl->m_PrevWorkingDay;	// `J` ...it will restore the previous days
 	}
 	u_int rest = JOB_RESTING;
-	/* */if (Girl->m_InStudio)	rest = JOB_FILMFREETIME;
-	else if (Girl->m_InArena)	rest = JOB_ARENAREST;
-	else if (Girl->m_InCentre)	rest = JOB_CENTREREST;
-	else if (Girl->m_InClinic)	rest = JOB_CLINICREST;
-	else if (Girl->m_InHouse)	rest = JOB_HOUSEREST;
-	else if (Girl->m_InFarm)	rest = JOB_FARMREST;
+	if(Girl->m_Building)
+	    rest = Girl->m_Building->m_RestJob;
 
 	// rest jobs
 	if (u_int(JobID) == JOB_FILMFREETIME)
@@ -1491,19 +1362,19 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 #if 1
 	else if (u_int(JobID) == JOB_MATRON)
 	{
-		if (g_Brothels.GetNumGirlsOnJob(TargetBrothel, JOB_MATRON, Day0Night1) > 0)
-			g_MessageQue.AddToQue(("You can only have one matron per brothel."), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_MATRON, Day0Night1) > 0)
+			g_Game.push_message(("You can only have one matron per brothel."), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(("The matron cannot be a slave."), 0);
+			g_Game.push_message(("The matron cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_MATRON;
 	}
 	else if (u_int(JobID) == JOB_TORTURER)
 	{
-		if (g_Brothels.GetNumGirlsOnJob(-1, JOB_TORTURER, Day0Night1) > 0)
-			g_MessageQue.AddToQue(("You can only have one torturer among all of your brothels."), 0);
+		if (random_girl_on_job(g_Game.buildings(), JOB_TORTURER, 0))
+			g_Game.push_message(("You can only have one torturer among all of your brothels."), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(("The torturer cannot be a slave."), 0);
+			g_Game.push_message(("The torturer cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_TORTURER;
 	}
@@ -1512,73 +1383,73 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 #if 1
 	else if (u_int(JobID) == JOB_HEADGIRL)
 	{
-		if (g_House.GetNumGirlsOnJob(0, JOB_HEADGIRL, Day0Night1) > 0)	g_MessageQue.AddToQue(("There can be only one Head Girl!"), 0);
-		else if (Girl->is_slave())/*            */	g_MessageQue.AddToQue(("The Head Girl cannot be a slave."), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_HEADGIRL, Day0Night1) > 0)	g_Game.push_message(("There can be only one Head Girl!"), 0);
+		else if (Girl->is_slave())/*            */	g_Game.push_message(("The Head Girl cannot be a slave."), 0);
 		else /*                                 */	Girl->m_NightJob = Girl->m_DayJob = JOB_HEADGIRL;
 	}
 	else if (u_int(JobID) == JOB_RECRUITER)
 	{
-		if (Girl->is_slave())/*                 */	g_MessageQue.AddToQue(("The recruiter cannot be a slave."), 0);
+		if (Girl->is_slave())/*                 */	g_Game.push_message(("The recruiter cannot be a slave."), 0);
 		else /*                                 */	Girl->m_NightJob = Girl->m_DayJob = JOB_RECRUITER;
 	}
 	else if (u_int(JobID) == JOB_FAKEORGASM)
 	{
-		if (Girl->has_trait("Fake Orgasm Expert"))	g_MessageQue.AddToQue(("She already has \"Fake Orgasm Expert\"."), 0);
+		if (Girl->has_trait("Fake Orgasm Expert"))	g_Game.push_message(("She already has \"Fake Orgasm Expert\"."), 0);
 		else /*                                 */	Girl->m_DayJob = Girl->m_NightJob = JOB_FAKEORGASM;
 	}
 	else if (u_int(JobID) == JOB_SO_BISEXUAL)
 	{
-		if (Girl->has_trait("Bisexual"))/*      */	g_MessageQue.AddToQue(("She is already Bisexual."), 0);
+		if (Girl->has_trait("Bisexual"))/*      */	g_Game.push_message(("She is already Bisexual."), 0);
 		else /*                                 */	Girl->m_DayJob = Girl->m_NightJob = JOB_SO_BISEXUAL;
 	}
 	else if (u_int(JobID) == JOB_SO_LESBIAN)
 	{
-		if (Girl->has_trait("Lesbian"))/*       */	g_MessageQue.AddToQue(("She is already a Lesbian."), 0);
+		if (Girl->has_trait("Lesbian"))/*       */	g_Game.push_message(("She is already a Lesbian."), 0);
 		else /*                                 */	Girl->m_DayJob = Girl->m_NightJob = JOB_SO_LESBIAN;
 	}
 	else if (u_int(JobID) == JOB_SO_STRAIGHT)
 	{
-		if (Girl->has_trait("Straight"))/*      */	g_MessageQue.AddToQue(("She is already Straight."), 0);
+		if (Girl->has_trait("Straight"))/*      */	g_Game.push_message(("She is already Straight."), 0);
 		else /*                                 */	Girl->m_DayJob = Girl->m_NightJob = JOB_SO_STRAIGHT;
 	}
 	else if (u_int(JobID) == JOB_HOUSEPET)
 	{
 		if (Girl->is_slave())/*                 */	Girl->m_NightJob = Girl->m_DayJob = JOB_HOUSEPET;
-		else /*                                 */	g_MessageQue.AddToQue(("Only slaves can take this training."), 0);
+		else /*                                 */	g_Game.push_message(("Only slaves can take this training."), 0);
 	}
 //	else if (u_int(JobID) == JOB_PONYGIRL)
 //	{
 //		if (Girl->is_slave())	Girl->m_NightJob = Girl->m_DayJob = JOB_PONYGIRL;
-//		else					g_MessageQue.AddToQue(("Only slaves can take this training."), 0);
+//		else					g_Game.push_message(("Only slaves can take this training."), 0);
 //	}
 #endif
 	// Special Farm Jobs
 #if 1
 	else if (u_int(JobID) == JOB_FARMMANGER)
 	{
-		if (g_Farm.GetNumGirlsOnJob(0, JOB_FARMMANGER, Day0Night1) > 0)
-			g_MessageQue.AddToQue(("There can be only one Farm Manager!"), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_FARMMANGER, Day0Night1) > 0)
+			g_Game.push_message(("There can be only one Farm Manager!"), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(("The Farm Manager cannot be a slave."), 0);
+			g_Game.push_message(("The Farm Manager cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_FARMMANGER;
 	}
 	else if (u_int(JobID) == JOB_MARKETER)
 	{
 		if (Girl->is_slave())
-			g_MessageQue.AddToQue(("The Farm Marketer cannot be a slave."), 0);
+			g_Game.push_message(("The Farm Marketer cannot be a slave."), 0);
 		else
 		{
 			if (Day0Night1 == SHIFT_DAY || fulltime)
 			{
-				if (g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, SHIFT_DAY) > 0)
-					g_MessageQue.AddToQue(("There can be only one Farm Marketer on each shift!"), 0);
+				if (Girl->m_Building->num_girls_on_job(JOB_MARKETER, SHIFT_DAY) > 0)
+					g_Game.push_message(("There can be only one Farm Marketer on each shift!"), 0);
 				else Girl->m_DayJob = JOB_MARKETER;
 			}
 			if (Day0Night1 == SHIFT_NIGHT || fulltime)
 			{
-				if (g_Farm.GetNumGirlsOnJob(0, JOB_MARKETER, SHIFT_NIGHT) > 0)
-					g_MessageQue.AddToQue(("There can be only one Farm Marketer on each shift!"), 0);
+				if (Girl->m_Building->num_girls_on_job(JOB_MARKETER, SHIFT_NIGHT) > 0)
+					g_Game.push_message(("There can be only one Farm Marketer on each shift!"), 0);
 				else Girl->m_NightJob = JOB_MARKETER;
 			}
 
@@ -1589,20 +1460,20 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 #if 1
 	else if (u_int(JobID) == JOB_DOCTORE)
 	{
-		if (g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, Day0Night1) > 0)
-			g_MessageQue.AddToQue(("There can be only one Doctore!"), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_DOCTORE, Day0Night1) > 0)
+			g_Game.push_message(("There can be only one Doctore!"), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(("The Doctore cannot be a slave."), 0);
+			g_Game.push_message(("The Doctore cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTORE;
 	}
 	else if (u_int(JobID) == JOB_CITYGUARD && Girl->is_slave())
 	{
-		g_MessageQue.AddToQue(("Slaves can not work as City Guards."), 0);
+		g_Game.push_message(("Slaves can not work as City Guards."), 0);
 	}
 	else if (u_int(JobID) == JOB_FIGHTTRAIN && (Girl->combat() > 99 && Girl->magic() > 99 && Girl->agility() > 99 && Girl->constitution() > 99))
 	{	// `J` added then modified
-		g_MessageQue.AddToQue(("There is nothing more she can learn here."), 0);
+		g_Game.push_message(("There is nothing more she can learn here."), 0);
 		if (Girl->m_DayJob == JOB_FIGHTTRAIN)	Girl->m_DayJob = rest;
 		if (Girl->m_NightJob == JOB_FIGHTTRAIN)	Girl->m_NightJob = rest;
 	}
@@ -1611,17 +1482,17 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 #if 1
 	else if (u_int(JobID) == JOB_CHAIRMAN)
 	{
-		if (g_Clinic.GetNumGirlsOnJob(0, JOB_CHAIRMAN, Day0Night1)>0)
-			g_MessageQue.AddToQue(("There can be only one Chairman!"), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_CHAIRMAN, Day0Night1)>0)
+			g_Game.push_message(("There can be only one Chairman!"), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(("The Chairman cannot be a slave."), 0);
+			g_Game.push_message(("The Chairman cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_CHAIRMAN;
 	}
 
 	else if (Girl->has_trait( "AIDS") && (u_int(JobID) == JOB_DOCTOR || u_int(JobID) == JOB_NURSE || u_int(JobID) == JOB_INTERN))
 	{
-		g_MessageQue.AddToQue(("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
+		g_Game.push_message(("Health laws prohibit anyone with AIDS from working in the Medical profession"), 0);
 		if (Girl->m_DayJob == JOB_INTERN || Girl->m_DayJob == JOB_NURSE || Girl->m_DayJob == JOB_DOCTOR)
 			Girl->m_DayJob = rest;
 		if (Girl->m_NightJob == JOB_INTERN || Girl->m_NightJob == JOB_NURSE || Girl->m_NightJob == JOB_DOCTOR)
@@ -1631,13 +1502,13 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 	{
 		if (Girl->is_slave())
 		{
-			g_MessageQue.AddToQue(("The Doctor cannot be a slave."), 0);
+			g_Game.push_message(("The Doctor cannot be a slave."), 0);
 		}
 		else if (Girl->medicine() < 50 || Girl->intelligence() < 50)
 		{
 			stringstream ss;
 			ss << Girl->m_Realname << " does not have enough training to work as a Doctor. Doctors require 50 Medicine and 50 Intelligence.";
-			g_MessageQue.AddToQue(ss.str(), 0);
+			g_Game.push_message(ss.str(), 0);
 		}
 		else Girl->m_NightJob = Girl->m_DayJob = JOB_DOCTOR;
 	}
@@ -1660,7 +1531,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 				Girl->m_NightJob = JOB_NURSE;
 			ss << Girl->m_Realname << " has been assigned as a Nurse instead.";
 		}
-		g_MessageQue.AddToQue(ss.str(), 0);
+		g_Game.push_message(ss.str(), 0);
 	}
 	else if (u_int(JobID) == JOB_MECHANIC)
 	{
@@ -1674,7 +1545,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_DayJob = JOB_GETREPAIRS;
 		else
 			Girl->m_NightJob = JOB_GETREPAIRS;
-		g_MessageQue.AddToQue(("The Doctor does not work on Constructs so she sends ") + Girl->m_Realname + (" to the Mechanic."), 0);
+		g_Game.push_message(("The Doctor does not work on Constructs so she sends ") + Girl->m_Realname + (" to the Mechanic."), 0);
 	}
 	else if (u_int(JobID) == JOB_GETREPAIRS && !Girl->has_trait( "Construct") && !Girl->has_trait( "Half-Construct"))
 	{
@@ -1684,7 +1555,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 			Girl->m_DayJob = JOB_GETHEALING;
 		else
 			Girl->m_NightJob = JOB_GETHEALING;
-		g_MessageQue.AddToQue(("The Mechanic only works on Constructs so she sends ") + Girl->m_Realname + (" to the Doctor."), 0);
+		g_Game.push_message(("The Mechanic only works on Constructs so she sends ") + Girl->m_Realname + (" to the Doctor."), 0);
 	}
 	// `J` condensed clinic surgery jobs into one check
 	else if (
@@ -1701,19 +1572,19 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		u_int(JobID) == JOB_FERTILITY)
 	{
 		bool jobgood = true;
-		if (g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) == 0)
+		if (Girl->m_Building->num_girls_on_job(JOB_DOCTOR, Day0Night1) == 0)
 		{
-			g_MessageQue.AddToQue(("You must have a Doctor on duty to perform surgery."), 0);
+			g_Game.push_message(("You must have a Doctor on duty to perform surgery."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_CUREDISEASES && !Girl->has_disease())
 		{
-			g_MessageQue.AddToQue(("Oops, the girl does not have any diseases."), 0);
+			g_Game.push_message(("Oops, the girl does not have any diseases."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_GETABORT && !Girl->is_pregnant())
 		{
-			g_MessageQue.AddToQue(("Oops, the girl is not pregant."), 0);
+			g_Game.push_message(("Oops, the girl is not pregant."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_COSMETICSURGERY)
@@ -1721,44 +1592,44 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		}
 		else if (u_int(JobID) == JOB_BREASTREDUCTION && Girl->has_trait( "Flat Chest"))
 		{
-			g_MessageQue.AddToQue(("Her boobs can't get no smaller."), 0);
+			g_Game.push_message(("Her boobs can't get no smaller."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_BOOBJOB && Girl->has_trait( "Titanic Tits"))
 		{
-			g_MessageQue.AddToQue(("Her boobs can't get no bigger."), 0);
+			g_Game.push_message(("Her boobs can't get no bigger."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_ASSJOB && Girl->has_trait( "Great Arse"))
 		{
-			g_MessageQue.AddToQue(("Her ass can't get no better."), 0);
+			g_Game.push_message(("Her ass can't get no better."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_FACELIFT && Girl->age() <= 21)
 		{
-			g_MessageQue.AddToQue(("She is to young for a face lift."), 0);
+			g_Game.push_message(("She is to young for a face lift."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_VAGINAREJUV && Girl->check_virginity())
 		{
-			g_MessageQue.AddToQue(("She is a virgin and has no need of this operation."), 0);
+			g_Game.push_message(("She is a virgin and has no need of this operation."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_LIPO && Girl->has_trait( "Great Figure"))
 		{
-			g_MessageQue.AddToQue(("She already has a great figure and doesn't need this."), 0);
+			g_Game.push_message(("She already has a great figure and doesn't need this."), 0);
 			jobgood = false;
 		}
 		else if (u_int(JobID) == JOB_TUBESTIED)
 		{
 			if (Girl->is_pregnant())
 			{
-				g_MessageQue.AddToQue(Girl->m_Realname + (" is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied."), 0);
+				g_Game.push_message(Girl->m_Realname + (" is pregant.\nShe must either have her baby or get an abortion before She can get her Tubes Tied."), 0);
 				jobgood = false;
 			}
 			else if (Girl->has_trait( "Sterile"))
 			{
-				g_MessageQue.AddToQue(("She is already Sterile and doesn't need this."), 0);
+				g_Game.push_message(("She is already Sterile and doesn't need this."), 0);
 				jobgood = false;
 			}
 		}
@@ -1766,13 +1637,13 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		{
 			if (Girl->is_pregnant())
 			{
-				g_MessageQue.AddToQue(Girl->m_Realname +
+				g_Game.push_message(Girl->m_Realname +
 					" is pregant.\nShe must either have her baby or get an abortion before She can get recieve any more fertility treatments.", 0);
 				jobgood = false;
 			}
 			else if (Girl->has_trait( "Broodmother"))
 			{
-				g_MessageQue.AddToQue("She is already as Fertile as she can be and doesn't need any more fertility treatments.", 0);
+				g_Game.push_message("She is already as Fertile as she can be and doesn't need any more fertility treatments.", 0);
 				jobgood = false;
 			}
 		}
@@ -1783,97 +1654,97 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 #if 1
 	else if (u_int(JobID) == JOB_CENTREMANAGER)
 	{
-		if (g_Centre.GetNumGirlsOnJob(0, JOB_CENTREMANAGER, Day0Night1) >0)
-			g_MessageQue.AddToQue(("There can be only one Centre Manager!"), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_CENTREMANAGER, Day0Night1) >0)
+			g_Game.push_message(("There can be only one Centre Manager!"), 0);
 		else if (Girl->is_slave())
-			g_MessageQue.AddToQue(("The Centre Manager cannot be a slave."), 0);
+			g_Game.push_message(("The Centre Manager cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_CENTREMANAGER;
 	}
 	else if (u_int(JobID) == JOB_COUNSELOR)
 	{
 		if (Girl->is_slave())
-			g_MessageQue.AddToQue(("The Counselor cannot be a slave."), 0);
+			g_Game.push_message(("The Counselor cannot be a slave."), 0);
 		else
 			Girl->m_NightJob = Girl->m_DayJob = JOB_COUNSELOR;
 	}
 	else if (u_int(JobID) == JOB_REHAB)
 	{
-		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
-			g_MessageQue.AddToQue(("You must have a counselor for rehab."), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
+			g_Game.push_message(("You must have a counselor for rehab."), 0);
 		else if (!Girl->has_trait( "Shroud Addict")
 			&& !Girl->has_trait( "Smoker")
 			&& !Girl->has_trait( "Cum Addict")
 			&& !Girl->has_trait( "Fairy Dust Addict")
 			&& !Girl->has_trait( "Alcoholic")
 			&& !Girl->has_trait( "Viras Blood Addict"))
-			g_MessageQue.AddToQue(("She has no addictions."), 0);
+			g_Game.push_message(("She has no addictions."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_REHAB;
 	}
 	else if (u_int(JobID) == JOB_ANGER)
 	{
-		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
-			g_MessageQue.AddToQue(("You must have a counselor for anger management."), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
+			g_Game.push_message(("You must have a counselor for anger management."), 0);
 		else if (!Girl->has_trait( "Aggressive")
 			&& !Girl->has_trait( "Tsundere")
 			&& !Girl->has_trait( "Yandere"))
-			g_MessageQue.AddToQue(("She has no anger issues."), 0);
+			g_Game.push_message(("She has no anger issues."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_ANGER;
 	}
 	else if (u_int(JobID) == JOB_EXTHERAPY)
 	{
-		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
-			g_MessageQue.AddToQue(("You must have a counselor for extreme therapy."), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
+			g_Game.push_message(("You must have a counselor for extreme therapy."), 0);
 		else if (!Girl->has_trait( "Mind Fucked")
 			&& !Girl->has_trait( "Broken Will"))
-			g_MessageQue.AddToQue(("She has no extreme issues."), 0);
+			g_Game.push_message(("She has no extreme issues."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_EXTHERAPY;
 	}
 	else if (u_int(JobID) == JOB_THERAPY)
 	{
-		if (g_Centre.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1)
-			g_MessageQue.AddToQue(("You must have a counselor for therapy."), 0);
+		if (Girl->m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
+			g_Game.push_message(("You must have a counselor for therapy."), 0);
 		else if (!Girl->has_trait( "Nervous")
 			&& !Girl->has_trait( "Dependant")
 			&& !Girl->has_trait( "Pessimist"))
-			g_MessageQue.AddToQue(("She has no need of therapy."), 0);
+			g_Game.push_message(("She has no need of therapy."), 0);
 		else
 			Girl->m_DayJob = Girl->m_NightJob = JOB_THERAPY;
 	}
 #endif
 	// Special Movie Studio Jobs
 #if 1
-	else if (u_int(JobID) == JOB_DIRECTOR && g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, SHIFT_NIGHT) >0)
+	else if (u_int(JobID) == JOB_DIRECTOR && Girl->m_Building->num_girls_on_job(JOB_DIRECTOR, SHIFT_NIGHT) >0)
 	{
-		g_MessageQue.AddToQue(("There can be only one Director!"), 0);
+		g_Game.push_message(("There can be only one Director!"), 0);
 	}
 	else if (u_int(JobID) == JOB_DIRECTOR && Girl->is_slave())
 	{
-		g_MessageQue.AddToQue(("The Director cannot be a slave."), 0);
+		g_Game.push_message(("The Director cannot be a slave."), 0);
 	}
-	else if (u_int(JobID) == JOB_PROMOTER && g_Studios.GetNumGirlsOnJob(0, JOB_PROMOTER, SHIFT_NIGHT) > 0)
+	else if (u_int(JobID) == JOB_PROMOTER && Girl->m_Building->num_girls_on_job(JOB_PROMOTER, SHIFT_NIGHT) > 0)
 	{
-		g_MessageQue.AddToQue(("There can be only one Promoter."), 0);
+		g_Game.push_message(("There can be only one Promoter."), 0);
 	}
 	else if (u_int(JobID) == JOB_PROMOTER && Girl->is_slave())
 	{
-		g_MessageQue.AddToQue(("The Promoter cannot be a slave."), 0);
+		g_Game.push_message(("The Promoter cannot be a slave."), 0);
 	}
-	else if (g_Studios.is_Actress_Job(JobID) &&
-		(g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 1 ||
-		g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) < 1))
+	else if (is_Actress_Job(JobID) &&
+		(Girl->m_Building->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) < 1 ||
+                Girl->m_Building->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) < 1))
 	{
-		g_MessageQue.AddToQue("You must have one cameramage and one crystal purifier.", 0);
+		g_Game.push_message("You must have one cameramage and one crystal purifier.", 0);
 		Girl->m_DayJob = Girl->m_NightJob = rest;
 	}
 #endif
 
 // Special cases were checked and don't apply, just set the studio job as requested
 #if 1
-	else if (Girl->m_InStudio)
+	else if (Girl->m_Building && Girl->m_Building->type() == BuildingType::STUDIO)
 	{
 		MadeChanges = false;
 		Girl->m_DayJob = rest;
@@ -1893,40 +1764,8 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		// if old job was full time but new job is not, switch leftover day or night job back to resting
 		if (!fulltime && FullTimeJob(OldJobID) && !FullTimeJob(JobID))		// `J` greatly simplified the check
 			(Day0Night1 ? Girl->m_DayJob = rest : Girl->m_NightJob = rest);
-	
-		// `J` check for refresh
 
-		// `J` we only need to refresh the clinic list if there are any patients
-		if (Girl->m_InClinic && g_Clinic.GetNumberPatients(0) + g_Clinic.GetNumberPatients(1) > 0)
-		{	// `J` if removing the last or adding the first doctor or nurse
-			if ((u_int(OldJobID) == JOB_DOCTOR && g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) < 1) ||
-				(u_int(JobID) == JOB_DOCTOR && g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) < 2) ||
-				(u_int(OldJobID) == JOB_NURSE && g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1) < 1) ||
-				(u_int(JobID) == JOB_NURSE && g_Clinic.GetNumGirlsOnJob(0, JOB_NURSE, Day0Night1) < 2))
-			{
-				refresh = true;
-			}
-		}
-		if (Girl->m_InStudio)
-		{	// `J` if removing the last or adding the first camera or crystal
-			if ((u_int(OldJobID) == JOB_CAMERAMAGE && g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 1) ||
-				(u_int(JobID) == JOB_CAMERAMAGE  && g_Studios.GetNumGirlsOnJob(0, JOB_CAMERAMAGE, SHIFT_NIGHT) < 2) ||
-				(u_int(OldJobID) == JOB_CRYSTALPURIFIER && g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) < 1) ||
-				(u_int(JobID) == JOB_CRYSTALPURIFIER && g_Studios.GetNumGirlsOnJob(0, JOB_CRYSTALPURIFIER, SHIFT_NIGHT) < 2))
-			{
-				refresh = true;
-			}
-		}
-		if (Girl->m_InCentre && g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, 0) + g_Centre.GetNumGirlsOnJob(0, JOB_REHAB, 1) > 0)
-		{	// `J` if removing the last or adding the first counselor
-			if ((u_int(OldJobID) == JOB_COUNSELOR && g_Studios.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 1) ||
-				(u_int(JobID) == JOB_COUNSELOR  && g_Studios.GetNumGirlsOnJob(0, JOB_COUNSELOR, Day0Night1) < 2))
-			{
-				refresh = true;
-			}
-		}
 	}
-	g_InitWin = (refresh || MadeChanges);
 
 	return MadeChanges;
 }
@@ -1950,11 +1789,10 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 	// the base chance of an attempted rape is higher on the streets
 	int rape_chance = (streets ? (int)cfg.prostitution.rape_streets() : (int)cfg.prostitution.rape_brothel());
 
-	int GirlsBrothelNo = g_Brothels.GetGirlsCurrentBrothel(girl);
-	sBrothel * Brothl = g_Brothels.GetBrothel(GirlsBrothelNo);
+	IBuilding * Brothl = girl->m_Building;
 
 	// `J` adjusted this a bit so gangs spying on the girl can help also
-	vector<sGang *> gangs_guarding = g_Gangs.gangs_watching_girls();
+	vector<sGang *> gangs_guarding = g_Game.gang_manager().gangs_watching_girls();
 
 	int gang_coverage = guard_coverage(&gangs_guarding);
 
@@ -1962,12 +1800,12 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 	if (Day0Night1) { rape_chance *= 2; gang_coverage = (int)((float)gang_coverage*0.8f); }
 
 	// if the player has a -ve disposition, this can scare the would-be rapist into behaving himself
-	if (g_Dice.percent(The_Player->disposition() * -1)) rape_chance = 1;
+	if (g_Dice.percent(g_Game.player().disposition() * -1)) rape_chance = 1;
 
 	if (rape_chance < 1) rape_chance = 1;	// minimum of 1%
 	if (g_Dice.percent(rape_chance))
 	{
-		/*sGang *gang = g_Gangs.random_gang(gang_v);
+		/*sGang *gang = g_Game.gang_manager().random_gang(gang_v);
 
 		if(gang_stops_rape(girl, gang, gang_chance, Day0Night1))
 		return false;
@@ -1978,7 +1816,8 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 		// They have low stats and smaller numbers. Define it here so that even if
 		// the security girl or defending gang is defeated, any casualties they inflicts
 		// carry over to the next layer of defense.
-		sGang *enemy_gang = g_Gangs.GetTempWeakGang();
+		sGang *enemy_gang = g_Game.gang_manager().GetTempWeakGang();
+        enemy_gang->give_potions(10);
 		// There is also between 1 and 15 of them, not 15 every time
 		enemy_gang->m_Num = (max(1, g_Dice.bell(-5, 15)));
 
@@ -2040,8 +1879,8 @@ bool cJobManager::work_related_violence(sGirl* girl, bool Day0Night1, bool stree
 int cJobManager::guard_coverage(vector<sGang*> *vpt)
 {
 	int pc = 0;
-	vector<sGang*> v = g_Gangs.gangs_on_mission(MISS_GUARDING);
-	if (vpt != 0) *vpt = v;
+	vector<sGang*> v = g_Game.gang_manager().gangs_on_mission(MISS_GUARDING);
+	if (vpt != nullptr) *vpt = v;
 	for (u_int i = 0; i < v.size(); i++)
 	{
 		sGang *gang = v[i];
@@ -2067,14 +1906,13 @@ int cJobManager::guard_coverage(vector<sGang*> *vpt)
 	 *	so 3 gangs on guard duty, at full strength, get you 90%
 	 *	coverage. And 4 get you 180 which should be bulletproof
 	 */
-	return pc / g_Brothels.GetNumBrothels();
+	return pc / g_Game.buildings().num_buildings(BuildingType::BROTHEL);
 }
 
 // True means security intercepted the perp(s)
 bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_night)
 {
-	int GirlsBrothelNo = g_Brothels.GetGirlsCurrentBrothel(girl);
-	sBrothel * Brothl = g_Brothels.GetBrothel(GirlsBrothelNo);
+	IBuilding* Brothl = girl->m_Building;
 	int SecLev = Brothl->m_SecurityLevel, OrgNumMem = enemy_gang->m_Num;
 	sGirl * SecGuard;
 
@@ -2082,16 +1920,16 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	if (p_seclev > 99) p_seclev = 99;
 	// A gang takes 5 security points per member to stop
 	if (SecLev > OrgNumMem * 5 && g_Dice.percent(p_seclev) &&
-		(g_Brothels.GetNumGirlsOnJob(GirlsBrothelNo, JOB_SECURITY, day_night == SHIFT_DAY) > 0 ||
-		g_Gangs.gangs_on_mission(MISS_GUARDING).size() > 0))
+		(Brothl->num_girls_on_job(JOB_SECURITY, day_night == SHIFT_DAY) > 0 ||
+		!g_Game.gang_manager().gangs_on_mission(MISS_GUARDING).empty()))
 		return true;
 
 	// Security guards on duty this shift
-	vector<sGirl *> SecGrd = g_Brothels.GirlsOnJob(GirlsBrothelNo, JOB_SECURITY, day_night == SHIFT_DAY);
+	vector<sGirl *> SecGrd = Brothl->girls_on_job(JOB_SECURITY, day_night == SHIFT_DAY);
 	// Security guards with enough health to fight
 	vector<sGirl *> SecGrdWhoCanFight;
 
-	if (SecGrd.size() == 0) return false;
+	if (SecGrd.empty()) return false;
 
 	// Remove security guards who are too wounded to fight
 	// Easier to work from the end
@@ -2107,7 +1945,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	}
 
 	// If all the security guards are too wounded to fight
-	if (SecGrdWhoCanFight.size() == 0) return false;
+	if (SecGrdWhoCanFight.empty()) return false;
 
 	// Get a random security guard
 	SecGuard = SecGrdWhoCanFight.at(g_Dice%SecGrdWhoCanFight.size());
@@ -2115,7 +1953,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	string SecName = SecGuard->m_Realname;
 
 	// Most of the rest of this is a copy-paste from customer_rape
-	bool res = g_Gangs.GirlVsEnemyGang(SecGuard, enemy_gang);
+	bool res = g_Game.gang_manager().GirlVsEnemyGang(SecGuard, enemy_gang);
 
 	// Earn xp for all kills, even if defeated
 	int xp = 3;
@@ -2150,36 +1988,33 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 			{
 				Gmsg << "her.";
 				SGmsg << "her.";
-				string item = "";
-				int itemnum = -1;
-				if (g_Brothels.HasItem("Brainwashing Oil", -1) != -1)
+				string item;
+				if (g_Game.player().inventory().has_item("Brainwashing Oil"))
 				{
-					itemnum = g_Brothels.HasItem("Brainwashing Oil", -1);
 					item = "Brainwashing Oil";
 					SGmsg << "\n \n" << SecName << " forced a bottle of Brainwashing Oil down her throat. After a few minutes of struggling, your new slave, ";
 				}
-				else if (g_Brothels.HasItem("Necklace of Control", -1) != -1)
+				else if (g_Game.player().inventory().has_item("Necklace of Control"))
 				{
-					itemnum = g_Brothels.HasItem("Necklace of Control", -1);
 					item = "Necklace of Control";
 					SGmsg << "\n \n" << SecName << " placed a Necklace of Control around her neck. After a few minutes of struggling, the magic in the necklace activated and your new slave, ";
 				}
-				else if (g_Brothels.HasItem("Slave Band", -1) != -1)
+				else if (g_Game.player().inventory().has_item("Slave Band"))
 				{
-					itemnum = g_Brothels.HasItem("Slave Band", -1);
 					item = "Slave Band";
 					SGmsg << "\n \n" << SecName << " placed a Slave Band on her arm. After a few minutes of struggling, the magic in the Slave Band activated and your new slave, ";
 				}
-				if (item != "" && itemnum != -1)
+				if (!item.empty())
 				{
 					stringstream CGmsg;
 
 					// `J` create the customer
-					sGirl* custgirl = g_Girls.CreateRandomGirl(g_Dice % 40 + 18, false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+					sGirl* custgirl = g_Game.CreateRandomGirl(g_Dice % 40 + 18, false, true, false, (g_Dice % 3 == 1));	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 
 					// `J` and adjust her stats
-					g_InvManager.Equip(custgirl, custgirl->add_inv(g_Brothels.m_Inventory[itemnum]), true);
-					g_Brothels.RemoveItemFromInventoryByNumber(itemnum);
+					sInventoryItem* item_p = g_Game.inventory_manager().GetItem(item);
+					g_Game.inventory_manager().Equip(custgirl, custgirl->add_inv(item_p), true);
+					g_Game.player().inventory().remove_item(item_p);
                     custgirl->add_trait("Emprisoned Customer", max(5, g_Dice.bell(0, 20)));	// add temp trait
 					custgirl->pclove(-(g_Dice % 50 + 50));
 					custgirl->pcfear(g_Dice % 50 + 50);
@@ -2187,9 +2022,9 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					custgirl->m_Stats[STAT_HEALTH];
 					custgirl->m_Enjoyment[ACTION_COMBAT] -= (g_Dice % 50 + 20);
 					custgirl->m_Enjoyment[ACTION_SEX] -= (g_Dice % 50 + 20);
-					The_Player->suspicion(g_Dice % 10);
-					The_Player->disposition(-(g_Dice % 10));
-					The_Player->customerfear(g_Dice % 10);
+                    g_Game.player().suspicion(g_Dice % 10);
+                    g_Game.player().disposition(-(g_Dice % 10));
+                    g_Game.player().customerfear(g_Dice % 10);
 
 					// `J` do all the messages
 					SGmsg << custgirl->m_Realname << " was sent to your dungeon.";
@@ -2199,7 +2034,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 						<< item << " and sent to the dungeon as your newest slave.";
 					custgirl->m_Events.AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
 					// `J` add the customer to the dungeon
-					m_Dungeon->AddGirl(custgirl, DUNGEON_CUSTBEATGIRL);
+					g_Game.dungeon().AddGirl(custgirl, DUNGEON_CUSTBEATGIRL);
 				}
 			}
 			else
@@ -2217,9 +2052,9 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					else if (dildo == 2) SGmsg << "Dreidel Dildo";
 					else if (dildo == 3) SGmsg << "Double Dildo";
 					SGmsg << " up his ass.";
-					The_Player->suspicion(g_Dice % 2);
-					The_Player->disposition(-(g_Dice % 2));
-					The_Player->customerfear(g_Dice % 3);
+                    g_Game.player().suspicion(g_Dice % 2);
+                    g_Game.player().disposition(-(g_Dice % 2));
+                    g_Game.player().customerfear(g_Dice % 3);
 				}
 			}
 		}
@@ -2266,7 +2101,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 		SecGuard->pcfear(20);
 		SecGuard->pclove(-20);
 		SecGuard->pchate(20);
-		g_Girls.GirlInjured(SecGuard, 10); // MYR: Note
+		cGirls::GirlInjured(SecGuard, 10); // MYR: Note
 		SecGuard->upd_Enjoyment(ACTION_WORKSECURITY, -30);
 		SecGuard->upd_Enjoyment(ACTION_COMBAT, -30);
 	}
@@ -2280,12 +2115,12 @@ bool cJobManager::gang_stops_rape(sGirl* girl, vector<sGang *> gangs_guarding, s
 	sGang *guarding_gang = gangs_guarding.at(g_Dice%gangs_guarding.size());
 
 	// GangVsGang returns true if enemy_gang loses
-	bool guards_win = g_Gangs.GangBrawl(guarding_gang, enemy_gang);
+	bool guards_win = g_Game.gang_manager().GangBrawl(guarding_gang, enemy_gang);
 
 	if (!guards_win) {
 		stringstream gang_s, girl_s;
-		gang_s << guarding_gang->m_Name << (" was defeated defending ") << girl->m_Realname << (".");
-		girl_s << guarding_gang->m_Name << (" was defeated defending you from a gang of rapists.");
+		gang_s << guarding_gang->name() << (" was defeated defending ") << girl->m_Realname << (".");
+		girl_s << guarding_gang->name() << (" was defeated defending you from a gang of rapists.");
 		guarding_gang->m_Events.AddMessage(gang_s.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		girl->m_Events.AddMessage(girl_s.str(), IMGTYPE_DEATH, EVENT_WARNING);
 		return false;
@@ -2300,21 +2135,21 @@ bool cJobManager::gang_stops_rape(sGirl* girl, vector<sGang *> gangs_guarding, s
 	int roll = g_Dice.d100();
 	if (roll < guarding_gang->intelligence() / 2)
 	{
-		gang_ss << ("One of the ") << guarding_gang->m_Name << (" found a customer getting violent with ")
+		gang_ss << ("One of the ") << guarding_gang->name() << (" found a customer getting violent with ")
 			<< girl->m_Realname << (" and sent him packing, in fear for his life.");
-		girl_ss << ("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << (" scared him off.");
+		girl_ss << ("Customer attempt to rape her, but guards ") << guarding_gang->name() << (" scared him off.");
 	}
 	else if (roll < guarding_gang->intelligence())
 	{
-		gang_ss << ("One of the ") << guarding_gang->m_Name << (" found a customer hurting  ") << girl->m_Realname
+		gang_ss << ("One of the ") << guarding_gang->name() << (" found a customer hurting  ") << girl->m_Realname
 			<< (" and beat him bloody before sending him away.");
-		girl_ss << ("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << (" gave him a beating.");
+		girl_ss << ("Customer attempt to rape her, but guards ") << guarding_gang->name() << (" gave him a beating.");
 	}
 	else
 	{
-		gang_ss << ("One of the ") << guarding_gang->m_Name << (" killed a customer who was trying to rape ")
+		gang_ss << ("One of the ") << guarding_gang->name() << (" killed a customer who was trying to rape ")
 			<< girl->m_Realname << (".");
-		girl_ss << ("Customer attempt to rape her, but guards ") << guarding_gang->m_Name << (" killed them.");
+		girl_ss << ("Customer attempt to rape her, but guards ") << guarding_gang->name() << (" killed them.");
 	}
 	cerr << "gang ss=" << gang_ss.str() << endl;
 	cerr << "girl ss=" << girl_ss.str() << endl;
@@ -2337,7 +2172,7 @@ bool cJobManager::gang_stops_rape(sGirl* girl, sGang *gang, int chance, int day_
 		return false;
 
 	bool gang_wins = false;
-	int wlev = *g_Gangs.GetWeaponLevel();
+	int wlev = *g_Game.gang_manager().GetWeaponLevel();
 /*
  *	the odds are tipped very much in favour of the gang
  *
@@ -2382,17 +2217,17 @@ bool cJobManager::gang_stops_rape(sGirl* girl, sGang *gang, int chance, int day_
 	stringstream gang_ss, girl_ss;
 	int roll = g_Dice.random(100) + 1;
 	if(roll < gang->intelligence() / 2) {
-		gang_ss <<	("One of the ") <<	gang->m_Name <<	(" found a customer getting violent with ")
+		gang_ss <<	("One of the ") <<	gang->name() <<	(" found a customer getting violent with ")
 			<<	girl->m_Realname <<	(" and sent him packing, in fear for his life");
 		girl_ss <<	("Customer attempt to rape her ") <<("but the guard scared him off");
 	}
 	else if(roll < gang->intelligence()) {
-		gang_ss	<<	("One of the ") << gang->m_Name << (" found a customer hurting  ") << girl->m_Realname
+		gang_ss	<<	("One of the ") << gang->name() << (" found a customer hurting  ") << girl->m_Realname
 			<< (" and beat him bloody before sending him away");
 		girl_ss	<<	("Customer attempt to rape her but ") << ("the guard gave him a beating");
 	}
 	else {
-		gang_ss	<<	("One of the ") << gang->m_Name << (" killed a customer who was trying to rape ")
+		gang_ss	<<	("One of the ") << gang->name() << (" killed a customer who was trying to rape ")
 			<<	girl->m_Realname;
 		girl_ss	<<	("Customer attempt to rape her but ") << ("the was killed by the guard.");
 	}
@@ -2410,7 +2245,7 @@ bool cJobManager::girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night
 {
 	int OrgNumMem = enemy_gang->m_Num;
 
-	bool res = g_Gangs.GirlVsEnemyGang(girl, enemy_gang);
+	bool res = g_Game.gang_manager().GirlVsEnemyGang(girl, enemy_gang);
 
 	// Earn xp for all kills, even if defeated
 	int xp = 3;
@@ -2511,12 +2346,12 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
 	girl->pcfear(20);
 	girl->pclove(-20);
 	girl->pchate(20);
-	g_Girls.GirlInjured(girl, 10); // MYR: Note
+	cGirls::GirlInjured(girl, 10); // MYR: Note
 	girl->upd_Enjoyment(ACTION_SEX, -30);
 
 	// `J` do Pregnancy and/or STDs
 	bool preg = false, std = false, a = false, c = false, h = false, s = false;
-	sCustomer Cust = GetMiscCustomer(*g_Brothels.GetBrothel(0));
+	sCustomer Cust = GetMiscCustomer(*girl->m_Building);
 	Cust.m_Amount = numberofattackers;
 
 	if (attacktype == SKILL_GROUP || attacktype == SKILL_NORMALSEX)
@@ -2813,7 +2648,7 @@ void cJobManager::get_training_set(vector<sGirl*> &v, vector<sGirl*> &t_set)
 	}
 }
 
-bool cJobManager::WorkTraining(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
+bool cJobManager::WorkTraining(sGirl* girl, bool Day0Night1, string& summary)
 {
 	return false;
 }
@@ -2822,8 +2657,8 @@ double cJobManager::JP_Training(sGirl* girl, bool estimate)
 	double jobperformance = 0.0;
 
 	jobperformance +=
-		(100 - g_Girls.GetAverageOfSexSkills(girl)) +
-		(100 - g_Girls.GetAverageOfNSxSkills(girl))
+		(100 - cGirls::GetAverageOfSexSkills(girl)) +
+		(100 - cGirls::GetAverageOfNSxSkills(girl))
 		;
 
 	return jobperformance;
@@ -2885,7 +2720,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 	for (u_int i = 0; i < num_girls; i++)
 	{
 		girl = girls[i];
-		if (girl == 0) break;
+		if (girl == nullptr) break;
 		set.push_back(TrainableGirl(girl));
 	}
 	/*
@@ -2980,7 +2815,7 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
 {
 	cTariff tariff;
 	vector<sGirl*> t_set;
-	vector<sGirl*> girls = girls_on_job(brothel, JOB_TRAINING, Day0Night1);
+	vector<sGirl*> girls = brothel->girls_on_job(JOB_TRAINING, Day0Night1);
 
 	for (u_int i = girls.size(); i-- > 0;)
 	{  // no girls sneaking in training if she gave birth
@@ -3016,90 +2851,8 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
 
 // ----- Film & related
 
-void cJobManager::update_film(sBrothel * brothel)
-{
-
-	if (brothel->m_CurrFilm)
-	{
-		if (brothel->m_CurrFilm->time) brothel->m_CurrFilm->time--;
-		else
-		{
-			brothel->m_CurrFilm->final_quality = 0;
-			for (u_int i = 0; i < brothel->m_CurrFilm->scene_quality.size(); i++)
-			{
-				brothel->m_CurrFilm->final_quality += (int)((float)brothel->m_CurrFilm->scene_quality[i] * brothel->m_CurrFilm->quality_multiplyer);
-			}
-			brothel->m_CurrFilm->total_customers = 0;
-			char cust_mult = 0;
-			for (int j = 0; j < 5; j++)
-			{
-				if (brothel->m_CurrFilm->sex_acts_flags[j]) cust_mult++;
-			}
-			brothel->m_CurrFilm->total_customers = cust_mult*brothel->m_CurrFilm->final_quality * 10;
-			brothel->m_CurrFilm->final_quality /= brothel->m_CurrFilm->scene_quality.size();
-			film_list.push_back(brothel->m_CurrFilm);
-			brothel->m_CurrFilm = 0;
-		}
-	}
-}
-
-long cJobManager::make_money_films()
-{
-	long income = 0;
-	for (u_int i = 0; i < film_list.size(); i++)
-	{
-		income += (long)((float)film_list[i]->final_quality*(float)film_list[i]->total_customers*.85f);
-		film_list[i]->total_customers = (int)((float)film_list[i]->total_customers*.85f);
-	}
-	return income;
-}
-
-void cJobManager::save_films(std::ofstream &ofs)
-{
-	ofs << film_list.size() << '\n';
-	for (u_int i = 0; i < film_list.size(); i++)
-	{
-		ofs << film_list[i]->final_quality << ' ' << film_list[i]->quality_multiplyer << ' ' << film_list[i]->time << ' ' << film_list[i]->total_customers << '\n';
-		for (int j = 0; j < 5; j++)
-		{
-			ofs << film_list[i]->sex_acts_flags[j];
-			if (j != 4) ofs << ' ';
-		}
-		ofs << '\n';
-		ofs << film_list[i]->scene_quality.size() << '\n';
-		for (u_int j = 0; j < film_list[i]->scene_quality.size(); j++)
-			ofs << film_list[i]->scene_quality[j] << ' ';
-		ofs << '\n';
-	}
-}
-
-void cJobManager::load_films(std::ifstream &ifs)
-{
-	u_int temp;
-	ifs >> temp;
-	film_list.resize(temp);
-	if (ifs.peek() == '\n') ifs.ignore(1, '\n');
-	for (u_int i = 0; i < film_list.size(); i++)
-	{
-		film_list[i] = new sFilm;
-		ifs >> film_list[i]->final_quality;
-		ifs >> film_list[i]->quality_multiplyer;
-		ifs >> film_list[i]->time;
-		ifs >> film_list[i]->total_customers;
-		if (ifs.peek() == '\n') ifs.ignore(1, '\n');
-		for (int j = 0; j < 5; j++)
-			ifs >> film_list[i]->sex_acts_flags[j];
-		if (ifs.peek() == '\n') ifs.ignore(1, '\n');
-		ifs >> temp;
-		film_list[i]->scene_quality.resize(temp);
-		for (u_int j = 0; j < temp; j++)
-		{
-			ifs >> film_list[i]->scene_quality[i];
-		}
-	}
-}
-
-string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTips, int totalPay, int totalGold, bool Day0Night1)
+string cJobManager::GirlPaymentText(IBuilding * brothel, sGirl * girl, int totalTips, int totalPay, int totalGold,
+                                    bool Day0Night1)
 {
 	stringstream ss;
 	string girlName = girl->m_Realname;
@@ -3146,546 +2899,103 @@ string cJobManager::GirlPaymentText(sBrothel* brothel, sGirl* girl, int totalTip
 	return ss.str();
 }
 
-void cJobManager::FreeSlaves(sGirl* firstgirl, bool multi)
+void cJobManager::do_job(sGirl& girl, bool is_night, std::string&)
 {
-	stringstream ask, free, keep;
-	ask << "Are you sure you wish to give ";
-	if (multi)
-	{
-		ask << "these girls their";
-		free << "Grant Them Their Freedom";
-		keep << "Keep Them As Slaves";
-	}
-	else
-	{
-		ask << firstgirl->m_Realname << " her";
-		free << "Grant Her Freedom";
-		keep << "Keep Her As A Slave";
-	}
-	ask << " freedom?";
-	int length = max(free.str().length(), keep.str().length());
-
-	g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, length, 16);
-	g_ChoiceManager.Question(0, ask.str());
-	g_ChoiceManager.AddChoice(0, free.str(), 0);
-	g_ChoiceManager.AddChoice(0, keep.str(), 1);
-	g_ChoiceManager.SetActive(0);
+    unsigned job_id = is_night ? girl.m_NightJob : girl.m_DayJob;
 }
 
-
-void cJobManager::ffsd_choice(int ffsd, vector<int> girl_array, string buildingtype, int buildingnum) // `J` added for .06.02.37
-{
-	int pos = 0, slavegirls = 0, freegirls = 0, deadgirls = 0, selltotal = 0;
-	int GSelection = girl_array[0];
-	stringstream firstgirlname;
-
-	for (int i = girl_array.size(); i-- > 0;)	// OK, we have the array, now step through it backwards
-	{
-		/* */if (buildingtype == "Br") selected_girl = g_Brothels.GetGirl(buildingnum, girl_array[i]);
-		else if (buildingtype == "Ho") selected_girl = g_House.GetGirl(buildingnum, girl_array[i]);
-		else if (buildingtype == "Cl") selected_girl = g_Clinic.GetGirl(buildingnum, girl_array[i]);
-		else if (buildingtype == "St") selected_girl = g_Studios.GetGirl(buildingnum, girl_array[i]);
-		else if (buildingtype == "Ar") selected_girl = g_Arena.GetGirl(buildingnum, girl_array[i]);
-		else if (buildingtype == "Ce") selected_girl = g_Centre.GetGirl(buildingnum, girl_array[i]);
-		else if (buildingtype == "Fa") selected_girl = g_Farm.GetGirl(buildingnum, girl_array[i]);
-
-		if (firstgirlname.str().length() == 0)	firstgirlname << selected_girl->m_Realname;
-
-		if (selected_girl->is_dead())	deadgirls++;
-		else if (selected_girl->is_slave())
-		{
-			slavegirls++;
-			selltotal += tariff.slave_sell_price(selected_girl);
-		}
-		else if (selected_girl)				freegirls++;
-	}
-
-	int totalgirls = freegirls + slavegirls + deadgirls;
-	if (totalgirls == 0) return;							// No girls so quit
-
-	stringstream ask, question, keep, fire, free, dump, sell, dump1, dump2, dump3, dump4,
-		frdu1, frdu2, fidu, fise, fisd, frdu, sedu, sedu1, free1;
-	keep << "\"Nevermind, Back to work.\"";
-
-	int length = 0;
-
-	/* Free girls only */
-	if (freegirls > 0 && slavegirls == 0 && deadgirls == 0)
-	{
-		question << "Do you want to fire ";
-		/* */if (freegirls == 1)	{ question << firstgirlname.str();					fire << "Fire her."; }
-		else if (freegirls == 2)	{ question << "these two girls";					fire << "Fire them both."; }
-		else/*                */	{ question << "these " << totalgirls << " girls";	fire << "Fire them all."; }
-		question << "?";
-	}
-	/* Slave girls only */
-	else if (freegirls == 0 && slavegirls > 0 && deadgirls == 0)
-	{
-		if (ffsd == FFSD_free && The_Player->disposition() > -10)
-		{
-			question << "Do you want to free ";
-			/* */if (slavegirls == 1)	{ question << firstgirlname.str();	free << "Free her."; }
-			else if (slavegirls == 2)	{ question << "these two girls";	free << "Free them both."; }
-			else		{ question << "these " << totalgirls << " girls";	free << "Free them all."; }
-			question << "?";
-		}
-		else if (ffsd == FFSD_sell && The_Player->disposition() < 10)
-		{
-			question << "Do you want to sell ";
-			/* */if (slavegirls == 1)	{ question << firstgirlname.str();		sell << "Sell her."; }
-			else if (slavegirls == 2)	{ question << "these two girls";		sell << "Sell them both."; }
-			else		{ question << "these " << totalgirls << " girls";		sell << "Sell them all."; }
-			question << "?\nYou could get " << selltotal << " gold for selling them.";
-		}
-		else
-		{
-			question << "Do you want to free or sell ";
-			/* */if (slavegirls == 1)	{ question << firstgirlname.str();		free << "Free her.";		sell << "Sell her."; }
-			else if (slavegirls == 2)	{ question << "these two girls";		free << "Free them both.";	sell << "Sell them both."; }
-			else		{ question << "these " << totalgirls << " girls";		free << "Free them all.";	sell << "Sell them all."; }
-			question << "?\nYou could get " << selltotal << " gold for selling them.";
-		}
-	}
-	/* Dead girls only */
-	else if (freegirls == 0 && slavegirls == 0 && deadgirls > 0)
-	{
-		question << "What do you want to do with ";
-		/* */if (deadgirls == 1)	question << firstgirlname.str() << "'s dead body";
-		else if (deadgirls == 2)	question << "the two dead bodies";
-		else/*                */	question << "the " << totalgirls << " dead bodies";
-		question << "?";
-		keep << "Nevermind, I'll deal with them later.";
-		dump1 << "Give " << (deadgirls == 1 ? "her" : "them") << " a proper funeral.";
-		dump2 << "Bury the bod" << (deadgirls == 1 ? "y" : "ies") << " in a shollow unmarked grave.";
-		dump3 << "Dump the bod" << (deadgirls == 1 ? "y" : "ies") << " on the side of the road.";
-		dump4 << "Sell the bod" << (deadgirls == 1 ? "y" : "ies") << " to the highest bidder" << (deadgirls == 1 ? "" : "s") << ".";
-	}
-	/* Slave and Dead girls */
-	else if (freegirls == 0 && slavegirls > 0 && deadgirls > 0)
-	{
-		if (ffsd == FFSD_free)
-		{
-			question << "Free slaves or dispose bodies?";
-			ask << "You have chosen to free ";
-			if (slavegirls == 1) ask << "a"; else if (slavegirls == 2) ask << "two"; else ask << slavegirls;
-			ask << " slave girl" << (slavegirls > 1 ? "s" : "") << ". Do you want them to:\nDispose of the bodies of the dead girl"
-				<< (deadgirls > 1 ? "s" : "") << " as their last act as your slave" << (slavegirls > 1 ? "s?" : "?")
-				<< "\nDispose of the bodies and get back to work?";
-
-			if (The_Player->disposition() < -10)
-			{
-				ask << "\nOr you can sell all the girls, living and dead.";
-				sedu1 << "\"Show me the MONEY\"";
-			}
-			free << "Free them and deal with the bod" << (deadgirls > 1 ? "ies" : "y") << " later.";
-			frdu1 << "\"Dispose of them and you get your freedom.\"";
-			frdu2 << "\"Dispose of them then get back to work.\"";
-
-		}
-		else	// fire or sell buttons
-		{
-			question << "Sell who?";
-			ask << "You have chosen to sell ";
-			if (slavegirls == 1) ask << "a"; else if (slavegirls == 2) ask << "two"; else ask << slavegirls;
-			ask << " living slave girl" << (slavegirls > 1 ? "s" : "") << " and ";
-			if (deadgirls == 1) ask << "a"; else if (deadgirls == 2) ask << "two"; else ask << deadgirls;
-			ask << " dead bod" << (deadgirls > 1 ? "ies" : "y") << ".";
-			ask << "\nYou could get " << selltotal << " gold for selling the living girl" << (slavegirls > 1 ? "s" : "") << ".";
-
-			sell << "Sell just the living.";
-			dump4 << "Sell just the dead.";
-			sedu1 << "Sell them all.";
-		}
-	}
-	/* Free and Slave girls */
-	else if (freegirls > 0 && slavegirls > 0 && deadgirls == 0)
-	{
-		ask << "You call in " << totalgirls << " girls, " << slavegirls << " slave girl" << (slavegirls > 1 ? "s" : "") << " and " << freegirls << " free girl" << (freegirls > 1 ? "s" : "") << ".\n";
-		if (ffsd == FFSD_free)
-		{
-			ask << "Do you want to throw them a Freedom Pary or just get it over with quickly?";
-			question << "Is it Party Time?";
-			free << "Just free " << (slavegirls > 1 ? "them" : "her") << ".";
-			free1 << "Throw a Freedom Party!";
-		}
-		else	// fire or sell
-		{
-			ask << "Do you want to make room for new girls by fireing or selling some old girls?";
-			question << "Get rid of who?";
-			fire << "Fire the free girl" << (freegirls > 1 ? "s" : "") << ".";
-			sell << "Sell the slave" << (slavegirls > 1 ? "s" : "") << ".";
-			fise << "Get rid of them all.";
-		}
-
-	}
-	/* Any girls */
-	else
-	{
-		ask << "You have chosen " << totalgirls << " girls, what do you want to do with them?";
-		question << "What do you want to do?";
-		fire << "Fire the free girls.";
-		free << "Free the slaves.";
-		sell << "Sell the slaves.";
-		dump << "Dump the bodies.";
-		fisd << "Get rid of them all.";
-	}
-
-	int numchoices = 0;
-	ffsd_choicelist.clear();
-	if ((int)keep.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_keep);	if ((int)keep.str().length() > length)	length = keep.str().length(); }
-	if ((int)fire.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_fire);	if ((int)fire.str().length() > length)	length = fire.str().length(); }
-	if ((int)free.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_free);	if ((int)free.str().length() > length)	length = free.str().length(); }
-	if ((int)sell.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_sell);	if ((int)sell.str().length() > length)	length = sell.str().length(); }
-	if ((int)dump.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump);	if ((int)dump.str().length() > length)	length = dump.str().length(); }
-	if ((int)fidu.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_fidu);	if ((int)fidu.str().length() > length)	length = fidu.str().length(); }
-	if ((int)fise.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_fise);	if ((int)fise.str().length() > length)	length = fise.str().length(); }
-	if ((int)fisd.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_fisd);	if ((int)fisd.str().length() > length)	length = fisd.str().length(); }
-	if ((int)frdu.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_frdu);	if ((int)frdu.str().length() > length)	length = frdu.str().length(); }
-	if ((int)sedu.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_sedu);	if ((int)sedu.str().length() > length)	length = sedu.str().length(); }
-	if ((int)dump1.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump1);	if ((int)dump1.str().length() > length)	length = dump1.str().length(); }
-	if ((int)dump2.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump2);	if ((int)dump2.str().length() > length)	length = dump2.str().length(); }
-	if ((int)dump3.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump3);	if ((int)dump3.str().length() > length)	length = dump3.str().length(); }
-	if ((int)dump4.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_dump4);	if ((int)dump4.str().length() > length)	length = dump4.str().length(); }
-	if ((int)frdu1.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_frdu1);	if ((int)frdu1.str().length() > length)	length = frdu1.str().length(); }
-	if ((int)frdu2.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_frdu2);	if ((int)frdu2.str().length() > length)	length = frdu2.str().length(); }
-	if ((int)sedu1.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_sedu1);	if ((int)sedu1.str().length() > length)	length = sedu1.str().length(); }
-	if ((int)free1.str().length() > 0)	{ numchoices++;	ffsd_choicelist.push_back(FFSD_free1);	if ((int)free1.str().length() > length)	length = free1.str().length(); }
-
-
-
-	g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, numchoices, 32, length, 16);
-	if (ask.str().length() > 0)	g_MessageQue.AddToQue(ask.str(), 0);
-	g_ChoiceManager.Question(0, question.str());
-	int i = 0;
-	if (keep.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, keep.str(), i); i++; }
-	if (fire.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, fire.str(), i); i++; }
-	if (free.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, free.str(), i); i++; }
-	if (sell.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, sell.str(), i); i++; }
-	if (dump.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump.str(), i); i++; }
-	if (fidu.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, fidu.str(), i); i++; }
-	if (fise.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, fise.str(), i); i++; }
-	if (fisd.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, fisd.str(), i); i++; }
-	if (frdu.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, frdu.str(), i); i++; }
-	if (sedu.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, sedu.str(), i); i++; }
-	if (dump1.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump1.str(), i); i++; }
-	if (dump2.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump2.str(), i); i++; }
-	if (dump3.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump3.str(), i); i++; }
-	if (dump4.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, dump4.str(), i); i++; }
-	if (frdu1.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, frdu1.str(), i); i++; }
-	if (frdu2.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, frdu2.str(), i); i++; }
-	if (sedu1.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, sedu1.str(), i); i++; }
-	if (free1.str().length() > 0)	{ g_ChoiceManager.AddChoice(0, free1.str(), i); i++; }
-
-	g_ChoiceManager.SetActive(0);
+// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cClinic.cpp >> is_Surgery_Job
+bool cJobManager::is_Surgery_Job(int testjob) {
+    if (testjob == JOB_CUREDISEASES ||
+        testjob == JOB_GETABORT ||
+        testjob == JOB_COSMETICSURGERY ||
+        testjob == JOB_LIPO ||
+        testjob == JOB_BREASTREDUCTION ||
+        testjob == JOB_BOOBJOB ||
+        testjob == JOB_VAGINAREJUV ||
+        testjob == JOB_TUBESTIED ||
+        testjob == JOB_FERTILITY ||
+        testjob == JOB_FACELIFT ||
+        testjob == JOB_ASSJOB)
+        return true;
+    return false;
 }
 
-void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
-{
-	bool free = false, fire = false, sell = false, dump = false;
-	int option = ffsd_choicelist[g_ChoiceManager.GetChoice(0)];
-	switch (option)
-	{
-	case FFSD_fire:		fire = true;	break;
+void cJobManager::CatchGirl(sGirl* girl, stringstream& fuckMessage, const sGang* guardgang) {// try to find an item
+    sInventoryItem* item;
+    if(g_Game.player().inventory().has_item("Brainwashing Oil")) {
+        item = g_Game.inventory_manager().GetItem("Brainwashing Oil");
+    } else if(g_Game.player().inventory().has_item("Necklace of Control")) {
+        item = g_Game.inventory_manager().GetItem("Necklace of Control");
+    } else if(g_Game.player().inventory().has_item("Slave Band")) {
+        item = g_Game.inventory_manager().GetItem("Slave Band");
+    }
+    if (item || g_Dice.percent(10)) {
+        string itemname;
+        stringstream itemtext;
+        itemtext << "Your gang " << (guardgang ? guardgang->name() : "");
+        stringstream CGmsg;
+        // `J` create the customer
+        sGirl* custgirl = g_Game.CreateRandomGirl(18 + (max(0, g_Dice % 40 - 10)), false, true, false, (g_Dice % 3 ==
+                                                                                                         1));    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+        int emprisontraittime = 1;
+        custgirl->pclove(-(g_Dice % 50 + 50));
+        custgirl->pcfear(g_Dice % 50 + 50);
+        custgirl->pchate(g_Dice % 50 + 50);
+        custgirl->m_Enjoyment[ACTION_COMBAT] -= (g_Dice % 50 + 20);
+        custgirl->m_Enjoyment[ACTION_SEX] -= (g_Dice % 50 + 20);
 
-	case FFSD_free1:	// Throw a freedom party
-	case FFSD_free:		free = true;	break;
+        if (!item)    // no item
+        {
+            itemtext << " beat up " << custgirl->m_Realname;
+            fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
+            itemtext
+                    << " until she stops fighting back. They place your brand on her and bring your new slave to the dungeon.";
+            emprisontraittime = 5 + g_Dice % 21;
+            custgirl->set_stat(STAT_HEALTH, 5 + g_Dice % 70);
+            custgirl->set_stat(STAT_HAPPINESS, g_Dice % 50);
+            custgirl->set_stat( STAT_TIREDNESS, 50 + g_Dice % 51);
+            girl->obedience(g_Dice % 10);
+            girl->pchate(g_Dice % 10);
+            girl->pcfear(g_Dice % 10);
+            girl->pclove(-(g_Dice % 10));
+            girl->spirit(-(g_Dice % 10));
+        } else        // item was found
+        {
+            itemname = item->m_Name;
+            g_Game.inventory_manager().Equip(custgirl, custgirl->add_inv(item), true);
+            g_Game.player().inventory().remove_item(item);
+            if (itemname == "Brainwashing Oil") {
+                emprisontraittime += g_Dice % 5;
+                itemtext << " forced a bottle of Brainwashing Oil down her throat";
+                fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
+                itemtext << ". After a few minutes of struggling,";
+            } else if (itemname == "Necklace of Control") {
+                emprisontraittime += g_Dice % 10;
+                itemtext << " placed a Necklace of Control around her neck";
+                fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
+                itemtext << ". After a few minutes of struggling, the magic in the necklace activated and";
+            } else if (itemname == "Slave Band") {
+                emprisontraittime += g_Dice % 15;
+                itemtext << " placed a Slave Band on her arm";
+                fuckMessage << itemtext.str() << " and dragged her to the dungeon.";
+                itemtext << ". After a few minutes of struggling, the magic in the Slave Band activated and";
+            }
+            itemtext << " your new slave, " << custgirl->m_Realname << ", was taken to the dungeon.";
 
-	case FFSD_sell:		sell = true;	break;
+        }
+        // `J` do all the messages
+        CGmsg << custgirl->m_Realname << " was caught trying to run out without paying for services provided by "
+              << girl->m_Realname << ".\n \n" << itemtext.str();
+        custgirl->add_trait("Emprisoned Customer", emprisontraittime);    // add temp trait
+        if (g_Dice.percent(75)) custgirl->lose_virginity();                // most of the time she will not be a virgin
+        g_Game.player().suspicion(g_Dice % 10);
+        g_Game.player().disposition(-(g_Dice % 10));
+        g_Game.player().customerfear(g_Dice % 10);
+        custgirl->m_Money = 0;
 
-	case FFSD_fidu:		fire = true;	dump = true;	break;
-
-	case FFSD_fise:		fire = true;	sell = true;	break;
-
-	case FFSD_fisd:		free = true;	sell = true;	dump = true;	break;
-
-	case FFSD_frdu1:	// dump the bodies and get your freedom
-	case FFSD_frdu:		free = true;	dump = true;	break;
-
-	case FFSD_sedu1:	// Sell all the girls, living and dead
-	case FFSD_sedu:		sell = true;	dump = true;	break;
-
-	case FFSD_dump1:	// Proper funeral
-	case FFSD_dump2:	// Unmarked grave
-	case FFSD_dump3:	// Side of the road
-	case FFSD_dump4:	// Sell the bodies
-	case FFSD_frdu2:	// Dump then get back to work
-	case FFSD_dump:		dump = true;	break;
-
-
-	default:	break;	// keep
-	}
-
-	if (free || fire || sell || dump)
-	{
-		stringstream ss;
-		vector<int>	sellgirl_price;
-		vector<string> freegirl_names; vector<string> firegirl_names; vector<string> sellgirl_names; vector<string> dumpgirl_names;
-
-		for (int i = girl_array.size(); i-- > 0;)	// OK, we have the array, now step through it backwards
-		{
-			g_InitWin = true;
-			/* */if (sub == "Br") selected_girl = g_Brothels.GetGirl(num, girl_array[i]);
-			else if (sub == "Ho") selected_girl = g_House.GetGirl(num, girl_array[i]);
-			else if (sub == "Cl") selected_girl = g_Clinic.GetGirl(num, girl_array[i]);
-			else if (sub == "St") selected_girl = g_Studios.GetGirl(num, girl_array[i]);
-			else if (sub == "Ar") selected_girl = g_Arena.GetGirl(num, girl_array[i]);
-			else if (sub == "Ce") selected_girl = g_Centre.GetGirl(num, girl_array[i]);
-			else if (sub == "Fa") selected_girl = g_Farm.GetGirl(num, girl_array[i]);
-
-			if (selected_girl->is_dead())
-			{
-				if (dump)
-				{
-					dumpgirl_names.push_back(selected_girl->m_Realname);
-					/* */if (sub == "Br") g_Brothels.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Ho") g_House.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Cl") g_Clinic.RemoveGirl(num, selected_girl, false);
-					else if (sub == "St") g_Studios.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Ar") g_Arena.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Ce") g_Centre.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Fa") g_Farm.RemoveGirl(num, selected_girl, false);
-					// dead girls get removed from the game
-					delete selected_girl;
-					selected_girl = 0;
-				}
-				continue;
-			}
-			else if (selected_girl->is_slave())
-			{
-				if (option == FFSD_free1)	// Throw a freedom party
-				{
-					freegirl_names.push_back(selected_girl->m_Realname);
-					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
-					The_Player->disposition(7);
-					selected_girl->pclove(20);
-					selected_girl->pcfear(-40);
-					selected_girl->pchate(-50);
-					selected_girl->obedience(10);
-					selected_girl->happiness(100);
-					selected_girl->health(10);
-					selected_girl->tiredness(10);
-					selected_girl->charisma(5);
-					selected_girl->fame(2);
-					selected_girl->confidence(5);
-					selected_girl->obedience(10);
-					selected_girl->dignity(5);
-					selected_girl->m_AccLevel = cfg.initial.girls_accom();
-					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
-				}
-				if (option == FFSD_frdu1)	// dump the bodies and get your freedom
-				{
-					firegirl_names.push_back(selected_girl->m_Realname);
-					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
-					The_Player->disposition(3);
-					selected_girl->pclove(5);
-					selected_girl->pcfear(5);
-					selected_girl->pchate(-5);
-					selected_girl->obedience(20);
-					selected_girl->happiness(40);
-					selected_girl->tiredness(5);
-					selected_girl->dignity(-2);
-					selected_girl->m_AccLevel = cfg.initial.girls_accom();
-					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
-				}
-				else if (option == FFSD_frdu2)	// dump the bodies then get back to work
-				{
-					freegirl_names.push_back(selected_girl->m_Realname);
-					The_Player->disposition(-1);
-					selected_girl->pclove(-2);
-					selected_girl->pcfear(10);
-					selected_girl->pchate(5);
-					selected_girl->obedience(5);
-					selected_girl->happiness(-10);
-					selected_girl->tiredness(5);
-					selected_girl->dignity(-5);
-				}
-				else if (free)
-				{
-					freegirl_names.push_back(selected_girl->m_Realname);
-					selected_girl->m_States &= ~(1 << STATUS_SLAVE);
-					The_Player->disposition(5);
-					selected_girl->pclove(10);
-					selected_girl->pcfear(-20);
-					selected_girl->pchate(-25);
-					selected_girl->obedience(10);
-					selected_girl->happiness(70);
-
-					selected_girl->m_AccLevel = cfg.initial.girls_accom();
-					selected_girl->m_Stats[STAT_HOUSE] = cfg.initial.girls_house_perc();
-				}
-				else if (sell)
-				{
-					sellgirl_names.push_back(selected_girl->m_Realname);
-					sellgirl_price.push_back(tariff.slave_sell_price(selected_girl));
-					g_Gold.slave_sales(tariff.slave_sell_price(selected_girl));
-
-					/* */if (sub == "Br") g_Brothels.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Ho") g_House.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Cl") g_Clinic.RemoveGirl(num, selected_girl, false);
-					else if (sub == "St") g_Studios.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Ar") g_Arena.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Ce") g_Centre.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Fa") g_Farm.RemoveGirl(num, selected_girl, false);
-
-					if (selected_girl->m_Realname.compare(selected_girl->m_Name) == 0)
-						g_Girls.AddGirl(selected_girl);  // add unique girls back to main pool
-					else
-					{  // random girls simply get removed from the game
-						delete selected_girl;
-						selected_girl = 0;
-					}
-				}
-				continue;
-			}
-			else if (selected_girl)		// the girl is free
-			{
-				if (option == FFSD_free1)	// Throw a freedom party - Guest
-				{
-					selected_girl->pclove(5);
-					selected_girl->pcfear(-5);
-					selected_girl->pchate(-5);
-					selected_girl->obedience(2);
-					selected_girl->happiness(100);
-					selected_girl->health(10);
-					selected_girl->tiredness(10);
-					selected_girl->confidence(2);
-					selected_girl->spirit(5);
-					selected_girl->dignity(1);
-				}
-				else if (fire)
-				{
-					firegirl_names.push_back(selected_girl->m_Realname);
-					/* */if (sub == "Br") g_Brothels.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Ho") g_House.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Cl") g_Clinic.RemoveGirl(num, selected_girl, false);
-					else if (sub == "St") g_Studios.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Ar") g_Arena.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Ce") g_Centre.RemoveGirl(num, selected_girl, false);
-					else if (sub == "Fa") g_Farm.RemoveGirl(num, selected_girl, false);
-
-					if (selected_girl->m_Realname.compare(selected_girl->m_Name) == 0)
-						g_Girls.AddGirl(selected_girl);  // add unique girls back to main pool
-					else
-					{  // random girls simply get removed from the game
-						delete selected_girl;
-						selected_girl = 0;
-					}
-				}
-			}
-		}
-
-		if (freegirl_names.size() > 0)
-		{
-			ss << "You grant " << freegirl_names[0];
-			if (freegirl_names.size() == 1)			ss << " her";
-			else if (freegirl_names.size() == 2)	ss << " and " << freegirl_names[1] << " thier";
-			else
-			{
-				for (int i = 1; i < (int)freegirl_names.size() - 1; i++) ss << ", " << freegirl_names[i];
-				ss << " and " << freegirl_names[freegirl_names.size() - 1] << " their";
-			}
-			ss << " freedom.\n \n";
-		}
-		if (firegirl_names.size() > 0)
-		{
-			ss << "You fire " << firegirl_names[0];
-			if (firegirl_names.size() == 2)	ss << " and " << firegirl_names[1];
-			else if (firegirl_names.size() > 2)
-			{
-				for (int i = 1; i < (int)firegirl_names.size() - 1; i++) ss << ", " << firegirl_names[i];
-				ss << " and " << firegirl_names[firegirl_names.size() - 1];
-			}
-			ss << ".\n \n";
-		}
-		if (sellgirl_names.size()>0)
-		{
-			int sell = 0;
-			int sellsize = sellgirl_names.size();
-			ss << "You sell ";
-			if (sellsize == 1)		ss << sellgirl_names[0] << " for " << sellgirl_price[0] << " gold";
-			else if (sellsize == 2)	ss << "two slaves:\n" << sellgirl_names[0] << " for " << sellgirl_price[0] << " gold and\n" << sellgirl_names[1] << " for " << sellgirl_price[0] << " gold";
-			else
-			{
-				ss << sellsize << " slaves:\n" << sellgirl_names[0] << " for " << sellgirl_price[0] << " gold";
-				for (int i = 1; i < (int)sellsize - 1; i++)
-				{
-					ss << ",\n" << sellgirl_names[i] << " for " << sellgirl_price[i] << " gold";
-				}
-				ss << " and\n" << sellgirl_names[sellsize - 1] << " for " << sellgirl_price[sellsize - 1] << " gold";
-			}
-			if (sellsize > 1)
-			{
-				for (int i = 0; i < (int)sellsize; i++) sell += sellgirl_price[i];
-				ss << ".\nYour total take was " << sell << " gold";
-			}
-			ss << ".\n \n";
-		}
-		if (dumpgirl_names.size() > 0)
-		{
-			int sell = 0;
-			int dumpsize = dumpgirl_names.size();
-			switch (option)
-			{
-			case FFSD_dump1:	// proper funeral
-				if (dumpsize == 1) ss << "You spend 100 gold for a proper funeral for ";
-				else ss << "You spend 100 gold each for proper funerals for ";
-				/* */if (sub == "Br") g_Brothels.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
-				else if (sub == "Ho") g_House.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
-				else if (sub == "Cl") g_Clinic.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
-				else if (sub == "St") g_Studios.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
-				else if (sub == "Ar") g_Arena.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
-				else if (sub == "Ce") g_Centre.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
-				else if (sub == "Fa") g_Farm.GetBrothel(num)->m_Finance.building_upkeep(100 * dumpsize);
-
-				The_Player->customerfear(-dumpsize);
-				The_Player->suspicion(-dumpsize);
-				The_Player->disposition(dumpsize);
-				break;
-			case FFSD_dump2:	// unmarked grave
-				ss << "You have your goons dig " << (dumpsize > 1 ? "graves " : "a grave") << " for ";
-				The_Player->disposition(-dumpsize);
-				break;
-			case FFSD_dump3:	// side of the road
-				ss << "You have your goons dump the bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
-				The_Player->customerfear(dumpsize);
-				The_Player->suspicion(dumpsize);
-				The_Player->disposition(-dumpsize);
-				break;
-			case FFSD_dump4:	// Sell the bodies
-			case FFSD_sedu1:	// Sell all the girls, living and dead
-				for (int i = 0; i < (int)dumpsize; i++) sell += g_Dice % 250 + g_Dice % 50 + 1;
-				ss << "You make " << sell << " gold for selling the dead bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
-				/* */if (sub == "Br") g_Brothels.GetBrothel(num)->m_Finance.slave_sales(sell);
-				else if (sub == "Ho") g_House.GetBrothel(num)->m_Finance.slave_sales(sell);
-				else if (sub == "Cl") g_Clinic.GetBrothel(num)->m_Finance.slave_sales(sell);
-				else if (sub == "St") g_Studios.GetBrothel(num)->m_Finance.slave_sales(sell);
-				else if (sub == "Ar") g_Arena.GetBrothel(num)->m_Finance.slave_sales(sell);
-				else if (sub == "Ce") g_Centre.GetBrothel(num)->m_Finance.slave_sales(sell);
-				else if (sub == "Fa") g_Farm.GetBrothel(num)->m_Finance.slave_sales(sell);
-
-				The_Player->customerfear(dumpsize * 2);
-				The_Player->suspicion(dumpsize * 2);
-				The_Player->disposition(-dumpsize * 2);
-				break;
-			default:
-				ss << "You have your goons remove the bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
-				break;
-			}
-			ss << dumpgirl_names[0];
-			if (dumpsize == 2)	ss << " and " << dumpgirl_names[1];
-			else
-			{
-				for (int i = 1; i < (int)dumpsize - 1; i++) ss << ", " << dumpgirl_names[i];
-				ss << " and " << dumpgirl_names[dumpsize - 1];
-			}
-			if (option == FFSD_dump2) ss << " and dump their bod" << (dumpsize > 1 ? "ies" : "y") << " in.";
-			if (option == FFSD_dump3) ss << " on the side of the road.";
-			ss << ".\n \n";
-		}
-		if (ss.str().length() > 0)	g_MessageQue.AddToQue(ss.str(), 0);
-
-		freegirl_names.clear(); firegirl_names.clear(); sellgirl_names.clear(); dumpgirl_names.clear();
-		sellgirl_price.clear();
-	}
-
+        custgirl->m_Events.AddMessage(CGmsg.str(), IMGTYPE_DEATH, EVENT_WARNING);
+        // `J` add the customer to the dungeon
+        g_Game.dungeon().AddGirl(custgirl, DUNGEON_CUSTNOPAY);
+    } else SetGameFlag(FLAG_CUSTNOPAY);        // if not taken as a slave, use the old code
 }

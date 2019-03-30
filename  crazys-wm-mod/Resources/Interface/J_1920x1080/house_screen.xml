@@ -7,6 +7,6 @@
 <Button     Name="BuyInteract"          Image="Buy"                         XPos="20"       YPos="540"      Width="72"      Height="32" Transparency="true" Scale="true"  />
 <Button     Name="BuyInteract10"        Image="Buy10"                       XPos="118"      YPos="540"      Width="72"      Height="32" Transparency="true" Scale="true"  />
 
-<Text     Name="HouseDetails"        Text=""                                   XPos="50"           YPos="100"           Width="700"           Height="400"           FontSize="16" />
+<Text     Name="BuildingDetails"     Text=""                                   XPos="50"           YPos="100"           Width="700"           Height="400"           FontSize="16" />
 <Button   Name="BackButton"          Image="Back"                              XPos="500"           YPos="500"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
 </Screen>

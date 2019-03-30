@@ -17,30 +17,34 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <time.h>
-#include <string>
-#include <cctype>
 #include "cInterfaceWindow.h"
+#include "cWindowManager.h"
 #include "DirPath.h"
 #include "CLog.h"
 #include "tinyxml.h"
 #include "XmlUtil.h"
-#include "libintl.h" 
-#include "Globals.h"
+
+#include "src/widgets/cListBox.h"
+#include "src/widgets/cButton.h"
+#include "src/widgets/cCheckBox.h"
+#include "src/widgets/cSlider.h"
+#include "src/widgets/cEditBox.h"
+#include "src/widgets/cTextItem.h"
+#include "src/widgets/cImageItem.h"
+#include "src/Game.hpp"
+#include "src/buildings/cBrothel.h"
+#include "CGraphics.h"
 
 using namespace std;
 
 typedef unsigned int u_int;
 
-extern CLog g_LogFile;
 extern CGraphics g_Graphics;
 extern CResourceManager rmanager;
-extern cInterfaceEventManager g_InterfaceEvents;
+extern cWindowManager			g_WinManager;
 
 extern unsigned char g_WindowBorderR, g_WindowBorderG, g_WindowBorderB;
 extern unsigned char g_WindowBackgroundR, g_WindowBackgroundG, g_WindowBackgroundB;
-
-extern bool g_InitWin;
 
 cInterfaceWindow::~cInterfaceWindow()
 {
@@ -49,97 +53,101 @@ cInterfaceWindow::~cInterfaceWindow()
 
 void cInterfaceWindow::Free()
 {
-	for (unsigned int i = 0; i< m_Buttons.size(); i++)		delete m_Buttons[i];
+	for (auto & m_Button : m_Buttons)		delete m_Button;
 	m_Buttons.clear();
-	for (unsigned int i = 0; i< m_ScrollBars.size(); i++)	delete m_ScrollBars[i];
+	for (auto & m_ScrollBar : m_ScrollBars)	delete m_ScrollBar;
 	m_ScrollBars.clear();
-	for (unsigned int i = 0; i<m_EditBoxes.size(); i++)		delete m_EditBoxes[i];
+	for (auto & m_EditBoxe : m_EditBoxes)		delete m_EditBoxe;
 	m_EditBoxes.clear();
 
 	//there is a special case where a picture may have already been deleted by something prior
 	//and it seems like way too much effort to include smart pointers
 	//so just detect any pointers that have been deleted already
-	for (unsigned int i = 0; i < m_Images.size(); i++)
+	for (auto & m_Image : m_Images)
 	{
-		if (m_Images[i])
+		if (m_Image)
 		{
 			// If this is NULL then the deconstructor has been called already.
-			if (m_Images[i]->m_AnimatedImage != 0)
-				delete m_Images[i];
+			if (m_Image->m_AnimatedImage != nullptr)
+				delete m_Image;
 		}
 	}
 
 	m_Images.clear();
-	for (unsigned int i = 0; i<m_CheckBoxes.size(); i++)	delete m_CheckBoxes[i];
+	for (auto & m_CheckBoxe : m_CheckBoxes)	delete m_CheckBoxe;
 	m_CheckBoxes.clear();
-	for (unsigned int i = 0; i<m_TextItems.size(); i++)		delete m_TextItems[i];
+	for (auto & m_TextItem : m_TextItems)		delete m_TextItem;
 	m_TextItems.clear();
-	for (unsigned int i = 0; i<m_ListBoxes.size(); i++)		delete m_ListBoxes[i];
+	for (auto & m_ListBoxe : m_ListBoxes)		delete m_ListBoxe;
 	m_ListBoxes.clear();
-	for (unsigned int i = 0; i<m_Sliders.size(); i++)		delete m_Sliders[i];
+	for (auto & m_Slider : m_Sliders)		delete m_Slider;
 	m_Sliders.clear();
 	if (m_Background)	SDL_FreeSurface(m_Background);
-	m_Background = 0;
+	m_Background = nullptr;
 	if (m_Border)		SDL_FreeSurface(m_Border);
-	m_Border = 0;
+	m_Border = nullptr;
 }
 
 void cInterfaceWindow::UpdateWindow(int x, int y)
 {
 	// check buttons
-	for (unsigned int i = 0; i< m_Buttons.size(); i++)		m_Buttons[i]->IsOver(x, y);
+	for (auto & m_Button : m_Buttons)		m_Button->IsOver(x, y);
 	// check listbox scroll bars
-	for (unsigned int i = 0; i< m_ScrollBars.size(); i++)	m_ScrollBars[i]->IsOver(x, y);
+	for (auto & m_ScrollBar : m_ScrollBars)	m_ScrollBar->IsOver(x, y);
 	// check sliders
-	for (unsigned int i = 0; i< m_Sliders.size(); i++)		m_Sliders[i]->IsOver(x, y);
+	for (auto & m_Slider : m_Sliders)		m_Slider->IsOver(x, y);
 }
 
 void cInterfaceWindow::MouseDown(int x, int y)
 {  // this method added to handle draggable objects
 	// check listbox scroll bars
-	for (unsigned int i = 0; i< m_ScrollBars.size(); i++)	m_ScrollBars[i]->MouseDown(x, y);
+	for (auto & m_ScrollBar : m_ScrollBars)	m_ScrollBar->MouseDown(x, y);
 	// check sliders
-	for (unsigned int i = 0; i< m_Sliders.size(); i++)		m_Sliders[i]->MouseDown(x, y);
+	for (auto & m_Slider : m_Sliders)		m_Slider->MouseDown(x, y);
 }
 
 void cInterfaceWindow::Click(int x, int y, bool mouseWheelDown, bool mouseWheelUp)
 {
-	// things which shouldn't respond to scroll wheel up/down as clicks
-	if (!mouseWheelDown && !mouseWheelUp)
-	{
-		// check buttons
-		for (unsigned int i = 0; i< m_Buttons.size(); i++)			m_Buttons[i]->ButtonClicked(x, y);
-		// Check EditBoxes
-		for (unsigned int i = 0; i<m_EditBoxes.size(); i++)			m_EditBoxes[i]->OnClicked(x, y);
-		// check check boxes
-		for (unsigned int i = 0; i<m_CheckBoxes.size(); i++)		m_CheckBoxes[i]->ButtonClicked(x, y);
-	}
-	// things which should only respond to mouse scroll wheel up/down
-	else if (mouseWheelDown || mouseWheelUp)
-	{
-		for (unsigned int i = 0; i<m_TextItems.size(); i++)			m_TextItems[i]->MouseScrollWheel(x, y, mouseWheelDown);
-	}
-	// check listbox scroll bars
-	for (unsigned int i = 0; i< m_ScrollBars.size(); i++)			m_ScrollBars[i]->ButtonClicked(x, y, mouseWheelDown, mouseWheelUp);
-	// check sliders
-	for (unsigned int i = 0; i<m_Sliders.size(); i++)				m_Sliders[i]->ButtonClicked(x, y, mouseWheelDown, mouseWheelUp);
-	// Check list boxes
-	for (unsigned int i = 0; i<m_ListBoxes.size(); i++)				m_ListBoxes[i]->OnClicked(x, y, mouseWheelDown, mouseWheelUp);
+    try {
+        // things which shouldn't respond to scroll wheel up/down as clicks
+        if (!mouseWheelDown && !mouseWheelUp)
+        {
+            // check buttons
+            for (auto & m_Button : m_Buttons)           m_Button->ButtonClicked(x, y);
+            // Check EditBoxes
+            for (auto & m_EditBoxe : m_EditBoxes)		m_EditBoxe->OnClicked(x, y);
+            // check check boxes
+            for (auto & m_CheckBoxe : m_CheckBoxes)		m_CheckBoxe->ButtonClicked(x, y);
+        }
+        // things which should only respond to mouse scroll wheel up/down
+        else if (mouseWheelDown || mouseWheelUp)
+        {
+            for (auto & m_TextItem : m_TextItems)		m_TextItem->MouseScrollWheel(x, y, mouseWheelDown);
+        }
+        // check listbox scroll bars
+        for (auto & m_ScrollBar : m_ScrollBars)			m_ScrollBar->ButtonClicked(x, y, mouseWheelDown, mouseWheelUp);
+        // check sliders
+        for (auto & m_Slider : m_Sliders)				m_Slider->ButtonClicked(x, y, mouseWheelDown, mouseWheelUp);
+        // Check list boxes
+        for (auto & m_ListBoxe : m_ListBoxes)			m_ListBoxe->OnClicked(x, y, mouseWheelDown, mouseWheelUp);
+    } catch (std::exception& exception) {
+        push_message(exception.what(), 1);
+    }
 }
 
 void cInterfaceWindow::Reset()
 {
-	for (unsigned int i = 0; i<m_Images.size(); i++)
+	for (auto & m_Image : m_Images)
 	{
-		if (m_Images[i]->m_loaded == false)	m_Images[i]->m_Image = 0;
+		if (!m_Image->m_loaded) m_Image->m_Image = nullptr;
 	}
-	for (unsigned int i = 0; i<m_ListBoxes.size(); i++)
+	for (auto & m_ListBoxe : m_ListBoxes)
 	{
-		m_ListBoxes[i]->ClearList();
+		m_ListBoxe->ClearList();
 	}
 }
 
-void cInterfaceWindow::Draw()
+void cInterfaceWindow::Draw(const CGraphics& gfx)
 {
 	if (m_Background && m_Border)
 	{
@@ -148,10 +156,10 @@ void cInterfaceWindow::Draw()
 		offset.x = m_XPos;
 		offset.y = m_YPos;
 		// blit to the screen
-		SDL_BlitSurface(m_Border, 0, g_Graphics.GetScreen(), &offset);
+        gfx.BlitSurface(m_Border, nullptr, &offset);
 		offset.x = m_XPos + m_BorderSize;
-		offset.y = m_YPos + m_BorderSize;
-		SDL_BlitSurface(m_Background, 0, g_Graphics.GetScreen(), &offset);
+        offset.y = m_YPos + m_BorderSize;
+        gfx.BlitSurface(m_Background, nullptr, &offset);
 	}
 	if (m_BackgroundSurface)
 	{
@@ -160,17 +168,17 @@ void cInterfaceWindow::Draw()
 		clip.y = m_YPos + m_BorderSize;
 		clip.w = m_Width - (m_BorderSize * 2);
 		clip.h = m_Height - (m_BorderSize * 2);
-		m_BackgroundSurface->DrawSurface(clip.x, clip.y, 0, &clip, true, false); // `J`
+		m_BackgroundSurface->DrawSurface(clip.x, clip.y, nullptr, &clip, true, false); // `J`
 	}
 
-	for (unsigned int i = 0; i< m_Images.size(); i++)		m_Images[i]->Draw();		// draw Images
-	for (unsigned int i = 0; i<m_EditBoxes.size(); i++)		m_EditBoxes[i]->Draw();		// Draw Editboxes
-	for (unsigned int i = 0; i<m_TextItems.size(); i++)		m_TextItems[i]->Draw();		// Draw Text item boxes
-	for (unsigned int i = 0; i<m_ListBoxes.size(); i++)		m_ListBoxes[i]->Draw();		// Draw list boxes
-	for (unsigned int i = 0; i<m_Sliders.size(); i++)		m_Sliders[i]->Draw();		// Draw sliders
-	for (unsigned int i = 0; i<m_Buttons.size(); i++)		m_Buttons[i]->Draw();		// draw buttons
-	for (unsigned int i = 0; i<m_ScrollBars.size(); i++)	m_ScrollBars[i]->Draw();	// draw listbox scroll bars
-	for (unsigned int i = 0; i<m_CheckBoxes.size(); i++)	m_CheckBoxes[i]->Draw();	// draw check boxes
+	for (auto & m_Image : m_Images) m_Image->Draw(gfx);		            // draw Images
+	for (auto & m_EditBoxe : m_EditBoxes) m_EditBoxe->Draw(gfx);	    // Draw Editboxes
+	for (auto & m_TextItem : m_TextItems) m_TextItem->Draw(gfx);	    // Draw Text item boxes
+	for (auto & m_ListBoxe : m_ListBoxes) m_ListBoxe->Draw(gfx);	    // Draw list boxes
+	for (auto & m_Slider : m_Sliders) m_Slider->Draw(gfx);		        // Draw sliders
+	for (auto & m_Button : m_Buttons) m_Button->Draw(gfx);		        // draw buttons
+	for (auto & m_ScrollBar : m_ScrollBars) m_ScrollBar->Draw(gfx);	    // draw listbox scroll bars
+	for (auto & m_CheckBoxe : m_CheckBoxes) m_CheckBoxe->Draw(gfx);	    // draw check boxes
 }
 
 void cInterfaceWindow::AddButton(const char *img_name, int & ID, int x, int y, int width, int height, bool transparency, bool scale, bool cached)
@@ -183,15 +191,6 @@ void cInterfaceWindow::AddButton(const char *img_name, int & ID, int x, int y, i
 	AddButton(off, disabled, on, ID, x, y, width, height, transparency, scale, cached);
 }
 
-void cInterfaceWindow::AddButtonND(const char *img_name, int & ID, int x, int y, int width, int height, bool transparency, bool scale, bool cached)
-{
-	DirPath dp = ButtonPath(img_name);
-	string on = string(dp.c_str()) + "On.png";
-	string off = string(dp.c_str()) + "Off.png";
-	string disabled;
-	AddButton(off, disabled, on, ID, x, y, width, height, transparency, scale, cached);
-}
-
 void cInterfaceWindow::AddButton(string image_name, int & ID, int x, int y, int width, int height, bool transparency, bool scale, bool cached)
 {
 	DirPath dp = ButtonPath(image_name);
@@ -201,16 +200,7 @@ void cInterfaceWindow::AddButton(string image_name, int & ID, int x, int y, int 
 	AddButton(off, disabled, on, ID, x, y, width, height, transparency, scale, cached);
 }
 
-void cInterfaceWindow::AddButtonND(string image_name, int & ID, int x, int y, int width, int height, bool transparency, bool scale, bool cached)
-{
-	DirPath dp = ButtonPath(image_name);
-	string on = string(dp.c_str()) + "On.png";
-	string off = string(dp.c_str()) + "Off.png";
-	string disabled = "";
-	AddButton(off, disabled, on, ID, x, y, width, height, transparency, scale, cached);
-}
-
-void cInterfaceWindow::AddButton(string OffImage, string DisabledImage, string OnImage, int & ID, int x, int y, int width, int height, bool transparency, bool scale, bool cached)
+void cInterfaceWindow::AddButton(string OffImage, string DisabledImage, const string& OnImage, int & ID, int x, int y, int width, int height, bool transparency, bool scale, bool cached)
 {
 	if (scale)
 	{
@@ -221,8 +211,8 @@ void cInterfaceWindow::AddButton(string OffImage, string DisabledImage, string O
 	}
 	ID = m_Buttons.size();
 	// create button
-	cButton* newButton = new cButton();
-	newButton->CreateButton(OffImage, DisabledImage, OnImage, ID, x + m_XPos, y + m_YPos, width, height, transparency, cached);
+	cButton* newButton = new cButton(OffImage, DisabledImage, OnImage, ID, x + m_XPos, y + m_YPos, width, height,
+	        transparency, cached);
 
 	// Store button
 	m_Buttons.push_back(newButton);
@@ -233,9 +223,8 @@ void cInterfaceWindow::AddScrollBar(int & ID, int x, int y, int width, int heigh
 	ID = m_ScrollBars.size();
 	// create scroll bar
 	g_LogFile.write("initializing scrollbar");
-	cScrollBar* newScrollBar = new cScrollBar();
+	cScrollBar* newScrollBar = new cScrollBar(ID, x + m_XPos, y + m_YPos, width, height, visibleitems);
 	g_LogFile.write("creating scrollbar");
-	newScrollBar->CreateScrollBar(ID, x + m_XPos, y + m_YPos, width, height, visibleitems);
 	newScrollBar->m_ScrollAmount = cfg.resolution.list_scroll();
 
 	// Store scroll bar
@@ -279,8 +268,8 @@ void cInterfaceWindow::AddImage(int & id, string filename, int x, int y, int wid
 
 	// create image
 	id = m_Images.size();
-	cImageItem* newImage = new cImageItem();
-	newImage->CreateImage(id, filename, x + m_XPos, y + m_YPos, width, height, statImage, R, G, B);
+	cImageItem* newImage = new cImageItem(id, x + m_XPos, y + m_YPos, width, height);
+    newImage->CreateImage(filename, statImage, R, G, B);
 
 	// Store button
 	m_Images.push_back(newImage);
@@ -289,12 +278,7 @@ void cInterfaceWindow::AddImage(int & id, string filename, int x, int y, int wid
 void cInterfaceWindow::SetImage(int id, CSurface* image)
 {
 	m_Images[id]->m_Image = image;
-	m_Images[id]->m_AnimatedImage = 0;
-}
-
-void cInterfaceWindow::SetImage(int id, cAnimatedSurface* image)
-{
-	m_Images[id]->m_AnimatedImage = image;
+	m_Images[id]->m_AnimatedImage = nullptr;
 }
 
 void cInterfaceWindow::AddEditBox(int & ID, int x, int y, int width, int height, int BorderSize, int FontSize)
@@ -306,9 +290,7 @@ void cInterfaceWindow::AddEditBox(int & ID, int x, int y, int width, int height,
 
 	// create button
 	ID = m_EditBoxes.size();
-	cEditBox* newEditBox = new cEditBox();
-	newEditBox->CreateEditBox(ID, x + m_XPos, y + m_YPos, width, height, BorderSize, FontSize);
-
+	cEditBox* newEditBox = new cEditBox(ID, x + m_XPos, y + m_YPos, width, height, BorderSize, FontSize);
 	// Store button
 	m_EditBoxes.push_back(newEditBox);
 }
@@ -325,12 +307,32 @@ void cInterfaceWindow::DisableButton(int id, bool disable)
 		m_Buttons[id]->SetDisabled(disable);
 }
 
+void cInterfaceWindow::SetButtonCallback(int id, std::function<void()> cb) {
+    if (id>-1)
+        m_Buttons[id]->SetCallback(std::move(cb));
+}
+
+void cInterfaceWindow::SetButtonNavigation(int id, std::string target, bool replace)
+{
+    if(target == "<back>") {
+        SetButtonCallback(id, [this]() { pop_window(); });
+    } else if(replace) {
+        SetButtonCallback(id, [this, t = std::move(target)]() {
+            replace_window(t);
+        });
+    } else {
+        SetButtonCallback(id, [this, t = std::move(target)]() {
+            push_window(t);
+        });
+    }
+}
+
 void cInterfaceWindow::CreateWindow(int x, int y, int width, int height, int BorderSize)
 {
 	m_xRatio = 1.0f;	m_yRatio = 1.0f;
 	// `J` fixed this to allow for nonscaled 800x600 screen sizes
-	if (_G.g_ScreenWidth != cfg.resolution.scalewidth())	m_xRatio = ((float)_G.g_ScreenWidth / (float)cfg.resolution.scalewidth());
-	if (_G.g_ScreenHeight != cfg.resolution.scaleheight())	m_yRatio = ((float)_G.g_ScreenHeight / (float)cfg.resolution.scaleheight());
+	if (g_Graphics.GetWidth() != cfg.resolution.scalewidth())	m_xRatio = (float)g_Graphics.GetWidth() / (float)cfg.resolution.scalewidth();
+	if (g_Graphics.GetHeight() != cfg.resolution.scaleheight())	m_yRatio = (float)g_Graphics.GetHeight() / (float)cfg.resolution.scaleheight();
 
 	width = (int)((float)width*m_xRatio);
 	height = (int)((float)height*m_yRatio);
@@ -340,15 +342,10 @@ void cInterfaceWindow::CreateWindow(int x, int y, int width, int height, int Bor
 	m_BorderSize = BorderSize;
 	SetPosition(x, y, width, height);
 	m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_Border, 0, SDL_MapRGB(m_Border->format, g_WindowBorderR, g_WindowBorderG, g_WindowBorderB));
+	SDL_FillRect(m_Border, nullptr, SDL_MapRGB(m_Border->format, g_WindowBorderR, g_WindowBorderG, g_WindowBorderB));
 
 	m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, width - (BorderSize * 2), height - (BorderSize * 2), 32, 0, 0, 0, 0);
-	SDL_FillRect(m_Background, 0, SDL_MapRGB(m_Background->format, g_WindowBackgroundR, g_WindowBackgroundG, g_WindowBackgroundB));
-}
-
-void cInterfaceWindow::SetBackgroundImage(string file)
-{
-	m_BackgroundSurface = new CSurface(file);
+	SDL_FillRect(m_Background, nullptr, SDL_MapRGB(m_Background->format, g_WindowBackgroundR, g_WindowBackgroundG, g_WindowBackgroundB));
 }
 
 string cInterfaceWindow::GetEditBoxText(int ID)
@@ -358,17 +355,15 @@ string cInterfaceWindow::GetEditBoxText(int ID)
 
 void cInterfaceWindow::UpdateEditBoxes(char key, bool upper)
 {
-	for (unsigned int i = 0; i<m_EditBoxes.size(); i++)
-		if (m_EditBoxes[i]->m_HasFocus)
-			m_EditBoxes[i]->UpdateText(key, upper);
+	for (auto & m_EditBoxe : m_EditBoxes)
+		if (m_EditBoxe->m_HasFocus)
+			m_EditBoxe->UpdateText(key, upper);
 }
 
 void cInterfaceWindow::Focused()
 {
-	// clear any events
-	g_InterfaceEvents.ClearEvents();
 	// clear edit boxes and set the first one as focused
-	for (unsigned int i = 0; i < m_EditBoxes.size(); i++)		m_EditBoxes[i]->ClearText();
+	for (auto & m_EditBoxe : m_EditBoxes)		m_EditBoxe->ClearText();
 	if (!m_EditBoxes.empty())	m_EditBoxes[0]->m_HasFocus = true;
 }
 
@@ -379,12 +374,12 @@ void cInterfaceWindow::SetCheckBox(int ID, bool on)
 
 void cInterfaceWindow::DisableCheckBox(int ID, bool disable)
 {
-	m_CheckBoxes[ID]->m_Disabled = disable;
+    m_CheckBoxes[ID]->SetDisabled(disable);
 }
 
 bool cInterfaceWindow::IsCheckboxOn(int ID)
 {
-	return m_CheckBoxes[ID]->m_StateOn;
+	return m_CheckBoxes[ID]->GetState();
 }
 
 void cInterfaceWindow::AddSlider(int & ID, int x, int y, int width, int min, int max, int increment, int value, bool live_update)
@@ -395,8 +390,7 @@ void cInterfaceWindow::AddSlider(int & ID, int x, int y, int width, int min, int
 	y = (int)((float)y*m_yRatio);
 
 	ID = m_Sliders.size();
-	cSlider* newSlider = new cSlider();
-	newSlider->CreateSlider(ID, x + m_XPos, y + m_YPos, width, min, max, increment, value, height);
+	cSlider* newSlider = new cSlider(ID, x + m_XPos, y + m_YPos, width, min, max, increment, value, height);
 	newSlider->LiveUpdate(live_update);
 
 	m_Sliders.push_back(newSlider);
@@ -412,12 +406,6 @@ void cInterfaceWindow::HideSlider(int ID, bool hide)
 {
 	if (ID == -1) return;
 	m_Sliders[ID]->Hide(hide);
-}
-
-void cInterfaceWindow::SliderLiveUpdate(int ID, bool live_update)
-{
-	if (ID == -1) return;
-	m_Sliders[ID]->LiveUpdate(live_update);
 }
 
 int cInterfaceWindow::SliderRange(int ID, int min, int max, int value, int increment)
@@ -444,12 +432,6 @@ void cInterfaceWindow::SliderMarker(int ID, int value)
 	m_Sliders[ID]->SetMarker(value);
 }
 
-void cInterfaceWindow::SliderMarkerDisable(int ID)
-{
-	if (ID == -1) return;
-	m_Sliders[ID]->RemoveMarker();
-}
-
 void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height, string text, int size, bool leftorright)
 {
 	width = (int)((float)width*m_xRatio);
@@ -459,8 +441,7 @@ void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height
 
 	// create checkbox item
 	ID = m_CheckBoxes.size();
-	cCheckBox* newCheckBox = new cCheckBox();
-	newCheckBox->CreateCheckBox(ID, x + m_XPos, y + m_YPos, width, height, text, size, leftorright);
+	cCheckBox* newCheckBox = new cCheckBox(ID, x + m_XPos, y + m_YPos, width, height, text, size, leftorright);
 
 	// Store text item
 	m_CheckBoxes.push_back(newCheckBox);
@@ -476,9 +457,8 @@ void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height
 
 	// create text item
 	ID = m_TextItems.size();
-	cTextItem* newTextItem = new cTextItem();
-	newTextItem->CreateTextItem(ID, x + m_XPos, y + m_YPos, width, height, text, size, auto_scrollbar, force_scrollbar, leftorright, red, green, blue);
-
+	cTextItem* newTextItem = new cTextItem(ID, x + m_XPos, y + m_YPos, width, height, text, size, auto_scrollbar,
+	        force_scrollbar, leftorright, red, green, blue);
 	// Store text item
 	m_TextItems.push_back(newTextItem);
 }
@@ -497,7 +477,7 @@ void cInterfaceWindow::EditTextItem(string text, int ID)
 	m_TextItems[ID]->m_Font.SetMultiline(true, m_TextItems[ID]->GetWidth(), m_TextItems[ID]->GetHeight());
 	m_TextItems[ID]->SetText(text);
 
-	if (m_TextItems[ID]->GetHeight() == 0 || text == "")
+	if (m_TextItems[ID]->GetHeight() == 0 || text.empty())
 	{
 		if (m_TextItems[ID]->m_ScrollBar)
 		{  // has scrollbar but doesn't need one since there doesn't seem to be any text at the moment; hide scrollbar
@@ -522,7 +502,7 @@ void cInterfaceWindow::EditTextItem(string text, int ID)
 	// update scrollbar if it exists
 	if (m_TextItems[ID]->m_ScrollBar)
 	{
-		if (!m_TextItems[ID]->m_ScrollBar->m_Hidden)
+		if (!m_TextItems[ID]->m_ScrollBar->IsHidden())
 		{  // also, re-render text in narrower space to accommodate scrollbar width
 			m_TextItems[ID]->m_Font.SetMultiline(true, m_TextItems[ID]->GetWidth() - 17, m_TextItems[ID]->GetHeight());
 			m_TextItems[ID]->SetText(text);
@@ -542,9 +522,8 @@ void cInterfaceWindow::AddListBox(int & ID, int x, int y, int width, int height,
 	// create listbox item
 	ID = m_ListBoxes.size();
 	g_LogFile.write("initializing listbox");
-	cListBox* newListBox = new cListBox();
-	g_LogFile.write("creating listbox");
-	newListBox->CreateListbox(ID, x + m_XPos, y + m_YPos, width, height, BorderSize, MultiSelect, ShowHeaders, HeaderDiv, HeaderSort, fontsize, rowheight);
+	cListBox* newListBox = new cListBox(ID, x + m_XPos, y + m_YPos, width, height, BorderSize, MultiSelect,
+	        ShowHeaders, HeaderDiv, HeaderSort, fontsize, rowheight);
 	g_LogFile.write("enabling events");
 	newListBox->m_EnableEvents = enableEvents;
 
@@ -573,16 +552,6 @@ int cInterfaceWindow::GetListBoxSize(int ID)
 	return m_ListBoxes[ID]->GetSize();
 }
 
-void cInterfaceWindow::ScrollListBoxDown(int ID)
-{
-	m_ListBoxes[ID]->ScrollDown();
-}
-
-void cInterfaceWindow::ScrollListBoxUp(int ID)
-{
-	m_ListBoxes[ID]->ScrollUp();
-}
-
 void cInterfaceWindow::SetSelectedItemText(int listBoxID, int itemID, string data)
 {
 	m_ListBoxes[listBoxID]->SetElementText(itemID, data);
@@ -599,9 +568,9 @@ void cInterfaceWindow::SetSelectedItemText(int listBoxID, int itemID, string dat
 	m_ListBoxes[listBoxID]->SetElementText(itemID, data, columns);
 }
 
-void cInterfaceWindow::SetSelectedItemColumnText(int listBoxID, int itemID, string data, int column)
+void cInterfaceWindow::SetSelectedItemColumnText(int listBoxID, int itemID, string data, const std::string& column)
 {
-	m_ListBoxes[listBoxID]->SetElementColumnText(itemID, data, column);
+    m_ListBoxes[listBoxID]->SetElementColumnText(itemID, std::move(data), column);
 }
 
 void cInterfaceWindow::SetSelectedItemTextColor(int listBoxID, int itemID, SDL_Color* text_color)
@@ -694,7 +663,7 @@ int cInterfaceWindow::ArrowDownListBox(int ID)
 
 bool cInterfaceWindow::IsMultiSelected(int ID)
 {
-	if (m_ListBoxes.empty())		return 0;
+	if (m_ListBoxes.empty())		return false;
 	return m_ListBoxes[ID]->HasMultiSelected();
 }
 
@@ -713,15 +682,14 @@ void cInterfaceWindow::ClearListBox(int ID)
 	m_ScrollBars[m_ListBoxes[ID]->m_ScrollDragID]->SetTopValue(0);
 }
 
-void cInterfaceWindow::SetListBoxPosition(int ID, int pos)
+cListBox* cInterfaceWindow::GetListBox(int id)
 {
-	if (m_ListBoxes.empty())		return;
-	m_ListBoxes[ID]->m_Position = pos;
-	m_ScrollBars[m_ListBoxes[ID]->m_ScrollDragID]->SetTopValue(pos);
+    return m_ListBoxes.at(id);
 }
 
-cInterfaceWindowXML::cInterfaceWindowXML()
-{
+cInterfaceWindowXML::cInterfaceWindowXML(const char* base_file) :
+    m_filename( (DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << base_file).str() ) {
+
 }
 
 cInterfaceWindowXML::~cInterfaceWindowXML()
@@ -762,6 +730,8 @@ void cInterfaceWindowXML::load()
 		g_LogFile.ss() << "Error: unexpected tag in '" << m_filename << "': '" << tag << "' ...";
 		g_LogFile.ssend();
 	}
+
+	set_ids();
 }
 
 void cInterfaceWindowXML::read_text_item(TiXmlElement *el)
@@ -868,7 +838,7 @@ void cInterfaceWindowXML::add_widget(string widget_name, int x, int y, string se
 	int id;
 	CLog l;
 	cXmlWidget *widget = find_widget(widget_name);
-	if (widget == 0)
+	if (widget == nullptr)
 	{
 		l.ss() << "Error: can't find definition for widget '" << widget_name << "'";
 		l.ssend();
@@ -1155,7 +1125,7 @@ void cInterfaceWindowXML::read_button_definition(TiXmlElement *el)
 {
 	int id, x, y, w, h;
 	XmlUtil xu(m_filename);
-	string scale, alpha, name, on, off, disabled, base = "";
+	string scale, alpha, name, on, off, disabled, base;
 	/*
 	*	get the button name - we'll use this to match up
 	*	interface IDs
@@ -1173,7 +1143,7 @@ void cInterfaceWindowXML::read_button_definition(TiXmlElement *el)
 	*	if we have a base value, use it to construct the
 	*	three image names
 	*/
-	if (base != "") {
+	if (!base.empty()) {
 		on = base + "On.png";
 		off = base + "Off.png";
 		disabled = base + "Disabled.png";
@@ -1304,7 +1274,7 @@ void cInterfaceWindowXML::widget_button_item(TiXmlElement *el, cXmlWidget &wid)
 
 	xu.get_att(el, "Name", xw.name);
 	xu.get_att(el, "Image", xw.base, Optional);
-	if (xw.base != "") {
+	if (!xw.base.empty()) {
 		xw.on = xw.base + "On.png";
 		xw.off = xw.base + "Off.png";
 		xw.disabled = xw.base + "Disabled.png";
@@ -1386,6 +1356,145 @@ cXmlWidget* cInterfaceWindowXML::find_widget(string name)
 {
 	map<string, cXmlWidget*>::iterator it;
 	it = widgets.find(name);
-	if (it == widgets.end())	return 0;
+	if (it == widgets.end())	return nullptr;
 	return it->second;
 }
+
+cWindowManager& cInterfaceWindow::window_manager() const
+{
+    return g_WinManager;
+}
+
+void cInterfaceWindow::push_window(const std::string& name) const {
+    window_manager().push(name);
+}
+
+void cInterfaceWindow::replace_window(const std::string& name) const {
+    window_manager().replace(name);
+}
+
+void cInterfaceWindow::update()
+{
+    process();
+}
+
+void cInterfaceWindow::OnKeyPress(SDL_keysym keysym)
+{
+    for(auto& btn : m_Buttons) {
+        try {
+            btn->OnKeyPress(keysym);
+        } catch (std::exception& exception) {
+            push_message(exception.what(), 1);
+        }
+    }
+}
+
+void cInterfaceWindow::pop_window() const
+{
+    window_manager().Pop();
+}
+
+void cInterfaceWindow::pop_to_window(const std::string& target) const
+{
+    window_manager().PopToWindow(target);
+}
+
+IBuilding& cInterfaceWindow::active_building() const {
+    auto bld = window_manager().GetActiveBuilding();
+    if(bld)
+        return *bld;
+    throw std::logic_error("No active building");
+}
+
+void cInterfaceWindow::set_active_building(IBuilding* building)
+{
+    window_manager().SetActiveBuilding(building);
+}
+
+IBuilding& cInterfaceWindow::cycle_building(int direction)
+{
+    auto& buildings = g_Game.buildings();
+    auto next = (buildings.find(&active_building()) + direction) % buildings.num_buildings();
+    auto& active = buildings.get_building(next);
+    set_active_building(&active);
+    return active;
+}
+
+void cInterfaceWindow::input_integer(std::function<void(int)> callback)
+{
+    window_manager().InputInteger(std::move(callback));
+}
+
+void cInterfaceWindow::input_confirm(std::function<void()> callback)
+{
+    window_manager().InputConfirm(std::move(callback));
+}
+
+void cInterfaceWindow::input_string(std::function<void(const std::string&)> callback)
+{
+    window_manager().InputString(std::move(callback));
+}
+
+void cInterfaceWindow::SetListBoxSelectionCallback(int id, std::function<void(int)> cb)
+{
+    if (id>-1)
+        m_ListBoxes[id]->SetSelectionCallback(std::move(cb));
+}
+
+void cInterfaceWindow::SetListBoxDoubleClickCallback(int id, std::function<void(int)> cb)
+{
+    if (id>-1)
+        m_ListBoxes[id]->SetDoubleClickCallback(std::move(cb));
+}
+
+void cInterfaceWindow::SetButtonHotKey(int id, SDLKey key)
+{
+    if(id > -1) {
+        m_Buttons[id]->SetHotKey(key);
+    }
+}
+
+void cInterfaceWindow::SetCheckBoxCallback(int id, std::function<void(bool)> cb)
+{
+    if(id > -1) {
+        m_CheckBoxes[id]->SetCallback(std::move(cb));
+    }
+}
+
+void cInterfaceWindow::SetSliderCallback(int id, std::function<void(int)> cb)
+{
+    if(id > -1) {
+        m_Sliders[id]->SetCallback(std::move(cb));
+    }
+}
+
+void cInterfaceWindow::SetListBoxHotKeys(int id, SDLKey up, SDLKey down)
+{
+    if(id > -1) {
+        m_ListBoxes[id]->SetArrowHotKeys(up, down);
+    }
+}
+
+void cInterfaceWindow::push_message(std::string text, int color)
+{
+    window_manager().PushMessage(std::move(text), color);
+}
+
+sGirl& cInterfaceWindow::active_girl() const
+{
+    auto girl = window_manager().GetActiveGirl();
+    if(girl)
+        return *girl;
+    throw std::logic_error("No girl selected");
+}
+
+void cInterfaceWindow::set_active_girl(sGirl * girl)
+{
+    window_manager().SetActiveGirl(girl);
+}
+
+sGirl* cInterfaceWindow::selected_girl() const
+{
+    return window_manager().GetActiveGirl();
+}
+

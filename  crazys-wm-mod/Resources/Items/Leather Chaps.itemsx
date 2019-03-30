@@ -7,5 +7,8 @@
         <Effect What="Stat" Name="Charisma" Amount="3" />
         <Effect What="Stat" Name="Constitution" Amount="5" />
         <Effect What="Stat" Name="Refinement" Amount="-10" />
+        <Crafting CraftPoints="40" ManaCost="0">
+            <Job Name="Cobbler"/>
+        </Crafting>
     </Item>
 </Items>

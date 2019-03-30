@@ -11,5 +11,8 @@
    <Effect What="Skill" Name="Combat"                  Amount="15"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
    <Effect What="Trait" Name="Fearless"                Amount="1"    />
+   <Crafting CraftPoints="220" ManaCost="50">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

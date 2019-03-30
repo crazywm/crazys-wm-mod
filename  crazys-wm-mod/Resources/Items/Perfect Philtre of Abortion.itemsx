@@ -12,5 +12,9 @@
    <Effect What="GirlStatus" Name="Pregnant By Player" Amount="0"    />
    <Effect What="GirlStatus" Name="Pregnant"           Amount="0"    />
    <Effect What="GirlStatus" Name="Inseminated"        Amount="0"    />
+   <Crafting CraftPoints="150" ManaCost="0">
+      <Job Name="Make Potions"/>
+      <Skill Name="Medicine" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

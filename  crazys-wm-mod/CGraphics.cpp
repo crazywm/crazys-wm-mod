@@ -18,19 +18,20 @@
  */
 #include "CGraphics.h"
 #include "fstream"
+#include <SDL_ttf.h>
+#include <SDL_image.h>
 #include "CLog.h"
 #include "DirPath.h"
 #include "sConfig.h"
-#include "Globals.h"
+#include "IconSurface.h"
 
 using namespace std;
 
-extern CLog g_LogFile;
 extern cConfig cfg;
 
 CGraphics::CGraphics()
 {
-	m_Screen = 0;
+	m_Screen = nullptr;
 	m_CurrentTime = 0;
 }
 
@@ -41,17 +42,25 @@ CGraphics::~CGraphics()
 
 void CGraphics::Free()
 {
-	TTF_Quit();
-	SDL_Quit();
-	m_Screen = 0;
+    m_BackgroundImage.reset();
+    TTF_Quit();
+    SDL_Quit();
 }
 
 void CGraphics::Begin()
 {
 	m_FPS.Start();
 	m_CurrentTime = SDL_GetTicks();
-	//Fill the screen white
+	// Fill the screen white
 	SDL_FillRect(m_Screen, &m_Screen->clip_rect, SDL_MapRGB(m_Screen->format, 0, 0, 0));
+
+    // draw the background image
+    SDL_Rect clip;
+    clip.x = 0;
+    clip.y = 0;
+    clip.w = GetWidth();
+    clip.h = GetHeight();
+    m_BackgroundImage->DrawSurface(clip.x, clip.y, nullptr, &clip, true);
 }
 
 bool CGraphics::End()
@@ -77,18 +86,18 @@ bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 {
 	if ((Width == 0 || Height == 0) && cfg.resolution.configXML())
 	{
-		m_ScreenWidth = _G.g_ScreenWidth = cfg.resolution.width();
-		m_ScreenHeight = _G.g_ScreenHeight = cfg.resolution.height();
-		_G.g_ScreenScaleX = (float)m_ScreenWidth / (float)cfg.resolution.scalewidth();
-		_G.g_ScreenScaleY = (float)m_ScreenHeight / (float)cfg.resolution.scaleheight();
-		_G.g_Fullscreen = cfg.resolution.fullscreen();
+		m_ScreenWidth = cfg.resolution.width();
+		m_ScreenHeight = cfg.resolution.height();
+        m_ScreenScaleX = (float)m_ScreenWidth / (float)cfg.resolution.scalewidth();
+        m_ScreenScaleY = (float)m_ScreenHeight / (float)cfg.resolution.scaleheight();
+		m_Fullscreen = cfg.resolution.fullscreen();
 	}
 	else
 	{
 		g_LogFile.write("Skipping Screen Mode");
-		_G.g_ScreenWidth = m_ScreenWidth = Width;
-		_G.g_ScreenHeight = m_ScreenHeight = Height;
-		_G.g_Fullscreen = false;
+		m_ScreenWidth = Width;
+		m_ScreenHeight = Height;
+        m_Fullscreen = false;
 	}
 
 	// init SDL
@@ -112,32 +121,68 @@ bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 		return false;
 	}
 	else
-		SDL_WM_SetIcon(loadIcon, NULL);
+		SDL_WM_SetIcon(loadIcon, nullptr);
 
 	// Setup the screen
 	g_LogFile.write("Determining Fullscreen or Windowed Mode");
-	if (_G.g_Fullscreen == false)
-		m_Screen = SDL_SetVideoMode(m_ScreenWidth, m_ScreenHeight, m_ScreenBPP, SDL_SWSURFACE);
-	else
-		m_Screen = SDL_SetVideoMode(m_ScreenWidth, m_ScreenHeight, m_ScreenBPP, SDL_SWSURFACE|SDL_FULLSCREEN);
-	if(!m_Screen)	// check for error
-	{
-		g_LogFile.write(SDL_GetError());
-		return false;
-	}
+    if (m_Fullscreen)
+        m_Screen = SDL_SetVideoMode(m_ScreenWidth, m_ScreenHeight, m_ScreenBPP, SDL_SWSURFACE | SDL_FULLSCREEN);
+    else
+        m_Screen = SDL_SetVideoMode(m_ScreenWidth, m_ScreenHeight, m_ScreenBPP, SDL_SWSURFACE);
+    if(!m_Screen)	// check for error
+    {
+        g_LogFile.write(SDL_GetError());
+        return false;
+    }
 
-	// set window caption
-	g_LogFile.write("Setting Window Caption");
-	SDL_WM_SetCaption(caption.c_str(), 0);
+    // set window caption
+    g_LogFile.write("Setting Window Caption");
+    SDL_WM_SetCaption(caption.c_str(), nullptr);
 
-	// Init TTF
-	g_LogFile.write("Initializing TTF");
-	if(TTF_Init() == -1)
-	{
-		g_LogFile.write("Error with TTF_Init()");
-		g_LogFile.write(TTF_GetError());
-		return false;
-	}
+    // Init TTF
+    g_LogFile.write("Initializing TTF");
+    if(TTF_Init() == -1)
+    {
+        g_LogFile.write("Error with TTF_Init()");
+        g_LogFile.write(TTF_GetError());
+        return false;
+    }
 
-	return true;
+    // Load the universal background image
+    m_BackgroundImage = make_image_surface("background", "");
+    g_LogFile.write("Background Image Set");
+
+    // Load the brothel images
+    for (int i = 0; i < 7; i++)
+    {
+        LoadBrothelImage("Brothel" + std::to_string(i) + ".jpg");
+    }
+    LoadBrothelImage("Arena.png");
+    LoadBrothelImage("Clinic.png");
+    LoadBrothelImage("Centre.jpg");
+    LoadBrothelImage("Farm.png");
+    LoadBrothelImage("House.png");
+    LoadBrothelImage("Movies.jpg");
+    g_LogFile.write("Brothel Images Set");
+
+    return true;
+}
+
+CSurface* CGraphics::LoadBrothelImage(const std::string& name)
+{
+    if(name.empty())
+        return nullptr;
+
+    auto image = m_BrothelImages.find(name);
+    if(image == m_BrothelImages.end()) {
+        m_BrothelImages[name] = std::make_unique<CSurface>(ImagePath(name).c_str());
+        return m_BrothelImages[name].get();
+    } else {
+        return image->second.get();
+    }
+}
+
+int CGraphics::BlitSurface(SDL_Surface* src, SDL_Rect* srcrect, SDL_Rect* dstrect) const
+{
+    return SDL_BlitSurface(src, srcrect, GetScreen(), dstrect);
 }

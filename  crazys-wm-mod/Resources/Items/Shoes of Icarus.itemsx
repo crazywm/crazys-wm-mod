@@ -19,5 +19,8 @@
    <Effect What="Stat"  Name="PCHate"                  Amount="-15"    />
    <Effect What="Stat"  Name="PCLove"                  Amount="-15"    />
    <Effect What="Trait" Name="Fleet of Foot"           Amount="1"    />
+   <Crafting CraftPoints="150" ManaCost="20">
+      <Job Name="Cobbler"/>
+   </Crafting>
 </Item>
 </Items>

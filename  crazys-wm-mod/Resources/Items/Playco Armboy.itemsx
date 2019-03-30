@@ -10,5 +10,8 @@
       Infinite="false">
    <Effect What="Skill" Name="Combat"                  Amount="5"    />
    <Effect What="Stat"  Name="Strength"                Amount="5"    />
+   <Crafting CraftPoints="50" ManaCost="30">
+      <Job Name="Make Items"/>
+   </Crafting>
 </Item>
 </Items>

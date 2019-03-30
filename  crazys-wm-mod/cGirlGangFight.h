@@ -23,7 +23,6 @@
 #define __CGIRLGANGFIGHT_H
 
 #include <string>
-#include <vector>
 
 #include "CLog.h"
 

@@ -197,7 +197,7 @@ if (DayNight == SHIFT_NIGHT)
 GardenPlant[0] -= int(jobperformance/20)+1;   // the gardener clears some weeds each shift - at least 1, jp>240 clears 13
 for (int i=1;i<10;i++)    // better numbers for this may be needed
 {
-    int herbsgrown = (g_Girls.GetSkill(girl, SKILL_FARMING))/(i*i);
+    int herbsgrown = (cGirls::GetSkill(girl, SKILL_FARMING))/(i*i);
     if (herbsgrown<1)herbsgrown=1;
     if (jobperformance>250)
     {

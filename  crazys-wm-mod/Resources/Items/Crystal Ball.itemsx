@@ -23,5 +23,8 @@
             What="Stat"
             Name="Mana"
             Amount="3" />
+        <Crafting CraftPoints="30" ManaCost="20">
+            <Job Name="Make Items"/>
+        </Crafting>
     </Item>
 </Items>

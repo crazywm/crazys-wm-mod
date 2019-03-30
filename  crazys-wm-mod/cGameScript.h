@@ -20,8 +20,8 @@
 #define __CGAMESCRIPT_H
 
 #include "cScripts.h"
-#include "cGirls.h"
-#include "cBrothel.h"
+
+class sGirl;
 
 const int NUMVARS = 20;
 
@@ -185,19 +185,17 @@ public:
 	cGameScript()
 	{
 		// Clear all internal flags to false
-		for(short i=0;i<NUMVARS;i++)
-			m_Vars[i] = 0;
-		m_CurrPos = 0;
-		m_ScriptParent = 0;
+		for(int & m_Var : m_Vars)
+			m_Var = 0;
+		m_CurrPos = nullptr;
+		m_ScriptParent = nullptr;
 		m_Active = false;
 		m_Leave = false;
-		m_GirlTarget = 0;
+		m_GirlTarget = nullptr;
 	}
 	~cGameScript()
 	{
-		m_CurrPos = 0;
-		if (m_ScriptParent) delete m_ScriptParent;
-		m_ScriptParent = 0;
+		delete m_ScriptParent;
 	}
 
 	bool Prepare(sGirl* girlTarget)
@@ -208,8 +206,8 @@ public:
 
 		m_GirlTarget = girlTarget;
 
-		for(short i=0;i<NUMVARS;i++)
-			m_Vars[i] = 0;
+		for(int & m_Var : m_Vars)
+			m_Var = 0;
 
 		// run the init portion of the script if it exists
 		// MOD: docclox: 'twas crashing here with m_ScriptParent == 0
@@ -218,7 +216,7 @@ public:
 		//
 		// Which may not work at all, of course, since there's
 		// no reliable way to test it.
-		if(m_ScriptParent == 0) return true;
+		if(m_ScriptParent == nullptr) return true;
 		if(m_ScriptParent && m_ScriptParent->m_Type == 1)
 		{
 			sScript* Ptr = m_ScriptParent;
@@ -237,11 +235,10 @@ public:
 	bool Release()
 	{
 		m_Active = false;
-		m_CurrPos = 0;
-		if(m_ScriptParent)
-			delete m_ScriptParent;
-		m_ScriptParent = 0;
-		m_GirlTarget = 0;
+		m_CurrPos = nullptr;
+		delete m_ScriptParent;
+		m_ScriptParent = nullptr;
+		m_GirlTarget = nullptr;
 		return true;
 	}
 

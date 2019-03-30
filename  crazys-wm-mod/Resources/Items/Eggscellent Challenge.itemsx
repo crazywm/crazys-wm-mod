@@ -12,5 +12,9 @@
    <Effect What="Stat"  Name="Health"                  Amount="20"    />
    <Effect What="Stat"  Name="Tiredness"               Amount="-10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="2"    />
+   <Crafting CraftPoints="25" ManaCost="0" Weight="4">
+      <Job Name="Baker"/>
+      <Skill Name="Cooking" Minimum="30" />
+   </Crafting>
 </Item>
 </Items>

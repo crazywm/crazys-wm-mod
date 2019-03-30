@@ -11,17 +11,9 @@
       GirlBuyChance="0">
    <Effect What="Stat"  Name="Charisma"                Amount="-10"    />
    <Effect What="Trait" Name="Herpes"                Amount="0"    />
-</Item>
-<Item Name="Herpes Cure"
-      Desc="This thick balm cures herpes, but also causes the skin to temporarily turn blue. Stock up on makeup! (-10 Cha) (This Seller can get more but he charges more)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="2000"
-      Rarity="Shop50"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Stat"  Name="Charisma"                Amount="-10"    />
-   <Effect What="Trait" Name="Herpes"                Amount="0"    />
+   <Crafting CraftPoints="200" ManaCost="0" Weight="2">
+      <Job Name="Make Potions"/>
+      <Skill Name="Medicine" Minimum="80" />
+   </Crafting>
 </Item>
 </Items>

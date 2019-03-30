@@ -9,5 +9,8 @@
       Rarity="Shop25"
       Infinite="false">
    <Effect What="Trait" Name="Cat Girl"                Amount="1"    />
+   <Crafting CraftPoints="80" ManaCost="20">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

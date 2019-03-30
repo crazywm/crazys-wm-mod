@@ -7,5 +7,10 @@
    <Effect What="Trait" Name="Tight Butt" Amount="1" />
    <Effect What="Trait" Name="MILF" Amount="0" />
    <Effect What="Trait" Name="Virgin" Amount="1" />
+   <Crafting CraftPoints="170" ManaCost="0">
+      <Job Name="Make Potions"/>
+      <Skill Name="Medicine" Minimum="40" />
+      <Skill Name="Brewing" Minimum="40" />
+   </Crafting>
 </Item>
 </Items>

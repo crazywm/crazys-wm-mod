@@ -13,5 +13,9 @@
    <Effect What="Stat"  Name="Constitution"            Amount="-5"    />
    <Effect What="Trait" Name="Nerd"                    Amount="1"    />
    <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
+   <Crafting CraftPoints="200" ManaCost="40">
+      <Job Name="Make Items"/>
+      <Stat Name="Intelligence" Minimum="90" />
+   </Crafting>
 </Item>
 </Items>

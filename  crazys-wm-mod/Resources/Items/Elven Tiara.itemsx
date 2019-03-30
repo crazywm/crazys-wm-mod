@@ -22,5 +22,8 @@
 			What="Stat"
 			Name="Refinement"
 			Amount="15" />
+		<Crafting CraftPoints="160" ManaCost="10">
+			<Job Name="Blacksmith"/>
+		</Crafting>
 	</Item>
 </Items>

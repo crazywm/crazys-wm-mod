@@ -55,5 +55,8 @@
             What="Trait"
             Name="Elegant"
             Amount="0" />
+        <Crafting CraftPoints="90" ManaCost="40">
+            <Job Name="Make Items"/>
+        </Crafting>
     </Item>
 </Items>

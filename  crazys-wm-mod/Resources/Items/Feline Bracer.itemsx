@@ -11,5 +11,8 @@
    <Effect What="Skill" Name="Beastiality" Amount="10" />
    <Effect What="Stat" Name="Intelligence" Amount="5" />
    <Effect What="Stat" Name="Agility" Amount="10" />
+   <Crafting CraftPoints="100" ManaCost="50">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

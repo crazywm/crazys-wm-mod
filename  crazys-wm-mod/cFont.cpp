@@ -18,22 +18,21 @@
  */
 #include <iostream>
 #include "cFont.h"
+#include <SDL_ttf.h>
 #include "CLog.h"
 #include "CGraphics.h"
 #include "sConfig.h"
-#include "Globals.h"
 #include <vector>
 using namespace std;
 
-extern CLog g_LogFile;
 extern CGraphics g_Graphics;
 
 float FontScale = 1.0f;
 
 cFont::cFont()
 {
-	m_Font = 0;
-	m_MultilineMessage = m_Message = 0;
+	m_Font = nullptr;
+	m_MultilineMessage = m_Message = nullptr;
 	m_Text = "";
 	m_NewText = true;
 	m_IsMultiline = false;
@@ -59,9 +58,9 @@ void cFont::SetText(string text)
 // it then blits the lines of text to this surface so it is then ready to be drawn as normal
 void cFont::RenderMultilineText(string text)
 {
-	if (m_NewText == false && m_MultilineMessage != 0) return;
-	if (text == "" && m_Text == "") return;
-	if (text == "") text = m_Text;
+	if (m_NewText == false && m_MultilineMessage != nullptr) return;
+	if (text.empty() && m_Text.empty()) return;
+	if (text.empty()) text = m_Text;
 	text = UpdateLineEndings(text);
 
 	// first separate into lines according to width
@@ -119,7 +118,7 @@ void cFont::RenderMultilineText(string text)
 	int height = lines.size()*m_Lineskip;
 
 	if (m_MultilineMessage) SDL_FreeSurface(m_MultilineMessage);
-	m_MultilineMessage = 0;
+	m_MultilineMessage = nullptr;
 
 	// create a surface to render all the text too
 	m_MultilineMessage = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
@@ -135,15 +134,15 @@ void cFont::RenderMultilineText(string text)
 	m_Text = otext;
 
 	if (m_Message) SDL_FreeSurface(m_Message);
-	m_Message = 0;
+	m_Message = nullptr;
 	m_NewText = false;
 }
 
 void cFont::RenderText(string text, bool multi)
 {
 	cConfig cfg;
-	if (m_NewText == false && m_Message != 0) return;
-	if (m_Font == 0)
+	if (m_NewText == false && m_Message != nullptr) return;
+	if (m_Font == nullptr)
 	{
 		if (cfg.debug.log_fonts())
 		{
@@ -153,14 +152,14 @@ void cFont::RenderText(string text, bool multi)
 		return;
 	}
 	if (m_Message) SDL_FreeSurface(m_Message);
-	m_Message = 0;
-	if ((m_Message != 0) && (text == "")) return;
-	if (text == "") text = m_Text;
+	m_Message = nullptr;
+	if ((m_Message != nullptr) && (text.empty())) return;
+	if (text.empty()) text = m_Text;
 	m_Message = (cfg.fonts.antialias())
 		? TTF_RenderText_Blended(m_Font, text.c_str(), m_TextColor)
 		: m_Message = TTF_RenderText_Solid(m_Font, text.c_str(), m_TextColor);
 
-	if (m_Message == 0) // `J` this log is useless - commenting it out
+	if (m_Message == nullptr) // `J` this log is useless - commenting it out
 	{
 		// g_LogFile.write("Error in RenderText m_Message. Text which was to be rendered: " + text);
 		// g_LogFile.write(TTF_GetError());
@@ -200,7 +199,7 @@ int cFont::GetHeight()
 
 bool cFont::DrawText(int x, int y, SDL_Surface* destination, bool multi)
 {
-	if (m_Text == "") return true;
+	if (m_Text.empty()) return true;
 	if (!m_Font) return false;
 	RenderText("", multi);
 	if (m_Message)
@@ -211,8 +210,8 @@ bool cFont::DrawText(int x, int y, SDL_Surface* destination, bool multi)
 		// Draw the source surface onto the destination
 		int ret = 0;
 		ret = (destination)
-			? SDL_BlitSurface(m_Message, 0, destination, &offset)
-			: SDL_BlitSurface(m_Message, 0, g_Graphics.GetScreen(), &offset);
+			? SDL_BlitSurface(m_Message, nullptr, destination, &offset)
+			: SDL_BlitSurface(m_Message, nullptr, g_Graphics.GetScreen(), &offset);
 		if (ret == -1)
 		{
 			g_LogFile.ss() << "Error bliting string" << endl;
@@ -225,7 +224,7 @@ bool cFont::DrawText(int x, int y, SDL_Surface* destination, bool multi)
 
 bool cFont::DrawMultilineText(int x, int y, int linesToSkip, int offsetY, SDL_Surface* destination)
 {
-	if (m_Text == "") return true;
+	if (m_Text.empty()) return true;
 	if (!m_Font) return false;
 	RenderMultilineText("");
 	if (m_MultilineMessage)
@@ -272,15 +271,15 @@ bool cFont::LoadFont(string font, int size)
 {
 	cConfig cfg;
 	if (m_Font) TTF_CloseFont(m_Font);
-	m_Font = 0;
+	m_Font = nullptr;
 	if (cfg.debug.log_fonts()) std::cerr << "loading font: '" << font << "' at size " << size << endl;
 
-	FontScale = (cfg.resolution.fixedscale() ? _G.g_ScreenScaleY : 1.0f);
+	FontScale = (cfg.resolution.fixedscale() ? g_Graphics.GetScaleY() : 1.0f);
 
 	int t = int((float)size * FontScale);
 	if (FontScale < 1.0f) t += 1;
 
-	if ((m_Font = TTF_OpenFont(font.c_str(), t)) == 0)
+	if ((m_Font = TTF_OpenFont(font.c_str(), t)) == nullptr)
 	{
 		g_LogFile.write("Error in LoadFont for font file: " + font);
 		g_LogFile.write(TTF_GetError());
@@ -292,10 +291,10 @@ bool cFont::LoadFont(string font, int size)
 void cFont::Free()
 {
 	if (m_Message) SDL_FreeSurface(m_Message);
-	m_Message = 0;
+	m_Message = nullptr;
 	if (m_MultilineMessage) SDL_FreeSurface(m_MultilineMessage);
-	m_MultilineMessage = 0;
-	m_Font = 0;
+	m_MultilineMessage = nullptr;
+	m_Font = nullptr;
 }
 
 string cFont::UpdateLineEndings(string text)
@@ -311,4 +310,29 @@ string cFont::UpdateLineEndings(string text)
 	}
 #endif
 	return text;
+}
+
+int cFont::GetFontHeight()
+{
+    return TTF_FontHeight(m_Font);
+}
+
+int cFont::GetFontLineSkip()
+{
+    return TTF_FontLineSkip(m_Font);
+}
+
+void cFont::SetFontBold(bool Bold)
+{
+    TTF_SetFontStyle(m_Font, (Bold ? TTF_STYLE_BOLD : TTF_STYLE_NORMAL) );
+}
+
+int cFont::IsFontFixedWidth()
+{
+    return TTF_FontFaceIsFixedWidth(m_Font);
+}
+
+void cFont::GetSize(std::string text, int& width, int& height)
+{
+    TTF_SizeText(m_Font, text.c_str(), &width, &height);
 }

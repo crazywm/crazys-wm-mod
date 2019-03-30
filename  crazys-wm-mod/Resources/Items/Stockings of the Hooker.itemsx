@@ -27,5 +27,9 @@
    <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
    <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+
+   <Crafting CraftPoints="120" ManaCost="30">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

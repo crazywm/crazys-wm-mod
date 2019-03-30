@@ -12,5 +12,9 @@
    <Effect What="Stat" Name="Health" Amount="45" />
    <Effect What="Stat" Name="Spirit" Amount="5" />
    <Effect What="Stat" Name="Charisma" Amount="5" />
+   <Crafting CraftPoints="50" ManaCost="0" Weight="3">
+      <Job Name="Baker"/>
+      <Skill Name="Cooking" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

@@ -27,5 +27,9 @@
             What="Stat"
             Name="Libido"
             Amount="13" />
+        <Crafting CraftPoints="80" ManaCost="0">
+            <Job Name="Make Items"/>
+            <Stat Name="Libido" Minimum="50" />
+        </Crafting>
     </Item>
 </Items>

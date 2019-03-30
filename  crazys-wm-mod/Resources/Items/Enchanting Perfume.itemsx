@@ -16,5 +16,10 @@
    <Effect What="Skill" Name="BDSM"                    Amount="30"    />
    <Effect What="Skill" Name="OralSex"                 Amount="30"    />
    <Effect What="Skill" Name="TittySex"                Amount="30"    />
+   <Crafting CraftPoints="130" ManaCost="30">
+      <Job Name="Make Potions"/>
+      <Skill Name="Herbalism" Minimum="50" />
+      <Skill Name="Magic" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

@@ -17,15 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cCustomers.h"
-#include "cBrothel.h"
-#include "libintl.h"
+#include "src/IBuilding.hpp"
 extern cRng g_Dice;
 
 // constructors + destructors
 cCustomers::cCustomers()
 {
-	//	m_Parent=0;
-	m_NumCustomers = 0;
 	ChangeCustomerBase();
 	//	m_Last=0;
 }
@@ -41,25 +38,19 @@ sCustomer::sCustomer()
 	m_Official = false;
 	m_Money = 100;
 	m_HasAIDS = m_HasChlamydia = m_HasSyphilis = m_HasHerpes = false;
-	for (int j = 0; j < NUM_STATS; j++)		m_Stats[j] = 50;
-	for (int j = 0; j < NUM_SKILLS; j++)	m_Skills[j] = 50;
+	for (int & m_Stat : m_Stats)		m_Stat = 50;
+	for (int & m_Skill : m_Skills)	    m_Skill = 50;
 	m_GoalA = m_GoalB = m_GoalC = 0;
 	m_Fetish = 0;
 	m_SexPref = m_SexPrefB = 0;
 	m_ParticularGirl = 0;
-	m_Next = 0;
-	m_Prev = 0;
 }
+
 sCustomer::~sCustomer()
 {
-	if (m_Next) delete m_Next;	m_Next = 0;
 }
 void cCustomers::Free()
 {
-	m_NumCustomers = 0;
-	if(m_Parent)
-		delete m_Parent;
-	m_Last = m_Parent = 0;
 }
 
 /*int cCustomers::GetHappiness()
@@ -74,39 +65,38 @@ void cCustomers::Free()
 	return num;
 }*/
 
-sCustomer* cCustomers::CreateCustomer(sBrothel& brothel)
+std::unique_ptr<sCustomer> cCustomers::CreateCustomer(IBuilding& brothel)
 {
-	return new sCustomer{GetCustomer(brothel)};
+	return std::make_unique<sCustomer>(GetCustomer(brothel));
 }
 
 // Create 1 customer
-sCustomer cCustomers::GetCustomer(sBrothel& brothel)
+sCustomer cCustomers::GetCustomer(IBuilding& brothel)
 {
 	sCustomer customer;
-	customer.m_Next = customer.m_Prev = 0;	// we are just making 1 customer
 	// It may be a group of people looking for group sex (5% chance)
 	if (g_Dice.percent(5)) // changed to bring to documented 5%, consider rasing to 10 or 15, was 4. -PP
 	{
-		customer.m_IsWoman = 0;
+		customer.m_IsWoman = false;
 		customer.m_Amount = (g_Dice % 3) + 2; // was +1 this allowed groups of 1 -PP
 	}
 	else	// Then it is just one customer
 	{
 		customer.m_Amount = 1;
 		// 15% chance they are a woman since women don't come often
-		customer.m_IsWoman = (g_Dice.percent(15)) ? true : false;
+		customer.m_IsWoman = g_Dice.percent(15);
 	}
 
 	// get their stats generated
-	for (int j = 0; j < NUM_STATS; j++)		customer.m_Stats[j] = (g_Dice % 91) + 10;
-	for (u_int j = 0; j < NUM_SKILLS; j++)	customer.m_Skills[j] = (g_Dice % 91) + 10;
+	for (int & m_Stat : customer.m_Stats)	m_Stat = (g_Dice % 91) + 10;
+	for (int & m_Skill : customer.m_Skills)	m_Skill = (g_Dice % 91) + 10;
 
 	SetGoals(&customer);
 
 	// generate their fetish
 	customer.m_Fetish = g_Dice%NUM_FETISH;
 	if (customer.m_Fetish == FETISH_SPECIFICGIRL)
-		customer.m_ParticularGirl = g_Dice%brothel.m_NumGirls;
+		customer.m_ParticularGirl = g_Dice%brothel.num_girls();
 
 	// generate their sex preference
 	if (customer.m_IsWoman)
@@ -202,10 +192,10 @@ sCustomer cCustomers::GetCustomer(sBrothel& brothel)
 	return customer;
 }
 
-void cCustomers::GenerateCustomers(sBrothel& brothel, bool Day0Night1)
+void cCustomers::GenerateCustomers(IBuilding& brothel, bool Day0Night1)
 {
 	Free();	// Free any existing customers
-	if (brothel.m_NumGirls == 0) return;	// no girls, no customers
+	if (brothel.num_girls() == 0) return;	// no girls, no customers
 
 	stringstream ss;
 	string daynighttime = (Day0Night1 ? "nighttime" : "daytime");
@@ -217,7 +207,7 @@ void cCustomers::GenerateCustomers(sBrothel& brothel, bool Day0Night1)
  *	adding a .5 bonus to night time trade as well - should see more
  *	punters after dark it seems to me
  */
-	int num = int(brothel.m_NumGirls * (Day0Night1 ? 2.0 : 1.5));
+	int num = int(brothel.num_girls() * (Day0Night1 ? 2.0 : 1.5));
 	ss << "The number of girls in this brothel attracted " << num << " initial " << daynighttime << " customers.\n \n";
 /*
  *	the customers attracted by the places fame (for this shift)
@@ -242,14 +232,14 @@ void cCustomers::GenerateCustomers(sBrothel& brothel, bool Day0Night1)
 	}
 
 	// filthiness will take away customers
-	int LostCustomers = max(0, int(brothel.m_Filthiness / 10));		// was /3, but that was overly harsh; changed to /10
+	int LostCustomers = max(0, int(brothel.filthiness() / 10));		// was /3, but that was overly harsh; changed to /10
 	num -= LostCustomers;
 
 	if (LostCustomers <= 0)	ss << "Your brothel was spotlessly clean, so you didn't lose any " << daynighttime << " customers due to filthiness.\n \n";
 	else/*               */	ss << "You lost " << LostCustomers << " " << daynighttime << " customers due to the filthiness of your brothel.\n \n";
 
 	// `J` Too much security will scare away customers
-	int ScareCustomers = int(brothel.m_SecurityLevel / 500);	// this number will need to be tweaked a bit
+	int ScareCustomers = int(brothel.security() / 500);	// this number will need to be tweaked a bit
 	ScareCustomers -= 4;	// less security could attract more customers (for good or bad)
 	if (ScareCustomers < 0) ScareCustomers = (g_Dice % 3) * -1;
 	if (ScareCustomers > 10) ScareCustomers += g_Dice%ScareCustomers;
@@ -273,15 +263,9 @@ void cCustomers::GenerateCustomers(sBrothel& brothel, bool Day0Night1)
 	for (int i = 0; i < num; i++)
 	{
 		Add(CreateCustomer(brothel));
-
 	}
 
 }
-
-/*sCustomer* cCustomers::GetParentCustomer()
-{
-	return m_Parent;
-}*/
 
 void cCustomers::ChangeCustomerBase()
 {
@@ -290,37 +274,9 @@ void cCustomers::ChangeCustomerBase()
 	// leaving 10-80% poor
 }
 
-void cCustomers::Add(sCustomer* cust)
+void cCustomers::Add(unique_ptr<sCustomer> cust)
 {
-	cust->m_Prev = cust->m_Next = 0;
-	if (m_Parent)
-	{
-		cust->m_Prev = m_Last;
-		m_Last->m_Next = cust;
-		m_Last = cust;
-	}
-	else	m_Last = m_Parent = cust;
-	m_NumCustomers++;
-}
-
-void cCustomers::Remove(sCustomer* cust)
-{
-	if (cust->m_Prev)
-	{
-		cust->m_Prev->m_Next = cust->m_Next;
-		if (cust->m_Next) cust->m_Next->m_Prev = cust->m_Prev;
-		cust->m_Next = cust->m_Prev = 0;
-		delete cust;
-		cust = 0;
-	}
-	else
-	{
-		m_Parent = cust->m_Next;
-		cust->m_Next = 0;
-		if (m_Parent) m_Parent->m_Prev = 0;
-		delete cust;
-		cust = 0;
-	}
+    m_Customers.push_back(std::move(cust));
 }
 
 void cCustomers::SetGoals(sCustomer* customer)
@@ -354,4 +310,9 @@ void cCustomers::SetGoals(sCustomer* customer)
 	customer->m_GoalA = a;
 	customer->m_GoalB = b;
 	customer->m_GoalC = c;
+}
+
+int cCustomers::GetNumCustomers()
+{
+    return m_Customers.size();
 }

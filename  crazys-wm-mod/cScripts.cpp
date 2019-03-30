@@ -22,13 +22,13 @@
 #include "XmlUtil.h"
 #include "FileList.h"
 #include "cGirls.h"
+#include "src/sGirl.hpp"
 
 
 #ifdef LINUX
 #include "linux.h"
 #endif
 
-extern CLog g_LogFile;
 extern string stringtolower(string name);
 static CLog &l = g_LogFile;
 
@@ -346,7 +346,7 @@ bool cActionTemplate::GetNextQuotedLine(char *Data, FILE *fp, long MaxSize)
 	long Pos = 0;
 
 	// Read until a quote is reached (or EOF)
-	while (1)
+	while (true)
 	{
 		if ((c = fgetc(fp)) == EOF)
 			return false;
@@ -354,7 +354,7 @@ bool cActionTemplate::GetNextQuotedLine(char *Data, FILE *fp, long MaxSize)
 		if (c == '"')
 		{
 			// Read until next quote (or EOF)
-			while (1)
+			while (true)
 			{
 				if ((c = fgetc(fp)) == EOF)
 					return false;
@@ -385,7 +385,7 @@ bool cActionTemplate::GetNextWord(char *Data, FILE *fp, long MaxSize)
 	Data[0] = 0;
 
 	// Read until an acceptable character found
-	while (1)
+	while (true)
 	{
 		if ((c = fgetc(fp)) == EOF)
 		{
@@ -425,11 +425,11 @@ sScript *cActionTemplate::CreateScriptAction(long Type)
 	// Make sure it's a valid action - Type is really the
 	// action ID (from the list of actions already loaded).
 	if (Type >= m_NumActions)
-		return 0;
+		return nullptr;
 
 	// Get pointer to action
-	if ((ActionPtr = GetAction(Type)) == 0)
-		return 0;
+	if ((ActionPtr = GetAction(Type)) == nullptr)
+		return nullptr;
 
 	// Create new sScript structure
 	Script = new sScript();
@@ -447,7 +447,7 @@ sScript *cActionTemplate::CreateScriptAction(long Type)
 		// Set up entry data based on type
 		switch (Script->m_Entries[i].m_Type)
 		{
-		case _TEXT:		Script->m_Entries[i].m_Text = 0;	break;
+		case _TEXT:		Script->m_Entries[i].m_Text = nullptr;	break;
 		case _INT:		Script->m_Entries[i].m_lValue = ActionPtr->m_Entries[i].m_lMin;	break;
 		case _FLOAT:	Script->m_Entries[i].m_fValue = ActionPtr->m_Entries[i].m_fMin;	break;
 		case _BOOL:		Script->m_Entries[i].m_bValue = true;	break;
@@ -508,11 +508,11 @@ bool cActionTemplate::ExpandActionText(char *Buffer, sScript *Script)
 bool cScript::Load(string filename)
 {
 	m_NumActions = 0;
-	if (m_ScriptParent) delete m_ScriptParent;
-	m_ScriptParent = 0;
+	delete m_ScriptParent;
+	m_ScriptParent = nullptr;
 
 	// load the script
-	sScript* testscript = NULL;
+	sScript* testscript = nullptr;
 	if (testscript = LoadScriptFile(filename))
 	{
 		m_ScriptParent = testscript;
@@ -527,7 +527,7 @@ bool cScript::Load(string filename)
 			l.ssend();
 		}
 	}
-	else if ((testscript = LoadScriptXML(filename)) != 0)
+	else if ((testscript = LoadScriptXML(filename)) != nullptr)
 	{
 		m_ScriptParent = testscript;
 		SaveScriptXML((filename + "x").c_str(), m_ScriptParent);
@@ -535,7 +535,7 @@ bool cScript::Load(string filename)
 		l.ss() << "Warning: Script '" << filename << "' was XML instead of Binary.\nRebuilding Binary '" << filename << "' as Binary and Building XML as '" << filename << "x'\n";
 		l.ssend();
 	}
-	else if ((testscript = LoadScriptXML(filename + "x")) != 0)
+	else if ((testscript = LoadScriptXML(filename + "x")) != nullptr)
 	{
 		m_ScriptParent = testscript;
 		string testpath = filename.substr(2, filename.find_last_of("\\") - 1);
@@ -560,34 +560,34 @@ bool cScript::Load(string filename)
 bool SaveScriptFile(const char *Filename, sScript *ScriptRoot)
 {
 	FILE *fp;
-	long i, j, NumActions;
+    std::int32_t i, j, NumActions;
 	sScript *ScriptPtr;
 
 	// Make sure there are some script actions
-	if ((ScriptPtr = ScriptRoot) == 0)
+	if ((ScriptPtr = ScriptRoot) == nullptr)
 		return false;
 
 	// Count the number of actions
 	NumActions = 0;
-	while (ScriptPtr != 0)
+	while (ScriptPtr != nullptr)
 	{
 		NumActions++; // Increase count
 		ScriptPtr = ScriptPtr->m_Next; // Next action
 	}
 
 	// Open the file for output
-	if ((fp = fopen(Filename, "wb")) == 0) return false; // return a failure
+	if ((fp = fopen(Filename, "wb")) == nullptr) return false; // return a failure
 
 	// Output # of script actions
-	fwrite(&NumActions, 1, sizeof(long), fp);
+	fwrite(&NumActions, 1, sizeof(std::int32_t), fp);
 
 	// Loop through each script action
 	ScriptPtr = ScriptRoot;
 	for (i = 0; i<NumActions; i++)
 	{
 		// Output type of action and # of entries
-		fwrite(&ScriptPtr->m_Type, 1, sizeof(long), fp);
-		fwrite(&ScriptPtr->m_NumEntries, 1, sizeof(long), fp);
+		fwrite(&ScriptPtr->m_Type, 1, sizeof(std::int32_t), fp);
+		fwrite(&ScriptPtr->m_NumEntries, 1, sizeof(std::int32_t), fp);
 
 		// Output entry data (if any)
 		if (ScriptPtr->m_NumEntries)
@@ -595,12 +595,12 @@ bool SaveScriptFile(const char *Filename, sScript *ScriptRoot)
 			for (j = 0; j<ScriptPtr->m_NumEntries; j++)
 			{
 				// Write entry type and data
-				fwrite(&ScriptPtr->m_Entries[j].m_Type, 1, sizeof(long), fp);
-				fwrite(&ScriptPtr->m_Entries[j].m_IOValue, 1, sizeof(long), fp);
+				fwrite(&ScriptPtr->m_Entries[j].m_Type, 1, sizeof(std::int32_t), fp);
+				fwrite(&ScriptPtr->m_Entries[j].m_IOValue, 1, sizeof(std::int32_t), fp);
 				fwrite(&ScriptPtr->m_Entries[j].m_Var, 1, sizeof(unsigned char), fp);
 
 				// Write text entry (if any)
-				if (ScriptPtr->m_Entries[j].m_Type == _TEXT && ScriptPtr->m_Entries[j].m_Text != NULL)
+				if (ScriptPtr->m_Entries[j].m_Type == _TEXT && ScriptPtr->m_Entries[j].m_Text != nullptr)
 					fwrite(ScriptPtr->m_Entries[j].m_Text, 1, ScriptPtr->m_Entries[j].m_Length, fp);
 			}
 		}
@@ -615,31 +615,31 @@ bool SaveScriptFile(const char *Filename, sScript *ScriptRoot)
 sScript *LoadScriptFile(string Filename)
 {
 	FILE *fp;
-	long i, j, Num;
-	sScript *ScriptRoot = 0, *Script = 0, *ScriptPtr = 0;
+    std::int32_t i, j, Num;
+	sScript *ScriptRoot = nullptr, *Script = nullptr, *ScriptPtr = nullptr;
 
 	// Open the file for input
-	if ((fp = fopen(Filename.c_str(), "rb")) == 0) return 0;
-	
+	if ((fp = fopen(Filename.c_str(), "rb")) == nullptr) return nullptr;
+
 	if (sizeof(long) != 4) {
 		g_LogFile.ss() << "Debug LoadScriptFile || sizeof(long) is " << sizeof(long) << " it should be 4. We are working on the fix for this. Please report it on PinkPetal.org"; g_LogFile.ssend();
 	}
-	
+
 	// Get # of script actions from file
-	fread(&Num, 1, sizeof(long), fp);
+	fread(&Num, 1, sizeof(std::int32_t), fp);
 
 	// Loop through each script action
 	for (i = 0; i < Num; i++)
 	{
 		// Allocate a script structure and link in
 		Script = new sScript();
-		if (ScriptPtr == 0) ScriptRoot = Script; // Assign root
+		if (ScriptPtr == nullptr) ScriptRoot = Script; // Assign root
 		else ScriptPtr->m_Next = Script;
 		ScriptPtr = Script;
 
 		// Get type of action and # of entries
-		fread(&Script->m_Type, 1, sizeof(long), fp);
-		fread(&Script->m_NumEntries, 1, sizeof(long), fp);
+		fread(&Script->m_Type, 1, sizeof(std::int32_t), fp);
+		fread(&Script->m_NumEntries, 1, sizeof(std::int32_t), fp);
 
 		// Get entry data (if any)
 		if (Script->m_NumEntries)
@@ -651,8 +651,8 @@ sScript *LoadScriptFile(string Filename)
 			for (j = 0; j < Script->m_NumEntries; j++)
 			{
 				// Get entry type and data
-				fread(&Script->m_Entries[j].m_Type, 1, sizeof(long), fp);
-				fread(&Script->m_Entries[j].m_IOValue, 1, sizeof(long), fp);
+				fread(&Script->m_Entries[j].m_Type, 1, sizeof(std::int32_t), fp);
+				fread(&Script->m_Entries[j].m_IOValue, 1, sizeof(std::int32_t), fp);
 				fread(&Script->m_Entries[j].m_Var, 1, sizeof(unsigned char), fp);
 
 				// Get text (if any)
@@ -673,7 +673,7 @@ sScript *LoadScriptFile(string Filename)
 bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 {
 	sScript *ScriptPtr;
-	if ((ScriptPtr = ScriptRoot) == 0) return false;	// Make sure there are some script actions
+	if ((ScriptPtr = ScriptRoot) == nullptr) return false;	// Make sure there are some script actions
 	TiXmlDocument doc(Filename);
 	TiXmlDeclaration* decl = new TiXmlDeclaration("2.0", "", "yes");
 	doc.LinkEndChild(decl);
@@ -687,7 +687,7 @@ bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 	pRoot->SetAttribute("ScriptName", name);
 
 	int NumActions = 0;
-	while (ScriptPtr != 0) { NumActions++; ScriptPtr = ScriptPtr->m_Next; }	// Count the number of actions
+	while (ScriptPtr != nullptr) { NumActions++; ScriptPtr = ScriptPtr->m_Next; }	// Count the number of actions
 	pRoot->SetAttribute("NumActions", NumActions);
 
 	int i = 0; int j = 0;
@@ -876,16 +876,16 @@ bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 					action->LinkEndChild(entry);
 					stringstream info;
 					stringstream iovalue;
-					if (iovalue.str().size() == 0)	iovalue << ScriptPtr->m_Entries[j].m_IOValue;
+					if (iovalue.str().empty())	iovalue << ScriptPtr->m_Entries[j].m_IOValue;
 
 					entry->SetAttribute("EntryNumber", j);
 					entry->SetAttribute("Type", cScript::script_entry_types[ScriptPtr->m_Entries[j].m_Type]);	// `J` save human readable
 					entry->SetAttribute("IOValue", iovalue.str());
 					entry->SetAttribute("Var", ScriptPtr->m_Entries[j].m_Var);
-					if (info.str().size() > 0) entry->SetAttribute("Info", info.str());
+					if (!info.str().empty()) entry->SetAttribute("Info", info.str());
 
 					// Write text entry (if any)
-					if (ScriptPtr->m_Entries[j].m_Type == _TEXT && ScriptPtr->m_Entries[j].m_Text != NULL)
+					if (ScriptPtr->m_Entries[j].m_Type == _TEXT && ScriptPtr->m_Entries[j].m_Text != nullptr)
 					{
 						stringstream ss; ss << ScriptPtr->m_Entries[j].m_Text;
 						entry->SetAttribute("IOValue", ss.str().length());
@@ -909,20 +909,20 @@ sScript *LoadScriptXML(string Filename)
 	if (!doc.LoadFile())
 	{
 		l.ss() << "Error: Can't load script '" << Filename << "'. " << endl; l.ssend();
-		return 0;
+		return nullptr;
 	}
 	XmlUtil xu(Filename);
-	TiXmlElement *ela = NULL;
-	TiXmlElement *ele = NULL;
+	TiXmlElement *ela = nullptr;
+	TiXmlElement *ele = nullptr;
 	string ver=	doc.FirstChild()->ToDeclaration()->Version();
 
 	TiXmlElement *root_el = doc.RootElement();
 	const char *pt;
-	sScript *ScriptRoot = 0, *Script = 0, *ScriptPtr = 0;
+	sScript *ScriptRoot = nullptr, *Script = nullptr, *ScriptPtr = nullptr;
 	if (!cScript::m_script_maps_setup)	cScript::setup_maps();									// only need to do this once
 	int Num = 0;
 	if (pt = root_el->Attribute("NumActions"))		xu.get_att(root_el, "NumActions", Num);
-	if (!Num) return 0;
+	if (!Num) return nullptr;
 
 	if (ver == "2.0")
 	{
@@ -930,12 +930,12 @@ sScript *LoadScriptXML(string Filename)
 		for (ela = root_el->FirstChildElement(); ela; ela = ela->NextSiblingElement())
 		{
 			Script = new sScript();																// Allocate a script structure and link in
-			if (ScriptPtr == 0) ScriptRoot = Script;											// Assign root
+			if (ScriptPtr == nullptr) ScriptRoot = Script;											// Assign root
 			else ScriptPtr->m_Next = Script;
 			ScriptPtr = Script;
 			if (pt = ela->Attribute("Type"))													// `J` check for human readable
 			{
-				string ty = ""; xu.get_att(ela, "Type", ty); ty = stringtolower(ty);
+				string ty; xu.get_att(ela, "Type", ty); ty = stringtolower(ty);
 				if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())			// `J` if human readable not found
 					xu.get_att(ela, "Type", Script->m_Type);									// `J` old script so get the number
 				else Script->m_Type = cScript::script_lookup[ty];
@@ -975,7 +975,7 @@ sScript *LoadScriptXML(string Filename)
 				// most are of type _INT so we set that as the default so we only need to change the non _INTs
 				for (int vv = 0; vv < Script->m_NumEntries; vv++)	{ Script->m_Entries[vv].m_Type = _INT;  }
 
-				string t = "";
+				string t;
 				switch (maintype)
 				{
 				case 0:	case 6:
@@ -1151,14 +1151,14 @@ sScript *LoadScriptXML(string Filename)
 
 						if (pt = ele->Attribute("Type"))	// `J` check for human readable
 						{
-							string ty = ""; xu.get_att(ele, "Type", ty); ty = stringtolower(ty);
+							string ty; xu.get_att(ele, "Type", ty); ty = stringtolower(ty);
 							if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())		// `J` if human readable not found
 								xu.get_att(ele, "Type", Script->m_Entries[entrynum].m_Type);			// `J` old script so get the number
 							else Script->m_Entries[entrynum].m_Type = cScript::script_lookup[ty];
 						}
 						if (pt = ele->Attribute("IOValue"))
 						{
-							string ty = ""; xu.get_att(ele, "IOValue", ty); string tyl = stringtolower(ty);
+							string ty; xu.get_att(ele, "IOValue", ty); string tyl = stringtolower(ty);
 							if (cScript::script_lookup.find(ty) != cScript::script_lookup.end())					Script->m_Entries[entrynum].m_IOValue = cScript::script_lookup[tyl];
 							else if (maintype == 24 && sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())	Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty] + NUM_STATS;
 							else if (sGirl::stat_lookup.find(ty) != sGirl::stat_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::stat_lookup[ty];
@@ -1194,13 +1194,13 @@ sScript *LoadScriptXML(string Filename)
 			// Allocate a script structure and link in
 			Script = new sScript();
 
-			if (ScriptPtr == 0) ScriptRoot = Script; // Assign root
+			if (ScriptPtr == nullptr) ScriptRoot = Script; // Assign root
 			else ScriptPtr->m_Next = Script;
 			ScriptPtr = Script;
 
 			if (pt = ela->Attribute("Type"))	// `J` check for human readable
 			{
-				string ty = ""; xu.get_att(ela, "Type", ty); ty = stringtolower(ty);
+				string ty; xu.get_att(ela, "Type", ty); ty = stringtolower(ty);
 				if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())				// `J` if human readable not found
 					xu.get_att(ela, "Type", Script->m_Type);										// `J` old script so get the number
 				else Script->m_Type = cScript::script_lookup[ty];
@@ -1220,14 +1220,14 @@ sScript *LoadScriptXML(string Filename)
 
 					if (pt = ele->Attribute("Type"))	// `J` check for human readable
 					{
-						string ty = ""; xu.get_att(ele, "Type", ty); ty = stringtolower(ty);
+						string ty; xu.get_att(ele, "Type", ty); ty = stringtolower(ty);
 						if (cScript::script_lookup.find(ty) == cScript::script_lookup.end())		// `J` if human readable not found
 							xu.get_att(ele, "Type", Script->m_Entries[entrynum].m_Type);			// `J` old script so get the number
 						else Script->m_Entries[entrynum].m_Type = cScript::script_lookup[ty];
 					}
 					if (pt = ele->Attribute("IOValue"))
 					{
-						string ty = ""; xu.get_att(ele, "IOValue", ty); string tyl = stringtolower(ty);
+						string ty; xu.get_att(ele, "IOValue", ty); string tyl = stringtolower(ty);
 						if (cScript::script_lookup.find(ty) != cScript::script_lookup.end())					Script->m_Entries[entrynum].m_IOValue = cScript::script_lookup[tyl];
 						else if (maintype == 24 && sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())	Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty] + NUM_STATS;
 						else if (sGirl::stat_lookup.find(ty) != sGirl::stat_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::stat_lookup[ty];

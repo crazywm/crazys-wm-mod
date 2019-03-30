@@ -8,5 +8,9 @@
         <Effect What="Stat" Name="Charisma" Amount="-10" />
         <Effect What="Stat" Name="PCFear" Amount="-20" />
         <Effect What="Stat" Name="PCHate" Amount="-10" />
+        <Crafting CraftPoints="40" ManaCost="0">
+            <Job Name="Tailor"/>
+            <Skill Name="Blacksmith" Minimum="10" />
+        </Crafting>
     </Item>
 </Items>

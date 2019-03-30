@@ -18,11 +18,12 @@
  */
 #pragma once
 
-#include "GameSystem.h"
 #include "CResource.h"
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
 #include <SDL_rotozoom.h>
 #include <string>
-#include <vector>
 using namespace std;
 #include "SDL_anigif.h"
 
@@ -43,8 +44,8 @@ public:
 	bool LoadSurface(SDL_Surface* inputsurface);  //for when we have an SDL surface in memory to use instead of loading from disk
 	void SetColorKey(unsigned char r, unsigned char g, unsigned char b);
 	void SetAlpha(bool UseAlpha);
-	bool DrawSurface(int x, int y, SDL_Surface* destination = 0, SDL_Rect* clip = 0, bool resize = false, bool maintainRatio = true);
-	bool DrawGifSurface(int x, int y, AG_Frame* agframes, int currentframe, SDL_Surface* destination = 0, SDL_Rect* clip = 0, bool resize = false, bool maintainRatio = true);
+	bool DrawSurface(int x, int y, SDL_Surface* destination = nullptr, SDL_Rect* clip = nullptr, bool resize = false, bool maintainRatio = true);
+	bool DrawGifSurface(int x, int y, AG_Frame* agframes, int currentframe, SDL_Surface* destination = nullptr, SDL_Rect* clip = nullptr, bool resize = false, bool maintainRatio = true);
 	bool DrawSprite(int x, int y);
 	bool ResizeSprite(SDL_Surface* image, SDL_Rect* clip, bool maintainRatio = false);
 	string GetFilename() {return m_Filename;}

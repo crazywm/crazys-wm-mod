@@ -22,7 +22,6 @@
 #ifndef _H_CRNG
 #define _H_CRNG
 #include <cstdlib>
-#include <ctime>
 
 typedef unsigned int u_int;
  
@@ -85,8 +84,8 @@ struct cRng
 /*
  *	constructor and destructor
  */
-	cRng(){srand((int)time(0));}
-	~cRng(){}
+	cRng();
+	~cRng() = default;
 };
 
 #endif

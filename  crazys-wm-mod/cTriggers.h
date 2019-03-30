@@ -53,8 +53,8 @@ public:
 
 	cTrigger* m_Next;
 
-	cTrigger() {m_Type=m_Triggered=m_Chance=m_Once=0;m_Next=0;}
-	~cTrigger() {if(m_Next)delete m_Next;m_Next=0;}
+	cTrigger() {m_Type=m_Triggered=m_Chance=m_Once=0;m_Next=nullptr;}
+	~cTrigger() {if(m_Next)delete m_Next;m_Next=nullptr;}
 
 	TiXmlElement* SaveTriggerXML(TiXmlElement* pRoot);
 	bool	LoadTriggerXML(TiXmlHandle hTrigger);
@@ -116,14 +116,14 @@ public:
 	cTriggerQue* m_Next;	// the next one in the que
 	cTriggerQue* m_Prev;	// the previous one in the que
 
-	cTriggerQue() {m_Trigger=0;m_Next=m_Prev=0;}
-	~cTriggerQue() {if(m_Next)delete m_Next;m_Prev=m_Next=0;m_Trigger=0;}
+	cTriggerQue() {m_Trigger=nullptr;m_Next=m_Prev=nullptr;}
+	~cTriggerQue() {if(m_Next)delete m_Next;m_Prev=m_Next=nullptr;m_Trigger=nullptr;}
 };
 
 class cTriggerList
 {
 public:
-	cTriggerList() {m_Triggers=0;m_CurrTrigger=0;m_Last=0;/*m_StartQue=m_EndQue=0;m_NumQued=0;*/m_NumTriggers=0;m_GirlTarget=0;}
+	cTriggerList() {m_Triggers=nullptr;m_CurrTrigger=nullptr;m_Last=nullptr;/*m_StartQue=m_EndQue=0;m_NumQued=0;*/m_NumTriggers=0;m_GirlTarget=nullptr;}
 	~cTriggerList() {Free();}
 
 	void Free();

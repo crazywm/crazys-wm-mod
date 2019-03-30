@@ -10,16 +10,10 @@
       Infinite="false">
    <Effect What="Stat"  Name="Happiness"               Amount="100"    />
    <Effect What="Stat"  Name="Exp"                     Amount="100"    />
-</Item>
-<Item Name="Heaven-and-Earth Cake"
-      Desc="This cake was baked with the finest, sweetest, rarest ingredients from all over the world, and beyond. The only drawback is that any other cake you ever eat will taste bland by comparison. (S) (+100 Hap, +100 Exp)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="5000"
-      Rarity="Catacomb15"
-      Infinite="false">
-   <Effect What="Stat"  Name="Happiness"               Amount="100"    />
-   <Effect What="Stat"  Name="Exp"                     Amount="100"    />
+   <Crafting CraftPoints="50" ManaCost="30">
+      <Job Name="Baker"/>
+      <Skill Name="Cooking" Minimum="50" />
+      <Skill Name="Magic" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

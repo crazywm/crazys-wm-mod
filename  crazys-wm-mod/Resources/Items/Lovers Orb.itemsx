@@ -27,5 +27,8 @@
             What="Stat"
             Name="NPCLove"
             Amount="-1" />
+        <Crafting CraftPoints="100" ManaCost="30">
+            <Job Name="Make Items"/>
+        </Crafting>
     </Item>
 </Items>

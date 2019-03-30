@@ -19,5 +19,8 @@
             What="Skill"
             Name="Service"
             Amount="5" />
+        <Crafting CraftPoints="30" ManaCost="0">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
 </Items>

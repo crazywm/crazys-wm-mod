@@ -11,5 +11,10 @@
    <Effect What="Stat"  Name="Tiredness"               Amount="35"    />
    <Effect What="Stat"  Name="Health"                  Amount="35"    />
    <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+
+   <Crafting CraftPoints="30" ManaCost="0" Weight="5">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="40" />
+   </Crafting>
 </Item>
 </Items>

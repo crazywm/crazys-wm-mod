@@ -14,6 +14,11 @@
    <Effect What="Stat" Name="Mana" Amount="5" />
    <Effect What="Stat" Name="Libido" Amount="5" />
    <Effect What="Stat" Name="Tiredness" Amount="-20" />
+
+   <Crafting CraftPoints="20" ManaCost="0" Weight="5">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="40" />
+   </Crafting>
 </Item>
 <Item Name="Nightmare Fuel X"
       Desc="This energy drink contains everything you need to get going through the day. Stronger Version, Zombie Cherry Flavor (Health +40) (Agil, Mana, Lib +10) (Tiredness -40)"
@@ -29,6 +34,11 @@
    <Effect What="Stat" Name="Agility" Amount="10" />
    <Effect What="Stat" Name="Mana" Amount="10" />
    <Effect What="Stat" Name="Libido" Amount="10" />
+
+   <Crafting CraftPoints="25" ManaCost="0" Weight="4">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="45" />
+   </Crafting>
 </Item>
 <Item Name="Nightmare Fuel XY"
       Desc="This energy drink contains everything you need to get going through the day. Even Stronger Version, Bloody Pom Flavor (Health +80) (Agil, Mana, Lib +20) (Tiredness -80)"
@@ -44,6 +54,10 @@
    <Effect What="Stat" Name="Agility" Amount="20" />
    <Effect What="Stat" Name="Health" Amount="80" />
    <Effect What="Stat" Name="Tiredness" Amount="-80" />
+   <Crafting CraftPoints="45" ManaCost="0" Weight="2">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="50" />
+   </Crafting>
 </Item>
 <Item Name="Nightmare Fuel XYZ"
       Desc="This energy drink contains everything you need to get going through the day and then some. Maybe that's because this IS the real Nightmare Fuel of Legend! Strongest Version, Tropical Scream Flavor (Health Max) (Agil, Mana, Lib +40) (Tiredness Max Decrease) (Gives girl Twisted)"
@@ -59,5 +73,9 @@
    <Effect What="Stat" Name="Mana" Amount="40" />
    <Effect What="Stat" Name="Agility" Amount="40" />
    <Effect What="Trait" Name="Twisted" Amount="1" />
+   <Crafting CraftPoints="60" ManaCost="0">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="55" />
+   </Crafting>
 </Item>
 </Items>

@@ -15,5 +15,8 @@
    <Effect What="Trait" Name="One Hand"                Amount="0"    />
    <Effect What="Trait" Name="Missing Finger"          Amount="0"    />
    <Effect What="Trait" Name="Missing Fingers"         Amount="0"    />
+   <Crafting CraftPoints="160" ManaCost="30">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

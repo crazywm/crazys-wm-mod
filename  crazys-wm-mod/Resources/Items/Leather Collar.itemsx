@@ -19,5 +19,8 @@
             What="Stat"
             Name="Obedience"
             Amount="5" />
+        <Crafting CraftPoints="10" ManaCost="0">
+            <Job Name="Cobbler"/>
+        </Crafting>
     </Item>
 </Items>

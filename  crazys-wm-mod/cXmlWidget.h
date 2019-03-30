@@ -19,19 +19,20 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 struct sXmlWidgetPart {
 public:
 	int x, y, w, h, r, g, b;
 	int fontsize, bordersize;
 	bool stat, alpha, scale, hidden, events, multi, hide, cache, leftorright;
-	string base, on, off, disabled, type, name, text, file, seq;
+	std::string base, on, off, disabled, type, name, text, file, seq;
 };
 
 class cXmlWidget {
-	vector<sXmlWidgetPart> list;
+	std::vector<sXmlWidgetPart> list;
 public:
-	cXmlWidget() {}
+	cXmlWidget() = default;
 	int size() {	return int(list.size()); }
 	sXmlWidgetPart& operator[](int i) {
 		return list[i];

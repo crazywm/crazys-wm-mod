@@ -11,5 +11,8 @@
    <Effect What="Trait" Name="Strange Eyes"            Amount="1"    />
    <Effect What="Trait" Name="One Eye"                 Amount="0"    />
    <Effect What="Trait" Name="Eye Patch"               Amount="0"    />
+   <Crafting CraftPoints="160" ManaCost="30">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

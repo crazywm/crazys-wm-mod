@@ -12,5 +12,10 @@
    <Effect What="Stat"  Name="Health"                  Amount="100"    />
    <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
    <Effect What="Stat"  Name="Age"                     Amount="-1"    />
+   <Crafting CraftPoints="150" ManaCost="0">
+      <Job Name="Make Potions"/>
+      <Skill Name="Medicine" Minimum="30" />
+      <Skill Name="Brewing" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

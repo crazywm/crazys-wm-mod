@@ -12,5 +12,8 @@
    <Effect What="Stat" Name="Charisma" Amount="4" />
    <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
    <Effect What="Trait" Name="Fast Orgasms" Amount="1" />
+   <Crafting CraftPoints="90" ManaCost="60">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

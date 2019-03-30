@@ -9,5 +9,8 @@
       Rarity="Common"
       Infinite="true">
    <Effect What="Stat"  Name="Beauty"                  Amount="3"    />
+   <Crafting CraftPoints="60" ManaCost="0">
+      <Job Name="Make Items"/>
+   </Crafting>
 </Item>
 </Items>

@@ -35,5 +35,9 @@
             What="Stat"
             Name="Agility"
             Amount="-2" />
+        <Crafting CraftPoints="30" ManaCost="0">
+            <Job Name="Make Items"/>
+            <Stat Name="Libido" Minimum="50" />
+        </Crafting>
     </Item>
 </Items>

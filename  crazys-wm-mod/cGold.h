@@ -20,16 +20,13 @@
 
 #include <string>
 #include <map>
-#include <iomanip>
-#include <math.h>
-#include "CLog.h"
-#include "tinyxml.h"
+#include <cmath>
 
 using namespace std;
 
-extern CLog g_LogFile;
-
 struct sBrothel;
+class TiXmlElement;
+class TiXmlHandle;
 
 string intstring(int);
 
@@ -61,41 +58,7 @@ class cGoldBase
 		// --- Whores ---                              --- Sales ---
 		// Brothel  Street   Movie     Bar  Casino   Items  Monster Loc'Biz   Raids P.Theft G.Theft C'combs  Reward Intr'st    Misc
 		//  123456 1234567 1234567 1234567 1234567 1234567  1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567
-		string str(int brothel_no = -1) {
-			stringstream ss;
-			ss << "  --- Whores ---                              --- Sales ---";
-			ss << "# Brothel  Street   Movie     Bar  Casino   Items  "
-				"Monster Loc'Biz   Raids P.Theft G.Theft C'combs  "
-				"Reward Intr'st    Misc      Clinic		Arena"
-				;
-			if (brothel_no == -1) {
-				ss << brothel_no << " ";
-			}
-			else {
-				ss << "  ";
-			}
-			ss << setw(7) << brothel_work << " ";
-			ss << setw(7) << street_work << " ";
-			ss << setw(7) << movie_income << " ";
-			ss << setw(7) << bar_income << " ";
-			ss << setw(7) << gambling_profits << " ";
-			ss << setw(7) << item_sales << " ";
-			ss << setw(7) << slave_sales << " ";
-			ss << setw(7) << creature_sales << " ";
-			ss << setw(7) << extortion << " ";
-			ss << setw(7) << plunder << " ";
-			ss << setw(7) << petty_theft << " ";
-			ss << setw(7) << grand_theft << " ";
-			ss << setw(7) << catacomb_loot << " ";
-			ss << setw(7) << objective_reward << " ";
-			ss << setw(7) << bank_interest << " ";
-			ss << setw(7) << misc << " ";
-			ss << setw(7) << clinic_income << " ";
-			ss << setw(7) << arena_income << " ";
-			ss << setw(7) << farm_income << " ";
-			ss << endl;
-			return ss.str();
-		}
+		string str(int brothel_no = -1);
 	} detail_in;
 
 	struct out {
@@ -178,7 +141,7 @@ public:
 	/*
 	*	save and load methods
 	*/
-	TiXmlElement* saveGoldXML(TiXmlElement* pRoot);
+	TiXmlElement* saveGoldXML(TiXmlElement* pRoot) const;
 	bool loadGoldXML(TiXmlHandle hGold);
 	/*
 	*	type conversion methods
@@ -282,10 +245,10 @@ public:
 	/*
 	*	some convienience methods
 	*/
-	int total_income()	{ return int(m_income); }
-	int total_upkeep()	{ return int(m_upkeep); }
-	int total_earned()	{ return int(m_income + m_cash_in); }
-	int total_profit()	{
+	int total_income() const { return int(m_income); }
+	int total_upkeep() const { return int(m_upkeep); }
+	int total_earned() const { return int(m_income + m_cash_in); }
+	int total_profit() const {
 		double d = total_earned() - total_upkeep();
 		return int(d);
 	}
@@ -296,7 +259,7 @@ class cGold : public cGoldBase
 	map<int, cGoldBase *> brothels;
 	cGoldBase *find_brothel_account(int id) {
 		cGoldBase *ac_pt = brothels[id];
-		if (ac_pt == 0) {
+		if (ac_pt == nullptr) {
 			ac_pt = new cGoldBase(0);
 			brothels[id] = ac_pt;
 		}
@@ -316,8 +279,8 @@ public:
 	*/
 	void	brothel_accounts(cGold &g, int brothel_id);
 	void	week_end();
-	int	total_income();
-	int	total_upkeep();
+	int	total_income() const;
+	int	total_upkeep() const;
 	/*
 	*	I'm not sure whether it's easier to make the total funcs
 	*	virtual, or just to repeat the inlines for the base class
@@ -325,8 +288,8 @@ public:
 	*	as long as it's just the two, repeating the inlines
 	*	might be better
 	*/
-	int total_earned();//	{ return m_income + m_cash_in; }
-	int total_profit()	{
+	int total_earned() const;//	{ return m_income + m_cash_in; }
+	int total_profit() const	{
 		return	int(total_earned() - total_upkeep());
 	}
 	void gen_report(int month);

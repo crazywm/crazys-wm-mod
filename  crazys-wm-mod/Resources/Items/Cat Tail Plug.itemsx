@@ -59,5 +59,8 @@
             What="Stat"
             Name="Spirit"
             Amount="-5" />
+        <Crafting CraftPoints="40" ManaCost="0">
+            <Job Name="Make Items"/>
+        </Crafting>
     </Item>
 </Items>

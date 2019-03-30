@@ -4,10 +4,8 @@
 	Type="Helmet" Badness="10" Special="None" Cost="150" Rarity="Shop50" Infinite="false" GirlBuyChance="10" ItemWeight="0.0">
         <Effect What="Stat" Name="Constitution" Amount="5" />
         <Effect What="Trait" Name="Tough" Amount="1" />
-    </Item>
-    <Item Name="Iron Helmet" Desc="Standard army issue helmet, most of the city guards wear one of these.  (Cons +5, adds Tough.)"
-	Type="Helmet" Badness="10" Special="None" Cost="150" Rarity="Shop50" Infinite="false" GirlBuyChance="10" ItemWeight="0.0">
-        <Effect What="Stat" Name="Constitution" Amount="5" />
-        <Effect What="Trait" Name="Tough" Amount="1" />
+        <Crafting CraftPoints="15" ManaCost="0">
+            <Job Name="Blacksmith"/>
+        </Crafting>
     </Item>
 </Items>

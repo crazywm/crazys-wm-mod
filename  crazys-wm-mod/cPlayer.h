@@ -26,8 +26,9 @@
 #include "Constants.h"
 #include "tinyxml.h"
 #include "sConfig.h"
+#include "src/Inventory.hpp"
 
-using namespace std;
+class sGirl;
 
 
 class cPlayer
@@ -57,24 +58,26 @@ private:
 	int m_BirthMonth;	// there are 12 month in the year
 	int m_BirthDay;		// there are 30 days in every month
 
-	string m_Title;		// basic title - need to add more titles with more power gained
-	string m_FirstName;	// no first name
-	string m_Surname;	// basic surname
-	string m_RealName;	// m_FirstName + " " + m_Surname
+	std::string m_Title;		// basic title - need to add more titles with more power gained
+	std::string m_FirstName;	// no first name
+	std::string m_Surname;	// basic surname
+	std::string m_RealName;	// m_FirstName + " " + m_Surname
 
 	int m_PlayerGender;	// `J` added - not going to be changeable yet but adding it in for later
 
+	Inventory m_Inventory;
+
 public:
 	
-	string Title()		{ return m_Title; }
-	string FirstName()	{ return m_FirstName; }
-	string Surname()	{ return m_Surname; }
-	string RealName()	{ return m_RealName; }
+	std::string Title()		{ return m_Title; }
+	std::string FirstName()	{ return m_FirstName; }
+	std::string Surname()	{ return m_Surname; }
+	std::string RealName()	{ return m_RealName; }
 
-	string SetTitle(string title);
-	string SetFirstName(string firstname);
-	string SetSurname(string surname);
-	string SetRealName(string realname);
+	std::string SetTitle(std::string title);
+	std::string SetFirstName(std::string firstname);
+	std::string SetSurname(std::string surname);
+	std::string SetRealName(std::string realname);
 
 	int Gender()		{ return m_PlayerGender; }
 	void SetGender(int x);
@@ -116,6 +119,18 @@ public:
 	int SetBirthMonth(int n);
 	int SetBirthDay(int n);
 
+	// text helpers
+    std::string disposition_text() const;
+    std::string suss_text() const;
+
+    bool Combat(sGirl* girl);	// returns true if the girl wins
+
+    Inventory& inventory();
+    /// automatically use items on the given girl
+    void apply_items(sGirl& girl);
+    bool AutomaticFoodItemUse(sGirl& girl, const char* item_name, string message);
+    bool AutomaticItemUse(sGirl& girl, const char* item_name, string message);
+    bool AutomaticSlotlessItemUse(sGirl& girl, const char* item_name, string message);
 };
 
 

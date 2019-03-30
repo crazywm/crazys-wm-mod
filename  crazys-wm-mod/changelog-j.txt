@@ -399,7 +399,7 @@ Corrected so "m_Human == 1" is human , "m_Human == 0" is nonhuman
 Corrected CreateRandomGirl, some places had slave/undead switched
 Reward girls from Objectives have a 1 in 3 chance of being nonhuman.
 Fixed the int to bool warning in cLuaScript.cpp
-Changed most virginity changes to use g_Girls.LoseVirginity(girl) and g_Girls.RegainVirginity(girl)
+Changed most virginity changes to use cGirls::LoseVirginity(girl) and cGirls::RegainVirginity(girl)
 Added handjob to WorkPersonalTraining
 Added Player Disposition >= 100 then Player is a "Saint"
 Fixed item rarity Catacomb05 and Catacomb01 so they work
@@ -2088,8 +2088,8 @@ Updated Enjoyment list with cfg.debug.log_show_numbers()
  - moved jobs[] out and renamed to sGirl::enjoy_jobs[]
 WME - added LogShowNumbers and PreferDefault to config settings
 
-Added g_Girls.GetBeast() to allow for easier beast insemination checks
- - girl->calc_insemination(g_Girls.GetBeast(), 1);
+Added cGirls::GetBeast() to allow for easier beast insemination checks
+ - girl->calc_insemination(cGirls::GetBeast(), 1);
 
 !!!!!!!!!!!!!!!!!!!! pushed to GitHub
 

@@ -30,5 +30,8 @@
    <Effect What="Skill" Name="Strip"                   Amount="10"    />
    <Effect What="Trait" Name="Strange Eyes"            Amount="1"    />
    <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
+   <Crafting CraftPoints="80" ManaCost="30">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

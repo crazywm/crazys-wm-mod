@@ -5,5 +5,8 @@
         <Effect What="Trait" Name="Masochist" Amount="1" />
         <Effect What="Trait" Name="Nymphomaniac" Amount="1" />
         <Effect What="Trait" Name="Twisted" Amount="1" />
+        <Crafting CraftPoints="100" ManaCost="20">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
 </Items>

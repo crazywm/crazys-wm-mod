@@ -20,5 +20,8 @@
    <Effect What="Trait" Name="Strong Magic"            Amount="0"    />
    <Effect What="Trait" Name="Optimist"                Amount="0"    />
    <Effect What="Trait" Name="Pessimist"               Amount="1"    />
+   <Crafting CraftPoints="60" ManaCost="30">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

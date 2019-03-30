@@ -24,5 +24,8 @@
    <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
    <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
    <Effect What="Trait" Name="Tough"                   Amount="1"    />
+   <Crafting CraftPoints="250" ManaCost="10">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

@@ -10,5 +10,9 @@
       Infinite="false">
    <Effect What="Stat"  Name="Happiness"               Amount="5"    />
    <Effect What="Stat"  Name="PCLove"                  Amount="1"    />
+   <Crafting CraftPoints="20" ManaCost="0">
+      <Job Name="Make Items"/>
+      <Stat Name="Happiness" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

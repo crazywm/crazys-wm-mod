@@ -12,5 +12,9 @@
    <Effect What="Skill" Name="Combat"                  Amount="10"    />
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Stat"  Name="Agility"                 Amount="-5"    />
+   <Crafting CraftPoints="100" ManaCost="30">
+      <Job Name="Make Items"/>
+      <Stat Name="Strength" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

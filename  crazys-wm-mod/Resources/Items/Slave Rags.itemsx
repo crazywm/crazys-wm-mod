@@ -18,5 +18,9 @@
    <Effect What="Stat"  Name="Spirit"                  Amount="-10"    />
    <Effect What="Stat"  Name="Refinement"              Amount="-40"   />
    <Effect What="Trait" Name="Optimist"                Amount="0"    />
+
+   <Crafting CraftPoints="10" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

@@ -19,11 +19,13 @@
 #ifndef __CINTERFACEOBJECT_H
 #define __CINTERFACEOBJECT_H
 
+class CGraphics;
+
 class cInterfaceObject
 {
 public:
 	void SetPosition(int x, int y, int width, int height) {m_XPos = x; m_YPos = y; m_Width = width; m_Height = height;}
-	virtual void Draw() {};
+	virtual void Draw(const CGraphics& gfx) {};
 	int GetXPos() {return m_XPos;}
 	int GetYPos() {return m_YPos;}
 	int GetWidth() {return m_Width;}
@@ -31,7 +33,36 @@ public:
 
 protected:
 	int m_XPos, m_YPos;
-	int m_Width, m_Height;
+	int m_Width = -1;
+	int m_Height = -1;
+};
+
+/*
+ * Common code for the different UI Widgets
+ */
+class cUIWidget: public cInterfaceObject
+{
+public:
+    cUIWidget(int id, int x, int y, int width, int height) : m_ID(id) {
+        SetPosition(x, y, width, height);
+    }
+    void hide()		{ SetHidden(true); }
+    void unhide()	{ SetHidden(false); }
+    void toggle()	{ SetHidden(!m_Hidden); }
+    virtual void SetHidden(bool mode) { m_Hidden = mode; }
+    bool IsHidden() const { return m_Hidden; }
+
+    void Draw(const CGraphics& gfx) final {
+        if(!m_Hidden)
+            DrawWidget(gfx);
+    }
+
+    int get_id() const { return m_ID; }
+protected:
+    bool m_Hidden = false;
+
+    int m_ID;
+    virtual void DrawWidget(const CGraphics& gfx) = 0;
 };
 
 #endif

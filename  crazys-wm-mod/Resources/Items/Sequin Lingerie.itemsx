@@ -17,5 +17,8 @@
         <Effect What="Skill" Name="OralSex" Amount="5" />
         <Effect What="Skill" Name="TittySex" Amount="5" />
         <Effect What="Skill" Name="Handjob" Amount="5" />
+        <Crafting CraftPoints="40" ManaCost="10">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
 </Items>

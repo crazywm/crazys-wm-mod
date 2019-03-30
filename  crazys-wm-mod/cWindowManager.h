@@ -18,41 +18,37 @@
 */
 #ifndef __CWINDOWMANAGER_H
 #define __CWINDOWMANAGER_H
-#include<stack>
-#include<vector>
 
-#include "cInterfaceWindow.h"
+#include <stack>
+#include <vector>
+#include <memory>
+#include <functional>
 
-typedef struct sWindow
-{
-	cInterfaceWindow* m_Interface;	// pointer to the interface
-	void(*Function)();	// pointer to the update function
-	void(*XmlFunction)(cInterfaceWindow*);
-	bool xmlfunc;
-	sWindow* m_Next;
+class cMessageBox;
+class cInterfaceWindow;
+class IBuilding;
+class SDL_keysym;
 
-	sWindow();
-	~sWindow();
-}sWindow;
-
-typedef void(*process_func)();
-typedef void(*process_funcxml)(cInterfaceWindow *);
-
+/*!
+ * \brief Manages the game's ui by handling the windows that are show.
+ */
 class cWindowManager
 {
-	map<string, cInterfaceWindowXML *> windows;
 public:
 	cWindowManager();
 	~cWindowManager();
 
-	void add_window(string name, cInterfaceWindowXML *win) { windows[name] = win; }
-	void push(string window_name);
-	void Push(process_func Process, cInterfaceWindow* Interface);
-	void push(process_funcxml Process, cInterfaceWindow * Interface);
+	void load();
+	void add_window(std::string name, std::unique_ptr<cInterfaceWindow> win);
+	void push(const std::string& window_name);
+	/// replaces the top window with a new window. Differs from push/pop in that the window in the lower layer will never
+	/// be initialized.
+	void replace(const std::string& window_name);
 
 	// remove function from the stack
 	void Pop();
 	void PopToWindow(cInterfaceWindow* Interface);
+    void PopToWindow(const std::string& window_name);
 	void UpdateCurrent();
 	void UpdateMouseMovement(int x, int y);
 	void UpdateMouseDown(int x, int y);
@@ -62,8 +58,45 @@ public:
 	cInterfaceWindow* GetWindow();
 	void Draw();
 
+
+	void FreeAllWindows();
+	void ResetAllWindows();
+
+	bool HasActiveModal() const;
+
+	// user interaction
+	// this function is called when a key is pressed
+	void OnKeyPress(SDL_keysym key);
+
+	IBuilding* GetActiveBuilding() const;
+	void SetActiveBuilding(IBuilding*);
+
+	// input handling
+	void InputInteger(std::function<void(int)> callback);
+	void InputConfirm(std::function<void()> callback);
+	void InputString(std::function<void(const std::string&)> callback);
+
+	// message box
+    void PushMessage(std::string text, int color);
+
+    // girl selection
+    sGirl* GetActiveGirl() const;
+    void SetActiveGirl(sGirl* girl);
 private:
-	sWindow* m_Parent;
+    // normal windows
+    std::vector<cInterfaceWindow*> m_WindowStack;
+
+    // modal windows
+    std::unique_ptr<cMessageBox> m_MessageBox;
+
+	// map of known window names
+    std::map<std::string, std::unique_ptr<cInterfaceWindow>> windows;
+
+    // the currently selected building
+    IBuilding* m_ActiveBuilding = nullptr;
+
+    // the active girl list.
+    std::vector<sGirl*> m_SelectedGirls;
 };
 
 #endif

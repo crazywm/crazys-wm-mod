@@ -33,6 +33,10 @@
 			What="Stat"
 			Name="Tiredness"
 			Amount="15" />
+		<Crafting CraftPoints="25" ManaCost="0" Weight="5">
+			<Job Name="Baker"/>
+			<Skill Name="Cooking" Minimum="25" />
+		</Crafting>
 	</Item>
 	<Item
 		Name="Box of Cookies"
@@ -67,6 +71,10 @@
 			What="Stat"
 			Name="Tiredness"
 			Amount="5" />
+		<Crafting CraftPoints="20" ManaCost="0" Weight="5">
+			<Job Name="Baker"/>
+			<Skill Name="Cooking" Minimum="20" />
+		</Crafting>
 	</Item>
 	<Item
 		Name="Box of Sugar Cookies"
@@ -101,5 +109,9 @@
 			What="Stat"
 			Name="Tiredness"
 			Amount="10" />
+		<Crafting CraftPoints="20" ManaCost="0" Weight="5">
+			<Job Name="Baker"/>
+			<Skill Name="Cooking" Minimum="20" />
+		</Crafting>
 	</Item>
 </Items>

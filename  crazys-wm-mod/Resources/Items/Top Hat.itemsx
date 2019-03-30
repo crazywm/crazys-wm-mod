@@ -26,5 +26,8 @@
 			What="Skill"
 			Name="Performance"
 			Amount="10" />
+		<Crafting CraftPoints="60" ManaCost="0">
+			<Job Name="Tailor"/>
+		</Crafting>
 	</Item>
 </Items>

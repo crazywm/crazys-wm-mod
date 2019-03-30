@@ -29,10 +29,9 @@
 #include "Constants.h"
 #include "XmlUtil.h"
 #include "Revision.h"
-#include "Globals.h"
+#include "SDL.h"
 
 
-extern CLog g_LogFile;
 static CLog &l = g_LogFile;
 static cColor ColorConvert;
 sConfigData *cConfig::data;
@@ -247,7 +246,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 	folders.items			= (DirPath() << "Resources" << "Items").c_str();
 	folders.defaultimageloc	= (DirPath() << "Resources" << "DefaultImages").c_str();
 
-	string testch = "", testsa = "", testdi = "", testil = "";
+	string testch, testsa, testdi, testil;
 	if (pt = el->Attribute("Characters"))		get_att(el, "Characters", testch);
 	if (pt = el->Attribute("Saves"))			get_att(el, "Saves", testsa);
 	if (pt = el->Attribute("Items"))			get_att(el, "Items", testil);
@@ -255,7 +254,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 	if (pt = el->Attribute("DefaultImages"))	get_att(el, "DefaultImages", testdi);
 	if (pt = el->Attribute("PreferDefault"))	get_att(el, "PreferDefault", folders.preferdefault);
 
-	if (testch != "")
+	if (!testch.empty())
 	{
 		DirPath abs_ch = DirPath(testch.c_str());
 		DirPath rel_ch = DirPath() << testch;
@@ -278,15 +277,15 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 			l.ss() << "\nWarning: config.xml: Characters folder '" << testch << "' does not exist or has no girls in it.\n\tDefaulting to ./Resources/Characters"; l.ssend();
 		}
 	}
-	if (testsa != "")
+	if (!testsa.empty())
 	{
 		DirPath abs_sa = DirPath(testsa.c_str());
 		DirPath rel_sa = DirPath() << testsa;
 		FILE *fp;
 		DirPath testloc = DirPath(abs_sa) << ".Whore Master Save Games folder";
-		if ((fp = fopen(testloc, "w")) != 0) fclose(fp);
+		if ((fp = fopen(testloc, "w")) != nullptr) fclose(fp);
 		DirPath testlocrel = DirPath(rel_sa) << ".Whore Master Save Games folder";
-		if ((fp = fopen(testlocrel, "w")) != 0) fclose(fp);
+		if ((fp = fopen(testlocrel, "w")) != nullptr) fclose(fp);
 		FileList abstest(abs_sa, "*.*");
 		FileList reltest(rel_sa, "*.*");
 
@@ -307,7 +306,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 			l.ss() << "\nWarning: config.xml: Save game folder '" << testsa << "' does not exist.\n\tDefaulting to ./Saves"; l.ssend();
 		}
 	}
-	if (testil != "")
+	if (!testil.empty())
 	{
 		DirPath abs_il = DirPath(testil.c_str());
 		DirPath rel_il = DirPath() << testil;
@@ -330,7 +329,7 @@ void sConfigData::get_folders_data(TiXmlElement *el)
 			l.ss() << "\nWarning: config.xml: Items folder '" << testil << "' does not exist or has no Items in it.\n\tDefaulting to ./Resources/Items"; l.ssend();
 		}
 	}
-	if (testdi != "")
+	if (!testdi.empty())
 	{
 		DirPath abs_di = DirPath(testdi.c_str());
 		DirPath rel_di = DirPath() << testdi;
@@ -360,9 +359,9 @@ void sConfigData::get_resolution_data(TiXmlElement *el)
 {
 	resolution.configXML = false;
 	const char *pt;
-	string testa = "";
+	string testa;
 	if (pt = el->Attribute("Resolution"))		get_att(el, "Resolution", testa);
-	if (testa != "")
+	if (!testa.empty())
 	{
 		DirPath location = DirPath() << "Resources" << "Interface" << testa;
 		XMLFileList test(location, "*.xml");

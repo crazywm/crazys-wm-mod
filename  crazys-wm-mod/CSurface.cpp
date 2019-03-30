@@ -24,16 +24,13 @@
 #include <algorithm>
 #include "DirPath.h"
 
-extern CLog g_LogFile;
 extern CGraphics g_Graphics;
 extern CResourceManager rmanager;
-//extern sCachedSurfaces cache;
 
 CSurface::CSurface()
 {
-	m_Temp = 0;
-	m_Surface = 0;
-	m_Next = m_Prev = 0;
+	m_Temp = nullptr;
+	m_Surface = nullptr;
 	m_UseKey = false;
 	m_Cached = false;
 	//m_CachedLocation=0;
@@ -44,14 +41,13 @@ CSurface::CSurface()
 	loaded = false;
 	m_SaveSurface = false;
 	m_ColoredSurface = false;
-	m_SpriteImage = 0;
+	m_SpriteImage = nullptr;
 	m_Message = "";
 }
 CSurface::CSurface(SDL_Surface* inputsurface)
 {
-	m_Temp = 0;
-	m_Surface = 0;
-	m_Next = m_Prev = 0;
+	m_Temp = nullptr;
+	m_Surface = nullptr;
 	m_UseKey = false;
 	m_UseAlpha = true;
 	m_Cached = false;
@@ -60,17 +56,16 @@ CSurface::CSurface(SDL_Surface* inputsurface)
 	LoadSurface(inputsurface);
 	m_SaveSurface = false;
 	m_ColoredSurface = false;
-	m_SpriteImage = 0;
+	m_SpriteImage = nullptr;
 	m_Message = "";
 
 }
 CSurface::CSurface(string filename)
 {
-	m_Temp = 0;
-	m_Surface = 0;
-	m_SpriteImage = 0;
+	m_Temp = nullptr;
+	m_Surface = nullptr;
+	m_SpriteImage = nullptr;
 	m_Filename = filename;
-	m_Next = m_Prev = 0;
 	m_UseKey = false;
 	m_UseAlpha = true;
 	loaded = false;
@@ -92,11 +87,11 @@ void CSurface::Free()
 {
 	if (m_SaveSurface) return;
 	if (m_Temp) SDL_FreeSurface(m_Temp);
-	m_Temp = 0;
+	m_Temp = nullptr;
 	if (m_Surface) SDL_FreeSurface(m_Surface);
-	m_Surface = 0;
+	m_Surface = nullptr;
 	if (m_SpriteImage) SDL_FreeSurface(m_SpriteImage);
-	m_SpriteImage = 0;
+	m_SpriteImage = nullptr;
 }
 void CSurface::FreeResources()
 {
@@ -113,12 +108,12 @@ bool CSurface::LoadImage(string filename, bool load)
 {
 	m_Filename = filename;
 	if (m_Filename == ButtonPath("").c_str()) return true;	// ignore disabled buttons
-	if (load == false)
+	if (!load)
 	{
 		Register(false);
 		return true;
 	}
-	SDL_Surface* loadedImage = 0;
+	SDL_Surface* loadedImage = nullptr;
 	loadedImage = IMG_Load(filename.c_str());		// Load image
 
 	if (loadedImage)
@@ -186,7 +181,7 @@ bool CSurface::ResizeSprite(SDL_Surface* image, SDL_Rect* clip, bool maintainRat
 {
 	double scaleX, scaleY;
 	if (m_SpriteImage) SDL_FreeSurface(m_SpriteImage);		// free old image
-	m_SpriteImage = 0;
+	m_SpriteImage = nullptr;
 	
 
 	if (maintainRatio == true)
@@ -212,7 +207,7 @@ bool CSurface::ResizeSprite(SDL_Surface* image, SDL_Rect* clip, bool maintainRat
 
 bool CSurface::DrawSprite(int x, int y)
 {
-	if (m_SpriteImage == 0)
+	if (m_SpriteImage == nullptr)
 	{
 		g_LogFile.ss() << "ERROR - Draw Sprite, null surface"; g_LogFile.ssend();
 		return false;
@@ -222,7 +217,7 @@ bool CSurface::DrawSprite(int x, int y)
 	offset.x = x;
 	offset.y = y;
 
-	SDL_BlitSurface(m_SpriteImage, 0, g_Graphics.GetScreen(), &offset);
+	SDL_BlitSurface(m_SpriteImage, nullptr, g_Graphics.GetScreen(), &offset);
 
 	return true;
 }
@@ -231,19 +226,19 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 {
 	double scaleX = 0;	double scaleY = 0; double deltaX = 0; double deltaY = 0;
 
-	if (m_Surface == 0)
+	if (m_Surface == nullptr)
 	{
-		if (m_ColoredSurface == true)
+		if (m_ColoredSurface)
 		{
 			g_LogFile.ss() << "ERROR - Colored surface null: '" << m_Filename << "'"; g_LogFile.ssend();
 			return false;
 		}
 
 		if (m_Temp) SDL_FreeSurface(m_Temp);
-		m_Temp = 0;
+		m_Temp = nullptr;
 		if (!loaded)
 		{
-			if (m_Filename == ButtonPath("").c_str() || m_Filename == "")	// fix disabled buttons
+			if (m_Filename == ButtonPath("").c_str() || m_Filename.empty())	// fix disabled buttons
 				m_Filename = ImagePath("blank.png").c_str();
 			if (!LoadImage(m_Filename))
 			{
@@ -258,13 +253,13 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 
 	if (clip && resize)
 	{
-		if (m_Temp == 0)
+		if (m_Temp == nullptr)
 		{
 			if (clip->w != m_Surface->w && clip->h != m_Surface->h)
 			{
 				scaleX = ((double)clip->w / (double)m_Surface->w);
 				scaleY = ((double)clip->h / (double)m_Surface->h);
-				if (maintainRatio == true)
+				if (maintainRatio)
 				{
 					// Use the most restrictive scale
 					if (scaleX < scaleY) { scaleY = scaleX; }
@@ -278,10 +273,10 @@ bool CSurface::DrawSurface(int x, int y, SDL_Surface* destination, SDL_Rect* cli
 			if (m_Temp->w != clip->w && m_Temp->h != clip->h)
 			{
 				if (m_Temp) SDL_FreeSurface(m_Temp);	// free old image
-				m_Temp = 0;
+				m_Temp = nullptr;
 				scaleX = ((double)clip->w / (double)m_Surface->w);
 				scaleY = ((double)clip->h / (double)m_Surface->h);
-				if (maintainRatio == true)
+				if (maintainRatio)
 				{
 					// Use the most restrictive scale
 					if (scaleX < scaleY) { scaleY = scaleX; }
@@ -362,7 +357,7 @@ bool CSurface::DrawGifSurface(int x, int y, AG_Frame* agframes, int currentframe
 		SDL_BlitSurface(destination, &f, agframes[0].surface, &f);
 
 	// Draw the current frame using the frame rectangle.
-	SDL_BlitSurface(agframes[currentframe].surface, NULL, destination, &f);
+	SDL_BlitSurface(agframes[currentframe].surface, nullptr, destination, &f);
 
 	// Update the display using the update rectangle.
 	SDL_UpdateRects(destination, 1, &u);
@@ -374,5 +369,5 @@ void CSurface::MakeColoredSurface(int width, int height, int red, int green, int
 {
 	m_ColoredSurface = true;
 	m_Surface = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, BPP, 0, 0, 0, 0);
-	SDL_FillRect(m_Surface, 0, SDL_MapRGB(m_Surface->format, red, green, blue));
+	SDL_FillRect(m_Surface, nullptr, SDL_MapRGB(m_Surface->format, red, green, blue));
 }

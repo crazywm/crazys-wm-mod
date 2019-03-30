@@ -35,5 +35,8 @@
             What="GirlStatus"
             Name="Controlled"
             Amount="0" />
+        <Crafting CraftPoints="180" ManaCost="30">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
 </Items>

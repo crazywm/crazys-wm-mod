@@ -86,5 +86,10 @@
    <Effect What="Trait" Name="Assassin"                Amount="0"    />
    <Effect What="Trait" Name="Adventurer"              Amount="0"    />
    <Effect What="Trait" Name="Aggressive"              Amount="1"    />
+
+   <Crafting CraftPoints="90" ManaCost="20">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="40" />
+   </Crafting>
 </Item>
 </Items>

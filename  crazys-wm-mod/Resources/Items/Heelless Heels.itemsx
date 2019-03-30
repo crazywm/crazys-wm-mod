@@ -24,5 +24,8 @@
     <Effect     What="Trait"    Name="Great Arse"       Amount="1" />
     <Effect     What="Trait"    Name="Long Legs"        Amount="1" />
     <Effect     What="Trait"    Name="Fallen Goddess"   Amount="1" />
+        <Crafting CraftPoints="65" ManaCost="25">
+            <Job Name="Cobbler"/>
+        </Crafting>
     </Item>
 </Items>

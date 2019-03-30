@@ -32,5 +32,9 @@
         <Effect What="Trait" Name="Deaf"                    Amount="0"    />
    <Effect What="Trait" Name="Half-Construct"          Amount="0"    />
    <Effect What="Trait" Name="Malformed"               Amount="0"    />
+        <Crafting CraftPoints="200" ManaCost="20">
+                <Job Name="Make Potions"/>
+                <Skill Name="Medicine" Minimum="80" />
+        </Crafting>
 </Item>
 </Items>

@@ -30,5 +30,8 @@
 			What="Trait"
 			Name="Dojikko"
 			Amount="1" />
+		<Crafting CraftPoints="45" ManaCost="20">
+			<Job Name="Tailor"/>
+		</Crafting>
 	</Item>
 </Items>

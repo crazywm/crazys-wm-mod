@@ -12,5 +12,8 @@
    <Effect What="Skill" Name="Magic"                   Amount="40"    />
    <Effect What="Skill" Name="Combat"                  Amount="-5"    />
    <Effect What="Stat"  Name="Mana"                    Amount="10"    />
+   <Crafting CraftPoints="150" ManaCost="60">
+      <Job Name="Make Items"/>
+   </Crafting>
 </Item>
 </Items>

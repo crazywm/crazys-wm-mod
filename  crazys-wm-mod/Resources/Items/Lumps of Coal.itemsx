@@ -11,5 +11,8 @@
    <Effect What="Stat"  Name="Libido"                  Amount="100"    />
    <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
    <Effect What="Trait" Name="Aggressive"              Amount="1"    />
+   <Crafting CraftPoints="5" ManaCost="10">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

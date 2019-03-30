@@ -20,9 +20,7 @@
 
 #include "CSurface.h"
 #include <string>
-#include <iostream>
-#include <fstream>
-using namespace std;
+
 #include "SDL_anigif.h"
 
 class CSurface;
@@ -70,21 +68,4 @@ private:
 	SDL_Rect m_Frames;				// Holds the data for ALL frames, since all frames have same width/height
 	AG_Frame* m_AFrames;			// gif frames
 	SDL_Surface* m_SaveSurface;
-};
-
-// Manages a file with multiple animations
-class CAnimatedSprite
-{
-public:
-	CAnimatedSprite(){m_Animations=0; m_Image=0;m_CurrAnimation=0;}
-	~CAnimatedSprite();
-
-	void Free();
-
-	bool Draw(int x, int y, int width, int height, unsigned int currentTime);
-
-private:
-	int m_CurrAnimation;
-	cAnimatedSurface* m_Animations;
-	CSurface* m_Image;
 };

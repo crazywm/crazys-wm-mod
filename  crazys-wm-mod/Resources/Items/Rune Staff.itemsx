@@ -13,19 +13,8 @@
    <Effect What="Stat"  Name="Confidence"              Amount="12"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-24"    />
    <Effect What="Stat"  Name="PCHate"                  Amount="-12"    />
-</Item>
-<Item Name="Rune Staff"
-      Desc="This thin silver staff is inscribed with arcane symbols of power. It constantly draws energy from other planes of existence and channels it to its wielder. (B) (+25 Mag, +6 Com, +12 Conf, -24 Fear, -12 Hate)"
-      Type="Weapon"
-      Badness="0"
-      Special="None"
-      Cost="1500"
-      Rarity="Shop25"
-      Infinite="false">
-   <Effect What="Skill" Name="Magic"                   Amount="25"    />
-   <Effect What="Skill" Name="Combat"                  Amount="6"    />
-   <Effect What="Stat"  Name="Confidence"              Amount="12"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-24"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-12"    />
+   <Crafting CraftPoints="120" ManaCost="50">
+      <Job Name="Make Items"/>
+   </Crafting>
 </Item>
 </Items>

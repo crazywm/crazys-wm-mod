@@ -21,18 +21,18 @@
 #include "cRng.h"
 #include "sConfig.h"
 
-extern	CLog	g_LogFile;
 extern	cRng	g_Dice;
 
 extern cConfig cfg;
 
 struct sBrothel;
 struct sGirl;
+class IBuilding;
 
 class cTariff {
 	double slave_base_price(sGirl *girl);
 public:
-	cTariff() {}
+	cTariff() = default;
 
 	int goon_weapon_upgrade(int level);
 	int goon_mission_cost(int mission);
@@ -48,7 +48,7 @@ public:
  */
 	int matron_wages(int level = 50, int numgirls = 1);
 	int bar_staff_wages();
-	int empty_room_cost(sBrothel *brothel);
+	int empty_room_cost(IBuilding& brothel);
 	int empty_bar_cost();
 	int active_bar_cost(int level, double shifts);
 	int empty_casino_cost(int level);

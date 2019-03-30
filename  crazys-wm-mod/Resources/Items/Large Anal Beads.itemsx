@@ -59,5 +59,9 @@
             What="Trait"
             Name="Fleet of Foot"
             Amount="0" />
+        <Crafting CraftPoints="70" ManaCost="0">
+            <Job Name="Make Items"/>
+            <Stat Name="Libido" Minimum="50" />
+        </Crafting>
     </Item>
 </Items>

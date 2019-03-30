@@ -12,5 +12,9 @@
    <Effect What="Stat"  Name="Constitution"            Amount="5"    />
    <Effect What="Stat"  Name="Exp"                     Amount="5"    />
    <Effect What="Stat"  Name="Happiness"               Amount="5"    />
+   <Crafting CraftPoints="20" ManaCost="0" Weight="5">
+      <Job Name="Brewer"/>
+      <Skill Name="Brewing" Minimum="20" />
+   </Crafting>
 </Item>
 </Items>

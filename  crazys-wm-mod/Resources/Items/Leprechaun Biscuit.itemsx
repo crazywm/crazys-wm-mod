@@ -12,5 +12,9 @@
    <Effect What="Stat"  Name="Tiredness"               Amount="-100"    />
    <Effect What="Trait" Name="Pessimist"               Amount="0"    />
    <Effect What="Trait" Name="Optimist"                Amount="1"    />
+   <Crafting CraftPoints="40" ManaCost="20">
+      <Job Name="Baker"/>
+      <Skill Name="Magic" Minimum="60" />
+   </Crafting>
 </Item>
 </Items>

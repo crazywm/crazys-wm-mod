@@ -9,15 +9,10 @@
       Rarity="Shop50"
       Infinite="false">
    <Effect What="Stat"  Name="Mana"                    Amount="25"    />
-</Item>
-<Item Name="Mana Potion"
-      Desc="This flask of sparkly blue potion restores a fair portion of one's magical power. Somehow, it tastes different to everyone who drinks it. (+25 Mana)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="100"
-      Rarity="Shop50"
-      Infinite="false">
-   <Effect What="Stat"  Name="Mana"                    Amount="25"    />
+   <Crafting CraftPoints="50" ManaCost="5" Weight="2">
+      <Job Name="Make Potions"/>
+      <Skill Name="Magic" Minimum="50" />
+      <Skill Name="Brewing" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

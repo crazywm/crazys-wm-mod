@@ -24,5 +24,9 @@
    <Effect What="Skill" Name="Service"                 Amount="5"    />
    <Effect What="Stat"  Name="Charisma"                Amount="2"    />
    <Effect What="Stat"  Name="Libido"                  Amount="5"    />
+
+   <Crafting CraftPoints="25" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

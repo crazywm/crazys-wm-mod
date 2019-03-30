@@ -15,21 +15,8 @@
    <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
    <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
    <Effect What="Skill" Name="Combat"                  Amount="-5"    />
-</Item>
-<Item Name="Mage Cloak"
-      Desc="This simple cloak, commonly worn by apprentice mages, is woven with minor enchantments that protect magic-users from their own spells, allowing them to put in just a little more juice without putting themselves in danger. It also slightly increases their endurance, in case they do bite off more than they can chew. (D) (+10 Mag, +5 Cons, -5 Agi, -2 Cha, -5 Fear, -5 Hate, -5 Comb)"
-      Type="Armor"
-      Badness="0"
-      Special="None"
-      Cost="400"
-      Rarity="Common"
-      Infinite="false">
-   <Effect What="Skill" Name="Magic"                   Amount="10"    />
-   <Effect What="Stat"  Name="Constitution"            Amount="5"    />
-   <Effect What="Stat"  Name="Agility"                 Amount="-5"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="-2"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
-   <Effect What="Skill" Name="Combat"                  Amount="-5"    />
+   <Crafting CraftPoints="80" ManaCost="20">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

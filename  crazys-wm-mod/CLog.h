@@ -50,18 +50,10 @@ static	bool setup;
 class CLog
 {
 public:
-	CLog(bool a_glob = false) {
+	explicit CLog(bool a_glob = false) {
 		m_glob = a_glob;
 	}
-	~CLog() {
-		if(!m_glob) {
-			return;
-		}
-		if(inner) {
-			delete inner;
-		}
-		inner = 0;
-	}
+	~CLog();
 	void write(string text)	{
 		if(!inner) inner = new CLogInner();
 		inner->write(text);
@@ -80,6 +72,7 @@ public:
 	}
 private:
 	bool m_glob;
-static	CLogInner *inner;
+    static CLogInner *inner;
 };
 
+extern CLog g_LogFile;

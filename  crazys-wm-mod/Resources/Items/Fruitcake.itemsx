@@ -9,5 +9,9 @@
       Rarity="Shop25"
       Infinite="false">
    <Effect What="Stat"  Name="Health"                  Amount="50"    />
+   <Crafting CraftPoints="25" ManaCost="0" Weight="5">
+      <Job Name="Baker"/>
+      <Skill Name="Cooking" Minimum="30" />
+   </Crafting>
 </Item>
 </Items>

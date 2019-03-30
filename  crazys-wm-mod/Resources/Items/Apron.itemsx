@@ -12,5 +12,8 @@
    <Effect What="Skill" Name="Service"                 Amount="15"    />
    <Effect What="Skill" Name="Cooking"                 Amount="15"    />
    <Effect What="Stat"  Name="Obedience"               Amount="5"    />
+   <Crafting CraftPoints="15" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

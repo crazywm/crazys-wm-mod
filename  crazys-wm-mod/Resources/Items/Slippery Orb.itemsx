@@ -12,5 +12,9 @@
    <Effect What="Stat" Name="PCFear" Amount="-2" />
    <Effect What="Skill" Name="NormalSex" Amount="25" />
    <Effect What="Skill" Name="Group" Amount="25" />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Make Items"/>
+      <Stat Name="Libido" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

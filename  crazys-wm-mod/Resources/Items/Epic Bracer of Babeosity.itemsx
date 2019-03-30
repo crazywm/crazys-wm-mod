@@ -27,5 +27,8 @@
    <Effect What="Trait" Name="Perky Nipples"           Amount="1"    />
    <Effect What="Trait" Name="Broken Will"             Amount="0"    />
    <Effect What="Trait" Name="Iron Will"               Amount="0"    />
+   <Crafting CraftPoints="250" ManaCost="10">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

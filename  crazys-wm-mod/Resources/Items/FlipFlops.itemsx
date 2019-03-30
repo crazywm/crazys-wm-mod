@@ -13,5 +13,8 @@
     <Effect     What="Stat"     Name="Beauty"           Amount="-3" />
     <Effect     What="Stat"     Name="Happiness"        Amount="2" />
     <Effect     What="Stat"     Name="Spirit"           Amount="3" />
+        <Crafting CraftPoints="10" ManaCost="0">
+            <Job Name="Cobbler"/>
+        </Crafting>
     </Item>
 </Items>

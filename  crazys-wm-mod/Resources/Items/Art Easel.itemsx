@@ -15,50 +15,8 @@
    <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
    <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
-</Item>
-<Item Name="Art Easel"
-      Desc="A nice easel for a girl to practice her painting. Relaxing, and who knows? She may even get famous. (+10 Intelligence, +5 love, -5 Tired, Fear, Hate. Possible increase to fame)"
-      Type="Misc"
-      Badness="0"
-      Special="None"
-      Cost="460"
-      Rarity="Shop50"
-      Infinite="false"
-      GirlBuyChance="60">
-   <Effect What="Stat"  Name="Intelligence"            Amount="10"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
-   <Effect What="Stat"  Name="Tiredness"               Amount="-5"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
-</Item>
-<Item Name="Art Easel"
-      Desc="A nice easel for a girl to practice her painting. Relaxing, and who knows? She may even get famous. (+10 Intelligence, +5 love, -5 Tired, Fear, Hate. Possible increase to fame)"
-      Type="Misc"
-      Badness="0"
-      Special="None"
-      Cost="460"
-      Rarity="Shop50"
-      Infinite="false"
-      GirlBuyChance="60">
-   <Effect What="Stat"  Name="Intelligence"            Amount="10"    />
-   <Effect What="Stat"  Name="Tiredness"               Amount="-5"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
-</Item>
-<Item Name="Art Easel"
-      Desc="A nice easel for a girl to practice her painting. Relaxing, and who knows? She may even get famous. (+10 Intelligence, +5 love, -5 Tired, Fear, Hate. Possible increase to fame)"
-      Type="Misc"
-      Badness="0"
-      Special="None"
-      Cost="460"
-      Rarity="Shop50"
-      Infinite="false"
-      GirlBuyChance="60">
-   <Effect What="Stat"  Name="Intelligence"            Amount="10"    />
-   <Effect What="Stat"  Name="Tiredness"               Amount="-5"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-5"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-5"    />
+   <Crafting CraftPoints="120" ManaCost="0">
+      <Job Name="Make Items"/>
+   </Crafting>
 </Item>
 </Items>

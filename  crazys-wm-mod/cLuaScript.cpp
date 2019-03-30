@@ -20,28 +20,23 @@
 #include "cLuaMenu.h"
 #include "cScriptUtils.h"
 #include "CLog.h"
-#include "cMessageBox.h"
 #include "cChoiceMessage.h"
-#include "cBrothel.h"
 #include "DirPath.h"
 #include "FileList.h"
 #include "SDLStuff.h"
-#include "sConfig.h"
-#include "cInterfaceWindow.h"
 #include "cWindowManager.h"
 #include "cScriptManager.h"
-#include "cScreenBrothelManagement.h"
+#include "src/screens/cScreenBrothelManagement.h"
+#include "src/Game.hpp"
+#include "cTraits.h"
+#include "src/sGirl.hpp"
+#include "src/buildings/cDungeon.h"
+#include "cPlayer.h"
 
 extern CGraphics g_Graphics;
 extern cChoiceManager g_ChoiceManager;
-extern cMessageQue g_MessageQue;
-extern cBrothelManager g_Brothels;
-extern int g_CurrBrothel;
 extern cWindowManager g_WinManager;
-extern cScreenBrothelManagement g_BrothelManagement;
-extern bool g_InitWin;
-
-extern cPlayer* The_Player;
+extern cScreenBrothelManagement* g_BrothelManagement;
 
 typedef int (*lua_func)(lua_State *L);
 
@@ -50,7 +45,7 @@ static const char *stats[] = {
 	"level", "askprice", "house", "exp", "age", "obedience", "spirit", "beauty", "tiredness",
 	"health", "pc_fear", "pc_love", "pc_hate", "morality", "refinement", "dignity", "lactation", "strength", "npc_love",
 	"sanity",
-	0
+	nullptr
 };
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cLuaScript.cpp
 
@@ -58,7 +53,7 @@ static const char *skills[] = // same again for skill names
 {
 	"anal", "magic", "bdsm", "normal", "beastiality", "group", "lesbian", "service", "strip", "combat", "oral", "titty", 
 	"medicine", "performance", "handjob", "crafting", "herbalism", "farming", "brewing", "animalhandling", "footjob", "cooking"
-	,0
+	,nullptr
 };
 
 static void add_to_table(lua_State *L, int table, const char *key, lua_func f)
@@ -375,10 +370,9 @@ static int game_over(lua_State *L)
 {
 	cScriptManager sm;
 
-	g_MessageQue.AddToQue("GAME OVER", COLOR_RED);
-	g_WinManager.PopToWindow(&g_BrothelManagement);
+	g_Game.push_message("GAME OVER", COLOR_RED);
+	g_WinManager.PopToWindow(g_BrothelManagement);
 	g_WinManager.Pop();
-	g_InitWin = true;
 	sm.Release();
 	return 0;
 }
@@ -423,7 +417,7 @@ static void make_lua_girl(lua_State *L, sGirl *girl)
  *	that way we null out any pre-existing girl to show that
  *	there is no target girl for the current event
  */
-	if(girl == 0) {
+	if(girl == nullptr) {
 		lua_pushnil(L);
 		return;
 	}
@@ -489,7 +483,7 @@ static int create_random_girl(lua_State *L)
 	bool arena		= false;	// set to true for an arena girl
 	bool daughter	= false;	// set to true if she will be player's daughter
 	bool isdaughter	= false;	// set to true if is she a Canonical_Daughter of another girl?
-	string name		= "";		// specific name search
+	string name;		// specific name search
 	/*
  *	now - let's have an arg table
  */
@@ -520,7 +514,7 @@ static int create_random_girl(lua_State *L)
 /*
  *	now create the girl
  */
-	sGirl *girl = g_Girls.CreateRandomGirl(
+	sGirl *girl = g_Game.CreateRandomGirl(
 		age,		// age
 		global,		// add to global girl list flag
 		slave,		// create as slave flag
@@ -550,7 +544,7 @@ static int queue_message(lua_State *L)
 	//log.ss() << "Before add: has = " << g_MessageQue.HasNext();
 	log.ssend();
 
-	g_MessageQue.AddToQue(msg, color);
+	g_Game.push_message(msg, color);
 	//log.ss() << "After add: has = " << g_MessageQue.HasNext();
 	//log.ssend();
 	return 0;
@@ -637,7 +631,7 @@ static int add_cust_to_brothel(lua_State *L)
 	}
 	lua_pop(L, 1);
 
-	g_Brothels.GetDungeon()->AddCust(rval, daughters, wife);
+	g_Game.dungeon().AddCust(rval, daughters, wife);
 	return 0;
 }
 
@@ -690,7 +684,7 @@ static const luaL_Reg funx [] = {
 	{ "pop_window", pop_window },
 	{ "log", log_from_lua },
 	{ "message", queue_message },
-	{ 0, 0 }
+	{ nullptr, nullptr }
 };
 
 cLuaStateInner::cLuaStateInner()
@@ -728,7 +722,7 @@ cLuaStateInner::set_param(const char *name, void *pt)
 }
  */
 
-cLuaStateInner *cLuaState::instance = 0;
+cLuaStateInner *cLuaState::instance = nullptr;
 
 string cLuaScript::slurp(string path)
 {
@@ -923,7 +917,7 @@ void cLuaScript::set_wm_player()
 /*
  *	now format the sGirl data as a Lua table
  */
-	make_lua_player(l, The_Player);
+	make_lua_player(l, &g_Game.player());
 	bool flag = !lua_isnil(l, -1);
 	assert(flag);
 /*

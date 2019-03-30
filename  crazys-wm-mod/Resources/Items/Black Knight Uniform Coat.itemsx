@@ -17,5 +17,8 @@
    <Effect What="Stat"  Name="PCFear"                  Amount="20"    />
    <Effect What="Trait" Name="Cool Person"             Amount="1"    />
    <Effect What="Trait" Name="Fearless"                Amount="1"    />
+   <Crafting CraftPoints="130" ManaCost="30">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

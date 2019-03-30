@@ -19,23 +19,19 @@
 #include "tinyxml.h"
 #include "cInventory.h"
 #include <iostream>
-#include <fstream>
-#include "cBrothel.h"
-#include "cMessageBox.h"
+#include "src/buildings/cBrothel.h"
 #include "cCustomers.h"
-#include "libintl.h"
+#include "src/Game.hpp"
+#include "src/utils/streaming_random_selection.hpp"
+#include "cTraits.h"
+#include "CLog.h"
 using namespace std;
 
-extern cGirls g_Girls;
 extern cTraits g_Traits;
-extern CLog g_LogFile;
-extern cCustomers g_Customers;
-extern cBrothelManager g_Brothels;
-extern cMessageQue g_MessageQue;
 extern cRng g_Dice;
+extern cConfig      cfg;
 
 extern string stringtolowerj(string name);
-extern cPlayer* The_Player;
 
 // ----- Misc
 
@@ -46,7 +42,7 @@ cInventory::~cInventory()
 
 void cInventory::Free()
 {
-	for(int i = 0; i < NUM_SHOPITEMS; i++) m_ShopItems[i] = 0;
+	for(auto & m_ShopItem : m_ShopItems) m_ShopItem = nullptr;
 }
 
 const char *sEffect::girl_status_name(unsigned int id)
@@ -122,37 +118,10 @@ bool sEffect::set_Enjoyment(string s)
 void cInventory::GivePlayerAllItems()
 {
 	sInventoryItem* item;
-	for (u_int i = 0; i < items.size(); i++)
+	for (auto & m_Item : m_Items)
 	{
-		item = items[i];
-		int curI = g_Brothels.HasItem(item->m_Name, -1);
-		bool loop = true;
-		while (loop)
-		{
-			if (curI != -1 && g_Brothels.m_NumItem[curI] >= 999) curI = g_Brothels.HasItem(item->m_Name, curI + 1);
-			else loop = false;
-		}
-		if (g_Brothels.m_NumInventory >= MAXNUM_INVENTORY && curI == -1)
-		{
-			g_LogFile.write("Adding all items cheat: inventory full");
-			break;
-		}
-		if (curI != -1)
-		{
-			g_Brothels.m_NumItem[curI]++;
-			continue;
-		}
-		for (int j = 0; j < MAXNUM_INVENTORY; j++)
-		{
-			if (g_Brothels.m_Inventory[j] == 0)
-			{
-				g_Brothels.m_Inventory[j] = item;
-				g_Brothels.m_EquipedItems[j] = 0;
-				g_Brothels.m_NumInventory++;
-				g_Brothels.m_NumItem[j]++;
-				break;
-			}
-		}
+		item = m_Item;
+		g_Game.player().inventory().add_item(item, 999);
 	}
 }
 
@@ -247,7 +216,7 @@ static void do_tests(TiXmlElement *parent, sInventoryItem *item)	// `J` added
 
 void cInventory::AddItem(sInventoryItem* item)
 {
-	items.push_back(item);
+	m_Items.push_back(item);
 }
 void cInventory::remove_trait(sGirl* girl, int num, int index)
 {
@@ -270,14 +239,14 @@ bool cInventory::GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoE
 {
 	// girl buys selected item if possible; returns true if bought
 	sInventoryItem* item = GetShopItem(ShopItem);
-	if (g_Girls.GetNumItemType(girl, item->m_Type) >= MaxItems)
+	if (cGirls::GetNumItemType(girl, item->m_Type) >= MaxItems)
 	{
 		// if she has enough of this type, she won't buy more unless it's better than what she has
-		int nicerThan = g_Girls.GetWorseItem(girl, (int)item->m_Type, item->m_Cost);
+		int nicerThan = cGirls::GetWorseItem(girl, (int)item->m_Type, item->m_Cost);
 		if (nicerThan != -1)
 		{
 			// found a worse item of the same type in her inventory
-			g_Girls.SellInvItem(girl, nicerThan);
+			cGirls::SellInvItem(girl, nicerThan);
 			girl->m_Money -= item->m_Cost;
 			int temp = girl->add_inv(item);
 			if (temp != -1 && AutoEquip) Equip(girl, temp, false); // MYR: Check temp value
@@ -379,13 +348,13 @@ void cInventory::CalculateCost(sInventoryItem* newItem)
 		}
 		if (newItem->m_Effects[i].m_Affects == sEffect::Trait)	newItem->m_Cost += 500;	// traits
 	}
-	if (newItem->m_Effects.size() > 0)		newItem->m_Cost += newItem->m_Effects.size() * 5;
+	if (!newItem->m_Effects.empty())		newItem->m_Cost += newItem->m_Effects.size() * 5;
 	if (newItem->m_Rarity > 0)				newItem->m_Cost += newItem->m_Rarity * 5;
 	if (newItem->m_Special == 1)			newItem->m_Cost += 2000;
 	else if (newItem->m_Special == 2)		newItem->m_Cost += 100;
 	if (newItem->m_Cost <= 10)				newItem->m_Cost = 10;
 }
-int cInventory::HappinessFromItem(sInventoryItem* item)
+int cInventory::HappinessFromItem(const sInventoryItem * item)
 {
 	// decrease value by 5% for each point of badness
 	int Value = int((double)item->m_Cost * ((100 - ((double)item->m_Badness * 5)) / 100));
@@ -408,18 +377,43 @@ ostream& operator << (ostream& os, sEffect::What &w)
 	}
 }
 
+void sEffect::set_what(string s) {
+    if		(s == "Skill")		m_Affects = Skill;
+    else if	(s == "Stat")		m_Affects = Stat;
+    else if	(s == "Nothing")	m_Affects = Nothing;
+    else if	(s == "GirlStatus")	m_Affects = GirlStatus;
+    else if (s == "Trait")		m_Affects = Trait;
+    else if (s == "Enjoy")		m_Affects = Enjoy;
+    else {
+        m_Affects = Nothing;
+        cerr << "Error: Bad 'what' string for item effect: '" << s << "'" << endl;
+    }
+}
+
+ostream& operator<<(ostream& os, sEffect& eff) {
+    os << "Effect: " << eff.m_Affects << " ";
+    if (eff.m_Affects == sEffect::Stat) { os << eff.stat_name(eff.m_EffectID); }
+    if (eff.m_Affects == sEffect::Skill) { os << eff.skill_name(eff.m_EffectID); }
+    if (eff.m_Affects == sEffect::Trait) { os << "'" << eff.m_Trait << "'"; }
+    if (eff.m_Affects == sEffect::GirlStatus) { os << eff.girl_status_name(eff.m_EffectID); }
+    if (eff.m_Affects == sEffect::Enjoy) { os << eff.enjoy_name(eff.m_EffectID); }
+    os << (eff.m_Amount > 0 ? " +" : " ") << eff.m_Amount;
+    return os << endl;
+}
+
 // ----- Shop
 sInventoryItem* cInventory::BuyShopItem(int num)
 {
-	if (num >= NUM_SHOPITEMS) return 0;
+	if (num >= NUM_SHOPITEMS) return nullptr;
 	sInventoryItem* item = m_ShopItems[num];
 	if (item->m_Infinite == 0)
 	{
-		m_ShopItems[num] = 0;
+		m_ShopItems[num] = nullptr;
 		m_NumShopItems--;
 	}
 	return item;
 }
+
 int cInventory::CheckShopItem(string name)
 {
 	int num = -1;
@@ -437,8 +431,8 @@ void cInventory::UpdateShop()
 	for (int i = 0; i < NUM_SHOPITEMS; i++)
 	{
 		sInventoryItem* item = GetRandomItem();
-		while (item == 0) item = GetRandomItem();
-		if (item == 0) break;	// should never happen but left in anyway
+		while (item == nullptr) item = GetRandomItem();
+		if (item == nullptr) break;	// should never happen but left in anyway
 
 		int chance = g_Dice.d100();
 		if ((item->m_Rarity == RARITYCOMMON ||
@@ -461,14 +455,14 @@ void cInventory::UpdateShop()
 sInventoryItem* cInventory::GetShopItem(int num)
 {
 	if (m_NumShopItems == 0) UpdateShop();
-	if (num >= NUM_SHOPITEMS) return 0;
+	if (num >= NUM_SHOPITEMS) return nullptr;
 	return m_ShopItems[num];
 }
 int cInventory::GetRandomShopItem()
 {
 	if (m_NumShopItems == 0) UpdateShop();
 	int num = g_Dice%NUM_SHOPITEMS;
-	while (m_ShopItems[num] == 0) num = g_Dice%NUM_SHOPITEMS;
+	while (m_ShopItems[num] == nullptr) num = g_Dice%NUM_SHOPITEMS;
 	if (num > NUM_SHOPITEMS - 1) num = NUM_SHOPITEMS - 1;   // shouldn't be necessary, but once I got 40 back causing OOB elsewhere
 	return num;
 }
@@ -478,36 +472,36 @@ sInventoryItem* cInventory::GetRandomItem()
 {
 	sInventoryItem *ipt;
 	int log = 0; if (cfg.debug.log_items()) log = (cfg.debug.log_extradetails()) ? 2 : 1;
-	if (log > 0) g_LogFile.os() << "cInventory::GetRandomItem: " << "items.size == " << items.size() << endl;
-	if (items.size() == 0)
+	if (log > 0) g_LogFile.os() << "cInventory::GetRandomItem: " << "items.size == " << m_Items.size() << endl;
+	if (m_Items.empty())
 	{
 		if (log > 1) g_LogFile.os() << "	returning null" << endl;
-		return 0;
+		return nullptr;
 	}
-	if (items.size() == 1)
+	if (m_Items.size() == 1)
 	{
-		ipt = items[0];
+		ipt = m_Items[0];
 		if (log > 1) g_LogFile.os() << "	returning 0x" << hex << long(ipt) << endl;
-		return items[0];
+		return m_Items[0];
 	}
-	int index = g_Dice % (items.size() - 1);	// fixed crash with going outside vector size - necro
+	int index = g_Dice % (m_Items.size() - 1);	// fixed crash with going outside vector size - necro
 	if (log > 1) g_LogFile.os() << "	returning item at index " << index << endl;
-	ipt = items[index];
+	ipt = m_Items[index];
 	if (log > 1) g_LogFile.os() << "	returning 0x" << hex << long(ipt) << dec << endl;
 	return ipt;
 }
 sInventoryItem* cInventory::GetRandomCatacombItem()
 {
-	if (items.size() == 0)	return 0;
-	sInventoryItem *temp = 0;
-	int index = g_Dice % (items.size() - 1);
+	if (m_Items.empty())	return nullptr;
+	sInventoryItem *temp = nullptr;
+	int index = g_Dice % (m_Items.size() - 1);
 
-	int tries = items.size() / 3;	// try 1/3 of all items to get an item
+	int tries = m_Items.size() / 3;	// try 1/3 of all items to get an item
 	while (tries > 0)
 	{
-		if (tries % 10 == 0) index = g_Dice % (items.size() - 1);
-		if (index >= (int)items.size()) index = 0;
-		temp = items[index];
+		if (tries % 10 == 0) index = g_Dice % (m_Items.size() - 1);
+		if (index >= (int)m_Items.size()) index = 0;
+		temp = m_Items[index];
 		switch (temp->m_Rarity) {
 		case RARITYSHOP25:									return temp;	break;
 		case RARITYSHOP05:		if (g_Dice.percent(25))		return temp;	break;
@@ -516,7 +510,7 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
 		case RARITYCATACOMB01:	if (g_Dice.percent(1))		return temp;	break;
 		case RARITYSCRIPTONLY:
 		case RARITYSCRIPTORREWARD:
-			temp = 0;
+			temp = nullptr;
 			break;	// if at the end it is a script item, no item is returned
 		case RARITYCOMMON:
 		case RARITYSHOP50:
@@ -526,109 +520,19 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
 		tries--;
 		index++;
 	}
-	if (!temp) return 0;
+	if (!temp) return nullptr;
 	return temp;
 }
-
-// `J` Incomplete Craftable code - commenting out
-#if 0
-// `J` get an item the girl can make
-sInventoryItem* cInventory::GetRandomCraftableItem(sGirl*girl, int job, int points)
-{
-	if (items.size() == 0)	return 0;
-	sInventoryItem *temp;
-	int index = g_Dice % (items.size() - 1);
-
-	int tries = items.size()/3;	// try 1/3 of all items to get an item
-	while (tries > 0)
-	{
-		if (tries % 10 == 0) index = g_Dice % (items.size() - 1);
-		if (index >= (int)items.size()) index = 0;
-		temp = items[index];
-		if ((temp->m_Craftable == job || temp->m_Craftable == sInventoryItem::Any)
-			&& temp->m_CraftPoints <= points
-			&& temp->m_CraftLevel <= girl->level()
-			&& temp->m_CraftCraft <= girl->crafting()
-			&& temp->m_CraftStrength <= girl->strength()
-			&& temp->m_CraftMagic <= girl->magic()
-			&& temp->m_CraftIntel <= girl->intelligence())
-			return temp;
-		else temp = NULL;
-		tries--;
-		index++;
-
-	}
-	return temp;
-}
-#endif
-
-// `J` Incomplete Craftable code - commenting out
-#if 0
-string cInventory::CraftItem(sGirl*girl, int job, int points)
-{
-	stringstream ss;
-	sInventoryItem* item = NULL;
-
-	int nummade = 0;
-	int total_made = 0;
-	int tries = girl->constitution() / 2;
-	string ItemsMade[50];
-	int numItemsMade[50];
-
-	while (points > 0 && tries > 0)
-	{
-		tries--;
-
-
-		item = GetRandomCraftableItem(girl, job, points);
-		if (item)
-		{
-			if (g_Brothels.AddItemToInventory(item))
-			{
-				points -= item->m_CraftPoints;
-				bool newitem = true;
-
-				for (int i=0; i < nummade; i++)
-				{
-					if (ItemsMade[i] == item->m_Name)
-					{
-						numItemsMade[i]++;
-						newitem = false;
-						break;
-					}
-				}
-				if (newitem)
-				{
-					ItemsMade[nummade] = item->m_Name;
-					numItemsMade[nummade] = 1;
-					nummade++;
-				}
-				total_made++;
-			}
-			else points--;
-		}
-		else points--;
-	}
-	if (total_made > 0)
-	{
-		ss << "\n \n" << girl->m_Realname << " made:\n";
-		for (int i = 0; i < nummade; i++)
-			ss << numItemsMade[i] << " " << ItemsMade[i] << "\n";
-	}
-
-	return ss.str();
-}
-#endif
 
 sInventoryItem* cInventory::GetItem(string name)
 {
 	sInventoryItem* item;
-	for (u_int i = 0; i < items.size(); i++)
+	for (u_int i = 0; i < m_Items.size(); i++)
 	{
-		item = items[i];
+		item = m_Items[i];
 		if (item->m_Name == name) return item;
 	}
-	return 0;
+	return nullptr;
 }
 
 // ----- Equip unequip
@@ -653,12 +557,12 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		girl->m_Stats[STAT_AGE] = (age == 100 ? 100 : 18);	// keep ageless girls ageless	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 		girl->m_Stats[STAT_HOUSE] = girl->is_slave() ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
 
-		g_MessageQue.AddToQue(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
+		g_Game.push_message(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
 			": The use of this item has reset all her stats and skills to default.", COLOR_BLUE);
-		girl->m_Inventory[num] = 0;
+		girl->m_Inventory[num] = nullptr;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
-		g_Girls.CalculateGirlType(girl);
+		cGirls::CalculateGirlType(girl);
 		return;
 	}
 	else if (stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Reset Potion MK ii"))
@@ -669,15 +573,15 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		{
 			if (girl->m_Traits[i]) girl->remove_trait(girl->m_Traits[i]->name(), false, true, false);
 		}
-		g_Girls.RemoveAllRememberedTraits(girl);
+		cGirls::RemoveAllRememberedTraits(girl);
 
-		g_MessageQue.AddToQue(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
+		g_Game.push_message(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
 			": The use of this item has removed all her traits.", COLOR_BLUE);
-		girl->m_Inventory[num] = 0;
+		girl->m_Inventory[num] = nullptr;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
-		g_Girls.ApplyTraits(girl);
-		g_Girls.CalculateGirlType(girl);
+		cGirls::ApplyTraits(girl);
+		cGirls::CalculateGirlType(girl);
 		return;
 	}
 	else if (girl->is_dead() ||					// dead girls shouldn't be able to equip or use anything
@@ -697,11 +601,14 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 	int pregbyP = 0;	int pregrmP = 0;
 	int pregbyB = 0;	int pregrmB = 0;
 
-	for (u_int i = 0; i < girl->m_Inventory[num]->m_Effects.size(); i++)
+	for (auto effect : girl->m_Inventory[num]->m_Effects)
 	{
-		int affects = girl->m_Inventory[num]->m_Effects[i].m_Affects;
-		int eff_id = girl->m_Inventory[num]->m_Effects[i].m_EffectID;
-		int amount = girl->m_Inventory[num]->m_Effects[i].m_Amount;
+        if(g_Dice % 100 >= effect.m_Chance) {
+            continue;
+        }
+		int affects = effect.m_Affects;
+		int eff_id = effect.m_EffectID;
+		int amount = effect.m_Amount;
 
 		if (affects == sEffect::GirlStatus && (eff_id == STATUS_PREGNANT || eff_id == STATUS_PREGNANT_BY_PLAYER || eff_id == STATUS_INSEMINATED))
 		{
@@ -914,7 +821,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			int numchildren = 1 + g_Dice % pregbyP;
 			if (type == STATUS_PREGNANT_BY_PLAYER)
 			{
-				g_Girls.CreatePregnancy(girl, numchildren, type, The_Player->m_Stats, The_Player->m_Skills);
+				cGirls::CreatePregnancy(girl, numchildren, type, g_Game.player().m_Stats, g_Game.player().m_Skills);
 				pregmsg << "\nThe item has gotten her pregnant with your child.";
 			}
 			else
@@ -930,7 +837,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					pregmsg << "\nThe item has gotten her pregnant.";
 				}
 				sCustomer Cust{};
-				g_Girls.CreatePregnancy(girl, numchildren, type, Cust.m_Stats, Cust.m_Skills);
+				cGirls::CreatePregnancy(girl, numchildren, type, Cust.m_Stats, Cust.m_Skills);
 			}
 		}
 
@@ -958,7 +865,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 
 			if (pregmsg.str().length() > 0)
 			{
-				g_MessageQue.AddToQue(pregmsg.str(), COLOR_RED);
+				g_Game.push_message(pregmsg.str(), COLOR_RED);
 			}
 
 		}
@@ -1040,7 +947,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
 					girl->upd_skill(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
-				else g_Girls.UpdateSkillMod(girl, eff_id, amount);
+				else cGirls::UpdateSkillMod(girl, eff_id, amount);
 			}
 			else if (affects == sEffect::Stat)
 			{
@@ -1048,7 +955,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
 					girl->upd_stat(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
-				else g_Girls.UpdateStatMod(girl, eff_id, amount);
+				else cGirls::UpdateStatMod(girl, eff_id, amount);
 			}
 			else if (affects == sEffect::Enjoy)
 			{
@@ -1056,7 +963,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
 					girl->upd_Enjoyment(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
-				else g_Girls.UpdateEnjoymentMod(girl, eff_id, amount);
+				else cGirls::UpdateEnjoymentMod(girl, eff_id, amount);
 			}
 			else if (affects == sEffect::GirlStatus)	// adds/removes status
 			{
@@ -1091,17 +998,17 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					{
 						if (girl->is_slave())
 						{		//SIN: just protecting investment in property
-							if (trait == "AIDS") The_Player->evil(-4);
-							if (trait == "Syphilis") The_Player->evil(-3);
-							if (trait == "Herpes") The_Player->evil(-2);
-							if (trait == "Chlamydia") The_Player->evil(-1);
+							if (trait == "AIDS") g_Game.player().evil(-4);
+							if (trait == "Syphilis") g_Game.player().evil(-3);
+							if (trait == "Herpes") g_Game.player().evil(-2);
+							if (trait == "Chlamydia") g_Game.player().evil(-1);
 						}
 						else   //SIN: a genuinely kind act to support staff
 						{
-							if (trait == "AIDS") The_Player->evil(-8);
-							if (trait == "Syphilis") The_Player->evil(-6);
-							if (trait == "Herpes") The_Player->evil(-4);
-							if (trait == "Chlamydia") The_Player->evil(-2);
+							if (trait == "AIDS") g_Game.player().evil(-8);
+							if (trait == "Syphilis") g_Game.player().evil(-6);
+							if (trait == "Herpes") g_Game.player().evil(-4);
+							if (trait == "Chlamydia") g_Game.player().evil(-2);
 						}
 					}
 					girl->remove_trait(trait, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// addrememberlist = true only if not consumable
@@ -1122,14 +1029,14 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 	// if consumable then remove from inventory
 	if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
 	{
-		girl->m_Inventory[num] = 0;
+		girl->m_Inventory[num] = nullptr;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
 	}
 	else	// set it as equiped
 		girl->m_EquipedItems[num] = 1;
 
-	g_Girls.CalculateGirlType(girl);
+	cGirls::CalculateGirlType(girl);
 }
 
 void cInventory::Unequip(sGirl* girl, int num)
@@ -1142,9 +1049,9 @@ void cInventory::Unequip(sGirl* girl, int num)
 		int affects = girl->m_Inventory[num]->m_Effects[i].m_Affects;
 		int amount = girl->m_Inventory[num]->m_Effects[i].m_Amount;
 
-		/* */if (affects == sEffect::Skill)	g_Girls.UpdateSkillMod(girl, eff_id, -amount);
-		else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, -amount);
-		else if (affects == sEffect::Enjoy)	g_Girls.UpdateEnjoymentMod(girl, eff_id, -amount);
+		/* */if (affects == sEffect::Skill)	cGirls::UpdateSkillMod(girl, eff_id, -amount);
+		else if (affects == sEffect::Stat)	cGirls::UpdateStatMod(girl, eff_id, -amount);
+		else if (affects == sEffect::Enjoy)	cGirls::UpdateEnjoymentMod(girl, eff_id, -amount);
 		else if (affects == sEffect::GirlStatus)	// adds/removes status
 		{
 			if (amount == 1) girl->m_States &= ~(1 << eff_id);		// add status
@@ -1172,7 +1079,7 @@ void cInventory::Unequip(sGirl* girl, int num)
 	// set it as unequiped
 	girl->m_EquipedItems[num] = 0;
 
-	g_Girls.CalculateGirlType(girl);
+	cGirls::CalculateGirlType(girl);
 }
 
 void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
@@ -1185,9 +1092,9 @@ void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
 		int affects = item->m_Effects[i].m_Affects;
 		int amount = item->m_Effects[i].m_Amount;
 
-		/* */if (affects == sEffect::Skill)	g_Girls.UpdateSkillMod(girl, eff_id, amount);
-		else if (affects == sEffect::Stat)	g_Girls.UpdateStatMod(girl, eff_id, amount);
-		else if (affects == sEffect::Enjoy)	g_Girls.UpdateEnjoymentMod(girl, eff_id, amount);
+		/* */if (affects == sEffect::Skill)	cGirls::UpdateSkillMod(girl, eff_id, amount);
+		else if (affects == sEffect::Stat)	cGirls::UpdateStatMod(girl, eff_id, amount);
+		else if (affects == sEffect::Enjoy)	cGirls::UpdateEnjoymentMod(girl, eff_id, amount);
 
 		else if (affects == sEffect::Trait)	// trait
 		{
@@ -1230,7 +1137,7 @@ bool cInventory::equip_limited_item_ok(sGirl* girl, int num, bool force, int lim
 	 */
 	for (int i = 0; i < 40 && count < limit; i++)
 	{
-		if (girl->m_Inventory[i] == 0 ||					// if there's nothing in the slot or
+		if (girl->m_Inventory[i] == nullptr ||					// if there's nothing in the slot or
 			girl->m_Inventory[i]->m_Type != target_type ||	// if there's something in the slot but it's not the correct type or
 			girl->m_EquipedItems[i] != 1)					// if it is the target type but she does not have it equipped,
 			continue;										// Skip it
@@ -1251,8 +1158,7 @@ bool cInventory::equip_limited_item_ok(sGirl* girl, int num, bool force, int lim
 		Unequip(girl, i);
 		break;
 	}
-	if (count == limit) return false;
-	return true;
+    return count != limit;
 }
 
 bool cInventory::ok_2_equip(sGirl *girl, int num, bool force)
@@ -1312,23 +1218,17 @@ static sInventoryItem* handle_element(TiXmlElement *el)
 	else												item->m_Infinite = false;
 
 
-	// `J` Incomplete Craftable code - commenting out
-#if 0
-	if (pt = el->Attribute("Craftable"))				item->set_craftable(pt);			else item->set_craftable("No");
-	if (pt = el->Attribute("CraftLevel", &ival))		item->m_CraftLevel		 = ival;	else item->m_CraftLevel		 = 0;
-	if (pt = el->Attribute("CraftCraft", &ival))		item->m_CraftCraft		 = ival;	else item->m_CraftCraft		 = 0;
-	if (pt = el->Attribute("CraftStren", &ival))		item->m_CraftStrength	 = ival;	else item->m_CraftStrength	 = 0;
-	if (pt = el->Attribute("CraftMagic", &ival))		item->m_CraftMagic		 = ival;	else item->m_CraftMagic		 = 0;
-	if (pt = el->Attribute("CraftIntel", &ival))		item->m_CraftIntel		 = ival;	else item->m_CraftIntel		 = 0;
-	if (pt = el->Attribute("CraftPoint", &ival))		item->m_CraftPoints		 = ival;	else item->m_CraftPoints	 = 0;
-#endif
+	auto crafting = el->FirstChildElement("Crafting");
+	if(crafting) {
+        item->m_Crafting.from_xml(*crafting);
+    }
 
 	do_effects(el, item);
 	//	do_tests(el, item);		//	`J` will be added in the future (hopefully)
 	return item;
 }
 
-bool cInventory::LoadItemsXML(string filename)
+bool cInventory::LoadItemsXML(const string& filename)
 {
 	TiXmlDocument doc(filename);
 	if (!doc.LoadFile())
@@ -1344,96 +1244,291 @@ bool cInventory::LoadItemsXML(string filename)
 	{
 		sInventoryItem* item = handle_element(el);
 		if (log_flag) g_LogFile.os() << *item << endl;
-		items.push_back(item);
+		m_Items.push_back(item);
 	}
 	return true;
 }
 
-void cInventory::LoadItems(string filename)
+sInventoryItem* cInventory::GetCraftableItem(sGirl& girl, JOBS job, int craft_points) {
+    RandomSelector<sInventoryItem> selector;
+    for(auto& item : m_Items) {
+        if(item->m_Crafting.can_craft(girl, job, craft_points)) {
+            // only consider items that need at least one third of the crafting points
+            if(item->m_Crafting.craft_cost() < craft_points / 3)
+                continue;
+
+            selector.process(item, item->m_Crafting.weight());
+        }
+    }
+    return selector.selection();
+}
+
+std::vector<sInventoryItem*> cInventory::GetCraftableItems(JOBS job)
 {
-	string msg = "Loading items from ";
-	msg += filename;
-	g_LogFile.write(msg);
-	g_LogFile.os() << "loading items from '" << filename << "'" << endl;
-	ifstream in;
-	in.open(filename.c_str());
-	if(!in.good())
-		g_LogFile.os() << "LoadItems: stream not good after open" << endl;
+    std::vector<sInventoryItem*> result;
+    for(auto& item : m_Items) {
+        if(item->m_Crafting.is_craftable_by(job)) {
+            result.push_back(item);
+        }
+    }
+    return std::move(result);
+}
 
-	char buffer[1000];
-	sInventoryItem* newItem = 0;
-	long tempData;
+int cInventory::BuyShopItem(sInventoryItem* item, int amount)
+{
+    auto found = std::find(begin(m_ShopItems), end(m_ShopItems), item);
+    if(found == end(m_ShopItems))
+        return 0;
 
-	while(in.good())
-	{
-		newItem = new sInventoryItem();
+    if ((*found)->m_Infinite == 0)
+    {
+        *found = nullptr;
+        m_NumShopItems--;
+        return 1;
+    }
+    return amount;
+}
 
-		if (in.peek()=='\n') in.ignore(1,'\n');
-		in.getline(buffer, sizeof(buffer), '\n');		// get the name
-		g_LogFile.os() << "LoadItems: " << buffer << endl;
-		if(buffer[0] == 0)
-			break;
+ostream& operator<<(ostream& os, sInventoryItem& it) {
+    os << "Item: " << it.m_Name << endl;
+    os << "Desc: " << it.m_Desc << endl;
+    os << "Type: " << it.m_Type << endl;
+    os << "Badness: " << int(it.m_Badness) << endl;
+    os << "Special: " << it.m_Special << endl;
+    os << "Cost: " << it.m_Cost << endl;
+    os << "Rarity: " << it.m_Rarity << endl;
+    os << "Infinite: " << (it.m_Infinite ? "True" : "False") << endl;
+    for(auto & eff : it.m_Effects) {
+        os << eff;
+    }
+    return os;
+}
 
-		newItem->m_Name = buffer;
+ostream& operator<<(ostream& os, sInventoryItem::Type& typ) {
+    switch(typ) {
+        case sInventoryItem::Ring:			return os << "Ring";
+        case sInventoryItem::Dress:			return os << "Dress";
+        case sInventoryItem::Underwear:		return os << "Underwear";
+        case sInventoryItem::Shoes:			return os << "Shoes";
+        case sInventoryItem::Food:			return os << "Food";
+        case sInventoryItem::Necklace:		return os << "Necklace";
+        case sInventoryItem::Weapon:		return os << "Weapon";
+        case sInventoryItem::SmWeapon:		return os << "Small Weapon";
+        case sInventoryItem::Makeup:		return os << "Makeup";
+        case sInventoryItem::Armor:			return os << "Armor";
+        case sInventoryItem::Misc:			return os << "Misc";
+        case sInventoryItem::Armband:		return os << "Armband";
+        case sInventoryItem::Hat:			return os << "Hat";
+        case sInventoryItem::Helmet:		return os << "Helmet";
+        case sInventoryItem::Glasses:		return os << "Glasses";
+        case sInventoryItem::Swimsuit:		return os << "Swimsuit";
+        case sInventoryItem::Combatshoes:	return os << "Combat Shoes";
+        case sInventoryItem::Shield:		return os << "Shield";
+        default:
+            cerr << "Unexpected type value: " << int(typ) << endl;
+            return os << "Error";
+    }
+}
 
-		if (in.peek()=='\n') in.ignore(1,'\n');
-		in.getline(buffer, sizeof(buffer), '\n');		// get the description
-		newItem->m_Desc = buffer;
+ostream& operator<<(ostream& os, sInventoryItem::Rarity& r) {
+    switch(r) {
+        case sInventoryItem::Common:			return os << "Common";
+        case sInventoryItem::Shop50:			return os << "Shops, 50%";
+        case sInventoryItem::Shop25:			return os << "Shops, 25%";
+        case sInventoryItem::Shop05:			return os << "Shops, 05%";
+        case sInventoryItem::Catacomb15:		return os << "Catacombs, 15%";
+        case sInventoryItem::Catacomb05:		return os << "Catacombs, 05%";
+        case sInventoryItem::Catacomb01:		return os << "Catacombs, 01%";
+        case sInventoryItem::ScriptOnly:		return os << "Scripted Only";
+        case sInventoryItem::ScriptOrReward:	return os << "Scripts or Reward";
+        default:	cerr << "error: unexpected rarity value: " << int(r) << endl;
+            return os << "Error(" << int(r) << ")";
+    }
+}
 
-		if (in.peek()=='\n') in.ignore(1,'\n');
-		in>>tempData;
-		newItem->m_Type = sInventoryItem::Type(tempData);
-		in>>tempData;
-		newItem->m_Badness = (unsigned char)tempData;
-		in>>tempData;
-		newItem->m_Special = sInventoryItem::Special(tempData);
-		in>>tempData;
-		newItem->m_Cost = tempData;
-		in>>tempData;
-		newItem->m_Rarity = sInventoryItem::Rarity(tempData);
-		in>>tempData;
-		newItem->m_Infinite = ((unsigned char)tempData !=0);
+ostream& operator<<(ostream& os, sInventoryItem::Special& spec) {
+    switch(spec) {
+        case sInventoryItem::None:				return os << "None";
+        case sInventoryItem::AffectsAll:		return os << "AffectsAll";
+        case sInventoryItem::Temporary:			return os << "Temporary";
+        default:	cerr << "error: unexpected special value: " << int(spec) << endl;
+            return os << "Error(" << int(spec) << ")";
+    }
+}
 
-		// get items attributes
-		if (in.peek()=='\n') in.ignore(1,'\n');
-		in>>tempData;
-		newItem->m_Effects.resize(tempData);
-		for(u_int i = 0; i < newItem->m_Effects.size(); i++)
-		{
-			if (in.peek()=='\n') in.ignore(1,'\n');
-			in>>tempData;
+void sInventoryItem::set_type(const string& s) {
+    if      (s == "Ring")							{ m_Type = Ring; }
+    else if (s == "Dress")							{ m_Type = Dress; }
+    else if (s == "Under Wear" || s == "Underwear")	{ m_Type = Underwear; }
+    else if (s == "Shoes")							{ m_Type = Shoes; }
+    else if (s == "Food")							{ m_Type = Food; }
+    else if (s == "Necklace")						{ m_Type = Necklace; }
+    else if (s == "Weapon")							{ m_Type = Weapon; }
+    else if (s == "Small Weapon")					{ m_Type = SmWeapon; }
+    else if (s == "Makeup")							{ m_Type = Makeup; }
+    else if (s == "Armor")							{ m_Type = Armor; }
+    else if (s == "Misc")							{ m_Type = Misc; }
+    else if (s == "Armband")						{ m_Type = Armband; }
+    else if (s == "Hat")							{ m_Type = Hat; }
+    else if (s == "Glasses")						{ m_Type = Glasses; }
+    else if (s == "Swimsuit")						{ m_Type = Swimsuit; }
+    else if (s == "Helmet")							{ m_Type = Helmet; }
+    else if (s == "Shield")							{ m_Type = Shield; }
+    else if (s == "Combat Shoes")					{ m_Type = Combatshoes; }
+    else if (s == "CombatShoes")					{ m_Type = Combatshoes; }
+    else { m_Type = Misc; cerr << "Error: unexpected item type: " << s << endl; }
+}
 
-			newItem->m_Effects[i].m_Affects = sEffect::What(tempData);
+void sInventoryItem::set_special(const string& s) {
+    if      (s == "None")			{ m_Special = None; }
+    else if (s == "AffectsAll")		{ m_Special = AffectsAll; }
+    else if (s == "Temporary")		{ m_Special = Temporary; }
+    else { m_Special = None; cerr << "unexpected special string: '" << s << "'" << endl; }
+}
 
-			if (newItem->m_Effects[i].m_Affects == sEffect::Trait)
-			{
-				if (in.peek()=='\n') in.ignore(1,'\n');
-				in.getline(buffer, sizeof(buffer), '\n');		// get the trait name
-				newItem->m_Effects[i].m_Trait = buffer;
-				if (in.peek()=='\n') in.ignore(1,'\n');	// get weather to add or remove the trait
-				in>>tempData;
-				newItem->m_Effects[i].m_Amount = tempData;
-			}
-			else
-			{
-				in>>tempData;
-				newItem->m_Effects[i].m_EffectID = (unsigned char)tempData;
-				in>>tempData;
-				newItem->m_Effects[i].m_Amount = tempData;
-				newItem->m_Effects[i].m_Trait = "";
-			}
-		}
+void sInventoryItem::set_rarity(const string& s) {
+    if      (s == "Common")			{ m_Rarity = Common; }
+    else if (s == "Shop50")			{ m_Rarity = Shop50; }
+    else if (s == "Shop25")			{ m_Rarity = Shop25; }
+    else if (s == "Shop05")			{ m_Rarity = Shop05; }
+    else if (s == "Catacomb15")		{ m_Rarity = Catacomb15; }
+    else if (s == "Catacomb05")		{ m_Rarity = Catacomb05; }
+    else if (s == "Catacomb01")		{ m_Rarity = Catacomb01; }
+    else if (s == "ScriptOnly")		{ m_Rarity = ScriptOnly; }
+    else if (s == "ScriptOrReward") { m_Rarity = ScriptOrReward; }
+    else { cerr << "Error in set_rarity: unexpected value '" << s << "'" << endl; m_Rarity = Shop05; }	// what to do?
+}
 
-		//CalculateCost(newItem);
-		AddItem(newItem);
-	}
+void CraftingData::from_xml(TiXmlElement& element) {
+    element.QueryIntAttribute("CraftPoints", &m_CraftPoints);
+    element.QueryIntAttribute("ManaCost", &m_ManaCost);
+    element.QueryIntAttribute("Weight", &m_Weight);
 
-	in.close();
+    std::cout << m_CraftPoints << "\n";
+
+    for(auto job = element.FirstChildElement("Job"); job; job = job->NextSiblingElement("Job")) {
+        auto job_name = job->Attribute("Name");
+        std::cout << "job: " << job_name << "\n";
+        if(job_name) {
+            auto job_id = sGirl::lookup_jobs_code(job_name);
+            if(job_id != -1) {
+                m_CraftableBy.insert((JOBS)job_id);
+            }
+        } else {
+            std::cerr << "No name given for <Job> tag.\n";
+        }
+    }
+
+    for(auto skill = element.FirstChildElement("Skill"); skill; skill = skill->NextSiblingElement("Skill")) {
+        auto skill_name = skill->Attribute("Name");
+        if(skill_name) {
+            int skill_value = 0;
+            auto skill_id = sGirl::lookup_skill_code(skill_name);
+            skill->QueryIntAttribute("Minimum", &skill_value);
+            if(skill_id != -1) {
+                m_SkillRequirements[(SKILLS)skill_id] = skill_value;
+            }
+        }
+    }
+
+    for(auto stat = element.FirstChildElement("Stat"); stat; stat = stat->NextSiblingElement("Stat")) {
+        auto stat_name = stat->Attribute("Name");
+        if(stat_name) {
+            int stat_value = 0;
+            auto stat_id = sGirl::lookup_stat_code(stat_name);
+            stat->QueryIntAttribute("Minimum", &stat_value);
+            if(stat_id != -1) {
+                m_StatsRequirements[(STATS)stat_id] = stat_value;
+            }
+        }
+    }
+}
+
+int CraftingData::craft_cost() const {
+    return m_CraftPoints;
+}
+
+int CraftingData::mana_cost() const {
+    return m_ManaCost;
+}
+
+bool CraftingData::can_craft(sGirl& girl, JOBS job, int craft_points) const {
+    if(!is_craftable_by(job))
+        return false;
+
+    if(craft_points < m_CraftPoints)
+        return false;
+
+    if(girl.mana() < m_ManaCost)
+        return false;
+
+    std::cout << " Possible Item. Checking Requirements\n";
+    for(auto& skill : m_SkillRequirements) {
+        if(girl.get_skill(skill.first) < skill.second)
+            return false;
+    }
+
+    for(auto& stat : m_StatsRequirements) {
+        if(girl.get_stat(stat.first) < stat.second)
+            return false;
+    }
+
+    return true;
+}
+
+bool CraftingData::is_craftable_by(JOBS job) const
+{
+    return m_CraftableBy.count(job) != 0;
 }
 
 
+int CraftingData::weight() const {
+    if(m_Weight > 0)
+        return m_Weight;
+    return 1;
+}
+
+int sCondition::sSkillSource::get(const sGirl& girl)
+{
+    return girl.get_skill(skill);
+}
+
+int sCondition::sStatSource::get(const sGirl& girl)
+{
+    return girl.get_stat(stat);
+}
+
+bool sCondition::check(const sGirl& girl) const
+{
+    if(m_Comparison == Cmp::LOWER) {
+        return m_ValueSource->get(girl) <= m_ReferenceValue;
+    } else {
+        return m_ValueSource->get(girl) >= m_ReferenceValue;
+    }
+}
 /*
+void sCondition::from_xml(TiXmlElement& element)
+{
+    const char* pt = nullptr;
+    if( element.Attribute("Minimum", &m_ReferenceValue)) {
+        m_Comparison = Cmp::LOWER;
+    } else if( (pt = element.Attribute("Maximum", &m_ReferenceValue))) {
+        m_Comparison = Cmp::GREATER;
+    } else {
+        // Error. One of `Minimum`, `Maximum` needs to be specified
+    }
 
-g++  -D LINUX -I /usr/include/SDL -g -Wall  -c -o cInventory.o cInventory.cpp
+    const char* type = element.Attribute("Type");
+    if(!type) {
+        // Error
+    }
 
+    std::string type_str = type;
+    if( type_str == "Stat" ) {
+        m_ValueSource = std::unique_ptr<sSource>( new );
+    }
+    element.QueryIntAttribute("CraftPoints", &m_ReferenceValue);
+    element.QueryIntAttribute("ManaCost", &m_ManaCost);
+    element.QueryIntAttribute("Weight", &m_Weight);
+}
 */

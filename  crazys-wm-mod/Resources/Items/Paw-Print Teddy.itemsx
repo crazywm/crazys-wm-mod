@@ -25,5 +25,9 @@
    <Effect What="Skill" Name="TittySex"                Amount="10"    />
    <Effect What="Skill" Name="Service"                 Amount="10"    />
    <Effect What="Trait" Name="Cute"                    Amount="1"    />
+
+   <Crafting CraftPoints="110" ManaCost="10">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

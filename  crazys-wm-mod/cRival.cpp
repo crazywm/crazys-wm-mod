@@ -17,42 +17,21 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cRival.h"
-#include <stdlib.h>
-#include <fstream>
 #include <sstream>
-
-#ifdef LINUX
-#include "linux.h"
-#endif
-
-using namespace std;
-#include "cBrothel.h"
-#include "cMessageBox.h"
+#include "Game.hpp"
+#include "utils/algorithms.hpp"
+#include "src/buildings/cBrothel.h"
 #include "cGold.h"
 #include "GameFlags.h"
 #include "DirPath.h"
 #include "cGangs.h"
-#include "libintl.h"
 #include "cInventory.h"
+#include "CLog.h"
 
-extern cMessageQue g_MessageQue;
-extern cBrothelManager g_Brothels;
-extern CLog g_LogFile;
 extern cRng g_Dice;
-extern cGold g_Gold;
-extern cGangManager g_Gangs;
-extern cInventory g_InvManager;
-extern cPlayer* The_Player;
-
-extern unsigned long g_Year;
-extern unsigned long g_Month;
-extern unsigned long g_Day;
 
 cRivalManager::cRivalManager()
 {
-	m_Rivals = 0;
-	m_NumRivals = 0;
-	m_Last = 0;
 	m_PlayerSafe = true;
 
 	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
@@ -64,13 +43,13 @@ static inline int max(int a, int b) { return((a > b) ? a : b); }
 
 string cRivalManager::rivals_plunder_pc_gold(cRival* rival)
 {
-	if (g_Gold.ival() <= 0) return "";						// no gold to sieze? nothing to do.
-	long pc_gold = g_Gold.ival();							// work out how much they take. make a note of how much we have
+	if (g_Game.gold().ival() <= 0) return "";						// no gold to sieze? nothing to do.
+	long pc_gold = g_Game.gold().ival();							// work out how much they take. make a note of how much we have
 
 	long gold = g_Dice.random(min((long)2000, pc_gold));
 	if (gold < 45) gold = 45;								// make sure there's at least 45 gold taken
 	if (pc_gold < gold) gold = pc_gold;						// unless the pc has less than that, in which case take the lot
-	g_Gold.rival_raids(gold);								// deduct the losses against rival raid losses
+	g_Game.gold().rival_raids(gold);								// deduct the losses against rival raid losses
 	rival->m_Gold += gold;									// add the aount to rival coffers
 
 	stringstream ss;
@@ -80,25 +59,15 @@ string cRivalManager::rivals_plunder_pc_gold(cRival* rival)
 
 void cRivalManager::Update(int& NumPlayerBussiness)
 {
-	cRival* curr = m_Rivals;
+	if (g_Game.date().year >= 1209 && g_Game.date().month > 3) m_PlayerSafe = false;
 
+	// first, remove killed rivals
+	if(erase_if(m_Rivals, [](auto& rival){ return rival->is_defeated(); })) {
+        SetGameFlag(FLAG_RIVALLOSE);
+	}
 
-	if (g_Year >= 1209 && g_Month > 3) m_PlayerSafe = false;
-
-	while (curr)
+	for(auto& curr : m_Rivals)
 	{
-		// check if rival is killed
-		if (curr->m_Gold <= 0 && curr->m_NumBrothels <= 0 && curr->m_NumGangs <= 0 &&
-			curr->m_NumGirls <= 0 && curr->m_NumGamblingHalls <= 0 && curr->m_NumBars <= 0 &&
-			curr->m_NumInventory <= 0)
-		{
-			cRival* tmp = curr->m_Next;
-			RemoveRival(curr);
-			curr = tmp;
-			SetGameFlag(FLAG_RIVALLOSE);
-			continue;
-		}
-
 		int income = 0; int upkeep = 0; int profit = 0;
 		int totalincome = 0; int totalupkeep = 0;
 		int startinggold = curr->m_Gold;
@@ -126,7 +95,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					if (temp)
 					{
 						income += (temp->m_Cost / 2);
-						RemoveRivalInvByNumber(curr, i);
+						curr->remove_from_inventory(i);
 					}
 				}
 			}
@@ -262,7 +231,8 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		int cGangs = curr->m_NumGangs;
 		for (int i = 0; i < cGangs; i++)
 		{
-			sGang* cG1 = g_Gangs.GetTempGang(curr->m_Power);	// create a random gang for this rival
+			sGang cG1 = g_Game.gang_manager().GetTempGang(curr->m_Power);	// create a random gang for this rival
+            cG1.give_potions(10);
 			int missionid = -1;
 			int tries = 0;
 			while (missionid == -1 && tries < 10)	// choose a mission
@@ -319,37 +289,37 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 				else			// if there are no uncontrolled businesses
 				{
 					stringstream ss;
-					int who = (g_Dice % (m_NumRivals + 1));				// who to attack
-					if (who == m_NumRivals)								// try to attack you
+					int who = (g_Dice % (m_Rivals.size() + 1));				// who to attack
+					if (who == m_Rivals.size())								// try to attack you
 					{
 						if (!player_safe() && NumPlayerBussiness > 0)	// but only if you are a valid target
 						{
-							sGang* miss1 = g_Gangs.GetGangOnMission(MISS_GUARDING);
+							sGang* miss1 = g_Game.gang_manager().GetGangOnMission(MISS_GUARDING);
 							if (miss1)									// if you have a gang guarding
 							{
 								ss << "Your guards encounter " << curr->m_Name << (" going after some of your territory.");
 
-								sGang* rGang = g_Gangs.GetTempGang(curr->m_Power);
-								if (g_Gangs.GangBrawl(miss1, rGang))	// if you win
+								sGang rGang = g_Game.gang_manager().GetTempGang(curr->m_Power);
+								rGang.give_potions(10);
+								if (g_Game.gang_manager().GangBrawl(miss1, &rGang))	// if you win
 								{
-									if (rGang->m_Num == 0) curr->m_NumGangs--;
+									if (rGang.m_Num == 0) curr->m_NumGangs--;
 									ss << ("\nBut you maintain control of the territory.");
 									miss1->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 								}
 								else									// if you lose
 								{
-									if (miss1->m_Num == 0) g_Gangs.RemoveGang(miss1);
+									if (miss1->m_Num == 0) g_Game.gang_manager().RemoveGang(miss1);
 									ss << ("\nYou lose the territory.");
 									NumPlayerBussiness--;
 									curr->m_BusinessesExtort++;
-									g_MessageQue.AddToQue(ss.str(), COLOR_RED);
+									g_Game.push_message(ss.str(), COLOR_RED);
 								}
-								delete rGang; rGang = 0;	// cleanup
 							}
 							else										// if you do not have a gang guarding
 							{
 								ss << ("Your rival ") << curr->m_Name << (" has taken one of the undefended territories you control.");
-								g_MessageQue.AddToQue(ss.str(), COLOR_RED);
+								g_Game.push_message(ss.str(), COLOR_RED);
 								NumPlayerBussiness--;
 								curr->m_BusinessesExtort++;
 							}
@@ -359,13 +329,14 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					{
 						ss << ("The ") << curr->m_Name << (" attacked the territories of ");
 						cRival* rival = GetRival(who);
-						if (rival != curr && rival->m_BusinessesExtort > 0)
+						if (rival != curr.get() && rival->m_BusinessesExtort > 0)
 						{
 							ss << rival->m_Name;
 							if (rival->m_NumGangs > 0)
 							{
-								sGang* rG1 = g_Gangs.GetTempGang(rival->m_Power);
-								if (g_Gangs.GangBrawl(cG1, rG1, true))
+								sGang rG1 = g_Game.gang_manager().GetTempGang(rival->m_Power);
+                                rG1.give_potions(10);
+								if (g_Game.gang_manager().GangBrawl(&cG1, &rG1, true))
 								{
 									rival->m_NumGangs--;
 									rival->m_BusinessesExtort--;
@@ -377,7 +348,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									curr->m_NumGangs--;
 									ss << (" and lost.");
 								}
-								delete rG1; rG1 = 0;	// cleanup
 							}
 							else
 							{
@@ -385,7 +355,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 								rival->m_BusinessesExtort--;
 								curr->m_BusinessesExtort++;
 							}
-							g_MessageQue.AddToQue(ss.str(), COLOR_BLUE);
+							g_Game.push_message(ss.str(), COLOR_BLUE);
 						}
 					}
 				}
@@ -414,29 +384,29 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			}break;
 			case MISS_SABOTAGE:			// attack rivals
 			{
-				if (g_Dice.percent(min(90, cG1->intelligence())))	// chance they find a target
+				if (g_Dice.percent(min(90, cG1.intelligence())))	// chance they find a target
 				{
 					stringstream ss;
-					int who = (g_Dice % (m_NumRivals + 1));
-					if (who == m_NumRivals && !player_safe())	// if it is you and you are a valid target
+					int who = (g_Dice % (m_Rivals.size() + 1));
+					if (who == m_Rivals.size() && !player_safe())	// if it is you and you are a valid target
 					{
 						int num = 0;
 						bool damage = false;
-						sGang* miss1 = g_Gangs.GetGangOnMission(MISS_GUARDING);
+						sGang* miss1 = g_Game.gang_manager().GetGangOnMission(MISS_GUARDING);
 						if (miss1)
 						{
 							ss << ("Your rival the ") << curr->m_Name << (" attack your assets.");
 
-							if (!g_Gangs.GangBrawl(miss1, cG1))
+							if (!g_Game.gang_manager().GangBrawl(miss1, &cG1))
 							{
-								if (miss1->m_Num == 0) g_Gangs.RemoveGang(miss1);
+								if (miss1->m_Num == 0) g_Game.gang_manager().RemoveGang(miss1);
 								ss << ("\nYour men are defeated.");
 								int num = (g_Dice % 2) + 1;
 								damage = true;
 							}
 							else
 							{
-								if (cG1->m_Num == 0) curr->m_NumGangs--;
+								if (cG1.m_Num == 0) curr->m_NumGangs--;
 								ss << (" But they fail.");
 								miss1->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
 							}
@@ -444,7 +414,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 						else
 						{
 							ss << ("You have no guards so your rival ") << curr->m_Name << (" attacks.");
-							if (NumPlayerBussiness > 0 || g_Gold.ival() > 0)
+							if (NumPlayerBussiness > 0 || g_Game.gold().ival() > 0)
 							{
 								num = (g_Dice % 3) + 1;
 								damage = true;
@@ -468,22 +438,23 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							}
 							else ss << ".";
 
-							ss << rivals_plunder_pc_gold(curr);
-							g_MessageQue.AddToQue(ss.str(), COLOR_RED);
+							ss << rivals_plunder_pc_gold(curr.get());
+							g_Game.push_message(ss.str(), COLOR_RED);
 						}
 					}
 					else
 					{
 						ss << ("The ") << curr->m_Name << (" launched an assault on ");
 						cRival* rival = GetRival(who);
-						if (rival && rival != curr)
+						if (rival && rival != curr.get())
 						{
 							int num = 0;
 							ss << rival->m_Name;
 							if (rival->m_NumGangs > 0)
 							{
-								sGang* rG1 = g_Gangs.GetTempGang(rival->m_Power);
-								if (g_Gangs.GangBrawl(cG1, rG1, true))
+								sGang rG1 = g_Game.gang_manager().GetTempGang(rival->m_Power);
+								rG1.give_potions(10);
+								if (g_Game.gang_manager().GangBrawl(&cG1, &rG1, true))
 								{
 									rival->m_NumGangs--;
 									ss << (" and won.");
@@ -494,7 +465,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									ss << (" and lost.");
 									curr->m_NumGangs--;
 								}
-								delete rG1; rG1 = 0;	// cleanup
 							}
 							else
 							{
@@ -540,7 +510,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									ss << "\nThey destroyed one of their Bars.";
 								}
 							}
-							g_MessageQue.AddToQue(ss.str(), 0);
+							g_Game.push_message(ss.str(), 0);
 						}
 					}
 				}
@@ -555,21 +525,21 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			}break;
 			case MISS_KIDNAPP:			// get new girls
 			{
-				if (g_Dice.percent(cG1->intelligence()))			// chance to find a girl
+				if (g_Dice.percent(cG1.intelligence()))			// chance to find a girl
 				{
 					bool addgirl = false;
-					sGirl* girl = g_Girls.GetRandomGirl();
-					g_Girls.SetStat(girl, STAT_HEALTH, 100);		// make sure she is at full health
+					sGirl* girl = g_Game.GetRandomGirl();
+                    girl->set_stat(STAT_HEALTH, 100);		// make sure she is at full health
 					if (girl)
 					{
-						if (g_Dice.percent(cG1->m_Stats[STAT_CHARISMA]))	// convince her
+						if (g_Dice.percent(cG1.m_Stats[STAT_CHARISMA]))	// convince her
 						{
 							addgirl = true;
 						}
-						else if (g_Brothels.FightsBack(girl))				// try to kidnap her
+						else if (girl->fights_back())				// try to kidnap her
 						{
-							if (!g_Gangs.GirlVsEnemyGang(girl, cG1)) addgirl = true;
-							else if (cG1->m_Num <= 0) curr->m_NumGangs--;
+							if (!g_Game.gang_manager().GirlVsEnemyGang(girl, &cG1)) addgirl = true;
+							else if (cG1.m_Num <= 0) curr->m_NumGangs--;
 						}
 						else { addgirl = true; }							// she goes willingly
 					}
@@ -578,24 +548,24 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			}break;
 			case MISS_CATACOMBS:		// random but dangerous
 			{
-				int num = cG1->m_Num;
+				int num = cG1.m_Num;
 				for (int i = 0; i < num; i++)
 				{
-					if (!g_Dice.percent(cG1->combat())) cG1->m_Num--;
+					if (!g_Dice.percent(cG1.combat())) cG1.m_Num--;
 				}
-				if (cG1->m_Num > 0)
+				if (cG1.m_Num > 0)
 				{
 					// determine loot
-					int gold = cG1->m_Num;
-					gold += g_Dice % (cG1->m_Num * 100);
+					int gold = cG1.m_Num;
+					gold += g_Dice % (cG1.m_Num * 100);
 					income += gold;
 
 					int items = 0;
-					while (g_Dice.percent(60) && items <= (cG1->m_Num / 3) && curr->m_NumInventory < MAXNUM_RIVAL_INVENTORY)
+					while (g_Dice.percent(60) && items <= (cG1.m_Num / 3) && curr->m_NumInventory < MAXNUM_RIVAL_INVENTORY)
 					{
 						bool quit = false; bool add = false;
 						sInventoryItem* temp;
-						do { temp = g_InvManager.GetRandomItem();
+						do { temp = g_Game.inventory_manager().GetRandomItem();
 						} while (!temp || temp->m_Rarity < RARITYSHOP25 || temp->m_Rarity > RARITYCATACOMB01);
 
 						switch (temp->m_Rarity)
@@ -612,7 +582,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 						}
 						if (add)
 						{
-							AddRivalInv(curr, temp);
+						    curr->add_to_inventory(temp);
 						}
 					}
 
@@ -626,7 +596,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			}break;
 			default:	break;			// No mission
 			}	// end mission switch
-			delete cG1; cG1 = 0;	// cleanup
 		}	// end Gang Missions
 
 		// process money
@@ -650,7 +619,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 						if (temp)
 						{
 							income += (temp->m_Cost / 2);
-							RemoveRivalInvByNumber(curr, i);
+							curr->remove_from_inventory(i);
 						}
 					}
 				}
@@ -717,7 +686,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					if (temp && g_Dice.percent(50))
 					{
 						if (g_Dice.percent(50)) income += (temp->m_Cost / 2);
-						RemoveRivalInvByNumber(curr, i);
+						curr->remove_from_inventory(i);
 					}
 				}
 			}
@@ -761,13 +730,13 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			int i = 0;
 			while (i < 6)
 			{
-				sInventoryItem* item = g_InvManager.GetRandomItem();
+				sInventoryItem* item = g_Game.inventory_manager().GetRandomItem();
 				if (item && item->m_Rarity <= RARITYCATACOMB01 && g_Dice.percent(rper[item->m_Rarity])
 					&& curr->m_Gold + income + upkeep > item->m_Cost)
 				{
 					if (g_Dice.percent(50))
 					{
-						AddRivalInv(curr, item);	// buy 50%, use 50%
+					    curr->add_to_inventory(item); // buy 50%, use 50%
 					}
 					upkeep -= item->m_Cost;
 				}
@@ -784,7 +753,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		if (profit > 1000)		curr->m_BribeRate += (long)(50);	// if doing well financially then increase
 		else if (profit < 0)	curr->m_BribeRate -= (long)(50);	// if loosing money decrease
 		if (curr->m_BribeRate < 0) curr->m_BribeRate = 0;			// check 0
-		g_Brothels.UpdateBribeInfluence();							// update influence
+		g_Game.UpdateBribeInfluence();							    // update influence
 
 
 		// `J` bookmark - rival money at the end of their turn
@@ -795,189 +764,123 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			<< " | Upkeep: " << totalupkeep
 			<< " | Profit: " << totalincome + totalupkeep
 			<< " | Ending Gold: " << curr->m_Gold <<"\n";
-
-		curr = curr->m_Next;
 	}
 }
 
 cRival* cRivalManager::GetRandomRival()
 {
-	if (m_NumRivals == 0) return 0;
-	if (m_NumRivals == 1) return m_Rivals;
+    if(m_Rivals.empty())
+        return nullptr;
 
-	int number = g_Dice%m_NumRivals;
-	cRival* current = m_Rivals;
-	int tmp = 0;
-	while (current)
-	{
-		if (tmp == number) break;
-		tmp++;
-		current = current->m_Next;
-	}
-
-	return current;
+	int number = g_Dice % m_Rivals.size();
+	return m_Rivals[number].get();
 }
 
 // check a random rival for gangs
 cRival* cRivalManager::GetRandomRivalWithGangs()
 {
-	if (m_NumRivals == 0) return 0;
-	if (m_NumRivals == 1) return m_Rivals;
+    if(m_Rivals.empty())
+        return nullptr;
 
-	cRival* current = m_Rivals;
-	int tries = m_NumRivals*5;
-	while (tries > 0)
+	for(int tries = 0; tries < 6 * m_Rivals.size(); ++tries)
 	{
 		tries--;
-		int number = g_Dice%m_NumRivals;
-		current = m_Rivals;
-		int tmp = 0;
-		while (current)
-		{
-			if (tmp == number)
-			{
-				if (current->m_NumGangs > 0) return current;
-				else break;
-			}
-			tmp++;
-			current = current->m_Next;
-		}
+		int number = g_Dice%m_Rivals.size();
+		if(m_Rivals[number]->m_NumGangs > 0)
+		    return m_Rivals[number].get();
 	}
 
 	// do one last check of all rivals if the random check failed
-	current = m_Rivals;
-	while (current)
-	{
-		if (current->m_NumGangs > 0) return current;
-		current = current->m_Next;
+	for(auto& rival : m_Rivals) {
+	    if(rival->m_NumGangs > 0) return rival.get();
 	}
-
-
-	return 0;
+	return nullptr;
 }
 
 // check a random rival for gangs
 cRival* cRivalManager::GetRandomRivalWithBusinesses()
 {
-	if (m_NumRivals == 0) return 0;
-	if (m_NumRivals == 1) return m_Rivals;
+    if(m_Rivals.empty())
+        return nullptr;
 
-	cRival* current = m_Rivals;
-	int tries = m_NumRivals * 5;
-	while (tries > 0)
-	{
-		tries--;
-		int number = g_Dice%m_NumRivals;
-		current = m_Rivals;
-		int tmp = 0;
-		while (current)
-		{
-			if (tmp == number)
-			{
-				if (current->m_BusinessesExtort > 0) return current;
-				else break;
-			}
-			tmp++;
-			current = current->m_Next;
-		}
-	}
+    for(int tries = 0; tries < 6 * m_Rivals.size(); ++tries)
+    {
+        tries--;
+        int number = g_Dice%m_Rivals.size();
+        if(m_Rivals[number]->m_BusinessesExtort > 0)
+            return m_Rivals[number].get();
+    }
 
-	// do one last check of all rivals if the random check failed
-	current = m_Rivals;
-	while (current)
-	{
-		if (current->m_BusinessesExtort > 0) return current;
-		current = current->m_Next;
-	}
-	return 0;
+    // do one last check of all rivals if the random check failed
+    for(auto& rival : m_Rivals) {
+        if(rival->m_BusinessesExtort > 0) return rival.get();
+    }
+    return nullptr;
 }
 
 // `J` added - hit whoever has the most brothels
 cRival* cRivalManager::GetRandomRivalToSabotage()
 {
-	if (m_NumRivals == 0) return 0;
-	if (m_NumRivals == 1) return m_Rivals;
+    if(m_Rivals.empty())
+        return nullptr;
 
-	cRival* current = m_Rivals;
-	cRival* temp = current;
-	while (current)
-	{
-		if (temp->m_NumBrothels < current->m_NumBrothels) temp = current;
-		current = current->m_Next;
-	}
+    for(int tries = 0; tries < 6 * m_Rivals.size(); ++tries)
+    {
+        tries--;
+        int number = g_Dice%m_Rivals.size();
+        if(m_Rivals[number]->m_BusinessesExtort > 0)
+            return m_Rivals[number].get();
+    }
 
-	return temp;
+    // do one last check of all rivals if the random check failed
+    cRival* best = m_Rivals.front().get();
+    for(auto& rival : m_Rivals) {
+        if (best->m_NumBrothels < rival->m_NumBrothels) best = rival.get();
+    }
+    return best;
 }
 
 // how many businesses are controlled by rivals
 int cRivalManager::GetNumBusinesses()
 {
 	int number = 0;
-
-	cRival* current = m_Rivals;
-	while (current)
-	{
-		number += current->m_BusinessesExtort;
-		current = current->m_Next;
-	}
-
+	for(auto& rival : m_Rivals)
+	    number += rival->m_BusinessesExtort;
 	return number;
 }
 
 int cRivalManager::GetNumRivalGangs()
 {
-	int gangs = 0;
-	cRival* current = m_Rivals;
-	while (current)
-	{
-		gangs+= current->m_NumGangs;
-		current = current->m_Next;
-	}
-	return gangs;
-}
-
-cRival* cRivalManager::GetRival(string name)
-{
-	cRival* current = m_Rivals;
-	while (current)
-	{
-		if (current->m_Name == name) return current;
-		current = current->m_Next;
-	}
-	return 0;
+    int number = 0;
+    for(auto& rival : m_Rivals)
+        number += rival->m_NumGangs;
+    return number;
 }
 
 // this will return the most influential rival or null if there were no rivals with influence
 cRival* cRivalManager::get_influential_rival()
 {
-	cRival* current;
-	cRival* top = 0;
-	for (current = m_Rivals; current; current = current->m_Next)
+	cRival* top = nullptr;
+    for(auto& rival : m_Rivals)
 	{
 		// if the rival has no influence, skip on
-		if (current->m_Influence <= 0) continue;
+		if (rival->m_Influence <= 0) continue;
 		// If we don't have a candidate yet, anyone with influence will do.
 		// And since we already weeded out the influence-less rivals at this point...
-		if (top == 0) { top = current; continue; }
+		if (top == nullptr) { top = rival.get(); continue; }
 		// is the current rival more influential than the the one we have our eye on?
-		if (current->m_Influence < top->m_Influence) continue;
-		top = current;
+		if (rival->m_Influence < top->m_Influence) continue;
+		top = rival.get();
 	}
 	return top;
 }
 
 cRival* cRivalManager::GetRival(int number)
 {
-	cRival* current = m_Rivals;
-	int tmp = 0;
-	while (current)
-	{
-		if (tmp == number) return current;
-		tmp++;
-		current = current->m_Next;
-	}
-
-	return 0;
+    if(number < m_Rivals.size()) {
+        return m_Rivals[number].get();
+    }
+	return nullptr;
 }
 
 TiXmlElement* cRivalManager::SaveRivalsXML(TiXmlElement* pRoot)
@@ -987,9 +890,8 @@ TiXmlElement* cRivalManager::SaveRivalsXML(TiXmlElement* pRoot)
 	TiXmlElement* pRivals = new TiXmlElement("Rivals");
 	pRivalManager->LinkEndChild(pRivals);
 
-	string message = "";
-	cRival* current = m_Rivals;
-	while (current)
+	string message;
+	for(auto& current : m_Rivals)
 	{
 		message = "saving rival: ";
 		message += current->m_Name;
@@ -1007,25 +909,22 @@ TiXmlElement* cRivalManager::SaveRivalsXML(TiXmlElement* pRoot)
 		pRival->SetAttribute("NumGangs", current->m_NumGangs);
 		pRival->SetAttribute("BribeRate", current->m_BribeRate);
 		pRival->SetAttribute("BusinessesExtort", current->m_BusinessesExtort);
-		current = current->m_Next;
 	}
 	return pRivalManager;
 }
 
 bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 {
-	Free();		// everything should be init even if we failed to load an XML element
 	TiXmlElement* pRivalManager = hRivalManager.ToElement();
-	if (pRivalManager == 0) return false;
+	if (pRivalManager == nullptr) return false;
 
-	string message = "";
-	m_NumRivals = 0;
+	string message;
 	TiXmlElement* pRivals = pRivalManager->FirstChildElement("Rivals");
 	if (pRivals)
 	{
-		for (TiXmlElement* pRival = pRivals->FirstChildElement("Rival"); pRival != 0; pRival = pRival->NextSiblingElement("Rival"))
+		for (TiXmlElement* pRival = pRivals->FirstChildElement("Rival"); pRival != nullptr; pRival = pRival->NextSiblingElement("Rival"))
 		{
-			cRival* current = new cRival();
+			auto current = std::make_unique<cRival>();
 
 			if (pRival->Attribute("Name"))
 			{
@@ -1044,18 +943,18 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 			// `J` cleanup rival power for .06.01.17
 			if (current->m_Power > 50) current->m_Power = max(0, current->m_NumBrothels * 5) + max(0, current->m_NumGamblingHalls * 2) + max(0, current->m_NumBars * 1);
 
-                                                    //jim: re-initializing rival inventory to zero (hopefully fixes Linux segfaults)
-                                                    current->m_NumInventory = 0;
-                                                    for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
-                                                    {
-                                                                      current->m_Inventory[i] = 0;
-                                                    }
+            //jim: re-initializing rival inventory to zero (hopefully fixes Linux segfaults)
+            current->m_NumInventory = 0;
+            for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
+            {
+                current->m_Inventory[i] = nullptr;
+            }
                         
 			message = "loaded rival: ";
 			message += current->m_Name;
 			g_LogFile.write(message);
 
-			AddRival(current);
+			m_Rivals.push_back(std::move(current));
 		}
 	}
 	return true;
@@ -1066,7 +965,7 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 	ifstream in;
 
 
-	cRival* rival = new cRival();
+	auto rival = std::make_unique<cRival>();
 
 	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
 	DirPath last_names = DirPath() << "Resources" << "Data" << "RivalGangLastNames.txt";
@@ -1087,12 +986,12 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 		max(0, rival->m_NumGamblingHalls * 2) +
 		max(0, rival->m_NumBars * 1));
         
-                //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
-                  rival->m_NumInventory = 0;
-                  for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
-                  {
-                                    rival->m_Inventory[i] = 0;
-                  }
+    //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
+      rival->m_NumInventory = 0;
+      for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
+      {
+            rival->m_Inventory[i] = nullptr;
+      }
 
 
 
@@ -1113,16 +1012,15 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 		<< "     | Bars : " << rival->m_NumBars
 		<< "     | Halls: " << rival->m_NumGamblingHalls
 		<< "\n";
-	AddRival(rival);
+
+	m_Rivals.push_back(std::move(rival));
 }
 
 bool cRivalManager::NameExists(string name)
 {
-	cRival* current = m_Rivals;
-	while (current)
+    for(auto& current : m_Rivals)
 	{
 		if (current->m_Name == name) return true;
-		current = current->m_Next;
 	}
 	return false;
 }
@@ -1130,7 +1028,7 @@ bool cRivalManager::NameExists(string name)
 void cRivalManager::CreateRandomRival()
 {
 	ifstream in;
-	cRival* rival = new cRival();
+	auto rival = std::make_unique<cRival>();
 
 	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
 	DirPath last_names = DirPath() << "Resources" << "Data" << "RivalGangLastNames.txt";
@@ -1144,43 +1042,23 @@ void cRivalManager::CreateRandomRival()
 		rival->m_NumGirls = (g_Dice % ((rival->m_NumBrothels) * 20)) + 20;
 	rival->m_NumGangs = g_Dice % 5+3;
         
-                   //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
-                  rival->m_NumInventory = 0;
-                  for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
-                  {
-                                    rival->m_Inventory[i] = 0;
-                  }
+    //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
+    rival->m_NumInventory = 0;
+    for(auto & i : rival->m_Inventory)
+    {
+        i = nullptr;
+    }
 
 	for (;;) {
 		rival->m_Name = names.random();
 		if (!NameExists(rival->m_Name)) break;
 	}
-	AddRival(rival);
-}
-
-void cRivalManager::AddRival(cRival* rival)
-{
-	if (m_Last)
-	{
-		m_Last->m_Next = rival;
-		rival->m_Prev = m_Last;
-		m_Last = rival;
-	}
-	else
-		m_Rivals = m_Last = rival;
-	m_NumRivals++;
+	m_Rivals.push_back(std::move(rival));
 }
 
 void cRivalManager::RemoveRival(cRival* rival)
 {
-	if (rival->m_Next)		rival->m_Next->m_Prev = rival->m_Prev;
-	if (rival->m_Prev)		rival->m_Prev->m_Next = rival->m_Next;
-	if (rival == m_Rivals)	m_Rivals = rival->m_Next;
-	if (rival == m_Last)	m_Last = rival->m_Prev;
-	rival->m_Prev = rival->m_Next = 0;
-	delete rival;
-	rival = 0;
-	m_NumRivals--;
+    m_Rivals.erase(std::find_if(m_Rivals.begin(), m_Rivals.end(), [rival](auto& c) { return c.get() == rival; }));
 }
 
 // `J` moved from cBrothel
@@ -1196,11 +1074,11 @@ void cRivalManager::check_rivals()
 	}
 	// we only create new rivals after the game has been won
 	// `J` added a chance for a new rival before the game is won
-	if (The_Player->m_WinGame == false && g_Dice.percent(100 - num_rivals)) return;
+	if (g_Game.player().m_WinGame == false && g_Dice.percent(100 - num_rivals)) return;
 	if (g_Dice.percent(70)) return;				// create new random rival or not!
 	peace = false;								// flag the war as on again, (should be a field somewhere)
 	CreateRandomRival();				// create a new rival and tell the player the good news
-	g_MessageQue.AddToQue(new_rival_text(), COLOR_RED);
+	g_Game.push_message(new_rival_text(), COLOR_RED);
 }
 
 // `J` moved from cBrothel
@@ -1295,18 +1173,18 @@ void cRivalManager::peace_breaks_out()
 {
 	stringstream ss;
 	// if the PC already won, this is just an minor outbreak of peace in the day-to-day feuding in crossgate
-	if (The_Player->m_WinGame)
+	if (g_Game.player().m_WinGame)
 	{
 		ss << "The last of your challengers has been overthrown. Your domination of Crossgate is absolute.\n \nUntil the next time that is...";
-		g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
+		g_Game.push_message(ss.str(), COLOR_GREEN);
 		return;
 	}
 	// otherwise, the player has just won flag it as such
-	The_Player->m_WinGame = true;
+    g_Game.player().m_WinGame = true;
 	// let's have a bit of chat to mark the event
 	ss.str("");
 	ss << "The last of your father's killers has been brought before you for judgement. None remain who would dare to oppose you. For all intents and purposes, the city is yours.\n \nWhether or not your father will rest easier for your efforts, you cannot say, but now, with the city at your feet, you feel sure he would be proud of you at this moment.\n \nBut pride comes before a fall, and in Crossgate, complacency kills. The city's slums and slave markets and the fighting pits are full of hungry young bloods burning to make their mark on the world, and any one of them could rise to challenge you at any time.\n \nYou may have seized the city, but holding on to it is never going to be easy.";
-	g_MessageQue.AddToQue(ss.str(), COLOR_GREEN);
+	g_Game.push_message(ss.str(), COLOR_GREEN);
 	return;
 }
 
@@ -1315,7 +1193,7 @@ int cRivalManager::AddRivalInv(cRival* rival, sInventoryItem* item)
 	int i;
 	for (i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
 	{
-		if (rival->m_Inventory[i] == 0)
+		if (rival->m_Inventory[i] == nullptr)
 		{
 			rival->m_Inventory[i] = item;
 			rival->m_NumInventory++;
@@ -1328,9 +1206,9 @@ int cRivalManager::AddRivalInv(cRival* rival, sInventoryItem* item)
 bool cRivalManager::RemoveRivalInvByNumber(cRival* rival, int num)
 {
 	// rivals inventories don't stack items
-	if (rival->m_Inventory[num] != 0)
+	if (rival->m_Inventory[num] != nullptr)
 	{
-		rival->m_Inventory[num] = 0;
+		rival->m_Inventory[num] = nullptr;
 		rival->m_NumInventory--;
 		return true;
 	}
@@ -1339,11 +1217,11 @@ bool cRivalManager::RemoveRivalInvByNumber(cRival* rival, int num)
 
 void cRivalManager::SellRivalInvItem(cRival* rival, int num)
 {
-	if (rival->m_Inventory[num] != 0)
+	if (rival->m_Inventory[num] != nullptr)
 	{
 		rival->m_Gold += (int)((float)rival->m_Inventory[num]->m_Cost*0.5f);
 		rival->m_NumInventory--;
-		rival->m_Inventory[num] = 0;
+		rival->m_Inventory[num] = nullptr;
 	}
 }
 
@@ -1357,7 +1235,7 @@ sInventoryItem* cRivalManager::GetRivalItem(cRival* rival, int num)
 sInventoryItem* cRivalManager::GetRandomRivalItem(cRival* rival)
 {
 	sInventoryItem *ipt;
-	if (rival->m_NumInventory <= 0) return 0;
+	if (rival->m_NumInventory <= 0) return nullptr;
 	int start = g_Dice%MAXNUM_RIVAL_INVENTORY;
 
 	for (int i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
@@ -1373,7 +1251,7 @@ sInventoryItem* cRivalManager::GetRandomRivalItem(cRival* rival)
 			return ipt;
 		}
 	}
-	return 0;
+	return nullptr;
 }
 
 int cRivalManager::GetRandomRivalItemNum(cRival* rival)
@@ -1396,4 +1274,37 @@ int cRivalManager::GetRandomRivalItemNum(cRival* rival)
 		}
 	}
 	return -1;
+}
+
+bool cRival::is_defeated() const
+{
+    return m_Gold <= 0 && m_NumBrothels <= 0 && m_NumGangs <= 0 && m_NumGirls <= 0 && m_NumGamblingHalls <= 0 &&
+        m_NumBars <= 0 && m_NumInventory <= 0;
+}
+
+bool cRival::remove_from_inventory(int num)
+{
+    // rivals inventories don't stack items
+    if (m_Inventory[num] != nullptr)
+    {
+        m_Inventory[num] = nullptr;
+        m_NumInventory--;
+        return true;
+    }
+    return false;
+}
+
+int cRival::add_to_inventory(sInventoryItem * item)
+{
+    int i;
+    for (i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
+    {
+        if (m_Inventory[i] == nullptr)
+        {
+            m_Inventory[i] = item;
+            m_NumInventory++;
+            return i;  // MYR: return i for success, -1 for failure
+        }
+    }
+    return -1;
 }

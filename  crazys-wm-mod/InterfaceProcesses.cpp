@@ -21,16 +21,16 @@
 #include "InterfaceGlobals.h"
 #include "GameFlags.h"
 #include "main.h"
-#include "cGetStringScreenManager.h"
-#include "cTariff.h"
 #include "cScriptManager.h"
 #include "Revision.h"
-#include "cScreenBrothelManagement.h"
 #include "FileList.h"
 #include "MasterFile.h"
 #include "DirPath.h"
-#include "cScreenGirlDetails.h"
-#include "cBrothel.h"
+#include "src/buildings/cBrothel.h"
+#include "cObjectiveManager.hpp"
+#include "src/Game.hpp"
+#include "cGangs.h"
+#include "cInventory.h"
 
 #undef bool
 
@@ -41,40 +41,24 @@
 #endif
 #undef GetMessage
 
-extern cScreenGirlDetails g_GirlDetails;
-extern cScreenBrothelManagement g_BrothelManagement;
-extern sInterfaceIDs g_interfaceid;
 extern bool eventrunning;
 extern cRng g_Dice;
 
-extern int g_BrothelScreenImgX, g_BrothelScreenImgY, g_BrothelScreenImgW, g_BrothelScreenImgH;
+extern bool g_UpArrow;		extern bool g_DownArrow;
+extern bool g_EnterKey;		extern bool g_AltKeys;
 
-extern cPlayer* The_Player;
-
-extern bool g_LeftArrow;	extern bool g_RightArrow;	extern bool g_UpArrow;		extern bool g_DownArrow;
-extern bool g_EnterKey;		extern bool g_AltKeys;		extern bool g_SpaceKey;		extern bool g_EscapeKey;
-extern bool g_HomeKey;		extern bool g_EndKey;		extern bool g_PageUpKey;	extern bool g_PageDownKey;
-
-extern bool g_A_Key;		extern bool g_B_Key;		extern bool g_C_Key;		extern bool g_D_Key;
-extern bool g_E_Key;		extern bool g_F_Key;		extern bool g_G_Key;		extern bool g_H_Key;
-extern bool g_I_Key;		extern bool g_J_Key;		extern bool g_K_Key;		extern bool g_L_Key;
-extern bool g_M_Key;		extern bool g_N_Key;		extern bool g_O_Key;		extern bool g_P_Key;
-extern bool g_Q_Key;		extern bool g_R_Key;		extern bool g_S_Key;		extern bool g_T_Key;
-extern bool g_U_Key;		extern bool g_V_Key;		extern bool g_W_Key;		extern bool g_X_Key;
-extern bool g_Y_Key;		extern bool g_Z_Key;
+extern bool g_O_Key;;
+extern bool g_S_Key;
+extern bool g_W_Key;
 extern	bool	g_CTRLDown;
-
-extern int g_CurrentScreen;
 
 #pragma endregion
 #pragma region //	Local Variables			//
 
 // globals used for the interface
-string g_ReturnText = "";
+string g_ReturnText;
 int g_ReturnInt = -1;
-bool g_InitWin = true;
 bool g_AllTogle = false;	// used on screens when wishing to apply something to all items
-long g_IntReturn;
 
 // for keeping track of weather have walked around town today
 bool g_WalkAround = false;
@@ -84,132 +68,18 @@ bool g_TryEr = false;
 bool g_TryCast = false;
 
 int g_TalkCount = 10;
-// g_GenGirls - false means the girls need to be generated
-bool g_GenGirls = false;
 bool g_Cheats = false;
 
 
-sGirl* selected_girl;  // global pointer for the currently selected girl
+sGirl* g_selected_girl;  // global pointer for the currently selected girl
 vector<int> cycle_girls;  // globally available sorted list of girl IDs for Girl Details screen to cycle through
 int cycle_pos;  //currently selected girl's position in the cycle_girls vector
 int summarysortorder = 0;	// the order girls get sorted in the summary lists
-
-sGirl* MarketSlaveGirls[20] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-int MarketSlaveGirlsDel[20] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
-
-CSurface* g_BrothelImages[7] = { 0, 0, 0, 0, 0, 0, 0 };
 
 #pragma endregion
 
 //used to store what files we have loaded
 MasterFile loadedGirlsFiles;
-
-void NewGame()
-{
-	
-	cScriptManager sm;
-
-	g_GenGirls = g_Cheats = false;
-	// for keeping track of weather have walked around town today
-	g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
-
-	g_TalkCount = 10;
-	g_Brothels.Free();
-	g_Clinic.Free();
-	g_Studios.Free();
-	g_Arena.Free();
-	g_Centre.Free();
-	g_House.Free();
-	g_Farm.Free();
-	g_Gangs.Free();
-	g_Customers.Free();
-	g_Girls.Free();
-	g_Traits.Free();
-	g_GlobalTriggers.Free();
-	sm.Release();
-	g_InvManager.Free();
-
-	string d = g_ReturnText;
-	g_Cheats = (g_ReturnText == "Cheat") ? true : false;
-
-	d += ".gam";
-
-	// Load all the data
-	LoadGameInfoFiles();
-	loadedGirlsFiles.LoadXML(TiXmlHandle(0));
-	LoadGirlsFiles();
-
-
-	g_GlobalTriggers.LoadList(DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml");
-
-	g_CurrBrothel = 0;
-
-	g_Gold.reset();
-
-	g_Year = 1209; g_Month = 1; g_Day = 1;
-
-	selected_girl = 0;
-	for (int i = 0; i < 20; i++)
-	{
-		MarketSlaveGirls[i] = 0;
-		MarketSlaveGirlsDel[i] = -1;
-	}
-
-	g_Brothels.NewBrothel(20, 250);
-	g_Brothels.SetName(0, g_ReturnText);
-	for (int i = 0; i < NUM_STATS; i++)		The_Player->m_Stats[i] = 60;
-	for (u_int i = 0; i < NUM_SKILLS; i++)	The_Player->m_Skills[i] = 10;
-	The_Player->SetToZero();
-
-	g_House.NewBrothel(20, 200);
-	g_House.SetName(0, "House");
-
-	u_int start_random_gangs = cfg.gangs.start_random();
-	u_int start_boosted_gangs = cfg.gangs.start_boosted();
-	for (u_int i = 0; i < start_random_gangs; i++)	g_Gangs.AddNewGang(false);
-	for (u_int i = 0; i < start_boosted_gangs; i++)	g_Gangs.AddNewGang(true);
-
-	// update the shop inventory
-	g_InvManager.UpdateShop();
-
-	// Add the begining rivals
-	for (int i = 0; i < 5; i++)
-	{
-		int str = g_Dice % 10 + 1;
-		g_Brothels.GetRivalManager()->CreateRival(
-			str * 100,								// BribeRate	= 100-1000
-			(str * 3) + (g_Dice % 11),	 			// Businesses	= 3-40
-			str * 5000, 							// Gold			= 5000-50000
-			(str / 2) + 1, 							// Bars			= 1-6
-			(str / 4) + 1, 							// GambHalls	= 1-3
-			(str * 5) + (g_Dice % (str * 5)), 		// Girls		= 5-100
-			(str / 2) + 1, 							// Brothels		= 1-6
-			g_Dice % 6 + 1, 						// Gangs		= 1-6
-			str	 									// Power		= 1-10	// `J` added - The rivals power level
-			);
-	}
-
-	if (g_Cheats)
-	{
-		g_Gold.cheat();
-		g_InvManager.GivePlayerAllItems();
-		g_Gangs.NumBusinessExtorted(500);
-	}
-
-	g_WinManager.push("Brothel Management");
-
-	DirPath text;
-	sm.Load(ScriptPath("Intro.lua"), 0);
-	SaveGame();
-	g_InitWin = true;
-
-}
-
-void GetString()
-{
-	cGetStringScreenManager gssm;
-	gssm.process();
-}
 
 static string clobber_extension(string s)	// `J` debug logging
 {
@@ -223,93 +93,8 @@ static string clobber_extension(string s)	// `J` debug logging
 	return base;
 }
 
-void LoadGameScreen()
-{
-
-	DirPath location = DirPath(cfg.folders.saves().c_str());
-	const char *pattern = "*.gam";
-	FileList fl(location, pattern);
-
-	int selected = 0;
-	if (g_InitWin)
-	{
-		g_InitWin = false;
-		g_LoadGame.Focused();
-		g_LoadGame.ClearListBox(g_interfaceid.LIST_LOADGSAVES);	// clear the list box with the save games
-		for (int i = 0; i < fl.size(); i++)						// loop through the files, adding them to the box
-		{
-			if (fl[i].leaf() != "autosave.gam")	g_LoadGame.AddToListBox(g_interfaceid.LIST_LOADGSAVES, i, fl[i].leaf());
-			else if (i == selected) selected++;	// make sure autosave.gam is not the selected item
-		}
-		g_LoadGame.SetSelectedItemInList(g_interfaceid.LIST_LOADGSAVES, selected);
-	}
-
-	/*
-	*	no events process means we can go home early
-	*/
-	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_EscapeKey && !g_UpArrow && !g_DownArrow && !g_EnterKey)
-	{
-		return;
-	}
-
-	/*
-	*	the next simplest case is the "back" button
-	*/
-	if (g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGBACK)
-		|| g_EscapeKey)
-	{
-		g_EscapeKey = false;
-		g_InitWin = true;
-		g_WinManager.Pop();
-		return;
-	}
-
-	int selection;
-	if (g_UpArrow)
-	{
-		g_UpArrow = false;
-		selection = g_LoadGame.ArrowUpListBox(g_interfaceid.LIST_LOADGSAVES);
-	}
-	if (g_DownArrow)
-	{
-		g_DownArrow = false;
-		selection = g_LoadGame.ArrowDownListBox(g_interfaceid.LIST_LOADGSAVES);
-	}
-
-	/*
-	*	by this point, we're only interested if it's a click on the load game button or a double-click on a game in the list
-	*/
-	if (!g_InterfaceEvents.CheckEvent(EVENT_BUTTONCLICKED, g_interfaceid.BUTTON_LOADGLOAD)
-		&& !g_LoadGame.ListDoubleClicked(g_interfaceid.LIST_LOADGSAVES) && !g_EnterKey)
-	{
-		return;
-	}
-	/*
-	*	OK: So from this point onwards, we're loading the game
-	*/
-	selection = g_LoadGame.GetLastSelectedItemFromList(g_interfaceid.LIST_LOADGSAVES);
-	/*
-	*	nothing selected means nothing more to do
-	*/
-	if (selection == -1)
-	{
-		return;
-	}
-	string temp = fl[selection].leaf();
-	g_ReturnText = temp;
-	/*
-	*	enable cheat mode for a cheat brothel
-	*/
-	g_Cheats = (temp == "Cheat.gam");
-
-	g_ReturnInt = 0;
-	g_InitWin = true;
-	g_WinManager.Pop();
-	g_WinManager.push("Preparing Game");
-	return;
-}
 // interim loader to load XML files, and then non-xml ones if there was no xml version.
-static void LoadXMLItems(FileList &fl)
+void LoadXMLItems(FileList &fl)
 {
 	map<string, string> lookup;
 	int loglevel = 0;
@@ -336,15 +121,16 @@ static void LoadXMLItems(FileList &fl)
 
 	// Iterate over the map and print out all key/value pairs. kudos: wikipedia
 	if (loglevel > 0)	g_LogFile.os() << "walking map..." << endl;
-	for (map<string, string>::const_iterator it = lookup.begin(); it != lookup.end(); ++it)
+	for (auto & it : lookup)
 	{
-		string full_path = it->second;
-		if (loglevel > 1)	g_LogFile.os() << "\tkey = " << it->first << endl;
+		string full_path = it.second;
+		if (loglevel > 1)	g_LogFile.os() << "\tkey = " << it.first << endl;
 		if (loglevel > 1)	g_LogFile.os() << "\tpath = " << full_path << endl;
 		if (loglevel > 0)	g_LogFile.os() << "\t\tLoading xml Item: " << full_path<< endl;
-		g_InvManager.LoadItemsXML(full_path);
+		g_Game.inventory_manager().LoadItemsXML(full_path);
 	}
 }
+
 void LoadGameInfoFiles()
 {
 	stringstream ss;
@@ -385,7 +171,7 @@ void LoadGameInfoFiles()
 
 
 }
-void LoadGirlsFiles()
+void LoadGirlsFiles(MasterFile& master)
 {
 	/*
 	*	now get a list of all the file in the Characters folder
@@ -411,18 +197,18 @@ void LoadGirlsFiles()
 		*		we don't need to load it. Unless the AllData flag is set
 		*		and then we do. I think.
 		*/
-		if (loadedGirlsFiles.exists(girlfiles[i].leaf()))
+		if (master.exists(girlfiles[i].leaf()))
 		{
 			continue;
 		}
 		/*
 		*		add the file to the master list
 		*/
-		loadedGirlsFiles.add(girlfiles[i].leaf());
+		master.add(girlfiles[i].leaf());
 		/*
 		*		load the file
 		*/
-		g_Girls.LoadGirlsDecider(girlfiles[i].full());
+		g_Game.girl_pool().LoadGirlsDecider(girlfiles[i].full());
 	}
 	/*
 	*	Load random girls
@@ -432,7 +218,7 @@ void LoadGirlsFiles()
 	*/
 	for (int i = 0; i < rgirlfiles.size(); i++)
 	{
-		g_Girls.LoadRandomGirl(rgirlfiles[i].full());
+        g_Game.girl_pool().LoadRandomGirl(rgirlfiles[i].full());
 	}
 }
 
@@ -440,91 +226,28 @@ void NextWeek()
 {
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Start"; g_LogFile.ssend(); }
 
-	g_GenGirls = g_WalkAround = false;
-	g_GenGirls = g_TryCentre = false;
-	g_GenGirls = g_TryOuts = false;
-	g_GenGirls = g_TryEr = false;
-	g_GenGirls = g_TryCast = false;
+	g_WalkAround = false;
+	g_TryCentre = false;
+	g_TryOuts = false;
+	g_TryEr = false;
+	g_TryCast = false;
 	g_TalkCount = 10;
 	/*
 	// `J` I want to make the player start with 0 in all stats and skills
 	// and have to gain them over time. When this gets implemented
 	// g_TalkCount will be based on the player's charisma.
-	g_TalkCount = 10 + (The_Player->m_Stats[STAT_CHARISMA] / 10);
+	g_TalkCount = 10 + (g_Game.player().m_Stats[STAT_CHARISMA] / 10);
 	// */ //
 
-	if (g_Cheats)	g_Gold.cheat();
+	if (g_Cheats)	g_Game.gold().cheat();
 
 	// Clear choice dialog
 	g_ChoiceManager.Free();
 
 	// update the shop inventory
-	g_InvManager.UpdateShop();
+	g_Game.inventory_manager().UpdateShop();
 
-	// Clear the interface events
-	g_InterfaceEvents.ClearEvents();
-
-	// clear the events of dungeon girls
-	g_Brothels.m_Dungeon.ClearDungeonGirlEvents();
-
-	// pass out potions and nets to gangs for the start of the shift
-	g_Gangs.GangStartOfShift();
-
-	// go through and update all the brothels (this updates the girls each brothel has and calculates sex and stuff)
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Clinic"; g_LogFile.ssend(); }
-	if (g_Clinic.GetNumBrothels() > 0)		g_Clinic.UpdateClinic();
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Studio"; g_LogFile.ssend(); }
-	if (g_Studios.GetNumBrothels() > 0)		g_Studios.UpdateMovieStudio();
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Arena"; g_LogFile.ssend(); }
-	if (g_Arena.GetNumBrothels() > 0)		g_Arena.UpdateArena();
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Centre"; g_LogFile.ssend(); }
-	if (g_Centre.GetNumBrothels() > 0)		g_Centre.UpdateCentre();
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Farm"; g_LogFile.ssend(); }
-	if (g_Farm.GetNumBrothels() > 0)		g_Farm.UpdateFarm();
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin House"; g_LogFile.ssend(); }
-	g_House.UpdateHouse();
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Brothels"; g_LogFile.ssend(); }
-	g_Brothels.UpdateBrothels(); // Moved so new buildings show up in profit reports --PP
-
-	// go ahead and handle pregnancies for girls not controlled by player
-	g_Girls.UncontrolledPregnancies();
-
-	// go through and update all the gang-related data (send them on missions, etc.)
-	g_Gangs.UpdateGangs();
-
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || Begin Dungeon"; g_LogFile.ssend(); }
-	g_Brothels.m_Dungeon.Update();	// update the people in the dungeon
-
-	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug NextWeek || End Buildings"; g_LogFile.ssend(); }
-
-	// update objectives or maybe create a new one
-	if (g_Brothels.GetObjective()) g_Brothels.UpdateObjective();
-	else if (g_Dice.percent(45)) g_Brothels.CreateNewObjective();
-
-	// go through and update the population base
-	g_Customers.ChangeCustomerBase();
-
-	// Free customers
-	g_Customers.Free();
-
-	// Update the time
-	g_Day += 7;
-	if (g_Day > 30)
-	{
-		g_Day = g_Day - 30;
-		g_Month++;
-		if (g_Month > 12)
-		{
-			g_Month = 1;
-			g_Year++;
-		}
-	}
-
-	// update the players gold
-	g_Gold.week_end();
-
-	// Process Triggers
-	g_GlobalTriggers.ProcessTriggers();
+	g_Game.next_week();
 
 	GameEvents();
 	g_CTRLDown = false;
@@ -544,14 +267,14 @@ void GameEvents()
 		eventrunning = false;
 
 	// process global triggers here
-	if (g_GlobalTriggers.GetNextQueItem() && !eventrunning)
+	if (g_Game.global_triggers().GetNextQueItem() && !eventrunning)
 	{
-		g_GlobalTriggers.ProcessNextQueItem(dp);
+        g_Game.global_triggers().ProcessNextQueItem(dp);
 		eventrunning = true;
 	}
 	else if (!eventrunning)	// check girl scripts
 	{
-		if (g_Brothels.CheckScripts())
+		if (g_Game.buildings().CheckScripts())
 			eventrunning = true;
 	}
 
@@ -562,27 +285,29 @@ void GameEvents()
 
 	if (CheckGameFlag(FLAG_DUNGEONGIRLDIE))	// a girl has died int the dungeon
 	{
-		g_MessageQue.AddToQue("A girl has died in the dungeon.\nHer body will be removed by the end of the week.", 1);
+		g_Game.push_message("A girl has died in the dungeon.\nHer body will be removed by the end of the week.", 1);
 
 		if (g_Dice.percent(10))	// only 10% of being discovered
 		{
-			The_Player->suspicion(1);
+            g_Game.player().suspicion(1);
 		}
-		The_Player->disposition(-1);
-		g_Brothels.UpdateAllGirlsStat(0, STAT_PCFEAR, 2);
+        g_Game.player().disposition(-1);
+        for(auto& broth : g_Game.buildings().buildings()) {
+            broth->update_all_girls_stat(STAT_PCFEAR, 2);
+        }
 
 		ClearGameFlag(FLAG_DUNGEONGIRLDIE);
 	}
 	else if (CheckGameFlag(FLAG_DUNGEONCUSTDIE))	// a customer has died in the dungeon
 	{
-		g_MessageQue.AddToQue("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.", 1);
+		g_Game.push_message("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.", 1);
 
 		if (g_Dice.percent(10))	// only 10% chance of being found out
 		{
-			The_Player->suspicion(1);
+            g_Game.player().suspicion(1);
 		}
-		The_Player->disposition(-1);
-		The_Player->customerfear(1);
+        g_Game.player().disposition(-1);
+        g_Game.player().customerfear(1);
 
 		ClearGameFlag(FLAG_DUNGEONCUSTDIE);
 	}
@@ -595,7 +320,7 @@ void AutoSaveGame()
 void SaveGame(bool saveCSV)
 {
 
-	string filename = g_Brothels.GetBrothel(0)->m_Name;
+	string filename = g_Game.buildings().get_building(0).name();
 	string filenamedotgam = filename + ".gam";
 	string filenamedotcsv = filename + ".csv";
 
@@ -607,76 +332,7 @@ void SaveGame(bool saveCSV)
 		if (saveCSV) SaveGirlsCSV(DirPath() << "Saves" << filenamedotcsv);
 	}
 }
-void SimpleSaveGameXML(string filename)	// `J` zzzzzz - incomplete code
-{
-	TiXmlDocument docq(filename + ".q");
-	TiXmlDeclaration* declq = new TiXmlDeclaration("1.0", "", "yes");
-	docq.LinkEndChild(declq);
-	TiXmlElement* qRoot = new TiXmlElement("Root");
-	docq.LinkEndChild(qRoot);
 
-	qRoot->SetAttribute("Year", g_Year);
-	qRoot->SetAttribute("Month", g_Month);
-	qRoot->SetAttribute("Day", g_Day);
-
-	qRoot->SetAttribute("NumberOfBrothels", g_Brothels.GetNumBrothels());
-	qRoot->SetAttribute("Gold", g_Gold.ival());
-
-	qRoot->SetAttribute("LoadedGirlsFiles", loadedGirlsFiles.size());
-
-	// Save Girls
-	vector<string> GirlNames;
-
-	TiXmlElement* pGirls = new TiXmlElement("GirlFoldersUsedInThisGame");
-	qRoot->LinkEndChild(pGirls);
-	for (int i = 0; i < 14; i++)
-	{
-		sGirl* girl = 0;
-		if (i == 0)/*                                       */	girl = g_Brothels.GetBrothel(0)->m_Girls;
-		if (i == 1 && g_Brothels.GetNumBrothels() >= 2)/*   */	girl = g_Brothels.GetBrothel(1)->m_Girls;
-		if (i == 2 && g_Brothels.GetNumBrothels() >= 3)/*   */	girl = g_Brothels.GetBrothel(2)->m_Girls;
-		if (i == 3 && g_Brothels.GetNumBrothels() >= 4)/*   */	girl = g_Brothels.GetBrothel(3)->m_Girls;
-		if (i == 4 && g_Brothels.GetNumBrothels() >= 5)/*   */	girl = g_Brothels.GetBrothel(4)->m_Girls;
-		if (i == 5 && g_Brothels.GetNumBrothels() >= 6)/*   */	girl = g_Brothels.GetBrothel(5)->m_Girls;
-		if (i == 6 && g_Brothels.GetNumBrothels() >= 7)/*   */	girl = g_Brothels.GetBrothel(6)->m_Girls;
-		if (i == 7 && g_Studios.GetNumBrothels() > 0)/*     */	girl = g_Studios.GetBrothel(0)->m_Girls;
-		if (i == 8 && g_Arena.GetNumBrothels() > 0)/*       */	girl = g_Arena.GetBrothel(0)->m_Girls;
-		if (i == 9 && g_Centre.GetNumBrothels() > 0)/*      */	girl = g_Centre.GetBrothel(0)->m_Girls;
-		if (i == 10 && g_Clinic.GetNumBrothels() > 0)/*     */	girl = g_Clinic.GetBrothel(0)->m_Girls;
-		if (i == 11 && g_Farm.GetNumBrothels() > 0)/*       */	girl = g_Farm.GetBrothel(0)->m_Girls;
-		if (i == 12)/*                                      */	girl = g_House.GetBrothel(0)->m_Girls;
-		if (i == 13 && g_Brothels.GetDungeon()->GetNumGirls())
-		{
-			sDungeonGirl* dgirl = g_Brothels.GetDungeon()->GetGirl(0);
-			while (dgirl)
-			{
-				if (find(GirlNames.begin(), GirlNames.end(), dgirl->m_Girl->m_Name) == GirlNames.end())
-					GirlNames.push_back(dgirl->m_Girl->m_Name);
-				dgirl = dgirl->m_Next;
-			}
-		}
-		else
-		{
-			while (girl)
-			{
-				if (find(GirlNames.begin(), GirlNames.end(), girl->m_Name) == GirlNames.end())
-					GirlNames.push_back(girl->m_Name);
-				girl = girl->m_Next;
-			}
-		}
-	}
-
-	sort(GirlNames.begin(), GirlNames.end());
-	for (u_int i = 0; i < GirlNames.size(); i++)
-	{
-		TiXmlElement* girlname = new TiXmlElement("Folder");
-		pGirls->LinkEndChild(girlname);
-		girlname->SetAttribute("Name", GirlNames[i]);
-	}
-
-
-	docq.SaveFile();
-}
 void SaveGameXML(string filename)
 {
 	TiXmlDocument doc(filename);
@@ -704,46 +360,11 @@ void SaveGameXML(string filename)
 	pRoot->SetAttribute("TryEr", g_TryEr);
 	pRoot->SetAttribute("TryCast", g_TryCast);
 
-	// output year, month and day
-	pRoot->SetAttribute("Year", g_Year);		
-	pRoot->SetAttribute("Month", g_Month);		
-	pRoot->SetAttribute("Day", g_Day);			
-
 	//this replaces the "master file"
-	loadedGirlsFiles.SaveXML(pRoot);			
+	// TODO Fix the master file stuff
+	loadedGirlsFiles.SaveXML(pRoot);
 
-	// output player gold
-	g_Gold.saveGoldXML(pRoot);					
-
-	// output girls
-	g_Girls.SaveGirlsXML(pRoot);	// this is all the girls that have not been acquired
-	
-	// output gangs
-	g_Gangs.SaveGangsXML(pRoot);
-
-	// output brothels
-	g_Brothels.SaveDataXML(pRoot);
-
-	// output clinic
-	g_Clinic.SaveDataXML(pRoot);
-
-	// output studio
-	g_Studios.SaveDataXML(pRoot);
-
-	// output arena
-	g_Arena.SaveDataXML(pRoot);
-
-	// output centre
-	g_Centre.SaveDataXML(pRoot);
-
-	// output house
-	g_House.SaveDataXML(pRoot);
-
-	// output farm
-	g_Farm.SaveDataXML(pRoot);
-
-	// output global triggers
-	g_GlobalTriggers.SaveTriggersXML(pRoot);
+	g_Game.save(*pRoot);
 	doc.SaveFile();
 
 	//ADB TODO
@@ -757,78 +378,27 @@ void SaveGameXML(string filename)
 	}
 
 	// update the shop inventory
-	g_InvManager.UpdateShop();
+	g_Game.inventory_manager().UpdateShop();
 #endif
-
-	SimpleSaveGameXML(filename);
-
 }
 
-
-
-
-void confirm_exit()
-{
-	if (g_InitWin)
-	{
-		g_GetString.Focused();
-		g_InitWin = false;
-	}
-
-	if (g_InterfaceEvents.GetNumEvents() == 0 && !g_EnterKey) { return; }
-
-	if (g_InterfaceEvents.CheckButton(g_interfaceid.BUTTON_CANCEL)) {
-		g_ReturnText = "";
-		g_InitWin = true;
-		g_WinManager.Pop();
-		return;
-	}
-
-	if (g_InterfaceEvents.CheckButton(g_interfaceid.BUTTON_OK) || g_EnterKey) {
-		g_EnterKey = false;
-		g_ReturnText = "";
-
-		g_InitWin = true;
-		g_WinManager.Pop();
-		g_WinManager.Pop();
-
-		ResetInterface();
-
-		// Schedule Quit Event -- To quit
-		//SDL_Event ev;
-		//ev->type = SDL_QUIT;
-		//if (!SDL_PushEvent(ev))
-		//	g_LogFile.write("SDL Quit Re-Scheduled!");
-	}
+static void SaveCSVHelper(IBuilding& building, ofstream& GirlsCSV) {
+    for (auto& cgirl : building.girls())
+    {
+        GirlsCSV << "'" << building.name() << "'," << Girl2CSV(cgirl) << '\n';
+    }
 }
 
 void SaveGirlsCSV(string filename)
 {
 	ofstream GirlsCSV;
-	sGirl* cgirl;
-	sBrothel* building;
 	string eol = "\n";
-	int buildingnum = 0;
 	GirlsCSV.open(filename);
 	GirlsCSV << "'Building','Girl Name','Based on','Slave?','Day Job','Night Job','Age','Level','Exp','Askprice','House','Fame','Tiredness','Health','Happiness','Constitution','Charisma','Beauty','Intelligence','Confidence','Agility','Obedience','Spirit','Morality','Refinement','Dignity','Mana','Libido','Lactation','PCFear','PCLove','PCHate','Magic','Combat','Service','Medicine','Performance','Crafting','Herbalism','Farming','Brewing','Animalhandling','Normalsex','Anal','Bdsm','Beastiality','Group','Lesbian','Strip','Oralsex','Tittysex','Handjob','Footjob'" << eol;
-	building = g_Brothels.GetBrothel(0);
-	while (building)
-	{
-		cgirl = building->m_Girls;
-		while (cgirl)
-		{
-			GirlsCSV << "'" << building->m_Name << "'," << Girl2CSV(cgirl) << eol;
-			cgirl = cgirl->m_Next;
-		}
-		building = building->m_Next;
-		if (building == 0) buildingnum++;
-		if (buildingnum == 1)	{ building = g_Studios.GetBrothel(0);	if (building == 0) buildingnum++; }
-		if (buildingnum == 2)	{ building = g_Arena.GetBrothel(0);		if (building == 0) buildingnum++; }
-		if (buildingnum == 3)	{ building = g_Centre.GetBrothel(0);	if (building == 0) buildingnum++; }
-		if (buildingnum == 4)	{ building = g_Clinic.GetBrothel(0);	if (building == 0) buildingnum++; }
-		if (buildingnum == 5)	{ building = g_Farm.GetBrothel(0);		if (building == 0) buildingnum++; }
-		if (buildingnum == 6)	{ building = g_House.GetBrothel(0);		if (building == 0) buildingnum++; }
-	}
+    for (auto& building : g_Game.buildings().buildings()) {
+        SaveCSVHelper(*building, GirlsCSV);
+    }
+
 	GirlsCSV.close();
 }
 string Girl2CSV(sGirl* girl)

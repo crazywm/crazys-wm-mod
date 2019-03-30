@@ -27,5 +27,8 @@
    <Effect What="Trait" Name="Great Figure"            Amount="1"    />
    <Effect What="Trait" Name="Optimist"                Amount="1"    />
    <Effect What="Trait" Name="Pessimist"               Amount="0"    />
+   <Crafting CraftPoints="160" ManaCost="30">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

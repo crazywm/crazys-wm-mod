@@ -14,5 +14,8 @@
    <Effect What="Skill" Name="Lesbian" Amount="15" />
    <Effect What="Trait" Name="Pessimist" Amount="0" />
    <Effect What="Trait" Name="Optimist" Amount="1" />
+   <Crafting CraftPoints="50" ManaCost="20">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

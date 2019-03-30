@@ -17,121 +17,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <iostream>
 #include "InterfaceGlobals.h"
 #include "DirPath.h"
-#include "cBrothel.h"
-#include "cClinic.h"
-#include "cMovieStudio.h"
-#include "cArena.h"
-#include "cCentre.h"
-#include "cFarm.h"
-#include "Constants.h"
 #include "cTariff.h"
 #include "cWindowManager.h"
-#include "cScreenBuildingManagement.h"
-#include "cScreenPropertyManagement.h"	// `J` added
-#include "cScreenPrison.h"
-#include "cScreenTown.h"
-#include "cScreenAuction.h"
-#include "cScreenArena.h"
-#include "cScreenArenaTry.h"
-#include "cScreenHouse.h"
-#include "cScreenClinic.h"
-#include "cScreenCentre.h"
-#include "cScreenMovie.h"
-#include "cScreenFarm.h"
-#include "cScreenClinicTry.h"
-#include "cScreenCastingTry.h"
-#include "cScreenSlaveMarket.h"
-#include "cScreenMayor.h"
-#include "cScreenBank.h"
-#include "cScreenHouseDetails.h"
-#include "cScreenItemManagement.h"
-#include "cScreenBuildingSetup.h"
-#include "cScreenGangs.h"
-#include "cScreenGirlManagement.h"
-#include "cScreenClinicManagement.h"
-#include "cScreenHouseManagement.h"
-#include "cScreenFarmManagement.h"
-#include "cScreenStudioManagement.h"
-#include "cScreenMovieMaker.h"
-#include "cScreenArenaManagement.h"
-#include "cScreenCentreManagement.h"
-#include "cScreenGirlDetails.h"
-#include "cScreenDungeon.h"
-#include "cScreenMainMenu.h"
-#include "cScreenPreparingGame.h"
-#include "cScreenNewGame.h"
-#include "cScreenSettings.h"
-#include "cScreenBrothelManagement.h"
-#include "cScreenGetInput.h"
-#include "cScreenGallery.h"
-#include "sConfig.h"
+#include "src/screens/cScreenPropertyManagement.h"	// `J` added
+#include "src/screens/cScreenPrison.h"
+#include "src/screens/cScreenTown.h"
+#include "src/screens/cScreenSlaveMarket.h"
+#include "src/screens/cScreenMayor.h"
+#include "src/screens/cScreenBank.h"
+#include "src/screens/cScreenHouseDetails.h"
+#include "src/screens/cScreenItemManagement.h"
+#include "src/screens/cScreenBuildingSetup.h"
+#include "src/screens/cScreenGangs.h"
+#include "src/screens/cScreenGirlDetails.h"
+#include "src/screens/cScreenDungeon.h"
+#include "src/screens/cScreenMainMenu.h"
+#include "src/screens/cScreenPreparingGame.h"
+#include "src/screens/cScreenNewGame.h"
+#include "src/screens/cScreenLoadGame.hpp"
+#include "src/screens/cScreenSettings.h"
+#include "src/screens/cScreenBrothelManagement.h"
+#include "src/screens/cScreenGetInput.h"
+#include "src/screens/cScreenGallery.h"
 #include "XmlUtil.h"
-#include "cScreenTurnSummary.h"
-#include "cScreenTransfer.h"
+#include "src/screens/cScreenTurnSummary.h"
+#include "src/screens/cScreenTransfer.h"
+#include "tinyxml.h"
 
 using namespace std;
 
-extern sInterfaceIDs g_interfaceid;
 extern cWindowManager g_WinManager;
 
-cInterfaceEventManager g_InterfaceEvents;
-cScreenMainMenu g_MainMenu;
-cScreenPreparingGame g_Preparing;
-cScreenNewGame g_NewGame;			// NewGame.xml
-cScreenSettings g_Settings;			// `J` added
-
-cScreenBrothelManagement g_BrothelManagement;
-cScreenGirlManagement g_GirlManagement;
-cScreenClinicManagement g_ClinicManagement;
-cScreenStudioManagement g_StudioManagement;
-cScreenArenaManagement g_ArenaManagement;
-cScreenCentreManagement g_CentreManagement;
-cScreenHouseManagement g_HouseManagement;
-cScreenFarmManagement g_FarmManagement;
-cScreenMovieMaker g_MovieMaker;
-cScreenGangs g_GangManagement;
-cScreenGirlDetails g_GirlDetails;
-cScreenDungeon g_Dungeon;
-cScreenSlaveMarket g_SlaveMarket;
-cScreenTown g_TownScreen;
-cScreenGallery g_GalleryScreen;
-cScreenArenaTry g_ArenaTry;
-cScreenClinic g_ClinicScreen;
-cScreenCentre g_CentreScreen;
-cScreenHouse g_HouseScreen;
-cScreenFarm g_FarmScreen;
-cMovieScreen g_MovieScreen;
-cScreenClinicTry g_ClinicTry;
-cScreenCastingTry g_CastingTry;
-cScreenArena g_ArenaScreen;
-cScreenAuction g_AuctionScreen;
-cScreenBuildingSetup g_BuildingSetupScreen;
-cScreenMayor g_MayorsOfficeScreen;
-cScreenBank g_BankScreen;
-cScreenHouseDetails g_PlayersHouse;
-cScreenItemManagement g_ItemManagement;
-cScreenPrison g_PrisonScreen;
-cBuildingManagement g_BuildingManagementScreen;
-cScreenPropertyManagement g_PropertyManagementScreen;	// `J` added
-cScreenTurnSummary g_TurnSummary;
-cScreenTransfer g_TransferScreen;	// `J` added for .06.03.02
-
-cScreenGetInput g_GetInput;
-
-cInterfaceWindow g_GetString;		// GetString.xml
-cInterfaceWindow g_LoadGame;		// LoadMenu.xml
-//cInterfaceWindow g_TransferGirls;	// Hard coded
-//cInterfaceWindow g_Gallery;			// Hard coded
-//cInterfaceWindow g_Gallery2;		// Hard coded
-cInterfaceWindow g_ChangeJobs;		// Hard coded
-//cInterfaceWindow g_Turnsummary;		// Hard coded
-
-cMessageBox g_MessageBox;
+cScreenBrothelManagement* g_BrothelManagement = nullptr;
+cScreenGirlDetails*       g_GirlDetails       = nullptr;
+cScreenMainMenu*          g_MainMenu          = nullptr;
+cScreenNewGame*           g_NewGame           = nullptr;
+cScreenPreparingGame*     g_Preparing         = nullptr;
+cInterfaceWindow*         g_LoadGame          = nullptr; // LoadMenu.xml
+cScreenGetInput*          g_GetInput          = nullptr;
 cChoiceManager g_ChoiceManager;
-cMessageQue g_MessageQue;
 
 // interface colors
 unsigned char g_StaticImageR = 0, g_StaticImageG = 0, g_StaticImageB = 0;
@@ -182,103 +108,17 @@ unsigned char g_MessageBoxBackground3R = 0, g_MessageBoxBackground3G = 0, g_Mess
 unsigned char g_MessageBoxBackground4R = 0, g_MessageBoxBackground4G = 0, g_MessageBoxBackground4B = 0;
 unsigned char g_MessageBoxTextR = 0, g_MessageBoxTextG = 0, g_MessageBoxTextB = 0;
 
+template<class T>
+T* load_window(const char* name);
+
 void FreeInterface()
 {
-	g_MainMenu.Free();
-	g_Preparing.Free();
-	g_GetString.Free();
-	g_BrothelManagement.Free();
-	g_ClinicManagement.Free();
-	g_StudioManagement.Free();
-	g_ArenaManagement.Free();
-	g_CentreManagement.Free();
-	g_HouseManagement.Free();
-	g_FarmManagement.Free();
-	g_GirlManagement.Free();
-	g_GangManagement.Free();
-	g_GirlDetails.Free();
-	g_ChangeJobs.Free();
-//	g_Turnsummary.Free();
-	g_Dungeon.Free();
-	g_SlaveMarket.Free();
-	g_TownScreen.Free();
-//	g_GalleryScreen.Free();
-	g_ArenaTry.Free();
-	g_CentreScreen.Free();
-	g_ClinicScreen.Free();
-	g_ClinicTry.Free();
-	g_CastingTry.Free();
-	g_ArenaScreen.Free();
-	g_AuctionScreen.Free();
-	g_HouseScreen.Free();
-	g_FarmScreen.Free();
-	g_MovieScreen.Free();
-//	g_Gallery.Free();
-//	g_Gallery2.Free();
-	g_BuildingSetupScreen.Free();
-	g_GetInput.Free();
-	g_MayorsOfficeScreen.Free();
-	g_BankScreen.Free();
-	g_ChoiceManager.Free();
-	g_MessageQue.Free();
-	g_LoadGame.Free();
-	g_Settings.Free();
-	g_PlayersHouse.Free();
-//	g_TransferGirls.Free();
-	g_TransferScreen.Free();
-	g_ItemManagement.Free();
-	g_PrisonScreen.Free();
-	g_MovieMaker.Free();
-	g_BuildingManagementScreen.Free();
+    g_WinManager.FreeAllWindows();
 }
 
 void ResetInterface()
 {
-	g_MainMenu.Reset();
-	g_Preparing.Reset();
-	g_GetString.Reset();
-	g_BrothelManagement.Reset();
-	g_ClinicManagement.Reset();
-	g_StudioManagement.Reset();
-	g_ArenaManagement.Reset();
-	g_CentreManagement.Reset();
-	g_HouseManagement.Reset();
-	g_FarmManagement.Reset();
-	g_GirlManagement.Reset();
-	g_GangManagement.Reset();
-	g_GirlDetails.Reset();
-	g_ChangeJobs.Reset();
-//	g_Turnsummary.Reset();
-	g_Dungeon.Reset();
-	g_SlaveMarket.Reset();
-	g_TownScreen.Reset();
-//	g_GalleryScreen.Reset();
-	g_ArenaTry.Reset();
-	g_CentreScreen.Reset();
-	g_ClinicScreen.Reset();
-	g_ClinicTry.Reset();
-	g_CastingTry.Reset();
-	g_ArenaScreen.Reset();
-	g_AuctionScreen.Reset();
-	g_HouseScreen.Reset();
-	g_FarmScreen.Reset();
-	g_MovieScreen.Reset();
-//	g_Gallery.Reset();
-//	g_Gallery2.Reset();
-	g_BuildingSetupScreen.Reset();
-	g_GetInput.Reset();
-	g_MayorsOfficeScreen.Reset();
-	g_BankScreen.Reset();
-	g_ChoiceManager.Free();
-	g_LoadGame.Reset();
-	g_Settings.Reset();
-	g_PlayersHouse.Reset();
-//	g_TransferGirls.Reset();
-	g_TransferScreen.Reset();
-	g_ItemManagement.Reset();
-	g_PrisonScreen.Reset();
-	g_MovieMaker.Reset();
-	g_BuildingManagementScreen.Reset();
+    g_WinManager.ResetAllWindows();
 }
 
 void LoadInterface()
@@ -287,7 +127,7 @@ void LoadInterface()
 	stringstream ss;
 	int r = 0, g = 0, b = 0, x = 0, y = 0, w = 0, h = 0, a = 0, c = 0, d = 0, e = 0, fontsize = 10, rowheight = 20,
 		increment = 0, min = 0, max = 0, value = 0;
-	string image = ""; string text = ""; string file = "";
+	string image; string text; string file;
 	bool Transparency = false, Scale = true, multi = false, events = false, liveUpdate = false, leftorright = false;
 	ifstream incol;
 	
@@ -400,304 +240,56 @@ void LoadInterface()
 		g_CheckBoxBackgroundR = 180;			g_CheckBoxBackgroundG = 180;			g_CheckBoxBackgroundB = 180;
 	}
 
+    // `J` Bookmark - Loading the screens
+    g_WinManager.load();
+    g_Preparing = load_window<cScreenPreparingGame>("Preparing Game");
+    g_MainMenu = load_window<cScreenMainMenu>("Main Menu");
+    g_NewGame = load_window<cScreenNewGame>("New Game");
+    g_LoadGame = load_window<cScreenLoadGame>("Load Game");
+    load_window<cScreenSettings>("Settings");
 
-	// Load game screen
-	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "LoadMenu.xml";
-	TiXmlDocument docLoadMenu(dp.c_str());
-	if (docLoadMenu.LoadFile())
-	{
-		g_LogFile.write("Loading LoadMenu.xml");
-		string m_filename = dp.c_str();
-		TiXmlElement *el, *root_el = docLoadMenu.RootElement();
-		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
-		{
-			XmlUtil xu(m_filename); string name;
-			xu.get_att(el, "Name", name);
-			xu.get_att(el, "XPos", x); xu.get_att(el, "YPos", y); xu.get_att(el, "Width", w); xu.get_att(el, "Height", h); xu.get_att(el, "Border", e, true);
-			xu.get_att(el, "Image", image, true); xu.get_att(el, "Transparency", Transparency, true); xu.get_att(el, "Scale", Scale, true);
-			xu.get_att(el, "File", file, true); xu.get_att(el, "Text", text, true);
-			xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 10;
-			xu.get_att(el, "RowHeight", rowheight); if (rowheight == 0) rowheight = 20;
-			xu.get_att(el, "Red", r, true); xu.get_att(el, "Green", g, true); xu.get_att(el, "Blue", b, true);
+    g_BrothelManagement = load_window<cScreenBrothelManagement>("Brothel Management");
+    g_GirlDetails = load_window<cScreenGirlDetails>("Girl Details");
+    load_window<cScreenGangs>("Gangs");
+    load_window<cScreenItemManagement>("Item Management");
+    load_window<cMovieScreen>("Movie Screen");
+    load_window<cScreenPropertyManagement>("Property Management");
+    load_window<cScreenTransfer>("Transfer Screen");
+    load_window<cScreenTurnSummary>("Turn Summary");
+    load_window<cScreenGallery>("Gallery");
+    g_GetInput = load_window<cScreenGetInput>("GetInput");
 
-			if (name == "LoadMenu")		g_LoadGame.CreateWindow(x, y, w, h, e);
-			if (name == "WhoreMaster")	g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, x, y, w, h, text, fontsize, false, false, false, r, g, b);
-			if (name == "FileName")		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, x, y, w, h, e, true, false, false, true, true, fontsize, rowheight);
-			if (name == "LoadGame")		g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGLOAD, x, y, w, h, Transparency, Scale);
-			if (name == "BackButton")	g_LoadGame.AddButton(image, g_interfaceid.BUTTON_LOADGBACK, x, y, w, h, Transparency, Scale);
-			if (name == "Background")
-			{
-				DirPath dp = ImagePath(file);
-				g_LoadGame.AddImage(g_interfaceid.IMAGE_BGIMAGE, dp, x, y, w, h);
-			}
-		}
-	}
-	else
-	{
-		g_LogFile.write("Loading Default LoadMenu");
-		g_LoadGame.CreateWindow(224, 128, 344, 344, 1);
-		g_LoadGame.AddTextItem(g_interfaceid.STATIC_STATIC, 0, 334 - 10, 344, 12, "Please read the readme.html", 10);
-		g_LoadGame.AddListBox(g_interfaceid.LIST_LOADGSAVES, 8, 8, 328, 288, 1, true, false, false, true, true, fontsize, rowheight);
-		g_LoadGame.AddButton("Load", g_interfaceid.BUTTON_LOADGLOAD, 8, 304, 160, 32, true);
-		g_LoadGame.AddButton("Back", g_interfaceid.BUTTON_LOADGBACK, 176, 304, 160, 32, true);
-	}
+    load_window<CBuildingManagementScreenDispatch>("Girl Management");
+    load_window<CBuildingScreenDispatch>("Building Management");
+    load_window<cScreenGirlManagement>("Girl Management Brothel");
+    load_window<cScreenClinicManagement>("Girl Management Clinic");
+    load_window<cScreenStudioManagement>("Girl Management Studio");
+    load_window<cScreenArenaManagement>("Girl Management Arena");
+    load_window<cScreenCentreManagement>("Girl Management Centre");
+    load_window<cScreenHouseManagement>("Girl Management House");
+    load_window<cScreenFarmManagement>("Girl Management Farm");
+    load_window<cScreenClinic>("Clinic Screen");
+    load_window<cScreenCentre>("Centre Screen");
+    load_window<cScreenArena>("Arena Screen");
+    load_window<cScreenHouse>("Player House");
+    load_window<cScreenFarm>("Farm Screen");
+    load_window<cScreenDungeon>("Dungeon");
+    load_window<cScreenTown>("Town");
+    load_window<cScreenSlaveMarket>("Slave Market");
+    load_window<cScreenBuildingSetup>("Building Setup");
+    load_window<cScreenMayor>("Mayor");
+    load_window<cScreenBank>("Bank");
+    load_window<cScreenHouseDetails>("House");
+    load_window<cScreenPrison>("Prison");
+}
 
-	
-
-
-	// Load GetString screen
-	dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "GetString.xml";
-	TiXmlDocument docGetString(dp.c_str());
-	if (docGetString.LoadFile())
-	{
-		g_LogFile.write("Loading GetString.xml");
-		string m_filename = dp.c_str();
-		TiXmlElement *el, *root_el = docGetString.RootElement();
-
-		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
-		{
-			XmlUtil xu(m_filename);	string name;
-			xu.get_att(el, "Name", name);
-			xu.get_att(el, "XPos", x); xu.get_att(el, "YPos", y); xu.get_att(el, "Width", w); xu.get_att(el, "Height", h); 
-			xu.get_att(el, "Red", r); xu.get_att(el, "Green", g); xu.get_att(el, "Blue", b); xu.get_att(el, "LeftOrRight", leftorright);
-			xu.get_att(el, "Border", e, true);
-			xu.get_att(el, "Image", image, true); xu.get_att(el, "Transparency", Transparency, true); 
-			xu.get_att(el, "Scale", Scale, true); xu.get_att(el, "Text", text, true);
-			xu.get_att(el, "FontSize", fontsize); if (fontsize == 0) fontsize = 16;
-
-			if (name == "GetString")	g_GetString.CreateWindow(x, y, w, h, e);
-			if (name == "Ok")			g_GetString.AddButton(image, g_interfaceid.BUTTON_OK, x, y, w, h, Transparency, Scale);
-			if (name == "Cancel")		g_GetString.AddButton(image, g_interfaceid.BUTTON_CANCEL, x, y, w, h, Transparency, Scale);
-			if (name == "Label")		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, x, y, w, h, text, fontsize, true, false, leftorright, r, g, b);
-			if (name == "TextField")	g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, x, y, w, h, e, fontsize);
-		}
-	}
-	else
-	{
-		g_LogFile.write("Loading Default GetString");
-		g_GetString.CreateWindow(224, 127, 352, 160, 1);
-		g_GetString.AddButton("Ok", g_interfaceid.BUTTON_OK, 32, 104, 128, 32, true);
-		g_GetString.AddButton("Cancel", g_interfaceid.BUTTON_CANCEL, 192, 104, 128, 32, true);
-		g_GetString.AddTextItem(g_interfaceid.TEXT_TEXT1, 32, 32, 128, 32, "Enter Text:", 16);
-		g_GetString.AddEditBox(g_interfaceid.EDITBOX_NAME, 160, 32, 160, 32, 1, fontsize);
-	}
-
-
-	// `J` This is never used so not updating it now
-	// Change Jobs Screen
-	g_LogFile.write("Loading Change Jobs Screen");
-	g_ChangeJobs.CreateWindow(256, 120, 304, 376, 1);
-	g_ChangeJobs.AddButton("Ok", g_interfaceid.BUTTON_CJOK, 8, 336, 128, 32, true);
-	g_ChangeJobs.AddButton("Cancel", g_interfaceid.BUTTON_CJCANCEL, 152, 336, 128, 32, true);
-	g_ChangeJobs.AddTextItem(g_interfaceid.TEXT_CJDESC, 8, 240, 272, 88, "", 10);
-	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJDAYTIME, 8, 48, 144, 192, 1, true, false, false, true, true, fontsize, rowheight);
-	g_ChangeJobs.AddListBox(g_interfaceid.LIST_CJNIGHTTIME, 152, 48, 144, 192, 1, true, false, false, true, true, fontsize, rowheight);
-	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 8, 8, 128, 32, "Day Shift");
-	g_ChangeJobs.AddTextItem(g_interfaceid.STATIC_STATIC, 152, 8, 128, 32, "Night Shift");
-
-
-	g_LogFile.write("Loading Preparing Game Screen");
-	g_Preparing.load();
-	g_WinManager.add_window("Preparing Game", &g_Preparing);
-	// `J` Bookmark - Loading the screens
-
-	// Main Menu
-	g_LogFile.write("Loading MainMenu");
-	g_MainMenu.load();
-	g_WinManager.add_window("Main Menu", &g_MainMenu);
-
-	// New Game
-	g_LogFile.write("Loading NewGame");
-	g_NewGame.load();
-	g_WinManager.add_window("New Game", &g_NewGame);
-
-	// Settings
-	g_LogFile.write("Loading Settings");
-	g_Settings.load();
-	g_WinManager.add_window("Settings", &g_Settings);
-
-	// Get Input Screen
-	g_LogFile.write("Loading Input Screen");
-	g_GetInput.load();
-	g_WinManager.add_window("GetInput", &g_GetInput);
-
-	// Brothel Management Screen
-	g_LogFile.write("Loading Brothel Management Screen");
-	g_BrothelManagement.load();
-	g_WinManager.add_window("Brothel Management", &g_BrothelManagement);
-
-	// GIRL MANAGEMENT SCREEN
-	g_LogFile.write("Loading Girl Management Screen");
-	g_GirlManagement.load();
-	g_WinManager.add_window("Girl Management", &g_GirlManagement);
-	
-	// CLINIC MANAGEMENT SCREEN
-	g_LogFile.write("Loading Clinic Management Screen");
-	g_ClinicManagement.load();
-	g_WinManager.add_window("Clinic", &g_ClinicManagement);
-
-	// MOVIE STUDIO SCREEN
-	g_LogFile.write("Loading Studio Management Screen");
-	g_StudioManagement.load();
-	g_WinManager.add_window("Studio", &g_StudioManagement);
-
-	// MOVIE MAKER SCREEN
-	g_LogFile.write("Loading Movie Maker Screen");
-	g_MovieMaker.load();
-	g_WinManager.add_window("Movie Maker", &g_MovieMaker);
-
-	// arena SCREEN
-	g_LogFile.write("Loading Arena Management Screen");
-	g_ArenaManagement.load();
-	g_WinManager.add_window("Arena", &g_ArenaManagement);
-
-	// centre SCREEN
-	g_LogFile.write("Loading Centre Management Screen");
-	g_CentreManagement.load();
-	g_WinManager.add_window("Centre", &g_CentreManagement);
-
-	// house management SCREEN
-	g_LogFile.write("Loading House Management Screen");
-	g_HouseManagement.load();
-	g_WinManager.add_window("House Management", &g_HouseManagement);
-
-	// farm management SCREEN
-	g_LogFile.write("Loading Farm Management Screen");
-	g_FarmManagement.load();
-	g_WinManager.add_window("Farm", &g_FarmManagement);
-
-	// GIRL DETAILS
-	g_LogFile.write("Loading Girl Details Screen");
-	g_GirlDetails.load();
-	g_WinManager.add_window("Girl Details", &g_GirlDetails);
-
-	// Gang Management
-	g_LogFile.write("Loading Gang Management Screen");
-	g_GangManagement.load();
-	g_WinManager.add_window("Gangs", &g_GangManagement);
-
-	// Transfer Screen
-	g_LogFile.write("Loading Transfer Screen");
-	g_TransferScreen.load();
-	g_WinManager.add_window("Transfer Screen", &g_TransferScreen);
-
-	// Turn Summary Management
-	g_LogFile.write("Loading Turn Summary Screen");
-	g_TurnSummary.load();
-	g_WinManager.add_window("Turn Summary", &g_TurnSummary);
-
-	// Dungeon Screen
-	g_LogFile.write("Loading Dungeon Screen");
-	g_Dungeon.load();
-	g_WinManager.add_window("Dungeon", &g_Dungeon);
-
-	// Town screen
-	g_LogFile.write("Loading Town Screen");
-	g_TownScreen.load();
-	g_WinManager.add_window("Town", &g_TownScreen);
-
-	// Gallery screen
-	g_LogFile.write("Loading Gallery Screen");
-	g_GalleryScreen.load();
-	g_WinManager.add_window("Gallery", &g_GalleryScreen);
-
-	// clinic screen
-	g_LogFile.write("Loading Clinic Screen");
-	g_ClinicScreen.load();
-	g_WinManager.add_window("Clinic Screen", &g_ClinicScreen);
-
-	// centre screen
-	g_LogFile.write("Loading Centre Screen");
-	g_CentreScreen.load();
-	g_WinManager.add_window("Centre Screen", &g_CentreScreen);
-
-	// movie screen
-	g_LogFile.write("Loading Movie Screen");
-	g_MovieScreen.load();
-	g_WinManager.add_window("Movie Screen", &g_MovieScreen);
-
-	// auction SCREEN
-	g_LogFile.write("Loading Auction Screen");
-	g_AuctionScreen.load();
-	g_WinManager.add_window("Auction", &g_AuctionScreen);
-
-	// arena screen
-	g_LogFile.write("Loading Arena Screen");
-	g_ArenaScreen.load();
-	g_WinManager.add_window("Arena Screen", &g_ArenaScreen);
-
-	// Arena tryout screen
-	g_LogFile.write("Loading Arena Try Screen");
-	g_ArenaTry.load();
-	g_WinManager.add_window("Arena Try", &g_ArenaTry);
-
-	// clinic tryout screen
-	g_LogFile.write("Loading Clinic Try Screen");
-	g_ClinicTry.load();
-	g_WinManager.add_window("Clinic Try", &g_ClinicTry);
-
-	// casting tryout screen
-	g_LogFile.write("Loading Casting Try Screen");
-	g_CastingTry.load();
-	g_WinManager.add_window("Casting Try", &g_CastingTry);
-
-	// Slave market screen
-	g_LogFile.write("Loading Slave Market Screen");
-	g_SlaveMarket.load();
-	g_WinManager.add_window("Slave Market", &g_SlaveMarket);
-
-	// Building Setup Screen
-	g_LogFile.write("Loading Building Setup Screen");
-	g_BuildingSetupScreen.load();
-	g_WinManager.add_window("Building Setup", &g_BuildingSetupScreen);
-
-	// Mayors office
-	g_LogFile.write("Loading Mayor Screen");
-	g_MayorsOfficeScreen.load();
-	g_WinManager.add_window("Mayor", &g_MayorsOfficeScreen);
-
-	// Bank Screen
-	g_LogFile.write("Loading Bank Screen");
-	g_BankScreen.load();
-	g_WinManager.add_window("Bank", &g_BankScreen);
-
-	// Players house
-	g_LogFile.write("Loading Player House Screen");
-	g_HouseScreen.load();
-	g_WinManager.add_window("Player House", &g_HouseScreen);
-
-	// farm screen
-	g_LogFile.write("Loading Farm Screen");
-	g_FarmScreen.load();
-	g_WinManager.add_window("Farm Screen", &g_FarmScreen);
-
-	// Players house (statistic screen)
-	g_LogFile.write("Loading House Screen");
-	g_PlayersHouse.load();
-	g_WinManager.add_window("House", &g_PlayersHouse);
-
-	// Item Management Screen
-	g_LogFile.write("Loading Item Management Screen");
-	g_ItemManagement.load();
-	g_WinManager.add_window("Item Management", &g_ItemManagement);
-
-	// Prison Screen
-	g_LogFile.write("Loading Prison Screen");
-	g_PrisonScreen.load();
-	g_WinManager.add_window("Prison", &g_PrisonScreen);
-	
-	// Building Management Screen
-	g_LogFile.write("Loading Building Management Screen");
-	g_BuildingManagementScreen.load();
-	g_WinManager.add_window("Building Management", &g_BuildingManagementScreen);
-
-	// Property Management Screen	// `J` added
-	g_LogFile.write("Loading Property Management Screen");
-	g_PropertyManagementScreen.load();
-	g_WinManager.add_window("Property Management", &g_PropertyManagementScreen);
-
-	// Setup the messagebox
-	g_LogFile.write("Setting up MessageBox");
-	g_interfaceid.STATIC_STATIC=1;//evil magic number
-	g_MessageBox.CreateWindow();
+template<class T>
+T* load_window(const char* name)
+{
+    g_LogFile.write(std::string("Loading Window '") + name + "'");
+    auto window = std::make_unique<T>();
+    window->load();
+    auto result = window.get();
+    g_WinManager.add_window(name, std::move(window));
+    return result;
 }

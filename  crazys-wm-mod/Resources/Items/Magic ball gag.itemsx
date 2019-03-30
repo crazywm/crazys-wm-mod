@@ -31,5 +31,8 @@
    <Effect What="Skill" Name="Service"                 Amount="-50"    />
    <Effect What="Trait" Name="Charming"                Amount="0"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
+   <Crafting CraftPoints="50" ManaCost="30">
+      <Job Name="Make Items"/>
+   </Crafting>
 </Item>
 </Items>

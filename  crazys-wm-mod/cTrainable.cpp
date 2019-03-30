@@ -17,17 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <algorithm>
-#include <math.h>
 #include "cRng.h"
 #include "CLog.h"
 #include "cGirls.h"
 #include "cTrainable.h"
 #include "Constants.h"
-#include "libintl.h"
+#include "sGirl.hpp"
 
 extern	cRng	g_Dice;
-extern	CLog	g_LogFile;
-extern	cGirls	g_Girls;
 
 int cTrainable::value()
 {
@@ -80,7 +77,7 @@ string TrainableGirl::update_random(int size)
 }
 
 IdealAttr::IdealAttr(vector<TrainableGirl> set, string name, int attr_idx)
-: cTrainable(0, name, attr_idx, cTrainable::Stat)
+: cTrainable(nullptr, name, attr_idx, cTrainable::Stat)
 {
 	m_value		= 0;
 	m_potential	= 0;

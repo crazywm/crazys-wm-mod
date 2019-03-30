@@ -15,5 +15,8 @@
    <Effect What="Stat"  Name="Strength"                Amount="40"    />
    <Effect What="Skill" Name="Magic"                   Amount="-40"    />
    <Effect What="Trait" Name="Manly"                   Amount="1"    />
+   <Crafting CraftPoints="200" ManaCost="80">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

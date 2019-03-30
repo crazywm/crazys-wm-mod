@@ -10,5 +10,8 @@
       Infinite="false">
    <Effect What="Stat"  Name="Tiredness"               Amount="-10"    />
    <Effect What="Skill" Name="Service"                 Amount="10"    />
+   <Crafting CraftPoints="150" ManaCost="30">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

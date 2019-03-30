@@ -18,10 +18,13 @@
  */
 #ifndef __IconSurface
 #define __IconSurface
+#include <memory>
 #ifdef LINUX
 #include "linux.h"
 #endif
 #include "DirPath.h"
+#include "CSurface.h"
+#include "CLog.h"
 
 class IconSurface : public CSurface {
 public:
@@ -35,7 +38,7 @@ public:
 	{
 		CLog log;
 
-		string full = "";
+		string full;
 		full += name;
 		full += pt;
 		full += ext; 
@@ -65,15 +68,7 @@ public:
 	}
 };
 
-class ImageSurface : public CSurface {
-public:
-	ImageSurface (string name)
-	: CSurface(ImagePath(name + ".png"))
-	{
-	}
-	ImageSurface (string name, const char *pt, const char *ext = ".jpg")
-	: CSurface(ImagePath((name + pt) + ext).c_str())
-	{
-	}
-};
+inline std::unique_ptr<CSurface> make_image_surface(const std::string& name, const char* pt, const char* ext = ".jpg") {
+    return std::make_unique<CSurface>(ImagePath((name + pt) + ext).c_str());
+}
 #endif

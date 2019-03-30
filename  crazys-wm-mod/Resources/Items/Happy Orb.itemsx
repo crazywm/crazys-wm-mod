@@ -27,5 +27,9 @@
             What="Trait"
             Name="Optimist"
             Amount="1" />
+        <Crafting CraftPoints="100" ManaCost="30">
+            <Job Name="Make Items"/>
+            <Stat Name="Happiness" Minimum="50" />
+        </Crafting>
     </Item>
 </Items>

@@ -35,5 +35,8 @@
             What="Skill"
             Name="Combat"
             Amount="-20" />
+        <Crafting CraftPoints="200" ManaCost="50">
+            <Job Name="Cobbler"/>
+        </Crafting>
     </Item>
 </Items>

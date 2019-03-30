@@ -20,9 +20,8 @@
 #include "CLog.h"
 #include "sConfig.h"
 #include <sstream>
-#include "libintl.h"
-
-extern CLog g_LogFile;
+#include <iomanip>
+#include "tinyxml.h"
 
 extern cConfig cfg;
 
@@ -422,7 +421,7 @@ int cGoldBase::ival()
 	return int(floor(m_value));
 }
 
-TiXmlElement* cGoldBase::saveGoldXML(TiXmlElement* pRoot)
+TiXmlElement* cGoldBase::saveGoldXML(TiXmlElement* pRoot) const
 {
 	TiXmlElement* pGold = new TiXmlElement("Gold");
 	pRoot->LinkEndChild(pGold);
@@ -441,7 +440,7 @@ bool cGoldBase::loadGoldXML(TiXmlHandle hGold)
 	reset();
 
 	TiXmlElement* pGold = hGold.ToElement();
-	if (pGold == 0) return false;
+	if (pGold == nullptr) return false;
 
 	pGold->QueryDoubleAttribute("value", &m_value);
 	pGold->QueryDoubleAttribute("income", &m_income);
@@ -511,30 +510,76 @@ void cGold::week_end()
 	g_LogFile.ssend();
 }
 
-int cGold::total_income()
+int cGold::total_income() const
 {
-	cGoldBase *bpt;
 	double sum = cGoldBase::total_income();
-	for (int i = 0; (bpt = brothels[i]); i++) sum += bpt->total_income();
+	for(auto& bpt : brothels) {
+        if(bpt.second) {
+            sum += bpt.second->total_income();
+        }
+	}
 	return int(floor(sum));
 }
 
-int cGold::total_upkeep()
+int cGold::total_upkeep() const
 {
-	cGoldBase *bpt;
 	double sum = cGoldBase::total_upkeep();
-	for (int i = 0; (bpt = brothels[i]); i++) sum += bpt->total_upkeep();
+    for(auto& bpt : brothels) {
+        if(bpt.second) {
+            sum += bpt.second->total_upkeep();
+        }
+    }
 	return int(floor(sum));
 }
 
-int cGold::total_earned()
+int cGold::total_earned() const
 {
-	cGoldBase *bpt;
 	double sum = cGoldBase::total_earned();
-	for (int i = 0; (bpt = brothels[i]); i++) sum += bpt->total_earned();
+    for(auto& bpt : brothels) {
+        if(bpt.second) {
+            sum += bpt.second->total_earned();
+        }
+    }
 	return int(floor(sum));
 }
 
 void cGold::gen_report(int month)
 {
+}
+
+string cGoldBase::in::str(int brothel_no)
+{
+    stringstream ss;
+    ss << "  --- Whores ---                              --- Sales ---";
+    ss << "# Brothel  Street   Movie     Bar  Casino   Items  "
+          "Monster Loc'Biz   Raids P.Theft G.Theft C'combs  "
+          "Reward Intr'st    Misc      Clinic		Arena"
+            ;
+    if (brothel_no == -1) {
+        ss << brothel_no << " ";
+    }
+    else {
+        ss << "  ";
+    }
+    ss << setw(7) << brothel_work << " ";
+    ss << setw(7) << street_work << " ";
+    ss << setw(7) << movie_income << " ";
+    ss << setw(7) << bar_income << " ";
+    ss << setw(7) << gambling_profits << " ";
+    ss << setw(7) << item_sales << " ";
+    ss << setw(7) << slave_sales << " ";
+    ss << setw(7) << creature_sales << " ";
+    ss << setw(7) << extortion << " ";
+    ss << setw(7) << plunder << " ";
+    ss << setw(7) << petty_theft << " ";
+    ss << setw(7) << grand_theft << " ";
+    ss << setw(7) << catacomb_loot << " ";
+    ss << setw(7) << objective_reward << " ";
+    ss << setw(7) << bank_interest << " ";
+    ss << setw(7) << misc << " ";
+    ss << setw(7) << clinic_income << " ";
+    ss << setw(7) << arena_income << " ";
+    ss << setw(7) << farm_income << " ";
+    ss << endl;
+    return ss.str();
 }

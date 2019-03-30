@@ -13,19 +13,9 @@
    <Effect What="Skill" Name="Lesbian"                 Amount="25"    />
    <Effect What="Stat"  Name="Libido"                  Amount="25"    />
    <Effect What="Stat"  Name="Constitution"            Amount="15"    />
-</Item>
-<Item Name="Dreidel Dildo"
-      Desc="This...uh...strange...dildo does the job good and if the girl wants, she can play with it. (Oh boy...) (+25 Anal/Norm/Les/Lib, +15 Con)"
-      Type="Misc"
-      Badness="10"
-      Special="None"
-      Cost="3000"
-      Rarity="Catacomb15"
-      Infinite="false">
-   <Effect What="Skill" Name="Anal"                    Amount="25"    />
-   <Effect What="Skill" Name="NormalSex"               Amount="25"    />
-   <Effect What="Skill" Name="Lesbian"                 Amount="25"    />
-   <Effect What="Stat"  Name="Libido"                  Amount="25"    />
-   <Effect What="Stat"  Name="Constitution"            Amount="15"    />
+   <Crafting CraftPoints="60" ManaCost="0">
+      <Job Name="Make Items"/>
+      <Stat Name="Libido" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

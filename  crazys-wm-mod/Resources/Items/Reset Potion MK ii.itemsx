@@ -228,5 +228,11 @@
    <Effect What="Trait" Name="Yandere"                                   Amount="0"/>
    <Effect What="Trait" Name="Your Daughter"                             Amount="0"/>
    <Effect What="Trait" Name="Your Wife"                                 Amount="0"/>
+
+   <Crafting CraftPoints="250" ManaCost="50">
+      <Job Name="Make Potions"/>
+      <Skill Name="Brewing" Minimum="90" />
+      <Skill Name="Magic" Minimum="80" />
+   </Crafting>
 </Item>
 </Items>

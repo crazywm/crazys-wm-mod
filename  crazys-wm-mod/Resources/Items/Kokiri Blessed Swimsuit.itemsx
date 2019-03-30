@@ -8,5 +8,8 @@
 		<Effect			What="Skill"			Name="Herbalism"			Amount="20" />
 		<Effect			What="Skill"			Name="AnimalHandling"			Amount="10" />
 		<Effect			What="Stat"			Name="Age"			Amount="-2" />
+		<Crafting CraftPoints="110" ManaCost="50">
+			<Job Name="Tailor"/>
+		</Crafting>
 	</Item>
 </Items>

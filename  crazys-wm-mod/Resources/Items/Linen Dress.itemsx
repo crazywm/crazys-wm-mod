@@ -10,5 +10,8 @@
       Infinite="true">
    <Effect What="Stat"  Name="Charisma"                Amount="6"    />
    <Effect What="Stat"  Name="Libido"                  Amount="18"    />
+   <Crafting CraftPoints="80" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

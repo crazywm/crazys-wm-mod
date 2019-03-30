@@ -10,16 +10,9 @@
       Infinite="false"
       GirlBuyChance="0">
    <Effect What="Skill" Name="Anal"                    Amount="75"    />
-</Item>
-<Item Name="Deluxe Booty Lube"
-      Desc="This effective anal lubricant is infused with a carefully prepared mix of aphrodisiac herbs. This ain't your generic booty lube! (+75 Anal, temporary)"
-      Type="Food"
-      Badness="20"
-      Special="Temporary"
-      Cost="750"
-      Rarity="Shop05"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Skill" Name="Anal"                    Amount="75"    />
+   <Crafting CraftPoints="100" ManaCost="0">
+      <Job Name="Make Potions"/>
+      <Skill Name="Herbalism" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

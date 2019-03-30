@@ -55,5 +55,8 @@
             What="Skill"
             Name="Strip"
             Amount="5" />
+        <Crafting CraftPoints="50" ManaCost="0">
+            <Job Name="Cobbler"/>
+        </Crafting>
     </Item>
 </Items>

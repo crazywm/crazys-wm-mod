@@ -14,5 +14,8 @@
    <Effect What="Trait" Name="One Leg"                 Amount="0"    />
    <Effect What="Trait" Name="One Foot"                Amount="0"    />
    <Effect What="Trait" Name="Missing Toe"             Amount="0"    />
+   <Crafting CraftPoints="160" ManaCost="30">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

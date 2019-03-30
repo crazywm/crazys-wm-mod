@@ -18,5 +18,8 @@
 			What="Trait"
 			Name="Nerd"
 			Amount="1" />
+		<Crafting CraftPoints="10" ManaCost="0">
+			<Job Name="Cobbler"/>
+		</Crafting>
 	</Item>
 </Items>

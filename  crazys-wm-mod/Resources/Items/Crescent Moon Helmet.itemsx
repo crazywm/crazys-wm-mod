@@ -9,5 +9,8 @@
         <Effect What="Stat" Name="PCFear" Amount="-5" />
         <Effect What="Stat" Name="PCHate" Amount="-5" />
         <Effect What="Stat" Name="Constitution" Amount="5" />
+        <Crafting CraftPoints="200" ManaCost="0">
+            <Job Name="Blacksmith"/>
+        </Crafting>
     </Item>
 </Items>

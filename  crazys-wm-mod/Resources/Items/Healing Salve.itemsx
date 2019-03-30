@@ -9,26 +9,12 @@
       Rarity="Shop05"
       Infinite="false">
    <Effect What="Stat"  Name="Health"                  Amount="100"    />
-</Item>
-<Item Name="Healing Salve (L)"
-      Desc="This rare and powerful herbal remedy is strong enough to instantly mend all physical wounds. The only thing it can't do is bring back a departed soul. (+100 HP)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="800"
-      Rarity="Shop05"
-      Infinite="false">
-   <Effect What="Stat"  Name="Health"                  Amount="100"    />
-</Item>
-<Item Name="Healing Salve (L)"
-      Desc="This rare and powerful herbal remedy is strong enough to instantly mend all physical wounds. The only thing it can't do is bring back a departed soul. (+100 HP) (This Seller has a full stock but he charges a lot more)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="1500"
-      Rarity="Shop05"
-      Infinite="true">
-   <Effect What="Stat"  Name="Health"                  Amount="100"    />
+   <Crafting CraftPoints="150" ManaCost="0" Weight="3">
+      <Job Name="Make Potions"/>
+      <Skill Name="Herbalism" Minimum="60" />
+      <Skill Name="Brewing" Minimum="80" />
+      <Skill Name="Medicine" Minimum="40" />
+   </Crafting>
 </Item>
 <Item Name="Healing Salve (M)"
       Desc="This potent herbal concoction is used as standard battlefield medicine by many armies around the world. It won't be enough to send a dying soldier back to the frontlines, but at least he'll be able to walk himself back to camp. (+50 HP)"
@@ -39,26 +25,12 @@
       Rarity="Shop25"
       Infinite="false">
    <Effect What="Stat"  Name="Health"                  Amount="50"    />
-</Item>
-<Item Name="Healing Salve (M)"
-      Desc="This potent herbal concoction is used as standard battlefield medicine by many armies around the world. It won't be enough to send a dying soldier back to the frontlines, but at least he'll be able to walk himself back to camp. (+50 HP)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="450"
-      Rarity="Shop25"
-      Infinite="false">
-   <Effect What="Stat"  Name="Health"                  Amount="50"    />
-</Item>
-<Item Name="Healing Salve (M)"
-      Desc="This potent herbal concoction is used as standard battlefield medicine by many armies around the world. It won't be enough to send a dying soldier back to the frontlines, but at least he'll be able to walk himself back to camp. (+50 HP) (This Seller has a full stock but he charges a lot more)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="900"
-      Rarity="Shop25"
-      Infinite="true">
-   <Effect What="Stat"  Name="Health"                  Amount="50"    />
+   <Crafting CraftPoints="100" ManaCost="0" Weight="3">
+      <Job Name="Make Potions"/>
+      <Skill Name="Herbalism" Minimum="50" />
+      <Skill Name="Brewing" Minimum="50" />
+      <Skill Name="Medicine" Minimum="35" />
+   </Crafting>
 </Item>
 <Item Name="Healing Salve (S)"
       Desc="This basic herbal concoction is widely used to cure small wounds and can even aid in the recovery of more serious injuries. (+25 HP)"
@@ -69,26 +41,12 @@
       Rarity="Shop50"
       Infinite="false">
    <Effect What="Stat"  Name="Health"                  Amount="25"    />
-</Item>
-<Item Name="Healing Salve (S)"
-      Desc="This basic herbal concoction is widely used to cure small wounds and can even aid in the recovery of more serious injuries. (+25 HP)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="250"
-      Rarity="Shop50"
-      Infinite="false">
-   <Effect What="Stat"  Name="Health"                  Amount="25"    />
-</Item>
-<Item Name="Healing Salve (S)"
-      Desc="This basic herbal concoction is widely used to cure small wounds and can even aid in the recovery of more serious injuries. (+25 HP) (This Seller has a full stock but he charges a lot more)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="500"
-      Rarity="Shop50"
-      Infinite="true">
-   <Effect What="Stat"  Name="Health"                  Amount="25"    />
+   <Crafting CraftPoints="60" ManaCost="0" Weight="3">
+      <Job Name="Make Potions"/>
+      <Skill Name="Herbalism" Minimum="35" />
+      <Skill Name="Brewing" Minimum="35" />
+      <Skill Name="Medicine" Minimum="30" />
+   </Crafting>
 </Item>
 <Item Name="Healing Salve (T)"
       Desc="This very basic herbal concoction is widely used to cure simple cuts and bruises. (+10 HP)"
@@ -99,15 +57,11 @@
       Rarity="Common"
       Infinite="false">
    <Effect What="Stat"  Name="Health"                  Amount="10"    />
-</Item>
-<Item Name="Healing Salve (T)"
-      Desc="This very basic herbal concoction is widely used to cure simple cuts and bruises. (+10 HP)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="150"
-      Rarity="Common"
-      Infinite="false">
-   <Effect What="Stat"  Name="Health"                  Amount="10"    />
+   <Crafting CraftPoints="50" ManaCost="0" Weight="3">
+      <Job Name="Make Potions"/>
+      <Skill Name="Herbalism" Minimum="30" />
+      <Skill Name="Brewing" Minimum="30" />
+      <Skill Name="Medicine" Minimum="30" />
+   </Crafting>
 </Item>
 </Items>

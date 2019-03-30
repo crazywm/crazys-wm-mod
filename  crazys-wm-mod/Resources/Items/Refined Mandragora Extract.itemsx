@@ -15,21 +15,10 @@
    <Effect What="Trait" Name="Fairy Dust Addict"       Amount="0"    />
    <Effect What="Trait" Name="Viras Blood Addict"      Amount="0"    />
    <Effect What="Trait" Name="Retarded"                Amount="0"    />
-</Item>
-<Item Name="Refined Mandragora Extract"
-      Desc="This small vial contains a tiny sample of refined mandragora sap, extracted and processed by a skilled alchemist. This mystical fluid has the extraordinary property of curing all forms of insanity! (cures Broken Will, Mind Fucked, Retarded, and all drug addictions)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="16000"
-      Rarity="Shop05"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Trait" Name="Broken Will"             Amount="0"    />
-   <Effect What="Trait" Name="Mind Fucked"             Amount="0"    />
-   <Effect What="Trait" Name="Shroud Addict"           Amount="0"    />
-   <Effect What="Trait" Name="Fairy Dust Addict"       Amount="0"    />
-   <Effect What="Trait" Name="Viras Blood Addict"      Amount="0"    />
-   <Effect What="Trait" Name="Retarded"                Amount="0"    />
+   <Crafting CraftPoints="250" ManaCost="0">
+      <Job Name="Make Potions"/>
+      <Skill Name="Brewing" Minimum="90" />
+      <Skill Name="Herbalism" Minimum="90" />
+   </Crafting>
 </Item>
 </Items>

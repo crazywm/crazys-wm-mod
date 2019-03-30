@@ -15,21 +15,8 @@
    <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
    <Effect What="Skill" Name="Combat"                  Amount="-25"    />
-</Item>
-<Item Name="Starlit Robes"
-      Desc="These heavy robes are embroidered with images of various constellations and generate a matrix of astral energy around their wearer. This energy can be used to empower spells and form magical shields. (B) (+20 Mag, +10 Cons, -10 Agi, -2 Cha, -10 Fear, -10 Hate, -25 Comb)"
-      Type="Armor"
-      Badness="0"
-      Special="None"
-      Cost="1500"
-      Rarity="Shop25"
-      Infinite="false">
-   <Effect What="Skill" Name="Magic"                   Amount="20"    />
-   <Effect What="Stat"  Name="Constitution"            Amount="10"    />
-   <Effect What="Stat"  Name="Agility"                 Amount="-10"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="-2"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-10"    />
-   <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
-   <Effect What="Skill" Name="Combat"                  Amount="-25"    />
+   <Crafting CraftPoints="120" ManaCost="40">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

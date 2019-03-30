@@ -34,6 +34,8 @@
    <Effect What="Trait" Name="Construct" Amount="1" />
    <Effect What="Trait" Name="Tough" Amount="1" />
    <Effect What="Trait" Name="Strong" Amount="1" />
-
+   <Crafting CraftPoints="250" ManaCost="90">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

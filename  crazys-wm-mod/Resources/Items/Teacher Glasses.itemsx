@@ -12,5 +12,9 @@
    <Effect What="Trait" Name="MILF"                    Amount="1"    />
    <Effect What="Trait" Name="Nerd"                    Amount="1"    />
    <Effect What="Trait" Name="Bad Eyesight"            Amount="0"    />
+   <Crafting CraftPoints="70" ManaCost="0">
+      <Job Name="Make Items"/>
+      <Stat Name="Intelligence" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

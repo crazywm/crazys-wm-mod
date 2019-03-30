@@ -19,10 +19,7 @@
 #include "CLog.h"
 #include "cTariff.h"
 #include "cGirls.h"
-#include "cBrothel.h"
-
-extern	cGirls	g_Girls;
-extern	CLog	g_LogFile;
+#include "src/buildings/cBrothel.h"
 
 static CLog &lf = g_LogFile;
 
@@ -30,7 +27,7 @@ double cTariff::slave_base_price(sGirl *girl)
 {
 	// The ask price is the base price for the girl. It changes with her stats, so we need to refresh it
 	double cost;
-	g_Girls.CalculateAskPrice(girl, false);
+	cGirls::CalculateAskPrice(girl, false);
 	cost = girl->askprice() * 15;						// base price is the girl's ask price stat
 	for (u_int i = 0; i<NUM_SKILLS; i++)				// add to that the sum of her skills
 	{
@@ -58,7 +55,7 @@ int cTariff::slave_sell_price(sGirl *girl)
 	return int(cost * cfg.in_fact.slave_sales());	// multiply by the config factor for buying slaves
 }
 
-int cTariff::empty_room_cost(sBrothel *brothel)
+int cTariff::empty_room_cost(IBuilding& brothel)
 {
 
 	double cost;
@@ -67,7 +64,7 @@ int cTariff::empty_room_cost(sBrothel *brothel)
 	*	nominal cost is 2 gold per
 	*	modified by brothel support multiplier
 	*/
-	cost = brothel->m_NumRooms - brothel->m_NumGirls;
+	cost = brothel.m_NumRooms - brothel.num_girls();
 	cost *= 2;
 	cost *= cfg.out_fact.brothel_support();
 	return int(cost);

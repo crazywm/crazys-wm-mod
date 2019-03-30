@@ -18,5 +18,9 @@
     <Effect     What="Stat"     Name="Intelligence"     Amount="5" />
     <Effect     What="Trait"    Name="Great Figure"     Amount="1" />
     <Effect     What="Trait"    Name="Great Arse"       Amount="1" />
+
+        <Crafting CraftPoints="100" ManaCost="20">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
 </Items>

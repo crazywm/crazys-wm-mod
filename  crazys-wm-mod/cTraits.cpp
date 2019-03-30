@@ -19,11 +19,12 @@
 #include <iostream>
 #include <algorithm>
 #include "cTraits.h"
-#include "stdio.h"
+#include <cstdio>
 #include "tinyxml.h"
 #include "XmlMisc.h"
 #include "CLog.h"
 #include "cGirls.h"
+#include "src/sGirl.hpp"
 
 #ifdef LINUX
 #include "linux.h"
@@ -32,16 +33,9 @@
 #include "libintl.h"
 #endif
 
-extern string stringtolowerj(string name);
-
 TraitEffect TraitEffect::from_xml(TiXmlElement* el)
 {
 	TraitEffect effect;
-	const char* target = el->Attribute("name");
-	if(!target) {
-		throw std::runtime_error("No 'name' specified for TraitEffect!");
-	}
-
 	if(!el->Attribute("value", &effect.value))
 		throw std::runtime_error("No 'value' specified for TraitEffect!");
 
@@ -50,7 +44,13 @@ TraitEffect TraitEffect::from_xml(TiXmlElement* el)
         throw std::runtime_error("No 'type' specified for TraitEffect!");
     std::string type = type_p;
 
-	if(type == "stat") {
+    const char* target = el->Attribute("name");
+    if(!target && type != "sex") {
+        throw std::runtime_error("No 'name' specified for TraitEffect!");
+    }
+
+
+    if(type == "stat") {
 		effect.type = TraitEffect::STAT;
 		effect.target = sGirl::lookup_stat_code(target);
 	} else if (type == "skill") {
@@ -59,9 +59,26 @@ TraitEffect TraitEffect::from_xml(TiXmlElement* el)
 	} else if (type == "enjoyment") {
 		effect.type = TraitEffect::ENJOYMENT;
         effect.target = sGirl::lookup_enjoy_code(target);
-	} else {
+	} else if (type == "fetish") {
+        effect.type = TraitEffect::FETISH;
+        effect.target = sGirl::lookup_fetish_code(target);
+    } else if (type == "sex") {
+        effect.type = TraitEffect::SEX_QUALITY;
+        const char* fetish_s = el->Attribute("fetish");
+        effect.condition = FETISH_TRYANYTHING;
+        if(fetish_s) {
+            effect.condition = (Fetishs)sGirl::lookup_fetish_code(fetish_s);
+        }
+    } else {
 		throw std::runtime_error("Invalid 'type' tag for TraitEffect!");
 	}
+
+    // for all types that have a target, check its validity
+    if(type != "sex") {
+        if(effect.target == -1) {
+            throw std::runtime_error("Invalid 'target' for TraitEffect!");
+        }
+    }
 
 	return effect;
 }
@@ -135,9 +152,7 @@ void TraitSpec::add_effect(TraitEffect effect)
 	m_Effects.push_back(effect);
 }
 
-cTraits::~cTraits()
-{
-}
+cTraits::~cTraits() = default;
 
 void cTraits::Free()
 {
@@ -178,17 +193,31 @@ void cTraits::RemoveTrait(const string& name)
 	}
 }
 
+// case insensitive string compare
+bool iequals(const string& a, const string& b)
+{
+    return std::equal(a.begin(), a.end(),
+                      b.begin(),
+                      [](char a, char b) {
+                          return tolower(a) == tolower(b);
+                      });
+}
+
 cTraits::trait_list_t::iterator cTraits::find_trait_by_name(const std::string& name)
 {
 	return std::find_if(begin(m_CoreTraits), end(m_CoreTraits),
-		[&](const std::unique_ptr<TraitSpec>& trait) { return stringtolowerj(trait->name()) == stringtolowerj(name); });
+			[&](const std::unique_ptr<TraitSpec>& trait) { return iequals(trait->name(), name); });
 }
 
 TraitSpec* cTraits::GetTrait(const string& name)
 {
 	auto found = find_trait_by_name(name);
-	if (found == m_CoreTraits.end())
-		return nullptr;
+	if(found == m_CoreTraits.end()) {
+        CLog l;
+        l.ss() << "Error: Trying to get unknown trait '"<< name << endl;
+        l.ssend();
+        return nullptr;
+    }
 
 	return found->get();
 }
@@ -198,14 +227,50 @@ void TraitSpec::apply_effects(sGirl* target) const
 	for(const auto& effect : m_Effects) {
 		switch(effect.type) {
 			case TraitEffect::STAT:
-				cGirls::UpdateStatTr(target, effect.target, effect.value);
-				break;
+                {
+                    auto stat = (STATS)effect.target;
+                    // it does not make any sense to change these stats with a trait.
+                    if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_EXP ||
+                        stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_ASKPRICE) {
+                        CLog l;
+                        l.ss() << "Error: Trait tried to change stat '"<< stat << endl;
+                        l.ssend();
+                        continue;
+                    }
+                    target->m_StatTr[stat] += effect.value;
+                }
+                break;
 			case TraitEffect::SKILL:
-				cGirls::UpdateSkillTr(target, effect.target, effect.value);
+                target->m_SkillTr[effect.target] += effect.value;
 				break;
 			case TraitEffect::ENJOYMENT:
-				cGirls::UpdateEnjoymentTR(target, effect.target, effect.value);
+                target->m_EnjoymentTR[effect.target] += effect.value;
 				break;
-		}
+        case TraitEffect::FETISH:
+        case TraitEffect::SEX_QUALITY:
+                // fetishes are handled separately when calculating a girls type
+                break;
+        }
 	}
+}
+
+void TraitSpec::get_fetish_rating(std::array<int, NUM_FETISH>& rating) const
+{
+    for(const auto& effect : m_Effects) {
+        if(effect.type == TraitEffect::FETISH) {
+            rating[effect.target] += effect.value;
+        }
+    }
+}
+
+int TraitSpec::get_sex_mod(Fetishs fetish) const {
+    int mod = 0;
+    for(const auto& effect : m_Effects) {
+        if(effect.type == TraitEffect::SEX_QUALITY) {
+            if(fetish == effect.condition || effect.condition == FETISH_TRYANYTHING) {
+                mod += effect.value;
+            }
+        }
+    }
+    return mod;
 }

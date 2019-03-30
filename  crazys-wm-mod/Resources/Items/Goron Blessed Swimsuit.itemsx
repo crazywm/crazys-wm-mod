@@ -11,5 +11,8 @@
 		<Effect			What="Stat"			Name="AskPrice"			Amount="-10" />
 		<Effect			What="Stat"			Name="Intelligence"		Amount="-10" />
 		<Effect			What="Trait"		Name="Tough"			Amount="1" />
+		<Crafting CraftPoints="90" ManaCost="80">
+			<Job Name="Tailor"/>
+		</Crafting>
 	</Item>
 </Items>

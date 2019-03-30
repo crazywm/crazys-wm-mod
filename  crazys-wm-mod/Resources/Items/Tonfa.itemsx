@@ -16,4 +16,8 @@
         <Effect What="Stat" Name="PCFear" Amount="-10" />
         <Effect What="Stat" Name="PCHate" Amount="-5" />
     </Item>
+    <Crafting CraftPoints="10" ManaCost="0">
+        <Job Name="Blacksmith"/>
+        <Skill Name="Combat" Minimum="10" />
+    </Crafting>
 </Items>

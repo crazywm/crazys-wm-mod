@@ -38,5 +38,8 @@
 			What="Trait"
 			Name="Great Figure"
 			Amount="1" />
+		<Crafting CraftPoints="100" ManaCost="10">
+			<Job Name="Tailor"/>
+		</Crafting>
 	</Item>
 </Items>

@@ -26,5 +26,8 @@
 			What="Trait"
 			Name="Tough"
 			Amount="1" />
+		<Crafting CraftPoints="30" ManaCost="0">
+			<Job Name="Blacksmith"/>
+		</Crafting>
 	</Item>
 </Items>

@@ -4,7 +4,7 @@
 <Image      Name="Background"           File="House.jpg"                    XPos="10"       YPos="35"       Width="780"     Height="660"     />
 
 <Button     Name="Weeks"                Image="NextWeek"                    XPos="815"      YPos="10"       Width="160"     Height="32"     Transparency="true"     Scale="true"     />
-<Text       Name="HouseDetails"         Text=""                             XPos="795"      YPos="50"       Width="205"     Height="300"    FontSize="10"  />    
+<Text       Name="BuildingDetails"      Text=""                             XPos="795"      YPos="50"       Width="205"     Height="300"    FontSize="10"  />
 
 
 <Button     Name="Girls"                Image="Girls"                       XPos="815"      YPos="400"      Width="160"     Height="32"     Transparency="true"     Scale="true"     />

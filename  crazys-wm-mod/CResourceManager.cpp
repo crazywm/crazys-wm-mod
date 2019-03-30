@@ -17,12 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "CResourceManager.h"
+#include "CGraphics.h"
+
+extern CGraphics g_Graphics;
+
+CResource::CResource()
+{
+    m_Next = nullptr;
+    m_Prev = nullptr;
+    m_TimeUsed = g_Graphics.GetTicks();
+}
+
 
 CResourceManager::CResourceManager()
 {
 	for(int i=0; i < NUM_RESOURCES; i++)
 	{
-		m_Resources[i] = m_Last[i] = 0;
+		m_Resources[i] = m_Last[i] = nullptr;
 		m_ResourceCount[i] = 0;
 
 //		m_UnloadedResources[i] = m_UnloadedLast[i] = 0;
@@ -40,13 +51,13 @@ void CResourceManager::Free()
 {
 	for(int i=0; i < NUM_RESOURCES; i++)
 	{  
-		if (m_Resources[i] != 0) // MYR: Trying to fix an exception upon exit
+		if (m_Resources[i] != nullptr) // MYR: Trying to fix an exception upon exit
 		{
 			//m_Resources[i]->Free();   
-			m_Resources[i] = 0;
+			m_Resources[i] = nullptr;
 		}
 //		m_UnloadedResources[i] = 0;
-		m_Last[i] = 0;
+		m_Last[i] = nullptr;
 		m_ResourceCount[i] = 0;
 //		m_UnloadedLast[i] = 0;
 	}
@@ -54,9 +65,9 @@ void CResourceManager::Free()
 
 void CResourceManager::Free(int type)
 {
-	m_Resources[type] = 0;
+	m_Resources[type] = nullptr;
 //	m_UnloadedResources[type] = 0;
-	m_Last[type] = 0;
+	m_Last[type] = nullptr;
 	m_ResourceCount[type] = 0;
 //	m_UnloadedLast[type] = 0;
 }
@@ -134,7 +145,7 @@ CResource* CResourceManager::AddResource(CResource *resource, int type)//, bool 
 		if(m_Resources[type])
 		{
 			resource->m_Next = m_Resources[type];
-			resource->m_Prev = 0;
+			resource->m_Prev = nullptr;
 
 			m_Resources[type]->m_Prev = resource;
 			m_Resources[type] = resource;
@@ -143,7 +154,7 @@ CResource* CResourceManager::AddResource(CResource *resource, int type)//, bool 
 		{
 			m_Resources[type] = resource;
 			m_Last[type] = m_Resources[type];
-			m_Resources[type]->m_Next = m_Resources[type]->m_Prev = 0;
+			m_Resources[type]->m_Next = m_Resources[type]->m_Prev = nullptr;
 		}
 
 		m_ResourceCount[type]++;
@@ -251,26 +262,26 @@ void CResourceManager::Cull(CResource *resource, int type)
 	CResource* temp1 = resource->m_Next;
 	CResource* temp2 = resource->m_Prev;
 
-	resource->m_Next = resource->m_Prev = 0;
+	resource->m_Next = resource->m_Prev = nullptr;
 	resource->FreeResources();
 
 	if(resource == m_Resources[type])
 	{
 		if(resource == m_Last[type])
 		{
-			m_Last[type] = m_Resources[type] = 0;
+			m_Last[type] = m_Resources[type] = nullptr;
 		}
 		else
 		{
-			if(temp1 != 0)
-				temp1->m_Prev = 0;
+			if(temp1 != nullptr)
+				temp1->m_Prev = nullptr;
 			m_Resources[type] = temp1;
 		}
 	}
 	else if(resource == m_Last[type])
 	{
-		if(temp2 != 0)
-			temp2->m_Next = 0;
+		if(temp2 != nullptr)
+			temp2->m_Next = nullptr;
 		m_Last[type] = temp2;
 	}
 	else
@@ -294,11 +305,11 @@ void CResourceManager::CullOld(unsigned long currentTime)
 				CResource* save = temp->m_Next;
 				Cull(temp,i);
 				temp = save;
-				save = 0;
+				save = nullptr;
 			}
 			else
 				temp = temp->m_Next;
 		}
-		temp = 0;
+		temp = nullptr;
 	}
 }

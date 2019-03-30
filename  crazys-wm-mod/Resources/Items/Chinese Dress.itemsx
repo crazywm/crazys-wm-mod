@@ -35,5 +35,8 @@
             What="Trait"
             Name="Sexy Air"
             Amount="1" />
+        <Crafting CraftPoints="90" ManaCost="0">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
 </Items>

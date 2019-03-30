@@ -19,15 +19,13 @@
 #include "cAnimatedSurface.h"
 #include "CLog.h"
 
-extern CLog g_LogFile;
-
 
 cAnimatedSurface::cAnimatedSurface()
 {
-	m_Surface = 0;
-	m_SpriteSurface = 0;
-	m_SaveSurface = 0;
-	m_AFrames = 0;
+	m_Surface = nullptr;
+	m_SpriteSurface = nullptr;
+	m_SaveSurface = nullptr;
+	m_AFrames = nullptr;
 	m_Gif = false;
 	m_FrameDone = false;
 	m_PlayOnce = false;
@@ -42,12 +40,12 @@ cAnimatedSurface::cAnimatedSurface()
 }
 cAnimatedSurface::~cAnimatedSurface()
 {
-	m_Surface = 0;
+	m_Surface = nullptr;
 	if (m_SpriteSurface)
 		SDL_FreeSurface(m_SpriteSurface);
-	m_SpriteSurface = 0;
-	m_SaveSurface = 0;
-	m_AFrames = 0;
+	m_SpriteSurface = nullptr;
+	m_SaveSurface = nullptr;
+	m_AFrames = nullptr;
 
 	m_Gif = false;
 	m_FrameDone = false;
@@ -150,7 +148,7 @@ void cAnimatedSurface::SetData(int xPos, int yPos, int numFrames, int speed, int
 	{
 		m_Colums = m_Rows = 1;
 	}
-	else if(surface->GetSurface() != 0)
+	else if(surface->GetSurface() != nullptr)
 	{
 		m_Colums = (**(surface->GetSurface())).w/width;
 		m_Rows = (**(surface->GetSurface())).h/height;
@@ -168,7 +166,7 @@ void cAnimatedSurface::SetData(int xPos, int yPos, int numFrames, int speed, int
 
 	// prepare the sprite surface
 	if(m_SpriteSurface)		SDL_FreeSurface(m_SpriteSurface);
-	m_SpriteSurface = 0;
+	m_SpriteSurface = nullptr;
 	m_SpriteSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, m_Frames.w, m_Frames.h, 32, 0,0,0,0);
 
 	m_Surface = surface;
@@ -191,28 +189,9 @@ void cAnimatedSurface::SetGifData(int xPos, int yPos, int numFrames, AG_Frame* a
 
 	// prepare the sprite surface
 	if (m_SpriteSurface)		SDL_FreeSurface(m_SpriteSurface);
-	m_SpriteSurface = 0;
+	m_SpriteSurface = nullptr;
 	m_SpriteSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, m_Frames.w, m_Frames.h, 32, 0, 0, 0, 0);
 
 	m_Surface = surface;
-}
-
-CAnimatedSprite::~CAnimatedSprite()
-{
-	Free();
-}
-
-void CAnimatedSprite::Free()
-{
-	if(m_Animations)	delete [] m_Animations;
-	m_Animations=0;
-	if(m_Image)			delete m_Image;
-	m_Image = 0;
-	m_CurrAnimation=0;
-}
-
-bool CAnimatedSprite::Draw(int x, int y, int width, int height, unsigned int currentTime)
-{
-	return m_Animations[m_CurrAnimation].DrawFrame(x,y,width,height,currentTime);
 }
 

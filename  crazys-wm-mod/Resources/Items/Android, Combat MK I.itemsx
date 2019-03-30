@@ -11,5 +11,8 @@
    <Effect What="Stat"  Name="Tiredness"               Amount="-15"    />
    <Effect What="Skill" Name="Combat"                  Amount="10"    />
    <Effect What="Stat"  Name="Exp"                     Amount="10"    />
+   <Crafting CraftPoints="200" ManaCost="50">
+      <Job Name="Blacksmith"/>
+   </Crafting>
 </Item>
 </Items>

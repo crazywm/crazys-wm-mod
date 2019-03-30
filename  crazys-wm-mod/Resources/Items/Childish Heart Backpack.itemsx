@@ -16,5 +16,8 @@
    <Effect What="Trait" Name="Cute" Amount="1" />
    <Effect What="Trait" Name="Lolita" Amount="1" />
    <Effect What="Trait" Name="Virgin" Amount="1" />
+   <Crafting CraftPoints="120" ManaCost="40">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

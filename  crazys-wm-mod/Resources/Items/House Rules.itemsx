@@ -10,5 +10,9 @@
       Infinite="false">
    <Effect What="Stat"  Name="Obedience"               Amount="8"    />
    <Effect What="Stat"  Name="Spirit"                  Amount="-1"    />
+   <Crafting CraftPoints="30" ManaCost="0">
+      <Job Name="Make Items"/>
+      <Stat Name="Obedience" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

@@ -13,5 +13,8 @@
    <Effect What="Stat"  Name="Beauty"                  Amount="5"    />
    <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
    <Effect What="Trait" Name="Elegant"                 Amount="1"    />
+   <Crafting CraftPoints="50" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

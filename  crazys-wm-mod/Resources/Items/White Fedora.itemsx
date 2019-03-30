@@ -18,5 +18,8 @@
 			What="Stat"
 			Name="Beauty"
 			Amount="5" />
+		<Crafting CraftPoints="50" ManaCost="0">
+			<Job Name="Tailor"/>
+		</Crafting>
 	</Item>
 </Items>

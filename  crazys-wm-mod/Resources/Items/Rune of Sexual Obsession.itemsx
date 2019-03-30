@@ -32,5 +32,9 @@
    <Effect What="Trait" Name="Tough" Amount="1" />
    <Effect What="Trait" Name="Quick Learner" Amount="0" />
    <Effect What="Trait" Name="Slow Learner" Amount="1" />
+   <Crafting CraftPoints="200" ManaCost="80">
+      <Job Name="Make Items"/>
+      <Stat Name="Libido" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

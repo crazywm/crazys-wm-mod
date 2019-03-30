@@ -9,5 +9,8 @@
       Rarity="Shop50"
       Infinite="false">
    <Effect What="Stat"  Name="Beauty"                  Amount="20"    />
+   <Crafting CraftPoints="100" ManaCost="0">
+      <Job Name="Make Potions"/>
+   </Crafting>
 </Item>
 </Items>

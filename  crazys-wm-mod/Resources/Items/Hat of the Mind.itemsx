@@ -8,5 +8,8 @@
 		<Effect			What="Stat"			Name="Intelligence"			Amount="20" />
 		<Effect			What="Stat"			Name="Beauty"			Amount="-20" />
 		<Effect			What="Stat"			Name="Charisma"			Amount="-10" />
+		<Crafting CraftPoints="100" ManaCost="30">
+			<Job Name="Tailor"/>
+		</Crafting>
 	</Item>
 </Items>

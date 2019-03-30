@@ -22,11 +22,14 @@
 #include "GameFlags.h"
 #include "cGirls.h"
 #include "cGold.h"
+#include "sConfig.h"
+#include "CLog.h"
+#include "src/Game.hpp"
+#include "src/sGirl.hpp"
 using namespace std;
 
-extern cGirls g_Girls;
-extern cGold g_Gold;
 extern cRng g_Dice;
+extern cConfig cfg;
 static map<string, int> trigger_types;
 
 void cTriggerList::AddTrigger(cTrigger* trigger)
@@ -161,7 +164,7 @@ bool cTrigger::LoadTriggerXML(TiXmlHandle hTrigger)
 {
 	// no need to init this, we just created it
 	TiXmlElement* pTrigger = hTrigger.ToElement();
-	if (pTrigger == 0) return false;
+	if (pTrigger == nullptr) return false;
 
 	int tempInt = 0;
 
@@ -259,13 +262,13 @@ bool cTriggerList::LoadTriggersXML(TiXmlHandle hTriggers)
 {
 	Free();//everything should be init even if we failed to load an XML element
 	TiXmlElement* pTriggers = hTriggers.ToElement();
-	if (pTriggers == 0)
+	if (pTriggers == nullptr)
 	{
 		return false;
 	}
 
 	m_NumTriggers = 0;
-	for (TiXmlElement* pTrigger = pTriggers->FirstChildElement("Trigger"); pTrigger != 0; pTrigger = pTrigger->NextSiblingElement("Trigger"))
+	for (TiXmlElement* pTrigger = pTriggers->FirstChildElement("Trigger"); pTrigger != nullptr; pTrigger = pTrigger->NextSiblingElement("Trigger"))
 	{
 		cTrigger* current = new cTrigger();
 		bool success = current->LoadTriggerXML(TiXmlHandle(pTrigger));
@@ -431,7 +434,7 @@ cTrigger* cTriggerList::CheckForScript(int Type, bool trigger, int values[2])
 		}
 		curr = curr->m_Next;
 	}
-	return 0;
+	return nullptr;
 }
 
 bool cTriggerList::HasRun(int num)
@@ -500,7 +503,7 @@ void cTriggerList::ProcessTriggers()
 			*
 			*				so let's note the result ofthe > comparison
 			*/
-			bool lt = (g_Gold.ival() < curr->m_Values[1]);
+			bool lt = (g_Game.gold().ival() < curr->m_Values[1]);
 			/*
 			*				now we either use that directly, or inverted
 			*				depending on values[1]
@@ -568,8 +571,8 @@ void cTriggerList::AddToQue(cTrigger* trigger)
 
 	cTriggerQue* newItem = new cTriggerQue();
 	newItem->m_Trigger = trigger;
-	newItem->m_Next = 0;
-	newItem->m_Prev = 0;
+	newItem->m_Next = nullptr;
+	newItem->m_Prev = nullptr;
 	m_TriggerQueue.push(newItem);
 	/*
 	if(m_StartQue)
@@ -631,7 +634,7 @@ void cTriggerList::RemoveFromQue(cTrigger* trigger)
 cTriggerQue* cTriggerList::GetNextQueItem()
 {	//mod
 	if (!m_TriggerQueue.empty())	return m_TriggerQueue.front();
-	else						return 0;
+	else						return nullptr;
 	//end mod
 }
 
@@ -645,7 +648,7 @@ void cTriggerList::Free()
 	}
 
 	if (m_Triggers)	delete m_Triggers;
-	m_Last = m_CurrTrigger = m_Triggers = 0;
+	m_Last = m_CurrTrigger = m_Triggers = nullptr;
 	m_NumTriggers = 0;
 	while (!m_TriggerQueue.empty())
 	{
@@ -658,7 +661,7 @@ void cTriggerList::Free()
 	m_StartQue=m_EndQue=0;
 	*/
 
-	if (m_GirlTarget) m_GirlTarget = 0;
+	if (m_GirlTarget) m_GirlTarget = nullptr;
 	//end mod
 }
 
@@ -671,7 +674,7 @@ void cTriggerList::ProcessNextQueItem(string fileloc)
 	*/
 	if (!top) { return; }
 
-	if (top->m_Trigger->m_Script != "")
+	if (!top->m_Trigger->m_Script.empty())
 	{
 		cScriptManager sm;
 
@@ -728,7 +731,7 @@ int cTrigger::get_type_from_xml(TiXmlElement *el)
 	/*
 	*	if we didn't find it, we can't process the trigger
 	*/
-	if (pt == 0)
+	if (pt == nullptr)
 	{
 		ss << "Error: Trigger with no 'Type' attribute - skipping";
 		g_LogFile.write(ss.str());
@@ -759,7 +762,7 @@ int cTrigger::get_chance_from_xml(TiXmlElement *el)
 	*	"not found" is not an error here
 	*	we just default to 100%
 	*/
-	if (pt == 0) { return 100; }
+	if (pt == nullptr) { return 100; }
 	/*
 	*	if we do have a string, we may need to
 	*	trim away a trailing "%"
@@ -792,7 +795,7 @@ bool cTrigger::get_once_from_xml(TiXmlElement *el)
 	*	"not found" is not an error here
 	*	default is false
 	*/
-	if (pt == 0) { return false; }
+	if (pt == nullptr) { return false; }
 	/*
 	*	we now expect "True" or "False"
 	*/
@@ -844,7 +847,7 @@ int cTrigger::load_skill_from_xml(TiXmlElement *el)
 	*	now the threshold value
 	*/
 	pt = el->Attribute("Threshold", &ival);
-	if (pt == 0)
+	if (pt == nullptr)
 	{
 		g_LogFile.write("Error: no threshold value for skill trigger");
 		return -1;
@@ -889,7 +892,7 @@ int cTrigger::load_stat_from_xml(TiXmlElement *el)
 	*	now the threshold value
 	*/
 	pt = el->Attribute("Threshold", &ival);
-	if (pt == 0)
+	if (pt == nullptr)
 	{
 		g_LogFile.write("Error: no threshold value for stat trigger");
 		return -1;
@@ -933,7 +936,7 @@ int cTrigger::load_status_from_xml(TiXmlElement *el)
 	*	now the threshold value
 	*/
 	pt = el->Attribute("Has");
-	if (pt == 0) {
+	if (pt == nullptr) {
 		g_LogFile.write("Error: no 'Has' value for status trigger");
 		return -1;
 	}
@@ -981,7 +984,7 @@ int cTrigger::load_money_from_xml(TiXmlElement *el)
 	*	get the comparison operation
 	*/
 	pt = el->Attribute("Comparison");
-	if (pt == 0) {
+	if (pt == nullptr) {
 		g_LogFile.write(
 			"Error: No comparison for Money trigger:"
 			"assume 'MoreThan'"
@@ -1011,7 +1014,7 @@ int cTrigger::load_money_from_xml(TiXmlElement *el)
 	*/
 	int ival;
 	pt = el->Attribute("Threshold", &ival);
-	if (pt == 0) {
+	if (pt == nullptr) {
 		g_LogFile.write(
 			"Error: no threshold value for Money trigger"
 			);
@@ -1139,7 +1142,7 @@ int cTrigger::load_from_xml(TiXmlElement *el)
 	/*
 	*	make sure the maps are intialised
 	*/
-	if (trigger_types.size() == 0) { init_trigger_types(); }
+	if (trigger_types.empty()) { init_trigger_types(); }
 	/*
 	*	get the trigger type
 	*/
@@ -1150,7 +1153,7 @@ int cTrigger::load_from_xml(TiXmlElement *el)
 	*	OK, get the script file
 	*/
 	pt = el->Attribute("File");
-	if (pt == 0)
+	if (pt == nullptr)
 	{
 		g_LogFile.write("Error: can't find script file for trigger");
 		return -1;

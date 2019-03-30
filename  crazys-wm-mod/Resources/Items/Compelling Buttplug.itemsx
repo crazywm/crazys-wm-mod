@@ -11,5 +11,9 @@
    <Effect What="Stat" Name="Libido" Amount="15" />
    <Effect What="Stat" Name="Agility" Amount="-5" />
    <Effect What="Skill" Name="Anal" Amount="40" />
+   <Crafting CraftPoints="110" ManaCost="30">
+      <Job Name="Make Items"/>
+      <Stat Name="Libido" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

@@ -20,5 +20,10 @@
    <Effect What="Stat" Name="PCLove" Amount="10" />
    <Effect What="Stat" Name="PCHate" Amount="-10" />
    <Effect What="Trait" Name="Cute" Amount="1" />
+   <Crafting CraftPoints="50" ManaCost="10" Weight="2">
+      <Job Name="Baker"/>
+      <Skill Name="Cooking" Minimum="50" />
+      <Skill Name="Magic" Minimum="30" />
+   </Crafting>
 </Item>
 </Items>

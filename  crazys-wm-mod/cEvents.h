@@ -26,21 +26,6 @@
 
 using namespace std;
 
-#if 0
-// Event types moved to Constants.h
-const int	EVENT_DAYSHIFT		= 0;
-const int	EVENT_NIGHTSHIFT	= 1;
-const int	EVENT_WARNING		= 2;
-const int	EVENT_DANGER		= 3;
-const int	EVENT_SUMMARY		= 4;
-const int	EVENT_DUNGEON		= 5;			// For torturer reports
-const int	EVENT_MATRON		= 6;			// For Matron reports
-const int	EVENT_GANG			= 7;
-const int	EVENT_BROTHEL		= 8;
-const int	EVENT_DEBUG			= 99;
-#endif
-
-
 class CEvent
 {
 public:
@@ -55,14 +40,11 @@ public:
 	string			TitleText();			//	Default listbox Text
 	unsigned int	ListboxColour();		//	Default Listbox Colour
 	unsigned int	m_Ordinal;				//  Used for sort order
-	bool			IsGoodNews();
-	bool			IsUrgent();
-	bool			IsDanger();
-	bool			IsWarning();
-	static bool		CmpEventPredicate(CEvent eFirst, CEvent eSecond)
-					{ 
-						return eFirst.m_Ordinal < eFirst.m_Ordinal;
-					}
+	bool			IsGoodNews() const;
+	bool			IsUrgent() const;
+	bool			IsDanger() const;
+	bool			IsWarning() const;
+	static bool		CmpEventPredicate(CEvent eFirst, CEvent eSecond);
 };
 
 class cEvents
@@ -78,17 +60,16 @@ public:
 	CEvent			GetMessage(int id);
 	int				GetNumEvents() 			{ return events.size(); }
 	bool			IsEmpty()				{ return events.empty() ; }
-	bool			HasGoodNews();
-	bool			HasUrgent();
-	bool			HasDanger();
-	bool			HasWarning();
+	bool			HasGoodNews() const;
+	bool			HasUrgent() const;
+	bool			HasDanger() const;
+	bool			HasWarning() const;
 	void			DoSort();
 
 
 private:
-	vector<CEvent>	events;
+	std::vector<CEvent>	events;
 	bool			m_bSorted;				// flag to only allow sort once
-	unsigned int	MakeOrdinal(int nEvent);
 };
 
 #endif

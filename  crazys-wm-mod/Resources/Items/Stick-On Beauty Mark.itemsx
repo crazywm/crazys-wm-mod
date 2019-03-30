@@ -3,5 +3,8 @@
     <Item Name="Stick-On Beauty Mark" Desc="An artificial beauty mark for those who don't have one naturally. (Adds Beauty Mark, predictably.)" 
     Type="Misc" Badness="0" Special="None" Cost="312" Rarity="Shop50" Infinite="false" GirlBuyChance="1" ItemWeight="0.0">
         <Effect What="Trait" Name="Beauty Mark" Amount="1" />
+        <Crafting CraftPoints="10" ManaCost="0">
+            <Job Name="Make Items"/>
+        </Crafting>
     </Item>
 </Items>

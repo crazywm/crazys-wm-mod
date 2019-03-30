@@ -12,5 +12,8 @@
    <Effect What="Skill" Name="Magic"                   Amount="10"    />
    <Effect What="Skill" Name="Combat"                  Amount="-5"    />
    <Effect What="Stat"  Name="Beauty"                  Amount="5"    />
+   <Crafting CraftPoints="10" ManaCost="10">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

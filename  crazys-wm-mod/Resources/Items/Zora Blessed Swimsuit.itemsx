@@ -9,5 +9,8 @@
 		<Effect			What="Skill"		Name="Performance"	Amount="5" />
 		<Effect			What="Stat"			Name="Agility"		Amount="20" />
 		<Effect			What="Trait"		Name="Agile"		Amount="1" />
+		<Crafting CraftPoints="110" ManaCost="50">
+			<Job Name="Tailor"/>
+		</Crafting>
 	</Item>
 </Items>

@@ -74,7 +74,7 @@ enum FFSD		// `J` Free Fire Sell Dump
 	FFSD_frdu2,	// have your slave girls dispose of the dead then stay slaves
 	FFSD_sedu1,	// Sell all the girls, living and dead
 	FFSD_free1,	// Throw a freedom party
-	FFSD_,
+	FFSD_COUNT,
 
 };
 
@@ -474,6 +474,7 @@ enum Gang_Missions{
 	MISS_RECRUIT,							// men recuit their number better
 	MISS_SERVICE,							// men will do community service - `J` added for .06.02.41
 	MISS_DUNGEON,							// men will help break girls in the dungeon
+	MISS_COUNT
 };
 
 // Reasons for keeping them in the dungeon
@@ -494,6 +495,17 @@ enum Dungeon_Reasons{
 	DUNGEON_KID,							// a girl child just aged up
 	DUNGEON_NEWARENA,						// a new girl who just joined you from the arena
 	DUNGEON_RECRUITED,						// a new girl who was just recruited
+};
+
+
+enum class BuildingType {
+    BROTHEL,
+    STUDIO,
+    CLINIC,
+    ARENA,
+    CENTRE,
+    HOUSE,
+    FARM
 };
 
 // Town Constants
@@ -898,17 +910,6 @@ const int SCREEN_FARM				= 28;
 const int SCREEN_NEWGAME			= 29;
 const int SCREEN_PREPARING			= 29;
 const int SCREEN_SETTINGS			= 30;	// `J` added
-
-// The following constants are used with g_CurrBrothel to determine if we are currently working with a brothel or a new building. --PP
-const int BUILDING_BROTHEL			= 0;
-const int BUILDING_STUDIO			= 10;
-const int BUILDING_CLINIC			= 20;
-const int BUILDING_ARENA			= 30;
-const int BUILDING_CENTRE			= 40;
-const int BUILDING_HOUSE			= 50;
-const int BUILDING_FARM				= 60;
-const int BUILDING_ERROR			= 70;	// This shows there was an error somehow, looking for a building that does not exist.
-
 
 // The following constants are used with counting child types for girls.
 const int CHILD00_TOTAL_BIRTHS		= 0;

@@ -75,5 +75,8 @@
             What="Skill"
             Name="Handjob"
             Amount="5" />
+        <Crafting CraftPoints="70" ManaCost="0">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
 </Items>

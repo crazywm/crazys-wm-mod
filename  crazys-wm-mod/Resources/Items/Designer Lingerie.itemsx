@@ -25,5 +25,8 @@
    <Effect What="Stat"  Name="Libido"                  Amount="20"    />
    <Effect What="Stat"  Name="Happiness"               Amount="5"    />
    <Effect What="Stat"  Name="Refinement"              Amount="5"    />
+   <Crafting CraftPoints="80" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

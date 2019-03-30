@@ -56,5 +56,13 @@
         <Effect What="Trait" Name="Smoker" Amount="0" />
         <Effect What="Trait" Name="Viras Blood Addict" Amount="0" />
         <Effect What="Trait" Name="Virgin" Amount="1" />
+
+        <Crafting CraftPoints="250" ManaCost="60">
+            <Job Name="Make Potions"/>
+            <Skill Name="Magic" Minimum="80" />
+            <Skill Name="Herbalism" Minimum="80" />
+            <Skill Name="Brewing" Minimum="80" />
+            <Skill Name="Medicine" Minimum="80" />
+        </Crafting>
     </Item>
 </Items>

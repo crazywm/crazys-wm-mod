@@ -57,10 +57,10 @@ string ReadTextFile(DirPath path, string file)
 
 #include <sys/types.h>
 #include <dirent.h>
-#include <errno.h>
+#include <cerrno>
 #include <vector>
 #include <regex.h>
-#include <string.h>
+#include <cstring>
 
 using namespace std;
 
@@ -117,18 +117,18 @@ void FileList::add(const char *pattern)
 	/*
 	*	open the directory. Print an error to the console if it fails
 	*/
-	if ((dpt = opendir(base_path)) == NULL) {
-		cerr << "Error(" << errno << ") opening " << base_path << endl;
+	if ((dpt = opendir(base_path)) == nullptr) {
+		std::cerr << "Error(" << errno << ") opening " << base_path << endl;
 		return;
 	}
 	
 	/*
 	*	loop through the files
 	*/
-	while ((dent = readdir(dpt)) != NULL) {
+	while ((dent = readdir(dpt)) != nullptr) {
 		int nmatch = strlen(dent->d_name);
-		cout << nmatch << " " << dent->d_name << " " << s_pat << endl;
-		if (regexec(&r, dent->d_name, nmatch, 0, 0) == REG_NOMATCH) {
+		//std::cout << nmatch << " " << dent->d_name << " " << s_pat << endl;
+		if (regexec(&r, dent->d_name, nmatch, nullptr, 0) == REG_NOMATCH) {
 			continue;
 		}
 		
@@ -142,7 +142,6 @@ void FileList::add(const char *pattern)
 #include<windows.h>
 #include"interfaceIDs.h"
 
-extern cInterfaceWindow g_LoadGame;
 
 void FileList::add(const char * pattern)
 {

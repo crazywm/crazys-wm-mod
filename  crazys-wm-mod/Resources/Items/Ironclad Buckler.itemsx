@@ -3,9 +3,8 @@
     <Item Name="Ironclad Buckler" Desc="A rather small shield, but quite sturdy. (adds Tough)"
 	Type="Shield" Badness="15" Special="None" Cost="120" Rarity="Shop50" Infinite="false" GirlBuyChance="3" ItemWeight="0.0">
         <Effect What="Trait" Name="Tough" Amount="1" />
-    </Item>
-    <Item Name="Ironclad Buckler" Desc="A rather small shield, but quite sturdy. (adds Tough)"
-	Type="Shield" Badness="15" Special="None" Cost="120" Rarity="Shop50" Infinite="false" GirlBuyChance="3" ItemWeight="0.0">
-        <Effect What="Trait" Name="Tough" Amount="1" />
+        <Crafting CraftPoints="10" ManaCost="0">
+            <Job Name="Blacksmith"/>
+        </Crafting>
     </Item>
 </Items>

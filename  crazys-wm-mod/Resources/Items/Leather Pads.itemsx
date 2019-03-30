@@ -16,5 +16,8 @@
    <Effect What="Stat"  Name="Agility"                 Amount="-2" />
    <Effect What="Stat"  Name="PCFear"                  Amount="-2" />     
    <Effect What="Stat"  Name="Charisma"                Amount="-2" />
+      <Crafting CraftPoints="10" ManaCost="0">
+         <Job Name="Cobbler"/>
+      </Crafting>
    </Item>
 </Items>

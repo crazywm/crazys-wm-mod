@@ -12,5 +12,10 @@
    <Effect What="Stat" Name="Beauty" Amount="75" />
    <Effect What="Stat" Name="Happiness" Amount="-50" />
    <Effect What="Skill" Name="Magic" Amount="10" />
+   <Crafting CraftPoints="120" ManaCost="40">
+      <Job Name="Make Potions"/>
+      <Skill Name="Brewing" Minimum="50" />
+      <Skill Name="Magic" Minimum="60" />
+   </Crafting>
 </Item>
 </Items>

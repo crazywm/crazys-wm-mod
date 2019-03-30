@@ -20,5 +20,8 @@
    <Effect What="Skill" Name="Magic"                   Amount="-200"    />
    <Effect What="Skill" Name="Combat"                  Amount="-400"    />
    <Effect What="Trait" Name="Charming"                Amount="0"    />
+   <Crafting CraftPoints="60" ManaCost="30">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

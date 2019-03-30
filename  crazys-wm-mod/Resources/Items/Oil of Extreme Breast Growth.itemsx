@@ -13,19 +13,9 @@
    <Effect What="Skill" Name="Combat"                  Amount="-20"    />
    <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
    <Effect What="Trait" Name="Clumsy"                  Amount="1"    />
-</Item>
-<Item Name="Oil of Extreme Breast Growth"
-      Desc="When carefully massaged onto a woman's chest, this magical oil temporarily increases her breasts to superhuman size (unless they were already particularly gigantic). However, most women can't immediately cope with the added weight; it is recommended to keep them away from fine china and other fragile items for the duration of the effect. (-20 Agi, -20 Com, adds Abnormally Large Breasts and Clumsy)"
-      Type="Food"
-      Badness="15"
-      Special="Temporary"
-      Cost="1500"
-      Rarity="Catacomb15"
-      Infinite="false"
-      GirlBuyChance="25">
-   <Effect What="Stat"  Name="Agility"                 Amount="-20"    />
-   <Effect What="Skill" Name="Combat"                  Amount="-20"    />
-   <Effect What="Trait" Name="Abnormally Large Boobs"  Amount="1"    />
-   <Effect What="Trait" Name="Clumsy"                  Amount="1"    />
+   <Crafting CraftPoints="200" ManaCost="0">
+      <Job Name="Make Potions"/>
+      <Skill Name="Medicine" Minimum="40" />
+   </Crafting>
 </Item>
 </Items>

@@ -18,5 +18,8 @@
    <Effect What="Trait" Name="Sexy Air"                Amount="1"    />
    <Effect What="Trait" Name="Elegant"                 Amount="0"    />
    <Effect What="Trait" Name="Fleet of Foot"           Amount="0"    />
+   <Crafting CraftPoints="50" ManaCost="0">
+      <Job Name="Cobbler"/>
+   </Crafting>
 </Item>
 </Items>

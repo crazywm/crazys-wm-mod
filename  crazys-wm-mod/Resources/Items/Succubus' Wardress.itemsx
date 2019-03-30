@@ -30,5 +30,9 @@
    <Effect What="Stat"  Name="Confidence"              Amount="10"    />
    <Effect What="Stat"  Name="PCFear"                  Amount="-10"    />
    <Effect What="Trait" Name="Nymphomaniac"            Amount="1"    />
+
+   <Crafting CraftPoints="250" ManaCost="70">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

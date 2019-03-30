@@ -13,5 +13,8 @@
    <Effect What="Stat"  Name="Constitution"            Amount="10"    />
    <Effect What="Stat"  Name="Fame"                    Amount="10"    />
    <Effect What="Stat"  Name="Beauty"                  Amount="10"    />
+   <Crafting CraftPoints="50" ManaCost="0">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

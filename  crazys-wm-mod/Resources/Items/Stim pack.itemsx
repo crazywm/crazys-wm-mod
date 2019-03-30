@@ -11,5 +11,9 @@
       GirlBuyChance="10">
    <Effect What="Stat"  Name="Health"                  Amount="40"    />
    <Effect What="Stat"  Name="Tiredness"               Amount="-25"    />
+   <Crafting CraftPoints="50" ManaCost="0">
+      <Job Name="Make Potions"/>
+      <Skill Name="Brewing" Minimum="40" />
+   </Crafting>
 </Item>
 </Items>

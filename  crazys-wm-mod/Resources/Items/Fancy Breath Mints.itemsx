@@ -11,16 +11,9 @@
       GirlBuyChance="15">
    <Effect What="Stat"  Name="Happiness"               Amount="10"    />
    <Effect What="Stat"  Name="Charisma"                Amount="1"    />
-</Item>
-<Item Name="Fancy Breath Mints"
-      Desc="These mints aren't just delicious candy: they're also the best way to tell a girl that you'd like her more if her breath didn't smell so bad. (D) (+10 Hap, +1 Cha)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="30"
-      Rarity="Common"
-      Infinite="false">
-   <Effect What="Stat"  Name="Happiness"               Amount="10"    />
-   <Effect What="Stat"  Name="Charisma"                Amount="1"    />
+   <Crafting CraftPoints="15" ManaCost="0" Weight="10">
+      <Job Name="Baker"/>
+      <Skill Name="Cooking" Minimum="20" />
+   </Crafting>
 </Item>
 </Items>

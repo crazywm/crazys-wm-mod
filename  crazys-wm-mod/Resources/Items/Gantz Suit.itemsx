@@ -25,5 +25,8 @@
    <Effect What="Trait" Name="Great Figure"            Amount="1"    />
    <Effect What="Trait" Name="Great Arse"              Amount="1"    />
    <Effect What="Trait" Name="Fleet of Foot"           Amount="1"    />
+   <Crafting CraftPoints="250" ManaCost="80">
+      <Job Name="Tailor"/>
+   </Crafting>
 </Item>
 </Items>

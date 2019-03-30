@@ -19,21 +19,16 @@
 #ifndef __CCOLOR_H
 #define __CCOLOR_H
 
-#include <iostream>
 #include <string>
-#include <SDL.h>
-#include "CLog.h"
-using namespace std;
 
-extern CLog g_LogFile;
 struct SDL_Color;
 
 class cColor
 {
 public:
-	Uint8 convertFromHex(string hex);
+	std::uint8_t convertFromHex(std::string hex);
 
-	void HexToSDLColor(string HexColor, SDL_Color* SDLColor);
+	void HexToSDLColor(std::string HexColor, SDL_Color* SDLColor);
 	void RGBToSDLColor(SDL_Color* SDLColor, int r, int g, int b);
 };
 #endif

@@ -3,7 +3,7 @@
 <Text       Name="Your House"           Text="Your House"                   XPos="20"           YPos="20"           Width="1100"           Height="50"           FontSize="32" />
 <Image      Name="Background"           File="House.jpg"                    XPos="335"           YPos="70"           Width="1130"           Height="930" />
 <Button     Name="Weeks"                Image="NextWeek"                    XPos="1510"           YPos="20"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Text       Name="HouseDetails"         Text=""                             XPos="20"           YPos="70"           Width="310"           Height="800"           FontSize="16" />
+<Text       Name="BuildingDetails"      Text=""                             XPos="20"           YPos="70"           Width="310"           Height="800"           FontSize="16" />
 <Button     Name="Girls"                Image="Girls"                       XPos="1510"           YPos="430"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
 <Button     Name="Staff"                Image="Staff"                       XPos="1510"           YPos="530"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
 <Button     Name="SetUp"                Image="Building"                    XPos="1510"           YPos="630"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
