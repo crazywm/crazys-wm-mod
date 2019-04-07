@@ -361,21 +361,10 @@ void LoadGameInfoFiles()
 	else if (loadtraits == 0)
 	{
 		FileList fl_t(location, "*.traitsx");				// get a file list
-		FileList fl(location, "*.traits");				// get a file list
-		if (fl_t.size() > 0)
-		{
-			for (int i = 0; i < fl_t.size(); i++)				// loop over the list, loading the files
-			{
-				g_Traits.LoadXMLTraits(fl_t[i].full());
-			}
-		}
-		else if (fl.size() > 0)
-		{
-			for (int i = 0; i < fl.size(); i++)				// loop over the list, loading the files
-			{
-				g_Traits.LoadTraits(fl[i].full());
-			}
-		}
+        for (int i = 0; i < fl_t.size(); i++)				// loop over the list, loading the files
+        {
+            g_Traits.LoadXMLTraits(fl_t[i].full());
+        }
 	}
 
 	// `J` Load .itemsx files

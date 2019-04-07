@@ -399,11 +399,11 @@ static void add_trait_table(lua_State *L, sGirl *girl, int table)
  *	now loop over the trait list
  */
 	for(unsigned int i = 0; i < girl->m_NumTraits; i++) {
-		sTrait *trait = girl->m_Traits[i];
+		TraitSpec *trait = girl->m_Traits[i];
 /*
  *		store the description keyed under the trait name
  */
-		add_to_table(L, trait_table, trait->m_Name, trait->m_Desc);
+		add_to_table(L, trait_table, trait->name().c_str(), trait->desc().c_str());
 	}
 /*
  *	and now add the trait table to the girl table

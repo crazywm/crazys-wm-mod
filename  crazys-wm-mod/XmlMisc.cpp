@@ -258,7 +258,7 @@ TiXmlElement* SaveJobsXML(TiXmlElement* pRoot, int buildingQualities[])
 	return pJobs;
 }
 
-TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int numTraits, sTrait* traits[], int tempTraits[])
+TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int numTraits, TraitSpec* traits[], int tempTraits[])
 {
 	TiXmlElement* pTraits = new TiXmlElement(TagName);
 	pRoot->LinkEndChild(pTraits);
@@ -266,7 +266,7 @@ TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int 
 	{
 		if (traits[i])
 		{
-			TiXmlElement* pTrait = new TiXmlElement(XMLifyString(traits[i]->m_Name));  // Trait name
+			TiXmlElement* pTrait = new TiXmlElement(XMLifyString(traits[i]->name()));  // Trait name
 			pTraits->LinkEndChild(pTrait);
 			if (tempTraits)	pTrait->SetAttribute("Temp", tempTraits[i]);  // Is temporary
 		}
@@ -274,7 +274,7 @@ TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int 
 	return pTraits;
 }
 
-bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits[], int tempTraits[])
+bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, TraitSpec* traits[], int tempTraits[])
 {
 	numTraits = 0;
 	TiXmlElement* pTraits = hTraits.ToElement();
@@ -282,43 +282,20 @@ bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, sTrait* traits
 
 	//this loop does not need UnXMLifyString, which is a bit of a hack currently
 	//however, it's coupled more tightly to traits, and seems to do more processing
-	sTrait* pTrait = g_Traits.GetTraitNum(0);
-	while (pTrait)
+	for(const auto& pTrait : g_Traits.all_traits())
 	{
-		TiXmlElement* pTraitElement = pTraits->FirstChildElement(XMLifyString(pTrait->m_Name));
+		TiXmlElement* pTraitElement = pTraits->FirstChildElement(XMLifyString(pTrait->name()));
 		if (pTraitElement)
 		{
 			int tempInt = 0;
-			traits[numTraits] = pTrait;
+			traits[numTraits] = pTrait.get();
 			if (tempTraits)
 			{
 				pTraitElement->QueryIntAttribute("Temp", &tempInt); tempTraits[numTraits] = tempInt; tempInt = 0;
 			}
 			++numTraits;
 		}
-		pTrait = pTrait->m_Next;
 	}
-
-#if 0
-	//old loop, not sure which way is better
-	//also, this loop method has not been tested
-	for (TiXmlElement* pTrait = pTraits->FirstChildElement();
-		pTrait != 0;
-		pTrait = pTrait->NextSiblingElement())
-	{
-		std::string traitName = pTrait->ValueStr();
-		if (traitName.empty() == false)
-		{
-			int tempInt = 0;
-			traits[numTraits] = g_Traits.GetTrait(UnXMLifyString(traitName));
-			if (tempTraits)
-			{
-				pTrait->QueryIntAttribute("Temp", &tempInt); tempTraits[numTraits] = tempInt; tempInt = 0;
-			}
-			++numTraits;
-		}
-	}
-#endif
 	return true;
 }
 

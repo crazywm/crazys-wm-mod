@@ -78,7 +78,7 @@ typedef struct sRandomGirl
 
 	int m_NumTraits;						// number of traits they are assigned
 	int m_NumTraitNames;					// number of traits they are assigned
-	sTrait* m_Traits[MAXNUM_TRAITS];		// List of traits they may start with
+	TraitSpec* m_Traits[MAXNUM_TRAITS];		// List of traits they may start with
 	int m_TraitChance[MAXNUM_TRAITS];		// the percentage change for each trait
 	int m_TraitChanceB[200];
 	string m_TraitNames[200];				// `J` fix for more than MAXNUM_TRAITS in .rgirlsx files
@@ -217,11 +217,11 @@ struct sGirl
 	string m_Desc;								// Short story about the girl
 
 	unsigned char m_NumTraits;					// current number of traits they have
-	sTrait* m_Traits[MAXNUM_TRAITS];			// List of traits they have
+	TraitSpec* m_Traits[MAXNUM_TRAITS];			// List of traits they have
 	int m_TempTrait[MAXNUM_TRAITS];	// a temp trait if not 0. Trait removed when == 0. traits last for 20 weeks.
 
 	unsigned char m_NumRememTraits;				// number of traits that are apart of the girls starting traits
-	sTrait* m_RememTraits[MAXNUM_TRAITS * 2];		// List of traits they have inbuilt
+	TraitSpec* m_RememTraits[MAXNUM_TRAITS * 2];		// List of traits they have inbuilt
 
 	unsigned int m_DayJob;						// id for what job the girl is currently doing
 	unsigned int m_NightJob;					// id for what job the girl is currently doing
@@ -761,26 +761,26 @@ public:
     void SetStat(sGirl* girl, int stat, int amount);
 	// updates a stat temporarily
 	void UpdateStatMod(sGirl* girl, int stat, int amount);							// updates a statmod usually from items
-	void UpdateStatTr(sGirl* girl, int stat, int amount);							// updates a statTr from traits
+	static void UpdateStatTr(sGirl* girl, int stat, int amount);							// updates a statTr from traits
 
 	void SetSkill(sGirl* girl, int skill, int amount);
     // updates a skill temporarily
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods usually from items
-	void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
+	static void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
 
 	// `J` added
 	void SetEnjoyment(sGirl* girl, int a_Enjoy, int amount);									// `J` added
-	void SetEnjoymentTR(sGirl* girl, int a_Enjoy, int amount);									// `J` added for traits
+	static void SetEnjoymentTR(sGirl* girl, int a_Enjoy, int amount);									// `J` added for traits
 	// updates what she enjoys
-	void UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
+	static void UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 	void UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
     // `J` added for traits
 
     // `CRAZY` added
 	void SetTraining(sGirl* girl, int a_Training, int amount);									// `CRAZY` added
-	void SetTrainingTR(sGirl* girl, int a_Training, int amount);									// `CRAZY` added for traits
+	static void SetTrainingTR(sGirl* girl, int a_Training, int amount);									// `CRAZY` added for traits
 	// updates what she enjoys
-	void UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
+	static void UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
 	void UpdateTrainingMod(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
 	// `CRAZY` added for traits
 
@@ -789,28 +789,24 @@ public:
 	double GetAverageOfSexSkills(sGirl* girl);	// `J` added
 	double GetAverageOfNSxSkills(sGirl* girl);	// `J` added
 
-	bool HasRememberedTrait(sGirl* girl, string trait);
-	int HasTempTrait(sGirl* girl, string trait);
-	bool RestoreRememberedTrait(sGirl* girl, string trait);
+	static bool HasRememberedTrait(sGirl* girl, string trait);
+	static int HasTempTrait(sGirl* girl, string trait);
+	static bool RestoreRememberedTrait(sGirl* girl, string trait);
 
 
-	void ApplyTraits(sGirl* girl, sTrait* trait = 0);	// applys the stat bonuses for traits to a girl
-	void MutuallyExclusiveTraits(sGirl* girl, bool apply, sTrait* trait = 0, bool rememberflag = false);
+	static void ApplyTraits(sGirl* girl, TraitSpec* trait = 0);	// applys the stat bonuses for traits to a girl
+	static void MutuallyExclusiveTraits(sGirl* girl, bool apply);
+	static void MutuallyExclusiveTrait(sGirl* girl, bool apply, TraitSpec* trait, bool rememberflag = false);
 
-	bool PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, int eventtype = EVENT_GOODNEWS);
-	bool PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
+	static bool PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, int eventtype = EVENT_GOODNEWS);
+	static bool PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
 
 	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> cGirls.h > AdjustTraitGroup
 
 	// `J` adding these to allow single step adjustment of linked traits
-	string AdjustTraitGroupGagReflex(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
-	string AdjustTraitGroupBreastSize(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
-	string AdjustTraitGroupFertility(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
-
-	int DrawGirl(sGirl* girl, int x, int y, int width, int height, int ImgType, bool random = true, int img = 0);	// draws a image of a girl
-	CSurface* GetImageSurface(sGirl* girl, int ImgType, bool random, int& img, bool gallery = false);	// draws a image of a girl
-	cAnimatedSurface* GetAnimatedSurface(sGirl* girl, int ImgType, int& img);
-	bool IsAnimatedSurface(sGirl* girl, int ImgType, int& img);
+	static string AdjustTraitGroupGagReflex(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
+	static string AdjustTraitGroupBreastSize(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
+	static string AdjustTraitGroupFertility(sGirl* girl, int steps, bool showmessage = false, bool Day0Night1 = false);
 
 	int GetNumSlaveGirls();
 	int GetNumCatacombGirls();
@@ -826,7 +822,7 @@ public:
 
 	Uint8 girl_fights_girl(sGirl* a, sGirl* b);
 
-	bool InheritTrait(sTrait* trait);
+	bool InheritTrait(TraitSpec* trait);
 
 	void AddRandomGirl(sRandomGirl* girl);
 	/*
@@ -862,16 +858,13 @@ public:
 	void SellInvItem(sGirl* girl, int num);
 	void UseItems(sGirl* girl);
 
-    void RemoveRememberedTrait(sGirl* girl, string name);
-	void RemoveAllRememberedTraits(sGirl* girl);					// WD: Cleanup remembered traits on new girl creation
+    static void RemoveRememberedTrait(sGirl* girl, string name);
+	static void RemoveAllRememberedTraits(sGirl* girl);					// WD: Cleanup remembered traits on new girl creation
 	int GetNumItemEquiped(sGirl* girl, int Type);
 	bool IsItemEquipable(sGirl* girl, int num);
 	bool IsInvFull(sGirl* girl);
 
 	int GetSkillWorth(sGirl* girl);
-
-	bool AskedOutChance(sGirl* girl, int action, sBrothel* brothel = 0);
-	bool SayYesChance(sGirl* girl, int action, sBrothel* brothel = 0);
 
 	string GetDetailsString(sGirl* girl, bool purchace = false);
 	string GetMoreDetailsString(sGirl* girl, bool purchace = false);

@@ -25,6 +25,7 @@
 
 #include <vector>
 #include <sstream>
+#include <algorithm>
 #include "cMovieStudio.h"
 #include "cGangs.h"
 #include "DirPath.h"

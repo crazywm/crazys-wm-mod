@@ -24,175 +24,76 @@
 #include <string>
 #include <fstream>
 #include <vector>
+#include <list>
+#include <memory>
 
-using namespace std;
+class sGirl;
+class TiXmlElement;
 
 
-struct tEffect	// `J` copied from cInventory.cpp - .06.01.17
+struct TraitEffect
 {
-	// MOD docclox
-	/*
-	*	let's have an enum for possible values of m_Affects
-	*/
-	enum What {
-		Skill = 0,
-		Stat = 1,
-		Nothing = 2,
-		GirlStatus = 3,
-		Enjoy = 4
-	};
-	What m_Affects;
-	/*
-	*	define an ostream operator so it will pretty print
-	*	(more useful for debugging than game play
-	*	but why take it out?)
-	*/
-	friend ostream& operator << (ostream& os, tEffect::What &w);
-	/*
-	*	and a function to go the other way
-	*	we need this to turn the strings in the xml file
-	*	into numbers
-	*/
-	void set_what(string s) {
-		/* */if (s == "Skill")		m_Affects = Skill;
-		else if (s == "Stat")		m_Affects = Stat;
-		else if (s == "Nothing")	m_Affects = Nothing;
-		else if (s == "GirlStatus")	m_Affects = GirlStatus;
-		else if (s == "Enjoy")		m_Affects = Enjoy;
-		else {
-			m_Affects = Nothing;
-			cerr << "Error: Bad 'what' string for item effect: '" << s << "'" << endl;
-		}
-	}
-	/*
-	*	can't make an enum for this since it can represent
-	*	different quantites.
-	*
-	*	The OO approach would be to write some variant classes, I expect
-	*	but really? Life's too short...
-	*/
-	unsigned char m_EffectID;	// what stat, skill or status effect it affects
-	/*
-	*	but I still need strings for the skills, states, traits and so forth
-	*
-	*	these should be (were until the merge) in sGirl. Will be again
-	*	as soon as I sort the main mess out...
-	*/
-	const char *girl_status_name(unsigned int id);
-	const char *skill_name(unsigned int id);		// WD:	Use definition in sGirl::
-	const char *stat_name(unsigned int id);			// WD:	Use definition in sGirl::
-	const char *enjoy_name(unsigned int id);		// `J`	Use definition in sGirl::
+    enum Type {
+        STAT, SKILL, ENJOYMENT
+    } type;
+    unsigned target;
+    int value;
 
-	/*
-	*	and we need to go the other way,
-	*	setting m_EffectID from the strings in the XML file
-	*
-	*	WD:	Change to use definition and code in sGirl::
-	*		remove duplicated code
-	*/
-	bool set_skill(string s);
-	bool set_girl_status(string s);
-	bool set_stat(string s);
-
-
-	/*
-	*	magnitude of the effect.
-	*	-10 will subtract 10 from the target stat while equiped
-	*	and add 10 when unequiped.
-	*
-	*	With status effects and traits 1 means add,
-	*	0 means take away and 2 means disable
-	*/
-	int m_Amount;
-
-	int m_Duration;	// `J` added for temporary trait duration
-	/*
-	*	name of the trait it adds
-	*/
-	string m_Trait;
-	/*
-	*	and a pretty printer for the class as a whole
-	*	just a debug thing, really
-	*/
-	friend ostream& operator << (ostream& os, tEffect &eff)
-	{
-		os << "Effect: " << eff.m_Affects << " ";
-		if (eff.m_Affects == Stat) { os << eff.stat_name(eff.m_EffectID); }
-		if (eff.m_Affects == Skill) { os << eff.skill_name(eff.m_EffectID); }
-		if (eff.m_Affects == Enjoy) { os << eff.enjoy_name(eff.m_EffectID); }
-		if (eff.m_Affects == GirlStatus) { os << eff.girl_status_name(eff.m_EffectID); }
-		os << (eff.m_Amount > 0 ? " +" : " ") << eff.m_Amount;
-		return os << endl;
-	}
-	// end mod
+    static TraitEffect from_xml(TiXmlElement* el);
 };
 
 
 // Represents a single trait
-typedef struct sTrait
+class TraitSpec
 {
-	char*	m_Name = 0;				// the name and unique ID of the trait
-	char*	m_Desc = 0;				// a description of the trait
-	char*	m_Type = 0;				// a description of the trait
-	int		m_InheritChance = -1;	// chance of inheriting the trait
-	int		m_RandomChance = -1;	// chance of a random girl to get the trait
-	bool	m_Use_XML_Mods = false;	// `J` added to allow customized traits - .06.01.17
-	vector<tEffect> m_Effects;
+public:
+	TraitSpec(std::string name, std::string description, std::string type,
+	        int inherit_chance=-1, int random_chance=-1);
 
-	sTrait* m_Next;		// the next trait in the list
+	static TraitSpec from_xml(TiXmlElement* el);
 
-	sTrait()
-	{
-		m_Name = m_Desc = m_Type = 0;
-		m_InheritChance = -1;
-		m_RandomChance = -1;
-		m_Next = 0;
-	}
+	const std::string& name() const { return m_Name; }
+	std::string display_name() const;
+	const std::string& desc() const { return m_Desc; }
+	int random_chance() const { return m_RandomChance; }
+	int inherit_chance() const { return m_InheritChance; }
 
-	~sTrait()
-	{
-		if (m_Name) delete[] m_Name;
-		m_Name = 0;
-		if (m_Desc) delete[] m_Desc;
-		m_Desc = 0;
-		if (m_Type) delete[] m_Type;
-		m_Type = 0;
-		if (m_Next) delete m_Next;
-		m_Next = 0;
-		m_InheritChance = 0;
-		m_RandomChance = 0;
+	void apply_effects(sGirl* target) const;
+private:
 
-	}
-}sTrait;
+    std::string m_Name;				// the name and unique ID of the trait
+    std::string m_Desc;				// a description of the trait
+    std::string m_Type ;				// a description of the trait
+    int		m_InheritChance = -1;	// chance of inheriting the trait
+    int		m_RandomChance = -1;	// chance of a random girl to get the trait
+
+    void add_effect(TraitEffect);
+    std::vector<TraitEffect> m_Effects;
+};
 
 // Manages and loads the traits file
 class cTraits
 {
+    using trait_list_t = std::list<std::unique_ptr<TraitSpec>>;
 public:
-	cTraits(){m_ParentTrait=0;m_LastTrait=0;m_NumTraits=0;}
-	~cTraits();
+	cTraits() = default;
+
+    ~cTraits();
 
 	void Free();	// Delete all the loaded data
 
-	void LoadTraits(string filename);		// Loads the traits from a file (adding them to the existing traits)
-	void LoadXMLTraits(string filename);	// Loads the traits from an XML file (adding them to the existing traits)
-	void SaveTraits(string filename);	// Saves the traits to a file
+	void LoadXMLTraits(const std::string& filename);	// Loads the traits from an XML file (adding them to the existing traits)
 
-	void AddTrait(sTrait* trait);
-	void RemoveTrait(string name);
-	sTrait* GetTrait(string name);
-	sTrait* GetTraitNum(int num);
-	int GetNumTraits() {return m_NumTraits;}
+	void AddTrait(TraitSpec trait);
+	void RemoveTrait(const std::string& name);
+	TraitSpec* GetTrait(const std::string& name);
 
-	int GetInheritChance(sTrait* trait)	{ return trait->m_InheritChance; }
-	int GetRandomChance(sTrait* trait)	{ return trait->m_RandomChance; }
-
-	string GetTranslateName(string name);
+	const trait_list_t& all_traits() const { return m_Traits; }
 
 private:
-	int		m_NumTraits;
-	sTrait* m_ParentTrait;				// the first trait in the list
-	sTrait* m_LastTrait;				// the last trait in the list
+
+    trait_list_t::iterator find_trait_by_name(const std::string& name);
+    trait_list_t m_Traits;
 };
 
 #endif
