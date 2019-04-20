@@ -620,7 +620,11 @@ sScript *LoadScriptFile(string Filename)
 
 	// Open the file for input
 	if ((fp = fopen(Filename.c_str(), "rb")) == 0) return 0;
-
+	
+	if (sizeof(long) != 4) {
+		g_LogFile.ss() << "Debug LoadScriptFile || sizeof(long) is " << sizeof(long) << " it should be 4. We are working on the fix for this. Please report it on PinkPetal.org"; g_LogFile.ssend();
+	}
+	
 	// Get # of script actions from file
 	fread(&Num, 1, sizeof(long), fp);
 

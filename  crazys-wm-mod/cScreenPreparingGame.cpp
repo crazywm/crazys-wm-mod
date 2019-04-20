@@ -24,6 +24,7 @@
 #include "InterfaceProcesses.h"
 #include "cScreenMainMenu.h"
 #include "MasterFile.h"
+#include "cScriptManager.h"
 
 extern bool g_InitWin;
 extern int g_CurrentScreen;
@@ -40,6 +41,8 @@ extern bool g_TryEr;
 extern bool g_TryCast;
 extern int g_TalkCount;
 extern bool g_Cheats;
+extern bool g_GenGirls;
+extern cPlayer* The_Player;
 
 extern sGirl* selected_girl;  // global pointer for the currently selected girl
 extern sGirl* MarketSlaveGirls[20];
@@ -81,6 +84,17 @@ l_finalstuff,
 l_finished
 };
 
+enum New_Step {
+	n_freecache = 1,
+	n_LoadGameInfoFiles,
+	n_Girls,
+	n_Scripts,
+	n_Player,
+	n_Markets,
+	n_GangsRivals,
+	n_Saving,
+	n_finished
+};
 
 cScreenPreparingGame::cScreenPreparingGame()
 {
@@ -151,6 +165,8 @@ void cScreenPreparingGame::stringEmUp()
 }
 void cScreenPreparingGame::clearall()
 {
+	cScriptManager sm;
+	sm.Release();
 	g_Traits.Free();
 	g_Girls.Free();
 	g_InvManager.Free();
@@ -161,6 +177,9 @@ void cScreenPreparingGame::clearall()
 	g_Centre.Free();
 	g_House.Free();
 	g_Farm.Free();
+	g_Gangs.Free();
+	g_Customers.Free();
+	g_GlobalTriggers.Free();
 }
 static string clobber_extension(string s)	// `J` debug logging
 {
@@ -214,7 +233,7 @@ void cScreenPreparingGame::process()
 {
 	if (!ids_set) set_ids();	// we need to make sure the ID variables are set
 	init();						// set up the window if needed
-	if (prep_step >(l_finished * 4) + 70) loading = false;	// incase something breaks
+	if (prep_step >( (load0new1 == 0? l_finished : n_finished) * 4) + 70) loading = false;	// incase something breaks
 	DisableButton(cancel_id, loading);
 	if (!loading)
 	{
@@ -351,21 +370,104 @@ void cScreenPreparingGame::process()
 	}
 	else						// new game
 	{
-		if (true)				// run the old new game
-		{
+		// `J` added new new game for .06.04.01
 			loading = true;
-			clearall();
-			stringstream ss;
-			ss << "Starting New Game:   " << g_ReturnText;
-			EditTextItem(ss.str(), text1_id);
-
-			if (prep_step == 4)	NewGame();
-
-		}
-		else					// `J` added new new game for .06.03.00
-		{
-
-		}
+			switch (prep_step)
+			{
+			case (n_freecache * 4) - 2:  	{ ss1 << "Starting New Game:   " << g_ReturnText; ss2 << "Freeing Cache.\n"; break; }
+			case (n_freecache * 4):			{ clearall(); break; }
+			case (n_LoadGameInfoFiles * 4) - 2:		{ ss2 << "Loading Game Info Files.\n"; break; }
+			case (n_LoadGameInfoFiles * 4):			{
+				g_GenGirls = g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
+				g_TalkCount = 10;
+				g_CurrBrothel = 0;
+				selected_girl = 0;
+				g_Year = 1209; g_Month = 1; g_Day = 1;
+				g_Gold.reset();
+				g_Cheats = (g_ReturnText == "Cheat") ? true : false;
+				LoadGameInfoFiles();
+				break;
+			}
+			case (n_Girls * 4) - 2:		{ ss2 << "Loading Girl Files.\n"; break; }
+			case (n_Girls * 4) : {
+				loadedGirlsFiles.LoadXML(TiXmlHandle(0));
+				LoadGirlsFiles();
+				break;
+			}
+			case (n_Scripts * 4) - 2:		{ ss2 << "Loading Scripts.\n"; break; }
+			case (n_Scripts * 4) : {
+				g_GlobalTriggers.LoadList(DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml");
+				break;
+			}
+			case (n_Player * 4) - 2:		{ ss2 << "Loading Buildings and Player.\n"; break; }
+			case (n_Player * 4) : {
+				g_Brothels.NewBrothel(20, 250);
+				g_Brothels.SetName(0, g_ReturnText);
+				g_House.NewBrothel(20, 200);
+				g_House.SetName(0, "House");
+				for (int i = 0; i < NUM_STATS; i++)		The_Player->m_Stats[i] = 60;
+				for (u_int i = 0; i < NUM_SKILLS; i++)	The_Player->m_Skills[i] = 10;
+				The_Player->SetToZero();
+				break;
+			}
+			case (n_Markets * 4) - 2:		{ ss2 << "Preparing Slave Market and Shop.\n"; break; }
+			case (n_Markets * 4) : {
+				for (int i = 0; i < 20; i++)
+				{
+					MarketSlaveGirls[i] = 0;
+					MarketSlaveGirlsDel[i] = -1;
+				}
+				// update the shop inventory
+				g_InvManager.UpdateShop();
+				break;
+			}
+			case (n_GangsRivals * 4) - 2:		{ ss2 << "Generating Gangs and Rivals.\n"; break; }
+			case (n_GangsRivals * 4) : {
+				u_int start_random_gangs = cfg.gangs.start_random();
+				u_int start_boosted_gangs = cfg.gangs.start_boosted();
+				for (u_int i = 0; i < start_random_gangs; i++)	g_Gangs.AddNewGang(false);
+				for (u_int i = 0; i < start_boosted_gangs; i++)	g_Gangs.AddNewGang(true);
+				// Add the begining rivals
+				for (int i = 0; i < 5; i++)
+				{
+					int str = g_Dice % 10 + 1;
+					g_Brothels.GetRivalManager()->CreateRival(
+						str * 100,								// BribeRate	= 100-1000
+						(str * 3) + (g_Dice % 11),	 			// Businesses	= 3-40
+						str * 5000, 							// Gold			= 5000-50000
+						(str / 2) + 1, 							// Bars			= 1-6
+						(str / 4) + 1, 							// GambHalls	= 1-3
+						(str * 5) + (g_Dice % (str * 5)), 		// Girls		= 5-100
+						(str / 2) + 1, 							// Brothels		= 1-6
+						g_Dice % 6 + 1, 						// Gangs		= 1-6
+						str	 									// Power		= 1-10	// `J` added - The rivals power level
+						);
+				}
+				break;
+			}
+			case (n_Saving * 4) - 2:		{ ss2 << "Saving Game.\n"; break; }
+			case (n_Saving * 4) : {
+				if (g_Cheats)
+				{
+					g_Gold.cheat();
+					g_InvManager.GivePlayerAllItems();
+					g_Gangs.NumBusinessExtorted(500);
+				}
+				SaveGame();
+				break;
+			}
+			case (n_finished * 4) - 2:		{ ss2 << "Finished.\n"; break; }
+			case (n_finished * 4) : {
+				g_WinManager.push("Brothel Management");
+				cScriptManager sm;
+				sm.Load(ScriptPath("Intro.lua"), 0);
+				g_InitWin = true;
+				break;
+			}
+			default:
+				break;
+			}
+			stringEmUp();
 	}
 	prep_step++;
 }

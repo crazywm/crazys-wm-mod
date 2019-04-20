@@ -27,7 +27,7 @@
 #include <list>
 #include <memory>
 
-class sGirl;
+struct sGirl;
 class TiXmlElement;
 
 

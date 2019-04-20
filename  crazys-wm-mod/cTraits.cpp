@@ -32,6 +32,8 @@
 #include "libintl.h"
 #endif
 
+extern string stringtolowerj(string name);
+
 TraitEffect TraitEffect::from_xml(TiXmlElement* el)
 {
 	TraitEffect effect;
@@ -179,7 +181,7 @@ void cTraits::RemoveTrait(const string& name)
 cTraits::trait_list_t::iterator cTraits::find_trait_by_name(const std::string& name)
 {
 	return std::find_if(begin(m_Traits), end(m_Traits),
-			[&](const std::unique_ptr<TraitSpec>& trait) { return trait->name() == name; });
+		[&](const std::unique_ptr<TraitSpec>& trait) { return stringtolowerj(trait->name()) == stringtolowerj(name); });
 }
 
 TraitSpec* cTraits::GetTrait(const string& name)

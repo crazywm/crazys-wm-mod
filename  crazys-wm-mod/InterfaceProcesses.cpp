@@ -126,7 +126,6 @@ void NewGame()
 	g_Girls.Free();
 	g_Traits.Free();
 	g_GlobalTriggers.Free();
-	g_Customers.Free();
 	sm.Release();
 	g_InvManager.Free();
 
