@@ -51,7 +51,7 @@ cScreenBuildingSetup::cScreenBuildingSetup()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "building_setup_screen.xml";
 	m_filename = dp.c_str();
 }
-cScreenBuildingSetup::~cScreenBuildingSetup() {}
+cScreenBuildingSetup::~cScreenBuildingSetup() = default;
 
 void cScreenBuildingSetup::set_ids()
 {
@@ -100,7 +100,7 @@ void cScreenBuildingSetup::init()
 	g_InitWin = false;
 
 	int rooms = 20, maxrooms = 200, antipregnum = 0, antipregused = 0, advert = 0;
-	string brothel = "";
+	string brothel;
 	switch (g_Building)
 	{
 	case BUILDING_STUDIO:

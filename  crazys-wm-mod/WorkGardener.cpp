@@ -138,7 +138,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 	int additemnum = 0;
 	while (flowerpower > 0 && additemnum < 8)
 	{
-		string additem = "";
+		string additem;
 		switch (g_Dice % 14)
 		{
 		case 0:		if (flowerpower >= 5) { flowerpower -= 5;	additem = "Bouquet of Enchanted Roses"; } break;
@@ -156,7 +156,7 @@ bool cJobManager::WorkGardener(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 		case 12:	if (flowerpower >= 1) { flowerpower -= 1;	additem = "Wild Flowers"; }				  break;
 		default:	flowerpower -= 1; break;
 		}
-		if (additem != "")
+		if (!additem.empty())
 		{
 			additems[additemnum] = additem;
 			additemnum++;

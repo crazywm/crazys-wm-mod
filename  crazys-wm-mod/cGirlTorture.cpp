@@ -122,7 +122,7 @@ void cGirlTorture::DoTorture()
 	m_Fight = false;
 
 	string sGirlName = m_Girl->m_Realname;
-	string sMsg = "";
+	string sMsg;
 
 	if (cfg.debug.log_torture())
 	{

@@ -52,16 +52,16 @@ sMovieStudio::sMovieStudio() : m_Finance(0)	// constructor
 	m_var = 0;
 	m_Name = "studio";
 	m_Filthiness = 0;
-	m_Next = 0;
-	m_Girls = 0;
-	m_LastGirl = 0;
+	m_Next = nullptr;
+	m_Girls = nullptr;
+	m_LastGirl = nullptr;
 	m_NumGirls = 0;
 	m_SecurityLevel = 0;
 	for (u_int i = 0; i < NUMJOBTYPES; i++) m_BuildingQuality[i] = 0;
-	m_CurrFilm = 0;
+	m_CurrFilm = nullptr;
 	m_NumMovies = 0;
-	m_LastMovies = 0;
-	m_Movies = 0;
+	m_LastMovies = nullptr;
+	m_Movies = nullptr;
 	m_MovieRunTime = 0;
 }
 
@@ -69,14 +69,14 @@ sMovieStudio::~sMovieStudio()			// destructor
 {
 	m_var = 0;
 	if (m_Next)		delete m_Next;
-	m_Next = 0;
+	m_Next = nullptr;
 	if (m_Girls)	delete m_Girls;
-	m_LastGirl = 0;
-	m_Girls = 0;
+	m_LastGirl = nullptr;
+	m_Girls = nullptr;
 	m_NumMovies = 0;
 	if (m_Movies)	delete m_Movies;
-	m_Movies = 0;
-	m_LastMovies = 0;
+	m_Movies = nullptr;
+	m_LastMovies = nullptr;
 	if (m_CurrFilm)	delete m_CurrFilm;
 }
 
@@ -112,8 +112,8 @@ cMovieStudioManager::~cMovieStudioManager()			// destructor
 void cMovieStudioManager::Free()
 {
 	if (m_Parent)	delete m_Parent;
-	m_Parent = 0;
-	m_Last = 0;
+	m_Parent = nullptr;
+	m_Last = nullptr;
 	m_NumBrothels = 0;
 }
 
@@ -149,11 +149,11 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 		if (cgirl->is_dead())			// Remove any dead bodies from last week
 		{
 			current->m_Filthiness++; // `J` Death is messy
-			sGirl* DeadGirl = 0;
+			sGirl* DeadGirl = nullptr;
 			girlName = cgirl->m_Realname;
 			DeadGirl = cgirl;
 			// If there are more girls to process
-			cgirl = (cgirl->m_Next) ? cgirl->m_Next : 0;
+			cgirl = (cgirl->m_Next) ? cgirl->m_Next : nullptr;
 			// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
 			UpdateAllGirlsStat(current, STAT_PCFEAR, 2);
 			UpdateAllGirlsStat(current, STAT_PCHATE, 1);
@@ -164,7 +164,7 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 			ss.str(""); ss << girlName << " has died from her injuries.  Her body will be removed by the end of the week.";
 			DeadGirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
 
-			RemoveGirl(0, DeadGirl); DeadGirl = 0;	// cleanup
+			RemoveGirl(0, DeadGirl); DeadGirl = nullptr;	// cleanup
 		}
 		else
 		{
@@ -188,7 +188,7 @@ void cMovieStudioManager::UpdateMovieStudio()	// Start_Building_Process_A
 			cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
 			cgirl->m_Refused_To_Work_Day = false;
 			cgirl->m_Refused_To_Work_Night = false;
-			string summary = "";
+			string summary;
 
 			g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
 			do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
@@ -294,7 +294,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		if (current->is_dead())		// skip dead girls
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		else
 		{
@@ -316,7 +316,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			(GetNumGirlsOnJob(0, matronjob, SHIFT_NIGHT) < 1 && (current->m_PrevNightJob != matronjob)))
 		{	// Sanity check! Don't process dead girls and only process those with matron jobs
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		// `J` so someone is or was a matron
 
@@ -335,7 +335,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 				current->m_Events.AddMessage("The Director puts herself back to work.", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
 			}
 			else if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		// `J` Now we have a matron so lets see if she will work
 
@@ -383,7 +383,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		if (current->is_dead() || current->m_NightJob != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
@@ -539,7 +539,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		if (current->is_dead() || (current->m_NightJob != JOB_CAMERAMAGE && current->m_NightJob != JOB_CRYSTALPURIFIER))
 		{	// skip dead girls and anyone not working the jobs we are processing
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
@@ -623,7 +623,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			(current->m_DayJob != restjob))
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		//		Summary Messages
 		if (!current->disobey_check(ACTION_WORKMOVIE, brothel))	// if she did not refuse to work...
@@ -656,7 +656,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		if (current->is_dead() || current->m_NightJob == restjob || current->m_NightJob == matronjob)
 		{	// skip dead girls, resting girls and the director (if there is one)
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		girlName = current->m_Realname;
 		if (current->m_NightJob == JOB_STAGEHAND || current->m_NightJob == JOB_PROMOTER) // these two can still work
@@ -705,7 +705,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 			|| (current->m_NightJob == JOB_CRYSTALPURIFIER && current->m_Refused_To_Work_Night))
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		totalPay = totalTips = totalGold = 0;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
@@ -748,7 +748,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		if (current->is_dead() || sw == restjob || sw == JOB_FLUFFER || sw == JOB_CAMERAMAGE || sw == JOB_CRYSTALPURIFIER || sw == JOB_DIRECTOR || sw == JOB_PROMOTER || sw == JOB_STAGEHAND)
 		{	// skip dead girls and already processed jobs
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 
 		totalPay = totalTips = totalGold = 0;
@@ -828,7 +828,7 @@ void cMovieStudioManager::UpdateGirls(sBrothel* brothel)			// Start_Building_Pro
 		if (current->is_dead())
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		girlName = current->m_Realname;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
@@ -1109,7 +1109,7 @@ bool cMovieStudioManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	//watch out, this frees dungeon and rivals too
 
 	TiXmlElement* pBrothelManager = hBrothelManager.ToElement();
-	if (pBrothelManager == 0)
+	if (pBrothelManager == nullptr)
 	{
 		return false;
 	}
@@ -1121,7 +1121,7 @@ bool cMovieStudioManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	}
 	else m_TotalScenesFilmed = 0;
 
-	string message = "";
+	string message;
 	//         ...................................................
 	message = "***************** Loading studio ****************";
 	g_LogFile.write(message);
@@ -1130,7 +1130,7 @@ bool cMovieStudioManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	if (pBrothels)
 	{
 		for (TiXmlElement* pBrothel = pBrothels->FirstChildElement("MovieStudio");
-			pBrothel != 0;
+			pBrothel != nullptr;
 			pBrothel = pBrothel->NextSiblingElement("MovieStudio"))
 		{
 			sMovieStudio* current = new sMovieStudio();
@@ -1154,7 +1154,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 {
 	// no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
-	if (pBrothel == 0)
+	if (pBrothel == nullptr)
 	{
 		return false;
 	}
@@ -1215,7 +1215,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 	if (pMovies)
 	{
 		for (TiXmlElement* pMovie = pMovies->FirstChildElement("Movie");
-			pMovie != 0;
+			pMovie != nullptr;
 			pMovie = pMovie->NextSiblingElement("Movie"))
 		{
 			string Name		= (pMovie->Attribute("Name") ? pMovie->Attribute("Name") : "");
@@ -1249,7 +1249,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 	if (pScenes)
 	{
 		for (TiXmlElement* pScene = pScenes->FirstChildElement("Scene");
-			pScene != 0;
+			pScene != nullptr;
 			pScene = pScene->NextSiblingElement("Scene"))
 		{
 			int scenenum; int mscenenum; int job;
@@ -1280,7 +1280,7 @@ bool sMovieStudio::LoadMovieStudioXML(TiXmlHandle hBrothel)
 	if (pGirls)
 	{
 		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
-			pGirl != 0;
+			pGirl != nullptr;
 			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
 		{
 			sGirl* girl = new sGirl();
@@ -1492,9 +1492,9 @@ void cMovieStudioManager::EndMovie(sBrothel* brothel)
 	{
 		sMovie* movie = brothel->m_Movies;
 		brothel->m_Movies = movie->m_Next;
-		movie->m_Next = 0;
+		movie->m_Next = nullptr;
 		delete movie;
-		movie = 0;
+		movie = nullptr;
 		brothel->m_NumMovies--;
 	}
 }
@@ -1877,7 +1877,7 @@ long cMovieStudioManager::calc_movie_quality(bool autoreleased)
 void cMovieStudioManager::ReleaseCurrentMovie(bool autoreleased, bool save)
 {
 	sMovieStudio* current = (sMovieStudio*)m_Parent;
-	string Name = "";
+	string Name;
 	string Director = BuildDirectorList(autoreleased,true);
 	string Cast = BuildCastList(autoreleased, true);
 	string Crew = BuildCrewList(autoreleased, true);
@@ -1908,17 +1908,17 @@ string cMovieStudioManager::BuildDirectorList(bool autoreleased, bool save)
 		for (int i = 0; i < (int)m_availableScenes.size(); i++)
 		{
 			
-			if (m_availableScenes[i]->m_Director != "") names.push_back(m_availableScenes[i]->m_Director);
+			if (!m_availableScenes[i]->m_Director.empty()) names.push_back(m_availableScenes[i]->m_Director);
 		}
 	}
 	else
 	{
 		for (int i = 0; i < (int)m_movieScenes.size(); i++)
 		{
-			if (m_movieScenes[i]->m_Director != "") names.push_back(m_movieScenes[i]->m_Director);
+			if (!m_movieScenes[i]->m_Director.empty()) names.push_back(m_movieScenes[i]->m_Director);
 		}
 	}
-	if (names.size() <= 0) { return ""; }
+	if (names.empty()) { return ""; }
 	namesB = names;
 	std::sort(names.begin(), names.end());
 	names.resize(std::distance(names.begin(),std::unique(names.begin(), names.end())));
@@ -1944,17 +1944,17 @@ string cMovieStudioManager::BuildCastList(bool autoreleased, bool save)
 	{
 		for (int i = 0; i < (int)m_availableScenes.size(); i++)
 		{
-			if (m_availableScenes[i]->m_Actress != "") names.push_back(m_availableScenes[i]->m_Actress);
+			if (!m_availableScenes[i]->m_Actress.empty()) names.push_back(m_availableScenes[i]->m_Actress);
 		}
 	}
 	else
 	{
 		for (int i = 0; i < (int)m_movieScenes.size(); i++)
 		{
-			if (m_movieScenes[i]->m_Actress != "") names.push_back(m_movieScenes[i]->m_Actress);
+			if (!m_movieScenes[i]->m_Actress.empty()) names.push_back(m_movieScenes[i]->m_Actress);
 		}
 	}
-	if (names.size() <= 0) { return ""; }
+	if (names.empty()) { return ""; }
 
 	namesB = names;
 	std::sort(names.begin(), names.end());
@@ -1981,19 +1981,19 @@ string cMovieStudioManager::BuildCrewList(bool autoreleased, bool save)
 	{
 		for (int i = 0; i < (int)m_availableScenes.size(); i++)
 		{
-			if (m_availableScenes[i]->m_CM != "") names.push_back(m_availableScenes[i]->m_CM);
-			if (m_availableScenes[i]->m_CP != "") names.push_back(m_availableScenes[i]->m_CP);
+			if (!m_availableScenes[i]->m_CM.empty()) names.push_back(m_availableScenes[i]->m_CM);
+			if (!m_availableScenes[i]->m_CP.empty()) names.push_back(m_availableScenes[i]->m_CP);
 		}
 	}
 	else
 	{
 		for (int i = 0; i < (int)m_movieScenes.size(); i++)
 		{
-			if (m_movieScenes[i]->m_CM != "") names.push_back(m_movieScenes[i]->m_CM);
-			if (m_movieScenes[i]->m_CP != "") names.push_back(m_movieScenes[i]->m_CP);
+			if (!m_movieScenes[i]->m_CM.empty()) names.push_back(m_movieScenes[i]->m_CM);
+			if (!m_movieScenes[i]->m_CP.empty()) names.push_back(m_movieScenes[i]->m_CP);
 		}
 	}
-	if (names.size() <= 0) { return ""; }
+	if (names.empty()) { return ""; }
 
 	namesB = names;
 	std::sort(names.begin(), names.end());

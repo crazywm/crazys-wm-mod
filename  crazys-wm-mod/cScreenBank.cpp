@@ -41,7 +41,7 @@ cScreenBank::cScreenBank()
 	m_filename = dp.c_str();
 	GetDeposit = GetWithdraw = false;
 }
-cScreenBank::~cScreenBank() {}
+cScreenBank::~cScreenBank() = default;
 
 void cScreenBank::set_ids()
 {

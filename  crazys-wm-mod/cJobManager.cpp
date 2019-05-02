@@ -1097,16 +1097,16 @@ void cJobManager::do_advertising(sBrothel* brothel, bool Day0Night1)
 	sGirl* current = brothel->m_Girls;
 	while (current)
 	{
-		string summary = "";
+		string summary;
 		bool refused = false;
 		// Added test for current shift, was running each shift twice -PP
 		if ((current->m_DayJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_DAY))
 		{
-			current->m_Refused_To_Work_Day = WorkAdvertising(current, brothel, 0, summary);
+			current->m_Refused_To_Work_Day = WorkAdvertising(current, brothel, false, summary);
 		}
 		if ((current->m_NightJob == JOB_ADVERTISING) && (Day0Night1 == SHIFT_NIGHT))
 		{
-			current->m_Refused_To_Work_Night = WorkAdvertising(current, brothel, 1, summary);
+			current->m_Refused_To_Work_Night = WorkAdvertising(current, brothel, true, summary);
 		}
 		current = current->m_Next;
 	}
@@ -1118,7 +1118,7 @@ void cJobManager::do_whorejobs(sBrothel* brothel, bool Day0Night1)
 
 	while (current)
 	{
-		string summary = "";
+		string summary;
 		u_int sw = 0;						//	Job type
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 
@@ -1148,7 +1148,7 @@ void cJobManager::do_custjobs(sBrothel* brothel, bool Day0Night1)
 
 	while (current)
 	{
-		string summary = "";
+		string summary;
 		u_int sw = 0;						//	Job type
 		sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
 
@@ -1897,7 +1897,7 @@ bool cJobManager::HandleSpecialJobs(int TargetBrothel, sGirl* Girl, int JobID, i
 		// `J` check for refresh
 
 		// `J` we only need to refresh the clinic list if there are any patients
-		if (Girl->m_InClinic && g_Clinic.GetNumberPatients(0) + g_Clinic.GetNumberPatients(1) > 0)
+		if (Girl->m_InClinic && g_Clinic.GetNumberPatients(false) + g_Clinic.GetNumberPatients(true) > 0)
 		{	// `J` if removing the last or adding the first doctor or nurse
 			if ((u_int(OldJobID) == JOB_DOCTOR && g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) < 1) ||
 				(u_int(JobID) == JOB_DOCTOR && g_Clinic.GetNumGirlsOnJob(0, JOB_DOCTOR, Day0Night1) < 2) ||
@@ -2041,7 +2041,7 @@ int cJobManager::guard_coverage(vector<sGang*> *vpt)
 {
 	int pc = 0;
 	vector<sGang*> v = g_Gangs.gangs_on_mission(MISS_GUARDING);
-	if (vpt != 0) *vpt = v;
+	if (vpt != nullptr) *vpt = v;
 	for (u_int i = 0; i < v.size(); i++)
 	{
 		sGang *gang = v[i];
@@ -2083,7 +2083,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	// A gang takes 5 security points per member to stop
 	if (SecLev > OrgNumMem * 5 && g_Dice.percent(p_seclev) &&
 		(g_Brothels.GetNumGirlsOnJob(GirlsBrothelNo, JOB_SECURITY, day_night == SHIFT_DAY) > 0 ||
-		g_Gangs.gangs_on_mission(MISS_GUARDING).size() > 0))
+		!g_Gangs.gangs_on_mission(MISS_GUARDING).empty()))
 		return true;
 
 	// Security guards on duty this shift
@@ -2091,7 +2091,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	// Security guards with enough health to fight
 	vector<sGirl *> SecGrdWhoCanFight;
 
-	if (SecGrd.size() == 0) return false;
+	if (SecGrd.empty()) return false;
 
 	// Remove security guards who are too wounded to fight
 	// Easier to work from the end
@@ -2107,7 +2107,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 	}
 
 	// If all the security guards are too wounded to fight
-	if (SecGrdWhoCanFight.size() == 0) return false;
+	if (SecGrdWhoCanFight.empty()) return false;
 
 	// Get a random security guard
 	SecGuard = SecGrdWhoCanFight.at(g_Dice%SecGrdWhoCanFight.size());
@@ -2150,7 +2150,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 			{
 				Gmsg << "her.";
 				SGmsg << "her.";
-				string item = "";
+				string item;
 				int itemnum = -1;
 				if (g_Brothels.HasItem("Brainwashing Oil", -1) != -1)
 				{
@@ -2170,7 +2170,7 @@ bool cJobManager::security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_n
 					item = "Slave Band";
 					SGmsg << "\n \n" << SecName << " placed a Slave Band on her arm. After a few minutes of struggling, the magic in the Slave Band activated and your new slave, ";
 				}
-				if (item != "" && itemnum != -1)
+				if (!item.empty() && itemnum != -1)
 				{
 					stringstream CGmsg;
 
@@ -2885,7 +2885,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
 	for (u_int i = 0; i < num_girls; i++)
 	{
 		girl = girls[i];
-		if (girl == 0) break;
+		if (girl == nullptr) break;
 		set.push_back(TrainableGirl(girl));
 	}
 	/*
@@ -3038,7 +3038,7 @@ void cJobManager::update_film(sBrothel * brothel)
 			brothel->m_CurrFilm->total_customers = cust_mult*brothel->m_CurrFilm->final_quality * 10;
 			brothel->m_CurrFilm->final_quality /= brothel->m_CurrFilm->scene_quality.size();
 			film_list.push_back(brothel->m_CurrFilm);
-			brothel->m_CurrFilm = 0;
+			brothel->m_CurrFilm = nullptr;
 		}
 	}
 }
@@ -3446,7 +3446,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 					else if (sub == "Fa") g_Farm.RemoveGirl(num, selected_girl, false);
 					// dead girls get removed from the game
 					delete selected_girl;
-					selected_girl = 0;
+					selected_girl = nullptr;
 				}
 				continue;
 			}
@@ -3532,7 +3532,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 					else
 					{  // random girls simply get removed from the game
 						delete selected_girl;
-						selected_girl = 0;
+						selected_girl = nullptr;
 					}
 				}
 				continue;
@@ -3568,13 +3568,13 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 					else
 					{  // random girls simply get removed from the game
 						delete selected_girl;
-						selected_girl = 0;
+						selected_girl = nullptr;
 					}
 				}
 			}
 		}
 
-		if (freegirl_names.size() > 0)
+		if (!freegirl_names.empty())
 		{
 			ss << "You grant " << freegirl_names[0];
 			if (freegirl_names.size() == 1)			ss << " her";
@@ -3586,7 +3586,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 			}
 			ss << " freedom.\n \n";
 		}
-		if (firegirl_names.size() > 0)
+		if (!firegirl_names.empty())
 		{
 			ss << "You fire " << firegirl_names[0];
 			if (firegirl_names.size() == 2)	ss << " and " << firegirl_names[1];
@@ -3597,7 +3597,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 			}
 			ss << ".\n \n";
 		}
-		if (sellgirl_names.size()>0)
+		if (!sellgirl_names.empty())
 		{
 			int sell = 0;
 			int sellsize = sellgirl_names.size();
@@ -3620,7 +3620,7 @@ void cJobManager::ffsd_outcome(vector<int> girl_array, string sub, int num)
 			}
 			ss << ".\n \n";
 		}
-		if (dumpgirl_names.size() > 0)
+		if (!dumpgirl_names.empty())
 		{
 			int sell = 0;
 			int dumpsize = dumpgirl_names.size();

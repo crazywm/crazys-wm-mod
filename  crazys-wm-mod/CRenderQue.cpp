@@ -30,11 +30,11 @@ void CRenderQue::DrawQue()
 	ClearQue();
 }
 
-void CRenderQue::ClearQue() {m_Parent = 0; m_Last = 0;}
+void CRenderQue::ClearQue() {m_Parent = nullptr; m_Last = nullptr;}
 
 void CRenderQue::AddObject(CRenderObject* object)
 {
-	object->m_Next = 0;
+	object->m_Next = nullptr;
 	if(!m_Parent)
 	{
 		m_Parent = object;

@@ -22,18 +22,18 @@
 #include "main.h"
 
 //these static vars defined in the header file need to be specified here
-SDL_Surface* cScrollBar::m_ImgBarBG=0;
-SDL_Surface* cScrollBar::m_ImgBarOn=0;
-SDL_Surface* cScrollBar::m_ImgBarOff=0;
-SDL_Surface* cScrollBar::m_ImgBarDisabled=0;
-SDL_Surface* cScrollBar::m_ImgNotches=0;
+SDL_Surface* cScrollBar::m_ImgBarBG=nullptr;
+SDL_Surface* cScrollBar::m_ImgBarOn=nullptr;
+SDL_Surface* cScrollBar::m_ImgBarOff=nullptr;
+SDL_Surface* cScrollBar::m_ImgBarDisabled=nullptr;
+SDL_Surface* cScrollBar::m_ImgNotches=nullptr;
 Uint8 cScrollBar::m_NotchOffset=0;
-SDL_Surface* cScrollBar::m_ImgButtonUpOn=0;
-SDL_Surface* cScrollBar::m_ImgButtonUpOff=0;
-SDL_Surface* cScrollBar::m_ImgButtonUpDisabled=0;
-SDL_Surface* cScrollBar::m_ImgButtonDownOn=0;
-SDL_Surface* cScrollBar::m_ImgButtonDownOff=0;
-SDL_Surface* cScrollBar::m_ImgButtonDownDisabled=0;
+SDL_Surface* cScrollBar::m_ImgButtonUpOn=nullptr;
+SDL_Surface* cScrollBar::m_ImgButtonUpOff=nullptr;
+SDL_Surface* cScrollBar::m_ImgButtonUpDisabled=nullptr;
+SDL_Surface* cScrollBar::m_ImgButtonDownOn=nullptr;
+SDL_Surface* cScrollBar::m_ImgButtonDownOff=nullptr;
+SDL_Surface* cScrollBar::m_ImgButtonDownDisabled=nullptr;
 	
 cScrollBar::cScrollBar(int ID, int x, int y, int width, int height, int visibleitems) :
     cUIWidget(ID, x, y, width, height),

@@ -135,7 +135,7 @@ cScreenTurnSummary::cScreenTurnSummary()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "TurnSummary.xml";
 	m_filename = dp.c_str();
 }
-cScreenTurnSummary::~cScreenTurnSummary() {}
+cScreenTurnSummary::~cScreenTurnSummary() = default;
 
 void cScreenTurnSummary::set_ids()
 {
@@ -191,7 +191,7 @@ void cScreenTurnSummary::process()
 		ClearListBox(event_id);
 		/* */if (Category == Summary_GANGS)		Fill_Events_GANGS();
 		else if (Category == Summary_BROTHELS)	Fill_Events_BROTHELS();
-		else if (GetSelectedTextFromList(item_id) == "") selected_girl = 0;
+		else if (GetSelectedTextFromList(item_id).empty()) selected_girl = nullptr;
 		else
 		{
 			switch (Category)
@@ -207,7 +207,7 @@ void cScreenTurnSummary::process()
 			case Summary_FARM:		selected_girl = g_Farm.GetGirlByName(0, GetSelectedTextFromList(item_id));					break;
 			case Summary_HOUSE:		selected_girl = g_House.GetGirlByName(0, GetSelectedTextFromList(item_id));					break;
 			case Summary_GIRLS:		selected_girl = g_Brothels.GetGirlByName(g_CurrBrothel, GetSelectedTextFromList(item_id));	break;
-			default:				selected_girl = 0;
+			default:				selected_girl = nullptr;
 			}
 
 			Fill_Events(selected_girl);
@@ -221,7 +221,7 @@ void cScreenTurnSummary::process()
 	}
 	if (Event_Change && Event >= 0)
 	{
-		string text = "";
+		string text;
 		if (selected_girl && (Category == Summary_DUNGEON || Category == Summary_STUDIO || Category == Summary_ARENA
 			|| Category == Summary_CENTRE || Category == Summary_CLINIC || Category == Summary_FARM
 			|| Category == Summary_HOUSE || Category == Summary_GIRLS))
@@ -273,7 +273,7 @@ void cScreenTurnSummary::process()
 		PrepareImage(image_id, selected_girl, Image_Type, random, Image);
 		if (imagename_id >= 0)
 		{
-			string t = "";
+			string t;
 			if (m_Images[image_id]) t = m_Images[image_id]->m_Image->GetFilename();
 			m_TextItems[imagename_id]->SetText(t);
 		}
@@ -281,7 +281,7 @@ void cScreenTurnSummary::process()
 	else if (Image_Change)
 	{
 		m_Images[image_id]->m_Image = new CSurface(ImagePath("blank.png"));
-		m_Images[image_id]->m_AnimatedImage = 0;
+		m_Images[image_id]->m_AnimatedImage = nullptr;
 		m_Images[image_id]->m_Image->m_Message = "";
 		if (imagename_id >= 0)	m_TextItems[imagename_id]->SetText("");
 	}
@@ -1367,7 +1367,7 @@ void cScreenTurnSummary::Fill_Items_HOUSE()
 
 void cScreenTurnSummary::Fill_Events(sGirl* girl)
 {
-	if (girl == 0) return;
+	if (girl == nullptr) return;
 	Event_Change = true;
 	Image_Change = true;
 	Image_Type = IMGTYPE_PROFILE;
@@ -1386,7 +1386,7 @@ void cScreenTurnSummary::Fill_Events(sGirl* girl)
 void cScreenTurnSummary::Fill_Events_GANGS()
 {
 	sGang* gang = g_Gangs.GetGang(Item);
-	if (gang == 0) return;
+	if (gang == nullptr) return;
 	if (!gang->m_Events.IsEmpty())
 	{
 		gang->m_Events.DoSort();						// Sort Events to put Warnings & Dangers first.

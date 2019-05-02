@@ -41,9 +41,9 @@ sArena::sArena() : m_Finance(0)	// constructor
 	m_var = 0;
 	m_Name = "arena";
 	m_Filthiness = 0;
-	m_Next = 0;
-	m_Girls = 0;
-	m_LastGirl = 0;
+	m_Next = nullptr;
+	m_Girls = nullptr;
+	m_LastGirl = nullptr;
 	m_NumGirls = 0;
 	m_SecurityLevel = 0;
 	for (u_int i = 0; i < NUMJOBTYPES; i++) m_BuildingQuality[i] = 0;
@@ -53,10 +53,10 @@ sArena::~sArena()			// destructor
 {
 	m_var = 0;
 	if (m_Next)		delete m_Next;
-	m_Next = 0;
+	m_Next = nullptr;
 	if (m_Girls)	delete m_Girls;
-	m_LastGirl = 0;
-	m_Girls = 0;
+	m_LastGirl = nullptr;
+	m_Girls = nullptr;
 }
 
 void cArenaManager::AddGirl(int brothelID, sGirl* girl, bool keepjob)
@@ -91,8 +91,8 @@ cArenaManager::~cArenaManager()			// destructor
 void cArenaManager::Free()
 {
 	if (m_Parent)	delete m_Parent;
-	m_Parent = 0;
-	m_Last = 0;
+	m_Parent = nullptr;
+	m_Last = nullptr;
 	m_NumBrothels = 0;
 }
 
@@ -121,11 +121,11 @@ void cArenaManager::UpdateArena()	// Start_Building_Process_A
 		if (cgirl->is_dead())			// Remove any dead bodies from last week
 		{
 			current->m_Filthiness++; // `J` Death is messy
-			sGirl* DeadGirl = 0;
+			sGirl* DeadGirl = nullptr;
 			girlName = cgirl->m_Realname;
 			DeadGirl = cgirl;
 			// If there are more girls to process
-			cgirl = (cgirl->m_Next) ? cgirl->m_Next : 0;
+			cgirl = (cgirl->m_Next) ? cgirl->m_Next : nullptr;
 			// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
 			UpdateAllGirlsStat(current, STAT_PCFEAR, 2);
 			UpdateAllGirlsStat(current, STAT_PCHATE, 1);
@@ -136,7 +136,7 @@ void cArenaManager::UpdateArena()	// Start_Building_Process_A
 			ss.str(""); ss << girlName << " has died from her injuries.  Her body will be removed by the end of the week.";
 			DeadGirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
 
-			RemoveGirl(0, DeadGirl); DeadGirl = 0;	// cleanup
+			RemoveGirl(0, DeadGirl); DeadGirl = nullptr;	// cleanup
 		}
 		else
 		{
@@ -160,7 +160,7 @@ void cArenaManager::UpdateArena()	// Start_Building_Process_A
 			cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
 			cgirl->m_Refused_To_Work_Day = false;
 			cgirl->m_Refused_To_Work_Night = false;
-			string summary = "";
+			string summary;
 			g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
 			do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
 			g_Girls.updateGirlAge(cgirl, true);		// update birthday counter and age the girl
@@ -181,9 +181,9 @@ void cArenaManager::UpdateArena()	// Start_Building_Process_A
 		}
 	}
 
-	UpdateGirls(current, 0);	// Run the Day Shift
+	UpdateGirls(current, false);	// Run the Day Shift
 
-	UpdateGirls(current, 1);	// Run the Nighty Shift
+	UpdateGirls(current, true);	// Run the Nighty Shift
 
 	g_Gold.brothel_accounts(current->m_Finance, current->m_id);
 
@@ -232,7 +232,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		if (current->is_dead())		// skip dead girls
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		else
 		{
@@ -254,7 +254,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 			(GetNumGirlsOnJob(0, matronjob, Day0Night1) < 1 && (current->m_PrevDayJob != matronjob || current->m_PrevNightJob != matronjob)))
 		{	// Sanity check! Don't process dead girls and only process those with matron jobs
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		// `J` so someone is or was a matron
 
@@ -273,7 +273,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 				current->m_Events.AddMessage("The Doctore puts herself back to work.", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
 			}
 			else if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		// `J` Now we have a matron so lets see if she will work
 
@@ -327,7 +327,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		if (current->is_dead() || sw != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
@@ -524,7 +524,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		if (current->is_dead() || sw == restjob || sw == matronjob)// || sw == JOB_RACING)
 		{	// skip dead girls, resting girls and the matron and racers
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		totalPay = totalTips = totalGold = 0;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
@@ -591,7 +591,7 @@ void cArenaManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bui
 		if (current->is_dead())
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		girlName = current->m_Realname;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
@@ -804,12 +804,12 @@ bool cArenaManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	//watch out, this frees dungeon and rivals too
 
 	TiXmlElement* pBrothelManager = hBrothelManager.ToElement();
-	if (pBrothelManager == 0)
+	if (pBrothelManager == nullptr)
 	{
 		return false;
 	}
 
-	string message = "";
+	string message;
 	//         ...................................................
 	message = "***************** Loading arena ****************";
 	g_LogFile.write(message);
@@ -818,7 +818,7 @@ bool cArenaManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	if (pBrothels)
 	{
 		for (TiXmlElement* pBrothel = pBrothels->FirstChildElement("Arena");
-			pBrothel != 0;
+			pBrothel != nullptr;
 			pBrothel = pBrothel->NextSiblingElement("Arena"))
 		{
 			sArena* current = new sArena();
@@ -842,7 +842,7 @@ bool sArena::LoadArenaXML(TiXmlHandle hBrothel)
 {
 	// no need to init this, we just created it
 	TiXmlElement* pBrothel = hBrothel.ToElement();
-	if (pBrothel == 0)
+	if (pBrothel == nullptr)
 	{
 		return false;
 	}
@@ -901,7 +901,7 @@ bool sArena::LoadArenaXML(TiXmlHandle hBrothel)
 	if (pGirls)
 	{
 		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
-			pGirl != 0;
+			pGirl != nullptr;
 			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
 		{
 			sGirl* girl = new sGirl();

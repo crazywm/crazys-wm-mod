@@ -54,7 +54,7 @@ public:
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cScreenCastingTry() {}
+	~cScreenCastingTry() = default;
 
 	void init();
 	void process();

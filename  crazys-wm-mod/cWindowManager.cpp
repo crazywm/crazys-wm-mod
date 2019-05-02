@@ -23,24 +23,24 @@ extern CLog g_LogFile;
 
 sWindow::sWindow()
 {
-	m_Next = 0;
-	m_Interface = 0;
+	m_Next = nullptr;
+	m_Interface = nullptr;
 }
 sWindow::~sWindow()
 {
 	if (m_Next) delete m_Next;
-	m_Next = 0;
-	m_Interface = 0;
+	m_Next = nullptr;
+	m_Interface = nullptr;
 }
 
 cWindowManager::cWindowManager()
 {
-	m_Parent = 0;
+	m_Parent = nullptr;
 }
 cWindowManager::~cWindowManager()
 {
 	if (m_Parent) delete m_Parent;
-	m_Parent = 0;
+	m_Parent = nullptr;
 }
 
 void cWindowManager::push(string window_name)
@@ -61,7 +61,7 @@ void cInterfaceWindowXML::handler_func(cInterfaceWindowXML *wpt)
 
 void cWindowManager::Push(process_func Process, cInterfaceWindow* Interface)
 {
-	if (Process == 0) return;					// Don't push a NULL value
+	if (Process == nullptr) return;					// Don't push a NULL value
 	sWindow *InterfacePtr = new sWindow();		// Allocate a new process and push it on stack
 	InterfacePtr->m_Next = m_Parent;
 	m_Parent = InterfacePtr;
@@ -75,7 +75,7 @@ void cWindowManager::Push(process_func Process, cInterfaceWindow* Interface)
 
 void cWindowManager::push(process_funcxml Process, cInterfaceWindow* Interface)
 {
-	if (Process == 0) return;					// Don't push a NULL value
+	if (Process == nullptr) return;					// Don't push a NULL value
 	sWindow *InterfacePtr = new sWindow();		// Allocate a new process and push it on stack
 	InterfacePtr->m_Next = m_Parent;
 	m_Parent = InterfacePtr;
@@ -90,19 +90,19 @@ void cWindowManager::push(process_funcxml Process, cInterfaceWindow* Interface)
 // remove function from the stack
 void cWindowManager::Pop()
 {
-	if (m_Parent != 0)
+	if (m_Parent != nullptr)
 	{
 		sWindow *InterfacePtr = m_Parent;
 		m_Parent = m_Parent->m_Next;
-		InterfacePtr->m_Next = 0;
+		InterfacePtr->m_Next = nullptr;
 		delete InterfacePtr;
-		InterfacePtr = 0;
+		InterfacePtr = nullptr;
 	}
 }
 
 void cWindowManager::PopToWindow(cInterfaceWindow* Interface)
 {
-	if (m_Parent != 0)
+	if (m_Parent != nullptr)
 	{
 		while (m_Parent->m_Interface != Interface) Pop();
 	}
@@ -143,7 +143,7 @@ bool cWindowManager::HasEditBox()
 
 cInterfaceWindow* cWindowManager::GetWindow()
 {
-	if (!m_Parent) return 0;
+	if (!m_Parent) return nullptr;
 	return m_Parent->m_Interface;
 }
 

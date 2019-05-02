@@ -62,7 +62,7 @@ cScreenPrison::cScreenPrison()
 	m_filename = dp.c_str();
 	selection = -1;
 }
-cScreenPrison::~cScreenPrison() {}
+cScreenPrison::~cScreenPrison() = default;
 
 void cScreenPrison::init()
 {
@@ -173,7 +173,7 @@ void cScreenPrison::update_details()
 
 sGirl* cScreenPrison::get_selected_girl()
 {
-	if (selection == -1) return 0;
+	if (selection == -1) return nullptr;
 	sGirl* pgirls = g_Brothels.GetPrison();
 	int i = 0;
 	while (pgirls)

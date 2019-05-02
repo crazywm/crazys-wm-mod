@@ -46,7 +46,7 @@ cInventory::~cInventory()
 
 void cInventory::Free()
 {
-	for(int i = 0; i < NUM_SHOPITEMS; i++) m_ShopItems[i] = 0;
+	for(int i = 0; i < NUM_SHOPITEMS; i++) m_ShopItems[i] = nullptr;
 }
 
 const char *sEffect::girl_status_name(unsigned int id)
@@ -144,7 +144,7 @@ void cInventory::GivePlayerAllItems()
 		}
 		for (int j = 0; j < MAXNUM_INVENTORY; j++)
 		{
-			if (g_Brothels.m_Inventory[j] == 0)
+			if (g_Brothels.m_Inventory[j] == nullptr)
 			{
 				g_Brothels.m_Inventory[j] = item;
 				g_Brothels.m_EquipedItems[j] = 0;
@@ -379,7 +379,7 @@ void cInventory::CalculateCost(sInventoryItem* newItem)
 		}
 		if (newItem->m_Effects[i].m_Affects == sEffect::Trait)	newItem->m_Cost += 500;	// traits
 	}
-	if (newItem->m_Effects.size() > 0)		newItem->m_Cost += newItem->m_Effects.size() * 5;
+	if (!newItem->m_Effects.empty())		newItem->m_Cost += newItem->m_Effects.size() * 5;
 	if (newItem->m_Rarity > 0)				newItem->m_Cost += newItem->m_Rarity * 5;
 	if (newItem->m_Special == 1)			newItem->m_Cost += 2000;
 	else if (newItem->m_Special == 2)		newItem->m_Cost += 100;
@@ -411,11 +411,11 @@ ostream& operator << (ostream& os, sEffect::What &w)
 // ----- Shop
 sInventoryItem* cInventory::BuyShopItem(int num)
 {
-	if (num >= NUM_SHOPITEMS) return 0;
+	if (num >= NUM_SHOPITEMS) return nullptr;
 	sInventoryItem* item = m_ShopItems[num];
 	if (item->m_Infinite == 0)
 	{
-		m_ShopItems[num] = 0;
+		m_ShopItems[num] = nullptr;
 		m_NumShopItems--;
 	}
 	return item;
@@ -437,8 +437,8 @@ void cInventory::UpdateShop()
 	for (int i = 0; i < NUM_SHOPITEMS; i++)
 	{
 		sInventoryItem* item = GetRandomItem();
-		while (item == 0) item = GetRandomItem();
-		if (item == 0) break;	// should never happen but left in anyway
+		while (item == nullptr) item = GetRandomItem();
+		if (item == nullptr) break;	// should never happen but left in anyway
 
 		int chance = g_Dice.d100();
 		if ((item->m_Rarity == RARITYCOMMON ||
@@ -461,14 +461,14 @@ void cInventory::UpdateShop()
 sInventoryItem* cInventory::GetShopItem(int num)
 {
 	if (m_NumShopItems == 0) UpdateShop();
-	if (num >= NUM_SHOPITEMS) return 0;
+	if (num >= NUM_SHOPITEMS) return nullptr;
 	return m_ShopItems[num];
 }
 int cInventory::GetRandomShopItem()
 {
 	if (m_NumShopItems == 0) UpdateShop();
 	int num = g_Dice%NUM_SHOPITEMS;
-	while (m_ShopItems[num] == 0) num = g_Dice%NUM_SHOPITEMS;
+	while (m_ShopItems[num] == nullptr) num = g_Dice%NUM_SHOPITEMS;
 	if (num > NUM_SHOPITEMS - 1) num = NUM_SHOPITEMS - 1;   // shouldn't be necessary, but once I got 40 back causing OOB elsewhere
 	return num;
 }
@@ -479,10 +479,10 @@ sInventoryItem* cInventory::GetRandomItem()
 	sInventoryItem *ipt;
 	int log = 0; if (cfg.debug.log_items()) log = (cfg.debug.log_extradetails()) ? 2 : 1;
 	if (log > 0) g_LogFile.os() << "cInventory::GetRandomItem: " << "items.size == " << items.size() << endl;
-	if (items.size() == 0)
+	if (items.empty())
 	{
 		if (log > 1) g_LogFile.os() << "	returning null" << endl;
-		return 0;
+		return nullptr;
 	}
 	if (items.size() == 1)
 	{
@@ -498,8 +498,8 @@ sInventoryItem* cInventory::GetRandomItem()
 }
 sInventoryItem* cInventory::GetRandomCatacombItem()
 {
-	if (items.size() == 0)	return 0;
-	sInventoryItem *temp = 0;
+	if (items.empty())	return nullptr;
+	sInventoryItem *temp = nullptr;
 	int index = g_Dice % (items.size() - 1);
 
 	int tries = items.size() / 3;	// try 1/3 of all items to get an item
@@ -516,7 +516,7 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
 		case RARITYCATACOMB01:	if (g_Dice.percent(1))		return temp;	break;
 		case RARITYSCRIPTONLY:
 		case RARITYSCRIPTORREWARD:
-			temp = 0;
+			temp = nullptr;
 			break;	// if at the end it is a script item, no item is returned
 		case RARITYCOMMON:
 		case RARITYSHOP50:
@@ -526,7 +526,7 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
 		tries--;
 		index++;
 	}
-	if (!temp) return 0;
+	if (!temp) return nullptr;
 	return temp;
 }
 
@@ -628,7 +628,7 @@ sInventoryItem* cInventory::GetItem(string name)
 		item = items[i];
 		if (item->m_Name == name) return item;
 	}
-	return 0;
+	return nullptr;
 }
 
 // ----- Equip unequip
@@ -655,7 +655,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 
 		g_MessageQue.AddToQue(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
 			": The use of this item has reset all her stats and skills to default.", COLOR_BLUE);
-		girl->m_Inventory[num] = 0;
+		girl->m_Inventory[num] = nullptr;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
 		g_Girls.CalculateGirlType(girl);
@@ -673,7 +673,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 
 		g_MessageQue.AddToQue(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
 			": The use of this item has removed all her traits.", COLOR_BLUE);
-		girl->m_Inventory[num] = 0;
+		girl->m_Inventory[num] = nullptr;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
 		g_Girls.ApplyTraits(girl);
@@ -1122,7 +1122,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 	// if consumable then remove from inventory
 	if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
 	{
-		girl->m_Inventory[num] = 0;
+		girl->m_Inventory[num] = nullptr;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
 	}
@@ -1230,7 +1230,7 @@ bool cInventory::equip_limited_item_ok(sGirl* girl, int num, bool force, int lim
 	 */
 	for (int i = 0; i < 40 && count < limit; i++)
 	{
-		if (girl->m_Inventory[i] == 0 ||					// if there's nothing in the slot or
+		if (girl->m_Inventory[i] == nullptr ||					// if there's nothing in the slot or
 			girl->m_Inventory[i]->m_Type != target_type ||	// if there's something in the slot but it's not the correct type or
 			girl->m_EquipedItems[i] != 1)					// if it is the target type but she does not have it equipped,
 			continue;										// Skip it
@@ -1361,7 +1361,7 @@ void cInventory::LoadItems(string filename)
 		g_LogFile.os() << "LoadItems: stream not good after open" << endl;
 
 	char buffer[1000];
-	sInventoryItem* newItem = 0;
+	sInventoryItem* newItem = nullptr;
 	long tempData;
 
 	while(in.good())

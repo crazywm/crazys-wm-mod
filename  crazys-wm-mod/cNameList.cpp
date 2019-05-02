@@ -90,7 +90,7 @@ void cNameList::load(string file)
 	/*
 	*	quick sanity check
 	*/
-	if (names.size() == 0)
+	if (names.empty())
 	{
 		g_LogFile.ss() << "Error: zero names found in file '" << file << "'";
 		g_LogFile.ssend();
@@ -174,7 +174,7 @@ void cSurnameList::load(string file)
 	/*
 	*	quick sanity check
 	*/
-	if (names.size() == 0)
+	if (names.empty())
 	{
 		g_LogFile.ss() << "Error: zero names found in file '" << file << "'";
 		g_LogFile.ssend();

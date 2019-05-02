@@ -36,7 +36,7 @@ class FileListEntry {
 	string m_leaf;	// the file name: "Girls.girls"
 	string m_full;	// the full path: ".\Resources\Characters\Girls.girls"
 public:
-	FileListEntry() {}
+	FileListEntry() = default;
 	FileListEntry(const FileListEntry &fle) {
 		m_path = fle.m_path;
 		m_leaf = fle.m_leaf;
@@ -126,9 +126,9 @@ public:
 	*/
 	static	vector<string> file_extensions;
 	ImageFileList(DirPath dp, const char *pattern = "*")
-		: FileList(dp, 0, true)
+		: FileList(dp, nullptr, true)
 	{
-		if (file_extensions.size() == 0) {
+		if (file_extensions.empty()) {
 			file_extensions.push_back(string(".jp*g"));
 			file_extensions.push_back(".png");
 			file_extensions.push_back(".gif");

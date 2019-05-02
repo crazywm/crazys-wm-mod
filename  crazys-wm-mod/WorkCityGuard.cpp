@@ -139,7 +139,7 @@ bool cJobManager::WorkCityGuard(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	}
 
 	// Cleanup
-	if (tempgirl) delete tempgirl; tempgirl = 0;
+	if (tempgirl) delete tempgirl; tempgirl = nullptr;
 
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);

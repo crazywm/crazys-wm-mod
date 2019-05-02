@@ -51,7 +51,7 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 {
 #pragma region //	Job setup				//
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	// if she was not in surgery last turn, reset working days to 0 before proceding
+	// if she was not in surgery last turn, reset working days to 0 before proceeding
 	if (girl->m_YesterDayJob != JOB_ASSJOB) { girl->m_WorkingDay = girl->m_PrevWorkingDay = 0; }
 	girl->m_DayJob = girl->m_NightJob = JOB_ASSJOB;	// it is a full time job
 
@@ -79,7 +79,7 @@ bool cJobManager::WorkGetAssJob(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 #pragma endregion
 #pragma region //	Count the Days				//
 
-	if (Day0Night1 == SHIFT_DAY)	// the Doctor works on her durring the day
+	if (Day0Night1 == SHIFT_DAY)	// the Doctor works on her during the day
 	{
 		girl->m_WorkingDay++;
 	}

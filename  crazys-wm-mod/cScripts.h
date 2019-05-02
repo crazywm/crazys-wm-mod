@@ -20,7 +20,7 @@
 #define __CSCRIPTS_H
 
 #include <map>
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #include "tinyxml.h"
 using namespace std;
@@ -54,7 +54,7 @@ typedef struct sEntry	// represents a single entry in an action
 	{
 		m_Type = _NONE;
 		m_NumChoices = 0;
-		m_Choices = 0;
+		m_Choices = nullptr;
 		m_TypeID= 0;
 	}
 
@@ -62,18 +62,18 @@ typedef struct sEntry	// represents a single entry in an action
 	~sEntry()
 	{
 		// Special case for choice types
-		if((m_Type == _CHOICE) && m_Choices != 0)
+		if((m_Type == _CHOICE) && m_Choices != nullptr)
 		{
 			if(m_NumChoices)
 			{
 				for(long i=0;i<m_NumChoices;i++)
 				{
 					delete [] m_Choices[i]; // Delete choice text
-					m_Choices[i] = 0;
+					m_Choices[i] = nullptr;
 				}
 			}
 			delete [] m_Choices; // Delete choice array
-			m_Choices = 0;
+			m_Choices = nullptr;
 		}
 	}
 }sEntry;
@@ -94,14 +94,14 @@ typedef struct sAction
 		m_ID = 0; // Set all data to defaults
 		m_Text[0] = 0;
 		m_NumEntries = 0;
-		m_Entries = 0;
-		m_Next = 0;
+		m_Entries = nullptr;
+		m_Next = nullptr;
 	}
 
 	~sAction()
 	{
-		if(m_Entries) delete [] m_Entries; m_Entries = 0; // Free entries array
-		if(m_Next) delete m_Next; m_Next = 0; // Delete next in list
+		if(m_Entries) delete [] m_Entries; m_Entries = nullptr; // Free entries array
+		if(m_Next) delete m_Next; m_Next = nullptr; // Delete next in list
 	}
 } sAction;
 
@@ -125,7 +125,7 @@ typedef struct sScriptEntry
 	{
 		m_Type = _NONE; // Clear to default values
 		m_IOValue = 0;
-		m_Text = 0;
+		m_Text = nullptr;
 		m_Var = 0;
 	}
 
@@ -133,7 +133,7 @@ typedef struct sScriptEntry
 	{
 		if(m_Text)
 			delete [] m_Text;
-		m_Text = 0;
+		m_Text = nullptr;
 	} // Delete text buffer
 } sScriptEntry;
 
@@ -149,16 +149,16 @@ typedef struct sScript
 	{
 		m_Type = 0; // Clear to defaults
 		m_NumEntries = 0;
-		m_Entries = 0;
-		m_Prev = m_Next = 0;
+		m_Entries = nullptr;
+		m_Prev = m_Next = nullptr;
 	}
 
 	~sScript()
 	{
 //		if (m_Entries) delete[] m_Entries;
-		m_Entries = 0; // Delete entry array
+		m_Entries = nullptr; // Delete entry array
 		if (m_Next) delete m_Next;
-		m_Prev = m_Next = 0; // Delete next in linked list
+		m_Prev = m_Next = nullptr; // Delete next in linked list
 	}
 } sScript;
 
@@ -173,12 +173,12 @@ private:
 	bool GetNextWord(char *Data, FILE *fp, long MaxSize);
 
 public:
-	cActionTemplate() {m_ActionParent=0;}
+	cActionTemplate() {m_ActionParent=nullptr;}
 	~cActionTemplate() {Free();}
 
 	// Load and free the action templates
 	bool Load();
-	bool Free(){if(m_ActionParent) delete m_ActionParent;m_ActionParent=0;m_NumActions=0;return true;}
+	bool Free(){if(m_ActionParent) delete m_ActionParent;m_ActionParent=nullptr;m_NumActions=0;return true;}
 
 	// Get # actions in template, action parent,
 	// and specific action structure.
@@ -216,8 +216,8 @@ protected:
 	virtual sScript *Process(sScript *Script) { return Script->m_Next; }
 
 public:
-	cScript() {m_ScriptParent=0;}; // Constructor
-	~cScript() {if(m_ScriptParent)delete m_ScriptParent; m_ScriptParent=0;}; // Destructor
+	cScript() {m_ScriptParent=nullptr;}; // Constructor
+	~cScript() {if(m_ScriptParent)delete m_ScriptParent; m_ScriptParent=nullptr;}; // Destructor
 
 	bool Load(string filename); // Load a script
 	bool Free(); // Free loaded script
@@ -232,7 +232,7 @@ public:
  *	no idea if this stub needs to return true or false
  *	picked one at random to silence a compiler warning
  */
-	bool Execute(char *Filename=NULL) { Filename; return true; }; // Execute script
+	bool Execute(char *Filename=nullptr) { Filename; return true; }; // Execute script
 };
 
 // General Functions

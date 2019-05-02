@@ -208,7 +208,7 @@ sScript *cGameScript::Process(sScript *Script)
 	default: return Script->m_Next;	// `J` if a script type is not found, skip it.
 	}
 
-	return 0; // Error executing
+	return nullptr; // Error executing
 }
 
 void cGameScript::RunScript()
@@ -218,7 +218,7 @@ void cGameScript::RunScript()
 	sScript* curr = m_CurrPos;
 
 	// Scan through script and process functions
-	while (curr != 0 && !m_Leave && m_Active)
+	while (curr != nullptr && !m_Leave && m_Active)
 	{
 		curr = Process(curr);
 		g_InitWin = true;
@@ -340,7 +340,7 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -366,10 +366,10 @@ sScript *cGameScript::Script_IfVar(sScript *Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript *cGameScript::Script_Else(sScript *Script)
 {
@@ -413,7 +413,7 @@ sScript *cGameScript::Script_IfChoice(sScript *Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -440,10 +440,10 @@ sScript *cGameScript::Script_IfChoice(sScript *Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript *cGameScript::Script_SetPlayerSuspision(sScript *Script)
 {
@@ -551,7 +551,7 @@ sScript *cGameScript::Script_SetGirlFlag(sScript *Script)
 	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 
-	if (m_GirlTarget == 0) return Script->m_Next;	// this shouldn't happen
+	if (m_GirlTarget == nullptr) return Script->m_Next;	// this shouldn't happen
 
 	m_GirlTarget->m_Flags[value[0]] = (char)value[1];
 	return Script->m_Next;
@@ -562,7 +562,7 @@ sScript *cGameScript::Script_AdjustGirlFlag(sScript *Script)
 	value[0] = (Script->m_Entries[0].m_Var == 1 ? m_Vars[Script->m_Entries[0].m_lValue] : Script->m_Entries[0].m_lValue);
 	value[1] = (Script->m_Entries[1].m_Var == 1 ? m_Vars[Script->m_Entries[1].m_lValue] : Script->m_Entries[1].m_lValue);
 
-	if (m_GirlTarget == 0) return Script->m_Next;	// this shouldn't happen
+	if (m_GirlTarget == nullptr) return Script->m_Next;	// this shouldn't happen
 
 	m_GirlTarget->m_Flags[value[0]] += (char)value[1];
 	return Script->m_Next;
@@ -789,7 +789,7 @@ sScript *cGameScript::Script_AdjustTargetGirlSkill(sScript *Script)
 }
 sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 {
-	if (m_GirlTarget == 0) return Script->m_Next;
+	if (m_GirlTarget == nullptr) return Script->m_Next;
 
 	m_GirlTarget->bdsm(2);
 	m_GirlTarget->anal(2);
@@ -818,7 +818,7 @@ sScript *cGameScript::Script_PlayerRapeTargetGirl(sScript *Script)
 sScript *cGameScript::Script_GivePlayerRandomSpecialItem(sScript *Script)
 {
 	sInventoryItem* item = g_InvManager.GetRandomItem();
-	while (item == 0)
+	while (item == nullptr)
 		item = g_InvManager.GetRandomItem();
 
 	bool ok = false;
@@ -827,7 +827,7 @@ sScript *cGameScript::Script_GivePlayerRandomSpecialItem(sScript *Script)
 		if (item->m_Rarity >= RARITYSHOP05) ok = true;
 		else
 		{
-			do { item = g_InvManager.GetRandomItem(); } while (item == 0);
+			do { item = g_InvManager.GetRandomItem(); } while (item == nullptr);
 		}
 	}
 
@@ -854,7 +854,7 @@ sScript *cGameScript::Script_GivePlayerRandomSpecialItem(sScript *Script)
 		{
 			for (int j = 0; j<MAXNUM_INVENTORY; j++)
 			{
-				if (g_Brothels.m_Inventory[j] == 0)
+				if (g_Brothels.m_Inventory[j] == nullptr)
 				{
 					g_Brothels.m_Inventory[j] = item;
 					g_Brothels.m_EquipedItems[j] = 0;
@@ -887,7 +887,7 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -913,10 +913,10 @@ sScript *cGameScript::Script_IfPassSkillCheck(sScript *Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 {
@@ -935,7 +935,7 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -961,10 +961,10 @@ sScript *cGameScript::Script_IfPassStatCheck(sScript *Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 {
@@ -994,7 +994,7 @@ sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -1020,10 +1020,10 @@ sScript* cGameScript::Script_IfGirlFlag(sScript* Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_GameOver(sScript* Script)
 {
@@ -1063,7 +1063,7 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -1089,10 +1089,10 @@ sScript* cGameScript::Script_IfGirlStat(sScript* Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 {
@@ -1122,7 +1122,7 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -1148,10 +1148,10 @@ sScript* cGameScript::Script_IfGirlSkill(sScript* Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 {
@@ -1167,7 +1167,7 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -1193,10 +1193,10 @@ sScript* cGameScript::Script_IfHasTrait(sScript* Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_TortureTarget(sScript* Script)
 {
@@ -1335,7 +1335,7 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -1361,10 +1361,10 @@ sScript* cGameScript::Script_IfNotDisobey(sScript* Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_GroupSexTarget(sScript* Script)
 {
@@ -1613,8 +1613,8 @@ sScript* cGameScript::Script_AdjustTraitTemp(sScript* Script)					// `J` new
 }
 sScript* cGameScript::Script_GetRandomGirl(sScript* Script)						// `J` new
 {
-	m_GirlTarget = 0;
-	sBrothel* brothel = 0;
+	m_GirlTarget = nullptr;
+	sBrothel* brothel = nullptr;
 	switch (Script->m_Entries[0].m_Selection)
 	{
 	case 1:	// brothel
@@ -1714,7 +1714,7 @@ sScript* cGameScript::Script_GetRandomGirl(sScript* Script)						// `J` new
 	}
 	break;
 	}
-	if (m_GirlTarget == 0)
+	if (m_GirlTarget == nullptr)
 	{
 		m_Active = false;
 		m_Leave = true;
@@ -1815,7 +1815,7 @@ sScript* cGameScript::Script_IfGirlHasItem(sScript* Script)					// `J` new .06.0
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -1841,10 +1841,10 @@ sScript* cGameScript::Script_IfGirlHasItem(sScript* Script)					// `J` new .06.0
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 
 }
 sScript* cGameScript::Script_AddItemtoGirl(sScript* Script)					// `J` new .06.02.55
@@ -1905,7 +1905,7 @@ sScript* cGameScript::Script_IfPlayerHasItem(sScript* Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -1931,10 +1931,10 @@ sScript* cGameScript::Script_IfPlayerHasItem(sScript* Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_GiveGirlInvItem(sScript* Script)
 {
@@ -1971,7 +1971,7 @@ sScript* cGameScript::Script_GiveGirlInvItem(sScript* Script)
 		if (g_Brothels.m_NumItem[selection] == 0)
 		{
 			g_LogFile.ss() << " That was the last of that item in Player Inventory.";
-			g_Brothels.m_Inventory[selection] = 0;
+			g_Brothels.m_Inventory[selection] = nullptr;
 			g_Brothels.m_EquipedItems[selection] = 0;
 			g_Brothels.m_NumInventory--;
 		}
@@ -1995,7 +1995,7 @@ sScript* cGameScript::Script_IfGirlIsSlave(sScript* Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -2021,10 +2021,10 @@ sScript* cGameScript::Script_IfGirlIsSlave(sScript* Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_IfGirlIsFree(sScript* Script)
 {
@@ -2040,7 +2040,7 @@ sScript* cGameScript::Script_IfGirlIsFree(sScript* Script)
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -2066,10 +2066,10 @@ sScript* cGameScript::Script_IfGirlIsFree(sScript* Script)
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_GiveGoldToGirl(sScript* Script)
 {
@@ -2140,7 +2140,7 @@ sScript* cGameScript::Script_IfGirlStatus(sScript* Script)			// `J` new .06.03.0
 	// for an else to flip the skip mode, or an endif to end
 	// the conditional block.
 	Script = Script->m_Next; // Go to next action to process
-	while (Script != 0)
+	while (Script != nullptr)
 	{
 		if (m_Leave) break;
 		// if else, flip skip mode
@@ -2166,10 +2166,10 @@ sScript* cGameScript::Script_IfGirlStatus(sScript* Script)			// `J` new .06.03.0
 		}
 		else
 		{
-			if ((Script = Process(Script)) == 0) return 0;
+			if ((Script = Process(Script)) == nullptr) return nullptr;
 		}
 	}
-	return 0; // End of script reached
+	return nullptr; // End of script reached
 }
 sScript* cGameScript::Script_SetGirlStatus(sScript* Script)			// `J` new .06.03.00
 {

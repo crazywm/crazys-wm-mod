@@ -49,7 +49,7 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 
 	// ok, she fights. Find all the gangs on guard duty
 	vector<sGang*> v = g_Gangs.gangs_on_mission(MISS_GUARDING);
-	if (v.size() == 0)
+	if (v.empty())
 	{	// no gang, so girl wins. PC combat is outside this class ATM
 		m_girl_wins = true;
 		m_unopposed = true;

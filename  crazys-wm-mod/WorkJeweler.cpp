@@ -196,11 +196,11 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		ss << g_InvManager.CraftItem(girl, JOB_JEWELER, int(craftpoints));
 #else
 		int numitems = 0, tries = 0, random = 0;
-		sInventoryItem* item = NULL;
+		sInventoryItem* item = nullptr;
 
 		while (craftpoints > 0 && numitems < (1 + girl->crafting() / 15) && tries < 20)
 		{
-			string itemmade = "";
+			string itemmade;
 			int Magic = 0, Cost = 0, NumMade = 1;
 
 			if (craftpoints < 20)						// Simple items
@@ -363,7 +363,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 				Magic = 0;		Cost = 0;		itemmade = "Ring of the Schwarzenegger";//                 Desc = "Only the best for the Californian Governator, This ring terminates flabby muscles!. (+50 Str, +25 Cons)"
 			}
 
-			if (itemmade == "")	{ Magic = 0;  Cost = 10; itemmade = "Bauble Necklace"; }//                 Desc = "This necklace is basically some semi-precious stones on a string. It's pretty, but it's not the kind of jewelry you write home about. (D) (+5 Cha)"
+			if (itemmade.empty())	{ Magic = 0;  Cost = 10; itemmade = "Bauble Necklace"; }//                 Desc = "This necklace is basically some semi-precious stones on a string. It's pretty, but it's not the kind of jewelry you write home about. (D) (+5 Cha)"
 			item = g_InvManager.GetItem(itemmade);
 			if (item)
 			{

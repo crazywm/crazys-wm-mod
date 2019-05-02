@@ -377,7 +377,7 @@ public:
 
 	// MYR: New code for security.  All the old code is still here, commented out.
 	static bool work_related_violence(sGirl*, bool, bool);
-	static int guard_coverage(vector<sGang*> *v=0);
+	static int guard_coverage(vector<sGang*> *v=nullptr);
 	static bool security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_night);
 	//static bool gang_stops_rape(sGirl* girl, sGang *gang, int chance, int day_night);
 	static bool gang_stops_rape(sGirl* girl, vector<sGang *> gangs_guarding, sGang *enemy_gang, int coverage, int day_night);
@@ -416,7 +416,7 @@ public:
 	static void do_advertising(sBrothel* brothel, bool Day0Night1);
 	static void do_whorejobs(sBrothel* brothel, bool Day0Night1);
 	static void do_custjobs(sBrothel* brothel, bool Day0Night1);
-	~cJobManager(){}
+	~cJobManager() = default;
 
 	bool is_job_Paid_Player(u_int Job);		//	WD:	Test for all jobs paid by player
 	bool FullTimeJob(u_int Job);			//	`J`	Test if job is takes both shifts

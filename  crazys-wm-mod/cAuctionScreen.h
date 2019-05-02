@@ -58,7 +58,7 @@ public:
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cAuctionScreen() {}
+	~cAuctionScreen() = default;
 
 	void init();
 	void process();

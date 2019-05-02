@@ -25,8 +25,8 @@
 #include <sstream>
 using namespace std;
 
-#include <stdio.h>
-#include <time.h>
+#include <cstdio>
+#include <ctime>
 #include "main.h"
 #include "Constants.h"
 #include "cTraits.h"
@@ -35,7 +35,7 @@ using namespace std;
 #include "cGangs.h"
 #include "cEvents.h"
 #include "cCustomers.h"
-#include "math.h"
+#include <cmath>
 #include "cTriggers.h"
 #include "cGameScript.h"
 #include "cWindowManager.h"

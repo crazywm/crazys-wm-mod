@@ -143,7 +143,7 @@ cScreenTransfer::cScreenTransfer()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "TransferGirls.xml";
 	m_filename = dp.c_str();
 }
-cScreenTransfer::~cScreenTransfer() {}
+cScreenTransfer::~cScreenTransfer() = default;
 
 void cScreenTransfer::set_ids()
 {
@@ -314,7 +314,7 @@ void cScreenTransfer::check_events()
 			else if (leftBrothel == 2)	{ temp = g_Centre.GetGirl(0, 0); }
 			else if (leftBrothel == 1)	{ temp = g_Arena.GetGirl(0, 0); }
 			else if (leftBrothel == 0)	{ temp = g_Studios.GetGirl(0, 0); }
-			else temp = 0;
+			else temp = nullptr;
 
 			int selection = 0;
 			int i = 0;
@@ -349,7 +349,7 @@ void cScreenTransfer::check_events()
 			else if (rightBrothel == 2)	{ temp = g_Centre.GetGirl(0, 0); }
 			else if (rightBrothel == 1)	{ temp = g_Arena.GetGirl(0, 0); }
 			else if (rightBrothel == 0)	{ temp = g_Studios.GetGirl(0, 0); }
-			else temp = 0;
+			else temp = nullptr;
 
 			int selection = 0;
 			int i = 0;
@@ -433,7 +433,7 @@ void cScreenTransfer::TransferGirlsRightToLeft(bool rightfirst, int rightBrothel
 
 			// get next girl
 			girlSelection = GetNextSelectedItemFromList(listb_id, pos + 1, pos);
-			selected_girl = 0;
+			selected_girl = nullptr;
 		}
 
 		// update the girl lists
@@ -461,7 +461,7 @@ int cScreenTransfer::checkjobcolor(sGirl* temp)
 	}
 	else if (temp->m_DayJob == JOB_DOCTOR || temp->m_NightJob == JOB_DOCTOR)
 	{
-		if (g_Clinic.GetNumberPatients(0) < 1 && g_Clinic.GetNumberPatients(1) < 1)		return COLOR_YELLOW;
+		if (g_Clinic.GetNumberPatients(false) < 1 && g_Clinic.GetNumberPatients(true) < 1)		return COLOR_YELLOW;
 		else return COLOR_RED;
 	}
 	else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT || temp->m_DayJob == JOB_COSMETICSURGERY || temp->m_NightJob == JOB_COSMETICSURGERY

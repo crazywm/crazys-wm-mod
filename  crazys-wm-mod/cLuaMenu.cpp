@@ -60,7 +60,7 @@ extern cConfig cfg;
  *	6 : callback calls lua callback function
  */
 
-cLuaMenuInner *cLuaMenu::instance = 0;
+cLuaMenuInner *cLuaMenu::instance = nullptr;
 
 int cLuaMenuInner::get_int(const char *name, int def_val)
 {
@@ -457,13 +457,13 @@ static void c_callback(int option_number)
 void cLuaMenuInner::clicked(int option_number)
 {
 	g_ChoiceManager.Free();
-	g_ChoiceManager.set_callback(0);
+	g_ChoiceManager.set_callback(nullptr);
 /*
  *	we need to free up the string pointers used for captions
  */
 	for(unsigned int i = 0; i < captions.size(); i++) {
 		delete captions[i];
-		captions[i] = 0;
+		captions[i] = nullptr;
 	}
 	captions.clear();
 /*

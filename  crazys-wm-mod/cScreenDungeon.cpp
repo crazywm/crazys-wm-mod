@@ -75,7 +75,7 @@ cScreenDungeon::cScreenDungeon()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "dungeon_screen.xml";
 	m_filename = dp.c_str();
 }
-cScreenDungeon::~cScreenDungeon() {}
+cScreenDungeon::~cScreenDungeon() = default;
 
 void cScreenDungeon::set_ids()
 {
@@ -203,17 +203,17 @@ void cScreenDungeon::init()
 	ss.str("");	ss << "Room for " << releaseto->free_rooms() << " more girls.";
 	EditTextItem(ss.str(), roomsfree_id);
 
-	HideButton(brothel1_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == 0);
-	HideButton(brothel2_id, g_Brothels.GetNumBrothels() < 3 || g_Brothels.GetBrothel(2) == 0);
-	HideButton(brothel3_id, g_Brothels.GetNumBrothels() < 4 || g_Brothels.GetBrothel(3) == 0);
-	HideButton(brothel4_id, g_Brothels.GetNumBrothels() < 5 || g_Brothels.GetBrothel(4) == 0);
-	HideButton(brothel5_id, g_Brothels.GetNumBrothels() < 6 || g_Brothels.GetBrothel(5) == 0);
-	HideButton(brothel6_id, g_Brothels.GetNumBrothels() < 7 || g_Brothels.GetBrothel(6) == 0);
-	HideButton(clinic_id, g_Clinic.GetNumBrothels() < 1 || g_Clinic.GetBrothel(0) == 0);
-	HideButton(studio_id, g_Studios.GetNumBrothels() < 1 || g_Studios.GetBrothel(0) == 0);
-	HideButton(arena_id, g_Arena.GetNumBrothels() < 1 || g_Arena.GetBrothel(0) == 0);
-	HideButton(centre_id, g_Centre.GetNumBrothels() < 1 || g_Centre.GetBrothel(0) == 0);
-	HideButton(farm_id, g_Farm.GetNumBrothels() < 1 || g_Farm.GetBrothel(0) == 0);
+	HideButton(brothel1_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == nullptr);
+	HideButton(brothel2_id, g_Brothels.GetNumBrothels() < 3 || g_Brothels.GetBrothel(2) == nullptr);
+	HideButton(brothel3_id, g_Brothels.GetNumBrothels() < 4 || g_Brothels.GetBrothel(3) == nullptr);
+	HideButton(brothel4_id, g_Brothels.GetNumBrothels() < 5 || g_Brothels.GetBrothel(4) == nullptr);
+	HideButton(brothel5_id, g_Brothels.GetNumBrothels() < 6 || g_Brothels.GetBrothel(5) == nullptr);
+	HideButton(brothel6_id, g_Brothels.GetNumBrothels() < 7 || g_Brothels.GetBrothel(6) == nullptr);
+	HideButton(clinic_id, g_Clinic.GetNumBrothels() < 1 || g_Clinic.GetBrothel(0) == nullptr);
+	HideButton(studio_id, g_Studios.GetNumBrothels() < 1 || g_Studios.GetBrothel(0) == nullptr);
+	HideButton(arena_id, g_Arena.GetNumBrothels() < 1 || g_Arena.GetBrothel(0) == nullptr);
+	HideButton(centre_id, g_Centre.GetNumBrothels() < 1 || g_Centre.GetBrothel(0) == nullptr);
+	HideButton(farm_id, g_Farm.GetNumBrothels() < 1 || g_Farm.GetBrothel(0) == nullptr);
 
 	g_InitWin = false;
 
@@ -238,7 +238,7 @@ void cScreenDungeon::selection_change()
 	// if nothing is selected, then we just need to disable some buttons and we're done
 	if (selection == -1)
 	{
-		selected_girl = 0;
+		selected_girl = nullptr;
 		DisableButton(brandslave_id);
 		DisableButton(allowfood_id);
 		DisableButton(stopfood_id);
@@ -470,7 +470,7 @@ void cScreenDungeon::sell_slaves()
 		{
 			g_Girls.AddGirl(girl);									// add unique girls back to main pool
 		}
-		else { girl = 0; }											// random girls simply get removed from the game
+		else { girl = nullptr; }											// random girls simply get removed from the game
 		g_Brothels.RemoveGirl(g_CurrBrothel, girl, true);			// `J` added to fix "dungeon screen to brothel screen crash"
 	}
 	if (deadcount > 0) g_MessageQue.AddToQue("Nobody is currently in the market for dead girls.", COLOR_YELLOW);
@@ -731,7 +731,7 @@ void cScreenDungeon::talk()
 		return;
 	}
 	// she's still alive. I guess we'll have to talk to her
-	cTrigger* trig = 0;		// is there a girl specific script for this interaction?
+	cTrigger* trig = nullptr;		// is there a girl specific script for this interaction?
 	DirPath dp;
 	eventrunning = true;
 	if (!(trig = girl->m_Girl->m_Triggers.CheckForScript(TRIGGER_TALK, false, v)))

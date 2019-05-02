@@ -42,9 +42,7 @@ public:
 /*
  *	constructor - nothing fancy here
  */
-	cTrainable()
-	{
-	}
+	cTrainable() = default;
 
 	cTrainable(sGirl *girl, string stat_name, int index, AType typ)
 	{

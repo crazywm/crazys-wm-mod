@@ -39,7 +39,7 @@ cScreenGetInput::cScreenGetInput()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "getInput.xml";
 	m_filename = dp.c_str();
 }
-cScreenGetInput::~cScreenGetInput() {}
+cScreenGetInput::~cScreenGetInput() = default;
 
 void cScreenGetInput::set_ids()
 {

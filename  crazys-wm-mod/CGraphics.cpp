@@ -30,7 +30,7 @@ extern cConfig cfg;
 
 CGraphics::CGraphics()
 {
-	m_Screen = 0;
+	m_Screen = nullptr;
 	m_CurrentTime = 0;
 }
 
@@ -43,7 +43,7 @@ void CGraphics::Free()
 {
 	TTF_Quit();
 	SDL_Quit();
-	m_Screen = 0;
+	m_Screen = nullptr;
 }
 
 void CGraphics::Begin()
@@ -112,7 +112,7 @@ bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 		return false;
 	}
 	else
-		SDL_WM_SetIcon(loadIcon, NULL);
+		SDL_WM_SetIcon(loadIcon, nullptr);
 
 	// Setup the screen
 	g_LogFile.write("Determining Fullscreen or Windowed Mode");
@@ -128,7 +128,7 @@ bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 
 	// set window caption
 	g_LogFile.write("Setting Window Caption");
-	SDL_WM_SetCaption(caption.c_str(), 0);
+	SDL_WM_SetCaption(caption.c_str(), nullptr);
 
 	// Init TTF
 	g_LogFile.write("Initializing TTF");

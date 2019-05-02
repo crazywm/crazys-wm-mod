@@ -22,7 +22,7 @@
 #include "FileList.h"
 #include "CLog.h"
 
-vector<sFacility *> *sFacilityList::list = 0;
+vector<sFacility *> *sFacilityList::list = nullptr;
 
 static string g_filename;
 

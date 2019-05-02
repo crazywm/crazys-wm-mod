@@ -47,9 +47,9 @@ sClinic::sClinic() : m_Finance(0)	// constructor
 	m_var = 0;
 	m_Name = "clinic";
 	m_Filthiness = 0;
-	m_Next = 0;
-	m_Girls = 0;
-	m_LastGirl = 0;
+	m_Next = nullptr;
+	m_Girls = nullptr;
+	m_LastGirl = nullptr;
 	m_NumGirls = 0;
 	m_SecurityLevel = 0;
 	for (u_int i = 0; i < NUMJOBTYPES; i++) m_BuildingQuality[i] = 0;
@@ -59,10 +59,10 @@ sClinic::~sClinic()			// destructor
 {
 	m_var = 0;
 	if (m_Next)		delete m_Next;
-	m_Next = 0;
+	m_Next = nullptr;
 	if (m_Girls)	delete m_Girls;
-	m_LastGirl = 0;
-	m_Girls = 0;
+	m_LastGirl = nullptr;
+	m_Girls = nullptr;
 }
 
 void cClinicManager::AddGirl(int brothelID, sGirl* girl, bool keepjob)
@@ -97,8 +97,8 @@ cClinicManager::~cClinicManager()			// destructor
 void cClinicManager::Free()
 {
 	if (m_Parent)	delete m_Parent;
-	m_Parent = 0;
-	m_Last = 0;
+	m_Parent = nullptr;
+	m_Last = nullptr;
 	m_NumBrothels = 0;
 }
 
@@ -127,11 +127,11 @@ void cClinicManager::UpdateClinic()	// Start_Building_Process_A
 		if (cgirl->is_dead())			// Remove any dead bodies from last week
 		{
 			current->m_Filthiness++; // `J` Death is messy
-			sGirl* DeadGirl = 0;
+			sGirl* DeadGirl = nullptr;
 			girlName = cgirl->m_Realname;
 			DeadGirl = cgirl;
 			// If there are more girls to process
-			cgirl = (cgirl->m_Next) ? cgirl->m_Next : 0;
+			cgirl = (cgirl->m_Next) ? cgirl->m_Next : nullptr;
 			// increase all the girls fear and hate of the player for letting her die (weather his fault or not)
 			UpdateAllGirlsStat(current, STAT_PCFEAR, 2);
 			UpdateAllGirlsStat(current, STAT_PCHATE, 1);
@@ -142,7 +142,7 @@ void cClinicManager::UpdateClinic()	// Start_Building_Process_A
 			ss.str(""); ss << girlName << " has died from her injuries.  Her body will be removed by the end of the week.";
 			DeadGirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
 
-			RemoveGirl(0, DeadGirl); DeadGirl = 0;	// cleanup
+			RemoveGirl(0, DeadGirl); DeadGirl = nullptr;	// cleanup
 		}
 		else
 		{
@@ -166,7 +166,7 @@ void cClinicManager::UpdateClinic()	// Start_Building_Process_A
 			cgirl->m_YesterNightJob = cgirl->m_NightJob;	// `J` set what she did yesternight
 			cgirl->m_Refused_To_Work_Day = false;
 			cgirl->m_Refused_To_Work_Night = false;
-			string summary = "";
+			string summary;
 
 			g_Girls.AddTiredness(cgirl);			// `J` moved all girls add tiredness to one place
 			do_food_and_digs(current, cgirl);		// Brothel only update for girls accommodation level
@@ -188,9 +188,9 @@ void cClinicManager::UpdateClinic()	// Start_Building_Process_A
 		}
 	}
 
-	UpdateGirls(current, 0);	// Run the Day Shift
+	UpdateGirls(current, false);	// Run the Day Shift
 
-	UpdateGirls(current, 1);	// Run the Nighty Shift
+	UpdateGirls(current, true);	// Run the Nighty Shift
 
 	g_Gold.brothel_accounts(current->m_Finance, current->m_id);
 
@@ -237,7 +237,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		if (current->is_dead())		// skip dead girls
 		{
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		else
 		{
@@ -271,7 +271,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			(GetNumGirlsOnJob(0, matronjob, Day0Night1) < 1 && (current->m_PrevDayJob != matronjob || current->m_PrevNightJob != matronjob)))
 		{	// Sanity check! Don't process dead girls and only process those with matron jobs
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		// `J` so someone is or was a matron
 
@@ -290,7 +290,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 				current->m_Events.AddMessage("The Chairman puts herself back to work.", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
 			}
 			else if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		// `J` Now we have a matron so lets see if she will work
 
@@ -344,7 +344,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		if (current->is_dead() || sw != restjob)
 		{	// skip dead girls and anyone not resting
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
@@ -517,7 +517,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		if (current->is_dead() || sw != JOB_DOCTOR)
 		{	// skip dead girls and anyone who is not a doctor
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		totalPay = totalTips = totalGold = 0;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
@@ -564,7 +564,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		if (current->is_dead() || sw != JOB_INTERN || current->is_slave() || current->intelligence() < 50 || current->medicine() < 50)
 		{	// skip dead girls and anyone who is not an intern and make sure they are qualified to be a doctor
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
@@ -586,7 +586,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		if (current->is_dead() || sw != JOB_NURSE || current->is_slave() || current->intelligence() < 50 || current->medicine() < 50)
 		{	// skip dead girls and anyone who is not a nurse and make sure they are qualified to be a doctor
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
 		girlName = current->m_Realname;
@@ -614,7 +614,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			(sw == JOB_DOCTOR && ((Day0Night1 == SHIFT_DAY && current->m_Refused_To_Work_Day)||(Day0Night1 == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
 		{	// and skip doctors who refused to work in the first check
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		totalPay = totalTips = totalGold = 0;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
@@ -661,7 +661,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 			&& sw != JOB_CUREDISEASES && sw != JOB_FERTILITY))
 		{	// skip dead girls and anyone not a patient
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		summary = "";
 
@@ -682,7 +682,7 @@ void cClinicManager::UpdateGirls(sBrothel* brothel, bool Day0Night1)	// Start_Bu
 		if (current->is_dead())
 		{	// skip dead girls
 			if (current->m_Next) { current = current->m_Next; continue; }
-			else { current = 0; break; }
+			else { current = nullptr; break; }
 		}
 		girlName = current->m_Realname;
 		sum = EVENT_SUMMARY; summary = ""; ss.str("");
@@ -911,12 +911,12 @@ bool cClinicManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	//watch out, this frees dungeon and rivals too
 
 	TiXmlElement* pBrothelManager = hBrothelManager.ToElement();
-	if (pBrothelManager == 0)
+	if (pBrothelManager == nullptr)
 	{
 		return false;
 	}
 
-	string message = "";
+	string message;
 	//         ...................................................
 	message = "***************** Loading clinic ****************";
 	g_LogFile.write(message);
@@ -925,7 +925,7 @@ bool cClinicManager::LoadDataXML(TiXmlHandle hBrothelManager)
 	if (pBrothels)
 	{
 		for (TiXmlElement* pBrothel = pBrothels->FirstChildElement("Clinic");
-			pBrothel != 0;
+			pBrothel != nullptr;
 			pBrothel = pBrothel->NextSiblingElement("Clinic"))
 		{
 			sClinic* current = new sClinic();
@@ -1006,7 +1006,7 @@ bool sClinic::LoadClinicXML(TiXmlHandle hBrothel)
 	if (pGirls)
 	{
 		for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl");
-			pGirl != 0;
+			pGirl != nullptr;
 			pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
 		{
 			sGirl* girl = new sGirl();

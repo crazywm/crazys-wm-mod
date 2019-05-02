@@ -54,7 +54,7 @@ public:
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cScreenClinicTry() {}
+	~cScreenClinicTry() = default;
 
 	void init();
 	void process();

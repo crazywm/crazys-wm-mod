@@ -225,11 +225,11 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 	///////////////////
 	//let's see if there's a milker, and if so, influence this a little.
 	bool milkerOnDuty = false;
-	sGirl* milker = 0;
-	string milkerName = "";
+	sGirl* milker = nullptr;
+	string milkerName;
 
 	vector<sGirl*> milkmaids = girls_on_job(brothel, JOB_MILKER, Day0Night1);
-	if (milkmaids.size() > 0)
+	if (!milkmaids.empty())
 	{
 		milkerOnDuty = true;
 		int i = g_Dice % milkmaids.size();
@@ -501,7 +501,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 			case 0:
 				ssextra << "The trader sends back 100 gold and a note apologizing, and promising this will never happen again. He says you can do what you like with the "
 					<< "delivery boy, \"But if you ever release the fool, tell him he'll need a new job.\"\n";
-				g_Brothels.GetDungeon()->AddCust(DUNGEON_CUSTBEATGIRL, 0, 0);
+				g_Brothels.GetDungeon()->AddCust(DUNGEON_CUSTBEATGIRL, 0, false);
 				wages += 100;
 				break;
 			case 1:
@@ -511,7 +511,7 @@ bool cJobManager::WorkMilk(sGirl* girl, sBrothel* brothel, bool Day0Night1, stri
 				break;
 			case 2:
 				ssextra << "You never hear a word from the market trader.\n";
-				g_Brothels.GetDungeon()->AddCust(DUNGEON_CUSTBEATGIRL, 0, 0);
+				g_Brothels.GetDungeon()->AddCust(DUNGEON_CUSTBEATGIRL, 0, false);
 				break;
 			}
 			if (girl->check_virginity()) ssextra << "Thanks to you, her virginity is intact so ";

@@ -73,14 +73,14 @@ bool cJobManager::WorkFarmMarketer(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	// `J` Farm Bookmark - adding in items that can be created in the farm
 	if (ForSale_Food + (g_Brothels.m_FoodReserves / 2) >= 10000 && g_Dice.percent(5))
 	{
-		sGirl* ugirl = 0;
+		sGirl* ugirl = nullptr;
 		int cost = 10000;
 		if (ForSale_Food >= 15000 && g_Dice.percent(cfg.slavemarket.unique_market()))
 		{
 			cost = 15000;
 			ugirl = g_Girls.GetRandomGirl();				// Unique girl type
 		}
-		if (ugirl == 0)		// if not unique or a unique girl can not be found
+		if (ugirl == nullptr)		// if not unique or a unique girl can not be found
 		{
 			cost = 10000;
 			ugirl = g_Girls.CreateRandomGirl(0, false);	// create a random girl

@@ -94,7 +94,7 @@ cScreenGirlDetails::cScreenGirlDetails()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "girl_details_screen.xml";
 	m_filename = dp.c_str();
 }
-cScreenGirlDetails::~cScreenGirlDetails() {}
+cScreenGirlDetails::~cScreenGirlDetails() = default;
 
 void cScreenGirlDetails::set_ids()
 {
@@ -140,7 +140,7 @@ void cScreenGirlDetails::Free()
 
 void cScreenGirlDetails::init()
 {
-	if (selected_girl == 0)
+	if (selected_girl == nullptr)
 	{
 		g_InitWin = true;
 		g_LogFile.write("ERROR - girl details screen, selected_girl is null");
@@ -165,7 +165,7 @@ void cScreenGirlDetails::init()
 		// `J` instead of removing dead girls from the list which breaks the game, just skip past her in the list.
 		NextGirl();								// `J` currently this prevents scrolling backwards past her - need to fix that.
 		//		selected_girl = remove_selected_girl();
-		if (selected_girl == 0)
+		if (selected_girl == nullptr)
 		{
 			g_WinManager.Pop();
 			g_InitWin = true;
@@ -585,7 +585,7 @@ void cScreenGirlDetails::check_events()
 
 			if (g_Brothels.GetDungeon()->GetNumGirls() == 0)
 			{
-				selected_girl = 0;
+				selected_girl = nullptr;
 				g_WinManager.Pop();
 			}
 			else selected_girl = nextGirl;
@@ -645,7 +645,7 @@ void cScreenGirlDetails::check_events()
 					g_MessageQue.AddToQue(smess.str(), 1);
 
 					selected_girl = nextGirl;
-					if (selected_girl == 0) g_WinManager.Pop();
+					if (selected_girl == nullptr) g_WinManager.Pop();
 				}
 				else	// otherwise put her in the dungeon
 				{
@@ -673,7 +673,7 @@ void cScreenGirlDetails::check_events()
 					else if (selected_girl->m_InStudio)	if (g_Studios.GetNumGirls(0) == 0)	pop = true;
 					else if (g_Brothels.GetNumGirls(selected_girl->where_is_she) == 0)		pop = true;
 
-					if (pop)	{ selected_girl = 0; g_WinManager.Pop(); }
+					if (pop)	{ selected_girl = nullptr; g_WinManager.Pop(); }
 					else		selected_girl = nextGirl;
 				}
 			}
@@ -704,7 +704,7 @@ void cScreenGirlDetails::check_events()
 				else if (selected_girl->m_InStudio)	if (g_Studios.GetNumGirls(0) == 0)	pop = true;
 				else if (g_Brothels.GetNumGirls(selected_girl->where_is_she) == 0)		pop = true;
 
-				if (pop)	{ selected_girl = 0; g_WinManager.Pop(); }
+				if (pop)	{ selected_girl = nullptr; g_WinManager.Pop(); }
 				else		selected_girl = nextGirl;
 			}
 		}
@@ -733,7 +733,7 @@ void cScreenGirlDetails::check_events()
 			else if (selected_girl->m_InStudio)	if (g_Studios.GetNumGirls(0) == 0)	pop = true;
 			else if (g_Brothels.GetNumGirls(g_CurrBrothel) == 0) /*              */	pop = true;
 
-			if (pop)	{ selected_girl = 0; g_WinManager.Pop(); }
+			if (pop)	{ selected_girl = nullptr; g_WinManager.Pop(); }
 			else		selected_girl = nextGirl;
 		}
 		g_InitWin = true;
@@ -750,7 +750,7 @@ void cScreenGirlDetails::check_events()
 			if (selected_girl->m_DayJob != JOB_INDUNGEON)
 			{
 				int v[2] = { 1, -1 };
-				cTrigger* trig = 0;
+				cTrigger* trig = nullptr;
 				if (!(trig = selected_girl->m_Triggers.CheckForScript(TRIGGER_TALK, false, v)))	// trigger any girl specific talk script
 				{
 					// no, so trigger the default one
@@ -765,7 +765,7 @@ void cScreenGirlDetails::check_events()
 			else
 			{
 				int v[2] = { 0, -1 };
-				cTrigger* trig = 0;
+				cTrigger* trig = nullptr;
 				if (!(trig = selected_girl->m_Triggers.CheckForScript(TRIGGER_TALK, false, v)))	// trigger any girl specific talk script
 				{
 					// no, so trigger the default one
@@ -800,11 +800,11 @@ void cScreenGirlDetails::RefreshJobList()
 	int job_filter = GetSelectedItemFromList(jobtypelist_id);
 	if (job_filter == -1) return;
 
-	string text = "";
+	string text;
 	// populate Jobs listbox with jobs in the selected category
 	for (int i = g_Brothels.m_JobManager.JobFilterIndex[job_filter]; i<g_Brothels.m_JobManager.JobFilterIndex[job_filter + 1]; i++)
 	{
-		if (g_Brothels.m_JobManager.JobName[i] == "") continue;
+		if (g_Brothels.m_JobManager.JobName[i].empty()) continue;
 		text = g_Brothels.m_JobManager.JobDescriptionCount(i, g_CurrBrothel, Day0Night1, selected_girl->m_InClinic, selected_girl->m_InStudio, selected_girl->m_InArena, selected_girl->m_InCentre, selected_girl->m_InHouse, selected_girl->m_InFarm);
 		AddToListBox(joblist_id, i, text);
 	}
@@ -829,7 +829,7 @@ void cScreenGirlDetails::NextGirl()
 
 sGirl *cScreenGirlDetails::get_prev_girl()		// return previous girl in the sorted list
 {
-	sGirl *prev_girl = 0;
+	sGirl *prev_girl = nullptr;
 	g_LogFile.write("Where is the girl??");
 
 	if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)
@@ -880,7 +880,7 @@ sGirl *cScreenGirlDetails::get_prev_girl()		// return previous girl in the sorte
 
 sGirl *cScreenGirlDetails::get_next_girl()		// return next girl in the sorted list
 {
-	sGirl *next_girl = 0;
+	sGirl *next_girl = nullptr;
 	g_LogFile.write("Where is the girl??");
 
 	if (g_Clinic.GetGirlsCurrentBrothel(selected_girl) != -1)
@@ -932,8 +932,8 @@ sGirl *cScreenGirlDetails::get_next_girl()		// return next girl in the sorted li
 
 sGirl *cScreenGirlDetails::remove_selected_girl()		// the selected girl is to be removed from the current list; returns next selected girl
 {
-	sGirl *next_girl = 0;
-	if (cycle_girls.size() == 0) return 0;
+	sGirl *next_girl = nullptr;
+	if (cycle_girls.empty()) return nullptr;
 	int cur_id			= cycle_girls[cycle_pos];
 	cycle_girls.erase(cycle_girls.begin() + cycle_pos);  // remove her
 	if (cycle_pos >= (int)cycle_girls.size())
@@ -1069,7 +1069,7 @@ bool cScreenGirlDetails::do_take_gold(sGirl *girl, string &message)	// returns T
 	selected_girl = nextGirl;
 	g_InitWin = true;
 
-	if (selected_girl == 0) g_WinManager.Pop();
+	if (selected_girl == nullptr) g_WinManager.Pop();
 
 	return true;	// the girl still won
 }

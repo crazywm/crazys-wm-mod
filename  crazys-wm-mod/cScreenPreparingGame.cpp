@@ -56,8 +56,8 @@ int prep_step = -1;
 DirPath			location;
 DirPath			thefile;
 TiXmlDocument	doc;
-TiXmlHandle		hRoot =0 ;
-TiXmlElement*	pRoot=0;
+TiXmlHandle		hRoot =nullptr ;
+TiXmlElement*	pRoot=nullptr;
 stringstream ss1;
 stringstream ss2;
 stringstream ss3;
@@ -140,8 +140,8 @@ void cScreenPreparingGame::init()
 void cScreenPreparingGame::resetScreen()
 {
 	doc.Clear();
-	hRoot = 0;
-	pRoot = 0;
+	hRoot = nullptr;
+	pRoot = nullptr;
 	ss1.str("");
 	ss2.str("");
 	ss3.str("");
@@ -299,7 +299,7 @@ void cScreenPreparingGame::process()
 			if (doc.LoadFile(thefile.c_str()) == false) { loading = false; }
 			hRoot = doc.FirstChildElement("Root");
 			pRoot = hRoot.ToElement();
-			if (pRoot == 0) { loading = false; return; }
+			if (pRoot == nullptr) { loading = false; return; }
 			// load the version
 			int minorA = -1;
 			pRoot->QueryIntAttribute("MinorVersionA", &minorA);
@@ -342,10 +342,10 @@ void cScreenPreparingGame::process()
 			pRoot->QueryValueAttribute<unsigned long>("Month", &g_Month);
 			pRoot->QueryValueAttribute<unsigned long>("Day", &g_Day);
 			g_GlobalTriggers.LoadTriggersXML(hRoot.FirstChildElement("Triggers"));
-			selected_girl = 0;
+			selected_girl = nullptr;
 			for (int i = 0; i < 20; i++)
 			{
-				MarketSlaveGirls[i] = 0;
+				MarketSlaveGirls[i] = nullptr;
 				MarketSlaveGirlsDel[i] = -1;
 			}
 			g_InvManager.UpdateShop();
@@ -381,7 +381,7 @@ void cScreenPreparingGame::process()
 				g_GenGirls = g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
 				g_TalkCount = 10;
 				g_CurrBrothel = 0;
-				selected_girl = 0;
+				selected_girl = nullptr;
 				g_Year = 1209; g_Month = 1; g_Day = 1;
 				g_Gold.reset();
 				g_Cheats = (g_ReturnText == "Cheat") ? true : false;
@@ -390,7 +390,7 @@ void cScreenPreparingGame::process()
 			}
 			case (n_Girls * 4) - 2:		{ ss2 << "Loading Girl Files.\n"; break; }
 			case (n_Girls * 4) : {
-				loadedGirlsFiles.LoadXML(TiXmlHandle(0));
+				loadedGirlsFiles.LoadXML(TiXmlHandle(nullptr));
 				LoadGirlsFiles();
 				break;
 			}
@@ -414,7 +414,7 @@ void cScreenPreparingGame::process()
 			case (n_Markets * 4) : {
 				for (int i = 0; i < 20; i++)
 				{
-					MarketSlaveGirls[i] = 0;
+					MarketSlaveGirls[i] = nullptr;
 					MarketSlaveGirlsDel[i] = -1;
 				}
 				// update the shop inventory
@@ -460,7 +460,7 @@ void cScreenPreparingGame::process()
 			case (n_finished * 4) : {
 				g_WinManager.push("Brothel Management");
 				cScriptManager sm;
-				sm.Load(ScriptPath("Intro.lua"), 0);
+				sm.Load(ScriptPath("Intro.lua"), nullptr);
 				g_InitWin = true;
 				break;
 			}

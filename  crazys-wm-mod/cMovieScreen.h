@@ -65,7 +65,7 @@ public:
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cMovieScreen() {}
+	~cMovieScreen() = default;
 
 	void init();
 	void process();

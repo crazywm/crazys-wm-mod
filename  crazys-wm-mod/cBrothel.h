@@ -69,8 +69,8 @@ typedef struct sMovie
 	long m_Money_Made;
 	long m_RunWeeks;
 	sMovie* m_Next;
-	sMovie()		{ m_Next = 0; }
-	~sMovie()		{ if (m_Next) delete m_Next; m_Next = 0; }
+	sMovie()		{ m_Next = nullptr; }
+	~sMovie()		{ if (m_Next) delete m_Next; m_Next = nullptr; }
 }sMovie;
 
 // defines a single brothel

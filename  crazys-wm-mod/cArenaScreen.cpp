@@ -176,7 +176,7 @@ void cArenaScreen::do_walk()
 	}
 	sGirl *girl = g_Girls.GetRandomGirl(false, false, true);	// let's get a girl for the player to meet was to get arena.. dont think this should happen this is tryouts arena girl should be ready to fight. CRAZY
 	//sGirl *girl = g_Girls.GetRandomGirl();						// let's get a girl for the player to meet
-	if (girl == 0)												// if there's no girl, no meeting
+	if (girl == nullptr)												// if there's no girl, no meeting
 	{
 		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
@@ -199,11 +199,11 @@ void cArenaScreen::do_walk()
 
 	g_Building = BUILDING_ARENA;
 	int v[2] = { 3, -1 };
-	cTrigger* trig = 0;
+	cTrigger* trig = nullptr;
 	DirPath dp;
 	DirPath intro;
-	string introfile = "";
-	string message = "";
+	string introfile;
+	string message;
 	cScriptManager sm;
 
 	// is there a girl specific talk script?
@@ -231,7 +231,7 @@ void cArenaScreen::do_walk()
 	{
 		message = ReadTextFile(intro, introfile);
 	}
-	if (message.size() > 0) g_MessageQue.AddToQue(message, COLOR_BLUE);
+	if (!message.empty()) g_MessageQue.AddToQue(message, COLOR_BLUE);
 
 	eventrunning = true;
 	sm.Load(dp, girl);

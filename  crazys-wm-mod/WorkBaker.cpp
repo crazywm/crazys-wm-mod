@@ -148,14 +148,14 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 
 	// `J` Farm Bookmark - adding in items that can be created in the farm
 
-	string itemmade = "";
-	bool a0an1 = 0;
-	sInventoryItem* item = NULL;
+	string itemmade;
+	bool a0an1 = false;
+	sInventoryItem* item = nullptr;
 	if (g_Dice.percent(min(90.0, jobperformance / 2)))
 	{
 		int chooseitem = g_Dice % (girl->magic() < 80 ? 96 : 100);	// limit some of the more magical items
 
-		/* */if (chooseitem < 10) { itemmade = "Apple Tart";			a0an1 = 1; }
+		/* */if (chooseitem < 10) { itemmade = "Apple Tart";			a0an1 = true; }
 		else if (chooseitem < 12) { itemmade = "Chocolate Cake"; }
 		else if (chooseitem < 20) { itemmade = "Chocolate Cake "; }
 		else if (chooseitem < 30) { itemmade = "Fancy Breath Mints"; }
@@ -167,12 +167,12 @@ bool cJobManager::WorkBaker(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		else if (chooseitem < 66) { itemmade = "Box of Cookies"; }
 		else if (chooseitem < 72) { itemmade = "Box of Sugar Cookies"; }
 		else if (chooseitem < 77) { itemmade = "Box of Chocolate Chip Cookies"; }
-		else if (chooseitem < 82) { itemmade = "Eggscellent Challenge";	a0an1 = 1; }
+		else if (chooseitem < 82) { itemmade = "Eggscellent Challenge";	a0an1 = true; }
 		else if (chooseitem < 87) { itemmade = "Yummi Gummi Lingere"; }
 		else if (chooseitem < 92) { itemmade = "Yummy Cookie Bra"; }
 		else if (chooseitem < 94) { itemmade = "Death Sandwich"; }
 		else if (chooseitem < 96) { itemmade = "Death Sandwich "; }
-		else if (chooseitem < 97) { itemmade = "Eldritch Cookie";		a0an1 = 1; }
+		else if (chooseitem < 97) { itemmade = "Eldritch Cookie";		a0an1 = true; }
 		else if (chooseitem < 98) { itemmade = "Honeypuff Scones"; }
 		else if (chooseitem < 99) { itemmade = "Leprechaun Biscuit"; }
 		else /*                */ { itemmade = "Heaven-and-Earth Cake"; }

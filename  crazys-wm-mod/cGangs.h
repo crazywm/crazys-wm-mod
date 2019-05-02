@@ -93,7 +93,7 @@ typedef struct sGang
 	{
 		m_Name = "Unnamed";
 		m_Num = 0;
-		m_Prev = m_Next = 0;
+		m_Prev = m_Next = nullptr;
 		m_MissionID = MISS_GUARDING;
 		m_Combat = false;
 		m_LastMissID = -1;
@@ -108,7 +108,7 @@ typedef struct sGang
 	~sGang()
 	{
 		if(m_Next) delete m_Next;
-		m_Prev = m_Next = 0;
+		m_Prev = m_Next = nullptr;
 	}
 }sGang;
 

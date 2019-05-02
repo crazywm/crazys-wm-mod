@@ -18,10 +18,10 @@
  */
 #pragma once
 
-#include <limits.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <climits>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
 
 #ifdef LINUX
 inline void itoa(int ival, char *buff, int) { sprintf(buff, "%d", ival); }

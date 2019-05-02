@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cRival.h"
-#include <stdlib.h>
+#include <cstdlib>
 #include <fstream>
 #include <sstream>
 
@@ -50,9 +50,9 @@ extern unsigned long g_Day;
 
 cRivalManager::cRivalManager()
 {
-	m_Rivals = 0;
+	m_Rivals = nullptr;
 	m_NumRivals = 0;
-	m_Last = 0;
+	m_Last = nullptr;
 	m_PlayerSafe = true;
 
 	DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
@@ -344,7 +344,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									curr->m_BusinessesExtort++;
 									g_MessageQue.AddToQue(ss.str(), COLOR_RED);
 								}
-								delete rGang; rGang = 0;	// cleanup
+								delete rGang; rGang = nullptr;	// cleanup
 							}
 							else										// if you do not have a gang guarding
 							{
@@ -377,7 +377,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									curr->m_NumGangs--;
 									ss << (" and lost.");
 								}
-								delete rG1; rG1 = 0;	// cleanup
+								delete rG1; rG1 = nullptr;	// cleanup
 							}
 							else
 							{
@@ -494,7 +494,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									ss << (" and lost.");
 									curr->m_NumGangs--;
 								}
-								delete rG1; rG1 = 0;	// cleanup
+								delete rG1; rG1 = nullptr;	// cleanup
 							}
 							else
 							{
@@ -626,7 +626,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			}break;
 			default:	break;			// No mission
 			}	// end mission switch
-			delete cG1; cG1 = 0;	// cleanup
+			delete cG1; cG1 = nullptr;	// cleanup
 		}	// end Gang Missions
 
 		// process money
@@ -802,7 +802,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 
 cRival* cRivalManager::GetRandomRival()
 {
-	if (m_NumRivals == 0) return 0;
+	if (m_NumRivals == 0) return nullptr;
 	if (m_NumRivals == 1) return m_Rivals;
 
 	int number = g_Dice%m_NumRivals;
@@ -821,7 +821,7 @@ cRival* cRivalManager::GetRandomRival()
 // check a random rival for gangs
 cRival* cRivalManager::GetRandomRivalWithGangs()
 {
-	if (m_NumRivals == 0) return 0;
+	if (m_NumRivals == 0) return nullptr;
 	if (m_NumRivals == 1) return m_Rivals;
 
 	cRival* current = m_Rivals;
@@ -853,13 +853,13 @@ cRival* cRivalManager::GetRandomRivalWithGangs()
 	}
 
 
-	return 0;
+	return nullptr;
 }
 
 // check a random rival for gangs
 cRival* cRivalManager::GetRandomRivalWithBusinesses()
 {
-	if (m_NumRivals == 0) return 0;
+	if (m_NumRivals == 0) return nullptr;
 	if (m_NumRivals == 1) return m_Rivals;
 
 	cRival* current = m_Rivals;
@@ -889,13 +889,13 @@ cRival* cRivalManager::GetRandomRivalWithBusinesses()
 		if (current->m_BusinessesExtort > 0) return current;
 		current = current->m_Next;
 	}
-	return 0;
+	return nullptr;
 }
 
 // `J` added - hit whoever has the most brothels
 cRival* cRivalManager::GetRandomRivalToSabotage()
 {
-	if (m_NumRivals == 0) return 0;
+	if (m_NumRivals == 0) return nullptr;
 	if (m_NumRivals == 1) return m_Rivals;
 
 	cRival* current = m_Rivals;
@@ -944,21 +944,21 @@ cRival* cRivalManager::GetRival(string name)
 		if (current->m_Name == name) return current;
 		current = current->m_Next;
 	}
-	return 0;
+	return nullptr;
 }
 
 // this will return the most influential rival or null if there were no rivals with influence
 cRival* cRivalManager::get_influential_rival()
 {
 	cRival* current;
-	cRival* top = 0;
+	cRival* top = nullptr;
 	for (current = m_Rivals; current; current = current->m_Next)
 	{
 		// if the rival has no influence, skip on
 		if (current->m_Influence <= 0) continue;
 		// If we don't have a candidate yet, anyone with influence will do.
 		// And since we already weeded out the influence-less rivals at this point...
-		if (top == 0) { top = current; continue; }
+		if (top == nullptr) { top = current; continue; }
 		// is the current rival more influential than the the one we have our eye on?
 		if (current->m_Influence < top->m_Influence) continue;
 		top = current;
@@ -977,7 +977,7 @@ cRival* cRivalManager::GetRival(int number)
 		current = current->m_Next;
 	}
 
-	return 0;
+	return nullptr;
 }
 
 TiXmlElement* cRivalManager::SaveRivalsXML(TiXmlElement* pRoot)
@@ -987,7 +987,7 @@ TiXmlElement* cRivalManager::SaveRivalsXML(TiXmlElement* pRoot)
 	TiXmlElement* pRivals = new TiXmlElement("Rivals");
 	pRivalManager->LinkEndChild(pRivals);
 
-	string message = "";
+	string message;
 	cRival* current = m_Rivals;
 	while (current)
 	{
@@ -1016,14 +1016,14 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
 {
 	Free();		// everything should be init even if we failed to load an XML element
 	TiXmlElement* pRivalManager = hRivalManager.ToElement();
-	if (pRivalManager == 0) return false;
+	if (pRivalManager == nullptr) return false;
 
-	string message = "";
+	string message;
 	m_NumRivals = 0;
 	TiXmlElement* pRivals = pRivalManager->FirstChildElement("Rivals");
 	if (pRivals)
 	{
-		for (TiXmlElement* pRival = pRivals->FirstChildElement("Rival"); pRival != 0; pRival = pRival->NextSiblingElement("Rival"))
+		for (TiXmlElement* pRival = pRivals->FirstChildElement("Rival"); pRival != nullptr; pRival = pRival->NextSiblingElement("Rival"))
 		{
 			cRival* current = new cRival();
 
@@ -1048,7 +1048,7 @@ bool cRivalManager::LoadRivalsXML(TiXmlHandle hRivalManager)
                                                     current->m_NumInventory = 0;
                                                     for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
                                                     {
-                                                                      current->m_Inventory[i] = 0;
+                                                                      current->m_Inventory[i] = nullptr;
                                                     }
                         
 			message = "loaded rival: ";
@@ -1091,7 +1091,7 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
                   rival->m_NumInventory = 0;
                   for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
                   {
-                                    rival->m_Inventory[i] = 0;
+                                    rival->m_Inventory[i] = nullptr;
                   }
 
 
@@ -1148,7 +1148,7 @@ void cRivalManager::CreateRandomRival()
                   rival->m_NumInventory = 0;
                   for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
                   {
-                                    rival->m_Inventory[i] = 0;
+                                    rival->m_Inventory[i] = nullptr;
                   }
 
 	for (;;) {
@@ -1177,9 +1177,9 @@ void cRivalManager::RemoveRival(cRival* rival)
 	if (rival->m_Prev)		rival->m_Prev->m_Next = rival->m_Next;
 	if (rival == m_Rivals)	m_Rivals = rival->m_Next;
 	if (rival == m_Last)	m_Last = rival->m_Prev;
-	rival->m_Prev = rival->m_Next = 0;
+	rival->m_Prev = rival->m_Next = nullptr;
 	delete rival;
-	rival = 0;
+	rival = nullptr;
 	m_NumRivals--;
 }
 
@@ -1315,7 +1315,7 @@ int cRivalManager::AddRivalInv(cRival* rival, sInventoryItem* item)
 	int i;
 	for (i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
 	{
-		if (rival->m_Inventory[i] == 0)
+		if (rival->m_Inventory[i] == nullptr)
 		{
 			rival->m_Inventory[i] = item;
 			rival->m_NumInventory++;
@@ -1328,9 +1328,9 @@ int cRivalManager::AddRivalInv(cRival* rival, sInventoryItem* item)
 bool cRivalManager::RemoveRivalInvByNumber(cRival* rival, int num)
 {
 	// rivals inventories don't stack items
-	if (rival->m_Inventory[num] != 0)
+	if (rival->m_Inventory[num] != nullptr)
 	{
-		rival->m_Inventory[num] = 0;
+		rival->m_Inventory[num] = nullptr;
 		rival->m_NumInventory--;
 		return true;
 	}
@@ -1339,11 +1339,11 @@ bool cRivalManager::RemoveRivalInvByNumber(cRival* rival, int num)
 
 void cRivalManager::SellRivalInvItem(cRival* rival, int num)
 {
-	if (rival->m_Inventory[num] != 0)
+	if (rival->m_Inventory[num] != nullptr)
 	{
 		rival->m_Gold += (int)((float)rival->m_Inventory[num]->m_Cost*0.5f);
 		rival->m_NumInventory--;
-		rival->m_Inventory[num] = 0;
+		rival->m_Inventory[num] = nullptr;
 	}
 }
 
@@ -1357,7 +1357,7 @@ sInventoryItem* cRivalManager::GetRivalItem(cRival* rival, int num)
 sInventoryItem* cRivalManager::GetRandomRivalItem(cRival* rival)
 {
 	sInventoryItem *ipt;
-	if (rival->m_NumInventory <= 0) return 0;
+	if (rival->m_NumInventory <= 0) return nullptr;
 	int start = g_Dice%MAXNUM_RIVAL_INVENTORY;
 
 	for (int i = 0; i < MAXNUM_RIVAL_INVENTORY; i++)
@@ -1373,7 +1373,7 @@ sInventoryItem* cRivalManager::GetRandomRivalItem(cRival* rival)
 			return ipt;
 		}
 	}
-	return 0;
+	return nullptr;
 }
 
 int cRivalManager::GetRandomRivalItemNum(cRival* rival)

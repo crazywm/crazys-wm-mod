@@ -145,7 +145,7 @@ TiXmlElement* SaveStatsXML(TiXmlElement* pRoot, int stats[], int statMods[], int
 bool LoadStatsXML(TiXmlHandle hStats, int stats[], int statMods[], int tempStats[])
 {
 	TiXmlElement* pStats = hStats.ToElement();
-	if (pStats == 0) return false;
+	if (pStats == nullptr) return false;
 
 	for (int i = 0; i < NUM_STATS; i++)
 	{
@@ -210,7 +210,7 @@ TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot, int skills[], int skillMods[], 
 bool LoadSkillsXML(TiXmlHandle hSkills, int skills[], int skillMods[], int tempSkills[])
 {
 	TiXmlElement* pSkills = hSkills.ToElement();
-	if (pSkills == 0) return false;
+	if (pSkills == nullptr) return false;
 
 	for (int i = 0; i < NUM_SKILLS; i++)
 	{
@@ -278,7 +278,7 @@ bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, TraitSpec* tra
 {
 	numTraits = 0;
 	TiXmlElement* pTraits = hTraits.ToElement();
-	if (pTraits == 0) return false;
+	if (pTraits == nullptr) return false;
 
 	//this loop does not need UnXMLifyString, which is a bit of a hack currently
 	//however, it's coupled more tightly to traits, and seems to do more processing
@@ -317,7 +317,7 @@ TiXmlElement* SaveActionsXML(TiXmlElement* pRoot, int enjoyments[], int enjoymen
 bool LoadActionsXML(TiXmlHandle hActions, int enjoyments[], int enjoymentsMods[], int enjoymentsTemps[])
 {
 	TiXmlElement* pActions = hActions.ToElement();
-	if (pActions == 0) return false;
+	if (pActions == nullptr) return false;
 
 	for (int x = 0; x < NUM_ACTIONTYPES; ++x)
 	{
@@ -363,7 +363,7 @@ TiXmlElement* SaveTrainingXML(TiXmlElement* pRoot, int training[], int trainingM
 bool LoadTrainingXML(TiXmlHandle hTrainings, int training[], int trainingMods[], int trainingTemps[])
 {
 	TiXmlElement* pTrainings = hTrainings.ToElement();
-	if (pTrainings == 0)
+	if (pTrainings == nullptr)
 	{
 		for (int x = 0; x < NUM_TRAININGTYPES; ++x)	// `J` added to set missing trainings to 0
 		{
@@ -425,12 +425,12 @@ bool LoadInventoryXML(TiXmlHandle hInventory, sInventoryItem* items[], int& numI
 {
 	numItems = 0;
 	TiXmlElement* pInventory = hInventory.ToElement();
-	if (pInventory == 0)	return false;
+	if (pInventory == nullptr)	return false;
 
 	TiXmlElement* pItems = pInventory->FirstChildElement("Items");
 	if (pItems)
 	{
-		for (TiXmlElement* pItem = pItems->FirstChildElement("Item"); pItem != 0; pItem = pItem->NextSiblingElement("Item"))
+		for (TiXmlElement* pItem = pItems->FirstChildElement("Item"); pItem != nullptr; pItem = pItem->NextSiblingElement("Item"))
 		{
 			if (pItem->Attribute("Name"))
 			{

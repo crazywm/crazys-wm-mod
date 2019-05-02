@@ -23,7 +23,7 @@
 class cNameList {
 	std::vector<std::string> names;
 public:
-	cNameList() {}
+	cNameList() = default;
 	cNameList(std::string file);
 	std::string random();
 	void load(std::string file);
@@ -32,7 +32,7 @@ public:
 class cSurnameList {
 	std::vector<std::string> names;
 public:
-	cSurnameList() {}
+	cSurnameList() = default;
 	cSurnameList(std::string file);
 	std::string random();
 	void load(std::string file);
@@ -42,7 +42,7 @@ class cDoubleNameList {
 	cNameList m_first;
 	cSurnameList m_last;
 public:
-	cDoubleNameList() {}
+	cDoubleNameList() = default;
 	cDoubleNameList(std::string first, std::string last)
 	: m_first(first), m_last(last)
 	{
@@ -52,7 +52,7 @@ public:
 		m_first.load(first);
 	}
 	std::string random() {
-		std::string s = "";
+		std::string s;
 		s += m_first.random();
 		s += " ";
 		s += m_last.random();

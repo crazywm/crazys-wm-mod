@@ -70,7 +70,7 @@ extern int g_CurrentScreen;
 #pragma region //	Local Variables			//
 
 // globals used for the interface
-string g_ReturnText = "";
+string g_ReturnText;
 int g_ReturnInt = -1;
 bool g_InitWin = true;
 bool g_AllTogle = false;	// used on screens when wishing to apply something to all items
@@ -94,10 +94,10 @@ vector<int> cycle_girls;  // globally available sorted list of girl IDs for Girl
 int cycle_pos;  //currently selected girl's position in the cycle_girls vector
 int summarysortorder = 0;	// the order girls get sorted in the summary lists
 
-sGirl* MarketSlaveGirls[20] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+sGirl* MarketSlaveGirls[20] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 int MarketSlaveGirlsDel[20] = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
 
-CSurface* g_BrothelImages[7] = { 0, 0, 0, 0, 0, 0, 0 };
+CSurface* g_BrothelImages[7] = { nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr };
 
 #pragma endregion
 
@@ -136,7 +136,7 @@ void NewGame()
 
 	// Load all the data
 	LoadGameInfoFiles();
-	loadedGirlsFiles.LoadXML(TiXmlHandle(0));
+	loadedGirlsFiles.LoadXML(TiXmlHandle(nullptr));
 	LoadGirlsFiles();
 
 
@@ -148,10 +148,10 @@ void NewGame()
 
 	g_Year = 1209; g_Month = 1; g_Day = 1;
 
-	selected_girl = 0;
+	selected_girl = nullptr;
 	for (int i = 0; i < 20; i++)
 	{
-		MarketSlaveGirls[i] = 0;
+		MarketSlaveGirls[i] = nullptr;
 		MarketSlaveGirlsDel[i] = -1;
 	}
 
@@ -199,7 +199,7 @@ void NewGame()
 	g_WinManager.push("Brothel Management");
 
 	DirPath text;
-	sm.Load(ScriptPath("Intro.lua"), 0);
+	sm.Load(ScriptPath("Intro.lua"), nullptr);
 	SaveGame();
 	g_InitWin = true;
 
@@ -569,7 +569,7 @@ void GameEvents()
 			The_Player->suspicion(1);
 		}
 		The_Player->disposition(-1);
-		g_Brothels.UpdateAllGirlsStat(0, STAT_PCFEAR, 2);
+		g_Brothels.UpdateAllGirlsStat(nullptr, STAT_PCFEAR, 2);
 
 		ClearGameFlag(FLAG_DUNGEONGIRLDIE);
 	}
@@ -631,7 +631,7 @@ void SimpleSaveGameXML(string filename)	// `J` zzzzzz - incomplete code
 	qRoot->LinkEndChild(pGirls);
 	for (int i = 0; i < 14; i++)
 	{
-		sGirl* girl = 0;
+		sGirl* girl = nullptr;
 		if (i == 0)/*                                       */	girl = g_Brothels.GetBrothel(0)->m_Girls;
 		if (i == 1 && g_Brothels.GetNumBrothels() >= 2)/*   */	girl = g_Brothels.GetBrothel(1)->m_Girls;
 		if (i == 2 && g_Brothels.GetNumBrothels() >= 3)/*   */	girl = g_Brothels.GetBrothel(2)->m_Girls;
@@ -821,13 +821,13 @@ void SaveGirlsCSV(string filename)
 			cgirl = cgirl->m_Next;
 		}
 		building = building->m_Next;
-		if (building == 0) buildingnum++;
-		if (buildingnum == 1)	{ building = g_Studios.GetBrothel(0);	if (building == 0) buildingnum++; }
-		if (buildingnum == 2)	{ building = g_Arena.GetBrothel(0);		if (building == 0) buildingnum++; }
-		if (buildingnum == 3)	{ building = g_Centre.GetBrothel(0);	if (building == 0) buildingnum++; }
-		if (buildingnum == 4)	{ building = g_Clinic.GetBrothel(0);	if (building == 0) buildingnum++; }
-		if (buildingnum == 5)	{ building = g_Farm.GetBrothel(0);		if (building == 0) buildingnum++; }
-		if (buildingnum == 6)	{ building = g_House.GetBrothel(0);		if (building == 0) buildingnum++; }
+		if (building == nullptr) buildingnum++;
+		if (buildingnum == 1)	{ building = g_Studios.GetBrothel(0);	if (building == nullptr) buildingnum++; }
+		if (buildingnum == 2)	{ building = g_Arena.GetBrothel(0);		if (building == nullptr) buildingnum++; }
+		if (buildingnum == 3)	{ building = g_Centre.GetBrothel(0);	if (building == nullptr) buildingnum++; }
+		if (buildingnum == 4)	{ building = g_Clinic.GetBrothel(0);	if (building == nullptr) buildingnum++; }
+		if (buildingnum == 5)	{ building = g_Farm.GetBrothel(0);		if (building == nullptr) buildingnum++; }
+		if (buildingnum == 6)	{ building = g_House.GetBrothel(0);		if (building == nullptr) buildingnum++; }
 	}
 	GirlsCSV.close();
 }

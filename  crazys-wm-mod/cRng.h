@@ -85,8 +85,8 @@ struct cRng
 /*
  *	constructor and destructor
  */
-	cRng(){srand((int)time(0));}
-	~cRng(){}
+	cRng(){srand((int)time(nullptr));}
+	~cRng() = default;
 };
 
 #endif

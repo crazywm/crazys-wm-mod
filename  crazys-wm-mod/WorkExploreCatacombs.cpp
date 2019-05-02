@@ -63,9 +63,9 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 	long gold = 0;
 	int wages = 0, tips = 0;
 	bool raped = false;
-	string UGirls_list = "";
-	string Girls_list = "";
-	string item_list = "";
+	string UGirls_list;
+	string Girls_list;
+	string item_list;
 
 	g_Girls.EquipCombat(girl);	// ready armor and weapons!
 
@@ -115,7 +115,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 						fight_outcome = 1;
 					}
 				}
-				if (tempgirl) delete tempgirl; tempgirl = 0;
+				if (tempgirl) delete tempgirl; tempgirl = nullptr;
 			}
 
 			if (fight_outcome == 1)  // If she won
@@ -180,25 +180,25 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 		while (numgirls > 0)
 		{
 			numgirls--;
-			sGirl* ugirl = 0;
+			sGirl* ugirl = nullptr;
 			if (g_Dice.percent(cfg.catacombs.unique_catacombs()))	// chance of getting unique girl
 			{
 				ugirl = g_Girls.GetRandomGirl(false, true);				// Unique monster girl type
 			}
-			if (ugirl == 0)		// if not unique or a unique girl can not be found
+			if (ugirl == nullptr)		// if not unique or a unique girl can not be found
 			{
 				ugirl = g_Girls.CreateRandomGirl(0, false, false, true, true);	// create a random girl
 				if (ugirl)
 				{
 					type_monster_girls++;
-					Girls_list += ((Girls_list == "") ? "   " : ",\n   ") + ugirl->m_Realname;
+					Girls_list += ((Girls_list.empty()) ? "   " : ",\n   ") + ugirl->m_Realname;
 				}
 			}
 			else				// otherwise set the unique girls stuff
 			{
 				ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 				type_unique_monster_girls++;
-				UGirls_list += ((UGirls_list == "") ? "   " : ",\n   ") + ugirl->m_Realname;
+				UGirls_list += ((UGirls_list.empty()) ? "   " : ",\n   ") + ugirl->m_Realname;
 			}
 			if (ugirl)
 			{
@@ -224,7 +224,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			ItemPlace = g_Brothels.HasItem(TempItem->m_Name, -1);
 			if ((ItemPlace != -1) && (g_Brothels.m_NumItem[ItemPlace] <= 999))
 			{
-				item_list += ((item_list == "") ? "   " : ",\n   ") + TempItem->m_Name;
+				item_list += ((item_list.empty()) ? "   " : ",\n   ") + TempItem->m_Name;
 				g_Brothels.m_NumItem[ItemPlace]++;
 				num_items++;
 			}
@@ -234,9 +234,9 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 			{
 				for (int j = 0; j < MAXNUM_INVENTORY; j++)
 				{
-					if (g_Brothels.m_Inventory[j] == 0) // Empty slot
+					if (g_Brothels.m_Inventory[j] == nullptr) // Empty slot
 					{
-						item_list += ((item_list == "") ? "   " : ",\n   ") + TempItem->m_Name;
+						item_list += ((item_list.empty()) ? "   " : ",\n   ") + TempItem->m_Name;
 						g_Brothels.m_Inventory[j] = TempItem;
 						g_Brothels.m_EquipedItems[j] = 0;
 						g_Brothels.m_NumInventory++;
@@ -297,25 +297,25 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				{				// NOTE that defeating tempgirl and capturing unrelated girl is
 					// the only way to ever capture rare girls like those with incoporeal trait.
 					// Some rationilization could be done, but is probably not necessary. DustyDan
-					sGirl* ugirl = 0;
+					sGirl* ugirl = nullptr;
 					if (g_Dice.percent(cfg.catacombs.unique_catacombs()))	// chance of getting unique girl
 					{
 						ugirl = g_Girls.GetRandomGirl(false, true);				// Unique monster girl type
 					}
-					if (ugirl == 0)		// if not unique or a unique girl can not be found
+					if (ugirl == nullptr)		// if not unique or a unique girl can not be found
 					{
 						ugirl = g_Girls.CreateRandomGirl(0, false, false, true, true);	// create a random girl
 						if (ugirl)
 						{
 							type_monster_girls++;
-							Girls_list += ((Girls_list == "") ? "   " : ",\n   ") + ugirl->m_Realname;
+							Girls_list += ((Girls_list.empty()) ? "   " : ",\n   ") + ugirl->m_Realname;
 						}
 					}
 					else				// otherwise set the unique girls stuff
 					{
 						ugirl->m_States &= ~(1 << STATUS_CATACOMBS);
 						type_unique_monster_girls++;
-						UGirls_list += ((UGirls_list == "") ? "   " : ",\n   ") + ugirl->m_Realname;
+						UGirls_list += ((UGirls_list.empty()) ? "   " : ",\n   ") + ugirl->m_Realname;
 					}
 					if (ugirl)
 					{
@@ -345,7 +345,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				type_beasts++;
 			}
 
-			if (tempgirl) delete tempgirl; tempgirl = 0;
+			if (tempgirl) delete tempgirl; tempgirl = nullptr;
 			if (raped) break;
 		} // # of monsters to fight loop
 
@@ -396,7 +396,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				ItemPlace = g_Brothels.HasItem(TempItem->m_Name, -1);
 				if ((ItemPlace != -1) && (g_Brothels.m_NumItem[ItemPlace] <= 999))
 				{
-					item_list += ((item_list == "") ? "   " : ",\n   ") + TempItem->m_Name;
+					item_list += ((item_list.empty()) ? "   " : ",\n   ") + TempItem->m_Name;
 					g_Brothels.m_NumItem[ItemPlace]++;
 					num_items++;
 				}
@@ -406,9 +406,9 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, sBrothel* brothel, bool Day0
 				{
 					for (int j = 0; j < MAXNUM_INVENTORY; j++)
 					{
-						if (g_Brothels.m_Inventory[j] == 0) // Empty slot
+						if (g_Brothels.m_Inventory[j] == nullptr) // Empty slot
 						{
-							item_list += ((item_list == "") ? "   " : ",\n   ") + TempItem->m_Name;
+							item_list += ((item_list.empty()) ? "   " : ",\n   ") + TempItem->m_Name;
 							g_Brothels.m_Inventory[j] = TempItem;
 							g_Brothels.m_EquipedItems[j] = 0;
 							g_Brothels.m_NumInventory++;

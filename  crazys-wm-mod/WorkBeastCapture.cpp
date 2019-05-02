@@ -76,7 +76,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		g_LogFile.write("Error: You need a Non-Human Random Girl to allow WorkBeastCapture randomness");
 		fight_outcome = 7;
 	}
-	if (tempgirl) delete tempgirl; tempgirl = 0;	// Cleanup
+	if (tempgirl) delete tempgirl; tempgirl = nullptr;	// Cleanup
 	if (fight_outcome == 7)
 	{
 		ss << "She came back with just one animal today.\n \n";
@@ -156,7 +156,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 					girl->beastiality(g_Dice % gain);
 					girl->libido(-2 * (g_Dice % gain));
 					girl->tiredness(gain);
-					girl->calc_insemination(*g_Girls.GetBeast(), 1);
+					girl->calc_insemination(*g_Girls.GetBeast(), true);
 				}
 				tired += gain;
 				break;
@@ -187,7 +187,7 @@ bool cJobManager::WorkBeastCapture(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	// `J` Farm Bookmark - adding in items that can be gathered in the farm
 	if (g_Dice.percent(5))
 	{
-		string itemfound = ""; string itemfoundtext = "";
+		string itemfound; string itemfoundtext;
 		int chooseitem = g_Dice.d100();
 
 		if (chooseitem < 25)

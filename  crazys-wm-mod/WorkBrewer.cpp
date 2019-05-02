@@ -150,10 +150,10 @@ bool cJobManager::WorkBrewer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 
 	// `J` Farm Bookmark - adding in items that can be created in the farm
-	string itemmade = "";
-	string itemtext = "";
+	string itemmade;
+	string itemtext;
 	int numbermade = 0;
-	sInventoryItem* item = NULL;
+	sInventoryItem* item = nullptr;
 
 	if (g_Dice.percent(min(90.0, jobperformance / 2)))
 	{

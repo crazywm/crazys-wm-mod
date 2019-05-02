@@ -102,7 +102,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 	else if (roll_a >= 90)	{ song_type = 0; song_type_text = "Pop songs"; }
 
 	// `CRAZY` How well she sings
-	/*default*/	int sing_pre = 0;	string sing_pre_text = "";
+	/*default*/	int sing_pre = 0;	string sing_pre_text;
 	/* */if (jobperformance >= 245)	{ sing_pre = 6; sing_pre_text = " perfectly"; }
 	else if (jobperformance >= 185)	{ sing_pre = 5; sing_pre_text = " great"; }
 	else if (jobperformance >= 145)	{ sing_pre = 4; sing_pre_text = " good"; }

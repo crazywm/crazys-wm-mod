@@ -183,12 +183,12 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #else
 
 		int numitems = 0, tries = 0;
-		sInventoryItem* item = NULL;
+		sInventoryItem* item = nullptr;
 
 		while (craftpoints > 0 && numitems < (1 + girl->crafting() / 15) && tries < 20)
 		{
 
-			string itemmade = "";
+			string itemmade;
 			int Magic = 0, Cost = 0, NumMade = 1;
 			if (girl->libido() >= 50 && g_Dice.percent(girl->libido() / 2))
 			{
@@ -298,7 +298,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 				girl->libido(-Cost);
 			}
-			if (itemmade == "" && girl->intelligence() >= 50 && g_Dice.percent(girl->intelligence() / 2))
+			if (itemmade.empty() && girl->intelligence() >= 50 && g_Dice.percent(girl->intelligence() / 2))
 			{
 				int d = g_Dice % 9;
 				if (craftpoints >= 100 && d > 6) d /= 3;
@@ -357,7 +357,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					break;
 				}
 			}
-			if (itemmade == "" && girl->magic() >= 20 && g_Dice.percent(girl->magic() / 1.5))
+			if (itemmade.empty() && girl->magic() >= 20 && g_Dice.percent(girl->magic() / 1.5))
 			{
 				int d = g_Dice % 13;
 				/* */if (craftpoints >= 150 && d > 4) d /= 3;
@@ -443,7 +443,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 				}
 			}
-			if (itemmade == "" && girl->combat() >= 50 && g_Dice.percent(girl->combat() / 2))
+			if (itemmade.empty() && girl->combat() >= 50 && g_Dice.percent(girl->combat() / 2))
 			{
 				switch (g_Dice % 2)
 				{
@@ -458,7 +458,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					break;
 				}
 			}
-			if (itemmade == "" && girl->strength() >= 50 && g_Dice.percent(girl->strength() / 2))
+			if (itemmade.empty() && girl->strength() >= 50 && g_Dice.percent(girl->strength() / 2))
 			{
 				switch (g_Dice % 3)
 				{
@@ -479,7 +479,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					break;
 				}
 			}
-			if (itemmade == "" && girl->happiness() >= 50 && g_Dice.percent(girl->happiness() / 2))
+			if (itemmade.empty() && girl->happiness() >= 50 && g_Dice.percent(girl->happiness() / 2))
 			{
 				int d = g_Dice % 4;
 				if (craftpoints >= 100 && d > 2) d /= 2;
@@ -508,11 +508,11 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 					break;
 				}
 			}
-			if (itemmade == "" && girl->obedience() >= 50 && g_Dice.percent(girl->obedience() / 2))
+			if (itemmade.empty() && girl->obedience() >= 50 && g_Dice.percent(girl->obedience() / 2))
 			{
 				Magic = 0;		Cost = 30;		itemmade = "House Rules";//                             Desc = "Remind your girl about the rules of the house. (Obedience +8, Spirit -1)"
 			}
-			if (itemmade == "")
+			if (itemmade.empty())
 			{
 				switch (g_Dice % 30)
 				{
@@ -684,7 +684,7 @@ bool cJobManager::WorkMakeItem(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 			}
 
-			if (itemmade == "")	{ Magic = 0;		Cost = 10;		itemmade == "Shiv"; }
+			if (itemmade.empty())	{ Magic = 0;		Cost = 10;		itemmade == "Shiv"; }
 			item = g_InvManager.GetItem(itemmade);
 			if (item)
 			{
