@@ -79,7 +79,7 @@ bool cJobManager::WorkEscort(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 	int prepare = (girl->agility() + girl->service()/2);
 	double cust_wealth = 1;
 	int cust_type = 0;
-	string cust_type_text = "";
+	string cust_type_text;
 
 	int sex = false;
 	int anal = false;

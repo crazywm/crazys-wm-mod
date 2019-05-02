@@ -34,11 +34,11 @@ public:
 	virtual void Free() {}	// Free all data
 	virtual void FreeResources() {}	// Frees only the loaded data, this is so the class isn't destroyed
 	CResource() {
-		m_Next = 0;
-		m_Prev = 0;
+		m_Next = nullptr;
+		m_Prev = nullptr;
 		m_TimeUsed = g_Graphics.GetTicks();
 	}
-	~CResource() {Free(); m_Next = 0; m_Prev = 0;}
+	~CResource() {Free(); m_Next = nullptr; m_Prev = nullptr;}
 
 	CResource* m_Next;	// pointer to the next resource or null if end of list
 	CResource* m_Prev;	// Pointer to the previous resource or null if top of list

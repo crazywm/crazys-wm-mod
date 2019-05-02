@@ -47,19 +47,19 @@ sCustomer::sCustomer()
 	m_Fetish = 0;
 	m_SexPref = m_SexPrefB = 0;
 	m_ParticularGirl = 0;
-	m_Next = 0;
-	m_Prev = 0;
+	m_Next = nullptr;
+	m_Prev = nullptr;
 }
 sCustomer::~sCustomer()
 {
-	if (m_Next) delete m_Next;	m_Next = 0;
+	if (m_Next) delete m_Next;	m_Next = nullptr;
 }
 void cCustomers::Free()
 {
 	m_NumCustomers = 0;
 	if(m_Parent)
 		delete m_Parent;
-	m_Last = m_Parent = 0;
+	m_Last = m_Parent = nullptr;
 }
 
 /*int cCustomers::GetHappiness()
@@ -83,11 +83,11 @@ sCustomer* cCustomers::CreateCustomer(sBrothel& brothel)
 sCustomer cCustomers::GetCustomer(sBrothel& brothel)
 {
 	sCustomer customer;
-	customer.m_Next = customer.m_Prev = 0;	// we are just making 1 customer
+	customer.m_Next = customer.m_Prev = nullptr;	// we are just making 1 customer
 	// It may be a group of people looking for group sex (5% chance)
 	if (g_Dice.percent(5)) // changed to bring to documented 5%, consider rasing to 10 or 15, was 4. -PP
 	{
-		customer.m_IsWoman = 0;
+		customer.m_IsWoman = false;
 		customer.m_Amount = (g_Dice % 3) + 2; // was +1 this allowed groups of 1 -PP
 	}
 	else	// Then it is just one customer
@@ -292,7 +292,7 @@ void cCustomers::ChangeCustomerBase()
 
 void cCustomers::Add(sCustomer* cust)
 {
-	cust->m_Prev = cust->m_Next = 0;
+	cust->m_Prev = cust->m_Next = nullptr;
 	if (m_Parent)
 	{
 		cust->m_Prev = m_Last;
@@ -309,17 +309,17 @@ void cCustomers::Remove(sCustomer* cust)
 	{
 		cust->m_Prev->m_Next = cust->m_Next;
 		if (cust->m_Next) cust->m_Next->m_Prev = cust->m_Prev;
-		cust->m_Next = cust->m_Prev = 0;
+		cust->m_Next = cust->m_Prev = nullptr;
 		delete cust;
-		cust = 0;
+		cust = nullptr;
 	}
 	else
 	{
 		m_Parent = cust->m_Next;
-		cust->m_Next = 0;
-		if (m_Parent) m_Parent->m_Prev = 0;
+		cust->m_Next = nullptr;
+		if (m_Parent) m_Parent->m_Prev = nullptr;
 		delete cust;
-		cust = 0;
+		cust = nullptr;
 	}
 }
 

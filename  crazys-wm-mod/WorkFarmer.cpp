@@ -152,7 +152,7 @@ bool cJobManager::WorkFarmer(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 
 	if (g_Dice.percent((girl->farming() + girl->magic()) / 10) && g_Dice.percent(jobperformance / 10))
 	{
-		string itemname = ""; int itemnumber = 1;
+		string itemname; int itemnumber = 1;
 		/* */if (roll_c > 30)	{ itemname = "Nut of Knowledge";		itemnumber = (roll_c > 90 ? g_Dice % 3 + 2 : 1); }
 		else if (roll_c > 10)	{ itemname = "Mango of Knowledge";		itemnumber = (roll_c > 28 ? 2 : 1); }
 		else/*            */	{ itemname = "Watermelon of Knowledge"; itemnumber = (roll_c == 9 ? 2 : 1); }

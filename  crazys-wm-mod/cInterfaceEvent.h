@@ -27,8 +27,8 @@ const int EVENT_SLIDERCHANGE = 4;
 class cInterfaceEvent
 {
 public:
-	cInterfaceEvent() {m_Next=0;}
-	~cInterfaceEvent() {if(m_Next)delete m_Next;m_Next=0;}
+	cInterfaceEvent() {m_Next=nullptr;}
+	~cInterfaceEvent() {if(m_Next)delete m_Next;m_Next=nullptr;}
 
 	int m_EventID;
 	int m_ObjectID;
@@ -39,8 +39,8 @@ public:
 class cInterfaceEventManager
 {
 public:
-	cInterfaceEventManager(){m_NumEvents=0;m_Events=0;}
-	~cInterfaceEventManager(){if(m_Events)delete m_Events; m_Events=0;}
+	cInterfaceEventManager(){m_NumEvents=0;m_Events=nullptr;}
+	~cInterfaceEventManager(){if(m_Events)delete m_Events; m_Events=nullptr;}
 /*
  *	a bit of shorthand - helps keep the code cleaner
  */
@@ -66,7 +66,7 @@ public:
 		}
 
 		cInterfaceEvent* current = m_Events;
-		cInterfaceEvent* last = 0;
+		cInterfaceEvent* last = nullptr;
 		while(current)
 		{
 			if(current->m_EventID == EventID && current->m_ObjectID == ObjectID)
@@ -74,7 +74,7 @@ public:
 				if(last)
 				{
 					last->m_Next = current->m_Next;
-					current->m_Next = 0;
+					current->m_Next = nullptr;
 					delete current;
 					m_NumEvents--;
 					return true;
@@ -84,9 +84,9 @@ public:
 					if(current->m_Next)
 						m_Events = current->m_Next;
 					else
-						m_Events = 0;
+						m_Events = nullptr;
 
-					current->m_Next = 0;
+					current->m_Next = nullptr;
 					delete current;
 					m_NumEvents--;
 					return true;
@@ -105,7 +105,7 @@ public:
 		cInterfaceEvent* newEvent = new cInterfaceEvent();
 		newEvent->m_EventID = ID;
 		newEvent->m_ObjectID = Object;
-		newEvent->m_Next = 0;
+		newEvent->m_Next = nullptr;
 
 		if (!m_Events)
 		{
@@ -122,7 +122,7 @@ public:
 		m_NumEvents++;
 	}
 
-	void ClearEvents() { if(m_Events) delete m_Events; m_Events = 0;}
+	void ClearEvents() { if(m_Events) delete m_Events; m_Events = nullptr;}
 
 private:
 	int m_NumEvents;

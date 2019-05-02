@@ -169,10 +169,10 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 	// `J` Farm Bookmark - adding in items that can be created in the farm
 	if (girl->intelligence() + girl->crafting() > 100 && g_Dice.percent(girl->intelligence() + girl->crafting() / 10))	// 10-20%
 	{
-		sInventoryItem* item = NULL;
-		string itemname = "";
+		sInventoryItem* item = nullptr;
+		string itemname;
 		int tries = skill;
-		while (itemname == "" && tries > 0)
+		while (itemname.empty() && tries > 0)
 		{
 			switch (g_Dice % 20)
 			{

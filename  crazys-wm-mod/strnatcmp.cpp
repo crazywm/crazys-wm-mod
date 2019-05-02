@@ -53,10 +53,10 @@
  * negative chars in their default char type.
  */
 
-#include <ctype.h>
-#include <string.h>
-#include <assert.h>
-#include <stdio.h>
+#include <cctype>
+#include <cstring>
+#include <cassert>
+#include <cstdio>
 
 #include "strnatcmp.h"
 
@@ -145,7 +145,7 @@ static int strnatcmp0(nat_char const *a, nat_char const *b, int fold_case)
      
      assert(a && b);
      ai = bi = 0;
-     while (1) {
+     while (true) {
 	  ca = a[ai]; cb = b[bi];
 
 	  /* skip over leading spaces or zeros */

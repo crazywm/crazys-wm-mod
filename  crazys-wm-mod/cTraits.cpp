@@ -19,7 +19,7 @@
 #include <iostream>
 #include <algorithm>
 #include "cTraits.h"
-#include "stdio.h"
+#include <cstdio>
 #include "tinyxml.h"
 #include "XmlMisc.h"
 #include "CLog.h"
@@ -135,9 +135,7 @@ void TraitSpec::add_effect(TraitEffect effect)
 	m_Effects.push_back(effect);
 }
 
-cTraits::~cTraits()
-{
-}
+cTraits::~cTraits() = default;
 
 void cTraits::Free()
 {

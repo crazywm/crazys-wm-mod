@@ -76,7 +76,7 @@ private:
 class CAnimatedSprite
 {
 public:
-	CAnimatedSprite(){m_Animations=0; m_Image=0;m_CurrAnimation=0;}
+	CAnimatedSprite(){m_Animations=nullptr; m_Image=nullptr;m_CurrAnimation=0;}
 	~CAnimatedSprite();
 
 	void Free();

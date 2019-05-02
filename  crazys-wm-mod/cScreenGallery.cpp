@@ -100,7 +100,7 @@ cScreenGallery::cScreenGallery()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "gallery_screen.xml";
 	m_filename = dp.c_str();
 }
-cScreenGallery::~cScreenGallery() {}
+cScreenGallery::~cScreenGallery() = default;
 
 void cScreenGallery::set_ids()
 {
@@ -120,7 +120,7 @@ void cScreenGallery::set_ids()
 
 void cScreenGallery::process()
 {
-	if (selected_girl == 0)
+	if (selected_girl == nullptr)
 	{
 		g_InitWin = true;
 		g_MessageQue.AddToQue("ERROR: No girl selected", 1);
@@ -137,7 +137,7 @@ void cScreenGallery::process()
 		changeimage = false;
 		PrepareImage(image_id, selected_girl, Mode, false, Img, true);
 		string t = m_Images[image_id]->m_Image->m_Message;
-		if (t == "") t = m_Images[image_id]->m_Image->GetFilename();
+		if (t.empty()) t = m_Images[image_id]->m_Image->GetFilename();
 		m_TextItems[imagename_id]->SetText(t);
 		SetSelectedItemInList(imagelist_id, Mode, false);
 	}

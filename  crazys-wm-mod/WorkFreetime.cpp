@@ -830,7 +830,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 			// 2. buy any items that catch her fancy
 			int numberToBuy = g_Dice % 10;	// try to buy up to 10 things
 			int itemsBought = 0;
-			string buyList = "";
+			string buyList;
 			imagetype = IMGTYPE_SHOP;
 
 			for (int i = 0; i < numberToBuy && girl->m_NumInventory < 40; i++)
@@ -882,7 +882,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 
 					if (num > 0 && g_InvManager.GirlBuyItem(girl, item, num, equip))
 					{
-						buyList += ((buyList == "") ? "" : ", ") + itemName;
+						buyList += ((buyList.empty()) ? "" : ", ") + itemName;
 						itemsBought++;
 					}
 				}     // if buy
@@ -957,7 +957,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				}
 				else // 'Mute' Manages to steal Drugs
 				{
-					string itemname = "";
+					string itemname;
 					string itemprefix = "a";
 					/* */if (girl->has_trait("Fairy Dust Addict"))	{ itemprefix = "a vial of";	itemname = "Fairy Dust"; }
 					else if (girl->has_trait("Shroud Addict"))		{ itemprefix = "a";			itemname = "Shroud Mushroom"; }
@@ -1020,8 +1020,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 #if 1
 		{
 			bool playerclinic = g_Clinic.GetNumBrothels() > 0;
-			sGirl* doctoronduty = NULL;
-			sGirl* nurseonduty = NULL;
+			sGirl* doctoronduty = nullptr;
+			sGirl* nurseonduty = nullptr;
 			string doctorname = "the Doctor";	// Who?
 			string nursename = "the Nurse";
 			if (playerclinic)
@@ -1037,8 +1037,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				ss << girlName << " went to the Clinic for a checkup.\n";
 				if (girl->has_trait( "AIDS") || girl->has_trait( "Chlamydia") || girl->has_trait( "Herpes") || girl->has_trait( "Syphilis"))
 				{
-					if (doctorname.size() > 0) ss << doctorname << " told her";
-					else if (nursename.size() > 0) ss << nursename << " told her";
+					if (!doctorname.empty()) ss << doctorname << " told her";
+					else if (!nursename.empty()) ss << nursename << " told her";
 					else ss << "She was told";
 					ss << " she has an STD." << (girl->is_pregnant() ? " Her unborn child will most likely be born with it if she can't find a way to cure it" : "") << ".\n";
 					U_Happiness -= 5;
@@ -1065,8 +1065,8 @@ bool cJobManager::WorkFreetime(sGirl* girl, sBrothel* brothel, bool Day0Night1, 
 				else
 				{
 					ss << "Her check up took a long time. She was in such bad health ";
-					if (doctorname.size() > 0) ss << doctorname;
-					else if (nursename.size() > 0) ss << nursename;
+					if (!doctorname.empty()) ss << doctorname;
+					else if (!nursename.empty()) ss << nursename;
 					else ss << "it was";
 					ss << " recommended that she get checked into the Clinic for full time treatment.\n";
 					if (girl->is_pregnant()) ss << "If she remains in such grave condition, her baby may not survive.\n";

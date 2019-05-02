@@ -18,7 +18,7 @@
  */
 #include "cScriptManager.h"
 
-cScriptManagerInner *cScriptManager::instance = 0;
+cScriptManagerInner *cScriptManager::instance = nullptr;
 
 static bool ends_with(string s, string suff)
 {

@@ -38,46 +38,46 @@ extern unsigned char g_ChoiceMessageSelectedR, g_ChoiceMessageSelectedG, g_Choic
 
 cChoice::cChoice() 
 {
-	m_Next = 0;
-	m_Choices = 0;
+	m_Next = nullptr;
+	m_Choices = nullptr;
 	m_NumChoices = 0;
 	m_CurrChoice = -1;
-	m_Background = m_Border = 0;
-	m_ElementSelectedBackground = m_ElementBackground = 0;
+	m_Background = m_Border = nullptr;
+	m_ElementSelectedBackground = m_ElementBackground = nullptr;
 	m_Position = 0;
-	m_HeaderBackground = 0;
+	m_HeaderBackground = nullptr;
 	m_ScrollDisabled = false;
 }
 cChoice::~cChoice()
 {
 	if (m_Next)							delete m_Next;
-	m_Next = 0;
+	m_Next = nullptr;
 	if (m_Choices)						delete[] m_Choices;
-	m_Choices = 0;
+	m_Choices = nullptr;
 	if (m_Background)					SDL_FreeSurface(m_Background);
-	m_Background = 0;
+	m_Background = nullptr;
 	if (m_Border)						SDL_FreeSurface(m_Border);
-	m_Border = 0;
+	m_Border = nullptr;
 	if (m_ElementBackground)			SDL_FreeSurface(m_ElementBackground);
-	m_ElementBackground = 0;
+	m_ElementBackground = nullptr;
 	if (m_ElementSelectedBackground)	SDL_FreeSurface(m_ElementSelectedBackground);
-	m_ElementSelectedBackground = 0;
+	m_ElementSelectedBackground = nullptr;
 	if (m_HeaderBackground)				SDL_FreeSurface(m_HeaderBackground);
-	m_HeaderBackground = 0;
+	m_HeaderBackground = nullptr;
 }
 
 void cChoiceManager::Free()
 {
 	if (m_Parent)	delete m_Parent;
-	m_Parent = 0;
-	m_ActiveChoice = 0;
-	m_CurrUp = m_CurrDown = 0;
+	m_Parent = nullptr;
+	m_ActiveChoice = nullptr;
+	m_CurrUp = m_CurrDown = nullptr;
 	if (m_Font)
 	{
 		m_Font->Free();
 		delete m_Font;
 	}
-	m_Font = 0;
+	m_Font = nullptr;
 
 	// I'm leaving these for the resource manager, which I think should collect them
 	// If I'm wrong, they'll leak memory -- doc
@@ -116,7 +116,7 @@ void cChoiceManager::BuildChoiceBox(int ID, int MaxStrLen)
 
 	if (newChoice)
 	{
-		if (m_Font == 0)
+		if (m_Font == nullptr)
 		{
 			m_Font = new cFont();
 			m_Font->LoadFont(cfg.fonts.normal(), (m_Parent->m_FontSize > 0 ? m_Parent->m_FontSize : 16));
@@ -125,7 +125,7 @@ void cChoiceManager::BuildChoiceBox(int ID, int MaxStrLen)
 		}
 
 		int MaxWidth = 0, MaxHeight = 0;
-		string temp = "";
+		string temp;
 		for (int i = 0; i<MaxStrLen - 1; i += 2)
 			temp += "oW";
 		m_Font->GetSize(temp, MaxWidth, MaxHeight);
@@ -154,35 +154,35 @@ void cChoiceManager::BuildChoiceBox(int ID, int MaxStrLen)
 			newChoice->m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_Width + 2, newChoice->m_Height + 2, 32, 0, 0, 0, 0);
 		else
 			newChoice->m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_Width + 20, newChoice->m_Height + 2, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_Border, 0, SDL_MapRGB(newChoice->m_Border->format, g_ChoiceMessageBorderR, g_ChoiceMessageBorderG, g_ChoiceMessageBorderB));
+		SDL_FillRect(newChoice->m_Border, nullptr, SDL_MapRGB(newChoice->m_Border->format, g_ChoiceMessageBorderR, g_ChoiceMessageBorderG, g_ChoiceMessageBorderB));
 
 		if (newChoice->m_ScrollDisabled)
 			newChoice->m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_Width, newChoice->m_Height, 32, 0, 0, 0, 0);
 		else
 			newChoice->m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_Width - (18), newChoice->m_Height - 2, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_Background, 0, SDL_MapRGB(newChoice->m_Background->format, g_ChoiceMessageBackgroundR, g_ChoiceMessageBackgroundG, g_ChoiceMessageBackgroundB));
+		SDL_FillRect(newChoice->m_Background, nullptr, SDL_MapRGB(newChoice->m_Background->format, g_ChoiceMessageBackgroundR, g_ChoiceMessageBackgroundG, g_ChoiceMessageBackgroundB));
 
 		newChoice->m_ElementBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, newChoice->m_eHeight, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_ElementBackground, 0, SDL_MapRGB(newChoice->m_ElementBackground->format, g_ChoiceMessageBackgroundR, g_ChoiceMessageBackgroundG, g_ChoiceMessageBackgroundB));
+		SDL_FillRect(newChoice->m_ElementBackground, nullptr, SDL_MapRGB(newChoice->m_ElementBackground->format, g_ChoiceMessageBackgroundR, g_ChoiceMessageBackgroundG, g_ChoiceMessageBackgroundB));
 
 		newChoice->m_ElementSelectedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, newChoice->m_eHeight, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_ElementSelectedBackground, 0, SDL_MapRGB(newChoice->m_ElementSelectedBackground->format, g_ChoiceMessageSelectedR, g_ChoiceMessageSelectedG, g_ChoiceMessageSelectedB));
+		SDL_FillRect(newChoice->m_ElementSelectedBackground, nullptr, SDL_MapRGB(newChoice->m_ElementSelectedBackground->format, g_ChoiceMessageSelectedR, g_ChoiceMessageSelectedG, g_ChoiceMessageSelectedB));
 
 		if (newChoice->m_eWidth > 120)
 			newChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, 32, 32, 0, 0, 0, 0);
 		else
 			newChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, 120, 32, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_HeaderBackground, 0, SDL_MapRGB(newChoice->m_HeaderBackground->format, g_ChoiceMessageHeaderR, g_ChoiceMessageHeaderG, g_ChoiceMessageHeaderB));
+		SDL_FillRect(newChoice->m_HeaderBackground, nullptr, SDL_MapRGB(newChoice->m_HeaderBackground->format, g_ChoiceMessageHeaderR, g_ChoiceMessageHeaderG, g_ChoiceMessageHeaderB));
 
 		newChoice->m_XPos = ((g_Graphics.GetWidth() / 2) - (newChoice->m_Width / 2));
 		newChoice->m_YPos = ((g_Graphics.GetHeight() / 2) - (newChoice->m_Height / 2));
 
-		if (m_UpOn == 0) m_UpOn = new ButtonSurface("UpOn");
-		if (m_UpOff == 0) m_UpOff = new ButtonSurface("UpOff");
+		if (m_UpOn == nullptr) m_UpOn = new ButtonSurface("UpOn");
+		if (m_UpOff == nullptr) m_UpOff = new ButtonSurface("UpOff");
 		m_CurrUp = m_UpOff;
 
-		if (m_DownOn == 0) m_DownOn = new ButtonSurface("DownOn");
-		if (m_DownOff == 0) m_DownOff = new ButtonSurface("DownOff");
+		if (m_DownOn == nullptr) m_DownOn = new ButtonSurface("DownOn");
+		if (m_DownOff == nullptr) m_DownOff = new ButtonSurface("DownOff");
 		m_CurrDown = m_DownOff;
 	}
 }
@@ -213,8 +213,8 @@ void cChoiceManager::CreateChoiceBox(int x, int y, int width, int height, int ID
 	}
 
 
-	cChoice* newChoice = 0;
-	if (m_Font == 0)
+	cChoice* newChoice = nullptr;
+	if (m_Font == nullptr)
 	{
 		m_Font = new cFont();
 		m_Font->LoadFont(cfg.fonts.normal(), fontsize);
@@ -242,22 +242,22 @@ void cChoiceManager::CreateChoiceBox(int x, int y, int width, int height, int ID
 		newChoice->m_ID = ID;
 
 		newChoice->m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_Border, 0, SDL_MapRGB(newChoice->m_Border->format, 0, 0, 0));
+		SDL_FillRect(newChoice->m_Border, nullptr, SDL_MapRGB(newChoice->m_Border->format, 0, 0, 0));
 
 		newChoice->m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, width - (18), height - 2, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_Background, 0, SDL_MapRGB(newChoice->m_Background->format, 88, 163, 113));
+		SDL_FillRect(newChoice->m_Background, nullptr, SDL_MapRGB(newChoice->m_Background->format, 88, 163, 113));
 
 		newChoice->m_ElementBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, newChoice->m_eHeight, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_ElementBackground, 0, SDL_MapRGB(newChoice->m_ElementBackground->format, 88, 163, 113));
+		SDL_FillRect(newChoice->m_ElementBackground, nullptr, SDL_MapRGB(newChoice->m_ElementBackground->format, 88, 163, 113));
 
 		newChoice->m_ElementSelectedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, newChoice->m_eHeight, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_ElementSelectedBackground, 0, SDL_MapRGB(newChoice->m_ElementSelectedBackground->format, 229, 227, 52));
+		SDL_FillRect(newChoice->m_ElementSelectedBackground, nullptr, SDL_MapRGB(newChoice->m_ElementSelectedBackground->format, 229, 227, 52));
 
 		if (newChoice->m_eWidth > 120)
 			newChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, 32, 32, 0, 0, 0, 0);
 		else
 			newChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, 120, 32, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_HeaderBackground, 0, SDL_MapRGB(newChoice->m_HeaderBackground->format, 229, 227, 52));
+		SDL_FillRect(newChoice->m_HeaderBackground, nullptr, SDL_MapRGB(newChoice->m_HeaderBackground->format, 229, 227, 52));
 	}
 	else	// autosize and center according to the max string size, also shut off the scroll box if not needed
 	{
@@ -297,36 +297,36 @@ void cChoiceManager::CreateChoiceBox(int x, int y, int width, int height, int ID
 			newChoice->m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_Width + 2, newChoice->m_Height + 2, 32, 0, 0, 0, 0);
 		else
 			newChoice->m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_Width + 20, newChoice->m_Height + 2, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_Border, 0, SDL_MapRGB(newChoice->m_Border->format, 0, 0, 0));
+		SDL_FillRect(newChoice->m_Border, nullptr, SDL_MapRGB(newChoice->m_Border->format, 0, 0, 0));
 
 		if (newChoice->m_ScrollDisabled)
 			newChoice->m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_Width, newChoice->m_Height, 32, 0, 0, 0, 0);
 		else
 			newChoice->m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_Width - (18), newChoice->m_Height - 2, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_Background, 0, SDL_MapRGB(newChoice->m_Background->format, 88, 163, 113));
+		SDL_FillRect(newChoice->m_Background, nullptr, SDL_MapRGB(newChoice->m_Background->format, 88, 163, 113));
 
 		newChoice->m_ElementBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, newChoice->m_eHeight, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_ElementBackground, 0, SDL_MapRGB(newChoice->m_ElementBackground->format, 88, 163, 113));
+		SDL_FillRect(newChoice->m_ElementBackground, nullptr, SDL_MapRGB(newChoice->m_ElementBackground->format, 88, 163, 113));
 
 		newChoice->m_ElementSelectedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, newChoice->m_eHeight, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_ElementSelectedBackground, 0, SDL_MapRGB(newChoice->m_ElementSelectedBackground->format, 229, 227, 52));
+		SDL_FillRect(newChoice->m_ElementSelectedBackground, nullptr, SDL_MapRGB(newChoice->m_ElementSelectedBackground->format, 229, 227, 52));
 
 		if (newChoice->m_eWidth > 120)
 			newChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, newChoice->m_eWidth, 32, 32, 0, 0, 0, 0);
 		else
 			newChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, 120, 32, 32, 0, 0, 0, 0);
-		SDL_FillRect(newChoice->m_HeaderBackground, 0, SDL_MapRGB(newChoice->m_HeaderBackground->format, 229, 227, 52));
+		SDL_FillRect(newChoice->m_HeaderBackground, nullptr, SDL_MapRGB(newChoice->m_HeaderBackground->format, 229, 227, 52));
 
 		newChoice->m_XPos = ((g_Graphics.GetWidth() / 2) - (newChoice->m_Width / 2));
 		newChoice->m_YPos = ((g_Graphics.GetHeight() / 2) - (newChoice->m_Height / 2));
 	}
 
-	if (m_UpOn == 0) m_UpOn = new ButtonSurface("UpOn");
-	if (m_UpOff == 0) m_UpOff = new ButtonSurface("UpOff");
+	if (m_UpOn == nullptr) m_UpOn = new ButtonSurface("UpOn");
+	if (m_UpOff == nullptr) m_UpOff = new ButtonSurface("UpOff");
 	m_CurrUp = m_UpOff;
 
-	if (m_DownOn == 0) m_DownOn = new ButtonSurface("DownOn");
-	if (m_DownOff == 0) m_DownOff = new ButtonSurface("DownOff");
+	if (m_DownOn == nullptr) m_DownOn = new ButtonSurface("DownOn");
+	if (m_DownOff == nullptr) m_DownOff = new ButtonSurface("DownOff");
 	m_CurrDown = m_DownOff;
 
 	if (!m_Parent) {
@@ -381,11 +381,11 @@ void cChoiceManager::Draw()
 			offset.y = m_ActiveChoice->m_YPos;
 
 			// blit to the screen
-			SDL_BlitSurface(m_ActiveChoice->m_Border, 0, g_Graphics.GetScreen(), &offset);
+			SDL_BlitSurface(m_ActiveChoice->m_Border, nullptr, g_Graphics.GetScreen(), &offset);
 
 			offset.x = m_ActiveChoice->m_XPos + 1;
 			offset.y = m_ActiveChoice->m_YPos + 1;
-			SDL_BlitSurface(m_ActiveChoice->m_Background, 0, g_Graphics.GetScreen(), &offset);
+			SDL_BlitSurface(m_ActiveChoice->m_Background, nullptr, g_Graphics.GetScreen(), &offset);
 		}
 
 		// Draw the heading text
@@ -403,10 +403,10 @@ void cChoiceManager::Draw()
 			offset.h = m_Font->GetHeight();
 			offset.w = m_ActiveChoice->m_Border->w;
 			m_ActiveChoice->m_HeaderBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, offset.w, m_Font->GetHeight(), 32, 0, 0, 0, 0);
-			SDL_FillRect(m_ActiveChoice->m_HeaderBackground, 0, SDL_MapRGB(m_ActiveChoice->m_HeaderBackground->format, g_ChoiceMessageHeaderR, g_ChoiceMessageHeaderG, g_ChoiceMessageHeaderB));
+			SDL_FillRect(m_ActiveChoice->m_HeaderBackground, nullptr, SDL_MapRGB(m_ActiveChoice->m_HeaderBackground->format, g_ChoiceMessageHeaderR, g_ChoiceMessageHeaderG, g_ChoiceMessageHeaderB));
 
 			//m_Font->DrawText(offset.x, offset.y);
-			SDL_BlitSurface(m_ActiveChoice->m_HeaderBackground, 0, g_Graphics.GetScreen(), &offset);
+			SDL_BlitSurface(m_ActiveChoice->m_HeaderBackground, nullptr, g_Graphics.GetScreen(), &offset);
 			m_Font->DrawMultilineText(offset.x, offset.y);
 		}
 
@@ -418,9 +418,9 @@ void cChoiceManager::Draw()
 
 			// blit to the screen
 			if (i == m_ActiveChoice->m_CurrChoice)
-				SDL_BlitSurface(m_ActiveChoice->m_ElementSelectedBackground, 0, g_Graphics.GetScreen(), &offset);
+				SDL_BlitSurface(m_ActiveChoice->m_ElementSelectedBackground, nullptr, g_Graphics.GetScreen(), &offset);
 			else
-				SDL_BlitSurface(m_ActiveChoice->m_ElementBackground, 0, g_Graphics.GetScreen(), &offset);
+				SDL_BlitSurface(m_ActiveChoice->m_ElementBackground, nullptr, g_Graphics.GetScreen(), &offset);
 
 			// draw the text
 			m_Font->SetText(m_ActiveChoice->m_Choices[i]);
@@ -436,8 +436,8 @@ void cChoiceManager::Draw()
 			rect.w = 16;
 			rect.h = 16;
 
-			m_CurrUp->DrawSurface(m_ActiveChoice->m_XPos + m_ActiveChoice->m_Width - 17, m_ActiveChoice->m_YPos + 1, 0, &rect);
-			m_CurrDown->DrawSurface(m_ActiveChoice->m_XPos + m_ActiveChoice->m_Width - 17, m_ActiveChoice->m_YPos + m_ActiveChoice->m_Height - 17, 0, &rect);
+			m_CurrUp->DrawSurface(m_ActiveChoice->m_XPos + m_ActiveChoice->m_Width - 17, m_ActiveChoice->m_YPos + 1, nullptr, &rect);
+			m_CurrDown->DrawSurface(m_ActiveChoice->m_XPos + m_ActiveChoice->m_Width - 17, m_ActiveChoice->m_YPos + m_ActiveChoice->m_Height - 17, nullptr, &rect);
 		}
 	}
 }
@@ -472,7 +472,7 @@ void cChoiceManager::SetActive(int ID)
 		current = current->m_Next;
 	}
 
-	m_ActiveChoice = 0;
+	m_ActiveChoice = nullptr;
 }
 
 bool cChoiceManager::IsActive()
@@ -556,9 +556,9 @@ bool cChoiceManager::ButtonClicked(int x, int y)
 	{
 		if (m_callback) {
 			m_callback(m_ActiveChoice->m_CurrChoice);
-			m_callback = 0;
+			m_callback = nullptr;
 		}
-		m_ActiveChoice = 0;
+		m_ActiveChoice = nullptr;
 		return true;
 	}
 
@@ -614,9 +614,9 @@ bool cChoiceManager::find_active(int x, int y)
 			m_ActiveChoice->m_CurrChoice = i;
 			if (m_callback) {
 				m_callback(i);
-				m_callback = 0;
+				m_callback = nullptr;
 			}
-			m_ActiveChoice = 0;
+			m_ActiveChoice = nullptr;
 
 			return true;
 		}

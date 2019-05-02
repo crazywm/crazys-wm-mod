@@ -63,7 +63,7 @@ public:
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cCentreScreen() {}
+	~cCentreScreen() = default;
 
 	void init();
 	void process();

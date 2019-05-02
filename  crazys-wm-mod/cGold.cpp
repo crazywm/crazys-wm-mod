@@ -441,7 +441,7 @@ bool cGoldBase::loadGoldXML(TiXmlHandle hGold)
 	reset();
 
 	TiXmlElement* pGold = hGold.ToElement();
-	if (pGold == 0) return false;
+	if (pGold == nullptr) return false;
 
 	pGold->QueryDoubleAttribute("value", &m_value);
 	pGold->QueryDoubleAttribute("income", &m_income);

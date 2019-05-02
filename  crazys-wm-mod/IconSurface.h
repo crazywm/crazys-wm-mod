@@ -35,7 +35,7 @@ public:
 	{
 		CLog log;
 
-		string full = "";
+		string full;
 		full += name;
 		full += pt;
 		full += ext; 

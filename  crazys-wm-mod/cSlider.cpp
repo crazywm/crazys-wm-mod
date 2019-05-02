@@ -24,12 +24,12 @@ extern CResourceManager rmanager;
 extern cSlider* g_DragSlider;
 
 //these static vars defined in the header file need to be specified here
-SDL_Surface* cSlider::m_ImgRailDefault=0;
-SDL_Surface* cSlider::m_ImgRailDisabled=0;
-SDL_Surface* cSlider::m_ImgButtonOff=0;
-SDL_Surface* cSlider::m_ImgButtonOn=0;
-SDL_Surface* cSlider::m_ImgButtonDisabled=0;
-SDL_Surface* cSlider::m_ImgMarker=0;
+SDL_Surface* cSlider::m_ImgRailDefault=nullptr;
+SDL_Surface* cSlider::m_ImgRailDisabled=nullptr;
+SDL_Surface* cSlider::m_ImgButtonOff=nullptr;
+SDL_Surface* cSlider::m_ImgButtonOn=nullptr;
+SDL_Surface* cSlider::m_ImgButtonDisabled=nullptr;
+SDL_Surface* cSlider::m_ImgMarker=nullptr;
 
 cSlider::cSlider(int ID, int x, int y, int width, int min, int max, int increment, int value, float height):
     cUIWidget(ID, x ,y, width, CalcHeight(height)), m_MinVal(min), m_MaxVal(max), m_Value(value), m_IncrementAmount(increment),

@@ -411,7 +411,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 		}
 
 		// Horizontal boogy
-		string fm = "";
+		string fm;
 		g_Girls.GirlFucks(girl, Day0Night1, &Cust, group, fm, SexType);
 		fuckMessage << fm;
 
@@ -642,7 +642,7 @@ bool cJobManager::WorkHallWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1,
 			if (itemnum >= 0 || g_Dice.percent(10))
 			{
 				sInventoryItem* item;
-				string itemname = "";
+				string itemname;
 				stringstream itemtext;
 				itemtext << "Your gang " << (guardgang ? guardgang->m_Name : "");
 				stringstream CGmsg;

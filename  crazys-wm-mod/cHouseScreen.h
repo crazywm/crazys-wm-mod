@@ -63,7 +63,7 @@ public:
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cHouseScreen() {}
+	~cHouseScreen() = default;
 
 	void init();
 	void process();

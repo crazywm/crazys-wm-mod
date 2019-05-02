@@ -89,7 +89,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 	{
 		enjoy = g_Dice % 3 + 1;
 		fame = g_Dice % 3 + 1;
-		sGirl* ugirl = 0;
+		sGirl* ugirl = nullptr;
 		if (g_Dice.percent(10))		// chance of getting unique girl
 		{
 			ugirl = g_Girls.GetRandomGirl(false, false, true);
@@ -236,7 +236,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, sBrothel* brothel, bool Day0N
 		ss  << girlName << " has quite the following, and the Arena is almost always packed when she fights.  People just love to watch her in action.\n";
 	}
 
-	if (tempgirl) delete tempgirl; tempgirl = 0;	// Cleanup
+	if (tempgirl) delete tempgirl; tempgirl = nullptr;	// Cleanup
 
 
 	// Improve girl

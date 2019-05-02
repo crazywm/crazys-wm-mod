@@ -55,7 +55,7 @@ struct sJobs
 	string m_HateWork;
 	//string m_BrothelStatToUpdate;
 	int m_DependantSkill;
-	sJobs(void){}
+	sJobs(void) = default;
 	void setup(
 		string name,
 		int min=0, int max=-1,
@@ -107,7 +107,7 @@ public:
 	void customer_rape(sGirl*);
 	bool gang_stops_rape(sGirl* girl, sGang *gang, int chance, int day_night);
 	bool girl_fights_rape(sGirl*, int);
-	int guard_coverage(vector<sGang*> *v=0);
+	int guard_coverage(vector<sGang*> *v=nullptr);
 	bool work_related_violence(sGirl*, int, bool);
 	bool explore_catacombs(sGirl *);
 	bool beast_capture(sGirl * girl,sBrothel * brothel,string& summary,int);

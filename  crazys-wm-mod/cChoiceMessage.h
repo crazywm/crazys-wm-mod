@@ -59,12 +59,12 @@ class cChoiceManager
 	menu_callback_type m_callback;
 public:
 	cChoiceManager() {
-		m_Parent = 0;
-		m_ActiveChoice = 0;
-		m_DownOn = m_UpOn = m_UpOff = m_DownOff = 0;
-		m_CurrUp = m_CurrDown = 0;
-		m_Font = 0;
-		m_callback = 0;
+		m_Parent = nullptr;
+		m_ActiveChoice = nullptr;
+		m_DownOn = m_UpOn = m_UpOff = m_DownOff = nullptr;
+		m_CurrUp = m_CurrDown = nullptr;
+		m_Font = nullptr;
+		m_callback = nullptr;
 	}
 	~cChoiceManager() { Free(); }
 

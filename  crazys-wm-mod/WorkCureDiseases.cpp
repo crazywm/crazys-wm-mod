@@ -131,12 +131,12 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, sBrothel* brothel, bool Day0Nigh
 		if (numnurse > 3)	n2 = 3;
 	}
 
-	sGirl* Doctor1 = d1 != -1 ? doctors[d1] : 0;
-	sGirl* Doctor2 = d2 != -1 ? doctors[d2] : 0;
-	sGirl* Nurse1 = n1 != -1 ? nurses[n1] : 0;
-	sGirl* Nurse2 = n2 != -1 ? nurses[n2] : 0;
-	sGirl* Nurse3 = n3 != -1 ? nurses[n3] : 0;
-	sGirl* Nurse4 = n4 != -1 ? nurses[n4] : 0;
+	sGirl* Doctor1 = d1 != -1 ? doctors[d1] : nullptr;
+	sGirl* Doctor2 = d2 != -1 ? doctors[d2] : nullptr;
+	sGirl* Nurse1 = n1 != -1 ? nurses[n1] : nullptr;
+	sGirl* Nurse2 = n2 != -1 ? nurses[n2] : nullptr;
+	sGirl* Nurse3 = n3 != -1 ? nurses[n3] : nullptr;
+	sGirl* Nurse4 = n4 != -1 ? nurses[n4] : nullptr;
 
 	numdoctor = numnurse = 0;		// clear the count and recheck to make sure they were found properly
 	if (Doctor1)	numdoctor++;

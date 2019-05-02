@@ -176,8 +176,8 @@ void cBuilding::clear_reversion_list()
 	u_int lim = list.size();
  	for(u_int i = 0; i < lim; i++) {
 		delete list[i];
-		list[i] = 0;
+		list[i] = nullptr;
 	}
 	delete m_reversion;
-	m_reversion = 0;
+	m_reversion = nullptr;
 }

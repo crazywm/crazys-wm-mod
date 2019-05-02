@@ -67,7 +67,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	int found = 0;
 	int Armor = -1, Weap1 = -1, Weap2 = -1;
 	for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
-		if (girl->m_Inventory[i] != 0)
+		if (girl->m_Inventory[i] != nullptr)
 		{
 			found++;
 			if (girl->m_Inventory[i]->m_Type == INVWEAPON)
@@ -227,7 +227,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, sBrothel* brothel, bool Day0Night1
 	ss << "\n \n";
 
 	// Cleanup
-	if (tempgirl) delete tempgirl; tempgirl = 0;
+	if (tempgirl) delete tempgirl; tempgirl = nullptr;
 
 
 	if ((girl->is_slave() && !cfg.initial.slave_pay_outofpocket()))

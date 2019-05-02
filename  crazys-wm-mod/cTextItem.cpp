@@ -29,7 +29,7 @@ cTextItem::cTextItem(int ID, int x, int y, int width, int height, string text, i
                      bool force_scrollbar , bool leftorright , int red , int green , int blue):
     cUIWidget(ID, x, y, width, height)
 {
-    m_ScrollBar = 0;
+    m_ScrollBar = nullptr;
 	m_AutoScrollBar = true;
 	m_ForceScrollBar = false;
 	m_ScrollChange = 0;
@@ -88,7 +88,7 @@ void cTextItem::SetText(string text)
 
 void cTextItem::DrawWidget()
 {
-	if (m_Text == "") return;
+	if (m_Text.empty()) return;
 
 #if 0	// draw visible box showing exact area covered by TextItem; for debug usage, disabled by default
 	SDL_Rect dstRect;

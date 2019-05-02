@@ -25,7 +25,7 @@ class CRenderObject;
 class CRenderObject
 {
 public:
-	CRenderObject() {m_Next = 0;}
+	CRenderObject() {m_Next = nullptr;}
 	virtual void Draw() {};
 
 	CRenderObject* m_Next;
@@ -34,8 +34,8 @@ public:
 class CRenderQue
 {
 public:
-	CRenderQue() {m_Parent = 0; m_Last = 0;}
-	~CRenderQue() {m_Parent = 0; m_Last = 0;}
+	CRenderQue() {m_Parent = nullptr; m_Last = nullptr;}
+	~CRenderQue() {m_Parent = nullptr; m_Last = nullptr;}
 
 	void DrawQue();
 	void ClearQue();

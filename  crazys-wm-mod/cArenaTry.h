@@ -52,7 +52,7 @@ public:
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cArenaTry() {}
+	~cArenaTry() = default;
 
 	void init();
 	void process();

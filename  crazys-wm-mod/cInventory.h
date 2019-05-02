@@ -377,7 +377,7 @@ class cInventory
 public:
 	cInventory() {
 		for(int i = 0; i < NUM_SHOPITEMS; i++) {
-			m_ShopItems[i] = 0;
+			m_ShopItems[i] = nullptr;
 		}
 		m_NumShopItems = 0;
 	}

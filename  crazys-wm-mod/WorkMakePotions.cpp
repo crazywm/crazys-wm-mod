@@ -149,8 +149,8 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 	while (numitemsmade > 0 && choosequality >= 70)
 	{
 		numitemsmade--;
-		sInventoryItem* item = NULL;
-		string itemmade = "";
+		sInventoryItem* item = nullptr;
+		string itemmade;
 		if (choosequality < 70)	{}	// she made nothing
 		else if (choosequality < 100)	// Common items
 		{
@@ -245,7 +245,7 @@ bool cJobManager::WorkMakePotions(sGirl* girl, sBrothel* brothel, bool Day0Night
 			else { numitemsmade += 2; choosequality = 240; }		// make 2 items of lesser quality
 		}
 
-		if (itemmade != "")
+		if (!itemmade.empty())
 		{
 			item = g_InvManager.GetItem(itemmade);
 			if (item)

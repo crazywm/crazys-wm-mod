@@ -27,6 +27,4 @@ Globals::Globals()
 }
 
 
-Globals::~Globals()
-{
-}
+Globals::~Globals() = default;

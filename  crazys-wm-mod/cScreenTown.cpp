@@ -81,7 +81,7 @@ cScreenTown::cScreenTown()
 	GetName = false;
 	m_first_walk = true;
 }
-cScreenTown::~cScreenTown() {}
+cScreenTown::~cScreenTown() = default;
 
 
 void cScreenTown::set_ids()
@@ -230,7 +230,7 @@ void cScreenTown::init()
 	}
 	if (GetName)
 	{
-		if (g_ReturnText != "")
+		if (!g_ReturnText.empty())
 		{
 			if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_GETNEXTBROTHEL)
 				g_Brothels.PassObjective();
@@ -266,11 +266,11 @@ void cScreenTown::init()
 	// buttons enable/disable
 	DisableButton(walk_id, g_WalkAround);
 
-	HideButton(brothel2_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == 0);
-	HideButton(brothel3_id, g_Brothels.GetNumBrothels() < 3 || g_Brothels.GetBrothel(2) == 0);
-	HideButton(brothel4_id, g_Brothels.GetNumBrothels() < 4 || g_Brothels.GetBrothel(3) == 0);
-	HideButton(brothel5_id, g_Brothels.GetNumBrothels() < 5 || g_Brothels.GetBrothel(4) == 0);
-	HideButton(brothel6_id, g_Brothels.GetNumBrothels() < 6 || g_Brothels.GetBrothel(5) == 0);
+	HideButton(brothel2_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == nullptr);
+	HideButton(brothel3_id, g_Brothels.GetNumBrothels() < 3 || g_Brothels.GetBrothel(2) == nullptr);
+	HideButton(brothel4_id, g_Brothels.GetNumBrothels() < 4 || g_Brothels.GetBrothel(3) == nullptr);
+	HideButton(brothel5_id, g_Brothels.GetNumBrothels() < 5 || g_Brothels.GetBrothel(4) == nullptr);
+	HideButton(brothel6_id, g_Brothels.GetNumBrothels() < 6 || g_Brothels.GetBrothel(5) == nullptr);
 
 
 	string brothel = "Current Brothel: ";
@@ -343,7 +343,7 @@ void cScreenTown::do_walk()
 		return;
 	}
 	sGirl *girl = g_Girls.GetRandomGirl();						// let's get a girl for the player to meet
-	if (girl == 0)												// if there's no girl, no meeting
+	if (girl == nullptr)												// if there's no girl, no meeting
 	{
 		g_MessageQue.AddToQue(walk_no_luck(), COLOR_RED);
 		return;
@@ -366,11 +366,11 @@ void cScreenTown::do_walk()
 	}
 
 	int v[2] = { 0, -1 };
-	cTrigger* trig = 0;
+	cTrigger* trig = nullptr;
 	DirPath dp;
 	DirPath intro;
-	string introfile = "";
-	string message = "";
+	string introfile;
+	string message;
 	cScriptManager sm;
 
 	// is there a girl specific talk script?
@@ -398,7 +398,7 @@ void cScreenTown::do_walk()
 	{
 		message = ReadTextFile(intro, introfile);
 	}
-	if (message.size() > 0) g_MessageQue.AddToQue(message, COLOR_BLUE);
+	if (!message.empty()) g_MessageQue.AddToQue(message, COLOR_BLUE);
 
 	eventrunning = true;
 	sm.Load(dp, girl);

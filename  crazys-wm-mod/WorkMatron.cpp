@@ -128,12 +128,12 @@ bool cJobManager::WorkMatron(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		int cost = 0;
 		int method = 0;	// 1 = out of pocket, 2 = brothel money, 3 = sex, 4 = bj
 		// 'Mute' Added so if the cost of the item changes then the gold amout will be correct
-		sInventoryItem* item = 0;
-		string itemName = "";
+		sInventoryItem* item = nullptr;
+		string itemName;
 		/* */if (girl->has_trait("Viras Blood Addict"))	{ itemName = "Vira Blood"; }		// cost += 150;	girl->add_inv(g_InvManager.GetItem("Vira Blood")); }
 		else if (girl->has_trait("Shroud Addict"))		{ itemName = "Shroud Mushroom"; }	// cost += 100;	girl->add_inv(g_InvManager.GetItem("Shroud Mushroom")); }
 		else if (girl->has_trait("Fairy Dust Addict"))	{ itemName = "Fairy Dust"; }		// cost += 50;	girl->add_inv(g_InvManager.GetItem("Fairy Dust")); }
-		if (itemName != "")		item = g_InvManager.GetItem(itemName);
+		if (!itemName.empty())		item = g_InvManager.GetItem(itemName);
 		if (item)
 		{
 			cost += item->m_Cost;

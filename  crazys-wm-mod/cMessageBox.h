@@ -79,21 +79,21 @@ typedef struct sMessage
 	int m_Color;
 	sMessage* m_Next;
 
-	sMessage() {m_Next=0;m_Color=0;m_Text="";}
-	~sMessage() {if(m_Next) delete m_Next; m_Next=0;}
+	sMessage() {m_Next=nullptr;m_Color=0;m_Text="";}
+	~sMessage() {if(m_Next) delete m_Next; m_Next=nullptr;}
 }sMessage;
 
 class cMessageQue
 {
 public:
-	cMessageQue() {m_Mess=0;m_Last=0;}
+	cMessageQue() {m_Mess=nullptr;m_Last=nullptr;}
 	~cMessageQue() {Free();}
 
-	void Free()	{if(m_Mess) delete m_Mess; m_Last=m_Mess=0;}
+	void Free()	{if(m_Mess) delete m_Mess; m_Last=m_Mess=nullptr;}
 
 	void AddToQue(string text, int color)
 	{
-		if(text != "") 
+		if(!text.empty())
 		{
 			// Allocate a new process and push it on stack
 			sMessage *Ptr = new sMessage();
@@ -123,15 +123,15 @@ public:
 		{
 			sMessage *Ptr = m_Mess;
 			m_Mess = m_Mess->m_Next;
-			Ptr->m_Next = 0;
-			if(m_Mess == 0)
-				m_Last = 0;
+			Ptr->m_Next = nullptr;
+			if(m_Mess == nullptr)
+				m_Last = nullptr;
 
 			g_MessageBox.ResetWindow(Ptr->m_Text, Ptr->m_Color);
 			g_MessageBox.SetActive(true);
 
 			delete Ptr;
-			Ptr = 0;
+			Ptr = nullptr;
 		}
 	}
 

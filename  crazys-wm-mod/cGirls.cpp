@@ -21,7 +21,7 @@
 #include "cTariff.h"
 #include "cGirls.h"
 #include "cEvents.h"
-#include "math.h"
+#include <cmath>
 #include "cBrothel.h"
 #include "cMessageBox.h"
 #include "cGold.h"
@@ -127,7 +127,7 @@ const char *sGirl::skill_names[] =
 {
 	"Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex",
 	"Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob", "Cooking"
-	, 0
+	, nullptr
 };
 const char *sGirl::status_names[] =
 {
@@ -212,7 +212,7 @@ const unsigned int sGirl::max_training = (sizeof(sGirl::training_names) / sizeof
 sGirl::sGirl()				// constructor
 {
 	// sGirl stuff
-	m_Prev = m_Next = 0;		m_newRandomFixed = -1;
+	m_Prev = m_Next = nullptr;		m_newRandomFixed = -1;
 
 	// Names
 	m_Name = m_Realname = m_FirstName = m_MiddleName = m_Surname = m_MotherName = m_FatherName = m_Desc = "";
@@ -247,12 +247,12 @@ sGirl::sGirl()				// constructor
 
 	// Inventory
 	m_NumInventory = 0;
-	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)	{ m_EquipedItems[i] = 0; m_Inventory[i] = 0; }
+	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)	{ m_EquipedItems[i] = 0; m_Inventory[i] = nullptr; }
 
 	//Traits
 	m_NumRememTraits = m_NumTraits = 0;
-	for (int i = 0; i < MAXNUM_TRAITS; i++)			{ m_Traits[i] = 0; m_TempTrait[i] = 0; }
-	for (int i = 0; i < MAXNUM_TRAITS * 2; i++)		{ m_RememTraits[i] = 0; }
+	for (int i = 0; i < MAXNUM_TRAITS; i++)			{ m_Traits[i] = nullptr; m_TempTrait[i] = 0; }
+	for (int i = 0; i < MAXNUM_TRAITS * 2; i++)		{ m_RememTraits[i] = nullptr; }
 
 	// Stats and skills
 	for (u_int i = 0; i < NUM_SKILLS; i++)		// Added m_Skills here to zero out any that are not specified -- PP
@@ -308,8 +308,8 @@ sGirl::~sGirl()		// destructor
 	m_Name = "";
 	m_Events.Free();
 	if (m_Next)		delete m_Next;
-	m_Next = 0;
-	m_Prev = 0;
+	m_Next = nullptr;
+	m_Prev = nullptr;
 
 }
 
@@ -327,7 +327,7 @@ int sGirl::has_item(const std::string& item)
 
 string stringtolowerj(string name)
 {
-	string s = "", t = "";
+	string s, t;
 	for (u_int i = 0; i < name.length(); i++)
 	{
 		if (tolower(name[i]) != tolower(" "[0]) && tolower(name[i]) != tolower("."[0]) && tolower(name[i]) != tolower(","[0]))
@@ -439,14 +439,14 @@ sRandomGirl::sRandomGirl()
 	m_NumTraits = m_NumTraitNames = 0;
 	for (int i = 0; i < MAXNUM_TRAITS; i++)
 	{
-		m_Traits[i] = 0;
+		m_Traits[i] = nullptr;
 		m_TraitChance[i] = 0;
 	}
 	m_NumItems = m_NumItemNames = 0;
 	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
 		m_ItemChance[i] = 0;
-		m_Inventory[i] = 0;
+		m_Inventory[i] = nullptr;
 	}
 
 	//assigning defaults
@@ -499,7 +499,7 @@ sRandomGirl::sRandomGirl()
 sRandomGirl::~sRandomGirl()
 {
 	if (m_Next) delete m_Next;
-	m_Next = 0;
+	m_Next = nullptr;
 }
 
 // ----- Lookups
@@ -877,16 +877,16 @@ public:
 
 cGirls::cGirls()
 {
-	m_Parent = 0;
-	m_Last = 0;
+	m_Parent = nullptr;
+	m_Last = nullptr;
 	m_NumRandomGirls = m_NumGirls =
 		m_NumHumanRandomGirls =
 		m_NumNonHumanRandomGirls =
 		m_NumRandomYourDaughterGirls =
 		m_NumHumanRandomYourDaughterGirls =
 		m_NumNonHumanRandomYourDaughterGirls = 0;
-	m_RandomGirls = 0;
-	m_LastRandomGirls = 0;
+	m_RandomGirls = nullptr;
+	m_LastRandomGirls = nullptr;
 }
 
 cGirls::~cGirls()
@@ -897,12 +897,12 @@ cGirls::~cGirls()
 void cGirls::Free()
 {
 	if (m_Parent) delete m_Parent;
-	m_Parent = m_Last = 0;
+	m_Parent = m_Last = nullptr;
 	m_NumGirls = 0;
 	g_GenGirls = false;
 	if (m_RandomGirls) delete m_RandomGirls;
-	m_RandomGirls = 0;
-	m_LastRandomGirls = 0;
+	m_RandomGirls = nullptr;
+	m_LastRandomGirls = nullptr;
 	m_NumRandomGirls =
 	m_NumHumanRandomGirls =
 		m_NumNonHumanRandomGirls =
@@ -1283,7 +1283,7 @@ sGirl *sGirl::run_away()
 	m_RunAway = 6;		// player has 6 weeks to retreive
 	m_NightJob = m_DayJob = JOB_RUNAWAY;
 	g_Brothels.AddGirlToRunaways(this);
-	return 0;
+	return nullptr;
 }
 
 void cGirls::CalculateAskPrice(sGirl* girl, bool vari)
@@ -1342,7 +1342,7 @@ sRandomGirl* cGirls::random_girl_at(int n)
 	*
 	*	So let's cut to the chase
 	*/
-	if (n >= m_NumRandomGirls)	return 0;
+	if (n >= m_NumRandomGirls)	return nullptr;
 	// loop through the linked list n times
 	for (i = 0; i < n; i++)
 	{
@@ -1358,10 +1358,10 @@ sRandomGirl* cGirls::random_girl_at(int n)
 		*
 		*		is it too late to rewrite this using vector?
 		*/
-		if (current == 0)
+		if (current == nullptr)
 		{
 			g_LogFile.os() << "broken chain in cGirls::random_girl_at" << endl;
-			return 0;
+			return nullptr;
 		}
 	}
 	return current;		// and there we (hopefully) are
@@ -1370,15 +1370,15 @@ sRandomGirl* cGirls::random_girl_at(int n)
 sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undead, bool Human0Monster1,
 								bool childnaped, bool arena, bool daughter, bool isdaughter, string findbyname)
 {
-	sRandomGirl* current = 0;
+	sRandomGirl* current = nullptr;
 	// 1. The most direct check is to try to find a girl by name.
-	if (findbyname != "")
+	if (!findbyname.empty())
 	{
-		current = find_random_girl_by_name(findbyname, 0);
+		current = find_random_girl_by_name(findbyname, nullptr);
 	}
 
 	// 2. Next we see if you are looking for your own daughter
-	if (current == 0 && daughter &&	m_NumRandomYourDaughterGirls > 0)
+	if (current == nullptr && daughter &&	m_NumRandomYourDaughterGirls > 0)
 	{
 		bool girlfound = false;
 		bool monstergirl = Human0Monster1;
@@ -1391,7 +1391,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		while (i < (int)m_NumRandomGirls)					// loop until we find a human/non-human template as required
 		{
 			current = random_girl_at(random_girl_index);
-			if (current != 0 && current->m_YourDaughter)
+			if (current != nullptr && current->m_YourDaughter)
 			{
 				if (monstergirl)
 				{
@@ -1413,11 +1413,11 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			i++; random_girl_index++;	// `J` check all random girls then if not found return the last random girl checked
 			if (random_girl_index >(int)m_NumRandomGirls) random_girl_index = 0;
 		}
-		if (!girlfound) current = 0;	// if no your daughter was found allow for random check.
+		if (!girlfound) current = nullptr;	// if no your daughter was found allow for random check.
 	}
 
 	if (current){}	// if the above checks succeded - skip random check
-	else if (m_NumRandomGirls == 0)	current = 0;
+	else if (m_NumRandomGirls == 0)	current = nullptr;
 	else
 	{
 		int i = 0;
@@ -1425,7 +1425,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		while (i < (int)m_NumRandomGirls)	// loop until we find a human/non-human template as required
 		{
 			current = random_girl_at(random_girl_index);
-			if (current != 0 && Human0Monster1 == (current->m_Human == 0))				// test for humanity - or lack of it as the case may be
+			if (current != nullptr && Human0Monster1 == (current->m_Human == 0))				// test for humanity - or lack of it as the case may be
 			{
 				break;
 			}
@@ -1682,7 +1682,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	}
 
 	sGirl* newGirl = new sGirl();
-	newGirl->m_Next = 0;
+	newGirl->m_Next = nullptr;
 	newGirl->m_AccLevel = cfg.initial.girls_accom();
 	newGirl->m_States = 0;
 	newGirl->m_NumTraits = 0;
@@ -1843,7 +1843,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		newGirl->m_Stats[STAT_OBEDIENCE] = min(newGirl->m_Stats[STAT_OBEDIENCE] + 20, 100);
 	}
 
-	g_Girls.MutuallyExclusiveTraits(newGirl, 1);	// make sure all the trait effects are applied
+	g_Girls.MutuallyExclusiveTraits(newGirl, true);	// make sure all the trait effects are applied
 	g_Girls.ApplyTraits(newGirl);
 	RemoveAllRememberedTraits(newGirl);	// WD: remove any rembered traits created from trait incompatibilities
 
@@ -1859,7 +1859,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	*
 	*	So I'm assuming non-unique names are ok
 	*/
-	string name = "", name1 = "", name2 = "";
+	string name, name1, name2;
 	for (int i = 0; i < 5; i++)
 	{
 		/* `J` Added g_BoysNameList for .06.03.00
@@ -1964,15 +1964,15 @@ string cGirls::CreateRealName(string first, string middle, string last)
 {
 	stringstream ss;
 	int numnames = 0;
-	if (first.size() > 0)	numnames++;
-	if (middle.size() > 0)	numnames++;
-	if (last.size() > 0)	numnames++;
+	if (!first.empty())	numnames++;
+	if (!middle.empty())	numnames++;
+	if (!last.empty())	numnames++;
 
 	if (numnames == 0) return "";
 	else if (numnames == 1) ss << first << middle << last;
 	else if (numnames == 2)
 	{
-		if (first.size() > 0) ss << first << " " << middle << last;
+		if (!first.empty()) ss << first << " " << middle << last;
 		else ss << middle << " " << last;
 	}
 	else  ss << first << " " << middle << " " << last;
@@ -2017,7 +2017,7 @@ void cGirls::DivideName(sGirl* girl)
 }
 bool cGirls::BuildName(sGirl* girl)
 {
-	if (girl->m_Realname == "")				// if m_Realname is empty...
+	if (girl->m_Realname.empty())				// if m_Realname is empty...
 	{
 		if (CreateRealName(girl))			// check if the F+M+S names are also empty
 		{
@@ -2057,7 +2057,7 @@ void cGirls::LevelUp(sGirl* girl)
 		while (addedtrait > 0)
 		{
 			int chance = g_Dice % 12;
-			string trait = "";
+			string trait;
 			switch (chance)
 			{
 			case 1:		trait = "Agile";				break;
@@ -2073,7 +2073,7 @@ void cGirls::LevelUp(sGirl* girl)
 			case 11:	trait = "Sexy Air";				break;
 			default: break;
 			}
-			if (trait != "" && !girl->has_trait(trait))
+			if (!trait.empty() && !girl->has_trait(trait))
 			{
 				addedtrait = 0;
 				girl->add_trait(trait);
@@ -2213,7 +2213,7 @@ void cGirls::EndDayGirls(sBrothel* brothel, sGirl* girl)
 
 void cGirls::AddRandomGirl(sRandomGirl* girl)
 {
-	girl->m_Next = 0;
+	girl->m_Next = nullptr;
 	if (m_RandomGirls)	m_LastRandomGirls->m_Next = girl;
 	else				m_RandomGirls = girl;
 	m_LastRandomGirls = girl;
@@ -2233,7 +2233,7 @@ void cGirls::AddRandomGirl(sRandomGirl* girl)
 
 void cGirls::AddGirl(sGirl* girl)
 {
-	girl->m_Prev = girl->m_Next = 0;
+	girl->m_Prev = girl->m_Next = nullptr;
 	if (m_Parent)
 	{
 		girl->m_Prev = m_Last;
@@ -2246,7 +2246,7 @@ void cGirls::AddGirl(sGirl* girl)
 
 void cGirls::RemoveGirl(sGirl* girl, bool deleteGirl)
 {
-	if (m_Parent == 0)	return;
+	if (m_Parent == nullptr)	return;
 	bool match = false;
 	sGirl* currGirl = m_Parent;
 	while (currGirl)
@@ -2266,9 +2266,9 @@ void cGirls::RemoveGirl(sGirl* girl, bool deleteGirl)
 			if (girl->m_Next)		girl->m_Next->m_Prev = girl->m_Prev;
 			if (girl == m_Parent)	m_Parent = girl->m_Next;
 			if (girl == m_Last)		m_Last = girl->m_Prev;
-			girl->m_Next = girl->m_Prev = 0;
+			girl->m_Next = girl->m_Prev = nullptr;
 			delete girl;
-			girl = 0;
+			girl = nullptr;
 		}
 		else
 		{
@@ -2276,7 +2276,7 @@ void cGirls::RemoveGirl(sGirl* girl, bool deleteGirl)
 			if (girl->m_Next)		girl->m_Next->m_Prev = girl->m_Prev;
 			if (girl == m_Parent)	m_Parent = girl->m_Next;
 			if (girl == m_Last)		m_Last = girl->m_Prev;
-			girl->m_Next = girl->m_Prev = 0;
+			girl->m_Next = girl->m_Prev = nullptr;
 		}
 		m_NumGirls--;
 	}
@@ -2457,12 +2457,12 @@ string cGirls::GetGirlMood(sGirl* girl)
 
 string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 {
-	if (girl == 0)	return string("");
+	if (girl == nullptr)	return string("");
 	//cTariff tariff;
 	cFont check; int w, h, size = 0;
 	check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 	stringstream ss;
-	string sper = ""; if (cfg.fonts.showpercent()) sper = " %";
+	string sper; if (cfg.fonts.showpercent()) sper = " %";
 
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
 	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Worth : " };
@@ -2633,8 +2633,8 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
 string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 {
-	if (girl == 0)	return "";
-	string sper = ""; if (cfg.fonts.showpercent()) sper = " %";
+	if (girl == nullptr)	return "";
+	string sper; if (cfg.fonts.showpercent()) sper = " %";
 	stringstream ss;
 	cFont check; int w, h, size = 0;
 	check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
@@ -2899,7 +2899,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 
 	// `J` spiltting the buildings so they can be sorted
 	string div = "\n------------------------------------\n\n";
-	string Brothel_Data = "";
+	string Brothel_Data;
 	Brothel_Data += "Brothel Job Ratings\n";
 	Brothel_Data += girl->JobRating(m_JobManager.JP_Matron(girl, true), "-", "Matron");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_Security(girl, true), "-", "Security");
@@ -2935,7 +2935,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	Brothel_Data += div;
 
 	//STUDIO
-	string Studio_Data = "";
+	string Studio_Data;
 	if (g_Studios.GetNumBrothels() > 0)
 	{
 		Studio_Data += "Studio Job Ratings\n";
@@ -2973,7 +2973,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Studio_Data += div;
 	}
 	//ARENA
-	string Arena_Data = "";
+	string Arena_Data;
 	if (g_Arena.GetNumBrothels() > 0)
 	{
 		Arena_Data += "Arena Job Ratings\n";
@@ -2989,7 +2989,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Arena_Data += div;
 	}
 	//CENTRE
-	string Centre_Data = "";
+	string Centre_Data;
 	if (g_Centre.GetNumBrothels() > 0)
 	{
 		Centre_Data += "Centre Job Ratings\n";
@@ -3005,7 +3005,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Centre_Data += div;
 	}
 	//CLINIC
-	string Clinic_Data = "";
+	string Clinic_Data;
 	if (g_Clinic.GetNumBrothels() > 0)
 	{
 		Clinic_Data += "Clinic Job Ratings\n";
@@ -3031,7 +3031,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Clinic_Data += div;
 	}
 	//FARM
-	string Farm_Data = "";
+	string Farm_Data;
 	if (g_Farm.GetNumBrothels() > 0)
 	{
 		Farm_Data += "Farm Job Ratings\n";
@@ -3059,7 +3059,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 		Farm_Data += div;
 	}
 	//HOUSE
-	string House_Data = "";
+	string House_Data;
 	House_Data += "House Job Ratings\n";
 	House_Data += girl->JobRating(m_JobManager.JP_HeadGirl(girl, true), "-", "Head Girl");
 	House_Data += girl->JobRating(m_JobManager.JP_Recruiter(girl, true), "-", "Recruiter");
@@ -3074,7 +3074,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	House_Data += div;
 
 	// `J` Show the current building first
-	string data = "";
+	string data;
 	/* */if (girl->m_InArena)		data += Arena_Data;
 	else if (girl->m_InStudio)		data += Studio_Data;
 	else if (girl->m_InCentre)		data += Centre_Data;
@@ -3107,12 +3107,12 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 
 string cGirls::GetSimpleDetails(sGirl* girl, int fontsize)
 {
-	if (girl == 0) return "";
+	if (girl == nullptr) return "";
 	if (fontsize < 8) fontsize = 8;
 	stringstream ss;
 	cFont check; int w, h, size = 0;
 	check.LoadFont(cfg.fonts.normal(), fontsize);
-	string sper = ""; if (cfg.fonts.showpercent()) sper = " %";
+	string sper; if (cfg.fonts.showpercent()) sper = " %";
 
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
 	string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Level : ", "Exp : ", "Location : ", "Day Job : ", "Night Job : " };
@@ -3175,7 +3175,7 @@ string cGirls::GetSimpleDetails(sGirl* girl, int fontsize)
 // added human check: -1 does not matter, 0 not human, 1 human
 sGirl* cGirls::GetUniqueYourDaughterGirl(int Human0Monster1)
 {
-	if (GetNumYourDaughterGirls() == 0) return 0;
+	if (GetNumYourDaughterGirls() == 0) return nullptr;
 	sGirl *girl;
 	vector<sGirl *> v;
 	for (girl = m_Parent; girl; girl = girl->m_Next)
@@ -3204,7 +3204,7 @@ sGirl* cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughte
 	}
 	GirlPredicate_GRG pred(slave, catacomb, arena, daughter, isdaughter);
 	vector<sGirl *> girls = get_girls(&pred);
-	if (girls.size() == 0) return 0;
+	if (girls.empty()) return nullptr;
 	return girls[g_Dice.random(girls.size())];
 }
 
@@ -3212,14 +3212,14 @@ sGirl* cGirls::GetGirl(int girl)
 {
 	int count = 0;
 	sGirl* current = m_Parent;
-	if (girl < 0 || (unsigned int)girl >= m_NumGirls)		return 0;
+	if (girl < 0 || (unsigned int)girl >= m_NumGirls)		return nullptr;
 	while (current)
 	{
 		if (count == girl)	return current;
 		count++;
 		current = current->m_Next;
 	}
-	return 0;
+	return nullptr;
 }
 
 int cGirls::GetRebelValue(sGirl* girl, bool matron)
@@ -3564,7 +3564,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 {
 	//this is always called after creating a new girl, so let's not init sGirl again
 	TiXmlElement* pGirl = hGirl.ToElement();
-	if (pGirl == 0) return false;
+	if (pGirl == nullptr) return false;
 	int tempInt = 0;
 
 	// load the name
@@ -3575,7 +3575,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	m_FirstName = (pGirl->Attribute("FirstName") ? pGirl->Attribute("FirstName") : "");	// `J` New
 	m_MiddleName = (pGirl->Attribute("MiddleName") ? pGirl->Attribute("MiddleName") : "");	// `J` New
 	m_Surname = (pGirl->Attribute("Surname") ? pGirl->Attribute("Surname") : "");	// `J` New
-	if (m_Realname == "" || (m_FirstName == "" && m_MiddleName == "" && m_Surname == "")) g_Girls.BuildName(this);
+	if (m_Realname.empty() || (m_FirstName.empty() && m_MiddleName.empty() && m_Surname.empty())) g_Girls.BuildName(this);
 
 	m_Desc = (pGirl->Attribute("Desc") ? pGirl->Attribute("Desc") : "-");	// get the description
 
@@ -3587,7 +3587,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	if (m_NumTraits > MAXNUM_TRAITS)
 		g_LogFile.write("--- ERROR - Loaded more traits than girls can have??");
 
-	g_Girls.MutuallyExclusiveTraits(this, 1);	// cleanup traits
+	g_Girls.MutuallyExclusiveTraits(this, true);	// cleanup traits
 	g_Girls.RemoveAllRememberedTraits(this);	// and clear any thing left after the cleanup
 
 	// Load their remembered traits
@@ -3707,9 +3707,9 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
 	}
 	if (pChildren)
 	{
-		for (TiXmlElement* pChild = pChildren->FirstChildElement("Child"); pChild != 0; pChild = pChild->NextSiblingElement("Child"))
+		for (TiXmlElement* pChild = pChildren->FirstChildElement("Child"); pChild != nullptr; pChild = pChild->NextSiblingElement("Child"))
 		{
-			sChild* child = new sChild(0, sChild::Girl, 0);				// `J` prepare a minimal new child
+			sChild* child = new sChild(false, sChild::Girl, 0);				// `J` prepare a minimal new child
 			bool success = child->LoadChildXML(TiXmlHandle(pChild));	// because this will load over top of it
 			if (success == true) { m_Children.add_child(child); }		// add it if it loaded
 			else { delete child; continue; }							// or delete the failed load
@@ -3759,7 +3759,7 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 
 	// Save their remembered traits
 	if (m_NumRememTraits > MAXNUM_TRAITS * 2) g_LogFile.write("---- ERROR - Saved more remembered traits then girls can have");
-	SaveTraitsXML(pGirl, "Remembered_Traits", MAXNUM_TRAITS * 2, m_RememTraits, 0);
+	SaveTraitsXML(pGirl, "Remembered_Traits", MAXNUM_TRAITS * 2, m_RememTraits, nullptr);
 
 	// Save inventory items
 	TiXmlElement* pInventory = new TiXmlElement("Inventory");
@@ -3859,7 +3859,7 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
 bool sChild::LoadChildXML(TiXmlHandle hChild)
 {
 	TiXmlElement* pChild = hChild.ToElement();
-	if (pChild == 0)
+	if (pChild == nullptr)
 	{
 		return false;
 	}
@@ -3930,7 +3930,7 @@ void sGirl::load_from_xml(TiXmlElement *el)
 		pt = el->Attribute(stat_name, &ival);
 
 		ostream& os = g_LogFile.os();
-		if (pt == 0)
+		if (pt == nullptr)
 		{
 			os << "Error: Can't find stat '" << stat_name << "' for girl '" << m_Realname << "' - Setting it to default." << endl;
 			continue;
@@ -4008,13 +4008,13 @@ void sRandomGirl::load_from_xml(TiXmlElement *el)
 
 	// DQ - new random type ...
 	m_newRandom = false;
-	m_newRandomTable = 0;
-	if (pt = el->Attribute("NewRandom"))		m_newRandom = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
-	if (pt = el->Attribute("Human"))			m_Human = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
-	if (pt = el->Attribute("Catacomb"))			m_Catacomb = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
-	if (pt = el->Attribute("Arena"))			m_Arena = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
-	if (pt = el->Attribute("Your Daughter"))	m_YourDaughter = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
-	if (pt = el->Attribute("Is Daughter"))		m_IsDaughter = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? 1 : 0;
+	m_newRandomTable = nullptr;
+	if (pt = el->Attribute("NewRandom"))		m_newRandom = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? true : false;
+	if (pt = el->Attribute("Human"))			m_Human = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? true : false;
+	if (pt = el->Attribute("Catacomb"))			m_Catacomb = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? true : false;
+	if (pt = el->Attribute("Arena"))			m_Arena = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? true : false;
+	if (pt = el->Attribute("Your Daughter"))	m_YourDaughter = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? true : false;
+	if (pt = el->Attribute("Is Daughter"))		m_IsDaughter = (strcmp(pt, "Yes") == 0 || strcmp(pt, "1") == 0) ? true : false;
 
 	// loop through children
 	TiXmlElement *child;
@@ -4155,7 +4155,7 @@ void cGirls::LoadGirlsXML(string filename)
 			girl->remove_trait("Virgin");
 		}
 		if (girl->m_Stats[STAT_AGE] < 18) girl->m_Stats[STAT_AGE] = 18;	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-		MutuallyExclusiveTraits(girl, 1);	// make sure all the trait effects are applied
+		MutuallyExclusiveTraits(girl, true);	// make sure all the trait effects are applied
 		RemoveAllRememberedTraits(girl);	// WD: For new girls remove any remembered traits from trait incompatibilities
 		ApplyTraits(girl);
 
@@ -4171,9 +4171,9 @@ void cGirls::LoadGirlsXML(string filename)
 bool cGirls::LoadGirlsXML(TiXmlHandle hGirls)
 {
 	TiXmlElement* pGirls = hGirls.ToElement();
-	if (pGirls == 0) return false;
-	sGirl* current = 0;					// load the number of girls
-	for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl"); pGirl != 0; pGirl = pGirl->NextSiblingElement("Girl"))
+	if (pGirls == nullptr) return false;
+	sGirl* current = nullptr;					// load the number of girls
+	for (TiXmlElement* pGirl = pGirls->FirstChildElement("Girl"); pGirl != nullptr; pGirl = pGirl->NextSiblingElement("Girl"))
 	{
 		current = new sGirl();			// load each girl and add her
 		bool success = current->LoadGirlXML(TiXmlHandle(pGirl));
@@ -4231,7 +4231,7 @@ void sRandomGirl::process_trait_xml(TiXmlElement *el)
 void sRandomGirl::process_item_xml(TiXmlElement *el)
 {
 	int ival; const char *pt;
-	sInventoryItem *item = 0;
+	sInventoryItem *item = nullptr;
 	if ((pt = el->Attribute("Name")))
 	{
 		string finditem = n_strdup(pt);
@@ -4329,7 +4329,7 @@ int cGirls::CheckEquipment(sGirl* girl)
 	int foundw = 0;	int founda = 0;	int foundh = 0;	int foundc = 0;	int founds = 0;
 	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
-		if (girl->m_Inventory[i] != 0 && girl->m_EquipedItems[i] == 1)
+		if (girl->m_Inventory[i] != nullptr && girl->m_EquipedItems[i] == 1)
 		{
 			if (girl->m_Inventory[i]->m_Type == INVWEAPON)			foundw = 1;
 			if (girl->m_Inventory[i]->m_Type == INVARMOR)			founda = 1;
@@ -4361,7 +4361,7 @@ void cGirls::EquipCombat(sGirl* girl)
 	int Armor = -1, Weap1 = -1, Weap2 = -1, Helm = -1, Shield = -1, Boot = -1;
 	for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
 	{
-		if (girl->m_Inventory[i] != 0)
+		if (girl->m_Inventory[i] != nullptr)
 		{
 			found++;
 			if (girl->m_Inventory[i]->m_Type == INVWEAPON)
@@ -4410,7 +4410,7 @@ void cGirls::EquipCombat(sGirl* girl)
 		found = 0;
 		for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
 		{
-			if (girl->m_Inventory[i] != 0)
+			if (girl->m_Inventory[i] != nullptr)
 			{
 				found++;
 				sInventoryItem* curItem = girl->m_Inventory[i];
@@ -4442,7 +4442,7 @@ void cGirls::UnequipCombat(sGirl* girl)
 	int found = 0;
 	for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
 	{
-		if (girl->m_Inventory[i] != 0)
+		if (girl->m_Inventory[i] != nullptr)
 		{
 			found++;
 			sInventoryItem* curItem = girl->m_Inventory[i];
@@ -4458,7 +4458,7 @@ void cGirls::UnequipCombat(sGirl* girl)
 	// reequip shoes and hats
 	for (int i = 0; i < MAXNUM_GIRL_INVENTORY && found<girl->m_NumInventory; i++)
 	{
-		if (girl->m_Inventory[i] != 0)
+		if (girl->m_Inventory[i] != nullptr)
 		{
 			found++;
 			sInventoryItem* curItem = girl->m_Inventory[i];
@@ -4706,7 +4706,7 @@ void cGirls::UseItems(sGirl* girl)
 	// sell crapy items
 	for (int i = 0; i < girl->m_NumInventory; i++)	// use a food item if it is in stock, and remove any bad things if disobedient
 	{
-		if (girl->m_Inventory[i] != 0)
+		if (girl->m_Inventory[i] != nullptr)
 		{
 			int max = 0;
 			switch ((int)girl->m_Inventory[i]->m_Type)
@@ -4744,7 +4744,7 @@ void cGirls::UseItems(sGirl* girl)
 	for (int i = 0; i < girl->m_NumInventory; i++)	// use a food item if it is in stock, and remove any bad things if disobedient
 	{
 		sInventoryItem* curItem = girl->m_Inventory[i];
-		if (curItem != 0)
+		if (curItem != nullptr)
 		{
 			if ((curItem->m_Type == INVFOOD || curItem->m_Type == INVMAKEUP) && usedFoodCount < usedFood)
 			{
@@ -4997,7 +4997,7 @@ bool cGirls::IsInvFull(sGirl* girl)
 	{
 		for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 		{
-			if (girl->m_Inventory[i] == 0)
+			if (girl->m_Inventory[i] == nullptr)
 			{
 				full = false;
 				break;
@@ -5014,7 +5014,7 @@ int cGirls::AddInv(sGirl* girl, sInventoryItem* item)
 	int i;
 	for (i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
 	{
-		if (girl->m_Inventory[i] == 0)
+		if (girl->m_Inventory[i] == nullptr)
 		{
 			girl->m_Inventory[i] = item;
 			girl->m_NumInventory++;
@@ -5028,10 +5028,10 @@ int cGirls::AddInv(sGirl* girl, sInventoryItem* item)
 bool cGirls::RemoveInvByNumber(sGirl* girl, int Pos)
 {
 	// Girl inventories don't stack items
-	if (girl->m_Inventory[Pos] != 0)
+	if (girl->m_Inventory[Pos] != nullptr)
 	{
 		g_InvManager.Unequip(girl, Pos);
-		girl->m_Inventory[Pos] = 0;
+		girl->m_Inventory[Pos] = nullptr;
 		girl->m_NumInventory--;
 		return true;
 	}
@@ -5043,7 +5043,7 @@ void cGirls::SellInvItem(sGirl* girl, int num)
 	girl->m_Money += (int)((float)girl->m_Inventory[num]->m_Cost*0.5f);
 	girl->m_NumInventory--;
 	g_InvManager.Unequip(girl, num);
-	girl->m_Inventory[num] = 0;
+	girl->m_Inventory[num] = nullptr;
 }
 
 int cGirls::GetWorseItem(sGirl* girl, int type, int cost)
@@ -5137,7 +5137,7 @@ bool cGirls::PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold,
 // `J` adding these to allow single step adjustment of linked traits
 string cGirls::AdjustTraitGroupGagReflex(sGirl* girl, int adjustment, bool showmessage, bool Day0Night1)
 {
-	if (girl == 0 || adjustment == 0) return "";	// no girl or not changing anything so quit
+	if (girl == nullptr || adjustment == 0) return "";	// no girl or not changing anything so quit
 	int newGR = 0;
 	stringstream ss;
 	ss << girl->m_Realname;
@@ -5212,7 +5212,7 @@ string cGirls::AdjustTraitGroupGagReflex(sGirl* girl, int adjustment, bool showm
 
 string cGirls::AdjustTraitGroupBreastSize(sGirl* girl, int adjustment, bool showmessage, bool Day0Night1)
 {
-	if (girl == 0 || adjustment == 0) return "";	// no girl or not changing anything so quit
+	if (girl == nullptr || adjustment == 0) return "";	// no girl or not changing anything so quit
 	int newGR = 0;
 	stringstream ss;
 	ss << girl->m_Realname;
@@ -5344,7 +5344,7 @@ string cGirls::AdjustTraitGroupBreastSize(sGirl* girl, int adjustment, bool show
 
 string cGirls::AdjustTraitGroupFertility(sGirl* girl, int adjustment, bool showmessage, bool Day0Night1)
 {
-	if (girl == 0 || adjustment == 0) return "";	// no girl or not changing anything so quit
+	if (girl == nullptr || adjustment == 0) return "";	// no girl or not changing anything so quit
 	int newGR = 0;
 	stringstream ss;
 	ss << girl->m_Realname;
@@ -5422,7 +5422,7 @@ void cGirls::ApplyTraits(sGirl* girl, TraitSpec* trait)
 	{
 		TraitSpec* tr = nullptr;
 		tr = (doOnce) ? trait : girl->m_Traits[i];
-		if (tr == 0) continue;
+		if (tr == nullptr) continue;
 
 		tr->apply_effects(girl);
 
@@ -5448,31 +5448,31 @@ void cGirls::MutuallyExclusiveTraits(sGirl* girl, bool apply)
 void cGirls::MutuallyExclusiveTrait(sGirl* girl, bool apply, TraitSpec* trait, bool rememberflag)
 {
 	string name = trait->name();
-	if (name == "") return;
+	if (name.empty()) return;
 
 		// `J` base for adding new mutually exclusive traits
 
 		// no need to comment this out because it will always fail to be true because of the first if check
 
 	else if (	// Check _type_ Traits
-			name == "" ||
-			name == "" ||
-			name == "" ||
-			name == "")
+			name.empty() ||
+			name.empty() ||
+			name.empty() ||
+			name.empty())
 	{
 		if (apply)
 		{
-			if (name != "")			girl->remove_trait("", rememberflag, true);
-			if (name != "")			girl->remove_trait("", rememberflag, true);
-			if (name != "")			girl->remove_trait("", rememberflag, true);
-			if (name != "")			girl->remove_trait("", rememberflag, true);
+			if (!name.empty())			girl->remove_trait("", rememberflag, true);
+			if (!name.empty())			girl->remove_trait("", rememberflag, true);
+			if (!name.empty())			girl->remove_trait("", rememberflag, true);
+			if (!name.empty())			girl->remove_trait("", rememberflag, true);
 		}
 		else
 		{
-			/* */if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
-			else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
-			else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
-			else if (name != "" && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+			/* */if (!name.empty() && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+			else if (!name.empty() && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+			else if (!name.empty() && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
+			else if (!name.empty() && HasRememberedTrait(girl, ""))	RestoreRememberedTrait(girl, "");
 		}
 	}
 
@@ -6259,7 +6259,7 @@ bool cGirls::RestoreRememberedTrait(sGirl* girl, string trait)
 
 	for (int i = 0; i < MAXNUM_TRAITS; i++)				// add the trait
 	{
-		if (girl->m_Traits[i] == 0)
+		if (girl->m_Traits[i] == nullptr)
 		{
 			girl->m_NumTraits++;
 			TraitSpec *addthistrait = g_Traits.GetTrait(trait);
@@ -6308,7 +6308,7 @@ void cGirls::RemoveRememberedTrait(sGirl* girl, string name)
 				if (girl->m_RememTraits[i] == trait)
 				{
 					girl->m_NumRememTraits--;
-					girl->m_RememTraits[i] = 0;
+					girl->m_RememTraits[i] = nullptr;
 					return;
 				}
 			}
@@ -6329,7 +6329,7 @@ void cGirls::RemoveAllRememberedTraits(sGirl* girl)
 	*/
 	for (int i = 0; i < MAXNUM_TRAITS * 2; i++)
 	{
-		girl->m_RememTraits[i] = 0;
+		girl->m_RememTraits[i] = nullptr;
 	}
 	girl->m_NumRememTraits = 0;
 }
@@ -6352,7 +6352,7 @@ void cGirls::AddRememberedTrait(sGirl* girl, string name)
 {
 	for (int i = 0; i < MAXNUM_TRAITS * 2; i++)	// add the traits
 	{
-		if (girl->m_RememTraits[i] == 0)
+		if (girl->m_RememTraits[i] == nullptr)
 		{
 			girl->m_NumRememTraits++;
 			girl->m_RememTraits[i] = g_Traits.GetTrait(name);
@@ -6419,7 +6419,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 		if (girl->happiness() <= 0 && g_Dice.percent(50))
 		{
 			stringstream ss;
-			string stopper = "";
+			string stopper;
 			if (girl->m_InArena && g_Arena.GetNumGirlsOnJob(0, JOB_DOCTORE, 0) > 0)
 				stopper = "the Doctore";
 			else if (girl->m_InStudio && g_Studios.GetNumGirlsOnJob(0, JOB_DIRECTOR, 1) > 0)
@@ -6440,7 +6440,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 				stopper = "the Farm Manger";
 
 			int Schance = g_Dice.d100();
-			if (stopper != "")
+			if (!stopper.empty())
 			{
 				ss << girl->m_Realname << " tried to killed herself but " << stopper;
 				if (Schance < 50)		{ ss << " talked her out of it."; }
@@ -7833,7 +7833,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				//default harm stored in local vars to avoid repeat update calls
 				int upset = 4, damage = 4, PCLove = -1, PCFear = 1;
 
-				bool guardingGang = (g_Gangs.gangs_watching_girls().size() > 0);
+				bool guardingGang = (!g_Gangs.gangs_watching_girls().empty());
 				bool guardingGirl = (g_Brothels.GetNumGirlsOnJob(0, JOB_SECURITY, Day0Night1) > 0);
 
 				if (guardingGirl) //there's a girl watching the place
@@ -7986,7 +7986,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				//default harm stored in local vars to avoid repeat update calls
 				int upset = 4, damage = 4, PCLove = -1, PCFear = 1;
 
-				bool guardingGang = (g_Gangs.gangs_watching_girls().size() > 0);
+				bool guardingGang = (!g_Gangs.gangs_watching_girls().empty());
 				bool guardingGirl = (g_Brothels.GetNumGirlsOnJob(0, JOB_SECURITY, Day0Night1) > 0);
 
 				if (guardingGirl) //there's a girl watching the place
@@ -13392,7 +13392,7 @@ string cGirls::GetRandomLesString()
 # pragma region les3
 	// For case 2
 	int BrothelNo = -1, NumGirlsInBroth = -1;
-	sGirl * TempGPtr = 0;
+	sGirl * TempGPtr = nullptr;
 	roll3 = g_Dice % 6 + 1;
 	switch (roll3)
 	{
@@ -13417,14 +13417,14 @@ string cGirls::GetRandomLesString()
 		NumGirlsInBroth = g_Brothels.GetNumGirls(BrothelNo);
 		random = g_Dice%NumGirlsInBroth;
 		TempGPtr = g_Brothels.GetGirl(BrothelNo, random);
-		/* */if (TempGPtr == 0)	OStr << "a girl";
+		/* */if (TempGPtr == nullptr)	OStr << "a girl";
 		else /*            */	OStr << TempGPtr->m_Realname;
 		OStr << " from ";
 		OStr << g_Brothels.GetName(BrothelNo);
 		OStr << " brothel.";
 		BrothelNo = -1;        // MYR: Paranoia
 		NumGirlsInBroth = -1;
-		TempGPtr = 0;
+		TempGPtr = nullptr;
 		break;
 	case 3:
 		OStr << "the ";
@@ -13594,12 +13594,12 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 
 	CLog l;
 
-	if (a == 0 || b == 0)
+	if (a == nullptr || b == nullptr)
 	{
 		l.ss() << "\ngirl_fights_girl: ";
-		if (a == 0 && b == 0)	l.ss() << "No one";
-		else if (a == 0)		l.ss() << "Only " << b->m_Realname;
-		else if (b == 0)		l.ss() << "Only " << a->m_Realname;
+		if (a == nullptr && b == nullptr)	l.ss() << "No one";
+		else if (a == nullptr)		l.ss() << "Only " << b->m_Realname;
+		else if (b == nullptr)		l.ss() << "Only " << a->m_Realname;
 		l.ss() << " showed up for the fight so no one wins?\n";
 		return 0;
 	}
@@ -13667,7 +13667,7 @@ Uint8 cGirls::girl_fights_girl(sGirl* a, sGirl* b)
 	int dodge = a_dodge;
 	int attack_count = 0;
 	int winner = 0; // 1 for a, 2 for b
-	while (1)
+	while (true)
 	{
 		if (a->health() <= 20)
 		{
@@ -14595,7 +14595,7 @@ sChild::sChild(bool is_players, Gender gender, int MultiBirth)
 	else m_Sex = gender;
 	m_MultiBirth = 1;
 	m_GirlsBorn = (m_Sex == Girl ? 1 : 0);
-	m_Next = m_Prev = 0;
+	m_Next = m_Prev = nullptr;
 	for (u_int i = 0; i < NUM_SKILLS; i++)		// Added m_Skills here to zero out any that are not specified -- PP
 		m_Skills[i] = 0;
 	for (int i = 0; i < NUM_STATS; i++)			// Added m_Stats here to zero out any that are not specified -- PP
@@ -14643,7 +14643,7 @@ sChild * cChildList::remove_child(sChild * child, sGirl * girl)
 	if (child->m_Prev)	child->m_Prev->m_Next = child->m_Next;
 	if (child == girl->m_Children.m_FirstChild)	girl->m_Children.m_FirstChild = child->m_Next;
 	if (child == girl->m_Children.m_LastChild)	girl->m_Children.m_LastChild = child->m_Prev;
-	child->m_Next = 0;
+	child->m_Next = nullptr;
 	delete child;
 	return temp;
 }
@@ -14711,7 +14711,7 @@ bool sGirl::has_weapon()		// `J` added .06.02.22
 	if (this->m_NumInventory <= 0) return false;	// she has no items
 	for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)	// check all her items
 	{
-		if (this->m_Inventory[i] != 0 && this->m_EquipedItems[i] == 1 &&
+		if (this->m_Inventory[i] != nullptr && this->m_EquipedItems[i] == 1 &&
 			(this->m_Inventory[i]->m_Type == INVWEAPON || this->m_Inventory[i]->m_Type == INVSMWEAPON))
 			return true;							// and return true if she has a weapon equiped
 	}
@@ -14818,14 +14818,14 @@ bool sGirl::add_trait(string name, int temptime, bool removeitem, bool remember)
 
 	for (int i = 0; i < MAXNUM_TRAITS; i++)				// add the trait
 	{
-		if (m_Traits[i] == 0)
+		if (m_Traits[i] == nullptr)
 		{
 			if (temptime>0) m_TempTrait[i] = temptime;
 			m_NumTraits++;
 			TraitSpec *addthistrait = g_Traits.GetTrait(name);
 			m_Traits[i] = addthistrait;
 
-			g_Girls.MutuallyExclusiveTrait(this, 1, m_Traits[i], removeitem);
+			g_Girls.MutuallyExclusiveTrait(this, true, m_Traits[i], removeitem);
 			g_Girls.ApplyTraits(this, addthistrait);
 
 			return true;
@@ -14891,11 +14891,11 @@ bool sGirl::remove_trait(string name,  bool addrememberlist, bool force, bool ke
 		{
 			m_NumTraits--;
 
-			g_Girls.MutuallyExclusiveTrait(this, 0, m_Traits[i]);
+			g_Girls.MutuallyExclusiveTrait(this, false, m_Traits[i]);
 			g_Girls.ApplyTraits(this);
 
 			if (m_TempTrait[i] > 0) m_TempTrait[i] = 0;
-			m_Traits[i] = 0;
+			m_Traits[i] = nullptr;
 			return true;
 		}
 	}
@@ -15080,7 +15080,7 @@ sGirl *cGirls::find_girl_by_name(string name, int *index_pt)
 		count++;
 		current = current->m_Next;
 	}
-	return 0;
+	return nullptr;
 }
 
 sRandomGirl *cGirls::find_random_girl_by_name(string name, int *index_pt)
@@ -15099,7 +15099,7 @@ sRandomGirl *cGirls::find_random_girl_by_name(string name, int *index_pt)
 		count++;
 		current = current->m_Next;
 	}
-	return 0;
+	return nullptr;
 }
 
 // returns 0 if not found, 1 if girl found, 2 if rgirl found.
@@ -15235,8 +15235,8 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 		bool slave = mom->is_slave();
 		bool MomIsMonster = mom->is_monster();
 		// create a new girl for the barn
-		sGirl* sprog = 0;
-		if (mom->m_Canonical_Daughters.size() > 0)
+		sGirl* sprog = nullptr;
+		if (!mom->m_Canonical_Daughters.empty())
 		{
 			sprog = make_girl_child(mom, playerfather);
 		}
@@ -15280,7 +15280,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 				else	// old method
 				{
 					string tname = mom->m_Traits[i]->name();
-					if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
+					if (g_Girls.InheritTrait(mom->m_Traits[i]) && !tname.empty())
 						sprog->add_trait(mom->m_Traits[i]->name());
 				}
 			}
@@ -15290,7 +15290,7 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 			sprog->add_trait("Your Daughter");
 		}
 
-		g_Girls.MutuallyExclusiveTraits(sprog, 1);	// make sure all the trait effects are applied
+		g_Girls.MutuallyExclusiveTraits(sprog, true);	// make sure all the trait effects are applied
 		g_Girls.ApplyTraits(sprog);
 		RemoveAllRememberedTraits(sprog);	// WD: remove any rembered traits created from trait incompatibilities
 
@@ -15337,10 +15337,10 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 
 		// at this point the sprog should have temporary firstname, surname, and realname
 		string prevsurname = sprog->m_Surname;		// save the temporary surname incase it is needed later
-		string biography = "";
+		string biography;
 		if (playerfather)
 		{
-			if (The_Player->Surname().size() > 0)
+			if (!The_Player->Surname().empty())
 			{
 				sprog->m_Surname = The_Player->Surname();
 			}
@@ -15456,8 +15456,8 @@ if (0){}
 				bool slave = mom->is_slave();
 				bool MomIsMonster = mom->is_monster();
 				// create a new girl for the barn
-				sGirl* sprog = 0;
-				if (mom->m_Canonical_Daughters.size() > 0)
+				sGirl* sprog = nullptr;
+				if (!mom->m_Canonical_Daughters.empty())
 				{
 					sprog = make_girl_child(mom, playerfather);
 				}
@@ -15501,7 +15501,7 @@ if (0){}
 						else
 						{
 							string tname = mom->m_Traits[i]->name();
-							if (g_Girls.InheritTrait(mom->m_Traits[i]) && tname != "")
+							if (g_Girls.InheritTrait(mom->m_Traits[i]) && !tname.empty())
 								sprog->add_trait(mom->m_Traits[i]->name());
 						}
 					}
@@ -15511,7 +15511,7 @@ if (0){}
 					sprog->add_trait("Your Daughter");
 				}
 
-				g_Girls.MutuallyExclusiveTraits(sprog, 1);	// make sure all the trait effects are applied
+				g_Girls.MutuallyExclusiveTraits(sprog, true);	// make sure all the trait effects are applied
 				g_Girls.ApplyTraits(sprog);
 				RemoveAllRememberedTraits(sprog);	// WD: remove any rembered traits created from trait incompatibilities
 
@@ -15555,10 +15555,10 @@ if (0){}
 
 				// at this point the sprog should have temporary firstname, surname, and realname
 				string prevsurname = sprog->m_Surname;		// save the temporary surname incase it is needed later
-				string biography = "";
+				string biography;
 				if (playerfather)
 				{
-					if (The_Player->Surname().size() > 0)
+					if (!The_Player->Surname().empty())
 					{
 						sprog->m_Surname = The_Player->Surname();
 					}
@@ -15653,7 +15653,7 @@ void cGirls::HandleChildren(sGirl* girl, string& summary, bool PlayerControlled)
 	*	now: if the girl has no children we have nothing to do logically this can precede the cooldown bump
 	*	since if she's on cooldown she must have given birth but I guess this way offers better bugproofing
 	*/
-	if (girl->m_Children.m_FirstChild == 0) return;
+	if (girl->m_Children.m_FirstChild == nullptr) return;
 	/*
 	*	loop through the girl's children, and divide them into those growing up and those still to be born
 	*/
@@ -16414,7 +16414,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
 	else if (detailName == "is_poisoned")		{ ss << (is_poisoned() ? "Yes" : "No"); }
 	else if (detailName == "Value")
 	{
-		g_Girls.CalculateAskPrice(this, 0);
+		g_Girls.CalculateAskPrice(this, false);
 		ss << (int)tariff.slave_price(this, false);
 	}
 	else if (detailName == "SO")
@@ -16921,7 +16921,7 @@ sCustomer* cGirls::GetBeast()
 {
 	sCustomer* beast = new sCustomer;
 	beast->m_Amount = 1;
-	beast->m_IsWoman = 0;
+	beast->m_IsWoman = false;
 	// get their stats generated
 	for (int j = 0; j < NUM_STATS; j++)		beast->m_Stats[j] = g_Dice % 100;
 	for (int j = 0; j < NUM_SKILLS; j++)	beast->m_Skills[j] = g_Dice % 10;
@@ -16942,7 +16942,7 @@ sCustomer* cGirls::GetBeast()
 	beast->m_HasSyphilis = g_Dice.percent(1.5);
 	beast->m_HasHerpes = g_Dice.percent(2.5);
 	beast->m_Money = 0;
-	beast->m_Next = 0;
+	beast->m_Next = nullptr;
 
 	return beast;
 }

@@ -457,18 +457,17 @@ add_library(SDL INTERFACE)
 target_link_libraries(SDL INTERFACE ${SDL_LIBRARY})
 target_include_directories(SDL INTERFACE ${SDL_INCLUDE_DIR})
 
-find_package(SDL_image 1.2)
+find_package(SDL_image 1.2 REQUIRED)
 add_library(SDL_image INTERFACE)
 target_link_libraries(SDL_image INTERFACE ${SDL_IMAGE_LIBRARIES} )
 target_include_directories(SDL INTERFACE ${SDL_IMAGE_INCLUDE_DIRS})
 
-find_package(SDL_ttf 2.0)
+find_package(SDL_ttf 2.0 REQUIRED)
 add_library(SDL_ttf INTERFACE)
 target_link_libraries(SDL INTERFACE ${SDL_TTF_LIBRARIES})
 target_include_directories(SDL_ttf INTERFACE ${SDL_TTF_INCLUDE_DIRS})
 
 # there is no find_package(SDL_gfx), unfortunately.
-
 add_executable(WhoreMaster ${SRC})
 target_link_libraries(WhoreMaster SDL SDL_gfx SDL_ttf lua SDL_image)
 set_target_properties(WhoreMaster PROPERTIES CXX_STANDARD 11)
@@ -476,3 +475,5 @@ set_target_properties(WhoreMaster PROPERTIES CXX_STANDARD 11)
 if (UNIX)
     target_compile_definitions(WhoreMaster PUBLIC LINUX=1)
 endif(UNIX)
+
+# libsdl-ttf2.0-dev

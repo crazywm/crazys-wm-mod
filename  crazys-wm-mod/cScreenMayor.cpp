@@ -45,7 +45,7 @@ cScreenMayor::cScreenMayor()
 	m_filename = dp.c_str();
 	SetBribe = false;
 }
-cScreenMayor::~cScreenMayor() {}
+cScreenMayor::~cScreenMayor() = default;
 
 void cScreenMayor::set_ids()
 {

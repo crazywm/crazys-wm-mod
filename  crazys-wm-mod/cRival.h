@@ -32,7 +32,7 @@ class cRival
 public:
 	cRival()
 	{
-		m_Next = m_Prev = 0;
+		m_Next = m_Prev = nullptr;
 		m_Name = "";
 		m_Power = 0;					// `J` added
 		m_Influence = 0;
@@ -49,8 +49,8 @@ public:
 	~cRival()
 	{
 		if (m_Next) delete m_Next;
-		m_Next = 0;
-		m_Prev = 0;
+		m_Next = nullptr;
+		m_Prev = nullptr;
 	}
 
 	// variables
@@ -84,8 +84,8 @@ public:
 	void Free()
 	{
 		if (m_Rivals) delete m_Rivals;
-		m_Rivals = 0;
-		m_Last = 0;
+		m_Rivals = nullptr;
+		m_Last = nullptr;
 		m_NumRivals = 0;
 	}
 	void Update(int& NumPlayerBussiness);

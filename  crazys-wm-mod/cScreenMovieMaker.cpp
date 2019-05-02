@@ -71,7 +71,7 @@ cScreenMovieMaker::cScreenMovieMaker()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "movie_maker_screen.xml";
 	m_filename = dp.c_str();
 }
-cScreenMovieMaker::~cScreenMovieMaker() {}
+cScreenMovieMaker::~cScreenMovieMaker() = default;
 
 void cScreenMovieMaker::set_ids()
 {

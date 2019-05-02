@@ -34,7 +34,7 @@
 #include "cJobManager.h"
 #include "Revision.h"
 #include "libintl.h"
-#include "locale.h"
+#include <clocale>
 #include "FileList.h"
 
 #ifndef LINUX
@@ -49,7 +49,7 @@
 #else
 #include "linux.h"
 #endif
-#include <signal.h>
+#include <csignal>
 #include <sstream>
 
 #include "IconSurface.h"
@@ -117,8 +117,8 @@ bool g_AltKeys = true;          // Toggles the alternate hotkeys --PP
 bool playershopinventory = false;
 extern bool g_AllTogle;
 
-cScrollBar* g_DragScrollBar = 0;  // if a scrollbar is being dragged, this points to it
-cSlider* g_DragSlider = 0;  // if a slider is being dragged, this points to it
+cScrollBar* g_DragScrollBar = nullptr;  // if a scrollbar is being dragged, this points to it
+cSlider* g_DragSlider = nullptr;  // if a slider is being dragged, this points to it
 
 extern CSurface* g_BrothelImages[7];
 extern bool g_InitWin;
@@ -172,7 +172,7 @@ cHouseManager g_House;
 cFarmManager g_Farm;
 
 // the background image
-CSurface* g_BackgroundImage = 0;
+CSurface* g_BackgroundImage = nullptr;
 
 // The global trigger manager
 cTriggerList g_GlobalTriggers;
@@ -295,7 +295,7 @@ void handle_hotkeys()
 	if (g_WinManager.GetWindow() != &g_MainMenu && g_WinManager.GetWindow() != &g_LoadGame && g_WinManager.GetWindow() != &g_Preparing && g_WinManager.GetWindow() != &g_NewGame)
 	{
 		int br_no = 0;
-		string msg = "";
+		string msg;
 
 		switch (vent.key.keysym.sym) {                  // Select Brothel
 		case SDLK_1: case SDLK_2: case SDLK_3:
@@ -339,7 +339,7 @@ void handle_hotkeys()
 		case SDLK_g:    if (g_AltKeys)  break;
 		case SDLK_F1:
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering Brothel");
-			if (g_Building != BUILDING_BROTHEL) selected_girl = 0;
+			if (g_Building != BUILDING_BROTHEL) selected_girl = nullptr;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_GIRLMANAGEMENT;
@@ -353,7 +353,7 @@ void handle_hotkeys()
 		case SDLK_t:    if (g_AltKeys)  break;
 		case SDLK_F2:
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Gang Management");
-			selected_girl = 0;
+			selected_girl = nullptr;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_GANGMANAGEMENT;
@@ -365,7 +365,7 @@ void handle_hotkeys()
 		case SDLK_d:    if (g_AltKeys)  break;
 		case SDLK_F3:
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Dungeon");
-			selected_girl = 0;
+			selected_girl = nullptr;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_InitWin = true;
@@ -377,7 +377,7 @@ void handle_hotkeys()
 		case SDLK_s:    if (g_AltKeys)  break;
 		case SDLK_F4:
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Slave Market");
-			selected_girl = 0;
+			selected_girl = nullptr;
 			g_Building = BUILDING_BROTHEL;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_InitWin = true;
@@ -395,7 +395,7 @@ void handle_hotkeys()
 			}
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Studio");
 			// Yes!
-			if (g_Building != BUILDING_STUDIO) selected_girl = 0;
+			if (g_Building != BUILDING_STUDIO) selected_girl = nullptr;
 			g_Building = BUILDING_STUDIO;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_STUDIO;
@@ -418,7 +418,7 @@ void handle_hotkeys()
 			}
 			// Yes!
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Arena");
-			if (g_Building != BUILDING_ARENA) selected_girl = 0;
+			if (g_Building != BUILDING_ARENA) selected_girl = nullptr;
 			g_Building = BUILDING_ARENA;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_ARENA;
@@ -439,7 +439,7 @@ void handle_hotkeys()
 			}
 			// Yes!
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Centre");
-			if (g_Building != BUILDING_CENTRE) selected_girl = 0;
+			if (g_Building != BUILDING_CENTRE) selected_girl = nullptr;
 			g_Building = BUILDING_CENTRE;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_CENTRE;
@@ -462,7 +462,7 @@ void handle_hotkeys()
 			}
 			// Yes!
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Clinic");
-			if (g_Building != BUILDING_CLINIC) selected_girl = 0;
+			if (g_Building != BUILDING_CLINIC) selected_girl = nullptr;
 			g_Building = BUILDING_CLINIC;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_CLINIC;
@@ -484,7 +484,7 @@ void handle_hotkeys()
 			}
 			// Yes!
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering  Farm");
-			if (g_Building != BUILDING_FARM) selected_girl = 0;
+			if (g_Building != BUILDING_FARM) selected_girl = nullptr;
 			g_Building = BUILDING_FARM;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_FARM;
@@ -562,7 +562,7 @@ void handle_hotkeys()
 			}
 		case SDLK_F12:  // House
 			if (cfg.debug.log_debug())	g_LogFile.write("Entering House");
-			if (g_Building != BUILDING_HOUSE) selected_girl = 0;
+			if (g_Building != BUILDING_HOUSE) selected_girl = nullptr;
 			g_Building = BUILDING_HOUSE;
 			g_WinManager.PopToWindow(&g_BrothelManagement);
 			g_CurrentScreen = SCREEN_HOUSE;
@@ -1201,15 +1201,15 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 			{
 				if (mouseDown == true)
 				{
-					if (g_DragScrollBar != 0)
+					if (g_DragScrollBar != nullptr)
 					{
 						g_DragScrollBar->SetTopValue(g_DragScrollBar->m_ItemTop);
-						g_DragScrollBar = 0;
+						g_DragScrollBar = nullptr;
 					}
-					else if (g_DragSlider != 0)
+					else if (g_DragSlider != nullptr)
 					{
 						g_DragSlider->EndDrag();
-						g_DragSlider = 0;
+						g_DragSlider = nullptr;
 					}
 					else if (g_MessageBox.IsActive())
 						g_MessageBox.Advance();
@@ -1438,10 +1438,10 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 				if (!g_MessageBox.IsActive() && !g_ChoiceManager.IsActive())
 				{
 					// if dragging a scrollbar, send movements to it exclusively until mouseup
-					if (g_DragScrollBar != 0)
+					if (g_DragScrollBar != nullptr)
 						g_DragScrollBar->DragMove(vent.motion.y);
 					// if dragging a slider, send movements to it exclusively until mouseup
-					else if (g_DragSlider != 0)
+					else if (g_DragSlider != nullptr)
 						g_DragSlider->DragMove(vent.motion.x);
 					// update interface
 					else
@@ -1463,7 +1463,7 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 		clip.y = 0;
 		clip.w = _G.g_ScreenWidth;
 		clip.h = _G.g_ScreenHeight;
-		g_BackgroundImage->DrawSurface(clip.x, clip.y, 0, &clip, true);
+		g_BackgroundImage->DrawSurface(clip.x, clip.y, nullptr, &clip, true);
 
 		// Draw the interface
 		g_WinManager.Draw();
@@ -1508,7 +1508,7 @@ void Shutdown()
 		if (g_BrothelImages[i])
 		{
 			delete g_BrothelImages[i];
-			g_BrothelImages[i] = 0;
+			g_BrothelImages[i] = nullptr;
 		}
 	}
 
@@ -1517,7 +1517,7 @@ void Shutdown()
 	{
 		if (MarketSlaveGirls[i] && MarketSlaveGirlsDel[i] == -1)
 			delete MarketSlaveGirls[i];
-		MarketSlaveGirls[i] = 0;
+		MarketSlaveGirls[i] = nullptr;
 	}
 
 	g_Girls.Free();
@@ -1586,7 +1586,7 @@ bool Init()		// `J` Bookmark	- Initializing the game
 		if (g_BrothelImages[i])
 		{
 			delete g_BrothelImages[i];
-			g_BrothelImages[i] = 0;
+			g_BrothelImages[i] = nullptr;
 		}
 		/*
 		*               I think this should work - kept the old line below

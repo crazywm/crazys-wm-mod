@@ -18,7 +18,7 @@
  */
 #pragma once
 
-#include <math.h>
+#include <cmath>
 #include "cTariff.h"
 
 using namespace std;
@@ -269,7 +269,7 @@ struct sFacility
 	}
 
 	string	name()		{
-		if(m_instance_name != "") {
+		if(!m_instance_name.empty()) {
 			return m_instance_name;
 		}
 		return m_type_name;

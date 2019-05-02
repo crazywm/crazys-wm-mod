@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <time.h>
+#include <ctime>
 #include <string>
 #include <cctype>
 #include "cInterfaceWindow.h"
@@ -72,7 +72,7 @@ void cInterfaceWindow::Free()
 		if (m_Image)
 		{
 			// If this is NULL then the deconstructor has been called already.
-			if (m_Image->m_AnimatedImage != 0)
+			if (m_Image->m_AnimatedImage != nullptr)
 				delete m_Image;
 		}
 	}
@@ -87,9 +87,9 @@ void cInterfaceWindow::Free()
 	for (auto & m_Slider : m_Sliders)		delete m_Slider;
 	m_Sliders.clear();
 	if (m_Background)	SDL_FreeSurface(m_Background);
-	m_Background = 0;
+	m_Background = nullptr;
 	if (m_Border)		SDL_FreeSurface(m_Border);
-	m_Border = 0;
+	m_Border = nullptr;
 }
 
 void cInterfaceWindow::UpdateWindow(int x, int y)
@@ -139,7 +139,7 @@ void cInterfaceWindow::Reset()
 {
 	for (auto & m_Image : m_Images)
 	{
-		if (!m_Image->m_loaded) m_Image->m_Image = 0;
+		if (!m_Image->m_loaded) m_Image->m_Image = nullptr;
 	}
 	for (auto & m_ListBoxe : m_ListBoxes)
 	{
@@ -156,10 +156,10 @@ void cInterfaceWindow::Draw()
 		offset.x = m_XPos;
 		offset.y = m_YPos;
 		// blit to the screen
-		SDL_BlitSurface(m_Border, 0, g_Graphics.GetScreen(), &offset);
+		SDL_BlitSurface(m_Border, nullptr, g_Graphics.GetScreen(), &offset);
 		offset.x = m_XPos + m_BorderSize;
 		offset.y = m_YPos + m_BorderSize;
-		SDL_BlitSurface(m_Background, 0, g_Graphics.GetScreen(), &offset);
+		SDL_BlitSurface(m_Background, nullptr, g_Graphics.GetScreen(), &offset);
 	}
 	if (m_BackgroundSurface)
 	{
@@ -168,7 +168,7 @@ void cInterfaceWindow::Draw()
 		clip.y = m_YPos + m_BorderSize;
 		clip.w = m_Width - (m_BorderSize * 2);
 		clip.h = m_Height - (m_BorderSize * 2);
-		m_BackgroundSurface->DrawSurface(clip.x, clip.y, 0, &clip, true, false); // `J`
+		m_BackgroundSurface->DrawSurface(clip.x, clip.y, nullptr, &clip, true, false); // `J`
 	}
 
 	for (unsigned int i = 0; i< m_Images.size(); i++)		m_Images[i]->Draw();		// draw Images
@@ -214,7 +214,7 @@ void cInterfaceWindow::AddButtonND(string image_name, int & ID, int x, int y, in
 	DirPath dp = ButtonPath(image_name);
 	string on = string(dp.c_str()) + "On.png";
 	string off = string(dp.c_str()) + "Off.png";
-	string disabled = "";
+	string disabled;
 	AddButton(off, disabled, on, ID, x, y, width, height, transparency, scale, cached);
 }
 
@@ -296,7 +296,7 @@ void cInterfaceWindow::AddImage(int & id, string filename, int x, int y, int wid
 void cInterfaceWindow::SetImage(int id, CSurface* image)
 {
 	m_Images[id]->m_Image = image;
-	m_Images[id]->m_AnimatedImage = 0;
+	m_Images[id]->m_AnimatedImage = nullptr;
 }
 
 void cInterfaceWindow::SetImage(int id, cAnimatedSurface* image)
@@ -345,10 +345,10 @@ void cInterfaceWindow::CreateWindow(int x, int y, int width, int height, int Bor
 	m_BorderSize = BorderSize;
 	SetPosition(x, y, width, height);
 	m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0);
-	SDL_FillRect(m_Border, 0, SDL_MapRGB(m_Border->format, g_WindowBorderR, g_WindowBorderG, g_WindowBorderB));
+	SDL_FillRect(m_Border, nullptr, SDL_MapRGB(m_Border->format, g_WindowBorderR, g_WindowBorderG, g_WindowBorderB));
 
 	m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, width - (BorderSize * 2), height - (BorderSize * 2), 32, 0, 0, 0, 0);
-	SDL_FillRect(m_Background, 0, SDL_MapRGB(m_Background->format, g_WindowBackgroundR, g_WindowBackgroundG, g_WindowBackgroundB));
+	SDL_FillRect(m_Background, nullptr, SDL_MapRGB(m_Background->format, g_WindowBackgroundR, g_WindowBackgroundG, g_WindowBackgroundB));
 }
 
 void cInterfaceWindow::SetBackgroundImage(string file)
@@ -695,7 +695,7 @@ int cInterfaceWindow::ArrowDownListBox(int ID)
 
 bool cInterfaceWindow::IsMultiSelected(int ID)
 {
-	if (m_ListBoxes.empty())		return 0;
+	if (m_ListBoxes.empty())		return false;
 	return m_ListBoxes[ID]->HasMultiSelected();
 }
 
@@ -721,9 +721,7 @@ void cInterfaceWindow::SetListBoxPosition(int ID, int pos)
 	m_ScrollBars[m_ListBoxes[ID]->m_ScrollDragID]->SetTopValue(pos);
 }
 
-cInterfaceWindowXML::cInterfaceWindowXML()
-{
-}
+cInterfaceWindowXML::cInterfaceWindowXML() = default;
 
 cInterfaceWindowXML::~cInterfaceWindowXML()
 {
@@ -869,7 +867,7 @@ void cInterfaceWindowXML::add_widget(string widget_name, int x, int y, string se
 	int id;
 	CLog l;
 	cXmlWidget *widget = find_widget(widget_name);
-	if (widget == 0)
+	if (widget == nullptr)
 	{
 		l.ss() << "Error: can't find definition for widget '" << widget_name << "'";
 		l.ssend();
@@ -1156,7 +1154,7 @@ void cInterfaceWindowXML::read_button_definition(TiXmlElement *el)
 {
 	int id, x, y, w, h;
 	XmlUtil xu(m_filename);
-	string scale, alpha, name, on, off, disabled, base = "";
+	string scale, alpha, name, on, off, disabled, base;
 	/*
 	*	get the button name - we'll use this to match up
 	*	interface IDs
@@ -1174,7 +1172,7 @@ void cInterfaceWindowXML::read_button_definition(TiXmlElement *el)
 	*	if we have a base value, use it to construct the
 	*	three image names
 	*/
-	if (base != "") {
+	if (!base.empty()) {
 		on = base + "On.png";
 		off = base + "Off.png";
 		disabled = base + "Disabled.png";
@@ -1305,7 +1303,7 @@ void cInterfaceWindowXML::widget_button_item(TiXmlElement *el, cXmlWidget &wid)
 
 	xu.get_att(el, "Name", xw.name);
 	xu.get_att(el, "Image", xw.base, Optional);
-	if (xw.base != "") {
+	if (!xw.base.empty()) {
 		xw.on = xw.base + "On.png";
 		xw.off = xw.base + "Off.png";
 		xw.disabled = xw.base + "Disabled.png";
@@ -1387,6 +1385,6 @@ cXmlWidget* cInterfaceWindowXML::find_widget(string name)
 {
 	map<string, cXmlWidget*>::iterator it;
 	it = widgets.find(name);
-	if (it == widgets.end())	return 0;
+	if (it == widgets.end())	return nullptr;
 	return it->second;
 }

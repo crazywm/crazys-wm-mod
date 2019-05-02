@@ -32,7 +32,7 @@ struct sGirl;
 class cTariff {
 	double slave_base_price(sGirl *girl);
 public:
-	cTariff() {}
+	cTariff() = default;
 
 	int goon_weapon_upgrade(int level);
 	int goon_mission_cost(int mission);

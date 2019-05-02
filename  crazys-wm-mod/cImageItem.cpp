@@ -105,23 +105,23 @@ string galtxt[] =
 // Constructors, Deconstructors and Free
 cImage::cImage()
 {
-	m_Surface = 0;
-	m_Next = 0;
-	m_AniSurface = 0;
+	m_Surface = nullptr;
+	m_Next = nullptr;
+	m_AniSurface = nullptr;
 }
 cImage::~cImage()
 {
 	if (m_Surface && !m_Surface->m_SaveSurface) delete m_Surface;
-	m_Surface = 0;
+	m_Surface = nullptr;
 	//if (m_AniSurface)		delete m_AniSurface;
-	m_AniSurface = 0;
-	m_Next = 0;
+	m_AniSurface = nullptr;
+	m_Next = nullptr;
 }
 cImageItem::cImageItem()
 {
-	m_Image = 0;
-	m_Surface = 0;
-	m_AnimatedImage = 0;
+	m_Image = nullptr;
+	m_Surface = nullptr;
+	m_AnimatedImage = nullptr;
 	m_loaded = false;
 	m_Hidden = false;
 }
@@ -983,9 +983,9 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	{
 		AG_FreeSurfaces(m_Images[id]->m_AnimatedImage->getAFrames(), m_Images[id]->m_AnimatedImage->getNumFrames());
 		m_Images[id]->m_AnimatedImage->m_Gif = false;
-		m_Images[id]->m_AnimatedImage = 0;
+		m_Images[id]->m_AnimatedImage = nullptr;
 	}
-	m_Images[id]->m_Image = 0;
+	m_Images[id]->m_Image = nullptr;
 
 	if (!girl || imagetype < 0 || ImageName == "blank")		// no girl, no images
 	{
@@ -1029,9 +1029,9 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		return;
 	}
 
-	string file = "";
-	string filename = "";
-	string ext = "";
+	string file;
+	string filename;
+	string ext;
 	bool imagechosen = false;
 
 	bool armor = g_Girls.GetNumItemEquiped(girl, INVARMOR) >= 1;
@@ -1271,7 +1271,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 				if (gallery)
 				{
 					m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-					m_Images[id]->m_AnimatedImage = 0;
+					m_Images[id]->m_AnimatedImage = nullptr;
 					m_Images[id]->m_Image->m_Message = "Bad ani file: Incorrect data file given for animation: " + file;
 					return;
 				}
@@ -1308,14 +1308,14 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 			else	// if it does not read as a gif, just load it as a normal image
 			{
 				m_Images[id]->m_Image = new CSurface(file);
-				m_Images[id]->m_AnimatedImage = 0;
+				m_Images[id]->m_AnimatedImage = nullptr;
 				imagechosen = true;
 			}
 		}
 		else if (ext == "jpg" || ext == "jpeg" || ext == "png")
 		{
 			m_Images[id]->m_Image = new CSurface(file);
-			m_Images[id]->m_AnimatedImage = 0;
+			m_Images[id]->m_AnimatedImage = nullptr;
 			imagechosen = true;
 		}
 		else	// any other extension gets cleared.
@@ -1334,7 +1334,7 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	if (ext.empty())	// unrecognised extension
 	{
 		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-		m_Images[id]->m_AnimatedImage = 0;
+		m_Images[id]->m_AnimatedImage = nullptr;
 		m_Images[id]->m_Image->m_Message = "No image found.";
 	}
 

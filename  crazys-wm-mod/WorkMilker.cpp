@@ -171,12 +171,12 @@ bool cJobManager::WorkMilker(sGirl* girl, sBrothel* brothel, bool Day0Night1, st
 		int milkmade[5] = { 0, 0, 0, 0, 0 };	// (total,gallon,quart,pint,shots}
 		// check if the milk items exist and only do the checks if at least one of them does
 		sInventoryItem* milkitems[4] = { g_InvManager.GetItem("Milk"), g_InvManager.GetItem("Milk (pt)"), g_InvManager.GetItem("Milk (qt)"), g_InvManager.GetItem("Milk (g)") };
-		if (milkitems[0] != 0 || milkitems[1] != 0 || milkitems[2] != 0 || milkitems[3] != 0)
+		if (milkitems[0] != nullptr || milkitems[1] != nullptr || milkitems[2] != nullptr || milkitems[3] != nullptr)
 		{
 			while (milk > 0)	// add milk
 			{
-				sInventoryItem* item = NULL;
-				string itemname = "";
+				sInventoryItem* item = nullptr;
+				string itemname;
 				/* */if (milkitems[3] && milk > 3 && g_Dice.percent(30))
 				{
 					milk -= 4;

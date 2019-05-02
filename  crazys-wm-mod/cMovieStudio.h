@@ -45,8 +45,8 @@ typedef struct sMovieScene
 	long m_Promo_Quality;
 	long m_Money_Made;
 	long m_RunWeeks;
-	sMovieScene()		{  }
-	~sMovieScene()		{  }
+	sMovieScene()		= default;
+	~sMovieScene()		= default;
 	void OutputSceneRow(string* Data, const vector<string>& columnNames);
 	void OutputSceneDetailString(string& Data, const string& detailName);
 }sMovieScene;
@@ -116,7 +116,7 @@ public:
 
 	vector<sMovieScene*> m_availableScenes;
 	vector<sMovieScene*> m_movieScenes;
-	int AddScene(sGirl* girl, int Job, int Bonus = 0, sGirl* Director = NULL, sGirl* CM = NULL, sGirl* CP = NULL);	// Added job parameter so different types of sex could effect film quality. --PP
+	int AddScene(sGirl* girl, int Job, int Bonus = 0, sGirl* Director = nullptr, sGirl* CM = nullptr, sGirl* CP = nullptr);	// Added job parameter so different types of sex could effect film quality. --PP
 	void LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks, int m_MovieSceneNum, string m_CM = "", string m_CP = "");
 	void AddGirl(int brothelID, sGirl* girl, bool keepjob = false);
 	void RemoveGirl(int brothelID, sGirl* girl, bool deleteGirl = false);

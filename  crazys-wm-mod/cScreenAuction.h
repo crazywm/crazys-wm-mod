@@ -56,7 +56,7 @@ public:
 		GetName = false;
 		m_first_walk = true;
 	}
-	~cScreenAuction() {}
+	~cScreenAuction() = default;
 
 	void init();
 	void process();

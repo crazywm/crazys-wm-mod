@@ -187,17 +187,17 @@ public:
 		// Clear all internal flags to false
 		for(short i=0;i<NUMVARS;i++)
 			m_Vars[i] = 0;
-		m_CurrPos = 0;
-		m_ScriptParent = 0;
+		m_CurrPos = nullptr;
+		m_ScriptParent = nullptr;
 		m_Active = false;
 		m_Leave = false;
-		m_GirlTarget = 0;
+		m_GirlTarget = nullptr;
 	}
 	~cGameScript()
 	{
-		m_CurrPos = 0;
+		m_CurrPos = nullptr;
 		if (m_ScriptParent) delete m_ScriptParent;
-		m_ScriptParent = 0;
+		m_ScriptParent = nullptr;
 	}
 
 	bool Prepare(sGirl* girlTarget)
@@ -218,7 +218,7 @@ public:
 		//
 		// Which may not work at all, of course, since there's
 		// no reliable way to test it.
-		if(m_ScriptParent == 0) return true;
+		if(m_ScriptParent == nullptr) return true;
 		if(m_ScriptParent && m_ScriptParent->m_Type == 1)
 		{
 			sScript* Ptr = m_ScriptParent;
@@ -237,11 +237,11 @@ public:
 	bool Release()
 	{
 		m_Active = false;
-		m_CurrPos = 0;
+		m_CurrPos = nullptr;
 		if(m_ScriptParent)
 			delete m_ScriptParent;
-		m_ScriptParent = 0;
-		m_GirlTarget = 0;
+		m_ScriptParent = nullptr;
+		m_GirlTarget = nullptr;
 		return true;
 	}
 

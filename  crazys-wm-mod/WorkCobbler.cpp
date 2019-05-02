@@ -184,12 +184,12 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 		ss << g_InvManager.CraftItem(girl, JOB_COBBLER, int(craftpoints));
 #else
 		int numitems = 0, tries = 0;
-		sInventoryItem* item = NULL;
+		sInventoryItem* item = nullptr;
 
 		while (craftpoints > 0 && numitems < (1 + girl->crafting() / 15) && tries < 20)
 		{
 
-			string itemmade = "";
+			string itemmade;
 			int Magic = 0, Cost = 0, NumMade = 1;
 
 			if (craftpoints < 20)						// Simple items
@@ -290,7 +290,7 @@ bool cJobManager::WorkCobbler(sGirl* girl, sBrothel* brothel, bool Day0Night1, s
 
 			}
 
-			if (itemmade == "")	{ Magic = 0; Cost = 10; itemmade == "FlipFlops"; }//            Desc = "Beach slippers might not look too great, but they're only meant to keep your feet free from the hot sand and prevent cuts from the sharper sea shells. Throw-away quality made from recycled materials. (Cha -2, Bea -3, HAP +2, Spir +3)"
+			if (itemmade.empty())	{ Magic = 0; Cost = 10; itemmade == "FlipFlops"; }//            Desc = "Beach slippers might not look too great, but they're only meant to keep your feet free from the hot sand and prevent cuts from the sharper sea shells. Throw-away quality made from recycled materials. (Cha -2, Bea -3, HAP +2, Spir +3)"
 			item = g_InvManager.GetItem(itemmade);
 			if (item)
 			{

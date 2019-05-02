@@ -60,7 +60,7 @@ cScreenGangs::cScreenGangs()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "gangs_screen.xml";
 	m_filename = dp.c_str();
 }
-cScreenGangs::~cScreenGangs() {}
+cScreenGangs::~cScreenGangs() = default;
 int cScreenGangs::multi_first()
 {
 	sel_pos = 0;
@@ -183,7 +183,7 @@ void cScreenGangs::init()
 		for (int i = 0; i < g_Gangs.GetNumGangs(); i++)
 		{
 			sGang* g = g_Gangs.GetGang(i);
-			if (g == 0) g = g_Gangs.GetGang(i - 1);
+			if (g == nullptr) g = g_Gangs.GetGang(i - 1);
 			cost += tariff.goon_mission_cost(g->m_MissionID);
 		}
 	}
@@ -272,7 +272,7 @@ void cScreenGangs::init()
 	DisableButton(ganghire_id, (g_Gangs.GetNumHireableGangs() <= 0) || (g_Gangs.GetNumGangs() >= g_Gangs.GetMaxNumGangs()) || (sel_recruit == -1));
 	DisableButton(gangfire_id, (g_Gangs.GetNumGangs() <= 0) || (selection == -1));
 
-	potions = wlev = nets = 0;
+	potions = wlev = nets = nullptr;
 }
 
 void cScreenGangs::process()
@@ -351,7 +351,7 @@ void cScreenGangs::check_events()
 			*wlev += 1;
 			g_InitWin = true;
 		}
-		wlev = 0;
+		wlev = nullptr;
 		return;
 	}
 
@@ -372,7 +372,7 @@ void cScreenGangs::check_events()
 			if (IsCheckboxOn(netautobuy_id)) g_Gangs.KeepNetStocked(*nets);
 			g_InitWin = true;
 		}
-		nets = 0;
+		nets = nullptr;
 		buynets = 0;
 		return;
 	}
@@ -394,7 +394,7 @@ void cScreenGangs::check_events()
 			if (IsCheckboxOn(healautobuy_id)) g_Gangs.KeepHealStocked(*potions);
 			g_InitWin = true;
 		}
-		potions = 0;
+		potions = nullptr;
 		buypots = 0;
 		return;
 	}
@@ -421,7 +421,7 @@ void cScreenGangs::check_events()
 	if (g_InterfaceEvents.CheckListbox(recruitlist_id))
 	{
 		string ClickedHeader = HeaderClicked(recruitlist_id);
-		if (ClickedHeader != "")
+		if (!ClickedHeader.empty())
 		{
 			g_LogFile.ss() << "User clicked \"" << ClickedHeader << "\" column header on Recruit listbox" << endl; g_LogFile.ssend();
 			return;
@@ -443,7 +443,7 @@ void cScreenGangs::check_events()
 	if (g_InterfaceEvents.CheckListbox(ganglist_id))
 	{
 		string ClickedHeader = HeaderClicked(ganglist_id);
-		if (ClickedHeader != "")
+		if (!ClickedHeader.empty())
 		{
 			g_LogFile.ss() << "User clicked \"" << ClickedHeader << "\" column header on Gangs listbox" << endl; g_LogFile.ssend();
 			return;
@@ -474,7 +474,7 @@ void cScreenGangs::check_events()
 			*				make sure we found the gang - pretty catastrophic
 			*				if not, so log it if we do
 			*/
-			if (gang == 0)
+			if (gang == nullptr)
 			{
 				g_LogFile.ss() << "Error: No gang for index " << selection; g_LogFile.ssend();
 				continue;

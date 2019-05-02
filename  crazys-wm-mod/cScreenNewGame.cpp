@@ -142,7 +142,7 @@ void cScreenNewGame::check_events()
 		string b = GetEditBoxText(brothel_id);
 		string p = GetEditBoxText(pname_id);
 		string s = GetEditBoxText(psname_id);
-		if (b.size() < 1 || p.size() < 1 || s.size() < 1)
+		if (b.empty() || p.empty() || s.empty())
 		{
 			g_MessageQue.AddToQue("You must enter a name in all 3 boxes.", COLOR_RED);
 			return;

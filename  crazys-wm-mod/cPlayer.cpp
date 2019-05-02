@@ -80,7 +80,7 @@ bool cPlayer::LoadPlayerXML(TiXmlHandle hPlayer)
 {
 	SetToZero();//init to 0
 	TiXmlElement* pPlayer = hPlayer.ToElement();
-	if (pPlayer == 0) return false;
+	if (pPlayer == nullptr) return false;
 	if (pPlayer->Attribute("RealName"))		m_RealName		= pPlayer->Attribute("RealName");
 	if (pPlayer->Attribute("FirstName"))	m_FirstName		= pPlayer->Attribute("FirstName");
 	if (pPlayer->Attribute("Surname"))		m_Surname		= pPlayer->Attribute("Surname");

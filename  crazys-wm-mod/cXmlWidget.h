@@ -31,7 +31,7 @@ public:
 class cXmlWidget {
 	vector<sXmlWidgetPart> list;
 public:
-	cXmlWidget() {}
+	cXmlWidget() = default;
 	int size() {	return int(list.size()); }
 	sXmlWidgetPart& operator[](int i) {
 		return list[i];

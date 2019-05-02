@@ -64,9 +64,9 @@ cGangManager::cGangManager()
 	in >> m_NumGangNames;
 	in.close();
 	m_NumGangs = 0;
-	m_GangStart = m_GangEnd = 0;
+	m_GangStart = m_GangEnd = nullptr;
 	m_NumHireableGangs = 0;
-	m_HireableGangStart = m_HireableGangEnd = 0;
+	m_HireableGangStart = m_HireableGangEnd = nullptr;
 	m_BusinessesExtort = 0;
 	m_NumHealingPotions = m_NumNets = m_SwordLevel = 0;
 	m_KeepHealStocked = m_KeepNetsStocked = 0;
@@ -79,10 +79,10 @@ void cGangManager::Free()
 {
 	if (m_GangStart) delete m_GangStart;
 	m_NumGangs = 0;
-	m_GangStart = m_GangEnd = 0;
+	m_GangStart = m_GangEnd = nullptr;
 	if (m_HireableGangStart) delete m_HireableGangStart;
 	m_NumHireableGangs = 0;
-	m_HireableGangStart = m_HireableGangEnd = 0;
+	m_HireableGangStart = m_HireableGangEnd = nullptr;
 	m_BusinessesExtort = 0;
 	m_NumHealingPotions = m_SwordLevel = m_NumNets = 0;
 	m_KeepHealStocked = m_KeepNetsStocked = 0;
@@ -94,13 +94,13 @@ bool cGangManager::LoadGangsXML(TiXmlHandle hGangManager)
 {
 	Free();							//everything should be init even if we failed to load an XML element
 	TiXmlElement* pGangManager = hGangManager.ToElement();
-	if (pGangManager == 0) return false;
+	if (pGangManager == nullptr) return false;
 
 	m_NumGangs = 0;					// load goons and goon missions
 	TiXmlElement* pGangs = pGangManager->FirstChildElement("Gangs");
 	if (pGangs)
 	{
-		for (TiXmlElement* pGang = pGangs->FirstChildElement("Gang"); pGang != 0; pGang = pGang->NextSiblingElement("Gang"))
+		for (TiXmlElement* pGang = pGangs->FirstChildElement("Gang"); pGang != nullptr; pGang = pGang->NextSiblingElement("Gang"))
 		{
 			sGang* gang = new sGang();
 			bool success = gang->LoadGangXML(TiXmlHandle(pGang));
@@ -112,7 +112,7 @@ bool cGangManager::LoadGangsXML(TiXmlHandle hGangManager)
 	TiXmlElement* pHireables = pGangManager->FirstChildElement("Hireables");
 	if (pHireables)
 	{
-		for (TiXmlElement* pGang = pHireables->FirstChildElement("Gang"); pGang != 0; pGang = pGang->NextSiblingElement("Gang"))
+		for (TiXmlElement* pGang = pHireables->FirstChildElement("Gang"); pGang != nullptr; pGang = pGang->NextSiblingElement("Gang"))
 		{
 			sGang* hgang = new sGang();
 			bool success = hgang->LoadGangXML(TiXmlHandle(pGang));
@@ -209,7 +209,7 @@ TiXmlElement* sGang::SaveGangXML(TiXmlElement* pRoot)
 bool sGang::LoadGangXML(TiXmlHandle hGang)
 {
 	TiXmlElement* pGang = hGang.ToElement();
-	if (pGang == 0) return false;
+	if (pGang == nullptr) return false;
 	if (pGang->Attribute("Name")) m_Name = pGang->Attribute("Name");
 	pGang->QueryIntAttribute("Num", &m_Num);
 	LoadSkillsXML(hGang.FirstChild("Skills"), m_Skills);
@@ -264,7 +264,7 @@ void cGangManager::HireGang(int gangID)
 	{
 		sGang* copyGang = new sGang();
 		*copyGang = *currentGang;
-		copyGang->m_Next = copyGang->m_Prev = 0;
+		copyGang->m_Next = copyGang->m_Prev = nullptr;
 		copyGang->m_Combat = copyGang->m_AutoRecruit = false;
 		copyGang->m_LastMissID = -1;
 		if (copyGang->m_Num <= 5) copyGang->m_MissionID = MISS_RECRUIT;
@@ -289,7 +289,7 @@ void cGangManager::FireGang(int gangID)
 		{
 			sGang* copyGang = new sGang();
 			*copyGang = *currentGang;
-			copyGang->m_Next = copyGang->m_Prev = 0;
+			copyGang->m_Next = copyGang->m_Prev = nullptr;
 			copyGang->m_Combat = copyGang->m_AutoRecruit = false;
 			copyGang->m_LastMissID = -1;
 			AddHireableGang(copyGang);
@@ -425,31 +425,31 @@ void cGangManager::RemoveHireableGang(sGang* gang)
 {
 	if (gang)
 	{
-		if (gang->m_Prev == 0)
+		if (gang->m_Prev == nullptr)
 		{
 			m_HireableGangStart = gang->m_Next;
 			if (m_HireableGangStart)
-				m_HireableGangStart->m_Prev = 0;
+				m_HireableGangStart->m_Prev = nullptr;
 			else
-				m_HireableGangEnd = 0;
-			gang->m_Next = 0;
+				m_HireableGangEnd = nullptr;
+			gang->m_Next = nullptr;
 			delete gang;
-			gang = 0;
+			gang = nullptr;
 		}
-		else if (gang->m_Next == 0)
+		else if (gang->m_Next == nullptr)
 		{
 			m_HireableGangEnd = gang->m_Prev;
-			m_HireableGangEnd->m_Next = 0;
+			m_HireableGangEnd->m_Next = nullptr;
 			delete gang;
-			gang = 0;
+			gang = nullptr;
 		}
 		else
 		{
 			gang->m_Next->m_Prev = gang->m_Prev;
 			gang->m_Prev->m_Next = gang->m_Next;
-			gang->m_Next = 0;
+			gang->m_Next = nullptr;
 			delete gang;
-			gang = 0;
+			gang = nullptr;
 		}
 		m_NumHireableGangs--;
 	}
@@ -459,31 +459,31 @@ void cGangManager::RemoveGang(sGang* gang)
 {
 	if (gang)
 	{
-		if (gang->m_Prev == 0)
+		if (gang->m_Prev == nullptr)
 		{
 			m_GangStart = gang->m_Next;
 			if (m_GangStart)
-				m_GangStart->m_Prev = 0;
+				m_GangStart->m_Prev = nullptr;
 			else
-				m_GangEnd = 0;
-			gang->m_Next = 0;
+				m_GangEnd = nullptr;
+			gang->m_Next = nullptr;
 			delete gang;
-			gang = 0;
+			gang = nullptr;
 		}
-		else if (gang->m_Next == 0)
+		else if (gang->m_Next == nullptr)
 		{
 			m_GangEnd = gang->m_Prev;
-			m_GangEnd->m_Next = 0;
+			m_GangEnd->m_Next = nullptr;
 			delete gang;
-			gang = 0;
+			gang = nullptr;
 		}
 		else
 		{
 			gang->m_Next->m_Prev = gang->m_Prev;
 			gang->m_Prev->m_Next = gang->m_Next;
-			gang->m_Next = 0;
+			gang->m_Next = nullptr;
 			delete gang;
-			gang = 0;
+			gang = nullptr;
 		}
 		m_NumGangs--;
 	}
@@ -576,9 +576,9 @@ sGang* cGangManager::GetGang(int gangID)
 		*
 		*		-- doc
 		*/
-		if (currentGang->m_Next == 0)
+		if (currentGang->m_Next == nullptr)
 		{//uh oh, bad pointer.... crap
-			return 0;
+			return nullptr;
 		}
 		currentGang = currentGang->m_Next;
 	}
@@ -594,10 +594,10 @@ sGang* cGangManager::GetHireableGang(int gangID)
 	{
 		if (count == gangID)	break;
 		count++;
-		if (currentGang->m_Next == 0)
+		if (currentGang->m_Next == nullptr)
 		{//uh oh, bad pointer.... crap
 			//int x = 1;
-			return 0;	// gang not found? -- doc
+			return nullptr;	// gang not found? -- doc
 		}
 		currentGang = currentGang->m_Next;
 	}
@@ -635,7 +635,7 @@ sGang *cGangManager::random_gang(vector<sGang*>& v)
 	/*
 	*	make sure the list isn't empty
 	*/
-	if (list.size() == 0) 	return 0;
+	if (list.empty()) 	return nullptr;
 	/*
 	*	now we randomly select from the list.
 	*
@@ -670,7 +670,7 @@ void cGangManager::BoostGangRandomSkill(vector<int*>* possible_skills, int count
 	*/
 	for (int j = 0; j < count; j++)  // we'll pick and boost a skill/stat "count" number of times
 	{
-		int *affect_skill = 0;
+		int *affect_skill = nullptr;
 		int total_chance = 0;
 		vector<int> chance;
 
@@ -908,7 +908,7 @@ bool cGangManager::GangCombat(sGirl* girl, sGang* gang)
 		return true;
 	}
 
-	if (gang == 0 || gang->m_Num == 0) return true;
+	if (gang == nullptr || gang->m_Num == 0) return true;
 
 	int dodge = 0;
 	u_int attack = SKILL_COMBAT;	// determined later, defaults to combat
@@ -1151,7 +1151,7 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 	u_int attack = SKILL_COMBAT;	// determined later, defaults to combat
 	u_int goon_attack = SKILL_COMBAT;
 
-	if (enemy_gang == 0)
+	if (enemy_gang == nullptr)
 		return true;
 	else if (enemy_gang->m_Num == 0)
 		return true;
@@ -1528,7 +1528,7 @@ sGang* cGangManager::GetGangOnMission(u_int missID)
 	int count = 0;
 	while (currentGang)
 	{
-		if (currentGang->m_Num < 0 || currentGang->m_Num>15) return 0;	// `J` bug fix?
+		if (currentGang->m_Num < 0 || currentGang->m_Num>15) return nullptr;	// `J` bug fix?
 		if (currentGang->m_MissionID == missID && currentGang->m_Num > 0) break;
 		count++;
 		currentGang = currentGang->m_Next;
@@ -1551,7 +1551,7 @@ sGang* cGangManager::GetRandomGangOnMission(u_int missID)
 		}
 		currentGang = currentGang->m_Next;
 	}
-	if (count == 0)	return 0;
+	if (count == 0)	return nullptr;
 	return gangs[g_Dice%count];
 }
 
@@ -1579,7 +1579,7 @@ sGang* cGangManager::GetGangNotFull(int roomfor, bool recruiting)
 			currentGang = currentGang->m_Next;
 		}
 	}
-	return 0;
+	return nullptr;
 }
 
 // `J` - Added for .06.01.09
@@ -1607,7 +1607,7 @@ sGang* cGangManager::GetGangRecruitingNotFull(int roomfor)
 		currentGang = currentGang->m_Next;
 	}
 
-	return 0;
+	return nullptr;
 }
 
 // Get a vector with all the gangs doing MISS_FOO
@@ -1699,7 +1699,7 @@ bool cGangManager::sabotage_mission(sGang* gang)
 	*	of course, if there is no rival, it's academic
 	*/
 	cRival* rival = m_Rivals->GetRandomRivalToSabotage();
-	sGang* rival_gang = 0;
+	sGang* rival_gang = nullptr;
 	if (!rival)
 	{
 		gang->m_Events.AddMessage("Scouted the city in vain, seeking would-be challengers to your dominance.", IMGTYPE_PROFILE, EVENT_GANG);
@@ -1713,7 +1713,7 @@ bool cGangManager::sabotage_mission(sGang* gang)
 		if (GangBrawl(gang, rival_gang) == false)
 		{
 			delete rival_gang;
-			rival_gang = 0;
+			rival_gang = nullptr;
 			if (gang->m_Num > 0)
 			{
 				ss << "Your men lost. The ";
@@ -1739,7 +1739,7 @@ bool cGangManager::sabotage_mission(sGang* gang)
 			else								ss << "a lot of gangs left.\n";
 		}
 		delete rival_gang;
-		rival_gang = 0;
+		rival_gang = nullptr;
 	}
 	else ss << "\nYour men encounter no resistance when you go after " << rival->m_Name << ".";
 
@@ -1911,7 +1911,7 @@ bool cGangManager::recapture_mission(sGang* gang)
 
 	// check if any girls have run away, if no runnaway then the gang continues on as normal
 	sGirl* runnaway = g_Brothels.GetFirstRunaway();
-	if (runnaway == 0)	// `J` this should have been replaced by a check in the gang mission list
+	if (runnaway == nullptr)	// `J` this should have been replaced by a check in the gang mission list
 	{
 		ss << "There are none of your girls who have run away, so they have noone to look for.";
 		gang->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
@@ -2100,7 +2100,7 @@ bool cGangManager::extortion_mission(sGang* gang)
 					return false;
 				}
 				delete rival_gang;
-				rival_gang = 0;
+				rival_gang = nullptr;
 			}
 			else // Rival has no gangs
 			{
@@ -2176,7 +2176,7 @@ bool cGangManager::petytheft_mission(sGang* gang)
 		ss << "\n \n";
 		if (rival && rival->m_NumGangs > 0 && rival_gang->m_Num <= 0) rival->m_NumGangs--;
 		delete rival_gang;
-		rival_gang = 0;
+		rival_gang = nullptr;
 
 		numlost += startnum - gang->m_Num;
 	}
@@ -2294,7 +2294,7 @@ bool cGangManager::grandtheft_mission(sGang* gang)
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug bool cGangManager::grandtheft_mission(sGang* gang) || Start"; g_LogFile.ssend(); }
 	stringstream ss;
 	The_Player->disposition(-3);	The_Player->customerfear(3);	The_Player->suspicion(3);
-	bool fightrival = false;		cRival* rival = 0;				sGang *defenders = 0;
+	bool fightrival = false;		cRival* rival = nullptr;				sGang *defenders = nullptr;
 	string place = "place";			int defencechance = 0;			long gold = 1;
 	int difficulty = max(0, g_Dice.bell(0, 6) - 2);	// 0-4
 
@@ -2320,12 +2320,12 @@ bool cGangManager::grandtheft_mission(sGang* gang)
 			defenders = GetTempGang(rival->m_Power);
 		}
 	}
-	if (defenders == 0 && g_Dice.percent(defencechance))
+	if (defenders == nullptr && g_Dice.percent(defencechance))
 	{
 		defenders = GetTempGang(difficulty * 3);
 		ss << "has its own guards";
 	}
-	if (defenders == 0)	ss << "is unguarded";
+	if (defenders == nullptr)	ss << "is unguarded";
 
 	if (defenders)
 	{
@@ -2348,7 +2348,7 @@ bool cGangManager::grandtheft_mission(sGang* gang)
 	ss << ".\n \n";
 
 	if (fightrival && defenders->m_Num <= 0) rival->m_NumGangs--;
-	delete defenders; defenders = 0;
+	delete defenders; defenders = nullptr;
 
 	// rewards
 	ss << "They get away with " << gold << " gold from the " << place << ".\n";
@@ -2589,7 +2589,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 						{
 							for (int j = 0; j < MAXNUM_INVENTORY; j++)
 							{
-								if (g_Brothels.m_Inventory[j] == 0)
+								if (g_Brothels.m_Inventory[j] == nullptr)
 								{
 									ss << "a " << temp->m_Name;
 									g_Brothels.m_Inventory[j] = temp;
@@ -2617,13 +2617,13 @@ bool cGangManager::catacombs_mission(sGang* gang)
 			// determine if get a catacomb girl (is "monster" if trait not human)
 			if (g_Dice.percent((gang->intelligence() / 4) + 25))
 			{
-				sGirl* ugirl = 0;
+				sGirl* ugirl = nullptr;
 				bool unique = false;
 				if (g_Dice.percent(50))	unique = true;	// chance of getting unique girl
 				if (unique)
 				{
 					ugirl = g_Girls.GetRandomGirl(false, true);
-					if (ugirl == 0) unique = false;
+					if (ugirl == nullptr) unique = false;
 				}
 
 				if (g_Brothels.GetObjective() && g_Brothels.GetObjective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
@@ -2646,7 +2646,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 				else
 				{
 					ugirl = g_Girls.CreateRandomGirl(0, false, false, false, true);
-					if (ugirl != 0)  // make sure a girl was returned
+					if (ugirl != nullptr)  // make sure a girl was returned
 					{
 						girl++;
 						ss << "\n \nYour men also captured a girl.";
@@ -2710,7 +2710,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 				{
 					if (!GangCombat(tempgirl, gang)) gotgirl = true;
 				}
-				delete tempgirl; tempgirl = 0;
+				delete tempgirl; tempgirl = nullptr;
 				if (gotgirl)
 				{
 					bringbacknum += 10;
@@ -2803,12 +2803,12 @@ bool cGangManager::catacombs_mission(sGang* gang)
 				ss << "Your men captured " << totalgirls << " girl" << (totalgirls > 1 ? "s" : "") << ":\n";
 				for (int i = 0; i < totalgirls; i++)
 				{
-					sGirl* ugirl = 0;
+					sGirl* ugirl = nullptr;
 					bool unique = g_Dice.percent(cfg.catacombs.unique_catacombs());	// chance of getting unique girl
 					if (unique)
 					{
 						ugirl = g_Girls.GetRandomGirl(false, true);
-						if (ugirl == 0) unique = false;
+						if (ugirl == nullptr) unique = false;
 					}
 					if (unique)
 					{
@@ -2823,7 +2823,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 					else
 					{
 						ugirl = g_Girls.CreateRandomGirl(0, false, false, false, true);
-						if (ugirl != 0)  // make sure a girl was returned
+						if (ugirl != nullptr)  // make sure a girl was returned
 						{
 							ss << "   " << ugirl->m_Realname << "\n";
 							stringstream NGmsg;
@@ -2875,7 +2875,7 @@ bool cGangManager::catacombs_mission(sGang* gang)
 							{
 								for (int j = 0; j < MAXNUM_INVENTORY; j++)
 								{
-									if (g_Brothels.m_Inventory[j] == 0)
+									if (g_Brothels.m_Inventory[j] == nullptr)
 									{
 										g_Brothels.m_Inventory[j] = temp;
 										g_Brothels.m_EquipedItems[j] = 0;
@@ -2972,7 +2972,7 @@ bool cGangManager::service_mission(sGang* gang)
 
 		if (g_Dice.percent(beasts * 5))
 		{
-			string itemfound = "";
+			string itemfound;
 			switch (g_Dice % 4)
 			{
 			case 0:		itemfound = "Black Cat";		break;

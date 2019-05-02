@@ -43,7 +43,7 @@ public:
 	cBuilding() {
 		m_capacity	= 20;
 		m_free		= 20;
-		m_reversion	= 0;
+		m_reversion	= nullptr;
 	}
 
 	bool add(sFacility *fac)
@@ -91,7 +91,7 @@ public:
 			m_free -= fpt->space_taken();
 		}
 		delete m_reversion;
-		m_reversion = 0;
+		m_reversion = nullptr;
 	}
 
 	ofstream &save(ofstream &ofs, string building_name);

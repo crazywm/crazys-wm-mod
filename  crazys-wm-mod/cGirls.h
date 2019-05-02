@@ -164,7 +164,7 @@ typedef struct sChild
 	sChild* m_Prev;
 
 	sChild(bool is_players = false, Gender gender = None, int MultiBirth = 1);
-	~sChild(){ m_Prev = 0; if (m_Next)delete m_Next; m_Next = 0; }
+	~sChild(){ m_Prev = nullptr; if (m_Next)delete m_Next; m_Next = nullptr; }
 
 	TiXmlElement* SaveChildXML(TiXmlElement* pRoot);
 	bool LoadChildXML(TiXmlHandle hChild);
@@ -180,7 +180,7 @@ public:
 	sChild* m_FirstChild;
 	sChild* m_LastChild;
 	int m_NumChildren;
-	cChildList(){ m_FirstChild = 0; m_LastChild = 0; m_NumChildren = 0; }
+	cChildList(){ m_FirstChild = nullptr; m_LastChild = nullptr; m_NumChildren = 0; }
 	~cChildList(){ if (m_FirstChild) delete m_FirstChild; }
 	void add_child(sChild*);
 	sChild* remove_child(sChild*, sGirl*);
@@ -794,7 +794,7 @@ public:
 	static bool RestoreRememberedTrait(sGirl* girl, string trait);
 
 
-	static void ApplyTraits(sGirl* girl, TraitSpec* trait = 0);	// applys the stat bonuses for traits to a girl
+	static void ApplyTraits(sGirl* girl, TraitSpec* trait = nullptr);	// applys the stat bonuses for traits to a girl
 	static void MutuallyExclusiveTraits(sGirl* girl, bool apply);
 	static void MutuallyExclusiveTrait(sGirl* girl, bool apply, TraitSpec* trait, bool rememberflag = false);
 
@@ -951,8 +951,8 @@ private:
 	int test_child_name(string name);
 
 	sGirl* make_girl_child(sGirl* mom, bool playerisdad = false);
-	sGirl* find_girl_by_name(string name, int* index_pt = 0);
-	sRandomGirl* find_random_girl_by_name(string name, int* index_pt = 0);
+	sGirl* find_girl_by_name(string name, int* index_pt = nullptr);
+	sRandomGirl* find_random_girl_by_name(string name, int* index_pt = nullptr);
 
 };
 

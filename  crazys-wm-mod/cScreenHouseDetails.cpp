@@ -52,7 +52,7 @@ cScreenHouseDetails::cScreenHouseDetails()
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "house_screen.xml";
 	m_filename = dp.c_str();
 }
-cScreenHouseDetails::~cScreenHouseDetails() {}
+cScreenHouseDetails::~cScreenHouseDetails() = default;
 
 void cScreenHouseDetails::set_ids()
 {
@@ -164,7 +164,7 @@ void cScreenHouseDetails::init()
 	}
 	if (interactb_id >= 0)		DisableButton(interactb_id, g_Cheats || g_Gold.ival() < 1000);
 	if (interactb10_id >= 0)	DisableButton(interactb10_id, g_Cheats || g_Gold.ival() < 10000);
-	obj = 0;
+	obj = nullptr;
 }
 
 void cScreenHouseDetails::check_events()

@@ -192,13 +192,13 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 #if 0
 		ss << g_InvManager.CraftItem(girl, JOB_BLACKSMITH, int(craftpoints));
 #else
-		sInventoryItem* item = NULL;
+		sInventoryItem* item = nullptr;
 		int numitems = 0, tries = 0;
 
 		while (craftpoints > 0 && numitems < (1 + girl->crafting() / 15) && tries < 20)
 		{
 
-			string itemmade = "";
+			string itemmade;
 			int Magic = 0, Cost = 0, NumMade = 1;
 
 			if (craftpoints < 20)						// Simple items
@@ -416,7 +416,7 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, sBrothel* brothel, bool Day0Night1
 
 			}
 
-			if (itemmade == "")	{ Magic = 0;		Cost = 10;		itemmade == "Shiv"; }
+			if (itemmade.empty())	{ Magic = 0;		Cost = 10;		itemmade == "Shiv"; }
 			item = g_InvManager.GetItem(itemmade);
 			if (item)
 			{

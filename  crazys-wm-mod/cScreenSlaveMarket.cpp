@@ -71,7 +71,7 @@ cScreenSlaveMarket::cScreenSlaveMarket()
 	DetailLevel = 0;
 	sel_pos = 0;
 }
-cScreenSlaveMarket::~cScreenSlaveMarket() {}
+cScreenSlaveMarket::~cScreenSlaveMarket() = default;
 
 void cScreenSlaveMarket::set_ids()
 {
@@ -147,17 +147,17 @@ void cScreenSlaveMarket::init()
 	ss.str("");	if (sub != "Du") ss << "Room for " << releaseto->free_rooms() << " more girls.";
 	EditTextItem(ss.str(), roomsfree_id);
 
-	HideButton(brothel1_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == 0);
-	HideButton(brothel2_id, g_Brothels.GetNumBrothels() < 3 || g_Brothels.GetBrothel(2) == 0);
-	HideButton(brothel3_id, g_Brothels.GetNumBrothels() < 4 || g_Brothels.GetBrothel(3) == 0);
-	HideButton(brothel4_id, g_Brothels.GetNumBrothels() < 5 || g_Brothels.GetBrothel(4) == 0);
-	HideButton(brothel5_id, g_Brothels.GetNumBrothels() < 6 || g_Brothels.GetBrothel(5) == 0);
-	HideButton(brothel6_id, g_Brothels.GetNumBrothels() < 7 || g_Brothels.GetBrothel(6) == 0);
-	HideButton(clinic_id, g_Clinic.GetNumBrothels()		< 1 || g_Clinic.GetBrothel(0) == 0);
-	HideButton(studio_id, g_Studios.GetNumBrothels()	< 1 || g_Studios.GetBrothel(0) == 0);
-	HideButton(arena_id, g_Arena.GetNumBrothels()		< 1 || g_Arena.GetBrothel(0) == 0);
-	HideButton(centre_id, g_Centre.GetNumBrothels()		< 1 || g_Centre.GetBrothel(0) == 0);
-	HideButton(farm_id, g_Farm.GetNumBrothels()			< 1 || g_Farm.GetBrothel(0) == 0);
+	HideButton(brothel1_id, g_Brothels.GetNumBrothels() < 2 || g_Brothels.GetBrothel(1) == nullptr);
+	HideButton(brothel2_id, g_Brothels.GetNumBrothels() < 3 || g_Brothels.GetBrothel(2) == nullptr);
+	HideButton(brothel3_id, g_Brothels.GetNumBrothels() < 4 || g_Brothels.GetBrothel(3) == nullptr);
+	HideButton(brothel4_id, g_Brothels.GetNumBrothels() < 5 || g_Brothels.GetBrothel(4) == nullptr);
+	HideButton(brothel5_id, g_Brothels.GetNumBrothels() < 6 || g_Brothels.GetBrothel(5) == nullptr);
+	HideButton(brothel6_id, g_Brothels.GetNumBrothels() < 7 || g_Brothels.GetBrothel(6) == nullptr);
+	HideButton(clinic_id, g_Clinic.GetNumBrothels()		< 1 || g_Clinic.GetBrothel(0) == nullptr);
+	HideButton(studio_id, g_Studios.GetNumBrothels()	< 1 || g_Studios.GetBrothel(0) == nullptr);
+	HideButton(arena_id, g_Arena.GetNumBrothels()		< 1 || g_Arena.GetBrothel(0) == nullptr);
+	HideButton(centre_id, g_Centre.GetNumBrothels()		< 1 || g_Centre.GetBrothel(0) == nullptr);
+	HideButton(farm_id, g_Farm.GetNumBrothels()			< 1 || g_Farm.GetBrothel(0) == nullptr);
 
 	ClearListBox(slave_list_id);	// clear the list
 
@@ -172,7 +172,7 @@ void cScreenSlaveMarket::init()
 		if (g_GenGirls != false)
 		{
 			// first of all, if there isn't a girl in this slot the reset doesn't matter much
-			if (MarketSlaveGirls[i] == 0) continue;
+			if (MarketSlaveGirls[i] == nullptr) continue;
 			/*
 			* I'm going to assume that -1 here means "OK to delete". Which means non -1 means
 			* "do not delete", from which we can infer that the girl is unique.
@@ -192,36 +192,36 @@ void cScreenSlaveMarket::init()
 		*		Still, that's for the future.
 		*		For now: is there a girl in the current slot?
 		*/
-		if (MarketSlaveGirls[i] != 0)
+		if (MarketSlaveGirls[i] != nullptr)
 		{
 			// Yes there is. Is it OK to delete her. If so, do it
 			if (MarketSlaveGirlsDel[i] == -1) delete MarketSlaveGirls[i];
 			// in any case, mark the slot as empty
-			MarketSlaveGirls[i] = 0;
+			MarketSlaveGirls[i] = nullptr;
 		}
 		if (i >= numgirls) continue;
 		// now try and generate a unique girl for the slot
 		generate_unique_girl(i, unique);
 		// if the id for this slot is zero, then we didn't make a unique girl so we need a random one
-		if (MarketSlaveGirls[i] == 0)
+		if (MarketSlaveGirls[i] == nullptr)
 		{
 			int n = 0;
-			sGirl* testgirl = 0;
-			while (testgirl == 0&& n<20)
+			sGirl* testgirl = nullptr;
+			while (testgirl == nullptr&& n<20)
 			{
 				testgirl = g_Girls.CreateRandomGirl(0, false, true);
 				for (int j = 0; j < 20; j++)
 				{
-					if (MarketSlaveGirls[j] == 0) continue;
+					if (MarketSlaveGirls[j] == nullptr) continue;
 					else if (string(testgirl->m_Name) == string(MarketSlaveGirls[j]->m_Name))
 					{
-						testgirl = 0;
+						testgirl = nullptr;
 						break;
 					}
 				}
 				n++;
 			}
-			if (testgirl == 0)
+			if (testgirl == nullptr)
 			{
 				testgirl = g_Girls.CreateRandomGirl(0, false, true);
 			}
@@ -233,7 +233,7 @@ void cScreenSlaveMarket::init()
 		* if the slot is still zero, we couldn't get a girl at all (can this happen? it probably should...)
 		* in which case there's nothing more for this time round.  (and arguably for the loop...)
 		*/
-		if (MarketSlaveGirls[i] == 0) continue;
+		if (MarketSlaveGirls[i] == nullptr) continue;
 		// decide the display color based on whether the girl is unique
 		int col = unique ? COLOR_RED : COLOR_BLUE;
 		// and display
@@ -264,7 +264,7 @@ void cScreenSlaveMarket::init()
 	// Finds the first girl in the selection, so she is highlighted. This stops the No girl selected that was normal before. --PP
 	for (int i = numgirls-1; i > -1; i--)
 	{
-		if (MarketSlaveGirls[i] == 0) continue;
+		if (MarketSlaveGirls[i] == nullptr) continue;
 		selection = i;
 	}
 
@@ -279,7 +279,7 @@ void cScreenSlaveMarket::init()
 	if (tmp == -1) return;
 	// get the girl under the cursor. If she's null, something funny is going on, so splurge a diagnostic before exiting the func
 	sGirl* g = MarketSlaveGirls[tmp];
-	if (g == 0)
+	if (g == nullptr)
 	{
 		g_LogFile.os() << "error: null pointer for cursor entry in market" << endl;
 		return;
@@ -335,7 +335,7 @@ bool cScreenSlaveMarket::check_events()
 	// if it's the back button, pop the window off the stack and we're done
 	if (g_InterfaceEvents.CheckButton(back_id))
 	{
-		girl = 0;
+		girl = nullptr;
 		g_InitWin = true;
 		g_WinManager.Pop();
 		return true;
@@ -747,8 +747,8 @@ bool cScreenSlaveMarket::buy_slaves()
 				if (girl->has_trait("Herpes"))		diseases.push_back("Herpes");
 				if (girl->has_trait("Syphilis"))	diseases.push_back("Syphilis");
 				ss << girl->m_Realname << " has been diagnosed with ";
-				if (diseases.size() <= 0)	ss << "an unknown disease.";
-				if (diseases.size() >= 1)	ss << diseases[0];
+				if (diseases.empty())	ss << "an unknown disease.";
+				if (!diseases.empty())	ss << diseases[0];
 				if (diseases.size() >= 2)	ss << " and " << diseases[1];
 				if (diseases.size() >= 3)	ss << " and " << diseases[2];
 				if (diseases.size() >= 4)	ss << " and " << diseases[3];
@@ -789,9 +789,9 @@ bool cScreenSlaveMarket::buy_slaves()
 		}
 		else					// multiple girl flavor texts
 		{
-			bool pornstar = false;	string pornstarname = "";	int pornstarnum = 0;
-			bool actress = false;	string actressname = "";	int actressnum = 0;
-			bool shygirl = false;	string shygirlname = "";	int shygirlnum = 0;
+			bool pornstar = false;	string pornstarname;	int pornstarnum = 0;
+			bool actress = false;	string actressname;	int actressnum = 0;
+			bool shygirl = false;	string shygirlname;	int shygirlnum = 0;
 
 			for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
 			{
@@ -989,7 +989,7 @@ bool cScreenSlaveMarket::buy_slaves()
 		{
 			g_Brothels.GetDungeon()->AddGirl(girl, DUNGEON_NEWSLAVE);
 		}
-		MarketSlaveGirls[sel] = 0;
+		MarketSlaveGirls[sel] = nullptr;
 	}
 
 	// `J` now tell the player what happened
@@ -998,7 +998,7 @@ bool cScreenSlaveMarket::buy_slaves()
 
 	// finish it
 	selection = -1;
-	PrepareImage(image_id, 0, -1, false, -1, false, "blank");
+	PrepareImage(image_id, nullptr, -1, false, -1, false, "blank");
 	HideImage(image_id, true);		// hide/show image based on whether a girl is selected
 	if (selection < 0)								// if no girl is selected, clear girl info
 	{
@@ -1088,7 +1088,7 @@ bool cScreenSlaveMarket::change_selected_girl()
 	}
 	if (!MatchSel) selection = multi_slave_first();
 	// if the player selected an empty slot make that into "nothing selected" and return
-	if (MarketSlaveGirls[selection] == 0) selection = -1;
+	if (MarketSlaveGirls[selection] == nullptr) selection = -1;
 	// disable/enable buttons based on whether a girl is selected
 	DisableButton(more_id, (selection == -1));
 	DisableButton(buy_slave_id, (selection == -1));

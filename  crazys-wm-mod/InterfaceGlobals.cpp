@@ -287,7 +287,7 @@ void LoadInterface()
 	stringstream ss;
 	int r = 0, g = 0, b = 0, x = 0, y = 0, w = 0, h = 0, a = 0, c = 0, d = 0, e = 0, fontsize = 10, rowheight = 20,
 		increment = 0, min = 0, max = 0, value = 0;
-	string image = ""; string text = ""; string file = "";
+	string image; string text; string file;
 	bool Transparency = false, Scale = true, multi = false, events = false, liveUpdate = false, leftorright = false;
 	ifstream incol;
 	

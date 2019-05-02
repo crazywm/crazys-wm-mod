@@ -25,7 +25,7 @@
 #define LIBINTL_DLL_EXPORTED __declspec(dllimport)
 #endif
 
-#include <locale.h>
+#include <clocale>
 
 /* The LC_MESSAGES locale category is the category used by the functions
    gettext() and dgettext().  It is specified in POSIX, but not in ANSI C.
@@ -290,12 +290,12 @@ extern LIBINTL_DLL_EXPORTED char *bind_textdomain_codeset (const char *__domainn
 
 #if !0
 
-#include <stdio.h>
-#include <stddef.h>
+#include <cstdio>
+#include <cstddef>
 
 /* Get va_list.  */
 #if __STDC__ || defined __cplusplus || defined _MSC_VER
-# include <stdarg.h>
+# include <cstdarg>
 #else
 # include <varargs.h>
 #endif
