@@ -5743,6 +5743,7 @@ void cGirls::MutuallyExclusiveTrait(sGirl* girl, bool apply, TraitSpec* trait, b
 			name == "Plump Tush" ||
 			name == "Great Arse" ||
 			name == "Phat Booty" ||
+			name == "Wide Bottom" ||
 			name == "Deluxe Derriere")
 	{
 		if (apply)
@@ -5752,6 +5753,7 @@ void cGirls::MutuallyExclusiveTrait(sGirl* girl, bool apply, TraitSpec* trait, b
 			if (name != "Plump Tush")			girl->remove_trait("Plump Tush", rememberflag, true);
 			if (name != "Great Arse")			girl->remove_trait("Great Arse", rememberflag, true);
 			if (name != "Phat Booty")			girl->remove_trait("Phat Booty", rememberflag, true);
+			if (name != "Wide Bottom")			girl->remove_trait("Wide Bottom", rememberflag, true);
 			if (name != "Deluxe Derriere")		girl->remove_trait("Deluxe Derriere", rememberflag, true);
 		}
 		else
@@ -5761,6 +5763,7 @@ void cGirls::MutuallyExclusiveTrait(sGirl* girl, bool apply, TraitSpec* trait, b
 			else if (name != "Plump Tush" && HasRememberedTrait(girl, "Plump Tush"))			RestoreRememberedTrait(girl, "Plump Tush");
 			else if (name != "Great Arse" && HasRememberedTrait(girl, "Great Arse"))			RestoreRememberedTrait(girl, "Great Arse");
 			else if (name != "Phat Booty" && HasRememberedTrait(girl, "Phat Booty"))			RestoreRememberedTrait(girl, "Phat Booty");
+			else if (name != "Wide Bottom" && HasRememberedTrait(girl, "Wide Bottom"))			RestoreRememberedTrait(girl, "Wide Bottom");
 			else if (name != "Deluxe Derriere" && HasRememberedTrait(girl, "Deluxe Derriere"))	RestoreRememberedTrait(girl, "Deluxe Derriere");
 		}
 	}

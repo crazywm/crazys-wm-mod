@@ -141,7 +141,7 @@ cTraits::~cTraits()
 
 void cTraits::Free()
 {
-	m_Traits.clear();
+	m_CoreTraits.clear();
 }
 
 void cTraits::LoadXMLTraits(const string& filename)
@@ -167,27 +167,27 @@ void cTraits::LoadXMLTraits(const string& filename)
 
 void cTraits::AddTrait(TraitSpec trait)
 {
-	m_Traits.emplace_back(new TraitSpec(std::move(trait)));
+	m_CoreTraits.emplace_back(new TraitSpec(std::move(trait)));
 }
 
 void cTraits::RemoveTrait(const string& name)
 {
 	auto trait_iter = find_trait_by_name(name);
-	if(trait_iter != m_Traits.end()) {
-		m_Traits.erase(trait_iter);
+	if (trait_iter != m_CoreTraits.end()) {
+		m_CoreTraits.erase(trait_iter);
 	}
 }
 
 cTraits::trait_list_t::iterator cTraits::find_trait_by_name(const std::string& name)
 {
-	return std::find_if(begin(m_Traits), end(m_Traits),
+	return std::find_if(begin(m_CoreTraits), end(m_CoreTraits),
 		[&](const std::unique_ptr<TraitSpec>& trait) { return stringtolowerj(trait->name()) == stringtolowerj(name); });
 }
 
 TraitSpec* cTraits::GetTrait(const string& name)
 {
 	auto found = find_trait_by_name(name);
-	if(found == m_Traits.end())
+	if (found == m_CoreTraits.end())
 		return nullptr;
 
 	return found->get();

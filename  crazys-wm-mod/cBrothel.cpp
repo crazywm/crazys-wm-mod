@@ -2217,6 +2217,7 @@ void cBrothelManager::UsePlayersItems(sGirl* cur)
 	has = g_Brothels.HasItem("Polish");
 	if (has != -1)
 	{
+// `J` zzzzzz - This should check stats not traits
 		// If the girl doesn't have 4 of these 5 traits she will use polish
 		if (!cur->has_trait("Good Kisser"))			PolishCount++;
 		if (!cur->has_trait("Great Figure"))			PolishCount++;

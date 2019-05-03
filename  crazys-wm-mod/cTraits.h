@@ -88,12 +88,12 @@ public:
 	void RemoveTrait(const std::string& name);
 	TraitSpec* GetTrait(const std::string& name);
 
-	const trait_list_t& all_traits() const { return m_Traits; }
+	const trait_list_t& all_traits() const { return m_CoreTraits; }
 
 private:
 
     trait_list_t::iterator find_trait_by_name(const std::string& name);
-    trait_list_t m_Traits;
+    trait_list_t m_CoreTraits;
 };
 
 #endif
