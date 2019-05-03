@@ -34,7 +34,7 @@ class TiXmlElement;
 struct TraitEffect
 {
     enum Type {
-        STAT, SKILL, ENJOYMENT
+        STAT, SKILL, ENJOYMENT, FETISH
     } type;
     unsigned target;
     int value;
@@ -59,6 +59,7 @@ public:
 	int inherit_chance() const { return m_InheritChance; }
 
 	void apply_effects(sGirl* target) const;
+	void get_fetish_rating(std::array<int, NUM_FETISH>& rating) const;
 private:
 
     std::string m_Name;				// the name and unique ID of the trait
