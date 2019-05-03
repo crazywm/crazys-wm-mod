@@ -37,11 +37,6 @@ extern string stringtolowerj(string name);
 TraitEffect TraitEffect::from_xml(TiXmlElement* el)
 {
 	TraitEffect effect;
-	const char* target = el->Attribute("name");
-	if(!target) {
-		throw std::runtime_error("No 'name' specified for TraitEffect!");
-	}
-
 	if(!el->Attribute("value", &effect.value))
 		throw std::runtime_error("No 'value' specified for TraitEffect!");
 
@@ -50,7 +45,13 @@ TraitEffect TraitEffect::from_xml(TiXmlElement* el)
         throw std::runtime_error("No 'type' specified for TraitEffect!");
     std::string type = type_p;
 
-	if(type == "stat") {
+    const char* target = el->Attribute("name");
+    if(!target && type != "sex") {
+        throw std::runtime_error("No 'name' specified for TraitEffect!");
+    }
+
+
+    if(type == "stat") {
 		effect.type = TraitEffect::STAT;
 		effect.target = sGirl::lookup_stat_code(target);
 	} else if (type == "skill") {
@@ -62,6 +63,13 @@ TraitEffect TraitEffect::from_xml(TiXmlElement* el)
 	} else if (type == "fetish") {
         effect.type = TraitEffect::FETISH;
         effect.target = sGirl::lookup_fetish_code(target);
+    } else if (type == "sex") {
+        effect.type = TraitEffect::SEX_QUALITY;
+        const char* fetish_s = el->Attribute("fetish");
+        effect.condition = FETISH_TRYANYTHING;
+        if(fetish_s) {
+            effect.condition = (Fetishs)sGirl::lookup_fetish_code(fetish_s);
+        }
     } else {
 		throw std::runtime_error("Invalid 'type' tag for TraitEffect!");
 	}
@@ -212,8 +220,9 @@ void TraitSpec::apply_effects(sGirl* target) const
 				cGirls::UpdateEnjoymentTR(target, effect.target, effect.value);
 				break;
         case TraitEffect::FETISH:
-            // fetishes are handled separately when calculating a girls type
-            break;
+        case TraitEffect::SEX_QUALITY:
+                // fetishes are handled separately when calculating a girls type
+                break;
         }
 	}
 }
@@ -225,4 +234,16 @@ void TraitSpec::get_fetish_rating(std::array<int, NUM_FETISH>& rating) const
             rating[effect.target] += effect.value;
         }
     }
+}
+
+int TraitSpec::get_sex_mod(Fetishs fetish) const {
+    int mod = 0;
+    for(const auto& effect : m_Effects) {
+        if(effect.type == TraitEffect::SEX_QUALITY) {
+            if(fetish == effect.condition || effect.condition == FETISH_TRYANYTHING) {
+                mod += effect.value;
+            }
+        }
+    }
+    return mod;
 }

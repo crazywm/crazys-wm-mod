@@ -832,7 +832,7 @@ int sGirl::lookup_fetish_code(string s)
     if (fetish_lookup.find(s) == fetish_lookup.end())
     {
         g_LogFile.os() << "[sGirl::lookup_fetish_code] Error: unknown fetish: " << s << endl;
-        return -1;
+        throw std::runtime_error("Invalid 'fetch' specified!");
     }
     return fetish_lookup[s];
 }
@@ -6386,74 +6386,16 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 	bool contraception = false;
 	double STDchance = 0.001;		// `J` added new percent that allows 3 decimal check so setting a 0.001% base chance
 	int happymod = 0;	// Start the customers unhappiness/happiness bad sex decreases, good sex inceases
-	if (girl->has_trait("Fake Orgasm Expert"))		happymod += 20;
-	else if (girl->has_trait("Fast Orgasms"))		happymod += 10;
-	else if (girl->has_trait("Slow Orgasms"))		happymod -= 10;
-	if (girl->has_trait("Psychic"))					happymod += 10;	// she knows what the customer wants
-	if (girl->has_trait("Shape Shifter"))			happymod += 10;	// she can be anything the customer wants
 
-	if (customer->m_Fetish == FETISH_FUTAGIRLS)
+	if (customer->m_Fetish == FETISH_FUTAGIRLS && !girl->has_trait("Futanari"))
 	{
-		if (girl->has_trait("Futanari"))				happymod += 50;
-		else										happymod -= 10;
+        happymod -= 10;
 	}
 
-	if (customer->m_Fetish == FETISH_BIGBOOBS)
-	{
-		/* */if (girl->has_trait("Flat Chest"))				happymod -= 15;
-		else if (girl->has_trait("Petite Breasts"))			happymod -= 10;
-		else if (girl->has_trait("Small Boobs"))				happymod -= 5;
-		else if (girl->has_trait("Busty Boobs"))				happymod += 4;
-		else if (girl->has_trait("Big Boobs"))				happymod += 8;
-		else if (girl->has_trait("Giant Juggs"))				happymod += 12;
-		else if (girl->has_trait("Massive Melons"))			happymod += 16;
-		else if (girl->has_trait("Abnormally Large Boobs"))	happymod += 20;
-		else if (girl->has_trait("Titanic Tits"))			happymod += 25;
-	}
-	else if (customer->m_Fetish == FETISH_SMALLBOOBS)
-	{
-		/* */if (girl->has_trait("Flat Chest"))				happymod += 15;
-		else if (girl->has_trait("Petite Breasts"))			happymod += 20;
-		else if (girl->has_trait("Small Boobs"))				happymod += 10;
-		else if (girl->has_trait("Busty Boobs"))				happymod -= 2;
-		else if (girl->has_trait("Big Boobs"))				happymod -= 5;
-		else if (girl->has_trait("Giant Juggs"))				happymod -= 10;
-		else if (girl->has_trait("Massive Melons"))			happymod -= 15;
-		else if (girl->has_trait("Abnormally Large Boobs"))	happymod -= 20;
-		else if (girl->has_trait("Titanic Tits"))			happymod -= 30;
-	}
-	else
-	{
-		/* */if (girl->has_trait("Flat Chest"))				happymod -= 2;
-		else if (girl->has_trait("Petite Breasts"))			happymod -= 1;
-		else if (girl->has_trait("Small Boobs"))				happymod += 0;
-		else if (girl->has_trait("Busty Boobs"))				happymod += 1;
-		else if (girl->has_trait("Big Boobs"))				happymod += 2;
-		else if (girl->has_trait("Giant Juggs"))				happymod += 1;
-		else if (girl->has_trait("Massive Melons"))			happymod += 0;
-		else if (girl->has_trait("Abnormally Large Boobs"))	happymod -= 1;
-		else if (girl->has_trait("Titanic Tits"))			happymod -= 2;
-	}
-
-	if (customer->m_Fetish == FETISH_ARSE)
-	{
-		/* */if (girl->has_trait("Great Arse"))				happymod += 25;
-		else if (girl->has_trait("Deluxe Derriere"))			happymod += 25;
-		else if (girl->has_trait("Tight Butt"))				happymod += 10;
-		else if (girl->has_trait("Phat Booty"))				happymod += 15;
-		else if (girl->has_trait("Wide Bottom"))				happymod += 10;
-		else if (girl->has_trait("Plump Tush"))				happymod += 5;
-		else if (girl->has_trait("Flat Ass"))				happymod -= 30;
-	}
-	else
-	{
-		/* */if (girl->has_trait("Great Arse"))				happymod += 3;
-		else if (girl->has_trait("Deluxe Derriere"))			happymod += 3;
-		else if (girl->has_trait("Tight Butt"))				happymod += 2;
-		else if (girl->has_trait("Phat Booty"))				happymod += 1;
-		else if (girl->has_trait("Wide Bottom"))				happymod += 0;
-		else if (girl->has_trait("Plump Tush"))				happymod += 0;
-		else if (girl->has_trait("Flat Ass"))				happymod -= 2;
+	for(auto& trait : girl->m_Traits) {
+	    if(trait) {
+	        happymod += trait->get_sex_mod((Fetishs)customer->m_Fetish);
+	    }
 	}
 
 	girl->m_NumCusts += (int)customer->m_Amount;

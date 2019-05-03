@@ -558,6 +558,7 @@
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="Agility" type="stat" value="-10"/>
             <effect name="TittySex" type="skill" value="20"/>
+
             <effect name="BigBoobs" type="fetish" value="100" />
             <effect name="SmallBoobs" type="fetish" value="-100" />
             <effect name="CuteGirl" type="fetish" value="-15" />
@@ -567,6 +568,9 @@
             <effect name="Freak" type="fetish" value="10" />
             <effect name="NonHuman" type="fetish" value="5" />
 
+            <effect type="sex" value="-1" />
+            <effect type="sex" fetish="BigBoobs" value="21" />
+            <effect type="sex" fetish="SmallBoobs" value="-19" />
         </effects>
     </Trait>
 
@@ -591,12 +595,17 @@
             <effect name="Agility" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="2"/>
             <effect name="TittySex" type="skill" value="15"/>
+
             <effect name="BigBoobs" type="fetish" value="40" />
             <effect name="SmallBoobs" type="fetish" value="-40" />
             <effect name="CuteGirl" type="fetish" value="-5" />
             <effect name="Lolita" type="fetish" value="-20" />
             <effect name="Sexy" type="fetish" value="20" />
             <effect name="NiceFigure" type="fetish" value="10" />
+
+            <effect type="sex" value="2" />
+            <effect type="sex" fetish="BigBoobs" value="6" />
+            <effect type="sex" fetish="SmallBoobs" value="-7" />
         </effects>
     </Trait>
 
@@ -609,12 +618,17 @@
             <effect name="Agility" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="2"/>
             <effect name="TittySex" type="skill" value="10"/>
+
             <effect name="BigBoobs" type="fetish" value="20" />
             <effect name="SmallBoobs" type="fetish" value="-20" />
             <effect name="CuteGirl" type="fetish" value="5" />
             <effect name="Lolita" type="fetish" value="0" />
             <effect name="Sexy" type="fetish" value="10" />
             <effect name="NiceFigure" type="fetish" value="5" />
+
+            <effect type="sex" value="1" />
+            <effect type="sex" fetish="BigBoobs" value="3" />
+            <effect type="sex" fetish="SmallBoobs" value="-3" />
         </effects>
     </Trait>
 
@@ -648,12 +662,17 @@
             <effect name="Agility" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="TittySex" type="skill" value="-50"/>
+
             <effect name="BigBoobs" type="fetish" value="-120" />
             <effect name="SmallBoobs" type="fetish" value="80" />
             <effect name="CuteGirl" type="fetish" value="20" />
             <effect name="Lolita" type="fetish" value="30" />
             <effect name="Sexy" type="fetish" value="-10" />
             <effect name="NiceFigure" type="fetish" value="-10" />
+
+            <effect type="sex" value="-2" />
+            <effect type="sex" fetish="BigBoobs" value="-13" />
+            <effect type="sex" fetish="SmallBoobs" value="17" />
         </effects>
     </Trait>
 
@@ -666,12 +685,17 @@
             <effect name="Agility" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="2"/>
             <effect name="TittySex" type="skill" value="15"/>
+
             <effect name="BigBoobs" type="fetish" value="60" />
             <effect name="SmallBoobs" type="fetish" value="-60" />
             <effect name="CuteGirl" type="fetish" value="-25" />
             <effect name="Lolita" type="fetish" value="-40" />
             <effect name="Sexy" type="fetish" value="20" />
             <effect name="NiceFigure" type="fetish" value="5" />
+
+            <effect type="sex" value="1" />
+            <effect type="sex" fetish="BigBoobs" value="12" />
+            <effect type="sex" fetish="SmallBoobs" value="-10" />
         </effects>
     </Trait>
 
@@ -694,6 +718,7 @@
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="Agility" type="stat" value="-10"/>
             <effect name="TittySex" type="skill" value="18"/>
+
             <effect name="BigBoobs" type="fetish" value="80" />
             <effect name="SmallBoobs" type="fetish" value="-80" />
             <effect name="CuteGirl" type="fetish" value="-25" />
@@ -701,6 +726,9 @@
             <effect name="Sexy" type="fetish" value="10" />
             <effect name="NiceFigure" type="fetish" value="-5" />
             <effect name="Freak" type="fetish" value="5" />
+
+            <effect type="sex" fetish="BigBoobs" value="16" />
+            <effect type="sex" fetish="SmallBoobs" value="-15" />
         </effects>
     </Trait>
 
@@ -730,6 +758,10 @@
             <effect name="Lolita" type="fetish" value="20" />
             <effect name="Sexy" type="fetish" value="-5" />
             <effect name="NiceFigure" type="fetish" value="-5" />
+
+            <effect type="sex" value="-1" />
+            <effect type="sex" fetish="BigBoobs" value="-9" />
+            <effect type="sex" fetish="SmallBoobs" value="21" />
         </effects>
     </Trait>
 
@@ -765,12 +797,16 @@
             <effect name="Agility" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="TittySex" type="skill" value="-15"/>
+
             <effect name="BigBoobs" type="fetish" value="-40" />
             <effect name="SmallBoobs" type="fetish" value="50" />
             <effect name="CuteGirl" type="fetish" value="10" />
             <effect name="Lolita" type="fetish" value="10" />
             <effect name="Sexy" type="fetish" value="5" />
             <effect name="NiceFigure" type="fetish" value="0" />
+
+            <effect type="sex" fetish="BigBoobs" value="-5" />
+            <effect type="sex" fetish="SmallBoobs" value="10" />
         </effects>
     </Trait>
 
@@ -782,6 +818,7 @@
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="Agility" type="stat" value="-15"/>
             <effect name="TittySex" type="skill" value="25"/>
+
             <effect name="BigBoobs" type="fetish" value="120" />
             <effect name="SmallBoobs" type="fetish" value="-120" />
             <effect name="CuteGirl" type="fetish" value="-25" />
@@ -790,6 +827,10 @@
             <effect name="NiceFigure" type="fetish" value="-20" />
             <effect name="Freak" type="fetish" value="20" />
             <effect name="NonHuman" type="fetish" value="10" />
+
+            <effect type="sex" value="-2" />
+            <effect type="sex" fetish="BigBoobs" value="27" />
+            <effect type="sex" fetish="SmallBoobs" value="-28" />
         </effects>
     </Trait>
 
@@ -1474,6 +1515,7 @@
             <effect name="Dangerous" type="fetish" value="10" />
             <effect name="NonHuman" type="fetish" value="10" />
             <effect name="Freak" type="fetish" value="10" />
+            <effect type="sex" value="10" />
         </effects>
     </Trait>
 
@@ -1710,9 +1752,13 @@
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="10"/>
+
             <effect name="Lolita" type="fetish" value="-25" />
             <effect name="Sexy" type="fetish" value="20" />
             <effect name="NiceArse" type="fetish" value="40" />
+
+            <effect type="sex" value="3" />
+            <effect type="sex" fetish="NiceArse" value="22" />
         </effects>
     </Trait>
 
@@ -1759,9 +1805,13 @@
             <effect name="Beauty" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="-5"/>
             <effect name="Anal" type="skill" value="-10"/>
+
             <effect name="Lolita" type="fetish" value="20" />
             <effect name="Sexy" type="fetish" value="-20" />
             <effect name="NiceArse" type="fetish" value="-50" />
+
+            <effect type="sex" value="-2" />
+            <effect type="sex" fetish="NiceArse" value="-28" />
         </effects>
     </Trait>
 
@@ -1795,8 +1845,12 @@
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="10"/>
+
             <effect name="Sexy" type="fetish" value="10" />
             <effect name="NiceArse" type="fetish" value="60" />
+
+            <effect type="sex" value="3" />
+            <effect type="sex" fetish="NiceArse" value="22" />
         </effects>
     </Trait>
 
@@ -2147,9 +2201,13 @@
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="10"/>
+
             <effect name="Lolita" type="fetish" value="-20" />
             <effect name="Sexy" type="fetish" value="15" />
             <effect name="NiceArse" type="fetish" value="30" />
+
+            <effect type="sex" value="1" />
+            <effect type="sex" fetish="NiceArse" value="14" />
         </effects>
     </Trait>
 
@@ -2160,9 +2218,12 @@
             <effect name="Agility" type="stat" value="-10"/>
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="10"/>
+
             <effect name="Lolita" type="fetish" value="-20" />
             <effect name="Sexy" type="fetish" value="15" />
             <effect name="NiceArse" type="fetish" value="10" />
+
+            <effect type="sex" fetish="NiceArse" value="5" />
         </effects>
     </Trait>
 
@@ -2206,9 +2267,13 @@
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="8"/>
+
             <effect name="Lolita" type="fetish" value="5" />
             <effect name="Sexy" type="fetish" value="20" />
             <effect name="NiceArse" type="fetish" value="40" />
+
+            <effect type="sex" value="2" />
+            <effect type="sex" fetish="NiceArse" value="8" />
         </effects>
     </Trait>
 
@@ -2246,9 +2311,12 @@
             <effect name="Constitution" type="stat" value="5"/>
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="5"/>
+
             <effect name="Lolita" type="fetish" value="-20" />
             <effect name="Sexy" type="fetish" value="15" />
             <effect name="NiceArse" type="fetish" value="20" />
+
+            <effect type="sex" fetish="NiceArse" value="10" />
         </effects>
     </Trait>
 
@@ -2296,6 +2364,7 @@
             <effect name="Lesbian" type="skill" value="2"/>
             <effect name="SEX" type="enjoyment" value="10"/>
             <effect name="Sexy" type="fetish" value="5" />
+            <effect type="sex" value="20" />
         </effects>
     </Trait>
 
@@ -2315,6 +2384,7 @@
             <effect name="SEX" type="enjoyment" value="10"/>
             <effect name="Cool" type="fetish" value="10" />
             <effect name="Sexy" type="fetish" value="30" />
+            <effect type="sex" value="10" />
         </effects>
     </Trait>
 
@@ -2471,6 +2541,7 @@
             <effect name="Elegant" type="fetish" value="5" />
             <effect name="Sexy" type="fetish" value="-10" />
             <effect name="Freak" type="fetish" value="5" />
+            <effect type="sex" value="-10" />
         </effects>
     </Trait>
 
@@ -2871,6 +2942,7 @@
             <effect name="NonHuman" type="fetish" value="10" />
             <effect name="Freak" type="fetish" value="30" />
             <effect name="Futa" type="fetish" value="100" />
+            <effect type="sex" fetish="Futa" value="60" />
         </effects>
     </Trait>
 
@@ -2971,6 +3043,7 @@
             <effect name="Sexy" type="fetish" value="20" />
             <effect name="NiceFigure" type="fetish" value="40" />
             <effect name="Freak" type="fetish" value="40" />
+            <effect type="sex" value="10" />
         </effects>
     </Trait>
 
