@@ -185,8 +185,12 @@ cTraits::trait_list_t::iterator cTraits::find_trait_by_name(const std::string& n
 TraitSpec* cTraits::GetTrait(const string& name)
 {
 	auto found = find_trait_by_name(name);
-	if (found == m_CoreTraits.end())
-		return nullptr;
+	if(found == m_CoreTraits.end()) {
+        CLog l;
+        l.ss() << "Error: Trying to get unknown trait '"<< name << endl;
+        l.ssend();
+        return nullptr;
+    }
 
 	return found->get();
 }

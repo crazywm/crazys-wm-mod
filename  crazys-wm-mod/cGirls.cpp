@@ -14825,11 +14825,14 @@ bool sGirl::add_trait(string name, int temptime, bool removeitem, bool remember)
 		{
 			if (temptime>0) m_TempTrait[i] = temptime;
 			m_NumTraits++;
-			TraitSpec *addthistrait = g_Traits.GetTrait(name);
-			m_Traits[i] = addthistrait;
+			m_Traits[i] = g_Traits.GetTrait(name);
+			// if we did not find the trait in the traits list, there is nothing we can do here.
+			if(m_Traits[i] == nullptr) {
+			    return false;
+			}
 
 			g_Girls.MutuallyExclusiveTrait(this, true, m_Traits[i], removeitem);
-			g_Girls.ApplyTraits(this, addthistrait);
+			g_Girls.ApplyTraits(this, m_Traits[i]);
 
 			return true;
 		}
