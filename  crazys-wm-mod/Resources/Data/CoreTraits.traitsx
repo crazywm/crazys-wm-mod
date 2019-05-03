@@ -4,7 +4,13 @@
 
     <Trait InheritChance="0" Name="Undead" RandomChance="0" Type="Undead">
         <description>This girl is technically alive, but not in a medical sense.</description>
-        <effects/>
+        <effects>
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="5" />
+            <effect name="NonHuman" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="-5" />
+            <effect name="Freak" type="fetish" value="20" />
+        </effects>
     </Trait>
 
 
@@ -44,6 +50,11 @@
             <effect name="Footjob" type="skill" value="-50"/>
             <!--less control over hands and feet-->
             <effect name="Cooking" type="skill" value="-50"/>
+            <effect name="NonHuman" type="fetish" value="100" />
+            <effect name="Freak" type="fetish" value="100" />
+            <effect name="CuteGirl" type="fetish" value="-50" />
+            <effect name="Dangerous" type="fetish" value="100" />
+            <effect name="Elegant" type="fetish" value="-50" />
         </effects>
     </Trait>
 
@@ -79,6 +90,17 @@
             <effect name="TittySex" type="skill" value="-1000"/>
             <effect name="Handjob" type="skill" value="-1000"/>
             <effect name="Footjob" type="skill" value="-1000"/>
+            <effect name="BigBoobs" type="fetish" value="-1000" />
+            <effect name="SmallBoobs" type="fetish" value="-1000" />
+            <effect name="CuteGirl" type="fetish" value="-1000" />
+            <effect name="Dangerous" type="fetish" value="1000" />
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="NonHuman" type="fetish" value="1000" />
+            <effect name="Elegant" type="fetish" value="-100" />
+            <effect name="Sexy" type="fetish" value="-100" />
+            <effect name="NiceFigure" type="fetish" value="-1000" />
+            <effect name="NiceArse" type="fetish" value="-1000" />
+            <effect name="Freak" type="fetish" value="1000" />
         </effects>
     </Trait>
 
@@ -89,6 +111,13 @@
             <effect name="Confidence" type="stat" value="10"/>
             <effect name="Obedience" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="10"/>
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="NonHuman" type="fetish" value="10" />
+            <effect name="Elegant" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -107,13 +136,19 @@
         <description>This girl is quick on her feet and swift with her hands. She has natural gift of dexterity.</description>
         <effects>
             <effect name="Agility" type="stat" value="20"/>
+            <effect name="Dangerous" type="fetish" value="20" />
+            <effect name="Sexy" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="10" Name="Blind" RandomChance="5" Type="Action">
         <description>This girl is blind and cannot see.</description>
-        <effects/>
+        <effects>
+            <effect name="Freak" type="fetish" value="10" />
+            <effect name="Dangerous" type="fetish" value="-15" />
+        </effects>
     </Trait>
 
 
@@ -138,6 +173,8 @@
             <effect name="Combat" type="skill" value="10"/>
             <effect name="Constitution" type="stat" value="5"/>
             <effect name="COMBAT" type="enjoyment" value="10"/>
+            <effect name="Dangerous" type="fetish" value="30" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -154,13 +191,21 @@
             <effect name="Lesbian" type="skill" value="-10"/>
             <effect name="Confidence" type="stat" value="-10"/>
             <effect name="WORKCLEANING" type="enjoyment" value="-20"/>
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="Dangerous" type="fetish" value="-20" />
+            <effect name="Cool" type="fetish" value="-10" />
+            <effect name="Nerd" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="10" Name="Deaf" RandomChance="5" Type="Action">
         <description>This girl is deaf and cannot hear.</description>
-        <effects/>
+        <effects>
+            <effect name="Freak" type="fetish" value="10" />
+            <effect name="Dangerous" type="fetish" value="-5" />
+        </effects>
     </Trait>
 
 
@@ -171,6 +216,8 @@
             <effect name="Performance" type="skill" value="-10"/>
             <effect name="AnimalHandling" type="skill" value="-5"/>
             <effect name="Charisma" type="stat" value="-5"/>
+            <effect name="Freak" type="fetish" value="10" />
+            <effect name="Dangerous" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -179,6 +226,10 @@
         <description>This girl is a delicate flower. She gets tired quickly and bruises easily if she's hit.</description>
         <effects>
             <effect name="Constitution" type="stat" value="-15"/>
+            <effect name="CuteGirl" type="fetish" value="5" />
+            <effect name="Nerd" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="5" />
+            <effect name="Lolita" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -187,12 +238,20 @@
         <description>This girl is quick on her feet. She can usually outrun her enemies if she can't beat them.</description>
         <effects>
             <effect name="Agility" type="stat" value="50"/>
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="20" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="20" Name="Fragile" RandomChance="5" Type="Action">
         <description>This girl is fragile and gets hurt or tired easy. (easy to hurt)</description>
+        <effects>
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="Nerd" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="10" />
+            <effect name="Lolita" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
@@ -201,6 +260,9 @@
         <effects>
             <effect name="Confidence" type="stat" value="15"/>
             <effect name="SEX" type="enjoyment" value="10"/>
+            <effect name="Sexy" type="fetish" value="30" />
+            <effect name="Cool" type="fetish" value="20" />
+            <effect name="Elegant" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -211,12 +273,25 @@
             <effect name="Combat" type="skill" value="10"/>
             <effect name="Confidence" type="stat" value="10"/>
             <effect name="Strength" type="stat" value="10"/>
+            <effect name="Dangerous" type="fetish" value="20" />
+            <effect name="Cool" type="fetish" value="20" />
+            <effect name="Nerd" type="fetish" value="-30" />
+            <effect name="NiceFigure" type="fetish" value="20" />
+            <effect name="NiceArse" type="fetish" value="20" />
+            <effect name="Lolita" type="fetish" value="-5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="50" Name="Tough" RandomChance="20" Type="Action">
         <description>This girl is tough, and can take a lot of punishment. (hard to hurt)</description>
+        <effects>
+            <effect name="CuteGirl" type="fetish" value="-5" />
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="Nerd" type="fetish" value="-5" />
+            <effect name="Elegant" type="fetish" value="-5" />
+        </effects>
     </Trait>
 
 
@@ -224,6 +299,9 @@
         <description>This girl is addicted to alcohol.</description>
         <effects>
             <effect name="Sanity" type="stat" value="-10"/>
+            <effect name="Elegant" type="fetish" value="-15" />
+            <effect name="Cool" type="fetish" value="5" />
+            <effect name="Dangerous" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -236,6 +314,9 @@
             <effect name="Obedience" type="stat" value="20"/>
             <effect name="Spirit" type="stat" value="-10"/>
             <effect name="SEX" type="enjoyment" value="10"/>
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="Elegant" type="fetish" value="-20" />
         </effects>
     </Trait>
 
@@ -245,6 +326,12 @@
         <effects>
             <effect name="Confidence" type="stat" value="-10"/>
             <effect name="Obedience" type="stat" value="5"/>
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="20" />
+            <effect name="Nerd" type="fetish" value="-15" />
+            <effect name="Elegant" type="fetish" value="-25" />
+            <effect name="Sexy" type="fetish" value="-25" />
+            <effect name="Freak" type="fetish" value="15" />
         </effects>
     </Trait>
 
@@ -254,6 +341,12 @@
         <effects>
             <effect name="Confidence" type="stat" value="-5"/>
             <effect name="Obedience" type="stat" value="5"/>
+            <effect name="Dangerous" type="fetish" value="5" />
+            <effect name="Cool" type="fetish" value="15" />
+            <effect name="Nerd" type="fetish" value="-10" />
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -265,6 +358,8 @@
             <effect name="Charisma" type="stat" value="-5"/>
             <effect name="Agility" type="stat" value="-10"/>
             <effect name="Constitution" type="stat" value="-5"/>
+            <effect name="Elegant" type="fetish" value="-5" />
+            <effect name="Cool" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -275,6 +370,12 @@
             <effect name="Confidence" type="stat" value="-15"/>
             <effect name="Obedience" type="stat" value="20"/>
             <effect name="Charisma" type="stat" value="-10"/>
+            <effect name="Dangerous" type="fetish" value="15" />
+            <effect name="Cool" type="fetish" value="25" />
+            <effect name="Nerd" type="fetish" value="-20" />
+            <effect name="Elegant" type="fetish" value="-30" />
+            <effect name="Sexy" type="fetish" value="-30" />
+            <effect name="Freak" type="fetish" value="20" />
         </effects>
     </Trait>
 
@@ -284,6 +385,9 @@
         <effects>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Beauty" type="stat" value="5"/>
+            <effect name="Cool" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="5" />
+            <effect name="Sexy" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -295,6 +399,10 @@
             <effect name="Constitution" type="stat" value="5"/>
             <effect name="Spirit" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="2"/>
+            <effect name="CuteGirl" type="fetish" value="-10" />
+            <effect name="Dangerous" type="fetish" value="20" />
+            <effect name="Cool" type="fetish" value="30" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -304,6 +412,8 @@
         <effects>
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="OralSex" type="skill" value="5"/>
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="CuteGirl" type="fetish" value="20" />
         </effects>
     </Trait>
 
@@ -313,6 +423,9 @@
         <effects>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Beauty" type="stat" value="10"/>
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -322,6 +435,9 @@
         <effects>
             <effect name="Beauty" type="stat" value="-15"/>
             <effect name="Charisma" type="stat" value="-15"/>
+            <effect name="Cool" type="fetish" value="30" />
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="Dangerous" type="fetish" value="15" />
         </effects>
     </Trait>
 
@@ -332,6 +448,9 @@
             <effect name="Beauty" type="stat" value="-5"/>
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="Spirit" type="stat" value="-10"/>
+            <effect name="CuteGirl" type="fetish" value="-15" />
+            <effect name="Dangerous" type="fetish" value="30" />
+            <effect name="Freak" type="fetish" value="20" />
         </effects>
     </Trait>
 
@@ -342,13 +461,20 @@
             <effect name="Libido" type="stat" value="20"/>
             <effect name="NormalSex" type="skill" value="10"/>
             <effect name="SEX" type="enjoyment" value="10"/>
+            <effect name="Elegant" type="fetish" value="-5" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="15" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Pierced Navel" RandomChance="2" Type="Appearance">
         <description>This girl has a pierced navel.</description>
-        <effects/>
+        <effects>
+            <effect name="Elegant" type="fetish" value="-5" />
+            <effect name="Sexy" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="15" />
+        </effects>
     </Trait>
 
 
@@ -359,13 +485,21 @@
             <effect name="Lactation" type="stat" value="-10"/>
             <effect name="TittySex" type="skill" value="10"/>
             <effect name="WORKMILK" type="enjoyment" value="-10"/>
+            <effect name="Elegant" type="fetish" value="-10" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="15" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Pierced Nose" RandomChance="2" Type="Appearance">
         <description>This girl has a pierced nose.</description>
-        <effects/>
+         <effects>
+            <effect name="Elegant" type="fetish" value="-30" />
+            <effect name="Sexy" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="15" />
+            <effect name="Dangerous" type="fetish" value="5" />
+        </effects>
     </Trait>
 
 
@@ -373,6 +507,9 @@
         <description>She has her tongue pierced.</description>
         <effects>
             <effect name="OralSex" type="skill" value="10"/>
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="15" />
         </effects>
     </Trait>
 
@@ -383,6 +520,10 @@
             <effect name="Beauty" type="stat" value="-2"/>
             <effect name="Constitution" type="stat" value="2"/>
             <effect name="Spirit" type="stat" value="-2"/>
+            <effect name="CuteGirl" type="fetish" value="-5" />
+            <effect name="Dangerous" type="fetish" value="5" />
+            <effect name="Cool" type="fetish" value="2" />
+            <effect name="Freak" type="fetish" value="2" />
         </effects>
     </Trait>
 
@@ -392,6 +533,9 @@
         <effects>
             <effect name="Beauty" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="-5"/>
+            <effect name="Cool" type="fetish" value="25" />
+            <effect name="Elegant" type="fetish" value="-5" />
+            <effect name="Dangerous" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -401,6 +545,8 @@
         <effects>
             <effect name="Beauty" type="stat" value="-10"/>
             <effect name="Charisma" type="stat" value="-10"/>
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="Dangerous" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -412,12 +558,27 @@
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="Agility" type="stat" value="-10"/>
             <effect name="TittySex" type="skill" value="20"/>
+            <effect name="BigBoobs" type="fetish" value="100" />
+            <effect name="SmallBoobs" type="fetish" value="-100" />
+            <effect name="CuteGirl" type="fetish" value="-15" />
+            <effect name="Lolita" type="fetish" value="-80" />
+            <effect name="Sexy" type="fetish" value="0" />
+            <effect name="NiceFigure" type="fetish" value="-10" />
+            <effect name="Freak" type="fetish" value="10" />
+            <effect name="NonHuman" type="fetish" value="5" />
+
         </effects>
     </Trait>
 
 
     <Trait InheritChance="50" Name="Abundant Lactation" RandomChance="5" Type="Breasts">
         <description>Her breasts produce a large amount of milk at a faster-than-average rate.</description>
+        <effects>
+            <effect name="BigBoobs" type="fetish" value="10" />
+            <effect name="SmallBoobs" type="fetish" value="-10" />
+            <effect name="CuteGirl" type="fetish" value="0" />
+            <effect name="Lolita" type="fetish" value="-10" />
+        </effects>
     </Trait>
 
 
@@ -430,6 +591,12 @@
             <effect name="Agility" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="2"/>
             <effect name="TittySex" type="skill" value="15"/>
+            <effect name="BigBoobs" type="fetish" value="40" />
+            <effect name="SmallBoobs" type="fetish" value="-40" />
+            <effect name="CuteGirl" type="fetish" value="-5" />
+            <effect name="Lolita" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="NiceFigure" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -442,19 +609,36 @@
             <effect name="Agility" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="2"/>
             <effect name="TittySex" type="skill" value="10"/>
+            <effect name="BigBoobs" type="fetish" value="20" />
+            <effect name="SmallBoobs" type="fetish" value="-20" />
+            <effect name="CuteGirl" type="fetish" value="5" />
+            <effect name="Lolita" type="fetish" value="0" />
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="NiceFigure" type="fetish" value="5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="50" Name="Cow Tits" RandomChance="1" Type="Breasts">
         <description>This girl's breasts produce an astoundingly large amount of milk at an extremely quick rate. Her mammaries are practically overflowing with deliciously sweet and rich milk.</description>
-        <effects/>
+        <effects>
+            <effect name="BigBoobs" type="fetish" value="20" />
+            <effect name="SmallBoobs" type="fetish" value="-20" />
+            <effect name="CuteGirl" type="fetish" value="-5" />
+            <effect name="Lolita" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="5" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="50" Name="Dry Milk" RandomChance="1" Type="Breasts">
         <description>This girl is incapable of producing milk of any worth.</description>
-        <effects/>
+        <effects>
+             <effect name="BigBoobs" type="fetish" value="-10" />
+             <effect name="SmallBoobs" type="fetish" value="10" />
+             <effect name="CuteGirl" type="fetish" value="5" />
+             <effect name="Lolita" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
@@ -464,6 +648,12 @@
             <effect name="Agility" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="TittySex" type="skill" value="-50"/>
+            <effect name="BigBoobs" type="fetish" value="-120" />
+            <effect name="SmallBoobs" type="fetish" value="80" />
+            <effect name="CuteGirl" type="fetish" value="20" />
+            <effect name="Lolita" type="fetish" value="30" />
+            <effect name="Sexy" type="fetish" value="-10" />
+            <effect name="NiceFigure" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -476,12 +666,24 @@
             <effect name="Agility" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="2"/>
             <effect name="TittySex" type="skill" value="15"/>
+            <effect name="BigBoobs" type="fetish" value="60" />
+            <effect name="SmallBoobs" type="fetish" value="-60" />
+            <effect name="CuteGirl" type="fetish" value="-25" />
+            <effect name="Lolita" type="fetish" value="-40" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="NiceFigure" type="fetish" value="5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="5" Name="Inverted Nipples" RandomChance="2" Type="Breasts">
         <description>She has inverted nipples.</description>
+        <effects>
+            <effect name="BigBoobs" type="fetish" value="-5" />
+            <effect name="SmallBoobs" type="fetish" value="5" />
+            <effect name="CuteGirl" type="fetish" value="-5" />
+            <effect name="Freak" type="fetish" value="5" />
+        </effects>
     </Trait>
 
 
@@ -492,6 +694,13 @@
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="Agility" type="stat" value="-10"/>
             <effect name="TittySex" type="skill" value="18"/>
+            <effect name="BigBoobs" type="fetish" value="80" />
+            <effect name="SmallBoobs" type="fetish" value="-80" />
+            <effect name="CuteGirl" type="fetish" value="-25" />
+            <effect name="Lolita" type="fetish" value="-60" />
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="NiceFigure" type="fetish" value="-5" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -501,6 +710,10 @@
         <effects>
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="TittySex" type="skill" value="5"/>
+            <effect name="BigBoobs" type="fetish" value="10" />
+            <effect name="SmallBoobs" type="fetish" value="5" />
+            <effect name="CuteGirl" type="fetish" value="5" />
+            <effect name="Lolita" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -511,6 +724,12 @@
             <effect name="Agility" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="TittySex" type="skill" value="-20"/>
+            <effect name="BigBoobs" type="fetish" value="-80" />
+            <effect name="SmallBoobs" type="fetish" value="100" />
+            <effect name="CuteGirl" type="fetish" value="15" />
+            <effect name="Lolita" type="fetish" value="20" />
+            <effect name="Sexy" type="fetish" value="-5" />
+            <effect name="NiceFigure" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -520,6 +739,9 @@
         <effects>
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="TittySex" type="skill" value="5"/>
+            <effect name="BigBoobs" type="fetish" value="10" />
+            <effect name="SmallBoobs" type="fetish" value="-5" />
+            <effect name="CuteGirl" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -529,6 +751,10 @@
         <effects>
             <effect name="Lactation" type="stat" value="-50"/>
             <effect name="WORKMILK" type="enjoyment" value="-10"/>
+            <effect name="BigBoobs" type="fetish" value="-5" />
+            <effect name="SmallBoobs" type="fetish" value="5" />
+            <effect name="CuteGirl" type="fetish" value="0" />
+            <effect name="Lolita" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -539,6 +765,12 @@
             <effect name="Agility" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="TittySex" type="skill" value="-15"/>
+            <effect name="BigBoobs" type="fetish" value="-40" />
+            <effect name="SmallBoobs" type="fetish" value="50" />
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="Lolita" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="5" />
+            <effect name="NiceFigure" type="fetish" value="0" />
         </effects>
     </Trait>
 
@@ -550,6 +782,14 @@
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="Agility" type="stat" value="-15"/>
             <effect name="TittySex" type="skill" value="25"/>
+            <effect name="BigBoobs" type="fetish" value="120" />
+            <effect name="SmallBoobs" type="fetish" value="-120" />
+            <effect name="CuteGirl" type="fetish" value="-25" />
+            <effect name="Lolita" type="fetish" value="-100" />
+            <effect name="Sexy" type="fetish" value="-10" />
+            <effect name="NiceFigure" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="NonHuman" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -579,6 +819,8 @@
         <effects>
             <effect name="Performance" type="skill" value="10"/>
             <effect name="WORKMOVIE" type="enjoyment" value="10"/>
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -590,6 +832,9 @@
             <effect name="Performance" type="skill" value="10"/>
             <effect name="WORKMOVIE" type="enjoyment" value="30"/>
             <effect name="SEX" type="enjoyment" value="20"/>
+            <effect name="Sexy" type="fetish" value="40" />
+            <effect name="Cool" type="fetish" value="40" />
+            <effect name="Elegant" type="fetish" value="-40" />
         </effects>
     </Trait>
 
@@ -608,6 +853,8 @@
         <effects>
             <effect name="Farming" type="skill" value="10"/>
             <effect name="AnimalHandling" type="skill" value="5"/>
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -618,6 +865,7 @@
             <effect name="Intelligence" type="stat" value="5"/>
             <effect name="Performance" type="skill" value="10"/>
             <effect name="WORKMOVIE" type="enjoyment" value="20"/>
+            <effect name="Elegant" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -630,6 +878,7 @@
             <effect name="WORKDOCTOR" type="enjoyment" value="20"/>
             <effect name="WORKNURSE" type="enjoyment" value="10"/>
             <effect name="WORKTRAINING" type="enjoyment" value="10"/>
+            <effect name="Elegant" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -643,6 +892,8 @@
             <effect name="Constitution" type="stat" value="5"/>
             <effect name="Refinement" type="stat" value="-10"/>
             <effect name="WORKFARM" type="enjoyment" value="20"/>
+            <effect name="Sexy" type="fetish" value="5" />
+            <effect name="Cool" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -658,6 +909,8 @@
             <effect name="Refinement" type="stat" value="10"/>
             <effect name="Constitution" type="stat" value="-5"/>
             <effect name="WORKFARM" type="enjoyment" value="-20"/>
+            <effect name="Cool" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -675,6 +928,8 @@
             <effect name="Refinement" type="stat" value="-20"/>
             <effect name="Constitution" type="stat" value="20"/>
             <effect name="WORKFARM" type="enjoyment" value="50"/>
+            <effect name="Cool" type="fetish" value="-5" />
+            <effect name="Elegant" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -689,6 +944,11 @@
             <effect name="Constitution" type="stat" value="5"/>
             <effect name="Refinement" type="stat" value="-5"/>
             <effect name="COMBAT" type="enjoyment" value="10"/>
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="5" />
+            <effect name="Sexy" type="fetish" value="2" />
+            <effect name="NiceFigure" type="fetish" value="2" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -702,6 +962,8 @@
             <effect name="WORKCENTRE" type="enjoyment" value="5"/>
             <effect name="WORKRECRUIT" type="enjoyment" value="5"/>
             <effect name="WORKCOUNSELOR" type="enjoyment" value="5"/>
+            <effect name="Elegant" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -712,6 +974,7 @@
             <effect name="Service" type="skill" value="10"/>
             <effect name="Crafting" type="skill" value="10"/>
             <effect name="WORKMECHANIC" type="enjoyment" value="10"/>
+            <effect name="Nerd" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -725,6 +988,9 @@
             <effect name="Confidence" type="stat" value="5"/>
             <effect name="Morality" type="stat" value="10"/>
             <effect name="COMBAT" type="enjoyment" value="10"/>
+            <effect name="Dangerous" type="fetish" value="50" />
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -734,6 +1000,9 @@
         <effects>
             <effect name="Refinement" type="stat" value="-10"/>
             <effect name="Dignity" type="stat" value="-5"/>
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Elegant" type="fetish" value="-10" />
+            <effect name="Cool" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -746,6 +1015,10 @@
             <effect name="Refinement" type="stat" value="10"/>
             <effect name="WORKCLEANING" type="enjoyment" value="20"/>
             <effect name="COOKING" type="enjoyment" value="5"/>
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="-10" />
+            <effect name="Elegant" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -756,6 +1029,8 @@
             <effect name="Service" type="skill" value="5"/>
             <effect name="Brewing" type="skill" value="15"/>
             <effect name="WORKBAR" type="enjoyment" value="25"/>
+            <effect name="Nerd" type="fetish" value="5" />
+            <effect name="Cool" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -767,6 +1042,9 @@
             <effect name="Charisma" type="stat" value="10"/>
             <effect name="WORKCOUNSELOR" type="enjoyment" value="10"/>
             <effect name="WORKADVERTISING" type="enjoyment" value="10"/>
+            <effect name="Freak" type="fetish" value="30" />
+            <effect name="Elegant" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -777,6 +1055,9 @@
             <effect name="Performance" type="skill" value="30"/>
             <effect name="Confidence" type="stat" value="30"/>
             <effect name="Constitution" type="stat" value="5"/>
+            <effect name="Elegant" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="5" />
+            <effect name="Cool" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -787,6 +1068,8 @@
             <effect name="Intelligence" type="stat" value="20"/>
             <effect name="WORKCOUNSELOR" type="enjoyment" value="10"/>
             <effect name="WORKMATRON" type="enjoyment" value="10"/>
+            <effect name="Elegant" type="fetish" value="5" />
+            <effect name="Nerd" type="fetish" value="20" />
         </effects>
     </Trait>
 
@@ -808,13 +1091,18 @@
             <effect name="WORKBAR" type="enjoyment" value="10"/>
             <effect name="WORKHALL" type="enjoyment" value="10"/>
             <effect name="COOKING" type="enjoyment" value="5"/>
+            <effect name="Elegant" type="fetish" value="5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="50" Name="Flight" RandomChance="1" Type="Magical">
         <description>This girl can fly.</description>
-        <effects/>
+        <effects>
+            <effect name="Dangerous" type="fetish" value="15" />
+            <effect name="NonHuman" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="20" />
+        </effects>
     </Trait>
 
 
@@ -822,6 +1110,8 @@
         <description>The girl emits her own special scent to draw in customers.</description>
         <effects>
             <effect name="Charisma" type="stat" value="10"/>
+            <effect name="NonHuman" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="40" />
         </effects>
     </Trait>
 
@@ -831,6 +1121,8 @@
         <effects>
             <effect name="Magic" type="skill" value="-30"/>
             <effect name="Mana" type="stat" value="-30"/>
+            <effect name="Dangerous" type="fetish" value="-5" />
+            <effect name="Nerd" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -840,6 +1132,8 @@
         <effects>
             <effect name="Magic" type="skill" value="-20"/>
             <effect name="Mana" type="stat" value="-20"/>
+            <effect name="Dangerous" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -849,6 +1143,10 @@
         <effects>
             <effect name="Magic" type="skill" value="20"/>
             <effect name="Mana" type="stat" value="20"/>
+            <effect name="Dangerous" type="fetish" value="20" />
+            <effect name="Nerd" type="fetish" value="5" />
+            <effect name="NonHuman" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="20" />
         </effects>
     </Trait>
 
@@ -858,6 +1156,10 @@
         <effects>
             <effect name="Magic" type="skill" value="30"/>
             <effect name="Mana" type="stat" value="30"/>
+            <effect name="Dangerous" type="fetish" value="25" />
+            <effect name="Nerd" type="fetish" value="15" />
+            <effect name="NonHuman" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="35" />
         </effects>
     </Trait>
 
@@ -867,6 +1169,10 @@
         <effects>
             <effect name="Combat" type="skill" value="10"/>
             <effect name="COMBAT" type="enjoyment" value="10"/>
+            <effect name="Dangerous" type="fetish" value="20" />
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="Nerd" type="fetish" value="-20" />
+            <effect name="Elegant" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -879,6 +1185,11 @@
             <effect name="Confidence" type="stat" value="5"/>
             <effect name="COMBAT" type="enjoyment" value="10"/>
             <effect name="WORKSECURITY" type="enjoyment" value="20"/>
+            <effect name="CuteGirl" type="fetish" value="-15" />
+            <effect name="Dangerous" type="fetish" value="20" />
+            <effect name="Lolita" type="fetish" value="-5" />
+            <effect name="Elegant" type="fetish" value="-10" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -890,6 +1201,10 @@
             <effect name="Combat" type="skill" value="15"/>
             <effect name="COMBAT" type="enjoyment" value="15"/>
             <effect name="WORKSECURITY" type="enjoyment" value="20"/>
+            <effect name="Dangerous" type="fetish" value="25" />
+            <effect name="Cool" type="fetish" value="15" />
+            <effect name="Nerd" type="fetish" value="-25" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -900,6 +1215,9 @@
             <effect name="PCFear" type="stat" value="-30"/>
             <effect name="Spirit" type="stat" value="30"/>
             <effect name="Obedience" type="stat" value="-40"/>
+            <effect name="Dangerous" type="fetish" value="20" />
+            <effect name="Cool" type="fetish" value="25" />
+            <effect name="Nerd" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -914,6 +1232,9 @@
             <effect name="Medicine" type="skill" value="-10"/>
             <effect name="SEX" type="enjoyment" value="10"/>
             <effect name="WORKTRAINING" type="enjoyment" value="-10"/>
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="Nerd" type="fetish" value="-20" />
         </effects>
     </Trait>
 
@@ -924,6 +1245,11 @@
             <effect name="Spirit" type="stat" value="-100"/>
             <effect name="Dignity" type="stat" value="-100"/>
             <effect name="Obedience" type="stat" value="100"/>
+            <effect name="Cool" type="fetish" value="-40" />
+            <effect name="Nerd" type="fetish" value="-40" />
+            <effect name="Elegant" type="fetish" value="-40" />
+            <effect name="Sexy" type="fetish" value="-40" />
+            <effect name="Freak" type="fetish" value="40" />
         </effects>
     </Trait>
 
@@ -938,6 +1264,13 @@
             <effect name="WORKHALL" type="enjoyment" value="-20"/>
             <effect name="WORKBAR" type="enjoyment" value="-20"/>
             <effect name="WORKCLUB" type="enjoyment" value="-20"/>
+            <effect name="CuteGirl" type="fetish" value="5" />
+            <effect name="Dangerous" type="fetish" value="-20" />
+            <effect name="Cool" type="fetish" value="-5" />
+            <effect name="Nerd" type="fetish" value="5" />
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -950,6 +1283,11 @@
             <effect name="Performance" type="skill" value="5"/>
             <effect name="COMBAT" type="enjoyment" value="20"/>
             <effect name="Sanity" type="stat" value="10"/>
+            <effect name="Dangerous" type="fetish" value="20" />
+            <effect name="Cool" type="fetish" value="15" />
+            <effect name="Nerd" type="fetish" value="-10" />
+            <effect name="Elegant" type="fetish" value="-10" />
+            <effect name="Lolita" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -964,6 +1302,10 @@
         <description>This girl isn't the brightest bulb and her personality is lacking, but her skills are extremely good.</description>
         <effects>
             <effect name="Intelligence" type="stat" value="-15"/>
+            <effect name="Freak" type="fetish" value="10" />
+            <effect name="Nerd" type="fetish" value="20" />
+            <effect name="Cool" type="fetish" value="-30" />
+            <effect name="Sexy" type="fetish" value="-20" />
         </effects>
     </Trait>
 
@@ -974,6 +1316,10 @@
             <effect name="PCFear" type="stat" value="-60"/>
             <effect name="Spirit" type="stat" value="60"/>
             <effect name="Obedience" type="stat" value="-90"/>
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="Nerd" type="fetish" value="-5" />
+            <effect name="Elegant" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -985,6 +1331,14 @@
             <effect name="Confidence" type="stat" value="10"/>
             <effect name="Obedience" type="stat" value="-10"/>
             <effect name="Spirit" type="stat" value="10"/>
+            <effect name="CuteGirl" type="fetish" value="-15" />
+            <effect name="Dangerous" type="fetish" value="5" />
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="-20" />
+            <effect name="NiceFigure" type="fetish" value="-20" />
+            <effect name="SmallBoobs" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="5" />
+            <effect name="Lolita" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -997,6 +1351,11 @@
             <effect name="Obedience" type="stat" value="30"/>
             <effect name="Dignity" type="stat" value="-20"/>
             <effect name="WORKTORTURER" type="enjoyment" value="5"/>
+            <effect name="CuteGirl" type="fetish" value="-10" />
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Nerd" type="fetish" value="-10" />
+            <effect name="Elegant" type="fetish" value="-10" />
+            <effect name="Freak" type="fetish" value="30" />
         </effects>
     </Trait>
 
@@ -1016,6 +1375,11 @@
             <effect name="WORKCLUB" type="enjoyment" value="-10"/>
             <effect name="WORKHALL" type="enjoyment" value="-10"/>
             <effect name="WORKCOUNSELOR" type="enjoyment" value="-10"/>
+            <effect name="CuteGirl" type="fetish" value="15" />
+            <effect name="Dangerous" type="fetish" value="-30" />
+            <effect name="Cool" type="fetish" value="-30" />
+            <effect name="Nerd" type="fetish" value="30" />
+            <effect name="Lolita" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1026,6 +1390,11 @@
             <effect name="Combat" type="skill" value="20"/>
             <effect name="COMBAT" type="enjoyment" value="20"/>
             <effect name="WORKTORTURER" type="enjoyment" value="10"/>
+            <effect name="CuteGirl" type="fetish" value="-20" />
+            <effect name="Dangerous" type="fetish" value="20" />
+            <effect name="Nerd" type="fetish" value="-10" />
+            <effect name="Elegant" type="fetish" value="-5" />
+            <effect name="Lolita" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -1038,6 +1407,13 @@
             <effect name="Spirit" type="stat" value="-50"/>
             <effect name="Dignity" type="stat" value="-35"/>
             <effect name="Sanity" type="stat" value="-40"/>
+            <effect name="CuteGirl" type="fetish" value="-60" />
+            <effect name="Dangerous" type="fetish" value="-60" />
+            <effect name="Cool" type="fetish" value="-60" />
+            <effect name="Nerd" type="fetish" value="-60" />
+            <effect name="Elegant" type="fetish" value="-60" />
+            <effect name="Sexy" type="fetish" value="-60" />
+            <effect name="Freak" type="fetish" value="40" />
         </effects>
     </Trait>
 
@@ -1052,6 +1428,8 @@
             <effect name="SEX" type="enjoyment" value="-20"/>
             <effect name="WORKBAR" type="enjoyment" value="-5"/>
             <effect name="WORKHALL" type="enjoyment" value="-5"/>
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="Nerd" type="fetish" value="15" />
         </effects>
     </Trait>
 
@@ -1065,6 +1443,8 @@
             <effect name="WORKRECRUIT" type="enjoyment" value="-20"/>
             <effect name="WORKCUSTSERV" type="enjoyment" value="-10"/>
             <effect name="WORKCLUB" type="enjoyment" value="-10"/>
+            <effect name="Cool" type="fetish" value="-20" />
+            <effect name="Nerd" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1073,6 +1453,7 @@
         <description>She is very cheerful and rarely in a bad mood. She enjoys what she does, a lot. (+happiness)</description>
         <effects>
             <effect name="WORKADVERTISING" type="enjoyment" value="10"/>
+            <effect name="Elegant" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -1081,17 +1462,28 @@
         <description>It doesn't take much for her mood to drop... off a cliff. Less rebellious but more suicidal. (-happiness)</description>
         <effects>
             <effect name="Spirit" type="stat" value="-60"/>
+            <effect name="Elegant" type="fetish" value="-5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="10" Name="Psychic" RandomChance="10" Type="Mental">
         <description>This girl always seems to know what a guy wants. (+magic skills/stats)</description>
+        <effects>
+            <effect name="Nerd" type="fetish" value="10" />
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="NonHuman" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="10" Name="Quick Learner" RandomChance="10" Type="Mental">
         <description>This girl picks things up quick. She will probably rise to the top in no time. (+exp)</description>
+        <effects>
+            <effect name="Cool" type="fetish" value="-20" />
+            <effect name="Nerd" type="fetish" value="30" />
+        </effects>
     </Trait>
 
 
@@ -1101,6 +1493,8 @@
             <effect name="Spirit" type="stat" value="-20"/>
             <effect name="Intelligence" type="stat" value="-50"/>
             <effect name="Confidence" type="stat" value="-60"/>
+            <effect name="NonHuman" type="fetish" value="2" />
+            <effect name="Freak" type="fetish" value="45" />
         </effects>
     </Trait>
 
@@ -1110,12 +1504,23 @@
         <effects>
             <effect name="BDSM" type="skill" value="20"/>
             <effect name="WORKTORTURER" type="enjoyment" value="25"/>
+            <effect name="CuteGirl" type="fetish" value="-20" />
+            <effect name="Dangerous" type="fetish" value="15" />
+            <effect name="Nerd" type="fetish" value="-10" />
+            <effect name="Elegant" type="fetish" value="-30" />
+            <effect name="Sexy" type="fetish" value="-10" />
+            <effect name="Freak" type="fetish" value="30" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="10" Name="Slow Learner" RandomChance="10" Type="Mental">
         <description>A little daft, this girl will take awhile to learn things. (-exp)</description>
+        <effects>
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="Nerd" type="fetish" value="-20" />
+            <effect name="CuteGirl" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
@@ -1124,6 +1529,12 @@
         <effects>
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="Charisma" type="stat" value="-10"/>
+            <effect name="CuteGirl" type="fetish" value="-15" />
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="-10" />
+            <effect name="SmallBoobs" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="5" />
+            <effect name="Lolita" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -1133,6 +1544,11 @@
         <effects>
             <effect name="Confidence" type="stat" value="20"/>
             <effect name="Obedience" type="stat" value="-20"/>
+            <effect name="Dangerous" type="fetish" value="5" />
+            <effect name="Cool" type="fetish" value="5" />
+            <effect name="Nerd" type="fetish" value="-5" />
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1141,6 +1557,11 @@
         <description>Her idea of pleasure is not... ordinary. Customers without rather exotic taste won't enjoy what she has in store.</description>
         <effects>
             <effect name="Sanity" type="stat" value="-20"/>
+            <effect name="CuteGirl" type="fetish" value="-40" />
+            <effect name="Dangerous" type="fetish" value="30" />
+            <effect name="Elegant" type="fetish" value="-30" />
+            <effect name="Sexy" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="40" />
         </effects>
     </Trait>
 
@@ -1149,6 +1570,11 @@
         <description>Expect this girl to be hurting people on the job...  frequently. (may attack customers)</description>
         <effects>
             <effect name="Spirit" type="stat" value="20"/>
+            <effect name="Dangerous" type="fetish" value="5" />
+            <effect name="Cool" type="fetish" value="5" />
+            <effect name="Nerd" type="fetish" value="-5" />
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1159,6 +1585,9 @@
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Spirit" type="stat" value="10"/>
             <effect name="Confidence" type="stat" value="10"/>
+            <effect name="Dangerous" type="fetish" value="5" />
+            <effect name="Cool" type="fetish" value="60" />
+            <effect name="Nerd" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -1171,6 +1600,9 @@
             <effect name="WORKCLUB" type="enjoyment" value="10"/>
             <effect name="WORKBAR" type="enjoyment" value="20"/>
             <effect name="WORKHALL" type="enjoyment" value="15"/>
+            <effect name="CuteGirl" type="fetish" value="60" />
+            <effect name="Lolita" type="fetish" value="20" />
+            <effect name="SmallBoobs" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -1180,6 +1612,10 @@
         <effects>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Agility" type="stat" value="-5"/>
+            <effect name="CuteGirl" type="fetish" value="20" />
+            <effect name="Dangerous" type="fetish" value="-20" />
+            <effect name="Nerd" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -1190,12 +1626,21 @@
             <effect name="Obedience" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="10"/>
             <effect name="Beauty" type="stat" value="20"/>
+            <effect name="BigBoobs" type="fetish" value="-30" />
+            <effect name="CuteGirl" type="fetish" value="30" />
+            <effect name="Dangerous" type="fetish" value="-5" />
+            <effect name="Lolita" type="fetish" value="60" />
+            <effect name="SmallBoobs" type="fetish" value="15" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="MILF" RandomChance="0" Type="Perception">
         <description>This woman has had children before.</description>
+        <effects>
+            <effect name="Freak" type="fetish" value="15" />
+            <effect name="Lolita" type="fetish" value="-50" />
+        </effects>
     </Trait>
 
 
@@ -1209,13 +1654,22 @@
             <effect name="WORKTRAINING" type="enjoyment" value="10"/>
             <effect name="MAKEITEMS" type="enjoyment" value="10"/>
             <effect name="COMBAT" type="enjoyment" value="-10"/>
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="Dangerous" type="fetish" value="-30" />
+            <effect name="Cool" type="fetish" value="-30" />
+            <effect name="Nerd" type="fetish" value="60" />
+            <effect name="SmallBoobs" type="fetish" value="5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Branded on the Ass" RandomChance="0" Type="Physical">
         <description>Normally the slave brand goes on the shoulder, but for some reason hers was placed on her ass.</description>
-        <effects/>
+        <effects>
+            <effect name="Freak" type="fetish" value="25" />
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="NiceArse" type="fetish" value="-10" />
+        </effects>
     </Trait>
 
 
@@ -1224,6 +1678,9 @@
         <effects>
             <effect name="Charisma" type="stat" value="-10"/>
             <effect name="Beauty" type="stat" value="-10"/>
+            <effect name="Freak" type="fetish" value="25" />
+            <effect name="Elegant" type="fetish" value="-30" />
+            <effect name="Cool" type="fetish" value="-30" />
         </effects>
     </Trait>
 
@@ -1239,7 +1696,11 @@
 
     <Trait InheritChance="80" Name="Cyclops" RandomChance="1" Type="Species">
         <description>This girl was born with only one eye.</description>
-        <effects/>
+        <effects>
+            <effect name="Freak" type="fetish" value="30" />
+            <effect name="CuteGirl" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="-10" />
+        </effects>
     </Trait>
 
 
@@ -1249,12 +1710,21 @@
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="10"/>
+            <effect name="Lolita" type="fetish" value="-25" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="NiceArse" type="fetish" value="40" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="80" Name="Dwarf" RandomChance="1" Type="Species">
         <description>This girl is extremly short.</description>
+        <effects>
+            <effect name="Freak" type="fetish" value="20"/>
+            <effect name="Lolita" type="fetish" value="10"/>
+            <effect name="Tall" type="fetish" value="-75"/>
+            <effect name="Short" type="fetish" value="100"/>
+        </effects>
     </Trait>
 
 
@@ -1263,12 +1733,23 @@
         <effects>
             <effect name="Beauty" type="stat" value="-5"/>
             <effect name="Constitution" type="stat" value="5"/>
+            <effect name="CuteGirl" type="fetish" value="-5" />
+            <effect name="Dangerous" type="fetish" value="5" />
+            <effect name="Cool" type="fetish" value="20" />
+            <effect name="Sexy" type="fetish" value="-5" />
+            <effect name="Freak" type="fetish" value="20" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="40" Name="Fat" RandomChance="10" Type="Physical">
         <description>She is a very heavy girl.</description>
+        <effects>
+            <effect name="Lolita" type="fetish" value="-20" />
+            <effect name="NiceFigure" type="fetish" value="-40" />
+            <effect name="Freak" type="fetish" value="25" />
+            <effect name="Fat" type="fetish" value="100" />
+        </effects>
     </Trait>
 
 
@@ -1278,6 +1759,9 @@
             <effect name="Beauty" type="stat" value="-5"/>
             <effect name="Charisma" type="stat" value="-5"/>
             <effect name="Anal" type="skill" value="-10"/>
+            <effect name="Lolita" type="fetish" value="20" />
+            <effect name="Sexy" type="fetish" value="-20" />
+            <effect name="NiceArse" type="fetish" value="-50" />
         </effects>
     </Trait>
 
@@ -1296,6 +1780,10 @@
             <effect name="Constitution" type="stat" value="20"/>
             <effect name="Strength" type="stat" value="20"/>
             <effect name="Agility" type="stat" value="-10"/>
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Lolita" type="fetish" value="-60" />
+            <effect name="Tall" type="fetish" value="75" />
+            <effect name="Short" type="fetish" value="-100" />
         </effects>
     </Trait>
 
@@ -1307,6 +1795,8 @@
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="10"/>
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="NiceArse" type="fetish" value="60" />
         </effects>
     </Trait>
 
@@ -1319,6 +1809,10 @@
             <effect name="WORKCLUB" type="enjoyment" value="10"/>
             <effect name="WORKBAR" type="enjoyment" value="10"/>
             <effect name="WORKHALL" type="enjoyment" value="10"/>
+            <effect name="BigBoobs" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="NiceFigure" type="fetish" value="60" />
+            <effect name="Fat" type="fetish" value="-100" />
         </effects>
     </Trait>
 
@@ -1331,6 +1825,10 @@
             <effect name="WORKCLUB" type="enjoyment" value="10"/>
             <effect name="WORKBAR" type="enjoyment" value="10"/>
             <effect name="WORKHALL" type="enjoyment" value="10"/>
+            <effect name="Sexy" type="fetish" value="25" />
+            <effect name="Lolita" type="fetish" value="-30" />
+            <effect name="NiceFigure" type="fetish" value="20" />
+            <effect name="Fat" type="fetish" value="-50" />
         </effects>
     </Trait>
 
@@ -1346,6 +1844,10 @@
             <effect name="Agility" type="stat" value="5"/>
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="5"/>
+            <effect name="Sexy" type="fetish" value="15" />
+            <effect name="Lolita" type="fetish" value="-20" />
+            <effect name="NiceArse" type="fetish" value="20" />
+
         </effects>
     </Trait>
 
@@ -1354,6 +1856,8 @@
         <description>The legs on this girl go all the way to heaven.</description>
         <effects>
             <effect name="Beauty" type="stat" value="10"/>
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="NiceFigure" type="fetish" value="20" />
         </effects>
     </Trait>
 
@@ -1365,42 +1869,72 @@
             <effect name="Spirit" type="stat" value="-20"/>
             <effect name="Intelligence" type="stat" value="-10"/>
             <effect name="Beauty" type="stat" value="-20"/>
+            <effect name="NonHuman" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="50" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Mature Body" RandomChance="1" Type="Physical">
         <description>A girl no longer, this woman's lascivious body is a fruit ripe for the picking.</description>
+        <effects>
+            <effect name="Lolita" type="fetish" value="-50" />
+            <effect name="CuteGirl" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Missing Finger" RandomChance="1" Type="Physical">
         <description>This girl is missing a finger.</description>
+        <effects>
+            <effect name="Freak" type="fetish" value="5" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Missing Fingers" RandomChance="1" Type="Physical">
         <description>This girl is missing several fingers.</description>
+        <effects>
+            <effect name="Freak" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="5" Name="Missing Nipple" RandomChance="1" Type="Breasts">
         <description>This girl has a huge scar where her nipple used to be.</description>
+        <effects>
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="-10" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Missing Teeth" RandomChance="1" Type="Physical">
         <description>This girl is missing a couple of teeth.</description>
+         <effects>
+             <effect name="Freak" type="fetish" value="5" />
+             <effect name="Elegant" type="fetish" value="-10" />
+             <effect name="Dangerous" type="fetish" value="10" />
+             <effect name="Sexy" type="fetish" value="-5" />
+         </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Missing Toe" RandomChance="1" Type="Physical">
         <description>This girl is missing a toe.</description>
+         <effects>
+            <effect name="Freak" type="fetish" value="5" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Missing Toes" RandomChance="1" Type="Physical">
         <description>This girl is missing several toes.</description>
+        <effects>
+            <effect name="Freak" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
@@ -1412,6 +1946,10 @@
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="Strength" type="stat" value="10"/>
             <effect name="COMBAT" type="enjoyment" value="10"/>
+            <effect name="Lolita" type="fetish" value="-30" />
+            <effect name="Sexy" type="fetish" value="-30" />
+            <effect name="Dangerous" type="fetish" value="25" />
+            <effect name="Freak" type="fetish" value="25" />
         </effects>
     </Trait>
 
@@ -1425,6 +1963,8 @@
             <effect name="Combat" type="skill" value="-50"/>
             <effect name="Group" type="skill" value="-20"/>
             <effect name="Footjob" type="skill" value="30"/>
+            <effect name="Freak" type="fetish" value="60" />
+            <effect name="Dangerous" type="fetish" value="-30" />
         </effects>
     </Trait>
 
@@ -1433,6 +1973,8 @@
         <description>This girl no longer has a clit. This was probably done to help her concentrate on her work.</description>
         <effects>
             <effect name="SEX" type="enjoyment" value="-10"/>
+            <effect name="Freak" type="fetish" value="5" />
+            <effect name="Sexy" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -1446,6 +1988,8 @@
             <effect name="Combat" type="skill" value="-50"/>
             <effect name="Group" type="skill" value="-20"/>
             <effect name="Agility" type="stat" value="-30"/>
+            <effect name="Freak" type="fetish" value="40" />
+            <effect name="Dangerous" type="fetish" value="-20" />
         </effects>
     </Trait>
 
@@ -1459,6 +2003,8 @@
             <effect name="Combat" type="skill" value="-20"/>
             <effect name="Group" type="skill" value="-10"/>
             <effect name="Footjob" type="skill" value="20"/>
+            <effect name="Freak" type="fetish" value="40" />
+            <effect name="Dangerous" type="fetish" value="-20" />
         </effects>
     </Trait>
 
@@ -1473,15 +2019,32 @@
             <effect name="Group" type="skill" value="-20"/>
             <effect name="Agility" type="stat" value="-70"/>
             <effect name="WORKFARM" type="enjoyment" value="-10"/>
+            <effect name="Freak" type="fetish" value="60" />
+            <effect name="Dangerous" type="fetish" value="-30" />
+            <effect name="Tall" type="fetish" value="-20" />
+            <effect name="Short" type="fetish" value="10" />
         </effects>
     </Trait>
 
+    <Trait InheritChance="0" Name="Clipped Tendons" RandomChance="0" Type="Physical">
+        <description>???</description>
+        <effects>
+            <effect name="Freak" type="fetish" value="40" />
+            <effect name="Dangerous" type="fetish" value="-20" />
+            <effect name="CuteGirl" type="fetish" value="-10" />
+            <effect name="Elegant" type="fetish" value="-50" />
+            <effect name="Tall" type="fetish" value="-5" />
+            <effect name="Short" type="fetish" value="5" />
+        </effects>
+    </Trait>
 
     <Trait InheritChance="50" Name="No Nipples" RandomChance="1" Type="Breasts">
         <description>This girl was born without nipples.</description>
         <effects>
             <effect name="TittySex" type="skill" value="-5"/>
             <effect name="Lactation" type="stat" value="-200"/>
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="NonHuman" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1492,6 +2055,10 @@
             <effect name="Charisma" type="stat" value="-10"/>
             <effect name="Beauty" type="stat" value="-10"/>
             <effect name="OralSex" type="skill" value="10"/>
+            <effect name="Freak" type="fetish" value="40" />
+            <effect name="Elegant" type="fetish" value="-40" />
+            <effect name="Dangerous" type="fetish" value="-5" />
+            <effect name="Sexy" type="fetish" value="-15" />
         </effects>
     </Trait>
 
@@ -1501,6 +2068,11 @@
         <effects>
             <effect name="Charisma" type="stat" value="-15"/>
             <effect name="Beauty" type="stat" value="-15"/>
+            <effect name="Lolita" type="fetish" value="-75" />
+            <effect name="CuteGirl" type="fetish" value="-40" />
+            <effect name="Sexy" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="30" />
+            <effect name="Elegant" type="fetish" value="15" />
         </effects>
     </Trait>
 
@@ -1510,6 +2082,8 @@
         <effects>
             <effect name="Charisma" type="stat" value="-15"/>
             <effect name="Beauty" type="stat" value="-15"/>
+            <effect name="Freak" type="fetish" value="40" />
+            <effect name="Dangerous" type="fetish" value="-20" />
         </effects>
     </Trait>
 
@@ -1521,6 +2095,12 @@
             <effect name="Charisma" type="stat" value="-5"/>
             <effect name="Constitution" type="stat" value="5"/>
             <effect name="Spirit" type="stat" value="-10"/>
+            <effect name="CuteGirl" type="fetish" value="-20" />
+            <effect name="Cool" type="fetish" value="5" />
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="-20" />
+            <effect name="NiceFigure" type="fetish" value="-10" />
+            <effect name="Freak" type="fetish" value="20" />
         </effects>
     </Trait>
 
@@ -1531,6 +2111,8 @@
             <effect name="Charisma" type="stat" value="-10"/>
             <effect name="Beauty" type="stat" value="-10"/>
             <effect name="Footjob" type="skill" value="-15"/>
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Dangerous" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -1540,6 +2122,8 @@
         <effects>
             <effect name="Charisma" type="stat" value="-10"/>
             <effect name="Beauty" type="stat" value="-10"/>
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Dangerous" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -1550,6 +2134,8 @@
             <effect name="Charisma" type="stat" value="-15"/>
             <effect name="Beauty" type="stat" value="-15"/>
             <effect name="Footjob" type="skill" value="-20"/>
+            <effect name="Freak" type="fetish" value="40" />
+            <effect name="Dangerous" type="fetish" value="-20" />
         </effects>
     </Trait>
 
@@ -1561,6 +2147,9 @@
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="10"/>
+            <effect name="Lolita" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="15" />
+            <effect name="NiceArse" type="fetish" value="30" />
         </effects>
     </Trait>
 
@@ -1571,6 +2160,9 @@
             <effect name="Agility" type="stat" value="-10"/>
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="10"/>
+            <effect name="Lolita" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="15" />
+            <effect name="NiceArse" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1579,17 +2171,31 @@
         <description>This girl has more than a few soft bits. Plenty of supple flesh to squeeze and pinch.</description>
         <effects>
             <effect name="Agility" type="stat" value="-10"/>
+             <effect name="Lolita" type="fetish" value="-10" />
+             <effect name="NiceFigure" type="fetish" value="-20" />
+             <effect name="Freak" type="fetish" value="20" />
+             <effect name="Fat" type="fetish" value="50" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="50" Name="Short" RandomChance="20" Type="Physical">
         <description>This girl is short.</description>
+        <effects>
+            <effect name="Lolita" type="fetish" value="15" />
+            <effect name="Tall" type="fetish" value="-50" />
+            <effect name="Short" type="fetish" value="50" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="50" Name="Tall" RandomChance="20" Type="Physical">
         <description>This girl is considered tall.</description>
+        <effects>
+            <effect name="Lolita" type="fetish" value="-30" />
+            <effect name="Tall" type="fetish" value="50" />
+            <effect name="Short" type="fetish" value="-50" />
+        </effects>
     </Trait>
 
 
@@ -1600,6 +2206,9 @@
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="8"/>
+            <effect name="Lolita" type="fetish" value="5" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="NiceArse" type="fetish" value="40" />
         </effects>
     </Trait>
 
@@ -1623,6 +2232,10 @@
             <effect name="AnimalHandling" type="skill" value="5"/>
             <effect name="Footjob" type="skill" value="5"/>
             <effect name="SEX" type="enjoyment" value="30"/>
+            <effect name="Lolita" type="fetish" value="-50" />
+            <effect name="CuteGirl" type="fetish" value="-40" />
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1633,6 +2246,9 @@
             <effect name="Constitution" type="stat" value="5"/>
             <effect name="Beauty" type="stat" value="5"/>
             <effect name="Anal" type="skill" value="5"/>
+            <effect name="Lolita" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="15" />
+            <effect name="NiceArse" type="fetish" value="20" />
         </effects>
     </Trait>
 
@@ -1646,6 +2262,10 @@
         <description>She can really handle big dicks in her mouth.</description>
         <effects>
             <effect name="OralSex" type="skill" value="50"/>
+            <effect name="Elegant" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="30" />
+            <effect name="Lolita" type="fetish" value="-10" />
         </effects>
     </Trait>
 
@@ -1655,6 +2275,9 @@
         <effects>
             <effect name="BDSM" type="skill" value="10"/>
             <effect name="WORKTORTURER" type="enjoyment" value="20"/>
+            <effect name="Dangerous" type="fetish" value="30" />
+            <effect name="Elegant" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="40" />
         </effects>
     </Trait>
 
@@ -1672,6 +2295,7 @@
             <effect name="Group" type="skill" value="2"/>
             <effect name="Lesbian" type="skill" value="2"/>
             <effect name="SEX" type="enjoyment" value="10"/>
+            <effect name="Sexy" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -1689,6 +2313,8 @@
             <effect name="Lesbian" type="skill" value="10"/>
             <effect name="Confidence" type="stat" value="10"/>
             <effect name="SEX" type="enjoyment" value="10"/>
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="30" />
         </effects>
     </Trait>
 
@@ -1703,6 +2329,10 @@
         <description>She can't handle dicks in her mouth.</description>
         <effects>
             <effect name="OralSex" type="skill" value="-30"/>
+            <effect name="Elegant" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="-10" />
+            <effect name="Freak" type="fetish" value="0" />
+            <effect name="Lolita" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1715,6 +2345,8 @@
             <effect name="Charisma" type="stat" value="2"/>
             <effect name="Service" type="skill" value="5"/>
             <effect name="SEX" type="enjoyment" value="5"/>
+            <effect name="Cool" type="fetish" value="10" />
+            <effect name="Sexy" type="fetish" value="20" />
         </effects>
     </Trait>
 
@@ -1736,6 +2368,7 @@
             <effect name="Charisma" type="stat" value="2"/>
             <effect name="SEX" type="enjoyment" value="5"/>
             <effect name="OralSex" type="skill" value="5"/>
+            <effect name="Sexy" type="fetish" value="25" />
         </effects>
     </Trait>
 
@@ -1744,6 +2377,10 @@
         <description>Putting things down her mouth is no big deal for her. Just not too much and not too fast.</description>
         <effects>
             <effect name="OralSex" type="skill" value="25"/>
+            <effect name="Elegant" type="fetish" value="-10" />
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="15" />
+            <effect name="Lolita" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -1756,6 +2393,9 @@
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Constitution" type="stat" value="5"/>
             <effect name="SEX" type="enjoyment" value="30"/>
+            <effect name="Sexy" type="fetish" value="15" />
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Elegant" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -1806,6 +2446,10 @@
             <effect name="WORKMUSIC" type="enjoyment" value="10"/>
             <effect name="WORKCUSTSERV" type="enjoyment" value="5"/>
             <effect name="WORKRECRUIT" type="enjoyment" value="5"/>
+            <effect name="Sexy" type="fetish" value="-10" />
+            <effect name="Freak" type="fetish" value="10" />
+            <effect name="Elegant" type="fetish" value="5" />
+            <effect name="Nerd" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -1822,6 +2466,11 @@
             <effect name="Lesbian" type="skill" value="-2"/>
             <effect name="Confidence" type="stat" value="-2"/>
             <effect name="SEX" type="enjoyment" value="-10"/>
+            <effect name="CuteGirl" type="fetish" value="-5" />
+            <effect name="Cool" type="fetish" value="-5" />
+            <effect name="Elegant" type="fetish" value="5" />
+            <effect name="Sexy" type="fetish" value="-10" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -1844,12 +2493,19 @@
         <description>This girl just isn't used to sticking things down her throat.</description>
         <effects>
             <effect name="OralSex" type="skill" value="-50"/>
+            <effect name="Elegant" type="fetish" value="20" />
+            <effect name="Sexy" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="5" />
+            <effect name="Lolita" type="fetish" value="20" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="0" Name="Virgin" RandomChance="50" Type="Sexual">
         <description>This girl has never had sex before.</description>
+        <effects>
+            <effect name="Lolita" type="fetish" value="15" />
+        </effects>
     </Trait>
 
 
@@ -1860,6 +2516,9 @@
             <effect name="Beauty" type="stat" value="10"/>
             <effect name="WORKBAR" type="enjoyment" value="20"/>
             <effect name="WORKHALL" type="enjoyment" value="20"/>
+            <effect name="Elegant" type="fetish" value="30" />
+            <effect name="Sexy" type="fetish" value="30" />
+            <effect name="Freak" type="fetish" value="-20" />
         </effects>
     </Trait>
 
@@ -1871,6 +2530,9 @@
             <effect name="Beauty" type="stat" value="15"/>
             <effect name="WORKBAR" type="enjoyment" value="10"/>
             <effect name="WORKHALL" type="enjoyment" value="10"/>
+            <effect name="Elegant" type="fetish" value="20" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="-15" />
         </effects>
     </Trait>
 
@@ -1884,6 +2546,11 @@
             <effect name="Performance" type="skill" value="5"/>
             <effect name="SEX" type="enjoyment" value="-20"/>
             <effect name="WORKMATRON" type="enjoyment" value="20"/>
+            <effect name="Dangerous" type="fetish" value="-30" />
+            <effect name="Nerd" type="fetish" value="-20" />
+            <effect name="NonHuman" type="fetish" value="-20" />
+            <effect name="Elegant" type="fetish" value="60" />
+            <effect name="Freak" type="fetish" value="-30" />
         </effects>
     </Trait>
 
@@ -1904,6 +2571,9 @@
             <effect name="WORKHALL" type="enjoyment" value="10"/>
             <effect name="WORKBAR" type="enjoyment" value="10"/>
             <effect name="WORKESCORT" type="enjoyment" value="10"/>
+            <effect name="CuteGirl" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Sexy" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1915,6 +2585,8 @@
             <effect name="Performance" type="skill" value="10"/>
             <effect name="WORKMOVIE" type="enjoyment" value="20"/>
             <effect name="WORKMUSIC" type="enjoyment" value="10"/>
+            <effect name="Cool" type="fetish" value="30" />
+            <effect name="CuteGirl" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -1934,6 +2606,9 @@
             <effect name="WORKFARM" type="enjoyment" value="-20"/>
             <effect name="MAKEITEMS" type="enjoyment" value="-5"/>
             <effect name="COOKING" type="enjoyment" value="-5"/>
+            <effect name="Elegant" type="fetish" value="15" />
+            <effect name="Sexy" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="-5" />
         </effects>
     </Trait>
 
@@ -1953,6 +2628,9 @@
             <effect name="WORKFARM" type="enjoyment" value="-30"/>
             <effect name="MAKEITEMS" type="enjoyment" value="-10"/>
             <effect name="COOKING" type="enjoyment" value="-10"/>
+            <effect name="Elegant" type="fetish" value="40" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="-15" />
         </effects>
     </Trait>
 
@@ -1972,6 +2650,9 @@
             <effect name="WORKFARM" type="enjoyment" value="-40"/>
             <effect name="MAKEITEMS" type="enjoyment" value="-20"/>
             <effect name="COOKING" type="enjoyment" value="-20"/>
+            <effect name="Elegant" type="fetish" value="60" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="-15" />
         </effects>
     </Trait>
 
@@ -1982,6 +2663,9 @@
             <effect name="Charisma" type="stat" value="5"/>
             <effect name="Beauty" type="stat" value="10"/>
             <effect name="Confidence" type="stat" value="2"/>
+            <effect name="Elegant" type="fetish" value="-5" />
+            <effect name="Sexy" type="fetish" value="10" />
+            <effect name="Cool" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -1992,13 +2676,20 @@
             <effect name="Charisma" type="stat" value="-10"/>
             <effect name="Dignity" type="stat" value="-5"/>
             <effect name="SEX" type="enjoyment" value="10"/>
+            <effect name="Sexy" type="fetish" value="25" />
+            <effect name="Cool" type="fetish" value="15" />
+            <effect name="Elegant" type="fetish" value="-30" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="30" Name="Social Drinker" RandomChance="10" Type="Social">
         <description>This girl knows how to handle her alcohol.</description>
-        <effects/>
+        <effects>
+            <effect name="Elegant" type="fetish" value="-5" />
+            <effect name="Cool" type="fetish" value="15" />
+            <effect name="Sexy" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
@@ -2018,19 +2709,29 @@
             <effect name="Morality" type="stat" value="20"/>
             <effect name="Refinement" type="stat" value="10"/>
             <effect name="Dignity" type="stat" value="10"/>
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="NonHuman" type="fetish" value="60" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="10" Name="Battery Operated" RandomChance="1" Type="Species">
         <description>She keeps going and going and going... She can never get tired, but she can get hurt or sad.</description>
-        <effects/>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="5" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="90" Name="Canine" RandomChance="5" Type="Species">
         <description>This girl is a dog, literally.</description>
-        <effects/>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="60" />
+            <effect name="CuteGirl" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="15" />
+        </effects>
     </Trait>
 
 
@@ -2038,12 +2739,20 @@
         <description>This girl is part feline.</description>
         <effects>
             <effect name="Agility" type="stat" value="10"/>
+            <effect name="CuteGirl" type="fetish" value="20" />
+            <effect name="NonHuman" type="fetish" value="60" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="10" Name="Construct" RandomChance="2" Type="Species">
         <description>This girl is not alive or real - she's a machine or has been created with magic. Her health doesn't go down or up quickly. (hard to hurt)</description>
+        <effects>
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="NonHuman" type="fetish" value="60" />
+            <effect name="Freak" type="fetish" value="20" />
+        </effects>
     </Trait>
 
 
@@ -2055,6 +2764,11 @@
             <effect name="Constitution" type="stat" value="5"/>
             <effect name="Obedience" type="stat" value="5"/>
             <effect name="WORKMILK" type="enjoyment" value="20"/>
+            <effect name="CuteGirl" type="fetish" value="-20" />
+            <effect name="NonHuman" type="fetish" value="60" />
+            <effect name="Freak" type="fetish" value="25" />
+            <effect name="BigBoobs" type="fetish" value="20" />
+            <effect name="SmallBoobs" type="fetish" value="-20" />
         </effects>
     </Trait>
 
@@ -2063,12 +2777,19 @@
         <description>This girl comes from the abyss.</description>
         <effects>
             <effect name="Morality" type="stat" value="-40"/>
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="NonHuman" type="fetish" value="60" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="30" Name="Different Colored Eyes" RandomChance="5" Type="Species">
         <description>Her eyes are different colors.</description>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="5" />
+            <effect name="Freak" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
@@ -2076,13 +2797,20 @@
         <description>This girl has a plant-like body.</description>
         <effects>
             <effect name="WORKFARM" type="enjoyment" value="10"/>
+            <effect name="NonHuman" type="fetish" value="50" />
+            <effect name="CuteGirl" type="fetish" value="-10" />
+            <effect name="Freak" type="fetish" value="20" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="90" Name="Egg Layer" RandomChance="1" Type="Species">
         <description>This girl gives birth to eggs instead of live young.</description>
-        <effects/>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="30" />
+            <effect name="Sexy" type="fetish" value="-20" />
+            <effect name="Freak" type="fetish" value="40" />
+        </effects>
     </Trait>
 
 
@@ -2093,6 +2821,10 @@
             <effect name="Intelligence" type="stat" value="10"/>
             <effect name="Constitution" type="stat" value="-5"/>
             <effect name="Refinement" type="stat" value="5"/>
+            <effect name="NonHuman" type="fetish" value="30" />
+            <effect name="Elegant" type="fetish" value="10" />
+            <effect name="Lolita" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="10" />
         </effects>
     </Trait>
 
@@ -2103,6 +2835,8 @@
             <effect name="Strength" type="stat" value="20"/>
             <effect name="Constitution" type="stat" value="10"/>
             <effect name="WORKFARM" type="enjoyment" value="10"/>
+            <effect name="NonHuman" type="fetish" value="80" />
+            <effect name="Freak" type="fetish" value="40" />
         </effects>
     </Trait>
 
@@ -2111,30 +2845,53 @@
         <description>She used to be a goddess, until she was stripped of her powers and thrown to the slavers.</description>
         <effects>
             <effect name="Sanity" type="stat" value="-10"/>
+            <effect name="NonHuman" type="fetish" value="20" />
+            <effect name="Elegant" type="fetish" value="30" />
+            <effect name="Freak" type="fetish" value="-10" />
+            <effect name="Sexy" type="fetish" value="25" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="90" Name="Furry" RandomChance="10" Type="Species">
         <description>This girl has short soft fur covering most of her body.</description>
-        <effects/>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="40" />
+            <effect name="Elegant" type="fetish" value="-5" />
+            <effect name="Sexy" type="fetish" value="15" />
+            <effect name="Freak" type="fetish" value="30" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="10" Name="Futanari" RandomChance="2" Type="Species">
         <description>This girl is a hermaphrodite, by magic or birth. Only a few guys will sleep with her.</description>
+        <effects>
+            <effect name="CuteGirl" type="fetish" value="-15" />
+            <effect name="NonHuman" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="30" />
+            <effect name="Futa" type="fetish" value="100" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="1" Name="Goddess" RandomChance="0" Type="Species">
         <description>She's a goddess from above.</description>
-        <effects/>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="20" />
+            <effect name="Elegant" type="fetish" value="50" />
+            <effect name="Freak" type="fetish" value="-20" />
+            <effect name="Sexy" type="fetish" value="20" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="90" Name="Half-Breed" RandomChance="10" Type="Species">
         <description>This girl is half human and half... something else.</description>
-        <effects/>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="20" />
+        </effects>
     </Trait>
 
 
@@ -2144,6 +2901,9 @@
             <effect name="Constitution" type="stat" value="20"/>
             <effect name="Combat" type="skill" value="20"/>
             <effect name="WORKMECHANIC" type="enjoyment" value="10"/>
+            <effect name="NonHuman" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Dangerous" type="fetish" value="5" />
         </effects>
     </Trait>
 
@@ -2152,12 +2912,18 @@
         <description>This girl never gets tired or loses health. (can't get tired or hurt)</description>
         <effects>
             <effect name="COMBAT" type="enjoyment" value="20"/>
+            <effect name="NonHuman" type="fetish" value="60" />
+            <effect name="Freak" type="fetish" value="40" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="100" Name="Not Human" RandomChance="20" Type="Species">
         <description>This girl is not human, which may appeal to some customers.</description>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="60" />
+            <effect name="Freak" type="fetish" value="10" />
+        </effects>
     </Trait>
 
 
@@ -2165,18 +2931,29 @@
         <description>This girl has a tail that she can't control.</description>
         <effects>
             <effect name="Charisma" type="stat" value="5"/>
+            <effect name="NonHuman" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="25" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="30" Name="Prehensile Tail" RandomChance="1" Type="Species">
         <description>This girl has a tail that she can use like a third hand.</description>
-        <effects/>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="40" />
+        </effects>
     </Trait>
 
 
     <Trait InheritChance="90" Name="Reptilian" RandomChance="10" Type="Species">
         <description>This girl has a Reptilian body.</description>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="50" />
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Dangerous" type="fetish" value="10" />
+            <effect name="CuteGirl" type="fetish" value="-20" />
+        </effects>
     </Trait>
 
 
@@ -2190,6 +2967,10 @@
             <effect name="Performance" type="skill" value="30"/>
             <effect name="WORKMOVIE" type="enjoyment" value="10"/>
             <effect name="WORKADVERTISING" type="enjoyment" value="10"/>
+            <effect name="NonHuman" type="fetish" value="35" />
+            <effect name="Sexy" type="fetish" value="20" />
+            <effect name="NiceFigure" type="fetish" value="40" />
+            <effect name="Freak" type="fetish" value="40" />
         </effects>
     </Trait>
 
@@ -2198,6 +2979,9 @@
         <description>This girl has a tail-like appendage instead of legs.</description>
         <effects>
             <effect name="Footjob" type="skill" value="-100"/>
+            <effect name="NonHuman" type="fetish" value="60" />
+            <effect name="Freak" type="fetish" value="25" />
+            <effect name="CuteGirl" type="fetish" value="-30" />
         </effects>
     </Trait>
 
@@ -2207,12 +2991,18 @@
         <effects>
             <effect name="WORKFARM" type="enjoyment" value="10"/>
             <!--works outdoors-->
+            <effect name="NonHuman" type="fetish" value="20" />
+            <effect name="Freak" type="fetish" value="5" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="30" Name="Strange Eyes" RandomChance="5" Type="Species">
         <description>Her eyes are unusual in some way.</description>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="10" />
+            <effect name="Freak" type="fetish" value="15" />
+        </effects>
     </Trait>
 
 
@@ -2221,13 +3011,19 @@
         <effects>
             <effect name="Libido" type="stat" value="35"/>
             <effect name="SEX" type="enjoyment" value="40"/>
+            <effect name="NonHuman" type="fetish" value="40" />
+            <effect name="Freak" type="fetish" value="30" />
+            <effect name="Sexy" type="fetish" value="30" />
         </effects>
     </Trait>
 
 
     <Trait InheritChance="50" Name="Wings" RandomChance="1" Type="Species">
         <description>This girl has wings.</description>
-        <effects/>
+        <effects>
+            <effect name="NonHuman" type="fetish" value="50" />
+            <effect name="Freak" type="fetish" value="20" />
+        </effects>
     </Trait>
 
 
@@ -2274,6 +3070,8 @@
             <effect name="Performance" type="skill" value="-10"/>
             <effect name="AnimalHandling" type="skill" value="-5"/>
             <effect name="Charisma" type="stat" value="-5"/>
+            <effect name="Freak" type="fetish" value="20" />
+            <effect name="Dangerous" type="fetish" value="-5" />
         </effects>
     </Trait>
     <Trait InheritChance="???" Name="Middle Aged" RandomChance="???" Type="???">

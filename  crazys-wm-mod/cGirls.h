@@ -363,6 +363,7 @@ struct sGirl
 	static map<string, unsigned int>	skill_lookup;
 	static map<string, unsigned int>	status_lookup;
 	static map<string, unsigned int>	enjoy_lookup;
+	static map<string, unsigned int>	fetish_lookup;
 	static map<string, unsigned int>	jobs_lookup;
 	static map<string, unsigned int>	training_lookup;
 	static void		setup_maps();
@@ -371,6 +372,7 @@ struct sGirl
 	static int lookup_skill_code(string s);
 	static int lookup_status_code(string s);
 	static int lookup_enjoy_code(string s);
+	static int lookup_fetish_code(string s);
 	static int lookup_jobs_code(string s);
 	static int lookup_training_code(string s);
 	string lookup_where_she_is();

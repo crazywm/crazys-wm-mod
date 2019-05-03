@@ -59,7 +59,10 @@ TraitEffect TraitEffect::from_xml(TiXmlElement* el)
 	} else if (type == "enjoyment") {
 		effect.type = TraitEffect::ENJOYMENT;
         effect.target = sGirl::lookup_enjoy_code(target);
-	} else {
+	} else if (type == "fetish") {
+        effect.type = TraitEffect::FETISH;
+        effect.target = sGirl::lookup_fetish_code(target);
+    } else {
 		throw std::runtime_error("Invalid 'type' tag for TraitEffect!");
 	}
 
@@ -208,6 +211,18 @@ void TraitSpec::apply_effects(sGirl* target) const
 			case TraitEffect::ENJOYMENT:
 				cGirls::UpdateEnjoymentTR(target, effect.target, effect.value);
 				break;
-		}
+        case TraitEffect::FETISH:
+            // fetishes are handled separately when calculating a girls type
+            break;
+        }
 	}
+}
+
+void TraitSpec::get_fetish_rating(std::array<int, NUM_FETISH>& rating) const
+{
+    for(const auto& effect : m_Effects) {
+        if(effect.type == TraitEffect::FETISH) {
+            rating[effect.target] += effect.value;
+        }
+    }
 }

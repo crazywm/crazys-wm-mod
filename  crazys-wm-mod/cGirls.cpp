@@ -114,6 +114,7 @@ map<string, unsigned int> sGirl::status_lookup;
 map<string, unsigned int> sGirl::enjoy_lookup;
 map<string, unsigned int> sGirl::jobs_lookup;
 map<string, unsigned int> sGirl::training_lookup;
+map<string, unsigned int> sGirl::fetish_lookup;
 
 const char *sGirl::stat_names[] =
 {
@@ -759,6 +760,26 @@ void sGirl::setup_maps()
 	training_lookup["GENERAL"] = TRAINING_GENERAL;
 
 
+	// Fetishes
+	fetish_lookup["TryAnything"] = FETISH_TRYANYTHING;
+	fetish_lookup["SpecificGirl"] = FETISH_SPECIFICGIRL;
+	fetish_lookup["BigBoobs"] = FETISH_BIGBOOBS;
+	fetish_lookup["Sexy"] = FETISH_SEXY;
+	fetish_lookup["CuteGirl"] = FETISH_CUTEGIRLS;
+	fetish_lookup["NiceFigure"] = FETISH_FIGURE;
+	fetish_lookup["Lolita"] = FETISH_LOLITA;
+	fetish_lookup["NiceArse"] = FETISH_ARSE;
+	fetish_lookup["Cool"] = FETISH_COOLGIRLS;
+	fetish_lookup["Elegant"] = FETISH_ELEGANT;
+	fetish_lookup["Nerd"] = FETISH_NERDYGIRLS;
+	fetish_lookup["SmallBoobs"] = FETISH_SMALLBOOBS;
+	fetish_lookup["Dangerous"] = FETISH_DANGEROUSGIRLS;
+	fetish_lookup["NonHuman"] = FETISH_NONHUMAN;
+	fetish_lookup["Freak"] = FETISH_FREAKYGIRLS;
+	fetish_lookup["Futa"] = FETISH_FUTAGIRLS;
+	fetish_lookup["Tall"] = FETISH_TALLGIRLS;
+	fetish_lookup["Short"] = FETISH_SHORTGIRLS;
+	fetish_lookup["Fat"] = FETISH_FATGIRLS;
 }
 
 int sGirl::lookup_skill_code(string s)
@@ -803,6 +824,17 @@ int sGirl::lookup_enjoy_code(string s)
 		return -1;
 	}
 	return enjoy_lookup[s];
+}
+
+int sGirl::lookup_fetish_code(string s)
+{
+    // be useful to be able to log unrecognised type names here
+    if (fetish_lookup.find(s) == fetish_lookup.end())
+    {
+        g_LogFile.os() << "[sGirl::lookup_fetish_code] Error: unknown fetish: " << s << endl;
+        return -1;
+    }
+    return fetish_lookup[s];
 }
 
 int sGirl::lookup_jobs_code(string s)
@@ -925,351 +957,32 @@ sGirl *sRandomGirl::lookup = new sGirl();  // used to look up stat and skill IDs
 
 void cGirls::CalculateGirlType(sGirl* girl)
 {
-	// `J` When adding new traits, search for "J-Add-New-Traits"  :  found in >> CalculateGirlType
-	int BigBoobs = 0, SmallBoobs = 0, CuteGirl = 0, Dangerous = 0, Cool = 0, Nerd = 0, NonHuman = 0, Lolita = 0,
-		Elegant = 0, Sexy = 0, NiceFigure = 0, NiceArse = 0, Freak = 0, Tall = 0, Short = 0, Fat = 0;
-
+    std::array<int, NUM_FETISH> ratings;
+    ratings.fill(0);
 	girl->m_FetishTypes = 0;
 
-	// template
-	if (girl->has_trait(""))		{
-		BigBoobs += 0;		SmallBoobs += 0;	CuteGirl += 0;		Dangerous += 0;
-		Cool += 0;			Nerd += 0;			NonHuman += 0;		Lolita += 0;
-		Elegant += 0;		Sexy += 0;			NiceFigure += 0;	NiceArse += 0;
-		Freak += 0;			Tall += 0;			Short += 0;			Fat += 0;
+	for(auto& spec : girl->m_Traits) {
+        if(spec)
+    	    spec->get_fetish_rating(ratings);
 	}
 
-
-	//SIN: sorted ALL traits and included ALL new traits from current CoreTraits.traitsx file (v126)
-	// Included code for traits that don't do anything for completeness, but these are commented out for performance.
-	/****** Physical Traits ******/
-	// Breasts
-	/* */if (girl->has_trait("Flat Chest"))				{ BigBoobs -= 120;	SmallBoobs += 80;	CuteGirl += 20;	Lolita += 30;	Sexy -= 10;	NiceFigure -= 10; }
-	else if (girl->has_trait("Petite Breasts"))			{ BigBoobs -= 80;	SmallBoobs += 100;	CuteGirl += 15;	Lolita += 20;	Sexy -= 5;	NiceFigure -= 5; }
-	else if (girl->has_trait("Small Boobs"))				{ BigBoobs -= 40;	SmallBoobs += 50;	CuteGirl += 10;	Lolita += 10;	Sexy += 5;	NiceFigure -= 0; }
-	else if (girl->has_trait("Busty Boobs"))				{ BigBoobs += 20;	SmallBoobs -= 20;	CuteGirl += 5;	Lolita += 0; 	Sexy += 10;	NiceFigure += 5; }
-	else if (girl->has_trait("Big Boobs"))				{ BigBoobs += 40;	SmallBoobs -= 40;	CuteGirl -= 5;	Lolita -= 20;	Sexy += 20;	NiceFigure += 10; }
-	else if (girl->has_trait("Giant Juggs"))				{ BigBoobs += 60;	SmallBoobs -= 60;	CuteGirl -= 25;	Lolita -= 40;	Sexy += 20;	NiceFigure += 5; }
-	else if (girl->has_trait("Massive Melons"))			{ BigBoobs += 80;	SmallBoobs -= 80;	CuteGirl -= 25;	Lolita -= 60;	Sexy += 10;	NiceFigure -= 5;	Freak += 5; }
-	else if (girl->has_trait("Abnormally Large Boobs"))	{ BigBoobs += 100;	SmallBoobs -= 100;	CuteGirl -= 15;	Lolita -= 80;	Sexy += 0;	NiceFigure -= 10;	Freak += 10;	NonHuman += 5; }
-	else if (girl->has_trait("Titanic Tits"))			{ BigBoobs += 120;	SmallBoobs -= 120;	CuteGirl -= 25;	Lolita -= 100;	Sexy -= 10;	NiceFigure -= 20;	Freak += 20;	NonHuman += 10; }
-
-	// Nipples
-	if (girl->has_trait("Inverted Nipples"))				{ BigBoobs -= 5;	SmallBoobs += 5;	CuteGirl -= 5;	Freak += 5; }
-	if (girl->has_trait("Perky Nipples"))				{ BigBoobs += 10;	SmallBoobs += 5;	CuteGirl += 5;	Lolita += 5; }
-	if (girl->has_trait("Puffy Nipples"))				{ BigBoobs += 10;	SmallBoobs -= 5;	CuteGirl += 5; }
-
-	// Milk
-	if (girl->has_trait("Dry Milk"))						{ BigBoobs -= 10;	SmallBoobs += 10;	CuteGirl += 5;	Lolita += 10; }
-	if (girl->has_trait("Scarce Lactation"))				{ BigBoobs -= 5;	SmallBoobs += 5;	CuteGirl += 0;	Lolita += 5; }
-	if (girl->has_trait("Abundant Lactation"))			{ BigBoobs += 10;	SmallBoobs -= 10;	CuteGirl -= 0;	Lolita -= 10; }
-	if (girl->has_trait("Cow Tits"))						{ BigBoobs += 20;	SmallBoobs -= 20;	CuteGirl -= 5;	Lolita -= 20;	Freak += 5; }
-
-	//Body
-	if (girl->has_trait("Fleet of Foot"))				{ Dangerous += 10; Sexy += 20; }
-	if (girl->has_trait("Fragile"))						{ CuteGirl += 10; Nerd += 5; Freak += 10; Lolita += 10; }
-	if (girl->has_trait("Long Legs"))					{ Sexy += 20; NiceFigure += 20; }
-	if (girl->has_trait("Strong"))						{ Dangerous += 20; Cool += 20; Nerd -= 30; NiceFigure += 20; NiceArse += 20; Lolita -= 5; }
-	if (girl->has_trait("Tough"))						{ CuteGirl -= 5; Dangerous += 10; Cool += 10; Nerd -= 5; Elegant -= 5; }
-	if (girl->has_trait("Agile"))						{ Dangerous += 20; Sexy += 5; Freak += 10; }
-	if (girl->has_trait("Delicate"))						{ CuteGirl += 5; Nerd += 5; Freak += 5; Lolita += 10; }
-	if (girl->has_trait("Dick-Sucking Lips"))			{ Sexy += 20; CuteGirl += 20; }
-	if (girl->has_trait("Exotic"))						{ Sexy += 10; CuteGirl += 10; Freak += 10; }
-	if (girl->has_trait("Large Hips"))					{ Sexy += 15; Lolita -= 20; NiceArse += 20; }
-	if (girl->has_trait("Mature Body"))					{ Lolita -= 50; CuteGirl -= 20; Sexy += 10; }
-	if (girl->has_trait("Muscular"))						{ Lolita -= 30; Sexy -= 30; Dangerous += 25; Freak += 25; }
-	if (girl->has_trait("Old"))							{ Lolita -= 75; CuteGirl -= 40; Sexy -= 20; Freak += 30; Elegant += 15; }
-	if (girl->has_trait("Whore"))						{ Lolita -= 50; CuteGirl -= 40; Cool += 10; Sexy += 10; }
-
-	//Figure
-	if (girl->has_trait("Great Figure"))					{ BigBoobs += 10; Sexy += 10; NiceFigure += 60; Fat -= 100;}
-	if (girl->has_trait("Hourglass Figure"))				{ Sexy += 25; Lolita -= 30; NiceFigure += 20; Fat -= 50;}
-	if (girl->has_trait("Plump"))						{ Lolita -= 10; NiceFigure -= 20; Freak += 20; Fat += 50;}
-	if (girl->has_trait("Fat"))							{ Lolita -= 20; NiceFigure -= 40; Freak += 25; Fat += 100;}
-
-	//Height
-	if (girl->has_trait("Giant"))						{ Freak += 20; Lolita -= 60; Tall += 75; Short -= 100;}
-	if (girl->has_trait("Tall"))							{ Lolita -= 30; Tall += 50; Short -= 50;}
-	if (girl->has_trait("Short"))						{ Lolita += 15; Tall -= 50; Short += 50;}
-	if (girl->has_trait("Dwarf"))						{ Freak += 20; Lolita += 10; Tall -= 75; Short += 100;}
-
-	//Ass
-	if (girl->has_trait("Great Arse"))					{ Sexy += 10; NiceArse += 60; }
-	if (girl->has_trait("Tight Butt"))					{ Lolita += 5; Sexy += 20; NiceArse += 40; }
-	if (girl->has_trait("Phat Booty"))					{ Lolita -= 20; Sexy += 15; NiceArse += 30; }
-	if (girl->has_trait("Deluxe Derriere"))				{ Lolita -= 25; Sexy += 20; NiceArse += 40; }
-	if (girl->has_trait("Wide Bottom"))					{ Lolita -= 20; Sexy += 15; NiceArse += 20; }
-	if (girl->has_trait("Plump Tush"))					{ Lolita -= 20; Sexy += 30; NiceArse += 10; }
-	if (girl->has_trait("Flat Ass"))						{ Lolita += 20; Sexy -= 20; NiceArse -= 50; }
-
-	//Piercings, Brandings & Tattoos
-	if (girl->has_trait("Pierced Clit"))					{ Elegant -= 5; Sexy += 20; Freak += 15; }
-	if (girl->has_trait("Pierced Nipples"))				{ Elegant -= 10; Sexy += 20; Freak += 15; }
-	if (girl->has_trait("Pierced Tongue"))				{ Elegant -= 20; Sexy += 10; Freak += 15; }
-	if (girl->has_trait("Pierced Navel"))				{ Elegant -= 5; Sexy += 5; Freak += 15; }
-	if (girl->has_trait("Pierced Nose"))					{ Elegant -= 30; Sexy += 5; Dangerous += 5; Freak += 15; }
-	if (girl->has_trait("Tattooed"))						{ Cool += 10; Dangerous += 5; }
-	if (girl->has_trait("Small Tattoos"))				{ Cool += 25; Elegant -= 5; Dangerous += 5; }
-	if (girl->has_trait("Heavily Tattooed"))				{ Cool += 30; Dangerous += 15; Elegant -= 20; }
-	if (girl->has_trait("Branded on the Ass"))			{ Freak += 25; Elegant -= 20; NiceArse -= 10; }
-	if (girl->has_trait("Branded on the Forehead"))		{ Cool -= 30; Elegant -= 30; Freak += 25; }
-
-
-	/*********  Scars, Mutilations, Amputations, Disabilities, etc.  ***************/
-	//Born this way...
-	if (girl->has_trait("Malformed"))					{ NonHuman += 10; Freak += 50; }
-	if (girl->has_trait("Beauty Mark"))					{ Cool += 5; Freak += 5; Sexy += 5; }
-	if (girl->has_trait("Blind"))						{ Freak += 10; Dangerous -= 15; }
-	if (girl->has_trait("Deaf"))							{ Freak += 10; Dangerous -= 5; }
-	if (girl->has_trait("Mute"))							{ Freak += 15; Dangerous -= 5; }
-	//	if (girl->has_trait("Bad Eyesight"))				{} // Not visible to customer
-	//	if (girl->has_trait("Sharp-Eyed"))				{} // Not visible to customer
-	//	if (girl->has_trait("Incest"))					{} // Not visible to customer
-	//Scars and wounds
-	if (girl->has_trait("Small Scars"))					{ CuteGirl -= 5; Dangerous += 5; Cool += 2; Freak += 2; }
-	if (girl->has_trait("Cool Scars"))					{ CuteGirl -= 10; Dangerous += 20; Cool += 30; Freak += 5; }
-	if (girl->has_trait("Horrific Scars"))				{ CuteGirl -= 15; Dangerous += 30; Freak += 20; }
-	//Missing Parts
-	if (girl->has_trait("One Eye"))						{ CuteGirl -= 20; Cool += 5; Dangerous += 10; Sexy -= 20; NiceFigure -= 10; Freak += 20; }
-	if (girl->has_trait("Eye Patch"))					{ CuteGirl -= 5; Dangerous += 5; Cool += 20; Sexy -= 5; Freak += 20; }
-	if (girl->has_trait("Missing Finger"))				{ Freak += 5; }
-	if (girl->has_trait("Missing Fingers"))				{ Freak += 10; }
-	if (girl->has_trait("One Hand"))						{ Freak += 20; Dangerous -= 10; }
-	if (girl->has_trait("No Hands"))						{ Freak += 40; Dangerous -= 20; }
-	if (girl->has_trait("One Arm"))						{ Freak += 40; Dangerous -= 20; }
-	if (girl->has_trait("No Arms"))						{ Freak += 60; Dangerous -= 30; }
-	if (girl->has_trait("Missing Toe"))					{ Freak += 5; }
-	if (girl->has_trait("Missing Toes"))					{ Freak += 10; }
-	if (girl->has_trait("One Foot"))						{ Freak += 20; Dangerous -= 10; }
-	if (girl->has_trait("No Feet"))						{ Freak += 40; Dangerous -= 20; }
-	if (girl->has_trait("One Leg"))						{ Freak += 40; Dangerous -= 20; }
-	if (girl->has_trait("No Legs"))						{ Freak += 60; Dangerous -= 30;  Tall -= 20; Short += 10; }
-	if (girl->has_trait("Clipped Tendons"))				{ Freak += 40; Dangerous -= 20; CuteGirl -= 10; Elegant -= 50; Tall -= 5; Short += 5; }
-	if (girl->has_trait("No Clit"))						{ Freak += 5; Sexy -= 10; }
-	if (girl->has_trait("Missing Teeth"))				{ Freak += 5; Elegant -= 10; Dangerous += 10; Sexy -= 5; }
-	if (girl->has_trait("No Teeth"))						{ Freak += 40; Elegant -= 40; Dangerous -= 5; Sexy -= 15; }
-	if (girl->has_trait("No Tongue"))					{ Freak += 20; Dangerous -= 5; }
-	if (girl->has_trait("Missing Nipple"))				{ Freak += 20; Dangerous += 10; Sexy -= 10; }
-	if (girl->has_trait("No Nipples"))					{ Freak += 20; NonHuman += 10; }
-	if (girl->has_trait("Cyclops"))						{ CuteGirl -= 20; Sexy -= 10; Freak += 30; }
-
-
-	/****** Magic Traits ******/
-	if (girl->has_trait("Psychic"))						{ Dangerous += 10; Nerd += 10; NonHuman += 10; Freak += 10; }
-	if (girl->has_trait("Strong Magic"))					{ Dangerous += 20; Nerd += 5; NonHuman += 5; Freak += 20; }
-	if (girl->has_trait("Muggle"))						{ Dangerous -= 5; Nerd += 5; }
-	if (girl->has_trait("Weak Magic"))					{ Dangerous += 5; Freak += 5; }
-	if (girl->has_trait("Powerful Magic"))				{ Dangerous += 25; Nerd += 15; NonHuman += 10; Freak += 35; }
-	if (girl->has_trait("Natural Pheromones"))			{ NonHuman += 10; Sexy += 40; }  // they'll see her as far more sexy for this
-	if (girl->has_trait("Flight"))						{ Dangerous += 15; NonHuman += 20; Freak += 20; }
-
-
-	/****** Sexual Traits ******/
-	// Performance
-	if (girl->has_trait("Strong Gag Reflex"))			{ Elegant += 20; Sexy -= 20; Freak += 5;	Lolita += 20; }
-	if (girl->has_trait("Gag Reflex"))					{ Elegant += 10; Sexy -= 10; Freak += 0;	Lolita += 10; }
-	if (girl->has_trait("No Gag Reflex"))				{ Elegant -= 10; Sexy += 10; Freak += 15;	Lolita -= 5; }
-	if (girl->has_trait("Deep Throat"))					{ Elegant -= 20; Sexy += 20; Freak += 30;	Lolita -= 10; }
-	if (girl->has_trait("Slow Orgasms"))					{ CuteGirl -= 5; Cool -= 5; Elegant += 5; Sexy -= 10; Freak += 5; }
-	if (girl->has_trait("Fake Orgasm Expert"))			{ Sexy += 5; }
-	if (girl->has_trait("Fast Orgasms"))					{ Cool += 10; Sexy += 30; }
-	if (girl->has_trait("Good Kisser"))					{ Cool += 10; Sexy += 20; }
-
-	if (girl->has_trait("Dominatrix"))					{ Dangerous += 30; Elegant += 5; Freak += 40; }
-	if (girl->has_trait("Nimble Tongue"))				{ Sexy += 25; }
-	if (girl->has_trait("Open Minded"))					{ Sexy += 30; Cool += 20; Elegant -= 10; }
-	if (girl->check_virginity())						{ Lolita += 15; }//Plus 50 for begin a virgin?  Seems odd to me so changed it CRAZY
-
-
-	/****** Social Traits ******/
-	//Types
-	if (girl->has_trait("Aggressive"))					{ CuteGirl -= 15; Dangerous += 20; Lolita -= 5; Elegant -= 10; Freak += 10; }
-	if (girl->has_trait("Adventurer"))					{ Dangerous += 20; Cool += 10; Nerd -= 20; Elegant -= 5; }
-	if (girl->has_trait("Charismatic"))					{ Elegant += 30; Sexy += 30; Freak -= 20; }
-	if (girl->has_trait("Charming"))						{ Elegant += 20; Sexy += 20; Freak -= 15; }
-	if (girl->has_trait("Clumsy"))						{ CuteGirl += 10; Dangerous -= 20; Cool -= 10; Nerd += 20; Freak += 5; }
-	if (girl->has_trait("Cool Person"))					{ Dangerous += 5; Cool += 60; Nerd -= 10; }
-	if (girl->has_trait("Cute"))							{ CuteGirl += 60; Lolita += 20; SmallBoobs += 5; }
-	if (girl->has_trait("Elegant"))						{ Dangerous -= 30; Nerd -= 20; NonHuman -= 20; Elegant += 60; Freak -= 30; }
-	if (girl->has_trait("Lolita"))						{ BigBoobs -= 30; CuteGirl += 30; Dangerous -= 5; Lolita += 60; SmallBoobs += 15; }
-	if (girl->has_trait("Manly"))						{ CuteGirl -= 15; Dangerous += 5; Elegant -= 20; Sexy -= 20; NiceFigure -= 20; SmallBoobs += 10; Freak += 5; Lolita -= 10; }
-	if (girl->has_trait("Meek"))							{ CuteGirl += 15; Dangerous -= 30; Cool -= 30; Nerd += 30; Lolita += 10; }
-	if (girl->has_trait("MILF"))							{ Freak += 15; Lolita -= 50; }
-	if (girl->has_trait("Nerd"))							{ CuteGirl += 10; Dangerous -= 30; Cool -= 30; Nerd += 60; SmallBoobs += 5; }
-	if (girl->has_trait("Nervous"))						{ CuteGirl += 10; Nerd += 15; }
-	if (girl->has_trait("Optimist"))						{ Elegant += 5; }
-	if (girl->has_trait("Pessimist"))					{ Elegant -= 5; }
-	if (girl->has_trait("Princess"))						{ Elegant += 40; Sexy += 20; Freak -= 15; }
-	if (girl->has_trait("Queen"))						{ Elegant += 60; Sexy += 20; Freak -= 15; }
-	if (girl->has_trait("Sexy Air"))						{ Cool += 5; Elegant -= 5; Sexy += 10; }
-	if (girl->has_trait("Audacity"))						{ Dangerous += 20; Cool += 25; Nerd -= 10; }
-	if (girl->has_trait("Brawler"))						{ Dangerous += 30; Freak += 10; }
-	if (girl->has_trait("Dojikko"))						{ CuteGirl += 20; Dangerous -= 20; Nerd += 10; Freak += 5; }
-	if (girl->has_trait("Exhibitionist"))				{ CuteGirl += 20; Freak += 20; Sexy += 10; }
-	if (girl->has_trait("Idol"))							{ Cool += 30; CuteGirl += 10; }
-	if (girl->has_trait("Noble"))						{ Elegant += 15; Sexy += 5; Freak -= 5; }
-	if (girl->has_trait("Shy"))							{ Cool -= 20; Nerd += 10; }
-	if (girl->has_trait("Slut"))							{ Sexy += 25; Cool += 15; Elegant -= 30; }
-	if (girl->has_trait("Social Drinker"))				{ Elegant -= 5; Cool += 15; Sexy += 10; }
-	if (girl->has_trait("Tomboy"))						{ CuteGirl -= 15; Elegant -= 20; Sexy -= 10; SmallBoobs += 10; Freak += 5; Lolita -= 10; }
-
-
-	/****** Mental Traits ******/
-	//Learning
-	if (girl->has_trait("Quick Learner"))				{ Cool -= 20; Nerd += 30; }
-	if (girl->has_trait("Slow Learner"))					{ CuteGirl += 10; Cool += 10; Nerd -= 20; }
-	if (girl->has_trait("Retarded"))						{ NonHuman += 2; Freak += 45; }
-	if (girl->has_trait("Bimbo"))						{ CuteGirl += 10; Cool += 10; Nerd -= 20; }
-	if (girl->has_trait("Idiot Savant"))					{ Freak += 10; Nerd += 20; Cool -= 30; Sexy -= 20; }
-
-	//Weak Mind
-	if (girl->has_trait("Mind Fucked"))					{ CuteGirl -= 60; Dangerous -= 60; Cool -= 60; Nerd -= 60; Elegant -= 60; Sexy -= 60; Freak += 40; }
-	if (girl->has_trait("Broken Will"))					{ Cool -= 40; Nerd -= 40; Elegant -= 40; Sexy -= 40; Freak += 40; }
-	if (girl->has_trait("Dependant"))					{ CuteGirl += 5; Dangerous -= 20; Cool -= 5; Nerd += 5; Elegant -= 20; Sexy -= 20; Freak += 10; }
-
-	//Strong Mind
-	if (girl->has_trait("Merciless"))					{ CuteGirl -= 20; Dangerous += 20; Nerd -= 10; Elegant -= 5; Lolita -= 10; }
-	if (girl->has_trait("Fearless"))						{ Dangerous += 20; Cool += 15; Nerd -= 10; Elegant -= 10; Lolita -= 5; }
-	if (girl->has_trait("Iron Will"))					{ Dangerous += 10; Cool += 10; Nerd -= 5; Elegant -= 10; }
-
-	//Messed up mind
-	if (girl->has_trait("Twisted"))						{ CuteGirl -= 40; Dangerous += 30; Elegant -= 30; Sexy -= 20; Freak += 40; }
-	if (girl->has_trait("Masochist"))					{ CuteGirl -= 10; Nerd -= 10; CuteGirl -= 15; Dangerous += 10; Elegant -= 10; Freak += 30; }
-	if (girl->has_trait("Sadistic"))						{ CuteGirl -= 20; Dangerous += 15; Nerd -= 10; Elegant -= 30; Sexy -= 10; Freak += 30; }
-	if (girl->has_trait("Tsundere"))						{ Dangerous += 5; Cool += 5; Nerd -= 5; Elegant -= 20; Freak += 10; }
-	if (girl->has_trait("Yandere"))						{ Dangerous += 5; Cool += 5; Nerd -= 5; Elegant -= 20; Freak += 10; }
-
-	// Addictions
-	if (girl->has_trait("Shroud Addict"))				{ Dangerous += 5; Cool += 15; Nerd -= 10; Elegant -= 20; Sexy -= 20; Freak += 10; }
-	if (girl->has_trait("Fairy Dust Addict"))			{ Dangerous += 10; Cool += 20; Nerd -= 15; Elegant -= 25; Sexy -= 25; Freak += 15; }
-	if (girl->has_trait("Viras Blood Addict"))			{ Dangerous += 15; Cool += 25; Nerd -= 20; Elegant -= 30; Sexy -= 30; Freak += 20; }
-	if (girl->has_trait("Nymphomaniac"))					{ Sexy += 15; Freak += 20; Elegant -= 5; } //kind of an addiction!
-	if (girl->has_trait("Chaste"))						{ Sexy -= 10; Freak += 10; Elegant += 5; Nerd += 5; }
-	if (girl->has_trait("Smoker"))						{ Elegant -= 5; Cool += 5; }
-	if (girl->has_trait("Alchoholic"))					{ Elegant -= 15; Cool += 5; Dangerous += 5; }
-	if (girl->has_trait("Cum Addict"))					{ Sexy += 10; Freak += 20; Elegant -= 20; }
-
-
-	/****** Job Skills ******/
-	if (girl->has_trait("Assassin"))						{ Dangerous += 25; Cool += 15; Nerd -= 25; Freak += 10; }
-	if (girl->has_trait("Actress"))						{ Sexy += 10; Cool += 10; }
-	if (girl->has_trait("Porn Star"))					{ Sexy += 40; Cool += 40; Elegant -= 40; }
-	//	if (girl->has_trait("Chef"))						{}								// Not visible to customer
-	if (girl->has_trait("City Girl"))					{ Cool += 5; Freak -= 5; }
-	if (girl->has_trait("Farmer"))						{ Cool -= 5; Elegant -= 5; }
-	if (girl->has_trait("Hunter"))						{ Dangerous += 10; Cool += 5; Sexy += 2; NiceFigure += 2; Freak += 5; }
-	if (girl->has_trait("Country Gal"))					{ Sexy += 10; Cool -= 10; }		//simple country charm!
-	if (girl->has_trait("Director"))						{ Elegant += 10; }				//Composure under pressure
-	if (girl->has_trait("Doctor"))						{ Elegant += 5; }	//rubber gloves
-	if (girl->has_trait("Farmers Daughter"))				{ Sexy += 5; Cool -= 5; }		//simple country charm!
-	if (girl->has_trait("Former Official"))				{ Elegant += 10; Freak += 5; } //F* the government!
-	if (girl->has_trait("Handyman"))						{ Nerd += 10; }
-	if (girl->has_trait("Heroine"))						{ Dangerous += 50; Sexy += 10; Cool += 10; }
-	if (girl->has_trait("Homeless"))						{ Dangerous += 10; Elegant -= 10; Cool -= 5; }
-	if (girl->has_trait("Maid"))							{ Sexy += 10; Freak -= 10; Elegant += 10; Cool -= 5; }
-	if (girl->has_trait("Mixologist"))					{ Nerd += 5; Cool += 5; }
-	if (girl->has_trait("Priestess"))					{ Freak += 30; Elegant += 10; Sexy -= 5; }
-	if (girl->has_trait("Singer"))						{ Elegant += 10; Sexy += 5; Cool += 5; }
-	//	if (girl->has_trait("Tone Deaf"))				{}								// Not visible to customer
-	if (girl->has_trait("Teacher"))						{ Elegant += 5; Nerd += 20; }
-	if (girl->has_trait("Waitress"))						{ Elegant += 5; }
-
-
-	/****** Species Traits ******/
-	if (girl->has_trait("Cat Girl"))						{ CuteGirl += 20; NonHuman += 60; Freak += 5; }
-	if (girl->has_trait("Construct"))					{ Dangerous += 10; NonHuman += 60; Freak += 20; }
-	if (girl->has_trait("Angel"))						{ CuteGirl += 10; NonHuman += 60; Freak += 5; }
-	if (girl->has_trait("Demon"))						{ Dangerous += 10; NonHuman += 60; Freak += 5; }
-	if (girl->has_trait("Different Colored Eyes"))		{ NonHuman += 5; Freak += 10; }
-	if (girl->has_trait("Futanari"))						{ CuteGirl -= 15; NonHuman += 10; Freak += 30; }
-	if (girl->has_trait("Half-Construct"))				{ Dangerous += 5; NonHuman += 20; Freak += 20; }
-	if (girl->has_trait("Incorporeal"))					{ NonHuman += 60; Freak += 40; }
-	if (girl->has_trait("Not Human"))					{ NonHuman += 60; Freak += 10; }
-	if (girl->has_trait("Shape Shifter"))				{ NonHuman += 35; Sexy += 20; NiceFigure += 40; Freak += 40; }
-	if (girl->has_trait("Strange Eyes"))					{ NonHuman += 10; Freak += 15; }
-
-	if (girl->has_trait("Skeleton"))						{ BigBoobs -= 1000; SmallBoobs -= 1000; CuteGirl -= 1000; Dangerous += 1000; Cool += 10; NonHuman += 1000; Elegant -= 100; Sexy -= 100; NiceFigure -= 1000; NiceArse -= 1000; Freak += 1000; }
-	if (girl->has_trait("Undead"))						{ Dangerous += 10; Cool += 5; NonHuman += 10; Sexy -= 5; Freak += 20; }
-	if (girl->has_trait("Vampire"))						{ CuteGirl += 10; Dangerous += 10; Cool += 10; NonHuman += 10; Elegant += 10; Sexy += 10; Freak += 10; }
-	if (girl->has_trait("Zombie"))						{ NonHuman += 100; Freak += 100; CuteGirl -= 50; Dangerous += 100; Elegant -= 50; }
-
-	if (girl->has_trait("Battery Operated"))				{ NonHuman += 20; Freak += 5; }
-	if (girl->has_trait("Canine"))						{ NonHuman += 60; CuteGirl += 10; Freak += 15; }
-	if (girl->has_trait("Cow Girl"))						{ NonHuman += 60; CuteGirl -= 20; Freak += 25; BigBoobs += 20; SmallBoobs -= 20; }
-	if (girl->has_trait("Dryad"))						{ NonHuman += 50; CuteGirl -= 10; Freak += 20; }
-	if (girl->has_trait("Egg Layer"))					{ NonHuman += 30; Sexy -= 20; Freak += 40; }
-	if (girl->has_trait("Elf"))							{ NonHuman += 30; Elegant += 10; Lolita += 10; Freak += 10; }
-	if (girl->has_trait("Equine"))						{ NonHuman += 80; Freak += 40; }
-	if (girl->has_trait("Fallen Goddess"))				{ NonHuman += 20; Elegant += 30; Freak -= 10; Sexy += 25; }
-	if (girl->has_trait("Furry"))						{ NonHuman += 40; Elegant -= 5; Sexy += 15; Freak += 30; }
-	if (girl->has_trait("Goddess"))						{ NonHuman += 20; Elegant += 50; Freak -= 20; Sexy += 20; }
-	if (girl->has_trait("Half-Breed"))					{ NonHuman += 20; Freak += 20; }
-	if (girl->has_trait("Playful Tail"))					{ NonHuman += 10; Freak += 25; }
-	if (girl->has_trait("Prehensile Tail"))				{ NonHuman += 20; Freak += 40; }
-	if (girl->has_trait("Reptilian"))					{ NonHuman += 50; Freak += 20; Dangerous += 10; CuteGirl -= 20; }
-	if (girl->has_trait("Slitherer"))					{ NonHuman += 60; Freak += 25; CuteGirl -= 30; }
-	if (girl->has_trait("Solar Powered"))				{ NonHuman += 20; Freak += 5; }
-	if (girl->has_trait("Succubus"))						{ NonHuman += 40; Freak += 30; Sexy += 30; }
-	if (girl->has_trait("Wings"))						{ NonHuman += 50; Freak += 20; }
-
-
-	// Other Invisible Traits (which do not affect customer decision, but are here for completeness)
-#if 0
-	//Fertility
-	if (girl->has_trait("Sterile"))					{}
-	if (girl->has_trait("Fertile"))					{}
-	if (girl->has_trait("Broodmother"))				{}
-	// Sexuality
-	if (girl->has_trait("Straight"))					{}
-	if (girl->has_trait("Bisexual"))					{}
-	if (girl->has_trait("Lesbian"))					{}
-	//STDs
-	if (girl->has_trait("AIDS"))						{}
-	if (girl->has_trait("Chlamydia"))				{}
-	if (girl->has_trait("Herpes"))					{}
-	if (girl->has_trait("Syphilis"))					{}
-	//Other
-	if (girl->has_trait("Has Boy Friend"))			{}
-	if (girl->has_trait("Has Girl Friend"))			{}
-	if (girl->has_trait("Your Daughter"))			{}
-	if (girl->has_trait("Your Wife"))				{}
-
-	//Temporary Traits
-	//Have ignored these four temp traits for now - not yet familiar with how/when applied
-	if (girl->has_trait("Botox Treatment"))			{}
-	if (girl->has_trait("Bruises"))					{}
-	if (girl->has_trait("Demon Possessed"))			{}
-	if (girl->has_trait("Out-Patient Surgery"))		{}
-	if (girl->has_trait("Spirit Possessed"))			{}
-	if (girl->has_trait("Kidnapped"))				{}
-	if (girl->has_trait("Emprisoned Customer"))		{}
-
-#endif	// end unused traits
-
-
-	if (BigBoobs > SmallBoobs)
+    // can have either BIGBOOBS or SMALLBOOBS fetish
+	if (ratings[FETISH_BIGBOOBS] > ratings[FETISH_SMALLBOOBS])
 	{
-		if (BigBoobs > 50)			girl->m_FetishTypes |= (1 << FETISH_BIGBOOBS);
+        ratings[FETISH_SMALLBOOBS] = 0;
 	}
 	else
 	{
-		if (SmallBoobs > 50)		girl->m_FetishTypes |= (1 << FETISH_SMALLBOOBS);
+        ratings[FETISH_BIGBOOBS] = 0;
 	}
-	if (CuteGirl > 50)				girl->m_FetishTypes |= (1 << FETISH_CUTEGIRLS);
-	if (Dangerous > 50)				girl->m_FetishTypes |= (1 << FETISH_DANGEROUSGIRLS);
-	if (Cool > 50)					girl->m_FetishTypes |= (1 << FETISH_COOLGIRLS);
-	if (Nerd > 50)					girl->m_FetishTypes |= (1 << FETISH_NERDYGIRLS);
-	if (NonHuman > 50)				girl->m_FetishTypes |= (1 << FETISH_NONHUMAN);
-	if (Lolita > 50)				girl->m_FetishTypes |= (1 << FETISH_LOLITA);
-	if (Elegant > 50)				girl->m_FetishTypes |= (1 << FETISH_ELEGANT);
-	if (Sexy > 50)					girl->m_FetishTypes |= (1 << FETISH_SEXY);
-	if (NiceFigure > 50)			girl->m_FetishTypes |= (1 << FETISH_FIGURE);
-	if (NiceArse > 50)				girl->m_FetishTypes |= (1 << FETISH_ARSE);
-	if (Freak > 50)					girl->m_FetishTypes |= (1 << FETISH_FREAKYGIRLS);
-	if (girl->has_trait("Futanari"))	girl->m_FetishTypes |= (1 << FETISH_FUTAGIRLS);
-	if (Tall > 50)					girl->m_FetishTypes |= (1 << FETISH_TALLGIRLS);
-	if (Short > 50)					girl->m_FetishTypes |= (1 << FETISH_SHORTGIRLS);
-	if (Fat > 50)					girl->m_FetishTypes |= (1 << FETISH_FATGIRLS);
+
+	// skip over FETISH_TRYANYTHING and FETISH_SPECIFICGIRL, as they do not apply here
+	for(unsigned fetish = FETISH_BIGBOOBS; fetish < NUM_FETISH; ++fetish) {
+        std::cout << "ASSIGN FETISH " << fetish << " " << ratings[fetish] << "\n";
+        if(ratings[fetish] >= 50 ) {
+            girl->m_FetishTypes |= (1u << fetish);
+	    }
+	}
 }
 
 bool cGirls::CheckGirlType(sGirl* girl, int type)
