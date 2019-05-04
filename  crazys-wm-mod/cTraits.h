@@ -34,6 +34,7 @@ struct TraitEffect
 {
     enum Type {
         STAT, SKILL, ENJOYMENT, FETISH, SEX_QUALITY
+        // TODO add TRAINING here?
     } type;
     unsigned target;
     int value;

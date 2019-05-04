@@ -22,6 +22,7 @@
 #define __CGIRL_H
 
 #include <map>
+#include <set>
 #include <iostream>
 #include <iomanip>
 #include <string>
@@ -265,7 +266,6 @@ struct sGirl
 	int m_SkillTemps[NUM_SKILLS];				// these go down (or up) by 1 each week until they reach 0
 
 	int m_Training[NUM_TRAININGTYPES];			// these values determine how far a girl is into her training CRAZY
-	int m_TrainingTR[NUM_TRAININGTYPES];		// 
 	int m_TrainingMods[NUM_TRAININGTYPES];		// 
 	int m_TrainingTemps[NUM_TRAININGTYPES];		// 
 	// (starts at 0, 100 if fully trained)
@@ -290,7 +290,7 @@ struct sGirl
 	int m_Pay;									// used to keep track of pay this turn
 	int m_Tips;									// used to keep track of tips this turn
 
-	long m_FetishTypes;							// the types of fetishes this girl has
+	std::set<Fetishs> m_FetishTypes;            // the types of fetishes this girl has
 
 	char m_Flags[NUM_GIRLFLAGS];				// flags used by scripts
 
@@ -620,8 +620,7 @@ struct sGirl
 	{
         if (actiontype < 0) return 0;
         // Generic calculation
-        int value = m_Training[actiontype] + m_TrainingTR[actiontype] +
-                    m_TrainingMods[actiontype] + m_TrainingTemps[actiontype];
+        int value = m_Training[actiontype] + m_TrainingMods[actiontype] + m_TrainingTemps[actiontype];
 
         if (value < 0) value = 0;
         else if (value > 100) value = 100;
@@ -763,26 +762,19 @@ public:
     void SetStat(sGirl* girl, int stat, int amount);
 	// updates a stat temporarily
 	void UpdateStatMod(sGirl* girl, int stat, int amount);							// updates a statmod usually from items
-	static void UpdateStatTr(sGirl* girl, int stat, int amount);							// updates a statTr from traits
 
 	void SetSkill(sGirl* girl, int skill, int amount);
     // updates a skill temporarily
 	void UpdateSkillMod(sGirl* girl, int skill, int amount);	// updates a skillmods usually from items
-	static void UpdateSkillTr(sGirl* girl, int skill, int amount);		// updates a skillTr from traits
 
 	// `J` added
 	void SetEnjoyment(sGirl* girl, int a_Enjoy, int amount);									// `J` added
-	static void SetEnjoymentTR(sGirl* girl, int a_Enjoy, int amount);									// `J` added for traits
 	// updates what she enjoys
-	static void UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
 	void UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount);							// `J` added for traits
     // `J` added for traits
 
     // `CRAZY` added
 	void SetTraining(sGirl* girl, int a_Training, int amount);									// `CRAZY` added
-	static void SetTrainingTR(sGirl* girl, int a_Training, int amount);									// `CRAZY` added for traits
-	// updates what she enjoys
-	static void UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
 	void UpdateTrainingMod(sGirl* girl, int whatSheTrains, int amount);							// `CRAZY` added for traits
 	// `CRAZY` added for traits
 
@@ -883,7 +875,7 @@ public:
 	void SetAntiPreg(sGirl* girl, bool useAntiPreg) { girl->m_UseAntiPreg = useAntiPreg; }
 
 	void CalculateGirlType(sGirl* girl);	// updates a girls fetish type based on her traits and stats
-	bool CheckGirlType(sGirl* girl, int type);	// Checks if a girl has this fetish type
+	bool CheckGirlType(sGirl* girl, Fetishs type);	// Checks if a girl has this fetish type
 
 	void do_abnormality(sGirl* sprog, int chance);
 	void HandleChild(sGirl* girl, sChild* child, string& summary);

@@ -272,13 +272,13 @@ sGirl::sGirl()				// constructor
 
 	// Training
 	for (int i = 0; i < NUM_TRAININGTYPES; i++)	// Added m_Training here to zero out any that are not specified
-		m_Training[i] = m_TrainingTR[i] = m_TrainingMods[i] = m_TrainingTemps[i] = 0;
+		m_Training[i] = m_TrainingMods[i] = m_TrainingTemps[i] = 0;
 
 	// Others
 	for (int i = 0; i < NUM_GIRLFLAGS; i++)			{ m_Flags[i] = 0; }
 	for (int i = 0; i < CHILD_COUNT_TYPES; i++)		{ m_ChildrenCount[i] = 0; }
 	m_States = m_BaseStates = 0;
-	m_FetishTypes = 0;
+	m_FetishTypes.clear();
 
 
 
@@ -959,7 +959,7 @@ void cGirls::CalculateGirlType(sGirl* girl)
 {
     std::array<int, NUM_FETISH> ratings;
     ratings.fill(0);
-	girl->m_FetishTypes = 0;
+	girl->m_FetishTypes.clear();
 
 	for(auto& spec : girl->m_Traits) {
         if(spec)
@@ -978,17 +978,15 @@ void cGirls::CalculateGirlType(sGirl* girl)
 
 	// skip over FETISH_TRYANYTHING and FETISH_SPECIFICGIRL, as they do not apply here
 	for(unsigned fetish = FETISH_BIGBOOBS; fetish < NUM_FETISH; ++fetish) {
-        std::cout << "ASSIGN FETISH " << fetish << " " << ratings[fetish] << "\n";
         if(ratings[fetish] >= 50 ) {
-            girl->m_FetishTypes |= (1u << fetish);
+            girl->m_FetishTypes.insert((Fetishs)fetish);
 	    }
 	}
 }
 
-bool cGirls::CheckGirlType(sGirl* girl, int type)
+bool cGirls::CheckGirlType(sGirl* girl, Fetishs type)
 {
-	if (type == FETISH_TRYANYTHING || girl->m_FetishTypes&(1 << type))	return true;
-	return false;
+	return type == FETISH_TRYANYTHING || girl->m_FetishTypes.count(type);
 }
 
 sGirl *sGirl::run_away()
@@ -2587,7 +2585,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 				if (cfg.debug.log_extradetails()) ss << "\n";
 				ss << "    ( " << girl->m_Training[i];
 				if (cfg.debug.log_extradetails())
-					ss << " + " << girl->m_TrainingTemps[i] << " + " << girl->m_TrainingMods[i] << " + " << girl->m_TrainingTR[i];
+					ss << " + " << girl->m_TrainingTemps[i] << " + " << girl->m_TrainingMods[i];
 				ss << " )";
 			}
 			ss << "\n";
@@ -3165,17 +3163,6 @@ void cGirls::UpdateStatMod(sGirl* girl, int stat, int amount)
 	girl->m_StatMods[stat] += amount;
 }
 
-void cGirls::UpdateStatTr(sGirl* girl, int stat, int amount)
-{
-	if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_EXP ||
-		stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_ASKPRICE)
-	{
-		girl->upd_stat(stat, amount);
-		return;
-	}
-	girl->m_StatTr[stat] += amount;
-}
-
 void cGirls::updateTemp(sGirl* girl)	// `J` group all the temp updates into one area
 {
 	updateTempStats(girl);		// update temp stats
@@ -3238,11 +3225,6 @@ int cGirls::GetSkillWorth(sGirl* girl)
 void cGirls::UpdateSkillMod(sGirl* girl, int skill, int amount)
 {
 	girl->m_SkillMods[skill] += amount;
-}
-// add amount to skillTr
-void cGirls::UpdateSkillTr(sGirl* girl, int skill, int amount)
-{
-	girl->m_SkillTr[skill] += amount;
 }
 
 // Normalise to zero by 30%
@@ -13865,17 +13847,7 @@ void cGirls::SetEnjoyment(sGirl* girl, int whatSheEnjoys, int amount)										/
 	if (girl->m_Enjoyment[whatSheEnjoys] > 100) 		girl->m_Enjoyment[whatSheEnjoys] = 100;
 	else if (girl->m_Enjoyment[whatSheEnjoys] < -100) 	girl->m_Enjoyment[whatSheEnjoys] = -100;
 }
-void cGirls::SetEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount)									// `J` added for traits
-{
-	girl->m_EnjoymentTR[whatSheEnjoys] = amount;
-	if (girl->m_EnjoymentTR[whatSheEnjoys] > 100) 			girl->m_EnjoymentTR[whatSheEnjoys] = 100;
-	else if (girl->m_EnjoymentTR[whatSheEnjoys] < -100) 	girl->m_EnjoymentTR[whatSheEnjoys] = -100;
-}
 
-void cGirls::UpdateEnjoymentTR(sGirl* girl, int whatSheEnjoys, int amount)
-{
-	girl->m_EnjoymentTR[whatSheEnjoys] += amount;
-}
 void cGirls::UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount)
 {
 	girl->m_EnjoymentMods[whatSheEnjoys] += amount;
@@ -13908,17 +13880,7 @@ void cGirls::SetTraining(sGirl* girl, int whatSheTrains, int amount)										//
 	if (girl->m_Training[whatSheTrains] > 100) 		girl->m_Training[whatSheTrains] = 100;
 	else if (girl->m_Training[whatSheTrains] < 0) 	girl->m_Training[whatSheTrains] = 0;
 }
-void cGirls::SetTrainingTR(sGirl* girl, int whatSheTrains, int amount)									// `CRAZY` added for traits
-{
-	girl->m_TrainingTR[whatSheTrains] = amount;
-	if (girl->m_TrainingTR[whatSheTrains] > 100) 			girl->m_TrainingTR[whatSheTrains] = 100;
-	else if (girl->m_TrainingTR[whatSheTrains] < 0) 	girl->m_TrainingTR[whatSheTrains] = 0;
-}
 
-void cGirls::UpdateTrainingTR(sGirl* girl, int whatSheTrains, int amount)
-{
-	girl->m_TrainingTR[whatSheTrains] += amount;
-}
 void cGirls::UpdateTrainingMod(sGirl* girl, int whatSheTrains, int amount)
 {
 	girl->m_TrainingMods[whatSheTrains] += amount;

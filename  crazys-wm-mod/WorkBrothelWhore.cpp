@@ -298,7 +298,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 			if (Day0Night1 && Cust.m_Fetish < NUM_FETISH - 2 && g_Dice.percent(50)) Cust.m_Fetish += 2;
 
 			// Check for fetish match
-			if (g_Girls.CheckGirlType(girl, Cust.m_Fetish))
+			if (g_Girls.CheckGirlType(girl, (Fetishs)Cust.m_Fetish))
 			{
 				fuckMessage << "The customer loves this type of girl.\n \n";
 				acceptsGirl = true;
@@ -306,7 +306,7 @@ bool cJobManager::WorkWhore(sGirl* girl, sBrothel* brothel, bool Day0Night1, str
 		}
 
 		// Other ways the customer will accept the girl
-		if (acceptsGirl == false)
+		if (!acceptsGirl)
 		{
 			if (girl->has_trait("Zombie"))
 			{

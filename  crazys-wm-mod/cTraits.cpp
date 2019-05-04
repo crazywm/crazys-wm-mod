@@ -211,13 +211,24 @@ void TraitSpec::apply_effects(sGirl* target) const
 	for(const auto& effect : m_Effects) {
 		switch(effect.type) {
 			case TraitEffect::STAT:
-				cGirls::UpdateStatTr(target, effect.target, effect.value);
-				break;
+                {
+                    auto stat = (STATS)effect.target;
+                    // it does not make any sense to change these stats with a trait.
+                    if (stat == STAT_HEALTH || stat == STAT_HAPPINESS || stat == STAT_TIREDNESS || stat == STAT_EXP ||
+                        stat == STAT_LEVEL || stat == STAT_HOUSE || stat == STAT_ASKPRICE) {
+                        CLog l;
+                        l.ss() << "Error: Trait tried to change stat '"<< stat << endl;
+                        l.ssend();
+                        continue;
+                    }
+                    target->m_StatTr[stat] += effect.value;
+                }
+                break;
 			case TraitEffect::SKILL:
-				cGirls::UpdateSkillTr(target, effect.target, effect.value);
+                target->m_SkillTr[effect.target] += effect.value;
 				break;
 			case TraitEffect::ENJOYMENT:
-				cGirls::UpdateEnjoymentTR(target, effect.target, effect.value);
+                target->m_EnjoymentTR[effect.target] += effect.value;
 				break;
         case TraitEffect::FETISH:
         case TraitEffect::SEX_QUALITY:
