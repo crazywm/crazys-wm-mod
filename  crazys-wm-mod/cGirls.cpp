@@ -1429,7 +1429,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		if (g_Dice.percent(current->m_TraitChanceB[i]))
 		{
 			string name = current->m_TraitNames[i];
-			if (g_Traits.GetTrait(current->m_Traits[i]->display_name())) // `J` added translation check
+			if (g_Traits.GetTrait(name)) // `J` added translation check
 			{
 				if (name == "Virgin") newGirl->m_Virgin = 1;
 				if (!newGirl->has_trait(name))
