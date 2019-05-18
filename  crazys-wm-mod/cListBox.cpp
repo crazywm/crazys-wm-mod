@@ -571,6 +571,7 @@ void cListBox::DrawWidget()
     int pos = 0;
     for (auto item = m_Items.begin(); item != m_Items.end(); ++item, ++pos)
     {
+        if ((pos - m_Position) < 0) continue;
 		if ((pos - m_Position) >= m_NumDrawnElements) break;
 
 		// Draw the window
