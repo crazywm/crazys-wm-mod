@@ -20,11 +20,8 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
-
 // `J` Job Centre - Rehab_Job - Full_Time_Job
-bool cJobManager::WorkCounselor(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkCounselor(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {	// `J` changed "Drug Counselor" to just "Counselor" so she can help the other therapy patients
 
     auto brothel = girl->m_Building;
@@ -34,7 +31,7 @@ bool cJobManager::WorkCounselor(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_DayJob = girl->m_NightJob = JOB_COUNSELOR;	// it is a full time job
 
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100();
+	int roll_a = rng.d100();
 	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
 	{
 		if (roll_a <= 50 && girl->disobey_check(actiontype, JOB_COUNSELOR))
@@ -55,9 +52,9 @@ bool cJobManager::WorkCounselor(sGirl* girl, bool Day0Night1, string& summary)
 	int tips = 0;
 	int enjoy = 0;
 
-	/* */if (roll_a <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "The addicts hasseled her."; }
-	else if (roll_a >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time working."; }
-	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
+	/* */if (roll_a <= 10)	{ enjoy -= rng % 3 + 1;	ss << "The addicts hasseled her."; }
+	else if (roll_a >= 90)	{ enjoy += rng % 3 + 1;	ss << "She had a pleasant time working."; }
+	else /*             */	{ enjoy += rng % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_TEACHER, Day0Night1);
 
@@ -65,7 +62,7 @@ bool cJobManager::WorkCounselor(sGirl* girl, bool Day0Night1, string& summary)
 	// work out the pay between the house and the girl
 	int roll_max = girl->spirit() + girl->intelligence();
 	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
+	wages += 10 + rng%roll_max;
 	wages += 5 * rehabers;	// `J` pay her 5 for each patient you send to her
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
@@ -78,8 +75,8 @@ bool cJobManager::WorkCounselor(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->charisma((g_Dice%skill) + 1);
-	girl->service((g_Dice%skill) + 1);
+	girl->charisma((rng%skill) + 1);
+	girl->service((rng%skill) + 1);
 
 	girl->upd_Enjoyment(actiontype, enjoy);
 	//gain traits
@@ -104,5 +101,8 @@ double cJobManager::JP_Counselor(sGirl* girl, bool estimate)// not used
 	else// for the actual check
 	{
 	}
-	return jobperformance;
+
+    jobperformance += girl->get_trait_modifier("work.counselor");
+
+    return jobperformance;
 }

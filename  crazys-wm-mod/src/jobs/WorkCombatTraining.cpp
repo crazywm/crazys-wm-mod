@@ -22,10 +22,8 @@
 #include "cGold.h"
 #include "src/buildings/cBrothel.h"
 
-extern cRng g_Dice;
-
 // `J` Job Arena - Fighting - Learning_Job - Combat_Job
-bool cJobManager::WorkCombatTraining(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkCombatTraining(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -61,9 +59,9 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, bool Day0Night1, string& summa
 	int skill = 0;												// gian for main skill trained
 	int dirtyloss = brothel->m_Filthiness / 100;				// training time wasted with bad equipment
 	int sgCmb = 0, sgMag = 0, sgAgi = 0, sgCns = 0, sgStr = 0;	// gains per skill
-	int roll_a = g_Dice.d100();									// roll for main skill gain
-	int roll_b = g_Dice.d100();									// roll for main skill trained
-	int roll_c = g_Dice.d100();									// roll for enjoyment
+	int roll_a = rng.d100();									// roll for main skill gain
+	int roll_b = rng.d100();									// roll for main skill trained
+	int roll_c = rng.d100();									// roll for enjoyment
 
 
 
@@ -92,13 +90,13 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, bool Day0Night1, string& summa
 		else if (roll_b < 100 && tstr < 100)	train = 5;	// strength
 		roll_b -= 10;
 	} while (train == 0 && roll_b > 0);
-	if (train == 0 || g_Dice.percent(5)) gaintrait = true;
+	if (train == 0 || rng.percent(5)) gaintrait = true;
 
-	if (train == 1) { sgCmb = skill; ss << "She trains in general combat techniques.\n"; }	else sgCmb = g_Dice % 2;
-	if (train == 2) { sgMag = skill; ss << "She trains to control her magic.\n"; }			else sgMag = g_Dice % 2;
-	if (train == 3) { sgAgi = skill; ss << "She trains her agility.\n"; }					else sgAgi = g_Dice % 2;
-	if (train == 4) { sgCns = skill; ss << "She works on her constitution.\n"; }			else sgCns = g_Dice % 2;
-	if (train == 5) { sgStr = skill; ss << "She lifts weights to get stronger.\n"; }		else sgStr = g_Dice % 2;
+	if (train == 1) { sgCmb = skill; ss << "She trains in general combat techniques.\n"; }	else sgCmb = rng % 2;
+	if (train == 2) { sgMag = skill; ss << "She trains to control her magic.\n"; }			else sgMag = rng % 2;
+	if (train == 3) { sgAgi = skill; ss << "She trains her agility.\n"; }					else sgAgi = rng % 2;
+	if (train == 4) { sgCns = skill; ss << "She works on her constitution.\n"; }			else sgCns = rng % 2;
+	if (train == 5) { sgStr = skill; ss << "She lifts weights to get stronger.\n"; }		else sgStr = rng % 2;
 
 	if (sgCmb + sgMag + sgAgi + sgCns + sgStr > 0)
 	{
@@ -114,7 +112,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, bool Day0Night1, string& summa
 	while (gaintrait && trycount > 0)	// `J` Try to add a trait
 	{
 		trycount--;
-		switch (g_Dice % 10)
+		switch (rng % 10)
 		{
 		case 0:
 			if (girl->has_trait( "Fragile"))
@@ -141,19 +139,19 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, bool Day0Night1, string& summa
 		case 2:
 			if (girl->has_trait( "Nervous") || girl->has_trait( "Meek") || girl->has_trait( "Dependant"))
 			{
-				if (g_Dice.percent(50) && girl->has_trait( "Nervous"))
+				if (rng.percent(50) && girl->has_trait( "Nervous"))
 				{
 					girl->remove_trait("Nervous");
 					ss << "She seems to be getting over her Nervousness with her training.";
 					gaintrait = false;
 				}
-				else if (g_Dice.percent(50) && girl->has_trait( "Meek"))
+				else if (rng.percent(50) && girl->has_trait( "Meek"))
 				{
 					girl->remove_trait("Meek");
 					ss << "She seems to be getting over her Meakness with her training.";
 					gaintrait = false;
 				}
-				else if (g_Dice.percent(50) && girl->has_trait( "Dependant"))
+				else if (rng.percent(50) && girl->has_trait( "Dependant"))
 				{
 					girl->remove_trait("Dependant");
 					ss << "She seems to be getting over her Dependancy with her training.";
@@ -162,19 +160,19 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, bool Day0Night1, string& summa
 			}
 			else
 			{
-				if (g_Dice.percent(50) && !girl->has_trait( "Aggressive"))
+				if (rng.percent(50) && !girl->has_trait( "Aggressive"))
 				{
 					girl->add_trait("Aggressive");
 					ss << "She is getting rather Aggressive from her enjoyment of combat.";
 					gaintrait = false;
 				}
-				else if (g_Dice.percent(50) && !girl->has_trait( "Fearless"))
+				else if (rng.percent(50) && !girl->has_trait( "Fearless"))
 				{
 					girl->add_trait("Fearless");
 					ss << "She is getting rather Fearless from her enjoyment of combat.";
 					gaintrait = false;
 				}
-				else if (g_Dice.percent(50) && !girl->has_trait( "Audacity"))
+				else if (rng.percent(50) && !girl->has_trait( "Audacity"))
 				{
 					girl->add_trait("Audacity");
 					ss << "She is getting rather Audacious from her enjoyment of combat.";
@@ -281,9 +279,9 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, bool Day0Night1, string& summa
 
 
 	//enjoyed the work or not
-	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "\nShe did not enjoy her time training."; }
-	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "\nShe had a pleasant time training."; }
-	else /*             */	{ enjoy += g_Dice % 2;		ss << "\nOtherwise, the shift passed uneventfully."; }
+	/* */if (roll_c <= 10)	{ enjoy -= rng % 3 + 1;	ss << "\nShe did not enjoy her time training."; }
+	else if (roll_c >= 90)	{ enjoy += rng % 3 + 1;	ss << "\nShe had a pleasant time training."; }
+	else /*             */	{ enjoy += rng % 2;		ss << "\nOtherwise, the shift passed uneventfully."; }
 	girl->upd_Enjoyment(actiontype, enjoy);
 	girl->upd_Enjoyment(actiontype2, enjoy);
 
@@ -301,7 +299,7 @@ bool cJobManager::WorkCombatTraining(sGirl* girl, bool Day0Night1, string& summa
 	else if (girl->has_trait( "Slow Learner"))	{ xp -= 2; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	return false;

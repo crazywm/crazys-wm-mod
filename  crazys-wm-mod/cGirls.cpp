@@ -23,7 +23,6 @@
 #include "cEvents.h"
 #include "tinyxml.h"
 #include "cGangs.h"
-#include "CGraphics.h"
 #include "src/buildings/cMovieStudio.h"
 #include "src/IBuilding.hpp"
 #include "src/Game.hpp"
@@ -32,7 +31,8 @@
 #include "cCustomers.h"
 #include "cTraits.h"
 #include "cInventory.h"
-#include "cFont.h"
+#include "interface/cFont.h"
+#include "CLog.h"
 
 #ifdef LINUX
 #include "linux.h"
@@ -45,21 +45,8 @@
 //1 turns them ON, 0 turns them OFF (compiles with warnings, but not errors - worth it for the easy search)
 #define SANITY 1;
 
-// SIN - adding raisable (only) minimum age in config.xml file, because:
-//(1) makes the code easier to read and maintain (so age references don't get Ctrl+H replaced along with other number "18"s, and vice versa)
-//(2) makes it possible for user to increase the min age for girls (for legal or preference reasons - some places age is 20/21)
-//(3) means that age can easily be used in dialogues, etc (without search, replace and recompile if user wants to update)
-//This uses a variable collected from the config.xml (via sConfig) to allow user to enter higher age (but remains hard-coded to min 18).
-//const int MINAGE = max(HCM, cfg.initial.minimumgirlage());
-//SIN - FMA = Fixed Min Age.
-//			//Set to 1, this uses the old code with age set at different points as a magic no. throughout various functions in the code.
-//			//Set to 0, this uses the above MINAGE variable in all locations (easier to see and maintain), which allows raising of the minage if user prefers.
-//(compiles with warnings, but not errors)
-#define FMA 0;
-
 using namespace std;
 
-extern cTraits g_Traits;
 extern cRng g_Dice;
 
 extern cNameList	g_GirlNameList;
@@ -67,8 +54,6 @@ extern cNameList	g_BoysNameList;
 extern cSurnameList g_SurnameList;
 
 extern cConfig cfg;
-
-extern cTariff tariff;
 
 class GirlPredicate_GRG : public GirlPredicate
 {
@@ -103,11 +88,6 @@ cGirls::cGirls()
 }
 
 cGirls::~cGirls()
-{
-	Free();
-}
-
-void cGirls::Free()
 {
     for(auto girl : m_Girls)
         delete girl;
@@ -239,7 +219,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		if (g_Dice.percent(girl_template.m_TraitChance[i]))
 		{
 			string name = girl_template.m_TraitNames[i];
-			if (g_Traits.GetTrait(name))
+			if (g_Game->traits().GetTrait(name))
 			{
 				if (name == "Virgin") newGirl->m_Virgin = 1;
 				if (!newGirl->has_trait(name))
@@ -248,9 +228,9 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			else
 			{
 				stringstream ss;
-				ss << "g_Game.CreateRandomGirl: ERROR: Trait '" << name << "' from girl template "
+				ss << "g_Game->CreateRandomGirl: ERROR: Trait '" << name << "' from girl template "
 				   << girl_template.m_Name << " doesn't exist or is spelled incorrectly.";
-				g_Game.push_message(ss.str(), COLOR_RED);
+				g_Game->push_message(ss.str(), COLOR_RED);
 			}
 		}
 	}
@@ -274,9 +254,9 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 				else
 				{
 					stringstream ss;
-					ss << "g_Game.CreateRandomGirl: ERROR: Item '" << girl_template.m_ItemNames[i] << "' from girl template "
+					ss << "g_Game->CreateRandomGirl: ERROR: Item '" << girl_template.m_ItemNames[i] << "' from girl template "
 						<< girl_template.m_Name << " doesn't exist or is spelled incorrectly.";
-					g_Game.push_message(ss.str(), COLOR_RED);
+					g_Game->push_message(ss.str(), COLOR_RED);
 				}
 			}
 		}
@@ -331,7 +311,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 	else newGirl->m_Stats[STAT_HOUSE] = cfg.initial.slave_house_perc();	// 100% is the norm
 
 	// If the girl is a slave or arena.. then make her more obedient.
-	if (slave || newGirl->m_States&(1u << STATUS_SLAVE))
+	if (slave || newGirl->is_slave())
 	{
 		newGirl->m_States |= (1u << STATUS_SLAVE);
 		newGirl->m_AccLevel = cfg.initial.slave_accom();
@@ -394,14 +374,14 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 			name2 = (true ? g_GirlNameList.random() : g_BoysNameList.random());
 			name = name1 + " " + name2; // `J` added second name to further reduce chance of multiple names
 		}
-		if (g_Game.NameExists(name)) continue;
+		if (g_Game->NameExists(name)) continue;
 		break;
 	}
 
 	string surname;
 	if (daughter || newGirl->m_States&(1 << STATUS_YOURDAUGHTER))	// `J` if she is your daughter...
 	{
-		surname = g_Game.player().Surname();	// give her your last name
+		surname = g_Game->player().Surname();	// give her your last name
 	}
 	else if (g_Dice.percent(90))		// 10% chance of no last name
 	{
@@ -409,7 +389,7 @@ sGirl* cGirls::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool unde
 		{
 			surname = g_SurnameList.random();
 			if (i>3) surname = surname + "-" + g_SurnameList.random(); // `J` added second name to further reduce chance of multiple names
-			if (g_Game.SurnameExists(surname)) continue;
+			if (g_Game->SurnameExists(surname)) continue;
 			break;
 		}
 	}
@@ -850,7 +830,6 @@ string cGirls::GetGirlMood(const sGirl * girl)
 string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 {
 	if (girl == nullptr)	return string("");
-	//cTariff tariff;
 	cFont check; int w, h, size = 0;
 	check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 	stringstream ss;
@@ -957,7 +936,7 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 		ss << "\n" << basestr[5] << girl->happiness() << sper;
 		ss << "\n" << basestr[6] << girl->tiredness() << sper;
 	}
-	int cost = int(tariff.slave_price(girl, purchase));
+	int cost = int(g_Game->tariff().slave_price(girl, purchase));
 	g_LogFile.ss() << "slave " << (purchase ? "buy" : "sell") << "price = " << cost;
 	g_LogFile.ssend();
 	ss << "\n" << basestr[7] << cost << " Gold";
@@ -1072,7 +1051,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	if (!purchase)
 	{
 		ss << "\n" << statstr[15];
-		if (g_Game.gang_manager().GetGangOnMission(MISS_SPYGIRLS))
+		if (g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS))
 		{
 			ss << girl->m_Money;
 		}
@@ -1103,8 +1082,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		if (girl->is_resting() && !girl->was_resting() && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
 		{
 			ss << "\n \nOFF WORK, RESTING DUE TO TIREDNESS.";
-			ss << "\nStored Day Job:   " << g_Game.job_manager().JobName[girl->m_PrevDayJob];
-			ss << "\nStored Night Job: " << g_Game.job_manager().JobName[girl->m_PrevNightJob];
+			ss << "\nStored Day Job:   " << g_Game->job_manager().JobName[girl->m_PrevDayJob];
+			ss << "\nStored Night Job: " << g_Game->job_manager().JobName[girl->m_PrevNightJob];
 			ss << "\n";
 		}
 		int to_go = (girl->m_States&(1 << STATUS_INSEMINATED) ? cfg.pregnancy.weeks_monster_p() : cfg.pregnancy.weeks_pregnant()) - girl->m_WeeksPreg;
@@ -1221,7 +1200,6 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 		int enjcount = 0;
 		for (int i = 0; i < NUM_ACTIONTYPES; ++i)
 		{
-			if (sGirl::enjoy_jobs[i] == "")			continue;
 			int e = girl->get_enjoyment(i);
 			/* */if (e < -70)	{ text = " hates "; }
 			else if (e < -50)	{ text = " really dislikes "; }
@@ -1233,7 +1211,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 			else if (e < 50)	{ text = " likes "; }
 			else if (e < 70)	{ text = " really enjoys "; }
 			else				{ text = " loves "; }
-			ss << base << text << sGirl::enjoy_jobs[i] << ".";
+			ss << base << text << get_action_descr((Action_Types)i) << ".";
 			if (cfg.debug.log_extradetails() || cfg.debug.log_show_numbers())
 			{
 				if (cfg.debug.log_extradetails()) ss << "\n";
@@ -1313,23 +1291,23 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	Brothel_Data += girl->JobRating(m_JobManager.JP_HallDealer(girl, true), "-", "Dealer");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_HallEntertainer(girl, true), "-", "Entertainer");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_HallXXXEntertainer(girl, true), "-", "XXX Entertainer");
-	Brothel_Data += girl->JobRating(m_JobManager.JP_HallWhore(girl, true), "?", "Hall Whore");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Whore(girl, true), "?", "Hall Whore");
 	Brothel_Data += "\n";
 	Brothel_Data += girl->JobRating(m_JobManager.JP_SleazyBarmaid(girl, true), "-", "Club Barmaid");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_SleazyWaitress(girl, true), "-", "Club Waitress");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BarStripper(girl, true), "-", "Stripper");
-	Brothel_Data += girl->JobRating(m_JobManager.JP_BarWhore(girl, true), "?", "Club Whore");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Whore(girl, true), "?", "Club Whore");
 	Brothel_Data += "\n";
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelMasseuse(girl, true), "-", "Masseuse");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_BrothelStripper(girl, true), "-", "Brothel Stripper");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_PeepShow(girl, true), "-", "Peep Show");
 	Brothel_Data += girl->JobRating(m_JobManager.JP_Whore(girl, true), "?", "Whore");
-	Brothel_Data += girl->JobRating(m_JobManager.JP_WhoreStreets(girl, true), "?", "Whore on Streets");
+	Brothel_Data += girl->JobRating(m_JobManager.JP_Whore(girl, true), "?", "Whore on Streets");
 	Brothel_Data += div;
 
 	//STUDIO
 	string Studio_Data;
-	if (g_Game.has_building(BuildingType::STUDIO))
+	if (g_Game->has_building(BuildingType::STUDIO))
 	{
 		Studio_Data += "Studio Job Ratings\n";
 		Studio_Data += girl->JobRating(m_JobManager.JP_FilmDirector(girl, true), "?", "Director");
@@ -1367,7 +1345,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	}
 	//ARENA
 	string Arena_Data;
-	if (g_Game.has_building(BuildingType::ARENA))
+	if (g_Game->has_building(BuildingType::ARENA))
 	{
 		Arena_Data += "Arena Job Ratings\n";
 		Arena_Data += girl->JobRating(m_JobManager.JP_Doctore(girl, true), "-", "Doctore");
@@ -1383,7 +1361,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	}
 	//CENTRE
 	string Centre_Data;
-	if (g_Game.has_building(BuildingType::CENTRE))
+	if (g_Game->has_building(BuildingType::CENTRE))
 	{
 		Centre_Data += "Centre Job Ratings\n";
 		Centre_Data += girl->JobRating(m_JobManager.JP_CentreManager(girl, true), "-", "Centre Manager");
@@ -1399,7 +1377,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	}
 	//CLINIC
 	string Clinic_Data;
-	if (g_Game.has_building(BuildingType::CLINIC))
+	if (g_Game->has_building(BuildingType::CLINIC))
 	{
 		Clinic_Data += "Clinic Job Ratings\n";
 		Clinic_Data += girl->JobRating(m_JobManager.JP_ChairMan(girl, true), "-", "Chairman");
@@ -1425,7 +1403,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)	// `J` bookmark - Job ratings
 	}
 	//FARM
 	string Farm_Data;
-	if (g_Game.has_building(BuildingType::FARM))
+	if (g_Game->has_building(BuildingType::FARM))
 	{
 		Farm_Data += "Farm Job Ratings\n";
 		Farm_Data += girl->JobRating(m_JobManager.JP_FarmManager(girl, true), "-", "Farm Manger");
@@ -1549,8 +1527,8 @@ string cGirls::GetSimpleDetails(sGirl* girl, int fontsize)
 
 
 	ss << basestr[9] << girl->lookup_where_she_is();
-	ss << "\n" << basestr[10] << g_Game.job_manager().JobName[girl->m_DayJob];
-	ss << "\n" << basestr[11] << g_Game.job_manager().JobName[girl->m_NightJob];
+	ss << "\n" << basestr[10] << g_Game->job_manager().JobName[girl->m_DayJob];
+	ss << "\n" << basestr[11] << g_Game->job_manager().JobName[girl->m_NightJob];
 	ss << "\n" << basestr[2] << (girl->beauty() + girl->charisma()) / 2 << sper;
 	ss << "\n" << statstr[0] << girl->charisma() << sper;
 	ss << "\n" << statstr[1] << girl->beauty() << sper;
@@ -1660,7 +1638,7 @@ int cGirls::GetRebelValue(sGirl * girl, bool matron, JOBS job)
 	chanceNo -= girl->obedience() / 5;
 
 	// having a guarding gang will enforce order
-	sGang* gang = g_Game.gang_manager().GetGangOnMission(MISS_GUARDING);
+	sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
 	if (gang)	chanceNo -= 10;
 
 	chanceNo += girl->tiredness() / 10;	// Tired girls increase Rebel
@@ -1680,7 +1658,7 @@ int cGirls::GetRebelValue(sGirl * girl, bool matron, JOBS job)
 		chanceNo += 15;								// Free girls are a little more rebelious
 		// WD	House take of gold has no affect on rebellion if
 		//		job is paid by player. eg Matron / cleaner
-		if (job == NUM_JOBS || g_Game.job_manager().is_job_Paid_Player(job))
+		if (job == NUM_JOBS || g_Game->job_manager().is_job_Paid_Player(job))
 			houseStat = 0;
 
 		if (houseStat < 60)							// Take less money than normal, lower Rebel
@@ -2039,7 +2017,7 @@ void cGirls::EquipCombat(sGirl* girl)
 			found++;
 			if (girl->m_Inventory[i]->m_Type == INVWEAPON)
 			{
-				g_Game.inventory_manager().Unequip(girl, i);
+			    girl->unequip(i);
 				if (Weap1 == -1) Weap1 = i;
 				else if (Weap2 == -1) Weap2 = i;
 				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Weap1]->m_Cost)
@@ -2052,25 +2030,25 @@ void cGirls::EquipCombat(sGirl* girl)
 			}
 			if (girl->m_Inventory[i]->m_Type == INVARMOR)
 			{
-				g_Game.inventory_manager().Unequip(girl, i);
+			    girl->unequip(i);
 				if (Armor == -1) Armor = i;
 				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Armor]->m_Cost) Armor = i;
 			}
 			if (girl->m_Inventory[i]->m_Type == INVHELMET)
 			{
-				g_Game.inventory_manager().Unequip(girl, i);
+                girl->unequip(i);
 				if (Helm == -1) Helm = i;
 				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Helm]->m_Cost) Helm = i;
 			}
 			if (girl->m_Inventory[i]->m_Type == INVCOMBATSHOES)
 			{
-				g_Game.inventory_manager().Unequip(girl, i);
-				if (Boot == -1) Boot = i;
+                girl->unequip(i);
+                if (Boot == -1) Boot = i;
 				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Boot]->m_Cost) Boot = i;
 			}
 			if (girl->m_Inventory[i]->m_Type == INVSHIELD)
 			{
-				g_Game.inventory_manager().Unequip(girl, i);
+                girl->unequip(i);
 				if (Shield == -1) Shield = i;
 				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Shield]->m_Cost) Shield = i;
 			}
@@ -2087,18 +2065,18 @@ void cGirls::EquipCombat(sGirl* girl)
 			{
 				found++;
 				sInventoryItem* curItem = girl->m_Inventory[i];
-				if (Helm > -1 && curItem->m_Type == INVHAT)		g_Game.inventory_manager().Unequip(girl, i);
-				if (Boot > -1 && curItem->m_Type == INVSHOES)	g_Game.inventory_manager().Unequip(girl, i);
+				if (Helm > -1 && curItem->m_Type == INVHAT)					    girl->unequip(i);
+				if (Boot > -1 && curItem->m_Type == INVSHOES)				    girl->unequip(i);
 			}
 		}
 	}
 
-	if (Armor > -1)		g_Game.inventory_manager().Equip(girl, Armor, false);
-	if (Weap1 > -1)		g_Game.inventory_manager().Equip(girl, Weap1, false);
-	if (Weap2 > -1)		g_Game.inventory_manager().Equip(girl, Weap2, false);
-	if (Helm > -1)		g_Game.inventory_manager().Equip(girl, Helm, false);
-	if (Boot > -1)		g_Game.inventory_manager().Equip(girl, Boot, false);
-	if (Shield > -1)	g_Game.inventory_manager().Equip(girl, Shield, false);
+	if (Armor > -1)		g_Game->inventory_manager().Equip(girl, Armor, false);
+	if (Weap1 > -1)		g_Game->inventory_manager().Equip(girl, Weap1, false);
+	if (Weap2 > -1)		g_Game->inventory_manager().Equip(girl, Weap2, false);
+	if (Helm > -1)		g_Game->inventory_manager().Equip(girl, Helm, false);
+	if (Boot > -1)		g_Game->inventory_manager().Equip(girl, Boot, false);
+	if (Shield > -1)	g_Game->inventory_manager().Equip(girl, Shield, false);
 }
 
 void cGirls::UnequipCombat(sGirl* girl)
@@ -2124,7 +2102,7 @@ void cGirls::UnequipCombat(sGirl* girl)
 				|| curItem->m_Type == INVHELMET
 				|| curItem->m_Type == INVCOMBATSHOES
 				|| curItem->m_Type == INVSHIELD)
-				g_Game.inventory_manager().Unequip(girl, i);
+                girl->unequip(i);
 		}
 	}
 	found = 0;
@@ -2136,7 +2114,7 @@ void cGirls::UnequipCombat(sGirl* girl)
 			found++;
 			sInventoryItem* curItem = girl->m_Inventory[i];
 			if (curItem->m_Type == INVSHOES || curItem->m_Type == INVHAT)
-				g_Game.inventory_manager().Equip(girl, i, false);
+				g_Game->inventory_manager().Equip(girl, i, false);
 		}
 	}
 
@@ -2176,7 +2154,7 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			girl->upd_stat(STAT_HAPPINESS, 10);
 			girl->upd_temp_stat(STAT_LIBIDO, 10, true);
-			g_Game.inventory_manager().Equip(girl, temp, false);
+			g_Game->inventory_manager().Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
 	}
@@ -2209,7 +2187,7 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			girl->upd_stat(STAT_HAPPINESS, 10);
 			girl->upd_temp_stat(STAT_LIBIDO, 5, true);
-			g_Game.inventory_manager().Equip(girl, temp, false);
+			g_Game->inventory_manager().Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
 	}
@@ -2242,7 +2220,7 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			girl->upd_stat(STAT_HAPPINESS, 10);
 			girl->upd_temp_stat(STAT_LIBIDO, 2, true);
-			g_Game.inventory_manager().Equip(girl, temp, false);
+			g_Game->inventory_manager().Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
 	}
@@ -2277,7 +2255,7 @@ void cGirls::UseItems(sGirl* girl)
 		{
 			girl->upd_stat(STAT_HAPPINESS, 10);
 			girl->upd_temp_stat(STAT_LIBIDO, 2, true);
-			g_Game.inventory_manager().Equip(girl, temp, false);
+			g_Game->inventory_manager().Equip(girl, temp, false);
 			girl->m_Withdrawals = 0;
 		}
 	}
@@ -2285,12 +2263,12 @@ void cGirls::UseItems(sGirl* girl)
 	{
 		if (girl->has_item_j("Stop Smoking Now Patch") > -1)
 		{
-			g_Game.inventory_manager().Equip(girl, girl->has_item_j("Stop Smoking Now Patch"), false);
+			g_Game->inventory_manager().Equip(girl, girl->has_item_j("Stop Smoking Now Patch"), false);
 			girl->m_Withdrawals = 0;
 		}
 		else if (girl->has_item_j("Stop Smoking Patch") > -1)
 		{
-			g_Game.inventory_manager().Equip(girl, girl->has_item_j("Stop Smoking Patch"), false);
+			g_Game->inventory_manager().Equip(girl, girl->has_item_j("Stop Smoking Patch"), false);
 			girl->m_Withdrawals = 0;
 		}
 		else if (girl->has_item_j("Cigarette") > -1 ||
@@ -2338,7 +2316,7 @@ void cGirls::UseItems(sGirl* girl)
 				girl->upd_stat(STAT_HEALTH, health);
 				girl->upd_stat(STAT_MANA, mana);
 				girl->upd_temp_stat(STAT_LIBIDO, libido, true);
-				g_Game.inventory_manager().Equip(girl, temp, false);
+				g_Game->inventory_manager().Equip(girl, temp, false);
 				girl->m_Withdrawals = 0;
 			}
 			if (girl->is_dead())
@@ -2570,7 +2548,7 @@ void cGirls::UseItems(sGirl* girl)
 
 				if (checktouseit < (int)curItem->m_Effects.size() / 2) // if more than half of the effects are useful, use it
 				{  // hey, this consumable item might actually be useful... gobble gobble gobble
-					g_Game.inventory_manager().Equip(girl, i, false);
+					g_Game->inventory_manager().Equip(girl, i, false);
 					usedFoodCount++;
 				}
 			}
@@ -2578,7 +2556,7 @@ void cGirls::UseItems(sGirl* girl)
 			// MYR: Girls shouldn't be able (IMHO) to take off things like control bracelets
 			//else if(curItem->m_Badness > 20 && DisobeyCheck(girl, ACTION_GENERAL) && girl->m_EquipedItems[i] == 1)
 			//{
-			//	g_Game.inventory_manager().Unequip(girl, i);
+			//	g_Game->inventory_manager().Unequip(girl, i);
 			//}
 		}
 	}
@@ -2635,7 +2613,7 @@ void cGirls::SellInvItem(sGirl* girl, int num)
 {
 	girl->m_Money += (int)((float)girl->m_Inventory[num]->m_Cost*0.5f);
 	girl->m_NumInventory--;
-	g_Game.inventory_manager().Unequip(girl, num);
+    girl->unequip(num);
 	girl->m_Inventory[num] = nullptr;
 }
 
@@ -3841,7 +3819,7 @@ bool cGirls::RestoreRememberedTrait(sGirl* girl, string trait)
 		if (girl->m_Traits[i] == nullptr)
 		{
 			girl->m_NumTraits++;
-			TraitSpec *addthistrait = g_Traits.GetTrait(trait);
+			TraitSpec *addthistrait = g_Game->traits().GetTrait(trait);
 			girl->m_Traits[i] = addthistrait;
 
 			return true;
@@ -3856,7 +3834,7 @@ void cGirls::RemoveRememberedTrait(sGirl* girl, string name)
 {
 	if (girl)
 	{
-		TraitSpec* trait = g_Traits.GetTrait(name);
+		TraitSpec* trait = g_Game->traits().GetTrait(name);
 		for (int i = 0; i < MAXNUM_TRAITS * 2; i++)	// remove the traits
 		{
 			if (girl->m_RememTraits[i])
@@ -3897,7 +3875,7 @@ void cGirls::AddRememberedTrait(sGirl* girl, string name)
 		if (girl->m_RememTraits[i] == nullptr)
 		{
 			girl->m_NumRememTraits++;
-			girl->m_RememTraits[i] = g_Traits.GetTrait(name);
+			girl->m_RememTraits[i] = g_Game->traits().GetTrait(name);
 			return;
 		}
 	}
@@ -4000,7 +3978,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 			{
 				string msg = girl->m_Realname + " has killed herself since she was unhappy and depressed.";
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
-				g_Game.push_message(ss.str(), COLOR_RED);
+				g_Game->push_message(ss.str(), COLOR_RED);
 				girl->health(-1000);
 			}
 		}
@@ -4009,7 +3987,7 @@ void cGirls::updateHappyTraits(sGirl* girl)
 
 // ----- Sex
 
-void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType)
+void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, SKILLS &SexType)
 {
 	int check = girl->get_skill(SexType);
 	string girlName = girl->m_Realname;
@@ -4124,8 +4102,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		runawaymsg << "\n";
 
 		//What do you do...
-		/* */if (g_Game.player().disposition() < -33) runawaymsg << "She's where she deserves. Why waste a gang's time going to fetch her? Unless you want to punish personally?";
-		else if (g_Game.player().disposition() < 33) runawaymsg << "You could send a gang to retrieve her. Or you could leave her. No hurry.";
+		/* */if (g_Game->player().disposition() < -33) runawaymsg << "She's where she deserves. Why waste a gang's time going to fetch her? Unless you want to punish personally?";
+		else if (g_Game->player().disposition() < 33) runawaymsg << "You could send a gang to retrieve her. Or you could leave her. No hurry.";
 		else runawaymsg << "You should send a gang right away to rescue the poor girl.";
 
 		runawaymsg << "(When you find her, she may be... changed.)";
@@ -4206,7 +4184,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		girl->run_away();
 
 		//Warn the user
-		g_Game.push_message(runawaymsg.str(), COLOR_RED);
+		g_Game->push_message(runawaymsg.str(), COLOR_RED);
 		return;
 	}
 
@@ -4360,7 +4338,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		else if (SexType == SKILL_BDSM && g_Dice.percent(40))
 		{
 			// now, what kind of person are you?
-			if (g_Game.player().disposition() < -40)	//You're related to satan, right?
+			if (g_Game->player().disposition() < -40)	//You're related to satan, right?
 			{
 				introtext += "deep underground to your infamous dungeons.\n";
 				switch (RANDROLL)
@@ -4381,11 +4359,11 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					introtext += "He is speechl(E)ss: ";
 					break;
 				}
-				introtext += "\"" + g_Game.player().RealName() + "'s Dungeon.\"\n";
+				introtext += "\"" + g_Game->player().RealName() + "'s Dungeon.\"\n";
 				if (g_Dice.percent(20)) introtext += "\nHe laughs nervously. \"I do get to come out again, right?\"\n";
 				customer->m_Stats[STAT_HAPPINESS] += 10;	//Evil customer likes evil
 			}
-			else if (g_Game.player().disposition() < 0)		//You're bad, you're bad, you know it.
+			else if (g_Game->player().disposition() < 0)		//You're bad, you're bad, you know it.
 			{
 				introtext += "to your ominous dungeons.\n";
 				switch (RANDROLL)
@@ -4406,9 +4384,9 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					introtext += "He is speechl(E)ss: \"";
 					break;
 				}
-				introtext += g_Game.player().RealName() + "'s Dungeon.\"\n";
+				introtext += g_Game->player().RealName() + "'s Dungeon.\"\n";
 			}
-			else if (g_Game.player().disposition() < 40)		//You're good
+			else if (g_Game->player().disposition() < 40)		//You're good
 			{
 				introtext += "to the dungeons.\n";
 			}
@@ -4529,7 +4507,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		if (g_Dice.percent(willfullness) && (pigHeaded || highStatus))
 		{
 			//Initiate locally used stuff
-			int newSexType = 0;			//What will she change it to?
+			SKILLS newSexType = SexType;			//What will she change it to?
 			bool resisting = true;		//Does she even resist? Low-level non-intrusive requests will be honored
 			bool forced = false;		//in case the customer overpowers her
 			bool askedForHerTopSkill = false;	//in case what she's refusing is already her top skill.
@@ -4590,8 +4568,10 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 
 			//Find top skill - what 'skill' is she most comfortable with? Working from the most extreme down...
-			int TopSkillID = 0, TopSkillLev = 0;
+			SKILLS TopSkillID = NUM_SKILLS;
+			int TopSkillLev = 0;
 
+			/// TODO this code is simply wrong. This will always result in strip.
 			if (TopSkillLev < girl->beastiality())	TopSkillID = SKILL_BEASTIALITY;
 			if (TopSkillLev < girl->anal())			TopSkillID = SKILL_ANAL;
 			if (TopSkillLev < girl->normalsex())	TopSkillID = SKILL_NORMALSEX;
@@ -5283,7 +5263,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				//default harm stored in local vars to avoid repeat update calls
 				int upset = 4, damage = 4, PCLove = -1, PCFear = 1;
 
-				bool guardingGang = (!g_Game.gang_manager().gangs_watching_girls().empty());
+				bool guardingGang = (!g_Game->gang_manager().gangs_watching_girls().empty());
 				bool guardingGirl = girl->m_Building->num_girls_on_job(JOB_SECURITY, Day0Night1) > 0;
 
 				if (guardingGirl) //there's a girl watching the place
@@ -5291,7 +5271,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					sGirl * guard = random_girl_on_job(*girl->m_Building, JOB_SECURITY, Day0Night1);
 					string guardName = guard->m_Realname;
 
-					if (g_Game.player().disposition() > 30)						//Player is Actively Good.
+					if (g_Game->player().disposition() > 30)						//Player is Actively Good.
 					{
 						sexMessage << "Knowing you wouldn't want things to go too far, your guard, " << guardName << ", intervened, instructing the customer to take it easy on "
 							<< girlName << " or get banned from your establishment.\n";
@@ -5324,7 +5304,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				}
 				else if (guardingGang)
 				{
-					if (g_Game.player().disposition() > 30)						//Player is Actively Good.
+					if (g_Game->player().disposition() > 30)						//Player is Actively Good.
 					{
 						sexMessage << "Knowing you wouldn't want things to go too far, your defending gang intervened, ordering the customer to take it easy on "
 							<< girlName << " or get banned from your establishment.\n";
@@ -5430,7 +5410,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				//default harm stored in local vars to avoid repeat update calls
 				int upset = 4, damage = 4, PCLove = -1, PCFear = 1;
 
-				bool guardingGang = (!g_Game.gang_manager().gangs_watching_girls().empty());
+				bool guardingGang = (!g_Game->gang_manager().gangs_watching_girls().empty());
 				bool guardingGirl = girl->m_Building->num_girls_on_job(JOB_SECURITY, Day0Night1) > 0;
 
 				if (guardingGirl) //there's a girl watching the place
@@ -5438,7 +5418,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					sGirl * guard = random_girl_on_job(*girl->m_Building, JOB_SECURITY, Day0Night1);
 					string guardName = guard->m_Realname;
 
-					if (g_Game.player().disposition() > 30)						//Player is Actively Good.
+					if (g_Game->player().disposition() > 30)						//Player is Actively Good.
 					{
 						sexMessage << "Knowing you wouldn't want things to go too far, your guard, " << guardName << ", intervened, instructing the customer to take it easy on "
 							<< girlName << " or get banned from your establishment.\n";
@@ -5471,7 +5451,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				}
 				else if (guardingGang)
 				{
-					if (g_Game.player().disposition() > 30)						//Player is Actively Good.
+					if (g_Game->player().disposition() > 30)						//Player is Actively Good.
 					{
 						sexMessage << "Knowing you wouldn't want things to go too far, your defending gang intervened, ordering the customer to take it easy on "
 							<< girlName << " or get banned from your establishment.\n";
@@ -5884,7 +5864,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					<< "he had a better time.";
 				customer->m_Stats[STAT_HAPPINESS] += 10;
 			}
-			else if (g_Dice.percent(35) && g_Game.player().disposition() > 40) //bonus if you are nice
+			else if (g_Dice.percent(35) && g_Game->player().disposition() > 40) //bonus if you are nice
 			{
 				sexMessage << girlName << " is not great at sex. However, inspired by your goodness and not wanting to let you down, she tried her best to give the customer a decent fuck.";
 				customer->m_Stats[STAT_HAPPINESS] += 20;
@@ -5961,7 +5941,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << girlName << " is okay at sex, but the customer figured out: to have a really great time you have to grip dat ass and do her from behind.";
 				customer->m_Stats[STAT_HAPPINESS] += 20;
 			}
-			else if (g_Dice.percent(35) && (HateLove > 0) && g_Game.player().disposition() > 40) //bonus if you are nice
+			else if (g_Dice.percent(35) && (HateLove > 0) && g_Game->player().disposition() > 40) //bonus if you are nice
 			{
 				sexMessage << girlName << " is inspired by your kindness and wants you to succeed. She tried her best to give the customer great sex.";
 				customer->m_Stats[STAT_HAPPINESS] += 20;
@@ -6036,7 +6016,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << "Somehow " << girlName << " had gotten hold of alcohol. She was completely wild, fucking the customer like crazy even after he came.";
 				customer->m_Stats[STAT_HAPPINESS] += 5;
 			}
-			else if (g_Dice.percent(35) && (HateLove > 0) && (g_Game.player().disposition() > 40)) //bonus if you are nice
+			else if (g_Dice.percent(35) && (HateLove > 0) && (g_Game->player().disposition() > 40)) //bonus if you are nice
 			{
 				sexMessage << girlName << " knows you are the best " << (girl->is_slave() ? "master" : "brother owner")
 					<< " in town, and pulls out all the stops to give the customer amazing sex.";
@@ -6153,7 +6133,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				sexMessage << "Somehow " << girlName << " was drunk. She was completely wild and uninhibited fucking and sucking the customer like crazy even after he came twice.";
 				customer->m_Stats[STAT_HAPPINESS] += 15;
 			}
-			else if (g_Dice.percent(35) && (HateLove > 0) && (g_Game.player().disposition() > 40)) //bonus if you are nice
+			else if (g_Dice.percent(35) && (HateLove > 0) && (g_Game->player().disposition() > 40)) //bonus if you are nice
 			{
 				sexMessage << girlName << " knows you are the kindest " << (girl->is_slave() ? "master" : "brother owner")
 					<< " in town, and feels like she owes you. She uses all her skills to make sure the customer has an incredible time.";
@@ -6274,7 +6254,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//	{
 			//		sexMessage << ", and against the odds managed to make him come in her mouth.\n\"She took a while, but seemed to have some basic idea,\" he said,"
 			//			<< " rating her 'Age Questionable.'\nThere is no fine, but this rating raises your suspicion.";
-			//		g_Game.player().suspicion(10);
+			//		g_Game->player().suspicion(10);
 			//	}
 			//	else
 			//	{
@@ -6313,8 +6293,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//			sexMessage << "she... Well, the list goes on. You get the picture.\"\n \n";
 			//		}
 			//		sexMessage << "He finally rated her 'underage' and fined you 1,000 gold on the spot, and filed a report against you with the City Hall.\nThis will not help your reputation.";
-			//		g_Game.gold().misc_debit(1000);
-			//		g_Game.player().suspicion(10);
+			//		g_Game->gold().misc_debit(1000);
+			//		g_Game->player().suspicion(10);
 			//	}
 			//}
 			else if (g_Dice.percent(30) && (girl->has_trait("Shy") || girl->has_trait("Nervous")|| girl->has_trait("Lolita")))
@@ -6412,12 +6392,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 //				if (evidence > 3)
 //				{
 //					sexMessage << "\nOn this 'evidence' he rated her \"Likely Underage\" - fining you 500 gold and filing a report against you.\n\""
-//						<< ((g_Game.player().Gender() == GENDER_MALE) ? "Men" : "Women")
+//						<< ((g_Game->player().Gender() == GENDER_MALE) ? "Men" : "Women")
 //						<< " like you disgust me!\"\n";
-//					g_Game.gold().misc_debit(500);
+//					g_Game->gold().misc_debit(500);
 //				}
 //				else sexMessage << "He finally rated her \"Age Questionable - follow up visit required\" - this significantly raises suspicion on your establishments.";
-//				g_Game.player().suspicion(10);
+//				g_Game->player().suspicion(10);
 //			}
 			else if (g_Dice.percent(20) && (girl->has_trait("Aggressive") || girl->has_trait("Twisted") || girl->has_trait("Sadistic")))
 			{
@@ -6461,7 +6441,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					<< girl->age() << ", but in the absense of documentation, he demanded - under City Statute 2218-C - that she 'prove Majority' by 'demonstrating adult-level competence' in oral sex.\n"
 					<< "He carried out a thorough test and finally rated her skills 'good' - \"She was very efficient,\" he nodded. \"I tested her three times and her skill certainly matches an appropriate age.\"\n"
 					<< "He rated her age 'legal' - this slightly reduces suspicion around your establishments.";
-				g_Game.player().suspicion(-5);
+				g_Game->player().suspicion(-5);
 			}*/
 			else if (g_Dice.percent(50) && girl->has_trait("Dick-Sucking Lips"))
 			{
@@ -6534,7 +6514,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					<< girl->age() << ", but in the absense of documentation, he demanded - under City Statute 2218-C - that she 'prove Majority' by 'demonstrating adult-level competence' in oral sex.\n"
 					<< "He carried out a thorough test and finally rated her skills 'Excellent' - \"A girl who can do that,\" he said. \"Is definitely old enough in my book.\"\n"
 					<< "He rated her age 'Legal' and left praising her skills - this reduces suspicion around your establishments and improves her fame.";
-				g_Game.player().suspicion(-15);
+				g_Game->player().suspicion(-15);
 				girl->upd_stat(STAT_FAME, 5);
 		}*/
 			else if (g_Dice.percent(65) && girl->has_trait("Cum Addict")) //added a roll, just so that it doesn't always overpower all other options
@@ -7198,7 +7178,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			//sexMessage << "(Z text not done)\n";
 			//SIN - ADDED
 			sexMessage << "This customer wanted to see an undead girl fucked by a beast. ";
-			if (g_Game.storage().beasts() == 0)
+			if (g_Game->storage().beasts() == 0)
 			{
 				sexMessage << "Unfortunately there were no beasts, so a fake was used. It's not the same.\n \n";
 				customer->m_Stats[STAT_HAPPINESS] -= 30;
@@ -7225,7 +7205,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				if (g_Dice.percent(girl->combat()))
 				{
 					sexMessage << " quickly tearing the poor creature apart and feasting on its flesh.\nThe customer seemed a little shocked.\n";
-					g_Game.storage().add_to_beasts(-1);
+					g_Game->storage().add_to_beasts(-1);
 					girl->happiness(+5);
 					girl->health(+5);
 					customer->m_Stats[STAT_HAPPINESS] -= 10;
@@ -7242,7 +7222,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		}
 
 		//TODO Gondra: rework this with the standard system I used in the prior Cases - although this will require a bit more work.
-		if (g_Game.storage().beasts() == 0)
+		if (g_Game->storage().beasts() == 0)
 		{
 			sexMessage << girlName << " found that there were no beasts available, so some fake ones were used. This disappointed the customer somewhat.";
 			customer->m_Stats[STAT_HAPPINESS] -= 10;
@@ -7253,7 +7233,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (g_Dice.percent(harmchance))
 			{
 				sexMessage << girlName << " accidentally harmed some beasts during the act.\n";
-				g_Game.storage().add_to_beasts(-((g_Dice % 3) + 1));
+				g_Game->storage().add_to_beasts(-((g_Dice % 3) + 1));
 			}
 			else if (g_Dice.percent(1 +
 				(girl->has_trait("Aggressive") ? 3 : 0) +
@@ -7263,7 +7243,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				(girl->has_trait("Twisted") ? 1 : 0)))
 			{
 				sexMessage << girlName << " \"accidentally\" harmed a beast during the act.\n";//Made it actually use quote marks CRAZY
-				g_Game.storage().add_to_beasts(-1);
+				g_Game->storage().add_to_beasts(-1);
 			}
 
 			if (check < 20)		//Gondra: if the girl is unskilled show one of these messages
@@ -7972,8 +7952,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			if (keep)
 			{
 
-				if (g_Dice.percent(66)) girl->add_inv(g_Game.inventory_manager().GetItem("Buttplug")), message += "this buttplug.";
-				else girl->add_inv(g_Game.inventory_manager().GetItem("Anal Beads")), message += "these anal beads.";
+				if (g_Dice.percent(66)) girl->add_inv(g_Game->inventory_manager().GetItem("Buttplug")), message += "this buttplug.";
+				else girl->add_inv(g_Game->inventory_manager().GetItem("Anal Beads")), message += "these anal beads.";
 			}
 		}
 	}break;
@@ -8025,8 +8005,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			if (keep)
 			{
-				if (g_Dice.percent(66)) girl->add_inv(g_Game.inventory_manager().GetItem("Spiked Collar")), message += "spiked collar.";
-				else girl->add_inv(g_Game.inventory_manager().GetItem("Slut Collar")), message += "'slut' collar.";
+				if (g_Dice.percent(66)) girl->add_inv(g_Game->inventory_manager().GetItem("Spiked Collar")), message += "spiked collar.";
+				else girl->add_inv(g_Game->inventory_manager().GetItem("Slut Collar")), message += "'slut' collar.";
 			}
 		}
 	}break;
@@ -8095,8 +8075,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 			}
 			if (keep)
 			{
-				if (g_Dice.percent(66)) girl->add_inv(g_Game.inventory_manager().GetItem("Dildo")), message += "dildo.";
-				else girl->add_inv(g_Game.inventory_manager().GetItem("Studded Dildo")), message += "studded dildo.";
+				if (g_Dice.percent(66)) girl->add_inv(g_Game->inventory_manager().GetItem("Dildo")), message += "dildo.";
+				else girl->add_inv(g_Game->inventory_manager().GetItem("Studded Dildo")), message += "studded dildo.";
 			}
 		}
 	}break;
@@ -8137,8 +8117,8 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		{
 			bool keep = false;
 			message += "\n \nAfterwards he gave " + girlName + " a gift to help her give head in future. She got ";
-			if (g_Dice.percent(50)) girl->add_inv(g_Game.inventory_manager().GetItem("Oral Sex Candy")), message += "some delicious oral sex candies.";
-			else girl->add_inv(g_Game.inventory_manager().GetItem("Knee Pads")), message += "some comfortable knee pads.";
+			if (g_Dice.percent(50)) girl->add_inv(g_Game->inventory_manager().GetItem("Oral Sex Candy")), message += "some delicious oral sex candies.";
+			else girl->add_inv(g_Game->inventory_manager().GetItem("Knee Pads")), message += "some comfortable knee pads.";
 		}
 	}break;
 
@@ -8217,7 +8197,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 		// if they're both happy afterward, it's good sex which modifies the chance of pregnancy
 		good = (customer->happiness() >= 60 && girl->happiness() >= 60);
 		// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
-		if (g_Game.storage().beasts() > 0)
+		if (g_Game->storage().beasts() > 0)
 		{
 			contraception = girl->calc_insemination(*GetBeast(), good);
 			STDchance += (contraception ? 2 : 20);
@@ -8236,12 +8216,12 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					message += "Annoyed, she later threw out this demeaning trash.";
 					keep = false;
 				}
-				if (keep) girl->add_inv(g_Game.inventory_manager().GetItem("Pet Collar"));
+				if (keep) girl->add_inv(g_Game->inventory_manager().GetItem("Pet Collar"));
 			}
 			else
 			{
 				message += "\n \nAfterward the customer gave " + girlName + " some cute Paw-Print Teddy lingerie as a gift.";
-				girl->add_inv(g_Game.inventory_manager().GetItem("Paw-Print Teddy"));
+				girl->add_inv(g_Game->inventory_manager().GetItem("Paw-Print Teddy"));
 			}
 		}
 	}break;
@@ -8305,17 +8285,17 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 				else
 				{
 					message += "She decided to keep it.";
-					girl->add_inv(g_Game.inventory_manager().GetItem("Goblet of Cum"));
+					girl->add_inv(g_Game->inventory_manager().GetItem("Goblet of Cum"));
 				}
 			}
 			else if (customer->m_Stats[STAT_HAPPINESS] > 90)
 			{
-				girl->add_inv(g_Game.inventory_manager().GetItem("Ring of the Hivemind"));
+				girl->add_inv(g_Game->inventory_manager().GetItem("Ring of the Hivemind"));
 				message += "\n \nThe grateful group were so exhausted they forgot to take their Ring of Hivemind. It's hers now.";
 			}
 			else
 			{
-				girl->add_inv(g_Game.inventory_manager().GetItem("Herpes Cure"));
+				girl->add_inv(g_Game->inventory_manager().GetItem("Herpes Cure"));
 				message += "\n \nWorryingly, as she tidied up she found a Herpes Cure dropped under the bed. It's hers now.";
 			}
 		}
@@ -8352,7 +8332,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					message += "\nBeing straight, she had no desire to keep it and threw it out later.";
 					keep = false;
 				}
-				if (keep) girl->add_inv(g_Game.inventory_manager().GetItem("Dildo"));
+				if (keep) girl->add_inv(g_Game->inventory_manager().GetItem("Dildo"));
 			}
 			else
 			{
@@ -8362,7 +8342,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 					message += "\nBeing straight, she found it kinda gross and threw it out.";
 					keep = false;
 				}
-				if (keep) girl->add_inv(g_Game.inventory_manager().GetItem("Manual of Two Roses"));
+				if (keep) girl->add_inv(g_Game->inventory_manager().GetItem("Manual of Two Roses"));
 			}
 		}
 	}break;
@@ -8630,7 +8610,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 	if (cfg.debug.log_debug())
 	{
-		g_LogFile.os() << "STD Debug ::: Sex Type : " << sGirl::skill_names[SexType]
+		g_LogFile.os() << "STD Debug ::: Sex Type : " << get_skill_name((SKILLS)SexType)
 			<< " :: Contraception: " << (contraception ? "True" : "False")
 			<< " :: Health: " << health
 			<< " :: STD Chance: " << STDchance
@@ -10756,7 +10736,7 @@ string cGirls::GetRandomLesString()
 		OStr << " brothel.";
 		break;
 	case 2: {
-        auto brothel = g_Game.buildings().building_with_type(BuildingType::BROTHEL, g_Dice % g_Game.buildings().num_buildings(BuildingType::BROTHEL));
+        auto brothel = g_Game->buildings().building_with_type(BuildingType::BROTHEL, g_Dice % g_Game->buildings().num_buildings(BuildingType::BROTHEL));
         auto girl = brothel->find_random_girl();
         // TODO(buildings) manager level random girl
         /* */if (girl == nullptr) OStr << "a girl";
@@ -11435,7 +11415,7 @@ void cGirls::updateSTD(sGirl* girl)
 		{
 			stringstream cure;
 			cure << girl->m_Realname << " was given an " << cureitem << " from the brothel's stock to cure the disease.";
-			g_Game.player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
+			g_Game->player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
 		}
 		else
 		{
@@ -11451,7 +11431,7 @@ void cGirls::updateSTD(sGirl* girl)
 		{
 			stringstream cure;
 			cure << girl->m_Realname << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
-            g_Game.player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
+            g_Game->player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
 		}
 		else
 		{
@@ -11467,7 +11447,7 @@ void cGirls::updateSTD(sGirl* girl)
 		{
 			stringstream cure;
 			cure << girl->m_Realname << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
-            g_Game.player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
+            g_Game->player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
 		}
 		else
 		{
@@ -11483,7 +11463,7 @@ void cGirls::updateSTD(sGirl* girl)
 		{
 			stringstream cure;
 			cure << girl->m_Realname << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
-            g_Game.player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
+            g_Game->player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
 		}
 		else
 		{
@@ -11505,7 +11485,7 @@ void cGirls::updateSTD(sGirl* girl)
 	{
 		string msg = girl->m_Realname + " has died from STDs.";
 		girl->m_Events.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
-		g_Game.push_message(msg, COLOR_RED);
+		g_Game->push_message(msg, COLOR_RED);
 	}
 }
 
@@ -11599,7 +11579,7 @@ ostream& operator<<(ostream& os, sGirl &g)
 	{
 		os.width(20);
 		os.flags(ios::left);
-		os << g.stat_names[i] << "\t: " << int(g.m_Stats[i]) << endl;
+		os << get_stat_names()[i] << "\t: " << int(g.m_Stats[i]) << endl;
 	}
 	os << endl;
 
@@ -11607,7 +11587,7 @@ ostream& operator<<(ostream& os, sGirl &g)
 	{
 		os.width(20);
 		os.flags(ios::left);
-		os << g.skill_names[i] << "\t: " << int(g.m_Skills[i]) << endl;
+		os << get_skill_name((SKILLS)i) << "\t: " << int(g.m_Skills[i]) << endl;
 	}
 	os << endl;
 
@@ -11803,7 +11783,6 @@ bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool Pla
 	// bump the age - if it's still not grown, go home
 	child->m_Age++;		if (child->m_Age < cfg.pregnancy.weeks_till_grown())	return false;
 
-	//cTariff tariff;
 	if (child->m_MultiBirth == 1)	// `J` only 1 child so use the old code
 	{
 		// we need a coming of age ceremony
@@ -11853,13 +11832,13 @@ void cGirls::handle_daughter(sGirl* mom, const sChild* child, string& summary)
     if (!sprog && playerfather &&
         GetNumYourDaughterGirls() > 0)                // this should check all your daughter girls that apply
     {
-        sprog = g_Game.girl_pool().GetUniqueYourDaughterGirl(
+        sprog = g_Game->girl_pool().GetUniqueYourDaughterGirl(
                 MomIsMonster);                        // first try to get the same human/nonhuman as mother
         if (!sprog && MomIsMonster)
-            sprog = g_Game.girl_pool().GetUniqueYourDaughterGirl(true);    // next, if mom is nonhuman, try to get a human daughter
+            sprog = g_Game->girl_pool().GetUniqueYourDaughterGirl(true);    // next, if mom is nonhuman, try to get a human daughter
     }
     if (!sprog) {
-        sprog = g_Game.CreateRandomGirl(17, false, slave, false, MomIsMonster, false, false, playerfather);
+        sprog = g_Game->CreateRandomGirl(17, false, slave, false, MomIsMonster, false, false, playerfather);
     }
     // check for incest, get the odds on abnormality
     int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
@@ -11918,8 +11897,8 @@ void cGirls::handle_daughter(sGirl* mom, const sChild* child, string& summary)
     sprog->m_Stats[STAT_EXP]       = 0;
 
     // `J` set her birthday
-    int m0 = g_Game.date().month;
-    int d0 = g_Game.date().day;
+    int m0 = g_Game->date().month;
+    int d0 = g_Game->date().day;
     d0 -= g_Dice % 7;
     if (d0 < 1) {
         d0 += 30;
@@ -11944,13 +11923,13 @@ void cGirls::handle_daughter(sGirl* mom, const sChild* child, string& summary)
     string prevsurname = sprog->m_Surname;        // save the temporary surname incase it is needed later
     string biography;
     if (playerfather) {
-        if (!g_Game.player().Surname().empty()) {
-            sprog->m_Surname = g_Game.player().Surname();
+        if (!g_Game->player().Surname().empty()) {
+            sprog->m_Surname = g_Game->player().Surname();
         } else    // probably shouldn't happen because there is a default surname
         {
             sprog->m_Surname = "Playerchild";    // generic name
         }
-        biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + g_Game.player().RealName();
+        biography = "Daughter of " + mom->m_Realname + " and the Brothel owner, Mr. " + g_Game->player().RealName();
     } else {
         if (mom->m_Surname.length() > 0)    // mom has a surname already
         {
@@ -11967,7 +11946,7 @@ void cGirls::handle_daughter(sGirl* mom, const sChild* child, string& summary)
     sprog->m_Stats[STAT_HOUSE] = (slave) ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
 
     // TODO decide where to send the new girl.
-    g_Game.dungeon().AddGirl(sprog, DUNGEON_KID);
+    g_Game->dungeon().AddGirl(sprog, DUNGEON_KID);
     mom->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 }
 
@@ -11978,14 +11957,14 @@ void cGirls::handle_son(sGirl* mom, string& summary, bool PlayerControlled)
     summary += "A son has grown of age. ";
     mom->m_States |= (1 << STATUS_HAS_SON);
     ss << "Her son has grown of age";
-    sGang * gang = g_Game.gang_manager().GetGangNotFull(1, false);
+    sGang * gang = g_Game->gang_manager().GetGangNotFull(1, false);
     if (gang && gang->m_Num < 15) {
         gang->m_Num++;
         ss << " and was sent to join your gang " << gang->name() << ".\n";
     } else if (PlayerControlled)    // get the going rate for a male slave and sell the poor sod
     {
-        int gold = tariff.male_slave_sales();
-        g_Game.gold().slave_sales(gold);
+        int gold = g_Game->tariff().male_slave_sales();
+        g_Game->gold().slave_sales(gold);
         ss << " and has been sold into slavery.\n";
         ss << "You make " << gold << " gold selling the boy.\n";
     } else    // or send him on his way
@@ -12005,7 +11984,7 @@ void cGirls::UncontrolledPregnancies()
 	string summary;
     for(auto current : m_Girls)
     {
-        g_Game.girl_pool().HandleChildren(current, summary, false);
+        g_Game->girl_pool().HandleChildren(current, summary, false);
 	}
 }
 
@@ -12061,7 +12040,6 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 	*	OK, it's time to give birth
 	*	start with some basic bookkeeping.
 	*/
-	//cTariff tariff;
 	stringstream ss;
 
 	girl->m_WeeksPreg = 0;
@@ -12306,12 +12284,12 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 		}
 		if (add > 0)
 		{
-			g_Game.storage().add_to_beasts(add);
+			g_Game->storage().add_to_beasts(add);
 		}
 		if (sell > 0)
 		{
-			gold = sell * tariff.creature_sales();
-			g_Game.gold().creature_sales(gold);
+			gold = sell * g_Game->tariff().creature_sales();
+			g_Game->gold().creature_sales(gold);
 		}
 
 		if (died > 0)
@@ -12355,13 +12333,13 @@ bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool Play
 			{
 				if (sell == 1) ss << "It was";
 				else ss << "They were " << (sell ==2 ? "both" : "all");
-				ss << " sold for " << tariff.creature_sales() << "gold" << (sell > 1 ? " each" : "") << ".";
+				ss << " sold for " << g_Game->tariff().creature_sales() << "gold" << (sell > 1 ? " each" : "") << ".";
 			}
 			else
 			{
 				if (sell == 1) ss << "One of them was";
 				else ss << sell << " of them were";
-				ss << " sold for " << tariff.creature_sales() << " gold" << (sell > 1 ? " each" : "") << ".";
+				ss << " sold for " << g_Game->tariff().creature_sales() << " gold" << (sell > 1 ? " each" : "") << ".";
 			}
 			if (sell > 1) ss << "\nYou made " << int(gold) << " gold for selling " << (sell == 2 ? "both" : "all") << " of them.";
 		}
@@ -12665,7 +12643,7 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl * girl, sCust
 	if (g_Dice.percent(0.1))	// 0.001 chance of false positive
 	{
 		ss << girlName << " thought she detected that her customer had a disease and refused to allow them to touch her just to be safe.";
-		g_Game.push_message(ss.str(), COLOR_RED);
+		g_Game->push_message(ss.str(), COLOR_RED);
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return true;
 	}
@@ -12770,7 +12748,7 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl * girl, sCust
 	if(found_disease) {
         ss << girlName << " detected that her customer has " << found_disease <<
             " and refused to allow them to touch her.";
-        g_Game.push_message(ss.str(), COLOR_RED);
+        g_Game->push_message(ss.str(), COLOR_RED);
         girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
         brothel->m_RejectCustomersDisease++;
 	}

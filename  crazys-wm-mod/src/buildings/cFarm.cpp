@@ -21,7 +21,6 @@
 
 #include "cFarm.h"
 #include "cGangs.h"
-#include "strnatcmp.h"
 #include "Game.hpp"
 
 extern cRng             g_Dice;
@@ -99,7 +98,7 @@ void sFarm::UpdateGirls(bool is_night)		// Start_Building_Process_B
 		girlName = current->m_Realname;
 
 		// do their job
-		refused = g_Game.job_manager().JobFunc[sw](current, is_night, summary);
+		refused = g_Game->job_manager().JobFunc[sw](current, is_night, summary, g_Dice);
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -114,7 +113,7 @@ void sFarm::UpdateGirls(bool is_night)		// Start_Building_Process_B
 		}
 		else
 		{
-			ss << g_Game.job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
+			ss << g_Game->job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
 			m_Fame += current->fame();
@@ -139,7 +138,7 @@ void sFarm::UpdateGirls(bool is_night)		// Start_Building_Process_B
 		girlName = current->m_Realname;
 
 		// do their job
-		refused = g_Game.job_manager().JobFunc[sw](current, is_night, summary);
+		refused = g_Game->job_manager().JobFunc[sw](current, is_night, summary, g_Dice);
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -154,7 +153,7 @@ void sFarm::UpdateGirls(bool is_night)		// Start_Building_Process_B
 		}
 		else
 		{
-			ss << g_Game.job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
+			ss << g_Game->job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
 			m_Fame += current->fame();

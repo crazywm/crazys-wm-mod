@@ -24,9 +24,7 @@
 #include <sstream>
 #include "cGangs.h"
 
-extern cRng g_Dice;
-
-bool cJobManager::WorkArenaJousting(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkArenaJousting(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
 	int actiontype = ACTION_COMBAT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
@@ -38,7 +36,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, bool Day0Night1, string& summar
 	}
 	ss << " worked as a jouster in the arena.\n";
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	int wages = 50, tips = 0, work = 0;
 	//string girls = GetNumGirlsOnJob(0, JOB_JOUSTING, Day0Night1)
 	//int winner = > JP_ArenaJousting;
@@ -110,7 +108,7 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, bool Day0Night1, string& summar
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	int roll_max = (girl->fame() + girl->charisma());
 	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
+	wages += 10 + rng%roll_max;
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
@@ -124,8 +122,8 @@ bool cJobManager::WorkArenaJousting(sGirl* girl, bool Day0Night1, string& summar
 
     girl->fame(1);
     girl->exp(xp);
-    girl->animalhandling(g_Dice%skill);
-    girl->combat(g_Dice%skill+2);
+    girl->animalhandling(rng%skill);
+    girl->combat(rng%skill+2);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	//gained
@@ -152,49 +150,7 @@ double cJobManager::JP_ArenaJousting(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Aggressive"))				jobperformance += 20;
-	if (girl->has_trait( "Charismatic"))				jobperformance += 10;
-	if (girl->has_trait( "Psychic"))					jobperformance += 10;
-	if (girl->has_trait( "Strong"))					jobperformance += 10;
-	if (girl->has_trait( "Assassin"))					jobperformance += 10;
-	if (girl->has_trait( "Sadistic"))					jobperformance += 10;
-	if (girl->has_trait( "Merciless"))				jobperformance += 10;
-	if (girl->has_trait( "Long Legs"))				jobperformance += 5;	// be able to ride better
-	if (girl->has_trait( "Quick Learner"))			jobperformance += 5;
-	if (girl->has_trait( "Strong Magic"))				jobperformance += 5;	// use magic to cheat
-	if (girl->has_trait( "Manly"))					jobperformance += 5;
-	if (girl->has_trait( "Fearless"))					jobperformance += 5;
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))				jobperformance -= 50;
-	if (girl->has_trait( "Nervous"))					jobperformance -= 30;
-	if (girl->has_trait( "Clumsy"))					jobperformance -= 20;
-	if (girl->has_trait( "Meek"))						jobperformance -= 20;
-	if (girl->has_trait( "One Eye"))					jobperformance -= 15;
-	if (girl->has_trait( "Eye Patch"))				jobperformance -= 15;
-	if (girl->has_trait( "Fragile"))					jobperformance -= 10;
-	if (girl->has_trait( "Abnormally Large Boobs"))	jobperformance -= 10;	// boobs get in the way
-	if (girl->has_trait( "Slow Learner"))				jobperformance -= 5;
-	if (girl->has_trait( "Elegant"))					jobperformance -= 5;	// wouldnt want to do this
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 40;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 60;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 125;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 60;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 50;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 150;
-	if (girl->has_trait( "Blind"))		jobperformance -= 75;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 15;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
+    jobperformance += girl->get_trait_modifier("work.jousting");
 
 	return jobperformance;
 }

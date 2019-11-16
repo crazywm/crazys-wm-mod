@@ -22,12 +22,10 @@
 #include <sstream>
 #include "Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Centre - Therapy
-bool cJobManager::WorkCentreAngerManagement(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkCentreAngerManagement(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
@@ -54,11 +52,11 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, bool Day0Night1, string
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 		return false;	// not refusing
 	}
-	if (g_Dice.percent(20) || girl->disobey_check(actiontype, JOB_ANGER))	// `J` - yes, OR, not and.
+	if (rng.percent(20) || girl->disobey_check(actiontype, JOB_ANGER))	// `J` - yes, OR, not and.
 	{
 		girl->upd_Enjoyment(actiontype, -1);
 		if (Day0Night1) girl->m_WorkingDay--;
-		if (g_Dice.percent(10))
+		if (rng.percent(10))
 		{
 			girl->upd_Enjoyment(actiontype, -5);
 			bool runaway = false;
@@ -73,12 +71,12 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, bool Day0Night1, string
 				counselor->upd_Enjoyment(ACTION_WORKCOUNSELOR, -5);
 				counselor->upd_Enjoyment(ACTION_COMBAT, -2);
 
-				if (g_Dice.percent(10))	// and ran away
+				if (rng.percent(10))	// and ran away
 				{
 					runaway = true;
 					stringstream smess;
 					smess << girlName << " fought with her counselor and ran away.\nSend your goons after her to attempt recapture.\nShe will escape for good after 6 weeks.\n";
-					g_Game.push_message(smess.str(), COLOR_RED);
+					g_Game->push_message(smess.str(), COLOR_RED);
 
 					girl->m_Building->remove_girl(girl);
 					girl->m_RunAway = 6;
@@ -119,13 +117,13 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, bool Day0Night1, string
 
 	if (!Day0Night1) girl->m_WorkingDay++;
 
-	girl->happiness(g_Dice % 30 - 20);
-	girl->spirit(g_Dice % 5 - 10);
-	girl->mana(g_Dice % 5 - 10);
+	girl->happiness(rng % 30 - 20);
+	girl->spirit(rng % 5 - 10);
+	girl->mana(rng % 5 - 10);
 
 	// `J` % chance a counselor will save her if she almost dies
-	int healthmod = (g_Dice % 15) - 11;
-	if (girl->health() + healthmod < 1 && g_Dice.percent(95 + (girl->health() + healthmod)) &&
+	int healthmod = (rng % 15) - 11;
+	if (girl->health() + healthmod < 1 && rng.percent(95 + (girl->health() + healthmod)) &&
 		(brothel->num_girls_on_job(JOB_COUNSELOR, true) > 0 || brothel->num_girls_on_job(JOB_COUNSELOR, false) > 0))
 	{	// Don't kill the girl from therapy if a Counselor is on duty
         girl->set_stat(STAT_HEALTH, 1);
@@ -151,9 +149,9 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, bool Day0Night1, string
 
 	if (girl->m_WorkingDay >= 3 && Day0Night1)
 	{
-		enjoy += g_Dice % 10;
-		girl->upd_Enjoyment(ACTION_WORKCOUNSELOR, g_Dice % 6 - 2);	// `J` She may want to help others with their problems
-		girl->happiness(g_Dice % 10);
+		enjoy += rng % 10;
+		girl->upd_Enjoyment(ACTION_WORKCOUNSELOR, rng % 6 - 2);	// `J` She may want to help others with their problems
+		girl->happiness(rng % 10);
 
 		ss << "The therapy is a success.\n";
 		msgtype = EVENT_GOODNEWS;
@@ -163,7 +161,7 @@ bool cJobManager::WorkCentreAngerManagement(sGirl* girl, bool Day0Night1, string
 		while (!cured && tries > -2)
 		{
 			tries--;
-			int t = max(0, g_Dice % tries);
+			int t = max(0, rng % tries);
 			switch (t)
 			{
 			case 0:

@@ -27,11 +27,12 @@ class MasterFile;
 void NextWeek();
 void GameEvents();
 void AutoSaveGame();
-void SaveGame(bool saveCSV = false);
+void SaveGame();
 void SaveGameXML(std::string filename);
 void LoadGameInfoFiles();
+void LoadNames();
 void LoadGirlsFiles(MasterFile& master);
-void SaveGirlsCSV(std::string filename);
-std::string Girl2CSV(sGirl* girl);
-std::string CSVifyString(std::string name);
+
+void LoadInterface();
+
 #endif

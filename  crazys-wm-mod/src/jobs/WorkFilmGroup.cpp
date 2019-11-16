@@ -23,10 +23,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Actress
-bool cJobManager::WorkFilmGroup(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmGroup(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -45,7 +43,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, bool Day0Night1, string& summary)
 	int jobperformance = 0;
 	int bonus = 0;
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FILMGROUP))
 	{
 		ss << girlName << " refused to do an orgy on film today.";
@@ -57,7 +55,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, bool Day0Night1, string& summary)
 
 	ss << girlName;
 
-	int guys = g_Dice.d100();
+	int guys = rng.d100();
 	if (guys < 50)
 	{
 		guys = 2;
@@ -67,7 +65,7 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, bool Day0Night1, string& summary)
 	else if (guys < 95)
 	{
 		jobperformance += 10;
-		guys = g_Dice.d100();
+		guys = rng.d100();
 		/* */if (guys < 40)		guys = 3;
 		else if (guys < 60)		guys = 4;
 		else if (guys < 75)		guys = 5;
@@ -81,13 +79,13 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, bool Day0Night1, string& summary)
 	else if (!girl->has_trait("Lesbian") && girl->has_trait("Nymphomaniac") && girl->has_trait("Porn Star"))
 	{
 		jobperformance += 50;
-		guys = g_Dice % 240 + 120;
+		guys = rng % 240 + 120;
 		ss << " worked in a scene where she tried to set a new record by taking part in a " << guys << " men gangbang.\n \n";
 	}
 	else
 	{
 		jobperformance += 20;
-		guys = g_Dice % 40 + 11;
+		guys = rng % 40 + 11;
 		ss << " worked in a orgy scene with " << guys << " other people.\n \n";
 	}
 
@@ -105,63 +103,63 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She wasn't really into having so much sex today, but managed to get through.\n \n";
 	}
 	jobperformance = enjoy * 2;
 
-	if (girl->has_trait("Lolita") && g_Dice.percent(50))
+	if (girl->has_trait("Lolita") && rng.percent(50))
 	{
 		ss << "With such a young looking girl on the cover, this movie is simply sure to sell out.\n \n";
 		jobperformance += 15;
 	}
-	if (girl->has_trait("Bimbo") && g_Dice.percent(50))
+	if (girl->has_trait("Bimbo") && rng.percent(50))
 	{
 		ss << "Her performance couldn't be considered acting. She just enjoyed a good dicking with a blissfully stupid smile on her face.\n \n";
 		jobperformance += 5;
 	}
-	if (girl->has_trait("Cute") && g_Dice.percent(50))
+	if (girl->has_trait("Cute") && rng.percent(50))
 	{
 		ss << "Such a cute girl doing her best to handle the rough ponding her co-stars gave her will surely make a few hearts skip a beat.\n \n";
 		jobperformance += 5;
 	}
-	if (girl->has_trait("Natural Pheromones") && g_Dice.percent(50))
+	if (girl->has_trait("Natural Pheromones") && rng.percent(50))
 	{
 		ss << "Her scent drove the actors mad with lust. They went at it harder and wilder than the director had ordered.\n \n";
 		jobperformance += 5;
 	}
-	if (girl->has_trait("Fast Orgasms") && g_Dice.percent(50))
+	if (girl->has_trait("Fast Orgasms") && rng.percent(50))
 	{
 		ss << "She came the second she got two dicks inside her. That was the first of many orgasms. She barely remembered her own name by the end of the scene.\n \n";
 		jobperformance += 5;
 	}
-	if (girl->has_trait("Great Arse") && g_Dice.percent(50))
+	if (girl->has_trait("Great Arse") && rng.percent(50))
 	{
 		ss << "Her ass jiggling with each thrust was a sight to behold. The camera mage made sure to capture its wiggly glory in slow motion.\n \n";
 		jobperformance += 5;
 	}
-	if (girl->has_trait("Plump") && g_Dice.percent(50))
+	if (girl->has_trait("Plump") && rng.percent(50))
 	{
 		ss << "She sure offered a lot of meat to work with. The wet and fleshy sound she made with each thrust is sure to drive the audience wild.\n \n";
 		jobperformance += 5;
 	}
-	if ((girl->has_trait("Fragile") || girl->has_trait("Delicate")) && g_Dice.percent(50))
+	if ((girl->has_trait("Fragile") || girl->has_trait("Delicate")) && rng.percent(50))
 	{
 		ss << "This was somewhat rough for her, she was barely able to move by the end of the scene. Some people find that hot though.\n \n";
 		jobperformance += 5;
-		enjoy -= g_Dice % 5 - 2;
+		enjoy -= rng % 5 - 2;
 	}
-	if (girl->breast_size() > 5 && g_Dice.percent(50))
+	if (girl->breast_size() > 5 && rng.percent(50))
 	{
 		ss << "Her gigantic breasts stole the spotlight towards the end of the scene when she pushed them together to collect her co-star's seed.\n \n";
 		jobperformance += 5;
 	}
-	if (girl->has_trait("Cum Addict") && g_Dice.percent(50))
+	if (girl->has_trait("Cum Addict") && rng.percent(50))
 	{
 		ss << "She insisted that her co-stars collect their semen in a cup for her to drink at the end of the scene.\n \n";
 		jobperformance += 5;
 	}
-	if (girl->has_trait("Succubus") && g_Dice.percent(50))
+	if (girl->has_trait("Succubus") && rng.percent(50))
 	{
 		ss << "After the camera stopped running, she grabed two actors and had another round with them.\n \n";
 		jobperformance += 5;
@@ -174,11 +172,11 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, bool Day0Night1, string& summary)
 		ss << "She is no longer a virgin.\n";
 	}
 
-	sCustomer Cust = g_Game.GetCustomer(*brothel);
+	sCustomer Cust = g_Game->GetCustomer(*brothel);
 	Cust.m_Amount = guys;
 	if (!girl->calc_group_pregnancy(Cust, false, 1.0))
 	{
-		g_Game.push_message(girl->m_Realname + " has gotten pregnant", 0);
+		g_Game->push_message(girl->m_Realname + " has gotten pregnant", 0);
 	}
 	
 	bonus = (int)(jobperformance / 10);
@@ -210,8 +208,8 @@ bool cJobManager::WorkFilmGroup(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->group(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->group(rng%skill + 1);
 
 	girl->upd_Enjoyment(ACTION_SEX, enjoy);
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);

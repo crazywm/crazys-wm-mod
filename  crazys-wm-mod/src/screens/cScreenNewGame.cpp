@@ -18,14 +18,18 @@
 */
 #include "cScreenNewGame.h"
 #include "widgets/cEditBox.h"
-#include "widgets/cSlider.h"
 #include "cPlayer.h"
 #include "Game.hpp"
 #include "cGirls.h"
+#include "cNameList.h"
+#include "InterfaceProcesses.h"
+#include "cShop.h"
 
 extern string monthnames[13];
 extern string g_ReturnText;
 extern int g_ReturnInt;
+extern cNameList g_BoysNameList;;
+extern cSurnameList g_SurnameList;
 
 cScreenNewGame::cScreenNewGame() : cInterfaceWindowXML("NewGame.xml")
 {
@@ -44,30 +48,40 @@ void cScreenNewGame::set_ids()
 	pbd1_id			= get_id("PlayerBirthDayNum");
 	phn_id			= get_id("PlayerHoroscope");
 
-	SetButtonNavigation(cancel_id, "<back>");
+	SetButtonNavigation(cancel_id, "Main Menu");
 	SetButtonCallback(ok_id, [this]() { start_game(); });
 	SetSliderCallback(pbm_id, [this](int) {update_birthday(); });
 	SetSliderCallback(pbd_id, [this](int) {update_birthday(); });
+	SetSliderHotKeys(pbm_id, SDLK_PAGEUP, SDLK_PAGEDOWN);
+	SetSliderHotKeys(pbd_id, SDLK_HOME, SDLK_END);
 }
 
 void cScreenNewGame::init(bool back)
 {
 	Focused();
+	// randomize the player
+    LoadNames();
+    g_Game = std::make_unique<Game>();
+    g_Game->player().SetBirthDay(g_Dice.in_range(1, 30));
+    g_Game->player().SetBirthMonth(g_Dice.in_range(1, 12));
+    g_Game->player().SetFirstName(g_BoysNameList.random());
+    g_Game->player().SetSurname(g_SurnameList.random());
+	update_ui();
 }
 
 void cScreenNewGame::update_birthday()
 {
     stringstream ss;
-    g_Game.player().SetBirthDay(SliderValue(pbd_id));
-    SliderValue(pbd_id, g_Game.player().BirthDay());
-    g_Game.player().SetBirthMonth(SliderValue(pbm_id));
-    SliderValue(pbm_id, g_Game.player().BirthMonth());
-    ss << g_Game.player().BirthDay();
+    g_Game->player().SetBirthDay(SliderValue(pbd_id));
+    SliderValue(pbd_id, g_Game->player().BirthDay());
+    g_Game->player().SetBirthMonth(SliderValue(pbm_id));
+    SliderValue(pbm_id, g_Game->player().BirthMonth());
+    ss << g_Game->player().BirthDay();
     EditTextItem(ss.str(), pbd1_id);
     ss.str("");
-    ss << monthnames[g_Game.player().BirthMonth()];
+    ss << monthnames[g_Game->player().BirthMonth()];
     EditTextItem(ss.str(), pbm1_id);
-    EditTextItem(cGirls::GetHoroscopeName(g_Game.player().BirthMonth(), g_Game.player().BirthDay()), phn_id);
+    EditTextItem(cGirls::GetHoroscopeName(g_Game->player().BirthMonth(), g_Game->player().BirthDay()), phn_id);
 }
 
 void cScreenNewGame::start_game()
@@ -84,9 +98,9 @@ void cScreenNewGame::start_game()
     {
         g_ReturnInt = 1;
         g_ReturnText = b;
-        g_Game.player().SetFirstName(p);
-        g_Game.player().SetSurname(s);
-        g_Game.player().SetRealName(p + " " + s);
+        g_Game->player().SetFirstName(p);
+        g_Game->player().SetSurname(s);
+        g_Game->player().SetRealName(p + " " + s);
 
         replace_window("Preparing Game");
         return;
@@ -95,88 +109,50 @@ void cScreenNewGame::start_game()
 
 void cScreenNewGame::OnKeyPress(SDL_keysym keysym)
 {
-    if (keysym.sym == SDLK_ESCAPE && currentbox < m_EditBoxes.size())
+    if (keysym.sym == SDLK_TAB)
     {
-        m_EditBoxes[currentbox]->ClearText();
-    }
-
-    if (keysym.sym == SDLK_TAB || keysym.sym == SDLK_DOWN)
-    {
-        currentbox++;
-        update_ui();
-    }
-    if ( keysym.sym == SDLK_UP)
-    {
-        currentbox--;
+        TabFocus();
         update_ui();
     }
 
-    if (keysym.sym == SDLK_PAGEDOWN || (currentbox == 3 && keysym.sym == SDLK_LEFT))
-    {
-        g_Game.player().BirthMonth(-1);
-        update_ui();
-    }
-    if (keysym.sym == SDLK_PAGEUP || (currentbox == 3 && keysym.sym == SDLK_RIGHT))
-    {
-        g_Game.player().BirthMonth(1);
-        update_ui();
-    }
-    if (keysym.sym == SDLK_END || (currentbox == 4 && keysym.sym == SDLK_LEFT))
-    {
-        g_Game.player().BirthDay(-1);
-        update_ui();
-    }
-    if (keysym.sym == SDLK_HOME || (currentbox == 4 && keysym.sym == SDLK_RIGHT))
-    {
-        g_Game.player().BirthDay(1);
-        update_ui();
-    }
-
-    if (currentbox == 4)
-    {
-        SDLKey numbers[] = {SDLK_0, SDLK_1, SDLK_2, SDLK_3, SDLK_4, SDLK_5,SDLK_6, SDLK_7, SDLK_8, SDLK_9};
-        for(int num = 0; num <= 9; ++num) {
-            if(keysym.sym == numbers[num]) {
-                int cur = g_Game.player().BirthDay();
+    if(HasFocus(pbd_id)) {
+        SDLKey   numbers[] = {SDLK_0, SDLK_1, SDLK_2, SDLK_3, SDLK_4, SDLK_5, SDLK_6, SDLK_7, SDLK_8, SDLK_9};
+        for (int num       = 0; num <= 9; ++num) {
+            if (keysym.sym == numbers[num]) {
+                int cur = g_Game->player().BirthDay();
                 int fin = 0;
-                if (cur == 0)      fin = num;
-                else if (cur > 9)  fin = ((cur % 10) * 10) + num;
+                if (cur == 0) fin = num;
+                else if (cur > 9) fin = ((cur % 10) * 10) + num;
                 else if (cur < 10) fin = (cur * 10) + num;
-                if (fin > 30)      fin = 30;
+                if (fin > 30) fin      = 30;
 
-                g_Game.player().SetBirthDay(fin);
+                g_Game->player().SetBirthDay(fin);
                 update_ui();
+                return;     // don't let the key handling propagate here -- so any text field will not add the number
             }
         }
     }
 
+
     SDLKey months[] = {SDLK_F1, SDLK_F2, SDLK_F3, SDLK_F4, SDLK_F5, SDLK_F6, SDLK_F7, SDLK_F8, SDLK_F9, SDLK_F10, SDLK_F11, SDLK_F12};
     for(int num = 0; num <= 12; ++num) {
         if (keysym.sym == months[num]) {
-            g_Game.player().SetBirthMonth(num + 1);
+            g_Game->player().SetBirthMonth(num + 1);
             update_ui();
         }
     }
+
+    cInterfaceWindow::OnKeyPress(keysym);
 }
 
 void cScreenNewGame::update_ui()
 {
-    stringstream ss;
-    SliderValue(pbd_id, g_Game.player().BirthDay());
-    ss << g_Game.player().BirthDay();
-    EditTextItem(ss.str(), pbd1_id);
-    ss.str("");
-    SliderValue(pbm_id, g_Game.player().BirthMonth());
-    ss << monthnames[g_Game.player().BirthMonth()];
-    EditTextItem(ss.str(), pbm1_id);
+    SetEditBoxText(pname_id, g_Game->player().FirstName());
+    SetEditBoxText(psname_id, g_Game->player().Surname());
 
-    if (currentbox >= (int) m_EditBoxes.size() + (int) m_Sliders.size()) currentbox = 0;
-    if (currentbox < 0) currentbox = (int) m_EditBoxes.size() + (int) m_Sliders.size();
-
-    for (auto & editBox : m_EditBoxes) editBox->m_HasFocus = false;
-    if (currentbox<3) m_EditBoxes[currentbox]->m_HasFocus = true;
-
-    m_Sliders[0]->IsActive(currentbox == 3);
-    m_Sliders[1]->IsActive(currentbox == 4);
-    EditTextItem(cGirls::GetHoroscopeName(g_Game.player().BirthMonth(), g_Game.player().BirthDay()), phn_id);
+    SliderValue(pbd_id, g_Game->player().BirthDay());
+    EditTextItem(std::to_string(g_Game->player().BirthDay()), pbd1_id);
+    SliderValue(pbm_id, g_Game->player().BirthMonth());
+    EditTextItem(monthnames[g_Game->player().BirthMonth()], pbm1_id);
+    EditTextItem(cGirls::GetHoroscopeName(g_Game->player().BirthMonth(), g_Game->player().BirthDay()), phn_id);
 }

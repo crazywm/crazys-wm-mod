@@ -19,16 +19,14 @@
 #include <sstream>
 #include "src/buildings/cBrothel.h"
 
-extern cRng g_Dice;
-
 // `J` Job Centre - General - job_is_cleaning
-bool cJobManager::WorkCleanCentre(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkCleanCentre(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
 	int actiontype = ACTION_WORKCLEANING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (roll_a <= 50 && girl->disobey_check(actiontype, JOB_CLEANCENTRE))
 	{
 		ss << " refused to clean the Centre.";
@@ -49,21 +47,21 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, bool Day0Night1, string& summary)
 
 	if (roll_a <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		CleanAmt *= 0.8;
 		if (roll_b < 50)	ss << "She spilled a bucket of something unpleasant all over herself.";
 		else				ss << "She did not like cleaning the Centre today.";
 	}
 	else if (roll_a >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		CleanAmt *= 1.1;
 		if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
 		else				ss << "She had a great time working today.";
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "The shift passed uneventfully.";
 	}
 	ss << "\n \n";
@@ -87,23 +85,23 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, bool Day0Night1, string& summary)
 		if (roll_a < 20 && roll_b < 60 && roll_c < 50)
 		{
 			ss << "\n \n" << girlName << " finished her cleaning early so took a long bath to clean herself off.";
-			girl->happiness((g_Dice % 3) + 1);
-			girl->tiredness(-(g_Dice % 3));
+			girl->happiness((rng % 3) + 1);
+			girl->tiredness(-(rng % 3));
 			imagetype = IMGTYPE_BATH;
 		}
 		else if (roll_c < 50)
 		{
 			ss << "\n \n" << girlName << " finished her cleaning early so she played with the children a bit.";
-			girl->happiness((g_Dice % 5) + 3);
-			girl->tiredness(g_Dice % 3);
-			girl->morality(g_Dice % 2);
+			girl->happiness((rng % 5) + 3);
+			girl->tiredness(rng % 3);
+			girl->morality(rng % 2);
 		}
 		else
 		{
 			ss << "\n \n" << girlName << " finished her cleaning early so she took nap.";
-			girl->happiness(g_Dice % 3);
-			girl->tiredness(-1 - (g_Dice % 10));
-			girl->morality(-(g_Dice % 2));
+			girl->happiness(rng % 3);
+			girl->tiredness(-1 - (rng % 10));
+			girl->morality(-(rng % 2));
 		}
 
 	}
@@ -124,24 +122,24 @@ bool cJobManager::WorkCleanCentre(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido,false);
 
 
 	// primary improvement (+2 for single or +1 for multiple)
-	girl->service((g_Dice % skill) + 2);
+	girl->service((rng % skill) + 2);
 	// secondary improvement (-1 for one then -2 for others)
-	girl->morality(max(-1, (g_Dice % skill) - 1));		// possibly go down but mostly go up
-	girl->refinement(max(-1, (g_Dice % skill) - 2));	// possibly go up or down
+	girl->morality(max(-1, (rng % skill) - 1));		// possibly go down but mostly go up
+	girl->refinement(max(-1, (rng % skill) - 2));	// possibly go up or down
 
 
 	// Update Enjoyment
 	girl->upd_Enjoyment(actiontype, enjoy);
 	// Gain Traits
-	if (g_Dice.percent(girl->service()))
+	if (rng.percent(girl->service()))
 		cGirls::PossiblyGainNewTrait(girl, "Maid", 70, actiontype, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
 	// Lose Traits
-	if (g_Dice.percent(girl->service()))
+	if (rng.percent(girl->service()))
 		cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 
 	return false;

@@ -188,7 +188,7 @@ bool cTrigger::LoadTriggerXML(TiXmlHandle hTrigger)
 		string skill = pTrigger->Attribute("Skill");				// Check if the trigger is sending a name
 		if (skill.size() > 2)
 		{
-			m_Values[0] = sGirl::lookup_skill_code(skill);
+			m_Values[0] = get_skill_id(skill);
 		}
 		else  pTrigger->QueryIntAttribute("Skill", &m_Values[0]);	// otherwise get the number
 		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// what value it must reach
@@ -198,7 +198,7 @@ bool cTrigger::LoadTriggerXML(TiXmlHandle hTrigger)
 		string stat = pTrigger->Attribute("Stat");				// Check if the trigger is sending a name
 		if (stat.size() > 2)
 		{
-			m_Values[0] = sGirl::lookup_stat_code(stat);
+			m_Values[0] = get_stat_id(stat);
 		}
 		else  pTrigger->QueryIntAttribute("Stat", &m_Values[0]);	// otherwise get the number
 		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// what value it must reach
@@ -208,7 +208,7 @@ bool cTrigger::LoadTriggerXML(TiXmlHandle hTrigger)
 		string status = pTrigger->Attribute("Status");				// Check if the trigger is sending a name
 		if (status.size() > 2)
 		{
-			m_Values[0] = sGirl::lookup_status_code(status);
+			m_Values[0] = get_status_id(status);
 		}
 		else  pTrigger->QueryIntAttribute("Status", &m_Values[0]);	// otherwise get the number
 		pTrigger->QueryIntAttribute("Value", &m_Values[1]);			// 0 means has status, 1 means doesn't have status
@@ -503,7 +503,7 @@ void cTriggerList::ProcessTriggers()
 			*
 			*				so let's note the result ofthe > comparison
 			*/
-			bool lt = (g_Game.gold().ival() < curr->m_Values[1]);
+			bool lt = (g_Game->gold().ival() < curr->m_Values[1]);
 			/*
 			*				now we either use that directly, or inverted
 			*				depending on values[1]
@@ -828,7 +828,7 @@ int cTrigger::load_skill_from_xml(TiXmlElement *el)
 	/*
 	*	get the skill code
 	*/
-	int code = sGirl::lookup_skill_code(pt);
+	int code = get_skill_id(pt);
 	/*
 	*	make sure what we have is actually a skill name
 	*/
@@ -873,7 +873,7 @@ int cTrigger::load_stat_from_xml(TiXmlElement *el)
 	/*
 	*	get the stat code
 	*/
-	int code = sGirl::lookup_stat_code(pt);
+	int code = get_stat_id(pt);
 	/*
 	*	make sure what we have is actually a stat name
 	*/
@@ -917,7 +917,7 @@ int cTrigger::load_status_from_xml(TiXmlElement *el)
 	/*
 	*	get the status code
 	*/
-	int code = sGirl::lookup_status_code(pt);
+	int code = get_status_id(pt);
 	/*
 	*	make sure what we have is actually a stat name
 	*/

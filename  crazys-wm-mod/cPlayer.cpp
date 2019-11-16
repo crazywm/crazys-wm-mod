@@ -34,13 +34,10 @@ cPlayer::cPlayer()			// constructor
 	m_RealName = "";
 	m_FirstName = "";
 	m_Surname = "";
-	m_BirthYear = 1190;
-	m_BirthMonth = 0;
-	m_BirthDay = 0;
 	m_PlayerGender = GENDER_MALE;
 
-	for (int i = 0; i < NUM_SKILLS; i++)	m_Skills[i] = 0;
-	for (int i = 0; i < NUM_STATS; i++)		m_Stats[i] = 0;
+	for (int & m_Skill : m_Skills)	m_Skill = 0;
+	for (int & m_Stat : m_Stats)	m_Stat = 0;
 	m_Stats[STAT_HEALTH] = 100;
 	m_Stats[STAT_HAPPINESS] = 100;
 	SetToZero();
@@ -196,20 +193,7 @@ int cPlayer::BirthYear(int n)
 	m_BirthYear = m_BirthYear + n;
 	return m_BirthYear;
 }
-int cPlayer::BirthMonth(int n)
-{
-	m_BirthMonth = m_BirthMonth + n;
-	if (m_BirthMonth > 12)		m_BirthMonth = 12;
-	if (m_BirthMonth < 1)		m_BirthMonth = 1;
-	return m_BirthMonth;
-}
-int cPlayer::BirthDay(int n)
-{
-	m_BirthDay = m_BirthDay + n;
-	if (m_BirthDay > 30)	m_BirthDay = 30;
-	if (m_BirthDay < 1)		m_BirthDay = 1;
-	return m_BirthDay;
-}
+
 int cPlayer::SetBirthYear(int n)
 {
 	m_BirthYear = m_BirthYear + n;
@@ -756,7 +740,7 @@ bool cPlayer::AutomaticFoodItemUse(sGirl& girl, const char* item_name, string me
 	if(!m_Inventory.has_item(item_name))
 	    return false;
 
-	auto item = g_Game.inventory_manager().GetItem(item_name);
+	auto item = g_Game->inventory_manager().GetItem(item_name);
     int EquipSlot = girl.add_inv(item);
     if (EquipSlot != -1)
     {
@@ -774,11 +758,11 @@ bool cPlayer::AutomaticItemUse(sGirl& girl, const char* item_name, string messag
     if(!m_Inventory.has_item(item_name))
         return false;
 
-    auto item = g_Game.inventory_manager().GetItem(item_name);
+    auto item = g_Game->inventory_manager().GetItem(item_name);
     int EquipSlot = girl.add_inv(item);
     if (EquipSlot != -1)
     {
-        if (g_Game.inventory_manager().equip_singleton_ok(&girl, EquipSlot, false))  // Don't force equipment
+        if (g_Game->inventory_manager().equip_singleton_ok(&girl, EquipSlot, false))  // Don't force equipment
         {
             m_Inventory.remove_item(item);
             girl.equip(EquipSlot, false);
@@ -801,7 +785,7 @@ bool cPlayer::AutomaticSlotlessItemUse(sGirl& girl, const char* item_name, strin
     if(!m_Inventory.has_item(item_name))
         return false;
 
-    auto item = g_Game.inventory_manager().GetItem(item_name);
+    auto item = g_Game->inventory_manager().GetItem(item_name);
     int EquipSlot = girl.add_inv(item);
     if (EquipSlot != -1)
     {

@@ -25,8 +25,6 @@
 #include "cInventory.h"
 #include "CLog.h"
 
-extern cTraits g_Traits;
-
 const char* actionTypeNames[] =
 {
 	// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in > XmlMisc.cpp
@@ -76,32 +74,6 @@ std::string XMLifyString(const std::string& XMLName)
 	return XMLifyString(XMLName.c_str());
 }
 
-/*
-the inverse of XMLifyString
-it's not an exact inverse, and both functions should be cleaned up
-*/
-std::string UnXMLifyString(const char* XMLName)
-{
-	std::string newName(XMLName);
-	//find characters that we can't put into XML names
-	//and change them to '_' or whatever works in a name
-	for (size_t position = newName.find_first_of("_");
-		position != newName.npos;
-		position = newName.find_first_of("_", position))
-	{
-		newName.replace(position, 1, 1, ' ');
-	}
-	return newName;
-}
-
-std::string UnXMLifyString(const std::string& XMLName)
-{
-	return UnXMLifyString(XMLName.c_str());
-}
-
-
-
-
 
 /*
 suppose you have an unsigned char called var with value 255, and you save it like this:
@@ -135,7 +107,7 @@ TiXmlElement* SaveStatsXML(TiXmlElement* pRoot, int stats[], int statMods[], int
 	pRoot->LinkEndChild(pStats);
 	for (int i = 0; i < NUM_STATS; i++)
 	{
-		TiXmlElement* pStat = new TiXmlElement(XMLifyString(sGirl::stat_names[i]));
+		TiXmlElement* pStat = new TiXmlElement(XMLifyString(get_stat_name((STATS)i)));
 		pStats->LinkEndChild(pStat);
 		pStat->SetAttribute("Value", stats[i]);
 		if (statMods && statMods[i])	pStat->SetAttribute("Mod", statMods[i]);
@@ -151,7 +123,7 @@ bool LoadStatsXML(TiXmlHandle hStats, int stats[], int statMods[], int tempStats
 
 	for (int i = 0; i < NUM_STATS; i++)
 	{
-		TiXmlElement* pStat = pStats->FirstChildElement(XMLifyString(sGirl::stat_names[i]));
+		TiXmlElement* pStat = pStats->FirstChildElement(XMLifyString(get_stat_name((STATS)i)));
 		if (pStat)
 		{
 			int tempInt = 0;
@@ -200,7 +172,7 @@ TiXmlElement* SaveSkillsXML(TiXmlElement* pRoot, int skills[], int skillMods[], 
 	pRoot->LinkEndChild(pSkills);
 	for (int i = 0; i < NUM_SKILLS; i++)
 	{
-		TiXmlElement* pSkill = new TiXmlElement(XMLifyString(sGirl::skill_names[i]));
+		TiXmlElement* pSkill = new TiXmlElement(XMLifyString(get_skill_name((SKILLS)i)));
 		pSkills->LinkEndChild(pSkill);
 		pSkill->SetAttribute("Value", skills[i]);
 		if (skillMods && skillMods[i])		pSkill->SetAttribute("Mod", skillMods[i]);
@@ -216,7 +188,7 @@ bool LoadSkillsXML(TiXmlHandle hSkills, int skills[], int skillMods[], int tempS
 
 	for (int i = 0; i < NUM_SKILLS; i++)
 	{
-		TiXmlElement* pSkill = pSkills->FirstChildElement(XMLifyString(sGirl::skill_names[i]));
+		TiXmlElement* pSkill = pSkills->FirstChildElement(XMLifyString(get_skill_name((SKILLS)i)));
 		if (pSkill)
 		{
 			int tempInt = 0;
@@ -253,7 +225,7 @@ TiXmlElement* SaveJobsXML(TiXmlElement* pRoot, int buildingQualities[])
 	pRoot->LinkEndChild(pJobs);
 	for (int i = 0; i < NUMJOBTYPES; i++)
 	{
-		TiXmlElement* pJob = new TiXmlElement(XMLifyString(g_Game.job_manager().JobName[i]));
+		TiXmlElement* pJob = new TiXmlElement(XMLifyString(g_Game->job_manager().JobName[i]));
 		pJobs->LinkEndChild(pJob);
 		pJob->SetAttribute("Qual", buildingQualities[i]);
 	}
@@ -274,31 +246,6 @@ TiXmlElement* SaveTraitsXML(TiXmlElement* pRoot, std::string TagName, const int 
 		}
 	}
 	return pTraits;
-}
-
-bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, TraitSpec* traits[], int tempTraits[])
-{
-	numTraits = 0;
-	TiXmlElement* pTraits = hTraits.ToElement();
-	if (pTraits == nullptr) return false;
-
-	//this loop does not need UnXMLifyString, which is a bit of a hack currently
-	//however, it's coupled more tightly to traits, and seems to do more processing
-	for(const auto& pTrait : g_Traits.all_traits())
-	{
-		TiXmlElement* pTraitElement = pTraits->FirstChildElement(XMLifyString(pTrait->name()));
-		if (pTraitElement)
-		{
-			int tempInt = 0;
-			traits[numTraits] = pTrait.get();
-			if (tempTraits)
-			{
-				pTraitElement->QueryIntAttribute("Temp", &tempInt); tempTraits[numTraits] = tempInt; tempInt = 0;
-			}
-			++numTraits;
-		}
-	}
-	return true;
 }
 
 TiXmlElement* SaveActionsXML(TiXmlElement* pRoot, int enjoyments[], int enjoymentsMods[], int enjoymentsTemps[])
@@ -436,7 +383,7 @@ bool LoadInventoryXML(TiXmlHandle hInventory, sInventoryItem* items[], int& numI
 		{
 			if (pItem->Attribute("Name"))
 			{
-				sInventoryItem* tempItem = g_Game.inventory_manager().GetItem(pItem->Attribute("Name"));
+				sInventoryItem* tempItem = g_Game->inventory_manager().GetItem(pItem->Attribute("Name"));
 				if (tempItem)
 				{
 					items[numItems] = tempItem;

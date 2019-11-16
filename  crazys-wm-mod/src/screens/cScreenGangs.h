@@ -19,8 +19,7 @@
 #pragma once
 
 #include "DirPath.h"
-#include "cInterfaceWindow.h"
-#include "InterfaceGlobals.h"
+#include "interface/cInterfaceWindow.h"
 
 class cScreenGangs : public cInterfaceWindowXML
 {
@@ -61,7 +60,6 @@ private:
 	int		sel_pos;
 	void hire_recruitable();
 
-    void OnKeyPress(SDL_keysym keysym) override;
 public:
 	cScreenGangs();
 

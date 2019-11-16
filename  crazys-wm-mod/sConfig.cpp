@@ -25,7 +25,7 @@
 #include "CLog.h"
 #include "FileList.h"
 #include "tinyxml.h"
-#include "cColor.h"
+#include "interface/cColor.h"
 #include "Constants.h"
 #include "XmlUtil.h"
 #include "Revision.h"

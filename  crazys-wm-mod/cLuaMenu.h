@@ -21,11 +21,11 @@
 #include <string>
 #include <vector>
 
-#include "cChoiceMessage.h"
+#include "interface/cChoiceMessage.h"
+#include "interface/CGraphics.h"
 #include "cLuaScript.h"
 #include "CLog.h"
 #include "sConfig.h"
-#include "CGraphics.h"
 
 using namespace std;
 
@@ -61,7 +61,6 @@ class cLuaMenuInner
 	void calc_co_ords(str_vec &v);
 	int get_menu_x(int maxw);
 	int get_menu_y(int maxh);
-	void write_captions();
 public:
 	void show();
 	void clicked(int option_number);

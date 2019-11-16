@@ -22,10 +22,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // BSIN: Job Movie Studio - Actress - Chef
-bool cJobManager::WorkFilmChef(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmChef(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -46,7 +44,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, bool Day0Night1, string& summary)
 	int bonus = 0;
 
 	ss << girlName;
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FILMCHEF))
 	{
 		ss << " refused to make a kitchen show today.\n";
@@ -104,17 +102,17 @@ bool cJobManager::WorkFilmChef(sGirl* girl, bool Day0Night1, string& summary)
 	//Enjoyed? If she performed well, she'd should have enjoyed it.
 	if (jobperformance >= 200)
 	{
-		enjoy += (g_Dice % 3 + 1);
+		enjoy += (rng % 3 + 1);
 		ss << "She loved cooking and flirting on camera.\n \n";
 	}
 	else if (jobperformance >= 100)
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She enjoyed making this show.\n \n";
 	}
 	else
 	{
-		enjoy -= (g_Dice % 3 + 2);
+		enjoy -= (rng % 3 + 2);
 		ss << "She was awful at this and did not enjoy making it.\n \n";
 	}
 	bonus = bonus + enjoy;
@@ -145,8 +143,8 @@ bool cJobManager::WorkFilmChef(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->cooking(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->cooking(rng%skill + 1);
 
 	girl->upd_Enjoyment(ACTION_WORKCOOKING, enjoy);
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
@@ -154,11 +152,11 @@ bool cJobManager::WorkFilmChef(sGirl* girl, bool Day0Night1, string& summary)
 	//gain traits
 	cGirls::PossiblyGainNewTrait(girl, "Charming", 80, ACTION_WORKMOVIE, "She has become quite Charming.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Actress", 80, ACTION_WORKMOVIE, "Working on camera has improved her acting skills.", Day0Night1);
-	if (jobperformance >= 220 && g_Dice.percent(30))
+	if (jobperformance >= 220 && rng.percent(30))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Chef", 80, ACTION_WORKCOOKING, girlName + " has become a competent Chef.", Day0Night1);
 	}
-	if (jobperformance >= 140 && g_Dice.percent(25))
+	if (jobperformance >= 140 && rng.percent(25))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks sexiness.", Day0Night1);
 	}
@@ -166,7 +164,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, bool Day0Night1, string& summary)
 	// nice job bonus-------------------------------------------------------
 	//BONUS - Nice jobs show off her assets and make her happy, increasing fame and love.
 
-	int MrNiceGuy = g_Dice % 6, MrFair = g_Dice % 6;
+	int MrNiceGuy = rng % 6, MrFair = rng % 6;
 	MrNiceGuy = (MrNiceGuy + MrFair) / 3;				//Should come out around 1-2 most of the time.
 
 	girl->happiness(MrNiceGuy);
@@ -174,7 +172,7 @@ bool cJobManager::WorkFilmChef(sGirl* girl, bool Day0Night1, string& summary)
 	girl->pclove(MrNiceGuy);
 	girl->pchate(-MrNiceGuy);
 	girl->pcfear(-MrNiceGuy);
-	g_Game.player().disposition(MrNiceGuy);
+	g_Game->player().disposition(MrNiceGuy);
 
 	//----------------------------------------------------------------------
 
@@ -194,37 +192,7 @@ double cJobManager::JP_FilmChef(sGirl* girl, bool estimate)
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
+    jobperformance += girl->get_trait_modifier("work.film.chef");
 
-	//good traits
-	if (girl->has_trait( "Chef"))				jobperformance += 40;	//Good at cooking
-	if (girl->has_trait( "Mixologist"))		jobperformance += 20;	//Good with measures
-	if (girl->has_trait( "Charismatic"))		jobperformance += 25;	//Charisma on film
-	if (girl->has_trait( "Sexy Air"))			jobperformance += 25;	//
-	if (girl->has_trait( "Charming"))			jobperformance += 20;	//
-	if (girl->has_trait( "Cool Person"))		jobperformance += 10;	//
-	if (girl->has_trait( "Social Drinker"))	jobperformance += 5;	//Drinks too
-	if (girl->has_trait( "Exhibitionist"))	jobperformance += 30;	//Shows off body
-	if (girl->has_trait( "MILF"))				jobperformance += 15;	//Attractive to some
-	if (girl->has_trait( "Cute"))				jobperformance += 10;	//
-	if (girl->has_trait( "Lolita"))			jobperformance += 10;	//
-	if (girl->has_trait( "Elegant"))			jobperformance += 10;	//
-	if (girl->has_trait( "Exotic"))			jobperformance += 5;	//
-	if (girl->has_trait( "Beauty Mark"))		jobperformance += 5;	//
-	if (girl->has_trait( "Fat"))				jobperformance += 10;	//Likes food
-	if (girl->has_trait( "Plump"))			jobperformance += 5;	//
-	if (girl->has_trait( "Wide Bottom"))		jobperformance += 5;	//
-	if (girl->has_trait( "Plump Tush"))		jobperformance += 5;	//
-
-
-	//bad traits
-	if (girl->has_trait( "Nervous"))					jobperformance -= 30;	//weakens performance
-	if (girl->has_trait( "Meek"))						jobperformance -= 20;
-	if (girl->has_trait( "Shy"))						jobperformance -= 20;
-	if (girl->has_trait( "One Arm"))					jobperformance -= 20;
-	if (girl->has_trait( "One Hand"))					jobperformance -= 10;
-	if (girl->has_trait( "No Arms"))					jobperformance -= 50;	//hard to strip
-	if (girl->has_trait( "No Hands"))					jobperformance -= 50;
-	if (girl->has_trait( "Alcoholic"))				jobperformance -= 5;
-
-	return jobperformance;
+    return jobperformance;
 }

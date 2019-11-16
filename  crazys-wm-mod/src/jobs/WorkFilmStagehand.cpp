@@ -22,16 +22,14 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Crew - job_is_cleaning
-bool cJobManager::WorkFilmStagehand(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmStagehand(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
 	int actiontype = ACTION_WORKMOVIE; int actiontype2 = ACTION_WORKCLEANING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (roll_a <= 50 && (girl->disobey_check(actiontype, JOB_STAGEHAND) || girl->disobey_check(actiontype2, JOB_STAGEHAND)))
 	{
 		ss << " refused to work as a stagehand today.";
@@ -112,19 +110,19 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, bool Day0Night1, string& summar
 
 	if (roll_a <= 10)
 	{
-		enjoyc -= g_Dice % 3 + 1; if (filming) enjoym -= g_Dice % 3 + 1;
+		enjoyc -= rng % 3 + 1; if (filming) enjoym -= rng % 3 + 1;
 		CleanAmt *= 0.8;
 		ss << "She did not like working in the studio today.";
 	}
 	else if (roll_a >= 90)
 	{
-		enjoyc += g_Dice % 3 + 1; if (filming) enjoym += g_Dice % 3 + 1;
+		enjoyc += rng % 3 + 1; if (filming) enjoym += rng % 3 + 1;
 		CleanAmt *= 1.1;
 		ss << "She had a great time working today.";
 	}
 	else
 	{
-		enjoyc += max(0, g_Dice % 3 - 1); if (filming) enjoym += max(0, g_Dice % 3 - 1);
+		enjoyc += max(0, rng % 3 - 1); if (filming) enjoym += max(0, rng % 3 - 1);
 		ss << "Otherwise, the shift passed uneventfully.";
 	}
 	jobperformance += enjoyc + enjoym;
@@ -134,7 +132,7 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, bool Day0Night1, string& summar
 	{
 		jobperformance += (((girl->spirit() - 50) / 10) + ((girl->intelligence() - 50) / 10) + (girl->service() / 10)) / 3;
 		jobperformance += girl->level();
-		jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
+		jobperformance += rng % 4 - 1;	// should add a -1 to +3 random element --PP
 
 		if (jobperformance > 0)
 		{
@@ -171,8 +169,8 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, bool Day0Night1, string& summar
 	if (!filming && brothel->m_Filthiness < CleanAmt / 2) // `J` needs more variation
 	{
 		ss << "\n \n" << girlName << " finished her cleaning early so she hung out around the Studio a bit.";
-		girl->upd_temp_stat(STAT_LIBIDO, g_Dice % 3 + 1, true);
-		girl->happiness(g_Dice % 3 + 1);
+		girl->upd_temp_stat(STAT_LIBIDO, rng % 3 + 1, true);
+		girl->happiness(rng % 3 + 1);
 	}
 
 
@@ -191,13 +189,13 @@ bool cJobManager::WorkFilmStagehand(sGirl* girl, bool Day0Night1, string& summar
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->service((g_Dice % skill) + 2);
+	girl->service((rng % skill) + 2);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	if (filming) girl->upd_Enjoyment(actiontype, enjoym);
 	girl->upd_Enjoyment(actiontype2, enjoyc);
 	// Gain Traits
-	if (g_Dice.percent(girl->service()))
+	if (rng.percent(girl->service()))
 		cGirls::PossiblyGainNewTrait(girl, "Maid", 90, actiontype2, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
 	//lose traits
 	cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype2, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);

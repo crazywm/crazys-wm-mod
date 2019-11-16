@@ -22,14 +22,11 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
-
 //Useful fn
 void AndAction(stringstream *, string, bool);
 
 // Job Movie Studio - Evil Jobs - Bukakke
-bool cJobManager::WorkFilmBuk(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmBuk(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -51,7 +48,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, bool Day0Night1, string& summary)
 
 	cGirls::UnequipCombat(girl);	// not for actress (yet)
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (girl->has_trait( "Cum Addict"))
 	{
 		ss << "Cum-craving " << girlName << " couldn't wait to get sticky in this bukkake scene, and was sucking guys off before the lighting was even set up.";
@@ -62,7 +59,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, bool Day0Night1, string& summary)
 		ss << girlName << " refused to have any part in this";
 		if (girl->is_slave())
 		{
-			if (g_Game.player().disposition() > 30)  // nice
+			if (g_Game->player().disposition() > 30)  // nice
 			{
 				ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you allowed her the day off.";
 				girl->pclove(2);
@@ -70,23 +67,23 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, bool Day0Night1, string& summary)
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 				return true;
 			}
-			else if (g_Game.player().disposition() > -30) //pragmatic
+			else if (g_Game->player().disposition() > -30) //pragmatic
 			{
 				ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you had your men drug her and tie her down for action.";
 				girl->pclove(-1);
 				girl->pchate(1);
 				girl->pcfear(+1);
-				g_Game.player().disposition(-1);
+				g_Game->player().disposition(-1);
 				tied = true;
 				enjoy -= 2;
 			}
-			else if (g_Game.player().disposition() > -30)
+			else if (g_Game->player().disposition() > -30)
 			{
 				ss << " \"filthy\" bukkake scene.\nShe was clearly upset so you had your men whip some sense into her before the scene and tie her down for action.";
 				girl->pclove(-2);
 				girl->pchate(+2);
 				girl->pcfear(+4);
-				g_Game.player().disposition(-2);
+				g_Game->player().disposition(-2);
 				enjoy -= 6;
 				tied = true;
 			}
@@ -198,10 +195,10 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->bdsm(g_Dice%skill + 1);
-	girl->confidence(-(g_Dice%skill + 1));
-	girl->spirit(-(g_Dice%skill + 1));
+	girl->performance(rng%skill);
+	girl->bdsm(rng%skill + 1);
+	girl->confidence(-(rng%skill + 1));
+	girl->spirit(-(rng%skill + 1));
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
@@ -223,7 +220,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, bool Day0Night1, string& summary)
 	//Evil job bonus-------------------------------------------------------
 	//BONUS - evil jobs damage her body, break her spirit and make her hate you
 
-	int MrEvil = g_Dice % 8, MrNasty = g_Dice % 8;
+	int MrEvil = rng % 8, MrNasty = rng % 8;
 	MrEvil = (MrEvil + MrNasty) / 2;				//Should come out around 3 most of the time.
 
 	girl->confidence(-MrEvil);
@@ -232,7 +229,7 @@ bool cJobManager::WorkFilmBuk(sGirl* girl, bool Day0Night1, string& summary)
 	girl->pclove(-MrEvil);
 	girl->pchate(MrEvil);
 	girl->pcfear(MrEvil);
-	g_Game.player().disposition(-MrEvil);
+	g_Game->player().disposition(-MrEvil);
 
 	//----------------------------------------------------------------------
 
@@ -251,31 +248,9 @@ double cJobManager::JP_FilmBuk(sGirl* girl, bool estimate)// used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//Good
-	if (girl->has_trait( "Mind Fucked"))					jobperformance += 100;	//Enjoyment and craziness
-	if (girl->has_trait( "Masochist"))					jobperformance += 35;	//
-	if (girl->has_trait( "Broken Will"))					jobperformance += 30;	//
-	if (girl->has_trait( "Dependant"))					jobperformance += 25;	//
-	if (girl->has_trait( "Twisted"))						jobperformance += 25;	//
-	if (girl->has_trait( "Cum Addict"))					jobperformance += 50;	//Her kind of job
-	if (girl->has_trait( "Goddess"))						jobperformance += 60;	//High-status degraded
-	if (girl->has_trait( "Angel"))						jobperformance += 50;	//
-	if (girl->has_trait( "Queen"))						jobperformance += 50;	//
-	if (girl->has_trait( "Princess"))						jobperformance += 40;	//
-	if (girl->has_trait( "Noble"))						jobperformance += 15;	//
-	if (girl->has_trait( "Idol"))							jobperformance += 25;	//
-	if (girl->has_trait( "Priestess"))					jobperformance += 25;	//
-	if (girl->has_trait( "Heroine"))						jobperformance += 15;	//
-	if (girl->has_trait( "Teacher"))						jobperformance += 15;	//
-	if (girl->has_trait( "Tsundere"))						jobperformance += 30;	//beaten customers wanna see this!
-	if (girl->has_trait( "Yandere"))						jobperformance += 25;	//
+    jobperformance += girl->get_trait_modifier("work.film.buk");
 
-	//Bad
-	if (girl->has_trait( "Iron Will"))					jobperformance += 40;	//Try not to put on a show
-	if (girl->has_trait( "Fearless"))						jobperformance += 25;	//
-
-
-	return jobperformance;
+    return jobperformance;
 }
 
 

@@ -17,16 +17,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cScreenGangs.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "InterfaceProcesses.h"
 #include "cGangs.h"
 #include "Game.hpp"
+#include "CLog.h"
 
-extern	bool	g_AltKeys;	// New hotkeys --PP
-
-static cTariff tariff;
 static int selection = -1;
 static int sel_recruit = -1;
 static stringstream ss;
@@ -80,10 +78,10 @@ void cScreenGangs::set_ids()
 	itemspercslider_id	/**/ = get_id("ItemsPercSlider");
 
 	//Set the default sort order for columns, so listboxes know the order in which data will be sent
-	string RecruitColumns[] = { "GangName", "Number", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength", "Service" };
-	SortColumns(recruitlist_id, RecruitColumns, 10);
-	string GangColumns[] = { "GangName", "Number", "Mission", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength", "Service" };
-	SortColumns(ganglist_id, GangColumns, 11);
+	std::vector<std::string> RecruitColumns{ "GangName", "Number", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength", "Service" };
+	SortColumns(recruitlist_id, RecruitColumns);
+    std::vector<std::string> GangColumns{ "GangName", "Number", "Mission", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength", "Service" };
+	SortColumns(ganglist_id, GangColumns);
 
 	// set button callbacks
 	SetButtonNavigation(back_id, "<back>");
@@ -91,7 +89,7 @@ void cScreenGangs::set_ids()
         selection = GetLastSelectedItemFromList(ganglist_id);
         if (selection != -1)
         {
-            g_Game.gang_manager().FireGang(selection);
+            g_Game->gang_manager().FireGang(selection);
             init(false);
         };
 	});
@@ -102,9 +100,9 @@ void cScreenGangs::set_ids()
 
     SetButtonCallback(weaponup_id, [this](){
         int cost = 0;
-        int *wlev = g_Game.gang_manager().GetWeaponLevel();
-        cost = tariff.goon_weapon_upgrade(*wlev);
-        if (g_Game.gold().item_cost(cost))
+        int *wlev = g_Game->gang_manager().GetWeaponLevel();
+        cost = g_Game->tariff().goon_weapon_upgrade(*wlev);
+        if (g_Game->gold().item_cost(cost))
         {
             *wlev += 1;
             init(false);
@@ -131,18 +129,20 @@ void cScreenGangs::set_ids()
     SetListBoxDoubleClickCallback(recruitlist_id, [this](int sel) {hire_recruitable(); });
     SetListBoxHotKeys(recruitlist_id, SDLK_q, SDLK_e);
 
+    AddKeyCallback(SDLK_SPACE, [this](){ hire_recruitable(); });
+
     SetCheckBoxCallback(netautobuy_id, [this](bool on) {
-        int nets = g_Game.gang_manager().GetNets();
-        g_Game.gang_manager().KeepNetStocked(on ? nets : 0);
+        int nets = g_Game->gang_manager().GetNets();
+        g_Game->gang_manager().KeepNetStocked(on ? nets : 0);
     });
 
     SetCheckBoxCallback(healautobuy_id, [this](bool on) {
-        int potions = g_Game.gang_manager().GetHealingPotions();
-        g_Game.gang_manager().KeepHealStocked(on ? potions : 0);
+        int potions = g_Game->gang_manager().GetHealingPotions();
+        g_Game->gang_manager().KeepHealStocked(on ? potions : 0);
     });
 
     SetCheckBoxCallback(controlcatacombs_id, [this](bool on) {
-        g_Game.gang_manager().Control_Gangs(on);
+        g_Game->gang_manager().Control_Gangs(on);
     });
 
     SetSliderCallback(girlspercslider_id, [this](int value) {
@@ -189,56 +189,56 @@ void cScreenGangs::init(bool back)
 	AddToListBox(missionlist_id, 10, "RECRUITING");
 	AddToListBox(missionlist_id, 11, "SERVICE");
 
-	SetCheckBox(controlcatacombs_id, (g_Game.gang_manager().Control_Gangs()));
-	SliderRange(girlspercslider_id, 0, 100, g_Game.gang_manager().Gang_Gets_Girls(), 1);
-	SliderRange(itemspercslider_id, 0, 100, g_Game.gang_manager().Gang_Gets_Girls() + g_Game.gang_manager().Gang_Gets_Items(), 1);
-	ss.str("");	ss << "Girls : " << g_Game.gang_manager().Gang_Gets_Girls() << "%";	EditTextItem(ss.str(), ganggetsgirls_id);
-	ss.str("");	ss << "Items : " << g_Game.gang_manager().Gang_Gets_Items() << "%";	EditTextItem(ss.str(), ganggetsitems_id);
-	ss.str("");	ss << "Beasts : " << g_Game.gang_manager().Gang_Gets_Beast() << "%";	EditTextItem(ss.str(), ganggetsbeast_id);
+	SetCheckBox(controlcatacombs_id, (g_Game->gang_manager().Control_Gangs()));
+	SliderRange(girlspercslider_id, 0, 100, g_Game->gang_manager().Gang_Gets_Girls(), 1);
+	SliderRange(itemspercslider_id, 0, 100, g_Game->gang_manager().Gang_Gets_Girls() + g_Game->gang_manager().Gang_Gets_Items(), 1);
+	ss.str("");	ss << "Girls : " << g_Game->gang_manager().Gang_Gets_Girls() << "%";	EditTextItem(ss.str(), ganggetsgirls_id);
+	ss.str("");	ss << "Items : " << g_Game->gang_manager().Gang_Gets_Items() << "%";	EditTextItem(ss.str(), ganggetsitems_id);
+	ss.str("");	ss << "Beasts : " << g_Game->gang_manager().Gang_Gets_Beast() << "%";	EditTextItem(ss.str(), ganggetsbeast_id);
 
-	SetCheckBox(netautobuy_id, (g_Game.gang_manager().GetNetRestock() > 0));
-	SetCheckBox(healautobuy_id, (g_Game.gang_manager().GetHealingRestock() > 0));
+	SetCheckBox(netautobuy_id, (g_Game->gang_manager().GetNetRestock() > 0));
+	SetCheckBox(healautobuy_id, (g_Game->gang_manager().GetHealingRestock() > 0));
 
 	// weapon upgrades
-	int *wlev = g_Game.gang_manager().GetWeaponLevel();
+	int *wlev = g_Game->gang_manager().GetWeaponLevel();
 	ss.str("");	ss << "Weapon Level: " << *wlev;
 	if ((*wlev) < 4)
 	{
-		EnableButton(weaponup_id);
-		ss << " Next: " << tariff.goon_weapon_upgrade(*wlev) << "g";
+        EnableWidget(weaponup_id);
+		ss << " Next: " << g_Game->tariff().goon_weapon_upgrade(*wlev) << "g";
 	}
-	else DisableButton(weaponup_id);
+	else DisableWidget(weaponup_id);
 	g_LogFile.ss() << "weapon text = '" << ss.str() << "'" << endl; g_LogFile.ssend();
 	EditTextItem(ss.str(), weaponlevel_id);
 
-	int nets = g_Game.gang_manager().GetNets();
-	ss.str(""); ss << "Nets (" << tariff.nets_price(1) << "g each): " << nets;
+	int nets = g_Game->gang_manager().GetNets();
+	ss.str(""); ss << "Nets (" << g_Game->tariff().nets_price(1) << "g each): " << nets;
 	EditTextItem(ss.str(), netdesc_id);
-	DisableButton(netbuy_id, nets >= 60);
-	DisableButton(netbuy10_id, nets >= 60);
-	DisableButton(netbuy20_id, nets >= 60);
-	DisableCheckBox(netautobuy_id, nets < 1);
+    DisableWidget(netbuy_id, nets >= 60);
+    DisableWidget(netbuy10_id, nets >= 60);
+    DisableWidget(netbuy20_id, nets >= 60);
+    DisableWidget(netautobuy_id, nets < 1);
 
-	int potions = g_Game.gang_manager().GetHealingPotions();
-	ss.str(""); ss << "Heal Potions (" << tariff.healing_price(1) << "g each): " << potions;
+	int potions = g_Game->gang_manager().GetHealingPotions();
+	ss.str(""); ss << "Heal Potions (" << g_Game->tariff().healing_price(1) << "g each): " << potions;
 	EditTextItem(ss.str(), healdesc_id);
-	DisableButton(healbuy_id, potions >= 200);
-	DisableButton(healbuy10_id, potions >= 200);
-	DisableButton(healbuy20_id, potions >= 200);
-	DisableCheckBox(healautobuy_id, potions < 1);
+    DisableWidget(healbuy_id, potions >= 200);
+    DisableWidget(healbuy10_id, potions >= 200);
+    DisableWidget(healbuy20_id, potions >= 200);
+    DisableWidget(healautobuy_id, potions < 1);
 
 	int cost = 0;
-	if (g_Game.gang_manager().GetNumGangs() > 0)
+	if (g_Game->gang_manager().GetNumGangs() > 0)
 	{
-	    for(auto& gang : g_Game.gang_manager().GetPlayerGangs()) {
-            cost += tariff.goon_mission_cost(gang->m_MissionID);
+	    for(auto& gang : g_Game->gang_manager().GetPlayerGangs()) {
+            cost += g_Game->tariff().goon_mission_cost(gang->m_MissionID);
 	    }
 	}
 	ss.str(""); ss << "Weekly Cost: " << cost;
 	EditTextItem(ss.str(), totalcost_id);
 	if (gold_id >= 0)
 	{
-		ss.str(""); ss << "Gold: " << g_Game.gold().ival();
+		ss.str(""); ss << "Gold: " << g_Game->gold().ival();
 		EditTextItem(ss.str(), gold_id);
 	}
 
@@ -247,10 +247,10 @@ void cScreenGangs::init(bool back)
 
 	// loop through the gangs, populating the list box
 	g_LogFile.write("Setting gang mission descriptions\n");
-	for(auto& gang : g_Game.gang_manager().GetPlayerGangs())
+	for(auto& gang : g_Game->gang_manager().GetPlayerGangs())
 	{
 		// format the string with the gang name, mission and number of men
-		string Data[11];
+		std::vector<string> Data(11);
 		ss.str("");	ss << gang->name(); Data[0] = ss.str();
 		ss.str("");	ss << gang->m_Num; Data[1] = ss.str();
 		ss.str("");	ss << short_mission_desc(gang->m_MissionID); Data[2] = ss.str();
@@ -271,7 +271,7 @@ void cScreenGangs::init(bool back)
 		*/
 		int color = (gang->m_Num < 6 ? COLOR_RED : COLOR_BLUE);
 		if (gang->m_Num < 6 && (gang->m_MissionID == MISS_SERVICE || gang->m_MissionID == MISS_TRAINING)) color = COLOR_YELLOW;
-		AddToListBox(ganglist_id, num++, Data, 11, color);
+		AddToListBox(ganglist_id, num++, std::move(Data), color);
 	}
 
 	ClearListBox(recruitlist_id);
@@ -279,10 +279,10 @@ void cScreenGangs::init(bool back)
 
 	// loop through the gangs, populating the list box
 	g_LogFile.write("Setting recruitable gang info\n");
-	for (auto& current : g_Game.gang_manager().GetHireableGangs())
+	for (auto& current : g_Game->gang_manager().GetHireableGangs())
 	{
 		// format the string with the gang name, mission and number of men
-		string Data[10];
+		std::vector<string> Data(10);
 		Data[0] = current->name();
 		Data[1] = std::to_string(current->m_Num);
 		ss.str("");	ss << current->combat() << "%";		Data[2] = ss.str();
@@ -301,7 +301,7 @@ void cScreenGangs::init(bool back)
 		*			add the box to the list
 		*/
 		int color = current->m_Num < 6 ? COLOR_RED : COLOR_BLUE;
-		AddToListBox(recruitlist_id, num++, Data, 10, color);
+		AddToListBox(recruitlist_id, num++, std::move(Data), color);
 	}
 
 	if (selection == -1 && GetListBoxSize(ganglist_id) >= 1) selection = 0;
@@ -314,25 +314,27 @@ void cScreenGangs::init(bool back)
 	if (sel_recruit == -1 && GetListBoxSize(recruitlist_id) >= 1) sel_recruit = 0;
 	if (sel_recruit >= 0) SetSelectedItemInList(recruitlist_id, sel_recruit);
 
-	DisableButton(ganghire_id, (g_Game.gang_manager().GetNumHireableGangs() <= 0) || (g_Game.gang_manager().GetNumGangs() >= g_Game.gang_manager().GetMaxNumGangs()) || (sel_recruit == -1));
-	DisableButton(gangfire_id, (g_Game.gang_manager().GetNumGangs() <= 0) || (selection == -1));
+    DisableWidget(ganghire_id, (g_Game->gang_manager().GetNumHireableGangs() <= 0) ||
+                               (g_Game->gang_manager().GetNumGangs() >= g_Game->gang_manager().GetMaxNumGangs()) ||
+                               (sel_recruit == -1));
+    DisableWidget(gangfire_id, (g_Game->gang_manager().GetNumGangs() <= 0) || (selection == -1));
 }
 
 void cScreenGangs::update_sliders()
 {
     int s1 = SliderValue(girlspercslider_id);
     int s2 = SliderValue(itemspercslider_id);
-    g_Game.gang_manager().Gang_Gets_Girls(s1);
-    g_Game.gang_manager().Gang_Gets_Items(s2 - s1);
-    g_Game.gang_manager().Gang_Gets_Beast(100 - s2);
+    g_Game->gang_manager().Gang_Gets_Girls(s1);
+    g_Game->gang_manager().Gang_Gets_Items(s2 - s1);
+    g_Game->gang_manager().Gang_Gets_Beast(100 - s2);
     ss.str("");
-    ss << "Girls : " << g_Game.gang_manager().Gang_Gets_Girls() << "%";
+    ss << "Girls : " << g_Game->gang_manager().Gang_Gets_Girls() << "%";
     EditTextItem(ss.str(), ganggetsgirls_id);
     ss.str("");
-    ss << "Items : " << g_Game.gang_manager().Gang_Gets_Items() << "%";
+    ss << "Items : " << g_Game->gang_manager().Gang_Gets_Items() << "%";
     EditTextItem(ss.str(), ganggetsitems_id);
     ss.str("");
-    ss << "Beasts : " << g_Game.gang_manager().Gang_Gets_Beast() << "%";
+    ss << "Beasts : " << g_Game->gang_manager().Gang_Gets_Beast() << "%";
     EditTextItem(ss.str(), ganggetsbeast_id);
 }
 
@@ -340,7 +342,7 @@ void cScreenGangs::on_select_gang(int selection)
 {
     if (selection != -1)
     {
-        sGang* gang = g_Game.gang_manager().GetGang(selection);
+        sGang* gang = g_Game->gang_manager().GetGang(selection);
         ss.str(""); ss << "Name: " << gang->name() << "\n" << "Number: " << gang->m_Num << "\n" << "Combat: " << gang->m_Skills[SKILL_COMBAT] << "%\n" << "Magic: " << gang->m_Skills[SKILL_MAGIC] << "%\n" << "Intelligence: " << gang->m_Stats[STAT_INTELLIGENCE] << "%\n";
         EditTextItem(ss.str(), gangdesc_id);
         SetSelectedItemInList(missionlist_id, gang->m_MissionID, false);
@@ -359,7 +361,7 @@ void cScreenGangs::on_select_mission()
     g_LogFile.ssend();
     for (int selection = multi_first(); selection != -1; selection = multi_next())
     {
-        sGang* gang = g_Game.gang_manager().GetGang(selection);
+        sGang* gang = g_Game->gang_manager().GetGang(selection);
         /*
         *				make sure we found the gang - pretty catastrophic
         *				if not, so log it if we do
@@ -398,12 +400,12 @@ void cScreenGangs::on_select_mission()
     }
 
     int cost = 0;
-    if (g_Game.gang_manager().GetNumGangs() > 0)
+    if (g_Game->gang_manager().GetNumGangs() > 0)
     {
-        for (int i = 0; i < g_Game.gang_manager().GetNumGangs(); i++)
+        for (int i = 0; i < g_Game->gang_manager().GetNumGangs(); i++)
         {
-            sGang* g = g_Game.gang_manager().GetGang(i);
-            cost += tariff.goon_mission_cost(g->m_MissionID);
+            sGang* g = g_Game->gang_manager().GetGang(i);
+            cost += g_Game->tariff().goon_mission_cost(g->m_MissionID);
         }
     }
     ss.str("");
@@ -411,7 +413,7 @@ void cScreenGangs::on_select_mission()
     EditTextItem(ss.str(), totalcost_id);
     if (gold_id >= 0)
     {
-        ss.str(""); ss << "Gold: " << g_Game.gold().ival();
+        ss.str(""); ss << "Gold: " << g_Game->gold().ival();
         EditTextItem(ss.str(), gold_id);
     }
 }
@@ -461,7 +463,7 @@ string cScreenGangs::short_mission_desc(int mid)
 
 int cScreenGangs::set_mission_desc(int mid)
 {
-	int price = tariff.goon_mission_cost(mid);			// OK: get the difficulty-adjusted price for this mission
+	int price = g_Game->tariff().goon_mission_cost(mid);			// OK: get the difficulty-adjusted price for this mission
 	string desc = mission_desc(mid);					// and get a description of the mission
 	ss.str(""); ss << desc << " (" << price << "g)";				// stick 'em both together ...
 	EditTextItem(ss.str(), missiondesc_id);				// ... and set the text field
@@ -470,28 +472,19 @@ int cScreenGangs::set_mission_desc(int mid)
 
 void cScreenGangs::hire_recruitable()
 {
-	if ((g_Game.gang_manager().GetNumGangs() >= g_Game.gang_manager().GetMaxNumGangs()) || (sel_recruit == -1)) return;
-	g_Game.gang_manager().HireGang(sel_recruit);
+	if ((g_Game->gang_manager().GetNumGangs() >= g_Game->gang_manager().GetMaxNumGangs()) || (sel_recruit == -1)) return;
+	g_Game->gang_manager().HireGang(sel_recruit);
 	init(false);
-}
-
-void cScreenGangs::OnKeyPress(SDL_keysym keysym)
-{
-    auto key = keysym.sym;
-    if (key == SDLK_SPACE)
-    {
-        hire_recruitable();
-    }
 }
 
 void cScreenGangs::buy_potions(int buypots)
 {
-    g_Game.gang_manager().BuyHealingPotions(buypots, IsCheckboxOn(healautobuy_id));
+    g_Game->gang_manager().BuyHealingPotions(buypots, IsCheckboxOn(healautobuy_id));
     init(false);
 }
 
 void cScreenGangs::buy_nets(int buynets)
 {
-    g_Game.gang_manager().BuyNets(buynets, IsCheckboxOn(netautobuy_id));
+    g_Game->gang_manager().BuyNets(buynets, IsCheckboxOn(netautobuy_id));
     init(false);
 }

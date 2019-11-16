@@ -23,10 +23,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Actress
-bool cJobManager::WorkFilmOral(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmOral(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -45,13 +43,13 @@ bool cJobManager::WorkFilmOral(sGirl* girl, bool Day0Night1, string& summary)
 	double jobperformance = JP_FilmOral(girl, false);
 
 	//BSIN - not sure what's wrong but this crashes the game.
-	sGang* Gang = g_Game.gang_manager().GetGangOnMission(MISS_GUARDING);
+	sGang* Gang = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
 
 	cGirls::UnequipCombat(girl);	// not for actress (yet)
 
 	ss << girlName << " worked as an actress filming oral scenes.\n \n";
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FILMORAL))
 	{
 		ss << "She refused to give head on film today.\n";
@@ -61,9 +59,9 @@ bool cJobManager::WorkFilmOral(sGirl* girl, bool Day0Night1, string& summary)
 
 	if (jobperformance >= 350)
 	{
-		if (Gang && Gang->m_Num > 0 && g_Dice.percent(50))
+		if (Gang && Gang->m_Num > 0 && rng.percent(50))
 		{
-			int members = min(g_Dice.bell(0, Gang->m_Num * 2), Gang->m_Num);
+			int members = min(rng.bell(0, Gang->m_Num * 2), Gang->m_Num);
 			ss << "When the 'actor' didn't turn up, " << girlName << " expertly sucked off ";
 			if (members >= Gang->m_Num)	ss << "everyone";
 			else if (members > 1)/*  */	ss << members << " lucky guys";
@@ -77,7 +75,7 @@ bool cJobManager::WorkFilmOral(sGirl* girl, bool Day0Night1, string& summary)
 	else if (jobperformance >= 245)
 	{
 		ss << girlName << " sucked off her man like a pro - not once breaking eye-contact - and was rewarded with ";
-		if (g_Dice.percent(50) || girl->has_trait("Cum Addict")) ss << "a mouthful of semen. She kept her lips clamped to his cock to the last, thirstily swallowing down every drop of hot cum.";
+		if (rng.percent(50) || girl->has_trait("Cum Addict")) ss << "a mouthful of semen. She kept her lips clamped to his cock to the last, thirstily swallowing down every drop of hot cum.";
 		else ss << "a explosion of cum in her face. As she licked his penis clean, she rubbed cum around her skin and licked it off her fingers.";
 		bonus = 6;
 	}
@@ -107,17 +105,17 @@ bool cJobManager::WorkFilmOral(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait("Cum Addict")) enjoy += 2;
 	if (jobperformance >= 200)
 	{
-		enjoy += (g_Dice % 3 + 1);
+		enjoy += (rng % 3 + 1);
 		ss << "She really enjoyed giving head today.\n \n";
 	}
 	else if (jobperformance >= 100)
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She enjoyed this performance.\n \n";
 	}
 	else
 	{
-		enjoy -= (g_Dice % 3 + 2);
+		enjoy -= (rng % 3 + 2);
 		ss << "She's bad at this, and the whole experience was pretty humiliating.\n \n";
 	}
 	bonus += enjoy;
@@ -148,14 +146,14 @@ bool cJobManager::WorkFilmOral(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->oralsex(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->oralsex(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(ACTION_SEX, enjoy);
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 	cGirls::PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
-	if (g_Dice.percent(5) && (girl->happiness() > 80) && (girl->get_enjoyment(ACTION_WORKMOVIE) > 75))
+	if (rng.percent(5) && (girl->happiness() > 80) && (girl->get_enjoyment(ACTION_WORKMOVIE) > 75))
 		cGirls::AdjustTraitGroupGagReflex(girl, 1, true, Day0Night1);
 	return false;
 }
@@ -173,32 +171,7 @@ double cJobManager::JP_FilmOral(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//Good
-	if (girl->has_trait( "Deep Throat"))					jobperformance += 60;	//better ability
-	if (girl->has_trait( "No Gag Reflex"))				jobperformance += 40;	//
-	if (girl->has_trait( "Good Kisser"))					jobperformance += 20;	//
-	if (girl->has_trait( "Nimble Tongue"))				jobperformance += 20;	//
-	if (girl->has_trait( "Pierced Tongue"))				jobperformance += 25;	//
-	if (girl->has_trait( "Dick-Sucking Lips"))			jobperformance += 35;	//
-	if (girl->has_trait( "Exotic"))						jobperformance += 5;	//
-	if (girl->has_trait( "Whore"))						jobperformance += 20;	//Knows how to work it
-	if (girl->has_trait( "Porn Star"))					jobperformance += 30;	//Knows how to work it on film
-	if (girl->has_trait( "No Teeth"))						jobperformance += 15;	// no chance of 'accident'
-	if (girl->has_trait( "Missing Teeth"))				jobperformance += 15;	//
-	if (girl->has_trait( "Nymphomaniac"))					jobperformance += 25;	//had lots of practice
-	if (girl->has_trait( "Slut"))							jobperformance += 15;	//had practice
-	if (girl->has_trait( "Cum Addict"))					jobperformance += 30;	//eager to please
-	if (girl->has_trait( "Mind Fucked"))					jobperformance += 25;	//eager to please
-	if (girl->has_trait( "Sexy Air"))						jobperformance += 10;
-	if (girl->has_trait( "Open Minded"))					jobperformance += 10;
-	if (girl->has_trait( "Natural Pheromones"))			jobperformance += 5;
-
-
-	//Bad
-	if (girl->has_trait( "Strong Gag Reflex"))			jobperformance -= 40;
-	if (girl->has_trait( "Gag Reflex"))					jobperformance -= 20;
-	if (girl->has_trait( "Clumsy"))						jobperformance -= 25;
-	if (girl->has_trait( "Nervous"))						jobperformance -= 15;
+    jobperformance += girl->get_trait_modifier("work.film.oral");
 
 	return jobperformance;
 }

@@ -62,7 +62,7 @@ struct sMovieScene
 	long m_RunWeeks;
 	sMovieScene()		= default;
 	~sMovieScene()		= default;
-	void OutputSceneRow(string* Data, const vector<string>& columnNames);
+	void OutputSceneRow(vector<string>& Data, const vector<string>& columnNames);
 	void OutputSceneDetailString(string& Data, const string& detailName);
 };
 

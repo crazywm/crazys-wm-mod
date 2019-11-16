@@ -23,11 +23,13 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include <map>
+#include "fwd.hpp"
 
 class cMessageBox;
-class cInterfaceWindow;
 class IBuilding;
 class SDL_keysym;
+class sGirl;
 
 /*!
  * \brief Manages the game's ui by handling the windows that are show.
@@ -39,7 +41,9 @@ public:
 	~cWindowManager();
 
 	void load();
-	void add_window(std::string name, std::unique_ptr<cInterfaceWindow> win);
+	void add_window(std::string name, std::shared_ptr<cInterfaceWindow> win);
+
+	// navigation
 	void push(const std::string& window_name);
 	/// replaces the top window with a new window. Differs from push/pop in that the window in the lower layer will never
 	/// be initialized.
@@ -47,15 +51,16 @@ public:
 
 	// remove function from the stack
 	void Pop();
-	void PopToWindow(cInterfaceWindow* Interface);
+	void PopAll();
+
     void PopToWindow(const std::string& window_name);
+
 	void UpdateCurrent();
 	void UpdateMouseMovement(int x, int y);
-	void UpdateMouseDown(int x, int y);
-	void UpdateMouseClick(int x, int y, bool mouseWheelDown = false, bool mouseWheelUp = false);
-	void UpdateKeyInput(char key, bool upper = false);
-	bool HasEditBox();
-	cInterfaceWindow* GetWindow();
+	void OnMouseClick(int x, int y, bool down);
+	void OnMouseWheel(int x, int y, bool mouseWheelDown = false);
+
+    cInterfaceWindow* GetWindow();
 	void Draw();
 
 
@@ -75,6 +80,7 @@ public:
 	void InputInteger(std::function<void(int)> callback);
 	void InputConfirm(std::function<void()> callback);
 	void InputString(std::function<void(const std::string&)> callback);
+	void InputChoice(std::string question, std::vector<std::string> options, std::function<void(int)> callback);
 
 	// message box
     void PushMessage(std::string text, int color);
@@ -84,13 +90,13 @@ public:
     void SetActiveGirl(sGirl* girl);
 private:
     // normal windows
-    std::vector<cInterfaceWindow*> m_WindowStack;
+    std::vector<std::shared_ptr<cInterfaceWindow>> m_WindowStack;
 
     // modal windows
     std::unique_ptr<cMessageBox> m_MessageBox;
 
 	// map of known window names
-    std::map<std::string, std::unique_ptr<cInterfaceWindow>> windows;
+    std::map<std::string, std::shared_ptr<cInterfaceWindow>> windows;
 
     // the currently selected building
     IBuilding* m_ActiveBuilding = nullptr;
@@ -98,5 +104,6 @@ private:
     // the active girl list.
     std::vector<sGirl*> m_SelectedGirls;
 };
+
 
 #endif

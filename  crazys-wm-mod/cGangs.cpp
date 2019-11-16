@@ -34,6 +34,7 @@
 #include "DirPath.h"
 #include "utils/streaming_random_selection.hpp"
 #include "utils/algorithms.hpp"
+#include "CLog.h"
 
 extern cRng g_Dice;
 
@@ -78,21 +79,8 @@ cGangManager::cGangManager()
 
 cGangManager::~cGangManager() = default;
 
-void cGangManager::Free()
-{
-    m_PlayersGangs.clear();
-    m_HireableGangs.clear();
-	m_BusinessesExtort = 0;
-	m_NumHealingPotions = m_SwordLevel = m_NumNets = 0;
-	m_KeepHealStocked = m_KeepNetsStocked = 0;
-	m_Control_Gangs = false;
-	m_Gang_Gets_Girls = m_Gang_Gets_Items = m_Gang_Gets_Beast = 0;
-}
-
 bool cGangManager::LoadGangsXML(TiXmlHandle hGangManager)
 {
-	Free();							//everything should be init even if we failed to load an XML element
-
 	TiXmlElement* pGangManager = hGangManager.ToElement();
 	if (pGangManager == nullptr) return false;
 
@@ -342,7 +330,7 @@ int cGangManager::GetNumGangs()
 
 int cGangManager::GetMaxNumGangs()
 {
-	m_MaxNumGangs = 7 + g_Game.buildings().num_buildings(BuildingType::BROTHEL);
+	m_MaxNumGangs = 7 + g_Game->buildings().num_buildings(BuildingType::BROTHEL);
 	return m_MaxNumGangs;
 }
 
@@ -605,7 +593,6 @@ bool cGangManager::GangBrawl(sGang* gang1, sGang* gang2, bool rivalVrival)
 	if (!gang1 || gang1->members() < 1) return false;	// gang1 does not exist
 	if (!gang2 || gang2->members() < 1) return true;	// gang2 does not exist
 
-	cTariff tariff;
 	// Player's gang or first gang if rivalVrival = true
 	gang1->m_Combat = true;
 	u_int g1attack = SKILL_COMBAT;
@@ -1197,7 +1184,6 @@ bool cGangManager::GirlVsEnemyGang(sGirl* girl, sGang* enemy_gang)
 void cGangManager::UpdateGangs()
 {
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || Start"; g_LogFile.ssend(); }
-	cTariff tariff;
 	stringstream ss;
 
 	// maintain recruitable gangs list, potentially pruning some old ones
@@ -1224,7 +1210,7 @@ void cGangManager::UpdateGangs()
         case MISS_SPYGIRLS:
             break;
         case MISS_CAPTUREGIRL:
-            if (g_Game.GetNumRunaways() > 0) {
+            if (g_Game->GetNumRunaways() > 0) {
                 m_Missions[MISS_CAPTUREGIRL]->run(*currentGang);
                 break;
             }
@@ -1268,7 +1254,7 @@ void cGangManager::UpdateGangs()
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || 3"; g_LogFile.ssend(); }
 
 
-	g_Game.rivals().Update(m_BusinessesExtort);	// Update the rivals
+	g_Game->rivals().Update(m_BusinessesExtort);	// Update the rivals
 
 	RestockNetsAndPots();
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || end"; g_LogFile.ssend(); }
@@ -1278,7 +1264,6 @@ void cGangManager::UpdateGangs()
 // `J` restock at the start and end of the gang shift - Added for .06.01.09
 void cGangManager::RestockNetsAndPots()
 {
-	cTariff tariff;
 	g_LogFile.ss() << "Time to restock heal potions and nets\n"
 		<< "Heal Flag    = " << bool(m_KeepHealStocked > 0) << "\n"
 		<< "Heal Target  = " << m_KeepHealStocked << "\n"
@@ -1291,13 +1276,13 @@ void cGangManager::RestockNetsAndPots()
 	{
 		int diff = m_KeepHealStocked - m_NumHealingPotions;
 		m_NumHealingPotions = m_KeepHealStocked;
-		g_Game.gold().consumable_cost(tariff.healing_price(diff));
+		g_Game->gold().consumable_cost(g_Game->tariff().healing_price(diff));
 	}
 	if (m_KeepNetsStocked > 0 && m_KeepNetsStocked > m_NumNets)
 	{
 		int diff = m_KeepNetsStocked - m_NumNets;
 		m_NumNets = m_KeepNetsStocked;
-		g_Game.gold().consumable_cost(tariff.nets_price(diff));
+		g_Game->gold().consumable_cost(g_Game->tariff().nets_price(diff));
 	}
 }
 
@@ -1437,7 +1422,7 @@ bool cGangManager::losegang(sGang& gang)
 		case MISS_SERVICE:		ss << "helping the community.";				break;
 		default:				ss << "on a mission.";						break;
 		}
-		g_Game.push_message(ss.str(), COLOR_RED);
+		g_Game->push_message(ss.str(), COLOR_RED);
 		return true;
 	}
 	return false;
@@ -1477,7 +1462,6 @@ void cGangManager::check_gang_recruit(sGang& gang)
 void cGangManager::GangStartOfShift()
 {
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGangManager::GangStartOfShift() || Start"; g_LogFile.ssend(); }
-	cTariff tariff;
 	stringstream ss;
 
 	RestockNetsAndPots();
@@ -1489,7 +1473,7 @@ void cGangManager::GangStartOfShift()
         if (gang->m_Num <= 0)	// clear dead
         {
             ss << "All of the men in gang " << gang->name() << " have died.";
-            g_Game.push_message(ss.str(), COLOR_RED);
+            g_Game->push_message(ss.str(), COLOR_RED);
             return true;
         }
         return false;
@@ -1501,14 +1485,14 @@ void cGangManager::GangStartOfShift()
     {
         gang->m_Combat = false;
         gang->m_Events.Clear();
-		cost += tariff.goon_mission_cost(gang->m_MissionID);	// sum up the cost of all the goon missions
+		cost += g_Game->tariff().goon_mission_cost(gang->m_MissionID);	// sum up the cost of all the goon missions
 
 		check_gang_recruit(*gang);
 
 		if (gang->m_MissionID == MISS_SPYGIRLS)	gang->m_Events.AddMessage("Gang   " + gang->name() + "   is spying on your girls.", IMGTYPE_PROFILE, EVENT_GANG);
 		if (gang->m_MissionID == MISS_GUARDING)	gang->m_Events.AddMessage("Gang   " + gang->name() + "   is guarding.", IMGTYPE_PROFILE, EVENT_GANG);
 	}
-	g_Game.gold().goon_wages(cost);
+	g_Game->gold().goon_wages(cost);
 
     // give out nets
     while(m_NumNets > 0) {
@@ -1544,11 +1528,10 @@ void cGangManager::GangStartOfShift()
 
 int cGangManager::BuyNets(int amount, bool autobuy)
 {
-    cTariff tariff;
     amount = std::min(amount, 60 - m_NumNets);
 
-    int cost = tariff.nets_price(amount);
-    if (g_Game.gold().item_cost(cost))
+    int cost = g_Game->tariff().nets_price(amount);
+    if (g_Game->gold().item_cost(cost))
     {
         m_NumNets += amount;
     }
@@ -1562,11 +1545,10 @@ int cGangManager::BuyNets(int amount, bool autobuy)
 
 int cGangManager::BuyHealingPotions(int amount, bool autobuy)
 {
-    cTariff tariff;
     amount = std::min(amount, 200 - m_NumNets);
 
-    int cost = tariff.healing_price(amount);
-    if (g_Game.gold().item_cost(cost))
+    int cost = g_Game->tariff().healing_price(amount);
+    if (g_Game->gold().item_cost(cost))
     {
         m_NumHealingPotions += amount;
     }

@@ -24,18 +24,16 @@
 #include "src/Game.hpp"
 #include "cCustomers.h"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Centre - General
-bool cJobManager::WorkComunityService(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkComunityService(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCENTRE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_COMUNITYSERVICE))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -96,7 +94,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, bool Day0Night1, string& summ
 
 
 	//try and add randomness here
-	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && !girl->check_virginity()
+	if (girl->has_trait( "Nymphomaniac") && rng.percent(30) && !girl->check_virginity()
 		&& !girl->has_trait( "Lesbian") && girl->libido() > 75
 		&& (brothel->is_sex_type_allowed(SKILL_NORMALSEX) || brothel->is_sex_type_allowed(SKILL_ANAL)))
 	{
@@ -104,7 +102,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, bool Day0Night1, string& summ
 		ss << "Her Nymphomania got the better of her today and she decided the best way to serve her community was on her back!\n \n";
 	}
 
-	if (g_Dice.percent(30) && girl->intelligence() < 55)//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
+	if (rng.percent(30) && girl->intelligence() < 55)//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{
 		blow = true;
 		ss << "An elderly fellow managed to convince " << girlName << " that the best way to serve her community was on her knees. She ended up giving him a blow job!\n \n";
@@ -148,7 +146,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, bool Day0Night1, string& summ
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
-				g_Game.push_message(girl->m_Realname + " has gotten pregnant", 0);
+				g_Game->push_message(girl->m_Realname + " has gotten pregnant", 0);
 			}
 		}
 		else if (brothel->is_sex_type_allowed(SKILL_ANAL))
@@ -164,7 +162,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, bool Day0Night1, string& summ
 	}
 	else if (blow)
 	{
-		brothel->m_Happiness += (g_Dice % 70) + 60;
+		brothel->m_Happiness += (rng % 70) + 60;
 		dispo += 4;
 		girl->oralsex(2);
 		fame += 1;
@@ -179,7 +177,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, bool Day0Night1, string& summ
 	else
 	{
 		ss << "\nThe fact that your paying this girl to do this helps people think your a better person.";
-		g_Game.gold().staff_wages(100);  // wages come from you
+		g_Game->gold().staff_wages(100);  // wages come from you
 		dispo = int(dispo*1.5);
 	}
 
@@ -194,7 +192,7 @@ bool cJobManager::WorkComunityService(sGirl* girl, bool Day0Night1, string& summ
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
-    g_Game.player().disposition(dispo);
+    g_Game->player().disposition(dispo);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	help += (int)(jobperformance / 10);		//  1 helped per 10 point of performance
@@ -216,9 +214,9 @@ bool cJobManager::WorkComunityService(sGirl* girl, bool Day0Night1, string& summ
 
 	girl->fame(fame);
 	girl->exp(xp);
-	if (g_Dice % 2 == 1)	girl->intelligence(g_Dice%skill);
-	else				girl->charisma(g_Dice%skill);
-	girl->service(g_Dice%skill + 1);
+	if (rng % 2 == 1)	girl->intelligence(rng%skill);
+	else				girl->charisma(rng%skill);
+	girl->service(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 
@@ -239,22 +237,7 @@ double cJobManager::JP_ComunityService(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-
-
-	//good traits
-	if (girl->has_trait( "Charismatic"))		jobperformance += 20;
-	if (girl->has_trait( "Sexy Air"))			jobperformance += 10;
-	if (girl->has_trait( "Cool Person"))		jobperformance += 10;	//people love to be around her
-	if (girl->has_trait( "Cute"))				jobperformance += 5;
-	if (girl->has_trait( "Charming")) 		jobperformance += 15;	//people like charming people
-	if (girl->has_trait( "Optimist"))			jobperformance += 10;
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))		jobperformance -= 50;	// needs others to do the job
-	if (girl->has_trait( "Clumsy"))			jobperformance -= 20;	//spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))		jobperformance -= 20;	//gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))			jobperformance -= 30;	//don't like to be around people
-	if (girl->has_trait( "Meek"))				jobperformance -= 20;
+    jobperformance += girl->get_trait_modifier("work.communityservice");
 
 	return jobperformance;
 }

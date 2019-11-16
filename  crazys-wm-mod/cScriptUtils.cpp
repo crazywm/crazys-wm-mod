@@ -20,7 +20,6 @@
 #include "cGirls.h"
 #include "src/buildings/cBrothel.h"
 #include "src/Game.hpp"
-#include "InterfaceGlobals.h"
 
 void cScriptUtils::add_girl_to_brothel(sGirl *girl)
 {
@@ -42,28 +41,26 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
  */
 	if(cGirls::GetRebelValue(girl, false) >= 35) {
 		text += " has been sent to your dungeon, as she is rebellious and poorly trained.";
-		g_Game.push_message(text, 0);
-		g_Game.dungeon().AddGirl(girl, DUNGEON_NEWGIRL);
+		g_Game->push_message(text, 0);
+		g_Game->dungeon().AddGirl(girl, DUNGEON_NEWGIRL);
 		return;
 	}
 /*
  *	She qualifies for brothel duty - is there room?
  *	let's get some numbers
  */
-	int total_rooms = 0;
-	int rooms_used = 0;
 	// TODO figure out which building is used here
-    IBuilding& building = g_Game.buildings().get_building(0);
-    total_rooms = building.m_NumRooms;
-    rooms_used  = building.num_girls();
+    IBuilding& building = g_Game->buildings().get_building(0);
+    int total_rooms = building.m_NumRooms;
+    int rooms_used  = building.num_girls();
 	int diff = total_rooms - rooms_used;
 /*
  *	now then...
  */
 	if(diff <= 0) {
 		text += (" has been sent to your dungeon, since current brothel is full.");
-		g_Game.push_message(text, 0);
-		g_Game.dungeon().AddGirl(girl, DUNGEON_NEWGIRL);
+		g_Game->push_message(text, 0);
+		g_Game->dungeon().AddGirl(girl, DUNGEON_NEWGIRL);
 		return;
 	}
 /*
@@ -71,7 +68,6 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
  */
 	text += (" has been sent to your current brothel.");
 	building.add_girl(girl);
-	g_Game.push_message(text, 0);
-	return;
+	g_Game->push_message(text, 0);
 }
 

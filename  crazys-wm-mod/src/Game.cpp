@@ -3,19 +3,24 @@
 #include "cPlayer.h"
 #include "src/buildings/cDungeon.h"
 #include "cGold.h"
+#include "DirPath.h"
 #include "CLog.h"
 #include "cGangs.h"
 #include "cJobManager.h"
 #include "cObjectiveManager.hpp"
 #include "src/IBuilding.hpp"
 #include "src/sStorage.hpp"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "tinyxml.h"
 #include "cCustomers.h"
 #include "buildings/cBrothel.h"
 #include "cInventory.h"
+#include "cTraits.h"
+#include "FileList.h"
+#include "interface/fwd.hpp"
+#include "cTariff.h"
+#include "cShop.h"
 
-extern cWindowManager g_WinManager;
 
 cRivalManager& Game::rivals()
 {
@@ -40,10 +45,15 @@ Game::Game() :
     m_Buildings(new cBuildingManager()),
     m_Customers(new cCustomers()),
     m_InvManager(new cInventory()),
-    m_Girls(new cGirls())
-
+    m_Girls(new cGirls()),
+    m_Traits( new cTraits() ),
+    m_Shop( new cShop(NUM_SHOPITEMS) )
 {
-    m_JobManager->Setup();
+}
+
+cTraits& Game::traits()
+{
+    return *m_Traits;
 }
 
 cObjectiveManager& Game::objective_manager()
@@ -123,7 +133,7 @@ void Game::next_week()
                 sGirl* temp = rgirl;
                 RemoveGirlFromRunaways(temp);
                 dungeon().AddGirl(temp, DUNGEON_GIRLRUNAWAY);
-                g_Game.push_message("A runnaway slave has been recaptured by the authorities and returned to you.", COLOR_GREEN);
+                g_Game->push_message("A runnaway slave has been recaptured by the authorities and returned to you.", COLOR_GREEN);
                 continue;
             }
             rgirl->m_RunAway--;
@@ -174,7 +184,7 @@ void Game::next_week()
         long gold = num_businesses_extortet * INCOME_BUSINESS;
         ss << "You gain " << gold << " gold from the " << num_businesses_extortet << " businesses under your control.\n";
         m_Gold->extortion(gold);
-        g_Game.push_message(ss.str(), COLOR_GREEN);
+        g_Game->push_message(ss.str(), COLOR_GREEN);
     }
 
     ss.str("");
@@ -182,31 +192,18 @@ void Game::next_week()
     if (totalProfit < 0)
     {
         ss << "Your brothel had an overall deficit of " << -totalProfit << " gold.";
-        g_Game.push_message(ss.str(), COLOR_RED);
+        g_Game->push_message(ss.str(), COLOR_RED);
     }
     else if (totalProfit > 0)
     {
         ss << "You made a overall profit of " << totalProfit << " gold.";
-        g_Game.push_message(ss.str(), COLOR_GREEN);
+        g_Game->push_message(ss.str(), COLOR_GREEN);
     }
     else
     {
         ss << "You are breaking even (made as much money as you spent)";
-        g_Game.push_message(ss.str(), COLOR_DARKBLUE);
+        g_Game->push_message(ss.str(), COLOR_DARKBLUE);
     }
-
-
-
-    // MYR: I'm really curious about what goes in these if statements
-
-    // DustyDan, 04/08/2013:  This is for future to include inside these ifs,
-    // the actions to take when not enough businesses controlled to support the
-    // number of brothels currently owned (according to formula that allowed original purchase).
-
-    // Suggest future something like not allowing any net profit from the brothels
-    // that are unsupported by enough businesses.
-    // Forcing sale of a brothel would be too drastic; maybe allowing sale if player
-    // wants to would be an option to present.
 
     // `J` added loss of security if not enough businesses held.
 
@@ -259,8 +256,7 @@ void Game::next_week()
     // go through and update the population base
     customers().ChangeCustomerBase();
 
-    // Free customers
-    customers().Free();
+    // TODO Free customers?
 
     // update the players gold
     gold().week_end();
@@ -270,6 +266,13 @@ void Game::next_week()
 
     // go ahead and handle pregnancies for girls not controlled by player
     m_Girls->UncontrolledPregnancies();
+
+    // Update the shop. This happens very late in the week update, because then we can guarantee that the
+    // player always sees a full shop.
+    m_Shop->RestockShop();
+
+    // cheat gold
+    if (m_IsCheating)	gold().cheat();
 }
 
 void Game::load(TiXmlElement& root)
@@ -306,6 +309,11 @@ void Game::load(TiXmlElement& root)
 
 void Game::read_attributes_xml(TiXmlElement& el)
 {
+    // load cheating
+    int cheat;
+    el.QueryIntAttribute("Cheat", &cheat);
+    m_IsCheating = cheat;
+
     // load supply shed level, other goodies
     el.QueryIntAttribute("SupplyShedLevel", &m_SupplyShedLevel);
 
@@ -351,6 +359,9 @@ void Game::read_attributes_xml(TiXmlElement& el)
 void Game::save(TiXmlElement& root)
 {
     auto& el = root;
+
+    // safe cheat
+    el.SetAttribute("Cheat", m_IsCheating);
 
     // save bribe rate and bank
     el.SetAttribute("BribeRate", m_BribeRate);
@@ -471,7 +482,7 @@ void Game::do_tax()
 
     if (earnings <= 0)
     {
-        g_Game.push_message("You didn't earn any money so didn't get taxed.", COLOR_BLUE);
+        g_Game->push_message("You didn't earn any money so didn't get taxed.", COLOR_BLUE);
         return;
     }
     /*
@@ -489,7 +500,7 @@ void Game::do_tax()
     */
     if (tax <= 0)
     {
-        g_Game.push_message("Thanks to a clever accountant, none of your income turns out to be taxable", COLOR_BLUE);
+        g_Game->push_message("Thanks to a clever accountant, none of your income turns out to be taxable", COLOR_BLUE);
         return;
     }
     m_Gold->tax(tax);
@@ -499,7 +510,7 @@ void Game::do_tax()
     *	Otherwise, it just makes the tax rate wobble a bit
     */
     ss << "You were taxed " << tax << " gold. You managed to launder " << laundry << " through various local businesses.";
-    g_Game.push_message(ss.str(), COLOR_BLUE);
+    g_Game->push_message(ss.str(), COLOR_BLUE);
 }
 
 void Game::RemoveGirlFromPrison(sGirl* girl)
@@ -641,7 +652,7 @@ void Game::check_raid()
     {
         ss << "the guard captain lectures you on the importance of crime prevention, whilst also passing on the Mayor's heartfelt best wishes.";
         player().suspicion(-5);
-        g_Game.push_message(ss.str(), COLOR_GREEN);
+        g_Game->push_message(ss.str(), COLOR_GREEN);
         return;
     }
     /*
@@ -663,7 +674,7 @@ void Game::check_raid()
         *		being so blatantly unfair
         */
         ss << "On his way out the captain smiles and says that the " << rival->m_Name << " send their regards.";
-        g_Game.push_message(ss.str(), COLOR_RED);
+        g_Game->push_message(ss.str(), COLOR_RED);
         return;
     }
     /*
@@ -675,7 +686,7 @@ void Game::check_raid()
     {
         ss << "they pronounce your operation to be entirely in accordance with the law.";
         player().suspicion(-5);
-        g_Game.push_message(ss.str(), COLOR_GREEN);
+        g_Game->push_message(ss.str(), COLOR_GREEN);
         return;
     }
     int nPlayer_Disposition = player().disposition();
@@ -722,7 +733,7 @@ void Game::check_raid()
     *	check for a drug-using girl they can arrest
     */
     check_druggy_girl(ss);
-    g_Game.push_message(ss.str(), COLOR_RED);
+    g_Game->push_message(ss.str(), COLOR_RED);
 }
 
 cBuildingManager& Game::buildings()
@@ -910,6 +921,47 @@ sGirl * Game::CreateRandomGirl(int age, bool addToGGirls, bool slave, bool undea
 
 void Game::push_message(std::string text, int color)
 {
-    g_WinManager.PushMessage(std::move(text), color);
+    window_manager().PushMessage(std::move(text), color);
+}
+
+void Game::LoadData()
+{
+    // jobs
+    m_JobManager->Setup();
+
+    // traits
+    DirPath traitdir = DirPath() << "Resources" << "Data";
+    FileList fl_t(traitdir, "*.traitsx");				// get a file list
+    if (fl_t.size() > 0)
+    {
+        for (int i = 0; i < fl_t.size(); i++)				// loop over the list, loading the files
+        {
+            traits().LoadXMLTraits(fl_t[i].full());
+        }
+    }
+
+    traits().LoadTraitsModifications( DirPath() << "Resources" << "Data" << "Modifiers.xml");
+}
+
+cTariff& Game::tariff()
+{
+    return *m_Tariff;
+}
+
+bool Game::allow_cheats() const
+{
+    return m_IsCheating;
+}
+
+void Game::enable_cheating()
+{
+    gold().cheat();
+    inventory_manager().GivePlayerAllItems();
+    gang_manager().NumBusinessExtorted(500);
+    m_IsCheating = true;
+}
+
+cShop &Game::shop() {
+    return *m_Shop;
 }
 

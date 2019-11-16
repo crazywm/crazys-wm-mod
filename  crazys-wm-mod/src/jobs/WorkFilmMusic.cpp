@@ -22,10 +22,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // BSIN: Job Movie Studio - Actress - Teaser
-bool cJobManager::WorkFilmMusic(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmMusic(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -49,7 +47,7 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, bool Day0Night1, string& summary)
 
 	//Refusal
 	ss << girlName;
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FILMMUSIC))
 	{
 		ss << " refused to shoot a music video scene today.\n";
@@ -127,7 +125,7 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, bool Day0Night1, string& summary)
 		else ss << "She looked pretty good but the performance let her down.";
 		bonus = 1;
 		ss << "\nThe Studio Director advised " << girlName << " how to spice up the performance";
-		if (g_Dice.percent(40))
+		if (rng.percent(40))
 		{
 			ss << ". The scene definitely got better after this.";
 			bonus++;
@@ -146,7 +144,7 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, bool Day0Night1, string& summary)
 	else
 	{
 		ss << " created a terrible music video. You even considered playing it in the dungeon as a kind of torture. But no. That would be inhumane.";
-		if (g_Game.player().disposition() < -20) ss << ".. Even for you.";
+		if (g_Game->player().disposition() < -20) ss << ".. Even for you.";
 	}
 
 	ss << "\n";
@@ -154,17 +152,17 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, bool Day0Night1, string& summary)
 	//Enjoyed? If she performed well, she'd should have enjoyed it.
 	if (jobperformance >= 200)
 	{
-		enjoy += (g_Dice % 3 + 1);
+		enjoy += (rng % 3 + 1);
 		ss << "She loved singing and performing today.\n \n";
 	}
 	else if (jobperformance >= 100)
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She enjoyed this performance.\n \n";
 	}
 	else
 	{
-		enjoy -= (g_Dice % 3 + 2);
+		enjoy -= (rng % 3 + 2);
 		ss << "She isn't much of a performer and did not enjoy making this scene.\n \n";
 	}
 	bonus = bonus + enjoy;
@@ -195,32 +193,32 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, bool Day0Night1, string& summary)
 	/* */if (girl->has_trait( "Nymphomaniac"))/*        */{ libido += 2; }
 
     girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->strip(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->strip(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(ACTION_WORKMUSIC, enjoy);
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 
 	//gain traits
-	/* */if (jobperformance >= 100 && g_Dice.percent(25)) cGirls::PossiblyGainNewTrait(girl, "Charming", 80, ACTION_WORKMOVIE, "Singing and dancing on film has made her more Charming.", Day0Night1);
-	else if (jobperformance >= 140 && g_Dice.percent(25))
+	/* */if (jobperformance >= 100 && rng.percent(25)) cGirls::PossiblyGainNewTrait(girl, "Charming", 80, ACTION_WORKMOVIE, "Singing and dancing on film has made her more Charming.", Day0Night1);
+	else if (jobperformance >= 140 && rng.percent(25))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks sexiness.", Day0Night1);
 	}
 	/* */if (girl->has_trait( "Singer"))
 	{
-		if (jobperformance >= 245 && g_Dice.percent(30))
+		if (jobperformance >= 245 && rng.percent(30))
 		{
 			cGirls::PossiblyGainNewTrait(girl, "Idol", 80, ACTION_WORKMOVIE, "Her talented and charismatic performances have got a large number of fans Idolizing her.", Day0Night1);
 		}
 	}
-	else if (jobperformance >= 200 && g_Dice.percent(30)) cGirls::PossiblyGainNewTrait(girl, "Singer", 80, ACTION_WORKMOVIE, "Her singing has become quite excellent.", Day0Night1);
+	else if (jobperformance >= 200 && rng.percent(30)) cGirls::PossiblyGainNewTrait(girl, "Singer", 80, ACTION_WORKMOVIE, "Her singing has become quite excellent.", Day0Night1);
 
 	// nice job bonus-------------------------------------------------------
 	//BONUS - Nice jobs show off her assets and make her happy, increasing fame and love.
 
-	int MrNiceGuy = g_Dice % 6, MrFair = g_Dice % 6;
+	int MrNiceGuy = rng % 6, MrFair = rng % 6;
 	MrNiceGuy = (MrNiceGuy + MrFair) / 3;				//Should come out around 1-2 most of the time.
 
     girl->happiness(MrNiceGuy);
@@ -228,7 +226,7 @@ bool cJobManager::WorkFilmMusic(sGirl* girl, bool Day0Night1, string& summary)
     girl->pclove(MrNiceGuy);
     girl->pchate(-MrNiceGuy);
     girl->pcfear(-MrNiceGuy);
-	g_Game.player().disposition(MrNiceGuy);
+	g_Game->player().disposition(MrNiceGuy);
 
 	//----------------------------------------------------------------------
 
@@ -250,39 +248,7 @@ double cJobManager::JP_FilmMusic(sGirl* girl, bool estimate)
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-
-	//good traits
-	if (girl->has_trait( "Singer"))/*                   */jobperformance += 50;	//can Sing
-	if (girl->has_trait( "Angel"))/*                    */jobperformance += 40;	//like a choir of angels
-	if (girl->has_trait( "Sexy Air"))/*                 */jobperformance += 25;	// nice video
-	if (girl->has_trait( "Agile"))/*                    */jobperformance += 20;	//
-	if (girl->has_trait( "Cool Person"))/*              */jobperformance += 20;	//
-	if (girl->has_trait( "Charismatic"))/*              */jobperformance += 20;	//
-	if (girl->has_trait( "Charming"))/*                 */jobperformance += 10;	//
-	if (girl->has_trait( "Audacity"))/*                 */jobperformance += 10;	//
-	if (girl->has_trait( "Cute"))/*                     */jobperformance += 15;	//Attractive to some
-	if (girl->has_trait( "Exotic"))/*                   */jobperformance += 15;	//
-	if (girl->has_trait( "Idol"))/*                     */jobperformance += 15;	//
-	if (girl->has_trait( "Lolita"))/*                   */jobperformance += 10;	//
-	if (girl->has_trait( "Elegant"))/*                  */jobperformance += 10;	//
-	if (girl->has_trait( "Great Figure"))/*             */jobperformance += 10;	//
-	if (girl->has_trait( "Beauty Mark"))/*              */jobperformance += 5;	//
-	if (girl->has_trait( "Porn Star"))/*                */jobperformance += 10;	//plays to camera well
-	if (girl->has_trait( "Exhibitionist"))/*            */jobperformance += 10;	//
-	if (girl->has_trait( "Social Drinker"))/*           */jobperformance += 5;	//relaxed
-
-	//bad traits
-	if (girl->has_trait( "Tone Deaf"))/*                */jobperformance -= 60;	//weakens performance
-	if (girl->has_trait( "Mind Fucked"))/*              */jobperformance -= 40;	//too messed up
-	if (girl->has_trait( "Nervous"))/*                  */jobperformance -= 25;	//weakens performance
-	if (girl->has_trait( "Meek"))/*                     */jobperformance -= 25;
-	if (girl->has_trait( "Shy"))/*                      */jobperformance -= 20;
-	if (girl->has_trait( "Retarded"))/*                 */jobperformance -= 15;
-
-	if (girl->has_trait( "Alcoholic"))/*                */jobperformance -= 5;
-	if (girl->has_trait( "Fairy Dust Addict"))/*        */jobperformance -= 5;
-	if (girl->has_trait( "Shroud Addict"))/*            */jobperformance -= 5;
-	if (girl->has_trait( "Viras Blood Addict"))/*       */jobperformance -= 5;
+    jobperformance += girl->get_trait_modifier("work.film.music");
 
 	return jobperformance;
 }

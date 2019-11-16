@@ -20,18 +20,14 @@
 #include "buildings/cBrothel.h"
 #include "main.h"
 #include "cScreenSlaveMarket.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "Game.hpp"
 
-extern bool g_Cheats;
-
-extern	bool	g_AltKeys;	// New hotkeys --PP
 extern	bool	g_ShiftDown;
 extern	bool	g_S_Key;
 
-cTariff tariff;
 cScreenSlaveMarket::cScreenSlaveMarket() : cInterfaceWindowXML("slavemarket_screen.xml")
 {
     m_SelectedGirl = -1;
@@ -96,7 +92,7 @@ void cScreenSlaveMarket::set_ids()
 	});
 
     SetButtonCallback(more_id, [this]() {
-        sGirl *girl = g_Game.GetMarketSlave(m_SelectedGirl);
+        sGirl *girl = g_Game->GetMarketSlave(m_SelectedGirl);
         if (DetailLevel == 0)		{ DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(girl, true), details_id); }
         else if (DetailLevel == 1)	{ DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(girl), details_id); }
         else						{ DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(girl, true), details_id); }
@@ -104,7 +100,7 @@ void cScreenSlaveMarket::set_ids()
 
     SetListBoxSelectionCallback(slave_list_id, [this](int sel) { change_selected_girl(sel); });
     SetListBoxSelectionCallback(trait_list_id, [this](int sel) { on_select_trait(sel); });
-    SetListBoxHotKeys(slave_list_id, g_AltKeys ? SDLK_a : SDLK_UP, g_AltKeys ? SDLK_d : SDLK_DOWN);
+    SetListBoxHotKeys(slave_list_id, SDLK_a, SDLK_d);
 }
 
 void cScreenSlaveMarket::init(bool back)
@@ -113,8 +109,8 @@ void cScreenSlaveMarket::init(bool back)
 	stringstream ss;
 
 	//buttons enable/disable
-	DisableButton(more_id, true);
-	DisableButton(buy_slave_id, true);
+    DisableWidget(more_id, true);
+    DisableWidget(buy_slave_id, true);
     m_SelectedGirl = -1;
 
 	ImageNum = -1;
@@ -123,35 +119,35 @@ void cScreenSlaveMarket::init(bool back)
 	change_release(BuildingType::BROTHEL, 0);
 
     for(const auto& btn: m_ReleaseButtons) {
-        HideButton(btn.id, g_Game.buildings().num_buildings(btn.type) < btn.index + 1);
+        HideWidget(btn.id, g_Game->buildings().num_buildings(btn.type) < btn.index + 1);
     }
 
 	ClearListBox(slave_list_id);	// clear the list
 
-	for(std::size_t i = 0; i < g_Game.GetNumMarketSlaves(); ++i) {
+	for(std::size_t i = 0; i < g_Game->GetNumMarketSlaves(); ++i) {
         int col = COLOR_BLUE;
-        if (g_Game.IsMarketUniqueGirl(i))
+        if (g_Game->IsMarketUniqueGirl(i))
         {
             col = COLOR_RED;
         }
-        AddToListBox(slave_list_id, i, g_Game.GetMarketSlave(i)->m_Realname, col);
+        AddToListBox(slave_list_id, i, g_Game->GetMarketSlave(i)->m_Realname, col);
 	}
 
     m_SelectedGirl = 0;
 
 	if (header_id >= 0)
 	{
-		ss.str(""); ss << "Slave Market, " << g_Game.gold().sval() << " gold";
+		ss.str(""); ss << "Slave Market, " << g_Game->gold().sval() << " gold";
 		EditTextItem(ss.str(), header_id);
 	}
 	if (gold_id >= 0)
 	{
-		ss.str(""); ss << "Gold: " << g_Game.gold().sval();
+		ss.str(""); ss << "Gold: " << g_Game->gold().sval();
 		EditTextItem(ss.str(), gold_id);
 	}
 
 	// Finds the first girl in the selection, so she is highlighted. This stops the No girl selected that was normal before. --PP
-	m_SelectedGirl = g_Game.GetNumMarketSlaves() - 1;
+	m_SelectedGirl = g_Game->GetNumMarketSlaves() - 1;
 
 	// if there is still as selection (a non empty slave list) then highlight the current selection
 	if (m_SelectedGirl >= 0) SetSelectedItemInList(slave_list_id, m_SelectedGirl, true);
@@ -163,14 +159,14 @@ void cScreenSlaveMarket::init(bool back)
 	// if the last item was -1 I assume the list is empty so we can go home early (and probably should have earlier still)
 	if (tmp == -1) return;
 	// get the girl under the cursor.
-	preparescreenitems(g_Game.GetMarketSlave(tmp));
+	preparescreenitems(g_Game->GetMarketSlave(tmp));
 }
 
 bool cScreenSlaveMarket::check_keys()
 {
-	if (g_AltKeys && g_S_Key)
+	if (g_S_Key)
 	{
-		sGirl *girl = g_Game.GetMarketSlave(m_SelectedGirl);
+		sGirl *girl = g_Game->GetMarketSlave(m_SelectedGirl);
 		g_S_Key = false;
 		if (g_ShiftDown)
 		{
@@ -190,9 +186,9 @@ bool cScreenSlaveMarket::check_keys()
 
 void cScreenSlaveMarket::on_select_trait(int selection)
 {
-    if (selection != -1 && m_SelectedGirl != -1 && g_Game.GetMarketSlave(m_SelectedGirl)->m_NumTraits > selection)
+    if (selection != -1 && m_SelectedGirl != -1 && g_Game->GetMarketSlave(m_SelectedGirl)->m_NumTraits > selection)
     {
-        EditTextItem(g_Game.GetMarketSlave(m_SelectedGirl)->m_Traits[selection]->desc(), trait_id);
+        EditTextItem(g_Game->GetMarketSlave(m_SelectedGirl)->m_Traits[selection]->desc(), trait_id);
     }
     else EditTextItem("", trait_id);
 }
@@ -200,7 +196,7 @@ void cScreenSlaveMarket::on_select_trait(int selection)
 void cScreenSlaveMarket::process()
 {
 	if (check_keys()) return;						// handle arrow keys
-	HideImage(image_id, (m_SelectedGirl < 0));		// hide/show image based on whether a girl is selected
+    HideWidget(image_id, (m_SelectedGirl < 0));		// hide/show image based on whether a girl is selected
 	if (m_SelectedGirl < 0)								// if no girl is selected, clear girl info
 	{
 		EditTextItem("No girl selected", details_id);
@@ -209,7 +205,7 @@ void cScreenSlaveMarket::process()
 	// nothing selected == nothing further to do
 	int index = selected_item();
 	if (index == -1) return;
-	sGirl* girl = g_Game.GetMarketSlave(m_SelectedGirl);
+	sGirl* girl = g_Game->GetMarketSlave(m_SelectedGirl);
 	if (!girl) g_LogFile.os() << "... no girl at index " << index << "- returning " << endl;
 }
 
@@ -254,9 +250,9 @@ bool cScreenSlaveMarket::buy_slaves()
 	std::vector<sGirl*> girls_bought;
 	for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
 	{
-		auto girl = g_Game.GetMarketSlave(sel);
+		auto girl = g_Game->GetMarketSlave(sel);
 		girls_bought.push_back(girl);
-		totalcost += tariff.slave_buy_price(girl);
+		totalcost += g_Game->tariff().slave_buy_price(girl);
 	}
 	numgirls = girls_bought.size();
 
@@ -265,21 +261,21 @@ bool cScreenSlaveMarket::buy_slaves()
 	{
 		if (m_TargetBuilding->free_rooms() < 0)
 		{
-			g_Game.push_message("The current building has no more room.\nChoose another building to send them to.", 0);
+			g_Game->push_message("The current building has no more room.\nChoose another building to send them to.", 0);
 			return false;
 		}
 		if (m_TargetBuilding->free_rooms() < numgirls)
 		{
-			g_Game.push_message("The current building does not have enough room for all the girls you want to send there.\nChoose another building or select fewer girls at a time to buy.", 0);
+			g_Game->push_message("The current building does not have enough room for all the girls you want to send there.\nChoose another building or select fewer girls at a time to buy.", 0);
 			return false;
 		}
 	}
 
 	// `J` check if we can afford all the girls selected
-	if (!g_Game.gold().slave_cost(totalcost))	// this pays for them if you can afford them
+	if (!g_Game->gold().slave_cost(totalcost))	// this pays for them if you can afford them
 	{									// otherwise this part runs and returns a fail message.
 		stringstream text;
-		if (numgirls > 4 && g_Game.gold().ival() < totalcost / 2) text << "Calm down!  ";
+		if (numgirls > 4 && g_Game->gold().ival() < totalcost / 2) text << "Calm down!  ";
 		text << "You don't have enough money to purchase ";
 		switch (numgirls)
 		{
@@ -290,7 +286,7 @@ bool cScreenSlaveMarket::buy_slaves()
 		default: text << numgirls; break;
 		}
 		text << (numgirls <= 1 ? "" : " girls") << ".";
-		g_Game.push_message(text.str(), 0);
+		g_Game->push_message(text.str(), 0);
 		return false;
 	}
 
@@ -307,27 +303,27 @@ bool cScreenSlaveMarket::buy_slaves()
 
 	else if (!m_TargetBuilding) {
 #pragma region //	Send them to the Dungeon		//
-        if (g_Game.player().disposition() >= 80)                //Benevolent
+        if (g_Game->player().disposition() >= 80)                //Benevolent
         {
             ss << "\"Don't worry " << (numgirls == 1 ? "my dear" : "ladies")
                << ", I'm only sending you there until I find room for you somewhere better.\"\n";
-        } else if (g_Game.player().disposition() >= 50)            // nice
+        } else if (g_Game->player().disposition() >= 50)            // nice
         {
             ss << "\"Don't worry " << (numgirls == 1 ? "my dear" : "ladies")
                << ", you will not be in there long, I promise.\"\n";
-        } else if (g_Game.player().disposition() >= 10)            //Pleasant
+        } else if (g_Game->player().disposition() >= 10)            //Pleasant
         {
             ss << "\"Try to make " << (numgirls == 1 ? "yourself" : "yourselves")
                << " comfortable, you should not be in there too long.\"\n";
-        } else if (g_Game.player().disposition() >= -10)            // neutral
+        } else if (g_Game->player().disposition() >= -10)            // neutral
         {
             ss << "\"To the Dungeon with " << (numgirls == 1 ? "you" : "them") << ", I'll see you there shortly.\"\n";
-        } else if (g_Game.player().disposition() >= -50)            // not nice
+        } else if (g_Game->player().disposition() >= -50)            // not nice
         {
             ss << "\"To the Dungeon with " << (numgirls == 1 ? "you" : "them")
                << ". I'll enjoy this, but you may not.\"\n";
 
-        } else if (g_Game.player().disposition() >= -80)            //Mean
+        } else if (g_Game->player().disposition() >= -80)            //Mean
         {
             ss << "\"To the Dungeon with " << (numgirls == 1 ? "you" : "them") << ". Put "
                << (numgirls == 1 ? "her" : "them") << " in chains and I'll get to them when I am done here.\"\n";
@@ -342,7 +338,7 @@ bool cScreenSlaveMarket::buy_slaves()
     }
 	else if (m_TargetBuilding->type() == BuildingType::BROTHEL)
 	{
-		if (g_Game.player().disposition() >= 80)				// Benevolent
+		if (g_Game->player().disposition() >= 80)				// Benevolent
 		{
 			if (numgirls == 1)
 			{
@@ -356,7 +352,7 @@ bool cScreenSlaveMarket::buy_slaves()
 				else/*            */	ss << "The crowds chear and congradulate each of the girls that you buy as they walk off the stage and into your custody.";
 			}
 		}
-		else if (g_Game.player().disposition() >= 50)			// Nice
+		else if (g_Game->player().disposition() >= 50)			// Nice
 		{
 			if (numgirls == 1)
 			{
@@ -369,7 +365,7 @@ bool cScreenSlaveMarket::buy_slaves()
 				else/*            */	ss << "They looked up at you hopefully as you refused the use of a retainer or delivery, instead finding themselves taken into your retinue for the day and given a chance to enjoy the fresh air before you bring them to their new home.";
 			}
 		}
-		else if (g_Game.player().disposition() >= 10)			// Pleasant
+		else if (g_Game->player().disposition() >= 10)			// Pleasant
 		{
 			if (numgirls == 1)
 			{
@@ -382,7 +378,7 @@ bool cScreenSlaveMarket::buy_slaves()
 				else/*            */	ss << "They were escorted home by one of your slaves who helped them settle in. They seem rather hopeful of a good life in your care.";
 			}
 		}
-		else if (g_Game.player().disposition() >= -10)			// Neutral
+		else if (g_Game->player().disposition() >= -10)			// Neutral
 		{
 			if (numgirls == 1)
 			{
@@ -395,7 +391,7 @@ bool cScreenSlaveMarket::buy_slaves()
 				else/*            */	ss << "They have been sent to your establishment under the supervision of your most trusted slaves.";
 			}
 		}
-		else if (g_Game.player().disposition() >= -50)			// Not nice
+		else if (g_Game->player().disposition() >= -50)			// Not nice
 		{
 			if (numgirls == 1)
 			{
@@ -408,7 +404,7 @@ bool cScreenSlaveMarket::buy_slaves()
 				else/*            */	ss << "They struggled as their hands were shackled in front of them. With their eyes locked on the floor and tears gathering in the corners of their eyes, they were sent off to your brothel.";
 			}
 		}
-		else if (g_Game.player().disposition() >= -80)			//Mean
+		else if (g_Game->player().disposition() >= -80)			//Mean
 		{
 			if (numgirls == 1)
 			{
@@ -440,27 +436,27 @@ bool cScreenSlaveMarket::buy_slaves()
 #pragma region //	Send them to Your House		//
 	else if  (m_TargetBuilding->type() == BuildingType::HOUSE)
 	{
-		if (g_Game.player().disposition() >= 80)				//Benevolent
+		if (g_Game->player().disposition() >= 80)				//Benevolent
 		{
 			ss << "";
 		}
-		else if (g_Game.player().disposition() >= 50)			// nice
+		else if (g_Game->player().disposition() >= 50)			// nice
 		{
 			ss << "";
 		}
-		else if (g_Game.player().disposition() >= 10)			//Pleasant
+		else if (g_Game->player().disposition() >= 10)			//Pleasant
 		{
 			ss << "";
 		}
-		else if (g_Game.player().disposition() >= -10)			// neutral
+		else if (g_Game->player().disposition() >= -10)			// neutral
 		{
 			ss << "";
 		}
-		else if (g_Game.player().disposition() >= -50)			// not nice
+		else if (g_Game->player().disposition() >= -50)			// not nice
 		{
 			ss << "";
 		}
-		else if (g_Game.player().disposition() >= -80)			//Mean
+		else if (g_Game->player().disposition() >= -80)			//Mean
 		{
 			ss << "";
 		}
@@ -554,7 +550,7 @@ bool cScreenSlaveMarket::buy_slaves()
 #pragma region //	Send them to the Arena			//
 	else if (m_TargetBuilding->type() == BuildingType::ARENA)
 	{
-		ss << "Guard: \"Ok " << (numgirls == 1 ? "sweetheart" : "ladies") << ", we are headed for the Arena where you will train and eventually fight for your new master, " << g_Game.player().RealName() << ". Your first lesson, to carry these heavy packages to the Arena. Load up and march.\"\n";
+		ss << "Guard: \"Ok " << (numgirls == 1 ? "sweetheart" : "ladies") << ", we are headed for the Arena where you will train and eventually fight for your new master, " << g_Game->player().RealName() << ". Your first lesson, to carry these heavy packages to the Arena. Load up and march.\"\n";
         for (auto girl : girls_bought)
         {
 			girl->strength(g_Dice % 6);
@@ -593,7 +589,7 @@ bool cScreenSlaveMarket::buy_slaves()
     for (auto girl : girls_bought)
     {
 		stringstream sss;
-		sss << "Purchased from the Slave Market for " << tariff.slave_buy_price(girl) << " gold.";
+		sss << "Purchased from the Slave Market for " << g_Game->tariff().slave_buy_price(girl) << " gold.";
 		girl->m_Events.AddMessage(sss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 
 		if(m_TargetBuilding) {
@@ -601,20 +597,20 @@ bool cScreenSlaveMarket::buy_slaves()
             affect_girl_by_disposition(*girl);
 		} else	// if something fails this will catch it and send them to the dungeon
 		{
-			g_Game.dungeon().AddGirl(girl, DUNGEON_NEWSLAVE);
+			g_Game->dungeon().AddGirl(girl, DUNGEON_NEWSLAVE);
 			affect_dungeon_girl_by_disposition(*girl);
 		}
-		g_Game.RemoveMarketSlave(*girl);
+		g_Game->RemoveMarketSlave(*girl);
 	}
 
 	// `J` now tell the player what happened
-	if (numgirls <= 0)	g_Game.push_message("Error, no girls names in the list", 0);
-	else g_Game.push_message(ss.str(), 0);
+	if (numgirls <= 0)	g_Game->push_message("Error, no girls names in the list", 0);
+	else g_Game->push_message(ss.str(), 0);
 
 	// finish it
 	m_SelectedGirl = -1;
 	PrepareImage(image_id, nullptr, -1, false, -1, false, "blank");
-	HideImage(image_id, true);		// hide/show image based on whether a girl is selected
+    HideWidget(image_id, true);		// hide/show image based on whether a girl is selected
 	if (m_SelectedGirl < 0)								// if no girl is selected, clear girl info
 	{
 		EditTextItem("No girl selected", details_id);
@@ -626,7 +622,7 @@ bool cScreenSlaveMarket::buy_slaves()
 
 void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
 {
-    if (g_Game.player().disposition() >= 80)				// Benevolent
+    if (g_Game->player().disposition() >= 80)				// Benevolent
     {
         girl.health(g_Dice % 10);
         girl.happiness(g_Dice % 20);
@@ -643,7 +639,7 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.sanity(g_Dice.bell(-1, 5));
         girl.fame(max(0, g_Dice.bell(-1, 1)));
     }
-    else if (g_Game.player().disposition() >= 50)			// Nice
+    else if (g_Game->player().disposition() >= 50)			// Nice
     {
         girl.health(g_Dice % 5);
         girl.happiness(g_Dice % 10);
@@ -659,7 +655,7 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.refinement(g_Dice.bell(-1, 3));
         girl.sanity(g_Dice.bell(-1, 3));
     }
-    else if (g_Game.player().disposition() >= 10)			// Pleasant
+    else if (g_Game->player().disposition() >= 10)			// Pleasant
     {
         girl.happiness(g_Dice % 5);
         girl.pclove(g_Dice.bell(-1, 1));
@@ -673,10 +669,10 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.refinement(g_Dice.bell(-1, 1));
         girl.sanity(g_Dice.bell(-1, 1));
     }
-    else if (g_Game.player().disposition() >= -10)			// Neutral
+    else if (g_Game->player().disposition() >= -10)			// Neutral
     {
     }
-    else if (g_Game.player().disposition() >= -50)			// Not nice
+    else if (g_Game->player().disposition() >= -50)			// Not nice
     {
         girl.health(-(g_Dice % 2));
         girl.happiness(-(g_Dice % 10));
@@ -693,7 +689,7 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.sanity(g_Dice.bell(-2, 2));
         girl.bdsm(max(0, g_Dice.bell(-2, 5)));
     }
-    else if (g_Game.player().disposition() >= -80)			//Mean
+    else if (g_Game->player().disposition() >= -80)			//Mean
     {
         girl.health(-(g_Dice % 3));
         girl.happiness(-(g_Dice % 20));
@@ -741,7 +737,7 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
 	m_SelectedGirl = selected;
 	if (m_SelectedGirl < 0)
 	{
-		HideImage(image_id, (m_SelectedGirl < 0));		// hide/show image based on whether a girl is selected
+        HideWidget(image_id, (m_SelectedGirl < 0));		// hide/show image based on whether a girl is selected
 		if (m_SelectedGirl < 0)								// if no girl is selected, clear girl info
 		{
 			EditTextItem("No girl selected", details_id);
@@ -763,8 +759,8 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
 	// if the player selected an empty slot make that into "nothing selected" and return
 	//if (MarketSlaveGirls[selection] == nullptr) selection = -1;
 	// disable/enable buttons based on whether a girl is selected
-	DisableButton(more_id, (m_SelectedGirl == -1));
-	DisableButton(buy_slave_id, (m_SelectedGirl == -1));
+    DisableWidget(more_id, (m_SelectedGirl == -1));
+    DisableWidget(buy_slave_id, (m_SelectedGirl == -1));
 	if (trait_list_id >= 0) ClearListBox(trait_list_id);
 	if (trait_list_text_id >= 0) EditTextItem("Traits:", trait_list_text_id);
 	if (girl_desc_id >= 0)	EditTextItem("", girl_desc_id);
@@ -776,7 +772,7 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
 	 *
 	 *	if we can't find the pointer. log an error and go home
 	 */
-	sGirl *girl = g_Game.GetMarketSlave(m_SelectedGirl);
+	sGirl *girl = g_Game->GetMarketSlave(m_SelectedGirl);
 	if (!girl)
 	{
 		g_LogFile.ss() << "Warning: cScreenSlaveMarket::change_selected_girl" << "can't find girl data for selection";
@@ -807,27 +803,27 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 	}
 	else if (cGirls::GetRebelValue(girl, false) >= 35)
 	{
-		if (g_Game.player().disposition() >= 80)				//Benevolent
+		if (g_Game->player().disposition() >= 80)				//Benevolent
 		{
 			text += " accepting her own flaws that to needed be corrected, she goes to the dungeon where she will be waiting for your guidance.";
 		}
-		else if (g_Game.player().disposition() >= 50)			// nice
+		else if (g_Game->player().disposition() >= 50)			// nice
 		{
 			text += " in your opinion needs to work on her attitude, she has been guided to the dungeon.";
 		}
-		else if (g_Game.player().disposition() >= 10)			//Pleasant
+		else if (g_Game->player().disposition() >= 10)			//Pleasant
 		{
 			text += " as your newest investment, she was sent to the dungeon to work on her rebellious nature.";
 		}
-		else if (g_Game.player().disposition() >= -10)			// neutral
+		else if (g_Game->player().disposition() >= -10)			// neutral
 		{
 			text += " has been sent to your dungeon, as she is rebellious and poorly trained.";
 		}
-		else if (g_Game.player().disposition() >= -50)			// not nice
+		else if (g_Game->player().disposition() >= -50)			// not nice
 		{
 			text += " as your newest investment that needs your special touch, she was sent to the dungeon.";
 		}
-		else if (g_Game.player().disposition() >= -80)			//Mean
+		else if (g_Game->player().disposition() >= -80)			//Mean
 		{
 			text += " still had some spirit in her eyes left that you decided to stub out. She was dragged to a dungeon cell.";
 		}
@@ -839,32 +835,32 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 	else
 	{
 		int t = g_Dice % 2;	// `J` because there are currently only 2 text options per disposition this should be ok
-		if (g_Game.player().disposition() >= 80)				//Benevolent
+		if (g_Game->player().disposition() >= 80)				//Benevolent
 		{
 			if (t == 1)	text += " went to your current brothel with a smile on her face happy that such a nice guy bought her.";
 			else		text += " smiled as you offered her your arm, surprised to find such a kindness waiting for her. Hopeing such kindness would continue, she went happily with you as her owner.";
 		}
-		else if (g_Game.player().disposition() >= 50)			// nice
+		else if (g_Game->player().disposition() >= 50)			// nice
 		{
 			if (t == 1)	text += ", having heard about her new owner's reputation, was guided to your current brothel without giving any trouble.";
 			else		text += " looked up at you hopefully as you refused the use of a retainer or delivery, instead finding herself taken into your retinue for the day and given a chance to enjoy the fresh air before you both return home.";
 		}
-		else if (g_Game.player().disposition() >= 10)			//Pleasant
+		else if (g_Game->player().disposition() >= 10)			//Pleasant
 		{
 			if (t == 1)	text += " was sent to your current brothel, knowing that she could have been bought by a lot worse owner.";
 			else		text += " was escorted home by one of your slaves who helped her settle in. She seems rather hopeful of a good life in your care.";
 		}
-		else if (g_Game.player().disposition() >= -10)			// neutral
+		else if (g_Game->player().disposition() >= -10)			// neutral
 		{
 			if (t == 1)	text += " as your newest investment, she was sent to your current brothel.";
 			else		text += " has been sent to your establishment under the supervision of your most trusted slaves.";
 		}
-		else if (g_Game.player().disposition() >= -50)			// not nice
+		else if (g_Game->player().disposition() >= -50)			// not nice
 		{
 			if (t == 1)	text += " not being very happy about her new owner, was escorted to your current brothel.";
 			else		text += " struggled as her hands were shackled in front of her. Her eyes locked on the floor, tears gathering in the corners of her eyes, as she was sent off to your brothel.";
 		}
-		else if (g_Game.player().disposition() >= -80)			//Mean
+		else if (g_Game->player().disposition() >= -80)			//Mean
 		{
 			if (t == 1)	text += " didn't wanted to provoke you in any possible way. She went quietly to your current brothel, without any resistance.";
 			else		text += " was dragged away to your brothel crying, one of your guards slapping her face as she tried to resist. ";
@@ -905,7 +901,7 @@ void cScreenSlaveMarket::preparescreenitems(sGirl* girl)
 
 void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
 {
-    if (g_Game.player().disposition() >= 80)                //Benevolent
+    if (g_Game->player().disposition() >= 80)                //Benevolent
     {
             // you have a reputation for not torturing so they are not afraid (but you are sending them to a dungeon so...)
             girl.m_AccLevel = 0;
@@ -916,7 +912,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
             girl.spirit(g_Dice.bell(-2, 4));
             girl.obedience(g_Dice.bell(-2, 5));
 
-    } else if (g_Game.player().disposition() >= 50)            // nice
+    } else if (g_Game->player().disposition() >= 50)            // nice
     {
         // you have a reputation for not torturing much so they are less afraid (but you are sending them to a dungeon so...)
         girl.m_AccLevel = 0;
@@ -927,7 +923,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         girl.spirit(g_Dice.bell(-2, 2));
         girl.obedience(g_Dice.bell(-2, 2));
 
-    } else if (g_Game.player().disposition() >= 10)            //Pleasant
+    } else if (g_Game->player().disposition() >= 10)            //Pleasant
     {
         bool mas = girl.has_trait("Masochist");
         girl.m_AccLevel = 0;
@@ -937,7 +933,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         girl.happiness(-(g_Dice % 6 - (mas ? 2 : 0)));
         girl.spirit(-(g_Dice % 4 - (mas ? 2 : 0)));
         girl.obedience(g_Dice % 3 - 1);
-    } else if (g_Game.player().disposition() >= -10)            // neutral
+    } else if (g_Game->player().disposition() >= -10)            // neutral
     {
         bool mas = girl.has_trait("Masochist");
         girl.m_AccLevel = 0;
@@ -947,7 +943,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         girl.happiness(-(g_Dice % 6 - (mas ? 2 : 0)));
         girl.spirit(-(g_Dice % 4 - (mas ? 2 : 0)));
         girl.obedience(g_Dice % 3 - 1);
-    } else if (g_Game.player().disposition() >= -50)            // not nice
+    } else if (g_Game->player().disposition() >= -50)            // not nice
     {
         bool mas = girl.has_trait("Masochist");
         girl.m_AccLevel = 0;
@@ -958,7 +954,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
         girl.spirit(-(g_Dice % 7 - (mas ? 2 : 0)));
         girl.obedience(g_Dice % 5 - 2);
 
-    } else if (g_Game.player().disposition() >= -80)            //Mean
+    } else if (g_Game->player().disposition() >= -80)            //Mean
     {
 
         bool mas = girl.has_trait("Masochist");
@@ -986,7 +982,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
 void cScreenSlaveMarket::change_release(BuildingType target, int index)
 {
     stringstream ss;
-    m_TargetBuilding = g_Game.buildings().building_with_type(target, index);
+    m_TargetBuilding = g_Game->buildings().building_with_type(target, index);
 
     ss.str("");
     ss << "Send Girl to: " << m_TargetBuilding->name();

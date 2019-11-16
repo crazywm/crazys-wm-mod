@@ -25,29 +25,18 @@
 #include "cGangs.h"
 #include "widgets/cListBox.h"
 
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "FileList.h"
-#include "cInterfaceWindow.h"
 
 #include "Game.hpp"
 
 
 
-extern	bool					g_Cheats;
 extern	bool					eventrunning;
 extern	bool					g_AllTogle;
 
 extern	string					pic_types[];
 
-extern	sGirl*					g_selected_girl;
-
-
-extern	bool	g_UpArrow;
-extern	bool	g_DownArrow;
-extern	bool	g_AltKeys;	// New hotkeys --PP
-extern	bool	g_EnterKey;
-extern	bool	g_W_Key;
-extern	bool	g_S_Key;
 extern	bool	g_CTRLDown;
 
 #pragma endregion
@@ -74,11 +63,6 @@ void cScreenTransfer::set_ids()
 	shiftright_id	/**/ = get_id("ShiftRight");
 	shiftleft_id	/**/ = get_id("ShiftLeft");
 	back_id			/**/ = get_id("BackButton","Back");
-
-
-	//Set the default sort order for columns, so listbox knows the order in which data will be sent
-	SortColumns(listleft_id, m_ListBoxes[listleft_id]->m_ColumnName, m_ListBoxes[listleft_id]->m_ColumnCount);
-	SortColumns(listright_id, m_ListBoxes[listright_id]->m_ColumnName, m_ListBoxes[listright_id]->m_ColumnCount);
 
 	SetButtonNavigation(back_id, "<back>");
 	SetButtonCallback(shiftright_id, [this]() {
@@ -112,46 +96,46 @@ void cScreenTransfer::init(bool back)
 	// list all the brothels
 
 	// TODO(buildings) improve iteration
-	for(int i = 0; i < g_Game.buildings().num_buildings(BuildingType::BROTHEL); ++i) {
+	for(int i = 0; i < g_Game->buildings().num_buildings(BuildingType::BROTHEL); ++i) {
         // there are 6 other buildings using 0-5 so the brothels start at 6
-	    auto current = g_Game.buildings().building_with_type(BuildingType::BROTHEL, i);
+	    auto current = g_Game->buildings().building_with_type(BuildingType::BROTHEL, i);
         AddToListBox(brothelleft_id, i + 6, current->name());
 		AddToListBox(brothelright_id, i + 6, current->name());
 	}
 
-	if (g_Game.has_building(BuildingType::STUDIO))		// add the movie studio studio
+	if (g_Game->has_building(BuildingType::STUDIO))		// add the movie studio studio
 	{
-        auto current = g_Game.buildings().building_with_type(BuildingType::STUDIO);
+        auto current = g_Game->buildings().building_with_type(BuildingType::STUDIO);
         AddToListBox(brothelleft_id, 0, current->name());
         AddToListBox(brothelright_id, 0, current->name());
 	}
-	if (g_Game.has_building(BuildingType::ARENA))
+	if (g_Game->has_building(BuildingType::ARENA))
 	{
-        auto current = g_Game.buildings().building_with_type(BuildingType::ARENA);
+        auto current = g_Game->buildings().building_with_type(BuildingType::ARENA);
 		AddToListBox(brothelleft_id, 1, current->name());
 		AddToListBox(brothelright_id, 1, current->name());
 	}
-    if (g_Game.has_building(BuildingType::CENTRE))
+    if (g_Game->has_building(BuildingType::CENTRE))
     {
-        auto current = g_Game.buildings().building_with_type(BuildingType::CENTRE);
+        auto current = g_Game->buildings().building_with_type(BuildingType::CENTRE);
         AddToListBox(brothelleft_id, 2, current->name());
         AddToListBox(brothelright_id, 2, current->name());
     }
-    if (g_Game.has_building(BuildingType::CLINIC))
+    if (g_Game->has_building(BuildingType::CLINIC))
     {
-        auto current = g_Game.buildings().building_with_type(BuildingType::CLINIC);
+        auto current = g_Game->buildings().building_with_type(BuildingType::CLINIC);
         AddToListBox(brothelleft_id, 3, current->name());
         AddToListBox(brothelright_id, 3, current->name());
     }
-    if (g_Game.has_building(BuildingType::FARM))
+    if (g_Game->has_building(BuildingType::FARM))
     {
-        auto current = g_Game.buildings().building_with_type(BuildingType::FARM);
+        auto current = g_Game->buildings().building_with_type(BuildingType::FARM);
         AddToListBox(brothelleft_id, 4, current->name());
         AddToListBox(brothelright_id, 4, current->name());
     }
-    if (g_Game.has_building(BuildingType::HOUSE))
+    if (g_Game->has_building(BuildingType::HOUSE))
     {
-        auto current = g_Game.buildings().building_with_type(BuildingType::HOUSE);
+        auto current = g_Game->buildings().building_with_type(BuildingType::HOUSE);
         AddToListBox(brothelleft_id, 5, current->name());
         AddToListBox(brothelright_id, 5, current->name());
     }
@@ -161,12 +145,8 @@ void cScreenTransfer::init(bool back)
 void cScreenTransfer::select_brothel(Side side, int selected)
 {
     int own_list_id = side == Side::Right ? listright_id : listleft_id;
-    int other_list_id = side == Side::Right ? listleft_id : listright_id;
-    vector<string> columnNames;
-    m_ListBoxes[other_list_id]->GetColumnNames(columnNames);
-    int numColumns = columnNames.size();
-    // TODO leak?
-    string* Data = new string[numColumns];
+    vector<string> columnNames = GetListBox(own_list_id)->GetColumnNames();
+    std::vector<string> Data;
 
     ClearListBox(own_list_id);
     (side == Side::Right ? rightBrothel : leftBrothel) = selected;
@@ -178,9 +158,9 @@ void cScreenTransfer::select_brothel(Side side, int selected)
         int i = 0;
         for(auto& girl : temp->girls())
         {
-            if (g_selected_girl == girl) selection = i;
+            if (selected_girl() == girl) selection = i;
             girl->OutputGirlRow(Data, columnNames);
-            AddToListBox(own_list_id, i, Data, numColumns, checkjobcolor(girl));
+            AddToListBox(own_list_id, i, std::move(Data), checkjobcolor(girl));
             i++;
         }
         if (selection >= 0) while (selection > GetListBoxSize(own_list_id) && selection != -1) selection--;
@@ -191,13 +171,13 @@ void cScreenTransfer::select_brothel(Side side, int selected)
 IBuilding * cScreenTransfer::getBuilding(int index) const
 {
     IBuilding * temp = nullptr;
-    if (index > 5) { temp = g_Game.buildings().building_with_type(BuildingType::BROTHEL, index - 6); }
-    else if (index == 5) { temp = g_Game.buildings().building_with_type(BuildingType::HOUSE); }
-    else if (index == 4) { temp = g_Game.buildings().building_with_type(BuildingType::FARM); }
-    else if (index == 3) { temp = g_Game.buildings().building_with_type(BuildingType::CLINIC); }
-    else if (index == 2) { temp = g_Game.buildings().building_with_type(BuildingType::CENTRE); }
-    else if (index == 1) { temp = g_Game.buildings().building_with_type(BuildingType::ARENA); }
-    else if (index == 0) { temp = g_Game.buildings().building_with_type(BuildingType::STUDIO); }
+    if (index > 5) { temp = g_Game->buildings().building_with_type(BuildingType::BROTHEL, index - 6); }
+    else if (index == 5) { temp = g_Game->buildings().building_with_type(BuildingType::HOUSE); }
+    else if (index == 4) { temp = g_Game->buildings().building_with_type(BuildingType::FARM); }
+    else if (index == 3) { temp = g_Game->buildings().building_with_type(BuildingType::CLINIC); }
+    else if (index == 2) { temp = g_Game->buildings().building_with_type(BuildingType::CENTRE); }
+    else if (index == 1) { temp = g_Game->buildings().building_with_type(BuildingType::ARENA); }
+    else if (index == 0) { temp = g_Game->buildings().building_with_type(BuildingType::STUDIO); }
     return temp;
 }
 
@@ -239,7 +219,6 @@ void cScreenTransfer::TransferGirlsRightToLeft(bool rightfirst, int rightBrothel
 
 			// get next girl
 			girlSelection = GetNextSelectedItemFromList(listb_id, pos + 1, pos);
-			g_selected_girl = nullptr;
 		}
 
 		// update the girl lists

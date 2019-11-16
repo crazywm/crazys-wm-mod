@@ -19,42 +19,33 @@
 #ifndef __CIMAGEITEM_H
 #define __CIMAGEITEM_H
 
-#include "cInterfaceObject.h"
+#include "interface/cInterfaceObject.h"
 #include <string>
+#include "interface/cSurface.h"
+#include "interface/cAnimatedSurface.h"
 
 
-class CSurface;
-class cAnimatedSurface;
 class SDL_Surface;
 
-
-// Character image
-class cImage
-{
-public:
-	cImage();
-	~cImage();
-	CSurface* m_Surface;
-	cAnimatedSurface* m_AniSurface;
-};
 
 class cImageItem : public cUIWidget
 {
 public:
-	cImageItem(int id, int x, int y, int width, int height);
+	cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width, int height);
 	~cImageItem();
 
+	void SetImage(cSurface image);
+	void SetImage(cAnimatedSurface image);
 
 	bool CreateImage(std::string filename, bool statImage, int R, int G, int B);
-	bool CreateAnimatedImage(std::string filename, std::string dataFilename);
+    void DrawWidget(const CGraphics& gfx) override;
+    void Reset() override;
 
-	void DrawWidget(const CGraphics& gfx) override;
-
-	cAnimatedSurface* m_AnimatedImage;
-	CSurface* m_Image;
-	SDL_Surface* m_Surface;
-	int m_ID;
+    cAnimatedSurface m_AnimatedImage;
+	cSurface m_Image;
 	bool m_loaded;
+
+	std::string m_Message;  // `J` added for new gallery screen
 };
 
 #endif

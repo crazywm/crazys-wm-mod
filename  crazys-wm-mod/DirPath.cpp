@@ -30,11 +30,3 @@ const char	DirPath::sep[] = "/";
 #else
 const char	DirPath::sep[] = "\\";
 #endif
-
-DirPathR::DirPathR()
-{
-	string s = cfg.override_dir();
-
-	(*this) << "." << "Resources";
-	over = DirPath() << s;
-}

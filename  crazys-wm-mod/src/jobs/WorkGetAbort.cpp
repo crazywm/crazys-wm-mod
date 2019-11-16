@@ -21,12 +21,10 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Clinic - Surgery
-bool cJobManager::WorkGetAbort(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkGetAbort(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//

@@ -22,18 +22,16 @@
 #include "cInventory.h"
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Arena - Staff
-bool cJobManager::WorkBlacksmith(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkBlacksmith(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKMAKEITEMS;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_BLACKSMITH))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -102,10 +100,10 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, bool Day0Night1, string& summary)
 	if (roll_a <= 10)
 	{
 		tired /= 8;
-		enjoy -= g_Dice % 3;
+		enjoy -= rng % 3;
 		if (roll_b < 10)	// fire
 		{
-			int fire = max(0, g_Dice.bell(-2, 10));
+			int fire = max(0, rng.bell(-2, 10));
 			brothel->m_Filthiness += fire * 2;
 			craftpoints -= (craftpoints * (fire * 0.1));
 			if (girl->pcfear() > 20) girl->pcfear(fire / 2);	// she is afraid you will get mad at her
@@ -115,15 +113,15 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, bool Day0Night1, string& summary)
 			else if (fire < 10)	ss << " that destroyed most of the equipment she had made.";
 			else /*          */	ss << " destroying everything she had made.";
 
-			if (fire > 5) g_Game.push_message(girlName + " accidently started a large fire while working as a Blacksmith at the Arena.", COLOR_RED);
+			if (fire > 5) g_Game->push_message(girlName + " accidently started a large fire while working as a Blacksmith at the Arena.", COLOR_RED);
 		}
 		else if (roll_b < 30)	// injury
 		{
-			girl->health(-(1 + g_Dice % 5));
+			girl->health(-(1 + rng % 5));
 			craftpoints *= 0.8;
 			if (girl->magic() > 50 && girl->mana() > 20)
 			{
-				girl->mana(-10 - (g_Dice % 10));
+				girl->mana(-10 - (rng % 10));
 				ss << "While trying to enchant an item, the magic rebounded on her";
 			}
 			else
@@ -131,7 +129,7 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, bool Day0Night1, string& summary)
 			if (girl->is_dead())
 			{
 				ss << " killing her.";
-				g_Game.push_message(girlName + " was killed in an accident while working as a Blacksmith at the Arena.", COLOR_RED);
+				g_Game->push_message(girlName + " was killed in an accident while working as a Blacksmith at the Arena.", COLOR_RED);
 				return false;	// not refusing, she is dead
 			}
 			else ss << ".";
@@ -140,21 +138,21 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, bool Day0Night1, string& summary)
 		else	// unhappy
 		{
 			ss << "She did not like working in the arena today.";
-			girl->happiness(-(g_Dice % 11));
+			girl->happiness(-(rng % 11));
 		}
 	}
 	else if (roll_a >= 90)
 	{
 		tired /= 12;
 		craftpoints *= 1.1;
-		enjoy += g_Dice % 3;
+		enjoy += rng % 3;
 		/* */if (roll_b < 50)	ss << "She kept a steady pace of hammer blows by humming a pleasant tune.";
 		else /*            */	ss << "She had a great time working today.";
 	}
 	else
 	{
 		tired /= 10;
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "The shift passed uneventfully.";
 	}
 	ss << "\n \n";
@@ -182,11 +180,11 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, bool Day0Night1, string& summary)
 
         while (points_remaining > 0 && numitems < (1 + girl->crafting() / 15))
         {
-            auto item = g_Game.inventory_manager().GetCraftableItem(*girl, JOB_BLACKSMITH, points_remaining);
+            auto item = g_Game->inventory_manager().GetCraftableItem(*girl, JOB_BLACKSMITH, points_remaining);
             if(!item) {
                 // try something easier. Get craftable item does not return items which need less than
                 // points_remaining / 3 crafting points
-                item = g_Game.inventory_manager().GetCraftableItem(*girl, JOB_BLACKSMITH, points_remaining / 2);
+                item = g_Game->inventory_manager().GetCraftableItem(*girl, JOB_BLACKSMITH, points_remaining / 2);
             }
             if(!item) {
                 points_remaining -= 10;
@@ -198,7 +196,7 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, bool Day0Night1, string& summary)
             msgtype = EVENT_GOODNEWS;
             if (numitems == 0)	ss << "\n \n" << girlName << " made:";
             ss << "\n" << item->m_Name;
-            g_Game.player().inventory().add_item(item);
+            g_Game->player().inventory().add_item(item);
             numitems++;
         }
     }
@@ -220,15 +218,15 @@ bool cJobManager::WorkBlacksmith(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido, false);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	girl->upd_skill(SKILL_CRAFTING,	(g_Dice % skill) + 1);
-	girl->upd_stat(STAT_STRENGTH, (g_Dice % skill) + 1);
+	girl->upd_skill(SKILL_CRAFTING,	(rng % skill) + 1);
+	girl->upd_stat(STAT_STRENGTH, (rng % skill) + 1);
 	// secondary improvement (-1 for one then -2 for others)
-	girl->upd_stat(STAT_CONSTITUTION,	max(0, (g_Dice % skill) - 1));
-	girl->upd_skill(SKILL_COMBAT,		max(0, (g_Dice % skill) - 2));
+	girl->upd_stat(STAT_CONSTITUTION,	max(0, (rng % skill) - 1));
+	girl->upd_skill(SKILL_COMBAT,		max(0, (rng % skill) - 2));
 
 	// Update Enjoyment
 	girl->upd_Enjoyment(actiontype, enjoy);
@@ -255,8 +253,7 @@ double cJobManager::JP_Blacksmith(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
+    jobperformance += girl->get_trait_modifier("work.blacksmith");
 
-
-	return jobperformance;
+    return jobperformance;
 }

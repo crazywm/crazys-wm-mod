@@ -22,8 +22,8 @@
 #include <string>
 #include <memory>
 #include <functional>
-#include "CSurface.h"
-#include "cInterfaceObject.h"
+#include "interface/cSurface.h"
+#include "interface/cInterfaceObject.h"
 
 
 class cSlider : public cUIWidget
@@ -42,40 +42,37 @@ private:
 	bool m_ShowMarker = false;  // whether to show the marker
 	int m_MarkerOffset = 0;  // physical X offset to show the marker at
 
-	static void LoadInitial();  // run by first slider control created, to load appropriate source images into memory
-	static SDL_Surface* LoadAlphaImageFromFile(string file);  // utility function used by above for loading specific source image from file
+    // run by first slider control created, to load appropriate source images into memory
+	static cSurface LoadAlphaImageFromFile(std::string file);  // utility function used by above for loading specific source image from file
 	void ValueToOffset();  // set the Offset of the button based on the current Value
 	void OffsetToValue();  // conversely, set the Value based on the current Offset of the button
 
 	std::unique_ptr<SDL_Rect> BGLeft;  // rectangle sized for left half of displayed background rail
     std::unique_ptr<SDL_Rect> BGRight;  // rectangle sized and moved for right half of displayed background rail
-	SDL_Surface* m_ImgButton = nullptr;  // points to the appropriate button surface (off, on, or disabled)
-	SDL_Surface* m_ImgRail = nullptr;  // points to the appropriate background rail surface (normal or disabled)
+	cSurface m_ImgButton;           // points to the appropriate button surface (off, on, or disabled)
+	cSurface m_ImgRail;             // points to the appropriate background rail surface (normal or disabled)
 
-	static SDL_Surface* m_ImgRailDefault;  // default background surface (rail) image, shared by all slider controls
-	static SDL_Surface* m_ImgRailDisabled;  // etc.
-	static SDL_Surface* m_ImgButtonOff;
-	static SDL_Surface* m_ImgButtonOn;
-	static SDL_Surface* m_ImgButtonDisabled;
-	static SDL_Surface* m_ImgMarker;
+	cSurface m_ImgRailDefault;      // default background surface (rail) image, shared by all slider controls
+	cSurface m_ImgRailDisabled;     // etc.
+	cSurface m_ImgButtonOff;
+	cSurface m_ImgButtonOn;
+	cSurface m_ImgButtonDisabled;
+	cSurface m_ImgMarker;
 
-	void LogSliderError(const std::string& description);
-
-	static int CalcHeight(float height);
+    int CalcHeight(float height);
 
 	void OnValueUpdate();
 
 	std::function<void(int)> m_Callback;
+
+	bool m_IsBeingDragged = false;
 public:
-	cSlider(int ID, int x, int y, int width, int min = 0, int max = 100, int increment = 5, int value = 0, float height = 1.0);
+	cSlider(cInterfaceWindow* parent, int ID, int x, int y, int width, int min = 0, int max = 100, int increment = 5, int value = 0, float height = 1.0);
     ~cSlider();
 
-	bool IsOver(int x, int y);  // determine if mouse is over control, switch button image accordingly
-	bool IsActive(bool active = false);  // determine if keyboard is in control, switch button image accordingly
-	bool MouseDown(int x, int y);  // user clicked mouse down; determine if mouse is over button itself so that we need to initiate drag
+	bool IsOver(int x, int y) const override;  // determine if mouse is over control, switch button image accordingly
 	void DragMove(int x);  // slider button is being dragged and has moved, so update offset and value
 	void EndDrag();  // slider button is no longer being dragged
-	bool ButtonClicked(int x, int y, bool mouseWheelDown = false, bool mouseWheelUp = false);  // handle mouse-up and scroll wheel
 	void DrawWidget(const CGraphics& gfx) override;  // blit background rail and button to screen
 
 	int SetRange(int min, int max, int value, int increment);  // change min value, max value, current value, and increment amount
@@ -85,14 +82,23 @@ public:
 	void SetMarker(int value);  // set value for a visual "marker" to be shown at, to denote a default or target value or similar
 	void RemoveMarker();  // stop displaying marker
 
-	void Disable(bool disable);  // disable/enable this control
-	void Hide(bool hide) { m_Hidden = hide; }  // hide/unhide this control
+	void SetDisabled(bool disable) override;  // disable/enable this control
 	void LiveUpdate(bool live_update) { m_LiveUpdate = live_update; }  // set LiveUpdate on or off
 
 	void SetCallback(std::function<void(int)>);
+	void SetHotKeys(SDLKey increase, SDLKey decrease);
 
-	bool m_Disabled = false;  // don't respond, and show grayed-out controls?
 	bool m_LiveUpdate = true;  // send update events while user is dragging? default enabled; if disabled, only sends update event on MouseUp
+
+    bool HandleClick(int x, int y, bool press) override;
+    void HandleMouseMove(bool over, int x, int y) override;
+    bool HandleMouseWheel(bool down) override;
+    bool HandleKeyPress(SDL_keysym key) override;
+    bool HandleSetFocus(bool focus) override;
+
+private:
+    SDLKey m_IncreaseHotKey = SDLK_UNKNOWN;
+    SDLKey m_DecreaseHotKey = SDLK_UNKNOWN;
 };
 
 

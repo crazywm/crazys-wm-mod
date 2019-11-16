@@ -1,0 +1,1971 @@
+<TraitMods>
+    <!-- Advertising job -->
+    <Modifier Name="work.advertising">
+        <Trait Name="Actress" Value="10"/>
+        <Trait Name="Charismatic" Value="10"/>
+        <Trait Name="Charming" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/>
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Director" Value="10"/>
+        <Trait Name="Dominatrix" Value="10"/>
+        <Trait Name="Elegant" Value="5"/>
+        <Trait Name="Exhibitionist" Value="15"/>   <!-- Advertising topless -->
+        <Trait Name="Fake Orgasm Expert" Value="10"/>
+        <Trait Name="Fearless" Value="5"/>
+        <Trait Name="Flexible" Value="5"/>
+        <Trait Name="Former Official" Value="10"/>
+        <Trait Name="Idol" Value="20"/>
+        <Trait Name="Iron Will" Value="5"/>
+        <Trait Name="Natural Pheromones" Value="10"/>
+        <Trait Name="Open Minded" Value="5"/>
+        <Trait Name="Optimist" Value="5"/>
+        <Trait Name="Playful Tail" Value="5"/>
+        <Trait Name="Porn Star" Value="20"/>
+        <Trait Name="Powerful Magic" Value="20"/>
+        <Trait Name="Prehensile Tail" Value="5"/>
+        <Trait Name="Priestess" Value="10"/>   <!-- used to preaching to the masses -->
+        <Trait Name="Princess" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Queen" Value="10"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Shape Shifter" Value="20"/>   <!-- she can show who is available -->
+        <Trait Name="Singer" Value="10"/>
+        <Trait Name="Slut" Value="10"/>
+        <Trait Name="Strong Magic" Value="10"/>
+        <Trait Name="Strong" Value="5"/>
+        <Trait Name="Whore" Value="10"/>
+        <Trait Name="Your Daughter" Value="20"/>
+        <Trait Name="Your Wife" Value="20"/>
+
+        <!-- negativ traits -->
+        <Trait Name="Aggressive" Value="-5"/>
+        <Trait Name="Blind" Value="-10"/>
+        <Trait Name="Broken Will" Value="-20"/>
+        <Trait Name="Clumsy" Value="-5"/>
+        <Trait Name="Deaf" Value="-10"/>
+        <Trait Name="Dependant" Value="-10"/>
+        <Trait Name="Emprisoned Customer" Value="-30"/>    <!-- she may be warning the other customers -->
+        <Trait Name="Horrific Scars" Value="-10"/>
+        <Trait Name="Kidnapped" Value="-40"/>  <!-- she may try to run away or get help -->
+        <Trait Name="Malformed" Value="-20"/>
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Mind Fucked" Value="-50"/>
+        <Trait Name="Mute" Value="-10"/>
+        <Trait Name="Nervous" Value="-5"/>
+        <Trait Name="No Arms" Value="-30"/>
+        <Trait Name="No Hands" Value="-20"/>
+        <Trait Name="No Legs" Value="-30"/>
+        <Trait Name="Nymphomaniac" Value="-5"/>    <!-- free samples? -->
+        <Trait Name="One Arm" Value="-10"/>
+        <Trait Name="One Hand" Value="-5"/>
+        <Trait Name="One Leg" Value="-10"/>
+        <Trait Name="Pessimist" Value="-5"/>
+        <Trait Name="Retarded" Value="-20"/>
+        <Trait Name="Shy" Value="-10"/>
+        <Trait Name="Skeleton" Value="-50"/>
+        <Trait Name="Zombie" Value="-50"/>
+    </Modifier>
+
+    <Modifier Name="work.jousting">
+        <!-- good traits -->
+        <Trait Name="Aggressive" Value="20"/>
+        <Trait Name="Charismatic" Value="10"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Strong" Value="10"/>
+        <Trait Name="Assassin" Value="10"/>
+        <Trait Name="Sadistic" Value="10"/>
+        <Trait Name="Merciless" Value="10"/>
+        <Trait Name="Long Legs" Value="5"/>    <!-- be able to ride better -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Strong Magic" Value="5"/> <!-- use magic to cheat -->
+        <Trait Name="Manly" Value="5"/>
+        <Trait Name="Fearless" Value="5"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>
+        <Trait Name="Nervous" Value="-30"/>
+        <Trait Name="Clumsy" Value="-20"/>
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="One Eye" Value="-15"/>
+        <Trait Name="Eye Patch" Value="-15"/>
+        <Trait Name="Fragile" Value="-10"/>
+        <Trait Name="Abnormally Large Boobs" Value="-10"/> <!-- boobs get in the way -->
+        <Trait Name="Slow Learner" Value="-5"/>
+        <Trait Name="Elegant" Value="-5"/> <!-- wouldnt want to do this -->
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-75"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.baker">
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Mixologist" Value="20"/>  <!-- Good with measures -->
+        <Trait Name="Chef" Value="30"/>
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+    </Modifier>
+
+    <Modifier Name="work.cooking">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Chef" Value="30"/>
+        <Trait Name="Mixologist" Value="20"/>  <!-- Good with measures -->
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-20"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-10"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-50"/>
+        <Trait Name="No Hands" Value="-75"/>
+        <Trait Name="No Legs" Value="-40"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.barmaid">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="10"/>  <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/>  <!-- people like charming people -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Mixologist" Value="40"/>
+        <Trait Name="Dick-Sucking Lips" Value="5"/>
+        <Trait Name="Long Legs" Value="5"/>
+        <Trait Name="Fleet of Foot" Value="10"/>   <!-- fast worker -->
+        <Trait Name="Agile" Value="5"/>    <!-- fast worker -->
+        <Trait Name="Natural Pheromones" Value="15"/>
+        <Trait Name="Optimist" Value="5"/> <!-- cheerful -->
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>  <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/>  <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/>  <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/>  <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="Alcoholic" Value="-40"/>  <!-- bad idea let an alcoholic near booze -->
+        <Trait Name="Social Drinker" Value="-10"/>
+        <Trait Name="Bimbo" Value="-5"/>
+
+        <Trait Name="One Arm" Value="-30"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-15"/>
+        <Trait Name="One Leg" Value="-40"/>
+        <Trait Name="No Arms" Value="-100"/>
+        <Trait Name="No Feet" Value="-20"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-40"/>
+        <Trait Name="Blind" Value="-40"/>
+        <Trait Name="Deaf" Value="-20"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/><!-- would need smoke breaks -->
+
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+        <Trait Name="Cum Addict" Value="-5"/>
+    </Modifier>
+
+    <Modifier Name="work.piano">
+        <!-- good traits -->
+        <Trait Name="Elegant" Value="15"/> <!-- Elegant people usally know how to play the piano lol -->
+        <Trait Name="Psychic" Value="10"/> <!-- knows what people want to hear -->
+        <Trait Name="Singer" Value="10"/>  <!-- Would understand rythem -->
+        <Trait Name="Charismatic" Value="10"/>
+        <Trait Name="Princess" Value="10"/>    <!-- usally taught to play -->
+        <Trait Name="Queen" Value="10"/>   <!-- usally taught to play -->
+        <Trait Name="Noble" Value="10"/>   <!-- usally taught to play -->
+        <Trait Name="Idol" Value="10"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="5"/>  <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="5"/> <!-- people like charming people -->
+        <Trait Name="Quick Learner" Value="5"/>    <!-- people like charming people -->
+        <Trait Name="Long Legs" Value="5"/>
+        <Trait Name="Nerd" Value="5"/>
+        <Trait Name="Playful Tail" Value="5"/> <!-- use it to help her play lol -->
+
+        <!-- bad traits -->
+        <Trait Name="Tone Deaf" Value="-75"/>  <!-- should never get good at this job -->
+        <Trait Name="Deaf" Value="-30"/>
+        <Trait Name="Retarded" Value="-30"/>
+        <Trait Name="Broken Will" Value="-30"/>
+        <Trait Name="Nervous" Value="-30"/>    <!-- don't like to be around people -->
+        <Trait Name="Dependant" Value="-30"/>  <!-- needs others to do the job -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+
+        <Trait Name="No Arms" Value="-200"/>
+        <Trait Name="No Hands" Value="-190"/>
+        <Trait Name="One Arm" Value="-100"/>
+        <Trait Name="One Hand" Value="-90"/>
+        <Trait Name="Missing Fingers" Value="-50"/>
+        <Trait Name="Missing Finger" Value="-20"/>
+        <Trait Name="No Legs" Value="-20"/>
+        <Trait Name="No Feet" Value="-10"/>
+        <Trait Name="Blind" Value="-5"/>
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+        <Trait Name="Smoker" Value="-5"/>  <!-- would need smoke breaks -->
+        <Trait Name="Cum Addict" Value="-5"/>
+    </Modifier>
+
+    <Modifier Name="work.singer">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="5"/>   <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="5"/>   <!-- people like charming people -->
+        <Trait Name="Elegant" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>  <!-- knows what people want to hear -->
+        <Trait Name="Fearless" Value="5"/>
+        <Trait Name="Singer" Value="50"/>
+        <Trait Name="Idol" Value="10"/>
+        <Trait Name="Natural Pheromones" Value="15"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Aggressive" Value="-10"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Broken Will" Value="-50"/>
+        <Trait Name="Clumsy" Value="-10"/><!-- might trip on stage -->
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="Shy" Value="-10"/>
+        <Trait Name="Construct" Value="-20"/> <!-- voice would sound funny -->
+        <Trait Name="Tone Deaf" Value="-150"/> <!-- should never get good at this job -->
+
+        <Trait Name="Deaf" Value="-20"/>   <!-- Voice would sound funny -->
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-20"/> <!-- would need smoke breaks and get out of breath quicker -->
+        <Trait Name="Mute" Value="-1000"/> <!-- cant sing -->
+        <Trait Name="Canine" Value="-20"/> <!-- Voice would sound funny -->
+        <Trait Name="Cat Girl" Value="-20"/>   <!-- Voice would sound funny -->
+        <Trait Name="Demon Possessed" Value="-20"/>    <!-- Voice would sound funny -->
+        <Trait Name="Reptilian" Value="-20"/>  <!-- Voice would sound funny -->
+        <Trait Name="Slitherer" Value="-20"/>  <!-- Voice would sound funny -->
+        <Trait Name="Spirit Possessed" Value="-20"/>   <!-- Voice would sound funny -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+        <Trait Name="Cum Addict" Value="-5"/>
+    </Modifier>
+
+    <Modifier Name="work.stripper">
+        <Trait Name="Charismatic" Value="10"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/><!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="10"/> <!-- people like charming people -->
+        <Trait Name="Great Figure" Value="5"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Long Legs" Value="10"/>
+        <Trait Name="Exhibitionist" Value="10"/> <!-- SIN - likes showing off her body -->
+        <Trait Name="Dick-Sucking Lips" Value="5"/>
+        <Trait Name="Fearless" Value="5"/>
+        <Trait Name="Flexible" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Shy" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="Horrific Scars" Value="-20"/>
+        <Trait Name="Small Scars" Value="-5"/>
+        <Trait Name="Flat Ass" Value="-15"/>
+        <Trait Name="Flat Chest" Value="-15"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-35"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.waitress">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/> <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="20"/>    <!-- people like charming people -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Fleet of Foot" Value="5"/>    <!-- faster at taking orders and droping them off -->
+        <Trait Name="Waitress" Value="40"/>
+        <Trait Name="Natural Pheromones" Value="15"/>
+        <Trait Name="Agile" Value="5"/>
+        <Trait Name="Flexible" Value="5"/>
+        <Trait Name="Flat Ass" Value="10"/>    <!-- Ass wont get in the way -->
+        <Trait Name="Prehensile Tail" Value="10"/> <!-- for carrying that one extra drink! -->
+        <Trait Name="Social Drinker" Value="5"/>   <!-- customers like a girl that might have a drink with them -->
+        <Trait Name="Bisexual" Value="5"/> <!-- can flirt with everyone -->
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Abnormally Large Boobs" Value="-20"/> <!-- boobs are too big and get in the way -->
+        <Trait Name="Titanic Tits" Value="-25"/> <!-- boobs are too big and get in the way -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="One Eye" Value="-10"/>
+
+        <Trait Name="One Arm" Value="-30"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-15"/>
+        <Trait Name="One Leg" Value="-40"/>
+        <Trait Name="No Arms" Value="-100"/>
+        <Trait Name="No Feet" Value="-30"/>
+        <Trait Name="No Hands" Value="-15"/>
+        <Trait Name="No Legs" Value="-100"/>
+        <Trait Name="Blind" Value="-60"/>
+        <Trait Name="Deaf" Value="-40"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+        <Trait Name="Dominatrix"
+               Value="-5"/>  <!-- try and force the people to order what she wants them to not what they want -->
+
+        <Trait Name="Alcoholic" Value="-40"/> <!-- might drink the drinks instead of taking to people -->
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+        <Trait Name="Cum Addict" Value="-5"/>
+    </Modifier>
+
+    <Modifier Name="work.beastcapture">
+        <Trait Name="Hunter" Value="40"/>
+        <Trait Name="Adventurer" Value="10"/>
+        <Trait Name="Angel" Value="5"/>
+        <Trait Name="Agile" Value="5"/>
+        <Trait Name="Aggressive" Value="5"/>
+    </Modifier>
+
+    <Modifier Name="work.beastcare">
+        <!-- Good -->
+        <Trait Name="Powerful Magic" Value="35"/>  <!-- Animagical -->
+        <Trait Name="Strong Magic" Value="30"/>    <!-- Animal magic spells -->
+        <Trait Name="Farmer" Value="30"/>  <!-- Animal expert -->
+        <Trait Name="Furry" Value="25"/>   <!-- Animal instinct -->
+        <Trait Name="Goddess" Value="25"/> <!-- Animal command -->
+        <Trait Name="Natural Pheromones" Value="20"/>  <!-- Animal attraction -->
+        <Trait Name="Farmers Daughter" Value="20"/>    <!-- Animal understanding -->
+        <Trait Name="Country Gal" Value="15"/> <!-- Animal awareness -->
+
+        <!-- Bad -->
+        <Trait Name="Undead" Value="-50"/> <!-- Animals fear her -->
+        <Trait Name="Zombie" Value="-50"/> <!-- Animals fear her -->
+        <Trait Name="Skeleton" Value="-40"/>   <!-- Animals fear her -->
+        <Trait Name="Muggle" Value="-30"/> <!-- This job uses magic a lot, so bad magic = low skill -->
+        <Trait Name="Weak Magic" Value="-20"/> <!-- This job uses magic a lot, so bad magic = low skill -->
+        <Trait Name="City Girl" Value="-15"/>  <!-- Saw animals on TV once. They looked cute. -->
+    </Modifier>
+
+    <Modifier Name="work.blacksmith">
+    </Modifier>
+
+    <Modifier Name="work.brewer">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Farmers Daughter" Value="10"/>
+        <Trait Name="Country Gal" Value="10"/>
+        <Trait Name="Mixologist" Value="50"/>
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-35"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-40"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-75"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-50"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.masseuse">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/> <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="10"/> <!-- people like charming people -->
+        <Trait Name="Great Figure" Value="5"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/> <!-- knows what people want to hear -->
+        <Trait Name="Strong" Value="15"/>
+        <Trait Name="Blind" Value="15"/> <!-- SIN: heightened sense of touch -->
+        <Trait Name="Doctor" Value="10"/> <!-- understands the body -->
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+
+
+        <Trait Name="One Arm" Value="-60"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-40"/>
+        <Trait Name="One Leg" Value="-30"/>
+        <Trait Name="No Arms" Value="-200"/>
+        <Trait Name="No Feet" Value="-40"/>
+        <Trait Name="No Hands" Value="-75"/>
+        <Trait Name="No Legs" Value="-60"/>
+        <!-- <Trait Name="Blind" Value="-15" /> SIN: Why? Moved this to positive -->
+        <Trait Name="Deaf" Value="-10"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.butcher">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Farmers Daughter" Value="20"/>
+        <Trait Name="Country Gal" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-35"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-40"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-75"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+
+    </Modifier>
+
+    <Modifier Name="work.cameramage">
+    </Modifier>
+
+    <Modifier Name="work.catacombranger">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Farmers Daughter" Value="30"/>
+        <Trait Name="Country Gal" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.cityguard">
+        <!-- Good traits -->
+        <Trait Name="Incorporeal" Value="100"/>    <!-- I'm fucking Superman! -->
+        <Trait Name="Assassin"
+               Value="50"/>    <!-- I was born for this job. I know how you think. Is 50 too high? Assassin is a relatively rare trait, and there's no way to gain it (That I'm aware of) so it trades off(?) -->
+        <Trait Name="Zombie" Value="20"/>  <!-- You have what guarding the city?!?! I'm out of here. -->
+        <Trait Name="Skeleton" Value="10"/>    <!-- You have what guarding the city?!?! I'm out of here. -->
+        <Trait Name="Tough" Value="15"/>   <!-- You hit like a girl -->
+        <Trait Name="Powerful Magic" Value="10"/>
+        <Trait Name="Psychic" Value="10"/> <!-- I sense danger -->
+        <Trait Name="Demon" Value="10"/>   <!-- Even scarier -->
+        <Trait Name="Brawler" Value="10"/>
+        <Trait Name="Strong" Value="10"/>
+        <Trait Name="Fleet of Foot" Value="5"/>    <!-- Moves around quickly -->
+        <Trait Name="Charming" Value="5"/> <!-- Gets more cooperation -->
+        <Trait Name="Cool Person" Value="5"/>  <!-- Gets more cooperation redux -->
+        <Trait Name="Adventurer" Value="5"/>   <!-- Has experience -->
+        <Trait Name="Aggressive" Value="5"/>   <!-- Rawr! I kill you now! -->
+        <Trait Name="Yandere" Value="5"/>  <!-- Rawr! I kill you now! -->
+        <Trait Name="Tsundere" Value="5"/> <!-- Rawr! I kill you now! -->
+        <Trait Name="Sadistic" Value="5"/> <!-- I kill you slowly with this dull knife! -->
+        <Trait Name="Merciless" Value="5"/>    <!-- Your cries for clemency amuse me -->
+        <Trait Name="Fearless" Value="5"/> <!-- Chhhhaaaarrrrrggggeeeeee!! -->
+        <Trait Name="Iron Will" Value="5"/>    <!-- Hold the line! -->
+        <Trait Name="Construct" Value="5"/>    <!-- Scary -->
+        <Trait Name="Not Human" Value="5"/>    <!-- Scary -->
+        <Trait Name="Agile" Value="5"/>
+        <Trait Name="Dominatrix" Value="5"/>   <!-- likes to be in charge -->
+        <Trait Name="Giant" Value="5"/>    <!-- Scary -->
+        <Trait Name="Goddess" Value="5"/>  <!-- people might behave better around a goddess -->
+        <Trait Name="Heroine" Value="5"/>  <!-- likes to protect others -->
+        <Trait Name="Muscular" Value="5"/> <!-- hit harder -->
+        <Trait Name="Strong Magic" Value="5"/>
+        <Trait Name="Strange Eyes" Value="2"/> <!-- I'm watching you -->
+
+        <!-- Bad traits -->
+        <Trait Name="Blind" Value="-50"/>  <!-- can't see what people are doing -->
+        <Trait Name="No Arms" Value="-40"/>    <!-- catch me if you... use your feet? -->
+        <Trait Name="No Legs" Value="-50"/>    <!-- run? whats that? -->
+        <Trait Name="Deaf" Value="-25"/>   <!-- can't hear girls scream for help -->
+        <Trait Name="No Hands" Value="-20"/>
+        <Trait Name="No Feet" Value="-20"/>
+        <Trait Name="One Arm" Value="-10"/>
+        <Trait Name="One Foot" Value="-10"/>
+        <Trait Name="One Leg" Value="-10"/>
+        <Trait Name="One Hand" Value="-5"/>
+        <Trait Name="One Eye" Value="-5"/>
+
+        <Trait Name="Broken Will" Value="-50"/>    <!-- I'm too tired to patrol -->
+        <Trait Name="Mind Fucked"
+               Value="-50"/>    <!-- duurrrrrr..... secu.... sec... what? (Mind fucked can be cured btw.) -->
+        <Trait Name="Alcoholic" Value="-30"/>
+        <Trait Name="Cum Addict" Value="-30"/> <!-- Be looking for cum instead of doing job -->
+        <Trait Name="Retarded" Value="-20"/>   <!-- duurrrrrr..... secu.... sec... what? -->
+        <Trait Name="Nymphomaniac" Value="-20"/>   <!-- Wait! The security officer is a nymphomaniac in a brothel? -->
+        <Trait Name="Shroud Addict" Value="-15"/>  <!-- high at work never good -->
+        <Trait Name="Fairy Dust Addict" Value="-15"/>  <!-- high at work never good -->
+        <Trait Name="Viras Blood Addict" Value="-15"/> <!-- high at work never good -->
+        <Trait Name="Cum Addict" Value="-5"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- less lung power = less running -->
+        <Trait Name="Dependant" Value="-10"/>  <!-- I can't do this alone -->
+        <Trait Name="Weak Magic" Value="-5"/>
+        <Trait Name="Lolita" Value="-5"/>  <!-- Hi there kiddo.  Lost your mommy? -->
+        <Trait Name="Nerd" Value="-5"/>    <!-- Gets no respect -->
+        <Trait Name="Bimbo" Value="-5"/>   <!-- Gets no respect -->
+        <Trait Name="Nervous" Value="-5"/> <!-- Gets no respect -->
+        <Trait Name="Twisted" Value="-5"/> <!-- Wierd ideas about security rarely work -->
+        <Trait Name="Meek" Value="-5"/>    <!-- Wait... bad person... come back -->
+        <Trait Name="Clumsy" Value="-5"/>  <!-- "Stop thief!" ..... "Ahhhhh! I fell again!" -->
+        <Trait Name="Delicate" Value="-5"/>    <!-- Awww, I broke a nail :( -->
+        <Trait Name="Old" Value="-5"/> <!-- Gets no respect -->
+        <Trait Name="Plump" Value="-5"/>   <!-- Chubby... chaser? -->
+    </Modifier>
+
+    <Modifier Name="work.cleaning">
+        <Trait Name="Maid" Value="20"/>
+        <Trait Name="Powerful Magic" Value="10"/>
+        <Trait Name="Waitress" Value="5"/>
+        <Trait Name="Strong" Value="5"/>
+        <Trait Name="Strong Magic" Value="5"/>
+        <Trait Name="Handyman" Value="5"/>
+        <Trait Name="Agile" Value="5"/>
+        <Trait Name="Prehensile Tail" Value="3"/>
+        <Trait Name="Tomboy" Value="2"/>
+        <Trait Name="Psychic" Value="2"/>
+        <Trait Name="Giant" Value="2"/>
+        <Trait Name="Fleet of Foot" Value="2"/>
+        <Trait Name="Sharp-Eyed" Value="1"/>
+        <Trait Name="Optimist" Value="1"/>
+        <Trait Name="Manly" Value="1"/>
+        <Trait Name="Assassin" Value="1"/>
+
+        <Trait Name="Queen" Value="-20"/>
+        <Trait Name="Blind" Value="-20"/>
+        <Trait Name="Princess" Value="-10"/>
+        <Trait Name="Mind Fucked" Value="-10"/>
+        <Trait Name="Titanic Tits" Value="-5"/>
+        <Trait Name="Retarded" Value="-5"/>
+        <Trait Name="Elegant" Value="-5"/>
+        <Trait Name="Dependant" Value="-5"/>
+        <Trait Name="Clumsy" Value="-5"/>
+        <!-- <Trait Name="Broken Will" Value="-5" />   SIN - why penalty? was thinking this could be a bonus! -->
+        <Trait Name="Bimbo" Value="-5"/>
+        <Trait Name="Bad Eyesight" Value="-5"/>
+        <Trait Name="Abnormally Large Boobs" Value="-3"/>
+        <Trait Name="Nervous" Value="-2"/>
+        <Trait Name="Meek" Value="-2"/>
+        <Trait Name="Smoker" Value="-1"/>
+        <Trait Name="Pessimist" Value="-1"/>
+        <Trait Name="Massive Melons" Value="-1"/>
+        <Trait Name="Malformed" Value="-1"/>
+        <Trait Name="Delicate" Value="-1"/>
+    </Modifier>
+
+    <Modifier Name="work.cobbler">
+    </Modifier>
+
+    <Modifier Name="work.communityservice">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="20"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/> <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/>    <!-- people like charming people -->
+        <Trait Name="Optimist" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>  <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/>    <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+    </Modifier>
+
+    <Modifier Name="work.counselor">
+    </Modifier>
+
+    <Modifier Name="work.crystalpurifier">
+    </Modifier>
+
+    <Modifier Name="work.customerservice">
+        <!-- Good traits -->
+        <Trait Name="Charismatic" Value="20"/> <!-- good with people -->
+        <Trait Name="Psychic" Value="15"/> <!-- knows what will make them happy -->
+        <Trait Name="Porn Star" Value="15"/>   <!-- famous for related reasons -->
+        <Trait Name="Succubus" Value="15"/>    <!-- likes to sexually entertain -->
+        <Trait Name="Titanic Tits" Value="10"/>    <!-- huge distraction for customer not getting laid -->
+        <Trait Name="Abnormally Large Boobs" Value="10"/>  <!-- huge distraction for customer not getting laid -->
+        <Trait Name="Natural Pheromones" Value="10"/>   <!-- natural turnon -->
+        <Trait Name="Charming" Value="10"/>    <!-- good with people -->
+        <Trait Name="Sexy Air" Value="10"/>    <!-- natural turnon -->
+        <Trait Name="Idol" Value="10"/>    <!-- famous -->
+        <Trait Name="Actress" Value="10"/> <!-- can act the part -->
+        <Trait Name="Fallen Goddess" Value="10"/>  <!-- like exotic but better - not too judgemental -->
+        <Trait Name="Massive Melons" Value="5"/>   <!-- big distraction for customer not getting laid -->
+        <Trait Name="Giant Juggs" Value="5"/>  <!-- big distraction for customer not getting laid -->
+        <Trait Name="Cool Person" Value="5"/>  <!-- good with people -->
+        <Trait Name="Social Drinker" Value="5"/>   <!-- gets customers merry -->
+        <Trait Name="Exotic" Value="5"/>   <!-- holds their interest -->
+        <Trait Name="Cat Girl" Value="5"/> <!-- holds their interest -->
+        <Trait Name="Strong Magic" Value="5"/> <!-- a saucier sorceror -->
+        <Trait Name="Big Boobs" Value="2"/>    <!-- distraction for customer not getting laid -->
+        <Trait Name="Busty Boobs" Value="2"/>  <!-- distraction for customer not getting laid -->
+        <Trait Name="Cute" Value="2"/> <!-- cheer up customer -->
+        <Trait Name="Optimist" Value="2"/> <!-- cheer up customer -->
+
+
+        <!-- Bad traits -->
+        <Trait Name="Zombie" Value="-50"/> <!-- Guuhhh! Customehh serv... Huh?! Mr run run?! -->
+        <Trait Name="Undead" Value="-50"/> <!-- Stop! I'm already dead... -->
+        <Trait Name="Mind Fucked"
+               Value="-50"/>    <!-- Hello. I like flowers. Do you like vaginas? ... This!? It's a knife, silly; can I cut you? ... For FUN! -->
+        <Trait Name="Mute" Value="-30"/>   <!-- (-_-) ... -->
+        <Trait Name="Fairy Dust Addict" Value="-25"/>  <!-- Focussed on own needs -->
+        <Trait Name="Shroud Addict" Value="-25"/>  <!-- Focussed on own needs -->
+        <Trait Name="Viras Blood Addict" Value="-25"/> <!-- Focussed on own needs -->
+        <Trait Name="Queen"
+               Value="-20"/>  <!-- Service?! Oh Jeeves! Jeeves!? Where is he?! Y'know you can't get the help these days. -->
+        <Trait Name="Blind" Value="-20"/>  <!-- Waiting customers?! Where?! -->
+        <Trait Name="Broken Will" Value="-15"/>    <!-- (-_-) ... -->
+        <Trait Name="Vampire" Value="-15"/>    <!-- I vant to help vith your... hey come back!? -->
+        <Trait Name="Princess" Value="-15"/>   <!-- Me serve you?! Get away, commoner. -->
+        <Trait Name="Aggressive" Value="-10"/> <!-- "Customer service. Impotent whiner says what?" -->
+        <Trait Name="Cow Girl" Value="-10"/>   <!-- *blinks*  ...  *chews a little* ... *blinks* -->
+        <Trait Name="Nervous" Value="-10"/>    <!-- C-c-customer service. Can I, like... How can I... I mean... -->
+        <Trait Name="Goddess" Value="-10"/>    <!-- Preachy -->
+        <Trait Name="Angel" Value="-10"/>  <!-- Preachy -->
+        <Trait Name="Deaf" Value="-5"/>    <!-- What's the problem sir? What?! WHAT!?! -->
+        <Trait Name="Pessimist" Value="-5"/>   <!-- I can help you, but you probably won't like it very much. -->
+        <Trait Name="Flat Chest" Value="-5"/>  <!-- no natural distractions -->
+
+    </Modifier>
+
+    <Modifier Name="work.doctor">
+        <Trait Name="Charismatic" Value="20"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/>
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/>
+        <Trait Name="Nerd" Value="30"/>
+        <Trait Name="Quick Learner" Value="10"/>
+        <Trait Name="Psychic" Value="20"/> <!-- Don't have to ask "Where does it hurt?" -->
+        <Trait Name="Doctor" Value="50"/>
+        <Trait Name="Goddess" Value="10"/> <!-- might be able to heal people easier.. they are a goddess after all -->
+        <Trait Name="Optimist" Value="10"/>
+        <Trait Name="Priestess" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>
+        <Trait Name="Clumsy" Value="-20"/>
+        <Trait Name="Aggressive" Value="-20"/>
+        <Trait Name="Nervous" Value="-50"/>
+        <Trait Name="Retarded" Value="-100"/>
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Mind Fucked" Value="-50"/>
+        <Trait Name="Pessimist" Value="-10"/>
+        <Trait Name="Sadistic" Value="-20"/>
+        <Trait Name="Zombie" Value="-100"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-150"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-90"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-75"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Former Addict" Value="-25"/> <!-- not good idea to let former addict around all those drugs -->
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.escort">
+    </Modifier>
+
+    <Modifier Name="work.explorecatacombs">
+    </Modifier>
+
+    <Modifier Name="work.farmer">
+        <!-- good traits -->
+        <Trait Name="Farmer" Value="30"/>
+        <Trait Name="Farmers Daughter" Value="20"/>
+        <Trait Name="Country Gal" Value="10"/>
+        <Trait Name="Psychic" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Nervous" Value="-20"/> <!-- don't like to be around people -->
+        <Trait Name="City Girl" Value="-20"/>
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Meek" Value="-20"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Retarded" Value="-30"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.farmmarketer">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="10"/>  <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/>  <!-- people like charming people -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+    </Modifier>
+
+    <Modifier Name="work.research">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+    </Modifier>
+
+    <Modifier Name="work.veterinarian">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Optimist" Value="10"/>    <!-- less willing to give up on the animal -->
+        <Trait Name="Farmers Daughter" Value="30"/>
+        <Trait Name="Country Gal" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>  <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/>    <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Pessimist" Value="-10"/>  <!-- more likely to give up on the animal -->
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.feedpoor">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="20"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/>  <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/>  <!-- people like charming people -->
+        <Trait Name="Optimist" Value="10"/>
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+    </Modifier>
+
+    <Modifier Name="work.fightarena">
+    </Modifier>
+
+    <Modifier Name="work.film.action">
+        <!-- Good -->
+        <Trait Name="Actress" Value="60"/> <!-- Can act -->
+        <Trait Name="Charismatic" Value="30"/> <!-- Can act -->
+        <Trait Name="Incorporeal" Value="60"/> <!-- Can't be hurt -->
+        <Trait Name="Construct" Value="50"/>
+        <Trait Name="Half-Construct" Value="35"/>
+        <Trait Name="Muscular" Value="35"/>
+        <Trait Name="Strong" Value="35"/>
+        <Trait Name="Tough" Value="30"/>
+        <Trait Name="Fleet of Foot" Value="30"/>
+        <Trait Name="Agile" Value="30"/>
+        <Trait Name="Princess" Value="30"/>    <!-- High-Status -->
+        <Trait Name="Queen" Value="30"/>
+        <Trait Name="Goddess" Value="30"/>
+        <Trait Name="Angel" Value="30"/>
+        <Trait Name="Heroine" Value="20"/> <!-- Exciting -->
+        <Trait Name="Brawler" Value="20"/>
+        <Trait Name="Dominatrix" Value="20"/>
+        <Trait Name="Tsundere" Value="15"/>
+        <Trait Name="Yandere" Value="15"/>
+        <Trait Name="Fearless" Value="15"/>
+        <Trait Name="Iron Will" Value="10"/>
+
+        <!-- Bad -->
+        <Trait Name="No Legs" Value="-80"/>    <!-- Difficult to make action scene -->
+        <Trait Name="One Leg" Value="-50"/>
+        <Trait Name="No Feet" Value="-80"/>
+        <Trait Name="One Foot" Value="-50"/>
+        <Trait Name="No Arms" Value="-50"/>
+        <Trait Name="One Arm" Value="-30"/>
+        <Trait Name="One Hand" Value="-20"/>
+        <Trait Name="No Hands" Value="-25"/>
+        <Trait Name="Blind" Value="-50"/>
+        <Trait Name="Fragile" Value="-30"/>    <!-- Tends to get hurt on set -->
+        <Trait Name="Delicate" Value="-30"/>
+        <Trait Name="Clumsy" Value="-25"/>
+        <Trait Name="Dojikko" Value="-15"/>
+        <Trait Name="Muggle" Value="-10"/>
+        <Trait Name="Meek" Value="-5"/>
+    </Modifier>
+
+    <Modifier Name="work.film.beast">
+        <!-- Good -->
+        <Trait Name="Mind Fucked" Value="100"/>    <!-- Enjoyment and craziness -->
+        <Trait Name="Masochist" Value="35"/>
+        <Trait Name="Broken Will" Value="30"/>
+        <Trait Name="Dependant" Value="25"/>
+        <Trait Name="Twisted" Value="25"/>
+        <Trait Name="Goddess" Value="60"/> <!-- High-status degraded -->
+        <Trait Name="Angel" Value="50"/>
+        <Trait Name="Queen" Value="50"/>
+        <Trait Name="Princess" Value="40"/>
+        <Trait Name="Noble" Value="15"/>
+        <Trait Name="Idol" Value="25"/>
+        <Trait Name="Priestess" Value="25"/>
+        <Trait Name="Heroine" Value="15"/>
+        <Trait Name="Teacher" Value="15"/>
+        <Trait Name="Tsundere" Value="30"/>    <!-- beaten customers wanna see this! -->
+        <Trait Name="Yandere" Value="25"/>
+
+        <!-- Bad -->
+        <Trait Name="Iron Will" Value="40"/>   <!-- Try not to put on a show -->
+        <Trait Name="Fearless" Value="25"/>
+    </Modifier>
+
+    <Modifier Name="work.film.bondage">
+
+        <Trait Name="Mind Fucked" Value="50"/> <!-- this is her home -->
+        <Trait Name="Masochist" Value="30"/>   <!-- she likes it -->
+        <Trait Name="Twisted" Value="10"/>
+        <Trait Name="Open Minded" Value="10"/>
+        <Trait Name="Broken Will" Value="20"/>
+        <Trait Name="Pierced Clit" Value="40"/>    <!-- Piercings can be useful for this... -->
+        <Trait Name="Pierced Nipples" Value="40"/>
+        <Trait Name="Pierced Tongue" Value="20"/>
+        <Trait Name="Pierced Nose" Value="10"/>
+        <Trait Name="Pierced Navel" Value="5"/>
+        <Trait Name="Princess" Value="30"/>    <!-- High-Status degraded -->
+        <Trait Name="Queen" Value="30"/>
+        <Trait Name="Goddess" Value="30"/>
+        <Trait Name="Angel" Value="30"/>
+        <Trait Name="Noble" Value="20"/>
+        <Trait Name="Elegant" Value="10"/>
+        <Trait Name="Branded on the Forehead" Value="5"/>  <!-- Degraded -->
+        <Trait Name="Branded on the Ass" Value="5"/>
+        <Trait Name="Strong Gag Reflex" Value="10"/>   <!-- Degrading -->
+        <Trait Name="Gag Reflex" Value="5"/>
+        <Trait Name="No Gag Reflex" Value="5"/>
+        <Trait Name="Deep Throat" Value="10"/> <!-- Capable -->
+        <Trait Name="Tsundere" Value="15"/>    <!-- Mistreated customers can see haughty girl knocked down -->
+        <Trait Name="Yandere" Value="15"/>
+        <Trait Name="Actress" Value="25"/> <!-- Can play it up for crowd -->
+
+        <Trait Name="Iron Will" Value="-30"/>  <!-- Refuses to react -->
+        <Trait Name="Incorporeal" Value="-60"/>    <!-- Can't be hurt -->
+        <Trait Name="Construct" Value="-60"/>  <!-- Can't be hurt -->
+        <Trait Name="Half-Construct" Value="-50"/> <!-- Can't be hurt -->
+        <Trait Name="Skeleton" Value="-80"/>   <!-- Can't be hurt -->
+        <Trait Name="Undead" Value="-80"/> <!-- Can't be hurt -->
+        <Trait Name="Zombie" Value="-80"/> <!-- Can't be hurt -->
+        <Trait Name="Fragile" Value="-80"/>    <!-- Too quickly damaged -->
+        <Trait Name="Delicate" Value="-80"/>   <!-- Too quickly damaged -->
+    </Modifier>
+
+    <Modifier Name="work.film.buk">
+        <!-- Good -->
+        <Trait Name="Mind Fucked" Value="100"/>    <!-- Enjoyment and craziness -->
+        <Trait Name="Masochist" Value="35"/>
+        <Trait Name="Broken Will" Value="30"/>
+        <Trait Name="Dependant" Value="25"/>
+        <Trait Name="Twisted" Value="25"/>
+        <Trait Name="Cum Addict" Value="50"/>  <!-- Her kind of job -->
+        <Trait Name="Goddess" Value="60"/> <!-- High-status degraded -->
+        <Trait Name="Angel" Value="50"/>
+        <Trait Name="Queen" Value="50"/>
+        <Trait Name="Princess" Value="40"/>
+        <Trait Name="Noble" Value="15"/>
+        <Trait Name="Idol" Value="25"/>
+        <Trait Name="Priestess" Value="25"/>
+        <Trait Name="Heroine" Value="15"/>
+        <Trait Name="Teacher" Value="15"/>
+        <Trait Name="Tsundere" Value="30"/>    <!-- beaten customers wanna see this! -->
+        <Trait Name="Yandere" Value="25"/>
+
+        <!-- Bad -->
+        <Trait Name="Iron Will" Value="40"/>   <!-- Try not to put on a show -->
+        <Trait Name="Fearless" Value="25"/>
+    </Modifier>
+
+    <Modifier Name="work.film.chef">
+        <!-- good traits -->
+        <Trait Name="Chef" Value="40"/>    <!-- Good at cooking -->
+        <Trait Name="Mixologist" Value="20"/>  <!-- Good with measures -->
+        <Trait Name="Charismatic" Value="25"/> <!-- Charisma on film -->
+        <Trait Name="Sexy Air" Value="25"/>
+        <Trait Name="Charming" Value="20"/>
+        <Trait Name="Cool Person" Value="10"/>
+        <Trait Name="Social Drinker" Value="5"/>   <!-- Drinks too -->
+        <Trait Name="Exhibitionist" Value="30"/>   <!-- Shows off body -->
+        <Trait Name="MILF" Value="15"/>    <!-- Attractive to some -->
+        <Trait Name="Cute" Value="10"/>
+        <Trait Name="Lolita" Value="10"/>
+        <Trait Name="Elegant" Value="10"/>
+        <Trait Name="Exotic" Value="5"/>
+        <Trait Name="Beauty Mark" Value="5"/>
+        <Trait Name="Fat" Value="10"/> <!-- Likes food -->
+        <Trait Name="Plump" Value="5"/>
+        <Trait Name="Wide Bottom" Value="5"/>
+        <Trait Name="Plump Tush" Value="5"/>
+
+
+        <!-- bad traits -->
+        <Trait Name="Nervous" Value="-30"/>    <!-- weakens performance -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Shy" Value="-20"/>
+        <Trait Name="One Arm" Value="-20"/>
+        <Trait Name="One Hand" Value="-10"/>
+        <Trait Name="No Arms" Value="-50"/>    <!-- hard to strip -->
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="Alcoholic" Value="-5"/>
+    </Modifier>
+
+    <Modifier Name="work.film.music">
+        <!-- good traits -->
+        <Trait Name="Singer" Value="50"/>  <!-- can Sing -->
+        <Trait Name="Angel" Value="40"/>   <!-- like a choir of angels -->
+        <Trait Name="Sexy Air" Value="25"/>    <!-- nice video -->
+        <Trait Name="Agile" Value="20"/>
+        <Trait Name="Cool Person" Value="20"/>
+        <Trait Name="Charismatic" Value="20"/>
+        <Trait Name="Charming" Value="10"/>
+        <Trait Name="Audacity" Value="10"/>
+        <Trait Name="Cute" Value="15"/>    <!-- Attractive to some -->
+        <Trait Name="Exotic" Value="15"/>
+        <Trait Name="Idol" Value="15"/>
+        <Trait Name="Lolita" Value="10"/>
+        <Trait Name="Elegant" Value="10"/>
+        <Trait Name="Great Figure" Value="10"/>
+        <Trait Name="Beauty Mark" Value="5"/>
+        <Trait Name="Porn Star" Value="10"/>   <!-- plays to camera well -->
+        <Trait Name="Exhibitionist" Value="10"/>
+        <Trait Name="Social Drinker" Value="5"/>   <!-- relaxed -->
+
+        <!-- bad traits -->
+        <Trait Name="Tone Deaf" Value="-60"/>  <!-- weakens performance -->
+        <Trait Name="Mind Fucked" Value="-40"/>    <!-- too messed up -->
+        <Trait Name="Nervous" Value="-25"/>    <!-- weakens performance -->
+        <Trait Name="Meek" Value="-25"/>
+        <Trait Name="Shy" Value="-20"/>
+        <Trait Name="Retarded" Value="-15"/>
+
+        <Trait Name="Alcoholic" Value="-5"/>
+        <Trait Name="Fairy Dust Addict" Value="-5"/>
+        <Trait Name="Shroud Addict" Value="-5"/>
+        <Trait Name="Viras Blood Addict" Value="-5"/>
+    </Modifier>
+
+    <Modifier Name="work.film.oral">
+        <!-- Good -->
+        <Trait Name="Deep Throat" Value="60"/> <!-- better ability -->
+        <Trait Name="No Gag Reflex" Value="40"/>
+        <Trait Name="Good Kisser" Value="20"/>
+        <Trait Name="Nimble Tongue" Value="20"/>
+        <Trait Name="Pierced Tongue" Value="25"/>
+        <Trait Name="Dick-Sucking Lips" Value="35"/>
+        <Trait Name="Exotic" Value="5"/>
+        <Trait Name="Whore" Value="20"/>   <!-- Knows how to work it -->
+        <Trait Name="Porn Star" Value="30"/>   <!-- Knows how to work it on film -->
+        <Trait Name="No Teeth" Value="15"/>    <!-- no chance of 'accident' -->
+        <Trait Name="Missing Teeth" Value="15"/>
+        <Trait Name="Nymphomaniac" Value="25"/>    <!-- had lots of practice -->
+        <Trait Name="Slut" Value="15"/>    <!-- had practice -->
+        <Trait Name="Cum Addict" Value="30"/>  <!-- eager to please -->
+        <Trait Name="Mind Fucked" Value="25"/> <!-- eager to please -->
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Open Minded" Value="10"/>
+        <Trait Name="Natural Pheromones" Value="5"/>
+
+
+        <!-- Bad -->
+        <Trait Name="Strong Gag Reflex" Value="-40"/>
+        <Trait Name="Gag Reflex" Value="-20"/>
+        <Trait Name="Clumsy" Value="-25"/>
+        <Trait Name="Nervous" Value="-15"/>
+    </Modifier>
+
+    <Modifier Name="work.filmpromoter">
+        <!-- useful traits -->
+        <Trait Name="Actress" Value="10"/>
+        <Trait Name="Charismatic" Value="10"/>
+        <Trait Name="Charming" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/>
+        <Trait Name="Elegant" Value="5"/>
+        <Trait Name="Exhibitionist" Value="15"/>   <!-- Advertising topless -->
+        <Trait Name="Fearless" Value="5"/>
+        <Trait Name="Flexible" Value="5"/>
+        <Trait Name="Former Official" Value="10"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Great Figure" Value="5"/>
+        <Trait Name="Idol" Value="20"/>
+        <Trait Name="Natural Pheromones" Value="10"/>
+        <Trait Name="Optimist" Value="5"/>
+        <Trait Name="Porn Star" Value="20"/>
+        <Trait Name="Priestess" Value="10"/>   <!-- used to preaching to the masses -->
+        <Trait Name="Princess" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Queen" Value="10"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Shape Shifter" Value="20"/>   <!-- she can show what is playing -->
+        <Trait Name="Singer" Value="10"/>
+        <Trait Name="Slut" Value="10"/>
+        <Trait Name="Your Daughter" Value="20"/>
+        <Trait Name="Your Wife" Value="20"/>
+
+
+        <!-- unhelpful traits -->
+        <Trait Name="Alcoholic" Value="-15"/>
+        <Trait Name="Aggressive" Value="-10"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Blind" Value="-20"/>
+        <Trait Name="Broken Will" Value="-50"/>
+        <Trait Name="Clumsy" Value="-5"/>
+        <Trait Name="Deaf" Value="-10"/>
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Emprisoned Customer" Value="-30"/>    <!-- she may be warning the other customers -->
+        <Trait Name="Fairy Dust Addict" Value="-15"/>
+        <Trait Name="Horrific Scars" Value="-10"/>
+        <Trait Name="Kidnapped" Value="-40"/>  <!-- she may try to run away or get help -->
+        <Trait Name="Malformed" Value="-20"/>
+        <Trait Name="Meek" Value="-10"/>
+        <Trait Name="Mute" Value="-10"/>
+        <Trait Name="Nervous" Value="-5"/>
+        <Trait Name="No Arms" Value="-40"/>
+        <Trait Name="No Feet" Value="-40"/>
+        <Trait Name="No Hands" Value="-30"/>
+        <Trait Name="No Legs" Value="-40"/>
+        <Trait Name="One Arm" Value="-10"/>
+        <Trait Name="One Foot" Value="-15"/>
+        <Trait Name="One Hand" Value="-5"/>
+        <Trait Name="One Leg" Value="-20"/>
+        <Trait Name="Pessimist" Value="-5"/>
+        <Trait Name="Retarded" Value="-20"/>
+        <Trait Name="Skeleton" Value="-50"/>
+        <Trait Name="Shy" Value="-10"/>
+        <Trait Name="Slow Learner" Value="-5"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+        <Trait Name="Shroud Addict" Value="-15"/>
+        <Trait Name="Viras Blood Addict" Value="-15"/>
+        <Trait Name="Zombie" Value="-50"/>
+    </Modifier>
+
+    <Modifier Name="work.film.publicbdsm">
+        <Trait Name="Mind Fucked" Value="50"/> <!-- this is her home -->
+        <Trait Name="Masochist" Value="30"/>   <!-- she likes it -->
+        <Trait Name="Twisted" Value="10"/>
+        <Trait Name="Open Minded" Value="10"/>
+        <Trait Name="Broken Will" Value="20"/>
+        <Trait Name="Pierced Clit" Value="40"/>    <!-- Piercings can be useful for this... -->
+        <Trait Name="Pierced Nipples" Value="40"/>
+        <Trait Name="Pierced Tongue" Value="20"/>
+        <Trait Name="Pierced Nose" Value="10"/>
+        <Trait Name="Pierced Navel" Value="5"/>
+        <Trait Name="Princess" Value="30"/>    <!-- High-Status degraded -->
+        <Trait Name="Queen" Value="30"/>
+        <Trait Name="Goddess" Value="30"/>
+        <Trait Name="Angel" Value="30"/>
+        <Trait Name="Noble" Value="20"/>
+        <Trait Name="Elegant" Value="10"/>
+        <Trait Name="Branded on the Forehead" Value="5"/>  <!-- Degraded -->
+        <Trait Name="Branded on the Ass" Value="5"/>
+        <Trait Name="Strong Gag Reflex" Value="10"/>   <!-- Degrading -->
+        <Trait Name="Gag Reflex" Value="5"/>
+        <Trait Name="No Gag Reflex" Value="5"/>
+        <Trait Name="Deep Throat" Value="10"/> <!-- Capable -->
+        <Trait Name="Tsundere" Value="15"/>    <!-- Mistreated customers can see haughty girl knocked down -->
+        <Trait Name="Yandere" Value="15"/>
+        <Trait Name="Actress" Value="25"/> <!-- Can play it up for crowd -->
+
+        <Trait Name="Iron Will" Value="-30"/>  <!-- Refuses to react -->
+        <Trait Name="Incorporeal" Value="-60"/>    <!-- Can't be hurt -->
+        <Trait Name="Construct" Value="-60"/>  <!-- Can't be hurt -->
+        <Trait Name="Half-Construct" Value="-50"/> <!-- Can't be hurt -->
+        <Trait Name="Skeleton" Value="-80"/>   <!-- Can't be hurt -->
+        <Trait Name="Undead" Value="-80"/> <!-- Can't be hurt -->
+        <Trait Name="Zombie" Value="-80"/> <!-- Can't be hurt -->
+        <Trait Name="Fragile" Value="-80"/>    <!-- Too quickly damaged -->
+        <Trait Name="Delicate" Value="-80"/>   <!-- Too quickly damaged -->
+    </Modifier>
+
+    <Modifier Name="work.film.tease">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="25"/> <!-- can tease -->
+        <Trait Name="Sexy Air" Value="25"/>    <!-- can tease -->
+        <Trait Name="Porn Star" Value="25"/>   <!-- plays to camera well -->
+        <Trait Name="Cool Person" Value="10"/> <!-- people love to be around her -->
+        <Trait Name="Charming" Value="10"/>
+        <Trait Name="Social Drinker" Value="5"/>   <!-- relaxed -->
+        <Trait Name="Exhibitionist" Value="30"/>   <!-- Loves showing off body -->
+        <Trait Name="Cute" Value="15"/>    <!-- Attractive to some -->
+        <Trait Name="Lolita" Value="10"/>
+        <Trait Name="Elegant" Value="15"/>
+        <Trait Name="Exotic" Value="10"/>
+        <Trait Name="Beauty Mark" Value="5"/>
+        <Trait Name="Great Figure" Value="10"/>
+        <Trait Name="Great Arse" Value="10"/>
+        <Trait Name="Agile" Value="15"/>   <!-- moves well -->
+
+
+        <!-- bad traits -->
+        <Trait Name="Nervous" Value="-30"/>    <!-- weakens performance -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Shy" Value="-20"/>
+        <Trait Name="Broken Will" Value="-80"/>    <!-- too messed up -->
+        <Trait Name="Mind Fucked" Value="-80"/>    <!-- too messed up -->
+        <Trait Name="Branded on the Ass" Value="-20"/>
+        <Trait Name="Branded on the Forehead" Value="-20"/>
+        <Trait Name="One Arm" Value="-20"/>
+        <Trait Name="One Foot" Value="-10"/>
+        <Trait Name="One Hand" Value="-10"/>
+        <Trait Name="One Leg" Value="-20"/>
+        <Trait Name="No Arms" Value="-50"/>    <!-- hard to strip -->
+        <Trait Name="No Feet" Value="-60"/>    <!-- hard to strip or move -->
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-75"/>
+        <Trait Name="Retarded" Value="-30"/>
+        <Trait Name="Flat Ass" Value="-5"/>
+        <Trait Name="Flat Chest" Value="-5"/>
+
+        <Trait Name="Alcoholic" Value="-5"/>
+        <Trait Name="Fairy Dust Addict" Value="-5"/>
+        <Trait Name="Shroud Addict" Value="-5"/>
+        <Trait Name="Viras Blood Addict" Value="-5"/>
+    </Modifier>
+
+    <Modifier Name="work.film.throat">
+        <!-- Good -->
+        <Trait Name="Deep Throat" Value="80"/> <!-- better ability -->
+        <Trait Name="Mind Fucked" Value="60"/> <!-- eager to please -->
+        <Trait Name="No Gag Reflex" Value="50"/>
+        <Trait Name="Masochist" Value="50"/>
+        <Trait Name="Cum Addict" Value="40"/>
+        <Trait Name="No Teeth" Value="25"/>    <!-- Lower resistance -->
+        <Trait Name="Missing Teeth" Value="25"/>
+        <Trait Name="Good Kisser" Value="20"/>
+        <Trait Name="Dick-Sucking Lips" Value="20"/>
+        <Trait Name="Demon Possessed" Value="20"/> <!-- Wild -->
+        <Trait Name="Nimble Tongue" Value="10"/>
+        <Trait Name="Pierced Tongue" Value="15"/>
+        <Trait Name="Exotic" Value="10"/>
+        <Trait Name="Whore" Value="20"/>   <!-- Knows how to work it -->
+        <Trait Name="Porn Star" Value="30"/>   <!-- Knows how to work it on film -->
+        <Trait Name="Nymphomaniac" Value="25"/>    <!-- had lots of practice -->
+        <Trait Name="Slut" Value="15"/>    <!-- had practice -->
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Open Minded" Value="10"/>
+        <Trait Name="Natural Pheromones" Value="5"/>
+
+
+        <!-- Bad -->
+        <Trait Name="Strong Gag Reflex" Value="-20"/>
+        <Trait Name="Gag Reflex" Value="-20"/>
+        <Trait Name="Clumsy" Value="-25"/>
+        <Trait Name="Nervous" Value="-15"/>
+    </Modifier>
+
+    <Modifier Name="work.gardener">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+    </Modifier>
+
+    <Modifier Name="work.halldealer">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="5"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="5"/> <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="10"/> <!-- people like charming people -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="20"/> <!-- "How did you know I was bluffing!?" -->
+        <Trait Name="Agile" Value="10"/> <!-- quick hands -->
+        <Trait Name="Lolita" Value="10"/> <!-- Customers go easy on her - she's just a girl, right? -->
+        <Trait Name="Natural Pheromones" Value="10"/> <!-- Customers can't figure out why they can't focus today -->
+        <Trait Name="Powerful Magic" Value="15"/> <!-- Switched your cards!? But I've been over here the whole time. -->
+        <Trait Name="Strong Magic" Value="10"/> <!-- Switched your cards!? But I've been over here the whole time. -->
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-10"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-15"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-15"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-20"/>
+        <Trait Name="No Arms" Value="-150"/>
+        <Trait Name="No Feet" Value="-25"/>
+        <Trait Name="No Hands" Value="-100"/>
+        <Trait Name="No Legs" Value="-50"/>
+        <Trait Name="Blind" Value="-60"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+
+    </Modifier>
+
+    <Modifier Name="work.hallentertainer">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="5"/> <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/> <!-- people like charming people -->
+        <Trait Name="Great Figure" Value="5"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="15"/>
+        <Trait Name="Fearless" Value="5"/>
+        <Trait Name="Singer" Value="10"/><!-- SIN - another way to entertain -->
+        <Trait Name="Exhibitionist" Value="5"/> <!-- Accidental slips -->
+        <Trait Name="Powerful Magic" Value="5"/> <!-- tricks -->
+        <Trait Name="Strong Magic" Value="5"/> <!-- tricks -->
+        <Trait Name="Flight" Value="5"/> <!-- well i'd be entertained -->
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-10"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Shy" Value="-20"/>
+        <Trait Name="Broken Will" Value="-50"/>
+        <Trait Name="Slow Learner" Value="-15"/>
+        <Trait Name="Flat Ass" Value="-5"/>
+        <Trait Name="Flat Chest" Value="-5"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.hallxxx">
+
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="10"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="5"/> <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="5"/> <!-- people like charming people -->
+        <Trait Name="Great Figure" Value="10"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Long Legs" Value="5"/>
+        <Trait Name="Exhibitionist" Value="10"/>
+        <Trait Name="Dick-Sucking Lips" Value="5"/>
+        <Trait Name="Fearless" Value="5"/>
+        <Trait Name="Natural Pheromones" Value="10"/> <!-- SIN - exudes sex -->
+        <Trait Name="Agile" Value="5"/>  <!-- good movement -->
+        <Trait Name="Flexible" Value="10"/> <!-- positions -->
+        <Trait Name="Porn Star" Value="10"/> <!-- this is her day job -->
+        <Trait Name="Social Drinker" Value="5"/> <!-- uninhibited -->
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-10"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Shy" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="Horrific Scars" Value="-15"/>
+        <Trait Name="Small Scars" Value="-5"/>
+        <Trait Name="Flat Ass" Value="-10"/>
+        <Trait Name="Flat Chest" Value="-10"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.housecook">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Chef" Value="30"/>
+        <Trait Name="Mixologist" Value="20"/>  <!-- Good with measures -->
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.makepotions">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Nerd" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+    </Modifier>
+
+    <Modifier Name="work.mechanic">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="5"/>
+        <Trait Name="Sexy Air" Value="5"/>
+        <Trait Name="Cool Person" Value="10"/>
+        <Trait Name="Charming" Value="5"/>
+        <Trait Name="Nerd" Value="15"/>
+        <Trait Name="Strong" Value="10"/>
+        <Trait Name="Tough" Value="5"/>
+        <Trait Name="Construct" Value="10"/>
+        <Trait Name="Half-Construct" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Goddess" Value="10"/> <!-- might be able to heal people easier.. they are a goddess after all -->
+        <Trait Name="Optimist" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-40"/>
+        <Trait Name="Clumsy" Value="-20"/>
+        <Trait Name="Aggressive" Value="-10"/>
+        <Trait Name="Nervous" Value="-20"/>
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Elegant" Value="-5"/> <!-- Don't break a nail -->
+        <Trait Name="Queen" Value="-20"/>  <!-- Manual labor is beneth her -->
+        <Trait Name="Princess" Value="-10"/>   <!-- Manual labor is beneth her -->
+        <Trait Name="Mind Fucked" Value="-50"/>
+        <Trait Name="Pessimist" Value="-10"/>
+        <Trait Name="Sadistic" Value="-20"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-150"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-90"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-75"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.milker">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Farmers Daughter" Value="30"/>
+        <Trait Name="Country Gal" Value="10"/>
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-100"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.nurse">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="20"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/>
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/>
+        <Trait Name="Nerd" Value="15"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Doctor" Value="40"/>
+        <Trait Name="Goddess" Value="10"/> <!-- might be able to heal people easier.. they are a goddess after all -->
+        <Trait Name="Optimist" Value="10"/>
+        <Trait Name="Priestess" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>
+        <Trait Name="Clumsy" Value="-20"/>
+        <Trait Name="Aggressive" Value="-20"/>
+        <Trait Name="Nervous" Value="-30"/>
+        <Trait Name="Retarded" Value="-50"/>
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Mind Fucked" Value="-50"/>
+        <Trait Name="Pessimist" Value="-10"/>
+        <Trait Name="Sadistic" Value="-20"/>
+        <Trait Name="Zombie" Value="-100"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-150"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-90"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-75"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Former Addict" Value="-25"/> <!-- not good idea to let former addict around all those drugs -->
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.peepshow">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="15"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/>  <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="10"/>  <!-- people like charming people -->
+        <Trait Name="Great Figure" Value="5"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>  <!-- knows what people want to see -->
+        <Trait Name="Fearless" Value="10"/>
+        <Trait Name="Dick-Sucking Lips" Value="5"/>
+        <Trait Name="Flexible" Value="10"/>
+        <Trait Name="Exhibitionist" Value="10"/> <!-- likes showing off her body -->
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>  <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/>  <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/>  <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-30"/>  <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Shy" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="Horrific Scars" Value="-20"/>
+        <Trait Name="Small Scars" Value="-5"/>
+        <Trait Name="Flat Ass" Value="-15"/>
+        <Trait Name="Flat Chest" Value="-15"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-15"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.rancher">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Farmers Daughter" Value="30"/>
+        <Trait Name="Country Gal" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.recruiter">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="20"/>
+        <Trait Name="Psychic" Value="20"/> <!-- knows what people want to hear -->
+        <Trait Name="Cool Person" Value="10"/> <!-- people love to be around her -->
+        <Trait Name="Charming" Value="10"/> <!-- people like charming people -->
+        <Trait Name="Great Figure" Value="5"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Natural Pheromones" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Broken Will" Value="-50"/>
+        <Trait Name="Nervous" Value="-30"/> <!-- don't like to be around people -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Clumsy" Value="-5"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="Shy" Value="-10"/>
+
+        <Trait Name="One Arm" Value="-30"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-15"/>
+        <Trait Name="One Leg" Value="-40"/>
+        <Trait Name="No Arms" Value="-100"/>
+        <Trait Name="No Feet" Value="-40"/>
+        <Trait Name="No Hands" Value="-25"/>
+        <Trait Name="No Legs" Value="-100"/>
+        <Trait Name="Blind" Value="-60"/>
+        <Trait Name="Deaf" Value="-40"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.shepherd">
+        <!-- good traits -->
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Farmers Daughter" Value="30"/>
+        <Trait Name="Country Gal" Value="10"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>  <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy -->
+        <Trait Name="Nervous" Value="-30"/>    <!-- don't like to be around people -->
+        <Trait Name="Meek" Value="-20"/>
+
+        <Trait Name="One Arm" Value="-40"/>
+        <Trait Name="One Foot" Value="-40"/>
+        <Trait Name="One Hand" Value="-30"/>
+        <Trait Name="One Leg" Value="-60"/>
+        <Trait Name="No Arms" Value="-125"/>
+        <Trait Name="No Feet" Value="-60"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-150"/>
+        <Trait Name="Blind" Value="-30"/>
+        <Trait Name="Deaf" Value="-15"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-25"/>
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.sleazybarmaid">
+        <!-- good traits -->
+        <Trait Name="Charismatic" Value="20"/>
+        <Trait Name="Mixologist" Value="25"/>
+        <Trait Name="Charming" Value="15"/>    <!-- people like charming people -->
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/> <!-- people love to be around her -->
+        <Trait Name="Psychic" Value="10"/>
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Great Figure" Value="5"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Dick-Sucking Lips" Value="5"/>
+        <Trait Name="Long Legs" Value="5"/>
+        <Trait Name="Natural Pheromones" Value="15"/>
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/>  <!-- needs others to do the job -->
+        <Trait Name="Alcoholic" Value="-40"/>  <!-- bad idea let an alcoholic near booze -->
+        <Trait Name="Nervous" Value="-30"/>    <!-- don't like to be around people -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/> <!-- gets mad easy and may attack people -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="Social Drinker" Value="-10"/>
+        <Trait Name="Bimbo" Value="-5"/>
+        <Trait Name="Shy" Value="-10"/>
+
+        <Trait Name="One Arm" Value="-30"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-15"/>
+        <Trait Name="One Leg" Value="-40"/>
+        <Trait Name="No Arms" Value="-100"/>
+        <Trait Name="No Feet" Value="-20"/>
+        <Trait Name="No Hands" Value="-50"/>
+        <Trait Name="No Legs" Value="-40"/>
+        <Trait Name="Blind" Value="-40"/>
+        <Trait Name="Deaf" Value="-20"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/><!-- would need smoke breaks -->
+
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+
+    </Modifier>
+
+    <Modifier Name="work.sleazywaitress">
+        <Trait Name="Charismatic" Value="10"/>
+        <Trait Name="Sexy Air" Value="10"/>
+        <Trait Name="Cool Person" Value="10"/> <!-- people love to be around her -->
+        <Trait Name="Cute" Value="5"/>
+        <Trait Name="Charming" Value="15"/> <!-- people like charming people -->
+        <Trait Name="Great Figure" Value="5"/>
+        <Trait Name="Great Arse" Value="5"/>
+        <Trait Name="Quick Learner" Value="5"/>
+        <Trait Name="Psychic" Value="10"/> <!-- knows what people want to hear -->
+        <Trait Name="Fleet of Foot" Value="5"/>  <!-- faster at taking orders and droping them off -->
+        <Trait Name="Waitress" Value="25"/>
+        <Trait Name="Natural Pheromones" Value="15"/>
+        <Trait Name="Agile" Value="5"/>
+        <Trait Name="Flexible" Value="5"/>
+        <Trait Name="Flat Ass" Value="5"/> <!-- Ass wont get in the way -->
+
+
+        <!-- bad traits -->
+        <Trait Name="Dependant" Value="-50"/> <!-- needs others to do the job -->
+        <Trait Name="Clumsy" Value="-20"/> <!-- spills food and breaks things often -->
+        <Trait Name="Aggressive" Value="-20"/>  <!-- gets mad easy and may attack people -->
+        <Trait Name="Nervous" Value="-20"/> <!-- don't like to be around people -->
+        <Trait Name="Abnormally Large Boobs" Value="-10"/>  <!-- boobs are to big and get in the way -->
+        <Trait Name="Titanic Tits" Value="-15"/> <!-- boobs are to big and get in the way -->
+        <Trait Name="Meek" Value="-20"/>
+        <Trait Name="Slow Learner" Value="-10"/>
+        <Trait Name="One Eye" Value="-10"/>
+        <Trait Name="Shy" Value="-10"/>
+
+        <Trait Name="One Arm" Value="-30"/>
+        <Trait Name="One Foot" Value="-20"/>
+        <Trait Name="One Hand" Value="-15"/>
+        <Trait Name="One Leg" Value="-40"/>
+        <Trait Name="No Arms" Value="-100"/>
+        <Trait Name="No Feet" Value="-40"/>
+        <Trait Name="No Hands" Value="-25"/>
+        <Trait Name="No Legs" Value="-100"/>
+        <Trait Name="Blind" Value="-60"/>
+        <Trait Name="Deaf" Value="-40"/>
+        <Trait Name="Retarded" Value="-60"/>
+        <Trait Name="Smoker" Value="-10"/> <!-- would need smoke breaks -->
+
+        <Trait Name="Alcoholic" Value="-40"/> <!-- might drink the drinks instead of taking to people -->
+        <Trait Name="Fairy Dust Addict" Value="-25"/>
+        <Trait Name="Shroud Addict" Value="-25"/>
+        <Trait Name="Viras Blood Addict" Value="-25"/>
+    </Modifier>
+
+    <Modifier Name="work.torturer">
+        <!-- "good" -->
+        <Trait Name="Sadistic" Value="30"/>    <!-- how do you like... THIS! -->
+        <Trait Name="Powerful Magic" Value="25"/>  <!-- magical flame -->
+        <Trait Name="Strong Magic" Value="20"/>    <!-- magical flame -->
+        <Trait Name="Dominatrix" Value="20"/>  <!-- you will learn to obey me -->
+        <Trait Name="Merciless" Value="20"/>   <!-- "Stop"? <shrug> I don't know that word. -->
+        <Trait Name="Demon" Value="20"/>   <!-- satan taught me this move -->
+        <Trait Name="Aggressive" Value="15"/>  <!-- WHAT did you say? -->
+        <Trait Name="Assassin" Value="15"/>    <!-- skills -->
+        <Trait Name="Doctor" Value="15"/>  <!-- they call me doctor pain... -->
+        <Trait Name="Iron Will" Value="15"/>   <!-- I *WILL* break you -->
+        <Trait Name="Alchoholic" Value="10"/>  <!-- she's a mean drunk -->
+        <Trait Name="Twisted" Value="10"/> <!-- twisted biatch -->
+        <Trait Name="Broken Will" Value="5"/>  <!-- just following orders -->
+        <Trait Name="Mind Fucked" Value="5"/>  <!-- let's play together -->
+
+        <!-- "bad" -->
+        <Trait Name="Goddess" Value="-50"/>    <!-- Wouldn't harm a soul -->
+        <Trait Name="Angel" Value="-40"/>  <!-- Wouldn't harm a soul -->
+        <Trait Name="Battery Operated" Value="-20"/>   <!-- "What is this 'pain' you feel?" -->
+        <Trait Name="Construct" Value="-20"/>  <!-- "What is this 'pain' you feel?" -->
+        <Trait Name="Clumsy" Value="20"/>  <!-- OW! I just whipped myself. -->
+
+    </Modifier>
+
+</TraitMods>

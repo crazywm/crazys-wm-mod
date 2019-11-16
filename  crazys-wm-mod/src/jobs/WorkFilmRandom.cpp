@@ -21,11 +21,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
-
 // `J` Job Movie Studio - Unused
-bool cJobManager::WorkFilmRandom(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmRandom(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -38,14 +35,14 @@ bool cJobManager::WorkFilmRandom(sGirl* girl, bool Day0Night1, string& summary)
 	
 	if (brothel->nothing_banned())
 	{
-		int roll = g_Dice % numfilmjobs;
+		int roll = rng % numfilmjobs;
 		filmjob = roll + JOB_STAGEHAND + 1;
 	}
 	else
 	{
 		do
 		{
-			int roll = g_Dice % numfilmjobs;
+			int roll = rng % numfilmjobs;
 			filmjob = roll + JOB_STAGEHAND + 1;
 			// `J` When adding new Studio Scenes, search for "J-Add-New-Scenes"  :  found in >> WorkFilmRandom.cpp
 			switch (filmjob)
@@ -102,7 +99,7 @@ bool cJobManager::WorkFilmRandom(sGirl* girl, bool Day0Night1, string& summary)
 		} while (!cando);
 	}
 
-	refused = g_Game.job_manager().JobFunc[filmjob](girl, SHIFT_NIGHT, summary);
+	refused = g_Game->job_manager().JobFunc[filmjob](girl, SHIFT_NIGHT, summary, rng);
 	return refused;
 }
 

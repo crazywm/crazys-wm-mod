@@ -17,20 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "CGraphics.h"
-#include "fstream"
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 #include "CLog.h"
 #include "DirPath.h"
 #include "sConfig.h"
-#include "IconSurface.h"
-
-using namespace std;
+#include "cColor.h"
+#include "cTimer.h"
 
 extern cConfig cfg;
 
 CGraphics::CGraphics()
 {
+    m_FPS = std::make_unique<cTimer>();
 	m_Screen = nullptr;
 	m_CurrentTime = 0;
 }
@@ -42,25 +41,19 @@ CGraphics::~CGraphics()
 
 void CGraphics::Free()
 {
-    m_BackgroundImage.reset();
     TTF_Quit();
     SDL_Quit();
 }
 
 void CGraphics::Begin()
 {
-	m_FPS.Start();
+	m_FPS->Start();
 	m_CurrentTime = SDL_GetTicks();
-	// Fill the screen white
+	// Fill the screen black
 	SDL_FillRect(m_Screen, &m_Screen->clip_rect, SDL_MapRGB(m_Screen->format, 0, 0, 0));
 
-    // draw the background image
-    SDL_Rect clip;
-    clip.x = 0;
-    clip.y = 0;
-    clip.w = GetWidth();
-    clip.h = GetHeight();
-    m_BackgroundImage->DrawSurface(clip.x, clip.y, nullptr, &clip, true);
+
+    m_BackgroundImage.DrawSurface(0, 0);
 }
 
 bool CGraphics::End()
@@ -73,10 +66,10 @@ bool CGraphics::End()
 	}
 
 	// Maintain framerate
-	if((m_FPS.GetTicks() < 1000 / FRAMES_PER_SECOND))
+	if((m_FPS->GetTicks() < 1000 / FRAMES_PER_SECOND))
 	{
 		//Sleep the remaining frame time
-		SDL_Delay((1000/FRAMES_PER_SECOND)-m_FPS.GetTicks());
+		SDL_Delay((1000/FRAMES_PER_SECOND)-m_FPS->GetTicks());
 	}
 
 	return true;
@@ -117,8 +110,6 @@ bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
 	{
 		g_LogFile.write("Error setting window icon (window_icon.png)");
 		g_LogFile.write(SDL_GetError());
-		g_LogFile.write(IMG_GetError());
-		return false;
 	}
 	else
 		SDL_WM_SetIcon(loadIcon, nullptr);
@@ -149,40 +140,18 @@ bool CGraphics::InitGraphics(string caption, int Width, int Height, int BPP)
     }
 
     // Load the universal background image
-    m_BackgroundImage = make_image_surface("background", "");
+    m_BackgroundImage = LoadImage(ImagePath("background.jpg"), GetWidth(), GetHeight(), false, false);
     g_LogFile.write("Background Image Set");
-
-    // Load the brothel images
-    for (int i = 0; i < 7; i++)
-    {
-        LoadBrothelImage("Brothel" + std::to_string(i) + ".jpg");
-    }
-    LoadBrothelImage("Arena.png");
-    LoadBrothelImage("Clinic.png");
-    LoadBrothelImage("Centre.jpg");
-    LoadBrothelImage("Farm.png");
-    LoadBrothelImage("House.png");
-    LoadBrothelImage("Movies.jpg");
-    g_LogFile.write("Brothel Images Set");
 
     return true;
 }
 
-CSurface* CGraphics::LoadBrothelImage(const std::string& name)
+cSurface CGraphics::LoadImage(std::string filename, int width, int height, bool transparency, bool keep_ratio)
 {
-    if(name.empty())
-        return nullptr;
-
-    auto image = m_BrothelImages.find(name);
-    if(image == m_BrothelImages.end()) {
-        m_BrothelImages[name] = std::make_unique<CSurface>(ImagePath(name).c_str());
-        return m_BrothelImages[name].get();
-    } else {
-        return image->second.get();
-    }
+    return m_ImageCache.LoadImage(std::move(filename), width, height, transparency, keep_ratio);
 }
 
-int CGraphics::BlitSurface(SDL_Surface* src, SDL_Rect* srcrect, SDL_Rect* dstrect) const
+cSurface CGraphics::CreateSurface(int width, int height, sColor color, bool transparent)
 {
-    return SDL_BlitSurface(src, srcrect, GetScreen(), dstrect);
+    return m_ImageCache.CreateSurface(width, height, color, transparent);
 }

@@ -21,10 +21,8 @@
 #include <sstream>
 #include "cGold.h"
 
-extern cRng g_Dice;
-
 // `J` Job Clinic - Surgery
-bool cJobManager::WorkRepairShop(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkRepairShop(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -46,8 +44,8 @@ bool cJobManager::WorkRepairShop(sGirl* girl, bool Day0Night1, string& summary)
 
 	// `J` base recovery copied freetime recovery
 	int health = 10 + (girl->constitution() / 10);
-	int tiredness = 10 + g_Dice % 21;	// build up as positive then apply as negative
-	int happy = 10 + g_Dice % 11;
+	int tiredness = 10 + rng % 21;	// build up as positive then apply as negative
+	int happy = 10 + rng % 11;
 	int mana = 5 + (girl->magic() / 5);
 	int libido = (girl->has_trait( "Nymphomaniac") ? 15 : 5);
 
@@ -80,7 +78,7 @@ bool cJobManager::WorkRepairShop(sGirl* girl, bool Day0Night1, string& summary)
 		happy += 10;
 		mana += (girl->magic() / 5);
 	}
-	if (nummecs + numnurse >= 4 && g_Dice.percent(50))	// lots of people making sure she is in good working order
+	if (nummecs + numnurse >= 4 && rng.percent(50))	// lots of people making sure she is in good working order
 	{
 		girl->constitution(1);
 	}
@@ -96,7 +94,7 @@ bool cJobManager::WorkRepairShop(sGirl* girl, bool Day0Night1, string& summary)
 	girl->happiness(happy);
 	girl->mana(mana);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
-	if (g_Dice % 10 == 0) girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
+	if (rng % 10 == 0) girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
 
 	girl->exp(1);   // Just because!
 

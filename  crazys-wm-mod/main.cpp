@@ -22,15 +22,12 @@
 #endif	// if you don't have Visual Leak Detector, get it here - https://vld.codeplex.com/
 
 #include "main.h"
-#include "src/screens/cScreenMainMenu.h"
-#include "src/screens/cScreenNewGame.h"
 #include "src/screens/cScreenBrothelManagement.h"
-#include "src/screens/cScreenPreparingGame.h"
-#include "InterfaceGlobals.h"
 #include "GameFlags.h"
 #include "InterfaceProcesses.h"
 #include "sConfig.h"
-#include "CSurface.h"
+#include "interface/cSurface.h"
+#include "interface/CGraphics.h"
 #include "cJobManager.h"
 #include "Revision.h"
 #include "libintl.h"
@@ -50,16 +47,13 @@
 #else
 #endif
 #include <sstream>
+#include <SDL_events.h>
 
 #include "src/widgets/cSlider.h"
 #include "src/widgets/cScrollBar.h"
 #include "cObjectiveManager.hpp"
 #include "cInventory.h"
 
-
-extern cScreenMainMenu* g_MainMenu;
-extern cScreenNewGame* g_NewGame;
-extern cScreenPreparingGame* g_Preparing;
 extern cScreenBrothelManagement* g_BrothelManagement;
 
 // Function Defs
@@ -69,9 +63,6 @@ bool Init();
 bool eventrunning = false;
 
 bool g_ShiftDown = false;	bool g_CTRLDown = false;
-
-bool g_UpArrow = false;		bool g_DownArrow = false;
-bool g_EnterKey = false;
 
 bool g_S_Key = false;
 bool g_W_Key = false;
@@ -85,30 +76,20 @@ bool g_AltKeys = true;          // Toggles the alternate hotkeys --PP
 bool playershopinventory = false;
 extern bool g_AllTogle;
 
-cScrollBar* g_DragScrollBar = nullptr;  // if a scrollbar is being dragged, this points to it
-cSlider* g_DragSlider = nullptr;  // if a slider is being dragged, this points to it
+// logfile
+CLog g_LogFile(true);
 
 // SDL Graphics interface
 CGraphics g_Graphics;
 
-// Resource Manager
-CResourceManager rmanager;
-
-// logfile
-CLog g_LogFile(true);
-
-// Trait list
-cTraits g_Traits;
-
 // Holds the currently running script
 
 cConfig cfg;
-cWindowManager g_WinManager;
 
 cRng g_Dice;
 
 // Game manager
-Game g_Game;
+std::unique_ptr<Game> g_Game;
 
 cNameList	g_GirlNameList;
 cNameList	g_BoysNameList;
@@ -127,43 +108,9 @@ void handle_hotkeys(const SDL_Event& vent)
 		g_CTRLDown = true;		// enable multi select
 		break;
 
-	case SDLK_RETURN:
-	case SDLK_KP_ENTER:	g_EnterKey = true;	break;
-
-	case SDLK_UP:		g_UpArrow = true;		break;
-	case SDLK_DOWN:		g_DownArrow = true;		break;
-
 	case SDLK_s:		g_S_Key = true;			break;
 	case SDLK_w:		g_W_Key = true;			break;
 	default:	break;
-	}
-
-
-
-
-	// Process the keys for every screen except MainMenu, LoadGame and NewGame - they have their own keys
-	if (g_WinManager.GetWindow() != g_MainMenu && g_WinManager.GetWindow() != g_LoadGame && g_WinManager.GetWindow() != g_Preparing && g_WinManager.GetWindow() != g_NewGame)
-	{
-		int br_no = 0;
-		string msg;
-
-		switch (vent.key.keysym.sym)
-		{
-		case SDLK_RSHIFT:
-		case SDLK_LSHIFT:
-			g_ShiftDown = true;		// enable multi select
-			break;
-		case SDLK_RCTRL:
-		case SDLK_LCTRL:
-			g_CTRLDown = true;		// enable multi select
-			break;
-
-		case SDLK_UP:		g_UpArrow = true;		break;
-		case SDLK_DOWN:		g_DownArrow = true;		break;
-		case SDLK_s:		g_S_Key = true;		break;
-		case SDLK_w:		g_W_Key = true;		break;
-		default:	break;
-		}
 	}
 }
 
@@ -175,25 +122,6 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 	//_CrtSetBreakAlloc(16477);
 #endif
 #endif
-
-#if 0
-	g_LogFile.ss() << "\n`J` DEBUG CODE - this section is used to debug a piece of code.\n"; g_LogFile.ssend();
-
-
-
-
-
-
-
-
-
-
-
-	g_LogFile.ss() << "\n`J` DEBUG CODE - this section is used to debug a piece of code.\n"; g_LogFile.ssend();
-#endif
-
-
-
 	// get text
 	setlocale(LC_ALL, "");
 	DirPath base = DirPath() << "Resources" << "lang";
@@ -202,7 +130,6 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 
 
 	bool running = true;
-	bool quitPending = false;
 	bool mouseDown = false;
 
 	g_LogFile.write("\n------------------------------------------------------------------------------------------------------------------------\nCalling Init");
@@ -210,7 +137,7 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 	if (!Init())
 		return 1;
 
-	g_WinManager.push("Main Menu");
+	window_manager().push("Main Menu");
 
 	while (running)
 	{
@@ -223,41 +150,25 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 			}
 			else if (vent.type == SDL_MOUSEBUTTONUP)
 			{
-				if (mouseDown)
-				{
-					if (g_DragScrollBar != nullptr)
-					{
-						g_DragScrollBar->SetTopValue(g_DragScrollBar->m_ItemTop);
-						g_DragScrollBar = nullptr;
-					}
-					else if (g_DragSlider != nullptr)
-					{
-						g_DragSlider->EndDrag();
-						g_DragSlider = nullptr;
-					}
-					else if (g_ChoiceManager.IsActive())
-						g_ChoiceManager.ButtonClicked(vent.motion.x, vent.motion.y);
-					else
-						g_WinManager.UpdateMouseClick(vent.motion.x, vent.motion.y);
-					mouseDown = false;
-				}
+                if (vent.button.button == SDL_BUTTON_LEFT)
+                    window_manager().OnMouseClick(vent.motion.x, vent.motion.y, false);
 			}
 			else if (vent.type == SDL_MOUSEBUTTONDOWN)
 			{
 				if (vent.button.button == SDL_BUTTON_WHEELDOWN)
 				{
-					g_WinManager.UpdateMouseClick(vent.motion.x, vent.motion.y, true, false);
+                    window_manager().OnMouseWheel(vent.motion.x, vent.motion.y, true);
 				}
 				else if (vent.button.button == SDL_BUTTON_WHEELUP)
 				{
-					g_WinManager.UpdateMouseClick(vent.motion.x, vent.motion.y, false, true);
+                    window_manager().OnMouseWheel(vent.motion.x, vent.motion.y, false);
 				}
 				else if (vent.button.button == SDL_BUTTON_LEFT)
 				{
 					//srand(SDL_GetTicks());
 					if (!mouseDown)
 						mouseDown = true;
-					g_WinManager.UpdateMouseDown(vent.motion.x, vent.motion.y);
+                    window_manager().OnMouseClick(vent.motion.x, vent.motion.y, true);
 				}
 				/*
 				*                               horizontal mouse scroll events happen here,
@@ -269,101 +180,26 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 			}
 			else if (vent.type == SDL_KEYUP)
 			{
-				if (!g_ChoiceManager.IsActive())
-				{
-					switch (vent.key.keysym.sym)
-					{
-					case SDLK_RSHIFT:
-					case SDLK_LSHIFT:	g_ShiftDown = false;	break;	// enable multi select
-					case SDLK_RCTRL:
-					case SDLK_LCTRL:	g_CTRLDown = false;		break;	// enable multi select
-					case SDLK_RETURN:
-					case SDLK_KP_ENTER:	g_EnterKey = false;		break;
+                switch (vent.key.keysym.sym)
+                {
+                case SDLK_RSHIFT:
+                case SDLK_LSHIFT:	g_ShiftDown = false;	break;	// enable multi select
+                case SDLK_RCTRL:
+                case SDLK_LCTRL:	g_CTRLDown = false;		break;	// enable multi select
 
-					case SDLK_UP:		g_UpArrow = false;		break;
-					case SDLK_DOWN:		g_DownArrow = false;	break;
-
-					case SDLK_s:		g_S_Key = false;		break;
-					case SDLK_w:		g_W_Key = false;		break;
-					}
-				}
+                case SDLK_s:		g_S_Key = false;		break;
+                case SDLK_w:		g_W_Key = false;		break;
+                }
 			}
 			else if (vent.type == SDL_KEYDOWN)
 			{
-			    g_WinManager.OnKeyPress(vent.key.keysym);
-				if (!g_ChoiceManager.IsActive())
-				{
-					if (g_WinManager.HasEditBox())
-					{
-						if (vent.key.keysym.sym == SDLK_BACKSPACE)		g_WinManager.UpdateKeyInput('-');
-						else if (vent.key.keysym.sym == SDLK_RETURN)	g_EnterKey = true;
-						else if (vent.key.keysym.sym == SDLK_KP_ENTER)	g_EnterKey = true;
-						else if (vent.key.keysym.sym == SDLK_PERIOD || vent.key.keysym.sym == SDLK_SLASH || vent.key.keysym.sym == SDLK_BACKSLASH)
-						{
-							g_WinManager.UpdateKeyInput((char)vent.key.keysym.sym);
-						}
-						else if ((vent.key.keysym.sym >= 97 && vent.key.keysym.sym <= 122) || vent.key.keysym.sym == 39 || vent.key.keysym.sym == 32 || (vent.key.keysym.sym >= 48 && vent.key.keysym.sym <= 57) || ((vent.key.keysym.sym >= 256 && vent.key.keysym.sym <= 265)))
-						{
-							if (vent.key.keysym.sym >= 256)
-							{
-								if (vent.key.keysym.sym == 256)			vent.key.keysym.sym = SDLK_0;
-								else if (vent.key.keysym.sym == 257)	vent.key.keysym.sym = SDLK_1;
-								else if (vent.key.keysym.sym == 258)	vent.key.keysym.sym = SDLK_2;
-								else if (vent.key.keysym.sym == 259)	vent.key.keysym.sym = SDLK_3;
-								else if (vent.key.keysym.sym == 260)	vent.key.keysym.sym = SDLK_4;
-								else if (vent.key.keysym.sym == 261)	vent.key.keysym.sym = SDLK_5;
-								else if (vent.key.keysym.sym == 262)	vent.key.keysym.sym = SDLK_6;
-								else if (vent.key.keysym.sym == 263)	vent.key.keysym.sym = SDLK_7;
-								else if (vent.key.keysym.sym == 264)	vent.key.keysym.sym = SDLK_8;
-								else if (vent.key.keysym.sym == 265)	vent.key.keysym.sym = SDLK_9;
-							}
-
-							if (vent.key.keysym.mod & KMOD_LSHIFT || vent.key.keysym.mod & KMOD_RSHIFT || vent.key.keysym.mod & KMOD_CAPS)
-								g_WinManager.UpdateKeyInput((char)vent.key.keysym.sym, true);
-							else
-								g_WinManager.UpdateKeyInput((char)vent.key.keysym.sym);
-						}
-					}
-					else    // hotkeys
-					{
-						handle_hotkeys(vent);
-					}
-				}
-				else if (vent.key.keysym.sym == SDLK_RETURN || vent.key.keysym.sym == SDLK_KP_ENTER)
-				{
-					if (g_ChoiceManager.IsActive())
-					{
-						g_EnterKey = true;
-						g_ChoiceManager.ButtonClicked(0, 0);
-					}
-					g_EnterKey = false;
-				}
-				else if (g_ChoiceManager.IsActive())
-				{
-					if (vent.key.keysym.sym == SDLK_UP || vent.key.keysym.sym == SDLK_DOWN)
-					{
-						/* */if (vent.key.keysym.sym == SDLK_UP)		g_UpArrow = true;
-						else if (vent.key.keysym.sym == SDLK_DOWN)		g_DownArrow = true;
-						g_ChoiceManager.ButtonClicked(0, 0);
-					}
-				}
+			    window_manager().OnKeyPress(vent.key.keysym);
+			    handle_hotkeys(vent);
 			}
 			else if (vent.type == SDL_MOUSEMOTION)
 			{
-				if (!g_ChoiceManager.IsActive())
-				{
-					// if dragging a scrollbar, send movements to it exclusively until mouseup
-					if (g_DragScrollBar != nullptr)
-						g_DragScrollBar->DragMove(vent.motion.y);
-					// if dragging a slider, send movements to it exclusively until mouseup
-					else if (g_DragSlider != nullptr)
-						g_DragSlider->DragMove(vent.motion.x);
-					// update interface
-					else
-						g_WinManager.UpdateMouseMovement(vent.motion.x, vent.motion.y);
-				}
-				else
-					g_ChoiceManager.IsOver(vent.motion.x, vent.motion.y);
+                // if dragging a scrollbar, send movements to it exclusively until mouseup
+                window_manager().UpdateMouseMovement(vent.motion.x, vent.motion.y);
 			}
 		}
 
@@ -373,18 +209,13 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 		g_Graphics.Begin();
 
 		// Draw the interface
-		g_WinManager.Draw();
+		window_manager().Draw();
 
-		if (eventrunning && !g_WinManager.HasActiveModal() && !g_ChoiceManager.IsActive())    // run any events that are being run
+		if (eventrunning && !window_manager().HasActiveModal())    // run any events that are being run
 			GameEvents();
 
 		// Run the interface
-		if (!g_ChoiceManager.IsActive())
-			g_WinManager.UpdateCurrent();
-		else
-			g_ChoiceManager.Draw();
-
-		rmanager.CullOld(g_Graphics.GetTicks());
+		window_manager().UpdateCurrent();
 
 		g_Graphics.End();
 	}
@@ -396,20 +227,8 @@ int main(int ac, char* av[])	// `J` Bookmark - #1 - Entering the game
 void Shutdown()
 {
 	g_LogFile.write("\n\n\t*** Shutting Down ***");
-	g_LogFile.write("Releasing Graphics");
-	g_Graphics.Free();
 
-	g_LogFile.write("Releasing Girls");
-    g_Game.girl_pool().Free();
-
-	g_Traits.Free();
-	g_Game.inventory_manager().Free();
-
-	g_LogFile.write("Releasing Interface");
-	FreeInterface();
-
-	g_LogFile.write("Releasing Resource Manager");
-	rmanager.Free();
+    ShutdownInterface();
 
 	g_LogFile.write("Releasing Jobs");
 #ifdef _DEBUG
@@ -417,6 +236,10 @@ void Shutdown()
 #else
 	cJobManager::free();
 #endif
+	// this happens at the end, so any SDL surfaces can be properly released.
+    g_LogFile.write("Releasing Graphics");
+    g_Graphics.Free();
+
 	g_LogFile.write("Shutdown Complete");
 }
 
@@ -437,9 +260,15 @@ bool Init()		// `J` Bookmark	- Initializing the game
 		return false;
 	}
 
+	// enable automatic unicode translation
+    SDL_EnableUNICODE(1);
+
 	g_LogFile.write("Graphics Initialized");
 
+	InitInterface();
 	LoadInterface();        // Load the interface
+	g_Graphics.GetImageCache().PrintStats();
+
 	g_LogFile.write("Interface Loaded");
 
 	InitGameFlags();        // Init the game flags

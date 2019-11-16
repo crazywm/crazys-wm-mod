@@ -23,7 +23,6 @@
 
 #include "cDungeon.h"
 #include "cGangs.h"
-#include "strnatcmp.h"
 #include "cGirlTorture.h"
 #include "cObjectiveManager.hpp"
 #include "src/Game.hpp"
@@ -65,16 +64,11 @@ cDungeon::cDungeon()		// constructor
 
 cDungeon::~cDungeon()		// destructor
 {
-	Free();
-}
-
-void cDungeon::Free()
-{
     m_Girls.clear();
-	delete m_Custs;
-	m_LastDCusts = m_Custs = nullptr;
-	m_NumberDied = 0;
-	m_NumCusts = 0;
+    delete m_Custs;
+    m_LastDCusts = m_Custs = nullptr;
+    m_NumberDied = 0;
+    m_NumCusts = 0;
 }
 
 TiXmlElement* cDungeon::SaveDungeonDataXML(TiXmlElement* pRoot)// saves all the people (they are stored with the dungeon)
@@ -130,7 +124,6 @@ TiXmlElement* cDungeon::SaveDungeonDataXML(TiXmlElement* pRoot)// saves all the 
 
 bool cDungeon::LoadDungeonDataXML(TiXmlHandle hDungeon)	// loads all the people (they are stored with the dungeon)
 {
-	Free();//everything should be init even if we failed to load an XML element
 	TiXmlElement* pDungeon = hDungeon.ToElement();
 	if (pDungeon == nullptr) { return false; }
 
@@ -203,9 +196,9 @@ void cDungeon::AddGirl(sGirl* girl, int reason)
 
 	if (reason == DUNGEON_GIRLKIDNAPPED)
 	{
-		if (g_Game.get_objective() && g_Game.get_objective()->m_Objective == OBJECTIVE_KIDNAPXGIRLS)
+		if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_KIDNAPXGIRLS)
 		{
-            g_Game.get_objective()->m_SoFar++;
+            g_Game->get_objective()->m_SoFar++;
 		}
 	}
 
@@ -218,7 +211,7 @@ void cDungeon::AddGirl(sGirl* girl, int reason)
 	newPerson.m_Girl = std::unique_ptr<sGirl>(girl);
 
 	// remove from girl manager if she is there
-	g_Game.girl_pool().RemoveGirl(girl);
+	g_Game->girl_pool().RemoveGirl(girl);
 
 	// remove girl from brothels if she is there
 	if(girl->m_Building) {
@@ -271,7 +264,7 @@ int cDungeon::GetGirlPos(sGirl* girl)
     return -1;
 }
 
-sGirl* cDungeon::RemoveGirl(sGirl* girl)	// this returns the girl, it must be placed somewhere or deleted
+std::unique_ptr<sGirl> cDungeon::RemoveGirl(sGirl* girl)	// this returns the girl, it must be placed somewhere or deleted
 {
     for(auto& current : m_Girls)
     {
@@ -282,18 +275,18 @@ sGirl* cDungeon::RemoveGirl(sGirl* girl)	// this returns the girl, it must be pl
     return nullptr;
 }
 
-sGirl* cDungeon::RemoveGirl(sDungeonGirl* girl)	// this returns the girl, it must be placed somewhere or deleted
+std::unique_ptr<sGirl> cDungeon::RemoveGirl(sDungeonGirl* girl)	// this returns the girl, it must be placed somewhere or deleted
 {
 	girl->m_Girl->m_DayJob = girl->m_Girl->m_NightJob = JOB_RESTING;
 
-	sGirl* girlData = girl->m_Girl.get();
+	std::unique_ptr<sGirl> girlData = std::move(girl->m_Girl);
 	girl->m_Girl = nullptr;
 
 	// remove from girls list
     m_Girls.erase(std::remove_if(begin(m_Girls), end(m_Girls), [girl](sDungeonGirl& g){ return &g == girl; }),
             end(m_Girls));
 
-	return girlData;
+	return std::move(girlData);
 }
 
 void cDungeon::RemoveCust(sDungeonCust* cust)
@@ -309,8 +302,9 @@ void cDungeon::RemoveCust(sDungeonCust* cust)
 	m_NumCusts--;
 }
 
-void cDungeon::OutputGirlRow(int i, string* Data, const vector<string>& columnNames)
+void cDungeon::OutputGirlRow(int i, vector<string>& Data, const vector<string>& columnNames)
 {
+    Data.resize(columnNames.size());
 	int tmp = 0;
     for(auto& current : m_Girls)
     {
@@ -333,7 +327,7 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
 	ss.str("");
 	if (detailName == "Rebelliousness")	// `J` Dungeon "Matron" can be a Torturer from any brothel
 	{
-		ss << cGirls::GetRebelValue(m_Girl.get(), random_girl_on_job(g_Game.buildings(), JOB_TORTURER, false) != nullptr);
+		ss << cGirls::GetRebelValue(m_Girl.get(), random_girl_on_job(g_Game->buildings(), JOB_TORTURER, false) != nullptr);
 	}
 	else if (detailName == "Reason")
 	{
@@ -369,8 +363,9 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
 	Data = ss.str();
 }
 
-void cDungeon::OutputCustRow(int i, string* Data, const vector<string>& columnNames)
+void cDungeon::OutputCustRow(int i, vector<string>& Data, const vector<string>& columnNames)
 {
+    Data.resize(columnNames.size());
 	sDungeonCust* cust = m_Custs;
 	int tmp = 0;
 	while (cust)
@@ -435,7 +430,7 @@ sDungeonGirl* cDungeon::GetGirlByName(string name)
 	if (name.empty()) return nullptr;
     for(auto& current : m_Girls)
     {
-		if (strnatcmp(name.c_str(), current.m_Girl->m_Realname.c_str()) == 0)
+		if (name == current.m_Girl->m_Realname)
 			return &current;
 	}
 	return nullptr;
@@ -490,7 +485,7 @@ void cDungeon::Update()
 
 	// WD:	Did we torture the girls
 	// WD: If so, who is the Torturer
-	if (m_TortureDone) { TorturerGirlref = random_girl_on_job(g_Game.buildings(), JOB_TORTURER, 0); }
+	if (m_TortureDone) { TorturerGirlref = random_girl_on_job(g_Game->buildings(), JOB_TORTURER, 0); }
 
 	/*********************************
 	*	DO ALL DUNGEON GIRLS
@@ -512,8 +507,8 @@ void cDungeon::Update()
             {
                 sDungeonGirl* temp = &current;
                 msg << girlName << "'s body has been removed from the dungeon since she was dead.";
-                g_Game.push_message(msg.str(), COLOR_RED);
-                delete RemoveGirl(temp);
+                g_Game->push_message(msg.str(), COLOR_RED);
+                RemoveGirl(temp);
                 continue;
             }
             // Mark as dead
@@ -534,8 +529,8 @@ void cDungeon::Update()
         cGirls::CalculateGirlType(girl);		// update the fetish traits
         cGirls::updateGirlAge(girl, true);		// update birthday counter and age the girl
         cGirls::updateTemp(girl);			// update temp stuff
-        cGirls::EndDayGirls(g_Game.buildings().get_building(0), girl);
-        g_Game.girl_pool().HandleChildren(girl, summary);	// handle pregnancy and children growing up
+        cGirls::EndDayGirls(g_Game->buildings().get_building(0), girl);
+        g_Game->girl_pool().HandleChildren(girl, summary);	// handle pregnancy and children growing up
         cGirls::updateSTD(girl);				// health loss to STD's - NOTE: Girl can die
         cGirls::updateHappyTraits(girl);		// Update happiness due to Traits - NOTE: Girl can die
         updateGirlTurnDungeonStats(&current);	// Update stats
@@ -756,12 +751,12 @@ bool cDungeon::SendGirlToDungeon(sGirl& girl)
     if (girl.fights_back())
     {
         bool win = true;
-        sGang* gang = g_Game.gang_manager().GetGangOnMission(MISS_GUARDING);
+        sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
         int count = 8;
         while (gang && win && count >= 0)
         {
-            win = (g_Game.gang_manager().GangCombat(&girl, gang));
-            if (gang->m_Num == 0) gang = g_Game.gang_manager().GetGangOnMission(MISS_GUARDING);
+            win = (g_Game->gang_manager().GangCombat(&girl, gang));
+            if (gang->m_Num == 0) gang = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
             count--;
             if (count<0) win = true;
         }
@@ -773,7 +768,7 @@ bool cDungeon::SendGirlToDungeon(sGirl& girl)
             if (gang && gang->m_Num == 0) ss << ", and the gang is completely wiped out";
             ss << ". ";
 
-            if (g_Game.player().Combat(&girl))				// fight with the player
+            if (g_Game->player().Combat(&girl))				// fight with the player
             {
                 // If girl wins she escapes and leaves the brothel
                 ss << "After defeating you as well, she escapes to the outside.\n";
@@ -783,7 +778,7 @@ bool cDungeon::SendGirlToDungeon(sGirl& girl)
 
                 stringstream smess;
                 smess << girl.m_Realname << " has run away";
-                g_Game.push_message(smess.str(), 1);
+                g_Game->push_message(smess.str(), 1);
             }
             else	// otherwise put her in the dungeon
             {
@@ -803,9 +798,9 @@ bool cDungeon::SendGirlToDungeon(sGirl& girl)
         ss << "She goes quietly with a sullen look on her face.";
     }
 
-    g_Game.push_message(ss.str(), 0);
+    g_Game->push_message(ss.str(), 0);
 
     if (success)
-        g_Game.dungeon().AddGirl(&girl, reason);
+        g_Game->dungeon().AddGirl(&girl, reason);
     return success;
 }

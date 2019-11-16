@@ -22,19 +22,17 @@
 #include <sstream>
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job House - General
-bool cJobManager::WorkHousePet(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkHousePet(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
 	if (Day0Night1) return false;
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKHOUSEPET;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	int train = roll_a - girl->obedience() - girl->get_training(TRAINING_PUPPY);
 
 	int wages = 100, tips = 0;
@@ -42,13 +40,13 @@ bool cJobManager::WorkHousePet(sGirl* girl, bool Day0Night1, string& summary)
 
 	// `J` add in player's disposition so if the girl has heard of you
 	int dispmod = 0;
-	/* */if (g_Game.player().disposition() >= 100)	dispmod = 3;	// "Saint"
-	else if (g_Game.player().disposition() >= 80)	dispmod = 2;	// "Benevolent"
-	else if (g_Game.player().disposition() >= 50)	dispmod = 1;	// "Nice"
-	else if (g_Game.player().disposition() >= 10)	dispmod = 0;	// "Pleasant"
-	else if (g_Game.player().disposition() >= -10)	dispmod = 0;	// "Neutral"
-	else if (g_Game.player().disposition() >= -50)	dispmod = -1;	// "Not nice"
-	else if (g_Game.player().disposition() >= -80)	dispmod = -2;	// "Mean"
+	/* */if (g_Game->player().disposition() >= 100)	dispmod = 3;	// "Saint"
+	else if (g_Game->player().disposition() >= 80)	dispmod = 2;	// "Benevolent"
+	else if (g_Game->player().disposition() >= 50)	dispmod = 1;	// "Nice"
+	else if (g_Game->player().disposition() >= 10)	dispmod = 0;	// "Pleasant"
+	else if (g_Game->player().disposition() >= -10)	dispmod = 0;	// "Neutral"
+	else if (g_Game->player().disposition() >= -50)	dispmod = -1;	// "Not nice"
+	else if (g_Game->player().disposition() >= -80)	dispmod = -2;	// "Mean"
 	else /*								  */	dispmod = -3;	// "Evil"
 
 	int imagetype = IMGTYPE_PUPPYGIRL;
@@ -58,7 +56,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, bool Day0Night1, string& summary)
 	string headname = (headonduty ? "Head Girl " + headonduty->m_Realname + "" : "the Head girl");
 
 	// torturer can be in any brothel. need not be in house
-	sGirl* tortureronduty = random_girl_on_job(g_Game.buildings(), JOB_CLEANHOUSE, Day0Night1);
+	sGirl* tortureronduty = random_girl_on_job(g_Game->buildings(), JOB_CLEANHOUSE, Day0Night1);
 	string torturername = (tortureronduty ? "Torturer " + tortureronduty->m_Realname + "" : "the Torturer");
 
 	sGirl* recruiteronduty = random_girl_on_job(*girl->m_Building, JOB_RECRUITER, Day0Night1);
@@ -446,7 +444,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, bool Day0Night1, string& summary)
 						ss << " but the bitches were just doing what they should. You smile at the happy look in " << girlName << "'s eyes, and turn the page.";
 						training += 2;
 					}
-				else if (roll_b >= 60 && g_Game.has_building(BuildingType::STUDIO))
+				else if (roll_b >= 60 && g_Game->has_building(BuildingType::STUDIO))
 					{
 						ss << "You clip a leash to " << girlName << "'s collar and she barks happily. She knows she's just your pet bitch, and she's happy to be with her master.";
 							/**/
@@ -477,7 +475,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, bool Day0Night1, string& summary)
 								imagetype = IMGTYPE_BEAST;
 								if (!girl->calc_insemination(*cGirls::GetBeast(), false, 1.0))
 								{
-									g_Game.push_message(girl->m_Realname + " has gotten inseminated", 0);
+									g_Game->push_message(girl->m_Realname + " has gotten inseminated", 0);
 								}
 							}
 							else
@@ -860,7 +858,7 @@ bool cJobManager::WorkHousePet(sGirl* girl, bool Day0Night1, string& summary)
 
 
 	//enjoyed the work or not
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 5)
 	{
 		ss << "Some of the girls made fun of her for been a puppy during the shift.";

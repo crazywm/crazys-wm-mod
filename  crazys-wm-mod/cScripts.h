@@ -111,10 +111,10 @@ typedef struct sScriptEntry
 	union
 	{
 		int m_IOValue; // Used for saving/loading
-		long m_Length; // Length of text (w/ 0 terminator)
-		long m_Selection; // Selection in choice
+		std::int32_t m_Length; // Length of text (w/ 0 terminator)
+        std::int32_t m_Selection; // Selection in choice
 		bool m_bValue; // bool value
-		long m_lValue; // long value
+        std::int32_t m_lValue; // long value
 		float m_fValue; // float value
 	};
 

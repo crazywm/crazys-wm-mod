@@ -18,16 +18,16 @@
 */
 #include "buildings/cBrothel.h"
 #include "cScreenTown.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "cScriptManager.h"
 #include <iostream>
 #include "cGangs.h"
 #include "FileList.h"
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
+#include "interface/cChoiceMessage.h"
 
 extern bool						g_WalkAround;
-extern bool						g_Cheats;
 extern bool						eventrunning;
 extern bool						g_AllTogle;
 extern string					ReadTextFile(DirPath path, string file);
@@ -51,7 +51,7 @@ static static_brothel_data brothel_data[] = {
         { 300000, 170, 50, 500, "Brothel6.jpg", BuildingType::BROTHEL },
         { 1000000, 220, 80, 600, "Brothel7.jpg", BuildingType::BROTHEL },
         { 5000, 5, 20, 200, "Centre.jpg", BuildingType::CENTRE },
-        { 10000, 10, 20, 200, "Farm.jpg", BuildingType::FARM },
+        { 10000, 10, 20, 200, "Farm.png", BuildingType::FARM },
         { 15000, 15, 20, 200, "Arena.png", BuildingType::ARENA },
         { 20000, 20, 20, 200, "Movies.jpg", BuildingType::STUDIO },
         { 25000, 25, 20, 200, "Clinic.png", BuildingType::CLINIC }
@@ -59,7 +59,6 @@ static static_brothel_data brothel_data[] = {
 
 cScreenTown::cScreenTown() : cInterfaceWindowXML("town_screen.xml")
 {
-	BuyBrothel = -1;
 	m_first_walk = true;
 }
 
@@ -111,7 +110,7 @@ void cScreenTown::set_ids()
     SetButtonCallback(studio_id, [this]() {check_building(10); });
     SetButtonCallback(clinic_id, [this]() {check_building(11); });
     SetButtonCallback(house_id, [this]() {
-        set_active_building(g_Game.buildings().building_with_type(BuildingType::HOUSE));
+        set_active_building(g_Game->buildings().building_with_type(BuildingType::HOUSE));
         push_window("Player House");
     });
     SetButtonCallback(shop_id, [this]() {
@@ -120,14 +119,14 @@ void cScreenTown::set_ids()
     });
     SetButtonCallback(walk_id, [this]() {
         do_walk();
-        if (!g_Cheats) g_WalkAround = true;
+        if (!g_Game->allow_cheats()) g_WalkAround = true;
         init(false);
     });
 }
 
 IBuilding& init_building(const static_brothel_data* data) {
-    IBuilding& building = g_Game.buildings().AddBuilding( data->data);
-    g_Game.gold().brothel_cost(data->price);
+    IBuilding& building = g_Game->buildings().AddBuilding( data->data);
+    g_Game->gold().brothel_cost(data->price);
     return building;
 }
 
@@ -135,43 +134,21 @@ void cScreenTown::init(bool back)
 {
 	if (gold_id >= 0)
 	{
-		stringstream ss; ss << "Gold: " << g_Game.gold().ival();
+		stringstream ss; ss << "Gold: " << g_Game->gold().ival();
 		EditTextItem(ss.str(), gold_id);
-	}
-
-	if (BuyBrothel != -1)
-	{
-		if (g_ChoiceManager.GetChoice(0) == 0) {
-            if (brothel_data[BuyBrothel].data.type == BuildingType::BROTHEL) {
-                g_Game.push_message("Enter a name for your new brothel.", 0);
-                input_string([this](const std::string& name){
-                    if (g_Game.get_objective() && g_Game.get_objective()->m_Objective == OBJECTIVE_GETNEXTBROTHEL)
-                        g_Game.objective_manager().PassObjective();
-                    init_building(brothel_data + BuyBrothel).set_name(name);
-
-                    init(false);
-                });
-
-            } else {
-                init_building(brothel_data + BuyBrothel);
-            }
-		}
-		else BuyBrothel = -1;
-		g_ChoiceManager.Free();
-		return;
 	}
 
 	Focused();
 
 	// buttons enable/disable
-	DisableButton(walk_id, g_WalkAround);
+    DisableWidget(walk_id, g_WalkAround);
 
-    int num_brothels = g_Game.buildings().num_buildings(BuildingType::BROTHEL);
-    HideButton(brothel2_id, num_brothels < 2);
-	HideButton(brothel3_id, num_brothels < 3);
-	HideButton(brothel4_id, num_brothels < 4);
-	HideButton(brothel5_id, num_brothels < 5);
-	HideButton(brothel6_id, num_brothels < 6);
+    int num_brothels = g_Game->buildings().num_buildings(BuildingType::BROTHEL);
+    HideWidget(brothel2_id, num_brothels < 2);
+    HideWidget(brothel3_id, num_brothels < 3);
+    HideWidget(brothel4_id, num_brothels < 4);
+    HideWidget(brothel5_id, num_brothels < 5);
+    HideWidget(brothel6_id, num_brothels < 6);
 
 
 	string brothel = "Current Brothel: ";
@@ -181,11 +158,7 @@ void cScreenTown::init(bool back)
 
 void cScreenTown::process()
 {
-	if (girlimage_id != -1 && !eventrunning)	HideImage(girlimage_id, true);
-
-	if(BuyBrothel != -1 && !g_ChoiceManager.IsActive()) {
-        init(false);
-    }
+	if (girlimage_id != -1 && !eventrunning) HideWidget(girlimage_id, true);
 }
 
 string cScreenTown::walk_no_luck()
@@ -212,26 +185,26 @@ void cScreenTown::do_walk()
 {
 	if (g_WalkAround)
 	{
-		g_Game.push_message("You can only do this once per week.", COLOR_RED);
+		g_Game->push_message("You can only do this once per week.", COLOR_RED);
 		return;
 	}
-	sGirl *girl = g_Game.GetRandomGirl();						// let's get a girl for the player to meet
+	sGirl *girl = g_Game->GetRandomGirl();						// let's get a girl for the player to meet
 	if (girl == nullptr)												// if there's no girl, no meeting
 	{
-		g_Game.push_message(walk_no_luck(), COLOR_RED);
+		g_Game->push_message(walk_no_luck(), COLOR_RED);
 		return;
 	}
 	// most of the time, you're not going to find anyone unless you're cheating, of course.
-	if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Cheats)
+	if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Game->allow_cheats())
 	{
-		g_Game.push_message(walk_no_luck(), COLOR_BLUE);
+		g_Game->push_message(walk_no_luck(), COLOR_BLUE);
 		return;
 	}
 
 	if (girlimage_id != -1)
 	{
         PrepareImage(girlimage_id, girl, IMGTYPE_PROFILE, true, ImageNum);
-        HideImage(girlimage_id, false);
+        HideWidget(girlimage_id, false);
 	}
 
 	int v[2] = { 0, -1 };
@@ -267,7 +240,7 @@ void cScreenTown::do_walk()
 	{
 		message = ReadTextFile(intro, introfile);
 	}
-	if (!message.empty()) g_Game.push_message(message, COLOR_BLUE);
+	if (!message.empty()) g_Game->push_message(message, COLOR_BLUE);
 
 	eventrunning = true;
 	sm.Load(dp, girl);
@@ -279,24 +252,36 @@ bool cScreenTown::buy_building(static_brothel_data* bck)
 	stringstream ss;
 	ss.imbue(syslocale);
 
-	if (!g_Game.gold().afford(bck->price) || g_Game.gang_manager().GetNumBusinessExtorted() < bck->business)
+	if (!g_Game->gold().afford(bck->price) || g_Game->gang_manager().GetNumBusinessExtorted() < bck->business)
 	{	// can't buy it
 		ss << ("This building costs ") << bck->price << (" gold and you need to control at least ") << bck->business << (" businesses.");
-		if (!g_Game.gold().afford(bck->price))
-			ss << "\n" << ("You need ") << (bck->price - g_Game.gold().ival()) << (" more gold to afford it.");
-		if (g_Game.gang_manager().GetNumBusinessExtorted() < bck->business)
-			ss << "\n" << ("You need to control ") << (bck->business - g_Game.gang_manager().GetNumBusinessExtorted()) << (" more businesses.");
-		g_Game.push_message(ss.str(), 0);
+		if (!g_Game->gold().afford(bck->price))
+			ss << "\n" << ("You need ") << (bck->price - g_Game->gold().ival()) << (" more gold to afford it.");
+		if (g_Game->gang_manager().GetNumBusinessExtorted() < bck->business)
+			ss << "\n" << ("You need to control ") << (bck->business - g_Game->gang_manager().GetNumBusinessExtorted()) << (" more businesses.");
+		g_Game->push_message(ss.str(), 0);
 		return false;
 	}
 	else	// can buy it
 	{
 		ss << ("Do you wish to purchase this building for ") << bck->price << (" gold? It has ") << bck->data.rooms << (" rooms.");
-		g_Game.push_message(ss.str(), 2);
-		g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, 2, 32, 8, 16);
-		g_ChoiceManager.AddChoice(0, ("Buy It"), 0);
-		g_ChoiceManager.AddChoice(0, ("Don't Buy It"), 1);
-		g_ChoiceManager.SetActive(0);
+		g_Game->push_message(ss.str(), 2);
+		input_choice("", std::vector<std::string>{"Buy It", "Don't Buy It"}, [this, bck](int selection) {
+            if(selection != 0) return;
+		    if (bck->data.type == BuildingType::BROTHEL) {
+                g_Game->push_message("Enter a name for your new brothel.", 0);
+                input_string([this, bck](const std::string& name){
+                    if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_GETNEXTBROTHEL)
+                        g_Game->objective_manager().PassObjective();
+                    init_building(bck).set_name(name);
+                    init(false);
+                });
+
+            } else {
+                init_building(bck);
+                init(false);
+            }
+		});
 		return true;
 	}
 }
@@ -311,15 +296,14 @@ void cScreenTown::check_building(int BrothelNum)
         num = 0;
     }
 
-	if (g_Game.buildings().num_buildings(type) == num)	// player doesn't own this brothel... can he buy it?
+	if (g_Game->buildings().num_buildings(type) == num)	// player doesn't own this brothel... can he buy it?
 	{
-		static_brothel_data *bck = brothel_data + BrothelNum;
-		if (buy_building(bck)) BuyBrothel = BrothelNum;
+		buy_building(brothel_data + BrothelNum);
 
 	}
 	else	// player owns this brothel... go to it
 	{
-	    set_active_building(g_Game.buildings().building_with_type(type, num));
+	    set_active_building(g_Game->buildings().building_with_type(type, num));
         replace_window("Building Management");
 	}
 }

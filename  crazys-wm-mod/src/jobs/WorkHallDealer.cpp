@@ -23,18 +23,16 @@
 #include <sstream>
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - Hall
-bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKHALL;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_DEALER))
 	{
 		//SIN - More informative mssg to show *what* she refuses
@@ -64,7 +62,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 
 
 	//a little pre-game randomness
-	if (g_Dice.percent(10))
+	if (rng.percent(10))
 	{
 		if (girl->has_trait( "Strange Eyes"))
 		{
@@ -82,20 +80,20 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 			jobperformance += 5;
 		}
 	}
-	if (girl->is_addict(true) && g_Dice.percent(20))
+	if (girl->is_addict(true) && rng.percent(20))
 	{
 		ss << "\nNoticing her addiction, a customer offered her drugs. She accepted, and had an awful day at the card table.\n";
 		if (girl->has_trait( "Shroud Addict"))
 		{
-			girl->add_inv(g_Game.inventory_manager().GetItem("Shroud Mushroom"));
+			girl->add_inv(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
 		}
 		if (girl->has_trait( "Fairy Dust Addict"))
 		{
-			girl->add_inv(g_Game.inventory_manager().GetItem("Fairy Dust"));
+			girl->add_inv(g_Game->inventory_manager().GetItem("Fairy Dust"));
 		}
 		if (girl->has_trait( "Viras Blood Addict"))
 		{
-			girl->add_inv(g_Game.inventory_manager().GetItem("Vira Blood"));
+			girl->add_inv(g_Game->inventory_manager().GetItem("Vira Blood"));
 		}
 		jobperformance -= 50;
 	}
@@ -424,13 +422,13 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 
 
 	//try and add randomness here
-	if (girl->beauty() > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && rng.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
 
 	//SIN: Fixed - add all traits and moved dice roll to start so that if this returns false, the bulky bit won't be evaluated (will be short-circuited)
-	if (g_Dice.percent(15) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Abnormally Large Boobs")
+	if (rng.percent(15) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Abnormally Large Boobs")
 		|| girl->has_trait( "Titanic Tits") || girl->has_trait( "Massive Melons")
 		|| girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs")))
 	{
@@ -444,7 +442,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Lolita") && g_Dice.percent(15))
+	if (girl->has_trait( "Lolita") && rng.percent(15))
 	{
 		if (jobperformance < 125)
 		{
@@ -460,7 +458,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 	//ANDs (&&) are processed before ORs (||) due to higher precedence. So this will be processed as:
 	//					do it if (she's elegant [always]), or (she's a princess [always]) or (she's a queen [only 15% of the time])
 	//Don't think this was intended, so re-writing to force the roll to apply to all traits
-	if (g_Dice.percent(15) && (girl->has_trait( "Elegant") || girl->has_trait( "Princess") || girl->has_trait( "Queen")))
+	if (rng.percent(15) && (girl->has_trait( "Elegant") || girl->has_trait( "Princess") || girl->has_trait( "Queen")))
 	{
 		if (jobperformance < 150)
 		{
@@ -472,7 +470,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Assassin") && g_Dice.percent(5))
+	if (girl->has_trait( "Assassin") && rng.percent(5))
 	{
 		if (jobperformance < 150)
 		{
@@ -484,12 +482,12 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Psychic") && g_Dice.percent(20))
+	if (girl->has_trait( "Psychic") && rng.percent(20))
 	{
 		ss << "She used her Psychic skills to know exactly what cards were coming up and won a big hand.\n"; wages += 30;
 	}
 
-	if (brothel->num_girls_on_job(JOB_ENTERTAINMENT, false) >= 1 && g_Dice.percent(25))
+	if (brothel->num_girls_on_job(JOB_ENTERTAINMENT, false) >= 1 && rng.percent(25))
 	{
 		if (jobperformance < 125)
 		{
@@ -502,12 +500,12 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 	}
 
 	//SIN: a bit more randomness
-	if (g_Dice.percent(20) && wages < 20 && girl->charisma() > 60)
+	if (rng.percent(20) && wages < 20 && girl->charisma() > 60)
 	{
 		ss << girlName << " did so badly, a customer felt sorry for her and left her a few coins from his winnings.\n";
-		wages += ((g_Dice % 18) + 3);
+		wages += ((rng % 18) + 3);
 	}
-	if (g_Dice.percent(5) && girl->normalsex() > 50 && girl->fame() > 30)
+	if (rng.percent(5) && girl->normalsex() > 50 && girl->fame() > 30)
 	{
 		ss << "A customer taunted " << girlName << ", saying the best use for a dumb whore like her is bent over the gambling table.";
 		bool spirited = (girl->spirit() + girl->spirit() > 80);
@@ -613,7 +611,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 
 	// work out the pay between the house and the girl
-	wages += (g_Dice % ((int)(((girl->beauty() + girl->charisma()) / 2)*0.5f))) + 10;
+	wages += (rng % ((int)(((girl->beauty() + girl->charisma()) / 2)*0.5f))) + 10;
 	// Money
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
@@ -634,11 +632,11 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 
 	girl->fame(fame);
 	girl->exp(xp);
-	int gain = g_Dice % 3;
-	/* */if (gain == 0)	girl->intelligence(g_Dice%skill);
-	else if (gain == 1)	girl->agility(g_Dice%skill);
-	else /*          */	girl->performance(g_Dice%skill);
-	girl->service(g_Dice%skill + 1);
+	int gain = rng % 3;
+	/* */if (gain == 0)	girl->intelligence(rng%skill);
+	else if (gain == 1)	girl->agility(rng%skill);
+	else /*          */	girl->performance(rng%skill);
+	girl->service(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 
@@ -648,7 +646,7 @@ bool cJobManager::WorkHallDealer(sGirl* girl, bool Day0Night1, string& summary)
 
 double cJobManager::JP_HallDealer(sGirl* girl, bool estimate)
 {
-#if 1	//SIN - standardizing job performance per J's instructs
+	//SIN - standardizing job performance per J's instructs
 	double jobperformance =
 		//Core stats - first 100 - intel and agility for smarts and speed to cheat
 		((girl->intelligence() + girl->agility()) / 2) +
@@ -658,13 +656,6 @@ double cJobManager::JP_HallDealer(sGirl* girl, bool estimate)
 		girl->level();
 
 	// next up tiredness penalty...
-#else
-	double jobperformance =
-		(girl->intelligence() / 2 + 	// intel makes her smart enough to know when to cheat
-		girl->agility() / 2 +			// agility makes her fast enough to cheat
-		girl->performance() / 2 +	// performance helps her get away with it
-		girl->service() / 2);
-#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -672,46 +663,7 @@ double cJobManager::JP_HallDealer(sGirl* girl, bool estimate)
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Charismatic"))			jobperformance += 5;
-	if (girl->has_trait( "Sexy Air"))				jobperformance += 5;
-	if (girl->has_trait( "Cool Person"))			jobperformance += 5; //people love to be around her
-	if (girl->has_trait( "Cute"))					jobperformance += 5;
-	if (girl->has_trait( "Charming"))				jobperformance += 10; //people like charming people
-	if (girl->has_trait( "Quick Learner"))		jobperformance += 5;
-	if (girl->has_trait( "Psychic"))				jobperformance += 20; //"How did you know I was bluffing!?"
-	if (girl->has_trait( "Agile"))				jobperformance += 10; //quick hands
-	if (girl->has_trait( "Lolita"))				jobperformance += 10; //Customers go easy on her - she's just a girl, right?
-	if (girl->has_trait( "Natural Pheromones"))	jobperformance += 10; //Customers can't figure out why they can't focus today
-	if (girl->has_trait( "Powerful Magic"))		jobperformance += 15; //Switched your cards!? But I've been over here the whole time.
-	if (girl->has_trait( "Strong Magic"))			jobperformance += 10; //Switched your cards!? But I've been over here the whole time.
+    jobperformance += girl->get_trait_modifier("work.halldealer");
 
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy"))		jobperformance -= 10; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))			jobperformance -= 20;
-	if (girl->has_trait( "Slow Learner"))	jobperformance -= 15;
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 15;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 20;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 150;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 25;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 100;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 50;
-	if (girl->has_trait( "Blind"))		jobperformance -= 60;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 15;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-
-	return jobperformance;
+    return jobperformance;
 }

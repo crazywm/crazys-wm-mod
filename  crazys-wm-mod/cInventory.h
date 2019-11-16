@@ -99,16 +99,6 @@ struct sEffect
  *	but really? Life's too short...
  */
 	unsigned char m_EffectID;	// what stat, skill or status effect it affects
-/*
- *	but I still need strings for the skills, states, traits and so forth
- *
- *	these should be (were until the merge) in sGirl. Will be again
- *	as soon as I sort the main mess out...
- */
-	const char *girl_status_name(unsigned int id);
-	const char *skill_name(unsigned int id);		// WD:	Use definition in sGirl::
-	const char *stat_name(unsigned int id);			// WD:	Use definition in sGirl::
-	const char *enjoy_name(unsigned int id);		// `J`	Use definition in sGirl::
 
 /*
  *	and we need to go the other way,
@@ -283,20 +273,11 @@ class cInventory
 {
 public:
 	cInventory() {
-		for(auto & m_ShopItem : m_ShopItems) {
-			m_ShopItem = nullptr;
-		}
-		m_NumShopItems = 0;
 	}
 	~cInventory();
 
-	void Free();
-
     bool LoadItemsXML(const string& filename);
-	void UpdateShop();	// re-randomizes the shops inventory
 	sInventoryItem* GetItem(string name);
-	sInventoryItem* GetShopItem(int num);
-	int GetRandomShopItem();
 	sInventoryItem* GetRandomItem();
 	sInventoryItem* GetRandomCatacombItem();
 
@@ -304,23 +285,15 @@ public:
 	/// return all items that can be crafted by a given job.
 	std::vector<sInventoryItem*> GetCraftableItems(JOBS job);
 
-	int CheckShopItem(string name);	// checks if a item is in shop inventory, returns -1 if not and the id if it is
-	sInventoryItem* BuyShopItem(int num);	// removes and returns the item from the shop
-	int BuyShopItem(sInventoryItem* item, int amount);
-	bool GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoEquip);  // girl buys selected item if possible; returns true if bought
-
 	void Equip(sGirl* girl, int num, bool force);
-	void Equip(sGirl* girl, sInventoryItem* item, bool force);
-	void Unequip(sGirl* girl, int num);
 
-	void AddItem(sInventoryItem* item);
-	void CalculateCost(sInventoryItem* newItem);
+    void AddItem(sInventoryItem* item);
 
-	int HappinessFromItem(const sInventoryItem * item);  // determines how happy a girl will be to receive an item (or how unhappy to lose it)
+    int HappinessFromItem(const sInventoryItem * item);  // determines how happy a girl will be to receive an item (or how unhappy to lose it)
 
 	void GivePlayerAllItems();
 
-	bool IsItemEquipable(sInventoryItem* item)
+	bool IsItemEquipable(const sInventoryItem *item)
 	{
         return item->m_Type != INVMISC;
     }
@@ -335,10 +308,6 @@ public:
 
 private:
 	std::vector<sInventoryItem *> m_Items;  // Master list of items?
-	int m_NumShopItems;	// number of items in the shop
-	sInventoryItem* m_ShopItems[NUM_SHOPITEMS];	// pointers to all items, the shop can only hold 30 random items
-
-	//
 };
 
 #endif

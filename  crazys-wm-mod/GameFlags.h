@@ -60,20 +60,7 @@ inline void ClearGameFlag(int flag)
 
 inline bool CheckGameFlag(int flag)
 {
-	if(g_GameFlags[flag][0] == 1)
-		return true;
-	return false;
+    return g_GameFlags[flag][0] == 1;
 }
 
-inline int GetGameFlag(int flag)
-{
-	return g_GameFlags[flag][1];
-}
-/*
-inline void InitGameFlags();
-inline void SetGameFlag(int flag, int value);
-inline void ClearGameFlag(int flag);
-inline int GetGameFlag(int flag);
-inline bool CheckGameFlag(int flag);
-*/
 #endif

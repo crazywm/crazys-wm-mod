@@ -22,13 +22,11 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 void AddStory(stringstream *);
 
 // Job Movie Studio - // nice Job - Action Scene
 //This film will use her combat and magic skills, and will be more popular if she's hot.
-bool cJobManager::WorkFilmAction(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmAction(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -46,7 +44,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, bool Day0Night1, string& summary)
 	//cGirls::UnequipCombat(girl);	// not for actress (yet)
 
 	ss << girlName;
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FILMACTION))
 	{
 		ss << " refused to shoot an action scenes today.\n";
@@ -102,7 +100,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, bool Day0Night1, string& summary)
 		AddStory(&ss);
 		bonus = 1;
 		ss << "\nThe CamerMage advised " << girlName << " how to improve her performance";
-		if (g_Dice.percent(40))
+		if (rng.percent(40))
 		{
 			ss << " and her scene got a little better after this.";
 			bonus++;
@@ -125,17 +123,17 @@ bool cJobManager::WorkFilmAction(sGirl* girl, bool Day0Night1, string& summary)
 	//Enjoyed? If she performed well, she'd should have enjoyed it.
 	if (jobperformance >= 200)
 	{
-		enjoy += (g_Dice % 3 + 1);
+		enjoy += (rng % 3 + 1);
 		ss << "She loved performing on film today.\n \n";
 	}
 	else if (jobperformance >= 100)
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She enjoyed this performance.\n \n";
 	}
 	else
 	{
-		enjoy -= (g_Dice % 3 + 2);
+		enjoy -= (rng % 3 + 2);
 		ss << "She found this awkward and did not enjoy it.\n \n";
 	}
 
@@ -165,16 +163,16 @@ bool cJobManager::WorkFilmAction(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->combat(g_Dice%skill + 1);
-	girl->magic(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->combat(rng%skill + 1);
+	girl->magic(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(ACTION_COMBAT, enjoy);
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 
 	//gain traits
-	if (jobperformance >= 140 && g_Dice.percent(50))
+	if (jobperformance >= 140 && rng.percent(50))
 	{
 		if (cGirls::PossiblyGainNewTrait(girl, "Brawler", 60, ACTION_COMBAT, "She has performed in enough fight scenes that she has become quite a brawler.", Day0Night1));
 		else if (cGirls::PossiblyGainNewTrait(girl, "Tough", 70, ACTION_COMBAT, "She has performed in enough fight scenes that she has become quite tough.", Day0Night1));
@@ -182,7 +180,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, bool Day0Night1, string& summary)
 		else (cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 90, ACTION_COMBAT, "She has performed so many action scenes that she has become fast on her feet.", Day0Night1));
 	}
 
-	if (jobperformance >= 140 && g_Dice.percent(50))
+	if (jobperformance >= 140 && rng.percent(50))
 	{
 		if (cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKMOVIE, "She has performed in enough movie scenes that she has become charismatic.", Day0Night1));
 		else if (cGirls::PossiblyGainNewTrait(girl, "Actress", 70, ACTION_WORKMOVIE, "She has performed in enough movie scenes that she has become a good actress.", Day0Night1));
@@ -192,7 +190,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, bool Day0Night1, string& summary)
 	// nice job bonus-------------------------------------------------------
 	//BONUS - Nice jobs show off her assets and make her happy, increasing fame and love.
 
-	int MrNiceGuy = g_Dice % 6, MrFair = g_Dice % 6;
+	int MrNiceGuy = rng % 6, MrFair = rng % 6;
 	MrNiceGuy = (MrNiceGuy + MrFair)/3;				//Should come out around 1-2 most of the time.
 
 	girl->happiness(MrNiceGuy);
@@ -200,7 +198,7 @@ bool cJobManager::WorkFilmAction(sGirl* girl, bool Day0Night1, string& summary)
 	girl->pclove(MrNiceGuy);
 	girl->pchate(-MrNiceGuy);
 	girl->pcfear(-MrNiceGuy);
-	g_Game.player().disposition(MrNiceGuy);
+	g_Game->player().disposition(MrNiceGuy);
 
 	//----------------------------------------------------------------------
 
@@ -295,45 +293,7 @@ double cJobManager::JP_FilmAction(sGirl* girl, bool estimate)	// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//Good
-	if (girl->has_trait( "Actress"))					jobperformance += 60;	//Can act
-	if (girl->has_trait( "Charismatic"))				jobperformance += 30;	//Can act
-	if (girl->has_trait( "Incorporeal"))				jobperformance += 60;	//Can't be hurt
-	if (girl->has_trait( "Construct"))				jobperformance += 50;	//
-	if (girl->has_trait( "Half-Construct"))			jobperformance += 35;	//
-	if (girl->has_trait( "Muscular"))					jobperformance += 35;	//
-	if (girl->has_trait( "Strong"))					jobperformance += 35;	//
-	if (girl->has_trait( "Tough"))					jobperformance += 30;	//
-	if (girl->has_trait( "Fleet of Foot"))			jobperformance += 30;	//
-	if (girl->has_trait( "Agile"))					jobperformance += 30;	//
-	if (girl->has_trait( "Princess"))					jobperformance += 30;	//High-Status
-	if (girl->has_trait( "Queen"))					jobperformance += 30;	//
-	if (girl->has_trait( "Goddess"))					jobperformance += 30;	//
-	if (girl->has_trait( "Angel"))					jobperformance += 30;	//
-	if (girl->has_trait( "Heroine"))					jobperformance += 20;	//Exciting
-	if (girl->has_trait( "Brawler"))					jobperformance += 20;	//
-	if (girl->has_trait( "Dominatrix"))				jobperformance += 20;	//
-	if (girl->has_trait( "Tsundere"))					jobperformance += 15;	//
-	if (girl->has_trait( "Yandere"))					jobperformance += 15;	//
-	if (girl->has_trait( "Fearless"))					jobperformance += 15;	//
-	if (girl->has_trait( "Iron Will"))				jobperformance += 10;	//
+    jobperformance += girl->get_trait_modifier("work.film.action");
 
-	//Bad
-	if (girl->has_trait( "No Legs"))					jobperformance -= 80;	//Difficult to make action scene
-	if (girl->has_trait( "One Leg"))					jobperformance -= 50;	//
-	if (girl->has_trait( "No Feet"))					jobperformance -= 80;	//
-	if (girl->has_trait( "One Foot"))					jobperformance -= 50;	//
-	if (girl->has_trait( "No Arms"))					jobperformance -= 50;	//
-	if (girl->has_trait( "One Arm"))					jobperformance -= 30;	//
-	if (girl->has_trait( "One Hand"))					jobperformance -= 20;	//
-	if (girl->has_trait( "No Hands"))					jobperformance -= 25;	//
-	if (girl->has_trait( "Blind"))					jobperformance -= 50;	//
-	if (girl->has_trait( "Fragile"))					jobperformance -= 30;	//Tends to get hurt on set
-	if (girl->has_trait( "Delicate"))					jobperformance -= 30;	//
-	if (girl->has_trait( "Clumsy"))					jobperformance -= 25;	//
-	if (girl->has_trait( "Dojikko"))					jobperformance -= 15;	//
-	if (girl->has_trait( "Muggle"))					jobperformance -= 10;	//
-	if (girl->has_trait( "Meek"))						jobperformance -= 5;	//
-
-	return jobperformance;
+    return jobperformance;
 }

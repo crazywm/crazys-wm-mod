@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "InterfaceGlobals.h"
+#include "src/interface/cColor.h"
 #include "DirPath.h"
 #include "cTariff.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "src/screens/cScreenPropertyManagement.h"	// `J` added
 #include "src/screens/cScreenPrison.h"
 #include "src/screens/cScreenTown.h"
@@ -45,97 +45,66 @@
 #include "src/screens/cScreenTurnSummary.h"
 #include "src/screens/cScreenTransfer.h"
 #include "tinyxml.h"
+#include "CLog.h"
+#include "sConfig.h"
 
-using namespace std;
+extern cConfig cfg;
 
-extern cWindowManager g_WinManager;
-
-cScreenBrothelManagement* g_BrothelManagement = nullptr;
 cScreenGirlDetails*       g_GirlDetails       = nullptr;
-cScreenMainMenu*          g_MainMenu          = nullptr;
-cScreenNewGame*           g_NewGame           = nullptr;
-cScreenPreparingGame*     g_Preparing         = nullptr;
-cInterfaceWindow*         g_LoadGame          = nullptr; // LoadMenu.xml
 cScreenGetInput*          g_GetInput          = nullptr;
-cChoiceManager g_ChoiceManager;
+
 
 // interface colors
-unsigned char g_StaticImageR = 0, g_StaticImageG = 0, g_StaticImageB = 0;
+sColor g_ChoiceMessageTextColor{0, 0, 0};
+sColor g_ChoiceMessageBorderColor{0, 0, 0};
+sColor g_ChoiceMessageHeaderColor{229, 227, 52};
+sColor g_ChoiceMessageBackgroundColor{88, 163, 113};
+sColor g_ChoiceMessageSelectedColor{229, 227, 52};
 
-unsigned char g_ChoiceMessageTextR = 0, g_ChoiceMessageTextG = 0, g_ChoiceMessageTextB = 0;
-unsigned char g_ChoiceMessageBorderR = 0, g_ChoiceMessageBorderG = 0, g_ChoiceMessageBorderB = 0;
-unsigned char g_ChoiceMessageHeaderR = 229, g_ChoiceMessageHeaderG = 227, g_ChoiceMessageHeaderB = 52;
-unsigned char g_ChoiceMessageBackgroundR = 0, g_ChoiceMessageBackgroundG = 0, g_ChoiceMessageBackgroundB = 0;
-unsigned char g_ChoiceMessageSelectedR = 0, g_ChoiceMessageSelectedG = 0, g_ChoiceMessageSelectedB = 0;
+sColor g_EditBoxBorderColor{0, 0, 0};
+sColor g_EditBoxBackgroundColor{90, 172, 161};
+sColor g_EditBoxSelectedColor{114, 211, 198};
+sColor g_EditBoxTextColor{0, 0, 0};
 
-unsigned char g_EditBoxBorderR = 0, g_EditBoxBorderG = 0, g_EditBoxBorderB = 0;
-unsigned char g_EditBoxBackgroundR = 0, g_EditBoxBackgroundG = 0, g_EditBoxBackgroundB = 0;
-unsigned char g_EditBoxSelectedR = 0, g_EditBoxSelectedG = 0, g_EditBoxSelectedB = 0;
-unsigned char g_EditBoxTextR = 0, g_EditBoxTextG = 0, g_EditBoxTextB = 0;
+sColor g_CheckBoxBorderColor{0, 0, 0};
+sColor g_CheckBoxBackgroundColor{180, 180, 180};
 
-unsigned char g_CheckBoxBorderR = 0, g_CheckBoxBorderG = 0, g_CheckBoxBorderB = 0;
-unsigned char g_CheckBoxBackgroundR = 0, g_CheckBoxBackgroundG = 0, g_CheckBoxBackgroundB = 0;
+sColor g_WindowBorderColor{0, 0, 0};
+sColor g_WindowBackgroundColor{140, 191, 228};
 
-unsigned char g_WindowBorderR = 0, g_WindowBorderG = 0, g_WindowBorderB = 0;
-unsigned char g_WindowBackgroundR = 0, g_WindowBackgroundG = 0, g_WindowBackgroundB = 0;
+sColor g_ListBoxBorderColor{0, 0, 0};
+sColor g_ListBoxBackgroundColor{217, 214, 139};
+sColor g_ListBoxElementBackgroundColor[] = {{114, 139, 217}, {200, 30, 30}, {80, 80, 250},
+                                            {30, 190, 30}, {190, 190, 00}};
+sColor g_ListBoxSelectedElementColor[] = {{187,   90, 224}, {255, 167, 180}, {187, 190, 224},
+                                          {0, 250, 0}, {250, 250, 250}};
+sColor g_ListBoxElementBorderColor{79, 79, 111};
+sColor g_ListBoxElementBorderHColor{159, 175, 255};
+sColor g_ListBoxTextColor{0, 0, 0};
 
-unsigned char g_ListBoxBorderR = 0, g_ListBoxBorderG = 0, g_ListBoxBorderB = 0;
-unsigned char g_ListBoxBackgroundR = 0, g_ListBoxBackgroundG = 0, g_ListBoxBackgroundB = 0;
-unsigned char g_ListBoxElementBackgroundR = 0, g_ListBoxElementBackgroundG = 0, g_ListBoxElementBackgroundB = 0;
-unsigned char g_ListBoxS1ElementBackgroundR = 0, g_ListBoxS1ElementBackgroundG = 0, g_ListBoxS1ElementBackgroundB = 0;
-unsigned char g_ListBoxS2ElementBackgroundR, g_ListBoxS2ElementBackgroundG, g_ListBoxS2ElementBackgroundB;
-unsigned char g_ListBoxS3ElementBackgroundR, g_ListBoxS3ElementBackgroundG, g_ListBoxS3ElementBackgroundB;
-unsigned char g_ListBoxS4ElementBackgroundR, g_ListBoxS4ElementBackgroundG, g_ListBoxS4ElementBackgroundB;
-unsigned char g_ListBoxSelectedElementR = 0, g_ListBoxSelectedElementG = 0, g_ListBoxSelectedElementB = 0;
-unsigned char g_ListBoxSelectedS1ElementR = 0, g_ListBoxSelectedS1ElementG = 0, g_ListBoxSelectedS1ElementB = 0;
-unsigned char g_ListBoxSelectedS2ElementR = 0, g_ListBoxSelectedS2ElementG = 0, g_ListBoxSelectedS2ElementB = 0;
-unsigned char g_ListBoxSelectedS3ElementR = 0, g_ListBoxSelectedS3ElementG = 0, g_ListBoxSelectedS3ElementB = 0;
-unsigned char g_ListBoxSelectedS4ElementR = 0, g_ListBoxSelectedS4ElementG = 0, g_ListBoxSelectedS4ElementB = 0;
-unsigned char g_ListBoxElementBorderR = 0, g_ListBoxElementBorderG = 0, g_ListBoxElementBorderB = 0;
-unsigned char g_ListBoxElementBorderHR = 0, g_ListBoxElementBorderHG = 0, g_ListBoxElementBorderHB = 0;
-unsigned char g_ListBoxTextR = 0, g_ListBoxTextG = 0, g_ListBoxTextB = 0;
+sColor g_ListBoxHeaderBackgroundColor{25, 100, 144};
+sColor g_ListBoxHeaderBorderColor{120, 155, 176};
+sColor g_ListBoxHeaderBorderHColor{15, 49, 69};
+sColor g_ListBoxHeaderTextColor{255, 255, 255};
 
-unsigned char g_ListBoxHeaderBackgroundR = 0, g_ListBoxHeaderBackgroundG = 0, g_ListBoxHeaderBackgroundB = 0;
-unsigned char g_ListBoxHeaderBorderR = 0, g_ListBoxHeaderBorderG = 0, g_ListBoxHeaderBorderB = 0;
-unsigned char g_ListBoxHeaderBorderHR = 0, g_ListBoxHeaderBorderHG = 0, g_ListBoxHeaderBorderHB = 0;
-unsigned char g_ListBoxHeaderTextR = 0, g_ListBoxHeaderTextG = 0, g_ListBoxHeaderTextB = 0;
-
-unsigned char g_MessageBoxBorderR = 0, g_MessageBoxBorderG = 0, g_MessageBoxBorderB = 0;
-unsigned char g_MessageBoxBackground0R = 0, g_MessageBoxBackground0G = 0, g_MessageBoxBackground0B = 0;
-unsigned char g_MessageBoxBackground1R = 0, g_MessageBoxBackground1G = 0, g_MessageBoxBackground1B = 0;
-unsigned char g_MessageBoxBackground2R = 0, g_MessageBoxBackground2G = 0, g_MessageBoxBackground2B = 0;
-unsigned char g_MessageBoxBackground3R = 0, g_MessageBoxBackground3G = 0, g_MessageBoxBackground3B = 0;
-unsigned char g_MessageBoxBackground4R = 0, g_MessageBoxBackground4G = 0, g_MessageBoxBackground4B = 0;
-unsigned char g_MessageBoxTextR = 0, g_MessageBoxTextG = 0, g_MessageBoxTextB = 0;
+sColor g_MessageBoxBorderColor{255, 255, 255};
+sColor g_MessageBoxBackgroundColor[] =  {{100, 100, 150}, {200, 100, 150}, {100, 200, 150},
+                                         {100, 100, 200}, {190, 190, 0}};
+sColor g_MessageBoxTextColor{0, 0, 0};
 
 template<class T>
-T* load_window(const char* name);
-
-void FreeInterface()
-{
-    g_WinManager.FreeAllWindows();
-}
-
-void ResetInterface()
-{
-    g_WinManager.ResetAllWindows();
-}
+T* load_window(const char* name, bool nonav=false);
 
 void LoadInterface()
 {
-	cTariff tariff;
 	stringstream ss;
-	int r = 0, g = 0, b = 0, x = 0, y = 0, w = 0, h = 0, a = 0, c = 0, d = 0, e = 0, fontsize = 10, rowheight = 20,
-		increment = 0, min = 0, max = 0, value = 0;
 	string image; string text; string file;
-	bool Transparency = false, Scale = true, multi = false, events = false, liveUpdate = false, leftorright = false;
 	ifstream incol;
-	
+
 
 	g_LogFile.write("Begin Loading Interface");
 
 	// load interface colors
-	int loadcolors = 0;		// 0=default, 1=xml, 2=txt
 	DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.xml";
 	TiXmlDocument docInterfaceColors(dp.c_str());
 	if (docInterfaceColors.LoadFile())
@@ -143,112 +112,71 @@ void LoadInterface()
 		g_LogFile.write("Loading InterfaceColors.xml");
 		string m_filename = dp.c_str();
 		TiXmlElement *el, *root_el = docInterfaceColors.RootElement();
-		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement()) 
+		for (el = root_el->FirstChildElement(); el; el = el->NextSiblingElement())
 		{
 			string tag = el->ValueStr();
 			if (tag == "Color")
 			{
 				XmlUtil xu(m_filename); string name; int r, g, b;
-				xu.get_att(el, "Name", name);							
+				xu.get_att(el, "Name", name);
 				xu.get_att(el, "R", r); xu.get_att(el, "G", g); xu.get_att(el, "B", b);
-				     if (name == "ImageBackground")						{ g_StaticImageR = r; g_StaticImageG = g; g_StaticImageB = b; }
-				else if (name == "ChoiceBoxText")						{ g_ChoiceMessageTextR = r; g_ChoiceMessageTextG = g; g_ChoiceMessageTextB = b; }
-				else if (name == "ChoiceBoxBorder")						{ g_ChoiceMessageBorderR = r; g_ChoiceMessageBorderG = g; g_ChoiceMessageBorderB = b; }
-				else if (name == "ChoiceBoxHeader")						{ g_ChoiceMessageHeaderR = r; g_ChoiceMessageHeaderG = g; g_ChoiceMessageHeaderB = b; }
-				else if (name == "ChoiceBoxBackground")					{ g_ChoiceMessageBackgroundR = r; g_ChoiceMessageBackgroundG = g; g_ChoiceMessageBackgroundB = b; }
-				else if (name == "ChoiceBoxSelected")					{ g_ChoiceMessageSelectedR = r; g_ChoiceMessageSelectedG = g; g_ChoiceMessageSelectedB = b; }
-				else if (name == "EditBoxBorder")						{ g_EditBoxBorderR = r; g_EditBoxBorderG = g; g_EditBoxBorderB = b; }
-				else if (name == "EditBoxBackground")					{ g_EditBoxBackgroundR = r; g_EditBoxBackgroundG = g; g_EditBoxBackgroundB = b; }
-				else if (name == "EditBoxSelected")						{ g_EditBoxSelectedR = r; g_EditBoxSelectedG = g; g_EditBoxSelectedB = b; }
-				else if (name == "EditBoxText")							{ g_EditBoxTextR = r; g_EditBoxTextG = g; g_EditBoxTextB = b; }
-				else if (name == "WindowBorder")						{ g_WindowBorderR = r; g_WindowBorderG = g; g_WindowBorderB = b; }
-				else if (name == "WindowBackground")					{ g_WindowBackgroundR = r; g_WindowBackgroundG = g; g_WindowBackgroundB = b; }
-				else if (name == "ListBoxBorder")						{ g_ListBoxBorderR = r; g_ListBoxBorderG = g; g_ListBoxBorderB = b; }
-				else if (name == "ListBoxBackground")					{ g_ListBoxBackgroundR = r; g_ListBoxBackgroundG = g; g_ListBoxBackgroundB = b; }
-				else if (name == "ListBoxElementBackground")			{ g_ListBoxElementBackgroundR = r; g_ListBoxElementBackgroundG = g; g_ListBoxElementBackgroundB = b; }
-				else if (name == "ListBoxSpecialElement1")				{ g_ListBoxS1ElementBackgroundR = r; g_ListBoxS1ElementBackgroundG = g; g_ListBoxS1ElementBackgroundB = b; }
-				else if (name == "ListBoxSpecialElement2")				{ g_ListBoxS2ElementBackgroundR = r; g_ListBoxS2ElementBackgroundG = g; g_ListBoxS2ElementBackgroundB = b; }
-				else if (name == "ListBoxSpecialElement3")				{ g_ListBoxS3ElementBackgroundR = r; g_ListBoxS3ElementBackgroundG = g; g_ListBoxS3ElementBackgroundB = b; }
-				else if (name == "ListBoxSpecialElement4")				{ g_ListBoxS4ElementBackgroundR = r; g_ListBoxS4ElementBackgroundG = g; g_ListBoxS4ElementBackgroundB = b; }
-				else if (name == "ListBoxSelectedElement")				{ g_ListBoxSelectedElementR = r; g_ListBoxSelectedElementG = g; g_ListBoxSelectedElementB = b; }
-				else if (name == "ListBoxSelectedSpecialElement1")		{ g_ListBoxSelectedS1ElementR = r; g_ListBoxSelectedS1ElementG = g; g_ListBoxSelectedS1ElementB = b; }
-				else if (name == "ListBoxSelectedSpecialElement2")		{ g_ListBoxSelectedS2ElementR = r; g_ListBoxSelectedS2ElementG = g; g_ListBoxSelectedS2ElementB = b; }
-				else if (name == "ListBoxSelectedSpecialElement3")		{ g_ListBoxSelectedS3ElementR = r; g_ListBoxSelectedS3ElementG = g; g_ListBoxSelectedS3ElementB = b; }
-				else if (name == "ListBoxSelectedSpecialElement4")		{ g_ListBoxSelectedS4ElementR = r; g_ListBoxSelectedS4ElementG = g; g_ListBoxSelectedS4ElementB = b; }
-				else if (name == "ListBoxElementBorderTopLeft")			{ g_ListBoxElementBorderR = r; g_ListBoxElementBorderG = g; g_ListBoxElementBorderB = b; }
-				else if (name == "ListBoxElementBorderBottomRight")		{ g_ListBoxElementBorderHR = r; g_ListBoxElementBorderHG = g; g_ListBoxElementBorderHB = b; }
-				else if (name == "ListBoxFont")							{ g_ListBoxTextR = r; g_ListBoxTextG = g; g_ListBoxTextB = b; }
-				else if (name == "ListBoxColumnHeaderBackground")		{ g_ListBoxHeaderBackgroundR = r; g_ListBoxHeaderBackgroundG = g; g_ListBoxHeaderBackgroundB = b; }
-				else if (name == "ListBoxColumnHeaderBorderTopLeft")	{ g_ListBoxHeaderBorderR = r; g_ListBoxHeaderBorderG = g; g_ListBoxHeaderBorderB = b; }
-				else if (name == "ListBoxColumnHeaderBorderBottomRight"){ g_ListBoxHeaderBorderHR = r; g_ListBoxHeaderBorderHG = g; g_ListBoxHeaderBorderHB = b; }
-				else if (name == "ListBoxColumnHeaderFont")				{ g_ListBoxHeaderTextR = r; g_ListBoxHeaderTextG = g; g_ListBoxHeaderTextB = b; }
-				else if (name == "MessageBoxBorder")					{ g_MessageBoxBorderR = r; g_MessageBoxBorderG = g; g_MessageBoxBorderB = b; }
-				else if (name == "MessageBoxBackground0")				{ g_MessageBoxBackground0R = r; g_MessageBoxBackground0G = g; g_MessageBoxBackground0B = b; }
-				else if (name == "MessageBoxBackground1")				{ g_MessageBoxBackground1R = r; g_MessageBoxBackground1G = g; g_MessageBoxBackground1B = b; }
-				else if (name == "MessageBoxBackground2")				{ g_MessageBoxBackground2R = r; g_MessageBoxBackground2G = g; g_MessageBoxBackground2B = b; }
-				else if (name == "MessageBoxBackground3")				{ g_MessageBoxBackground3R = r; g_MessageBoxBackground3G = g; g_MessageBoxBackground3B = b; }
-				else if (name == "MessageBoxBackground4")				{ g_MessageBoxBackground4R = r; g_MessageBoxBackground4G = g; g_MessageBoxBackground4B = b; }
-				else if (name == "MessageBoxText")						{ g_MessageBoxTextR = r; g_MessageBoxTextG = g; g_MessageBoxTextB = b; }
-				else if (name == "CheckboxBorder")						{ g_CheckBoxBorderR = r; g_CheckBoxBorderG = g; g_CheckBoxBorderB = b; }
-				else if (name == "CheckboxBackground")					{ g_CheckBoxBackgroundR = r; g_CheckBoxBackgroundG = g; g_CheckBoxBackgroundB = b; }
+				     if (name == "ChoiceBoxText")						{ g_ChoiceMessageTextColor = sColor(r, g, b); }
+				else if (name == "ChoiceBoxBorder")						{ g_ChoiceMessageBorderColor = sColor(r, g, b); }
+				else if (name == "ChoiceBoxHeader")						{ g_ChoiceMessageHeaderColor = sColor(r, g, b); }
+				else if (name == "ChoiceBoxBackground")					{ g_ChoiceMessageBackgroundColor = sColor(r, g, b); }
+				else if (name == "ChoiceBoxSelected")					{ g_ChoiceMessageSelectedColor = sColor(r, g, b); }
+				else if (name == "EditBoxBorder")						{ g_EditBoxBorderColor = sColor(r, g, b); }
+				else if (name == "EditBoxBackground")					{ g_EditBoxBackgroundColor = sColor(r, g, b); }
+				else if (name == "EditBoxSelected")						{ g_EditBoxSelectedColor = sColor(r, g, b); }
+				else if (name == "EditBoxText")							{ g_EditBoxTextColor = sColor(r, g, b); }
+				else if (name == "WindowBorder")						{ g_WindowBorderColor = sColor(r, g, b); }
+				else if (name == "WindowBackground")					{ g_WindowBackgroundColor = sColor(r, g, b); }
+				else if (name == "ListBoxBorder")						{ g_ListBoxBorderColor = sColor(r, g, b); }
+				else if (name == "ListBoxBackground")					{ g_ListBoxBackgroundColor = sColor(r, g, b); }
+				else if (name == "ListBoxElementBackground")			{ g_ListBoxElementBackgroundColor[0] = sColor(r, g, b); }
+				else if (name == "ListBoxSpecialElement1")				{ g_ListBoxElementBackgroundColor[1] = sColor(r, g, b); }
+				else if (name == "ListBoxSpecialElement2")				{ g_ListBoxElementBackgroundColor[2] = sColor(r, g, b);; }
+				else if (name == "ListBoxSpecialElement3")				{ g_ListBoxElementBackgroundColor[3] = sColor(r, g, b); }
+				else if (name == "ListBoxSpecialElement4")				{ g_ListBoxElementBackgroundColor[4] = sColor(r, g, b); }
+				else if (name == "ListBoxSelectedElement")				{ g_ListBoxSelectedElementColor[0] = sColor(r, g, b); }
+				else if (name == "ListBoxSelectedSpecialElement1")		{ g_ListBoxSelectedElementColor[1] = sColor(r, g, b); }
+				else if (name == "ListBoxSelectedSpecialElement2")		{ g_ListBoxSelectedElementColor[2] = sColor(r, g, b); }
+				else if (name == "ListBoxSelectedSpecialElement3")		{ g_ListBoxSelectedElementColor[3] = sColor(r, g, b); }
+				else if (name == "ListBoxSelectedSpecialElement4")		{ g_ListBoxSelectedElementColor[4] = sColor(r, g, b); }
+				else if (name == "ListBoxElementBorderTopLeft")			{ g_ListBoxElementBorderColor = sColor(r, g, b); }
+				else if (name == "ListBoxElementBorderBottomRight")		{ g_ListBoxElementBorderHColor = sColor(r, g, b); }
+				else if (name == "ListBoxFont")							{ g_ListBoxTextColor = sColor(r, g, b); }
+				else if (name == "ListBoxColumnHeaderBackground")		{ g_ListBoxHeaderBackgroundColor = sColor(r, g, b); }
+				else if (name == "ListBoxColumnHeaderBorderTopLeft")	{ g_ListBoxHeaderBorderColor = sColor(r, g, b); }
+				else if (name == "ListBoxColumnHeaderBorderBottomRight"){ g_ListBoxHeaderBorderHColor = sColor(r, g, b); }
+				else if (name == "ListBoxColumnHeaderFont")				{ g_ListBoxHeaderTextColor = sColor(r, g, b); }
+				else if (name == "MessageBoxBorder")					{ g_MessageBoxBorderColor = sColor(r, g, b); }
+				else if (name == "MessageBoxBackground0")				{ g_MessageBoxBackgroundColor[0] = sColor(r, g, b); }
+				else if (name == "MessageBoxBackground1")				{ g_MessageBoxBackgroundColor[1] = sColor(r, g, b); }
+				else if (name == "MessageBoxBackground2")				{ g_MessageBoxBackgroundColor[2] = sColor(r, g, b); }
+				else if (name == "MessageBoxBackground3")				{ g_MessageBoxBackgroundColor[3] = sColor(r, g, b); }
+				else if (name == "MessageBoxBackground4")				{ g_MessageBoxBackgroundColor[4] = sColor(r, g, b); }
+				else if (name == "MessageBoxText")						{ g_MessageBoxTextColor = sColor(r, g, b); }
+				else if (name == "CheckboxBorder")						{ g_CheckBoxBorderColor = sColor(r, g, b); }
+				else if (name == "CheckboxBackground")					{ g_CheckBoxBackgroundColor = sColor(r, g, b); }
 				// ItemRarity is loaded in sConfig.cpp
 			}
 		}
 	}
 	else
 	{
-		g_LogFile.write("Loading Default InterfaceColors");
-		g_StaticImageR = 0;						g_StaticImageG = 0;						g_StaticImageB = 0;
-		g_ChoiceMessageTextR = 0;				g_ChoiceMessageTextG = 0;				g_ChoiceMessageTextB = 0;
-		g_ChoiceMessageBorderR = 0;				g_ChoiceMessageBorderG = 0;				g_ChoiceMessageBorderB = 0;
-		g_ChoiceMessageHeaderR = 229;			g_ChoiceMessageHeaderG = 227;			g_ChoiceMessageHeaderB = 52;
-		g_ChoiceMessageBackgroundR = 88;		g_ChoiceMessageBackgroundG = 163;		g_ChoiceMessageBackgroundB = 113;
-		g_ChoiceMessageSelectedR = 229;			g_ChoiceMessageSelectedG = 227;			g_ChoiceMessageSelectedB = 52;
-		g_EditBoxBorderR = 0;					g_EditBoxBorderG = 0;					g_EditBoxBorderB = 0;
-		g_EditBoxBackgroundR = 90;				g_EditBoxBackgroundG = 172;				g_EditBoxBackgroundB = 161;
-		g_EditBoxSelectedR = 114;				g_EditBoxSelectedG = 211;				g_EditBoxSelectedB = 198;
-		g_EditBoxTextR = 0;						g_EditBoxTextG = 0;						g_EditBoxTextB = 0;
-		g_WindowBorderR = 0;					g_WindowBorderG = 0;					g_WindowBorderB = 0;
-		g_WindowBackgroundR = 140;				g_WindowBackgroundG = 191;				g_WindowBackgroundB = 228;
-		g_ListBoxBorderR = 0;					g_ListBoxBorderG = 0;					g_ListBoxBorderB = 0;
-		g_ListBoxBackgroundR = 217;				g_ListBoxBackgroundG = 214;				g_ListBoxBackgroundB = 139;
-		g_ListBoxElementBackgroundR = 114;		g_ListBoxElementBackgroundG = 139;		g_ListBoxElementBackgroundB = 217;
-		g_ListBoxS1ElementBackgroundR = 200;	g_ListBoxS1ElementBackgroundG = 30;		g_ListBoxS1ElementBackgroundB = 30;
-		g_ListBoxS2ElementBackgroundR = 80;		g_ListBoxS2ElementBackgroundG = 80;		g_ListBoxS2ElementBackgroundB = 250;
-		g_ListBoxS3ElementBackgroundR = 30;		g_ListBoxS3ElementBackgroundG = 190;	g_ListBoxS3ElementBackgroundB = 30;
-		g_ListBoxS4ElementBackgroundR = 190;	g_ListBoxS4ElementBackgroundG = 190;	g_ListBoxS4ElementBackgroundB = 0;
-		g_ListBoxSelectedElementR = 187;		g_ListBoxSelectedElementG = 190;		g_ListBoxSelectedElementB = 224;
-		g_ListBoxSelectedS1ElementR = 255;		g_ListBoxSelectedS1ElementG = 167;		g_ListBoxSelectedS1ElementB = 180;
-		g_ListBoxSelectedS2ElementR = 187;		g_ListBoxSelectedS2ElementG = 190;		g_ListBoxSelectedS2ElementB = 224;
-		g_ListBoxSelectedS3ElementR = 0;		g_ListBoxSelectedS3ElementG = 250;		g_ListBoxSelectedS3ElementB = 0;
-		g_ListBoxSelectedS4ElementR = 250;		g_ListBoxSelectedS4ElementG = 250;		g_ListBoxSelectedS4ElementB = 250;
-		g_ListBoxElementBorderR = 79;			g_ListBoxElementBorderG = 79;			g_ListBoxElementBorderB = 111;
-		g_ListBoxElementBorderHR = 159;			g_ListBoxElementBorderHG = 175;			g_ListBoxElementBorderHB = 255;
-		g_ListBoxTextR = 0;						g_ListBoxTextG = 0;						g_ListBoxTextB = 0;
-		g_ListBoxHeaderBackgroundR = 25;		g_ListBoxHeaderBackgroundG = 100;		g_ListBoxHeaderBackgroundB = 144;
-		g_ListBoxHeaderBorderR = 120;			g_ListBoxHeaderBorderG = 155;			g_ListBoxHeaderBorderB = 176;
-		g_ListBoxHeaderBorderHR = 15;			g_ListBoxHeaderBorderHG = 49;			g_ListBoxHeaderBorderHB = 69;
-		g_ListBoxHeaderTextR = 255;				g_ListBoxHeaderTextG = 255;				g_ListBoxHeaderTextB = 255;
-		g_MessageBoxBorderR = 255;				g_MessageBoxBorderG = 255;				g_MessageBoxBorderB = 255;
-		g_MessageBoxBackground0R = 100;			g_MessageBoxBackground0G = 100;			g_MessageBoxBackground0B = 150;
-		g_MessageBoxBackground1R = 200;			g_MessageBoxBackground1G = 100;			g_MessageBoxBackground1B = 150;
-		g_MessageBoxBackground2R = 100;			g_MessageBoxBackground2G = 200;			g_MessageBoxBackground2B = 150;
-		g_MessageBoxBackground3R = 100;			g_MessageBoxBackground3G = 100;			g_MessageBoxBackground3B = 200;
-		g_MessageBoxBackground4R = 190;			g_MessageBoxBackground4G = 190;			g_MessageBoxBackground4B = 0;
-		g_MessageBoxTextR = 0;					g_MessageBoxTextG = 0;					g_MessageBoxTextB = 0;
-		g_CheckBoxBorderR = 0;					g_CheckBoxBorderG = 0;					g_CheckBoxBorderB = 0;
-		g_CheckBoxBackgroundR = 180;			g_CheckBoxBackgroundG = 180;			g_CheckBoxBackgroundB = 180;
+		g_LogFile.write("Keeping Default InterfaceColors");
 	}
 
+    window_manager().load();
     // `J` Bookmark - Loading the screens
-    g_WinManager.load();
-    g_Preparing = load_window<cScreenPreparingGame>("Preparing Game");
-    g_MainMenu = load_window<cScreenMainMenu>("Main Menu");
-    g_NewGame = load_window<cScreenNewGame>("New Game");
-    g_LoadGame = load_window<cScreenLoadGame>("Load Game");
-    load_window<cScreenSettings>("Settings");
+    load_window<cScreenPreparingGame>("Preparing Game", true);
+    load_window<cScreenMainMenu>("Main Menu", true);
+    load_window<cScreenNewGame>("New Game", true);
+    load_window<cScreenLoadGame>("Load Game", true);
+    load_window<cScreenSettings>("Settings", true);
 
-    g_BrothelManagement = load_window<cScreenBrothelManagement>("Brothel Management");
+    load_window<cScreenBrothelManagement>("Brothel Management");
     g_GirlDetails = load_window<cScreenGirlDetails>("Girl Details");
     load_window<cScreenGangs>("Gangs");
     load_window<cScreenItemManagement>("Item Management");
@@ -284,12 +212,95 @@ void LoadInterface()
 }
 
 template<class T>
-T* load_window(const char* name)
+T* load_window(const char* name, bool nonav)
 {
     g_LogFile.write(std::string("Loading Window '") + name + "'");
-    auto window = std::make_unique<T>();
-    window->load();
+    auto window = std::make_shared<T>();
     auto result = window.get();
-    g_WinManager.add_window(name, std::move(window));
+    if(!nonav) {
+        register_global_nav_keys(*window);
+    }
+    window_manager().add_window(name, std::move(window));
     return result;
+}
+
+
+void register_global_nav_keys(cInterfaceWindow& window) {
+    window.AddKeyCallback(SDLK_F1, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Girl Management");
+    });
+
+    window.AddKeyCallback(SDLK_F2, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Gangs");
+    });
+
+    window.AddKeyCallback(SDLK_F3, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Dungeon");
+    });
+
+    window.AddKeyCallback(SDLK_F4, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Town");
+        window_manager().push("Slave Market");
+    });
+
+    window.AddKeyCallback(SDLK_F5, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Item Management");
+    });
+
+    window.AddKeyCallback(SDLK_F6, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Transfer Screen");
+    });
+
+    window.AddKeyCallback(SDLK_F7, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Prison");
+    });
+
+    window.AddKeyCallback(SDLK_F8, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Town");
+        window_manager().push("Mayor");
+    });
+
+    window.AddKeyCallback(SDLK_F9, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Town");
+        window_manager().push("Bank");
+    });
+
+    window.AddKeyCallback(SDLK_F10, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Town");
+    });
+
+    window.AddKeyCallback(SDLK_F11, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Turn Summary");
+    });
+
+    window.AddKeyCallback(SDLK_F12, []() {
+        window_manager().PopToWindow("Brothel Management");
+        window_manager().push("Property Management");
+    });
+    /*
+    1-7: Select Brothel
+    Tab: Cycle Brothel (Shitf: fwd / back)
+    Esc: Back
+    F5 Studio
+    e/F6 Arena
+    F7 Centre
+    c/F8 Clinic
+    F9 Farm
+    p/i Inventory
+    F12 House
+    m Mayor
+    b Bank
+    u Building Setup
+    */
 }

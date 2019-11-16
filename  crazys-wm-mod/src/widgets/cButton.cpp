@@ -17,83 +17,45 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cButton.h"
-#include "CSurface.h"
+#include "interface/cSurface.h"
+#include "interface/CGraphics.h"
 
 cButton::~cButton() = default;
-
-bool cButton::IsOver(int x, int y)
-{
-	if (m_Disabled || m_Hidden) return false;
-    if(x > m_XPos && y > m_YPos && x < m_XPos + m_Width && y < m_YPos + m_Height) {
-        m_CurrImage = m_OnImage.get();
-        return true;
-    } else {
-        m_CurrImage = m_OffImage.get();
-        return false;
-    }
-}
-
-bool cButton::ButtonClicked(int x, int y)
-{
-	if (m_Disabled || m_Hidden) return false;
-	if (IsOver(x, y))
-	{
-        if(m_Callback)
-            m_Callback();
-		return true;
-	}
-
-	return false;
-}
 
 void cButton::DrawWidget(const CGraphics& gfx)
 {
 	if (m_CurrImage)
 	{
-		SDL_Rect rect;
-		rect.y = rect.x = 0;
-		rect.w = m_Width;
-		rect.h = m_Height;
-		m_CurrImage->DrawSurface(m_XPos, m_YPos, nullptr, &rect, true);
+		m_CurrImage->DrawSurface(m_XPos, m_YPos);
 	}
 }
 
-cButton::cButton(const string& OffImage, const string& DisabledImage, const string& OnImage, int ID,
-        int x, int y, int width, int height, bool transparency, bool cached):
-    cUIWidget(ID, x, y, width, height)
+cButton::cButton(cInterfaceWindow* parent, const std::string& OffImage, const std::string& DisabledImage,
+        const std::string& OnImage, int ID, int x, int y, int width, int height, bool transparency):
+    cUIWidget(ID, x, y, width, height, parent)
 {
     if (!OffImage.empty())
     {
-        m_OffImage = std::make_unique<CSurface>(OffImage);
-        m_OffImage->m_Cached = cached;
+        m_OffImage = GetGraphics().LoadImage(OffImage, m_Width, m_Height, transparency);
     }
 
     if (!DisabledImage.empty())
     {
-        m_DisabledImage = std::make_unique<CSurface>(DisabledImage);
-        m_DisabledImage->m_Cached = cached;
+        m_DisabledImage = GetGraphics().LoadImage(DisabledImage, m_Width, m_Height, transparency);
     }
 
     if (!OnImage.empty())
     {
-        m_OnImage = std::make_unique<CSurface>(OnImage);
-        m_OnImage->m_Cached = cached;
+        m_OnImage = GetGraphics().LoadImage(OnImage, m_Width, m_Height, transparency);
     }
 
-    m_CurrImage = m_OffImage.get();
-
-    if (transparency)
-    {
-        if (m_OffImage)			m_OffImage->SetAlpha(true);
-        if (m_DisabledImage)	m_DisabledImage->SetAlpha(true);
-        if (m_OnImage)			m_OnImage->SetAlpha(true);
-    }
+    m_CurrImage = &m_OffImage;
 }
 
 void cButton::SetDisabled(bool disable)
 {
-    m_Disabled = disable;
-    m_CurrImage = (disable) ? m_DisabledImage.get() : m_OffImage.get();
+    cUIWidget::SetDisabled(disable);
+    m_CurrImage = disable ? &m_DisabledImage : &m_OffImage;
 }
 
 void cButton::SetCallback(std::function<void()> cb)
@@ -101,15 +63,12 @@ void cButton::SetCallback(std::function<void()> cb)
     m_Callback = std::move(cb);
 }
 
-void cButton::OnKeyPress(SDL_keysym key)
+bool cButton::HandleKeyPress(SDL_keysym key)
 {
-    if(m_Disabled)
-        return;
-
-    if(key.sym == m_HotKey) {
-        if(m_Callback)
-            m_Callback();
-    }
+    if(key.sym != m_HotKey) return false;
+    if(m_Callback)
+        m_Callback();
+    return true;
 }
 
 void cButton::SetHotKey(SDLKey key)
@@ -117,8 +76,14 @@ void cButton::SetHotKey(SDLKey key)
     m_HotKey = key;
 }
 
-bool cButton::IsDisabled() const
+bool cButton::HandleClick(int x, int y, bool press)
 {
-    return m_Disabled;
+    if(press)        return false;
+    if(m_Callback)   m_Callback();
+    return true;
 }
 
+void cButton::HandleMouseMove(bool over, int x, int y)
+{
+    m_CurrImage = over ? &m_OnImage : &m_OffImage;
+}

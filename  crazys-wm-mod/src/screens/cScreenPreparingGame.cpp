@@ -28,14 +28,11 @@
 #include "cTraits.h"
 #include "cCustomers.h"
 #include "cInventory.h"
-#include "InterfaceGlobals.h"
 #include "CLog.h"
 
 extern string g_ReturnText;
 extern int g_ReturnInt;
 extern MasterFile loadedGirlsFiles;
-
-extern cTraits g_Traits;
 
 extern cNameList	g_GirlNameList;
 extern cNameList	g_BoysNameList;
@@ -47,7 +44,6 @@ extern bool g_TryOuts;
 extern bool g_TryEr;
 extern bool g_TryCast;
 extern int g_TalkCount;
-extern bool g_Cheats;
 
 bool loading = true;
 int load0new1 = 0;
@@ -112,6 +108,9 @@ void cScreenPreparingGame::set_ids()
 
 void cScreenPreparingGame::init(bool back)
 {
+    if(!g_Game) {
+        g_Game = std::make_unique<Game>();
+    }
 	if (g_ReturnInt >= 0)
 	{
 		prep_step = 0;
@@ -153,11 +152,6 @@ void cScreenPreparingGame::clearall()
 {
 	cScriptManager sm;
 	sm.Release();
-	g_Traits.Free();
-	g_Game.girl_pool().Free();
-	g_Game.inventory_manager().Free();
-	g_Game.gang_manager().Free();
-	g_Game.customers().Free();
 }
 static string clobber_extension(string s)	// `J` debug logging
 {
@@ -176,7 +170,7 @@ void LoadXMLItems(FileList &fl);
 void cScreenPreparingGame::process()
 {
 	if (prep_step >( (load0new1 == 0? l_finished : n_finished) * 4) + 70) loading = false;	// incase something breaks
-	DisableButton(cancel_id, loading);
+    DisableWidget(cancel_id, loading);
 	if (!loading)
 	{
 		loadFailed();
@@ -191,21 +185,7 @@ void cScreenPreparingGame::process()
 		case (l_traits * 4) - 2:  	{ ss2 << "Loading Traits.\n"; break; }
 		case (l_traits * 4):  
 		{
-			DirPath core = DirPath() << "Resources" << "Data" << "CoreTraits.traitsx";
-			TiXmlDocument docTraits(core.c_str());
-			if (docTraits.LoadFile())	{ g_Traits.LoadXMLTraits(core); }
-			else
-			{
-				DirPath traitdir = DirPath() << "Resources" << "Data";
-				FileList fl_t(traitdir, "*.traitsx");				// get a file list
-				if (fl_t.size() > 0)
-				{
-					for (int i = 0; i < fl_t.size(); i++)				// loop over the list, loading the files
-					{
-						g_Traits.LoadXMLTraits(fl_t[i].full());
-					}
-				}
-			}
+			g_Game->LoadData();
 			break;
 		}
 		case (l_items * 4) - 2:  	{ ss2 << "Loading Items.\n"; break; }
@@ -231,7 +211,7 @@ void cScreenPreparingGame::process()
 			DirPath location = cfg.folders.saves().c_str();
 			DirPath thefile = location.c_str();
 			thefile << g_ReturnText;
-			if (doc.LoadFile(thefile.c_str()) == false) { loading = false; }
+			if (!doc.LoadFile(thefile.c_str())) { loading = false; }
 			hRoot = doc.FirstChildElement("Root");
 			pRoot = hRoot.ToElement();
 			if (pRoot == nullptr) { loading = false; return; }
@@ -242,7 +222,7 @@ void cScreenPreparingGame::process()
 			string version("<blank>");
 			if (pRoot->Attribute("ExeVersion")) { version = pRoot->Attribute("ExeVersion"); }
 			if (version != "official") { push_message("Warning, the exe was not detected as official, it was detected as " + version + ".  Attempting to load anyways.", 1); }
-			g_Game.load(*pRoot);
+			g_Game->load(*pRoot);
 			break;
 		}
 		case (l_girlfiles * 4) - 2:  { ss2 << "Loading Girl Files.\n"; break; }
@@ -252,8 +232,8 @@ void cScreenPreparingGame::process()
 			LoadGirlsFiles(loadedGirlsFiles);
 			break;
 		}
-		case (l_girls * 4) - 2:			{ ss2 << "Loading Girls.\n"; break; }		case (l_girls * 4):		{ g_Game.girl_pool().LoadGirlsXML(hRoot.FirstChildElement("Girls")); break; }
-		case (l_gangs * 4) - 2:			{ ss2 << "Loading Gangs.\n"; break; }		case (l_gangs * 4):		{ g_Game.gang_manager().LoadGangsXML(hRoot.FirstChildElement("Gang_Manager")); break; }
+		case (l_girls * 4) - 2:			{ ss2 << "Loading Girls.\n"; break; }		case (l_girls * 4):		{ g_Game->girl_pool().LoadGirlsXML(hRoot.FirstChildElement("Girls")); break; }
+		case (l_gangs * 4) - 2:			{ ss2 << "Loading Gangs.\n"; break; }		case (l_gangs * 4):		{ g_Game->gang_manager().LoadGangsXML(hRoot.FirstChildElement("Gang_Manager")); break; }
 		case (l_finalstuff * 4) - 2:	{ ss2 << "Loading Final Stuff.\n"; break; }
 		case (l_finalstuff * 4):  
 		{
@@ -263,11 +243,9 @@ void cScreenPreparingGame::process()
 			g_TryEr = false;		pRoot->QueryValueAttribute<bool>("TryEr", &g_TryEr);
 			g_TryCast = false;		pRoot->QueryValueAttribute<bool>("TryCast", &g_TryCast);
 			g_TalkCount = 0;		pRoot->QueryIntAttribute("TalkCount", &g_TalkCount);
-			if (g_Cheats) { g_WalkAround = g_TryCentre = g_TryOuts = g_TryEr = g_TryCast = false; g_TalkCount = 10; }
+			if (g_Game->allow_cheats()) { g_WalkAround = g_TryCentre = g_TryOuts = g_TryEr = g_TryCast = false; g_TalkCount = 10; }
 
-			g_Game.inventory_manager().UpdateShop();
-
-            g_Game.UpdateMarketSlaves();
+            g_Game->UpdateMarketSlaves();
 			break;
 		}
 		case (l_finished * 4) - 2:  	{ ss2 << "Finished Loading.\n"; break; }
@@ -275,7 +253,7 @@ void cScreenPreparingGame::process()
 		{
 
 			loading = false;
-			set_active_building(&g_Game.buildings().get_building(0));
+			set_active_building(&g_Game->buildings().get_building(0));
 			replace_window("Building Management");
 			prep_step = -1;
 			return;
@@ -296,10 +274,10 @@ void cScreenPreparingGame::process()
 			case (n_freecache * 4):			{ clearall(); break; }
 			case (n_LoadGameInfoFiles * 4) - 2:		{ ss2 << "Loading Game Info Files.\n"; break; }
 			case (n_LoadGameInfoFiles * 4):			{
+			    g_Game->LoadData();
 				g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
 				g_TalkCount = 10;
-				g_Game.gold().reset();
-				g_Cheats = (g_ReturnText == "Cheat") ? true : false;
+				g_Game->gold().reset();
 				LoadGameInfoFiles();
 				break;
 			}
@@ -311,44 +289,42 @@ void cScreenPreparingGame::process()
 			}
 			case (n_Scripts * 4) - 2:		{ ss2 << "Loading Scripts.\n"; break; }
 			case (n_Scripts * 4) : {
-                g_Game.global_triggers().LoadList(DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml");
+                g_Game->global_triggers().LoadList(DirPath() << "Resources" << "Scripts" << "GlobalTriggers.xml");
 				break;
 			}
 			case (n_Player * 4) - 2:		{ ss2 << "Loading Buildings and Player.\n"; break; }
 			case (n_Player * 4) : {
-                auto& new_brot = g_Game.buildings().AddBuilding(std::unique_ptr<IBuilding>(new sBrothel()));
+                auto& new_brot = g_Game->buildings().AddBuilding(std::unique_ptr<IBuilding>(new sBrothel()));
                 new_brot.m_NumRooms = 20;
                 new_brot.m_MaxNumRooms = 250;
                 new_brot.set_name(g_ReturnText);
                 new_brot.set_background_image("Brothel0.jpg");
                 set_active_building(&new_brot);
-                auto& new_house = g_Game.buildings().AddBuilding(std::unique_ptr<IBuilding>(new sHouse()));
+                auto& new_house = g_Game->buildings().AddBuilding(std::unique_ptr<IBuilding>(new sHouse()));
                 new_house.m_NumRooms = 20;
                 new_house.m_MaxNumRooms = 200;
                 new_house.set_background_image("House.jpg");
-				for (int & m_Stat : g_Game.player().m_Stats)	m_Stat  = 60;
-				for (int & m_Skill : g_Game.player().m_Skills)	m_Skill = 10;
-				g_Game.player().SetToZero();
+				for (int & m_Stat : g_Game->player().m_Stats)	m_Stat  = 60;
+				for (int & m_Skill : g_Game->player().m_Skills)	m_Skill = 10;
+				g_Game->player().SetToZero();
 				break;
 			}
 			case (n_Markets * 4) - 2:		{ ss2 << "Preparing Slave Market and Shop.\n"; break; }
 			case (n_Markets * 4) : {
-				// update the shop inventory
-				g_Game.inventory_manager().UpdateShop();
-                g_Game.UpdateMarketSlaves();
+                g_Game->UpdateMarketSlaves();
 				break;
 			}
 			case (n_GangsRivals * 4) - 2:		{ ss2 << "Generating Gangs and Rivals.\n"; break; }
 			case (n_GangsRivals * 4) : {
 				u_int start_random_gangs = cfg.gangs.start_random();
 				u_int start_boosted_gangs = cfg.gangs.start_boosted();
-				for (u_int i = 0; i < start_random_gangs; i++)	g_Game.gang_manager().AddNewGang(false);
-				for (u_int i = 0; i < start_boosted_gangs; i++)	g_Game.gang_manager().AddNewGang(true);
+				for (u_int i = 0; i < start_random_gangs; i++)	g_Game->gang_manager().AddNewGang(false);
+				for (u_int i = 0; i < start_boosted_gangs; i++)	g_Game->gang_manager().AddNewGang(true);
 				// Add the begining rivals
 				for (int i = 0; i < 5; i++)
 				{
 					int str = g_Dice % 10 + 1;
-					g_Game.rivals().CreateRival(
+					g_Game->rivals().CreateRival(
 						str * 100,								// BribeRate	= 100-1000
 						(str * 3) + (g_Dice % 11),	 			// Businesses	= 3-40
 						str * 5000, 							// Gold			= 5000-50000
@@ -364,12 +340,9 @@ void cScreenPreparingGame::process()
 			}
 			case (n_Saving * 4) - 2:		{ ss2 << "Saving Game.\n"; break; }
 			case (n_Saving * 4) : {
-				if (g_Cheats)
-				{
-					g_Game.gold().cheat();
-					g_Game.inventory_manager().GivePlayerAllItems();
-					g_Game.gang_manager().NumBusinessExtorted(500);
-				}
+			    if(g_ReturnText == "Cheat") {
+			        g_Game->enable_cheating();
+			    }
 				SaveGame();
 				break;
 			}

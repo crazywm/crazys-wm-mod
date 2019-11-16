@@ -19,14 +19,16 @@
 #ifndef __CGRAPHICS_H
 #define __CGRAPHICS_H
 
-#include "CTimer.h"
 #include <string>
 #include <memory>
 #include <vector>
 #include <map>
+#include "cImageCache.hpp"
 
 class SDL_Surface;
-class CSurface;
+class cSurface;
+class sColor;
+class cTimer;
 
 class CGraphics
 {
@@ -39,8 +41,10 @@ public:
 	bool End();		// End Drawing Stuff
 	void Begin();	// begins drawing stuff
 
-	// Drawing helpers
-	int BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Rect *dstrect) const;
+    // pass through to image cache
+    cImageCache& GetImageCache() { return m_ImageCache; }
+    cSurface CreateSurface(int width, int height, sColor color, bool transparent=false);
+    cSurface LoadImage(std::string filename, int width=-1, int height=-1, bool transparency=false, bool keep_ratio=true);
 
 	// Accessors
 	SDL_Surface* GetScreen() const {return m_Screen;}
@@ -53,9 +57,6 @@ public:
 	float GetScaleX() const { return m_ScreenScaleX;}
 	float GetScaleY() const { return m_ScreenScaleY;}
 
-	// Gets a pointer to a brothel image
-	CSurface* LoadBrothelImage(const std::string& name);
-
 private:
     // scaling
     bool m_Fullscreen = false;
@@ -66,8 +67,8 @@ private:
 	SDL_Surface* m_Screen = nullptr;
 
 	// Images
-    std::unique_ptr<CSurface> m_BackgroundImage;
-    std::map<std::string, std::unique_ptr<CSurface>> m_BrothelImages;
+    cSurface m_BackgroundImage;
+    cImageCache m_ImageCache;
 
 	// screen attributes
 	int m_ScreenWidth;
@@ -76,7 +77,7 @@ private:
 
 	// Time
 	unsigned int m_CurrentTime;
-	CTimer m_FPS;
+	std::unique_ptr<cTimer> m_FPS;
 };
 
 #endif

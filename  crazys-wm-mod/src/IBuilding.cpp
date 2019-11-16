@@ -18,6 +18,8 @@
  */
 
 #include "IBuilding.hpp"
+
+#include <memory>
 #include "src/buildings/cBrothel.h"
 #include "cTariff.h"
 #include "src/Game.hpp"
@@ -109,7 +111,7 @@ void IBuilding::BeginWeek()
 
             ss.str(""); ss << cgirl->m_Realname << " has died from her injuries, the other girls all fear and hate you a little more.";
             cgirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
-            g_Game.push_message(ss.str(), COLOR_RED);
+            g_Game->push_message(ss.str(), COLOR_RED);
             ss.str(""); ss << cgirl->m_Realname << " has died from her injuries.  Her body will be removed by the end of the week.";
             cgirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
             dead_girls.push_back(cgirl);
@@ -141,7 +143,7 @@ void IBuilding::BeginWeek()
             do_food_and_digs(this, cgirl);		    // Brothel only update for girls accommodation level
             cGirls::CalculateGirlType(cgirl);		// update the fetish traits
             cGirls::updateGirlAge(cgirl, true);		// update birthday counter and age the girl
-            g_Game.girl_pool().HandleChildren(cgirl, summary);	// handle pregnancy and children growing up
+            g_Game->girl_pool().HandleChildren(cgirl, summary);	// handle pregnancy and children growing up
             cGirls::updateSTD(cgirl);				// health loss to STD's				NOTE: Girl can die
             cGirls::updateHappyTraits(cgirl);		// Update happiness due to Traits	NOTE: Girl can die
             updateGirlTurnBrothelStats(cgirl);		// Update daily stats				Now only runs once per day
@@ -187,7 +189,7 @@ void IBuilding::HandleRestingGirls(bool is_night, bool has_matron, const char * 
         }
         else if (current->health() < 80 || current->tiredness() > 20)
         {
-            g_Game.job_manager().JobFunc[m_RestJob](current, is_night, summary);
+            g_Game->job_manager().JobFunc[m_RestJob](current, is_night, summary, g_Dice);
         }
         else if (has_matron)	// send her back to work
         {
@@ -219,7 +221,7 @@ void IBuilding::HandleRestingGirls(bool is_night, bool has_matron, const char * 
         }
         else if (current->health() < 100 || current->tiredness() > 0)	// if there is no matron to send her somewhere just do resting
         {
-            g_Game.job_manager().JobFunc[m_RestJob](current, is_night, summary);
+            g_Game->job_manager().JobFunc[m_RestJob](current, is_night, summary, g_Dice);
         }
         else	// no one to send her back to work
         {
@@ -240,7 +242,7 @@ void IBuilding::Update()
     UpdateGirls(false);	// Run the Day Shift
     UpdateGirls(true);	    // Run the Night Shift
 
-    g_Game.gold().brothel_accounts(m_Finance, m_id);
+    g_Game->gold().brothel_accounts(m_Finance, m_id);
 
     for(auto cgirl : girls())
     {
@@ -316,26 +318,26 @@ void IBuilding::EndShift(const string& matron_title, bool Day0Night1, bool has_m
                 ss << "some potions";
                 current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
                 current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
-                g_Game.gold().consumable_cost(20, true);
+                g_Game->gold().consumable_cost(20, true);
             }
             else if (t > 50)
             {
                 ss << "a resting potion";
                 current->upd_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
-                g_Game.gold().consumable_cost(10, true);
+                g_Game->gold().consumable_cost(10, true);
             }
             else if (h < 50)
             {
                 ss << "a healing potion";
                 current->upd_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
-                g_Game.gold().consumable_cost(10, true);
+                g_Game->gold().consumable_cost(10, true);
             }
             else
             {
                 ss << "a potion";
                 current->upd_stat(STAT_HEALTH, 10 + g_Dice % 10, false);
                 current->upd_stat(STAT_TIREDNESS, -(10 + g_Dice % 10), false);
-                g_Game.gold().consumable_cost(5, true);
+                g_Game->gold().consumable_cost(5, true);
             }
             ss << " for herself.\n";
         }
@@ -447,10 +449,10 @@ void IBuilding::load_girls_xml(TiXmlHandle root)
          pGirl != nullptr;
          pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
     {
-        auto girl = std::unique_ptr<sGirl>{new sGirl()};
+        auto girl = std::make_unique<sGirl>();
         if (girl->LoadGirlXML(TiXmlHandle(pGirl)))
         {
-            add_girl(girl.release(), false);
+            add_girl(girl.release(), true);
         }
     }
 }
@@ -461,12 +463,11 @@ IBuilding::IBuilding(BuildingType type, std::string name) : m_Type(type), m_Fina
 }
 
 bool IBuilding::provide_anti_preg() {
-    cTariff tariff;
-    int cost = tariff.anti_preg_price(1);
+    int cost = g_Game->tariff().anti_preg_price(1);
 
     if (m_KeepPotionsStocked) {
         if (m_AntiPregPotions < m_AntiPregUsed) cost *= 5;
-        g_Game.gold().consumable_cost(cost);
+        g_Game->gold().consumable_cost(cost);
         m_AntiPregUsed++;
         return true;
     }
@@ -737,7 +738,7 @@ bool IBuilding::SetupMatron(bool is_night, const string& title)
             // TODO use a global JobManager here
             cJobManager jobs;
             jobs.Setup();
-            jobs.JobFunc[m_MatronJob](current, is_night ? 1 : 0, summary);
+            jobs.JobFunc[m_MatronJob](current, is_night ? 1 : 0, summary, g_Dice);
             totalGold += current->m_Pay + current->m_Tips;
 
             // She does not get paid for the first shift and gets docked some pay from the second shift if she refused once
@@ -1255,13 +1256,13 @@ void IBuilding::do_daily_items(sGirl& girl)
             if (g_Dice.percent(50))
             {
                 ss << girlName << " comes to you and tells you she had a sexy dream about you.";
-                if (girl.has_trait("Lesbian") && g_Game.player().Gender() >= GENDER_HERMFULL && g_Dice.percent(girl.pclove() / 10))
+                if (girl.has_trait("Lesbian") && g_Game->player().Gender() >= GENDER_HERMFULL && g_Dice.percent(girl.pclove() / 10))
                 {
                     girl.remove_trait("Lesbian");
                     girl.add_trait("Bisexual");
                     ss << "  \"Normally I don't like men but for you I'll make an exception.\"";
                 }
-                if (girl.has_trait("Straight") && g_Game.player().Gender() <= GENDER_FUTAFULL && g_Dice.percent(girl.pclove() / 10))
+                if (girl.has_trait("Straight") && g_Game->player().Gender() <= GENDER_FUTAFULL && g_Dice.percent(girl.pclove() / 10))
                 {
                     girl.remove_trait("Straight");
                     girl.add_trait("Bisexual");
@@ -1420,7 +1421,7 @@ void IBuilding::do_daily_items(sGirl& girl)
                 {
                     int upskill = g_Dice%NUM_SKILLS;
                     int upskillg = g_Dice % 4 - 1;
-                    ss << " She found a book on " << sGirl::skill_names[upskill];
+                    ss << " She found a book on " << get_skill_name((SKILLS)upskill);
                     if (upskillg > 0)
                     {
                         ss << " and gained " << upskillg << " points in it.";
@@ -1782,9 +1783,9 @@ void IBuilding::CalculatePay(sGirl& girl, u_int Job)
     if (girl.m_Pay <= 0) { girl.m_Pay = 0; return; }
 
     // if the house takes nothing		or if it is a player paid job and she is not a slave
-    if (girl.m_Stats[STAT_HOUSE] == 0 || (g_Game.job_manager().is_job_Paid_Player(Job) && !girl.is_slave()) ||
+    if (girl.m_Stats[STAT_HOUSE] == 0 || (g_Game->job_manager().is_job_Paid_Player(Job) && !girl.is_slave()) ||
         // or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-        (g_Game.job_manager().is_job_Paid_Player(Job) && girl.is_slave() && cfg.initial.slave_pay_outofpocket()))
+        (g_Game->job_manager().is_job_Paid_Player(Job) && girl.is_slave() && cfg.initial.slave_pay_outofpocket()))
     {
         girl.m_Money += girl.m_Pay;	// she gets it all
         girl.m_Pay = 0;
@@ -1810,9 +1811,9 @@ void IBuilding::CalculatePay(sGirl& girl, u_int Job)
     if (girl.m_Money < 0) girl.m_Money = 0;				// Not sure how this could happen - suspect it's just a sanity check
 
     if (!stolen) return;									// If she didn't steal anything, we're done
-    sGang* gang = g_Game.gang_manager().GetGangOnMission(MISS_SPYGIRLS);	// if no-one is watching for theft, we're done
+    sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS);	// if no-one is watching for theft, we're done
     if (!gang) return;
-    int catch_pc = g_Game.gang_manager().chance_to_catch(&girl);			// work out the % chance that the girl gets caught
+    int catch_pc = g_Game->gang_manager().chance_to_catch(&girl);			// work out the % chance that the girl gets caught
     if (!g_Dice.percent(catch_pc)) return;					// if they don't catch her, we're done
 
     // OK: she got caught. Tell the player

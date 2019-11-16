@@ -36,7 +36,7 @@ void cScreenMayor::set_ids()
 	SetButtonNavigation(back_id, "<back>");
 	SetButtonCallback(bribe_id, [this](){
 	    input_integer([](int amount){
-            if (amount >= 0) { g_Game.SetBribeRate(amount); }
+            if (amount >= 0) { g_Game->SetBribeRate(amount); }
 	    });
 	});
 }
@@ -47,10 +47,10 @@ void cScreenMayor::init(bool back)
 	stringstream ss;
 	ss << "Influence Details\n";
 
-	g_Game.UpdateBribeInfluence();
+	g_Game->UpdateBribeInfluence();
 
-	int PlayersInfluence = g_Game.GetInfluence();
-	auto& rivals = g_Game.rivals().GetRivals();
+	int PlayersInfluence = g_Game->GetInfluence();
+	auto& rivals = g_Game->rivals().GetRivals();
 	if (!rivals.empty())
 	{
 		long top[4];	// the top 4 rival influences
@@ -71,13 +71,13 @@ void cScreenMayor::init(bool back)
 			}
 			r++;
 		}
-		ss << "Your influence: " << PlayersInfluence << "% costing " << g_Game.GetBribeRate() << " gold per week.";
+		ss << "Your influence: " << PlayersInfluence << "% costing " << g_Game->GetBribeRate() << " gold per week.";
 
 		for (long i : top)
 		{
 			if (i != -1)
 			{
-				ss << "\n" << g_Game.rivals().GetRival(i)->m_Name << " : " << g_Game.rivals().GetRival(i)->m_Influence << "% influence";
+				ss << "\n" << g_Game->rivals().GetRival(i)->m_Name << " : " << g_Game->rivals().GetRival(i)->m_Influence << "% influence";
 			}
 		}
 	}
@@ -85,6 +85,6 @@ void cScreenMayor::init(bool back)
 	{
 		ss << "Your influence: " << PlayersInfluence << "%\nNo Rivals";
 	}
-	ss << "\n \nNumber of girls in prison: " << g_Game.GetNumInPrison();
+	ss << "\n \nNumber of girls in prison: " << g_Game->GetNumInPrison();
 	EditTextItem(ss.str(), details_id);
 }

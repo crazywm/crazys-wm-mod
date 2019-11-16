@@ -19,10 +19,8 @@
 #include "cRng.h"
 #include "src/buildings/cBrothel.h"
 
-extern cRng g_Dice;
-
 // `J` Job Farm - Staff - Matron_Job - Full_Time_Job
-bool cJobManager::WorkFarmManager(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFarmManager(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -40,28 +38,28 @@ bool cJobManager::WorkFarmManager(sGirl* girl, bool Day0Night1, string& summary)
 	int happy = 0;
 
 	// Complications
-	int check = g_Dice.d100();
+	int check = rng.d100();
 	if (check < 10 && numgirls >(girl->service() + girl->confidence()) * 3)
 	{
-		enjoy -= (g_Dice % 6 + 5);
+		enjoy -= (rng % 6 + 5);
 		conf -= 5; happy -= 10;
 		ss << "was overwhelmed by the number of girls she was required to manage and broke down crying.";
 	}
 	else if (check < 10)
 	{
-		enjoy -= (g_Dice % 3 + 1);
+		enjoy -= (rng % 3 + 1);
 		conf -= -1; happy -= -3;
 		ss << "had trouble dealing with some of the girls.";
 	}
 	else if (check > 90)
 	{
-		enjoy += (g_Dice % 3 + 1);
+		enjoy += (rng % 3 + 1);
 		conf += 1; happy += 3;
 		ss << "enjoyed helping the girls with their lives.";
 	}
 	else
 	{
-		enjoy += (g_Dice % 3 - 1);
+		enjoy += (rng % 3 - 1);
 		ss << "went about her day as usual.";
 	}
 
@@ -85,17 +83,17 @@ bool cJobManager::WorkFarmManager(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
-	if (conf>-1) conf += g_Dice%skill;
+	if (conf>-1) conf += rng%skill;
 	girl->confidence(conf);
 	girl->happiness(happy);
 
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	girl->medicine(g_Dice%skill);
+	girl->medicine(rng%skill);
 	// secondary (-1 for one then -2 for others)
-	girl->service(g_Dice%skill + 2);
+	girl->service(rng%skill + 2);
 
 	girl->upd_Enjoyment(actiontype, enjoy);
 	cGirls::PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);

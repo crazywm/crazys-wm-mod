@@ -52,29 +52,32 @@ TraitEffect TraitEffect::from_xml(TiXmlElement* el)
 
     if(type == "stat") {
 		effect.type = TraitEffect::STAT;
-		effect.target = sGirl::lookup_stat_code(target);
+		effect.target = get_stat_id(target);
 	} else if (type == "skill") {
 		effect.type = TraitEffect::SKILL;
-        effect.target = sGirl::lookup_skill_code(target);
+        effect.target = get_skill_id(target);
 	} else if (type == "enjoyment") {
 		effect.type = TraitEffect::ENJOYMENT;
-        effect.target = sGirl::lookup_enjoy_code(target);
+        effect.target = get_action_id(target);
 	} else if (type == "fetish") {
         effect.type = TraitEffect::FETISH;
-        effect.target = sGirl::lookup_fetish_code(target);
+        effect.target = get_fetish_id(target);;
     } else if (type == "sex") {
         effect.type = TraitEffect::SEX_QUALITY;
         const char* fetish_s = el->Attribute("fetish");
         effect.condition = FETISH_TRYANYTHING;
         if(fetish_s) {
-            effect.condition = (Fetishs)sGirl::lookup_fetish_code(fetish_s);
+            effect.condition = (Fetishs)get_fetish_id(fetish_s);
         }
+    } else if (type == "modifier") {
+        effect.type = TraitEffect::MODIFIER;
+        effect.modifier = target;
     } else {
 		throw std::runtime_error("Invalid 'type' tag for TraitEffect!");
 	}
 
     // for all types that have a target, check its validity
-    if(type != "sex") {
+    if(type != "sex" && type != "modifier") {
         if(effect.target == -1) {
             throw std::runtime_error("Invalid 'target' for TraitEffect!");
         }
@@ -180,6 +183,42 @@ void cTraits::LoadXMLTraits(const string& filename)
 	}
 }
 
+
+void cTraits::LoadTraitsModifications(const std::string& filename)
+{
+    CLog l;
+    l.ss() << "loading " << filename; l.ssend();
+    TiXmlDocument doc(filename);
+    if (!doc.LoadFile())
+    {
+        l.ss() << "can't load XML traits mod " << filename << endl;
+        l.ss() << "Error: line " << doc.ErrorRow() << ", col " << doc.ErrorCol() << ": " << doc.ErrorDesc() << endl;
+        l.ssend();
+        return;
+    }
+
+    TiXmlElement *el, *root_el = doc.RootElement();
+    // loop over the elements attached to the root
+    for (el = root_el->FirstChildElement("Modifier"); el; el = el->NextSiblingElement("Modifier"))
+    {
+        std::string name = el->Attribute("Name");
+        for(auto mod = el->FirstChildElement("Trait"); mod; mod = mod->NextSiblingElement("Trait")) {
+            std::string trait_name = mod->Attribute("Name");
+            int value;
+            if(mod->QueryIntAttribute("Value", &value) != TIXML_SUCCESS) {
+                l.ss() << "Invalid value for trait '" << trait_name << "' in modifier '" << name << "'\n";
+                l.ssend();
+                continue;
+            }
+            for(auto& trait : m_CoreTraits) {
+                if(trait->name() == trait_name) {
+                    trait->add_effect(TraitEffect{TraitEffect::MODIFIER, 0, name, value});
+                }
+            }
+        }
+    }
+}
+
 void cTraits::AddTrait(TraitSpec trait)
 {
 	m_CoreTraits.emplace_back(new TraitSpec(std::move(trait)));
@@ -220,6 +259,29 @@ TraitSpec* cTraits::GetTrait(const string& name)
     }
 
 	return found->get();
+}
+
+bool cTraits::LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, TraitSpec* traits[], int tempTraits[])
+{
+    numTraits = 0;
+    TiXmlElement* pTraits = hTraits.ToElement();
+    if (pTraits == nullptr) return false;
+
+    for(const auto& pTrait : all_traits())
+    {
+        TiXmlElement* pTraitElement = pTraits->FirstChildElement(XMLifyString(pTrait->name()));
+        if (pTraitElement)
+        {
+            int tempInt = 0;
+            traits[numTraits] = pTrait.get();
+            if (tempTraits)
+            {
+                pTraitElement->QueryIntAttribute("Temp", &tempInt); tempTraits[numTraits] = tempInt; tempInt = 0;
+            }
+            ++numTraits;
+        }
+    }
+    return true;
 }
 
 void TraitSpec::apply_effects(sGirl* target) const
@@ -273,4 +335,15 @@ int TraitSpec::get_sex_mod(Fetishs fetish) const {
         }
     }
     return mod;
+}
+
+int TraitSpec::get_modifier(const std::string& mod) const
+{
+    int total = 0;
+    for(auto& effect : m_Effects) {
+        if(effect.type == TraitEffect::MODIFIER && effect.modifier == mod) {
+            total += effect.value;
+        }
+    }
+    return total;
 }

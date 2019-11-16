@@ -19,34 +19,23 @@
 #ifndef __CTEXTITEM_H
 #define __CTEXTITEM_H
 
-#include "cFont.h"
-#include "cInterfaceObject.h"
+#include "interface/cInterfaceObject.h"
 
 class cScrollBar;
 
 class cTextItem : public cUIWidget
 {
-	bool m_AutoScrollBar;	// automatically use scrollbar if text is too tall?
-	bool m_ForceScrollBar;	// force scrollbar display even if text fits?
+    bool m_ForceScrollBar;	// force scrollbar display even if text fits?
 
 public:
-	cTextItem(int ID, int x, int y, int width, int height, std::string text, int size, bool auto_scrollbar = true,
-              bool force_scrollbar = false, bool leftorright = false, int red = 0, int green = 0, int blue = 0);
+	cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, std::string text, int size,
+              bool force_scrollbar = false, int red = 0, int green = 0, int blue = 0);
 	~cTextItem();
 
-	void DisableAutoScroll(bool disable);
-	void ForceScrollBar(bool force);
+    int HeightTotal();
+    bool HandleMouseWheel(bool down) override;
 
-	// does scrollbar exist, but current text fits, and scrollbar isn't being forced?
-	bool NeedScrollBarHidden();
-	// does scrollbar exist but is hidden, and current text doesn't fit?
-	bool NeedScrollBarShown();
-	// does a scrollbar need to be added?
-	bool NeedScrollBar();
-	int HeightTotal();
-	void MouseScrollWheel(int x, int y, bool ScrollDown = true);
-
-	bool IsOver(int x, int y);
+	bool IsOver(int x, int y) const override;
 
 	void ChangeFontSize(int FontSize, int red = 0, int green = 0, int blue = 0);
 
@@ -54,9 +43,8 @@ public:
 	void DrawWidget(const CGraphics& gfx) override;
     void SetHidden(bool mode) override;
 
-	//int m_CharsPerLine, m_LinesPerBox, m_CharHeight;
 	std::string m_Text;
-    cFont m_Font;
+    std::unique_ptr<cFont> m_Font;
 	int m_FontHeight;		// height of the font
 
 	cScrollBar* m_ScrollBar;  // pointer to the associated scrollbar, if any

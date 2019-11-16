@@ -22,18 +22,16 @@
 #include "cGold.h"
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - General
-bool cJobManager::WorkAdvertising(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkAdvertising(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKADVERTISING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_ADVERTISING))
 	{
 		ss << " refused to advertise the brothel today.";
@@ -90,27 +88,27 @@ bool cJobManager::WorkAdvertising(sGirl* girl, bool Day0Night1, string& summary)
 	// Complications
 	if (roll_a <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		ss << "She was harassed and made fun of while advertising.\n";
 		if (girl->happiness() < 50)
 		{
 			enjoy -= 1;
 			ss << "Other then that she mostly just spent her time trying to not breakdown and cry.\n";
-			fame -= g_Dice % 2;
+			fame -= rng % 2;
 		}
 		multiplier *= 0.8;
-		fame -= g_Dice % 2;
+		fame -= rng % 2;
 	}
 	else if (roll_a >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		ss << "She made sure many people were interested in the buildings facilities.\n";
 		multiplier *= 1.1;
-		fame += g_Dice % 3;
+		fame += rng % 3;
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She had an uneventful day advertising.\n";
 	}
 
@@ -121,7 +119,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->m_Enjoyment[actiontype] < -10) 						// if she does not like the job
 	{
 		int enjoyamount = girl->m_Enjoyment[actiontype];
-		int saysomething = g_Dice%girl->confidence() - enjoyamount;	// the more she does not like the job the more likely she is to say something about it
+		int saysomething = rng%girl->confidence() - enjoyamount;	// the more she does not like the job the more likely she is to say something about it
 		saysomething -= girl->pcfear() / (girl->is_free() ? 2 : 1);	// reduce by fear (half if free)
 
 		if (saysomething > 50)
@@ -144,7 +142,7 @@ bool cJobManager::WorkAdvertising(sGirl* girl, bool Day0Night1, string& summary)
 	if ((girl->is_slave() && cfg.initial.slave_pay_outofpocket()) || girl->is_free())
 	{
 		wages += 70;
-		g_Game.gold().advertising_costs(70);
+		g_Game->gold().advertising_costs(70);
 		ss << " You paid her 70 gold for her advertising efforts.";
 	}
 	else
@@ -170,16 +168,16 @@ bool cJobManager::WorkAdvertising(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	int I_xp = (g_Dice % xp) + 1;							girl->exp(I_xp);
-	int I_libido = (g_Dice % libido) + 1;					girl->upd_temp_stat(STAT_LIBIDO, I_libido,false);//cGirls::UpdateStatTemp(girl,STAT_LIBIDO,I_libido);
+	int I_xp = (rng % xp) + 1;							girl->exp(I_xp);
+	int I_libido = (rng % libido) + 1;					girl->upd_temp_stat(STAT_LIBIDO, I_libido,false);//cGirls::UpdateStatTemp(girl,STAT_LIBIDO,I_libido);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	int I_performance	= (g_Dice % skill) + 1;				girl->performance(I_performance);
-	int I_charisma		= (g_Dice % skill) + 1;				girl->charisma(I_charisma);
+	int I_performance	= (rng % skill) + 1;				girl->performance(I_performance);
+	int I_charisma		= (rng % skill) + 1;				girl->charisma(I_charisma);
 
 	// secondary improvement (-1 for one then -2 for others)
-	int I_service		= max(0, (g_Dice % skill) - 1);		girl->service(I_service);
-	int I_confidence	= max(0, (g_Dice % skill) - 2);		girl->confidence(I_confidence);
+	int I_service		= max(0, (rng % skill) - 1);		girl->service(I_service);
+	int I_confidence	= max(0, (rng % skill) - 2);		girl->confidence(I_confidence);
 	int I_fame			= fame;								girl->fame(I_fame);
 
 	// Update Enjoyment
@@ -189,23 +187,6 @@ bool cJobManager::WorkAdvertising(sGirl* girl, bool Day0Night1, string& summary)
 	cGirls::PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Advertising on a daily basis has made " + girl->m_Realname + " more Charismatic.", Day0Night1 == SHIFT_NIGHT);
 	// Lose Traits
 	cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 40, actiontype, girl->m_Realname + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
-
-	if (cfg.debug.log_show_numbers())
-	{
-		ss << "\n \nNumbers:"
-			<< "\n Ad Multiplier = " << multiplier
-			<< "\n Wages = " << (int)wages
-			<< "\n Tips = " << (int)tips
-			<< "\n Xp = " << I_xp
-			<< "\n Libido = " << I_libido
-			<< "\n Fame = " << I_fame
-			<< "\n Performance = " << I_performance
-			<< "\n Charisma = " << I_charisma
-			<< "\n Service = " << I_service
-			<< "\n Confidence = " << I_confidence
-			<< "\n Enjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
-			;
-	}
 
 #pragma endregion
 	return false;
@@ -270,70 +251,8 @@ double cJobManager::JP_Advertising(sGirl* girl, bool estimate)
 		if (t > 0)
 			jobperformance -= (t + 2) * (t / 3);
 	}
-	// positiv traits
-	if (girl->has_trait("Actress"))					jobperformance += 10;	//
-	if (girl->has_trait("Charismatic"))				jobperformance += 10;	//
-	if (girl->has_trait("Charming"))				jobperformance += 10;	//
-	if (girl->has_trait("Cool Person"))				jobperformance += 10;	//
-	if (girl->has_trait("Cute"))					jobperformance += 5;	//
-	if (girl->has_trait("Director"))				jobperformance += 10;	//
-	if (girl->has_trait("Dominatrix"))				jobperformance += 10;	//
-	if (girl->has_trait("Elegant"))					jobperformance += 5;	//
-	if (girl->has_trait("Exhibitionist"))			jobperformance += 15;	// Advertising topless
-	if (girl->has_trait("Fake Orgasm Expert"))		jobperformance += 10;	//
-	if (girl->has_trait("Fearless"))				jobperformance += 5;	//
-	if (girl->has_trait("Flexible"))				jobperformance += 5;	//
-	if (girl->has_trait("Former Official"))			jobperformance += 10;	//
-	if (girl->has_trait("Idol"))					jobperformance += 20;	//
-	if (girl->has_trait("Iron Will"))				jobperformance += 5;	//
-	if (girl->has_trait("Natural Pheromones"))		jobperformance += 10;	//
-	if (girl->has_trait("Open Minded"))				jobperformance += 5;	//
-	if (girl->has_trait("Optimist"))				jobperformance += 5;	//
-	if (girl->has_trait("Playful Tail"))			jobperformance += 5;	//
-	if (girl->has_trait("Porn Star"))				jobperformance += 20;	//
-	if (girl->has_trait("Powerful Magic"))			jobperformance += 20;	//
-	if (girl->has_trait("Prehensile Tail"))			jobperformance += 5;	//
-	if (girl->has_trait("Priestess"))				jobperformance += 10;	// used to preaching to the masses
-	if (girl->has_trait("Princess"))				jobperformance += 5;	//
-	if (girl->has_trait("Psychic"))					jobperformance += 10;	//
-	if (girl->has_trait("Queen"))					jobperformance += 10;	//
-	if (girl->has_trait("Sexy Air"))				jobperformance += 10;	//
-	if (girl->has_trait("Shape Shifter"))			jobperformance += 20;	// she can show who is available
-	if (girl->has_trait("Singer"))					jobperformance += 10;	//
-	if (girl->has_trait("Slut"))					jobperformance += 10;	//
-	if (girl->has_trait("Strong Magic"))			jobperformance += 10;	//
-	if (girl->has_trait("Strong"))					jobperformance += 5;	//
-	if (girl->has_trait("Whore"))					jobperformance += 10;	//
-	if (girl->has_trait("Your Daughter"))			jobperformance += 20;	//
-	if (girl->has_trait("Your Wife"))				jobperformance += 20;	//
 
-	// negativ traits
-	if (girl->has_trait("Aggressive"))				jobperformance -= 5;	//
-	if (girl->has_trait("Blind"))					jobperformance -= 10;	//
-	if (girl->has_trait("Broken Will"))				jobperformance -= 20;	//
-	if (girl->has_trait("Clumsy"))					jobperformance -= 5;	//
-	if (girl->has_trait("Deaf"))					jobperformance -= 10;	//
-	if (girl->has_trait("Dependant"))				jobperformance -= 10;	//
-	if (girl->has_trait("Emprisoned Customer"))		jobperformance -= 30;	// she may be warning the other customers
-	if (girl->has_trait("Horrific Scars"))			jobperformance -= 10;	//
-	if (girl->has_trait("Kidnapped"))				jobperformance -= 40;	// she may try to run away or get help
-	if (girl->has_trait("Malformed"))				jobperformance -= 20;	//
-	if (girl->has_trait("Meek"))					jobperformance -= 20;	//
-	if (girl->has_trait("Mind Fucked"))				jobperformance -= 50;	//
-	if (girl->has_trait("Mute"))					jobperformance -= 10;	//
-	if (girl->has_trait("Nervous"))					jobperformance -= 5;	//
-	if (girl->has_trait("No Arms"))					jobperformance -= 30;	//
-	if (girl->has_trait("No Hands"))				jobperformance -= 20;	//
-	if (girl->has_trait("No Legs"))					jobperformance -= 30;	//
-	if (girl->has_trait("Nymphomaniac"))			jobperformance -= 5;	// free samples?
-	if (girl->has_trait("One Arm"))					jobperformance -= 10;	//
-	if (girl->has_trait("One Hand"))				jobperformance -= 5;	//
-	if (girl->has_trait("One Leg"))					jobperformance -= 10;	//
-	if (girl->has_trait("Pessimist"))				jobperformance -= 5;	//
-	if (girl->has_trait("Retarded"))				jobperformance -= 20;	//
-	if (girl->has_trait("Shy"))						jobperformance -= 10;	//
-	if (girl->has_trait("Skeleton"))				jobperformance -= 50;	//
-	if (girl->has_trait("Zombie"))					jobperformance -= 50;	//
+    jobperformance += girl->get_trait_modifier("work.advertising");
 
 	return jobperformance;
 }

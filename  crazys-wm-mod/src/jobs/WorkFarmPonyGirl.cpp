@@ -22,19 +22,17 @@
 #include <sstream>
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Farm - General
-bool cJobManager::WorkFarmPonyGirl(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFarmPonyGirl(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
 	if (Day0Night1) return false;
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKHOUSEPET;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	int train = roll_a - girl->obedience() - girl->get_training(TRAINING_PUPPY);
 
 	int wages = 100, tips = 0;
@@ -42,13 +40,13 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, bool Day0Night1, string& summary
 
 	// `J` add in player's disposition so if the girl has heard of you
 	int dispmod = 0;
-	/* */if (g_Game.player().disposition() >= 100)	dispmod = 3;	// "Saint"
-	else if (g_Game.player().disposition() >= 80)	dispmod = 2;	// "Benevolent"
-	else if (g_Game.player().disposition() >= 50)	dispmod = 1;	// "Nice"
-	else if (g_Game.player().disposition() >= 10)	dispmod = 0;	// "Pleasant"
-	else if (g_Game.player().disposition() >= -10)	dispmod = 0;	// "Neutral"
-	else if (g_Game.player().disposition() >= -50)	dispmod = -1;	// "Not nice"
-	else if (g_Game.player().disposition() >= -80)	dispmod = -2;	// "Mean"
+	/* */if (g_Game->player().disposition() >= 100)	dispmod = 3;	// "Saint"
+	else if (g_Game->player().disposition() >= 80)	dispmod = 2;	// "Benevolent"
+	else if (g_Game->player().disposition() >= 50)	dispmod = 1;	// "Nice"
+	else if (g_Game->player().disposition() >= 10)	dispmod = 0;	// "Pleasant"
+	else if (g_Game->player().disposition() >= -10)	dispmod = 0;	// "Neutral"
+	else if (g_Game->player().disposition() >= -50)	dispmod = -1;	// "Not nice"
+	else if (g_Game->player().disposition() >= -80)	dispmod = -2;	// "Mean"
 	else /*								  */	dispmod = -3;	// "Evil"
 
 	int imagetype = IMGTYPE_PONYGIRL;
@@ -196,7 +194,7 @@ bool cJobManager::WorkFarmPonyGirl(sGirl* girl, bool Day0Night1, string& summary
 
 
 	//enjoyed the work or not
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 5)
 	{
 		ss << "Some of the girls made fun of her for been a pony during the shift.";

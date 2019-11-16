@@ -19,10 +19,8 @@
 #include "cRng.h"
 #include "src/buildings/cBrothel.h"
 
-extern cRng g_Dice;
-
 // `J` Job Brothel - General
-bool cJobManager::WorkSecurity(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkSecurity(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -42,7 +40,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, bool Day0Night1, string& summary)
 	int enjoy = 0;
 	int wages = 0;
 	int tips = 0;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	int imagetype = IMGTYPE_COMBAT;
 
 	cGirls::EquipCombat(girl);	// ready armor and weapons!
@@ -60,24 +58,24 @@ bool cJobManager::WorkSecurity(sGirl* girl, bool Day0Night1, string& summary)
 	// Complications
 	if (roll_a <= 25)
 	{
-        switch(g_Dice%5)
+        switch(rng%5)
         {
         case 2: //'Mute' Unrulely Customers rape her
         {
-            enjoy-=g_Dice%3+1;
+            enjoy-=rng%3+1;
             SecLev-=SecLev/10;
             ss<< "She tried to Fight off some unruly patrons, but they turned on her and raped her.";
-            int custCount=g_Dice%4+1;
+            int custCount=rng%4+1;
             customer_rape(girl,custCount);
             break;
         }
 		case 3:
 		{
-			enjoy -= g_Dice % 3 + 1;
+			enjoy -= rng % 3 + 1;
 			double secLvlMod = SecLev / 10.0;
 			ss << "She stumbled across some patrons trying to rape a female customer.\n";
 			int combatMod = (girl->combat() + girl->magic() + girl->agility()) / 3;
-			if (g_Dice.percent(combatMod))
+			if (rng.percent(combatMod))
 			{
 				ss << "She succeeded in saving the girl from being raped."; //'Mute" TODO add posiblity of adding female customers to dungeon
 				SecLev += secLvlMod;
@@ -85,7 +83,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, bool Day0Night1, string& summary)
 			else
 			{
 				SecLev -= secLvlMod;
-				int rapers = g_Dice % 4 + 1;
+				int rapers = rng % 4 + 1;
 				ss << "She failed in saving her. They where both raped by " << rapers << " men.\n";
 				customer_rape(girl, rapers);
 			}
@@ -93,7 +91,7 @@ bool cJobManager::WorkSecurity(sGirl* girl, bool Day0Night1, string& summary)
 		}
         default:
         {
-            enjoy -= g_Dice % 3 + 1;
+            enjoy -= rng % 3 + 1;
             SecLev -= SecLev / 10;
             ss << "She had to deal with some very unruly patrons that gave her a hard time.";
             break;
@@ -103,20 +101,20 @@ bool cJobManager::WorkSecurity(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else if (roll_a >= 75)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		SecLev += SecLev / 10;
 		ss << "She successfully handled unruly patrons.";
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She had an uneventful day watching over the brothel.";
 	}
 	ss << "\n \n";
 
-	if (girl->libido() >= 70 && g_Dice.percent(20))
+	if (girl->libido() >= 70 && rng.percent(20))
 	{
-		int choice = g_Dice % 2;
+		int choice = rng % 2;
 		ss << "Her libido caused her to get distracted while watching ";
 		/*might could do more with this FIXME CRAZY*/
 		if (girl->has_trait( "Lesbian"))	choice = 0;
@@ -136,11 +134,11 @@ bool cJobManager::WorkSecurity(sGirl* girl, bool Day0Night1, string& summary)
 
 	}
 
-	if ((girl->libido() > 50 && g_Dice.percent(girl->libido() / 5)) || (girl->has_trait( "Nymphomaniac") && g_Dice.percent(20)))
+	if ((girl->libido() > 50 && rng.percent(girl->libido() / 5)) || (girl->has_trait( "Nymphomaniac") && rng.percent(20)))
 	{
 		ss <<"\nGave some bonus service to the well behaved patrons, ";
 		int l = 0;
-		switch (g_Dice % 4)		// `J` just roll for the 4 sex options and flash only if sex is restricted
+		switch (rng % 4)		// `J` just roll for the 4 sex options and flash only if sex is restricted
 		{
 		case 1:	if (brothel->is_sex_type_allowed(SKILL_ORALSEX))	{ l = 10;	imagetype = IMGTYPE_ORAL;	ss << "She sucked them off";	break; }
 		case 2:	if (brothel->is_sex_type_allowed(SKILL_TITTYSEX))	{ l = 7;	imagetype = IMGTYPE_TITTY;	ss << "She used her tits to get them off";	break; }
@@ -169,12 +167,12 @@ bool cJobManager::WorkSecurity(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
-	//g_Game.gold().staff_wages(70);  // wages come from
+	//g_Game->gold().staff_wages(70);  // wages come from
 	// 'Mute' Updated
 	girl->exp(xp);
-	girl->combat((g_Dice%skill)+1);
-	girl->magic((g_Dice%skill)+1);
-	girl->agility((g_Dice%skill)+1);
+	girl->combat((rng%skill)+1);
+	girl->magic((rng%skill)+1);
+	girl->agility((rng%skill)+1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 

@@ -21,8 +21,9 @@
 
 #include <string>
 #include <queue>
+#include "cInterfaceObject.h"
+#include "cSurface.h"
 
-class SDL_Surface;
 class cFont;
 
 const int NUM_MESSBOXCOLOR = 4;
@@ -35,32 +36,29 @@ struct sMessage
 
 // separate to text boxes and edit boxes these boxes will display text and on a user click advance to the next box
 // to continue displaying the message
-class cMessageBox
+class cMessageBox : public cInterfaceObject
 {
 public:
 	cMessageBox(int x = 32, int y = 416, int width = 736, int height = 160, int BorderSize = 1, int FontSize = 16, bool scale = true);
-	~cMessageBox();
+    ~cMessageBox();
 
-	void ChangeFontSize(int FontSize = 16);
-	void Draw();
+    void ChangeFontSize(int FontSize = 16);
+	void Draw(const CGraphics& gfx) override;
 	void Advance();
 	bool IsActive() const;
 
 	void PushMessage(std::string text, int color);
 
 private:
-	int m_XPos, m_YPos, m_Height, m_Width, m_BorderSize, m_FontHeight;
+	int m_BorderSize, m_FontHeight;
 
-	bool m_Advance;
-
-	SDL_Surface* m_Background[NUM_MESSBOXCOLOR];
-	SDL_Surface* m_Border;
+	cSurface m_Background[NUM_MESSBOXCOLOR];
+	cSurface m_Border;
 	
-	cFont* m_Font;
+	std::unique_ptr<cFont> m_Font;
 	std::string m_Text;	// contains the entire text string
 	int m_Position;	// where we are up too
 
-	bool m_TextAdvance;
 	int m_Color;	// used to determine which color to use
 
     std::deque<sMessage> m_Messages;

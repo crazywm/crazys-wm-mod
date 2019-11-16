@@ -17,37 +17,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cMessageBox.h"
-#include "CGraphics.h"
+#include "interface/CGraphics.h"
 #include "sConfig.h"
 #include "CLog.h"
 #include "cFont.h"
 #include "tinyxml.h"
 #include "DirPath.h"
 #include "XmlUtil.h"
+#include "cColor.h"
 
 extern CGraphics g_Graphics;
 extern cConfig cfg;
 
-extern unsigned char g_MessageBoxBorderR, g_MessageBoxBorderG, g_MessageBoxBorderB;
-extern unsigned char g_MessageBoxBackground0R, g_MessageBoxBackground0G, g_MessageBoxBackground0B;
-extern unsigned char g_MessageBoxBackground1R, g_MessageBoxBackground1G, g_MessageBoxBackground1B;
-extern unsigned char g_MessageBoxBackground2R, g_MessageBoxBackground2G, g_MessageBoxBackground2B;
-extern unsigned char g_MessageBoxBackground3R, g_MessageBoxBackground3G, g_MessageBoxBackground3B;
-extern unsigned char g_MessageBoxTextR, g_MessageBoxTextG, g_MessageBoxTextB;
+extern sColor g_MessageBoxBorderColor;
+extern sColor g_MessageBoxBackgroundColor[];
+extern sColor g_MessageBoxTextColor;
 
-bool loadfile = false;
-
-
+cMessageBox::~cMessageBox() = default;
 
 
 cMessageBox::cMessageBox(int x, int y, int width, int height, int BorderSize, int FontSize, bool scale)
 {
-	m_Font = nullptr;
 	m_Text = "";
-	for (auto & i : m_Background)
-		i = nullptr;
-	m_Border = nullptr;
-	m_Advance = false;
 	m_Position = 0;
 
     DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "popup_message.xml";
@@ -82,7 +73,7 @@ cMessageBox::cMessageBox(int x, int y, int width, int height, int BorderSize, in
     float xScale = 1.0f, yScale = 1.0f;
     if (scale)
     {
-        if (g_Graphics.GetWidth() != cfg.resolution.width())		xScale = (float)g_Graphics.GetWidth() / (float)cfg.resolution.width();
+        if (g_Graphics.GetWidth() != cfg.resolution.width())	xScale = (float)g_Graphics.GetWidth() / (float)cfg.resolution.width();
         if (g_Graphics.GetHeight() != cfg.resolution.height())	yScale = (float)g_Graphics.GetHeight() / (float)cfg.resolution.height();
     }
 
@@ -93,84 +84,33 @@ cMessageBox::cMessageBox(int x, int y, int width, int height, int BorderSize, in
     FontSize = (int)((float)FontSize*yScale);
 
     m_BorderSize = BorderSize;
-    m_XPos = x;
-    m_YPos = y;
-    m_Width = width;
-    m_Height = height;
+    SetPosition(x, y, width, height);
     m_FontHeight = FontSize;
-    m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0,0,0,0);
-    SDL_FillRect(m_Border,nullptr,SDL_MapRGB(m_Border->format,g_MessageBoxBorderR,g_MessageBoxBorderG,g_MessageBoxBorderB));
-
-    m_Background[0] = SDL_CreateRGBSurface(SDL_SWSURFACE, width-(BorderSize*2), height-(BorderSize*2), 32, 0,0,0,0);
-    SDL_FillRect(m_Background[0],nullptr,SDL_MapRGB(m_Background[0]->format,g_MessageBoxBackground0R,g_MessageBoxBackground0G,g_MessageBoxBackground0B));
-
-    m_Background[1] = SDL_CreateRGBSurface(SDL_SWSURFACE, width-(BorderSize*2), height-(BorderSize*2), 32, 0,0,0,0);
-    SDL_FillRect(m_Background[1],nullptr,SDL_MapRGB(m_Background[1]->format,g_MessageBoxBackground1R,g_MessageBoxBackground1G,g_MessageBoxBackground1B));
-
-    m_Background[2] = SDL_CreateRGBSurface(SDL_SWSURFACE, width-(BorderSize*2), height-(BorderSize*2), 32, 0,0,0,0);
-    SDL_FillRect(m_Background[2],nullptr,SDL_MapRGB(m_Background[2]->format,g_MessageBoxBackground2R,g_MessageBoxBackground2G,g_MessageBoxBackground2B));
-
-    m_Background[3] = SDL_CreateRGBSurface(SDL_SWSURFACE, width-(BorderSize*2), height-(BorderSize*2), 32, 0,0,0,0);
-    SDL_FillRect(m_Background[3],nullptr,SDL_MapRGB(m_Background[3]->format,g_MessageBoxBackground3R,g_MessageBoxBackground3G,g_MessageBoxBackground3B));
-
+    m_Border = g_Graphics.CreateSurface(width, height, g_MessageBoxBorderColor);
+    for(int i = 0; i < NUM_MESSBOXCOLOR; ++i) {
+        m_Background[i] = g_Graphics.CreateSurface(width-(BorderSize*2), height-(BorderSize*2), g_MessageBoxBackgroundColor[i]);
+    }
     ChangeFontSize(FontSize);
 }
 
-
-cMessageBox::~cMessageBox()
-{
-	for(auto & i : m_Background)
-	{
-		if(i)
-			SDL_FreeSurface(i);
-		i = nullptr;
-	}
-
-	if(m_Border)
-		SDL_FreeSurface(m_Border);
-	m_Border = nullptr;
-
-	if(m_Font)
-	{
-		m_Font->Free();
-		delete m_Font;
-	}
-	m_Font= nullptr;
-}
-
-
-void cMessageBox::Draw()
+void cMessageBox::Draw(const CGraphics& gfx)
 {
 	if(!IsActive())
 		return;
 
-	if(m_Background[m_Color] && m_Border)
-	{
-		// Draw the window
-		SDL_Rect offset;
-		offset.x = m_XPos;
-		offset.y = m_YPos;
-
-		// blit to the screen
-		SDL_BlitSurface(m_Border, nullptr, g_Graphics.GetScreen(), &offset);
-
-		offset.x = m_XPos+m_BorderSize;
-		offset.y = m_YPos+m_BorderSize;
-		SDL_BlitSurface(m_Background[m_Color], nullptr, g_Graphics.GetScreen(), &offset);
-	}
-
-	if(m_Font)	// draw the text
-	{
-		if(m_Text != m_Font->GetText())
-			m_Font->SetText(m_Text);
-		m_Font->DrawMultilineText(m_XPos, m_YPos, m_Position);
-	}
+	if(m_Background[m_Color] && m_Border) {
+        // Draw the window
+        m_Border.DrawSurface(m_XPos, m_YPos);
+        m_Background[m_Color].DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
+    }
+    if(m_Text != m_Font->GetText())
+        m_Font->SetText(m_Text);
+    m_Font->DrawMultilineText(m_XPos, m_YPos, m_Position);
 }
 
 void cMessageBox::Advance()
 {
 	m_Position += m_Font->GetLinesPerBox();
-	m_TextAdvance = false;
 
 	if(m_Position >= m_Font->GetTotalNumberOfLines()) {
 	    m_Messages.pop_front();
@@ -178,8 +118,6 @@ void cMessageBox::Advance()
             UpdateMessageText();
         }
     }
-	
-	m_Advance = true;
 }
 
 void cMessageBox::UpdateMessageText()
@@ -187,23 +125,16 @@ void cMessageBox::UpdateMessageText()
     if(!m_Messages.empty()) {
         m_Text        = m_Messages.front().m_Text;
         m_Position    = 0;
-        m_TextAdvance = false;
         m_Color       = m_Messages.front().m_Color;
     }
 }
 
 void cMessageBox::ChangeFontSize(int FontSize)
 {
-	if(m_Font)
-	{
-		m_Font->Free();
-		delete m_Font;
-	}
-	m_Font = nullptr;
-	m_Font = new cFont();
+	m_Font = std::make_unique<cFont>();
 	m_Font->LoadFont(cfg.fonts.normal(), FontSize);
 	m_Font->SetText("");
-	m_Font->SetColor(g_MessageBoxTextR,g_MessageBoxTextG,g_MessageBoxTextB);
+	m_Font->SetColor(g_MessageBoxTextColor.r, g_MessageBoxTextColor.g, g_MessageBoxTextColor.b);
 	m_Font->SetMultiline(true, m_Width, m_Height);
 }
 

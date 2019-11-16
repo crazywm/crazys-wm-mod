@@ -1,6 +1,6 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
- * The Pink Petal Devloment Team are defined as the game's coders 
+ * The Pink Petal Development Team are defined as the game's coders 
  * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -16,26 +16,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-// CResource is a parent class for resource types used by CResourceManager
+#pragma once
 
-#ifndef __CRESOURCE_H
-#define __CRESOURCE_H
+#include <string>
+#include <vector>
+#include <chrono>
+#include "fwd.hpp"
+#include "cSurface.h"
 
-class CResourceManager;
-
-class CResource
-{
-public:
-	virtual void Register() {};		// registers the resource with the resource manager
-	virtual void Free() {}	// Free all data
-	virtual void FreeResources() {}	// Frees only the loaded data, this is so the class isn't destroyed
-	CResource();
-	~CResource() {Free(); m_Next = nullptr; m_Prev = nullptr;}
-
-	CResource* m_Next;	// pointer to the next resource or null if end of list
-	CResource* m_Prev;	// Pointer to the previous resource or null if top of list
-	unsigned long m_TimeUsed;	// Stores the last time this resource was used
-	bool m_Registered;
+struct sAnimationFrame {
+    cSurface surface;
+    int delay;
 };
 
-#endif
+// Class to hold the data for a single animation within an image
+class cAnimatedSurface
+{
+public:
+    cAnimatedSurface() = default;
+	explicit cAnimatedSurface(std::vector<sAnimationFrame>);
+
+    explicit operator bool() const { return !m_Frames.empty(); }
+
+    // Drawing functions
+    void DrawSurface(int x, int y, SDL_Rect* clip = nullptr) const;
+    void UpdateFrame();
+
+private:
+    std::chrono::high_resolution_clock::time_point m_LastTime {};
+    std::vector<sAnimationFrame> m_Frames;
+
+	int m_CurrentFrame = 0;				// Current frame in a playing animation
+};

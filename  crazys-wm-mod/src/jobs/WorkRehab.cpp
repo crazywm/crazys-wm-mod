@@ -21,13 +21,10 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
-
 #pragma endregion
 
 // `J` Job Centre - Therapy - Full_Time_Job
-bool cJobManager::WorkRehab(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkRehab(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
@@ -55,7 +52,7 @@ bool cJobManager::WorkRehab(sGirl* girl, bool Day0Night1, string& summary)
 		return false;	// not refusing
 	}
 
-	if (g_Dice.percent(50) && girl->disobey_check(actiontype, JOB_REHAB))
+	if (rng.percent(50) && girl->disobey_check(actiontype, JOB_REHAB))
 	{
 		ss << " fought with her counselor and did not make any progress this week.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
@@ -75,13 +72,13 @@ bool cJobManager::WorkRehab(sGirl* girl, bool Day0Night1, string& summary)
 
 	if (!Day0Night1) girl->m_WorkingDay++;
 
-	girl->happiness(g_Dice % 30 - 20);
-	girl->spirit(g_Dice % 5 - 10);
-	girl->mana(g_Dice % 5 - 10);
+	girl->happiness(rng % 30 - 20);
+	girl->spirit(rng % 5 - 10);
+	girl->mana(rng % 5 - 10);
 
-	int healthmod = (g_Dice % 10) - 15;
+	int healthmod = (rng % 10) - 15;
 	// `J` % chance a counselor will save her if she almost dies
-	if (girl->health() + healthmod < 1 && g_Dice.percent(95 + (girl->health() + healthmod)) &&
+	if (girl->health() + healthmod < 1 && rng.percent(95 + (girl->health() + healthmod)) &&
 		(brothel->num_girls_on_job(JOB_COUNSELOR, true) > 0 || brothel->num_girls_on_job(JOB_COUNSELOR, false) > 0))
 	{	// Don't kill the girl from rehab if a Counselor is on duty
         girl->set_stat(STAT_HEALTH, 1);
@@ -109,9 +106,9 @@ bool cJobManager::WorkRehab(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->m_WorkingDay >= 3 && Day0Night1)
 	{
 		girl->m_PrevWorkingDay = girl->m_WorkingDay = 0;
-		enjoy += g_Dice % 10;
-		girl->upd_Enjoyment(ACTION_WORKCOUNSELOR, g_Dice.bell(-1, 4));	// `J` She may want to help others with their problems
-		girl->happiness(g_Dice % 10);
+		enjoy += rng % 10;
+		girl->upd_Enjoyment(ACTION_WORKCOUNSELOR, rng.bell(-1, 4));	// `J` She may want to help others with their problems
+		girl->happiness(rng % 10);
 
 		ss << "The rehab is a success.\n";
 		msgtype = EVENT_GOODNEWS;
@@ -121,7 +118,7 @@ bool cJobManager::WorkRehab(sGirl* girl, bool Day0Night1, string& summary)
 		while (!cured && tries > -2)
 		{
 			tries--;
-			int t = max(0, g_Dice % tries);
+			int t = max(0, rng % tries);
 			switch (t)
 			{
 			case 0:

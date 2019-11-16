@@ -20,10 +20,8 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Clinic - Staff
-bool cJobManager::WorkDoctor(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkDoctor(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -79,22 +77,22 @@ bool cJobManager::WorkDoctor(sGirl* girl, bool Day0Night1, string& summary)
 	double jobperformance = JP_Doctor(girl, false);
 
 	//enjoyed the work or not
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		jobperformance *= 0.9;
 		ss << "Some of the patients abused her during the shift.\n";
 	}
 	else if (roll >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		jobperformance *= 1.1;
 		ss << "She had a pleasant time working.\n";
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "Otherwise, the shift passed uneventfully.\n";
 	}
 
@@ -107,7 +105,7 @@ bool cJobManager::WorkDoctor(sGirl* girl, bool Day0Night1, string& summary)
 	int earned = 0;
 	for (int i = 0; i < patients; i++)
 	{
-		earned += g_Dice % 50 + 50; // 50-100 gold per customer
+		earned += rng % 50 + 50; // 50-100 gold per customer
 	}
 	brothel->m_Finance.clinic_income(earned);
 	ss.str("");
@@ -151,49 +149,7 @@ double cJobManager::JP_Doctor(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	if (girl->has_trait( "Charismatic"))		jobperformance += 20;
-	if (girl->has_trait( "Sexy Air"))			jobperformance += 10;
-	if (girl->has_trait( "Cool Person"))		jobperformance += 10;
-	if (girl->has_trait( "Cute"))				jobperformance += 5;
-	if (girl->has_trait( "Charming"))			jobperformance += 15;
-	if (girl->has_trait( "Nerd"))				jobperformance += 30;
-	if (girl->has_trait( "Quick Learner"))	jobperformance += 10;
-	if (girl->has_trait( "Psychic"))			jobperformance += 20;	// Don't have to ask "Where does it hurt?"
-	if (girl->has_trait( "Doctor"))			jobperformance += 50;
-	if (girl->has_trait( "Goddess"))			jobperformance += 10; //might be able to heal people easier.. they are a goddess after all
-	if (girl->has_trait( "Optimist"))			jobperformance += 10;
-	if (girl->has_trait( "Priestess"))		jobperformance += 10;
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))		jobperformance -= 50;
-	if (girl->has_trait( "Clumsy"))			jobperformance -= 20;
-	if (girl->has_trait( "Aggressive"))		jobperformance -= 20;
-	if (girl->has_trait( "Nervous"))			jobperformance -= 50;
-	if (girl->has_trait( "Retarded"))			jobperformance -= 100;
-	if (girl->has_trait( "Meek"))				jobperformance -= 20;
-	if (girl->has_trait( "Mind Fucked"))		jobperformance -= 50;
-	if (girl->has_trait( "Pessimist"))		jobperformance -= 10;
-	if (girl->has_trait( "Sadistic"))			jobperformance -= 20;
-	if (girl->has_trait( "Zombie"))			jobperformance -= 100;
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 40;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 60;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 150;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 60;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 90;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 150;
-	if (girl->has_trait( "Blind"))		jobperformance -= 75;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 15;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Former Addict"))		jobperformance -= 25; // not good idea to let former addict around all those drugs
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
+    jobperformance += girl->get_trait_modifier("work.doctor");
 
 	return jobperformance;
 }

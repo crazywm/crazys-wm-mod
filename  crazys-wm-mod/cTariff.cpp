@@ -138,21 +138,6 @@ int cTariff::anti_preg_price(int n)
 	return int(n * 2 * cfg.out_fact.consumables());
 }
 
-int cTariff::strip_bar_price()
-{
-	return int(2500 * cfg.out_fact.casino_cost());
-}
-
-int cTariff::gambling_hall_price()
-{
-	return int(15000 * cfg.out_fact.casino_cost());
-}
-
-int cTariff::movie_cost()
-{
-	return int(100 * cfg.out_fact.movie_cost());
-}
-
 /*
 *	let's have matron wages go up as skill level increases.
 *	`J` this is no longer used
@@ -168,19 +153,6 @@ int cTariff::bar_staff_wages()
 	return int(20 * cfg.out_fact.bar_cost());
 }
 
-int cTariff::empty_bar_cost()
-{
-	return int(20 * cfg.out_fact.bar_cost());
-}
-
-int cTariff::active_bar_cost(int level, double shifts)
-{
-	if (shifts > 2.0) shifts = 2.0;
-	shifts /= 2.0;
-	double cost = 50.0 * level / shifts;
-	return int(cost * cfg.out_fact.bar_cost());
-}
-
 int cTariff::empty_casino_cost(int level)
 {
 	return int(50 * level * cfg.out_fact.casino_cost());
@@ -192,13 +164,6 @@ int cTariff::active_casino_cost(int level, double shifts)
 	shifts /= 2.0;
 	double cost = 150.0 * level / shifts;
 	return int(cost * cfg.out_fact.casino_cost());
-}
-
-int cTariff::casino_staff_wages()
-{
-	g_LogFile.ss() << "casino wages: cfg factor = " << cfg.out_fact.staff_wages();
-	g_LogFile.ssend();
-	return int(50 * cfg.out_fact.casino_cost());
 }
 
 int cTariff::advertising_costs(int budget)
@@ -236,40 +201,3 @@ int cTariff::girl_training()
 {
 	return int(cfg.out_fact.training() * 5);
 }
-
-/*
-*	really should do this by facility and match on name
-*
-*	that said...
-*/
-int cTariff::buy_facility(int base_price)
-{
-	return int(cfg.out_fact.brothel_cost() * base_price);
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-g++ -g CAnimatedSprite.o cBrothel.o cButton.o cCheckBox.o cChoiceMessage.o cCustomers.o cEditBox.o cEvents.o cFont.o CGameObject.o cGameScript.o cGirls.o CGraphics.o cImageItem.o cInterfaceWindow.o cInventory.o cListBox.o CLog.o cMessageBox.o CRenderQue.o CResourceManager.o cRival.o cScripts.o CSurface.o cTraits.o cTriggers.o GameFlags.o InterfaceGlobals.o InterfaceProcesses.o main.o FileList.o DirPath.o cRng.o cDungeonScreenManager.o sConfig.o cTariff.o cGold.o tinystr.o tinyxml.o tinyxmlerror.o tinyxmlparser.o -lSDL -lSDL_ttf -lSDL_gfx -lSDL_image -o WhoreMaster
-
-*/

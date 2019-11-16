@@ -29,14 +29,16 @@
 
 struct sGirl;
 class TiXmlElement;
+class TiXmlHandle;
 
 struct TraitEffect
 {
     enum Type {
-        STAT, SKILL, ENJOYMENT, FETISH, SEX_QUALITY, ACCOM
+        STAT, SKILL, ENJOYMENT, FETISH, SEX_QUALITY, ACCOM, MODIFIER
         // TODO add TRAINING here?
     } type;
     unsigned target;
+    std::string modifier;
     int value;
 
     // this is only used for SEX_QUALITY
@@ -64,6 +66,8 @@ public:
 	void apply_effects(sGirl* target) const;
 	void get_fetish_rating(std::array<int, NUM_FETISH>& rating) const;
 	int get_sex_mod(Fetishs fetish) const;
+
+	int get_modifier(const std::string& mod) const;
 private:
 
     std::string m_Name;				// the name and unique ID of the trait
@@ -74,6 +78,8 @@ private:
 
     void add_effect(TraitEffect);
     std::vector<TraitEffect> m_Effects;
+
+    friend class cTraits;
 };
 
 // Manages and loads the traits file
@@ -88,10 +94,13 @@ public:
 	void Free();	// Delete all the loaded data
 
 	void LoadXMLTraits(const std::string& filename);	// Loads the traits from an XML file (adding them to the existing traits)
+    void LoadTraitsModifications(const std::string& filename);
 
 	void AddTrait(TraitSpec trait);
 	void RemoveTrait(const std::string& name);
 	TraitSpec* GetTrait(const std::string& name);
+
+    bool LoadTraitsXML(TiXmlHandle hTraits, unsigned char& numTraits, TraitSpec* traits[], int tempTraits[] = nullptr);
 
 	const trait_list_t& all_traits() const { return m_CoreTraits; }
 

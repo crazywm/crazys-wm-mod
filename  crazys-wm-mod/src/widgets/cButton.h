@@ -24,37 +24,34 @@
 #include <functional>
 #include <SDL_keyboard.h>
 
-#include "cInterfaceObject.h"
-
-class CSurface;
+#include "interface/cInterfaceObject.h"
+#include "interface/cSurface.h"
 
 class cButton : public cUIWidget
 {
 public:
-	cButton(const std::string& OffImage, const std::string& DisabledImage, const std::string& OnImage, int ID,
-	        int x, int y, int width, int height, bool transparency = false, bool cached = false);
+	cButton(cInterfaceWindow* parent, const std::string& OffImage, const std::string& DisabledImage, const std::string& OnImage, int ID,
+	        int x, int y, int width, int height, bool transparency = false);
 	~cButton();
 
-	bool IsOver(int x, int y);
-	bool ButtonClicked(int x, int y);
-	void OnKeyPress(SDL_keysym key);
+    bool HandleClick(int x, int y, bool press) override;
+    void HandleMouseMove(bool over, int x, int y) override;
+    bool HandleKeyPress(SDL_keysym key) override;
 
-	void SetDisabled(bool disable);
-	bool IsDisabled() const;
-
-	void DrawWidget(const CGraphics& gfx) override;
+	void SetDisabled(bool disable) override;
+    void DrawWidget(const CGraphics& gfx) override;
 
     void SetCallback(std::function<void()>);
     void SetHotKey(SDLKey key);
+
 private:
-    std::unique_ptr<CSurface> m_OffImage;
-    std::unique_ptr<CSurface> m_DisabledImage;
-    std::unique_ptr<CSurface> m_OnImage;
+    cSurface m_OffImage;
+    cSurface m_DisabledImage;
+    cSurface m_OnImage;
     std::function<void()> m_Callback;
     SDLKey m_HotKey = SDLK_UNKNOWN;
 
-    bool m_Disabled = false;
-    CSurface* m_CurrImage;
+    cSurface* m_CurrImage;
 };
 
 

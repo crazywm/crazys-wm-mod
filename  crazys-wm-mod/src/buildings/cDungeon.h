@@ -91,20 +91,19 @@ private:
 public:
 	cDungeon();								// constructor
 	~cDungeon();							// destructor
-	void Free();
-	TiXmlElement* SaveDungeonDataXML(TiXmlElement* pRoot);	// saves dungeon data
+    TiXmlElement* SaveDungeonDataXML(TiXmlElement* pRoot);	// saves dungeon data
 	bool LoadDungeonDataXML(TiXmlHandle hDungeon);
 	bool SendGirlToDungeon(sGirl& girl);
 	void AddGirl(sGirl* girl, int reason);
 	void AddCust(int reason, int numDaughters, bool hasWife);
-	void OutputGirlRow(int i, string* Data, const vector<string>& columnNames);
-	void OutputCustRow(int i, string* Data, const vector<string>& columnNames);
+	void OutputGirlRow(int i, vector<string>& Data, const vector<string>& columnNames);
+	void OutputCustRow(int i, vector<string>& Data, const vector<string>& columnNames);
 	sDungeonGirl* GetGirl(int i);
 	sDungeonGirl* GetGirlByName(string name);
 	sDungeonCust* GetCust(int i);
 	int GetDungeonPos(sGirl* girl);
-	sGirl* RemoveGirl(sGirl* girl);
-	sGirl* RemoveGirl(sDungeonGirl* girl);	// releases or kills a girl
+	std::unique_ptr<sGirl> RemoveGirl(sGirl* girl);
+	std::unique_ptr<sGirl> RemoveGirl(sDungeonGirl* girl);	// releases or kills a girl
 	void RemoveCust(sDungeonCust* cust);	// releases or kills a customer
 	void ClearDungeonGirlEvents();
 	void Update();

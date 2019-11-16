@@ -24,18 +24,16 @@
 #include "cGold.h"
 #include "cCustomers.h"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - Brothel
-bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKSTRIP;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_PEEP))
 	{
 		//SIN - More informative mssg to show *what* she refuses
@@ -48,10 +46,10 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 	cGirls::UnequipCombat(girl);	// put that shit away, you'll scare off the customers!
 
 
-	int wages = girl->askprice() + g_Dice % 50;
-	int tips = max((g_Dice % 50) - 10, 0);
+	int wages = girl->askprice() + rng % 50;
+	int tips = max((rng % 50) - 10, 0);
 	int enjoy = 0, fame = 0;
-	u_int sextype = SKILL_STRIP;
+	SKILLS sextype = SKILL_STRIP;
 	int imagetype = IMGTYPE_STRIP;
 	int msgtype = Day0Night1;
 
@@ -156,7 +154,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 			if (girl->has_trait( "Cum Addict"))
 			{
 				//Autofellatio, belly gets in the way if pregnant, requires extra flexibility
-				if (girl->has_trait( "Flexible") && !(girl->is_pregnant()) && g_Dice.percent(50))
+				if (girl->has_trait( "Flexible") && !(girl->is_pregnant()) && rng.percent(50))
 				{
 					ss << "\nDuring her shift " << girlName << " couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
 					girl->oralsex(1);
@@ -184,7 +182,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 			{
 				//Some variety
 				//Autopaizuri, requires very big breasts
-				if (g_Dice.percent(25) && girl->has_trait( "Abnormally Large Boobs") || g_Dice.percent(25) && (girl->has_trait( "Titanic Tits")))
+				if (rng.percent(25) && girl->has_trait( "Abnormally Large Boobs") || rng.percent(25) && (girl->has_trait( "Titanic Tits")))
 				{
 					ss << "\n" << girlName << " was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
 					girl->tittysex(1);
@@ -192,7 +190,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 					tips += 30;
 				}
 				//cums over self
-				else if (girl->dignity() < -40 && g_Dice.percent(25))
+				else if (girl->dignity() < -40 && rng.percent(25))
 				{
 					ss << "\nThe customers were really impressed when " << girlName << " finished her show by cumming all over herself";
 					tips += 10;
@@ -230,7 +228,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 			imagetype = IMGTYPE_MAST;
 		}
 	}
-	else if (g_Dice.percent(5))  //glory hole event
+	else if (rng.percent(5))  //glory hole event
 	{
 		ss << "A man managed to cut a hole out from his booth and made himself a glory hole, " << girlName
 			<< " saw his cock sticking out and ";
@@ -273,7 +271,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 			}
 
 			/* `J` suggest adding bad stuff,
-			else if (girl->has_trait( "Merciless") && girl->has_item("Dagger") != -1 && g_Dice.percent(10))
+			else if (girl->has_trait( "Merciless") && girl->has_item("Dagger") != -1 && rng.percent(10))
 			{
 			imagetype = IMGTYPE_COMBAT;
 			ss << "decided she would teach this guy a lesson and cut his dick off.\n";
@@ -290,10 +288,10 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 	tips = max(0, int(tips * mod));
 	wages = max(0, int(wages * mod));
 
-	if (girl->beauty() > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && rng.percent(20))
 	{
 		ss << "Stunned by her beauty, a customer left her a great tip.\n \n";
-		tips += g_Dice % 50 + 10;
+		tips += rng % 50 + 10;
 	}
 
 	if (sextype != SKILL_STRIP)
@@ -314,9 +312,9 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 		girl->upd_temp_stat(STAT_LIBIDO, -20);
 		//*/
 
-		int sexwages = min(g_Dice % (Cust.m_Money / 4) + girl->askprice(), int(Cust.m_Money));
+		int sexwages = min(rng % (Cust.m_Money / 4) + girl->askprice(), int(Cust.m_Money));
 		Cust.m_Money -= sexwages;
-		int sextips = max(0, int(g_Dice%Cust.m_Money - (Cust.m_Money / 2)));
+		int sextips = max(0, int(rng%Cust.m_Money - (Cust.m_Money / 2)));
 		Cust.m_Money -= sextips;
 		wages += sexwages;
 		tips += sextips;
@@ -380,16 +378,16 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 
 	girl->fame(fame);
 	girl->exp(xp);
-	girl->strip(g_Dice%skill + 1);
-	girl->performance(g_Dice%skill + 1);
+	girl->strip(rng%skill + 1);
+	girl->performance(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	//gain traits
-		if (jobperformance >= 140 && g_Dice.percent(25))
+		if (jobperformance >= 140 && rng.percent(25))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
 	}
-	if (sextype != SKILL_STRIP && girl->dignity() < 0 && g_Dice.percent(25))
+	if (sextype != SKILL_STRIP && girl->dignity() < 0 && rng.percent(25))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1, EVENT_WARNING);
 	}
@@ -403,7 +401,7 @@ bool cJobManager::WorkPeepShow(sGirl* girl, bool Day0Night1, string& summary)
 
 double cJobManager::JP_PeepShow(sGirl* girl, bool estimate)// not used
 {
-#if 1  //SIN - standardizing job performance calc per J's instructs
+  //SIN - standardizing job performance calc per J's instructs
 	double jobperformance =
 		//basing this on payout logic from code above
 		//main stats - first 100 - charisma and beauty are used above to calc typical payout
@@ -414,13 +412,6 @@ double cJobManager::JP_PeepShow(sGirl* girl, bool estimate)// not used
 		girl->level();
 
 	// next up tiredness penalty
-#else
-	double jobperformance =
-		(girl->charisma() / 2 +
-		girl->beauty() / 2 +
-		girl->strip() / 2 +
-		girl->performance() / 2);
-#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -428,52 +419,8 @@ double cJobManager::JP_PeepShow(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Charismatic"))              jobperformance += 15;
-	if (girl->has_trait( "Sexy Air"))                 jobperformance += 10;
-	if (girl->has_trait( "Cool Person"))              jobperformance += 10;  //people love to be around her
-	if (girl->has_trait( "Cute"))                     jobperformance += 5;
-	if (girl->has_trait( "Charming"))                 jobperformance += 10;  //people like charming people
-	if (girl->has_trait( "Great Figure"))             jobperformance += 5;
-	if (girl->has_trait( "Great Arse"))               jobperformance += 5;
-	if (girl->has_trait( "Quick Learner"))            jobperformance += 5;
-	if (girl->has_trait( "Psychic"))                  jobperformance += 10;  //knows what people want to see
-	if (girl->has_trait( "Fearless"))                 jobperformance += 10;
-	if (girl->has_trait( "Dick-Sucking Lips"))		jobperformance += 5;
-	if (girl->has_trait( "Flexible"))					jobperformance += 10;
-	if (girl->has_trait( "Exhibitionist"))			jobperformance += 10; //likes showing off her body
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))                jobperformance -= 50;  // needs others to do the job
-	if (girl->has_trait( "Clumsy"))                   jobperformance -= 20;  //spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))               jobperformance -= 20;  //gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))                  jobperformance -= 30;  //don't like to be around people
-	if (girl->has_trait( "Meek"))                     jobperformance -= 20;
-	if (girl->has_trait( "Shy"))                      jobperformance -= 20;
-	if (girl->has_trait( "Slow Learner"))             jobperformance -= 10;
-	if (girl->has_trait( "Horrific Scars"))           jobperformance -= 20;
-	if (girl->has_trait( "Small Scars"))              jobperformance -= 5;
 	if (girl->is_pregnant())								jobperformance -= 5;
-	if (girl->has_trait( "Flat Ass"))					jobperformance -= 15;
-	if (girl->has_trait( "Flat Chest"))				jobperformance -= 15;
+    jobperformance += girl->get_trait_modifier("work.peepshow");
 
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 40;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 60;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 125;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 60;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 50;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 150;
-	if (girl->has_trait( "Blind"))		jobperformance -= 15;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 15;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-
-	return jobperformance;
+    return jobperformance;
 }

@@ -21,34 +21,30 @@
 
 #include <memory>
 #include <functional>
-#include "cInterfaceObject.h"
-#include "cFont.h"
-
-class CSurface;
+#include "interface/cInterfaceObject.h"
+#include "interface/cFont.h"
+#include "interface/cSurface.h"
 
 class cCheckBox : public cUIWidget
 {
 public:
-	cCheckBox(int id, int x, int y, int width, int height, std::string text, int fontsize = 12, bool leftorright = false);
-	~cCheckBox();
+	cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, int height, std::string text, int fontsize = 12, bool leftorright = false);
 
-	bool GetState() const {return m_StateOn;}
-	void ButtonClicked(int x, int y);
+    bool HandleClick(int x, int y, bool press) override;
 
-	void SetState(bool on) { m_StateOn = on;}
-    void SetDisabled(bool disable) { m_Disabled = disable; };
+    bool GetState() const {return m_StateOn;}
+    void SetState(bool on) { m_StateOn = on;}
 
 	void DrawWidget(const CGraphics& gfx) override;
 
     void SetCallback(std::function<void(bool)>);
-private:
 
-	std::unique_ptr<CSurface> m_Image;
-	SDL_Surface* m_Surface = nullptr;
-	SDL_Surface* m_Border = nullptr;
+private:
+    cSurface m_Image;
+    cSurface m_Surface;
+    cSurface m_Border;
 	bool m_StateOn = false;
 	cFont m_Font;
-	bool m_Disabled = false;
     std::function<void(bool)> m_Callback;
 };
 

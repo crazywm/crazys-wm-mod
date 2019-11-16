@@ -19,89 +19,43 @@
 #include "cEditBox.h"
 
 #include <memory>
-#include "CGraphics.h"
+#include "interface/CGraphics.h"
 #include "sConfig.h"
-#include "cFont.h"
+#include "interface/cFont.h"
+#include "interface/cInterfaceWindow.h"
+#include "interface/cColor.h"
 
 extern cConfig cfg;
 
-extern unsigned char g_EditBoxBorderR, g_EditBoxBorderG, g_EditBoxBorderB;
-extern unsigned char g_EditBoxBackgroundR, g_EditBoxBackgroundG, g_EditBoxBackgroundB;
-extern unsigned char g_EditBoxSelectedR, g_EditBoxSelectedG, g_EditBoxSelectedB;
-extern unsigned char g_EditBoxTextR, g_EditBoxTextG, g_EditBoxTextB;
-
-cEditBox::~cEditBox()
-{
-	if(m_Background)
-		SDL_FreeSurface(m_Background);
-
-	if(m_FocusedBackground)
-		SDL_FreeSurface(m_FocusedBackground);
-
-	if(m_Border)
-		SDL_FreeSurface(m_Border);
-}
+extern sColor g_EditBoxBorderColor;
+extern sColor g_EditBoxBackgroundColor;
+extern sColor g_EditBoxSelectedColor;
+extern sColor g_EditBoxTextColor;
 
 void cEditBox::DrawWidget(const CGraphics& gfx)
 {
-	if(m_Background && m_Border)
-	{
-		// Draw the window
-		SDL_Rect offset;
-		offset.x = m_XPos;
-		offset.y = m_YPos;
+    m_Border.DrawSurface(m_XPos, m_YPos);
 
-		// blit to the screen
-        gfx.BlitSurface(m_Border, nullptr, &offset);
-
-		offset.x = m_XPos+m_BorderSize;
-		offset.y = m_YPos+m_BorderSize;
-
-		if(m_HasFocus)
-            gfx.BlitSurface(m_FocusedBackground, nullptr, &offset);
-		else
-            gfx.BlitSurface(m_Background, nullptr, &offset);
-	}
+    if(HasFocus())
+        m_FocusedBackground.DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
+    else
+        m_Background.DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
 
 	// draw the text
 	m_Text->DrawText(m_XPos+m_BorderSize+1, m_YPos+m_BorderSize+1);
 }
 
-cEditBox::cEditBox(int ID, int x, int y, int width, int height, int BorderSize, int FontSize):
-    cUIWidget(ID, x, y, width, height), m_BorderSize(BorderSize),
+cEditBox::cEditBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, int FontSize):
+    cUIWidget(ID, x, y, width, height, parent), m_BorderSize(BorderSize),
     m_Text(std::make_unique<cFont>())
 {
-	m_Border = SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0,0,0,0);
-	SDL_FillRect(m_Border,nullptr,SDL_MapRGB(m_Border->format,g_EditBoxBorderR,g_EditBoxBorderG,g_EditBoxBorderB));
-		
-	m_Background = SDL_CreateRGBSurface(SDL_SWSURFACE, width-(BorderSize*2), height-(BorderSize*2), 32, 0,0,0,0);
-	SDL_FillRect(m_Background,nullptr,SDL_MapRGB(m_Background->format,g_EditBoxBackgroundR,g_EditBoxBackgroundG,g_EditBoxBackgroundB));
-
-	m_FocusedBackground = SDL_CreateRGBSurface(SDL_SWSURFACE, width-(BorderSize*2), height-(BorderSize*2), 32, 0,0,0,0);
-	SDL_FillRect(m_FocusedBackground,nullptr,SDL_MapRGB(m_Background->format,g_EditBoxSelectedR,g_EditBoxSelectedG,g_EditBoxSelectedB));
+    m_Border = GetGraphics().CreateSurface(width, height, g_EditBoxBorderColor);
+    m_Background = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2), g_EditBoxBackgroundColor);
+    m_FocusedBackground = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2), g_EditBoxSelectedColor);
 
 	m_Text->LoadFont(cfg.fonts.normal(), FontSize);
 	m_Text->SetText("");
-	m_Text->SetColor(g_EditBoxTextR,g_EditBoxTextG,g_EditBoxTextB);
-}
-
-bool cEditBox::IsOver(int x, int y)
-{
-    return x > m_XPos && y > m_YPos && x < m_XPos + m_Width && y < m_YPos + m_Height;
-}
-
-bool cEditBox::OnClicked(int x, int y)
-{
-	if(IsOver(x,y))
-	{
-		m_HasFocus = true;
-//		g_InterfaceEvents.AddEvent(EVENT_BUTTONCLICKED, m_ID);
-		return true;
-	}
-	else
-		m_HasFocus = false;
-
-	return false;
+	m_Text->SetColor(g_EditBoxTextColor.r, g_EditBoxTextColor.g, g_EditBoxTextColor.b);
 }
 
 void cEditBox::ClearText()
@@ -110,29 +64,52 @@ void cEditBox::ClearText()
 		m_Text->SetText("");
 }
 
-void cEditBox::UpdateText(char key, bool upper)
-{
-	string text = m_Text->GetText();
-	if(key == '-')
-	{
-		if(text.length() > 0)
-		{
-			text.erase(text.length()-1);
-			m_Text->SetText(text);
-		}
-		return;
-	}
-	if(upper)
-		key = (char)toupper((int)key);
-	text += key;
-	int w = 0, h = 0;
-	m_Text->GetSize(text,w,h);
-	if(w > m_Width)
-		return;
-	m_Text->SetText(text);
-}
-
 std::string cEditBox::GetText()
 {
     return m_Text->GetText();
+}
+
+bool cEditBox::HandleClick(int x, int y, bool press)
+{
+    GetParent()->SetFocusTo(this);
+    return true;
+}
+
+bool cEditBox::HandleKeyPress(SDL_keysym sym)
+{
+    if(!HasFocus()) return false;
+
+    if (sym.sym == SDLK_BACKSPACE) {
+        string text = m_Text->GetText();
+        if(text.length() > 0)
+        {
+            text.erase(text.length()-1);
+            m_Text->SetText(text);
+        }
+        return true;
+    }
+    else if (sym.sym == SDLK_ESCAPE) {
+        ClearText();
+    }
+    else
+    {
+        std::uint16_t unicode = sym.unicode;
+        unsigned char ascii   = unicode & 0xffu;
+        if(unicode && unicode == ascii && std::isprint(ascii)) {
+            string text = m_Text->GetText();
+            text += ascii;
+            int w = 0, h = 0;
+            m_Text->GetSize(text,w,h);
+            if(w > m_Width)
+                return true;
+            m_Text->SetText(text);
+            return true;
+        }
+        return false;
+    }
+}
+
+bool cEditBox::HandleSetFocus(bool focus)
+{
+    return true;
 }

@@ -24,11 +24,11 @@
 // Frame Rate for games
 const int FRAMES_PER_SECOND = 25;
 
-class CTimer
+class cTimer
 {
 public:
-	CTimer() {m_StartTicks = m_PausedTicks = 0; m_Paused = m_Started = false;}
-	~CTimer() = default;
+	cTimer() { m_StartTicks = m_PausedTicks = 0; m_Paused = m_Started = false;}
+	~cTimer() = default;
 
 	void Start() {m_Paused = false; m_Started = true; m_StartTicks = SDL_GetTicks();}
 	void Stop() {m_Paused = m_Started = false;}

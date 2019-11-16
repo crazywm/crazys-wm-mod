@@ -20,7 +20,7 @@
 #ifndef CRAZYS_WM_MOD_CSCREENLOADGAME_HPP
 #define CRAZYS_WM_MOD_CSCREENLOADGAME_HPP
 
-#include "cInterfaceWindow.h"
+#include "interface/cInterfaceWindow.h"
 
 class cScreenLoadGame : public cInterfaceWindow
 {

@@ -17,13 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #pragma once
-#include "CLog.h"
-#include "cRng.h"
-#include "sConfig.h"
-
-extern	cRng	g_Dice;
-
-extern cConfig cfg;
 
 struct sBrothel;
 struct sGirl;
@@ -39,22 +32,18 @@ public:
 	int healing_price(int n);
 	int nets_price(int n);
 	int anti_preg_price(int n);
-	int strip_bar_price();
-	int gambling_hall_price();
-	int movie_cost();
-/*
+
+    /*
  *	let's have matron wages go up as skill level increases.
  *	`J` this is no longer used
  */
 	int matron_wages(int level = 50, int numgirls = 1);
 	int bar_staff_wages();
 	int empty_room_cost(IBuilding& brothel);
-	int empty_bar_cost();
-	int active_bar_cost(int level, double shifts);
-	int empty_casino_cost(int level);
+    int empty_casino_cost(int level);
 	int active_casino_cost(int level, double shifts);
-	int casino_staff_wages();
-	int advertising_costs(int budget);
+
+    int advertising_costs(int budget);
 	int add_room_cost(int n);
 
 	double slave_price(sGirl *girl, bool buying);
@@ -64,10 +53,4 @@ public:
 	int male_slave_sales();
 	int creature_sales();
 	int girl_training();
-/*
- *	really should do this by facility and match on name
- *
- *	that said...
- */
-	int buy_facility(int base_price);
 };

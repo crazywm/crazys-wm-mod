@@ -23,18 +23,16 @@
 #include "src/Game.hpp"
 #include "cCustomers.h"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Centre - General
-bool cJobManager::WorkFeedPoor(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFeedPoor(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCENTRE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(ACTION_WORKCENTRE, JOB_FEEDPOOR))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -216,12 +214,12 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, bool Day0Night1, string& summary)
 
 
 	//try and add randomness here
-	if (girl->intelligence() < 55 && g_Dice.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
+	if (girl->intelligence() < 55 && rng.percent(30))//didnt put a check on this one as we could use some randomness and its an intel check... guess we can if people keep bitching
 	{
 		blow = true;	ss << "An elderly fellow managed to convince " << girlName << " that he was full and didn't need anymore food but that she did. He told her his cock gave a special treat if she would suck on it long enough. Which she did man she isn't very smart.\n \n";
 	}
 
-	if (girl->has_trait( "Nymphomaniac") && g_Dice.percent(30) && girl->libido() > 75
+	if (girl->has_trait( "Nymphomaniac") && rng.percent(30) && girl->libido() > 75
 		&& !girl->has_trait( "Lesbian") && !girl->check_virginity()
 		&& (brothel->is_sex_type_allowed(SKILL_NORMALSEX) || brothel->is_sex_type_allowed(SKILL_ANAL)))
 	{
@@ -234,14 +232,14 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->is_slave())
 	{
 		ss << "\nThe fact that she is your slave makes people think its less of a good deed on your part.";
-		g_Game.player().disposition(dispo);
+		g_Game->player().disposition(dispo);
 		wages = 0;
 	}
 	else
 	{
 		ss << "\nThe fact that your paying this girl to do this helps people think your a better person.";
-		g_Game.gold().staff_wages(100);  // wages come from you
-		g_Game.player().disposition(int(dispo*1.5));
+		g_Game->gold().staff_wages(100);  // wages come from you
+		g_Game->player().disposition(int(dispo*1.5));
 	}
 
 
@@ -281,7 +279,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
-				g_Game.push_message(girl->m_Realname + " has gotten pregnant", 0);
+				g_Game->push_message(girl->m_Realname + " has gotten pregnant", 0);
 			}
 		}
 		else if (brothel->is_sex_type_allowed(SKILL_ANAL))
@@ -297,7 +295,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else if (blow)
 	{
-		brothel->m_Happiness += (g_Dice % 70) + 60;
+		brothel->m_Happiness += (rng % 70) + 60;
 		dispo += 4;
 		girl->oralsex(2);
 		fame += 1;
@@ -324,7 +322,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, bool Day0Night1, string& summary)
 	int cost = 0;
 	for (int i = 0; i < feed; i++)
 	{
-		cost += g_Dice % 3 + 2; // 2-5 gold per customer
+		cost += rng % 3 + 2; // 2-5 gold per customer
 	}
 	brothel->m_Finance.centre_costs(cost);
 	ss.str("");
@@ -346,7 +344,7 @@ bool cJobManager::WorkFeedPoor(sGirl* girl, bool Day0Night1, string& summary)
 
 	girl->fame(fame);
 	girl->exp(xp);
-	if (g_Dice % 2)
+	if (rng % 2)
 		girl->intelligence(1);
 	girl->service(skill);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
@@ -370,21 +368,7 @@ double cJobManager::JP_FeedPoor(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 5);
 	}
 
-	//good traits
-	if (girl->has_trait( "Charismatic"))  jobperformance += 20;
-	if (girl->has_trait( "Sexy Air"))		jobperformance += 10;
-	if (girl->has_trait( "Cool Person"))  jobperformance += 10;  //people love to be around her
-	if (girl->has_trait( "Cute"))			jobperformance += 5;
-	if (girl->has_trait( "Charming"))		jobperformance += 15;  //people like charming people
-	if (girl->has_trait( "Optimist"))		jobperformance += 10;
+    jobperformance += girl->get_trait_modifier("work.feedpoor");
 
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))    jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy"))		jobperformance -= 20; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))   jobperformance -= 20; //gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))			jobperformance -= 20;
-
-	return jobperformance;
+    return jobperformance;
 }

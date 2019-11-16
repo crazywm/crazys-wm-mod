@@ -19,7 +19,7 @@
 #pragma once
 
 #include "DirPath.h"
-#include "cInterfaceWindow.h"
+#include "interface/cInterfaceWindow.h"
 
 class sInventoryItem;
 
@@ -34,8 +34,8 @@ struct sItemTransferSide {
     int unequip_id;
     int detail_id;      // `J` Added for .06.02.39
 
-    std::vector<sInventoryItem*> items;
-    int selected_owner;
+    std::vector<const sInventoryItem*> items;
+    int selected_owner = -1;
     int selected_item = -2;
 };
 
@@ -43,12 +43,13 @@ class IInventoryProvider {
     // everything to which an inventory item can be transferred
 public:
     virtual ~IInventoryProvider() = default;
-    virtual std::array<std::string, 3> get_data(int filter) const = 0;
+    virtual std::vector<std::string> get_data(int filter) const = 0;
     virtual std::string get_details(int font_size) const { return "-"; }
-    virtual void enumerate_items(const std::function<void(sInventoryItem *, int)>& callback) const = 0;
+    virtual void enumerate_items(const function<void(const sInventoryItem *, int)> &callback) const = 0;
 
-    virtual int take_item(sInventoryItem* item, int amount) = 0;
-    virtual int give_item(sInventoryItem* item, int amount) = 0;
+    virtual int take_item(const sInventoryItem *item, int amount) = 0;
+    virtual int give_item(const sInventoryItem *item, int amount) = 0;
+    virtual bool equippable(const sInventoryItem *item, bool equip) const = 0;
 };
 
 class cScreenItemManagement : public cInterfaceWindowXML
@@ -88,7 +89,7 @@ public:
 	void refresh_item_list(Side which_list);
 	static string GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, string ItemName = "");
 
-    void write_item_text(sInventoryItem * item, int owner, int target);
+    void write_item_text(const sInventoryItem *item, int owner, int target);
 
     void change_equip(Side, bool equip);
 

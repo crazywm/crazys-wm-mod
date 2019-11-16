@@ -25,10 +25,8 @@
 #include "src/sStorage.hpp"
 #include "CLog.h"
 
-extern cRng g_Dice;
-
 // `J` Job Brothel - General
-bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -67,20 +65,20 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 
 		while (haulcount > 0 && girl->health() > 40)
 		{
-			gold += g_Dice % 150;
-			double roll = (g_Dice % 10000) / 100.0;
+			gold += rng % 150;
+			double roll = (rng % 10000) / 100.0;
 			int getwhat = 0;								// 0=girl, 1=beast, 2=item
 			if (roll < beastpercent)						getwhat = 1;
 			else if (roll < beastpercent + itemspercent)	getwhat = 2;
 
 			std::uint8_t fight_outcome = 0;
 			// she may be able to coax a beast or if they are looking for an item, it may be guarded
-			if ((getwhat == 1 && g_Dice.percent((girl->animalhandling() + girl->beastiality()) / 3))
-				|| (getwhat == 2 && g_Dice.percent(50)))
+			if ((getwhat == 1 && rng.percent((girl->animalhandling() + girl->beastiality()) / 3))
+				|| (getwhat == 2 && rng.percent(50)))
 				fight_outcome = 1;	// no fight so auto-win
 			else		// otherwise do the fight
 			{
-				sGirl* tempgirl = g_Game.CreateRandomGirl(18, false, false, false, true);
+				sGirl* tempgirl = g_Game->CreateRandomGirl(18, false, false, false, true);
 				if (tempgirl)		// `J` reworked incase there are no Non-Human Random Girls
 				{
 					fight_outcome = cGirls::girl_fights_girl(girl, tempgirl);
@@ -93,7 +91,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 				}
 				if (fight_outcome == 7)
 				{
-					if (g_Dice % girl->get_skill(SKILL_COMBAT) < 5) fight_outcome = 2;
+					if (rng % girl->get_skill(SKILL_COMBAT) < 5) fight_outcome = 2;
 					else
 					{
 						stringstream sse;
@@ -113,7 +111,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 				{
 					haulcount--;
 					int chance = (girl->intelligence() + girl->agility()) / 2;
-					if (g_Dice.percent(chance))		// percent chance she will find an item
+					if (rng.percent(chance))		// percent chance she will find an item
 					{
 						haulcount--;
 						numitems++;
@@ -128,14 +126,14 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 			}
 			else if (fight_outcome == 0) // it was a draw
 			{
-				haulcount -= 1 + g_Dice % 5;
+				haulcount -= 1 + rng % 5;
 			}
 		}
 
 		if (raped)
 		{
 			ss.str("");
-			int NumMon = g_Dice % 6 + 1;
+			int NumMon = rng % 6 + 1;
 			ss << girl->m_Realname << " was defeated then" << ((NumMon <= 3) ? "" : " gang") << " raped and abused by " << NumMon << " monsters.";
 			int health = -NumMon, happy = -NumMon * 5, spirit = -NumMon, sex = -NumMon * 2, combat = -NumMon * 2, injury = 9 + NumMon;
 
@@ -149,7 +147,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 
 			if (!girl->calc_insemination(*cGirls::GetBeast(), false, 1.0 + (NumMon * 0.5)))
 			{
-				g_Game.push_message(girl->m_Realname + " has gotten inseminated", 0);
+				g_Game->push_message(girl->m_Realname + " has gotten inseminated", 0);
 				health -= 1, happy -= 10, spirit -= 4, sex -= 4, combat -= 2, injury += 2;
 			}
 
@@ -163,18 +161,18 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 			return false;
 		}
 
-		g_Game.storage().add_to_beasts(type_beasts);
+		g_Game->storage().add_to_beasts(type_beasts);
 		while (numgirls > 0)
 		{
 			numgirls--;
 			sGirl* ugirl = nullptr;
-			if (g_Dice.percent(cfg.catacombs.unique_catacombs()))	// chance of getting unique girl
+			if (rng.percent(cfg.catacombs.unique_catacombs()))	// chance of getting unique girl
 			{
-				ugirl = g_Game.GetRandomGirl(false, true);				// Unique monster girl type
+				ugirl = g_Game->GetRandomGirl(false, true);				// Unique monster girl type
 			}
 			if (ugirl == nullptr)		// if not unique or a unique girl can not be found
 			{
-				ugirl = g_Game.CreateRandomGirl(0, false, false, true, true);	// create a random girl
+				ugirl = g_Game->CreateRandomGirl(0, false, false, true, true);	// create a random girl
 				if (ugirl)
 				{
 					type_monster_girls++;
@@ -190,23 +188,23 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 			if (ugirl)
 			{
 				num_monsters++;
-				if (g_Game.get_objective() && g_Game.get_objective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
+				if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
 				{
-                    g_Game.get_objective()->m_SoFar++;
+                    g_Game->get_objective()->m_SoFar++;
 				}
 				stringstream Umsg;
-				ugirl->add_trait("Kidnapped", 2 + g_Dice % 15);
+				ugirl->add_trait("Kidnapped", 2 + rng % 15);
 				Umsg << ugirl->m_Realname << " was captured in the catacombs by " << girlName << ".\n";
 				ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
-				g_Game.dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);	// Either type of girl goes to the dungeon
+				g_Game->dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);	// Either type of girl goes to the dungeon
 			}
 		}
 		while (numitems > 0)
 		{
 			numitems--;
 			int ItemPlace = 0;  // Place in 0..299
-			sInventoryItem* TempItem = g_Game.inventory_manager().GetRandomCatacombItem();
-			if(g_Game.player().inventory().add_item(TempItem)) {
+			sInventoryItem* TempItem = g_Game->inventory_manager().GetRandomCatacombItem();
+			if(g_Game->player().inventory().add_item(TempItem)) {
                 item_list += ((item_list.empty()) ? "   " : ",\n   ") + TempItem->m_Name;
                 num_items++;
             }
@@ -217,20 +215,20 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 #endif
 	{
 		// determine if they fight any monsters
-		if (!g_Dice.percent(max(girl->combat(), girl->magic())))	// WD:	Allow best of Combat or Magic skill
+		if (!rng.percent(max(girl->combat(), girl->magic())))	// WD:	Allow best of Combat or Magic skill
 		{
 			ss << "The first creature she encountered looked way to strong for her to fight so she ran away. She stops by your office later, \"I think I need more fight training before I can go back there.\"";
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 			return false;
 		}
-		num_monsters = max(1, (g_Dice % 6) - 1);
+		num_monsters = max(1, (rng % 6) - 1);
 
 		// fight/capture monsters here
 		for (int i = num_monsters; i > 0; i--)
 		{
-			bool getagirl = g_Dice.percent(55);	// 0 is beast, 1 is girl (human or non-human)
+			bool getagirl = rng.percent(55);	// 0 is beast, 1 is girl (human or non-human)
 
-			sGirl* tempgirl = g_Game.CreateRandomGirl(18, false, false, false, true, false, false);
+			sGirl* tempgirl = g_Game->CreateRandomGirl(18, false, false, false, true, false, false);
 			std::uint8_t fight_outcome = 0;
 			if (tempgirl)		// `J` reworked incase there are no Non-Human Random Girls
 			{
@@ -244,13 +242,13 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 			}
 			if (fight_outcome == 7)
 			{
-				if (g_Dice%girl->get_skill(SKILL_COMBAT) < 5) raped = true;
+				if (rng%girl->get_skill(SKILL_COMBAT) < 5) raped = true;
 				else
 				{
 					ss << "She came back with one animal today.\n \n";
 					ss << "(Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness)";
 					girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
-					g_Game.storage().add_to_beasts(1);
+					g_Game->storage().add_to_beasts(1);
 					type_beasts++;
 				}
 			}
@@ -261,13 +259,13 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 					// the only way to ever capture rare girls like those with incoporeal trait.
 					// Some rationilization could be done, but is probably not necessary. DustyDan
 					sGirl* ugirl = nullptr;
-					if (g_Dice.percent(cfg.catacombs.unique_catacombs()))	// chance of getting unique girl
+					if (rng.percent(cfg.catacombs.unique_catacombs()))	// chance of getting unique girl
 					{
-						ugirl = g_Game.GetRandomGirl(false, true);				// Unique monster girl type
+						ugirl = g_Game->GetRandomGirl(false, true);				// Unique monster girl type
 					}
 					if (ugirl == nullptr)		// if not unique or a unique girl can not be found
 					{
-						ugirl = g_Game.CreateRandomGirl(0, false, false, true, true);	// create a random girl
+						ugirl = g_Game->CreateRandomGirl(0, false, false, true, true);	// create a random girl
 						if (ugirl)
 						{
 							type_monster_girls++;
@@ -282,19 +280,19 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 					}
 					if (ugirl)
 					{
-						if (g_Game.get_objective() && g_Game.get_objective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
+						if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS)
 						{
-                            g_Game.get_objective()->m_SoFar++;
+                            g_Game->get_objective()->m_SoFar++;
 						}
 						stringstream Umsg;
 						Umsg << ugirl->m_Realname << " was captured in the catacombs by " << girlName << ".\n";
 						ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
-						g_Game.dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);	// Either type of girl goes to the dungeon
+						g_Game->dungeon().AddGirl(ugirl, DUNGEON_GIRLCAPTURED);	// Either type of girl goes to the dungeon
 					}
 				}
 				else  // Beast type
 				{
-					g_Game.storage().add_to_beasts(1);
+					g_Game->storage().add_to_beasts(1);
 					type_beasts++;
 				}
 			}
@@ -304,7 +302,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 			}
 			else if (fight_outcome == 0)  // it was a draw just get a beast
 			{
-				g_Game.storage().add_to_beasts(1);
+				g_Game->storage().add_to_beasts(1);
 				type_beasts++;
 			}
 
@@ -315,7 +313,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 		if (raped)
 		{
 			ss.str("");
-			int NumMon = g_Dice % 6 + 1;
+			int NumMon = rng % 6 + 1;
 			ss << girl->m_Realname << " was defeated then" << ((NumMon <= 3) ? "" : " gang") << " raped and abused by " << NumMon << " monsters.";
 			int health = -NumMon, happy = -NumMon * 5, spirit = -NumMon, sex = -NumMon * 2, combat = -NumMon * 2, injury = 9 + NumMon;
 
@@ -329,7 +327,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 
 			if (!girl->calc_insemination(*cGirls::GetBeast(), false, 1.0 + (NumMon * 0.5)))
 			{
-				g_Game.push_message(girl->m_Realname + " has gotten inseminated", 0);
+				g_Game->push_message(girl->m_Realname + " has gotten inseminated", 0);
 				health -= 1, happy -= 10, spirit -= 4, sex -= 4, combat -= 2, injury += 2;
 			}
 
@@ -347,13 +345,13 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 
 		for (int i = num_monsters; i > 0; i--)
 		{
-			gold += g_Dice % 150;
+			gold += rng % 150;
 
 			// get any items
-			while (g_Dice.percent(50 - (num_items * 5))) {
-                sInventoryItem* TempItem = g_Game.inventory_manager().GetRandomCatacombItem();
+			while (rng.percent(50 - (num_items * 5))) {
+                sInventoryItem* TempItem = g_Game->inventory_manager().GetRandomCatacombItem();
 
-                if (g_Game.player().inventory().add_item(TempItem)) {
+                if (g_Game->player().inventory().add_item(TempItem)) {
                     item_list += ((item_list.empty()) ? "   " : ",\n   ") + TempItem->m_Name;
                     num_items++;
                 }
@@ -406,7 +404,7 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 		if (!girl->calc_insemination(*cGirls::GetBeast(), false, 1.0))
 		{
-			g_Game.push_message(girl->m_Realname + " has gotten inseminated", 0);
+			g_Game->push_message(girl->m_Realname + " has gotten inseminated", 0);
 		}
 	}
 
@@ -437,19 +435,19 @@ bool cJobManager::WorkExploreCatacombs(sGirl* girl, bool Day0Night1, string& sum
 	if (girl->has_trait( "Lesbian"))				libido += type_monster_girls + type_unique_monster_girls;
 
 	girl->exp(xp);
-	girl->combat((g_Dice % skill) + 1);
-	girl->magic((g_Dice % skill) + 1);
-	girl->agility(g_Dice % skill);
-	girl->constitution(g_Dice % skill);
-	girl->strength(g_Dice % skill);
+	girl->combat((rng % skill) + 1);
+	girl->magic((rng % skill) + 1);
+	girl->agility(rng % skill);
+	girl->constitution(rng % skill);
+	girl->strength(rng % skill);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
-	girl->upd_Enjoyment(actiontype, (g_Dice % skill) + 2);
+	girl->upd_Enjoyment(actiontype, (rng % skill) + 2);
 
 	// Myr: Turned trait gains into functions
 	cGirls::PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself an Adventurer.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
-	if (g_Dice.percent(25) && girl->strength() >= 60 && girl->combat() > girl->magic())
+	if (rng.percent(25) && girl->strength() >= 60 && girl->combat() > girl->magic())
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, girlName + " has become pretty Strong from all of the fights she's been in.", Day0Night1);
 	}
@@ -478,6 +476,7 @@ double cJobManager::JP_ExploreCatacombs(sGirl* girl, bool estimate)
 
 	}
 
+    jobperformance += girl->get_trait_modifier("work.explorecatacombs");
 
 	return jobperformance;
 }

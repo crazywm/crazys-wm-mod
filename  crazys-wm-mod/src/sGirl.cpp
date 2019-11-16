@@ -13,9 +13,7 @@
 #include "src/buildings/cBrothel.h"
 
 extern cRng g_Dice;
-extern cTraits g_Traits;
 extern cConfig cfg;
-extern cTariff tariff;
 
 bool is_Actress_Job(int testjob);
 bool CrewNeeded(const IBuilding& building);
@@ -26,107 +24,20 @@ bool CrewNeeded(const IBuilding& building);
 * first: static members need declaring
 */
 bool sGirl::m_maps_setup = false;
-map<string, unsigned int> sGirl::stat_lookup;
-map<string, unsigned int> sGirl::skill_lookup;
-map<string, unsigned int> sGirl::status_lookup;
-map<string, unsigned int> sGirl::enjoy_lookup;
 map<string, unsigned int> sGirl::jobs_lookup;
-map<string, unsigned int> sGirl::training_lookup;
-map<string, unsigned int> sGirl::fetish_lookup;
 
-const char *sGirl::stat_names[] =
-                   {
-                           "Charisma", "Happiness", "Libido", "Constitution", "Intelligence", "Confidence", "Mana", "Agility",
-                           "Fame", "Level", "AskPrice", "House", "Exp", "Age", "Obedience", "Spirit", "Beauty", "Tiredness", "Health",
-                           "PCFear", "PCLove", "PCHate", "Morality", "Refinement", "Dignity", "Lactation", "Strength",
-                           "NPCLove", "Sanity"
-                   };
-// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > *_names[]
-const char *sGirl::skill_names[] =
-                   {
-                           "Anal", "Magic", "BDSM", "NormalSex", "Beastiality", "Group", "Lesbian", "Service", "Strip", "Combat", "OralSex", "TittySex",
-                           "Medicine", "Performance", "Handjob", "Crafting", "Herbalism", "Farming", "Brewing", "AnimalHandling", "Footjob", "Cooking"
-                           , nullptr
-                   };
-const char *sGirl::status_names[] =
-                   {
-                           "None", "Poisoned", "Badly Poisoned", "Pregnant", "Pregnant By Player", "Slave", "Has Daughter", "Has Son",
-                           "Inseminated", "Controlled", "Catacombs", "Arena", "Your Daughter", "Is Daughter"
-                   };
-// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > enjoy_names[]
-const char *sGirl::enjoy_names[] =
-                   {
-                           "COMBAT", "SEX", "WORKESCORT", "WORKCLEANING", "WORKMATRON", "WORKBAR", "WORKHALL", "WORKSHOW", "WORKSECURITY",
-                           "WORKADVERTISING", "WORKTORTURER", "WORKCARING", "WORKDOCTOR", "WORKMOVIE", "WORKCUSTSERV", "WORKCENTRE", "WORKCLUB",
-                           "WORKHAREM", "WORKRECRUIT", "WORKNURSE", "WORKMECHANIC", "WORKCOUNSELOR", "WORKMUSIC", "WORKSTRIP", "WORKMILK",
-                           "WORKMASSEUSE", "WORKFARM", "WORKTRAINING", "WORKREHAB", "MAKEPOTIONS", "MAKEITEMS", "COOKING", "GETTHERAPY",
-                           "WORKHOUSEPET", "GENERAL"
-                   };
-// `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > enjoy_jobs[]
-const char *sGirl::enjoy_jobs[] = {
-        "combat",							// ACTION_COMBAT
-        "working as a whore",				// ACTION_SEX
-        "working as an Escort",				// ACTION_WORKESCORT
-        "cleaning",							// ACTION_WORKCLEANING
-        "acting as a matron",				// ACTION_WORKMATRON
-        "working in the bar",				// ACTION_WORKBAR
-        "working in the gambling hall",		// ACTION_WORKHALL
-        "producing movies",					// ACTION_WORKSHOW
-        "providing security",				// ACTION_WORKSECURITY
-        "doing advertising",				// ACTION_WORKADVERTISING
-        "torturing people",					// ACTION_WORKTORTURER
-        "caring for beasts",				// ACTION_WORKCARING
-        "working as a doctor",				// ACTION_WORKDOCTOR
-        "producing movies",					// ACTION_WORKMOVIE
-        "providing customer service",		// ACTION_WORKCUSTSERV
-        "working in the centre",			// ACTION_WORKCENTRE
-        "working in the club",				// ACTION_WORKCLUB
-        "being in your harem",				// ACTION_WORKHAREM
-        "being a recruiter",				// ACTION_WORKRECRUIT
-        "working as a nurse",				// ACTION_WORKNURSE
-        "fixing things",					// ACTION_WORKMECHANIC
-        "counseling people",				// ACTION_WORKCOUNSELOR
-        "performing music",					// ACTION_WORKMUSIC
-        "stripping",						// ACTION_WORKSTRIP
-        "having her breasts milked",		// ACTION_WORKMILK
-        "working as a masseuse",			// ACTION_WORKMASSEUSE
-        "working on the farm",				// ACTION_WORKFARM
-        "training",							// ACTION_WORKTRAINING
-        "counseling",						// ACTION_WORKREHAB
-        "making potions",					// ACTION_WORKMAKEPOTIONS
-        "making items",						// ACTION_WORKMAKEITEMS
-        "cooking",							// ACTION_WORKCOOKING
-        "therapy",							// ACTION_WORKTHERAPY
-        "puppy training",					// ACTION_WORKHOUSEPET
-        "doing miscellaneous tasks"			// ACTION_GENERAL
-};
 const char *sGirl::children_type_names[] =
                    {
                            "Total_Births", "Beasts", "All_Girls", "All_Boys", "Customer_Girls",
                            "Customer_Boys", "Your_Girls", "Your_Boys", "Miscarriages", "Abortions"
                    };
-// When modifying Training types, search for "Change-Traning-Types"  :  found in >> cGirls.cpp > training_names[]
-const char *sGirl::training_names[] =
-                   {
-                           "PUPPY", "PONY", "GENERAL"
-                   };
+
 //  When modifying Training types, search for "Change-Traning-Types"  :  found in >> cGirls.cpp > training_jobs[]
 const char *sGirl::training_jobs[] = {
         "puppy training",
         "pony training",
         "general training"
 };
-
-// calculate the max like this, and it's self-maintaining
-const unsigned int sGirl::max_stats = (sizeof(sGirl::stat_names) / sizeof(sGirl::stat_names[0]));
-const unsigned int sGirl::max_skills = (sizeof(sGirl::skill_names) / sizeof(sGirl::skill_names[0]));
-const unsigned int sGirl::max_statuses = (sizeof(sGirl::status_names) / sizeof(sGirl::status_names[0]));
-const unsigned int sGirl::max_enjoy = (sizeof(sGirl::enjoy_names) / sizeof(sGirl::enjoy_names[0]));
-const unsigned int sGirl::max_jobs = (sizeof(g_Game.job_manager().JobQkNm) / sizeof(g_Game.job_manager().JobQkNm[0]));
-const unsigned int sGirl::max_training = (sizeof(sGirl::training_names) / sizeof(sGirl::training_names[0]));
-
-
-
 
 sGirl::sGirl()				// constructor
 {
@@ -223,13 +134,12 @@ int sGirl::has_item(const std::string& item)
 
 string stringtolowerj(string name)
 {
-    string s, t;
-    for (u_int i = 0; i < name.length(); i++)
+    string s;
+    for (char i : name)
     {
-        if (tolower(name[i]) != tolower(" "[0]) && tolower(name[i]) != tolower("."[0]) && tolower(name[i]) != tolower(","[0]))
+        if (tolower(i) != tolower(' ') && tolower(i) != tolower('.') && tolower(i) != tolower(','))
         {
-            t[0] = tolower(name[i]);
-            s += t[0];
+            s += tolower(i);
         }
     }
     return s;
@@ -250,7 +160,7 @@ int sGirl::has_item_j(const std::string& item)
     return -1;
 }
 
-int sGirl::add_inv(sInventoryItem* item)
+int sGirl::add_inv(const sInventoryItem *item)
 {
     if (!item)	return -1;
     int i;
@@ -258,7 +168,7 @@ int sGirl::add_inv(sInventoryItem* item)
     {
         if (m_Inventory[i] == nullptr)
         {
-            m_Inventory[i] = item;
+            m_Inventory[i] = const_cast<sInventoryItem*>(item);
             m_NumInventory++;
             if (item->m_Type == INVMISC) equip(i, true);
             return i;  // MYR: return i for success, -1 for failure
@@ -343,117 +253,6 @@ void sGirl::setup_maps()
 {
     g_LogFile.os() << "[sGirl::setup_maps] Setting up Stats, Skills and Status codes." << endl;
     m_maps_setup = true;
-    stat_lookup["Charisma"] = STAT_CHARISMA;
-    stat_lookup["Happiness"] = STAT_HAPPINESS;
-    stat_lookup["Libido"] = STAT_LIBIDO;
-    stat_lookup["Constitution"] = STAT_CONSTITUTION;
-    stat_lookup["Intelligence"] = STAT_INTELLIGENCE;
-    stat_lookup["Confidence"] = STAT_CONFIDENCE;
-    stat_lookup["Mana"] = STAT_MANA;
-    stat_lookup["Agility"] = STAT_AGILITY;
-    stat_lookup["Fame"] = STAT_FAME;
-    stat_lookup["Level"] = STAT_LEVEL;
-    stat_lookup["AskPrice"] = STAT_ASKPRICE;
-    stat_lookup["House"] = STAT_HOUSE;
-    stat_lookup["Exp"] = STAT_EXP;
-    stat_lookup["Age"] = STAT_AGE;
-    stat_lookup["Obedience"] = STAT_OBEDIENCE;
-    stat_lookup["Spirit"] = STAT_SPIRIT;
-    stat_lookup["Beauty"] = STAT_BEAUTY;
-    stat_lookup["Tiredness"] = STAT_TIREDNESS;
-    stat_lookup["Health"] = STAT_HEALTH;
-    stat_lookup["PCFear"] = STAT_PCFEAR;
-    stat_lookup["PCLove"] = STAT_PCLOVE;
-    stat_lookup["PCHate"] = STAT_PCHATE;
-    stat_lookup["Morality"] = STAT_MORALITY;
-    stat_lookup["Refinement"] = STAT_REFINEMENT;
-    stat_lookup["Dignity"] = STAT_DIGNITY;
-    stat_lookup["Lactation"] = STAT_LACTATION;
-    stat_lookup["Strength"] = STAT_STRENGTH;
-    stat_lookup["NPCLove"] = STAT_NPCLOVE;
-    stat_lookup["Sanity"] = STAT_SANITY;
-
-    // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > setup_maps
-
-
-    skill_lookup["Magic"] = SKILL_MAGIC;
-    skill_lookup["Combat"] = SKILL_COMBAT;
-    skill_lookup["Service"] = SKILL_SERVICE;
-    skill_lookup["Medicine"] = SKILL_MEDICINE;
-    skill_lookup["Performance"] = SKILL_PERFORMANCE;
-    skill_lookup["Crafting"] = SKILL_CRAFTING;
-    skill_lookup["Herbalism"] = SKILL_HERBALISM;
-    skill_lookup["Farming"] = SKILL_FARMING;
-    skill_lookup["Brewing"] = SKILL_BREWING;
-    skill_lookup["AnimalHandling"] = SKILL_ANIMALHANDLING;
-    skill_lookup["Cooking"] = SKILL_COOKING;
-
-    skill_lookup["Anal"] = SKILL_ANAL;
-    skill_lookup["BDSM"] = SKILL_BDSM;
-    skill_lookup["NormalSex"] = SKILL_NORMALSEX;
-    skill_lookup["OralSex"] = SKILL_ORALSEX;
-    skill_lookup["TittySex"] = SKILL_TITTYSEX;
-    skill_lookup["Handjob"] = SKILL_HANDJOB;
-    skill_lookup["Beastiality"] = SKILL_BEASTIALITY;
-    skill_lookup["Group"] = SKILL_GROUP;
-    skill_lookup["Lesbian"] = SKILL_LESBIAN;
-    skill_lookup["Strip"] = SKILL_STRIP;
-    skill_lookup["Footjob"] = SKILL_FOOTJOB;
-
-    status_lookup["None"] = STATUS_NONE;
-    status_lookup["Poisoned"] = STATUS_POISONED;
-    status_lookup["Badly Poisoned"] = STATUS_BADLY_POISONED;
-    status_lookup["Pregnant"] = STATUS_PREGNANT;
-    status_lookup["Pregnant By Player"] = STATUS_PREGNANT_BY_PLAYER;
-    status_lookup["Slave"] = STATUS_SLAVE;
-    status_lookup["Has Daughter"] = STATUS_HAS_DAUGHTER;
-    status_lookup["Has Son"] = STATUS_HAS_SON;
-    status_lookup["Inseminated"] = STATUS_INSEMINATED;
-    status_lookup["Controlled"] = STATUS_CONTROLLED;
-    status_lookup["Catacombs"] = STATUS_CATACOMBS;
-    status_lookup["Arena"] = STATUS_ARENA;
-    status_lookup["Your Daughter"] = STATUS_YOURDAUGHTER;
-    status_lookup["Is Daughter"] = STATUS_ISDAUGHTER;
-
-    // `J` When modifying Action types, search for "J-Change-Action-Types"  :  found in >> cGirls.cpp > setup_maps
-
-    enjoy_lookup["COMBAT"] = ACTION_COMBAT;
-    enjoy_lookup["SEX"] = ACTION_SEX;
-    enjoy_lookup["WORKESCORT"] = ACTION_WORKESCORT;
-    enjoy_lookup["WORKCLEANING"] = ACTION_WORKCLEANING;
-    enjoy_lookup["WORKMATRON"] = ACTION_WORKMATRON;
-    enjoy_lookup["WORKBAR"] = ACTION_WORKBAR;
-    enjoy_lookup["WORKHALL"] = ACTION_WORKHALL;
-    enjoy_lookup["WORKSHOW"] = ACTION_WORKSHOW;
-    enjoy_lookup["WORKSECURITY"] = ACTION_WORKSECURITY;
-    enjoy_lookup["WORKADVERTISING"] = ACTION_WORKADVERTISING;
-    enjoy_lookup["WORKTORTURER"] = ACTION_WORKTORTURER;
-    enjoy_lookup["WORKCARING"] = ACTION_WORKCARING;
-    enjoy_lookup["WORKDOCTOR"] = ACTION_WORKDOCTOR;
-    enjoy_lookup["WORKMOVIE"] = ACTION_WORKMOVIE;
-    enjoy_lookup["WORKCUSTSERV"] = ACTION_WORKCUSTSERV;
-    enjoy_lookup["WORKCENTRE"] = ACTION_WORKCENTRE;
-    enjoy_lookup["WORKCLUB"] = ACTION_WORKCLUB;
-    enjoy_lookup["WORKHAREM"] = ACTION_WORKHAREM;
-    enjoy_lookup["WORKRECRUIT"] = ACTION_WORKRECRUIT;
-    enjoy_lookup["WORKNURSE"] = ACTION_WORKNURSE;
-    enjoy_lookup["WORKMECHANIC"] = ACTION_WORKMECHANIC;
-    enjoy_lookup["WORKCOUNSELOR"] = ACTION_WORKCOUNSELOR;
-    enjoy_lookup["WORKMUSIC"] = ACTION_WORKMUSIC;
-    enjoy_lookup["WORKSTRIP"] = ACTION_WORKSTRIP;
-    enjoy_lookup["WORKMILK"] = ACTION_WORKMILK;
-    enjoy_lookup["WORKMASSEUSE"] = ACTION_WORKMASSEUSE;
-    enjoy_lookup["WORKFARM"] = ACTION_WORKFARM;
-    enjoy_lookup["WORKINTERN"] = ACTION_WORKTRAINING;		// `J` changed WORKINTERN to WORKTRAINING...
-    enjoy_lookup["WORKTRAINING"] = ACTION_WORKTRAINING;		// to allow it to be used for any training job
-    enjoy_lookup["WORKREHAB"] = ACTION_WORKREHAB;
-    enjoy_lookup["MAKEPOTIONS"] = ACTION_WORKMAKEPOTIONS;
-    enjoy_lookup["MAKEITEMS"] = ACTION_WORKMAKEITEMS;
-    enjoy_lookup["COOKING"] = ACTION_WORKCOOKING;
-    enjoy_lookup["GETTHERAPY"] = ACTION_WORKTHERAPY;
-    enjoy_lookup["WORKHOUSEPET"] = ACTION_WORKHOUSEPET;
-    enjoy_lookup["GENERAL"] = ACTION_GENERAL;
-
 
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cGirls.cpp > jobs_lookup
     jobs_lookup["Adv"] = JOB_ADVERTISING;
@@ -587,98 +386,6 @@ void sGirl::setup_maps()
     jobs_lookup["StWr"] = JOB_WHORESTREETS;
     jobs_lookup["XXXE"] = JOB_XXXENTERTAINMENT;
     jobs_lookup["255"] = 255;
-
-
-    // When modifying Training types, search for "Change-Traning-Types"  :  found in >> cGirls.cpp > setup_maps
-
-    training_lookup["PUPPY"] = TRAINING_PUPPY;
-    training_lookup["GENERAL"] = TRAINING_GENERAL;
-
-
-    // Fetishes
-    fetish_lookup["TryAnything"] = FETISH_TRYANYTHING;
-    fetish_lookup["SpecificGirl"] = FETISH_SPECIFICGIRL;
-    fetish_lookup["BigBoobs"] = FETISH_BIGBOOBS;
-    fetish_lookup["Sexy"] = FETISH_SEXY;
-    fetish_lookup["CuteGirl"] = FETISH_CUTEGIRLS;
-    fetish_lookup["NiceFigure"] = FETISH_FIGURE;
-    fetish_lookup["Lolita"] = FETISH_LOLITA;
-    fetish_lookup["NiceArse"] = FETISH_ARSE;
-    fetish_lookup["Cool"] = FETISH_COOLGIRLS;
-    fetish_lookup["Elegant"] = FETISH_ELEGANT;
-    fetish_lookup["Nerd"] = FETISH_NERDYGIRLS;
-    fetish_lookup["SmallBoobs"] = FETISH_SMALLBOOBS;
-    fetish_lookup["Dangerous"] = FETISH_DANGEROUSGIRLS;
-    fetish_lookup["NonHuman"] = FETISH_NONHUMAN;
-    fetish_lookup["Freak"] = FETISH_FREAKYGIRLS;
-    fetish_lookup["Futa"] = FETISH_FUTAGIRLS;
-    fetish_lookup["Tall"] = FETISH_TALLGIRLS;
-    fetish_lookup["Short"] = FETISH_SHORTGIRLS;
-    fetish_lookup["Fat"] = FETISH_FATGIRLS;
-}
-
-int sGirl::lookup_skill_code(string s)
-{
-    // be useful to be able to log unrecognised type names here
-    if (skill_lookup.find(s) == skill_lookup.end())
-    {
-        g_LogFile.os() << "[sGirl::lookup_skill_code] Error: unknown Skill: " << s << endl;
-        return -1;
-    }
-    return skill_lookup[s];
-}
-
-int sGirl::lookup_status_code(string s)
-{
-    // be useful to be able to log unrecognised type names here
-    if (status_lookup.find(s) == status_lookup.end())
-    {
-        g_LogFile.os() << "[sGirl::lookup_status_code] Error: unknown Status: " << s << endl;
-        return -1;
-    }
-    return status_lookup[s];
-}
-
-int sGirl::lookup_stat_code(string s)
-{
-    if (!m_maps_setup)	// only need to do this once
-        setup_maps();
-
-    // be useful to be able to log unrecognised type names here
-    if (stat_lookup.find(s) == stat_lookup.end())
-    {
-        g_LogFile.os() << "[sGirl::lookup_stat_code] Error: unknown Stat: " << s << endl;
-        return -1;
-    }
-    return stat_lookup[s];
-}
-
-int sGirl::lookup_enjoy_code(string s)
-{
-    if (!m_maps_setup)	// only need to do this once
-        setup_maps();
-
-    // be useful to be able to log unrecognised type names here
-    if (enjoy_lookup.find(s) == enjoy_lookup.end())
-    {
-        g_LogFile.os() << "[sGirl::lookup_enjoy_code] Error: unknown Enjoy: " << s << endl;
-        return -1;
-    }
-    return enjoy_lookup[s];
-}
-
-int sGirl::lookup_fetish_code(string s)
-{
-    if (!m_maps_setup)	// only need to do this once
-        setup_maps();
-
-    // be useful to be able to log unrecognised type names here
-    if (fetish_lookup.find(s) == fetish_lookup.end())
-    {
-        g_LogFile.os() << "[sGirl::lookup_fetish_code] Error: unknown fetish: " << s << endl;
-        throw std::runtime_error("Invalid 'fetich' specified!");
-    }
-    return fetish_lookup[s];
 }
 
 int sGirl::lookup_jobs_code(string s)
@@ -692,7 +399,7 @@ int sGirl::lookup_jobs_code(string s)
         // `J` added check for missing jobs_lookup
         for (int i = 0; i < NUM_JOBS; i++)
         {
-            if (g_Game.job_manager().JobQkNm[i] == s || g_Game.job_manager().JobName[i] == s)
+            if (g_Game->job_manager().JobQkNm[i] == s || g_Game->job_manager().JobName[i] == s)
                 return i;
         }
         // if still not found, send original error message
@@ -700,20 +407,6 @@ int sGirl::lookup_jobs_code(string s)
         return -1;
     }
     return jobs_lookup[s];
-}
-
-int sGirl::lookup_training_code(string s)
-{
-    if (!m_maps_setup)	// only need to do this once
-        setup_maps();
-
-    // be useful to be able to log unrecognised type names here
-    if (training_lookup.find(s) == training_lookup.end())
-    {
-        g_LogFile.os() << "[sGirl::lookup_training_code] Error: unknown Training: " << s << endl;
-        return -1;
-    }
-    return training_lookup[s];
 }
 
 string sGirl::lookup_where_she_is()
@@ -729,7 +422,7 @@ string sGirl::lookup_where_she_is()
 bool sGirl::equip(int slot, bool force) {
     if (can_equip(slot, force))
     {
-        g_Game.inventory_manager().Equip(this, slot, force);
+        g_Game->inventory_manager().Equip(this, slot, force);
         return true;
     }
     return false;
@@ -1307,7 +1000,7 @@ bool sGirl::remove_inv(int slot) {
     // Girl inventories don't stack items
     if (m_Inventory[slot] != nullptr)
     {
-        g_Game.inventory_manager().Unequip(this, slot);
+        unequip(slot);
         m_Inventory[slot] = nullptr;
         m_NumInventory--;
         return true;
@@ -1322,10 +1015,10 @@ sGirl *sGirl::run_away()
     if(m_Building)
         m_Building->remove_girl(this);
     if (m_NightJob == JOB_INDUNGEON)
-        g_Game.dungeon().RemoveGirl(this);
+        g_Game->dungeon().RemoveGirl(this);
     m_RunAway = 6;		// player has 6 weeks to retreive
     m_NightJob = m_DayJob = JOB_RUNAWAY;
-    g_Game.AddGirlToRunaways(this);
+    g_Game->AddGirlToRunaways(this);
     return nullptr;
 }
 
@@ -1355,7 +1048,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
     pGirl->QueryIntAttribute("DaysUnhappy", &tempInt); m_DaysUnhappy = tempInt; tempInt = 0;
 
     // Load their traits
-    LoadTraitsXML(hGirl.FirstChild("Traits"), m_NumTraits, m_Traits, m_TempTrait);
+    g_Game->traits().LoadTraitsXML(hGirl.FirstChild("Traits"), m_NumTraits, m_Traits, m_TempTrait);
     if (m_NumTraits > MAXNUM_TRAITS)
         g_LogFile.write("--- ERROR - Loaded more traits than girls can have??");
 
@@ -1363,7 +1056,7 @@ bool sGirl::LoadGirlXML(TiXmlHandle hGirl)
     cGirls::RemoveAllRememberedTraits(this);	// and clear any thing left after the cleanup
 
     // Load their remembered traits
-    LoadTraitsXML(hGirl.FirstChild("Remembered_Traits"), m_NumRememTraits, m_RememTraits);
+    g_Game->traits().LoadTraitsXML(hGirl.FirstChild("Remembered_Traits"), m_NumRememTraits, m_RememTraits);
     if (m_NumRememTraits > MAXNUM_TRAITS * 2)
         g_LogFile.write("--- ERROR - Loaded more remembered traits than girls can have??");
 
@@ -1556,21 +1249,21 @@ TiXmlElement* sGirl::SaveGirlXML(TiXmlElement* pRoot)
     // `J` changed jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
     // save day/night jobs
     if (m_DayJob < 0 || m_DayJob > NUM_JOBS) pGirl->SetAttribute("DayJob", "255");
-    else pGirl->SetAttribute("DayJob", g_Game.job_manager().JobQkNm[m_DayJob]);
+    else pGirl->SetAttribute("DayJob", g_Game->job_manager().JobQkNm[m_DayJob]);
     if (m_NightJob < 0 || m_NightJob > NUM_JOBS) pGirl->SetAttribute("NightJob", "255");
-    else pGirl->SetAttribute("NightJob", g_Game.job_manager().JobQkNm[m_NightJob]);
+    else pGirl->SetAttribute("NightJob", g_Game->job_manager().JobQkNm[m_NightJob]);
 
     // save prev day/night jobs
     if (m_PrevDayJob < 0 || m_PrevDayJob > NUM_JOBS) pGirl->SetAttribute("PrevDayJob", "255");
-    else pGirl->SetAttribute("PrevDayJob", g_Game.job_manager().JobQkNm[m_PrevDayJob]);
+    else pGirl->SetAttribute("PrevDayJob", g_Game->job_manager().JobQkNm[m_PrevDayJob]);
     if (m_PrevNightJob < 0 || m_PrevNightJob > NUM_JOBS) pGirl->SetAttribute("PrevNightJob", "255");
-    else pGirl->SetAttribute("PrevNightJob", g_Game.job_manager().JobQkNm[m_PrevNightJob]);
+    else pGirl->SetAttribute("PrevNightJob", g_Game->job_manager().JobQkNm[m_PrevNightJob]);
 
     // save prev day/night jobs
     if (m_YesterDayJob < 0 || m_YesterDayJob > NUM_JOBS) pGirl->SetAttribute("YesterDayJob", "255");
-    else pGirl->SetAttribute("YesterDayJob", g_Game.job_manager().JobQkNm[m_YesterDayJob]);
+    else pGirl->SetAttribute("YesterDayJob", g_Game->job_manager().JobQkNm[m_YesterDayJob]);
     if (m_YesterNightJob < 0 || m_YesterNightJob > NUM_JOBS) pGirl->SetAttribute("YesterNightJob", "255");
-    else pGirl->SetAttribute("YesterNightJob", g_Game.job_manager().JobQkNm[m_YesterNightJob]);
+    else pGirl->SetAttribute("YesterNightJob", g_Game->job_manager().JobQkNm[m_YesterNightJob]);
 
     pGirl->SetAttribute("RunAway", m_RunAway);					// save runnayway vale
     pGirl->SetAttribute("Spotted", m_Spotted);					// save spotted
@@ -1698,7 +1391,7 @@ void sGirl::load_from_xml(TiXmlElement *el)
     for (int i = 0; i < NUM_STATS; i++) // loop through stats
     {
         int ival;
-        const char *stat_name = sGirl::stat_names[i];
+        const char *stat_name = get_stat_name((STATS)i);
         pt = el->Attribute(stat_name, &ival);
 
         ostream& os = g_LogFile.os();
@@ -1714,7 +1407,7 @@ void sGirl::load_from_xml(TiXmlElement *el)
     for (u_int i = 0; i < NUM_SKILLS; i++)	//	loop through skills
     {
         int ival;
-        if (el->Attribute(sGirl::skill_names[i], &ival))	m_Skills[i] = ival;
+        if (el->Attribute(get_skill_name((SKILLS)i), &ival))	m_Skills[i] = ival;
     }
 
     if (pt = el->Attribute("Status"))
@@ -1738,13 +1431,13 @@ void sGirl::load_from_xml(TiXmlElement *el)
         if (child->ValueStr() == "Trait")	//get the trait name
         {
             pt = child->Attribute("Name");
-            m_Traits[m_NumTraits] = g_Traits.GetTrait(pt);
+            m_Traits[m_NumTraits] = g_Game->traits().GetTrait(pt);
             m_NumTraits++;
         }
         if (child->ValueStr() == "Item")	//get the item name
         {
             pt = child->Attribute("Name");
-            sInventoryItem* item = g_Game.inventory_manager().GetItem(pt);
+            sInventoryItem* item = g_Game->inventory_manager().GetItem(pt);
             if (item)
             {
                 m_Inventory[m_NumInventory] = item;
@@ -1822,10 +1515,6 @@ bool sGirl::lose_virginity()	{
 }
 
 
-bool sGirl::calc_pregnancy(int chance, cPlayer *player)
-{
-    return calc_pregnancy(chance, STATUS_PREGNANT_BY_PLAYER, player->m_Stats, player->m_Skills);
-}
 bool sGirl::calc_pregnancy(int chance, sCustomer *cust)
 {
     return calc_pregnancy(chance, STATUS_PREGNANT, cust->m_Stats, cust->m_Skills);
@@ -1996,7 +1685,7 @@ bool sGirl::add_trait(string name, int temptime, bool removeitem, bool remember)
         {
             if (temptime>0) m_TempTrait[i] = temptime;
             m_NumTraits++;
-            m_Traits[i] = g_Traits.GetTrait(name);
+            m_Traits[i] = g_Game->traits().GetTrait(name);
             // if we did not find the trait in the traits list, there is nothing we can do here.
             if(m_Traits[i] == nullptr) {
                 return false;
@@ -2061,7 +1750,7 @@ bool sGirl::remove_trait(string name,  bool addrememberlist, bool force, bool ke
     if (addrememberlist || keepinrememberlist) cGirls::AddRememberedTrait(this, name);
 
     //	WD: Remove trait
-    TraitSpec* trait = g_Traits.GetTrait(name);
+    TraitSpec* trait = g_Game->traits().GetTrait(name);
     for (int i = 0; i < MAXNUM_TRAITS; i++)			// remove the traits
     {
         if (m_Traits[i] && m_Traits[i] == trait)
@@ -2111,7 +1800,7 @@ bool sGirl::is_dead(bool sendmessage) const
         if (sendmessage)
         {
             stringstream ss; ss << this->m_Realname << " is dead. She isn't going to work anymore and her body will be removed by the end of the week.";
-            g_Game.push_message(ss.str(), 1);
+            g_Game->push_message(ss.str(), 1);
         }
         return true;
     }
@@ -2233,8 +1922,9 @@ bool sGirl::was_resting()
 }
 
 
-void sGirl::OutputGirlRow(string* Data, const vector<string>& columnNames)
+void sGirl::OutputGirlRow(vector<string>& Data, const vector<string>& columnNames)
 {
+    Data.resize(columnNames.size());
     for (unsigned int x = 0; x < columnNames.size(); ++x)
     {
         //for each column, write out the statistic that goes in it
@@ -2249,7 +1939,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
     ss.str("");
 
     bool interrupted = false;	// `J` added
-    if ((this) && (this)->m_YesterDayJob != (this)->m_DayJob &&
+    if (this->m_YesterDayJob != (this)->m_DayJob &&
         (cJobManager::is_Surgery_Job((this)->m_YesterDayJob) || (this)->m_YesterDayJob == JOB_REHAB) &&
         (((this)->m_WorkingDay > 0) || (this)->m_PrevWorkingDay > 0))
         interrupted = true;
@@ -2282,7 +1972,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
     }
     else if (detailName == "Gold")
     {
-        if (g_Game.gang_manager().GetGangOnMission(MISS_SPYGIRLS))
+        if (g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS))
         {
             ss << m_Money;
         }
@@ -2296,7 +1986,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
         // 'J' Added for .06.03.01
     else if (detailName == "DayJobShort" || detailName == "NightJobShort")
     {
-        ss << g_Game.job_manager().JobQkNm[(detailName == "DayJobShort" ? m_DayJob : m_NightJob)];
+        ss << g_Game->job_manager().JobQkNm[(detailName == "DayJobShort" ? m_DayJob : m_NightJob)];
     }
 
         // 'J' Girl Table job text
@@ -2312,39 +2002,39 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
         }
         else if (DN_Job == JOB_FAKEORGASM || DN_Job == JOB_SO_STRAIGHT || DN_Job == JOB_SO_BISEXUAL || DN_Job == JOB_SO_LESBIAN)
         {
-            ss << g_Game.job_manager().JobName[DN_Job] << " (" << m_WorkingDay << "%)";
+            ss << g_Game->job_manager().JobName[DN_Job] << " (" << m_WorkingDay << "%)";
         }
         else if (DN_Job == JOB_CUREDISEASES)
         {
             if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " (" << m_WorkingDay << "%)";
+                ss << g_Game->job_manager().JobName[DN_Job] << " (" << m_WorkingDay << "%)";
             }
             else
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " (" << m_WorkingDay << "%) **";
+                ss << g_Game->job_manager().JobName[DN_Job] << " (" << m_WorkingDay << "%) **";
             }
         }
         else if (DN_Job == JOB_REHAB || DN_Job == JOB_ANGER || DN_Job == JOB_EXTHERAPY || DN_Job == JOB_THERAPY)
         {
             if (m_Building->num_girls_on_job(JOB_COUNSELOR, DN_Day) > 0)
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " (" << 3 - m_WorkingDay << ")";
+                ss << g_Game->job_manager().JobName[DN_Job] << " (" << 3 - m_WorkingDay << ")";
             }
             else
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " (?)***";
+                ss << g_Game->job_manager().JobName[DN_Job] << " (?)***";
             }
         }
         else if (DN_Job == JOB_GETHEALING)
         {
             if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
             {
-                ss << g_Game.job_manager().JobName[DN_Job];
+                ss << g_Game->job_manager().JobName[DN_Job];
             }
             else
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " ***";
+                ss << g_Game->job_manager().JobName[DN_Job] << " ***";
             }
         }
         else if (DN_Job == JOB_GETREPAIRS)
@@ -2352,15 +2042,15 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
             if (m_Building->num_girls_on_job(JOB_MECHANIC, DN_Day) > 0 &&
                 (this->has_trait("Construct") || this->has_trait("Half-Construct")))
             {
-                ss << g_Game.job_manager().JobName[DN_Job];
+                ss << g_Game->job_manager().JobName[DN_Job];
             }
             else if (this->has_trait("Construct"))
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " ****";
+                ss << g_Game->job_manager().JobName[DN_Job] << " ****";
             }
             else
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " !!";
+                ss << g_Game->job_manager().JobName[DN_Job] << " !!";
             }
         }
         else if (DN_Job == JOB_GETABORT)
@@ -2372,11 +2062,11 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
             }
             if (m_Building->num_girls_on_job( JOB_DOCTOR, DN_Day) > 0)
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " (" << wdays << ")*";
+                ss << g_Game->job_manager().JobName[DN_Job] << " (" << wdays << ")*";
             }
             else
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " (?)***";
+                ss << g_Game->job_manager().JobName[DN_Job] << " (?)***";
             }
         }
         else if (cJobManager::is_Surgery_Job(DN_Job))
@@ -2390,25 +2080,25 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
             }
             if (m_Building->num_girls_on_job(JOB_DOCTOR, DN_Day) > 0)
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " (" << wdays << ")*";
+                ss << g_Game->job_manager().JobName[DN_Job] << " (" << wdays << ")*";
             }
             else
             {
-                ss << g_Game.job_manager().JobName[DN_Job] << " (?)***";
+                ss << g_Game->job_manager().JobName[DN_Job] << " (?)***";
             }
         }
         else if (is_Actress_Job(DN_Job) && CrewNeeded(*m_Building))
         {
-            ss << g_Game.job_manager().JobName[DN_Job] << " **";
+            ss << g_Game->job_manager().JobName[DN_Job] << " **";
         }
         else if (is_resting() && !was_resting() && m_PrevDayJob != 255 && m_PrevNightJob != 255)
         {
-            ss << g_Game.job_manager().JobName[DN_Job];
-            ss << " (" << g_Game.job_manager().JobQkNm[(DN_Day == 0 ? m_PrevDayJob : m_PrevNightJob)] << ")";
+            ss << g_Game->job_manager().JobName[DN_Job];
+            ss << " (" << g_Game->job_manager().JobQkNm[(DN_Day == 0 ? m_PrevDayJob : m_PrevNightJob)] << ")";
         }
         else
         {
-            ss << g_Game.job_manager().JobName[DN_Job];
+            ss << g_Game->job_manager().JobName[DN_Job];
         }
         if (interrupted)
         {
@@ -2420,7 +2110,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
     {
         string stat = detailName;
         stat.replace(0, 5, "");
-        int code = sGirl::lookup_stat_code(stat);
+        int code = get_stat_id(stat);
         if (code != -1)
         {
             ss << get_stat(code);
@@ -2434,7 +2124,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
     {
         string skill = detailName;
         skill.replace(0, 6, "");
-        int code = sGirl::lookup_skill_code(skill);
+        int code = get_skill_id(skill);
         if (code != -1)
         {
             ss << get_skill(code);
@@ -2461,7 +2151,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
     {
         string status = detailName;
         status.replace(0, 7, "");
-        int code = lookup_status_code(status);
+        int code = get_status_id(status);
         if (code != -1)
         {
             ss << (m_States&(1u << code) ? "Yes" : "No");
@@ -2509,7 +2199,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
     else if (detailName == "Value")
     {
         cGirls::CalculateAskPrice(this, false);
-        ss << (int)tariff.slave_price(this, false);
+        ss << (int)g_Game->tariff().slave_price(this, false);
     }
     else if (detailName == "SO")
     {
@@ -2538,7 +2228,7 @@ int sGirl::rebel()
 {
     // return cGirls::GetRebelValue(this, this->m_DayJob == JOB_MATRON); // `J` old version
     if (this->m_DayJob == JOB_INDUNGEON)	// `J` Dungeon "Matron" can be a Torturer from any brothel
-        return cGirls::GetRebelValue(this, random_girl_on_job(g_Game.buildings(), JOB_TORTURER, 0));
+        return cGirls::GetRebelValue(this, random_girl_on_job(g_Game->buildings(), JOB_TORTURER, 0));
     if(m_Building)
         return cGirls::GetRebelValue(this, m_Building->matron_count() > 0);
     g_LogFile.ss() << "Error: Getting rebel value of girl that is not associated with any building!\n";
@@ -2725,4 +2415,65 @@ void sGirl::set_stat(int stat, int amount)
     if (amt > max) amt = max;
     else if (amt < min) amt = min;
     m_Stats[stat] = amt;
+}
+
+int sGirl::get_trait_modifier(const std::string& type) const
+{
+    int mod = 0;
+    for(auto& trait : m_Traits) {
+        if(trait)
+            mod += trait->get_modifier(type);
+    }
+    return mod;
+}
+
+int sGirl::has_item(const sInventoryItem &item) const {
+    for(auto& inv : m_Inventory) {
+        if(inv == &item) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void sGirl::unequip(int slot) {
+    if (m_EquipedItems[slot] == 0) return;	// if already unequiped do nothing
+    // unapply the effects
+    for (u_int i = 0; i < m_Inventory[slot]->m_Effects.size(); i++)
+    {
+        int eff_id = m_Inventory[slot]->m_Effects[i].m_EffectID;
+        int affects = m_Inventory[slot]->m_Effects[i].m_Affects;
+        int amount = m_Inventory[slot]->m_Effects[i].m_Amount;
+
+        /* */if (affects == sEffect::Skill)	cGirls::UpdateSkillMod(this, eff_id, -amount);
+        else if (affects == sEffect::Stat)	cGirls::UpdateStatMod(this, eff_id, -amount);
+        else if (affects == sEffect::Enjoy)	cGirls::UpdateEnjoymentMod(this, eff_id, -amount);
+        else if (affects == sEffect::GirlStatus)	// adds/removes status
+        {
+            if (amount == 1) m_States &= ~(1 << eff_id);		// add status
+            else if (amount == 0) m_States |= (1 << eff_id);	// remove status
+        }
+        else if (affects == sEffect::Trait)	// trait
+        {
+            /*
+             *	WD:	New logic for remembering traits
+             *		moved to AddTrait() RemoveTrait() fn's
+             *
+             *		UNEQUIP
+             */
+            if (amount == 0 && m_Inventory[slot]->m_Effects[i].m_Trait == "Virgin")
+            {
+                m_Virgin = 0; // `J` unequiping an item will not make her a virgin again
+            }
+            else if (amount == 0)					// possibly add remembered trait from unequiping an item
+                add_trait(m_Inventory[slot]->m_Effects[i].m_Trait, false, false, true);	// inrememberlist = true Add trait only if it is in the rememebered list
+
+            else if (amount == 1)				// remove item trait from unequiping an item
+                remove_trait(m_Inventory[slot]->m_Effects[i].m_Trait);
+        }
+    }
+    // set it as unequiped
+    m_EquipedItems[slot] = 0;
+
+    cGirls::CalculateGirlType(this);
 }

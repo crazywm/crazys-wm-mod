@@ -19,8 +19,7 @@
 #pragma once
 
 #include "DirPath.h"
-#include "cInterfaceWindow.h"
-#include "InterfaceGlobals.h"
+#include "interface/cInterfaceWindow.h"
 
 class cScreenDungeon : public cInterfaceWindowXML
 {
@@ -68,7 +67,7 @@ private:
 
 	void set_ids() override;
 
-    IBuilding* m_ReleaseBuilding;
+    IBuilding* m_ReleaseBuilding = nullptr;
 public:
 	cScreenDungeon();
 

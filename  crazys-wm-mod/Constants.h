@@ -18,8 +18,11 @@
  */
 #ifndef __CONSTANTS_H
 #define __CONSTANTS_H
-#include"cRng.h"
 
+#include "cRng.h"
+#include <string>
+#include <array>
+#include <unordered_map>
 
 typedef unsigned int u_int;
 
@@ -113,6 +116,15 @@ enum STATS{
 	NUM_STATS					// 1 more than the last stat
 };//End STATS enum
 
+template<class T>
+using id_lookup_t = std::unordered_map<std::string, T>;
+
+// lookup
+const std::array<const char*, NUM_STATS>& get_stat_names();
+const char* get_stat_name(STATS stat);
+STATS get_stat_id(const std::string& name);
+const id_lookup_t<STATS>& get_stat_lookup();
+
 // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> Constants.h
 
 // Skills
@@ -144,6 +156,12 @@ enum SKILLS{
 //const unsigned int SKILL_MAST		= ;
 };//End SKILLS enum
 
+// lookup
+const std::array<const char*, NUM_SKILLS>& get_skill_names();
+const char* get_skill_name(SKILLS stat);
+SKILLS get_skill_id(const std::string& name);
+const id_lookup_t<SKILLS>& get_skill_lookup();
+
 // STATUS
 //STATUS enum
 enum STATUS{
@@ -166,6 +184,11 @@ enum STATUS{
 	STATUS_DATING_NICE				,	//
 	NUM_STATUS						,	// 1 more than the last status
 };//End STATUS enum
+
+const std::array<const char*, NUM_STATUS>& get_status_names();
+const char* get_status_name(STATUS stat);
+STATUS get_status_id(const std::string& name);
+const id_lookup_t<STATUS>& get_status_lookup();
 
 // Jobs
 // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> Constants.h
@@ -601,6 +624,10 @@ enum Fetishs{
 	NUM_FETISH							// 
 };
 
+const std::array<const char*, NUM_FETISH>& get_fetish_names();
+const char* get_fetish_name(Fetishs stat);
+Fetishs get_fetish_id(const std::string& name);
+
 enum Goals{								// `J` new
 	GOAL_UNDECIDED = 0,					// The customer is not sure what they want to do
 	GOAL_FIGHT,							// The customer wants to start a fight
@@ -662,6 +689,11 @@ enum Action_Types{
 	ACTION_GENERAL,
 	NUM_ACTIONTYPES
 };
+
+const std::array<const char*, NUM_ACTIONTYPES>& get_action_names();
+const char* get_action_name(Action_Types stat);
+Action_Types get_action_id(const std::string& name);
+const char* get_action_descr(Action_Types action);
 
 // training girls can under take
 // When modifying Training types, search for "Change-Traning-Types"  :  found in >> Constants.h
@@ -850,7 +882,6 @@ const int MAXNUM_GIRL_INVENTORY		= 40;		// Maximum number of items a Girl can ha
 const int MAXNUM_RIVAL_INVENTORY	= 40;		// Maximum number of items a Rival can have in inventory
 
 const int LISTBOX_ITEMHEIGHT = 20;		//how tall (in pixels) each list item is
-const unsigned int LISTBOX_COLUMNS = 25;		//how many columns are allowed
 
 // Listbox Constants moved from cListBox.h
 const unsigned int COLOR_BLUE		= 0;
@@ -874,42 +905,6 @@ const int	EVENT_NOWORK		= 10;
 const int	EVENT_BACKTOWORK	= 11;
 const int	EVENT_LEVELUP		= 12;	// `J` added
 const int	EVENT_DEBUG			= 99;
-
-
-// Constants determining which screen is currently showing. This will help with hotkeys and help menu. --PP
-// The variable that uses this constant is int g_CurrentScreen;
-const int SCREEN_BROTHEL			= 0;
-const int SCREEN_TURNSUMMARY		= 1;
-const int SCREEN_GIRLMANAGEMENT		= 2;
-const int SCREEN_GIRLDETAILS		= 3;
-const int SCREEN_INVENTORY			= 4;
-const int SCREEN_GALLERY			= 5;
-const int SCREEN_TRANSFERGIRLS		= 6;
-const int SCREEN_GANGMANAGEMENT		= 7;
-const int SCREEN_BROTHELMANAGEMENT	= 8;
-const int SCREEN_DUNGEON			= 9;
-const int SCREEN_TOWN				= 10;
-const int SCREEN_MAYOR				= 11;
-const int SCREEN_BANK				= 12;
-const int SCREEN_JAIL				= 13;
-const int SCREEN_HOUSE				= 14;
-const int SCREEN_CLINIC				= 15;
-const int SCREEN_ARENA				= 16;
-const int SCREEN_TRYOUTS			= 17;
-const int SCREEN_CENTRE				= 18;
-const int SCREEN_STUDIO				= 19;
-const int SCREEN_CREATEMOVIE		= 20;
-const int SCREEN_BUILDINGMANAGEMENT	= 21;
-const int SCREEN_MAINMENU			= 22;
-const int SCREEN_SLAVEMARKET		= 23;
-const int SCREEN_PLAYERHOUSE		= 24; 
-const int SCREEN_GALLERY2			= 25;
-const int SCREEN_GETINPUT           = 26;
-const int SCREEN_PROPERTYMANAGEMENT = 27;	// `J` added for managing all properties on 1 page
-const int SCREEN_FARM				= 28;
-const int SCREEN_NEWGAME			= 29;
-const int SCREEN_PREPARING			= 29;
-const int SCREEN_SETTINGS			= 30;	// `J` added
 
 // The following constants are used with counting child types for girls.
 const int CHILD00_TOTAL_BIRTHS		= 0;

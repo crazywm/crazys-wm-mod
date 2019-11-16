@@ -20,6 +20,7 @@
 #include <sstream>
 #include <algorithm>
 #include "cCustomers.h"
+#include "CLog.h"
 
 #ifdef LINUX
 #include "linux.h"
@@ -28,7 +29,6 @@
 #include "src/buildings/cBrothel.h"
 #include "cGangs.h"
 #include "DirPath.h"
-#include "strnatcmp.h"
 #include "XmlMisc.h"
 #include "cMovieStudio.h"
 #include "cArena.h"
@@ -120,7 +120,7 @@ void sBrothel::UpdateGirls(bool is_night)
     /*
     *	handle any girls training during this shift
     */
-    g_Game.job_manager().do_training(this, is_night);
+    g_Game->job_manager().do_training(this, is_night);
     /*
     *	as for the rest of them...
     */
@@ -144,7 +144,7 @@ void sBrothel::UpdateGirls(bool is_night)
                 if ((matron || current->m_PrevDayJob == m_MatronJob)					// do we have a director, or was she the director and made herself rest?
                     && current->m_PrevDayJob != 255 && current->m_PrevNightJob != 255)	// 255 = nothing, in other words no previous job stored
                 {
-                    g_Game.job_manager().HandleSpecialJobs(current, current->m_PrevDayJob, current->m_DayJob, false);
+                    g_Game->job_manager().HandleSpecialJobs(current, current->m_PrevDayJob, current->m_DayJob, false);
                     if (current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
                         current->m_NightJob = current->m_PrevNightJob;
                     else
@@ -201,7 +201,7 @@ void sBrothel::UpdateGirls(bool is_night)
         {
             // these jobs are already done so we skip them
         }
-        else refused = g_Game.job_manager().JobFunc[sw](current, is_night, summary);
+        else refused = g_Game->job_manager().JobFunc[sw](current, is_night, summary, g_Dice);
 
 
         totalPay += current->m_Pay;
@@ -228,7 +228,7 @@ void sBrothel::UpdateGirls(bool is_night)
         else if (sw == JOB_TORTURER && is_night == SHIFT_NIGHT)	sum = -1;
 
             // `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-        else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() && g_Game.job_manager().is_job_Paid_Player(sw))
+        else if (current->is_slave() && !cfg.initial.slave_pay_outofpocket() && g_Game->job_manager().is_job_Paid_Player(sw))
         {
             summary += "\nYou own her and you don't pay your slaves.";
         }
@@ -239,9 +239,9 @@ void sBrothel::UpdateGirls(bool is_night)
             ss << girlName << " earned a total of " << totalGold << " gold";
             u_int job = (is_night ? current->m_NightJob : current->m_DayJob);
             // if it is a player paid job and she is not a slave
-            if ((g_Game.job_manager().is_job_Paid_Player(job) && !current->is_slave()) ||
+            if ((g_Game->job_manager().is_job_Paid_Player(job) && !current->is_slave()) ||
                 // or if it is a player paid job	and she is a slave		but you pay slaves out of pocket.
-                (g_Game.job_manager().is_job_Paid_Player(job) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
+                (g_Game->job_manager().is_job_Paid_Player(job) && current->is_slave() && cfg.initial.slave_pay_outofpocket()))
                 ss << " directly from you. She gets to keep it all.";
             else if (current->house() <= 0)				ss << " and she gets to keep it all.";
             else if (totalTips>0 && ((cfg.initial.girls_keep_tips() && !current->is_slave()) || (cfg.initial.slave_keep_tips() && current->is_slave())))
@@ -263,7 +263,7 @@ void sBrothel::UpdateGirls(bool is_night)
         else if (totalGold < 0)
         {
             ss.str("");
-            ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current->m_Realname << "\nJob: " << g_Game.job_manager().JobName[(is_night ? current->m_NightJob : current->m_DayJob)] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold;
+            ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current->m_Realname << "\nJob: " << g_Game->job_manager().JobName[(is_night ? current->m_NightJob : current->m_DayJob)] << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold;
             summary += ss.str();
             sum = EVENT_DEBUG;
         }
@@ -370,7 +370,7 @@ void sBrothel::UpdateGirls(bool is_night)
         {
             // Myr: Automate the use of a number of different items. See the function itself for more comments.
             //      Enabled or disabled based on config option.
-            if (cfg.initial.auto_use_items()) g_Game.player().apply_items(*current);
+            if (cfg.initial.auto_use_items()) g_Game->player().apply_items(*current);
 
             // update for girls items that are not used up
             do_daily_items(*current);					// `J` added
@@ -451,7 +451,7 @@ bool sBrothel::runaway_check(sGirl * girl)
     */
     if (girl->disobey_check(ACTION_GENERAL))	// check if the girl will run away
     {
-        if (g_Dice.percent(g_Game.job_manager().guard_coverage() - girl->m_DaysUnhappy)) return false;
+        if (g_Dice.percent(g_Game->job_manager().guard_coverage() - girl->m_DaysUnhappy)) return false;
 
         girl->m_Events.AddMessage("She ran away.", IMGTYPE_PROFILE, EVENT_DANGER);
         girl->m_Stats[STAT_TIREDNESS] = 0;
@@ -459,7 +459,7 @@ bool sBrothel::runaway_check(sGirl * girl)
         girl->m_RunAway = 6;
         stringstream smess;
         smess << girl->m_Realname << " has run away.\nSend your goons after her to attempt recapture.\nShe will escape for good after 6 weeks.\n";
-        g_Game.push_message(smess.str(), COLOR_RED);
+        g_Game->push_message(smess.str(), COLOR_RED);
         return true;
     }
 
@@ -531,8 +531,6 @@ bool sBrothel::runaway_check(sGirl * girl)
 void sBrothel::Update()
 {
     stringstream ss;
-    cTariff tariff;
-
     // reset the data
     m_Happiness = m_MiscCustomers = m_TotalCustomers = 0;
     m_Finance.zero();
@@ -556,23 +554,23 @@ void sBrothel::Update()
     if (m_SecurityLevel <= 0) m_SecurityLevel = 0;	 // crazy added
 
     // Generate customers for the brothel for the day shift and update girls
-    g_Game.job_manager().do_advertising(*this, false);
-    g_Game.customers().GenerateCustomers(*this, false);
-    m_TotalCustomers += g_Game.GetNumCustomers();
+    g_Game->job_manager().do_advertising(*this, false);
+    g_Game->customers().GenerateCustomers(*this, false);
+    m_TotalCustomers += g_Game->GetNumCustomers();
 
-    g_Game.job_manager().do_whorejobs(*this, false);
-    g_Game.job_manager().do_custjobs(*this, false);
+    g_Game->job_manager().do_whorejobs(*this, false);
+    g_Game->job_manager().do_custjobs(*this, false);
     UpdateGirls(false);
 
 #pragma endregion
 #pragma region //	Night Shift			//
 
     // update the girls and satisfy the customers for this brothel during the night
-    g_Game.job_manager().do_advertising(*this, true);
-    g_Game.customers().GenerateCustomers(*this, true);
-    m_TotalCustomers += g_Game.GetNumCustomers();
-    g_Game.job_manager().do_whorejobs(*this, true);
-    g_Game.job_manager().do_custjobs(*this, true);
+    g_Game->job_manager().do_advertising(*this, true);
+    g_Game->customers().GenerateCustomers(*this, true);
+    m_TotalCustomers += g_Game->GetNumCustomers();
+    g_Game->job_manager().do_whorejobs(*this, true);
+    g_Game->job_manager().do_custjobs(*this, true);
     UpdateGirls(true);
 
 
@@ -589,24 +587,24 @@ void sBrothel::Update()
     m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 
     // empty rooms cost 2 gold to maintain
-    m_Finance.building_upkeep(tariff.empty_room_cost(*this));
+    m_Finance.building_upkeep(g_Game->tariff().empty_room_cost(*this));
 
     // update brothel stats
     if (!girls().empty())
         m_Fame = (total_fame() / girls().size());
-    if (m_Happiness > 0 && g_Game.GetNumCustomers())
+    if (m_Happiness > 0 && g_Game->GetNumCustomers())
         m_Happiness = min(100, m_Happiness / m_TotalCustomers);
 
 
     // advertising costs are set independently for each brothel
-    m_Finance.advertising_costs(tariff.advertising_costs(m_AdvertisingBudget));
+    m_Finance.advertising_costs(g_Game->tariff().advertising_costs(m_AdvertisingBudget));
 
     ss.str("");
     ss << "Your advertising budget for this brothel is " << m_AdvertisingBudget << " gold.";
-    if (tariff.advertising_costs(m_AdvertisingBudget) != m_AdvertisingBudget)
+    if (g_Game->tariff().advertising_costs(m_AdvertisingBudget) != m_AdvertisingBudget)
     {
         ss << " However, due to your configuration, you instead had to pay " <<
-           tariff.advertising_costs(m_AdvertisingBudget) << " gold.";
+           g_Game->tariff().advertising_costs(m_AdvertisingBudget) << " gold.";
     }
     m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_BROTHEL);
 
@@ -645,13 +643,13 @@ void sBrothel::Update()
             if (used > num)
             {
                 ss << used - num << " more than were in stock were needed so an emergency restock had to be made.\n";
-                ss << "Normally they cost " << tariff.anti_preg_price(1) << " gold, but our supplier charges five times the normal price for unscheduled deliveries.\n \n";
-                cost += tariff.anti_preg_price(num);
-                cost += tariff.anti_preg_price(used - num) * 5;
+                ss << "Normally they cost " << g_Game->tariff().anti_preg_price(1) << " gold, but our supplier charges five times the normal price for unscheduled deliveries.\n \n";
+                cost += g_Game->tariff().anti_preg_price(num);
+                cost += g_Game->tariff().anti_preg_price(used - num) * 5;
             }
             else
             {
-                cost += tariff.anti_preg_price(used);
+                cost += g_Game->tariff().anti_preg_price(used);
             }
 
             ss << "Your budget for Anti-Pregnancy potions for this brothel is " << cost << " gold.";
@@ -669,7 +667,7 @@ void sBrothel::Update()
     }
 
     // update the global cash
-    g_Game.gold().brothel_accounts(m_Finance, m_id);
+    g_Game->gold().brothel_accounts(m_Finance, m_id);
 
 #pragma endregion
 #pragma region //	End of Shift Girl Shutdown	//
@@ -1039,14 +1037,14 @@ int cBrothelManager::bar_update(sbrothel* brothel)
 	ctariff tariff;
 
 	//	brothel->m_Finance.bar_upkeep(
-	//		tariff.empty_bar_cost()
+	//		g_Game->tariff().empty_bar_cost()
 	//	);
 	//	if(GetAlcohol() == 0 && !m_KeepAlcStocked) {
 	//		if(!brothel->m_HasBarStaff) {
 	//			return 0;
 	//		}
 	brothel->m_Finance.staff_wages(
-		tariff.bar_staff_wages()
+		g_Game->tariff().bar_staff_wages()
 		);
 	//		return 0;
 	//	}
@@ -1074,7 +1072,7 @@ int cBrothelManager::bar_update(sbrothel* brothel)
 	// *	half price if you only run it one shift
 	// *
 	//	brothel->m_Finance.bar_upkeep(
-	//		tariff.active_bar_cost(brothel->m_Bar, shifts)
+	//		g_Game->tariff().active_bar_cost(brothel->m_Bar, shifts)
 	//	);
 	//
 	//	int maxCust = brothel->m_Bar*8;
@@ -1095,7 +1093,7 @@ int cBrothelManager::bar_update(sbrothel* brothel)
 	//		brothel->m_Happiness += 5;
 	//		if(!message_shown)
 	//		{
-	//			g_Game.push_message("Your bars have run out of booze", 1);
+	//			g_Game->push_message("Your bars have run out of booze", 1);
 	//			message_shown = true;
 	//		}
 	//	}
@@ -1122,7 +1120,7 @@ int cBrothelManager::bar_update(sbrothel* brothel)
 	//	m_Alcohol -= barrels*5;
 	//	if(m_Alcohol < 0)
 	//		m_Alcohol = 0;
-	//	g_Game.gold().bar_upkeep(gold);
+	//	g_Game->gold().bar_upkeep(gold);
 	//*
 	// *	format the message
 	// *
@@ -1133,7 +1131,7 @@ int cBrothelManager::bar_update(sbrothel* brothel)
 	//	   << " gold to repair the damages and you lost " << barrels
 	//	   << " barrels of alcohol."
 	//	;
-	//	g_Game.push_message(ss.str(), 2);
+	//	g_Game->push_message(ss.str(), 2);
 	//	return numCusts;
 }
 
@@ -1142,13 +1140,12 @@ int cBrothelManager::bar_update(sbrothel* brothel)
 */
 int cBrothelManager::casino_update(sBrothel* brothel)
 {
-	cTariff tariff;
 	/*
 	*	if the casino is staffed, it costs money
 	*/
 	if (brothel->m_HasGambStaff) {
 		brothel->m_Finance.casino_upkeep(
-			tariff.empty_casino_cost(
+			g_Game->tariff().empty_casino_cost(
 			brothel->m_GamblingHall
 			)
 			);
@@ -1178,7 +1175,7 @@ int cBrothelManager::casino_update(sBrothel* brothel)
 	*	above and beyond basic long term maintenance
 	*/
 	brothel->m_Finance.building_upkeep(
-		tariff.active_casino_cost(brothel->m_GamblingHall, shifts)
+		g_Game->tariff().active_casino_cost(brothel->m_GamblingHall, shifts)
 		);
 
 
@@ -1199,7 +1196,7 @@ int cBrothelManager::casino_update(sBrothel* brothel)
 	{
 		if (!message_shown && GetGamblingPool() == 0)
 		{
-			g_Game.push_message("CAUTION: The gold pool for the gambling halls is empty.", 1);
+			g_Game->push_message("CAUTION: The gold pool for the gambling halls is empty.", 1);
 			message_shown = true;
 		}
 		/*
@@ -1256,7 +1253,7 @@ int cBrothelManager::casino_update(sBrothel* brothel)
 		*		(after a cooldown period) and the girls would
 		*		eventually show up in the slave market again
 		*/
-		g_Game.gold().misc_debit(wager - pool);
+		g_Game->gold().misc_debit(wager - pool);
 		TakeGamblingPool(pool);
 
 	}
@@ -1265,7 +1262,7 @@ int cBrothelManager::casino_update(sBrothel* brothel)
 	*	tell the customer
 	*/
 	if (!message_shown && GetGamblingPool() == 0) {
-		g_Game.push_message("CAUTION: The gold pool for the gambling halls is empty.", 1);
+		g_Game->push_message("CAUTION: The gold pool for the gambling halls is empty.", 1);
 		message_shown = true;
 	}
 	/*
@@ -1415,22 +1412,22 @@ void cBuildingManager::LoadXML(TiXmlElement& root)
 
 int get_total_player_girls()
 {
-    int total = g_Game.buildings().total_girls();
-    total += g_Game.dungeon().GetNumGirls();
+    int total = g_Game->buildings().total_girls();
+    total += g_Game->dungeon().GetNumGirls();
     return total;
 }
 
 int get_total_player_monster_girls()
 {
     int total = 0;
-    for (int i = 0; i < g_Game.dungeon().GetNumGirls(); i++)
+    for (int i = 0; i < g_Game->dungeon().GetNumGirls(); i++)
     {
-        sDungeonGirl* dgirl = g_Game.dungeon().GetGirl(i);
+        sDungeonGirl* dgirl = g_Game->dungeon().GetGirl(i);
         if (dgirl->m_Girl->has_trait("Not Human"))
             total++;
     }
 
-    total += g_Game.buildings().total_girls_with(is_nonhuman);
+    total += g_Game->buildings().total_girls_with(is_nonhuman);
     return total;
 }
 

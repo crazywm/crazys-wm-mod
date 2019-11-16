@@ -24,7 +24,7 @@
 #include "src/Game.hpp"
 
 // `J` Job Brothel - General
-bool cJobManager::WorkTorturer(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkTorturer(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
 	int actiontype = ACTION_WORKTORTURER;
 	if (Day0Night1) return false;		// Do this only once a day
@@ -44,9 +44,9 @@ bool cJobManager::WorkTorturer(sGirl* girl, bool Day0Night1, string& summary)
 
 	// Complications
 	//SIN: bit more variety for the above
-	int roll(g_Dice % 5);
+	int roll(rng % 5);
 	bool forFree = false;
-	if (g_Dice.percent(10))
+	if (rng.percent(10))
 	{
 		girl->upd_Enjoyment(actiontype, -3);
 		if (girl->has_trait( "Sadistic") || girl->has_trait( "Merciless") || girl->morality() < 30)
@@ -63,24 +63,24 @@ bool cJobManager::WorkTorturer(sGirl* girl, bool Day0Night1, string& summary)
 			default:	ss << girlName << (" didn't enjoy this for some illogical reason. [error]\n"); break; //shouldn't happen
 			}
 			//And a little randomness
-			if (g_Dice.percent(40))
+			if (rng.percent(40))
 			{
-				roll = g_Dice % 3;
+				roll = rng % 3;
 				switch (roll)
 				{
 				case 0:
 					ss << ("She hates you for making her do this today.\n");
-					girl->pclove(-(g_Dice % 2));
-					girl->pchate(g_Dice % 2);
+					girl->pclove(-(rng % 2));
+					girl->pchate(rng % 2);
 					break;
 				case 1:
 					ss << girlName << (" is terrified that you treat people like this.\n");
-					girl->pcfear(g_Dice % 6);
-					girl->obedience(g_Dice % 2);
+					girl->pcfear(rng % 6);
+					girl->obedience(rng % 2);
 					break;
 				case 2:
 					ss << ("She learned a bit about medicine while trying to stop the pain.\n");
-					girl->medicine(g_Dice % 10);
+					girl->medicine(rng % 10);
 					break;
 				default:
 					ss << girlName << (" did something completely unexpected. [error]");
@@ -104,37 +104,37 @@ bool cJobManager::WorkTorturer(sGirl* girl, bool Day0Night1, string& summary)
 		}
 
 		//And a little randomness
-		if ((girl->morality() < 20 || girl->has_trait( "Sadistic")) && g_Dice.percent(20))
+		if ((girl->morality() < 20 || girl->has_trait( "Sadistic")) && rng.percent(20))
 		{
 			ss << girlName << (" loved this so much she wouldn't accept any money, as long as you promise she can do it again soon.\n");
 			girl->upd_Enjoyment(actiontype, +3);
 			forFree = true;
 		}
-		if (g_Dice.percent(20))
+		if (rng.percent(20))
 		{
-			roll = g_Dice % 4;
+			roll = rng % 4;
 			switch (roll)
 			{
 			case 0:
 				ss << girlName << (" put so much energy into this it seems to have improved her fitness.\n");
-				girl->constitution(g_Dice % 3);
+				girl->constitution(rng % 3);
 				break;
 			case 1:
 				ss << girlName << (" went way too far, creating a hell of a mess. Still it looks like she had fun - she hasn't stopped smiling.\n");
-				girl->happiness(g_Dice % 5);
+				girl->happiness(rng % 5);
 				girl->upd_Enjoyment(actiontype, +1);
 				// TODO so the torturing happens in the brothel where the torturer is, not in the dungeon?
 				girl->m_Building->m_Filthiness += 15;
 				break;
 			case 2:
 				ss << girlName << (" over-exerted herself.");
-				girl->health(-(g_Dice % 5));
-				girl->tiredness(g_Dice % 5);
+				girl->health(-(rng % 5));
+				girl->tiredness(rng % 5);
 				break;
 			case 3:
 				ss << girlName << (" appreciates that you entrust her with this kind of work.");
-				girl->pclove(g_Dice % 2);
-				girl->pchate(-(g_Dice % 2));
+				girl->pclove(rng % 2);
+				girl->pchate(-(rng % 2));
 				break;
 			default:
 				ss << girlName << (" did something completely unexpected. [error]");
@@ -154,7 +154,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, bool Day0Night1, string& summary)
 	if (!forFree)
 	{
 		wages += 65;
-		//g_Game.gold().staff_wages(65);  // wages come from you
+		//g_Game->gold().staff_wages(65);  // wages come from you
 	}
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
@@ -165,7 +165,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, bool Day0Night1, string& summary)
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// WD: Update flag
-	g_Game.dungeon().SetTortureDone();
+	g_Game->dungeon().SetTortureDone();
 
 	// Check for new traits
 	cGirls::PossiblyGainNewTrait(girl, "Sadistic", 30, actiontype, girl->m_Realname + (" has come to enjoy her job so much that she has become rather Sadistic."), Day0Night1);
@@ -176,7 +176,7 @@ bool cJobManager::WorkTorturer(sGirl* girl, bool Day0Night1, string& summary)
 
 double cJobManager::JP_Torturer(sGirl* girl, bool estimate)		// not used
 {
-#if 1	//SIN - this is a special case.
+	//SIN - this is a special case.
 	//AFAIK the torturer ID/skills not used at all in the job processing (apart from names in strings)
 	//Who does the currently has ZERO affect on outcome.
 	//So this stat just shows how much THIS girl (i.e. the torturer) will 'enjoy' job.
@@ -190,23 +190,6 @@ double cJobManager::JP_Torturer(sGirl* girl, bool estimate)		// not used
 		//add level
 		girl->level();
 
-	//and finally traits
-	//"good"
-	if (girl->has_trait( "Sadistic"))					jobperformance += 30;	//how do you like... THIS!
-	if (girl->has_trait( "Powerful Magic"))			    jobperformance += 25;	//magical flame
-	if (girl->has_trait( "Strong Magic"))				jobperformance += 20;	//magical flame
-	if (girl->has_trait( "Dominatrix"))				    jobperformance += 20;	//you will learn to obey me
-	if (girl->has_trait( "Merciless"))				    jobperformance += 20;	//"Stop"? <shrug> I don't know that word.
-	if (girl->has_trait( "Demon"))					    jobperformance += 20;	//satan taught me this move
-	if (girl->has_trait( "Aggressive"))				    jobperformance += 15;	//WHAT did you say?
-	if (girl->has_trait( "Assassin"))					jobperformance += 15;	//skills
-	if (girl->has_trait( "Doctor"))					    jobperformance += 15;	//they call me doctor pain...
-	if (girl->has_trait( "Iron Will"))				    jobperformance += 15;	//I *WILL* break you
-	if (girl->has_trait( "Alchoholic"))				    jobperformance += 10;	//she's a mean drunk
-	if (girl->has_trait( "Twisted"))					jobperformance += 10;	//twisted biatch
-	if (girl->has_trait( "Broken Will"))				jobperformance += 5;	//just following orders
-	if (girl->has_trait( "Mind Fucked"))				jobperformance += 5;	//let's play together
-
 	//either
 	if (girl->has_trait( "Psychic"))												//I feel your pain... such suffering...
 	{
@@ -214,23 +197,7 @@ double cJobManager::JP_Torturer(sGirl* girl, bool estimate)		// not used
 		else											jobperformance -= 30;
 	}
 
-	//"bad"
-	if (girl->has_trait( "Goddess"))					jobperformance -= 50;	//Wouldn't harm a soul
-	if (girl->has_trait( "Angel"))					    jobperformance -= 40;	//Wouldn't harm a soul
-	if (girl->has_trait( "Battery Operated"))			jobperformance -= 20;	//"What is this 'pain' you feel?"
-	if (girl->has_trait( "Construct"))				    jobperformance -= 20;	//"What is this 'pain' you feel?"
-	if (girl->has_trait( "Clumsy"))					    jobperformance += 20;	//OW! I just whipped myself.
+    jobperformance += girl->get_trait_modifier("work.torturer");
 
-#else
-	double jobperformance = 0.0;
-	if (estimate)	// for third detail string
-	{
-
-	}
-	else			// for the actual security check
-	{
-
-	}
-#endif
 	return jobperformance;
 }

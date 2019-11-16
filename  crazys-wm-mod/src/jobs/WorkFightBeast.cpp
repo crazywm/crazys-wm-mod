@@ -24,23 +24,21 @@
 #include "src/sStorage.hpp"
 #include "CLog.h"
 
-extern cRng g_Dice;
-
 // `J` Job Arena - Fighting
-bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
 	int actiontype = ACTION_COMBAT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
 
-	if (g_Game.storage().beasts() < 1)
+	if (g_Game->storage().beasts() < 1)
 	{
 		ss << " had no beasts to fight.";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 		return false;	// not refusing
 	}
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(actiontype, JOB_FIGHTBEASTS))
 	{
 		ss << " refused to fight beasts today.\n";
@@ -56,7 +54,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary)
 			found++;
 			if (girl->m_Inventory[i]->m_Type == INVWEAPON)
 			{
-				g_Game.inventory_manager().Unequip(girl, i);
+				girl->remove_inv(i);
 				if (Weap1 == -1) Weap1 = i;
 				else if (Weap2 == -1) Weap2 = i;
 				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Weap1]->m_Cost)
@@ -69,15 +67,15 @@ bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			if (girl->m_Inventory[i]->m_Type == INVARMOR)
 			{
-				g_Game.inventory_manager().Unequip(girl, i);
+				girl->unequip(i);
 				if (Armor == -1) Armor = i;
 				else if (girl->m_Inventory[i]->m_Cost > girl->m_Inventory[Armor]->m_Cost) Armor = i;
 			}
 		}
 
-	if (Armor > -1)		g_Game.inventory_manager().Equip(girl, Armor, false);
-	if (Weap1 > -1)		g_Game.inventory_manager().Equip(girl, Weap1, false);
-	if (Weap2 > -1)		g_Game.inventory_manager().Equip(girl, Weap2, false);
+	if (Armor > -1)		girl->equip(Armor, false);
+	if (Weap1 > -1)		girl->equip(Weap1, false);
+	if (Weap2 > -1)		girl->equip(Weap2, false);
 
 	if (Armor == -1)
 	{
@@ -119,7 +117,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary)
 
 	// TODO need better dialog
 
-	sGirl* tempgirl = g_Game.CreateRandomGirl(18, false, false, false, true, false);
+	sGirl* tempgirl = g_Game->CreateRandomGirl(18, false, false, false, true, false);
 	if (tempgirl)		// `J` reworked incase there are no Non-Human Random Girls
 	{
 		fight_outcome = cGirls::girl_fights_girl(girl, tempgirl);
@@ -143,7 +141,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary)
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 		int roll_max = girl->fame() + girl->charisma();
 		roll_max /= 4;
-		wages += 10 + g_Dice%roll_max;
+		wages += 10 + rng%roll_max;
 		girl->m_Tips = max(0, tips);
 		girl->m_Pay = max(0, wages);
 		girl->fame(2);
@@ -161,7 +159,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary)
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 			if (!girl->calc_insemination(*cGirls::GetBeast(), false, 1.0))
 			{
-				g_Game.push_message(girl->m_Realname + " has gotten inseminated", 0);
+				g_Game->push_message(girl->m_Realname + " has gotten inseminated", 0);
 			}
 		}
 		else
@@ -172,11 +170,11 @@ bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	int kills = g_Dice % 6 - 4;		 		// `J` how many beasts she kills 0-2
-	if (g_Game.storage().beasts() < kills)	// or however many there are
-		kills = g_Game.storage().beasts();
+	int kills = rng % 6 - 4;		 		// `J` how many beasts she kills 0-2
+	if (g_Game->storage().beasts() < kills)	// or however many there are
+		kills = g_Game->storage().beasts();
 	if (kills < 0) kills = 0;				// can't gain any
-	g_Game.storage().add_to_beasts(-kills);
+	g_Game->storage().add_to_beasts(-kills);
 
 	if (girl->is_pregnant())
 	{
@@ -222,7 +220,7 @@ bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary)
 	int earned = 0;
 	for (int i = 0; i < jobperformance; i++)
 	{
-		earned += g_Dice % 10 + 5; // 5-15 gold per customer  This may need tweaked to get it where it should be for the pay
+		earned += rng % 10 + 5; // 5-15 gold per customer  This may need tweaked to get it where it should be for the pay
 	}
 	brothel->m_Finance.arena_income(earned);
 	ss.str("");
@@ -239,17 +237,17 @@ bool cJobManager::WorkFightBeast(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->combat(g_Dice%fightxp + skill);
-	girl->magic(g_Dice%fightxp + skill);
-	girl->agility(g_Dice%fightxp + skill);
-	girl->constitution(g_Dice%fightxp + skill);
+	girl->combat(rng%fightxp + skill);
+	girl->magic(rng%fightxp + skill);
+	girl->agility(rng%fightxp + skill);
+	girl->constitution(rng%fightxp + skill);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
-	girl->beastiality(g_Dice%fightxp * 2 + skill);
+	girl->beastiality(rng%fightxp * 2 + skill);
 
 	cGirls::PossiblyGainNewTrait(girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 30, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
-	if (g_Dice.percent(25) && girl->strength() >= 60 && girl->combat() > girl->magic())
+	if (rng.percent(25) && girl->strength() >= 60 && girl->combat() > girl->magic())
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, girlName + " has become pretty Strong from all of the fights she's been in.", Day0Night1);
 	}
@@ -282,7 +280,9 @@ double cJobManager::JP_FightBeast(sGirl* girl, bool estimate)// not used
 			if (t > 0)
 				jobperformance -= (t + 2) * (t / 2);
 		}
-
 	}
-	return jobperformance;
+
+    jobperformance += girl->get_trait_modifier("work.fightarena");
+
+    return jobperformance;
 }

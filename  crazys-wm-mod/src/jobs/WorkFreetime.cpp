@@ -23,19 +23,18 @@
 #include "cScriptManager.h"
 
 #include "src/Game.hpp"
-
-extern cRng g_Dice;
+#include "cShop.h"
 
 // `J` Job Brothel - General
-bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
 	stringstream ss; string girlName = girl->m_Realname;
 
-	int U_Tiredness = -(10 + g_Dice % 21);
+	int U_Tiredness = -(10 + rng % 21);
 	int U_Health = 10 + (girl->constitution() / 10);
-	int U_Happiness = 10 + g_Dice % 11;
+	int U_Happiness = 10 + rng % 11;
 	int U_Mana = 5 + girl->magic() / 5;
 	int U_Libido = (girl->has_trait( "Nymphomaniac") ? 15 : 5);
 	int U_EXP = 1;	// Just because!
@@ -54,11 +53,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 	stringstream girldiedmsg;
 
 
-	int roll = g_Dice.d100();
-	int roll_a = g_Dice.d100();
-	int roll_b = g_Dice.d100();
-	int roll_c = g_Dice.d100();
-	int roll_d = g_Dice.d100();
+	int roll = rng.d100();
+	int roll_a = rng.d100();
+	int roll_b = rng.d100();
+	int roll_c = rng.d100();
+	int roll_d = rng.d100();
 	int HateLove = 0;
 	HateLove = girl->pclove() - girl->pchate();
 
@@ -113,7 +112,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 	};								// When the choice gets handled, the switch will use the "FT_name" as the case.
 
 
-	if (g_Dice % 2)	// half of the time she will just stay home and rest
+	if (rng % 2)	// half of the time she will just stay home and rest
 	{
 
 		// `J` the test for if the girl can act on that choice is done next
@@ -128,13 +127,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 		{
 #if 1
 			// First check if there are some things she will more likely do
-			if (girl->health() < 30 && g_Game.has_building(BuildingType::CLINIC))	// if she is in bad health and you own a clinic
+			if (girl->health() < 30 && g_Game->has_building(BuildingType::CLINIC))	// if she is in bad health and you own a clinic
 			{
 				choice = FT_ClinicCheckup;
 				choicemade = true;
 			}
 			else if (girl->is_addict(true)								// `J` changed it so only hard drugs will trigger this
-				&& g_Dice.percent(90 - girl->happiness()))				// and the less happy she is, the more likely
+				&& rng.percent(90 - girl->happiness()))				// and the less happy she is, the more likely
 			{
 				choice = FT_BuyDrugs;
 				choicemade = true;
@@ -149,7 +148,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			else	// If none of the above take precedence, randomly choose
 			{
 
-				choice = g_Dice % FT_NumberOfFreeTimeChoices;	// randomly choose from all of the choices
+				choice = rng % FT_NumberOfFreeTimeChoices;	// randomly choose from all of the choices
 				switch (choice)
 				{
 					// these don't need a test
@@ -190,13 +189,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 					// if she can not afford it, reroll.
 					break;
 				case FT_BuyDrugs:
-					if (girl->is_addict() || (girl->happiness() < 20 && !g_Dice.percent(girl->intelligence())))
+					if (girl->is_addict() || (girl->happiness() < 20 && !rng.percent(girl->intelligence())))
 					{
 						choicemade = true;	// if she is an addict or unhappy, she may turn to drugs
 					}
 					break;
 				case FT_ClinicCheckup:
-					if (g_Game.has_building(BuildingType::CLINIC))
+					if (g_Game->has_building(BuildingType::CLINIC))
 					{
 						choicemade = true;	// if you own a Clinic, she will go
 					}
@@ -232,7 +231,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 					// if she dont need it, reroll.
 					break;
 				case FT_WatchFights:
-					if (girl->m_Money >= 15 && g_Game.has_building(BuildingType::ARENA))
+					if (girl->m_Money >= 15 && g_Game->has_building(BuildingType::ARENA))
 					{
 						choicemade = true;	// She has enough money for it, so continue
 					}
@@ -286,7 +285,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			imagetype = IMGTYPE_BATH;
 			U_Happiness += 5;
 			U_Health += 5;
-			if (HateLove >= 80 && g_Dice.percent(10))//loves you
+			if (HateLove >= 80 && rng.percent(10))//loves you
 			{
 				ss << "She invites you to join her in the tub.\n";//will get around to adding sex options later
 			}
@@ -308,7 +307,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			else if (girl->tiredness() > 80)
 			{
-				if (g_Dice.percent(3) && girl->tiredness() > 95 && !girl->has_trait("Incorporeal") && !girl->has_trait("Undead") && !girl->has_trait("Zombie") && !girl->has_trait("Skeleton"))	// 'MUTE' this is meant to kill the girl
+				if (rng.percent(3) && girl->tiredness() > 95 && !girl->has_trait("Incorporeal") && !girl->has_trait("Undead") && !girl->has_trait("Zombie") && !girl->has_trait("Skeleton"))	// 'MUTE' this is meant to kill the girl
 				{
 					girldiedmsg << girlName;
 					if (girl->is_addict(true))	girldiedmsg << " took an overdose of drugs and drowned in the tub.\n";
@@ -322,7 +321,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 					U_Health -= 2;
 				}
 			}
-			else if (g_Dice.percent(5) && (girl->has_trait("Zombie") || girl->has_trait("Skeleton")))
+			else if (rng.percent(5) && (girl->has_trait("Zombie") || girl->has_trait("Skeleton")))
 			{
 				ss << "Someone knocks on the door, \"Are you cooking in there? something smells good.\"   \"What? No, I'm taking a bath.\"   \"Oh, Sorry. Wait, What? EWwwwwwwwwwwwwwwwwwwwww.\"";
 			}
@@ -392,7 +391,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 				)
 			{
 				ss << "and decide to get a \"special\" message.\n";
-				int sex = g_Dice % 3;
+				int sex = rng % 3;
 
 				if (brothel->is_sex_type_allowed(SKILL_LESBIAN) && girl->has_trait("Lesbian")) sex = 0;
 				if (sex == 0 && (!brothel->is_sex_type_allowed(SKILL_LESBIAN) || girl->has_trait( "Straight"))) sex++;
@@ -614,10 +613,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			U_Happiness += 5;
 			ss << girlName << " went to the local pool.\n";
 
-			if (girl->tiredness() > 70 && g_Dice.percent(10))		// 'MUTE'
+			if (girl->tiredness() > 70 && rng.percent(10))		// 'MUTE'
 			{
 				ss << "Not realizing how tired she was, she tried to jump into to pool from the high dive but she didn't realize ";
-				if ((g_Dice.percent(25) || girl->has_trait("Mind Fucked") || girl->has_trait("Retarded")))
+				if ((rng.percent(25) || girl->has_trait("Mind Fucked") || girl->has_trait("Retarded")))
 				{
 					ss << "the water had been drained out of the pool.";
 					if (girl->has_trait("Incorporeal"))
@@ -669,7 +668,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			{
 				ss << "Being on the tired side, she just decided to lay around the pool and get some sun.  She is going to have a tan for a few days.\n";
 				U_Beauty += 5;
-				if (g_Dice.percent(20))
+				if (rng.percent(20))
 				{
 					bool success = false;
 					bool fight = false;
@@ -678,7 +677,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 					{
 						ss << " But using her Psychic skills she stopped him before he could do it.";
 					}
-					else if (!g_Dice.percent(girl->agility()) && g_Dice.percent(40))
+					else if (!rng.percent(girl->agility()) && rng.percent(40))
 					{
 						ss << " He succeed and was able to expose her ";
 						if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits")) { ss << "gigantic boobs."; }
@@ -745,7 +744,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 				U_Health -= 2;
 				girl->upd_Enjoyment(ACTION_WORKCOOKING, -1);
 			}
-			if (HateLove >= 80 && g_Dice.percent(10))//loves you
+			if (HateLove >= 80 && rng.percent(10))//loves you
 			{
 				ss << "She invites you to eat with her.\n";//FIXME add in different things here
 			}
@@ -759,13 +758,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 		{
 			// 1. if she is addicted she will first attempt to purchase drugs until she has no money
 			if (girl->has_trait( "Viras Blood Addict") ||
-				(girl->happiness() < 20 && g_Dice.percent(10)))	// 10% chance an unhappy girl will try this
+				(girl->happiness() < 20 && rng.percent(10)))	// 10% chance an unhappy girl will try this
 			{
 				AddictBuysDrugs("Viras Blood Addict", "Viras Blood", girl, brothel, Day0Night1);
 				break;
 			}
 			if (girl->has_trait( "Fairy Dust Addict") ||
-				(girl->happiness() < 20 && g_Dice.percent(50)))	// 50% chance an unhappy girl will try this
+				(girl->happiness() < 20 && rng.percent(50)))	// 50% chance an unhappy girl will try this
 			{
 				AddictBuysDrugs("Fairy Dust Addict", "Fairy Dust", girl, brothel, Day0Night1);
 				break;
@@ -788,7 +787,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 #if 1
 		{
 			imagetype = IMGTYPE_SHOP;
-			int hap = g_Dice % 10 - 4;
+			int hap = rng % 10 - 4;
 			U_Happiness += hap;
 			ss << girlName << " wandered around the shops trying things on that she knew she could not afford. Though she wasted the shop girl's time, ";
 			if (hap > 0) ss << " she enjoyed herself a " << (hap > 3 ? "bit." : "lot.");
@@ -801,66 +800,24 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 #if 1
 		{
 			// 2. buy any items that catch her fancy
-			int numberToBuy = g_Dice % 10;	// try to buy up to 10 things
+			int numberToBuy = rng % 10;	// try to buy up to 10 things
 			int itemsBought = 0;
 			string buyList;
 			imagetype = IMGTYPE_SHOP;
 
 			for (int i = 0; i < numberToBuy && girl->m_NumInventory < 40; i++)
-			{
-				int item = g_Game.inventory_manager().GetRandomShopItem();
+            {
+                auto item = g_Game->shop().GetRandomItem();
+                if(!item) continue;
+                bool wants = g_Game->shop().GirlWantsItem(*girl, *item);
 
-				int cost = g_Game.inventory_manager().GetShopItem(item)->m_Cost;
-				string itemName = g_Game.inventory_manager().GetShopItem(item)->m_Name;
+                if (wants && g_Game->shop().GirlBuyItem(*girl, *item))
+                {
+                    buyList += ((buyList.empty()) ? "" : ", ") + item->m_Name;
+                    itemsBought++;
+                }
 
-				if (girl->has_item(itemName) > -1	        // if she already has one
-					|| girl->m_Money - cost < 0) 			// or if she can't afford it
-					continue;								// skip it
-
-				if (g_Dice.percent(g_Game.inventory_manager().GetShopItem(item)->m_GirlBuyChance))
-				{
-					int type = g_Game.inventory_manager().GetShopItem(item)->m_Type;
-					bool equip = true;
-					int num = 1;
-					if (type == INVARMBAND || type == INVSMWEAPON)
-					{
-
-						if (girl->has_trait( "Adventurer") || girl->has_trait( "Assassin") ||
-							girl->combat() >= 50 || girl->magic() >= 50)
-						{
-							int magic = 0, combat = 0;
-							num = 0;
-							for (u_int j = 0; j < g_Game.inventory_manager().GetShopItem(item)->m_Effects.size(); j++)
-							{
-								sEffect* curEffect = &g_Game.inventory_manager().GetShopItem(item)->m_Effects[j];
-								if (curEffect->m_EffectID == SKILL_COMBAT)	combat = curEffect->m_Amount;
-								if (curEffect->m_EffectID == SKILL_MAGIC)	magic = curEffect->m_Amount;
-							}
-							if ((girl->combat() >= girl->magic() && combat >= magic) ||	// if the girl favors combat and the item favors combat
-								(girl->magic() >= girl->combat() && magic >= combat))	// or if the girl favors magic and the item favors magic
-							{
-								num = 2;	// buy it
-							}
-						}
-						else	// if she isn't a warrior type she probably won't buy weapons or armor
-						{
-							num = 0;
-						}
-					}
-					if (type == INVRING) num = 8;
-					if (type == INVFOOD || type == INVMAKEUP || type == INVMISC)
-					{
-						num = 15; equip = false;
-					}
-
-					if (num > 0 && g_Game.inventory_manager().GirlBuyItem(girl, item, num, equip))
-					{
-						buyList += ((buyList.empty()) ? "" : ", ") + itemName;
-						itemsBought++;
-					}
-				}     // if buy
-
-				if (itemsBought >= 3) i += numberToBuy;	// if she already has 3 items stop shopping
+				if (itemsBought >= 3) break;	// if she already has 3 items stop shopping
 			}         // for # buy chances
 
 			if (itemsBought > 0)
@@ -871,7 +828,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			else
 			{
-				int hap = g_Dice % 10 - 4;
+				int hap = rng % 10 - 4;
 				U_Happiness += hap;
 				ss << girlName << " wandered around the shops trying things on. Though she wasted the shop girl's time, ";
 				if (hap > 0) ss << " she enjoyed herself a " << (hap > 3 ? "bit." : "lot.");
@@ -891,32 +848,32 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			if (girl->is_addict(true) && girl->get_stat(STAT_MORALITY) <= -60)		// 'Mute'
 			{
 				ss << " to try and steal drugs.\n";
-				if (!g_Dice.percent((girl->agility() + girl->intelligence()) / 2))	// 'Mute' Fail to steal drugs
+				if (!rng.percent((girl->agility() + girl->intelligence()) / 2))	// 'Mute' Fail to steal drugs
 				{
-					if (g_Game.has_building(BuildingType::CLINIC) && g_Dice.percent(50))		// She tries stealing from your clinic
+					if (g_Game->has_building(BuildingType::CLINIC) && rng.percent(50))		// She tries stealing from your clinic
 					{
 						ss << "She got caught by the guards in your clinic and they brought her to your dungeon.\n";
 						girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
 						girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
 						if(girl->m_Building)
 						    girl->m_Building->remove_girl(girl);
-						g_Game.dungeon().AddGirl(girl, DUNGEON_GIRLSTEAL);
+						g_Game->dungeon().AddGirl(girl, DUNGEON_GIRLSTEAL);
 						return false;
 					}
-					else if (girl->m_Money >= 200 && g_Dice.percent(50))			// 'Mute' Pay 200 gold fine, if not enough gold goes to prision
+					else if (girl->m_Money >= 200 && rng.percent(50))			// 'Mute' Pay 200 gold fine, if not enough gold goes to prision
 					{
 						ss << "She got caught by the clinic guards and was forced to pay 200 Gold.\n";
 						girl->m_Money -= 200;
 						U_Happiness -= 50;
 					}
-					else if (g_Dice.percent(50))
+					else if (rng.percent(50))
 					{
 						ss << "She got caught by the clinic guards and was unable to pay so they sent her to jail.\n";
 						girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-						g_Game.AddGirlToPrison(girl);
+						g_Game->AddGirlToPrison(girl);
 						return false;
 					}
-					else if (g_Dice.percent(20)) // 'Mute' Gets raped by guards
+					else if (rng.percent(20)) // 'Mute' Gets raped by guards
 					{
 						ss << "Unfortunantly she got caught and was raped by the guards.\n";
 						U_Happiness -= 50;
@@ -931,10 +888,10 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 					/* */if (girl->has_trait("Fairy Dust Addict"))	{ itemprefix = "a vial of";	itemname = "Fairy Dust"; }
 					else if (girl->has_trait("Shroud Addict"))		{ itemprefix = "a";			itemname = "Shroud Mushroom"; }
 					else if (girl->has_trait("Viras Blood Addict"))	{ itemprefix = "a vial of";	itemname = "Vira Blood"; }
-					sInventoryItem* item = g_Game.inventory_manager().GetItem(itemname);
+					sInventoryItem* item = g_Game->inventory_manager().GetItem(itemname);
 					while (!item)
 					{
-						int numtry = g_Dice % 6;	if (numtry >= 3)	numtry = g_Dice % 15;
+						int numtry = rng % 6;	if (numtry >= 3)	numtry = rng % 15;
 
 						itemprefix = "a ";
 						/* */if (numtry == 0 || numtry == 2)	itemprefix = "a vial of ";
@@ -945,20 +902,20 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 						case 0:		itemname = "Fairy Dust";			break;
 						case 1:		itemname = "Shroud Mushroom";		break;
 						case 2:		itemname = "Vira Blood";			break;
-						case 3:		if (g_Dice.percent(5))	{ itemname = "Healing Salve (L)";		break; }
-						case 4:		if (g_Dice.percent(20))	{ itemname = "Healing Salve (M)";		break; }
-						case 5:		if (g_Dice.percent(50))	{ itemname = "Healing Salve (S)";		break; }
+						case 3:		if (rng.percent(5))	{ itemname = "Healing Salve (L)";		break; }
+						case 4:		if (rng.percent(20))	{ itemname = "Healing Salve (M)";		break; }
+						case 5:		if (rng.percent(50))	{ itemname = "Healing Salve (S)";		break; }
 						case 6:		itemname = "Healing Salve (T)";			break;
-						case 7:		if (g_Dice.percent(5))	{ itemname = "Incense of Serenity(L)";	break; }
-						case 8:		if (g_Dice.percent(20))	{ itemname = "Incense of Serenity(M)";	break; }
-						case 9:		if (g_Dice.percent(50))	{ itemname = "Incense of Serenity(S)";	break; }
+						case 7:		if (rng.percent(5))	{ itemname = "Incense of Serenity(L)";	break; }
+						case 8:		if (rng.percent(20))	{ itemname = "Incense of Serenity(M)";	break; }
+						case 9:		if (rng.percent(50))	{ itemname = "Incense of Serenity(S)";	break; }
 						case 10:	itemname = "Incense of Serenity(T)";	break;
 						case 11:	itemname = "Mana Potion";				break;
-						case 12:	if (g_Dice.percent(5))	{ itemname = "Oil of Greater Scar Removing";	break; }
-						case 13:	if (g_Dice.percent(10))	{ itemname = "Oil of Lesser Scar Removing";	break; }
+						case 12:	if (rng.percent(5))	{ itemname = "Oil of Greater Scar Removing";	break; }
+						case 13:	if (rng.percent(10))	{ itemname = "Oil of Lesser Scar Removing";	break; }
 						default:	break;
 						}
-						item = g_Game.inventory_manager().GetItem(itemname);
+						item = g_Game->inventory_manager().GetItem(itemname);
 					}
 					ss << "She managed to steal " << itemprefix << itemname << ".\n";
 					girl->add_inv(item);
@@ -988,16 +945,16 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 		case FT_ClinicCheckup:
 #if 1
 		{
-			bool playerclinic = g_Game.has_building(BuildingType::CLINIC);
+			bool playerclinic = g_Game->has_building(BuildingType::CLINIC);
 			sGirl* doctoronduty = nullptr;
 			sGirl* nurseonduty = nullptr;
 			string doctorname = "the Doctor";	// Who?
 			string nursename = "the Nurse";
 			if (playerclinic)
 			{
-				doctoronduty = random_girl_on_job(g_Game.buildings(), JOB_DOCTOR, Day0Night1);
+				doctoronduty = random_girl_on_job(g_Game->buildings(), JOB_DOCTOR, Day0Night1);
 				doctorname = (doctoronduty ? "Doctor " + doctoronduty->m_Realname + "" : "the Doctor");
-				nurseonduty = random_girl_on_job(g_Game.buildings(), JOB_NURSE, Day0Night1);
+				nurseonduty = random_girl_on_job(g_Game->buildings(), JOB_NURSE, Day0Night1);
 				nursename = (nurseonduty ? "Nurse " + nurseonduty->m_Realname + "" : "the Nurse");
 			}
 
@@ -1085,7 +1042,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 
 			ss << girlName << " decides to go watch a movie.";
 			/*May add different ways for the girl to get into the movie CRAZY*/
-			if (g_Dice.percent(20) && girl->oralsex() >= 50)
+			if (rng.percent(20) && girl->oralsex() >= 50)
 			{
 				ss << " Instead of paying for her ticket she slides under the ticket booth and sucks off the guy selling the tickets to get in for free.";
 				imagetype = IMGTYPE_ORAL;
@@ -1269,7 +1226,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 				{
 					ss << "The crowd keep chanting " << girlName << " wanting her to take the stage and sing for them.\n";
 					U_Happiness += 5;  roll = 96; /*could add a way for her to make gold off this, and need to add if she takes the stage or not*/
-					if (g_Dice.percent(50))
+					if (rng.percent(50))
 					{
 						ss << "She agrees and took to the stage putting on a show for the crowd. They threw some gold on stage for her performance.\n";
 						U_Money += 100;
@@ -1282,28 +1239,28 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			}
 
 			//random things that can happen at any show type
-			if (girl->has_trait( "Exhibitionist") && g_Dice.percent(30))
+			if (girl->has_trait( "Exhibitionist") && rng.percent(30))
 			{
 				ss << "Before the show was over " << girlName << " had thrown all her clothes on stage and was now walking around naked.\n";
 				imagetype = IMGTYPE_NUDE; invite = true;
 			}
-			if (girl->is_addict(true) && g_Dice.percent(20)) //may have to change this to the traits instead of the addict as only those 3 should trigger it.  zzzzz FIXME CRAZY
+			if (girl->is_addict(true) && rng.percent(20)) //may have to change this to the traits instead of the addict as only those 3 should trigger it.  zzzzz FIXME CRAZY
 			{
 				ss << "\nNoticing her addiction, someone offered her some drugs. She accepted, and got baked for the concert.\n";
 				if (girl->has_trait( "Shroud Addict"))
 				{
-					girl->add_inv(g_Game.inventory_manager().GetItem("Shroud Mushroom"));
+					girl->add_inv(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
 				}
 				if (girl->has_trait( "Fairy Dust Addict"))
 				{
-					girl->add_inv(g_Game.inventory_manager().GetItem("Fairy Dust"));
+					girl->add_inv(g_Game->inventory_manager().GetItem("Fairy Dust"));
 				}
 				if (girl->has_trait( "Viras Blood Addict"))
 				{
-					girl->add_inv(g_Game.inventory_manager().GetItem("Vira Blood"));
+					girl->add_inv(g_Game->inventory_manager().GetItem("Vira Blood"));
 				}
 				/* May added in a sex event here where they try to take advatage of the high girl*/
-				if (g_Dice.percent(10) && girl->beauty() > 85 && !girl->check_virginity())
+				if (rng.percent(10) && girl->beauty() > 85 && !girl->check_virginity())
 				{
 					ss << "After noticing her great beauty and the fact that she is baked, a group of guys take her off alone somewhere and have their way with her.\n";
 					imagetype = IMGTYPE_GROUP;
@@ -1338,7 +1295,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 				{
 					ss << girlName << " accepted with great joy.\n"; U_Happiness += 5;
 					/* add anything from them trying to have sex with her to just talking*/
-					if (g_Dice.percent(30) && !girl->check_virginity())
+					if (rng.percent(30) && !girl->check_virginity())
 					{
 						ss << "After talking for awhile they asked if she wanted to have sex with them. ";
 						if (girl->libido() >= 50 && !girl->has_trait( "Lesbian"))
@@ -1368,7 +1325,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 					{
 						ss << girlName << " enjoyed herself so she accepted.\n";
 						/* add anything from them trying to have sex with her to just talking*/
-						if (g_Dice.percent(20) && !girl->check_virginity())
+						if (rng.percent(20) && !girl->check_virginity())
 						{
 							ss << "After talking for awhile they asked if she wanted to have sex with them. ";
 							if (girl->libido() >= 70)
@@ -1384,7 +1341,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 								else
 								{
 									u_int n;
-									switch (g_Dice % 10)
+									switch (rng % 10)
 									{
 									case 0:        n = SKILL_NORMALSEX;  ss << "lead singer.";			break;
 									case 1:        n = SKILL_NORMALSEX;  ss << "lead guitarist.";		break;
@@ -1427,7 +1384,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 		case FT_VisitBar:
 #if 1
 		{
-			sGirl* barmaidonduty = random_girl_on_job(g_Game.buildings(), JOB_BARMAID, Day0Night1);
+			sGirl* barmaidonduty = random_girl_on_job(g_Game->buildings(), JOB_BARMAID, Day0Night1);
 			string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->m_Realname + "" : "the Barmaid");
 			ss << girlName << " decides to go to the bar.\n";
 			if (girl->has_trait( "Alcoholic"))
@@ -1457,11 +1414,11 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 		case FT_Club:
 #if 1
 		{
-			sGirl* clubbaronduty = random_girl_on_job(g_Game.buildings(), JOB_SLEAZYBARMAID, Day0Night1);
+			sGirl* clubbaronduty = random_girl_on_job(g_Game->buildings(), JOB_SLEAZYBARMAID, Day0Night1);
 			string clubbarname = (clubbaronduty ? "Bartender " + clubbaronduty->m_Realname + "" : "the Bartender");
-			sGirl* stripperonduty = random_girl_on_job(g_Game.buildings(), JOB_BARSTRIPPER, Day0Night1);
+			sGirl* stripperonduty = random_girl_on_job(g_Game->buildings(), JOB_BARSTRIPPER, Day0Night1);
 			string strippername = (stripperonduty ? "Stripper " + stripperonduty->m_Realname + "" : "the Stripper");
-			sGirl* clubwaitonduty = random_girl_on_job(g_Game.buildings(), JOB_SLEAZYWAITRESS, Day0Night1);
+			sGirl* clubwaitonduty = random_girl_on_job(g_Game->buildings(), JOB_SLEAZYWAITRESS, Day0Night1);
 			string clubwaitname = (clubwaitonduty ? "Waitress " + clubwaitonduty->m_Realname + "" : "the Waitress");
 
 			ss << girlName << " puts on her best dress before leaving and going to the club.";
@@ -1497,9 +1454,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			if (girl->has_trait( "Nymphomaniac") && girl->libido() > 80 && !girl->check_virginity())
 			{
 				ss << " went out looking to get laid.\n";
-				if (g_Dice.percent(35))//finds someone
+				if (rng.percent(35))//finds someone
 				{
-					if (girl->has_trait( "Lesbian") || girl->has_trait( "Bisexual") && g_Dice.percent(50))//find a woman /*FIXME not sure this will work CRAZY*/
+					if (girl->has_trait( "Lesbian") || girl->has_trait( "Bisexual") && rng.percent(50))//find a woman /*FIXME not sure this will work CRAZY*/
 					{
 						ss << "She goes out and finds herself a woman that she likes enough. They go back to her place and have sex.";/*FIXME needs better text and more varations CRAZY*/
 						imagetype = IMGTYPE_LESBIAN; U_Libido -= 10;
@@ -1519,7 +1476,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			else if (girl->has_trait( "Nerd"))
 			{
-				if (g_Dice.percent(50))
+				if (rng.percent(50))
 				{
 					ss << " stays home and plays some video games.";
 				}
@@ -1531,7 +1488,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			else if (girl->is_fighter())
 			{
-				if (g_Dice.percent(75))
+				if (rng.percent(75))
 				{
 					ss << " practiced her combat skills.";
 					imagetype = IMGTYPE_COMBAT;
@@ -1574,28 +1531,28 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			if (girl->is_addict())
 			{
 				ss << "addiction.";
-				if (girl->is_addict(true) && g_Dice.percent(20))//doesnt make it
+				if (girl->is_addict(true) && rng.percent(20))//doesnt make it
 				{
 					ss << "But on her way their she ran into an old friend who invited her to do some ";
 					if (girl->has_trait( "Shroud Addict"))
 					{
-						girl->add_inv(g_Game.inventory_manager().GetItem("Shroud Mushroom"));
+						girl->add_inv(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
 						ss << "Shroud Mushrooms.";
 					}
 					if (girl->has_trait( "Fairy Dust Addict"))
 					{
-						girl->add_inv(g_Game.inventory_manager().GetItem("Fairy Dust"));
+						girl->add_inv(g_Game->inventory_manager().GetItem("Fairy Dust"));
 						ss << "Fairy Dust.";
 					}
 					if (girl->has_trait( "Viras Blood Addict"))
 					{
-						girl->add_inv(g_Game.inventory_manager().GetItem("Vira Blood"));
+						girl->add_inv(g_Game->inventory_manager().GetItem("Vira Blood"));
 						ss << "Vira Blood.";
 					}
 				}
 				else//does make it
 				{
-					if (g_Dice.percent(2))//helps 2% seems about right to me... dont want it to help to often or rehab would be worthless
+					if (rng.percent(2))//helps 2% seems about right to me... dont want it to help to often or rehab would be worthless
 					{
 						ss << "She ended up having a major breakthru and ";
 						if (girl->has_trait( "Fairy Dust Addict"))
@@ -1638,13 +1595,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			else if (girl->is_fighter(true))
 			{
 				ss << "anger problems.";
-				if (g_Dice.percent(20))//doesnt make it
+				if (rng.percent(20))//doesnt make it
 				{
 					ss << "But on her way their she ran into someone who pissed her off and she ended up chasing them trying to fight with them.";
 				}
 				else//does make it
 				{
-					if (g_Dice.percent(2))//helps
+					if (rng.percent(2))//helps
 					{
 						ss << "She ended up having a major breakthru and ";
 						if (girl->has_trait( "Aggressive"))
@@ -1672,13 +1629,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			else if (girl->has_trait( "Shy"))
 			{
 				ss << "shyness.\n";
-				if (g_Dice.percent(20))//doesnt make it
+				if (rng.percent(20))//doesnt make it
 				{
 					ss << "But she couldn't work up the courage to go.";
 				}
 				else//does make it
 				{
-					if (g_Dice.percent(2))//helps
+					if (rng.percent(2))//helps
 					{
 						ss << "She ended up having a major breakthru and she is no longer shy.\n";
 						girl->remove_trait("Shy", true);
@@ -1692,13 +1649,13 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			else if (girl->has_trait( "Pessimist"))
 			{
 				ss << "pessimistic nature.\n";
-				if (g_Dice.percent(20))//doesnt make it
+				if (rng.percent(20))//doesnt make it
 				{
 					ss << "But she decided it was pointless.";
 				}
 				else//does make it
 				{
-					if (g_Dice.percent(2))//helps
+					if (rng.percent(2))//helps
 					{
 						ss << "She ended up having a major breakthru and she is no longer a Pessimist.\n";
 						girl->remove_trait("Pessimist", true);
@@ -1716,9 +1673,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 		case FT_WatchFights:
 #if 1
 		{
-			sGirl* fightgirlonduty = random_girl_on_job(g_Game.buildings(), JOB_FIGHTARENAGIRLS, Day0Night1);
+			sGirl* fightgirlonduty = random_girl_on_job(g_Game->buildings(), JOB_FIGHTARENAGIRLS, Day0Night1);
 			string fightgirlname = (fightgirlonduty ? "Gladiator " + fightgirlonduty->m_Realname + "" : "the Gladiator");
-			sGirl* fightbeastonduty = random_girl_on_job(g_Game.buildings(), JOB_FIGHTBEASTS, Day0Night1);
+			sGirl* fightbeastonduty = random_girl_on_job(g_Game->buildings(), JOB_FIGHTBEASTS, Day0Night1);
 			string fightbeastname = (fightbeastonduty ? "Beast fighter " + fightbeastonduty->m_Realname + "" : "the Beast fighter");
 			ss << girlName << " decides to go to the arena and watch some fights.\n";
 			if (fightgirlonduty && fightbeastonduty)
@@ -1738,7 +1695,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			{
 				ss << girlName << " took in a few fights before going home.";
 			}
-			if (girl->is_fighter() && g_Dice.percent(40))
+			if (girl->is_fighter() && rng.percent(40))
 			{
 				ss << "She felt she could have put on a better show.";
 			}
@@ -1753,14 +1710,14 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 		case FT_Casino:
 #if 1
 		{
-			sGirl* dealeronduty = random_girl_on_job(g_Game.buildings(), JOB_DEALER, Day0Night1);
+			sGirl* dealeronduty = random_girl_on_job(g_Game->buildings(), JOB_DEALER, Day0Night1);
 			string dealername = (dealeronduty ? "Dealer " + dealeronduty->m_Realname + "" : "the Dealer");
-			sGirl* enteronduty = random_girl_on_job(g_Game.buildings(), JOB_ENTERTAINMENT, Day0Night1);
+			sGirl* enteronduty = random_girl_on_job(g_Game->buildings(), JOB_ENTERTAINMENT, Day0Night1);
 			string entername = (enteronduty ? "Entertainment " + enteronduty->m_Realname + "" : "the Entertainment");
-			sGirl* xxxonduty = random_girl_on_job(g_Game.buildings(), JOB_XXXENTERTAINMENT, Day0Night1);
+			sGirl* xxxonduty = random_girl_on_job(g_Game->buildings(), JOB_XXXENTERTAINMENT, Day0Night1);
 			string xxxname = (xxxonduty ? "XXX Entertainment " + xxxonduty->m_Realname + "" : "the XXX Entertainment");
 			ss << girlName << " decides to go to ";
-			int gamble = g_Dice % 1000 + 1;
+			int gamble = rng % 1000 + 1;
 			if (roll > 75)
 			{
 				ss << "one of your rivials casinos.\n";
@@ -1777,7 +1734,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 					{
 						//ss << "She didn't have enough to pay them so they brought her to you to see if you would.";
 						string message = girlName + " didn't have enough to pay her gambling debt to your rivial so they brought her to you to see if you would.";
-						g_Game.push_message(message, COLOR_BLUE);
+						g_Game->push_message(message, COLOR_BLUE);
 						dp = DirPath() << "Resources" << "Scripts" << "GirlLostRivalGamble.script"; //FIXME zzzzz
 					}
 					else
@@ -1800,7 +1757,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 						{
 							//ss << "She didn't have enough to pay so they brought her to you to decide her fate.";
 							string message = girlName + " didn't have enough to pay her gambling debt so they brought her to you to decide her fate.";
-							g_Game.push_message(message, COLOR_BLUE);
+							g_Game->push_message(message, COLOR_BLUE);
 							dp = DirPath() << "Resources" << "Scripts" << "GirlLostYouGamble.script";  //FIXME zzzzz
 						}
 						else
@@ -1847,7 +1804,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			bool ass = false, str = false, flex = false, jog = false;
 			ss << girlName << " decided to workout today. She ";
 			/*add different types of workouts.. the type she does will affect the stat gain and maybe give a trait gain*/
-			switch (g_Dice % 10)
+			switch (rng % 10)
 			{
 			case 0:         ss << "did crunches working on her abs";		jog = true;	break;
 			case 1:         ss << "did squats working on her ass";			ass = true;	break;
@@ -1866,7 +1823,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			{
 				ss << " and with the help of her Free Weights she got a better workout.\n"; workout += 2;
 			}
-			else if (girl->has_trait( "Clumsy") && g_Dice.percent(50))
+			else if (girl->has_trait( "Clumsy") && rng.percent(50))
 			{
 				ss << " but somehow she ended up hurting herself.\n"; workout -= 2;
 				roll = 4;
@@ -1885,22 +1842,22 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			if (workout >= 2)
 			{
-				if (jog && !girl->has_trait( "Great Figure") && g_Dice.percent(5))
+				if (jog && !girl->has_trait( "Great Figure") && rng.percent(5))
 				{
 					ss << "With the help of her workouts she has got quite a Great Figure now.";
 					girl->add_trait("Great Figure");
 				}
-				else if (ass && !girl->has_trait( "Great Arse") && g_Dice.percent(5))
+				else if (ass && !girl->has_trait( "Great Arse") && rng.percent(5))
 				{
 					ss << "With the help of crunches her ass has become a sight to behold.";
 					girl->add_trait("Great Arse");
 				}
-				else if (str && !girl->has_trait( "Strong") && g_Dice.percent(5))
+				else if (str && !girl->has_trait( "Strong") && rng.percent(5))
 				{
 					ss << "With the help of her work out she has become Strong.";
 					girl->add_trait("Strong");
 				}
-				else if (flex && !girl->has_trait( "Flexible") && g_Dice.percent(15))
+				else if (flex && !girl->has_trait( "Flexible") && rng.percent(15))
 				{
 					ss << "With the help of yoga she has become quite Flexible.";
 					girl->add_trait("Flexible");
@@ -1908,9 +1865,9 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			if (workout < 0) workout = 0;
 			imagetype = IMGTYPE_SPORT;
-			girl->constitution(g_Dice % workout);
-			girl->agility(g_Dice % workout);
-			girl->beauty(g_Dice % workout);
+			girl->constitution(rng % workout);
+			girl->agility(rng % workout);
+			girl->beauty(rng % workout);
 		}
 #endif
 		break;	// end FT_WorkOut
@@ -1929,7 +1886,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			{
 				ss << "girl friend.\n";
 			}
-			if (g_Dice.percent(10))//is she excited to go?
+			if (rng.percent(10))//is she excited to go?
 			{
 				if (girl->has_trait( "Optimist"))
 				{
@@ -1997,7 +1954,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 						if (girl->has_trait( "Has Boy Friend"))
 						{
 							ss << "he walks " << girlName << " home, ";
-							if (g_Dice.percent(50))//perv so higher chance of trying to get some
+							if (rng.percent(50))//perv so higher chance of trying to get some
 							{
 								ss << "but before getting her home he whips out his cock and asks for a blow job.\n";
 								if (girl->has_trait( "Shy"))
@@ -2048,7 +2005,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 						else if (girl->has_trait( "Has Girl Friend"))
 						{
 							ss << "she walks " << girlName << " home, ";
-							if (g_Dice.percent(50))//perv so higher chance of trying to get some
+							if (rng.percent(50))//perv so higher chance of trying to get some
 							{
 								ss << "before getting her home she pulls her into an alley and whips out a didlo asking if she wants to have some fun.\n";
 								if (girl->has_trait( "Shy"))
@@ -2116,7 +2073,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 						if (girl->has_trait( "Has Boy Friend"))
 						{
 							ss << "he walks " << girlName << " home, ";
-							if (g_Dice.percent(20))//mean so decent chance of trying to get some
+							if (rng.percent(20))//mean so decent chance of trying to get some
 							{
 								ss << "but before getting her home he decides he deserves a blow job.\n";
 								if (girl->has_trait( "Meek"))
@@ -2156,7 +2113,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 						else if (girl->has_trait( "Has Girl Friend"))
 						{
 							ss << "she walks " << girlName << " home, ";
-							if (g_Dice.percent(30))//mean so decent chance of trying to get some
+							if (rng.percent(30))//mean so decent chance of trying to get some
 							{
 								ss << "but before getting her home she decides she deserves some pleasure.\n";
 								if (girl->has_trait( "Meek"))
@@ -2217,7 +2174,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 						if (girl->has_trait( "Has Boy Friend"))
 						{
 							ss << "he walks " << girlName << " home, ";
-							if (g_Dice.percent(10))// nice so lowest chance of trying to get some
+							if (rng.percent(10))// nice so lowest chance of trying to get some
 							{
 								ss << "but before getting her home he decides to ask for a blow job.\n";
 							}
@@ -2229,7 +2186,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 						else if (girl->has_trait( "Has Girl Friend"))
 						{
 							ss << "she walks " << girlName << " home, ";
-							if (g_Dice.percent(10))// nice so lowest chance of trying to get some
+							if (rng.percent(10))// nice so lowest chance of trying to get some
 							{
 								ss << "but before getting her home she decides to ask if she wants some pleasure.\n";
 							}
@@ -2340,7 +2297,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 				{
 					ss << "Even your pets get the occasional downtime\n";
 					ss << "She was let outside ";
-					if (g_Dice.percent(20))
+					if (rng.percent(20))
 					{
 						ss << "and she found a spot to take a nap.";
 					}
@@ -2440,7 +2397,7 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			girldiedmsg << ".";
 		}
-		g_Game.push_message(girldiedmsg.str(), COLOR_RED);
+		g_Game->push_message(girldiedmsg.str(), COLOR_RED);
 		return false;
 	}
 
@@ -2462,28 +2419,29 @@ bool cJobManager::WorkFreetime(sGirl* girl, bool Day0Night1, string& summary)
 
 bool cJobManager::AddictBuysDrugs(string Addiction, string Drug, sGirl * girl, IBuilding * brothel, bool Day0Night1)
 {
-	int id = g_Game.inventory_manager().CheckShopItem(Drug);
-	if (id == -1) return false;							// quit if the shop does not have the item
+    int avail = g_Game->shop().CountItem(Drug);
+    if(avail == 0) return false;						// quit if the shop does not have the item
 	if (!cGirls::CheckInvSpace(girl)) return false;		// quit if inventory is full
 
-	int cost = g_Game.inventory_manager().GetItem(Drug)->m_Cost;
-	if ((girl->m_Money - cost) < 0) return false;		// if they can afford it, they will buy it
-
-	girl->m_Money -= cost;
+    auto item = g_Game->inventory_manager().GetItem(Drug);
+    int cost = item->m_Cost;
+    // try to buy the item
+	if(!g_Game->shop().GirlBuyItem(*girl, *item))   return false;
 
 	// If a matron is on shift, she may catch the girl buying drugs
 	if ((brothel->num_girls_on_job(JOB_MATRON, true) >= 1 || brothel->num_girls_on_job(JOB_MATRON, false) >= 1)
 		&& g_Dice.percent(70))
 	{
 		girl->m_Events.AddMessage("Matron confiscates drugs", IMGTYPE_PROFILE, EVENT_WARNING);
+		for(int i = 0; i < MAXNUM_GIRL_INVENTORY; ++i) {
+            if (girl->m_Inventory[i] == item) {
+                girl->remove_inv(i);
+                return false;
+            }
+        }
 		return false;
 	}
-	else
-	{
-		girl->add_inv(g_Game.inventory_manager().BuyShopItem(id));
-		return true;
-	}
-
+	return true;
 }
 
 double cJobManager::JP_Freetime(sGirl* girl, bool estimate)	// not used

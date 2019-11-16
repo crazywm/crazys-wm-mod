@@ -126,7 +126,7 @@ void sArena::UpdateGirls(bool is_night)	// Start_Building_Process_B
 		girlName = current->m_Realname;
 
 		// fight beasts so if there is no beasts dont want them doing nothing
-		if (sw == JOB_FIGHTBEASTS && g_Game.storage().beasts() < 1)
+		if (sw == JOB_FIGHTBEASTS && g_Game->storage().beasts() < 1)
 		{
 			stringstream ssc;
 			ssc << "There are no beasts to fight so " << girlName << " was sent to ";
@@ -152,7 +152,7 @@ void sArena::UpdateGirls(bool is_night)	// Start_Building_Process_B
 		}
 
 		// do their job
-		bool refused = g_Game.job_manager().JobFunc[sw](current, is_night, summary);
+		bool refused = g_Game->job_manager().JobFunc[sw](current, is_night, summary, g_Dice);
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -167,7 +167,7 @@ void sArena::UpdateGirls(bool is_night)	// Start_Building_Process_B
 		}
 		else
 		{
-			ss << g_Game.job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
+			ss << g_Game->job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
 			m_Fame += current->fame();
@@ -247,8 +247,8 @@ void sArena::auto_assign_job(sGirl* target, std::stringstream& message, bool is_
         *		until each building has their own beast supply.
         *	The farm will supply them when more work gets done to it
         */
-    else if (target->combat() > 60 && g_Game.storage().beasts() >= 10 &&
-            num_girls_on_job(JOB_FIGHTBEASTS, is_night) < g_Game.storage().beasts() / 10)
+    else if (target->combat() > 60 && g_Game->storage().beasts() >= 10 &&
+            num_girls_on_job(JOB_FIGHTBEASTS, is_night) < g_Game->storage().beasts() / 10)
     {
         target->m_DayJob = target->m_NightJob = JOB_FIGHTBEASTS;
         ss << "work fighting beast in the arena.";

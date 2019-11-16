@@ -17,14 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cScreenPropertyManagement.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "buildings/cBrothel.h"
 #include "Game.hpp"
 
 
-static cTariff tariff;
 static stringstream ss;
 
 cScreenPropertyManagement::cScreenPropertyManagement() : cInterfaceWindowXML("property_management.xml")
@@ -98,7 +97,7 @@ void cScreenPropertyManagement::load_brothel_ui_ids(const std::string& prefix, B
     target.noles    = get_id(prefix + "_NoLes");
     target.nooral   = get_id(prefix + "_NoOral");
     target.notitty  = get_id(prefix + "_NoTitty");
-    target.nohand   = get_id(prefix + "_NoHand");
+    target.nohand   = get_id(prefix + "_NoHandJob");
     target.nofoot   = get_id(prefix + "_NoFoot");
     target.nostrip  = get_id(prefix + "_NoStrip");
     target.nogroup  = get_id(prefix + "_NoGroup");
@@ -106,7 +105,7 @@ void cScreenPropertyManagement::load_brothel_ui_ids(const std::string& prefix, B
     target.advamnt  = get_id(prefix + "_AdvAmnt");
 
     SetCheckBoxCallback(target.pot_b, [this, type, index](bool on) {
-        g_Game.buildings().building_with_type(type, index)->m_KeepPotionsStocked = on;
+        g_Game->buildings().building_with_type(type, index)->m_KeepPotionsStocked = on;
     });
 
     struct STCB {
@@ -121,12 +120,12 @@ void cScreenPropertyManagement::load_brothel_ui_ids(const std::string& prefix, B
 
     for(const auto& data : stcb) {
         SetCheckBoxCallback(data.id, [this, skill=data.skill, type, index](bool on){
-            g_Game.buildings().building_with_type(type, index)->set_sex_type_allowed(skill, !on);
+            g_Game->buildings().building_with_type(type, index)->set_sex_type_allowed(skill, !on);
         });
     }
 
     SetSliderCallback(target.advslid, [this, advamnt=target.advamnt, type, index](int value) {
-        g_Game.buildings().building_with_type(type, index)->m_AdvertisingBudget = value * 50;
+        g_Game->buildings().building_with_type(type, index)->m_AdvertisingBudget = value * 50;
         ss.str(""); ss << ("Advertising Budget: ") << (value * 50) << (" gold / week");
         EditTextItem(ss.str(), advamnt);
     });
@@ -134,9 +133,26 @@ void cScreenPropertyManagement::load_brothel_ui_ids(const std::string& prefix, B
 
 void cScreenPropertyManagement::init_building_ui(const BrothelUiIDs& ui)
 {
-    auto building = g_Game.buildings().building_with_type(ui.type, ui.index);
+    auto building = g_Game->buildings().building_with_type(ui.type, ui.index);
+    HideWidget(ui.noanal, !building);
+    HideWidget(ui.nobdsm, !building);
+    HideWidget(ui.nonorm, !building);
+    HideWidget(ui.nobeast, !building);
+    HideWidget(ui.nogroup, !building);
+    HideWidget(ui.noles, !building);
+    HideWidget(ui.nooral, !building);
+    HideWidget(ui.notitty, !building);
+    HideWidget(ui.nohand, !building);
+    HideWidget(ui.nofoot, !building);
+    HideWidget(ui.advslid, !building);
+    HideWidget(ui.advamnt, !building);
+    HideWidget(ui.pot_b, !building);
+    HideWidget(ui.pot_a, !building);
+
+    std::cout << ui.index << " - " << building << "\n";
+
     if(!building) {
-        EditTextItem("(You do not own this building yet.)", ui.name);
+        EditTextItem("", ui.name);
         return;
     }
     EditTextItem(building->name(), ui.name);
@@ -150,6 +166,7 @@ void cScreenPropertyManagement::init_building_ui(const BrothelUiIDs& ui)
     SetCheckBox(ui.nooral, !building->is_sex_type_allowed(SKILL_ORALSEX));
     SetCheckBox(ui.notitty, !building->is_sex_type_allowed(SKILL_TITTYSEX));
     SetCheckBox(ui.nohand, !building->is_sex_type_allowed(SKILL_HANDJOB));
+    SetCheckBox(ui.nofoot, !building->is_sex_type_allowed(SKILL_FOOTJOB));
 
     int advert = building->m_AdvertisingBudget / 50;
     advert = SliderRange(ui.advslid, 0, (2000 / 50), advert, 4);  // set slider min/max range
@@ -161,21 +178,22 @@ void cScreenPropertyManagement::init_building_ui(const BrothelUiIDs& ui)
     int number = building->m_AntiPregPotions;
     ss << ("You have: ") << number;
     EditTextItem(ss.str(), ui.pot_a);
-    DisableCheckBox(ui.pot_b, number < 1);
+    DisableWidget(ui.pot_b, number < 1);
 }
 
 void cScreenPropertyManagement::init(bool back)
 {
 	Focused();
 
-	ss.str(""); ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold";
+	ss.str(""); ss << "Add Rooms: " << g_Game->tariff().add_room_cost(5) << " gold";
 	EditTextItem(ss.str(), roomcost_id);
 
-	ss.str(""); ss << "Anti-Preg Potions: " << tariff.anti_preg_price(1) << " gold each";
+	ss.str(""); ss << "Anti-Preg Potions: " << g_Game->tariff().anti_preg_price(1) << " gold each";
 	EditTextItem(ss.str(), potioncost_id);
 
+	std::cout << "INIT \n";
     BrothelUiIDs* uiids[] = {&p_b0, &p_b1, &p_b2, &p_b3, &p_b4, &p_b5, &p_b6, &p_ar, &p_fa, &p_cl, &p_ce, &p_st, &p_ho};
-	for(int i = 0; i < 6; ++i) {
+	for(int i = 0; i < 13; ++i) {
         init_building_ui(*uiids[i]);
 	}
 }

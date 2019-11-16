@@ -22,10 +22,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Actress
-bool cJobManager::WorkFilmFootJob(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmFootJob(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -48,16 +46,16 @@ bool cJobManager::WorkFilmFootJob(sGirl* girl, bool Day0Night1, string& summary)
 
 	ss << girlName << " worked as an actress filming foot job scenes.\n \n";
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FILMFOOTJOB))
 	{
 		ss << "She refused to use her feet on film today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She used her feet on his cock, but didn't like it.\n \n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She loved having his cock slide between her feet.\n \n"; }
-	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day using her feet to get her co-star off.\n \n"; }
+	else if (roll <= 10) { enjoy -= rng % 3 + 1;	ss << "She used her feet on his cock, but didn't like it.\n \n"; }
+	else if (roll >= 90) { enjoy += rng % 3 + 1;	ss << "She loved having his cock slide between her feet.\n \n"; }
+	else /*            */{ enjoy += rng % 2;		ss << "She had a pleasant day using her feet to get her co-star off.\n \n"; }
 	jobperformance = enjoy * 2;
 
 	// remaining modifiers are in the AddScene function --PP
@@ -86,8 +84,8 @@ bool cJobManager::WorkFilmFootJob(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->footjob(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->footjob(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(ACTION_SEX, enjoy);

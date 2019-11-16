@@ -26,6 +26,9 @@ class cCustomers;
 class sCustomer;
 class cInventory;
 class IBuilding;
+class cTraits;
+class cTariff;
+class cShop;
 
 class TiXmlElement;
 
@@ -77,6 +80,12 @@ public:
     // gold
     cGold& gold();
 
+    // traits
+    cTraits& traits();
+
+    // tariffs
+    cTariff& tariff();
+
     // messages
     void push_message(std::string text, int color);
 
@@ -94,6 +103,9 @@ public:
 
     // inventory
     cInventory& inventory_manager();
+
+    // shop
+    cShop& shop();
 
     // building management and shortcuts
     cBuildingManager& buildings();
@@ -141,9 +153,14 @@ public:
     void RemoveMarketSlave(const sGirl& target);
     void UpdateMarketSlaves();
 
+    bool allow_cheats() const;
+    void enable_cheating();
+
     // utilities
     bool NameExists(std::string name) const;
     bool SurnameExists(std::string surname) const;
+
+    void LoadData();
 private:
     // managers
     std::unique_ptr<cRivalManager> m_Rivals;
@@ -160,11 +177,16 @@ private:
     std::unique_ptr<cCustomers> m_Customers;
     std::unique_ptr<cInventory> m_InvManager;
     std::unique_ptr<cGirls> m_Girls;
+    std::unique_ptr<cTraits> m_Traits;
+    std::unique_ptr<cTariff> m_Tariff;
+    std::unique_ptr<cShop> m_Shop;
 
     // slave market stuff
     std::vector<sGirl*> m_MarketGirls;
     std::vector<bool> m_MarketUniqueGirl;
     sGirl* generate_unique_girl();
+
+    bool m_IsCheating = false;
 
 
 
@@ -185,6 +207,6 @@ private:
 };
 
 // the global game instance.
-extern Game g_Game;
+extern std::unique_ptr<Game> g_Game;
 
 #endif //CRAZYS_WM_MOD_GAME_HPP

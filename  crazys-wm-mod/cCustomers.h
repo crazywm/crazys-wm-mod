@@ -71,9 +71,7 @@ public:
 	cCustomers();
 	~cCustomers();
 
-	void Free();
-
-	void GenerateCustomers(IBuilding& brothel, bool Day0Night1 = SHIFT_DAY);	// generates a random amount of possible customers based on the number of poor, rich, and middle class
+    void GenerateCustomers(IBuilding& brothel, bool Day0Night1 = SHIFT_DAY);	// generates a random amount of possible customers based on the number of poor, rich, and middle class
     std::unique_ptr<sCustomer> CreateCustomer(IBuilding& brothel);
 
 	sCustomer GetCustomer(IBuilding& brothel); // Creates a new customer.

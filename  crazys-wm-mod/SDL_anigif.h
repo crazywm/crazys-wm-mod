@@ -29,7 +29,7 @@
 
 
 
-typedef struct
+typedef struct AG_Frame
 {
 	SDL_Surface*	surface;				/* SDL surface for this frame */
 	int				x, y;					/* Frame offset position */

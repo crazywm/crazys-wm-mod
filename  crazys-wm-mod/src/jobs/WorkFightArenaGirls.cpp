@@ -23,18 +23,16 @@
 #include <sstream>
 #include "CLog.h"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Arena - Fighting
-bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_COMBAT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_FIGHTARENAGIRLS))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -57,7 +55,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summ
 
 	cGirls::EquipCombat(girl);		// ready armor and weapons!
 
-	sGirl* tempgirl = g_Game.CreateRandomGirl(18, false, false, false, false, false, true);
+	sGirl* tempgirl = g_Game->CreateRandomGirl(18, false, false, false, false, false, true);
 	if (tempgirl) fight_outcome = cGirls::girl_fights_girl(girl, tempgirl);
 	else fight_outcome = 7;			// `J` reworked incase there are no Non-Human Random Girls
 	if (fight_outcome == 7)
@@ -69,26 +67,26 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summ
 	}
 	else if (fight_outcome == 1)	// she won
 	{
-		enjoy = g_Dice % 3 + 1;
-		fame = g_Dice % 3 + 1;
+		enjoy = rng % 3 + 1;
+		fame = rng % 3 + 1;
 		sGirl* ugirl = nullptr;
-		if (g_Dice.percent(10))		// chance of getting unique girl
+		if (rng.percent(10))		// chance of getting unique girl
 		{
-			ugirl = g_Game.GetRandomGirl(false, false, true);
+			ugirl = g_Game->GetRandomGirl(false, false, true);
 		}
 		if (ugirl)
 		{
 			stringstream msg;	// goes to the girl and the g_MessageQue
 			stringstream Umsg;	// goes to the new girl
 			stringstream Tmsg;	// temp msg
-			ugirl->m_Stats[STAT_HEALTH] = g_Dice % 50 + 1;
-			ugirl->m_Stats[STAT_HAPPINESS] = g_Dice % 80 + 1;
-			ugirl->m_Stats[STAT_TIREDNESS] = g_Dice % 50 + 50;
+			ugirl->m_Stats[STAT_HEALTH] = rng % 50 + 1;
+			ugirl->m_Stats[STAT_HAPPINESS] = rng % 80 + 1;
+			ugirl->m_Stats[STAT_TIREDNESS] = rng % 50 + 50;
 			ugirl->m_States |= (1 << STATUS_ARENA);
 			msg << girlName << " won her fight against " << ugirl->m_Realname << ".\n \n";
 			Umsg << ugirl->m_Realname << " lost her fight against your girl " << girlName << ".\n \n";
 			Tmsg << ugirl->m_Realname;
-			if (g_Dice.percent(50))
+			if (rng.percent(50))
 			{
 				ugirl->m_States |= (1 << STATUS_SLAVE);
 				Tmsg << "'s owner could not afford to pay you your winnings so he gave her to you instead.\n \n";
@@ -96,15 +94,15 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summ
 			else
 			{
 				Tmsg << " put up a good fight so you let her live as long as she came work for you.\n \n";
-				wages = 100 + g_Dice % (girl->fame() + girl->charisma());
+				wages = 100 + rng % (girl->fame() + girl->charisma());
 			}
 			msg << Tmsg.str();
 			Umsg << Tmsg.str();
 			ss << msg.str();
-			g_Game.push_message(msg.str(), 0);
+			g_Game->push_message(msg.str(), 0);
 			ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
 
-			g_Game.dungeon().AddGirl(ugirl, DUNGEON_NEWARENA);
+			g_Game->dungeon().AddGirl(ugirl, DUNGEON_NEWARENA);
 		}
 		else
 		{
@@ -148,13 +146,13 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summ
 			{
 				ss << girlName << " won her fight.";
 			}
-			wages = 100 + g_Dice % (girl->fame() + girl->charisma());
+			wages = 100 + rng % (girl->fame() + girl->charisma());
 		}
 	}
 	else if (fight_outcome == 2) // she lost
 	{
-		enjoy = -(g_Dice % 3 + 1);
-		fame = -(g_Dice % 3 + 1);
+		enjoy = -(rng % 3 + 1);
+		fame = -(rng % 3 + 1);
 		if (girl->has_trait( "Exhibitionist"))
 		{
 			ss << "As she enjoys showing off her body, " << girlName << " lets her opponent cut away her already-skimpy clothing, but either because of her lack of skill or just bad luck, she takes a real hit and is defeated.\n";
@@ -190,8 +188,8 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summ
 	}
 	else if (fight_outcome == 0)  // it was a draw
 	{
-		enjoy = g_Dice % 3 - 2;
-		fame = g_Dice % 3 - 2;
+		enjoy = rng % 3 - 2;
+		fame = rng % 3 - 2;
 		ss << "The fight ended in a draw.";
 	}
 
@@ -208,12 +206,12 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summ
 		girl->tiredness(10 - girl->strength() / 20 );
 	}
 
-	if (girl->has_trait( "Exhibitionist") && g_Dice.percent(15))
+	if (girl->has_trait( "Exhibitionist") && rng.percent(15))
 	{
 		ss  << "A flamboyant fighter, " << girlName << " fights with as little armor and clothing as possible, and sometimes takes something off in the middle of a match, to the enjoyment of many fans.\n";
 	}
 
-	if (girl->has_trait( "Idol") && g_Dice.percent(15))
+	if (girl->has_trait( "Idol") && rng.percent(15))
 	{
 		ss  << girlName << " has quite the following, and the Arena is almost always packed when she fights.  People just love to watch her in action.\n";
 	}
@@ -242,10 +240,10 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summ
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 	girl->fame(fame);
 	girl->exp(xp);
-	girl->combat(g_Dice%fightxp + skill);
-	girl->magic(g_Dice%fightxp + skill);
-	girl->agility(g_Dice%fightxp + skill);
-	girl->constitution(g_Dice%fightxp + skill);
+	girl->combat(rng%fightxp + skill);
+	girl->magic(rng%fightxp + skill);
+	girl->agility(rng%fightxp + skill);
+	girl->constitution(rng%fightxp + skill);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 	girl->upd_Enjoyment(actiontype, enjoy);
 
@@ -255,7 +253,7 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summ
 	int earned = 0;
 	for (int i = 0; i < jobperformance; i++)
 	{
-		earned += g_Dice % 10 + 5; // 5-15 gold per customer  This may need tweaked to get it where it should be for the pay
+		earned += rng % 10 + 5; // 5-15 gold per customer  This may need tweaked to get it where it should be for the pay
 	}
 	brothel->m_Finance.arena_income(earned);
 	ss.str("");
@@ -267,11 +265,11 @@ bool cJobManager::WorkFightArenaGirls(sGirl* girl, bool Day0Night1, string& summ
 	cGirls::PossiblyGainNewTrait(girl, "Tough", 65, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 55, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Aggressive", 70, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
-	if (g_Dice.percent(25) && girl->strength() >= 65 && girl->combat() > girl->magic())
+	if (rng.percent(25) && girl->strength() >= 65 && girl->combat() > girl->magic())
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, girlName + " has become pretty Strong from all of the fights she's been in.", Day0Night1);
 	}
-	if (g_Dice.percent(25) && girl->combat() >= 60 && girl->combat() > girl->magic())
+	if (rng.percent(25) && girl->combat() >= 60 && girl->combat() > girl->magic())
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Brawler", 60, ACTION_COMBAT, girlName + " has become pretty good at fighting.", Day0Night1);
 	}
@@ -304,7 +302,9 @@ double cJobManager::JP_FightArenaGirls(sGirl* girl, bool estimate)// not used
 			if (t > 0)
 				jobperformance -= (t + 2) * (t / 2);
 		}
-
 	}
-	return jobperformance;
+
+    jobperformance += girl->get_trait_modifier("work.fightarena");
+
+    return jobperformance;
 }

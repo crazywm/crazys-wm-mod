@@ -22,10 +22,8 @@
 #include "cGold.h"
 #include "src/buildings/cBrothel.h"
 
-extern cRng g_Dice;
-
 // `J` Job Clinic - Staff - Learning_Job
-bool cJobManager::WorkIntern(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkIntern(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -69,9 +67,9 @@ bool cJobManager::WorkIntern(sGirl* girl, bool Day0Night1, string& summary)
 	int skill = 0;												// gian for main skill trained
 	int dirtyloss = brothel->m_Filthiness / 100;				// training time wasted with bad equipment
 	int sgMed = 0, sgInt = 0, sgCha = 0;						// gains per skill
-	int roll_a = g_Dice.d100();									// roll for main skill gain
-	int roll_b = g_Dice.d100();									// roll for main skill trained
-	int roll_c = g_Dice.d100();									// roll for enjoyment
+	int roll_a = rng.d100();									// roll for main skill gain
+	int roll_b = rng.d100();									// roll for main skill trained
+	int roll_c = rng.d100();									// roll for enjoyment
 
 
 
@@ -100,12 +98,12 @@ bool cJobManager::WorkIntern(sGirl* girl, bool Day0Night1, string& summary)
 		else if (roll_b < 100 && tcha < 100)	train = 3;	// charisma
 		roll_b -= 10;
 	} while (train == 0 && roll_b > 0);
-	if (train == 0 || g_Dice.percent(5)) gaintrait = true;
+	if (train == 0 || rng.percent(5)) gaintrait = true;
 	if (train == 0 && girl->medicine() > 70 && girl->intelligence() > 70)	promote = true;
 
-	if (train == 1) { sgMed = skill; ss << "She learns how to work with medicine better.\n"; }	else sgMed = g_Dice % 3;
-	if (train == 2) { sgInt = skill; ss << "She got smarter today.\n"; }						else sgInt = g_Dice % 2;
-	if (train == 3) { sgCha = skill; ss << "She got more charismatic today.\n"; }				else sgCha = g_Dice % 2;
+	if (train == 1) { sgMed = skill; ss << "She learns how to work with medicine better.\n"; }	else sgMed = rng % 3;
+	if (train == 2) { sgInt = skill; ss << "She got smarter today.\n"; }						else sgInt = rng % 2;
+	if (train == 3) { sgCha = skill; ss << "She got more charismatic today.\n"; }				else sgCha = rng % 2;
 
 	if (sgMed + sgInt + sgCha > 0)
 	{
@@ -119,7 +117,7 @@ bool cJobManager::WorkIntern(sGirl* girl, bool Day0Night1, string& summary)
 	while (gaintrait && trycount > 0)	// `J` Try to add a trait
 	{
 		trycount--;
-		switch (g_Dice % 10)
+		switch (rng % 10)
 		{
 		case 0:
 			if (girl->has_trait( "Nervous"))
@@ -169,9 +167,9 @@ bool cJobManager::WorkIntern(sGirl* girl, bool Day0Night1, string& summary)
 
 
 	//enjoyed the work or not
-	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "Some of the patrons abused her during the shift."; }
-	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time working."; }
-	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
+	/* */if (roll_c <= 10)	{ enjoy -= rng % 3 + 1;	ss << "Some of the patrons abused her during the shift."; }
+	else if (roll_c >= 90)	{ enjoy += rng % 3 + 1;	ss << "She had a pleasant time working."; }
+	else /*             */	{ enjoy += rng % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 	girl->upd_Enjoyment(actiontype, enjoy);
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
@@ -188,7 +186,7 @@ bool cJobManager::WorkIntern(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ xp -= 2; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	if (girl->m_Skills[SKILL_MEDICINE] + girl->m_Stats[STAT_INTELLIGENCE] + girl->m_Stats[STAT_CHARISMA] >= 300) promote = true;

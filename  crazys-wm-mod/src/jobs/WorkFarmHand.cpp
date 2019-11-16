@@ -19,16 +19,14 @@
 #include "cRng.h"
 #include "src/buildings/cBrothel.h"
 
-extern cRng g_Dice;
-
 // `J` Job Farm - Staff - job_is_cleaning
-bool cJobManager::WorkFarmHand(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFarmHand(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
 	int actiontype = ACTION_WORKFARM; int actiontype2 = ACTION_WORKCLEANING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (roll_a <= 50 && (girl->disobey_check(actiontype, JOB_FARMHAND) || girl->disobey_check(actiontype2, JOB_FARMHAND)))
 	{
 		ss << " refused to work on the farm.";
@@ -49,7 +47,7 @@ bool cJobManager::WorkFarmHand(sGirl* girl, bool Day0Night1, string& summary)
 
 	if (roll_a <= 10)
 	{
-		enjoyC -= g_Dice % 3; enjoyF -= g_Dice % 3;
+		enjoyC -= rng % 3; enjoyF -= rng % 3;
 		CleanAmt = CleanAmt * 0.8;
 		/* */if (roll_b < 30)	ss << "She spilled a bucket of something unpleasant all over herself.";
 		else if (roll_b < 60)	ss << "She stepped in something unpleasant.";
@@ -57,14 +55,14 @@ bool cJobManager::WorkFarmHand(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else if (roll_a >= 90)
 	{
-		enjoyC += g_Dice % 3; enjoyF += g_Dice % 3;
+		enjoyC += rng % 3; enjoyF += rng % 3;
 		CleanAmt = CleanAmt * 1.1;
 		/* */if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
 		else /*            */	ss << "She had a great time working today.";
 	}
 	else
 	{
-		enjoyC += g_Dice % 2; enjoyF += g_Dice % 2;
+		enjoyC += rng % 2; enjoyF += rng % 2;
 		ss << "The shift passed uneventfully.";
 	}
 	ss << "\n \n";
@@ -89,25 +87,25 @@ bool cJobManager::WorkFarmHand(sGirl* girl, bool Day0Night1, string& summary)
 		if (Day0Night1 == SHIFT_DAY && roll_c % 3 == 1)	// 33% chance she will watch the sunset when working day shift
 		{
 			ss << "sat beneath an oak tree and watched the sunset.";
-			girl->tiredness(-((g_Dice % 5) + 2));
+			girl->tiredness(-((rng % 5) + 2));
 		}
 		else if (roll_c < 25)
 		{
 			ss << "played with the baby animals a bit.";
-			girl->animalhandling((g_Dice % 2) + 1);
+			girl->animalhandling((rng % 2) + 1);
 		}
 		else if (roll_c < 50)
 		{
 			ss << "played in the dirt a bit.";
-			girl->farming((g_Dice % 2));
+			girl->farming((rng % 2));
 		}
 		else
 		{
 			ss << "sat in a rocking chair on the farm house front porch whittling.";
-			girl->crafting((g_Dice % 3));
-			girl->tiredness(-(g_Dice % 3));
+			girl->crafting((rng % 3));
+			girl->tiredness(-(rng % 3));
 		}
-		girl->happiness((g_Dice % 4) + 2);
+		girl->happiness((rng % 4) + 2);
 	}
 
 #if 0
@@ -149,23 +147,23 @@ bool cJobManager::WorkFarmHand(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	girl->service((g_Dice % skill));
+	girl->service((rng % skill));
 	// secondary (-1 for one then -2 for others)
-	girl->crafting(max(0, (g_Dice % skill) - 1));
-	girl->farming(max(0, (g_Dice % skill) - 2));
-	girl->strength(max(0, (g_Dice % skill) - 2));
+	girl->crafting(max(0, (rng % skill) - 1));
+	girl->farming(max(0, (rng % skill) - 2));
+	girl->strength(max(0, (rng % skill) - 2));
 
 	girl->upd_Enjoyment(actiontype, enjoyF);
 	girl->upd_Enjoyment(actiontype2, enjoyC);
 	// Gain Traits
-	if (g_Dice.percent(girl->service()))
+	if (rng.percent(girl->service()))
 		cGirls::PossiblyGainNewTrait(girl, "Maid", 90, actiontype2, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
 	// Lose Traits
-	if (g_Dice.percent(girl->service()))
+	if (rng.percent(girl->service()))
 		cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype2, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 
 	return false;

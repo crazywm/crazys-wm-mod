@@ -17,10 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "cLuaMenu.h"
-#include "cChoiceMessage.h"
+#include "interface/cChoiceMessage.h"
+#include "interface/cWindowManager.h"
+#include "SDL_ttf.h"
 
 extern CGraphics g_Graphics;
-extern cChoiceManager g_ChoiceManager;
 
 extern cConfig cfg;
 /*
@@ -362,16 +363,6 @@ int cLuaMenuInner::get_menu_y(int maxh)
 	return (screen_h - maxh) / 2;
 }
 
-void cLuaMenuInner::write_captions()
-{
-	u_int i;
-
-	for(i = 0; i < captions.size(); i++) {
-		const char *pt = captions[i]->c_str();
-		g_ChoiceManager.AddChoice(0, pt, i);
-	}
-}
-
 void cLuaMenuInner::show()
 {
 /*
@@ -419,20 +410,10 @@ void cLuaMenuInner::show()
  */
 	log.ss() << "creating choice box";
 	log.ssend();
-	g_ChoiceManager.CreateChoiceBox(x, y, maxw + 20, maxh, 0, captions.size(), maxh, 0, 16);
-/*
- *	Now: the choicemanager will call a C function when the
- *	user clicks, so we need to specify that. 
- */
- 	g_ChoiceManager.set_callback(c_callback);
-/* 
- *	we still need to write the captions on the menu boxes
- */
- 	write_captions();
-/*
- *	set the menu active, and we're done. For now :)
- */
-	g_ChoiceManager.SetActive(0);
+	std::vector<std::string> cap;
+	for(auto c : captions) cap.push_back(*c);
+	// TODO support settings
+	window_manager().InputChoice("", cap, c_callback);
 }
 
 /*
@@ -456,8 +437,6 @@ static void c_callback(int option_number)
  */
 void cLuaMenuInner::clicked(int option_number)
 {
-	g_ChoiceManager.Free();
-	g_ChoiceManager.set_callback(nullptr);
 /*
  *	we need to free up the string pointers used for captions
  */

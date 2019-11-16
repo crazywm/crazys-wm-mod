@@ -28,7 +28,6 @@ cCustomers::cCustomers()
 }
 cCustomers::~cCustomers()
 {
-	Free();
 }
 sCustomer::sCustomer()
 {
@@ -47,9 +46,6 @@ sCustomer::sCustomer()
 }
 
 sCustomer::~sCustomer()
-{
-}
-void cCustomers::Free()
 {
 }
 
@@ -194,7 +190,7 @@ sCustomer cCustomers::GetCustomer(IBuilding& brothel)
 
 void cCustomers::GenerateCustomers(IBuilding& brothel, bool Day0Night1)
 {
-	Free();	// Free any existing customers
+	// TODO Free any existing customers?
 	if (brothel.num_girls() == 0) return;	// no girls, no customers
 
 	stringstream ss;

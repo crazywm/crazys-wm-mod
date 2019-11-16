@@ -18,16 +18,17 @@
 */
 #include <vector>
 #include "cImageItem.h"
-#include "CGraphics.h"
+#include "interface/CGraphics.h"
 #include "cGirls.h"
 #include "DirPath.h"
 #include "FileList.h"
-#include "cInterfaceWindow.h"
+#include "interface/cInterfaceWindow.h"
 #include "SDL_anigif.h"
 #include "CLog.h"
 #include "src/sGirl.hpp"
 #include "sConfig.h"
-#include "cAnimatedSurface.h"
+#include "interface/cAnimatedSurface.h"
+#include "interface/cSurface.h"
 
 extern cConfig		cfg;
 extern string		stringtolowerj(string name);
@@ -97,33 +98,12 @@ string galtxt[] =
 
 };
 
-// Constructors, Deconstructors and Free
-cImage::cImage()
+cImageItem::cImageItem(cInterfaceWindow* parent, int id, int x, int y, int width, int height) : cUIWidget(id, x, y, width, height, parent)
 {
-	m_Surface = nullptr;
-	m_AniSurface = nullptr;
-}
-cImage::~cImage()
-{
-	if (m_Surface && !m_Surface->m_SaveSurface) delete m_Surface;
-	m_Surface = nullptr;
-	//if (m_AniSurface)		delete m_AniSurface;
-	m_AniSurface = nullptr;
-}
-
-cImageItem::cImageItem(int id, int x, int y, int width, int height) : cUIWidget(id, x, y, width, height)
-{
-	m_Image = nullptr;
-	m_Surface = nullptr;
-	m_AnimatedImage = nullptr;
 	m_loaded = false;
 }
 cImageItem::~cImageItem()
 {
-    delete m_Image;
-	if (m_Surface)
-	    SDL_FreeSurface(m_Surface);
-	delete m_AnimatedImage;
 }
 
 /* `J` image tree for each image type
@@ -972,13 +952,8 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || Start"; g_LogFile.ssend(); }
 
 	// Clear the old images
-	if (m_Images[id] && m_Images[id]->m_AnimatedImage && m_Images[id]->m_AnimatedImage->getNumFrames() > 0)
-	{
-		AG_FreeSurfaces(m_Images[id]->m_AnimatedImage->getAFrames(), m_Images[id]->m_AnimatedImage->getNumFrames());
-		m_Images[id]->m_AnimatedImage->m_Gif = false;
-		m_Images[id]->m_AnimatedImage = nullptr;
-	}
-	m_Images[id]->m_Image = nullptr;
+    cImageItem* image = GetImage(id);
+	if(!image) return;
 
 	if (!girl || imagetype < 0 || ImageName == "blank")		// no girl, no images
 	{
@@ -991,8 +966,8 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 			else/*                  */	g_LogFile.ss() << "Unknown error";
 			g_LogFile.ssend();
 		}
-		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-		m_Images[id]->m_Image->m_Message = "No image.";
+        image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
+        image->m_Message = "No image.";
 		return;
 	}
 
@@ -1017,8 +992,8 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 	if (totalimagesCc + totalimagesCo + totalimagesDc + totalimagesDo < 1)	// no images at all so return a blank image
 	{
 		if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || No Images found for: " << girlName << " and no Default images found"; g_LogFile.ssend(); }
-		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-		m_Images[id]->m_Image->m_Message = "No image found.";
+        image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
+        image->m_Message = "No image found.";
 		return;
 	}
 
@@ -1133,8 +1108,8 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		if (dir == 0 && gallery)	// gallery stops here if there are no images
 		{
 			if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug Alt Images || No gallery images found for: " << girlName; g_LogFile.ssend(); }
-			m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-			m_Images[id]->m_Image->m_Message = "No images found.";
+            image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
+            image->m_Message = "No images found.";
 			return;
 		}
 
@@ -1191,8 +1166,8 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 		}
 		if (dir == 0)
 		{
-			m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-			m_Images[id]->m_Image->m_Message = "No images found.";
+            image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
+            image->m_Message = "No images found.";
 			continue;
 		}
 
@@ -1243,42 +1218,26 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 			{
 				if (gallery)
 				{
-					m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-					m_Images[id]->m_AnimatedImage = nullptr;
-					m_Images[id]->m_Image->m_Message = "Bad ani file: Missing its matching jpg file: " + file;
+                    image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
+                    image->m_Message = "Bad ani file: Missing its matching jpg file: " + file;
 					return;
 				}
 				continue;
 			}
 			anidir << name;
-			cImage* newImage = new cImage();
-			newImage->m_Surface = new CSurface();
-			newImage->m_Surface->LoadImage(anidir.c_str());
-			newImage->m_AniSurface = new cAnimatedSurface();
-			int numFrames, speed, aniwidth, aniheight;
-			ifstream input;
-			input.open(file.c_str());
-			if (!input)
-			{
-				g_LogFile.ss() << "Incorrect data file given for animation - " << file; g_LogFile.ssend();
-				if (gallery)
-				{
-					m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-					m_Images[id]->m_AnimatedImage = nullptr;
-					m_Images[id]->m_Image->m_Message = "Bad ani file: Incorrect data file given for animation: " + file;
-					return;
-				}
-			}
-			else
-			{
-				input >> numFrames >> speed >> aniwidth >> aniheight;
-				m_Images[id]->m_Image = newImage->m_Surface;
-				m_Images[id]->m_AnimatedImage = new cAnimatedSurface();
-				m_Images[id]->m_AnimatedImage->SetData(0, 0, numFrames, speed, aniwidth, aniheight, newImage->m_Surface);
-				imagechosen = true;
-				m_Images[id]->m_Image->m_Message = file;
-			}
-			input.close();
+
+            try {
+                image->SetImage(GetGraphics().GetImageCache().LoadAni(anidir, file, image->GetWidth(), image->GetHeight()));
+                image->m_Message = file;
+            } catch (std::runtime_error) {
+                if (gallery)
+                {
+                    image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
+                    image->m_Message = "Bad ani file: Incorrect data file given for animation: " + file;
+                    return;
+                }
+            }
+            imagechosen = true;
 		}
 		else if (ext == "gif")
 		{
@@ -1286,29 +1245,18 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 			int frames = AG_LoadGIF(n, nullptr, 0);
 			if (frames)
 			{
-				cImage* newImage = new cImage();
-				newImage->m_Surface = new CSurface();
-				newImage->m_Surface->LoadImage(file);
-				newImage->m_AniSurface = new cAnimatedSurface();
-				AG_Frame* gpAG = new AG_Frame[frames];
-				AG_LoadGIF(n, gpAG, frames);
-				m_Images[id]->m_Image = newImage->m_Surface;
-				m_Images[id]->m_Image->m_Message = file;
-				m_Images[id]->m_AnimatedImage = new cAnimatedSurface();
-				m_Images[id]->m_AnimatedImage->SetGifData(0, 0, frames, gpAG, newImage->m_Surface);
+                image->SetImage(GetGraphics().GetImageCache().LoadGif(file, image->GetWidth(), image->GetHeight()));
 				imagechosen = true;
 			}
 			else	// if it does not read as a gif, just load it as a normal image
 			{
-				m_Images[id]->m_Image = new CSurface(file);
-				m_Images[id]->m_AnimatedImage = nullptr;
+			    image->SetImage(GetGraphics().LoadImage(file, image->GetWidth(), image->GetHeight(), true));
 				imagechosen = true;
 			}
 		}
 		else if (ext == "jpg" || ext == "jpeg" || ext == "png")
 		{
-			m_Images[id]->m_Image = new CSurface(file);
-			m_Images[id]->m_AnimatedImage = nullptr;
+            image->SetImage(GetGraphics().LoadImage(file, image->GetWidth(), image->GetHeight(), true));
 			imagechosen = true;
 		}
 		else	// any other extension gets cleared.
@@ -1319,108 +1267,59 @@ void cInterfaceWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool ran
 
 
 
-	if (m_Images[id]->m_Image->m_Message.empty())
+	if (image->m_Message.empty())
 	{
-		m_Images[id]->m_Image->m_Message = m_Images[id]->m_Image->GetFilename();
+        image->m_Message = image->m_Image.GetFileName();
 	}
 
 	if (ext.empty())	// unrecognised extension
 	{
-		m_Images[id]->m_Image = new CSurface(ImagePath("blank.png"));
-		m_Images[id]->m_AnimatedImage = nullptr;
-		m_Images[id]->m_Image->m_Message = "No image found.";
+        image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
+        image->m_Message = "No image found.";
 	}
 
 	if (cfg.debug.log_extradetails())
 	{
-		g_LogFile.ss() << "Loading image: " << m_Images[id]->m_Image->m_Message; g_LogFile.ssend();
+		g_LogFile.ss() << "Loading image: " << image->m_Message; g_LogFile.ssend();
 	}
 }
 
 bool cImageItem::CreateImage(std::string filename, bool statImage, int R, int G, int B)
 {
-	if (statImage)
-	{
-		m_Surface = SDL_CreateRGBSurface(SDL_SWSURFACE, GetWidth(), GetHeight(), 32, 0, 0, 0, 0);
-		SDL_FillRect(m_Surface, nullptr, SDL_MapRGB(m_Surface->format, R, G, B));
-	}
-
 	if (!filename.empty())
 	{
 		m_loaded = true;
-		m_Image = new CSurface(filename);
-		m_Image->SetAlpha(true);
+		m_Image = GetGraphics().LoadImage(filename, m_Width, m_Height, true);
 	}
 	else
 		m_loaded = false;
-
-	return true;
-}
-
-bool cImageItem::CreateAnimatedImage(string filename, string dataFilename)
-{
-	if (!filename.empty())
-	{
-		m_loaded = true;
-		m_Image = new CSurface(filename);
-		m_Image->SetAlpha(true);
-
-		// load the animation
-		m_AnimatedImage = new cAnimatedSurface();
-		int numFrames, speed, aniwidth, aniheight;
-		ifstream input;
-		input.open(dataFilename.c_str());
-		if (!input)
-		{
-
-			g_LogFile.ss() << "Incorrect data file given for animation - " << dataFilename; g_LogFile.ssend();
-			return false;
-		}
-		else
-			input >> numFrames >> speed >> aniwidth >> aniheight;
-		m_AnimatedImage->SetData(0, 0, numFrames, speed, aniwidth, aniheight, m_Image);
-		input.close();
-	}
-	else
-	{
-		g_LogFile.ss() << "Incorrect image file given for animation"; g_LogFile.ssend();
-		m_loaded = false;
-		return false;
-	}
 
 	return true;
 }
 
 void cImageItem::DrawWidget(const CGraphics& gfx)
 {
-	if (m_AnimatedImage && m_AnimatedImage->m_Gif)
-	{
-		SDL_Rect rect;
-		rect.y = rect.x = 0;
-		rect.w = m_Width;
-		rect.h = m_Height;
-		m_AnimatedImage->DrawGifFrame(m_XPos, m_YPos, m_Width, m_Height, gfx.GetTicks());
+	if (m_AnimatedImage) {
+	    m_AnimatedImage.UpdateFrame();
+        m_AnimatedImage.DrawSurface(m_XPos, m_YPos);
+    } else if (m_Image)	{
+		m_Image.DrawSurface(m_XPos, m_YPos);
 	}
-	else if (m_AnimatedImage)
-	{
-		m_AnimatedImage->DrawFrame(m_XPos, m_YPos, m_Width, m_Height, gfx.GetTicks());
-	}
-	else if (m_Image)
-	{
-		SDL_Rect rect;
-		rect.y = rect.x = 0;
-		rect.w = m_Width;
-		rect.h = m_Height;
-		m_Image->DrawSurface(m_XPos, m_YPos, nullptr, &rect, true);
-	}
-	else if (m_Surface)
-	{
-		// Draw the window
-		SDL_Rect offset;
-		offset.x = m_XPos;
-		offset.y = m_YPos;
+}
 
-		// blit to the screen
-        gfx.BlitSurface(m_Surface, nullptr, &offset);
-	}
+void cImageItem::Reset()
+{
+    if (!m_loaded) m_Image = cSurface();
+}
+
+void cImageItem::SetImage(cSurface image)
+{
+    m_Image = std::move(image);
+    m_AnimatedImage = {};
+}
+
+void cImageItem::SetImage(cAnimatedSurface image)
+{
+    m_Image = {};
+    m_AnimatedImage = std::move(image);
 }

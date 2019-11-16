@@ -615,7 +615,7 @@ bool SaveScriptFile(const char *Filename, sScript *ScriptRoot)
 sScript *LoadScriptFile(string Filename)
 {
 	FILE *fp;
-    std::int32_t i, j, Num;
+    std::int32_t j, Num;
 	sScript *ScriptRoot = nullptr, *Script = nullptr, *ScriptPtr = nullptr;
 
 	// Open the file for input
@@ -629,7 +629,7 @@ sScript *LoadScriptFile(string Filename)
 	fread(&Num, 1, sizeof(std::int32_t), fp);
 
 	// Loop through each script action
-	for (i = 0; i < Num; i++)
+	for (int i = 0; i < Num; i++)
 	{
 		// Allocate a script structure and link in
 		Script = new sScript();
@@ -732,8 +732,8 @@ bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 				case 104: //"AdjustTargetGirlSkillR ~ ~ ~ ~"
 				{
 					if (maintype == 8 && j == 0)								/**/ action->SetAttribute("Var", ScriptPtr->m_Entries[j].m_IOValue);
-					if (maintype == 103 && j == 0)								/**/ action->SetAttribute("Stat", sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]);
-					if (maintype == 104 && j == 0)								/**/ action->SetAttribute("Skill", sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (maintype == 103 && j == 0)								/**/ action->SetAttribute("Stat", get_stat_name((STATS)ScriptPtr->m_Entries[j].m_IOValue));
+					if (maintype == 104 && j == 0)								/**/ action->SetAttribute("Skill", get_skill_name((SKILLS)ScriptPtr->m_Entries[j].m_IOValue));
 					if (j == 1)													/**/ action->SetAttribute("Min", ScriptPtr->m_Entries[j].m_IOValue);
 					if (j == 2)													/**/ action->SetAttribute("Max", ScriptPtr->m_Entries[j].m_IOValue);
 					if ((maintype == 103 || maintype == 104) && j == 3)			/**/ action->SetAttribute("Temp", ScriptPtr->m_Entries[j].m_IOValue);
@@ -747,8 +747,8 @@ bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 				{
 					if (maintype == 9 && j == 0)								/**/ action->SetAttribute("Var", ScriptPtr->m_Entries[j].m_IOValue);
 					if (maintype == 29 && j == 0)								/**/ action->SetAttribute("Flag", ScriptPtr->m_Entries[j].m_IOValue);
-					if (maintype == 31 && j == 0)								/**/ action->SetAttribute("Stat", sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]);
-					if (maintype == 32 && j == 0)								/**/ action->SetAttribute("Skill", sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (maintype == 31 && j == 0)								/**/ action->SetAttribute("Stat", get_stat_name((STATS)ScriptPtr->m_Entries[j].m_IOValue));
+					if (maintype == 32 && j == 0)								/**/ action->SetAttribute("Skill", get_skill_name((SKILLS)ScriptPtr->m_Entries[j].m_IOValue));
 					if (j == 1)													/**/ action->SetAttribute("Compare", cScript::script_compare_types[ScriptPtr->m_Entries[j].m_IOValue]);
 					if (j == 2)													/**/ action->SetAttribute("Amount", ScriptPtr->m_Entries[j].m_IOValue);
 					if (j == 2)													/**/ action->SetAttribute("Info", "Compare Options:   e , l , le , g , ge , ne");
@@ -805,17 +805,17 @@ bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 				case  24: //"AdjustTargetGirlStat ~ ~"
 				case  82: //"AdjustTargetGirlSkill ~ ~"
 				{
-					if (maintype == 24 && j == 0)								/**/ action->SetAttribute("Stat", sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]);
-					if (maintype == 82 && j == 0)								/**/ action->SetAttribute("Skill", sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (maintype == 24 && j == 0)								/**/ action->SetAttribute("Stat", get_stat_name((STATS)ScriptPtr->m_Entries[j].m_IOValue));
+					if (maintype == 82 && j == 0)								/**/ action->SetAttribute("Skill", get_skill_name((SKILLS)ScriptPtr->m_Entries[j].m_IOValue));
 					if (j == 1)													/**/ action->SetAttribute("Amount", ScriptPtr->m_Entries[j].m_IOValue);
 				} break;
 				case  27: //"IfPassSkillCheck ~"
 				{
-					if (j == 0)													/**/ action->SetAttribute("Skill", sGirl::skill_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (j == 0)													/**/ action->SetAttribute("Skill", get_skill_name((SKILLS)ScriptPtr->m_Entries[j].m_IOValue));
 				} break;
 				case  28: // "IfPassStatCheck ~"
 				{
-					if (j == 0)													/**/ action->SetAttribute("Stat", sGirl::stat_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (j == 0)													/**/ action->SetAttribute("Stat", get_stat_name((STATS)ScriptPtr->m_Entries[j].m_IOValue));
 				} break;
 				case  33: // "IfHasTrait ~"
 				case  71: // "AddTrait ~"
@@ -858,7 +858,7 @@ bool SaveScriptXML(const char *Filename, sScript *ScriptRoot)
 				case 106: //"IfGirlStatus ~ is ~"
 				case 107: //"SetGirlStatus ~ to ~"
 				{
-					if (j == 0)													/**/ action->SetAttribute("Status", sGirl::status_names[ScriptPtr->m_Entries[j].m_IOValue]);
+					if (j == 0)													/**/ action->SetAttribute("Status", get_status_name((STATUS)ScriptPtr->m_Entries[j].m_IOValue));
 					if (j == 1)													/**/ action->SetAttribute("Val_01", ScriptPtr->m_Entries[j].m_IOValue);
 					if (j == 1)													/**/ action->SetAttribute("Info", "_01: 0 = no, 1 = yes");
 				} break;
@@ -1004,8 +1004,8 @@ sScript *LoadScriptXML(string Filename)
 				case 103: //"AdjustTargetGirlStatR ~ ~ ~ ~"
 				case 104: //"AdjustTargetGirlSkillR ~ ~ ~ ~"
 					Script->m_Entries[0].m_Type = _CHOICE;
-					if (maintype == 103)	{ t = ela->Attribute("Stat");	Script->m_Entries[0].m_IOValue = sGirl::stat_lookup[t]; }
-					if (maintype == 104)	{ t = ela->Attribute("Skill");	Script->m_Entries[0].m_IOValue = sGirl::skill_lookup[t]; }
+					if (maintype == 103)	{ t = ela->Attribute("Stat");	Script->m_Entries[0].m_IOValue = get_stat_id(t); }
+					if (maintype == 104)	{ t = ela->Attribute("Skill");	Script->m_Entries[0].m_IOValue = get_skill_id(t); }
 					ela->QueryIntAttribute("Min", &Script->m_Entries[1].m_IOValue);
 					ela->QueryIntAttribute("Max", &Script->m_Entries[2].m_IOValue);
 					ela->QueryIntAttribute("Temp", &Script->m_Entries[3].m_IOValue);	Script->m_Entries[3].m_Type = _BOOL;
@@ -1016,8 +1016,8 @@ sScript *LoadScriptXML(string Filename)
 				case  32: // "IfSkill ~ ~ ~"
 					if (maintype == 9)	ela->QueryIntAttribute("Var", &Script->m_Entries[0].m_IOValue);
 					if (maintype == 29)	ela->QueryIntAttribute("Flag", &Script->m_Entries[0].m_IOValue);
-					if (maintype == 31)	{ t = ela->Attribute("Stat");		Script->m_Entries[0].m_IOValue = sGirl::stat_lookup[t]; Script->m_Entries[0].m_Type = _CHOICE; }
-					if (maintype == 32)	{ t = ela->Attribute("Skill");		Script->m_Entries[0].m_IOValue = sGirl::skill_lookup[t]; Script->m_Entries[0].m_Type = _CHOICE; }
+					if (maintype == 31)	{ t = ela->Attribute("Stat");		Script->m_Entries[0].m_IOValue = get_stat_id(t); Script->m_Entries[0].m_Type = _CHOICE; }
+					if (maintype == 32)	{ t = ela->Attribute("Skill");		Script->m_Entries[0].m_IOValue = get_skill_id(t); Script->m_Entries[0].m_Type = _CHOICE; }
 					t = ela->Attribute("Compare");	Script->m_Entries[1].m_IOValue = cScript::script_lookup[stringtolower(t)];	Script->m_Entries[1].m_Type = _CHOICE;
 					ela->QueryIntAttribute("Amount", &Script->m_Entries[2].m_IOValue);
 					break;
@@ -1048,11 +1048,11 @@ sScript *LoadScriptXML(string Filename)
 					if (maintype == 24 || maintype == 28)
 					{
 						t = ela->Attribute("Stat");
-						if (maintype == 24 && sGirl::skill_lookup.find(t) != sGirl::skill_lookup.end())		Script->m_Entries[0].m_IOValue = sGirl::skill_lookup[t] + NUM_STATS;
-						else if (maintype == 24 && sGirl::stat_lookup.find(t) != sGirl::stat_lookup.end())	Script->m_Entries[0].m_IOValue = sGirl::stat_lookup[t];
-						else Script->m_Entries[0].m_IOValue = sGirl::stat_lookup[t];
+						if (maintype == 24 && get_skill_lookup().find(t) != get_skill_lookup().end())		Script->m_Entries[0].m_IOValue = get_skill_id(t) + NUM_STATS;
+						else if (maintype == 24 && get_stat_lookup().find(t) != get_stat_lookup().end())	Script->m_Entries[0].m_IOValue = get_stat_id(t);
+						else Script->m_Entries[0].m_IOValue = get_stat_id(t);
 					}
-					if (maintype == 27 || maintype == 82)	{ t = ela->Attribute("Skill");	Script->m_Entries[0].m_IOValue = sGirl::skill_lookup[t]; }
+					if (maintype == 27 || maintype == 82)	{ t = ela->Attribute("Skill");	Script->m_Entries[0].m_IOValue = get_skill_id(t); }
 					break;
 
 				case  73: // "AddTraitTemp ~ ~"
@@ -1095,7 +1095,7 @@ sScript *LoadScriptXML(string Filename)
 				case 106: // "IfGirlStatus ~ is ~"
 				case 107: // "SetGirlStatus ~ to ~"
 					t = ela->Attribute("Status");			
-					Script->m_Entries[0].m_IOValue = sGirl::status_lookup[t];			Script->m_Entries[0].m_Type = _CHOICE;
+					Script->m_Entries[0].m_IOValue = get_status_id(t);			Script->m_Entries[0].m_Type = _CHOICE;
 					ela->QueryIntAttribute("Val_01", &Script->m_Entries[1].m_IOValue);	Script->m_Entries[1].m_Type = _BOOL;
 					break;
 				case 109: // "CreatePregnancy type ~ chance ~ force ~"
@@ -1160,10 +1160,10 @@ sScript *LoadScriptXML(string Filename)
 						{
 							string ty; xu.get_att(ele, "IOValue", ty); string tyl = stringtolower(ty);
 							if (cScript::script_lookup.find(ty) != cScript::script_lookup.end())					Script->m_Entries[entrynum].m_IOValue = cScript::script_lookup[tyl];
-							else if (maintype == 24 && sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())	Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty] + NUM_STATS;
-							else if (sGirl::stat_lookup.find(ty) != sGirl::stat_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::stat_lookup[ty];
-							else if (sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty];
-							else if (sGirl::status_lookup.find(ty) != sGirl::status_lookup.end())					Script->m_Entries[entrynum].m_IOValue = sGirl::status_lookup[ty];
+							else if (maintype == 24 && get_skill_lookup().find(ty) != get_skill_lookup().end())	Script->m_Entries[entrynum].m_IOValue = get_skill_id(ty) + NUM_STATS;
+							else if (get_stat_lookup().find(ty) != get_stat_lookup().end())						Script->m_Entries[entrynum].m_IOValue = get_stat_id(ty);
+							else if (get_skill_lookup().find(ty) != get_skill_lookup().end())						Script->m_Entries[entrynum].m_IOValue = get_skill_id(ty);
+							else if (get_status_lookup().find(ty) != get_status_lookup().end())					Script->m_Entries[entrynum].m_IOValue = get_status_id(ty);
 							else xu.get_att(ele, "IOValue", Script->m_Entries[entrynum].m_IOValue);		// `J` old script so get the number
 						}
 						if (pt = ele->Attribute("Var"))			xu.get_att(ele, "Var", Script->m_Entries[entrynum].m_Var);
@@ -1229,9 +1229,9 @@ sScript *LoadScriptXML(string Filename)
 					{
 						string ty; xu.get_att(ele, "IOValue", ty); string tyl = stringtolower(ty);
 						if (cScript::script_lookup.find(ty) != cScript::script_lookup.end())					Script->m_Entries[entrynum].m_IOValue = cScript::script_lookup[tyl];
-						else if (maintype == 24 && sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())	Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty] + NUM_STATS;
-						else if (sGirl::stat_lookup.find(ty) != sGirl::stat_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::stat_lookup[ty];
-						else if (sGirl::skill_lookup.find(ty) != sGirl::skill_lookup.end())						Script->m_Entries[entrynum].m_IOValue = sGirl::skill_lookup[ty];
+						else if (maintype == 24 && get_skill_lookup().find(ty) != get_skill_lookup().end())	Script->m_Entries[entrynum].m_IOValue = get_skill_id(ty) + NUM_STATS;
+						else if (get_stat_lookup().find(ty) != get_stat_lookup().end())						Script->m_Entries[entrynum].m_IOValue = get_stat_id(ty);
+						else if (get_skill_lookup().find(ty) != get_skill_lookup().end())						Script->m_Entries[entrynum].m_IOValue = get_skill_id(ty);
 						else xu.get_att(ele, "IOValue", Script->m_Entries[entrynum].m_IOValue);		// `J` old script so get the number
 					}
 					if (pt = ele->Attribute("Var"))			xu.get_att(ele, "Var", Script->m_Entries[entrynum].m_Var);

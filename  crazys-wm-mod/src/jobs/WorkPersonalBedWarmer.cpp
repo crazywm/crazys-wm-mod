@@ -23,11 +23,8 @@
 #include <sstream>
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
-
 // `J` Job House - General
-bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -37,8 +34,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 
 	int actiontype = ACTION_SEX;
 	stringstream ss; string girlName = girl->m_Realname;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100(), roll_d = g_Dice.d100(), roll;
-	//cTariff tariff;
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100(), roll_d = rng.d100(), roll;
 	//g_Building = BUILDING_HOUSE;
 	cGirls::UnequipCombat(girl);	// put that shit away, not needed for sex training
 	int imagetype = IMGTYPE_MAID;
@@ -62,7 +58,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 	{
 #if 1
 		ss << " but she refuses to lay with you.";
-		int effectiveness = g_Dice.d100();
+		int effectiveness = rng.d100();
 
 		if (headOnDuty)
 		{
@@ -159,7 +155,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 					girl->obedience(1);
 					girl->spirit(-1);
 					girl->health(-1);
-					g_Game.gold().misc_debit(20); //drug/spell money
+					g_Game->gold().misc_debit(20); //drug/spell money
 					girl->upd_temp_stat(STAT_LIBIDO, 2, true);
 					girl->pchate(5); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
@@ -242,7 +238,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 				{
 					ss << " stopping her. Because she's rather special you offer extra money. ";
 					//
-					if (g_Dice.percent(50))
+					if (rng.percent(50))
 					{
 						int pay = 2 * girl->askprice();
 						ss << girlName << " agrees to stay for " << pay << " extra gold.\n";
@@ -307,13 +303,13 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 					girl->obedience(1);
 				}
 				//Are you psychopathic
-				else if ((g_Game.player().disposition() < -80) && effectiveness > 60)
+				else if ((g_Game->player().disposition() < -80) && effectiveness > 60)
 				{
 					ss << ", but add that you are a kind master and she has nothing to fear from you. Over a drink, you explain how you respect your slaves and their choices, "
 						<< "and that her choice to defy you, led to your choice to drug her.\nShe smiles dreamily, rubbing her breasts against you as you strip away her clothes."
 						<< "\nYour drug delivers the perfect blend of horniness and suggestibility. " << girlName
 						<< " will participate. Fully.\n";
-					g_Game.gold().misc_debit(100); //drug money
+					g_Game->gold().misc_debit(100); //drug money
 					girl->upd_temp_stat(STAT_LIBIDO, 10, true);
 					girl->pchate(+10); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
@@ -333,7 +329,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 					ss << ". She agrees to stay because you've mostly been good to her.";
 				}
 				//are you nice
-				else if (g_Game.player().disposition() > 40)
+				else if (g_Game->player().disposition() > 40)
 				{
 					ss << ", adding that you are a kind master she should trust that you would only ever act in her best interests.\nWhile you respect that she is uncomfortable, " << girlName
 						<< " must broaden her mind, adjust to this life and learn the skills.\nShe WILL share your bed tonight, and she will learn something too.\n"
@@ -343,7 +339,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 					girl->happiness(-1);
 				}
 				//or just mean?
-				else if (g_Game.player().disposition() < -50)
+				else if (g_Game->player().disposition() < -50)
 				{
 					ss << ", adding that slaves who defy you here, get to enjoy a much more intimate and much less pleasant night down in the dungeon...\n";
 					ss << "\"Less pleasant for YOU, at least,\" you smile.\n \n";
@@ -370,7 +366,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 					girl->obedience(1);
 					girl->spirit(-1);
 					girl->health(-1);
-					g_Game.gold().misc_debit(20); //drug/spell money
+					g_Game->gold().misc_debit(20); //drug/spell money
 					girl->upd_temp_stat(STAT_LIBIDO, 2, true);
 					girl->pchate(5); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
@@ -412,7 +408,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 				{
 					ss << "Because she's rather special you offer some extra money.\n";
 					//
-					if (g_Dice.percent(65))
+					if (rng.percent(65))
 					{
 						int pay = 2 * girl->askprice();
 						ss << girlName << " agrees to stay for " << pay << " extra gold.\n";
@@ -426,13 +422,13 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 					}
 				}
 				//if you are pure evil and very lucky
-				else if ((g_Game.player().disposition() < -90) && effectiveness > 80)
+				else if ((g_Game->player().disposition() < -90) && effectiveness > 80)
 				{
 					ss << "You persuade her to stay for a few minutes, for a casual chat over a drink. She agrees. Her words soon start to slur as the drug takes effect."
 						<< "\nShe smiles dreamily, rubbing her nipples against you as you strip away her clothes."
 						<< "\nYour drug delivers a perfect blend of horniness and suggestibility. " << girlName
 						<< " will now participate. Fully.\n";
-					g_Game.gold().misc_debit(100); //drug money
+					g_Game->gold().misc_debit(100); //drug money
 					girl->upd_temp_stat(STAT_LIBIDO, 10, true);
 					girl->pchate(+20); //she'll hate you later
 					HateLove = 50;  //probably best fit for next bit...
@@ -590,8 +586,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 		//Was gonna use a random number for this, but since script runs seperately for each girl
 		//resulted in one member of group reporting one kind of orgy, another reporting completely different one
 		//using date as a common field. should result in same psuedo-random option for all
-		if (Day0Night1)	roll = g_Game.date().day % NUMSCENARIOS;
-		else roll = (g_Game.date().day + 1) % NUMSCENARIOS;
+		if (Day0Night1)	roll = g_Game->date().day % NUMSCENARIOS;
+		else roll = (g_Game->date().day + 1) % NUMSCENARIOS;
 
 		ss << "\nYou order the " << sz << " slaves warming your bed to put on a show.\n";
 		switch (roll)
@@ -617,7 +613,7 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 			break;
 		case 6:
 			ss << "A police chief comes to visit. You negotiate an excellent deal while he is clearly distracted by the scene in the corner, where ";
-			g_Game.player().suspicion(-10);
+			g_Game->player().suspicion(-10);
 			break;
 		case 7:
 			ss << "You are tired. You sit on the sofa with a drink, barely bothering to watch as ";
@@ -649,8 +645,8 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 		//Was gonna use a random number for this, but since script runs seperately for each girl
 		//resulted in one member of group reporting one kind of orgy, another reporting completely different one
 		//using date as a common field. should result in same psuedo-random option for all
-		if (Day0Night1)	roll = g_Game.date().day % NUMACTIONS;
-		else roll = (g_Game.date().day + 1) % NUMACTIONS;
+		if (Day0Night1)	roll = g_Game->date().day % NUMACTIONS;
+		else roll = (g_Game->date().day + 1) % NUMACTIONS;
 		switch (roll)
 		{
 		case 0:
@@ -736,12 +732,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 				imagetype = IMGTYPE_SEX;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 
-				if (!girl->calc_pregnancy(&g_Game.player(), false, 1.0))
+				if (!girl->calc_pregnancy(&g_Game->player(), false, 1.0))
 				{
 					stringstream ssm;
 					ssm << girlName << " has gotten pregnant.\n";
 					ss << ssm.str();
-					g_Game.push_message(ssm.str(), 0);
+					g_Game->push_message(ssm.str(), 0);
 				}
 
 			}
@@ -755,12 +751,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 				imagetype = IMGTYPE_SEX;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 
-				if (!girl->calc_pregnancy(&g_Game.player(), false, 1.0))
+				if (!girl->calc_pregnancy(&g_Game->player(), false, 1.0))
 				{
 					stringstream ssm;
 					ssm << girlName << " has gotten pregnant.\n";
 					ss << ssm.str();
-					g_Game.push_message(ssm.str(), 0);
+					g_Game->push_message(ssm.str(), 0);
 				}
 			}
 			else
@@ -813,12 +809,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 				imagetype = IMGTYPE_SEX;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 
-				if (!girl->calc_pregnancy(&g_Game.player(), false, 1.0))
+				if (!girl->calc_pregnancy(&g_Game->player(), false, 1.0))
 				{
 					stringstream ssm;
 					ssm << girlName << " has gotten pregnant.\n";
 					ss << ssm.str();
-					g_Game.push_message(ssm.str(), 0);
+					g_Game->push_message(ssm.str(), 0);
 				}
 			}
 			else if (roll_d <= 80)
@@ -828,12 +824,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 				imagetype = IMGTYPE_BDSM;
 				//girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
 
-				if (!girl->calc_pregnancy(&g_Game.player(), false, 1.0))
+				if (!girl->calc_pregnancy(&g_Game->player(), false, 1.0))
 				{
 					stringstream ssm;
 					ssm << girlName << " has gotten pregnant.\n";
 					ss << ssm.str();
-					g_Game.push_message(ssm.str(), 0);
+					g_Game->push_message(ssm.str(), 0);
 				}
 			}
 			else if (roll_d <= 100)
@@ -845,14 +841,14 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 			}
 		}
 		//Some group action randomness...
-		if (g_Dice.percent(20) && girl->has_trait("Shy"))
+		if (rng.percent(20) && girl->has_trait("Shy"))
 		{
 			ss << "\n" << girlName << " doesn't seem so shy tonight!\n";
 			girl->charisma(1);
 		}
-		if (g_Dice.percent(20) && girl->has_trait("Cum Addict"))
+		if (rng.percent(20) && girl->has_trait("Cum Addict"))
 		{
-			roll = g_Dice % 6;
+			roll = rng % 6;
 			switch (roll)
 			{
 			case 0:
@@ -883,19 +879,19 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 			girl->lesbian(2);
 			girl->upd_Enjoyment(ACTION_WORKHAREM, 2);
 		}
-		else if (g_Dice.percent(30) && HateLove > 0 && girl->has_trait("Good Kisser"))
+		else if (rng.percent(30) && HateLove > 0 && girl->has_trait("Good Kisser"))
 		{
 			ss << "\n" << girlName << " gives you a mindblowing kiss afterwards.\n";
 			girl->charisma(1);
 			girl->pclove(1);
 		}
-		if (g_Dice.percent(20) && (girl->has_trait("Masochist")))
+		if (rng.percent(20) && (girl->has_trait("Masochist")))
 		{
 			ss << "\n\"Next time spank me please";
 			if (girl->is_slave()) ss << " master";
 			ss << ",\" she whispers.\n";
 		}
-		else if (g_Dice.percent(5) && (girl->has_trait("Sadist") || girl->has_trait("Aggressive")))
+		else if (rng.percent(5) && (girl->has_trait("Sadist") || girl->has_trait("Aggressive")))
 		{
 			ss << "\n\"If you made me Head Girl, I'd keep these bitches in line for you,";
 			if (girl->is_slave()) ss << " master";
@@ -1037,12 +1033,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 			}
 			imagetype = IMGTYPE_BDSM;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
-			if (!girl->calc_pregnancy(&g_Game.player(), false, 1.0))
+			if (!girl->calc_pregnancy(&g_Game->player(), false, 1.0))
 			{
 				stringstream ssm;
 				ssm << girlName << " has gotten pregnant.\n";
 				ss << ssm.str();
-				g_Game.push_message(ssm.str(), 0);
+				g_Game->push_message(ssm.str(), 0);
 			}
 		}
 		else if (roll_d <= 80 && brothel->is_sex_type_allowed(SKILL_NORMALSEX))
@@ -1057,12 +1053,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 			}
 			imagetype = IMGTYPE_SEX;
 			//girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
-			if (!girl->calc_pregnancy(&g_Game.player(), false, 1.0))
+			if (!girl->calc_pregnancy(&g_Game->player(), false, 1.0))
 			{
 				stringstream ssm;
 				ssm << girlName << " has gotten pregnant.\n";
 				ss << ssm.str();
-				g_Game.push_message(ssm.str(), 0);
+				g_Game->push_message(ssm.str(), 0);
 			}
 		}
 		else if (roll_d <= 90)
@@ -1221,12 +1217,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_BDSM, Day0Night1);
-		if (!girl->calc_pregnancy(&g_Game.player(), false, 1.0))
+		if (!girl->calc_pregnancy(&g_Game->player(), false, 1.0))
 		{
 			stringstream ssm;
 			ssm << girlName << " has gotten pregnant.\n";
 			ss << ssm.str();
-			g_Game.push_message(ssm.str(), 0);
+			g_Game->push_message(ssm.str(), 0);
 		}
 	}
 	else if (roll_d <= 80 && is_sex_type_allowed(SKILL_NORMALSEX, brothel))
@@ -1239,12 +1235,12 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 			ss << "She is no longer a virgin.\n";
 		}
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
-		if (!girl->calc_pregnancy(&g_Game.player(), false, 1.0))
+		if (!girl->calc_pregnancy(&g_Game->player(), false, 1.0))
 		{
 			stringstream ssm;
 			ssm << girlName << " has gotten pregnant.\n";
 			ss << ssm.str();
-			g_Game.push_message(ssm.str(), 0);
+			g_Game->push_message(ssm.str(), 0);
 		}
 	}
 	else if (roll_d <= 90)
@@ -1276,24 +1272,24 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 #endif
 #if 1
 	//BSIN bit more randomness
-	if (girl->is_addict(true) && g_Dice.percent(20))
+	if (girl->is_addict(true) && rng.percent(20))
 	{
-		int theft = g_Dice.in_range(5, 50);
+		int theft = rng.in_range(5, 50);
 		ss << "\nWhile you're not looking, she steals " << theft << " gold from your room to feed her addiction.\n";
 		wages += theft;
 	}
-	if (g_Dice.percent(30) && girl->has_trait("Natural Pheromones"))
+	if (rng.percent(30) && girl->has_trait("Natural Pheromones"))
 	{
-		int wowfactor = g_Dice.in_range(5, 55);
+		int wowfactor = rng.in_range(5, 55);
 		ss << "\nSomething about her drives you wild. You pay her " << wowfactor << " gold extra.\n";
 		wages += wowfactor;
 	}
-	if (g_Dice.percent(30) && (girl->has_trait("Exotic") || girl->has_trait("Furry")))
+	if (rng.percent(30) && (girl->has_trait("Exotic") || girl->has_trait("Furry")))
 	{
 		ss << "\n" << girlName << " mentions that this reminds her of a 'coming of age' ritual back home.";
 		girl->upd_Enjoyment(ACTION_WORKHAREM, 1);
 	}
-	else if (g_Dice.percent(20) && (girl->has_trait("Nymphomaniac") || girl->has_trait("Slut") || girl->has_trait("Open Minded")))
+	else if (rng.percent(20) && (girl->has_trait("Nymphomaniac") || girl->has_trait("Slut") || girl->has_trait("Open Minded")))
 	{
 		ss << "\n" << girlName << " actually seems suited to this.\n\"Can I do this again";
 		if (girl->is_slave()) ss << ", master?\"\n";
@@ -1304,53 +1300,53 @@ bool cJobManager::WorkPersonalBedWarmer(sGirl* girl, bool Day0Night1, string& su
 	//BSIN - disease risk, mostly a cost, but also an expensive way to cure a girl of serious disease
 	if (diseased && risky && !girl->m_UseAntiPreg)
 	{
-		if (girl->has_trait("Chlamydia") && g_Dice.percent(30))
+		if (girl->has_trait("Chlamydia") && rng.percent(30))
 		{
-			g_Game.gold().misc_debit(500);
+			g_Game->gold().misc_debit(500);
 			girl->remove_trait("Chlamydia");
 			stringstream ssm;
 			ssm << girlName << " gave you Chlamydia.\nYou spend 500 gold getting your shit cleaned up.\nYou use the medicine to clear her up too.\n";
 			ss << ssm.str();
-			g_Game.push_message(ssm.str(), 0);
+			g_Game->push_message(ssm.str(), 0);
 		}
-		else if (girl->has_trait("Herpes") && g_Dice.percent(30))
+		else if (girl->has_trait("Herpes") && rng.percent(30))
 		{
-			g_Game.gold().misc_debit(1000);
+			g_Game->gold().misc_debit(1000);
 			girl->remove_trait("Herpes");
 			girl->pclove(1);
 			girl->pchate(-1);
 			stringstream ssm;
 			ssm << girlName << " gave you herpes.\nMedicine for it costs you 1,000 gold.\nYou use the medicine to clear her up too.\n";
 			ss << ssm.str();
-			g_Game.push_message(ssm.str(), 0);
+			g_Game->push_message(ssm.str(), 0);
 		}
-		else if (girl->has_trait("Syphilis") && g_Dice.percent(30))
+		else if (girl->has_trait("Syphilis") && rng.percent(30))
 		{
-			g_Game.gold().misc_debit(3500);
+			g_Game->gold().misc_debit(3500);
 			girl->remove_trait("Syphilis");
 			girl->pclove(3);
 			girl->pchate(-3);
 			stringstream ssm;
 			ssm << girlName << " gave you syphilis.\nMedicine for it is hard to track down, costing you 3,500 gold.\nYou share it with her.\n";
 			ss << ssm.str();
-			g_Game.push_message(ssm.str(), 0);
+			g_Game->push_message(ssm.str(), 0);
 		}
-		else if (girl->has_trait("AIDS") && g_Dice.percent(30))
+		else if (girl->has_trait("AIDS") && rng.percent(30))
 		{
-			g_Game.gold().misc_debit(8000);
+			g_Game->gold().misc_debit(8000);
 			girl->remove_trait("AIDS");
 			girl->pclove(6);
 			girl->pchate(-6);
 			stringstream ssm;
 			ssm << girlName << " gave you AIDS.\n8,000 gold later and the wizards' incantations have finally cleansed you both.\n";
 			ss << ssm.str();
-			g_Game.push_message(ssm.str(), 0);
+			g_Game->push_message(ssm.str(), 0);
 		}
 	}
 
 #endif
 	if (wages < 0) wages = 0;
-	g_Game.gold().girl_support(wages);  // wages come from you
+	g_Game->gold().girl_support(wages);  // wages come from you
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 

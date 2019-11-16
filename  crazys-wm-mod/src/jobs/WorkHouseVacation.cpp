@@ -20,14 +20,12 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` House Job - General
-bool cJobManager::WorkHouseVacation(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkHouseVacation(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
 	stringstream ss; string girlName = girl->m_Realname;
 
-	int roll_a = g_Dice%100;
+	int roll_a = rng%100;
 
 	// `CRAZY` This is places she can go
 	/*default*/	int vac_type = 1;    string vac_type_text = "an onsen";

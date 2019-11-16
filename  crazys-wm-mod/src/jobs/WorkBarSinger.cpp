@@ -21,18 +21,16 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - Bar
-bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKMUSIC;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_SINGER))
 	{
 		ss << " refused to sing in your bar " << (Day0Night1 ? "tonight." : "today.");
@@ -66,13 +64,13 @@ bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
 	string pianoname = (pianoonduty ? "Pianist " + pianoonduty->m_Realname + "" : "the Pianist");
 
 	//dont effect things but what she sings
-	if (g_Dice.percent(60) && (girl->has_trait( "Country Gal") || girl->has_trait( "Farmers Daughter")))
+	if (rng.percent(60) && (girl->has_trait( "Country Gal") || girl->has_trait( "Farmers Daughter")))
 		roll_a = 60;	// country
-	else if (g_Dice.percent(60) && (girl->has_trait( "Elegant")))
+	else if (rng.percent(60) && (girl->has_trait( "Elegant")))
 		roll_a = 30;	// classical
-	else if (g_Dice.percent(60) && (girl->has_trait( "Aggressive")))
+	else if (rng.percent(60) && (girl->has_trait( "Aggressive")))
 		roll_a = 20;	// death metal
-	else if (g_Dice.percent(60) && (girl->has_trait( "Bimbo")))
+	else if (rng.percent(60) && (girl->has_trait( "Bimbo")))
 		roll_a = 90;	// Pop Songs
 
 	// `CRAZY` The type of music she sings
@@ -263,22 +261,22 @@ bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
 	tips += (int)(((5 + jobperformance / 8) * wages) / 100);
 
 	//try and add randomness here
-	if (girl->beauty() >85 && g_Dice.percent(20))
+	if (girl->beauty() >85 && rng.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 15;
 	}
 
-	if (girl->charisma() > 80 && g_Dice.percent(15))
+	if (girl->charisma() > 80 && rng.percent(15))
 	{
 		ss << "Her charisma shone through as she chatted to customers between songs.\n \n"; tips += 15; happy += 5;
 	}
 
-	if (girl->has_trait( "Clumsy") && g_Dice.percent(5))
+	if (girl->has_trait( "Clumsy") && rng.percent(5))
 	{
 		ss << "Her clumsy nature caused her to trip coming on stage causing the crowed to go wild with laughter. She went to the back and hide refusing to take the stage for her song set.\n"; wages -= 15;
 	}
 
-	if (girl->has_trait( "Pessimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Pessimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -290,7 +288,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Optimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Optimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -302,12 +300,12 @@ bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Psychic") && g_Dice.percent(20))
+	if (girl->has_trait( "Psychic") && rng.percent(20))
 	{
 		ss << "She knew just what songs to sing to get better tips by using her Psychic powers.\n"; tips += 15;
 	}
 
-	if (girl->has_trait( "Assassin") && g_Dice.percent(5))
+	if (girl->has_trait( "Assassin") && rng.percent(5))
 	{
 		if (jobperformance < 150)
 		{
@@ -319,7 +317,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Horrific Scars") && g_Dice.percent(15))
+	if (girl->has_trait( "Horrific Scars") && rng.percent(15))
 	{
 		if (jobperformance < 150)
 		{
@@ -331,21 +329,21 @@ bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Idol") && girl->fame() > 75 && g_Dice.percent(25))
+	if (girl->has_trait( "Idol") && girl->fame() > 75 && rng.percent(25))
 	{
 		ss << "Today a large group of " << girlName << "'s followers came to listen to her sing, leaving very generous tips behind.\n";
 		wages += 15;
 		tips += 25 + girl->fame() / 4;
 		girl->fame(1);
 	}
-	else if (girl->has_trait( "Idol") && g_Dice.percent(25))
+	else if (girl->has_trait( "Idol") && rng.percent(25))
 	{
 		ss << "A group of " << girlName << "'s fans came to listen to her sing, leaving good tips behind.\n";
 		wages += 10;
 		tips += 20 + girl->fame() / 5;
 		girl->fame(1);
 	}
-	else if (!girl->has_trait( "Idol") && girl->fame() > 75 && g_Dice.percent(15))
+	else if (!girl->has_trait( "Idol") && girl->fame() > 75 && rng.percent(15))
 	{
 		ss << girlName << " is quite popular in Crossgate so a small crowd of people came in just to listen to her.\n";
 		wages += 5;
@@ -353,7 +351,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
 		girl->fame(1);
 	}
 
-	if (brothel->num_girls_on_job(JOB_PIANO, Day0Night1) >= 1 && g_Dice.percent(25))
+	if (brothel->num_girls_on_job(JOB_PIANO, Day0Night1) >= 1 && rng.percent(25))
 	{
 		if (jobperformance < 125)
 		{
@@ -396,7 +394,7 @@ bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
+	wages += 10 + rng%roll_max;
 
 	// Money
 	girl->m_Tips = max(0, tips);
@@ -415,14 +413,14 @@ bool cJobManager::WorkBarSinger(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->fame() < 90 && jobperformance >= 185)		{ fame += 1; }
 
 	girl->exp(xp);
-	if (g_Dice % 2 == 1)
-		girl->confidence(g_Dice%skill + 1);
-	girl->performance(g_Dice%skill + 1);
+	if (rng % 2 == 1)
+		girl->confidence(rng%skill + 1);
+	girl->performance(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	//gain traits
 	cGirls::PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Singing on a daily basis has made " + girlName + " more Charismatic.", Day0Night1);
-	if (girl->fame() >= 70 && g_Dice.percent(25))
+	if (girl->fame() >= 70 && rng.percent(25))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Idol", 50, actiontype, "Her fame and singing skills has made " + girlName + " an Idol in Crossgate.", Day0Night1);
 	}
@@ -452,49 +450,7 @@ double cJobManager::JP_BarSinger(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Charismatic"))		jobperformance += 15;
-	if (girl->has_trait( "Sexy Air"))			jobperformance += 5;
-	if (girl->has_trait( "Cool Person"))		jobperformance += 5;   //people love to be around her
-	if (girl->has_trait( "Cute"))				jobperformance += 5;
-	if (girl->has_trait( "Charming"))			jobperformance += 5;   //people like charming people
-	if (girl->has_trait( "Elegant"))			jobperformance += 5;
-	if (girl->has_trait( "Quick Learner"))    jobperformance += 5;
-	if (girl->has_trait( "Psychic"))			jobperformance += 10;  //knows what people want to hear
-	if (girl->has_trait( "Fearless"))			jobperformance += 5;
-	if (girl->has_trait( "Singer"))			jobperformance += 50;
-	if (girl->has_trait( "Idol"))				jobperformance += 10;
-	if (girl->has_trait( "Natural Pheromones"))jobperformance += 15;
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Aggressive"))	jobperformance -= 10; //gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))			jobperformance -= 20;
-	if (girl->has_trait( "Broken Will"))	jobperformance -= 50;
-	if (girl->has_trait( "Clumsy"))		jobperformance -= 10;//might trip on stage
-	if (girl->has_trait( "Slow Learner")) jobperformance -= 10;
-	if (girl->has_trait( "Shy"))			jobperformance -= 10;
-	if (girl->has_trait( "Construct"))	jobperformance -= 20; //voice would sound funny
-	if (girl->has_trait( "Tone Deaf"))	jobperformance -= 150; //should never get good at this job
-
-	if (girl->has_trait( "Deaf"))			jobperformance -= 20;	//Voice would sound funny
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 20;	//would need smoke breaks and get out of breath quicker
-	if (girl->has_trait( "Mute"))			jobperformance -= 1000; //cant sing
-	if (girl->has_trait( "Canine"))		jobperformance -= 20;	//Voice would sound funny
-	if (girl->has_trait( "Cat Girl"))		jobperformance -= 20;	//Voice would sound funny
-	if (girl->has_trait( "Demon Possessed"))jobperformance -= 20;	//Voice would sound funny
-	if (girl->has_trait( "Reptilian"))	jobperformance -= 20;	//Voice would sound funny
-	if (girl->has_trait( "Slitherer"))	jobperformance -= 20;	//Voice would sound funny
-	if (girl->has_trait( "Spirit Possessed"))jobperformance -= 20;	//Voice would sound funny
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Cum Addict"))			jobperformance -= 5;
-
+    jobperformance += girl->get_trait_modifier("work.singer");
 
 	return jobperformance;
 }

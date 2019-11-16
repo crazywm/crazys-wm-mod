@@ -60,17 +60,15 @@ public:
 	cGirls();
 	~cGirls();
 
-	void Free();
-
-	/*
-	*	load the templated girls
-	*	(if loading a save game doesn't load from the global template,
-	*	loads from the save games' template)
-	*
-	*	LoadGirlsDecider is a wrapper function that decides to load XML or Legacy formats.
-	//  `J` Legacy support has been removed
-	*	LoadGirlsXML loads the XML files
-	*/
+    /*
+    *	load the templated girls
+    *	(if loading a save game doesn't load from the global template,
+    *	loads from the save games' template)
+    *
+    *	LoadGirlsDecider is a wrapper function that decides to load XML or Legacy formats.
+    //  `J` Legacy support has been removed
+    *	LoadGirlsXML loads the XML files
+    */
 	void LoadGirlsDecider(string filename);
 	void LoadGirlsXML(string filename);
 	/*
@@ -85,7 +83,7 @@ public:
 
 	sGirl* GetGirl(int girl);	// gets the girl by count
 
-	static void GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, u_int& SexType);	// does the logic for fucking
+	static void GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, SKILLS &SexType);	// does the logic for fucking
 	// MYR: Millions of ways to say, [girl] does [act] to [customer]
 	static string GetRandomGroupString();
 	static string GetRandomSexString();

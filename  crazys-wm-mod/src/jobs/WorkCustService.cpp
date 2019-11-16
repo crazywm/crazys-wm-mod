@@ -24,10 +24,8 @@
 #include <algorithm>
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 // `J` Job Brothel - General
-bool cJobManager::WorkCustService(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkCustService(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -51,7 +49,7 @@ bool cJobManager::WorkCustService(sGirl* girl, bool Day0Night1, string& summary)
 	int serviced = 0;
 
 	// Complications
-	int roll = g_Dice%100;
+	int roll = rng%100;
 	if (roll <= 5)
 	{
 		ss << "Some of the patrons abused her during the shift.";
@@ -111,18 +109,18 @@ bool cJobManager::WorkCustService(sGirl* girl, bool Day0Night1, string& summary)
 	// Now let's take care of our neglected customers.
 	for (int i=0; i<numCusts; i++)
 	{
-		if (g_Game.GetNumCustomers() > 0)
+		if (g_Game->GetNumCustomers() > 0)
 		{
-            sCustomer Cust = g_Game.GetCustomer(*brothel);
+            sCustomer Cust = g_Game->GetCustomer(*brothel);
 			// Let's find out how much happiness they started with.
 			// They're not going to start out very happy. They're seeing customer service, after all.
-			Cust.m_Stats[STAT_HAPPINESS] = 22 + g_Dice%10 + g_Dice%10; // average 31 range 22 to 40
+			Cust.m_Stats[STAT_HAPPINESS] = 22 + rng%10 + rng%10; // average 31 range 22 to 40
 			// Now apply her happiness bonus.
 			Cust.m_Stats[STAT_HAPPINESS] += bonus;
 			// update how happy the customers are on average
 			brothel->m_Happiness += Cust.m_Stats[STAT_HAPPINESS];
 			// And decrement the number of customers to be taken care of
-            g_Game.customers().AdjustNumCustomers(-1);
+            g_Game->customers().AdjustNumCustomers(-1);
 			serviced++;
 		}
 		else
@@ -144,14 +142,14 @@ bool cJobManager::WorkCustService(sGirl* girl, bool Day0Night1, string& summary)
 	// Bad customer service reps will leave the customer with 2-20 happiness. Bad customer service is at least better than no customer service.
 #if 0
 	string debug = "";
-	debug += ("There were " + intstring(g_Game.GetNumCustomers()) + " customers.\n");
+	debug += ("There were " + intstring(g_Game->GetNumCustomers()) + " customers.\n");
 	debug += ("She could have handled " + intstring(numCusts) + " customers.\n");
 	girl->m_Events.AddMessage(debug, IMGTYPE_PROFILE, EVENT_DEBUG);
 #endif
 	// Now pay the girl.
 
 	girl->m_Pay += 50;
-	g_Game.gold().staff_wages(50);  // wages come from you
+	g_Game->gold().staff_wages(50);  // wages come from you
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
 
 	// Raise skills
@@ -163,11 +161,11 @@ bool cJobManager::WorkCustService(sGirl* girl, bool Day0Night1, string& summary)
 
 	girl->fame(1);
 	girl->exp(xp);
-	int gain = g_Dice % skill;
-	if (gain == 1)		girl->confidence(g_Dice%skill);
-	else if(gain == 2)	girl->spirit(g_Dice%skill);
-	else				girl->performance(g_Dice%skill);
-	girl->service(g_Dice%skill+1);
+	int gain = rng % skill;
+	if (gain == 1)		girl->confidence(rng%skill);
+	else if(gain == 2)	girl->spirit(rng%skill);
+	else				girl->performance(rng%skill);
+	girl->service(rng%skill+1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	return false;
@@ -175,7 +173,7 @@ bool cJobManager::WorkCustService(sGirl* girl, bool Day0Night1, string& summary)
 
 double cJobManager::JP_CustService(sGirl* girl, bool estimate)
 {
-#if 1	//SIN - standardizing job performance per J's instructs
+	//SIN - standardizing job performance per J's instructs
 	double jobperformance =
 		//main stats - first 100
 		((girl->service() + girl->charisma()) / 2) +
@@ -183,18 +181,7 @@ double cJobManager::JP_CustService(sGirl* girl, bool estimate)
 		((girl->confidence() + girl->spirit() + girl->performance() + girl->beauty()) / 4) +
 		//add level
 		girl->level();
-#else
-	double jobperformance = 0.0;
-	if (estimate)	// for third detail string
-	{
-		jobperformance += (girl->confidence() + girl->spirit() + girl->beauty() +
-			girl->charisma() + girl->performance() + girl->service()) / 3;
-	}
-	else			// for the actual check			// not used
-	{
 
-	}
-#endif
 	//tiredness penalty
 	if (!estimate)
 	{
@@ -203,55 +190,7 @@ double cJobManager::JP_CustService(sGirl* girl, bool estimate)
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	////////SIN - and traits
-	//Good traits
-	if (girl->has_trait( "Charismatic"))					jobperformance += 20;	//good with people
-	if (girl->has_trait( "Psychic"))						jobperformance += 15;	//knows what will make them happy
-	if (girl->has_trait( "Porn Star"))					jobperformance += 15;	//famous for related reasons
-	if (girl->has_trait( "Succubus"))						jobperformance += 15;	//likes to sexually entertain
-	if (girl->has_trait( "Titanic Tits"))					jobperformance += 10;	//huge distraction for customer not getting laid
-	if (girl->has_trait( "Abnormally Large Boobs"))		jobperformance += 10;	//huge distraction for customer not getting laid
-	if (girl->has_trait( "Natural Pheromones"))			jobperformance += 10;   // natural turnon
-	if (girl->has_trait( "Charming"))						jobperformance += 10;	//good with people
-	if (girl->has_trait( "Sexy Air"))						jobperformance += 10;	// natural turnon
-	if (girl->has_trait( "Idol"))							jobperformance += 10;	//famous
-	if (girl->has_trait( "Actress"))						jobperformance += 10;	//can act the part
-	if (girl->has_trait( "Fallen Goddess"))				jobperformance += 10;	//like exotic but better - not too judgemental
-	if (girl->has_trait( "Massive Melons"))				jobperformance += 5;	//big distraction for customer not getting laid
-	if (girl->has_trait( "Giant Juggs"))					jobperformance += 5;	//big distraction for customer not getting laid
-	if (girl->has_trait( "Cool Person"))					jobperformance += 5;	//good with people
-	if (girl->has_trait( "Social Drinker"))				jobperformance += 5;	//gets customers merry
-	if (girl->has_trait( "Exotic"))						jobperformance += 5;	//holds their interest
-	if (girl->has_trait( "Cat Girl"))						jobperformance += 5;	//holds their interest
-	if (girl->has_trait( "Strong Magic"))					jobperformance += 5;	//a saucier sorceror
-	if (girl->has_trait( "Big Boobs"))					jobperformance += 2;	//distraction for customer not getting laid
-	if (girl->has_trait( "Busty Boobs"))					jobperformance += 2;	//distraction for customer not getting laid
-	if (girl->has_trait( "Cute"))							jobperformance += 2;	//cheer up customer
-	if (girl->has_trait( "Optimist"))						jobperformance += 2;	//cheer up customer
-
-
-	//Bad traits
-	if (girl->has_trait( "Zombie"))						jobperformance -= 50;	//Guuhhh! Customehh serv... Huh?! Mr run run?!
-	if (girl->has_trait( "Undead"))						jobperformance -= 50;	//Stop! I'm already dead...
-	if (girl->has_trait( "Mind Fucked"))					jobperformance -= 50;	//Hello. I like flowers. Do you like vaginas? ... This!? It's a knife, silly; can I cut you? ... For FUN!
-	if (girl->has_trait( "Mute"))							jobperformance -= 30;	// (-_-) ...
-	if (girl->has_trait( "Fairy Dust Addict"))			jobperformance -= 25;	//Focussed on own needs
-	if (girl->has_trait( "Shroud Addict"))				jobperformance -= 25;	//Focussed on own needs
-	if (girl->has_trait( "Viras Blood Addict"))			jobperformance -= 25;	//Focussed on own needs
-	if (girl->has_trait( "Queen"))						jobperformance -= 20;	//Service?! Oh Jeeves! Jeeves!? Where is he?! Y'know you can't get the help these days.
-	if (girl->has_trait( "Blind"))						jobperformance -= 20;	//Waiting customers?! Where?!
-	if (girl->has_trait( "Broken Will"))					jobperformance -= 15;	// (-_-) ...
-	if (girl->has_trait( "Vampire"))						jobperformance -= 15;	//I vant to help vith your... hey come back!?
-	if (girl->has_trait( "Princess"))						jobperformance -= 15;	//Me serve you?! Get away, commoner.
-	if (girl->has_trait( "Aggressive"))					jobperformance -= 10;	//"Customer service. Impotent whiner says what?"
-	if (girl->has_trait( "Cow Girl"))						jobperformance -= 10;	// *blinks*  ...  *chews a little* ... *blinks*
-	if (girl->has_trait( "Nervous"))						jobperformance -= 10;	//C-c-customer service. Can I, like... How can I... I mean...
-	if (girl->has_trait( "Goddess"))						jobperformance -= 10;	//Preachy
-	if (girl->has_trait( "Angel"))						jobperformance -= 10;	//Preachy
-	if (girl->has_trait( "Deaf"))							jobperformance -= 5;	//What's the problem sir? What?! WHAT!?!
-	if (girl->has_trait( "Pessimist"))					jobperformance -= 5;	//I can help you, but you probably won't like it very much.
-	if (girl->has_trait( "Flat Chest"))					jobperformance -= 5;	// no natural distractions
-
+    jobperformance += girl->get_trait_modifier("work.customerservice");
 
 	return jobperformance;
 }

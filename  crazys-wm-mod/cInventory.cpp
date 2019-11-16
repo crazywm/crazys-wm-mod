@@ -27,7 +27,6 @@
 #include "CLog.h"
 using namespace std;
 
-extern cTraits g_Traits;
 extern cRng g_Dice;
 extern cConfig      cfg;
 
@@ -35,83 +34,26 @@ extern string stringtolowerj(string name);
 
 // ----- Misc
 
-cInventory::~cInventory()
-{
-	Free();
-}
-
-void cInventory::Free()
-{
-	for(auto & m_ShopItem : m_ShopItems) m_ShopItem = nullptr;
-}
-
-const char *sEffect::girl_status_name(unsigned int id)
-{
-	if (id < sGirl::max_statuses) return sGirl::status_names[id];
-	g_LogFile.os() << "[sEffect::girl_status_name] Error: girl status id " << id << " too large (max is " << sGirl::max_statuses << ")" << endl;
-	return "";
-}
-const char *sEffect::skill_name(unsigned int id)
-{
-	if (id < sGirl::max_skills) return sGirl::skill_names[id];
-	g_LogFile.os() << "[sEffect::skill_name] Error: skill id " << id << " too large (max is " << sGirl::max_skills << ")" << endl;
-	return "";
-}
-const char *sEffect::stat_name(unsigned int id)
-{
-	if (id < sGirl::max_stats) return sGirl::stat_names[id];
-	g_LogFile.os() << "[sEffect::stat_name] Error: stat id " << id << " too large (max is " << sGirl::max_stats << ")" << endl;
-	return "";
-}
-const char *sEffect::enjoy_name(unsigned int id)
-{
-	if (id < sGirl::max_stats) return sGirl::enjoy_names[id];
-	g_LogFile.os() << "[sEffect::enjoy_names] Error: enjoy id " << id << " too large (max is " << sGirl::max_enjoy << ")" << endl;
-	return "";
-}
+cInventory::~cInventory() = default;
 
 bool sEffect::set_skill(string s)
 {
-	int nID = sGirl::lookup_skill_code(s);
-	if (nID == -1)		// ERROR
-	{
-		g_LogFile.os() << "[sEffect::set_skill] Error: unknown Skill: " << s << ". Skill ID: " << nID << endl;
-		return false;
-	}
-	m_EffectID = nID;
+	m_EffectID = get_skill_id(s);
 	return true;
 }
 bool sEffect::set_girl_status(string s)
 {
-	int nID = sGirl::lookup_status_code(s);
-	if (nID == -1)		// ERROR
-	{
-		g_LogFile.os() << "[sEffect::lookup_status_code] Error: unknown Status: " << s << ". Status ID: " << nID << endl;
-		return false;
-	}
-	m_EffectID = nID;
+	m_EffectID = get_status_id(s);
 	return true;
 }
 bool sEffect::set_stat(string s)
 {
-	int nID = sGirl::lookup_stat_code(s);
-	if (nID == -1)		// ERROR
-	{
-		g_LogFile.os() << "[sEffect::set_stat] Error: unknown Stat: " << s << ". Stat ID: " << nID << endl;
-		return false;
-	}
-	m_EffectID = nID;
+	m_EffectID = get_stat_id(s);
 	return true;
 }
 bool sEffect::set_Enjoyment(string s)
 {
-	int nID = sGirl::lookup_enjoy_code(s);
-	if (nID == -1)		// ERROR
-	{
-		g_LogFile.os() << "[sEffect::set_enjoy] Error: unknown Enjoy: " << s << ". Enjoy ID: " << nID << endl;
-		return false;
-	}
-	m_EffectID = nID;
+	m_EffectID = get_action_id(s);
 	return true;
 }
 
@@ -121,7 +63,7 @@ void cInventory::GivePlayerAllItems()
 	for (auto & m_Item : m_Items)
 	{
 		item = m_Item;
-		g_Game.player().inventory().add_item(item, 999);
+		g_Game->player().inventory().add_item(item, 999);
 	}
 }
 
@@ -235,125 +177,7 @@ void cInventory::remove_trait(sGirl* girl, int num, int index)
 	girl->remove_trait(trait_name,					// Remove Traits
 		item_type != INVFOOD && item_type != INVMAKEUP);	// Remember if not consumable
 }
-bool cInventory::GirlBuyItem(sGirl* girl, int ShopItem, int MaxItems, bool AutoEquip)
-{
-	// girl buys selected item if possible; returns true if bought
-	sInventoryItem* item = GetShopItem(ShopItem);
-	if (cGirls::GetNumItemType(girl, item->m_Type) >= MaxItems)
-	{
-		// if she has enough of this type, she won't buy more unless it's better than what she has
-		int nicerThan = cGirls::GetWorseItem(girl, (int)item->m_Type, item->m_Cost);
-		if (nicerThan != -1)
-		{
-			// found a worse item of the same type in her inventory
-			cGirls::SellInvItem(girl, nicerThan);
-			girl->m_Money -= item->m_Cost;
-			int temp = girl->add_inv(item);
-			if (temp != -1 && AutoEquip) Equip(girl, temp, false); // MYR: Check temp value
-			return true;
-		}
-	}
-	else
-	{
-		girl->m_Money -= item->m_Cost;
-		int temp = girl->add_inv(item);
-		if (temp != -1 && AutoEquip) Equip(girl, temp, false);	// MYR: Check temp value
-		return true;
-	}
-	return false;
-}
-void cInventory::CalculateCost(sInventoryItem* newItem)
-{
-	for (u_int i = 0; i < newItem->m_Effects.size(); i++)
-	{
-		if (newItem->m_Effects[i].m_Affects == sEffect::Stat)	// stats
-		{
-			if (newItem->m_Effects[i].m_Amount >= 0)
-			{
-				// bad stats increases
-				if (newItem->m_Effects[i].m_EffectID == STAT_TIREDNESS || newItem->m_Effects[i].m_EffectID == STAT_PCHATE)
-					newItem->m_Cost += newItem->m_Effects[i].m_Amount * 2;
-				else	// good stats increases
-				{
-					newItem->m_Cost += newItem->m_Effects[i].m_Amount * 10;
-				}
-				// make items that do more cost a little less (buy in bulk)
-				newItem->m_Cost -= (newItem->m_Effects[i].m_Amount / 5) * 5;
-			}
-			else
-			{
-				// bad stats decreases
-				if (newItem->m_Effects[i].m_EffectID == STAT_TIREDNESS || newItem->m_Effects[i].m_EffectID == STAT_PCHATE)
-					newItem->m_Cost += newItem->m_Effects[i].m_Amount * 10;
-				else	// good stats decreases
-				{
-					newItem->m_Cost += newItem->m_Effects[i].m_Amount * 2;
-				}
-				// make items that do heaps of stuff cost a little less
-				newItem->m_Cost -= (newItem->m_Effects[i].m_Amount / 5) * 5;
-			}
-		}
-		if (newItem->m_Effects[i].m_Affects == sEffect::Skill)	// skills
-		{
-			if (newItem->m_Effects[i].m_Amount >= 0)	// increases skill
-				newItem->m_Cost += newItem->m_Effects[i].m_Amount * 15;
-			else	// decreases skill
-				newItem->m_Cost += newItem->m_Effects[i].m_Amount * 2;
 
-			// make items that do heaps of stuff cost a little less
-			newItem->m_Cost -= (newItem->m_Effects[i].m_Amount / 5) * 5;
-		}
-		if (newItem->m_Effects[i].m_Affects == sEffect::Enjoy)	// skills
-		{
-			if (newItem->m_Effects[i].m_Amount >= 0)	// increases enjoyment
-				newItem->m_Cost += newItem->m_Effects[i].m_Amount * 15;
-			else	// decreases enjoyment
-				newItem->m_Cost += newItem->m_Effects[i].m_Amount * 2;
-
-			// make items that do heaps of stuff cost a little less
-			newItem->m_Cost -= (newItem->m_Effects[i].m_Amount / 5) * 5;
-		}
-		if (newItem->m_Effects[i].m_Affects == sEffect::GirlStatus)	// status
-		{
-			if (newItem->m_Effects[i].m_Amount == 1)	// adds status
-			{
-				/* */if (newItem->m_Effects[i].m_EffectID == STATUS_POISONED)				newItem->m_Cost -= 20;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_BADLY_POISONED)			newItem->m_Cost -= 50;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_PREGNANT)				newItem->m_Cost += 30;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_PREGNANT_BY_PLAYER)		newItem->m_Cost += 30;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_SLAVE)					newItem->m_Cost += 400;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_HAS_DAUGHTER)			newItem->m_Cost += 200;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_HAS_SON)				newItem->m_Cost += 200;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_INSEMINATED)			newItem->m_Cost += 30;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_CONTROLLED)				newItem->m_Cost += 900;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_CATACOMBS)				newItem->m_Cost += 90;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_ARENA)					newItem->m_Cost += 90;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_YOURDAUGHTER)			newItem->m_Cost += 900;
-			}
-			else	// removes status
-			{
-				/* */if (newItem->m_Effects[i].m_EffectID == STATUS_POISONED)				newItem->m_Cost += 100;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_BADLY_POISONED)			newItem->m_Cost += 200;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_PREGNANT)				newItem->m_Cost += 10;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_PREGNANT_BY_PLAYER)		newItem->m_Cost += 10;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_SLAVE)					newItem->m_Cost += 70;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_HAS_DAUGHTER)			newItem->m_Cost += 20;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_HAS_SON)				newItem->m_Cost += 20;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_INSEMINATED)			newItem->m_Cost += 10;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_CONTROLLED)				newItem->m_Cost += 20;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_CATACOMBS)				newItem->m_Cost += 20;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_ARENA)					newItem->m_Cost += 20;
-				else if (newItem->m_Effects[i].m_EffectID == STATUS_YOURDAUGHTER)			newItem->m_Cost += 200;
-			}
-		}
-		if (newItem->m_Effects[i].m_Affects == sEffect::Trait)	newItem->m_Cost += 500;	// traits
-	}
-	if (!newItem->m_Effects.empty())		newItem->m_Cost += newItem->m_Effects.size() * 5;
-	if (newItem->m_Rarity > 0)				newItem->m_Cost += newItem->m_Rarity * 5;
-	if (newItem->m_Special == 1)			newItem->m_Cost += 2000;
-	else if (newItem->m_Special == 2)		newItem->m_Cost += 100;
-	if (newItem->m_Cost <= 10)				newItem->m_Cost = 10;
-}
 int cInventory::HappinessFromItem(const sInventoryItem * item)
 {
 	// decrease value by 5% for each point of badness
@@ -392,79 +216,13 @@ void sEffect::set_what(string s) {
 
 ostream& operator<<(ostream& os, sEffect& eff) {
     os << "Effect: " << eff.m_Affects << " ";
-    if (eff.m_Affects == sEffect::Stat) { os << eff.stat_name(eff.m_EffectID); }
-    if (eff.m_Affects == sEffect::Skill) { os << eff.skill_name(eff.m_EffectID); }
+    if (eff.m_Affects == sEffect::Stat) { os << get_stat_name((STATS)eff.m_EffectID); }
+    if (eff.m_Affects == sEffect::Skill) { os << get_skill_name((SKILLS)eff.m_EffectID); }
     if (eff.m_Affects == sEffect::Trait) { os << "'" << eff.m_Trait << "'"; }
-    if (eff.m_Affects == sEffect::GirlStatus) { os << eff.girl_status_name(eff.m_EffectID); }
-    if (eff.m_Affects == sEffect::Enjoy) { os << eff.enjoy_name(eff.m_EffectID); }
+    if (eff.m_Affects == sEffect::GirlStatus) { os << get_status_name((STATUS)eff.m_EffectID); }
+    if (eff.m_Affects == sEffect::Enjoy) { os << get_action_name((Action_Types)eff.m_EffectID); }
     os << (eff.m_Amount > 0 ? " +" : " ") << eff.m_Amount;
     return os << endl;
-}
-
-// ----- Shop
-sInventoryItem* cInventory::BuyShopItem(int num)
-{
-	if (num >= NUM_SHOPITEMS) return nullptr;
-	sInventoryItem* item = m_ShopItems[num];
-	if (item->m_Infinite == 0)
-	{
-		m_ShopItems[num] = nullptr;
-		m_NumShopItems--;
-	}
-	return item;
-}
-
-int cInventory::CheckShopItem(string name)
-{
-	int num = -1;
-	for (int i = 0; i < NUM_SHOPITEMS; i++)
-	{
-		if (m_ShopItems[i])
-		{
-			if (m_ShopItems[i]->m_Name == name) num = i;
-		}
-	}
-	return num;
-}
-void cInventory::UpdateShop()
-{
-	for (int i = 0; i < NUM_SHOPITEMS; i++)
-	{
-		sInventoryItem* item = nullptr;
-		while (item == nullptr) item = GetRandomItem();
-
-		int chance = g_Dice.d100();
-		if ((item->m_Rarity == RARITYCOMMON ||
-			(item->m_Rarity == RARITYSHOP50 && chance <= 50) ||
-			(item->m_Rarity == RARITYSHOP25 && chance <= 25) ||
-			(item->m_Rarity == RARITYSHOP05 && chance <= 5)) &&
-			(item->m_Infinite == 0 || (item->m_Infinite == 1 && CheckShopItem(item->m_Name) == -1)))
-		{
-			m_ShopItems[i] = item;
-			m_NumShopItems++;
-			continue;
-		}
-		else
-		{
-			i--;
-			continue;
-		}
-	}
-}
-sInventoryItem* cInventory::GetShopItem(int num)
-{
-	if (m_NumShopItems == 0) UpdateShop();
-	if (num >= NUM_SHOPITEMS) return nullptr;
-	return m_ShopItems[num];
-}
-
-int cInventory::GetRandomShopItem()
-{
-	if (m_NumShopItems == 0) UpdateShop();
-	int num = g_Dice%NUM_SHOPITEMS;
-	while (m_ShopItems[num] == nullptr) num = g_Dice%NUM_SHOPITEMS;
-	if (num > NUM_SHOPITEMS - 1) num = NUM_SHOPITEMS - 1;   // shouldn't be necessary, but once I got 40 back causing OOB elsewhere
-	return num;
 }
 
 // ----- Get
@@ -541,12 +299,13 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 {
 	if (num == -1) return;	// no item then ignore the call
 
-	if (girl->is_dead() && (	// Allow certain Items to recover the dead
-		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Better Zed than Dead") ||
-		stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Elixir of Ultimate Regeneration")
+    sInventoryItem* item = girl->m_Inventory[num];
+    if (girl->is_dead() && (	// Allow certain Items to recover the dead
+		stringtolowerj(item->m_Name) == stringtolowerj("Better Zed than Dead") ||
+        stringtolowerj(item->m_Name) == stringtolowerj("Elixir of Ultimate Regeneration")
 		)){}
 	// A few items are hard coded
-	else if (stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Reset Potion MK i"))
+	else if (stringtolowerj(item->m_Name) == stringtolowerj("Reset Potion MK i"))
 	{
 		int age = girl->age();
 		// reset all numbers to default
@@ -557,15 +316,15 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		girl->m_Stats[STAT_AGE] = (age == 100 ? 100 : 18);	// keep ageless girls ageless	// `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 		girl->m_Stats[STAT_HOUSE] = girl->is_slave() ? cfg.initial.slave_house_perc() : cfg.initial.girls_house_perc();
 
-		g_Game.push_message(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
-			": The use of this item has reset all her stats and skills to default.", COLOR_BLUE);
+		g_Game->push_message(girl->m_Realname + ": " + item->m_Name +
+                             ": The use of this item has reset all her stats and skills to default.", COLOR_BLUE);
 		girl->m_Inventory[num] = nullptr;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
 		cGirls::CalculateGirlType(girl);
 		return;
 	}
-	else if (stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Reset Potion MK ii"))
+	else if (stringtolowerj(item->m_Name) == stringtolowerj("Reset Potion MK ii"))
 	{
 		// remove all traits
 		girl->m_Stats[STAT_HEALTH] = 100;	// `J` revive dead girls
@@ -575,8 +334,8 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		}
 		cGirls::RemoveAllRememberedTraits(girl);
 
-		g_Game.push_message(girl->m_Realname + ": " + girl->m_Inventory[num]->m_Name +
-			": The use of this item has removed all her traits.", COLOR_BLUE);
+		g_Game->push_message(girl->m_Realname + ": " + item->m_Name +
+                             ": The use of this item has removed all her traits.", COLOR_BLUE);
 		girl->m_Inventory[num] = nullptr;
 		girl->m_EquipedItems[num] = 0;
 		girl->m_NumInventory--;
@@ -586,7 +345,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 	}
 	else if (girl->is_dead() ||					// dead girls shouldn't be able to equip or use anything
 		girl->m_EquipedItems[num] == 1 ||		// if already equiped do nothing
-		girl->m_Inventory[num]->m_Special == sInventoryItem::AffectsAll || // no "AffectsAll" item should be equipable
+		item->m_Special == sInventoryItem::AffectsAll || // no "AffectsAll" item should be equipable
 		ok_2_equip(girl, num, force) == false)	// of if it is not ok to equip it
 		return;
 
@@ -601,7 +360,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 	int pregbyP = 0;	int pregrmP = 0;
 	int pregbyB = 0;	int pregrmB = 0;
 
-	for (auto effect : girl->m_Inventory[num]->m_Effects)
+	for (auto effect : item->m_Effects)
 	{
         if(g_Dice % 100 >= effect.m_Chance) {
             continue;
@@ -635,7 +394,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		bool endpreg = false;
 		bool startpreg = false;
 		int type = STATUS_PREGNANT;
-		pregmsg << girl->m_Realname << " has used her " << girl->m_Inventory[num]->m_Name << ".\n";
+		pregmsg << girl->m_Realname << " has used her " << item->m_Name << ".\n";
 
 		if (pregadd == 0)		// end only
 		{
@@ -821,7 +580,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			int numchildren = 1 + g_Dice % pregbyP;
 			if (type == STATUS_PREGNANT_BY_PLAYER)
 			{
-				cGirls::CreatePregnancy(girl, numchildren, type, g_Game.player().m_Stats, g_Game.player().m_Skills);
+				cGirls::CreatePregnancy(girl, numchildren, type, g_Game->player().m_Stats, g_Game->player().m_Skills);
 				pregmsg << "\nThe item has gotten her pregnant with your child.";
 			}
 			else
@@ -842,7 +601,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		}
 
 
-		if (stringtolowerj(girl->m_Inventory[num]->m_Name) == stringtolowerj("Better Zed than Dead"))
+		if (stringtolowerj(item->m_Name) == stringtolowerj("Better Zed than Dead"))
 		{
 			// `J` a few specific items don't need the rest of the code
 		}
@@ -865,7 +624,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 
 			if (pregmsg.str().length() > 0)
 			{
-				g_Game.push_message(pregmsg.str(), COLOR_RED);
+				g_Game->push_message(pregmsg.str(), COLOR_RED);
 			}
 
 		}
@@ -877,13 +636,13 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 #endif
 
 	// apply the effects
-	for (u_int i = 0; i < girl->m_Inventory[num]->m_Effects.size(); i++)
+	for (u_int i = 0; i < item->m_Effects.size(); i++)
 	{
-		int affects = girl->m_Inventory[num]->m_Effects[i].m_Affects;
-		int eff_id = girl->m_Inventory[num]->m_Effects[i].m_EffectID;
-		int amount = girl->m_Inventory[num]->m_Effects[i].m_Amount;
-		int duration = girl->m_Inventory[num]->m_Effects[i].m_Duration;
-		bool tempeff = girl->m_Inventory[num]->m_Special == sInventoryItem::Temporary;
+		int affects = item->m_Effects[i].m_Affects;
+		int eff_id = item->m_Effects[i].m_EffectID;
+		int amount = item->m_Effects[i].m_Amount;
+		int duration = item->m_Effects[i].m_Duration;
+		bool tempeff = item->m_Special == sInventoryItem::Temporary;
 
 		if (tempeff)
 		{
@@ -928,12 +687,12 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				 *		EQUIP Temporary Item
 				 */
 				if (amount == 0)						// remove trait temporarily from equiping an item
-					girl->remove_trait(girl->m_Inventory[num]->m_Effects[i].m_Trait, true);		// addrememberlist = true Temporary Item trait removal
+					girl->remove_trait(item->m_Effects[i].m_Trait, true);		// addrememberlist = true Temporary Item trait removal
 
 				else if (amount == 1)		// add temporary trait
-					girl->add_trait(girl->m_Inventory[num]->m_Effects[i].m_Trait, duration, true);	// Temp = true Temporary Item, removeitem = true for Temporary Item trait addition
+					girl->add_trait(item->m_Effects[i].m_Trait, duration, true);	// Temp = true Temporary Item, removeitem = true for Temporary Item trait addition
 
-				if (girl->m_Inventory[num]->m_Effects[i].m_Trait == "Virgin")
+				if (item->m_Effects[i].m_Trait == "Virgin")
 				{
 					girl->m_Virgin = (amount == 1);
 				}
@@ -944,7 +703,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			/* */if (affects == sEffect::Skill)
 			{
 				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
-				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
+				if (item->m_Type == INVFOOD || item->m_Type == INVMAKEUP)
 					girl->upd_skill(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
 				else cGirls::UpdateSkillMod(girl, eff_id, amount);
@@ -952,7 +711,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			else if (affects == sEffect::Stat)
 			{
 				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
-				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
+				if (item->m_Type == INVFOOD || item->m_Type == INVMAKEUP)
 					girl->upd_stat(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
 				else cGirls::UpdateStatMod(girl, eff_id, amount);
@@ -960,7 +719,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 			else if (affects == sEffect::Enjoy)
 			{
 				// `J` food and makeup are single use items, so if permanent, make them affect the base skill
-				if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
+				if (item->m_Type == INVFOOD || item->m_Type == INVMAKEUP)
 					girl->upd_Enjoyment(eff_id, amount);
 				// `J` all other items can be removed so use skill mod
 				else cGirls::UpdateEnjoymentMod(girl, eff_id, amount);
@@ -987,7 +746,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 				 *
 				 *		EQUIP Normal Item
 				 */
-				string trait = girl->m_Inventory[num]->m_Effects[i].m_Trait; // avoids repeat calls
+				string trait = item->m_Effects[i].m_Trait; // avoids repeat calls
 
 				if (amount == 0)				// remove trait from equiping an item
 				{
@@ -998,25 +757,25 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 					{
 						if (girl->is_slave())
 						{		//SIN: just protecting investment in property
-							if (trait == "AIDS") g_Game.player().evil(-4);
-							if (trait == "Syphilis") g_Game.player().evil(-3);
-							if (trait == "Herpes") g_Game.player().evil(-2);
-							if (trait == "Chlamydia") g_Game.player().evil(-1);
+							if (trait == "AIDS") g_Game->player().evil(-4);
+							if (trait == "Syphilis") g_Game->player().evil(-3);
+							if (trait == "Herpes") g_Game->player().evil(-2);
+							if (trait == "Chlamydia") g_Game->player().evil(-1);
 						}
 						else   //SIN: a genuinely kind act to support staff
 						{
-							if (trait == "AIDS") g_Game.player().evil(-8);
-							if (trait == "Syphilis") g_Game.player().evil(-6);
-							if (trait == "Herpes") g_Game.player().evil(-4);
-							if (trait == "Chlamydia") g_Game.player().evil(-2);
+							if (trait == "AIDS") g_Game->player().evil(-8);
+							if (trait == "Syphilis") g_Game->player().evil(-6);
+							if (trait == "Herpes") g_Game->player().evil(-4);
+							if (trait == "Chlamydia") g_Game->player().evil(-2);
 						}
 					}
-					girl->remove_trait(trait, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// addrememberlist = true only if not consumable
+					girl->remove_trait(trait, item->m_Type != INVFOOD && item->m_Type != INVMAKEUP);		// addrememberlist = true only if not consumable
 				}
 				else if (amount == 1)			// add normal trait	from equiping an item
 				{
-					int d =	(duration > 0 && (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)) ? duration : 0;
-					girl->add_trait(trait, d, girl->m_Inventory[num]->m_Type != INVFOOD && girl->m_Inventory[num]->m_Type != INVMAKEUP);		// Temp = false Normal Item, removeitem = true only if not consumable
+					int d = (duration > 0 && (item->m_Type == INVFOOD || item->m_Type == INVMAKEUP)) ? duration : 0;
+					girl->add_trait(trait, d, item->m_Type != INVFOOD && item->m_Type != INVMAKEUP);		// Temp = false Normal Item, removeitem = true only if not consumable
 				}
 				if (trait == "Virgin")
 				{
@@ -1027,7 +786,7 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 	}
 
 	// if consumable then remove from inventory
-	if (girl->m_Inventory[num]->m_Type == INVFOOD || girl->m_Inventory[num]->m_Type == INVMAKEUP)
+	if (item->m_Type == INVFOOD || item->m_Type == INVMAKEUP)
 	{
 		girl->m_Inventory[num] = nullptr;
 		girl->m_EquipedItems[num] = 0;
@@ -1037,79 +796,6 @@ void cInventory::Equip(sGirl* girl, int num, bool force)
 		girl->m_EquipedItems[num] = 1;
 
 	cGirls::CalculateGirlType(girl);
-}
-
-void cInventory::Unequip(sGirl* girl, int num)
-{
-	if (girl->m_EquipedItems[num] == 0) return;	// if already unequiped do nothing
-	// unapply the effects
-	for (u_int i = 0; i < girl->m_Inventory[num]->m_Effects.size(); i++)
-	{
-		int eff_id = girl->m_Inventory[num]->m_Effects[i].m_EffectID;
-		int affects = girl->m_Inventory[num]->m_Effects[i].m_Affects;
-		int amount = girl->m_Inventory[num]->m_Effects[i].m_Amount;
-
-		/* */if (affects == sEffect::Skill)	cGirls::UpdateSkillMod(girl, eff_id, -amount);
-		else if (affects == sEffect::Stat)	cGirls::UpdateStatMod(girl, eff_id, -amount);
-		else if (affects == sEffect::Enjoy)	cGirls::UpdateEnjoymentMod(girl, eff_id, -amount);
-		else if (affects == sEffect::GirlStatus)	// adds/removes status
-		{
-			if (amount == 1) girl->m_States &= ~(1 << eff_id);		// add status
-			else if (amount == 0) girl->m_States |= (1 << eff_id);	// remove status
-		}
-		else if (affects == sEffect::Trait)	// trait
-		{
-			/*
-			 *	WD:	New logic for remembering traits
-			 *		moved to AddTrait() RemoveTrait() fn's
-			 *
-			 *		UNEQUIP
-			 */
-			if (amount == 0 && girl->m_Inventory[num]->m_Effects[i].m_Trait == "Virgin")
-			{
-				girl->m_Virgin = 0; // `J` unequiping an item will not make her a virgin again
-			}
-			else if (amount == 0)					// possibly add remembered trait from unequiping an item
-				girl->add_trait(girl->m_Inventory[num]->m_Effects[i].m_Trait, false, false, true);	// inrememberlist = true Add trait only if it is in the rememebered list
-
-			else if (amount == 1)				// remove item trait from unequiping an item
-				girl->remove_trait(girl->m_Inventory[num]->m_Effects[i].m_Trait);
-		}
-	}
-	// set it as unequiped
-	girl->m_EquipedItems[num] = 0;
-
-	cGirls::CalculateGirlType(girl);
-}
-
-void cInventory::Equip(sGirl* girl, sInventoryItem* item, bool force)
-{
-	// this function is only used for global effects sInventoryItem::AffectsAll = 1
-	if (item->m_Special != sInventoryItem::AffectsAll) return;
-	for (u_int i = 0; i < item->m_Effects.size(); i++)
-	{
-		int eff_id = item->m_Effects[i].m_EffectID;
-		int affects = item->m_Effects[i].m_Affects;
-		int amount = item->m_Effects[i].m_Amount;
-
-		/* */if (affects == sEffect::Skill)	cGirls::UpdateSkillMod(girl, eff_id, amount);
-		else if (affects == sEffect::Stat)	cGirls::UpdateStatMod(girl, eff_id, amount);
-		else if (affects == sEffect::Enjoy)	cGirls::UpdateEnjoymentMod(girl, eff_id, amount);
-
-		else if (affects == sEffect::Trait)	// trait
-		{
-			if (amount == 0)			// remove trait temporarily from equiping an item
-				girl->remove_trait(item->m_Effects[i].m_Trait, true);	// addrememberlist = true AffectAll trait removal
-
-			else if (amount == 1)		// add temporary trait
-				girl->add_trait(item->m_Effects[i].m_Trait, 20, true); // Temp = true AffectAll Item, removeitem = true for AffectAll trait
-
-			if (item->m_Effects[i].m_Trait == "Virgin")
-			{
-				girl->m_Virgin = (amount == 1);
-			}
-		}
-	}
 }
 
 bool cInventory::equip_ring_ok(sGirl* girl, int num, bool force)
@@ -1155,7 +841,7 @@ bool cInventory::equip_limited_item_ok(sGirl* girl, int num, bool force, int lim
 		 *		so we need to remove this last ring, decrement the count and exit the loop
 		 */
 		count--;
-		Unequip(girl, i);
+		girl->unequip(i);
 		break;
 	}
     return count != limit;
@@ -1275,21 +961,6 @@ std::vector<sInventoryItem*> cInventory::GetCraftableItems(JOBS job)
         }
     }
     return std::move(result);
-}
-
-int cInventory::BuyShopItem(sInventoryItem* item, int amount)
-{
-    auto found = std::find(begin(m_ShopItems), end(m_ShopItems), item);
-    if(found == end(m_ShopItems))
-        return 0;
-
-    if ((*found)->m_Infinite == 0)
-    {
-        *found = nullptr;
-        m_NumShopItems--;
-        return 1;
-    }
-    return amount;
 }
 
 ostream& operator<<(ostream& os, sInventoryItem& it) {
@@ -1426,7 +1097,7 @@ void CraftingData::from_xml(TiXmlElement& element) {
         auto skill_name = skill->Attribute("Name");
         if(skill_name) {
             int skill_value = 0;
-            auto skill_id = sGirl::lookup_skill_code(skill_name);
+            auto skill_id = get_skill_id(skill_name);
             skill->QueryIntAttribute("Minimum", &skill_value);
             if(skill_id != -1) {
                 m_SkillRequirements[(SKILLS)skill_id] = skill_value;
@@ -1438,11 +1109,9 @@ void CraftingData::from_xml(TiXmlElement& element) {
         auto stat_name = stat->Attribute("Name");
         if(stat_name) {
             int stat_value = 0;
-            auto stat_id = sGirl::lookup_stat_code(stat_name);
+            auto stat_id = get_stat_id(stat_name);
             stat->QueryIntAttribute("Minimum", &stat_value);
-            if(stat_id != -1) {
-                m_StatsRequirements[(STATS)stat_id] = stat_value;
-            }
+            m_StatsRequirements[stat_id] = stat_value;
         }
     }
 }

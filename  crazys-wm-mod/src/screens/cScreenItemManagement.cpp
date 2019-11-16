@@ -21,76 +21,73 @@
 #include "widgets/cListBox.h"
 #include "widgets/cTextItem.h"
 #include "cTariff.h"
-#include "cWindowManager.h"
-#include "InterfaceGlobals.h"
+#include "interface/cWindowManager.h"
 #include "InterfaceProcesses.h"
 #include "sConfig.h"
 #include "cGirls.h"
 #include "main.h"
 #include "Game.hpp"
 #include "cInventory.h"
+#include "cShop.h"
 
 
 static bool AutoUseItems = false;
 
 
 struct cInventoryProviderPlayer : public IInventoryProvider {
-    std::array<std::string, 3> get_data(int filter) const override {
+    std::vector<std::string> get_data(int filter) const override {
         stringstream ss, ss2;
-        int num_items = g_Game.player().inventory().get_num_items();
+        int num_items = g_Game->player().inventory().get_num_items();
         if (num_items > 0) ss << num_items;
-        int numtype = g_Game.player().inventory().get_num_classes(filter);
+        int numtype = g_Game->player().inventory().get_num_classes(filter);
         if (numtype > 0) ss2 << numtype;
 
-        return std::array<std::string, 3> {"Player", ss.str(), ss2.str()};
+        return std::vector<std::string> {"Player", ss.str(), ss2.str()};
     }
 
-    void enumerate_items(const std::function<void(sInventoryItem *, int)>& callback) const override
+    void enumerate_items(const function<void(const sInventoryItem *, int)> &callback) const override
     {
-        for(auto entry : g_Game.player().inventory().all_items()) {
+        for(auto entry : g_Game->player().inventory().all_items()) {
             callback(entry.first, entry.second);
         }
     }
 
-    int take_item(sInventoryItem * item, int amount) override {
-        return g_Game.player().inventory().remove_item(item, amount);
+    int take_item(const sInventoryItem *item, int amount) override {
+        return g_Game->player().inventory().remove_item(item, amount);
     }
 
-    int give_item(sInventoryItem* item, int amount) override {
+    int give_item(const sInventoryItem *item, int amount) override {
         // Add the item to players inventory
-        int got = g_Game.player().inventory().add_item(item, amount);
-        if (got == amount)
+        int got = g_Game->player().inventory().add_item(item, amount);
+        if (got != amount)
         {
-            g_Game.push_message("Your inventory is full.", 1);
+            g_Game->push_message("Your inventory is full.", 1);
         }
         return amount - got;
     }
+
+    bool equippable(const sInventoryItem *item, bool equip) const override { return false; }
 };
 
 struct cInventoryProviderShop : public IInventoryProvider {
-    std::array<std::string, 3> get_data(int filter) const override {
-        return std::array<std::string, 3> {"Shop", "", ""};
+    std::vector<std::string> get_data(int filter) const override {
+        return std::vector<std::string> {"Shop", "", ""};
     }
 
-    void enumerate_items(const std::function<void(sInventoryItem *, int)>& callback) const override
+    void enumerate_items(const function<void(const sInventoryItem*, int)> &callback) const override
     {
-        for (int i = 0; i < NUM_SHOPITEMS; i++)
-        {
-            /// TODO shop item count
-            sInventoryItem * item = g_Game.inventory_manager().GetShopItem(i);
-            if (item) { callback(item, 1);  }
-        }
+        g_Game->shop().IterateItems(callback);
     }
 
-    int take_item(sInventoryItem * item, int amount) override {
+    int take_item(const sInventoryItem *item, int amount) override {
         int cost = item->m_Cost;
         int bought = 0;
-        if (g_Game.gold().afford(cost*amount))
+        if (g_Game->gold().afford(cost*amount))
         {
             while(bought < amount)
             {
-                int got = g_Game.inventory_manager().BuyShopItem(item, amount);
-                g_Game.gold().item_cost(got * cost);
+                int got = g_Game->shop().BuyItem(item, amount);
+                g_Game->gold().item_cost(got * cost);
                 bought += got;
                 if(got == 0)
                     break;
@@ -99,18 +96,20 @@ struct cInventoryProviderShop : public IInventoryProvider {
         return bought;
     }
 
-    int give_item(sInventoryItem* item, int amount) override {
-        g_Game.gold().item_sales(amount * item->m_Cost);
+    int give_item(const sInventoryItem *item, int amount) override {
+        g_Game->gold().item_sales(amount * item->m_Cost);
         return 0;
     }
+
+    bool equippable(const sInventoryItem *item, bool equip) const override { return false; }
 };
 
 
 
 struct cInventoryProviderGirl : public IInventoryProvider {
     explicit cInventoryProviderGirl(sGirl* girl) : m_Girl(girl) { }
-    std::array<std::string, 3> get_data(int filter) const override {
-        std::array<std::string, 3> data;
+    std::vector<std::string> get_data(int filter) const override {
+        std::vector<std::string> data(3);
 
         data[0] = m_Girl->m_Realname;
 
@@ -128,14 +127,14 @@ struct cInventoryProviderGirl : public IInventoryProvider {
         return cGirls::GetSimpleDetails(m_Girl, font_size);
     }
 
-    void enumerate_items(const std::function<void(sInventoryItem *, int)>& callback) const override
+    void enumerate_items(const function<void(const sInventoryItem *, int)> &callback) const override
     {
         for (auto & item : m_Girl->m_Inventory) {
             if (item) { callback(item, 1); }
         }
     }
 
-    int take_item(sInventoryItem * item, int amount) override {
+    int take_item(const sInventoryItem *item, int amount) override {
         // find the item
         auto found = std::find(begin(m_Girl->m_Inventory), end(m_Girl->m_Inventory), item);
         if(found == end(m_Girl->m_Inventory))
@@ -143,13 +142,13 @@ struct cInventoryProviderGirl : public IInventoryProvider {
         int selection = std::distance(begin(m_Girl->m_Inventory), found);
 
         if (m_Girl->m_EquipedItems[selection] == 1)	// unequip item if it is equiped
-            g_Game.inventory_manager().Unequip(m_Girl, selection);
+            m_Girl->unequip(selection);
         auto sold_item = m_Girl->m_Inventory[selection];
         if (sold_item->m_Badness >= 20)	// happy to get rid of bad items
             m_Girl->happiness(5);
         else	// sad to see good items go
         {
-            int happiness = g_Game.inventory_manager().HappinessFromItem(sold_item);
+            int happiness = g_Game->inventory_manager().HappinessFromItem(sold_item);
             m_Girl->happiness(-happiness);
         }
 
@@ -161,20 +160,20 @@ struct cInventoryProviderGirl : public IInventoryProvider {
         return 1;
     }
 
-    int give_item(sInventoryItem* item, int amount) override {
+    int give_item(const sInventoryItem *item, int amount) override {
         while(amount > 0) {
             if (cGirls::IsInvFull(m_Girl)) {
-                g_Game.push_message("Her inventory is full", 0);
+                g_Game->push_message("Her inventory is full", 0);
                 return amount;
             }
 
             int   goodbad  = item->m_Badness;
             u_int type     = item->m_Type;
             int   HateLove = m_Girl->pclove() - m_Girl->pchate();
-            g_Game.push_message(cScreenItemManagement::GiveItemText(goodbad, HateLove, m_Girl), 0);
+            g_Game->push_message(cScreenItemManagement::GiveItemText(goodbad, HateLove, m_Girl), 0);
 
             if (goodbad < 20) {
-                int happiness = g_Game.inventory_manager().HappinessFromItem(item);
+                int happiness = g_Game->inventory_manager().HappinessFromItem(item);
 
                 m_Girl->obedience(1);
                 m_Girl->happiness(happiness);
@@ -186,11 +185,22 @@ struct cInventoryProviderGirl : public IInventoryProvider {
             if (!AutoUseItems && (type == INVFOOD || type == INVMAKEUP))
                 m_Girl->add_inv(item);
             else
-                g_Game.inventory_manager().Equip(m_Girl, m_Girl->add_inv(item), false);
+                m_Girl->equip(m_Girl->add_inv(item), false);
 
             --amount;
         }
         return 0;
+    }
+
+    bool equippable(const sInventoryItem *item, bool equip) const override {
+        if(!g_Game->inventory_manager().IsItemEquipable(item)) {
+            return false;
+        }
+        for(int i =0 ; i < MAXNUM_INVENTORY; ++i) {
+            if(m_Girl->m_Inventory[i] == item)
+                return m_Girl->m_EquipedItems[i] != equip;
+        }
+        return false;
     }
 
     sGirl* m_Girl;
@@ -199,10 +209,6 @@ struct cInventoryProviderGirl : public IInventoryProvider {
 extern bool g_AllTogle;
 extern cConfig cfg;
 extern bool playershopinventory;
-extern sGirl *g_selected_girl;
-extern cTariff tariff;
-
-extern	bool	g_AltKeys;	// New hotkeys --PP
 
 cScreenItemManagement::cScreenItemManagement() : cInterfaceWindowXML("itemmanagement_screen.xml")
 {
@@ -211,8 +217,6 @@ cScreenItemManagement::cScreenItemManagement() : cInterfaceWindowXML("itemmanage
 
 static int filter = 0;
 static int filterpos = 0;
-
-int HateLove = 0;
 
 static SDL_Color* RarityColor[9];
 
@@ -230,12 +234,12 @@ void cScreenItemManagement::load_ids(sItemTransferSide& target, Side side)
     target.items_id     = get_id("Items" + side_str + "List");
     target.detail_id     = get_id("Owners" + side_str + "Details", "*Optional*");
 
-    string ORColumns[] = { "ORLName", "ORLNumber", "ORLCatNum" };
-    string OLColumns[] = { "OLLName", "OLLNumber", "OLLCatNum" };
+    std::vector<std::string> ORColumns{ "ORLName", "ORLNumber", "ORLCatNum" };
+    std::vector<std::string> OLColumns{ "OLLName", "OLLNumber", "OLLCatNum" };
     if(side == Side::Left) {
-        SortColumns(target.owners_id, OLColumns, 3);
+        SortColumns(target.owners_id, OLColumns);
     } else {
-        SortColumns(target.owners_id, ORColumns, 3);
+        SortColumns(target.owners_id, ORColumns);
     }
 
     SetButtonCallback(target.buy10_id, [this, opposite]() { attempt_transfer(opposite, 10); });
@@ -281,17 +285,17 @@ void cScreenItemManagement::init_side(sItemTransferSide& target, int owner, int 
 
     for(std::size_t i = 0; i < m_OwnerList.size(); ++i) {
         /// TODO define colors
-        AddToListBox(target.owners_id, i, m_OwnerList[i]->get_data(filter).data(), 3, COLOR_BLUE);
+        AddToListBox(target.owners_id, i, m_OwnerList[i]->get_data(filter), COLOR_BLUE);
     }
 
-    if (m_ListBoxes[target.owners_id]->GetSelected() != owner)		SetSelectedItemInList(target.owners_id, owner);
+    if (GetListBox(target.owners_id)->GetSelected() != owner)		SetSelectedItemInList(target.owners_id, owner);
     SetSelectedItemInList(target.items_id, item);
 
     update_details(target);
 
     // disable the equip/unequip buttons
-    DisableButton(target.equip_id, true);
-    DisableButton(target.unequip_id, true);
+    DisableWidget(target.equip_id, true);
+    DisableWidget(target.unequip_id, true);
 }
 
 void cScreenItemManagement::update_details(const sItemTransferSide& target)
@@ -300,7 +304,7 @@ void cScreenItemManagement::update_details(const sItemTransferSide& target)
     {
         int index = GetSelectedItemFromList(target.owners_id);
         if(index >= 0) {
-            EditTextItem(m_OwnerList.at(index)->get_details(m_TextItems[target.detail_id]->m_FontHeight),
+            EditTextItem(m_OwnerList.at(index)->get_details(GetTextItem(target.detail_id)->m_FontHeight),
                          target.detail_id);
         } else {
             EditTextItem("", target.detail_id);
@@ -319,9 +323,9 @@ void cScreenItemManagement::init(bool back)	// `J` bookmark
 	if (playershopinventory)	// `J` to set player and shop when pressing ctrl-I to get to inventory
 	{
 		if (m_LeftData.selected_owner != 0)								                m_LeftData.selected_item = -1;
-		if (m_LeftData.selected_item < 0 && !g_Game.player().inventory().empty())		m_LeftData.selected_item = 0;
-		if (m_RightData.selected_owner != 1)								m_RightData.selected_item = -1;
-		if (m_RightData.selected_item < 0 && g_Game.inventory_manager().GetShopItem(0))	m_RightData.selected_item = 0;
+		if (m_LeftData.selected_item < 0 && !g_Game->player().inventory().empty())		m_LeftData.selected_item = 0;
+		if (m_RightData.selected_owner != 1)								            m_RightData.selected_item = -1;
+		if (m_RightData.selected_item < 0 && !g_Game->shop().empty())	                m_RightData.selected_item = 0;
 		m_LeftData.selected_owner = 0;	m_RightData.selected_owner = 1;
 	}
 	playershopinventory = false;
@@ -362,15 +366,15 @@ void cScreenItemManagement::init(bool back)	// `J` bookmark
     m_OwnerList.push_back(std::make_unique<cInventoryProviderShop>());
 
     // and girls from current brothel to list
-    for(auto& b : g_Game.buildings().buildings()) {
+    for(auto& b : g_Game->buildings().buildings()) {
         AddGirlsFromBuilding(b.get());
     }
 
 	// add current dungeon girls to list
-	for(sDungeonGirl& girl : g_Game.dungeon().girls())
+	for(sDungeonGirl& girl : g_Game->dungeon().girls())
 	{
 	    int i = m_OwnerList.size();
-	    if (g_AllTogle && g_selected_girl == girl.m_Girl.get()) m_RightData.selected_owner = i;
+	    if (g_AllTogle && selected_girl() == girl.m_Girl.get()) m_RightData.selected_owner = i;
 		m_OwnerList.push_back(std::make_unique<cInventoryProviderGirl>(girl.m_Girl.get()));
 	}
 
@@ -379,46 +383,46 @@ void cScreenItemManagement::init(bool back)	// `J` bookmark
 
 	g_AllTogle = false;
 
+    update_button_states(Left);
     update_button_states(Right);
 }
 
 void cScreenItemManagement::AddGirlsFromBuilding(IBuilding * brothel) {
     for(auto& temp : brothel->girls()) {
         int i = m_OwnerList.size();
-        if (g_AllTogle && g_selected_girl == temp) m_RightData.selected_owner = i;
+        if (g_AllTogle && selected_girl() == temp) m_RightData.selected_owner = i;
         m_OwnerList.push_back(std::make_unique<cInventoryProviderGirl>(temp));
     }
 }
 
-void cScreenItemManagement::write_item_text(sInventoryItem * item, int owner, int target)
+void cScreenItemManagement::write_item_text(const sInventoryItem* item, int owner, int target)
 {
 	stringstream ss;
-	stringstream iName;
 	stringstream iCost;
 	stringstream iSell;
 	stringstream iType;
-	stringstream iDesc;
 
-	if (item == nullptr || owner < 0) {}
+	if (item == nullptr || owner < 0) {
+	    EditTextItem("", desc_id);
+	    return;
+	}
 	else
 	{
-		iName << item->m_Name;
 		iCost << item->m_Cost << " gold";
 		iSell << int(((float)item->m_Cost) * cfg.in_fact.item_sales()) << " gold";
 		iType << item->m_Type;
-		iDesc << item->m_Desc;
 	}
-	if (owner != 1 && owner >= 0 && target == 1)
+	if (target == 1)
 	{
-		cFont check; int w, h, size = int(m_TextItems[desc_id]->GetWidth()*0.25);
+		cFont check; int w, h, size = int(GetTextItem(desc_id)->GetWidth()*0.25);
 		check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 		check.GetSize(iCost.str(), w, h); while (w < size) { iCost << " "; check.GetSize(iCost.str(), w, h); }
 	}
-	ss << "Item Name:      " << iName.str();
+	ss << "Item Name:      " << item->m_Name;
 	ss << "\nCost:  " << iCost.str();
-	if (owner != 1 && owner >= 0 && target == 1) ss << "Sell for:  " << iSell.str();
+	if (target == 1) ss << "Sell for:  " << iSell.str();
 	ss << "\nType:  " << iType.str();
-	ss << "\n \n" << iDesc.str();
+	ss << "\n \n" << item->m_Desc;
 
 	EditTextItem(ss.str(), desc_id);
 };
@@ -429,65 +433,27 @@ void cScreenItemManagement::on_select_item(Side side, int selected)
     auto& other_side = side == Side::Right ? m_LeftData : m_RightData;
     own_side.selected_item = GetLastSelectedItemFromList(own_side.items_id);
 
-    //DisableButton(own_side.shift_id, (selected < 0) || (own_side.selected_owner == 1 && !g_Game.gold().afford(g_Game.inventory_manager().GetShopItem(selected)->m_Cost)));
-
-    bool disablebuy10L = true;
-    if (other_side.selected_owner == 0 && own_side.selected_owner == 1 && selected > -1 &&
-        g_Game.inventory_manager().GetShopItem(selected) &&
-        g_Game.gold().afford(g_Game.inventory_manager().GetShopItem(selected)->m_Cost * 10))
-    {
-        disablebuy10L = !g_Game.inventory_manager().GetShopItem(selected)->m_Infinite;
-    }
-    DisableButton(own_side.buy10_id, disablebuy10L);
-
     if (selected != -1)
     {
-        /*
-        sInventoryItem * item;
-        if (own_side.selected_owner == 0) // Shop
-        {
-            item =  own_side.items[selected];
-            DisableButton(own_side.equip_id, true);
-            DisableButton(own_side.unequip_id, true);
-        }
-        else if (own_side.selected_owner == 1) // Player
-        {
-            item = g_Game.inventory_manager().GetShopItem(selected);
-            DisableButton(own_side.equip_id, true);
-            DisableButton(own_side.unequip_id, true);
-        }
-        else // Girl
-        {
-            sGirl* targetGirl = GirlSelectedFromList(own_side.selected_owner);
-            item = targetGirl->m_Inventory[selected];
-            HateLove = targetGirl->pclove() - targetGirl->pchate();
-
-            if (g_Game.inventory_manager().IsItemEquipable(targetGirl->m_Inventory[selected]))
-            {
-                DisableButton(own_side.equip_id, targetGirl->m_EquipedItems[selected] == 1);
-                DisableButton(own_side.unequip_id, targetGirl->m_EquipedItems[selected] != 1);
-            }
-            else
-            {
-                DisableButton(own_side.equip_id, true);
-                DisableButton(own_side.unequip_id, true);
-            }
-        }
-
+        const sInventoryItem * item = own_side.items.at(selected);
+        DisableWidget(own_side.equip_id, !m_OwnerList[own_side.selected_owner]->equippable(item, true));
+        DisableWidget(own_side.unequip_id, !m_OwnerList[own_side.selected_owner]->equippable(item, false));
         write_item_text(item, own_side.selected_owner, other_side.selected_owner);
-         */
     }
     else
     {
-        DisableButton(own_side.equip_id, true);
-        DisableButton(own_side.unequip_id, true);
+        DisableWidget(own_side.equip_id, true);
+        DisableWidget(own_side.unequip_id, true);
     }
+
+    update_button_states(Side::Left);
+    update_button_states(Side::Right);
 }
 
 void cScreenItemManagement::on_select_filter(int selection)
 {
     filter    = selection;
-    filterpos = m_ListBoxes[filter_id]->m_Position;
+    filterpos = GetListBox(filter_id)->m_Position;
     sync_owner_selection(m_LeftData);
     sync_owner_selection(m_RightData);
     init(false);
@@ -495,7 +461,7 @@ void cScreenItemManagement::on_select_filter(int selection)
 
 void cScreenItemManagement::sync_owner_selection(const sItemTransferSide& side)
 {
-    if (m_ListBoxes[side.owners_id]->GetSelected() != side.selected_owner)
+    if (GetSelectedItemFromList(side.owners_id) != side.selected_owner)
         SetSelectedItemInList(side.owners_id, side.selected_owner);
 }
 
@@ -504,20 +470,20 @@ void cScreenItemManagement::change_equip(Side side, bool equip)
     sItemTransferSide& own_side = side == Side::Left ? m_LeftData : m_RightData;
     sItemTransferSide& other_side = side == Side::Right ? m_LeftData : m_RightData;
 
-    sGirl * targetGirl = dynamic_cast<cInventoryProviderGirl&>(*m_OwnerList.at(own_side.owners_id)).m_Girl;
+    sGirl * targetGirl = dynamic_cast<cInventoryProviderGirl&>(*m_OwnerList.at(own_side.selected_owner)).m_Girl;
 
-    HateLove = targetGirl->pclove() - targetGirl->pchate();
+    int HateLove = targetGirl->pclove() - targetGirl->pchate();
 
     int item = GetLastSelectedItemFromList(own_side.items_id);
     if (item != -1)
     {
         if(equip) {
-            g_Game.inventory_manager().Equip(targetGirl, item, true);
+            targetGirl->equip(item, true);
         } else {
-            g_Game.inventory_manager().Unequip(targetGirl, item);
+            targetGirl->unequip(item);
         }
-        DisableButton(own_side.equip_id, equip);
-        DisableButton(own_side.unequip_id, !equip);
+        DisableWidget(own_side.equip_id, equip);
+        DisableWidget(own_side.unequip_id, !equip);
         sync_owner_selection(own_side);
         sync_owner_selection(other_side);
     }
@@ -529,7 +495,10 @@ void cScreenItemManagement::update_button_states(Side side)
 {
     sItemTransferSide& data = (side == Side::Left) ? m_LeftData : m_RightData;
     sItemTransferSide& other_data = (side == Side::Right) ? m_LeftData : m_RightData;
-    int item        = other_data.selected_item;
+    const sInventoryItem* item  = nullptr;
+    if(other_data.selected_item >= 0) {
+        item = other_data.items[other_data.selected_item];
+    }
     
 	// check the shop for infinite items and check Player for multiples of the same item
 	int disable_shift   = 0;		// 0 = hidden
@@ -537,34 +506,34 @@ void cScreenItemManagement::update_button_states(Side side)
 	int disable_sell10  = 0;		// 2 = on
 	int disable_sellall = 0;	//
 	
-	disable_shift = (item > -1 ? 2 : 1);
+	disable_shift = (item  ? 2 : 1);
 
 	if (data.selected_owner == 0/*Player*/ && other_data.selected_owner == 1/*Shop*/)
 	{
-        disable_buy10 = (item > -1 && g_Game.inventory_manager().GetShopItem(item) &&
-                         g_Game.inventory_manager().GetShopItem(item)->m_Infinite &&
-                         g_Game.gold().afford(g_Game.inventory_manager().GetShopItem(item)->m_Cost * 10) ? 2 : 1);
-        disable_shift = (item > -1 && g_Game.inventory_manager().GetShopItem(item) &&
-                         g_Game.gold().afford(g_Game.inventory_manager().GetShopItem(item)->m_Cost) ? 2 : 1);
+        disable_buy10 = (item  && item->m_Infinite && g_Game->gold().afford(item->m_Cost * 10) ? 2 : 1);
+        disable_shift = (item  && g_Game->gold().afford(item->m_Cost) ? 2 : 1);
 	}
 	if (data.selected_owner == 1/*Shop*/ && other_data.selected_owner == 0/*Player*/)
 	{
-        disable_sell10  = (item > -1 ? 2 : 1);
-        if(item < 0 || other_data.items.size() <= item) {
+        disable_sell10  = (item ? 2 : 1);
+        if(!item) {
             disable_sellall = 1;
         } else {
-            disable_sellall = (g_Game.player().inventory().get_num_items(other_data.items.at(item)) > 0 ? 2 : 1);
+            disable_sellall = (g_Game->player().inventory().get_num_items(item) > 0 ? 2 : 1);
         }
 	}
-	DisableButton(data.shift_id, disable_shift <= 1);
-	HideButton(data.buy10_id, disable_buy10 == 0);			DisableButton(data.buy10_id, disable_buy10 <= 1);
-	HideButton(data.sell10_id, disable_sell10 == 0);		DisableButton(data.sell10_id, disable_sell10 <= 1);
-	HideButton(data.sellall_id, disable_sellall == 0);		DisableButton(data.sellall_id, disable_sellall <= 1);
+    DisableWidget(data.shift_id, disable_shift <= 1);
+    HideWidget(data.buy10_id, disable_buy10 == 0);
+    DisableWidget(data.buy10_id, disable_buy10 <= 1);
+    HideWidget(data.sell10_id, disable_sell10 == 0);
+    DisableWidget(data.sell10_id, disable_sell10 <= 1);
+    HideWidget(data.sellall_id, disable_sellall == 0);
+    DisableWidget(data.sellall_id, disable_sellall <= 1);
 
     if (GetSelectedItemFromList(data.items_id) < 0)
     {
-        DisableButton(data.equip_id, true);
-        DisableButton(data.unequip_id, true);
+        DisableWidget(data.equip_id, true);
+        DisableWidget(data.unequip_id, true);
     }
 }
 
@@ -572,28 +541,35 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
 {
 	// good enough place as any to update the cost shown on the screen
 	string temp = "PLAYER GOLD: ";
-	temp += g_Game.gold().sval();
+	temp += g_Game->gold().sval();
 	EditTextItem(temp, gold_id);
 
     sItemTransferSide& data = (which_list == Side::Left) ? m_LeftData : m_RightData;
     sItemTransferSide& other = (which_list == Side::Right) ? m_LeftData : m_RightData;
 
-	data.items.clear();
-
 	update_details(m_LeftData);
 	update_details(m_RightData);
 
-	int sel_pos = GetSelectedItemFromList(data.items_id);
-	std::string sel_name;
-
 	ClearListBox(data.items_id);
+    data.items.clear();
+
 	int selection = GetSelectedItemFromList(data.owners_id);
-	int& owner = data.selected_owner;
-	if (selection == other.selected_owner) SetSelectedItemInList(data.owners_id, owner);
-	else if (selection != -1)
+
+	// prevent selecting the same on both sides. in that case, just reset to old selection.
+	if (selection == other.selected_owner) {
+	    if(selection == data.selected_owner)
+	        std::cout << "THIS IS WEIRD\n";
+	    else
+            SetSelectedItemInList(data.owners_id, data.selected_owner);
+        return;
+    } else {
+        data.selected_owner = selection;
+    }
+
+	if (selection != -1)
 	{
 	    int i = 0;
-        m_OwnerList[selection]->enumerate_items([this, &data, &i](sInventoryItem * item, int amount) {
+        m_OwnerList[selection]->enumerate_items([this, &data, &i](const sInventoryItem* item, int amount) {
             int          ItemColor = -1;
             stringstream it;
             it << item->m_Name;
@@ -605,31 +581,26 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
                 || (item_type == filter)  // matches filter exactly?
                 || ((filter == INVFOOD) && (item_type == INVMAKEUP))  // passes "consumable" filter?
                     ) {  // passed the filter, so add it
-
-                // TODO fix this
-                //if (sel_name == item->m_Name) {
-                //    sel_pos = i;  // if we just transferred this item here, might want to select it
-                //}
                 AddToListBox(data.items_id, i, it.str());
                 ItemColor = item->m_Rarity;
+
+                data.items.push_back(item);
                 ++i;
             }
-            // todo shouldn't this only happen if the item is added to the list box?
-            data.items.push_back(item);
 
-            if (ItemColor > -1) SetSelectedItemTextColor(data.items_id, i, RarityColor[ItemColor]);
-            i++;
+            if (ItemColor > -1) SetSelectedItemTextColor(data.items_id, i, *RarityColor[ItemColor]);
         });
 	}
-	SortListItems(data.items_id, "");
 
-	SetSelectedItemInList(data.items_id, sel_pos);
-    data.selected_item = GetSelectedItemFromList(data.items_id);
+	SortListItems(data.items_id, "");
+	// TODO tracking of selected items. This is something we can do once items are uniquely identifiable.
+	SetSelectedItemInList(data.items_id, -1);
+    data.selected_item = -1;
 
 	if (GetLastSelectedItemFromList(data.items_id) < 0)
 	{
 		write_item_text(nullptr, -1, -1);
-		DisableButton(data.shift_id, true);
+        DisableWidget(data.shift_id, true);
 	}
 
     update_button_states(Left);
@@ -651,7 +622,7 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
     while (selection != -1)
     {
         // since items sold to shop are simply destroyed, no selection to track here
-        sInventoryItem* item = from_data.items[selection];
+        const sInventoryItem* item = from_data.items[selection];
         int sold = m_OwnerList[from_data.selected_owner]->take_item(item, num);
         int remaining = m_OwnerList[to_data.selected_owner]->give_item(item, sold);
         // give back remaining items to original owner
@@ -659,12 +630,9 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
         selection = GetNextSelectedItemFromList(from_data.items_id, pos + 1, pos);
     }
 
-
 	// update the item lists
-	sync_owner_selection(from_data);
-	sync_owner_selection(to_data);
-
-    init(false);
+    refresh_item_list(Side::Left);
+    refresh_item_list(Side::Right);
 }
 
 string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, string ItemName)

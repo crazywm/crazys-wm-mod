@@ -23,10 +23,8 @@
 #include <sstream>
 #include "src/sStorage.hpp"
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Actress
-bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -39,7 +37,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
 		return false;
 	}
 	// no beasts = no scene
-	if (g_Game.storage().beasts() < 1)
+	if (g_Game->storage().beasts() < 1)
 	{
 		girl->m_Events.AddMessage("You have no beasts for this scene, so she had the day off.", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;
@@ -53,7 +51,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
 	cGirls::UnequipCombat(girl);	// not for actress (yet)
 
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (girl->health() < 20)
 	{
 		ss << "The crew refused to film a Bestiality scene with " << girlName << " because she is not healthy enough.\n\"She could get hurt.\"";
@@ -69,7 +67,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
 		ss << girlName << " refused to be fucked by animals on film.";
 		if (girl->is_slave())
 		{
-			if (g_Game.player().disposition() > 30)  // nice
+			if (g_Game->player().disposition() > 30)  // nice
 			{
 				ss << " She was so passionate that you allowed her the day off.\n";
 				girl->pclove(2);
@@ -77,18 +75,18 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 				return true;
 			}
-			else if (g_Game.player().disposition() > -30) //pragmatic
+			else if (g_Game->player().disposition() > -30) //pragmatic
 			{
 				ss << " As her owner, you over-ruled and gave her consent.";
 				ss << " Your crew readied the cameras, while your men tied her arms behind her back and feet behind her head. \n\"Release the beasts!\"";
 				girl->pclove(-1);
 				girl->pchate(1);
 				girl->pcfear(+1);
-				g_Game.player().disposition(-1);
+				g_Game->player().disposition(-1);
 				tied = true;
 				enjoy -= 2;
 			}
-			else if (g_Game.player().disposition() > -30)
+			else if (g_Game->player().disposition() > -30)
 			{
 				ss << " Amused, you have your men flog this slave for a while to remind her of her place.";
 				ss << " You offer the film-crew first choice of your more exotic beasts.";
@@ -96,7 +94,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
 				girl->pchate(+2);
 				girl->pcfear(+4);
 				girl->spirit(-1);
-				g_Game.player().disposition(-2);
+				g_Game->player().disposition(-2);
 				enjoy -= 6;
 				tied = true;
 			}
@@ -154,10 +152,10 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
 	ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
 	// mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
-	if (g_Game.storage().beasts() > 0)
+	if (g_Game->storage().beasts() > 0)
 	{
 		if (!girl->calc_insemination(*cGirls::GetBeast(), false, 1.0))
-			g_Game.push_message(girl->m_Realname + " has gotten inseminated", 0);
+			g_Game->push_message(girl->m_Realname + " has gotten inseminated", 0);
 	}
 
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
@@ -181,8 +179,8 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->beastiality(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->beastiality(rng%skill + 1);
 
 	girl->upd_Enjoyment(ACTION_SEX, enjoy);
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
@@ -192,7 +190,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
 	//Evil job bonus-------------------------------------------------------
 	//BONUS - evil jobs damage her body, break her spirit and make her hate you
 
-	int MrEvil = g_Dice % 8, MrNasty = g_Dice % 8;
+	int MrEvil = rng % 8, MrNasty = rng % 8;
 	MrEvil = (MrEvil + MrNasty) / 2;				//Should come out around 3 most of the time.
 
 	girl->confidence(-MrEvil);
@@ -201,7 +199,7 @@ bool cJobManager::WorkFilmBeast(sGirl* girl, bool Day0Night1, string& summary)
 	girl->pclove(-MrEvil);
 	girl->pchate(MrEvil);
 	girl->pcfear(MrEvil);
-	g_Game.player().disposition(-MrEvil);
+	g_Game->player().disposition(-MrEvil);
 
 	//----------------------------------------------------------------------
 
@@ -221,28 +219,7 @@ double cJobManager::JP_FilmBeast(sGirl* girl, bool estimate)
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//Good
-	if (girl->has_trait( "Mind Fucked"))					jobperformance += 100;	//Enjoyment and craziness
-	if (girl->has_trait( "Masochist"))					jobperformance += 35;	//
-	if (girl->has_trait( "Broken Will"))					jobperformance += 30;	//
-	if (girl->has_trait( "Dependant"))					jobperformance += 25;	//
-	if (girl->has_trait( "Twisted"))						jobperformance += 25;	//
-	if (girl->has_trait( "Goddess"))						jobperformance += 60;	//High-status degraded
-	if (girl->has_trait( "Angel"))						jobperformance += 50;	//
-	if (girl->has_trait( "Queen"))						jobperformance += 50;	//
-	if (girl->has_trait( "Princess"))						jobperformance += 40;	//
-	if (girl->has_trait( "Noble"))						jobperformance += 15;	//
-	if (girl->has_trait( "Idol"))							jobperformance += 25;	//
-	if (girl->has_trait( "Priestess"))					jobperformance += 25;	//
-	if (girl->has_trait( "Heroine"))						jobperformance += 15;	//
-	if (girl->has_trait( "Teacher"))						jobperformance += 15;	//
-	if (girl->has_trait( "Tsundere"))						jobperformance += 30;	//beaten customers wanna see this!
-	if (girl->has_trait( "Yandere"))						jobperformance += 25;	//
-
-	//Bad
-	if (girl->has_trait( "Iron Will"))					jobperformance += 40;	//Try not to put on a show
-	if (girl->has_trait( "Fearless"))						jobperformance += 25;	//
-
+    jobperformance += girl->get_trait_modifier("work.film.beast");
 
 	return jobperformance;
 }

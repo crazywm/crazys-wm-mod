@@ -25,18 +25,16 @@
 #include "src/sStorage.hpp"
 
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Farm - Laborers
-bool cJobManager::WorkRancher(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkRancher(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKFARM;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_RANCHER))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -98,28 +96,28 @@ bool cJobManager::WorkRancher(sGirl* girl, bool Day0Night1, string& summary)
 	// Complications
 	if (roll_a <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		ss << "The animals were uncooperative and some didn't even let her get near them.\n";
-		if (g_Dice.percent(20))
+		if (rng.percent(20))
 		{
 			enjoy--;
 			ss << "Several animals got out and " << girlName << " had to chase them down.\n";
-			girl->happiness(-(1 + g_Dice % 5));
-			girl->tiredness(1 + g_Dice % 15);
+			girl->happiness(-(1 + rng % 5));
+			girl->tiredness(1 + rng % 15);
 			beasts *= 0.8;
 			food *= 0.9;
 		}
-		if (g_Dice.percent(20))
+		if (rng.percent(20))
 		{
 			enjoy--;
-			int healthmod = g_Dice % 10 + 1;
+			int healthmod = rng % 10 + 1;
 			girl->health(-healthmod);
-			girl->happiness(-(healthmod + g_Dice % healthmod));
+			girl->happiness(-(healthmod + rng % healthmod));
 			ss << "One of the animals kicked " << girlName << " and ";
 			if (girl->health() < 1)
 			{
 				ss << "killed her.\n";
-				g_Game.push_message(girlName + " was killed when an animal she was milking kicked her in the head.", COLOR_RED);
+				g_Game->push_message(girlName + " was killed when an animal she was milking kicked her in the head.", COLOR_RED);
 				return false;	// not refusing, she is dead
 			}
 			else ss << (healthmod > 5 ? "" : "nearly ") << "broke her arm.\n";
@@ -129,14 +127,14 @@ bool cJobManager::WorkRancher(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else if (roll_a >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		ss << "The animals were pleasant and cooperative today.\n";
 		beasts *= 1.1;
 		food *= 1.1;
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She had an uneventful day tending the animals.\n";
 	}
 
@@ -181,7 +179,7 @@ bool cJobManager::WorkRancher(sGirl* girl, bool Day0Night1, string& summary)
 	ss << "\n" << girlName;
 	if ((int)beasts > 0)
 	{
-		g_Game.storage().add_to_beasts((int)beasts);
+		g_Game->storage().add_to_beasts((int)beasts);
 		ss << " brought " << (int)beasts << " beasts to work in the brothels";
 	}
 	if ((int)beasts > 0 && (int)food > 0)
@@ -190,7 +188,7 @@ bool cJobManager::WorkRancher(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	if ((int)food > 0)
 	{
-		g_Game.storage().add_to_food((int)food);
+		g_Game->storage().add_to_food((int)food);
 		ss << " sent " << (int)food << " units of food worth of animals to slaughter";
 	}
 	if ((int)beasts <= 0 && (int)food <= 0)
@@ -212,15 +210,15 @@ bool cJobManager::WorkRancher(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	girl->animalhandling((g_Dice % skill) + 2);
+	girl->animalhandling((rng % skill) + 2);
 	// secondary (-1 for one then -2 for others)
-	girl->confidence(max(0, (g_Dice % skill) - 1));
-	girl->charisma(max(0, (g_Dice % skill) - 2));
-	girl->intelligence(max(0, (g_Dice % skill) - 2));
+	girl->confidence(max(0, (rng % skill) - 1));
+	girl->charisma(max(0, (rng % skill) - 2));
+	girl->intelligence(max(0, (rng % skill) - 2));
 
 	girl->upd_Enjoyment(actiontype, enjoy);
 
@@ -243,37 +241,7 @@ double cJobManager::JP_Rancher(sGirl* girl, bool estimate)// not used
 		if (t > 0)
 			jobperformance -= (t + 2) * (t / 3);
 	}
+    jobperformance += girl->get_trait_modifier("work.rancher");
 
-	//good traits
-	if (girl->has_trait( "Quick Learner"))	jobperformance += 5;
-	if (girl->has_trait( "Psychic"))			jobperformance += 10;
-	if (girl->has_trait( "Farmers Daughter"))	jobperformance += 30;
-	if (girl->has_trait( "Country Gal"))		jobperformance += 10;
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))		jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy")) 			jobperformance -= 20; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive")) 		jobperformance -= 20; //gets mad easy
-	if (girl->has_trait( "Nervous"))			jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))				jobperformance -= 20;
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 40;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 60;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 125;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 60;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 50;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 150;
-	if (girl->has_trait( "Blind"))		jobperformance -= 30;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 15;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-
-	return jobperformance;
+    return jobperformance;
 }

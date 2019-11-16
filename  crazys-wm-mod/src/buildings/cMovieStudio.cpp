@@ -24,7 +24,6 @@
 #include <algorithm>
 #include "cMovieStudio.h"
 #include "cGangs.h"
-#include "strnatcmp.h"
 #include "XmlMisc.h"
 #include "src/buildings/cBrothel.h"
 #include "src/Game.hpp"
@@ -203,7 +202,7 @@ void sMovieStudio::UpdateGirls(bool is_night)			// Start_Building_Process_B
 		if (current->m_NightJob == JOB_STAGEHAND || current->m_NightJob == JOB_PROMOTER) // these two can still work
 		{
 			totalPay = totalTips = totalGold = 0;
-			refused = g_Game.job_manager().JobFunc[current->m_NightJob](current, SHIFT_NIGHT, summary);
+			refused = g_Game->job_manager().JobFunc[current->m_NightJob](current, SHIFT_NIGHT, summary, g_Dice);
 			totalPay += current->m_Pay;
 			totalTips += current->m_Tips;
 			totalGold += current->m_Pay + current->m_Tips;
@@ -217,7 +216,7 @@ void sMovieStudio::UpdateGirls(bool is_night)			// Start_Building_Process_B
 			}
 			else
 			{
-				ss << g_Game.job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
+				ss << g_Game->job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
 				if (totalGold < 0) sum = EVENT_DEBUG;
 				m_Fame += current->fame();
 			}
@@ -253,7 +252,7 @@ void sMovieStudio::UpdateGirls(bool is_night)			// Start_Building_Process_B
 
 		if (current->m_NightJob == JOB_CAMERAMAGE || current->m_NightJob == JOB_CRYSTALPURIFIER) summary = "SkipDisobey";
 		// do their job
-		refused = g_Game.job_manager().JobFunc[current->m_NightJob](current, SHIFT_NIGHT, summary);
+		refused = g_Game->job_manager().JobFunc[current->m_NightJob](current, SHIFT_NIGHT, summary, g_Dice);
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -268,7 +267,7 @@ void sMovieStudio::UpdateGirls(bool is_night)			// Start_Building_Process_B
 		}
 		else
 		{
-			ss << g_Game.job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
+			ss << g_Game->job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
 			m_Fame += current->fame();
@@ -332,7 +331,7 @@ void sMovieStudio::UpdateGirls(bool is_night)			// Start_Building_Process_B
 		//				test -= 5;	// after each roll, lower the test number and roll again
 		//			} while (sw == JOB_FILMRANDOM);	// until something is assigned or the test number gets too low
 		//		}
-		refused = g_Game.job_manager().JobFunc[sw](current, SHIFT_NIGHT, summary);
+		refused = g_Game->job_manager().JobFunc[sw](current, SHIFT_NIGHT, summary, g_Dice);
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -347,7 +346,7 @@ void sMovieStudio::UpdateGirls(bool is_night)			// Start_Building_Process_B
 		}
 		else
 		{
-			ss << g_Game.job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
+			ss << g_Game->job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, SHIFT_NIGHT);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
 			m_Fame += current->fame();
@@ -577,7 +576,7 @@ void sMovieStudio::save_additional_xml(TiXmlElement& root) const
         pScene->SetAttribute("Director", scene->m_Director);
         pScene->SetAttribute("CM", scene->m_CM);
         pScene->SetAttribute("CP", scene->m_CP);
-        pScene->SetAttribute("Job", g_Game.job_manager().JobQkNm[scene->m_Job]);
+        pScene->SetAttribute("Job", g_Game->job_manager().JobQkNm[scene->m_Job]);
         pScene->SetAttribute("Init_Quality", scene->m_Init_Quality);
         pScene->SetAttribute("Quality", scene->m_Quality);
         pScene->SetAttribute("Promo_Quality", scene->m_Promo_Quality);
@@ -594,7 +593,7 @@ void sMovieStudio::save_additional_xml(TiXmlElement& root) const
         pScene->SetAttribute("Director", scene->m_Director);
         pScene->SetAttribute("CM", scene->m_CM);
         pScene->SetAttribute("CP", scene->m_CP);
-        pScene->SetAttribute("Job", g_Game.job_manager().JobQkNm[scene->m_Job]);
+        pScene->SetAttribute("Job", g_Game->job_manager().JobQkNm[scene->m_Job]);
         pScene->SetAttribute("Init_Quality", scene->m_Init_Quality);
         pScene->SetAttribute("Quality", scene->m_Quality);
         pScene->SetAttribute("Promo_Quality", scene->m_Promo_Quality);
@@ -618,7 +617,7 @@ void sMovieStudio::Update()
     else if (GetNumScenes() > 0)
     {
         ss.str("");	ss << "You have " << GetNumScenes() << " unused scenes in the Movie Studio ready to be put into movies.";
-        g_Game.push_message(ss.str(), COLOR_GREEN);
+        g_Game->push_message(ss.str(), COLOR_GREEN);
     }
 
     BeginWeek();
@@ -655,10 +654,10 @@ void sMovieStudio::Update()
         m_Finance.movie_income(income);
         ss.str("");
         ss << "You earn " << income << " gold from movie income, at your " << name();
-        g_Game.push_message(ss.str(), COLOR_GREEN);
+        g_Game->push_message(ss.str(), COLOR_GREEN);
     }
 
-    g_Game.gold().brothel_accounts(m_Finance, m_id);
+    g_Game->gold().brothel_accounts(m_Finance, m_id);
 
 
     for (sGirl* cgirl : girls())
@@ -769,8 +768,9 @@ void sMovieStudio::SortMovieScenes()
 }
 
 
-void sMovieScene::OutputSceneRow(string* Data, const vector<string>& columnNames)
+void sMovieScene::OutputSceneRow(vector<string>& Data, const vector<string>& columnNames)
 {
+    Data.resize(columnNames.size());
 	for (unsigned int x = 0; x < columnNames.size(); ++x)
 	{
 		//for each column, write out the statistic that goes in it
@@ -798,7 +798,7 @@ void sMovieScene::OutputSceneDetailString(string& Data, const string& detailName
 	else if (detailName == "Crystal_Purifier")	{ ss << m_CP; }
 	else if (detailName == "Crystal")			{ ss << m_CP; }
 	else if (detailName == "CP")				{ ss << m_CP; }
-	else if (detailName == "Job")				{ ss << g_Game.job_manager().JobName[m_Job]; }
+	else if (detailName == "Job")				{ ss << g_Game->job_manager().JobName[m_Job]; }
 	else if (detailName == "Init_Quality")		{ ss << m_Init_Quality; }
 	else if (detailName == "Quality")			{ ss << m_Quality; }
 	else if (detailName == "Promo_Quality")		{ ss << m_Promo_Quality; }
@@ -1169,7 +1169,7 @@ long sMovieStudio::calc_movie_quality(bool autoreleased)
 		ss << " promoter with an advertising budget will help it sell for more.";
 
 	}
-	g_Game.push_message(ss.str(), COLOR_BLUE);
+	g_Game->push_message(ss.str(), COLOR_BLUE);
 	// TODO what was the purpose of: g_InitWin = true;
 	return quality;
 }

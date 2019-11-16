@@ -20,18 +20,16 @@
 #include "src/buildings/cBrothel.h"
 #include "cRng.h"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - Bar
-bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKMUSIC;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_PIANO))
 	{
 		ss << " refused to play piano in your bar " << (Day0Night1 ? "tonight." : "today.");
@@ -63,52 +61,52 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 #pragma region //	Job Performance			//
 
 	double jobperformance = JP_BarPiano(girl, false);
-	tips = (int)((jobperformance / 8.0) * ((g_Dice % (girl->beauty() + girl->charisma()) / 20.0) + (girl->performance() / 5.0)));
+	tips = (int)((jobperformance / 8.0) * ((rng % (girl->beauty() + girl->charisma()) / 20.0) + (girl->performance() / 5.0)));
 
 	if (jobperformance >= 245)
 	{
 		ss << " She plays with the grace of an angel. Customers come from miles around to listen to her play.\n";
-		roll_b += g_Dice % 23 + 8;						// +8 to +30 enjoy check
+		roll_b += rng % 23 + 8;						// +8 to +30 enjoy check
 		if (roll_a <= 20)
 		{
 			ss << girlName << "'s playing brought many patrons to tears as she played a song full of sadness.";
-			brothel->m_Happiness += g_Dice % 6 + 5;		// +5 to +10
+			brothel->m_Happiness += rng % 6 + 5;		// +5 to +10
 		}
 		else if (roll_a <= 40)
 		{
 			ss << "Nice melody fills the room when " << girlName << " is behind the piano.";
-			brothel->m_Happiness += g_Dice % 11 + 5;	// +5 to +15
+			brothel->m_Happiness += rng % 11 + 5;	// +5 to +15
 		}
 		else if (roll_a <= 60)
 		{
 			ss << "Knowing that she is good, " << girlName << " played all the tunes blindfolded.";
-			brothel->m_Fame += g_Dice % 10 + 1;			// +1 to +10
+			brothel->m_Fame += rng % 10 + 1;			// +1 to +10
 		}
 		else if (roll_a <= 80)
 		{
 			ss << "Being confident in her skill, " << girlName << " played today using only one hand.";
-			brothel->m_Fame += g_Dice % 10 + 1;			// +1 to +10
+			brothel->m_Fame += rng % 10 + 1;			// +1 to +10
 		}
 		else
 		{
 			ss << girlName << "'s soothing playing seems to glide over the noise and bustling of the bar.";
-			brothel->m_Happiness += g_Dice % 11 + 5;	// +5 to +15
+			brothel->m_Happiness += rng % 11 + 5;	// +5 to +15
 		}
 	}
 	else if (jobperformance >= 185)
 	{
 		ss << " She's unbelievable at this and is always getting praised by the customers for her playing skills.\n";
-		roll_b += g_Dice % 22 + 4;						// +4 to +25 enjoy check
+		roll_b += rng % 22 + 4;						// +4 to +25 enjoy check
 		if (roll_a <= 20)
 		{
 			ss << girlName << " began to acquire her own following - a small crowd of people came in just to listen to her and buy drinks";
-			brothel->m_Fame += g_Dice % 5 + 1;			// +1 to +5
-			tips += g_Dice % 101 + 10;					// +10 to +110
+			brothel->m_Fame += rng % 5 + 1;			// +1 to +5
+			tips += rng % 101 + 10;					// +10 to +110
 		}
 		else if (roll_a <= 40)
 		{
 			ss << "Her playing fills the room. Some customers hum the melody under their noses.";
-			brothel->m_Happiness += g_Dice % 8 + 3;		// +3 to +10
+			brothel->m_Happiness += rng % 8 + 3;		// +3 to +10
 		}
 		else if (roll_a <= 60)
 		{
@@ -117,18 +115,18 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 		else if (roll_a <= 80)
 		{
 			ss << "She plays without music sheets having all the songs memorized.";
-			brothel->m_Fame += g_Dice % 5 + 1;			// +1 to +5
+			brothel->m_Fame += rng % 5 + 1;			// +1 to +5
 		}
 		else
 		{
 			ss << girlName << "'s soothing playing seems to glide over the noise and bustling of the bar.";
-			brothel->m_Happiness += g_Dice % 8 + 3;		// +3 to +10
+			brothel->m_Happiness += rng % 8 + 3;		// +3 to +10
 		}
 	}
 	else if (jobperformance >= 145)
 	{
 		ss << " Her playing is really good and gets praised by the customers often.\n";
-		roll_b += g_Dice % 17 - 1;						//	-1 to +15 enjoy check
+		roll_b += rng % 17 - 1;						//	-1 to +15 enjoy check
 		if (roll_a <= 20)
 		{
 			ss << "Her playing was pleasing, if bland.  Her rythem was nice, if slightly untrained.";
@@ -140,12 +138,12 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 		else if (roll_a <= 60)
 		{
 			ss << "Give " << girlName << " any kind of music sheet and she will play it. She is really good at this.";
-			brothel->m_Happiness += g_Dice % 5 + 1;		// +1 to +5
+			brothel->m_Happiness += rng % 5 + 1;		// +1 to +5
 		}
 		else if (roll_a <= 80)
 		{
 			ss << "When asked to play one of the more complicated tunes she gave her all.";
-			brothel->m_Happiness += g_Dice % 7 - 1;		// -1 to +5
+			brothel->m_Happiness += rng % 7 - 1;		// -1 to +5
 		}
 		else
 		{
@@ -155,7 +153,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 	else if (jobperformance >= 100)
 	{
 		ss << " She hits a few right notes but she still has room to improve.\n";
-		roll_b += g_Dice % 14 - 3;						// -3 to +10 enjoy check
+		roll_b += rng % 14 - 3;						// -3 to +10 enjoy check
 		if (roll_a <= 20)
 		{
 			ss << "While she won't win any contests, " << girlName << " isn't a terrible pianist.";
@@ -180,7 +178,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 	else if (jobperformance >= 70)
 	{
 		ss << " She almost never hits a right note. Lucky for you most of the customers are too drunk and horny to care.\n";
-		roll_b += g_Dice % 16 - 10;						// -10 to +5 enjoy check
+		roll_b += rng % 16 - 10;						// -10 to +5 enjoy check
 		if (roll_a <= 20)
 		{
 			ss << "Her playing is barely acceptable, but fortunately the bustling of the bar drowns " << girlName << " out for the most part.";
@@ -188,12 +186,12 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 		else if (roll_a <= 40)
 		{
 			ss << "She is terrible at this. Some customers left after she started to play.";
-			brothel->m_Happiness -= g_Dice % 5 + 1;
+			brothel->m_Happiness -= rng % 5 + 1;
 		}
 		else if (roll_a <= 60)
 		{
 			ss << "You could count on the fingers of one hand the part in her performance that was clean.";
-			brothel->m_Happiness -= g_Dice % 5 + 1;
+			brothel->m_Happiness -= rng % 5 + 1;
 		}
 		else if (roll_a <= 80)
 		{
@@ -207,58 +205,58 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 	else
 	{
 		ss << " She didn't play the piano so much as banged on it.\n";
-		roll_b += g_Dice % 19 - 15;						// -15 to +3 enjoy check
+		roll_b += rng % 19 - 15;						// -15 to +3 enjoy check
 		if (roll_a <= 20)
 		{
 			ss << "Her audience seems paralyzed, as if they couldn't believe that a piano was capable of making such noise.";
-			brothel->m_Happiness -= g_Dice % 8 + 3;		// -3 to -10
-			brothel->m_Fame -= g_Dice % 4;			// 0 to -3
+			brothel->m_Happiness -= rng % 8 + 3;		// -3 to -10
+			brothel->m_Fame -= rng % 4;			// 0 to -3
 		}
 		else if (roll_a <= 40)
 		{
 			ss << "After ten seconds you wanted to grab an axe and end the instrument's misery under " << girlName << "'s attempt to play.";
-			brothel->m_Happiness -= g_Dice % 8 + 3;		// -3 to -10
+			brothel->m_Happiness -= rng % 8 + 3;		// -3 to -10
 		}
 		else if (roll_a <= 60)
 		{
 			ss << "Noone else would call this random key-mashing 'playing', but " << girlName << " thinks otherwise.";
-			brothel->m_Happiness -= g_Dice % 8 + 3;		// -3 to -10
+			brothel->m_Happiness -= rng % 8 + 3;		// -3 to -10
 		}
 		else if (roll_a <= 80)
 		{
 			ss << "When " << girlName << " started to play, the bar emptied almost instantly. This could be useful in a fire.";
-			brothel->m_Fame -= g_Dice % 5 + 1;			// -1 to -5
+			brothel->m_Fame -= rng % 5 + 1;			// -1 to -5
 		}
 		else
 		{
 			ss << girlName << " banged on the piano clearly having no clue which note was which.";
-			brothel->m_Happiness -= g_Dice % 8 + 3;		// -3 to -10
+			brothel->m_Happiness -= rng % 8 + 3;		// -3 to -10
 		}
 		//SIN - bit of randomness.
-		if (g_Dice.percent(brothel->m_Filthiness / 50))
+		if (rng.percent(brothel->m_Filthiness / 50))
 		{
 			ss << "Soon after she started her set, some rats jumped out of the piano and fled the building. Patrons could be heard laughing.";
-			brothel->m_Fame -= g_Dice % 2;			// 0 to -1
+			brothel->m_Fame -= rng % 2;			// 0 to -1
 		}
 	}
 	ss << "\n \n";
 
 
 	//try and add randomness here
-	if (girl->beauty() > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && rng.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n";
-		tips += 15 + g_Dice % 26;					// +15 to +40
+		tips += 15 + rng % 26;					// +15 to +40
 	}
 
-	if (girl->has_trait( "Clumsy") && g_Dice.percent(5))
+	if (girl->has_trait( "Clumsy") && rng.percent(5))
 	{
 		ss << "Her clumsy nature caused her to close the lid on her fingers making her have to stop playing for a few hours.\n";
 		wages -= 10;
 		tips /= 2;
 	}
 
-	if (girl->has_trait( "Pessimist") && g_Dice.percent(20))
+	if (girl->has_trait( "Pessimist") && rng.percent(20))
 	{
 		if (jobperformance < 125)
 		{
@@ -271,7 +269,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 			tips = int(tips * 1.1);
 		}
 	}
-	else if (girl->has_trait( "Optimist") && g_Dice.percent(10))
+	else if (girl->has_trait( "Optimist") && rng.percent(10))
 	{
 		if (jobperformance < 125)
 		{
@@ -285,13 +283,13 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Psychic") && g_Dice.percent(20))
+	if (girl->has_trait( "Psychic") && rng.percent(20))
 	{
 		ss << "She used her Psychic skills to know exactly what the patrons wanted to hear her play.\n";
 		tips = int(tips * 1.1);
 	}
 
-	if (girl->has_trait( "Assassin") && g_Dice.percent(5))
+	if (girl->has_trait( "Assassin") && rng.percent(5))
 	{
 		if (jobperformance < 150)
 		{
@@ -305,7 +303,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Horrific Scars") && g_Dice.percent(15))
+	if (girl->has_trait( "Horrific Scars") && rng.percent(15))
 	{
 		if (jobperformance < 150)
 		{
@@ -318,7 +316,7 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (brothel->num_girls_on_job(JOB_SINGER, false) >= 1 && g_Dice.percent(25))
+	if (brothel->num_girls_on_job(JOB_SINGER, false) >= 1 && rng.percent(25))
 	{
 		if (jobperformance < 125)
 		{
@@ -339,19 +337,19 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 	if (roll_b <= 10)
 	{
 		ss << "Some of the patrons abused her during the shift.";
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		tips = int(tips * 0.9);
 	}
 	else if (roll_b >= 90)
 	{
 		ss << "She had a pleasant time working.";
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		tips = int(tips * 1.1);
 	}
 	else
 	{
 		ss << "Otherwise, the shift passed uneventfully.";
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 	}
 
 #pragma endregion
@@ -380,14 +378,14 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	int I_xp = (g_Dice % xp) + 1;							girl->exp(I_xp);
-	int I_libido = (g_Dice % libido) + 1;					girl->upd_temp_stat(STAT_LIBIDO, I_libido);
+	int I_xp = (rng % xp) + 1;							girl->exp(I_xp);
+	int I_libido = (rng % libido) + 1;					girl->upd_temp_stat(STAT_LIBIDO, I_libido);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	int I_performance = (g_Dice % skill) + 2;			 	girl->performance(I_performance);
+	int I_performance = (rng % skill) + 2;			 	girl->performance(I_performance);
 	// secondary improvement (-1 for one then -2 for others)
-	int I_confidence = max(0, (g_Dice % skill) - 1);		girl->confidence(I_confidence);
-	int I_intelligence = max(0, (g_Dice % skill) - 2);		girl->intelligence(I_intelligence);
+	int I_confidence = max(0, (rng % skill) - 1);		girl->confidence(I_confidence);
+	int I_intelligence = max(0, (rng % skill) - 2);		girl->intelligence(I_intelligence);
 	int I_fame = fame;										girl->fame(I_fame);
 
 	// Update Enjoyment
@@ -399,21 +397,6 @@ bool cJobManager::WorkBarPiano(sGirl* girl, bool Day0Night1, string& summary)
 	cGirls::PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given " + girlName + " an Elegant nature.", Day0Night1);
 	//lose traits
 	cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, girlName + " seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
-
-	if (cfg.debug.log_show_numbers())
-	{
-		ss << "\n \nNumbers:"
-			<< "\n Job Performance = " << (int)jobperformance
-			<< "\n Wages = " << (int)wages
-			<< "\n Tips = " << (int)tips
-			<< "\n Xp = " << I_xp
-			<< "\n Libido = " << I_libido
-			<< "\n Fame = " << I_fame
-			<< "\n Confidence = " << I_confidence
-			<< "\n Intelligence = " << I_intelligence
-			<< "\n Enjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy
-			;
-	}
 
 	// Push out the turn report
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
@@ -437,52 +420,7 @@ double cJobManager::JP_BarPiano(sGirl* girl, bool estimate)// Used in cJobManage
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-
-	//good traits
-	if (girl->has_trait( "Elegant"))				jobperformance += 15;	// Elegant people usally know how to play the piano lol
-	if (girl->has_trait( "Psychic"))				jobperformance += 10;	// knows what people want to hear
-	if (girl->has_trait( "Singer"))				jobperformance += 10;	// Would understand rythem
-	if (girl->has_trait( "Charismatic"))			jobperformance += 10;
-	if (girl->has_trait( "Princess"))				jobperformance += 10;	// usally taught to play
-	if (girl->has_trait( "Queen"))				jobperformance += 10;	// usally taught to play
-	if (girl->has_trait( "Noble"))				jobperformance += 10;	// usally taught to play
-	if (girl->has_trait( "Idol"))					jobperformance += 10;
-	if (girl->has_trait( "Sexy Air"))				jobperformance += 5;
-	if (girl->has_trait( "Cool Person"))			jobperformance += 5;	// people love to be around her
-	if (girl->has_trait( "Cute"))					jobperformance += 5;
-	if (girl->has_trait( "Charming"))				jobperformance += 5;	// people like charming people
-	if (girl->has_trait( "Quick Learner"))		jobperformance += 5;	// people like charming people
-	if (girl->has_trait( "Long Legs"))			jobperformance += 5;
-	if (girl->has_trait( "Nerd"))					jobperformance += 5;
-	if (girl->has_trait( "Playful Tail"))			jobperformance += 5;	// use it to help her play lol
-
-	//bad traits
-	if (girl->has_trait( "Tone Deaf"))			jobperformance -= 75;	// should never get good at this job
-	if (girl->has_trait( "Deaf"))					jobperformance -= 30;
-	if (girl->has_trait( "Retarded"))				jobperformance -= 30;
-	if (girl->has_trait( "Broken Will"))			jobperformance -= 30;
-	if (girl->has_trait( "Nervous"))				jobperformance -= 30;	// don't like to be around people
-	if (girl->has_trait( "Dependant"))			jobperformance -= 30;	// needs others to do the job
-	if (girl->has_trait( "Aggressive"))			jobperformance -= 20;	// gets mad easy and may attack people
-	if (girl->has_trait( "Meek"))					jobperformance -= 20;
-	if (girl->has_trait( "Slow Learner"))			jobperformance -= 10;
-
-	if (girl->has_trait( "No Arms"))				jobperformance -= 200;
-	if (girl->has_trait( "No Hands"))				jobperformance -= 190;
-	if (girl->has_trait( "One Arm"))				jobperformance -= 100;
-	if (girl->has_trait( "One Hand"))				jobperformance -= 90;
-	if (girl->has_trait( "Missing Fingers"))		jobperformance -= 50;
-	if (girl->has_trait( "Missing Finger"))		jobperformance -= 20;
-	if (girl->has_trait( "No Legs"))				jobperformance -= 20;
-	if (girl->has_trait( "No Feet"))				jobperformance -= 10;
-	if (girl->has_trait( "Blind"))				jobperformance -= 5;
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Smoker"))				jobperformance -= 5;	// would need smoke breaks
-	if (girl->has_trait( "Cum Addict"))			jobperformance -= 5;
+    jobperformance += girl->get_trait_modifier("work.piano");
 
 	return jobperformance;
 }

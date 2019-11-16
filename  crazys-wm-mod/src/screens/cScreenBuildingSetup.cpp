@@ -18,12 +18,12 @@
 */
 #include "buildings/cBrothel.h"
 #include "cScreenBuildingSetup.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "cGold.h"
 #include "cTariff.h"
 #include "Game.hpp"
+#include "CLog.h"
 
-static cTariff tariff;
 static stringstream ss;
 
 cScreenBuildingSetup::cScreenBuildingSetup() : cInterfaceWindowXML("building_setup_screen.xml")
@@ -92,7 +92,7 @@ void cScreenBuildingSetup::set_ids()
 
 	SetSliderCallback(advertsli_id, [this](int value) {
         active_building().m_AdvertisingBudget = value * 50;
-        ss.str(""); ss << "Advertising Budget: " << tariff.advertising_costs(value * 50) << " gold / week";
+        ss.str(""); ss << "Advertising Budget: " << g_Game->tariff().advertising_costs(value * 50) << " gold / week";
         EditTextItem(ss.str(), advertamt_id);;
 	});
 }
@@ -129,12 +129,12 @@ void cScreenBuildingSetup::init(bool back)
 
 	if (gold_id >= 0)
 	{
-		ss.str(""); ss << "Gold: " << g_Game.gold().ival();
+		ss.str(""); ss << "Gold: " << g_Game->gold().ival();
 		EditTextItem(ss.str(), gold_id);
 	}
 
 	EditTextItem(brothel, curbrothel_id);
-	ss.str("");	ss << "Anti-Preg Potions: " << tariff.anti_preg_price(1) << " gold each.";
+	ss.str("");	ss << "Anti-Preg Potions: " << g_Game->tariff().anti_preg_price(1) << " gold each.";
 	EditTextItem(ss.str(), potioncost_id);
 
 	// let's limit advertising budget to multiples of 50 gold (~3 added customers), from 0 - 2000
@@ -145,25 +145,25 @@ void cScreenBuildingSetup::init(bool back)
 	if (antipregused < 0) antipregused = 0;
 	ss.str("");	ss << "         You have: " << antipregnum << "\nUsed Last Turn: " << antipregused;
 	EditTextItem(ss.str(), potionavail_id);
-	DisableCheckBox(autopotions_id, antipregnum < 1);
+    DisableWidget(autopotions_id, antipregnum < 1);
 
-	ss.str("");	ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
+	ss.str("");	ss << "Add Rooms: " << g_Game->tariff().add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
 	EditTextItem(ss.str(), roomcost_id);
-	DisableButton(buyrooms_id, rooms >= maxrooms);
+    DisableWidget(buyrooms_id, rooms >= maxrooms);
 
 	/*	ss.str("");
-	ss << "Bar Staff: " << tariff.bar_staff_wages() << " gold / week";
+	ss << "Bar Staff: " << g_Game->tariff().bar_staff_wages() << " gold / week";
 	EditTextItem(ss.str(), barstaff_id);
 
 	ss.str("");
-	ss << "Casino Staff: " << tariff.casino_staff_wages() << " gold / week";
+	ss << "Casino Staff: " << g_Game->tariff().casino_staff_wages() << " gold / week";
 	EditTextItem(ss.str(), casinostaff_id);
 	*/
 
-	HideButton(barhire_id, true);
-	HideButton(casinohire_id, true);
-	HideButton(barfire_id, true);
-	HideButton(casinofire_id, true);
+    HideWidget(barhire_id, true);
+    HideWidget(casinohire_id, true);
+    HideWidget(barfire_id, true);
+    HideWidget(casinofire_id, true);
 }
 
 void cScreenBuildingSetup::buy_potions(int buypotions)
@@ -171,10 +171,10 @@ void cScreenBuildingSetup::buy_potions(int buypotions)
     int buynum = buypotions;
     int buysum = buynum;
     int antipregnum = 0;
-    if (!g_Game.gold().afford(tariff.anti_preg_price(buynum)))	push_message("You don't have enough gold", COLOR_RED);
+    if (!g_Game->gold().afford(g_Game->tariff().anti_preg_price(buynum)))	push_message("You don't have enough gold", COLOR_RED);
     else
     {
-        int MaxSupplies = g_Game.MaxSupplies();
+        int MaxSupplies = g_Game->MaxSupplies();
 
         auto& building = active_building();
         antipregnum = building.m_AntiPregPotions;
@@ -187,22 +187,22 @@ void cScreenBuildingSetup::buy_potions(int buypotions)
             if (buysum > 0)
             {
                 ss << "\nYou buy " << buysum << " to fill the stock.";
-                g_Game.gold().item_cost(tariff.anti_preg_price(buysum));
+                g_Game->gold().item_cost(g_Game->tariff().anti_preg_price(buysum));
             }
-            g_Game.push_message(ss.str(), 0);
+            g_Game->push_message(ss.str(), 0);
         }
-        else g_Game.gold().item_cost(tariff.anti_preg_price(buynum));
+        else g_Game->gold().item_cost(g_Game->tariff().anti_preg_price(buynum));
     }
     init(false);
 }
 
 void cScreenBuildingSetup::buy_rooms()
 {
-    if (!g_Game.gold().brothel_cost(tariff.add_room_cost(5)))
+    if (!g_Game->gold().brothel_cost(g_Game->tariff().add_room_cost(5)))
     {
         ss.str("");
-        ss << "You Need " << tariff.add_room_cost(5) << " gold to add 5 rooms.";
-        g_Game.push_message(ss.str(), COLOR_RED);
+        ss << "You Need " << g_Game->tariff().add_room_cost(5) << " gold to add 5 rooms.";
+        g_Game->push_message(ss.str(), COLOR_RED);
     }
     else
     {
@@ -211,9 +211,9 @@ void cScreenBuildingSetup::buy_rooms()
         int rooms = target.m_NumRooms;
         int maxrooms = target.m_MaxNumRooms;
 
-        ss.str(""); ss << "Add Rooms: " << tariff.add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
+        ss.str(""); ss << "Add Rooms: " << g_Game->tariff().add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
         EditTextItem(ss.str(), roomcost_id);
-        DisableButton(buyrooms_id, rooms >= maxrooms);
+        DisableWidget(buyrooms_id, rooms >= maxrooms);
         init(false);
     }
 }

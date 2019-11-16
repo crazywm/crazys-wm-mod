@@ -21,10 +21,8 @@
 #include "src/buildings/queries.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Crew
-bool cJobManager::WorkFluffer(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFluffer(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -43,7 +41,7 @@ bool cJobManager::WorkFluffer(sGirl* girl, bool Day0Night1, string& summary)
 		girl->m_Events.AddMessage("There were no actresses to film, so she took the day off", IMGTYPE_PROFILE, EVENT_NOWORK);
 		return false;	// not refusing
 	}
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FLUFFER))
 	{
 		ss << " refused to work as a fluffer today";
@@ -60,17 +58,17 @@ bool cJobManager::WorkFluffer(sGirl* girl, bool Day0Night1, string& summary)
 
 	if (roll <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		ss << "She didn't like having so many dicks in her mouth today.\n \n";
 	}
 	else if (roll >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		ss << "She loved sucking cock today.\n \n";
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She had a pleasant day keeping the actors ready to work.\n \n";
 	}
 	double jobperformance = JP_Fluffer(girl, false);

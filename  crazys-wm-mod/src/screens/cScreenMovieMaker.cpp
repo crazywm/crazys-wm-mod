@@ -19,22 +19,14 @@
 #include <algorithm>
 #include "buildings/cMovieStudio.h"
 #include "cScreenMovieMaker.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "widgets/cListBox.h"
-#include "widgets/cCheckBox.h"
 #include "cTariff.h"
 #include "cJobManager.h"
 
-extern sGirl *g_selected_girl;
 extern vector<int> cycle_girls;
 extern int cycle_pos;
 
-extern	bool	g_UpArrow;
-extern	bool	g_DownArrow;
-extern	bool	g_W_Key;
-extern	bool	g_S_Key;
-
-static cTariff tariff;
 static stringstream ss;
 
 static int ImageNum = -1;
@@ -62,9 +54,6 @@ void cScreenMovieMaker::set_ids()
 	removescene_id		/**/ = get_id("RemoveScene");
 	scenedetails_id		/**/ = get_id("SceneDetails");
 	moviedetails_id		/**/ = get_id("MovieDetails");
-
-	SortColumns(sceneslist_id, m_ListBoxes[sceneslist_id]->m_ColumnName, m_ListBoxes[sceneslist_id]->m_ColumnCount);
-	SortColumns(makethismovie_id, m_ListBoxes[makethismovie_id]->m_ColumnName, m_ListBoxes[makethismovie_id]->m_ColumnCount);
 
 	SetButtonNavigation(back_id, "<back>");
 
@@ -104,16 +93,20 @@ void cScreenMovieMaker::init(bool back)
 	ClearListBox(makethismovie_id);
 
 	//get a list of all the column names, so we can find which data goes in that column
-	vector<string> columnNames;
-	m_ListBoxes[sceneslist_id]->GetColumnNames(columnNames);
-	int numColumns = columnNames.size();
-	string* Data = new string[numColumns];
+	auto& columns = GetListBox(sceneslist_id)->GetColumnData();
+	std::vector<std::string> scene_col_names(columns.size());
+	std::vector<std::string> scene_col_data(columns.size());
+	for(int i = 0; i < columns.size(); ++i) {
+        scene_col_names[i] = columns[i].name;
+	}
 	int row = 0;
 
-	vector<string> columnNamesM;
-	m_ListBoxes[makethismovie_id]->GetColumnNames(columnNamesM);
-	int numColumnsM = columnNamesM.size();
-	string* DataM = new string[numColumns];
+    auto& columnsm = GetListBox(sceneslist_id)->GetColumnData();
+    std::vector<std::string> movie_col_names(columns.size());
+    std::vector<std::string> movie_col_data(columns.size());
+    for(int i = 0; i < columnsm.size(); ++i) {
+        movie_col_names[i] = columnsm[i].name;
+    }
 	int rowm = 0;
 
 	auto& brothel = dynamic_cast<sMovieStudio&>(active_building());
@@ -125,8 +118,8 @@ void cScreenMovieMaker::init(bool back)
 		unsigned int item_color = COLOR_BLUE;
 		scene->m_Row = row;
 		scene->m_RowM = -1;
-		scene->OutputSceneRow(Data, columnNames);
-		AddToListBox(sceneslist_id, row, Data, numColumns, item_color);
+		scene->OutputSceneRow(scene_col_data, scene_col_names);
+		AddToListBox(sceneslist_id, row, std::move(scene_col_data), item_color);
 		row++;
 	}
 	for (int i = 0; i < brothel.GetNumMovieScenes(); i++)
@@ -135,46 +128,40 @@ void cScreenMovieMaker::init(bool back)
 		unsigned int item_color = COLOR_BLUE;
 		scene->m_Row = -1;
 		scene->m_RowM = rowm;
-		scene->OutputSceneRow(DataM, columnNamesM);
-		AddToListBox(makethismovie_id, rowm, DataM, numColumnsM, item_color);
+		scene->OutputSceneRow(movie_col_data, movie_col_names);
+		AddToListBox(makethismovie_id, rowm, std::move(movie_col_data), item_color);
 		rowm++;
 	}
 
-	if (cRow < 0 && m_ListBoxes[sceneslist_id]->GetSize()>0) { cRow = 0; }
-	else if (cRow  > m_ListBoxes[sceneslist_id]->GetSize()) { cRow = m_ListBoxes[sceneslist_id]->GetSize(); }
-	if (cRowM < 0 && m_ListBoxes[makethismovie_id]->GetSize()>0) { cRowM = 0; }
-	else if (cRowM > m_ListBoxes[makethismovie_id]->GetSize()) { cRowM = m_ListBoxes[makethismovie_id]->GetSize(); }
+	if (cRow < 0 && GetListBox(sceneslist_id)->GetSize()>0) { cRow = 0; }
+	else if (cRow  > GetListBox(sceneslist_id)->GetSize()) { cRow = GetListBox(sceneslist_id)->GetSize(); }
+	if (cRowM < 0 && GetListBox(makethismovie_id)->GetSize()>0) { cRowM = 0; }
+	else if (cRowM > GetListBox(makethismovie_id)->GetSize()) { cRowM = GetListBox(makethismovie_id)->GetSize(); }
 	SetSelectedItemInList(sceneslist_id, cRow);
 	SetSelectedItemInList(makethismovie_id, cRowM);
-	DisableButton(addscene_id, cRow == -1);
-	DisableButton(removescene_id, cRowM == -1);
-	DisableButton(scrapscene_id, cRow == -1);
-	DisableButton(moveup_id, cRowM <= 0);
-	DisableButton(movedown_id, (cRowM == -1 || cRowM >= m_ListBoxes[makethismovie_id]->GetSize() - 1));
-	DisableButton(releasemovie_id, m_ListBoxes[makethismovie_id]->GetSize() < 1);
+    DisableWidget(addscene_id, cRow == -1);
+    DisableWidget(removescene_id, cRowM == -1);
+    DisableWidget(scrapscene_id, cRow == -1);
+    DisableWidget(moveup_id, cRowM <= 0);
+    DisableWidget(movedown_id, (cRowM == -1 || cRowM >= GetListBox(makethismovie_id)->GetSize() - 1));
+    DisableWidget(releasemovie_id, GetListBox(makethismovie_id)->GetSize() < 1);
 
 	stringstream movietext;
-	if (m_ListBoxes[makethismovie_id]->GetSize() > 0)
+	if (GetListBox(makethismovie_id)->GetSize() > 0)
 	{
 		movietext << brothel.BuildDirectorList() << "\n\n";
 		movietext << brothel.BuildCastList() << "\n\n";
 		movietext << brothel.BuildCrewList();
 	}
 	EditTextItem(movietext.str(), moviedetails_id);
-	m_CheckBoxes[autocreatemovies_id]->SetState(cfg.initial.autocreatemovies());
-
-
-
-
-	delete[] Data;
-	delete[] DataM;
+	SetCheckBox(autocreatemovies_id, cfg.initial.autocreatemovies());
 }
 
 void cScreenMovieMaker::on_select_movie_scene(int selection)
 {
-    DisableButton(removescene_id, ::selection == -1);
-    DisableButton(moveup_id, ::selection <= 0);
-    DisableButton(movedown_id, ::selection == -1 || ::selection >= m_ListBoxes[makethismovie_id]->GetSize() - 1);
+    DisableWidget(removescene_id, ::selection == -1);
+    DisableWidget(moveup_id, ::selection <= 0);
+    DisableWidget(movedown_id, ::selection == -1 || ::selection >= GetListBox(makethismovie_id)->GetSize() - 1);
     stringstream scenedetails;
     if (::selection != -1)
     {
@@ -185,8 +172,8 @@ void cScreenMovieMaker::on_select_movie_scene(int selection)
 
 void cScreenMovieMaker::on_select_source_scene(int selection)
 {
-    DisableButton(addscene_id, ::selection == -1);
-    DisableButton(scrapscene_id, ::selection == -1);
+    DisableWidget(addscene_id, ::selection == -1);
+    DisableWidget(scrapscene_id, ::selection == -1);
 
     stringstream scenedetails;
     if (::selection != -1)
@@ -231,16 +218,17 @@ void cScreenMovieMaker::movie_remove_scene(){
 sMovieStudio& cScreenMovieMaker::getStudio() const
 { return dynamic_cast<sMovieStudio&>(active_building()); }
 
+
 void cScreenMovieMaker::update_image()
 {
-	if ((g_selected_girl)) //&& !IsMultiSelected(girllist_id))
+	if (selected_girl()/*&& !IsMultiSelected(girllist_id)*/)
 	{
-		PrepareImage(girlimage_id, g_selected_girl, IMGTYPE_PROFILE, true, ImageNum);
-		HideImage(girlimage_id, false);
+		PrepareImage(girlimage_id, selected_girl(), IMGTYPE_PROFILE, true, ImageNum);
+        HideWidget(girlimage_id, false);
 	}
 	else
 	{
-		HideImage(girlimage_id, true);
+        HideWidget(girlimage_id, true);
 	}
 }
 

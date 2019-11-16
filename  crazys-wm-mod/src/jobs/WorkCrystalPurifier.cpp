@@ -21,10 +21,8 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Crew
-bool cJobManager::WorkCrystalPurifier(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkCrystalPurifier(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -59,7 +57,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, bool Day0Night1, string& summ
 
 	cGirls::UnequipCombat(girl);	// not for studio crew
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (!SkipDisobey)	// `J` skip the disobey check because it has already been done in the building flow
 	{
 		if (roll <= 10 && girl->disobey_check(actiontype, JOB_CRYSTALPURIFIER))
@@ -90,17 +88,17 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, bool Day0Night1, string& summ
 
 	if (roll <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		ss << "She did not like working in the studio today.\n \n";
 	}
 	else if (roll >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		ss << "She had a great time working today.\n \n";
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "Otherwise, the shift passed uneventfully.\n \n";
 	}
 	double jobperformance = JP_CrystalPurifier(girl, false);
@@ -118,7 +116,7 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, bool Day0Night1, string& summ
 		wages += 20;
 		int roll_max = girl->spirit() + girl->intelligence();
 		roll_max /= 4;
-		wages += 10 + g_Dice%roll_max;
+		wages += 10 + rng%roll_max;
 	}
 
 	/* */if (jobperformance > 0)	ss << "She helped improve the scene " << (int)jobperformance << "% with her production skills. \n";
@@ -138,9 +136,9 @@ bool cJobManager::WorkCrystalPurifier(sGirl* girl, bool Day0Night1, string& summ
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	if (g_Dice % 2 == 1)
-		girl->intelligence(g_Dice%skill);
-	girl->service(g_Dice%skill + 1);
+	if (rng % 2 == 1)
+		girl->intelligence(rng%skill);
+	girl->service(rng%skill + 1);
 	girl->exp(xp);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
@@ -173,7 +171,9 @@ double cJobManager::JP_CrystalPurifier(sGirl* girl, bool estimate)// not used
 		jobperformance += girl->level();
 		jobperformance += girl->fame() / 10;
 		jobperformance += g_Dice % 4 - 1;	// should add a -1 to +3 random element --PP
-
 	}
-	return jobperformance;
+
+    jobperformance += girl->get_trait_modifier("work.crystalpurifier");
+
+    return jobperformance;
 }

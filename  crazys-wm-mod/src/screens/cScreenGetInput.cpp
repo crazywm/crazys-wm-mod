@@ -18,8 +18,6 @@
 */
 #include "cScreenGetInput.h"
 
-void ResetInterface();
-
 cScreenGetInput::cScreenGetInput() : cInterfaceWindowXML("getInput.xml")
 {
 }
@@ -71,20 +69,20 @@ void cScreenGetInput::init(bool back)
 	{
 	case MODE_STRING:
 	{
-		HideEditBox(id_textfield, false);
-		EditTextItem("Enter Text:", id_textfield);
+        HideWidget(id_textfield, false);
+		EditTextItem("Enter Text:", id_label);
 		break;
 	}
 	case MODE_INT:
 	{
-		HideEditBox(id_textfield, false);
-		EditTextItem("Enter Value:", id_textfield);
+        HideWidget(id_textfield, false);
+		EditTextItem("Enter Value:", id_label);
 		break;
 	}
 	case MODE_CONFIRM:
 	{
-		HideEditBox(id_textfield, true);
-		EditTextItem("Confirm?", id_textfield);
+        HideWidget(id_textfield, true);
+        EditTextItem("Confirm?", id_label);
 		break;
 	}
 	}

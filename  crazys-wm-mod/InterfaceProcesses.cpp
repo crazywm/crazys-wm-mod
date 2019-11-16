@@ -18,7 +18,6 @@
 */
 #pragma region //	Includes and Externs			//
 #include "InterfaceProcesses.h"
-#include "InterfaceGlobals.h"
 #include "GameFlags.h"
 #include "main.h"
 #include "cScriptManager.h"
@@ -44,10 +43,6 @@
 extern bool eventrunning;
 extern cRng g_Dice;
 
-extern bool g_UpArrow;		extern bool g_DownArrow;
-extern bool g_EnterKey;		extern bool g_AltKeys;
-
-extern bool g_O_Key;;
 extern bool g_S_Key;
 extern bool g_W_Key;
 extern	bool	g_CTRLDown;
@@ -68,10 +63,8 @@ bool g_TryEr = false;
 bool g_TryCast = false;
 
 int g_TalkCount = 10;
-bool g_Cheats = false;
 
 
-sGirl* g_selected_girl;  // global pointer for the currently selected girl
 vector<int> cycle_girls;  // globally available sorted list of girl IDs for Girl Details screen to cycle through
 int cycle_pos;  //currently selected girl's position in the cycle_girls vector
 int summarysortorder = 0;	// the order girls get sorted in the summary lists
@@ -80,6 +73,8 @@ int summarysortorder = 0;	// the order girls get sorted in the summary lists
 
 //used to store what files we have loaded
 MasterFile loadedGirlsFiles;
+
+void LoadNames();
 
 static string clobber_extension(string s)	// `J` debug logging
 {
@@ -127,50 +122,34 @@ void LoadXMLItems(FileList &fl)
 		if (loglevel > 1)	g_LogFile.os() << "\tkey = " << it.first << endl;
 		if (loglevel > 1)	g_LogFile.os() << "\tpath = " << full_path << endl;
 		if (loglevel > 0)	g_LogFile.os() << "\t\tLoading xml Item: " << full_path<< endl;
-		g_Game.inventory_manager().LoadItemsXML(full_path);
+		g_Game->inventory_manager().LoadItemsXML(full_path);
 	}
 }
 
 void LoadGameInfoFiles()
 {
 	stringstream ss;
-	int loadtraits = 0;		// 0=default, 1=xml, 2=txt
-	DirPath location = DirPath() << "Resources" << "Data";
-	DirPath dp = DirPath() << "Resources" << "Data" << "CoreTraits.traitsx";
-	TiXmlDocument docTraits(dp.c_str());
-	if (docTraits.LoadFile())	loadtraits = 1;
-	if (loadtraits == 1)
-	{
-		g_Traits.LoadXMLTraits(dp);
-	}
-	else if (loadtraits == 0)
-	{
-		FileList fl_t(location, "*.traitsx");				// get a file list
-        for (int i = 0; i < fl_t.size(); i++)				// loop over the list, loading the files
-        {
-            g_Traits.LoadXMLTraits(fl_t[i].full());
-        }
-	}
-
 	// `J` Load .itemsx files
 	// DirPath location_i = DirPath() << "Resources" << "Items"; // `J` moved items from Data to Items folder
 	DirPath location_i = DirPath(cfg.folders.items().c_str());
 	FileList fl_i(location_i, "*.itemsx");
 	if (cfg.debug.log_items())	g_LogFile.os() << "Found " << fl_i.size() << " itemsx files" << endl;
 	LoadXMLItems(fl_i);
-
-	// `J` load names lists
-	DirPath location_N = DirPath() << "Resources" << "Data" << "RandomGirlNames.txt";
-	g_GirlNameList.load(location_N);
-	DirPath location_SN = DirPath() << "Resources" << "Data" << "RandomLastNames.txt";
-	g_SurnameList.load(location_SN);
-	// `J` Added g_BoysNameList for .06.03.00
-	DirPath location_B = DirPath() << "Resources" << "Data" << "RandomBoysNames.txt";
-	g_BoysNameList.load(location_B);
-
-
+    LoadNames();
 
 }
+
+void LoadNames()
+{// `J` load names lists
+    DirPath location_N = DirPath() << "Resources" << "Data" << "RandomGirlNames.txt";
+    g_GirlNameList.load(location_N);
+    DirPath location_SN = DirPath() << "Resources" << "Data" << "RandomLastNames.txt";
+    g_SurnameList.load(location_SN);
+    // `J` Added g_BoysNameList for .06.03.00
+    DirPath location_B = DirPath() << "Resources" << "Data" << "RandomBoysNames.txt";
+    g_BoysNameList.load(location_B);
+}
+
 void LoadGirlsFiles(MasterFile& master)
 {
 	/*
@@ -208,7 +187,7 @@ void LoadGirlsFiles(MasterFile& master)
 		/*
 		*		load the file
 		*/
-		g_Game.girl_pool().LoadGirlsDecider(girlfiles[i].full());
+		g_Game->girl_pool().LoadGirlsDecider(girlfiles[i].full());
 	}
 	/*
 	*	Load random girls
@@ -218,7 +197,7 @@ void LoadGirlsFiles(MasterFile& master)
 	*/
 	for (int i = 0; i < rgirlfiles.size(); i++)
 	{
-        g_Game.girl_pool().LoadRandomGirl(rgirlfiles[i].full());
+        g_Game->girl_pool().LoadRandomGirl(rgirlfiles[i].full());
 	}
 }
 
@@ -236,18 +215,10 @@ void NextWeek()
 	// `J` I want to make the player start with 0 in all stats and skills
 	// and have to gain them over time. When this gets implemented
 	// g_TalkCount will be based on the player's charisma.
-	g_TalkCount = 10 + (g_Game.player().m_Stats[STAT_CHARISMA] / 10);
+	g_TalkCount = 10 + (g_Game->player().m_Stats[STAT_CHARISMA] / 10);
 	// */ //
 
-	if (g_Cheats)	g_Game.gold().cheat();
-
-	// Clear choice dialog
-	g_ChoiceManager.Free();
-
-	// update the shop inventory
-	g_Game.inventory_manager().UpdateShop();
-
-	g_Game.next_week();
+	g_Game->next_week();
 
 	GameEvents();
 	g_CTRLDown = false;
@@ -267,14 +238,14 @@ void GameEvents()
 		eventrunning = false;
 
 	// process global triggers here
-	if (g_Game.global_triggers().GetNextQueItem() && !eventrunning)
+	if (g_Game->global_triggers().GetNextQueItem() && !eventrunning)
 	{
-        g_Game.global_triggers().ProcessNextQueItem(dp);
+        g_Game->global_triggers().ProcessNextQueItem(dp);
 		eventrunning = true;
 	}
 	else if (!eventrunning)	// check girl scripts
 	{
-		if (g_Game.buildings().CheckScripts())
+		if (g_Game->buildings().CheckScripts())
 			eventrunning = true;
 	}
 
@@ -285,14 +256,14 @@ void GameEvents()
 
 	if (CheckGameFlag(FLAG_DUNGEONGIRLDIE))	// a girl has died int the dungeon
 	{
-		g_Game.push_message("A girl has died in the dungeon.\nHer body will be removed by the end of the week.", 1);
+		g_Game->push_message("A girl has died in the dungeon.\nHer body will be removed by the end of the week.", 1);
 
 		if (g_Dice.percent(10))	// only 10% of being discovered
 		{
-            g_Game.player().suspicion(1);
+            g_Game->player().suspicion(1);
 		}
-        g_Game.player().disposition(-1);
-        for(auto& broth : g_Game.buildings().buildings()) {
+        g_Game->player().disposition(-1);
+        for(auto& broth : g_Game->buildings().buildings()) {
             broth->update_all_girls_stat(STAT_PCFEAR, 2);
         }
 
@@ -300,14 +271,14 @@ void GameEvents()
 	}
 	else if (CheckGameFlag(FLAG_DUNGEONCUSTDIE))	// a customer has died in the dungeon
 	{
-		g_Game.push_message("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.", 1);
+		g_Game->push_message("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.", 1);
 
 		if (g_Dice.percent(10))	// only 10% chance of being found out
 		{
-            g_Game.player().suspicion(1);
+            g_Game->player().suspicion(1);
 		}
-        g_Game.player().disposition(-1);
-        g_Game.player().customerfear(1);
+        g_Game->player().disposition(-1);
+        g_Game->player().customerfear(1);
 
 		ClearGameFlag(FLAG_DUNGEONCUSTDIE);
 	}
@@ -317,19 +288,16 @@ void AutoSaveGame()
 {
 	SaveGameXML(DirPath(cfg.folders.saves().c_str()) << "autosave.gam");
 }
-void SaveGame(bool saveCSV)
+void SaveGame()
 {
-
-	string filename = g_Game.buildings().get_building(0).name();
+	string filename = g_Game->buildings().get_building(0).name();
 	string filenamedotgam = filename + ".gam";
 	string filenamedotcsv = filename + ".csv";
 
 	SaveGameXML(DirPath(cfg.folders.saves().c_str()) << filenamedotgam);
-	if (saveCSV) SaveGirlsCSV(DirPath(cfg.folders.saves().c_str()) << filenamedotcsv);
 	if (cfg.folders.backupsaves())
 	{
 		SaveGameXML(DirPath() << "Saves" << filenamedotgam);
-		if (saveCSV) SaveGirlsCSV(DirPath() << "Saves" << filenamedotcsv);
 	}
 }
 
@@ -364,7 +332,7 @@ void SaveGameXML(string filename)
 	// TODO Fix the master file stuff
 	loadedGirlsFiles.SaveXML(pRoot);
 
-	g_Game.save(*pRoot);
+	g_Game->save(*pRoot);
 	doc.SaveFile();
 
 	//ADB TODO
@@ -378,102 +346,6 @@ void SaveGameXML(string filename)
 	}
 
 	// update the shop inventory
-	g_Game.inventory_manager().UpdateShop();
+	g_Game->inventory_manager().UpdateShop();
 #endif
-}
-
-static void SaveCSVHelper(IBuilding& building, ofstream& GirlsCSV) {
-    for (auto& cgirl : building.girls())
-    {
-        GirlsCSV << "'" << building.name() << "'," << Girl2CSV(cgirl) << '\n';
-    }
-}
-
-void SaveGirlsCSV(string filename)
-{
-	ofstream GirlsCSV;
-	string eol = "\n";
-	GirlsCSV.open(filename);
-	GirlsCSV << "'Building','Girl Name','Based on','Slave?','Day Job','Night Job','Age','Level','Exp','Askprice','House','Fame','Tiredness','Health','Happiness','Constitution','Charisma','Beauty','Intelligence','Confidence','Agility','Obedience','Spirit','Morality','Refinement','Dignity','Mana','Libido','Lactation','PCFear','PCLove','PCHate','Magic','Combat','Service','Medicine','Performance','Crafting','Herbalism','Farming','Brewing','Animalhandling','Normalsex','Anal','Bdsm','Beastiality','Group','Lesbian','Strip','Oralsex','Tittysex','Handjob','Footjob'" << eol;
-    for (auto& building : g_Game.buildings().buildings()) {
-        SaveCSVHelper(*building, GirlsCSV);
-    }
-
-	GirlsCSV.close();
-}
-string Girl2CSV(sGirl* girl)
-{
-	cJobManager m_JobManager;
-	stringstream ss;
-	ss << "'" << CSVifyString(girl->m_Realname) << "'"
-		<< ",'" << CSVifyString(girl->m_Name) << "'"
-		<< "," << (girl->is_slave() ? "'Slave'" : "'Free'")
-		<< ",'" << m_JobManager.JobName[girl->m_DayJob] << "'"
-		<< ",'" << m_JobManager.JobName[girl->m_NightJob] << "'"
-
-		<< "," << girl->age()
-		<< "," << girl->level()
-		<< "," << girl->exp()
-		<< "," << girl->askprice()
-		<< "," << girl->house()
-		<< "," << girl->fame()
-		<< "," << girl->tiredness()
-		<< "," << girl->health()
-		<< "," << girl->happiness()
-		<< "," << girl->constitution()
-		<< "," << girl->charisma()
-		<< "," << girl->beauty()
-		<< "," << girl->intelligence()
-		<< "," << girl->confidence()
-		<< "," << girl->agility()
-		<< "," << girl->obedience()
-		<< "," << girl->spirit()
-		<< "," << girl->morality()
-		<< "," << girl->refinement()
-		<< "," << girl->dignity()
-		<< "," << girl->mana()
-		<< "," << girl->libido()
-		<< "," << girl->lactation()
-		<< "," << girl->pcfear()
-		<< "," << girl->pclove()
-		<< "," << girl->pchate()
-
-		<< "," << girl->magic()
-		<< "," << girl->combat()
-		<< "," << girl->service()
-		<< "," << girl->medicine()
-		<< "," << girl->performance()
-		<< "," << girl->crafting()
-		<< "," << girl->herbalism()
-		<< "," << girl->farming()
-		<< "," << girl->brewing()
-		<< "," << girl->animalhandling()
-
-		<< "," << girl->normalsex()
-		<< "," << girl->anal()
-		<< "," << girl->bdsm()
-		<< "," << girl->beastiality()
-		<< "," << girl->group()
-		<< "," << girl->lesbian()
-		<< "," << girl->strip()
-		<< "," << girl->oralsex()
-		<< "," << girl->tittysex()
-		<< "," << girl->handjob()
-		<< "," << girl->footjob()
-		;
-
-	return ss.str();
-}
-std::string CSVifyString(string name)
-{
-	std::string newName(name);
-	//find characters that we can't put into XML names
-	//and change them to '_' or whatever works in a name
-	for (size_t position = newName.find_first_of("\'\",");
-		position != newName.npos;
-		position = newName.find_first_of("\'\",", position))
-	{
-		newName.replace(position, 1, 1, '_');
-	}
-	return newName;
 }

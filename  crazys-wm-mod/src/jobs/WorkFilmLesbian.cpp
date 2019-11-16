@@ -22,10 +22,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Actress
-bool cJobManager::WorkFilmLesbian(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmLesbian(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -48,16 +46,16 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, bool Day0Night1, string& summary)
 
 	ss << girlName << " worked as an actress filming lesbian scenes.\n \n";
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FILMLESBIAN))
 	{
 		ss << "She refused to film a lesbian scene today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She didn't like doing it, but but she made the actress come.\n \n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She was amazed how good it felt to have her pussy eaten, and gave as good in return.\n \n"; }
-	else /*            */{ enjoy += g_Dice % 2;		ss << "She had a pleasant day playing with her girlfriend.\n \n"; }
+	else if (roll <= 10) { enjoy -= rng % 3 + 1;	ss << "She didn't like doing it, but but she made the actress come.\n \n"; }
+	else if (roll >= 90) { enjoy += rng % 3 + 1;	ss << "She was amazed how good it felt to have her pussy eaten, and gave as good in return.\n \n"; }
+	else /*            */{ enjoy += rng % 2;		ss << "She had a pleasant day playing with her girlfriend.\n \n"; }
 	jobperformance = enjoy * 2;
 
 	if (girl->check_virginity())
@@ -90,8 +88,8 @@ bool cJobManager::WorkFilmLesbian(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->lesbian(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->lesbian(rng%skill + 1);
 
 	girl->upd_Enjoyment(ACTION_SEX, enjoy);
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);

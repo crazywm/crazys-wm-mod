@@ -25,7 +25,6 @@
 #include "src/Game.hpp"
 
 extern	cRng			g_Dice;
-extern	bool			g_Cheats;
 
 /*
 * ideally, we'd keep a queue of message strings and
@@ -41,7 +40,7 @@ cGirlTorture::~cGirlTorture()		// deconstructor
 	{
 		if (m_TorturedByPlayer)
 		{
-			g_Game.push_message(m_Message, color);
+			g_Game->push_message(m_Message, color);
 			m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);	// `J` added
 		}
 		else
@@ -57,7 +56,7 @@ cGirlTorture::cGirlTorture(sGirl* a_girl)		// Torture girl by player
 	if (cfg.debug.log_debug()) { g_LogFile.ss() << "Debug cGirlTorture || cGirlTorture(sGirl* a_girl)"; g_LogFile.ssend(); }
 	// Init for DoTorture()
 	m_TorturedByPlayer = true;
-	m_Dungeon = &g_Game.dungeon();
+	m_Dungeon = &g_Game->dungeon();
 	m_Girl = a_girl;
 	int nTemp = m_Dungeon->GetGirlPos(m_Girl);
 	if (nTemp > -1)
@@ -79,7 +78,7 @@ cGirlTorture::cGirlTorture(sDungeonGirl* a_girl)	// Torture Dungeon girl by play
 	m_TorturedByPlayer = true;
 	m_DungeonGirl = a_girl;
 	m_Girl = m_DungeonGirl->m_Girl.get();
-	m_Dungeon = &g_Game.dungeon();
+	m_Dungeon = &g_Game->dungeon();
 
 	DoTorture();
 }
@@ -92,7 +91,7 @@ cGirlTorture::cGirlTorture(sDungeonGirl* a_girl, sGirl* Tourturer)
 	m_DungeonGirl = a_girl;
 	m_Torturer = Tourturer;
 	m_Girl = m_DungeonGirl->m_Girl.get();
-	m_Dungeon = &g_Game.dungeon();
+	m_Dungeon = &g_Game->dungeon();
 
 	DoTorture();
 }
@@ -129,7 +128,7 @@ void cGirlTorture::DoTorture()
 	if (m_TorturedByPlayer) m_Message = sGirlName + ": ";
 
 	// WD	Don't allow girls to be tortured by both the Player and the Torturer
-	if (m_Girl->m_Tort && !g_Cheats)		// only allow this once a week unless cheating
+	if (m_Girl->m_Tort && !g_Game->allow_cheats())		// only allow this once a week unless cheating
 	{
 		if (m_TorturedByPlayer) m_Message += "You may only torture someone once per week.\n";
 		else m_Message += sGirlName + " has already been tortured this week.\n";
@@ -179,11 +178,11 @@ void cGirlTorture::DoTorture()
 	*/
 	if (m_TorturedByPlayer)
 	{
-        g_Game.player().evil(m_Girl->is_slave() ? 5 : 10);
+        g_Game->player().evil(m_Girl->is_slave() ? 5 : 10);
 	}
 	else	// Tortured by Girl
 	{
-        g_Game.player().evil(m_Girl->is_slave() ? 2 : 4);
+        g_Game->player().evil(m_Girl->is_slave() ? 2 : 4);
 	}
 	/*
 	*	now add one of a number of torture messages...
@@ -298,7 +297,7 @@ void cGirlTorture::AddTextPlayer()
 		*		and assigning any progeny to the player.
 		*		Lazy, I know :)
 		*/
-		m_Girl->calc_pregnancy(&g_Game.player(), false, 1.5);
+		m_Girl->calc_pregnancy(&g_Game->player(), false, 1.5);
 		is = m_Girl->is_pregnant();
 		/*
 		*		if she was not, but is now, then the player
@@ -413,7 +412,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	// Post any outstanding Player messages
 	if (m_TorturedByPlayer && !m_Message.empty())
 	{
-		g_Game.push_message(m_Message, 0);
+		g_Game->push_message(m_Message, 0);
 		m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);	// `J` added
 
 		m_Message = sGirlName + ": ";
@@ -524,7 +523,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
 	// Post any new Player messages in Red Message Box Colour 1
 	if (m_TorturedByPlayer && !m_Message.empty() && m_Message != sGirlName + ": ")
 	{
-		g_Game.push_message(m_Message, COLOR_RED);
+		g_Game->push_message(m_Message, COLOR_RED);
 		m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_DAYSHIFT);	// `J` added
 
 		m_Message = sGirlName + ": ";
@@ -569,8 +568,8 @@ bool cGirlTorture::girl_escapes()
 	// If girl wins she escapes and leaves the brothel
 	m_Message += "And after defeating you as well she escapes to the outside world.\n";
 	m_Girl->run_away();
-    g_Game.player().evil(5);							// Add evilness for girl telling the tale
-    g_Game.player().suspicion(15);
+    g_Game->player().evil(5);							// Add evilness for girl telling the tale
+    g_Game->player().suspicion(15);
 	return true;
 }
 
@@ -624,7 +623,7 @@ void cGirlTorture::add_trait(string trait, int pc)
 
 	if (m_TorturedByPlayer)
 	{
-		g_Game.push_message(sMsg, 2);
+		g_Game->push_message(sMsg, 2);
 		m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
 	}
 	else MakeEvent(sMsg);

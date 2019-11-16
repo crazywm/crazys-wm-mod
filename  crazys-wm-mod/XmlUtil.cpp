@@ -29,15 +29,6 @@ bool XmlUtil::get_att(TiXmlElement *el, const char *name, int &ipt, bool optiona
 	return false;
 }
 
-bool XmlUtil::get_att(TiXmlElement *el, const char *name, double &dpt, bool optional)
-{
-	if (el->Attribute(name, &dpt) || optional)	return true;
-	CLog l;
-	l.ss() << "Warning: " << m_context << ": No '" << name << "' attribute: defaulting to " << dpt;
-	l.ssend();
-	return false;
-}
-
 bool XmlUtil::get_att(TiXmlElement *el, const char *name, bool &bval, bool optional)
 {
 	const char *pt;

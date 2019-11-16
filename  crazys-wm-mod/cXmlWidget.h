@@ -21,12 +21,22 @@
 #include <vector>
 #include <string>
 
-struct sXmlWidgetPart {
+struct sXmlWidgetBase {
+    std::string name;
+    int x = -1;
+    int y = -1;
+    int w = -1;
+    int h = -1;
+    bool hide = false;
+};
+
+struct sXmlWidgetPart : public sXmlWidgetBase {
 public:
-	int x, y, w, h, r, g, b;
-	int fontsize, bordersize;
-	bool stat, alpha, scale, hidden, events, multi, hide, cache, leftorright;
-	std::string base, on, off, disabled, type, name, text, file, seq;
+	int         r, g, b;
+	int         fontsize, bordersize;
+	bool        stat, alpha, scale, events, multi, cache, leftorright;
+	std::string on, off, disabled_img, type, text, file, seq;
+	bool        force_scroll = false;
 };
 
 class cXmlWidget {

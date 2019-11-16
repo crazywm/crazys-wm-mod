@@ -54,9 +54,9 @@ private:
 	int m_CustomerFear;
 
 
-	int m_BirthYear;	// the game starts in year 1209 so default start age is 18
-	int m_BirthMonth;	// there are 12 month in the year
-	int m_BirthDay;		// there are 30 days in every month
+	int m_BirthYear  = 1190;	// the game starts in year 1209 so default start age is 18
+	int m_BirthMonth = 1;	    // there are 12 month in the year
+	int m_BirthDay   = 1;	    // there are 30 days in every month
 
 	std::string m_Title;		// basic title - need to add more titles with more power gained
 	std::string m_FirstName;	// no first name
@@ -113,8 +113,6 @@ public:
 	int BirthMonth()	{ return m_BirthMonth; }
 	int BirthDay()		{ return m_BirthDay; }
 	int BirthYear(int n);
-	int BirthMonth(int n);
-	int BirthDay(int n);
 	int SetBirthYear(int n);
 	int SetBirthMonth(int n);
 	int SetBirthDay(int n);

@@ -21,13 +21,10 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
-
 #pragma endregion
 
 // `J` Job House - Training - Full_Time_Job
-bool cJobManager::WorkSOBisexual(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkSOBisexual(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
@@ -57,8 +54,8 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, bool Day0Night1, string& summary)
 	int msgtype = Day0Night1, imagetype = IMGTYPE_SEX;
 
 	// Base adjustment
-	int tired = 5 + g_Dice % 11;
-	girl->m_WorkingDay += 10 + g_Dice % 11;
+	int tired = 5 + rng % 11;
+	girl->m_WorkingDay += 10 + rng % 11;
 	// Positive Stats/Skills
 
 	if (girl->has_trait("Straight"))
@@ -90,19 +87,19 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, bool Day0Night1, string& summary)
 	}
 
 	girl->m_WorkingDay += girl->obedience() / 20;
-	if (girl->pcfear() > 50)				girl->m_WorkingDay += g_Dice % (girl->pcfear() / 20);		// She will do as she is told
-	if (girl->pclove() > 50)				girl->m_WorkingDay += g_Dice % (girl->pclove() / 20);		// She will do what you ask
+	if (girl->pcfear() > 50)				girl->m_WorkingDay += rng % (girl->pcfear() / 20);		// She will do as she is told
+	if (girl->pclove() > 50)				girl->m_WorkingDay += rng % (girl->pclove() / 20);		// She will do what you ask
 	// Negative Stats/Skills
 	girl->m_WorkingDay -= girl->spirit() / 25;
-	if (girl->pchate() > 30)				girl->m_WorkingDay -= g_Dice % (girl->pchate() / 10);		// She will not do what you want
-	if (girl->happiness() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is not feeling like it
-	if (girl->health() < 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is feeling sick
-	if (girl->tiredness() > 50)				girl->m_WorkingDay -= 1 + g_Dice % 5;						// She is tired
+	if (girl->pchate() > 30)				girl->m_WorkingDay -= rng % (girl->pchate() / 10);		// She will not do what you want
+	if (girl->happiness() < 50)				girl->m_WorkingDay -= 1 + rng % 5;						// She is not feeling like it
+	if (girl->health() < 50)				girl->m_WorkingDay -= 1 + rng % 5;						// She is feeling sick
+	if (girl->tiredness() > 50)				girl->m_WorkingDay -= 1 + rng % 5;						// She is tired
 	// Positive Traits
-	if (girl->has_trait("Your Wife"))		girl->m_WorkingDay += g_Dice % 10;			// She wants to be with you, even if it is with another girl
-	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay += g_Dice % 10;			// She is used to having sex with anyone her director tells her to
-	if (girl->has_trait("Whore"))			girl->m_WorkingDay += g_Dice % 8;			// She'll do anyone as long as they can pay
-	if (girl->has_trait("Slut"))			girl->m_WorkingDay += g_Dice % 5;			// She'll do anyone
+	if (girl->has_trait("Your Wife"))		girl->m_WorkingDay += rng % 10;			// She wants to be with you, even if it is with another girl
+	if (girl->has_trait("Porn Star"))		girl->m_WorkingDay += rng % 10;			// She is used to having sex with anyone her director tells her to
+	if (girl->has_trait("Whore"))			girl->m_WorkingDay += rng % 8;			// She'll do anyone as long as they can pay
+	if (girl->has_trait("Slut"))			girl->m_WorkingDay += rng % 5;			// She'll do anyone
 	if (girl->has_trait("Your Daughter"))	girl->m_WorkingDay += 2;					// She wants to partake in all that her father has to offer
 	if (girl->has_trait("Actress"))			girl->m_WorkingDay += 2;					// She will do whatever her director tells her to
 	if (girl->has_trait("Shape Shifter"))	girl->m_WorkingDay += 2;					// If she can become anyone she can have sex with anyone
@@ -110,24 +107,24 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait("Broodmother"))		girl->m_WorkingDay += 1;					// She prefers males who can get her pregnant
 	if (girl->has_trait("Futanari"))		girl->m_WorkingDay += 1;					// If she has a dick she can put it anywhere
 	// Negative Traits
-	if (girl->has_trait("Broken Will"))	{ girl->m_WorkingDay -= g_Dice.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
-	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= g_Dice.bell(10, 20);	// Does she even know who is fucking her?
-	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= g_Dice.bell(5, 10);	// Does she even know who is fucking her?
-	if (girl->has_trait("Slow Learner"))	girl->m_WorkingDay -= g_Dice % 10;			//
-	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay -= g_Dice % 5;			// She is set in her ways
+	if (girl->has_trait("Broken Will"))	{ girl->m_WorkingDay -= rng.bell(10, 20);	ss << "She just sits there doing exactly what you tell her to do, You don't think it is really getting through to her.\n"; }
+	if (girl->has_trait("Mind Fucked"))		girl->m_WorkingDay -= rng.bell(10, 20);	// Does she even know who is fucking her?
+	if (girl->has_trait("Retarded"))		girl->m_WorkingDay -= rng.bell(5, 10);	// Does she even know who is fucking her?
+	if (girl->has_trait("Slow Learner"))	girl->m_WorkingDay -= rng % 10;			//
+	if (girl->has_trait("Iron Will"))		girl->m_WorkingDay -= rng % 5;			// She is set in her ways
 
 
 	//	if (girl->check_virginity())				{}
 
-	if (!brothel->is_sex_type_allowed(SKILL_ANAL))			girl->m_WorkingDay -= g_Dice % 3;
-	if (!brothel->is_sex_type_allowed(SKILL_BDSM))			girl->m_WorkingDay -= g_Dice % 5;
-	if (!brothel->is_sex_type_allowed(SKILL_FOOTJOB))		girl->m_WorkingDay -= g_Dice % 2;
-	if (!brothel->is_sex_type_allowed(SKILL_GROUP))			girl->m_WorkingDay -= g_Dice % 15;
-	if (!brothel->is_sex_type_allowed(SKILL_HANDJOB))		girl->m_WorkingDay -= g_Dice % 5;
-	if (!brothel->is_sex_type_allowed(SKILL_LESBIAN))		girl->m_WorkingDay -= g_Dice % 10;
-	if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))		girl->m_WorkingDay -= g_Dice % 10;
-	if (!brothel->is_sex_type_allowed(SKILL_ORALSEX))		girl->m_WorkingDay -= g_Dice % 5;
-	if (!brothel->is_sex_type_allowed(SKILL_TITTYSEX))		girl->m_WorkingDay -= g_Dice % 2;
+	if (!brothel->is_sex_type_allowed(SKILL_ANAL))			girl->m_WorkingDay -= rng % 3;
+	if (!brothel->is_sex_type_allowed(SKILL_BDSM))			girl->m_WorkingDay -= rng % 5;
+	if (!brothel->is_sex_type_allowed(SKILL_FOOTJOB))		girl->m_WorkingDay -= rng % 2;
+	if (!brothel->is_sex_type_allowed(SKILL_GROUP))			girl->m_WorkingDay -= rng % 15;
+	if (!brothel->is_sex_type_allowed(SKILL_HANDJOB))		girl->m_WorkingDay -= rng % 5;
+	if (!brothel->is_sex_type_allowed(SKILL_LESBIAN))		girl->m_WorkingDay -= rng % 10;
+	if (!brothel->is_sex_type_allowed(SKILL_NORMALSEX))		girl->m_WorkingDay -= rng % 10;
+	if (!brothel->is_sex_type_allowed(SKILL_ORALSEX))		girl->m_WorkingDay -= rng % 5;
+	if (!brothel->is_sex_type_allowed(SKILL_TITTYSEX))		girl->m_WorkingDay -= rng % 2;
 
 
 
@@ -142,18 +139,18 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, bool Day0Night1, string& summary)
 	int xp = 1 + (max(0, girl->m_WorkingDay / 20));
 	if (total <= 0)								// she lost time so more tired
 	{
-		tired += 5 + g_Dice % (-total);
-		enjoy -= g_Dice % 3;
+		tired += 5 + rng % (-total);
+		enjoy -= rng % 3;
 	}
 	else if (total > 40)						// or if she trained a lot
 	{
-		tired += (total / 4) + g_Dice % (total / 2);
-		enjoy += g_Dice % 3;
+		tired += (total / 4) + rng % (total / 2);
+		enjoy += rng % 3;
 	}
 	else										// otherwise just a bit tired
 	{
-		tired += g_Dice % (total / 3);
-		enjoy -= g_Dice.bell(-2, 2);
+		tired += rng % (total / 3);
+		enjoy -= rng.bell(-2, 2);
 	}
 
 	if (girl->m_WorkingDay <= 0)
@@ -161,7 +158,7 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, bool Day0Night1, string& summary)
 		girl->m_WorkingDay = 0;
 		msgtype = EVENT_WARNING;
 		ss << "\nShe resisted all attempts to make her Bisexual.";
-		tired += 5 + g_Dice % 11;
+		tired += 5 + rng % 11;
 		wages = 0;
 	}
 	else if (girl->m_WorkingDay >= 100 && Day0Night1)
@@ -192,13 +189,13 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_Pay = wages;
 
 	// Improve girl
-	int I_lesbian = (g_Dice.bell(1, 10));
-	int I_normalsex = (g_Dice.bell(1, 10));
-	int I_group = (g_Dice.bell(2, 15));
-	int I_anal = (g_Dice.bell(0, 5));
-	int I_oralsex = (g_Dice.bell(0, 5));
-	int I_handjob = (g_Dice.bell(0, 5));
-	int I_tittysex = (g_Dice.bell(0, 3));
+	int I_lesbian = (rng.bell(1, 10));
+	int I_normalsex = (rng.bell(1, 10));
+	int I_group = (rng.bell(2, 15));
+	int I_anal = (rng.bell(0, 5));
+	int I_oralsex = (rng.bell(0, 5));
+	int I_handjob = (rng.bell(0, 5));
+	int I_tittysex = (rng.bell(0, 3));
 
 	girl->exp(xp);
 	girl->tiredness(tired);
@@ -213,20 +210,6 @@ bool cJobManager::WorkSOBisexual(sGirl* girl, bool Day0Night1, string& summary)
 	libido += girl->has_trait("Nymphomaniac") ? 3 : 1;
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 	girl->upd_Enjoyment(actiontype, enjoy);
-
-	ss << "\n \nNumbers:"
-		<< "\n Wages = " << (int)wages
-		<< "\n Xp = " << xp
-		<< "\n Libido = " << libido
-		<< "\n Lesbian = " << I_lesbian
-		<< "\n Normal Sex = " << I_normalsex
-		<< "\n Group = " << I_group
-		<< "\n Anal = " << I_anal
-		<< "\n Oral Sex = " << I_oralsex
-		<< "\n Handjob = " << I_handjob
-		<< "\n Titty Sex = " << I_tittysex
-		<< "\n Enjoy " << girl->enjoy_jobs[actiontype] << " = " << enjoy;
-
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 #pragma endregion

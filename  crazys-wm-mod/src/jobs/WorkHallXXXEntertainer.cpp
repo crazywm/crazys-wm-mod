@@ -23,18 +23,16 @@
 #include "src/Game.hpp"
 #include "cCustomers.h"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - Hall
-bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKSTRIP;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_XXXENTERTAINMENT))
 	{
 		//SIN - More informative mssg to show *what* she refuses
@@ -59,7 +57,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 
 
 	// SIN: A little pre-show randomness - temporary stats that may affect show
-	if (g_Dice.percent(20))
+	if (rng.percent(20))
 	{
 		if (girl->tiredness() > 75)
 		{
@@ -81,7 +79,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 			wages += 30;
 			fame += 1;
 		}
-		else if (girl->age() > 30 && g_Dice.percent(min(90, max((girl->age() - 30) * 3, 1))) && girl->beauty() < 30)
+		else if (girl->age() > 30 && rng.percent(min(90, max((girl->age() - 30) * 3, 1))) && girl->beauty() < 30)
 		{	//"Too old!" - chance of heckle: age<30y= 0%, then 4%/year (32y - 6%, 40y - 30%...) max 90%... (but only a 20% chance this bit even runs)
 			// note: demons are exempt as they age differently
 			ss << "Some customers heckle " << girlName << " over her age.";
@@ -96,7 +94,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 			fame += 1;
 		}
 		if ((girl->has_trait( "Syphilis") || girl->has_trait( "Herpes"))
-			&& g_Dice.percent(100 - girl->health()))
+			&& rng.percent(100 - girl->health()))
 		{
 			ss << "She's unwell. A man in the audience recognises " << girlName << "'s symptoms and heckles her about her ";
 			if (girl->has_trait( "Syphilis") && girl->has_trait( "Herpes"))
@@ -406,7 +404,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 		else if (roll_b <= 80)
 		{
 			ss << girlName << " was drunk when she stumbled out at the beginning of shift. ";
-			if (g_Dice.percent(girl->combat()))
+			if (rng.percent(girl->combat()))
 			{
 				ss << "A customer insulted her, so she leapt off the stage butt-naked and beat him down. This turned out to be the sexiest part of an otherwise boring show.\n";
 				brothel->m_Happiness += 5;
@@ -435,15 +433,15 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 	tips += (int)(((5 + jobperformance / 6) * wages) / 100);
 
 	//try and add randomness here
-	if (girl->beauty() > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && rng.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
 
-	if (girl->has_trait( "Clumsy") && g_Dice.percent(15))
+	if (girl->has_trait( "Clumsy") && rng.percent(15))
 	{
 		ss << "Her clumsy nature caused her to lose one of her \"toys\" up a hole. ";
-		if (g_Dice.percent(20) || girl->has_trait( "Psychic") || girl->has_trait( "Exhibitionist") || girl->medicine() > 25)
+		if (rng.percent(20) || girl->has_trait( "Psychic") || girl->has_trait( "Exhibitionist") || girl->medicine() > 25)
 		{
 			ss << "She put on a damn sexy show of getting it back out.\n"; tips += 10;
 			fame += 1;
@@ -455,7 +453,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 		}
 	}
 
-	if (girl->has_trait( "Pessimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Pessimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -467,7 +465,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 		}
 	}
 
-	if (girl->has_trait( "Optimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Optimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -479,7 +477,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 		}
 	}
 
-	if (girl->has_trait( "Cat Girl") && g_Dice.percent(10))
+	if (girl->has_trait( "Cat Girl") && rng.percent(10))
 	{
 		ss << girlName << " is able to clean herself like a cat. Customers are amazed as this pussy-cat ";
 		ss << "spreads her legs wide and licks her own cunt right there on stage.\n";
@@ -487,18 +485,18 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 		tips += 15;
 	}
 
-	if (girl->has_trait( "Masochist") && g_Dice.percent(10))
+	if (girl->has_trait( "Masochist") && rng.percent(10))
 	{
 		ss << girlName << " invites a few customers to punish her on stage. They happily agree to spank and whip her.\n";
 		tips += 15;
 		girl->health(-2);
 		girl->bdsm(1);
 	}
-	if (girl->has_trait( "Your Daughter") && g_Dice.percent(20))
+	if (girl->has_trait( "Your Daughter") && rng.percent(20))
 	{
 		ss << "Word got around that " << girlName << " is your daughter, so more customers than normal came to watch her perform.\n";
 		wages += (wages / 5);
-		if (g_Game.player().disposition() > 0)
+		if (g_Game->player().disposition() > 0)
 		{
 			ss << "This is about the nicest job you can give her. She's safe here and the customers can only look - ";
 		}
@@ -525,7 +523,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 						if (girl->has_trait( "Cum Addict"))
 						{
 								//Autofellatio, belly gets in the way if pregnant, requires extra flexibility
-								if ( girl->has_trait( "Flexible") && !girl->is_pregnant() && g_Dice.percent(50))
+								if ( girl->has_trait( "Flexible") && !girl->is_pregnant() && rng.percent(50))
 								{
 										ss << "During her shift " << girlName << " couldn't resist the temptation of taking a load of hot, delicious cum in her mouth and began to suck her own cock. The customers enjoyed a lot such an unusual show.";
 										girl->oralsex(1);
@@ -553,7 +551,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 						{
 								//Some variety
 								//Autopaizuri, requires very big breasts
-								if (g_Dice.percent(25) && girl->has_trait( "Abnormally Large Boobs") || g_Dice.percent(25) && (girl->has_trait( "Titanic Tits")))
+								if (rng.percent(25) && girl->has_trait( "Abnormally Large Boobs") || rng.percent(25) && (girl->has_trait( "Titanic Tits")))
 								{
 										ss << girlName << " was horny and decided to deliver a good show. She put her cock between her huge breasts and began to slowly massage it. The crowd went wild when she finally came on her massive tits.";
 										girl->tittysex(1);
@@ -561,7 +559,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 										tips += 30;
 								}
 								//cums over self
-								else if (girl->dignity() < -40 && g_Dice.percent(25))
+								else if (girl->dignity() < -40 && rng.percent(25))
 								{
 										ss << "The customers were really impressed when " << girlName << " finished her show by cumming all over herself";
 										tips += 10;
@@ -639,7 +637,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 
 
 	// work out the pay between the house and the girl
-	wages += (g_Dice % ((int)(((girl->beauty() + girl->charisma()) / 2)*0.5f))) + 10;
+	wages += (rng % ((int)(((girl->beauty() + girl->charisma()) / 2)*0.5f))) + 10;
 	// Money
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
@@ -658,9 +656,9 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 
 	girl->fame(fame);
 	girl->exp(xp);
-	girl->confidence(g_Dice%skill);
-	girl->strip(g_Dice%skill + 1);
-	girl->performance(g_Dice%skill + 1);
+	girl->confidence(rng%skill);
+	girl->strip(rng%skill + 1);
+	girl->performance(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	//gain traits
@@ -668,7 +666,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 	//SIN: new trait
 	cGirls::PossiblyGainNewTrait(girl, "Exhibitionist", 50, ACTION_WORKSTRIP, "Performing sexual entertainment for strangers every day has made " + girlName + " quite keen to show off her sexuality.", Day0Night1);
 
-	if (jobperformance >= 140 && g_Dice.percent(25))
+	if (jobperformance >= 140 && rng.percent(25))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
 	}
@@ -679,7 +677,7 @@ bool cJobManager::WorkHallXXXEntertainer(sGirl* girl, bool Day0Night1, string& s
 
 double cJobManager::JP_HallXXXEntertainer(sGirl* girl, bool estimate)// not used
 {
-#if 1	//SIN - standardizing job performance per J's instructs
+	//SIN - standardizing job performance per J's instructs
 	double jobperformance =
 		//Core stats - performance & beauty: can she put on a show, and will anyone want to see?
 		((girl->performance() + girl->beauty()) / 2) +
@@ -689,14 +687,6 @@ double cJobManager::JP_HallXXXEntertainer(sGirl* girl, bool estimate)// not used
 		girl->level();
 
 	// next up tiredness penalty...
-#else
-	double jobperformance =
-		((girl->charisma() +
-		girl->beauty() +
-		girl->confidence()) / 3 +
-		girl->strip() / 2 +
-		girl->performance() / 2);
-#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -704,60 +694,8 @@ double cJobManager::JP_HallXXXEntertainer(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-
-	//good traits
-	if (girl->has_trait( "Charismatic"))  jobperformance += 10;
-	if (girl->has_trait( "Sexy Air"))		jobperformance += 10;
-	if (girl->has_trait( "Cool Person"))  jobperformance += 5; //people love to be around her
-	if (girl->has_trait( "Cute"))			jobperformance += 5;
-	if (girl->has_trait( "Charming"))		jobperformance += 5; //people like charming people
-	if (girl->has_trait( "Great Figure")) jobperformance += 10;
-	if (girl->has_trait( "Great Arse"))   jobperformance += 5;
-	if (girl->has_trait( "Quick Learner"))jobperformance += 5;
-	if (girl->has_trait( "Psychic"))		jobperformance += 10;
-	if (girl->has_trait( "Long Legs"))	jobperformance += 5;
-	if (girl->has_trait( "Exhibitionist"))jobperformance += 10;
-	if (girl->has_trait( "Dick-Sucking Lips"))jobperformance += 5;
-	if (girl->has_trait( "Fearless"))		jobperformance += 5;
-	if (girl->has_trait( "Natural Pheromones"))jobperformance += 10; //SIN - exudes sex
-	if (girl->has_trait( "Agile"))		jobperformance += 5;  //good movement
-	if (girl->has_trait( "Flexible"))		jobperformance += 10; //positions
-	if (girl->has_trait( "Porn Star"))	jobperformance += 10; //this is her day job
-	if (girl->has_trait( "Social Drinker"))jobperformance += 5; //uninhibited
-
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy"))		jobperformance -= 10; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))			jobperformance -= 20;
-	if (girl->has_trait( "Shy"))			jobperformance -= 20;
-	if (girl->has_trait( "Slow Learner"))	jobperformance -= 10;
-	if (girl->has_trait( "Horrific Scars")) jobperformance -= 15;
-	if (girl->has_trait( "Small Scars"))	jobperformance -= 5;
-	if (girl->is_pregnant())					jobperformance -= 5; //can't move so well
-	if (girl->has_trait( "Flat Ass"))		jobperformance -= 10;
-	if (girl->has_trait( "Flat Chest"))	jobperformance -= 10;
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 40;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 60;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 125;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 60;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 50;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 150;
-	if (girl->has_trait( "Blind"))		jobperformance -= 30;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 15;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-
+    if (girl->is_pregnant())                    jobperformance -= 5; //can't move so well
+    jobperformance += girl->get_trait_modifier("work.hallxxx");
 
 	return jobperformance;
 }

@@ -23,8 +23,6 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Clinic - Surgery
@@ -99,32 +97,32 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 		if (numnurse > 2)
 		{
 			ss << "The Nurses kept her healthy and happy during her recovery.\n";
-			girl->health(g_Dice.bell(0, 20));
-			girl->happiness(g_Dice.bell(0, 10));
-			girl->spirit(g_Dice.bell(0, 10));
-			girl->mana(g_Dice.bell(0, 20));
-			girl->beauty(g_Dice.bell(10, 20));
-			girl->charisma(g_Dice.bell(1, 10));
+			girl->health(rng.bell(0, 20));
+			girl->happiness(rng.bell(0, 10));
+			girl->spirit(rng.bell(0, 10));
+			girl->mana(rng.bell(0, 20));
+			girl->beauty(rng.bell(10, 20));
+			girl->charisma(rng.bell(1, 10));
 		}
 		else if (numnurse > 0)
 		{
 			ss << "The Nurse" << (numnurse > 1 ? "s" : "") << " helped her during her recovery.\n";
-			girl->health(g_Dice.bell(0, 10));
-			girl->happiness(g_Dice.bell(0, 5));
-			girl->spirit(g_Dice.bell(0, 5));
-			girl->mana(g_Dice.bell(0, 10));
-			girl->beauty(g_Dice.bell(8, 15));
-			girl->charisma(g_Dice.bell(1, 5));
+			girl->health(rng.bell(0, 10));
+			girl->happiness(rng.bell(0, 5));
+			girl->spirit(rng.bell(0, 5));
+			girl->mana(rng.bell(0, 10));
+			girl->beauty(rng.bell(8, 15));
+			girl->charisma(rng.bell(1, 5));
 		}
 		else
 		{
 			ss << "She is sad and has lost some health during the operation.\n";
-			girl->health(g_Dice.bell(-20, 2));
-			girl->happiness(g_Dice.bell(-10, 1));
-			girl->spirit(g_Dice.bell(-5, 1));
-			girl->mana(g_Dice.bell(-20, 3));
-			girl->beauty(g_Dice.bell(5, 12));
-			girl->charisma(g_Dice.bell(0, 3));
+			girl->health(rng.bell(-20, 2));
+			girl->happiness(rng.bell(-10, 1));
+			girl->spirit(rng.bell(-5, 1));
+			girl->mana(rng.bell(-20, 3));
+			girl->beauty(rng.bell(5, 12));
+			girl->charisma(rng.bell(0, 3));
 		}
 
 		if (!girl->has_trait("Sexy Air"))
@@ -156,7 +154,7 @@ bool cJobManager::WorkPhysicalSurgery(sGirl* girl, sBrothel* brothel, bool Day0N
 	if (girl->has_trait("Masochist"))	libido += 1;
 	if (girl->has_trait("Nymphomaniac"))	libido += 2;
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
-	if (g_Dice % 10 == 0)
+	if (rng % 10 == 0)
 		girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
 
 #pragma endregion

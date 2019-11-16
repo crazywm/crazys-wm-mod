@@ -17,7 +17,6 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <main.h>
-#include <InterfaceGlobals.h>
 #include "cScriptManager.h"
 #include "cScreenGetInput.h"
 #include "InterfaceProcesses.h"
@@ -30,7 +29,6 @@
 extern string ReadTextFile(DirPath path, string file);
 
 extern bool eventrunning;
-extern bool g_Cheats;
 extern bool g_CTRLDown;
 
 
@@ -89,20 +87,19 @@ void IBuildingScreen::set_ids()
         push_window("Turn Summary");
     });
     SetButtonCallback(save_id, [this]() {
-        SaveGame(g_CTRLDown);
-        g_Game.push_message("Game Saved", COLOR_GREEN);
+        SaveGame();
+        g_Game->push_message("Game Saved", COLOR_GREEN);
     });
     SetButtonCallback(quit_id, [this]() {
         input_confirm([this]() {
-            g_WinManager.PopToWindow("Main Menu");
-            ResetInterface();
+            window_manager().PopToWindow("Main Menu");
         });
     });
 }
 
 void IBuildingScreen::process()
 {
-    if (girlimage_id != -1 && !eventrunning)	HideImage(girlimage_id, true);
+    if (girlimage_id != -1 && !eventrunning) HideWidget(girlimage_id, true);
 }
 
 IBuildingScreen::IBuildingScreen(const char * base_file, BuildingType building, bool * has_walked) :
@@ -121,14 +118,14 @@ void IBuildingScreen::init(bool back)
     EditTextItem(get_building_summary(active_building()), details_id);
     stringstream ss;
 
-    ss << "Day: " << g_Game.date().day << " Month: " << g_Game.date().month << " Year: " << g_Game.date().year
+    ss << "Day: " << g_Game->date().day << " Month: " << g_Game->date().month << " Year: " << g_Game->date().year
        << " -- " << active_building().type_str() << ": " << active_building().name();
     EditTextItem(ss.str(), buildinglabel_id);
 
     if(m_HasDoneWalkThisWeek)
-        DisableButton(walk_id, *m_HasDoneWalkThisWeek);
+        DisableWidget(walk_id, *m_HasDoneWalkThisWeek);
 
-    SetImage(background_id, g_Graphics.LoadBrothelImage(active_building().background_image()));
+    SetImage(background_id, active_building().background_image());
 }
 
 IBuildingScreen::~IBuildingScreen()
@@ -138,35 +135,36 @@ IBuildingScreen::~IBuildingScreen()
 
 void IBuildingScreen::try_walk()
 {
+    /// TODO this function should not be part of the UI code!
     if(!m_HasDoneWalkThisWeek)
         return;
 
     if (*m_HasDoneWalkThisWeek)
     {
-        g_Game.push_message("You can only do this once per week.", COLOR_RED);
+        g_Game->push_message("You can only do this once per week.", COLOR_RED);
         return;
     }
 
-    if (!g_Cheats) *m_HasDoneWalkThisWeek = true;
+    if (!g_Game->allow_cheats()) *m_HasDoneWalkThisWeek = true;
 
     sGirl* girl = meet_girl();
     if (girl == nullptr)												// if there's no girl, no meeting
     {
-        g_Game.push_message(walk_no_luck(), COLOR_RED);
+        g_Game->push_message(walk_no_luck(), COLOR_RED);
         return;
     }
 
     // most of the time, you're not going to find anyone unless you're cheating, of course.
-    if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Cheats)
+    if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Game->allow_cheats())
     {
-        g_Game.push_message(walk_no_luck(), COLOR_BLUE);
+        g_Game->push_message(walk_no_luck(), COLOR_BLUE);
         return;
     }
 
     if (girlimage_id != -1)
     {
         PrepareImage(girlimage_id, girl, IMGTYPE_PROFILE, true, -1);
-        HideImage(girlimage_id, false);
+        HideWidget(girlimage_id, false);
     }
 
     do_walk(girl);
@@ -174,7 +172,7 @@ void IBuildingScreen::try_walk()
 
 sGirl* IBuildingScreen::meet_girl() const
 {
-    return g_Game.GetRandomGirl();
+    return g_Game->GetRandomGirl();
 }
 
 std::string IBuildingScreen::walk_no_luck()
@@ -217,18 +215,18 @@ static std::string get_building_summary(const IBuilding& building)
     ss << "\nFame: " << fame_text(&building) << endl;
     ss << "\nRooms (available/current): " << (building.free_rooms() - building.num_girls()) << " / " << building.num_rooms();
     ss << "\nThis brothel's Profit: " << profit;
-    ss << "\nYour Gold: " << g_Game.gold().ival();
+    ss << "\nYour Gold: " << g_Game->gold().ival();
     ss << "\nSecurity Level: " << building.security();
-    ss << "\nDisposition: " << g_Game.player().disposition_text();
-    ss << "\nSuspicion: " << g_Game.player().suss_text();
+    ss << "\nDisposition: " << g_Game->player().disposition_text();
+    ss << "\nSuspicion: " << g_Game->player().suss_text();
     ss << "\nFilthiness: " << building.filthiness();
-    ss << "\nBeasts Housed Here: " << g_Game.storage().beasts();
+    ss << "\nBeasts Housed Here: " << g_Game->storage().beasts();
 
     if(building.type() == BuildingType::FARM) {
-        ss << "\nFood Stored: " << g_Game.storage().food()
-           << "\nDrink Stored: " << g_Game.storage().drinks()
-           << "\nGoods Stored: " << g_Game.storage().goods()
-           << "\nAlchemy Items: " << g_Game.storage().alchemy();
+        ss << "\nFood Stored: " << g_Game->storage().food()
+           << "\nDrink Stored: " << g_Game->storage().drinks()
+           << "\nGoods Stored: " << g_Game->storage().goods()
+           << "\nAlchemy Items: " << g_Game->storage().alchemy();
     }
     return ss.str();
 }
@@ -283,7 +281,7 @@ void cScreenArena::do_walk(sGirl* girl)
     {
         message = ReadTextFile(intro, introfile);
     }
-    if (!message.empty()) g_Game.push_message(message, COLOR_BLUE);
+    if (!message.empty()) g_Game->push_message(message, COLOR_BLUE);
 
     eventrunning = true;
     sm.Load(dp, girl);
@@ -292,7 +290,7 @@ void cScreenArena::do_walk(sGirl* girl)
 sGirl* cScreenArena::meet_girl() const
 {
     // let's get a girl for the player to meet was to get arena.. dont think this should happen this is tryouts arena girl should be ready to fight. CRAZY
-    return g_Game.GetRandomGirl(false, false, true);
+    return g_Game->GetRandomGirl(false, false, true);
 }
 
 std::string cScreenArena::walk_no_luck()
@@ -393,7 +391,7 @@ void cScreenClinic::do_walk(sGirl* girl)
     {
         message = ReadTextFile(intro, introfile);
     }
-    if (!message.empty()) g_Game.push_message(message, COLOR_BLUE);
+    if (!message.empty()) g_Game->push_message(message, COLOR_BLUE);
 
     eventrunning = true;
     sm.Load(dp, girl);
@@ -500,7 +498,7 @@ void cMovieScreen::do_walk(sGirl* girl)
     {
         message = ReadTextFile(intro, introfile);
     }
-    if (!message.empty()) g_Game.push_message(message, COLOR_BLUE);
+    if (!message.empty()) g_Game->push_message(message, COLOR_BLUE);
 
     eventrunning = true;
     sm.Load(dp, girl);

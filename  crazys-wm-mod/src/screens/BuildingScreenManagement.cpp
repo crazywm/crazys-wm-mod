@@ -1,7 +1,6 @@
 #include <algorithm>
-#include <InterfaceGlobals.h>
 #include "BuildingScreenManagement.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "buildings/cBrothel.h"
 #include "widgets/cListBox.h"
 #include "cTariff.h"
@@ -9,20 +8,18 @@
 #include "InterfaceProcesses.h"
 #include "Game.hpp"
 #include "buildings/queries.hpp"
+#include "interface/cChoiceMessage.h"
 
 extern cConfig cfg;
 extern vector<int> cycle_girls;
 extern int cycle_pos;
 extern cScreenGirlDetails* g_GirlDetails;
 extern bool eventrunning;
-extern bool g_Cheats;
 
 extern	bool			g_AltKeys;	// New hotkeys --PP
 extern	bool			g_CTRLDown;
 extern  bool            g_W_Key;
 extern  bool            g_S_Key;
-
-static cTariff tariff;
 
 
 IBuildingScreenManagement::IBuildingScreenManagement(BuildingType type, const char * base_file) :
@@ -33,18 +30,6 @@ IBuildingScreenManagement::IBuildingScreenManagement(BuildingType type, const ch
 
 void IBuildingScreenManagement::process()
 {
-    if (check_keys()) return;	// handle arrow keys
-
-    if (m_FFSD_Flag >= 0) {
-        vector<int> girl_array;
-        GetSelectedGirls(&girl_array);
-        ffsd_outcome(girl_array);
-        girl_array.clear();
-        g_ChoiceManager.Free();
-        m_FFSD_Flag = -1;
-    }
-
-    handle_events();
 }
 
 void IBuildingScreenManagement::update_image()
@@ -62,12 +47,12 @@ void IBuildingScreenManagement::update_image()
             m_LastSelection = selected_girl;
         }
         PrepareImage(girlimage_id, selected_girl, IMGTYPE_PROFILE, Rand);
-        HideImage(girlimage_id, false);
+        HideWidget(girlimage_id, false);
     }
     else
     {
         EditTextItem("No Girl Selected", girldesc_id);
-        HideImage(girlimage_id, true);
+        HideWidget(girlimage_id, true);
     }
 }
 
@@ -77,7 +62,7 @@ void IBuildingScreenManagement::ViewSelectedGirl()
     {
         if (selected_girl->is_dead()) return;
         //load up the cycle_girls vector with the ordered list of girl IDs
-        FillSortedIDList(girllist_id, &cycle_girls, &cycle_pos);
+        FillSortedIDList(girllist_id, cycle_girls, cycle_pos);
         for (int i = cycle_girls.size(); i-- > 0;)
         {  // no viewing dead girls
             if (active_building().get_girl(cycle_girls[i])->is_dead())
@@ -107,27 +92,27 @@ void IBuildingScreenManagement::RefreshJobList()
     int job_filter = GetSelectedItemFromList(jobtypelist_id);
     if (job_filter == -1) return;
     // populate Jobs listbox with jobs in the selected category
-    for (int i = g_Game.job_manager().JobFilterIndex[job_filter]; i < g_Game.job_manager().JobFilterIndex[job_filter + 1]; i++)
+    for (int i = g_Game->job_manager().JobFilterIndex[job_filter]; i < g_Game->job_manager().JobFilterIndex[job_filter + 1]; i++)
     {
-        if (g_Game.job_manager().JobName[i].empty()) continue;
+        if (g_Game->job_manager().JobName[i].empty()) continue;
         AddToListBox(joblist_id, i, jobname_with_count((JOBS)i, Day0Night1));
     }
     if (selected_girl)
     {
-        int sel_job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
+        int sel_job = Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob;
         SetSelectedItemInList(joblist_id, sel_job, false);
-        EditTextItem(g_Game.job_manager().JobDesc[sel_job] + update_job_description(*selected_girl), jobdesc_id);
+        EditTextItem(g_Game->job_manager().JobDesc[sel_job] + update_job_description(*selected_girl), jobdesc_id);
         SetSelectedItemText(joblist_id, sel_job, jobname_with_count((JOBS)sel_job, Day0Night1));
     }
 }
 
-void IBuildingScreenManagement::handle_events()
+void IBuildingScreenManagement::handle_ffsd(int flag)
 {
-    if (m_FFSD_Flag > 0 && selected_girl)
-    {
-        vector<int> girl_array;
-        GetSelectedGirls(&girl_array);
-        ffsd_choice(m_FFSD_Flag, girl_array);
+    vector<int> girl_array;
+    GetSelectedGirls(&girl_array);
+    if(!girl_array.empty()) {
+        ffsd_choice(flag, girl_array);
+        m_FFSD_Flag = flag;
     }
 }
 
@@ -148,25 +133,25 @@ void IBuildingScreenManagement::on_select_girl(int selection)
                 if (!active_building().get_girl(pos)->is_slave()) freefound = true;
                 GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
             }
-            DisableButton(firegirl_id, !freefound);
-            DisableButton(freeslave_id, !slavefound);
-            DisableButton(sellslave_id, !slavefound);
+            DisableWidget(firegirl_id, !freefound);
+            DisableWidget(freeslave_id, !slavefound);
+            DisableWidget(sellslave_id, !slavefound);
         }
         else
         {
-            DisableButton(firegirl_id, selected_girl->is_slave());
-            DisableButton(freeslave_id, selected_girl->is_free());
-            DisableButton(sellslave_id, selected_girl->is_free());
+            DisableWidget(firegirl_id, selected_girl->is_slave());
+            DisableWidget(freeslave_id, selected_girl->is_free());
+            DisableWidget(sellslave_id, selected_girl->is_free());
         }
-        DisableButton(viewdetails_id, false);
+        DisableWidget(viewdetails_id, false);
         RefreshSelectedJobType();
     }
     else
     {
-        DisableButton(firegirl_id, true);
-        DisableButton(freeslave_id, true);
-        DisableButton(sellslave_id, true);
-        DisableButton(viewdetails_id, true);
+        DisableWidget(firegirl_id, true);
+        DisableWidget(freeslave_id, true);
+        DisableWidget(sellslave_id, true);
+        DisableWidget(viewdetails_id, true);
         selected_girl = nullptr;
     }
 
@@ -196,19 +181,21 @@ void IBuildingScreenManagement::set_ids() {
     jobdesc_id     = get_id("JobDescription");
     jobtypehead_id = get_id("JobTypeHeader");
     jobtypedesc_id = get_id("JobTypeDescription");
+    curbrothel_id  = get_id("CurrentBrothel");
+
 
     //Set the default sort order for columns, so listbox knows the order in which data will be sent
-    SortColumns(girllist_id, m_ListBoxes[girllist_id]->m_ColumnName, m_ListBoxes[girllist_id]->m_ColumnCount);
+    SortColumns(girllist_id, GetListBox(girllist_id)->GetColumnNames());
 
     // setting up button callbacks
     SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(viewdetails_id, [this](){
-        g_GirlDetails->lastsexact = -1;
+        g_GirlDetails->set_image(-1);
         ViewSelectedGirl(); });
     SetButtonNavigation(transfer_id, "Transfer Screen");
-    SetButtonCallback(firegirl_id, [this](){  m_FFSD_Flag = FFSD_fire; });
-    SetButtonCallback(freeslave_id, [this](){  m_FFSD_Flag = FFSD_free; });
-    SetButtonCallback(sellslave_id, [this](){  m_FFSD_Flag = FFSD_sell; });
+    SetButtonCallback(firegirl_id, [this](){  handle_ffsd(FFSD_fire); });
+    SetButtonCallback(freeslave_id, [this](){  handle_ffsd(FFSD_free); });
+    SetButtonCallback(sellslave_id, [this](){  handle_ffsd(FFSD_sell); });
 
     SetButtonCallback(day_id, [this](){ SetShift(SHIFT_DAY); });
     SetButtonCallback(night_id, [this](){ SetShift(SHIFT_NIGHT); });
@@ -216,7 +203,6 @@ void IBuildingScreenManagement::set_ids() {
     SetButtonHotKey(night_id, SDLK_c);
 
     SetListBoxSelectionCallback(jobtypelist_id, [this](int selection) {
-        std::cout << "SEL " << selection << "\n";
         if (selection == -1) EditTextItem("Nothing Selected", jobtypedesc_id);
         else
         {
@@ -229,7 +215,7 @@ void IBuildingScreenManagement::set_ids() {
     SetListBoxSelectionCallback(joblist_id, [this](int selection) { on_select_job(selection); });
     SetListBoxSelectionCallback(girllist_id, [this](int selection) { on_select_girl(selection); });
     SetListBoxDoubleClickCallback(girllist_id, [this](int sel){
-        g_GirlDetails->lastsexact = -1;
+        g_GirlDetails->set_image(-1);
         ViewSelectedGirl();
     });
     SetListBoxHotKeys(girllist_id, g_AltKeys ? SDLK_a : SDLK_UP, g_AltKeys ? SDLK_d : SDLK_DOWN);
@@ -251,7 +237,6 @@ void IBuildingScreenManagement::on_select_job(int selection)
             if (girl)
             {
                 assign_job(girl, new_job, GSelection, fulltime);
-
             }
             GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
         }
@@ -262,16 +247,18 @@ void IBuildingScreenManagement::on_select_job(int selection)
 void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_selection, bool fulltime)
 {
     // handle special job requirements and assign
-    unsigned int day_job   = girl->m_DayJob;
-    unsigned int night_job = girl->m_NightJob;
-    unsigned int old_job   = Day0Night1 ? night_job : day_job;
+    unsigned int old_job   = Day0Night1 ? girl->m_NightJob : girl->m_DayJob;
     
     // if HandleSpecialJobs returns true, the job assignment was modified or cancelled
     if (job_manager().HandleSpecialJobs(girl, new_job, old_job, Day0Night1, fulltime))
     {
-        new_job = Day0Night1 ? night_job : day_job;
+        // TODO WHAT HAPPENS HERE?
+        //new_job = Day0Night1 ? night_job : day_job;
         SetSelectedItemInList(joblist_id, new_job, false);
     }
+
+    unsigned int day_job   = girl->m_DayJob;
+    unsigned int night_job = girl->m_NightJob;
     stringstream ss;
     // update the girl's listing to reflect the job change
     ss << job_manager().JobName[day_job];
@@ -438,7 +425,7 @@ void IBuildingScreenManagement::init(bool back)
     if (gold_id >= 0)
     {
         std::stringstream ss;
-        ss.str(""); ss << "Gold: " << g_Game.gold().ival();
+        ss.str(""); ss << "Gold: " << g_Game->gold().ival();
         EditTextItem(ss.str(), gold_id);
     }
 
@@ -447,8 +434,7 @@ void IBuildingScreenManagement::init(bool back)
     ClearListBox(jobtypelist_id);
 
     // get a list of all the column names, so we can find which data goes in that column
-    vector<string> columnNames;
-    m_ListBoxes[girllist_id]->GetColumnNames(columnNames);
+    vector<string> columnNames = GetListBox(girllist_id)->GetColumnNames();
     int numColumns = columnNames.size();
     std::vector<std::string> data(numColumns);
 
@@ -457,36 +443,39 @@ void IBuildingScreenManagement::init(bool back)
         sGirl* gir = active_building().get_girl(i);
         if (selected_girl == gir) selection = i;
         unsigned int item_color = (gir->health() <= 30 || gir->tiredness() >= 80 || gir->happiness() <= 30) ? COLOR_RED : COLOR_BLUE;
-        gir->OutputGirlRow(&data.front(), columnNames);
-        AddToListBox(girllist_id, i, &data.front(), numColumns, item_color);
+        gir->OutputGirlRow(data, columnNames);
+        AddToListBox(girllist_id, i, data, item_color);
     }
 
-    DisableButton(firegirl_id, true);
-    DisableButton(freeslave_id, true);
-    DisableButton(sellslave_id, true);
-    DisableButton(viewdetails_id, true);
+    DisableWidget(firegirl_id, true);
+    DisableWidget(freeslave_id, true);
+    DisableWidget(sellslave_id, true);
+    DisableWidget(viewdetails_id, true);
 
     // add the job filters
     for(auto filter : m_JobFilters) {
-        AddToListBox(jobtypelist_id, filter, g_Game.job_manager().JobFilterName[filter]);
+        AddToListBox(jobtypelist_id, filter, g_Game->job_manager().JobFilterName[filter]);
     }
     SetSelectedItemInList(jobtypelist_id, m_JobFilters.front());
 
     if (selection >= 0) while (selection > GetListBoxSize(girllist_id) && selection != -1) selection--;
     SetSelectedItemInList(girllist_id, selection >= 0 ? selection : 0);
 
-    DisableButton(day_id, (Day0Night1 == SHIFT_DAY));
-    DisableButton(night_id, (Day0Night1 == SHIFT_NIGHT));
+    DisableWidget(day_id, Day0Night1 == SHIFT_DAY);
+    DisableWidget(night_id, Day0Night1 == SHIFT_NIGHT);
 
     update_image();
 }
 
 static vector<int> ffsd_choicelist;
 
-void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
+void IBuildingScreenManagement::ffsd_outcome(int selected)
 {
+    vector<int> girl_array;
+    GetSelectedGirls(&girl_array);
+
     bool free = false, fire = false, sell = false, dump = false;
-    int option = ffsd_choicelist[g_ChoiceManager.GetChoice(0)];
+    int option = ffsd_choicelist[selected];
     switch (option)
     {
     case FFSD_fire:		fire = true;	break;
@@ -547,7 +536,7 @@ void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
                 {
                     freegirl_names.push_back(selected_girl->m_Realname);
                     selected_girl->m_States &= ~(1u << STATUS_SLAVE);
-                    g_Game.player().disposition(7);
+                    g_Game->player().disposition(7);
                     selected_girl->pclove(20);
                     selected_girl->pcfear(-40);
                     selected_girl->pchate(-50);
@@ -567,7 +556,7 @@ void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
                 {
                     firegirl_names.push_back(selected_girl->m_Realname);
                     selected_girl->m_States &= ~(1u << STATUS_SLAVE);
-                    g_Game.player().disposition(3);
+                    g_Game->player().disposition(3);
                     selected_girl->pclove(5);
                     selected_girl->pcfear(5);
                     selected_girl->pchate(-5);
@@ -581,7 +570,7 @@ void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
                 else if (option == FFSD_frdu2)	// dump the bodies then get back to work
                 {
                     freegirl_names.push_back(selected_girl->m_Realname);
-                    g_Game.player().disposition(-1);
+                    g_Game->player().disposition(-1);
                     selected_girl->pclove(-2);
                     selected_girl->pcfear(10);
                     selected_girl->pchate(5);
@@ -594,7 +583,7 @@ void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
                 {
                     freegirl_names.push_back(selected_girl->m_Realname);
                     selected_girl->m_States &= ~(1u << STATUS_SLAVE);
-                    g_Game.player().disposition(5);
+                    g_Game->player().disposition(5);
                     selected_girl->pclove(10);
                     selected_girl->pcfear(-20);
                     selected_girl->pchate(-25);
@@ -607,13 +596,13 @@ void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
                 else if (sell)
                 {
                     sellgirl_names.push_back(selected_girl->m_Realname);
-                    sellgirl_price.push_back(tariff.slave_sell_price(selected_girl));
-                    g_Game.gold().slave_sales(tariff.slave_sell_price(selected_girl));
+                    sellgirl_price.push_back(g_Game->tariff().slave_sell_price(selected_girl));
+                    g_Game->gold().slave_sales(g_Game->tariff().slave_sell_price(selected_girl));
 
                     active_building().remove_girl(selected_girl);
 
                     if (selected_girl->m_Realname == selected_girl->m_Name)
-                        g_Game.girl_pool().AddGirl(selected_girl);  // add unique girls back to main pool
+                        g_Game->girl_pool().AddGirl(selected_girl);  // add unique girls back to main pool
                     else
                     {  // random girls simply get removed from the game
                         delete selected_girl;
@@ -643,7 +632,7 @@ void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
                     active_building().remove_girl(selected_girl);
 
                     if (selected_girl->m_Realname == selected_girl->m_Name)
-                       g_Game.girl_pool().AddGirl(selected_girl);  // add unique girls back to main pool
+                       g_Game->girl_pool().AddGirl(selected_girl);  // add unique girls back to main pool
                     else
                     {  // random girls simply get removed from the game
                         delete selected_girl;
@@ -710,19 +699,19 @@ void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
                 else ss << "You spend 100 gold each for proper funerals for ";
                 active_building().m_Finance.building_upkeep(100 * dumpsize);
 
-                g_Game.player().customerfear(-dumpsize);
-                g_Game.player().suspicion(-dumpsize);
-                g_Game.player().disposition(dumpsize);
+                g_Game->player().customerfear(-dumpsize);
+                g_Game->player().suspicion(-dumpsize);
+                g_Game->player().disposition(dumpsize);
                 break;
             case FFSD_dump2:	// unmarked grave
                 ss << "You have your goons dig " << (dumpsize > 1 ? "graves " : "a grave") << " for ";
-                g_Game.player().disposition(-dumpsize);
+                g_Game->player().disposition(-dumpsize);
                 break;
             case FFSD_dump3:	// side of the road
                 ss << "You have your goons dump the bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
-                g_Game.player().customerfear(dumpsize);
-                g_Game.player().suspicion(dumpsize);
-                g_Game.player().disposition(-dumpsize);
+                g_Game->player().customerfear(dumpsize);
+                g_Game->player().suspicion(dumpsize);
+                g_Game->player().disposition(-dumpsize);
                 break;
             case FFSD_dump4:	// Sell the bodies
             case FFSD_sedu1:	// Sell all the girls, living and dead
@@ -730,9 +719,9 @@ void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
                 ss << "You make " << sell << " gold for selling the dead bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
                 active_building().m_Finance.slave_sales(sell);
 
-                g_Game.player().customerfear(dumpsize * 2);
-                g_Game.player().suspicion(dumpsize * 2);
-                g_Game.player().disposition(-dumpsize * 2);
+                g_Game->player().customerfear(dumpsize * 2);
+                g_Game->player().suspicion(dumpsize * 2);
+                g_Game->player().disposition(-dumpsize * 2);
                 break;
             default:
                 ss << "You have your goons remove the bod" << (dumpsize > 1 ? "ies" : "y") << " of ";
@@ -749,7 +738,7 @@ void IBuildingScreenManagement::ffsd_outcome(vector<int> girl_array)
             if (option == FFSD_dump3) ss << " on the side of the road.";
             ss << ".\n \n";
         }
-        if (ss.str().length() > 0)	g_Game.push_message(ss.str(), 0);
+        if (ss.str().length() > 0)	g_Game->push_message(ss.str(), 0);
 
         freegirl_names.clear(); firegirl_names.clear(); sellgirl_names.clear(); dumpgirl_names.clear();
         sellgirl_price.clear();
@@ -771,7 +760,7 @@ void IBuildingScreenManagement::ffsd_choice(int ffsd, vector<int> girl_array) //
         else if (selected_girl->is_slave())
         {
             slavegirls++;
-            selltotal += tariff.slave_sell_price(selected_girl);
+            selltotal += g_Game->tariff().slave_sell_price(selected_girl);
         }
         else if (selected_girl)				freegirls++;
     }
@@ -795,7 +784,7 @@ void IBuildingScreenManagement::ffsd_choice(int ffsd, vector<int> girl_array) //
         /* Slave girls only */
     else if (freegirls == 0 && slavegirls > 0 && deadgirls == 0)
     {
-        if (ffsd == FFSD_free && g_Game.player().disposition() > -10)
+        if (ffsd == FFSD_free && g_Game->player().disposition() > -10)
         {
             question << "Do you want to free ";
             /* */if (slavegirls == 1)	{ question << firstgirlname.str();	free << "Free her."; }
@@ -803,7 +792,7 @@ void IBuildingScreenManagement::ffsd_choice(int ffsd, vector<int> girl_array) //
             else		{ question << "these " << totalgirls << " girls";	free << "Free them all."; }
             question << "?";
         }
-        else if (ffsd == FFSD_sell && g_Game.player().disposition() < 10)
+        else if (ffsd == FFSD_sell && g_Game->player().disposition() < 10)
         {
             question << "Do you want to sell ";
             /* */if (slavegirls == 1)	{ question << firstgirlname.str();		sell << "Sell her."; }
@@ -846,7 +835,7 @@ void IBuildingScreenManagement::ffsd_choice(int ffsd, vector<int> girl_array) //
                 << (deadgirls > 1 ? "s" : "") << " as their last act as your slave" << (slavegirls > 1 ? "s?" : "?")
                 << "\nDispose of the bodies and get back to work?";
 
-            if (g_Game.player().disposition() < -10)
+            if (g_Game->player().disposition() < -10)
             {
                 ask << "\nOr you can sell all the girls, living and dead.";
                 sedu1 << "\"Show me the MONEY\"";
@@ -904,53 +893,29 @@ void IBuildingScreenManagement::ffsd_choice(int ffsd, vector<int> girl_array) //
         fisd << "Get rid of them all.";
     }
 
-    std::array<std::string, FFSD_COUNT> options;
-    options[FFSD_keep] = keep.str();
-    options[FFSD_fire] = fire.str();
-    options[FFSD_free] = free.str();
-    options[FFSD_sell] = sell.str();
-    options[FFSD_dump] = dump.str();
-    options[FFSD_fidu] = fidu.str();
-    options[FFSD_fise] = fise.str();
-    options[FFSD_fisd] = fisd.str();
-    options[FFSD_frdu] = frdu.str();
-    options[FFSD_sedu] = sedu.str();
-    options[FFSD_dump1] = dump1.str();
-    options[FFSD_dump2] = dump2.str();
-    options[FFSD_dump2] = dump3.str();
-    options[FFSD_dump4] = dump4.str();
-    options[FFSD_frdu1] = frdu1.str();
-    options[FFSD_frdu2] = frdu2.str();
-    options[FFSD_sedu1] = sedu1.str();
-    options[FFSD_free1] = free1.str();
+    std::array<std::stringstream*, FFSD_COUNT> options = {
+            &keep, &fire, &free, &sell, &dump, &fidu, &fise, &fisd, &frdu, &sedu, &dump1, &dump2, &dump3, &dump4,
+            &frdu1, &frdu2, &sedu1, &free1
+    };
 
     ffsd_choicelist.clear();
+    std::vector<std::string> choices;
+    choices.reserve(FFSD_COUNT);
     for(unsigned i = 0; i < options.size(); ++i) {
-        if(!options[i].empty()) {
+        // has the option been used?
+        if(options[i]->tellp() != std::streampos(0)) {
             ffsd_choicelist.push_back(i);
+            choices.push_back(options[i]->str());
         }
     }
-    int length = std::max_element(begin(options), end(options),
-            [](const std::string& a, const std::string& b){ return a.size() < b.size(); })->size();
-
-
-    g_ChoiceManager.CreateChoiceBox(224, 112, 352, 384, 0, ffsd_choicelist.size(), 32, length, 16);
-    if (ask.str().length() > 0)	g_Game.push_message(ask.str(), 0);
-    g_ChoiceManager.Question(0, question.str());
-    int j = 0;
-    for(auto & option : options) {
-        if(!option.empty()) {
-            g_ChoiceManager.AddChoice(0, option, j);
-            ++j;
-        }
-    }
-    g_ChoiceManager.SetActive(0);
+    if (ask.str().length() > 0)	g_Game->push_message(ask.str(), 0);
+    input_choice(question.str(), std::move(choices), [this](int selected){ ffsd_outcome(selected); });
 }
 
 std::string IBuildingScreenManagement::jobname_with_count(JOBS job_id, bool is_night)
 {
     stringstream text;
-    text << g_Game.job_manager().JobName[job_id];
+    text << g_Game->job_manager().JobName[job_id];
     text << " (" << active_building().num_girls_on_job(job_id, is_night) << ")";
     return text.str();
 }
@@ -967,8 +932,8 @@ void IBuildingScreenManagement::RefreshSelectedJobType()
     selected_girl = active_building().get_girl(selection);
     int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
     for(auto& filter : m_JobFilters) {
-        if(job >= g_Game.job_manager().JobFilterIndex[filter] &&
-                job < g_Game.job_manager().JobFilterIndex[filter+1]) {
+        if(job >= g_Game->job_manager().JobFilterIndex[filter] &&
+                job < g_Game->job_manager().JobFilterIndex[filter+1]) {
             SetSelectedItemInList(jobtypelist_id, filter);
             return;
         }
@@ -978,7 +943,7 @@ void IBuildingScreenManagement::RefreshSelectedJobType()
 
 cJobManager& IBuildingScreenManagement::job_manager()
 {
-    return g_Game.job_manager();
+    return g_Game->job_manager();
 }
 
 void IBuildingScreenManagement::OnKeyPress(SDL_keysym keysym)
@@ -986,7 +951,7 @@ void IBuildingScreenManagement::OnKeyPress(SDL_keysym keysym)
     auto key = keysym.sym;
 
     // girl list
-    if (key == SDLK_SPACE || key == SDLK_KP_ENTER)	{ g_GirlDetails->lastsexact = -1;	ViewSelectedGirl();	}
+    if (key == SDLK_SPACE || key == SDLK_KP_ENTER)	{ g_GirlDetails->set_image(-1);	ViewSelectedGirl();	}
 
     else if (key == SDLK_q || key == SDLK_e) {
         int selection = -1;
@@ -1002,13 +967,15 @@ void IBuildingScreenManagement::OnKeyPress(SDL_keysym keysym)
         }
     }
 
+    cInterfaceWindowXML::OnKeyPress(keysym);
+
 }
 
 void IBuildingScreenManagement::SetShift(int shift)
 {
     Day0Night1 = shift;
-    DisableButton(day_id, shift == SHIFT_DAY);
-    DisableButton(night_id, shift == SHIFT_NIGHT);
+    DisableWidget(day_id, shift == SHIFT_DAY);
+    DisableWidget(night_id, shift == SHIFT_NIGHT);
     RefreshSelectedJobType();
 }
 
@@ -1210,13 +1177,6 @@ void cScreenGirlManagement::set_ids()
 
     SetButtonCallback(prev_id, [this](){ cycle_building(-1); });
     SetButtonCallback(next_id, [this](){ cycle_building(1); });
-}
-
-bool cScreenGirlManagement::check_keys()
-{
-    // Select Location
-    if (g_W_Key)	{ ArrowUpListBox(jobtypelist_id);	g_W_Key = false;	return true; }
-    if (g_S_Key)	{ ArrowDownListBox(jobtypelist_id);	g_S_Key = false;	return true; }
 }
 
 cScreenHouseManagement::cScreenHouseManagement() :

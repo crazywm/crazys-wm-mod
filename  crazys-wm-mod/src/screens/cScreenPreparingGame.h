@@ -18,7 +18,7 @@
 */
 #pragma once
 
-#include "cInterfaceWindow.h"
+#include "interface/cInterfaceWindow.h"
 
 class cScreenPreparingGame : public cInterfaceWindowXML
 {

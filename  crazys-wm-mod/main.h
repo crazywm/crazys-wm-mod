@@ -20,27 +20,17 @@
 #define __MAIN_H
 
 #include "CLog.h"
-#include "CGraphics.h"
-#include "CResourceManager.h"
 
 #include <cstdio>
 #include "Constants.h"
 #include "cTraits.h"
 #include "cGirls.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
+#include "interface/CGraphics.h"
 #include "cNameList.h"
-
-// interface manager
-extern cWindowManager g_WinManager;
 
 // SDL Graphics interface
 extern CGraphics g_Graphics;
-
-// Resource Manager
-extern CResourceManager rmanager;
-
-// Trait list
-extern cTraits g_Traits;
 
 extern cNameList	g_GirlNameList;
 extern cNameList	g_BoysNameList;

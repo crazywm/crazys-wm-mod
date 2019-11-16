@@ -22,18 +22,16 @@
 #include "cInventory.h"
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Arena - Staff
-bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKMAKEITEMS;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_JEWELER))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -104,10 +102,10 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 	if (roll_a <= 10)
 	{
 		tired /= 8;
-		enjoy -= g_Dice % 3;
+		enjoy -= rng % 3;
 		if (roll_b < 10)	// fire
 		{
-			int fire = max(0, g_Dice.bell(-2, 10));
+			int fire = max(0, rng.bell(-2, 10));
 			brothel->m_Filthiness += fire * 2;
 			craftpoints -= (craftpoints * (fire * 0.1));
 			if (girl->pcfear() > 20) girl->pcfear(fire / 2);	// she is afraid you will get mad at her
@@ -117,15 +115,15 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 			else if (fire < 10)	ss << " that destroyed most of the equipment she had made.";
 			else /*          */	ss << " destroying everything she had made.";
 
-			if (fire > 5) g_Game.push_message(girlName + " accidently started a large fire while working as a Jeweler at the Arena.", COLOR_RED);
+			if (fire > 5) g_Game->push_message(girlName + " accidently started a large fire while working as a Jeweler at the Arena.", COLOR_RED);
 		}
 		else if (roll_b < 30)	// injury
 		{
-			girl->health(-(1 + g_Dice % 5));
+			girl->health(-(1 + rng % 5));
 			craftpoints *= 0.8;
 			if (girl->magic() > 50 && girl->mana() > 20)
 			{
-				girl->mana(-10 - (g_Dice % 10));
+				girl->mana(-10 - (rng % 10));
 				ss << "While trying to enchant an item, the magic rebounded on her";
 			}
 			else
@@ -133,7 +131,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 			if (girl->is_dead())
 			{
 				ss << " killing her.";
-				g_Game.push_message(girlName + " was killed in an accident while working as a Jeweler at the Arena.", COLOR_RED);
+				g_Game->push_message(girlName + " was killed in an accident while working as a Jeweler at the Arena.", COLOR_RED);
 				return false;	// not refusing, she is dead
 			}
 			else ss << ".";
@@ -142,21 +140,21 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 		else	// unhappy
 		{
 			ss << "She did not like working in the arena today.";
-			girl->happiness(-(g_Dice % 11));
+			girl->happiness(-(rng % 11));
 		}
 	}
 	else if (roll_a >= 90)
 	{
 		tired /= 12;
 		craftpoints *= 1.1;
-		enjoy += g_Dice % 3;
+		enjoy += rng % 3;
 		/* */if (roll_b < 50)	ss << "She kept a steady pace of hammer blows by humming a pleasant tune.";
 		else /*            */	ss << "She had a great time working today.";
 	}
 	else
 	{
 		tired /= 10;
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "The shift passed uneventfully.";
 	}
 	ss << "\n \n";
@@ -184,7 +182,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 	{
 		// `J` Incomplete Craftable code - commenting out
 #if 0
-		ss << g_Game.inventory_manager().CraftItem(girl, JOB_JEWELER, int(craftpoints));
+		ss << g_Game->inventory_manager().CraftItem(girl, JOB_JEWELER, int(craftpoints));
 #else
 		int numitems = 0, tries = 0, random = 0;
 		sInventoryItem* item = nullptr;
@@ -196,7 +194,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 
 			if (craftpoints < 20)						// Simple items
 			{
-				random = g_Dice % 10;
+				random = rng % 10;
 				switch (random)
 				{
 				case 0:		Cost = 15;	itemmade = "Nipple Barbells";			break;	// Desc = "Barbell ring nipple piercings. (+2 BDSM, +2 Confidence, +1 Titty, +1 Libido, adds Pierced Nipples)"
@@ -213,8 +211,8 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			else if (craftpoints < 50)					// small common items
 			{
-				random = g_Dice % 10;
-				if (girl->magic() >= 30 && girl->mana() >= 30 && g_Dice.percent(girl->magic() / 3)) random = (g_Dice % 2)*2;
+				random = rng % 10;
+				if (girl->magic() >= 30 && girl->mana() >= 30 && rng.percent(girl->magic() / 3)) random = (rng % 2)*2;
 				switch (random)
 				{
 				case 0:	if (girl->magic() >= 30 && girl->mana() >= 30)
@@ -237,7 +235,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			else if (craftpoints < 100)					// medium items
 			{
-				random = g_Dice % 3;
+				random = rng % 3;
 				switch (random)
 				{
 				case 0:		Cost = 90;	itemmade = "Gold Pendant";		break;	// Desc = "A finely crafted heart pendant hangs on this pair of twisting gold chains. (A) (+20 Cha)"
@@ -247,8 +245,8 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			else if (craftpoints < 150)					// large items
 			{
-				random = g_Dice % 7;
-				if (girl->magic() >= 50 && girl->mana() >= 50 && g_Dice.percent(girl->magic() / 3)) random = (g_Dice % 3) * 2;
+				random = rng % 7;
+				if (girl->magic() >= 50 && girl->mana() >= 50 && rng.percent(girl->magic() / 3)) random = (rng % 3) * 2;
 				switch (random)
 				{
 				case 0:	if (girl->magic() >= 50 && girl->mana() >= 50)
@@ -271,7 +269,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 			}
 			else if (craftpoints < 200)					// difficult to make items
 			{
-				random = g_Dice % 3;
+				random = rng % 3;
 				switch (random)
 				{
 				case 0:	if (girl->magic() >= 20 && girl->mana() >= 20)
@@ -355,7 +353,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 			}
 
 			if (itemmade.empty())	{ Magic = 0;  Cost = 10; itemmade = "Bauble Necklace"; }//                 Desc = "This necklace is basically some semi-precious stones on a string. It's pretty, but it's not the kind of jewelry you write home about. (D) (+5 Cha)"
-			item = g_Game.inventory_manager().GetItem(itemmade);
+			item = g_Game->inventory_manager().GetItem(itemmade);
 			if (item)
 			{
 				craftpoints -= Cost;
@@ -363,7 +361,7 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 				msgtype = EVENT_GOODNEWS;
 				if (numitems == 0)	ss << "\n \n" << girlName << " made:";
 				ss << "\n" << itemmade;
-                g_Game.player().inventory().add_item(item);
+                g_Game->player().inventory().add_item(item);
 				numitems++;
 			}
 			else
@@ -395,14 +393,14 @@ bool cJobManager::WorkJeweler(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait("Slow Learner"))	{ skill -= 1; xp -= 3; }
 	/* */if (girl->has_trait("Nymphomaniac"))	{ libido += 2; }
 	// EXP and Libido
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary improvement (+2 for single or +1 for multiple)
-	girl->upd_skill(SKILL_CRAFTING,	(g_Dice % skill) + 2);
+	girl->upd_skill(SKILL_CRAFTING,	(rng % skill) + 2);
 	// secondary improvement (-1 for one then -2 for others)
-	girl->agility((g_Dice % skill) - 1);
-	girl->confidence(max(0, (g_Dice % skill) - 2));
+	girl->agility((rng % skill) - 1);
+	girl->confidence(max(0, (rng % skill) - 2));
 
 	// Update Enjoyment
 	girl->upd_Enjoyment(actiontype, enjoy);

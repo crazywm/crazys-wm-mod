@@ -111,3 +111,18 @@ void cColor::RGBToSDLColor(SDL_Color* SDLColor, int r = 0, int g = 0, int b = 0)
 	SDLColor->b = b;
 }
 
+void number_to_hex(char* target, std::uint8_t number) {
+    std::uint8_t first_digit  = (number & 0xF0u) >> 4u;
+    std::uint8_t second_digit = number & 0x0Fu;
+    target[0] = first_digit + '0';
+    target[1] = second_digit + '0';
+}
+
+std::string sColor::to_hex() const
+{
+    std::string result(6, ' ');
+    number_to_hex(&result.front(), r);
+    number_to_hex(&result.front() + 2, r);
+    number_to_hex(&result.front() + 4, r);
+    return std::move(result);
+}

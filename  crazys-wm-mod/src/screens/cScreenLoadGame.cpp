@@ -20,12 +20,11 @@
 #include "CLog.h"
 #include "XmlUtil.h"
 #include "FileList.h"
-#include "InterfaceGlobals.h"
 #include "sConfig.h"
 #include "tinyxml.h"
+#include "widgets/cListBox.h"
 
 extern cConfig cfg;
-extern bool g_Cheats;
 extern string g_ReturnText;
 extern int g_ReturnInt;
 
@@ -57,10 +56,13 @@ cScreenLoadGame::cScreenLoadGame()
             xu.get_att(el, "Red", r, true); xu.get_att(el, "Green", g, true); xu.get_att(el, "Blue", b, true);
 
             if (name == "LoadMenu")		CreateWindow(x, y, w, h, e);
-            if (name == "WhoreMaster")	AddTextItem(STATIC_STATIC, x, y, w, h, text, fontsize, false, false, false, r, g, b);
-            if (name == "FileName")		AddListBox(LIST_LOADGSAVES, x, y, w, h, e, true, false, false, true, true, fontsize, rowheight);
-            if (name == "LoadGame")		AddButton(image, BUTTON_LOADGLOAD, x, y, w, h, Transparency, Scale);
-            if (name == "BackButton")	AddButton(image, BUTTON_LOADGBACK, x, y, w, h, Transparency, Scale);
+            if (name == "WhoreMaster")	AddTextItem(STATIC_STATIC, x, y, w, h, text, fontsize, false, r, g, b);
+            if (name == "FileName") {
+                auto lb = AddListBox(x, y, w, h, e, true, false, false, true, true, fontsize, rowheight);
+                LIST_LOADGSAVES = lb->get_id();
+            }
+            if (name == "LoadGame") AddButton(image, BUTTON_LOADGLOAD, x, y, w, h, Transparency, Scale);
+            if (name == "BackButton") AddButton(image, BUTTON_LOADGBACK, x, y, w, h, Transparency, Scale);
             if (name == "Background")
             {
                 DirPath dp = ImagePath(file);
@@ -73,9 +75,10 @@ cScreenLoadGame::cScreenLoadGame()
         g_LogFile.write("Loading Default LoadMenu");
         CreateWindow(224, 128, 344, 344, 1);
         AddTextItem(STATIC_STATIC, 0, 334 - 10, 344, 12, "Please read the readme.html", 10);
-        AddListBox(LIST_LOADGSAVES, 8, 8, 328, 288, 1, true, false, false, true, true, fontsize, rowheight);
-        AddButton("Load", BUTTON_LOADGLOAD, 8, 304, 160, 32, true);
-        AddButton("Back", BUTTON_LOADGBACK, 176, 304, 160, 32, true);
+        auto lb = AddListBox(8, 8, 328, 288, 1, true, false, false, true, true, fontsize, rowheight);
+        LIST_LOADGSAVES = lb->get_id();
+        AddButton("Load", BUTTON_LOADGLOAD, 8, 304, 160, 32, true, false);
+        AddButton("Back", BUTTON_LOADGBACK, 176, 304, 160, 32, true, false);
     }
 
     SetButtonNavigation(BUTTON_LOADGBACK, "<back>");
@@ -92,12 +95,7 @@ void cScreenLoadGame::load_game()
     {
         return;
     }
-    string temp = GetSelectedTextFromList(LIST_LOADGSAVES);
-    g_ReturnText = temp;
-
-    //	enable cheat mode for a cheat brothel
-    g_Cheats = (temp == "Cheat.gam");
-
+    g_ReturnText = GetSelectedTextFromList(LIST_LOADGSAVES);;
     g_ReturnInt = 0;
     replace_window("Preparing Game");
 }

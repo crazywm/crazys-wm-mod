@@ -19,7 +19,7 @@
 #pragma once
 
 #include <functional>
-#include "cInterfaceWindow.h"
+#include "interface/cInterfaceWindow.h"
 
 enum INPUT_MODE {
 	MODE_STRING,

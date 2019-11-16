@@ -23,18 +23,16 @@
 #include "src/Game.hpp"
 #include "src/sStorage.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - General
-bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCARING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (roll_a < 50 && girl->disobey_check(actiontype, JOB_BEASTCARER))
 	{
 		ss << " refused to take care of beasts during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -43,7 +41,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	ss << " worked taking care of beasts.\n \n";
 
-	if (g_Game.storage().beasts() < 1)
+	if (g_Game->storage().beasts() < 1)
 	{
 		ss << "There were no beasts in the brothel to take care of.\n \n";
 	}
@@ -67,11 +65,11 @@ bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary)
 	int addbeasts = -1;
 
 	// `J` if she has time to spare after taking care of the current beasts, she may try to get some new ones.
-	if (numhandle / 2 > g_Game.storage().beasts() && g_Dice.percent(50))	// `J` these need more options
+	if (numhandle / 2 > g_Game->storage().beasts() && rng.percent(50))	// `J` these need more options
 	{
 		if (girl->magic() > 70 && girl->mana() >= 30)
 		{
-			addbeasts = (g_Dice % ((girl->mana() / 30) + 1));
+			addbeasts = (rng % ((girl->mana() / 30) + 1));
 			ss << girlName;
 			ss << (addbeasts > 0 ? " used" : " tried to use") << " her magic to summon ";
 			if (addbeasts < 2) ss << "a beast";
@@ -83,9 +81,9 @@ bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary)
 		else if (girl->animalhandling() > 50 && girl->charisma() > 50)
 		{
 			addbeasts =
-				g_Dice.percent(girl->combat()) +
-				g_Dice.percent(girl->charisma()) +
-				g_Dice.percent(girl->animalhandling());
+				rng.percent(girl->combat()) +
+				rng.percent(girl->charisma()) +
+				rng.percent(girl->animalhandling());
 			ss << girlName;
 			if (addbeasts <= 0)
 			{
@@ -103,7 +101,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary)
 		}
 		else if (girl->combat() > 50 && (girl->has_trait( "Adventurer") || girl->confidence() > 70))
 		{
-			addbeasts = (g_Dice % 2);
+			addbeasts = (rng % 2);
 			ss << girlName << " stood near the entrance to the catacombs, trying to lure out a beast by making noises of an injured animal.\n";
 			if (addbeasts > 0) ss << "After some time, a beast came out of the catacombs. " << girlName << " threw a net over it and wrestled it into submission.\n";
 			else ss << "After a few hours, she gave up.";
@@ -116,19 +114,19 @@ bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary)
 #pragma region	//	Enjoyment and Tiredness		//
 	if (roll_a <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		addbeasts--;
 		ss << "The animals were restless and disobedient.";
 	}
 	else if (roll_a >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		addbeasts++;
 		ss << "She enjoyed her time working with the animals today.";
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << (addbeasts>=0 ? "Otherwise, the" : "The") << " shift passed uneventfully.\n \n";
 	}
 
@@ -146,14 +144,14 @@ bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else
 	{
-		wages += g_Game.storage().beasts()/5;
+		wages += g_Game->storage().beasts()/5;
 		tips += addbeasts * 5;				// a little bonus for getting new beasts
 	}
 
 #pragma endregion
 #pragma region	//	Finish the shift			//
 
-	g_Game.storage().add_to_beasts(addbeasts);
+	g_Game->storage().add_to_beasts(addbeasts);
 	girl->m_Events.AddMessage(ss.str(), imagetype, msgtype);
 
 	// Money
@@ -161,16 +159,16 @@ bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_Pay = max(0, wages);
 
 	// Improve girl
-	int xp = 5 + (g_Game.storage().beasts() / 10), libido = 1, skill = 2 + (g_Game.storage().beasts() / 20);
+	int xp = 5 + (g_Game->storage().beasts() / 10), libido = 1, skill = 2 + (g_Game->storage().beasts() / 20);
 
 	if (girl->has_trait( "Quick Learner"))		{ skill += 1; xp += 3; }
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->service(max(1, (g_Dice % skill) - 1));
+	girl->service(max(1, (rng % skill) - 1));
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
-	girl->animalhandling(max(1, (g_Dice % skill) + 1));
+	girl->animalhandling(max(1, (rng % skill) + 1));
 
 	girl->upd_Enjoyment(actiontype, enjoy);
 	cGirls::PossiblyLoseExistingTrait(girl, "Elegant", 40, actiontype, " Working with dirty, smelly beasts has damaged " + girlName + "'s hair, skin and nails making her less Elegant.", Day0Night1);
@@ -181,7 +179,7 @@ bool cJobManager::WorkBeastCare(sGirl* girl, bool Day0Night1, string& summary)
 
 double cJobManager::JP_BeastCare(sGirl* girl, bool estimate)
 {
-#if 1	//SIN - standardizing job performance calc per J's instructs
+	//SIN - standardizing job performance calc per J's instructs
 	double jobperformance =
 		//main stat - first 100
 		girl->animalhandling() +
@@ -198,37 +196,8 @@ double cJobManager::JP_BeastCare(sGirl* girl, bool estimate)
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//and finally some traits
-	//Good
-	if (girl->has_trait( "Powerful Magic"))				jobperformance += 35;	//Animagical
-	if (girl->has_trait( "Strong Magic"))					jobperformance += 30;	//Animal magic spells
-	if (girl->has_trait( "Farmer"))						jobperformance += 30;	//Animal expert
-	if (girl->has_trait( "Furry"))						jobperformance += 25;	//Animal instinct
-	if (girl->has_trait( "Goddess"))						jobperformance += 25;	//Animal command
-	if (girl->has_trait( "Natural Pheromones"))			jobperformance += 20;	//Animal attraction
-	if (girl->has_trait( "Farmers Daughter"))				jobperformance += 20;	//Animal understanding
-	if (girl->has_trait( "Country Gal"))					jobperformance += 15;	//Animal awareness
+    jobperformance += girl->get_trait_modifier("work.beastcare");
 
-	//Bad
-	if (girl->has_trait( "Undead"))						jobperformance -= 50;	//Animals fear her
-	if (girl->has_trait( "Zombie"))						jobperformance -= 50;	//Animals fear her
-	if (girl->has_trait( "Skeleton"))						jobperformance -= 40;	//Animals fear her
-	if (girl->has_trait( "Muggle"))						jobperformance -= 30;	//This job uses magic a lot, so bad magic = low skill
-	if (girl->has_trait( "Weak Magic"))					jobperformance -= 20;	//This job uses magic a lot, so bad magic = low skill
-	if (girl->has_trait( "City Girl"))					jobperformance -= 15;	//Saw animals on TV once. They looked cute.
 
-#else
-	double jobperformance = 0.0;
-	jobperformance = (girl->animalhandling() +
-		girl->intelligence() / 3 +
-		girl->service() / 3 +
-		girl->magic() / 3);
-	if (!estimate)
-	{
-		int t = girl->tiredness() - 80;
-		if (t > 0)
-			jobperformance -= (t + 2) * (t / 3);
-	}
-#endif
-	return jobperformance;
+    return jobperformance;
 }

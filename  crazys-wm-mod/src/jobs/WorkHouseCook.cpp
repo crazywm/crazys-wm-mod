@@ -20,16 +20,14 @@
 #include <sstream>
 #include "src/buildings/cBrothel.h"
 
-extern cRng g_Dice;
-
 // `J` Job House - Cook
-bool cJobManager::WorkHouseCook(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkHouseCook(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
 	int actiontype = ACTION_WORKCOOKING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100();
 	if (roll_a <= 50 && girl->disobey_check(actiontype, JOB_HOUSECOOK))
 	{
 		ss << " refused to cook for your house.";
@@ -89,7 +87,7 @@ bool cJobManager::WorkHouseCook(sGirl* girl, bool Day0Night1, string& summary)
 
 
 	//enjoyed the work or not
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 5)
 	{
 		ss << "Some of the girls made fun of her cooking during the shift.";
@@ -136,8 +134,8 @@ bool cJobManager::WorkHouseCook(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 2);
-	girl->cooking((g_Dice % skill) + 2);
+	girl->exp((rng % xp) + 2);
+	girl->cooking((rng % skill) + 2);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(actiontype, enjoy);
@@ -161,36 +159,7 @@ double cJobManager::JP_HouseCook(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Quick Learner"))  jobperformance += 5;
-	if (girl->has_trait( "Psychic"))		  jobperformance += 10;
-	if (girl->has_trait( "Chef"))			  jobperformance += 30;
-	if (girl->has_trait( "Mixologist"))	  jobperformance += 20;	//Good with measures
+    jobperformance += girl->get_trait_modifier("work.housecook");
 
-	//bad traits
-	if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive")) 	jobperformance -= 20; //gets mad easy
-	if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))			jobperformance -= 20;
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 40;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 60;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 125;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 60;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 50;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 150;
-	if (girl->has_trait( "Blind"))		jobperformance -= 30;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 15;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-
-	return jobperformance;
+    return jobperformance;
 }

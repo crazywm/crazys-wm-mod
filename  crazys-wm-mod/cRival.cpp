@@ -43,13 +43,13 @@ static inline int max(int a, int b) { return((a > b) ? a : b); }
 
 string cRivalManager::rivals_plunder_pc_gold(cRival* rival)
 {
-	if (g_Game.gold().ival() <= 0) return "";						// no gold to sieze? nothing to do.
-	long pc_gold = g_Game.gold().ival();							// work out how much they take. make a note of how much we have
+	if (g_Game->gold().ival() <= 0) return "";						// no gold to sieze? nothing to do.
+	long pc_gold = g_Game->gold().ival();							// work out how much they take. make a note of how much we have
 
 	long gold = g_Dice.random(min((long)2000, pc_gold));
 	if (gold < 45) gold = 45;								// make sure there's at least 45 gold taken
 	if (pc_gold < gold) gold = pc_gold;						// unless the pc has less than that, in which case take the lot
-	g_Game.gold().rival_raids(gold);								// deduct the losses against rival raid losses
+	g_Game->gold().rival_raids(gold);								// deduct the losses against rival raid losses
 	rival->m_Gold += gold;									// add the aount to rival coffers
 
 	stringstream ss;
@@ -59,7 +59,7 @@ string cRivalManager::rivals_plunder_pc_gold(cRival* rival)
 
 void cRivalManager::Update(int& NumPlayerBussiness)
 {
-	if (g_Game.date().year >= 1209 && g_Game.date().month > 3) m_PlayerSafe = false;
+	if (g_Game->date().year >= 1209 && g_Game->date().month > 3) m_PlayerSafe = false;
 
 	// first, remove killed rivals
 	if(erase_if(m_Rivals, [](auto& rival){ return rival->is_defeated(); })) {
@@ -231,7 +231,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		int cGangs = curr->m_NumGangs;
 		for (int i = 0; i < cGangs; i++)
 		{
-			sGang cG1 = g_Game.gang_manager().GetTempGang(curr->m_Power);	// create a random gang for this rival
+			sGang cG1 = g_Game->gang_manager().GetTempGang(curr->m_Power);	// create a random gang for this rival
             cG1.give_potions(10);
 			int missionid = -1;
 			int tries = 0;
@@ -294,14 +294,14 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					{
 						if (!player_safe() && NumPlayerBussiness > 0)	// but only if you are a valid target
 						{
-							sGang* miss1 = g_Game.gang_manager().GetGangOnMission(MISS_GUARDING);
+							sGang* miss1 = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
 							if (miss1)									// if you have a gang guarding
 							{
 								ss << "Your guards encounter " << curr->m_Name << (" going after some of your territory.");
 
-								sGang rGang = g_Game.gang_manager().GetTempGang(curr->m_Power);
+								sGang rGang = g_Game->gang_manager().GetTempGang(curr->m_Power);
 								rGang.give_potions(10);
-								if (g_Game.gang_manager().GangBrawl(miss1, &rGang))	// if you win
+								if (g_Game->gang_manager().GangBrawl(miss1, &rGang))	// if you win
 								{
 									if (rGang.m_Num == 0) curr->m_NumGangs--;
 									ss << ("\nBut you maintain control of the territory.");
@@ -309,17 +309,17 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 								}
 								else									// if you lose
 								{
-									if (miss1->m_Num == 0) g_Game.gang_manager().RemoveGang(miss1);
+									if (miss1->m_Num == 0) g_Game->gang_manager().RemoveGang(miss1);
 									ss << ("\nYou lose the territory.");
 									NumPlayerBussiness--;
 									curr->m_BusinessesExtort++;
-									g_Game.push_message(ss.str(), COLOR_RED);
+									g_Game->push_message(ss.str(), COLOR_RED);
 								}
 							}
 							else										// if you do not have a gang guarding
 							{
 								ss << ("Your rival ") << curr->m_Name << (" has taken one of the undefended territories you control.");
-								g_Game.push_message(ss.str(), COLOR_RED);
+								g_Game->push_message(ss.str(), COLOR_RED);
 								NumPlayerBussiness--;
 								curr->m_BusinessesExtort++;
 							}
@@ -334,9 +334,9 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							ss << rival->m_Name;
 							if (rival->m_NumGangs > 0)
 							{
-								sGang rG1 = g_Game.gang_manager().GetTempGang(rival->m_Power);
+								sGang rG1 = g_Game->gang_manager().GetTempGang(rival->m_Power);
                                 rG1.give_potions(10);
-								if (g_Game.gang_manager().GangBrawl(&cG1, &rG1, true))
+								if (g_Game->gang_manager().GangBrawl(&cG1, &rG1, true))
 								{
 									rival->m_NumGangs--;
 									rival->m_BusinessesExtort--;
@@ -355,7 +355,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 								rival->m_BusinessesExtort--;
 								curr->m_BusinessesExtort++;
 							}
-							g_Game.push_message(ss.str(), COLOR_BLUE);
+							g_Game->push_message(ss.str(), COLOR_BLUE);
 						}
 					}
 				}
@@ -392,14 +392,14 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					{
 						int num = 0;
 						bool damage = false;
-						sGang* miss1 = g_Game.gang_manager().GetGangOnMission(MISS_GUARDING);
+						sGang* miss1 = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
 						if (miss1)
 						{
 							ss << ("Your rival the ") << curr->m_Name << (" attack your assets.");
 
-							if (!g_Game.gang_manager().GangBrawl(miss1, &cG1))
+							if (!g_Game->gang_manager().GangBrawl(miss1, &cG1))
 							{
-								if (miss1->m_Num == 0) g_Game.gang_manager().RemoveGang(miss1);
+								if (miss1->m_Num == 0) g_Game->gang_manager().RemoveGang(miss1);
 								ss << ("\nYour men are defeated.");
 								int num = (g_Dice % 2) + 1;
 								damage = true;
@@ -414,7 +414,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 						else
 						{
 							ss << ("You have no guards so your rival ") << curr->m_Name << (" attacks.");
-							if (NumPlayerBussiness > 0 || g_Game.gold().ival() > 0)
+							if (NumPlayerBussiness > 0 || g_Game->gold().ival() > 0)
 							{
 								num = (g_Dice % 3) + 1;
 								damage = true;
@@ -439,7 +439,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							else ss << ".";
 
 							ss << rivals_plunder_pc_gold(curr.get());
-							g_Game.push_message(ss.str(), COLOR_RED);
+							g_Game->push_message(ss.str(), COLOR_RED);
 						}
 					}
 					else
@@ -452,9 +452,9 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 							ss << rival->m_Name;
 							if (rival->m_NumGangs > 0)
 							{
-								sGang rG1 = g_Game.gang_manager().GetTempGang(rival->m_Power);
+								sGang rG1 = g_Game->gang_manager().GetTempGang(rival->m_Power);
 								rG1.give_potions(10);
-								if (g_Game.gang_manager().GangBrawl(&cG1, &rG1, true))
+								if (g_Game->gang_manager().GangBrawl(&cG1, &rG1, true))
 								{
 									rival->m_NumGangs--;
 									ss << (" and won.");
@@ -510,7 +510,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 									ss << "\nThey destroyed one of their Bars.";
 								}
 							}
-							g_Game.push_message(ss.str(), 0);
+							g_Game->push_message(ss.str(), 0);
 						}
 					}
 				}
@@ -528,7 +528,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 				if (g_Dice.percent(cG1.intelligence()))			// chance to find a girl
 				{
 					bool addgirl = false;
-					sGirl* girl = g_Game.GetRandomGirl();
+					sGirl* girl = g_Game->GetRandomGirl();
                     girl->set_stat(STAT_HEALTH, 100);		// make sure she is at full health
 					if (girl)
 					{
@@ -538,7 +538,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 						}
 						else if (girl->fights_back())				// try to kidnap her
 						{
-							if (!g_Game.gang_manager().GirlVsEnemyGang(girl, &cG1)) addgirl = true;
+							if (!g_Game->gang_manager().GirlVsEnemyGang(girl, &cG1)) addgirl = true;
 							else if (cG1.m_Num <= 0) curr->m_NumGangs--;
 						}
 						else { addgirl = true; }							// she goes willingly
@@ -565,7 +565,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 					{
 						bool quit = false; bool add = false;
 						sInventoryItem* temp;
-						do { temp = g_Game.inventory_manager().GetRandomItem();
+						do { temp = g_Game->inventory_manager().GetRandomItem();
 						} while (!temp || temp->m_Rarity < RARITYSHOP25 || temp->m_Rarity > RARITYCATACOMB01);
 
 						switch (temp->m_Rarity)
@@ -730,7 +730,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 			int i = 0;
 			while (i < 6)
 			{
-				sInventoryItem* item = g_Game.inventory_manager().GetRandomItem();
+				sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
 				if (item && item->m_Rarity <= RARITYCATACOMB01 && g_Dice.percent(rper[item->m_Rarity])
 					&& curr->m_Gold + income + upkeep > item->m_Cost)
 				{
@@ -753,7 +753,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 		if (profit > 1000)		curr->m_BribeRate += (long)(50);	// if doing well financially then increase
 		else if (profit < 0)	curr->m_BribeRate -= (long)(50);	// if loosing money decrease
 		if (curr->m_BribeRate < 0) curr->m_BribeRate = 0;			// check 0
-		g_Game.UpdateBribeInfluence();							    // update influence
+		g_Game->UpdateBribeInfluence();							    // update influence
 
 
 		// `J` bookmark - rival money at the end of their turn
@@ -1074,11 +1074,11 @@ void cRivalManager::check_rivals()
 	}
 	// we only create new rivals after the game has been won
 	// `J` added a chance for a new rival before the game is won
-	if (g_Game.player().m_WinGame == false && g_Dice.percent(100 - num_rivals)) return;
+	if (g_Game->player().m_WinGame == false && g_Dice.percent(100 - num_rivals)) return;
 	if (g_Dice.percent(70)) return;				// create new random rival or not!
 	peace = false;								// flag the war as on again, (should be a field somewhere)
 	CreateRandomRival();				// create a new rival and tell the player the good news
-	g_Game.push_message(new_rival_text(), COLOR_RED);
+	g_Game->push_message(new_rival_text(), COLOR_RED);
 }
 
 // `J` moved from cBrothel
@@ -1173,18 +1173,18 @@ void cRivalManager::peace_breaks_out()
 {
 	stringstream ss;
 	// if the PC already won, this is just an minor outbreak of peace in the day-to-day feuding in crossgate
-	if (g_Game.player().m_WinGame)
+	if (g_Game->player().m_WinGame)
 	{
 		ss << "The last of your challengers has been overthrown. Your domination of Crossgate is absolute.\n \nUntil the next time that is...";
-		g_Game.push_message(ss.str(), COLOR_GREEN);
+		g_Game->push_message(ss.str(), COLOR_GREEN);
 		return;
 	}
 	// otherwise, the player has just won flag it as such
-    g_Game.player().m_WinGame = true;
+    g_Game->player().m_WinGame = true;
 	// let's have a bit of chat to mark the event
 	ss.str("");
 	ss << "The last of your father's killers has been brought before you for judgement. None remain who would dare to oppose you. For all intents and purposes, the city is yours.\n \nWhether or not your father will rest easier for your efforts, you cannot say, but now, with the city at your feet, you feel sure he would be proud of you at this moment.\n \nBut pride comes before a fall, and in Crossgate, complacency kills. The city's slums and slave markets and the fighting pits are full of hungry young bloods burning to make their mark on the world, and any one of them could rise to challenge you at any time.\n \nYou may have seized the city, but holding on to it is never going to be easy.";
-	g_Game.push_message(ss.str(), COLOR_GREEN);
+	g_Game->push_message(ss.str(), COLOR_GREEN);
 	return;
 }
 

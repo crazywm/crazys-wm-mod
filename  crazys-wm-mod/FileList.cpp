@@ -231,27 +231,3 @@ static string clobber_extension(string s)
 	//cerr << "clobber_extension: base = " << base << endl;
 	return base;
 }
-
-vector<string> ImageFileList::file_extensions;
-
-void ImageFileList::scan(const char *base)
-{
-	DirPath &dp = folder_dp();
-	/*
-	*	loop over all the file types
-	*/
-	for (u_int i = 0; i < file_extensions.size(); i++) {
-		/*
-		*		build the pattern from the base plus extension
-		*/
-		string pat = base + file_extensions[i];
-		/*
-		*		get a FileList for the extension,
-		*/
-		FileList l(dp, pat.c_str());
-		/*
-		*		add its files to this list
-		*/
-		(*this) += l;
-	}
-}

@@ -22,18 +22,16 @@
 #include "cInventory.h"
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Farm - Staff - Learning_Job
-bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKTRAINING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_RESEARCH))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -89,13 +87,13 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 		else if (roll_b < 100 && tint < 100)	train = 5;	// intelligence
 		roll_b -= 10;
 	} while (train == 0 && roll_b > 0);
-	if (train == 0 || g_Dice.percent(5)) gaintrait = true;
+	if (train == 0 || rng.percent(5)) gaintrait = true;
 
-	if (train == 1) { sgAnm = skill; ss << "She researches animals.\n"; }				else sgAnm = g_Dice % 2;
-	if (train == 2) { sgFar = skill; ss << "She researches farming techniques.\n"; }	else sgFar = g_Dice % 2;
-	if (train == 3) { sgMag = skill; ss << "She researches magical techniques.\n"; }	else sgMag = g_Dice % 2;
-	if (train == 4) { sgHer = skill; ss << "She researches plants and their uses.\n"; }	else sgHer = g_Dice % 2;
-	if (train == 5) { sgInt = skill; ss << "She researches general topics.\n"; }		else sgInt = g_Dice % 2;
+	if (train == 1) { sgAnm = skill; ss << "She researches animals.\n"; }				else sgAnm = rng % 2;
+	if (train == 2) { sgFar = skill; ss << "She researches farming techniques.\n"; }	else sgFar = rng % 2;
+	if (train == 3) { sgMag = skill; ss << "She researches magical techniques.\n"; }	else sgMag = rng % 2;
+	if (train == 4) { sgHer = skill; ss << "She researches plants and their uses.\n"; }	else sgHer = rng % 2;
+	if (train == 5) { sgInt = skill; ss << "She researches general topics.\n"; }		else sgInt = rng % 2;
 
 	if (sgAnm + sgFar + sgMag + sgHer + sgInt > 0)
 	{
@@ -111,7 +109,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 	while (gaintrait && trycount > 0)	// `J` Try to add a trait
 	{
 		trycount--;
-		switch (g_Dice % 10)
+		switch (rng % 10)
 		{
 		case 0:
 			break;
@@ -146,9 +144,9 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 
 
 	//enjoyed the work or not
-	/* */if (roll_c <= 10)	{ enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy her time training."; }
-	else if (roll_c >= 90)	{ enjoy += g_Dice % 3 + 1;	ss << "She had a pleasant time training."; }
-	else /*             */	{ enjoy += g_Dice % 2;		ss << "Otherwise, the shift passed uneventfully."; }
+	/* */if (roll_c <= 10)	{ enjoy -= rng % 3 + 1;	ss << "She did not enjoy her time training."; }
+	else if (roll_c >= 90)	{ enjoy += rng % 3 + 1;	ss << "She had a pleasant time training."; }
+	else /*             */	{ enjoy += rng % 2;		ss << "Otherwise, the shift passed uneventfully."; }
 
 	ss << "\n \n";
 
@@ -158,14 +156,14 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 
 
 	// `J` Farm Bookmark - adding in items that can be created in the farm
-	if (girl->intelligence() + girl->crafting() > 100 && g_Dice.percent(girl->intelligence() + girl->crafting() / 10))	// 10-20%
+	if (girl->intelligence() + girl->crafting() > 100 && rng.percent(girl->intelligence() + girl->crafting() / 10))	// 10-20%
 	{
 		sInventoryItem* item = nullptr;
 		string itemname;
 		int tries = skill;
 		while (itemname.empty() && tries > 0)
 		{
-			switch (g_Dice % 20)
+			switch (rng % 20)
 			{
 				/*	For each item available, the girl making it must have:
 				Skills:
@@ -177,49 +175,49 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 				Traits:
 				*	Most traits will require some magic
 				Randomness:
-				*	There also should be a g_Dice.percent() with the main Skills averaged and divided by 10
-				*		If there are 3 skills, then g_Dice.percent((a+b+c)/30)
+				*	There also should be a rng.percent() with the main Skills averaged and divided by 10
+				*		If there are 3 skills, then rng.percent((a+b+c)/30)
 				*/
 			case 0:
 				if (girl->farming() > 50 && girl->animalhandling() > 50
-					&& g_Dice.percent(girl->farming() + girl->animalhandling() / 20))
+					&& rng.percent(girl->farming() + girl->animalhandling() / 20))
 					itemname = "Farmer's Guide";		// +10 Farming, +10 AnimalHandling
 				break;
 			case 1:
-				if (girl->constitution() > 60 && g_Dice.percent(girl->constitution() / 10))
+				if (girl->constitution() > 60 && rng.percent(girl->constitution() / 10))
 					itemname = "Manual of Health";		// (+15 Beast/Group, +10 Cons/Str, +5 BDSM/Comb)
 				break;
 			case 2:
-				if (girl->magic() > 60 && g_Dice.percent(girl->magic() / 10))
+				if (girl->magic() > 60 && rng.percent(girl->magic() / 10))
 					itemname = "Manual of Magic";		// +20 magic
 				break;
 			case 3:
-				if (girl->magic() > 80 && g_Dice.percent(girl->magic() / 10))
+				if (girl->magic() > 80 && rng.percent(girl->magic() / 10))
 					itemname = "Codex of the Arcane";	// +40 magic
 				break;
 			case 4:
-				if (girl->lesbian() > 40 && g_Dice.percent(girl->lesbian() / 10))
+				if (girl->lesbian() > 40 && rng.percent(girl->lesbian() / 10))
 					itemname = "Manual of Two Roses";	// +20 Lesbian
 				break;
 			case 5:
 			{
-				if (girl->lesbian() > 80 && g_Dice.percent(girl->lesbian() / 10))
+				if (girl->lesbian() > 80 && rng.percent(girl->lesbian() / 10))
 					itemname = "Codex of Sappho";		// +40 Lesbian
 			}break;
 			case 6:
-				if (girl->bdsm() > 60 && g_Dice.percent(girl->bdsm() / 10))
+				if (girl->bdsm() > 60 && rng.percent(girl->bdsm() / 10))
 					itemname = "Manual of Bondage";		// (+20 BDSM, +5 Cons)
 				break;
 			case 7:
-				if (girl->combat() > 60 && g_Dice.percent(girl->combat() / 10))
+				if (girl->combat() > 60 && rng.percent(girl->combat() / 10))
 					itemname = "Manual of Arms";		// (+20 Com)
 				break;
 			case 8:
-				if (girl->performance() + girl->strip() > 100 && g_Dice.percent((girl->performance() + girl->strip()) / 20))
+				if (girl->performance() + girl->strip() > 100 && rng.percent((girl->performance() + girl->strip()) / 20))
 					itemname = "Manual of the Dancer";	// (+15 Serv/Strip/Perf, +5 Norm/Agi)
 				break;
 			case 9:
-				if (girl->normalsex() + girl->oralsex() + girl->anal() > 150 && g_Dice.percent((girl->normalsex() + girl->oralsex() + girl->anal()) / 30))
+				if (girl->normalsex() + girl->oralsex() + girl->anal() > 150 && rng.percent((girl->normalsex() + girl->oralsex() + girl->anal()) / 30))
 					itemname = "Manual of Sex";			// (+15 Norm, +10 Oral, +5 Anal)
 				break;
 			case 10:
@@ -229,7 +227,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 				/* */if (girl->has_trait("Sterile"))		manacost = 80;
 				else if (girl->has_trait("Fertile"))		manacost = 40;
 				else if (girl->has_trait("Broodmother"))	manacost = 20;
-				if (girl->mana() >= manacost && g_Dice.percent(girl->magic() - manacost))
+				if (girl->mana() >= manacost && rng.percent(girl->magic() - manacost))
 				{
 					girl->mana(-manacost);
 					itemname = "Fertility Tome";				// (-Sterile, +Fertile, +50 Normal Sex, +100 Libido)
@@ -242,7 +240,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 					if (girl->refinement() < 40 || girl->service() < 40 || girl->intelligence() < 40)		break;
 				else if (girl->refinement() < 60 && girl->service() < 60 && girl->intelligence() < 60)		break;
 				// she can make it, now does she?
-				if (g_Dice.percent((girl->refinement() + girl->service() + girl->intelligence()) / 30))
+				if (rng.percent((girl->refinement() + girl->service() + girl->intelligence()) / 30))
 					itemname = "Codex of the Courtesan";		// (+20 Serv/Strip/Refin, +10 Mor/Dig/Cha/Int/Lib/Conf/Oral)
 			}break;
 			case 12:
@@ -256,7 +254,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 				}
 				else if (girl->bdsm() < 70 && girl->magic() < 70 && girl->mana() < 70)		break;
 				// she can make it, now does she?
-				if (g_Dice.percent((girl->bdsm() + girl->magic()) / 20))
+				if (rng.percent((girl->bdsm() + girl->magic()) / 20))
 				{
 					girl->mana(-manacost);
 					itemname = "Codex of Submission";		// (+30 Obed, -30 Spi/Dig, +20 BDSM, +10 Anal/Group/Oral/Hand/Foot)
@@ -264,17 +262,17 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 			}break;
 			case 13:
 			{
-				if (girl->combat() > 80 && g_Dice.percent(girl->combat() / 10))
+				if (girl->combat() > 80 && rng.percent(girl->combat() / 10))
 					itemname = "Codex of Mars";			// (+40 Com, Adds Brawler)
 			}break;
 			case 14:
 			{
-				if (girl->normalsex() + girl->oralsex() + girl->anal() > 170 && g_Dice.percent((girl->normalsex() + girl->oralsex() + girl->anal()) / 30))
+				if (girl->normalsex() + girl->oralsex() + girl->anal() > 170 && rng.percent((girl->normalsex() + girl->oralsex() + girl->anal()) / 30))
 					itemname = "Codex of Eros";			// (+30 Norm, +10 Anal/Oral)
 			}break;
 			case 15:
 			{
-				if (girl->medicine() + girl->intelligence() > 110 && g_Dice.percent((girl->medicine() + girl->intelligence()) / 20))
+				if (girl->medicine() + girl->intelligence() > 110 && rng.percent((girl->medicine() + girl->intelligence()) / 20))
 					itemname = "Codex of Asclepius";	// (+20 Med, +10 Int)
 			}break;
 			case 16:
@@ -301,10 +299,10 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 			}
 		}
 
-		item = g_Game.inventory_manager().GetItem(itemname);
+		item = g_Game->inventory_manager().GetItem(itemname);
 		if (item)
 		{
-            g_Game.player().inventory().add_item(item);
+            g_Game->player().inventory().add_item(item);
 			ss << girlName << " managed to create a " << itemname << " by compiling her notes together.\n";
 		}
 	}
@@ -338,7 +336,7 @@ bool cJobManager::WorkFarmResearch(sGirl* girl, bool Day0Night1, string& summary
 	else if (girl->has_trait( "Slow Learner"))	{ xp -= 2; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 #pragma endregion
@@ -368,17 +366,9 @@ double cJobManager::JP_FarmResearch(sGirl* girl, bool estimate)// not used
 			if (t > 0)
 				jobperformance -= (t + 2) * (t / 3);
 		}
-
-		//good traits
-		if (girl->has_trait( "Quick Learner"))  jobperformance += 5;
-		if (girl->has_trait( "Psychic"))		  jobperformance += 10;
-
-		//bad traits
-		if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
-		if (girl->has_trait( "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
-		if (girl->has_trait( "Aggressive")) 	jobperformance -= 20; //gets mad easy
-		if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
-		if (girl->has_trait( "Meek"))			jobperformance -= 20;
 	}
-	return jobperformance;
+
+    jobperformance += girl->get_trait_modifier("work.research");
+
+    return jobperformance;
 }

@@ -17,10 +17,6 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cScreenSettings.h"
-#include "widgets/cEditBox.h"
-#include "widgets/cCheckBox.h"
-#include "widgets/cTextItem.h"
-#include "widgets/cSlider.h"
 #include "FileList.h"
 #include "sConfig.h"
 #include "CLog.h"
@@ -112,7 +108,7 @@ void cScreenSettings::set_ids()
         std::stringstream ss;
         cfg.catacombs.unique_catacombs() = value;
         ss.str("");	ss << "Chance of Unique Girls from Catacombs: " << cfg.catacombs.unique_catacombs() << "%";
-        m_TextItems[uniquecatacombslabel_id]->SetText(ss.str());
+        EditTextItem(ss.str(), uniquecatacombslabel_id);
     });
 }
 
@@ -126,28 +122,28 @@ void cScreenSettings::init(bool back)
     if (!back)
     {
         stringstream ss;
-        m_EditBoxes[characters_id]->m_Text->SetText(cfg.folders.characters());
-        m_EditBoxes[saves_id]->m_Text->SetText(cfg.folders.saves());
-        m_EditBoxes[defaultimages_id]->m_Text->SetText(cfg.folders.defaultimageloc());
-        m_EditBoxes[items_id]->m_Text->SetText(cfg.folders.items());
-        m_CheckBoxes[backupsaves_id]->SetState(cfg.folders.backupsaves());
-        m_CheckBoxes[preferdefault_id]->SetState(cfg.folders.preferdefault());
+        SetEditBoxText(characters_id, cfg.folders.characters());
+        SetEditBoxText(saves_id, cfg.folders.saves());
+        SetEditBoxText(defaultimages_id, cfg.folders.defaultimageloc());
+        SetEditBoxText(items_id, cfg.folders.items());
+        SetCheckBox(backupsaves_id, cfg.folders.backupsaves());
+        SetCheckBox(preferdefault_id, cfg.folders.preferdefault());
 
         ss.str("");	ss << "Chance of Unique Girls from Catacombs: "<< cfg.catacombs.unique_catacombs() <<"%";
-        m_TextItems[uniquecatacombslabel_id]->SetText(ss.str());
-        m_Sliders[uniquecatacombs_id]->Value(cfg.catacombs.unique_catacombs());
-        m_CheckBoxes[controlgirls_id]->SetState(cfg.catacombs.control_girls());
-        m_CheckBoxes[controlgangs_id]->SetState(cfg.catacombs.control_gangs());
-        ss.str("");	ss << "Girls: " << cfg.catacombs.girl_gets_girls() << "%";	m_TextItems[girlgetsgirls_id]->SetText(ss.str());
-        ss.str("");	ss << "Items: " << cfg.catacombs.girl_gets_items() << "%";	m_TextItems[girlgetsitems_id]->SetText(ss.str());
-        ss.str("");	ss << "Beast: " << cfg.catacombs.girl_gets_beast() << "%";	m_TextItems[girlgetsbeast_id]->SetText(ss.str());
-        m_Sliders[girlsgirlspercslider_id]->Value(cfg.catacombs.girl_gets_girls());
-        m_Sliders[girlsitemspercslider_id]->Value(cfg.catacombs.girl_gets_girls() + cfg.catacombs.girl_gets_items());
-        ss.str("");	ss << "Girls: " << cfg.catacombs.gang_gets_girls() << "%";	m_TextItems[ganggetsgirls_id]->SetText(ss.str());
-        ss.str("");	ss << "Items: " << cfg.catacombs.gang_gets_items() << "%";	m_TextItems[ganggetsitems_id]->SetText(ss.str());
-        ss.str("");	ss << "Beast: " << cfg.catacombs.gang_gets_beast() << "%";	m_TextItems[ganggetsbeast_id]->SetText(ss.str());
-        m_Sliders[gangsgirlspercslider_id]->Value(cfg.catacombs.gang_gets_girls());
-        m_Sliders[gangsitemspercslider_id]->Value(cfg.catacombs.gang_gets_girls() + cfg.catacombs.gang_gets_items());
+        EditTextItem(ss.str(), uniquecatacombslabel_id);
+        SliderValue(uniquecatacombs_id, cfg.catacombs.unique_catacombs());
+        SetCheckBox(controlgirls_id, cfg.catacombs.control_girls());
+        SetCheckBox(controlgangs_id, cfg.catacombs.control_gangs());
+        ss.str("");	ss << "Girls: " << cfg.catacombs.girl_gets_girls() << "%";	EditTextItem(ss.str(), girlgetsgirls_id);
+        ss.str("");	ss << "Items: " << cfg.catacombs.girl_gets_items() << "%";	EditTextItem(ss.str(), girlgetsitems_id);
+        ss.str("");	ss << "Beast: " << cfg.catacombs.girl_gets_beast() << "%";	EditTextItem(ss.str(), girlgetsbeast_id);
+        SliderValue(girlsgirlspercslider_id, cfg.catacombs.girl_gets_girls());
+        SliderValue(girlsitemspercslider_id, cfg.catacombs.girl_gets_girls() + cfg.catacombs.girl_gets_items());
+        ss.str("");	ss << "Girls: " << cfg.catacombs.gang_gets_girls() << "%";	EditTextItem(ss.str(), ganggetsgirls_id);
+        ss.str("");	ss << "Items: " << cfg.catacombs.gang_gets_items() << "%";	EditTextItem(ss.str(), ganggetsitems_id);
+        ss.str("");	ss << "Beast: " << cfg.catacombs.gang_gets_beast() << "%";  EditTextItem(ss.str(), ganggetsbeast_id);
+        SliderValue(gangsgirlspercslider_id, cfg.catacombs.gang_gets_girls());
+        SliderValue(gangsitemspercslider_id, cfg.catacombs.gang_gets_girls() + cfg.catacombs.gang_gets_items());
     }
 //	backupsaves_id
 //	preferdefault_id
@@ -195,16 +191,16 @@ void cScreenSettings::update_girl_sliders()
 
 void cScreenSettings::update_settings()
 {
-    cfg.folders.characters()      = m_EditBoxes[characters_id]->m_Text->GetText();
-    cfg.folders.saves()           = m_EditBoxes[saves_id]->m_Text->GetText();
-    cfg.folders.defaultimageloc() = m_EditBoxes[defaultimages_id]->m_Text->GetText();
-    cfg.folders.items()           = m_EditBoxes[items_id]->m_Text->GetText();
-    cfg.folders.backupsaves()     = m_CheckBoxes[backupsaves_id]->GetState();
-    cfg.folders.preferdefault()   = m_CheckBoxes[preferdefault_id]->GetState();
-
-    cfg.catacombs.unique_catacombs() = m_Sliders[uniquecatacombs_id]->Value();
-    cfg.catacombs.control_girls() = m_CheckBoxes[controlgirls_id]->GetState();
-    cfg.catacombs.control_gangs() = m_CheckBoxes[controlgangs_id]->GetState();
+    cfg.folders.characters()      = GetEditBoxText(characters_id);
+    cfg.folders.saves()           = GetEditBoxText(saves_id);
+    cfg.folders.defaultimageloc() = GetEditBoxText(defaultimages_id);
+    cfg.folders.items()           = GetEditBoxText(items_id);
+    cfg.folders.backupsaves()     = GetCheckBox(backupsaves_id);
+    cfg.folders.preferdefault()   = GetCheckBox(preferdefault_id);
+    
+    cfg.catacombs.unique_catacombs() = SliderValue(uniquecatacombs_id);
+    cfg.catacombs.control_girls() = GetCheckBox(controlgirls_id);
+    cfg.catacombs.control_gangs() = GetCheckBox(controlgangs_id);
     int s1 = SliderValue(girlsgirlspercslider_id);
     int s2 = SliderValue(girlsitemspercslider_id);
     int s3 = SliderValue(gangsgirlspercslider_id);

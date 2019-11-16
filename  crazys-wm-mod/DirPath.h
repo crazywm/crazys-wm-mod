@@ -52,19 +52,10 @@ public:
 			path[pos] = 0;
 		}
 	}
-/*
- *	copy constructor, probably not needed...
- */
-#if 0
-	DirPath(DirPath& dp) {
-		path = dp.path;
-	}
-#else
 	// `J` - not sure if this will work but it shuts up the compiler
 	DirPath(const DirPath& dp) {
 		path = dp.path;
 	}
-#endif
 
 
 /*
@@ -112,70 +103,6 @@ public:
 	operator string()	{ return path; }
 };
 
-/*
- * little class to create pathnames in a cross platform way
- */
-class DirPathR : public DirPath
-{
-	DirPath over;
-public:
-/*
- *	constructor takes a single path component,
- *	defaulting to "," since that seems to be the most common case
- *
- *	If you want an absolute pathanme (/foo/bar or \FOO\BAR)
- *	construct the path with an empty string
- */
-	DirPathR();
-/*
- *	copy contstructor, probably not needed...
- */
-	DirPathR(DirPathR& dp) {
-		path = dp.path;
-		over = dp.over;
-	}
-
-	ifstream &open(ifstream &ifs) {
-		ifs.open(over.c_str());
-		if(!ifs.good()) {
-			ifs.open(c_str());
-		}
-		return ifs;
-	}
-
-	ofstream &open(ofstream &ofs) {
-		ofs.open(over.c_str());
-		if(!ofs.good()) {
-			ofs.open(c_str());
-		}
-		return ofs;
-	}
-/*
- *	to build the path we use the << operator
- *	since that lets us cope with char * and string
- *	types mixed into sequences of arbitrary length
- *
- *	this is the string operator
- */
-	DirPath& operator << (string &s) {
-		over << s;
-		path += sep;
-		path += s;
-		return *this;
-	}
-/*
- *	and here's one for const char * values
- */
-	DirPath& operator << (const char *pt) {
-		over << pt;
-		path += sep;
-		path += pt;
-		return *this;
-	}
-
-};
-
-
 class ImagePath : public DirPath {
 public:
 	ImagePath(const string& filename)
@@ -187,7 +114,7 @@ public:
 
 class ButtonPath : public DirPath {
 public:
-	ButtonPath(string filename)
+	ButtonPath(const string& filename)
 	: DirPath()
 	{
 		(*this) << "Resources" << "Buttons" << filename;
@@ -196,7 +123,7 @@ public:
 
 class ScriptPath : public DirPath {
 public:
-	ScriptPath(string filename)
+    ScriptPath(const string& filename)
 	: DirPath()
 	{
 		(*this) << "Resources" << "Scripts" << filename;

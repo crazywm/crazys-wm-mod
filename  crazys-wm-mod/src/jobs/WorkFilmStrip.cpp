@@ -22,10 +22,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Actress
-bool cJobManager::WorkFilmStrip(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmStrip(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -48,7 +46,7 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, bool Day0Night1, string& summary)
 
 	ss << girlName << " worked as an actress filming strip tease scenes.\n \n";
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FILMSTRIP))
 	{
 		ss << "She refused to strip on film today.\n";
@@ -57,17 +55,17 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else if (roll <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		ss << "She stripped on film today, but didn't like it.\n \n";
 	}
 	else if (roll >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		ss << "She loved stripping for the camera.\n \n";
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "She had a pleasant day stripping today.\n \n";
 	}
 	jobperformance = enjoy * 2;
@@ -99,15 +97,15 @@ bool cJobManager::WorkFilmStrip(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->strip(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->strip(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(ACTION_WORKSTRIP, enjoy); //I've changed this to workstrip, it make more sense than sex
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
 
 	//gain traits
-	if (girl->performance() > 50 && girl->strip() > 50 && g_Dice.percent(25))
+	if (girl->performance() > 50 && girl->strip() > 50 && rng.percent(25))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, girlName + " has been stripping for so long, when she walks, it seems her clothes just want to fall off.", Day0Night1);
 	}

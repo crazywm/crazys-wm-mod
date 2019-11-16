@@ -29,12 +29,12 @@ class TiXmlElement;
 
 class Inventory {
 private:
-    using item_map_t = std::map<sInventoryItem*, int>;
+    using item_map_t = std::map<const sInventoryItem*, int>;
     using item_map_iter = typename item_map_t::iterator;
     using item_map_citer = typename item_map_t::const_iterator;
 public:
     /// adds an item to the inventory. Returns the number of items that were added.
-    int add_item(sInventoryItem* item, int count = 1);
+    int add_item(const sInventoryItem* item, int count = 1);
 
     /// returns whether the item is present in the inventory
     bool empty() const;
@@ -45,6 +45,7 @@ public:
     int get_num_items() const;
     /// get number of items in a given class
     int get_num_items(const sInventoryItem* item) const;
+    int get_num_items(const std::string& item) const;
     /// get number of item classes of a given type
     int get_num_classes(int type) const;
 
@@ -53,12 +54,13 @@ public:
 
     // for presenting all items
     const item_map_t& all_items() const { return m_ItemCounts; }
+    item_map_t& all_items() { return m_ItemCounts; }
 
     // io
     void load_from_xml(TiXmlElement& root);
     void save_to_xml(TiXmlElement& root);
 private:
-    std::map<sInventoryItem*, int> m_ItemCounts;
+    std::map<const sInventoryItem*, int> m_ItemCounts;
 
     item_map_citer get_entry(const sInventoryItem* item) const;
 };

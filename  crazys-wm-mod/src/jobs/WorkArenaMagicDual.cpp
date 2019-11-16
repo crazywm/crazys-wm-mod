@@ -32,8 +32,6 @@
 #include "cGangs.h"
 #include "libintl.h"
 
-extern cRng g_Dice;
-
 // `J` Job Arena - Fighting
 bool cJobManager::WorkArenaMagicDual(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
@@ -47,7 +45,7 @@ bool cJobManager::WorkArenaMagicDual(sGirl* girl, sBrothel* brothel, bool Day0Ni
 	}
 
 	int imagetype = IMGTYPE_MAGIC;
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 
 	enum magicdualchoice
 		{
@@ -62,7 +60,7 @@ bool cJobManager::WorkArenaMagicDual(sGirl* girl, sBrothel* brothel, bool Day0Ni
 		// the test for if the girl can act on that choice is done next
 		int choice = 0;	bool choicemade = false;
 
-		choice = g_Dice % MD_NumberOfMagicDualChoices;	// randomly choose from all of the choices
+		choice = rng % MD_NumberOfMagicDualChoices;	// randomly choose from all of the choices
 		switch (choice)
 		{
 			// these don't need a test

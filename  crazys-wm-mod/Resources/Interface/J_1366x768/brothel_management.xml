@@ -2,7 +2,6 @@
 <Window     Name="Brothel Management"                                       XPos="13"       YPos="14"       Width="1340"    Height="740"    Border="1"  />
 <Text       Name="BuildingLabel"        Text="Name"                         XPos="10"       YPos="2"        Width="700"     Height="40"     FontSize="20"            />
 <Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="10"       YPos="35"       Width="1020"    Height="660"     />
-<Button     Name="WalkButton"           Image=""                            XPos="250"      YPos="698"      Width="160"     Height="32"     Transparency="true"     Scale="true"     />
 
 <Button     Name="Next Week"            Image="NextWeek"                    XPos="1100"     YPos="10"       Width="160"     Height="32"     Transparency="true"     Scale="true"     />
 <Text       Name="BuildingDetails"      Text="Details"                      XPos="1030"     YPos="50"       Width="310"     Height="300"    FontSize="10"  />    

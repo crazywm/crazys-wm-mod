@@ -20,7 +20,6 @@
 #include <sstream>
 #include "cClinic.h"
 #include "cGangs.h"
-#include "strnatcmp.h"
 #include "src/Game.hpp"
 
 extern cRng    g_Dice;
@@ -194,7 +193,7 @@ void sClinic::UpdateGirls(bool is_night)	// Start_Building_Process_B
 
 		if (current->m_NightJob == JOB_DOCTOR) summary = "SkipDisobey";
 		// do their job
-		bool refused = g_Game.job_manager().JobFunc[sw](current, is_night, summary);
+		bool refused = g_Game->job_manager().JobFunc[sw](current, is_night, summary, g_Dice);
 
 		totalPay += current->m_Pay;
 		totalTips += current->m_Tips;
@@ -209,7 +208,7 @@ void sClinic::UpdateGirls(bool is_night)	// Start_Building_Process_B
 		}
 		else
 		{
-			ss << g_Game.job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
+			ss << g_Game->job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
 			if (totalGold < 0) sum = EVENT_DEBUG;
 
 			m_Fame += current->fame();
@@ -234,7 +233,7 @@ void sClinic::UpdateGirls(bool is_night)	// Start_Building_Process_B
 		summary = "";
 
 		// do their surgery
-		g_Game.job_manager().JobFunc[sw](current, is_night, summary);
+		g_Game->job_manager().JobFunc[sw](current, is_night, summary, g_Dice);
 	}
 
     EndShift("Chairman", is_night, matron);
@@ -345,7 +344,7 @@ bool sClinic::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
     }
     else if (psw != m_RestJob && psw >= firstjob && psw<=lastjob)
     {	// if she had a previous job that shift, put her back to work.
-        if (g_Game.job_manager().FullTimeJob(psw))
+        if (g_Game->job_manager().FullTimeJob(psw))
         {
             girl.m_DayJob = girl.m_NightJob = psw;
         }

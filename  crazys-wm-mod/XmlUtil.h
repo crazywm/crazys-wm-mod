@@ -19,21 +19,15 @@
 #pragma once
 #include <string>
 
-using namespace std;
-
 class TiXmlElement;
 
-typedef unsigned int u_int;
-
 class XmlUtil {
-	string m_context;
+	std::string m_context;
 public:
-	XmlUtil(string context) {
-		m_context = context;
+	XmlUtil(std::string context) : m_context(std::move(context)) {
 	}
 
-    bool get_att(TiXmlElement *el, const char *name, string &s, bool optional = false);
+    bool get_att(TiXmlElement *el, const char *name, std::string &s, bool optional = false);
 	bool get_att(TiXmlElement *el, const char *name, int &ival, bool optional = false);
-	bool get_att(TiXmlElement *el, const char *name, double &dval, bool optional = false);
 	bool get_att(TiXmlElement *el, const char *name, bool &bval, bool optional = false);
 };

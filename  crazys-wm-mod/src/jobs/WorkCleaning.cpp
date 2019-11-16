@@ -19,17 +19,14 @@
 #include <sstream>
 #include "src/buildings/cBrothel.h"
 
-extern cRng g_Dice;
-
-
 // `J` Job Brothel - General - job_is_cleaning
-bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
 	int actiontype = ACTION_WORKCLEANING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100();
 	if (roll_a <= 50 && girl->disobey_check(actiontype, JOB_CLEANING))
 	{
 		ss << " refused to clean during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -51,7 +48,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary)
 	//SIN - a little more variety
 	if (roll_a <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		jobperformance *= 0.8;
 		if (roll_b < 33)		ss << "She spilled a bucket of something unpleasant all over herself.";
 		else if (roll_b < 66)	ss << "An impatient group of customers got bored of waiting and roughly tried to 'use' her. She had to hide in a janitor closet for a while.";
@@ -68,7 +65,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else if (roll_a >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		jobperformance *= 1.1;
 		if (roll_b < 33)		ss << "She cleaned the building while humming a pleasant tune.";
 		else if (roll_b < 66)	ss << "A waiting customer chatted with her as she worked, and even helped her out a little.";
@@ -76,7 +73,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "The shift passed uneventfully.";
 	}
 	ss << "\n \n";
@@ -87,18 +84,18 @@ bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary)
 	if (playtime)	//SIN: a bit more variation
 	{
 		ss << "\n \n" << girlName << " finished her cleaning early so ";
-		roll_a = g_Dice % 6;
+		roll_a = rng % 6;
 		if (roll_a == 1 && !brothel->is_sex_type_allowed(SKILL_ORALSEX)) roll_a = 0;
 		if (roll_a == 1 && girl->has_trait( "Lesbian")) roll_a = 0;
 		if (roll_a != 2 && girl->tiredness() >= 80) roll_a = 2;
-		if (roll_a != 1 && g_Dice.percent(30) && girl->has_trait( "Cum Addict")) roll_a = 1;
+		if (roll_a != 1 && rng.percent(30) && girl->has_trait( "Cum Addict")) roll_a = 1;
 
 		switch (roll_a)
 		{
 		case 1:
 		{
 			ss << "she hung out at the brothel, offering to \"clean off\" finished customers with her mouth.\n";//Made it actually use quote marks CRAZY
-			tips = g_Dice % 6 - 1; //how many 'tips' she clean? <6 for now, considered adjusting to amount playtime - didn't seem worth complexity
+			tips = rng % 6 - 1; //how many 'tips' she clean? <6 for now, considered adjusting to amount playtime - didn't seem worth complexity
 			if (tips > 0)
 			{
 				brothel->m_Happiness += (tips);
@@ -116,29 +113,29 @@ bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary)
 		case 2:
 		{
 			ss << "she had a rest.";
-			girl->tiredness(-(g_Dice % 10 + 1));
+			girl->tiredness(-(rng % 10 + 1));
 		}break;
 
 		case 3:
 		{
 			ss << "she hung out around the brothel chatting with staff and patrons.\n";
-			girl->charisma((g_Dice % 3) + 1);
-			girl->confidence((g_Dice % 2) + 1);
+			girl->charisma((rng % 3) + 1);
+			girl->confidence((rng % 2) + 1);
 		}break;
 
 		case 4:
 		{
 			ss << "she spent some time training and getting herself fitter.\n";
-			girl->constitution(g_Dice % 2);
-			girl->agility(g_Dice % 2);
-			girl->beauty(g_Dice % 2);
-			girl->spirit(g_Dice % 2);
-			girl->combat(g_Dice % 2);
+			girl->constitution(rng % 2);
+			girl->agility(rng % 2);
+			girl->beauty(rng % 2);
+			girl->spirit(rng % 2);
+			girl->combat(rng % 2);
 		}break;
 
 		case 5:
 		{
-			if (girl->has_trait( "Your Wife") || g_Dice.percent(30) && !girl->has_trait( "Your Daughter") && !girl->has_trait( "Lesbian")) //Flipped to fix the daughter issue
+			if (girl->has_trait( "Your Wife") || rng.percent(30) && !girl->has_trait( "Your Daughter") && !girl->has_trait( "Lesbian")) //Flipped to fix the daughter issue
 
 			{
 
@@ -166,32 +163,32 @@ bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary)
 					{
 						ss << "She didn't stop 'cleaning' until you came in her mouth.\nAfterward, you notice her carefully "
 							<< "crawling around and licking up every stray drop of cum. She must really love cleaning.\n";
-						girl->oralsex(g_Dice % 2);
-						girl->spirit(-(g_Dice % 2));
-						tips += (g_Dice % 20);  // tip her for hotness
+						girl->oralsex(rng % 2);
+						girl->spirit(-(rng % 2));
+						tips += (rng % 20);  // tip her for hotness
 					}
 					imagetype = IMGTYPE_ORAL;
 				}
-				girl->service(g_Dice % 5);
-				girl->medicine(g_Dice % 2);
-				girl->obedience(g_Dice % 4);
-				girl->pclove(g_Dice % 5);
+				girl->service(rng % 5);
+				girl->medicine(rng % 2);
+				girl->obedience(rng % 4);
+				girl->pclove(rng % 5);
 			}
 			else
 			{
 				ss << "she hung out around the brothel, watching the other girls and trying to learn tricks and techniques.\n";
-				girl->normalsex(g_Dice % 2);
-				girl->anal(g_Dice % 2);
-				girl->oralsex(g_Dice % 2);
-				girl->bdsm(g_Dice % 2);
-				girl->lesbian(g_Dice % 2);
+				girl->normalsex(rng % 2);
+				girl->anal(rng % 2);
+				girl->oralsex(rng % 2);
+				girl->bdsm(rng % 2);
+				girl->lesbian(rng % 2);
 			}
 		}break;
 
 		default:
 			ss << "she hung out around the brothel a bit.";
-			girl->upd_temp_stat(STAT_LIBIDO, g_Dice % 3 + 1, true);
-			girl->happiness((g_Dice % 3) + 1);
+			girl->upd_temp_stat(STAT_LIBIDO, rng % 3 + 1, true);
+			girl->happiness((rng % 3) + 1);
 			break;
 		}
 	}
@@ -224,17 +221,17 @@ bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 2);
-	girl->service((g_Dice % skill) + 2);
-	girl->constitution(g_Dice % skill);
+	girl->exp((rng % xp) + 2);
+	girl->service((rng % skill) + 2);
+	girl->constitution(rng % skill);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(actiontype, enjoy);
 	// Gain Traits
-	if (g_Dice.percent(girl->service()))
+	if (rng.percent(girl->service()))
 		cGirls::PossiblyGainNewTrait(girl, "Maid", 70, actiontype, girlName + " has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
 	// Lose Traits
-	if (g_Dice.percent(girl->service()))
+	if (rng.percent(girl->service()))
 		cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her spilling hundreds of buckets, and just as many reprimands, but " + girl->m_Realname + " has finally stopped being so Clumsy.", Day0Night1);
 
 	return false;
@@ -243,23 +240,7 @@ bool cJobManager::WorkCleaning(sGirl* girl, bool Day0Night1, string& summary)
 
 double cJobManager::JP_Cleaning(sGirl* girl, bool estimate)
 {
-#if 0
-	double jobperformance = 0;
-	if (estimate)	// for third detail string
-	{
-		jobperformance += girl->service() * 1.5;
-		jobperformance += girl->morality() * 0.5;
-	}
-	else
-	{
-		jobperformance += ((girl->service() / 10) + 5) * 10;
-		jobperformance += (girl->morality() / 10);			// evil girls may intentionally break something
-
-		int t = girl->tiredness() - 80;
-		if (t > 0)
-			jobperformance -= (t + 2) * (t / 5);
-	}
-#else	//SIN - standardizing job performance calc per J's instructs
+	//SIN - standardizing job performance calc per J's instructs
 	double jobperformance =
 		//main stat - first 100
 		girl->service() +
@@ -276,47 +257,7 @@ double cJobManager::JP_Cleaning(sGirl* girl, bool estimate)
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//and finally traits
-#endif
-
-	if (girl->has_trait( "Maid"))						jobperformance += 20;
-	if (girl->has_trait( "Powerful Magic"))			jobperformance += 10;
-	if (girl->has_trait( "Waitress"))					jobperformance += 5;
-	if (girl->has_trait( "Strong"))					jobperformance += 5;
-	if (girl->has_trait( "Strong Magic"))				jobperformance += 5;
-	if (girl->has_trait( "Handyman"))					jobperformance += 5;
-	if (girl->has_trait( "Agile"))					jobperformance += 5;
-	if (girl->has_trait( "Prehensile Tail"))			jobperformance += 3;
-	if (girl->has_trait( "Tomboy"))					jobperformance += 2;
-	if (girl->has_trait( "Psychic"))					jobperformance += 2;
-	if (girl->has_trait( "Giant"))					jobperformance += 2;
-	if (girl->has_trait( "Fleet of Foot"))			jobperformance += 2;
-	if (girl->has_trait( "Sharp-Eyed"))				jobperformance += 1;
-	if (girl->has_trait( "Optimist"))					jobperformance += 1;
-	if (girl->has_trait( "Manly"))					jobperformance += 1;
-	if (girl->has_trait( "Assassin"))					jobperformance += 1;
-
-	if (girl->has_trait( "Queen"))					jobperformance -= 20;
-	if (girl->has_trait( "Blind"))					jobperformance -= 20;
-	if (girl->has_trait( "Princess"))					jobperformance -= 10;
-	if (girl->has_trait( "Mind Fucked"))				jobperformance -= 10;
-	if (girl->has_trait( "Titanic Tits"))				jobperformance -= 5;
-	if (girl->has_trait( "Retarded"))					jobperformance -= 5;
-	if (girl->has_trait( "Elegant"))					jobperformance -= 5;
-	if (girl->has_trait( "Dependant"))				jobperformance -= 5;
-	if (girl->has_trait( "Clumsy"))					jobperformance -= 5;
-	//if (girl->has_trait( "Broken Will"))			jobperformance -= 5;	//SIN - why penalty? was thinking this could be a bonus!
-	if (girl->has_trait( "Bimbo"))					jobperformance -= 5;
-	if (girl->has_trait( "Bad Eyesight"))				jobperformance -= 5;
-	if (girl->has_trait( "Abnormally Large Boobs"))	jobperformance -= 3;
-	if (girl->has_trait( "Nervous"))					jobperformance -= 2;
-	if (girl->has_trait( "Meek"))						jobperformance -= 2;
-	if (girl->has_trait( "Smoker"))					jobperformance -= 1;
-	if (girl->has_trait( "Pessimist"))				jobperformance -= 1;
-	if (girl->has_trait( "Massive Melons"))			jobperformance -= 1;
-	if (girl->has_trait( "Malformed"))				jobperformance -= 1;
-	if (girl->has_trait( "Delicate"))					jobperformance -= 1;
-
+    jobperformance += girl->get_trait_modifier("work.cleaning");
 
 	return jobperformance;
 }

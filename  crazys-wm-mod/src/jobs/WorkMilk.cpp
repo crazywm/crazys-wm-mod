@@ -22,14 +22,13 @@
 #include "cCustomers.h"
 #include "src/sStorage.hpp"
 
-extern cRng g_Dice;
 //BSIN: function used to convert to ounces
 double toOz(int ml)			{ return (0.0338 * ml); }
 
 
 
 // `J` Job Farm - Laborers
-bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -52,8 +51,8 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 
 	int enjoy = 0;
 	int wages = 0, tips = 0;
-	int roll = g_Dice.d100();
-	/*int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();*/
+	int roll = rng.d100();
+	/*int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();*/
 
 
 #if 1
@@ -114,16 +113,16 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 	//test code for auto preg
 	if (girl->m_WeeksPreg < 0 && brothel->num_girls_on_job(JOB_FARMMANGER, false) >= 1 && noAnti && !girl->check_virginity())
 	{
-		sCustomer Cust = g_Game.GetCustomer(*brothel);
+		sCustomer Cust = g_Game->GetCustomer(*brothel);
 		ss << farmmanname <<" noticing that " << girlName << " wasn't pregnant decided to take it upon herself to make sure she got knocked up.\n";
-		if (brothel->is_sex_type_allowed(SKILL_BEASTIALITY) && g_Game.storage().beasts() >= 1 && g_Dice.percent(50))
+		if (brothel->is_sex_type_allowed(SKILL_BEASTIALITY) && g_Game->storage().beasts() >= 1 && rng.percent(50))
 		{
 			ss << "She sends in one of your beasts to get the job done.";
 			girl->beastiality(2);
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
 			if (!girl->calc_insemination(*cGirls::GetBeast(), false, 1.0))
 			{
-				g_Game.push_message(girl->m_Realname + " has gotten inseminated", 0);
+				g_Game->push_message(girl->m_Realname + " has gotten inseminated", 0);
 			}
 		}
 		else
@@ -133,7 +132,7 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 			girl->m_Events.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
 			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
-				g_Game.push_message(girlName + " has gotten pregnant", 0);
+				g_Game->push_message(girlName + " has gotten pregnant", 0);
 			}
 		}
 	}
@@ -202,7 +201,7 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 	//some randomization to prevent identical production numbers every time
 	int randVol = volume / 10;			// rand vol = 10 percent of vol
 	volume -= randVol;					// removing the 10 percent
-	volume += 2 * (g_Dice % randVol);	// adding back between 0 and 20%
+	volume += 2 * (rng % randVol);	// adding back between 0 and 20%
 
 
 	//Testing and seems weird that virgins and never-pregs can produce so much, so halving this
@@ -210,7 +209,7 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->check_virginity() || (!isPregnant && !girl->has_trait( "MILF") && girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] < 1))
 	{
 		volume /= 2;											// never preg, so not producing much
-		girl->lactation(g_Dice % 3);	//all this pumping etc induces lactation
+		girl->lactation(rng % 3);	//all this pumping etc induces lactation
 	}
 
 	///////////////////
@@ -223,7 +222,7 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 	if (!milkmaids.empty())
 	{
 		milkerOnDuty = true;
-		int i = g_Dice % milkmaids.size();
+		int i = rng % milkmaids.size();
 		milker = milkmaids[i];
 		milkerName = milker->m_Realname;
 	}
@@ -238,33 +237,33 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 			ss << ", who really struggled. Why would you pick someone with no hands to be a milker?";
 			volume /= 2;
 		}
-		else if (milker->has_trait("MILF") && g_Dice.percent(50))
+		else if (milker->has_trait("MILF") && rng.percent(50))
 		{
 			ss << ", a mother, who has experience extracting milk effectively.";
 			volume += (volume / 5);
 		}
-		else if (milker->has_trait("Sadistic") && g_Dice.percent(35))
+		else if (milker->has_trait("Sadistic") && rng.percent(35))
 		{
 			ss << ", who seemed more interested in slapping " << girlName << "'s breasts and twisting her nipples than in actually trying to get milk out.";
 			volume -= (volume / 5);
 		}
-		else if (milker->has_trait("Lesbian") && g_Dice.percent(40))
+		else if (milker->has_trait("Lesbian") && rng.percent(40))
 		{
 			ss << ", who massaged " << girlName << "'s breasts thoroughly and was careful to thoroughly arouse the nipple with her tongue before attaching the cup. This helped with milking.";
 			volume += (volume / 10);
 			girl->upd_temp_stat(STAT_LIBIDO, 5, true);
 		}
-		else if (girl->has_trait( "Clumsy") && g_Dice.percent(40))
+		else if (girl->has_trait( "Clumsy") && rng.percent(40))
 		{
 			ss << ", who did a great job milking " << girlName << "'s breasts, but then tripped over the bucket, spilling quite a lot.";
 			volume -= (volume / 4);
 		}
-		else if (milker->has_trait("Straight") && g_Dice.percent(40))
+		else if (milker->has_trait("Straight") && rng.percent(40))
 		{
 			ss << ", who clearly didn't want to touch another woman's breasts. This made the milking akward and inefficient.";
 			volume -= (volume / 10);
 		}
-		else if (milker->has_trait("Cum Addict") && g_Dice.percent(45))
+		else if (milker->has_trait("Cum Addict") && rng.percent(45))
 		{
 			ss << ", who kept compaining that she'd rather be 'milking' men.";
 		}
@@ -344,34 +343,34 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 	//finally a little randomness
 	if (volume > 0)   // no point mentioning this if she doesn't produce anything
 	{
-		if (g_Dice.percent(60) && (girl->has_trait( "Fallen Goddess") || girl->has_trait( "Goddess")))
+		if (rng.percent(60) && (girl->has_trait( "Fallen Goddess") || girl->has_trait( "Goddess")))
 		{
 			ss << "Customers are willing to pay much more to sup from the breast of a Goddess.\n";
 			milkValue += (2 * traitBoost);
 		}
-		else if (g_Dice.percent(40) && girl->has_trait( "Demon"))
+		else if (rng.percent(40) && girl->has_trait( "Demon"))
 		{
 			ss << "Customers are thrilled at the chance to consume the milk of a Demon.\n";
 			milkValue += (2 * traitBoost);
 		}
-		else if (g_Dice.percent(50) && girl->has_trait( "Queen"))
+		else if (rng.percent(50) && girl->has_trait( "Queen"))
 		{
 			ss << "Customers are willing to pay more to enjoy the breast-milk of a Queen.\n";
-			traitBoost *= (1 + g_Dice % 2);
+			traitBoost *= (1 + rng % 2);
 			milkValue += traitBoost;
 		}
-		else if (g_Dice.percent(50) && girl->has_trait( "Princess"))
+		else if (rng.percent(50) && girl->has_trait( "Princess"))
 		{
 			ss << "Customers are willing to pay more to enjoy the breast-milk of a Princess.\n";
-			traitBoost *= (1 + g_Dice % 2);
+			traitBoost *= (1 + rng % 2);
 			milkValue += traitBoost;
 		}
-		else if (g_Dice.percent(30) && (girl->has_trait( "Priestess")))
+		else if (rng.percent(30) && (girl->has_trait( "Priestess")))
 		{
 			ss << "Customers pay more to drink the breast-milk of a religious holy-woman.\n";
 			milkValue += traitBoost;
 		}
-		else if (g_Dice.percent(40) && (girl->fame() >= 95))
+		else if (rng.percent(40) && (girl->fame() >= 95))
 		{
 			ss << "Your customers eagerly gulp down the breast-milk of such a famous and well-loved girl.\n";
 			milkValue += traitBoost;
@@ -379,16 +378,16 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 		else if (girl->has_trait( "Vampire"))
 		{
 			ss << "Customers pay more to try the breast-milk of a Vampire. Perhaps they hope for eternal life.\n";
-			milkValue += (g_Dice % 30 + 5);
+			milkValue += (rng % 30 + 5);
 		}
 
-		if (g_Dice.percent(30) && (girl->has_trait( "Shroud Addict") || girl->has_trait( "Fairy Dust Addict") || girl->has_trait( "Viras Blood Addict")))
+		if (rng.percent(30) && (girl->has_trait( "Shroud Addict") || girl->has_trait( "Fairy Dust Addict") || girl->has_trait( "Viras Blood Addict")))
 		{
 			ss << "Her breast-milk has a strangely bitter flavour. However, customers find it quite addictive and end up paying extra for more.\n";
-			milkValue += (g_Dice % 30 + 10);
+			milkValue += (rng % 30 + 10);
 		}
 
-		if (g_Dice.percent(15) && (girl->has_trait( "Strong Magic") || girl->has_trait( "Powerful Magic")))
+		if (rng.percent(15) && (girl->has_trait( "Strong Magic") || girl->has_trait( "Powerful Magic")))
 		{
 			if ((girl->magic() > 75) && (girl->mana() > 50))
 			{
@@ -399,7 +398,7 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 			else
 			{
 				ss << "Her milk has mild magical healing properties and leaves customers feeling upbeat. Customers pay a little more for this.\n";
-				milkValue += (g_Dice % 30 + 10);
+				milkValue += (rng % 30 + 10);
 			}
 		}
 		if (girl->has_trait( "Undead") || girl->has_trait( "Zombie"))
@@ -409,11 +408,11 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 	//update to add options based on how good you are...
-	if (g_Dice.percent(3) && (girl->has_trait( "Great Arse") || girl->has_trait( "Tight Butt") || girl->has_trait( "Phat Booty") || girl->has_trait( "Deluxe Derriere")))
+	if (rng.percent(3) && (girl->has_trait( "Great Arse") || girl->has_trait( "Tight Butt") || girl->has_trait( "Phat Booty") || girl->has_trait( "Deluxe Derriere")))
 	{
 		extraEvent = true;
 		ssextra << "\nAs you survey the milking area from the doorway, you can't help noticing " << girlName << "'s butt rising into the air from a milking stall";
-		if (g_Game.player().disposition() < -30)  //more than a bit evil
+		if (g_Game->player().disposition() < -30)  //more than a bit evil
 		{
 			ssextra << ". Looking closer you find her strapped to a milking bench, that butt pointed right at you while her breasts hang beneath, pumped by suction cups. "
 				<< "It's too damn good an opportunity";
@@ -438,12 +437,12 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 				girl->bdsm(1);
 				extraimage = IMGTYPE_SEX;
 
-				if (!girl->calc_pregnancy(&g_Game.player(), false, 1.0))
+				if (!girl->calc_pregnancy(&g_Game->player(), false, 1.0))
 				{
 					stringstream ssm;
 					ssm << girlName << " has gotten pregnant. This should help with her milk production.";
 					ssextra << ssm.str();
-					g_Game.push_message(ssm.str(), 0);
+					g_Game->push_message(ssm.str(), 0);
 				}
 				ssextra << "\n";
 			}
@@ -474,7 +473,7 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 				enjoy += 4;
 			}
 		}
-		else if (g_Game.player().disposition() < 40)   // not that good
+		else if (g_Game->player().disposition() < 40)   // not that good
 		{
 			ssextra << ". Looking closer, she really does have a great butt. You stop for a moment, but decide that doing anything more just wouldn't be right. "
 				<< "You give her butt a gentle pat and walk away.\n \n";
@@ -492,7 +491,7 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 			case 0:
 				ssextra << "The trader sends back 100 gold and a note apologizing, and promising this will never happen again. He says you can do what you like with the "
 					<< "delivery boy, \"But if you ever release the fool, tell him he'll need a new job.\"\n";
-				g_Game.dungeon().AddCust(DUNGEON_CUSTBEATGIRL, 0, false);
+				g_Game->dungeon().AddCust(DUNGEON_CUSTBEATGIRL, 0, false);
 				wages += 100;
 				break;
 			case 1:
@@ -502,7 +501,7 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 				break;
 			case 2:
 				ssextra << "You never hear a word from the market trader.\n";
-				g_Game.dungeon().AddCust(DUNGEON_CUSTBEATGIRL, 0, false);
+				g_Game->dungeon().AddCust(DUNGEON_CUSTBEATGIRL, 0, false);
 				break;
 			}
 			if (girl->check_virginity()) ssextra << "Thanks to you, her virginity is intact so ";
@@ -661,11 +660,11 @@ bool cJobManager::WorkMilk(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary
-	girl->service((g_Dice % skill) + 1);
+	girl->service((rng % skill) + 1);
 
 	return false;
 }

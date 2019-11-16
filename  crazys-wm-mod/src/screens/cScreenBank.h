@@ -19,8 +19,7 @@
 #pragma once
 
 #include "DirPath.h"
-#include "cInterfaceWindow.h"
-#include "InterfaceGlobals.h"
+#include "interface/cInterfaceWindow.h"
 
 class cScreenBank : public cInterfaceWindowXML
 {

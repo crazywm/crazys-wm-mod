@@ -24,20 +24,18 @@
 #include "src/Game.hpp"
 #include "src/sStorage.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - Bar
-bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKBAR;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_jp = g_Dice.d100(), roll_e = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_jp = rng.d100(), roll_e = rng.d100(), roll_c = rng.d100();
 	//Does she work?
-	if (girl->libido() >= 90 && girl->has_trait( "Nymphomaniac") && g_Dice.percent(20))
+	if (girl->libido() >= 90 && girl->has_trait( "Nymphomaniac") && rng.percent(20))
 	{
 		ss << " let lust get the better of her and she ended up missing her " << (Day0Night1 ? "night" : "day") << " shift.";
 		girl->upd_temp_stat(STAT_LIBIDO, -20);
@@ -80,19 +78,19 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 	int numbargirls = numbarmaid + numbarwait;
 	int numallcust = brothel->m_TotalCustomers;
 	int numhercust = (numallcust / numbargirls)
-		+ g_Dice % ((girl->charisma() / 10) - 3)
-		+ g_Dice % ((girl->beauty() / 10) - 1);
+		+ rng % ((girl->charisma() / 10) - 3)
+		+ rng % ((girl->beauty() / 10) - 1);
 	if (numhercust < 0) numhercust = 1;
 	if (numhercust > numallcust) numhercust = numallcust;
 
 	double drinkssold = 0;											// how many drinks she can sell in a shift
 	for (int i = 0; i < numhercust; i++)
 	{
-		drinkssold += 1 + ((g_Dice % (int)jobperformance) / 30);	// 200jp can serve up to 7 drinks per customer
+		drinkssold += 1 + ((rng % (int)jobperformance) / 30);	// 200jp can serve up to 7 drinks per customer
 	}
 	double drinkswasted = 0;										// for when she messes up an order
 
-	if (g_Dice.percent(20))
+	if (rng.percent(20))
 	{
 		if (actiontype >= 75)
 		{
@@ -108,9 +106,9 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 
 	//what is she wearing?
 	
-	if (girl->has_item_j("Bourgeoise Gown") != -1 && g_Dice.percent(60))
+	if (girl->has_item_j("Bourgeoise Gown") != -1 && rng.percent(60))
 	{
-		int bg = g_Dice.bell(-1, 1);
+		int bg = rng.bell(-1, 1);
 		roll_e += bg;					// enjoy adj
 		/* */if (bg < 0)	ss << "A few customers did not really like " << girlName << "'s Bourgeoise Gown.";
 		else if (bg > 0)	ss << "A few customers complimented " << girlName << "'s Bourgeoise Gown.";
@@ -119,7 +117,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else if (girl->has_item_j("Maid Uniform") != -1)
 	{
-		int bg = g_Dice.bell(-1, 1);
+		int bg = rng.bell(-1, 1);
 		roll_e += bg;					// enjoy adj
 		/* */if (bg < 0)	ss << "A few customers teased " << girlName << " for wearing a Maid's Uniform in a bar.";
 		else if (bg > 0)	ss << girlName << "'s Maid Uniform didn't do much for most of the patrons, but a few of them seemed to really like it.";
@@ -130,11 +128,11 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 	//a little pre-game randomness
 	if (girl->has_trait( "Alcoholic"))
 	{
-		if (g_Dice.percent(10))
+		if (rng.percent(10))
 		{
 			ss << girlName << "'s alcoholic nature caused her to drink several bottles of booze becoming drunk and her serving suffered cause of it.";
 			jobperformance -= 50;
-			drinkswasted += 10 + g_Dice % 11;
+			drinkswasted += 10 + rng % 11;
 		}
 		ss << "\n \n";
 	}
@@ -147,7 +145,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		if (roll_jp <= 14)
 		{
 			ss << girlName << " was sliding drinks all over the bar without spilling a drop she put on quite a show for the patrons.";
-			Bfame += g_Dice % 6 + 5;
+			Bfame += rng % 6 + 5;
 		}
 		else if (roll_jp <= 28)
 		{
@@ -157,8 +155,8 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		else if (roll_jp <= 42)
 		{
 			ss << girlName << " made an 11 layer drink like it was nothing. The amazed customer left her a big tip!";
-			Bfame += g_Dice % 6 + 5;
-			tips += g_Dice % 26 + 15;
+			Bfame += rng % 6 + 5;
+			tips += rng % 26 + 15;
 		}
 		else if (roll_jp <= 56)
 		{
@@ -168,20 +166,20 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		else if (roll_jp <= 70)
 		{
 			ss << girlName << " noticed that a client was upset about something. After a pleasant conversation she managed to cheer him up. The client left full of willpower, leaving a generous tip behind.";
-			Bhappy += g_Dice % 6 + 5;
-			tips += g_Dice % 26 + 15;
+			Bhappy += rng % 6 + 5;
+			tips += rng % 26 + 15;
 		}
 		else if (roll_jp <= 84)
 		{
 			ss << "Bottles fly high under the ceiling when " << girlName << " is pouring drinks for the customers. The amazed crowd loudly applaudes every caught bottle and leave big tips for the girl.";
-			Bfame += g_Dice % 6 + 5;
-			tips += g_Dice % 26 + 15;
+			Bfame += rng % 6 + 5;
+			tips += rng % 26 + 15;
 		}
 		else
 		{
 			ss << girlName << " mixed up what some patrons called the perfect drink.  It got them drunk faster then anything they had before.";
-			Bhappy += g_Dice % 6 + 5;
-			Bfame += g_Dice % 6 + 5;
+			Bhappy += rng % 6 + 5;
+			Bfame += rng % 6 + 5;
 		}
 	}
 	else if (jobperformance >= 185)
@@ -192,7 +190,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		if (roll_jp <= 14)
 		{
 			ss << girlName << " had the bar filled with happy drunks.  She didn't miss a beat all shift.";
-			Bhappy += g_Dice % 5 + 4;
+			Bhappy += rng % 5 + 4;
 		}
 		else if (roll_jp <= 28)
 		{
@@ -201,17 +199,17 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		else if (roll_jp <= 42)
 		{
 			ss << girlName << " propose to a client to play a drinking game with her. If she loses she will serve nude to the end of her shift, but if she wins he will be paying double. Some other patrons join the wager on the same terms. After a few hours the last of them drops drunk and " << girlName << " cleaned up on money.";
-			wages += g_Dice % 19 + 10;
+			wages += rng % 19 + 10;
 		}
 		else if (roll_jp <= 56)
 		{
 			ss << "When taking orders from customers, " << girlName << " talked them into buying more expensive drinks, that let you make a solid profit today.";
-			wages += g_Dice % 19 + 10;
+			wages += rng % 19 + 10;
 		}
 		else if (roll_jp <= 70)
 		{
 			ss << girlName << " is great at this job. At happy hour she was irreplaceable getting all the orders right. Later on she even prevented a fight between customers.";
-			Bfame += g_Dice % 5 + 4;
+			Bfame += rng % 5 + 4;
 		}
 		else if (roll_jp <= 84)
 		{
@@ -219,13 +217,13 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 			int promo = 2;
 			/* */if (girl->has_trait( "Flat Chest"))				promo = 1;
 			else if (girl->has_trait( "Petite Breasts"))			promo = 1;
-			else if (girl->has_trait( "Small Boobs"))				promo = g_Dice.percent(50) ? 1 : 2;
-			else if (girl->has_trait( "Busty Boobs"))				promo = g_Dice.percent(80) ? 2 : 3;
-			else if (girl->has_trait( "Big Boobs"))				promo = g_Dice.percent(70) ? 2 : 3;
-			else if (girl->has_trait( "Giant Juggs"))				promo = g_Dice.percent(60) ? 2 : 3;
-			else if (girl->has_trait( "Massive Melons"))			promo = g_Dice.percent(50) ? 2 : 3;
-			else if (girl->has_trait( "Abnormally Large Boobs"))	promo = g_Dice.percent(40) ? 2 : 3;
-			else if (girl->has_trait( "Titanic Tits"))			promo = g_Dice.percent(30) ? 2 : 3;
+			else if (girl->has_trait( "Small Boobs"))				promo = rng.percent(50) ? 1 : 2;
+			else if (girl->has_trait( "Busty Boobs"))				promo = rng.percent(80) ? 2 : 3;
+			else if (girl->has_trait( "Big Boobs"))				promo = rng.percent(70) ? 2 : 3;
+			else if (girl->has_trait( "Giant Juggs"))				promo = rng.percent(60) ? 2 : 3;
+			else if (girl->has_trait( "Massive Melons"))			promo = rng.percent(50) ? 2 : 3;
+			else if (girl->has_trait( "Abnormally Large Boobs"))	promo = rng.percent(40) ? 2 : 3;
+			else if (girl->has_trait( "Titanic Tits"))			promo = rng.percent(30) ? 2 : 3;
 			if (promo == 1)
 			{
 				ss << "Every third shot ordered by a client could be drunk from her navel.\n";
@@ -244,8 +242,8 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		else
 		{
 			ss << "People love seeing " << girlName << " work and they pour into the bar during her shift.  She mixes wonderful drinks and doesn't mess orders up so they couldn't be happier.";
-			Bhappy += g_Dice % 5 + 4;
-			Bfame += g_Dice % 4 + 2;
+			Bhappy += rng % 5 + 4;
+			Bfame += rng % 4 + 2;
 		}
 	}
 	else if (jobperformance >= 145)
@@ -256,23 +254,23 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		if (roll_jp <= 14)
 		{
 			ss << girlName << " didn't mix up any orders and kept the patrons drunk and happy.";
-			Bhappy += g_Dice % 5 + 2;
+			Bhappy += rng % 5 + 2;
 		}
 		else if (roll_jp <= 28)
 		{
 			ss << girlName << " certainly knows what she is doing behind the bar counter. She spends her shift without making any mistakes and earning a lot from tips.";
-			tips += g_Dice % 16 + 5;
+			tips += rng % 16 + 5;
 		}
 		else if (roll_jp <= 42)
 		{
 			ss << girlName << " didn't make any mistakes today. She even earned some tips from happy customers.";
-			Bhappy += g_Dice % 5 + 2;
-			tips += g_Dice % 16 + 5;
+			Bhappy += rng % 5 + 2;
+			tips += rng % 16 + 5;
 		}
 		else if (roll_jp <= 56)
 		{
 			ss << "When mixing one of the more complicated cocktails, " << girlName << " noticed that she made a mistake and remakes the order. She wasted some alcohol, but the customer has happy with his drink.";
-			Bhappy += g_Dice % 5 + 2;
+			Bhappy += rng % 5 + 2;
 			drinkswasted += 1;
 		}
 		else if (roll_jp <= 70)
@@ -286,7 +284,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		else
 		{
 			ss << girlName << " had some regulars come in.  She knows just how to keep them happy and spending gold.";
-			Bhappy += g_Dice % 5 + 2;
+			Bhappy += rng % 5 + 2;
 		}
 	}
 	else if (jobperformance >= 100)
@@ -320,12 +318,12 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		else if (roll_jp <= 84)
 		{
 			ss << girlName << " focused all her attention on taking orders and making drinks. Her attitude wasn't too appealing to clients. Some customers left feeling mistreated and unhappy.";
-			Bhappy -= g_Dice % 5 + 1;
+			Bhappy -= rng % 5 + 1;
 		}
 		else
 		{
 			ss << girlName << " wasted a few drinks by forgetting to put ice in them but it wasn't anything major.";
-			drinkswasted += 1 + g_Dice % 5 + ((100 - girl->intelligence()) / 20);
+			drinkswasted += 1 + rng % 5 + ((100 - girl->intelligence()) / 20);
 		}
 	}
 	else if (jobperformance >= 70)
@@ -336,17 +334,17 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		if (roll_jp <= 14)
 		{
 			ss << girlName << " mixed up people's drink orders...  When she only had four patrons drinking.";
-			drinkswasted += 1 + g_Dice % 10 + ((100 - girl->intelligence()) / 10);
+			drinkswasted += 1 + rng % 10 + ((100 - girl->intelligence()) / 10);
 		}
 		else if (roll_jp <= 28)
 		{
 			ss << girlName << " is having a bad day and she isn't trying to hide it. Her bad attitude shows and rubs off on the customers, leaving a negative impression on them.";
-			Bhappy -= g_Dice % 6 + 2;
+			Bhappy -= rng % 6 + 2;
 		}
 		else if (roll_jp <= 42)
 		{
 			ss << "Not being very good at this, she makes few mistakes. " << girlName << " feels that she didn't improve today.";
-			drinkswasted += 1 + g_Dice % 5;
+			drinkswasted += 1 + rng % 5;
 		}
 		else if (roll_jp <= 56)
 		{
@@ -357,18 +355,18 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		else if (roll_jp <= 70)
 		{
 			ss << "One patron, looking for encouragement or understanding from the barmaid, unfortunately approached " << girlName << ". After a short conversation, he left crying.";
-			Bhappy -= g_Dice % 6 + 2;
+			Bhappy -= rng % 6 + 2;
 		}
 		else if (roll_jp <= 84)
 		{
 			ss << girlName << " tried to tap a new keg of beer; consequently she spends the rest of her shift mopping the floor.";
 			Bfilth += 10;
-			drinkswasted += 10 + g_Dice % 20;
+			drinkswasted += 10 + rng % 20;
 		}
 		else
 		{
 			ss << girlName << " gave someone a drink she mixed that made them sick.  It was nothing but coke and ice so who knows how she did it.";
-			Bhappy -= g_Dice % 6 + 2;
+			Bhappy -= rng % 6 + 2;
 		}
 	}
 	else
@@ -379,26 +377,26 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		if (roll_jp <= 14)
 		{
 			ss << girlName << " was giving orders to the wrong patrons and letting a lot people walk out without paying their tab.";
-			drinkswasted += 5 + g_Dice % 15;
+			drinkswasted += 5 + rng % 15;
 		}
 		else if (roll_jp <= 28)
 		{
 			ss << "She mixed the ordered cocktails in the wrong proportions, making the clients throw up from the intoxication after just one shot! Besides swearing at her and yelling that they will never come here again, they left without paying.";
-			Bhappy -= g_Dice % 6 + 5;
-			Bfame -= g_Dice % 5 + 3;
-			drinkswasted += 5 + g_Dice % 15;
+			Bhappy -= rng % 6 + 5;
+			Bfame -= rng % 5 + 3;
+			drinkswasted += 5 + rng % 15;
 		}
 		else if (roll_jp <= 42)
 		{
 			ss << "You can see that standing behind the bar isn't her happy place. Being tense she made a lot of mistakes today.";
-			Bhappy -= g_Dice % 4 + 2;
-			drinkswasted += 1 + g_Dice % 15;
+			Bhappy -= rng % 4 + 2;
+			drinkswasted += 1 + rng % 15;
 		}
 		else if (roll_jp <= 56)
 		{
 			ss << "Not having any experience at this kind of job, " << girlName << " tries her best.. Regrettably without results.";
-			Bhappy -= g_Dice % 4 + 2;
-			drinkswasted += 1 + g_Dice % 10;
+			Bhappy -= rng % 4 + 2;
+			drinkswasted += 1 + rng % 10;
 		}
 		else if (roll_jp <= 70)
 		{
@@ -409,13 +407,13 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		{
 			ss << "She spends most of her shift flirting with one client and not paying much attention to the others. What's worse, the guy she was flirting with skips without paying the bill!";
 			drinkssold *= 0.5;
-			drinkswasted += 1 + g_Dice % 5;
+			drinkswasted += 1 + rng % 5;
 		}
 		else
 		{
 			ss << girlName << " spilled drinks all over the place and mixed the wrong stuff when trying to make drinks for people.";
-			Bhappy -= g_Dice % 5 + 3;
-			drinkswasted += 10 + g_Dice % 10;
+			Bhappy -= rng % 5 + 3;
+			drinkswasted += 10 + rng % 10;
 			Bfilth += 5;
 		}
 	}
@@ -427,38 +425,38 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 	tips += (drinkssold - drinkswasted) * ((double)roll_e / 100.0);	//base tips
 
 	//try and add randomness here
-	if (girl->beauty() > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && rng.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n";
 		tips += 25;
 	}
 
-	if (girl->beauty() > 99 && g_Dice.percent(5))
+	if (girl->beauty() > 99 && rng.percent(5))
 	{
 		tips += 50;
 		ss << girlName << " looked absolutely stunning during her shift and was unable to hide it. Instead of her ass or tits, the patrons couldn't take their eyes off her face, and spent a lot more than usual on tipping her.\n";
 	}
 
-	if (girl->charisma() > 85 && g_Dice.percent(20))
+	if (girl->charisma() > 85 && rng.percent(20))
 	{
 		tips += 35;
 		ss << girlName << " surprised a couple of gentlemen discussing some complicated issue by her insightful comments when she was taking her order. They decided her words were worth a heavy tip.\n";
 	}
 
-	if (girl->intelligence() < 30 && g_Dice.percent(20))
+	if (girl->intelligence() < 30 && rng.percent(20))
 	{
 		ss << girlName << " got confused when calculating the tabs, and seems to have damn near given away most of the alcohol.\n";
-		drinkswasted += 5 + g_Dice % 26;
+		drinkswasted += 5 + rng % 26;
 		Bhappy += 5;
 	}
 
-	if (girl->has_trait( "Clumsy") && g_Dice.percent(15))
+	if (girl->has_trait( "Clumsy") && rng.percent(15))
 	{
 		ss << "Her clumsy nature caused her to spill a drink on a customer resulting in them storming off without paying.\n";
-		drinkswasted += 1 + g_Dice % 5;
+		drinkswasted += 1 + rng % 5;
 	}
 
-	if (girl->has_trait( "Pessimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Pessimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -472,7 +470,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Optimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Optimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -486,12 +484,12 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 	// `J` slightly lower percent compared to sleazy barmaid, I would think regular barmaid's uniform is less revealing
-	if ((g_Dice.percent(3) && girl->has_trait( "Busty Boobs")) ||
-		(g_Dice.percent(6) && girl->has_trait( "Big Boobs")) ||
-		(g_Dice.percent(9) && girl->has_trait( "Giant Juggs")) ||
-		(g_Dice.percent(12) && girl->has_trait( "Massive Melons")) ||
-		(g_Dice.percent(16) && girl->has_trait( "Abnormally Large Boobs")) ||
-		(g_Dice.percent(20) && girl->has_trait( "Titanic Tits")))
+	if ((rng.percent(3) && girl->has_trait( "Busty Boobs")) ||
+		(rng.percent(6) && girl->has_trait( "Big Boobs")) ||
+		(rng.percent(9) && girl->has_trait( "Giant Juggs")) ||
+		(rng.percent(12) && girl->has_trait( "Massive Melons")) ||
+		(rng.percent(16) && girl->has_trait( "Abnormally Large Boobs")) ||
+		(rng.percent(20) && girl->has_trait( "Titanic Tits")))
 	{
 		ss << "A patron was obviously staring at her large breasts. ";
 		if (jobperformance < 150)
@@ -505,18 +503,18 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Psychic") && g_Dice.percent(20))
+	if (girl->has_trait( "Psychic") && rng.percent(20))
 	{
 		ss << "She used her Psychic skills to know exactly what the patrons wanted to order and when to refill their mugs, keeping them happy and increasing tips.\n";
 		tips += 15;
 	}
 
-	if (girl->has_trait( "Assassin") && g_Dice.percent(5))
+	if (girl->has_trait( "Assassin") && rng.percent(5))
 	{
 		if (jobperformance < 150)
 		{
 			ss << "A patron pissed her off and using her Assassin skills she killed him before she even realised. In the chaos that followed a number of patrons fled without paying.\n";
-			drinkswasted += 5 + g_Dice % 31;	// customers flee without paying
+			drinkswasted += 5 + rng % 31;	// customers flee without paying
 			drinkssold /= 2;					// customers don't come back
 			wages -= 50;						// pay off the victims family or officials to cover it up
 			Bhappy -= 10;						//
@@ -527,7 +525,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Horrific Scars") && g_Dice.percent(15))
+	if (girl->has_trait( "Horrific Scars") && rng.percent(15))
 	{
 		if (jobperformance < 150)
 		{
@@ -540,7 +538,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->morality() >= 80 && g_Dice.percent(20))
+	if (girl->morality() >= 80 && rng.percent(20))
 	{
 		if (roll_jp <= 50)
 		{
@@ -554,7 +552,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->morality() <= -20 && g_Dice.percent(20))
+	if (girl->morality() <= -20 && rng.percent(20))
 	{
 		if (roll_jp <= 33)
 		{
@@ -573,13 +571,13 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->morality() <= -20 && girl->dignity() <= -20 && g_Dice.percent(20))
+	if (girl->morality() <= -20 && girl->dignity() <= -20 && rng.percent(20))
 	{
 		tips += 40;
 		ss << "A drunk patron suddenly walked up to " << girlName << " and just started groping her body. Instead of pushing him away immediately, " << girlName << " allowed him to take his time with her tits and butt while she helped herself to his pockets and all the money inside them. The rowdy client left with a dumb glee on his face, probably to find out his fondling was much, much overpriced.\n";
 	}
 
-	if (girl->dignity() <= -20 && g_Dice.percent(20))
+	if (girl->dignity() <= -20 && rng.percent(20))
 	{
 		if (roll_jp <= 50)
 		{
@@ -593,13 +591,13 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->dignity() <= -20 && g_Dice.percent(20) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits") || girl->has_trait( "Massive Melons") || girl->has_trait( "Giant Juggs")))
+	if (girl->dignity() <= -20 && rng.percent(20) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits") || girl->has_trait( "Massive Melons") || girl->has_trait( "Giant Juggs")))
 	{
 		tips += 25;
 		ss << girlName << " got an odd request from a client to carry a small drink he ordered between her tits to his table. After pouring the drink in a thin glass, " << girlName << " handled the task with minimal difficulty and earned a bigger tip.\n";
 	}
 
-	if (girl->morality() <= -20 && g_Dice.percent(10))
+	if (girl->morality() <= -20 && rng.percent(10))
 	{
 		ss << "A patron came up to her and said he wanted to order some milk but that he wanted it straight from the source. ";
 		if (girl->lactation() >= 20)
@@ -614,12 +612,12 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->is_pregnant() && g_Dice.percent(10))
+	if (girl->is_pregnant() && rng.percent(10))
 	{
 		ss << "A customer tried to buy " << girlName << " a drink, but she refused for the sake of her unborn child.";
 	}
 
-	if ((girl->has_trait( "Deep Throat") || girl->has_trait( "No Gag Reflex")) && g_Dice.percent(5))
+	if ((girl->has_trait( "Deep Throat") || girl->has_trait( "No Gag Reflex")) && rng.percent(5))
 	{
 		ss << "Some customers were having a speed drinking contest and challenged " << girlName << " to take part.\n";
 		if (girl->is_pregnant()) ss << "She refused for the sake of her unborn child.";
@@ -630,7 +628,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_item_j("Golden Pendant") != -1 && g_Dice.percent(10))//zzzzz FIXME need more CRAZY
+	if (girl->has_item_j("Golden Pendant") != -1 && rng.percent(10))//zzzzz FIXME need more CRAZY
 	{
 		ss << "A patron complimented her gold necklace, you're not sure if it was an actual compliment or ";
 		if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs")
@@ -652,19 +650,19 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 	//enjoyed the work or not
 	if (roll_e <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		drinkssold *= 0.9;
 		ss << "\nSome of the patrons abused her during the shift.";
 	}
 	else if (roll_e >= 90)
 	{
 		drinkssold *= 1.1;
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		ss << "\nShe had a pleasant time working.";
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 		ss << "\nOtherwise, the shift passed uneventfully.";
 	}
 	ss << "\n \n";
@@ -679,10 +677,10 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 	int ds = max(0, (int)drinkssold);
 	int dw = max(0, (int)drinkswasted);
 	int d1 = ds + dw;													// all drinks needed
-	int d2 = g_Game.storage().drinks() >= d1 ? d1 : g_Game.storage().drinks();		// Drinks taken from stock
-	int d3 = g_Game.storage().drinks() >= d1 ? 0 : d1 - g_Game.storage().drinks();	// Drinks needed to be bought
+	int d2 = g_Game->storage().drinks() >= d1 ? d1 : g_Game->storage().drinks();		// Drinks taken from stock
+	int d3 = g_Game->storage().drinks() >= d1 ? 0 : d1 - g_Game->storage().drinks();	// Drinks needed to be bought
 	int profit = (ds * 3) - (d3 * 1);
-	g_Game.storage().add_to_drinks(-d2);
+	g_Game->storage().add_to_drinks(-d2);
 	// 'Mute' Updated to make it so that the game uses the config settings
 	if (profit < 0) profit = int(profit * cfg.in_fact.barmaid_work());
 	else/*       */ profit = int(profit * cfg.out_fact.bar_cost());
@@ -780,21 +778,21 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 				profit += c + d;
 				if (girl->m_Money < 1)				// she can't pay so you scold her
 				{
-					girl->pcfear(g_Dice.bell(-1,5));
+					girl->pcfear(rng.bell(-1,5));
 					ss << "\nYou take all her wages and tips and then scold her for wasting so many drinks";
 				}
 				else if (girl->m_Money >= e)		// she has enough to pay it back
 				{
-					girl->pcfear(g_Dice.bell(-1, 2));
-					girl->pchate(g_Dice.bell(-1, 2));
+					girl->pcfear(rng.bell(-1, 2));
+					girl->pchate(rng.bell(-1, 2));
 					ss << "\nYou take all her wages and tips and then make her pay for the rest out of her own money";
 					girl->m_Money -= e;
 					profit += e;
 				}
 				else								// she does not have all but can pay some
 				{
-					girl->pcfear(g_Dice.bell(-1, 4));
-					girl->pchate(g_Dice.bell(-1, 2));
+					girl->pcfear(rng.bell(-1, 4));
+					girl->pchate(rng.bell(-1, 2));
 					ss << "\nYou take all her wages and tips and then make her pay for what she can of the rest out of her own money";
 					e = girl->m_Money;
 					girl->m_Money -= e;
@@ -834,7 +832,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_Tips = max(0, (int)tips);
 	girl->m_Pay = max(0, wages);
 
-	g_Game.gold().bar_income(profit);
+	g_Game->gold().bar_income(profit);
 
 #pragma endregion
 #pragma region	//	Finish the shift			//
@@ -860,11 +858,11 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
     girl->tiredness(tired);
 
 	girl->exp(xp);
-	if (g_Dice % 2 == 1)
-		girl->intelligence(g_Dice%skill);
+	if (rng % 2 == 1)
+		girl->intelligence(rng%skill);
 	else
-		girl->performance(g_Dice%skill);
-	girl->service(g_Dice%skill + 1);
+		girl->performance(rng%skill);
+	girl->service(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(actiontype, enjoy);
@@ -881,7 +879,7 @@ bool cJobManager::WorkBarmaid(sGirl* girl, bool Day0Night1, string& summary)
 }
 double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 {
-#if 1  //SIN - standardizing job performance calc per J's instructs
+    //SIN - standardizing job performance calc per J's instructs
 	double jobperformance =
 		//main stats - first 100 - needs to be smart and good at service
 		((girl->service() + girl->intelligence()) / 2) +
@@ -891,12 +889,6 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 		girl->level();
 
 	// next up tiredness penalty
-#else
-	double jobperformance =
-		(girl->intelligence() / 2 +
-		girl->performance() / 2 +
-		girl->service());
-#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -904,52 +896,7 @@ double cJobManager::JP_Barmaid(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Charismatic"))			jobperformance += 15;
-	if (girl->has_trait( "Sexy Air"))				jobperformance += 5;
-	if (girl->has_trait( "Cool Person"))			jobperformance += 10;  //people love to be around her
-	if (girl->has_trait( "Cute"))					jobperformance += 5;
-	if (girl->has_trait( "Charming")) 			    jobperformance += 15;  //people like charming people
-	if (girl->has_trait( "Quick Learner"))		    jobperformance += 5;
-	if (girl->has_trait( "Psychic"))				jobperformance += 10;
-	if (girl->has_trait( "Mixologist"))			    jobperformance += 40;
-	if (girl->has_trait( "Dick-Sucking Lips"))	    jobperformance += 5;
-	if (girl->has_trait( "Long Legs"))			    jobperformance += 5;
-	if (girl->has_trait( "Fleet of Foot"))		    jobperformance += 10;	//fast worker
-	if (girl->has_trait( "Agile"))				    jobperformance += 5;	//fast worker
-	if (girl->has_trait( "Natural Pheromones"))	    jobperformance += 15;
-	if (girl->has_trait( "Optimist"))				jobperformance += 5;	//cheerful
-
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))			    jobperformance -= 50;  // needs others to do the job
-	if (girl->has_trait( "Clumsy")) 				jobperformance -= 20;  //spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))			    jobperformance -= 20;  //gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))				jobperformance -= 30;  //don't like to be around people
-	if (girl->has_trait( "Meek"))					jobperformance -= 20;
-	if (girl->has_trait( "Slow Learner"))			jobperformance -= 10;
-	if (girl->has_trait( "Alcoholic"))			    jobperformance -= 40;  //bad idea let an alcoholic near booze
-	if (girl->has_trait( "Social Drinker"))		    jobperformance -= 10;
-	if (girl->has_trait( "Bimbo"))				    jobperformance -= 5;
-
-	if (girl->has_trait( "One Arm"))				jobperformance -= 30;
-	if (girl->has_trait( "One Foot"))				jobperformance -= 20;
-	if (girl->has_trait( "One Hand"))				jobperformance -= 15;
-	if (girl->has_trait( "One Leg"))				jobperformance -= 40;
-	if (girl->has_trait( "No Arms"))				jobperformance -= 100;
-	if (girl->has_trait( "No Feet"))				jobperformance -= 20;
-	if (girl->has_trait( "No Hands"))				jobperformance -= 50;
-	if (girl->has_trait( "No Legs"))				jobperformance -= 40;
-	if (girl->has_trait( "Blind"))				    jobperformance -= 40;
-	if (girl->has_trait( "Deaf"))					jobperformance -= 20;
-	if (girl->has_trait( "Retarded"))				jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))				    jobperformance -= 10;//would need smoke breaks
-
-	if (girl->has_trait( "Fairy Dust Addict"))	    jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		    jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	    jobperformance -= 25;
-	if (girl->has_trait( "Cum Addict"))			    jobperformance -= 5;
-
+    jobperformance += girl->get_trait_modifier("work.barmaid");
 
 	return jobperformance;
 }

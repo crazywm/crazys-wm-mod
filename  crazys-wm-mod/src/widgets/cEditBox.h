@@ -21,32 +21,29 @@
 
 #include <string>
 #include <memory>
-#include "CSurface.h"
-#include "cInterfaceObject.h"
+#include "interface/cSurface.h"
+#include "interface/cInterfaceObject.h"
 
 class cFont;
 
 class cEditBox : public cUIWidget
 {
 public:
-	cEditBox(int ID, int x, int y, int width, int height, int BorderSize, int FontSize = 16);
-	~cEditBox();
+	cEditBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, int FontSize = 16);
 
-	bool IsOver(int x, int y);
-	bool OnClicked(int x, int y);
-	void ClearText();
+    void ClearText();
 	std::string GetText();
 
-	void UpdateText(char key, bool upper);
-
-	void DrawWidget(const CGraphics& gfx) override;
+    void DrawWidget(const CGraphics& gfx) override;
+    bool HandleSetFocus(bool focus) override;
+    bool HandleClick(int x, int y, bool press) override;
+    bool HandleKeyPress(SDL_keysym sym) override;
 
 	std::unique_ptr<cFont> m_Text;
-	bool m_HasFocus = false;
 
-	SDL_Surface* m_FocusedBackground = nullptr;
-	SDL_Surface* m_Background = nullptr;
-	SDL_Surface* m_Border = nullptr;
+	cSurface m_FocusedBackground;
+	cSurface m_Background;
+	cSurface m_Border;
 	int m_BorderSize;
 };
 

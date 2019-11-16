@@ -32,8 +32,6 @@
 #include "cGangs.h"
 #include "libintl.h"
 
-extern cRng g_Dice;
-
 bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night1, string& summary)
 {
 	int actiontype = ACTION_COMBAT;
@@ -49,13 +47,13 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 	sGirl * ArenaRacer;
 	// racer this shift
 //	vector<sGirl *> AreRacer = girls_on_job(GirlsBrothelNo, JOB_RACING, Day0Night1);
-	int roll = g_Dice%100;
+	int roll = rng%100;
 	int wages = 50, work = 0;
 	double jobperformance = JP_ArenaRacing(girl, false);
 	//double Otherjobperformance = JP_ArenaRacing(AreRacer, false);
 	//int otherRacerskill = Otherjobperformance;
 
-	int numracers = g_Game.job_manager().get_num_on_job(brothel, JOB_RACING, Day0Night1);
+	int numracers = g_Game->job_manager().get_num_on_job(brothel, JOB_RACING, Day0Night1);
 
 
 	ss << "She worked as a chariot racer in the arena.\n";
@@ -125,7 +123,7 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 	girl->m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
 	int roll_max = (girl->fame() + girl->charisma());
 	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
+	wages += 10 + rng%roll_max;
 	girl->m_Pay = wages;
 
 
@@ -138,8 +136,8 @@ bool cJobManager::WorkArenaRacing(sGirl* girl, sBrothel* brothel, bool Day0Night
 
 	girl->fame(1);
 	girl->exp(xp);
-	girl->animalhandling(g_Dice%skill);
-	girl->combat(g_Dice%skill + 2);
+	girl->animalhandling(rng%skill);
+	girl->combat(rng%skill + 2);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	//gained

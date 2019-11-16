@@ -18,12 +18,11 @@
 */
 #include "buildings/cBrothel.h"
 #include "cScreenHouseDetails.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "cGangs.h"
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
 
-extern bool g_Cheats;
 extern	int	g_TalkCount;
 
 static string fmt_objective(stringstream &ss, string desc, int limit, int sofar = -1)
@@ -56,7 +55,7 @@ void cScreenHouseDetails::set_ids()
 
 void cScreenHouseDetails::buy_interactions(int num)
 {
-    if (g_Game.gold().misc_debit(1000 * num)) g_TalkCount += num;
+    if (g_Game->gold().misc_debit(1000 * num)) g_TalkCount += num;
     init(false);
 }
 
@@ -66,7 +65,7 @@ void cScreenHouseDetails::init(bool back)
 
 	stringstream ss;
 	ss << "CURRENT OBJECTIVE: ";
-	sObjective* obj = g_Game.get_objective();
+	sObjective* obj = g_Game->get_objective();
 	if (obj)
 	{
 		switch (obj->m_Objective)
@@ -74,7 +73,7 @@ void cScreenHouseDetails::init(bool back)
 		case OBJECTIVE_REACHGOLDTARGET:
 			ss << "End the week with " << obj->m_Target << " gold in the bank";
 			if (obj->m_Limit != -1) ss << " within " << obj->m_Limit << " weeks";
-			ss << ", " << g_Game.GetBankMoney() << " gathered so far.";
+			ss << ", " << g_Game->GetBankMoney() << " gathered so far.";
 			break;
 		case OBJECTIVE_GETNEXTBROTHEL:
 			fmt_objective(ss, "Purchase the next brothel", obj->m_Limit);
@@ -122,15 +121,15 @@ void cScreenHouseDetails::init(bool back)
 	}
 	else ss << "NONE\n";
 
-	ss << "\nCurrent gold: " << g_Game.gold().ival()
-		<< "\nBank account: " << g_Game.GetBankMoney()
-		<< "\nBusinesses controlled: " << g_Game.gang_manager().GetNumBusinessExtorted()
-		<< "\n \nCurrent number of runaways: " << g_Game.GetNumRunaways() << "\n";
+	ss << "\nCurrent gold: " << g_Game->gold().ival()
+		<< "\nBank account: " << g_Game->GetBankMoney()
+		<< "\nBusinesses controlled: " << g_Game->gang_manager().GetNumBusinessExtorted()
+		<< "\n \nCurrent number of runaways: " << g_Game->GetNumRunaways() << "\n";
 	//	`J` added while loop to add runaway's names to the list 
-	if (g_Game.GetNumRunaways() > 0)
+	if (g_Game->GetNumRunaways() > 0)
 	{
 	    bool first = true;
-		for(sGirl* rgirl : g_Game.GetRunaways())
+		for(sGirl* rgirl : g_Game->GetRunaways())
 		{
             if (!first)	ss << " ,   ";
             first = false;
@@ -141,10 +140,10 @@ void cScreenHouseDetails::init(bool back)
 	if (interact_id >= 0)
 	{
 		ss.str(""); ss << "Interactions Left: ";
-		if (g_Cheats) ss << "\nInfinate Cheat";
+		if (g_Game->allow_cheats()) ss << "\nInfinate Cheat";
 		else ss << g_TalkCount << "\nBuy more for 1000 each.";
 		EditTextItem(ss.str(), interact_id);
 	}
-	if (interactb_id >= 0)		DisableButton(interactb_id, g_Cheats || g_Game.gold().ival() < 1000);
-	if (interactb10_id >= 0)	DisableButton(interactb10_id, g_Cheats || g_Game.gold().ival() < 10000);
+	if (interactb_id >= 0) DisableWidget(interactb_id, g_Game->allow_cheats() || g_Game->gold().ival() < 1000);
+	if (interactb10_id >= 0) DisableWidget(interactb10_id, g_Game->allow_cheats() || g_Game->gold().ival() < 10000);
 }

@@ -22,18 +22,16 @@
 #include "cInventory.h"
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Farm - Producers
-bool cJobManager::WorkBrewer(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkBrewer(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCOOKING;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_BREWER))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -114,7 +112,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, bool Day0Night1, string& summary)
 #else
 	if (roll_a <= 10)
 	{
-		enjoyC -= g_Dice % 3; enjoyF -= g_Dice % 3;
+		enjoyC -= rng % 3; enjoyF -= rng % 3;
 		CleanAmt = int(CleanAmt * 0.8);
 		/* */if (roll_b < 30)	ss << "She spilled a bucket of something unpleasant all over herself.";
 		else if (roll_b < 60)	ss << "She stepped in something unpleasant.";
@@ -122,14 +120,14 @@ bool cJobManager::WorkBrewer(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else if (roll_a >= 90)
 	{
-		enjoyC += g_Dice % 3; enjoyF += g_Dice % 3;
+		enjoyC += rng % 3; enjoyF += rng % 3;
 		CleanAmt = int(CleanAmt * 1.1);
 		/* */if (roll_b < 50)	ss << "She cleaned the building while humming a pleasant tune.";
 		else /*            */	ss << "She had a great time working today.";
 	}
 	else
 	{
-		enjoyC += g_Dice % 2; enjoyF += g_Dice % 2;
+		enjoyC += rng % 2; enjoyF += rng % 2;
 		ss << "The shift passed uneventfully.";
 	}
 	ss << "\n \n";
@@ -147,11 +145,11 @@ bool cJobManager::WorkBrewer(sGirl* girl, bool Day0Night1, string& summary)
 
         while (points_remaining > 0 && numitems < (1 + girl->crafting() / 15))
         {
-            auto item = g_Game.inventory_manager().GetCraftableItem(*girl, JOB_BREWER, points_remaining);
+            auto item = g_Game->inventory_manager().GetCraftableItem(*girl, JOB_BREWER, points_remaining);
             if(!item) {
                 // try something easier. Get craftable item does not return items which need less than
                 // points_remaining / 3 crafting points
-                item = g_Game.inventory_manager().GetCraftableItem(*girl, JOB_BAKER, points_remaining / 2);
+                item = g_Game->inventory_manager().GetCraftableItem(*girl, JOB_BAKER, points_remaining / 2);
             }
             if(!item) {
                 points_remaining -= 10;
@@ -163,7 +161,7 @@ bool cJobManager::WorkBrewer(sGirl* girl, bool Day0Night1, string& summary)
             msgtype = EVENT_GOODNEWS;
             if (numitems == 0)	ss << "\n \n" << girlName << " made:";
             ss << "\n" << item->m_Name;
-            g_Game.player().inventory().add_item(item);
+            g_Game->player().inventory().add_item(item);
             numitems++;
         }
     }
@@ -195,15 +193,15 @@ bool cJobManager::WorkBrewer(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	girl->brewing((g_Dice % skill) + 2);
+	girl->brewing((rng % skill) + 2);
 	// secondary (-1 for one then -2 for others)
-	girl->herbalism(max(0, (g_Dice % skill) - 1));
-	girl->intelligence(max(0, (g_Dice % skill) - 2));
-	girl->cooking(max(0, (g_Dice % skill) - 2));
+	girl->herbalism(max(0, (rng % skill) - 1));
+	girl->intelligence(max(0, (rng % skill) - 2));
+	girl->cooking(max(0, (rng % skill) - 2));
 
 #pragma endregion
 	return false;
@@ -225,37 +223,7 @@ double cJobManager::JP_Brewer(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Quick Learner"))  jobperformance += 5;
-	if (girl->has_trait( "Psychic"))		  jobperformance += 10;
-	if (girl->has_trait( "Farmers Daughter"))	jobperformance += 10;
-	if (girl->has_trait( "Country Gal"))		jobperformance += 10;
-	if (girl->has_trait( "Mixologist"))		jobperformance += 50;
+    jobperformance += girl->get_trait_modifier("work.brewer");
 
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive")) 	jobperformance -= 20; //gets mad easy
-	if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))			jobperformance -= 20;
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 20;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 35;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 125;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 40;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 50;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 75;
-	if (girl->has_trait( "Blind"))		jobperformance -= 30;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 50;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-
-	return jobperformance;
+    return jobperformance;
 }

@@ -22,6 +22,7 @@
 #include "sConfig.h"
 #include "SDL.h"
 #include "CLog.h"
+#include "Game.hpp"
 
 extern string g_ReturnText;
 extern int g_ReturnInt;
@@ -73,9 +74,10 @@ void cScreenMainMenu::init(bool back)
     FileList fla(location, "*.gam");
     bool d_continue = fl.size() < 1;
     bool d_load = (fla.size() < 1 || (fla.size() == 1 && !d_continue));
-    DisableButton(continue_id, d_continue);	// `J` disable continue button if autosave.gam is not found
-    DisableButton(load_id, d_load);			// `J` disable load game button if there are no save games found
-    DisableButton(settings_id, false);		// `J` disable settings button until settings page is added
+    DisableWidget(continue_id, d_continue);	// `J` disable continue button if autosave.gam is not found
+    DisableWidget(load_id, d_load);			// `J` disable load game button if there are no save games found
+    DisableWidget(settings_id, false);		// `J` disable settings button until settings page is added
     if (version_id >= 0) EditTextItem(svn_revision, version_id);
 
+    g_Game = nullptr;
 }

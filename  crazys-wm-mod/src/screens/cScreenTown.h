@@ -18,9 +18,7 @@
 */
 #pragma once
 
-#include "DirPath.h"
-#include "cInterfaceWindow.h"
-#include "InterfaceGlobals.h"
+#include "interface/cInterfaceWindow.h"
 
 class static_brothel_data;
 
@@ -52,7 +50,6 @@ private:
 	int setup_id;			// setup map button
 	int girlimage_id;		// Girl image
 
-	int BuyBrothel;
 	bool m_first_walk;
 
 	void set_ids() override;

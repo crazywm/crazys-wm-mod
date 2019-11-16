@@ -23,18 +23,16 @@
 #include <sstream>
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - Brothel
-bool cJobManager::WorkBrothelMasseuse(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkBrothelMasseuse(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sBrothel*>(girl->m_Building);
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKMASSEUSE;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_MASSEUSE))
 	{
 		//SIN - More informative mssg to show *what* she refuses
@@ -244,7 +242,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, bool Day0Night1, string& summ
 	{
 		u_int n;
 		ss << "Because she was quite horny, she ended up ";
-		sCustomer Cust = g_Game.GetCustomer(*brothel);
+		sCustomer Cust = g_Game->GetCustomer(*brothel);
 		brothel->m_Happiness += 100;
 		if (Cust.m_IsWoman && brothel->is_sex_type_allowed(SKILL_LESBIAN))
 		{
@@ -252,7 +250,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, bool Day0Night1, string& summ
 		}
 		else
 		{
-			switch (g_Dice % 10)
+			switch (rng % 10)
 			{
 			case 0:        n = SKILL_ORALSEX;   ss << "massaging the customer's cock with her tongue";					break;
 			case 1:        n = SKILL_TITTYSEX;  ss << "using her tits to get the customer off";							break;
@@ -279,7 +277,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, bool Day0Night1, string& summ
 			}
 			if (!girl->calc_pregnancy(Cust, false, 1.0))
 			{
-				g_Game.push_message(girlName + " has gotten pregnant", 0);
+				g_Game->push_message(girlName + " has gotten pregnant", 0);
 			}
 		}
 		girl->upd_skill(n, 2);
@@ -306,7 +304,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, bool Day0Night1, string& summ
 	}
 	else
 	{
-		brothel->m_Happiness += (g_Dice % 70) + 30;
+		brothel->m_Happiness += (rng % 70) + 30;
 		brothel->m_MiscCustomers++;
 		//girl->m_Events.AddMessage(ss.str(), imageType, Day0Night1);
 	}
@@ -358,8 +356,8 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, bool Day0Night1, string& summ
 
 	girl->fame(fame);
 	girl->exp(xp);
-	girl->medicine(g_Dice%skill);
-	girl->service(g_Dice%skill + 1);
+	girl->medicine(rng%skill);
+	girl->service(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 
@@ -369,7 +367,7 @@ bool cJobManager::WorkBrothelMasseuse(sGirl* girl, bool Day0Night1, string& summ
 
 double cJobManager::JP_BrothelMasseuse(sGirl* girl, bool estimate)// not used
 {
-#if 1	//SIN - standardizing job performance per J's instructs
+	//SIN - standardizing job performance per J's instructs
 	double jobperformance =
 		//Core stats - first 100: how well she serves customers and understanding of body
 		((girl->service() + girl->medicine()) / 2) +
@@ -379,13 +377,6 @@ double cJobManager::JP_BrothelMasseuse(sGirl* girl, bool estimate)// not used
 		girl->level();
 
 	// next up tiredness penalty...
-#else
-	double jobperformance =
-		(girl->charisma() / 2 +
-		girl->beauty() / 2 +
-		girl->medicine() / 2 +
-		girl->service() / 2);
-#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -393,48 +384,7 @@ double cJobManager::JP_BrothelMasseuse(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Charismatic"))   jobperformance += 15;
-	if (girl->has_trait( "Sexy Air"))		 jobperformance += 10;
-	if (girl->has_trait( "Cool Person"))	 jobperformance += 10; //people love to be around her
-	if (girl->has_trait( "Cute"))			 jobperformance += 5;
-	if (girl->has_trait( "Charming"))		 jobperformance += 10; //people like charming people
-	if (girl->has_trait( "Great Figure"))  jobperformance += 5;
-	if (girl->has_trait( "Great Arse"))    jobperformance += 5;
-	if (girl->has_trait( "Quick Learner")) jobperformance += 5;
-	if (girl->has_trait( "Psychic"))		 jobperformance += 10; //knows what people want to hear
-	if (girl->has_trait( "Strong"))		 jobperformance += 15;
-	if (girl->has_trait( "Blind"))		 jobperformance += 15; //SIN: heightened sense of touch
-	if (girl->has_trait( "Doctor"))		 jobperformance += 10; //understands the body
+    jobperformance += girl->get_trait_modifier("work.masseuse");
 
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy"))		jobperformance -= 20; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))	jobperformance -= 20; //gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))			jobperformance -= 20;
-	if (girl->has_trait( "Slow Learner"))	jobperformance -= 10;
-
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 60;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 20;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 40;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 30;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 200;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 40;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 75;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 60;
-	//if (girl->has_trait( "Blind"))		jobperformance -= 15; //SIN: Why? Moved this to positive
-	if (girl->has_trait( "Deaf"))			jobperformance -= 10;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-
-
-	return jobperformance;
+    return jobperformance;
 }

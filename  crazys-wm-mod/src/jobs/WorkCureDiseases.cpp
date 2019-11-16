@@ -21,12 +21,10 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Clinic - Full_Time_Job
-bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
@@ -88,9 +86,9 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary
 
 	if (numdoctor > 2)	// choose 2 random doctors
 	{
-		d1 = g_Dice%numdoctor;
-		d2 = g_Dice%numdoctor;
-		while (d1 == d2)	d2 = g_Dice%numdoctor;
+		d1 = rng%numdoctor;
+		d2 = rng%numdoctor;
+		while (d1 == d2)	d2 = rng%numdoctor;
 	}
 	else					// otherwise take whoever is there
 	{
@@ -99,10 +97,10 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary
 	}
 	if (numnurse > 4)	// choose 4 random nurses
 	{
-		n1 = g_Dice%numnurse;	n2 = g_Dice%numnurse;	n3 = g_Dice%numnurse;	n4 = g_Dice%numnurse;
-		while (n2 == n1)							n2 = g_Dice%numnurse;
-		while (n3 == n1 || n3 == n2)				n3 = g_Dice%numnurse;
-		while (n4 == n1 || n4 == n2 || n4 == n3)	n4 = g_Dice%numnurse;
+		n1 = rng%numnurse;	n2 = rng%numnurse;	n3 = rng%numnurse;	n4 = rng%numnurse;
+		while (n2 == n1)							n2 = rng%numnurse;
+		while (n3 == n1 || n3 == n2)				n3 = rng%numnurse;
+		while (n4 == n1 || n4 == n2 || n4 == n3)	n4 = rng%numnurse;
 	}
 	else					// otherwise take whoever is there
 	{
@@ -165,7 +163,7 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary
 	else
 	{
 		ss << "There were no Doctors or Nurses working so " << girlName << " just lay in bed getting sicker";
-		girl->m_WorkingDay -= g_Dice % 10;
+		girl->m_WorkingDay -= rng % 10;
 		cost = 0;	// noone to give her the medicine
 	}
 	ss << ".\n \n";
@@ -181,18 +179,18 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary
 	if (girl->has_trait("Dwarf"))				girl->m_WorkingDay += 1;			// a hearty race
 	if (girl->has_trait("Elf"))					girl->m_WorkingDay += 1;			// a healty race
 	if (girl->has_trait("Tough"))				girl->m_WorkingDay += 1;			// her immune system is a little stronger
-	if (girl->has_trait("Fallen Goddess"))		girl->m_WorkingDay += g_Dice % 2;	// she must have some power left
-	if (girl->has_trait("Goddess"))				girl->m_WorkingDay += g_Dice % 2;	// she must have some power left
-	if (girl->has_trait("Country Gal"))			girl->m_WorkingDay += g_Dice % 2;	// she is used to dirty surroundings so her immune system is a little stronger
-	if (girl->has_trait("Farmer"))				girl->m_WorkingDay += g_Dice % 2;	// she is used to dirty surroundings so her immune system is a little stronger
-	if (girl->has_trait("Farmers Daughter"))	girl->m_WorkingDay += g_Dice % 2;	// she is used to dirty surroundings so her immune system is a little stronger
-	if (girl->has_trait("Homeless"))			girl->m_WorkingDay += g_Dice % 2;	// she is used to dirty surroundings so her immune system is a little stronger
-	if (girl->has_trait("Maid"))				girl->m_WorkingDay += g_Dice % 2;	// she is used to dirty surroundings so her immune system is a little stronger
-	if (girl->has_trait("Waitress"))			girl->m_WorkingDay += g_Dice % 2;	// she is used to dirty surroundings so her immune system is a little stronger
-	if (girl->has_trait("Porn Star"))			girl->m_WorkingDay += g_Dice % 2;	// she is used to dirty surroundings so her immune system is a little stronger
-	if (girl->has_trait("Whore"))				girl->m_WorkingDay += g_Dice % 2;	// she is used to dirty surroundings so her immune system is a little stronger
-	if (girl->has_trait("Slitherer"))			girl->m_WorkingDay += g_Dice % 2;	// more of her body touches the ground so her immune system is a little stronger
-	if (girl->has_trait("Succubus"))			girl->m_WorkingDay += g_Dice % 2;	// she feeds on dark energies so her immune system is a little stronger
+	if (girl->has_trait("Fallen Goddess"))		girl->m_WorkingDay += rng % 2;	// she must have some power left
+	if (girl->has_trait("Goddess"))				girl->m_WorkingDay += rng % 2;	// she must have some power left
+	if (girl->has_trait("Country Gal"))			girl->m_WorkingDay += rng % 2;	// she is used to dirty surroundings so her immune system is a little stronger
+	if (girl->has_trait("Farmer"))				girl->m_WorkingDay += rng % 2;	// she is used to dirty surroundings so her immune system is a little stronger
+	if (girl->has_trait("Farmers Daughter"))	girl->m_WorkingDay += rng % 2;	// she is used to dirty surroundings so her immune system is a little stronger
+	if (girl->has_trait("Homeless"))			girl->m_WorkingDay += rng % 2;	// she is used to dirty surroundings so her immune system is a little stronger
+	if (girl->has_trait("Maid"))				girl->m_WorkingDay += rng % 2;	// she is used to dirty surroundings so her immune system is a little stronger
+	if (girl->has_trait("Waitress"))			girl->m_WorkingDay += rng % 2;	// she is used to dirty surroundings so her immune system is a little stronger
+	if (girl->has_trait("Porn Star"))			girl->m_WorkingDay += rng % 2;	// she is used to dirty surroundings so her immune system is a little stronger
+	if (girl->has_trait("Whore"))				girl->m_WorkingDay += rng % 2;	// she is used to dirty surroundings so her immune system is a little stronger
+	if (girl->has_trait("Slitherer"))			girl->m_WorkingDay += rng % 2;	// more of her body touches the ground so her immune system is a little stronger
+	if (girl->has_trait("Succubus"))			girl->m_WorkingDay += rng % 2;	// she feeds on dark energies so her immune system is a little stronger
 
 	if (girl->has_trait("Zombie"))				girl->m_WorkingDay -= 5;			// she is a rotting corpse, she has no immune system
 	if (girl->has_trait("Demon"))				girl->m_WorkingDay -= 3;			// a creature of taint
@@ -206,9 +204,9 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary
 	if (girl->has_trait("Former Addict"))		girl->m_WorkingDay -= 1;			// she is a little worse for wear because of drug abuse
 	if (girl->has_trait("Shroud Addict"))		girl->m_WorkingDay -= 1;			// she is a little worse for wear because of drug abuse
 	if (girl->has_trait("Viras Blood Addict"))	girl->m_WorkingDay -= 1;			// she is a little worse for wear because of drug abuse
-	if (girl->has_trait("Noble"))				girl->m_WorkingDay -= g_Dice % 2;	// she is not used to dirty surroundings so her immune system is a little weaker
-	if (girl->has_trait("Princess"))			girl->m_WorkingDay -= g_Dice % 2;	// she is not used to dirty surroundings so her immune system is a little weaker
-	if (girl->has_trait("Queen"))				girl->m_WorkingDay -= g_Dice % 3;	// she is not used to dirty surroundings so her immune system is a little weaker
+	if (girl->has_trait("Noble"))				girl->m_WorkingDay -= rng % 2;	// she is not used to dirty surroundings so her immune system is a little weaker
+	if (girl->has_trait("Princess"))			girl->m_WorkingDay -= rng % 2;	// she is not used to dirty surroundings so her immune system is a little weaker
+	if (girl->has_trait("Queen"))				girl->m_WorkingDay -= rng % 3;	// she is not used to dirty surroundings so her immune system is a little weaker
 
 
 #pragma endregion
@@ -227,26 +225,26 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary
 	if (numnurse == 4)
 	{
 		ss << "The Nurses kept her healthy and happy during her treatment";
-		girl->health(g_Dice.bell(0, 20));
-		girl->happiness(g_Dice.bell(0, 10));
-		girl->spirit(g_Dice.bell(0, 10));
-		girl->mana(g_Dice.bell(0, 20));
+		girl->health(rng.bell(0, 20));
+		girl->happiness(rng.bell(0, 10));
+		girl->spirit(rng.bell(0, 10));
+		girl->mana(rng.bell(0, 20));
 	}
 	else if (numnurse > 0)
 	{
 		ss << "The Nurse" << (numnurse > 1 ? "s" : "") << " helped her during her treatment";
-		girl->health(g_Dice.bell(0, 10));
-		girl->happiness(g_Dice.bell(0, 5));
-		girl->spirit(g_Dice.bell(0, 5));
-		girl->mana(g_Dice.bell(0, 10));
+		girl->health(rng.bell(0, 10));
+		girl->happiness(rng.bell(0, 5));
+		girl->spirit(rng.bell(0, 5));
+		girl->mana(rng.bell(0, 10));
 	}
 	else
 	{
 		ss << "She is sad and has lost some health during the treatment";
-		girl->health(g_Dice.bell(-20, 2));
-		girl->happiness(g_Dice.bell(-10, 1));
-		girl->spirit(g_Dice.bell(-5, 1));
-		girl->mana(g_Dice.bell(-20, 3));
+		girl->health(rng.bell(-20, 2));
+		girl->happiness(rng.bell(-10, 1));
+		girl->spirit(rng.bell(-5, 1));
+		girl->mana(rng.bell(-20, 3));
 	}
 
 
@@ -260,7 +258,7 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary
 		msgtype = EVENT_GOODNEWS;
 		girl->m_WorkingDay = girl->m_PrevWorkingDay = 0;
 
-		string diseasecured = diseases[g_Dice%numdiseases];
+		string diseasecured = diseases[rng%numdiseases];
 		girl->remove_trait(diseasecured);
 		numdiseases--;
 		ss << "You pay " << cost << " gold for last dose of the medicine used in her treatment.\n \nThe treatment is a success, " << girlName << " no longer has " << diseasecured << "!\n \n";
@@ -307,7 +305,7 @@ bool cJobManager::WorkCureDiseases(sGirl* girl, bool Day0Night1, string& summary
 	if (girl->has_trait( "Masochist"))	libido += 1;
 	if (girl->has_trait( "Nymphomaniac"))	libido += 2;
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
-	if (g_Dice % 10 == 0)
+	if (rng % 10 == 0)
 		girl->medicine(1);	// `J` she watched what the doctors and nurses were doing
 
 #pragma endregion

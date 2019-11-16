@@ -24,10 +24,8 @@
 #include "cGold.h"
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 // `J` Job Brothel - General - Matron_Job - Full_Time_Job
-bool cJobManager::WorkMatron(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkMatron(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 
@@ -52,45 +50,45 @@ bool cJobManager::WorkMatron(sGirl* girl, bool Day0Night1, string& summary)
 	int enjoy = 0;
 	int conf = 0;
 	int happy = 0;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100();
 	int imagetype = IMGTYPE_PROFILE;
 
 	// Complications
-	int check = g_Dice.d100();
+	int check = rng.d100();
 	if (check < 10 && numgirls >(girl->service() + girl->confidence()) * 3)
 	{
-		enjoy -= (g_Dice % 6 + 5);
+		enjoy -= (rng % 6 + 5);
 		conf -= 5; happy -= 10;
 		ss << "was overwhelmed by the number of girls she was required to manage and broke down crying.";
 	}
 	else if (check < 10)
 	{
-		enjoy -= (g_Dice % 3 + 1);
+		enjoy -= (rng % 3 + 1);
 		conf -= -1; happy -= -3;
 		ss << "had trouble dealing with some of the girls.";
 	}
 	else if (check > 90)
 	{
-		enjoy += (g_Dice % 3 + 1);
+		enjoy += (rng % 3 + 1);
 		conf += 1; happy += 3;
 		ss << "enjoyed helping the girls with their lives.";
 	}
 	else
 	{
-		enjoy += (g_Dice % 3 - 1);
+		enjoy += (rng % 3 - 1);
 		ss << "went about her day as usual.";
 	}
 
 
 	//Events
 
-	if (g_Game.gold().ival() > 1000 &&								// `J` first you need to have enough money to steal
-		g_Dice.percent(10 - girl->morality()) &&			// positive morality will rarely steal
-		!g_Dice.percent(girl->pclove() + 20) &&				// Love will make her not want to steal
-		!g_Dice.percent(girl->obedience()) &&				// if she fails an obedience check
-		!g_Dice.percent(girl->pcfear()))					// Fear may keep her from stealing
+	if (g_Game->gold().ival() > 1000 &&								// `J` first you need to have enough money to steal
+		rng.percent(10 - girl->morality()) &&			// positive morality will rarely steal
+		!rng.percent(girl->pclove() + 20) &&				// Love will make her not want to steal
+		!rng.percent(girl->obedience()) &&				// if she fails an obedience check
+		!rng.percent(girl->pcfear()))					// Fear may keep her from stealing
 	{
-		int steal = g_Game.gold().ival() / 1000;
+		int steal = g_Game->gold().ival() / 1000;
 		if (steal > 1000) steal = 1000;		if (steal < 10) steal = 10;
 
 		if (roll_b < brothel->m_SecurityLevel)
@@ -102,22 +100,22 @@ bool cJobManager::WorkMatron(sGirl* girl, bool Day0Night1, string& summary)
 		}
 		else
 		{
-			g_Game.gold().misc_debit(steal);
+			g_Game->gold().misc_debit(steal);
 			girl->m_Money += steal;		// goes directly into her pocket
 		}
 	}
 
-	if (girl->is_addict(true) && g_Dice.percent(girl->m_Withdrawals * 20))
+	if (girl->is_addict(true) && rng.percent(girl->m_Withdrawals * 20))
 	{
 		int cost = 0;
 		int method = 0;	// 1 = out of pocket, 2 = brothel money, 3 = sex, 4 = bj
 		// 'Mute' Added so if the cost of the item changes then the gold amout will be correct
 		sInventoryItem* item = nullptr;
 		string itemName;
-		/* */if (girl->has_trait("Viras Blood Addict"))	{ itemName = "Vira Blood"; }		// cost += 150;	girl->add_inv(g_Game.inventory_manager().GetItem("Vira Blood")); }
-		else if (girl->has_trait("Shroud Addict"))		{ itemName = "Shroud Mushroom"; }	// cost += 100;	girl->add_inv(g_Game.inventory_manager().GetItem("Shroud Mushroom")); }
-		else if (girl->has_trait("Fairy Dust Addict"))	{ itemName = "Fairy Dust"; }		// cost += 50;	girl->add_inv(g_Game.inventory_manager().GetItem("Fairy Dust")); }
-		if (!itemName.empty())		item = g_Game.inventory_manager().GetItem(itemName);
+		/* */if (girl->has_trait("Viras Blood Addict"))	{ itemName = "Vira Blood"; }		// cost += 150;	girl->add_inv(g_Game->inventory_manager().GetItem("Vira Blood")); }
+		else if (girl->has_trait("Shroud Addict"))		{ itemName = "Shroud Mushroom"; }	// cost += 100;	girl->add_inv(g_Game->inventory_manager().GetItem("Shroud Mushroom")); }
+		else if (girl->has_trait("Fairy Dust Addict"))	{ itemName = "Fairy Dust"; }		// cost += 50;	girl->add_inv(g_Game->inventory_manager().GetItem("Fairy Dust")); }
+		if (!itemName.empty())		item = g_Game->inventory_manager().GetItem(itemName);
 		if (item)
 		{
 			cost += item->m_Cost;
@@ -128,32 +126,32 @@ bool cJobManager::WorkMatron(sGirl* girl, bool Day0Night1, string& summary)
 			method = 4;
 		else if (girl->has_trait("Nymphomaniac") && girl->libido() > 50)
 			method = 3;
-		else if (cost < girl->m_Money && g_Dice.percent(girl->morality()))		// pay out of pocket
+		else if (cost < girl->m_Money && rng.percent(girl->morality()))		// pay out of pocket
 			method = 1;
-		else if (cost < g_Game.gold().ival() / 10 && g_Dice.percent(30 - girl->morality()) && !g_Dice.percent(girl->obedience() / 2) && !g_Dice.percent(girl->pcfear() / 2))
+		else if (cost < g_Game->gold().ival() / 10 && rng.percent(30 - girl->morality()) && !rng.percent(girl->obedience() / 2) && !rng.percent(girl->pcfear() / 2))
 			method = 2;
-		else method = g_Dice % 4 + 3;
+		else method = rng % 4 + 3;
 
 		stringstream warning;
 		int warningimage = IMGTYPE_PROFILE;
 		switch (method)
 		{
 		case 1:
-			if (!g_Dice.percent(girl->agility()))	// you only get to know about it if she fails an agility check
+			if (!rng.percent(girl->agility()))	// you only get to know about it if she fails an agility check
 			{
 				warning << girlName << " bought some drugs with her money.\n";
 			}
 			girl->m_Money -= cost;
 			break;
 		case 2:
-			if (g_Dice.percent(cost / 2))		// chance that you notice the missing money
+			if (rng.percent(cost / 2))		// chance that you notice the missing money
 			{
 				warning << girlName << " bought some drugs with some of the brothel's money.\n";
 			}
-			g_Game.gold().misc_debit(cost);
+			g_Game->gold().misc_debit(cost);
 			break;
 		case 3:
-			if (!g_Dice.percent(girl->agility()))	// you only get to know about it if she fails an agility check
+			if (!rng.percent(girl->agility()))	// you only get to know about it if she fails an agility check
 			{
 				warning << girlName << " saw a customer with drugs and offered to fuck him for some. He accepted, so she took him out of sight of security and banged him.\n";
 				warningimage = IMGTYPE_SEX;
@@ -161,7 +159,7 @@ bool cJobManager::WorkMatron(sGirl* girl, bool Day0Night1, string& summary)
 			girl->normalsex(1);
 			break;
 		default:
-			if (!g_Dice.percent(girl->agility()))	// you only get to know about it if she fails an agility check
+			if (!rng.percent(girl->agility()))	// you only get to know about it if she fails an agility check
 			{
 				warning << girlName << " saw a customer with drugs and offered to give him a blowjob for some. He accepted, so she took him out of sight of security and sucked him off.\n";
 				warningimage = IMGTYPE_ORAL;
@@ -179,54 +177,54 @@ bool cJobManager::WorkMatron(sGirl* girl, bool Day0Night1, string& summary)
 	if (girl->has_trait("Exhibitionist"))
 	{
 		ss << "\n \nShe hung out in the brothel wearing barely anything.";
-		if (g_Dice.percent(50) && girl->has_trait("Horrific Scars"))
+		if (rng.percent(50) && girl->has_trait("Horrific Scars"))
 		{
 			ss << " The customers were disgusted by her horrific scars.";
 			brothel->m_Happiness -= 15;
 		}
-		else if (g_Dice.percent(50) && girl->has_trait("Small Scars"))
+		else if (rng.percent(50) && girl->has_trait("Small Scars"))
 		{
 			ss << " Some customers were disgusted by her scars.";
 			brothel->m_Happiness -= 5;
 		}
-		else if (g_Dice.percent(50) && girl->has_trait("Bruises"))
+		else if (rng.percent(50) && girl->has_trait("Bruises"))
 		{
 			ss << " The customers were disgusted by her bruises.";
 			brothel->m_Happiness -= 5;
 		}
 
-		if (g_Dice.percent(50) && girl->has_trait("Futanari"))
+		if (rng.percent(50) && girl->has_trait("Futanari"))
 		{
 			ss << " The girls and some customers couldn't stop looking at her big cock.";
 			brothel->m_Happiness += 2;
 		}
 
-		if (g_Dice.percent(50) && (girl->has_trait("Massive Melons") || girl->has_trait("Abnormally Large Boobs") || girl->has_trait("Titanic Tits")))
+		if (rng.percent(50) && (girl->has_trait("Massive Melons") || girl->has_trait("Abnormally Large Boobs") || girl->has_trait("Titanic Tits")))
 		{
 			ss << " Her enormous, heaving breasts drew a lot of attention from the customers.";
 			brothel->m_Happiness += 15;
 		}
-		else if (g_Dice.percent(50) && (girl->has_trait("Big Boobs") || girl->has_trait("Busty Boobs") || girl->has_trait("Giant Juggs")))
+		else if (rng.percent(50) && (girl->has_trait("Big Boobs") || girl->has_trait("Busty Boobs") || girl->has_trait("Giant Juggs")))
 		{
 			ss << " Her big, round breasts drew a lot of attention from the customers.";
 			brothel->m_Happiness += 10;
 		}
-		if (g_Dice.percent(50) && (girl->has_trait("Deluxe Derriere") || girl->has_trait("Great Arse")))
+		if (rng.percent(50) && (girl->has_trait("Deluxe Derriere") || girl->has_trait("Great Arse")))
 		{
 			ss << " The customers were hypnotized by the movements of her well shaped butt.";
 			brothel->m_Happiness += 15;
 		}
-		if (g_Dice.percent(50) && (girl->has_trait("Great Figure") || girl->has_trait("Hourglass Figure")))
+		if (rng.percent(50) && (girl->has_trait("Great Figure") || girl->has_trait("Hourglass Figure")))
 		{
 			ss << " She has such a great figure that the customers couldn't stop looking at her.";
 			brothel->m_Happiness += 15;
 		}
-		if (g_Dice.percent(50) && girl->has_trait("Sexy Air"))
+		if (rng.percent(50) && girl->has_trait("Sexy Air"))
 		{
 			ss << " She's so sexy that the customers couldn't stop looking at her.";
 			brothel->m_Happiness += 10;
 		}
-		if (g_Dice.percent(50) && (girl->has_trait("Pierced Nipples") || girl->has_trait("Pierced Navel") || girl->has_trait("Pierced Nose")))
+		if (rng.percent(50) && (girl->has_trait("Pierced Nipples") || girl->has_trait("Pierced Navel") || girl->has_trait("Pierced Nose")))
 		{
 			ss << " Her piercings catch the eye of some customers.";
 			brothel->m_Happiness += 5;
@@ -262,14 +260,14 @@ bool cJobManager::WorkMatron(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
 
-	if (conf>-1) conf += g_Dice%skill;
+	if (conf>-1) conf += rng%skill;
 	girl->confidence(conf);
 	girl->happiness(happy);
 
-	girl->exp(g_Dice%xp + 5);
-	girl->medicine(g_Dice%skill);
-	girl->service(g_Dice%skill + 2);
-	girl->upd_temp_stat(STAT_LIBIDO, g_Dice%libido);
+	girl->exp(rng%xp + 5);
+	girl->medicine(rng%skill);
+	girl->service(rng%skill + 2);
+	girl->upd_temp_stat(STAT_LIBIDO, rng%libido);
 
 	girl->upd_Enjoyment(actiontype, enjoy);
 	cGirls::PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);

@@ -25,18 +25,16 @@
 #include "cGold.h"
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - Sleazy Bar
-bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKCLUB;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_SLEAZYWAITRESS))
 	{
 		//SIN - More informative mssg to show *what* she refuses
@@ -69,14 +67,14 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 	else if (roll_c >= 90)	{ dick_type = 0; dick_type_text = "small"; }
 
 	//a little pre-game randomness
-	if (girl->has_trait( "Cum Addict") && g_Dice.percent(30))
+	if (girl->has_trait( "Cum Addict") && rng.percent(30))
 	{
 		ss << girlName << " is addicted to cum, and she cannot serve her shift without taking advantage of a room full of cocks. Since most of your patrons are already sexually primed with all this nubile flesh walking around in skimpy uniforms, she does not need to be very persuasive to convince various men to satisfy her addiction. You see her feet sticking out from under the tables from time to time as a satisfied customer smiles at the ceiling. Her service with the other tables suffers, but her tips are still quite high.\n";
 		jobperformance -= 10;
 		tips += 40;
 		imagetype = IMGTYPE_ORAL;
 	}
-	else if ((girl->has_trait( "Shy") || girl->has_trait( "Nervous")) && g_Dice.percent(20))
+	else if ((girl->has_trait( "Shy") || girl->has_trait( "Nervous")) && rng.percent(20))
 	{
 		ss << girlName << " has serious difficulty being around all these new people, and the fact that they are all so forward about her body does nothing to help. She spends a lot of time hiding in the kitchen, petrified of going back out and talking to all those people.";
 		jobperformance -= 20;
@@ -182,14 +180,14 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 	tips += (((10.0 + jobperformance / 22.0) * (double)wages) / 100.0);
 
 	//try and add randomness here
-	if (girl->beauty() > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && rng.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
 
-	if (girl->has_trait( "Clumsy") && g_Dice.percent(15))
+	if (girl->has_trait( "Clumsy") && rng.percent(15))
 	{
-		if (g_Dice.percent(50))
+		if (rng.percent(50))
 		{
 			ss << "Her clumsy nature cause her to spill food on a customer resulting in them storming off without paying.\n";
 		}
@@ -200,7 +198,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		wages -= 25;
 	}
 
-	if (girl->has_trait( "Pessimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Pessimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -212,7 +210,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		}
 	}
 
-	if (girl->has_trait( "Optimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Optimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -224,7 +222,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		}
 	}
 
-	if (girl->has_trait( "Great Arse") && g_Dice.percent(15))
+	if (girl->has_trait( "Great Arse") && rng.percent(15))
 	{
 		if (jobperformance >= 185) //great
 		{
@@ -461,7 +459,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		}
 	}
 
-	if (girl->has_trait( "Great Figure") && g_Dice.percent(25))
+	if (girl->has_trait( "Great Figure") && rng.percent(25))
 	{
 		if (jobperformance < 125)
 		{
@@ -473,13 +471,13 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		}
 	}
 
-	if ((girl->has_trait( "Meek") || girl->has_trait( "Shy")) && g_Dice.percent(5))
+	if ((girl->has_trait( "Meek") || girl->has_trait( "Shy")) && rng.percent(5))
 	{
 		ss << girlName << " was taking an order from a rather rude patron when he decide to grope her. She isn't the kind of girl to resist this and had a bad day at work because of this.\n";
 		enjoy -= 5;
 	}
 
-	if (girl->libido() > 90 && g_Dice.percent(25) && !girl->has_trait( "Lesbian") && (girl->has_trait(
+	if (girl->libido() > 90 && rng.percent(25) && !girl->has_trait( "Lesbian") && (girl->has_trait(
 			"Nymphomaniac") || girl->has_trait( "Succubus")) && (girl->oralsex() > 80 || girl->has_trait( "Cum Addict")))
 	{
 		ss << girlName << " thought she deserved a short break and disappeared under one of the tables when nobody was looking, in order to give one of the clients a blowjob. Kneeling under the table, she devoured his cock with ease and deepthroated him as he came to make sure she didn't make a mess. The client himself was wasted out of his mind and didn't catch as much as a glimpse of her, but he left the locale with a big tip on the table.\n";
@@ -489,7 +487,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 	}
 
-	if (girl->libido() > 90 && g_Dice.percent(25) && !girl->has_trait( "Lesbian") && (girl->has_trait(
+	if (girl->libido() > 90 && rng.percent(25) && !girl->has_trait( "Lesbian") && (girl->has_trait(
 			"Nymphomaniac") || girl->has_trait( "Succubus")) && (girl->oralsex() > 80 || girl->has_trait( "Cum Addict")))
 	{
 		ss << "During her shift, " << girlName << " unnoticeably dove under the table belonging to a lonely-looking fellow, quickly unzipped his pants and started jacking him off enthusiastically. She skillfully wiped herself when he came all over her face. The whole event took no longer than two minutes, but was well worth the time spent on it, since the patron left with a heavy tip.\n";
@@ -499,7 +497,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
 	}
 
-	if (g_Dice.percent(20) && (girl->has_trait( "Exhibitionist") || girl->dignity() <= -20))
+	if (rng.percent(20) && (girl->has_trait( "Exhibitionist") || girl->dignity() <= -20))
 	{
 		if (roll_b <= 50)
 		{
@@ -511,13 +509,13 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		}
 	}
 
-	if (girl->dignity() <= -20 && g_Dice.percent(20) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Giant Juggs") ||
+	if (girl->dignity() <= -20 && rng.percent(20) && (girl->has_trait( "Big Boobs") || girl->has_trait( "Giant Juggs") ||
 										   girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Titanic Tits"))) //updated for the new breast traits
 	{
 		ss << "A drunk patron \"accidentally\" fell onto " << girlName << " and buried his face between her breasts. To his joy and surprise, " << girlName << " flirtatiously encouraged him to motorboat them for awhile, which he gladly did, before slipping some cash between the titties and staggering out on his way.\n"; tips += 40;
 	}
 
-	if (girl->has_trait( "Futanari") && girl->libido() > 80 && g_Dice.percent(5))
+	if (girl->has_trait( "Futanari") && girl->libido() > 80 && rng.percent(5))
 	{
 		if (girl->has_trait( "Open Minded") || girl->has_trait( "Exhibitionist") || girl->has_trait( "Slut") ||
 			girl->has_trait( "Succubus") || (girl->confidence() > 35 && girl->dignity() < 35))
@@ -531,24 +529,24 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		else
 		{
 			ss << "Noticing the bulge under her skirt one of the customers asked " << girlName << " to spill some of her \"cream\" in his drink, but she refused, blushing.\n";
-			switch (g_Dice % 10)
+			switch (rng % 10)
 			{
-			case 1:		girl->sanity(-(g_Dice % 5));		if (g_Dice % 2) break;
-			case 2:		girl->confidence(-(g_Dice % 5));	if (g_Dice % 2) break;
-			case 3:		girl->dignity(-(g_Dice % 5));		if (g_Dice % 2) break;
-			default:	enjoy -= g_Dice % 5;	break;
+			case 1:		girl->sanity(-(rng % 5));		if (rng % 2) break;
+			case 2:		girl->confidence(-(rng % 5));	if (rng % 2) break;
+			case 3:		girl->dignity(-(rng % 5));		if (rng % 2) break;
+			default:	enjoy -= rng % 5;	break;
 			}
 		}
 	}
 
-	if ((girl->has_trait( "Busty Boobs") && g_Dice.percent(5)) ||
-		(girl->has_trait( "Big Boobs") && g_Dice.percent(10)) ||
-		(girl->has_trait( "Giant Juggs") && g_Dice.percent(15)) ||
-		(girl->has_trait( "Massive Melons") && g_Dice.percent(20)) ||
-		(girl->has_trait( "Abnormally Large Boobs") && g_Dice.percent(25)) ||
-		(girl->has_trait( "Titanic Tits") && g_Dice.percent(30)))
+	if ((girl->has_trait( "Busty Boobs") && rng.percent(5)) ||
+		(girl->has_trait( "Big Boobs") && rng.percent(10)) ||
+		(girl->has_trait( "Giant Juggs") && rng.percent(15)) ||
+		(girl->has_trait( "Massive Melons") && rng.percent(20)) ||
+		(girl->has_trait( "Abnormally Large Boobs") && rng.percent(25)) ||
+		(girl->has_trait( "Titanic Tits") && rng.percent(30)))
 	{
-		if (g_Dice.percent(30) && (girl->has_trait( "Exhibitionist") || girl->has_trait( "Bimbo")))
+		if (rng.percent(30) && (girl->has_trait( "Exhibitionist") || girl->has_trait( "Bimbo")))
 		{
 			ss << "A patron was staring obviously at her large breasts, so she took off her top to show him her tits, which earned her a ";
 			double t = 10.0;
@@ -573,7 +571,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 			else  ss << "gigantic";
 			ss << " tip.\n";
 		}
-		else if (g_Dice.percent(20) && girl->has_trait( "Lesbian") && (girl->has_trait( "Slut") || girl->has_trait( "Succubus") || girl->libido() > 60))
+		else if (rng.percent(20) && girl->has_trait( "Lesbian") && (girl->has_trait( "Slut") || girl->has_trait( "Succubus") || girl->libido() > 60))
 		{
 			ss << "A female patron was staring obviously at her large breasts, so she grabbed her hand, slipped it under her clothes and let her play with her boobs. ";
 			if (girl->has_trait( "Pierced Nipples"))
@@ -611,7 +609,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		}
 	}
 
-	if (girl->is_pregnant() && g_Dice.percent(15))
+	if (girl->is_pregnant() && rng.percent(15))
 	{
 		if (girl->lactation() > 50 &&
 			(girl->has_trait( "Open Minded") || girl->has_trait( "Exhibitionist") || girl->has_trait( "Slut")
@@ -631,31 +629,31 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		else
 		{
 			ss << "Noticing her pregnant belly, one of the customers asked for some breast milk in his drink, but she refused, blushing.\n";
-			switch (g_Dice % 10)
+			switch (rng % 10)
 			{
-			case 1:		girl->sanity(-(g_Dice % 5));		if (g_Dice % 2) break;
-			case 2:		girl->confidence(-(g_Dice % 5));	if (g_Dice % 2) break;
-			case 3:		girl->dignity(-(g_Dice % 5));		if (g_Dice % 2) break;
-			default:	enjoy -= g_Dice % 5;	break;
+			case 1:		girl->sanity(-(rng % 5));		if (rng % 2) break;
+			case 2:		girl->confidence(-(rng % 5));	if (rng % 2) break;
+			case 3:		girl->dignity(-(rng % 5));		if (rng % 2) break;
+			default:	enjoy -= rng % 5;	break;
 			}
 		}
 	}
 
-	if (girl->has_trait( "Alcoholic") && g_Dice.percent(10) && girl->health() > 5)
+	if (girl->has_trait( "Alcoholic") && rng.percent(10) && girl->health() > 5)
 	{
 		ss << girlName << " couldn't resist the offer of some patrons who invited her for a drink. And another one. And another one... When she came back to her senses she was lying on the floor half naked and covered in cum...\n";
-		int NumCust = g_Dice % 6 + 1;
+		int NumCust = rng % 6 + 1;
 		tips -= 10;
 		wages -= 50;
 		girl->upd_temp_stat(STAT_LIBIDO, -20, true);
-		girl->anal(max(0, g_Dice % 4 + 1));
-		girl->bdsm(max(0, g_Dice % 4 - 1));
-		girl->normalsex(max(0, g_Dice % 4 + 1));
-		girl->group(max(2, g_Dice % 4 + 2));
-		girl->oralsex(max(0, g_Dice % 4 + 0));
-		girl->tittysex(max(0, g_Dice % 4 - 1));
-		girl->handjob(max(0, g_Dice % 4 + 0));
-		girl->footjob(max(0, g_Dice % 4 - 1));
+		girl->anal(max(0, rng % 4 + 1));
+		girl->bdsm(max(0, rng % 4 - 1));
+		girl->normalsex(max(0, rng % 4 + 1));
+		girl->group(max(2, rng % 4 + 2));
+		girl->oralsex(max(0, rng % 4 + 0));
+		girl->tittysex(max(0, rng % 4 - 1));
+		girl->handjob(max(0, rng % 4 + 0));
+		girl->footjob(max(0, rng % 4 - 1));
 		girl->happiness(-5);
 		girl->health(-1);
 		girl->upd_Enjoyment( ACTION_SEX, -2);
@@ -671,27 +669,27 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 			girl->health(-1);
 			girl->spirit(-1);
 		}
-		sCustomer Cust = g_Game.GetCustomer(*brothel);
-		Cust.m_Amount = min(1, g_Dice % 11);
+		sCustomer Cust = g_Game->GetCustomer(*brothel);
+		Cust.m_Amount = min(1, rng % 11);
 		if (!girl->calc_group_pregnancy(Cust, false, 1.0))
 		{
-			g_Game.push_message(girl->m_Realname + " has gotten pregnant.", 0);
+			g_Game->push_message(girl->m_Realname + " has gotten pregnant.", 0);
 		}
 	}
 
-	if (girl->has_trait( "Fleet Of Foot") && g_Dice.percent(30))
+	if (girl->has_trait( "Fleet Of Foot") && rng.percent(30))
 	{
 		ss << girlName << " is fast on her feet, and makes great time navigating from table to table. She is able to serve almost twice as many customers in her shift.\n";
 		tips += 50;
 	}
 
-	if (girl->has_trait( "Long Legs") || girl->has_trait( "Great Figure") || girl->has_trait( "Hourglass Figure") && g_Dice.percent(30))
+	if (girl->has_trait( "Long Legs") || girl->has_trait( "Great Figure") || girl->has_trait( "Hourglass Figure") && rng.percent(30))
 	{
 		ss << girlName << "'s body is incredible, and the customers fixate on her immediately. Her tips reflect their attention.";
 		tips += 20;
 	}
 
-	if (girl->has_trait( "Dojikko") && g_Dice.percent(35))
+	if (girl->has_trait( "Dojikko") && rng.percent(35))
 	{
 		ss << girlName << "  is clumsy in the most adorable way, and when she trips and falls face-first into a patron's lap, spilling a tray all over the floor, he just laughs and asks if there is anything he can do to help.\n";
 		if (girl->dignity() >= 50 || girl->libido() <= 50)
@@ -718,7 +716,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		}
 	}
 
-	if (girl->has_trait( "Sexy Air") && g_Dice.percent(35))
+	if (girl->has_trait( "Sexy Air") && rng.percent(35))
 	{
 		ss << "Customers enjoy watching " << girlName << " work. Her sexy body and her indefinably attractive way of carrying herself draw attention, whether she likes it or not. It is uncanny how many drinks the customers accidentally spill on their laps, and they would all like her help drying themselves off.\n";
 		if (girl->dignity() <= 0 || girl->libido() >= 60)
@@ -741,13 +739,13 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		}
 	}
 
-	if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
+	if (girl->has_trait( "Exhibitionist") && rng.percent(50))
 	{
 		ss << girlName << " is a rampant exhibitionist, and this job gives her a lot of opportunities to flash her goods at select customers. She has cut her uniform top to be even shorter than usual, and her nipples constantly appear when she flashes her underboobs. " << girlName << " does a great job of increasing the atmosphere of sexual tension in your restaurant.";
 		brothel->m_Happiness += 15;
 	}
 
-	if (g_Dice.percent(35) && girl->has_trait( "Massive Melons")
+	if (rng.percent(35) && girl->has_trait( "Massive Melons")
 		|| girl->has_trait( "Abnormally Large Boobs") || girl->has_trait( "Sexy Air")
 		|| girl->has_trait( "Titanic Tits") || girl->has_trait( "Big Boobs")
 		|| girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs"))
@@ -780,7 +778,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 		}
 	}
 
-	if (brothel->num_girls_on_job(JOB_SLEAZYBARMAID, false) >= 1 && g_Dice.percent(25))
+	if (brothel->num_girls_on_job(JOB_SLEAZYBARMAID, false) >= 1 && rng.percent(25))
 	{
 		if (jobperformance > 100)
 		{
@@ -817,7 +815,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 
 	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
+	wages += 10 + rng%roll_max;
 
 	girl->m_Tips = max(0, (int)tips);
 	girl->m_Pay = max(0, wages);
@@ -846,15 +844,15 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 
 	girl->fame(fame);
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->service(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->service(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 
 	//gained traits
 	cGirls::PossiblyGainNewTrait(girl, "Charming", 70, actiontype, girlName + " has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
 	if (jobperformance > 150 && girl->constitution() > 65) { cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 60, actiontype, girlName + " has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", Day0Night1); }
-	if (g_Dice.percent(25) && girl->dignity() < 0 && (anal > 0 || oral > 0 || hand > 0))
+	if (rng.percent(25) && girl->dignity() < 0 && (anal > 0 || oral > 0 || hand > 0))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, girlName + " has turned into quite a slut.", Day0Night1, EVENT_WARNING);
 	}
@@ -870,7 +868,7 @@ bool cJobManager::WorkSleazyWaitress(sGirl* girl, bool Day0Night1, string& summa
 
 double cJobManager::JP_SleazyWaitress(sGirl* girl, bool estimate)// not used
 {
-#if 1  //SIN - standardizing job performance calc per J's instructs
+    //SIN - standardizing job performance calc per J's instructs
 	double jobperformance =
 		//main stats - first 100 - service skills and beauty (due to sleazy bar)
 		(girl->service() + girl->beauty() / 2) +
@@ -880,12 +878,6 @@ double cJobManager::JP_SleazyWaitress(sGirl* girl, bool estimate)// not used
 		girl->level();
 
 	// next up tiredness penalty
-#else
-	double jobperformance = ((girl->charisma() +
-		girl->beauty() +
-		girl->performance()) / 3 +
-		girl->service());
-#endif
 	if (!estimate)
 	{
 		int t = girl->tiredness() - 80;
@@ -893,53 +885,7 @@ double cJobManager::JP_SleazyWaitress(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Charismatic"))		jobperformance += 10;
-	if (girl->has_trait( "Sexy Air"))			jobperformance += 10;
-	if (girl->has_trait( "Cool Person"))		jobperformance += 10; //people love to be around her
-	if (girl->has_trait( "Cute"))				jobperformance += 5;
-	if (girl->has_trait( "Charming"))			jobperformance += 15; //people like charming people
-	if (girl->has_trait( "Great Figure"))		jobperformance += 5;
-	if (girl->has_trait( "Great Arse"))		jobperformance += 5;
-	if (girl->has_trait( "Quick Learner"))	jobperformance += 5;
-	if (girl->has_trait( "Psychic"))			jobperformance += 10; //knows what people want to hear
-	if (girl->has_trait( "Fleet of Foot"))	jobperformance += 5;  //faster at taking orders and droping them off
-	if (girl->has_trait( "Waitress"))			jobperformance += 25;
-	if (girl->has_trait( "Natural Pheromones"))jobperformance += 15;
-	if (girl->has_trait( "Agile"))		jobperformance += 5;
-	if (girl->has_trait( "Flexible"))		jobperformance += 5;
-	if (girl->has_trait( "Flat Ass"))		jobperformance += 5;	//Ass wont get in the way
+    jobperformance += girl->get_trait_modifier("work.sleazywaitress");
 
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy"))		jobperformance -= 20; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))	jobperformance -= 20;  //gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))		jobperformance -= 20; //don't like to be around people
-	if (girl->has_trait( "Abnormally Large Boobs"))  jobperformance -= 10;  //boobs are to big and get in the way
-	if (girl->has_trait( "Titanic Tits"))	jobperformance -= 15; //boobs are to big and get in the way
-	if (girl->has_trait( "Meek"))			jobperformance -= 20;
-	if (girl->has_trait( "Slow Learner"))	jobperformance -= 10;
-	if (girl->has_trait( "One Eye"))		jobperformance -= 10;
-	if (girl->has_trait( "Shy"))			jobperformance -= 10;
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 30;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 20;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 15;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 40;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 100;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 40;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 25;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 100;
-	if (girl->has_trait( "Blind"))		jobperformance -= 60;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 40;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 40; //might drink the drinks instead of taking to people
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-
-	return jobperformance;
+    return jobperformance;
 }

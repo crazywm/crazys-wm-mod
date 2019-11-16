@@ -22,48 +22,26 @@
 #include <string>
 #include <memory>
 #include <SDL_video.h>
-#include "cInterfaceObject.h"
+#include "interface/cInterfaceObject.h"
+#include "interface/cSurface.h"
 
-class CSurface;
 class SDL_Surface;
 
 class cScrollBar : public cUIWidget
 {
-	static void LoadInitial();
-	static SDL_Surface* m_ImgBarBG;  // static class-wide shared images
-	static SDL_Surface* m_ImgBarOn;  // ...
-	static SDL_Surface* m_ImgBarOff;
-	static SDL_Surface* m_ImgBarDisabled;
-	static SDL_Surface* m_ImgNotches;
-	static std::uint8_t m_NotchOffset;  // Y offset for drawing bar notches
-	static SDL_Surface* m_ImgButtonUpOn;
-	static SDL_Surface* m_ImgButtonUpOff;
-	static SDL_Surface* m_ImgButtonUpDisabled;
-	static SDL_Surface* m_ImgButtonDownOn;
-	static SDL_Surface* m_ImgButtonDownOff;
-	static SDL_Surface* m_ImgButtonDownDisabled;
-
-	SDL_Surface* m_ImgBar = nullptr;  // points to the appropriate bar surface above (on, off, or disabled)
-	SDL_Surface* m_ImgButtonUp = nullptr;  // same for "Up" button surface
-	SDL_Surface* m_ImgButtonDown = nullptr;  // same for "Down" button surface
-	std::unique_ptr<SDL_Rect> m_RectBGTop;  // rectangle for top half of background to be blitted
-    std::unique_ptr<SDL_Rect> m_RectBGBottom;  // rectangle for bottom half of background to be blitted
-    std::unique_ptr<SDL_Rect> m_RectTop;  // rectangle for top half of bar to be blitted
-    std::unique_ptr<SDL_Rect> m_RectBottom;  // rectangle for bottom half of bar to be blitted
-
-	void LogScrollBarError(const std::string& description);
-
 public:
-	cScrollBar(int ID, int x, int y, int width, int height, int visibleitems);
+	cScrollBar(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int visibleitems);
 	~cScrollBar();
 
 	void UpdateScrollBar();  // update size of draggable bar based on total items vs. visible items
-	bool IsOver(int x, int y);
-	bool MouseDown(int x, int y);
-	void DragMove(int y);  // dragging of bar was initiated, so handle movement
-	bool ButtonClicked(int x, int y, bool mouseWheelDown = false, bool mouseWheelUp = false);
-	void SetTopValue(int itemnum);  // update bar position based on top visible item
-	void SetDisabled(bool disable);
+    bool IsOver(int x, int y) const override;
+    void DragMove(int y);  // dragging of bar was initiated, so handle movement
+    void SetTopValue(int itemnum);  // update bar position based on top visible item
+	void SetDisabled(bool disable) override;
+
+    bool HandleClick(int x, int y, bool press) override;
+    bool HandleMouseWheel(bool down) override;
+    void HandleMouseMove(bool over, int x, int y) override;
 
 	void DrawWidget(const CGraphics& gfx) override;
 
@@ -81,9 +59,31 @@ public:
 
 	bool m_UpdateSelf = true;  // whether control should update own position when sending updates to parent
 
-	bool m_Disabled = false;
-
 	int *ParentPosition = nullptr;  // pointer to callback value of parent with updated position
+    void ScrollBy(int newpos);
+
+    bool m_IsBeingDragged = false;
+private:
+    cSurface m_ImgBarBG;  // static class-wide shared images
+    cSurface m_ImgBarOn;  // ...
+    cSurface m_ImgBarOff;
+    cSurface m_ImgBarDisabled;
+    cSurface m_ImgNotches;
+    static std::uint8_t m_NotchOffset;  // Y offset for drawing bar notches
+    cSurface m_ImgButtonUpOn;
+    cSurface m_ImgButtonUpOff;
+    cSurface m_ImgButtonUpDisabled;
+    cSurface m_ImgButtonDownOn;
+    cSurface m_ImgButtonDownOff;
+    cSurface m_ImgButtonDownDisabled;
+
+    cSurface m_ImgBar;          // points to the appropriate bar surface above (on, off, or disabled)
+    cSurface m_ImgButtonUp;     // same for "Up" button surface
+    cSurface m_ImgButtonDown;   // same for "Down" button surface
+    std::unique_ptr<SDL_Rect> m_RectBGTop;  // rectangle for top half of background to be blitted
+    std::unique_ptr<SDL_Rect> m_RectBGBottom;  // rectangle for bottom half of background to be blitted
+    std::unique_ptr<SDL_Rect> m_RectTop;  // rectangle for top half of bar to be blitted
+    std::unique_ptr<SDL_Rect> m_RectBottom;  // rectangle for bottom half of bar to be blitted
 };
 
 

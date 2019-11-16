@@ -22,10 +22,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Crew - Matron_Job - Full_Time_Job
-bool cJobManager::WorkFilmDirector(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmDirector(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -43,20 +41,20 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, bool Day0Night1, string& summary
 	int enjoy = 0;
 	int numgirls = brothel->num_girls();
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10)
 	{
-		enjoy -= g_Dice % 3 + 1;
+		enjoy -= rng % 3 + 1;
 		ss << "She did not like working in the Studio today.\n \n";
 	}
 	else if (roll >= 90)
 	{
-		enjoy += g_Dice % 3 + 1;
+		enjoy += rng % 3 + 1;
 		ss << "She had a great time working today.\n \n";
 	}
 	else
 	{
-		enjoy += g_Dice % 2;
+		enjoy += rng % 2;
 	}
 
 	double jobperformance = JP_FilmDirector(girl, false);
@@ -80,11 +78,11 @@ bool cJobManager::WorkFilmDirector(sGirl* girl, bool Day0Night1, string& summary
 	if (girl->has_trait( "Nymphomaniac"))			libido += 2;
 	if (girl->has_trait( "Lesbian"))				libido += numgirls / 20;
 
-	girl->exp(g_Dice%xp + 5);
-	girl->fame(g_Dice%fame);
-	girl->charisma(g_Dice%skill);
-	girl->service(g_Dice%skill + 2);
-	girl->upd_temp_stat(STAT_LIBIDO, g_Dice%libido);
+	girl->exp(rng%xp + 5);
+	girl->fame(rng%fame);
+	girl->charisma(rng%skill);
+	girl->service(rng%skill + 2);
+	girl->upd_temp_stat(STAT_LIBIDO, rng%libido);
 
 	cGirls::PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Psychic", 90, actiontype, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);

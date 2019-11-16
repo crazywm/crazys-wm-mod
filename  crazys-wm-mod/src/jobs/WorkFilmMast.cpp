@@ -22,10 +22,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Actress
-bool cJobManager::WorkFilmMast(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmMast(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -48,18 +46,18 @@ bool cJobManager::WorkFilmMast(sGirl* girl, bool Day0Night1, string& summary)
 
 	ss << girlName << " worked as an actress filming Masturbation scenes.\n \n";
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, JOB_FILMMAST))
 	{
 		ss << "She refused to masturbate on film today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She didn't want to make the film, but the director persuaded her.\n \n"; }
-	else if (roll >= 90 && girl->has_trait( "Futanari")) { enjoy += g_Dice % 3 + 1;	ss << "She cummed hard while playing with her cock!\n \n"; }
-	else if (roll >= 90 && !girl->has_trait( "Futanari")) { enjoy += g_Dice % 3 + 1;	ss << "She had intense orgasms while playing with her pussy!\n \n"; }
-	else if (girl->has_trait( "Futanari")){ enjoy += g_Dice % 2;		ss << girlName << " spent the session rubbing her dick until she came.\n \n"; }
-	else /*            */{ enjoy += g_Dice % 2;		ss << "She spent the afternoon fingering herself.\n \n"; }
+	else if (roll <= 10) { enjoy -= rng % 3 + 1;	ss << "She didn't want to make the film, but the director persuaded her.\n \n"; }
+	else if (roll >= 90 && girl->has_trait( "Futanari")) { enjoy += rng % 3 + 1;	ss << "She cummed hard while playing with her cock!\n \n"; }
+	else if (roll >= 90 && !girl->has_trait( "Futanari")) { enjoy += rng % 3 + 1;	ss << "She had intense orgasms while playing with her pussy!\n \n"; }
+	else if (girl->has_trait( "Futanari")){ enjoy += rng % 2;		ss << girlName << " spent the session rubbing her dick until she came.\n \n"; }
+	else /*            */{ enjoy += rng % 2;		ss << "She spent the afternoon fingering herself.\n \n"; }
 	jobperformance = enjoy * 2;
 
 	if (girl->check_virginity())
@@ -69,7 +67,7 @@ bool cJobManager::WorkFilmMast(sGirl* girl, bool Day0Night1, string& summary)
 	}
 #if 1
 	//BSIN
-	else if (g_Dice.percent(33))
+	else if (rng.percent(33))
 	{
 		int dildo = 0;
 		/* */if (girl->has_item("Compelling Dildo") != -1)	dildo = 1;
@@ -111,8 +109,8 @@ bool cJobManager::WorkFilmMast(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->service(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->service(rng%skill + 1);
 
 	girl->upd_Enjoyment(ACTION_SEX, enjoy);
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);

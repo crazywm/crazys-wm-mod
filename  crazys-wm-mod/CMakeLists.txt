@@ -19,6 +19,19 @@ set(BUILDINGS_SRC
         src/buildings/cMovieStudio.cpp
         src/buildings/queries.cpp)
 
+set(INTERFACE_SRC
+        src/interface/cColor.cpp
+        src/interface/cAnimatedSurface.cpp
+        src/interface/cFont.cpp
+        src/interface/cInterfaceWindow.cpp
+        src/interface/cSurface.cpp
+        src/interface/cWindowManager.cpp
+        src/interface/cMessageBox.cpp
+        src/interface/cChoiceMessage.cpp
+        src/interface/CGraphics.cpp
+        src/interface/cImageCache.cpp
+        )
+
 set(SCREENS_SRC
         src/screens/BuildingScreenManagement.cpp
         src/screens/cScreenBank.cpp
@@ -70,7 +83,6 @@ set(JOBS_SRC
         src/jobs/WorkBarSinger.cpp
         src/jobs/WorkBarStripper.cpp
         src/jobs/WorkBarWaitress.cpp
-        src/jobs/WorkBarWhore.cpp
         src/jobs/WorkBeastCapture.cpp
         src/jobs/WorkBeastCare.cpp
         src/jobs/WorkBlacksmith.cpp
@@ -79,7 +91,7 @@ set(JOBS_SRC
         src/jobs/WorkBrewer.cpp
         src/jobs/WorkBrothelMassusse.cpp
         src/jobs/WorkBrothelStripper.cpp
-        src/jobs/WorkBrothelWhore.cpp
+        src/jobs/WorkWhore.cpp
         src/jobs/WorkButcher.cpp
         src/jobs/WorkCameraMage.cpp
         src/jobs/WorkCatacombRancher.cpp
@@ -151,7 +163,6 @@ set(JOBS_SRC
         src/jobs/WorkGetVaginalRejuvenation.cpp
         src/jobs/WorkHallDealer.cpp
         src/jobs/WorkHallEntertainer.cpp
-        src/jobs/WorkHallWhore.cpp
         src/jobs/WorkHallXXXEntertainer.cpp
         src/jobs/WorkHeadGirl.cpp
         src/jobs/WorkHealing.cpp
@@ -189,40 +200,30 @@ set(JOBS_SRC
         )
 
 set(SRC
-    cAnimatedSurface.cpp
-    cChoiceMessage.cpp
-    cColor.cpp
     cCustomers.cpp
     cEvents.cpp
-    cFont.cpp
     cGameScript.cpp
     cGangs.cpp
     cGirlGangFight.cpp
     cGirls.cpp
     cGirlTorture.cpp
     cGold.cpp
-    CGraphics.cpp
-    cInterfaceWindow.cpp
     cInventory.cpp
     cJobManager.cpp
     CLog.cpp
     cLuaMenu.cpp
     cLuaScript.cpp
-    cMessageBox.cpp
     cNameList.cpp
     cPlayer.cpp
-    CResourceManager.cpp
-    cRival.cpp
+        cRival.cpp
     cRng.cpp
     cScriptManager.cpp
     cScripts.cpp
     cScriptUtils.cpp
-    CSurface.cpp
     cTariff.cpp
     cTrainable.cpp
     cTraits.cpp
     cTriggers.cpp
-    cWindowManager.cpp
     DirPath.cpp
     FileList.cpp
     GameFlags.cpp
@@ -230,8 +231,7 @@ set(SRC
     InterfaceProcesses.cpp
     main.cpp
     sConfig.cpp
-        strnatcmp.cpp
-    tinystr.cpp
+        tinystr.cpp
     tinyxml.cpp
     tinyxmlerror.cpp
     tinyxmlparser.cpp
@@ -239,50 +239,36 @@ set(SRC
     XmlUtil.cpp
     SDL_anigif.c
 
-    cAnimatedSurface.h
-    cChoiceMessage.h
-    cColor.h
     cCustomers.h
     cEvents.h
-    cFont.h
     cGameScript.h
     cGangs.h
         cGirlGangFight.h
     cGirls.h
     cGirlTorture.h
     cGold.h
-    CGraphics.h
-    cInterfaceObject.h
-    cInterfaceWindow.h
     cInventory.h
     cJobManager.h
     CLog.h
     cLuaMenu.h
     cLuaScript.h
-    cMessageBox.h
     cNameList.h
     Constants.h
+    Constants.cpp
     cPlayer.h
-    CResource.h
-    CResourceManager.h
-    cRival.h
+        cRival.h
     cRng.h
     cScriptManager.h
     cScripts.h
     cScriptUtils.h
-    CSurface.h
     cTariff.h
-    CTimer.h
     cTrainable.h
     cTraits.h
     cTriggers.h
-    cWindowManager.h
     cXmlWidget.h
     DirPath.h
     FileList.h
     GameFlags.h
-    IconSurface.h
-    InterfaceGlobals.h
         InterfaceProcesses.h
     linux.h
     main.h
@@ -291,12 +277,11 @@ set(SRC
     Revision.h
     sConfig.h
     SDL_anigif.h
-    SDLStuff.h
-        strnatcmp.h
-    tinystr.h
+        tinystr.h
     tinyxml.h
     XmlMisc.h
     XmlUtil.h
+        src/cShop.cpp
         cRandomGirl.cpp
         cRandomGirl.h
         cObjectiveManager.cpp
@@ -381,7 +366,7 @@ target_link_libraries(SDL INTERFACE ${SDL_TTF_LIBRARIES})
 target_include_directories(SDL_ttf INTERFACE ${SDL_TTF_INCLUDE_DIRS})
 
 # there is no find_package(SDL_gfx), unfortunately.
-add_executable(WhoreMaster ${SRC} ${BUILDINGS_SRC} ${SCREENS_SRC} ${WIDGETS_SRC} ${JOBS_SRC})
+add_executable(WhoreMaster ${SRC} ${BUILDINGS_SRC} ${SCREENS_SRC} ${WIDGETS_SRC} ${JOBS_SRC} ${INTERFACE_SRC})
 target_link_libraries(WhoreMaster SDL SDL_gfx SDL_ttf lua SDL_image)
 set_target_properties(WhoreMaster PROPERTIES CXX_STANDARD 14)
 

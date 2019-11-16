@@ -21,10 +21,8 @@
 #include <sstream>
 #include <algorithm>
 
-extern cRng g_Dice;
-
 // `J` Job Brothel - Bar
-bool cJobManager::WorkEscort(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkEscort(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
 	int actiontype = ACTION_WORKESCORT;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
@@ -36,12 +34,12 @@ bool cJobManager::WorkEscort(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	ss << " has been assigned to work as an Escort. She is informed that various men will ask for her to accompany them on dates, whether because they need a date for a social engagement of some kind or because of their own loneliness. Her skills in service, her beauty, her charisma, her intelligence, and her refinement may all be tested to provide the ideal date that each client requests. And, of course, should she decide to spend some \"extra\" time with the client, she will need to perform well with each of their sexual proclivities. This is her choice, however.\n \n";
 
-	if (girl->has_trait("Deaf") && g_Dice.percent(50))
+	if (girl->has_trait("Deaf") && rng.percent(50))
 	{
 		ss << girlName << " is deaf, meaning she would be unable to hear the conversation that is so critical to being successful as an escort. As there is practically no chance that a client will want to have an entire date in sign language, assuming he even knows it, " << girlName << " is particularly unsuited to work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
 		return false;
 	}
-	else if (girl->has_trait("Mute") && g_Dice.percent(50))
+	else if (girl->has_trait("Mute") && rng.percent(50))
 	{
 		ss << girlName << " is mute, and while some men enjoy a woman who stays silent, these men are not paying escorts to engage them in conversation. As it is severely unlikely that a client will want to spend the entire date deciphering sign language, even if they do know it, " << girlName << " is particularly unsuited for work as an escort. You should consider alternate employment for her. Nobody chooses her this week.\n";
 		return false;
@@ -54,11 +52,11 @@ bool cJobManager::WorkEscort(sGirl* girl, bool Day0Night1, string& summary)
 	int imagetype = IMGTYPE_ESCORT;
 
 	int agl = (girl->agility());
-	int roll_a = g_Dice.d100();							// customer type
-	int roll_b = g_Dice.d100();							// customer wealth
-	int roll_c = g_Dice.d100() + agl;					// agility adjustment
-	int roll_d = g_Dice.d100();
-	int roll_sex = g_Dice.d100();
+	int roll_a = rng.d100();							// customer type
+	int roll_b = rng.d100();							// customer wealth
+	int roll_c = rng.d100() + agl;					// agility adjustment
+	int roll_d = rng.d100();
+	int roll_sex = rng.d100();
 	int prepare = (girl->agility() + girl->service()/2);
 	double cust_wealth = 1;
 	int cust_type = 0;
@@ -170,7 +168,7 @@ enum escortchoice
 			}
 	else
 	{
-	choice = g_Dice % MD_NumberOfEscortChoices;	// randomly choose from all of the choices
+	choice = rng % MD_NumberOfEscortChoices;	// randomly choose from all of the choices
 	switch (choice)
 		{
 			// these don't need a test
@@ -255,14 +253,14 @@ case Es_Regular:
 	//boob event
 	if (girl->has_trait( "Massive Melons") || girl->has_trait( "Abnormally Large Boobs")
 					|| girl->has_trait( "Titanic Tits") || girl->has_trait( "Big Boobs")
-					|| girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs") && g_Dice.percent(75))
+					|| girl->has_trait( "Busty Boobs") || girl->has_trait( "Giant Juggs") && rng.percent(75))
 				{
 					ss << girlName << " knows that this assignation is all about pleasing the boss. So when she sees his eyes lock onto her substantial tits, she gives a quick victorious smile to her \"boyfriend.\" The boss's wife glances down at her own modest breasts with discomfort, but soon breaks the silence with a comment about the lovely weather.\n";
 					escort += 1;
-					if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
+					if (girl->has_trait( "Exhibitionist") && rng.percent(50))
 						{
 							ss << "Being a bit of an exhibitionist, " << girlName << " decides to give the boss a quick \"accidental\" show when his wife is distracted by the menu. She leans forward enticingly to study the menu, giving him a full view of her deep cleavage.\n";
-							if (g_Dice.percent(75))
+							if (rng.percent(75))
 							{
 								ss << "The boss winks at the client and makes a joke about the \"immense\" profits he can both expect to enjoy later.\n";
 								escort += 1;
@@ -843,14 +841,14 @@ case Es_Commoner:
 				{
 					ss << girlName << " catches the client's eyes going briefly to her substantial breasts,";
 					titty_lover = true;
-					if (g_Dice.percent(75))
+					if (rng.percent(75))
 					{
 						ss << " before he realizes he has been caught in the act and snaps his head back to make eye contact with her, looking a little sheepish. She did see him smile, though. It seems the client is a bit of a breast man.\n";
 						escort += 1;
-						if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
+						if (girl->has_trait( "Exhibitionist") && rng.percent(50))
 							{
 								ss << "Being a bit of an exhibitionist, " << girlName << " is pleased to see that her tits are getting some extra attention. She decides to reward his interest by leaning forward over the table to give him a good look, and \"accidentally\" catches her bracelet on her shirt as her hand moves down to grab her drink, flashing a nipple briefly at him. \"Whoops!\" she giggles, feigning embarrassment.\n";
-								if (g_Dice.percent(75))
+								if (rng.percent(75))
 								{
 									ss << "He grins back at her, appreciating the view. \"Oh, no,\" he laughs, \"what an unfortunate wardrobe malfunction!\"\n";
 									escort += 1;
@@ -871,15 +869,15 @@ case Es_Commoner:
 				}
 	else
 	{
-		if (g_Dice.percent(40))
+		if (rng.percent(40))
 		{
 			ss << girlName << "  notices when the client flashes his eyes quickly over her breasts. She has always been a bit self-conscious about their small size, but she is surprised to see him smile back at her with greater appreciation. \"Aren't you just perfect,\" he smiles.\n";
 			escort += 1;
 			titty_lover = true;
-			if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
+			if (girl->has_trait( "Exhibitionist") && rng.percent(50))
 				{
 					ss << "As a bit of an exhibitionist and pleased at this unusual attention on her small breasts, " << girlName << " decides to reward his interest by \"accidentally\" catching the top of her shirt on her bracelet, giving him a brief view of her pert tits and even a flash of nipple. \"Oh, how silly of me,\" she exclaims, readjusting herself.\n";
-					if (g_Dice.percent(75))
+					if (rng.percent(75))
 						{
 							ss << "\"Aren't you just perfect, indeed,\" he repeats, smiling rakishly at her.\n";
 							escort += 1;
@@ -904,10 +902,10 @@ case Es_Commoner:
 		ss << girlName << " feels the client's gaze as she rests her fantastic ass in her chair. He is clearly mesmerized by it for a second, before he forces himself to stop staring and returns to his own chair.";
 		escort += 1;
 		ass_lover = true;
-		if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
+		if (girl->has_trait( "Exhibitionist") && rng.percent(50))
 				{
 					ss << girlName << " does not mind his gaze, however, and her exhibitionist tendencies make her decide to keep his attention on her amazing ass for a few more moments. She sits so that her skirt hitches on the chair and rides up, giving him a brief view of the contours of her ass cheeks. \"Oh my,\" she giggles, quickly�but not too quickly�settling her skirt back to normal.\n";
-					if (g_Dice.percent(75))
+					if (rng.percent(75))
 						{
 							ss << "The client fans himself for a moment with the menu and smiles. \"My,\" he begins, \"did it just get hot in here?\"\n";
 							escort += 1;
@@ -929,12 +927,12 @@ case Es_Commoner:
 
 	if (girl->has_trait( "Bruises"))
 	{
-		if (g_Dice.percent(33))
+		if (rng.percent(33))
 		{
 			ss << "The client cannot help but notice the bruises all over " << girlName << "'s body, and his eyes flash momentarily with regret and sympathy for her life. He finds himself feeling inexplicably protective of her, and concerned for what may happen when she returns to her normal work.\n";
 			escort += 1;
 		}
-		else if (g_Dice.percent(33))
+		else if (rng.percent(33))
 		{
 			ss << "The client cannot help but notice the bruises all over " << girlName << "'s body, and he finds them unseemly. He does not know what earned her these marks, but he clearly considers them to be inappropriate for a lady engaged in the escort profession.\n";
 			escort -= 1;
@@ -1397,14 +1395,14 @@ case Es_DeadBeat:
 				{
 					ss << girlName << " catches the client's eyes going briefly to her substantial breasts,";
 					titty_lover = true;
-					if (g_Dice.percent(75))
+					if (rng.percent(75))
 					{
 						ss << " before he realizes he has been caught in the act and snaps his head back to make eye contact with her, looking a little sheepish. She did see him smile, though. It seems the client is a bit of a breast man.\n";
 						escort += 1;
-						if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
+						if (girl->has_trait( "Exhibitionist") && rng.percent(50))
 							{
 								ss << "Being a bit of an exhibitionist, " << girlName << " is pleased to see that her tits are getting some extra attention. She decides to reward his interest by leaning forward over the table to give him a good look, and \"accidentally\" catches her bracelet on her shirt as her hand moves down to grab her drink, flashing a nipple briefly at him. \"Whoops!\" she giggles, feigning embarrassment.\n";
-								if (g_Dice.percent(75))
+								if (rng.percent(75))
 								{
 									ss << "He grins back at her, appreciating the view. \"Oh, no,\" he laughs, \"what an unfortunate wardrobe malfunction!\"\n";
 									escort += 1;
@@ -1425,15 +1423,15 @@ case Es_DeadBeat:
 				}
 	else
 	{
-		if (g_Dice.percent(40))
+		if (rng.percent(40))
 		{
 			ss << girlName << "  notices when the client flashes his eyes quickly over her breasts. She has always been a bit self-conscious about their small size, but she is surprised to see him smile back at her with greater appreciation. \"Aren't you just perfect,\" he smiles.\n";
 			escort += 1;
 			titty_lover = true;
-			if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
+			if (girl->has_trait( "Exhibitionist") && rng.percent(50))
 				{
 					ss << "As a bit of an exhibitionist and pleased at this unusual attention on her small breasts, " << girlName << " decides to reward his interest by \"accidentally\" catching the top of her shirt on her bracelet, giving him a brief view of her pert tits and even a flash of nipple. \"Oh, how silly of me,\" she exclaims, readjusting herself.\n";
-					if (g_Dice.percent(75))
+					if (rng.percent(75))
 						{
 							ss << "\"Aren't you just perfect, indeed,\" he repeats, smiling rakishly at her.\n";
 							escort += 1;
@@ -1459,10 +1457,10 @@ case Es_DeadBeat:
 		ss << girlName << " feels the client's gaze as she rests her fantastic ass in her chair. He is clearly mesmerized by it for a second, before he forces himself to stop staring and returns to his own chair.";
 		escort += 1;
 		ass_lover = true;
-		if (girl->has_trait( "Exhibitionist") && g_Dice.percent(50))
+		if (girl->has_trait( "Exhibitionist") && rng.percent(50))
 				{
 					ss << girlName << " does not mind his gaze, however, and her exhibitionist tendencies make her decide to keep his attention on her amazing ass for a few more moments. She sits so that her skirt hitches on the chair and rides up, giving him a brief view of the contours of her ass cheeks. \"Oh my,\" she giggles, quickly�but not too quickly�settling her skirt back to normal.\n";
-					if (g_Dice.percent(75))
+					if (rng.percent(75))
 						{
 							ss << "The client fans himself for a moment with the menu and smiles. \"My,\" he begins, \"did it just get hot in here?\"\n";
 							escort += 1;
@@ -1485,12 +1483,12 @@ case Es_DeadBeat:
 
 	if (girl->has_trait( "Bruises"))
 	{
-		if (g_Dice.percent(33))
+		if (rng.percent(33))
 		{
 			ss << "The client cannot help but notice the bruises all over " << girlName << "'s body, and his eyes flash momentarily with regret and sympathy for her life. He finds himself feeling inexplicably protective of her, and concerned for what may happen when she returns to her normal work.\n";
 			escort += 1;
 		}
-		else if (g_Dice.percent(33))
+		else if (rng.percent(33))
 		{
 			ss << "The client cannot help but notice the bruises all over " << girlName << "'s body, and he finds them unseemly. He does not know what earned her these marks, but he clearly considers them to be inappropriate for a lady engaged in the escort profession.\n";
 			escort -= 1;
@@ -1508,7 +1506,7 @@ case Es_DeadBeat:
 	{
 		ss << girlName << " and the client spend the next hour joking and bantering like old friends. She is wonderfully charismatic, and while she expertly keeps the conversation on comfortable subjects for him, she knows that he would be happy talking with her about anything. By the end of the hour he is wiping tears of laughter from his eyes and smiling at her with deep appreciation.\n";
 		escort += 3;
-		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && rng.percent(50))
 		{
 			ss << girlName << "He also appreciates the sheer volume of alcohol that " << girlName << " has consumed in the last hour. He accurately suspects that she may be an alcoholic, but she seems to be able to handle it well, and while this concerns him, it has hardly ruined his evening.\n";
 			escort -= 1;
@@ -1519,7 +1517,7 @@ case Es_DeadBeat:
 	{
 		ss << girlName << " and the client are bantering like best friends within minutes. She charismatically leads him into conversations where they share interests and deftly steers him away from controversial or uncomfortable subjects. An hour has passed before he even realizes it, and their laughter reverberates around the surrounding tables.\n";
 		escort += 2;
-		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && rng.percent(50))
 		{
 			ss << girlName << " is laughing a bit louder than he is, though. This is probably because her desperate need for alcohol has resulted in her downing five beverages over the course of the hour. While their conversation was so engaging that the client did not seem to mind how drunk she was getting, he did notice.\n";
 			escort -= 1;
@@ -1530,7 +1528,7 @@ case Es_DeadBeat:
 	{
 		ss << girlName << " has the client laughing at jokes and talking about shared hobbies in no time. The two of them enjoy a pleasant conversation for the next forty-five minutes, and they both share another drink. After about an hour, the conversation starts slowing down as " << girlName << " runs out of ideas to keep it going, but by the end of the evening, she can tell the client enjoyed their time together.\n";
 		escort += 1;
-		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && rng.percent(50))
 		{
 			ss << "All except for " << girlName << "'s drinking, that is. As an alcoholic, she is unable to control herself once the drinking starts, and after they share another drink, she gets a third, and then a fourth, and by the fifth she is sloppy. The silent judgment in his eyes verifies that " << girlName << "'s alcoholism has reversed any rapport she was able to gain via conversation.\n";
 			escort -= 1;
@@ -1540,7 +1538,7 @@ case Es_DeadBeat:
 	else if (girl->charisma() >= 25)
 	{
 		ss << girlName << " is able to lead the two of them in a few minutes of good conversation, but it begins to sputter out once she is out of ideas. The client's efforts at leading the conversation would have been successful if " << girlName << " was more charismatic and able to think and speak on her feet. The conversation is not the worst thing in the world, but it ends up being a part of the date that both of them would be happier forgetting.\n";
-		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && rng.percent(50))
 		{
 			ss << "What he cannot forget, however, is how many drinks " << girlName << " knocks back during the hour. Her need is not social; it is clearly an addiction. She is much drunker than he is by the end of the hour, and while he is willing to forget the conversation, he does feel compelled to judge her conduct.\n";
 			escort -= 1;
@@ -1551,7 +1549,7 @@ case Es_DeadBeat:
 	{
 		ss << girlName << " has the charisma of a sponge, and the conversation grinds to a halt within minutes. Her efforts at small talk are painfully awkward, and whenever she tries to start a new conversation topic, she sounds like an alien who has just discovered the human race. After she asks him to tell her more about \"this thing called football,\" he starts ordering more drinks. He knows at this point he is not drinking to be social; he is drinking to survive.\n";
 		escort -= 1;
-		if (girl->has_trait( "Alcoholic") && g_Dice.percent(50))
+		if (girl->has_trait( "Alcoholic") && rng.percent(50))
 		{
 			ss << girlName << " is more than familiar with the idea of drinking like her life depended on it, and her craving for alcohol soon has her keeping pace with the client. Soon the two are an absolute mess together.\n";
 			escort += 1;
@@ -1876,19 +1874,19 @@ break;	// end Es_DeadBeat
 
 
 	// `J` do wages and tips
-	if (cust_type * cust_wealth <= 0 || g_Dice.percent(2))	// the customer can not or will not pay
+	if (cust_type * cust_wealth <= 0 || rng.percent(2))	// the customer can not or will not pay
 	{
 		wages = tips = 0;
-		if (g_Dice.percent(25))	// Runner
+		if (rng.percent(25))	// Runner
 		{
-			if (g_Game.gang_manager().GetGangOnMission(MISS_GUARDING))
+			if (g_Game->gang_manager().GetGangOnMission(MISS_GUARDING))
 			{
-				sGang* gang = g_Game.gang_manager().GetGangOnMission(MISS_GUARDING);
-				if (g_Dice.percent(gang->m_Stats[STAT_AGILITY]))
+				sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
+				if (rng.percent(gang->m_Stats[STAT_AGILITY]))
 				{
 					ss << " The customer tried to run off without paying. Your men caught him before he got away.";
 					SetGameFlag(FLAG_CUSTNOPAY);
-					wages = max(g_Dice%girl->askprice(), girl->askprice() * cust_type * cust_wealth);	// Take what customer has
+					wages = max(rng%girl->askprice(), girl->askprice() * cust_type * cust_wealth);	// Take what customer has
 				}
 				else	ss << " The customer couldn't pay and managed to elude your guards.";
 			}
@@ -1897,20 +1895,20 @@ break;	// end Es_DeadBeat
 		else
 		{
 			// offers to pay the girl what he has
-			if (g_Dice.percent(girl->intelligence()))
+			if (rng.percent(girl->intelligence()))
 			{
 				// she turns him over to the goons
 				ss << " The customer couldn't pay the full amount, so your girl turned them over to your men.";
 				SetGameFlag(FLAG_CUSTNOPAY);
 			}
 			else	ss << " The customer couldn't pay the full amount.";
-			wages = max(g_Dice%girl->askprice(), g_Dice % (girl->askprice() * cust_type * cust_wealth));	// Take what customer has
+			wages = max(rng%girl->askprice(), rng % (girl->askprice() * cust_type * cust_wealth));	// Take what customer has
 		}
 	}
 	else
 	{
 			wages = girl->askprice() * cust_type * cust_wealth;
-			tips = (jobperformance > 0) ? (g_Dice%jobperformance) * cust_type * cust_wealth : 0;
+			tips = (jobperformance > 0) ? (rng%jobperformance) * cust_type * cust_wealth : 0;
 	}
 #endif
 
@@ -1918,7 +1916,7 @@ break;	// end Es_DeadBeat
 
 	// work out the pay between the house and the girl
 	wages = (int)(girl->askprice() * cust_type * cust_wealth);
-	//tips = (jobperformance > 0) ? (g_Dice%jobperformance) * cust_type * cust_wealth : 0;
+	//tips = (jobperformance > 0) ? (rng%jobperformance) * cust_type * cust_wealth : 0;
 	ss << "\n \n" << girlName << " receives " << wages << " in payment for her work as an Escort for a " << cust_type_text << " client. Her fame as an Escort has changed by " << fame << ".";
 
 	// Money
@@ -1933,10 +1931,10 @@ break;	// end Es_DeadBeat
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
 	girl->exp(xp);
-	girl->intelligence(g_Dice%skill + 1);
-	girl->confidence(g_Dice%skill + 1);
-	girl->fame(g_Dice%skill);
-	girl->performance(g_Dice%skill + 1);
+	girl->intelligence(rng%skill + 1);
+	girl->confidence(rng%skill + 1);
+	girl->fame(rng%skill);
+	girl->performance(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
@@ -1963,5 +1961,8 @@ double cJobManager::JP_Escort(sGirl* girl, bool estimate)// not used
 	else// for the actual check
 	{
 	}
-	return jobperformance;
+
+    jobperformance += girl->get_trait_modifier("work.escort");
+
+    return jobperformance;
 }

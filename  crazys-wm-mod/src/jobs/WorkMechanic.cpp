@@ -21,18 +21,16 @@
 #include "cRng.h"
 #include <sstream>
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Clinic - Staff
-bool cJobManager::WorkMechanic(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkMechanic(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKMECHANIC;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_MECHANIC))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -87,27 +85,27 @@ bool cJobManager::WorkMechanic(sGirl* girl, bool Day0Night1, string& summary)
 
 
 	//try and add randomness here
-	if (girl->beauty() > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && rng.percent(20))
 	{
 		wages += 25;
 		ss << " Stunned by her beauty a patient left her a great tip.\n \n";
 	}
-	if (girl->has_trait( "Construct") && g_Dice.percent(15))
+	if (girl->has_trait( "Construct") && rng.percent(15))
 	{
 		wages += 15;
 		ss << " Seeing a kindred spirit, the mechanical patient left her a great tip.\n";
 	}
-	if (girl->has_trait( "Half-Construct") && g_Dice.percent(15))
+	if (girl->has_trait( "Half-Construct") && rng.percent(15))
 	{
 		wages += 15;
 		ss << " Seeing a kindred spirit, the mechanical patient left her a great tip.\n";
 	}
-	if (girl->has_trait( "Clumsy") && g_Dice.percent(15))
+	if (girl->has_trait( "Clumsy") && rng.percent(15))
 	{
 		wages -= 15;
 		ss << " Her clumsy nature caused her to drop parts everywhere.\n";
 	}
-	if (girl->has_trait( "Pessimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Pessimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -120,7 +118,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, bool Day0Night1, string& summary)
 			ss << girlName << " was in a poor mood so the patients gave her a bigger tip to try and cheer her up.\n";
 		}
 	}
-	if (girl->has_trait( "Optimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Optimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -167,7 +165,7 @@ bool cJobManager::WorkMechanic(sGirl* girl, bool Day0Night1, string& summary)
 	girl->m_Events.AddMessage(ss.str(), imagetype, Day0Night1);
 	int roll_max = (girl->intelligence() + girl->service());
 	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
+	wages += 10 + rng%roll_max;
 	wages += 5 * brothel->num_girls_on_job(JOB_GETREPAIRS, Day0Night1);	// `J` pay her 5 for each patient you send to her
 	// Money
 	girl->m_Tips = max(0, tips);
@@ -187,9 +185,9 @@ bool cJobManager::WorkMechanic(sGirl* girl, bool Day0Night1, string& summary)
 
 	girl->fame(fame);
 	girl->exp(xp);
-	girl->intelligence(g_Dice%skill + 1);
-	girl->medicine(g_Dice%skill);
-	girl->service(g_Dice%skill);
+	girl->intelligence(rng%skill + 1);
+	girl->medicine(rng%skill);
+	girl->service(rng%skill);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(actiontype, enjoy);
@@ -219,50 +217,7 @@ double cJobManager::JP_Mechanic(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Charismatic"))		jobperformance += 5;
-	if (girl->has_trait( "Sexy Air"))			jobperformance += 5;
-	if (girl->has_trait( "Cool Person"))		jobperformance += 10;
-	if (girl->has_trait( "Charming"))			jobperformance += 5;
-	if (girl->has_trait( "Nerd"))				jobperformance += 15;
-	if (girl->has_trait( "Strong"))			jobperformance += 10;
-	if (girl->has_trait( "Tough"))			jobperformance += 5;
-	if (girl->has_trait( "Construct"))		jobperformance += 10;
-	if (girl->has_trait( "Half-Construct"))	jobperformance += 5;
-	if (girl->has_trait( "Psychic"))			jobperformance += 10;
-	if (girl->has_trait( "Goddess"))			jobperformance += 10; //might be able to heal people easier.. they are a goddess after all
-	if (girl->has_trait( "Optimist"))			jobperformance += 10;
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))		jobperformance -= 40;
-	if (girl->has_trait( "Clumsy"))			jobperformance -= 20;
-	if (girl->has_trait( "Aggressive"))		jobperformance -= 10;
-	if (girl->has_trait( "Nervous"))			jobperformance -= 20;
-	if (girl->has_trait( "Meek"))				jobperformance -= 20;
-	if (girl->has_trait( "Elegant"))			jobperformance -= 5;	// Don't break a nail
-	if (girl->has_trait( "Queen"))			jobperformance -= 20;	// Manual labor is beneth her
-	if (girl->has_trait( "Princess"))			jobperformance -= 10;	// Manual labor is beneth her
-	if (girl->has_trait( "Mind Fucked"))		jobperformance -= 50;
-	if (girl->has_trait( "Pessimist"))		jobperformance -= 10;
-	if (girl->has_trait( "Sadistic"))			jobperformance -= 20;
-
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 40;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 60;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 150;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 60;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 90;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 150;
-	if (girl->has_trait( "Blind"))		jobperformance -= 75;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 15;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 25;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
-
+    jobperformance += girl->get_trait_modifier("work.mechanic");
+	
 	return jobperformance;
 }

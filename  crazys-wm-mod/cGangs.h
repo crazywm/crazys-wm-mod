@@ -121,8 +121,6 @@ public:
     cGangManager();
     ~cGangManager();
 
-    void Free();
-
     void AddNewGang(bool boosted = false);	// Adds a new randomly generated gang to the recruitable list
     void HireGang(int gangID);	// hired a recruitable gang, so add it to your gangs
     void FireGang(int gangID);	// fired a gang, so send it back to recruitables (or just delete if full up)

@@ -235,31 +235,9 @@ struct sGirl
 
     void dump(std::ostream &os);
 
-    /*
-    *	MOD: docclox. attach the skill and stat names to the
-    *	class that uses them. Plus an XML load method and
-    *	an ostream << operator to pretty print the struct for
-    *	debug purposes.
-    *
-    *	Sun Nov 15 05:58:55 GMT 2009
-    */
-    static const char	*stat_names[];
-    static const char	*skill_names[];
-    static const char	*status_names[];
-    static const char	*enjoy_names[];
-    static const char	*enjoy_jobs[];
-    static const char	*training_names[];
     static const char	*training_jobs[];
     static const char	*children_type_names[];	// `J` added
-    /*
-    *	again, might as well make them part of the struct that uses them
-    */
-    static const unsigned int	max_stats;
-    static const unsigned int	max_skills;
-    static const unsigned int	max_statuses;
-    static const unsigned int	max_enjoy;
-    static const unsigned int	max_jobs;
-    static const unsigned int	max_training;
+
     /*
     *	we need to be able to go the other way, too:
     *	from std::string to number. The maps map stat/skill names
@@ -267,22 +245,12 @@ struct sGirl
     * 	the maps the first time an sGirl is constructed
     */
     static bool		m_maps_setup;
-    static std::map<std::string, unsigned int>	stat_lookup;
-    static std::map<std::string, unsigned int>	skill_lookup;
-    static std::map<std::string, unsigned int>	status_lookup;
-    static std::map<std::string, unsigned int>	enjoy_lookup;
-    static std::map<std::string, unsigned int>	fetish_lookup;
     static std::map<std::string, unsigned int>	jobs_lookup;
     static std::map<std::string, unsigned int>	training_lookup;
     static void		setup_maps();
 
-    static int lookup_stat_code(std::string s);
-    static int lookup_skill_code(std::string s);
-    static int lookup_status_code(std::string s);
-    static int lookup_enjoy_code(std::string s);
-    static int lookup_fetish_code(std::string s);
     static int lookup_jobs_code(std::string s);
-    static int lookup_training_code(std::string s);
+
     std::string lookup_where_she_is();
     /*
     *	Strictly speaking, methods don't belong in structs.
@@ -381,6 +349,8 @@ struct sGirl
     int sanity() const								{ return get_stat(STAT_SANITY); }
     int sanity(int n, bool usetraits = true)		{ return upd_stat(STAT_SANITY, n, usetraits); }
 
+    int get_trait_modifier(const std::string& type) const;
+
 
     int rebel();
     std::string JobRating(double value, std::string type = "", std::string name = "");
@@ -402,49 +372,49 @@ struct sGirl
 
     int upd_skill(int skill_id, int amount, bool usetraits = true);
 
-    int	anal()										{ return get_skill(SKILL_ANAL); }
+    int	anal() const								{ return get_skill(SKILL_ANAL); }
     int	anal(int n, bool usetraits = true)			{ return upd_skill(SKILL_ANAL, n, usetraits); }
-    int	bdsm()										{ return get_skill(SKILL_BDSM); }
+    int	bdsm() const								{ return get_skill(SKILL_BDSM); }
     int	bdsm(int n, bool usetraits = true)			{ return upd_skill(SKILL_BDSM, n, usetraits); }
-    int	beastiality()								{ return get_skill(SKILL_BEASTIALITY); }
+    int	beastiality() const 						{ return get_skill(SKILL_BEASTIALITY); }
     int	beastiality(int n, bool usetraits = true)	{ return upd_skill(SKILL_BEASTIALITY, n, usetraits); }
-    int	combat()									{ return get_skill(SKILL_COMBAT); }
+    int	combat() const  							{ return get_skill(SKILL_COMBAT); }
     int	combat(int n, bool usetraits = true)		{ return upd_skill(SKILL_COMBAT, n, usetraits); }
-    int	group()										{ return get_skill(SKILL_GROUP); }
+    int	group() const								{ return get_skill(SKILL_GROUP); }
     int	group(int n, bool usetraits = true)			{ return upd_skill(SKILL_GROUP, n, usetraits); }
-    int	lesbian()									{ return get_skill(SKILL_LESBIAN); }
+    int	lesbian() const 							{ return get_skill(SKILL_LESBIAN); }
     int	lesbian(int n, bool usetraits = true)		{ return upd_skill(SKILL_LESBIAN, n, usetraits); }
-    int	magic()										{ return get_skill(SKILL_MAGIC); }
+    int	magic() const								{ return get_skill(SKILL_MAGIC); }
     int	magic(int n, bool usetraits = true)			{ return upd_skill(SKILL_MAGIC, n, usetraits); }
-    int	normalsex()									{ return get_skill(SKILL_NORMALSEX); }
+    int	normalsex() const							{ return get_skill(SKILL_NORMALSEX); }
     int	normalsex(int n, bool usetraits = true)		{ return upd_skill(SKILL_NORMALSEX, n, usetraits); }
-    int oralsex()									{ return get_skill(SKILL_ORALSEX); }
+    int oralsex() const 							{ return get_skill(SKILL_ORALSEX); }
     int oralsex(int n, bool usetraits = true)		{ return upd_skill(SKILL_ORALSEX, n, usetraits); }
-    int tittysex()									{ return get_skill(SKILL_TITTYSEX); }
+    int tittysex() const							{ return get_skill(SKILL_TITTYSEX); }
     int tittysex(int n, bool usetraits = true)		{ return upd_skill(SKILL_TITTYSEX, n, usetraits); }
-    int handjob()									{ return get_skill(SKILL_HANDJOB); }
+    int handjob() const 							{ return get_skill(SKILL_HANDJOB); }
     int handjob(int n, bool usetraits = true)		{ return upd_skill(SKILL_HANDJOB, n, usetraits); }
-    int footjob()									{ return get_skill(SKILL_FOOTJOB); }
-    int footjob(int n, bool usetraits = true)			{ return upd_skill(SKILL_FOOTJOB, n, usetraits); }
-    int	service()									{ return get_skill(SKILL_SERVICE); }
+    int footjob() const 							{ return get_skill(SKILL_FOOTJOB); }
+    int footjob(int n, bool usetraits = true)		{ return upd_skill(SKILL_FOOTJOB, n, usetraits); }
+    int	service() const 							{ return get_skill(SKILL_SERVICE); }
     int	service(int n, bool usetraits = true)			{ return upd_skill(SKILL_SERVICE, n, usetraits); }
-    int	strip()										{ return get_skill(SKILL_STRIP); }
+    int	strip() const								{ return get_skill(SKILL_STRIP); }
     int	strip(int n, bool usetraits = true)			{ return upd_skill(SKILL_STRIP, n, usetraits); }
-    int	medicine()									{ return get_skill(SKILL_MEDICINE); }
+    int	medicine() const							{ return get_skill(SKILL_MEDICINE); }
     int	medicine(int n, bool usetraits = true)			{ return upd_skill(SKILL_MEDICINE, n, usetraits); }
-    int	performance()								{ return get_skill(SKILL_PERFORMANCE); }
+    int	performance() const 						{ return get_skill(SKILL_PERFORMANCE); }
     int	performance(int n, bool usetraits = true)		{ return upd_skill(SKILL_PERFORMANCE, n, usetraits); }
-    int	crafting()									{ return get_skill(SKILL_CRAFTING); }
+    int	crafting() const							{ return get_skill(SKILL_CRAFTING); }
     int	crafting(int n, bool usetraits = true)			{ return upd_skill(SKILL_CRAFTING, n, usetraits); }
-    int	herbalism()									{ return get_skill(SKILL_HERBALISM); }
+    int	herbalism() const							{ return get_skill(SKILL_HERBALISM); }
     int	herbalism(int n, bool usetraits = true)		{ return upd_skill(SKILL_HERBALISM, n, usetraits); }
-    int	farming()									{ return get_skill(SKILL_FARMING); }
+    int	farming() const 							{ return get_skill(SKILL_FARMING); }
     int	farming(int n, bool usetraits = true)			{ return upd_skill(SKILL_FARMING, n, usetraits); }
-    int	brewing()									{ return get_skill(SKILL_BREWING); }
+    int	brewing() const 							{ return get_skill(SKILL_BREWING); }
     int	brewing(int n, bool usetraits = true)			{ return upd_skill(SKILL_BREWING, n, usetraits); }
-    int	animalhandling()							{ return get_skill(SKILL_ANIMALHANDLING); }
+    int	animalhandling() const  					{ return get_skill(SKILL_ANIMALHANDLING); }
     int	animalhandling(int n, bool usetraits = true)	{ return upd_skill(SKILL_ANIMALHANDLING, n, usetraits); }
-    int	cooking()									{ return get_skill(SKILL_COOKING); }
+    int	cooking() const 							{ return get_skill(SKILL_COOKING); }
     int	cooking(int n, bool usetraits = true)			{ return upd_skill(SKILL_COOKING, n, usetraits); }
 
     int get_enjoyment(int actiontype)
@@ -486,7 +456,6 @@ struct sGirl
     int preg_chance(int base_pc, bool good = false, double factor = 1.0);
     bool calc_pregnancy(int chance, int type, const int stats[NUM_STATS], const int skills[NUM_SKILLS]);
 
-    bool calc_pregnancy(int, cPlayer*);
     bool calc_pregnancy(cPlayer* player, bool good = false, double factor = 1.0);
     bool calc_insemination(cPlayer* player, bool good = false, double factor = 1.0);
     bool calc_group_pregnancy(cPlayer* player, bool good = false, double factor = 1.0);
@@ -529,17 +498,19 @@ struct sGirl
     bool is_havingsex();
     bool was_resting();
 
-    void OutputGirlRow(std::string* Data, const std::vector<std::string>& columnNames);
+    void OutputGirlRow(vector<string>& Data, const std::vector<std::string>& columnNames);
     void OutputGirlDetailString(std::string& Data, const std::string& detailName);
 
     // END MOD
 
     // more useful functions
     int has_item(const std::string& item);
+    int has_item(const sInventoryItem& item) const;
     int has_item_j(const std::string& item);
     int get_num_item_equiped(int Type);
-    int add_inv(sInventoryItem* item);
+    int add_inv(const sInventoryItem *item);
     bool equip(int slot, bool force);
+    void unequip(int slot);
     bool can_equip(int num, bool force);
     bool remove_inv(int slot);
 

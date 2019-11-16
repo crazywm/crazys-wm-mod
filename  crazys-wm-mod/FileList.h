@@ -113,30 +113,6 @@ public:
 	}
 };
 
-/*
-* don't give this any file extensions: it'll scan for .jpg, .jpeg, .gif...
-*/
-class ImageFileList : public FileList {
-public:
-	/*
-	*	these are the extensions for which ImageFileList scans
-	*
-	*	made them a static class member so they can be overridden in software.
-	*	if need be, can be a config file entry
-	*/
-	static	vector<string> file_extensions;
-	ImageFileList(DirPath dp, const char *pattern = "*")
-		: FileList(dp, nullptr, true)
-	{
-		if (file_extensions.empty()) {
-			file_extensions.push_back(string(".jp*g"));
-			file_extensions.push_back(".png");
-			file_extensions.push_back(".gif");
-		}
-		scan(pattern);
-	}
-	virtual	void	scan(const char *);
-};
 
 class XMLFileList {
 	DirPath folder;

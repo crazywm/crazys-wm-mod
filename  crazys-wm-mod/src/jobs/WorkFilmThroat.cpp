@@ -22,10 +22,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Actress
-bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -45,7 +43,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary)
 
 	cGirls::UnequipCombat(girl);	// not for actress (yet)
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 
 	if (girl->health() < 20)
 	{
@@ -68,7 +66,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary)
 		ss << girlName << (" angrily refused to be throat-fucked on film today.");
 		if (girl->is_slave())
 		{
-			if (g_Game.player().disposition() > 30)  // nice
+			if (g_Game->player().disposition() > 30)  // nice
 			{
 				ss << ("\nThough she is a slave, she was upset so you allowed her the day off.\n");
 				girl->pclove(2);
@@ -77,22 +75,22 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary)
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 				return true;
 			}
-			else if (g_Game.player().disposition() > -30) //pragmatic
+			else if (g_Game->player().disposition() > -30) //pragmatic
 			{
 				ss << (" Amused, you over-ruled her, and gave owner's consent for her. She glared at you as they dragged her away.\n");
 				girl->pclove(-1);
 				girl->pchate(2);
 				girl->pcfear(2);
-				g_Game.player().disposition(-1);
+				g_Game->player().disposition(-1);
 				enjoy -= 2;
 			}
-			else if (g_Game.player().disposition() > -30)
+			else if (g_Game->player().disposition() > -30)
 			{
 				ss << (" Amused, you over-ruled her, and gave owner's consent.\nShe made a hell of a fuss, but you knew just the thing to shut her up.");
 				girl->pclove(-4);
 				girl->pchate(+5);
 				girl->pcfear(+5);
-				g_Game.player().disposition(-2);
+				g_Game->player().disposition(-2);
 				enjoy -= 6;
 			}
 		}
@@ -105,8 +103,8 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary)
 	else ss << girlName << " was filmed in facefucking scenes.\n \n";
 
 
-	int OPTION = g_Dice % 3;
-	int OUTCOME = g_Dice % 3;
+	int OPTION = rng % 3;
+	int OUTCOME = rng % 3;
 	if (jobperformance >= 350)
 	{
 		switch (OPTION)
@@ -276,17 +274,17 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary)
 	}
 	else if (jobperformance >= 100)
 	{
-		enjoy -= (1 + g_Dice % 2);
+		enjoy -= (1 + rng % 2);
 		ss << "She's pretty raw and her makeup is everywhere.\n \n";
 	}
 	else
 	{
-		enjoy -= (2 + g_Dice % 3);
+		enjoy -= (2 + rng % 3);
 		ss << "From the way she's coughing and gagging and has bright red eyes, you suspect this wasn't much fun for her.\n \n";
 	}
 	bonus = bonus + enjoy;
 
-	int impact = g_Dice%10;
+	int impact = rng%10;
 	if (girl->has_trait( "Strong Gag Reflex"))
 	{
 		ss << "She was gagging and retching the whole scene, and was violently sick. She was exhausted and felt awful afterward.\n \n";
@@ -331,8 +329,8 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary)
 
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->oralsex(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->oralsex(rng%skill + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	girl->upd_Enjoyment(ACTION_SEX, enjoy);
@@ -340,16 +338,16 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary)
 	cGirls::PossiblyGainNewTrait(girl, "Masochist", 75, ACTION_SEX, girlName + " has turned into a Masochist from filming so many BDSM scenes.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Mind Fucked", 90, ACTION_WORKMOVIE, "She has been abused so much she is now completely Mind Fucked.", Day0Night1);
 	if (jobperformance > 200) cGirls::PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
-	if (g_Dice.percent(5) && (girl->happiness() > 80) && (girl->get_enjoyment(ACTION_WORKMOVIE) > 75))
+	if (rng.percent(5) && (girl->happiness() > 80) && (girl->get_enjoyment(ACTION_WORKMOVIE) > 75))
 		cGirls::AdjustTraitGroupGagReflex(girl, 1, true, Day0Night1);
 
 	//lose
-	if (g_Dice.percent(5)) cGirls::PossiblyLoseExistingTrait(girl, "Iron Will", 80, ACTION_SEX, "Somewhere between having a dick in her throat, balls slapping her eyes and a camera watching her retch, " + girlName + " has lost her iron will.", Day0Night1);
+	if (rng.percent(5)) cGirls::PossiblyLoseExistingTrait(girl, "Iron Will", 80, ACTION_SEX, "Somewhere between having a dick in her throat, balls slapping her eyes and a camera watching her retch, " + girlName + " has lost her iron will.", Day0Night1);
 
 	//Evil job bonus-------------------------------------------------------
 	//BONUS - evil jobs damage her body, break her spirit and make her hate you
 
-	int MrEvil = g_Dice % 8, MrNasty = g_Dice % 8;
+	int MrEvil = rng % 8, MrNasty = rng % 8;
 	MrEvil = (MrEvil + MrNasty) / 2;				//Should come out around 3 most of the time.
 
 	girl->confidence(-MrEvil);
@@ -358,7 +356,7 @@ bool cJobManager::WorkFilmThroat(sGirl* girl, bool Day0Night1, string& summary)
 	girl->pclove(-MrEvil);
 	girl->pchate(MrEvil);
 	girl->pcfear(MrEvil);
-	g_Game.player().disposition(-MrEvil);
+	g_Game->player().disposition(-MrEvil);
 
 	//----------------------------------------------------------------------
 
@@ -378,34 +376,7 @@ double cJobManager::JP_FilmThroat(sGirl* girl, bool estimate)
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//Good
-	if (girl->has_trait( "Deep Throat"))					jobperformance += 80;	//better ability
-	if (girl->has_trait( "Mind Fucked"))					jobperformance += 60;	//eager to please
-	if (girl->has_trait( "No Gag Reflex"))				jobperformance += 50;	//
-	if (girl->has_trait( "Masochist"))					jobperformance += 50;	//
-	if (girl->has_trait( "Cum Addict"))					jobperformance += 40;	//
-	if (girl->has_trait( "No Teeth"))						jobperformance += 25;	//Lower resistance
-	if (girl->has_trait( "Missing Teeth"))				jobperformance += 25;	//
-	if (girl->has_trait( "Good Kisser"))					jobperformance += 20;	//
-	if (girl->has_trait( "Dick-Sucking Lips"))			jobperformance += 20;	//
-	if (girl->has_trait( "Demon Possessed"))				jobperformance += 20;	//Wild
-	if (girl->has_trait( "Nimble Tongue"))				jobperformance += 10;	//
-	if (girl->has_trait( "Pierced Tongue"))				jobperformance += 15;	//
-	if (girl->has_trait( "Exotic"))						jobperformance += 10;	//
-	if (girl->has_trait( "Whore"))						jobperformance += 20;	//Knows how to work it
-	if (girl->has_trait( "Porn Star"))					jobperformance += 30;	//Knows how to work it on film
-	if (girl->has_trait( "Nymphomaniac"))					jobperformance += 25;	//had lots of practice
-	if (girl->has_trait( "Slut"))							jobperformance += 15;	//had practice
-	if (girl->has_trait( "Sexy Air"))						jobperformance += 10;
-	if (girl->has_trait( "Open Minded"))					jobperformance += 10;
-	if (girl->has_trait( "Natural Pheromones"))			jobperformance += 5;
-
-
-	//Bad
-	if (girl->has_trait( "Strong Gag Reflex"))			jobperformance -= 20;
-	if (girl->has_trait( "Gag Reflex"))					jobperformance -= 20;
-	if (girl->has_trait( "Clumsy"))						jobperformance -= 25;
-	if (girl->has_trait( "Nervous"))						jobperformance -= 15;
+    jobperformance += girl->get_trait_modifier("work.film.throat");
 
 	return jobperformance;
 }

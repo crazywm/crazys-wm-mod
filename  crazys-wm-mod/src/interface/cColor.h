@@ -23,6 +23,15 @@
 
 struct SDL_Color;
 
+struct sColor {
+    sColor(std::uint8_t R, std::uint8_t G, std::uint8_t B) noexcept : r(R), g(G), b(B) {}
+    std::uint8_t r;
+    std::uint8_t g;
+    std::uint8_t b;
+
+    std::string to_hex() const;
+};
+
 class cColor
 {
 public:

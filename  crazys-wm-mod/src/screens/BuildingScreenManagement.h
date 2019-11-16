@@ -21,7 +21,7 @@
 #ifndef CRAZYS_WM_MOD_BUILDINGSCREENMANAGEMENT_H
 #define CRAZYS_WM_MOD_BUILDINGSCREENMANAGEMENT_H
 
-#include "cInterfaceWindow.h"
+#include "interface/cInterfaceWindow.h"
 
 class cBrothelManager;
 class cJobManager;
@@ -42,8 +42,8 @@ protected:
     cJobManager& job_manager();
 
 
-    int curbrothel_id;		// Current Brothel text
-    int girllist_id;		// Girls listbox
+    int curbrothel_id = -1;		// Current Brothel text
+    int girllist_id   = -1;		// Girls listbox
 
     int joblist_id;			// Job listbox
     int jobtypelist_id;		// Job Types listbox
@@ -73,20 +73,18 @@ private:
     int transfer_id;		// Transfer Girl button
     int viewdetails_id;		// View Details button
 
-
-    virtual bool check_keys() { return false; };
     virtual std::string update_job_description(const sGirl& girl) { return ""; };
     virtual std::string get_job_description(int selection);
 
     void SetShift(int shift);
 
-    void handle_events();
+    void handle_ffsd(int flag);
     void init(bool back) override;
 
     void RefreshSelectedJobType();
 
-    void ffsd_outcome(vector<int> girl_array);
-    void ffsd_choice(int ffsd, vector<int> girl_array);
+    void ffsd_outcome(int option);
+    void ffsd_choice(int ffsd, std::vector<int> girl_array);
     bool is_job_allowed(JOBS job);
 
     BuildingType m_Type;
@@ -97,7 +95,7 @@ private:
 
     std::vector<JOBFILTER> m_JobFilters;
 protected:
-    bool Day0Night1;
+    bool Day0Night1 = SHIFT_DAY;
 
     void assign_job(sGirl * girl, int new_job, int girl_selection, bool fulltime);
 
@@ -152,7 +150,6 @@ private:
     int prev_id;
 
     void set_ids() override;
-    bool check_keys() override;
 
 public:
     cScreenGirlManagement();

@@ -48,7 +48,7 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 	m_girl_wins = false;
 
 	// ok, she fights. Find all the gangs on guard duty
-	vector<sGang*> v = g_Game.gang_manager().gangs_on_mission(MISS_GUARDING);
+	vector<sGang*> v = g_Game->gang_manager().gangs_on_mission(MISS_GUARDING);
 	if (v.empty())
 	{	// no gang, so girl wins. PC combat is outside this class ATM
 		m_girl_wins = true;
@@ -89,7 +89,7 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 	*
 	*	Annnnyway....
 	*/
-	m_goon_stats = *g_Game.gang_manager().GetWeaponLevel() * 5 * m_max_goons;
+	m_goon_stats = *g_Game->gang_manager().GetWeaponLevel() * 5 * m_max_goons;
 	for (int i = 0; i < m_max_goons; i++)
 	{
 		m_goon_stats += gang->combat() + gang->magic() + gang->intelligence();
@@ -130,7 +130,7 @@ cGirlGangFight::cGirlGangFight(sGirl *girl)
 		lose_vs_own_gang(gang);
 		return;
 	}
-	if (!g_Game.player().Combat(girl))
+	if (!g_Game->player().Combat(girl))
 	{
 		m_girl_wins = false;
 		m_player_wins = true;

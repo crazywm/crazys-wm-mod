@@ -20,11 +20,9 @@
 #include "cLuaMenu.h"
 #include "cScriptUtils.h"
 #include "CLog.h"
-#include "cChoiceMessage.h"
 #include "DirPath.h"
 #include "FileList.h"
-#include "SDLStuff.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "cScriptManager.h"
 #include "src/screens/cScreenBrothelManagement.h"
 #include "src/Game.hpp"
@@ -34,9 +32,6 @@
 #include "cPlayer.h"
 
 extern CGraphics g_Graphics;
-extern cChoiceManager g_ChoiceManager;
-extern cWindowManager g_WinManager;
-extern cScreenBrothelManagement* g_BrothelManagement;
 
 typedef int (*lua_func)(lua_State *L);
 
@@ -370,9 +365,8 @@ static int game_over(lua_State *L)
 {
 	cScriptManager sm;
 
-	g_Game.push_message("GAME OVER", COLOR_RED);
-	g_WinManager.PopToWindow(g_BrothelManagement);
-	g_WinManager.Pop();
+	g_Game->push_message("GAME OVER", COLOR_RED);
+	window_manager().PopAll();
 	sm.Release();
 	return 0;
 }
@@ -514,7 +508,7 @@ static int create_random_girl(lua_State *L)
 /*
  *	now create the girl
  */
-	sGirl *girl = g_Game.CreateRandomGirl(
+	sGirl *girl = g_Game->CreateRandomGirl(
 		age,		// age
 		global,		// add to global girl list flag
 		slave,		// create as slave flag
@@ -544,7 +538,7 @@ static int queue_message(lua_State *L)
 	//log.ss() << "Before add: has = " << g_MessageQue.HasNext();
 	log.ssend();
 
-	g_Game.push_message(msg, color);
+	g_Game->push_message(msg, color);
 	//log.ss() << "After add: has = " << g_MessageQue.HasNext();
 	//log.ssend();
 	return 0;
@@ -631,7 +625,7 @@ static int add_cust_to_brothel(lua_State *L)
 	}
 	lua_pop(L, 1);
 
-	g_Game.dungeon().AddCust(rval, daughters, wife);
+	g_Game->dungeon().AddCust(rval, daughters, wife);
 	return 0;
 }
 
@@ -917,7 +911,7 @@ void cLuaScript::set_wm_player()
 /*
  *	now format the sGirl data as a Lua table
  */
-	make_lua_player(l, &g_Game.player());
+	make_lua_player(l, &g_Game->player());
 	bool flag = !lua_isnil(l, -1);
 	assert(flag);
 /*

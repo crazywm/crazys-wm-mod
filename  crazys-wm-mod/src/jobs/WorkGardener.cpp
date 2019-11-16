@@ -23,18 +23,16 @@
 #include "src/Game.hpp"
 
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Farm - Laborers
-bool cJobManager::WorkGardener(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkGardener(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKFARM;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_GARDENER))			// they refuse to work
 	{
 		ss << " refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -91,7 +89,7 @@ bool cJobManager::WorkGardener(sGirl* girl, bool Day0Night1, string& summary)
 #pragma region	//	Enjoyment and Tiredness		//
 
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 
 	//enjoyed the work or not
 	if (roll <= 5)
@@ -118,7 +116,7 @@ bool cJobManager::WorkGardener(sGirl* girl, bool Day0Night1, string& summary)
 	// `J` Farm Bookmark - adding in items that can be gathered in the farm
 
 
-	int flowerpower = g_Dice % 3;
+	int flowerpower = rng % 3;
 	/* */if (jobperformance < 70)	flowerpower -= 1;
 	else if (jobperformance < 100)	flowerpower += 0;
 	else if (jobperformance < 145)	flowerpower += 1;
@@ -131,7 +129,7 @@ bool cJobManager::WorkGardener(sGirl* girl, bool Day0Night1, string& summary)
 	while (flowerpower > 0 && additemnum < 8)
 	{
 		string additem;
-		switch (g_Dice % 14)
+		switch (rng % 14)
 		{
 		case 0:		if (flowerpower >= 5) { flowerpower -= 5;	additem = "Bouquet of Enchanted Roses"; } break;
 		case 1:		if (flowerpower >= 5) { flowerpower -= 5;	additem = "Chatty Flowers"; }			  break;
@@ -174,8 +172,8 @@ bool cJobManager::WorkGardener(sGirl* girl, bool Day0Night1, string& summary)
 		}
 		for (int i = 0; i < additemnum; i++)
 		{
-			sInventoryItem* item = g_Game.inventory_manager().GetItem(additems[i]);
-			if (item) g_Game.player().inventory().add_item(item);
+			sInventoryItem* item = g_Game->inventory_manager().GetItem(additems[i]);
+			if (item) g_Game->player().inventory().add_item(item);
 		}
 	}
 
@@ -193,7 +191,7 @@ bool cJobManager::WorkGardener(sGirl* girl, bool Day0Night1, string& summary)
 			+ girl->herbalism()
 			+ girl->farming());
 		roll_max /= 6;
-		wages += 10 + g_Dice%roll_max;
+		wages += 10 + rng%roll_max;
 	}
 
 
@@ -218,15 +216,15 @@ bool cJobManager::WorkGardener(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 	if (girl->has_trait( "Nymphomaniac"))			{ libido += 2; }
 
-	girl->exp((g_Dice % xp) + 1);
+	girl->exp((rng % xp) + 1);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
 
 	// primary (+2 for single or +1 for multiple)
-	girl->herbalism((g_Dice%skill) + 2);
+	girl->herbalism((rng%skill) + 2);
 	// secondary (-1 for one then -2 for others)
-	girl->farming(max(0, (g_Dice % skill) - 1));
-	girl->intelligence(max(0, (g_Dice % skill) - 2));
-	girl->constitution(max(0, (g_Dice % skill) - 2));
+	girl->farming(max(0, (rng % skill) - 1));
+	girl->intelligence(max(0, (rng % skill) - 2));
+	girl->constitution(max(0, (rng % skill) - 2));
 
 #pragma endregion
 	return false;
@@ -248,17 +246,7 @@ double cJobManager::JP_Gardener(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Quick Learner"))  jobperformance += 5;
-	if (girl->has_trait( "Psychic"))		  jobperformance += 10;
+    jobperformance += girl->get_trait_modifier("work.gardener");
 
-	//bad traits
-	if (girl->has_trait( "Dependant"))	jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy")) 		jobperformance -= 20; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive")) 	jobperformance -= 20; //gets mad easy
-	if (girl->has_trait( "Nervous"))		jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))			jobperformance -= 20;
-
-
-	return jobperformance;
+    return jobperformance;
 }

@@ -20,6 +20,7 @@
 #define __CGAMESCRIPT_H
 
 #include "cScripts.h"
+#include <vector>
 
 class sGirl;
 
@@ -180,6 +181,13 @@ private:
 
 	// script targets (things that the script will affect with certain commands)
 	sGirl* m_GirlTarget;	// if not 0 then the script is affecting a girl
+
+	struct sChoiceBox {
+        std::string Prompt;
+        std::vector<std::string> Options;
+	};
+	std::vector<sChoiceBox> m_ChoiceBoxes;
+	int m_LastSelection;
 
 public:
 	cGameScript()

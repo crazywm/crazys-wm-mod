@@ -23,10 +23,8 @@
 #include "src/Game.hpp"
 #include <sstream>
 
-extern cRng g_Dice;
-
 // `J` Job Movie Studio - Actress
-bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = dynamic_cast<sMovieStudio*>(girl->m_Building);
 
@@ -50,20 +48,20 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary)
 	//OLD version
 	ss << girlName << " worked as an actress filming BDSM scenes.\n \n";
 
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 	if (roll <= 10 && girl->disobey_check(ACTION_WORKMOVIE, brothel))
 	{
 		ss << "She refused to get beaten on film today.\n";
 		girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 		return true;
 	}
-	else if (roll <= 10) { enjoy -= g_Dice % 3 + 1;	ss << "She did not enjoy getting tied up and hurt today.\n \n"; }
-	else if (roll >= 90) { enjoy += g_Dice % 3 + 1;	ss << "She had a great time getting spanked and whipped.\n \n"; }
-	else /*            */{ enjoy += g_Dice % 2;		ss << "She had just another day in the dungeon.\n \n"; }
+	else if (roll <= 10) { enjoy -= rng % 3 + 1;	ss << "She did not enjoy getting tied up and hurt today.\n \n"; }
+	else if (roll >= 90) { enjoy += rng % 3 + 1;	ss << "She had a great time getting spanked and whipped.\n \n"; }
+	else /*            */{ enjoy += rng % 2;		ss << "She had just another day in the dungeon.\n \n"; }
 	jobperformance = enjoy * 2;
 #else
 	int bonus = 0;
-	int roll = g_Dice.d100();
+	int roll = rng.d100();
 
 
 	if (girl->health() < 40)
@@ -93,7 +91,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary)
 		ss << girlName << " was horrified and refused to be beaten and sexually tortured in this ";
 		if (girl->is_slave())
 		{
-			if (g_Game.player().disposition() > 30)  // nice
+			if (g_Game->player().disposition() > 30)  // nice
 			{
 				ss << "\"monstrous\" place.\nShe was starting to panic, so you allowed her the day off.\n";
 				girl->pclove(2);
@@ -101,16 +99,16 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary)
 				girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
 				return true;
 			}
-			else if (g_Game.player().disposition() > -30) //pragmatic
+			else if (g_Game->player().disposition() > -30) //pragmatic
 			{
 				ss << "\"monstrous\" place.\nShe was starting to panic, so you ordered your men to grab her and bind her for action.\n";
 				girl->pclove(-1);
 				girl->pchate(2);
 				girl->pcfear(2);
-				g_Game.player().disposition(-1);
+				g_Game->player().disposition(-1);
 				enjoy -= 2;
 			}
-			else if (g_Game.player().disposition() > -30)
+			else if (g_Game->player().disposition() > -30)
 			{
 				ss << "\"monstrous\" place.\nShe was starting to panic so you ordered your men to quickly grab, strip and bind her. Finally, ";
 				if (girl->has_trait( "Pierced Nipples"))
@@ -127,7 +125,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary)
 				girl->pclove(-4);
 				girl->pchate(+5);
 				girl->pcfear(+5);
-				g_Game.player().disposition(-2);
+				g_Game->player().disposition(-2);
 				enjoy -= 6;
 			}
 		}
@@ -221,20 +219,20 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary)
 		jobperformance += 50;
 		ss << "She is no longer a virgin.\n";
 	}
-	sCustomer Cust = g_Game.GetCustomer(*brothel);
+	sCustomer Cust = g_Game->GetCustomer(*brothel);
 	Cust.m_Amount = 1;
 	if (Cust.m_IsWoman)	// FemDom
 	{
 		jobperformance += 20;
-		/* */if (girl->has_trait("Lesbian"))	jobperformance += 20;
-		else if (girl->has_trait("Straight"))	jobperformance -= 20;
+        /* */if (girl->has_trait("Lesbian"))	jobperformance += 20;
+        else if (girl->has_trait("Straight"))	jobperformance -= 20;
 	}
 	else
 	{
 		if (!girl->calc_pregnancy(Cust, false, 0.75))
-			g_Game.push_message(girl->m_Realname + " has gotten pregnant", 0);
-		/* */if (girl->has_trait("Lesbian"))	jobperformance -= 10;
-		else if (girl->has_trait("Straight"))	jobperformance += 10;
+			g_Game->push_message(girl->m_Realname + " has gotten pregnant", 0);
+        /* */if (girl->has_trait("Lesbian"))	jobperformance -= 10;
+        else if (girl->has_trait("Straight"))	jobperformance += 10;
 	}
 
 	//Evil pays more and costs about the same...
@@ -262,8 +260,8 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary)
 	else if (girl->has_trait( "Slow Learner"))	{ skill -= 1; xp -= 3; }
 
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->bdsm(g_Dice%skill + 1);
+	girl->performance(rng%skill);
+	girl->bdsm(rng%skill + 1);
 
 	girl->upd_Enjoyment(ACTION_SEX, enjoy);
 	girl->upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
@@ -277,7 +275,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary)
 	//Evil job bonus-------------------------------------------------------
 	//BONUS - evil jobs damage her body, break her spirit and make her hate you
 
-	int MrEvil = g_Dice % 8, MrNasty = g_Dice % 8;
+	int MrEvil = rng % 8, MrNasty = rng % 8;
 	MrEvil = (MrEvil + MrNasty) / 2;				//Should come out around 3 most of the time.
 
 	girl->confidence(-MrEvil);
@@ -286,7 +284,7 @@ bool cJobManager::WorkFilmBondage(sGirl* girl, bool Day0Night1, string& summary)
 	girl->pclove(-MrEvil);
 	girl->pchate(MrEvil);
 	girl->pcfear(MrEvil);
-	g_Game.player().disposition(-MrEvil);
+	g_Game->player().disposition(-MrEvil);
 
 	//----------------------------------------------------------------------
 	return false;
@@ -305,42 +303,9 @@ double cJobManager::JP_FilmBondage(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	if (girl->has_trait( "Mind Fucked"))				jobperformance += 50;	//this is her home
-	if (girl->has_trait( "Masochist"))				jobperformance += 30;	//she likes it
-	if (girl->has_trait( "Twisted"))					jobperformance += 10;	//
-	if (girl->has_trait( "Open Minded"))				jobperformance += 10;	//
-	if (girl->has_trait( "Broken Will"))				jobperformance += 20;	//
-	if (girl->has_trait( "Pierced Clit"))				jobperformance += 40;	//Piercings can be useful for this...
-	if (girl->has_trait( "Pierced Nipples"))			jobperformance += 40;	//
-	if (girl->has_trait( "Pierced Tongue"))			jobperformance += 20;	//
-	if (girl->has_trait( "Pierced Nose"))				jobperformance += 10;	//
-	if (girl->has_trait( "Pierced Navel"))			jobperformance += 5;	//
-	if (girl->has_trait( "Princess"))					jobperformance += 30;	//High-Status degraded
-	if (girl->has_trait( "Queen"))					jobperformance += 30;	//
-	if (girl->has_trait( "Goddess"))					jobperformance += 30;	//
-	if (girl->has_trait( "Angel"))					jobperformance += 30;	//
-	if (girl->has_trait( "Noble"))					jobperformance += 20;	//
-	if (girl->has_trait( "Elegant"))					jobperformance += 10;	//
-	if (girl->has_trait( "Branded on the Forehead"))	jobperformance += 5;	//Degraded
-	if (girl->has_trait( "Branded on the Ass"))		jobperformance += 5;	//
 	if (girl->check_virginity())						jobperformance += 20;	//
-	if (girl->has_trait( "Strong Gag Reflex"))		jobperformance += 10;	//Degrading
-	if (girl->has_trait( "Gag Reflex"))				jobperformance += 5;	//
-	if (girl->has_trait( "No Gag Reflex"))			jobperformance += 5;	//
-	if (girl->has_trait( "Deep Throat"))				jobperformance += 10;	//Capable
-	if (girl->has_trait( "Tsundere"))					jobperformance += 15;	//Mistreated customers can see haughty girl knocked down
-	if (girl->has_trait( "Yandere"))					jobperformance += 15;	//
-	if (girl->has_trait( "Actress"))					jobperformance += 25;	//Can play it up for crowd
 
-	if (girl->has_trait( "Iron Will"))				jobperformance -= 30;	//Refuses to react
-	if (girl->has_trait( "Incorporeal"))				jobperformance -= 60;	//Can't be hurt
-	if (girl->has_trait( "Construct"))				jobperformance -= 60;	//Can't be hurt
-	if (girl->has_trait( "Half-Construct"))			jobperformance -= 50;	//Can't be hurt
-	if (girl->has_trait( "Skeleton"))					jobperformance -= 80;	//Can't be hurt
-	if (girl->has_trait( "Undead"))					jobperformance -= 80;	//Can't be hurt
-	if (girl->has_trait( "Zombie"))					jobperformance -= 80;	//Can't be hurt
-	if (girl->has_trait( "Fragile"))					jobperformance -= 80;	//Too quickly damaged
-	if (girl->has_trait( "Delicate"))					jobperformance -= 80;	//Too quickly damaged
+    jobperformance += girl->get_trait_modifier("work.film.bondage");
 
-	return jobperformance;
+    return jobperformance;
 }

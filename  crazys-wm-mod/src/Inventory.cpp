@@ -23,7 +23,7 @@
 #include "tinyxml.h"
 
 
-int Inventory::add_item(sInventoryItem* item, int count) {
+int Inventory::add_item(const sInventoryItem *item, int count) {
     auto found = m_ItemCounts.find(item);
     if(found != m_ItemCounts.end()) {
         found->second += count;
@@ -103,7 +103,7 @@ int Inventory::remove_item(const sInventoryItem * item, int amount)
 
 bool Inventory::has_item(const std::string& item, int count) const
 {
-    auto p_item = g_Game.inventory_manager().GetItem(item);
+    auto p_item = g_Game->inventory_manager().GetItem(item);
     if(!p_item)
         return false;
     return has_item(p_item, count);
@@ -126,7 +126,7 @@ void Inventory::load_from_xml(TiXmlElement& root)
     {
         if (pItem->Attribute("Name"))
         {
-            sInventoryItem* item = g_Game.inventory_manager().GetItem(pItem->Attribute("Name"));
+            sInventoryItem* item = g_Game->inventory_manager().GetItem(pItem->Attribute("Name"));
             if (!item) {
                 // Todo log error
                 continue;
@@ -137,4 +137,11 @@ void Inventory::load_from_xml(TiXmlElement& root)
             m_ItemCounts[item] = amount;
         }
     }
+}
+
+int Inventory::get_num_items(const std::string &item) const {
+    auto p_item = g_Game->inventory_manager().GetItem(item);
+    if(!p_item)
+        return 0;
+    return get_num_items(p_item);
 }

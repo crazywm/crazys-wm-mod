@@ -58,41 +58,41 @@ void cScreenBank::init(bool back)
 	Focused();
 
 	stringstream ss;
-	ss << "Bank account: " << g_Game.GetBankMoney() << " gold" << endl;
-	ss << "On hand: " << g_Game.gold().ival() << " gold";
+	ss << "Bank account: " << g_Game->GetBankMoney() << " gold" << endl;
+	ss << "On hand: " << g_Game->gold().ival() << " gold";
 	EditTextItem(ss.str(), details_id);
 
 	// disable/enable Withdraw button depending on whether player has money in bank
-	DisableButton(withdraw_id, (g_Game.GetBankMoney() == 0));
-	DisableButton(withdrawall_id, (g_Game.GetBankMoney() == 0));
+    DisableWidget(withdraw_id, (g_Game->GetBankMoney() == 0));
+    DisableWidget(withdrawall_id, (g_Game->GetBankMoney() == 0));
 	// likewise, if player has no money on hand, disable deposit buttons
-	DisableButton(depositall_id, (g_Game.gold().ival() <= 0));
-	DisableButton(deposit_id, (g_Game.gold().ival() <= 0));
+    DisableWidget(depositall_id, (g_Game->gold().ival() <= 0));
+    DisableWidget(deposit_id, (g_Game->gold().ival() <= 0));
 }
 
 void cScreenBank::withdraw_all()
 {
-    if (g_Game.GetBankMoney() <= 0)
+    if (g_Game->GetBankMoney() <= 0)
     {
         push_message("You have no money to withdraw", COLOR_RED);
         return;
     }
-    withdraw(g_Game.GetBankMoney());
+    withdraw(g_Game->GetBankMoney());
 }
 
 void cScreenBank::deposit_all()
 {
-    if (g_Game.gold().ival() <= 0)
+    if (g_Game->gold().ival() <= 0)
     {
         push_message("You have no money to deposit.", COLOR_RED);
         return;
     }
-    deposit(g_Game.gold().ival());
+    deposit(g_Game->gold().ival());
 }
 
 void cScreenBank::deposit(int amount)
 {
-    if (g_Game.gold().misc_debit(amount)) g_Game.DepositInBank(amount);
+    if (g_Game->gold().misc_debit(amount)) g_Game->DepositInBank(amount);
     else push_message("You don't have that much!", COLOR_RED);
 
     init(false);
@@ -100,10 +100,10 @@ void cScreenBank::deposit(int amount)
 
 void cScreenBank::withdraw(int amount)
 {
-    if (amount <= g_Game.GetBankMoney())
+    if (amount <= g_Game->GetBankMoney())
     {
-        g_Game.WithdrawFromBank(amount);
-        g_Game.gold().misc_credit(amount);
+        g_Game->WithdrawFromBank(amount);
+        g_Game->gold().misc_credit(amount);
     }
     else push_message("There isn't that much in your account", COLOR_RED);
 

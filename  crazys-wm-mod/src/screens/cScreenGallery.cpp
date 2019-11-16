@@ -17,9 +17,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cScreenGallery.h"
-#include "cWindowManager.h"
-#include "widgets/cTextItem.h"
+#include "interface/cWindowManager.h"
 #include "widgets/cImageItem.h"
+#include "interface/cSurface.h"
 #include "InterfaceProcesses.h"
 #include "cGangs.h"
 #include "FileList.h"
@@ -49,8 +49,8 @@ void cScreenGallery::set_ids()
 	imagename_id	/**/ = get_id("ImageName");
 	imagelist_id	/**/ = get_id("ImageList");
 
-	string ILColumns[] = { "ILName", "ILTotal", "ILjpg", "ILAni", "ILGif" };
-	SortColumns(imagelist_id, ILColumns, 5);
+	std::vector<std::string> ILColumns{ "ILName", "ILTotal", "ILjpg", "ILAni", "ILGif" };
+	SortColumns(imagelist_id, ILColumns);
 
 	SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(prev_id, [this](){
@@ -77,9 +77,9 @@ void cScreenGallery::set_ids()
 void cScreenGallery::change_image()
 {
     PrepareImage(image_id, m_SelectedGirl, Mode, false, Img, true);
-    string t = m_Images[image_id]->m_Image->m_Message;
-    if (t.empty()) t = m_Images[image_id]->m_Image->GetFilename();
-    m_TextItems[imagename_id]->SetText(t);
+    string t = GetImage(image_id)->m_Message;
+    if (t.empty()) t = GetImage(image_id)->m_Image.GetFileName();
+    EditTextItem(t, imagename_id);
     SetSelectedItemInList(imagelist_id, Mode, false);
 }
 
@@ -140,8 +140,8 @@ void cScreenGallery::init(bool back)
 			stringstream num2;	num2 << numimages[i][2];
 			stringstream num3;	num3 << numimages[i][3];
 
-			string dataP[] = { galtxt[i], num0.str(), num1.str(), num2.str(), num3.str() };
-			AddToListBox(imagelist_id, i, dataP, 5);
+			std::vector<std::string> dataP{ galtxt[i], num0.str(), num1.str(), num2.str(), num3.str() };
+			AddToListBox(imagelist_id, i, std::move(dataP));
 		}
 	}
 	Mode = startmode;

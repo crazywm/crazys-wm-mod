@@ -27,7 +27,6 @@
 #include "sConfig.h"
 #include "cTraits.h"
 
-extern cTraits g_Traits;
 extern cConfig cfg;
 
 sRandomGirl::sRandomGirl()
@@ -172,17 +171,17 @@ ostream& operator<<(ostream &os, sRandomGirl &g)
     *	setw sets a field width for the next operation,
     *	left forces left alignment. Makes the columns line up.
     */
-    for (unsigned int i = 0; i < sGirl::max_stats; i++)
+    for (unsigned int i = 0; i < NUM_STATS; i++)
     {
-        os << setw(14) << left << sGirl::stat_names[i] << ": Min = " << (g.m_MinStats[i]) << endl;
+        os << setw(14) << left << get_stat_name((STATS)i) << ": Min = " << (g.m_MinStats[i]) << endl;
         os << setw(14) << "" << ": Max = " << (g.m_MaxStats[i]) << endl;
     }
     /*
     *	loop through skills
     */
-    for (unsigned int i = 0; i < sGirl::max_skills; i++)
+    for (unsigned int i = 0; i < NUM_SKILLS; i++)
     {
-        os << setw(14) << left << sGirl::skill_names[i] << ": Min = " << int(g.m_MinSkills[i]) << endl;
+        os << setw(14) << left << get_skill_name((SKILLS)i) << ": Min = " << int(g.m_MinSkills[i]) << endl;
         os << setw(14) << "" << ": Max = " << int(g.m_MaxSkills[i]) << endl;
     }
     /*
@@ -319,7 +318,7 @@ void sRandomGirl::process_item_xml(TiXmlElement *el)
     if ((pt = el->Attribute("Name")))
     {
         string finditem = pt;
-        item = g_Game.inventory_manager().GetItem(finditem);
+        item = g_Game->inventory_manager().GetItem(finditem);
         if (!item)
         {
             g_LogFile.os() << "Error: Can't find Item: '" << finditem << "' - skipping it." << endl;
@@ -340,7 +339,7 @@ void sRandomGirl::process_item_xml(TiXmlElement *el)
 void sRandomGirl::process_stat_xml(TiXmlElement *el)
 {
     int ival, index; const char *pt;
-    if ((pt = el->Attribute("Name"))) index = sGirl::lookup_stat_code(pt);
+    if ((pt = el->Attribute("Name"))) index = get_stat_id(pt);
     else
     {
         g_LogFile.os() << "can't find 'Name' attribute - can't process stat" << endl;
@@ -359,7 +358,7 @@ void sRandomGirl::process_skill_xml(TiXmlElement *el)
     *	test for absence. This won't catch typos in the
     *	XML file
     */
-    if ((pt = el->Attribute("Name"))) index = sGirl::skill_lookup[pt];
+    if ((pt = el->Attribute("Name"))) index = get_skill_id(pt);
     else
     {
         g_LogFile.os() << "can't find 'Name' attribute - can't process skill" << endl;

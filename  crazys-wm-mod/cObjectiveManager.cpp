@@ -36,10 +36,10 @@ void cObjectiveManager::UpdateObjective()
         switch (m_Objective->m_Objective)
         {
         case OBJECTIVE_REACHGOLDTARGET:
-            if (g_Game.GetBankMoney() >= m_Objective->m_Target)	PassObjective();	// `J` changed to bank instead of cash to clear up issues
+            if (g_Game->GetBankMoney() >= m_Objective->m_Target)	PassObjective();	// `J` changed to bank instead of cash to clear up issues
             break;
         case OBJECTIVE_HAVEXGOONS:
-            if (g_Game.gang_manager().GetNumGangs() >= m_Objective->m_Target)		PassObjective();
+            if (g_Game->gang_manager().GetNumGangs() >= m_Objective->m_Target)		PassObjective();
             break;
         case OBJECTIVE_STEALXAMOUNTOFGOLD:
         case OBJECTIVE_CAPTUREXCATACOMBGIRLS:
@@ -64,7 +64,7 @@ void cObjectiveManager::UpdateObjective()
             if (!m_Objective->m_FailText.empty())		ss << "You have failed your objective:\n" << m_Objective->m_FailText;
             else if (m_Objective->m_Text.empty())	ss << "You have failed an objective.";
             else ss << "You have failed your objective to " << m_Objective->m_Text;
-            g_Game.push_message(ss.str(), COLOR_RED);
+            g_Game->push_message(ss.str(), COLOR_RED);
             m_Objective.reset();
         }
     }
@@ -84,7 +84,7 @@ void cObjectiveManager::CreateNewObjective()
 
         sst << "You have a new objective:\n";
         bool done = false;
-        m_Objective->m_Difficulty = std::max(0, ((int)g_Game.date().year - 1209));
+        m_Objective->m_Difficulty = std::max(0, ((int)g_Game->date().year - 1209));
         m_Objective->m_SoFar = 0;
         m_Objective->m_Reward = g_Dice%NUM_REWARDS;
         m_Objective->m_Limit = -1;
@@ -135,9 +135,9 @@ void cObjectiveManager::CreateNewObjective()
                 cRivalManager r;
                 if (r.GetNumRivals() > 0)
                 {
-                    if (g_Game.gang_manager().GetNumGangs() > 0)
+                    if (g_Game->gang_manager().GetNumGangs() > 0)
                     {
-                        ss << "Your gang" << (g_Game.gang_manager().GetNumGangs() > 1 ? "s are" : " is") << " getting restless and itching for a fight. ";
+                        ss << "Your gang" << (g_Game->gang_manager().GetNumGangs() > 1 ? "s are" : " is") << " getting restless and itching for a fight. ";
                     }
                     ss << "Launch a successful attack mission within ";
                     m_Objective->m_Limit = (m_Objective->m_Difficulty >= 3 ? (g_Dice % 5) + 3 : (g_Dice % 10) + 10);
@@ -148,10 +148,10 @@ void cObjectiveManager::CreateNewObjective()
 
             case OBJECTIVE_HAVEXGOONS:
             {
-                if (g_Game.gang_manager().GetNumGangs() < g_Game.gang_manager().GetMaxNumGangs())
+                if (g_Game->gang_manager().GetNumGangs() < g_Game->gang_manager().GetMaxNumGangs())
                 {
-                    m_Objective->m_Target = g_Game.gang_manager().GetNumGangs() + ((g_Dice % 3) + 1);
-                    if (m_Objective->m_Target > g_Game.gang_manager().GetMaxNumGangs()) m_Objective->m_Target = g_Game.gang_manager().GetMaxNumGangs();
+                    m_Objective->m_Target = g_Game->gang_manager().GetNumGangs() + ((g_Dice % 3) + 1);
+                    if (m_Objective->m_Target > g_Game->gang_manager().GetMaxNumGangs()) m_Objective->m_Target = g_Game->gang_manager().GetMaxNumGangs();
                     m_Objective->m_Limit = (m_Objective->m_Difficulty >= 3 ? (g_Dice % 4) + 3 : (g_Dice % 7) + 6);
                     ss << "Have " << m_Objective->m_Target << " gangs within " << m_Objective->m_Limit << " weeks.";
                     done = true;
@@ -227,7 +227,7 @@ void cObjectiveManager::CreateNewObjective()
 
             case OBJECTIVE_EXTORTXNEWBUSINESS:
             {	// `J` if there are not enough available businesses, don't use this one
-                if (TOWN_NUMBUSINESSES > g_Game.gang_manager().GetNumBusinessExtorted() + 5)
+                if (TOWN_NUMBUSINESSES > g_Game->gang_manager().GetNumBusinessExtorted() + 5)
                 {
                     ss << "Gain control of ";
                     if (m_Objective->m_Difficulty >= 2)
@@ -264,7 +264,7 @@ void cObjectiveManager::CreateNewObjective()
 
             case OBJECTIVE_GETNEXTBROTHEL:
             {
-                if (g_Game.buildings().num_buildings(BuildingType::BROTHEL) < 6)
+                if (g_Game->buildings().num_buildings(BuildingType::BROTHEL) < 6)
                 {
 //					ss << "The seller of a brothel is offering a bonus mystery prize to whoever buys it";
                     ss << "Purchase a new brothel";
@@ -287,9 +287,9 @@ void cObjectiveManager::CreateNewObjective()
 
         if (sst.str().length() > 0)
         {
-            g_Game.push_message(sst.str(), COLOR_DARKBLUE);
+            g_Game->push_message(sst.str(), COLOR_DARKBLUE);
             // TODO give objectives their own message category
-            g_Game.buildings().get_building(0).m_Events.AddMessage(sst.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+            g_Game->buildings().get_building(0).m_Events.AddMessage(sst.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
         }
     }
 }
@@ -302,7 +302,7 @@ void cObjectiveManager::PassObjective()
         cRival* rival = nullptr;
         if (m_Objective->m_Reward == REWARD_RIVALHINDER)
         {
-            rival = g_Game.random_rival();
+            rival = g_Game->random_rival();
             if (!rival) m_Objective->m_Reward = REWARD_GOLD;
         }
 
@@ -325,7 +325,7 @@ void cObjectiveManager::PassObjective()
             if (m_Objective->m_Limit > 0) gold += mod * m_Objective->m_Limit;
 
             ss << " get " << gold << " gold.";
-            g_Game.gold().objective_reward(gold);
+            g_Game->gold().objective_reward(gold);
         }break;
 
         case REWARD_GIRLS:
@@ -346,12 +346,12 @@ void cObjectiveManager::PassObjective()
             ss << " get " << girls << " slave girl" << (girls > 1 ? "s" : "") << ":\n";
             while (girls > 0)
             {
-                sGirl* girl = g_Game.CreateRandomGirl(0, false, true, false, g_Dice % 3 == 1);
+                sGirl* girl = g_Game->CreateRandomGirl(0, false, true, false, g_Dice % 3 == 1);
                 stringstream ssg;
                 ss << girl->m_Realname << "\n";
                 ssg << girl->m_Realname << " was given to you as a reward for completing your objective.";
                 girl->m_Events.AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
-                g_Game.dungeon().AddGirl(girl, DUNGEON_NEWGIRL);
+                g_Game->dungeon().AddGirl(girl, DUNGEON_NEWGIRL);
                 girls--;
             }
         }break;
@@ -360,7 +360,7 @@ void cObjectiveManager::PassObjective()
         {
             long gold = (rival->m_Gold > 10 ? (g_Dice % (rival->m_Gold / 2)) + 1 : 436);
             rival->m_Gold -= gold;
-            g_Game.gold().objective_reward(gold);
+            g_Game->gold().objective_reward(gold);
             ss << " get to steal " << gold << " gold from the " << rival->m_Name << ".";
 
             // `J` added
@@ -424,10 +424,10 @@ void cObjectiveManager::PassObjective()
             while (numItems > 0 && tries > 0)
             {
                 tries--;
-                sInventoryItem* item = g_Game.inventory_manager().GetRandomItem();
+                sInventoryItem* item = g_Game->inventory_manager().GetRandomItem();
                 if (item && item->m_Rarity < RARITYSCRIPTONLY)
                 {
-                    if(g_Game.player().inventory().add_item(item)) {
+                    if(g_Game->player().inventory().add_item(item)) {
                         itemnames.push_back(item->m_Name);
                         numItems--;
                     }
@@ -456,15 +456,15 @@ void cObjectiveManager::PassObjective()
                 long gold = (g_Dice % 200) + 33;
                 if (m_Objective->m_Difficulty > 0) gold *= m_Objective->m_Difficulty;
                 ss << " get " << gold << " gold.";
-                g_Game.gold().objective_reward(gold);
+                g_Game->gold().objective_reward(gold);
             }
         }break;
         }
 
         if (ss.str().length() > 0)
         {
-            g_Game.push_message(ss.str(), COLOR_GREEN);
-            g_Game.buildings().get_building(0).m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+            g_Game->push_message(ss.str(), COLOR_GREEN);
+            g_Game->buildings().get_building(0).m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
         }
 
         m_Objective.reset();

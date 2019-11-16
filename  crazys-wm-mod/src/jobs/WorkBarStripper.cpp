@@ -23,18 +23,16 @@
 #include <sstream>
 #include "src/Game.hpp"
 
-extern cRng g_Dice;
-
 #pragma endregion
 
 // `J` Job Brothel - Sleazy Bar
-bool cJobManager::WorkBarStripper(sGirl* girl, bool Day0Night1, string& summary)
+bool cJobManager::WorkBarStripper(sGirl* girl, bool Day0Night1, string& summary, cRng& rng)
 {
     auto brothel = girl->m_Building;
 #pragma region //	Job setup				//
 	int actiontype = ACTION_WORKSTRIP;
 	stringstream ss; string girlName = girl->m_Realname; ss << girlName;
-	int roll_a = g_Dice.d100(), roll_b = g_Dice.d100(), roll_c = g_Dice.d100();
+	int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
 	if (girl->disobey_check(actiontype, JOB_BARSTRIPPER))
 	{
 		//SIN - More informative mssg to show *what* she refuses
@@ -300,17 +298,17 @@ bool cJobManager::WorkBarStripper(sGirl* girl, bool Day0Night1, string& summary)
 	tips += (int)(((5 + jobperformance / 6) * wages) / 100);
 
 	//try and add randomness here
-	if (girl->beauty() > 85 && g_Dice.percent(20))
+	if (girl->beauty() > 85 && rng.percent(20))
 	{
 		ss << "Stunned by her beauty a customer left her a great tip.\n \n"; tips += 25;
 	}
 
-	if (girl->has_trait( "Clumsy") && g_Dice.percent(5))
+	if (girl->has_trait( "Clumsy") && rng.percent(5))
 	{
 		ss << "Her clumsy nature caused her to slide off the pole causing her to have to stop stripping for a few hours.\n"; wages -= 15;
 	}
 
-	if (girl->has_trait( "Pessimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Pessimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -322,7 +320,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Optimist") && g_Dice.percent(5))
+	if (girl->has_trait( "Optimist") && rng.percent(5))
 	{
 		if (jobperformance < 125)
 		{
@@ -334,7 +332,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, bool Day0Night1, string& summary)
 		}
 	}
 
-	if (girl->has_trait( "Great Figure") && g_Dice.percent(20))
+	if (girl->has_trait( "Great Figure") && rng.percent(20))
 	{
 		if (jobperformance < 125)
 		{
@@ -422,13 +420,13 @@ bool cJobManager::WorkBarStripper(sGirl* girl, bool Day0Night1, string& summary)
 	if (wages < 0)
 		wages = 0;
 
-	if (girl->is_addict(true) && g_Dice.percent(20))
+	if (girl->is_addict(true) && rng.percent(20))
 	{
 		string warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
 		ss << "\n" << warning << "\n";
-		if (girl->has_trait( "Shroud Addict"))		girl->add_inv(g_Game.inventory_manager().GetItem("Shroud Mushroom"));
-		if (girl->has_trait( "Fairy Dust Addict"))	girl->add_inv(g_Game.inventory_manager().GetItem("Fairy Dust"));
-		if (girl->has_trait( "Viras Blood Addict"))	girl->add_inv(g_Game.inventory_manager().GetItem("Vira Blood"));
+		if (girl->has_trait( "Shroud Addict"))		girl->add_inv(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
+		if (girl->has_trait( "Fairy Dust Addict"))	girl->add_inv(g_Game->inventory_manager().GetItem("Fairy Dust"));
+		if (girl->has_trait( "Viras Blood Addict"))	girl->add_inv(g_Game->inventory_manager().GetItem("Vira Blood"));
 		girl->m_Events.AddMessage(warning, IMGTYPE_ORAL, EVENT_WARNING);
 	}
 
@@ -490,7 +488,7 @@ bool cJobManager::WorkBarStripper(sGirl* girl, bool Day0Night1, string& summary)
 
 	int roll_max = (girl->beauty() + girl->charisma());
 	roll_max /= 4;
-	wages += 10 + g_Dice%roll_max;
+	wages += 10 + rng%roll_max;
 	// Money
 	girl->m_Tips = max(0, tips);
 	girl->m_Pay = max(0, wages);
@@ -508,15 +506,15 @@ bool cJobManager::WorkBarStripper(sGirl* girl, bool Day0Night1, string& summary)
 
 	girl->fame(fame);
 	girl->exp(xp);
-	girl->performance(g_Dice%skill);
-	girl->strip(g_Dice%skill + 2);
+	girl->performance(rng%skill);
+	girl->strip(rng%skill + 2);
 	girl->upd_temp_stat(STAT_LIBIDO, libido);
-	girl->upd_temp_stat(STAT_CONFIDENCE, g_Dice % 2); //SIN - slow boost to confidence
+	girl->upd_temp_stat(STAT_CONFIDENCE, rng % 2); //SIN - slow boost to confidence
 
 	//gained
 	cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, actiontype, girlName + " has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1);
 	cGirls::PossiblyGainNewTrait(girl, "Exhibitionist", 60, actiontype, girlName + " has been stripping for so long she loves to be naked now.", Day0Night1);
-	if (jobperformance >= 140 && g_Dice.percent(25))
+	if (jobperformance >= 140 && rng.percent(25))
 	{
 		cGirls::PossiblyGainNewTrait(girl, "Agile", 40, actiontype, girlName + " has been working the pole long enough to become quite Agile.", Day0Night1);
 	}
@@ -558,54 +556,10 @@ double cJobManager::JP_BarStripper(sGirl* girl, bool estimate)// not used
 			jobperformance -= (t + 2) * (t / 3);
 	}
 
-	//good traits
-	if (girl->has_trait( "Charismatic"))    jobperformance += 10;
-	if (girl->has_trait( "Sexy Air"))		  jobperformance += 10;
-	if (girl->has_trait( "Cool Person"))    jobperformance += 10;//people love to be around her
-	if (girl->has_trait( "Cute"))			  jobperformance += 5;
-	if (girl->has_trait( "Charming")) 	  jobperformance += 10; //people like charming people
-	if (girl->has_trait( "Great Figure"))   jobperformance += 5;
-	if (girl->has_trait( "Great Arse"))	  jobperformance += 5;
-	if (girl->has_trait( "Quick Learner"))  jobperformance += 5;
-	if (girl->has_trait( "Psychic"))		  jobperformance += 10;
-	if (girl->has_trait( "Long Legs"))	  jobperformance += 10;
-	if (girl->has_trait( "Exhibitionist"))  jobperformance += 10; //SIN - likes showing off her body
 	if (girl->fame() > 85)	  jobperformance += 10;
-	if (girl->has_trait( "Dick-Sucking Lips"))jobperformance += 5;
-	if (girl->has_trait( "Fearless"))		  jobperformance += 5;
-	if (girl->has_trait( "Flexible"))		  jobperformance += 10;
-
-	//bad traits
-	if (girl->has_trait( "Dependant"))		jobperformance -= 50; // needs others to do the job
-	if (girl->has_trait( "Clumsy"))			jobperformance -= 20; //spills food and breaks things often
-	if (girl->has_trait( "Aggressive"))		jobperformance -= 20; //gets mad easy and may attack people
-	if (girl->has_trait( "Nervous"))			jobperformance -= 30; //don't like to be around people
-	if (girl->has_trait( "Meek"))				jobperformance -= 20;
-	if (girl->has_trait( "Shy"))				jobperformance -= 20;
-	if (girl->has_trait( "Slow Learner"))		jobperformance -= 10;
-	if (girl->has_trait( "Horrific Scars"))   jobperformance -= 20;
-	if (girl->has_trait( "Small Scars"))		jobperformance -= 5;
 	if (girl->is_pregnant())						jobperformance -= 10; //can't move so well
-	if (girl->has_trait( "Flat Ass"))			jobperformance -= 15;
-	if (girl->has_trait( "Flat Chest"))		jobperformance -= 15;
 
-	if (girl->has_trait( "One Arm"))		jobperformance -= 40;
-	if (girl->has_trait( "One Foot"))		jobperformance -= 40;
-	if (girl->has_trait( "One Hand"))		jobperformance -= 30;
-	if (girl->has_trait( "One Leg"))		jobperformance -= 60;
-	if (girl->has_trait( "No Arms"))		jobperformance -= 125;
-	if (girl->has_trait( "No Feet"))		jobperformance -= 60;
-	if (girl->has_trait( "No Hands"))		jobperformance -= 50;
-	if (girl->has_trait( "No Legs"))		jobperformance -= 150;
-	if (girl->has_trait( "Blind"))		jobperformance -= 30;
-	if (girl->has_trait( "Deaf"))			jobperformance -= 15;
-	if (girl->has_trait( "Retarded"))		jobperformance -= 60;
-	if (girl->has_trait( "Smoker"))		jobperformance -= 10;	//would need smoke breaks
-
-	if (girl->has_trait( "Alcoholic"))			jobperformance -= 35;
-	if (girl->has_trait( "Fairy Dust Addict"))	jobperformance -= 25;
-	if (girl->has_trait( "Shroud Addict"))		jobperformance -= 25;
-	if (girl->has_trait( "Viras Blood Addict"))	jobperformance -= 25;
+    jobperformance += girl->get_trait_modifier("work.stripper");
 
 	return jobperformance;
 }
