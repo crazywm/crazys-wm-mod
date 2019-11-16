@@ -1256,7 +1256,7 @@ void cGangManager::UpdateGangs()
     }
 
 	// remove lost gangs
-    erase_if(m_PlayersGangs,  [this](auto& gang) { return losegang(*gang); });
+    erase_if(m_PlayersGangs,  [this](auto& gang) { return this->losegang(*gang); });
 
 	// recruitment
 	for(auto& gang : m_PlayersGangs) {
