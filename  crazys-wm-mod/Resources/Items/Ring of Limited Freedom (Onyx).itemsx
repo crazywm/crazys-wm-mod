@@ -15,5 +15,9 @@
    <Effect What="Trait" Name="Small Boobs" Amount="0" />
    <Effect What="Trait" Name="Big Boobs" Amount="0" />
    <Effect What="Trait" Name="Abnormally Large Boobs" Amount="1" />
+      <Crafting CraftPoints="200" ManaCost="35">
+           <Job Name="Jeweler"/>
+           <Skill Name="Magic" Minimum="50" />
+       </Crafting>
 </Item>
 </Items>

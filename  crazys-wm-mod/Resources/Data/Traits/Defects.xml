@@ -1,0 +1,359 @@
+<?xml version="1.0" ?>
+<Traits>
+    <Default>
+        <!--
+             Defects have a low chance of appearing randomly, but are inheritable. If they are spawned, they are
+             usually not inherent (i.e. they mostly stem from accidents etc). They cannot be spawned as acquired
+             and dormant.
+        -->
+        <Setting Name="inherit:chance" Value="70" />
+        <Setting Name="inherit:chance:from_dormant" Value="33" />
+        <Setting Name="inherit:dormant" Value="25" />
+
+        <Setting Name="random:chance" Value="0.5" />
+        <Setting Name="random:inherent" Value="10" />
+        <Setting Name="random:acquired:dormant" Value="0" />
+    </Default>
+
+    <Trait Name="Missing Nipple">
+        <description>This girl has a huge scar where her nipple used to be.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="-10" />
+        </Modifiers>
+        <Excludes>No Nipples</Excludes>
+    </Trait>
+
+    <Trait Name="Missing Finger">
+        <description>This girl is missing a finger.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Missing Fingers">
+        <description>This girl is missing several fingers.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Missing Teeth">
+        <description>This girl is missing a couple of teeth.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="5" />
+            <Modifier Name="fetish:Elegant" Value="-10" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="-5" />
+        </Modifiers>
+
+        <Excludes>No Teeth</Excludes>
+    </Trait>
+
+    <Trait Name="Missing Toe">
+        <description>This girl is missing a toe.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Missing Toes">
+        <description>This girl is missing several toes.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Malformed">
+        <description>This girl is deformed.</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="-20" />
+            <Modifier Name="stat:Spirit" Value="-20" />
+            <Modifier Name="stat:Intelligence" Value="-10" />
+            <Modifier Name="stat:Beauty" Value="-20" />
+            <Modifier Name="fetish:NonHuman" Value="10" />
+            <Modifier Name="fetish:Freak" Value="50" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="No Arms">
+        <description>This girl has no arms.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-30" />
+            <Modifier Name="stat:Beauty" Value="-30" />
+            <Modifier Name="skill:Handjob" Value="-100" />
+            <Modifier Name="skill:Combat" Value="-50" />
+            <Modifier Name="skill:Group" Value="-20" />
+            <Modifier Name="skill:Footjob" Value="30" />
+            <Modifier Name="fetish:Freak" Value="60" />
+            <Modifier Name="fetish:Dangerous" Value="-30" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="No Clit">
+        <description>This girl no longer has a clit. This was probably done to help her concentrate on her work.</description>
+        <Modifiers>
+            <Modifier Name="enjoy:SEX" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="5" />
+            <Modifier Name="fetish:Sexy" Value="-10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="No Feet">
+        <description>This girl has legs but nothing on the ends.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="stat:Beauty" Value="-10" />
+            <Modifier Name="skill:Footjob" Value="-100" />
+            <Modifier Name="skill:Combat" Value="-50" />
+            <Modifier Name="skill:Group" Value="-20" />
+            <Modifier Name="stat:Agility" Value="-30" />
+            <Modifier Name="fetish:Freak" Value="40" />
+            <Modifier Name="fetish:Dangerous" Value="-20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="No Hands">
+        <description>This girl has arms but nothing on the ends.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="stat:Beauty" Value="-10" />
+            <Modifier Name="skill:Handjob" Value="-100" />
+            <Modifier Name="skill:Combat" Value="-20" />
+            <Modifier Name="skill:Group" Value="-10" />
+            <Modifier Name="skill:Footjob" Value="20" />
+            <Modifier Name="fetish:Freak" Value="40" />
+            <Modifier Name="fetish:Dangerous" Value="-20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="No Legs">
+        <description>This girl has no legs.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-40" />
+            <Modifier Name="stat:Beauty" Value="-40" />
+            <Modifier Name="skill:Footjob" Value="-100" />
+            <Modifier Name="skill:Combat" Value="-75" />
+            <Modifier Name="skill:Group" Value="-20" />
+            <Modifier Name="stat:Agility" Value="-70" />
+            <Modifier Name="enjoy:WORKFARM" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="60" />
+            <Modifier Name="fetish:Dangerous" Value="-30" />
+            <Modifier Name="fetish:Tall" Value="-20" />
+            <Modifier Name="fetish:Short" Value="10" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Clipped Tendons">
+        <description>???</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="40" />
+            <Modifier Name="fetish:Dangerous" Value="-20" />
+            <Modifier Name="fetish:CuteGirl" Value="-10" />
+            <Modifier Name="fetish:Elegant" Value="-50" />
+            <Modifier Name="fetish:Tall" Value="-5" />
+            <Modifier Name="fetish:Short" Value="5" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="No Nipples" Type="Breasts">
+        <description>This girl was born without nipples.</description>
+        <Modifiers>
+            <Modifier Name="skill:TittySex" Value="-5" />
+            <Modifier Name="stat:Lactation" Value="-200" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:NonHuman" Value="10" />
+        </Modifiers>
+        <Excludes>Inverted Nipples</Excludes>
+        <Excludes>Perky Nipples</Excludes>
+        <Excludes>Puffy Nipples</Excludes>
+        <Excludes>Missing Nipple</Excludes>
+        <Excludes>Cow Tits</Excludes>
+        <Excludes>Dry Milk</Excludes>
+        <Excludes>Scarce Lactation</Excludes>
+        <Excludes>Abundant Lactation</Excludes>
+    </Trait>
+
+
+    <Trait  Name="No Teeth">
+        <description>This girl no longer has any teeth. Customers need not fear any 'accidents' and are willing to use her more roughly. (-looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="stat:Beauty" Value="-10" />
+            <Modifier Name="skill:OralSex" Value="10" />
+            <Modifier Name="fetish:Freak" Value="40" />
+            <Modifier Name="fetish:Elegant" Value="-40" />
+            <Modifier Name="fetish:Dangerous" Value="-5" />
+            <Modifier Name="fetish:Sexy" Value="-15" />
+        </Modifiers>
+
+        <Excludes>Missing Teeth</Excludes>
+    </Trait>
+
+    <Trait Name="One Arm">
+        <description>This girl has only one arm.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-15" />
+            <Modifier Name="stat:Beauty" Value="-15" />
+            <Modifier Name="fetish:Freak" Value="40" />
+            <Modifier Name="fetish:Dangerous" Value="-20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="One Eye">
+        <description>This girl has lost an eye somewhere along the way.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="-5" />
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="stat:Spirit" Value="-10" />
+            <Modifier Name="fetish:CuteGirl" Value="-20" />
+            <Modifier Name="fetish:Cool" Value="5" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="-20" />
+            <Modifier Name="fetish:NiceFigure" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="20" />
+        </Modifiers>
+
+        <Excludes>Cyclops</Excludes>
+        <Excludes>Different Colored Eyes</Excludes>
+    </Trait>
+
+
+    <Trait Name="One Foot">
+        <description>This girl has legs but one is missing the foot.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="stat:Beauty" Value="-10" />
+            <Modifier Name="skill:Footjob" Value="-15" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="-10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="One Hand">
+        <description>This girl has arms but one is missing the hand.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="stat:Beauty" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="-10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="One Leg">
+        <description>This girl has only one leg.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-15" />
+            <Modifier Name="stat:Beauty" Value="-15" />
+            <Modifier Name="skill:Footjob" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="40" />
+            <Modifier Name="fetish:Dangerous" Value="-20" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="No Tongue">
+        <description>This girl has no tongue.</description>
+        <Modifiers>
+            <Modifier Name="skill:OralSex" Value="-5" />
+            <Modifier Name="skill:Magic" Value="-10" />
+            <Modifier Name="skill:Performance" Value="-10" />
+            <Modifier Name="skill:AnimalHandling" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="-5" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="-5" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Blind" RandomChance="5">
+        <description>This girl is blind and cannot see.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="-15" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:inherent" Value="50" />
+        </Properties>
+        <Excludes>Sharp-Eyed</Excludes>
+        <Excludes>Bad Eyesight</Excludes>
+    </Trait>
+
+
+    <Trait Name="Bad Eyesight">
+        <description>This girl needs glasses to see; without them, she is almost blind.</description>
+        <Modifiers>
+            <Modifier Name="skill:Crafting" Value="-5" />
+            <Modifier Name="skill:Combat" Value="-5" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="10" />
+            <Setting Name="random:inherent" Value="75" />
+        </Properties>
+        <Excludes>Sharp-Eyed</Excludes>
+        <Excludes>Blind</Excludes>
+    </Trait>
+
+    <Trait Name="Deaf">
+        <description>This girl is deaf and cannot hear.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="-5" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:inherent" Value="50" />
+        </Properties>
+    </Trait>
+    
+    <Trait Name="Mute">
+        <description>This girl is mute and cannot speak.</description>
+        <Modifiers>
+            <Modifier Name="skill:Magic" Value="-10" />
+            <Modifier Name="skill:Performance" Value="-10" />
+            <Modifier Name="skill:AnimalHandling" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="-5" />
+            <Modifier Name="fetish:Freak" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="-5" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="random:inherent" Value="80" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Tone Deaf">
+        <description>She thinks she can sing, but no one else does.</description>
+        <Modifiers>
+            <Modifier Name="skill:Performance" Value="-30" />
+            <Modifier Name="stat:Confidence" Value="-30" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:inherent" Value="80" />
+            <Setting Name="random:chance" Value="5" />
+        </Properties>
+
+        <Excludes>Singer</Excludes>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Retarded" RandomChance="5" Type="Mental">
+        <description>This girl is mentaly retarded.</description>
+        <Modifiers>
+            <Modifier Name="stat:Spirit" Value="-20" />
+            <Modifier Name="stat:Intelligence" Value="-50" />
+            <Modifier Name="stat:Confidence" Value="-60" />
+            <Modifier Name="fetish:NonHuman" Value="2" />
+            <Modifier Name="fetish:Freak" Value="45" />
+        </Modifiers>
+        <Excludes>Quick Learner</Excludes>
+    </Trait>
+</Traits>

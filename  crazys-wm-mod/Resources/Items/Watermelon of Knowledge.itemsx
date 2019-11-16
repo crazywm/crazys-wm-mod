@@ -9,5 +9,10 @@
       Rarity="Catacomb15"
       Infinite="false">
    <Effect What="Stat"  Name="Exp"                     Amount="200"    />
+   <Crafting CraftPoints="150" ManaCost="25">
+         <Job Name="Gardener"/>
+         <Skill Name="Herbalism" Minimum="60" />
+         <Skill Name="Magic" Minimum="40" />
+     </Crafting>
 </Item>
 </Items>

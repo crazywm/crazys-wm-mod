@@ -7,5 +7,8 @@
         <Effect What="Stat" Name="PCLove" Amount="20" />
         <Effect What="Stat" Name="PCHate" Amount="-10" />
         <Effect What="Stat" Name="Beauty" Amount="5" />
+        <Crafting CraftPoints="120" ManaCost="0">
+           <Job Name="Jeweler"/>
+        </Crafting>
     </Item>
 </Items>

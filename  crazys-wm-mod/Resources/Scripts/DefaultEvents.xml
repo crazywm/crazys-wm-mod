@@ -1,0 +1,9 @@
+<EventMapping>
+    <Event Name="customer:no-pay" Script="PunishCustomer.lua" Function="EventNoPay" />
+    <Event Name="customer:gambling-cheat" Script="PunishCustomer.lua" Function="EventCheat" />
+    <Event Name="rival-lost" Script="RivalLose.lua" Function="Event" />
+    <!--
+    <Event Name="next-week" Script="RivalLose.lua" Function="Event" />
+    -->
+    <Event Name="intro" Script="Intro.lua" Function="RunIntro" />
+</EventMapping>

@@ -1,0 +1,200 @@
+<Traits>
+    <Default>
+        <!-- In general, figure traits are strongly inheritable. -->
+        <Setting Name="inherit:chance" Value="70" />
+        <Setting Name="random:inherent" Value="50" />
+        <Setting Name="random:inherent:dormant" Value="50" />
+        <Setting Name="random:chance" Value="10" />
+    </Default>
+
+    <Trait Name="Fat">
+        <description>She is a very heavy girl.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Lolita" Value="-20" />
+            <Modifier Name="fetish:NiceFigure" Value="-40" />
+            <Modifier Name="fetish:Freak" Value="25" />
+            <Modifier Name="fetish:Fat" Value="100" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:acquired:dormant" Value="25" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Plump">
+        <description>This girl has more than a few soft bits. Plenty of supple flesh to squeeze and pinch.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="-10" />
+            <Modifier Name="fetish:Lolita" Value="-10" />
+            <Modifier Name="fetish:NiceFigure" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:Fat" Value="50" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Great Figure">
+        <description>This girl has a really good figure.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="10" />
+            <Modifier Name="stat:Beauty" Value="20" />
+            <Modifier Name="enjoy:WORKCLUB" Value="10" />
+            <Modifier Name="enjoy:WORKBAR" Value="10" />
+            <Modifier Name="enjoy:WORKHALL" Value="10" />
+            <Modifier Name="fetish:BigBoobs" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="10" />
+            <Modifier Name="fetish:NiceFigure" Value="60" />
+            <Modifier Name="fetish:Fat" Value="-100" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="5" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Hourglass Figure">
+        <description>Her body has the highly desirable shape of an hourglass - big tits, thin waist, wide hips and ass.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="enjoy:WORKCLUB" Value="10" />
+            <Modifier Name="enjoy:WORKBAR" Value="10" />
+            <Modifier Name="enjoy:WORKHALL" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="25" />
+            <Modifier Name="fetish:Lolita" Value="-30" />
+            <Modifier Name="fetish:NiceFigure" Value="20" />
+            <Modifier Name="fetish:Fat" Value="-50" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Muscular">
+        <description>This girl has an athletic, well-toned body with visible muscles. She definitely works out.</description>
+        <Modifiers>
+            <Modifier Name="skill:Combat" Value="5" />
+            <Modifier Name="stat:Agility" Value="10" />
+            <Modifier Name="stat:Constitution" Value="10" />
+            <Modifier Name="stat:Strength" Value="10" />
+            <Modifier Name="enjoy:COMBAT" Value="10" />
+            <Modifier Name="fetish:Lolita" Value="-30" />
+            <Modifier Name="fetish:Sexy" Value="-30" />
+            <Modifier Name="fetish:Dangerous" Value="25" />
+            <Modifier Name="fetish:Freak" Value="25" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:inherent" Value="25" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Giant">
+        <description>This girl is tall. Her height might be a bit intimidating...</description>
+        <Modifiers>
+            <Modifier Name="stat:Constitution" Value="20" />
+            <Modifier Name="stat:Strength" Value="20" />
+            <Modifier Name="stat:Agility" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:Lolita" Value="-60" />
+            <Modifier Name="fetish:Tall" Value="75" />
+            <Modifier Name="fetish:Short" Value="-100" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="3" />
+            <Setting Name="random:inherent" Value="100" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Short">
+        <description>This girl is short.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Lolita" Value="15" />
+            <Modifier Name="fetish:Tall" Value="-50" />
+            <Modifier Name="fetish:Short" Value="50" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="15" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Tall">
+        <description>This girl is considered tall.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Lolita" Value="-30" />
+            <Modifier Name="fetish:Tall" Value="50" />
+            <Modifier Name="fetish:Short" Value="-50" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="15" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Dwarf">
+        <description>This girl is extremly short.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak"  Value="20"/>
+            <Modifier Name="fetish:Lolita" Value="10"/>
+            <Modifier Name="fetish:Tall"   Value="-75"/>
+            <Modifier Name="fetish:Short"  Value="100"/>
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Mature Body" Type="Physical">
+        <description>A girl no longer, this woman's lascivious body is a fruit ripe for the picking.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Lolita" Value="-50" />
+            <Modifier Name="fetish:CuteGirl" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="10" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="3" />
+            <Setting Name="random:inherent" Value="0" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Large Hips" Type="Physical">
+        <description>This girl has really large hips.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="5" />
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="skill:Anal" Value="5" />
+            <Modifier Name="fetish:Sexy" Value="15" />
+            <Modifier Name="fetish:Lolita" Value="-20" />
+            <Modifier Name="fetish:NiceArse" Value="20" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:inherent" Value="95" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Long Legs" Type="Physical">
+        <description>The legs on this girl go all the way to heaven.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+            <Modifier Name="fetish:NiceFigure" Value="20" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:inherent" Value="98" />
+        </Properties>
+    </Trait>
+
+    <MutexGroup>
+        <Trait>Great Figure</Trait>
+        <Trait>Hourglass Figure</Trait>
+        <Trait>Plump</Trait>
+        <Trait>Fat</Trait>
+    </MutexGroup>
+
+    <MutexGroup>
+        <Trait>Giant</Trait>
+        <Trait>Short</Trait>
+        <Trait>Tall</Trait>
+        <Trait>Dwarf</Trait>
+    </MutexGroup>
+</Traits>

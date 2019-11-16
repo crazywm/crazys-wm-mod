@@ -12,7 +12,6 @@
    <Effect What="Stat" Name="Libido" Amount="40" />
    <Effect What="Stat" Name="Constitution" Amount="40" />
    <Effect What="Stat" Name="Confidence" Amount="40" />
-   <Effect What="Stat" Name="House" Amount="40" />
    <Effect What="Stat" Name="AskPrice" Amount="40" />
    <Effect What="Stat" Name="Spirit" Amount="20" />
    <Effect What="Stat" Name="PCLove" Amount="40" />

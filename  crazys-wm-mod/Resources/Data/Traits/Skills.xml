@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<Traits>
+    <Trait InheritChance="30" Name="Agile" RandomChance="20" Type="Action">
+        <description>This girl is quick on her feet and swift with her hands. She has natural gift of dexterity.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="20" />
+            <Modifier Name="fetish:Sexy" Value="5" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="5" Name="Brawler" RandomChance="10" Type="Action">
+        <description>This girl knows how to whoop asses when necessary.</description>
+        <Modifiers>
+            <Modifier Name="skill:Combat" Value="10" />
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="enjoy:COMBAT" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="30" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="30" Name="Fleet of Foot" RandomChance="20" Type="Action">
+        <description>This girl is quick on her feet. She can usually outrun her enemies if she can't beat them.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="50" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="30" Name="Strong" RandomChance="20" Type="Action">
+        <description>This girl can fight well and is tough. (+combat skills/stats)</description>
+        <Modifiers>
+            <Modifier Name="skill:Combat" Value="10" />
+            <Modifier Name="stat:Confidence" Value="10" />
+            <Modifier Name="stat:Strength" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="20" />
+            <Modifier Name="fetish:Cool" Value="20" />
+            <Modifier Name="fetish:Nerd" Value="-30" />
+            <Modifier Name="fetish:NiceFigure" Value="20" />
+            <Modifier Name="fetish:NiceArse" Value="20" />
+            <Modifier Name="fetish:Lolita" Value="-5" />
+        </Modifiers>
+    </Trait>
+</Traits>

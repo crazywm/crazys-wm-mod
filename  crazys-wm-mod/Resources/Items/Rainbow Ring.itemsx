@@ -10,5 +10,9 @@
       Infinite="false">
    <Effect What="Stat"  Name="Beauty"                  Amount="15"    />
    <Effect What="Stat"  Name="Happiness"               Amount="5"    />
+   <Crafting CraftPoints="90" ManaCost="30">
+      <Job Name="Jeweler"/>
+      <Skill Name="Magic" Minimum="30" />
+   </Crafting>
 </Item>
 </Items>

@@ -1,0 +1,392 @@
+<?xml version="1.0" ?>
+<Traits>
+    <Trait InheritChance="1" Name="Aggressive" RandomChance="20" Type="Mental">
+        <description>This girl is much angrier than most. (may attack customers)</description>
+        <Modifiers>
+            <Modifier Name="skill:Combat" Value="10" />
+            <Modifier Name="stat:Spirit" Value="10" />
+            <Modifier Name="stat:Confidence" Value="5" />
+            <Modifier Name="enjoy:COMBAT" Value="10" />
+            <Modifier Name="enjoy:WORKSECURITY" Value="20" />
+            <Modifier Name="fetish:CuteGirl" Value="-15" />
+            <Modifier Name="fetish:Dangerous" Value="20" />
+            <Modifier Name="fetish:Lolita" Value="-5" />
+            <Modifier Name="fetish:Elegant" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+        <Excludes>Meek</Excludes>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Audacity" RandomChance="10" Type="Mental">
+        <description>She certainly doesn't lack courage. Dominating her would pose quite a challenge.</description>
+        <Modifiers>
+            <Modifier Name="stat:PCFear" Value="-30" />
+            <Modifier Name="stat:Spirit" Value="30" />
+            <Modifier Name="stat:Obedience" Value="-40" />
+            <Modifier Name="fetish:Dangerous" Value="20" />
+            <Modifier Name="fetish:Cool" Value="25" />
+            <Modifier Name="fetish:Nerd" Value="-10" />
+        </Modifiers>
+        <Excludes>Meek</Excludes>
+        <Excludes>Nervous</Excludes>
+        <Excludes>Dependant</Excludes>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Bimbo" RandomChance="2" Type="Mental">
+        <description>This girl is, like, a total ditz.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="8" />
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="stat:Confidence" Value="10" />
+            <Modifier Name="stat:Intelligence" Value="-10" />
+            <Modifier Name="skill:Medicine" Value="-10" />
+            <Modifier Name="enjoy:SEX" Value="10" />
+            <Modifier Name="enjoy:WORKTRAINING" Value="-10" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:Cool" Value="10" />
+            <Modifier Name="fetish:Nerd" Value="-20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Broken Will" RandomChance="5" Type="Mental">
+        <description>This girl's will is broken, and she is completely obedient. (+obedience, -spirit)</description>
+        <Modifiers>
+            <Modifier Name="stat:Spirit" Value="-100" />
+            <Modifier Name="stat:Dignity" Value="-100" />
+            <Modifier Name="stat:Obedience" Value="100" />
+            <Modifier Name="fetish:Cool" Value="-40" />
+            <Modifier Name="fetish:Nerd" Value="-40" />
+            <Modifier Name="fetish:Elegant" Value="-40" />
+            <Modifier Name="fetish:Sexy" Value="-40" />
+            <Modifier Name="fetish:Freak" Value="40" />
+        </Modifiers>
+        <Excludes>Iron Will</Excludes>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Dependant" RandomChance="10" Type="Mental">
+        <description>This girl is rather dependent on other people for survival. Will not strike out on her own. (+obedience)</description>
+        <Modifiers>
+            <Modifier Name="stat:Spirit" Value="-30" />
+            <Modifier Name="stat:Obedience" Value="50" />
+            <Modifier Name="skill:Performance" Value="-10" />
+            <Modifier Name="enjoy:COMBAT" Value="-20" />
+            <Modifier Name="enjoy:WORKHALL" Value="-20" />
+            <Modifier Name="enjoy:WORKBAR" Value="-20" />
+            <Modifier Name="enjoy:WORKCLUB" Value="-20" />
+            <Modifier Name="fetish:CuteGirl" Value="5" />
+            <Modifier Name="fetish:Dangerous" Value="-20" />
+            <Modifier Name="fetish:Cool" Value="-5" />
+            <Modifier Name="fetish:Nerd" Value="5" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+        <Excludes>Audacity</Excludes>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Fearless" RandomChance="10" Type="Mental">
+        <description>Fear has no effect. (will more likely defend herself)</description>
+        <Modifiers>
+            <Modifier Name="stat:PCFear" Value="-200" />
+            <Modifier Name="stat:Spirit" Value="30" />
+            <Modifier Name="skill:Performance" Value="5" />
+            <Modifier Name="enjoy:COMBAT" Value="20" />
+            <Modifier Name="stat:Sanity" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="20" />
+            <Modifier Name="fetish:Cool" Value="15" />
+            <Modifier Name="fetish:Nerd" Value="-10" />
+            <Modifier Name="fetish:Elegant" Value="-10" />
+            <Modifier Name="fetish:Lolita" Value="-5" />
+        </Modifiers>
+        <Excludes>Meek</Excludes>
+        <Excludes>Nervous</Excludes>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Idiot Savant" RandomChance="1" Type="Mental">
+        <description>This girl isn't the brightest bulb and her personality is lacking, but her skills are extremely good.</description>
+        <Modifiers>
+            <Modifier Name="stat:Intelligence" Value="-15" />
+            <Modifier Name="fetish:Freak" Value="10" />
+            <Modifier Name="fetish:Nerd" Value="20" />
+            <Modifier Name="fetish:Cool" Value="-30" />
+            <Modifier Name="fetish:Sexy" Value="-20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Iron Will" RandomChance="10" Type="Mental">
+        <description>Don't expect her to become less rebellious soon, if ever. Broken Will will remove this trait. (hard to break)</description>
+        <Modifiers>
+            <Modifier Name="stat:PCFear" Value="-60" />
+            <Modifier Name="stat:Spirit" Value="60" />
+            <Modifier Name="stat:Obedience" Value="-90" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Cool" Value="10" />
+            <Modifier Name="fetish:Nerd" Value="-5" />
+            <Modifier Name="fetish:Elegant" Value="-10" />
+        </Modifiers>
+        <Excludes>Broken Will</Excludes>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Manly" RandomChance="10" Type="Mental">
+        <description>Higher rebelliousness and resistance to damage; can pass herself off as a man. (-looks, +combat skills)</description>
+        <Modifiers>
+            <Modifier Name="stat:Constitution" Value="10" />
+            <Modifier Name="stat:Confidence" Value="10" />
+            <Modifier Name="stat:Obedience" Value="-10" />
+            <Modifier Name="stat:Spirit" Value="10" />
+            <Modifier Name="fetish:CuteGirl" Value="-15" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="-20" />
+            <Modifier Name="fetish:NiceFigure" Value="-20" />
+            <Modifier Name="fetish:SmallBoobs" Value="10" />
+            <Modifier Name="fetish:Freak" Value="5" />
+            <Modifier Name="fetish:Lolita" Value="-10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Masochist" RandomChance="10" Type="Mental">
+        <description>She gets sexual gratification from pain, deprivation, degradation, etc. (+BDSM, +constitution)</description>
+        <Modifiers>
+            <Modifier Name="skill:BDSM" Value="50" />
+            <Modifier Name="stat:Constitution" Value="50" />
+            <Modifier Name="stat:Obedience" Value="30" />
+            <Modifier Name="stat:Dignity" Value="-20" />
+            <Modifier Name="enjoy:WORKTORTURER" Value="5" />
+            <Modifier Name="fetish:CuteGirl" Value="-10" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Nerd" Value="-10" />
+            <Modifier Name="fetish:Elegant" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="30" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Meek" RandomChance="10" Type="Mental">
+        <description>She has a low rebelliousness. (+obedience)</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="-20" />
+            <Modifier Name="stat:Obedience" Value="20" />
+            <Modifier Name="stat:Spirit" Value="-20" />
+            <Modifier Name="skill:Performance" Value="-10" />
+            <Modifier Name="enjoy:WORKMATRON" Value="-30" />
+            <Modifier Name="enjoy:COMBAT" Value="-20" />
+            <Modifier Name="enjoy:SEX" Value="-20" />
+            <Modifier Name="enjoy:WORKCUSTSERV" Value="-20" />
+            <Modifier Name="enjoy:WORKBAR" Value="-10" />
+            <Modifier Name="enjoy:WORKCLUB" Value="-10" />
+            <Modifier Name="enjoy:WORKHALL" Value="-10" />
+            <Modifier Name="enjoy:WORKCOUNSELOR" Value="-10" />
+            <Modifier Name="fetish:CuteGirl" Value="15" />
+            <Modifier Name="fetish:Dangerous" Value="-30" />
+            <Modifier Name="fetish:Cool" Value="-30" />
+            <Modifier Name="fetish:Nerd" Value="30" />
+            <Modifier Name="fetish:Lolita" Value="10" />
+        </Modifiers>
+        <Excludes>Aggressive</Excludes>
+        <Excludes>Fearless</Excludes>
+        <Excludes>Audacity</Excludes>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Merciless" RandomChance="10" Type="Mental">
+        <description>This girl deals higher damage. Likely take out or kill anyone causing harm to her. (will more likely disobey)</description>
+        <Modifiers>
+            <Modifier Name="skill:Combat" Value="20" />
+            <Modifier Name="enjoy:COMBAT" Value="20" />
+            <Modifier Name="enjoy:WORKTORTURER" Value="10" />
+            <Modifier Name="fetish:CuteGirl" Value="-20" />
+            <Modifier Name="fetish:Dangerous" Value="20" />
+            <Modifier Name="fetish:Nerd" Value="-10" />
+            <Modifier Name="fetish:Elegant" Value="-5" />
+            <Modifier Name="fetish:Lolita" Value="-10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="0" Name="Mind Fucked" RandomChance="5" Type="Mental">
+        <description>This girl is gone in the head. She will be compliant with anything. (+obedience)</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="-50" />
+            <Modifier Name="stat:Obedience" Value="100" />
+            <Modifier Name="stat:Spirit" Value="-50" />
+            <Modifier Name="stat:Dignity" Value="-35" />
+            <Modifier Name="stat:Sanity" Value="-40" />
+            <Modifier Name="fetish:CuteGirl" Value="-60" />
+            <Modifier Name="fetish:Dangerous" Value="-60" />
+            <Modifier Name="fetish:Cool" Value="-60" />
+            <Modifier Name="fetish:Nerd" Value="-60" />
+            <Modifier Name="fetish:Elegant" Value="-60" />
+            <Modifier Name="fetish:Sexy" Value="-60" />
+            <Modifier Name="fetish:Freak" Value="40" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Nervous" RandomChance="20" Type="Mental">
+        <description>Shy and afraid to speak her mind sometimes.</description>
+        <Modifiers>
+            <Modifier Name="stat:Obedience" Value="10" />
+            <Modifier Name="stat:Confidence" Value="-10" />
+            <Modifier Name="skill:Performance" Value="-20" />
+            <Modifier Name="enjoy:WORKCLUB" Value="-10" />
+            <Modifier Name="enjoy:SEX" Value="-20" />
+            <Modifier Name="enjoy:WORKBAR" Value="-5" />
+            <Modifier Name="enjoy:WORKHALL" Value="-5" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:Nerd" Value="15" />
+        </Modifiers>
+        <Excludes>Fearless</Excludes>
+        <Excludes>Audacity</Excludes>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Optimist" RandomChance="20" Type="Mental">
+        <description>She is very cheerful and rarely in a bad mood. She enjoys what she does, a lot. (+happiness)</description>
+        <Modifiers>
+            <Modifier Name="enjoy:WORKADVERTISING" Value="10" />
+            <Modifier Name="fetish:Elegant" Value="5" />
+        </Modifiers>
+        <Excludes>Pessimist</Excludes>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Pessimist" RandomChance="20" Type="Mental">
+        <description>It doesn't take much for her mood to drop... off a cliff. Less rebellious but more suicidal. (-happiness)</description>
+        <Modifiers>
+            <Modifier Name="stat:Spirit" Value="-60" />
+            <Modifier Name="fetish:Elegant" Value="-5" />
+        </Modifiers>
+        <Excludes>Optimist</Excludes>
+    </Trait>
+
+    <Trait InheritChance="10" Name="Quick Learner" RandomChance="10" Type="Mental">
+        <description>This girl picks things up quick. She will probably rise to the top in no time. (+exp)</description>
+        <Modifiers>
+            <Modifier Name="fetish:Cool" Value="-20" />
+            <Modifier Name="fetish:Nerd" Value="30" />
+        </Modifiers>
+        <Excludes>Slow Learner</Excludes>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Sadistic" RandomChance="10" Type="Mental">
+        <description>Enjoys inflicting or watching pain inflicted. (+BDSM)</description>
+        <Modifiers>
+            <Modifier Name="skill:BDSM" Value="20" />
+            <Modifier Name="enjoy:WORKTORTURER" Value="25" />
+            <Modifier Name="fetish:CuteGirl" Value="-20" />
+            <Modifier Name="fetish:Dangerous" Value="15" />
+            <Modifier Name="fetish:Nerd" Value="-10" />
+            <Modifier Name="fetish:Elegant" Value="-30" />
+            <Modifier Name="fetish:Sexy" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="30" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="10" Name="Slow Learner" RandomChance="10" Type="Mental">
+        <description>A little daft, this girl will take awhile to learn things. (-exp)</description>
+        <Modifiers>
+            <Modifier Name="fetish:Cool" Value="10" />
+            <Modifier Name="fetish:Nerd" Value="-20" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+        </Modifiers>
+        <Excludes>Quick Learner</Excludes>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Tomboy" RandomChance="5" Type="Mental">
+        <description>She's got a feisty personality of a tomboy. Her hobbies and personalities are fairly masculine.</description>
+        <Modifiers>
+            <Modifier Name="stat:Constitution" Value="10" />
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="fetish:CuteGirl" Value="-15" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="-10" />
+            <Modifier Name="fetish:SmallBoobs" Value="10" />
+            <Modifier Name="fetish:Freak" Value="5" />
+            <Modifier Name="fetish:Lolita" Value="-10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Tsundere" RandomChance="10" Type="Mental">
+        <description>She has a conceited, irritable, or violent personality, but becomes modest and loving with the proper triger. (may attack customers)</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="20" />
+            <Modifier Name="stat:Obedience" Value="-20" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+            <Modifier Name="fetish:Cool" Value="5" />
+            <Modifier Name="fetish:Nerd" Value="-5" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Twisted" RandomChance="10" Type="Mental">
+        <description>Her idea of pleasure is not... ordinary. Customers without rather exotic taste won't enjoy what she has in store.</description>
+        <Modifiers>
+            <Modifier Name="stat:Sanity" Value="-20" />
+            <Modifier Name="fetish:CuteGirl" Value="-40" />
+            <Modifier Name="fetish:Dangerous" Value="30" />
+            <Modifier Name="fetish:Elegant" Value="-30" />
+            <Modifier Name="fetish:Sexy" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="40" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Yandere" RandomChance="10" Type="Mental">
+        <description>Expect this girl to be hurting people on the job...  frequently. (may attack customers)</description>
+        <Modifiers>
+            <Modifier Name="stat:Spirit" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+            <Modifier Name="fetish:Cool" Value="5" />
+            <Modifier Name="fetish:Nerd" Value="-5" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Dominatrix" RandomChance="5" Type="Sexual">
+        <description>This girl loves to be in control.</description>
+        <Modifiers>
+            <Modifier Name="skill:BDSM" Value="10" />
+            <Modifier Name="enjoy:WORKTORTURER" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="30" />
+            <Modifier Name="fetish:Elegant" Value="5" />
+            <Modifier Name="fetish:Freak" Value="40" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Good Kisser" RandomChance="20" Type="Sexual">
+        <description>Locking mouths with this girl feels almost as good as sex. She's an artisan when it comes to kissing.</description>
+        <Modifiers>
+            <Modifier Name="stat:Libido" Value="2" />
+            <Modifier Name="stat:Confidence" Value="2" />
+            <Modifier Name="stat:Charisma" Value="2" />
+            <Modifier Name="skill:Service" Value="5" />
+            <Modifier Name="enjoy:SEX" Value="5" />
+            <Modifier Name="fetish:Cool" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="10" Name="Nimble Tongue" RandomChance="5" Type="Sexual">
+        <description>The flexibility of her tongue grants this girl the ability to do amazing things with it.</description>
+        <Modifiers>
+            <Modifier Name="stat:Libido" Value="2" />
+            <Modifier Name="stat:Confidence" Value="2" />
+            <Modifier Name="stat:Charisma" Value="2" />
+            <Modifier Name="enjoy:SEX" Value="5" />
+            <Modifier Name="skill:OralSex" Value="5" />
+            <Modifier Name="fetish:Sexy" Value="25" />
+        </Modifiers>
+    </Trait>
+</Traits>

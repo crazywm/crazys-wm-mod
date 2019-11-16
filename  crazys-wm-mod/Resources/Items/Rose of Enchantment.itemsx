@@ -11,5 +11,10 @@
       GirlBuyChance="0">
    <Effect What="Stat" Name="Happiness" Amount="20" />
    <Effect What="Stat" Name="PCLove" Amount="5" />
+   <Crafting CraftPoints="90" ManaCost="10">
+      <Job Name="Gardener"/>
+      <Skill Name="Herbalism" Minimum="20" />
+      <Skill Name="Magic" Minimum="50" />
+  </Crafting>
 </Item>
 </Items>

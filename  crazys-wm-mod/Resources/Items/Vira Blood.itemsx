@@ -15,21 +15,12 @@
    <Effect What="Stat"  Name="Spirit"                  Amount="-20"    />
    <Effect What="Stat"  Name="Health"                  Amount="-4"    />
    <Effect What="Trait" Name="Viras Blood Addict"      Amount="1"    />
-</Item>
-<Item Name="Vira Blood"
-      Desc="This green sap comes from a specific large plant with many tentacles called a vira. The plants &quot;mate&quot; with other creatures in order to spread their seed further. The inseminated animal will latter &quot;give birth&quot; to a hard shelled seed. The sap is highly addictive. (+20 Hap, +20 Obed, -20 Spi, -20 Cha, -4 HP, addictive)"
-      Type="Food"
-      Badness="70"
-      Special="None"
-      Cost="200"
-      Rarity="Shop50"
-      Infinite="false"
-      GirlBuyChance="2">
-   <Effect What="Stat"  Name="Charisma"                Amount="-20"    />
-   <Effect What="Stat"  Name="Happiness"               Amount="20"    />
-   <Effect What="Stat"  Name="Obedience"               Amount="20"    />
-   <Effect What="Stat"  Name="Spirit"                  Amount="-20"    />
-   <Effect What="Stat"  Name="Health"                  Amount="-4"    />
-   <Effect What="Trait" Name="Viras Blood Addict"      Amount="1"    />
+
+   <Crafting CraftPoints="90" ManaCost="0">
+     <Job Name="Gardener"/>
+     <Skill Name="Herbalism" Minimum="20" />
+     <Skill Name="Beastiality" Minimum="50" />
+     <Stat Name="Libido" Minimum="50" />
+    </Crafting>
 </Item>
 </Items>

@@ -10,5 +10,12 @@
       Infinite="false" 
       GirlBuyChance="40">
    <Effect What="Stat" Name="Intelligence" Amount="8" />
+    <Crafting CraftPoints="230" ManaCost="80">
+      <Job Name="Jeweler"/>
+      <Skill Name="Magic" Minimum="50" />
+      <Skill Name="Crafting" Minimum="80" />
+      <Stat Name="Intelligence" Minimum="80" />
+      <Stat Name="Level" Minimum="10" />
+    </Crafting>
 </Item>
 </Items>

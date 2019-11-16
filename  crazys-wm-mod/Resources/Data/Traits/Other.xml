@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<Traits>
+    <Trait InheritChance="1" Name="Out-Patient Surgery" RandomChance="0" Type="Temporary">
+        <description>She recently got out of surgery and should be resting.</description>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Spirit Possessed" RandomChance="0" Type="Temporary">
+        <description>Her body is currently being physically possessed by an evil spirit.</description>
+    </Trait>
+
+    <Trait InheritChance="0" Name="Botox Treatment" RandomChance="0" Type="Temporary">
+        <description>She recently had Botox injected into her face. If she is happy about it, no one can tell.</description>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Demon Possessed" RandomChance="0" Type="Temporary">
+        <description>Her body is currently being physically possessed by a demon.</description>
+        <Modifiers>
+            <Modifier Name="stat:Morality" Value="-25" />
+            <Modifier Name="stat:Sanity" Value="-30" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="0" Name="Kidnapped" RandomChance="0" Type="Temporary">
+        <description>This girl was taken from her family.</description>
+    </Trait>
+
+
+    <Trait InheritChance="0" Name="Emprisoned Customer" RandomChance="0" Type="Temporary">
+        <description>This girl was was a customer but broke the law in some way, allowing you to take her as a slave.</description>
+    </Trait>
+
+</Traits>

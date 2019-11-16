@@ -13,5 +13,10 @@
    <Effect What="Stat" Name="PCHate" Amount="-20" />
    <Effect What="Stat" Name="PCFear" Amount="-20" />
    <Effect What="Stat" Name="PCLove" Amount="60" />
+   <Crafting CraftPoints="200" ManaCost="50">
+         <Job Name="Gardener"/>
+         <Skill Name="Herbalism" Minimum="25" />
+         <Skill Name="Magic" Minimum="60" />
+     </Crafting>
 </Item>
 </Items>

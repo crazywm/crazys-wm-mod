@@ -10,16 +10,9 @@
       Infinite="true"
       GirlBuyChance="0">
    <Effect What="Stat"  Name="Libido"                  Amount="75"    />
-</Item>
-<Item Name="Sinspice"
-      Desc="This potent spice adds a slightly pungent aroma to any meal, but its real power lies in its capacity to considerably increase the female sex drive. Her body will definitely say yes. (+75 Lib)"
-      Type="Food"
-      Badness="0"
-      Special="Temporary"
-      Cost="500"
-      Rarity="Shop50"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Stat"  Name="Libido"                  Amount="75"    />
+   <Crafting CraftPoints="60" ManaCost="0">
+      <Job Name="Gardener"/>
+      <Skill Name="Herbalism" Minimum="30" />
+  </Crafting>
 </Item>
 </Items>

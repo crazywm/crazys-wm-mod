@@ -12,5 +12,10 @@
    <Effect What="Stat"  Name="Intelligence"            Amount="2"    />
    <Effect What="Stat"  Name="Happiness"               Amount="50"    />
    <Effect What="Trait" Name="Optimist"                Amount="1"    />
+    <Crafting CraftPoints="150" ManaCost="15">
+        <Job Name="Gardener"/>
+        <Skill Name="Herbalism" Minimum="80" />
+        <Skill Name="Magic" Minimum="40" />
+    </Crafting>
 </Item>
 </Items>

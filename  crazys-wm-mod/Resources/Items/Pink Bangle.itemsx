@@ -4,5 +4,8 @@
     Type="Armband" Badness="10" Special="None" Cost="60" Rarity="Shop50" Infinite="true" GirlBuyChance="5" ItemWeight="0.0">
         <Effect What="Stat" Name="Charisma" Amount="3" />
         <Effect What="Stat" Name="Refinement" Amount="-6" />
+        <Crafting CraftPoints="10" ManaCost="0">
+           <Job Name="Jeweler"/>
+        </Crafting>
     </Item>
 </Items>

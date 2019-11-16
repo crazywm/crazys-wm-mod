@@ -25,5 +25,9 @@
 		<Crafting CraftPoints="160" ManaCost="10">
 			<Job Name="Blacksmith"/>
 		</Crafting>
+		<Crafting CraftPoints="140" ManaCost="20">
+          <Job Name="Jeweler"/>
+          <Skill Name="Magic" Minimum="50" />
+        </Crafting>
 	</Item>
 </Items>

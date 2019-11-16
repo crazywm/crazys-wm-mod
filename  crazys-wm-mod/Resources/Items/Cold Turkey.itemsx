@@ -10,6 +10,9 @@
 	<Effect What="Stat" Name="PCFear" Amount="-5" />
 	<Effect What="Stat" Name="PCHate" Amount="-5" />
 	<Effect What="Stat" Name="PCLove" Amount="5" />
+	<Crafting CraftPoints="100" ManaCost="0">
+        <Job Name="Butcher"/>
+    </Crafting>
 </Item>
 <Item
 		Name="Cold Turkey"
@@ -21,6 +24,9 @@
 	<Effect What="Stat" Name="PCFear" Amount="-5" />
 	<Effect What="Stat" Name="PCHate" Amount="-5" />
 	<Effect What="Stat" Name="PCLove" Amount="5" />
+	<Crafting CraftPoints="100" ManaCost="0">
+            <Job Name="Butcher"/>
+        </Crafting>
 </Item>
 <Item
 		Name="Cold Turkey "
@@ -34,6 +40,9 @@
 	<Effect What="Stat" Name="PCLove" Amount="5" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Alcoholic" Amount="0" />
+	<Crafting CraftPoints="100" ManaCost="0">
+            <Job Name="Butcher"/>
+        </Crafting>
 </Item>
 <Item
 		Name="Cold Turkey  "
@@ -47,6 +56,9 @@
 	<Effect What="Stat" Name="PCLove" Amount="5" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Viras Blood Addict" Amount="0" />
+	<Crafting CraftPoints="100" ManaCost="0">
+            <Job Name="Butcher"/>
+        </Crafting>
 </Item>
 <Item
 		Name="Cold  Turkey"
@@ -60,6 +72,9 @@
 	<Effect What="Stat" Name="PCLove" Amount="5" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Shroud Addict" Amount="0" />
+	<Crafting CraftPoints="100" ManaCost="0">
+            <Job Name="Butcher"/>
+        </Crafting>
 </Item>
 <Item
 		Name="Cold  Turkey "
@@ -73,6 +88,9 @@
 	<Effect What="Stat" Name="PCLove" Amount="5" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Fairy Dust Addict" Amount="0" />
+	<Crafting CraftPoints="100" ManaCost="0">
+            <Job Name="Butcher"/>
+        </Crafting>
 </Item>
 <Item
 		Name="Cold  Turkey  "
@@ -86,5 +104,8 @@
 	<Effect What="Stat" Name="PCLove" Amount="5" />
 	<Effect What="Trait" Name="Former Addict" Amount="1" />
 	<Effect What="Trait" Name="Smoker" Amount="0" />
+	<Crafting CraftPoints="100" ManaCost="0">
+            <Job Name="Butcher"/>
+        </Crafting>
 </Item>
 </Items>

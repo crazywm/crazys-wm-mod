@@ -1,0 +1,522 @@
+<?xml version="1.0" ?>
+<Traits>
+
+    <Default>
+        <!-- Species are always inherent - not sure about inheritance and half-breeds... for now make it almost completely
+         heritable-->
+        <Setting Name="inherit:chance" Value="95" />
+        <Setting Name="random:inherent" Value="100" />
+    </Default>
+
+    <Trait Name="Undead">
+        <description>This girl is technically alive, but not in a medical sense.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Cool" Value="5" />
+            <Modifier Name="fetish:NonHuman" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="-5" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="tag:sterile" Value="1" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Zombie">
+        <description>This girl died, but she got better... or did she?</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-50" />
+            <Modifier Name="stat:Constitution" Value="20" />
+            <Modifier Name="stat:Intelligence" Value="-50" />
+            <Modifier Name="stat:Agility" Value="-20" />
+            <Modifier Name="stat:AskPrice" Value="-1000" />
+            <Modifier Name="stat:Beauty" Value="-20" />
+            <Modifier Name="stat:Tiredness" Value="-100" />
+            <!--zombies don't get tired-->
+            <Modifier Name="stat:Morality" Value="-50" />
+            <!--zombies eat people-->
+            <Modifier Name="stat:Refinement" Value="-50" />
+            <Modifier Name="stat:Lactation" Value="-1000" />
+            <Modifier Name="stat:Strength" Value="20" />
+            <Modifier Name="skill:Beastiality" Value="-50" />
+            <!--animals are afraid of her-->
+            <Modifier Name="skill:AnimalHandling" Value="-50" />
+            <!--animals are afraid of her-->
+            <Modifier Name="skill:Service" Value="-20" />
+            <Modifier Name="skill:Strip" Value="-50" />
+            <!--zombies don't care about clothes-->
+            <Modifier Name="skill:OralSex" Value="-50" />
+            <!--You want to put what where?-->
+            <Modifier Name="skill:Medicine" Value="-50" />
+            <Modifier Name="skill:Performance" Value="-50" />
+            <Modifier Name="skill:Handjob" Value="-50" />
+            <!--less control over hands and feet-->
+            <Modifier Name="skill:Crafting" Value="-50" />
+            <Modifier Name="skill:Herbalism" Value="-50" />
+            <Modifier Name="skill:Farming" Value="-10" />
+            <Modifier Name="skill:Brewing" Value="-50" />
+            <Modifier Name="skill:Footjob" Value="-50" />
+            <!--less control over hands and feet-->
+            <Modifier Name="skill:Cooking" Value="-50" />
+            <Modifier Name="fetish:NonHuman" Value="100" />
+            <Modifier Name="fetish:Freak" Value="100" />
+            <Modifier Name="fetish:CuteGirl" Value="-50" />
+            <Modifier Name="fetish:Dangerous" Value="100" />
+            <Modifier Name="fetish:Elegant" Value="-50" />
+
+            <Modifier Name="tag:sterile" Value="1" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Skeleton">
+        <description>This girl is dead, nothing but bones held together by a magical force. Her spirit is strong but her flesh is gone.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-100" />
+            <Modifier Name="stat:Constitution" Value="50" />
+            <Modifier Name="stat:Agility" Value="-20" />
+            <Modifier Name="stat:AskPrice" Value="-1000" />
+            <!--skeletons don't need money-->
+            <Modifier Name="stat:Beauty" Value="-50" />
+            <!--She may have great bone structure but thats all she has-->
+            <Modifier Name="stat:Tiredness" Value="-100" />
+            <!--skeletons don't get tired-->
+            <Modifier Name="stat:Lactation" Value="-1000" />
+            <Modifier Name="skill:Beastiality" Value="-50" />
+            <!--animals are afraid of her-->
+            <Modifier Name="skill:AnimalHandling" Value="-50" />
+            <!--animals are afraid of her-->
+            <Modifier Name="skill:Service" Value="-10" />
+            <Modifier Name="skill:Anal" Value="-1000" />
+            <Modifier Name="skill:BDSM" Value="-1000" />
+            <Modifier Name="skill:NormalSex" Value="-1000" />
+            <Modifier Name="skill:Beastiality" Value="-1000" />
+            <Modifier Name="skill:Group" Value="-1000" />
+            <Modifier Name="skill:Lesbian" Value="-1000" />
+            <Modifier Name="skill:Strip" Value="-1000" />
+            <!--what exactly is she covering up?-->
+            <Modifier Name="skill:OralSex" Value="-1000" />
+            <Modifier Name="skill:TittySex" Value="-1000" />
+            <Modifier Name="skill:Handjob" Value="-1000" />
+            <Modifier Name="skill:Footjob" Value="-1000" />
+            <Modifier Name="fetish:BigBoobs" Value="-1000" />
+            <Modifier Name="fetish:SmallBoobs" Value="-1000" />
+            <Modifier Name="fetish:CuteGirl" Value="-1000" />
+            <Modifier Name="fetish:Dangerous" Value="1000" />
+            <Modifier Name="fetish:Cool" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="1000" />
+            <Modifier Name="fetish:Elegant" Value="-100" />
+            <Modifier Name="fetish:Sexy" Value="-100" />
+            <Modifier Name="fetish:NiceFigure" Value="-1000" />
+            <Modifier Name="fetish:NiceArse" Value="-1000" />
+            <Modifier Name="fetish:Freak" Value="1000" />
+
+            <Modifier Name="tag:sterile" Value="1" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Vampire">
+        <description>This girl is an undead blood sucker.</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="10" />
+            <Modifier Name="stat:Obedience" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="10" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Cool" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="10" />
+            <Modifier Name="fetish:Elegant" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="10" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Angel">
+        <description>She is an angel from above.</description>
+        <Modifiers>
+            <Modifier Name="stat:Morality" Value="20" />
+            <Modifier Name="stat:Refinement" Value="10" />
+            <Modifier Name="stat:Dignity" Value="10" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="60" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Battery Operated">
+        <description>She keeps going and going and going... She can never get tired, but she can get hurt or sad.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="20" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="random:inherent" Value="30" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Canine">
+        <description>This girl is a dog, literally.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="60" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:Freak" Value="15" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Cat Girl">
+        <description>This girl is part feline.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="10" />
+            <Modifier Name="fetish:CuteGirl" Value="20" />
+            <Modifier Name="fetish:NonHuman" Value="60" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Construct">
+        <description>This girl is not alive or real - she's a machine or has been created with magic. Her health doesn't go down or up quickly. (hard to hurt)</description>
+        <Modifiers>
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="60" />
+            <Modifier Name="fetish:Freak" Value="20" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="random:inherent" Value="50" />
+        </Properties>
+
+        <Excludes>Half Construct</Excludes>
+    </Trait>
+
+
+    <Trait Name="Cow Girl">
+        <description>This girl is part cow.</description>
+        <Modifiers>
+            <Modifier Name="stat:Refinement" Value="-5" />
+            <Modifier Name="stat:Spirit" Value="-10" />
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="stat:Obedience" Value="5" />
+            <Modifier Name="enjoy:WORKMILK" Value="20" />
+            <Modifier Name="fetish:CuteGirl" Value="-20" />
+            <Modifier Name="fetish:NonHuman" Value="60" />
+            <Modifier Name="fetish:Freak" Value="25" />
+            <Modifier Name="fetish:BigBoobs" Value="20" />
+            <Modifier Name="fetish:SmallBoobs" Value="-20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Demon">
+        <description>This girl comes from the abyss.</description>
+        <Modifiers>
+            <Modifier Name="stat:Morality" Value="-40" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="60" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Dryad">
+        <description>This girl has a plant-like body.</description>
+        <Modifiers>
+            <Modifier Name="enjoy:WORKFARM" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="50" />
+            <Modifier Name="fetish:CuteGirl" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Egg Layer">
+        <description>This girl gives birth to eggs instead of live young.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="30" />
+            <Modifier Name="fetish:Sexy" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="40" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Elf">
+        <description>This girl grew up in the woodlands and has pointy ears.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="10" />
+            <Modifier Name="stat:Intelligence" Value="10" />
+            <Modifier Name="stat:Constitution" Value="-5" />
+            <Modifier Name="stat:Refinement" Value="5" />
+            <Modifier Name="fetish:NonHuman" Value="30" />
+            <Modifier Name="fetish:Elegant" Value="10" />
+            <Modifier Name="fetish:Lolita" Value="10" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Equine">
+        <description>This girl has the body of a horse.</description>
+        <Modifiers>
+            <Modifier Name="stat:Strength" Value="20" />
+            <Modifier Name="stat:Constitution" Value="10" />
+            <Modifier Name="enjoy:WORKFARM" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="80" />
+            <Modifier Name="fetish:Freak" Value="40" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Fallen Goddess">
+        <description>She used to be a goddess, until she was stripped of her powers and thrown to the slavers.</description>
+        <Modifiers>
+            <Modifier Name="stat:Sanity" Value="-10" />
+            <Modifier Name="fetish:NonHuman" Value="20" />
+            <Modifier Name="fetish:Elegant" Value="30" />
+            <Modifier Name="fetish:Freak" Value="-10" />
+            <Modifier Name="fetish:Sexy" Value="25" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="10" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Furry">
+        <description>This girl has short soft fur covering most of her body.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="40" />
+            <Modifier Name="fetish:Elegant" Value="-5" />
+            <Modifier Name="fetish:Sexy" Value="15" />
+            <Modifier Name="fetish:Freak" Value="30" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Futanari">
+        <description>This girl is a hermaphrodite, by magic or birth. Only a few guys will sleep with her.</description>
+        <Modifiers>
+            <Modifier Name="fetish:CuteGirl" Value="-15" />
+            <Modifier Name="fetish:NonHuman" Value="10" />
+            <Modifier Name="fetish:Freak" Value="30" />
+            <Modifier Name="fetish:Futa" Value="100" />
+            <Modifier Name="sex:Futa" Value="60" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Goddess">
+        <description>She's a goddess from above.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="20" />
+            <Modifier Name="fetish:Elegant" Value="50" />
+            <Modifier Name="fetish:Freak" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="10" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Half-Breed">
+        <description>This girl is half human and half... something else.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="20" />
+            <Modifier Name="fetish:Freak" Value="20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Half-Construct">
+        <description>This girl has lost a limb, and has a machine or magically animated replacement one. (hard to hurt)</description>
+        <Modifiers>
+            <Modifier Name="stat:Constitution" Value="20" />
+            <Modifier Name="skill:Combat" Value="20" />
+            <Modifier Name="enjoy:WORKMECHANIC" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="20" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="25" />
+            <Setting Name="random:inherent" Value="25" />
+        </Properties>
+
+        <Excludes>Construct</Excludes>
+    </Trait>
+
+
+    <Trait Name="Incorporeal">
+        <description>This girl never gets tired or loses health. (can't get tired or hurt)</description>
+        <Modifiers>
+            <Modifier Name="enjoy:COMBAT" Value="20" />
+            <Modifier Name="fetish:NonHuman" Value="60" />
+            <Modifier Name="fetish:Freak" Value="40" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Not Human">
+        <description>This girl is not human, which may appeal to some customers.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="60" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Reptilian">
+        <description>This girl has a Reptilian body.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="50" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:CuteGirl" Value="-20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Shape Shifter">
+        <description>This girl can change her shape to anything.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="20" />
+            <Modifier Name="stat:Beauty" Value="20" />
+            <Modifier Name="stat:Strength" Value="10" />
+            <Modifier Name="stat:Constitution" Value="10" />
+            <Modifier Name="skill:Performance" Value="30" />
+            <Modifier Name="enjoy:WORKMOVIE" Value="10" />
+            <Modifier Name="enjoy:WORKADVERTISING" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="35" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+            <Modifier Name="fetish:NiceFigure" Value="40" />
+            <Modifier Name="fetish:Freak" Value="40" />
+            <Modifier Name="sex:*" Value="10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Slitherer">
+        <description>This girl has a tail-like appendage instead of legs.</description>
+        <Modifiers>
+            <Modifier Name="skill:Footjob" Value="-100" />
+            <Modifier Name="fetish:NonHuman" Value="60" />
+            <Modifier Name="fetish:Freak" Value="25" />
+            <Modifier Name="fetish:CuteGirl" Value="-30" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Solar Powered">
+        <description>She needs direct sunlight for a lengthy period to survive.</description>
+        <Modifiers>
+            <Modifier Name="enjoy:WORKFARM" Value="10" />
+            <!--works outdoors-->
+            <Modifier Name="fetish:NonHuman" Value="20" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="10" />
+            <Setting Name="random:inherent" Value="25" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Succubus">
+        <description>She is a demon who feeds on sexual energies.</description>
+        <Modifiers>
+            <Modifier Name="stat:Libido" Value="35" />
+            <Modifier Name="enjoy:SEX" Value="40" />
+            <Modifier Name="fetish:NonHuman" Value="40" />
+            <Modifier Name="fetish:Freak" Value="30" />
+            <Modifier Name="fetish:Sexy" Value="30" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Cyclops">
+        <description>This girl was born with only one eye.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="30" />
+            <Modifier Name="fetish:CuteGirl" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="-10" />
+        </Modifiers>
+
+        <Excludes>Different Colored Eyes</Excludes>
+        <Excludes>Eye Patch</Excludes>
+        <Excludes>One Eye</Excludes>
+    </Trait>
+
+    <Trait Name="Playful Tail">
+        <description>This girl has a tail that she can't control.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="fetish:NonHuman" Value="10" />
+            <Modifier Name="fetish:Freak" Value="25" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="random:inherent" Value="75" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Prehensile Tail">
+        <description>This girl has a tail that she can use like a third hand.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="20" />
+            <Modifier Name="fetish:Freak" Value="40" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="random:inherent" Value="75" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Wings">
+        <description>This girl has wings.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="50" />
+            <Modifier Name="fetish:Freak" Value="20" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="random:inherent" Value="75" />
+        </Properties>
+    </Trait>
+
+
+    <MutexGroup>
+        <Trait>Zombie</Trait>
+        <Trait>Skeleton</Trait>
+        <Trait>Skeleton</Trait>
+        <Trait>Vampire</Trait>
+        <Trait>Angel</Trait>
+        <Trait>Canine</Trait>
+        <Trait>Cat Girl</Trait>
+        <Trait>Cow Girl</Trait>
+        <Trait>Construct</Trait>
+        <Trait>Demon</Trait>
+        <Trait>Egg Layer</Trait>
+        <Trait>Elf</Trait>
+        <Trait>Equine</Trait>
+        <Trait>Fallen Goddess</Trait>
+        <Trait>Furry</Trait>
+        <Trait>Goddess</Trait>
+        <Trait>Reptilian</Trait>
+        <Trait>Shape Shifter</Trait>
+        <Trait>Slitherer</Trait>
+        <Trait>Succubus</Trait>
+        <Trait>Cyclops</Trait>
+    </MutexGroup>
+</Traits>

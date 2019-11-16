@@ -5,5 +5,8 @@
         <Effect What="Stat" Name="Refinement" Amount="20" />
         <Effect What="Stat" Name="PCLove" Amount="5" />
         <Effect What="Stat" Name="PCHate" Amount="-3" />
+        <Crafting CraftPoints="70" ManaCost="0">
+           <Job Name="Jeweler"/>
+        </Crafting>
     </Item>
 </Items>

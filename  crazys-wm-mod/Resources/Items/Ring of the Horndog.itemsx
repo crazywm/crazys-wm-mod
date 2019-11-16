@@ -9,5 +9,10 @@
       Rarity="Catacomb15"
       Infinite="false">
    <Effect What="Stat"  Name="Libido"                  Amount="50"    />
+    <Crafting CraftPoints="220" ManaCost="80">
+        <Job Name="Jeweler"/>
+        <Skill Name="Magic" Minimum="60" />
+        <Skill Name="NormalSex" Minimum="70" />
+      </Crafting>
 </Item>  
 </Items>

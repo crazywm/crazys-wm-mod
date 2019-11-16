@@ -3,21 +3,6 @@
  !-->
 <Triggers>
 	<Trigger
-		Type		= "GlobalFlag"
-		Flag		= "NoPay"
-		File		= "CustNoPay.script"
-	/>
-	<Trigger
-		Type		= "GlobalFlag"
-		Flag		= "RivalLose"
-		File		= "RivalLose.script"
-	/>
-	<Trigger
-		Type		= "GlobalFlag"
-		Flag		= "GamblingCheat"
-		File		= "CustGambCheat.script"
-	/>
-	<Trigger
 		Type		= "Money"
 		Who			= "Player"
 		Threshold	= "-5000"

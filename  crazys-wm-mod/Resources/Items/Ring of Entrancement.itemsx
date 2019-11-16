@@ -5,5 +5,12 @@
         <Effect What="Stat" Name="PCLove" Amount="70" />
         <Effect What="Stat" Name="PCHate" Amount="-60" />
         <Effect What="Trait" Name="Dependant" Amount="1" />
+        <Crafting CraftPoints="250" ManaCost="90">
+            <Job Name="Jeweler"/>
+            <Skill Name="Magic" Minimum="80" />
+            <Skill Name="Crafting" Minimum="90" />
+            <Stat Name="Intelligence" Minimum="60" />
+            <Stat Name="Level" Minimum="12" />
+          </Crafting>
     </Item>
 </Items>

@@ -12,5 +12,9 @@
    <Effect What="Trait" Name="Big Boobs"               Amount="1"    />
    <Effect What="Trait" Name="MILF"                    Amount="1"    />
    <Effect What="Trait" Name="Lolita"                  Amount="0"    />
+     <Crafting CraftPoints="220" ManaCost="80">
+       <Job Name="Jeweler"/>
+       <Skill Name="Magic" Minimum="70" />
+     </Crafting>
 </Item>
 </Items>

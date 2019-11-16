@@ -51,10 +51,6 @@
 		       Min    = "0"
 		       Max    = "0"
 		/>
-		<Stat  Name   = "House"
-		       Min    = "0"
-		       Max    = "0"
-		/>
 		<Stat  Name   = "Exp"
 		       Min    = "0"
 		       Max    = "0"

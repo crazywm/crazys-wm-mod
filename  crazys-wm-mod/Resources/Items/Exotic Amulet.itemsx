@@ -12,5 +12,9 @@
    <Effect What="Stat" Name="Beauty" Amount="10" />
    <Effect What="Trait" Name="Strange Eyes" Amount="1" />
    <Effect What="Trait" Name="Exotic" Amount="1" />
+   <Crafting CraftPoints="180" ManaCost="20">
+     <Job Name="Jeweler"/>
+     <Skill Name="Magic" Minimum="20" />
+    </Crafting>
 </Item>
 </Items>

@@ -1,0 +1,100 @@
+<?xml version="1.0" ?>
+<Traits>
+
+    <Default>
+        <!-- MAgic is typically inborn and only acquired with difficulty -->
+        <Setting Name="inherit:chance" Value="80" />
+        <Setting Name="random:inherent" Value="80" />
+        <Setting Name="random:chance" Value="5" />
+    </Default>
+
+    <Trait Name="Flight">
+        <description>This girl can fly.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Dangerous" Value="15" />
+            <Modifier Name="fetish:NonHuman" Value="20" />
+            <Modifier Name="fetish:Freak" Value="20" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Natural Pheromones">
+    <description>The girl emits her own special scent to draw in customers.</description>
+    <Modifiers>
+        <Modifier Name="stat:Charisma" Value="10" />
+        <Modifier Name="fetish:NonHuman" Value="10" />
+        <Modifier Name="fetish:Sexy" Value="40" />
+    </Modifiers>
+        <Properties>
+            <Setting Name="random:chance" Value="2" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Muggle">
+    <description>This girl can barely use magic, if at all.</description>
+    <Modifiers>
+        <Modifier Name="skill:Magic" Value="-30" />
+        <Modifier Name="stat:Mana" Value="-30" />
+        <Modifier Name="fetish:Dangerous" Value="-5" />
+        <Modifier Name="fetish:Nerd" Value="5" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Weak Magic">
+    <description>This girl has very little magical power within her.</description>
+    <Modifiers>
+        <Modifier Name="skill:Magic" Value="-20" />
+        <Modifier Name="stat:Mana" Value="-20" />
+        <Modifier Name="fetish:Dangerous" Value="5" />
+        <Modifier Name="fetish:Freak" Value="5" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Strong Magic">
+    <description>This girl has strong power within her. Be careful you don't give her too much trouble.</description>
+    <Modifiers>
+        <Modifier Name="skill:Magic" Value="20" />
+        <Modifier Name="stat:Mana" Value="20" />
+        <Modifier Name="fetish:Dangerous" Value="20" />
+        <Modifier Name="fetish:Nerd" Value="5" />
+        <Modifier Name="fetish:NonHuman" Value="5" />
+        <Modifier Name="fetish:Freak" Value="20" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Powerful Magic">
+    <description>This girl has great power within her. She may become too powerful for you to handle.</description>
+    <Modifiers>
+        <Modifier Name="skill:Magic" Value="30" />
+        <Modifier Name="stat:Mana" Value="30" />
+        <Modifier Name="fetish:Dangerous" Value="25" />
+        <Modifier Name="fetish:Nerd" Value="15" />
+        <Modifier Name="fetish:NonHuman" Value="10" />
+        <Modifier Name="fetish:Freak" Value="35" />
+    </Modifiers>
+    </Trait>
+
+    <Trait Name="Psychic">
+        <description>This girl always seems to know what a guy wants. (+magic skills/stats)</description>
+        <Modifiers>
+            <Modifier Name="fetish:Nerd" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="10" />
+            <Modifier Name="fetish:Freak" Value="10" />
+            <Modifier Name="sex:*" Value="10" />
+        </Modifiers>
+    </Trait>
+
+
+    <MutexGroup>
+        <Trait>Powerful Magic</Trait>
+        <Trait>Strong Magic</Trait>
+        <Trait>Weak Magic</Trait>
+        <Trait>Muggle</Trait>
+    </MutexGroup>
+</Traits>

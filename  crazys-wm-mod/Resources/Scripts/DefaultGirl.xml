@@ -1,0 +1,21 @@
+<EventMapping>
+    <Event Name="girl:meet:arena" Script="MeetArenaTry.lua" Function="MeetArena" />
+    <Event Name="girl:meet:town" Script="MeetTownDefault.lua" Function="MeetTown" />
+    <Event Name="girl:meet:studio" Script="MeetCastingTry.lua" Function="MeetCasting" />
+    <Event Name="girl:meet:clinic" Script="MeetClinicTry.lua" Function="MeetClinic" />
+    <Event Name="girl:gambling-lost.own" Script="GirlLostGamble.lua" Function="LostOwnGamble" />
+    <Event Name="girl:gambling-lost.rival" Script="GirlLostGamble.lua" Function="LostRivalGamble" />
+    <Event Name="girl:interact.dungeon" Script="DefaultInteract.lua" Function="InteractDungeon" />
+    <Event Name="girl:interact.brothel" Script="DefaultInteract.lua" Function="InteractBrothel" />
+    <Event Name="girl:sex:anal" Script="SexText.lua" Function="GetAnalMessage" />
+    <Event Name="girl:sex:group" Script="SexText.lua" Function="GetGroupMessage" />
+    <Event Name="girl:sex:bdsm" Script="SexText.lua" Function="GetBDSMMessage" />
+    <Event Name="girl:sex:beast" Script="SexText.lua" Function="GetBestialityMessage" />
+    <Event Name="girl:sex:lesbian" Script="SexText.lua" Function="GetLesMessage" />
+    <Event Name="girl:sex:normal" Script="SexText.lua" Function="GetNormalMessage" />
+    <Event Name="girl:sex:strip" Script="SexText.lua" Function="GetStripMessage" />
+    <Event Name="girl:sex:hand" Script="SexText.lua" Function="GetHandjobMessage" />
+    <Event Name="girl:sex:titty" Script="SexText.lua" Function="GetTittyMessage" />
+    <Event Name="girl:sex:oral" Script="SexText.lua" Function="GetOralMessage" />
+    <Event Name="girl:sex:foot" Script="SexText.lua" Function="GetFootMessage" />
+</EventMapping>

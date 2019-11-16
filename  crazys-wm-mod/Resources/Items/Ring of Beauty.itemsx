@@ -9,5 +9,12 @@
       Rarity="Catacomb15"
       Infinite="false">
    <Effect What="Stat"  Name="Beauty"                  Amount="50"    />
+   <Crafting CraftPoints="220" ManaCost="80">
+     <Job Name="Jeweler"/>
+     <Skill Name="Magic" Minimum="60" />
+     <Skill Name="Crafting" Minimum="90" />
+     <Stat Name="Intelligence" Minimum="60" />
+     <Stat Name="Level" Minimum="10" />
+   </Crafting>
 </Item>
 </Items>

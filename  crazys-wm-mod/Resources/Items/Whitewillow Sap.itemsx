@@ -13,5 +13,10 @@
    <Effect What="Stat" Name="Confidence" Amount="8" />
    <Effect What="Stat" Name="PCLove" Amount="4" />
    <Effect What="Stat" Name="Tiredness" Amount="20" />
+   <Crafting CraftPoints="90" ManaCost="10">
+        <Job Name="Gardener"/>
+        <Skill Name="Herbalism" Minimum="60" />
+        <Skill Name="Magic" Minimum="20" />
+    </Crafting>
 </Item>
 </Items>

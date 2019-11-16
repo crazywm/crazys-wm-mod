@@ -10,5 +10,9 @@
       Infinite="false">
    <Effect What="Trait" Name="Quick Learner"           Amount="1"    />
    <Effect What="Trait" Name="Slow Learner"            Amount="0"    />
+     <Crafting CraftPoints="150" ManaCost="30">
+       <Job Name="Jeweler"/>
+       <Skill Name="Magic" Minimum="50" />
+     </Crafting>
 </Item>
 </Items>

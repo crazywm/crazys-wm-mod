@@ -10,5 +10,10 @@
       Infinite="false"
       GirlBuyChance="30">
    <Effect What="Trait" Name="Fast Orgasms"            Amount="1"    />
+  <Crafting CraftPoints="180" ManaCost="20">
+      <Job Name="Jeweler"/>
+      <Skill Name="Magic" Minimum="30" />
+      <Skill Name="Crafting" Minimum="50" />
+    </Crafting>
 </Item>
 </Items>

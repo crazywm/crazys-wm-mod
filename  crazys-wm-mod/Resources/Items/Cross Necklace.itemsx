@@ -39,5 +39,8 @@
             What="Skill"
             Name="OralSex"
             Amount="-10" />
+       <Crafting CraftPoints="35" ManaCost="0">
+           <Job Name="Jeweler"/>
+       </Crafting>
     </Item>
 </Items>

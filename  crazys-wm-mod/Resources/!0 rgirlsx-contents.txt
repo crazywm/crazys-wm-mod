@@ -48,7 +48,6 @@ For "Skill" and "Stat":
     <Stat     Name="Fame"                   Min="0" Max="0" />
     <Stat     Name="Level"                  Min="0" Max="0" />
     <Stat     Name="AskPrice"               Min="0" Max="0" />
-    <Stat     Name="House"                  Min="0" Max="0" />
     <Stat     Name="Exp"                    Min="0" Max="0" />
     <Stat     Name="Age"                    Min="0" Max="0" />
     <Stat     Name="Obedience"              Min="0" Max="0" />

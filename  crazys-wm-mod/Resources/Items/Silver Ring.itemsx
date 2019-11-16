@@ -3,5 +3,8 @@
     <Item Name="Silver Ring" Desc="A plain silver ring. Despite its price it doesn't have any magical properties. (+10 Refinement)"
     Type="Ring" Badness="0" Special="None" Cost="150" Rarity="Shop25" Infinite="false" GirlBuyChance="0" ItemWeight="0.0">
         <Effect What="Stat" Name="Refinement" Amount="10" />
+        <Crafting CraftPoints="25" ManaCost="0">
+           <Job Name="Jeweler"/>
+        </Crafting>
     </Item>
 </Items>

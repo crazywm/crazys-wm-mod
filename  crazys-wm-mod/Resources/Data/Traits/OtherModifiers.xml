@@ -1,0 +1,520 @@
+<?xml version="1.0" ?>
+<TraitMods>
+    <!-- Traits can increase or decrease the level of preferred accommodation of a girl -->
+    <Modifier Name="pref-accommodation">
+        <Trait Name="Your Wife" Value="2" />
+        <Trait Name="Your Daughter" Value="1" />
+        <Trait Name="Queen" Value="3" /> <!-- Royalty is accustomed to higher quality stuff. -->
+        <Trait Name="Princess" Value="2" />
+        <Trait Name="Noble" Value="1.5" />
+        <Trait Name="Former Official" Value="1.0" />
+        <Trait Name="Elegant" Value="0.5" />
+        <Trait Name="Heroine" Value="0.5" />
+        <Trait Name="Bimbo" Value="2.0" /> <!-- she needs a place to keep all her stuff -->
+        <Trait Name="Broodmother" Value="2.5" /> <!-- she needs somewhere to raise her kids -->
+        <Trait Name="Actress" Value="2.0" />
+        <Trait Name="Porn Star" Value="1.0" />
+        <Trait Name="Idol" Value="2.0" />
+        <Trait Name="Iron Will" Value="1.0" />
+        <Trait Name="Nerd" Value="0.5" /> <!-- she probably spends her free time in her room -->
+
+        <Trait Name="Tomboy" Value="-0.5" />
+        <Trait Name="Open Minded" Value="-0.5" /> <!-- 'I can sleep anywhere' -->
+        <Trait Name="Dependant" Value="-1.0" /> <!-- she will take what you give her -->
+        <Trait Name="Adventurer" Value="-1.0" /> <!-- she likes sleeping under the stars -->
+        <Trait Name="Farmers Daughter" Value="-1.5" />
+        <Trait Name="Country Gal" Value="-1.5" />
+        <Trait Name="Maid" Value="-1.0" />
+        <Trait Name="Optimist" Value="-0.8" /> <!-- 'I can make due with what I have' -->
+        <Trait Name="Pessimist" Value="-1.0" /> <!-- 'whatever' -->
+        <Trait Name="Whore" Value="-1.5" />
+        <Trait Name="Broken Will" Value="-1.5" />
+        <Trait Name="Homeless" Value="-2.0" /> <!-- used to live outdoors -->
+        <Trait Name="Masochist" Value="-2.0" /> <!-- 'I deserve to sleep on rocks' -->
+        <Trait Name="Retarded" Value="-3.0" />
+        <Trait Name="Zombie" Value="-3.0" />
+        <Trait Name="Skeleton" Value="-4.0" />
+        <Trait Name="Mind Fucked" Value="-5.0" />
+    </Modifier>
+
+    <!-- Influence on the chance of detecting a disease in the customer -->
+    <Modifier Name="detect-disease">
+     <Trait Name="Alcoholic" Value="-20" /> <!-- if your drunk your not paying any mind to things -->
+     <Trait Name="Bimbo" Value="-20" />
+     <Trait Name="Blind" Value="-20" /> <!-- can't see it -->
+     <Trait Name="Broken Will" Value="-90" />
+     <Trait Name="Canine" Value="+20" /> <!-- I can smell it in you -->
+     <Trait Name="Cat Girl" Value="+10" />
+     <Trait Name="Chaste" Value="-10" /> <!-- not shure what to look for -->
+     <Trait Name="Clumsy" Value="-10" />
+     <Trait Name="Construct" Value="+5" />
+     <Trait Name="Country Gal" Value="+5" />
+     <Trait Name="Cum Addict" Value="-50" />
+     <Trait Name="Demon" Value="+10" />
+     <Trait Name="Dependant" Value="-50" />
+     <Trait Name="Doctor" Value="+50" /> <!-- knows what to look for -->
+     <Trait Name="Dominatrix" Value="+10" /> <!-- force an truth out -->
+     <Trait Name="Dryad" Value="+5" />
+     <Trait Name="Elf" Value="+5" />
+     <Trait Name="Emprisoned Customer" Value="+10" /> <!-- suspicious of everyone -->
+     <Trait Name="Fairy Dust Addict" Value="-20" /> <!-- if your high your not paying any mind to things -->
+     <Trait Name="Fallen Goddess" Value="+10" />
+     <Trait Name="Farmers Daughter" Value="+5" />
+     <Trait Name="Fearless" Value="+5" />
+     <Trait Name="Former Official" Value="+10" />
+     <Trait Name="Goddess" Value="+20" />
+     <Trait Name="Idiot Savant" Value="+5" />
+     <Trait Name="Iron Will" Value="+10" /> <!-- I'm not letting you touch me until you answer the question -->
+     <Trait Name="Kidnapped" Value="+10" />
+     <Trait Name="Lesbian" Value="+10" /> <!-- all men are diseased -->
+     <Trait Name="Maid" Value="+5" />		<!-- regular cleaning check -->
+     <Trait Name="Masochist" Value="-10" /> <!-- hurt me bad -->
+     <Trait Name="Meek" Value="-50" />
+     <Trait Name="Merciless" Value="+5" />
+     <Trait Name="Mind Fucked" Value="-200" />
+     <Trait Name="Mute" Value="-10" /> <!-- can't say no -->
+     <Trait Name="Nerd" Value="+5" />
+     <Trait Name="Nervous" Value="-10" />
+     <Trait Name="Noble" Value="+5" />		<!-- commoners are dirty -->
+     <Trait Name="Nymphomaniac" Value="-50" /> <!-- too horny to check -->
+     <Trait Name="Old" Value="-10" />
+     <Trait Name="Open Minded" Value="+1" />
+     <Trait Name="Optimist" Value="-10" /> <!-- I'll never get sick -->
+     <Trait Name="Pessimist" Value="-10" /> <!-- I will get sick -->
+     <Trait Name="Pierced Clit" Value="-5" />
+     <Trait Name="Pierced Navel" Value="-5" />
+     <Trait Name="Pierced Nipples" Value="-5" />
+     <Trait Name="Pierced Nose" Value="-5" />
+     <Trait Name="Pierced Tongue" Value="-5" />
+     <Trait Name="Porn Star" Value="+10" /> <!-- manditory tests for porn stars -->
+     <Trait Name="Powerful Magic" Value="+10" />
+     <Trait Name="Priestess" Value="+10" />
+     <Trait Name="Princess" Value="+10" /> <!-- commoners are dirty -->
+     <Trait Name="Psychic" Value="+20" />
+     <Trait Name="Queen" Value="+20" /> <!-- commoners are dirty -->
+     <Trait Name="Quick Learner" Value="+5" />
+     <Trait Name="Reptilian" Value="+5" />
+     <Trait Name="Retarded" Value="-80" />
+     <Trait Name="Sadistic" Value="-5" />
+     <Trait Name="Sharp-Eyed" Value="+10" />
+     <Trait Name="Shroud Addict" Value="-20" /> <!-- if your high your not paying any mind to things -->
+     <Trait Name="Slut" Value="-20" />
+     <Trait Name="Strong Magic" Value="+5" />
+     <Trait Name="Succubus" Value="+10" /> <!-- I can smell your disease -->
+     <Trait Name="Teacher" Value="+5" />		<!-- knows what to look for -->
+     <Trait Name="Tsundere" Value="+5" />
+     <Trait Name="Twisted" Value="-10" />
+     <Trait Name="Vampire" Value="+20" /> <!-- I can smell it in your blood -->
+     <Trait Name="Viras Blood Addict" Value="-20" /> <!-- if your high your not paying any mind to things -->
+     <Trait Name="Virgin" Value="-20" /> <!-- not sure what to look for -->
+     <Trait Name="Whore" Value="+20" /> <!-- I've seen it all -->
+     <Trait Name="Yandere" Value="+5" />
+     <Trait Name="Your Daughter" Value="+30" /> <!-- you taught her what to look out for -->
+     <Trait Name="Your Wife" Value="+10" /> <!-- she knows what to look out for -->
+    </Modifier>
+
+    <Modifier Name="refuse-unequip-combat">
+        <Trait Name="Aggressive" Value="30" />
+        <Trait Name="Yandere" Value="30" />
+        <Trait Name="Twisted" Value="30" />
+        <Trait Name="Retarded" Value="30" />
+    </Modifier>
+
+    <Modifier Name="fight-back-chance">
+        <Trait Name="Adventurer" Value="5" />
+        <Trait Name="Aggressive" Value="10" />
+        <Trait Name="Agile" Value="2" />
+        <Trait Name="Assassin" Value="10" />
+        <Trait Name="Audacity" Value="10" />
+        <Trait Name="Brawler" Value="5" />
+        <Trait Name="Canine" Value="2" />
+        <Trait Name="Cat Girl" Value="2" />
+        <Trait Name="Country Gal" Value="2" />
+        <Trait Name="Demon" Value="5" />
+        <Trait Name="Dominatrix" Value="5" />
+        <Trait Name="Emprisoned Customer" Value="10" />
+        <Trait Name="Fearless" Value="10" />
+        <Trait Name="Fleet of Foot" Value="2" />
+        <Trait Name="Heroine" Value="5" />
+        <Trait Name="Hunter" Value="5" />
+        <Trait Name="Incorporeal" Value="10" />
+        <Trait Name="Iron Will" Value="20" />
+        <Trait Name="Kidnapped" Value="15" />
+        <Trait Name="Manly" Value="5" />
+        <Trait Name="Merciless" Value="5" />
+        <Trait Name="Muscular" Value="5" />
+        <Trait Name="Open Minded" Value="2" />
+        <Trait Name="Optimist" Value="2" />
+        <Trait Name="Pessimist" Value="2" />
+        <Trait Name="Powerful Magic" Value="10" />
+        <Trait Name="Sadistic" Value="5" />
+        <Trait Name="Strong Magic" Value="5" />
+        <Trait Name="Strong" Value="5" />
+        <Trait Name="Tomboy" Value="2" />
+        <Trait Name="Tough" Value="5" />
+        <Trait Name="Tsundere" Value="5" />
+        <Trait Name="Twisted" Value="5" />
+        <Trait Name="Yandere" Value="5" />
+
+        <Trait Name="Bad Eyesight" Value="-2" />
+        <Trait Name="Bimbo" Value="-5" />
+        <Trait Name="Blind" Value="-5" />
+        <Trait Name="Bruises" Value="-2" />
+        <Trait Name="Clumsy" Value="-2" />
+        <Trait Name="Deaf" Value="-5" />
+        <Trait Name="Delicate" Value="-10" />
+        <Trait Name="Dependant" Value="-20" />
+        <Trait Name="Elegant" Value="-5" />
+        <Trait Name="Fragile" Value="-10" />
+        <Trait Name="Malformed" Value="-2" />
+        <Trait Name="Masochist" Value="-10" />
+        <Trait Name="Meek" Value="-20" />
+        <Trait Name="Nerd" Value="-5" />
+        <Trait Name="Nervous" Value="-5" />
+        <Trait Name="Retarded" Value="-10" />
+        <Trait Name="Shy" Value="-10" />
+        <Trait Name="One Eye" Value="-1" />
+        <Trait Name="No Hands" Value="-8" />
+        <Trait Name="One Arm" Value="-3" />
+        <Trait Name="No Arms" Value="-10" />
+        <Trait Name="One Foot" Value="-3" />
+        <Trait Name="No Feet" Value="-6" />
+        <Trait Name="One Leg" Value="-4" />
+        <Trait Name="No Legs" Value="-10" />
+        <Trait Name="Clipped Tendons" Value="-8" />
+        <Trait Name="Broken Will" Value="-100" />
+        <Trait Name="Mind Fucked" Value="-100" />
+    </Modifier>
+
+    <Modifier Name="sex.eagerness">
+        <Trait Name="Succubus" Value="5" />
+        <Trait Name="Nymphomaniac" Value="4" />
+        <Trait Name="Fast Orgasm" Value="3" />
+        <Trait Name="Whore" Value="2" />
+        <Trait Name="Aggressive" Value="1" />
+        <Trait Name="Open Minded" Value="1" />
+        <Trait Name="Slut" Value="1" />
+        <Trait Name="Homeless" Value="1" /> <!-- Just happy to be off the street?  CRAZY -->
+        <Trait Name="Optimist" Value="1" />
+        <Trait Name="Pessimist" Value="-1" />
+        <Trait Name="Meek" Value="-1" />
+        <Trait Name="Noble" Value="-1" />
+        <Trait Name="Nervous" Value="-2" />
+        <Trait Name="Chaste" Value="-2" />
+        <Trait Name="Shy" Value="-2" />
+        <Trait Name="Princess" Value="-2" />
+        <Trait Name="Priestess" Value="-2" />
+        <Trait Name="Slow Orgasms" Value="-3" />
+        <Trait Name="Queen" Value="-3" />
+        <Trait Name="Your Wife" Value="-3" />
+        <Trait Name="Virgin" Value="-5" />
+        <Trait Name="Kidnapped" Value="-5" />
+        <Trait Name="Emprisoned Customer" Value="-5" />
+    </Modifier>
+
+    <Modifier Name="breast-size">
+        <!-- Since no-trait means average boobs, which means breast-size==0, we need to have these partly negative -->
+        <Trait Name="Flat Chest" Value="-3" />          <!-- No bra needed -->
+        <Trait Name="Petite Breasts" Value="-2" />      <!-- A cup -->
+        <Trait Name="Small Boobs" Value="-1" />         <!-- B cup -->
+        <Trait Name="Busty Boobs" Value="1" />          <!-- D cup -->
+        <Trait Name="Big Boobs" Value="2" />            <!-- E-F cup -->
+        <Trait Name="Giant Juggs" Value="3" />          <!-- G-H cup -->
+        <Trait Name="Massive Melons" Value="4" />       <!-- I-J cup -->
+        <Trait Name="Abnormally Large Boobs" Value="5" /> <!-- K-M cup -->
+        <Trait Name="Titanic Tits" Value="6" />         <!--  N+ cup -->
+    </Modifier>
+
+    <!--                                   COMBAT                               -->
+    <!-- Chance for critical hits -->
+    <Modifier Name="combat.melee.crit">
+        <Trait Name="Adventurer" Value="1" />
+        <Trait Name="Heroine" Value="1" />
+        <Trait Name="Assassin" Value="3" />
+    </Modifier>
+
+    <!-- Modifies the likelihood of trying to escape -->
+    <Modifier Name="combat.retreat">
+        <Trait Name="Broken Will" Value="15" />
+        <Trait Name="Meek" Value="5" />
+        <Trait Name="Fearless" Value="-5" />
+        <Trait Name="Iron Will" Value="-2" />
+        <Trait Name="Masochist" Value="-2" />
+        <Trait Name="Optimist" Value="-2" />
+        <Trait Name="Pessimist" Value="2" />
+    </Modifier>
+
+    <!-- Modifies the likelihood of resting. Default is 5 for non-exhausted combatants -->
+    <Modifier Name="combat.rest">
+        <Trait Name="Broken Will" Value="15" />
+        <Trait Name="Meek" Value="10" />
+        <Trait Name="Iron Will" Value="-5" />
+        <Trait Name="Masochist" Value="-5" />
+        <Trait Name="Fat" Value="5" />
+        <Trait Name="Old" Value="5" />
+        <Trait Name="Delicate" Value="5" />
+    </Modifier>
+
+
+    <!-- Bonus / malus to armour (positive: shrug off more damage) Each point reduces damage by 5%-->
+    <Modifier Name="combat.hurt.physical">
+        <Trait Name="Fragile" Value="-5" />
+        <Trait Name="Delicate" Value="-3" />
+        <Trait Name="Dryad" Value="-3" />
+        <Trait Name="Old" Value="-3" />
+        <Trait Name="Priestess" Value="-1" />
+        <Trait Name="Princess" Value="-1" />
+
+        <Trait Name="Fallen Goddess" Value="2" />
+        <Trait Name="Goddess" Value="4" />
+        <!-- TODO does Zombie/Skeleton/Vampire stack with undead? for now assume it doesn't-->
+        <Trait Name="Undead" Value="3" />
+        <Trait Name="Zombie" Value="4" />
+        <Trait Name="Skeleton" Value="5" />
+        <Trait Name="Angel" Value="3" />
+        <Trait Name="Demon" Value="3" />
+        <Trait Name="Vampire" Value="5" />
+        <Trait Name="Construct" Value="5" />
+        <Trait Name="Half-Construct" Value="3" />
+        <Trait Name="Giant" Value="2" />
+        <Trait Name="Incorporeal" Value="10" />
+
+        <Trait Name="Tough" Value="2" />
+        <Trait Name="Strong" Value="1" />
+        <Trait Name="Adventurer" Value="1" />
+        <Trait Name="Manly" Value="1" />
+        <Trait Name="Muscular" Value="1" />
+        <Trait Name="Heroine" Value="1" />
+        <Trait Name="Brawler" Value="1" />
+        <Trait Name="Iron Will" Value="1" />
+        <Trait Name="Fat" Value="1" />
+    </Modifier>
+
+    <Modifier Name="combat.hurt.magical">
+        <Trait Name="Fragile" Value="-3" />
+        <Trait Name="Delicate" Value="-1" />
+        <Trait Name="Old" Value="-1" />
+        <Trait Name="Muggle" Value="-1" />
+
+        <Trait Name="Dryad" Value="1" />
+        <Trait Name="Elf" Value="1" />
+        <Trait Name="Fallen Goddess" Value="2" />
+        <Trait Name="Goddess" Value="4" />
+        <Trait Name="Angel" Value="4" />
+        <Trait Name="Demon" Value="3" />
+        <Trait Name="Vampire" Value="2" />
+        <Trait Name="Incorporeal" Value="4" />
+        <Trait Name="Priestess" Value="2" />
+        <Trait Name="Strong Magic" Value="1" />
+        <Trait Name="Powerful Magic" Value="3" />
+
+        <Trait Name="Adventurer" Value="1" />
+        <Trait Name="Heroine" Value="1" />
+    </Modifier>
+    <!-- Blind "Bad Eyesight" "Sharp-Eyed" "Clumsy" "Strong" "Hunter" "Priestess" "Flight"
+    <Trait Name="Fleet of Foot" Value="1" />
+
+    -->
+
+    <!-- Movies -->
+    <Modifier Name="movie.quality.general">
+        <Trait Name="Porn Star" Value="20" />
+        <Trait Name="Actress" Value="10" />
+        <Trait Name="Shape Shifter" Value="10" />
+        <Trait Name="Fake Orgasm Expert" Value="5" />
+        <Trait Name="Fast Orgasms" Value="2" />
+        <Trait Name="Slow Orgasms" Value="-2" />
+        <Trait Name="Great Figure" Value="4" />
+        <Trait Name="Great Arse" Value="2" />
+        <Trait Name="Charismatic" Value="4" />
+        <Trait Name="Charming" Value="2" />
+        <Trait Name="Long Legs" Value="2" />
+        <Trait Name="Nymphomaniac" Value="4" />
+        <Trait Name="Good Kisser" Value="2" />
+        <Trait Name="Cute" Value="2" />
+        <Trait Name="Sexy Air" Value="2" />
+        <Trait Name="Psychic" Value="4" />
+        <Trait Name="Dick-Sucking Lips" Value="1" />
+        <Trait Name="Chaste" Value="-2" />
+        <Trait Name="Manly" Value="-2" />
+        <Trait Name="Fragile" Value="-2" />
+        <Trait Name="Mind Fucked" Value="-4" />
+        <Trait Name="Nervous" Value="-2" />
+        <Trait Name="Horrific Scars" Value="-4" />
+        <Trait Name="Clumsy" Value="-2" />
+        <Trait Name="Meek" Value="-2" />
+        <Trait Name="Aggressive" Value="-2" />
+        <Trait Name="Broken Will" Value="-4" />
+        <Trait Name="Dependant" Value="-3" />
+        <Trait Name="Shy" Value="-3" />
+
+        <Trait Name="Flat Chest" Value="-2" />
+        <Trait Name="Petite Breasts" Value="-1" />
+        <Trait Name="Small Boobs" Value="-0" />
+        <Trait Name="Busty Boobs" Value="0" />
+        <Trait Name="Big Boobs" Value="1" />
+        <Trait Name="Giant Juggs" Value="2" />
+        <Trait Name="Massive Melons" Value="3" />
+        <Trait Name="Abnormally Large Boobs" Value="4" />
+        <Trait Name="Titanic Tits" Value="5" />
+        <Trait Name="Perky Nipples" Value="1" />
+        <Trait Name="Puffy Nipples" Value="1" />
+    </Modifier>
+
+    <Modifier Name="movie.quality.titty">
+        <Trait Name="Flat Chest" Value="-8" />
+        <Trait Name="Petite Breasts" Value="-4" />
+        <Trait Name="Small Boobs" Value="-1" />
+        <Trait Name="Busty Boobs" Value="2" />
+        <Trait Name="Big Boobs" Value="3" />
+        <Trait Name="Giant Juggs" Value="4" />
+        <Trait Name="Massive Melons" Value="5" />
+        <Trait Name="Abnormally Large Boobs" Value="6" />
+        <Trait Name="Titanic Tits" Value="7" />
+        <Trait Name="Perky Nipples" Value="1" />
+        <Trait Name="Puffy Nipples" Value="1" />
+        <Trait Name="Pierced Nipples" Value="5" />
+        <Trait Name="Pierced Navel" Value="2" />
+        <Trait Name="Lesbian" Value="-4" />
+    </Modifier>
+
+    <Modifier Name="movie.quality.anal">
+        <Trait Name="Pierced Clit" Value="1" />
+        <Trait Name="Great Arse" Value="10" />
+        <Trait Name="Tight Butt" Value="8" />
+        <Trait Name="Phat Booty" Value="6" />
+        <Trait Name="Wide Bottom" Value="4" />
+        <Trait Name="Plump Tush" Value="2" />
+        <Trait Name="Flat Ass" Value="-10" />
+        <Trait Name="Lesbian" Value="-10" />
+    </Modifier>
+
+    <Modifier Name="movie.quality.bondage">
+        <Trait Name="Pierced Nipples" Value="5" />
+        <Trait Name="Pierced Navel" Value="5" />
+        <Trait Name="Pierced Clit" Value="5" />
+    </Modifier>
+
+    <Modifier Name="movie.quality.sex">
+        <Trait Name="Pierced Nipples" Value="1" />
+        <Trait Name="Pierced Navel" Value="1" />
+        <Trait Name="Pierced Clit" Value="1" />
+        <Trait Name="Lesbian" Value="-5" />
+    </Modifier>
+
+    <Modifier Name="movie.quality.beast">
+        <Trait Name="Pierced Nipples" Value="1" />
+        <Trait Name="Pierced Navel" Value="1" />
+        <Trait Name="Hunter" Value="3" />
+        <Trait Name="Lesbian" Value="-5" />
+    </Modifier>
+
+    <Modifier Name="movie.quality.group">
+        <Trait Name="Pierced Nipples" Value="1" />
+        <Trait Name="Pierced Navel" Value="1" />
+        <Trait Name="Pierced Clit" Value="1" />
+        <Trait Name="Lesbian" Value="-10" />
+    </Modifier>
+
+    <Modifier Name="movie.quality.lesbian">
+        <Trait Name="Pierced Nipples" Value="1" />
+        <Trait Name="Pierced Navel" Value="1" />
+        <Trait Name="Pierced Clit" Value="3" />
+        <Trait Name="Lesbian" Value="10" />
+        <Trait Name="Straight" Value="-5" />
+    </Modifier>
+
+    <Modifier Name="movie.quality.strip">
+        <Trait Name="Pierced Nipples" Value="1" />
+        <Trait Name="Pierced Navel" Value="1" />
+        <Trait Name="Pierced Clit" Value="1" />
+        <Trait Name="Lesbian" Value="10" />
+        <Trait Name="Straight" Value="-5" />
+    </Modifier>
+
+    <Modifier Name="movie.quality.oral">
+        <Trait Name="Pierced Tongue" Value="1" />
+        <Trait Name="Dick-Sucking Lips" Value="2" />
+        <Trait Name="Deep Throat" Value="5" />
+        <Trait Name="No Gag Reflex" Value="2" />
+        <Trait Name="Gag Reflex" Value="-5" />
+        <Trait Name="Strong Gag Reflex" Value="-10" />
+        <Trait Name="Lesbian" Value="-10" />
+    </Modifier>
+
+    <!-- Pregnancy stuff -->
+    <Modifier Name="preg.abort.happy">
+        <!-- How happy/unhappy the girl gets by having an abortion - default is -10 -->
+        <Trait Name="Pessimist" Value="-5" />
+        <Trait Name="Optimist" Value="5" />
+        <Trait Name="Lesbian" Value="5" /> <!-- reaffirms her dislike of men. -->
+        <Trait Name="MILF" Value="5" /> <!-- "But I want more children" -->
+        <Trait Name="Twisted" Value="2" />
+        <Trait Name="Demon" Value="5" /> <!-- "I'm going to hell anyway..." -->
+        <Trait Name="Angel" Value="-10" /> <!-- "I'm going to hell." -->
+        <Trait Name="Adventurer" Value="5" /> <!-- "At least a kid will not get in my way." -->
+        <Trait Name="Shape Shifter" Value="2" /> <!-- "The baby may have caused complications when I change shape." -->
+    </Modifier>
+
+    <Modifier Name="preg.abort.spirit">
+        <!-- How spirit changes with an abortion - default is -5 -->
+        <Trait Name="Pessimist" Value="-1" />
+        <Trait Name="Optimist" Value="1" />
+        <Trait Name="Sadistic" Value="1" /> <!-- "If only someone had done this to your father..." -->
+        <Trait Name="Masochist" Value="-1" /> <!-- "If only someone had done this to me..." -->
+        <Trait Name="Your Daughter" Value="-1" /> <!-- "Why Daddy?" -->
+        <Trait Name="Twisted" Value="1" />
+        <Trait Name="Demon" Value="5" /> <!-- "I'm going to hell anyway..." -->
+        <Trait Name="Angel" Value="-5" /> <!-- "I'm going to hell." -->
+        <Trait Name="Adventurer" Value="1" /> <!-- "At least a kid will not get in my way." -->
+    </Modifier>
+
+    <Modifier Name="preg.abort.love">
+        <!-- How love changes with an abortion - default is -5 -->
+        <Trait Name="Lesbian" Value="-1" />
+        <Trait Name="Sadistic" Value="-1" />
+        <Trait Name="Masochist" Value="-1" />
+        <Trait Name="Your Daughter" Value="-3" />
+        <Trait Name="MILF" Value="-1" />
+        <Trait Name="Angel" Value="-5" />
+    </Modifier>
+
+    <Modifier Name="preg.abort.hate">
+        <!-- How hate changes with an abortion - default is 5 -->
+        <Trait Name="Lesbian" Value="1" />
+        <Trait Name="Masochist" Value="-1" />
+        <Trait Name="MILF" Value="1" />
+        <Trait Name="Angel" Value="5" />
+    </Modifier>
+
+    <Modifier Name="inseminated.abort.happy">
+        <!-- How happy the girl is to not have to carry the monster baby. Note that this compounds with general abortion happiness-->
+        <Trait Name="Adventurer" Value="-2" /> <!-- "It could have been interesting to see what became of that." -->
+        <Trait Name="Angel" Value="5" /> <!-- "DEAR GOD, WHAT WAS THAT THING?" -->
+        <Trait Name="Cat Girl" Value="-2" /> <!-- "No kittens for me. :(" -->
+        <Trait Name="Demon" Value="-10" /> <!-- "I guess my evil brood will have to wait." -->
+        <Trait Name="Shape Shifter" Value="-2" /> <!-- "What would that have looked like?" -->
+        <Trait Name="Twisted" Value="-2" /> <!-- "What would that have felt like?" -->
+        <Trait Name="Queen" Value="40" /> <!-- "Thank God I didn't have to carry that." -->
+        <Trait Name="Princess" Value="20" /> <!-- "Thank God I didn't have to carry that." -->
+        <Trait Name="Noble" Value="15" /> <!-- "Thank God I didn't have to carry that." -->
+    </Modifier>
+
+    <Modifier Name="inseminated.abort.love">
+        <!-- How love changes with an abortion - compounds with preg -->
+        <Trait Name="Angel" Value="-5" />
+        <Trait Name="Demon" Value="-2" />
+        <Trait Name="Queen" Value="8" />
+        <Trait Name="Princess" Value="4" />
+        <Trait Name="Noble" Value="4" />
+    </Modifier>
+
+    <Modifier Name="inseminated.abort.hate">
+        <!-- How hate changes with an abortion - compounds with preg -->
+        <Trait Name="Angel" Value="5" />
+        <Trait Name="Demon" Value="2" />
+        <Trait Name="Queen" Value="-4" />
+        <Trait Name="Princess" Value="-2" />
+        <Trait Name="Noble" Value="-2" />
+    </Modifier>
+</TraitMods>

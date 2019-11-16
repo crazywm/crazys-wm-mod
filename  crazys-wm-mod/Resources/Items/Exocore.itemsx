@@ -36,7 +36,6 @@
    <Effect What="Stat" Name="Agility" Amount="40" />
    <Effect What="Stat" Name="Fame" Amount="40" />
    <Effect What="Stat" Name="AskPrice" Amount="40" />
-   <Effect What="Stat" Name="House" Amount="40" />
    <Effect What="Stat" Name="Exp" Amount="40" />
    <Effect What="Stat" Name="Spirit" Amount="40" />
    <Effect What="Stat" Name="Beauty" Amount="40" />

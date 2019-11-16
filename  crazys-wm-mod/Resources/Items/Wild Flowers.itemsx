@@ -9,19 +9,10 @@
       Rarity="Shop50"
       Infinite="false"
       GirlBuyChance="0">
-   <Effect What="Stat"  Name="Happiness"               Amount="5"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
-</Item>
-<Item Name="Wild Flowers"
-      Desc="This fresh bouquet of colorful flowers picked outside the city is guaranteed to brighten any girl's mood. It might not be enough to prevent her from getting mad at you for boning her best friend, but you'll be a step closer to that lofty goal. (C) (+5 Love, +5 Hap)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="75"
-      Rarity="Shop50"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Stat"  Name="Happiness"               Amount="5"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
+    <Effect What="Stat"  Name="Happiness"               Amount="5"    />
+    <Effect What="Stat"  Name="PCLove"                  Amount="5"    />
+    <Crafting CraftPoints="10" ManaCost="0">
+        <Job Name="Gardener"/>
+    </Crafting>
 </Item>
 </Items>

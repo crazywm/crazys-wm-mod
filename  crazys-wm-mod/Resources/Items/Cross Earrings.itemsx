@@ -19,5 +19,8 @@
             What="Stat"
             Name="Charisma"
             Amount="3" />
+        <Crafting CraftPoints="25" ManaCost="0">
+           <Job Name="Jeweler"/>
+        </Crafting>
     </Item>
 </Items>

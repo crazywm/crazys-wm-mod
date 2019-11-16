@@ -16,7 +16,6 @@
     <Stat     Name="Fame"                   Min="0"     Max="0" />
     <Stat     Name="Level"                  Min="0"     Max="0" />
     <Stat     Name="AskPrice"               Min="0"     Max="0" />
-    <Stat     Name="House"                  Min="100"   Max="100" />
     <Stat     Name="Exp"                    Min="0"     Max="0" />
     <Stat     Name="Age"                    Min="18"    Max="35" />
     <Stat     Name="Obedience"              Min="0"     Max="20" />

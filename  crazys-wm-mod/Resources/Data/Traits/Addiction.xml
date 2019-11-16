@@ -1,0 +1,132 @@
+<?xml version="1.0" ?>
+<Traits>
+    <Default>
+        <Setting Name="inherit:chance" Value="70" />
+
+        <Setting Name="random:inherent" Value="10" />
+        <Setting Name="random:acquired:dormant" Value="50" />
+    </Default>
+
+    <Trait Name="Alcoholic">
+        <description>This girl is addicted to alcohol.</description>
+        <Modifiers>
+            <Modifier Name="stat:Sanity" Value="-10" />
+            <Modifier Name="fetish:Elegant" Value="-15" />
+            <Modifier Name="fetish:Cool" Value="5" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+            <Modifier Name="tag:addiction" Value="1" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:chance" Value="5" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Cum Addict">
+        <description>This girl is addicted to the taste of semen and will even trick her customers to taste their delicious cum.</description>
+        <Modifiers>
+            <Modifier Name="skill:OralSex" Value="30" />
+            <Modifier Name="skill:Group" Value="10" />
+            <Modifier Name="stat:Obedience" Value="20" />
+            <Modifier Name="stat:Spirit" Value="-10" />
+            <Modifier Name="enjoy:SEX" Value="10" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:Sexy" Value="10" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="tag:addiction" Value="1" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Fairy Dust Addict">
+        <description>This girl is addicted to the mellow fairy dust. (drug) (+happiness) (-looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="-10" />
+            <Modifier Name="stat:Obedience" Value="5" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Cool" Value="20" />
+            <Modifier Name="fetish:Nerd" Value="-15" />
+            <Modifier Name="fetish:Elegant" Value="-25" />
+            <Modifier Name="fetish:Sexy" Value="-25" />
+            <Modifier Name="fetish:Freak" Value="15" />
+            <Modifier Name="tag:addiction" Value="1" />
+            <Modifier Name="tag:hard-addiction" Value="1" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="3" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Shroud Addict">
+        <description>A girl addicted to the gas emmited from the rare Shroud Mushroom. (drug) (+happiness) (-looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="-5" />
+            <Modifier Name="stat:Obedience" Value="5" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+            <Modifier Name="fetish:Cool" Value="15" />
+            <Modifier Name="fetish:Nerd" Value="-10" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="10" />
+            <Modifier Name="tag:addiction" Value="1" />
+            <Modifier Name="tag:hard-addiction" Value="1" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Smoker">
+        <description>This girl is addicted to nicotine.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="-5" />
+            <Modifier Name="stat:Agility" Value="-10" />
+            <Modifier Name="stat:Constitution" Value="-5" />
+            <Modifier Name="fetish:Elegant" Value="-5" />
+            <Modifier Name="fetish:Cool" Value="5" />
+            <Modifier Name="tag:addiction" Value="1" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="5" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Viras Blood Addict">
+        <description>This girl is additced to the blood of the sex crazed plant Viras. (drug) (+happiness) (-looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="-15" />
+            <Modifier Name="stat:Obedience" Value="20" />
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="fetish:Dangerous" Value="15" />
+            <Modifier Name="fetish:Cool" Value="25" />
+            <Modifier Name="fetish:Nerd" Value="-20" />
+            <Modifier Name="fetish:Elegant" Value="-30" />
+            <Modifier Name="fetish:Sexy" Value="-30" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="tag:addiction" Value="1" />
+            <Modifier Name="tag:hard-addiction" Value="1" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Former Addict">
+        <description>This girl has had an addiction in the past.</description>
+        <Properties>
+            <Setting Name="inherit:chance" Value="0" />
+        </Properties>
+    </Trait>
+</Traits>

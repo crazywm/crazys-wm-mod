@@ -1,0 +1,53 @@
+<?xml version="1.0" ?>
+<Traits>
+    <Default>
+        <Properties>
+            <Setting Name="random:inherent" Value="0" />
+            <Setting Name="inherit:from_acquired" Value="50" />
+        </Properties>
+    </Default>
+
+    <Trait Name="AIDS">
+        <description>She has AIDS, a fatal disease. If you can't track down a cure, she'll likely die. (disease)</description>
+        <Modifiers>
+            <Modifier Name="tag:Addiction" Value="1" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:chance" Value="1" />
+            <Setting Name="inherit:from_acquired" Value="80" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Chlamydia">
+        <description>This nasty disease will cause pain for both her and the customers during urination. (disease)</description>
+        <Modifiers>
+            <Modifier Name="tag:Addiction" Value="1" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:chance" Value="2" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Herpes">
+        <description>She has contracted herpes. Customers will not be happy if she gives it to them. (disease)</description>
+        <Modifiers>
+            <Modifier Name="tag:Addiction" Value="1" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:chance" Value="4" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Syphilis">
+        <description>This disease can cause death if left untreated. The sores are just the early symptoms. (disease)</description>
+        <Modifiers>
+            <Modifier Name="tag:Addiction" Value="1" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:chance" Value="3" />
+        </Properties>
+    </Trait>
+</Traits>

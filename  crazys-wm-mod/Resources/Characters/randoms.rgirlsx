@@ -53,10 +53,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -233,10 +229,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -445,10 +437,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -616,10 +604,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -778,10 +762,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -949,10 +929,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -1139,10 +1115,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -1299,10 +1271,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -1471,10 +1439,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -1636,10 +1600,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -1786,10 +1746,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -1945,10 +1901,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -2118,10 +2070,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -2306,10 +2254,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -2456,10 +2400,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -2621,10 +2561,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -2813,10 +2749,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -2996,10 +2928,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -3161,10 +3089,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -3323,10 +3247,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -3509,10 +3429,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -3694,10 +3610,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -3860,10 +3772,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -4050,10 +3958,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -4234,10 +4138,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -4425,10 +4325,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -4621,10 +4517,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -4812,10 +4704,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -4998,10 +4886,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -5195,10 +5079,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -5399,10 +5279,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -5565,10 +5441,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -5755,10 +5627,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -5941,10 +5809,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -6129,10 +5993,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -6285,10 +6145,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -6489,10 +6345,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -6667,10 +6519,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -6859,10 +6707,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -7050,10 +6894,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -7225,10 +7065,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -7390,10 +7226,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -7542,10 +7374,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -7722,10 +7550,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -7889,10 +7713,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -8055,10 +7875,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -8247,10 +8063,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -8413,10 +8225,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -8639,10 +8447,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -8814,10 +8618,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -8974,10 +8774,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -9153,10 +8949,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -9349,10 +9141,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -9534,10 +9322,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -9711,10 +9495,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -9885,10 +9665,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -10073,10 +9849,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -10227,10 +9999,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -10393,10 +10161,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -10558,10 +10322,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -10710,10 +10470,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -10871,10 +10627,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -11061,10 +10813,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -11235,10 +10983,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -11421,10 +11165,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -11587,10 +11327,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -11787,10 +11523,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -11937,10 +11669,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"
@@ -12123,10 +11851,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -12290,10 +12014,6 @@
 			Min="0"
 			Max="0" />
 		<Stat
-			Name="House"
-			Min="0"
-			Max="0" />
-		<Stat
 			Name="Exp"
 			Min="0"
 			Max="0" />
@@ -12454,10 +12174,6 @@
 			Max="0" />
 		<Stat
 			Name="AskPrice"
-			Min="0"
-			Max="0" />
-		<Stat
-			Name="House"
 			Min="0"
 			Max="0" />
 		<Stat
@@ -12641,10 +12357,6 @@
 			Name="AskPrice"
 			Min="0"
 			Max="0" />
-		<Stat
-			Name="House"
-			Min="100"
-			Max="100" />
 		<Stat
 			Name="Exp"
 			Min="0"

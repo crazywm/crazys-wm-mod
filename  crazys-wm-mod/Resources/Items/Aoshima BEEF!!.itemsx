@@ -10,5 +10,9 @@
       Infinite="false">
    <Effect What="Trait" Name="Tough"                   Amount="1"    />
    <Effect What="Trait" Name="Fragile"                 Amount="0"    />
+   <Crafting CraftPoints="100" ManaCost="20">
+       <Job Name="Butcher"/>
+       <Skill Name="Magic" Minimum="50" />
+   </Crafting>
 </Item>
 </Items>

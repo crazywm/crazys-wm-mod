@@ -1,0 +1,703 @@
+<?xml version="1.0" ?>
+<Traits>
+
+    <Default>
+        <!-- In general, physical traits are strongly inheritable and mostly inherent -->
+        <Setting Name="inherit:chance" Value="70" />
+        <Setting Name="random:inherent" Value="80" />
+    </Default>
+
+
+    <Trait Name="Eye Patch" Type="Physical">
+        <description>This girl has lost an eye, but wears a patch over it. She thinks it makes her look dangerous and cool. (-looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="-5" />
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="fetish:CuteGirl" Value="-5" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+            <Modifier Name="fetish:Cool" Value="20" />
+            <Modifier Name="fetish:Sexy" Value="-5" />
+            <Modifier Name="fetish:Freak" Value="20" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="10" />
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+
+        <Excludes>Cyclops</Excludes>
+        <Excludes>Different Colored Eyes</Excludes>
+    </Trait>
+
+
+    <Trait Name="Flat Ass" Type="Physical">
+        <description>Her posterior isn't really anything special. Not much to grope or slap whatsoever.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="-5" />
+            <Modifier Name="skill:Anal" Value="-10" />
+
+            <Modifier Name="fetish:Lolita" Value="20" />
+            <Modifier Name="fetish:Sexy" Value="-20" />
+            <Modifier Name="fetish:NiceArse" Value="-50" />
+
+            <Modifier Name="sex:*" Value="-2" />
+            <Modifier Name="sex:NiceArse" Value="-28" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="10" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Flexible" Type="Physical">
+        <description>She is able to bend her body in many different ways.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="5" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="5" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Great Arse" Type="Physical">
+        <description>She has a really nice arse.</description>
+        <Modifiers>
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="skill:Anal" Value="10" />
+
+            <Modifier Name="fetish:Sexy" Value="10" />
+            <Modifier Name="fetish:NiceArse" Value="60" />
+
+            <Modifier Name="sex:*" Value="3" />
+            <Modifier Name="sex:NiceArse" Value="22" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="10" />
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Incest" Type="Physical">
+        <description>This is a child of incest.</description>
+
+        <Properties>
+            <Setting Name="inherit:chance" Value="50" />
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Abnormally Large Boobs">
+        <description>Her tits are insanely huge. Not something you see every day, although the world would be a better place if you did.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="stat:Constitution" Value="10" />
+            <Modifier Name="stat:Agility" Value="-10" />
+            <Modifier Name="skill:TittySex" Value="20" />
+
+            <Modifier Name="fetish:BigBoobs" Value="100" />
+            <Modifier Name="fetish:SmallBoobs" Value="-100" />
+            <Modifier Name="fetish:CuteGirl" Value="-15" />
+            <Modifier Name="fetish:Lolita" Value="-80" />
+            <Modifier Name="fetish:Sexy" Value="0" />
+            <Modifier Name="fetish:NiceFigure" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="10" />
+            <Modifier Name="fetish:NonHuman" Value="5" />
+
+            <Modifier Name="sex:*" Value="-1" />
+            <Modifier Name="sex:BigBoobs" Value="21" />
+            <Modifier Name="sex:SmallBoobs" Value="-19" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="5" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Big Boobs">
+        <description>Wow! This girl really has knockers. (+looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="5" />
+            <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="stat:Agility" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="2" />
+            <Modifier Name="skill:TittySex" Value="15" />
+
+            <Modifier Name="fetish:BigBoobs" Value="40" />
+            <Modifier Name="fetish:SmallBoobs" Value="-40" />
+            <Modifier Name="fetish:CuteGirl" Value="-5" />
+            <Modifier Name="fetish:Lolita" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+            <Modifier Name="fetish:NiceFigure" Value="10" />
+
+            <Modifier Name="sex:*" Value="2" />
+            <Modifier Name="sex:BigBoobs" Value="6" />
+            <Modifier Name="sex:SmallBoobs" Value="-7" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="20" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Busty Boobs">
+        <description>She's packing a pair of fairly large, full lady lumps on her chest.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="8" />
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="stat:Agility" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="2" />
+            <Modifier Name="skill:TittySex" Value="10" />
+
+            <Modifier Name="fetish:BigBoobs" Value="20" />
+            <Modifier Name="fetish:SmallBoobs" Value="-20" />
+            <Modifier Name="fetish:CuteGirl" Value="5" />
+            <Modifier Name="fetish:Lolita" Value="0" />
+            <Modifier Name="fetish:Sexy" Value="10" />
+            <Modifier Name="fetish:NiceFigure" Value="5" />
+
+            <Modifier Name="sex:*" Value="1" />
+            <Modifier Name="sex:BigBoobs" Value="3" />
+            <Modifier Name="sex:SmallBoobs" Value="-3" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="20" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Flat Chest">
+        <description>This girl's boobs aren't just small - her entire chest area is practically plank-shaped.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="5" />
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="skill:TittySex" Value="-50" />
+
+            <Modifier Name="fetish:BigBoobs" Value="-120" />
+            <Modifier Name="fetish:SmallBoobs" Value="80" />
+            <Modifier Name="fetish:CuteGirl" Value="20" />
+            <Modifier Name="fetish:Lolita" Value="30" />
+            <Modifier Name="fetish:Sexy" Value="-10" />
+            <Modifier Name="fetish:NiceFigure" Value="-10" />
+
+            <Modifier Name="sex:*" Value="-2" />
+            <Modifier Name="sex:BigBoobs" Value="-13" />
+            <Modifier Name="sex:SmallBoobs" Value="17" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Giant Juggs">
+        <description>They're soft, they're jiggly and they're BIG, with a B-I-G. There is definitely something to be jealous of here.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="stat:Constitution" Value="8" />
+            <Modifier Name="stat:Agility" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="2" />
+            <Modifier Name="skill:TittySex" Value="15" />
+
+            <Modifier Name="fetish:BigBoobs" Value="60" />
+            <Modifier Name="fetish:SmallBoobs" Value="-60" />
+            <Modifier Name="fetish:CuteGirl" Value="-25" />
+            <Modifier Name="fetish:Lolita" Value="-40" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+            <Modifier Name="fetish:NiceFigure" Value="5" />
+
+            <Modifier Name="sex:*" Value="1" />
+            <Modifier Name="sex:BigBoobs" Value="12" />
+            <Modifier Name="sex:SmallBoobs" Value="-10" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="5" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Massive Melons">
+        <description>This girl's got some overripe melons on her chest. Hands and faces get lost between them rather easily.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="stat:Constitution" Value="10" />
+            <Modifier Name="stat:Agility" Value="-10" />
+            <Modifier Name="skill:TittySex" Value="18" />
+
+            <Modifier Name="fetish:BigBoobs" Value="80" />
+            <Modifier Name="fetish:SmallBoobs" Value="-80" />
+            <Modifier Name="fetish:CuteGirl" Value="-25" />
+            <Modifier Name="fetish:Lolita" Value="-60" />
+            <Modifier Name="fetish:Sexy" Value="10" />
+            <Modifier Name="fetish:NiceFigure" Value="-5" />
+            <Modifier Name="fetish:Freak" Value="5" />
+
+            <Modifier Name="sex:BigBoobs" Value="16" />
+            <Modifier Name="sex:SmallBoobs" Value="-15" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="5" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Petite Breasts">
+        <description>She's only a bit under-endowed. What she lacks in size, she makes up with sensitivity.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="5" />
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="skill:TittySex" Value="-20" />
+            <Modifier Name="fetish:BigBoobs" Value="-80" />
+            <Modifier Name="fetish:SmallBoobs" Value="100" />
+            <Modifier Name="fetish:CuteGirl" Value="15" />
+            <Modifier Name="fetish:Lolita" Value="20" />
+            <Modifier Name="fetish:Sexy" Value="-5" />
+            <Modifier Name="fetish:NiceFigure" Value="-5" />
+
+            <Modifier Name="sex:*" Value="-1" />
+            <Modifier Name="sex:BigBoobs" Value="-9" />
+            <Modifier Name="sex:SmallBoobs" Value="21" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="10" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Small Boobs">
+        <description>Her boobs may be small, but some customers like that.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="5" />
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="skill:TittySex" Value="-15" />
+
+            <Modifier Name="fetish:BigBoobs" Value="-40" />
+            <Modifier Name="fetish:SmallBoobs" Value="50" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:Lolita" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="5" />
+            <Modifier Name="fetish:NiceFigure" Value="0" />
+
+            <Modifier Name="sex:BigBoobs" Value="-5" />
+            <Modifier Name="sex:SmallBoobs" Value="10" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="20" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Titanic Tits">
+        <description>Her breasts are larger than life, as defined by most tailors. The poor girl's back has to be killing her.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="stat:Constitution" Value="10" />
+            <Modifier Name="stat:Agility" Value="-15" />
+            <Modifier Name="skill:TittySex" Value="25" />
+
+            <Modifier Name="fetish:BigBoobs" Value="120" />
+            <Modifier Name="fetish:SmallBoobs" Value="-120" />
+            <Modifier Name="fetish:CuteGirl" Value="-25" />
+            <Modifier Name="fetish:Lolita" Value="-100" />
+            <Modifier Name="fetish:Sexy" Value="-10" />
+            <Modifier Name="fetish:NiceFigure" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="20" />
+            <Modifier Name="fetish:NonHuman" Value="10" />
+
+            <Modifier Name="sex:*" Value="-2" />
+            <Modifier Name="sex:BigBoobs" Value="27" />
+            <Modifier Name="sex:SmallBoobs" Value="-28" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="5" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Phat Booty">
+        <description>This girl has the kind of butt that makes all your gang members go 'Daaaayyyuuumn!'.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="-5" />
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="skill:Anal" Value="10" />
+
+            <Modifier Name="fetish:Lolita" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="15" />
+            <Modifier Name="fetish:NiceArse" Value="30" />
+
+            <Modifier Name="sex:*" Value="1" />
+            <Modifier Name="sex:NiceArse" Value="14" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="20" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Plump Tush">
+        <description>This girl's huge ass is impossible to hide. She can barely fit in any pants and every dress she wears is filled with her butt's shape.</description>
+        <Modifiers>
+            <Modifier Name="stat:Agility" Value="-10" />
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="skill:Anal" Value="10" />
+
+            <Modifier Name="fetish:Lolita" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="15" />
+            <Modifier Name="fetish:NiceArse" Value="10" />
+
+            <Modifier Name="sex:NiceArse" Value="5" />
+        </Modifiers>
+        <Properties>
+            <Setting Name="random:chance" Value="10" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Tight Butt">
+        <description>Two finely-sculpted, scrumptious ass cheeks. What they lack in size, they make up with shape.</description>
+        <Modifiers>
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="skill:Anal" Value="8" />
+
+            <Modifier Name="fetish:Lolita" Value="5" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+            <Modifier Name="fetish:NiceArse" Value="40" />
+
+            <Modifier Name="sex:*" Value="2" />
+            <Modifier Name="sex:NiceArse" Value="8" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="20" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Deluxe Derriere">
+        <description>The legendary perfectly peach-shaped ass. Big enough to melt hands, shapely enough to glue eyes to it forever. You can't gaze at it too long without lowering your shades.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="skill:Anal" Value="10" />
+
+            <Modifier Name="fetish:Lolita" Value="-25" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+            <Modifier Name="fetish:NiceArse" Value="40" />
+
+            <Modifier Name="sex:*" Value="3" />
+            <Modifier Name="sex:NiceArse" Value="22" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="20" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Wide Bottom">
+        <description>She can be rightfully proud of her large, shapely hips and equally juicy thighs.</description>
+        <Modifiers>
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="skill:Anal" Value="5" />
+
+            <Modifier Name="fetish:Lolita" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="15" />
+            <Modifier Name="fetish:NiceArse" Value="20" />
+
+            <Modifier Name="sex:NiceArse" Value="10" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="20" />
+        </Properties>
+    </Trait>
+
+    <Trait  Name="Different Colored Eyes">
+        <description>Her eyes are different colors.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="5" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+
+        <Excludes>Cyclops</Excludes>
+        <Excludes>Eye Patch</Excludes>
+        <Excludes>One Eye</Excludes>
+    </Trait>
+
+    <Trait Name="Strange Eyes">
+        <description>Her eyes are unusual in some way.</description>
+        <Modifiers>
+            <Modifier Name="fetish:NonHuman" Value="10" />
+            <Modifier Name="fetish:Freak" Value="15" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Inverted Nipples">
+        <description>She has inverted nipples.</description>
+        <Modifiers>
+            <Modifier Name="fetish:BigBoobs" Value="-5" />
+            <Modifier Name="fetish:SmallBoobs" Value="5" />
+            <Modifier Name="fetish:CuteGirl" Value="-5" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+        <Excludes>Perky Nipples</Excludes>
+        <Excludes>No Nipples</Excludes>
+    </Trait>
+
+    <Trait Name="Perky Nipples">
+        <description>She has perky nipples.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="skill:TittySex" Value="5" />
+            <Modifier Name="fetish:BigBoobs" Value="10" />
+            <Modifier Name="fetish:SmallBoobs" Value="5" />
+            <Modifier Name="fetish:CuteGirl" Value="5" />
+            <Modifier Name="fetish:Lolita" Value="5" />
+        </Modifiers>
+        <Excludes>Inverted Nipples</Excludes>
+        <Excludes>No Nipples</Excludes>
+    </Trait>
+
+    <Trait Name="Puffy Nipples">
+        <description>Her nipples are puffy.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="skill:TittySex" Value="5" />
+            <Modifier Name="fetish:BigBoobs" Value="10" />
+            <Modifier Name="fetish:SmallBoobs" Value="-5" />
+            <Modifier Name="fetish:CuteGirl" Value="5" />
+        </Modifiers>
+        <Excludes>No Nipples</Excludes>
+    </Trait>
+
+    <!-- Lactation -->
+
+    <Trait Name="Abundant Lactation" RandomChance="5">
+        <description>Her breasts produce a large amount of milk at a faster-than-average rate.</description>
+        <Modifiers>
+            <Modifier Name="fetish:BigBoobs" Value="10" />
+            <Modifier Name="fetish:SmallBoobs" Value="-10" />
+            <Modifier Name="fetish:CuteGirl" Value="0" />
+            <Modifier Name="fetish:Lolita" Value="-10" />
+        </Modifiers>
+        <Excludes>No Nipples</Excludes>
+    </Trait>
+
+    <Trait Name="Cow Tits" RandomChance="1">
+        <description>This girl's breasts produce an astoundingly large amount of milk at an extremely quick rate. Her mammaries are practically overflowing with deliciously sweet and rich milk.</description>
+        <Modifiers>
+            <Modifier Name="fetish:BigBoobs" Value="20" />
+            <Modifier Name="fetish:SmallBoobs" Value="-20" />
+            <Modifier Name="fetish:CuteGirl" Value="-5" />
+            <Modifier Name="fetish:Lolita" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+        <Excludes>No Nipples</Excludes>
+    </Trait>
+
+
+    <Trait Name="Dry Milk" RandomChance="1">
+        <description>This girl is incapable of producing milk of any worth.</description>
+        <Modifiers>
+            <Modifier Name="fetish:BigBoobs" Value="-10" />
+            <Modifier Name="fetish:SmallBoobs" Value="10" />
+            <Modifier Name="fetish:CuteGirl" Value="5" />
+            <Modifier Name="fetish:Lolita" Value="10" />
+        </Modifiers>
+        <Excludes>No Nipples</Excludes>
+    </Trait>
+
+    <Trait Name="Scarce Lactation" RandomChance="2">
+        <description>Her breasts produce a smaller amount of milk than usual.</description>
+        <Modifiers>
+            <Modifier Name="stat:Lactation" Value="-50" />
+            <Modifier Name="enjoy:WORKMILK" Value="-10" />
+            <Modifier Name="fetish:BigBoobs" Value="-5" />
+            <Modifier Name="fetish:SmallBoobs" Value="5" />
+            <Modifier Name="fetish:CuteGirl" Value="0" />
+            <Modifier Name="fetish:Lolita" Value="5" />
+        </Modifiers>
+        <Excludes>No Nipples</Excludes>
+    </Trait>
+
+    <MutexGroup>
+        <Trait>Cow Tits</Trait>
+        <Trait>Dry Milk</Trait>
+        <Trait>Scarce Lactation</Trait>
+        <Trait>Abundant Lactation</Trait>
+    </MutexGroup>
+
+    <!-- AGE -->
+    <Trait InheritChance="0" Name="Lolita" RandomChance="20">
+        <description>This girl looks very young and is sexually flirtatious.</description>
+        <Modifiers>
+            <Modifier Name="stat:Obedience" Value="5" />
+            <Modifier Name="stat:Charisma" Value="10" />
+            <Modifier Name="stat:Beauty" Value="20" />
+            <Modifier Name="fetish:BigBoobs" Value="-30" />
+            <Modifier Name="fetish:CuteGirl" Value="30" />
+            <Modifier Name="fetish:Dangerous" Value="-5" />
+            <Modifier Name="fetish:Lolita" Value="60" />
+            <Modifier Name="fetish:SmallBoobs" Value="15" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="0" Name="MILF" RandomChance="0">
+        <description>This woman has had children before.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="15" />
+            <Modifier Name="fetish:Lolita" Value="-50" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="0" Name="Old" RandomChance="0">
+        <description>This girl is old and looks it.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-15" />
+            <Modifier Name="stat:Beauty" Value="-15" />
+            <Modifier Name="fetish:Lolita" Value="-75" />
+            <Modifier Name="fetish:CuteGirl" Value="-40" />
+            <Modifier Name="fetish:Sexy" Value="-20" />
+            <Modifier Name="fetish:Freak" Value="30" />
+            <Modifier Name="fetish:Elegant" Value="15" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="???" Name="Middle Aged" RandomChance="???">
+        <description>???</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-5" />
+            <Modifier Name="stat:Beauty" Value="-5" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Beauty Mark" RandomChance="5" Type="Appearance">
+        <description>She has a visible beauty mark somewhere. Above her lips, on her cheek, maybe even on her tits or asscheeks.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="fetish:Cool" Value="5" />
+            <Modifier Name="fetish:Freak" Value="5" />
+            <Modifier Name="fetish:Sexy" Value="5" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="20" Name="Fragile" RandomChance="5" Type="Action">
+        <description>This girl is fragile and gets hurt or tired easy. (easy to hurt)</description>
+        <Modifiers>
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:Nerd" Value="5" />
+            <Modifier Name="fetish:Freak" Value="10" />
+            <Modifier Name="fetish:Lolita" Value="10" />
+        </Modifiers>
+        <Excludes>Tough</Excludes>
+    </Trait>
+
+    <Trait InheritChance="50" Name="Tough" RandomChance="20" Type="Action">
+        <description>This girl is tough, and can take a lot of punishment. (hard to hurt)</description>
+        <Modifiers>
+            <Modifier Name="fetish:CuteGirl" Value="-5" />
+            <Modifier Name="fetish:Dangerous" Value="10" />
+            <Modifier Name="fetish:Cool" Value="10" />
+            <Modifier Name="fetish:Nerd" Value="-5" />
+            <Modifier Name="fetish:Elegant" Value="-5" />
+        </Modifiers>
+        <Excludes>Fragile</Excludes>
+    </Trait>
+
+    <Trait InheritChance="10" Name="Sharp-Eyed" RandomChance="10" Type="Action">
+        <description>This girl can see much more clearly than most people.</description>
+        <Excludes>Blind</Excludes>
+        <Excludes>Bad Eyesight</Excludes>
+    </Trait>
+
+    <Trait InheritChance="5" Name="Clumsy" RandomChance="20" Type="Action">
+        <description>This girl often makes mistakes. Maybe she will learn in time.</description>
+        <Modifiers>
+            <Modifier Name="skill:Anal" Value="-10" />
+            <Modifier Name="skill:BDSM" Value="-10" />
+            <Modifier Name="skill:NormalSex" Value="-10" />
+            <Modifier Name="skill:Beastiality" Value="-10" />
+            <Modifier Name="skill:OralSex" Value="-10" />
+            <Modifier Name="skill:Group" Value="-10" />
+            <Modifier Name="skill:Lesbian" Value="-10" />
+            <Modifier Name="stat:Confidence" Value="-10" />
+            <Modifier Name="enjoy:WORKCLEANING" Value="-20" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="-20" />
+            <Modifier Name="fetish:Cool" Value="-10" />
+            <Modifier Name="fetish:Nerd" Value="20" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="20" Name="Delicate" RandomChance="10" Type="Action">
+        <description>This girl is a delicate flower. She gets tired quickly and bruises easily if she's hit.</description>
+        <Modifiers>
+            <Modifier Name="stat:Constitution" Value="-15" />
+            <Modifier Name="fetish:CuteGirl" Value="5" />
+            <Modifier Name="fetish:Nerd" Value="5" />
+            <Modifier Name="fetish:Freak" Value="5" />
+            <Modifier Name="fetish:Lolita" Value="10" />
+        </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="50" Name="Exotic" RandomChance="10" Type="Appearance">
+        <description>Her skin colour is unusual. It could be natural chocolate, tanned orange, perhaps even alien green or purple.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="fetish:Sexy" Value="10" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:Freak" Value="10" />
+        </Modifiers>
+    </Trait>
+
+
+    <MutexGroup>
+        <Trait>Flat Chest</Trait>
+        <Trait>Petite Breasts</Trait>
+        <Trait>Small Boobs</Trait>
+        <Trait>Busty Boobs</Trait>
+        <Trait>Big Boobs</Trait>
+        <Trait>Giant Juggs</Trait>
+        <Trait>Massive Melons</Trait>
+        <Trait>Abnormally Large Boobs</Trait>
+        <Trait>Titanic Tits</Trait>
+    </MutexGroup>
+
+    <MutexGroup>
+        <Trait>Flat Ass</Trait>
+        <Trait>Tight Butt</Trait>
+        <Trait>Plump Tush</Trait>
+        <Trait>Great Arse</Trait>
+        <Trait>Phat Booty</Trait>
+        <Trait>Wide Bottom</Trait>
+        <Trait>Deluxe Derriere</Trait>
+    </MutexGroup>
+
+    <MutexGroup>
+        <Trait>Lolita</Trait>
+        <Trait>MILF</Trait>
+        <Trait>Middle Aged</Trait>
+        <Trait>Old</Trait>
+    </MutexGroup>
+</Traits>

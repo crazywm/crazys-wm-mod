@@ -10,5 +10,12 @@
       Infinite="false">
    <Effect What="Stat" Name="PCLove" Amount="10" />
    <Effect What="Stat" Name="Intelligence" Amount="30" />
+   <Crafting CraftPoints="280" ManaCost="90">
+       <Job Name="Jeweler"/>
+       <Skill Name="Magic" Minimum="60" />
+       <Skill Name="Crafting" Minimum="90" />
+       <Stat Name="Intelligence" Minimum="95" />
+       <Stat Name="Level" Minimum="15" />
+     </Crafting>
 </Item>
 </Items>

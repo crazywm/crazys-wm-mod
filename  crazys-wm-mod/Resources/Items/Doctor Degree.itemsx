@@ -14,7 +14,6 @@
    <Effect What="Stat" Name="Fame" Amount="70" />
    <Effect What="Stat" Name="Level" Amount="5" />
    <Effect What="Stat" Name="AskPrice" Amount="75" />
-   <Effect What="Stat" Name="House" Amount="75" />
    <Effect What="Stat" Name="Exp" Amount="75" />
    <Effect What="Stat" Name="Spirit" Amount="75" />
    <Effect What="Stat" Name="Health" Amount="75" />

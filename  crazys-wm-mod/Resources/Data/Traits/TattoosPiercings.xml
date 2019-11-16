@@ -1,0 +1,207 @@
+<?xml version="1.0" ?>
+<Traits>
+    <!-- Not inherited and not generated as inherent or dormant traits -->
+    <Default>
+        <Setting Name="random:chance" Value="5" />
+        <Setting Name="inherit:chance" Value="0" />
+        <Setting Name="random:inherent" Value="0" />
+        <Setting Name="random:acquired:dormant" Value="0" />
+    </Default>
+
+    <Trait Name="Branded on the Ass">
+        <description>Normally the slave brand goes on the shoulder, but for some reason hers was placed on her ass.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Freak" Value="25" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="fetish:NiceArse" Value="-10" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Branded on the Forehead">
+        <description>Normally the slave brand goes on the shoulder, but for some reason hers was placed on her forehead.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="stat:Beauty" Value="-10" />
+            <Modifier Name="fetish:Freak" Value="25" />
+            <Modifier Name="fetish:Elegant" Value="-30" />
+            <Modifier Name="fetish:Cool" Value="-30" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Tattooed">
+        <description>She has some type of image tattooed on her body, be it a bird, a heart, or the name of an old lover.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="-10" />
+            <Modifier Name="stat:Charisma" Value="-10" />
+            <Modifier Name="fetish:Cool" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Small Tattoos">
+        <description>She has some small tattoos on her body. If you ask nicely, she may show you.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="-5" />
+            <Modifier Name="stat:Charisma" Value="-5" />
+            <Modifier Name="fetish:Cool" Value="25" />
+            <Modifier Name="fetish:Elegant" Value="-5" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="10" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Small Scars">
+        <description>This poor girl has small scars. (-looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="-2" />
+            <Modifier Name="stat:Constitution" Value="2" />
+            <Modifier Name="stat:Spirit" Value="-2" />
+            <Modifier Name="fetish:CuteGirl" Value="-5" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+            <Modifier Name="fetish:Cool" Value="2" />
+            <Modifier Name="fetish:Freak" Value="2" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="15" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Cool Scars">
+        <description>This girl has some scars that look kinda cool and dangerous.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="2" />
+            <Modifier Name="stat:Constitution" Value="5" />
+            <Modifier Name="stat:Spirit" Value="5" />
+            <Modifier Name="stat:Charisma" Value="2" />
+            <Modifier Name="fetish:CuteGirl" Value="-10" />
+            <Modifier Name="fetish:Dangerous" Value="20" />
+            <Modifier Name="fetish:Cool" Value="30" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="15" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Pierced Tongue">
+        <description>She has her tongue pierced.</description>
+        <Modifiers>
+            <Modifier Name="skill:OralSex" Value="10" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="fetish:Sexy" Value="10" />
+            <Modifier Name="fetish:Freak" Value="15" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Pierced Nose">
+        <description>This girl has a pierced nose.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Elegant" Value="-30" />
+            <Modifier Name="fetish:Sexy" Value="5" />
+            <Modifier Name="fetish:Freak" Value="15" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Pierced Navel">
+        <description>This girl has a pierced navel.</description>
+        <Modifiers>
+            <Modifier Name="fetish:Elegant" Value="-5" />
+            <Modifier Name="fetish:Sexy" Value="5" />
+            <Modifier Name="fetish:Freak" Value="15" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Pierced Nipples">
+        <description>She has had her nipples pierced.</description>
+        <Modifiers>
+            <Modifier Name="stat:Libido" Value="10" />
+            <Modifier Name="stat:Lactation" Value="-10" />
+            <Modifier Name="skill:TittySex" Value="10" />
+            <Modifier Name="enjoy:WORKMILK" Value="-10" />
+            <Modifier Name="fetish:Elegant" Value="-10" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+            <Modifier Name="fetish:Freak" Value="15" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="2" />
+        </Properties>
+    </Trait>
+
+    <Trait Name="Heavily Tattooed">
+        <description>She has tattoos over most of her body. It is very hard for her to cover them all.</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="-15" />
+            <Modifier Name="stat:Charisma" Value="-15" />
+            <Modifier Name="fetish:Cool" Value="30" />
+            <Modifier Name="fetish:Elegant" Value="-20" />
+            <Modifier Name="fetish:Dangerous" Value="15" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait Name="Horrific Scars">
+        <description>The poor girl has some horrid scars on her body. (-looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Beauty" Value="-5" />
+            <Modifier Name="stat:Constitution" Value="10" />
+            <Modifier Name="stat:Spirit" Value="-10" />
+            <Modifier Name="fetish:CuteGirl" Value="-15" />
+            <Modifier Name="fetish:Dangerous" Value="30" />
+            <Modifier Name="fetish:Freak" Value="20" />
+        </Modifiers>
+    </Trait>
+
+    <Trait Name="Bruises">
+        <description>This girl has bruises all over her body.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="-5" />
+            <Modifier Name="stat:Beauty" Value="-5" />
+            <Modifier Name="enjoy:COMBAT" Value="-5" />
+        </Modifiers>
+
+        <Properties>
+            <!-- This is expected to be used as a temporary trait, so do not spawn with it -->
+            <Setting Name="random:chance" Value="0" />
+        </Properties>
+    </Trait>
+
+
+    <Trait Name="Pierced Clit">
+        <description>She has had her clit pierced.</description>
+        <Modifiers>
+            <Modifier Name="stat:Libido" Value="20" />
+            <Modifier Name="skill:NormalSex" Value="10" />
+            <Modifier Name="enjoy:SEX" Value="10" />
+            <Modifier Name="fetish:Elegant" Value="-5" />
+            <Modifier Name="fetish:Sexy" Value="20" />
+            <Modifier Name="fetish:Freak" Value="15" />
+        </Modifiers>
+
+        <Properties>
+            <Setting Name="random:chance" Value="1" />
+        </Properties>
+    </Trait>
+
+    <MutexGroup>
+        <Trait>Small Tattoos</Trait>
+        <Trait>Tattooed</Trait>
+        <Trait>Heavily Tattooed</Trait>
+    </MutexGroup>
+</Traits>

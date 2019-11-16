@@ -14,5 +14,9 @@
    <Effect What="Trait" Name="Dependant" Amount="1" />
    <Effect What="Trait" Name="Nervous" Amount="1" />
    <Effect What="Trait" Name="Nervous" Amount="1" />
+   <Crafting CraftPoints="180" ManaCost="30">
+        <Job Name="Jeweler"/>
+        <Skill Name="Magic" Minimum="50" />
+    </Crafting>
 </Item>
 </Items>

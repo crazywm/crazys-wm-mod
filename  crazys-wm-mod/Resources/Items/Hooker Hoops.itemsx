@@ -27,5 +27,8 @@
             What="Trait"
             Name="Elegant"
             Amount="0" />
+        <Crafting CraftPoints="10" ManaCost="0">
+           <Job Name="Jeweler"/>
+        </Crafting>
     </Item>
 </Items>

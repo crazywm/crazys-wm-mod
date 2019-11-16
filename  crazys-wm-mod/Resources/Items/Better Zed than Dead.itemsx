@@ -12,7 +12,6 @@
         <Effect What="Skill" Name="OralSex" Amount="-50" />
 
         <Effect What="Stat" Name="Health" Amount="100" />
-        <Effect What="Stat" Name="House" Amount="100" />
         <Effect What="Stat" Name="Strength" Amount="50" />
         <Effect What="Stat" Name="Charisma" Amount="-50" />
         <Effect What="Stat" Name="Intelligence" Amount="-50" />

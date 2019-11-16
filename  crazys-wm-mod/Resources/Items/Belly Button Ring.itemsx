@@ -5,5 +5,8 @@
         <Effect What="Stat" Name="Charisma" Amount="2" />
         <Effect What="Stat" Name="Beauty" Amount="1" />
         <Effect What="Trait" Name="Pierced Navel" Amount="1" />
+        <Crafting CraftPoints="10" ManaCost="0">
+           <Job Name="Jeweler"/>
+        </Crafting>
     </Item>
 </Items>

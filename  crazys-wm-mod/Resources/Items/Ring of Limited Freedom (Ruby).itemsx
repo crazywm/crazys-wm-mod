@@ -19,5 +19,9 @@
    <Effect What="Trait" Name="Fast Orgasms" Amount="0" />
    <Effect What="Trait" Name="Slow Orgasms" Amount="1" />
    <Effect What="Trait" Name="Slow Orgasms" Amount="1" />
+      <Crafting CraftPoints="150" ManaCost="30">
+       <Job Name="Jeweler"/>
+       <Skill Name="Magic" Minimum="40" />
+   </Crafting>
 </Item>
 </Items>

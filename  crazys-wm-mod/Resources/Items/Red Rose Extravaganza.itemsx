@@ -13,19 +13,8 @@
    <Effect What="Stat"  Name="PCLove"                  Amount="30"    />
    <Effect What="Stat"  Name="Libido"                  Amount="50"    />
    <Effect What="Stat"  Name="PCHate"                  Amount="-20"    />
-</Item>
-<Item Name="Red Rose Extravaganza"
-      Desc="A single red rose is worth a lot to a girl. How much do you think a hundred red roses are worth? There's a point of diminishing returns somewhere around twenty-eight but you can't go wrong with three digits' worth of classic, timeless romance. (A) (+20 Hap, +30 Love, +50 Lib, -20 Hate)"
-      Type="Food"
-      Badness="0"
-      Special="None"
-      Cost="1000"
-      Rarity="Shop05"
-      Infinite="false"
-      GirlBuyChance="0">
-   <Effect What="Stat"  Name="Happiness"               Amount="20"    />
-   <Effect What="Stat"  Name="PCLove"                  Amount="30"    />
-   <Effect What="Stat"  Name="Libido"                  Amount="50"    />
-   <Effect What="Stat"  Name="PCHate"                  Amount="-20"    />
+   <Crafting CraftPoints="140" ManaCost="0">
+       <Job Name="Gardener"/>
+   </Crafting>
 </Item>
 </Items>

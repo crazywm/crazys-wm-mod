@@ -1,0 +1,276 @@
+<?xml version="1.0" ?>
+<Traits>
+
+    <Trait InheritChance="10" Name="Charismatic" RandomChance="10" Type="Social">
+        <description>Increased Charisma. She is a natural born leader, negotiator, diplomat, and fast talker. Damn, she's smooth. (+looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="50" />
+            <Modifier Name="stat:Beauty" Value="10" />
+            <Modifier Name="enjoy:WORKBAR" Value="20" />
+            <Modifier Name="enjoy:WORKHALL" Value="20" />
+            <Modifier Name="fetish:Elegant" Value="30" />
+            <Modifier Name="fetish:Sexy" Value="30" />
+            <Modifier Name="fetish:Freak" Value="-20" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="10" Name="Charming" RandomChance="20" Type="Social">
+    <description>This girl has a lot of natural appealing wit on her side, in a non-sexual sort of way. Higher Charisma, and Natural Looks. (+looks)</description>
+    <Modifiers>
+        <Modifier Name="stat:Charisma" Value="30" />
+        <Modifier Name="stat:Beauty" Value="15" />
+        <Modifier Name="enjoy:WORKBAR" Value="10" />
+        <Modifier Name="enjoy:WORKHALL" Value="10" />
+        <Modifier Name="fetish:Elegant" Value="20" />
+        <Modifier Name="fetish:Sexy" Value="20" />
+        <Modifier Name="fetish:Freak" Value="-15" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="10" Name="Elegant" RandomChance="20" Type="Social">
+    <description>She's got style and flair. (+looks)</description>
+    <Modifiers>
+        <Modifier Name="stat:Charisma" Value="10" />
+        <Modifier Name="stat:Confidence" Value="5" />
+        <Modifier Name="stat:Refinement" Value="10" />
+        <Modifier Name="skill:Performance" Value="5" />
+        <Modifier Name="enjoy:SEX" Value="-20" />
+        <Modifier Name="enjoy:WORKMATRON" Value="20" />
+        <Modifier Name="fetish:Dangerous" Value="-30" />
+        <Modifier Name="fetish:Nerd" Value="-20" />
+        <Modifier Name="fetish:NonHuman" Value="-20" />
+        <Modifier Name="fetish:Elegant" Value="60" />
+        <Modifier Name="fetish:Freak" Value="-30" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Exhibitionist" RandomChance="5" Type="Social">
+    <description>She loves to show her body.</description>
+    <Modifiers>
+        <Modifier Name="skill:Strip" Value="20" />
+        <Modifier Name="skill:Performance" Value="10" />
+        <Modifier Name="stat:Confidence" Value="20" />
+        <Modifier Name="stat:Charisma" Value="10" />
+        <Modifier Name="stat:Morality" Value="-10" />
+        <Modifier Name="enjoy:WORKMUSIC" Value="20" />
+        <Modifier Name="enjoy:WORKSTRIP" Value="30" />
+        <Modifier Name="enjoy:WORKMOVIE" Value="30" />
+        <Modifier Name="enjoy:SEX" Value="10" />
+        <Modifier Name="enjoy:WORKCLUB" Value="10" />
+        <Modifier Name="enjoy:WORKHALL" Value="10" />
+        <Modifier Name="enjoy:WORKBAR" Value="10" />
+        <Modifier Name="enjoy:WORKESCORT" Value="10" />
+        <Modifier Name="fetish:CuteGirl" Value="20" />
+        <Modifier Name="fetish:Freak" Value="20" />
+        <Modifier Name="fetish:Sexy" Value="10" />
+    </Modifiers>
+        <Excludes>Shy</Excludes>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Shy" RandomChance="5" Type="Social">
+        <description>This girl has trouble interacting with people she does not know.</description>
+        <Modifiers>
+            <Modifier Name="skill:Performance" Value="-20" />
+            <Modifier Name="stat:Confidence" Value="-20" />
+            <Modifier Name="enjoy:WORKADVERTISING" Value="-20" />
+            <Modifier Name="enjoy:WORKRECRUIT" Value="-20" />
+            <Modifier Name="enjoy:WORKCUSTSERV" Value="-10" />
+            <Modifier Name="enjoy:WORKCLUB" Value="-10" />
+            <Modifier Name="fetish:Cool" Value="-20" />
+            <Modifier Name="fetish:Nerd" Value="10" />
+        </Modifiers>
+        <Excludes>Exhibitionist</Excludes>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Idol" RandomChance="1" Type="Social">
+    <description>This girl has gathered quite the following.</description>
+    <Modifiers>
+        <Modifier Name="stat:Fame" Value="25" />
+        <Modifier Name="skill:Performance" Value="10" />
+        <Modifier Name="enjoy:WORKMOVIE" Value="20" />
+        <Modifier Name="enjoy:WORKMUSIC" Value="10" />
+        <Modifier Name="fetish:Cool" Value="30" />
+        <Modifier Name="fetish:CuteGirl" Value="10" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="0" Name="Noble" RandomChance="5" Type="Social">
+    <description>This blue-blooded girl comes from an aristocratic, high-class background.</description>
+    <Modifiers>
+        <Modifier Name="stat:Charisma" Value="5" />
+        <Modifier Name="stat:Beauty" Value="5" />
+        <Modifier Name="stat:Confidence" Value="5" />
+        <Modifier Name="stat:Obedience" Value="-5" />
+        <Modifier Name="stat:Refinement" Value="10" />
+        <Modifier Name="stat:Dignity" Value="10" />
+        <Modifier Name="stat:Fame" Value="5" />
+        <Modifier Name="enjoy:SEX" Value="-10" />
+        <Modifier Name="enjoy:WORKCLEANING" Value="-20" />
+        <Modifier Name="enjoy:WORKFARM" Value="-20" />
+        <Modifier Name="enjoy:MAKEITEMS" Value="-5" />
+        <Modifier Name="enjoy:COOKING" Value="-5" />
+        <Modifier Name="fetish:Elegant" Value="15" />
+        <Modifier Name="fetish:Sexy" Value="5" />
+        <Modifier Name="fetish:Freak" Value="-5" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="0" Name="Princess" RandomChance="2" Type="Social">
+    <description>She is a princess.</description>
+    <Modifiers>
+        <Modifier Name="stat:Charisma" Value="10" />
+        <Modifier Name="stat:Beauty" Value="10" />
+        <Modifier Name="stat:Confidence" Value="10" />
+        <Modifier Name="stat:Obedience" Value="-5" />
+        <Modifier Name="stat:Refinement" Value="20" />
+        <Modifier Name="stat:Dignity" Value="20" />
+        <Modifier Name="stat:Fame" Value="10" />
+        <Modifier Name="enjoy:SEX" Value="-10" />
+        <Modifier Name="enjoy:WORKCLEANING" Value="-30" />
+        <Modifier Name="enjoy:WORKFARM" Value="-30" />
+        <Modifier Name="enjoy:MAKEITEMS" Value="-10" />
+        <Modifier Name="enjoy:COOKING" Value="-10" />
+        <Modifier Name="fetish:Elegant" Value="40" />
+        <Modifier Name="fetish:Sexy" Value="20" />
+        <Modifier Name="fetish:Freak" Value="-15" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="0" Name="Queen" RandomChance="1" Type="Social">
+    <description>She is a queen.</description>
+    <Modifiers>
+        <Modifier Name="stat:Charisma" Value="20" />
+        <Modifier Name="stat:Beauty" Value="20" />
+        <Modifier Name="stat:Confidence" Value="10" />
+        <Modifier Name="stat:Obedience" Value="-15" />
+        <Modifier Name="stat:Refinement" Value="30" />
+        <Modifier Name="stat:Dignity" Value="30" />
+        <Modifier Name="stat:Fame" Value="15" />
+        <Modifier Name="enjoy:SEX" Value="-10" />
+        <Modifier Name="enjoy:WORKCLEANING" Value="-40" />
+        <Modifier Name="enjoy:WORKFARM" Value="-40" />
+        <Modifier Name="enjoy:MAKEITEMS" Value="-20" />
+        <Modifier Name="enjoy:COOKING" Value="-20" />
+        <Modifier Name="fetish:Elegant" Value="60" />
+        <Modifier Name="fetish:Sexy" Value="20" />
+        <Modifier Name="fetish:Freak" Value="-15" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="10" Name="Sexy Air" RandomChance="10" Type="Social">
+    <description>Something about this girl is just so sexy, everything she does is hot. (+customer attraction)</description>
+    <Modifiers>
+        <Modifier Name="stat:Charisma" Value="5" />
+        <Modifier Name="stat:Beauty" Value="10" />
+        <Modifier Name="stat:Confidence" Value="2" />
+        <Modifier Name="fetish:Elegant" Value="-5" />
+        <Modifier Name="fetish:Sexy" Value="10" />
+        <Modifier Name="fetish:Cool" Value="5" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Slut" RandomChance="5" Type="Social">
+    <description>She definitely wouldn't make a good wife. A good whore on the other hand...</description>
+    <Modifiers>
+        <Modifier Name="stat:Charisma" Value="-10" />
+        <Modifier Name="stat:Dignity" Value="-5" />
+        <Modifier Name="enjoy:SEX" Value="10" />
+        <Modifier Name="fetish:Sexy" Value="25" />
+        <Modifier Name="fetish:Cool" Value="15" />
+        <Modifier Name="fetish:Elegant" Value="-30" />
+    </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="30" Name="Social Drinker" RandomChance="10" Type="Social">
+    <description>This girl knows how to handle her alcohol.</description>
+    <Modifiers>
+        <Modifier Name="fetish:Elegant" Value="-5" />
+        <Modifier Name="fetish:Cool" Value="15" />
+        <Modifier Name="fetish:Sexy" Value="10" />
+    </Modifiers>
+    </Trait>
+
+    <Trait InheritChance="1" Name="Cool Person" RandomChance="20" Type="Perception">
+        <description>This person is just cool to be with. (+looks)</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="stat:Spirit" Value="10" />
+            <Modifier Name="stat:Confidence" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="5" />
+            <Modifier Name="fetish:Cool" Value="60" />
+            <Modifier Name="fetish:Nerd" Value="-10" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="0" Name="Your Daughter" RandomChance="0" Type="Social">
+    <description>This girl is a child of your loins.</description>
+    </Trait>
+
+
+    <Trait InheritChance="0" Name="Your Wife" RandomChance="0" Type="Social">
+    <description>This girl is one of your wives.</description>
+    </Trait>
+
+    <Trait InheritChance="70" Name="Cute" RandomChance="20" Type="Perception">
+        <description>This girl is just very cute.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="10" />
+            <Modifier Name="stat:Beauty" Value="5" />
+            <Modifier Name="enjoy:WORKCLUB" Value="10" />
+            <Modifier Name="enjoy:WORKBAR" Value="20" />
+            <Modifier Name="enjoy:WORKHALL" Value="15" />
+            <Modifier Name="fetish:CuteGirl" Value="60" />
+            <Modifier Name="fetish:Lolita" Value="20" />
+            <Modifier Name="fetish:SmallBoobs" Value="5" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Dojikko" RandomChance="5" Type="Perception">
+        <description>This girl is a klutz, but somehow, that just makes her more attractive.</description>
+        <Modifiers>
+            <Modifier Name="stat:Charisma" Value="5" />
+            <Modifier Name="stat:Agility" Value="-5" />
+            <Modifier Name="fetish:CuteGirl" Value="20" />
+            <Modifier Name="fetish:Dangerous" Value="-20" />
+            <Modifier Name="fetish:Nerd" Value="10" />
+            <Modifier Name="fetish:Freak" Value="5" />
+        </Modifiers>
+    </Trait>
+
+
+    <Trait InheritChance="1" Name="Nerd" RandomChance="20" Type="Perception">
+        <description>Bookish and clumsy but kinda cute all the same. (+brains)</description>
+        <Modifiers>
+            <Modifier Name="stat:Confidence" Value="-10" />
+            <Modifier Name="stat:Intelligence" Value="10" />
+            <Modifier Name="skill:Combat" Value="-10" />
+            <Modifier Name="skill:Medicine" Value="10" />
+            <Modifier Name="enjoy:WORKTRAINING" Value="10" />
+            <Modifier Name="enjoy:MAKEITEMS" Value="10" />
+            <Modifier Name="enjoy:COMBAT" Value="-10" />
+            <Modifier Name="fetish:CuteGirl" Value="10" />
+            <Modifier Name="fetish:Dangerous" Value="-30" />
+            <Modifier Name="fetish:Cool" Value="-30" />
+            <Modifier Name="fetish:Nerd" Value="60" />
+            <Modifier Name="fetish:SmallBoobs" Value="5" />
+        </Modifiers>
+    </Trait>
+
+    <MutexGroup>
+        <Trait>Queen</Trait>
+        <Trait>Princess</Trait>
+        <Trait>Noble</Trait>
+    </MutexGroup>
+</Traits>
