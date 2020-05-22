@@ -78,7 +78,7 @@ cScreenLoadGame::cScreenLoadGame()
         AddButton("Back", BUTTON_LOADGBACK, 176, 304, 160, 32, true);
     }
 
-    SetButtonNavigation(BUTTON_LOADGBACK, "Main Menu");
+    SetButtonNavigation(BUTTON_LOADGBACK, "<back>");
     SetButtonCallback(BUTTON_LOADGLOAD, [this]() { load_game(); });
     SetListBoxDoubleClickCallback(LIST_LOADGSAVES, [this](int sel) { load_game(); });
 }

@@ -57,7 +57,7 @@ void cScreenSettings::set_ids()
 	gangsgirlspercslider_id	/**/ = get_id("GangsGirlsPercSliderCat");
 	gangsitemspercslider_id	/**/ = get_id("GangsItemsPercSliderCat");
 
-	SetButtonNavigation(back_id, "Main Menu");
+	SetButtonNavigation(back_id, "<back>");
 	SetButtonCallback(revert_id, [this]() { init(false); });
     SetButtonCallback(ok_id, [this]() {
         update_settings();

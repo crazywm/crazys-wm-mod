@@ -36,11 +36,11 @@ void cScreenMainMenu::set_ids()
 	quit_id			= get_id("Quit Game");
 	version_id		= get_id("Version");
 
-	SetButtonNavigation(new_id, "New Game");
+	SetButtonNavigation(new_id, "New Game", false);
 	SetButtonHotKey(new_id, SDLK_n);
-	SetButtonNavigation(load_id, "Load Game");
+	SetButtonNavigation(load_id, "Load Game", false);
 	SetButtonHotKey(load_id, SDLK_l);
-	SetButtonNavigation(settings_id, "Settings");
+	SetButtonNavigation(settings_id, "Settings", false);
 	SetButtonHotKey(settings_id, SDLK_s);
 	SetButtonCallback(continue_id, [this]()
     {
