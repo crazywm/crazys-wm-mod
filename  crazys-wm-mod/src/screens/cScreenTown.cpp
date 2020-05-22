@@ -92,11 +92,11 @@ void cScreenTown::set_ids()
     setup_id        /**/    = get_id("SetUp", "*Unused*");//
 
     SetButtonNavigation(back_id, "<back>");
-    SetButtonNavigation(slavemarket_id, "Slave Market");
-    SetButtonNavigation(prison_id, "Prison");
-    SetButtonNavigation(bank_id, "Bank");
-    SetButtonNavigation(mayor_id, "Mayor");
-    SetButtonNavigation(setup_id, "Property Management");
+    SetButtonNavigation(slavemarket_id, "Slave Market", false);
+    SetButtonNavigation(prison_id, "Prison", false);
+    SetButtonNavigation(bank_id, "Bank", false);
+    SetButtonNavigation(mayor_id, "Mayor", false);
+    SetButtonNavigation(setup_id, "Property Management", false);
 
     SetButtonCallback(brothel0_id, [this]() {check_building(0); });
     SetButtonCallback(brothel1_id, [this]() {check_building(1); });
