@@ -1242,6 +1242,7 @@ void cGangManager::UpdateGangs()
         case MISS_RECRUIT:
         case MISS_SERVICE:
             m_Missions[currentGang->m_MissionID]->run(*currentGang);
+            break;
             default: {
             if (cfg.debug.log_debug()) {
                 g_LogFile.ss() << "Debug cGangManager::UpdateGangs() || bad mission " << currentGang->m_MissionID;
