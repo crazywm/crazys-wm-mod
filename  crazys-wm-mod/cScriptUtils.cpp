@@ -53,9 +53,9 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
 	int total_rooms = 0;
 	int rooms_used = 0;
 	// TODO figure out which building is used here
-    IBuilding* building = nullptr;
-    total_rooms = building->m_NumRooms;
-    rooms_used  = building->num_girls();
+    IBuilding& building = g_Game.buildings().get_building(0);
+    total_rooms = building.m_NumRooms;
+    rooms_used  = building.num_girls();
 	int diff = total_rooms - rooms_used;
 /*
  *	now then...
@@ -70,7 +70,7 @@ void cScriptUtils::add_girl_to_brothel(sGirl *girl)
  *	otherwise, it's very simple
  */
 	text += (" has been sent to your current brothel.");
-	building->add_girl(girl);
+	building.add_girl(girl);
 	g_Game.push_message(text, 0);
 	return;
 }
