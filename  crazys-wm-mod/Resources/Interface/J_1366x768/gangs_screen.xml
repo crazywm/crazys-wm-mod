@@ -5,7 +5,7 @@
 <Text       Name="Gold"                 Text="Player Gold: 0"               XPos="800"      YPos="2"        Width="300"     Height="32"     FontSize="24"  />
 
 
-<ListBox    Name="GangList"                                                 XPos="10"       YPos="35"       Width="1100"     Height="402" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<ListBox    Name="GangList"                                                 XPos="10"       YPos="35"       Width="1100"     Height="402" FontSize="12" RowHeight="19" Border="1" Events="true" Multi="true" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column     Name="GangName"             Header="Gang Name"                  Offset="0"  />
 <Column     Name="Mission"              Header="Mission"                    Offset="250"  />
 <Column     Name="Number"               Header="Men"                        Offset="400"  />
@@ -24,7 +24,7 @@
 <Image      Name="HireArrow"            File="imgArrowLeft.png"             XPos="194"      YPos="495"      Width="32"      Height="80"  />
 <Button     Name="GangHireButton"       Image="Hire"                        XPos="116"      YPos="520"      Width="80"      Height="32"  Transparency="true" Scale="true"  />
 
-<ListBox    Name="RecruitList"                                              XPos="210"      YPos="450"      Width="900"     Height="182" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<ListBox    Name="RecruitList"                                              XPos="210"      YPos="450"      Width="900"     Height="182" FontSize="12" RowHeight="19" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column     Name="GangName"             Header="Recruitable Gang"           Offset="0"  />
 <Column     Name="Number"               Header="Men"                        Offset="200"  />
 <Column     Name="Combat"               Header="Combat"                     Offset="275"  />
@@ -38,7 +38,7 @@
 </ListBox>
 
 <Text       Name="txtMissions"          Text="Available Missions"           XPos="1130"     YPos="8"        Width="200"     Height="32"  FontSize="18"  />
-<ListBox    Name="MissionList"                                              XPos="1130"     YPos="35"       Width="200"     Height="242" Border="1"          Events="true"  />
+<ListBox    Name="MissionList"                                              XPos="1130"     YPos="35"       Width="200"     Height="242" FontSize="12" RowHeight="19" Border="1"          Events="true"  />
 <Text       Name="MissionDescription"   Text=""                             XPos="1130"     YPos="280"      Width="200"     Height="115" FontSize="12"  />
 
 <Text       Name="WeaponDescription"    Text="Weapon Level: 0"              XPos="800"      YPos="675"      Width="300"     Height="32" FontSize="13"  />

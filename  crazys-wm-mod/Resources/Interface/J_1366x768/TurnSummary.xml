@@ -2,11 +2,11 @@
 <Window     Name="Turn Summary"                                             XPos="13"       YPos="14"       Width="1340"    Height="740"    Border="1"  />
 <Text       Name="CurrentBrothel"       Text=""                             XPos="10"       YPos="2"        Width="790"     Height="32"     FontSize="15"  />
 
-<ListBox    Name="Category"                                                 XPos="10"       YPos="30"       Width="200"     Height="102"    Border="1"          Events="true" Multi="false"  />
+<ListBox    Name="Category"                                                 XPos="10"       YPos="30"       Width="200"     Height="102"   FontSize="12" RowHeight="19"  Border="1"          Events="true" Multi="false"  />
 <Text       Name="LabelItem"            Text="Item"                         XPos="10"       YPos="140"      Width="200"     Height="20"     FontSize="15"  />
-<ListBox    Name="Item"                                                     XPos="10"       YPos="160"      Width="200"     Height="161"    Border="1"          Events="true" Multi="false"  />
+<ListBox    Name="Item"                                                     XPos="10"       YPos="160"      Width="200"     Height="161"   FontSize="12" RowHeight="19"  Border="1"          Events="true" Multi="false"  />
 <Text       Name="LabelEvent"           Text="Event"                        XPos="10"       YPos="330"      Width="200"     Height="20"     FontSize="15"  />
-<ListBox    Name="Event"                                                    XPos="10"       YPos="350"      Width="200"     Height="380"    Border="1"          Events="true" Multi="false"  />
+<ListBox    Name="Event"                                                    XPos="10"       YPos="350"      Width="200"     Height="380"   FontSize="12" RowHeight="19"  Border="1"          Events="true" Multi="false"  />
 
 <Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="210"      YPos="10"       Width="920"     Height="720"  />
 

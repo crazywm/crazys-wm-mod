@@ -5,7 +5,7 @@
 <Text    	Name="Capacity"	Text="Capacity: "			XPos="10"	YPos="48"	Width="240"	Height="32"	FontSize="16"	/>
 <Text    	Name="Gold"	Text="Gold: 99999999"			XPos="400"	YPos="24"	Width="120"	Height="32"	FontSize="16"	/>
 <Text    	Name="TotalCost"	Text="TotalCost: 0"		XPos="400"	YPos="48"	Width="120"	Height="32"	FontSize="16"	/>
-<ListBox	Name="FacilityList"					XPos="560"	YPos="20"	Width="200"	Height="500"	Border="1"	Events="true"	Multi="false"	/>
+<ListBox	Name="FacilityList"					XPos="560"	YPos="20"	Width="200"	Height="500"	FontSize="12" RowHeight="19" Border="1"	Events="true"	Multi="false"	/>
 <Text    	Name="Narrative"	Text=""				XPos="10"	YPos="490"	Width="500"	Height="128"	FontSize="16"	/>
 <!--!	The idea here is to define repeating sequences of screen!	elements as "	widgets"	!!	So:!!	<Define	Widget="WidgetName"	>!	(repeating XML definitions go here)!	</Define>!!	And then:!!	<Widget	Definition="WidgetName"	!	Sequence="0"	!				XPos="10"	!	YPos="10"	!/>!!	And have the component parts of the widget take their position and ID!	based on the X and Y pos and sequence. !-->
 <Define Widget="Adjuster"	>

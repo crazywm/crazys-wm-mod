@@ -1,23 +1,23 @@
 <Screen>
 <Window     Name="Item Management Window"                                   XPos="13"       YPos="14"       Width="1340"    Height="740"    Border="1"  />
 <Text       Name="OwnersLeftHeader"     Text="Owner"                        XPos="301"      YPos="0"        Width="120"     Height="32"  FontSize="18"  />
-<ListBox    Name="OwnersLeftList"                                           XPos="220"       YPos="24"       Width="300"     Height="282" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
+<ListBox    Name="OwnersLeftList"                                           XPos="220"       YPos="24"       Width="300"     Height="282" FontSize="12" RowHeight="19" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
 <Column     Name="OLLName"              Header="Name"                       Offset="0"  />                                   
 <Column     Name="OLLNumber"            Header="Items"                      Offset="180"  />                                 
 <Column     Name="OLLCatNum"            Header="Cat."                       Offset="230"  />                                 
 </ListBox>                                                                                                                  
 <Text       Name="ItemsLeftHeader"      Text="Inventory"                    XPos="286"       YPos="302"      Width="120"     Height="32"  FontSize="18"  />
-<ListBox    Name="ItemsLeftList"                                            XPos="220"       YPos="328"      Width="300"     Height="402" Border="1"       Events="true" Multi="true"  />
+<ListBox    Name="ItemsLeftList"                                            XPos="220"       YPos="328"      Width="300"     Height="402" FontSize="12" RowHeight="19" Border="1"       Events="true" Multi="true"  />
 <Text       Name="OwnersRightHeader"    Text="Owner"                        XPos="903"      YPos="0"        Width="120"     Height="32"  FontSize="18"  />
-<ListBox    Name="OwnersRightList"                                          XPos="810"      YPos="24"       Width="300"     Height="282" Border="1"      Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
+<ListBox    Name="OwnersRightList"                                          XPos="810"      YPos="24"       Width="300"     Height="282" FontSize="12" RowHeight="19" Border="1"      Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="false" >
 <Column     Name="ORLName"              Header="Name"                       Offset="0"  />                                   
 <Column     Name="ORLNumber"            Header="Items"                      Offset="180"  />                                 
 <Column     Name="ORLCatNum"            Header="Cat."                       Offset="230"  />                                 
 </ListBox>                                                                                                                  
 <Text       Name="ItemsRightHeader"     Text="Inventory"                    XPos="888"      YPos="302"      Width="120"     Height="32"     FontSize="18"  />
-<ListBox    Name="ItemsRightList"                                           XPos="810"      YPos="328"      Width="300"     Height="402"    Border="1"          Events="true" Multi="true"  />
+<ListBox    Name="ItemsRightList"                                           XPos="810"      YPos="328"      Width="300"     Height="402"    FontSize="12" RowHeight="19" Border="1"          Events="true" Multi="true"  />
 <Text       Name="CurrentBrothel"       Text=""                             XPos="526"      YPos="0"        Width="500"     Height="32"     FontSize="12"  />
-<ListBox    Name="FilterList"                                               XPos="600"      YPos="20"       Width="130"     Height="242"    Border="1"          Events="true" Multi="false"  />
+<ListBox    Name="FilterList"                                               XPos="600"      YPos="20"       Width="130"     Height="242"    FontSize="12" RowHeight="19" Border="1"          Events="true" Multi="false"  />
 <Button     Name="Sell10LeftButton"     Image="Sell10"                      XPos="536"      YPos="30"       Width="48"      Height="22"     Transparency="true" Scale="true"  />
 <Button     Name="Sell10RightButton"    Image="Sell10"                      XPos="746"      YPos="30"       Width="48"      Height="22"     Transparency="true" Scale="true"  />
 <Button     Name="SellAllLeftButton"    Image="SellAll"                     XPos="536"      YPos="55"       Width="48"      Height="22"     Transparency="true" Scale="true"  />

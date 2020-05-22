@@ -7,7 +7,7 @@
 <Button     Name="NextButton"           Image="Next"                        XPos="1240"      YPos="650"      Width="72"      Height="32"     Transparency="true"     Scale="true"     />
 <Button     Name="BackButton"           Image="Back"                        XPos="1130"      YPos="690"      Width="200"     Height="40"     Transparency="true" Scale="true"  />
 
-<ListBox    Name="ImageList"                                                XPos="1130"      YPos="10"       Width="200"     Height="622" FontSize="9" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
+<ListBox    Name="ImageList"                                                XPos="1130"      YPos="10"       Width="200"     Height="622" FontSize="9" RowHeight="17" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column     Name="Name"                 Header="Image Types"                Offset="0" />
 <Column     Name="All"                  Header="All"                        Offset="100" />
 <Column     Name="jpg"                  Header="*g"                         Offset="121" />
