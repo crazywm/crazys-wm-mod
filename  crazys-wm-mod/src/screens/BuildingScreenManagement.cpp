@@ -178,6 +178,7 @@ void IBuildingScreenManagement::set_ids() {
     girlimage_id = get_id("GirlImage");
     girldesc_id  = get_id("GirlDescription");
     girllist_id  = get_id("GirlList");
+    curbrothel_id = get_id("CurrentBrothel");
 
     viewdetails_id = get_id("ViewDetailsButton");
     gold_id      = get_id("Gold");
