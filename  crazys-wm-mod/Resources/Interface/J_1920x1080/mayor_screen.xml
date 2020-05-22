@@ -1,8 +1,11 @@
+
 <Screen>
-<Window   Name="Mayor Office Window"                                           XPos="560"           YPos="240"           Width="800"           Height="600"           Border="1" />
-<Image    Name="MayorIcon"           File="MayorsOffice.png"                   XPos="650"           YPos="50"           Width="100"           Height="100" />
-<Text     Name="ScreenHeader"        Text="Town Hall"                          XPos="50"           YPos="50"           Width="600"           Height="50"           FontSize="32" />
-<Text     Name="MayorDetails"        Text=""                                   XPos="50"           YPos="100"           Width="600"           Height="400"           FontSize="14" />
-<Button   Name="BribeButton"         Image="Bribe"                             XPos="100"           YPos="500"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="BackButton"          Image="Back"                              XPos="450"           YPos="500"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
+<Window     Name="Mayor Office Window"                                      XPos="679"      YPos="239"      Width="562"     Height="562" Border="1"  />
+<Image      Name="MayorIcon"            File="MayorsOffice.png"             XPos="14"       YPos="14"       Width="70"      Height="70"                   />
+<Text       Name="ScreenHeader"         Text="Town Hall"                    XPos="98"       YPos="14"       Width="450"     Height="45"                  FontSize="28"                   />
+<Text       Name="MayorDetails"         Text=""                             XPos="14"       YPos="84"       Width="534"     Height="408"                  FontSize="20"                   />
+
+
+<Button     Name="BribeButton"          Image="Bribe"                       XPos="169"      YPos="503"      Width="225"     Height="45"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="BackButton"           Image="Back"                        XPos="720"      YPos="754"      Width="267"     Height="53"  Transparency="true"    Scale="true"  />
 </Screen>

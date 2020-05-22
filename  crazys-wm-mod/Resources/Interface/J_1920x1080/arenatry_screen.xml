@@ -1,0 +1,6 @@
+<Screen>
+<Window	Name="Arena Try Window"				XPos="14"  YPos="14"  Width="1096" Height="816" Border="1" />
+<Image	Name="Arena"	File="Arena.png"		XPos="1"	YPos="1"	Width="1079"	Height="754"	/>
+<Button  	Name="BackButton"	Image="Back"		XPos="843"	YPos="759"	Width="225"	Height="45"	Transparency="true"	Scale="true"	/>
+<Button  	Name="WalkButton"	Image="holdTryouts"	XPos="247"	YPos="759"	Width="225"	Height="45"	Transparency="true"	Scale="true"	/>
+</Screen>

@@ -1,15 +1,23 @@
 <Screen>
-<Window   Name="Centre Window"                                                 XPos="60"           YPos="40"           Width="1800"           Height="1000"           Border="1" />
-<Text     Name="Header"                Text="Centre"                           XPos="20"           YPos="20"           Width="1100"           Height="50"           FontSize="32" />
-<Text     Name="BuildingDetails"       Text=""                                 XPos="20"           YPos="70"           Width="310"           Height="800"           FontSize="16" />
-<Image    Name="Centre"                File="Centre.jpg"                       XPos="335"           YPos="70"           Width="1130"           Height="930" />
-<Image    Name="GirlImage"             File="blank.png"                        XPos="152"           YPos="15"           Width="200"           Height="200" Hidden="true" />
-<Button   Name="Weeks"                 Image="NextWeek"                        XPos="1510"           YPos="20"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="Turn"                  Image="TurnSum"                         XPos="1510"           YPos="120"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="Girls"                 Image="Girls"                           XPos="1510"           YPos="430"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="Staff"                 Image="Staff"                           XPos="1510"           YPos="530"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="SetUp"                 Image="Building"                        XPos="1510"           YPos="630"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="Dungeon"               Image="Dungeon"                         XPos="1510"           YPos="730"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="BackButton"            Image="Back"                            XPos="1510"           YPos="930"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="WalkButton"            Image=""                                XPos="40"           YPos="830"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
+<Window     Name="Centre Window"                                            XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
+<Text       Name="BuildingLabel"        Text="The Centre"                   XPos="14"       YPos="3"        Width="984"     Height="56"     FontSize="28"            />
+<Image      Name="Background"           File="Centre.jpg"                   XPos="14"       YPos="49"       Width="1434"    Height="928"     />
+
+<Button     Name="Next Week"            Image="NextWeek"                    XPos="1546"     YPos="14"       Width="225"     Height="45"     Transparency="true"     Scale="true"     />
+<Text       Name="BuildingDetails"      Text="Details"                      XPos="1448"     YPos="70"       Width="436"     Height="422"    FontSize="14"  />
+
+
+<Button     Name="PrevButton"           Image="Prev"                        XPos="1543"     YPos="492"      Width="101"      Height="45"     Transparency="true"     Scale="true"     />
+<Button     Name="NextButton"           Image="Next"                        XPos="1673"     YPos="492"      Width="101"      Height="45"     Transparency="true"     Scale="true"     />
+<Button     Name="Girl Management"      Image="Girls"                       XPos="1546"     YPos="562"      Width="225"     Height="45"     Transparency="true"     Scale="true"     />
+<Button     Name="Staff Management"     Image="Staff"                       XPos="1546"     YPos="633"      Width="225"     Height="45"     Transparency="true"     Scale="true"     />
+<Button     Name="Setup"                Image="Building"                    XPos="1546"     YPos="703"      Width="225"     Height="45"     Transparency="true"     Scale="true"     />
+<Button     Name="Dungeon"              Image="Dungeon"                     XPos="1546"     YPos="773"      Width="225"     Height="45"     Transparency="true"     Scale="true"     />
+<Button     Name="WalkButton"           Image=""                            XPos="1546"     YPos="844"      Width="225"     Height="45"     Transparency="true"     Scale="true"     />
+<Button     Name="Visit Town"           Image="VisitTown"                   XPos="1546"     YPos="914"      Width="225"     Height="45"     Transparency="true"     Scale="true"     />
+
+<Button     Name="Turn Summary"         Image="TurnSum"                     XPos="1153"      YPos="982"      Width="225"     Height="45"     Transparency="true"     Scale="true"  />
+<Button     Name="Quit"                 Image="Quit"                        XPos="14"       YPos="982"      Width="225"     Height="45"     Transparency="true"     Scale="true"     />
+<Button     Name="Save"                 Image="Save"                        XPos="351"      YPos="982"      Width="225"     Height="45"     Transparency="true"     Scale="true"     />
+<Image      Name="GirlImage"            File="blank.png"                    XPos="214"      YPos="21"       Width="281"     Height="281"    Hidden="true"  />
 </Screen>

@@ -1,0 +1,235 @@
+<Screen>
+<Window     Name="Settings"                                                 XPos="214"       YPos="16"       Width="1171"    Height="867"    Border="1"  />
+<Text       Name="ScreenHeader"             Text="Settings"                 XPos="2"        YPos="0"        Width="234"     Height="70"     FontSize="47"  />
+<Button     Name="OkButton"                 Image="Ok"                      XPos="551"      YPos="818"      Width="150"     Height="38"     Transparency="true"                  Scale="true"      />
+<Button     Name="RevertButton"             Image="Revert"                  XPos="777"      YPos="818"      Width="84"      Height="38"     Transparency="true"                  Scale="true"      />
+<Button     Name="BackButton"               Image="Back"                    XPos="937"      YPos="811"      Width="223"     Height="45"     Transparency="true" Scale="true"  />
+
+<Define     Widget="Folders">
+<Text       Name="CharactersLabel"          Text="Characters"               XPos="0"        YPos="2"       Width="117"     Height="23"     FontSize="14"  />
+<Text       Name="SavesLabel"               Text="Saves"                    XPos="0"        YPos="26"       Width="117"     Height="23"     FontSize="14"  />
+<Text       Name="DefaultImagesLabel"       Text="DefaultImages"            XPos="0"        YPos="49"       Width="117"     Height="23"     FontSize="14"  />
+<Text       Name="ItemsLabel"               Text="Items"                    XPos="0"        YPos="73"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Characters"                                               XPos="117"      YPos="0"       Width="351"     Height="23"     FontSize="12"                  Border="1"  />
+<EditBox    Name="Saves"                                                    XPos="117"      YPos="23"       Width="351"     Height="23"     FontSize="12"                  Border="1"  />
+<EditBox    Name="DefaultImages"                                            XPos="117"      YPos="47"       Width="351"     Height="23"     FontSize="12"                  Border="1"  />
+<EditBox    Name="Items"                                                    XPos="117"      YPos="70"       Width="351"     Height="23"     FontSize="12"                  Border="1"  />
+<Checkbox   Name="BackupSaves"              Text="Backup Saves"             XPos="59"       YPos="105"       Width="19"      Height="19"     FontSize="14" LeftOrRight="false" />
+<Checkbox   Name="PreferDefault"            Text="Prefer Default"           XPos="293"      YPos="105"       Width="19"      Height="19"     FontSize="14" LeftOrRight="false" />
+</Define>
+
+<Define     Widget="Initial">
+<EditBox    Name="Gold"                                                     XPos="0"        YPos="0"        Width="117"     Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="GoldLabel"                Text="Initial Gold"             XPos="117"      YPos="2"        Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="GirlMeet"                                                 XPos="82"       YPos="23"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="GirlMeetLabel"            Text="Girl Meet Chance"         XPos="117"      YPos="26"       Width="176"     Height="23"     FontSize="14"  />
+<EditBox    Name="TortureTraitWeekMod"                                      XPos="82"       YPos="47"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="TTWMLabel"                Text="Torture Mod"              XPos="117"      YPos="49"       Width="176"     Height="23"     FontSize="14"  />
+<Checkbox   Name="SlavePayOutOfPocket"      Text="Pay Slave Out of Pocket"  XPos="59"       YPos="70"       Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="AutoUseItems"             Text="Auto Use Items"           XPos="293"      YPos="0"        Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="AutoCombatEquip"          Text="Auto Equip Combat"        XPos="293"      YPos="23"       Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="GirlsKeepTips"            Text="Girls Keep Tips"          XPos="293"      YPos="47"       Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="SlaveKeepTips"            Text="Slave Keep Tips"          XPos="293"      YPos="70"       Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Text       Name="GHPLabel"                 Text="Free House %"             XPos="0"        YPos="96"       Width="176"     Height="23"     FontSize="14"  />
+<Slider     Name="GirlsHousePerc"                                           XPos="176"      YPos="97"       Width="293"     MinValue="0"    MaxValue="100"                  Value="0"                  Increment="10"                  LiveUpdate="true"                  Hidden="false"                  Disabled="false"                   />
+<Text       Name="SHPLabel"                 Text="Slave House %"            XPos="0"        YPos="120"      Width="176"     Height="23"     FontSize="14"  />
+<Slider     Name="SlaveHousePerc"                                           XPos="176"      YPos="121"      Width="293"     MinValue="0"    MaxValue="100"                  Value="0"                  Increment="10"                  LiveUpdate="true"                  Hidden="false"                  Disabled="false"                   />
+<Text       Name="GirlsAccomLabel"          Text="Base Free Accom"          XPos="0"        YPos="143"      Width="176"     Height="23"     FontSize="14"  />
+<Slider     Name="GirlsAccom"                                               XPos="176"      YPos="144"      Width="293"     MinValue="0"    MaxValue="100"                  Value="0"                  Increment="10"                  LiveUpdate="true"                  Hidden="false"                  Disabled="false"                   />
+<Text       Name="SlaveAccomLabel"          Text="Base Slave Accom"         XPos="0"        YPos="166"      Width="176"     Height="23"     FontSize="14"  />
+<Slider     Name="SlaveAccom"                                               XPos="176"      YPos="168"      Width="293"     MinValue="0"    MaxValue="100"                  Value="0"                  Increment="10"                  LiveUpdate="true"                  Hidden="false"                  Disabled="false"                   />
+</Define>
+
+<Define     Widget="Catacombs">
+<Checkbox   Name="ControlGirls"             Text="Control Girls"            XPos="59"       YPos="0"        Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Text       Name="GirlGets"                 Text="Girl Gets What:"          XPos="0"        YPos="23"       Width="117"     Height="23"     FontSize="14"  />
+<Text       Name="GirlGetsGirls"            Text="Girls: 34%"               XPos="117"      YPos="23"       Width="117"     Height="23"     FontSize="14"  />
+<Text       Name="GirlGetsItems"            Text="Items: 33%"               XPos="234"      YPos="23"       Width="117"     Height="23"     FontSize="14"  />
+<Text       Name="GirlGetsBeast"            Text="Beast: 33%"               XPos="351"      YPos="23"       Width="117"     Height="23"     FontSize="14"  />
+<Slider     Name="GirlsGirlsPercSlider"                                     XPos="0"        YPos="50"       Width="469"     MinValue="0"    MaxValue="100"                  Value="0"                  Increment="1"                  LiveUpdate="true"                  Hidden="false"                  Disabled="false"                   />
+<Slider     Name="GirlsItemsPercSlider"                                     XPos="0"        YPos="74"       Width="469"     MinValue="0"    MaxValue="100"                  Value="0"                  Increment="1"                  LiveUpdate="true"                  Hidden="false"                  Disabled="false"                   />
+<Checkbox   Name="ControlGangs"             Text="Control Gangs"            XPos="59"       YPos="117"      Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Text       Name="GangGets"                 Text="Gang Gets What:"          XPos="0"        YPos="141"      Width="117"     Height="23"     FontSize="14"  />
+<Text       Name="GangGetsGirls"            Text="Girls: 34%"               XPos="117"      YPos="141"      Width="117"     Height="23"     FontSize="14"  />
+<Text       Name="GangGetsItems"            Text="Items: 33%"               XPos="234"      YPos="141"      Width="117"     Height="23"     FontSize="14"  />
+<Text       Name="GangGetsBeast"            Text="Beast: 33%"               XPos="351"      YPos="141"      Width="117"     Height="23"     FontSize="14"  />
+<Slider     Name="GangsGirlsPercSlider"                                     XPos="0"        YPos="168"      Width="469"     MinValue="0"    MaxValue="100"                  Value="0"                  Increment="1"                  LiveUpdate="true"                  Hidden="false"                  Disabled="false"                   />
+<Slider     Name="GangsItemsPercSlider"                                     XPos="0"        YPos="191"      Width="469"     MinValue="0"    MaxValue="100"                  Value="0"                  Increment="1"                  LiveUpdate="true"                  Hidden="false"                  Disabled="false"                   />
+<Text       Name="UniqueCatacombsLabel"     Text="Unique %"                 XPos="82"       YPos="234"      Width="351"     Height="23"     FontSize="14"  />
+<Slider     Name="UniqueCatacombs"                                          XPos="0"        YPos="261"      Width="469"     MinValue="0"    MaxValue="100"                  Value="0"                  Increment="1"                  LiveUpdate="true"                  Hidden="false"                  Disabled="false"                   />
+</Define>
+
+<Define     Widget="Income">
+<Text       Name="IncomeLabel"              Text="Income"                   XPos="0"        YPos="-5"       Width="234"     Height="35"     FontSize="21"  />
+<EditBox    Name="ExtortionIncome"                                          XPos="0"        YPos="23"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="ExtortionIncomeLabel"     Text="Extortion Income"         XPos="35"       YPos="26"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="GirlsWorkBrothel"                                         XPos="0"        YPos="47"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="GirlsWorkBrothelLabel"    Text="Girls Work Brothel"       XPos="35"       YPos="49"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="GirlsWorkStreet"                                          XPos="0"        YPos="70"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="GirlsWorkStreetLabel"     Text="Girls Work Street"        XPos="35"       YPos="73"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="MovieIncome"                                              XPos="0"        YPos="94"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="MovieIncomeLabel"         Text="Movie Income"             XPos="35"       YPos="96"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="StripperIncome"                                           XPos="0"        YPos="117"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="StripperIncomeLabel"      Text="Stripper Income"          XPos="35"       YPos="120"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="BarmaidIncome"                                            XPos="0"        YPos="141"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="BarmaidIncomeLabel"       Text="Barmaid Income"           XPos="35"       YPos="143"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="SlaveSales"                                               XPos="0"        YPos="164"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="SlaveSalesLabel"          Text="Slave Sales"              XPos="35"       YPos="166"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="ItemSales"                                                XPos="0"        YPos="188"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="ItemSalesLabel"           Text="Item Sales"               XPos="35"       YPos="190"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="ClinicIncome"                                             XPos="0"        YPos="211"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="ClinicIncomeLabel"        Text="Clinic Income"            XPos="35"       YPos="213"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="ArenaIncome"                                              XPos="0"        YPos="234"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="ArenaIncomeLabel"         Text="Arena Income"             XPos="35"       YPos="237"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="FarmIncome"                                               XPos="0"        YPos="258"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="FarmIncomeLabel"          Text="Farm Income"              XPos="35"       YPos="260"      Width="117"     Height="23"     FontSize="14"  />
+</Define>
+<Define     Widget="Expenses">
+<Text       Name="ExpensesLabel"            Text="Expenses"                 XPos="0"        YPos="-5"       Width="234"     Height="35"     FontSize="21"  />
+<EditBox    Name="Training"                                                 XPos="0"        YPos="23"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="TrainingLabel"            Text="Training"                 XPos="35"       YPos="26"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="MovieCost"                                                XPos="0"        YPos="47"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="MovieCostLabel"           Text="MovieCost"                XPos="35"       YPos="49"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="ActressWages"                                             XPos="0"        YPos="70"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="ActressWagesLabel"        Text="ActressWages"             XPos="35"       YPos="73"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="GoonWages"                                                XPos="0"        YPos="94"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="GoonWagesLabel"           Text="GoonWages"                XPos="35"       YPos="96"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="MatronWages"                                              XPos="0"        YPos="117"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="MatronWagesLabel"         Text="MatronWages"              XPos="35"       YPos="120"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="StaffWages"                                               XPos="0"        YPos="141"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="StaffWagesLabel"          Text="StaffWages"               XPos="35"       YPos="143"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="GirlSupport"                                              XPos="0"        YPos="164"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="GirlSupportLabel"         Text="GirlSupport"              XPos="35"       YPos="166"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Consumables"                                              XPos="0"        YPos="188"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="ConsumablesLabel"         Text="Consumables"              XPos="35"       YPos="190"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Items"                                                    XPos="0"        YPos="211"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="ItemsLabel"               Text="Items"                    XPos="35"       YPos="213"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="SlavesBought"                                             XPos="0"        YPos="234"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="SlavesBoughtLabel"        Text="SlavesBought"             XPos="35"       YPos="237"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="BuyBrothel"                                               XPos="0"        YPos="258"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="BuyBrothelLabel"          Text="BuyBrothel"               XPos="35"       YPos="260"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="BrothelSupport"                                           XPos="0"        YPos="281"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="BrothelSupportLabel"      Text="BrothelSupport"           XPos="35"       YPos="284"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="BarSupport"                                               XPos="0"        YPos="305"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="BarSupportLabel"          Text="BarSupport"               XPos="35"       YPos="307"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="CasinoSupport"                                            XPos="0"        YPos="328"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="CasinoSupportLabel"       Text="CasinoSupport"            XPos="35"       YPos="330"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Bribes"                                                   XPos="0"        YPos="352"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="BribesLabel"              Text="Bribes"                   XPos="35"       YPos="354"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Fines"                                                    XPos="0"        YPos="375"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="FinesLabel"               Text="Fines"                    XPos="35"       YPos="377"      Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Advertising"                                              XPos="0"        YPos="398"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="AdvertisingLabel"         Text="Advertising"              XPos="35"       YPos="401"      Width="117"     Height="23"     FontSize="14"  />
+</Define>
+<Define     Widget="Fonts">
+<Checkbox   Name="ShowPercent"              Text="Show % Signs"             XPos="0"        YPos="0"        Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+</Define>
+<Define     Widget="Gambling">
+<Text       Name="GamblingLabel"            Text="Gambling"                 XPos="0"        YPos="-5"       Width="234"     Height="35"     FontSize="21"  />
+<EditBox    Name="Odds"                                                     XPos="0"        YPos="23"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="OddsLabel"                Text="Odds"                     XPos="35"       YPos="26"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Base"                                                     XPos="0"        YPos="47"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="BaseLabel"                Text="Base"                     XPos="35"       YPos="49"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Spread"                                                   XPos="0"        YPos="70"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="SpreadLabel"              Text="Spread"                   XPos="35"       YPos="73"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="CustomerFactor"                                           XPos="0"        YPos="94"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="CustomerFactorLabel"      Text="Customer Factor"          XPos="35"       YPos="96"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="HouseFactor"                                              XPos="0"        YPos="117"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="HouseFactorLabel"         Text="House Factor"             XPos="35"       YPos="120"      Width="117"     Height="23"     FontSize="14"  />
+</Define>
+<Define     Widget="Tax">
+<Text       Name="TaxLabel"                 Text="Taxes"                    XPos="0"        YPos="-5"       Width="234"     Height="35"     FontSize="21"  />
+<EditBox    Name="Rate"                                                     XPos="0"        YPos="23"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="RateLabel"                Text="Rate"                     XPos="35"       YPos="26"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Minimum"                                                  XPos="0"        YPos="47"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="MinimumLabel"             Text="Minimum"                  XPos="35"       YPos="49"       Width="117"     Height="23"     FontSize="14"  />
+<EditBox    Name="Laundry"                                                  XPos="0"        YPos="70"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="LaundryLabel"             Text="Laundry"                  XPos="35"       YPos="73"       Width="117"     Height="23"     FontSize="14"  />
+</Define>
+<Define     Widget="Pregnancy">
+<Text       Name="PregnancyLabel"           Text="Pregnancy"                XPos="0"        YPos="-5"       Width="234"     Height="35"     FontSize="21"  />
+<EditBox    Name="PlayerChance"                                             XPos="0"        YPos="23"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="PlayerChanceLabel"        Text="Player Chance"            XPos="35"       YPos="26"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="CustomerChance"                                           XPos="0"        YPos="47"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="CustomerChanceLabel"      Text="Customer Chance"          XPos="35"       YPos="49"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="MonsterChance"                                            XPos="0"        YPos="70"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="MonsterChanceLabel"       Text="Monster Chance"           XPos="35"       YPos="73"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="GoodSexFactor"                                            XPos="0"        YPos="94"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="GoodSexFactorLabel"       Text="Good Sex Factor"          XPos="35"       YPos="96"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="ChanceOfGirl"                                             XPos="0"        YPos="117"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="ChanceOfGirlLabel"        Text="Chance Of Girl"           XPos="35"       YPos="120"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="WeeksPregnant"                                            XPos="0"        YPos="141"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="WeeksPregnantLabel"       Text="Weeks Pregnant"           XPos="35"       YPos="143"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="WeeksMonsterP"                                            XPos="0"        YPos="164"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="WeeksMonsterPLabel"       Text="Weeks Monster P"          XPos="35"       YPos="166"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="MiscarriageChance"                                        XPos="0"        YPos="188"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="MiscarriageChanceLabel"   Text="Miscarriage Chance"       XPos="35"       YPos="190"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="MiscarriageMonster"                                       XPos="0"        YPos="211"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="MiscarriageMonsterLabel"  Text="Miscarriage Monster"      XPos="35"       YPos="213"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="WeeksTillGrown"                                           XPos="0"        YPos="234"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="WeeksTillGrownLabel"      Text="Weeks Till Grown"         XPos="35"       YPos="237"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="CoolDown"                                                 XPos="0"        YPos="258"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="CoolDownLabel"            Text="Cool Down"                XPos="35"       YPos="260"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="AntiPregFailure"                                          XPos="0"        YPos="281"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="AntiPregFailureLabel"     Text="AntiPreg Failure"         XPos="35"       YPos="284"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="MultiBirthChance"                                         XPos="0"        YPos="305"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="MultiBirthChanceLabel"    Text="Multi Birth Chance"       XPos="35"       YPos="307"      Width="141"     Height="23"     FontSize="14"  />
+</Define>
+<Define     Widget="SlaveMarket">
+<Text       Name="SlaveMarketLabel"         Text="Slave Market"             XPos="0"        YPos="-5"       Width="234"     Height="35"     FontSize="21"  />
+<EditBox    Name="UniqueMarket"                                             XPos="0"        YPos="23"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="UniqueMarketLabel"        Text="Unique Market"            XPos="35"       YPos="26"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="SlavesNewWeeklyMin"                                       XPos="0"        YPos="47"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="SlavesNewWeeklyMinLabel"  Text="Slaves Per Week Min"      XPos="35"       YPos="49"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="SlavesNewWeeklyMax"                                       XPos="0"        YPos="70"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="SlavesNewWeeklyMaxLabel"  Text="Slaves Per Week Max"      XPos="35"       YPos="73"       Width="141"     Height="23"     FontSize="14"  />
+</Define>
+<Define     Widget="Gangs">
+<Text       Name="GangsLabel"               Text="Gangs"                    XPos="0"        YPos="-5"       Width="234"     Height="35"     FontSize="21"  />
+<EditBox    Name="MaxRecruitList"                                           XPos="0"        YPos="23"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="MaxRecruitListLabel"      Text="Max Recruit List"         XPos="35"       YPos="26"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="StartRandom"                                              XPos="0"        YPos="47"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="StartRandomLabel"         Text="Start Random"             XPos="35"       YPos="49"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="StartBoosted"                                             XPos="0"        YPos="70"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="StartBoostedLabel"        Text="Start Boosted"            XPos="35"       YPos="73"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="InitMemberMin"                                            XPos="0"        YPos="94"       Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="InitMemberMinLabel"       Text="Init Member Min"          XPos="35"       YPos="96"       Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="InitMemberMax"                                            XPos="0"        YPos="117"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="InitMemberMaxLabel"       Text="Init Member Max"          XPos="35"       YPos="120"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="AddNewWeeklyMin"                                          XPos="0"        YPos="141"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="AddNewWeeklyMinLabel"     Text="Add New Weekly Min"       XPos="35"       YPos="143"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="AddNewWeeklyMax"                                          XPos="0"        YPos="164"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="AddNewWeeklyMaxLabel"     Text="Add New Weekly Max"       XPos="35"       YPos="166"      Width="141"     Height="23"     FontSize="14"  />
+<EditBox    Name="ChanceRemoveUnwanted"                                     XPos="0"        YPos="188"      Width="35"      Height="23"     FontSize="12"                  Border="1"                   />
+<Text       Name="ChanceRemoveUnwantedLabel"Text="Remove Unwanted"          XPos="35"       YPos="190"      Width="141"     Height="23"     FontSize="14"  />
+</Define>
+<Define     Widget="Debug">
+<Checkbox   Name="LogAll"                   Text="Log All"                  XPos="0"        YPos="0"        Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="LogGirls"                 Text="Log Girls"                XPos="0"        YPos="23"       Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="LogRGirls"                Text="Log RGirls"               XPos="0"       YPos="47"       Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="LogGirlFights"            Text="Log Girl Fights"          XPos="0"       YPos="70"       Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="LogItems"                 Text="Log Items"                XPos="0"        YPos="94"       Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="LogFonts"                 Text="Log Fonts"                XPos="0"        YPos="117"      Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="LogExtraDetails"          Text="Log Extra Details"        XPos="0"        YPos="141"      Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="LogTorture"               Text="Log Torture"              XPos="0"        YPos="164"      Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="LogDebug"                 Text="Log Debug"                XPos="0"        YPos="188"      Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+<Checkbox   Name="LogShowNumbers"           Text="Log Show Numbers"         XPos="0"        YPos="211"      Width="19"      Height="19"     FontSize="14"                  LeftOrRight="false" />
+</Define>
+
+
+
+<Widget     Definition="Folders"            Seq="Fol"                       XPos="12"       YPos="94" />
+<Widget     Definition="Catacombs"          Seq="Cat"                       XPos="12"       YPos="551" />
+<!--
+<Widget     Definition="Initial"            Seq="Ini"                       XPos="12"       YPos="293" />
+<Widget     Definition="Fonts"              Seq="Fon"                       XPos="305"      YPos="35" />
+<Widget     Definition="Income"             Seq="Inc"                       XPos="539"      YPos="12" />
+<Widget     Definition="Tax"                Seq="Tax"                       XPos="539"      YPos="340" />
+<Widget     Definition="Debug"              Seq="Dbg"                       XPos="539"      YPos="527" />
+<Widget     Definition="Expenses"           Seq="Exp"                       XPos="750"      YPos="12" />
+<Widget     Definition="Gangs"              Seq="Gan"                       XPos="750"      YPos="551" />
+<Widget     Definition="Pregnancy"          Seq="Prg"                       XPos="960"      YPos="12" />
+<Widget     Definition="SlaveMarket"        Seq="Svm"                       XPos="960"      YPos="434" />
+<Widget     Definition="Gambling"           Seq="Gam"                       XPos="960"      YPos="621" />
+-->
+</Screen>

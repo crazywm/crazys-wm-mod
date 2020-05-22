@@ -39,11 +39,35 @@
 	-->
 <!-- 16:9
     <Resolution
+        Resolution="J_3840x2160"
+        Width="3840"
+        Height="2160"
+        ScaleWidth="3840"
+        ScaleHeight="2160"
+        FixedScale="true"
+        FullScreen="false"
+        ListScrollAmount="3"
+        TextScrollAmount="3" />
+ -->
+<!-- 16:9
+    <Resolution
         Resolution="J_1920x1080"
         Width="1920"
         Height="1080"
         ScaleWidth="1920"
         ScaleHeight="1080"
+        FixedScale="true"
+        FullScreen="false"
+        ListScrollAmount="3"
+        TextScrollAmount="3" />
+ -->
+<!-- 16:9
+    <Resolution
+        Resolution="J_1600x900"
+        Width="1600"
+        Height="900"
+        ScaleWidth="1600"
+        ScaleHeight="900"
         FixedScale="true"
         FullScreen="false"
         ListScrollAmount="3"

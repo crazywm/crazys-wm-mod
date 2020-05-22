@@ -1,0 +1,48 @@
+<Screen>
+<Window     Name="Girl Details Window"                                      XPos="37"       YPos="39"       Width="3767"    Height="2081"    Border="1"  />
+<Text       Name="GirlName"             Text=""                             XPos="28"       YPos="6"        Width="1406"     Height="90"     FontSize="67"  />
+<Text       Name="GirlDescription"      Text=""                             XPos="28"       YPos="98"       Width="562"     Height="1955"    FontSize="25"          />
+
+<Image      Name="GirlImage"            File="blank.png"                    XPos="590"      YPos="28"       Width="2586"     Height="1828"  />
+
+<Text       Name="JobTypeHeader"        Text="Job Types"                    XPos="3177"     YPos="31"       Width="562"     Height="68"     FontSize="45"  />
+<ListBox    Name="JobTypeList"                                              XPos="3177"     YPos="98"       Width="562"     Height="287"    FontSize="34" RowHeight="53" Border="1"          Events="true"  />
+<Text       Name="JobHeader"            Text="Jobs"                         XPos="3177"     YPos="411"      Width="562"     Height="68"     FontSize="45"  />
+<Button     Name="DayButton"            Image="DayToggle"                   XPos="3354"     YPos="388"      Width="152"      Height="90"     Transparency="true" Scale="true"  />
+<Button     Name="NightButton"          Image="NightToggle"                 XPos="3505"     YPos="388"      Width="191"      Height="90"     Transparency="true" Scale="true"  />
+<ListBox    Name="JobList"                                                  XPos="3177"     YPos="478"      Width="562"     Height="287"    FontSize="34" RowHeight="53" Border="1"          Events="true"  />
+<Text       Name="TraitHeader"          Text="Traits"                       XPos="3177"     YPos="790"      Width="562"     Height="68"     FontSize="45"  />
+<ListBox    Name="TraitList"                                                XPos="3177"     YPos="858"      Width="562"     Height="568"    FontSize="34" RowHeight="53" Border="1"          Events="true"  />
+<Text       Name="TraitDescription"     Text="Trait Description"            XPos="3177"     YPos="1434"      Width="562"     Height="253"     FontSize="28"  />
+<Button     Name="InteractButton"       Image="Talk"                        XPos="3233"     YPos="1688"      Width="450"     Height="90"     Transparency="true" Scale="true"  />
+<Text       Name="InteractCount"        Text="Interactions Left: 0"         XPos="3177"     YPos="1778"      Width="562"     Height="42"     FontSize="22"  />
+
+<Button     Name="PrevButton"           Image="Prev"                        XPos="3227"      YPos="1828"      Width="202"      Height="90"     Transparency="true"     Scale="true"     />
+<Button     Name="NextButton"           Image="Next"                        XPos="3486"      YPos="1828"      Width="202"      Height="90"     Transparency="true"     Scale="true"     />
+
+
+<Button     Name="MoreButton"           Image="ShowMore"                    XPos="703"       YPos="1884"      Width="337"     Height="68"     Transparency="true"         Scale="true"          />
+<Button     Name="GalleryButton"        Image="Gallery"                     XPos="703"       YPos="1963"      Width="450"     Height="90"     Transparency="true" Scale="true"  />
+
+
+<Slider     Name="AccomSlider"                                              XPos="1124"      YPos="1884"      Width="731"     MinValue="0"    MaxValue="9" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false"  />
+<Text       Name="AccomValue"           Text="Accommodation: Very Poor"     XPos="1406"      YPos="1927"      Width="506"     Height="59"     FontSize="31"  />
+<!-- Use either AccomSlider and AccomValue or  AccomUpButton and AccomDownButton or you can use all or some of them but you will have to move them around                                                   
+<Button     Name="AccomUpButton"        Image="AcomUp"                      XPos="22"        YPos="1505"      Width="202"      Height="90"     Transparency="true" Scale="true"  />
+<Button     Name="AccomDownButton"      Image="AcomDown"                    XPos="270"       YPos="1505"      Width="202"      Height="90"     Transparency="true" Scale="true"  />
+-->
+
+<Slider     Name="HousePercSlider"                                          XPos="1912"      YPos="1884"      Width="731"     MinValue="0"    MaxValue="100" Value="0" Increment="10" LiveUpdate="true" Hidden="false" Disabled="false"  />
+<Text       Name="HousePercValue"       Text="House Percentage: 100%"       XPos="1968"      YPos="1927"      Width="506"     Height="59"     FontSize="31"  />
+
+<Button     Name="SendDungeonButton"    Image="SendDungeon"                 XPos="1434"      YPos="1986"      Width="337"     Height="68"     Transparency="true" Scale="true" Disabled=""  />
+<Button     Name="ReleaseDungeonButton" Image="Release"                     XPos="1434"      YPos="1986"      Width="337"     Height="68"     Transparency="true" Scale="true" Disabled=""  />
+<Button     Name="TakeGoldButton"       Image="TakeGold"                    XPos="1996"      YPos="1986"      Width="337"     Height="68"     Transparency="true" Scale="true"  />
+
+<Checkbox   Name="UseAntiPregToggle"    Text="Use Anti-Preg"                XPos="2783"      YPos="1884"      Width="45"      Height="45"     FontSize="31" />
+<Button     Name="InventoryButton"      Image="GiveGift"                    XPos="2614"      YPos="1963"      Width="450"     Height="90"     Transparency="true" Scale="true"  />
+
+
+
+<Button     Name="BackButton"           Image="Back"                        XPos="3177"      YPos="1941"      Width="562"     Height="112"     Transparency="true" Scale="true"  />
+</Screen>

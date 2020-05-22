@@ -1,33 +1,38 @@
 <Screen>
-<Window   Name="Arena Management Window"                                       XPos="60"           YPos="40"           Width="1800"           Height="1000"           Border="1" />
-<Text     Name="Arena"                  Text=""                                XPos="335"           YPos="20"           Width="1130"           Height="50"           FontSize="32" />
-<Text     Name="Gold"                Text="Gold: 0"                            XPos="1100"           YPos="20"           Width="400"           Height="50"           FontSize="32" />
-<Image    Name="GirlImage"              File="blank.png"                       XPos="20"           YPos="20"           Width="310"           Height="310" />
-<Button   Name="ViewDetailsButton"      Image="ViewDetails"                    XPos="50"           YPos="340"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Text     Name="GirlDescription"        Text=""                                XPos="20"           YPos="400"           Width="310"           Height="470"           FontSize="14" />
-<Button   Name="FreeSlaveButton"        Image="FreeSlave"                      XPos="20"           YPos="880"           Width="160"           Height="32"           Transparency="true"           Scale="true" />
-<Button   Name="SellSlaveButton"        Image="SellSlave"                      XPos="90"           YPos="914"           Width="160"           Height="32"           Transparency="true"           Scale="true" />
-<Button   Name="FireButton"             Image="FireGirl"                       XPos="160"           YPos="948"           Width="160"           Height="32"           Transparency="true"           Scale="true" />
-<Text     Name="JobTypeHeader"          Text="Job Types"                       XPos="1480"           YPos="20"           Width="300"           Height="40"           FontSize="24" />
-<ListBox  Name="JobTypeList"                                                   XPos="1480"           YPos="60"           Width="300"           Height="146"           FontSize="16"           RowHeight="24"           Border="1"           Events="true" />
-<Text     Name="JobTypeDescription"     Text=""                                XPos="1480"           YPos="210"           Width="300"           Height="40"           FontSize="14" />
-<Text     Name="JobHeader"              Text="Jobs"                            XPos="1480"           YPos="280"           Width="300"           Height="40"           FontSize="24" />
-<Button   Name="DayButton"              Image="DayToggle"                      XPos="1580"           YPos="270"           Width="80"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="NightButton"            Image="NightToggle"                    XPos="1660"           YPos="270"           Width="100"           Height="50"           Transparency="true"           Scale="true" />
-<ListBox  Name="JobList"                                                       XPos="1480"           YPos="320"           Width="300"           Height="194"           FontSize="16"           RowHeight="24"           Border="1"           Events="true" />
-<Text     Name="JobDescription"         Text=""                                XPos="1480"           YPos="520"           Width="300"           Height="180"           FontSize="14" />
-<Button   Name="TransferButton"         Image="TransferGirls"                  XPos="1510"           YPos="830"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<Button   Name="BackButton"             Image="Back"                           XPos="1510"           YPos="930"           Width="250"           Height="50"           Transparency="true"           Scale="true" />
-<ListBox  Name="GirlList"                                                      XPos="335"           YPos="70"           Width="1130"           Height="910"           FontSize="16"           RowHeight="30"           Border="1"           Events="true"           Multi="true"           ShowHeaders="true"           HeaderDiv="true"           HeaderClicksSort="true" >
-<Column   Name="Name"                   Header="Girl Name"                     Offset="0" />
-<Column   Name="Age"                    Header="Age"                           Offset="250" />
-<Column   Name="Health"                 Header="Health"                        Offset="310" />
-<Column   Name="Happiness"              Header="Happy"                         Offset="370" />
-<Column   Name="Tiredness"              Header="Tired"                         Offset="430" />
-<Column   Name="DayJob"                 Header="Day Job"                       Offset="490" />
-<Column   Name="NightJob"               Header="Night Job"                     Offset="670" />
-<Column   Name="is_pregnant"            Header="Preg"                          Offset="850" />
-<Column   Name="is_slave"               Header="Slave"                         Offset="910" />
-<Column   Name="Rebel"                  Header="Rebel"                         Offset="970" />
+<Window     Name="Arena Management Window"                                  XPos="18"       YPos="20"       Width="1883"    Height="1041"    Border="1"  />
+<Text       Name="CurrentBrothel"       Text=""                             XPos="14"       YPos="3"        Width="703"     Height="45"     FontSize="34"  />
+<Text       Name="Gold"                 Text="Player Gold: 0"               XPos="1124"      YPos="3"        Width="422"     Height="45"     FontSize="34"  />
+<Image      Name="GirlImage"            File="blank.png"                    XPos="1448"     YPos="14"       Width="422"     Height="422"     />
+<Button     Name="ViewDetailsButton"    Image="ViewDetails"                 XPos="1546"     YPos="450"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
+<Text       Name="GirlDescription"      Text=""                             XPos="1448"     YPos="506"      Width="436"     Height="338"    FontSize="14"  />
+<Button     Name="TransferButton"       Image="TransferGirls"               XPos="1616"     YPos="844"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="FreeSlaveButton"      Image="FreeSlave"                   XPos="1265"      YPos="844"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="SellSlaveButton"      Image="SellSlave"                   XPos="1265"      YPos="914"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="FireButton"           Image="FireGirl"                    XPos="1265"      YPos="982"      Width="225"     Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="1588"     YPos="970"      Width="281"     Height="56"     Transparency="true" Scale="true"  />
+
+<Text       Name="JobTypeHeader"        Text="Job Types"                    XPos="14"       YPos="827"      Width="281"     Height="45"     FontSize="28"  />
+<ListBox    Name="JobTypeList"                                              XPos="14"       YPos="869"      Width="281"     Height="158"    FontSize="17"       RowHeight="31"      Border="1"          Events="true"  />
+<Text       Name="JobHeader"            Text="Jobs"                         XPos="309"      YPos="827"      Width="281"     Height="45"     FontSize="28"  />    
+<ListBox    Name="JobList"                                                  XPos="309"      YPos="869"      Width="281"     Height="158"    FontSize="17"       RowHeight="31"      Border="1"          Events="true"  />
+<Button     Name="DayButton"            Image="DayToggle"                   XPos="417"      YPos="823"      Width="76"      Height="45"     Transparency="true" Scale="true"  />
+<Button     Name="NightButton"          Image="NightToggle"                 XPos="492"      YPos="823"      Width="96"      Height="45"     Transparency="true" Scale="true"  />
+<Text       Name="JobTypeDescription"   Text=""                             XPos="604"      YPos="844"      Width="520"     Height="45"     FontSize="14"  />    
+<Text       Name="JobDescription"       Text=""                             XPos="604"      YPos="914"      Width="520"     Height="127"     FontSize="14"  />    
+
+<ListBox    Name="GirlList"                                                 XPos="14"       YPos="49"       Width="1434"     Height="771"    FontSize="17"       RowHeight="30"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<Column     Name="Name"                 Header="Girl Name"                  Offset="0" />
+<Column     Name="Health"               Header="Health"                     Offset="281" /> 
+<Column     Name="Happiness"            Header="Happy"                      Offset="351" />
+<Column     Name="Tiredness"            Header="Tired"                      Offset="421" />
+<Column     Name="DayJob"               Header="Day Job"                    Offset="491" />
+<Column     Name="NightJob"             Header="Night Job"                  Offset="702" />
+<Column     Name="is_pregnant"          Header="Preg"                       Offset="913" />
+<Column     Name="is_slave"             Header="Slave"                      Offset="983" />
+<Column     Name="Rebel"                Header="Rebel"                      Offset="1053" />
+<Column     Name="Age"                  Header="Age"                        Offset="1123" />
+<Column     Name="STAT_Constitution"    Header="Const."                     Offset="1193" />
+<Column     Name="SKILL_Magic"          Header="Magic"                      Offset="1263" />
+<Column     Name="SKILL_Combat"         Header="Combat"                     Offset="1333" />
 </ListBox>
 </Screen>

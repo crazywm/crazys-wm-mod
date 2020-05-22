@@ -1,8 +1,8 @@
 <Screen>
-<Window     Name="LoadMenu"                                                 XPos="360"      YPos="90"       Width="1200"    Height="900" Border="1"  />
-<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1200"    Height="900"  />
-<Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="391"      YPos="20"       Width="1200"    Height="120"  FontSize="64"  Red="200"   Green="30"  Blue="30"    />
-<ListBox    Name="FileName"                                                 XPos="415"      YPos="150"      Width="400"     Height="600" Border="1"  FontSize="20" RowHeight="30"/>
-<Button     Name="LoadGame"             Image="Load"                        XPos="300"      YPos="795"      Width="240"     Height="48"  Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="660"      YPos="795"      Width="240"     Height="48"  Transparency="true" Scale="true"  />
+<Window     Name="LoadMenu"                                                 XPos="398"      YPos="118"       Width="1124"     Height="844" Border="1"  />
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1124"     Height="844"  />
+<Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="273"      YPos="0"        Width="1124"     Height="121"  FontSize="90"  Red="200"   Green="30"  Blue="30"    />
+<ListBox    Name="FileName"                                                 XPos="363"      YPos="141"      Width="422"     Height="562" FontSize="17" RowHeight="27" Border="1"  />
+<Button     Name="LoadGame"             Image="Load"                        XPos="281"      YPos="745"      Width="225"     Height="45"  Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="618"      YPos="745"      Width="225"     Height="45"  Transparency="true" Scale="true"  />
 </Screen>

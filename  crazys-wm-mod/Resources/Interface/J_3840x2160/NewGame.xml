@@ -1,0 +1,20 @@
+<Screen>
+<Window     Name="NewGame"                                                  XPos="796"      YPos="236"       Width="2249"     Height="1688" Border="1"  />
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="2249"     Height="1688"  />
+<Text       Name="Whore Master"         Text="Whore Master"                 XPos="545"      YPos="0"        Width="2249"     Height="242"  FontSize="180"  Red="200"   Green="30"  Blue="30"    />
+<Text       Name="Label1"               Text="Brothel Name"                 XPos="981"      YPos="259"       Width="843"     Height="90"  FontSize="45"  />
+<EditBox    Name="BrothelName"                                              XPos="728"      YPos="349"       Width="843"     Height="90"  FontSize="45" Border="1"  />
+<Text       Name="Label2"               Text="Player First Name"            XPos="953"      YPos="529"      Width="843"     Height="90"  FontSize="45"  />
+<EditBox    Name="PlayerName"                                               XPos="728"      YPos="619"      Width="843"     Height="90"  FontSize="45" Border="1"  />
+<Text       Name="Label3"               Text="Player Last Name"             XPos="953"      YPos="709"      Width="843"     Height="90"  FontSize="45"  />
+<EditBox    Name="PlayerSurname"                                            XPos="728"      YPos="799"      Width="843"     Height="90"  FontSize="45" Border="1"  />
+<Text       Name="Label4"               Text="Player Birth Month"           XPos="953"      YPos="979"      Width="843"     Height="90"  FontSize="45"  />
+<Slider     Name="PlayerBirthMonth"                                         XPos="588"      YPos="1069"      Width="1124"     Height="90"  MinValue="1"        MaxValue="12" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false"  />
+<Text       Name="Label5"               Text="Player Birth Day"             XPos="970"      YPos="1159"      Width="843"     Height="90"  FontSize="45"  />
+<Slider     Name="PlayerBirthDay"                                           XPos="588"      YPos="1249"      Width="1124"     Height="90"  MinValue="1"        MaxValue="30" Value="1" Increment="1" LiveUpdate="true" Hidden="false" Disabled="false"  />
+<Text       Name="PlayerBirthMonthNum"  Text="January"                      XPos="618"      YPos="1339"      Width="843"      Height="90"  FontSize="45"  />
+<Text       Name="PlayerBirthDayNum"    Text="1"                            XPos="900"      YPos="1339"      Width="843"      Height="90"  FontSize="45"  />
+<Text       Name="PlayerHoroscope"      Text="Capricorn"                    XPos="1349"      YPos="1339"      Width="1124"     Height="90"  FontSize="45"  />
+<Button     Name="Ok"                   Image="Ok"                          XPos="562"      YPos="1491"      Width="450"     Height="90"  Transparency="true" Scale="true"  />
+<Button     Name="Cancel"               Image="Cancel"                      XPos="1237"      YPos="1491"      Width="450"     Height="90"  Transparency="true" Scale="true"  />
+</Screen>

@@ -1,0 +1,8 @@
+<Screen>
+<Window     Name="LoadMenu"                                                 XPos="331"      YPos="98"       Width="937"     Height="703" Border="1"  />
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="937"     Height="703"  />
+<Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="227"      YPos="0"        Width="937"     Height="101"  FontSize="75"  Red="200"   Green="30"  Blue="30"    />
+<ListBox    Name="FileName"                                                 XPos="302"      YPos="117"      Width="351"     Height="469" FontSize="14" RowHeight="22" Border="1"  />
+<Button     Name="LoadGame"             Image="Load"                        XPos="234"      YPos="621"      Width="187"     Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="515"      YPos="621"      Width="187"     Height="38"  Transparency="true" Scale="true"  />
+</Screen>

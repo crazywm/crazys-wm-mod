@@ -1,0 +1,13 @@
+
+<Screen>
+<Window     Name="Prison Screen Window"                                     XPos="566"      YPos="199"      Width="469"     Height="469" Border="1"  />
+<Image      Name="PrisonIcon"           File="Prison.png"                   XPos="12"       YPos="12"       Width="59"      Height="59"                   />
+<Text       Name="ScreenHeader"         Text="Town Prison"                  XPos="82"       YPos="12"       Width="187"     Height="38"                  FontSize="23"                   />
+<ListBox    Name="PrisonList"                                               XPos="12"       YPos="70"       Width="246"     Height="387"  FontSize="14" RowHeight="22"                 Border="1"                  Events="true"                  Multi="false"                   />
+
+<Text       Name="GirlDescription"      Text="None Selected"                XPos="269"      YPos="12"       Width="187"     Height="352"                  FontSize="12"                   />
+<Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="269"      YPos="363"      Width="187"     Height="38"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="ReleaseButton"        Image="Release"                     XPos="269"      YPos="420"      Width="187"     Height="38"                  Transparency="true"                  Scale="true"                   />
+
+<Button     Name="BackButton"           Image="Back"                        XPos="600"      YPos="628"      Width="223"     Height="45"  Transparency="true"    Scale="true"  />
+</Screen>

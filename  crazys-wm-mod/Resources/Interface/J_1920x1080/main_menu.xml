@@ -1,13 +1,13 @@
 <Screen>
-<Window     Name="Main Menu"                                                XPos="360"      YPos="90"       Width="1200"    Height="900" Border="1"  />
-<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1200"    Height="900"  />
-<Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="391"      YPos="20"       Width="1200"    Height="120"  FontSize="64"  Red="200"   Green="30"  Blue="30"    />
-<Text       Name="Version"              Text="Version"                      XPos="525"      YPos="120"      Width="1200"    Height="60"  FontSize="10"  />
-<Button     Name="Continue"             Image="Continue"                    XPos="420"      YPos="150"      Width="384"     Height="96"  Transparency="true" Scale="true"  />
-<Button     Name="Load Game"            Image="LoadGame"                    XPos="420"      YPos="291"      Width="384"     Height="96"  Transparency="true" Scale="true"  />
-<Button     Name="New Game"             Image="NewGame"                     XPos="420"      YPos="432"      Width="384"     Height="96"  Transparency="true" Scale="true"  />
-<Button     Name="Settings"             Image="Settings"                    XPos="420"      YPos="573"      Width="384"     Height="96"  Transparency="true" Scale="true"  />
-<Button     Name="Quit Game"            Image="QuitGame"                    XPos="420"      YPos="714"      Width="384"     Height="96"  Transparency="true" Scale="true"  />
-<Text       Name="ReadMe"       Text="Please read the readme.html"          XPos="15"       YPos="855"      Width="600"     Height="60"  FontSize="10"  />
-<Text       Name="VisitUs"      Text="Visit us at PinkPetal.org"            XPos="975"      YPos="855"      Width="600"     Height="60"  FontSize="10"  />
+<Window     Name="Main Menu"                                                XPos="398"      YPos="118"       Width="1124"     Height="844" Border="1"  />
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="1124"     Height="844"  />
+<Text       Name="WhoreMaster"          Text="Whore Master"                 XPos="273"      YPos="0"        Width="1124"     Height="121"  FontSize="90"  Red="200"   Green="30"  Blue="30"    />
+<Text       Name="Version"              Text="Version"                      XPos="450"      YPos="112"       Width="1124"     Height="56"  FontSize="14"  />
+<Button     Name="Continue"             Image="Continue"                    XPos="394"      YPos="141"      Width="360"     Height="90"  Transparency="true" Scale="true"  />
+<Button     Name="Load Game"            Image="LoadGame"                    XPos="394"      YPos="273"      Width="360"     Height="90"  Transparency="true" Scale="true"  />
+<Button     Name="New Game"             Image="NewGame"                     XPos="394"      YPos="405"      Width="360"     Height="90"  Transparency="true" Scale="true"  />
+<Button     Name="Settings"             Image="Settings"                    XPos="394"      YPos="537"      Width="360"     Height="90"  Transparency="true" Scale="true"  />
+<Button     Name="Quit Game"            Image="QuitGame"                    XPos="394"      YPos="669"      Width="360"     Height="90"  Transparency="true" Scale="true"  />
+<Text       Name="ReadMe"       Text="Please read the readme.html"          XPos="14"       YPos="802"      Width="562"     Height="56"  FontSize="14"  />
+<Text       Name="VisitUs"      Text="Visit us at PinkPetal.org"            XPos="914"      YPos="802"      Width="562"     Height="56"  FontSize="14"  />
 </Screen>

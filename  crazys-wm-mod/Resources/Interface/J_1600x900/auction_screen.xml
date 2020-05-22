@@ -1,0 +1,13 @@
+<Screen>
+<Window	Name="Auction Window"			XPos="12"	YPos="12"	Width="914"	Height="680"	Border="1" />
+<Image	Name="Arena"	File=""		XPos="9"	YPos="56"	Width="684"	Height="562"	/>
+<Text    	Name="ArenaDetails"	Text=""	XPos="703"	YPos="23"	Width="187"	Height="199"	FontSize="12"	/>
+<Button  	Name="BackButton"	Image="Back"	XPos="703"	YPos="633"	Width="187"	Height="38"	Transparency="true"	Scale="true"	/>
+<Button  	Name="WalkButton"	Image=""		XPos="206"	YPos="633"	Width="187"	Height="38"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Girls"	Image="Girls"	XPos="703"	YPos="302"	Width="187"	Height="38"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Staff"	Image="Staff"	XPos="703"	YPos="349"	Width="187"	Height="38"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Dungeon"	Image="Dungeon"	XPos="703"	YPos="466"	Width="187"	Height="38"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Turn"	Image="TurnSum"		XPos="506"	YPos="633"	Width="187"	Height="38"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Weeks"	Image="NextWeek"	XPos="703"	YPos="6"	Width="187"	Height="38"	Transparency="true"	Scale="true"	/>
+<Button  	Name="SetUp"	Image=""		XPos="703"	YPos="398"	Width="187"	Height="38"	Transparency="true"	Scale="true"	/>
+</Screen>

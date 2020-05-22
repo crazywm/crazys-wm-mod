@@ -1,0 +1,27 @@
+<Screen>
+<Window     Name="Town Screen Window"                                       XPos="37"       YPos="39"       Width="3767"    Height="2081"    Border="1"  />
+<Image      Name="TownMap"              File="townmap.png"                  XPos="28"       YPos="28"       Width="2901"    Height="2025"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="3177"     YPos="1941"      Width="562"     Height="112"     Transparency="true" Scale="true"  />
+<Button     Name="WalkButton"           Image="WalkAround"                  XPos="3233"     YPos="1688"      Width="450"     Height="90"     Transparency="true"     Scale="true"  />
+
+<Text       Name="CurrentBrothel"       Text=""                             XPos="2924"     YPos="28"       Width="843"     Height="90"  FontSize="45"  />
+<Button     Name="SlaveMarket"          Image="SlaveMarket"     Disabled="" XPos="1540"      YPos="1215"      Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Shop"                 Image="Shop"            Disabled="" XPos="2013"      YPos="1035"      Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="MayorsOffice"         Image="MayorsOffice"    Disabled="" XPos="1985"      YPos="59"       Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Bank"                 Image="Bank"            Disabled="" XPos="2339"      YPos="267"       Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="House"                Image="House"           Disabled="" XPos="798"      YPos="1184"      Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Prison"               Image="Prison"          Disabled="" XPos="2457"      YPos="532"      Width="135"      Height="135"  Transparency="true" Scale="true"  />      
+<Button     Name="Clinic"               Image="Clinic"          Disabled="" XPos="1451"      YPos="208"       Width="135"      Height="135"  Transparency="true" Scale="true"  />      
+<Button     Name="Studio"               Image="Studio"          Disabled="" XPos="413"      YPos="712"      Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Arena"                Image="Arena"           Disabled="" XPos="1481"      YPos="1538"      Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Centre"               Image="Centre"          Disabled="" XPos="1746"      YPos="652"      Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Farm"                 Image="Farm"            Disabled="" XPos="2429"      YPos="1688"      Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Brothel0"             Image="Brothel"         Disabled="" XPos="1361"      YPos="830"      Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Brothel1"             Image="Brothel2"        Disabled="" XPos="1985"      YPos="1274"      Width="135"      Height="135"  Transparency="true" Scale="true"  />      
+<Button     Name="Brothel2"             Image="Brothel3"        Disabled="" XPos="1392"      YPos="562"      Width="135"      Height="135"  Transparency="true" Scale="true"  />      
+<Button     Name="Brothel3"             Image="Brothel4"        Disabled="" XPos="1687"      YPos="413"      Width="135"      Height="135"  Transparency="true" Scale="true"  />      
+<Button     Name="Brothel4"             Image="Brothel5"        Disabled="" XPos="2103"      YPos="652"      Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Brothel5"             Image="Brothel6"        Disabled="" XPos="2665"      YPos="177"       Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Button     Name="Brothel6"             Image="Brothel7"        Disabled="" XPos="1183"      YPos="90"       Width="135"      Height="135"  Transparency="true" Scale="true"  />
+<Image      Name="GirlImage"            File="blank.png"                    XPos="2924"     YPos="141"       Width="815"     Height="1125" Hidden="true"  />
+</Screen>

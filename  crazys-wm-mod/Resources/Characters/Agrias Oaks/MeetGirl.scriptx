@@ -1,0 +1,31 @@
+<?xml version="2.0" standalone="yes" ?>
+<Root ScriptName="./Resources/Characters/Agrias Oaks/MeetGirl" NumActions="28">
+    <Action Type="Script_Init" />
+    <Action Type="Script_ChoiceBox" ID="0" Num="2" />
+    <Action Type="Script_m_Next" Text='&quot;I might be.  What&apos;s your name?&quot;' />
+    <Action Type="Script_m_Next" Text='&quot;Mmm, afraid I can&apos;t help you there, then.&quot;' />
+    <Action Type="Script_SetVar" Var="0" Val="1" />
+    <Action Type="Script_EndInit" />
+    <Action Type="Script_IfVar" Var="0" Compare="e" Amount="1" Info="Compare Options:   e , l , le , g , ge , ne" />
+    <Action Type="Script_Dialog" Text="Whoever it is, she&apos;s tall and well armed.  A well used long sword and battered armor cover her form.  Her eyes seem to linger on a few of the mercenary groups scattered near the City Watch Headquarters, but she doesn&apos;t approach them.  She seems to notice your eyes on her, and turns your way." />
+    <Action Type="Script_Dialog" Text='You greet her, keeping your face friendly.  &quot;Hello there.  You seem a little lost.  Anything I can do to help?&quot;' />
+    <Action Type="Script_Dialog" Text='Her expression is wary, but not openly hostile.  &quot;Not unless you know someone looking to hire a sellsword...&quot;' />
+    <Action Type="Script_SetVar" Var="0" Val="2" />
+    <Action Type="Script_ActivateChoice" ID="0" />
+    <Action Type="Script_Restart" />
+    <Action Type="Script_EndIf" />
+    <Action Type="Script_IfVar" Var="0" Compare="e" Amount="2" Info="Compare Options:   e , l , le , g , ge , ne" />
+    <Action Type="Script_IfChoice" ID="0" Val="0" />
+    <Action Type="Script_Dialog" Text='She turns to face you fully, but keeps her hand on her sword&apos;s hilt.  &quot;Agrias.  Agrias Oaks.&quot;' />
+    <Action Type="Script_Dialog" Text='You offer her your best smile.  &quot;A pleasure, Agrias.  I run a...bar, here in town.  It&apos;s in a rough area, and we&apos;re always looking to hire beautiful women like yourself.  Either to work the bar, or keep out the riff raff.&quot;' />
+    <Action Type="Script_Dialog" Text='She hesitates, but when you mention that you include room and board, it seems to seal the deal.  &quot;Let&apos;s go to you bar and discuss the details then.&quot;  Her eyes have a determined expression.  &quot;My sword is yours.  I own&apos;t disappoint you.&quot;' />
+    <Action Type="Script_Dialog" Text='You give her a broad smile as you lead her home.  &quot;We shall see.&quot;  Inwardly, you wonder how she&apos;ll react when she finds out she&apos;s just been hired to work at a brothel...' />
+    <Action Type="Script_AddTargetGirl" />
+    <Action Type="Script_EndScript" />
+    <Action Type="Script_EndIf" />
+    <Action Type="Script_IfChoice" ID="0" Val="1" />
+    <Action Type="Script_Dialog" Text='She nods.  &quot;A pity, but understandable.  Have a good day, Sir.&quot;' />
+    <Action Type="Script_EndScript" />
+    <Action Type="Script_EndIf" />
+    <Action Type="Script_EndIf" />
+</Root>

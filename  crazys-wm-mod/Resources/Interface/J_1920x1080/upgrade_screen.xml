@@ -1,0 +1,49 @@
+<Screen>
+<Window	Name="Brothel Screen Window"				XPos="14"	YPos="14"	Width="1096"	Height="816"	Border="1"	/>
+<Image	Name="Background"	File="building_mgt_bg.jpg"	XPos="0"	YPos="0"	Width="1096"	Height="816"	/>
+<Text    	Name="ScreenHeader" Text="Building Management"	XPos="14"	YPos="14"	Width="1124"	Height="45"	FontSize="25"	/>
+<Text    	Name="Capacity"	Text="Capacity: "			XPos="14"	YPos="68"	Width="337"	Height="45"	FontSize="22"	/>
+<Text    	Name="Gold"	Text="Gold: 99999999"			XPos="562"	YPos="34"	Width="169"	Height="45"	FontSize="22"	/>
+<Text    	Name="TotalCost"	Text="TotalCost: 0"		XPos="562"	YPos="68"	Width="169"	Height="45"	FontSize="22"	/>
+<ListBox	Name="FacilityList"					XPos="787"	YPos="28"	Width="281"	Height="703"	FontSize="17" RowHeight="27" Border="1"	Events="true"	Multi="false"	/>
+<Text    	Name="Narrative"	Text=""				XPos="14"	YPos="689"	Width="703"	Height="180"	FontSize="22"	/>
+<!--!	The idea here is to define repeating sequences of screen!	elements as "	widgets"	!!	So:!!	<Define	Widget="WidgetName"	>!	(repeating XML definitions go here)!	</Define>!!	And then:!!	<Widget	Definition="WidgetName"	!	Sequence="0"	!				XPos="14"	!	YPos="14"	!/>!!	And have the component parts of the widget take their position and ID!	based on the X and Y pos and sequence. !-->
+<Define Widget="Adjuster"	>
+<Text    	Name="Caption"	Text="Provides"			XPos="1"	YPos="0"	Width="84"	Height="45"	FontSize="22"	Hidden="true"	/>
+<Button  	Name="Down"	Image="minus_20x20"			XPos="0"	YPos="34"	Width="28"	Height="28"	Transparency="true"	Scale="true"	Hidden="true"	Cache="1"	/>
+<Text    	Name="Level"	Text="0"				XPos="31"	YPos="31"	Width="84"	Height="45"	FontSize="22"	Hidden="true"	/>
+<Button  	Name="Up"	Image="plus_20x20"			XPos="56"	YPos="34"	Width="28"	Height="28"	Transparency="true"	Scale="true"	Hidden="true"	Cache="1"	/>
+</Define>
+<Define Widget="Facility"	>
+<!--	
+<Image	Name="Shader"	File="bldg_mgt_black50.png"	XPos="0"	YPos="0"	Width="731"	Height="84"	/>FacilityBG	-->
+<Image	Name="Shader"	File="FacilityBG.png"		XPos="0"	YPos="0"	Width="731"	Height="84"	/>
+<!-- <Image Name="BevelTop"	File="bevel_bar_white50.png"	XPos="0"	YPos="0"	Width="724"	Height="3"	Hidden="true"	/>
+<Image Name="BevelBottom" File="bevel_bar_black50.png"	XPos="3"	YPos="77"	Width="724"	Height="3"	Hidden="true"	/>
+<Image Name="BevelLeft"	File="bevel_bar_white50_v.png"	XPos="0"	YPos="0"	Width="3"	Height="77"	Hidden="true"	/>
+<Image Name="BevelRight" File="bevel_bar_white50_v.png"	XPos="3"	YPos="703"	Width="3"	Height="77"	Hidden="true"	/>	-->
+<Text    	Name="Unit"	Text="0:"					XPos="6"	YPos="-2"	Width="42"	Height="45"	FontSize="22"	Hidden="true"	/>
+<Button  	Name="RenameButton"	Image="Asterisk"		XPos="28"	YPos="3"	Width="28"	Height="28"	Transparency="true"	Scale="true"	Hidden="true"	/>
+<Text    	Name="Name"	Text=""					XPos="62"	YPos="-2"	Width="422"	Height="45"	FontSize="22"	Hidden="true"	/>
+<Text    	Name="Type"	Text="Foo"					XPos="295"	YPos="-2"	Width="281"	Height="45"	FontSize="22"	Hidden="true"	/>
+<Text    	Name="Spaces"	Text="Space: 0"			XPos="569"	YPos="20"	Width="112"	Height="45"	FontSize="22"	Hidden="true"	/>
+<Text    	Name="Cost"	Text="Cost: 0"				XPos="569"	YPos="-2"	Width="141"	Height="45"	FontSize="22"	Hidden="true"	/>
+<Button  	Name="DeleteButton"	Image="X16x16"		XPos="703"	YPos="6"	Width="22"	Height="22"	Transparency="true"	Scale="true"	Hidden="true"	/>
+<Image	Name="NewSplash"	File="newsplash.png"		XPos="676"	YPos="56"	Width="49"	Height="21"	Hidden="true"	/>
+<Widget	Definition="Adjuster"	Seq="Provides"		XPos="11"	YPos="18"	/>
+<Widget	Definition="Adjuster"	Seq="Glitz"			XPos="112"	YPos="18"	/>
+<Widget	Definition="Adjuster"	Seq="Secure"		XPos="211"	YPos="18"	/>
+<Widget	Definition="Adjuster"	Seq="Stealth"		XPos="309"	YPos="18"	/>
+</Define>
+<Widget	Definition="Facility"	Seq="0"			XPos="14"	YPos="112"	/>
+<Widget	Definition="Facility"	Seq="1"			XPos="14"	YPos="211"	/>
+<Widget	Definition="Facility"	Seq="2"			XPos="14"	YPos="309"	/>
+<Widget	Definition="Facility"	Seq="3"			XPos="14"	YPos="408"	/>
+<Widget	Definition="Facility"	Seq="4"			XPos="14"	YPos="506"	/>
+<Widget	Definition="Facility"	Seq="5"			XPos="14"	YPos="605"	/>
+<!--!	Most names here are for commentary purposes.!	"	Girl Management"	 doesn't have any effect on the button text!!	Specifying "	Image"	="Girls"	 and nothing else here!	will call the "	on"	 button GirlsOn.png!	and will infer GirlsOff.png and GirlsDisabled.png!	from there.!!	Specifing "	On"	, "	Off"	 and "	Disabled"	 will use!	the names supplied for the image files.!!	To make a "	ND"	 version with no default image!	Specify Image, and also Disabled=""	!	!-->
+<Button  	Name="NewButton"	Image="New"				XPos="14"	YPos="759"	Width="101"	Height="45"	Transparency="true"	Scale="true"	/>
+<Button  	Name="BuyButton"	Image="Buy"				XPos="127"	YPos="759"	Width="101"	Height="45"	Transparency="true"	Scale="true"	/>
+<Button  	Name="RevertButton"	Image="Revert"		XPos="239"	YPos="759"	Width="101"	Height="45"	Transparency="true"	Scale="true"	/>
+<Button  	Name="BackButton"	Image="Back"			XPos="857"	YPos="759"	Width="225"	Height="45"	Transparency="true"	Scale="true"	/>
+</Screen>

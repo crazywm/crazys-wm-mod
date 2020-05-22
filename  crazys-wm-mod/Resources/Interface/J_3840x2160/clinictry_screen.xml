@@ -1,0 +1,6 @@
+<Screen>
+<Window	Name="Clinic Try Window"			XPos="28"  YPos="28"  Width="2193" Height="1631" Border="1" />
+<Image	Name="Clinic2"	File="Clinic2.jpg"	XPos="3"	YPos="3"	Width="2159"	Height="1508"	/>
+<Button  	Name="BackButton"	Image="Back"		XPos="1687"	YPos="1519"	Width="450"	Height="90"	Transparency="true"	Scale="true"	/>
+<Button  	Name="WalkButton"	Image="Begin"		XPos="495"	YPos="1519"	Width="450"	Height="90"	Transparency="true"	Scale="true"	/>
+</Screen>

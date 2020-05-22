@@ -1,0 +1,11 @@
+
+<Screen>
+<Window     Name="Mayor Office Window"                                      XPos="1358"      YPos="478"      Width="1124"     Height="1125" Border="1"  />
+<Image      Name="MayorIcon"            File="MayorsOffice.png"             XPos="28"       YPos="28"       Width="141"      Height="141"                   />
+<Text       Name="ScreenHeader"         Text="Town Hall"                    XPos="197"       YPos="28"       Width="900"     Height="90"                  FontSize="56"                   />
+<Text       Name="MayorDetails"         Text=""                             XPos="28"       YPos="169"       Width="1068"     Height="816"                  FontSize="39"                   />
+
+
+<Button     Name="BribeButton"          Image="Bribe"                       XPos="337"      YPos="1007"      Width="450"     Height="90"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="BackButton"           Image="Back"                        XPos="1439"      YPos="1508"      Width="534"     Height="107"  Transparency="true"    Scale="true"  />
+</Screen>
