@@ -7,17 +7,9 @@
         <Effect What="Stat" Name="Charisma" Amount="-5" />
         <Effect What="Stat" Name="PCFear" Amount="-10" />
         <Effect What="Stat" Name="PCHate" Amount="-5" />
+        <Crafting CraftPoints="25" ManaCost="0">
+            <Job Name="Blacksmith"/>
+            <Skill Name="Combat" Minimum="10" />
+        </Crafting>
     </Item>
-    <Item Name="Short Sword" Desc="This robust stabbing sword is quite effective for its size. It can be concealed to some degree, but it's too large to completely camouflage. (B) (+15 Com, -10 Fear, -5 Hate, +5 Conf, -5 Cha)"
-	Type="Weapon" Badness="0" Special="None" Cost="200" Rarity="Shop50" Infinite="true" GirlBuyChance="1" ItemWeight="0.0">
-        <Effect What="Skill" Name="Combat" Amount="15" />
-        <Effect What="Stat" Name="Confidence" Amount="5" />
-        <Effect What="Stat" Name="Charisma" Amount="-5" />
-        <Effect What="Stat" Name="PCFear" Amount="-10" />
-        <Effect What="Stat" Name="PCHate" Amount="-5" />
-    </Item>
-    <Crafting CraftPoints="25" ManaCost="0">
-        <Job Name="Blacksmith"/>
-        <Skill Name="Combat" Minimum="10" />
-    </Crafting>
 </Items>

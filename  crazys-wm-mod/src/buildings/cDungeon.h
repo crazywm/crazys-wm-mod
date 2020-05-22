@@ -76,7 +76,7 @@ struct sDungeonGirl
 class cDungeon
 {
 private:
-    bool m_TortureDone;			// WD:	Have we got a torturer working today
+    bool m_TortureDone = false;			// WD:	Have we got a torturer working today
 
 	std::vector<sDungeonGirl> m_Girls;
 	sDungeonCust* m_Custs;

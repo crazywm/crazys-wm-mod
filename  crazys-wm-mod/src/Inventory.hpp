@@ -22,6 +22,7 @@
 #define CRAZYS_WM_MOD_INVENTORY_HPP
 
 #include <map>
+#include <string>
 
 class sInventoryItem;
 class TiXmlElement;

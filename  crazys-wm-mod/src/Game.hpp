@@ -1,6 +1,7 @@
 #ifndef CRAZYS_WM_MOD_GAME_HPP
 #define CRAZYS_WM_MOD_GAME_HPP
 
+#include <string>
 #include <memory>
 #include <list>
 #include <Constants.h>

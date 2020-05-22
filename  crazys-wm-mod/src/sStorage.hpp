@@ -21,6 +21,7 @@
 #define CRAZYS_WM_MOD_SSTORAGE_HPP
 
 class TiXmlElement;
+#include <string>
 #include <map>
 
 

@@ -131,7 +131,7 @@ void cInventory::GivePlayerAllItems()
 static void do_effects(TiXmlElement *parent, sInventoryItem *item)
 {
 	int ival; const char *pt; TiXmlElement *el;
-	for (el = parent->FirstChildElement(); el; el = el->NextSiblingElement())
+	for (el = parent->FirstChildElement("Effect"); el; el = el->NextSiblingElement("Effect"))
 	{
 		sEffect *ept = new sEffect;
 		if (pt = el->Attribute("What")) ept->set_what(pt);
@@ -430,9 +430,8 @@ void cInventory::UpdateShop()
 {
 	for (int i = 0; i < NUM_SHOPITEMS; i++)
 	{
-		sInventoryItem* item = GetRandomItem();
+		sInventoryItem* item = nullptr;
 		while (item == nullptr) item = GetRandomItem();
-		if (item == nullptr) break;	// should never happen but left in anyway
 
 		int chance = g_Dice.d100();
 		if ((item->m_Rarity == RARITYCOMMON ||
@@ -458,6 +457,7 @@ sInventoryItem* cInventory::GetShopItem(int num)
 	if (num >= NUM_SHOPITEMS) return nullptr;
 	return m_ShopItems[num];
 }
+
 int cInventory::GetRandomShopItem()
 {
 	if (m_NumShopItems == 0) UpdateShop();
@@ -1244,6 +1244,9 @@ bool cInventory::LoadItemsXML(const string& filename)
 	{
 		sInventoryItem* item = handle_element(el);
 		if (log_flag) g_LogFile.os() << *item << endl;
+        if(item->m_Name.empty()) {
+            g_LogFile.os() << "Error: Item in '" << filename << "' has no name!" << endl;
+        }
 		m_Items.push_back(item);
 	}
 	return true;

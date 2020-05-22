@@ -43,8 +43,8 @@
             What="Stat"
             Name="Spirit"
             Amount="-5" />
+        <Crafting CraftPoints="45" ManaCost="0">
+            <Job Name="Tailor"/>
+        </Crafting>
     </Item>
-    <Crafting CraftPoints="45" ManaCost="0">
-        <Job Name="Tailor"/>
-    </Crafting>
 </Items>

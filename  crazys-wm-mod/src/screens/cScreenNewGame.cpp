@@ -44,7 +44,7 @@ void cScreenNewGame::set_ids()
 	pbd1_id			= get_id("PlayerBirthDayNum");
 	phn_id			= get_id("PlayerHoroscope");
 
-	SetButtonNavigation(cancel_id, "<back>");
+	SetButtonNavigation(cancel_id, "Main Menu");
 	SetButtonCallback(ok_id, [this]() { start_game(); });
 	SetSliderCallback(pbm_id, [this](int) {update_birthday(); });
 	SetSliderCallback(pbd_id, [this](int) {update_birthday(); });
