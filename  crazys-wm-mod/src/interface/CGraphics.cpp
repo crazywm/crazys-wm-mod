@@ -24,6 +24,7 @@
 #include "sConfig.h"
 #include "cColor.h"
 #include "cTimer.h"
+#include "cFont.h"
 
 extern cConfig cfg;
 
@@ -154,4 +155,11 @@ cSurface CGraphics::LoadImage(std::string filename, int width, int height, bool 
 cSurface CGraphics::CreateSurface(int width, int height, sColor color, bool transparent)
 {
     return m_ImageCache.CreateSurface(width, height, color, transparent);
+}
+
+cFont CGraphics::LoadFont(const string& font, int size)
+{
+    cFont f{this};
+    f.LoadFont(font, size);
+    return std::move(f);
 }

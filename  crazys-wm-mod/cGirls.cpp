@@ -33,6 +33,7 @@
 #include "cInventory.h"
 #include "interface/cFont.h"
 #include "CLog.h"
+#include "interface/CGraphics.h"
 
 #ifdef LINUX
 #include "linux.h"
@@ -48,6 +49,7 @@
 using namespace std;
 
 extern cRng g_Dice;
+extern CGraphics g_Graphics;
 
 extern cNameList	g_GirlNameList;
 extern cNameList	g_BoysNameList;
@@ -830,8 +832,8 @@ string cGirls::GetGirlMood(const sGirl * girl)
 string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 {
 	if (girl == nullptr)	return string("");
-	cFont check; int w, h, size = 0;
-	check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
+	int w, h, size = 0;
+    cFont check = g_Graphics.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 	stringstream ss;
 	string sper; if (cfg.fonts.showpercent()) sper = " %";
 
@@ -852,17 +854,17 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 	else		// `J` otherwise try to align the numbers
 	{
 		// get the widest
-		for (int i = 0; i < 8; i++) { check.GetSize(basestr[i], w, h); if (w > size) size = w; }
-		for (int i = 0; i < 22; i++) { check.GetSize(skillstr[i], w, h); if (w > size) size = w; }
+		for (auto& i : basestr) { check.GetSize(i, w, h); if (w > size) size = w; }
+		for (auto& i : skillstr) { check.GetSize(i, w, h); if (w > size) size = w; }
 		size += 5; // add a little padding
 		// then add extra spaces until it is longer that the widest
-		for (int i = 0; i < 8; i++)
+		for (auto & i : basestr)
 		{
-			check.GetSize(basestr[i], w, h);
+			check.GetSize(i, w, h);
 			while (w < size)
 			{
-				basestr[i] += " ";
-				check.GetSize(basestr[i], w, h);
+				i += " ";
+				check.GetSize(i, w, h);
 			}
 		}
 		for (int i = 0; i < 22; i++)
@@ -1008,8 +1010,8 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 	if (girl == nullptr)	return "";
 	string sper; if (cfg.fonts.showpercent()) sper = " %";
 	stringstream ss;
-	cFont check; int w, h, size = 0;
-	check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
+	int w, h, size = 0;
+	cFont check = g_Graphics.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetMoreDetailsString
 	ss << "STATS";
@@ -1501,8 +1503,8 @@ string cGirls::GetSimpleDetails(sGirl* girl, int fontsize)
 	if (girl == nullptr) return "";
 	if (fontsize < 8) fontsize = 8;
 	stringstream ss;
-	cFont check; int w, h, size = 0;
-	check.LoadFont(cfg.fonts.normal(), fontsize);
+	int w, h, size = 0;
+	cFont check = g_Graphics.LoadFont(cfg.fonts.normal(), fontsize);
 	string sper; if (cfg.fonts.showpercent()) sper = " %";
 
 	// `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString

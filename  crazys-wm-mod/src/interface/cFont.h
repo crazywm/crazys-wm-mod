@@ -27,48 +27,25 @@
 class cFont
 {
 public:
-	cFont();
+    explicit cFont(CGraphics* gfx);
 
-	void Free();
+    void SetColor(unsigned char r, unsigned char g, unsigned char b);
+    bool LoadFont(const std::string& font, int size);
+    void GetSize(const std::string& text, int &width, int &height) const;
 
-	void SetColor(unsigned char r, unsigned char g, unsigned char b);
-	bool DrawText(int x, int y, bool multi = false);	// draws the text surface to the screen
-	bool DrawMultilineText(int x, int y, int linesToSkip = 0, int offsetY = 0, SDL_Surface* destination = nullptr);	// draws the text surface to the screen
-	bool LoadFont(std::string font, int size);
-	void SetText(std::string text);
-	std::string GetText() {return m_Text;}
-	void GetSize(const std::string& text, int &width, int &height);
-	int GetWidth();
-	int GetHeight();
-	void SetMultiline(bool multi, int width, int height){m_IsMultiline=multi;m_Width = width;m_Height=height;}
+    int IsFontFixedWidth();
+    int GetFontHeight();	// returns the height in pixels of the font
+    int GetFontLineSkip() const;	// returns the number of pixels you should have between lines
+    void SetFontBold(bool Bold = true);
 
-	int IsFontFixedWidth();
-	int GetFontHeight();	// returns the height in pixels of the font
-	int GetFontLineSkip();	// returns the number of pixels you should have between lines
-	void SetFontBold(bool Bold = true);
-
-	int GetTotalNumberOfLines(){return m_NumLines;}
-	int GetLinesPerBox(){if(m_Lineskip>0)return (m_Height/m_Lineskip);else return m_Height/GetFontLineSkip();}
-
-	bool LeftOrRight(){ return m_LeftOrRight; }
-	void LeftOrRight(bool leftorright){ m_LeftOrRight = leftorright; }
+    cSurface RenderText(std::string text) const;
+    cSurface RenderMultilineText(std::string text, int width) const;
 private:
-    ttf_font_ptr m_Font;
-	SDL_Color m_TextColor;
-	cSurface m_Message;	                // for storing a single line message
-    cSurface m_MultilineMessage;	// for storing multiline messages
-	std::string m_Text;
-	bool m_LeftOrRight = false;
-	bool m_NewText;	// variable for keeping track of if it needs to be updated
-	bool m_IsMultiline;
-	int m_Width;
-	int m_Height;
-	int m_Lineskip;
-	unsigned int m_NumLines;	// stores the total number of lines in the box
+    ttf_font_ptr m_Font    = nullptr;
+    SDL_Color m_TextColor;
 
-	// These functions are used internally to draw text to a surface
-    void RenderText(bool multi);
-	void RenderMultilineText();	// function that renders multiline text to the internal surface
-	std::string UpdateLineEndings(std::string text);  // added function to fix line endings ("/n"=>"/r/n") for Windows
+    static std::string UpdateLineEndings(std::string text) ;  // added function to fix line endings ("/n"=>"/r/n") for Windows
+
+    CGraphics* m_GFX = nullptr;
 };
 

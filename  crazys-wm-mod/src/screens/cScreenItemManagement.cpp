@@ -414,8 +414,8 @@ void cScreenItemManagement::write_item_text(const sInventoryItem* item, int owne
 	}
 	if (target == 1)
 	{
-		cFont check; int w, h, size = int(GetTextItem(desc_id)->GetWidth()*0.25);
-		check.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
+		int w, h, size = int(GetTextItem(desc_id)->GetWidth()*0.25);
+        cFont check = g_Graphics.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
 		check.GetSize(iCost.str(), w, h); while (w < size) { iCost << " "; check.GetSize(iCost.str(), w, h); }
 	}
 	ss << "Item Name:      " << item->m_Name;

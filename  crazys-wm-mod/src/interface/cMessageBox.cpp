@@ -103,18 +103,23 @@ void cMessageBox::Draw(const CGraphics& gfx)
         m_Border.DrawSurface(m_XPos, m_YPos);
         m_Background[m_Color].DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
     }
-    if(m_Text != m_Font->GetText())
-        m_Font->SetText(m_Text);
-    m_Font->DrawMultilineText(m_XPos, m_YPos, m_Position);
+
+    SDL_Rect srcRect;
+    srcRect.x = 0;
+    srcRect.y = m_Position * m_Font->GetFontLineSkip();
+    srcRect.h = m_Height;
+    srcRect.w = m_Width;
+
+    m_PreRendered.DrawSurface(m_XPos, m_YPos, &srcRect);
 }
 
 void cMessageBox::Advance()
 {
-	m_Position += m_Font->GetLinesPerBox();
+    m_Position += m_Height / m_Font->GetFontLineSkip();
 
-	if(m_Position >= m_Font->GetTotalNumberOfLines()) {
-	    m_Messages.pop_front();
-	    if(!m_Messages.empty()) {
+    if(m_Position >= m_PreRendered.GetHeight() / m_Font->GetFontLineSkip()) {
+        m_Messages.pop_front();
+        if(!m_Messages.empty()) {
             UpdateMessageText();
         }
     }
@@ -126,16 +131,16 @@ void cMessageBox::UpdateMessageText()
         m_Text        = m_Messages.front().m_Text;
         m_Position    = 0;
         m_Color       = m_Messages.front().m_Color;
+
+        m_PreRendered = m_Font->RenderMultilineText(m_Text, m_Width);
     }
 }
 
 void cMessageBox::ChangeFontSize(int FontSize)
 {
-	m_Font = std::make_unique<cFont>();
-	m_Font->LoadFont(cfg.fonts.normal(), FontSize);
-	m_Font->SetText("");
-	m_Font->SetColor(g_MessageBoxTextColor.r, g_MessageBoxTextColor.g, g_MessageBoxTextColor.b);
-	m_Font->SetMultiline(true, m_Width, m_Height);
+    m_Font = std::make_unique<cFont>(g_Graphics.LoadFont(cfg.fonts.normal(), FontSize));
+    m_Font->SetColor(g_MessageBoxTextColor.r, g_MessageBoxTextColor.g, g_MessageBoxTextColor.b);
+    UpdateMessageText();
 }
 
 void cMessageBox::PushMessage(std::string text, int color)

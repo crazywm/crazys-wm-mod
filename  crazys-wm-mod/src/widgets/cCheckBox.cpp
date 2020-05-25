@@ -31,31 +31,31 @@ extern cConfig cfg;
 
 void cCheckBox::DrawWidget(const CGraphics& gfx)
 {
-	if (IsDisabled()) return;
+    if (IsDisabled()) return;
 
-	int off = (m_Font.LeftOrRight() ? m_Font.GetWidth() : m_Width) + 4;
-	// Draw the window
-    m_Border.DrawSurface(m_XPos + (m_Font.LeftOrRight() ? off : 0), m_YPos);
-    m_Surface.DrawSurface(m_XPos + (m_Font.LeftOrRight() ? off + 1 : 1), m_YPos + 1);
+    int off = (m_LeftOrRight ? m_Label.GetWidth() : m_Width) + 4;
+    // Draw the window
+    m_Border.DrawSurface(m_XPos + (m_LeftOrRight ? off : 0), m_YPos);
+    m_Surface.DrawSurface(m_XPos + (m_LeftOrRight ? off + 1 : 1), m_YPos + 1);
 
-	if (m_StateOn)
-	{
-		m_Image.DrawSurface(m_XPos + (m_Font.LeftOrRight() ? off : 0), m_YPos);
-	}
-	m_Font.DrawText(m_XPos + (m_Font.LeftOrRight() ? 0 : off), m_YPos);
+    if (m_StateOn)
+    {
+        m_Image.DrawSurface(m_XPos + (m_LeftOrRight ? off : 0), m_YPos);
+    }
+    m_Label.DrawSurface(m_XPos + (m_LeftOrRight ? 0 : off), m_YPos);
 }
 
-cCheckBox::cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, int height, string text, int fontsize, bool leftorright):
-    cUIWidget(id, x, y, width, height, parent)
+cCheckBox::cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, int height, std::string text, int fontsize, bool leftorright):
+        cUIWidget(id, x, y, width, height, parent), m_Font(&GetGraphics())
 {
     m_Image = GetGraphics().LoadImage(ImagePath("CheckBoxCheck.png").str(), m_Width, m_Height, true);
     m_Border = GetGraphics().CreateSurface(width, height, g_CheckBoxBorderColor);
     m_Surface = GetGraphics().CreateSurface(width - 2, height - 2, g_CheckBoxBackgroundColor);
 
     m_Font.LoadFont(cfg.fonts.normal(), fontsize);
-    m_Font.SetText(std::move(text));
     m_Font.SetColor(0, 0, 0);
-    m_Font.LeftOrRight(leftorright);
+    m_Label = m_Font.RenderText(std::move(text));
+    m_LeftOrRight = leftorright;
 }
 
 void cCheckBox::SetCallback(std::function<void(bool)> cb)
@@ -67,9 +67,9 @@ bool cCheckBox::HandleClick(int x, int y, bool press)
 {
     if (!press) return false;
 
-    int off = (m_Font.LeftOrRight() ? m_Font.GetWidth() : m_Width) + 4;
+    int off = (m_LeftOrRight ? m_Label.GetWidth() : m_Width) + 4;
     bool over = false;
-    if (m_Font.LeftOrRight())
+    if (m_LeftOrRight)
     {
         if (x > m_XPos + off && y > m_YPos && x < m_XPos + off + m_Width && y < m_YPos + m_Height)
             over = true;

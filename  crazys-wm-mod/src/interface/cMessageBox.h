@@ -21,8 +21,9 @@
 
 #include <string>
 #include <queue>
-#include "cInterfaceObject.h"
-#include "cSurface.h"
+#include <utility>
+#include "interface/cInterfaceObject.h"
+#include "interface/cSurface.h"
 
 class cFont;
 
@@ -54,8 +55,9 @@ private:
 
 	cSurface m_Background[NUM_MESSBOXCOLOR];
 	cSurface m_Border;
-	
+
 	std::unique_ptr<cFont> m_Font;
+    cSurface m_PreRendered;
 	std::string m_Text;	// contains the entire text string
 	int m_Position;	// where we are up too
 

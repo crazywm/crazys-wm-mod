@@ -244,11 +244,11 @@ void cScreenDungeon::init(bool back)
     HideWidget(brothel4_id, mum_brothels < 5);
     HideWidget(brothel5_id, mum_brothels < 6);
     HideWidget(brothel6_id, mum_brothels < 7);
-    HideWidget(clinic_id, g_Game->has_building(BuildingType::CLINIC));
-    HideWidget(studio_id, g_Game->has_building(BuildingType::STUDIO));
-    HideWidget(arena_id, g_Game->has_building(BuildingType::ARENA));
-    HideWidget(centre_id, g_Game->has_building(BuildingType::CENTRE));
-    HideWidget(farm_id, g_Game->has_building(BuildingType::FARM));
+    HideWidget(clinic_id, !g_Game->has_building(BuildingType::CLINIC));
+    HideWidget(studio_id, !g_Game->has_building(BuildingType::STUDIO));
+    HideWidget(arena_id, !g_Game->has_building(BuildingType::ARENA));
+    HideWidget(centre_id, !g_Game->has_building(BuildingType::CENTRE));
+    HideWidget(farm_id, !g_Game->has_building(BuildingType::FARM));
 
 	if (cfg.debug.log_debug())	g_LogFile.write("cScreenDungeon::init > 3");
 	// if a selection of girls is stored, try to re-select them

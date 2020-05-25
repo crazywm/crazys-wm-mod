@@ -31,7 +31,7 @@
 class cChoice : public cUIWidget	// represents a list of text selections and the currently selected text
 {
 public:
-	cChoice(int x, int y, int width, int height, int ID, int num_choices, int item_height, int max_str_len, int fontsize, cInterfaceWindow* parent);
+    cChoice(int x, int y, int width, int height, int ID, int num_choices, int item_height, int max_str_len, int fontsize, cInterfaceWindow* parent);
 
     int num_choices() const;
 
@@ -46,24 +46,26 @@ private:
     bool HandleKeyPress(SDL_keysym key) override;
     int FindActive(int x, int y) const;
 
-	std::string m_Question;						// `J` The question at the top of the choice box
-	std::vector<std::string> m_Choices;			// array of choices available
-	int m_CurrChoice = -1;						// The choice selected at present
-	cSurface m_Background;
+    std::string m_Question;						// `J` The question at the top of the choice box
+    std::vector<std::string> m_Choices;			// array of choices available
+    std::vector<cSurface> m_ChoicesSurface;     // array of pre-rendered choice text
+    cSurface m_QuestionSurface;
+    int m_CurrChoice = -1;						// The choice selected at present
+    cSurface m_Background;
     cSurface m_Border;
     cSurface m_ElementBackground;		        // the background and border for the list elements
     cSurface m_ElementSelectedBackground;	    // the background and border for the list elements
     cSurface m_HeaderBackground;
     cFont m_Font;
-	int m_FontSize;
+    int m_FontSize;
 
-	int m_NumDrawnElements;
-	int m_eWidth;
-	int m_eHeight;
-	int m_Position = 0;
+    int m_NumDrawnElements;
+    int m_eWidth;
+    int m_eHeight;
+    int m_Position = 0;
 
-	bool m_ScrollDisabled = false;
-	// the scroll button
+    bool m_ScrollDisabled = false;
+    // the scroll button
     cSurface m_UpOn;
     cSurface m_DownOn;
     cSurface m_UpOff;

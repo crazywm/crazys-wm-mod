@@ -268,7 +268,7 @@ string cInterfaceWindow::GetEditBoxText(int ID)
 
 void cInterfaceWindow::SetEditBoxText(int ID, std::string text)
 {
-    GetEditBox(ID)->m_Text->SetText(std::move(text));
+    GetEditBox(ID)->SetText(std::move(text));
 }
 
 cEditBox* cInterfaceWindow::GetEditBox(int id)

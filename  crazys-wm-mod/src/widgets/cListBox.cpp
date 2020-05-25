@@ -25,8 +25,6 @@
 #include "sConfig.h"
 #include "cScrollBar.h"
 
-extern CGraphics g_Graphics;
-
 extern cConfig cfg;
 
 extern bool g_ShiftDown;
@@ -45,40 +43,19 @@ extern sColor g_ListBoxHeaderBorderHColor;
 extern sColor g_ListBoxHeaderTextColor;
 
 cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect,
-        bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight):
-    cUIWidget(ID, x, y, width, height, parent)
+                   bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight):
+        cUIWidget(ID, x, y, width, height, parent),
+        m_ShowHeaders(ShowHeaders), m_HeaderDividers(HeaderDiv), m_HeaderClicksSort(HeaderSort), m_BorderSize(BorderSize), m_Font(&GetGraphics())
 {
-    m_NumDrawnElements = m_NumElements = m_Position = 0;
+    m_FontSize = fontsize == 0 ? 10 : fontsize;
+    m_Font.LoadFont(cfg.fonts.normal(), m_FontSize);
+    m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+
     m_LastSelected = m_Items.end();
-    m_ScrollChange = -1;
 
     DefineColumns(std::vector<std::string>(1), std::vector<std::string>(1), std::vector<int>(1), std::vector<bool>(1));
-
-    m_ShowHeaders = false;
-    m_HeaderDividers = true;
-
-    m_HeaderClicksSort = true;
-    m_SortedColumn = "";
-    m_SortedDescending = false;
-
-    m_LastClickX = 0;
-    m_LastClickY = 0;
-    m_LastClickTime = 0;
-    m_CurrentClickX = 0;
-    m_CurrentClickY = 0;
-    m_CurrentClickTime = 0;
-
-    m_EnableEvents = false;
-    m_MultiSelect = false;
-    m_HasMultiSelect = false;
-
     SDL_Rect dest_rect;
 
-    m_ShowHeaders = ShowHeaders;
-    m_HeaderDividers = HeaderDiv;
-    m_HeaderClicksSort = HeaderSort;
-
-    m_BorderSize = BorderSize;
     m_RowHeight = (rowheight == 0 ? LISTBOX_ITEMHEIGHT : rowheight);
 
     m_Border = GetGraphics().CreateSurface(width, height, g_ListBoxBorderColor);
@@ -145,11 +122,6 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
         }
     }
 
-    m_Font.LoadFont(cfg.fonts.normal(), (fontsize == 0 ? 10 : fontsize));
-    m_Font.SetText("");
-    m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
-    m_FontSize = fontsize == 0 ? 10 : fontsize;
-
     m_MultiSelect = MultiSelect;
 
     m_Divider.h = m_eHeight - (m_BorderSize * 2) - 3;
@@ -162,11 +134,11 @@ cListBox::~cListBox()
 
 void cListBox::ClearList()
 {
-	m_Items.clear();
+    m_Items.clear();
     m_LastSelected = m_Items.end();
-	m_Position = 0;
-	m_NumElements = 0;
-	m_ScrollBar->SetTopValue(0);
+    m_Position = 0;
+    m_NumElements = 0;
+    m_ScrollBar->SetTopValue(0);
 }
 
 int cListBox::ArrowDownList()
@@ -174,23 +146,23 @@ int cListBox::ArrowDownList()
     if(m_Items.empty())
         return -1;
 
-	int selection = GetSelected();
-	if (selection == -1)
-	{
-		SetSelected(m_Items.front().m_ID);
-		return m_Items.front().m_ID;
-	}
+    int selection = GetSelected();
+    if (selection == -1)
+    {
+        SetSelected(m_Items.front().m_ID);
+        return m_Items.front().m_ID;
+    }
 
-	auto current = std::find_if(begin(m_Items), end(m_Items),
-	        [selection](const cListItem& item) { return item.m_ID == selection; });
+    auto current = std::find_if(begin(m_Items), end(m_Items),
+                                [selection](const cListItem& item) { return item.m_ID == selection; });
 
-	if(current == m_Items.end())
-	    return -1;
+    if(current == m_Items.end())
+        return -1;
 
-	++current;
+    ++current;
 
     // If there is not next item, jump back to the top.
-	if(current == m_Items.end()) {
+    if(current == m_Items.end()) {
         SetSelected(m_Items.front().m_ID);
         return m_Items.front().m_ID;
     }
@@ -229,37 +201,37 @@ int cListBox::ArrowUpList()
 
 bool cListBox::HasMultiSelected()
 {
-	return m_HasMultiSelect;
+    return m_HasMultiSelect;
 }
 
 bool cListBox::IsOver(int x, int y) const
 {
-	if(x > m_XPos && y > m_YPos && x < m_XPos + m_Width && y < m_YPos + m_Height) {
-	    return (m_ShowHeaders && y < m_YPos + m_BorderSize + m_RowHeight) || x < m_XPos + m_Width - 15;
+    if(x > m_XPos && y > m_YPos && x < m_XPos + m_Width && y < m_YPos + m_Height) {
+        return (m_ShowHeaders && y < m_YPos + m_BorderSize + m_RowHeight) || x < m_XPos + m_Width - 15;
     }
-	return false;
+    return false;
 }
 
 bool cListBox::DoubleClicked()
 {
-	// make sure click time values are both set
-	if (!m_CurrentClickTime || !m_LastClickTime)
-		return false;
+    // make sure click time values are both set
+    if (!m_CurrentClickTime || !m_LastClickTime)
+        return false;
 
-	// make sure little enough time has passed... 1000ms = 1 second
-	// Windows default maximum for a double-click is 500ms, so let's use that
-	if (m_CurrentClickTime > m_LastClickTime + 500)
-		return false;
+    // make sure little enough time has passed... 1000ms = 1 second
+    // Windows default maximum for a double-click is 500ms, so let's use that
+    if (m_CurrentClickTime > m_LastClickTime + 500)
+        return false;
 
-	// make sure click locations aren't spaced too far apart
-	if (m_CurrentClickY > m_LastClickY + 2 || m_CurrentClickY < m_LastClickY - 2)
-		return false;
-	if (m_CurrentClickX > m_LastClickX + 2 || m_CurrentClickX < m_LastClickX - 2)
-		return false;
+    // make sure click locations aren't spaced too far apart
+    if (m_CurrentClickY > m_LastClickY + 2 || m_CurrentClickY < m_LastClickY - 2)
+        return false;
+    if (m_CurrentClickX > m_LastClickX + 2 || m_CurrentClickX < m_LastClickX - 2)
+        return false;
 
-	// all that having passed, looks like a double-click
-	m_CurrentClickTime = 0;
-	return true;
+    // all that having passed, looks like a double-click
+    m_CurrentClickTime = 0;
+    return true;
 }
 
 bool cListBox::HandleClick(int x, int y, bool press)
@@ -410,123 +382,116 @@ auto cListBox::FindItemAtPosition(int x, int y) -> item_list_t::iterator {
 
 void cListBox::DrawWidget(const CGraphics& gfx)
 {
-	if (m_ScrollChange >= 0)
-	{  // scrollbar has changed top position
-		m_Position = m_ScrollChange;
-		m_ScrollChange = -1;
-		m_ScrollBar->SetTopValue(m_Position);
-	}
+    if (m_ScrollChange >= 0)
+    {  // scrollbar has changed top position
+        m_Position = m_ScrollChange;
+        m_ScrollChange = -1;
+        m_ScrollBar->SetTopValue(m_Position);
+    }
 
-	SDL_Rect offset;
+    SDL_Rect offset;
 
-	// draw the box
+    // draw the box
     m_Border.DrawSurface(m_XPos, m_YPos);
     m_Background.DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
 
-	// Show column header box if enabled
-	if (m_ShowHeaders)
-	{
-		offset.x = m_XPos + m_BorderSize;
-		offset.y = m_YPos + m_BorderSize;
+    // Show column header box if enabled
+    if (m_ShowHeaders)
+    {
+        offset.x = m_XPos + m_BorderSize;
+        offset.y = m_YPos + m_BorderSize;
 
-		// blit to the screen
-		m_HeaderBackground.DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
+        // blit to the screen
+        m_HeaderBackground.DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
 
-		m_Font.SetColor(g_ListBoxHeaderTextColor.r, g_ListBoxHeaderTextColor.g, g_ListBoxHeaderTextColor.b);
+        m_Font.SetColor(g_ListBoxHeaderTextColor.r, g_ListBoxHeaderTextColor.g, g_ListBoxHeaderTextColor.b);
 
-		// draw the header text
-		for (int i = 0; i < m_Columns.size(); i++)
-		{
-			if (m_Columns[i].skip) continue;
-			if (!m_SortedColumn.empty() && m_SortedColumn == m_Columns[i].name  )
-			{
-				SDL_Rect sort_offset;
-				sort_offset.x = offset.x + m_Columns[i].offset;
-				sort_offset.y = offset.y + 1;
-				if (i == 0) sort_offset.x += 2 + m_BorderSize;
-				m_HeaderSortBack.DrawSurface(sort_offset.x, sort_offset.y);
-			}
-			m_Font.SetText(m_Columns[i].header);
-			//m_Font.SetFontBold(true);
-			m_Font.DrawText(offset.x + 3 + m_Columns[i].offset, offset.y + 3);
-		}
+        // draw the header text
+        for (int i = 0; i < m_Columns.size(); i++)
+        {
+            if (m_Columns[i].skip) continue;
+            if (!m_SortedColumn.empty() && m_SortedColumn == m_Columns[i].name  )
+            {
+                SDL_Rect sort_offset;
+                sort_offset.x = offset.x + m_Columns[i].offset;
+                sort_offset.y = offset.y + 1;
+                if (i == 0) sort_offset.x += 2 + m_BorderSize;
+                m_HeaderSortBack.DrawSurface(sort_offset.x, sort_offset.y);
+            }
+            m_Columns[i].header_gfx.DrawSurface(offset.x + 3 + m_Columns[i].offset, offset.y + 3);
+            //m_Font.SetFontBold(true);
+        }
 
-		//m_Font.SetFontBold(false);
-		m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
-	}
+        //m_Font.SetFontBold(false);
+        m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+    }
 
-	// draw the elements
+    // draw the elements
     int pos = 0;
     for (auto item = m_Items.begin(); item != m_Items.end(); ++item, ++pos)
     {
         if ((pos - m_Position) < 0) continue;
-		if ((pos - m_Position) >= m_NumDrawnElements) break;
+        if ((pos - m_Position) >= m_NumDrawnElements) break;
 
-		// Draw the window
-		offset.x = m_XPos + m_BorderSize;
-		offset.y = (m_YPos + m_BorderSize) + (m_RowHeight*(pos - m_Position));
-		if (m_ShowHeaders) // Account for headers if shown
-			offset.y += m_RowHeight;
+        // Draw the window
+        offset.x = m_XPos + m_BorderSize;
+        offset.y = (m_YPos + m_BorderSize) + (m_RowHeight*(pos - m_Position));
+        if (m_ShowHeaders) // Account for headers if shown
+            offset.y += m_RowHeight;
 
-		// blit to the screen
-		m_ElementBorder.DrawSurface(offset.x, offset.y);
+        // blit to the screen
+        m_ElementBorder.DrawSurface(offset.x, offset.y);
 
-		offset.x = offset.x + 1;
-		offset.y = offset.y + 1;
-		if (item->m_Selected) {
-		    m_SelectedElementBackgrounds[item->m_Color].DrawSurface(offset.x, offset.y);
-		} else {
+        offset.x = offset.x + 1;
+        offset.y = offset.y + 1;
+        if (item->m_Selected) {
+            m_SelectedElementBackgrounds[item->m_Color].DrawSurface(offset.x, offset.y);
+        } else {
             m_ElementBackgrounds[item->m_Color].DrawSurface(offset.x, offset.y);
-		}
+        }
 
-		// if we have a custom text color specified, use it
-		if (item->m_TextColor)
-			m_Font.SetColor(item->m_TextColor->r, item->m_TextColor->g, item->m_TextColor->b);
-
-		// draw the text
-		for (auto& column : m_Columns)
-		{
-			if (column.skip) continue;
-            item->m_Font.at(column.sort).DrawText(offset.x + 2 + column.offset, offset.y + 1);
-		}
-
-		m_Font.SetColor(0, 0, 0);
-	}
+        // draw the text
+        for (auto& column : m_Columns)
+        {
+            if (column.skip) continue;
+            item->m_PreRendered.at(column.sort).DrawSurface(offset.x + 2 + column.offset, offset.y + 1);
+        }
+    }
 }
 
 void cListBox::ScrollDown(int amount, bool updatebar)
 {
-	if (m_NumDrawnElements >= m_Items.size()) return;
-	if (amount <= 0) amount = m_ScrollBar->m_ScrollAmount;
-	if (m_Position + m_NumDrawnElements + amount < m_Items.size()) m_Position += amount;
-	else m_Position = m_Items.size() - m_NumDrawnElements;
-	if (updatebar) m_ScrollBar->SetTopValue(m_Position);
+    if (m_NumDrawnElements >= m_Items.size()) return;
+    if (amount <= 0) amount = m_ScrollBar->m_ScrollAmount;
+    if (m_Position + m_NumDrawnElements + amount < m_Items.size()) m_Position += amount;
+    else m_Position = m_Items.size() - m_NumDrawnElements;
+    if (updatebar) m_ScrollBar->SetTopValue(m_Position);
 }
 
 void cListBox::ScrollUp(int amount, bool updatebar)
 {
-	if (m_NumDrawnElements >= m_Items.size()) return;
-	if (amount <= 0) amount = m_ScrollBar->m_ScrollAmount;
-	if (m_Position - amount >= 0) m_Position -= amount;
-	else m_Position = 0;
-	if (updatebar) m_ScrollBar->SetTopValue(m_Position);
+    if (m_NumDrawnElements >= m_Items.size()) return;
+    if (amount <= 0) amount = m_ScrollBar->m_ScrollAmount;
+    if (m_Position - amount >= 0) m_Position -= amount;
+    else m_Position = 0;
+    if (updatebar) m_ScrollBar->SetTopValue(m_Position);
 }
 
 int cListBox::GetNextSelected(int from, int& pos)
 {
-	if (!m_MultiSelect) return -1;
+    if (!m_MultiSelect) return -1;
 
-	auto start = begin(m_Items);
-	std::advance(start, from);
+    auto start = begin(m_Items);
+    std::advance(start, from);
     auto selected = FindSelected(start);
 
     pos = std::distance(begin(m_Items), selected);
 
-	if (selected != m_Items.end()) return selected->m_ID;
-	return -1;
+    if (selected != m_Items.end()) return selected->m_ID;
+    return -1;
 }
 
-auto cListBox::FindSelected(const list<cListItem, std::allocator<cListItem>>::iterator& start) -> item_list_t::iterator
+auto cListBox::FindSelected(const std::list<cListItem, std::allocator<cListItem>>::iterator& start) -> item_list_t::iterator
 {
     auto selected = find_if(start, end(m_Items),
                             [](const cListItem& item) { return item.m_Selected; });
@@ -535,29 +500,29 @@ auto cListBox::FindSelected(const list<cListItem, std::allocator<cListItem>>::it
 
 int cListBox::GetLastSelected()
 {
-	if (m_LastSelected != m_Items.end()) return m_LastSelected->m_ID;
-	return -1;
+    if (m_LastSelected != m_Items.end()) return m_LastSelected->m_ID;
+    return -1;
 }
 
 int cListBox::GetSelected()
 {
-	if (m_LastSelected == m_Items.end()) return -1;
-	//else return m_LastSelected->m_ID;
+    if (m_LastSelected == m_Items.end()) return -1;
+    //else return m_LastSelected->m_ID;
 
     auto selected = FindSelected(begin(m_Items));
-	if(selected == m_Items.end())
-    	return -1;
+    if(selected == m_Items.end())
+        return -1;
 
-	return selected->m_ID;
+    return selected->m_ID;
 }
 
-const string& cListBox::GetSelectedText()
+const std::string& cListBox::GetSelectedText()
 {
     static std::string empty;
-	if (m_LastSelected == m_Items.end())
-	    return empty;
-	else
-	    return m_LastSelected->m_Data.front();
+    if (m_LastSelected == m_Items.end())
+        return empty;
+    else
+        return m_LastSelected->m_Data.front();
 }
 
 bool cListBox::IsSelected()
@@ -565,39 +530,44 @@ bool cListBox::IsSelected()
     return FindSelected(begin(m_Items)) != end(m_Items);
 }
 
-void cListBox::GetSortedIDList(vector<int> *id_vec, int *vec_pos)
+void cListBox::GetSortedIDList(std::vector<int> *id_vec, int *vec_pos)
 {
-	id_vec->clear();
-	id_vec->reserve(m_Items.size());
-	for(auto& item : m_Items) {
-	    id_vec->push_back(item.m_ID);
-	}
+    id_vec->clear();
+    id_vec->reserve(m_Items.size());
+    for(auto& item : m_Items) {
+        id_vec->push_back(item.m_ID);
+    }
 
-	*vec_pos = std::distance(begin(m_Items), m_LastSelected);
+    *vec_pos = std::distance(begin(m_Items), m_LastSelected);
 }
 
-void cListBox::SetElementText(int ID, string data)
+void cListBox::SetElementText(int ID, std::string data)
 {
-	string datarray[] = { data };
-	SetElementText(ID, datarray, 1);
+    std::string datarray[] = { data };
+    SetElementText(ID, datarray, 1);
 }
 
-void cListBox::SetElementText(int ID, string data[], int columns)
+void cListBox::SetElementText(int ID, std::string data[], int columns)
 {
-	for(auto& item : m_Items) {
-	    if (item.m_ID == ID)
-		{
-			for (int i = 0; i < columns; i++) {
+    for(auto& item : m_Items) {
+        if (item.m_ID == ID)
+        {
+            for (int i = 0; i < columns; i++) {
                 item.m_Data[i] = data[i];
-                item.m_Font[i].SetText(data[i]);
+                if(item.m_TextColor) {
+                    m_Font.SetColor(item.m_TextColor->r, item.m_TextColor->g, item.m_TextColor->b);
+                } else {
+                    m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+                }
+                item.m_PreRendered[i] = m_Font.RenderText(item.m_Data[i]);
             }
-			break;
-		}
-	}
-	ReSortList();
+            break;
+        }
+    }
+    ReSortList();
 }
 
-void cListBox::SetElementColumnText(int ID, string data, const string& column)
+void cListBox::SetElementColumnText(int ID, std::string data, const std::string& column)
 {
     int column_id = -1;
     for (int i = 0; i < m_Columns.size(); i++)
@@ -613,12 +583,18 @@ void cListBox::SetElementColumnText(int ID, string data, const string& column)
     for(auto& item : m_Items) {
         if (item.m_ID == ID)
         {
-            item.m_Font[column_id].SetText(data);
+            if(item.m_TextColor) {
+                m_Font.SetColor(item.m_TextColor->r, item.m_TextColor->g, item.m_TextColor->b);
+            } else {
+                m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+            }
+            item.m_PreRendered[column_id] = m_Font.RenderText(data);
+
             item.m_Data[column_id] = std::move(data);
-			break;
-		}
+            break;
+        }
     }
-	ReSortList();
+    ReSortList();
 }
 
 void cListBox::SetElementTextColor(int ID, SDL_Color text_color)
@@ -626,13 +602,14 @@ void cListBox::SetElementTextColor(int ID, SDL_Color text_color)
     for(auto& item : m_Items) {
         if (item.m_ID == ID)
         {
-			item.m_TextColor = std::make_unique<SDL_Color>(text_color);
-			for(auto& font : item.m_Font) {
-			    font.SetColor(text_color.r, text_color.g, text_color.b);
-			}
-			break;
-		}
-	}
+            item.m_TextColor = std::make_unique<SDL_Color>(text_color);
+            m_Font.SetColor(text_color.r, text_color.g, text_color.b);
+            for(unsigned i = 0; i < item.m_Data.size(); ++i) {
+                item.m_PreRendered[i] = m_Font.RenderText(item.m_Data[i]);
+            }
+            break;
+        }
+    }
 }
 void cListBox::AddElement(int ID, std::vector<std::string> data, int color)
 {
@@ -641,19 +618,19 @@ void cListBox::AddElement(int ID, std::vector<std::string> data, int color)
     if(data.size() != m_Columns.size())
         throw std::logic_error("Column count mismatch when adding new element to list box");
     newItem.m_Data = std::move(data);
-    newItem.m_Font.resize(newItem.m_Data.size());
+    newItem.m_PreRendered.reserve(newItem.m_Data.size());
     for(std::size_t i = 0; i < newItem.m_Data.size(); ++i) {
         /// TODO add ability to use reference to existing font with new text
-        newItem.m_Font[i].LoadFont(cfg.fonts.normal(), m_FontSize);
-        newItem.m_Font[i].SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
-        newItem.m_Font[i].SetText(newItem.m_Data[i]);
+        m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
+        auto gfx = m_Font.RenderText(newItem.m_Data[i]);
+        newItem.m_PreRendered.push_back(std::move(gfx));
     }
 
     newItem.m_ID = ID;
     newItem.m_Color = color;
     newItem.m_InsertionOrder = m_NumElements;
-	m_NumElements++;
-	ReSortList();
+    m_NumElements++;
+    ReSortList();
 
     // update "item total" reference for scroll bar
     if(m_ScrollBar)
@@ -664,133 +641,136 @@ void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::str
 {
     m_Columns.clear();
 
-	for (int i = 0; i < name.size(); i++)
-	{
-	    int left = int(offset[i] * g_Graphics.GetScaleX());
-	    int right = i == name.size() - 1 ? m_eWidth : int(offset[i + 1] * g_Graphics.GetScaleX());
-	    m_Columns.emplace_back(sColumnData{name[i], header[i], left, right - left, i, skip[i]});
-	}
+    m_Font.SetColor(g_ListBoxHeaderTextColor.r, g_ListBoxHeaderTextColor.g, g_ListBoxHeaderTextColor.b);
 
-	if (!m_HeaderDividers) return;
+    for (int i = 0; i < name.size(); i++)
+    {
+        int left = int(offset[i] * GetGraphics().GetScaleX());
+        int right = i == name.size() - 1 ? m_eWidth : int(offset[i + 1] * GetGraphics().GetScaleX());
+        auto gfx = m_Font.RenderText(header[i]);
+        m_Columns.emplace_back(sColumnData{std::move(name[i]), std::move(header[i]), left, right - left, i, skip[i], gfx});
+    }
 
-	// while we're here, let's pre-draw the header dividers on the stored header background image
-	for (int i = 1; i < name.size(); i++)
-	{
-		if (m_Columns[i].skip) continue;
-		m_Divider.x = m_Columns[i].offset - 4;
-		m_Divider.w = 2;
+    if (!m_HeaderDividers) return;
+
+    // while we're here, let's pre-draw the header dividers on the stored header background image
+    for (int i = 1; i < name.size(); i++)
+    {
+        if (m_Columns[i].skip) continue;
+        m_Divider.x = m_Columns[i].offset - 4;
+        m_Divider.w = 2;
         m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider, g_ListBoxHeaderBorderHColor);
-		m_Divider.x++;
+        m_Divider.x++;
         m_Divider.w = 1;
         m_Divider.y++;
         m_Divider.h--;
         m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider,g_ListBoxHeaderBorderColor);
         m_Divider.y--;
-		m_Divider.h++;
-	}
+        m_Divider.h++;
+    }
 }
 
 void cListBox::SetColumnSort(const std::vector<std::string>& column_name)
 {
-	for (int i = 0; i < column_name.size(); i++)
-	{
-		for (auto & column : m_Columns)
-		{
-			if (column.name == column_name[i]) {
+    for (int i = 0; i < column_name.size(); i++)
+    {
+        for (auto & column : m_Columns)
+        {
+            if (column.name == column_name[i]) {
                 column.sort = i;
-				break;
-			}
-		}
-	}
+                break;
+            }
+        }
+    }
 }
 
 void cListBox::SetSelected(int ID, bool ev, bool deselect_others)
 {
 
-	m_LastSelected = m_Items.end();
-	m_HeaderClicked = "";
+    m_LastSelected = m_Items.end();
+    m_HeaderClicked = "";
 
-	if (m_Items.empty()) return;
+    if (m_Items.empty()) return;
 
-	// special case if ID "-2" is sent, select first actual list item (not based on ID)
-	if (ID == -2)
-	{
+    // special case if ID "-2" is sent, select first actual list item (not based on ID)
+    if (ID == -2)
+    {
         m_Items.front().m_Selected = true;
-		m_LastSelected = m_Items.begin();
-		m_Position = 0;
-		m_ScrollBar->SetTopValue(m_Position);
-		if (ev) handle_selection_change();
-		return;
-	}
+        m_LastSelected = m_Items.begin();
+        m_Position = 0;
+        m_ScrollBar->SetTopValue(m_Position);
+        if (ev) handle_selection_change();
+        return;
+    }
 
-	int count = 0; int posit = 0;
-	for(auto current = m_Items.begin(); current != m_Items.end(); ++current) {
-		if (current->m_ID == ID)
-		{
-			current->m_Selected = true;
-			m_LastSelected = current;
-			posit = count;
-			if (!deselect_others) break;
-		}
-		else
-		{
-			if (deselect_others) current->m_Selected = false;
-		}
-		count++;
-	}
+    int count = 0; int posit = 0;
+    for(auto current = m_Items.begin(); current != m_Items.end(); ++current) {
+        if (current->m_ID == ID)
+        {
+            current->m_Selected = true;
+            m_LastSelected = current;
+            posit = count;
+            if (!deselect_others) break;
+        }
+        else
+        {
+            if (deselect_others) current->m_Selected = false;
+        }
+        count++;
+    }
 
     if (ev) handle_selection_change();
 
-	if (count <= m_NumDrawnElements)
-	{
-		m_Position = 0;
-	}
-	else
-	{
-		if (m_Position >= posit)	// if the item is above the top of the list
-		{
-			m_Position = posit - 1;	// shift the list up
-		}
-		else if (m_Position < posit && posit < m_Position + m_NumDrawnElements - 1)
-		{
-			// don't change m_Position
-		}
-		else if (m_Position + m_NumDrawnElements - 1 <= posit)
-			m_Position = posit - m_NumDrawnElements + 2;
-	}
+    if (count <= m_NumDrawnElements)
+    {
+        m_Position = 0;
+    }
+    else
+    {
+        if (m_Position >= posit)	// if the item is above the top of the list
+        {
+            m_Position = posit - 1;	// shift the list up
+        }
+        else if (m_Position < posit && posit < m_Position + m_NumDrawnElements - 1)
+        {
+            // don't change m_Position
+        }
+        else if (m_Position + m_NumDrawnElements - 1 <= posit)
+            m_Position = posit - m_NumDrawnElements + 2;
+    }
 
-	if (m_Position > count - m_NumDrawnElements) m_Position = count - m_NumDrawnElements;
-	if (m_Position < 0) m_Position = 0;
+    if (m_Position > count - m_NumDrawnElements) m_Position = count - m_NumDrawnElements;
+    if (m_Position < 0) m_Position = 0;
 
-	m_ScrollBar->SetTopValue(m_Position);
+    m_ScrollBar->SetTopValue(m_Position);
 }
 
 int cListBox::GetAfterSelected()
 {
-	if (m_LastSelected != m_Items.end())
-	{
-	    auto copy = m_LastSelected;
-	    ++copy;
-		if (copy != m_Items.end())
-			return copy->m_ID;
-	}
+    if (m_LastSelected != m_Items.end())
+    {
+        auto copy = m_LastSelected;
+        ++copy;
+        if (copy != m_Items.end())
+            return copy->m_ID;
+    }
 
-	return -1;
+    return -1;
 }
 
 
 void cListBox::ReSortList()
 {
-	if (m_SortedColumn.empty() || m_NumElements <= 0)
-		return;
-	SortByColumn(m_SortedColumn, m_SortedDescending);
+    if (m_SortedColumn.empty() || m_NumElements <= 0)
+        return;
+    SortByColumn(m_SortedColumn, m_SortedDescending);
 }
 
 void cListBox::UnSortList()
 {
-	if (m_NumElements <= 0)
-		return;
-	m_SortedColumn = "";
+    if (m_NumElements <= 0)
+        return;
+    m_SortedColumn = "";
     // sort by insertion order
     m_Items.sort([](const cListItem& a, const cListItem& b) {
         return a.m_InsertionOrder < b.m_InsertionOrder;
@@ -798,13 +778,13 @@ void cListBox::UnSortList()
     UpdatePositionsAfterSort();
 }
 
-void cListBox::SortByColumn(string ColumnName, bool Descending)
+void cListBox::SortByColumn(std::string ColumnName, bool Descending)
 {
-	if (m_Items.empty())  // any items in list?
-		return;
+    if (m_Items.empty())  // any items in list?
+        return;
 
-	int col_ref = -1;
-	// Find the column id from the supplied column name
+    int col_ref = -1;
+    // Find the column id from the supplied column name
     int col_id = -1;
     for (int j = 0; j < m_Columns.size(); j++) {
         if (m_Columns[j].name == ColumnName) {
@@ -826,30 +806,30 @@ void cListBox::SortByColumn(string ColumnName, bool Descending)
     UpdatePositionsAfterSort();
 
     if (m_ShowHeaders)
-	{
-		// Prepare Ascending/Descending image indicator for column header
-		int dwidth;
-		if (col_ref < m_Columns.size() - 1)
-			dwidth = m_Columns[col_ref].width - 6;
-		else
-			dwidth = m_Columns[col_ref].width - 19;
-		if (col_ref == 0)
-			dwidth -= 2 + m_BorderSize;
-		if (Descending)
+    {
+        // Prepare Ascending/Descending image indicator for column header
+        int dwidth;
+        if (col_ref < m_Columns.size() - 1)
+            dwidth = m_Columns[col_ref].width - 6;
+        else
+            dwidth = m_Columns[col_ref].width - 19;
+        if (col_ref == 0)
+            dwidth -= 2 + m_BorderSize;
+        if (Descending)
             m_HeaderSortBack = GetGraphics().LoadImage(m_SortDescImage, dwidth, -1, true);
         else
             m_HeaderSortBack = GetGraphics().LoadImage(m_SortAscImage, dwidth, -1, true);
 
     }
 
-	m_ScrollBar->SetTopValue(m_Position);
+    m_ScrollBar->SetTopValue(m_Position);
 }
 
 void cListBox::UpdatePositionsAfterSort()
 {// Update m_Position
     int count = 0;
     for(auto & m_Item : m_Items)
-{
+    {
         if (m_Item.m_Selected)
         {
             if (count < m_Position)

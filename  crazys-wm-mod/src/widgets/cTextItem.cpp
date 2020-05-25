@@ -26,13 +26,13 @@
 
 extern cConfig cfg;
 
-cTextItem::cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, string text, int size,
+cTextItem::cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, std::string text, int size,
                      bool force_scrollbar, int red , int green , int blue):
-    cUIWidget(ID, x, y, width, height, parent), m_Font(std::make_unique<cFont>())
+        cUIWidget(ID, x, y, width, height, parent), m_Font(std::make_unique<cFont>(&GetGraphics()))
 {
     m_ScrollBar = nullptr;
     m_ForceScrollBar = false;
-	m_ScrollChange = 0;
+    m_ScrollChange = 0;
     m_FontHeight = size;
 
     ChangeFontSize(size, red, green, blue);
@@ -45,41 +45,44 @@ cTextItem::~cTextItem() {
 
 }
 
-int cTextItem::HeightTotal() { return m_Font->GetHeight(); }
+int cTextItem::HeightTotal() { return m_PreRenderedText.GetHeight(); }
 
 bool cTextItem::HandleMouseWheel(bool down)
 {
-	if (m_ScrollBar && !m_ScrollBar->IsHidden())
-	{
-		int newpos = m_ScrollChange + (m_Font->GetFontHeight() * (down ? 1 : -1) * m_ScrollBar->m_ScrollAmount);
-		if (newpos < 0) newpos = 0;
-		else if (newpos > HeightTotal() - GetHeight())
-			newpos = HeightTotal() - GetHeight();
-		m_ScrollBar->SetTopValue(newpos);
-		m_ScrollChange = newpos;
-		return true;
-	}
-	return false;
+    if (m_ScrollBar && !m_ScrollBar->IsHidden())
+    {
+        int newpos = m_ScrollChange + (m_Font->GetFontHeight() * (down ? 1 : -1) * m_ScrollBar->m_ScrollAmount);
+        if (newpos < 0) newpos = 0;
+        else if (newpos > HeightTotal() - GetHeight())
+            newpos = HeightTotal() - GetHeight();
+        m_ScrollBar->SetTopValue(newpos);
+        m_ScrollChange = newpos;
+        return true;
+    }
+    return false;
 }
 
 bool cTextItem::IsOver(int x, int y) const { return (x > m_XPos && y > m_YPos && x < m_XPos + m_Width - 15 && y < m_YPos + m_Height); }
 
 void cTextItem::ChangeFontSize(int FontSize, int red , int green , int blue )
 {
-	m_Font->LoadFont(cfg.fonts.normal(), FontSize);
-	m_Font->SetText(m_Text);
-
-	m_Font->SetColor(red, green, blue);
-	m_Font->SetMultiline(true, m_Width, m_Height);
+    m_Font->LoadFont(cfg.fonts.normal(), FontSize);
+    m_Font->SetColor(red, green, blue);
+    SetText(std::move(m_Text));
 }
 
-void cTextItem::SetText(string text)
+void cTextItem::SetText(std::string text)
 {
-    m_Font->SetMultiline(true, GetWidth(), GetHeight());
     m_Text = std::move(text);
-    m_Font->SetText(m_Text);
-    if (m_ScrollBar && !m_ScrollBar->IsHidden())
+
+    int effective_width = GetWidth();
+
+    if (m_ScrollBar && !m_ScrollBar->IsHidden()) {
+        effective_width -= 17;
         m_ScrollBar->SetTopValue(0);
+    }
+
+    m_PreRenderedText = m_Font->RenderMultilineText(m_Text, effective_width);
 
 
     if (GetHeight() == 0 || m_Text.empty())
@@ -115,25 +118,29 @@ void cTextItem::SetText(string text)
     }
 
     // update scrollbar if it exists
+    int updated_width = GetWidth();
     if (m_ScrollBar)
     {
         if (!m_ScrollBar->IsHidden())
         {  // also, re-render text in narrower space to accommodate scrollbar width
-            m_Font->SetMultiline(true, GetWidth() - 17, GetHeight());
-            m_Font->SetText(m_Text);
+            updated_width -= 17;
             if (m_ScrollBar && !m_ScrollBar->IsHidden())
                 m_ScrollBar->SetTopValue(0);
         }
         m_ScrollBar->m_ItemsTotal = HeightTotal();
     }
+
+    if(updated_width != effective_width) {
+        m_PreRenderedText = m_Font->RenderMultilineText(m_Text, updated_width);
+    }
 }
 
 void cTextItem::DrawWidget(const CGraphics& gfx)
 {
-	if (m_Text.empty()) return;
+    if (m_Text.empty()) return;
 
 #if 0	// draw visible box showing exact area covered by TextItem; for debug usage, disabled by default
-	SDL_Rect dstRect;
+    SDL_Rect dstRect;
 	dstRect.x = m_XPos;
 	dstRect.y = m_YPos;
 	dstRect.h = m_Height;
@@ -141,7 +148,14 @@ void cTextItem::DrawWidget(const CGraphics& gfx)
 	SDL_FillRect(gfx.GetScreen(), &dstRect, SDL_MapRGB(gfx.GetScreen()->format, 200, 255, 255));
 #endif
 
-	m_Font->DrawMultilineText(m_XPos, m_YPos, 0, m_ScrollChange);
+    if(!m_Text.empty()) {
+        SDL_Rect srcRect;
+        srcRect.x = 0;
+        srcRect.y = m_ScrollChange;
+        srcRect.h = m_Height;
+        srcRect.w = m_Width;
+        m_PreRenderedText.DrawSurface(m_XPos, m_YPos, &srcRect);
+    }
 }
 
 void cTextItem::SetHidden(bool mode) {

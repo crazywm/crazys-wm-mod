@@ -29,22 +29,29 @@ class cFont;
 class cEditBox : public cUIWidget
 {
 public:
-	cEditBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, int FontSize = 16);
+    cEditBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, int FontSize = 16);
 
     void ClearText();
-	std::string GetText();
+    const std::string& GetText();
+    void SetText(std::string text);
 
     void DrawWidget(const CGraphics& gfx) override;
     bool HandleSetFocus(bool focus) override;
     bool HandleClick(int x, int y, bool press) override;
     bool HandleKeyPress(SDL_keysym sym) override;
 
-	std::unique_ptr<cFont> m_Text;
+    cSurface m_TextGFX;
+    std::string m_Text;
 
-	cSurface m_FocusedBackground;
-	cSurface m_Background;
-	cSurface m_Border;
-	int m_BorderSize;
+    cSurface m_FocusedBackground;
+    cSurface m_Background;
+    cSurface m_Border;
+    int      m_BorderSize;
+
+private:
+    std::unique_ptr<cFont> m_Font;
+
+    void UpdateText();
 };
 
 #endif

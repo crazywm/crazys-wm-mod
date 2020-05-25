@@ -57,6 +57,8 @@ public:
 	float GetScaleX() const { return m_ScreenScaleX;}
 	float GetScaleY() const { return m_ScreenScaleY;}
 
+    cFont LoadFont(const std::string& font, int size);
+
 private:
     // scaling
     bool m_Fullscreen = false;

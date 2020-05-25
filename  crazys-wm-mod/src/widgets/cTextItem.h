@@ -28,27 +28,28 @@ class cTextItem : public cUIWidget
     bool m_ForceScrollBar;	// force scrollbar display even if text fits?
 
 public:
-	cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, std::string text, int size,
+    cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, std::string text, int size,
               bool force_scrollbar = false, int red = 0, int green = 0, int blue = 0);
-	~cTextItem();
+    ~cTextItem();
 
     int HeightTotal();
     bool HandleMouseWheel(bool down) override;
 
-	bool IsOver(int x, int y) const override;
+    bool IsOver(int x, int y) const override;
 
-	void ChangeFontSize(int FontSize, int red = 0, int green = 0, int blue = 0);
+    void ChangeFontSize(int FontSize, int red = 0, int green = 0, int blue = 0);
 
-	void SetText(std::string text);
-	void DrawWidget(const CGraphics& gfx) override;
+    void SetText(std::string text);
+    void DrawWidget(const CGraphics& gfx) override;
     void SetHidden(bool mode) override;
 
-	std::string m_Text;
+    std::string m_Text;
     std::unique_ptr<cFont> m_Font;
-	int m_FontHeight;		// height of the font
+    cSurface m_PreRenderedText;
+    int m_FontHeight;		// height of the font
 
-	cScrollBar* m_ScrollBar;  // pointer to the associated scrollbar, if any
-	int m_ScrollChange;  // scrollbar changes will update this value; translates to skipped lines of text
+    cScrollBar* m_ScrollBar;  // pointer to the associated scrollbar, if any
+    int m_ScrollChange;  // scrollbar changes will update this value; translates to skipped lines of text
 };
 
 #endif

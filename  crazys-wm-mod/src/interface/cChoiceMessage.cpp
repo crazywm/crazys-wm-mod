@@ -22,12 +22,9 @@
 #include "cFont.h"
 #include "CGraphics.h"
 #include "sConfig.h"
-#include "XmlUtil.h"
-#include "tinyxml.h"
 #include "DirPath.h"
 #include "cColor.h"
 
-extern CGraphics g_Graphics;
 extern cConfig cfg;
 extern sColor g_ChoiceMessageTextColor;
 extern sColor g_ChoiceMessageBorderColor;
@@ -36,22 +33,21 @@ extern sColor g_ChoiceMessageBackgroundColor;
 extern sColor g_ChoiceMessageSelectedColor;
 
 cChoice::cChoice(int x, int y, int width, int height, int ID, int num_choices, int item_height, int max_str_len, int fontsize, cInterfaceWindow* parent) :
-    cUIWidget(ID, x, y, width, height, parent), m_Choices(num_choices), m_FontSize(fontsize)
+        cUIWidget(ID, x, y, width, height, parent), m_Choices(num_choices), m_ChoicesSurface(num_choices), m_FontSize(fontsize), m_Font(&GetGraphics())
 {
     m_Font.LoadFont(cfg.fonts.normal(), fontsize);
-    m_Font.SetText("");
     m_Font.SetColor(g_ChoiceMessageTextColor.r, g_ChoiceMessageTextColor.g, g_ChoiceMessageTextColor.b);
 
     if(max_str_len > 0) {
         int MaxWidth = 0, MaxHeight = 0;
-        std::string temp = std::string('W', max_str_len);
+        std::string temp = std::string(max_str_len, 'W');
         m_Font.GetSize(temp, MaxWidth, MaxHeight);
         int newHeight = (MaxHeight * num_choices) + 2;
 
-        if (newHeight > g_Graphics.GetHeight())
-            newHeight = g_Graphics.GetHeight() - 34;
-        if (MaxWidth > g_Graphics.GetWidth())
-            MaxWidth = g_Graphics.GetWidth() - 2;
+        if (newHeight > GetGraphics().GetHeight())
+            newHeight = GetGraphics().GetHeight() - 34;
+        if (MaxWidth > GetGraphics().GetWidth())
+            MaxWidth = GetGraphics().GetWidth() - 2;
 
         m_NumDrawnElements = newHeight / MaxHeight;
         if (m_NumDrawnElements >= num_choices) {
@@ -66,8 +62,8 @@ cChoice::cChoice(int x, int y, int width, int height, int ID, int num_choices, i
         m_Height = newHeight;
         m_FontSize = fontsize;
 
-        m_XPos = ((g_Graphics.GetWidth() / 2) - (m_Width / 2));
-        m_YPos = ((g_Graphics.GetHeight() / 2) - (m_Height / 2));
+        m_XPos = ((GetGraphics().GetWidth() / 2) - (m_Width / 2));
+        m_YPos = ((GetGraphics().GetHeight() / 2) - (m_Height / 2));
     } else {
         if ((height - 2) / item_height < num_choices)
             height = (num_choices*item_height) + 2;
@@ -76,19 +72,21 @@ cChoice::cChoice(int x, int y, int width, int height, int ID, int num_choices, i
         m_eHeight = item_height;
     }
 
-    m_Border = g_Graphics.CreateSurface(m_Width + (m_ScrollDisabled ? 2 : 20), m_Height, g_ChoiceMessageBorderColor);
-    m_Background = g_Graphics.CreateSurface(m_Width - (m_ScrollDisabled ? 0 : 18), m_Height, g_ChoiceMessageBackgroundColor);
-    m_ElementBackground = g_Graphics.CreateSurface(m_eWidth, m_eHeight,g_ChoiceMessageBackgroundColor);
-    m_ElementSelectedBackground = g_Graphics.CreateSurface(m_eWidth, m_eHeight, g_ChoiceMessageSelectedColor);
-    m_HeaderBackground = g_Graphics.CreateSurface(std::max(120, m_eWidth), 32, g_ChoiceMessageHeaderColor);
+    m_Border = GetGraphics().CreateSurface(m_Width + (m_ScrollDisabled ? 2 : 20), m_Height + 2, g_ChoiceMessageBorderColor);
+    m_Background = GetGraphics().CreateSurface(m_Width - (m_ScrollDisabled ? 0 : 18), m_Height, g_ChoiceMessageBackgroundColor);
+    m_ElementBackground = GetGraphics().CreateSurface(m_eWidth, m_eHeight,g_ChoiceMessageBackgroundColor);
+    m_ElementSelectedBackground = GetGraphics().CreateSurface(m_eWidth, m_eHeight, g_ChoiceMessageSelectedColor);
+    m_HeaderBackground = GetGraphics().CreateSurface(std::max(120, m_eWidth), 32, g_ChoiceMessageHeaderColor);
 
-    m_UpOn = g_Graphics.LoadImage(ButtonPath("UpOn.png"), 16, 16, true);
-    m_UpOff = g_Graphics.LoadImage(ButtonPath("UpOff.png"), 16, 16, true);
+    m_UpOn = GetGraphics().LoadImage(ButtonPath("UpOn.png"), 16, 16, true);
+    m_UpOff = GetGraphics().LoadImage(ButtonPath("UpOff.png"), 16, 16, true);
     m_CurrUp = m_UpOff;
 
-    m_DownOn = g_Graphics.LoadImage(ButtonPath("DownOn.png"), 16, 16, true);
-    m_DownOff = g_Graphics.LoadImage(ButtonPath("DownOff.png"), 16, 16, true);
+    m_DownOn = GetGraphics().LoadImage(ButtonPath("DownOn.png"), 16, 16, true);
+    m_DownOff = GetGraphics().LoadImage(ButtonPath("DownOff.png"), 16, 16, true);
     m_CurrDown = m_DownOff;
+
+    Question("");
 }
 
 int cChoice::num_choices() const
@@ -107,18 +105,11 @@ void cChoice::DrawWidget(const CGraphics &gfx) {
     // Draw the heading text
     if (m_HeaderBackground)
     {
-
-        string question = "Select Choice";
-        if (m_Question.length() > 0)
-            question = m_Question;
-        m_Font.SetText(question);
-        m_Font.SetMultiline(true, m_Width, m_Height);
-
-        int y = m_YPos - m_Font.GetHeight();
+        int y = m_YPos - m_QuestionSurface.GetHeight();
         // TODO this does not belong into the loop! why is this here?
-        m_HeaderBackground = g_Graphics.CreateSurface(m_Border.GetWidth(), m_Font.GetHeight(), g_ChoiceMessageHeaderColor);
+        m_HeaderBackground = GetGraphics().CreateSurface(m_Border.GetWidth(), m_QuestionSurface.GetHeight(), g_ChoiceMessageHeaderColor);
         m_HeaderBackground.DrawSurface(m_XPos, y);
-        m_Font.DrawMultilineText(m_XPos, y);
+        m_QuestionSurface.DrawSurface(m_XPos, y);
     }
 
     for (int i = m_Position, j = 0; i < num_choices() && j < m_NumDrawnElements; i++, j++)
@@ -133,8 +124,7 @@ void cChoice::DrawWidget(const CGraphics &gfx) {
             m_ElementBackground.DrawSurface(m_XPos + 1, y);
 
         // draw the text
-        m_Font.SetText(m_Choices[i]);
-        m_Font.DrawText(m_XPos, y);
+        m_ChoicesSurface.at(i).DrawSurface(m_XPos + 1, y);
     }
 
 
@@ -147,10 +137,17 @@ void cChoice::DrawWidget(const CGraphics &gfx) {
 }
 
 void cChoice::Question(std::string text) {
+    if (text.length() > 0) {
+        m_QuestionSurface = m_Font.RenderMultilineText(text, m_Width);
+    } else {
+        m_QuestionSurface = m_Font.RenderMultilineText("Select Choice", m_Width);
+    }
+
     m_Question = std::move(text);
 }
 
 void cChoice::AddChoice(std::string text, int choiceID) {
+    m_ChoicesSurface.at(choiceID) = m_Font.RenderText(text);
     m_Choices.at(choiceID) = std::move(text);
 }
 
@@ -163,23 +160,12 @@ void cChoice::HandleMouseMove(bool over, int x, int y) {
     // check if over the buttons
     if (!m_ScrollDisabled)
     {
-        if (x < m_XPos + m_Width - 1 && y < m_YPos + 17 && x > m_XPos - 16 + m_Width && y > m_YPos + 1)
-        {
-            m_CurrUp = m_UpOn;
-        }
-        else
-        {
-            m_CurrUp = m_UpOff;
-        }
+        bool up_status = x < m_XPos + m_Width - 1 && y < m_YPos + 17 && x > m_XPos - 16 + m_Width && y > m_YPos + 1;
+        bool down_status = x < m_XPos + m_Width - 1 && y < m_YPos + m_Height - 1 && x > m_XPos - 16 + m_Width &&
+                           y > m_YPos + m_Height - 17;
 
-        if (x < m_XPos + m_Width - 1 && y < m_YPos + m_Height - 1 && x > m_XPos - 16 + m_Width && y > m_YPos + m_Height - 17)
-        {
-            m_CurrDown = m_DownOn;
-        }
-        else
-        {
-            m_CurrDown = m_DownOff;
-        }
+        m_CurrUp = up_status ? m_UpOn : m_UpOff;
+        m_CurrDown = down_status ? m_DownOn : m_DownOff;
     }
 
     // now highlight the choice the mouse is over
@@ -203,9 +189,7 @@ int cChoice::FindActive(int x, int y) const {
 }
 
 bool cChoice::HandleClick(int x, int y, bool press) {
-    if(press)
-        return false;
-
+    if(press)  return false;
     // check for scroll buttons
     if(!m_ScrollDisabled) {
         // TODO these conditions need to be fixed
@@ -227,20 +211,22 @@ bool cChoice::HandleClick(int x, int y, bool press) {
     if(m_CurrChoice == -1)
         return false;
 
+    SetDisabled(true);
+    SetHidden(true);
     if (m_Callback) {
         m_Callback(m_CurrChoice);
     }
-    SetDisabled(true);
     return true;
 }
 
 bool cChoice::HandleKeyPress(SDL_keysym key) {
     if (key.sym == SDLK_RETURN || key.sym == SDLK_KP_ENTER)
     {
+        SetDisabled(true);
+        SetHidden(true);
         if (m_Callback) {
             m_Callback(m_CurrChoice);
         }
-        SetDisabled(true);
     }
     if (key.sym == SDLK_UP)
     {

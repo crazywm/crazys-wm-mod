@@ -28,14 +28,14 @@
 class cCheckBox : public cUIWidget
 {
 public:
-	cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, int height, std::string text, int fontsize = 12, bool leftorright = false);
+    cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, int height, std::string text, int fontsize = 12, bool leftorright = false);
 
     bool HandleClick(int x, int y, bool press) override;
 
     bool GetState() const {return m_StateOn;}
     void SetState(bool on) { m_StateOn = on;}
 
-	void DrawWidget(const CGraphics& gfx) override;
+    void DrawWidget(const CGraphics& gfx) override;
 
     void SetCallback(std::function<void(bool)>);
 
@@ -43,8 +43,10 @@ private:
     cSurface m_Image;
     cSurface m_Surface;
     cSurface m_Border;
-	bool m_StateOn = false;
-	cFont m_Font;
+    bool m_StateOn = false;
+    cFont m_Font;
+    cSurface m_Label;
+    bool m_LeftOrRight = false;
     std::function<void(bool)> m_Callback;
 };
 

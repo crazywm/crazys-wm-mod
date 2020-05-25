@@ -41,32 +41,35 @@ void cEditBox::DrawWidget(const CGraphics& gfx)
     else
         m_Background.DrawSurface(m_XPos + m_BorderSize, m_YPos + m_BorderSize);
 
-	// draw the text
-	m_Text->DrawText(m_XPos+m_BorderSize+1, m_YPos+m_BorderSize+1);
+    // draw the text
+    m_TextGFX.DrawSurface(m_XPos + m_BorderSize + 1, m_YPos + m_BorderSize + 1);
 }
 
 cEditBox::cEditBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, int FontSize):
-    cUIWidget(ID, x, y, width, height, parent), m_BorderSize(BorderSize),
-    m_Text(std::make_unique<cFont>())
+        cUIWidget(ID, x, y, width, height, parent), m_BorderSize(BorderSize),
+        m_Font(std::make_unique<cFont>(&GetGraphics()))
 {
     m_Border = GetGraphics().CreateSurface(width, height, g_EditBoxBorderColor);
     m_Background = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2), g_EditBoxBackgroundColor);
     m_FocusedBackground = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2), g_EditBoxSelectedColor);
 
-	m_Text->LoadFont(cfg.fonts.normal(), FontSize);
-	m_Text->SetText("");
-	m_Text->SetColor(g_EditBoxTextColor.r, g_EditBoxTextColor.g, g_EditBoxTextColor.b);
+    m_Font->LoadFont(cfg.fonts.normal(), FontSize);
+    m_Font->SetColor(g_EditBoxTextColor.r, g_EditBoxTextColor.g, g_EditBoxTextColor.b);
+
+    UpdateText();
 }
 
 void cEditBox::ClearText()
 {
-	if(m_Text)
-		m_Text->SetText("");
+    if(!m_Text.empty()) {
+        m_Text.clear();
+        UpdateText();
+    }
 }
 
-std::string cEditBox::GetText()
+const std::string& cEditBox::GetText()
 {
-    return m_Text->GetText();
+    return m_Text;
 }
 
 bool cEditBox::HandleClick(int x, int y, bool press)
@@ -80,11 +83,11 @@ bool cEditBox::HandleKeyPress(SDL_keysym sym)
     if(!HasFocus()) return false;
 
     if (sym.sym == SDLK_BACKSPACE) {
-        string text = m_Text->GetText();
-        if(text.length() > 0)
+
+        if(m_Text.length() > 0)
         {
-            text.erase(text.length()-1);
-            m_Text->SetText(text);
+            m_Text.erase(m_Text.length()-1);
+            UpdateText();
         }
         return true;
     }
@@ -96,13 +99,15 @@ bool cEditBox::HandleKeyPress(SDL_keysym sym)
         std::uint16_t unicode = sym.unicode;
         unsigned char ascii   = unicode & 0xffu;
         if(unicode && unicode == ascii && std::isprint(ascii)) {
-            string text = m_Text->GetText();
-            text += ascii;
+            m_Text += ascii;
             int w = 0, h = 0;
-            m_Text->GetSize(text,w,h);
-            if(w > m_Width)
+            m_Font->GetSize(m_Text, w, h);
+            if(w > m_Width) {
+                // too long, remove that character again
+                m_Text.erase(m_Text.length()-1);
                 return true;
-            m_Text->SetText(text);
+            }
+            UpdateText();
             return true;
         }
         return false;
@@ -112,4 +117,15 @@ bool cEditBox::HandleKeyPress(SDL_keysym sym)
 bool cEditBox::HandleSetFocus(bool focus)
 {
     return true;
+}
+
+void cEditBox::UpdateText()
+{
+    m_TextGFX = m_Font->RenderText(m_Text);
+}
+
+void cEditBox::SetText(std::string text)
+{
+    m_Text = std::move(text);
+    UpdateText();
 }

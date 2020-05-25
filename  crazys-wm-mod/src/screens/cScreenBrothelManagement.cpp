@@ -83,8 +83,9 @@ void IBuildingScreen::set_ids()
 
     SetButtonCallback(weeks_id, [this]() {
         if (!g_CTRLDown) { AutoSaveGame(); }
-        NextWeek();
+        // need to switch the windows first, so that any new events will show up!
         push_window("Turn Summary");
+        NextWeek();
     });
     SetButtonCallback(save_id, [this]() {
         SaveGame();
@@ -112,8 +113,9 @@ void IBuildingScreen::init(bool back)
 {
     Focused();
 
-    if(active_building().type() != m_Type)
-        throw std::logic_error("Invalid building type for this screen!");
+    if(active_building().type() != m_Type) {
+        replace_window("Building Management");
+    }
 
     EditTextItem(get_building_summary(active_building()), details_id);
     stringstream ss;
@@ -213,7 +215,7 @@ static std::string get_building_summary(const IBuilding& building)
     */
     ss << "Customer Happiness: " << happiness_text(&building);
     ss << "\nFame: " << fame_text(&building) << endl;
-    ss << "\nRooms (available/current): " << (building.free_rooms() - building.num_girls()) << " / " << building.num_rooms();
+    ss << "\nRooms (available/current): " << building.free_rooms() << " / " << building.num_rooms();
     ss << "\nThis brothel's Profit: " << profit;
     ss << "\nYour Gold: " << g_Game->gold().ival();
     ss << "\nSecurity Level: " << building.security();
