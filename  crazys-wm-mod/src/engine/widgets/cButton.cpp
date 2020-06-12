@@ -63,7 +63,7 @@ void cButton::SetCallback(std::function<void()> cb)
     m_Callback = std::move(cb);
 }
 
-bool cButton::HandleKeyPress(SDL_keysym key)
+bool cButton::HandleKeyPress(SDL_Keysym key)
 {
     if(key.sym != m_HotKey) return false;
     if(m_Callback)
@@ -71,7 +71,7 @@ bool cButton::HandleKeyPress(SDL_keysym key)
     return true;
 }
 
-void cButton::SetHotKey(SDLKey key)
+void cButton::SetHotKey(SDL_Keycode key)
 {
     m_HotKey = key;
 }

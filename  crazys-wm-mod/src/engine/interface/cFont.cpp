@@ -18,7 +18,7 @@
  */
 #include <iostream>
 #include "cFont.h"
-#include <SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 #include "CLog.h"
 #include "interface/CGraphics.h"
 #include "sConfig.h"
@@ -164,7 +164,6 @@ cSurface cFont::RenderMultilineText(std::string text, int width) const
 
     // create a surface to render all the text too
     auto message = m_GFX->CreateSurface(width, height, sColor(0xff, 0, 0), true);
-    //SDL_SetAlpha(m_MultilineMessage.RawSurface()->surface(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
 
     cConfig cfg;
     for (unsigned int i = 0; i < lines.size(); i++)
@@ -173,11 +172,10 @@ cSurface cFont::RenderMultilineText(std::string text, int width) const
             auto line = m_GFX->GetImageCache().CreateTextSurface(
                     m_Font.get(), lines[i], sColor(m_TextColor.r, m_TextColor.g, m_TextColor.b),
                     cfg.fonts.antialias());
-            SDL_SetAlpha(line.RawSurface()->surface(), 0, SDL_ALPHA_OPAQUE);
+            SDL_SetSurfaceBlendMode(line.RawSurface()->surface(), SDL_BLENDMODE_NONE);
             SDL_Rect dst = {0, static_cast<Sint16>(i * lineskip),
                             static_cast<Uint16>(line.GetWidth()), static_cast<Uint16>(line.GetHeight())};
             message = message.BlitOther(line, nullptr, &dst);
-            SDL_SetAlpha(line.RawSurface()->surface(), SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
         }
     }
     return std::move(message);

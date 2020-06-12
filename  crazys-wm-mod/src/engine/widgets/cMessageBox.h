@@ -49,7 +49,7 @@ public:
 	void Advance();
 
     bool HandleClick(int x, int y, bool press) override;
-    bool HandleKeyPress(SDL_keysym key) override;
+    bool HandleKeyPress(SDL_Keysym key) override;
     bool HandleMouseWheel(bool down) override;
     bool IsOver(int x, int y) const override;
 

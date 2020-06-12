@@ -150,7 +150,7 @@ void cScreenGallery::init(bool back)
 	change_image();
 }
 
-void cScreenGallery::OnKeyPress(SDL_keysym keysym)
+void cScreenGallery::OnKeyPress(SDL_Keysym keysym)
 {
     auto key = keysym.sym;
     bool up = key == SDLK_w || key == SDLK_UP;

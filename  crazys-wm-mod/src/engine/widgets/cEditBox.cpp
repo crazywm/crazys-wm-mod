@@ -67,7 +67,7 @@ void cEditBox::ClearText()
     }
 }
 
-const std::string& cEditBox::GetText()
+const std::string& cEditBox::GetText() const
 {
     return m_Text;
 }
@@ -78,7 +78,7 @@ bool cEditBox::HandleClick(int x, int y, bool press)
     return true;
 }
 
-bool cEditBox::HandleKeyPress(SDL_keysym sym)
+bool cEditBox::HandleKeyPress(SDL_Keysym sym)
 {
     if(!HasFocus()) return false;
 
@@ -89,33 +89,32 @@ bool cEditBox::HandleKeyPress(SDL_keysym sym)
             m_Text.erase(m_Text.length()-1);
             UpdateText();
         }
-        return true;
     }
     else if (sym.sym == SDLK_ESCAPE) {
         ClearText();
     }
-    else
-    {
-        std::uint16_t unicode = sym.unicode;
-        unsigned char ascii   = unicode & 0xffu;
-        if(unicode && unicode == ascii && std::isprint(ascii)) {
-            m_Text += ascii;
-            int w = 0, h = 0;
-            m_Font->GetSize(m_Text, w, h);
-            if(w > m_Width) {
-                // too long, remove that character again
-                m_Text.erase(m_Text.length()-1);
-                return true;
-            }
-            UpdateText();
-            return true;
-        }
-        return false;
+    return true;
+}
+
+void cEditBox::HandleTextInput(const char* t) {
+    m_Text += t;
+    int w = 0, h = 0;
+    m_Font->GetSize(m_Text, w, h);
+    if(w > m_Width) {
+        // too long, remove that character again
+        m_Text.erase(m_Text.length()-1);
+        return;
     }
+    UpdateText();
 }
 
 bool cEditBox::HandleSetFocus(bool focus)
 {
+    if(focus) {
+        SDL_StartTextInput();
+    } else {
+        SDL_StopTextInput();
+    }
     return true;
 }
 

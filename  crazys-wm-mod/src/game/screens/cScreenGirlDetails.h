@@ -66,7 +66,7 @@ private:
 
 	sGirl* m_SelectedGirl = nullptr;
 
-    void OnKeyPress(SDL_keysym keysym) override;
+    void OnKeyPress(SDL_Keysym keysym) override;
 
     bool m_Refresh = false;
 

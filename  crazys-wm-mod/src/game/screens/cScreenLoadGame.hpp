@@ -34,7 +34,7 @@ private:
     int BUTTON_LOADGBACK;
     void load_game();
 
-    void OnKeyPress(SDL_keysym keysym) override;
+    void OnKeyPress(SDL_Keysym keysym) override;
 public:
     cScreenLoadGame();
     void init(bool back) override;

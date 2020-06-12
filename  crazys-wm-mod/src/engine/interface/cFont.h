@@ -20,7 +20,7 @@
 
 #include <string>
 #include <memory>
-#include <SDL_video.h>
+#include <SDL2/SDL_video.h>
 #include "fwd.hpp"
 #include "cSurface.h"
 

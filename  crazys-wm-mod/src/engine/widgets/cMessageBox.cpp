@@ -154,7 +154,7 @@ void cMessageBox::PushMessage(std::string text, int color)
     }
 }
 
-bool cMessageBox::HandleKeyPress(SDL_keysym key) {
+bool cMessageBox::HandleKeyPress(SDL_Keysym key) {
     Advance();
     return true;
 }

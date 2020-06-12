@@ -21,11 +21,10 @@
 #include "cSurface.h"
 #include "cColor.h"
 #include <string>
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <SDL/SDL_rotozoom.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 #include <SDL_anigif.h>
-#include <SDL/SDL_ttf.h>
+#include <SDL2/SDL_ttf.h>
 #include <CLog.h>
 #include <cassert>
 #include <utility>
@@ -99,7 +98,8 @@ cSurface cImageCache::LoadImage(std::string filename, int width, int height, boo
     }
 
     // Convert image to screen format
-    loaded = surface_ptr_t{transparency ? SDL_DisplayFormatAlpha(loaded.get()) : SDL_DisplayFormat(loaded.get())};
+    // TODO figure out this part in SDL2. Use SDL_Texture?
+    // loaded = surface_ptr_t{transparency ? SDL_DisplayFormatAlpha(loaded.get()) : SDL_DisplayFormat(loaded.get())};
 
     return AddToCache(std::move(key), std::move(loaded), std::move(filename));
 }
@@ -135,16 +135,27 @@ surface_ptr_t cImageCache::ResizeImage(surface_ptr_t input, int width, int heigh
 {
     if (width != input->w || height != input->h)
     {
-        double scale_x = (double)width / (double)input->w;
-        double scale_y = (double)height / (double)input->h;
+        if(width  == -1) { width = input->w; }
+        if(height == -1) { height = input->h; }
+        if (keep_ratio)  {
+            double scale_x = (double)width / (double)input->w;
+            double scale_y = (double)height / (double)input->h;
+            double s = std::min(scale_x, scale_y);
+            width = input->w * s;
+            height = input->h * s;
+        }
 
-        if(width  == -1) { scale_x = 1; }
-        if(height == -1) { scale_y = 1; }
-        if (keep_ratio)  { scale_x = scale_y = std::min(scale_x, scale_y); }
-
-        auto result = surface_ptr_t(zoomSurface(input.get(), scale_x, scale_y, 1));
+        auto target = CreateSDLSurface(width, height, true);
+        SDL_Rect inp{0, 0, input->w, input->h};
+        SDL_Rect tgt{0, 0, target->w, target->h};
+        if(SDL_BlitScaled(input.get(), &inp, target.get(), &tgt)) {
+            g_LogFile.error("interface", "Could not scale surface: ", SDL_GetError());
+        }
+        SDL_BlendMode mode = SDL_BLENDMODE_INVALID;
+        SDL_GetSurfaceBlendMode(input.get(), &mode);
+        SDL_SetSurfaceBlendMode(target.get(), mode);
         m_ImageResizeCount++;
-        return result;
+        return target;
     }
 
     return input;
@@ -216,15 +227,14 @@ surface_ptr_t cImageCache::CreateSDLSurface(int width, int height, bool transpar
         throw std::logic_error("Invalid size specified for SDLSurface");
     }
     m_ImageCreateCount++;
-    auto sf = SDL_CreateRGBSurface(SDL_HWSURFACE, width, height, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+    auto sf = SDL_CreateRGBSurface(0, width, height, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
     if(!sf) {
         throw std::runtime_error("Could not create SDL surface");
     }
     if(transparent) {
-        return surface_ptr_t{SDL_DisplayFormatAlpha(sf)};
-    } else {
-        return surface_ptr_t{SDL_DisplayFormat(sf)};
+        SDL_SetSurfaceBlendMode(sf, SDL_BLENDMODE_BLEND);
     }
+    return surface_ptr_t{sf};
 }
 
 surface_ptr_t cImageCache::CloneSDLSurface(SDL_Surface * sf)
@@ -337,8 +347,8 @@ cSurface cImageCache::CreateTextSurface(TTF_Font* font, std::string text, sColor
     }
 
     auto sdlColor = SDL_Color{color.r, color.g, color.b, 0};
-    auto new_image = antialias ? TTF_RenderText_Blended(font, text.c_str(), sdlColor)
-                               : TTF_RenderText_Solid(font, text.c_str(), sdlColor);
+    auto new_image = antialias ? TTF_RenderUTF8_Blended(font, text.c_str(), sdlColor)
+                               : TTF_RenderUTF8_Solid(font, text.c_str(), sdlColor);
     if(new_image)
         return AddToCache(std::move(key), surface_ptr_t{new_image}, std::move(text));
     else

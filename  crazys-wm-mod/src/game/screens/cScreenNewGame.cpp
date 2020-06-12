@@ -109,7 +109,7 @@ void cScreenNewGame::start_game()
     }
 }
 
-void cScreenNewGame::OnKeyPress(SDL_keysym keysym)
+void cScreenNewGame::OnKeyPress(SDL_Keysym keysym)
 {
     if (keysym.sym == SDLK_TAB)
     {
@@ -118,7 +118,7 @@ void cScreenNewGame::OnKeyPress(SDL_keysym keysym)
     }
 
     if(HasFocus(pbd_id)) {
-        SDLKey   numbers[] = {SDLK_0, SDLK_1, SDLK_2, SDLK_3, SDLK_4, SDLK_5, SDLK_6, SDLK_7, SDLK_8, SDLK_9};
+        SDL_Keycode numbers[] = {SDLK_0, SDLK_1, SDLK_2, SDLK_3, SDLK_4, SDLK_5, SDLK_6, SDLK_7, SDLK_8, SDLK_9};
         for (int num       = 0; num <= 9; ++num) {
             if (keysym.sym == numbers[num]) {
                 int cur = g_Game->player().BirthDay();
@@ -136,7 +136,7 @@ void cScreenNewGame::OnKeyPress(SDL_keysym keysym)
     }
 
 
-    SDLKey months[] = {SDLK_F1, SDLK_F2, SDLK_F3, SDLK_F4, SDLK_F5, SDLK_F6, SDLK_F7, SDLK_F8, SDLK_F9, SDLK_F10, SDLK_F11, SDLK_F12};
+    SDL_Keycode months[] = {SDLK_F1, SDLK_F2, SDLK_F3, SDLK_F4, SDLK_F5, SDLK_F6, SDLK_F7, SDLK_F8, SDLK_F9, SDLK_F10, SDLK_F11, SDLK_F12};
     for(int num = 0; num <= 12; ++num) {
         if (keysym.sym == months[num]) {
             g_Game->player().SetBirthMonth(num + 1);

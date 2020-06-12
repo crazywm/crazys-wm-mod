@@ -119,6 +119,11 @@ void cWindowManager::OnMouseWheel(int x, int y, bool mouseWheelDown)
         m_WindowStack.back()->MouseWheel(x, y, mouseWheelDown);
 }
 
+void cWindowManager::OnTextInput(const char* text) {
+    if(!m_WindowStack.empty())
+        m_WindowStack.back()->TextInput(text);
+}
+
 cInterfaceWindow* cWindowManager::GetWindow(bool allow_modal)
 {
     if(m_WindowStack.empty())
@@ -154,7 +159,7 @@ void cWindowManager::Draw()
     }
 }
 
-void cWindowManager::OnKeyPress(SDL_keysym key)
+void cWindowManager::OnKeyPress(SDL_Keysym key)
 {
     GetWindow()->OnKeyPress(key);
 }

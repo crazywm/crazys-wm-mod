@@ -28,7 +28,7 @@
 
 class cModalWindow;
 class IBuilding;
-class SDL_keysym;
+class SDL_Keysym;
 class sGirl;
 class CGraphics;
 
@@ -59,6 +59,7 @@ public:
 	void UpdateMouseMovement(int x, int y);
 	void OnMouseClick(int x, int y, bool down);
 	void OnMouseWheel(int x, int y, bool mouseWheelDown = false);
+	void OnTextInput(const char* text);
 
     cInterfaceWindow* GetWindow(bool allow_model=true);
 	void Draw();
@@ -67,7 +68,7 @@ public:
 
 	// user interaction
 	// this function is called when a key is pressed
-	void OnKeyPress(SDL_keysym key);
+	void OnKeyPress(SDL_Keysym key);
 
 	IBuilding* GetActiveBuilding() const;
 	void SetActiveBuilding(IBuilding*);

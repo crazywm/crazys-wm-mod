@@ -177,39 +177,6 @@ void AG_FreeSurfaces( AG_Frame* frames, int nFrames )
 	}
 }
 
-
-
-/*--------------------------------------------------------------------------*/
-/*
-/*--------------------------------------------------------------------------*/
-int AG_ConvertSurfacesToDisplayFormat( AG_Frame* frames, int nFrames )
-{
-	int i;
-	int n = 0;
-
-	if ( frames )
-	{
-		for ( i = 0; i < nFrames; i++ )
-		{
-			if ( frames[i].surface )
-			{
-				SDL_Surface* surface = (frames[i].surface->flags & SDL_SRCCOLORKEY) ? SDL_DisplayFormatAlpha(frames[i].surface) : SDL_DisplayFormat(frames[i].surface);
-
-				if ( surface )
-				{
-					SDL_FreeSurface( frames[i].surface );
-					frames[i].surface = surface;
-					n++;
-				}
-			}
-		}
-	}
-
-	return n;
-}
-
-
-
 /*--------------------------------------------------------------------------*/
 /*
 /*--------------------------------------------------------------------------*/
@@ -219,8 +186,13 @@ int AG_NormalizeSurfacesToDisplayFormat( AG_Frame* frames, int nFrames )
 
 	if ( nFrames > 0 && frames && frames[0].surface )
 	{
-		SDL_Surface* mainSurface = (frames[0].surface->flags & SDL_SRCCOLORKEY) ? SDL_DisplayFormatAlpha(frames[0].surface) : SDL_DisplayFormat(frames[0].surface);
-		const int newDispose = (frames[0].surface->flags & SDL_SRCCOLORKEY) ? AG_DISPOSE_RESTORE_BACKGROUND : AG_DISPOSE_NONE;
+	    Uint32 color_key;
+	    int alpha = SDL_GetColorKey(frames[0].surface, &color_key);
+	    if(alpha != -1) {
+            SDL_SetSurfaceBlendMode(frames[0].surface, SDL_BLENDMODE_BLEND);
+	    }
+	    SDL_Surface* mainSurface = frames[0].surface;
+		const int newDispose = (alpha != -1) ? AG_DISPOSE_RESTORE_BACKGROUND : AG_DISPOSE_NONE;
 
 		if ( mainSurface )
 		{
@@ -398,7 +370,7 @@ int AG_LoadGIF_RW( SDL_RWops* src, AG_Frame* frames, int maxFrames )
 				goto done;
 
 			if ( gd->g89.transparent >= 0 )
-				SDL_SetColorKey( image, SDL_SRCCOLORKEY, gd->g89.transparent );
+				SDL_SetColorKey( image, SDL_TRUE, gd->g89.transparent );
 
 			frames[iFrame].surface	= image;
 			frames[iFrame].x		= LM_to_uint(buf[0], buf[1]);
@@ -721,7 +693,8 @@ static SDL_Surface* ReadImage( gifdata* gd, int len, int height, int cmapSize, u
 		return NULL;
 	}
 
-	image = SDL_AllocSurface( SDL_SWSURFACE, len, height, 8, 0, 0, 0, 0 );
+	image = SDL_CreateRGBSurface(0, len, height, 8, 0, 0, 0, 0);
+	//image = SDL_AllocSurface( SDL_SWSURFACE, len, height, 8, 0, 0, 0, 0 );
 
 	for ( i = 0; i < cmapSize; i++ )
 	{

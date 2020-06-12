@@ -220,7 +220,7 @@ bool cChoice::HandleClick(int x, int y, bool press) {
     return true;
 }
 
-bool cChoice::HandleKeyPress(SDL_keysym key) {
+bool cChoice::HandleKeyPress(SDL_Keysym key) {
     if (key.sym == SDLK_RETURN || key.sym == SDLK_KP_ENTER)
     {
         SetDisabled(true);

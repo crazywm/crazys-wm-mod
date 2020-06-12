@@ -32,13 +32,15 @@ public:
 	cEditBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, int FontSize = 16);
 
     void ClearText();
-	const std::string& GetText();
+	const std::string& GetText() const;
 	void SetText(std::string text);
 
     void DrawWidget(const CGraphics& gfx) override;
     bool HandleSetFocus(bool focus) override;
     bool HandleClick(int x, int y, bool press) override;
-    bool HandleKeyPress(SDL_keysym sym) override;
+    bool HandleKeyPress(SDL_Keysym sym) override;
+    void HandleTextInput(const char* t) override;
+
 
 	cSurface m_TextGFX;
 	std::string m_Text;

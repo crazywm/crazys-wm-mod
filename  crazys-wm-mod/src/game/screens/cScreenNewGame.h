@@ -39,7 +39,7 @@ private:
 	int currentbox = 0;
 
 	void set_ids() override;
-    void OnKeyPress(SDL_keysym keysym) override;
+    void OnKeyPress(SDL_Keysym keysym) override;
 public:
 	cScreenNewGame();
 

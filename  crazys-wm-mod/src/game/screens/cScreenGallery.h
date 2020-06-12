@@ -34,7 +34,7 @@ private:
 
 	sGirl* m_SelectedGirl;
 
-    void OnKeyPress(SDL_keysym keysym) override;
+    void OnKeyPress(SDL_Keysym keysym) override;
 public:
 	cScreenGallery();
 

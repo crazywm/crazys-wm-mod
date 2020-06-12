@@ -21,7 +21,7 @@
 
 #include <string>
 #include <memory>
-#include <SDL_video.h>
+#include <SDL2/SDL_video.h>
 #include "interface/cInterfaceObject.h"
 #include "interface/cSurface.h"
 

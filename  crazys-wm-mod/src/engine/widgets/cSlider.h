@@ -86,19 +86,19 @@ public:
 	void LiveUpdate(bool live_update) { m_LiveUpdate = live_update; }  // set LiveUpdate on or off
 
 	void SetCallback(std::function<void(int)>);
-	void SetHotKeys(SDLKey increase, SDLKey decrease);
+	void SetHotKeys(SDL_Keycode increase, SDL_Keycode decrease);
 
 	bool m_LiveUpdate = true;  // send update events while user is dragging? default enabled; if disabled, only sends update event on MouseUp
 
     bool HandleClick(int x, int y, bool press) override;
     void HandleMouseMove(bool over, int x, int y) override;
     bool HandleMouseWheel(bool down) override;
-    bool HandleKeyPress(SDL_keysym key) override;
+    bool HandleKeyPress(SDL_Keysym key) override;
     bool HandleSetFocus(bool focus) override;
 
 private:
-    SDLKey m_IncreaseHotKey = SDLK_UNKNOWN;
-    SDLKey m_DecreaseHotKey = SDLK_UNKNOWN;
+    SDL_Keycode m_IncreaseHotKey = SDLK_UNKNOWN;
+    SDL_Keycode m_DecreaseHotKey = SDLK_UNKNOWN;
 };
 
 

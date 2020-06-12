@@ -26,7 +26,7 @@
 #include <memory>
 #include <vector>
 #include <functional>
-#include <SDL_keyboard.h>
+#include <SDL2/SDL_keyboard.h>
 
 class cChoice : public cUIWidget	// represents a list of text selections and the currently selected text
 {
@@ -43,7 +43,7 @@ public:
 private:
     void HandleMouseMove(bool over, int x, int y) override;
     bool HandleClick(int x, int y, bool press) override;
-    bool HandleKeyPress(SDL_keysym key) override;
+    bool HandleKeyPress(SDL_Keysym key) override;
     int FindActive(int x, int y) const;
 
 	std::string m_Question;						// `J` The question at the top of the choice box

@@ -24,8 +24,8 @@
 #include <vector>
 #include <functional>
 #include <map>
-#include <SDL_keyboard.h>
-#include <SDL_video.h>
+#include <SDL2/SDL_keyboard.h>
+#include <SDL2/SDL_video.h>
 #include "cSurface.h"
 #include <stack>
 
@@ -56,9 +56,10 @@ public:
 	void UpdateWindow(int x, int y);
 	void MouseClick(int x, int y, bool down);
 	void MouseWheel(int x, int y, bool down = false);
+	void TextInput(const char* text);
 	void Draw(const CGraphics& gfx) override;
 	/// TODO make this non-virtual
-    virtual void OnKeyPress(SDL_keysym keysym);
+    virtual void OnKeyPress(SDL_Keysym keysym);
 
 	void Reset();
 
@@ -78,7 +79,7 @@ public:
                   int height, bool transparency = false, bool scale = true);
     void SetButtonCallback(int id, std::function<void()>);
     void SetButtonNavigation(int id, std::string target, bool replace = true);
-    void SetButtonHotKey(int id, SDLKey key);
+    void SetButtonHotKey(int id, SDL_Keycode key);
     cButton* GetButton(int id);
 
     // Images
@@ -105,7 +106,7 @@ public:
     cListBox* GetListBox(int listBoxID);
     void SetListBoxSelectionCallback(int id, std::function<void(int)>);
     void SetListBoxDoubleClickCallback(int id, std::function<void(int)>);
-    void SetListBoxHotKeys(int id, SDLKey up, SDLKey down);
+    void SetListBoxHotKeys(int id, SDL_Keycode up, SDL_Keycode down);
     void SetSelectedItemColumnText(int listBoxID, int itemID, std::string data, const std::string& column);
     void SortColumns(int listBoxID, const std::vector<std::string>& column_name);
     void SortListItems(int listBoxID, std::string column_name, bool Desc = false);
@@ -134,7 +135,7 @@ public:
 	int SliderValue(int ID, int value);  // set slider value, get result (might be different than requested due to out-of-bounds or whatever)
 	void SliderMarker(int ID, int value); // set value for a visual "marker" to be shown at, to denote a default or target value or similar
     void SetSliderCallback(int id, std::function<void(int)>);
-    void SetSliderHotKeys(int id, SDLKey increase, SDLKey decrease);
+    void SetSliderHotKeys(int id, SDL_Keycode increase, SDL_Keycode decrease);
     cSlider* GetSlider(int ID);
 
     // Check Boxes
@@ -156,7 +157,7 @@ public:
     virtual void init(bool back) {};
     virtual bool IsTransparent() const { return false; }
 
-    void AddKeyCallback(SDLKey key, std::function<void()> callback);
+    void AddKeyCallback(SDL_Keycode key, std::function<void()> callback);
 
     void push_message(std::string text, int color);
 
@@ -169,7 +170,7 @@ protected:
 	std::vector<std::unique_ptr<cUIWidget>> m_Widgets;
 	cUIWidget* m_KeyboardFocusWidget = nullptr;
 
-	std::map<SDLKey, std::function<void()>> m_KeyCallbacks;
+	std::map<SDL_Keycode, std::function<void()>> m_KeyCallbacks;
 
 	// the windows properties
 	cSurface m_Background;

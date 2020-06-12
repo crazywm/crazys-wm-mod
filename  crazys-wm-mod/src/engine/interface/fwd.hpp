@@ -24,6 +24,7 @@
 
 extern "C" {
 struct SDL_Surface;
+struct SDL_Texture;
 struct SDL_Rect;
 struct AG_Frame;
 typedef struct _TTF_Font TTF_Font;

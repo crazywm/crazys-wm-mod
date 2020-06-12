@@ -28,7 +28,7 @@
 #include "interface/cFont.h"
 #include "interface/cSurface.h"
 #include "interface/constants.h"
-#include "SDL_keyboard.h"
+#include "SDL2/SDL_keyboard.h"
 
 class cScrollBar;
 
@@ -64,13 +64,13 @@ public:
 	bool IsOver(int x, int y) const override;
 	bool HandleClick(int x, int y, bool press) override;
     bool HandleMouseWheel(bool down) override;
-    bool HandleKeyPress(SDL_keysym key) override;
+    bool HandleKeyPress(SDL_Keysym key) override;
     void Reset() override;
 	void DrawWidget(const CGraphics& gfx) override;
 
     void SetSelectionCallback(std::function<void(int)>);
     void SetDoubleClickCallback(std::function<void(int)>);
-    void SetArrowHotKeys(SDLKey up, SDLKey down);
+    void SetArrowHotKeys(SDL_Keycode up, SDL_Keycode down);
 
     void SetElementText(int ID, std::string data);
 
@@ -155,8 +155,8 @@ private:
     std::function<void(int)> m_SelectionCallback;
     std::function<void(int)> m_DoubleClickCallback;
 
-    SDLKey m_UpArrowHotKey = SDLK_UNKNOWN;
-    SDLKey m_DownArrowHotKey = SDLK_UNKNOWN;
+    SDL_Keycode m_UpArrowHotKey = SDLK_UNKNOWN;
+    SDL_Keycode m_DownArrowHotKey = SDLK_UNKNOWN;
 
     bool m_ShowHeaders    = false;					// whether to show column headers
     bool m_HeaderDividers = true;					// whether to show dividers between column headers

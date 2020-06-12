@@ -20,7 +20,7 @@
 #include "FileList.h"
 #include "Revision.h"
 #include "sConfig.h"
-#include "SDL.h"
+#include "SDL2/SDL.h"
 #include "CLog.h"
 #include "Game.hpp"
 

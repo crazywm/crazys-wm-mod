@@ -500,7 +500,7 @@ void cScreenGirlDetails::take_gold(sGirl *girl)
     init(true);
 }
 
-void cScreenGirlDetails::OnKeyPress(SDL_keysym keysym)
+void cScreenGirlDetails::OnKeyPress(SDL_Keysym keysym)
 {
     auto key = keysym.sym;
 

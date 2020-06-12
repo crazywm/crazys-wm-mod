@@ -20,7 +20,7 @@
 #include "CLog.h"
 #include "CGraphics.h"
 #include "cColor.h"
-#include <SDL_image.h>
+#include <SDL2/SDL_image.h>
 #include <algorithm>
 #include "DirPath.h"
 

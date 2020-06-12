@@ -945,7 +945,7 @@ cJobManager& IBuildingScreenManagement::job_manager()
     return g_Game->job_manager();
 }
 
-void IBuildingScreenManagement::OnKeyPress(SDL_keysym keysym)
+void IBuildingScreenManagement::OnKeyPress(SDL_Keysym keysym)
 {
     auto key = keysym.sym;
 

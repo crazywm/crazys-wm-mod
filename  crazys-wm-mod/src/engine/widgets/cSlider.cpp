@@ -20,7 +20,7 @@
 #include "interface/CGraphics.h"
 #include "CLog.h"
 #include "DirPath.h"
-#include <SDL_video.h>
+#include <SDL2/SDL_video.h>
 
 //these static vars defined in the header file need to be specified here
 
@@ -228,13 +228,13 @@ bool cSlider::HandleMouseWheel(bool down)
     return true;
 }
 
-void cSlider::SetHotKeys(SDLKey increase, SDLKey decrease)
+void cSlider::SetHotKeys(SDL_Keycode increase, SDL_Keycode decrease)
 {
     m_IncreaseHotKey = increase;
     m_DecreaseHotKey = decrease;
 }
 
-bool cSlider::HandleKeyPress(SDL_keysym key)
+bool cSlider::HandleKeyPress(SDL_Keysym key)
 {
     if(key.sym == m_IncreaseHotKey && m_IncreaseHotKey != SDLK_UNKNOWN) {
         Value(m_Value + m_IncrementAmount, true);

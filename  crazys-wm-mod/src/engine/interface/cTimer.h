@@ -19,8 +19,6 @@
 #ifndef __CTIMER_H
 #define __CTIMER_H
 
-#include <SDL.h>
-
 // Frame Rate for games
 const int FRAMES_PER_SECOND = 25;
 
@@ -30,17 +28,8 @@ public:
 	cTimer() { m_StartTicks = m_Started = false;}
 	~cTimer() = default;
 
-	void Start() {m_Started = true; m_StartTicks = SDL_GetTicks();}
-
-    int GetTicks()
-	{
-		if(m_Started)
-		{
-		    return (SDL_GetTicks() - m_StartTicks);
-		}
-		return 0;
-	}
-
+	void Start();
+    int GetTicks() const;
 private:
 	int m_StartTicks;
 

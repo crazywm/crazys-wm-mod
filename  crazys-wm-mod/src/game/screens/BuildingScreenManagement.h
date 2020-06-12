@@ -62,7 +62,7 @@ protected:
 
     void set_ids() override;
 private:
-    void OnKeyPress(SDL_keysym keysym) override;
+    void OnKeyPress(SDL_Keysym keysym) override;
 
     int back_id;			// Back button
     int gold_id;			// Player Gold

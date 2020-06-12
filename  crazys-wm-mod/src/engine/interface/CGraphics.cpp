@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "CGraphics.h"
-#include <SDL_ttf.h>
-#include <SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 #include "CLog.h"
 #include "DirPath.h"
 #include "sConfig.h"
@@ -31,7 +31,6 @@ extern cConfig cfg;
 CGraphics::CGraphics() : m_ImageCache(this)
 {
     m_FPS = std::make_unique<cTimer>();
-	m_Screen = nullptr;
 }
 
 CGraphics::~CGraphics()
@@ -43,23 +42,24 @@ CGraphics::~CGraphics()
 void CGraphics::Begin()
 {
 	m_FPS->Start();
-	// Fill the screen black
-	SDL_FillRect(m_Screen, &m_Screen->clip_rect, SDL_MapRGB(m_Screen->format, 0, 0, 0));
-
-
     m_BackgroundImage.DrawSurface(0, 0);
 }
 
 bool CGraphics::End()
 {
-	// flip the surface
-	if(SDL_Flip(m_Screen) == -1)
-	{
-		g_LogFile.error("interface", SDL_GetError());
-		return false;
-	}
+    if(SDL_UpdateTexture(m_Screen, nullptr, m_ScreenBuffer->pixels, m_ScreenBuffer->pitch)) {
+        g_LogFile.error("interface", "Could not update screen buffer: ", SDL_GetError());
+    }
+    if(SDL_RenderClear(m_Renderer)) {
+        g_LogFile.error("interface", "Could not clear render: ", SDL_GetError());
+    }
+    if(SDL_RenderCopy(m_Renderer, m_Screen, nullptr, nullptr)) {
+        g_LogFile.error("interface", "Could not copy screen buffer: ", SDL_GetError());
+    }
+    SDL_RenderPresent(m_Renderer);
 
-	// Maintain framerate
+
+    // Maintain framerate
 	if((m_FPS->GetTicks() < 1000 / FRAMES_PER_SECOND))
 	{
 		//Sleep the remaining frame time
@@ -103,25 +103,42 @@ bool CGraphics::InitGraphics(std::string caption, int Width, int Height, int BPP
         g_LogFile.error("interface", "Error setting window icon (window_icon.png)");
         g_LogFile.error("interface", SDL_GetError());
 	}
-	else
-		SDL_WM_SetIcon(loadIcon, nullptr);
 
 	// Setup the screen
     g_LogFile.info("interface", "Determining Fullscreen or Windowed Mode");
-    if (m_Fullscreen)
-        m_Screen = SDL_SetVideoMode(m_ScreenWidth, m_ScreenHeight, m_ScreenBPP, SDL_SWSURFACE | SDL_FULLSCREEN);
+    if (m_Fullscreen) {
+        SDL_CreateWindowAndRenderer(0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP, &m_Window, &m_Renderer);
+        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // make the scaled rendering look smoother.
+        SDL_RenderSetLogicalSize(m_Renderer, 640, 480);
+    }
     else
-        m_Screen = SDL_SetVideoMode(m_ScreenWidth, m_ScreenHeight, m_ScreenBPP, SDL_SWSURFACE);
-    if(!m_Screen)	// check for error
+        SDL_CreateWindowAndRenderer(m_ScreenWidth, m_ScreenHeight, 0, &m_Window, &m_Renderer);
+    if(!(m_Window && m_Renderer))	// check for error
     {
-        g_LogFile.error("interface", "Could not SDL_SetVideoMode");
+        g_LogFile.error("interface", "Could not SDL_CreateWindowAndRenderer");
         g_LogFile.error("interface", SDL_GetError());
         return false;
     }
 
+    // prepare the screen
+    m_ScreenBuffer = SDL_CreateRGBSurface(0, m_ScreenWidth, m_ScreenHeight, 32,
+            0x00FF0000,0x0000FF00,0x000000FF,0xFF000000);
+
+    m_Screen = SDL_CreateTexture(m_Renderer, SDL_PIXELFORMAT_ARGB8888,SDL_TEXTUREACCESS_STREAMING,
+            m_ScreenWidth, m_ScreenHeight);
+    if(!(m_ScreenBuffer && m_Screen))	// check for error
+    {
+        g_LogFile.error("interface", "Could not prepare screen buffer");
+        g_LogFile.error("interface", SDL_GetError());
+        return false;
+    }
+
+    if(loadIcon)
+        SDL_SetWindowIcon(m_Window, loadIcon);
+
     // set window caption
     g_LogFile.info("interface","Setting Window Caption");
-    SDL_WM_SetCaption(caption.c_str(), nullptr);
+    SDL_SetWindowTitle(m_Window, caption.c_str());
 
     // Init TTF
     g_LogFile.info("interface","Initializing TTF");

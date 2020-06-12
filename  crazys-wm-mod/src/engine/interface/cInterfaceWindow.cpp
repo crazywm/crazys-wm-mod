@@ -585,7 +585,7 @@ void cInterfaceWindow::update()
     process();
 }
 
-void cInterfaceWindow::OnKeyPress(SDL_keysym keysym)
+void cInterfaceWindow::OnKeyPress(SDL_Keysym keysym)
 {
     try {
         if(m_KeyCallbacks.count(keysym.sym) != 0) {
@@ -601,6 +601,12 @@ void cInterfaceWindow::OnKeyPress(SDL_keysym keysym)
         }
     } catch (std::exception& exception) {
         push_message(exception.what(), 1);
+    }
+}
+
+void cInterfaceWindow::TextInput(const char* ip) {
+    if(m_KeyboardFocusWidget) {
+        m_KeyboardFocusWidget->OnTextInput(ip);
     }
 }
 
@@ -646,7 +652,7 @@ void cInterfaceWindow::SetListBoxDoubleClickCallback(int id, std::function<void(
         GetListBox(id)->SetDoubleClickCallback(std::move(cb));
 }
 
-void cInterfaceWindow::SetButtonHotKey(int id, SDLKey key)
+void cInterfaceWindow::SetButtonHotKey(int id, SDL_Keycode key)
 {
     if(id > -1) {
         GetButton(id)->SetHotKey(key);
@@ -667,13 +673,13 @@ void cInterfaceWindow::SetSliderCallback(int id, std::function<void(int)> cb)
     }
 }
 
-void cInterfaceWindow::SetSliderHotKeys(int id, SDLKey increase, SDLKey decrease) {
+void cInterfaceWindow::SetSliderHotKeys(int id, SDL_Keycode increase, SDL_Keycode decrease) {
     if(id > -1) {
         GetSlider(id)->SetHotKeys(increase, decrease);
     }
 }
 
-void cInterfaceWindow::SetListBoxHotKeys(int id, SDLKey up, SDLKey down)
+void cInterfaceWindow::SetListBoxHotKeys(int id, SDL_Keycode up, SDL_Keycode down)
 {
     if(id > -1) {
         GetListBox(id)->SetArrowHotKeys(up, down);
@@ -715,7 +721,7 @@ void cInterfaceWindow::TabFocus()
     // There really is none!
 }
 
-void cInterfaceWindow::AddKeyCallback(SDLKey key, std::function<void()> callback)
+void cInterfaceWindow::AddKeyCallback(SDL_Keycode key, std::function<void()> callback)
 {
     m_KeyCallbacks.emplace(key, std::move(callback));
 }

@@ -26,6 +26,9 @@
 #include "cImageCache.hpp"
 
 class SDL_Surface;
+class SDL_Texture;
+class SDL_Window;
+class SDL_Renderer;
 class cSurface;
 class sColor;
 class cTimer;
@@ -46,7 +49,7 @@ public:
     cSurface LoadImage(std::string filename, int width=-1, int height=-1, bool transparency=false, bool keep_ratio=true);
 
 	// Accessors
-	SDL_Surface* GetScreen() const {return m_Screen;}
+	SDL_Surface* GetScreen() const { return m_ScreenBuffer; }
 
 	// absolute screen size
 	int GetWidth() const {return m_ScreenWidth;}
@@ -64,9 +67,13 @@ private:
     float m_ScreenScaleY = 1.0f;
 
 	// Screen
-	SDL_Surface* m_Screen = nullptr;
+    SDL_Window* m_Window = nullptr;
+    SDL_Renderer* m_Renderer = nullptr;
+    SDL_Surface* m_ScreenBuffer = nullptr;
+    SDL_Texture* m_Screen = nullptr;
 
-	// Images
+
+    // Images
     cSurface m_BackgroundImage;
     cImageCache m_ImageCache;
 

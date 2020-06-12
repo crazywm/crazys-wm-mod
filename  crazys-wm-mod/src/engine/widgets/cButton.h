@@ -22,7 +22,6 @@
 #include <string>
 #include <memory>
 #include <functional>
-#include <SDL_keyboard.h>
 
 #include "interface/cInterfaceObject.h"
 #include "interface/cSurface.h"
@@ -36,20 +35,20 @@ public:
 
     bool HandleClick(int x, int y, bool press) override;
     void HandleMouseMove(bool over, int x, int y) override;
-    bool HandleKeyPress(SDL_keysym key) override;
+    bool HandleKeyPress(SDL_Keysym key) override;
 
 	void SetDisabled(bool disable) override;
     void DrawWidget(const CGraphics& gfx) override;
 
     void SetCallback(std::function<void()>);
-    void SetHotKey(SDLKey key);
+    void SetHotKey(SDL_Keycode key);
 
 private:
     cSurface m_OffImage;
     cSurface m_DisabledImage;
     cSurface m_OnImage;
     std::function<void()> m_Callback;
-    SDLKey m_HotKey = SDLK_UNKNOWN;
+    SDL_Keycode m_HotKey = SDLK_UNKNOWN;
 
     cSurface* m_CurrImage;
 };

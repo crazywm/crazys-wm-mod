@@ -22,7 +22,7 @@
 #include <string>
 #include <memory>
 #include <functional>
-#include <SDL_keyboard.h>
+#include <SDL2/SDL_keyboard.h>
 #include "fwd.hpp"
 
 class cInterfaceObject
@@ -96,6 +96,12 @@ public:
         }
     }
 
+    void OnTextInput(const char* ip) {
+        if(!m_Disabled) {
+            HandleTextInput(ip);
+        }
+    }
+
     /// force: This is true if the even should be handled even if the mouse is not over the widget
     bool OnMouseWheel(bool down, int x, int y, bool force)
     {
@@ -103,7 +109,7 @@ public:
         return HandleMouseWheel(down);
     }
 
-    bool OnKeyPress(SDL_keysym keysym) {
+    bool OnKeyPress(SDL_Keysym keysym) {
         if(m_Disabled) return false;
         return HandleKeyPress(keysym);
     }
@@ -118,9 +124,10 @@ private:
     virtual void DrawWidget(const CGraphics& gfx) = 0;
     virtual bool HandleClick(int x, int y, bool press) { return false; }
     virtual void HandleMouseMove(bool over, int x, int y) { };
-    virtual bool HandleKeyPress(SDL_keysym sym) { return false; };
+    virtual bool HandleKeyPress(SDL_Keysym sym) { return false; };
     virtual bool HandleMouseWheel(bool down)    { return false; }
     virtual bool HandleSetFocus(bool focus) { return false; }
+    virtual void HandleTextInput(const char* t) { }
 };
 
 #endif

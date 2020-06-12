@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <algorithm>
-#include <SDL_timer.h>              // needed to detect double clicks
+#include <SDL2/SDL_timer.h>              // needed to detect double clicks
 #include "DirPath.h"
 #include "cListBox.h"
 #include "interface/CGraphics.h"
@@ -862,7 +862,7 @@ void cListBox::SetDoubleClickCallback(std::function<void(int)> cb)
     m_DoubleClickCallback = std::move(cb);
 }
 
-bool cListBox::HandleKeyPress(SDL_keysym key){
+bool cListBox::HandleKeyPress(SDL_Keysym key){
     if(m_UpArrowHotKey != SDLK_UNKNOWN && key.sym == m_UpArrowHotKey) {
         ArrowUpList();
         return true;
@@ -873,7 +873,7 @@ bool cListBox::HandleKeyPress(SDL_keysym key){
     return false;
 }
 
-void cListBox::SetArrowHotKeys(SDLKey up, SDLKey down)
+void cListBox::SetArrowHotKeys(SDL_Keycode up, SDL_Keycode down)
 {
     m_UpArrowHotKey = up;
     m_DownArrowHotKey = down;

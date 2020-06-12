@@ -49,7 +49,7 @@ void cScreenLoadGame::load_game()
     replace_window("Preparing Game");
 }
 
-void cScreenLoadGame::OnKeyPress(SDL_keysym keysym)
+void cScreenLoadGame::OnKeyPress(SDL_Keysym keysym)
 {
     if(keysym.sym == SDLK_BACKSPACE) {
         pop_window();

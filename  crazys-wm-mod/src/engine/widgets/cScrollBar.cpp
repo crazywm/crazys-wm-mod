@@ -19,7 +19,7 @@
 #include "cScrollBar.h"
 #include "DirPath.h"
 #include "interface/CGraphics.h"
-#include "SDL_image.h"
+// #include "SDL2/SDL_image.h"
 
 //these static vars defined in the header file need to be specified here
 Uint8 cScrollBar::m_NotchOffset=0;
