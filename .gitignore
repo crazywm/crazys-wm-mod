@@ -1,1 +1,14 @@
 .idea/*
+/build/
+/.objs/
+/WhoreMaster
+*.cbp
+*.layout
+*.txt~
+/_bin/
+*.make
+*.workspace
+/Makefile
+*.depend
+gamelog.txt
+
