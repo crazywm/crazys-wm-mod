@@ -22,7 +22,7 @@
 #include "interface/cSurface.h"
 #include "InterfaceProcesses.h"
 #include "cGangs.h"
-#include "FileList.h"
+#include "utils/FileList.h"
 #include "character/sGirl.hpp"
 #include "sConfig.h"
 #include <sstream>

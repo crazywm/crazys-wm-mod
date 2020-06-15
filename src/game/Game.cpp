@@ -3,7 +3,7 @@
 #include "character/cPlayer.h"
 #include "buildings/cDungeon.h"
 #include "cGold.h"
-#include "DirPath.h"
+#include "utils/DirPath.h"
 #include "CLog.h"
 #include "cGangs.h"
 #include "cJobManager.h"
@@ -16,7 +16,7 @@
 #include "buildings/cBrothel.h"
 #include "cInventory.h"
 #include "character/traits/cTraitsManager.h"
-#include "FileList.h"
+#include "utils/FileList.h"
 #include "interface/fwd.hpp"
 #include "cTariff.h"
 #include "cShop.h"
@@ -103,19 +103,22 @@ cDungeon& Game::dungeon()
 
 void Game::next_week()
 {
+    g_LogFile.info("turn", "Start processing next week");
     gang_manager().GangStartOfShift();
 
+    g_LogFile.info("turn", "Processing buildings");
     for(auto& building : m_Buildings->buildings()) {
         building->Update();
     }
 
+    // clear the events of dungeon girls
+    m_Dungeon->ClearDungeonGirlEvents();
+
+    g_LogFile.info("turn", "Money Processing");
     UpdateBribeInfluence();
 
     // Update the bribe rate
     m_Gold->bribes(GetBribeRate());
-
-    // clear the events of dungeon girls
-    m_Dungeon->ClearDungeonGirlEvents();
 
     if (GetBankMoney() > 0)                                    // incraese the bank gold by 02%
     {
@@ -130,8 +133,10 @@ void Game::next_week()
 
     do_tax();
 
+    g_LogFile.info("turn", "Rivals");
     rivals().check_rivals();
 
+    g_LogFile.info("turn", "Prison");
     if(!m_Prison.empty())
     {
         if (g_Dice.percent(10))    // 10% chance of someone being released
@@ -142,6 +147,7 @@ void Game::next_week()
         }
     }
 
+    g_LogFile.info("turn", "Runaways");
     UpdateRunaways();
 
     // Update the time
@@ -234,24 +240,30 @@ void Game::next_week()
         m_Buildings->building_with_type(BuildingType::BROTHEL, 6)->m_SecurityLevel -= (220 - num_businesses_extortet) * 2;
     }
 
+    g_LogFile.info("turn", "Update Slave Market");
     // update slave market
     UpdateMarketSlaves();
 
     // go through and update all the gang-related data (send them on missions, etc.)
+    g_LogFile.info("turn", "Update Gangs");
     gang_manager().UpdateGangs();
 
+    g_LogFile.info("turn", "Update Dungeon");
     dungeon().Update();    // update the people in the dungeon
 
+    g_LogFile.info("turn", "Update Objectives");
     // update objectives or maybe create a new one
     if (get_objective()) objective_manager().UpdateObjective();
     else if (g_Dice.percent(45)) objective_manager().CreateNewObjective();
 
+    g_LogFile.info("turn", "Update Customers");
     // go through and update the population base
     customers().ChangeCustomerBase();
 
     // TODO Free customers?
 
     // update the players gold
+    g_LogFile.info("turn", "Update Gold");
     gold().week_end();
 
     // Process Triggers
@@ -262,10 +274,12 @@ void Game::next_week()
 
     // Update the shop. This happens very late in the week update, because then we can guarantee that the
     // player always sees a full shop.
+    g_LogFile.info("turn", "Update Shop");
     m_Shop->RestockShop();
 
     // cheat gold
     if (m_IsCheating)    gold().cheat();
+    g_LogFile.info("turn", "End Turn");
 }
 
 void Game::UpdateRunaways() {

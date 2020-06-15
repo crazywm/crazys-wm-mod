@@ -16,15 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include "CGraphics.h"
+#include "interface/CGraphics.h"
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 #include "CLog.h"
-#include "DirPath.h"
+#include "utils/DirPath.h"
 #include "sConfig.h"
-#include "cColor.h"
+#include "interface/cColor.h"
 #include "cTimer.h"
-#include "cFont.h"
+#include "interface/cFont.h"
 
 extern cConfig cfg;
 

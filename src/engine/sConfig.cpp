@@ -19,9 +19,9 @@
 #include <ostream>
 #include <cctype>
 #include "sConfig.h"
-#include "DirPath.h"
+#include "utils/DirPath.h"
 #include "CLog.h"
-#include "FileList.h"
+#include "utils/FileList.h"
 #include <tinyxml2.h>
 #include "interface/cColor.h"
 #include "Revision.h"

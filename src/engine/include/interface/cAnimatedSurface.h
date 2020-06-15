@@ -21,8 +21,8 @@
 #include <string>
 #include <vector>
 #include <chrono>
-#include "fwd.hpp"
-#include "cSurface.h"
+#include "interface/fwd.hpp"
+#include "interface/cSurface.h"
 
 struct sAnimationFrame {
     cSurface surface;

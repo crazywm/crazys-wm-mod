@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "cKeyValueStore.h"
+#include "utils/cKeyValueStore.h"
 #include "tinyxml2.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
@@ -92,7 +92,7 @@ void cKeyValueBase::set_value(const char* name, std::string value) {
 
 void cKeyValueBase::set_value(const char* name, sPercent value) {
     auto& val = get_value(name);
-    if(val.type() == typeid(std::string)) {
+    if(val.type() == typeid(sPercent)) {
         val = std::move(value);
     } else {
         throw std::logic_error("Cannot set non-string setting to string value");

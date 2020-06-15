@@ -25,8 +25,8 @@
 #include "CLog.h"
 #include "widgets/cImageItem.h"
 #include "interface/CGraphics.h"
-#include "DirPath.h"
-#include "FileList.h"
+#include "utils/DirPath.h"
+#include "utils/FileList.h"
 #include "utils/string.hpp"
 #include "sConfig.h"
 

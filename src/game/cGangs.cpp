@@ -31,7 +31,7 @@
 #include "sStorage.hpp"
 #include "gang_missions.hpp"
 
-#include "DirPath.h"
+#include "utils/DirPath.h"
 #include "utils/streaming_random_selection.hpp"
 #include "utils/algorithms.hpp"
 #include "CLog.h"

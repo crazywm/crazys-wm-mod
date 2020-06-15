@@ -19,14 +19,14 @@
 #ifndef __CINTERFACEWINDOW_H
 #define __CINTERFACEWINDOW_H
 
-#include "cInterfaceObject.h"
-#include "constants.h"
+#include "interface/cInterfaceObject.h"
+#include "interface/constants.h"
 #include <vector>
 #include <functional>
 #include <map>
 #include <SDL_keyboard.h>
 #include <SDL_video.h>
-#include "cSurface.h"
+#include "interface/cSurface.h"
 #include <stack>
 
 class cImageItem;

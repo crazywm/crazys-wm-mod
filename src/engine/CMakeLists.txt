@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 project(WM_Engine)
 
-set(SRC CLog.cpp DirPath.cpp FileList.cpp sConfig.cpp SDL_anigif.c utils/cKeyValueStore.cpp)
+set(SRC CLog.cpp utils/DirPath.cpp utils/FileList.cpp sConfig.cpp interface/SDL_anigif.c utils/cKeyValueStore.cpp)
 
 set(INTERFACE_SRC
         interface/cColor.cpp
@@ -31,8 +31,8 @@ set(WIDGETS_SRC
 SET(XML_SRC xml/getattr.cpp xml/util.cpp)
 
 add_library(WMEngine STATIC ${SRC} ${WIDGETS_SRC} ${INTERFACE_SRC} ${XML_SRC})
-# can't link to SDL_image here, get fPIC problems, so we link this only in the final executable
-target_link_libraries(WMEngine PUBLIC SDL2::SDL2 SDL2::TTF lua::lua Boost::headers tinyxml2)
+target_link_libraries(WMEngine PUBLIC SDL2::SDL2 lua::lua Boost::headers tinyxml2)
+target_link_libraries(WMEngine PRIVATE SDL2::TTF SDL2::Image)
 set_target_properties(WMEngine PROPERTIES CXX_STANDARD 14)
 
 if (UNIX)
@@ -40,5 +40,5 @@ if (UNIX)
 endif(UNIX)
 
 # Long-term goal: make the first one PRIVATE
-target_include_directories(WMEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(WMEngine PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(WMEngine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

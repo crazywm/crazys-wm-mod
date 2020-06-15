@@ -18,7 +18,7 @@
 */
 #pragma once
 
-#include "DirPath.h"
+#include "utils/DirPath.h"
 #include "interface/cInterfaceWindowXML.h"
 
 class cScreenNewGame : public cInterfaceWindowXML

@@ -1674,7 +1674,9 @@ void sGirl::remove_status(STATUS stat) {
 }
 
 double sGirl::job_performance(JOBS job, bool estimate) const {
-    return g_Game->job_manager().m_OOPJobs[job]->GetPerformance(*this, estimate);
+    const auto& job_handler = g_Game->job_manager().m_OOPJobs.at(job);
+    assert(job_handler);
+    return job_handler->GetPerformance(*this, estimate);
 }
 
 extern std::string process_message(const sGirl& girl, std::string message);

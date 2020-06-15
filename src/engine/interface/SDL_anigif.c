@@ -191,7 +191,7 @@ int AG_NormalizeSurfacesToDisplayFormat( AG_Frame* frames, int nFrames )
 	    if(alpha != -1) {
             SDL_SetSurfaceBlendMode(frames[0].surface, SDL_BLENDMODE_BLEND);
 	    }
-	    SDL_Surface* mainSurface = frames[0].surface;
+        SDL_Surface* mainSurface = SDL_ConvertSurface( frames[0].surface, frames[0].surface->format, frames[0].surface->flags );
 		const int newDispose = (alpha != -1) ? AG_DISPOSE_RESTORE_BACKGROUND : AG_DISPOSE_NONE;
 
 		if ( mainSurface )

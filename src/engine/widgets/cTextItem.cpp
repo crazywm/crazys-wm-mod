@@ -20,7 +20,7 @@
 #include "interface/cFont.h"
 #include "sConfig.h"
 #include "cScrollBar.h"
-#include "cTextItem.h"
+#include "widgets/cTextItem.h"
 #include <utility>
 #include "interface/cInterfaceWindow.h"
 

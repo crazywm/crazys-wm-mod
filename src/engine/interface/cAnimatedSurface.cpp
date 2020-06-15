@@ -17,10 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cAnimatedSurface.h"
-#include "cSurface.h"
+#include "interface/cAnimatedSurface.h"
+#include "interface/cSurface.h"
 #include "CLog.h"
-#include "cImageCache.hpp"
+#include "interface/cImageCache.h"
 #include <chrono>
 
 cAnimatedSurface::cAnimatedSurface(std::vector<sAnimationFrame> frames) : m_Frames(std::move(frames))

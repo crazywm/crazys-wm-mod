@@ -20,9 +20,9 @@
 #include "InterfaceProcesses.h"
 #include "main.h"
 #include "Revision.h"
-#include "FileList.h"
+#include "utils/FileList.h"
+#include "utils/DirPath.h"
 #include "MasterFile.h"
-#include "DirPath.h"
 #include "buildings/cBrothel.h"
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
@@ -33,7 +33,6 @@
 #undef bool
 
 #ifdef LINUX
-#include "linux.h"
 #else
 #include <windows.h>
 #endif

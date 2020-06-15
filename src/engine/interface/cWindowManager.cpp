@@ -17,13 +17,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <algorithm>
-#include "cInterfaceWindowXML.h"
+#include "interface/cInterfaceWindowXML.h"
 #include "widgets/cScreenGetInput.h"
-#include "cWindowManager.h"
+#include "interface/cWindowManager.h"
 #include "CLog.h"
 #include "widgets/cMessageBox.h"
 #include "cChoiceMessage.h"
-#include "cInterfaceObject.h"
+#include "interface/cInterfaceObject.h"
 
 #include <cassert>
 #include <utility>
@@ -259,6 +259,18 @@ std::shared_ptr<cModalWindow> cWindowManager::GetModalWindow() {
 
     assert(choice_window);
     return std::move(choice_window);
+}
+
+void cWindowManager::EnableTextInput() {
+    if(m_TextInputEnabled == 0)
+        SDL_StartTextInput();
+    m_TextInputEnabled += 1;
+}
+
+void cWindowManager::DisableTextInput() {
+    m_TextInputEnabled -= 1;
+    if(m_TextInputEnabled == 0)
+        SDL_StopTextInput();
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

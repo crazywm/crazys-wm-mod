@@ -51,7 +51,7 @@ void cJobManager::Setup()
     m_OOPJobs.resize(NUM_JOBS);
 
     auto register_filter = [&](JOBFILTER filter, JOBS first, JOBS last) {
-        for(int i = first; i < last; ++i) {
+        for(int i = first; i <= last; ++i) {
             JobFilters[filter].Contents.push_back((JOBS)i);
         }
     };

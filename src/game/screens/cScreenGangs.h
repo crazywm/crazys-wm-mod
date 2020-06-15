@@ -82,4 +82,6 @@ public:
     void on_select_gang(int selection);
 
     void update_sliders();
+    void update_wpn_info();
+    void update_recruit_btn();
 };

@@ -20,7 +20,7 @@
 
 #include <string>
 #include <memory>
-#include "fwd.hpp"
+#include "interface/fwd.hpp"
 
 class cImageCache;
 class cCachedSurface;

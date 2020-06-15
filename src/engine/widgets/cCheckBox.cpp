@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cCheckBox.h"
-#include "DirPath.h"
+#include "utils/DirPath.h"
 #include "interface/CGraphics.h"
 #include "interface/cSurface.h"
 #include "sConfig.h"

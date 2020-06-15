@@ -23,7 +23,7 @@
 #include <memory>
 #include <functional>
 #include <SDL_keyboard.h>
-#include "fwd.hpp"
+#include "interface/fwd.hpp"
 
 class cInterfaceObject
 {

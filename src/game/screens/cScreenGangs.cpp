@@ -25,8 +25,6 @@
 #include "Game.hpp"
 #include "CLog.h"
 
-static int selection = -1;
-static int sel_recruit = -1;
 static stringstream ss;
 
 cScreenGangs::cScreenGangs() : cInterfaceWindowXML("gangs_screen.xml")
@@ -86,7 +84,7 @@ void cScreenGangs::set_ids()
     // set button callbacks
     SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(gangfire_id, [this](){
-        selection = GetLastSelectedItemFromList(ganglist_id);
+        int selection = GetLastSelectedItemFromList(ganglist_id);
         if (selection != -1)
         {
             g_Game->gang_manager().FireGang(selection);
@@ -126,10 +124,7 @@ void cScreenGangs::set_ids()
     SetListBoxSelectionCallback(ganglist_id, [this](int sel) { on_select_gang(sel); });
     SetListBoxHotKeys(ganglist_id, SDLK_a, SDLK_d);
     SetListBoxSelectionCallback(recruitlist_id, [this](int sel) {
-        if(sel != sel_recruit) {
-            sel_recruit = sel;
-            init(false);
-        }
+        update_recruit_btn();
     });
     SetListBoxDoubleClickCallback(recruitlist_id, [this](int sel) {hire_recruitable(); });
     SetListBoxHotKeys(recruitlist_id, SDLK_q, SDLK_e);
@@ -173,8 +168,7 @@ void cScreenGangs::init(bool back)
 {
     Focused();
 
-    selection = GetLastSelectedItemFromList(ganglist_id);
-    sel_recruit = GetLastSelectedItemFromList(recruitlist_id);
+    int selection = GetLastSelectedItemFromList(ganglist_id);
 
     ClearListBox(missionlist_id);
     AddToListBox(missionlist_id, 0, "GUARDING");
@@ -200,27 +194,7 @@ void cScreenGangs::init(bool back)
     SetCheckBox(healautobuy_id, (g_Game->gang_manager().GetHealingRestock() > 0));
 
     // weapon upgrades
-    ss.str("");    ss << "Weapon Level: ";
-    int wpn_cost = 0;
-    for (int selection = multi_first(); selection != -1; selection = multi_next()) {
-        sGang* gang = g_Game->gang_manager().GetGang(selection);
-        if(gang) {
-            ss << gang->weapon_level() << " ";
-            if ( gang->weapon_level() < 3)
-            {
-                wpn_cost += g_Game->tariff().goon_weapon_upgrade(gang->weapon_level());
-            }
-        }
-    }
-
-    if(wpn_cost == 0) {
-        DisableWidget(weaponup_id);
-    }
-    else {
-        EnableWidget(weaponup_id);
-        ss << " Next: " << wpn_cost << "g";
-    }
-    EditTextItem(ss.str(), weaponlevel_id);
+    update_wpn_info();
 
     int nets = g_Game->gang_manager().GetNets();
     ss.str(""); ss << "Nets (" << g_Game->tariff().nets_price(1) << "g each): " << nets;
@@ -322,12 +296,8 @@ void cScreenGangs::init(bool back)
         while (selection > GetListBoxSize(ganglist_id) && selection != -1) selection--;
     }
     if (selection >= 0) SetSelectedItemInList(ganglist_id, selection);
-    if (sel_recruit == -1 && GetListBoxSize(recruitlist_id) >= 1) sel_recruit = 0;
-    if (sel_recruit >= 0) SetSelectedItemInList(recruitlist_id, sel_recruit);
 
-    DisableWidget(ganghire_id, (g_Game->gang_manager().GetNumHireableGangs() <= 0) ||
-                               (g_Game->gang_manager().GetNumGangs() >= g_Game->gang_manager().GetMaxNumGangs()) ||
-                               (sel_recruit == -1));
+    update_recruit_btn();
     DisableWidget(gangfire_id, (g_Game->gang_manager().GetNumGangs() <= 0) || (selection == -1));
 }
 
@@ -359,6 +329,8 @@ void cScreenGangs::on_select_gang(int selection)
         SetSelectedItemInList(missionlist_id, gang->m_MissionID, false);
         set_mission_desc(gang->m_MissionID);        // set the long description for the mission
     }
+
+    update_wpn_info();
 }
 
 void cScreenGangs::on_select_mission()
@@ -478,6 +450,7 @@ int cScreenGangs::set_mission_desc(int mid)
 
 void cScreenGangs::hire_recruitable()
 {
+    int sel_recruit = GetLastSelectedItemFromList(recruitlist_id);
     if ((g_Game->gang_manager().GetNumGangs() >= g_Game->gang_manager().GetMaxNumGangs()) || (sel_recruit == -1)) return;
     g_Game->gang_manager().HireGang(sel_recruit);
     init(false);
@@ -493,4 +466,35 @@ void cScreenGangs::buy_nets(int buynets)
 {
     g_Game->gang_manager().BuyNets(buynets, IsCheckboxOn(netautobuy_id));
     init(false);
+}
+
+void cScreenGangs::update_wpn_info() {
+    ss.str("");    ss << "Weapon Level: ";
+    int wpn_cost = 0;
+    for (int selection = multi_first(); selection != -1; selection = multi_next()) {
+        sGang* gang = g_Game->gang_manager().GetGang(selection);
+        if(gang) {
+            ss << gang->weapon_level() << " ";
+            if ( gang->weapon_level() < 3)
+            {
+                wpn_cost += g_Game->tariff().goon_weapon_upgrade(gang->weapon_level());
+            }
+        }
+    }
+
+    if(wpn_cost == 0) {
+        DisableWidget(weaponup_id);
+    }
+    else {
+        EnableWidget(weaponup_id);
+        ss << " Next: " << wpn_cost << "g";
+    }
+    EditTextItem(ss.str(), weaponlevel_id);
+}
+
+void cScreenGangs::update_recruit_btn() {
+    int sel_recruit = GetLastSelectedItemFromList(recruitlist_id);
+    DisableWidget(ganghire_id, (g_Game->gang_manager().GetNumHireableGangs() <= 0) ||
+                               (g_Game->gang_manager().GetNumGangs() >= g_Game->gang_manager().GetMaxNumGangs()) ||
+                               (sel_recruit == -1));
 }

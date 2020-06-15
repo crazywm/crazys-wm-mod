@@ -19,7 +19,7 @@
 #include "cSlider.h"
 #include "interface/CGraphics.h"
 #include "CLog.h"
-#include "DirPath.h"
+#include "utils/DirPath.h"
 #include <SDL_video.h>
 
 //these static vars defined in the header file need to be specified here

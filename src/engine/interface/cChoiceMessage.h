@@ -18,9 +18,9 @@
 */
 #pragma once
 
-#include "cSurface.h"
-#include "cFont.h"
-#include "cInterfaceObject.h"
+#include "interface/cSurface.h"
+#include "interface/cFont.h"
+#include "interface/cInterfaceObject.h"
 
 #include <string>
 #include <memory>

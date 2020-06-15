@@ -16,13 +16,13 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "cSurface.h"
+#include "interface/cSurface.h"
 #include "CLog.h"
-#include "CGraphics.h"
-#include "cColor.h"
+#include "interface/CGraphics.h"
+#include "interface/cColor.h"
 #include <SDL_image.h>
 #include <algorithm>
-#include "DirPath.h"
+#include "utils/DirPath.h"
 
 
 cSurface::cSurface(std::shared_ptr<cCachedSurface> surface, CGraphics* gfx) :

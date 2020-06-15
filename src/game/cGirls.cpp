@@ -37,8 +37,8 @@
 #include "scripting/GameEvents.h"
 #include "interface/CGraphics.h"
 
-#include "DirPath.h"
-#include "FileList.h"
+#include "utils/DirPath.h"
+#include "utils/FileList.h"
 #include "sConfig.h"
 #include "character/traits/ITraitSpec.h"
 #include "Inventory.hpp"
@@ -1653,7 +1653,12 @@ void cGirls::LoadGirlsXML(string filename)
 {
     auto doc = LoadXMLDocument(filename);
     // loop over the elements attached to the root
-    for (auto& el : IterateChildElements(*doc->RootElement()))
+    auto root = doc->RootElement();
+    if(!root) {
+        g_LogFile.error("girls", "No XML root found in girl file ", filename);
+        return;
+    }
+    for (auto& el : IterateChildElements(*root))
     {
         auto girl = sGirl::LoadFromTemplate(el);
         if (girl->age() < 18) girl->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live

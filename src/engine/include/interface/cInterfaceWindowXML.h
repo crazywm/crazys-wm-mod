@@ -19,7 +19,7 @@
 #ifndef __CINTERFACEWINDOWXML_H
 #define __CINTERFACEWINDOWXML_H
 
-#include "cInterfaceWindow.h"
+#include "interface/cInterfaceWindow.h"
 
 struct sXmlWidgetBase {
     std::string name;

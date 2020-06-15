@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cScreenSettings.h"
-#include "FileList.h"
+#include "utils/FileList.h"
 #include "sConfig.h"
 #include "CLog.h"
 

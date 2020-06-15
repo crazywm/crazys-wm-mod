@@ -17,13 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <iostream>
-#include "cFont.h"
+#include "interface/cFont.h"
 #include <SDL_ttf.h>
 #include "CLog.h"
 #include "interface/CGraphics.h"
 #include "sConfig.h"
 #include <vector>
-#include "cColor.h"
+#include "interface/cColor.h"
 
 float FontScale = 1.0f;
 

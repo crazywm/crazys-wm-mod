@@ -114,7 +114,23 @@ bool Combat::round(int num) {
     get_initiatives(m_Defenders);
 
     // sort combatants according to initiative
-    std::sort(begin(m_CombatOrder), end(m_CombatOrder));
+
+    // for some reason, std::sort occasionally caused crashes here,
+    // this manual bubble sort might be less efficient, but we do
+    // not expect many entries anyway, so it shouldn't matter too much
+    while(true) {
+        bool swapped = false;
+        for(int i = 0; i < m_CombatOrder.size() - 1; ++i)
+        {
+            if(m_CombatOrder[i].initiative > m_CombatOrder[i+1].initiative) {
+                std::swap(m_CombatOrder[i], m_CombatOrder[i+1]);
+                swapped = true;
+            }
+        }
+        if(!swapped)
+            break;
+    }
+    //std::sort(begin(m_CombatOrder), end(m_CombatOrder));
 
     for(auto& cb : m_CombatOrder) {
         cb.actor->begin_round();

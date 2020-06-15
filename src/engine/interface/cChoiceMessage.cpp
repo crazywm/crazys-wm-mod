@@ -19,11 +19,10 @@
 #include "cChoiceMessage.h"
 
 #include <memory>
-#include "cFont.h"
-#include "CGraphics.h"
+#include "interface/CGraphics.h"
 #include "sConfig.h"
-#include "DirPath.h"
-#include "cColor.h"
+#include "utils/DirPath.h"
+#include "interface/cColor.h"
 
 extern cConfig cfg;
 extern sColor g_ChoiceMessageTextColor;

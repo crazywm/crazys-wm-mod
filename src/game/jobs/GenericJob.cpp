@@ -62,9 +62,8 @@ private:
 double JP_##Fn(const sGirl& girl, bool estimate)
 
 // - General
-double JP_Cleaning(const sGirl& girl, bool estimate);
-
 DECL_JOB(Freetime);
+DECL_JOB(Cleaning);
 DECL_JOB(Training);
 DECL_JOB(Security);
 DECL_JOB(Advertising);
@@ -170,7 +169,7 @@ DECL_JOB(FakeOrgasm);
 
 void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_RESTING, Freetime);
-    // JOB_CLEANING
+    REGISTER_JOB(JOB_CLEANING, Cleaning);
     REGISTER_JOB(JOB_TRAINING, Training);
     REGISTER_JOB(JOB_SECURITY, Security);
     REGISTER_JOB(JOB_ADVERTISING, Advertising);

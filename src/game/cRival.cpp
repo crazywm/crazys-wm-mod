@@ -23,7 +23,7 @@
 #include "utils/algorithms.hpp"
 #include "buildings/cBrothel.h"
 #include "cGold.h"
-#include "DirPath.h"
+#include "utils/DirPath.h"
 #include "cGangs.h"
 #include "cInventory.h"
 #include "CLog.h"

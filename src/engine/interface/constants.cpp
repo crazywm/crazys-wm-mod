@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cColor.h"
+#include "interface/cColor.h"
 
 // interface colors
 sColor g_ChoiceMessageTextColor{0, 0, 0};

@@ -18,8 +18,8 @@
 */
 #include "cScreenPreparingGame.h"
 #include "buildings/cHouse.h"
-#include "FileList.h"
-#include "DirPath.h"
+#include "utils/FileList.h"
+#include "utils/DirPath.h"
 #include "InterfaceProcesses.h"
 #include "MasterFile.h"
 #include "cGangs.h"
@@ -62,16 +62,16 @@ stringstream ss4;
 stringstream ss5;
 
 enum Load_Step {
-l_freecache = 1,
-l_traits,
-l_items,
-l_names,
-l_gamexml,
-l_girlfiles,
-l_girls,
-l_gangs,
-l_finalstuff,
-l_finished
+    l_freecache = 1,
+    l_traits,
+    l_items,
+    l_names,
+    l_gamexml,
+    l_girlfiles,
+    l_girls,
+    l_gangs,
+    l_finalstuff,
+    l_finished
 };
 
 enum New_Step {
@@ -205,7 +205,7 @@ void cScreenPreparingGame::process()
             // load the version
             int minorA = -1;
             pRoot->QueryIntAttribute("MinorVersionA", &minorA);
-            if (minorA != 6) { push_message("You must start a new game with this version", 2); loading = false; return; }
+            if (minorA != 7) { push_message("You must start a new game with this version", 2); loading = false; return; }
             string version("<blank>");
             if (pRoot->Attribute("ExeVersion")) { version = pRoot->Attribute("ExeVersion"); }
             if (version != "official") { push_message("Warning, the exe was not detected as official, it was detected as " + version + ".  Attempting to load anyways.", 1); }
@@ -257,50 +257,73 @@ void cScreenPreparingGame::process()
             loading = true;
             switch (prep_step)
             {
-            case (n_freecache * 4) - 2:      { ss1 << "Starting New Game:   " << g_ReturnText; ss2 << "Freeing Cache.\n"; break; }
-            case (n_LoadGameInfoFiles * 4) - 2:        { ss2 << "Loading Game Info Files.\n"; break; }
+            case (n_freecache * 4) - 2:      {
+                ss1 << "Starting New Game:   " << g_ReturnText;
+                ss2 << "Freeing Cache.\n"; break;
+            }
+            case (n_LoadGameInfoFiles * 4) - 2:        {
+                ss2 << "Loading Game Info Files.\n";
+                break;
+            }
             case (n_LoadGameInfoFiles * 4):            {
+                g_LogFile.info("prepare", "Loading Game Data");
                 g_Game->LoadData();
                 g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
                 g_TalkCount = 10;
                 g_Game->gold().reset();
+                g_LogFile.info("prepare", "Loading Game Info Files");
                 LoadGameInfoFiles();
                 break;
             }
-            case (n_Girls * 4) - 2:        { ss2 << "Loading Girl Files.\n"; break; }
+            case (n_Girls * 4) - 2:        {
+                ss2 << "Loading Girl Files.\n"; break;
+            }
             case (n_Girls * 4) : {
+                g_LogFile.info("prepare", "Loading Girl Files");
                 loadedGirlsFiles.LoadXML(nullptr);
                 LoadGirlsFiles(loadedGirlsFiles);
                 break;
             }
-            case (n_Player * 4) - 2:        { ss2 << "Loading Buildings and Player.\n"; break; }
+            case (n_Player * 4) - 2:        {
+                ss2 << "Loading Buildings and Player.\n"; break;
+            }
             case (n_Player * 4) : {
+                g_LogFile.info("prepare", "Adding Brothel");
                 auto& new_brot = g_Game->buildings().AddBuilding(std::unique_ptr<IBuilding>(new sBrothel()));
                 new_brot.m_NumRooms = 20;
                 new_brot.m_MaxNumRooms = 250;
                 new_brot.set_name(g_ReturnText);
                 new_brot.set_background_image("Brothel0.jpg");
                 set_active_building(&new_brot);
+                g_LogFile.info("prepare", "Adding House");
                 auto& new_house = g_Game->buildings().AddBuilding(std::unique_ptr<IBuilding>(new sHouse()));
                 new_house.m_NumRooms = 20;
                 new_house.m_MaxNumRooms = 200;
                 new_house.set_background_image("House.jpg");
+
+                g_LogFile.info("prepare", "Resetting Player");
                 for(int i = 0; i < NUM_STATS; ++i) g_Game->player().set_stat(i, 60);
                 for(int i = 0; i < NUM_SKILLS; ++i) g_Game->player().set_skill(i, 10);
                 g_Game->player().SetToZero();
                 break;
             }
-            case (n_Markets * 4) - 2:        { ss2 << "Preparing Slave Market and Shop.\n"; break; }
+            case (n_Markets * 4) - 2:        {
+                ss2 << "Preparing Slave Market and Shop.\n"; break;
+            }
             case (n_Markets * 4) : {
+                g_LogFile.info("prepare", "Update Slave Market");
                 g_Game->UpdateMarketSlaves();
                 break;
             }
             case (n_GangsRivals * 4) - 2:        { ss2 << "Generating Gangs and Rivals.\n"; break; }
             case (n_GangsRivals * 4) : {
+                g_LogFile.info("prepare", "Setting Up Gangs");
                 int start_random_gangs = g_Game->settings().get_integer(settings::INITIAL_RANDOM_GANGS);
                 int start_boosted_gangs = g_Game->settings().get_integer(settings::INITIAL_BOOSTED_GANGS);
                 for (int i = 0; i < start_random_gangs; i++)    g_Game->gang_manager().AddNewGang(false);
                 for (int i = 0; i < start_boosted_gangs; i++)    g_Game->gang_manager().AddNewGang(true);
+
+                g_LogFile.info("prepare", "Setting Up Rivals");
                 // Add the begining rivals
                 for (int i = 0; i < 5; i++)
                 {
@@ -321,6 +344,7 @@ void cScreenPreparingGame::process()
             }
             case (n_Saving * 4) - 2:        { ss2 << "Saving Game.\n"; break; }
             case (n_Saving * 4) : {
+                g_LogFile.info("prepare", "Saving");
                 if(g_ReturnText == "Cheat") {
                     g_Game->enable_cheating();
                 }
@@ -329,6 +353,7 @@ void cScreenPreparingGame::process()
             }
             case (n_finished * 4) - 2:        { ss2 << "Finished.\n"; break; }
             case (n_finished * 4) : {
+                g_LogFile.info("prepare", "New Game Finished");
                 push_window("Building Management");
                 g_Game->RunEvent("intro");
                 break;

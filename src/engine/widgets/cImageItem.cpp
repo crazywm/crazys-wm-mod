@@ -17,9 +17,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <vector>
-#include "cImageItem.h"
+#include "widgets/cImageItem.h"
 #include "interface/CGraphics.h"
-#include "FileList.h"
+#include "utils/FileList.h"
 #include "interface/cInterfaceWindow.h"
 #include "interface/cAnimatedSurface.h"
 #include "interface/cSurface.h"

@@ -23,7 +23,7 @@
 #include "GameEvents.h"
 #include "cScriptManager.h"
 #include <tinyxml2.h>
-#include <include/CLog.h>
+#include "CLog.h"
 #include "sLuaParameter.hpp"
 #include "utils/string.hpp"
 

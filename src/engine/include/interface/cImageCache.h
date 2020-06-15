@@ -17,16 +17,16 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef CRAZYS_WM_MOD_CIMAGECACHE_HPP
-#define CRAZYS_WM_MOD_CIMAGECACHE_HPP
+#ifndef CRAZYS_WM_MOD_CIMAGECACHE_H
+#define CRAZYS_WM_MOD_CIMAGECACHE_H
 
 #include <string>
 #include <unordered_map>
 #include <vector>
-#include "cSurface.h"
-#include "cAnimatedSurface.h"
+#include "interface/cSurface.h"
+#include "interface/cAnimatedSurface.h"
 
-struct sColor;
+class sColor;
 
 struct sImageCacheKey {
     std::string file_name;
@@ -128,4 +128,4 @@ private:
 };
 
 
-#endif //CRAZYS_WM_MOD_CIMAGECACHE_HPP
+#endif //CRAZYS_WM_MOD_CIMAGECACHE_H

@@ -18,7 +18,7 @@
  */
 
 #include "fwd.hpp"
-#include <DirPath.h>
+#include "utils/DirPath.h"
 #include "cScriptManager.h"
 #include "cEventMapping.h"
 #include "cLuaScript.h"

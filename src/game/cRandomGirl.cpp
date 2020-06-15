@@ -323,7 +323,15 @@ void sRandomGirl::process_item_xml(tinyxml2::XMLElement *el)
 void sRandomGirl::process_stat_xml(tinyxml2::XMLElement *el)
 {
     int ival, index; const char *pt;
-    if ((pt = el->Attribute("Name"))) index = get_stat_id(pt);
+    if ((pt = el->Attribute("Name")))
+    {
+        try {
+            index = get_stat_id(pt);
+        } catch (const std::out_of_range& e) {
+            g_LogFile.error("girls", "Invalid stat name '", pt, "' encountered");
+            return;        // do as much as we can without crashing
+        }
+    }
     else
     {
         g_LogFile.log(ELogLevel::ERROR, "can't find 'Name' attribute - can't process stat");

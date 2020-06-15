@@ -40,6 +40,8 @@ protected:
 };
 
 class BrothelMatronJob : public MatronJob {
+public:
+    using MatronJob::MatronJob;
     bool DoWork(sGirl& girl, bool is_night) override;
 };
 
@@ -337,13 +339,13 @@ bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
         imagetype = IMGTYPE_ECCHI;
     }
 
-    if (girl.has_active_trait("Optimistic") && roll_b < girl.happiness() / 2) // 50% chance at best
+    if (girl.has_active_trait("Optimist") && roll_b < girl.happiness() / 2) // 50% chance at best
     {
         ss << "\n \nWorking with someone as cheerful as ${name} makes everybody a bit happier.";
         brothel->update_all_girls_stat(STAT_HAPPINESS, 1);
     }
 
-    if (girl.has_active_trait("Pessimistic") && roll_b > 50 + girl.happiness() / 2) // 50% chance at worst
+    if (girl.has_active_trait("Pessimist") && roll_b > 50 + girl.happiness() / 2) // 50% chance at worst
     {
         ss << "\n \nWorking with someone as pessimistic as ${name} makes everybody a little bit sadder.";
         brothel->update_all_girls_stat(STAT_HAPPINESS, -1);
@@ -358,6 +360,7 @@ bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
 }
 
 void RegisterManagerJobs(cJobManager& mgr) {
+    mgr.register_job(std::make_unique<BrothelMatronJob>(JOB_MATRON, "Matron"));
     mgr.register_job(std::make_unique<MatronJob>(JOB_CHAIRMAN, "Clinic Chairman"));
     mgr.register_job(std::make_unique<MatronJob>(JOB_CENTREMANAGER, "Centre Manager"));
     mgr.register_job(std::make_unique<MatronJob>(JOB_DOCTORE, "Doctore"));

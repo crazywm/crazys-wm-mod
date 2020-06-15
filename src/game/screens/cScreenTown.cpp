@@ -22,7 +22,7 @@
 #include "scripting/cScriptManager.h"
 #include <iostream>
 #include "cGangs.h"
-#include "FileList.h"
+#include "utils/FileList.h"
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
 #include <sstream>

@@ -23,7 +23,7 @@
 #include <memory>
 #include <vector>
 #include <map>
-#include "cImageCache.hpp"
+#include "interface/cImageCache.h"
 
 class SDL_Surface;
 class SDL_Texture;

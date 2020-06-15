@@ -109,6 +109,13 @@ void cScreenNewGame::start_game()
     }
 }
 
+// for some reason, when mingw compiles the following
+// function with optimization it causes segfaults.
+// therefore we tune down the optimization in that case
+#ifdef __MINGW32__
+#pragma GCC push_options
+#pragma GCC optimize("Og")
+#endif
 void cScreenNewGame::OnKeyPress(SDL_Keysym keysym)
 {
     if (keysym.sym == SDLK_TAB)
@@ -120,7 +127,7 @@ void cScreenNewGame::OnKeyPress(SDL_Keysym keysym)
 
     if(HasFocus(pbd_id)) {
         SDL_Keycode numbers[] = {SDLK_0, SDLK_1, SDLK_2, SDLK_3, SDLK_4, SDLK_5, SDLK_6, SDLK_7, SDLK_8, SDLK_9};
-        for (int num       = 0; num <= 9; ++num) {
+        for (int num = 0; num <= 9; ++num) {
             if (keysym.sym == numbers[num]) {
                 int cur = g_Game->player().BirthDay();
                 int fin = 0;
@@ -147,6 +154,9 @@ void cScreenNewGame::OnKeyPress(SDL_Keysym keysym)
 
     cInterfaceWindow::OnKeyPress(keysym);
 }
+#ifdef __MINGW32__
+#pragma GCC pop_options
+#endif
 
 void cScreenNewGame::update_ui()
 {

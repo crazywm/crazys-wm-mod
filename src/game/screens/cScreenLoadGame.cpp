@@ -18,7 +18,7 @@
 */
 #include "cScreenLoadGame.hpp"
 #include "CLog.h"
-#include "FileList.h"
+#include "utils/FileList.h"
 #include "sConfig.h"
 #include <tinyxml2.h>
 #include "widgets/cListBox.h"

@@ -26,7 +26,7 @@
 #include "widgets/cListBox.h"
 
 #include "interface/cWindowManager.h"
-#include "FileList.h"
+#include "utils/FileList.h"
 
 #include "Game.hpp"
 

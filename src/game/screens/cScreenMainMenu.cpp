@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cScreenMainMenu.h"
-#include "FileList.h"
+#include "utils/FileList.h"
 #include "Revision.h"
 #include "sConfig.h"
 #include <SDL.h>

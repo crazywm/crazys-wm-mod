@@ -22,7 +22,7 @@
 #include "CLog.h"
 #include "interface/cFont.h"
 #include <tinyxml2.h>
-#include "DirPath.h"
+#include "utils/DirPath.h"
 #include "interface/cColor.h"
 #include "xml/util.h"
 #include "xml/getattr.h"

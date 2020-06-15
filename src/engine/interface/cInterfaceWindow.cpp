@@ -17,9 +17,9 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "cInterfaceWindow.h"
-#include "cWindowManager.h"
-#include "DirPath.h"
+#include "interface/cInterfaceWindow.h"
+#include "interface/cWindowManager.h"
+#include "utils/DirPath.h"
 #include "CLog.h"
 #include <tinyxml2.h>
 #include "xml/util.h"
@@ -33,7 +33,7 @@
 #include "widgets/cImageItem.h"
 #include "widgets/cScrollBar.h"
 #include "interface/CGraphics.h"
-#include "cColor.h"
+#include "interface/cColor.h"
 #include "sConfig.h"
 #include <cassert>
 
@@ -68,6 +68,8 @@ void cInterfaceWindow::MouseClick(int x, int y, bool down)
         // nobody wanted to handle this click -> remove focus
         SetFocusTo(nullptr);
     } catch (std::exception& exception) {
+        g_LogFile.error("interface", "Error when handling MouseClick event at (", x, ", ", y,
+                "): ", exception.what());
         push_message(exception.what(), 1);
     }
 }
@@ -82,6 +84,8 @@ void cInterfaceWindow::MouseWheel(int x, int y, bool down)
         if(m_KeyboardFocusWidget && m_KeyboardFocusWidget->OnMouseWheel(down, x, y, true)) return;
 
     } catch (std::exception& exception) {
+        g_LogFile.error("interface", "Error when handling MouseWheel event at (", x, ", ", y,
+                "): ", exception.what());
         push_message(exception.what(), 1);
     }
 }
@@ -577,11 +581,19 @@ cWindowManager& cInterfaceWindow::window_manager() const
 }
 
 void cInterfaceWindow::push_window(const std::string& name) const {
+    g_LogFile.info("screens", "Push Window '", name, '\'');
     window_manager().push(name);
 }
 
 void cInterfaceWindow::replace_window(const std::string& name) const {
+    g_LogFile.info("screens", "Replace Window '", name, '\'');
     window_manager().replace(name);
+}
+
+void cInterfaceWindow::pop_window() const
+{
+    g_LogFile.info("screens", "Pop Window");
+    window_manager().Pop();
 }
 
 void cInterfaceWindow::update()
@@ -604,6 +616,8 @@ void cInterfaceWindow::OnKeyPress(SDL_Keysym keysym)
             if(wdg->OnKeyPress(keysym)) return;
         }
     } catch (std::exception& exception) {
+        g_LogFile.error("interface", "Error when handling KeyPress event of key ", keysym.sym,
+                ": ", exception.what());
         push_message(exception.what(), 1);
     }
 }
@@ -614,13 +628,9 @@ void cInterfaceWindow::TextInput(const char* ip) {
     }
 }
 
-void cInterfaceWindow::pop_window() const
-{
-    window_manager().Pop();
-}
-
 void cInterfaceWindow::pop_to_window(const std::string& target) const
 {
+    g_LogFile.info("screens", "Pop to window: ", target);
     window_manager().PopToWindow(target);
 }
 

@@ -24,11 +24,11 @@
 #include <memory>
 #include <functional>
 #include <map>
-#include "fwd.hpp"
+#include "interface/fwd.hpp"
 
 class cModalWindow;
 class IBuilding;
-class SDL_Keysym;
+struct SDL_Keysym;
 class sGirl;
 class CGraphics;
 
@@ -60,6 +60,10 @@ public:
     void OnMouseClick(int x, int y, bool down);
     void OnMouseWheel(int x, int y, bool mouseWheelDown = false);
     void OnTextInput(const char* text);
+    // Enable and/or disable text input. Internally, this counts the number of enables, and only
+    // disables text input if there is no UI element left that requests it.
+    void EnableTextInput();
+    void DisableTextInput();
 
     cInterfaceWindow* GetWindow(bool allow_model=true);
     void Draw();
@@ -102,6 +106,9 @@ private:
 
     // pointer to the graphics engine
     CGraphics* m_GFX;
+
+    // counter to allow recursive enabling/disabling of text input
+    int m_TextInputEnabled = 0;
 };
 
 
