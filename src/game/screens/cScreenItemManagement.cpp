@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 #include "widgets/cTextItem.h"
 #include "cTariff.h"
 #include "interface/cWindowManager.h"
+#include "interface/CGraphics.h"
 #include "InterfaceProcesses.h"
 #include "sConfig.h"
 #include "cGirls.h"
@@ -39,7 +40,7 @@ namespace settings {
 static bool AutoUseItems = false;
 
 
-struct cInventoryProviderPlayer : public IInventoryProvider {
+struct cInventoryProviderPlayer: public IInventoryProvider {
     std::vector<std::string> get_data(int filter) const override {
         stringstream ss, ss2;
         int num_items = g_Game->player().inventory().get_num_items();
@@ -127,9 +128,9 @@ struct cInventoryProviderGirl : public IInventoryProvider {
         return data;
     }
 
-    std::string get_details(CGraphics& gfx, int font_size) const override
+    std::string get_details() const override
     {
-        return cGirls::GetSimpleDetails(gfx, m_Girl, font_size);
+        return cGirls::GetSimpleDetails(*m_Girl);
     }
 
     void enumerate_items(const function<void(const sInventoryItem *, int)> &callback) const override
@@ -292,8 +293,7 @@ void cScreenItemManagement::update_details(const sItemTransferSide& target)
     {
         int index = GetSelectedItemFromList(target.owners_id);
         if(index >= 0) {
-            EditTextItem(m_OwnerList.at(index)->get_details(GetGraphics(), GetTextItem(target.detail_id)->m_FontHeight),
-                         target.detail_id);
+            EditTextItem(m_OwnerList.at(index)->get_details(), target.detail_id, true);
         } else {
             EditTextItem("", target.detail_id);
         }

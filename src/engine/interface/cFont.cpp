@@ -23,6 +23,7 @@
 #include "interface/CGraphics.h"
 #include "sConfig.h"
 #include <vector>
+#include <numeric>
 #include "interface/cColor.h"
 
 cFont::cFont(CGraphics* gfx) : m_GFX(gfx)
@@ -175,6 +176,125 @@ cSurface cFont::RenderMultilineText(std::string text, int width) const
         }
     }
     return std::move(message);
+}
+
+cSurface cFont::RenderTable(const std::string& text, int max_width) const {
+    // split into cells
+    struct sCellData {
+        int tabs;
+        std::string content;
+        cSurface render;
+        bool is_last;
+    };
+
+    int tab = 0;
+    int num_tabs = 0;
+    std::vector<sCellData> cells;
+    std::string next_cell;
+    cConfig cfg;
+
+    auto add_cell = [&, this](std::string text, bool last) {
+        num_tabs = std::max(tab+1, num_tabs);
+        if(text.empty()) {
+            cells.push_back(sCellData{tab, std::move(text), cSurface(), last});
+            return;
+        }
+
+        auto render = m_GFX->GetImageCache().CreateTextSurface(
+                m_Font.get(), text, sColor(m_TextColor.r, m_TextColor.g, m_TextColor.b),
+                cfg.fonts.antialias());
+        SDL_SetSurfaceBlendMode(render.RawSurface()->surface(), SDL_BLENDMODE_NONE);
+
+        cells.push_back(sCellData{tab, std::move(text), std::move(render), last});
+    };
+
+    // split text into cells
+    for(auto& c : text) {
+        if(c == '\t') {
+            add_cell(std::move(next_cell), false);
+            next_cell = "";
+            ++tab;
+        } else if(c == '\n') {
+            add_cell(std::move(next_cell), true);
+            next_cell = "";
+            tab = 0;
+        } else {
+            next_cell.push_back(c);
+        }
+    }
+    if(!next_cell.empty())
+        add_cell(std::move(next_cell), true);
+
+    // now determine tab positions
+    std::vector<int> tab_widths(num_tabs, 0);
+    for(auto& cell : cells) {
+        if(!cell.render || cell.is_last)
+            continue;
+        tab_widths[cell.tabs] = std::max(tab_widths[cell.tabs], cell.render.GetWidth());
+    }
+
+    // determine the offsets
+    std::vector<int> tab_start(num_tabs, 0);
+    for(auto i = 0; i < num_tabs - 1; ++i) {
+        tab_start[i+1] = tab_start[i] + tab_widths[i];
+    }
+
+    // at this point, we have the chance to split overlong lines
+    int num_lines = 0;
+    for(int i = 0; i < cells.size(); ++i) {
+        if(!cells[i].render) continue;
+        int x_pos = tab_start[cells[i].tabs] + cells[i].render.GetWidth();
+        if(x_pos > max_width && cells[i].content.size() > 1) {
+            // split
+            int split_point = cells[i].content.size() / 2;
+            while(split_point > 0 && cells[i].content[split_point] != ' ')
+                --split_point;
+            std::string first = cells[i].content.substr(0, split_point);
+            std::string last = cells[i].content.substr(split_point);
+
+            auto render = m_GFX->GetImageCache().CreateTextSurface(
+                    m_Font.get(), first, sColor(m_TextColor.r, m_TextColor.g, m_TextColor.b),
+                    cfg.fonts.antialias());
+            SDL_SetSurfaceBlendMode(render.RawSurface()->surface(), SDL_BLENDMODE_NONE);
+
+            cells[i] = sCellData{tab, std::move(first), std::move(render), true};
+
+            render = m_GFX->GetImageCache().CreateTextSurface(
+                    m_Font.get(), last, sColor(m_TextColor.r, m_TextColor.g, m_TextColor.b),
+                    cfg.fonts.antialias());
+            SDL_SetSurfaceBlendMode(render.RawSurface()->surface(), SDL_BLENDMODE_NONE);
+            cells.insert(cells.begin() + i + 1, sCellData{0, std::move(last), std::move(render), true} );
+        }
+
+        if(cells[i].is_last) ++num_lines;
+    }
+
+    int lineskip = GetFontLineSkip();
+    int height = (num_lines+1)*lineskip;
+
+    // create a surface to render all the text too
+    auto message = m_GFX->CreateSurface(max_width, height, sColor(0xff, 0, 0), true);
+
+    int line = 0;
+    for(int i = 0; i < cells.size(); ++i) {
+        const auto& cell = cells[i];
+        if(!cell.render) {
+            if(cell.is_last)
+                line += 1;
+            continue;
+        }
+
+        int x = tab_start.at(cells[i].tabs);
+        SDL_Rect dst = {static_cast<Sint16>(x),
+                        static_cast<Sint16>(line * lineskip),
+                        static_cast<Uint16>(cell.render.GetWidth()),
+                        static_cast<Uint16>(cell.render.GetHeight())};
+        message = message.BlitOther(cell.render, nullptr, &dst);
+
+        if(cell.is_last)
+            line += 1;
+    }
+    return message;
 }
 
 

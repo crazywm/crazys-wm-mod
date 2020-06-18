@@ -124,7 +124,7 @@ public:
     cEditBox* GetEditBox(int id);
 
     // Text Items
-    void EditTextItem(std::string text, int ID);
+    void EditTextItem(std::string text, int ID, bool as_table=false);
     void AddTextItem(int & ID, int x, int y, int width, int height, std::string text, int size = 16, bool force_scrollbar = false, int red = 0, int green = 0, int blue = 0);
 
     cTextItem* GetTextItem(int id);

@@ -382,12 +382,12 @@ void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height
     m_Widgets.push_back(std::move(newTextItem));
 }
 
-void cInterfaceWindow::EditTextItem(string text, int ID)
+void cInterfaceWindow::EditTextItem(string text, int ID, bool as_table)
 {
     if (ID == -1) return;
 
     cTextItem* item = GetTextItem(ID);
-    item->SetText(text);
+    item->SetText(std::move(text), as_table);
 }
 
 cTextItem* cInterfaceWindow::GetTextItem(int id)

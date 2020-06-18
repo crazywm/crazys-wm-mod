@@ -46,6 +46,7 @@ public:
 
     cSurface RenderText(std::string text) const;
     cSurface RenderMultilineText(std::string text, int width) const;
+    cSurface RenderTable(const std::string& text, int width) const;
 private:
     ttf_font_ptr m_Font    = nullptr;
     SDL_Color m_TextColor;

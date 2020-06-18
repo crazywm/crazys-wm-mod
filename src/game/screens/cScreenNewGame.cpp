@@ -17,7 +17,6 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cScreenNewGame.h"
-#include "widgets/cEditBox.h"
 #include "character/cPlayer.h"
 #include "Game.hpp"
 #include "cGirls.h"

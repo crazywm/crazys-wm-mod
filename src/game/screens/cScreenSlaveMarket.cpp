@@ -93,9 +93,9 @@ void cScreenSlaveMarket::set_ids()
 
     SetButtonCallback(more_id, [this]() {
         sGirl *girl = g_Game->GetMarketSlave(m_SelectedGirl);
-        if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(GetGraphics(), girl, true), details_id); }
-        else if (DetailLevel == 1)    { DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(girl), details_id); }
-        else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(GetGraphics(), girl, true), details_id); }
+        if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(girl, true), details_id, true); }
+        else if (DetailLevel == 1)    { DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(girl), details_id, true); }
+        else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(girl, true), details_id, true); }
     });
 
     SetListBoxSelectionCallback(slave_list_id, [this](int sel) { change_selected_girl(sel); });
@@ -111,8 +111,8 @@ void cScreenSlaveMarket::set_ids()
         }
         else
         {
-            if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(GetGraphics(), girl, true), details_id); }
-            else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(GetGraphics(), girl, true), details_id); }
+            if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(girl, true), details_id); }
+            else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(girl, true), details_id); }
         }
         return true;
     });
@@ -770,10 +770,10 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
     }
     string detail;
 
-    if (DetailLevel == 0)        detail = cGirls::GetDetailsString(GetGraphics(), girl, true);
-    else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(GetGraphics(), girl, true);
+    if (DetailLevel == 0)        detail = cGirls::GetDetailsString(girl, true);
+    else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(girl, true);
     else                        detail = cGirls::GetThirdDetailsString(girl);
-    EditTextItem(detail, details_id);
+    EditTextItem(detail, details_id, true);
     ImageNum = -1;                                        // I don't understand where this is used...
 
     preparescreenitems(girl);

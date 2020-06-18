@@ -95,9 +95,9 @@ void cScreenGirlDetails::set_ids()
     SetButtonCallback(accomup_id, [this]( ) { update_accomodation(1); });
     SetButtonCallback(accomdown_id, [this]( ) { update_accomodation(-1); });
     SetButtonCallback(more_id, [this]( ) {
-        if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(GetGraphics(), m_SelectedGirl), girldesc_id); }
-        else if (DetailLevel == 1)    { DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(m_SelectedGirl), girldesc_id); }
-        else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(GetGraphics(), m_SelectedGirl), girldesc_id); }
+        if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(m_SelectedGirl), girldesc_id, true); }
+        else if (DetailLevel == 1)    { DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(m_SelectedGirl), girldesc_id, true); }
+        else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(m_SelectedGirl), girldesc_id, true); }
     });
     SetButtonCallback(inventory_id, [this]( ) {
         if (m_SelectedGirl)
@@ -150,15 +150,15 @@ void cScreenGirlDetails::init(bool back)
         }
     }
 
-    int job = (Day0Night1 ? m_SelectedGirl->m_NightJob : m_SelectedGirl->m_DayJob);
+    int job = Day0Night1 ? m_SelectedGirl->m_NightJob : m_SelectedGirl->m_DayJob;
 
     EditTextItem(m_SelectedGirl->FullName(), girlname_id);
 
     string detail;
-    if (DetailLevel == 0)        detail = cGirls::GetDetailsString(GetGraphics(), m_SelectedGirl);
-    else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(GetGraphics(), m_SelectedGirl);
+    if (DetailLevel == 0)        detail = cGirls::GetDetailsString(m_SelectedGirl);
+    else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(m_SelectedGirl);
     else                        detail = cGirls::GetThirdDetailsString(m_SelectedGirl);
-    EditTextItem(detail, girldesc_id);
+    EditTextItem(detail, girldesc_id, true);
 
     /// TODO when do we reset the image?
     if(!back) {
@@ -313,8 +313,8 @@ void cScreenGirlDetails::set_house_percentage(int value)
     EditTextItem(ss.str(), housepercval_id);
     if (DetailLevel == 0)                                // Rebelliousness might have changed, so update details
     {
-        string detail = cGirls::GetDetailsString(GetGraphics(), m_SelectedGirl);
-        EditTextItem(detail, girldesc_id);
+        string detail = cGirls::GetDetailsString(m_SelectedGirl);
+        EditTextItem(detail, girldesc_id, true);
     }
 }
 
@@ -514,7 +514,7 @@ void cScreenGirlDetails::OnKeyPress(SDL_Keysym keysym)
         // Rebelliousness might have changed, so update details
         if (DetailLevel == 0)
         {
-            string detail = cGirls::GetDetailsString(GetGraphics(), m_SelectedGirl);
+            string detail = cGirls::GetDetailsString(m_SelectedGirl);
             EditTextItem(detail, girldesc_id);
         }
     }
@@ -523,12 +523,12 @@ void cScreenGirlDetails::OnKeyPress(SDL_Keysym keysym)
         if (keysym.mod & KMOD_SHIFT)
         {
             DetailLevel = 2;
-            EditTextItem(cGirls::GetThirdDetailsString(m_SelectedGirl), girldesc_id);
+            EditTextItem(cGirls::GetThirdDetailsString(m_SelectedGirl), girldesc_id, true);
         }
         else
         {
-            if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(GetGraphics(), m_SelectedGirl), girldesc_id); }
-            else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(GetGraphics(), m_SelectedGirl), girldesc_id); }
+            if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(m_SelectedGirl), girldesc_id, true); }
+            else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(m_SelectedGirl), girldesc_id, true); }
         }
     }
 

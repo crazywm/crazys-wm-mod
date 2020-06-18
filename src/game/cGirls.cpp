@@ -35,7 +35,6 @@
 #include "CLog.h"
 #include "xml/util.h"
 #include "scripting/GameEvents.h"
-#include "interface/CGraphics.h"
 
 #include "utils/DirPath.h"
 #include "utils/FileList.h"
@@ -718,80 +717,27 @@ string cGirls::GetGirlMood(const sGirl * girl)
     return ss.str();
 }
 
-string cGirls::GetDetailsString(CGraphics& gfx, sGirl* girl, bool purchase)
+string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 {
     if (girl == nullptr)    return string("");
-    int w, h, size = 0;
-    cFont check = gfx.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
     stringstream ss;
 
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
-    string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Worth : " };
+    string basestr[] = { "Age : \t", "Rebelliousness : \t", "Looks : \t", "Constitution : \t", "Health : \t", "Happiness : \t", "Tiredness : \t", "Worth : \t" };
 
-    int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
-    string skillstr[] = { "Magic Ability : ", "Combat Ability : ", "Service Skills : ", "Medicine Skill : ", "Performance Skill : ", "Crafting Skill : ", "Herbalism Skill : ", "Farming Skill : ", "Brewing Skill : ", "Animal Handling : ", "Cooking : ", "Anal Sex : ", "BDSM Sex : ", "Normal Sex : ", "Bestiality Sex : ", "Group Sex : ", "Lesbian Sex : ", "Oral Sex : ", "Titty Sex : ", "Hand Job : ", "Stripping : ", "Foot Job : " };
+    int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM,
+                       SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
+    string skillstr[] = { "Magic Ability : \t", "Combat Ability : \t", "Service Skills : \t", "Medicine Skill : \t", "Performance Skill : \t",
+                          "Crafting Skill : \t", "Herbalism Skill : \t", "Farming Skill : \t", "Brewing Skill : \t", "Animal Handling : \t", "Cooking : \t",
+                          "Anal Sex : \t", "BDSM Sex : \t", "Normal Sex : \t", "Bestiality Sex : \t", "Group Sex : \t", "Lesbian Sex : \t", "Oral Sex : \t",
+                          "Titty Sex : \t", "Hand Job : \t", "Stripping : \t", "Foot Job : \t" };
 
-    if (cfg.fonts.normal() == "segoeui.ttf" && cfg.fonts.detailfontsize() == 9) // `J` if already set to my default
-    {
-        string basesegoeuistr[] = { "Age :                                   ", "Rebelliousness :         ", "Looks :                              ", "Constitution :               ", "Health :                            ", "Happiness :                    ", "Tiredness :                     ", "Worth :                             " };
-        for (int i = 0; i < 8; i++) basestr[i] = basesegoeuistr[i];
-        string skillsegoeuistr[] = { "Magic Ability :              ", "Combat Ability :           ", "Service Skills :              ", "Medicine Skill :            ", "Performance Skill :    ", "Crafting Skill :              ", "Herbalism Skill :         ", "Farming Skill :             ", "Brewing Skill :               ", "Animal Handling :    ", "Cooking :                        ", "Anal Sex :                        ", "BDSM Sex :                      ", "Normal Sex :                 ", "Bestiality Sex :              ", "Group Sex :                     ", "Lesbian Sex :                 ", "Oral Sex :                         ", "Titty Sex :                         ", "Hand Job :                      ", "Stripping :                       ", "Foot Job :                         " };
-        for (int i = 0; i < 22; i++) skillstr[i] = skillsegoeuistr[i];
-        size = 90;
-    }
-    else        // `J` otherwise try to align the numbers
-    {
-        // get the widest
-        for (int i = 0; i < 8; i++) { check.GetSize(basestr[i], w, h); if (w > size) size = w; }
-        for (int i = 0; i < 22; i++) { check.GetSize(skillstr[i], w, h); if (w > size) size = w; }
-        size += 5; // add a little padding
-        // then add extra spaces until it is longer that the widest
-        for (int i = 0; i < 8; i++)
-        {
-            check.GetSize(basestr[i], w, h);
-            while (w < size)
-            {
-                basestr[i] += " ";
-                check.GetSize(basestr[i], w, h);
-            }
-        }
-        for (int i = 0; i < 22; i++)
-        {
-            check.GetSize(skillstr[i], w, h);
-            while (w < size)
-            {
-                skillstr[i] += " ";
-                check.GetSize(skillstr[i], w, h);
-            }
-        }
-    }
-
-    string levelstr[] = { "Level : ", "Exp : ", "Exp to level : ", "Needs : " };
+    string levelstr[] = { "Level : \t", "Exp : \t", "Exp to level : \t", "Needs : \t" };
 
     int level = girl->level();
     int exp = girl->exp();
     int exptolv = min(32000, (level + 1) * 125);
     int expneed = exptolv - exp;
-
-    check.GetSize(levelstr[0], w, h);
-    if (!purchase)
-    {
-        while (w < size - 5)
-        {
-            levelstr[0] += " ";
-            stringstream levelnumstr; levelnumstr << level;
-            check.GetSize(levelstr[0] + levelnumstr.str(), w, h);
-        }
-    }
-    else
-    {
-        while (w < size)
-        {
-            levelstr[0] += " ";
-            check.GetSize(levelstr[0], w, h);
-        }
-
-    }
 
     // display looks
     ss << basestr[2] << (girl->beauty() + girl->charisma()) / 2;
@@ -800,16 +746,9 @@ string cGirls::GetDetailsString(CGraphics& gfx, sGirl* girl, bool purchase)
     ss << "\n" << levelstr[0] << level;
     if (!purchase)
     {
-        check.GetSize(levelstr[2], w, h);
-        while (w < size - 5)
-        {
-            levelstr[2] += " ";
-            stringstream levelnumstr; levelnumstr << exptolv;
-            check.GetSize(levelstr[2] + levelnumstr.str(), w, h);
-        }
-        ss << "  |  " << levelstr[1] << exp;
+        ss << "\t | " << levelstr[1] << exp;
         ss << "\n" << levelstr[2] << exptolv;
-        ss << "  |  " << levelstr[3] << expneed;
+        ss << "\t | " << levelstr[3] << expneed;
     }
 
     // display Age
@@ -827,7 +766,7 @@ string cGirls::GetDetailsString(CGraphics& gfx, sGirl* girl, bool purchase)
         ss << "\n" << basestr[6] << girl->tiredness();
     }
     int cost = int(g_Game->tariff().slave_price(girl, purchase));
-    ss << "\n" << basestr[7] << cost << " Gold";
+    ss << "\n" << basestr[7] << cost << " Gold\t";
     CalculateAskPrice(girl, false);
     cost = girl->askprice();
     ss << "\nAvg Pay per Customer : " << cost << " gold\n";
@@ -892,44 +831,21 @@ string cGirls::GetDetailsString(CGraphics& gfx, sGirl* girl, bool purchase)
     return ss.str();
 }
 
-string cGirls::GetMoreDetailsString(CGraphics& gfx, sGirl* girl, bool purchase)
+string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 {
     if (girl == nullptr)    return "";
     stringstream ss;
-    cFont check = gfx.LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
-    int w, h, size = 0;
 
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetMoreDetailsString
     ss << "STATS";
     if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
     int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
     int statnumsize = 15;
-    string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Strength : ", "Fame : ", "Lactation : ", "PCFear : ", "PCLove : ", "PCHate : ", "Gold : " };
+    string statstr[] = { "Charisma : \t", "Beauty : \t", "Libido : \t", "Mana : \t", "Intelligence : \t", "Confidence : \t",
+                         "Obedience : \t", "Spirit : \t", "Agility : \t", "Strength : \t", "Fame : \t", "Lactation : \t",
+                         "PCFear : \t", "PCLove : \t", "PCHate : \t", "Gold : \t" };
 
     int show = (cfg.debug.log_extradetails() && !purchase) ? statnumsize : statnumsize - 3;
-
-    if (cfg.fonts.normal() == "segoeui.ttf" && cfg.fonts.detailfontsize() == 9) // `J` if already set to my default
-    {
-        string statsegoeuistr[] = { "Charisma :          ", "Beauty :                  ", "Libido :                   ", "Mana :                   ", "Intelligence :      ", "Confidence :       ", "Obedience :         ", "Spirit :                     ", "Agility :                  ", "Strength :             ", "Fame :                    ", "Lactation :           ", "PCFear :                 ", "PCLove :                 ", "PCHate :                 ", "Gold :                     " };
-        for (u_int i = 0; i < 16; i++) statstr[i] = statsegoeuistr[i];
-        size = 70;
-    }
-    else        // `J` otherwise try to align the numbers
-    {
-        // get the widest
-        for (u_int i = 0; i < 16; i++) { check.GetSize(statstr[i], w, h); if (w > size) size = w; }
-        size += 10; // add some padding
-        // then add extra spaces to the statstr until it is longer that the widest
-        for (int i = 0; i < show; i++)
-        {
-            check.GetSize(statstr[i], w, h);
-            while (w < size)
-            {
-                statstr[i] += " ";
-                check.GetSize(statstr[i], w, h);
-            }
-        }
-    }
 
     for (int i = 0; i < show; i++)
     {
@@ -952,7 +868,7 @@ string cGirls::GetMoreDetailsString(CGraphics& gfx, sGirl* girl, bool purchase)
 
     if (!purchase)
     {
-        ss << "\n \nAccommodation: ";
+        ss << "\n \nAccommodation: \t";
         if (cfg.debug.log_extradetails()) ss << "( " << girl->m_AccLevel << " ) ";
         ss << Accommodation(girl->m_AccLevel);
         if (cfg.debug.log_extradetails())
@@ -960,7 +876,7 @@ string cGirls::GetMoreDetailsString(CGraphics& gfx, sGirl* girl, bool purchase)
             ss << "\n" << (girl->is_free() ? "Preferred  Accom:" : "Expected Accom: ")
                 << " ( " << PreferredAccom(girl) << " ) " << Accommodation(PreferredAccom(girl));
         }
-        ss << "\nCost per turn: " << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold.\n";
+        ss << "\nCost per turn: \t" << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold.\n";
 
         //ss << "\nDetails:\n";
         //ss << AccommodationDetails(girl, girl->m_AccLevel);
@@ -1303,70 +1219,57 @@ string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratin
     data += div;
     data += "Job Ratings range from\n'I' The absolute best, 'S' Superior,\n";
     data += "Then 'A'-'E' with 'E' being the worst.\n'X' means they can not do the job.\n \n";
-    data += "Jobs marked with ? do not really use job performace directly and is an estimate.\n";
+    data += "Jobs marked with ? do not really use job performance directly and is an estimate.\n";
     data += "Jobs marked with ! are how much the girl is in need of the service of that job.\n";
     return data;
 
 }
 
-string cGirls::GetSimpleDetails(CGraphics& gfx, sGirl* girl, int fontsize)
+string cGirls::GetSimpleDetails(const sGirl& girl)
 {
-    if (girl == nullptr) return "";
-    if (fontsize < 8) fontsize = 8;
     stringstream ss;
-    cFont check = gfx.LoadFont(cfg.fonts.normal(), fontsize);
     int w, h, size = 0;
 
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
-    string basestr[] = { "Age : ", "Rebelliousness : ", "Looks : ", "Constitution : ", "Health : ", "Happiness : ", "Tiredness : ", "Level : ", "Exp : ", "Location : ", "Day Job : ", "Night Job : " };
+    string basestr[] = { "Age : \t", "Rebelliousness : \t", "Looks : \t", "Constitution : \t", "Health : \t", "Happiness : \t", "Tiredness : \t", "Level : \t", "Exp : \t", "Location : \t", "Day Job : \t", "Night Job : \t" };
     int basecount = 12;
     int skillnum[] = { SKILL_MAGIC, SKILL_COMBAT, SKILL_SERVICE, SKILL_MEDICINE, SKILL_PERFORMANCE, SKILL_CRAFTING, SKILL_HERBALISM, SKILL_FARMING, SKILL_BREWING, SKILL_ANIMALHANDLING, SKILL_COOKING, SKILL_ANAL, SKILL_BDSM, SKILL_NORMALSEX, SKILL_BEASTIALITY, SKILL_GROUP, SKILL_LESBIAN, SKILL_ORALSEX, SKILL_TITTYSEX, SKILL_HANDJOB, SKILL_STRIP, SKILL_FOOTJOB };
-    string skillstr[] = { "Magic : ", "Combat : ", "Service : ", "Medicine : ", "Performance : ", "Crafting : ", "Herbalism : ", "Farming : ", "Brewing : ", "Animal Handling : ", "Cooking : ", "Anal : ", "BDSM : ", "Normal : ", "Bestiality : ", "Group : ", "Lesbian : ", "Oral : ", "Titty : ", "Hand Job : ", "Stripping : ", "Foot Job : " };
+    string skillstr[] = { "Magic : \t", "Combat : \t", "Service : \t", "Medicine : \t", "Performance : \t", "Crafting : \t", "Herbalism : \t", "Farming : \t", "Brewing : \t", "Animal Handling : \t", "Cooking : \t", "Anal : \t", "BDSM : \t", "Normal : \t", "Bestiality : \t", "Group : \t", "Lesbian : \t", "Oral : \t", "Titty : \t", "Hand Job : \t", "Stripping : \t", "Foot Job : \t" };
     int skillcount = 22;
     int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION };
-    string statstr[] = { "Charisma : ", "Beauty : ", "Libido : ", "Mana : ", "Intelligence : ", "Confidence : ", "Obedience : ", "Spirit : ", "Agility : ", "Strength : ", "Fame : ", "Lactation : " };
+    string statstr[] = { "Charisma : \t", "Beauty : \t", "Libido : \t", "Mana : \t", "Intelligence : \t", "Confidence : \t", "Obedience : \t", "Spirit : \t", "Agility : \t", "Strength : \t", "Fame : \t", "Lactation : \t" };
     int statcount = 12;
 
-    // get the widest
-    for (int i = 0; i < basecount; i++)        { check.GetSize(basestr[i], w, h);    if (w > size) size = w; }
-    for (int i = 0; i < skillcount; i++)    { check.GetSize(skillstr[i], w, h);    if (w > size) size = w; }
-    for (int i = 0; i < statcount; i++)        { check.GetSize(statstr[i], w, h);    if (w > size) size = w; }
-    size += 5; // add a little padding
-    // then add extra spaces until it is longer than the widest
-    for (int i = 0; i < basecount; i++)        { check.GetSize(basestr[i], w, h);    while (w < size)    { basestr[i] += " "; check.GetSize(basestr[i], w, h); } }
-    for (int i = 0; i < skillcount; i++)    { check.GetSize(skillstr[i], w, h);    while (w < size)    { skillstr[i] += " "; check.GetSize(skillstr[i], w, h); } }
-    for (int i = 0; i < statcount; i++)        { check.GetSize(statstr[i], w, h);    while (w < size)    { statstr[i] += " "; check.GetSize(statstr[i], w, h); } }
-
     ss << basestr[9];
-    if(girl->m_Building)
-        ss << girl->m_Building->name();
+    if(girl.m_Building)
+        ss << girl.m_Building->name();
 
-    ss << "\n" << basestr[10] << g_Game->job_manager().JobData[girl->m_DayJob].name;
-    ss << "\n" << basestr[11] << g_Game->job_manager().JobData[girl->m_NightJob].name;
-    ss << "\n" << basestr[2] << (girl->beauty() + girl->charisma()) / 2;
-    ss << "\n" << statstr[0] << girl->charisma();
-    ss << "\n" << statstr[1] << girl->beauty();
-    ss << "\n" << basestr[7] << girl->level();
-    ss << "\n" << basestr[8] << girl->exp();
-    ss << "\n" << basestr[0]; if (girl->age() == 100) ss << "Unknown"; else ss << girl->age();
-    ss << "\n" << basestr[1] << girl->rebel();
-    ss << "\n" << basestr[3] << girl->constitution();
-    ss << "\n" << basestr[4] << girl->health();
-    ss << "\n" << basestr[5] << girl->happiness();
-    ss << "\n" << basestr[6] << girl->tiredness();
-    for (int i = 2; i < statcount; i++)    { ss << "\n" << statstr[i] << girl->get_stat(statnum[i]); }
-    ss << "\n";    if (girl->is_slave())                { ss << "Is Branded a Slave"; }
-    ss << "\n";    if (is_virgin(*girl))    { ss << "She is a Virgin"; }
-    int to_go = girl->get_preg_duration() - girl->m_WeeksPreg;
-    ss << "\n";    if (girl->has_status(STATUS_PREGNANT))        { ss << "Is pregnant " << "(" << to_go << ")"; }
-    else if (girl->has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child " << "(" << to_go << ")"; }
-    else if (girl->has_status(STATUS_INSEMINATED))            { ss << "Is inseminated " << "(" << to_go << ")"; }
-    ss << "\n";    if (is_addict(*girl) && !has_disease(*girl))    { ss << "Has an addiciton"; }
-    else if (!is_addict(*girl) && has_disease(*girl))            { ss << "Has a disease"; }
-    else if (is_addict(*girl) && has_disease(*girl))            { ss << "Has an addiciton and a disease"; }
-    for (int i = 0; i < skillcount; i++)    { ss << "\n" << skillstr[i] << girl->get_skill(skillnum[i]); }
+    ss << "\n" << basestr[10] << g_Game->job_manager().JobData[girl.m_DayJob].name;
+    ss << "\n" << basestr[11] << g_Game->job_manager().JobData[girl.m_NightJob].name;
+    ss << "\n" << basestr[2] << (girl.beauty() + girl.charisma()) / 2;
+    ss << "\n" << statstr[0] << girl.charisma();
+    ss << "\n" << statstr[1] << girl.beauty();
+    ss << "\n" << basestr[7] << girl.level();
+    ss << "\n" << basestr[8] << girl.exp();
+    ss << "\n" << basestr[0]; if (girl.age() == 100) ss << "Unknown"; else ss << girl.age();
+    ss << "\n" << basestr[1] << const_cast<sGirl&>(girl).rebel();
+    ss << "\n" << basestr[3] << girl.constitution();
+    ss << "\n" << basestr[4] << girl.health();
+    ss << "\n" << basestr[5] << girl.happiness();
+    ss << "\n" << basestr[6] << girl.tiredness();
+    for (int i = 2; i < statcount; i++)    { ss << "\n" << statstr[i] << girl.get_stat(statnum[i]); }
+    ss << "\n";    if (girl.is_slave())                { ss << "Is Branded a Slave"; }
+    ss << "\n";    if (is_virgin(girl))    { ss << "She is a Virgin"; }
+    int to_go = girl.get_preg_duration() - girl.m_WeeksPreg;
+    ss << "\n";    if (girl.has_status(STATUS_PREGNANT))        { ss << "Is pregnant " << "(" << to_go << ")"; }
+    else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child " << "(" << to_go << ")"; }
+    else if (girl.has_status(STATUS_INSEMINATED))            { ss << "Is inseminated " << "(" << to_go << ")"; }
+    ss << "\n";    if (is_addict(girl) && !has_disease(girl))    { ss << "Has an addiciton"; }
+    else if (!is_addict(girl) && has_disease(girl))            { ss << "Has a disease"; }
+    else if (is_addict(girl) && has_disease(girl))            { ss << "Has an addiciton and a disease"; }
+    for (int i = 0; i < skillcount; i++)    { ss << "\n" << skillstr[i] << girl.get_skill(skillnum[i]); }
     ss << "\n \n";    int trait_count = 0;
-    auto all_traits = girl->raw_traits().get_trait_info();
+    auto all_traits = const_cast<sGirl&>(girl).raw_traits().get_trait_info();
     for (auto& t : all_traits)
     {
         trait_count++;

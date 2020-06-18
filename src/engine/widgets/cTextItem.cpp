@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 extern cConfig cfg;
 
 cTextItem::cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, std::string text, int size,
-                     bool force_scrollbar, int red , int green , int blue):
+                     bool force_scrollbar, int red , int green , int blue, bool as_table):
     cUIWidget(ID, x, y, width, height, parent), m_Font(std::make_unique<cFont>(&GetGraphics()))
 {
     m_ScrollBar = nullptr;
@@ -36,16 +36,12 @@ cTextItem::cTextItem(cInterfaceWindow* parent, int ID, int x, int y, int width, 
     m_FontHeight = size;
 
     ChangeFontSize(size, red, green, blue);
-    SetText(std::move(text));
+    SetText(std::move(text), as_table);
 
     m_ForceScrollBar = force_scrollbar;
 }
 
-cTextItem::~cTextItem() {
-
-}
-
-int cTextItem::HeightTotal() { return m_PreRenderedText.GetHeight(); }
+int cTextItem::HeightTotal() const { return m_PreRenderedText.GetHeight(); }
 
 bool cTextItem::HandleMouseWheel(bool down)
 {
@@ -68,12 +64,13 @@ void cTextItem::ChangeFontSize(int FontSize, int red , int green , int blue )
 {
     m_Font->LoadFont(cfg.fonts.normal(), FontSize);
     m_Font->SetColor(red, green, blue);
-    SetText(std::move(m_Text));
+    SetText(std::move(m_Text), m_IsTable);
 }
 
-void cTextItem::SetText(std::string text)
+void cTextItem::SetText(std::string text, bool as_table)
 {
     m_Text = std::move(text);
+    m_IsTable = as_table;
 
     int effective_width = GetWidth();
 
@@ -82,8 +79,11 @@ void cTextItem::SetText(std::string text)
         m_ScrollBar->SetTopValue(0);
     }
 
-    m_PreRenderedText = m_Font->RenderMultilineText(m_Text, effective_width);
-
+    if(as_table) {
+        m_PreRenderedText = m_Font->RenderTable(m_Text, effective_width);
+    } else {
+        m_PreRenderedText = m_Font->RenderMultilineText(m_Text, effective_width);
+    }
 
     if (GetHeight() == 0 || m_Text.empty())
     {
@@ -130,7 +130,7 @@ void cTextItem::SetText(std::string text)
         m_ScrollBar->m_ItemsTotal = HeightTotal();
     }
 
-    if(updated_width != effective_width) {
+    if(updated_width != effective_width && !as_table) {
         m_PreRenderedText = m_Font->RenderMultilineText(m_Text, updated_width);
     }
 }

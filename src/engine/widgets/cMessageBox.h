@@ -65,7 +65,7 @@ private:
     std::string m_Text;    // contains the entire text string
     int m_Position;    // where we are up too
 
-    int m_Color;    // used to determine which color to use
+    int m_Color = 0;    // used to determine which color to use
 
     std::deque<sMessage> m_Messages;
     cSurface m_PreRendered;

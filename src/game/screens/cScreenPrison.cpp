@@ -89,9 +89,9 @@ void cScreenPrison::update_details()
     sGirl* pgirls = get_selected_girl();
     if (!pgirls) return;
 
-    if (DetailLevel == 1)        EditTextItem(cGirls::GetMoreDetailsString(GetGraphics(), pgirls, true), girl_desc_id);
-    else if (DetailLevel == 2)    EditTextItem(cGirls::GetThirdDetailsString(pgirls), girl_desc_id);
-    else                        EditTextItem(cGirls::GetDetailsString(GetGraphics(), pgirls, true), girl_desc_id);
+    if (DetailLevel == 1)        EditTextItem(cGirls::GetMoreDetailsString(pgirls, true), girl_desc_id, true);
+    else if (DetailLevel == 2)    EditTextItem(cGirls::GetThirdDetailsString(pgirls), girl_desc_id, true);
+    else                        EditTextItem(cGirls::GetDetailsString(pgirls, true), girl_desc_id, true);
 }
 
 sGirl* cScreenPrison::get_selected_girl()

@@ -135,11 +135,11 @@ public:
     static void UseItems(sGirl* girl);
 
     static int GetSkillWorth(sGirl* girl);
-    static string GetDetailsString(CGraphics& gfx, sGirl* girl, bool purchace = false);
-    static string GetMoreDetailsString(CGraphics& gfx, sGirl* girl, bool purchace = false);
+    static string GetDetailsString(sGirl* girl, bool purchace = false);
+    static string GetMoreDetailsString(sGirl* girl, bool purchace = false);
     static string GetThirdDetailsString(sGirl* girl);
     static string GetGirlMood(const sGirl * girl);
-    static string GetSimpleDetails(CGraphics& gfx, sGirl* girl, int fontsize = 8);
+    static string GetSimpleDetails(const sGirl& girl);
 
     static void CalculateAskPrice(sGirl* girl, bool vari);
 

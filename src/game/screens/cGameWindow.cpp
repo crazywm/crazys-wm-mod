@@ -1296,7 +1296,8 @@ void cGameWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, in
         }
 
         if (image->m_Message.empty()) {
-            image->m_Message = image->m_Image.GetFileName();
+            if(image->m_Image)
+                image->m_Message = image->m_Image.GetFileName();
         }
 
         g_LogFile.verbose("image", "Loading image: ", image->m_Message);
