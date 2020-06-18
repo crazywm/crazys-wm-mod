@@ -49,33 +49,17 @@ sConfigData::sConfigData(const char *a_filename)
     : fonts()
 {
 
-    DirPath dpnew = DirPath() << ".." << "config.xml";    // `J` Added to load user's config file first
     DirPath dpdef = DirPath() << a_filename;    // `J` moved to root directory
-    std::string filenamenew = dpnew.c_str();
     std::string filenamedef = dpdef.c_str();
-    g_LogFile.info("engine", "Attempting to load config.xml file.");
-    /*
-    *    make sure we have something playable,
-    *    even if the file doesn't load
-    */
-    set_defaults();
-    /*
-    *    open the file - moan most eloqently in its absence
-    */
     pXMLDocument doc;
+    g_LogFile.info( "engine", "Attempting to load config file: ",filenamedef );
     try {
-        g_LogFile.info("engine", "Try to load config file : ", filenamenew);
-        doc = LoadXMLDocument(filenamenew);
-    } catch(std::runtime_error& error) {
-        // Could not load new, try default
-        g_LogFile.info("engine", "Loading Config file :  ", filenamedef);
-        try {
-            doc = LoadXMLDocument(filenamedef);
-        } catch(std::runtime_error& error) {
-            g_LogFile.error("engine", "Could not load any config.xml files, using defaults.");
-            g_LogFile.warning("engine", "*** Game will run with default pricing factors.\n*** This may seem a little easy. To fix this\n*** get a config.xml file from pinkpetal.org\n*** or make one with Whore Master Editor");
-            return;
-        }
+        doc = LoadXMLDocument(filenamedef);
+    } catch( std::runtime_error& error ){
+        g_LogFile.error("engine", "Could not load any config.xml files, using defaults.");
+        g_LogFile.warning("engine", "*** Game will run with default pricing factors.\n*** This may seem a little easy. To fix this\n*** get a config.xml file from pinkpetal.org\n*** or make one with Whore Master Editor");
+        set_defaults();
+        return;
     }
 
     /*
@@ -90,43 +74,12 @@ sConfigData::sConfigData(const char *a_filename)
         if (tag == "Expenses")        { get_expense_factors(&el);    continue; }
         if (tag == "Prostitution")    { get_pros_factors(&el);    continue; }
         if (tag == "Catacombs")        { get_catacombs_data(&el);    continue; }
-        if (tag == "Items")            { get_item_data(&el);        continue; }
         if (tag == "Fonts")            { get_font_data(&el);        continue; }
         if (tag == "Debug")            { get_debug_flags(&el);        continue; }
 
         g_LogFile.warning("engine", "config.xml: tag: '", tag, "' unexpected");
     }
-    // check interface for colors
-    DirPath dpi = DirPath() << "Resources" << "Interface" << resolution.resolution << "InterfaceColors.xml";
-    tinyxml2::XMLDocument doci;
-    if (doci.LoadFile(dpi.c_str()) == tinyxml2::XML_SUCCESS)
-    {
-        for (auto& el : IterateChildElements(*doci.RootElement()))
-        {
-            std::string tag = el.Value();
-            /// TODO move this to all the other interface stuff
-            if (tag == "Color")
-            {
-                int r, g, b;
-                if(el.QueryAttribute("R", &r) == tinyxml2::XML_SUCCESS && el.QueryAttribute("G", &g) == tinyxml2::XML_SUCCESS &&
-                    el.QueryAttribute("B", &b) == tinyxml2::XML_SUCCESS) {
-                    std::string name = el.Attribute("Name");
-                    /* */if (name == "ItemRarity0") ColorConvert.RGBToSDLColor(items.rarity_color[0], r, g, b);
-                    else if (name == "ItemRarity1") ColorConvert.RGBToSDLColor(items.rarity_color[1], r, g, b);
-                    else if (name == "ItemRarity2") ColorConvert.RGBToSDLColor(items.rarity_color[2], r, g, b);
-                    else if (name == "ItemRarity3") ColorConvert.RGBToSDLColor(items.rarity_color[3], r, g, b);
-                    else if (name == "ItemRarity4") ColorConvert.RGBToSDLColor(items.rarity_color[4], r, g, b);
-                    else if (name == "ItemRarity5") ColorConvert.RGBToSDLColor(items.rarity_color[5], r, g, b);
-                    else if (name == "ItemRarity6") ColorConvert.RGBToSDLColor(items.rarity_color[6], r, g, b);
-                    else if (name == "ItemRarity7") ColorConvert.RGBToSDLColor(items.rarity_color[7], r, g, b);
-                    else if (name == "ItemRarity8") ColorConvert.RGBToSDLColor(items.rarity_color[8], r, g, b);
-                } else {
-                    g_LogFile.error("engine", "Error reading Color definition from '", dpi.c_str(), "': ",  el.GetLineNum());
-                }
-
-            }
-        }
-    }
+    ReadItemData();
     /// TODO add a way to specify this
     fonts.detailfontsize = 9;    // default to 9
 }
@@ -402,26 +355,6 @@ void sConfigData::get_catacombs_data(XMLElement *el)
         catacombs.gang_gets_girls = int((100.0 / checkggang) * (double)catacombs.gang_gets_girls);
         catacombs.gang_gets_items = int((100.0 / checkggang) * (double)catacombs.gang_gets_items);
         catacombs.gang_gets_beast = int(100.0 - (double)catacombs.gang_gets_girls - (double)catacombs.gang_gets_items);
-    }                                     
-}
-
-// `J` get_item_data will be obsolete for .06 after Rarity Colors are moved to interfaces.
-void sConfigData::get_item_data(XMLElement *el)
-{
-    const char *pt;
-
-    // `J` Rarity Colors will be moved to interfaces. Kept here for legacy.
-    for (int i = 0; i < NUM_ITEM_RARITY; i++)
-    {
-        std::string ColorIn;
-        std::stringstream ss;
-        ss.str("");
-        ss << "RarityColor" << i;
-        if (pt = el->Attribute(ss.str().c_str()))    get_att(el, ss.str().c_str(), ColorIn);
-        {
-            get_att(el, ss.str().c_str(), ColorIn);
-            ColorConvert.HexToSDLColor(ColorIn, items.rarity_color[i]);
-        }
     }
 }
 
@@ -432,6 +365,45 @@ void sConfigData::get_font_data(XMLElement *el)
     if (pt = el->Attribute("Fixed"))            get_att(el, "Fixed", fonts.fixed);
     if (pt = el->Attribute("Antialias"))        get_att(el, "Antialias", fonts.antialias);
     if (pt = el->Attribute("ShowPercent"))        get_att(el, "ShowPercent", fonts.showpercent);
+}
+
+void sConfigData::ReadItemData()
+{
+    // check interface for colors
+    DirPath dpi = DirPath() << "Resources" << "Interface" << resolution.resolution << "InterfaceColors.xml";
+    tinyxml2::XMLDocument doci;
+    for (int i = 0; i<NUM_ITEM_RARITY; i++)
+    {
+        items.rarity_color[i] = new SDL_Color();
+    }
+    if (doci.LoadFile(dpi.c_str()) == tinyxml2::XML_SUCCESS)
+    {
+        for (auto& el : IterateChildElements(*doci.RootElement()))
+        {
+            std::string tag = el.Value();
+            /// TODO move this to all the other interface stuff
+            if (tag == "Color")
+            {
+                int r, g, b;
+                if(el.QueryAttribute("R", &r) == tinyxml2::XML_SUCCESS && el.QueryAttribute("G", &g) == tinyxml2::XML_SUCCESS &&
+                    el.QueryAttribute("B", &b) == tinyxml2::XML_SUCCESS) {
+                    std::string name = el.Attribute("Name");
+                    /* */if (name == "ItemRarity0") ColorConvert.RGBToSDLColor(items.rarity_color[0], r, g, b);
+                    else if (name == "ItemRarity1") ColorConvert.RGBToSDLColor(items.rarity_color[1], r, g, b);
+                    else if (name == "ItemRarity2") ColorConvert.RGBToSDLColor(items.rarity_color[2], r, g, b);
+                    else if (name == "ItemRarity3") ColorConvert.RGBToSDLColor(items.rarity_color[3], r, g, b);
+                    else if (name == "ItemRarity4") ColorConvert.RGBToSDLColor(items.rarity_color[4], r, g, b);
+                    else if (name == "ItemRarity5") ColorConvert.RGBToSDLColor(items.rarity_color[5], r, g, b);
+                    else if (name == "ItemRarity6") ColorConvert.RGBToSDLColor(items.rarity_color[6], r, g, b);
+                    else if (name == "ItemRarity7") ColorConvert.RGBToSDLColor(items.rarity_color[7], r, g, b);
+                    else if (name == "ItemRarity8") ColorConvert.RGBToSDLColor(items.rarity_color[8], r, g, b);
+                } else {
+                    g_LogFile.error("engine", "Error reading Color definition from '", dpi.c_str(), "': ",  el.GetLineNum());
+                }
+
+            }
+        }
+    }
 }
 
 void sConfigData::get_debug_flags(XMLElement *el)
@@ -454,11 +426,11 @@ void sConfigData::get_debug_flags(XMLElement *el)
 */
 void sConfigData::set_defaults()
 {
-    folders.characters = "";                // `J` where the characters folder is located 
+    folders.characters = "";                // `J` where the characters folder is located
     folders.saves = "";                        // `J` where the saves folder is located
     folders.items = "";                        // `J` where the items folder is located
     folders.backupsaves = false;            // `J` backup saves in the version folder incase moving to the next version breaks the save
-    folders.defaultimageloc = "";            // `J` where the default images folder is located 
+    folders.defaultimageloc = "";            // `J` where the default images folder is located
     folders.preferdefault = false;            // `J` default images will be preferred over the alttype tree
 
     resolution.resolution = "J_1024x768";    // `J` I set this to my interface because that is the one I edit myself
@@ -498,19 +470,8 @@ void sConfigData::set_defaults()
     catacombs.gang_gets_items = 33;
     catacombs.gang_gets_beast = 33;
 
-    for (int i = 0; i<9; i++)
-    {
-        items.rarity_color[i] = new SDL_Color();
-    }
-    ColorConvert.HexToSDLColor("000000", items.rarity_color[0]);    //000000
-    ColorConvert.HexToSDLColor("000066", items.rarity_color[1]);    //000066
-    ColorConvert.HexToSDLColor("0000cc", items.rarity_color[2]);    //0000cc
-    ColorConvert.HexToSDLColor("0066ff", items.rarity_color[3]);    //0066ff
-    ColorConvert.HexToSDLColor("8f0000", items.rarity_color[4]);    //8f0000
-    ColorConvert.HexToSDLColor("00ff00", items.rarity_color[5]);    //00ff00
-    ColorConvert.HexToSDLColor("008f00", items.rarity_color[6]);    //008f00
-    ColorConvert.HexToSDLColor("a00000", items.rarity_color[7]);    //a00000
-    ColorConvert.HexToSDLColor("e00000", items.rarity_color[8]);    //e00000
+    ReadItemData();
+
     /*
     *    not hugely sensible values
     *    but I want something I'm not using so I can test this

@@ -138,6 +138,7 @@ struct sConfigData
     void    get_pros_factors(XMLElement *el);
     void    get_catacombs_data(XMLElement *el);
     void    get_item_data(XMLElement *el);
+    void    ReadItemData();
     void    get_font_data(XMLElement *el);
     void    get_initial_values(XMLElement *el);
     void    get_folders_data(XMLElement *el);
