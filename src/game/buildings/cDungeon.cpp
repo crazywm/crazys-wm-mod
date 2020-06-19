@@ -117,7 +117,7 @@ tinyxml2::XMLElement& cDungeon::SaveDungeonDataXML(tinyxml2::XMLElement * pRoot)
 }
 
 
-bool cDungeon::LoadDungeonDataXML(tinyxml2::XMLElement* pDungeon)    // loads all the people (they are stored with the dungeon)
+bool cDungeon::LoadDungeonDataXML(const tinyxml2::XMLElement* pDungeon)    // loads all the people (they are stored with the dungeon)
 {
     if (pDungeon == nullptr) { return false; }
 

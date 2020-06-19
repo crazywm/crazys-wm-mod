@@ -443,10 +443,10 @@ void IBuilding::save_girls_xml(tinyxml2::XMLElement& target) const
     }
 }
 
-void IBuilding::load_girls_xml(tinyxml2::XMLElement& root)
+void IBuilding::load_girls_xml(const tinyxml2::XMLElement& root)
 {
     auto pGirls = root.FirstChildElement("Girls");
-    for (tinyxml2::XMLElement* pGirl = pGirls->FirstChildElement("Girl");
+    for (auto pGirl = pGirls->FirstChildElement("Girl");
          pGirl;
          pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
     {
@@ -521,7 +521,7 @@ void IBuilding::save_settings_xml(tinyxml2::XMLElement& root) const
     }
 }
 
-void IBuilding::load_settings_xml(tinyxml2::XMLElement& root)
+void IBuilding::load_settings_xml(const tinyxml2::XMLElement& root)
 {
     const char* name_attribute = root.Attribute("Name");
     if (name_attribute)
@@ -569,7 +569,7 @@ int IBuilding::security() const
     return m_SecurityLevel;
 }
 
-void IBuilding::load_xml(tinyxml2::XMLElement& root)
+void IBuilding::load_xml(const tinyxml2::XMLElement& root)
 {
     load_settings_xml(root);
     load_girls_xml(root);

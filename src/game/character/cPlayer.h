@@ -78,7 +78,7 @@ public:
     void SetToZero();
 
     tinyxml2::XMLElement& SavePlayerXML(tinyxml2::XMLElement& elRoot);
-    bool LoadPlayerXML(tinyxml2::XMLElement* Player);
+    bool LoadPlayerXML(const tinyxml2::XMLElement* Player);
 
     int disposition()        { return m_Disposition; }
     int disposition(int n);

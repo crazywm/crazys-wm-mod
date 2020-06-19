@@ -265,7 +265,7 @@ const ITraitSpec *cTraitsCollection::id_to_spec(sTraitID id) const {
         return m_TraitsManager->lookup(id.name);
     } catch(std::out_of_range& error) {
         g_LogFile.error("traits", "Could not find trait: ", id.name);
-        throw ;
+        throw std::out_of_range(std::string("Could not find trait: ") + id.name);
     }
 }
 

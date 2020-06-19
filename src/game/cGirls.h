@@ -69,7 +69,7 @@ public:
     *    but rather writes girl data to the save file
     */
     tinyxml2::XMLElement& SaveGirlsXML(tinyxml2::XMLElement& elRoot);    // Saves the girls to a file
-    bool LoadGirlsXML(tinyxml2::XMLElement * pGirls);
+    bool LoadGirlsXML(const tinyxml2::XMLElement* pGirls);
 
     void AddGirl(sGirl* girl);        // adds a girl to the list
     void RemoveGirl(sGirl* girl, bool deleteGirl = false);    // Removes a girl from the list (only used with editor where all girls are available)

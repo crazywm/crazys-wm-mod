@@ -148,33 +148,3 @@ void cShop::RestockShop() {
         m_Inventory.add_item(item, item->m_Infinite ? 1000 : 1);
     }
 }
-
-
-/*
-
-void cInventory::UpdateShop()
-{
-    for (int i = 0; i < NUM_SHOPITEMS; i++)
-    {
-        sInventoryItem* item = nullptr;
-        while (item == nullptr) item = GetRandomItem();
-
-        int chance = g_Dice.d100();
-        if ((item->m_Rarity == RARITYCOMMON ||
-            (item->m_Rarity == RARITYSHOP50 && chance <= 50) ||
-            (item->m_Rarity == RARITYSHOP25 && chance <= 25) ||
-            (item->m_Rarity == RARITYSHOP05 && chance <= 5)) &&
-            (item->m_Infinite == 0 || (item->m_Infinite == 1 && CheckShopItem(item->m_Name) == -1)))
-        {
-            m_ShopItems[i] = item;
-            m_NumShopItems++;
-            continue;
-        }
-        else
-        {
-            i--;
-            continue;
-        }
-    }
-}
- */

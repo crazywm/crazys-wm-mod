@@ -40,8 +40,6 @@ void cScreenSettings::set_ids()
     // Catacombs
     uniquecatacombs_id         = get_id("UniqueCatacombsCat");
     uniquecatacombslabel_id     = get_id("UniqueCatacombsLabelCat");
-    controlgirls_id             = get_id("ControlGirlsCat");
-    controlgangs_id             = get_id("ControlGangsCat");
     girlgetsgirls_id         = get_id("GirlGetsGirlsCat");
     girlgetsitems_id         = get_id("GirlGetsItemsCat");
     girlgetsbeast_id         = get_id("GirlGetsBeastCat");

@@ -71,23 +71,23 @@ tinyxml2::XMLElement& cPlayer::SavePlayerXML(tinyxml2::XMLElement& elRoot)
 }
 
 
-bool cPlayer::LoadPlayerXML(tinyxml2::XMLElement* pPlayer)
+bool cPlayer::LoadPlayerXML(const tinyxml2::XMLElement* Player)
 {
     SetToZero();//init to 0
-    if (pPlayer == nullptr) return false;
-    if (pPlayer->Attribute("RealName"))       m_FullName    = pPlayer->Attribute("RealName");
-    if (pPlayer->Attribute("FirstName"))        m_FirstName   = pPlayer->Attribute("FirstName");
-    if (pPlayer->Attribute("Surname"))        m_Surname     = pPlayer->Attribute("Surname");
-    if (pPlayer->Attribute("BirthMonth"))        pPlayer->QueryIntAttribute("BirthMonth", &m_BirthMonth);
-    if (pPlayer->Attribute("BirthDay"))        pPlayer->QueryIntAttribute("BirthDay", &m_BirthDay);
+    if (Player == nullptr) return false;
+    if (Player->Attribute("RealName")) m_FullName    = Player->Attribute("RealName");
+    if (Player->Attribute("FirstName")) m_FirstName   = Player->Attribute("FirstName");
+    if (Player->Attribute("Surname")) m_Surname     = Player->Attribute("Surname");
+    if (Player->Attribute("BirthMonth"))        Player->QueryIntAttribute("BirthMonth", &m_BirthMonth);
+    if (Player->Attribute("BirthDay"))        Player->QueryIntAttribute("BirthDay", &m_BirthDay);
 
     // stats
-    LoadXML(*pPlayer);
+    LoadXML(*Player);
     // load other player stuff
-    pPlayer->QueryIntAttribute("Suspicion", &m_Suspicion);
-    pPlayer->QueryIntAttribute("Disposition", &m_Disposition);
-    pPlayer->QueryIntAttribute("CustomerFear", &m_CustomerFear);
-    pPlayer->QueryAttribute("WinGame", &m_WinGame);// have they won the game
+    Player->QueryIntAttribute("Suspicion", &m_Suspicion);
+    Player->QueryIntAttribute("Disposition", &m_Disposition);
+    Player->QueryIntAttribute("CustomerFear", &m_CustomerFear);
+    Player->QueryAttribute("WinGame", &m_WinGame);// have they won the game
     return true;
 }
 

@@ -275,10 +275,7 @@ void sConfigData::get_resolution_data(XMLElement *el)
     }
     if (pt = el->Attribute("Width"))            { get_att(el, "Width", &resolution.width);        resolution.configXML = true; }
     if (pt = el->Attribute("Height"))            { get_att(el, "Height", &resolution.height);    resolution.configXML = true; }
-    if (pt = el->Attribute("ScaleWidth"))        { get_att(el, "ScaleWidth", &resolution.scalewidth); }
-    if (pt = el->Attribute("ScaleHeight"))        { get_att(el, "ScaleHeight", &resolution.scaleheight); }
     if (pt = el->Attribute("FullScreen"))        { get_att(el, "FullScreen", resolution.fullscreen); }
-    if (pt = el->Attribute("FixedScale"))        { get_att(el, "FixedScale", resolution.fixedscale); }
     if (pt = el->Attribute("ListScrollAmount"))    { get_att(el, "ListScrollAmount", &resolution.list_scroll); }
     if (pt = el->Attribute("TextScrollAmount"))    { get_att(el, "TextScrollAmount", &resolution.text_scroll); }
     if (pt = el->Attribute("NextTurnEnter"))    { get_att(el, "NextTurnEnter", resolution.next_turn_enter); }
@@ -436,10 +433,7 @@ void sConfigData::set_defaults()
     resolution.resolution = "J_1024x768";    // `J` I set this to my interface because that is the one I edit myself
     resolution.width = 1024;                // `J` added - Will be moved to interfaces
     resolution.height = 768;                // `J` added - Will be moved to interfaces
-    resolution.scalewidth = 800;            // `J` added - Will be moved to interfaces
-    resolution.scaleheight = 600;            // `J` added - Will be moved to interfaces
     resolution.fullscreen = false;            // `J` added - Will be moved to interfaces
-    resolution.fixedscale = false;            // `J` added for .06.02.39
     resolution.configXML = false;            // `J` added - Will be changed to interfaces
     resolution.list_scroll = 3;                // `Dagoth` added
     resolution.text_scroll = 3;                // `Dagoth` added

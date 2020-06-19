@@ -21,7 +21,6 @@
 #include "utils/FileList.h"
 #include "utils/DirPath.h"
 #include "InterfaceProcesses.h"
-#include "MasterFile.h"
 #include "cGangs.h"
 #include "Game.hpp"
 #include "character/cCustomers.h"
@@ -36,7 +35,6 @@ namespace settings {
 
 extern string g_ReturnText;
 extern int g_ReturnInt;
-extern MasterFile loadedGirlsFiles;
 
 extern cNameList g_GirlNameList;
 extern cNameList g_BoysNameList;
@@ -215,8 +213,7 @@ void cScreenPreparingGame::process()
         case (l_girlfiles * 4) - 2:  { ss2 << "Loading Girl Files.\n"; break; }
         case (l_girlfiles * 4):  
         {
-            loadedGirlsFiles.LoadXML(pRoot->FirstChildElement("Loaded_Files"));
-            LoadGirlsFiles(loadedGirlsFiles);
+            g_Game->LoadGirlFiles();
             break;
         }
         case (l_girls * 4) - 2:            { ss2 << "Loading Girls.\n"; break; }        case (l_girls * 4):        { g_Game->girl_pool().LoadGirlsXML(pRoot->FirstChildElement("Girls")); break; }
@@ -244,7 +241,6 @@ void cScreenPreparingGame::process()
             replace_window("Building Management");
             prep_step = -1;
             return;
-            break;
         }
         default:  
             break;
@@ -254,114 +250,113 @@ void cScreenPreparingGame::process()
     else                        // new game
     {
         // `J` added new new game for .06.04.01
-            loading = true;
-            switch (prep_step)
+        loading = true;
+        switch (prep_step)
+        {
+        case (n_freecache * 4) - 2:      {
+            ss1 << "Starting New Game:   " << g_ReturnText;
+            ss2 << "Freeing Cache.\n"; break;
+        }
+        case (n_LoadGameInfoFiles * 4) - 2:        {
+            ss2 << "Loading Game Info Files.\n";
+            break;
+        }
+        case (n_LoadGameInfoFiles * 4):            {
+            g_LogFile.info("prepare", "Loading Game Data");
+            g_Game->LoadData();
+            g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
+            g_TalkCount = 10;
+            g_Game->gold().reset();
+            g_LogFile.info("prepare", "Loading Game Info Files");
+            LoadGameInfoFiles();
+            break;
+        }
+        case (n_Girls * 4) - 2:        {
+            ss2 << "Loading Girl Files.\n"; break;
+        }
+        case (n_Girls * 4) : {
+            g_LogFile.info("prepare", "Loading Girl Files");
+            g_Game->LoadGirlFiles();
+            break;
+        }
+        case (n_Player * 4) - 2:        {
+            ss2 << "Loading Buildings and Player.\n"; break;
+        }
+        case (n_Player * 4) : {
+            g_LogFile.info("prepare", "Adding Brothel");
+            auto& new_brot = g_Game->buildings().AddBuilding(std::unique_ptr<IBuilding>(new sBrothel()));
+            new_brot.m_NumRooms = 20;
+            new_brot.m_MaxNumRooms = 250;
+            new_brot.set_name(g_ReturnText);
+            new_brot.set_background_image("Brothel0.jpg");
+            set_active_building(&new_brot);
+            g_LogFile.info("prepare", "Adding House");
+            auto& new_house = g_Game->buildings().AddBuilding(std::unique_ptr<IBuilding>(new sHouse()));
+            new_house.m_NumRooms = 20;
+            new_house.m_MaxNumRooms = 200;
+            new_house.set_background_image("House.jpg");
+
+            g_LogFile.info("prepare", "Resetting Player");
+            for(int i = 0; i < NUM_STATS; ++i) g_Game->player().set_stat(i, 60);
+            for(int i = 0; i < NUM_SKILLS; ++i) g_Game->player().set_skill(i, 10);
+            g_Game->player().SetToZero();
+            break;
+        }
+        case (n_Markets * 4) - 2:        {
+            ss2 << "Preparing Slave Market and Shop.\n"; break;
+        }
+        case (n_Markets * 4) : {
+            g_LogFile.info("prepare", "Update Slave Market");
+            g_Game->UpdateMarketSlaves();
+            break;
+        }
+        case (n_GangsRivals * 4) - 2:        { ss2 << "Generating Gangs and Rivals.\n"; break; }
+        case (n_GangsRivals * 4) : {
+            g_LogFile.info("prepare", "Setting Up Gangs");
+            int start_random_gangs = g_Game->settings().get_integer(settings::INITIAL_RANDOM_GANGS);
+            int start_boosted_gangs = g_Game->settings().get_integer(settings::INITIAL_BOOSTED_GANGS);
+            for (int i = 0; i < start_random_gangs; i++)    g_Game->gang_manager().AddNewGang(false);
+            for (int i = 0; i < start_boosted_gangs; i++)    g_Game->gang_manager().AddNewGang(true);
+
+            g_LogFile.info("prepare", "Setting Up Rivals");
+            // Add the beginning rivals
+            for (int i = 0; i < 5; i++)
             {
-            case (n_freecache * 4) - 2:      {
-                ss1 << "Starting New Game:   " << g_ReturnText;
-                ss2 << "Freeing Cache.\n"; break;
+                int str = g_Dice % 10 + 1;
+                g_Game->rivals().CreateRival(
+                    str * 100,                                // BribeRate    = 100-1000
+                    (str * 3) + (g_Dice % 11),                 // Businesses    = 3-40
+                    str * 5000,                             // Gold            = 5000-50000
+                    (str / 2) + 1,                             // Bars            = 1-6
+                    (str / 4) + 1,                             // GambHalls    = 1-3
+                    (str * 5) + (g_Dice % (str * 5)),         // Girls        = 5-100
+                    (str / 2) + 1,                             // Brothels        = 1-6
+                    g_Dice % 6 + 1,                         // Gangs        = 1-6
+                    str                                         // Power        = 1-10    // `J` added - The rivals power level
+                    );
             }
-            case (n_LoadGameInfoFiles * 4) - 2:        {
-                ss2 << "Loading Game Info Files.\n";
-                break;
+            break;
+        }
+        case (n_Saving * 4) - 2:        { ss2 << "Saving Game.\n"; break; }
+        case (n_Saving * 4) : {
+            g_LogFile.info("prepare", "Saving");
+            if(g_ReturnText == "Cheat") {
+                g_Game->enable_cheating();
             }
-            case (n_LoadGameInfoFiles * 4):            {
-                g_LogFile.info("prepare", "Loading Game Data");
-                g_Game->LoadData();
-                g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
-                g_TalkCount = 10;
-                g_Game->gold().reset();
-                g_LogFile.info("prepare", "Loading Game Info Files");
-                LoadGameInfoFiles();
-                break;
-            }
-            case (n_Girls * 4) - 2:        {
-                ss2 << "Loading Girl Files.\n"; break;
-            }
-            case (n_Girls * 4) : {
-                g_LogFile.info("prepare", "Loading Girl Files");
-                loadedGirlsFiles.LoadXML(nullptr);
-                LoadGirlsFiles(loadedGirlsFiles);
-                break;
-            }
-            case (n_Player * 4) - 2:        {
-                ss2 << "Loading Buildings and Player.\n"; break;
-            }
-            case (n_Player * 4) : {
-                g_LogFile.info("prepare", "Adding Brothel");
-                auto& new_brot = g_Game->buildings().AddBuilding(std::unique_ptr<IBuilding>(new sBrothel()));
-                new_brot.m_NumRooms = 20;
-                new_brot.m_MaxNumRooms = 250;
-                new_brot.set_name(g_ReturnText);
-                new_brot.set_background_image("Brothel0.jpg");
-                set_active_building(&new_brot);
-                g_LogFile.info("prepare", "Adding House");
-                auto& new_house = g_Game->buildings().AddBuilding(std::unique_ptr<IBuilding>(new sHouse()));
-                new_house.m_NumRooms = 20;
-                new_house.m_MaxNumRooms = 200;
-                new_house.set_background_image("House.jpg");
-
-                g_LogFile.info("prepare", "Resetting Player");
-                for(int i = 0; i < NUM_STATS; ++i) g_Game->player().set_stat(i, 60);
-                for(int i = 0; i < NUM_SKILLS; ++i) g_Game->player().set_skill(i, 10);
-                g_Game->player().SetToZero();
-                break;
-            }
-            case (n_Markets * 4) - 2:        {
-                ss2 << "Preparing Slave Market and Shop.\n"; break;
-            }
-            case (n_Markets * 4) : {
-                g_LogFile.info("prepare", "Update Slave Market");
-                g_Game->UpdateMarketSlaves();
-                break;
-            }
-            case (n_GangsRivals * 4) - 2:        { ss2 << "Generating Gangs and Rivals.\n"; break; }
-            case (n_GangsRivals * 4) : {
-                g_LogFile.info("prepare", "Setting Up Gangs");
-                int start_random_gangs = g_Game->settings().get_integer(settings::INITIAL_RANDOM_GANGS);
-                int start_boosted_gangs = g_Game->settings().get_integer(settings::INITIAL_BOOSTED_GANGS);
-                for (int i = 0; i < start_random_gangs; i++)    g_Game->gang_manager().AddNewGang(false);
-                for (int i = 0; i < start_boosted_gangs; i++)    g_Game->gang_manager().AddNewGang(true);
-
-                g_LogFile.info("prepare", "Setting Up Rivals");
-                // Add the begining rivals
-                for (int i = 0; i < 5; i++)
-                {
-                    int str = g_Dice % 10 + 1;
-                    g_Game->rivals().CreateRival(
-                        str * 100,                                // BribeRate    = 100-1000
-                        (str * 3) + (g_Dice % 11),                 // Businesses    = 3-40
-                        str * 5000,                             // Gold            = 5000-50000
-                        (str / 2) + 1,                             // Bars            = 1-6
-                        (str / 4) + 1,                             // GambHalls    = 1-3
-                        (str * 5) + (g_Dice % (str * 5)),         // Girls        = 5-100
-                        (str / 2) + 1,                             // Brothels        = 1-6
-                        g_Dice % 6 + 1,                         // Gangs        = 1-6
-                        str                                         // Power        = 1-10    // `J` added - The rivals power level
-                        );
-                }
-                break;
-            }
-            case (n_Saving * 4) - 2:        { ss2 << "Saving Game.\n"; break; }
-            case (n_Saving * 4) : {
-                g_LogFile.info("prepare", "Saving");
-                if(g_ReturnText == "Cheat") {
-                    g_Game->enable_cheating();
-                }
-                SaveGame();
-                break;
-            }
-            case (n_finished * 4) - 2:        { ss2 << "Finished.\n"; break; }
-            case (n_finished * 4) : {
-                g_LogFile.info("prepare", "New Game Finished");
-                push_window("Building Management");
-                g_Game->RunEvent("intro");
-                break;
-            }
-            default:
-                break;
-            }
-            stringEmUp();
+            SaveGame();
+            break;
+        }
+        case (n_finished * 4) - 2:        { ss2 << "Finished.\n"; break; }
+        case (n_finished * 4) : {
+            g_LogFile.info("prepare", "New Game Finished");
+            push_window("Building Management");
+            g_Game->RunEvent("intro");
+            break;
+        }
+        default:
+            break;
+        }
+        stringEmUp();
     }
     prep_step++;
 }

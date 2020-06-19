@@ -19,26 +19,19 @@
 #pragma region //    Includes and Externs            //
 #include <iostream>
 #include <functional>
-#include <main.h>
 #include "cScreenTurnSummary.h"
 
 #include "buildings/cBrothel.h"
-
 #include "cGangs.h"
-#include "cScreenGirlDetails.h"
+
 #include "InterfaceProcesses.h"
-#include "cScreenBrothelManagement.h"
 
 #include "widgets/cImageItem.h"
-#include "utils/FileList.h"
 #include "Game.hpp"
-#include "interface/cSurface.h"
 #include "cJobManager.h"
 #include "sConfig.h"
 
 extern cConfig cfg;
-
-extern    cScreenGirlDetails*        g_GirlDetails;
 
 extern    bool    g_CTRLDown;
 

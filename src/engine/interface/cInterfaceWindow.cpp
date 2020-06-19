@@ -127,10 +127,10 @@ cInterfaceWindow::AddButton(std::string OffImage, std::string DisabledImage, con
 {
     if (scale)
     {
-        width = (int)((float)width*m_xRatio);
-        height = (int)((float)height*m_yRatio);
-        x = (int)((float)x*m_xRatio);
-        y = (int)((float)y*m_yRatio);
+        width = (int)((float)width);
+        height = (int)((float)height);
+        x = (int)((float)x);
+        y = (int)((float)y);
     }
     int ID = m_Widgets.size();
     // create button
@@ -171,10 +171,10 @@ void cInterfaceWindow::HideWidget(int id, bool hide)
 
 void cInterfaceWindow::AddImage(int & id, string filename, int x, int y, int width, int height, bool statImage, int R, int G, int B)
 {
-    width = (int)((float)width*m_xRatio);
-    height = (int)((float)height*m_yRatio);
-    x = (int)((float)x*m_xRatio);
-    y = (int)((float)y*m_yRatio);
+    width = (int)((float)width);
+    height = (int)((float)height);
+    x = (int)((float)x);
+    y = (int)((float)y);
 
     // create image
     id = m_Widgets.size();
@@ -201,10 +201,10 @@ void cInterfaceWindow::SetImage(int id, string image)
 
 void cInterfaceWindow::AddEditBox(int & ID, int x, int y, int width, int height, int BorderSize, int FontSize)
 {
-    width = (int)((float)width*m_xRatio);
-    height = (int)((float)height*m_yRatio);
-    x = (int)((float)x*m_xRatio);
-    y = (int)((float)y*m_yRatio);
+    width = (int)((float)width);
+    height = (int)((float)height);
+    x = (int)((float)x);
+    y = (int)((float)y);
 
     // create button
     ID = m_Widgets.size();
@@ -241,16 +241,6 @@ void cInterfaceWindow::SetButtonNavigation(int id, std::string target, bool repl
 
 void cInterfaceWindow::CreateWindow(int x, int y, int width, int height, int BorderSize)
 {
-    m_xRatio = 1.0f;    m_yRatio = 1.0f;
-    // `J` fixed this to allow for nonscaled 800x600 screen sizes
-    if (GetGraphics().GetWidth() != cfg.resolution.scalewidth())    m_xRatio = (float)GetGraphics().GetWidth() / (float)cfg.resolution.scalewidth();
-    if (GetGraphics().GetHeight() != cfg.resolution.scaleheight())    m_yRatio = (float)GetGraphics().GetHeight() / (float)cfg.resolution.scaleheight();
-
-    width = (int)((float)width*m_xRatio);
-    height = (int)((float)height*m_yRatio);
-    x = (int)((float)x*m_xRatio);
-    y = (int)((float)y*m_yRatio);
-
     m_BorderSize = BorderSize;
     SetPosition(x, y, width, height);
     m_Border = GetGraphics().CreateSurface(width, height, g_WindowBorderColor);
@@ -314,10 +304,10 @@ bool cInterfaceWindow::IsCheckboxOn(int ID)
 
 void cInterfaceWindow::AddSlider(int & ID, int x, int y, int width, int min, int max, int increment, int value, bool live_update)
 {
-    width = (int)((float)width*m_xRatio);
-    float height = m_yRatio;
-    x = (int)((float)x*m_xRatio);
-    y = (int)((float)y*m_yRatio);
+    width = (int)((float)width);
+    float height = 1.f;
+    x = (int)((float)x);
+    y = (int)((float)y);
 
     ID = m_Widgets.size();
     auto newSlider = std::make_unique<cSlider>(this, ID, x + m_XPos, y + m_YPos, width, min, max, increment, value, height);
@@ -358,10 +348,10 @@ cSlider* cInterfaceWindow::GetSlider(int id)
 
 void cInterfaceWindow::AddCheckbox(int & ID, int x, int y, int width, int height, string text, int size, bool leftorright)
 {
-    width = (int)((float)width*m_xRatio);
-    height = (int)((float)height*m_yRatio);
-    x = (int)((float)x*m_xRatio);
-    y = (int)((float)y*m_yRatio);
+    width = (int)((float)width);
+    height = (int)((float)height);
+    x = (int)((float)x);
+    y = (int)((float)y);
 
     // create checkbox item
     ID = m_Widgets.size();
@@ -379,10 +369,10 @@ cCheckBox* cInterfaceWindow::GetCheckBox(int id) {
 void cInterfaceWindow::AddTextItem(int & ID, int x, int y, int width, int height, string text, int size,
     bool force_scrollbar, int red, int green, int blue)
 {
-    width = (int)((float)width*m_xRatio);
-    height = (int)((float)height*m_yRatio);
-    x = (int)((float)x*m_xRatio);
-    y = (int)((float)y*m_yRatio);
+    width = (int)((float)width);
+    height = (int)((float)height);
+    x = (int)((float)x);
+    y = (int)((float)y);
 
     // create text item
     ID = m_Widgets.size();
@@ -409,10 +399,10 @@ cTextItem* cInterfaceWindow::GetTextItem(int id)
 
 cListBox* cInterfaceWindow::AddListBox(int x, int y, int width, int height, int BorderSize, bool enableEvents, bool MultiSelect, bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight)
 {
-    width = (int)((float)width*m_xRatio);
-    height = (int)((float)height*m_yRatio);
-    x = (int)((float)x*m_xRatio);
-    y = (int)((float)y*m_yRatio);
+    width = (int)((float)width);
+    height = (int)((float)height);
+    x = (int)((float)x);
+    y = (int)((float)y);
 
     g_LogFile.debug("interface", "Adding listbox...");
     // create listbox item

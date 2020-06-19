@@ -42,9 +42,6 @@
         Resolution="J_3840x2160"
         Width="3840"
         Height="2160"
-        ScaleWidth="3840"
-        ScaleHeight="2160"
-        FixedScale="true"
         FullScreen="false"
         ListScrollAmount="3"
         TextScrollAmount="3" />
@@ -54,9 +51,6 @@
         Resolution="J_1920x1080"
         Width="1920"
         Height="1080"
-        ScaleWidth="1920"
-        ScaleHeight="1080"
-        FixedScale="true"
         FullScreen="false"
         ListScrollAmount="3"
         TextScrollAmount="3" />
@@ -66,9 +60,6 @@
         Resolution="J_1600x900"
         Width="1600"
         Height="900"
-        ScaleWidth="1600"
-        ScaleHeight="900"
-        FixedScale="true"
         FullScreen="false"
         ListScrollAmount="3"
         TextScrollAmount="3" />
@@ -78,9 +69,6 @@
         Resolution="J_1366x768"
         Width="1366"
         Height="768"
-        ScaleWidth="1366"
-        ScaleHeight="768"
-        FixedScale="true"
         FullScreen="false"
         ListScrollAmount="3"
         TextScrollAmount="3" />
@@ -90,9 +78,6 @@
         Resolution="J_1024x768"
         Width="1024"
         Height="768"
-        ScaleWidth="1024"
-        ScaleHeight="768"
-        FixedScale="false"
         FullScreen="false"
         ListScrollAmount="3"
         TextScrollAmount="3" />

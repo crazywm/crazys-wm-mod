@@ -617,7 +617,7 @@ bool sGirl::is_unpaid() const {
 
 // This load
 
-bool sGirl::LoadGirlXML(tinyxml2::XMLElement* pGirl)
+bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
 {
     //this is always called after creating a new girl, so let's not init sGirl again
     if (pGirl == nullptr) return false;
@@ -625,13 +625,6 @@ bool sGirl::LoadGirlXML(tinyxml2::XMLElement* pGirl)
 
     // load the name
     m_Name = pGirl->Attribute("Name");        // the name the girl is based on, also the name of the image folder
-
-    // m_Realname = the name the girl is called in the game // `J` used to set to m_Name but now gets built from F+M+S names
-    m_FullName   = (pGirl->Attribute("Realname") ? pGirl->Attribute("Realname") : "");
-    m_FirstName  = (pGirl->Attribute("FirstName") ? pGirl->Attribute("FirstName") : "");    // `J` New
-    m_MiddleName = (pGirl->Attribute("MiddleName") ? pGirl->Attribute("MiddleName") : "");    // `J` New
-    m_Surname    = (pGirl->Attribute("Surname") ? pGirl->Attribute("Surname") : "");    // `J` New
-
     m_Desc = (pGirl->Attribute("Desc") ? pGirl->Attribute("Desc") : "-");    // get the description
 
     // load the amount of days they are unhappy in a row
@@ -667,7 +660,9 @@ bool sGirl::LoadGirlXML(tinyxml2::XMLElement* pGirl)
     if (m_SpecialJobGoal < 0)    m_SpecialJobGoal = 0;
 
     // load acom level
-    pGirl->QueryIntAttribute("AccLevel", &tempInt); m_AccLevel = tempInt; tempInt = 0;
+    pGirl->QueryIntAttribute("AccLevel", &m_AccLevel);
+    // load house percent
+    pGirl->QueryIntAttribute("HousePercent", &m_HousePercent);
 
     // `J` changeing jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
     string tempst = pGirl->Attribute("DayJob");            m_DayJob = lookup_jobs_code(tempst);
@@ -768,10 +763,6 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
 {
     auto& elGirl = PushNewElement(elRoot, "Girl");
     elGirl.SetAttribute("Name", m_Name.c_str());                        // save the name
-    elGirl.SetAttribute("Realname", FullName().c_str());                // save the real name
-    elGirl.SetAttribute("FirstName", m_FirstName.c_str());                // save the first name
-    elGirl.SetAttribute("MiddleName", m_MiddleName.c_str());            // save the middle name
-    elGirl.SetAttribute("Surname", m_Surname.c_str());                    // save the surname
     elGirl.SetAttribute("Desc", m_Desc.c_str());                        // save the description
     elGirl.SetAttribute("DaysUnhappy", m_DaysUnhappy);            // save the amount of days they are unhappy
 
@@ -782,6 +773,7 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
     elGirl.SetAttribute("Withdrawals", m_Withdrawals);            // save withdrawals
     elGirl.SetAttribute("Money", m_Money);                        // save money
     elGirl.SetAttribute("AccLevel", m_AccLevel);                // save acom level
+    elGirl.SetAttribute("HousePercent", m_HousePercent);                // save acom level
 
     // save working day counter
     elGirl.SetAttribute("WorkingDay", m_WorkingDay);
@@ -851,7 +843,7 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
     return elGirl;
 }
 
-bool sChild::LoadChildXML(tinyxml2::XMLElement* pChild)
+bool sChild::LoadChildXML(const tinyxml2::XMLElement* pChild)
 {
     if (pChild == nullptr)
     {
@@ -938,20 +930,11 @@ sChild::Gender sChild::RandomGender() {
     return g_Dice.percent(chance) ? Girl : Boy;
 }
 
-
-int sGirl::preg_chance(int base_pc, bool good, double factor)
-{
-    double chance = base_pc;
-    // factor is used to pass situational modifiers. For instance BDSM has a 25% reduction in chance
-    chance *= factor;
-    // if the sex was good, the chance is modded, again from the config file
-    if (good) chance *= g_Game->settings().get_float(settings::PREG_GOOD_FACTOR);
-    return int(chance);
-}
-
 bool sGirl::calc_pregnancy(cPlayer *player, double factor, bool nomessage)
 {
-    double chance = preg_chance(100.f * g_Game->settings().get_percent(settings::PREG_CHANCE_PLAYER), factor);
+    float girl_chance = fertility(*this);
+    sPercent guy_chance = g_Game->settings().get_percent(settings::PREG_CHANCE_PLAYER);
+    float chance = girl_chance * guy_chance * factor;
     //    now do the calculation
     bool result = calc_pregnancy(int(chance), STATUS_PREGNANT_BY_PLAYER, *player);
     if(!result && !nomessage) {
@@ -962,21 +945,28 @@ bool sGirl::calc_pregnancy(cPlayer *player, double factor, bool nomessage)
 
 bool sGirl::calc_group_pregnancy(const sCustomer& cust, bool good, double factor)
 {
-    double chance = preg_chance(100.f * g_Game->settings().get_percent(settings::PREG_CHANCE_CUST), good, factor);
-    chance += cust.m_Amount;
+    double girl_chance = fertility(*this);
+    sPercent guy_chance = g_Game->settings().get_percent(settings::PREG_CHANCE_CUST);
+    float chance = girl_chance * (1.f - std::pow(1.f - float(guy_chance), cust.m_Amount)) * factor;
+
     // now do the calculation
     return calc_pregnancy(int(chance), STATUS_PREGNANT, cust);
 }
 
 bool sGirl::calc_pregnancy(const sCustomer& cust, double factor)
 {
-    double chance = preg_chance(100.f * g_Game->settings().get_percent(settings::PREG_CHANCE_CUST), false, factor);
+    double girl_chance = fertility(*this);
+    sPercent guy_chance = g_Game->settings().get_percent(settings::PREG_CHANCE_CUST);
+    float chance = girl_chance * float(guy_chance) * factor;
+
     return calc_pregnancy(int(chance), STATUS_PREGNANT, cust);
 }
 
 bool sGirl::calc_insemination(const sCustomer& cust, bool good, double factor)
 {
-    double chance = preg_chance(100.f * g_Game->settings().get_percent(settings::PREG_CHANCE_BEAST), good, factor);
+    double girl_chance = fertility(*this);
+    sPercent guy_chance = g_Game->settings().get_percent(settings::PREG_CHANCE_BEAST);
+    float chance = girl_chance * float(guy_chance) * factor;
     return calc_pregnancy(int(chance), STATUS_INSEMINATED, cust);
 }
 

@@ -351,7 +351,7 @@ void sMovieStudio::auto_assign_job(sGirl* target, std::stringstream& message, bo
     }
 }
 
-void sMovieStudio::load_xml(tinyxml2::XMLElement& root)
+void sMovieStudio::load_xml(const tinyxml2::XMLElement& root)
 {
     IBuilding::load_xml(root);
 

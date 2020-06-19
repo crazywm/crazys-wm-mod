@@ -22,7 +22,6 @@
 #include "Revision.h"
 #include "utils/FileList.h"
 #include "utils/DirPath.h"
-#include "MasterFile.h"
 #include "buildings/cBrothel.h"
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
@@ -66,9 +65,6 @@ int cycle_pos;  //currently selected girl's position in the cycle_girls vector
 int summarysortorder = 0;    // the order girls get sorted in the summary lists
 
 #pragma endregion
-
-//used to store what files we have loaded
-MasterFile loadedGirlsFiles;
 
 static string clobber_extension(string s)    // `J` debug logging
 {
@@ -116,7 +112,6 @@ void LoadGameInfoFiles()
     g_LogFile.log(ELogLevel::INFO, "Found ", fl_i.size(), " itemsx files");
     LoadXMLItems(fl_i);
     LoadNames();
-
 }
 
 void LoadNames()
@@ -130,59 +125,9 @@ void LoadNames()
     g_BoysNameList.load(location_B);
 }
 
-void LoadGirlsFiles(MasterFile& master)
-{
-    /*
-    *    now get a list of all the file in the Characters folder
-    *    start by building a path...
-    */
-    DirPath location = DirPath(cfg.folders.characters().c_str());
-    /*
-    *    now scan for matching files. The XMLFileList
-    *    will look for ".girls" and ".girlx" files
-    *    with the XML versions shadowing the originals
-    */
-    XMLFileList girlfiles(location, "*.girls");
-    XMLFileList rgirlfiles(location, "*.rgirls");
-    /*
-    *    And we need to know which ".girls" files the saved game processed
-    *    This information is stored in the master file - so we read that.
-    */
-    for (int i = 0; i < girlfiles.size(); i++)
-    {
-        /*
-        *        OK: if the current file is listed in the master file
-        *        we don't need to load it. Unless the AllData flag is set
-        *        and then we do. I think.
-        */
-        if (master.exists(girlfiles[i].leaf()))
-        {
-            continue;
-        }
-        /*
-        *        add the file to the master list
-        */
-        master.add(girlfiles[i].leaf());
-        /*
-        *        load the file
-        */
-        g_Game->girl_pool().LoadGirlsXML(girlfiles[i].full());
-    }
-    /*
-    *    Load random girls
-    *
-    *    "girlfiles" is still an XMLFileList, so this will get
-    *    XML format files in preference to original format ones
-    */
-    for (int i = 0; i < rgirlfiles.size(); i++)
-    {
-        g_Game->girl_pool().LoadRandomGirl(rgirlfiles[i].full());
-    }
-}
-
 void NextWeek()
 {
-    g_LogFile.log(ELogLevel::DEBUG, " *** NextWeek || Start ***");
+    g_LogFile.debug("turn", " *** NextWeek || Start ***");
 
     g_WalkAround = false;
     g_TryCentre = false;
@@ -207,6 +152,7 @@ void AutoSaveGame()
 {
     SaveGameXML(DirPath(cfg.folders.saves().c_str()) << "autosave.gam");
 }
+
 void SaveGame()
 {
     string filename = g_Game->buildings().get_building(0).name();
@@ -221,6 +167,7 @@ void SaveGame()
 
 void SaveGameXML(string filename)
 {
+    g_LogFile.info("save", "Saving game to '", filename, '\'');
     tinyxml2::XMLDocument doc;
     doc.LinkEndChild(doc.NewDeclaration());
     auto* pRoot = doc.NewElement("Root");
@@ -245,24 +192,6 @@ void SaveGameXML(string filename)
     pRoot->SetAttribute("TryEr", g_TryEr);
     pRoot->SetAttribute("TryCast", g_TryCast);
 
-    //this replaces the "master file"
-    // TODO Fix the master file stuff
-    loadedGirlsFiles.SaveXML(*pRoot);
-
     g_Game->save(*pRoot);
     doc.SaveFile(filename.c_str());
-
-    //ADB TODO
-#if 0
-    //this stuff is not saved, save it and load it
-    selected_girl = 0;
-    for (int i = 0; i<8; i++)
-    {
-        MarketSlaveGirls[i] = 0;
-        MarketSlaveGirlsDel[i] = -1;
-    }
-
-    // update the shop inventory
-    g_Game->inventory_manager().UpdateShop();
-#endif
 }

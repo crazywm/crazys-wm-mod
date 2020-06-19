@@ -84,7 +84,7 @@ public:
     auto&   GetRivals() { return m_Rivals; }
     cRival* GetRival(int number);
     tinyxml2::XMLElement& SaveRivalsXML(tinyxml2::XMLElement& elRoot);
-    bool LoadRivalsXML(tinyxml2::XMLElement* pRivalManager);
+    bool LoadRivalsXML(const tinyxml2::XMLElement* pRivalManager);
     void CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int gangs, int age);
     void RemoveRival(cRival* rival);
     void CreateRandomRival();

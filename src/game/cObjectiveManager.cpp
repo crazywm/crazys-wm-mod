@@ -475,9 +475,9 @@ void cObjectiveManager::PassObjective()
 }
 
 
-void cObjectiveManager::LoadFromXML(tinyxml2::XMLElement& root)
+void cObjectiveManager::LoadFromXML(const tinyxml2::XMLElement& root)
 {
-    tinyxml2::XMLElement* pObjective = root.FirstChildElement("Objective");
+    auto pObjective = root.FirstChildElement("Objective");
     if (pObjective)
     {
         m_Objective.reset(new sObjective());

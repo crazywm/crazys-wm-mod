@@ -112,6 +112,9 @@ int Inventory::remove_item(const sInventoryItem * item, int amount)
     }
 
     found->second.count -= amount;
+    if(found->second.count == 0) {
+        m_ItemCounts.erase(found);
+    }
     return amount;
 }
 

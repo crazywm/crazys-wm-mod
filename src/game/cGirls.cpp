@@ -174,6 +174,7 @@ std::unique_ptr<sGirl>
 cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool childnaped, bool arena,
                          bool daughter, bool isdaughter, string findbyname)
 {
+    g_LogFile.debug("girls", "cGirls::CreateRandomGirl");
     auto girl_template = m_RandomGirls.CreateRandomGirl(Human0Monster1, arena, daughter, findbyname);
 
     auto newGirl = std::make_unique<sGirl>();
@@ -209,26 +210,15 @@ cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, 
         newGirl->gain_trait(name.c_str(), girl_template.m_TraitChance[i]);
     }
     
-    for (int i = 0; i < girl_template.m_NumItemNames; i++)
+    for (auto& item_candidate : girl_template.m_Inventory)
     {
-        if (g_Dice.percent(girl_template.m_ItemChanceB[i]))
+        if (!g_Dice.percent(item_candidate.Chance)) {
+            continue;
+        }
+        newGirl->add_item(item_candidate.Item);
+        if (item_candidate.Item->m_Type != sInventoryItem::Food && item_candidate.Item->m_Type != sInventoryItem::Makeup)
         {
-            sInventoryItem* item = girl_template.m_Inventory[i];
-            if (item)
-            {
-                newGirl->add_item(item);
-                if (item->m_Type != sInventoryItem::Food && item->m_Type != sInventoryItem::Makeup)
-                {
-                    newGirl->equip(item, false);
-                }
-            }
-            else
-            {
-                stringstream ss;
-                ss << "g_Game->CreateRandomGirl: ERROR: Item '" << girl_template.m_ItemNames[i] << "' from girl template "
-                    << girl_template.m_Name << " doesn't exist or is spelled incorrectly.";
-                g_Game->push_message(ss.str(), COLOR_RED);
-            }
+            newGirl->equip(item_candidate.Item, false);
         }
     }
 
@@ -1202,6 +1192,7 @@ string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratin
                               {JOB_ADVERTISING, '-'}, {JOB_CUSTOMERSERVICE, '-'}, {JOB_BEASTCARER, '-'},
                               {JOB_TRAINING, '!'}, {JOB_CLEANING, '?'}});
     JobRating(Brothel_Data, *girl, {{JOB_BARMAID, '-'}, {JOB_WAITRESS, '-'}, {JOB_SINGER, '-'}, {JOB_PIANO, '-'}, {JOB_ESCORT, '?'}});
+    JobRating(Brothel_Data, *girl, {{JOB_DEALER, '-'}, {JOB_ENTERTAINMENT, '-'}, {JOB_XXXENTERTAINMENT, '-'}, {JOB_WHOREGAMBHALL, '?'}});
     JobRating(Brothel_Data, *girl, {{JOB_SLEAZYBARMAID, '-'}, {JOB_SLEAZYWAITRESS, '-'}, {JOB_BARSTRIPPER, '-'}, {JOB_BARWHORE, '?'}});
     JobRating(Brothel_Data, *girl, {{JOB_MASSEUSE, '-'}, {JOB_BROTHELSTRIPPER, '-'}, {JOB_PEEP, '-'}, {JOB_WHOREBROTHEL, '?'}, {JOB_WHORESTREETS, '?'}});
     Brothel_Data << div;
@@ -1669,7 +1660,7 @@ void cGirls::LoadGirlsXML(string filename)
     }
 }
 
-bool cGirls::LoadGirlsXML(tinyxml2::XMLElement* pGirls)
+bool cGirls::LoadGirlsXML(const tinyxml2::XMLElement* pGirls)
 {
     if (pGirls == nullptr) return false;
     sGirl* current = nullptr;                    // load the number of girls

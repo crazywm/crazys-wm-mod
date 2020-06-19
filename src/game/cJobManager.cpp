@@ -413,7 +413,7 @@ JobData[JOB_RECRUITER].description = "She will go out and try and recruit girls 
     JobData[JOB_CLEANHOUSE].description = ("She will clean your house.");
 
     JobFilters[JOBFILTER_HOUSETTRAINING] = sJobFilter{"Sex Training", "You will take a personal interest in training the girl in sexual matters."};
-    register_filter(JOBFILTER_HOUSETTRAINING, JOB_PERSONALTRAINING, JOB_FAKEORGASM);
+    register_filter(JOBFILTER_HOUSETTRAINING, JOB_PERSONALTRAINING, JOB_HOUSEPET);
     JobData[JOB_PERSONALTRAINING] = sJobData("Personal Training", "PTrn");
     JobData[JOB_PERSONALTRAINING].description = ("You will oversee her training personal.");
     JobData[JOB_HOUSEPET] = sJobData("House Pet", "Hpet");
@@ -1795,7 +1795,7 @@ void cJobManager::customer_rape(sGirl* girl, int numberofattackers)
     if (attacktype == SKILL_GROUP || attacktype == SKILL_NORMALSEX)
     {
         Cust.m_IsWoman = false;
-        preg = !girl->calc_pregnancy(5 + (Cust.m_Amount * 5), STATUS_PREGNANT, Cust);
+        preg = !girl->calc_group_pregnancy(Cust, false);
     }
     if (attacktype == SKILL_LESBIAN)
     {

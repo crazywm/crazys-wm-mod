@@ -4,6 +4,7 @@
 #include <memory>
 #include <list>
 #include <string>
+#include <unordered_set>
 #include "Constants.h"
 #include <vector>
 #include "scripting/fwd.hpp"
@@ -175,6 +176,7 @@ public:
     void TalkToGirl(sGirl& target);
 
     void LoadData();
+    void LoadGirlFiles();
 private:
     // managers
     std::unique_ptr<cRivalManager> m_Rivals;
@@ -221,6 +223,9 @@ private:
     void read_attributes_xml(tinyxml2::XMLElement& el);
 
     void UpdateRunaways();
+
+    // This keeps track of all unqiue girl files that are used for this game.
+    std::unordered_set<std::string> m_GirlFiles;
 };
 
 // the global game instance.

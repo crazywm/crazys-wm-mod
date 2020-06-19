@@ -479,7 +479,6 @@ void cScreenDungeon::sell_slaves()
         girl = g_Game->dungeon().RemoveGirl(g_Game->dungeon().GetGirl(selection)).release();    // remove her from the dungeon, add her back into the general pool
         girl_names.push_back(girl->FullName());
         sell_gold.push_back(cost);
-        girl->m_Building->remove_girl(girl);
         if (girl->FullName() == girl->m_Name)
         {
             g_Game->girl_pool().AddGirl(girl);                                    // add unique girls back to main pool

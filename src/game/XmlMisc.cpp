@@ -202,7 +202,7 @@ tinyxml2::XMLElement& SaveActionsXML(tinyxml2::XMLElement& elRoot, int * enjoyme
     return actions_el;
 }
 
-bool LoadActionsXML(tinyxml2::XMLElement* pActions, int * enjoyments, int * enjoymentsMods, int * enjoymentsTemps)
+bool LoadActionsXML(const tinyxml2::XMLElement* pActions, int * enjoyments, int * enjoymentsMods, int * enjoymentsTemps)
 {
     if (pActions == nullptr) return false;
 
@@ -239,7 +239,7 @@ tinyxml2::XMLElement& SaveTrainingXML(tinyxml2::XMLElement& pRoot, int * trainin
     return elTrainings;
 }
 
-bool LoadTrainingXML(tinyxml2::XMLElement* pTrainings, int * training, int * trainingMods, int * trainingTemps)
+bool LoadTrainingXML(const tinyxml2::XMLElement* pTrainings, int * training, int * trainingMods, int * trainingTemps)
 {
     if (pTrainings == nullptr)
     {

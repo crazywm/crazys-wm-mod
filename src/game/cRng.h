@@ -66,7 +66,7 @@ struct cRng
  *    returns true n percent of the time. 
  *    so g_Dice.percent(20) will return true 20% of the time
  */
-    bool percent(int n) { return (1 + random(100)) < n; }
+    bool percent(int n) { return random(100) < n; }
     bool percent(sPercent p) { return percent(100.f * p); }
 /*
 *    `J` added percent allowing double input up to 3 decimal

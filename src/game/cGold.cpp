@@ -420,7 +420,7 @@ tinyxml2::XMLElement& cGoldBase::saveGoldXML(tinyxml2::XMLElement& elRoot) const
     return elGold;
 }
 
-bool cGoldBase::loadGoldXML(tinyxml2::XMLElement* pGold)
+bool cGoldBase::loadGoldXML(const tinyxml2::XMLElement* pGold)
 {
     //load default values just in case
     reset();

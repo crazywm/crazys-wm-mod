@@ -61,10 +61,7 @@ struct sConfigData
         std::string resolution;
         int            width;
         int            height;
-        int            scalewidth;
-        int            scaleheight;
         bool        fullscreen;
-        bool        fixedscale;
         bool        configXML;
         int            list_scroll;
         int            text_scroll;
@@ -137,7 +134,6 @@ struct sConfigData
     void    get_expense_factors(XMLElement *el);
     void    get_pros_factors(XMLElement *el);
     void    get_catacombs_data(XMLElement *el);
-    void    get_item_data(XMLElement *el);
     void    ReadItemData();
     void    get_font_data(XMLElement *el);
     void    get_initial_values(XMLElement *el);
@@ -216,9 +212,6 @@ public:
         std::string&    resolution()            { return data->resolution.resolution; }
         int                width()                    { return data->resolution.width; }
         int                height()                { return data->resolution.height; }
-        int                scalewidth()            { return data->resolution.scalewidth; }
-        int                scaleheight()            { return data->resolution.scaleheight; }
-        bool            fixedscale()            { return data->resolution.fixedscale; }
         bool            fullscreen()            { return data->resolution.fullscreen; }
         bool            configXML()                { return data->resolution.configXML; }
         int                list_scroll()            { return data->resolution.list_scroll; }

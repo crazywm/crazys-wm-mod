@@ -78,6 +78,7 @@ int main(int ac, char* av[])    // `J` Bookmark - #1 - Entering the game
     // Init the program
     // SDL Graphics interface
     CGraphics graphics;
+    g_LogFile.disable_verbose();
 
     if (!Init(graphics))
         return 1;
@@ -178,7 +179,7 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     *       init the graphics, with the caption on the titlebar
     */
 
-    if (!gfx.InitGraphics(ss.str(), cfg.resolution.width(), cfg.resolution.height(), 32))
+    if (!gfx.InitGraphics(ss.str(), cfg.resolution.width(), cfg.resolution.height()))
     {
         g_LogFile.log(ELogLevel::ERROR,"Initializing Graphics");
         return false;

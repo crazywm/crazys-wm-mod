@@ -933,15 +933,9 @@ tinyxml2::XMLElement * cBuildingManager::SaveXML(tinyxml2::XMLElement& root) con
     return &elBrothels;
 }
 
-tinyxml2::XMLElement * cBuildingManager::LoadBuildingsXML(tinyxml2::XMLElement& root, const char * element_name, const char * manager_name)
+void cBuildingManager::LoadXML(const tinyxml2::XMLElement& root)
 {
-    auto mgr_xml = manager_name ? root.FirstChildElement(manager_name) : &root;
-    if (mgr_xml == nullptr)
-    {
-        return nullptr;
-    }
-
-    auto* pBrothels = mgr_xml->FirstChildElement(element_name);
+    auto* pBrothels = root.FirstChildElement("Buildings");
     if (pBrothels)
     {
         for (auto& brothel : IterateChildElements(*pBrothels)) {
@@ -955,7 +949,6 @@ tinyxml2::XMLElement * cBuildingManager::LoadBuildingsXML(tinyxml2::XMLElement& 
             }
         }
     }
-    return mgr_xml;
 }
 
 IBuilding& cBuildingManager::AddBuilding(std::unique_ptr<IBuilding> building)
@@ -1023,23 +1016,6 @@ IBuilding * cBuildingManager::building_with_type(BuildingType type, int index)
 
     return nullptr;
 }
-
-void cBuildingManager::LoadXML(tinyxml2::XMLElement& root)
-{
-    // Legacy support: delete after a few versions
-    /*
-    LoadBuildingsXML(root, "Clinics", "Clinic_Manager");
-    LoadBuildingsXML(root, "Arenas", "Arena_Manager");
-    LoadBuildingsXML(root, "Centres", "Centre_Manager");
-    LoadBuildingsXML(root, "Houses", "House_Manager");
-    LoadBuildingsXML(root, "Farms", "Farm_Manager");
-    LoadBuildingsXML(root, "MovieStudios", "MovieStudio_Manager");
-     */
-
-    // this is the new code
-    LoadBuildingsXML(root, "Buildings");
-}
-
 
 int get_total_player_girls()
 {

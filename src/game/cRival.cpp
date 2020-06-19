@@ -914,14 +914,14 @@ tinyxml2::XMLElement& cRivalManager::SaveRivalsXML(tinyxml2::XMLElement& elRoot)
     return elRivalManager;
 }
 
-bool cRivalManager::LoadRivalsXML(tinyxml2::XMLElement* pRivalManager)
+bool cRivalManager::LoadRivalsXML(const tinyxml2::XMLElement* pRivalManager)
 {
     if (pRivalManager == nullptr) return false;
 
-    tinyxml2::XMLElement* pRivals = pRivalManager->FirstChildElement("Rivals");
+    auto pRivals = pRivalManager->FirstChildElement("Rivals");
     if (pRivals)
     {
-        for (tinyxml2::XMLElement* pRival = pRivals->FirstChildElement("Rival"); pRival != nullptr; pRival = pRival->NextSiblingElement("Rival"))
+        for (auto pRival = pRivals->FirstChildElement("Rival"); pRival != nullptr; pRival = pRival->NextSiblingElement("Rival"))
         {
             auto current = std::make_unique<cRival>();
 

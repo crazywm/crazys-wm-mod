@@ -47,7 +47,7 @@ int sStorage::get_excess(const std::string& key) const {
     return amount - reserve;
 }
 
-void sStorage::load_from_xml(tinyxml2::XMLElement& el)
+void sStorage::load_from_xml(const tinyxml2::XMLElement& el)
 {
 // TODO
 }

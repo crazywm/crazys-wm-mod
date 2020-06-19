@@ -34,6 +34,6 @@ tinyxml2::XMLElement& SaveTrainingXML(tinyxml2::XMLElement& pRoot, int * trainin
 
 bool LoadStatsXML(const tinyxml2::XMLElement * pStats, int * stats, int * statMods = nullptr, int * tempStats = nullptr);
 bool LoadSkillsXML(const tinyxml2::XMLElement * pSkills, int * skills, int * skillMods = nullptr, int * tempSkills = nullptr);
-bool LoadActionsXML(tinyxml2::XMLElement * pActions, int * enjoyments, int * enjoymentsMods, int * enjoymentsTemps);
-bool LoadTrainingXML(tinyxml2::XMLElement * pTrainings, int * training, int * trainingMods, int * trainingTemps);
+bool LoadActionsXML(const tinyxml2::XMLElement* pActions, int * enjoyments, int * enjoymentsMods, int * enjoymentsTemps);
+bool LoadTrainingXML(const tinyxml2::XMLElement* pTrainings, int * training, int * trainingMods, int * trainingTemps);
 

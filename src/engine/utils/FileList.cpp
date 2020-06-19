@@ -71,6 +71,15 @@ void FileList::add(const char *pattern)
     DIR        *dpt;
     struct dirent *dent;
     const char* base_path = folder.c_str();
+
+    /*
+     *    open the directory. Print an error to the console if it fails
+     */
+    if ((dpt = opendir(base_path)) == nullptr) {
+        g_LogFile.error("engine", "Could not open directory '", base_path, "' (", errno, ")");
+        return;
+    }
+
     std::string        s_bp(folder.c_str());
     std::string        s_pat(pattern);
                 //match from beginning of string - stops preg* images from being sorted into normal image groups
@@ -89,14 +98,9 @@ void FileList::add(const char *pattern)
     *    now make a regex
     */
     regex_t r;
-    regcomp(&r, s_pat.c_str(), REG_NOSUB|REG_ICASE); //ignoring case so images work properly
-
-    /*
-    *    open the directory. Print an error to the console if it fails
-    */
-    if ((dpt = opendir(base_path)) == nullptr) {
-        g_LogFile.error("engine", "Could not open directory '", base_path, "' (", errno, ")");
-        return;
+    int res = regcomp(&r, s_pat.c_str(), REG_NOSUB | REG_ICASE); //ignoring case so images work properly
+    if(res != 0) {
+        g_LogFile.error("regex", "Could not compile regex");
     }
 
     /*
@@ -108,8 +112,9 @@ void FileList::add(const char *pattern)
             continue;
         }
         
-        files.push_back(FileListEntry(s_bp, std::string(dent->d_name)));
+        files.emplace_back(s_bp, std::string(dent->d_name));
     }
+    regfree(&r);
     closedir(dpt);
 }
 

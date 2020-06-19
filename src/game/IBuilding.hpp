@@ -77,10 +77,10 @@ public:
     void save_girls_xml(tinyxml2::XMLElement& target) const;
     void save_settings_xml(tinyxml2::XMLElement& root) const;
     virtual void save_additional_xml(tinyxml2::XMLElement& root) const {};
-    void load_girls_xml(tinyxml2::XMLElement& root);
-    void load_settings_xml(tinyxml2::XMLElement& root);
+    void load_girls_xml(const tinyxml2::XMLElement& root);
+    void load_settings_xml(const tinyxml2::XMLElement& root);
 
-    virtual void load_xml(tinyxml2::XMLElement& root);
+    virtual void load_xml(const tinyxml2::XMLElement& root);
     virtual void save_xml(tinyxml2::XMLElement& root) const;
 
     // girl management

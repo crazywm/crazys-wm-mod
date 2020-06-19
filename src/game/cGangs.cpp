@@ -89,7 +89,7 @@ cGangManager::cGangManager()
 
 cGangManager::~cGangManager() = default;
 
-bool cGangManager::LoadGangsXML(tinyxml2::XMLElement* pGangManager)
+bool cGangManager::LoadGangsXML(const tinyxml2::XMLElement* pGangManager)
 {
     if (pGangManager == nullptr) return false;
 

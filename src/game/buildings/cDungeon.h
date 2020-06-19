@@ -90,7 +90,7 @@ public:
     cDungeon();                                // constructor
     ~cDungeon();                            // destructor
     tinyxml2::XMLElement& SaveDungeonDataXML(tinyxml2::XMLElement * pRoot);    // saves dungeon data
-    bool LoadDungeonDataXML(tinyxml2::XMLElement* pDungeon);
+    bool LoadDungeonDataXML(const tinyxml2::XMLElement* pDungeon);
     bool SendGirlToDungeon(sGirl& girl);
     void AddGirl(sGirl* girl, int reason);
     void AddCust(int reason, int numDaughters, bool hasWife);

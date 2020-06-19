@@ -22,34 +22,6 @@
 
 class cScreenSettings : public cInterfaceWindowXML
 {
-private:
-    int back_id;
-    int ok_id;
-    int revert_id;
-
-    // Folders
-    int characters_id;
-    int saves_id;
-    int defaultimages_id;
-    int items_id;
-    int backupsaves_id;
-    int preferdefault_id;
-
-    // Catacombs
-    int uniquecatacombs_id;
-    int uniquecatacombslabel_id;
-    int controlgirls_id;
-    int controlgangs_id;
-    int girlgetsgirls_id;
-    int girlgetsitems_id;
-    int girlgetsbeast_id;
-    int girlsgirlspercslider_id;
-    int girlsitemspercslider_id;
-    int ganggetsgirls_id;
-    int ganggetsitems_id;
-    int ganggetsbeast_id;
-    int gangsgirlspercslider_id;
-    int gangsitemspercslider_id;
 public:
     void set_ids() override;
 
@@ -61,4 +33,30 @@ public:
 
     void update_girl_sliders();
     void update_gang_sliders();
+private:
+    int back_id = -1;
+    int ok_id = -1;
+    int revert_id = -1;
+
+    // Folders
+    int characters_id = -1;
+    int saves_id = -1;
+    int defaultimages_id = -1;
+    int items_id = -1;
+    int backupsaves_id = -1;
+    int preferdefault_id = -1;
+
+    // Catacombs
+    int uniquecatacombs_id = -1;
+    int uniquecatacombslabel_id = -1;
+    int girlgetsgirls_id = -1;
+    int girlgetsitems_id = -1;
+    int girlgetsbeast_id = -1;
+    int girlsgirlspercslider_id = -1;
+    int girlsitemspercslider_id = -1;
+    int ganggetsgirls_id = -1;
+    int ganggetsitems_id = -1;
+    int ganggetsbeast_id = -1;
+    int gangsgirlspercslider_id = -1;
+    int gangsitemspercslider_id = -1;
 };

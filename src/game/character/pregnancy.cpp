@@ -59,9 +59,9 @@ bool UseAntiPreg(const sGirl& girl)
 
 
 int fertility(const sGirl& girl) {
-    if (girl.get_trait_modifier("tag:sterile") > 0) return 0;
+    if (girl.get_trait_modifier("tag:sterile") > 0)          return 0;
     if (girl.is_pregnant())                                  return 0;
-    if (girl.m_PregCooldown > 0)                           return 0;
+    if (girl.m_PregCooldown > 0)                             return 0;
     if(UseAntiPreg(girl)) {
         return 0;
     }

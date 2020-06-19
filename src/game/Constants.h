@@ -839,8 +839,6 @@ const std::array<const char*, NUM_IMGTYPES>& get_imgtype_names();
 
 
 const int NUM_GIRLFLAGS                = 30;
-const int MAXNUM_INVENTORY            = 3000;        // Maximum number of items in inventory
-const int MAXNUM_GIRL_INVENTORY        = 40;        // Maximum number of items a Girl can have in inventory
 const int MAXNUM_RIVAL_INVENTORY    = 40;        // Maximum number of items a Rival can have in inventory
 
 // Event constants oved from cEvents.h

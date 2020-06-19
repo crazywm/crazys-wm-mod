@@ -31,6 +31,7 @@ class TraitSpec;
 #include <string>
 #include <vector>
 #include <array>
+#include "utils/sPercent.h"
 #include "Constants.h"
 
 // structure to hold randomly generated girl information
@@ -58,12 +59,11 @@ struct sRandomGirl
     std::vector<int> m_TraitChance;
 
     // `J` added starting items for random girls
-    int m_NumItems;
-    int m_NumItemNames;
-    sInventoryItem* m_Inventory[MAXNUM_INVENTORY];
-    int m_ItemChance[MAXNUM_GIRL_INVENTORY];
-    int m_ItemChanceB[200];
-    std::string m_ItemNames[200];
+    struct sItemRecord {
+        const sInventoryItem* Item;
+        sPercent Chance;
+    };
+    std::vector<sItemRecord> m_Inventory;
 
 
     int m_MinMoney;    // min and max money they can start with

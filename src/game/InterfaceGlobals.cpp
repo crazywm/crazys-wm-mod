@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <chrono>
 #include "interface/cColor.h"
 #include "utils/DirPath.h"
 #include "cTariff.h"
@@ -91,6 +92,9 @@ void LoadInterface()
         g_LogFile.log(ELogLevel::INFO, "Keeping Default InterfaceColors");
     }
 
+    g_LogFile.debug("interface", "Loading screens");
+    auto start_time = std::chrono::steady_clock::now();
+
     // `J` Bookmark - Loading the screens
     load_window<cScreenPreparingGame>("Preparing Game", true);
     load_window<cScreenMainMenu>("Main Menu", true);
@@ -132,6 +136,9 @@ void LoadInterface()
     load_window<cScreenHouseDetails>("House");
     load_window<cScreenPrison>("Prison");
     load_window<cScreenGameConfig>("GameSetup");
+
+    auto duration = std::chrono::steady_clock::now() - start_time;
+    g_LogFile.debug("interface", "Loaded screens in ", std::chrono::duration_cast<std::chrono::milliseconds>(duration).count(), "ms");
 }
 
 sColor& LookupThemeColor(const std::string& name) {

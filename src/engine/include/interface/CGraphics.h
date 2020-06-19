@@ -39,7 +39,7 @@ public:
     CGraphics();
     ~CGraphics();
 
-    bool InitGraphics(std::string caption, int Width = 0, int Height = 0, int BPP = 32);
+    bool InitGraphics(std::string caption, int Width = 0, int Height = 0);
     bool End();        // End Drawing Stuff
     void Begin();      // begins drawing stuff
 
@@ -55,16 +55,11 @@ public:
     int GetWidth() const {return m_ScreenWidth;}
     int GetHeight() const {return m_ScreenHeight;}
 
-    float GetScaleX() const { return m_ScreenScaleX;}
-    float GetScaleY() const { return m_ScreenScaleY;}
-
     cFont LoadFont(const std::string& font, int size);
 
 private:
     // scaling
     bool m_Fullscreen = false;
-    float m_ScreenScaleX = 1.0f;
-    float m_ScreenScaleY = 1.0f;
 
     // Screen
     SDL_Window* m_Window = nullptr;
@@ -80,7 +75,6 @@ private:
     // screen attributes
     int m_ScreenWidth;
     int m_ScreenHeight;
-    int m_ScreenBPP;
 
     // Time
     unsigned int m_CurrentTime;

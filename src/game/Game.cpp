@@ -25,6 +25,7 @@
 #include "scripting/GameEvents.h"
 #include "xml/util.h"
 #include "character/traits/ITraitsCollection.h"
+#include "sConfig.h"
 
 namespace settings {
     extern const char* TAXES_RATE;
@@ -322,6 +323,14 @@ void Game::load(tinyxml2::XMLElement& root)
 
     read_attributes_xml(root);
 
+    // girl file list
+    auto gf = root.FirstChildElement("GirlFiles");
+    if(gf) {
+        for(auto& file : IterateChildElements(*gf, "File")) {
+            m_GirlFiles.insert(file.GetText());
+        }
+    }
+
     g_LogFile.log(ELogLevel::INFO, "Loading Rivals");
     /// TODO fix error handling;
     rivals().LoadRivalsXML(root.FirstChildElement("Rival_Manager"));
@@ -409,6 +418,12 @@ void Game::save(tinyxml2::XMLElement& root)
     // save bribe rate and bank
     el.SetAttribute("BribeRate", m_BribeRate);
     el.SetAttribute("Bank", m_Bank);
+
+    // girl file list
+    auto& gf = PushNewElement(el, "GirlFiles");
+    for(auto& file : m_GirlFiles) {
+        PushNewElement(gf, "File").SetText(file.c_str());
+    }
 
     // save prison
     auto& elPrison = PushNewElement(el, "PrisonGirls");
@@ -795,6 +810,7 @@ bool Game::has_building(BuildingType type) const
 
 void Game::UpdateMarketSlaves()
 {
+    g_LogFile.debug("game", "Updating slave market");
     int numgirls = g_Dice.bell(settings().get_integer(settings::SLAVE_MARKET_MIN_WEEKLY_NEW),
                                settings().get_integer(settings::SLAVE_MARKET_MAX_WEEKLY_NEW));
     if (numgirls > 20)    numgirls = 20;
@@ -802,6 +818,7 @@ void Game::UpdateMarketSlaves()
 
     std::vector<sGirl*> old_girls  = m_MarketGirls;
     std::vector<bool>   old_unique = m_MarketUniqueGirl;
+    assert(old_girls.size() == old_unique.size());
     m_MarketGirls.clear();
     m_MarketUniqueGirl.clear();
 
@@ -814,11 +831,13 @@ void Game::UpdateMarketSlaves()
         }
         else {
             if(!old_unique[i]) {
+                g_LogFile.debug("game", "Removing old girl ", old_girls[i]->FullName(), " from slave market");
                 delete old_girls[i];
             }
         }
     }
 
+    g_LogFile.debug("game", "Filling up slave market again");
     // next, fill up
     for(unsigned i = m_MarketGirls.size(); i < numgirls; ++i) {
 
@@ -1058,5 +1077,31 @@ IKeyValueStore& Game::settings()
 
 std::unique_ptr<ITraitsCollection> Game::create_traits_collection() {
     return m_Traits->create_collection();
+}
+
+void Game::LoadGirlFiles() {
+
+    cConfig cfg;
+    DirPath location = DirPath(cfg.folders.characters().c_str());
+
+    // first, load unique girls. Process only those that are not
+    // already present in the current game.
+    FileList girlfiles(location, "*.girlsx");
+    for (int i = 0; i < girlfiles.size(); i++)
+    {
+        if (m_GirlFiles.count(girlfiles[i].leaf()) > 0)
+        {
+            continue;
+        }
+        m_GirlFiles.insert(girlfiles[i].leaf());
+        girl_pool().LoadGirlsXML(girlfiles[i].full());
+    }
+
+    // load all random girls.
+    FileList rgirlfiles(location, "*.rgirlsx");
+    for (int i = 0; i < rgirlfiles.size(); i++)
+    {
+        g_Game->girl_pool().LoadRandomGirl(rgirlfiles[i].full());
+    }
 }
 

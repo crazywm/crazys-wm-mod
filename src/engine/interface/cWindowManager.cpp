@@ -71,8 +71,10 @@ void cWindowManager::replace(const std::string& window_name)
 void cWindowManager::Pop()
 {
     m_WindowStack.pop_back();
-    if(!m_WindowStack.empty())
+    if(!m_WindowStack.empty()) {
+        g_LogFile.info("interface", "New window is '", m_WindowStack.back()->name(), "', calling init");
         m_WindowStack.back()->init(true);
+    }
 }
 
 void cWindowManager::PopToWindow(const std::string& window_name)
@@ -88,7 +90,7 @@ void cWindowManager::PopToWindow(const std::string& window_name)
     }
 
     if(m_WindowStack.empty()) {
-        m_WindowStack.push_back(windows[window_name]);
+        m_WindowStack.push_back(windows.at(window_name));
     }
 
     m_WindowStack.back()->init(true);
@@ -301,9 +303,9 @@ CGraphics& cUIWidget::GetGraphics()
 }
 
 cInterfaceObject::cInterfaceObject() {
-    g_LogFile.debug("interface", "Create interface object ", this);
+    g_LogFile.verbose("interface", "Create interface object ", this);
 }
 
 cInterfaceObject::~cInterfaceObject() {
-    g_LogFile.debug("interface", "Delete interface object ", this);
+    g_LogFile.verbose("interface", "Delete interface object ", this);
 }

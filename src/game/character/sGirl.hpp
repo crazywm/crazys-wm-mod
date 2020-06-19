@@ -89,7 +89,7 @@ typedef struct sChild
     ~sChild(){ m_Prev = nullptr; if (m_Next)delete m_Next; m_Next = nullptr; }
 
     tinyxml2::XMLElement& SaveChildXML(tinyxml2::XMLElement& elRoot);
-    bool LoadChildXML(tinyxml2::XMLElement* pChild);
+    bool LoadChildXML(const tinyxml2::XMLElement* pChild);
 
 }sChild;
 
@@ -111,9 +111,9 @@ struct sGirl : public ICharacter
     */
     std::string m_Desc;                                // Short story about the girl
 
-    int house() const                               { return house_stat; }                /* It's NOT lupus! */
-    void house(int n)                                { house_stat = std::min(std::max(0 ,n), 100); }
-    int house_stat = 0;
+    int house() const                               { return m_HousePercent; }                /* It's NOT lupus! */
+    void house(int n)                                { m_HousePercent = std::min(std::max(0 , n), 100); }
+    int m_HousePercent = 0;
 
     /// gets the girls job for the day or night shift
     JOBS get_job(bool night_shift) const;
@@ -207,7 +207,7 @@ struct sGirl : public ICharacter
 
 
     tinyxml2::XMLElement& SaveGirlXML(tinyxml2::XMLElement& elRoot);
-    bool LoadGirlXML(tinyxml2::XMLElement* pGirl);
+    bool LoadGirlXML(const tinyxml2::XMLElement* pGirl);
     static std::unique_ptr<sGirl> LoadFromTemplate(const tinyxml2::XMLElement& root);
 
     /*
@@ -245,7 +245,6 @@ struct sGirl : public ICharacter
     void clear_pregnancy();
     void clear_dating();
 
-    int preg_chance(int base_pc, bool good = false, double factor = 1.0);
     bool calc_pregnancy(int chance, int type, const ICharacter& father);
 
     bool calc_pregnancy(cPlayer* player, double factor = 1.0, bool nomessage=false);

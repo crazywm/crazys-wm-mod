@@ -73,7 +73,7 @@ struct sMovieStudio : public IBuilding
     sMovieStudio();                            // constructor
     ~sMovieStudio();                        // destructor
 
-    void load_xml(tinyxml2::XMLElement& root) override;
+    void load_xml(const tinyxml2::XMLElement& root) override;
     void save_additional_xml(tinyxml2::XMLElement& root) const override;
 
     void auto_assign_job(sGirl * target, std::stringstream& message, bool is_night) override;

@@ -35,6 +35,10 @@ CGraphics::CGraphics() : m_ImageCache(this)
 
 CGraphics::~CGraphics()
 {
+    SDL_DestroyTexture(m_Screen);
+    SDL_FreeSurface(m_ScreenBuffer);
+    SDL_DestroyRenderer(m_Renderer);
+    SDL_DestroyWindow(m_Window);
     TTF_Quit();
     SDL_Quit();
 }
@@ -69,14 +73,12 @@ bool CGraphics::End()
     return true;
 }
 
-bool CGraphics::InitGraphics(std::string caption, int Width, int Height, int BPP)
+bool CGraphics::InitGraphics(std::string caption, int Width, int Height)
 {
     m_ScreenWidth = Width;
     m_ScreenHeight = Height;
     if (cfg.resolution.configXML())
     {
-        m_ScreenScaleX = (float)m_ScreenWidth / (float)cfg.resolution.scalewidth();
-        m_ScreenScaleY = (float)m_ScreenHeight / (float)cfg.resolution.scaleheight();
         m_Fullscreen = cfg.resolution.fullscreen();
     }
     else
@@ -93,7 +95,6 @@ bool CGraphics::InitGraphics(std::string caption, int Width, int Height, int BPP
         g_LogFile.error("interface", SDL_GetError());
         return false;
     }
-    m_ScreenBPP = BPP;
 
     // set window icon
     g_LogFile.info("interface","Setting Window Icon");
@@ -109,7 +110,7 @@ bool CGraphics::InitGraphics(std::string caption, int Width, int Height, int BPP
     if (m_Fullscreen) {
         SDL_CreateWindowAndRenderer(0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP, &m_Window, &m_Renderer);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // make the scaled rendering look smoother.
-        SDL_RenderSetLogicalSize(m_Renderer, 640, 480);
+        SDL_RenderSetLogicalSize(m_Renderer, m_ScreenWidth, m_ScreenHeight);
     }
     else
         SDL_CreateWindowAndRenderer(m_ScreenWidth, m_ScreenHeight, 0, &m_Window, &m_Renderer);
@@ -133,8 +134,10 @@ bool CGraphics::InitGraphics(std::string caption, int Width, int Height, int BPP
         return false;
     }
 
-    if(loadIcon)
+    if(loadIcon) {
         SDL_SetWindowIcon(m_Window, loadIcon);
+        SDL_FreeSurface(loadIcon);
+    }
 
     // set window caption
     g_LogFile.info("interface","Setting Window Caption");

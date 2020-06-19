@@ -137,7 +137,7 @@ public:
     *    save and load methods
     */
     tinyxml2::XMLElement& saveGoldXML(tinyxml2::XMLElement& elRoot) const;
-    bool loadGoldXML(tinyxml2::XMLElement * pGold);
+    bool loadGoldXML(const tinyxml2::XMLElement* pGold);
     /*
     *    type conversion methods
     */

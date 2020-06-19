@@ -177,8 +177,6 @@ protected:
     cSurface m_Border;
     int m_BorderSize;
 
-    float m_xRatio, m_yRatio;    // for storing the scaling ratio of the interface
-
 
     // For interacting with the window manager
     cWindowManager& window_manager() const;

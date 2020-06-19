@@ -25,8 +25,6 @@
 #include <vector>
 #include "interface/cColor.h"
 
-float FontScale = 1.0f;
-
 cFont::cFont(CGraphics* gfx) : m_GFX(gfx)
 {
 }
@@ -47,11 +45,7 @@ bool cFont::LoadFont(const std::string& font, int size)
     m_Font = nullptr;
     g_LogFile.debug("interface", "loading font: '", font, "' at size ", size);
 
-    FontScale = (cfg.resolution.fixedscale() ? m_GFX->GetScaleY() : 1.0f);
-
-    int t = int((float)size * FontScale);
-    if (FontScale < 1.0f) t += 1;
-    m_Font.reset(TTF_OpenFont(font.c_str(), t));
+    m_Font.reset(TTF_OpenFont(font.c_str(), size));
     if (!m_Font)
     {
         g_LogFile.error("interface", "Error in LoadFont for font file: ", font);

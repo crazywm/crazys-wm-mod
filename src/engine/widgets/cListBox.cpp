@@ -86,7 +86,7 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
     if (ShowHeaders)
     {
         // background for optional column header box
-        int scroll_space = (HeaderSort) ? 0 : 16;
+        int scroll_space = HeaderSort ? 0 : 16;
         dest_rect.w = m_eWidth - m_BorderSize - scroll_space;
         m_HeaderBackground = GetGraphics().CreateSurface(m_eWidth - scroll_space, m_eHeight, g_ListBoxHeaderBorderColor);
         m_HeaderBackground = m_HeaderBackground.FillRect(dest_rect, g_ListBoxHeaderBorderHColor);
@@ -102,17 +102,16 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
         m_HeaderUnSort = GetGraphics().LoadImage(None, -1, -1, true);
 
         // draw the "un-sort" clickable header
+
         if (HeaderSort)
         {
-            m_Divider.y = 0;
-            m_Divider.x = m_eWidth - 17;
-            m_Divider.w = 2;
-            m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider, g_ListBoxHeaderBorderHColor);
-            m_Divider.x++;
-            m_Divider.w = 1;
-            m_Divider.h--;
-            m_HeaderBackground = m_HeaderBackground.FillRect(m_Divider, g_ListBoxHeaderBorderColor);
-            m_Divider.h++;
+            SDL_Rect area{m_eWidth - 17, 0, 2, m_eHeight};
+            m_HeaderBackground = m_HeaderBackground.FillRect(area, g_ListBoxHeaderBorderHColor);
+            area.x++;
+            area.w = 1;
+            area.h--;
+            m_HeaderBackground = m_HeaderBackground.FillRect(area, g_ListBoxHeaderBorderColor);
+            area.h++;
 
             dest_rect.x = m_eWidth - 15;
             dest_rect.y = m_BorderSize;
@@ -120,6 +119,7 @@ cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, in
             dest_rect.w = 14;
             m_HeaderBackground = m_HeaderBackground.BlitOther(m_HeaderUnSort, nullptr, &dest_rect);
         }
+
     }
 
     m_MultiSelect = MultiSelect;
@@ -644,8 +644,8 @@ void cListBox::DefineColumns(std::vector<std::string> name, std::vector<std::str
     m_Font.SetFontBold(true);
     for (int i = 0; i < name.size(); i++)
     {
-        int left = int(offset[i] * GetGraphics().GetScaleX());
-        int right = i == name.size() - 1 ? m_eWidth : int(offset[i + 1] * GetGraphics().GetScaleX());
+        int left = offset[i];
+        int right = i == name.size() - 1 ? m_eWidth : offset[i + 1];
         auto gfx = m_Font.RenderText(header[i]);
         m_Columns.emplace_back(sColumnData{std::move(name[i]), std::move(header[i]), left, right - left, i, skip[i], gfx});
     }

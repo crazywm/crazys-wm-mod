@@ -34,13 +34,6 @@ sRandomGirl::sRandomGirl()
     m_Human = true;
     m_Catacomb = m_Arena = m_YourDaughter = m_IsDaughter = false;
 
-    m_NumItems = m_NumItemNames = 0;
-    for (int i = 0; i < MAXNUM_GIRL_INVENTORY; i++)
-    {
-        m_ItemChance[i] = 0;
-        m_Inventory[i] = nullptr;
-    }
-
     //assigning defaults
     for (int i = 0; i < NUM_STATS; i++)
     {
@@ -93,7 +86,6 @@ sRandomGirl::~sRandomGirl() = default;
 void sRandomGirl::load_from_xml(tinyxml2::XMLElement *el)
 {
     const char *pt;
-    m_NumItems = 0; m_NumItemNames = 0;
     // name and description are easy
     if (pt = el->Attribute("Name"))         m_Name = pt;
     g_LogFile.log(ELogLevel::INFO, "Loading Rgirl : ", pt);
@@ -297,27 +289,20 @@ void sRandomGirl::process_trait_xml(tinyxml2::XMLElement *el)
 
 void sRandomGirl::process_item_xml(tinyxml2::XMLElement *el)
 {
-    int ival; const char *pt;
-    sInventoryItem *item = nullptr;
-    if ((pt = el->Attribute("Name")))
+    if (const char* pt = el->Attribute("Name"))
     {
-        string finditem = pt;
-        item = g_Game->inventory_manager().GetItem(finditem);
+        sInventoryItem *item = g_Game->inventory_manager().GetItem(pt);
         if (!item)
         {
-            g_LogFile.log(ELogLevel::ERROR, "Can't find Item: '", finditem, "' - skipping it.");
+            g_LogFile.log(ELogLevel::ERROR, "Can't find Item: '", pt, "' - skipping it.");
             return;        // do as much as we can without crashing
         }
-        m_ItemNames[m_NumItemNames] = item->m_Name;
+
+        sPercent chance(el->IntAttribute("Percent", 100));
+        m_Inventory.push_back(sItemRecord{item, chance});
+    } else {
+        g_LogFile.log(ELogLevel::ERROR, "Item entry does not have a `Name` attribute, line ", el->GetLineNum());
     }
-    if (m_NumItemNames<MAXNUM_INVENTORY) m_Inventory[m_NumItems] = item;
-    if (el->QueryAttribute("Percent", &ival))
-    {
-        if (m_NumItemNames<MAXNUM_INVENTORY)    m_ItemChance[m_NumItems] = ival;
-        m_ItemChanceB[m_NumItemNames] = ival;
-    }
-    if (m_NumItemNames<MAXNUM_INVENTORY) m_NumItems++;
-    m_NumItemNames++;
 }
 
 void sRandomGirl::process_stat_xml(tinyxml2::XMLElement *el)

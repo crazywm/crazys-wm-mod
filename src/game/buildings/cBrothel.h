@@ -74,9 +74,8 @@ public:
     IBuilding& AddBuilding(std::unique_ptr<IBuilding> building);
     IBuilding& AddBuilding(const BrothelCreationData& data);
 
-    tinyxml2::XMLElement * LoadBuildingsXML(tinyxml2::XMLElement& root, const char * element_name, const char * manager_name = nullptr);
+    void LoadXML(const tinyxml2::XMLElement& root);
     tinyxml2::XMLElement * SaveXML(tinyxml2::XMLElement& root) const;
-    void LoadXML(tinyxml2::XMLElement& root);
 
     /// Gets the total number of buildings
     int num_buildings() const;

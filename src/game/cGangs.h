@@ -154,7 +154,7 @@ public:
     sGang* GetTempWeakGang();
 
     tinyxml2::XMLElement& SaveGangsXML(tinyxml2::XMLElement& pRoot);
-    bool LoadGangsXML(tinyxml2::XMLElement * xml);
+    bool LoadGangsXML(const tinyxml2::XMLElement* pGangManager);
 
     int GetNumBusinessExtorted()        { return m_BusinessesExtort; }
     int NumBusinessExtorted(int n)        { m_BusinessesExtort += n; return m_BusinessesExtort; }

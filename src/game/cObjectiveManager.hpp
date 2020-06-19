@@ -51,7 +51,7 @@ public:
     void CreateNewObjective();            // Creates a new objective
     void PassObjective();                // Gives a reward
 
-    void LoadFromXML(tinyxml2::XMLElement& root);
+    void LoadFromXML(const tinyxml2::XMLElement& root);
     void SaveToXML(tinyxml2::XMLElement& root) const;
 private:
     std::unique_ptr<sObjective> m_Objective;
