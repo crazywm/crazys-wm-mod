@@ -107,6 +107,7 @@ protected:
 
 struct CBuildingManagementScreenDispatch: public cInterfaceWindow
 {
+    CBuildingManagementScreenDispatch();
     void load() {};
     void process() override {}
     void init(bool back) override;

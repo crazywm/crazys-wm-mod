@@ -27,7 +27,6 @@ void NextWeek();
 void AutoSaveGame();
 void SaveGame();
 void SaveGameXML(std::string filename);
-void LoadGameInfoFiles();
 void LoadNames();
 
 void LoadInterface();

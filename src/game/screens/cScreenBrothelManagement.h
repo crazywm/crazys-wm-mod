@@ -64,6 +64,7 @@ public:
 
 struct CBuildingScreenDispatch: public cInterfaceWindow
 {
+    CBuildingScreenDispatch();
     void load() {};
     void process() override {}
     void init(bool back) override;

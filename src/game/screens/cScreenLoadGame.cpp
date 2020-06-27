@@ -31,7 +31,7 @@ extern int g_ReturnInt;
 
 
 
-cScreenLoadGame::cScreenLoadGame()
+cScreenLoadGame::cScreenLoadGame() : cInterfaceWindow("LoadGame")
 {
 }
 

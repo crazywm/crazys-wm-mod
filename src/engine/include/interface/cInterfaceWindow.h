@@ -48,9 +48,10 @@ namespace tinyxml2 {
 class cInterfaceWindow : public cInterfaceObject
 {
 public:
-    cInterfaceWindow() {
-    }
+    cInterfaceWindow(std::string name);
     ~cInterfaceWindow() override;
+
+    const std::string& name() const { return m_Name; }
 
     void CreateWindow(int x, int y, int width, int height, int BorderSize);    // and color options latter
     void UpdateWindow(int x, int y);
@@ -192,11 +193,13 @@ protected:
     void input_choice(std::string question, std::vector<std::string> options, std::function<void(int)> callback);
 private:
     cWindowManager* m_WindowManager = nullptr;
+
+    std::string m_Name;     // name of the window
 };
 
 class cModalWindow : public cInterfaceWindow {
 public:
-    cModalWindow() = default;
+    cModalWindow();
     bool IsTransparent() const override { return true; }
     void process() override;
     void Draw(const CGraphics& gfx) override;

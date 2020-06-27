@@ -30,7 +30,8 @@
 extern cConfig cfg;
 
 cInterfaceWindowXML::cInterfaceWindowXML(const char* base_file) :
-        m_filename( (DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << base_file).str() ) {
+    cInterfaceWindow(base_file),
+    m_filename( (DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << base_file).str() ) {
 
 }
 

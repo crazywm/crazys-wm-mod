@@ -56,6 +56,7 @@ namespace settings {
     const char* USER_ITEMS_AUTO_EQUIP_COMBAT = "user.items.auto_equip_combat";
     const char* USER_HOROSCOPE           = "user.horoscopetype";
     const char* USER_MOVIES_AUTO         = "user.movies.auto";
+    const char* USER_COMBAT_POPUP        = "user.combat-popup";
 
     const char* SLAVE_MARKET_MIN_WEEKLY_NEW = "slave_market.min_weekly_new";
     const char* SLAVE_MARKET_MAX_WEEKLY_NEW = "slave_market.max_weekly_new";
@@ -112,6 +113,7 @@ cGameSettings::cGameSettings()
     add_setting(USER_ITEMS_AUTO_EQUIP_COMBAT, "Auto Equip Combat", "If this is enabled, girls will equip their combat gear before doing any combat-related jobs.", true);
     add_setting(USER_HOROSCOPE, "Horoscope", "Which horoscope to use", 1);
     add_setting(USER_MOVIES_AUTO, "Auto Make Movies", "Whether scenes should automatically be combined to movies", true);
+    add_setting(USER_COMBAT_POPUP, "Combat Popup", "Whether combat details are shown in a popup", true);
     // add_setting("user.torture_mod", "Whether free girls are allowed to keep their tips.", true);
     // TODO Figure out what this one does
     // add_setting("user.slave_pay", "Whether free girls are allowed to keep their tips.", true);

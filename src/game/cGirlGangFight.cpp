@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <utils/streaming_random_selection.hpp>
+#include "utils/streaming_random_selection.hpp"
 #include "cGirlGangFight.h"
 #include "cGangs.h"
 #include "Game.hpp"
@@ -25,6 +25,10 @@
 #include "combat/combat.h"
 
 extern cRng g_Dice;
+
+namespace settings {
+    extern const char* USER_COMBAT_POPUP;
+}
 
 EGirlEscapeAttemptResult AttemptEscape(sGirl& girl) {
     // decide if she's going to fight or flee
@@ -45,7 +49,9 @@ EGirlEscapeAttemptResult AttemptEscape(sGirl& girl) {
 
         auto result = combat.run(10);
         for(auto& round : combat.round_summaries()) {
-            g_Game->push_message(round, 0);
+            if(g_Game->settings().get_bool(settings::USER_COMBAT_POPUP)) {
+                g_Game->push_message(round, 0);
+            }
         }
 
         if (result == ECombatResult::VICTORY)
@@ -62,7 +68,9 @@ EGirlEscapeAttemptResult AttemptEscape(sGirl& girl) {
 
     auto pc_result = pc_combat.run(10);
     for(auto& round : pc_combat.round_summaries()) {
-        g_Game->push_message(round, 0);
+        if(g_Game->settings().get_bool(settings::USER_COMBAT_POPUP)) {
+            g_Game->push_message(round, 0);
+        }
     }
 
     if (pc_result == ECombatResult::VICTORY)

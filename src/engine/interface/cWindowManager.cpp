@@ -38,9 +38,10 @@ cWindowManager::~cWindowManager() = default;
 
 void cWindowManager::push(const std::string& window_name)
 {
+    g_LogFile.info("interface", "Push Window '", window_name, '\'');
     if (windows.find(window_name) == windows.end())                        //check the screen exists
     {
-        g_LogFile.error("interface", "cWindowManager::Push: can't find window named '", window_name, "'");
+        g_LogFile.error("interface", "can't find window named '", window_name, "'");
         return;
     }
 
@@ -55,6 +56,7 @@ void cWindowManager::push(const std::string& window_name)
 
 void cWindowManager::replace(const std::string& window_name)
 {
+    g_LogFile.info("interface", "Replace Window '", window_name, '\'');
     auto current = m_WindowStack.back();
     m_WindowStack.pop_back();
     try {
@@ -70,6 +72,7 @@ void cWindowManager::replace(const std::string& window_name)
 // remove function from the stack
 void cWindowManager::Pop()
 {
+    g_LogFile.info("interface", "Pop Window");
     m_WindowStack.pop_back();
     if(!m_WindowStack.empty()) {
         g_LogFile.info("interface", "New window is '", m_WindowStack.back()->name(), "', calling init");
@@ -79,6 +82,7 @@ void cWindowManager::Pop()
 
 void cWindowManager::PopToWindow(const std::string& window_name)
 {
+    g_LogFile.info("screens", "Pop to window: ", window_name);
     if (windows.find(window_name) == windows.end())                        //check the screen exists
     {
         g_LogFile.error("interface", "cWindowManager::Push: can't find window named '", window_name, "'");

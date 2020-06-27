@@ -19,23 +19,26 @@
 #pragma once
 
 #include "cGameWindow.h"
+#include <mutex>
+#include <future>
 
 class cScreenPreparingGame : public cGameWindow
 {
 private:
-    int prep_id;
-    int brothel_id;
-    int pname_id;
-    int psname_id;
     int cancel_id;
 
     int text1_id;
     int text2_id;
     int text3_id;
-    int text4_id;
-    int text5_id;
 
     void set_ids() override;
+
+    std::mutex m_Mutex;
+    std::vector<std::string> m_Messages;
+    std::future<bool> m_AsyncLoad;
+
+    bool NewGame(std::string name);
+    bool LoadGame(std::string name);
 public:
     cScreenPreparingGame();
 

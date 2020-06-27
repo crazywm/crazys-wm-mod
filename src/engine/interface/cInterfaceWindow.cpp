@@ -571,18 +571,15 @@ cWindowManager& cInterfaceWindow::window_manager() const
 }
 
 void cInterfaceWindow::push_window(const std::string& name) const {
-    g_LogFile.info("screens", "Push Window '", name, '\'');
     window_manager().push(name);
 }
 
 void cInterfaceWindow::replace_window(const std::string& name) const {
-    g_LogFile.info("screens", "Replace Window '", name, '\'');
     window_manager().replace(name);
 }
 
 void cInterfaceWindow::pop_window() const
 {
-    g_LogFile.info("screens", "Pop Window");
     window_manager().Pop();
 }
 
@@ -620,7 +617,6 @@ void cInterfaceWindow::TextInput(const char* ip) {
 
 void cInterfaceWindow::pop_to_window(const std::string& target) const
 {
-    g_LogFile.info("screens", "Pop to window: ", target);
     window_manager().PopToWindow(target);
 }
 
@@ -736,6 +732,10 @@ CGraphics& cInterfaceWindow::GetGraphics() {
     return window_manager().GetGraphics();
 }
 
+cInterfaceWindow::cInterfaceWindow(std::string name) : m_Name(name) {
+
+}
+
 void cModalWindow::process() {
     if(!m_Widgets.empty()) {
         if(m_Widgets.front()->IsDisabled()) {
@@ -750,4 +750,8 @@ void cModalWindow::Draw(const CGraphics& gfx)
 {
     if(!m_Widgets.empty())
         m_Widgets.front()->Draw(gfx);
+}
+
+cModalWindow::cModalWindow() : cInterfaceWindow("ModalWindow") {
+
 }

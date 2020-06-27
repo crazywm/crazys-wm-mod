@@ -95,7 +95,7 @@ void IBuildingScreen::set_ids()
     });
     SetButtonCallback(quit_id, [this]() {
         input_confirm([this]() {
-            window_manager().PopToWindow("Main Menu");
+            pop_to_window("Main Menu");
         });
     });
 }
@@ -435,4 +435,8 @@ void CBuildingScreenDispatch::init(bool back)
         replace_window("Farm Screen");
         break;
     }
+}
+
+CBuildingScreenDispatch::CBuildingScreenDispatch() : cInterfaceWindow("BuildingScreenDispatch") {
+
 }

@@ -102,18 +102,6 @@ void LoadXMLItems(FileList &fl)
     }
 }
 
-void LoadGameInfoFiles()
-{
-    stringstream ss;
-    // `J` Load .itemsx files
-    // DirPath location_i = DirPath() << "Resources" << "Items"; // `J` moved items from Data to Items folder
-    DirPath location_i = DirPath(cfg.folders.items().c_str());
-    FileList fl_i(location_i, "*.itemsx");
-    g_LogFile.log(ELogLevel::INFO, "Found ", fl_i.size(), " itemsx files");
-    LoadXMLItems(fl_i);
-    LoadNames();
-}
-
 void LoadNames()
 {// `J` load names lists
     DirPath location_N = DirPath() << "Resources" << "Data" << "RandomGirlNames.txt";

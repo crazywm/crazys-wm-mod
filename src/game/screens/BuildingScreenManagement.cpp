@@ -1060,6 +1060,9 @@ void CBuildingManagementScreenDispatch::init(bool back)
     }
 }
 
+CBuildingManagementScreenDispatch::CBuildingManagementScreenDispatch() :
+    cInterfaceWindow("BuildingManagementDispatch") {
+}
 
 
 cScreenArenaManagement::cScreenArenaManagement() :
