@@ -20,7 +20,7 @@
 #include "interface/cWindowManager.h"
 #include "cGold.h"
 #include "cTariff.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "Game.hpp"
 #include <sstream>
 

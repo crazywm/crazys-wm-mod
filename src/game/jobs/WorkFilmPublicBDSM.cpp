@@ -20,7 +20,7 @@
 #include "Game.hpp"
 #include "character/cCustomers.h"
 #include "character/cPlayer.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "character/predicates.h"
 
 void FilmPubBDSM::GainTraits(sGirl& girl, int performance) const {

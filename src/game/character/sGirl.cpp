@@ -10,7 +10,7 @@
 #include "character/cCustomers.h"
 #include "cInventory.h"
 #include "character/cPlayer.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "scripting/cScriptManager.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
@@ -20,6 +20,7 @@
 #include "predicates.h"
 #include "pregnancy.h"
 #include "jobs/GenericJob.h"
+#include "buildings/cDungeon.h"
 
 extern cRng g_Dice;
 extern cConfig cfg;

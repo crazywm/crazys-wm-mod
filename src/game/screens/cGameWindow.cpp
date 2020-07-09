@@ -21,7 +21,7 @@
 #include "cGameWindow.h"
 #include "interface/cWindowManager.h"
 #include "Game.hpp"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "CLog.h"
 #include "widgets/cImageItem.h"
 #include "interface/CGraphics.h"

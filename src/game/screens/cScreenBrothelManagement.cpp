@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "buildings/cBrothel.h"
 #include "scripting/cScriptManager.h"
 #include "interface/cWindowManager.h"
+#include "character/cPlayer.h"
 #include "cScreenBrothelManagement.h"
 #include "utils/FileList.h"
 #include "Game.hpp"
@@ -106,9 +107,9 @@ void IBuildingScreen::process()
     if (girlimage_id != -1) HideWidget(girlimage_id, true);
 }
 
-IBuildingScreen::IBuildingScreen(const char * base_file, BuildingType building, bool * has_walked) :
+IBuildingScreen::IBuildingScreen(const char * base_file, BuildingType building) :
         cGameWindow(base_file),
-        m_Type(building), m_HasDoneWalkThisWeek(has_walked)
+        m_Type(building)
 {
 }
 
@@ -127,38 +128,15 @@ void IBuildingScreen::init(bool back)
     ss << "Day: " << g_Game->date().day << " Month: " << g_Game->date().month << " Year: " << g_Game->date().year
        << " -- " << active_building().type_str() << ": " << active_building().name();
     EditTextItem(ss.str(), buildinglabel_id);
-
-    if(m_HasDoneWalkThisWeek)
-        DisableWidget(walk_id, *m_HasDoneWalkThisWeek);
-
+    DisableWidget(walk_id, !active_building().CanEncounter());
     SetImage(background_id, active_building().background_image());
 }
 
 void IBuildingScreen::try_walk()
 {
-    /// TODO this function should not be part of the UI code!
-    if(!m_HasDoneWalkThisWeek)
-        return;
-
-    if (*m_HasDoneWalkThisWeek)
-    {
-        g_Game->push_message("You can only do this once per week.", COLOR_RED);
-        return;
-    }
-
-    if (!g_Game->allow_cheats()) *m_HasDoneWalkThisWeek = true;
-
-    sGirl* girl = active_building().meet_girl();
+    sGirl* girl = active_building().TryEncounter();
     if (girl == nullptr)                                                // if there's no girl, no meeting
     {
-        g_Game->push_message(walk_no_luck(), COLOR_RED);
-        return;
-    }
-
-    // most of the time, you're not going to find anyone unless you're cheating, of course.
-    if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Game->allow_cheats())
-    {
-        g_Game->push_message(walk_no_luck(), COLOR_BLUE);
         return;
     }
 
@@ -167,13 +145,6 @@ void IBuildingScreen::try_walk()
         PrepareImage(girlimage_id, girl, IMGTYPE_PROFILE, true, -1);
         HideWidget(girlimage_id, false);
     }
-
-    do_walk(girl);
-}
-
-std::string IBuildingScreen::walk_no_luck()
-{
-    return "NOT IMPLEMENTED! AT " __FILE__;
 }
 
 static std::string fame_text(const IBuilding* brothel)
@@ -233,138 +204,32 @@ static std::string get_building_summary(const IBuilding& building)
 
 
 cScreenBrothelManagement::cScreenBrothelManagement() : IBuildingScreen("brothel_management.xml",
-                                                                       BuildingType::BROTHEL, nullptr)
+                                                                       BuildingType::BROTHEL)
 {
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
-cScreenArena::cScreenArena() : IBuildingScreen("arena_screen.xml", BuildingType::ARENA, &g_TryOuts)
+cScreenArena::cScreenArena() : IBuildingScreen("arena_screen.xml", BuildingType::ARENA)
 {
 }
 
-void cScreenArena::do_walk(sGirl* girl)
-{
-    girl->TriggerEvent( EDefaultEvent::MEET_GIRL_ARENA );
-}
 
-std::string cScreenArena::walk_no_luck()
-{
-    if (m_first_walk) {
-        m_first_walk = false;
-        return    "Your father once called this 'talent spotting' - "
-                  "and looking these girls over you see no talent for "
-                  "anything."
-                ;
-    }
-    switch (g_Dice % 8) {
-    case 0:
-    case 1:
-    case 2: return
-                "The city is quiet and no one shows up.";
-    case 3: return
-                "Married. Married. Bodyguard. Already works for you. Married. "
-                "Hideous. Not a woman. Married. Escorted. Married... "
-                "Might as well go home, there's nothing happening out here."
-                ;
-    case 4: return
-                "It's not a bad life, if you can get paid for hanging around "
-                "on street corners and eyeing up the pretty girls. Not a "
-                "single decent prospect in the bunch of them, mind. "
-                "Every silver lining has a cloud..."
-                ;
-    case 5: return
-                "You've walked and walked and walked, and the prettiest "
-                "thing you've seen all day turned out not to be female. "
-                "It's time to go home..."
-                ;
-    case 6: return
-                "When the weather is bad, the hunting is good. Get them cold "
-                "and wet enough and girls too proud to spread their legs "
-                "suddenly can't get their knickers off fast enough, if the job "
-                "only comes with room and board. The down side is that you "
-                "spend far too much time walking in the rain when everyone "
-                "sane is warm inside. Time to head home for a mug of cocoa "
-                "and a nice hot trollop."
-                ;
-    default: return
-                "There's a bit of skirt over there with a lovely "
-                "figure, and had a face that was pretty, ninety "
-                "years ago. Over yonder, a sweet young thing frolicking "
-                "through the marketplace. She's being ever so daring, "
-                "spending her daddy's gold, and hasn't yet realised "
-                "that there's a dozen of her daddy's goons keeping "
-                "a discreet eye on her.  It's like that everywhere "
-                "today. Maybe tomorrow will be better."
-                ;
-    }
-}
-
-cScreenCentre::cScreenCentre() : IBuildingScreen("centre_screen.xml", BuildingType::CENTRE, &g_TryCentre)
+cScreenCentre::cScreenCentre() : IBuildingScreen("centre_screen.xml", BuildingType::CENTRE)
 {
     //
 }
 
 
-cScreenClinic::cScreenClinic() : IBuildingScreen("clinic_screen.xml", BuildingType::CLINIC,
-                                                 &g_TryEr)
+cScreenClinic::cScreenClinic() : IBuildingScreen("clinic_screen.xml", BuildingType::CLINIC)
 {
 }
 
-void cScreenClinic::do_walk(sGirl* girl)
-{
-    girl->TriggerEvent( EDefaultEvent::MEET_GIRL_CLINIC );
-}
-
-std::string cScreenClinic::walk_no_luck()
-{
-    if(m_first_walk) {
-        m_first_walk = false;
-        return    "Your father once called this 'talent spotting' - "
-                  "and looking these girls over you see no talent for "
-                  "anything."
-                ;
-    }
-    switch(g_Dice % 8) {
-    case 0:
-    case 1:
-    case 2: return
-                "The Clinic is quite not much going on here.";
-    case 3: return
-                "Married. Married. Bodyguard. Already works for you. Married. "
-                "Hideous. Not a woman. Married. Escorted. Married... "
-                "Might as well go home, there's nothing happening here."
-                ;
-    case 4: return
-                "It's not a bad life, if you can get paid for hanging in the "
-                "clinic eyeing up the pretty girls that might be brought in."
-                "Not a single decent prospect in the bunch of them. "
-                ;
-    case 5: return
-                "You've walked and walked and walked, and the prettiest "
-                "thing you've seen all day turned out not to be female. "
-                "It's time to go home..."
-                ;
-    case 6: return
-                "When the weather is bad, the hunting is good. The cold brings "
-                "in the sick. But nothing of note today. "
-                ;
-    default: return
-                "There's a bit of skirt over there with a lovely "
-                "figure, and had a face that was pretty, ninety "
-                "years ago. Over yonder, a sweet young thing but she's "
-                "got daddy's gold.  Looks like nothing to gain here today. "
-                ;
-    }
-}
-
-
-cScreenFarm::cScreenFarm(): IBuildingScreen("farm_screen.xml", BuildingType::FARM, nullptr)
+cScreenFarm::cScreenFarm(): IBuildingScreen("farm_screen.xml", BuildingType::FARM)
 {
 
 }
 
-cScreenHouse::cScreenHouse() : IBuildingScreen("playerhouse_screen.xml",
-                                               BuildingType::HOUSE, nullptr)
+cScreenHouse::cScreenHouse() : IBuildingScreen("playerhouse_screen.xml", BuildingType::HOUSE)
 {
 }
 
@@ -375,13 +240,8 @@ void cScreenHouse::set_ids()
     SetButtonNavigation(house_id,"House", false);
 }
 
-cMovieScreen::cMovieScreen() : IBuildingScreen("movie_screen.xml", BuildingType::STUDIO, &g_TryCast)
+cMovieScreen::cMovieScreen() : IBuildingScreen("movie_screen.xml", BuildingType::STUDIO)
 {
-}
-
-void cMovieScreen::do_walk(sGirl* girl)
-{
-    girl->TriggerEvent( EDefaultEvent::MEET_GIRL_STUDIO );
 }
 
 void cMovieScreen::set_ids()
@@ -391,23 +251,6 @@ void cMovieScreen::set_ids()
     SetButtonNavigation(createmovie_id, "Movie Maker", false);
 }
 
-std::string cMovieScreen::walk_no_luck()
-{
-    if (m_first_walk)
-    {
-        m_first_walk = false;
-        return    "Your father once called this 'talent spotting' - and looking these girls over you see no talent for anything.";
-    }
-    switch (g_Dice % 8)
-    {
-    case 0:    return "Married. Married. Bodyguard. Already works for you. Married. Hideous. Not a woman. Married. Escorted. Married...\nMight as well go home, there's nothing happening here.";
-    case 1:    return "It's not a bad life, if you can get paid to try pretty girls out before they start filming. But somedays there isn't a single decent prospect in the bunch of them.";
-    case 2:    return "All seemed perfect she was pretty really wanting to be an actress...  Then you told her what kinda movies you planned to make and she stormed off cursing at you.";
-    case 3:    return "When the weather is bad people just don't show up for this kinda thing.";
-    case 4:    return "There's a bit of skirt over there with a lovely figure, and had a face that was pretty, ninety years ago. Over yonder, a sweet young thing but she's got daddy's gold.  Looks like nothing to gain here today. ";
-    default:return "There is not much going on here in the studio.";
-    }
-}
 
 void CBuildingScreenDispatch::init(bool back)
 {

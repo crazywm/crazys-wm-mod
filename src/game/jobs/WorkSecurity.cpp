@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cRng.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include <sstream>
 #include "cJobManager.h"
 

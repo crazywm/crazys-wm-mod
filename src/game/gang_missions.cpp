@@ -32,8 +32,7 @@
 #include "cObjectiveManager.hpp"
 #include "sStorage.hpp"
 #include "IBuilding.hpp"
-// for building manager
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "CLog.h"
 #include "combat/combat.h"
 #include "sConfig.h"

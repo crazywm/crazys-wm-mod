@@ -19,9 +19,11 @@
 #include <tinyxml2.h>
 #include "cInventory.h"
 #include <iostream>
+#include "cGirls.h"
 #include "character/pregnancy.h"
-#include "buildings/cBrothel.h"
+#include "character/sGirl.hpp"
 #include "character/cCustomers.h"
+#include "character/cPlayer.h"
 #include "Game.hpp"
 #include "utils/streaming_random_selection.hpp"
 #include "CLog.h"

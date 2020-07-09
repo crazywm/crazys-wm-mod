@@ -21,7 +21,8 @@
 #include <functional>
 #include "cScreenTurnSummary.h"
 
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
+#include "buildings/cDungeon.h"
 #include "cGangs.h"
 
 #include "InterfaceProcesses.h"

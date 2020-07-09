@@ -17,13 +17,15 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cRng.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "Game.hpp"
 #include "character/cCustomers.h"
 #include "sStorage.hpp"
 #include <sstream>
 #include "cJobManager.h"
 #include "character/predicates.h"
+#include "character/cPlayer.h"
+#include "buildings/cDungeon.h"
 
 
 //BSIN: function used to convert to ounces

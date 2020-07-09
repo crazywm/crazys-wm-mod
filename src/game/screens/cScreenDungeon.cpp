@@ -21,7 +21,9 @@
 #include <algorithm>
 #include "widgets/cListBox.h"
 #include "cScreenDungeon.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
+#include "buildings/cDungeon.h"
+#include "character/cPlayer.h"
 #include "main.h"
 #include "utils/DirPath.h"
 #include "cTariff.h"

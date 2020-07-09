@@ -22,8 +22,7 @@
 #ifndef __CMOVIESTUDIO_H
 #define __CMOVIESTUDIO_H
 
-#include "buildings/cBrothel.h"
-#include "cGold.h"
+#include "IBuilding.hpp"
 #include "cJobManager.h"
 
 using namespace std;
@@ -80,6 +79,9 @@ struct sMovieStudio : public IBuilding
     void UpdateGirls(bool is_night) override;
 
     void Update() override;
+
+    sGirl* meet_girl() const override;
+    std::string meet_no_luck() const override;
 
     int AddScene(sGirl* girl, int Job, int Bonus, int jobType, const char* scene_name);
     void LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks, int m_MovieSceneNum, string m_CM = "", string m_CP = "");

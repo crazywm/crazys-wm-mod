@@ -16,8 +16,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "buildings/cBrothel.h"
 #include "cScreenHouseDetails.h"
+#include "buildings/cBuildingManager.h"
 #include "interface/cWindowManager.h"
 #include "cGangs.h"
 #include "cObjectiveManager.hpp"

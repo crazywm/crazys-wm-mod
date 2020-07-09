@@ -26,7 +26,7 @@
 #include "character/predicates.h"
 #include "Game.hpp"
 #include "cGirlGangFight.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 
 struct sRemoveTrait {
     const char* Trait;

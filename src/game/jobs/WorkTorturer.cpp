@@ -16,11 +16,12 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include <sstream>
 #include "Game.hpp"
 #include "cJobManager.h"
+#include "buildings/cDungeon.h"
 
 // `J` Job Brothel - General
 bool WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)

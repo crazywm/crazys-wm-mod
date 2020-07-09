@@ -7,6 +7,7 @@
 #include "InterfaceProcesses.h"
 #include "Game.hpp"
 #include "buildings/queries.hpp"
+#include "character/cPlayer.h"
 #include <sstream>
 #include "cJobManager.h"
 #include "sConfig.h"

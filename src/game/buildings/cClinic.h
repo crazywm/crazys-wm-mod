@@ -22,14 +22,16 @@
 #ifndef __CCLINIC_H
 #define __CCLINIC_H
 
-#include "buildings/cBrothel.h"
-#include "cGold.h"
+#include "IBuilding.hpp"
 
 // defines a single clinic
 struct sClinic : public IBuilding
 {
     sClinic();
     ~sClinic() override;
+
+    sGirl* meet_girl() const override;
+    std::string meet_no_luck() const override;
 
     void save_additional_xml(tinyxml2::XMLElement& root) const override {};
     void auto_assign_job(sGirl * target, std::stringstream& message, bool is_night) override;

@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "Game.hpp"
 #include "sStorage.hpp"
 #include "cJobManager.h"
+#include "scripting/GameEvents.h"
 
 extern cRng             g_Dice;
 
@@ -233,5 +234,43 @@ void sArena::auto_assign_job(sGirl* target, std::stringstream& message, bool is_
 sGirl* sArena::meet_girl() const
 {
     // let's get a girl for the player to meet was to get arena.. dont think this should happen this is tryouts arena girl should be ready to fight. CRAZY
-    return g_Game->GetRandomGirl(false, false, true);
+    auto girl = g_Game->GetRandomGirl(false, false, true);
+    girl->TriggerEvent( EDefaultEvent::MEET_GIRL_ARENA );
+    return girl;
+}
+
+std::string sArena::meet_no_luck() const {
+    return g_Dice.select_text(
+            {
+                "Your father once called this 'talent spotting' - "
+                "and looking these girls over you see no talent for "
+                "anything.",
+                "The city is quiet and no one shows up.",
+                "Married. Married. Bodyguard. Already works for you. Married. "
+                "Hideous. Not a woman. Married. Escorted. Married... "
+                "Might as well go home, there's nothing happening out here.",
+                "It's not a bad life, if you can get paid for hanging around "
+                "on street corners and eyeing up the pretty girls. Not a "
+                "single decent prospect in the bunch of them, mind. "
+                "Every silver lining has a cloud...",
+                "You've walked and walked and walked, and the prettiest "
+                "thing you've seen all day turned out not to be female. "
+                "It's time to go home...",
+                "When the weather is bad, the hunting is good. Get them cold "
+                "and wet enough and girls too proud to spread their legs "
+                "suddenly can't get their knickers off fast enough, if the job "
+                "only comes with room and board. The down side is that you "
+                "spend far too much time walking in the rain when everyone "
+                "sane is warm inside. Time to head home for a mug of cocoa "
+                "and a nice hot trollop.",
+                "There's a bit of skirt over there with a lovely "
+                "figure, and had a face that was pretty, ninety "
+                "years ago. Over yonder, a sweet young thing frolicking "
+                "through the marketplace. She's being ever so daring, "
+                "spending her daddy's gold, and hasn't yet realised "
+                "that there's a dozen of her daddy's goons keeping "
+                "a discreet eye on her.  It's like that everywhere "
+                "today. Maybe tomorrow will be better."
+            }
+            );
 }

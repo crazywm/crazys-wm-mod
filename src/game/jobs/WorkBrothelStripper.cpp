@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma region //    Includes and Externs            //
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "character/cCustomers.h"
 #include "cRng.h"
 #include "cInventory.h"

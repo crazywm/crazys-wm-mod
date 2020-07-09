@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include "cInventory.h"
 #include <sstream>
@@ -29,6 +29,8 @@
 #include "sConfig.h"
 #include "Inventory.hpp"
 #include "character/predicates.h"
+#include "buildings/cDungeon.h"
+#include "character/cPlayer.h"
 
 extern cConfig cfg;
 

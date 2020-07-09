@@ -17,13 +17,14 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "cJobManager.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include "cInventory.h"
 #include <sstream>
 #include "Game.hpp"
 #include "cJobManager.h"
 #include "character/predicates.h"
+#include "character/cPlayer.h"
 
 // `J` Job House - General
 bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)

@@ -18,7 +18,7 @@
  */
 
 #if 0
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include "cMovieStudio.h"
 #include "Game.hpp"

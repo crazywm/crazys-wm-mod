@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@
 #include "Revision.h"
 #include "utils/FileList.h"
 #include "utils/DirPath.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
 #include "cGangs.h"
@@ -52,10 +52,6 @@ bool g_AllTogle = false;    // used on screens when wishing to apply something t
 
 // for keeping track of weather have walked around town today
 bool g_WalkAround = false;
-bool g_TryCentre = false;
-bool g_TryOuts = false;
-bool g_TryEr = false;
-bool g_TryCast = false;
 
 int g_TalkCount = 10;
 
@@ -118,10 +114,6 @@ void NextWeek()
     g_LogFile.debug("turn", " *** NextWeek || Start ***");
 
     g_WalkAround = false;
-    g_TryCentre = false;
-    g_TryOuts = false;
-    g_TryEr = false;
-    g_TryCast = false;
     g_TalkCount = 10;
     /*
     // `J` I want to make the player start with 0 in all stats and skills
@@ -175,10 +167,6 @@ void SaveGameXML(string filename)
     // output interface variables
     pRoot->SetAttribute("WalkAround", g_WalkAround);
     pRoot->SetAttribute("TalkCount", g_TalkCount);
-    pRoot->SetAttribute("TryCentre", g_TryCentre);
-    pRoot->SetAttribute("TryOuts", g_TryOuts);
-    pRoot->SetAttribute("TryEr", g_TryEr);
-    pRoot->SetAttribute("TryCast", g_TryCast);
 
     g_Game->save(*pRoot);
     doc.SaveFile(filename.c_str());

@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,7 @@
 class IBuildingScreen : public cGameWindow {
 private:
     BuildingType m_Type;
-    bool* m_HasDoneWalkThisWeek = nullptr;
 protected:
-    bool m_first_walk = true;
-
     int buildinglabel_id = -1;
     int background_id = -1;
     int walk_id = -1;            // Walk Around Town button
@@ -54,11 +51,9 @@ protected:
 
     // walking
     void try_walk();
-    virtual void do_walk(sGirl* girl) {};
-    virtual std::string walk_no_luck();
 
 public:
-    IBuildingScreen(const char * base_file, BuildingType building, bool * has_walked);
+    IBuildingScreen(const char * base_file, BuildingType building);
     void process() override;
 };
 
@@ -76,8 +71,6 @@ class cScreenArena : public IBuildingScreen
 {
 public:
     cScreenArena();
-    void do_walk(sGirl * girl) override;
-    std::string walk_no_luck() override;
 };
 
 class cScreenCentre : public IBuildingScreen
@@ -91,9 +84,6 @@ class cScreenClinic : public IBuildingScreen
 {
 public:
     cScreenClinic();
-
-    void do_walk(sGirl * girl) override;
-    std::string walk_no_luck() override;
 };
 
 class cScreenBrothelManagement : public IBuildingScreen
@@ -124,9 +114,6 @@ private:
     int createmovie_id;        // Create Movie
 
     void set_ids() override;
-    void do_walk(sGirl* girl) override;
-
-    std::string walk_no_luck() override;
 public:
     cMovieScreen();
 

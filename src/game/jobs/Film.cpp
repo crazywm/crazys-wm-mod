@@ -20,6 +20,7 @@
 #include "cJobManager.h"
 #include "cGirls.h"
 #include "character/sGirl.hpp"
+#include "character/cPlayer.h"
 #include "buildings/cMovieStudio.h"
 #include <sstream>
 #include "CLog.h"

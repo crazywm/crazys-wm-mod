@@ -13,7 +13,7 @@
 #include "interface/cWindowManager.h"
 #include <tinyxml2.h>
 #include "character/cCustomers.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cInventory.h"
 #include "character/traits/cTraitsManager.h"
 #include "utils/FileList.h"
@@ -362,7 +362,7 @@ void Game::load(tinyxml2::XMLElement& root)
     settings().load_xml(root);
 }
 
-void Game::read_attributes_xml(tinyxml2::XMLElement& el)
+void Game::read_attributes_xml(const tinyxml2::XMLElement& el)
 {
     // load cheating
     int cheat = 0;
@@ -377,10 +377,10 @@ void Game::read_attributes_xml(tinyxml2::XMLElement& el)
     el.QueryAttribute("Bank", &m_Bank);
 
     // load prison
-    tinyxml2::XMLElement* pPrisonGirls = el.FirstChildElement("PrisonGirls");
+    auto pPrisonGirls = el.FirstChildElement("PrisonGirls");
     if (pPrisonGirls)
     {
-        for (tinyxml2::XMLElement* pGirl = pPrisonGirls->FirstChildElement("Girl");
+        for (auto pGirl = pPrisonGirls->FirstChildElement("Girl");
              pGirl != nullptr;
              pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
         {
@@ -392,10 +392,10 @@ void Game::read_attributes_xml(tinyxml2::XMLElement& el)
     }
 
     // load runaways
-    tinyxml2::XMLElement* pRunaways = el.FirstChildElement("Runaways");
+    auto pRunaways = el.FirstChildElement("Runaways");
     if (pRunaways)
     {
-        for (tinyxml2::XMLElement* pGirl = pRunaways->FirstChildElement("Girl"); pGirl != nullptr; pGirl = pGirl->NextSiblingElement("Girl"))
+        for (auto pGirl = pRunaways->FirstChildElement("Girl"); pGirl != nullptr; pGirl = pGirl->NextSiblingElement("Girl"))
         {    // load each girl and add her
             sGirl* rgirl = new sGirl();
             bool success = rgirl->LoadGirlXML(pGirl);
@@ -991,29 +991,6 @@ void Game::push_message(std::string text, int color)
     window_manager().PushMessage(std::move(text), color);
 }
 
-void Game::LoadData()
-{
-    // setup gold
-
-    // jobs
-    m_JobManager->Setup();
-
-    // traits
-
-    DirPath traitdir = DirPath() << "Resources" << "Data" << "Traits";
-    FileList fl_t(traitdir, "*.xml");                // get a file list
-    if (fl_t.size() > 0)
-    {
-        for (int i = 0; i < fl_t.size(); i++)                // loop over the list, loading the files
-        {
-            g_LogFile.info("traits", "Loading traits from file '", fl_t[i].full(), '\'');
-            traits().load_xml(*LoadXMLDocument(fl_t[i].full())->RootElement());
-        }
-    } else {
-        g_LogFile.error("traits", "Could not find any trait files in '", traitdir.c_str(), '\'');
-    }
-}
-
 cTariff& Game::tariff()
 {
     return *m_Tariff;
@@ -1079,11 +1056,7 @@ std::unique_ptr<ITraitsCollection> Game::create_traits_collection() {
     return m_Traits->create_collection();
 }
 
-void Game::LoadGirlFiles() {
-
-    cConfig cfg;
-    DirPath location = DirPath(cfg.folders.characters().c_str());
-
+void Game::LoadGirlFiles(DirPath location) {
     // first, load unique girls. Process only those that are not
     // already present in the current game.
     FileList girlfiles(location, "*.girlsx");
@@ -1105,3 +1078,143 @@ void Game::LoadGirlFiles() {
     }
 }
 
+void Game::LoadTraitFiles(DirPath location) {
+    FileList fl_t(location, "*.xml");                // get a file list
+    if (fl_t.size() > 0)
+    {
+        for (int i = 0; i < fl_t.size(); i++)                // loop over the list, loading the files
+        {
+            g_LogFile.info("traits", "Loading traits from file '", fl_t[i].full(), '\'');
+            traits().load_xml(*LoadXMLDocument(fl_t[i].full())->RootElement());
+        }
+    } else {
+        g_LogFile.error("traits", "Could not find any trait files in '", location.c_str(), '\'');
+    }
+}
+
+
+void Game::LoadItemFiles(DirPath location) {
+    FileList fl(location, "*.itemsx");
+    g_LogFile.log(ELogLevel::INFO, "Found ", fl.size(), " itemsx files");
+    fl.scan("*.itemsx");
+    // Iterate over the map and print out all key/value pairs. kudos: wikipedia
+    g_LogFile.debug("items", "walking map...");
+    for (int i = 0; i < fl.size(); i++)
+    {
+        try {
+            g_LogFile.debug("items", "\t\tLoading xml Item from", fl[i].full());
+            inventory_manager().LoadItemsXML(fl[i].full());
+        } catch (std::runtime_error& error) {
+            g_LogFile.error("items", "Could not load items from '", fl[i].full(), "': ", error.what());
+        }
+    }
+}
+
+
+void Game::NewGame(const std::function<void(std::string)>& callback) {
+    cConfig cfg;
+    g_LogFile.info("prepare", "Loading Game Data");
+    // setup gold
+    m_Gold->reset();
+
+    // jobs
+    g_LogFile.info("prepare", "Setup Jobs");
+    m_JobManager->Setup();
+
+    g_LogFile.info("prepare", "Resetting Player");
+    for(int i = 0; i < NUM_STATS; ++i) g_Game->player().set_stat(i, 60);
+    for(int i = 0; i < NUM_SKILLS; ++i) g_Game->player().set_skill(i, 10);
+    g_Game->player().SetToZero();
+
+    // traits
+    callback("Loading Traits");
+    g_LogFile.info("prepare", "Loading Traits");
+    LoadTraitFiles(DirPath() << "Resources" << "Data" << "Traits");
+
+    callback("Loading Items");
+    g_LogFile.info("prepare", "Loading Items");
+    LoadItemFiles(cfg.folders.items().c_str());
+
+    callback("Loading Girls");
+    g_LogFile.info("prepare", "Loading Girl Files");
+    LoadGirlFiles(cfg.folders.characters().c_str());
+
+    g_LogFile.info("prepare", "Update Shop");
+    m_Shop->RestockShop();
+}
+
+void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void(std::string)>& callback) {
+    cConfig cfg;
+    g_LogFile.info("prepare", "Loading Game Data");
+
+    // jobs
+    g_LogFile.info("prepare", "Setup Jobs");
+    m_JobManager->Setup();
+
+    read_attributes_xml(source);
+
+    // traits
+    callback("Loading Traits");
+    g_LogFile.info("prepare", "Loading Traits");
+    LoadTraitFiles(DirPath() << "Resources" << "Data" << "Traits");
+
+    callback("Loading Items");
+    g_LogFile.info("prepare", "Loading Items");
+    LoadItemFiles(cfg.folders.items().c_str());
+
+    // girl file list
+    g_LogFile.info("prepare", "Loading Girl List");
+    auto gf = source.FirstChildElement("GirlFiles");
+    if(gf) {
+        for(auto& file : IterateChildElements(*gf, "File")) {
+            m_GirlFiles.insert(file.GetText());
+        }
+    }
+
+    callback("Loading Girl Files");
+    g_LogFile.info("prepare", "Loading Girl Files");
+    LoadGirlFiles(cfg.folders.characters().c_str());
+
+    g_LogFile.log(ELogLevel::INFO, "Loading Rivals");
+    callback("Loading Rivals");
+    /// TODO fix error handling;
+    rivals().LoadRivalsXML(source.FirstChildElement("Rival_Manager"));
+
+    gold().loadGoldXML(source.FirstChildElement("Gold"));            // load player gold
+
+    source.QueryAttribute("Year", &m_Date.year);
+    source.QueryAttribute("Month", &m_Date.month);
+    source.QueryAttribute("Day", &m_Date.day);
+
+    auto storage = source.FirstChildElement("Storage");
+    if(storage) {
+        m_Storage->load_from_xml(*storage);
+    }
+
+    callback("Loading Player");
+    g_LogFile.log(ELogLevel::INFO, "Loading Player");
+    player().LoadPlayerXML(source.FirstChildElement("Player"));
+
+    g_LogFile.log(ELogLevel::INFO, "Loading Dungeon");
+    dungeon().LoadDungeonDataXML(source.FirstChildElement("Dungeon"));
+
+    // initialize new market
+    // TODO load
+    UpdateMarketSlaves();
+
+    // load the buildings!
+    g_LogFile.log(ELogLevel::INFO, "Loading Buildings");
+    callback("Loading Buildings");
+    buildings().LoadXML(source);
+
+    // load the settings
+    settings().load_xml(source);
+
+    callback("Loading Girls.");
+    g_LogFile.log(ELogLevel::INFO, "Loading Girls");
+    g_Game->girl_pool().LoadGirlsXML(source.FirstChildElement("Girls"));
+
+    callback("Loading Gangs.");
+    g_LogFile.log(ELogLevel::INFO, "Loading Gangs");
+    g_Game->gang_manager().LoadGangsXML(source.FirstChildElement("Gang_Manager"));
+}

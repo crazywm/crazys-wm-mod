@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,12 +18,13 @@
 */
 #pragma region //    Includes and Externs            //
 #include "cRng.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cInventory.h"
 #include "Game.hpp"
 #include "sStorage.hpp"
 #include <sstream>
 #include "Inventory.hpp"
+#include "character/cPlayer.h"
 
 #pragma endregion
 

@@ -30,6 +30,7 @@
 #include "Game.hpp"
 #include "sStorage.hpp"
 #include "gang_missions.hpp"
+#include "cRival.h"
 
 #include "utils/DirPath.h"
 #include "utils/streaming_random_selection.hpp"
@@ -37,6 +38,7 @@
 #include "CLog.h"
 #include "xml/util.h"
 #include "sConfig.h"
+#include "buildings/cBuildingManager.h"
 
 extern cRng g_Dice;
 extern cConfig cfg;

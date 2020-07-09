@@ -36,7 +36,11 @@
 #include "jobs/Film.h"
 #include "jobs/Crafting.h"
 #include "Inventory.hpp"
+#include "cRival.h"
+#include "buildings/cDungeon.h"
 #include "character/predicates.h"
+#include "character/cPlayer.h"
+#include "buildings/cBuildingManager.h"
 
 extern cRng g_Dice;
 extern cConfig cfg;

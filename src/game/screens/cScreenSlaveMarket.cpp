@@ -17,7 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <vector>
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
+#include "buildings/cDungeon.h"
+#include "character/cPlayer.h"
 #include "main.h"
 #include "cScreenSlaveMarket.h"
 #include "cTariff.h"

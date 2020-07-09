@@ -4,6 +4,7 @@
 #include <memory>
 #include <list>
 #include <string>
+#include <functional>
 #include <unordered_set>
 #include "Constants.h"
 #include <vector>
@@ -15,6 +16,7 @@ class sGirl;
 class cGirls;
 class cBuildingManager;
 class cGangManager;
+class DirPath;
 
 class sStorage;
 class cRival;
@@ -60,6 +62,9 @@ public:
 
     void load(tinyxml2::XMLElement& root);
     void save(tinyxml2::XMLElement& root);
+
+    void NewGame(const std::function<void(std::string)>& callback);
+    void LoadGame(const tinyxml2::XMLElement& source, const std::function<void(std::string)>& callback);
 
     // rivals
     cRivalManager& rivals();
@@ -174,9 +179,6 @@ public:
 
     // Global actions
     void TalkToGirl(sGirl& target);
-
-    void LoadData();
-    void LoadGirlFiles();
 private:
     // managers
     std::unique_ptr<cRivalManager> m_Rivals;
@@ -220,12 +222,17 @@ private:
 
     // helper functions
     void do_tax();
-    void read_attributes_xml(tinyxml2::XMLElement& el);
+    void read_attributes_xml(const tinyxml2::XMLElement& el);
 
     void UpdateRunaways();
 
     // This keeps track of all unqiue girl files that are used for this game.
     std::unordered_set<std::string> m_GirlFiles;
+
+private:
+    void LoadGirlFiles(DirPath location);
+    void LoadItemFiles(DirPath location);
+    void LoadTraitFiles(DirPath location);
 };
 
 // the global game instance.

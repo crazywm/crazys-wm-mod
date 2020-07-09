@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cScreenTown.h"
 #include "interface/cWindowManager.h"
 #include "scripting/cScriptManager.h"
@@ -25,7 +25,6 @@
 #include "utils/FileList.h"
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
-#include <sstream>
 #include "sConfig.h"
 
 extern bool                        g_WalkAround;

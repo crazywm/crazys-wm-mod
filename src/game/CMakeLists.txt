@@ -120,7 +120,9 @@ set(BUILDINGS_SRC
         buildings/cFarm.cpp
         buildings/cHouse.cpp
         buildings/cMovieStudio.cpp
-        buildings/queries.cpp)
+        buildings/queries.cpp
+        buildings/cBuildingManager.cpp
+        )
 
 set(CHARACTER_SRC
         character/cCustomers.cpp
@@ -168,7 +170,7 @@ set(SRC cEvents.cpp
         cGameSettings.cpp cGameSettings.h combat/combat.h combat/combat.cpp combat/action.h combat/action.cpp combat/combatant.cpp combat/combatant.h)
 
 add_executable(WhoreMaster ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC} main.cpp)
-target_link_libraries(WhoreMaster PUBLIC WMEngine)
+target_link_libraries(WhoreMaster PUBLIC WMEngine pthread)
 set_target_properties(WhoreMaster PROPERTIES CXX_STANDARD 14 RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/../..")
 
 target_include_directories(WhoreMaster PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

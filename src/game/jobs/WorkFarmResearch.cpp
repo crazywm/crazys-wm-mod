@@ -18,12 +18,13 @@
 */
 #pragma region //    Includes and Externs            //
 #include "cRng.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cInventory.h"
 #include "Game.hpp"
 #include <sstream>
 #include "cJobManager.h"
 #include "Inventory.hpp"
+#include "character/cPlayer.h"
 
 #pragma endregion
 

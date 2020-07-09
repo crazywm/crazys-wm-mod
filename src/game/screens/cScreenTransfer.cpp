@@ -19,7 +19,7 @@
 #pragma region //    Includes and Externs            //
 #include "cScreenTransfer.h"
 
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "buildings/queries.hpp"
 
 #include "cGangs.h"

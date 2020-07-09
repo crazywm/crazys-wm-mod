@@ -22,8 +22,7 @@
 #ifndef __CHOUSE_H
 #define __CHOUSE_H
 
-#include "buildings/cBrothel.h"
-#include "cGold.h"
+#include "IBuilding.hpp"
 
 // defines a single House
 struct sHouse : public IBuilding

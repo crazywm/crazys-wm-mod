@@ -18,7 +18,7 @@
 */
 #pragma region //    Includes and Externs            //
 #include "cRng.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include <sstream>
 
 #pragma endregion

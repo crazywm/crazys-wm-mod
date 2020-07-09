@@ -26,14 +26,18 @@
 #include "sStorage.hpp"
 #include "cGangs.h"
 #include <sstream>
+#include "sConfig.h"
 #include "xml/util.h"
 #include "cJobManager.h"
 #include "Inventory.hpp"
 #include "character/predicates.h"
+#include "character/cPlayer.h"
 
 namespace settings{
     extern const char* PREG_COOL_DOWN;
 }
+
+extern cConfig cfg;
 
 void do_food_and_digs(IBuilding * brothel, sGirl * girl);
 void updateGirlTurnBrothelStats(sGirl* girl);
@@ -100,6 +104,7 @@ int IBuilding::matron_count() const
 
 void IBuilding::BeginWeek()
 {
+    m_HasDoneEncounter = false;
     m_Finance.zero();
     m_AntiPregUsed = 0;
     m_Events.Clear();
@@ -515,6 +520,7 @@ void IBuilding::save_settings_xml(tinyxml2::XMLElement& root) const
     root.SetAttribute("AntiPregPotions", m_AntiPregPotions);
     root.SetAttribute("AntiPregUsed", m_AntiPregUsed);
     root.SetAttribute("KeepPotionsStocked", m_KeepPotionsStocked);
+    root.SetAttribute("Encounter", m_HasDoneEncounter);
 
     for(auto& forbidden : m_ForbiddenSexType) {
         PushNewElement(root, "ForbiddenSex").SetText(get_skill_name(forbidden));
@@ -557,6 +563,8 @@ void IBuilding::load_settings_xml(const tinyxml2::XMLElement& root)
     root.QueryIntAttribute("MaxNumRooms", &tmp); m_MaxNumRooms = tmp; tmp = 0;
     if (m_MaxNumRooms < 200)        m_MaxNumRooms = 200;
     else if (m_MaxNumRooms > 600)    m_MaxNumRooms = 600;
+
+    root.QueryBoolAttribute("Encounter", &m_HasDoneEncounter);
 }
 
 int IBuilding::filthiness() const
@@ -1777,7 +1785,7 @@ void IBuilding::set_background_image(std::string img)
     m_BackgroundImage = std::move(img);
 }
 
-sGirl * IBuilding::meet_girl() const
+sGirl* IBuilding::meet_girl() const
 {
     return g_Game->GetRandomGirl();
 }
@@ -1795,4 +1803,38 @@ void IBuilding::EndWeek() {
     // cap filthiness and security at 0
     if (m_Filthiness < 0)        m_Filthiness = 0;
     if (m_SecurityLevel < 0)    m_SecurityLevel = 0;
+}
+
+sGirl* IBuilding::TryEncounter() {
+    if (m_HasDoneEncounter && !g_Game->allow_cheats())
+    {
+        g_Game->push_message("You can only do this once per week.", COLOR_RED);
+        return nullptr;
+    }
+
+    m_HasDoneEncounter = true;
+
+    // most of the time, you're not going to find anyone unless you're cheating, of course.
+    if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Game->allow_cheats())
+    {
+        g_Game->push_message(meet_no_luck(), COLOR_BLUE);
+        return nullptr;
+    }
+
+    sGirl* girl = meet_girl();
+    if (girl == nullptr)                                                // if there's no girl, no meeting
+    {
+        g_Game->push_message("Error: Could not generate a girl to meet.", COLOR_RED);
+        return nullptr;
+    }
+
+    return girl;
+}
+
+std::string IBuilding::meet_no_luck() const {
+    return "You don't encounter any suitable girls";
+}
+
+bool IBuilding::CanEncounter() const {
+    return !m_HasDoneEncounter;
 }

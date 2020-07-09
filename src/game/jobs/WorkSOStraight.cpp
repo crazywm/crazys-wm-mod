@@ -18,7 +18,7 @@
 */
 #pragma region //    Includes and Externs            //
 
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include <sstream>
 #include "cJobManager.h"
 

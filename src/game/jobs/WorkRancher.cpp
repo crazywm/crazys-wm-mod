@@ -20,7 +20,7 @@
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "Game.hpp"
 #include "sStorage.hpp"
 

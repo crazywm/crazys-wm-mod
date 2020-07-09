@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,18 +22,19 @@
 #ifndef __CARENA_H
 #define __CARENA_H
 
-#include "buildings/cBrothel.h"
-#include "cGold.h"
+#include "IBuilding.hpp"
 
 // defines a single arena
 class sArena : public IBuilding
 {
 public:
-    sArena();                        // constructor
-    ~sArena() override;              // destructor
+    sArena();
+    ~sArena() override;
 
     void save_additional_xml(tinyxml2::XMLElement& root) const override {};
+
     sGirl* meet_girl() const override;
+    std::string meet_no_luck() const override;
 
     void auto_assign_job(sGirl * target, std::stringstream& message, bool is_night) override;
     void UpdateGirls(bool is_night) override;

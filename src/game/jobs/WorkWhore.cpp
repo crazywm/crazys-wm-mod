@@ -17,8 +17,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "character/cCustomers.h"
+#include "character/cPlayer.h"
+#include "cRival.h"
 #include "cRng.h"
 #include "cInventory.h"
 #include <sstream>

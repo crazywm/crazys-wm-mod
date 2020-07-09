@@ -22,8 +22,7 @@
 #ifndef __CFARM_H
 #define __CFARM_H
 
-#include "buildings/cBrothel.h"
-#include "cGold.h"
+#include "IBuilding.hpp"
 
 // defines a single farm
 struct sFarm : public IBuilding

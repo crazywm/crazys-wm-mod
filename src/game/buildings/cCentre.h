@@ -22,8 +22,7 @@
 #ifndef __CCENTRE_H
 #define __CCENTRE_H
 
-#include "buildings/cBrothel.h"
-#include "cGold.h"
+#include "IBuilding.hpp"
 
 // defines a single centre
 struct sCentre : public IBuilding

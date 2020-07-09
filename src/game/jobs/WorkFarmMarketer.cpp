@@ -19,9 +19,10 @@
 #pragma region //    Includes and Externs            //
 #include "cRng.h"
 #include "CLog.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "Game.hpp"
 #include "sStorage.hpp"
+#include "buildings/cDungeon.h"
 
 namespace settings {
     extern const char* SLAVE_MARKET_UNIQUE_CHANCE;

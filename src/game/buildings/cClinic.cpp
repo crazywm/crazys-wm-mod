@@ -24,6 +24,7 @@
 #include "cJobManager.h"
 #include "utils/algorithms.hpp"
 #include "character/predicates.h"
+#include "scripting/GameEvents.h"
 
 
 extern cRng    g_Dice;
@@ -362,4 +363,36 @@ bool sClinic::handle_resting_girl(sGirl& girl, bool is_night, bool has_matron, s
         return true;
     }
     return false;
+}
+
+std::string sClinic::meet_no_luck() const {
+    return g_Dice.select_text(
+            {
+                "Your father once called this 'talent spotting' - "
+                "and looking these girls over you see no talent for "
+                "anything.",
+                "The Clinic is quite not much going on here.",
+                "Married. Married. Bodyguard. Already works for you. Married. "
+                "Hideous. Not a woman. Married. Escorted. Married... "
+                "Might as well go home, there's nothing happening here.",
+                "It's not a bad life, if you can get paid for hanging in the "
+                "clinic eyeing up the pretty girls that might be brought in."
+                "Not a single decent prospect in the bunch of them. ",
+                "You've walked and walked and walked, and the prettiest "
+                "thing you've seen all day turned out not to be female. "
+                "It's time to go home...",
+                "When the weather is bad, the hunting is good. The cold brings "
+                "in the sick. But nothing of note today. ",
+                "There's a bit of skirt over there with a lovely "
+                "figure, and had a face that was pretty, ninety "
+                "years ago. Over yonder, a sweet young thing but she's "
+                "got daddy's gold.  Looks like nothing to gain here today. "
+            }
+    );
+}
+
+sGirl* sClinic::meet_girl() const {
+    auto girl = g_Game->GetRandomGirl();
+    girl->TriggerEvent( EDefaultEvent::MEET_GIRL_CLINIC );
+    return girl;
 }

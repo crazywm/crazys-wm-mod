@@ -16,10 +16,10 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "buildings/cBrothel.h"
+#include "IBuilding.hpp"
+#include "buildings/cDungeon.h"
 #include "cScreenPrison.h"
 #include "interface/cWindowManager.h"
-#include "cGold.h"
 #include "Game.hpp"
 #include <sstream>
 #include "character/predicates.h"

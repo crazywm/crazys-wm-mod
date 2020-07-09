@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <sstream>
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 
 void CleaningUpdateGirl(sGirl& girl, cRng& rng, bool is_night, int enjoy, int tips, int wages, int clean_amount) {
     girl.m_Building->m_Filthiness -= (int)clean_amount;

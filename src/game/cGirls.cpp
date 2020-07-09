@@ -35,6 +35,8 @@
 #include "CLog.h"
 #include "xml/util.h"
 #include "scripting/GameEvents.h"
+#include "cNameList.h"
+#include "buildings/cDungeon.h"
 
 #include "utils/DirPath.h"
 #include "utils/FileList.h"
@@ -43,6 +45,7 @@
 #include "Inventory.hpp"
 #include "character/traits/ITraitsCollection.h"
 #include "character/predicates.h"
+#include "character/cPlayer.h"
 
 
 using namespace std;

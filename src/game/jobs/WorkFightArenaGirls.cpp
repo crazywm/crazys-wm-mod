@@ -17,12 +17,13 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma region //    Includes and Externs            //
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include "Game.hpp"
 #include <sstream>
 #include "CLog.h"
 #include "cGirlGangFight.h"
+#include "buildings/cDungeon.h"
 
 #pragma endregion
 

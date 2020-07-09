@@ -16,7 +16,8 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "buildings/cBrothel.h"
+#include "IBuilding.hpp"
+#include "buildings/cDungeon.h"
 #include "cScreenGirlDetails.h"
 #include "interface/cWindowManager.h"
 #include "cTariff.h"
@@ -24,7 +25,6 @@
 #include "cGangs.h"
 #include "Game.hpp"
 #include "CLog.h"
-#include "combat/combat.h"
 #include "sConfig.h"
 #include "character/traits/ITraitSpec.h"
 

@@ -25,10 +25,11 @@
 #include "cMovieStudio.h"
 #include "cGangs.h"
 #include "XmlMisc.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "Game.hpp"
 #include "xml/util.h"
 #include "interface/constants.h"
+#include "scripting/GameEvents.h"
 
 extern cRng             g_Dice;
 
@@ -1060,3 +1061,22 @@ string sMovieStudio::BuildCrewList(bool autoreleased, bool save)
     return ss.str();
 }
 
+std::string sMovieStudio::meet_no_luck() const {
+    return g_Dice.select_text(
+            {
+                "Your father once called this 'talent spotting' - and looking these girls over you see no talent for anything.",
+                "Married. Married. Bodyguard. Already works for you. Married. Hideous. Not a woman. Married. Escorted. Married...\nMight as well go home, there's nothing happening here.",
+                "It's not a bad life, if you can get paid to try pretty girls out before they start filming. But somedays there isn't a single decent prospect in the bunch of them.",
+                "All seemed perfect she was pretty really wanting to be an actress...  Then you told her what kinda movies you planned to make and she stormed off cursing at you.",
+                "When the weather is bad people just don't show up for this kinda thing.",
+                "There's a bit of skirt over there with a lovely figure, and had a face that was pretty, ninety years ago. Over yonder, a sweet young thing but she's got daddy's gold.  Looks like nothing to gain here today. ",
+                "There is not much going on here in the studio."
+            }
+            );
+}
+
+sGirl* sMovieStudio::meet_girl() const {
+    auto girl = g_Game->GetRandomGirl();
+    girl->TriggerEvent( EDefaultEvent::MEET_GIRL_STUDIO );
+    return girl;
+}

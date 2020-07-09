@@ -19,8 +19,9 @@
 
 #include "cGirls.h"
 #include "cGirlTorture.h"
-#include "buildings/cBrothel.h"
 #include "buildings/cDungeon.h"
+#include "character/sGirl.hpp"
+#include "character/cPlayer.h"
 #include "cGirlGangFight.h"
 #include "Game.hpp"
 #include "sConfig.h"

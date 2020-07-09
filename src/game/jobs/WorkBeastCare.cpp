@@ -19,7 +19,7 @@
 #pragma region //    Includes and Externs            //
 #include <sstream>
 #include "cRng.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "Game.hpp"
 #include "sStorage.hpp"
 

@@ -18,13 +18,11 @@
 */
 #include <sstream>
 #include "cJobManager.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "Game.hpp"
 #include "cJobManager.h"
 #include "character/predicates.h"
-
-extern cJobManager m_JobManager;
-
+#include "character/cPlayer.h"
 
 // `J` Job House - General - Learning_Job
 bool WorkPersonalTraining(sGirl& girl, bool Day0Night1, cRng& rng)

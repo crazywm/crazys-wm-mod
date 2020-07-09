@@ -18,7 +18,7 @@
 */
 #include "cRng.h"
 #include <sstream>
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 
 // `J` Job House - Cook
 bool WorkHouseCook(sGirl& girl, bool Day0Night1, cRng& rng)

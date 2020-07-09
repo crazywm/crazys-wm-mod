@@ -20,7 +20,7 @@
 #include "cRng.h"
 #include "CLog.h"
 #include "cGold.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "cJobManager.h"
 
 // `J` Job Clinic - Staff - Learning_Job

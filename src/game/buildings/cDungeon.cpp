@@ -19,7 +19,7 @@
 #include <sstream>
 #include "character/sGirl.hpp"
 #include "IBuilding.hpp"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "interface/constants.h"
 
 #include "cDungeon.h"

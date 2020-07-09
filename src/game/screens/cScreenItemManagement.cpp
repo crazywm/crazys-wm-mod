@@ -16,8 +16,10 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "buildings/cBrothel.h"
 #include "cScreenItemManagement.h"
+#include "buildings/cBuildingManager.h"
+#include "buildings/cDungeon.h"
+#include "character/cPlayer.h"
 #include "widgets/cListBox.h"
 #include "widgets/cTextItem.h"
 #include "cTariff.h"

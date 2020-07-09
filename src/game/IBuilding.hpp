@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,9 +46,6 @@ public:
     IBuilding(const IBuilding&) = delete;
 
     virtual void auto_assign_job(sGirl* target, std::stringstream& message, bool is_night) = 0;
-
-    // meeting new girls
-    virtual sGirl* meet_girl() const;
 
     // info functions
     BuildingType type() const { return m_Type; };
@@ -212,6 +209,10 @@ public:
     void do_daily_items(sGirl& girl);
 
     void CalculatePay(sGirl& girl, u_int Job);
+
+    // this is called for when the player tries to meet a new girl at this location
+    bool CanEncounter() const;
+    sGirl* TryEncounter();
 protected:
     std::string m_Name;
     std::list<sGirl*> m_Girls;
@@ -221,6 +222,13 @@ private:
 
     BuildingType m_Type;
     std::string m_BackgroundImage;
+
+    // whether an encounter event has already happened this week
+    bool m_HasDoneEncounter = false;
+
+    // meeting new girls
+    virtual sGirl* meet_girl() const;
+    virtual std::string meet_no_luck() const;
 };
 
 // predicates

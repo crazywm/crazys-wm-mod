@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http:  //pinkpetal.org     // old site:   http:  //pinkpetal .co.cc
+* who meet on http:  //pinkpetal.org
 *
 * This program is free software:   you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,14 @@
 #include "utils/DirPath.h"
 #include "InterfaceProcesses.h"
 #include "cGangs.h"
+#include "cRival.h"
+#include "buildings/cBrothel.h"
 #include "Game.hpp"
 #include "character/cCustomers.h"
 #include "cInventory.h"
 #include "CLog.h"
 #include "sConfig.h"
+#include "cNameList.h"
 
 namespace settings {
     extern const char* INITIAL_RANDOM_GANGS;
@@ -43,10 +46,6 @@ extern cNameList g_BoysNameList;
 extern cNameList g_SurnameList;
 
 extern bool g_WalkAround;
-extern bool g_TryCentre;
-extern bool g_TryOuts;
-extern bool g_TryEr;
-extern bool g_TryCast;
 extern int g_TalkCount;
 extern cConfig cfg;
 
@@ -121,7 +120,7 @@ void cScreenPreparingGame::resetScreen()
 }
 
 bool cScreenPreparingGame::NewGame(std::string name) {
-    g_WalkAround = g_TryOuts = g_TryCentre = g_TryEr = g_TryCast = false;
+    g_WalkAround = false;
     g_TalkCount = 10;
 
     auto callback = [this](std::string str) {
@@ -216,12 +215,8 @@ bool cScreenPreparingGame::LoadGame(std::string name) {
     g_Game->LoadGame(*pRoot, callback);
 
     g_WalkAround = false;       pRoot->QueryAttribute("WalkAround", &g_WalkAround);
-    g_TryCentre = false;        pRoot->QueryAttribute("TryCentre", &g_TryCentre);    // `J` added
-    g_TryOuts = false;          pRoot->QueryAttribute("TryOuts", &g_TryOuts);
-    g_TryEr = false;            pRoot->QueryAttribute("TryEr", &g_TryEr);
-    g_TryCast = false;          pRoot->QueryAttribute("TryCast", &g_TryCast);
     g_TalkCount = 0;            pRoot->QueryIntAttribute("TalkCount", &g_TalkCount);
-    if (g_Game->allow_cheats()) { g_WalkAround = g_TryCentre = g_TryOuts = g_TryEr = g_TryCast = false; g_TalkCount = 10; }
+    if (g_Game->allow_cheats()) { g_WalkAround = false; g_TalkCount = 10; }
     return true;
 }
 

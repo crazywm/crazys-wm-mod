@@ -18,7 +18,7 @@
 */
 #pragma region //    Includes and Externs            //
 #include "cRng.h"
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "Game.hpp"
 #include "sStorage.hpp"
 #include "cInventory.h"
@@ -26,6 +26,7 @@
 #include "cGirlGangFight.h"
 #include "Inventory.hpp"
 #include "character/predicates.h"
+#include "character/cPlayer.h"
 
 #pragma endregion
 

@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma region //    Includes and Externs            //
-#include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 #include "character/cCustomers.h"
 #include "cRng.h"
 #include <sstream>
@@ -29,7 +29,7 @@
 // `J` Job Brothel - Brothel
 bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
 {
-    auto brothel = dynamic_cast<sBrothel*>(girl.m_Building);
+    auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKMASSEUSE;
     stringstream ss;

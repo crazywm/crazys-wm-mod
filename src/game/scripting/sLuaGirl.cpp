@@ -19,6 +19,7 @@ extern "C" {
 #include "cGirlTorture.h"
 #include "character/predicates.h"
 #include "buildings/cBrothel.h"
+#include "buildings/cBuildingManager.h"
 
 using namespace scripting;
 
