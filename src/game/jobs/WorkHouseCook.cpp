@@ -41,7 +41,7 @@ bool WorkHouseCook(sGirl& girl, bool Day0Night1, cRng& rng)
     double jobperformance = girl.job_performance(JOB_HOUSECOOK, false);
 
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     #pragma endregion
 #pragma region //    Job Performance            //

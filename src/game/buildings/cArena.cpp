@@ -45,9 +45,6 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cArena.cpp
     stringstream ss;
     string girlName;
-    u_int sw = 0;
-
-    int sum = EVENT_SUMMARY;
 
     //////////////////////////////////////////////////////
     //  Handle the start of shift stuff for all girls.  //
@@ -78,28 +75,26 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
     JOB_CITYGUARD
 
     //*/
-    for(auto& current : girls())
-    {
-        sw = (is_night ? current->m_NightJob : current->m_DayJob);
-        if (current->is_dead() || sw == m_RestJob || sw == m_MatronJob)// || sw == JOB_RACING)
+    m_Girls->apply([&](auto& current){
+        auto sw = (is_night ? current.m_NightJob : current.m_DayJob);
+        if (current.is_dead() || sw == m_RestJob || sw == m_MatronJob)// || sw == JOB_RACING)
         {    // skip dead girls, resting girls and the matron and racers
-            continue;
+            return;
         }
-        sum = EVENT_SUMMARY; ss.str("");
-        girlName = current->FullName();
+        auto sum = EVENT_SUMMARY; ss.str("");
 
         // fight beasts so if there is no beasts dont want them doing nothing
         if (sw == JOB_FIGHTBEASTS && g_Game->storage().beasts() < 1)
         {
             stringstream ssc;
-            ssc << "There are no beasts to fight so " << girlName << " was sent to ";
+            ssc << "There are no beasts to fight so ${name} was sent to ";
 
-            if (current->health() < 50)
+            if (current.health() < 50)
             {
                 ssc << "rest and heal";
                 sw = m_RestJob;
             }
-            else if (current->combat() > 90 && current->magic() > 90 && current->agility() > 90 && current->constitution() > 90 && current->health() > 90)
+            else if (current.combat() > 90 && current.magic() > 90 && current.agility() > 90 && current.constitution() > 90 && current.health() > 90)
             {
                 ssc << "fight other girls";
                 sw = JOB_FIGHTARENAGIRLS;
@@ -110,96 +105,95 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
                 sw = JOB_FIGHTTRAIN;
             }
             ssc << " instead.\n"<<"\n";
-            current->m_Events.AddMessage(ssc.str(), IMGTYPE_PROFILE, is_night);
-
+            current.AddMessage(ssc.str(), IMGTYPE_PROFILE, is_night);
         }
 
         // TODO this does not respect the changed job!
         // do their job
-        bool refused = g_Game->job_manager().do_job(*current, is_night);
+        bool refused = g_Game->job_manager().do_job(current, is_night);
 
-        int totalPay   = current->m_Pay;
-        int totalTips  = current->m_Tips;
-        int totalGold  = current->m_Pay + current->m_Tips;
-        CalculatePay(*current, sw);
+        int totalPay   = current.m_Pay;
+        int totalTips  = current.m_Tips;
+        int totalGold  = current.m_Pay + current.m_Tips;
+        CalculatePay(current, sw);
 
         //        Summary Messages
         if (refused)
         {
-            m_Fame -= current->fame();
-            ss << girlName << " refused to work so made no money.";
+            m_Fame -= current.fame();
+            ss << "${name} refused to work so made no money.";
         }
         else
         {
             ss << g_Game->job_manager().GirlPaymentText(this, current, totalTips, totalPay, totalGold, is_night);
             if (totalGold < 0) sum = EVENT_DEBUG;
 
-            m_Fame += current->fame();
+            m_Fame += current.fame();
         }
-        if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-    }
+        if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+    });
 
     EndShift("Doctore", is_night, matron);
 }
 
-void sArena::auto_assign_job(sGirl* target, std::stringstream& message, bool is_night)
+void sArena::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)
 {
     // shortcut
     std::stringstream& ss = message;
 
-    ss << "The Doctore assigns " << target->FullName() << " to ";
+    ss << "The Doctore assigns " << target.FullName() << " to ";
 
     // need at least 1 guard and 1 cleaner (because guards must be free, they get assigned first)
-    if (target->is_free() && num_girls_on_job(JOB_CITYGUARD, is_night) < 1)
+    if (target.is_free() && num_girls_on_job(JOB_CITYGUARD, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_CITYGUARD;
+        target.m_DayJob = target.m_NightJob = JOB_CITYGUARD;
         ss << "work helping the city guard.";
     }
     else if (num_girls_on_job(JOB_CLEANARENA, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_CLEANARENA;
+        target.m_DayJob = target.m_NightJob = JOB_CLEANARENA;
         ss << "work cleaning the arena.";
     }
     else if (num_girls_on_job(JOB_BLACKSMITH, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_BLACKSMITH;
+        target.m_DayJob = target.m_NightJob = JOB_BLACKSMITH;
         ss << "work making weapons and armor.";
     }
     else if (num_girls_on_job(JOB_COBBLER, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_COBBLER;
+        target.m_DayJob = target.m_NightJob = JOB_COBBLER;
         ss << "work making shoes and leather items.";
     }
     else if (num_girls_on_job(JOB_JEWELER, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_JEWELER;
+        target.m_DayJob = target.m_NightJob = JOB_JEWELER;
         ss << "work making jewelery.";
     }
 
         // next assign more guards and cleaners if there are a lot of girls to choose from
-    else if (target->is_free() && num_girls_on_job(JOB_CITYGUARD, is_night) < num_girls() / 20)
+    else if (target.is_free() && num_girls_on_job(JOB_CITYGUARD, is_night) < num_girls() / 20)
     {
-        target->m_DayJob = target->m_NightJob = JOB_CITYGUARD;
+        target.m_DayJob = target.m_NightJob = JOB_CITYGUARD;
         ss << "work helping the city guard.";
     }
     else if (num_girls_on_job(JOB_CLEANARENA, is_night) < num_girls() / 20)
     {
-        target->m_DayJob = target->m_NightJob = JOB_CLEANARENA;
+        target.m_DayJob = target.m_NightJob = JOB_CLEANARENA;
         ss << "work cleaning the arena.";
     }
     else if (num_girls_on_job(JOB_BLACKSMITH, is_night) < num_girls() / 20)
     {
-        target->m_DayJob = target->m_NightJob = JOB_BLACKSMITH;
+        target.m_DayJob = target.m_NightJob = JOB_BLACKSMITH;
         ss << "work making weapons and armor.";
     }
     else if (num_girls_on_job(JOB_COBBLER, is_night) < num_girls() / 20)
     {
-        target->m_DayJob = target->m_NightJob = JOB_COBBLER;
+        target.m_DayJob = target.m_NightJob = JOB_COBBLER;
         ss << "work making shoes and leather items.";
     }
     else if (num_girls_on_job(JOB_JEWELER, is_night) < num_girls() / 20)
     {
-        target->m_DayJob = target->m_NightJob = JOB_JEWELER;
+        target.m_DayJob = target.m_NightJob = JOB_JEWELER;
         ss << "work making jewelery.";
     }
 
@@ -211,27 +205,27 @@ void sArena::auto_assign_job(sGirl* target, std::stringstream& message, bool is_
         *        until each building has their own beast supply.
         *    The farm will supply them when more work gets done to it
         */
-    else if (target->combat() > 60 && g_Game->storage().beasts() >= 10 &&
+    else if (target.combat() > 60 && g_Game->storage().beasts() >= 10 &&
             num_girls_on_job(JOB_FIGHTBEASTS, is_night) < g_Game->storage().beasts() / 10)
     {
-        target->m_DayJob = target->m_NightJob = JOB_FIGHTBEASTS;
+        target.m_DayJob = target.m_NightJob = JOB_FIGHTBEASTS;
         ss << "work fighting beast in the arena.";
     }
         // if there are not enough beasts, have the girls fight other girls
-    else if (target->combat() > 60 && num_girls_on_job(JOB_FIGHTARENAGIRLS, is_night) < 1)
+    else if (target.combat() > 60 && num_girls_on_job(JOB_FIGHTARENAGIRLS, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_FIGHTARENAGIRLS;
+        target.m_DayJob = target.m_NightJob = JOB_FIGHTARENAGIRLS;
         ss << "work fighting other girls in the arena.";
     }
 
     else    // assign anyone else to Training
     {
-        target->m_DayJob = target->m_NightJob = JOB_FIGHTTRAIN;
+        target.m_DayJob = target.m_NightJob = JOB_FIGHTTRAIN;
         ss << "train for the arena.";
     }
 }
 
-sGirl* sArena::meet_girl() const
+std::shared_ptr<sGirl> sArena::meet_girl() const
 {
     // let's get a girl for the player to meet was to get arena.. dont think this should happen this is tryouts arena girl should be ready to fight. CRAZY
     auto girl = g_Game->GetRandomGirl(false, false, true);

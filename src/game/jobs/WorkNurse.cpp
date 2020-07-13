@@ -58,7 +58,7 @@ bool WorkNurse(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a nurse.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the patients!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the patients!
 
     int wages = 25, tips = 0;
     int enjoy = 0, fame = 0;
@@ -432,9 +432,9 @@ bool WorkNurse(sGirl& girl, bool Day0Night1, cRng& rng)
 
     girl.upd_Enjoyment(actiontype, enjoy);
     //gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 30, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 
 #pragma endregion
     return false;

@@ -90,40 +90,40 @@ static void do_effects(tinyxml2::XMLElement *parent, sInventoryItem *item)
     const char *pt;
     for (auto el = parent->FirstChildElement("Effect"); el; el = el->NextSiblingElement("Effect"))
     {
-        sEffect *ept = new sEffect;
-        if (pt = el->Attribute("What")) ept->set_what(pt);
+        sEffect eff;
+        if (pt = el->Attribute("What")) eff.set_what(pt);
         if (pt = el->Attribute("Name"))
         {
-            switch (ept->m_Affects)
+            switch (eff.m_Affects)
             {
             case sEffect::Trait:
-                ept->m_Trait = pt;
+                eff.m_Trait = pt;
                 break;
             case sEffect::Stat:
-                if (ept->set_stat(pt) == false)
+                if (eff.set_stat(pt) == false)
                 {
-                    g_LogFile.log(ELogLevel::ERROR, "effect type code == ", ept->m_Affects,
+                    g_LogFile.log(ELogLevel::ERROR, "effect type code == ", eff.m_Affects,
                             " stat lookup failed for ", item->m_Name);
                 }
                 break;
             case sEffect::GirlStatus:
-                if (!ept->set_girl_status(pt))  g_LogFile.log(ELogLevel::ERROR, "Error in item ", item->m_Name);
+                if (!eff.set_girl_status(pt))  g_LogFile.log(ELogLevel::ERROR, "Error in item ", item->m_Name);
                 break;
             case sEffect::Skill:
-                if (!ept->set_skill(pt)) g_LogFile.log(ELogLevel::ERROR, "Error in item ", item->m_Name);
+                if (!eff.set_skill(pt)) g_LogFile.log(ELogLevel::ERROR, "Error in item ", item->m_Name);
                 break;
             case sEffect::Enjoy:
-                if (!ept->set_Enjoyment(pt)) g_LogFile.log(ELogLevel::ERROR, "Error in item ", item->m_Name);
+                if (!eff.set_Enjoyment(pt)) g_LogFile.log(ELogLevel::ERROR, "Error in item ", item->m_Name);
                 break;
             default:
-                g_LogFile.log(ELogLevel::ERROR, "Can't handle effect type ", ept->m_Affects);
+                g_LogFile.log(ELogLevel::ERROR, "Can't handle effect type ", eff.m_Affects);
                 break;
             }
         }
-        ept->m_Amount = el->IntAttribute("Amount", ept->m_Amount);
-        ept->m_Duration = el->IntAttribute("Duration", item->m_Special == 2 ? 20 : 0);
+        eff.m_Amount = el->IntAttribute("Amount", eff.m_Amount);
+        eff.m_Duration = el->IntAttribute("Duration", item->m_Special == 2 ? 20 : 0);
 
-        item->m_Effects.push_back(*ept);
+        item->m_Effects.push_back(std::move(eff));
     }
 }
 
@@ -243,29 +243,29 @@ sInventoryItem* cInventory::GetItem(string name)
 
 // ----- Equip unequip
 
-void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
+void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
 {
     if (item == nullptr) return;    // no item then ignore the call
 
-    if (girl->is_dead() && (    // Allow certain Items to recover the dead
+    if (girl.is_dead() && (    // Allow certain Items to recover the dead
         stringtolowerj(item->m_Name) == stringtolowerj("Better Zed than Dead") ||
         stringtolowerj(item->m_Name) == stringtolowerj("Elixir of Ultimate Regeneration")
         )){}
     // A few items are hard coded
     else if (stringtolowerj(item->m_Name) == stringtolowerj("Reset Potion MK i"))
     {
-        int age = girl->age();
+        int age = girl.age();
         // reset all numbers to default
-        for (u_int i = 0; i < NUM_SKILLS; i++)    girl->set_skill(i, 0);
-        for (int i = 0; i < NUM_STATS; i++)        girl->set_stat(i, 0);
-        girl->set_stat(STAT_HEALTH, 100);
-        girl->set_stat(STAT_HAPPINESS, 100);
-        girl->set_stat(STAT_AGE, (age == 100 ? 100 : 18)); // keep ageless girls ageless    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-        girl->set_default_house_percent();
+        for (u_int i = 0; i < NUM_SKILLS; i++)    girl.set_skill(i, 0);
+        for (int i = 0; i < NUM_STATS; i++)        girl.set_stat(i, 0);
+        girl.set_stat(STAT_HEALTH, 100);
+        girl.set_stat(STAT_HAPPINESS, 100);
+        girl.set_stat(STAT_AGE, (age == 100 ? 100 : 18)); // keep ageless girls ageless    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+        girl.set_default_house_percent();
 
-        g_Game->push_message(girl->FullName() + ": " + item->m_Name +
+        g_Game->push_message(girl.FullName() + ": " + item->m_Name +
                              ": The use of this item has reset all her stats and skills to default.", COLOR_BLUE);
-        girl->remove_item(item);
+        girl.remove_item(item);
         cGirls::CalculateGirlType(girl);
         return;
     }
@@ -274,32 +274,32 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
         /// TODO (traits) RESET POTION MK ii
         /*
         // remove all traits
-        girl->set_stat(STAT_HEALTH, 100);        // `J` revive dead girls
+        girl.set_stat(STAT_HEALTH, 100);        // `J` revive dead girls
         for (int i = 0; i < MAXNUM_TRAITS; i++)
         {
-            if (girl->m_Traits[i]) girl->remove_trait(girl->m_Traits[i]->name(), false, true, false);
+            if (girl.m_Traits[i]) girl.remove_trait(girl.m_Traits[i]->name(), false, true, false);
         }
         cGirls::RemoveAllRememberedTraits(girl);
 
-        g_Game->push_message(girl->FullName() + ": " + item->m_Name +
+        g_Game->push_message(girl.FullName() + ": " + item->m_Name +
                              ": The use of this item has removed all her traits.", COLOR_BLUE);
-        girl->remove_item(item);
+        girl.remove_item(item);
         cGirls::ApplyTraits(girl);
         cGirls::CalculateGirlType(girl);
          */
         return;
     }
-    else if (girl->is_dead() ||                    // dead girls shouldn't be able to equip or use anything
-        girl->inventory().num_equipped(item) == girl->inventory().get_num_items(item) ||        // if all are already equipped do nothing
+    else if (girl.is_dead() ||                    // dead girls shouldn't be able to equip or use anything
+        girl.inventory().num_equipped(item) == girl.inventory().get_num_items(item) ||        // if all are already equipped do nothing
         item->m_Special == sInventoryItem::AffectsAll) // no "AffectsAll" item should be equipable
         return;
 
     // check if the item is equippable
-    if(!girl->can_equip(item)) {
+    if(!girl.can_equip(item)) {
         if(!force) return;
         // if forced, unequip an item of the given type
-        girl->inventory().unequip_all_of_type(item->m_Type, *girl);
-        if(!girl->can_equip(item)) {
+        girl.inventory().unequip_all_of_type(item->m_Type, girl);
+        if(!girl.can_equip(item)) {
             return;  // something went wrong. TODO log an error here!
         }
     }
@@ -308,7 +308,7 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
 #if 1        // `J` Pregnancy item fix
     usenewpreg = true;
     stringstream pregmsg;
-    bool pregbefore = girl->is_pregnant();
+    bool pregbefore = girl.is_pregnant();
     int pregadd = 0;    int pregend = 0;
     int pregbyC = 0;    int pregrmC = 0;
     int pregbyP = 0;    int pregrmP = 0;
@@ -348,14 +348,14 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
         bool endpreg = false;
         bool startpreg = false;
         int type = STATUS_PREGNANT;
-        pregmsg << girl->FullName() << " has used her " << item->m_Name << ".\n";
+        pregmsg << girl.FullName() << " has used her " << item->m_Name << ".\n";
 
         if (pregadd == 0)        // end only
         {
             if (pregbefore)        // can end normally
             {
-                if (((girl->has_status(STATUS_PREGNANT) || girl->has_status(STATUS_PREGNANT_BY_PLAYER))    // abort human
-                    && pregrmC + pregrmP > 0) || (girl->has_status(STATUS_INSEMINATED) && pregrmB > 0))        // abort beast
+                if (((girl.has_status(STATUS_PREGNANT) || girl.has_status(STATUS_PREGNANT_BY_PLAYER))    // abort human
+                    && pregrmC + pregrmP > 0) || (girl.has_status(STATUS_INSEMINATED) && pregrmB > 0))        // abort beast
                 {
                     endpreg = true;    // the item can do what is intended
                 }
@@ -363,7 +363,7 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
                 {
                     badchance += pregend * 5;
                     pregmsg << "It was not intended to end "
-                        << (girl->has_status(STATUS_INSEMINATED) ? "beast " : "human ") << "pregnancies ";
+                        << (girl.has_status(STATUS_INSEMINATED) ? "beast " : "human ") << "pregnancies ";
                     if (g_Dice.percent(min(80, pregend * 10)))    // may still abort
                     {
                         endpreg = true;
@@ -420,10 +420,10 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
             }
             else                // already pregnant
             {
-                if (girl->has_status(STATUS_PREGNANT) || girl->has_status(STATUS_PREGNANT_BY_PLAYER))
+                if (girl.has_status(STATUS_PREGNANT) || girl.has_status(STATUS_PREGNANT_BY_PLAYER))
                 {
                     pregmsg << "She is already pregnant";
-                    if (girl->has_status(STATUS_PREGNANT_BY_PLAYER))
+                    if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))
                         pregmsg << " with your child";
                     if (pregbyB == 0)    // human only
                     {
@@ -437,7 +437,7 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
                         if (g_Dice.percent(pregbyB * chance))
                         {
                             pregmsg << " but the insemination fluid consumed the human baby and took over the pregnancy.";
-                            girl->clear_pregnancy();
+                            girl.clear_pregnancy();
                             type = STATUS_INSEMINATED;
                             startpreg = true;
                             badchance += pregbyB * 5;
@@ -449,14 +449,14 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
                 else            // already inseminated
                 {
                     pregmsg << "She is already carrying some type of beast in her";
-                    if (girl->m_WeeksPreg > girl->get_preg_duration() / 2 && g_Dice.percent(50))    // more than halfway through pregnancy
+                    if (girl.m_WeeksPreg > girl.get_preg_duration() / 2 && g_Dice.percent(50))    // more than halfway through pregnancy
                     {
                         pregmsg << " and it fed on what the item tried to implant.";
                         // zzzzzz - Add in the effects
                         pregmsg << " (not implemented yet).";
 
                     }
-                    else if (girl->m_WeeksPreg < 3 && g_Dice.percent(100 * g_Game->settings().get_percent(settings::PREG_MULTI_CHANCE)*pregadd * 2))    // fairly new pregnancy
+                    else if (girl.m_WeeksPreg < 3 && g_Dice.percent(100 * g_Game->settings().get_percent(settings::PREG_MULTI_CHANCE)*pregadd * 2))    // fairly new pregnancy
                     {
                         pregmsg << " and the new implantation" << (pregadd > 1 ? "s" : "") << " seemed to cause it to multiply instead of create a new pregnancy.";
                         // zzzzzz - Add in the effects
@@ -475,15 +475,15 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
 #if 0
             if (pregbefore)        // end old pregnancy to start a new one?
             {
-                if (girl->has_status(STATUS_PREGNANT))
+                if (girl.has_status(STATUS_PREGNANT))
                 {
 
                 }
-                else if (girl->has_status(STATUS_PREGNANT_BY_PLAYER))
+                else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))
                 {
 
                 }
-                else    // girl->has_status(STATUS_INSEMINATED)
+                else    // girl.has_status(STATUS_INSEMINATED)
                 {
 
                 }
@@ -513,13 +513,13 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
 
         if (endpreg)
         {
-            girl->m_ChildrenCount[CHILD09_ABORTIONS]++;
+            girl.m_ChildrenCount[CHILD09_ABORTIONS]++;
             pregmsg << "\nShe is no longer ";
-            if (girl->has_status(STATUS_PREGNANT_BY_PLAYER))
+            if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))
             {
                 pregmsg << "pregnant with your child.";
             }
-            else if (girl->has_status(STATUS_INSEMINATED))
+            else if (girl.has_status(STATUS_INSEMINATED))
             {
                 pregmsg << "inseminated.";
             }
@@ -527,14 +527,14 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
             {
                 pregmsg << "pregnant.";
             }
-            girl->clear_pregnancy();
+            girl.clear_pregnancy();
         }
         if (startpreg)
         {
             int numchildren = 1 + g_Dice % pregbyP;
             if (type == STATUS_PREGNANT_BY_PLAYER)
             {
-                create_pregnancy(*girl, numchildren, type, g_Game->player());
+                create_pregnancy(girl, numchildren, type, g_Game->player());
                 pregmsg << "\nThe item has gotten her pregnant with your child.";
             }
             else
@@ -550,7 +550,7 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
                     pregmsg << "\nThe item has gotten her pregnant.";
                 }
                 sCustomer Cust{};
-                create_pregnancy(*girl, numchildren, type, Cust);
+                create_pregnancy(girl, numchildren, type, Cust);
             }
         }
 
@@ -621,15 +621,15 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
                     break;
 
                 case sEffect::Skill:            // affects skill
-                    girl->upd_temp_skill(eff_id, amount);
+                    girl.upd_temp_skill(eff_id, amount);
                     break;
 
                 case sEffect::Stat:            // affects skill
-                    girl->upd_temp_stat(eff_id, amount);
+                    girl.upd_temp_stat(eff_id, amount);
                     break;
 
                 case sEffect::Enjoy:            // affects enjoyment
-                    girl->upd_temp_Enjoyment((Action_Types)eff_id, amount);
+                    girl.upd_temp_Enjoyment((Action_Types)eff_id, amount);
                     break;
 
                 case sEffect::Trait:            // affects skill
@@ -642,23 +642,23 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
             {
                 // `J` food and makeup are single use items, so if permanent, make them affect the base skill
                 if (is_consumed)
-                    girl->upd_skill(eff_id, amount);
+                    girl.upd_skill(eff_id, amount);
                 // `J` all other items can be removed so use skill mod
-                else girl->upd_mod_skill(eff_id, amount);
+                else girl.upd_mod_skill(eff_id, amount);
             }
             else if (affects == sEffect::Stat)
             {
                 // `J` food and makeup are single use items, so if permanent, make them affect the base skill
                 if (is_consumed)
-                                  girl->upd_base_stat(eff_id, amount);
+                                  girl.upd_base_stat(eff_id, amount);
                 // `J` all other items can be removed so use skill mod
-                else girl->upd_mod_stat(eff_id, amount);
+                else girl.upd_mod_stat(eff_id, amount);
             }
             else if (affects == sEffect::Enjoy)
             {
                 // `J` food and makeup are single use items, so if permanent, make them affect the base skill
                 if (is_consumed)
-                    girl->upd_Enjoyment((Action_Types)eff_id, amount);
+                    girl.upd_Enjoyment((Action_Types)eff_id, amount);
                 // `J` all other items can be removed so use skill mod
                 else cGirls::UpdateEnjoymentMod(girl, eff_id, amount);
             }
@@ -671,9 +671,9 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
                 else    // all other GirlStatus
                 {
                     if (amount >= 1)    // add status
-                        girl->set_status((STATUS)eff_id);
+                        girl.set_status((STATUS)eff_id);
                     else if (amount == 0)    // remove status
-                        girl->remove_status((STATUS)eff_id);
+                        girl.remove_status((STATUS)eff_id);
                 }
             }
             else if (affects == sEffect::Trait)    // trait
@@ -690,7 +690,7 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
                     //and replace, but if we get here, player is looking out for staff.
                     if (trait == "AIDS" || trait == "Syphilis" || trait == "Herpes" || trait == "Chlamydia")
                     {
-                        if (girl->is_slave())
+                        if (girl.is_slave())
                         {        //SIN: just protecting investment in property
                             if (trait == "AIDS") g_Game->player().evil(-4);
                             if (trait == "Syphilis") g_Game->player().evil(-3);
@@ -705,14 +705,14 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
                             if (trait == "Chlamydia") g_Game->player().evil(-2);
                         }
                     }
-                    girl->lose_trait(trait.c_str());
+                    girl.lose_trait(trait.c_str());
                 }
                 else if (amount == 1)            // add normal trait    from equiping an item
                 {
                     if(duration > 0) {
-                        girl->add_temporary_trait(trait.c_str(), duration);
+                        girl.add_temporary_trait(trait.c_str(), duration);
                     } else {
-                        girl->gain_trait(trait.c_str());
+                        girl.gain_trait(trait.c_str());
                     }
                 }
             }
@@ -722,10 +722,10 @@ void cInventory::Equip(sGirl* girl, const sInventoryItem* item, bool force)
     // if consumable then remove from inventory
     if (is_consumed)
     {
-        girl->remove_item(item);
+        girl.remove_item(item);
     }
     else    // set it as equiped
-        girl->inventory().add_to_equipment(item, *girl);
+        girl.inventory().add_to_equipment(item, girl);
 
     cGirls::CalculateGirlType(girl);
 }

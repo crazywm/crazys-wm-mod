@@ -85,10 +85,10 @@ void FilmChef::DoScene(sGirl& girl) {
 void FilmChef::GainTraits(sGirl& girl, int performance) const {
     if (performance >= 220 && chance(30))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Chef", 80, ACTION_WORKCOOKING, "${name} has become a competent Chef.", false);
+        cGirls::PossiblyGainNewTrait(girl, "Chef", 80, ACTION_WORKCOOKING, "${name} has become a competent Chef.", false);
     }
     if (performance >= 140 && chance(25))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks sexiness.", false);
+        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks sexiness.", false);
     }
 }

@@ -31,6 +31,7 @@
 #include "Game.hpp"
 #include "cJobManager.h"
 #include "sConfig.h"
+#include <sstream>
 
 extern cConfig cfg;
 
@@ -44,6 +45,11 @@ static int    Image_Type = -1;
 static bool    Image_Change = false;
 static int summarysortorder = 0;    // the order girls get sorted in the summary lists
 #pragma endregion
+
+const sGirl* find_girl_by_name(IBuilding& source, std::string name)
+{
+    return source.girls().get_first_girl(HasName(std::move(name))) ;
+}
 
 cScreenTurnSummary::cScreenTurnSummary() : cGameWindow("TurnSummary.xml")
 {
@@ -123,11 +129,12 @@ void cScreenTurnSummary::set_ids()
 void cScreenTurnSummary::init(bool back)
 {
     Focused();
-
     if (selected_girl())
     {
-        if (selected_girl()->m_DayJob == JOB_INDUNGEON)    m_ActiveCategory = Summary_DUNGEON;
-        else {
+        if(selected_girl()->is_dead())
+            set_active_girl(nullptr);
+        else if (selected_girl()->m_DayJob == JOB_INDUNGEON)    m_ActiveCategory = Summary_DUNGEON;
+        else if(selected_girl()->m_Building) {
             m_ActiveCategory = Summary_GIRLS;
             set_active_building(selected_girl()->m_Building);
         }
@@ -137,7 +144,7 @@ void cScreenTurnSummary::init(bool back)
 
     if (gold_id >= 0)
     {
-        stringstream ss; ss << "Gold: " << g_Game->gold().ival();
+        std::stringstream ss; ss << "Gold: " << g_Game->gold().ival();
         EditTextItem(ss.str(), gold_id);
     }
 
@@ -184,7 +191,7 @@ void cScreenTurnSummary::process()
         if (selected_girl() && Image_Change)
         {
             Image_Change = false;
-            PrepareImage(image_id, selected_girl(), Image_Type, true, Image);
+            PrepareImage(image_id, selected_girl().get(), Image_Type, true, Image);
             if (imagename_id >= 0)
             {
                 string t;
@@ -297,12 +304,17 @@ void cScreenTurnSummary::change_item(int selection)
         break;
     case Summary_DUNGEON:
         if (g_Game->dungeon().GetGirlByName(GetSelectedTextFromList(item_id))) {
-            set_active_girl(g_Game->dungeon().GetGirlByName(GetSelectedTextFromList(item_id))->m_Girl.get());
+            set_active_girl(g_Game->dungeon().GetGirlByName(GetSelectedTextFromList(item_id))->m_Girl);
         }
         break;
     case Summary_GIRLS:
-        set_active_girl(active_building().find_girl_by_name(GetSelectedTextFromList(item_id)));
-        Fill_Events(selected_girl());
+        auto girl = find_girl_by_name(active_building(), GetSelectedTextFromList(item_id));
+        if(girl && girl->m_Building) {
+            set_active_girl(girl->m_Building->girls().get_ref_counted(girl));
+        } else {
+            set_active_girl(nullptr);
+        }
+        Fill_Events(selected_girl().get());
         break;
     }
 
@@ -328,9 +340,9 @@ void cScreenTurnSummary::goto_selected()
         break;
 
     case Summary_GIRLS: {
-        auto girl = active_building().find_girl_by_name(selectedName);
+        auto girl = find_girl_by_name(active_building(), selectedName);
         if (girl) {
-            set_active_girl(girl);
+            set_active_girl(active_building().girls().get_ref_counted(girl));
             push_window("Girl Details");
         }
         break;
@@ -338,9 +350,9 @@ void cScreenTurnSummary::goto_selected()
     case Summary_DUNGEON: {
         sDungeonGirl * dg   = g_Game->dungeon().GetGirlByName(selectedName);
         if (dg) {
-            auto* girl = g_Game->dungeon().GetGirlByName(selectedName)->m_Girl.get();
+            auto girl = g_Game->dungeon().GetGirlByName(selectedName)->m_Girl;
             if(girl) {
-                set_active_girl(girl);
+                set_active_girl(std::move(girl));
                 push_window("Girl Details");
             }
         } else {
@@ -556,11 +568,11 @@ EventRating studio_rating_default(const sGirl& g)
 
 void cScreenTurnSummary::Fill_Items_GIRLS(IBuilding * building)
 {
-    std::vector<sGirl*> all_girls;
+    std::vector<const sGirl*> all_girls;
     all_girls.reserve(building->num_girls());
-    for(auto& girl : building->girls()) {
-        all_girls.push_back(girl);
-    }
+    building->girls().visit([&](const sGirl& g){
+        all_girls.push_back(&g);
+    });
 
     std::function<EventRating(const sGirl& g)> rating_fn = default_rating;
     if (summarysortorder == 1 && building->type() == BuildingType::CLINIC) {
@@ -571,14 +583,14 @@ void cScreenTurnSummary::Fill_Items_GIRLS(IBuilding * building)
         rating_fn = brothel_rating;
     }
 
-    std::sort(begin(all_girls), end(all_girls), [&](sGirl* a, sGirl* b) {
+    std::sort(begin(all_girls), end(all_girls), [&](const sGirl* a, const sGirl* b) {
         return rating_fn(*a).ordering > rating_fn(*b).ordering;
     });
 
     int ID = 0;
     for(auto& girl : all_girls) {
         AddToListBox(item_id, ID, girl->FullName(), rating_fn(*girl).color);
-        if (selected_girl() == girl) {
+        if (selected_girl().get() == girl) {
             SetSelectedItemInList(item_id, ID);
         }
         ID++;
@@ -603,7 +615,7 @@ void cScreenTurnSummary::Fill_Items_DUNGEON()
     int ID = 0;
     for(auto& girl : all_girls) {
         AddToListBox(item_id, ID, girl->FullName(), rating_fn(*girl).color);
-        if (selected_girl() == girl) {
+        if (selected_girl().get() == girl) {
             SetSelectedItemInList(item_id, ID);
         }
         ID++;

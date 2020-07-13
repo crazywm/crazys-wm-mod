@@ -42,7 +42,7 @@ bool WorkFilmDominatrix(sGirl* girl, sBrothel* brothel, bool Day0Night1, string&
     int jobperformance = 0;
     int bonus = 0;
 
-    cGirls::UnequipCombat(&girl);    // not for actress (yet)
+    cGirls::UnequipCombat(girl);    // not for actress (yet)
 
     ss << "${name} worked as an actress filming Dominatrix scences.\n\n";
 
@@ -101,9 +101,9 @@ bool WorkFilmDominatrix(sGirl* girl, sBrothel* brothel, bool Day0Night1, string&
     girl.upd_Enjoyment(ACTION_SEX, enjoy);
     girl.upd_Enjoyment(ACTION_WORKMOVIE, enjoy);
     //gain
-    cGirls::PossiblyGainNewTrait(&girl, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
-    cGirls::PossiblyGainNewTrait(&girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
+    cGirls::PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", Day0Night1);
     //lose
 
     //delete Cust;

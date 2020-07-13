@@ -43,7 +43,7 @@ bool WorkFarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked tending crops on the farm.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = 20, tips = 0;
     int enjoy = 0;
@@ -229,7 +229,7 @@ bool WorkFarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype, enjoy);
 
     // Gain Traits
-    cGirls::PossiblyGainNewTrait(&girl, "Tough", 50, actiontype, "Working in the heat of the sun has made ${name} rather Tough.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Tough", 50, actiontype, "Working in the heat of the sun has made ${name} rather Tough.", Day0Night1);
 
     // Push out the turn report
     girl.AddMessage(ss.str(), imagetype, msgtype);

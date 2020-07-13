@@ -48,7 +48,7 @@ bool WorkBarSinger(sGirl& girl, bool Day0Night1, cRng& rng)
 
     ss << "${name} worked as a singer in the bar.\n \n";
 
-    cGirls::UnequipCombat(&girl); // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl); // put that shit away, you'll scare off the customers!
 
     int wages = 20, tips = 0;
     int enjoy = 0, happy = 0, fame = 0;
@@ -60,7 +60,7 @@ bool WorkBarSinger(sGirl& girl, bool Day0Night1, cRng& rng)
 
     double jobperformance = girl.job_performance(JOB_SINGER, false);
 
-    sGirl* pianoonduty = random_girl_on_job(*girl.m_Building, JOB_PIANO, Day0Night1);
+    const sGirl* pianoonduty = random_girl_on_job(*girl.m_Building, JOB_PIANO, Day0Night1);
     string pianoname = (pianoonduty ? "Pianist " + pianoonduty->FullName() + "" : "the Pianist");
 
     //dont effect things but what she sings
@@ -417,15 +417,15 @@ bool WorkBarSinger(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.performance(rng%skill + 1);
 
     //gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 70, actiontype, "Singing on a daily basis has made ${name} more Charismatic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Singing on a daily basis has made ${name} more Charismatic.", Day0Night1);
     if (girl.fame() >= 70 && rng.percent(25))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Idol", 50, actiontype, "Her fame and singing skills has made ${name} an Idol in Crossgate.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Idol", 50, actiontype, "Her fame and singing skills has made ${name} an Idol in Crossgate.", Day0Night1);
     }
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 30, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
-    cGirls::PossiblyLoseExistingTrait(&girl, "Meek", 50, actiontype, "${name}'s having to sing every day has forced her to get over her meekness.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 30, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Meek", 50, actiontype, "${name}'s having to sing every day has forced her to get over her meekness.", Day0Night1);
 
 
 #pragma endregion

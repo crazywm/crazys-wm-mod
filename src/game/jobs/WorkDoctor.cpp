@@ -61,7 +61,7 @@ bool WorkDoctor(sGirl& girl, bool Day0Night1, cRng& rng)
     ss << "${name} worked as a Doctor.\n";
 
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the patients!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the patients!
 
     int enjoy = 0, wages = 100, tips = 0;
 

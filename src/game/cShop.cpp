@@ -78,16 +78,16 @@ bool cShop::GirlBuyItem(sGirl& girl, const sInventoryItem& item) {
     // cannot afford it
     if(girl.m_Money < item.m_Cost) return false;
 
-    if (cGirls::GetNumItemType(&girl, item.m_Type) >= MaxItems)
+    if (cGirls::GetNumItemType(girl, item.m_Type) >= MaxItems)
     {
         // if she has enough of this type, she won't buy more unless it's better than what she has
-        auto nicerThan = cGirls::GetWorseItem(&girl, (int)item.m_Type, item.m_Cost);
+        auto nicerThan = cGirls::GetWorseItem(girl, (int)item.m_Type, item.m_Cost);
         if (!nicerThan)
         {
             return false;
         }
         // found a worse item of the same type in her inventory
-        cGirls::SellInvItem(&girl, nicerThan);
+        cGirls::SellInvItem(girl, nicerThan);
     }
 
     girl.m_Money -= item.m_Cost;

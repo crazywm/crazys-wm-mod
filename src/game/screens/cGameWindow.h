@@ -41,8 +41,8 @@ protected:
 
     // active girls
     sGirl& active_girl() const;
-    sGirl* selected_girl() const;
-    void set_active_girl(sGirl* girl);
+    std::shared_ptr<sGirl> selected_girl() const;
+    void set_active_girl(std::shared_ptr<sGirl> girl);
 private:
 
 };

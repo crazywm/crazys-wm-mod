@@ -42,7 +42,7 @@ bool WorkRancher(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a rancher on the farm.";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     int wages = 20, tips = 0;
     int enjoy = 0;

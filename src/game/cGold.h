@@ -23,8 +23,6 @@
 #include <cmath>
 #include <tinyxml2.h>
 
-using namespace std;
-
 struct sBrothel;
 
 class cGoldBase
@@ -55,7 +53,7 @@ class cGoldBase
         // --- Whores ---                              --- Sales ---
         // Brothel  Street   Movie     Bar  Casino   Items  Monster Loc'Biz   Raids P.Theft G.Theft C'combs  Reward Intr'st    Misc
         //  123456 1234567 1234567 1234567 1234567 1234567  1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567
-        string str(int brothel_no = -1);
+        std::string str(int brothel_no = -1);
     } detail_in;
 
     struct out {
@@ -126,14 +124,6 @@ protected:
 public:
     cGoldBase(int initial = 0);
     /*
-    *    use these to save and load
-    *    they save "value income upkeep" all on one line by itself
-    *
-    *    If I expand the variables tracked here, I'll mod the stream
-    *    operators accodingly.
-    */
-    friend    istream &operator>>(istream& is, cGoldBase &g);
-    /*
     *    save and load methods
     */
     tinyxml2::XMLElement& saveGoldXML(tinyxml2::XMLElement& elRoot) const;
@@ -141,7 +131,7 @@ public:
     /*
     *    type conversion methods
     */
-    string    sval();
+    std::string    sval();
     int    ival();
 
     void    reset();
@@ -251,7 +241,7 @@ public:
 
 class cGold : public cGoldBase
 {
-    map<int, cGoldBase *> brothels;
+    std::map<int, cGoldBase *> brothels;
     cGoldBase *find_brothel_account(int id) {
         cGoldBase *ac_pt = brothels[id];
         if (ac_pt == nullptr) {

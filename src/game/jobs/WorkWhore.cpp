@@ -91,7 +91,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
 
     Action_Types actiontype = ACTION_SEX;
     // put that shit away, you'll scare off the customers!
-    cGirls::UnequipCombat(&girl);
+    cGirls::UnequipCombat(girl);
 
 
     stringstream fuckMessage;
@@ -203,7 +203,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
         sCustomer Cust = g_Game->GetCustomer(*brothel);
 
         // `J` check for disease
-        if (cGirls::detect_disease_in_customer(brothel, &girl, &Cust)) continue;
+        if (cGirls::detect_disease_in_customer(brothel, girl, &Cust)) continue;
 
         // filter out unwanted sex types (unless it is street work)
         if (!bStreetWork && !brothel->is_sex_type_allowed(Cust.m_SexPref) && !brothel->is_sex_type_allowed(Cust.m_SexPrefB))
@@ -280,7 +280,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
             if (Day0Night1 && Cust.m_Fetish < NUM_FETISH - 2 && rng.percent(50)) Cust.m_Fetish += 2;
 
             // Check for fetish match
-            if (cGirls::CheckGirlType(&girl, (Fetishs)Cust.m_Fetish))
+            if (cGirls::CheckGirlType(girl, (Fetishs)Cust.m_Fetish))
             {
                 fuckMessage << "The customer loves this type of girl.\n \n";
                 acceptsGirl = true;
@@ -657,12 +657,12 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
         }
         else if (femalecustcaught)
         {
-            cJobManager::CatchGirl(&girl, fuckMessage, guardgang);
+            cJobManager::CatchGirl(girl, fuckMessage, guardgang);
         }
         else
         {
             // chance of customer beating or attempting to beat girl
-            if (cJobManager::work_related_violence(&girl, Day0Night1, false)) {
+            if (cJobManager::work_related_violence(girl, Day0Night1, false)) {
                 pay = 0;        // WD TRACE WorkRelatedViloence {girl.m_Name} earns nothing
                 // if gravely injured, stop working
                 if(girl.health() < 10) {
@@ -711,16 +711,16 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
     girl.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1);
 
     //gain
-    cGirls::PossiblyGainNewTrait(&girl, "Good Kisser", 50, actiontype, "${name} has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Slut", 60, actiontype, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
-    cGirls::PossiblyGainNewTrait(&girl, "Nymphomaniac", 70, actiontype, "${name} has been having so much sex she is now wanting sex all the time.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Good Kisser", 50, actiontype, "${name} has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Slut", 60, actiontype, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
+    cGirls::PossiblyGainNewTrait(girl, "Nymphomaniac", 70, actiontype, "${name} has been having so much sex she is now wanting sex all the time.", Day0Night1);
 
     //SIN: use a few of the new traits
     if (rng.percent(1) && rng.percent(girl.oralsex()) && (girl.has_active_trait("Nymphomaniac")))
-        cGirls::PossiblyGainNewTrait(&girl, "Cum Addict", 90, actiontype, "${name} has tasted so much cum she now craves it at all times.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Cum Addict", 90, actiontype, "${name} has tasted so much cum she now craves it at all times.", Day0Night1);
 
     if (girl.oralsex() > 30 && rng.percent(oralcount))
-        cGirls::AdjustTraitGroupGagReflex(&girl, +1, true, Day0Night1);
+        cGirls::AdjustTraitGroupGagReflex(girl, +1, true);
 
     return false;
 }

@@ -32,7 +32,7 @@ FilmBuk::FilmBuk() : GenericFilmJob(JOB_FILMBUKKAKE, {
 }
 
 //Useful fn
-void AndAction(stringstream *, const string&, bool);
+void AndAction(std::stringstream *, const std::string&, bool);
 
 void FilmBuk::DoScene(sGirl& girl) {
     //Lights, camera...
@@ -78,9 +78,9 @@ void FilmBuk::DoScene(sGirl& girl) {
 
 void FilmBuk::GainTraits(sGirl& girl, int performance) const {
     if (tied) {
-        cGirls::PossiblyGainNewTrait(&girl, "Mind Fucked", 75, ACTION_SEX,
+        cGirls::PossiblyGainNewTrait(girl, "Mind Fucked", 75, ACTION_SEX,
                                      "${name} has become Mind Fucked from the forced degradation.", false);
-        cGirls::PossiblyLoseExistingTrait(&girl, "Iron Will", 80, ACTION_SEX,
+        cGirls::PossiblyLoseExistingTrait(girl, "Iron Will", 80, ACTION_SEX,
                                           "${name}'s unwilling degradation has shattered her iron will.", false);
     }
 }
@@ -142,7 +142,7 @@ void FilmBuk::Reset() {
     tied = false;
 }
 
-void AndAction(stringstream *TheAction, const string& TheHo, bool TiedUp)
+void AndAction(std::stringstream *TheAction, const std::string& TheHo, bool TiedUp)
 {
     *TheAction << TheHo << " was ";
     *TheAction << g_Dice.select_text({ "dutifully gangbanged", "deeply probed", "effectively raped",

@@ -26,6 +26,7 @@
 #include "cShop.h"
 #include "cJobManager.h"
 #include "character/predicates.h"
+#include "character/cGirlPool.h"
 #include "buildings/cDungeon.h"
 
 // `J` Job Brothel - General
@@ -629,7 +630,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     {
                         ss << " Luckily her Abnormally Large Boobs cushioned her fall. She may need reconstructive surgery but at least she will live.\n";
                         U_Health -= 45;
-                        cGirls::AdjustTraitGroupBreastSize(&girl, -2);
+                        cGirls::AdjustTraitGroupBreastSize(girl, -2);
                     }
                     else if (girl.has_active_trait("Zombie") && girl.health() > 30)
                     {
@@ -857,9 +858,8 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                         ss << "She got caught by the guards in your clinic and they brought her to your dungeon.\n";
                         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
                         girl.m_DayJob = girl.m_NightJob = JOB_INDUNGEON;
-                        if(girl.m_Building)
-                            girl.m_Building->remove_girl(&girl);
-                        g_Game->dungeon().AddGirl(&girl, DUNGEON_GIRLSTEAL);
+                        assert(girl.m_Building);
+                        g_Game->dungeon().AddGirl(girl.m_Building->remove_girl(&girl), DUNGEON_GIRLSTEAL);
                         return false;
                     }
                     else if (girl.m_Money >= 200 && rng.percent(50))            // 'Mute' Pay 200 gold fine, if not enough gold goes to prision
@@ -872,15 +872,15 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                     {
                         ss << "She got caught by the clinic guards and was unable to pay so they sent her to jail.\n";
                         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
-                        g_Game->AddGirlToPrison(&girl);
+                        g_Game->GetPrison().AddGirl(girl.m_Building->remove_girl(&girl));
                         return false;
                     }
                     else if (rng.percent(20)) // 'Mute' Gets raped by guards
                     {
-                        ss << "Unfortunantly she got caught and was raped by the guards.\n";
+                        ss << "Unfortunately she got caught and was raped by the guards.\n";
                         U_Happiness -= 50;
                         U_Health -= 10;
-                        cJobManager::customer_rape(&girl, 5);
+                        cJobManager::customer_rape(girl, 5);
                     }
                 }
                 else // 'Mute' Manages to steal Drugs

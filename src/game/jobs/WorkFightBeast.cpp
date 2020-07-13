@@ -27,6 +27,7 @@
 #include "combat/combat.h"
 #include "combat/combatant.h"
 #include "character/predicates.h"
+#include "character/cCustomers.h"
 
 // `J` Job Arena - Fighting
 bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -50,7 +51,7 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
         return true;
     }
 
-    cGirls::EquipCombat(&girl);
+    cGirls::EquipCombat(girl);
     bool has_armor = girl.get_num_item_equiped(sInventoryItem::Armor);
     bool has_wpn = girl.get_num_item_equiped(sInventoryItem::Weapon) + girl.get_num_item_equiped(sInventoryItem::SmWeapon);
 
@@ -123,7 +124,7 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
             girl.upd_temp_stat(STAT_LIBIDO, -50, true);
             girl.beastiality(2);
             girl.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
-            if (!girl.calc_insemination(*cGirls::GetBeast(), 1.0))
+            if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
             {
                 g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
             }
@@ -203,16 +204,16 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.constitution(rng%fightxp + skill);
     girl.beastiality(rng%fightxp * 2 + skill);
 
-    cGirls::PossiblyGainNewTrait(&girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Fleet of Foot", 30, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 30, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
     if (rng.percent(25) && girl.strength() >= 60 && girl.combat() > girl.magic())
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", Day0Night1);
     }
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Fragile", 75, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Fragile", 75, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 
     return false;
 }

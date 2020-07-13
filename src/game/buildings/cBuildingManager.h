@@ -35,6 +35,7 @@ struct BrothelCreationData {
 
 class cBuildingManager
 {
+    using girl_pred_fn = std::function<bool(const sGirl&)>;
 public:
     IBuilding& AddBuilding(std::unique_ptr<IBuilding> building);
     IBuilding& AddBuilding(const BrothelCreationData& data);
@@ -57,31 +58,20 @@ public:
     int total_girls() const;
 
     /// Get total number of girls fulfilling a predicate
-    template<class F>
-    int total_girls_with(F&& predicate) const {
-        int count = 0;
-        for(const auto& b : m_Buildings) {
-            count += b->num_girls_with(std::forward<F>(predicate));
-        }
-        return count;
-    }
+    int total_girls_with(const girl_pred_fn& predicate) const;
+
+    bool has_any_girl_with(const girl_pred_fn& predicate) const;
 
     template<class F>
-    bool has_any_girl_with(F&& predicate) const {
-        for(const auto& b : m_Buildings) {
-            if(b->num_girls_with(std::forward<F>(predicate)) > 0) {
-                return true;
+    std::vector<const sGirl*> all_girls_with(F&& predicate) const {
+        std::vector<const sGirl*> target;
+        std::function<void(const sGirl&)> visit = [&](const sGirl& girl) {
+            if (predicate(girl)) {
+                target.push_back(&girl);
             }
-        }
-        return false;
-    }
-
-    template<class F>
-    std::vector<sGirl*> all_girls_with(F&& predicate) const {
-        std::vector<sGirl*> target;
+        };
         for(const auto& b : m_Buildings) {
-            auto result = b->find_all_girls(predicate);
-            target.insert( target.end(), result.begin(), result.end() );
+            b->girls().visit(visit);
         }
         return std::move(target);
     }
@@ -95,7 +85,7 @@ public:
 
     /// name checks
     bool NameExists(string name) const;
-    bool SurnameExists(string name) const;
+    bool SurnameExists(const string& name) const;
 
     const std::vector<std::unique_ptr<IBuilding>>& buildings() const {
         return m_Buildings;
@@ -114,6 +104,6 @@ int get_total_player_girls();
 int get_total_player_monster_girls();
 
 sGirl* random_girl_on_job(const cBuildingManager& mgr, JOBS job, bool at_night);
-sGirl* random_girl_on_job(const IBuilding& building, JOBS job, bool at_night);
+sGirl* random_girl_on_job(IBuilding& building, JOBS job, bool at_night);
 
 #endif //WM_CBUILDINGMANAGER_H

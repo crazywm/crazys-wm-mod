@@ -21,6 +21,7 @@
 #include "sStorage.hpp"
 #include "Films.h"
 #include "character/predicates.h"
+#include "character/cCustomers.h"
 
 void FilmBeast::DoScene(sGirl& girl) {
     PrintPerfSceneEval();
@@ -105,7 +106,7 @@ bool FilmBeast::CheckRefuseWork(sGirl& girl) {
 }
 
 void FilmBeast::GainTraits(sGirl& girl, int performance) const {
-    if (!girl.calc_insemination(*cGirls::GetBeast(), 1.0))
+    if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
         g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
 }
 

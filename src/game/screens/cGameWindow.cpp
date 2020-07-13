@@ -62,12 +62,12 @@ sGirl& cGameWindow::active_girl() const
     throw std::logic_error("No girl selected");
 }
 
-void cGameWindow::set_active_girl(sGirl * girl)
+void cGameWindow::set_active_girl(std::shared_ptr<sGirl> girl)
 {
-    window_manager().SetActiveGirl(girl);
+    window_manager().SetActiveGirl(std::move(girl));
 }
 
-sGirl* cGameWindow::selected_girl() const
+std::shared_ptr<sGirl> cGameWindow::selected_girl() const
 {
     return window_manager().GetActiveGirl();
 }
@@ -981,12 +981,9 @@ int TryImageType(int imagetype, int tries)
 }
 
 
-std::vector<std::string> FindImage(sGirl* girl, int imagetype, bool gallery, std::string ImageName) {
-    if (!girl || imagetype < 0 || ImageName == "blank")        // no girl, no images
+std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool gallery, std::string ImageName) {
+    if (imagetype < 0 || ImageName == "blank")        // no girl, no images
     {
-        if(!girl)
-            g_LogFile.log(ELogLevel::ERROR, "Debug Alt Images || No Girl");
-
         if(ImageName == "blank")
             g_LogFile.log(ELogLevel::WARNING, "Debug Alt Images || Blank Image");
         if(imagetype < 0)
@@ -994,8 +991,8 @@ std::vector<std::string> FindImage(sGirl* girl, int imagetype, bool gallery, std
         return {};
     }
 
-    std::string girlName = girl->m_Name;
-    g_LogFile.log(ELogLevel::DEBUG, "Debug Alt Images || Getting image for: ", girl->FullName(), " (", girlName, ")");
+    std::string girlName = girl.m_Name;
+    g_LogFile.log(ELogLevel::DEBUG, "Debug Alt Images || Getting image for: ", girl.FullName(), " (", girlName, ")");
 
     int dir = 0; DirPath usedir = "";
     DirPath imagedirCc = DirPath(cfg.folders.characters().c_str()) << girlName;    // usedir = 1
@@ -1022,10 +1019,10 @@ std::vector<std::string> FindImage(sGirl* girl, int imagetype, bool gallery, std
     std::string ext;
     bool imagechosen = false;
 
-    bool armor = girl->get_num_item_equiped(sInventoryItem::Armor) >= 1;
-    bool dress = girl->get_num_item_equiped(sInventoryItem::Dress) >= 1;
-    bool swim = girl->get_num_item_equiped(sInventoryItem::Swimsuit) >= 1;
-    bool lingerie = girl->get_num_item_equiped(sInventoryItem::Underwear) >= 1;
+    bool armor = girl.get_num_item_equiped(sInventoryItem::Armor) >= 1;
+    bool dress = girl.get_num_item_equiped(sInventoryItem::Dress) >= 1;
+    bool swim = girl.get_num_item_equiped(sInventoryItem::Swimsuit) >= 1;
+    bool lingerie = girl.get_num_item_equiped(sInventoryItem::Underwear) >= 1;
 
     int tries = 40;
     if (gallery) tries = 0;
@@ -1039,11 +1036,11 @@ std::vector<std::string> FindImage(sGirl* girl, int imagetype, bool gallery, std
             if (armor)    { imagetype = IMGTYPE_COMBAT; }
             else if (dress)
             {
-                /* */if (girl->has_active_trait("Elegant")) imagetype = IMGTYPE_FORMAL;
-                else if (girl->has_active_trait("Dominatrix")) imagetype = IMGTYPE_DOM;
-                else if (girl->has_active_trait("Maid")) imagetype = IMGTYPE_MAID;
-                else if (girl->has_active_trait("Teacher")) imagetype = IMGTYPE_TEACHER;
-                else if (girl->has_active_trait("Doctor")) imagetype = IMGTYPE_NURSE;
+                /* */if (girl.has_active_trait("Elegant")) imagetype = IMGTYPE_FORMAL;
+                else if (girl.has_active_trait("Dominatrix")) imagetype = IMGTYPE_DOM;
+                else if (girl.has_active_trait("Maid")) imagetype = IMGTYPE_MAID;
+                else if (girl.has_active_trait("Teacher")) imagetype = IMGTYPE_TEACHER;
+                else if (girl.has_active_trait("Doctor")) imagetype = IMGTYPE_NURSE;
             }
             else if (swim)            { imagetype = IMGTYPE_SWIM; }
             else if (lingerie)        { imagetype = IMGTYPE_ECCHI; }
@@ -1051,7 +1048,7 @@ std::vector<std::string> FindImage(sGirl* girl, int imagetype, bool gallery, std
 
         /* */if (imagetype >= IMGTYPE_PREGBIRTHHUMAN && imagetype <= IMGTYPE_PREGVIRGINBEAST) imagetype -= PREG_OFFSET;        // `J` new .06.03.01 for DarkArk - These should not have preg varients
         else if (imagetype >= IMGTYPE_BIRTHHUMAN && imagetype <= IMGTYPE_VIRGINBEAST) {}                                    // `J` new .06.03.01 for DarkArk - These should not have preg varients
-        else if (girl->is_pregnant())
+        else if (girl.is_pregnant())
         {
             if (imagetype < IMGTYPE_PREGNANT)    imagetype += PREG_OFFSET;
         }
@@ -1220,9 +1217,9 @@ void cGameWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, in
 {
     // Clear the old images
     cImageItem* image = GetImage(id);
-    if(!image) return;
+    if(!image || !girl) return;
 
-    auto images = FindImage(girl, imagetype, gallery, ImageName);
+    auto images = FindImage(*girl, imagetype, gallery, ImageName);
     if(images.empty()) {
         image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
         image->m_Message = "No image found.";

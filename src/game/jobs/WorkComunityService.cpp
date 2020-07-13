@@ -45,7 +45,7 @@ bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked doing community service.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     bool blow = false, sex = false;
     int dispo = 0;

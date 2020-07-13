@@ -788,7 +788,7 @@ vector<sGang*> cGangManager::gangs_watching_girls()
 *    A: multiple squads spying on the girls improves the chance of catching thieves
 *    B: The intelligence of the girl and the goons affects the result
 */
-int cGangManager::chance_to_catch(sGirl* girl)
+int cGangManager::chance_to_catch(const sGirl& girl)
 {
     int pc = 0;
     vector<sGang*> gvec = gangs_on_mission(MISS_SPYGIRLS);    // get a vector containing all the spying gangs
@@ -799,7 +799,7 @@ int cGangManager::chance_to_catch(sGirl* girl)
         *        but I want to modify that for the intelligence
         *        of the girl, and that of the squad
         */
-        float mod = 1.f + float(gang->intelligence() - girl->intelligence()) / 100.f;
+        float mod = 1.f + float(gang->intelligence() - girl.intelligence()) / 100.f;
         /*
         *        that should give us a multiplier that can
         *        at one extreme, double the chances of the sqaud

@@ -37,6 +37,7 @@
 #include "combat/combat.h"
 #include "sConfig.h"
 #include "Inventory.hpp"
+#include "cGirlGangFight.h"
 
 
 extern cRng g_Dice;
@@ -171,10 +172,10 @@ bool cMissionKidnap::execute_mission(sGang& gang, std::stringstream& ss)
 
     if (g_Dice.percent(min(75, gang.intelligence())))    // chance to find a girl to kidnap
     {
-        sGirl* girl = g_Game->GetRandomGirl();
-        if (girl)
+        auto girl = g_Game->GetRandomGirl();
+        if (girl != nullptr)
         {
-            return kidnap(gang, ss, *girl);
+            return kidnap(gang, ss, std::move(girl));
         }
     }
     ss << "They failed to find any girls to kidnap.";
@@ -182,12 +183,12 @@ bool cMissionKidnap::execute_mission(sGang& gang, std::stringstream& ss)
     return false;
 }
 
-bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, sGirl& girl)
+bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<sGirl> girl)
 {
     bool captured = false;
     /// TODO kidnap event
 
-    string girlName = girl.FullName();
+    string girlName = girl->FullName();
     stringstream NGmsg;
     int girlimagetype = IMGTYPE_PROFILE;
     int eventtype = EVENT_GANG;
@@ -198,7 +199,7 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, sGirl& girl)
     /* MYR: For some reason I can't figure out, a number of girl's house percentages
     are at zero or set to zero when they are sent to the dungeon. I'm not sure
     how to fix it, so I'm explicitly setting the percentage to 60 here */
-    girl.house(60);
+    girl->house(60);
 
     ss << "Your men find a girl, " << girlName << ", and ";
     if (g_Dice.percent(min(75, gang.charisma())))    // convince her
@@ -218,22 +219,22 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, sGirl& girl)
 
     if (!captured)
     {
-        switch(AttemptCapture(gang, girl)) {
+        switch(AttemptCapture(gang, *girl)) {
             case EAttemptCaptureResult::SUBMITS:
                 dungeonreason = DUNGEON_GIRLKIDNAPPED;
-                girl.add_temporary_trait("Kidnapped", 3 + g_Dice % 8);
+                girl->add_temporary_trait("Kidnapped", 3 + g_Dice % 8);
                 ss << "kidnap her successfully without a fuss.  She is in your dungeon now.";
-                NGmsg << girl.FullName() << " was surrounded by " << gang.name() << " and gave up without a fight.";
+                NGmsg << girl->FullName() << " was surrounded by " << gang.name() << " and gave up without a fight.";
                 captured = true;
                break;
             case EAttemptCaptureResult::CAPTURED:
                 ss << "attempt to kidnap her.\n";
                 girlimagetype = IMGTYPE_DEATH;
                 dungeonreason = DUNGEON_GIRLKIDNAPPED;
-                girl.set_stat(STAT_OBEDIENCE, 0);
-                girl.add_temporary_trait("Kidnapped", 10 + g_Dice % 11);
+                girl->set_stat(STAT_OBEDIENCE, 0);
+                girl->add_temporary_trait("Kidnapped", 10 + g_Dice % 11);
                 ss << "She fights back but your men succeed in kidnapping her.\n";
-                NGmsg << girl.FullName() << " fought with " << gang.name() << " but lost. She was dragged back to the dungeon.";
+                NGmsg << girl->FullName() << " fought with " << gang.name() << " but lost. She was dragged back to the dungeon.";
                 gang.BoostSkill(SKILL_COMBAT, 1);
                 captured = true;
                 break;
@@ -246,8 +247,8 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, sGirl& girl)
 
     if (captured)
     {
-        girl.AddMessage(NGmsg.str(), girlimagetype, eventtype);
-        g_Game->dungeon().AddGirl(&girl, dungeonreason);
+        girl->AddMessage(NGmsg.str(), girlimagetype, eventtype);
+        g_Game->dungeon().AddGirl(std::move(girl), dungeonreason);
         gang.BoostStat(STAT_INTELLIGENCE);
     }
     gang.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, gangeventtype);
@@ -505,7 +506,7 @@ bool cMissionRecapture::execute_mission(sGang& gang, std::stringstream& event_te
     }
 
     stringstream RGmsg;
-    sGirl* runaway = g_Game->GetRunaways().front();
+    auto runaway = g_Game->GetRunaways().front();
     string girlName = runaway->FullName();
     bool captured = false;
     int girlimagetype = IMGTYPE_PROFILE;
@@ -538,7 +539,7 @@ bool cMissionRecapture::execute_mission(sGang& gang, std::stringstream& event_te
     {
         runaway->m_Events.AddMessage(RGmsg.str(), girlimagetype, EVENT_GANG);
         runaway->m_RunAway = 0;
-        g_Game->RemoveGirlFromRunaways(runaway);
+        g_Game->RemoveGirlFromRunaways(runaway.get());
         g_Game->dungeon().AddGirl(runaway, DUNGEON_GIRLRUNAWAY);
         return true;
     }
@@ -721,7 +722,7 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
     }
     else if (g_Dice.percent(0))        // `J` added for .06.02.41
     {
-        sGirl* girl = g_Game->GetRandomGirl();
+        auto girl = g_Game->GetRandomGirl();
         if (girl->has_active_trait("Incorporeal")) girl = g_Game->GetRandomGirl();        // try not to get an incorporeal girl but only 1 check
         if (girl)
         {
@@ -976,7 +977,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
             ss << "Your men captured " << totalgirls << " girl" << (totalgirls > 1 ? "s" : "") << ":\n";
             for (int i = 0; i < totalgirls; i++)
             {
-                sGirl* ugirl = nullptr;
+                std::shared_ptr<sGirl> ugirl = nullptr;
                 bool unique = g_Dice.percent(cfg.catacombs.unique_catacombs());    // chance of getting unique girl
                 if (unique)
                 {
@@ -995,7 +996,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                 }
                 else
                 {
-                    ugirl = g_Game->CreateRandomGirl(0, false, false, true).release();
+                    ugirl = g_Game->CreateRandomGirl(0, false, false, true);
                     if (ugirl != nullptr)  // make sure a girl was returned
                     {
                         ss << "   " << ugirl->FullName() << "\n";
@@ -1125,7 +1126,7 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
             if (item)
             {
                 IBuilding* brothel = g_Game->buildings().random_building_with_type(BuildingType::BROTHEL);
-                sGirl* girl = brothel->find_random_girl();
+                sGirl* girl = brothel->girls().get_random_girl();
                 if (girl->add_item(item))                        // see if a girl can take it
                 {
                     stringstream gss;

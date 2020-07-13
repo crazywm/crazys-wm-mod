@@ -46,12 +46,12 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
     int roll_a = rng.d100();
     int imagetype = IMGTYPE_COMBAT;
 
-    cGirls::EquipCombat(&girl);    // ready armor and weapons!
+    cGirls::EquipCombat(girl);    // ready armor and weapons!
 
-    sGirl* stripperonduty = random_girl_on_job(*brothel, JOB_BARSTRIPPER, Day0Night1);
+    const sGirl* stripperonduty = random_girl_on_job(*brothel, JOB_BARSTRIPPER, Day0Night1);
     string strippername = (stripperonduty ? "Stripper " + stripperonduty->FullName() + "" : "the Stripper");
 
-    sGirl* whoreonduty = random_girl_on_job(*brothel, JOB_WHOREBROTHEL, Day0Night1);
+    const sGirl* whoreonduty = random_girl_on_job(*brothel, JOB_WHOREBROTHEL, Day0Night1);
     string whorename = (whoreonduty ? "Whore " + whoreonduty->FullName() + "" : "the Whore");
 
 
@@ -69,7 +69,7 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
             SecLev-=SecLev/10;
             ss<< "She tried to Fight off some unruly patrons, but they turned on her and raped her.";
             int custCount=rng%4+1;
-            cJobManager::customer_rape(&girl, custCount);
+            cJobManager::customer_rape(girl, custCount);
             break;
         }
         case 3:
@@ -88,7 +88,7 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
                 SecLev -= secLvlMod;
                 int rapers = rng % 4 + 1;
                 ss << "She failed in saving her. They where both raped by " << rapers << " men.\n";
-                cJobManager::customer_rape(&girl, rapers);
+                cJobManager::customer_rape(girl, rapers);
             }
             break;
         }
@@ -179,9 +179,9 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype, enjoy);
 
     // Copy-pasta from WorkExploreCatacombs
-    cGirls::PossiblyGainNewTrait(&girl, "Tough", 15, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Adventurer", 45, actiontype, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Tough", 15, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Adventurer", 45, actiontype, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
     return false;
 }
 

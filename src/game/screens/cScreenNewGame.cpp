@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -25,8 +25,8 @@
 #include "cShop.h"
 #include <sstream>
 
-extern string monthnames[13];
-extern string g_ReturnText;
+extern std::string monthnames[13];
+extern std::string g_ReturnText;
 extern int g_ReturnInt;
 extern cNameList g_BoysNameList;;
 extern cNameList g_SurnameList;
@@ -74,7 +74,7 @@ void cScreenNewGame::init(bool back)
 
 void cScreenNewGame::update_birthday()
 {
-    stringstream ss;
+    std::stringstream ss;
     g_Game->player().SetBirthDay(SliderValue(pbd_id));
     SliderValue(pbd_id, g_Game->player().BirthDay());
     g_Game->player().SetBirthMonth(SliderValue(pbm_id));
@@ -89,9 +89,9 @@ void cScreenNewGame::update_birthday()
 
 void cScreenNewGame::start_game()
 {
-    string b = GetEditBoxText(brothel_id);
-    string p = GetEditBoxText(pname_id);
-    string s = GetEditBoxText(psname_id);
+    std::string b = GetEditBoxText(brothel_id);
+    std::string p = GetEditBoxText(pname_id);
+    std::string s = GetEditBoxText(psname_id);
     if (b.empty() || p.empty() || s.empty())
     {
         push_message("You must enter a name in all 3 boxes.", COLOR_RED);

@@ -398,15 +398,15 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
     if (m_TorturedByPlayer && !m_Message.empty())
     {
         g_Game->push_message(m_Message, 0);
-        m_Girl->m_Events.AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);    // `J` added
+        m_Girl->AddMessage(m_Message, IMGTYPE_TORTURE, EVENT_SUMMARY);    // `J` added
 
         m_Message = sGirlName + ": ";
     }
 
     if(m_TorturedByPlayer) {
-        cGirls::GirlInjured(m_Girl, unModifier, [&](std::string msg){ m_Message += std::move(msg); });
+        cGirls::GirlInjured(*m_Girl, unModifier, [&](std::string msg){ m_Message += std::move(msg); });
     } else {
-        cGirls::GirlInjured(m_Girl, unModifier, [&](std::string msg){ MakeEvent(std::move(msg)); });
+        cGirls::GirlInjured(*m_Girl, unModifier, [&](std::string msg){ MakeEvent(std::move(msg)); });
     }
 
     if (cfg.initial.torture_mod() < 0){

@@ -57,8 +57,8 @@ void cScreenBank::init(bool back)
 {
     Focused();
 
-    stringstream ss;
-    ss << "Bank account: " << g_Game->GetBankMoney() << " gold" << endl;
+    std::stringstream ss;
+    ss << "Bank account: " << g_Game->GetBankMoney() << " gold" << std::endl;
     ss << "On hand: " << g_Game->gold().ival() << " gold";
     EditTextItem(ss.str(), details_id);
 

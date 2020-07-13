@@ -534,13 +534,13 @@ std::string cPlayer::suss_text() const
 }
 
 // True means the girl beat the brothel master
-bool cPlayer::Combat(sGirl* girl)        //  **************************** for now doesn't count items
+bool cPlayer::Combat(sGirl& girl)        //  **************************** for now doesn't count items
 {
     // MYR: Sanity check: Incorporeal is an auto-win.
-    if (girl->has_active_trait("Incorporeal"))
+    if (girl.has_active_trait("Incorporeal"))
     {
-        girl->set_stat(STAT_HEALTH, 100);
-        g_LogFile.log(ELogLevel::DEBUG, "\nGirl vs. Brothel owner: ", girl->FullName(), " is incorporeal, so she wins.\n");
+        girl.set_stat(STAT_HEALTH, 100);
+        g_LogFile.log(ELogLevel::DEBUG, "\nGirl vs. Brothel owner: ", girl.FullName(), " is incorporeal, so she wins.\n");
         return true;
     }
 
@@ -552,7 +552,7 @@ bool cPlayer::Combat(sGirl* girl)        //  **************************** for no
     int pMana = 100;
 
     // first determine what she will fight with
-    if (girl->combat() >= girl->magic())
+    if (girl.combat() >= girl.magic())
         attack = SKILL_COMBAT;
     else
         attack = SKILL_MAGIC;
@@ -564,38 +564,38 @@ bool cPlayer::Combat(sGirl* girl)        //  **************************** for no
         pattack = SKILL_MAGIC;
 
     // calculate the girls dodge ability
-    if ((girl->agility()- girl->tiredness()) < 0)
+    if ((girl.agility()- girl.tiredness()) < 0)
         dodge = 0;
     else
-        dodge = (girl->agility() - girl->tiredness());
+        dodge = (girl.agility() - girl.tiredness());
 
     int combatrounds = 0;
-    while (girl->health() > 20 && pHealth > 0 && combatrounds < 1000)
+    while (girl.health() > 20 && pHealth > 0 && combatrounds < 1000)
     {
         // Girl attacks
-        if (g_Dice.percent(girl->get_skill(attack)))
+        if (g_Dice.percent(girl.get_skill(attack)))
         {
             int damage = 0;
             if (attack == SKILL_MAGIC)
             {
-                if (girl->mana() <= 0)
+                if (girl.mana() <= 0)
                 {
                     attack = SKILL_COMBAT;
                     damage = 2;
                 }
                 else
                 {
-                    damage = 2 + (girl->get_skill(attack) / 5);
-                    girl->mana(-7);
+                    damage = 2 + (girl.get_skill(attack) / 5);
+                    girl.mana(-7);
                 }
             }
             else
             {
                 // she has hit now calculate how much damage will be done
-                damage = 5 + (girl->get_skill(attack) / 10);
+                damage = 5 + (girl.get_skill(attack) / 10);
             }
 
-            girl->upd_skill(attack, g_Dice % 2);// she may improve a little
+            girl.upd_skill(attack, g_Dice % 2);// she may improve a little
 
             // player attempts Dodge
             if (!g_Dice.percent(pdodge))
@@ -631,7 +631,7 @@ bool cPlayer::Combat(sGirl* girl)        //  **************************** for no
 
             // girl attempts Dodge
             if (!g_Dice.percent(dodge))
-                girl->health(-damage);
+                girl.health(-damage);
             else
             {
                 agility(g_Dice % 2);
@@ -656,17 +656,17 @@ bool cPlayer::Combat(sGirl* girl)        //  **************************** for no
 
     if (combatrounds > 999)    // a tie?
     {
-        if (girl->health() > pHealth) return true;    // the girl won
+        if (girl.health() > pHealth) return true;    // the girl won
         return false;
     }
 
-    if (girl->health() < 20)
+    if (girl.health() < 20)
     {
-        girl->upd_Enjoyment(ACTION_COMBAT, -1);
+        girl.upd_Enjoyment(ACTION_COMBAT, -1);
         return false;
     }
 
-    girl->upd_Enjoyment(ACTION_COMBAT, +1);
+    girl.upd_Enjoyment(ACTION_COMBAT, +1);
 
     return true;
 }

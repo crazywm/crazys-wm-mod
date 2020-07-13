@@ -143,13 +143,12 @@ void cScreenTransfer::select_brothel(Side side, int selected)
 
         int selection = 0;
         int i = 0;
-        for(auto& girl : temp->girls())
-        {
-            if (selected_girl() == girl) selection = i;
-            girl->OutputGirlRow(Data, columnNames);
+        temp->girls().visit([&](const sGirl& girl){
+            if (selected_girl().get() == &girl) selection = i;
+            girl.OutputGirlRow(Data, columnNames);
             AddToListBox(own_list_id, i, std::move(Data), checkjobcolor(girl));
             i++;
-        }
+        });
         if (selection >= 0) while (selection > GetListBoxSize(own_list_id) && selection != -1) selection--;
         SetSelectedItemInList(own_list_id, selection >= 0 ? selection : 0);
     }
@@ -201,8 +200,7 @@ void cScreenTransfer::TransferGirlsRightToLeft(bool rightfirst, int rightBrothel
 
             // remove girl from left side
             NumRemoved++;
-            bb->remove_girl(temp);
-            brothel->add_girl(temp, brothela == brothelb);
+            brothel->add_girl(bb->remove_girl(temp), brothela == brothelb);
 
             // get next girl
             girlSelection = GetNextSelectedItemFromList(listb_id, pos + 1, pos);
@@ -214,62 +212,62 @@ void cScreenTransfer::TransferGirlsRightToLeft(bool rightfirst, int rightBrothel
     }
 }
 
-int cScreenTransfer::checkjobcolor(sGirl* temp)
+int cScreenTransfer::checkjobcolor(const sGirl& temp)
 {
-    if (temp->m_DayJob == JOB_CENTREMANAGER || temp->m_NightJob == JOB_CENTREMANAGER || temp->m_DayJob == JOB_CHAIRMAN || temp->m_NightJob == JOB_CHAIRMAN
-        || temp->m_DayJob == JOB_DOCTORE || temp->m_NightJob == JOB_DOCTORE || temp->m_DayJob == JOB_FARMMANGER || temp->m_NightJob == JOB_FARMMANGER
-        || temp->m_DayJob == JOB_HEADGIRL || temp->m_NightJob == JOB_HEADGIRL || temp->m_DayJob == JOB_MATRON || temp->m_NightJob == JOB_MATRON
-        || temp->m_NightJob == JOB_DIRECTOR)
+    if (temp.m_DayJob == JOB_CENTREMANAGER || temp.m_NightJob == JOB_CENTREMANAGER || temp.m_DayJob == JOB_CHAIRMAN || temp.m_NightJob == JOB_CHAIRMAN
+        || temp.m_DayJob == JOB_DOCTORE || temp.m_NightJob == JOB_DOCTORE || temp.m_DayJob == JOB_FARMMANGER || temp.m_NightJob == JOB_FARMMANGER
+        || temp.m_DayJob == JOB_HEADGIRL || temp.m_NightJob == JOB_HEADGIRL || temp.m_DayJob == JOB_MATRON || temp.m_NightJob == JOB_MATRON
+        || temp.m_NightJob == JOB_DIRECTOR)
         return COLOR_RED;
-    else if ((temp->m_DayJob == JOB_ARENAREST && temp->m_NightJob == JOB_ARENAREST) || (temp->m_DayJob == JOB_CENTREREST && temp->m_NightJob == JOB_CENTREREST)
-        || (temp->m_DayJob == JOB_CLINICREST && temp->m_NightJob == JOB_CLINICREST) || (temp->m_DayJob == JOB_FARMREST && temp->m_NightJob == JOB_FARMREST)
-        || (temp->m_DayJob == JOB_HOUSEREST && temp->m_NightJob == JOB_HOUSEREST) || (temp->m_DayJob == JOB_RESTING && temp->m_NightJob == JOB_RESTING)
-        || (temp->m_NightJob == JOB_FILMFREETIME))
+    else if ((temp.m_DayJob == JOB_ARENAREST && temp.m_NightJob == JOB_ARENAREST) || (temp.m_DayJob == JOB_CENTREREST && temp.m_NightJob == JOB_CENTREREST)
+        || (temp.m_DayJob == JOB_CLINICREST && temp.m_NightJob == JOB_CLINICREST) || (temp.m_DayJob == JOB_FARMREST && temp.m_NightJob == JOB_FARMREST)
+        || (temp.m_DayJob == JOB_HOUSEREST && temp.m_NightJob == JOB_HOUSEREST) || (temp.m_DayJob == JOB_RESTING && temp.m_NightJob == JOB_RESTING)
+        || (temp.m_NightJob == JOB_FILMFREETIME))
         return COLOR_GREEN;
-    else if (temp->m_DayJob == JOB_COUNSELOR || temp->m_NightJob == JOB_COUNSELOR)
+    else if (temp.m_DayJob == JOB_COUNSELOR || temp.m_NightJob == JOB_COUNSELOR)
     {
-        if (temp->m_Building->num_girls_on_job(JOB_REHAB, SHIFT_NIGHT) < 1) return COLOR_YELLOW;
+        if (temp.m_Building->num_girls_on_job(JOB_REHAB, SHIFT_NIGHT) < 1) return COLOR_YELLOW;
         else return COLOR_RED;
     }
-    else if (temp->m_DayJob == JOB_DOCTOR || temp->m_NightJob == JOB_DOCTOR)
+    else if (temp.m_DayJob == JOB_DOCTOR || temp.m_NightJob == JOB_DOCTOR)
     {
-        if (GetNumberPatients(*temp->m_Building, false)  < 1 && GetNumberPatients(*temp->m_Building, false) < 1)        return COLOR_YELLOW;
+        if (GetNumberPatients(*temp.m_Building, false)  < 1 && GetNumberPatients(*temp.m_Building, false) < 1)        return COLOR_YELLOW;
         else return COLOR_RED;
     }
-    else if (temp->m_DayJob == JOB_GETABORT || temp->m_NightJob == JOB_GETABORT || temp->m_DayJob == JOB_COSMETICSURGERY || temp->m_NightJob == JOB_COSMETICSURGERY
-        || temp->m_DayJob == JOB_LIPO || temp->m_NightJob == JOB_LIPO || temp->m_DayJob == JOB_BREASTREDUCTION || temp->m_NightJob == JOB_BREASTREDUCTION
-        || temp->m_DayJob == JOB_BOOBJOB || temp->m_NightJob == JOB_BOOBJOB || temp->m_DayJob == JOB_VAGINAREJUV || temp->m_NightJob == JOB_VAGINAREJUV
-        || temp->m_DayJob == JOB_FACELIFT || temp->m_NightJob == JOB_FACELIFT || temp->m_DayJob == JOB_ASSJOB || temp->m_NightJob == JOB_ASSJOB
-        || temp->m_DayJob == JOB_TUBESTIED || temp->m_NightJob == JOB_TUBESTIED || temp->m_DayJob == JOB_FERTILITY || temp->m_NightJob == JOB_FERTILITY)
+    else if (temp.m_DayJob == JOB_GETABORT || temp.m_NightJob == JOB_GETABORT || temp.m_DayJob == JOB_COSMETICSURGERY || temp.m_NightJob == JOB_COSMETICSURGERY
+        || temp.m_DayJob == JOB_LIPO || temp.m_NightJob == JOB_LIPO || temp.m_DayJob == JOB_BREASTREDUCTION || temp.m_NightJob == JOB_BREASTREDUCTION
+        || temp.m_DayJob == JOB_BOOBJOB || temp.m_NightJob == JOB_BOOBJOB || temp.m_DayJob == JOB_VAGINAREJUV || temp.m_NightJob == JOB_VAGINAREJUV
+        || temp.m_DayJob == JOB_FACELIFT || temp.m_NightJob == JOB_FACELIFT || temp.m_DayJob == JOB_ASSJOB || temp.m_NightJob == JOB_ASSJOB
+        || temp.m_DayJob == JOB_TUBESTIED || temp.m_NightJob == JOB_TUBESTIED || temp.m_DayJob == JOB_FERTILITY || temp.m_NightJob == JOB_FERTILITY)
     {
-        if (temp->m_WorkingDay == 0) return COLOR_DARKBLUE;
+        if (temp.m_WorkingDay == 0) return COLOR_DARKBLUE;
         else return COLOR_RED;
     }
-    else if (temp->m_DayJob == JOB_GETHEALING || temp->m_NightJob == JOB_GETHEALING || temp->m_DayJob == JOB_GETREPAIRS || temp->m_NightJob == JOB_GETREPAIRS)
+    else if (temp.m_DayJob == JOB_GETHEALING || temp.m_NightJob == JOB_GETHEALING || temp.m_DayJob == JOB_GETREPAIRS || temp.m_NightJob == JOB_GETREPAIRS)
     {
-        if (temp->health() > 70 && temp->tiredness() < 30) return COLOR_DARKBLUE;
+        if (temp.health() > 70 && temp.tiredness() < 30) return COLOR_DARKBLUE;
         else return COLOR_RED;
     }
-    else if (temp->m_DayJob == JOB_MECHANIC || temp->m_NightJob == JOB_MECHANIC)
+    else if (temp.m_DayJob == JOB_MECHANIC || temp.m_NightJob == JOB_MECHANIC)
     {
-        if (temp->m_Building->num_girls_on_job(JOB_GETREPAIRS, 0) < 1 && temp->m_Building->num_girls_on_job(JOB_GETREPAIRS, 1) < 1)    return COLOR_DARKBLUE;
+        if (temp.m_Building->num_girls_on_job(JOB_GETREPAIRS, 0) < 1 && temp.m_Building->num_girls_on_job(JOB_GETREPAIRS, 1) < 1)    return COLOR_DARKBLUE;
         else return COLOR_RED;
     }
-    else if (temp->m_DayJob == JOB_REHAB || temp->m_NightJob == JOB_REHAB || temp->m_DayJob == JOB_SO_STRAIGHT || temp->m_NightJob == JOB_SO_STRAIGHT
-        || temp->m_DayJob == JOB_SO_BISEXUAL || temp->m_NightJob == JOB_SO_BISEXUAL || temp->m_DayJob == JOB_SO_LESBIAN || temp->m_NightJob == JOB_SO_LESBIAN
-        || temp->m_DayJob == JOB_FAKEORGASM || temp->m_NightJob == JOB_FAKEORGASM)
+    else if (temp.m_DayJob == JOB_REHAB || temp.m_NightJob == JOB_REHAB || temp.m_DayJob == JOB_SO_STRAIGHT || temp.m_NightJob == JOB_SO_STRAIGHT
+        || temp.m_DayJob == JOB_SO_BISEXUAL || temp.m_NightJob == JOB_SO_BISEXUAL || temp.m_DayJob == JOB_SO_LESBIAN || temp.m_NightJob == JOB_SO_LESBIAN
+        || temp.m_DayJob == JOB_FAKEORGASM || temp.m_NightJob == JOB_FAKEORGASM)
     {
-        if (temp->m_WorkingDay == 0) return COLOR_DARKBLUE;
+        if (temp.m_WorkingDay == 0) return COLOR_DARKBLUE;
         else return COLOR_RED;
     }
-    else if (temp->m_NightJob == JOB_CAMERAMAGE)
+    else if (temp.m_NightJob == JOB_CAMERAMAGE)
     {
-        if (temp->m_Building->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) return COLOR_DARKBLUE;
+        if (temp.m_Building->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) > 1) return COLOR_DARKBLUE;
         else return COLOR_RED;
     }
-    else if (temp->m_NightJob == JOB_CRYSTALPURIFIER)
+    else if (temp.m_NightJob == JOB_CRYSTALPURIFIER)
     {
-        if (temp->m_Building->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) return COLOR_DARKBLUE;
+        if (temp.m_Building->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) > 1) return COLOR_DARKBLUE;
         else return COLOR_RED;
     }
     return COLOR_BLUE;

@@ -32,6 +32,8 @@
 #include "cFarm.h"
 #include "cBrothel.h"
 #include "cDungeon.h"
+#include "character/predicates.h"
+#include "character/cGirlPool.h"
 
 
 bool cBuildingManager::NameExists(string name) const
@@ -39,14 +41,17 @@ bool cBuildingManager::NameExists(string name) const
     return has_any_girl_with(HasName(std::move(name)));
 }
 
-bool cBuildingManager::SurnameExists(string name) const
+bool cBuildingManager::SurnameExists(const string& name) const
 {
+    // convert to std::function before the loop
+    girl_pred_fn check_name = [&](const sGirl& girl){
+        return name == girl.Surname();
+    };
+
     for(auto& current : m_Buildings)
     {
-        for(sGirl* currentGirl : current->girls())
-        {
-            if (name == currentGirl->Surname())
-                return true;
+        if(current->girls().has_any(check_name)) {
+            return true;
         }
     }
     return false;
@@ -177,16 +182,14 @@ sGirl* random_girl_on_job(const cBuildingManager& mgr, JOBS job, bool at_night)
     auto all_girls = mgr.all_girls_with( HasJob(job, at_night) );
     if(all_girls.empty())
         return nullptr;
-    return all_girls[g_Dice % all_girls.size()];
+    /// TODO const_cast
+    return const_cast<sGirl*>(all_girls[g_Dice % all_girls.size()]);
 }
 
 
-sGirl* random_girl_on_job(const IBuilding& building, JOBS job, bool at_night)
+sGirl* random_girl_on_job(IBuilding& building, JOBS job, bool at_night)
 {
-    auto all_girls = building.find_all_girls( HasJob(job, at_night) );
-    if(all_girls.empty())
-        return nullptr;
-    return all_girls[g_Dice % all_girls.size()];
+    return building.girls().get_random_girl(HasJob(job, at_night));
 }
 
 int cBuildingManager::num_buildings(BuildingType type) const
@@ -227,4 +230,21 @@ IBuilding& cBuildingManager::AddBuilding(const BrothelCreationData& data)
     building->m_MaxNumRooms = data.maxrooms;
     building->set_background_image(data.background);
     return AddBuilding(std::move(building));
+}
+
+int cBuildingManager::total_girls_with(const cBuildingManager::girl_pred_fn& predicate) const {
+    int count = 0;
+    for(const auto& b : m_Buildings) {
+        count += b->girls().count(predicate);
+    }
+    return count;
+}
+
+bool cBuildingManager::has_any_girl_with(const cBuildingManager::girl_pred_fn& predicate) const {
+    for(const auto& b : m_Buildings) {
+        if(b->girls().has_any(predicate)) {
+            return true;
+        }
+    }
+    return false;
 }

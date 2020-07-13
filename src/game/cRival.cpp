@@ -32,6 +32,8 @@
 #include "xml/util.h"
 #include "scripting/cScriptManager.h"
 #include "sConfig.h"
+#include "cGirls.h"
+#include "cGirlGangFight.h"
 
 
 extern cRng g_Dice;
@@ -533,21 +535,20 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             {
                 if (g_Dice.percent(cG1.intelligence()))            // chance to find a girl
                 {
-                    bool addgirl = false;
-                    sGirl* girl = g_Game->GetRandomGirl();
+                    auto girl = g_Game->CreateRandomGirl(0);
                     girl->set_stat(STAT_HEALTH, 100);        // make sure she is at full health
                     if (girl)
                     {
                         if (g_Dice.percent(cG1.m_Stats[STAT_CHARISMA]))    // convince her
                         {
-                            addgirl = true;
+                            curr->m_NumGirls++;
                         }
                         else                // try to kidnap her
                         {
                             switch(AttemptCapture(cG1, *girl)) {
                                 case EAttemptCaptureResult::SUBMITS:
                                 case EAttemptCaptureResult::CAPTURED:
-                                    addgirl = true;
+                                    curr->m_NumGirls++;
                                     break;
                                 case EAttemptCaptureResult::ESCAPED:
                                     if (cG1.m_Num <= 0) curr->m_NumGangs--;
@@ -555,7 +556,6 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                             }
                         }
                     }
-                    if (addgirl) curr->m_NumGirls++;
                 }
             }break;
             case MISS_CATACOMBS:        // random but dangerous

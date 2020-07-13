@@ -42,7 +42,7 @@ bool WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as Customer Service.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     // Note: Customer service needs to be done last, after all the whores have worked.
 

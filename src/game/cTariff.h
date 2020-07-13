@@ -22,7 +22,7 @@ struct sGirl;
 class IBuilding;
 
 class cTariff {
-    double slave_base_price(sGirl *girl);
+    double slave_base_price(sGirl& girl) const;
 public:
     cTariff() = default;
 
@@ -42,9 +42,9 @@ public:
     int advertising_costs(int budget);
     int add_room_cost(int n);
 
-    double slave_price(sGirl *girl, bool buying);
-    int slave_buy_price(sGirl *girl);
-    int slave_sell_price(sGirl *girl);
+    double slave_price(sGirl& girl, bool buying) const;
+    int slave_buy_price(sGirl& girl) const;
+    int slave_sell_price(sGirl& girl) const;
 
     int male_slave_sales();
     int creature_sales();

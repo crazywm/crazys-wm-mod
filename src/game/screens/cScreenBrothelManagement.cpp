@@ -133,7 +133,7 @@ void IBuildingScreen::init(bool back)
 
 void IBuildingScreen::try_walk()
 {
-    sGirl* girl = active_building().TryEncounter();
+    auto girl = active_building().TryEncounter();
     if (girl == nullptr)                                                // if there's no girl, no meeting
     {
         return;
@@ -141,7 +141,7 @@ void IBuildingScreen::try_walk()
 
     if (girlimage_id != -1)
     {
-        PrepareImage(girlimage_id, girl, IMGTYPE_PROFILE, true, -1);
+        PrepareImage(girlimage_id, girl.get(), IMGTYPE_PROFILE, true, -1);
         HideWidget(girlimage_id, false);
     }
 }

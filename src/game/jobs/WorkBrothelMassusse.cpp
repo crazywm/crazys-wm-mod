@@ -43,7 +43,7 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked massaging customers.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = girl.askprice() + 40;
     int tips = 0;

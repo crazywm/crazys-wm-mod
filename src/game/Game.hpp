@@ -35,6 +35,7 @@ class ITraitsManager;
 class ITraitsCollection;
 class cTariff;
 class cShop;
+class cGirlPool;
 
 namespace tinyxml2
 {
@@ -109,8 +110,8 @@ public:
 
     // girls
     cGirls& girl_pool();
-    sGirl* GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false);
-    std::unique_ptr<sGirl>
+    std::shared_ptr<sGirl> GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false);
+    std::shared_ptr<sGirl>
     CreateRandomGirl(int age, bool slave = false, bool undead = false, bool Human0Monster1 = false,
                      bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false,
                      std::string findbyname = "");
@@ -135,14 +136,11 @@ public:
     const Date& date() const;
 
     // prison
-    std::list<sGirl*>& GetPrison()                { return m_Prison; }
-    void AddGirlToPrison(sGirl* girl);
-    void RemoveGirlFromPrison(sGirl* girl);
-    int  GetNumInPrison()                        { return m_Prison.size(); }
+    cGirlPool& GetPrison()                { return *m_Prison; }
 
     // runaways
-    const std::list<sGirl*>& GetRunaways() const { return m_Runaways; }
-    void AddGirlToRunaways(sGirl* girl);
+    const std::list<std::shared_ptr<sGirl>>& GetRunaways() const { return m_Runaways; }
+    void AddGirlToRunaways(std::shared_ptr<sGirl> girl);
     void RemoveGirlFromRunaways(sGirl* girl);
     int  GetNumRunaways()                        { return m_Runaways.size(); }
 
@@ -164,10 +162,7 @@ public:
     int  GetSupplyShedLevel()            { return m_SupplyShedLevel; }
     int MaxSupplies()                   { return m_SupplyShedLevel * 700; }
 
-    std::size_t GetNumMarketSlaves() const;
-    sGirl * GetMarketSlave(std::size_t index);
-    bool IsMarketUniqueGirl(int index) const;
-    void RemoveMarketSlave(const sGirl& target);
+    cGirlPool& GetSlaveMarket() { return *m_MarketGirls; }
     void UpdateMarketSlaves();
 
     bool allow_cheats() const;
@@ -201,9 +196,7 @@ private:
     std::unique_ptr<scripting::cScriptManager> m_ScriptManager;
 
     // slave market stuff
-    std::vector<sGirl*> m_MarketGirls;
-    std::vector<bool> m_MarketUniqueGirl;
-    sGirl* generate_unique_girl();
+    std::unique_ptr<cGirlPool> m_MarketGirls;
 
     bool m_IsCheating = false;
 
@@ -215,8 +208,8 @@ private:
 
     int m_SupplyShedLevel = 1;            // the level of the supply sheds. the higher the level, the more alcohol and antipreg potions can hold
 
-    std::list<sGirl*> m_Prison;
-    std::list<sGirl*> m_Runaways;
+    std::unique_ptr<cGirlPool> m_Prison;
+    std::list<std::shared_ptr<sGirl>> m_Runaways;
 
     Date m_Date = {1209, 1, 1};
 

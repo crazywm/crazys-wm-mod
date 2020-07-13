@@ -40,7 +40,7 @@ public:
     void init(bool back) override;
     void process() override { };
     void TransferGirlsRightToLeft(bool rightfirst, int rightBrothel, int leftBrothel);
-    int checkjobcolor(sGirl* temp);
+    int checkjobcolor(const sGirl& temp);
 
     IBuilding * getBuilding(int index) const;
 

@@ -57,13 +57,13 @@ bool WorkBarWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
         ss << "${name} worked as a waitress in the bar.\n \n";
     }
 
-    cGirls::UnequipCombat(&girl);  // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
 
-    sGirl* barmaidonduty = random_girl_on_job(*girl.m_Building, JOB_BARMAID, Day0Night1);
+    const sGirl* barmaidonduty = random_girl_on_job(*girl.m_Building, JOB_BARMAID, Day0Night1);
     string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid");
 
-    sGirl* cookonduty = random_girl_on_job(*girl.m_Building, JOB_BARCOOK, Day0Night1);
+    const sGirl* cookonduty = random_girl_on_job(*girl.m_Building, JOB_BARCOOK, Day0Night1);
     string cookname = (cookonduty ? "Cook " + cookonduty->FullName() + "" : "the cook");
 
     int wages = 15, tips = 0;
@@ -612,14 +612,14 @@ bool WorkBarWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.service(rng%skill + 1);
 
     //gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Charming", 70, actiontype, "${name} has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Charming", 70, actiontype, "${name} has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
     if (jobperformance > 150 && girl.constitution() > 65)
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Fleet of Foot", 60, actiontype, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet of Foot.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 60, actiontype, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet of Foot.", Day0Night1);
     }
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Clumsy", 30, actiontype, "It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
 
 #pragma endregion
     return false;

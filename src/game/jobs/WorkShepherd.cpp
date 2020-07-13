@@ -42,7 +42,7 @@ bool WorkShepherd(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a shepherd in the farm.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = 20, tips = 0;
     int enjoy = 0;

@@ -38,7 +38,7 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a stagehand.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // not for studio crew
+    cGirls::UnequipCombat(girl);    // not for studio crew
     int enjoyc = 0, enjoym = 0;
     int wages = 50;
     int tips = 0;
@@ -151,9 +151,9 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype2, enjoyc);
     // Gain Traits
     if (rng.percent(girl.service()))
-        cGirls::PossiblyGainNewTrait(&girl, "Maid", 90, actiontype2, "${name} has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Maid", 90, actiontype2, "${name} has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Clumsy", 30, actiontype2, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype2, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
 
     return false;
 }

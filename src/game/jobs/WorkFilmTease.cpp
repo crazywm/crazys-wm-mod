@@ -114,7 +114,7 @@ void FilmTease::GainTraits(sGirl& girl, int performance) const {
     //gain traits
     if (performance >= 140 && chance(25))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks sexiness.", false);
+        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks sexiness.", false);
     }
 }
 

@@ -27,6 +27,7 @@
 #include "character/traits/ITraitSpec.h"
 #include "character/traits/ITraitsCollection.h"
 #include "character/predicates.h"
+#include "character/cGirlPool.h"
 
 cScreenSlaveMarket::cScreenSlaveMarket() : cGameWindow("slavemarket_screen.xml")
 {
@@ -92,10 +93,14 @@ void cScreenSlaveMarket::set_ids()
     });
 
     SetButtonCallback(more_id, [this]() {
-        sGirl *girl = g_Game->GetMarketSlave(m_SelectedGirl);
-        if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(girl, true), details_id, true); }
-        else if (DetailLevel == 1)    { DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(girl), details_id, true); }
-        else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(girl, true), details_id, true); }
+        sGirl *girl = g_Game->GetSlaveMarket().get_girl(m_SelectedGirl);
+        if(!girl) {
+            EditTextItem("", details_id, true);
+            return;
+        }
+        if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(*girl, true), details_id, true); }
+        else if (DetailLevel == 1)    { DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(*girl), details_id, true); }
+        else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(*girl, true), details_id, true); }
     });
 
     SetListBoxSelectionCallback(slave_list_id, [this](int sel) { change_selected_girl(sel); });
@@ -103,16 +108,21 @@ void cScreenSlaveMarket::set_ids()
     SetListBoxHotKeys(slave_list_id, SDLK_a, SDLK_d);
 
     AddKeyCallback(SDLK_s, [this](){
-        sGirl *girl = g_Game->GetMarketSlave(m_SelectedGirl);
+        sGirl *girl = g_Game->GetSlaveMarket().get_girl(m_SelectedGirl);
+        if(!girl) {
+            EditTextItem("", details_id, true);
+            return true;
+        }
+
         if (is_ctrl_held())
         {
             DetailLevel = 2;
-            EditTextItem(cGirls::GetThirdDetailsString(girl), details_id);
+            EditTextItem(cGirls::GetThirdDetailsString(*girl), details_id);
         }
         else
         {
-            if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(girl, true), details_id); }
-            else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(girl, true), details_id); }
+            if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(*girl, true), details_id); }
+            else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(*girl, true), details_id); }
         }
         return true;
     });
@@ -139,13 +149,14 @@ void cScreenSlaveMarket::init(bool back)
 
     ClearListBox(slave_list_id);    // clear the list
 
-    for(std::size_t i = 0; i < g_Game->GetNumMarketSlaves(); ++i) {
+    for(std::size_t i = 0; i < g_Game->GetSlaveMarket().num(); ++i) {
         int col = COLOR_BLUE;
-        if (g_Game->IsMarketUniqueGirl(i))
+        auto girl = g_Game->GetSlaveMarket().get_girl(i);
+        if (girl->IsUnique())
         {
             col = COLOR_RED;
         }
-        AddToListBox(slave_list_id, i, g_Game->GetMarketSlave(i)->FullName(), col);
+        AddToListBox(slave_list_id, i, girl->FullName(), col);
     }
 
     m_SelectedGirl = 0;
@@ -162,7 +173,7 @@ void cScreenSlaveMarket::init(bool back)
     }
 
     // Finds the first girl in the selection, so she is highlighted. This stops the No girl selected that was normal before. --PP
-    m_SelectedGirl = g_Game->GetNumMarketSlaves() - 1;
+    m_SelectedGirl = g_Game->GetSlaveMarket().num() - 1;
 
     // if there is still as selection (a non empty slave list) then highlight the current selection
     if (m_SelectedGirl >= 0) SetSelectedItemInList(slave_list_id, m_SelectedGirl, true);
@@ -174,14 +185,14 @@ void cScreenSlaveMarket::init(bool back)
     // if the last item was -1 I assume the list is empty so we can go home early (and probably should have earlier still)
     if (tmp == -1) return;
     // get the girl under the cursor.
-    preparescreenitems(g_Game->GetMarketSlave(tmp));
+    preparescreenitems(g_Game->GetSlaveMarket().get_girl(tmp));
 }
 
 void cScreenSlaveMarket::on_select_trait(int selection)
 {
     if (selection != -1 && m_SelectedGirl != -1)
     {
-        auto traits = g_Game->GetMarketSlave(m_SelectedGirl)->get_trait_info();
+        auto traits = g_Game->GetSlaveMarket().get_girl(m_SelectedGirl)->get_trait_info();
         EditTextItem(traits.at(selection).trait->desc(), trait_id);
     }
     else EditTextItem("", trait_id);
@@ -239,9 +250,9 @@ bool cScreenSlaveMarket::buy_slaves()
     std::vector<sGirl*> girls_bought;
     for (int sel = multi_slave_first(); sel != -1; sel = multi_slave_next())
     {
-        auto girl = g_Game->GetMarketSlave(sel);
+        auto girl = g_Game->GetSlaveMarket().get_girl(sel);
         girls_bought.push_back(girl);
-        totalcost += g_Game->tariff().slave_buy_price(girl);
+        totalcost += g_Game->tariff().slave_buy_price(*girl);
     }
     numgirls = girls_bought.size();
 
@@ -459,7 +470,7 @@ bool cScreenSlaveMarket::buy_slaves()
     else if  (m_TargetBuilding->type() == BuildingType::CLINIC)
     {
         ss << (numgirls == 1 ? "She is" : "They are") << " brought to the Clinic where they are given a full checkup.\n";
-        for (auto girl : girls_bought)
+        for (auto& girl : girls_bought)
         {
             girl->health(100);
             girl->happiness(100);
@@ -491,7 +502,7 @@ bool cScreenSlaveMarket::buy_slaves()
         ss << "\"Ok " << (numgirls == 1 ? "my dear" : "ladies") << ", here are a couple of scripts to practice with on your way to the Studio.\"\n";
         if (numgirls == 1)        // single girl flavor texts
         {
-            for (auto girl : girls_bought)
+            for (auto& girl : girls_bought)
             {
                 /* */if (girl->has_active_trait("Porn Star"))
                 {
@@ -520,7 +531,7 @@ bool cScreenSlaveMarket::buy_slaves()
             string actressname;    int actressnum = 0;
             string shygirlname;    int shygirlnum = 0;
 
-            for (auto girl : girls_bought)
+            for (auto& girl : girls_bought)
             {
                 /* */if (girl->has_active_trait("Porn Star"))    { pornstarnum++; pornstarname = girl->FullName(); }
                 else if (girl->has_active_trait("Actress"))    { actressnum++; actressname = girl->FullName(); }
@@ -540,7 +551,7 @@ bool cScreenSlaveMarket::buy_slaves()
     else if (m_TargetBuilding->type() == BuildingType::ARENA)
     {
         ss << "Guard: \"Ok " << (numgirls == 1 ? "sweetheart" : "ladies") << ", we are headed for the Arena where you will train and eventually fight for your new master, " << g_Game->player().FullName() << ". Your first lesson, to carry these heavy packages to the Arena. Load up and march.\"\n";
-        for (auto girl : girls_bought)
+        for (auto& girl : girls_bought)
         {
             girl->strength(g_Dice % 6);
             girl->constitution(g_Dice % 3);
@@ -552,7 +563,7 @@ bool cScreenSlaveMarket::buy_slaves()
     else if (m_TargetBuilding->type() == BuildingType::CENTRE)
     {
         ss << "When " << (numgirls == 1 ? "she arrives" : "the girls arrive") << " at the Centre " << (numgirls == 1 ? "she is" : "they are") << " shown around and then assigned to " << (numgirls == 1 ? "clean the dishes.\n" : "various tasks around the Centre.\n");
-        for (auto girl : girls_bought)
+        for (auto& girl : girls_bought)
         {
             girl->service(g_Dice % 5);
             girl->morality(g_Dice % 5);
@@ -564,7 +575,7 @@ bool cScreenSlaveMarket::buy_slaves()
     else if (m_TargetBuilding->type() == BuildingType::FARM)
     {
         ss << (numgirls == 1 ? "She is" : "The girls are") << " brought to your stall at the town's farmers market until they are ready to go to the Farm. While there, " << (numgirls == 1 ? "she is" : "they are") << " shown the various animals and goods that they will be producing on the farm.\n";
-        for (auto girl : girls_bought)
+        for (auto& girl : girls_bought)
         {
             girl->farming(g_Dice % 5 + 1);
             girl->animalhandling(g_Dice % 5 + 1);
@@ -575,21 +586,20 @@ bool cScreenSlaveMarket::buy_slaves()
     // `J` end flavor texts
 
     // `J` send them where they need to go
-    for (auto girl : girls_bought)
+    for (auto& girl : girls_bought)
     {
         stringstream sss;
-        sss << "Purchased from the Slave Market for " << g_Game->tariff().slave_buy_price(girl) << " gold.";
-        girl->m_Events.AddMessage(sss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+        sss << "Purchased from the Slave Market for " << g_Game->tariff().slave_buy_price(*girl) << " gold.";
+        girl->AddMessage(sss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 
         if(m_TargetBuilding) {
-            m_TargetBuilding->add_girl(girl);
+            m_TargetBuilding->add_girl(g_Game->GetSlaveMarket().TakeGirl(girl));
             affect_girl_by_disposition(*girl);
         } else    // if something fails this will catch it and send them to the dungeon
         {
-            g_Game->dungeon().AddGirl(girl, DUNGEON_NEWSLAVE);
+            g_Game->dungeon().AddGirl(g_Game->GetSlaveMarket().TakeGirl(girl), DUNGEON_NEWSLAVE);
             affect_dungeon_girl_by_disposition(*girl);
         }
-        g_Game->RemoveMarketSlave(*girl);
     }
 
     // `J` now tell the player what happened
@@ -761,7 +771,7 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
      *
      *    if we can't find the pointer. log an error and go home
      */
-    sGirl *girl = g_Game->GetMarketSlave(m_SelectedGirl);
+    sGirl *girl = g_Game->GetSlaveMarket().get_girl(m_SelectedGirl);
     if (!girl)
     {
         g_LogFile.log(ELogLevel::ERROR, "cScreenSlaveMarket::change_selected_girl: can't find girl data for selection (",
@@ -770,9 +780,9 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
     }
     string detail;
 
-    if (DetailLevel == 0)        detail = cGirls::GetDetailsString(girl, true);
-    else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(girl, true);
-    else                        detail = cGirls::GetThirdDetailsString(girl);
+    if (DetailLevel == 0)        detail = cGirls::GetDetailsString(*girl, true);
+    else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(*girl, true);
+    else                        detail = cGirls::GetThirdDetailsString(*girl);
     EditTextItem(detail, details_id, true);
     ImageNum = -1;                                        // I don't understand where this is used...
 
@@ -790,7 +800,7 @@ string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
     {
         text += " has been sent to your dungeon, since your current brothel is full.";
     }
-    else if (cGirls::GetRebelValue(girl, false) >= 35)
+    else if (cGirls::GetRebelValue(*girl, false) >= 35)
     {
         if (g_Game->player().disposition() >= 80)                //Benevolent
         {

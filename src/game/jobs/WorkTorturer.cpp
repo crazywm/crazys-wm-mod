@@ -40,7 +40,7 @@ bool WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.morality(-1);
     int wages = 0, tips = 0;
 
-    cGirls::EquipCombat(&girl);    // ready armor and weapons!
+    cGirls::EquipCombat(girl);    // ready armor and weapons!
 
     // Complications
     //SIN: bit more variety for the above
@@ -167,8 +167,8 @@ bool WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
     g_Game->dungeon().SetTortureDone();
 
     // Check for new traits
-    cGirls::PossiblyGainNewTrait(&girl, "Sadistic", 30, actiontype, "${name} has come to enjoy her job so much that she has become rather Sadistic.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Merciless", 50, actiontype, "${name} extensive experience with torture has made her absolutely Merciless.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Sadistic", 30, actiontype, "${name} has come to enjoy her job so much that she has become rather Sadistic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Merciless", 50, actiontype, "${name} extensive experience with torture has made her absolutely Merciless.", Day0Night1);
 
     return false;
 }

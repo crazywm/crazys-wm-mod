@@ -86,7 +86,7 @@ public:
 
     void attempt_transfer(Side transfer_from, int num = 1);
     void refresh_item_list(Side which_list);
-    static std::string GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, std::string ItemName = "");
+    static std::string GiveItemText(int goodbad, int HateLove, const sGirl& targetgirl, std::string ItemName = "");
 
     void write_item_text(const sInventoryItem *item, int owner, int target);
 

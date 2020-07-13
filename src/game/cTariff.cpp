@@ -31,26 +31,26 @@ namespace settings {
 
 extern cConfig cfg;
 
-double cTariff::slave_base_price(sGirl *girl)
+double cTariff::slave_base_price(sGirl& girl) const
 {
     // The ask price is the base price for the girl. It changes with her stats, so we need to refresh it
     double cost;
-    cGirls::CalculateAskPrice(girl, false);
-    cost = girl->askprice() * 15;                        // base price is the girl's ask price stat
+    cGirls::UpdateAskPrice(girl, false);
+    cost = girl.askprice() * 15;                        // base price is the girl's ask price stat
     for (u_int i = 0; i < NUM_SKILLS; i++)                // add to that the sum of her skills
     {
-        cost += (unsigned int)girl->get_skill(i);
+        cost += (unsigned int)girl.get_skill(i);
     }
-    if (is_virgin(*girl))    cost *= 1.5;    // virgins fetch a premium
+    if (is_virgin(girl))    cost *= 1.5;    // virgins fetch a premium
     return cost;
 }
 
-int cTariff::slave_buy_price(sGirl *girl)
+int cTariff::slave_buy_price(sGirl& girl) const
 {
     return int(slave_base_price(girl) * cfg.out_fact.slave_cost());
 }
 
-int cTariff::slave_sell_price(sGirl *girl)
+int cTariff::slave_sell_price(sGirl& girl) const
 {
 
     double cost = slave_base_price(girl);
@@ -146,7 +146,7 @@ int cTariff::add_room_cost(int n)
 }
 
 
-double cTariff::slave_price(sGirl *girl, bool buying)
+double cTariff::slave_price(sGirl& girl, bool buying) const
 {
     if (buying)
     {

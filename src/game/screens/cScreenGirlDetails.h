@@ -59,12 +59,12 @@ private:
     void RefreshJobList();
     void PrevGirl();
     void NextGirl();
-    sGirl *get_prev_girl();
-    sGirl *get_next_girl();
-    void take_gold(sGirl *girl);
+    std::shared_ptr<sGirl> get_prev_girl();
+    std::shared_ptr<sGirl> get_next_girl();
+    void take_gold(sGirl& girl);
     void set_shift(int shift);
 
-    sGirl* m_SelectedGirl = nullptr;
+    std::shared_ptr<sGirl> m_SelectedGirl = nullptr;
 
     void OnKeyPress(SDL_Keysym keysym) override;
 

@@ -258,7 +258,7 @@ public:
     /// return all items that can be crafted by a given job.
     std::vector<sInventoryItem*> GetCraftableItems(JOBS job);
 
-    void Equip(sGirl* girl, const sInventoryItem* item, bool force);
+    void Equip(sGirl& girl, const sInventoryItem* item, bool force);
 
     void AddItem(sInventoryItem* item);
 

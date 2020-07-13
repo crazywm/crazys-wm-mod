@@ -39,7 +39,7 @@ bool WorkPersonalTraining(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "You oversee ${name}'s training.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, not needed for sex training
+    cGirls::UnequipCombat(girl);    // put that shit away, not needed for sex training
 
 
 

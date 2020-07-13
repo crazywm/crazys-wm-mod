@@ -54,7 +54,7 @@ bool WorkCameraMage(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
 
-    cGirls::UnequipCombat(&girl);    // not for studio crew
+    cGirls::UnequipCombat(girl);    // not for studio crew
 
     int roll = rng.d100();
     if (!SkipDisobey)    // `J` skip the disobey check because it has already been done in the building flow

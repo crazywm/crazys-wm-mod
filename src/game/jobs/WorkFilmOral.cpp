@@ -78,7 +78,7 @@ void FilmOral::DoScene(sGirl& girl) {
 
 void FilmOral::GainTraits(sGirl& girl, int performance) const {
     if (chance(5) && (girl.happiness() > 80) && (girl.get_enjoyment(ACTION_WORKMOVIE) > 75))
-        cGirls::AdjustTraitGroupGagReflex(&girl, 1, true, false);
+        cGirls::AdjustTraitGroupGagReflex(girl, 1, true);
 }
 
 FilmOral::FilmOral() : GenericFilmJob(JOB_FILMORAL, {

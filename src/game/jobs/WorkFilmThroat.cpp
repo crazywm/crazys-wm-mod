@@ -218,12 +218,12 @@ bool FilmThroat::CheckRefuseWork(sGirl& girl) {
 }
 
 void FilmThroat::GainTraits(sGirl& girl, int performance) const {
-    if (result.performance > 200) cGirls::PossiblyGainNewTrait(&girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", false);
+    if (result.performance > 200) cGirls::PossiblyGainNewTrait(girl, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star.", false);
     if (chance(5) && (girl.happiness() > 80) && (girl.get_enjoyment(ACTION_WORKMOVIE) > 75))
-        cGirls::AdjustTraitGroupGagReflex(&girl, 1, true, false);
+        cGirls::AdjustTraitGroupGagReflex(girl, 1, true);
 
     //lose
-    if (chance(5)) cGirls::PossiblyLoseExistingTrait(&girl, "Iron Will", 80, ACTION_SEX, "Somewhere between having a dick in her throat, balls slapping her eyes and a camera watching her retch, ${name} has lost her iron will.", false);
+    if (chance(5)) cGirls::PossiblyLoseExistingTrait(girl, "Iron Will", 80, ACTION_SEX, "Somewhere between having a dick in her throat, balls slapping her eyes and a camera watching her retch, ${name} has lost her iron will.", false);
 }
 
 FilmThroat::FilmThroat() : GenericFilmJob(JOB_FILMFACEFUCK, {

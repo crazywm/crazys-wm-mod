@@ -42,7 +42,7 @@ void IBuildingScreenManagement::update_image()
         if (m_LastSelection != selected_girl)
         {
             stringstream text;
-            text << cGirls::GetGirlMood(selected_girl) << "\n \n" << selected_girl->m_Desc;
+            text << cGirls::GetGirlMood(*selected_girl) << "\n \n" << selected_girl->m_Desc;
             if (cfg.debug.log_extradetails()) text << "\n \nBased on: " << selected_girl->m_Name;
             EditTextItem(text.str(), girldesc_id);
             Rand = true;
@@ -71,7 +71,7 @@ void IBuildingScreenManagement::ViewSelectedGirl()
                 cycle_girls.erase(cycle_girls.begin() + i);
         }
 
-        set_active_girl(selected_girl);
+        set_active_girl(selected_girl->m_Building->girls().get_ref_counted(selected_girl));
         push_window("Girl Details");
     }
 }
@@ -236,7 +236,7 @@ void IBuildingScreenManagement::on_select_job(int selection)
             auto girl = active_building().get_girl(GSelection);
             if (girl)
             {
-                assign_job(girl, new_job, GSelection, fulltime);
+                assign_job(*girl, new_job, GSelection, fulltime);
             }
             GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
         }
@@ -244,10 +244,10 @@ void IBuildingScreenManagement::on_select_job(int selection)
     else EditTextItem("Nothing Selected", jobdesc_id);
 }
 
-void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_selection, bool fulltime)
+void IBuildingScreenManagement::assign_job(sGirl& girl, int new_job, int girl_selection, bool fulltime)
 {
     // handle special job requirements and assign
-    unsigned int old_job   = Day0Night1 ? girl->m_NightJob : girl->m_DayJob;
+    unsigned int old_job   = Day0Night1 ? girl.m_NightJob : girl.m_DayJob;
     
     // if HandleSpecialJobs returns true, the job assignment was modified or cancelled
     if (job_manager().HandleSpecialJobs(girl, new_job, old_job, Day0Night1, fulltime))
@@ -257,8 +257,8 @@ void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_s
         SetSelectedItemInList(joblist_id, new_job, false);
     }
 
-    unsigned int day_job   = girl->m_DayJob;
-    unsigned int night_job = girl->m_NightJob;
+    unsigned int day_job   = girl.m_DayJob;
+    unsigned int night_job = girl.m_NightJob;
     stringstream ss;
     // update the girl's listing to reflect the job change
     ss << job_manager().JobData[day_job].name;
@@ -274,10 +274,10 @@ void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_s
     // handle rehab
     if (day_job == JOB_REHAB)    // `J` added
     {
-        ss.str("");    ss << job_manager().JobData[day_job].name << " (" << 3 - girl->m_WorkingDay << ")";
+        ss.str("");    ss << job_manager().JobData[day_job].name << " (" << 3 - girl.m_WorkingDay << ")";
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
     }
-    else if (girl->m_YesterDayJob == JOB_REHAB && ((girl->m_WorkingDay > 0) || girl->m_PrevWorkingDay > 0))
+    else if (girl.m_YesterDayJob == JOB_REHAB && ((girl.m_WorkingDay > 0) || girl.m_PrevWorkingDay > 0))
     {
         ss.str("");    ss << job_manager().JobData[day_job].name << " **";
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
@@ -285,16 +285,16 @@ void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_s
 
     if (night_job == JOB_REHAB)    // `J` added
     {
-        ss.str("");    ss << job_manager().JobData[night_job].name << " (" << 3 - girl->m_WorkingDay << ")";
+        ss.str("");    ss << job_manager().JobData[night_job].name << " (" << 3 - girl.m_WorkingDay << ")";
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
     }
-    else if (girl->m_YesterNightJob == JOB_REHAB && ((girl->m_WorkingDay > 0) || girl->m_PrevWorkingDay > 0))
+    else if (girl.m_YesterNightJob == JOB_REHAB && ((girl.m_WorkingDay > 0) || girl.m_PrevWorkingDay > 0))
     {
         ss.str("");    ss << job_manager().JobData[night_job].name << " **";
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
     }
 
-    if (girl->m_YesterDayJob == JOB_REHAB && new_job != JOB_REHAB && (girl->m_WorkingDay > 0 || girl->m_PrevWorkingDay > 0))
+    if (girl.m_YesterDayJob == JOB_REHAB && new_job != JOB_REHAB && (girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0))
     {    // `J` added
         ss.str("");    ss << job_manager().JobData[new_job].description << "\n** This girl was in Rehab, if you send her somewhere else, she will have to start her Rehab over.";
         EditTextItem(ss.str(), jobdesc_id);
@@ -302,22 +302,22 @@ void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_s
 
     // handle surgeries
     bool interrupted = false;    // `J` added
-    if (girl->m_YesterDayJob != day_job && cJobManager::is_Surgery_Job(girl->m_YesterDayJob) && ((girl->m_WorkingDay > 0) || girl->m_PrevWorkingDay > 0))
+    if (girl.m_YesterDayJob != day_job && cJobManager::is_Surgery_Job(girl.m_YesterDayJob) && ((girl.m_WorkingDay > 0) || girl.m_PrevWorkingDay > 0))
         interrupted = true;
 
     if (day_job == JOB_CUREDISEASES)    // `J` added
     {
-        ss.str(""); ss << job_manager().JobData[day_job].name << " (" << girl->m_WorkingDay << "%)*" << (interrupted ? " **" : "");
+        ss.str(""); ss << job_manager().JobData[day_job].name << " (" << girl.m_WorkingDay << "%)*" << (interrupted ? " **" : "");
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
     }
     else if (day_job == JOB_GETABORT)    // `J` added
     {
-        ss.str(""); ss << job_manager().JobData[day_job].name << " (" << 2 - girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
+        ss.str(""); ss << job_manager().JobData[day_job].name << " (" << 2 - girl.m_WorkingDay << ")*" << (interrupted ? " **" : "");
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
     }
     else if (cJobManager::is_Surgery_Job(day_job))    // `J` added
     {
-        ss.str(""); ss << job_manager().JobData[day_job].name << " (" << 5 - girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
+        ss.str(""); ss << job_manager().JobData[day_job].name << " (" << 5 - girl.m_WorkingDay << ")*" << (interrupted ? " **" : "");
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
     }
     else if (interrupted)
@@ -328,17 +328,17 @@ void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_s
 
     if (night_job == JOB_CUREDISEASES)    // `J` added
     {
-        ss.str(""); ss << job_manager().JobData[night_job].name << " (" << girl->m_WorkingDay << "%)*" << (interrupted ? " **" : "");
+        ss.str(""); ss << job_manager().JobData[night_job].name << " (" << girl.m_WorkingDay << "%)*" << (interrupted ? " **" : "");
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
     }
     else if (night_job == JOB_GETABORT)    // `J` added
     {
-        ss.str(""); ss << job_manager().JobData[night_job].name << " (" << 2 - girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
+        ss.str(""); ss << job_manager().JobData[night_job].name << " (" << 2 - girl.m_WorkingDay << ")*" << (interrupted ? " **" : "");
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
     }
     else if (cJobManager::is_Surgery_Job(night_job))    // `J` added
     {
-        ss.str(""); ss << job_manager().JobData[night_job].name << " (" << 5 - girl->m_WorkingDay << ")*" << (interrupted ? " **" : "");
+        ss.str(""); ss << job_manager().JobData[night_job].name << " (" << 5 - girl.m_WorkingDay << ")*" << (interrupted ? " **" : "");
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
     }
     else if (interrupted)
@@ -349,16 +349,16 @@ void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_s
     if (interrupted)
     {    // `J` added
         ss.str(""); ss << job_manager().JobData[new_job].description << "\n** This girl was getting ";
-        if (girl->m_YesterDayJob == JOB_CUREDISEASES)
+        if (girl.m_YesterDayJob == JOB_CUREDISEASES)
         {
             ss << "her disease cured, if you send her somewhere else, she will have to start her treatment over.";
         }
         else
         {
-            if (girl->m_YesterDayJob == JOB_BOOBJOB || girl->m_YesterDayJob == JOB_FACELIFT)        ss << "a ";
-            else if (girl->m_YesterDayJob == JOB_GETABORT || girl->m_YesterDayJob == JOB_ASSJOB)    ss << "an ";
-            else if (girl->m_YesterDayJob == JOB_TUBESTIED)/*                                          */    ss << "her ";
-            ss << job_manager().JobData[girl->m_YesterDayJob].name << ", if you send her somewhere else, she will have to start her Surgery over.";
+            if (girl.m_YesterDayJob == JOB_BOOBJOB || girl.m_YesterDayJob == JOB_FACELIFT)        ss << "a ";
+            else if (girl.m_YesterDayJob == JOB_GETABORT || girl.m_YesterDayJob == JOB_ASSJOB)    ss << "an ";
+            else if (girl.m_YesterDayJob == JOB_TUBESTIED)/*                                          */    ss << "her ";
+            ss << job_manager().JobData[girl.m_YesterDayJob].name << ", if you send her somewhere else, she will have to start her Surgery over.";
         }
         EditTextItem(ss.str(), jobdesc_id);
     }
@@ -366,14 +366,14 @@ void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_s
     // conversions
     if (day_job == JOB_SO_STRAIGHT || day_job == JOB_SO_BISEXUAL || day_job == JOB_SO_LESBIAN || day_job == JOB_FAKEORGASM)    // `J` added
     {
-        ss.str("");    ss << job_manager().JobData[day_job].name << " (" << girl->m_WorkingDay << "%)";
+        ss.str("");    ss << job_manager().JobData[day_job].name << " (" << girl.m_WorkingDay << "%)";
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
     }
-    else if ((girl->m_WorkingDay > 0 || girl->m_PrevWorkingDay > 0) && (
-            girl->m_YesterDayJob == JOB_SO_STRAIGHT ||
-            girl->m_YesterDayJob == JOB_SO_BISEXUAL ||
-            girl->m_YesterDayJob == JOB_SO_LESBIAN ||
-            girl->m_YesterDayJob == JOB_FAKEORGASM))
+    else if ((girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0) && (
+            girl.m_YesterDayJob == JOB_SO_STRAIGHT ||
+            girl.m_YesterDayJob == JOB_SO_BISEXUAL ||
+            girl.m_YesterDayJob == JOB_SO_LESBIAN ||
+            girl.m_YesterDayJob == JOB_FAKEORGASM))
     {
         ss.str("");    ss << job_manager().JobData[day_job].name << " **";
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
@@ -381,27 +381,27 @@ void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_s
 
     if (night_job == JOB_SO_STRAIGHT || night_job == JOB_SO_BISEXUAL || night_job == JOB_SO_LESBIAN || night_job == JOB_FAKEORGASM)    // `J` added
     {
-        ss.str("");    ss << job_manager().JobData[night_job].name << " (" << girl->m_WorkingDay << "%)";
+        ss.str("");    ss << job_manager().JobData[night_job].name << " (" << girl.m_WorkingDay << "%)";
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
     }
-    else if ((girl->m_WorkingDay > 0 || girl->m_PrevWorkingDay > 0) && (
-            girl->m_YesterNightJob == JOB_SO_STRAIGHT ||
-            girl->m_YesterNightJob == JOB_SO_BISEXUAL ||
-            girl->m_YesterNightJob == JOB_SO_LESBIAN ||
-            girl->m_YesterNightJob == JOB_FAKEORGASM))
+    else if ((girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0) && (
+            girl.m_YesterNightJob == JOB_SO_STRAIGHT ||
+            girl.m_YesterNightJob == JOB_SO_BISEXUAL ||
+            girl.m_YesterNightJob == JOB_SO_LESBIAN ||
+            girl.m_YesterNightJob == JOB_FAKEORGASM))
     {
         ss.str("");    ss << job_manager().JobData[night_job].name << " **";
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
     }
 
-    if ((girl->m_WorkingDay > 0 || girl->m_PrevWorkingDay > 0) && (new_job != girl->m_YesterDayJob && (
-            girl->m_YesterDayJob == JOB_SO_STRAIGHT ||
-            girl->m_YesterDayJob == JOB_SO_BISEXUAL ||
-            girl->m_YesterDayJob == JOB_SO_LESBIAN ||
-            girl->m_YesterDayJob == JOB_FAKEORGASM)))
+    if ((girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0) && (new_job != girl.m_YesterDayJob && (
+            girl.m_YesterDayJob == JOB_SO_STRAIGHT ||
+            girl.m_YesterDayJob == JOB_SO_BISEXUAL ||
+            girl.m_YesterDayJob == JOB_SO_LESBIAN ||
+            girl.m_YesterDayJob == JOB_FAKEORGASM)))
     {    // `J` added
         ss.str("");    ss << job_manager().JobData[new_job].description <<
-                          "\n** This girl was in training for " << job_manager().JobData[girl->m_YesterDayJob].name
+                          "\n** This girl was in training for " << job_manager().JobData[girl.m_YesterDayJob].name
                           << ", if you send her somewhere else, she will have to start her training over.";
         EditTextItem(ss.str(), jobdesc_id);
     }
@@ -409,7 +409,7 @@ void IBuildingScreenManagement::assign_job(sGirl * girl, int new_job, int girl_s
     // actress
     if (is_Actress_Job(night_job))    // `J` added
     {
-        ss.str(""); ss << job_manager().JobData[night_job].name << (CrewNeeded(*girl->m_Building) ? " **" : "");
+        ss.str(""); ss << job_manager().JobData[night_job].name << (CrewNeeded(*girl.m_Building) ? " **" : "");
         SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "NightJob");
     }
 }
@@ -596,18 +596,12 @@ void IBuildingScreenManagement::ffsd_outcome(int selected)
                 else if (sell)
                 {
                     sellgirl_names.push_back(selected_girl->FullName());
-                    sellgirl_price.push_back(g_Game->tariff().slave_sell_price(selected_girl));
-                    g_Game->gold().slave_sales(g_Game->tariff().slave_sell_price(selected_girl));
+                    sellgirl_price.push_back(g_Game->tariff().slave_sell_price(*selected_girl));
+                    g_Game->gold().slave_sales(g_Game->tariff().slave_sell_price(*selected_girl));
 
-                    active_building().remove_girl(selected_girl);
-
-                    if (selected_girl->FullName() == selected_girl->m_Name)
-                        g_Game->girl_pool().AddGirl(selected_girl);  // add unique girls back to main pool
-                    else
-                    {  // random girls simply get removed from the game
-                        delete selected_girl;
-                        selected_girl = nullptr;
-                    }
+                    auto girl_ptr = active_building().remove_girl(selected_girl);
+                    g_Game->girl_pool().GiveGirl(std::move(girl_ptr));
+                    selected_girl = nullptr;
                 }
                 continue;
             }
@@ -629,15 +623,9 @@ void IBuildingScreenManagement::ffsd_outcome(int selected)
                 else if (fire)
                 {
                     firegirl_names.push_back(selected_girl->FullName());
-                    active_building().remove_girl(selected_girl);
-
-                    if (selected_girl->FullName() == selected_girl->m_Name)
-                       g_Game->girl_pool().AddGirl(selected_girl);  // add unique girls back to main pool
-                    else
-                    {  // random girls simply get removed from the game
-                        delete selected_girl;
-                        selected_girl = nullptr;
-                    }
+                    auto girl_ptr = active_building().remove_girl(selected_girl);
+                    g_Game->girl_pool().GiveGirl(std::move(girl_ptr));
+                    selected_girl = nullptr;
                 }
             }
         }
@@ -760,7 +748,7 @@ void IBuildingScreenManagement::ffsd_choice(int ffsd, vector<int> girl_array) //
         else if (selected_girl->is_slave())
         {
             slavegirls++;
-            selltotal += g_Game->tariff().slave_sell_price(selected_girl);
+            selltotal += g_Game->tariff().slave_sell_price(*selected_girl);
         }
         else if (selected_girl)                freegirls++;
     }

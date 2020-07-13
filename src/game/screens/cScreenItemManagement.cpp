@@ -115,7 +115,7 @@ struct cInventoryProviderShop : public IInventoryProvider {
 
 
 struct cInventoryProviderGirl : public IInventoryProvider {
-    explicit cInventoryProviderGirl(sGirl* girl) : m_Girl(girl) { }
+    explicit cInventoryProviderGirl(std::shared_ptr<sGirl> girl) : m_Girl(girl) { }
     std::vector<std::string> get_data(int filter) const override {
         std::vector<std::string> data(3);
 
@@ -124,7 +124,7 @@ struct cInventoryProviderGirl : public IInventoryProvider {
         if (!m_Girl->inventory().empty())
             data[1] = std::to_string(m_Girl->inventory().get_num_items());
 
-        int numtype = cGirls::GetNumItemType(m_Girl, filter);
+        int numtype = cGirls::GetNumItemType(*m_Girl, filter);
         if (numtype > 0) data[2] = std::to_string(numtype);
 
         return data;
@@ -161,7 +161,7 @@ struct cInventoryProviderGirl : public IInventoryProvider {
             int   goodbad  = item->m_Badness;
             u_int type     = item->m_Type;
             int   HateLove = m_Girl->pclove() - m_Girl->pchate();
-            g_Game->push_message(cScreenItemManagement::GiveItemText(goodbad, HateLove, m_Girl), 0);
+            g_Game->push_message(cScreenItemManagement::GiveItemText(goodbad, HateLove, *m_Girl), 0);
 
             if (goodbad < 20) {
                 int happiness = g_Game->inventory_manager().HappinessFromItem(item);
@@ -194,7 +194,7 @@ struct cInventoryProviderGirl : public IInventoryProvider {
         }
     }
 
-    sGirl* m_Girl;
+    std::shared_ptr<sGirl> m_Girl;
 };
 
 extern bool g_AllTogle;
@@ -364,8 +364,8 @@ void cScreenItemManagement::init(bool back)    // `J` bookmark
     for(sDungeonGirl& girl : g_Game->dungeon().girls())
     {
         int i = m_OwnerList.size();
-        if (g_AllTogle && selected_girl() == girl.m_Girl.get()) m_RightData.selected_owner = i;
-        m_OwnerList.push_back(std::make_unique<cInventoryProviderGirl>(girl.m_Girl.get()));
+        if (g_AllTogle && selected_girl().get() == girl.m_Girl.get()) m_RightData.selected_owner = i;
+        m_OwnerList.push_back(std::make_unique<cInventoryProviderGirl>(girl.m_Girl));
     }
 
     init_side(m_LeftData, 0, 0);
@@ -378,11 +378,11 @@ void cScreenItemManagement::init(bool back)    // `J` bookmark
 }
 
 void cScreenItemManagement::AddGirlsFromBuilding(IBuilding * brothel) {
-    for(auto& temp : brothel->girls()) {
+    brothel->girls().visit([&](const sGirl& girl){
         int i = m_OwnerList.size();
-        if (g_AllTogle && selected_girl() == temp) m_RightData.selected_owner = i;
-        m_OwnerList.push_back(std::make_unique<cInventoryProviderGirl>(temp));
-    }
+        if (g_AllTogle && selected_girl().get() == &girl) m_RightData.selected_owner = i;
+        m_OwnerList.push_back(std::make_unique<cInventoryProviderGirl>(brothel->girls().get_ref_counted(&girl)));
+    });
 }
 
 void cScreenItemManagement::write_item_text(const sInventoryItem* item, int owner, int target)
@@ -460,7 +460,7 @@ void cScreenItemManagement::change_equip(Side side, bool equip)
     sItemTransferSide& own_side = side == Side::Left ? m_LeftData : m_RightData;
     sItemTransferSide& other_side = side == Side::Right ? m_LeftData : m_RightData;
 
-    sGirl * targetGirl = dynamic_cast<cInventoryProviderGirl&>(*m_OwnerList.at(own_side.selected_owner)).m_Girl;
+    auto targetGirl = dynamic_cast<cInventoryProviderGirl&>(*m_OwnerList.at(own_side.selected_owner)).m_Girl;
 
     int item = GetLastSelectedItemFromList(own_side.items_id);
     if (item != -1)
@@ -623,9 +623,8 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
     refresh_item_list(Side::Right);
 }
 
-string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* targetgirl, string ItemName)
+string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, const sGirl& girl, string ItemName)
 {
-    sGirl* girl = targetgirl;
     string message = "";
     if (goodbad < 20)
     {
@@ -633,7 +632,7 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
         else if (HateLove < -60)    message = "She takes your gift in hand, looks at it, looks at you, than walks away without a word.";
         else if (HateLove < -40)
         {
-            if (girl->has_active_trait("Your Daughter"))
+            if (girl.has_active_trait("Your Daughter"))
             {
                 message = "Are you trying to make up for being an ass dad?"; //hopefully this works.. will add more
             }
@@ -641,7 +640,7 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
         }
         else if (HateLove < -20)
         {
-            if (girl->has_active_trait("Your Daughter"))
+            if (girl.has_active_trait("Your Daughter"))
             {
                 message = "You still have a long way to go if you want me to like you dad."; //hopefully this works.. will add more CRAZY
             }
@@ -654,8 +653,8 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
         else if (HateLove < 80)        message = "She is happy with the gift and gives you a big hug and a kiss on the cheek.";
         else
         {
-            if (girl->has_active_trait("Your Daughter")) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek saying she loves her daddy."; //hopefully this works.. will add more
-            else if (girl->has_active_trait("Lesbian")) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek and says that if you weren't a \"man\" she might have to show you how much she loved that gift.";
+            if (girl.has_active_trait("Your Daughter")) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek saying she loves her daddy."; //hopefully this works.. will add more
+            else if (girl.has_active_trait("Lesbian")) message = "She is happy with the gift and gives you a big hug and a kiss on the cheek and says that if you weren't a \"man\" she might have to show you how much she loved that gift.";
             else /*                                   */    message = "She is happy with the gift and gives you a big hug and kisses you hard.  After the kiss she whispers to you to see her later so she can thank you \"properly\".";
         }
     }
@@ -672,7 +671,7 @@ string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, sGirl* tar
         else if (HateLove < 80)        message = "She doesn't seem happy with the gift and tears can be seen in her eyes.";
         else
         {
-            if (girl->has_active_trait("Your Daughter")) message = "She looks at you and says \"Why would you give me such a thing daddy?\"."; //hopefully this works.. will add more
+            if (girl.has_active_trait("Your Daughter")) message = "She looks at you and says \"Why would you give me such a thing daddy?\"."; //hopefully this works.. will add more
             else /*                                   */    message = "She can't belive you would give her such a gift and runs off crying.";
         }
     }

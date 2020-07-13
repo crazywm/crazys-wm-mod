@@ -37,7 +37,7 @@ bool WorkCityGuard(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} helps guard the city.\n \n";
 
-    cGirls::EquipCombat(&girl);    // ready armor and weapons!
+    cGirls::EquipCombat(girl);    // ready armor and weapons!
 
     int roll_a = rng.d100(), roll_b = rng.d100();
     int wages = 150, tips = 0, enjoy = 0, enjoyc = 0, sus = 0;
@@ -128,9 +128,9 @@ bool WorkCityGuard(sGirl& girl, bool Day0Night1, cRng& rng)
 
     girl.upd_Enjoyment(actiontype, enjoy);
     girl.upd_Enjoyment(ACTION_COMBAT, enjoyc);
-    cGirls::PossiblyGainNewTrait(&girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Fleet of Foot", 30, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Tough", 20, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 30, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
 
     return false;
 }

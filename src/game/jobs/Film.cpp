@@ -56,14 +56,14 @@ bool GenericFilmJob::WorkFilm(sGirl& girl) {
 
     ss << "\n ";
 
-    cGirls::UnequipCombat(&girl);
+    cGirls::UnequipCombat(girl);
 
     DoScene(girl);
 
     // remaining modifiers are in the AddScene function --PP
     // `J` do job based modifiers
     result.bonus += girl.get_skill(m_FilmData.SceneSkill) / 5;
-    int finalqual = brothel->AddScene(&girl, job(), result.bonus, m_FilmData.Type, m_FilmData.SceneName);
+    int finalqual = brothel->AddScene(girl, job(), result.bonus, m_FilmData.Type, m_FilmData.SceneName);
     ss << "Her scene is valued at: " << finalqual << " gold.\n";
 
     girl.AddMessage(ss.str(), m_FilmData.Image, EVENT_DAYSHIFT);
@@ -97,10 +97,10 @@ bool GenericFilmJob::WorkFilm(sGirl& girl) {
     // gain simple traits
     for(auto& trait : m_FilmData.TraitChanges) {
         if(trait.Gain) {
-            cGirls::PossiblyGainNewTrait(&girl, trait.TraitName, trait.Threshold, trait.Action,
+            cGirls::PossiblyGainNewTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
                                          trait.Message, false, trait.EventType);
         } else {
-            cGirls::PossiblyLoseExistingTrait(&girl, trait.TraitName, trait.Threshold, trait.Action,
+            cGirls::PossiblyLoseExistingTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
                                               trait.Message, false);
         }
     }
@@ -226,7 +226,7 @@ struct FilmStrip : public SimpleFilmJob
     void GainTraits(sGirl& girl, int performance) const override {
         if (girl.performance() > 50 && girl.strip() > 50 && chance(25))
         {
-            cGirls::PossiblyGainNewTrait(&girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been stripping for so long, when she walks, it seems her clothes just want to fall off.", false);
+            cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been stripping for so long, when she walks, it seems her clothes just want to fall off.", false);
         }
     }
 

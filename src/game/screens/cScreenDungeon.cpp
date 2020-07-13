@@ -184,7 +184,7 @@ void cScreenDungeon::init(bool back)
     for (int i = 0; i < g_Game->dungeon().GetNumGirls(); i++)                                                // add girls
     {
         sGirl *girl = g_Game->dungeon().GetGirl(i)->m_Girl.get();                                            // get the i-th girl
-        if (selected_girl() == girl) selection = i;                                                            // if selected_girl is this girl, update selection
+        if (selected_girl().get() == girl) selection = i;                                                            // if selected_girl is this girl, update selection
         girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
         int col = ((girl->health() <= 30) || (girl->happiness() <= 30)) ? COLOR_RED : COLOR_BLUE;            // if she's low health or unhappy, flag her entry to display in red // Anon21
         g_Game->dungeon().OutputGirlRow(i, Data, columnNames);                                                // add her to the list
@@ -295,14 +295,14 @@ void cScreenDungeon::selection_change()
     cerr << "Player selecting Dungeon Girl #" << selection << endl;    // `J` rewrote to reduce confusion
     int num = selection;
     auto dgirl = g_Game->dungeon().GetGirl(num);
-    sGirl * girl = dgirl->m_Girl.get();
+    auto girl = dgirl->m_Girl;
     // again, we're just enabling and disabling buttons
     EnableWidget(viewdetails_id);
 
     DisableWidget(allowfood_id, dgirl->m_Feeding);
     DisableWidget(stopfood_id, !dgirl->m_Feeding);
     // some of them partly depend upon whether she's a slave or not
-    if (girl->is_slave())
+    if (dgirl->m_Girl->is_slave())
     {
         EnableWidget(sellslave_id);
         DisableWidget(brandslave_id);
@@ -312,7 +312,7 @@ void cScreenDungeon::selection_change()
         EnableWidget(brandslave_id);
         DisableWidget(sellslave_id);
     }
-    set_active_girl(girl);
+    set_active_girl(std::move(girl));
 }
 
 int cScreenDungeon::view_girl()
@@ -321,7 +321,7 @@ int cScreenDungeon::view_girl()
 
     if (selection == -1) return Continue;                            // nothing selected, nothing to do.
     if ((selection - g_Game->dungeon().GetNumGirls()) >= 0) return Continue;    // if this is a customer, we're not interested
-    sGirl *girl = g_Game->dungeon().GetGirl(selection)->m_Girl.get();                // if we can't find the girl, there's nothing we can do
+    auto girl = g_Game->dungeon().GetGirl(selection)->m_Girl;                // if we can't find the girl, there's nothing we can do
     if (!girl) return Continue;
     if (girl->health() > 0)
     {
@@ -335,7 +335,7 @@ int cScreenDungeon::view_girl()
                 cycle_girls.erase(cycle_girls.begin() + i);
         }
 
-        set_active_girl(girl);
+        set_active_girl(std::move(girl));
         push_window("Girl Details");
         return Return;
     }
@@ -473,19 +473,15 @@ void cScreenDungeon::sell_slaves()
             continue;
         }
         // she's a living slave, she's out of here
-        cGirls::CalculateAskPrice(girl, false);
-        int cost = g_Game->tariff().slave_sell_price(girl);                    // get the sell price of the girl. This is a little on the occult side
+        cGirls::UpdateAskPrice(*girl, false);
+        int cost = g_Game->tariff().slave_sell_price(*girl);                    // get the sell price of the girl. This is a little on the occult side
         g_Game->gold().slave_sales(cost);
         paid += cost;
         count++;
-        girl = g_Game->dungeon().RemoveGirl(g_Game->dungeon().GetGirl(selection)).release();    // remove her from the dungeon, add her back into the general pool
+        auto removed_girl = g_Game->dungeon().RemoveGirl(g_Game->dungeon().GetGirl(selection));    // remove her from the dungeon, add her back into the general pool
         girl_names.push_back(girl->FullName());
         sell_gold.push_back(cost);
-        if (girl->FullName() == girl->m_Name)
-        {
-            g_Game->girl_pool().AddGirl(girl);                                    // add unique girls back to main pool
-        }
-        else { delete girl;}                                        // random girls simply get removed from the game
+        g_Game->girl_pool().GiveGirl(removed_girl);
     }
     if (deadcount > 0) g_Game->push_message("Nobody is currently in the market for dead girls.", COLOR_YELLOW);
     if (count <= 0) return;
@@ -512,8 +508,8 @@ void cScreenDungeon::release_all_girls()
     {
         if (m_ReleaseBuilding->free_rooms() > 0)         // make sure there's room for another girl
         {
-            sGirl* girl = g_Game->dungeon().RemoveGirl(g_Game->dungeon().GetGirl(0)).release();
-            m_ReleaseBuilding->add_girl(girl);
+            /// TODO(performance) always removing the first element might be very inefficient
+            g_Game->dungeon().ReleaseGirl(0, *m_ReleaseBuilding);
             continue;
         }
         // we only get here if we run out of space
@@ -527,19 +523,7 @@ void cScreenDungeon::stop_feeding()
     // and then loop using multi_first() and multi_next()
     for (int selection = multi_first(); selection != -1; selection = multi_next())
     {
-        int num_girls = g_Game->dungeon().GetNumGirls();
-        // if the selection is more than than the number of girls it has to be a customer
-        if ((selection - num_girls) >= 0)    // it is a customer
-        {
-            int num = (selection - num_girls);
-            sDungeonCust* cust = g_Game->dungeon().GetCust(num);
-            cust->m_Feeding = true;
-        }
-        else
-        {
-            sDungeonGirl* girl = g_Game->dungeon().GetGirl(selection);
-            girl->m_Feeding = true;
-        }
+        g_Game->dungeon().SetFeeding(selection, false);
     }
 }
 
@@ -549,18 +533,7 @@ void cScreenDungeon::start_feeding()
     selection = GetNextSelectedItemFromList(girllist_id, 0, pos);
     while (selection != -1)
     {
-        if ((selection - g_Game->dungeon().GetNumGirls()) >= 0)    // it is a customer
-        {
-            int num = (selection - g_Game->dungeon().GetNumGirls());
-            sDungeonCust* cust = g_Game->dungeon().GetCust(num);
-            cust->m_Feeding = false;
-        }
-        else
-        {
-            int num = selection;
-            sDungeonGirl* girl = g_Game->dungeon().GetGirl(num);
-            girl->m_Feeding = false;
-        }
+        g_Game->dungeon().SetFeeding(selection, true);
         selection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
     }
 }
@@ -676,8 +649,7 @@ void cScreenDungeon::release()
         int num = selection;
         if ((m_ReleaseBuilding->free_rooms()) > 0)
         {
-            sGirl* girl = g_Game->dungeon().RemoveGirl(g_Game->dungeon().GetGirl(num)).release();
-            m_ReleaseBuilding->add_girl(girl);
+            g_Game->dungeon().ReleaseGirl(num, *m_ReleaseBuilding);
             continue;
         }
         // if we run out of space
@@ -717,7 +689,7 @@ void cScreenDungeon::update_image()
 }
 
 void cScreenDungeon::UpdateImage(int imagetype) {
-    PrepareImage(girlimage_id, selected_girl(), imagetype, true, ImageNum);
+    PrepareImage(girlimage_id, selected_girl().get(), imagetype, true, ImageNum);
     HideWidget(girlimage_id, false);
 }
 

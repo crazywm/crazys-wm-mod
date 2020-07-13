@@ -215,14 +215,21 @@ int sLuaGirl::acquire_girl(lua_State* L) {
             how to fix it, so I'm explicitly setting the percentage to 60 here */
     girl.house(60);
 
+    std::shared_ptr<sGirl> girl_owner = nullptr;
+    if(girl.m_Building) {
+        girl_owner = girl.m_Building->remove_girl(&girl);
+    } else {
+        girl_owner = g_Game->girl_pool().TakeGirl(&girl);
+    }
+
     string text = girl.FullName();
 /*
 *    OK: how rebellious is this floozy?
 */
-    if(cGirls::GetRebelValue(&girl, false) >= 35) {
+    if(cGirls::GetRebelValue(girl, false) >= 35) {
         text += " has been sent to your dungeon, as she is rebellious and poorly trained.";
         g_Game->push_message(text, 0);
-        g_Game->dungeon().AddGirl(&girl, DUNGEON_NEWGIRL);
+        g_Game->dungeon().AddGirl(std::move(girl_owner), DUNGEON_NEWGIRL);
         return 0;
     }
 /*
@@ -240,14 +247,14 @@ int sLuaGirl::acquire_girl(lua_State* L) {
     if(diff <= 0) {
         text += (" has been sent to your dungeon, since current brothel is full.");
         g_Game->push_message(text, 0);
-        g_Game->dungeon().AddGirl(&girl, DUNGEON_NEWGIRL);
+        g_Game->dungeon().AddGirl(std::move(girl_owner), DUNGEON_NEWGIRL);
         return 0;
     }
 /*
 *    otherwise, it's very simple
 */
     text += (" has been sent to your current brothel.");
-    building.add_girl(&girl);
+    building.add_girl(std::move(girl_owner));
     g_Game->push_message(text, 0);
     return 0;
 }
@@ -259,15 +266,26 @@ int sLuaGirl::create_random_girl(lua_State *L) {
     bool kidnapped = lua_toboolean(L, 4);
     bool arena = lua_toboolean(L, 5);
     bool daughter = lua_toboolean(L, 6);
-    sGirl* newgirl = g_Game->CreateRandomGirl(age, slave, false, non_human, kidnapped, arena, daughter).release();
-    create(L, newgirl);
+    auto newgirl = g_Game->CreateRandomGirl(age, slave, false, non_human, kidnapped, arena, daughter);
+    sGirl* gptr = newgirl.get();
+    g_Game->girl_pool().AddGirl(std::move(newgirl));
+    create(L, gptr);
     return 1;
 }
 
 int sLuaGirl::to_dungeon(lua_State *L) {
     auto& girl = check_type(L, 1);
     int reason = luaL_checkinteger(L, 2);
-    g_Game->dungeon().AddGirl(&girl, reason);
+
+    std::shared_ptr<sGirl> girl_owner = nullptr;
+    if(girl.m_Building) {
+        girl_owner = girl.m_Building->remove_girl(&girl);
+    } else {
+        girl_owner = g_Game->girl_pool().TakeGirl(&girl);
+    }
+    // TODO this fails if the girl is in prison/runaway
+
+    g_Game->dungeon().AddGirl(std::move(girl_owner), reason);
     return 0;
 }
 

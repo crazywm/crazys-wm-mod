@@ -25,11 +25,11 @@
 
 void FilmPubBDSM::GainTraits(sGirl& girl, int performance) const {
     if (hard) {
-        cGirls::PossiblyGainNewTrait(&girl, "Mind Fucked", 65, ACTION_SEX,
+        cGirls::PossiblyGainNewTrait(girl, "Mind Fucked", 65, ACTION_SEX,
                                      "${name} was pushed too far in her public torture film and is now completely Mind Fucked.",
                                      false);
-        cGirls::GirlInjured(&girl, 5);
-        cGirls::PossiblyLoseExistingTrait(&girl, "Iron Will", 80, ACTION_SEX,
+        cGirls::GirlInjured(girl, 5);
+        cGirls::PossiblyLoseExistingTrait(girl, "Iron Will", 80, ACTION_SEX,
                                           "${name}'s public degradation has shattered her iron will.", false);
     }
     //Hate
@@ -366,7 +366,7 @@ void FilmPubBDSM::DoScene(sGirl& girl) {
         }
         else
         {
-            if (!girl.calc_insemination(*cGirls::GetBeast(), 0.75))
+            if (!girl.calc_insemination(cGirls::GetBeast(), 0.75))
             {
                 g_Game->push_message(girl.FullName() + " has been inseminated.", 0);
                 ss << "And she's been inseminated by a beast.\nCongratulations!\n";

@@ -27,7 +27,6 @@
 #include <tinyxml2.h>
 #include "Constants.h"
 #include "cEvents.h"
-#include "cGirlGangFight.h"
 
 
 class sGirl;
@@ -132,7 +131,7 @@ public:
     void AddNewGang(bool boosted = false);    // Adds a new randomly generated gang to the recruitable list
     void HireGang(int gangID);    // hired a recruitable gang, so add it to your gangs
     void FireGang(int gangID);    // fired a gang, so send it back to recruitables (or just delete if full up)
-    void AddGang(unique_ptr<sGang> newGang);
+    void AddGang(std::unique_ptr<sGang> newGang);
 
     // removed a controlled gang completely from service
     void RemoveGang(sGang* gang);
@@ -174,10 +173,10 @@ public:
     void GangStartOfShift();
     void RestockNetsAndPots();
 
-    int chance_to_catch(sGirl* girl);
+    int chance_to_catch(const sGirl& girl);
 
-    vector<sGang*> gangs_on_mission(u_int mission_id);
-    vector<sGang*> gangs_watching_girls();
+    std::vector<sGang*> gangs_on_mission(u_int mission_id);
+    std::vector<sGang*> gangs_watching_girls();
 
     int Gang_Gets_Girls()    { return m_Gang_Gets_Girls; }
     int Gang_Gets_Items()    { return m_Gang_Gets_Items; }

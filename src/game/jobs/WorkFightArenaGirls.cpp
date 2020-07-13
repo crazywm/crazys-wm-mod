@@ -53,7 +53,7 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
 
     double jobperformance = girl.job_performance(JOB_FIGHTARENAGIRLS, false);
 
-    cGirls::EquipCombat(&girl);        // ready armor and weapons!
+    cGirls::EquipCombat(girl);        // ready armor and weapons!
     int fightxp = 1;
     auto tempgirl = g_Game->CreateRandomGirl(18, false, false, false, false, true);
     if (tempgirl) {
@@ -63,7 +63,7 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
             fightxp = 3;
             enjoy = rng % 3 + 1;
             fame = rng % 3 + 1;
-            sGirl* ugirl = nullptr;
+            std::shared_ptr<sGirl> ugirl = nullptr;
             if (rng.percent(10))        // chance of getting unique girl
             {
                 ugirl = g_Game->GetRandomGirl(false, false, true);
@@ -257,19 +257,19 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     //gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Tough", 65, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Fleet of Foot", 55, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Aggressive", 70, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Tough", 65, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 55, actiontype, "She is getting rather fast from all the fighting.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Aggressive", 70, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
     if (rng.percent(25) && girl.strength() >= 65 && girl.combat() > girl.magic())
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", Day0Night1);
     }
     if (rng.percent(25) && girl.combat() >= 60 && girl.combat() > girl.magic())
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Brawler", 60, ACTION_COMBAT, "${name} has become pretty good at fighting.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Brawler", 60, ACTION_COMBAT, "${name} has become pretty good at fighting.", Day0Night1);
     }
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Fragile", 35, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Fragile", 35, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 
 #pragma endregion
     return false;

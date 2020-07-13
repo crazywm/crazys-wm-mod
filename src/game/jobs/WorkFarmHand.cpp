@@ -36,7 +36,7 @@ bool WorkFarmHand(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked cleaning and repairing the farm.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     double CleanAmt = girl.job_performance(JOB_FARMHAND, false);
     int enjoyC = 0, enjoyF = 0;
@@ -160,10 +160,10 @@ bool WorkFarmHand(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype2, enjoyC);
     // Gain Traits
     if (rng.percent(girl.service()))
-        cGirls::PossiblyGainNewTrait(&girl, "Maid", 90, actiontype2, "${name} has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Maid", 90, actiontype2, "${name} has cleaned enough that she could work professionally as a Maid anywhere.", Day0Night1);
     // Lose Traits
     if (rng.percent(girl.service()))
-        cGirls::PossiblyLoseExistingTrait(&girl, "Clumsy", 30, actiontype2, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
+        cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype2, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
 
     return false;
 }

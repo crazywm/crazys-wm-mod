@@ -39,7 +39,7 @@ bool WorkFarmPonyGirl(sGirl& girl, bool Day0Night1, cRng& rng)
 
     int imagetype = IMGTYPE_PONYGIRL;
 
-    sGirl* headonduty = random_girl_on_job(*girl.m_Building, JOB_HEADGIRL, Day0Night1);
+    const sGirl* headonduty = random_girl_on_job(*girl.m_Building, JOB_HEADGIRL, Day0Night1);
     string headname = (headonduty ? "Head Girl " + headonduty->FullName() + "" : "the Head girl");
 
     if (train >= 50)            // they refuse to train

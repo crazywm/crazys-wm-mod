@@ -35,7 +35,7 @@ EGirlEscapeAttemptResult AttemptEscape(sGirl& girl) {
     if (!girl.fights_back())        return EGirlEscapeAttemptResult::SUBMITS;
 
     // ok, she fights. Find all the gangs on guard duty
-    vector<sGang*> v = g_Game->gang_manager().gangs_on_mission(MISS_GUARDING);
+    std::vector<sGang*> v = g_Game->gang_manager().gangs_on_mission(MISS_GUARDING);
     if (!v.empty())
     {
         int index = g_Dice.in_range(0, v.size() - 1);

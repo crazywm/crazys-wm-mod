@@ -45,7 +45,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     }
     ss << m_CraftingData.MsgWork << "\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int imagetype = m_CraftingData.Image;
     int msgtype = is_night;
@@ -146,10 +146,10 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     // gain simple traits
     for(auto& trait : m_CraftingData.TraitChanges) {
         if(trait.Gain) {
-            cGirls::PossiblyGainNewTrait(&girl, trait.TraitName, trait.Threshold, trait.Action,
+            cGirls::PossiblyGainNewTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
                                          trait.Message, is_night, trait.EventType);
         } else {
-            cGirls::PossiblyLoseExistingTrait(&girl, trait.TraitName, trait.Threshold, trait.Action,
+            cGirls::PossiblyLoseExistingTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
                                               trait.Message, is_night);
         }
     }

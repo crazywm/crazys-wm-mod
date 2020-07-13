@@ -44,7 +44,7 @@ bool WorkSleazyBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a bartender in the strip club.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int HateLove = 0;
     HateLove = girl.pclove() - girl.pchate();
@@ -273,15 +273,15 @@ bool WorkSleazyBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.service(rng%skill + 1);
 
     //gained
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 60, actiontype, "Dealing with customers at the bar and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
-    if (jobperformance < 100 && roll_a <= 2) { cGirls::PossiblyGainNewTrait(&girl, "Assassin", 10, actiontype, "${name}'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", Day0Night1); }
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with customers at the bar and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
+    if (jobperformance < 100 && roll_a <= 2) { cGirls::PossiblyGainNewTrait(girl, "Assassin", 10, actiontype, "${name}'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", Day0Night1); }
     if (rng.percent(25) && girl.dignity() < 0 && (imagetype == IMGTYPE_SEX || imagetype == IMGTYPE_ORAL))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
+        cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
     }
 
     //lose
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 20, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 
 
 #pragma endregion

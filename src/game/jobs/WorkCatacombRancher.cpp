@@ -37,7 +37,7 @@ bool WorkCatacombRancher(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a catacomb rancher on the farm.\n \n";
 
-    cGirls::EquipCombat(&girl);    // This job can be dangerous so any protection is good.
+    cGirls::EquipCombat(girl);    // This job can be dangerous so any protection is good.
 
     int wages = 20, tips = 0;
     int enjoy = 0;

@@ -221,17 +221,17 @@ void cWindowManager::PushMessage(std::string text, int color, std::function<void
     window->AddWidget(std::move(cb));
 }
 
-sGirl * cWindowManager::GetActiveGirl() const
+std::shared_ptr<sGirl> cWindowManager::GetActiveGirl() const
 {
     if(m_SelectedGirls.empty())
         return nullptr;
     return m_SelectedGirls.front();
 }
 
-void cWindowManager::SetActiveGirl(sGirl * girl)
+void cWindowManager::SetActiveGirl(std::shared_ptr<sGirl> girl)
 {
     m_SelectedGirls.clear();
-    m_SelectedGirls.push_back(girl);
+    m_SelectedGirls.push_back(std::move(girl));
 }
 
 void cWindowManager::InputChoice(std::string question, std::vector<std::string> options, std::function<void(int)> callback)

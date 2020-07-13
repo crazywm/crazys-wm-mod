@@ -105,26 +105,20 @@ void sBrothel::UpdateGirls(bool is_night)
 
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cBrothel.cpp
     bool matron = num_girls_on_job(m_MatronJob, false) >= 1;
-    string MatronMsg, MatronWarningMsg;
     stringstream ss;
-
-    string summary, msg, girlName;
-    int sum = EVENT_SUMMARY;
 
 
     /*
     *    handle any girls training during this shift
     */
-    g_Game->job_manager().do_training(this, is_night);
+    cJobManager::do_training(this, is_night);
     /*
     *    as for the rest of them...
     */
-    for(auto& current : girls())
-    {
+    m_Girls->apply([&](sGirl& current){
         int totalPay = 0, totalTips = 0, totalGold = 0;
         bool refused = false;
-        girlName = current->FullName();
-        sum = EVENT_SUMMARY;
+        auto sum = EVENT_SUMMARY;
 
         /*
         *        ONCE DAILY processing
@@ -133,27 +127,23 @@ void sBrothel::UpdateGirls(bool is_night)
         if (is_night == SHIFT_DAY)
         {
             // Back to work
-            if (current->m_NightJob == m_RestJob && current->m_DayJob == m_RestJob && current->m_PregCooldown < g_Game->settings().get_integer(settings::PREG_COOL_DOWN) &&
-                current->health() >= 80 && current->tiredness() <= 20)
+            if (current.m_NightJob == m_RestJob && current.m_DayJob == m_RestJob && current.m_PregCooldown < g_Game->settings().get_integer(settings::PREG_COOL_DOWN) &&
+                current.health() >= 80 && current.tiredness() <= 20)
             {
-                if ((matron || current->m_PrevDayJob == m_MatronJob)                    // do we have a director, or was she the director and made herself rest?
-                    && current->m_PrevDayJob != 255 && current->m_PrevNightJob != 255)    // 255 = nothing, in other words no previous job stored
+                if ((matron || current.m_PrevDayJob == m_MatronJob)                    // do we have a director, or was she the director and made herself rest?
+                    && current.m_PrevDayJob != 255 && current.m_PrevNightJob != 255)    // 255 = nothing, in other words no previous job stored
                 {
-                    g_Game->job_manager().HandleSpecialJobs(current, current->m_PrevDayJob, current->m_DayJob, false);
-                    if (current->m_DayJob == current->m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
-                        current->m_NightJob = current->m_PrevNightJob;
+                    g_Game->job_manager().HandleSpecialJobs(current, current.m_PrevDayJob, current.m_DayJob, false);
+                    if (current.m_DayJob == current.m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
+                        current.m_NightJob = current.m_PrevNightJob;
                     else
-                        current->m_NightJob = m_RestJob;
-                    current->m_PrevDayJob = current->m_PrevNightJob = 255;
-                    MatronMsg += "The Matron puts " + girlName + " back to work.\n";
-                    current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, EVENT_BACKTOWORK);
-                    MatronMsg = "";
+                        current.m_NightJob = m_RestJob;
+                    current.m_PrevDayJob = current.m_PrevNightJob = 255;
+                    current.AddMessage("The Matron puts ${name} back to work.\n", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
                 }
                 else
-                {
-                    MatronWarningMsg += "WARNING " + girlName + " is doing nothing!\n";
-                    current->m_Events.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
-                    MatronWarningMsg = "";
+                {;
+                    current.m_Events.AddMessage("WARNING ${name} is doing nothing!\n", IMGTYPE_PROFILE, EVENT_WARNING);
                 }
             }
 
@@ -166,22 +156,22 @@ void sBrothel::UpdateGirls(bool is_night)
         */
 
         // Sanity check! Don't process dead girls
-        if (current->is_dead())
+        if (current.is_dead())
         {
-            continue;
+            return;
         }
         cGirls::UseItems(current);                        // Girl uses items she has
-        cGirls::CalculateAskPrice(current, true);        // Calculate the girls asking price
+        cGirls::UpdateAskPrice(current, true);        // Calculate the girls asking price
 
         /*
         *        JOB PROCESSING
         */
-        u_int sw = current->get_job(is_night);
+        u_int sw = current.get_job(is_night);
 
         // Sanity check! Don't process runaways
         if (sw == JOB_RUNAWAY)        // `J` added for .06.03.00
         {
-            continue;
+            return;
         }
 
         // do their job
@@ -195,26 +185,27 @@ void sBrothel::UpdateGirls(bool is_night)
             // these jobs are already done so we skip them
         }
         else {
-            refused = g_Game->job_manager().do_job(*current, is_night);
+            refused = g_Game->job_manager().do_job(current, is_night);
         }
 
-        totalPay += current->m_Pay;
-        totalTips += current->m_Tips;
-        totalGold += current->m_Pay + current->m_Tips;
+        totalPay += current.m_Pay;
+        totalTips += current.m_Tips;
+        totalGold += current.m_Pay + current.m_Tips;
 
         // work out the pay between the house and the girl
-        CalculatePay(*current, sw);
+        CalculatePay(current, sw);
 
-        m_Fame += current->fame();
+        m_Fame += current.fame();
 
         /*
         *        Summary Messages
         */
 
         ss.str("");
-        /* */if (sw == JOB_RESTING)            summary += girlName + " was resting so made no money.";
+        std::string summary;
+        /* */if (sw == JOB_RESTING)            summary += "${name} was resting so made no money.";
         else if (sw == JOB_MATRON && is_night == SHIFT_NIGHT)
-            summary += girlName + " continued to help the other girls throughout the night.";
+            summary += "${name} continued to help the other girls throughout the night.";
 
             // `J` temporary -1 until I reflow brothel jobs
         else if (sw == JOB_TRAINING || sw == JOB_ADVERTISING)    sum = -1;
@@ -223,46 +214,46 @@ void sBrothel::UpdateGirls(bool is_night)
 
         // TODO this seems to contain some copy/paste form IBuilding::CalculatePlay
             // `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
-        else if (current->is_unpaid() && g_Game->job_manager().is_job_Paid_Player(sw))
+        else if (current.is_unpaid() && g_Game->job_manager().is_job_Paid_Player(sw))
         {
             summary += "\nYou own her and you don't pay your slaves.";
         }
             // WD:    Bad girl did not work. Moved from cJobManager::Preprocessing()
-        else if (refused) summary += girlName + " refused to work so made no money.";
+        else if (refused) summary += "${name} refused to work so made no money.";
         else if (totalGold > 0)
         {
-            ss << girlName << " earned a total of " << totalGold << " gold";
-            u_int job = (is_night ? current->m_NightJob : current->m_DayJob);
+            ss << "${name} earned a total of " << totalGold << " gold";
+            u_int job = (is_night ? current.m_NightJob : current.m_DayJob);
             // if it is a player paid job and you pay her
-            if ((g_Game->job_manager().is_job_Paid_Player(job) && !current->is_unpaid()))
+            if ((g_Game->job_manager().is_job_Paid_Player(job) && !current.is_unpaid()))
                 ss << " directly from you. She gets to keep it all.";
-            else if (current->house() <= 0)                ss << " and she gets to keep it all.";
-            else if (totalTips>0 && current->keep_tips())
+            else if (current.house() <= 0)                ss << " and she gets to keep it all.";
+            else if (totalTips>0 && current.keep_tips())
             {
-                int hpay = int(double(totalPay * double(current->house() * 0.01)));
+                int hpay = int(double(totalPay * double(current.house() * 0.01)));
                 int gpay = totalPay - hpay;
-                ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current->house() << "%) of the payment amounting to " << gpay << " gold.\n \nYou got " << hpay << " gold (" << current->house() << "%).";
+                ss << ".\nShe keeps the " << totalTips << " she got in tips and her cut (" << 100 - current.house() << "%) of the payment amounting to " << gpay << " gold.\n \nYou got " << hpay << " gold (" << current.house() << "%).";
             }
             else
             {
-                int hpay = int(double(totalGold * double(current->house() * 0.01)));
+                int hpay = int(double(totalGold * double(current.house() * 0.01)));
                 int gpay = totalGold - hpay;
-                ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current->house() << "%)\nYou keep " << hpay << " gold (" << current->house() << "%).";
+                ss << ".\nShe keeps " << gpay << " gold. (" << 100 - current.house() << "%)\nYou keep " << hpay << " gold (" << current.house() << "%).";
             }
             summary += ss.str();
         }
 
-        else if (totalGold == 0)        summary += girlName + " made no money.";
+        else if (totalGold == 0)        summary += "${name} made no money.";
         else if (totalGold < 0)
         {
             ss.str("");
-            ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current->FullName()
-               << "\nJob: " << g_Game->job_manager().JobData[(is_night ? current->m_NightJob : current->m_DayJob)].name << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold;
+            ss << "ERROR: She has a loss of " << totalGold << " gold\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n \nGirl Name: " << current.FullName()
+               << "\nJob: " << g_Game->job_manager().JobData[(is_night ? current.m_NightJob : current.m_DayJob)].name << "\nPay:     " << current.m_Pay << "\nTips:   " << current.m_Tips << "\nTotal: " << totalGold;
             summary += ss.str();
             sum = EVENT_DEBUG;
         }
         if (sum >= 0)    // `J` temporary -1 not to show until I reflow brothel jobs
-            current->m_Events.AddMessage(summary, IMGTYPE_PROFILE, sum);
+            current.AddMessage(summary, IMGTYPE_PROFILE, sum);
 
         summary = "";
 
@@ -271,9 +262,9 @@ void sBrothel::UpdateGirls(bool is_night)
         // Runaway, Depression & Drug checking
         if (runaway_check(current))
         {
-            remove_girl(current);
-            current->run_away();
-            continue;
+            remove_girl(&current);
+            current.run_away();
+            return;
         }
 
         /*
@@ -281,73 +272,73 @@ void sBrothel::UpdateGirls(bool is_night)
         */
 
         // Lets try to compact multiple messages into one.
-        MatronMsg = "";
-        MatronWarningMsg = "";
-
         bool matron = (num_girls_on_job(JOB_MATRON, true) >= 1 || num_girls_on_job(JOB_MATRON, false) >= 1);
 
-        if (current->tiredness() > 80)
+        std::string MatronWarningMsg;
+        std::string MatronMsg;
+
+        if (current.tiredness() > 80)
         {
             if (matron)
             {
-                if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+                if (current.m_PrevNightJob == 255 && current.m_PrevDayJob == 255)
                 {
-                    current->m_PrevDayJob = current->m_DayJob;
-                    current->m_PrevNightJob = current->m_NightJob;
-                    current->m_DayJob = current->m_NightJob = JOB_RESTING;
-                    MatronWarningMsg += "Your matron takes " + girlName + " off duty to rest due to her tiredness.\n";
+                    current.m_PrevDayJob = current.m_DayJob;
+                    current.m_PrevNightJob = current.m_NightJob;
+                    current.m_DayJob = current.m_NightJob = JOB_RESTING;
+                    MatronWarningMsg += "Your matron takes ${name} off duty to rest due to her tiredness.\n";
                 }
                 else
                 {
                     if (g_Dice.percent(70))
                     {
-                        MatronMsg += "Your matron helps " + girlName + " to relax.\n";
-                        current->tiredness(-5);
+                        MatronMsg += "Your matron helps ${name} to relax.\n";
+                        current.tiredness(-5);
                     }
                 }
             }
             else
-                MatronWarningMsg += "CAUTION! This girl desperately need rest. Give her some free time\n";
+                MatronWarningMsg += "CAUTION! This girl desperately needs rest. Give her some free time\n";
         }
 
-        if (current->happiness() < 40 && matron && g_Dice.percent(70))
+        if (current.happiness() < 40 && matron && g_Dice.percent(70))
         {
-            MatronMsg = "Your matron helps cheer up " + girlName + " after she feels sad.\n";
-            current->happiness(5);
+            MatronMsg = "Your matron helps cheer up ${name} after she feels sad.\n";
+            current.happiness(5);
         }
 
-        if (current->health() < 40)
+        if (current.health() < 40)
         {
             if (matron)
             {
-                if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255)
+                if (current.m_PrevNightJob == 255 && current.m_PrevDayJob == 255)
                 {
-                    current->m_PrevDayJob = current->m_DayJob;
-                    current->m_PrevNightJob = current->m_NightJob;
-                    current->m_DayJob = current->m_NightJob = JOB_RESTING;
-                    MatronWarningMsg += girlName + " is taken off duty by your matron to rest due to her low health.\n";
+                    current.m_PrevDayJob = current.m_DayJob;
+                    current.m_PrevNightJob = current.m_NightJob;
+                    current.m_DayJob = current.m_NightJob = JOB_RESTING;
+                    MatronWarningMsg += "${name} is taken off duty by your matron to rest due to her low health.\n";
                 }
                 else
                 {
-                    MatronMsg = "Your matron helps heal " + girlName + ".\n";
-                    current->health(5);
+                    MatronMsg = "Your matron helps heal ${name}.\n";
+                    current.health(5);
                 }
             }
             else
             {
-                MatronWarningMsg = "DANGER " + girlName + "'s health is very low!\nShe must rest or she will die!\n";
+                MatronWarningMsg = "DANGER ${name}'s health is very low!\nShe must rest or she will die!\n";
             }
         }
 
         if (!MatronMsg.empty())
         {
-            current->m_Events.AddMessage(MatronMsg, IMGTYPE_PROFILE, is_night);
+            current.AddMessage(MatronMsg, IMGTYPE_PROFILE, is_night);
             MatronMsg = "";
         }
 
         if (!MatronWarningMsg.empty())
         {
-            current->m_Events.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
+            current.AddMessage(MatronWarningMsg, IMGTYPE_PROFILE, EVENT_WARNING);
             MatronWarningMsg = "";
         }
         /*
@@ -359,22 +350,22 @@ void sBrothel::UpdateGirls(bool is_night)
         {
             // Myr: Automate the use of a number of different items. See the function itself for more comments.
             //      Enabled or disabled based on config option.
-            if (g_Game->settings().get_bool(settings::USER_ITEMS_AUTO_USE)) g_Game->player().apply_items(*current);
+            if (g_Game->settings().get_bool(settings::USER_ITEMS_AUTO_USE)) g_Game->player().apply_items(current);
 
             // update for girls items that are not used up
-            do_daily_items(*current);                    // `J` added
+            do_daily_items(current);                    // `J` added
 
             // Natural healing, 2% health and 2% tiredness per day
-            current->upd_base_stat(STAT_HEALTH, 2, false);
-            current->upd_base_stat(STAT_TIREDNESS, -2, false);
+            current.upd_base_stat(STAT_HEALTH, 2, false);
+            current.upd_base_stat(STAT_TIREDNESS, -2, false);
         }
 
         // Level the girl up if nessessary
         cGirls::LevelUp(current);
-    }
+    });
 }
 
-bool sBrothel::runaway_check(sGirl * girl)
+bool sBrothel::runaway_check(sGirl& girl)
 {
 /*
     *    nothing interesting happens here unless the girl is miserable
@@ -382,25 +373,25 @@ bool sBrothel::runaway_check(sGirl * girl)
     *    WD: added m_DaysUnhappy tracking
     */
 
-    bool flightrisk = (girl->has_active_trait("Kidnapped") || girl->has_active_trait("Emprisoned Customer"));
+    bool flightrisk = (girl.has_active_trait("Kidnapped") || girl.has_active_trait("Emprisoned Customer"));
 
-    if (flightrisk && girl->happiness() > 50)    // Girls here totally against their will are more likely to try to get away
+    if (flightrisk && girl.happiness() > 50)    // Girls here totally against their will are more likely to try to get away
     {
-        girl->m_DaysUnhappy--;                    // and they don't reset days to 0 but instead reduce day count
-        if (girl->m_DaysUnhappy < 0)
-            girl->m_DaysUnhappy = 0;            // until it gets to 0
+        girl.m_DaysUnhappy--;                    // and they don't reset days to 0 but instead reduce day count
+        if (girl.m_DaysUnhappy < 0)
+            girl.m_DaysUnhappy = 0;            // until it gets to 0
         return false;
     }
-    else if ((girl->has_active_trait("Homeless") || girl->has_active_trait("Adventurer")) && girl->happiness() > 10)
+    else if ((girl.has_active_trait("Homeless") || girl.has_active_trait("Adventurer")) && girl.happiness() > 10)
     {    // homeless girls and adventurers know they can survive on their own so are more likely to runaway
-        if (girl->m_DaysUnhappy > 3)
-            girl->m_DaysUnhappy /= 2;        // they don't reset days to 0 but instead divide day count in half
-        else girl->m_DaysUnhappy--;            // or just lower by 1
+        if (girl.m_DaysUnhappy > 3)
+            girl.m_DaysUnhappy /= 2;        // they don't reset days to 0 but instead divide day count in half
+        else girl.m_DaysUnhappy--;            // or just lower by 1
         return false;
     }
-    else if (girl->happiness() > 10)
+    else if (girl.happiness() > 10)
     {
-        girl->m_DaysUnhappy = 0;
+        girl.m_DaysUnhappy = 0;
         return false;
     }
 
@@ -409,8 +400,8 @@ bool sBrothel::runaway_check(sGirl * girl)
     *    I made it add up for all girls
     *    and free girls become unhappy faster
     */
-    girl->m_DaysUnhappy++;
-    if (!girl->is_slave()) girl->m_DaysUnhappy++;
+    girl.m_DaysUnhappy++;
+    if (!girl.is_slave()) girl.m_DaysUnhappy++;
     /*
     *    now there's a matron on duty, she has a chance of fending off
     *    bad things.
@@ -430,7 +421,7 @@ bool sBrothel::runaway_check(sGirl * girl)
 
     if (g_Dice.percent(matron_chance)) return false;    // if there is a matron 70%
 
-    if (girl->m_DayJob == JOB_REHAB && (num_girls_on_job(JOB_COUNSELOR, true) > 0 || num_girls_on_job(JOB_COUNSELOR, false) > 0))
+    if (girl.m_DayJob == JOB_REHAB && (num_girls_on_job(JOB_COUNSELOR, true) > 0 || num_girls_on_job(JOB_COUNSELOR, false) > 0))
     {
         if (g_Dice.percent(70)) return false;
     }
@@ -438,22 +429,22 @@ bool sBrothel::runaway_check(sGirl * girl)
     /*
     *    mainly here, we're interested in the chance that she might run away
     */
-    if (girl->disobey_check(ACTION_GENERAL))    // check if the girl will run away
+    if (girl.disobey_check(ACTION_GENERAL))    // check if the girl will run away
     {
-        if (g_Dice.percent(g_Game->job_manager().guard_coverage() - girl->m_DaysUnhappy)) return false;
+        if (g_Dice.percent(g_Game->job_manager().guard_coverage() - girl.m_DaysUnhappy)) return false;
 
-        girl->m_Events.AddMessage("She ran away.", IMGTYPE_PROFILE, EVENT_DANGER);
-        girl->set_stat(STAT_TIREDNESS, 0);
-        girl->set_stat(STAT_HEALTH, 100);
-        girl->m_RunAway = 6;
+        girl.m_Events.AddMessage("She ran away.", IMGTYPE_PROFILE, EVENT_DANGER);
+        girl.set_stat(STAT_TIREDNESS, 0);
+        girl.set_stat(STAT_HEALTH, 100);
+        girl.m_RunAway = 6;
         stringstream smess;
-        smess << girl->FullName() << " has run away.\nSend your goons after her to attempt recapture.\nShe will escape for good after 6 weeks.\n";
+        smess << girl.FullName() << " has run away.\nSend your goons after her to attempt recapture.\nShe will escape for good after 6 weeks.\n";
         g_Game->push_message(smess.str(), COLOR_RED);
         return true;
     }
 
-    if (girl->m_Money <= 50) { return false; }
-    if (g_Dice.percent(80 - girl->m_DaysUnhappy)) { return false; }
+    if (girl.m_Money <= 50) { return false; }
+    if (g_Dice.percent(80 - girl.m_DaysUnhappy)) { return false; }
     /*
     *    if she is unhappy she may turn to drugs
     */
@@ -461,7 +452,7 @@ bool sBrothel::runaway_check(sGirl * girl)
     //Crazy changed it to this might not be the best // `J` made it better :p
     string drug;
     int i = 0;
-    if (girl->happiness() <= 20 && girl->has_active_trait( "Former Addict"))
+    if (girl.happiness() <= 20 && girl.has_active_trait( "Former Addict"))
     {
         while (!starts_drugs && i<10)        // `J` She will try to find a drug she used to be addicted to
         {                                    // and if she can't find it in 10 tries she will take what is available
@@ -473,26 +464,26 @@ bool sBrothel::runaway_check(sGirl * girl)
             case 4:            drug = "Viras Blood Addict";    break;    // 12.5%
             default:        drug = "Alcoholic";                break;    // 50%
             }
-            if (girl->has_dormant_trait(drug.c_str()))
+            if (girl.has_dormant_trait(drug.c_str()))
             {
                 starts_drugs = true;
             }
             i++;
         }
     }
-    else if (girl->happiness() <= 3 && g_Dice.percent(50) && !girl->has_active_trait( "Viras Blood Addict"))
+    else if (girl.happiness() <= 3 && g_Dice.percent(50) && !girl.has_active_trait( "Viras Blood Addict"))
     {
         drug = "Viras Blood Addict";
     }
-    else if (girl->happiness() <= 5 && g_Dice.percent(50) && !girl->has_active_trait( "Shroud Addict"))
+    else if (girl.happiness() <= 5 && g_Dice.percent(50) && !girl.has_active_trait( "Shroud Addict"))
     {
         drug = "Shroud Addict";
     }
-    else if (girl->happiness() <= 8 && g_Dice.percent(50) && !girl->has_active_trait( "Fairy Dust Addict"))
+    else if (girl.happiness() <= 8 && g_Dice.percent(50) && !girl.has_active_trait( "Fairy Dust Addict"))
     {
         drug = "Fairy Dust Addict";
     }
-    else if (girl->happiness() <= 10 && !girl->has_active_trait( "Alcoholic"))
+    else if (girl.happiness() <= 10 && !girl.has_active_trait( "Alcoholic"))
     {
         drug = "Alcoholic";
     }
@@ -505,15 +496,15 @@ bool sBrothel::runaway_check(sGirl * girl)
         return false;
     }
 
-    girl->gain_trait(drug.c_str());
-    girl->lose_trait("Former Addict");
+    girl.gain_trait(drug.c_str());
+    girl.lose_trait("Former Addict");
 
     /*
     *    otherwise, report the sad occurrence
     */
     stringstream ss;
     ss << "This girl's unhappiness has turned her into " << (drug == "Alcoholic" ? "an" : "a") << " " << drug << ".";
-    girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+    girl.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
     return false;
 }
 
@@ -533,7 +524,7 @@ void sBrothel::Update()
 
     // Moved to here so Security drops once per day instead of everytime a girl works security -PP
     m_SecurityLevel -= 10;
-    m_SecurityLevel -= girls().size();    //`J` m_SecurityLevel is extremely over powered.
+    m_SecurityLevel -= girls().num();    //`J` m_SecurityLevel is extremely over powered.
     // Reducing it's power a lot.
     if (m_SecurityLevel <= 0) m_SecurityLevel = 0;     // crazy added
 
@@ -571,7 +562,7 @@ void sBrothel::Update()
 
     // update brothel stats
     if (!girls().empty())
-        m_Fame = (total_fame() / girls().size());
+        m_Fame = (total_fame() / girls().num());
     if (m_Happiness > 0 && g_Game->GetNumCustomers())
         m_Happiness = min(100, m_Happiness / m_TotalCustomers);
 
@@ -654,17 +645,17 @@ void sBrothel::Update()
 
 
 // add the girls accommodation and food costs to the upkeep
-void do_food_and_digs(IBuilding * brothel, sGirl * girl)
+void do_food_and_digs(IBuilding& brothel, sGirl& girl)
 {
     // `J` new code for .06.01.18
     stringstream ss;
 
     // Gold per accommodation level
-    int gold = (girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1);
-    brothel->m_Finance.girl_support(gold);
+    int gold = (girl.is_slave() ? 5 : 20) * (girl.m_AccLevel + 1);
+    brothel.m_Finance.girl_support(gold);
 
     int preferredaccom = cGirls::PreferredAccom(girl);    // what she wants/expects
-    int mod = girl->m_AccLevel - preferredaccom;
+    int mod = girl.m_AccLevel - preferredaccom;
 
     /*   if (acc == 0)    return "Bare Bones";
     else if (acc == 1)    return "Very Poor";
@@ -704,7 +695,7 @@ void do_food_and_digs(IBuilding * brothel, sGirl * girl)
     case 9:        hapA = 5;    hapB = 21;    lovA = 2;    lovB = 8;    hatA = -10;    hatB = -3;    feaA = -3;    feaB = 0;    sanA = -2;    sanB = 5;    break;
     default: break;
     }
-    if (girl->happiness() < 20 - mod)            // if she is unhappy, her mood will go down
+    if (girl.happiness() < 20 - mod)            // if she is unhappy, her mood will go down
     {
         /* */if (mod < -6){ hapA -= 7;    hapB -= 3;    lovA -= 4;    lovB -= 1;    hatA += 2;    hatB += 5;    feaA += 2;    feaB += 5; }
         else if (mod < -3){ hapA -= 5;    hapB -= 2;    lovA -= 2;    lovB -= 1;    hatA += 1;    hatB += 3;    feaA += 1;    feaB += 3; }
@@ -713,7 +704,7 @@ void do_food_and_digs(IBuilding * brothel, sGirl * girl)
         else if (mod < 4){ hapA -= 2;    hapB -= 0;    lovA -= 1;    lovB -= 0;    hatA += 0;    hatB += 1;    feaA -= 1;    feaB += 1; }
         else if (mod < 7){ hapA -= 1;    hapB -= 0;    lovA -= 1;    lovB -= 0;    hatA += 0;    hatB += 0;    feaA -= 1;    feaB += 0; }
     }
-    else if (!g_Dice.percent(girl->happiness()))    // if she is not happy, her mood may go up or down
+    else if (!g_Dice.percent(girl.happiness()))    // if she is not happy, her mood may go up or down
     {
         /* */if (mod < -6){ hapA -= 3;    hapB += 1;    lovA -= 3;    lovB += 0;    hatA -= 0;    hatB += 4;    feaA -= 2;    feaB += 3; }
         else if (mod < -3){ hapA -= 2;    hapB += 1;    lovA -= 2;    lovB += 0;    hatA -= 0;    hatB += 3;    feaA -= 1;    feaB += 2; }
@@ -731,7 +722,7 @@ void do_food_and_digs(IBuilding * brothel, sGirl * girl)
         else if (mod < 4){ hapA += 1;    hapB += 7;    lovA += 0;    lovB += 2;    hatA -= 3;    hatB -= 1;    feaA -= 3;    feaB -= 0; }
         else if (mod < 7){ hapA += 2;    hapB += 8;    lovA += 1;    lovB += 3;    hatA -= 4;    hatB -= 1;    feaA -= 3;    feaB -= 1; }
     }
-    if (girl->health() < 25)                    // if she is injured she may be scared because of her surroundings
+    if (girl.health() < 25)                    // if she is injured she may be scared because of her surroundings
     {
         /* */if (mod < -6){ hapA -= 6;    hapB -= 2;    lovA -= 4;    lovB -= 1;    hatA += 3;    hatB += 4;    feaA += 2;    feaB += 4; sanA -= 4;  sanB -= 2;}
         else if (mod < -3){ hapA -= 4;    hapB -= 1;    lovA -= 3;    lovB -= 1;    hatA += 2;    hatB += 3;    feaA += 1;    feaB += 3; sanA -= 2;  sanB -= 1;}
@@ -741,7 +732,7 @@ void do_food_and_digs(IBuilding * brothel, sGirl * girl)
         else if (mod < 7){    hapA += 2;    hapB += 8;    lovA += 1;    lovB += 1;    hatA -= 1;    hatB += 0;    feaA -= 3;    feaB += 0; sanA += 2;  sanB += 4;}
     }
 
-    if (girl->is_slave())                        // slaves get half as much from their mods
+    if (girl.is_slave())                        // slaves get half as much from their mods
     {
         hapA /= 2;    hapB /= 2;    lovA /= 2;    lovB /= 2;    hatA /= 2;    hatB /= 2;    feaA /= 2;    feaB /= 2;
     }
@@ -752,25 +743,25 @@ void do_food_and_digs(IBuilding * brothel, sGirl * girl)
     int fea = g_Dice.bell(feaA, feaB);
     int san = g_Dice.bell(sanA, sanB);
 
-    girl->happiness(hap);
-    girl->pclove(lov);
-    girl->pchate(hat);
-    girl->pcfear(fea);
-    girl->sanity(san);
+    girl.happiness(hap);
+    girl.pclove(lov);
+    girl.pchate(hat);
+    girl.pcfear(fea);
+    girl.sanity(san);
 
 
     // after all the happy, love fear and hate are done, do some other checks.
 
 #if 0
-    if (girl->pchate() > girl->pcfear())        // if she hates you more than she fears you, she will disobey more
+    if (girl.pchate() > girl.pcfear())        // if she hates you more than she fears you, she will disobey more
     {
-        girl->obedience(g_Dice.bell(mod, 0));
-        girl->spirit(g_Dice.bell(-1, 2));
+        girl.obedience(g_Dice.bell(mod, 0));
+        girl.spirit(g_Dice.bell(-1, 2));
     }
     else                                        // otherwise she will obey more in hopes of getting an upgrade
     {
-        girl->obedience(g_Dice.bell(0, -mod));
-        girl->spirit(g_Dice.bell(-2, 1));
+        girl.obedience(g_Dice.bell(0, -mod));
+        girl.spirit(g_Dice.bell(-2, 1));
     }
 #endif
 
@@ -782,50 +773,50 @@ void do_food_and_digs(IBuilding * brothel, sGirl * girl)
     if (!g_Dice.percent(chance)) return;
     // Only check if a trait gets modified if mod is far from 0
 
-    bool b_intelligence = g_Dice.percent(girl->intelligence());
-    bool b_confidence = g_Dice.percent(girl->confidence());
-    bool b_spirit = g_Dice.percent(girl->spirit());
-    bool b_refinement = g_Dice.percent(girl->refinement());
-    bool b_dignity = g_Dice.percent(girl->dignity());
+    bool b_intelligence = g_Dice.percent(girl.intelligence());
+    bool b_confidence = g_Dice.percent(girl.confidence());
+    bool b_spirit = g_Dice.percent(girl.spirit());
+    bool b_refinement = g_Dice.percent(girl.refinement());
+    bool b_dignity = g_Dice.percent(girl.dignity());
 
     if (b_refinement && b_dignity && b_confidence &&
-        mod >= 0 && girl->m_AccLevel >= 5 && girl->lose_trait("Homeless", true, girl->m_AccLevel))
+        mod >= 0 && girl.m_AccLevel >= 5 && girl.lose_trait("Homeless", true, girl.m_AccLevel))
     {
-        ss << girl->FullName() << " has gotten used to better surroundings and has lost the \"Homeless\" trait.";
+        ss << girl.FullName() << " has gotten used to better surroundings and has lost the \"Homeless\" trait.";
     }
     else if (b_intelligence && b_spirit && b_confidence && mod >= 2 &&
-        girl->lose_trait("Masochist", true, girl->m_AccLevel - 7))
+        girl.lose_trait("Masochist", true, girl.m_AccLevel - 7))
     {
-        ss << girl->FullName() << " seems to be getting used to being treated well and has lost the \"Masochist\" trait.";
+        ss << girl.FullName() << " seems to be getting used to being treated well and has lost the \"Masochist\" trait.";
     }
-    else if (!b_dignity && !b_spirit && !b_confidence && mod <= -1 && girl->gain_trait("Masochist", 3 - mod))
+    else if (!b_dignity && !b_spirit && !b_confidence && mod <= -1 && girl.gain_trait("Masochist", 3 - mod))
     {
-        ss << girl->FullName()
+        ss << girl.FullName()
            << " seems to be getting used to being treated poorly and has become a \"Masochist\".";
     }
-    else if (mod < 0 && girl->lose_trait("Optimist", true, 3))
+    else if (mod < 0 && girl.lose_trait("Optimist", true, 3))
     {
-        ss << girl->FullName() << " has lost her \"Optimistic\" outlook on life.";
+        ss << girl.FullName() << " has lost her \"Optimistic\" outlook on life.";
     }
-    else if (mod > 0 && girl->gain_trait("Optimist", 3))
+    else if (mod > 0 && girl.gain_trait("Optimist", 3))
     {
-        ss << girl->FullName() << " has started to view the world from a more \"Optimistic\" point of view.";
+        ss << girl.FullName() << " has started to view the world from a more \"Optimistic\" point of view.";
     }
-    else if (mod > 0 && g_Dice.percent(3) && girl->lose_trait("Pessimist", true, 3))
+    else if (mod > 0 && g_Dice.percent(3) && girl.lose_trait("Pessimist", true, 3))
     {
-        ss << girl->FullName() << " has lost her \"Pessimistic\" way of viewing the world around her.";
+        ss << girl.FullName() << " has lost her \"Pessimistic\" way of viewing the world around her.";
     }
-    else if (mod < 0 && girl->gain_trait("Pessimist", 3))
+    else if (mod < 0 && girl.gain_trait("Pessimist", 3))
     {
-        ss << girl->FullName() << " has started to view the world from a more \"Pessimistic\" point of view.";
+        ss << girl.FullName() << " has started to view the world from a more \"Pessimistic\" point of view.";
     }
 
-    if (ss.str().length() > 0)    girl->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+    if (ss.str().length() > 0)    girl.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 }
 
 // ----- Stats
 
-void updateGirlTurnBrothelStats(sGirl* girl)
+void updateGirlTurnBrothelStats(sGirl& girl)
 {
     /*
     *    WD: Update each turn the stats for girl in brothel
@@ -861,35 +852,35 @@ void updateGirlTurnBrothelStats(sGirl* girl)
     */
 
     // Sanity check. Abort on dead girl
-    if (girl->is_dead()) { return; }
+    if (girl.is_dead()) { return; }
 
     stringstream ss;
-    string girlName = girl->FullName();
-    int statHouse = girl->house();
+    string girlName = girl.FullName();
+    int statHouse = girl.house();
     int bonus = (60 - statHouse) / 30;
 
-    if (girl->is_slave())
+    if (girl.is_slave())
     {
         if (bonus > 0)                        // Slaves don't get penalties
         {
-            girl->obedience(bonus);            // bonus vs house stat    0: 31-60, 1: 01-30, 2: 00
-            girl->pcfear(-bonus);
-            girl->pchate(-bonus);
+            girl.obedience(bonus);            // bonus vs house stat    0: 31-60, 1: 01-30, 2: 00
+            girl.pcfear(-bonus);
+            girl.pchate(-bonus);
             bonus = (60 - statHouse) / 15;
-            girl->happiness(bonus);            // bonus vs house stat    0: 46-60, 1: 31-45, 2: 16-30, 3: 01-15, 4: 00
+            girl.happiness(bonus);            // bonus vs house stat    0: 46-60, 1: 31-45, 2: 16-30, 3: 01-15, 4: 00
         }
     }
     else                                    // Free girls
     {
-        girl->obedience(bonus);                // bonus vs house stat    -2: 91-100, -1: 61-90, 0: 31-60, 1: 01-30, 2: 00
+        girl.obedience(bonus);                // bonus vs house stat    -2: 91-100, -1: 61-90, 0: 31-60, 1: 01-30, 2: 00
 
         if (bonus > 0)                        // no increase for hate or fear
         {
-            girl->pcfear(-bonus);
-            girl->pchate(-bonus);
+            girl.pcfear(-bonus);
+            girl.pchate(-bonus);
         }
 
         bonus = (60 - statHouse) / 15;
-        girl->happiness(bonus);                // bonus vs house stat    -3: 91-100, -2: 76-90, -1: 61-75, 0: 46-60, 1: 31-45, 2: 16-30, 3: 01-15, 4: 00
+        girl.happiness(bonus);                // bonus vs house stat    -3: 91-100, -2: 76-90, -1: 61-75, 0: 46-60, 1: 31-45, 2: 16-30, 3: 01-15, 4: 00
     }
 }

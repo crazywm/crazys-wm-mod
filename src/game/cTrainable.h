@@ -44,7 +44,7 @@ public:
  */
     cTrainable() = default;
 
-    cTrainable(sGirl *girl, string stat_name, int index, AType typ)
+    cTrainable(sGirl *girl, std::string stat_name, int index, AType typ)
     {
         m_girl    = girl;
         m_index    = index;
@@ -70,7 +70,7 @@ public:
         m_gain    = t.m_gain;
     }
 
-    string    name()    { return m_name; }
+   std:: string    name()    { return m_name; }
 /*
  *    lost the virtual here - don't need it
  */
@@ -79,7 +79,7 @@ public:
     int    gain()        { return m_gain; }
 protected:
     sGirl    *m_girl;
-    string    m_name;
+    std::string    m_name;
     int    m_index;
     AType    m_type;
     int    m_gain;
@@ -92,14 +92,14 @@ protected:
  */
 class TrainableStat : public cTrainable {
 public:
-    TrainableStat(sGirl *girl, string stat_name, int index)
+    TrainableStat(sGirl *girl, std::string stat_name, int index)
     : cTrainable(girl, stat_name, index, cTrainable::Stat)
     {}
 };
 
 class TrainableSkill : public cTrainable {
 public:
-    TrainableSkill(sGirl *girl, string stat_name, int index)
+    TrainableSkill(sGirl *girl, std::string stat_name, int index)
     : cTrainable(girl, stat_name, index, cTrainable::Skill)
     {}
 };
@@ -110,7 +110,7 @@ public:
  */
 class TrainableGirl {
     sGirl *m_girl;
-    vector<cTrainable> stats;
+    std::vector<cTrainable> stats;
 public:
     TrainableGirl(sGirl *girl);
     cTrainable &operator[](int index) {
@@ -120,7 +120,7 @@ public:
 /*
  *    this is useful for solo training
  */
-    string    update_random(int size=1);
+    std::string    update_random(int size=1);
     sGirl*    girl()     { return m_girl; }
 };
 
@@ -137,7 +137,7 @@ class IdealAttr : public cTrainable {
     int    m_potential;
     int    m_rand;
 public:
-    IdealAttr(vector<TrainableGirl> set, string name, int attr_idx);
+    IdealAttr(std::vector<TrainableGirl> set, std::string name, int attr_idx);
     int    value()        const    { return m_value; }
     void    value(int n)        { m_value = n; }
     int    potential()    const    { return m_potential; }
@@ -150,13 +150,13 @@ public:
  * and here's the idealized girl based on those attributes
  */
 class IdealGirl {
-    vector<IdealAttr> stats;
+    std::vector<IdealAttr> stats;
 public:
-    IdealGirl(vector<TrainableGirl> set);
+    IdealGirl(std::vector<TrainableGirl> set);
     /*cTrainable*/ IdealAttr &operator[](int index) {
         return stats[index];
     }
     u_int size()    { return stats.size(); }
-    vector<int> training_indices();
+    std::vector<int> training_indices();
 };
 

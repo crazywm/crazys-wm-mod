@@ -46,9 +46,9 @@
 #include "character/traits/ITraitsCollection.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
-
-
-using namespace std;
+#include "character/pregnancy.h"
+#include "character/cGirlPool.h"
+#include "cGirlGangFight.h"
 
 namespace settings {
     extern const char* USER_HOUSE_PERCENT_FREE;
@@ -72,53 +72,22 @@ extern cNameList g_SurnameList;
 
 extern cConfig cfg;
 
-class GirlPredicate_GRG : public GirlPredicate
-{
-    bool m_slave = false;
-    bool m_catacomb = false;
-    bool m_arena = false;
-    bool m_yourdaughter = false;
-    bool m_isdaughter = false;
-public:
-    GirlPredicate_GRG(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
-    {
-        m_slave = slave;
-        m_catacomb = catacomb;
-        m_arena = arena;
-        m_yourdaughter = daughter;
-        m_isdaughter = isdaughter;
-    }
-    virtual bool test(sGirl *girl)
-    {
-        return  girl->is_slave() == m_slave
-            &&    girl->is_monster() == m_catacomb
-            &&    girl->is_arena() == m_arena
-            &&    girl->is_yourdaughter() == m_yourdaughter
-            &&    girl->is_isdaughter() == m_isdaughter;
-    }
-};
-
 // ----- Create / destroy
 
-cGirls::cGirls()
+cGirls::cGirls() : m_Girls(std::make_unique<cGirlPool>())
 {
 }
-
-cGirls::~cGirls()
-{
-    for(auto girl : m_Girls)
-        delete girl;
-}
+cGirls::~cGirls() = default;
 
 // ----- Misc
 
-void cGirls::CalculateGirlType(sGirl* girl)
+void cGirls::CalculateGirlType(sGirl& girl)
 {
     std::array<int, NUM_FETISH> ratings;
     for(int i = 0; i < NUM_FETISH; ++i) {
-        ratings[i] = girl->get_trait_modifier( (std::string("fetish:") + get_fetish_name((Fetishs)i)).c_str() );
+        ratings[i] = girl.get_trait_modifier( (std::string("fetish:") + get_fetish_name((Fetishs)i)).c_str() );
     }
-    girl->m_FetishTypes.clear();
+    girl.m_FetishTypes.clear();
     // can have either BIGBOOBS or SMALLBOOBS fetish
     if (ratings[FETISH_BIGBOOBS] > ratings[FETISH_SMALLBOOBS])
     {
@@ -132,54 +101,54 @@ void cGirls::CalculateGirlType(sGirl* girl)
     // skip over FETISH_TRYANYTHING and FETISH_SPECIFICGIRL, as they do not apply here
     for(unsigned fetish = FETISH_BIGBOOBS; fetish < NUM_FETISH; ++fetish) {
         if(ratings[fetish] >= 50 ) {
-            girl->m_FetishTypes.insert((Fetishs)fetish);
+            girl.m_FetishTypes.insert((Fetishs)fetish);
         }
     }
 }
 
-bool cGirls::CheckGirlType(sGirl* girl, Fetishs type)
+bool cGirls::CheckGirlType(const sGirl& girl, Fetishs type)
 {
-    return type == FETISH_TRYANYTHING || girl->m_FetishTypes.count(type);
+    return type == FETISH_TRYANYTHING || girl.m_FetishTypes.count(type);
 }
 
-void cGirls::CalculateAskPrice(sGirl* girl, bool vari)
+void cGirls::UpdateAskPrice(sGirl& girl, bool vari)
 {
-    int askPrice = (int)(((girl->beauty() + girl->charisma()) / 2)*0.6f);    // Initial price
-    askPrice += girl->confidence() / 10;        // their confidence will make them think they are worth more
-    askPrice += girl->intelligence() / 10;        // if they are smart they know they can get away with a little more
-    askPrice += girl->fame() / 2;                // And lastly their fame can be quite useful too
-    if (girl->level() > 0)    askPrice += girl->level() * 10;  // MYR: Was * 1
+    int askPrice = (int)(((girl.beauty() + girl.charisma()) / 2)*0.6f);    // Initial price
+    askPrice += girl.confidence() / 10;        // their confidence will make them think they are worth more
+    askPrice += girl.intelligence() / 10;        // if they are smart they know they can get away with a little more
+    askPrice += girl.fame() / 2;                // And lastly their fame can be quite useful too
+    if (girl.level() > 0)    askPrice += girl.level() * 10;  // MYR: Was * 1
 
     if (askPrice > 100) askPrice = 100;
     if (askPrice < 0) askPrice = 0;
-    girl->set_stat(STAT_ASKPRICE, askPrice);
+    girl.set_stat(STAT_ASKPRICE, askPrice);
     if (vari)    // vari is used when calculating for jobs so she can charge customers a little more
     {
         // `J` changed so there is better variation but with a chance of negatives
         int lowend = 0;    int highend = 0;
         // dumb girls will charge less, smart girls will charge more
-        lowend    += (girl->intelligence() / 10) - 7;    // -7 to +3
-        highend    += (girl->intelligence() / 8);        // +0 to +12
+        lowend    += (girl.intelligence() / 10) - 7;    // -7 to +3
+        highend    += (girl.intelligence() / 8);        // +0 to +12
         // timid girls will charge less, confident girls will charge more
-        lowend    += (girl->confidence() / 10) - 7;    // -7 to +3
-        highend    += (girl->confidence() / 7);        // +0 to +14
+        lowend    += (girl.confidence() / 10) - 7;    // -7 to +3
+        highend    += (girl.confidence() / 7);        // +0 to +14
 
         askPrice += g_Dice.bell(lowend, highend);
 
         if (askPrice < 1) askPrice = 1;
-        girl->set_stat(STAT_ASKPRICE, askPrice);
+        girl.set_stat(STAT_ASKPRICE, askPrice);
     }
 
 }
 
-std::unique_ptr<sGirl>
+std::shared_ptr<sGirl>
 cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool childnaped, bool arena,
                          bool daughter, bool isdaughter, string findbyname)
 {
     g_LogFile.debug("girls", "cGirls::CreateRandomGirl");
     auto girl_template = m_RandomGirls.CreateRandomGirl(Human0Monster1, arena, daughter, findbyname);
 
-    auto newGirl = std::make_unique<sGirl>();
+    auto newGirl = std::make_shared<sGirl>(false);
     newGirl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
 
     newGirl->m_Desc = girl_template.m_Desc;
@@ -276,7 +245,7 @@ cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, 
         newGirl->m_Money = 0;
         newGirl->set_stat(STAT_OBEDIENCE, min(newGirl->obedience() + 20, 100));
     }
-    if (daughter || newGirl->is_yourdaughter())    // `J` if she is your daughter...
+    if (daughter || is_your_daughter(*newGirl))    // `J` if she is your daughter...
     {
         newGirl->m_AccLevel = 9;            // pamper her
         newGirl->m_Money = 1000;
@@ -345,35 +314,35 @@ cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, 
     // `J` more usefull log for rgirl
     g_LogFile.log(ELogLevel::INFO, "Random girl ", newGirl->FullName(), " created from template ", newGirl->m_Name, ".rgirlsx");
 
-    CalculateGirlType(newGirl.get());
+    CalculateGirlType(*newGirl);
     return newGirl;
 }
 
 
 // `J` moved exp check into levelup to reduce coding
-void cGirls::LevelUp(sGirl* girl)
+void cGirls::LevelUp(sGirl& girl)
 {
-    int level = girl->level();
-    int xp = girl->exp();
+    int level = girl.level();
+    int xp = girl.exp();
     int xpneeded = min(32000, (level + 1) * 125);
 
     if (xp < xpneeded) return;
 
-    girl->set_stat(STAT_EXP, xp - xpneeded);
-    girl->level(1);
+    girl.set_stat(STAT_EXP, xp - xpneeded);
+    girl.level(1);
 
-    if (girl->level() <= 20)    LevelUpStats(girl);
+    if (girl.level() <= 20)    LevelUpStats(girl);
 
     stringstream ss;
-    ss << "${name} levelled up to " << girl->level() << ".";
-    girl->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_LEVELUP);
+    ss << "${name} levelled up to " << girl.level() << ".";
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_LEVELUP);
     ss.str("");
 
     // add traits
     // MYR: One chance to get a new trait every five levels.
-    if (girl->level() % 5 == 0)
+    if (girl.level() % 5 == 0)
     {
-        int addedtrait = girl->level() + 5;
+        int addedtrait = girl.level() + 5;
         while (addedtrait > 0)
         {
             int chance = g_Dice % 12;
@@ -393,28 +362,28 @@ void cGirls::LevelUp(sGirl* girl)
             case 11:    trait = "Sexy Air";                break;
             default: break;
             }
-            if (!trait.empty() && girl->gain_trait(trait.c_str()))
+            if (!trait.empty() && girl.gain_trait(trait.c_str()))
             {
                 addedtrait = 0;
                 ss << " She has gained the " << trait << " trait.";
-                girl->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+                girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
             }
             addedtrait--;
         }
     }
 }
 
-void cGirls::LevelUpStats(sGirl* girl)
+void cGirls::LevelUpStats(sGirl& girl)
 {
     int DiceSize = 3;
-    if (girl->has_active_trait("Quick Learner")) DiceSize = 4;
-    else if (girl->has_active_trait("Slow Learner")) DiceSize = 2;
+    if (girl.has_active_trait("Quick Learner")) DiceSize = 4;
+    else if (girl.has_active_trait("Slow Learner")) DiceSize = 2;
 
     // level up stats (only first 8 advance in levelups)
-    for (int i = 0; i < 8; i++) girl->upd_base_stat(i, g_Dice % DiceSize);
+    for (int i = 0; i < 8; i++) girl.upd_base_stat(i, g_Dice % DiceSize);
 
     // level up skills
-    for (u_int i = 0; i < NUM_SKILLS; i++)    girl->upd_skill(i, g_Dice%DiceSize);
+    for (u_int i = 0; i < NUM_SKILLS; i++)    girl.upd_skill(i, g_Dice%DiceSize);
 }
 
 /*
@@ -422,63 +391,63 @@ void cGirls::LevelUpStats(sGirl* girl)
 *    if a sex type is banned, 10% chance she will lose 1 point in it
 *   all other skills have a 5% chance to lose 1 point
 */
-void cGirls::EndDayGirls(IBuilding& brothel, sGirl * girl)
+void cGirls::EndDayGirls(IBuilding& brothel, sGirl& girl)
 {
     stringstream goodnews;
-    /* */if (girl->m_NumCusts == girl->m_NumCusts_old)    {}    // no customers
-    else if (girl->m_NumCusts < girl->m_NumCusts_old)    {}    // lost customers??
-    else if (girl->m_NumCusts_old == 0 && girl->m_NumCusts > 0)
+    /* */if (girl.m_NumCusts == girl.m_NumCusts_old)    {}    // no customers
+    else if (girl.m_NumCusts < girl.m_NumCusts_old)    {}    // lost customers??
+    else if (girl.m_NumCusts_old == 0 && girl.m_NumCusts > 0)
     {
         goodnews << "${name} has serviced her first ";
-        /* */if (girl->m_NumCusts == 1)            goodnews << " customer.";
-        else if (girl->m_NumCusts == 2)        goodnews << " pair of customers.";
-        else if (girl->m_NumCusts == 12)    goodnews << " dozen customers.";
-        else        goodnews << (int)girl->m_NumCusts << " customers. ";
+        /* */if (girl.m_NumCusts == 1)            goodnews << " customer.";
+        else if (girl.m_NumCusts == 2)        goodnews << " pair of customers.";
+        else if (girl.m_NumCusts == 12)    goodnews << " dozen customers.";
+        else        goodnews << (int)girl.m_NumCusts << " customers. ";
         goodnews << " She is sure to service more as long as she works for you.";
     }
-    else if (girl->m_NumCusts_old < 100 && girl->m_NumCusts >= 100)
+    else if (girl.m_NumCusts_old < 100 && girl.m_NumCusts >= 100)
     {
         goodnews << "${name} serviced her first hundred customers.";
-        if (girl->has_active_trait("Optimist") && girl->happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
+        if (girl.has_active_trait("Optimist") && girl.happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
         else goodnews << " You see great potential in this one.";
-        girl->fame(1);
+        girl.fame(1);
     }
-    else if (girl->m_NumCusts_old < 500 && girl->m_NumCusts >= 500)
+    else if (girl.m_NumCusts_old < 500 && girl.m_NumCusts >= 500)
     {
         goodnews << "${name} serviced five hundred customers.";
-        if (girl->has_active_trait("Optimist") && girl->happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
-        girl->gain_trait("Whore");
-        girl->fame(5);
+        if (girl.has_active_trait("Optimist") && girl.happiness() > 80) goodnews << " She seems pleased with her accomplishment and looks forward to reaching the next level.";
+        girl.gain_trait("Whore");
+        girl.fame(5);
     }
-    else if (girl->m_NumCusts_old < 1000 && girl->m_NumCusts >= 1000)
+    else if (girl.m_NumCusts_old < 1000 && girl.m_NumCusts >= 1000)
     {
         goodnews << "${name} has slept with 1000 people.. You gotta wonder if its like throwing a hot dog down a hallway at this point.";
-        girl->fame(10);
+        girl.fame(10);
 
     }
-    if (goodnews.str().length() > 2)    girl->AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+    if (goodnews.str().length() > 2)    girl.AddMessage(goodnews.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
 
 
-    girl->m_NumCusts_old = girl->m_NumCusts;            // prepare for next week
+    girl.m_NumCusts_old = girl.m_NumCusts;            // prepare for next week
 
     int E_mana = 0, E_libido = 0, E_lactation = 0;
 
-    /* */if (girl->has_active_trait("Muggle")) E_mana = girl->magic() / 50;    // max 2 per day
-    else if (girl->has_active_trait("Weak Magic")) E_mana = girl->magic() / 20;    // max 5 per day
-    else if (girl->has_active_trait("Strong Magic")) E_mana = girl->magic() / 5;        // max 20 per day
-    else if (girl->has_active_trait("Powerful Magic")) E_mana = girl->magic() / 2;        // max 50 per day
-    else /*                                 */    E_mana = girl->magic() / 10;    // max 10 per day
-    girl->mana(E_mana);
+    /* */if (girl.has_active_trait("Muggle")) E_mana = girl.magic() / 50;    // max 2 per day
+    else if (girl.has_active_trait("Weak Magic")) E_mana = girl.magic() / 20;    // max 5 per day
+    else if (girl.has_active_trait("Strong Magic")) E_mana = girl.magic() / 5;        // max 20 per day
+    else if (girl.has_active_trait("Powerful Magic")) E_mana = girl.magic() / 2;        // max 50 per day
+    else /*                                 */    E_mana = girl.magic() / 10;    // max 10 per day
+    girl.mana(E_mana);
 
 
     // `J` update the girls base libido
-    int total_libido = girl->libido();                // total_libido
-    int base_libido = girl->libido();    // base_libido
+    int total_libido = girl.libido();                // total_libido
+    int base_libido = girl.libido();    // base_libido
     if (total_libido > (base_libido*1.5)) E_libido++;
     if (total_libido > 90)    E_libido++;
     if (total_libido < 10)    E_libido--;
     if (total_libido < (base_libido / 3)) E_libido--;
-    girl->libido(E_libido);
+    girl.libido(E_libido);
 
 
     /* `J` lactation is not really thought out fully
@@ -487,21 +456,21 @@ void cGirls::EndDayGirls(IBuilding& brothel, sGirl * girl)
     *    pregnancy doubles lactation
     *    pregnant cow girl will alwasy be ready to milk
     //*/
-    if (!girl->has_active_trait("No Nipples"))    // no nipples = no lactation
+    if (!girl.has_active_trait("No Nipples"))    // no nipples = no lactation
     {
-        /* */if (girl->has_active_trait("Dry Milk")) E_lactation = 1;
-        else if (girl->has_active_trait("Scarce Lactation")) E_lactation = 5;
-        else if (girl->has_active_trait("Abundant Lactation")) E_lactation = 25;
-        else if (girl->has_active_trait("Cow Tits")) E_lactation = 50;
+        /* */if (girl.has_active_trait("Dry Milk")) E_lactation = 1;
+        else if (girl.has_active_trait("Scarce Lactation")) E_lactation = 5;
+        else if (girl.has_active_trait("Abundant Lactation")) E_lactation = 25;
+        else if (girl.has_active_trait("Cow Tits")) E_lactation = 50;
         else /*                                     */    E_lactation = 10;
-        /* */if (girl->is_pregnant())                    E_lactation *= 2;
-        else if (girl->m_PregCooldown>0)                E_lactation = int((float)E_lactation * 2.5f);
-        girl->lactation(E_lactation);
+        /* */if (girl.is_pregnant())                    E_lactation *= 2;
+        else if (girl.m_PregCooldown>0)                E_lactation = int((float)E_lactation * 2.5f);
+        girl.lactation(E_lactation);
     }
 
     auto DecaySexSkill = [&](SKILLS skill) {
         int a = g_Dice.d100();
-        if (a < 5 || (a < 10 && !brothel.is_sex_type_allowed(skill)))    girl->upd_skill(skill, -1);
+        if (a < 5 || (a < 10 && !brothel.is_sex_type_allowed(skill)))    girl.upd_skill(skill, -1);
     };
 
     DecaySexSkill(SKILL_BEASTIALITY);
@@ -516,17 +485,17 @@ void cGirls::EndDayGirls(IBuilding& brothel, sGirl * girl)
     DecaySexSkill(SKILL_TITTYSEX);
     DecaySexSkill(SKILL_STRIP);
 
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_MAGIC, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_SERVICE, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_COMBAT, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_MEDICINE, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_PERFORMANCE, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_CRAFTING, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_HERBALISM, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_FARMING, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_BREWING, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_ANIMALHANDLING, -1);
-    if (g_Dice.percent(5))    girl->upd_skill(SKILL_COOKING, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_MAGIC, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_SERVICE, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_COMBAT, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_MEDICINE, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_PERFORMANCE, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_CRAFTING, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_HERBALISM, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_FARMING, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_BREWING, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_ANIMALHANDLING, -1);
+    if (g_Dice.percent(5))    girl.upd_skill(SKILL_COOKING, -1);
 }
 
 std::string process_message(const sGirl& girl, std::string message) {
@@ -559,60 +528,32 @@ std::string process_message(const sGirl& girl, std::string message) {
 
 // ----- Add remove
 
-void cGirls::AddGirl(sGirl* girl)
+void cGirls::AddGirl(shared_ptr<sGirl> girl)
 {
-    m_Girls.push_back(girl);
+    m_Girls->AddGirl(std::move(girl));
 }
 
-void cGirls::RemoveGirl(sGirl* girl, bool deleteGirl)
+shared_ptr<sGirl> cGirls::TakeGirl(const sGirl* girl)
 {
-    m_Girls.remove(girl);
-    if(deleteGirl)
-        delete girl;
+    return m_Girls->TakeGirl(girl);
 }
 
-// ----- Get
-
-int cGirls::GetSlaveGirl(int from)
+void cGirls::GiveGirl(std::shared_ptr<sGirl> girl)
 {
-    int num = 0; int girlnum = 0;
-    bool found = false;
-    for(auto current : m_Girls)
-    {
-        if (current->is_slave())
-        {
-            if (num == from)
-            {
-                found = true;
-                break;
-            }
-            else    num++;
-        }
-        girlnum++;
+    if (girl->IsUnique()) {
+        m_Girls->AddGirl(std::move(girl)); // only add unique girls back to main pool
     }
-    if (!found)    return -1;
-    return girlnum;
 }
 
-vector<sGirl *>  cGirls::get_girls(GirlPredicate* pred)
-{
-    vector<sGirl *> v;
-    for(auto girl : m_Girls)
-    {
-        if (pred->test(girl))    v.push_back(girl);
-    }
-    return v;
-}
-
-string cGirls::GetGirlMood(const sGirl * girl)
+string cGirls::GetGirlMood(const sGirl& girl)
 {
     stringstream ss;
-    ss << girl->FullName();
+    ss << girl.FullName();
 
-    int HateLove = girl->pclove() - girl->pchate();
+    int HateLove = girl.pclove() - girl.pchate();
     ss << " feels the player ";
 
-    if (girl->has_active_trait("Your Daughter"))
+    if (girl.has_active_trait("Your Daughter"))
     {
         /* */if (HateLove <= -80)    ss << "should die ";
         else if (HateLove <= -60)    ss << "is better off dead ";
@@ -625,7 +566,7 @@ string cGirls::GetGirlMood(const sGirl * girl)
         else if (HateLove <= 80)    ss << "is a great dad ";
         else                         ss << "is an awesome daddy ";
     }
-    else if (girl->has_active_trait("Lesbian"))//lesbian shouldn't fall in love with you
+    else if (girl.has_active_trait("Lesbian"))//lesbian shouldn't fall in love with you
     {
         /* */if (HateLove <= -80)    ss << "should die ";
         else if (HateLove <= -60)    ss << "is better off dead ";
@@ -652,21 +593,21 @@ string cGirls::GetGirlMood(const sGirl * girl)
         else                         ss << "is her true love ";
     }
 
-    if (girl->pcfear() > 20)
+    if (girl.pcfear() > 20)
     {
         if (HateLove > 0)    ss << "but she is also ";
         else                ss << "and she is ";
-        /* */if (girl->pcfear() < 40)    ss << "afraid of him." << (girl->is_dead() ? " (for good reasons)." : ".");
-        else if (girl->pcfear() < 60)    ss << "fearful of him." << (girl->is_dead() ? " (for good reasons)." : ".");
-        else if (girl->pcfear() < 80)    ss << "afraid he will hurt her" << (girl->is_dead() ? " (and she was right)." : ".");
-        else                                        ss << "afraid he will kill her" << (girl->is_dead() ? " (and she was right)." : ".");
+        /* */if (girl.pcfear() < 40)    ss << "afraid of him." << (girl.is_dead() ? " (for good reasons)." : ".");
+        else if (girl.pcfear() < 60)    ss << "fearful of him." << (girl.is_dead() ? " (for good reasons)." : ".");
+        else if (girl.pcfear() < 80)    ss << "afraid he will hurt her" << (girl.is_dead() ? " (and she was right)." : ".");
+        else                                        ss << "afraid he will kill her" << (girl.is_dead() ? " (and she was right)." : ".");
 
     }
     else    ss << "and he isn't scary.";
 
-    int happy = girl->happiness();
+    int happy = girl.happiness();
     ss << "\nShe is ";
-    if (girl->health() < 1)    ss << "dead.";
+    if (girl.health() < 1)    ss << "dead.";
     else if (happy > 90)    ss << "happy.";
     else if (happy > 80)    ss << "joyful.";
     else if (happy > 60)    ss << "reasonably happy.";
@@ -674,8 +615,8 @@ string cGirls::GetGirlMood(const sGirl * girl)
     else        ss << "showing signs of depression.";
 
 
-    int morality = girl->morality(); //zzzzz FIXME needs better text
-    ss << "\nShe " << (girl->health() < 1 ? "was " : "is ");
+    int morality = girl.morality(); //zzzzz FIXME needs better text
+    ss << "\nShe " << (girl.health() < 1 ? "was " : "is ");
     /* */if (morality <= -80)    ss << "pure evil";
     else if (morality <= -60)    ss << "evil";
     else if (morality <= -40)    ss << "mean";
@@ -688,8 +629,8 @@ string cGirls::GetGirlMood(const sGirl * girl)
     else                         ss << "holy";
     ss << ".";
 
-    int sanity = girl->sanity();    // `bsin` added - `J` adjusted
-    ss << "\nShe " << (girl->health() < 1 ? "was " : "is ");
+    int sanity = girl.sanity();    // `bsin` added - `J` adjusted
+    ss << "\nShe " << (girl.health() < 1 ? "was " : "is ");
 
     /* */if (sanity <= -75)
     {
@@ -720,9 +661,8 @@ string cGirls::GetGirlMood(const sGirl * girl)
     return ss.str();
 }
 
-string cGirls::GetDetailsString(sGirl* girl, bool purchase)
+string cGirls::GetDetailsString(sGirl& girl, bool purchase)
 {
-    if (girl == nullptr)    return string("");
     stringstream ss;
 
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetDetailsString
@@ -737,13 +677,13 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
     string levelstr[] = { "Level : \t", "Exp : \t", "Exp to level : \t", "Needs : \t" };
 
-    int level = girl->level();
-    int exp = girl->exp();
+    int level = girl.level();
+    int exp = girl.exp();
     int exptolv = min(32000, (level + 1) * 125);
     int expneed = exptolv - exp;
 
     // display looks
-    ss << basestr[2] << (girl->beauty() + girl->charisma()) / 2;
+    ss << basestr[2] << (girl.beauty() + girl.charisma()) / 2;
 
     // display level and exp
     ss << "\n" << levelstr[0] << level;
@@ -755,48 +695,48 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
     }
 
     // display Age
-    ss << "\n" << basestr[0]; if (girl->age() == 100) ss << "Unknown"; else ss << girl->age();
+    ss << "\n" << basestr[0]; if (girl.age() == 100) ss << "Unknown"; else ss << girl.age();
     // display rebel
-    ss << "\n" << basestr[1] << girl->rebel();
+    ss << "\n" << basestr[1] << girl.rebel();
     // display Constitution
-    ss << "\n" << basestr[3] << girl->constitution();
+    ss << "\n" << basestr[3] << girl.constitution();
 
     // display HHT and money
     if (!purchase)
     {
-        ss << "\n" << basestr[4] << girl->health();
-        ss << "\n" << basestr[5] << girl->happiness();
-        ss << "\n" << basestr[6] << girl->tiredness();
+        ss << "\n" << basestr[4] << girl.health();
+        ss << "\n" << basestr[5] << girl.happiness();
+        ss << "\n" << basestr[6] << girl.tiredness();
     }
     int cost = int(g_Game->tariff().slave_price(girl, purchase));
     ss << "\n" << basestr[7] << cost << " Gold\t";
-    CalculateAskPrice(girl, false);
-    cost = girl->askprice();
+    UpdateAskPrice(girl, false);
+    cost = girl.askprice();
     ss << "\nAvg Pay per Customer : " << cost << " gold\n";
 
     // display status
-    /* */if (girl->is_slave())    ss << "Is Branded a Slave\n";
+    /* */if (girl.is_slave())    ss << "Is Branded a Slave\n";
     else if (cfg.debug.log_extradetails())            ss << "( She Is Not a Slave )\n";
     else ss << "\n";
 
-    /* */if (is_virgin(*girl))            ss << "She is a Virgin\n";
+    /* */if (is_virgin(girl))            ss << "She is a Virgin\n";
     else if (cfg.debug.log_extradetails())            ss << "( She Is Not a Virgin )\n";
     else ss << "\n";
 
     if (!purchase)
     {
-        int to_go = girl->get_preg_duration() - girl->m_WeeksPreg;
-        /* */if (girl->has_status(STATUS_PREGNANT))                { ss << "Is pregnant, due: " << to_go << " weeks\n"; }
-        else if (girl->has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
-        else if (girl->has_status(STATUS_INSEMINATED))            { ss << "Is inseminated, due: " << to_go << " weeks\n"; }
-        else if (girl->m_PregCooldown != 0)                            { ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n"; }
+        int to_go = girl.get_preg_duration() - girl.m_WeeksPreg;
+        /* */if (girl.has_status(STATUS_PREGNANT))                { ss << "Is pregnant, due: " << to_go << " weeks\n"; }
+        else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
+        else if (girl.has_status(STATUS_INSEMINATED))            { ss << "Is inseminated, due: " << to_go << " weeks\n"; }
+        else if (girl.m_PregCooldown != 0)                            { ss << "Cannot get pregnant for: " << girl.m_PregCooldown << " weeks\n"; }
         else if (cfg.debug.log_extradetails())                        { ss << "( She Is not Pregnant )\n"; }
         else ss << "\n";
         // `J` moved the rest of children lines to second detail list
     }
 
-    bool addict = is_addict(*girl);
-    bool diseased = has_disease(*girl);
+    bool addict = is_addict(girl);
+    bool diseased = has_disease(girl);
     /* */if (addict && !diseased) ss << "Has an addiciton\n";
     else if (!addict && diseased)    ss << "Has a disease\n";
     else if (addict && diseased)    ss << "Has an addiciton and a disease\n";
@@ -805,15 +745,15 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
 
     if (!purchase)
     {
-        if (girl->has_status(STATUS_BADLY_POISONED))   ss << "Is badly poisoned\n";
-        else if (girl->has_status(STATUS_POISONED))    ss << "Is poisoned\n";
+        if (girl.has_status(STATUS_BADLY_POISONED))   ss << "Is badly poisoned\n";
+        else if (girl.has_status(STATUS_POISONED))    ss << "Is poisoned\n";
         else if (cfg.debug.log_extradetails())                ss << "( She Is Not Poisoned )\n";
         else                                                ss << "\n";
     }
 
     if (!purchase)
     {
-        int cust = girl->m_NumCusts;
+        int cust = girl.m_NumCusts;
         ss << "\nShe has slept with " << cust << " Customers.";
     }
 
@@ -828,15 +768,14 @@ string cGirls::GetDetailsString(sGirl* girl, bool purchase)
             ss << "\n \nSEX SKILLS";
             if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
         }
-        ss << "\n" << skillstr[i] << girl->get_skill(skillnum[i]);
-        if (cfg.debug.log_extradetails() && !purchase) ss << "    (" << girl->get_base_skill(skillnum[i]) << "+" << girl->get_temp_skill(skillnum[i]) << "+" << girl->get_mod_skill(skillnum[i]) << ")";
+        ss << "\n" << skillstr[i] << girl.get_skill(skillnum[i]);
+        if (cfg.debug.log_extradetails() && !purchase) ss << "    (" << girl.get_base_skill(skillnum[i]) << "+" << girl.get_temp_skill(skillnum[i]) << "+" << girl.get_mod_skill(skillnum[i]) << ")";
     }
     return ss.str();
 }
 
-string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
+string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
 {
-    if (girl == nullptr)    return "";
     stringstream ss;
 
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetMoreDetailsString
@@ -852,15 +791,15 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
 
     for (int i = 0; i < show; i++)
     {
-        ss << "\n" << statstr[i] << girl->get_stat(statnum[i]);
-        if (cfg.debug.log_extradetails() && !purchase) ss << "    (" << girl->get_base_stat(statnum[i]) << "+" << girl->get_temp_stat(statnum[i]) << "+" << girl->get_mod_stat(statnum[i])  << ")";
+        ss << "\n" << statstr[i] << girl.get_stat(statnum[i]);
+        if (cfg.debug.log_extradetails() && !purchase) ss << "    (" << girl.get_base_stat(statnum[i]) << "+" << girl.get_temp_stat(statnum[i]) << "+" << girl.get_mod_stat(statnum[i])  << ")";
     }
     if (!purchase)
     {
         ss << "\n" << statstr[15];
         if (g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS))
         {
-            ss << girl->m_Money;
+            ss << girl.m_Money;
         }
         else
         {
@@ -872,102 +811,102 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
     if (!purchase)
     {
         ss << "\n \nAccommodation: \t";
-        if (cfg.debug.log_extradetails()) ss << "( " << girl->m_AccLevel << " ) ";
-        ss << Accommodation(girl->m_AccLevel);
+        if (cfg.debug.log_extradetails()) ss << "( " << girl.m_AccLevel << " ) ";
+        ss << Accommodation(girl.m_AccLevel);
         if (cfg.debug.log_extradetails())
         {
-            ss << "\n" << (girl->is_free() ? "Preferred  Accom:" : "Expected Accom: ")
+            ss << "\n" << (girl.is_free() ? "Preferred  Accom:" : "Expected Accom: ")
                 << " ( " << PreferredAccom(girl) << " ) " << Accommodation(PreferredAccom(girl));
         }
-        ss << "\nCost per turn: \t" << ((girl->is_slave() ? 5 : 20) * (girl->m_AccLevel + 1)) << " gold.\n";
+        ss << "\nCost per turn: \t" << ((girl.is_slave() ? 5 : 20) * (girl.m_AccLevel + 1)) << " gold.\n";
 
         //ss << "\nDetails:\n";
-        //ss << AccommodationDetails(girl, girl->m_AccLevel);
-        //ss << cGirls::AccommodationDetails(girl, girl->m_AccLevel);
+        //ss << AccommodationDetails(girl, girl.m_AccLevel);
+        //ss << cGirls::AccommodationDetails(girl, girl.m_AccLevel);
 
         // added from Dagoth
-        if (girl->is_resting() && !girl->was_resting() && girl->m_PrevDayJob != 255 && girl->m_PrevNightJob != 255)
+        if (girl.is_resting() && !girl.was_resting() && girl.m_PrevDayJob != 255 && girl.m_PrevNightJob != 255)
         {
             ss << "\n \nOFF WORK, RESTING DUE TO TIREDNESS.";
-            ss << "\nStored Day Job:   " << g_Game->job_manager().JobData[girl->m_PrevDayJob].name;
-            ss << "\nStored Night Job: " << g_Game->job_manager().JobData[girl->m_PrevNightJob].name;
+            ss << "\nStored Day Job:   " << g_Game->job_manager().JobData[girl.m_PrevDayJob].name;
+            ss << "\nStored Night Job: " << g_Game->job_manager().JobData[girl.m_PrevNightJob].name;
             ss << "\n";
         }
-        int to_go = girl->get_preg_duration() - girl->m_WeeksPreg;
+        int to_go = girl.get_preg_duration() - girl.m_WeeksPreg;
         // first line is current pregnancy
-        /* */if (girl->has_status(STATUS_PREGNANT))                { ss << "Is pregnant, due: " << to_go << " weeks\n"; }
-        else if (girl->has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
-        else if (girl->has_status(STATUS_INSEMINATED))            { ss << "Is inseminated, due: " << to_go << " weeks\n"; }
-        else if (girl->m_PregCooldown != 0)                            { ss << "Cannot get pregnant for: " << girl->m_PregCooldown << " weeks\n"; }
+        /* */if (girl.has_status(STATUS_PREGNANT))                { ss << "Is pregnant, due: " << to_go << " weeks\n"; }
+        else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
+        else if (girl.has_status(STATUS_INSEMINATED))            { ss << "Is inseminated, due: " << to_go << " weeks\n"; }
+        else if (girl.m_PregCooldown != 0)                            { ss << "Cannot get pregnant for: " << girl.m_PregCooldown << " weeks\n"; }
         else if (cfg.debug.log_extradetails())                        { ss << "( She Is not Pregnant )\n"; }
         else ss << "\n";
         // count the total births
-        if (girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 0)
-            ss << "She has given birth to " << girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS]
-                << " child" << (girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 1 ? "ren" : "") << ":\n";
+        if (girl.m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 0)
+            ss << "She has given birth to " << girl.m_ChildrenCount[CHILD00_TOTAL_BIRTHS]
+                << " child" << (girl.m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 1 ? "ren" : "") << ":\n";
         // count the girls born
-        if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] > 0)
+        if (girl.m_ChildrenCount[CHILD02_ALL_GIRLS] > 0)
         {
-            ss << girl->m_ChildrenCount[CHILD02_ALL_GIRLS] << " girl" << (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] > 1 ? "s" : "") << "\n   ";
-            if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == girl->m_ChildrenCount[CHILD06_YOUR_GIRLS])
+            ss << girl.m_ChildrenCount[CHILD02_ALL_GIRLS] << " girl" << (girl.m_ChildrenCount[CHILD02_ALL_GIRLS] > 1 ? "s" : "") << "\n   ";
+            if (girl.m_ChildrenCount[CHILD02_ALL_GIRLS] == girl.m_ChildrenCount[CHILD06_YOUR_GIRLS])
             {
-                if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == 1)
+                if (girl.m_ChildrenCount[CHILD02_ALL_GIRLS] == 1)
                     ss << "She is your daughter.";
                 else ss << "They are all yours.";
             }
-            else if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS])
+            else if (girl.m_ChildrenCount[CHILD02_ALL_GIRLS] == girl.m_ChildrenCount[CHILD04_CUSTOMER_GIRLS])
             {
-                if (girl->m_ChildrenCount[CHILD02_ALL_GIRLS] == 1)
+                if (girl.m_ChildrenCount[CHILD02_ALL_GIRLS] == 1)
                     ss << "She is not your daughter.";
                 else ss << "They are all from other men.";
             }
             else
             {
-                if (girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] == 1)
+                if (girl.m_ChildrenCount[CHILD06_YOUR_GIRLS] == 1)
                     ss << "One is yours and ";
-                else ss << girl->m_ChildrenCount[CHILD06_YOUR_GIRLS] << " of them are yours and ";
+                else ss << girl.m_ChildrenCount[CHILD06_YOUR_GIRLS] << " of them are yours and ";
                 ss << "\n   ";
-                if (girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] == 1)
+                if (girl.m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] == 1)
                     ss << "One is from another man.";
-                else ss << girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] << " of them are from other men.";
+                else ss << girl.m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] << " of them are from other men.";
             }
             ss << "\n";
         }
         else if (cfg.debug.log_extradetails())                        ss << "( She Has No Daughters )\n";
 
         // count the boys born
-        if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 0)
+        if (girl.m_ChildrenCount[CHILD03_ALL_BOYS] > 0)
         {
-            ss << girl->m_ChildrenCount[CHILD03_ALL_BOYS] << " boy" << (girl->m_ChildrenCount[CHILD03_ALL_BOYS] > 1 ? "s" : "") << "\n   ";
-            if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == girl->m_ChildrenCount[CHILD07_YOUR_BOYS])
+            ss << girl.m_ChildrenCount[CHILD03_ALL_BOYS] << " boy" << (girl.m_ChildrenCount[CHILD03_ALL_BOYS] > 1 ? "s" : "") << "\n   ";
+            if (girl.m_ChildrenCount[CHILD03_ALL_BOYS] == girl.m_ChildrenCount[CHILD07_YOUR_BOYS])
             {
-                if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == 1)
+                if (girl.m_ChildrenCount[CHILD03_ALL_BOYS] == 1)
                     ss << "He is your son.";
                 else ss << "They are all yours.";
             }
-            else if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS])
+            else if (girl.m_ChildrenCount[CHILD03_ALL_BOYS] == girl.m_ChildrenCount[CHILD05_CUSTOMER_BOYS])
             {
-                if (girl->m_ChildrenCount[CHILD03_ALL_BOYS] == 1)
+                if (girl.m_ChildrenCount[CHILD03_ALL_BOYS] == 1)
                     ss << "He is not your son.";
                 else ss << "They are all from other men.";
             }
             else
             {
-                if (girl->m_ChildrenCount[CHILD07_YOUR_BOYS] == 1)
+                if (girl.m_ChildrenCount[CHILD07_YOUR_BOYS] == 1)
                     ss << "One is yours and ";
-                else ss << girl->m_ChildrenCount[CHILD07_YOUR_BOYS] << " of them are yours and ";
+                else ss << girl.m_ChildrenCount[CHILD07_YOUR_BOYS] << " of them are yours and ";
                 ss << "\n   ";
-                if (girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] == 1)
+                if (girl.m_ChildrenCount[CHILD05_CUSTOMER_BOYS] == 1)
                     ss << "One is from another man.";
-                else ss << girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS] << " of them are from other men.";
+                else ss << girl.m_ChildrenCount[CHILD05_CUSTOMER_BOYS] << " of them are from other men.";
             }
             ss << "\n";
         }
         else if (cfg.debug.log_extradetails())                    ss << "( She Has No Sons )\n";
 
-        if (girl->m_ChildrenCount[CHILD01_ALL_BEASTS] > 0)        ss << "She has given birth to " << girl->m_ChildrenCount[CHILD01_ALL_BEASTS] << " Beast" << (girl->m_ChildrenCount[CHILD01_ALL_BEASTS] > 1 ? "s" : "") << ".\n";
-        if (girl->m_ChildrenCount[CHILD08_MISCARRIAGES] > 0)    ss << "She has had " << girl->m_ChildrenCount[CHILD08_MISCARRIAGES] << " Miscarriage" << (girl->m_ChildrenCount[CHILD08_MISCARRIAGES] > 1 ? "s" : "") << ".\n";
-        if (girl->m_ChildrenCount[CHILD09_ABORTIONS] > 0)        ss << "She has had " << girl->m_ChildrenCount[CHILD09_ABORTIONS] << " Abortion" << (girl->m_ChildrenCount[CHILD09_ABORTIONS] > 1 ? "s" : "") << ".\n";
+        if (girl.m_ChildrenCount[CHILD01_ALL_BEASTS] > 0)        ss << "She has given birth to " << girl.m_ChildrenCount[CHILD01_ALL_BEASTS] << " Beast" << (girl.m_ChildrenCount[CHILD01_ALL_BEASTS] > 1 ? "s" : "") << ".\n";
+        if (girl.m_ChildrenCount[CHILD08_MISCARRIAGES] > 0)    ss << "She has had " << girl.m_ChildrenCount[CHILD08_MISCARRIAGES] << " Miscarriage" << (girl.m_ChildrenCount[CHILD08_MISCARRIAGES] > 1 ? "s" : "") << ".\n";
+        if (girl.m_ChildrenCount[CHILD09_ABORTIONS] > 0)        ss << "She has had " << girl.m_ChildrenCount[CHILD09_ABORTIONS] << " Abortion" << (girl.m_ChildrenCount[CHILD09_ABORTIONS] > 1 ? "s" : "") << ".\n";
     }
 
     ss << "\n \nFETISH CATEGORIES\n";
@@ -1005,7 +944,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
         int enjcount = 0;
         for (int i = 0; i < NUM_ACTIONTYPES; ++i)
         {
-            int e = girl->get_enjoyment((Action_Types)i);
+            int e = girl.get_enjoyment((Action_Types)i);
             /* */if (e < -70)    { text = " hates "; }
             else if (e < -50)    { text = " really dislikes "; }
             else if (e < -30)    { text = " dislikes "; }
@@ -1020,9 +959,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
             if (cfg.debug.log_extradetails() || cfg.debug.log_show_numbers())
             {
                 if (cfg.debug.log_extradetails()) ss << "\n";
-                ss << "    ( " << girl->m_Enjoyment[i];
+                ss << "    ( " << girl.m_Enjoyment[i];
                 if (cfg.debug.log_extradetails())
-                    ss << " + " << girl->m_EnjoymentTemps[i] << " + " << girl->m_EnjoymentMods[i];
+                    ss << " + " << girl.m_EnjoymentTemps[i] << " + " << girl.m_EnjoymentMods[i];
                 ss << " )";
             }
             ss << "\n";
@@ -1036,7 +975,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
         for (int i = 0; i < NUM_TRAININGTYPES; ++i)
         {
             if (sGirl::training_jobs[i] == "")            continue;
-            int e = girl->get_training(i);
+            int e = girl.get_training(i);
             /* */if (e < 0)    { text = " hasn't started "; }
             // if she's indifferent, why specify it? Let's instead skip it.
             else if (e < 15)    { if (cfg.debug.log_extradetails())    { text = " is indifferent to "; } else continue; }
@@ -1048,9 +987,9 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
             if (cfg.debug.log_extradetails() || cfg.debug.log_show_numbers())
             {
                 if (cfg.debug.log_extradetails()) ss << "\n";
-                ss << "    ( " << girl->m_Training[i];
+                ss << "    ( " << girl.m_Training[i];
                 if (cfg.debug.log_extradetails())
-                    ss << " + " << girl->m_TrainingTemps[i] << " + " << girl->m_TrainingMods[i];
+                    ss << " + " << girl.m_TrainingTemps[i] << " + " << girl.m_TrainingMods[i];
                 ss << " )";
             }
             ss << "\n";
@@ -1061,7 +1000,7 @@ string cGirls::GetMoreDetailsString(sGirl* girl, bool purchase)
         else                                        { ss << "At the moment, she hasn't started any special training.\n \n"; }
     }
 
-    ss << "\n \n\nBased on:  " << girl->m_Name;
+    ss << "\n \n\nBased on:  " << girl.m_Name;
 
     return ss.str();
 }
@@ -1085,7 +1024,7 @@ namespace {
         char mark;
     };
 
-    void JobRating(std::stringstream& jr, sGirl& girl, std::initializer_list<sJD> jobs) {
+    void JobRating(std::stringstream& jr, const sGirl& girl, std::initializer_list<sJD> jobs) {
         for(auto& job : jobs) {
             double value = girl.job_performance(job.job, true);
 
@@ -1097,7 +1036,7 @@ namespace {
     }
 }
 
-string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratings
+string cGirls::GetThirdDetailsString(const sGirl& girl)    // `J` bookmark - Job ratings
 {
     // `J` bookmark - Job Ratings list
 
@@ -1107,13 +1046,13 @@ string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratin
     string div = "\n------------------------------------\n\n";
     std::stringstream Brothel_Data;
     Brothel_Data << "Brothel Job Ratings\n";
-    JobRating(Brothel_Data, *girl, {{JOB_MATRON, '-'}, {JOB_SECURITY, '-'}, {JOB_EXPLORECATACOMBS, '-'},
+    JobRating(Brothel_Data, girl, {{JOB_MATRON, '-'}, {JOB_SECURITY, '-'}, {JOB_EXPLORECATACOMBS, '-'},
                               {JOB_ADVERTISING, '-'}, {JOB_CUSTOMERSERVICE, '-'}, {JOB_BEASTCARER, '-'},
                               {JOB_TRAINING, '!'}, {JOB_CLEANING, '?'}});
-    JobRating(Brothel_Data, *girl, {{JOB_BARMAID, '-'}, {JOB_WAITRESS, '-'}, {JOB_SINGER, '-'}, {JOB_PIANO, '-'}, {JOB_ESCORT, '?'}});
-    JobRating(Brothel_Data, *girl, {{JOB_DEALER, '-'}, {JOB_ENTERTAINMENT, '-'}, {JOB_XXXENTERTAINMENT, '-'}, {JOB_WHOREGAMBHALL, '?'}});
-    JobRating(Brothel_Data, *girl, {{JOB_SLEAZYBARMAID, '-'}, {JOB_SLEAZYWAITRESS, '-'}, {JOB_BARSTRIPPER, '-'}, {JOB_BARWHORE, '?'}});
-    JobRating(Brothel_Data, *girl, {{JOB_MASSEUSE, '-'}, {JOB_BROTHELSTRIPPER, '-'}, {JOB_PEEP, '-'}, {JOB_WHOREBROTHEL, '?'}, {JOB_WHORESTREETS, '?'}});
+    JobRating(Brothel_Data, girl, {{JOB_BARMAID, '-'}, {JOB_WAITRESS, '-'}, {JOB_SINGER, '-'}, {JOB_PIANO, '-'}, {JOB_ESCORT, '?'}});
+    JobRating(Brothel_Data, girl, {{JOB_DEALER, '-'}, {JOB_ENTERTAINMENT, '-'}, {JOB_XXXENTERTAINMENT, '-'}, {JOB_WHOREGAMBHALL, '?'}});
+    JobRating(Brothel_Data, girl, {{JOB_SLEAZYBARMAID, '-'}, {JOB_SLEAZYWAITRESS, '-'}, {JOB_BARSTRIPPER, '-'}, {JOB_BARWHORE, '?'}});
+    JobRating(Brothel_Data, girl, {{JOB_MASSEUSE, '-'}, {JOB_BROTHELSTRIPPER, '-'}, {JOB_PEEP, '-'}, {JOB_WHOREBROTHEL, '?'}, {JOB_WHORESTREETS, '?'}});
     Brothel_Data << div;
 
     //STUDIO
@@ -1121,10 +1060,10 @@ string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratin
     if (g_Game->has_building(BuildingType::STUDIO))
     {
         Studio_Data << "Studio Job Ratings\n";
-        JobRating(Studio_Data, *girl, {{JOB_DIRECTOR, '?'}, {JOB_CAMERAMAGE, '?'}, {JOB_CRYSTALPURIFIER, '?'}, {JOB_FLUFFER, '?'}, {JOB_STAGEHAND, '?'}});
-        JobRating(Studio_Data, *girl, {{JOB_FILMACTION, ' '}, {JOB_FILMMUSIC, ' '}, {JOB_FILMCHEF, ' '}, {JOB_FILMTEASE, ' '}});
-        JobRating(Studio_Data, *girl, {{JOB_FILMORAL, ' '}});
-        JobRating(Studio_Data, *girl, {{JOB_FILMFACEFUCK, ' '}, {JOB_FILMBUKKAKE, ' '}, {JOB_FILMBONDAGE, ' '}, {JOB_FILMPUBLICBDSM, ' '}, {JOB_FILMBEAST, ' '}});
+        JobRating(Studio_Data, girl, {{JOB_DIRECTOR, '?'}, {JOB_CAMERAMAGE, '?'}, {JOB_CRYSTALPURIFIER, '?'}, {JOB_FLUFFER, '?'}, {JOB_STAGEHAND, '?'}});
+        JobRating(Studio_Data, girl, {{JOB_FILMACTION, ' '}, {JOB_FILMMUSIC, ' '}, {JOB_FILMCHEF, ' '}, {JOB_FILMTEASE, ' '}});
+        JobRating(Studio_Data, girl, {{JOB_FILMORAL, ' '}});
+        JobRating(Studio_Data, girl, {{JOB_FILMFACEFUCK, ' '}, {JOB_FILMBUKKAKE, ' '}, {JOB_FILMBONDAGE, ' '}, {JOB_FILMPUBLICBDSM, ' '}, {JOB_FILMBEAST, ' '}});
         // TODO the other jobs don't have a useful rating yet
         Studio_Data << div;
     }
@@ -1133,8 +1072,8 @@ string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratin
     if (g_Game->has_building(BuildingType::ARENA))
     {
         Arena_Data << "Arena Job Ratings\n";
-        JobRating(Arena_Data, *girl, {{JOB_DOCTORE, '-'}, {JOB_CITYGUARD, '?'}, {JOB_BLACKSMITH, '-'}, {JOB_COBBLER, '-'}, {JOB_JEWELER, '-'}});
-        JobRating(Arena_Data, *girl, {{JOB_FIGHTBEASTS, '-'}, {JOB_FIGHTARENAGIRLS, '?'}, {JOB_FIGHTTRAIN, '!'}});
+        JobRating(Arena_Data, girl, {{JOB_DOCTORE, '-'}, {JOB_CITYGUARD, '?'}, {JOB_BLACKSMITH, '-'}, {JOB_COBBLER, '-'}, {JOB_JEWELER, '-'}});
+        JobRating(Arena_Data, girl, {{JOB_FIGHTBEASTS, '-'}, {JOB_FIGHTARENAGIRLS, '?'}, {JOB_FIGHTTRAIN, '!'}});
         Arena_Data << div;
     }
     //CENTRE
@@ -1142,8 +1081,8 @@ string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratin
     if (g_Game->has_building(BuildingType::CENTRE))
     {
         Centre_Data << "Centre Job Ratings\n";
-        JobRating(Centre_Data, *girl, {{JOB_CENTREMANAGER, '-'}, {JOB_FEEDPOOR, '-'}, {JOB_COMUNITYSERVICE, '-'}});
-        JobRating(Centre_Data, *girl, {{JOB_COUNSELOR, '-'}, {JOB_REHAB, '!'}, {JOB_THERAPY, '!'}, {JOB_EXTHERAPY, '!'}, {JOB_ANGER, '!'}});
+        JobRating(Centre_Data, girl, {{JOB_CENTREMANAGER, '-'}, {JOB_FEEDPOOR, '-'}, {JOB_COMUNITYSERVICE, '-'}});
+        JobRating(Centre_Data, girl, {{JOB_COUNSELOR, '-'}, {JOB_REHAB, '!'}, {JOB_THERAPY, '!'}, {JOB_EXTHERAPY, '!'}, {JOB_ANGER, '!'}});
         Centre_Data << div;
     }
     //CLINIC
@@ -1151,8 +1090,8 @@ string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratin
     if (g_Game->has_building(BuildingType::CLINIC))
     {
         Clinic_Data << "Clinic Job Ratings\n";
-        JobRating(Clinic_Data, *girl, {{JOB_CHAIRMAN, '-'}, {JOB_DOCTOR, '-'}, {JOB_NURSE, '!'}, {JOB_MECHANIC, '-'}, {JOB_INTERN, '!'}});
-        JobRating(Clinic_Data, *girl, {{JOB_GETHEALING, '!'}, {JOB_GETREPAIRS, '!'}, {JOB_CUREDISEASES, '!'}, {JOB_GETABORT, '!'},
+        JobRating(Clinic_Data, girl, {{JOB_CHAIRMAN, '-'}, {JOB_DOCTOR, '-'}, {JOB_NURSE, '!'}, {JOB_MECHANIC, '-'}, {JOB_INTERN, '!'}});
+        JobRating(Clinic_Data, girl, {{JOB_GETHEALING, '!'}, {JOB_GETREPAIRS, '!'}, {JOB_CUREDISEASES, '!'}, {JOB_GETABORT, '!'},
                                        {JOB_COSMETICSURGERY, '!'}, {JOB_LIPO, '!'}, {JOB_BREASTREDUCTION, '!'}, {JOB_BOOBJOB, '!'},
                                        {JOB_VAGINAREJUV, '!'}, {JOB_FACELIFT, '!'}, {JOB_ASSJOB, '!'}, {JOB_TUBESTIED, '!'}, {JOB_FERTILITY, '!'}});
         Clinic_Data << div;
@@ -1162,16 +1101,16 @@ string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratin
     if (g_Game->has_building(BuildingType::FARM))
     {
         Farm_Data << "Farm Job Ratings\n";
-        JobRating(Farm_Data, *girl, {{JOB_FARMMANGER, '-'}, {JOB_VETERINARIAN, '-'}, {JOB_MARKETER, '-'}, {JOB_RESEARCH, '!'}, {JOB_FARMHAND, '-'}});
-        JobRating(Farm_Data, *girl, {{JOB_FARMER, '-'}, {JOB_GARDENER, '-'}, {JOB_SHEPHERD, '-'}, {JOB_RANCHER, '-'}, {JOB_CATACOMBRANCHER, '-'},
+        JobRating(Farm_Data, girl, {{JOB_FARMMANGER, '-'}, {JOB_VETERINARIAN, '-'}, {JOB_MARKETER, '-'}, {JOB_RESEARCH, '!'}, {JOB_FARMHAND, '-'}});
+        JobRating(Farm_Data, girl, {{JOB_FARMER, '-'}, {JOB_GARDENER, '-'}, {JOB_SHEPHERD, '-'}, {JOB_RANCHER, '-'}, {JOB_CATACOMBRANCHER, '-'},
                                      {JOB_BEASTCAPTURE, '-'}, {JOB_MILKER, '-'}, {JOB_MILK, '?'}});
-        JobRating(Farm_Data, *girl, {{JOB_BUTCHER, '-'}, {JOB_BAKER, '-'}, {JOB_BREWER, '-'}, {JOB_TAILOR, '-'}, {JOB_MAKEITEM, '-'}, {JOB_MAKEPOTIONS, '-'}});
+        JobRating(Farm_Data, girl, {{JOB_BUTCHER, '-'}, {JOB_BAKER, '-'}, {JOB_BREWER, '-'}, {JOB_TAILOR, '-'}, {JOB_MAKEITEM, '-'}, {JOB_MAKEPOTIONS, '-'}});
         Farm_Data << div;
     }
     //HOUSE
     stringstream House_Data;
     House_Data << "House Job Ratings\n";
-    JobRating(House_Data, *girl, {{JOB_HEADGIRL, '-'}, {JOB_RECRUITER, '-'}, {JOB_PERSONALTRAINING, '!'},
+    JobRating(House_Data, girl, {{JOB_HEADGIRL, '-'}, {JOB_RECRUITER, '-'}, {JOB_PERSONALTRAINING, '!'},
                                   {JOB_FAKEORGASM, '!'}, {JOB_SO_STRAIGHT, '!'}, {JOB_SO_BISEXUAL, '!'}, {JOB_SO_LESBIAN}});
 
     // House_Data += JobRating(*girl, m_JobManager.JP_PersonalBedWarmer(girl, true), "* PersonalBedWarmer");
@@ -1180,9 +1119,9 @@ string cGirls::GetThirdDetailsString(sGirl* girl)    // `J` bookmark - Job ratin
     // `J` Show the current building first
     string data = Brothel_Data.str();
     BuildingType btype = BuildingType::BROTHEL;
-    if(girl->m_Building) {
-        btype = girl->m_Building->type();
-        switch(girl->m_Building->type()) {
+    if(girl.m_Building) {
+        btype = girl.m_Building->type();
+        switch(girl.m_Building->type()) {
         case BuildingType::ARENA:
             data = Arena_Data.str();
             break;
@@ -1284,53 +1223,48 @@ string cGirls::GetSimpleDetails(const sGirl& girl)
 }
 
 // added human check: -1 does not matter, 0 not human, 1 human
-sGirl* cGirls::GetUniqueYourDaughterGirl(int Human0Monster1)
+std::shared_ptr<sGirl> cGirls::GetUniqueYourDaughterGirl(int Human0Monster1)
 {
     if (GetNumYourDaughterGirls() == 0) return nullptr;
-    vector<sGirl *> v;
-    for(auto girl : m_Girls)
-    {
-        if (girl->is_yourdaughter())
-            if (Human0Monster1 == -1 ||
-                (Human0Monster1 == 1 && !girl->is_human()) ||
-                (Human0Monster1 == 0 && girl->is_human()))
-                v.push_back(girl);
-    }
-
-    return v[g_Dice%v.size()];
+    auto ptr = m_Girls->get_random_girl([&](const sGirl& girl) {
+        return is_your_daughter(girl) && (Human0Monster1 == -1 ||
+                (Human0Monster1 == 1 && !girl.is_human()) ||
+                (Human0Monster1 == 0 && girl.is_human()));
+    });
+    return m_Girls->TakeGirl(ptr);
 }
 
-sGirl* cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
+std::shared_ptr<sGirl> cGirls::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
 {
-    int num_girls = m_Girls.size();
-    if ((num_girls == GetNumSlaveGirls() + GetNumCatacombGirls() + GetNumArenaGirls() + GetNumYourDaughterGirls() + GetNumIsDaughterGirls()) || num_girls == 0)
+    int num_girls = m_Girls->num();
+    int num_monster = m_Girls->count([](const sGirl& girl){ return girl.is_monster(); });
+    int num_arena = m_Girls->count([](const sGirl& girl){ return girl.is_arena(); });
+    int num_daughter = m_Girls->count([](const sGirl& girl){ return girl.is_isdaughter(); });
+    int num_slave = m_Girls->count([](const sGirl& girl){ return girl.is_slave(); });
+    if ((num_girls == num_slave + num_monster + num_arena + GetNumYourDaughterGirls() + num_daughter) || num_girls == 0)
     {
         int r = 3;
         while (r)
         {
-            AddGirl(CreateRandomGirl(0).release());
+            AddGirl(CreateRandomGirl(0));
             r--;
         }
     }
-    GirlPredicate_GRG pred(slave, catacomb, arena, daughter, isdaughter);
-    vector<sGirl *> girls = get_girls(&pred);
-    if (girls.empty()) return nullptr;
-    return girls[g_Dice.random(girls.size())];
+    auto choice = m_Girls->get_random_girl([&](const sGirl& girl){
+        return  girl.is_slave() == slave
+                &&    girl.is_monster() == catacomb
+                &&    girl.is_arena() == arena
+                &&    is_your_daughter(girl) == daughter
+                &&    girl.is_isdaughter() == isdaughter;});
+    return m_Girls->TakeGirl(choice);
 }
 
 sGirl* cGirls::GetGirl(int girl)
 {
-    int count = 0;
-    if (girl < 0 || (unsigned int)girl >= m_Girls.size())        return nullptr;
-    for(auto current : m_Girls)
-    {
-        if (count == girl)    return current;
-        count++;
-    }
-    return nullptr;
+    return m_Girls->get_girl(girl);
 }
 
-int cGirls::GetRebelValue(sGirl * girl, bool matron, JOBS job)
+int cGirls::GetRebelValue(const sGirl& girl, bool matron, JOBS job)
 {
     /*
     *    WD:    Added test to ingnore STAT_HOUSE value
@@ -1343,24 +1277,24 @@ int cGirls::GetRebelValue(sGirl * girl, bool matron, JOBS job)
     *    refusal.
     */
 
-    if (girl->has_active_trait("Broken Will"))    return -100;
+    if (girl.has_active_trait("Broken Will"))    return -100;
     int chanceNo = 0;
-    int houseStat = girl->house();
-    int happyStat = girl->happiness();
-    bool girlIsSlave = girl->is_slave();
+    int houseStat = girl.house();
+    int happyStat = girl.happiness();
+    bool girlIsSlave = girl.is_slave();
 
     // a matron (or torturer in dungeon) will help convince a girl to obey
     if (matron)    chanceNo -= 15;
 
-    chanceNo -= girl->pclove() / 5;
-    chanceNo += girl->spirit() / 2;
-    chanceNo -= girl->obedience() / 5;
+    chanceNo -= girl.pclove() / 5;
+    chanceNo += girl.spirit() / 2;
+    chanceNo -= girl.obedience() / 5;
 
     // having a guarding gang will enforce order
     sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
     if (gang)    chanceNo -= 10;
 
-    chanceNo += girl->tiredness() / 10;    // Tired girls increase Rebel
+    chanceNo += girl.tiredness() / 10;    // Tired girls increase Rebel
 
     if (happyStat < 50)                                // Unhappy girls increase Rebel
     {
@@ -1395,21 +1329,21 @@ int cGirls::GetRebelValue(sGirl * girl, bool matron, JOBS job)
     */
 
     // these are factoring in twice before and after mental trait modifiers
-    if (girl->has_active_trait("Kidnapped") || girl->has_active_trait("Emprisoned Customer")) chanceNo += 10;
+    if (girl.has_active_trait("Kidnapped") || girl.has_active_trait("Emprisoned Customer")) chanceNo += 10;
     /// TODO (traits) consider remaining time
-    //int kep = girl->has_temp_trait("Kidnapped") + girl->has_temp_trait("Emprisoned Customer");
+    //int kep = girl.has_temp_trait("Kidnapped") + girl.has_temp_trait("Emprisoned Customer");
     //if (kep > 20) kep += 20; else if (kep > 10) kep += 10;
 
     // guarantee certain rebelliousness values for specific traits
-    if (girl->has_active_trait("Retarded")) chanceNo -= 30;
-    if (girl->has_active_trait("Mind Fucked") && chanceNo > -50) chanceNo = -50;
-    if (girl->has_active_trait("Dependant") && chanceNo > -40) chanceNo = -40;
-    if (girl->has_active_trait("Meek") && chanceNo > 20) chanceNo = 20;
+    if (girl.has_active_trait("Retarded")) chanceNo -= 30;
+    if (girl.has_active_trait("Mind Fucked") && chanceNo > -50) chanceNo = -50;
+    if (girl.has_active_trait("Dependant") && chanceNo > -40) chanceNo = -40;
+    if (girl.has_active_trait("Meek") && chanceNo > 20) chanceNo = 20;
 
     // chanceNo += kep;
 
     // `J` What type of accommodations she is held in will affect her a lot.
-    int accommod = girl->m_AccLevel - cGirls::PreferredAccom(girl);
+    int accommod = girl.m_AccLevel - cGirls::PreferredAccom(girl);
     if (accommod < -4)
     {
         chanceNo -= accommod * 2;
@@ -1430,66 +1364,16 @@ int cGirls::GetRebelValue(sGirl * girl, bool matron, JOBS job)
     return chanceNo;
 }
 
-int cGirls::GetNumCatacombGirls()
-{
-    int number = 0;
-    for(auto current : m_Girls)
-    {
-        if (current->has_status(STATUS_CATACOMBS))
-            number++;
-    }
-    return number;
-}
-
-int cGirls::GetNumSlaveGirls()
-{
-    int number = 0;
-    for(auto current : m_Girls)
-    {
-        if (current->has_status(STATUS_SLAVE))
-            number++;
-    }
-    return number;
-}
-
-int cGirls::GetNumArenaGirls()
-{
-    int number = 0;
-    for(auto current : m_Girls)
-    {
-        if (current->has_status(STATUS_ARENA))
-            number++;
-    }
-    return number;
-}
-
 int cGirls::GetNumYourDaughterGirls()
 {
-    int number = 0;
-    for(auto current : m_Girls)
-    {
-        if (current->is_yourdaughter())
-            number++;
-    }
-    return number;
-}
-
-int cGirls::GetNumIsDaughterGirls()
-{
-    int number = 0;
-    for(auto current : m_Girls)
-    {
-        if (current->has_status(STATUS_ISDAUGHTER))
-            number++;
-    }
-    return number;
+    return m_Girls->count(is_your_daughter);
 }
 
 // ----- Stat
 
-void cGirls::updateTemp(sGirl* girl)    // `J` group all the temp updates into one area
+void cGirls::updateTemp(sGirl& girl)    // `J` group all the temp updates into one area
 {
-    girl->DecayTemp();        // update temp stats
+    girl.DecayTemp();        // update temp stats
     updateTempEnjoyment(girl);        // update temp enjoyment
 }
 
@@ -1516,10 +1400,10 @@ double cGirls::GetAverageOfSexSkills(const sGirl& girl)
 
 
 // total of all skills
-int cGirls::GetSkillWorth(sGirl* girl)
+int cGirls::GetSkillWorth(const sGirl& girl)
 {
     int num = 0;
-    for (int i = 0; i < NUM_SKILLS; ++i) num += girl->get_skill(i);
+    for (int i = 0; i < NUM_SKILLS; ++i) num += girl.get_skill(i);
     return num;
 }
 
@@ -1561,21 +1445,20 @@ void cGirls::LoadGirlsXML(string filename)
         if (girl->age() < 18) girl->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 
         // TOOD load triggers if the girl has any
-        CalculateGirlType(girl.get());            // Fetish list for customer happiness
-        AddGirl(girl.release());                        // add the girl to the list
+        CalculateGirlType(*girl);            // Fetish list for customer happiness
+        AddGirl(girl);                        // add the girl to the list
     }
 }
 
 bool cGirls::LoadGirlsXML(const tinyxml2::XMLElement* pGirls)
 {
     if (pGirls == nullptr) return false;
-    sGirl* current = nullptr;                    // load the number of girls
+    std::shared_ptr<sGirl> current = nullptr;                    // load the number of girls
     for (auto* pGirl = pGirls->FirstChildElement("Girl"); pGirl != nullptr; pGirl = pGirl->NextSiblingElement("Girl"))
     {
-        current = new sGirl();            // load each girl and add her
+        current = std::make_shared<sGirl>(false);            // load each girl and add her
         bool success = current->LoadGirlXML(pGirl);
-        if (success) AddGirl(current);
-        else { delete current; continue; }
+        if (success) AddGirl(std::move(current));
     }
     return true;
 }
@@ -1583,31 +1466,26 @@ bool cGirls::LoadGirlsXML(const tinyxml2::XMLElement* pGirls)
 tinyxml2::XMLElement& cGirls::SaveGirlsXML(tinyxml2::XMLElement& elRoot)
 {
     auto& elGirls = PushNewElement(elRoot, "Girls");
-    int numgirls=0;
-    for(auto current : m_Girls)
-    {
-        current->SaveGirlXML(elGirls);
-        numgirls++;
-    }
-    elGirls.SetAttribute("NumberofGirls", numgirls);
+    m_Girls->SaveXML(elGirls);
+    elGirls.SetAttribute("NumberofGirls", m_Girls->num());
     return elGirls;
 }
 
 // ----- Equipment & inventory
-void cGirls::EquipCombat(sGirl* girl)
+void cGirls::EquipCombat(sGirl& girl)
 {
     // girl makes sure best armor and weapons are equipped, ready for combat
     if (!g_Game->settings().get_bool(settings::USER_ITEMS_AUTO_EQUIP_COMBAT)) return;    // is this feature disabled in config?
     int refusal = 0;
-    if (girl->has_active_trait("Retarded")) refusal += 30;    // if she's retarded, she might refuse or forget
+    if (girl.has_active_trait("Retarded")) refusal += 30;    // if she's retarded, she might refuse or forget
     if (g_Dice.percent(refusal)) return;
     
     const sInventoryItem* Armor = nullptr, *Helm=nullptr, *Shield=nullptr, *Boot=nullptr, *Weap1=nullptr, *Weap2=nullptr;
-    for(auto& entry : girl->inventory().all_items()) {
+    for(auto& entry : girl.inventory().all_items()) {
         auto item = entry.first;
         if (item->m_Type == sInventoryItem::Weapon)
         {
-            girl->unequip(item);
+            girl.unequip(item);
             if(!Weap1) Weap1 = item;
             else if (!Weap2) Weap2 = item;
             else if (item->m_Cost > Weap1->m_Cost)
@@ -1620,23 +1498,23 @@ void cGirls::EquipCombat(sGirl* girl)
         }
         if (item->m_Type == sInventoryItem::Armor)
         {
-            girl->unequip(item);
+            girl.unequip(item);
             if (!Armor || item->m_Cost > Armor->m_Cost) Armor = item;
         }
         if (item->m_Type == sInventoryItem::Helmet)
         {
-            girl->unequip(item);
+            girl.unequip(item);
             if (!Helm || item->m_Cost > Helm->m_Cost) Helm = item;
         }
         if (item->m_Type == sInventoryItem::Combatshoes)
         {
-            girl->unequip(item);
+            girl.unequip(item);
             if (!Boot || item->m_Cost > Boot->m_Cost) Boot = item;
 
         }
         if (item->m_Type == sInventoryItem::Shield)
         {
-            girl->unequip(item);
+            girl.unequip(item);
             if (!Shield || item->m_Cost > Shield->m_Cost) Shield = item;
 
         }
@@ -1645,38 +1523,38 @@ void cGirls::EquipCombat(sGirl* girl)
     // unequip hats and shoes if boots and helms were found
     if (Helm || Boot)
     {
-        for(auto& entry : girl->inventory().all_items()) {
+        for(auto& entry : girl.inventory().all_items()) {
             auto item = entry.first;
-            if (Helm && item->m_Type == sInventoryItem::Hat)                    girl->unequip(item);
-            if (Boot && item->m_Type == sInventoryItem::Shoes)                    girl->unequip(item);
+            if (Helm && item->m_Type == sInventoryItem::Hat)                    girl.unequip(item);
+            if (Boot && item->m_Type == sInventoryItem::Shoes)                    girl.unequip(item);
         }
     }
 
-    if (Armor)        girl->equip(Armor, false);
-    if (Weap1)        girl->equip(Weap1, false);
-    if (Weap2)        girl->equip(Weap2, false);
-    if (Helm)        girl->equip(Helm, false);
-    if (Boot)        girl->equip(Boot, false);
-    if (Shield)        girl->equip(Shield, false);
+    if (Armor)        girl.equip(Armor, false);
+    if (Weap1)        girl.equip(Weap1, false);
+    if (Weap2)        girl.equip(Weap2, false);
+    if (Helm)        girl.equip(Helm, false);
+    if (Boot)        girl.equip(Boot, false);
+    if (Shield)        girl.equip(Shield, false);
 }
 
-void cGirls::UnequipCombat(sGirl* girl)
+void cGirls::UnequipCombat(sGirl& girl)
 {  // girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs
     if (!g_Game->settings().get_bool(settings::USER_ITEMS_AUTO_EQUIP_COMBAT)) return; // is this feature disabled in config?
     // if she's a really rough or crazy bitch, she might just keep combat gear equipped
-    int refusal = girl->get_trait_modifier("refuse-unequip-combat");
+    int refusal = girl.get_trait_modifier("refuse-unequip-combat");
     if (g_Dice.percent(refusal))            return;
 
-    for(auto& entry : girl->inventory().all_items()) {
+    for(auto& entry : girl.inventory().all_items()) {
         auto item = entry.first;
         if (is_in(item->m_Type, {sInventoryItem::Weapon, sInventoryItem::Armor, sInventoryItem::Helmet, sInventoryItem::Combatshoes, sInventoryItem::Shield}))
-            girl->unequip(item);
+            girl.unequip(item);
     }
     // reequip shoes and hats
-    for(auto& entry : girl->inventory().all_items()) {
+    for(auto& entry : girl.inventory().all_items()) {
         auto item = entry.first;
         if (item->m_Type == sInventoryItem::Shoes || item->m_Type == sInventoryItem::Hat)
-            girl->equip(item, false);
+            girl.equip(item, false);
     }
 
 
@@ -1729,31 +1607,31 @@ bool HandleDrug(sGirl &girl, const char *drug_trait, const char* drug, std::init
     return false;
 }
 
-void cGirls::UseItems(sGirl* girl)
+void cGirls::UseItems(sGirl& girl)
 {
     bool withdraw = false;
     // uses drugs first
-    HandleDrug(*girl, "Viras Blood Addict", "Vira Blood", {"Vira Blood"}, 30, withdraw,
+    HandleDrug(girl, "Viras Blood Addict", "Vira Blood", {"Vira Blood"}, 30, withdraw,
             {{STAT_HAPPINESS, -30}, {STAT_OBEDIENCE, -30}, {STAT_HEALTH, -4}});
-    HandleDrug(*girl, "Fairy Dust Addict", "Fairy Dust", {"Fairy Dust"}, 20, withdraw,
+    HandleDrug(girl, "Fairy Dust Addict", "Fairy Dust", {"Fairy Dust"}, 20, withdraw,
             {{STAT_HAPPINESS, -30}, {STAT_OBEDIENCE, -30}, {STAT_HEALTH, -4}});
-    HandleDrug(*girl, "Shroud Addict", "Shroud Mushrooms", {"Shroud Mushroom"}, 20, withdraw,
+    HandleDrug(girl, "Shroud Addict", "Shroud Mushrooms", {"Shroud Mushroom"}, 20, withdraw,
             {{STAT_HAPPINESS, -30}, {STAT_OBEDIENCE, -30}, {STAT_HEALTH, -4}});
-    HandleDrug(*girl, "Alcoholic", "Alcohol", {"Alcohol"}, 15, withdraw,
+    HandleDrug(girl, "Alcoholic", "Alcohol", {"Alcohol"}, 15, withdraw,
                 {{STAT_HAPPINESS, -10}, {STAT_OBEDIENCE, -10}, {STAT_HEALTH, -1}});
-    if (girl->has_active_trait("Smoker")) // `Gondra` added this since this seemed to be missing IMPORTANT: requires the item
+    if (girl.has_active_trait("Smoker")) // `Gondra` added this since this seemed to be missing IMPORTANT: requires the item
     {
-        if (auto item = girl->has_item("Stop Smoking Now Patch"))
+        if (auto item = girl.has_item("Stop Smoking Now Patch"))
         {
-            girl->equip(item, false);
-            girl->m_Withdrawals = 0;
+            girl.equip(item, false);
+            girl.m_Withdrawals = 0;
         }
-        else if (auto item = girl->has_item("Stop Smoking Patch"))
+        else if (auto item = girl.has_item("Stop Smoking Patch"))
         {
-            girl->equip(item, false);
-            girl->m_Withdrawals = 0;
+            girl.equip(item, false);
+            girl.m_Withdrawals = 0;
         } else {
-            if(HandleDrug(*girl, "Smoker", "Nicotine",
+            if(HandleDrug(girl, "Smoker", "Nicotine",
                        {"Magic Carton of Cigarettes", "Magic Pack of Cigarettes", "Carton of Cigarettes",
                         "Pack of Cigarettes", "Small pack of Cigarettes", "Cigarette"},
                        15, withdraw, {{STAT_HAPPINESS,    -10},
@@ -1761,10 +1639,10 @@ void cGirls::UseItems(sGirl* girl)
                             {STAT_HEALTH,       -1},
                             {STAT_INTELLIGENCE, -2},
                             {STAT_TIREDNESS,    5}})) {
-                if (girl->is_dead()) {
+                if (girl.is_dead()) {
                     stringstream cancer;
                     cancer << "${name} has died of cancer from smoking.";
-                    girl->AddMessage(cancer.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+                    girl.AddMessage(cancer.str(), IMGTYPE_PROFILE, EVENT_WARNING);
                     return;
                 }
             }
@@ -1772,7 +1650,7 @@ void cGirls::UseItems(sGirl* girl)
     }
 
     // sell crappy items
-    for(auto& element : girl->inventory().all_items())
+    for(auto& element : girl.inventory().all_items())
     {
         int max = cInventory::NumItemSlots(element.first);
         if(max < 10) {
@@ -1789,7 +1667,7 @@ void cGirls::UseItems(sGirl* girl)
 
     int usedFood = (g_Dice % 3) + 1;
     int usedFoodCount = 0;
-    for(auto& element : girl->inventory().all_items())     // use a food item if it is in stock, and remove any bad things if disobedient
+    for(auto& element : girl.inventory().all_items())     // use a food item if it is in stock, and remove any bad things if disobedient
     {
         const sInventoryItem* curItem = element.first;
         if ((curItem->m_Type == sInventoryItem::Food || curItem->m_Type == sInventoryItem::Makeup) && usedFoodCount < usedFood)
@@ -1816,33 +1694,33 @@ void cGirls::UseItems(sGirl* girl)
                         break;
                         // these statuses need to be tested individually
                     case STATUS_PREGNANT:
-                        if (curEffect->m_Amount == 0 && girl->has_status(STATUS_PREGNANT))
+                        if (curEffect->m_Amount == 0 && girl.has_status(STATUS_PREGNANT))
                         {
                             if (g_Dice.percent(5)) checktouseit--;        // 5% chance she wants to get rid of the baby
                         }
-                        if (curEffect->m_Amount == 1 && !girl->is_pregnant())
+                        if (curEffect->m_Amount == 1 && !girl.is_pregnant())
                         {
                             if (g_Dice.percent(50)) checktouseit--;        // you gave it to her so she will consider using it
                         }
                         break;
                     case STATUS_PREGNANT_BY_PLAYER:
-                        if (curEffect->m_Amount == 1 && !girl->is_pregnant())
+                        if (curEffect->m_Amount == 1 && !girl.is_pregnant())
                         {
-                            if (girl->pchate()<10 && girl->pclove()>80)    // she love you and wants to have your child
+                            if (girl.pchate()<10 && girl.pclove()>80)    // she love you and wants to have your child
                                 checktouseit--;
                         }
-                        if (curEffect->m_Amount == 0 && girl->has_status(STATUS_PREGNANT_BY_PLAYER))
+                        if (curEffect->m_Amount == 0 && girl.has_status(STATUS_PREGNANT_BY_PLAYER))
                         {
-                            if (girl->pchate()>90 && girl->pclove()<10)    // she hates you and doesn't want to have your child
+                            if (girl.pchate()>90 && girl.pclove()<10)    // she hates you and doesn't want to have your child
                                 checktouseit--;
                         }
                         break;
                     case STATUS_INSEMINATED:
-                        if (curEffect->m_Amount == 0 && girl->has_status((STATUS)curEffect->m_EffectID))
+                        if (curEffect->m_Amount == 0 && girl.has_status((STATUS)curEffect->m_EffectID))
                         {
                             if (g_Dice.percent(50)) checktouseit--;    // she might not want give birth to a beast
                         }
-                        if (curEffect->m_Amount == 1 && !girl->is_pregnant())
+                        if (curEffect->m_Amount == 1 && !girl.is_pregnant())
                         {
                             if (g_Dice.percent(50)) checktouseit--;    // she might want give birth to a beast
                         }
@@ -1852,7 +1730,7 @@ void cGirls::UseItems(sGirl* girl)
                     case STATUS_BADLY_POISONED:
                     case STATUS_SLAVE:
                     case STATUS_CONTROLLED:
-                        if (curEffect->m_Amount == 0 && girl->has_status((STATUS)curEffect->m_EffectID))
+                        if (curEffect->m_Amount == 0 && girl.has_status((STATUS)curEffect->m_EffectID))
                         {
                             checktouseit--;
                         }
@@ -1862,7 +1740,7 @@ void cGirls::UseItems(sGirl* girl)
                 }
                 else if (curEffect->m_Affects == sEffect::Trait)
                 {
-                    if ((curEffect->m_Amount >= 1) != girl->has_active_trait(curEffect->m_Trait.c_str()))
+                    if ((curEffect->m_Amount >= 1) != girl.has_active_trait(curEffect->m_Trait.c_str()))
                     {  // girl has trait and item removes it, or doesn't have trait and item adds it
                         checktouseit--;
                     }
@@ -1876,13 +1754,13 @@ void cGirls::UseItems(sGirl* girl)
                     {  // even if this stat can't be increased further, she still wants it (call it vanity, greed, whatever)
                         checktouseit--;
                     }
-                    if (curEffect->m_Amount > 0 && girl->get_stat(Stat) < 100 &&
+                    if (curEffect->m_Amount > 0 && girl.get_stat(Stat) < 100 &&
                         is_in(Stat, {STAT_LIBIDO, STAT_CONSTITUTION, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_MANA,
                                STAT_AGILITY, STAT_SPIRIT, STAT_HEALTH}))
                     {  // this stat increase would be good
                         checktouseit--;
                     }
-                    if ((curEffect->m_Amount < 0) && (girl->get_stat(Stat) > 0) &&
+                    if ((curEffect->m_Amount < 0) && (girl.get_stat(Stat) > 0) &&
                         (
                         Stat == STAT_AGE || Stat == STAT_TIREDNESS
                         )
@@ -1893,14 +1771,14 @@ void cGirls::UseItems(sGirl* girl)
                 }
                 else if (curEffect->m_Affects == sEffect::Skill)
                 {
-                    if ((curEffect->m_Amount > 0) && (girl->get_stat(curEffect->m_EffectID) < 100))
+                    if ((curEffect->m_Amount > 0) && (girl.get_stat(curEffect->m_EffectID) < 100))
                     {  // skill would actually increase (wouldn't want to lose any skills)
                         checktouseit--;
                     }
                 }
                 else if (curEffect->m_Affects == sEffect::Enjoy)
                 {
-                    if ((curEffect->m_Amount > 0) && (girl->get_enjoyment((Action_Types)curEffect->m_EffectID) < 100))
+                    if ((curEffect->m_Amount > 0) && (girl.get_enjoyment((Action_Types)curEffect->m_EffectID) < 100))
                     {  // enjoyment would actually increase (wouldn't want to lose any enjoyment)
                         checktouseit--;
                     }
@@ -1909,13 +1787,13 @@ void cGirls::UseItems(sGirl* girl)
 
             if (checktouseit < (int)curItem->m_Effects.size() / 2) // if more than half of the effects are useful, use it
             {  // hey, this consumable item might actually be useful... gobble gobble gobble
-                girl->equip(curItem, false);
+                girl.equip(curItem, false);
                 usedFoodCount++;
             }
         }
 
         // MYR: Girls shouldn't be able (IMHO) to take off things like control bracelets
-        //else if(curItem->m_Badness > 20 && DisobeyCheck(girl, ACTION_GENERAL) && girl->m_EquipedItems[i] == 1)
+        //else if(curItem->m_Badness > 20 && DisobeyCheck(girl, ACTION_GENERAL) && girl.m_EquipedItems[i] == 1)
         //{
         //    g_Game->inventory_manager().Unequip(girl, i);
         //}
@@ -1924,15 +1802,15 @@ void cGirls::UseItems(sGirl* girl)
     // add the selling of items that are no longer needed here
 }
 
-void cGirls::SellInvItem(sGirl* girl, const sInventoryItem* item)
+void cGirls::SellInvItem(sGirl& girl, const sInventoryItem* item)
 {
-    girl->m_Money += (int)((float)item->m_Cost * 0.5f);
-    girl->unequip(item);
+    girl.m_Money += (int)((float)item->m_Cost * 0.5f);
+    girl.unequip(item);
 }
 
-const sInventoryItem* cGirls::GetWorseItem(sGirl* girl, int type, int cost)
+const sInventoryItem* cGirls::GetWorseItem(const sGirl& girl, int type, int cost)
 {
-    for(auto& inv : girl->inventory().all_items()) {
+    for(auto& inv : girl.inventory().all_items()) {
         if(inv.first->m_Type == type && inv.first->m_Cost < cost) {
             return inv.first;
         }
@@ -1940,11 +1818,11 @@ const sInventoryItem* cGirls::GetWorseItem(sGirl* girl, int type, int cost)
     return nullptr;
 }
 
-int cGirls::GetNumItemType(sGirl* girl, int Type, bool splitsubtype)
+int cGirls::GetNumItemType(const sGirl& girl, int Type, bool splitsubtype)
 {
-    int num = girl->inventory().get_num_of_type(Type);
+    int num = girl.inventory().get_num_of_type(Type);
     if(!splitsubtype && Type == sInventoryItem::Food) {
-        num += girl->inventory().get_num_of_type(sInventoryItem::Makeup);
+        num += girl.inventory().get_num_of_type(sInventoryItem::Makeup);
     }
     return num;
 }
@@ -1952,14 +1830,14 @@ int cGirls::GetNumItemType(sGirl* girl, int Type, bool splitsubtype)
 // ----- Traits
 
 // If a girl enjoys a job enough, she has a chance of gaining traits associated with it
-bool cGirls::PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, int eventtype)
+bool cGirls::PossiblyGainNewTrait(sGirl& girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, int eventtype)
 {
-    if (girl->m_Enjoyment[ActionType] > Threshold)
+    if (girl.m_Enjoyment[ActionType] > Threshold)
     {
-        int chance = (girl->m_Enjoyment[ActionType] - Threshold);
-        if (girl->gain_trait(Trait.c_str(), chance))
+        int chance = (girl.m_Enjoyment[ActionType] - Threshold);
+        if (girl.gain_trait(Trait.c_str(), chance))
         {
-            girl->AddMessage(Message, IMGTYPE_PROFILE, eventtype);
+            girl.AddMessage(Message, IMGTYPE_PROFILE, eventtype);
             return true;
         }
     }
@@ -1967,14 +1845,14 @@ bool cGirls::PossiblyGainNewTrait(sGirl* girl, string Trait, int Threshold, int 
 }
 
 // If a girl enjoys a job enough, she has a chance of losing bad traits associated with it
-bool cGirls::PossiblyLoseExistingTrait(sGirl* girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1)
+bool cGirls::PossiblyLoseExistingTrait(sGirl& girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1)
 {
-    if (girl->m_Enjoyment[ActionType] > Threshold && girl->has_active_trait(Trait.c_str()))
+    if (girl.m_Enjoyment[ActionType] > Threshold && girl.has_active_trait(Trait.c_str()))
     {
-        int chance = (girl->m_Enjoyment[ActionType] - Threshold);
-        if (girl->lose_trait(Trait.c_str(), chance))
+        int chance = (girl.m_Enjoyment[ActionType] - Threshold);
+        if (girl.lose_trait(Trait.c_str(), chance))
         {
-            girl->AddMessage(Message, IMGTYPE_PROFILE, EVENT_GOODNEWS);
+            girl.AddMessage(Message, IMGTYPE_PROFILE, EVENT_GOODNEWS);
             return true;
         }
     }
@@ -2035,65 +1913,65 @@ std::string AdjustTraitGroup(sGirl& girl, int adjustment, std::initializer_list<
 }
 
 // `J` adding these to allow single step adjustment of linked traits
-string cGirls::AdjustTraitGroupGagReflex(sGirl* girl, int adjustment, bool showmessage, bool Day0Night1)
+string cGirls::AdjustTraitGroupGagReflex(sGirl& girl, int adjustment, bool showmessage)
 {
-    if (girl == nullptr || adjustment == 0) return "";    // no girl or not changing anything so quit
-    return AdjustTraitGroup(*girl, adjustment,
+    if (adjustment == 0) return "";    // no girl or not changing anything so quit
+    return AdjustTraitGroup(girl, adjustment,
             {"Strong Gag Reflex", "Gag Reflex", "No Gag Reflex", "Deep Throat"}, showmessage,
             " has lost the trait", " has gained the trait");
 }
 
-string cGirls::AdjustTraitGroupBreastSize(sGirl* girl, int adjustment, bool showmessage, bool Day0Night1)
+string cGirls::AdjustTraitGroupBreastSize(sGirl& girl, int adjustment, bool showmessage)
 {
-    if (girl == nullptr || adjustment == 0) return "";    // no girl or not changing anything so quit
-    return AdjustTraitGroup(*girl, adjustment,
+    if (adjustment == 0) return "";    // no girl or not changing anything so quit
+    return AdjustTraitGroup(girl, adjustment,
                             {"Flat Chest", "Petite Breasts", "Small Boobs", "Busty Boobs", "Big Boobs", "Giant Juggs",
                              "Massive Melons", "Abnormally Large Boobs", "Titanic Tits"}, showmessage,
                             "'s breast size has changed from", " to", "Average");
 }
 
-string cGirls::AdjustTraitGroupFertility(sGirl* girl, int adjustment, bool showmessage, bool Day0Night1)
+string cGirls::AdjustTraitGroupFertility(sGirl& girl, int steps, bool showmessage)
 {
-    if (girl == nullptr || adjustment == 0) return "";    // no girl or not changing anything so quit
-    return AdjustTraitGroup(*girl, adjustment,
+    if (steps == 0) return "";    // not changing anything so quit
+    return AdjustTraitGroup(girl, steps,
                             {"Sterile", "Fertile", "Broodmother"}, showmessage,
                             " has lost the trait", " has gained the trait");
 }
 
 // Update happiness for trait affects
-void cGirls::updateHappyTraits(sGirl* girl)
+void cGirls::updateHappyTraits(sGirl& girl)
 {
-    if (girl->is_dead()) return;    // Sanity check. Abort on dead girl
-    if (girl->has_active_trait("Optimist")) girl->happiness(5);
+    if (girl.is_dead()) return;    // Sanity check. Abort on dead girl
+    if (girl.has_active_trait("Optimist")) girl.happiness(5);
 
-    if (girl->has_active_trait("Pessimist"))
+    if (girl.has_active_trait("Pessimist"))
     {
-        girl->happiness(-5);
-        if (girl->happiness() <= 0 && g_Dice.percent(50))
+        girl.happiness(-5);
+        if (girl.happiness() <= 0 && g_Dice.percent(50))
         {
             stringstream ss;
             string stopper;
-            if(girl->m_Building) {
-                auto bt = girl->m_Building->type();
-                if (bt == BuildingType::ARENA && girl->m_Building->num_girls_on_job(JOB_DOCTORE, 0) > 0)
+            if(girl.m_Building) {
+                auto bt = girl.m_Building->type();
+                if (bt == BuildingType::ARENA && girl.m_Building->num_girls_on_job(JOB_DOCTORE, 0) > 0)
                     stopper = "the Doctore";
-                else if (bt == BuildingType::STUDIO && girl->m_Building->num_girls_on_job(JOB_DIRECTOR, 1) > 0)
+                else if (bt == BuildingType::STUDIO && girl.m_Building->num_girls_on_job(JOB_DIRECTOR, 1) > 0)
                     stopper = "the Director";
-                else if (bt == BuildingType::CLINIC && girl->m_Building->num_girls_on_job(JOB_CHAIRMAN, 0) > 0)
+                else if (bt == BuildingType::CLINIC && girl.m_Building->num_girls_on_job(JOB_CHAIRMAN, 0) > 0)
                     stopper = "the Chairman";
                 else if (bt == BuildingType::CENTRE &&
-                        (girl->m_DayJob == JOB_REHAB || girl->m_PrevDayJob == JOB_REHAB) &&
-                        girl->m_Building->num_girls_on_job(JOB_COUNSELOR, 0) > 0)
+                        (girl.m_DayJob == JOB_REHAB || girl.m_PrevDayJob == JOB_REHAB) &&
+                        girl.m_Building->num_girls_on_job(JOB_COUNSELOR, 0) > 0)
                     stopper = "her Counselor";
-                else if (bt == BuildingType::CENTRE && girl->m_Building->num_girls_on_job(JOB_CENTREMANAGER, 0) > 0)
+                else if (bt == BuildingType::CENTRE && girl.m_Building->num_girls_on_job(JOB_CENTREMANAGER, 0) > 0)
                     stopper = "the Centre Manager";
                 else if (bt == BuildingType::HOUSE && g_Dice.percent(50))
                     stopper = "You";
-                else if (bt == BuildingType::HOUSE &&  girl->m_Building->num_girls_on_job(JOB_HEADGIRL, 0) > 0)
+                else if (bt == BuildingType::HOUSE &&  girl.m_Building->num_girls_on_job(JOB_HEADGIRL, 0) > 0)
                     stopper = "your Head Girl";
-                else if (bt == BuildingType::FARM &&  girl->m_Building->num_girls_on_job(JOB_FARMMANGER, 0) > 0)
+                else if (bt == BuildingType::FARM &&  girl.m_Building->num_girls_on_job(JOB_FARMMANGER, 0) > 0)
                     stopper = "the Farm Manger";
-                else if ( girl->m_Building->num_girls_on_job(JOB_MATRON, 0) > 0)
+                else if ( girl.m_Building->num_girls_on_job(JOB_MATRON, 0) > 0)
                     stopper = "the Matron";
 
             }
@@ -2104,15 +1982,15 @@ void cGirls::updateHappyTraits(sGirl* girl)
                 ss << "${name} tried to killed herself but " << stopper;
                 if (Schance < 50)        { ss << " talked her out of it."; }
                 else if (Schance < 90)    { ss << " stopped her."; }
-                else    { girl->set_stat(STAT_HEALTH, 1);    ss << " revived her."; }
-                girl->AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+                else    { girl.set_stat(STAT_HEALTH, 1);    ss << " revived her."; }
+                girl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
             }
             else
             {
-                string msg = girl->FullName() + " has killed herself since she was unhappy and depressed.";
-                girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+                string msg = girl.FullName() + " has killed herself since she was unhappy and depressed.";
+                girl.m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
                 g_Game->push_message(ss.str(), COLOR_RED);
-                girl->health(-1000);
+                girl.health(-1000);
             }
         }
     }
@@ -2147,7 +2025,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         && is_addict(*girl, true))
     {
         stringstream runawaymsg;
-        if (girl->is_yourdaughter()) runawaymsg << "Your daughter ";
+        if (is_your_daughter(*girl)) runawaymsg << "Your daughter ";
         runawaymsg << girlName << " ran away with your rival!\nExploiting her desperate drug cravings, he claimed to be ";
 
         //the con
@@ -2213,7 +2091,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         {
             //overused face
             girl->gain_trait("Missing Teeth");
-            AdjustTraitGroupGagReflex(girl, +1);
+            AdjustTraitGroupGagReflex(*girl, +1);
 
             girl->lose_trait("Optimist");
             girl->upd_base_stat(STAT_DIGNITY, -10);
@@ -3154,7 +3032,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         // mod: added check for number of beasts owned; otherwise, fake beasts could somehow inseminate the girl
         if (g_Game->storage().beasts() > 0)
         {
-            contraception = girl->calc_insemination(*GetBeast());
+            contraception = girl->calc_insemination(GetBeast());
             STDchance += (contraception ? 2 : 20);
         }
         girl->upd_temp_stat(STAT_LIBIDO, -10, true);
@@ -3545,7 +3423,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 
 // ----- Combat
 
-bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier, std::function<void(std::string)> handler)
+bool cGirls::GirlInjured(sGirl& girl, unsigned int unModifier, std::function<void(std::string)> handler)
 {  // modifier: 5 = 5% chance, 10 = 10% chance
     /*
     *    WD    Injury was only possible if girl is pregnant or
@@ -3560,13 +3438,13 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier, std::function<voi
 
     if(!handler)
         handler = [&](std::string message){
-            girl->m_Events.AddMessage(std::move(message), IMGTYPE_PROFILE, EVENT_WARNING);
+            girl.AddMessage(std::move(message), IMGTYPE_PROFILE, EVENT_WARNING);
     };
 
     // Sanity check, Can't get injured
-    if (girl->has_active_trait("Incorporeal")) return false;
-    if (girl->has_active_trait("Fragile")) nMod += nMod;
-    if (girl->has_active_trait("Tough")) nMod /= 2;
+    if (girl.has_active_trait("Incorporeal")) return false;
+    if (girl.has_active_trait("Fragile")) nMod += nMod;
+    if (girl.has_active_trait("Tough")) nMod /= 2;
 
     // Did the girl get injured
     if (!g_Dice.percent(nMod))
@@ -3579,16 +3457,16 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier, std::function<voi
     // getting hurt badly could lead to scars
     if (
             g_Dice.percent(nMod * 2) &&
-            !girl->has_active_trait("Small Scars") &&
-            !girl->has_active_trait("Cool Scars") &&
-            !girl->has_active_trait("Horrific Scars")
+            !girl.has_active_trait("Small Scars") &&
+            !girl.has_active_trait("Cool Scars") &&
+            !girl.has_active_trait("Horrific Scars")
         )
     {
         //injured = true;
         int chance = g_Dice % 6;
         if (chance == 0)
         {
-            girl->gain_trait("Horrific Scars");
+            girl.gain_trait("Horrific Scars");
             if (g_Dice.percent(50))
             {
                 handler("She was horribly injured, and now is now covered with Horrific Scars.");
@@ -3600,12 +3478,12 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier, std::function<voi
         }
         else if (chance <= 2)
         {
-            girl->gain_trait("Small Scars");
+            girl.gain_trait("Small Scars");
             handler("She was injured and now has a couple of Small Scars.");
         }
         else
         {
-            girl->gain_trait("Cool Scars");
+            girl.gain_trait("Cool Scars");
             handler("She was injured and scarred. As scars go however, at least they are pretty Cool Scars.");
         }
     }
@@ -3613,87 +3491,87 @@ bool cGirls::GirlInjured(sGirl* girl, unsigned int unModifier, std::function<voi
     // in rare cases, she might even lose an eye
     if (
             g_Dice.percent((nMod / 2)) &&
-            !girl->has_active_trait("One Eye") &&
-            !girl->has_active_trait("Eye Patch")
+            !girl.has_active_trait("One Eye") &&
+            !girl.has_active_trait("Eye Patch")
         )
     {
         //injured = true;
         int chance = g_Dice % 3;
         if (chance == 0)
         {
-            girl->gain_trait("One Eye");
+            girl.gain_trait("One Eye");
             handler("Oh, no! She was badly injured, and now only has One Eye!");
         }
         else
         {
-            girl->gain_trait("Eye Patch");
+            girl.gain_trait("Eye Patch");
             handler("She was injured and lost an eye, but at least she has a cool Eye Patch to wear.");
         }
     }
 
-    if (girl->has_active_trait("Tough"))
+    if (girl.has_active_trait("Tough"))
     {
-        if (girl->gain_trait("Tough", nMod))
+        if (girl.gain_trait("Tough", nMod))
         {
             handler("Due to ${name}'s injuries her body has become less Tough.\n");
         }
     } else
     // or become fragile
-    if (girl->gain_trait("Fragile", nMod / 2))
+    if (girl.gain_trait("Fragile", nMod / 2))
     {
         handler("Due to ${name}'s injuries her body has become Fragile.\n");
     }
     
 
     // and if pregnant, she might lose the baby; I'll assume inseminations can't be aborted so easily
-    if (girl->carrying_human() && g_Dice.percent((nMod * 2)))
+    if (girl.carrying_human() && g_Dice.percent((nMod * 2)))
     {  // unintended abortion time
         //injured = true;
-        girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;
-        girl->clear_pregnancy();
-        girl->happiness(-20);
-        girl->spirit(-5);
+        girl.m_ChildrenCount[CHILD08_MISCARRIAGES]++;
+        girl.clear_pregnancy();
+        girl.happiness(-20);
+        girl.spirit(-5);
         handler("Her unborn child has been lost due to the injuries she sustained, leaving her quite distraught.");
     }
-    if (girl->carrying_monster() && g_Dice.percent((nMod)))
+    if (girl.carrying_monster() && g_Dice.percent((nMod)))
     {  // unintended abortion time
         //injured = true;
-        girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;
-        girl->clear_pregnancy();
-        girl->happiness(-10);
-        girl->spirit(-5);
+        girl.m_ChildrenCount[CHILD08_MISCARRIAGES]++;
+        girl.clear_pregnancy();
+        girl.happiness(-10);
+        girl.spirit(-5);
         handler("The creature growing inside her has been lost due to the injuries she sustained, leaving her distraught.");
     }
 
     // Lose between 5 - 14 hp
-    girl->health(-5 - g_Dice % 10);
+    girl.health(-5 - g_Dice % 10);
 
     return true;
 }
 
 // ----- Update
 
-void cGirls::UpdateEnjoymentMod(sGirl* girl, int whatSheEnjoys, int amount)
+void cGirls::UpdateEnjoymentMod(sGirl& girl, int whatSheEnjoys, int amount)
 {
-    girl->m_EnjoymentMods[whatSheEnjoys] += amount;
+    girl.m_EnjoymentMods[whatSheEnjoys] += amount;
 }
 
 // Normalise to zero by 30%
-void cGirls::updateTempEnjoyment(sGirl* girl)
+void cGirls::updateTempEnjoyment(sGirl& girl)
 {
     // Sanity check. Abort on dead girl
-    if (girl->is_dead()) return;
+    if (girl.is_dead()) return;
 
     for (u_int i = 0; i < NUM_ACTIONTYPES; i++)
     {
-        if (girl->m_EnjoymentTemps[i] != 0)
+        if (girl.m_EnjoymentTemps[i] != 0)
         {                                            // normalize towards 0 by 30% each week
-            int newEnjoy = (int)(float(girl->m_EnjoymentTemps[i]) * 0.7);
-            if (newEnjoy != girl->m_EnjoymentTemps[i])    girl->m_EnjoymentTemps[i] = newEnjoy;
+            int newEnjoy = (int)(float(girl.m_EnjoymentTemps[i]) * 0.7);
+            if (newEnjoy != girl.m_EnjoymentTemps[i])    girl.m_EnjoymentTemps[i] = newEnjoy;
             else
             {                                        // if 30% did nothing, go with 1 instead
-                /* */if (girl->m_EnjoymentTemps[i] > 0)    girl->m_EnjoymentTemps[i]--;
-                else if (girl->m_EnjoymentTemps[i] < 0)    girl->m_EnjoymentTemps[i]++;
+                /* */if (girl.m_EnjoymentTemps[i] > 0)    girl.m_EnjoymentTemps[i]--;
+                else if (girl.m_EnjoymentTemps[i] < 0)    girl.m_EnjoymentTemps[i]++;
             }
         }
     }
@@ -3701,44 +3579,44 @@ void cGirls::updateTempEnjoyment(sGirl* girl)
 
 
 // Increment birthday counter and update Girl's age if needed
-void cGirls::updateGirlAge(sGirl* girl, bool inc_inService)
+void cGirls::updateGirlAge(sGirl& girl, bool inc_inService)
 {
     // Sanity check. Abort on dead girl
-    if (girl->is_dead()) return;
+    if (girl.is_dead()) return;
     if (inc_inService)
     {
-        girl->m_WeeksPast++;
-        girl->m_BDay++;
+        girl.m_WeeksPast++;
+        girl.m_BDay++;
     }
-    if (girl->m_BDay >= 52)                    // Today is girl's birthday
+    if (girl.m_BDay >= 52)                    // Today is girl's birthday
     {
-        girl->m_BDay = 0;
-        girl->age(1);
-        if (girl->age() > 20) girl->lose_trait("Lolita");
-        if (girl->age() >= 50)
+        girl.m_BDay = 0;
+        girl.age(1);
+        if (girl.age() > 20) girl.lose_trait("Lolita");
+        if (girl.age() >= 50)
         {
-            girl->beauty(-(g_Dice % 3 + 1));
+            girl.beauty(-(g_Dice % 3 + 1));
         }
     }
 }
 
 // Update health and other things for STDs
-void cGirls::updateSTD(sGirl* girl)
+void cGirls::updateSTD(sGirl& girl)
 {
     // Sanity check. Abort on dead girl
-    if (girl->is_dead()) return;
+    if (girl.is_dead()) return;
 
     bool matron = girl_has_matron(girl, SHIFT_DAY);
 
     int Dhea = 0, Dhap = 0, Dtir = 0, Dint = 0, Dcha = 0;
-    if (girl->has_active_trait("AIDS"))
+    if (girl.has_active_trait("AIDS"))
     {
         const char* cureitem = "AIDS Cure";
         if (matron)
         {
             stringstream cure;
-            cure << girl->FullName() << " was given an " << cureitem << " from the brothel's stock to cure the disease.";
-            g_Game->player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
+            cure << girl.FullName() << " was given an " << cureitem << " from the brothel's stock to cure the disease.";
+            g_Game->player().AutomaticFoodItemUse(girl, cureitem, cure.str());
         }
         else
         {
@@ -3747,14 +3625,14 @@ void cGirls::updateSTD(sGirl* girl)
             Dtir += g_Dice % 2 + 1;
         }
     }
-    if (girl->has_active_trait("Herpes"))
+    if (girl.has_active_trait("Herpes"))
     {
         const char* cureitem = "Herpes Cure";
         if (matron)
         {
             stringstream cure;
-            cure << girl->FullName() << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
-            g_Game->player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
+            cure << girl.FullName() << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
+            g_Game->player().AutomaticFoodItemUse(girl, cureitem, cure.str());
         }
         else
         {
@@ -3763,14 +3641,14 @@ void cGirls::updateSTD(sGirl* girl)
             Dcha += max(0, g_Dice % 4 - 1);
         }
     }
-    if (girl->has_active_trait("Chlamydia"))
+    if (girl.has_active_trait("Chlamydia"))
     {
         const char* cureitem = "Chlamydia Cure";
         if (matron)
         {
             stringstream cure;
-            cure << girl->FullName() << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
-            g_Game->player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
+            cure << girl.FullName() << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
+            g_Game->player().AutomaticFoodItemUse(girl, cureitem, cure.str());
         }
         else
         {
@@ -3779,14 +3657,14 @@ void cGirls::updateSTD(sGirl* girl)
             Dtir += g_Dice % 2 + 1;
         }
     }
-    if (girl->has_active_trait("Syphilis"))
+    if (girl.has_active_trait("Syphilis"))
     {
         const char* cureitem = "Syphilis Cure";
         if (matron)
         {
             stringstream cure;
-            cure << girl->FullName() << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
-            g_Game->player().AutomaticFoodItemUse(*girl, cureitem, cure.str());
+            cure << girl.FullName() << " was given a " << cureitem << " from the brothel's stock to cure the disease.";
+            g_Game->player().AutomaticFoodItemUse(girl, cureitem, cure.str());
         }
         else
         {
@@ -3796,68 +3674,68 @@ void cGirls::updateSTD(sGirl* girl)
         }
     }
 
-    girl->health(-Dhea);
-    girl->happiness(-Dhap);
-    girl->tiredness(Dtir);
-    girl->charisma(-Dcha);
-    girl->intelligence(-Dint);
+    girl.health(-Dhea);
+    girl.happiness(-Dhap);
+    girl.tiredness(Dtir);
+    girl.charisma(-Dcha);
+    girl.intelligence(-Dint);
 
 
 
-    if (girl->is_dead())
+    if (girl.is_dead())
     {
         string msg = "${name} has died from STDs.";
-        girl->AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
+        girl.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
         g_Game->push_message(msg, COLOR_RED);
     }
 }
 
 // Stat update code that is to be run every turn
-void cGirls::updateGirlTurnStats(sGirl* girl)
+void cGirls::updateGirlTurnStats(sGirl& girl)
 {
-    if (girl->is_dead()) return;        // Sanity check. Abort on dead girl
+    if (girl.is_dead()) return;        // Sanity check. Abort on dead girl
 
     // TIREDNESS Really tired girls get unhappy fast
-    int bonus = girl->tiredness() - 90;
+    int bonus = girl.tiredness() - 90;
     int b = 0;
     if (bonus > 0)                            // bonus is 1-10
     {
-        girl->obedience(-1);                // Base loss for being tired
-        girl->pclove(-1);
+        girl.obedience(-1);                // Base loss for being tired
+        girl.pclove(-1);
         b = bonus / 3 + 1;
-        girl->happiness(-b);                // 1-4
-        if (girl->health() - bonus < 10)    // Don't kill the girl from tiredness
+        girl.happiness(-b);                // 1-4
+        if (girl.health() - bonus < 10)    // Don't kill the girl from tiredness
         {
             b = bonus / 2 + 1;                // halve the damage
-            girl->health(-b);                // Girl will hate player more if badly hurt from being tired
-            girl->pclove(-1);
-            girl->pchate(1);
+            girl.health(-b);                // Girl will hate player more if badly hurt from being tired
+            girl.pclove(-1);
+            girl.pchate(1);
         }
-        else girl->health(-bonus);            // Really tired girls lose more health
+        else girl.health(-bonus);            // Really tired girls lose more health
     }
 
     // HEALTH hurt girls get tired fast
-    bonus = 40 - girl->health();
+    bonus = 40 - girl.health();
     if (bonus > 0)                            // bonus is 1-40
     {
-        girl->pchate(1);                    // Base loss for being hurt
-        girl->pclove(-1);
-        girl->happiness(-1);
+        girl.pchate(1);                    // Base loss for being hurt
+        girl.pclove(-1);
+        girl.happiness(-1);
 
         bonus = bonus / 8 + 1;                // bonus vs health values 1: 33-39, 2: 25-32, 3: 17-24, 4: 09-16 5: 01-08
-        girl->tiredness(bonus);
+        girl.tiredness(bonus);
     }
 
     // LOVE love is updated only if happiness is >= 100 or < 50
-    if (girl->happiness() >= 100)
+    if (girl.happiness() >= 100)
     {
-        girl->pclove(2);                    // Happy girls love player more
-        girl->obedience(g_Dice%2);            // `J` added
+        girl.pclove(2);                    // Happy girls love player more
+        girl.obedience(g_Dice%2);            // `J` added
     }
-    if (!girl->is_slave() && girl->happiness() < 50)
+    if (!girl.is_slave() && girl.happiness() < 50)
     {
-        girl->pclove(-2);                    // Unhappy FREE girls love player less
-        girl->obedience(-(g_Dice % 2));        // `J` added
+        girl.pclove(-2);                    // Unhappy FREE girls love player less
+        girl.obedience(-(g_Dice % 2));        // `J` added
     }
 }
 
@@ -3898,709 +3776,20 @@ ostream& operator<<(ostream& os, sGirl &g)
     return os;
 }
 
-int cGirls::calc_abnormal_pc(sGirl *mom, sGirl *sprog, bool is_players)
-{
-    if (!is_players)     // the non-pc-daughter case is simpler
-    {
-        if (mom->has_active_trait("Your Daughter")) return 0;        // if the mom is your daughter then any customer is a safe dad - genetically speaking, anyway
-        if (g_Dice.percent(98)) return 0;                    // so what are the odds that this customer fathered both mom and sprog. Let's say 2%
-        sprog->raw_traits().add_inherent_trait("Incest");                    // that's enough to give the sprog the incest trait
-        if (!mom->has_active_trait("Incest")) return 0;    // but there's only a risk of abnormality if mom is herself incestuous
-        return 5;                                            // If we get past all that lot, there's a 5% chance of abnormality
-    }
-    sprog->raw_traits().add_inherent_trait("Your Daughter");                // OK. The sprog is the player's get
-    if (!mom->has_active_trait("Your Daughter")) return 0;    // if mom isn't the player's then there is no problem
-    sprog->raw_traits().add_inherent_trait("Incest");                        // she IS, so we add the incest trait
-    if (mom->has_active_trait("Incest")) return 10;                // if mom is also incestuous, that adds 5% to the odds
-    return 5;
-}
-
 // Crazy found some old code to allow Canonical_Daughters
-sGirl *cGirls::find_girl_by_name(string name, int *index_pt)
+sGirl* cGirls::find_girl_by_name(const std::string& name)
 {
-    int count = 0;
-
-    if (index_pt)
-    {
-        *index_pt = -1;
-    }
-
-    for(auto current : m_Girls)
-    {
-        if (current->m_Name == name)
-        {
-            if (index_pt)
-            {
-                *index_pt = count;
-            }
-            return current;
-        }
-        count++;
-    }
-    return nullptr;
-}
-
-// returns 0 if not found, 1 if girl found, 2 if rgirl found.
-int cGirls::test_child_name(string name)
-{
-    sGirl* current = find_girl_by_name(name);
-    // did we get a girl?
-    if (current)    return 1;        // yes, we did!
-
-    //    OK, we need to search for a random girl
-    sRandomGirl* rgirl = m_RandomGirls.find_random_girl_by_name(name);
-    if (rgirl)        return 2;
-    return 0;
-}
-
-sGirl *cGirls::make_girl_child(sGirl* mom, bool playerisdad)
-{
-    sGirl* sprog = nullptr;
-    bool slave = mom->is_slave();
-    bool non_human = mom->is_human();
-
-    // if there are no entries in the duaghter_names list we just create a random girl
-    int n_names = mom->m_Canonical_Daughters.size();
-    if (n_names == 0)
-    {
-        return CreateRandomGirl(17, slave, false, non_human, false, false, playerisdad, true, "").release();
-    }
-    /*
-    *    OK, we get to work for our living in which case.
-    *
-    *    we'll need a retry loop
-    */
-    for (;;) {
-        /*
-        *        get a random index into the daughter list
-        *        (some people might prefer them to be born in order
-        *        we'll see ... )
-        */
-        int index = g_Dice.random(n_names);
-        /*
-        *        get the name at that index
-        */
-        string name = mom->m_Canonical_Daughters[index];
-        /*
-        *        see if we can find or create a girl based on that name
-        */
-        int found = test_child_name(name);
-
-        if (found > 0)        // success! break out of the retry loop
-        {
-            if (found == 1)            // found a girl
-            {
-                sprog = find_girl_by_name(name);
-            }
-            else if (found == 2)    // found a rgirl
-            {
-                sprog = CreateRandomGirl(17, slave, false, non_human, false, false, playerisdad, true, name).release();
-            }
-            if (sprog)
-            {
-                return sprog;
-            }
-        }
-        /*
-        *        OK - that name is not usable - remove it
-        */
-        mom->m_Canonical_Daughters.erase(mom->m_Canonical_Daughters.begin() + index);
-        /*
-        *        check the size of the list - if empty, break out of the loop
-        */
-        n_names = mom->m_Canonical_Daughters.size();
-        if (n_names == 0) {
-            break;
-        }
-    }
-    /*
-    *    If the above palaver resulted in a sprog, return it
-    *    otherwise, back to the random girls
-    */
-    return CreateRandomGirl(17, slave, false, non_human, false, false, playerisdad).release();
-}
-
-// returns false if the child is not grown up, returns true when the child grows up
-bool cGirls::child_is_grown(sGirl* mom, sChild *child, string& summary, bool PlayerControlled)
-{
-    if (child->m_MultiBirth < 1) child->m_MultiBirth = 1; // `J` fix old code
-    if (child->m_MultiBirth > 5) child->m_MultiBirth = 5; // `J` fix old code
-
-    // bump the age - if it's still not grown, go home
-    child->m_Age++;        if (child->m_Age < g_Game->settings().get_integer(settings::PREG_WEEKS_GROW))    return false;
-
-    if (child->m_MultiBirth == 1)    // `J` only 1 child so use the old code
-    {
-        // we need a coming of age ceremony
-        if (child->is_boy())
-        {
-            handle_son(mom, summary, PlayerControlled);
-            return true;
-        }
-
-        handle_daughter(mom, child, summary);
-        return true;
-    } else {
-        // prepare for the checks
-        int numchildren = child->m_MultiBirth;
-        int aregirls[5] = { -1, -1, -1, -1, -1 };
-        for (int i = 0; i < child->m_MultiBirth; i++)    aregirls[i] = 1;
-        for (int i = 0; i < child->m_GirlsBorn; i++)    aregirls[i] = 0;
-
-        for (int i = 0; i < numchildren; i++)
-        {
-            if (aregirls[i] == 1)    // boys first
-            {
-                handle_son(mom, summary, PlayerControlled);
-            }
-            else if (aregirls[i] == 0)    // girls next
-            {
-                handle_daughter(mom, child, summary);
-            }
-        }
-    }
-    return true;
-}
-
-void cGirls::handle_daughter(sGirl* mom, const sChild* child, string& summary)
-{
-    stringstream ss;
-    bool playerfather = child->m_IsPlayers;        // is 1 if father is player
-    summary += "A daughter has grown of age. ";
-    bool slave        = mom->is_slave();
-    bool MomIsMonster = mom->is_monster();
-    // create a new girl for the barn
-    sGirl * sprog = nullptr;
-    if (!mom->m_Canonical_Daughters.empty()) {
-        sprog = make_girl_child(mom, playerfather);
-    }
-    if (!sprog && playerfather &&
-        GetNumYourDaughterGirls() > 0)                // this should check all your daughter girls that apply
-    {
-        sprog = g_Game->girl_pool().GetUniqueYourDaughterGirl(
-                MomIsMonster);                        // first try to get the same human/nonhuman as mother
-        if (!sprog && MomIsMonster)
-            sprog = g_Game->girl_pool().GetUniqueYourDaughterGirl(true);    // next, if mom is nonhuman, try to get a human daughter
-    }
-    if (!sprog) {
-        sprog = g_Game->CreateRandomGirl(17, slave, false, MomIsMonster, false, false, playerfather).release();
-    }
-    // check for incest, get the odds on abnormality
-    int abnormal_pc = calc_abnormal_pc(mom, sprog, child->m_IsPlayers);
-    if (g_Dice.percent(abnormal_pc)) {
-        if (g_Dice.percent(50)) sprog->raw_traits().add_inherent_trait("Malformed");
-        else sprog->raw_traits().add_inherent_trait("Retarded");
-    }
-    // loop through the mom's traits, inheriting where appropriate
-    auto moms_traits = mom->raw_traits().get_trait_info();
-    for (auto& info : moms_traits) {
-        if (info.type == sTraitInfo::INHERENT) {
-            if (g_Dice.percent(info.trait->get_properties().get_percent("inherit_chance"))) {
-                sprog->raw_traits().add_inherent_trait(info.trait);
-            }
-        }
-    }
-    if (playerfather) {
-        sprog->raw_traits().add_inherent_trait("Your Daughter");
-    }
-
-    sprog->raw_traits().update();
-
-    // inherit stats
-    for (int i = 0; i < NUM_STATS; i++) {
-        int min = 0, max = 100;
-        if (mom->get_base_stat(i) < child->m_Stats[i]) {
-            min = mom->get_base_stat(i);
-            max = child->m_Stats[i];
-        }
-        else {
-            max = mom->get_base_stat(i);
-            min = child->m_Stats[i];
-        }
-        sprog->set_stat(i, (g_Dice % (max - min)) + min);
-    }
-
-    // set age to 18, fix health
-    sprog->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
-    sprog->set_stat(STAT_HEALTH, 100);
-    sprog->set_stat(STAT_HAPPINESS, 100);
-    sprog->set_stat(STAT_TIREDNESS, 0);
-    sprog->set_stat(STAT_LEVEL, 0);
-    sprog->set_stat(STAT_EXP, 0);
-
-    // `J` set her birthday
-    int m0 = g_Game->date().month;
-    int d0 = g_Game->date().day;
-    d0 -= g_Dice % 7;
-    if (d0 < 1) {
-        d0 += 30;
-        m0--;
-    }
-    if (m0 < 1) { m0 = 12; }
-    sprog->SetBirthMonth(m0);
-    sprog->SetBirthDay(d0);
-
-    // inherit skills
-    for (u_int i = 0; i < NUM_SKILLS; i++) {
-        int s = 0;
-        if (mom->get_base_skill(i) < child->m_Skills[i]) s = child->m_Skills[i];
-        else s = mom->get_base_skill(i);
-        sprog->set_skill(i, g_Dice % min(s, 20));
-    }
-
-
-    // new code to add first and last name to girls
-
-    // at this point the sprog should have temporary firstname, surname, and realname
-    string prevsurname = sprog->Surname();        // save the temporary surname incase it is needed later
-    string biography;
-    if (playerfather) {
-        sprog->SetSurname(g_Game->player().Surname());
-        biography = "Daughter of " + mom->FullName() + " and the Brothel owner, Mr. " + g_Game->player().FullName();
-    } else {
-        if (!mom->Surname().empty()) { // mom has a surname already
-            sprog->SetSurname(mom->Surname());
-        }
-        biography = "Daughter of " + mom->FullName() + " and an anonymous brothel client";
-    }
-    sprog->m_Desc = sprog->m_Desc + "\n \n" + biography + ".";
-
-    // make sure slave daughters have house perc. set to 100, otherwise 60
-    sprog->set_default_house_percent();
-
-    // TODO decide where to send the new girl.
-    g_Game->dungeon().AddGirl(sprog, DUNGEON_KID);
-    mom->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
-}
-
-void cGirls::handle_son(sGirl* mom, string& summary, bool PlayerControlled)
-{
-    stringstream ss;
-
-    summary += "A son has grown of age. ";
-    ss << "Her son has grown of age";
-    sGang * gang = g_Game->gang_manager().GetGangNotFull(1, false);
-    if (gang && gang->m_Num < 15) {
-        gang->m_Num++;
-        ss << " and was sent to join your gang " << gang->name() << ".\n";
-    } else if (PlayerControlled)    // get the going rate for a male slave and sell the poor sod
-    {
-        int gold = g_Game->tariff().male_slave_sales();
-        g_Game->gold().slave_sales(gold);
-        ss << " and has been sold into slavery.\n";
-        ss << "You make " << gold << " gold selling the boy.\n";
-    } else    // or send him on his way
-    {
-        int roll = g_Dice % 4;
-        ss << " and ";
-        if (roll == 0) ss << "moved away";
-        else if (roll == 1) ss << "joined the army";
-        else ss << "got his own place in town";
-        ss << ".\n";
-    }
-    mom->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+    return m_Girls->get_first_girl(
+            [&](const sGirl& girl){ return girl.m_Name == name; });
 }
 
 void cGirls::UncontrolledPregnancies()
 {
-    string summary;
+    /*string summary;
     for(auto current : m_Girls)
     {
-        g_Game->girl_pool().HandleChildren(current, summary, false);
-    }
-}
-
-void cGirls::HandleChildren(sGirl* girl, string& summary, bool PlayerControlled)
-{
-    girl->m_JustGaveBirth = false;
-    /*
-    *    start by advancing pregnancy cooldown time
-    */
-    if (girl->m_PregCooldown > 0) girl->m_PregCooldown--;
-
-    /*
-    *    loop through the girl's children, and divide them into those growing up and those still to be born
-    */
-    erase_if(girl->m_Children, [&](auto& child){
-            if(child->m_Unborn) {
-              // some births (monsters) we do not track to adulthood these need removing from the list
-                return child_is_due(girl, child.get(), summary, PlayerControlled);
-            } else {
-                // the child has been born already if it comes of age we remove it from the list
-                return child_is_grown(girl, child.get(), summary, PlayerControlled);;
-            }
-    });
-}
-
-// Returns false if we do not want to remove the child. Returns true and we get rid of the child.
-bool cGirls::child_is_due(sGirl* girl, sChild *child, string& summary, bool PlayerControlled)
-{
-    if (child->m_MultiBirth < 1) child->m_MultiBirth = 1; // `J` fix old code
-    if (child->m_MultiBirth > 5 && girl->carrying_human())
-        child->m_MultiBirth = 5; // `J` fix old code - maximum 5 human children - no max for beasts
-    /*
-    *    clock on the count and see if she's due
-    *    if not, return false (meaning "do not remove this child yet)
-    */
-    girl->m_WeeksPreg++;
-    if (girl->m_WeeksPreg < girl->get_preg_duration())
-        return false;
-    /*
-    *    OK, it's time to give birth
-    *    start with some basic bookkeeping.
-    */
-    stringstream ss;
-
-    girl->m_WeeksPreg = 0;
-    child->m_Unborn = 0;
-    girl->m_PregCooldown = g_Game->settings().get_integer(settings::PREG_COOL_DOWN);
-
-    //ADB low health is risky for pregnancy!
-    //80 health will add 2 to percent chance of sterility and death, 10 health will add 9 percent!
-    int healthFactor = (100 - girl->health()) / 10;
-    /*
-    *    the human-baby case is marginally easier than the
-    *    tentacle-beast-monstrosity one, so we do that first
-    */
-    bool is_broodmother = girl->has_active_trait("Broodmother");
-    bool is_fertile = girl->has_active_trait("Fertile");
-    if (girl->carrying_human())
-    {
-        /*
-        *        first things first - clear the pregnancy bit
-        *        this is a human birth, so add the MILF trait
-        */
-        girl->clear_pregnancy();
-        girl->m_JustGaveBirth = true;
-        girl->gain_trait("MILF");
-
-        girl->tiredness(100);
-        girl->happiness(10 + g_Dice % 91);
-        girl->health(-(child->m_MultiBirth + g_Dice % 10 + healthFactor));
-
-        // `J` If/when the baby gets moved somewhere else in the code, then the maother can die from giving birth
-        // For now don't kill her, it causes too many problems with the baby.
-        if (girl->health() < 1) girl->set_stat(STAT_HEALTH, 1);
-
-        if (child->m_MultiBirth == 1)    // only 1 baby so use the old code
-        {
-            if (g_Dice.percent(g_Game->settings().get_percent(settings::PREG_MISS_HUMAN)))    // the baby dies
-            {
-                // format a message
-                girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;
-                ss << "She has given birth to " << child->boy_girl_str() << " but it did not survive the birth.\n \nYou grant her the week off to grieve.";
-                //check for sterility
-                if (g_Dice.percent(5 + healthFactor))
-                {
-                    // `J` updated old code to use new traits from new code
-                    ss << "It was a difficult birth and ";
-                    if (is_broodmother)
-                    {
-                        ss << "her womb has been damaged.\n";
-                        girl->health(-(1 + g_Dice % 2));
-                        if (girl->health() < 1) girl->set_stat(STAT_HEALTH, 1);    // don't kill her now, it causes all the babies to go away.
-                    }
-                    else if (is_fertile)    // loose fertile
-                    {
-                        ss << "her womb has been damaged reducing her fertility.\n";
-                        AdjustTraitGroupFertility(girl, -1);
-                    }
-                    else    // add sterile
-                    {
-                        ss << "she has lost the ability to have children.\n";
-                        AdjustTraitGroupFertility(girl, -1);
-                    }
-                }
-                if (PlayerControlled) girl->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
-                return true;
-            }
-            else    // the baby lives
-            {
-                girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS]++;
-                if (child->is_girl())
-                {
-                    girl->m_ChildrenCount[CHILD02_ALL_GIRLS]++;
-                    if (child->m_IsPlayers) girl->m_ChildrenCount[CHILD06_YOUR_GIRLS]++;
-                    else                    girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS]++;
-                }
-                else
-                {
-                    girl->m_ChildrenCount[CHILD03_ALL_BOYS]++;
-                    if (child->m_IsPlayers) girl->m_ChildrenCount[CHILD07_YOUR_BOYS]++;
-                    else                    girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS]++;
-                }
-                // format a message
-                ss << "She has given birth to " << child->boy_girl_str() << ".\n \nYou grant her the week off for maternity leave.";
-                //check for sterility
-                if (g_Dice.percent(healthFactor))
-                {
-                    // `J` updated old code to use new traits from new code
-                    ss << "It was a difficult birth and ";
-                    if (is_broodmother)
-                    {
-                        ss << "her womb has been damaged.\n";
-                        girl->health(-(1 + g_Dice % 2));
-                        if (girl->health() < 1) girl->set_stat(STAT_HEALTH, 1);    // don't kill her now, it causes all the babies to go away.
-                    }
-                    else if (is_fertile)    // loose fertile
-                    {
-                        ss << "her womb has been damaged reducing her fertility.\n";
-                        AdjustTraitGroupFertility(girl, -1);
-                    }
-                    else    // add sterile
-                    {
-                        ss << "she has lost the ability to have children.\n";
-                        AdjustTraitGroupFertility(girl, -1);
-                    }
-                }
-                // queue the message and return false because we need to see this one grow up
-                if (PlayerControlled) girl->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
-                return false;
-            }
-        }
-        else    // multiple births
-        {
-            int unbornbabies = child->m_MultiBirth;
-            healthFactor += child->m_MultiBirth;
-            int t = 0;    // total
-            int m = 0;    // miscarriages
-            int g = 0;    // girls born live
-            int b = 0;    // boys born live
-            int s = 0;    // sterility count
-            int c = 0;    // current baby, 0=girl, 1=boy
-            while (unbornbabies > 0)
-            {
-                c = (unbornbabies > child->m_GirlsBorn ? 1 : 0);
-                t++;
-                if (g_Dice.percent(100.f * g_Game->settings().get_percent(settings::PREG_MISS_HUMAN)            // the baby dies
-                    + child->m_MultiBirth))                                        // more likely for multiple births
-                {
-                    m++; girl->m_ChildrenCount[CHILD08_MISCARRIAGES]++;            // add to miscarriage count
-                    child->m_MultiBirth--; if (c == 0) child->m_GirlsBorn--;    // and remove the baby from the counts
-                    if (g_Dice.percent(5 + healthFactor)) s++;                    // check for sterility
-                }
-                else    // the baby lives
-                {
-                    girl->m_ChildrenCount[CHILD00_TOTAL_BIRTHS]++;
-                    if (c == 0)
-                    {
-                        g++;
-                        girl->m_ChildrenCount[CHILD02_ALL_GIRLS]++;
-                        if (child->m_IsPlayers) girl->m_ChildrenCount[CHILD06_YOUR_GIRLS]++;
-                        else                    girl->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS]++;
-                    }
-                    else
-                    {
-                        b++;
-                        girl->m_ChildrenCount[CHILD03_ALL_BOYS]++;
-                        if (child->m_IsPlayers) girl->m_ChildrenCount[CHILD07_YOUR_BOYS]++;
-                        else                    girl->m_ChildrenCount[CHILD05_CUSTOMER_BOYS]++;
-                    }
-                    if (g_Dice.percent(healthFactor)) s++;                        //check for sterility
-                }
-                unbornbabies--; // count down and check the next one
-            }
-
-            ss << girl->FullName() << " has given birth";
-            if (g + b > 0)        ss << " to ";
-            if (g > 0)            ss << g << " girl" << (g > 1 ? "s" : "");
-            if (g > 0 && b > 0)    ss << " and ";
-            if (b > 0)            ss << b << " boy" << (b > 1 ? "s" : "");
-            if (m > 0)
-            {
-                ss << ".\nShe lost ";
-                if (m < t) ss << m << " of her " << t << " babies";
-                else ss << "all of her babies, she is very distraught";
-            }
-
-            ss << ".\n \nYou grant her the week off ";
-            if (g + b > 0)            ss << "for maternity leave";
-            if (g + b > 0 && m > 0)    ss << " and ";
-            if (m > 0)                ss << "to mourn her lost child" << (m > 1 ? "ren" : "");
-            ss << ".\n \n";
-
-            if (s > 0)
-            {
-                ss << "It was a difficult birth and ";
-                if (is_broodmother)
-                {
-                    if (s > 1)    // loose broodmother only if 2 or more miscarriages
-                    {
-                        ss << "her womb has been damaged reducing her fertility.\n";
-                        AdjustTraitGroupFertility(girl, (s == 5 ? -2 : -1));
-                    }
-                    else        // otherwise take more damage
-                    {
-                        ss << "her womb has been damaged.\n";
-                        girl->health(-(s + g_Dice % (s * 2)));
-                        if (girl->health() < 1) girl->set_stat(STAT_HEALTH, 1);    // don't kill her now, it causes all the babies to go away.
-                    }
-                }
-                else if (is_fertile)    // loose fertile
-                {
-                    ss << "her womb has been damaged " << (s > 3 ? "leaving her sterile" : "reducing her fertility") << ".\n";
-                    AdjustTraitGroupFertility(girl, (s > 3 ? -2 : -1));
-                }
-                else    // add sterile
-                {
-                    ss << "she has lost the ability to have children.\n";
-                    AdjustTraitGroupFertility(girl, -1);
-                }
-            }
-            else if (!is_broodmother && t > 1 && g_Dice.percent(t * 5))
-            {
-                ss << "She has given birth to so many children, her womb has gotten used to carrying babies.\n";
-                AdjustTraitGroupFertility(girl, 1);
-            }
-
-            if (PlayerControlled) girl->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
-
-            if (child->m_MultiBirth > 0) return false;    // there are some babies that survived so we need to keep them
-            else return true;                            // or they all died so we can remove this pregnancy
-        }
-    }
-    /*
-    *    It's monster time!
-    *
-    *    How much does one of these suckers bring on the open market
-    *    anyway?
-    *
-    *    might as well record the transaction and clear the preggo bit
-    *    while we're at it
-    */
-
-
-    if (PlayerControlled)
-    {
-        int number = child->m_MultiBirth;
-        ss << "The ";
-        if (number > 1)    { ss << number << " creatures within her have"; }
-        else { number = 1;    ss << "creature within her has"; }
-        ss << " matured and emerged from her womb.\n";
-
-        int died = 0; int add = 0; int sell = 0; long gold = 0;
-        for (int i = 0; i < number; i++)
-        {
-            if (g_Dice.percent(100.f * g_Game->settings().get_percent(settings::PREG_MISS_MONSTER) + number - 1))    died++;        // some may die
-            else if (g_Dice.percent(child->m_Stats[STAT_BEAUTY]))                    add++;        // keep the good looking ones
-            else if (g_Dice.percent(child->m_Stats[STAT_CONSTITUTION]))                add++;        // and the realy healthy ones
-            else sell++;                                                                        // sell the rest
-        }
-        girl->m_ChildrenCount[CHILD01_ALL_BEASTS] += add + sell;
-        girl->m_ChildrenCount[CHILD08_MISCARRIAGES] += died;
-        if (died > 0)
-        {
-            healthFactor += died;
-            if (died > 2) healthFactor += died;    // the more that died the worse off she will be
-        }
-        if (add > 0)
-        {
-            g_Game->storage().add_to_beasts(add);
-        }
-        if (sell > 0)
-        {
-            gold = sell * g_Game->tariff().creature_sales();
-            g_Game->gold().creature_sales(gold);
-        }
-
-        if (died > 0)
-        {
-            ss << "\nUnfortunately ";
-            if (add + sell < 1)
-            {
-                /* */if (died == 1)    ss << "it did not survive.";
-                else if (died == 2)    ss << "neither of them survived.";
-                else /*          */    ss << "none of them survived.";
-            }
-            else
-            {
-                if (died == 1) ss << "one";
-                else ss << died;
-                ss << " of them did not survive.";
-            }
-        }
-
-        if (add > 0)
-        {
-            ss << "\n";
-            if (died + sell < 1)    // all added
-            {
-                if (add == 1) ss << "It was";
-                else ss << "They were " << (add == 2 ? "both" : "all");
-                ss << " added to your stable of beasts.";
-            }
-            else
-            {
-                if (add == 1) ss << "One of them was";
-                else ss << add << " of them were";
-                ss << " good enough to be added to your stable of beasts.";
-            }
-        }
-
-        if (sell > 0)
-        {
-            ss << "\n";
-            if (died + add < 1)    // all sold
-            {
-                if (sell == 1) ss << "It was";
-                else ss << "They were " << (sell ==2 ? "both" : "all");
-                ss << " sold for " << g_Game->tariff().creature_sales() << "gold" << (sell > 1 ? " each" : "") << ".";
-            }
-            else
-            {
-                if (sell == 1) ss << "One of them was";
-                else ss << sell << " of them were";
-                ss << " sold for " << g_Game->tariff().creature_sales() << " gold" << (sell > 1 ? " each" : "") << ".";
-            }
-            if (sell > 1) ss << "\nYou made " << int(gold) << " gold for selling " << (sell == 2 ? "both" : "all") << " of them.";
-        }
-
-        ss << "\n \nYou grant her the week off for her body to recover.";
-    }
-    girl->clear_pregnancy();
-    /*
-    *    check for death
-    */
-    if (g_Dice.percent(healthFactor))
-    {
-        //summary += "And died from it. ";
-        ss << "\nSadly, the girl did not survive the experience.";
-        girl->set_stat(STAT_HEALTH, 0);
-    }
-    /*
-    *    and sterility
-    *    slight mod: 1% death, 5% sterility for monster births
-    *    as opposed to other way around. Seems better this way.
-    */
-    else if (g_Dice.percent(5 + healthFactor))
-    {
-        // `J` updated old code to use new traits from new code
-        ss << "It was a difficult birth and ";
-        if (is_broodmother)
-        {
-            ss << "her womb has been damaged.\n";
-            girl->health(-(1 + g_Dice % 2));
-            if (girl->health() < 1) girl->set_stat(STAT_HEALTH, 1);    // don't kill her now, it causes all the babies to go away.
-        }
-        else if (is_fertile)    // loose fertile
-        {
-            ss << "her womb has been damaged reducing her fertility.\n";
-            AdjustTraitGroupFertility(girl, -1);
-        }
-        else    // add sterile
-        {
-            ss << "she has lost the ability to have children.\n";
-            AdjustTraitGroupFertility(girl, -1);
-        }
-    }
-    /*
-    *    queue the message and return TRUE
-    *    because we're not interested in watching
-    *    little tentacles grow to adulthood
-    */
-    if (PlayerControlled) girl->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_DANGER);
-    girl->m_JustGaveBirth = true;
-    return true;
+        handle_children(*current, summary, false);
+    }*/
 }
 
 string cGirls::GetHoroscopeName(int month, int day)
@@ -4650,10 +3839,10 @@ string cGirls::GetHoroscopeName(int month, int day)
     return "";
 }
 
-bool cGirls::girl_has_matron(sGirl* girl, int shift)
+bool cGirls::girl_has_matron(const sGirl& girl, int shift)
 {
-    if(girl->m_Building) {
-        return girl->m_Building->matron_on_shift(shift);
+    if(girl.m_Building) {
+        return girl.m_Building->matron_on_shift(shift);
     }
     return false;
 }
@@ -4668,46 +3857,46 @@ string cGirls::Accommodation(int acc)
 }
 
 // The accommodation level the girl expects/demands
-int cGirls::PreferredAccom(sGirl* girl)
+int cGirls::PreferredAccom(const sGirl& girl)
 {
-    double preferredaccom = (girl->is_slave() ? 1.0 : 2.5);
-    preferredaccom += girl->level() * (girl->is_slave() ? 0.1 : 0.3);
-    if (girl->is_pregnant()) preferredaccom += 1.5;
+    double preferredaccom = (girl.is_slave() ? 1.0 : 2.5);
+    preferredaccom += girl.level() * (girl.is_slave() ? 0.1 : 0.3);
+    if (girl.is_pregnant()) preferredaccom += 1.5;
 
-    preferredaccom += girl->get_trait_modifier("pref-accommodation");
+    preferredaccom += girl.get_trait_modifier("pref-accommodation");
 
     // TODO I think iteration would be more efficient here!
-    if (!girl->inventory().all_items().empty())    // only bother checking items if the girl has at least 1
+    if (!girl.inventory().all_items().empty())    // only bother checking items if the girl has at least 1
     {
-        if (girl->has_item("Chrono Bed"))                        preferredaccom -= 2.0;    // She gets a great night sleep so she is happier when she wakes up
-        else if (girl->has_item("Rejuvenation Bed"))            preferredaccom -= 1.0;    // She gets a good night sleep so she is happier when she wakes up
-        if (girl->has_item("150 Piece Drum Kit"))                preferredaccom += 0.5;    // Though she may annoy her neighbors and it takes a lot of space, it it fun
-        if (girl->has_item("Android, Assistance"))            preferredaccom -= 0.5;    // This little guy cleans up for her
-        if (girl->has_item("Anger Management Tapes"))            preferredaccom -= 0.1;    // When she listens to these it takes her mind off other things
-        if (girl->has_item("Appreciation Trophy"))            preferredaccom -= 0.1;    // Something nice to look at
-        if (girl->has_item("Art Easel"))                        preferredaccom -= 1.0;    // She can make her room nicer by herself.
-        if (girl->has_item("Black Cat"))                        preferredaccom -= 0.3;    // Small and soft, it mostly cares for itself
-        if (girl->has_item("Cat"))                            preferredaccom -= 0.3;    // Small and soft, it mostly cares for itself
-        if (girl->has_item("Claptrap"))                        preferredaccom -= 0.1;    // An annoying little guy but he does help a little
-        if (girl->has_item("Computer"))                        preferredaccom -= 1.5;    // Something to do but it takes up a little room
-        if (girl->has_item("Death Bear"))                        preferredaccom += 2.0;    // Having a large bear living with her she needs a little more room.
-        if (girl->has_item("Deathtrap"))                        preferredaccom += 1.0;    // Having a large robot guarding her her she needs a little more room.
-        if (girl->has_item("Free Weights"))                    preferredaccom += 0.2;    // She may like the workout but it takes up a lot of room
-        if (girl->has_item("Guard Dog"))                        preferredaccom += 0.2;    // Though she loves having a pet, a large dog takes up some room
-        if (girl->has_item("Happy Orb"))                        preferredaccom -= 0.5;    // She has happy dreams
-        if (girl->has_item("Relaxation Orb"))                    preferredaccom -= 0.5;    // She can relax anywhere
-        if (girl->has_item("Library Card"))                    preferredaccom -= 0.5;    // She has somewhere else to go and she can bring books back, they keep her mind off other things
-        if (girl->has_item("Lovers Orb"))                        preferredaccom -= 0.5;    // She really enjoys her dreams
-        if (girl->has_item("Nightmare Orb"))                    preferredaccom += 0.2;    // She does not sleep well
-        if (girl->has_item("Pet Spider"))                        preferredaccom -= 0.1;    // A little spider, she may be afraid of it but it takes her mind off her room
-        if (girl->has_item("Room Decorations"))                preferredaccom -= 0.5;    // They make her like her room more.
-        if (girl->has_item("Safe by Marcus"))                    preferredaccom -= 0.3;    // Somewhere to keep her stuff where ske knows no one can get to it.
-        if (girl->has_item("Smarty Pants"))                    preferredaccom -= 0.2;    // A little stuffed animal to hug and squeeze
-        if (girl->has_item("Stick Hockey Game"))                preferredaccom += 0.3;    // While fun, it takes a lot of room to not break things
-        if (girl->has_item("Stripper Pole"))                    preferredaccom += 0.1;    // She may like the workout but it takes up a lot of room
-        if (girl->has_item("Television Set"))                    preferredaccom -= 2.0;    // When she stares at this, she doesn't notice anything else
-        if (girl->has_item("The Realm of Darthon"))            preferredaccom -= 0.1;    // She and her friends can have fun together but they need some space to play it
-        if (girl->has_item("Weekly Social Therapy Session"))    preferredaccom -= 0.1;    // She has somewhere to go and get her troubles off her chest.
+        if (girl.has_item("Chrono Bed"))                        preferredaccom -= 2.0;    // She gets a great night sleep so she is happier when she wakes up
+        else if (girl.has_item("Rejuvenation Bed"))            preferredaccom -= 1.0;    // She gets a good night sleep so she is happier when she wakes up
+        if (girl.has_item("150 Piece Drum Kit"))                preferredaccom += 0.5;    // Though she may annoy her neighbors and it takes a lot of space, it it fun
+        if (girl.has_item("Android, Assistance"))            preferredaccom -= 0.5;    // This little guy cleans up for her
+        if (girl.has_item("Anger Management Tapes"))            preferredaccom -= 0.1;    // When she listens to these it takes her mind off other things
+        if (girl.has_item("Appreciation Trophy"))            preferredaccom -= 0.1;    // Something nice to look at
+        if (girl.has_item("Art Easel"))                        preferredaccom -= 1.0;    // She can make her room nicer by herself.
+        if (girl.has_item("Black Cat"))                        preferredaccom -= 0.3;    // Small and soft, it mostly cares for itself
+        if (girl.has_item("Cat"))                            preferredaccom -= 0.3;    // Small and soft, it mostly cares for itself
+        if (girl.has_item("Claptrap"))                        preferredaccom -= 0.1;    // An annoying little guy but he does help a little
+        if (girl.has_item("Computer"))                        preferredaccom -= 1.5;    // Something to do but it takes up a little room
+        if (girl.has_item("Death Bear"))                        preferredaccom += 2.0;    // Having a large bear living with her she needs a little more room.
+        if (girl.has_item("Deathtrap"))                        preferredaccom += 1.0;    // Having a large robot guarding her her she needs a little more room.
+        if (girl.has_item("Free Weights"))                    preferredaccom += 0.2;    // She may like the workout but it takes up a lot of room
+        if (girl.has_item("Guard Dog"))                        preferredaccom += 0.2;    // Though she loves having a pet, a large dog takes up some room
+        if (girl.has_item("Happy Orb"))                        preferredaccom -= 0.5;    // She has happy dreams
+        if (girl.has_item("Relaxation Orb"))                    preferredaccom -= 0.5;    // She can relax anywhere
+        if (girl.has_item("Library Card"))                    preferredaccom -= 0.5;    // She has somewhere else to go and she can bring books back, they keep her mind off other things
+        if (girl.has_item("Lovers Orb"))                        preferredaccom -= 0.5;    // She really enjoys her dreams
+        if (girl.has_item("Nightmare Orb"))                    preferredaccom += 0.2;    // She does not sleep well
+        if (girl.has_item("Pet Spider"))                        preferredaccom -= 0.1;    // A little spider, she may be afraid of it but it takes her mind off her room
+        if (girl.has_item("Room Decorations"))                preferredaccom -= 0.5;    // They make her like her room more.
+        if (girl.has_item("Safe by Marcus"))                    preferredaccom -= 0.3;    // Somewhere to keep her stuff where ske knows no one can get to it.
+        if (girl.has_item("Smarty Pants"))                    preferredaccom -= 0.2;    // A little stuffed animal to hug and squeeze
+        if (girl.has_item("Stick Hockey Game"))                preferredaccom += 0.3;    // While fun, it takes a lot of room to not break things
+        if (girl.has_item("Stripper Pole"))                    preferredaccom += 0.1;    // She may like the workout but it takes up a lot of room
+        if (girl.has_item("Television Set"))                    preferredaccom -= 2.0;    // When she stares at this, she doesn't notice anything else
+        if (girl.has_item("The Realm of Darthon"))            preferredaccom -= 0.1;    // She and her friends can have fun together but they need some space to play it
+        if (girl.has_item("Weekly Social Therapy Session"))    preferredaccom -= 0.1;    // She has somewhere to go and get her troubles off her chest.
     }
 
     if (preferredaccom <= 0.0) return 0;
@@ -4716,15 +3905,15 @@ int cGirls::PreferredAccom(sGirl* girl)
 }
 
 // `J` the girl will check the customer for diseases before continuing.
-bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl * girl, sCustomer * Cust, double mod)
+bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCustomer * Cust, double mod)
 {
-    string girlName = girl->FullName();
+    string girlName = girl.FullName();
     stringstream ss;
     if (g_Dice.percent(0.1))    // 0.001 chance of false positive
     {
         ss << "${name} thought she detected that her customer had a disease and refused to allow them to touch her just to be safe.";
         g_Game->push_message(ss.str(), COLOR_RED);
-        girl->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
         return true;
     }
     // if the customer is clean, then it will return false
@@ -4734,13 +3923,13 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl * girl, sCust
 
     double detectdisease = 1.0;                                                // base 1% chance
     detectdisease += mod;                                                    // add mod
-    detectdisease += girl->medicine() / 2.0;                                // +50 medicine
-    detectdisease += girl->intelligence() / 5.0;                            // +20 intelligence
-    detectdisease += girl->magic() / 5.0;                                    // +20 magic
-    detectdisease -= girl->libido() / 2.0;                                    // -50 libido
+    detectdisease += girl.medicine() / 2.0;                                // +50 medicine
+    detectdisease += girl.intelligence() / 5.0;                            // +20 intelligence
+    detectdisease += girl.magic() / 5.0;                                    // +20 magic
+    detectdisease -= girl.libido() / 2.0;                                    // -50 libido
 
-    if (has_disease(*girl))                        detectdisease += 20;    // has it so know what to look for
-    detectdisease += girl->get_trait_modifier("detect-disease");
+    if (has_disease(girl))                        detectdisease += 20;    // has it so know what to look for
+    detectdisease += girl.get_trait_modifier("detect-disease");
 
     const char* found_disease = nullptr;
     // these need better texts
@@ -4760,7 +3949,7 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl * girl, sCust
         ss << girlName << " detected that her customer has " << found_disease <<
             " and refused to allow them to touch her.";
         g_Game->push_message(ss.str(), COLOR_RED);
-        girl->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
         brothel->m_RejectCustomersDisease++;
     }
 
@@ -4844,38 +4033,33 @@ string cGirls::catacombs_look_for(int girls, int items, int beast)
 }
 
 // `J` for use with beast jobs where the girl has sex with a beast
-sCustomer* cGirls::GetBeast()
+sCustomer cGirls::GetBeast()
 {
-    sCustomer* beast = new sCustomer;
-    beast->m_Amount = 1;
-    beast->m_IsWoman = false;
+    sCustomer beast;
+    beast.m_Amount = 1;
+    beast.m_IsWoman = false;
     // get their stats generated
-    for(int i = 0; i < NUM_STATS; ++i)  beast->set_stat(i, g_Dice % 100);
-    for(int i = 0; i < NUM_SKILLS; ++i)  beast->set_skill(i, g_Dice % 10);
+    for(int i = 0; i < NUM_STATS; ++i)  beast.set_stat(i, g_Dice % 100);
+    for(int i = 0; i < NUM_SKILLS; ++i)  beast.set_skill(i, g_Dice % 10);
 
-    beast->set_skill(SKILL_BEASTIALITY, 40 + g_Dice % 61);
-    beast->set_skill(SKILL_COMBAT, 40 + g_Dice % 61);
-    beast->set_skill(SKILL_FARMING, g_Dice % 20);
-    beast->set_skill(SKILL_ANIMALHANDLING, 40 + g_Dice % 61);
-    beast->set_stat(STAT_INTELLIGENCE, g_Dice % 30);
-    beast->set_stat(STAT_LEVEL, 0);
-    beast->set_stat(STAT_AGE, g_Dice % 20);
-    beast->set_stat(STAT_STRENGTH, 20+g_Dice % 81);
+    beast.set_skill(SKILL_BEASTIALITY, 40 + g_Dice % 61);
+    beast.set_skill(SKILL_COMBAT, 40 + g_Dice % 61);
+    beast.set_skill(SKILL_FARMING, g_Dice % 20);
+    beast.set_skill(SKILL_ANIMALHANDLING, 40 + g_Dice % 61);
+    beast.set_stat(STAT_INTELLIGENCE, g_Dice % 30);
+    beast.set_stat(STAT_LEVEL, 0);
+    beast.set_stat(STAT_AGE, g_Dice % 20);
+    beast.set_stat(STAT_STRENGTH, 20+g_Dice % 81);
 
-    beast->m_SexPref = beast->m_SexPrefB = SKILL_BEASTIALITY;
+    beast.m_SexPref = beast.m_SexPrefB = SKILL_BEASTIALITY;
 
-    beast->gain_trait("AIDS", 0.5);
-    beast->gain_trait("Chlamydia", 1.0);
-    beast->gain_trait("Syphilis", 1.5);
-    beast->gain_trait("Herpes", 2.5);
-    beast->m_Money = 0;
+    beast.gain_trait("AIDS", 0.5);
+    beast.gain_trait("Chlamydia", 1.0);
+    beast.gain_trait("Syphilis", 1.5);
+    beast.gain_trait("Herpes", 2.5);
+    beast.m_Money = 0;
 
     return beast;
-}
-
-void cGirls::SetAntiPreg(sGirl * girl, bool useAntiPreg)
-{
-    girl->m_UseAntiPreg = useAntiPreg;
 }
 
 bool do_take_gold(sGirl& girl, string &message)    // returns TRUE if the girl won
@@ -4962,5 +4146,51 @@ void cGirls::TakeGold(sGirl& girl) {
     }
 
     g_Game->push_message(message, 0);
+}
+
+std::shared_ptr<sGirl> cGirls::GetDaughterByName(const string& name, bool slave, bool non_human, bool player_dad) {
+    auto current = find_girl_by_name(name);
+    // did we get a girl?
+    if (current)    return TakeGirl(current);        // yes, we did!
+
+    //    OK, we need to search for a random girl
+    sRandomGirl* rgirl = m_RandomGirls.find_random_girl_by_name(name);
+    if (rgirl)
+        return g_Game->girl_pool().CreateRandomGirl(17, slave, false, non_human, false, false, player_dad, true, name);
+
+    return nullptr;
+}
+
+std::shared_ptr<sGirl> cGirls::CreateDaughter(sGirl& mom, bool player_dad) {
+    std::shared_ptr<sGirl> sprog = nullptr;
+    bool slave = mom.is_slave();
+    bool non_human = mom.is_human();
+
+    /*
+    *    Check canonical daughters
+    */
+    while (!mom.m_Canonical_Daughters.empty()) {
+        int index = g_Dice.random(mom.m_Canonical_Daughters.size());
+        string name = mom.m_Canonical_Daughters[index];
+
+        sprog = g_Game->girl_pool().GetDaughterByName(name, slave, non_human, player_dad);
+        mom.m_Canonical_Daughters.erase(mom.m_Canonical_Daughters.begin() + index);
+
+        if(sprog)
+            return sprog;
+    }
+
+    // If the player is the father, check that shortlist
+    if(player_dad && GetNumYourDaughterGirls() > 0)                // this should check all your daughter girls that apply
+    {
+        sprog = g_Game->girl_pool().GetUniqueYourDaughterGirl(non_human);                        // first try to get the same human/nonhuman as mother
+        if (!sprog && non_human)
+            sprog = g_Game->girl_pool().GetUniqueYourDaughterGirl(false);    // next, if mom is nonhuman, try to get a human daughter
+    }
+
+    /*
+    *    Did not find a girl, so back to the random girls
+    */
+    return CreateRandomGirl(17, slave, false, non_human, false, false, player_dad);
 }
 

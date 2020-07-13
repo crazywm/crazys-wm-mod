@@ -396,9 +396,9 @@ double cGoldBase::decrease_interest_rate()
     return m_interest_rate;
 }
 
-string cGoldBase::sval()
+std::string cGoldBase::sval()
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << ival();
     return ss.str();
 }
@@ -434,19 +434,6 @@ bool cGoldBase::loadGoldXML(const tinyxml2::XMLElement* pGold)
     pGold->QueryDoubleAttribute("cash_out", &m_cash_out);
     pGold->QueryDoubleAttribute("interest_rate", &m_interest_rate);
     return true;
-}
-
-istream &operator>>(istream& is, cGoldBase &g)
-{
-    double val, inc, up, cashin, cashout;
-    is >> val >> inc >> up >> cashin >> cashout;
-    g.m_value = val;
-    g.m_income = inc;
-    g.m_upkeep = up;
-    g.m_cash_in = cashin;
-    g.m_cash_out = cashout;
-    is.ignore(100, '\n');
-    return is;
 }
 
 void cGold::brothel_accounts(cGold &g, int brothel_id)
@@ -527,9 +514,10 @@ void cGold::gen_report(int month)
 {
 }
 
-string cGoldBase::in::str(int brothel_no)
+std::string cGoldBase::in::str(int brothel_no)
 {
-    stringstream ss;
+    using std::setw;
+    std::stringstream ss;
     ss << "  --- Whores ---                              --- Sales ---";
     ss << "# Brothel  Street   Movie     Bar  Casino   Items  "
           "Monster Loc'Biz   Raids P.Theft G.Theft C'combs  "
@@ -560,6 +548,6 @@ string cGoldBase::in::str(int brothel_no)
     ss << setw(7) << clinic_income << " ";
     ss << setw(7) << arena_income << " ";
     ss << setw(7) << farm_income << " ";
-    ss << endl;
+    ss << std::endl;
     return ss.str();
 }

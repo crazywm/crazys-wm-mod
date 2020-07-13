@@ -75,7 +75,7 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
     ss << ".\n \n";
 
     int msgtype = Day0Night1;
-    cGirls::UnequipCombat(&girl);    // not for patient
+    cGirls::UnequipCombat(girl);    // not for patient
 
     //    `J` We want to get 2 doctors and 4 nurses if possible
     int d1 = -1, d2 = -1, n1 = -1, n2 = -1, n3 = -1, n4 = -1;

@@ -31,6 +31,7 @@
 #include "character/predicates.h"
 #include "buildings/cDungeon.h"
 #include "character/cPlayer.h"
+#include "character/cCustomers.h"
 
 extern cConfig cfg;
 
@@ -61,7 +62,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     string Girls_list;
     string item_list;
 
-    cGirls::EquipCombat(&girl);    // ready armor and weapons!
+    cGirls::EquipCombat(girl);    // ready armor and weapons!
 
     int haulcount = 2 + ((girl.strength() + girl.constitution()) / 10);    // how much she can bring back            - max 22 points
     // each girl costs 5 haul points                        - max 5 girls
@@ -148,7 +149,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
         }
         girl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
 
-        if (!girl.calc_insemination(*cGirls::GetBeast(), 1.0 + (NumMon * 0.5)))
+        if (!girl.calc_insemination(cGirls::GetBeast(), 1.0 + (NumMon * 0.5)))
         {
             g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
             health -= 1, happy -= 10, spirit -= 4, sex -= 4, combat -= 2, injury += 2;
@@ -157,7 +158,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
         girl.health(health);
         girl.happiness(happy);
         girl.spirit(spirit);
-        cGirls::GirlInjured(&girl, injury);
+        cGirls::GirlInjured(girl, injury);
         girl.upd_Enjoyment(ACTION_SEX, sex);
         girl.upd_Enjoyment(actiontype, combat);
 
@@ -168,7 +169,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     while (numgirls > 0)
     {
         numgirls--;
-        sGirl* ugirl = nullptr;
+        std::shared_ptr<sGirl> ugirl = nullptr;
         if (rng.percent(cfg.catacombs.unique_catacombs()))    // chance of getting unique girl
         {
             ugirl = g_Game->GetRandomGirl(false, true);                // Unique monster girl type
@@ -176,7 +177,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
         if (ugirl == nullptr)        // if not unique or a unique girl can not be found
         {
             // the girl will be added to the dungeon, which will start managing object lifetimes
-            ugirl = g_Game->CreateRandomGirl(0, false, true, true).release();    // create a random girl
+            ugirl = g_Game->CreateRandomGirl(0, false, true, true);    // create a random girl
             if (ugirl)
             {
                 type_monster_girls++;
@@ -256,7 +257,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
         girl.upd_temp_stat(STAT_LIBIDO, -50, true);
         girl.beastiality(type_beasts);
         girl.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
-        if (!girl.calc_insemination(*cGirls::GetBeast(), 1.0))
+        if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
         {
             g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
         }
@@ -297,16 +298,16 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype, (rng % skill) + 2);
 
     // Myr: Turned trait gains into functions
-    cGirls::PossiblyGainNewTrait(&girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself an Adventurer.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself an Adventurer.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
     if (rng.percent(25) && girl.strength() >= 60 && girl.combat() > girl.magic())
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", Day0Night1);
     }
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Fragile", 75, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Fragile", 75, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 
     return false;
 }

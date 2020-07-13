@@ -50,7 +50,7 @@ bool WorkFluffer(sGirl& girl, bool Day0Night1, cRng& rng)
     ss << "${name} worked as a fluffer.\n \n";
 
 
-    cGirls::UnequipCombat(&girl);    // not for studio crew
+    cGirls::UnequipCombat(girl);    // not for studio crew
 
     int wages = 50, tips = 0;
     int enjoy = 0;

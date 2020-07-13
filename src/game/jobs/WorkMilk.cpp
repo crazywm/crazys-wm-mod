@@ -50,9 +50,9 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
 
-    cGirls::UnequipCombat(&girl);    // not needed
+    cGirls::UnequipCombat(girl);    // not needed
 
-    sGirl* farmmanonduty = random_girl_on_job(*girl.m_Building, JOB_FARMMANGER, Day0Night1);
+    const sGirl* farmmanonduty = random_girl_on_job(*girl.m_Building, JOB_FARMMANGER, Day0Night1);
     string farmmanname = (farmmanonduty ? "Farm Manager " + farmmanonduty->FullName() + "" : "the Farm Manager");
 
     int enjoy = 0;
@@ -125,7 +125,7 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
             ss << "She sends in one of your beasts to get the job done.";
             girl.beastiality(2);
             girl.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
-            if (!girl.calc_insemination(*cGirls::GetBeast(), 1.0))
+            if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
             {
                 g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
             }
@@ -219,24 +219,14 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
 
     ///////////////////
     //let's see if there's a milker, and if so, influence this a little.
-    bool milkerOnDuty = false;
-    sGirl* milker = nullptr;
-    string milkerName;
-
-    vector<sGirl*> milkmaids = brothel->girls_on_job(JOB_MILKER, Day0Night1);
-    if (!milkmaids.empty())
-    {
-        milkerOnDuty = true;
-        int i = rng % milkmaids.size();
-        milker = milkmaids[i];
-        milkerName = milker->FullName();
-    }
+    const sGirl* milker = random_girl_on_job(*brothel, JOB_MILKER, Day0Night1);;
 
     //O/P for info and debug
-    ss << "She was milked by ";
-    if (milkerOnDuty)
+
+    if (milker)
     {
-        ss << milkerName;
+        ss << "She was milked by ";
+        ss << milker->FullName();
         if (milker->has_active_trait("No Hands") || milker->has_active_trait("No Arms"))
         {
             ss << ", who really struggled. Why would you pick someone with no hands to be a milker?";
@@ -274,7 +264,7 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
         }
         else ss << ".";
     }
-    else ss << "some farmhand.";
+    else ss << "She was milked by some farmhand.";
     ss << "\n";
 
     //to ounces

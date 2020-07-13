@@ -45,39 +45,34 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cClinic.cpp
     stringstream ss;
     string girlName;
-    u_int sw = 0;
-
-    int sum = EVENT_SUMMARY;
 
     int numDoctors = 0;
 
     //////////////////////////////////////////////////////
     //  Handle the start of shift stuff for all girls.  //
     //////////////////////////////////////////////////////
-    for(auto& current : girls())
-    {
-        if (current->is_dead())        // skip dead girls
+    m_Girls->apply([&](auto& current){
+        if (current.is_dead())        // skip dead girls
         {
-            continue;
+            return;
         }
-        sum = EVENT_SUMMARY;
+        auto sum = EVENT_SUMMARY;
         ss.str("");
 
         cGirls::UseItems(current);                // Girl uses items she has
         cGirls::CalculateGirlType(current);        // update the fetish traits
-        cGirls::CalculateAskPrice(current, true);    // Calculate the girls asking price
+        cGirls::UpdateAskPrice(current, true);    // Calculate the girls asking price
 
-        if (current->has_active_trait("AIDS") && (
-                is_in((JOBS)current->m_DayJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE}) ||
-                is_in((JOBS)current->m_NightJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE})))
+        if (current.has_active_trait("AIDS") && (
+                is_in((JOBS)current.m_DayJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE}) ||
+                is_in((JOBS)current.m_NightJob, {JOB_DOCTOR, JOB_INTERN, JOB_NURSE})))
         {
-            ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so " << girlName << " was sent to the waiting room.";
-            current->m_DayJob = current->m_NightJob = JOB_CLINICREST;
+            ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
+            current.m_DayJob = current.m_NightJob = JOB_CLINICREST;
             sum = EVENT_WARNING;
         }
-        if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-
-    }
+        if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+    });
 
     ////////////////////////////////////////////////////////
     //  Process Matron first incase she refuses to work.  //
@@ -88,197 +83,164 @@ void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
     ////////////////////////////////////////////////////////
     //  JOB_DOCTOR needs to be checked before all others  //
     ////////////////////////////////////////////////////////
-    for(auto& current : girls())
-    {
-        sw = (is_night ? current->m_NightJob : current->m_DayJob);
-        if (current->is_dead() || sw != JOB_DOCTOR)
+    m_Girls->apply([&](auto& current) {
+        auto sw = current.get_job(is_night);
+        if (current.is_dead() || sw != JOB_DOCTOR)
         {    // skip dead girls and anyone who is not a doctor
-            continue;
+            return;
         }
-        sum = EVENT_SUMMARY;
+        auto sum = EVENT_SUMMARY;
         ss.str("");
-        girlName = current->FullName();
 
-        if (current->has_active_trait("AIDS"))
+        if (current.has_active_trait("AIDS"))
         {
-            ss << girlName << " has AIDS! She has to get it treated before she can go back to work as a Doctor.";
-            current->m_DayJob = current->m_NightJob = JOB_CUREDISEASES;
+            ss << "${name} has AIDS! She has to get it treated before she can go back to work as a Doctor.";
+            current.m_DayJob = current.m_NightJob = JOB_CUREDISEASES;
         }
-        else if (current->is_slave())
+        else if (current.is_slave())
         {
-            ss << "Doctors can not be slaves so " << girlName << " was demoted to Nurse.";
-            current->m_DayJob = current->m_NightJob = JOB_NURSE;
+            ss << "Doctors can not be slaves so ${name} was demoted to Nurse.";
+            current.m_DayJob = current.m_NightJob = JOB_NURSE;
         }
-        else if (current->intelligence() < 50 || current->medicine() < 50)
+        else if (current.intelligence() < 50 || current.medicine() < 50)
         {
-            ss << girlName << " is not qualified to be a Doctor so she was sent back to being an Intern.";
-            current->m_DayJob = current->m_NightJob = JOB_NURSE;
+            ss << "${name} is not qualified to be a Doctor so she was sent back to being an Intern.";
+            current.m_DayJob = current.m_NightJob = JOB_NURSE;
         }
-        else if (current->disobey_check(ACTION_WORKDOCTOR, JOB_DOCTOR))
+        else if (current.disobey_check(ACTION_WORKDOCTOR, JOB_DOCTOR))
         {
-            (is_night ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
-            m_Fame -= current->fame();
-            ss << girlName << " refused to work as a Doctor so made no money.";
+            (is_night ? current.m_Refused_To_Work_Night = true : current.m_Refused_To_Work_Day = true);
+            m_Fame -= current.fame();
+            ss << "${name} refused to work as a Doctor so made no money.";
             sum = EVENT_NOWORK;
         }
         else
         {
             numDoctors++;
         }
-        if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-    }
+        if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+    });
 
     ////////////////////////////////////////////////////////////////
     //  Interns and Nurses can be promoted to doctor if need be.  //
     ////////////////////////////////////////////////////////////////
     if(matron)
     {
-        for (auto& current : girls()) {
-            if (numDoctors >= 1)
-                break;
-
-            sw = (is_night ? current->m_NightJob : current->m_DayJob);
-            if (current->is_dead() || sw != JOB_INTERN || current->is_slave() || current->intelligence() < 50 ||
-                current->medicine() <
-                50) {    // skip dead girls and anyone who is not an intern and make sure they are qualified to be a doctor
-                continue;
-            }
-            sum = EVENT_SUMMARY;
-            ss.str("");
-            girlName = current->FullName();
-
-            if (!current->disobey_check(ACTION_WORKDOCTOR, JOBS(sw))) {
-                numDoctors++;
-                ss << "There was no Doctor available to work so " << girlName << " was promoted to Doctor.";
-                current->m_DayJob = current->m_NightJob = JOB_DOCTOR;
-            }
-            if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-        }
-
-        for (auto& current : girls()) {
-            if (numDoctors >= 1)
-                break;
-
-            sw  = (is_night ? current->m_NightJob : current->m_DayJob);
-            if (current->is_dead() || sw != JOB_NURSE || current->is_slave() || current->intelligence() < 50 ||
-                current->medicine() < 50) {    // skip dead girls and anyone who is not a nurse and make sure they
-                // are qualified to be a doctor
-                continue;
-            }
-            sum = EVENT_SUMMARY;
-            ss.str("");
-            girlName = current->FullName();
-
-            if (!current->disobey_check(ACTION_WORKDOCTOR, JOBS(sw))) {
-                numDoctors++;
-                ss << "There was no Doctor available to work so " << girlName << " was promoted to Doctor.";
-                current->m_DayJob = current->m_NightJob = JOB_DOCTOR;
-            }
-            if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-        }
+        if(numDoctors < 1)
+            m_Girls->apply([&](sGirl& current){
+                if (numDoctors >= 1)
+                    return;
+                if(promote_to_doctor(current, JOB_INTERN, is_night))
+                    numDoctors += 1;
+            });
+        if(numDoctors < 1)
+            m_Girls->apply([&](sGirl& current){
+                if (numDoctors >= 1)
+                    return;
+                if(promote_to_doctor(current, JOB_NURSE, is_night))
+                    numDoctors += 1;
+            });
     }
 
     /////////////////////////////////////
     //  Do all the Clinic staff jobs.  //
     /////////////////////////////////////
-    for (auto& current : girls())
-    {
-        sw = current->get_job(is_night);
-        if (current->is_dead() || (sw != JOB_INTERN && sw != JOB_NURSE && sw != JOB_JANITOR && sw != JOB_MECHANIC && sw != JOB_DOCTOR) ||
+    m_Girls->apply([is_night](auto& current) {
+        auto sw = current.get_job(is_night);
+        if (current.is_dead() || (sw != JOB_INTERN && sw != JOB_NURSE && sw != JOB_JANITOR && sw != JOB_MECHANIC && sw != JOB_DOCTOR) ||
             // skip dead girls and anyone who is not staff
-            (sw == JOB_DOCTOR && ((is_night == SHIFT_DAY && current->m_Refused_To_Work_Day)||(is_night == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
+            (sw == JOB_DOCTOR && ((is_night == SHIFT_DAY && current.m_Refused_To_Work_Day)||(is_night == SHIFT_NIGHT && current.m_Refused_To_Work_Night))))
         {    // and skip doctors who refused to work in the first check
-            continue;
+            return;
         }
 
-        g_Game->job_manager().handle_simple_job(*current, is_night);
-    }
+        g_Game->job_manager().handle_simple_job(current, is_night);
+    });
 
 
     ///////////////////////////////////////////////////////////////////////
     //  Do all the surgery jobs. Not having a doctor is in all of them.  //
     ///////////////////////////////////////////////////////////////////////
-    for (auto& current : girls())
-    {
-        sw = (is_night ? current->m_NightJob : current->m_DayJob);
-        if (current->is_dead() || !is_in((JOBS)sw, {JOB_GETHEALING, JOB_GETREPAIRS, JOB_GETABORT, JOB_COSMETICSURGERY,
-                                         JOB_LIPO, JOB_BREASTREDUCTION, JOB_BOOBJOB, JOB_VAGINAREJUV, JOB_FACELIFT,
-                                         JOB_ASSJOB, JOB_TUBESTIED, JOB_CUREDISEASES, JOB_FERTILITY}))
+    m_Girls->apply([is_night](auto& current) {
+        auto sw = current.get_job(is_night);
+        if (current.is_dead() || !is_in((JOBS)sw, {JOB_GETHEALING, JOB_GETREPAIRS, JOB_GETABORT, JOB_COSMETICSURGERY,
+                                                    JOB_LIPO, JOB_BREASTREDUCTION, JOB_BOOBJOB, JOB_VAGINAREJUV, JOB_FACELIFT,
+                                                    JOB_ASSJOB, JOB_TUBESTIED, JOB_CUREDISEASES, JOB_FERTILITY}))
         {    // skip dead girls and anyone not a patient
-            continue;
+            return;
         }
 
         // do their surgery
-        g_Game->job_manager().do_job(*current, is_night);
-    }
+        g_Game->job_manager().do_job(current, is_night);
+    });
 
     EndShift("Chairman", is_night, matron);
 }
 
-void sClinic::auto_assign_job(sGirl* target, std::stringstream& message, bool is_night)
+void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)
 {
     std::stringstream& ss = message;
     // if they have no job at all, assign them a job
-    ss << "The Chairman assigns " << target->FullName() << " to ";
-    if (target->has_active_trait("AIDS"))                                        // anyone with AIDS
+    ss << "The Chairman assigns " << target.FullName() << " to ";
+    if (target.has_active_trait("AIDS"))                                        // anyone with AIDS
     {
-        target->m_DayJob = target->m_NightJob = JOB_CUREDISEASES;        //  needs to get it treated right away
+        target.m_DayJob = target.m_NightJob = JOB_CUREDISEASES;        //  needs to get it treated right away
         ss << "get her AIDS treated right away.";
     }
-    else if ((target->is_free() &&                                        // assign any free girl
-             (target->intelligence() > 70 && target->medicine() > 70))    // who is well qualified
+    else if ((target.is_free() &&                                        // assign any free girl
+             (target.intelligence() > 70 && target.medicine() > 70))    // who is well qualified
              || (num_girls_on_job(JOB_DOCTOR, is_night) < 1 &&            // or if there are no doctors yet
-                 target->intelligence() >= 50 && target->medicine() >= 50))    // assign anyone who qualifies
+                 target.intelligence() >= 50 && target.medicine() >= 50))    // assign anyone who qualifies
     {
-        target->m_DayJob = target->m_NightJob = JOB_DOCTOR;            // as a Doctor
+        target.m_DayJob = target.m_NightJob = JOB_DOCTOR;            // as a Doctor
         ss << "work as a Doctor.";
     }
     else if (num_girls_on_job(JOB_NURSE, is_night) < 1)            // make sure there is at least 1 Nurse
     {
-        target->m_DayJob = target->m_NightJob = JOB_NURSE;
+        target.m_DayJob = target.m_NightJob = JOB_NURSE;
         ss << "work as a Nurse.";
     }
-    else if (has_disease(*target))                                    // treat anyone with a disease
+    else if (has_disease(target))                                    // treat anyone with a disease
     {
-        target->m_DayJob = target->m_NightJob = JOB_CUREDISEASES;
+        target.m_DayJob = target.m_NightJob = JOB_CUREDISEASES;
         vector<const char*> diseases;
-        if (target->has_active_trait("Herpes"))            diseases.emplace_back("Herpes");
-        if (target->has_active_trait("Chlamydia"))        diseases.emplace_back("Chlamydia");
-        if (target->has_active_trait("Syphilis"))        diseases.emplace_back("Syphilis");
-        if (target->has_active_trait("AIDS"))            diseases.emplace_back("AIDS");
+        if (target.has_active_trait("Herpes"))            diseases.emplace_back("Herpes");
+        if (target.has_active_trait("Chlamydia"))        diseases.emplace_back("Chlamydia");
+        if (target.has_active_trait("Syphilis"))        diseases.emplace_back("Syphilis");
+        if (target.has_active_trait("AIDS"))            diseases.emplace_back("AIDS");
         int numdiseases = diseases.size();
         ss << "get her " << (numdiseases > 1 ? "diseases" : diseases[0]) << " treated.";
     }
         // then make sure there is at least 1 Janitor and 1 Mechanic
     else if (num_girls_on_job(JOB_MECHANIC, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_MECHANIC;
+        target.m_DayJob = target.m_NightJob = JOB_MECHANIC;
         ss << "work as a Mechanic.";
     }
     else if (num_girls_on_job(JOB_JANITOR, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_JANITOR;
+        target.m_DayJob = target.m_NightJob = JOB_JANITOR;
         ss << "work as a Janitor.";
     }
         // then add more of each job as numbers permit
-    else if (target->medicine() > 30 && num_girls_on_job(JOB_NURSE, is_night) < num_girls() / 10)
+    else if (target.medicine() > 30 && num_girls_on_job(JOB_NURSE, is_night) < num_girls() / 10)
     {
-        target->m_DayJob = target->m_NightJob = JOB_NURSE;
+        target.m_DayJob = target.m_NightJob = JOB_NURSE;
         ss << "work as a Nurse.";
     }
     else if (num_girls_on_job(JOB_MECHANIC, is_night) < num_girls() / 20)
     {
-        target->m_DayJob = target->m_NightJob = JOB_MECHANIC;
+        target.m_DayJob = target.m_NightJob = JOB_MECHANIC;
         ss << "work as a Mechanic.";
     }
     else if (num_girls_on_job(JOB_JANITOR, is_night) < num_girls() / 20)
     {
-        target->m_DayJob = target->m_NightJob = JOB_JANITOR;
+        target.m_DayJob = target.m_NightJob = JOB_JANITOR;
         ss << "work as a Janitor.";
     }
     else    // assign anyone else to Internship
     {
-        target->m_DayJob = target->m_NightJob = JOB_INTERN;
+        target.m_DayJob = target.m_NightJob = JOB_INTERN;
         ss << "work as an Intern.";
     }
 }
@@ -391,8 +353,25 @@ std::string sClinic::meet_no_luck() const {
     );
 }
 
-sGirl* sClinic::meet_girl() const {
+std::shared_ptr<sGirl> sClinic::meet_girl() const {
     auto girl = g_Game->GetRandomGirl();
     girl->TriggerEvent( EDefaultEvent::MEET_GIRL_CLINIC );
     return girl;
+}
+
+bool sClinic::promote_to_doctor(sGirl& current, JOBS job, bool is_night) {
+    auto sw = (is_night ? current.m_NightJob : current.m_DayJob);
+    if (current.is_dead() || sw != job || current.is_slave() || current.intelligence() < 50 ||
+        current.medicine() < 50) {
+        // skip dead girls and anyone who is not an intern and make sure they are qualified to be a doctor
+        return false;
+    }
+    auto sum = EVENT_SUMMARY;
+
+    if (!current.disobey_check(ACTION_WORKDOCTOR, JOBS(sw))) {
+        current.m_DayJob = current.m_NightJob = JOB_DOCTOR;
+        current.AddMessage("There was no Doctor available to work so ${name} was promoted to Doctor.", IMGTYPE_PROFILE, sum);
+        return true;
+    }
+    return false;
 }

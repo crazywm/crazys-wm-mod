@@ -44,7 +44,7 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
     ss << "${name} is instructed to work at your sleazy restaurant as a waitress. She is informed that the customers here want good service, but they chose this place because of the promise of attractive women in skimpy clothing. If she wants to be successful, she will need to impress them with her body as well as her service.\n \n";
     ss << "She worked as a waitress in the strip club.\n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = 25;
     double tips = 0;
@@ -56,8 +56,8 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
 
     double jobperformance = girl.job_performance(JOB_SLEAZYWAITRESS, false);
 
-    sGirl* barmaidonduty = random_girl_on_job(*girl.m_Building, JOB_SLEAZYBARMAID, Day0Night1);
-    string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid");
+    const sGirl* barmaidonduty = random_girl_on_job(*girl.m_Building, JOB_SLEAZYBARMAID, Day0Night1);
+    string barmaidname = barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid";
 
     // `CRAZY`
     /*default*/ string dick_type_text = "normal sized";
@@ -752,15 +752,15 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     //gained traits
-    cGirls::PossiblyGainNewTrait(&girl, "Charming", 70, actiontype, "${name} has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
-    if (jobperformance > 150 && girl.constitution() > 65) { cGirls::PossiblyGainNewTrait(&girl, "Fleet of Foot", 60, actiontype, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", Day0Night1); }
+    cGirls::PossiblyGainNewTrait(girl, "Charming", 70, actiontype, "${name} has been flirting with customers to try to get better tips. Enough practice at it has made her quite Charming.", Day0Night1);
+    if (jobperformance > 150 && girl.constitution() > 65) { cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 60, actiontype, "${name} has been dodging between tables and avoiding running into customers for so long she has become Fleet Of Foot.", Day0Night1); }
     if (rng.percent(25) && girl.dignity() < 0 && (anal > 0 || oral > 0 || hand > 0))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
+        cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
     }
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Clumsy", 30, actiontype, "It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
 
 
 #pragma endregion

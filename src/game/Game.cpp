@@ -26,6 +26,7 @@
 #include "xml/util.h"
 #include "character/traits/ITraitsCollection.h"
 #include "sConfig.h"
+#include "character/cGirlPool.h"
 
 namespace settings {
     extern const char* TAXES_RATE;
@@ -62,7 +63,9 @@ Game::Game() :
     m_Traits( std::make_unique<cTraitsManager>() ),
     m_Shop( new cShop(NUM_SHOPITEMS) ),
     m_ScriptManager( new scripting::cScriptManager() ),
-    m_GameSettings(new cGameSettings())
+    m_GameSettings(new cGameSettings()),
+    m_MarketGirls( new cGirlPool() ),
+    m_Prison( new cGirlPool() )
 {
     m_Player = std::make_unique<cPlayer>( create_traits_collection() );
 
@@ -138,12 +141,12 @@ void Game::next_week()
     rivals().check_rivals();
 
     g_LogFile.info("turn", "Prison");
-    if(!m_Prison.empty())
+    if(m_Prison->num() > 0)
     {
         if (g_Dice.percent(10))    // 10% chance of someone being released
         {
-            sGirl* girl = m_Prison.front();
-            RemoveGirlFromPrison(girl);
+            // TODO shouldn't the player get the girl back???
+            auto girl = m_Prison->TakeGirl(0);
             m_Girls->AddGirl(girl);
         }
     }
@@ -181,7 +184,7 @@ void Game::next_week()
             stringstream ssg;
             ssg << girl->FullName() << "'s father could not pay his debt to you so he gave her to you as payment.";
             girl->m_Events.AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
-            dungeon().AddGirl(girl.release(), DUNGEON_NEWGIRL);
+            dungeon().AddGirl(std::move(girl), DUNGEON_NEWGIRL);
             gang_manager().NumBusinessExtorted(-1);
         }
         long gold = num_businesses_extortet * INCOME_BUSINESS;
@@ -286,7 +289,7 @@ void Game::next_week()
 void Game::UpdateRunaways() {
     for(auto it = m_Runaways.begin(); it != m_Runaways.end(); )
     {
-        sGirl* rgirl = *it;
+        auto& rgirl = *it;
         if (rgirl->m_RunAway > 0)
         {
             // there is a chance the authorities will catch her if she is branded a slave
@@ -380,15 +383,7 @@ void Game::read_attributes_xml(const tinyxml2::XMLElement& el)
     auto pPrisonGirls = el.FirstChildElement("PrisonGirls");
     if (pPrisonGirls)
     {
-        for (auto pGirl = pPrisonGirls->FirstChildElement("Girl");
-             pGirl != nullptr;
-             pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
-        {
-            sGirl* pgirl = new sGirl();
-            bool success = pgirl->LoadGirlXML(pGirl);
-            if (success) { AddGirlToPrison(pgirl); }
-            else { delete pgirl; continue; }
-        }
+        m_Prison->LoadXML(*pPrisonGirls);
     }
 
     // load runaways
@@ -397,10 +392,9 @@ void Game::read_attributes_xml(const tinyxml2::XMLElement& el)
     {
         for (auto pGirl = pRunaways->FirstChildElement("Girl"); pGirl != nullptr; pGirl = pGirl->NextSiblingElement("Girl"))
         {    // load each girl and add her
-            sGirl* rgirl = new sGirl();
+            auto rgirl = std::make_shared<sGirl>(false);
             bool success = rgirl->LoadGirlXML(pGirl);
             if (success) { AddGirlToRunaways(rgirl); }
-            else { delete rgirl; continue; }
         }
     }
 
@@ -427,10 +421,7 @@ void Game::save(tinyxml2::XMLElement& root)
 
     // save prison
     auto& elPrison = PushNewElement(el, "PrisonGirls");
-    for(auto pgirl : m_Prison)
-    {
-        pgirl->SaveGirlXML(elPrison);
-    }
+    m_Prison->SaveXML(elPrison);
 
     // save runaways
     auto& elRunaways = PushNewElement(el, "Runaways");
@@ -573,34 +564,16 @@ void Game::do_tax()
     g_Game->push_message(ss.str(), COLOR_BLUE);
 }
 
-void Game::RemoveGirlFromPrison(sGirl* girl)
-{
-    m_Prison.remove(girl);
-}
-
-void Game::AddGirlToPrison(sGirl* girl)
-{
-    // remove from girl manager if she is there
-    m_Girls->RemoveGirl(girl);
-
-    // remove girl from brothels if she is there
-    auto building = girl->m_Building;
-    if(building)
-        building->remove_girl(girl);
-
-    m_Prison.push_back(girl);
-}
-
 // ----- Runaways
 void Game::RemoveGirlFromRunaways(sGirl* girl)
 {
-    m_Runaways.remove(girl);
+    m_Runaways.remove_if([&](auto& ptr){ return ptr.get() == girl; });
 }
 
-void Game::AddGirlToRunaways(sGirl* girl)
+void Game::AddGirlToRunaways(shared_ptr<sGirl> girl)
 {
-    m_Runaways.push_back(girl);
     girl->m_DayJob = girl->m_NightJob = JOB_RUNAWAY;
+    m_Runaways.push_back(std::move(girl));
 }
 
 cGold& Game::gold()
@@ -642,7 +615,8 @@ void Game::check_druggy_girl(stringstream& ss)
     /*for (int i = 0; i<girl->m_NumInventory; i++) { girl->m_Inventory[i] = nullptr; }
     girl->m_NumInventory = 0;
     */
-    AddGirlToPrison(girl);
+    if(girl->m_Building)
+        m_Prison->AddGirl(girl->m_Building->remove_girl(girl));
 }
 
 sGirl* Game::GetDrugPossessor()
@@ -816,37 +790,24 @@ void Game::UpdateMarketSlaves()
     if (numgirls > 20)    numgirls = 20;
     if (numgirls < 1)    numgirls = 1;
 
-    std::vector<sGirl*> old_girls  = m_MarketGirls;
-    std::vector<bool>   old_unique = m_MarketUniqueGirl;
-    assert(old_girls.size() == old_unique.size());
-    m_MarketGirls.clear();
-    m_MarketUniqueGirl.clear();
-
     // first, we may copy some girls over
-    for(std::size_t i = 0; i < old_girls.size(); ++i) {
-        // replace half the girls every week
+    g_LogFile.debug("game", "Removing slaves from market");
+    for(int i = 0; i < m_MarketGirls->num(); ++i) {
         if(g_Dice % 2 == 0) {
-            m_MarketGirls.push_back(old_girls[i]);
-            m_MarketUniqueGirl.push_back(old_unique[i]);
-        }
-        else {
-            if(!old_unique[i]) {
-                g_LogFile.debug("game", "Removing old girl ", old_girls[i]->FullName(), " from slave market");
-                delete old_girls[i];
-            }
+            m_Girls->GiveGirl(m_MarketGirls->TakeGirl(i));
+            --i;  // need to decrement the iterator because the market has just lost a girl
         }
     }
 
     g_LogFile.debug("game", "Filling up slave market again");
     // next, fill up
-    for(unsigned i = m_MarketGirls.size(); i < numgirls; ++i) {
+    for(unsigned i = m_MarketGirls->num(); i < numgirls; ++i) {
 
         if (g_Dice.percent(settings().get_percent(settings::SLAVE_MARKET_UNIQUE_CHANCE)))
         {
-            auto girl = generate_unique_girl();
+            auto girl = m_Girls->GetRandomGirl(true);
             if(girl) {
-                m_MarketGirls.push_back(girl);
-                m_MarketUniqueGirl.push_back(true);
+                m_MarketGirls->AddGirl(girl);
                 continue;
             }
         }
@@ -855,55 +816,13 @@ void Game::UpdateMarketSlaves()
         // try to generate a new random girl. Don't allow name duplicates
         for(int n = 0; n < 20; ++n) {
             auto girl = m_Girls->CreateRandomGirl(0, true);
-            // unless this is our last try, ensure unique names
-            for (const auto& other : m_MarketGirls) {
-                if (other->m_Name == girl->m_Name) {
-                    girl = nullptr;
-                    break;
-                }
-            }
-
             // still valid?
             if(girl) {
-                m_MarketGirls.push_back(girl.release());
-                m_MarketUniqueGirl.push_back(false);
+                m_MarketGirls->AddGirl(girl);
                 break;
             }
         }
     }
-}
-
-sGirl* Game::generate_unique_girl()
-{
-    if (m_Girls->GetNumSlaveGirls() <= 0) return nullptr;                // if there are no unique slave girls left then we can do no more here
-    int g = g_Dice%m_Girls->GetNumSlaveGirls();                            // randomly select a slavegirl from the list
-    sGirl *gpt = m_Girls->GetGirl(m_Girls->GetSlaveGirl(g));                // try and get a struct for the girl in question
-    if (!gpt) return nullptr;                                            // if we can't, we go home
-    /*
-     *    whizz down the list of girls we have already
-     *    and see if the new girl is already in the list
-     *
-     *    if she is, we need do nothing more
-     */
-    for (int j = 0; j < 20; j++)
-    {
-        if (m_MarketGirls[j] == gpt) return nullptr;
-    }
-    gpt->set_default_house_percent();
-    return gpt;
-}
-
-std::size_t Game::GetNumMarketSlaves() const
-{
-    return m_MarketGirls.size();
-}
-
-sGirl * Game::GetMarketSlave(size_t index)
-{
-    if(index >= m_MarketGirls.size()) {
-        return nullptr;
-    }
-    return m_MarketGirls[index];
 }
 
 bool Game::NameExists(string name) const
@@ -916,8 +835,8 @@ bool Game::NameExists(string name) const
     }
 
     if (m_Buildings->NameExists(name))        return true;
-    for(auto& girl : m_MarketGirls)
-        if (girl->FullName() == name)    return true;
+    for(int i = 0; i < m_MarketGirls->num(); ++i)
+        if (m_MarketGirls->get_girl(i)->FullName() == name)    return true;
 
     return false;
 }
@@ -932,22 +851,10 @@ bool Game::SurnameExists(string name) const
     }
 
     if (m_Buildings->SurnameExists(name))    return true;
-    for(auto& girl : m_MarketGirls)
-        if (girl->Surname() == name)    return true;
+    for(int i = 0; i < m_MarketGirls->num(); ++i)
+        if (m_MarketGirls->get_girl(i)->Surname() == name)    return true;
 
     return false;
-}
-
-bool Game::IsMarketUniqueGirl(int index) const
-{
-    return m_MarketUniqueGirl.at(index);
-}
-
-void Game::RemoveMarketSlave(const sGirl& target)
-{
-    auto girl = std::find(begin(m_MarketGirls), end(m_MarketGirls), &target);
-    m_MarketUniqueGirl.erase(m_MarketUniqueGirl.begin() + std::distance(begin(m_MarketGirls), girl));
-    m_MarketGirls.erase(girl);
 }
 
 cCustomers& Game::customers()
@@ -970,7 +877,7 @@ cInventory& Game::inventory_manager()
     return *m_InvManager;
 }
 
-sGirl * Game::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
+std::shared_ptr<sGirl> Game::GetRandomGirl(bool slave, bool catacomb, bool arena, bool daughter, bool isdaughter)
 {
     return m_Girls->GetRandomGirl(slave, catacomb, arena, daughter, isdaughter);
 }
@@ -980,7 +887,7 @@ cGirls& Game::girl_pool()
     return *m_Girls;
 }
 
-std::unique_ptr<sGirl> Game::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool childnaped,
+std::shared_ptr<sGirl> Game::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, bool childnaped,
                                               bool arena, bool daughter, bool isdaughter, std::string findbyname)
 {
     return m_Girls->CreateRandomGirl(age, slave, undead, Human0Monster1, childnaped, arena, daughter, isdaughter, findbyname);

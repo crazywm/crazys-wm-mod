@@ -31,7 +31,7 @@ struct sFarm : public IBuilding
     ~sFarm();
 
     void save_additional_xml(tinyxml2::XMLElement& root) const override {};
-    void auto_assign_job(sGirl * target, std::stringstream& message, bool is_night) override;
+    void auto_assign_job(sGirl& target, std::stringstream& message, bool is_night) override;
     void UpdateGirls(bool is_night) override;
 };
 

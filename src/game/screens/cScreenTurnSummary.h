@@ -46,7 +46,7 @@ private:
         Summary_DUNGEON,
     };
 
-    SummaryCategory m_ActiveCategory;
+    SummaryCategory m_ActiveCategory = SummaryCategory::Summary_GIRLS;
     std::shared_ptr<const CombatReport> m_ActiveReport;
 
     void set_ids() override;

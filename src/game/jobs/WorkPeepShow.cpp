@@ -45,7 +45,7 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} let the customers watch her get naked.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
 
     int wages = girl.askprice() + rng % 50;
@@ -389,15 +389,15 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
     //gain traits
         if (jobperformance >= 140 && rng.percent(25))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
     }
     if (sextype != SKILL_STRIP && girl.dignity() < 0 && rng.percent(25))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
+        cGirls::PossiblyGainNewTrait(girl, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", Day0Night1, EVENT_WARNING);
     }
 
     //lose
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 30, ACTION_WORKSTRIP, "${name} has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKSTRIP, "${name} has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
 
 #pragma endregion
     return false;

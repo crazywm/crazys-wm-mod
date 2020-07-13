@@ -130,7 +130,7 @@ void cScreenHouseDetails::init(bool back)
     if (g_Game->GetNumRunaways() > 0)
     {
         bool first = true;
-        for(sGirl* rgirl : g_Game->GetRunaways())
+        for(const auto& rgirl : g_Game->GetRunaways())
         {
             if (!first)    ss << " ,   ";
             first = false;

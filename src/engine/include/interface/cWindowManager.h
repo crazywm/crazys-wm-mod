@@ -90,8 +90,8 @@ public:
     std::shared_ptr<cModalWindow> GetModalWindow();
 
     // girl selection
-    sGirl* GetActiveGirl() const;
-    void SetActiveGirl(sGirl* girl);
+    std::shared_ptr<sGirl> GetActiveGirl() const;
+    void SetActiveGirl(std::shared_ptr<sGirl> girl);
 
     // key state functions
     bool IsCtrlHeld() const;
@@ -107,7 +107,7 @@ private:
     IBuilding* m_ActiveBuilding = nullptr;
 
     // the active girl list.
-    std::vector<sGirl*> m_SelectedGirls;
+    std::vector<std::shared_ptr<sGirl>> m_SelectedGirls;
 
     // pointer to the graphics engine
     CGraphics* m_GFX;

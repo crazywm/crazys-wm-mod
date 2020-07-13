@@ -40,7 +40,7 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} is assigned to advertise the brothel.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     int wages = 20, tips = 0;
     int enjoy = 0, fame = 0;
@@ -181,10 +181,10 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
     // Update Enjoyment
     girl.upd_Enjoyment(actiontype, enjoy);
     if (girl.strip() > 50)
-        cGirls::PossiblyGainNewTrait(&girl, "Exhibitionist", 50, actiontype, "${name} has become quite the Exhibitionist, she seems to prefer Advertising topless whenever she can.", Day0Night1 == SHIFT_NIGHT);
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 70, actiontype, "Advertising on a daily basis has made ${name} more Charismatic.", Day0Night1 == SHIFT_NIGHT);
+        cGirls::PossiblyGainNewTrait(girl, "Exhibitionist", 50, actiontype, "${name} has become quite the Exhibitionist, she seems to prefer Advertising topless whenever she can.", Day0Night1 == SHIFT_NIGHT);
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 70, actiontype, "Advertising on a daily basis has made ${name} more Charismatic.", Day0Night1 == SHIFT_NIGHT);
     // Lose Traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 40, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 40, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1 == SHIFT_NIGHT);
 
 #pragma endregion
     return false;

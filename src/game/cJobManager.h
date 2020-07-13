@@ -83,7 +83,7 @@ public:
     std::array<sJobFilter, NUMJOBTYPES> JobFilters;
 
     // return a job description along with a count of how many girls are on it
-    bool HandleSpecialJobs(sGirl* Girl, int JobID, int OldJobID, bool Day0Night1, bool fulltime = false );  // check for and handle special job assignments
+    bool HandleSpecialJobs(sGirl& Girl, int JobID, int OldJobID, bool Day0Night1, bool fulltime = false );  // check for and handle special job assignments
 
     void Setup();
 
@@ -91,12 +91,12 @@ public:
     static bool AddictBuysDrugs(std::string Addiction, std::string Drug, sGirl& girl, IBuilding* brothel, bool Day0Night1);
 
     // MYR: New code for security.  All the old code is still here, commented out.
-    static bool work_related_violence(sGirl*, bool, bool);
+    static bool work_related_violence(sGirl&, bool, bool);
     static int guard_coverage(std::vector<sGang*> *v=nullptr);
-    static bool security_stops_rape(sGirl * girl, sGang *enemy_gang, int day_night);
-    static bool gang_stops_rape(sGirl* girl, std::vector<sGang *> gangs_guarding, sGang *enemy_gang, int coverage, int day_night);
-    static bool girl_fights_rape(sGirl* girl, sGang *enemy_gang, int day_night);
-    static void customer_rape(sGirl* girl, int numberofattackers);
+    static bool security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_night);
+    static bool gang_stops_rape(sGirl& girl, std::vector<sGang *> gangs_guarding, sGang *enemy_gang, int coverage, int day_night);
+    static bool girl_fights_rape(sGirl& girl, sGang *enemy_gang, int day_night);
+    static void customer_rape(sGirl& girl, int numberofattackers);
     static std::string GetGirlAttackedString(u_int attacktype = SKILL_COMBAT);    // `J` added attacktype to be used with sextype for more specific attacks defaulting to combat
 
 
@@ -105,19 +105,19 @@ public:
     static void get_training_set(std::vector<sGirl*> &v, std::vector<sGirl*> &set);
     static void do_training(sBrothel* brothel, bool Day0Night1);
     static void do_training_set(std::vector<sGirl*> girls, bool Day0Night1);
-    static void do_solo_training(sGirl *girl, bool Day0Night1);
+    static void do_solo_training(sGirl& girl, bool Day0Night1);
     void do_advertising(IBuilding& brothel, bool Day0Night1);
     void do_whorejobs(IBuilding& brothel, bool Day0Night1);
     void do_custjobs(IBuilding& brothel, bool Day0Night1);
 
     bool is_job_Paid_Player(u_int Job);        //    WD:    Test for all jobs paid by player
     bool FullTimeJob(u_int Job);            //    `J`    Test if job is takes both shifts
-    std::string GirlPaymentText(IBuilding * brothel, sGirl * girl, int totalTips, int totalPay, int totalGold,
-                           bool Day0Night1);
+    std::string GirlPaymentText(IBuilding * brothel, sGirl& girl, int totalTips, int totalPay, int totalGold,
+                                bool Day0Night1);
 
     static bool is_Surgery_Job(int testjob);
 
-    static void CatchGirl(sGirl* girl, std::stringstream& fuckMessage, const sGang* guardgang);
+    static void CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const sGang* guardgang);
 
     std::vector<std::unique_ptr<IGenericJob>> m_OOPJobs;
 

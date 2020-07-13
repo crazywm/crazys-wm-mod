@@ -27,6 +27,7 @@
 #include "Inventory.hpp"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
+#include "character/cCustomers.h"
 
 #pragma endregion
 
@@ -44,7 +45,7 @@ bool WorkBeastCapture(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} equipped herself and went out to hunt for exotic beasts and animals.\n \n";
 
-    cGirls::EquipCombat(&girl);    // ready armor and weapons!
+    cGirls::EquipCombat(girl);    // ready armor and weapons!
 
     int wages = 40, tips = 0;
     int enjoy = 0;
@@ -143,7 +144,7 @@ bool WorkBeastCapture(sGirl& girl, bool Day0Night1, cRng& rng)
                     girl.beastiality(rng % gain);
                     girl.libido(-2 * (rng % gain));
                     girl.tiredness(gain);
-                    girl.calc_insemination(*cGirls::GetBeast());
+                    girl.calc_insemination(cGirls::GetBeast());
                 }
                 tired += gain;
                 break;
@@ -271,16 +272,16 @@ bool WorkBeastCapture(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype, enjoy);
 
     // Gain Traits
-    cGirls::PossiblyGainNewTrait(&girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Tough", 30, actiontype, "She has become pretty Tough from all of the fights she's been in.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Adventurer", 40, actiontype, "She has been in enough tough spots to consider herself Adventurer.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Aggressive", 60, actiontype, "She is getting rather Aggressive from her enjoyment of combat.", Day0Night1);
     if (rng.percent(25) && girl.strength() >= 60 && girl.combat() > girl.magic())
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Strong", 60, ACTION_COMBAT, "${name} has become pretty Strong from all of the fights she's been in.", Day0Night1);
     }
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Fragile", 15, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Fragile", 15, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 
     girl.AddMessage(ss.str(), imagetype, msgtype);
 

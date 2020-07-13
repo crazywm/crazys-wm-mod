@@ -120,7 +120,7 @@ bool SurgeryJob::DoWork(sGirl& girl, bool is_night) {
     ss << " " << m_SurgeryData.SurgeryMessage << "\n \n";
 
     int msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
-    cGirls::UnequipCombat(&girl);    // not for patient
+    cGirls::UnequipCombat(girl);    // not for patient
 
     // update progress
     if (!is_night)    // the Doctor works on her during the day
@@ -304,7 +304,7 @@ BreastReduction::BreastReduction() : SurgeryJob(JOB_BREASTREDUCTION, {"${name} i
 void BreastReduction::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
 
-    ss << cGirls::AdjustTraitGroupBreastSize(&girl, -1, false) << "\n \n";
+    ss << cGirls::AdjustTraitGroupBreastSize(girl, -1, false) << "\n \n";
 
     EndSurgery(girl);
 
@@ -339,7 +339,7 @@ BoobJob::BoobJob() : SurgeryJob(JOB_BOOBJOB, {"${name} is in the Clinic to get h
 void BoobJob::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
 
-    ss << cGirls::AdjustTraitGroupBreastSize(&girl, 1, false) << "\n \n";
+    ss << cGirls::AdjustTraitGroupBreastSize(girl, 1, false) << "\n \n";
 
     EndSurgery(girl);
 
@@ -504,7 +504,7 @@ void TubesTied::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
     EndSurgery(girl);
     girl.FullJobReset(JOB_CLINICREST);
-    ss << cGirls::AdjustTraitGroupFertility(&girl, -10, false);
+    ss << cGirls::AdjustTraitGroupFertility(girl, -10, false);
 }
 
 double TubesTied::GetPerformance(const sGirl& girl, bool estimate) const {
@@ -540,7 +540,7 @@ bool Fertility::is_valid(sGirl& girl) {
 void Fertility::success(sGirl& girl) {
     ss << "The surgery is a success.\n";
     EndSurgery(girl);
-    ss << cGirls::AdjustTraitGroupFertility(&girl, 1, false);
+    ss << cGirls::AdjustTraitGroupFertility(girl, 1, false);
     if (girl.has_active_trait("Broodmother"))
     {
         ss << "\n \nShe has been released from the Clinic.";

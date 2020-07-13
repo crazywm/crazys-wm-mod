@@ -228,7 +228,7 @@ void cScreenMovieMaker::update_image()
 {
     if (selected_girl()/*&& !IsMultiSelected(girllist_id)*/)
     {
-        PrepareImage(girlimage_id, selected_girl(), IMGTYPE_PROFILE, true, ImageNum);
+        PrepareImage(girlimage_id, selected_girl().get(), IMGTYPE_PROFILE, true, ImageNum);
         HideWidget(girlimage_id, false);
     }
     else

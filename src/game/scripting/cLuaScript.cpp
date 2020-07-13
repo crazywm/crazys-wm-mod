@@ -291,10 +291,10 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     }
 
     // `J` zzzzzz - this can probably be done easier
-    sGirl* Daughter1 = nullptr;
-    sGirl* Daughter2 = nullptr;
-    sGirl* Daughter3 = nullptr;
-    sGirl* Mother = nullptr;
+    std::shared_ptr<sGirl> Daughter1 = nullptr;
+    std::shared_ptr<sGirl> Daughter2 = nullptr;
+    std::shared_ptr<sGirl> Daughter3 = nullptr;
+    std::shared_ptr<sGirl> Mother = nullptr;
     stringstream NGmsg1;
     stringstream NGmsg2;
     stringstream NGmsg3;
@@ -303,13 +303,13 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     int oldest = 18;    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
     if (num_daughters > 0)
     {
-        Daughter1 = g_Game->CreateRandomGirl((g_Dice % 13) + 13, slave, false, allowNonHuman, kidnapped, arena).release();
+        Daughter1 = g_Game->CreateRandomGirl((g_Dice % 13) + 13, slave, false, allowNonHuman, kidnapped, arena);
         if (Daughter1->age() > oldest) oldest = Daughter1->age();
         Daughter1->SetSurname(surname);
     }
     if (num_daughters > 1)
     {
-        Daughter2 = g_Game->CreateRandomGirl((g_Dice % 13) + 13, slave, false, allowNonHuman, kidnapped, arena).release();
+        Daughter2 = g_Game->CreateRandomGirl((g_Dice % 13) + 13, slave, false, allowNonHuman, kidnapped, arena);
         if (Daughter2->age() == Daughter1->age())    // if only 2 daughters and their ages are the same, change that
         {                                            // if there is a third daughter, her age can be anything (to allow twins)
             if (Daughter1->age() > 20) Daughter2->age(-(g_Dice % 3 + 1));
@@ -320,14 +320,14 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     }
     if (num_daughters > 2)
     {
-        Daughter3 = g_Game->CreateRandomGirl((g_Dice % 13) + 13, slave, false, allowNonHuman, kidnapped, arena).release();
+        Daughter3 = g_Game->CreateRandomGirl((g_Dice % 13) + 13, slave, false, allowNonHuman, kidnapped, arena);
         if (Daughter3->age() > oldest) oldest = Daughter3->age();
         Daughter3->SetSurname(surname);
     }
 
     if (mother)    // there is a mother
     {
-        Mother = g_Game->CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, slave, false, allowNonHuman, kidnapped, arena).release();    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+        Mother = g_Game->CreateRandomGirl((g_Dice % (50 - (oldest + 18))) + oldest + 18, slave, false, allowNonHuman, kidnapped, arena);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
         Mother->SetSurname(surname);
         if (!g_Dice.percent(Mother->age())) Mother->gain_trait("MILF");    // the younger the mother the more likely she will be a MILF
         Mother->lose_trait("Virgin");

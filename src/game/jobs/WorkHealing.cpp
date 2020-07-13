@@ -28,7 +28,7 @@ bool WorkHealing(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     stringstream ss;
-    cGirls::UnequipCombat(&girl);    // not for patients
+    cGirls::UnequipCombat(girl);    // not for patients
 
     if (girl.has_active_trait("Construct"))
     {

@@ -22,6 +22,7 @@
 #include "cGold.h"
 #include "Game.hpp"
 #include <sstream>
+#include "character/cGirlPool.h"
 
 cScreenMayor::cScreenMayor() : cInterfaceWindowXML("mayor_screen.xml")
 {
@@ -87,6 +88,6 @@ void cScreenMayor::init(bool back)
     {
         ss << "Your influence: " << PlayersInfluence << "%\nNo Rivals";
     }
-    ss << "\n \nNumber of girls in prison: " << g_Game->GetNumInPrison();
+    ss << "\n \nNumber of girls in prison: " << g_Game->GetPrison().num();
     EditTextItem(ss.str(), details_id);
 }

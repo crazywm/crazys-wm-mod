@@ -40,7 +40,7 @@ bool WorkMechanic(sGirl& girl, bool Day0Night1, cRng& rng)
     ss << "${name} worked as a mechanic.\n \n";
 
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
     int wages = 25, tips = 0;
     int enjoy = 0, fame = 0;
     int imagetype = IMGTYPE_PROFILE;
@@ -190,12 +190,12 @@ bool WorkMechanic(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype, enjoy);
 
     //gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Strong", 60, actiontype, "Handling heavy parts and working with heavy tools has made ${name} much Stronger.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with patients and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Strong", 60, actiontype, "Handling heavy parts and working with heavy tools has made ${name} much Stronger.", Day0Night1);
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 20, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
-    cGirls::PossiblyLoseExistingTrait(&girl, "Elegant", 40, actiontype, " Working with dirty, greasy equipment has damaged ${name}'s hair, skin and nails making her less Elegant.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Elegant", 40, actiontype, " Working with dirty, greasy equipment has damaged ${name}'s hair, skin and nails making her less Elegant.", Day0Night1);
 
 #pragma endregion
     return false;

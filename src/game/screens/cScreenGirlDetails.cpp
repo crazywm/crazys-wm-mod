@@ -89,13 +89,13 @@ void cScreenGirlDetails::set_ids()
     SetButtonCallback(interact_id, [this]( ) { do_interaction(); });
     SetButtonCallback(senddungeon_id, [this]( ) { send_to_dungeon(); });
     SetButtonCallback(reldungeon_id, [this]( ) { release_from_dungeon(); });
-    SetButtonCallback(takegold_id, [this]( ) { take_gold(m_SelectedGirl); });
+    SetButtonCallback(takegold_id, [this]( ) { take_gold(*m_SelectedGirl); });
     SetButtonCallback(accomup_id, [this]( ) { update_accomodation(1); });
     SetButtonCallback(accomdown_id, [this]( ) { update_accomodation(-1); });
     SetButtonCallback(more_id, [this]( ) {
-        if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(m_SelectedGirl), girldesc_id, true); }
-        else if (DetailLevel == 1)    { DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(m_SelectedGirl), girldesc_id, true); }
-        else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(m_SelectedGirl), girldesc_id, true); }
+        if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(*m_SelectedGirl), girldesc_id, true); }
+        else if (DetailLevel == 1)    { DetailLevel = 2; EditTextItem(cGirls::GetThirdDetailsString(*m_SelectedGirl), girldesc_id, true); }
+        else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(*m_SelectedGirl), girldesc_id, true); }
     });
     SetButtonCallback(inventory_id, [this]( ) {
         if (m_SelectedGirl)
@@ -126,13 +126,13 @@ void cScreenGirlDetails::set_ids()
 }
 
 void cScreenGirlDetails::UpdateImage(int imagetype) {
-    PrepareImage(girlimage_id, m_SelectedGirl, imagetype, true, ImageNum);
+    PrepareImage(girlimage_id, m_SelectedGirl.get(), imagetype, true, ImageNum);
 }
 
 void cScreenGirlDetails::init(bool back)
 {
     m_Refresh = false;
-    m_SelectedGirl = &active_girl();
+    m_SelectedGirl = selected_girl();
     m_TraitInfoCache = m_SelectedGirl->get_trait_info();
     Focused();
 
@@ -153,14 +153,14 @@ void cScreenGirlDetails::init(bool back)
     EditTextItem(m_SelectedGirl->FullName(), girlname_id);
 
     string detail;
-    if (DetailLevel == 0)        detail = cGirls::GetDetailsString(m_SelectedGirl);
-    else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(m_SelectedGirl);
-    else                        detail = cGirls::GetThirdDetailsString(m_SelectedGirl);
+    if (DetailLevel == 0)        detail = cGirls::GetDetailsString(*m_SelectedGirl);
+    else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(*m_SelectedGirl);
+    else                        detail = cGirls::GetThirdDetailsString(*m_SelectedGirl);
     EditTextItem(detail, girldesc_id, true);
 
     /// TODO when do we reset the image?
     if(!back) {
-        PrepareImage(girlimage_id, m_SelectedGirl, IMGTYPE_PROFILE, true, ImageNum);
+        PrepareImage(girlimage_id, m_SelectedGirl.get(), IMGTYPE_PROFILE, true, ImageNum);
     }
 
     SliderRange(houseperc_id, 0, 100, m_SelectedGirl->house(), 10);
@@ -175,14 +175,14 @@ void cScreenGirlDetails::init(bool back)
     if (accom_id != -1)
     {
         SliderRange(accom_id, 0, 9, m_SelectedGirl->m_AccLevel, 1);
-        SliderMarker(accom_id, cGirls::PreferredAccom(m_SelectedGirl));
+        SliderMarker(accom_id, cGirls::PreferredAccom(*m_SelectedGirl));
     }
     if (accomval_id != -1)
     {
         ss.str(""); ss << "Accommodation: " << cGirls::Accommodation(SliderValue(accom_id));
         if (cfg.debug.log_extradetails())
         {
-            int val = SliderValue(accom_id) - cGirls::PreferredAccom(m_SelectedGirl);
+            int val = SliderValue(accom_id) - cGirls::PreferredAccom(*m_SelectedGirl);
             if (val != 0) ss << "  ( " << (val > 0 ? "+" : "") << val << " )";
         }
         EditTextItem(ss.str(), accomval_id);
@@ -295,7 +295,7 @@ void cScreenGirlDetails::set_accomodation(int value)
         ss.str(""); ss << "Accommodation: " << cGirls::Accommodation(value);
         if (cfg.debug.log_extradetails())
         {
-            int val = SliderValue(accom_id) - cGirls::PreferredAccom(m_SelectedGirl);
+            int val = SliderValue(accom_id) - cGirls::PreferredAccom(*m_SelectedGirl);
             if (val != 0) ss << "  ( " << (val > 0 ? "+" : "") << val << " )";
         }
         EditTextItem(ss.str(), accomval_id);
@@ -311,7 +311,7 @@ void cScreenGirlDetails::set_house_percentage(int value)
     EditTextItem(ss.str(), housepercval_id);
     if (DetailLevel == 0)                                // Rebelliousness might have changed, so update details
     {
-        string detail = cGirls::GetDetailsString(m_SelectedGirl);
+        string detail = cGirls::GetDetailsString(*m_SelectedGirl);
         EditTextItem(detail, girldesc_id, true);
     }
 }
@@ -320,7 +320,7 @@ void cScreenGirlDetails::on_select_job(int selection, bool fulltime)
 {// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
     int old_job = (Day0Night1 ? m_SelectedGirl->m_NightJob : m_SelectedGirl->m_DayJob);
     // handle special job requirements and assign - if HandleSpecialJobs returns true, the job assignment was modified or cancelled
-    if (g_Game->job_manager().HandleSpecialJobs(m_SelectedGirl, selection, old_job, Day0Night1, fulltime))
+    if (g_Game->job_manager().HandleSpecialJobs(*m_SelectedGirl, selection, old_job, Day0Night1, fulltime))
     {
         selection = (Day0Night1 ? m_SelectedGirl->m_NightJob : m_SelectedGirl->m_DayJob);
         SetSelectedItemInList(joblist_id, selection, false);
@@ -357,9 +357,9 @@ void cScreenGirlDetails::release_from_dungeon()
     }
     else
     {
-        sGirl* nextGirl = get_next_girl();
-        auto tempGirl = g_Game->dungeon().RemoveGirl(m_SelectedGirl);
-        current_brothel.add_girl(tempGirl.release());
+        auto nextGirl = get_next_girl();
+        auto tempGirl = g_Game->dungeon().RemoveGirl(m_SelectedGirl.get());
+        current_brothel.add_girl(std::move(tempGirl));
 
         if (g_Game->dungeon().GetNumGirls() == 0)
         {
@@ -374,8 +374,10 @@ void cScreenGirlDetails::release_from_dungeon()
 void cScreenGirlDetails::send_to_dungeon()
 {
     if (!m_SelectedGirl) return;
-    sGirl* nextGirl = get_next_girl();
-    if(g_Game->dungeon().SendGirlToDungeon(*m_SelectedGirl)) {
+    if(!m_SelectedGirl->m_Building) return;
+
+    auto nextGirl = get_next_girl();
+    if(g_Game->dungeon().SendGirlToDungeon(m_SelectedGirl->m_Building->remove_girl(m_SelectedGirl.get()))) {
         // if this was successful
     }
     set_active_girl(nextGirl);
@@ -439,16 +441,16 @@ void cScreenGirlDetails::NextGirl()
     auto candidate = get_next_girl();
     set_active_girl(candidate);
     // if we did change the girl, update screen
-    if(m_SelectedGirl != &active_girl()) {
+    if(m_SelectedGirl.get() != &active_girl()) {
         init(false);
     }
 }
 
-sGirl *cScreenGirlDetails::get_prev_girl()        // return previous girl in the sorted list
+std::shared_ptr<sGirl> cScreenGirlDetails::get_prev_girl()        // return previous girl in the sorted list
 {
     if (m_SelectedGirl->m_DayJob == JOB_INDUNGEON)
     {
-        return g_Game->dungeon().GetGirl(g_Game->dungeon().GetGirlPos(m_SelectedGirl) - 1)->m_Girl.get();
+        return g_Game->dungeon().GetGirl(g_Game->dungeon().GetGirlPos(m_SelectedGirl.get()) - 1)->m_Girl;
     }
     else
     {
@@ -459,17 +461,17 @@ sGirl *cScreenGirlDetails::get_prev_girl()        // return previous girl in the
             g_LogFile.log(ELogLevel::ERROR, "Girl is not in building she claims she is!");
             return m_SelectedGirl;
         } else if (index == 0) {
-            return source_building->get_girl(source_building->num_girls() - 1);
+            return source_building->girls().get_ref_counted(source_building->get_girl(source_building->num_girls() - 1));
         }
-        return source_building->get_girl(index - 1);
+        return source_building->girls().get_ref_counted(source_building->get_girl(index - 1));
     }
 }
 
-sGirl *cScreenGirlDetails::get_next_girl()        // return next girl in the sorted list
+std::shared_ptr<sGirl> cScreenGirlDetails::get_next_girl()        // return next girl in the sorted list
 {
     if (m_SelectedGirl->m_DayJob == JOB_INDUNGEON)
     {
-        return g_Game->dungeon().GetGirl(g_Game->dungeon().GetGirlPos(m_SelectedGirl) + 1)->m_Girl.get();
+        return g_Game->dungeon().GetGirl(g_Game->dungeon().GetGirlPos(m_SelectedGirl.get()) + 1)->m_Girl;
     }
     else
     {
@@ -479,19 +481,19 @@ sGirl *cScreenGirlDetails::get_next_girl()        // return next girl in the sor
             g_LogFile.log(ELogLevel::ERROR, "Girl is not in building she claims she is!");
             return m_SelectedGirl;
         } else if (index == source_building->num_girls() - 1) {
-            return source_building->get_girl(0);
+            return source_building->girls().get_ref_counted(source_building->get_girl(0));
         }
-        return source_building->get_girl(index + 1);
+        return source_building->girls().get_ref_counted(source_building->get_girl(index + 1));
     }
 }
 
 
-void cScreenGirlDetails::take_gold(sGirl *girl)
+void cScreenGirlDetails::take_gold(sGirl& girl)
 {
     // a bit inefficient, but we can't do this after the girl has run away
-    sGirl* nextGirl = get_next_girl();
-    cGirls::TakeGold(*girl);
-    if(girl->m_RunAway) {
+    auto nextGirl = get_next_girl();
+    cGirls::TakeGold(girl);
+    if(girl.m_RunAway) {
         m_SelectedGirl = nextGirl;
         if (m_SelectedGirl == nullptr) pop_window();
     }
@@ -512,7 +514,7 @@ void cScreenGirlDetails::OnKeyPress(SDL_Keysym keysym)
         // Rebelliousness might have changed, so update details
         if (DetailLevel == 0)
         {
-            string detail = cGirls::GetDetailsString(m_SelectedGirl);
+            string detail = cGirls::GetDetailsString(*m_SelectedGirl);
             EditTextItem(detail, girldesc_id);
         }
     }
@@ -521,12 +523,12 @@ void cScreenGirlDetails::OnKeyPress(SDL_Keysym keysym)
         if (keysym.mod & KMOD_SHIFT)
         {
             DetailLevel = 2;
-            EditTextItem(cGirls::GetThirdDetailsString(m_SelectedGirl), girldesc_id, true);
+            EditTextItem(cGirls::GetThirdDetailsString(*m_SelectedGirl), girldesc_id, true);
         }
         else
         {
-            if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(m_SelectedGirl), girldesc_id, true); }
-            else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(m_SelectedGirl), girldesc_id, true); }
+            if (DetailLevel == 0)        { DetailLevel = 1; EditTextItem(cGirls::GetMoreDetailsString(*m_SelectedGirl), girldesc_id, true); }
+            else                        { DetailLevel = 0; EditTextItem(cGirls::GetDetailsString(*m_SelectedGirl), girldesc_id, true); }
         }
     }
 

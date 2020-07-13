@@ -92,5 +92,6 @@ void RegisterSurgeryJobs(cJobManager& mgr);
 void RegisterWrappedJobs(cJobManager& mgr);
 void RegisterManagerJobs(cJobManager& mgr);
 void RegisterFilmJobs(cJobManager& mgr);
+void RegisterTherapyJobs(cJobManager& mgr);
 
 #endif //WM_GENERICJOB_H

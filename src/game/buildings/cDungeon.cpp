@@ -30,6 +30,8 @@
 #include "scripting/GameEvents.h"
 #include "CLog.h"
 #include "xml/util.h"
+#include "cGirlGangFight.h"
+#include "character/pregnancy.h"
 
 extern cRng                g_Dice;
 
@@ -51,7 +53,8 @@ sDungeonCust::~sDungeonCust()        // destructor
 }
 
 // strut sDungeonGirl
-sDungeonGirl::sDungeonGirl()        // constructor
+sDungeonGirl::sDungeonGirl(std::shared_ptr<sGirl> girl) :
+    m_Girl(std::move(girl))
 {
 }
 
@@ -131,8 +134,7 @@ bool cDungeon::LoadDungeonDataXML(const tinyxml2::XMLElement* pDungeon)    // lo
         // load each girl and add her
         for (auto& xml_girl : IterateChildElements(*pDungeonGirls, "Girl"))
         {
-            sDungeonGirl girl;
-            girl.m_Girl = std::unique_ptr<sGirl>(new sGirl());
+            sDungeonGirl girl{std::make_shared<sGirl>(false)};
             bool success = girl.m_Girl->LoadGirlXML(&xml_girl);
             if (success)
             {
@@ -176,14 +178,8 @@ bool cDungeon::LoadDungeonDataXML(const tinyxml2::XMLElement* pDungeon)    // lo
     return true;
 }
 
-void cDungeon::AddGirl(sGirl* girl, int reason)
+void cDungeon::AddGirl(std::shared_ptr<sGirl> girl, int reason)
 {
-    // remove from previous building
-    IBuilding* building = girl->m_Building;
-    if(building) {
-        building->remove_girl(girl);
-    }
-
     if (reason == DUNGEON_GIRLKIDNAPPED)
     {
         if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_KIDNAPXGIRLS)
@@ -196,17 +192,8 @@ void cDungeon::AddGirl(sGirl* girl, int reason)
     girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
 
     // by this stage they should no longer be a part of any other lists of girls
-    sDungeonGirl newPerson;
+    sDungeonGirl newPerson{std::move(girl)};
     newPerson.m_Reason = reason;
-    newPerson.m_Girl = std::unique_ptr<sGirl>(girl);
-
-    // remove from girl manager if she is there
-    g_Game->girl_pool().RemoveGirl(girl);
-
-    // remove girl from brothels if she is there
-    if(girl->m_Building) {
-        girl->m_Building->remove_girl(girl);
-    }
     PlaceDungeonGirl(std::move(newPerson));
 }
 
@@ -254,7 +241,7 @@ int cDungeon::GetGirlPos(sGirl* girl)
     return -1;
 }
 
-std::unique_ptr<sGirl> cDungeon::RemoveGirl(sGirl* girl)    // this returns the girl, it must be placed somewhere or deleted
+std::shared_ptr<sGirl> cDungeon::RemoveGirl(sGirl* girl)    // this returns the girl, it must be placed somewhere or deleted
 {
     for(auto& current : m_Girls)
     {
@@ -265,11 +252,11 @@ std::unique_ptr<sGirl> cDungeon::RemoveGirl(sGirl* girl)    // this returns the 
     return nullptr;
 }
 
-std::unique_ptr<sGirl> cDungeon::RemoveGirl(sDungeonGirl* girl)    // this returns the girl, it must be placed somewhere or deleted
+std::shared_ptr<sGirl> cDungeon::RemoveGirl(sDungeonGirl* girl)    // this returns the girl, it must be placed somewhere or deleted
 {
     girl->m_Girl->m_DayJob = girl->m_Girl->m_NightJob = JOB_RESTING;
 
-    std::unique_ptr<sGirl> girlData = std::move(girl->m_Girl);
+    std::shared_ptr<sGirl> girlData = std::move(girl->m_Girl);
     girl->m_Girl = nullptr;
 
     // remove from girls list
@@ -317,7 +304,7 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
     ss.str("");
     if (detailName == "Rebelliousness")    // `J` Dungeon "Matron" can be a Torturer from any brothel
     {
-        ss << cGirls::GetRebelValue(m_Girl.get(), random_girl_on_job(g_Game->buildings(), JOB_TORTURER, false) != nullptr);
+        ss << cGirls::GetRebelValue(*m_Girl, random_girl_on_job(g_Game->buildings(), JOB_TORTURER, false) != nullptr);
     }
     else if (detailName == "Reason")
     {
@@ -521,15 +508,15 @@ void cDungeon::Update()
         string summary;
 
         current.m_Weeks++;                        // the number of weeks they have been in the dungeon
-        cGirls::CalculateGirlType(girl);        // update the fetish traits
-        cGirls::updateGirlAge(girl, true);        // update birthday counter and age the girl
-        cGirls::updateTemp(girl);            // update temp stuff
-        cGirls::EndDayGirls(g_Game->buildings().get_building(0), girl);
-        g_Game->girl_pool().HandleChildren(girl, summary);    // handle pregnancy and children growing up
-        cGirls::updateSTD(girl);                // health loss to STD's - NOTE: Girl can die
-        cGirls::updateHappyTraits(girl);        // Update happiness due to Traits - NOTE: Girl can die
+        cGirls::CalculateGirlType(*girl);        // update the fetish traits
+        cGirls::updateGirlAge(*girl, true);        // update birthday counter and age the girl
+        cGirls::updateTemp(*girl);            // update temp stuff
+        cGirls::EndDayGirls(g_Game->buildings().get_building(0), *girl);
+        handle_children(*girl, summary, true);            // handle pregnancy and children growing up
+        cGirls::updateSTD(*girl);                // health loss to STD's - NOTE: Girl can die
+        cGirls::updateHappyTraits(*girl);        // Update happiness due to Traits - NOTE: Girl can die
         updateGirlTurnDungeonStats(&current);    // Update stats
-        cGirls::updateGirlTurnStats(girl);        // Stat Code common to Dugeon and Brothel
+        cGirls::updateGirlTurnStats(*girl);        // Stat Code common to Dugeon and Brothel
 
         // Check again for dead girls
         if (girl->health() <= 0)
@@ -735,13 +722,13 @@ void cDungeon::SetTortureDone()
     m_TortureDone = true;
 }
 
-bool cDungeon::SendGirlToDungeon(sGirl& girl)
+bool cDungeon::SendGirlToDungeon(std::shared_ptr<sGirl> girl)
 {
     std::stringstream ss;
     bool success = true;
-    int reason = girl.m_Spotted ? DUNGEON_GIRLSTEAL : DUNGEON_GIRLWHIM;
+    int reason = girl->m_Spotted ? DUNGEON_GIRLSTEAL : DUNGEON_GIRLWHIM;
 
-    auto result = AttemptEscape(girl);
+    auto result = AttemptEscape(*girl);
     switch(result) {
         case EGirlEscapeAttemptResult::SUBMITS:
             ss << "She goes quietly with a sullen look on her face.";
@@ -757,15 +744,31 @@ bool cDungeon::SendGirlToDungeon(sGirl& girl)
         case EGirlEscapeAttemptResult::SUCCESS:
             ss << "After defeating you goons and you, she escapes to the outside.\n";
             ss << "She will escape for good in 6 weeks if you don't send someone after her.";
-            girl.run_away();
+            girl->run_away();
             success = false;
             stringstream smess;
-            smess << girl.FullName() << " has run away";
+            smess << girl->FullName() << " has run away";
             g_Game->push_message(smess.str(), 1);
     }
     g_Game->push_message(ss.str(), 0);
 
     if (success)
-        g_Game->dungeon().AddGirl(&girl, reason);
+        g_Game->dungeon().AddGirl(std::move(girl), reason);
     return success;
+}
+
+void cDungeon::SetFeeding(int num, bool allow) {
+    if ((num - GetNumGirls()) >= 0)    // it is a customer
+    {
+        GetCust(num - GetNumGirls())->m_Feeding = allow;
+    }
+    else
+    {
+        GetGirl(num)->m_Feeding = allow;
+    }
+}
+
+void cDungeon::ReleaseGirl(int index, IBuilding& target) {
+    auto girl = RemoveGirl(GetGirl(index));
+    target.add_girl(std::move(girl));
 }

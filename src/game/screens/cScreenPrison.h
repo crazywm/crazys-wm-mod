@@ -41,7 +41,7 @@ public:
     void process() override { };
     void more_button();
     void release_button();
-    int PrisonReleaseCost(sGirl* girl);
+    int PrisonReleaseCost(sGirl& girl);
     void update_details();
     sGirl* get_selected_girl();
     void selection_change(int selection);

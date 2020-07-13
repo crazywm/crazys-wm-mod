@@ -80,37 +80,34 @@ void sFarm::UpdateGirls(bool is_night)        // Start_Building_Process_B
 
 
     //*/
-    for (auto& current : girls()) {
-        sw = (is_night ? current->m_NightJob : current->m_DayJob);
-        if (current->is_dead() || sw == m_RestJob || sw == m_MatronJob || sw == JOB_MARKETER)
+    m_Girls->apply([&](sGirl& girl) {
+        auto sw = girl.get_job(is_night);
+        if (girl.is_dead() || sw == m_RestJob || sw == m_MatronJob || sw == JOB_MARKETER)
         {    // skip dead girls, resting girls and the matron
-            continue;
+            return;
         }
-        g_Game->job_manager().handle_simple_job(*current, is_night);
-    }
-
-
+        g_Game->job_manager().handle_simple_job(girl, is_night);
+    });
+    
     //////////////////////////////////////////////////////////////
     //  Do Marketer last so she can sell what the others made.  //
     //////////////////////////////////////////////////////////////
-
-    for (auto& current : girls())
-    {
-        sw = (is_night ? current->m_NightJob : current->m_DayJob);
-        if (current->is_dead() || sw != JOB_MARKETER)
+    m_Girls->apply([&](sGirl& girl) {
+        auto sw = girl.get_job(is_night);
+        if (girl.is_dead() || sw != JOB_MARKETER)
         {    // skip dead girls, resting girls and the matron
-            continue;
+            return;
         }
-        g_Game->job_manager().handle_simple_job(*current, is_night);
-    }
+        g_Game->job_manager().handle_simple_job(girl, is_night);
+    });
 
     EndShift("Farm Manager", is_night, matron);
 }
 
-void sFarm::auto_assign_job(sGirl* target, std::stringstream& message, bool is_night)
+void sFarm::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)
 {
     // if they have no job at all, assign them a job
-    message << "The Farm Manager assigns " << target->FullName() << " to ";
+    message << "The Farm Manager assigns " << target.FullName() << " to ";
     // `J` zzzzzz need to add this in
     message << "do nothing because this part of the code has not been added yet.";
     /*

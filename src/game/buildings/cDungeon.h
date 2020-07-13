@@ -32,7 +32,7 @@
 class cGirlTorture;
 
 // Keeps track of customers in the dungeon
-typedef struct sDungeonCust
+struct sDungeonCust
 {
     sDungeonCust();                // constructor
     ~sDungeonCust();            // destructor
@@ -48,13 +48,13 @@ typedef struct sDungeonCust
     sDungeonCust*   m_Next;
     sDungeonCust*   m_Prev;
     int             m_Health;
-    void OutputCustDetailString(string& Data, const string& detailName);
-}sDungeonCust;
+    void OutputCustDetailString(std::string& Data, const std::string& detailName);
+};
 
 // Keeps track of girls in the dungeon
 struct sDungeonGirl
 {
-    sDungeonGirl();                        // constructor
+    sDungeonGirl(std::shared_ptr<sGirl> girl);                        // constructor
     ~sDungeonGirl();                    // destructor
 
     sDungeonGirl(sDungeonGirl&&) = default;
@@ -65,8 +65,8 @@ struct sDungeonGirl
     int                m_Weeks    = 0;            // the number of weeks they have been here
 
     // customer data
-    std::unique_ptr<sGirl> m_Girl;
-    void OutputGirlDetailString(string& Data, const string& detailName);
+    std::shared_ptr<sGirl> m_Girl;
+    void OutputGirlDetailString(std::string& Data, const std::string& detailName);
 };
 
 
@@ -91,17 +91,18 @@ public:
     ~cDungeon();                            // destructor
     tinyxml2::XMLElement& SaveDungeonDataXML(tinyxml2::XMLElement * pRoot);    // saves dungeon data
     bool LoadDungeonDataXML(const tinyxml2::XMLElement* pDungeon);
-    bool SendGirlToDungeon(sGirl& girl);
-    void AddGirl(sGirl* girl, int reason);
+
+    bool SendGirlToDungeon(shared_ptr<sGirl> girl);
+    void AddGirl(shared_ptr<sGirl> girl, int reason);
     void AddCust(int reason, int numDaughters, bool hasWife);
-    void OutputGirlRow(int i, vector<string>& Data, const vector<string>& columnNames);
-    void OutputCustRow(int i, vector<string>& Data, const vector<string>& columnNames);
+    void OutputGirlRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames);
+    void OutputCustRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames);
     sDungeonGirl* GetGirl(int i);
-    sDungeonGirl* GetGirlByName(string name);
+    sDungeonGirl* GetGirlByName(std::string name);
     sDungeonCust* GetCust(int i);
     int GetDungeonPos(sGirl* girl);
-    std::unique_ptr<sGirl> RemoveGirl(sGirl* girl);
-    std::unique_ptr<sGirl> RemoveGirl(sDungeonGirl* girl);    // releases or kills a girl
+    std::shared_ptr<sGirl> RemoveGirl(sGirl* girl);
+    std::shared_ptr<sGirl> RemoveGirl(sDungeonGirl* girl);    // releases or kills a girl
     void RemoveCust(sDungeonCust* cust);    // releases or kills a customer
     void ClearDungeonGirlEvents();
     void Update();
@@ -112,20 +113,26 @@ public:
     unsigned long GetNumDied()        { return m_NumberDied; }
 
     int NumGirlsTort()                { return m_NumGirlsTort; }
-    int NumGirlsTort(int n)            { m_NumGirlsTort += n; return m_NumGirlsTort; }
-     int NumCustsTort()                { return m_NumCustsTort; }
-    int NumCustsTort(int n)            { m_NumCustsTort += n; return m_NumCustsTort; }
+    int NumGirlsTort(int n)           { m_NumGirlsTort += n; return m_NumGirlsTort; }
+    int NumCustsTort()                { return m_NumCustsTort; }
+    int NumCustsTort(int n)           { m_NumCustsTort += n; return m_NumCustsTort; }
 
     std::vector<sDungeonGirl>& girls() { return m_Girls; }
 
 
     // WD:    Torturer tortures dungeon girl. 
     //void doTorturer(sDungeonGirl* d_girl, sGirl* t_girl, string& summary);    { cGirlTorture::cGirlTorture(d_girl, t_girl) }
- 
-    void PlaceDungeonGirl(sDungeonGirl newGirl);
     void PlaceDungeonCustomer(sDungeonCust* newCust);
 
     void SetTortureDone();
+
+    // actions
+    void SetFeeding(int num, bool allow);
+
+    void ReleaseGirl(int index, IBuilding& target);
+
+private:
+    void PlaceDungeonGirl(sDungeonGirl newGirl);
 };
 
 

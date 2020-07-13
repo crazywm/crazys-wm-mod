@@ -26,8 +26,6 @@
 
 #include "CLog.h"
 
-using namespace std;
-
 struct sGirl;
 struct sGang;
 

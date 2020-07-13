@@ -25,7 +25,7 @@
 #include "IBuilding.hpp"
 #include "cJobManager.h"
 
-using namespace std;
+using std::string;
 
 // holds data for movies
 struct sMovie
@@ -75,15 +75,15 @@ struct sMovieStudio : public IBuilding
     void load_xml(const tinyxml2::XMLElement& root) override;
     void save_additional_xml(tinyxml2::XMLElement& root) const override;
 
-    void auto_assign_job(sGirl * target, std::stringstream& message, bool is_night) override;
+    void auto_assign_job(sGirl& target, std::stringstream& message, bool is_night) override;
     void UpdateGirls(bool is_night) override;
 
     void Update() override;
 
-    sGirl* meet_girl() const override;
+    std::shared_ptr<sGirl> meet_girl() const override;
     std::string meet_no_luck() const override;
 
-    int AddScene(sGirl* girl, int Job, int Bonus, int jobType, const char* scene_name);
+    int AddScene(sGirl& girl, int Job, int Bonus, int jobType, const char* scene_name);
     void LoadScene(int m_SceneNum, string m_Name, string m_Actress, string m_Director, int m_Job, long m_Init_Quality, long m_Quality, long m_Promo_Quality, long m_Money_Made, long m_RunWeeks, int m_MovieSceneNum, string m_CM = "", string m_CP = "");
     void NewMovie(string Name, string Director, string Cast, string Crew, int Init_Quality, int Quality,
                   int Promo_Quality, int Money_Made, int RunWeeks);

@@ -47,7 +47,7 @@ bool WorkFakeOrgasm(sGirl& girl, bool Day0Night1, cRng& rng)
 
     ss << "You teach ${name} how to fake her orgasms.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // not for patient
+    cGirls::UnequipCombat(girl);    // not for patient
 
     int enjoy = 0, wages = 10;
     int startday = girl.m_WorkingDay;

@@ -39,7 +39,7 @@ bool WorkFilmPromoter(sGirl& girl, bool Day0Night1, cRng& rng)
     bool movies = !brothel->m_Movies.empty();
     if (!movies)    ss << "There were no movies for her to promote, so she just promoted the studio in general.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // not for studio crew
+    cGirls::UnequipCombat(girl);    // not for studio crew
 
     int wages = 50, tips = 0;
     int enjoy = 0;

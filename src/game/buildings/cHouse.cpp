@@ -53,16 +53,14 @@ void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
     /////////////////////////////////////////////
     //  Do all Personal Bed Warmers together.  //
     /////////////////////////////////////////////
-
-    for (auto& current : girls())
-    {
-        sw = (is_night ? current->m_NightJob : current->m_DayJob);
-        if (current->is_dead() || sw != JOB_PERSONALBEDWARMER)
+    m_Girls->apply([&](auto& current) {
+        auto sw = current.get_job(is_night);
+        if (current.is_dead() || sw != JOB_PERSONALBEDWARMER)
         {
-            continue;
+            return;
         }
-        g_Game->job_manager().handle_simple_job(*current, is_night);
-    }
+        g_Game->job_manager().handle_simple_job(current, is_night);
+    });
 
     /////////////////////////////////////////////////////////////////////
     //  All the orher Jobs in the House can be done at the same time.  //
@@ -75,69 +73,68 @@ void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
     JOB_PERSONALTRAINING
 
     //*/
-    for (auto& current : girls())
-    {
-        sw = current->get_job(is_night);;
-        if (current->is_dead() || sw == m_RestJob || sw == m_MatronJob ||    // skip dead girls, resting girls and the matron
+    m_Girls->apply([&](auto& current) {
+        auto sw = current.get_job(is_night);;
+        if (current.is_dead() || sw == m_RestJob || sw == m_MatronJob ||    // skip dead girls, resting girls and the matron
             sw == JOB_PERSONALBEDWARMER ||
             (is_night && sw == JOB_RECRUITER))                            // skip recruiters on the night shift
         {
-            continue;
+            return;
         }
 
-        g_Game->job_manager().handle_simple_job(*current, is_night);
-    }
+        g_Game->job_manager().handle_simple_job(current, is_night);
+    });
 
     EndShift("Head Girl", is_night, matron);
 }
 
-void sHouse::auto_assign_job(sGirl* target, std::stringstream& message, bool is_night)
+void sHouse::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)
 {
     std::stringstream& ss = message;
     // if they have no job at all, assign them a job
-    ss << "The Head Girl assigns " << target->FullName() << " to ";
+    ss << "The Head Girl assigns " << target.FullName() << " to ";
 
     // Set any free girls who would do well at recruiting to recruit for you
-    if (target->is_free() && target->job_performance(JOB_RECRUITER) >= 185)
+    if (target.is_free() && target.job_performance(JOB_RECRUITER) >= 185)
     {
-        target->m_DayJob = target->m_NightJob = JOB_RECRUITER;
+        target.m_DayJob = target.m_NightJob = JOB_RECRUITER;
         ss << "work recruiting girls for you.";
     }
         // assign a slave to clean
-    else if (target->is_slave() && num_girls_on_job(JOB_CLEANHOUSE, is_night) < max(1, num_girls() / 20))
+    else if (target.is_slave() && num_girls_on_job(JOB_CLEANHOUSE, is_night) < max(1, num_girls() / 20))
     {
-        target->m_DayJob = target->m_NightJob = JOB_CLEANHOUSE;
+        target.m_DayJob = target.m_NightJob = JOB_CLEANHOUSE;
         ss << "work cleaning the house.";
     }
         // and a free girl to recruit for you
-    else if (target->is_free() && num_girls_on_job(JOB_RECRUITER, is_night) < 1)
+    else if (target.is_free() && num_girls_on_job(JOB_RECRUITER, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_RECRUITER;
+        target.m_DayJob = target.m_NightJob = JOB_RECRUITER;
         ss << "work recruiting girls for you.";
     }
         // set at least 1 bed warmer
     else if (num_girls_on_job(JOB_PERSONALBEDWARMER, is_night) < 1
-             && !is_virgin(*target))    // Crazy added this so that it wont set virgins to this
+             && !is_virgin(target))    // Crazy added this so that it wont set virgins to this
     {
-        target->m_DayJob = target->m_NightJob = JOB_PERSONALBEDWARMER;
+        target.m_DayJob = target.m_NightJob = JOB_PERSONALBEDWARMER;
         ss << "work warming your bed.";
     }
         // assign 1 cleaner per 20 girls
     else if (num_girls_on_job(JOB_CLEANHOUSE, is_night) < max(1, num_girls() / 20))
     {
-        target->m_DayJob = target->m_NightJob = JOB_CLEANHOUSE;
+        target.m_DayJob = target.m_NightJob = JOB_CLEANHOUSE;
         ss << "work cleaning the house.";
     }
         // Put every one else who is not a virgin and needs some training
-    else if (!is_virgin(*target) && cGirls::GetAverageOfSexSkills(*target) < 99)
+    else if (!is_virgin(target) && cGirls::GetAverageOfSexSkills(target) < 99)
     {
-        target->m_DayJob = target->m_NightJob = JOB_PERSONALTRAINING;
+        target.m_DayJob = target.m_NightJob = JOB_PERSONALTRAINING;
         ss << "get personal training from you.";
     }
         // Set any other free girls to recruit for you
-    else if (target->is_free())
+    else if (target.is_free())
     {
-        target->m_DayJob = target->m_NightJob = JOB_RECRUITER;
+        target.m_DayJob = target.m_NightJob = JOB_RECRUITER;
         ss << "work recruiting girls for you.";
     }
     else

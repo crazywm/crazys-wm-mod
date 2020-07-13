@@ -117,19 +117,19 @@ void FilmMusic::DoScene(sGirl& girl) {
 
 void FilmMusic::GainTraits(sGirl& girl, int performance) const {
     //gain traits
-    if      (performance >= 100 && chance(25)) cGirls::PossiblyGainNewTrait(&girl, "Charming", 80, ACTION_WORKMOVIE, "Singing and dancing on film has made her more Charming.", false);
+    if      (performance >= 100 && chance(25)) cGirls::PossiblyGainNewTrait(girl, "Charming", 80, ACTION_WORKMOVIE, "Singing and dancing on film has made her more Charming.", false);
     else if (performance >= 140 && chance(25))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks sexiness.", false);
+        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks sexiness.", false);
     }
     if (girl.has_active_trait("Singer"))
     {
         if (performance >= 245 && chance(30))
         {
-            cGirls::PossiblyGainNewTrait(&girl, "Idol", 80, ACTION_WORKMOVIE, "Her talented and charismatic performances have got a large number of fans Idolizing her.", false);
+            cGirls::PossiblyGainNewTrait(girl, "Idol", 80, ACTION_WORKMOVIE, "Her talented and charismatic performances have got a large number of fans Idolizing her.", false);
         }
     }
-    else if (performance >= 200 && chance(30)) cGirls::PossiblyGainNewTrait(&girl, "Singer", 80, ACTION_WORKMOVIE, "Her singing has become quite excellent.", false);
+    else if (performance >= 200 && chance(30)) cGirls::PossiblyGainNewTrait(girl, "Singer", 80, ACTION_WORKMOVIE, "Her singing has become quite excellent.", false);
 }
 
 FilmMusic::FilmMusic() : GenericFilmJob(JOB_FILMMUSIC, {

@@ -52,7 +52,7 @@ bool WorkRecruiter(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma region //    Job Performance            //
 
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, are you are trying to recruit for the military?
+    cGirls::UnequipCombat(girl);    // put that shit away, are you are trying to recruit for the military?
 
     int HateLove = girl.pclove() - girl.pchate();
     int findchance = 0;
@@ -116,7 +116,7 @@ bool WorkRecruiter(sGirl& girl, bool Day0Night1, cRng& rng)
     int findroll = (rng.d100());
     if (findroll < findchance + 10)    // `J` While out recruiting she does find someone...
     {
-        sGirl* newgirl = g_Game->GetRandomGirl(false, (dispmod == -3 && rng % 4 != 0));
+        auto newgirl = g_Game->GetRandomGirl(false, (dispmod == -3 && rng % 4 != 0));
         if (newgirl)
         {
             bool add = false;
@@ -184,7 +184,7 @@ bool WorkRecruiter(sGirl& girl, bool Day0Night1, cRng& rng)
                 NGmsg << newgirl->FullName() << " was recruited by ${name} to work for you.";
                 newgirl->m_Events.AddMessage(NGmsg.str(), imagetype, EVENT_GANG);
 
-                g_Game->dungeon().AddGirl(newgirl, DUNGEON_RECRUITED);
+                g_Game->dungeon().AddGirl(std::move(newgirl), DUNGEON_RECRUITED);
             }
         }
         else
@@ -255,11 +255,11 @@ bool WorkRecruiter(sGirl& girl, bool Day0Night1, cRng& rng)
     else            girl.service(skill);
 
     //gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 60, actiontype, "Dealing with people all day has made ${name} more Charismatic.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Psychic", 80, actiontype, "${name} has been doing this for so long it's as if she can read minds now.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with people all day has made ${name} more Charismatic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Psychic", 80, actiontype, "${name} has been doing this for so long it's as if she can read minds now.", Day0Night1);
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 20, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 
 #pragma endregion
     return false;

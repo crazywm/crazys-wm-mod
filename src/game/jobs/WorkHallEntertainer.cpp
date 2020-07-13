@@ -41,9 +41,9 @@ bool WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as an entertainer in the gambling hall.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
-    sGirl* dealeronduty = random_girl_on_job(*girl.m_Building, JOB_DEALER, Day0Night1);
+    const sGirl* dealeronduty = random_girl_on_job(*girl.m_Building, JOB_DEALER, Day0Night1);
     string dealername = (dealeronduty ? "Dealer " + dealeronduty->FullName() + "" : "the Dealer");
 
     int wages = 25, tips = 0;

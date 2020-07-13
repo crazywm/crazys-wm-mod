@@ -47,9 +47,9 @@ bool WorkBarPiano(sGirl& girl, bool Day0Night1, cRng& rng)
 
     ss << "${name} played the piano in the bar.";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
-    sGirl* singeronduty = random_girl_on_job(*brothel, JOB_SINGER, Day0Night1);
+    const sGirl* singeronduty = random_girl_on_job(*brothel, JOB_SINGER, Day0Night1);
     string singername = (singeronduty ? "Singer " + singeronduty->FullName() + "" : "the Singer");
 
     int wages = 20, tips = 0;
@@ -393,9 +393,9 @@ bool WorkBarPiano(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype, enjoy);
 
     // gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given ${name} an Elegant nature.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Elegant", 75, ACTION_WORKMUSIC, "Playing the piano has given ${name} an Elegant nature.", Day0Night1);
     // lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 30, ACTION_WORKMUSIC, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 30, ACTION_WORKMUSIC, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 
     // Push out the turn report
     girl.AddMessage(ss.str(), imagetype, msgtype);

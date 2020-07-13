@@ -30,15 +30,17 @@ struct sClinic : public IBuilding
     sClinic();
     ~sClinic() override;
 
-    sGirl* meet_girl() const override;
+    std::shared_ptr<sGirl> meet_girl() const override;
     std::string meet_no_luck() const override;
 
     void save_additional_xml(tinyxml2::XMLElement& root) const override {};
-    void auto_assign_job(sGirl * target, std::stringstream& message, bool is_night) override;
+    void auto_assign_job(sGirl& target, std::stringstream& message, bool is_night) override;
     void UpdateGirls(bool is_night) override;
 
     bool handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_night) override;
     bool handle_resting_girl(sGirl& girl, bool is_night, bool has_matron, std::stringstream& ss) override;
+
+    static bool promote_to_doctor(sGirl& candidate, JOBS job, bool is_night);
 };
 
 #endif  /* __CCLINIC_H */

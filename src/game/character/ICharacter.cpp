@@ -33,10 +33,14 @@
 
 extern cRng g_Dice;
 
-ICharacter::ICharacter(std::unique_ptr<ITraitsCollection> tc) :
+ICharacter::ICharacter(std::unique_ptr<ITraitsCollection> tc, bool unique) :
     m_Inventory(std::make_unique<Inventory>()),
-    m_Traits( std::move(tc) ){
-
+    m_Traits( std::move(tc) ),
+    m_IsUnique(unique)
+{
+    // default-initialize stats and skills
+    m_Stats.fill(sAttributeValue{});
+    m_Skills.fill(sAttributeValue{});
 }
 
 ICharacter::~ICharacter() = default;
@@ -119,6 +123,8 @@ int ICharacter::upd_skill(int skill_id, int amount, bool usetraits)
 
 void ICharacter::SaveXML(tinyxml2::XMLElement& elRoot) const
 {
+    elRoot.SetAttribute("Unique", m_IsUnique);
+
     // stats
     auto& stats_el = PushNewElement(elRoot, "Stats");
     for (int i = 0; i < NUM_STATS; i++)
@@ -156,6 +162,8 @@ void ICharacter::SaveXML(tinyxml2::XMLElement& elRoot) const
 
 void ICharacter::LoadXML(const tinyxml2::XMLElement& elRoot)
 {
+    elRoot.QueryAttribute("Unique", &m_IsUnique);
+
     // load name
     auto name_el = elRoot.FirstChildElement("Name");
     if(!name_el) {
@@ -429,4 +437,8 @@ int ICharacter::get_attribute(StatSkill id) const {
 int ICharacter::update_attribute(StatSkill id, int amount) {
     UpdateVisitor visitor{this, amount};
     return id.apply_visitor(visitor);
+}
+
+bool ICharacter::IsUnique() const {
+    return m_IsUnique;
 }

@@ -88,13 +88,13 @@ bool TherapyJob::DoWork(sGirl& girl, bool is_night) {
         return false;    // not refusing
     }
 
-    if (chance(m_TherapyData.BasicFightChance) || girl.disobey_check(actiontype, job))    // `J` - yes, OR, not and.
+    if (chance(m_TherapyData.BasicFightChance) || girl.disobey_check(actiontype, job()))    // `J` - yes, OR, not and.
     {
         FightEvent(girl, is_night);
     }
     ss << m_TherapyData.TherapyMessage << "\n \n";
 
-    cGirls::UnequipCombat(&girl);    // not for patient
+    cGirls::UnequipCombat(girl);    // not for patient
 
     int enjoy = 0;
     int msgtype = is_night;
@@ -223,7 +223,7 @@ void AngerManagement::FightEvent(sGirl& girl, bool is_night) {
         girl.upd_Enjoyment(ACTION_WORKTHERAPY, -5);
         bool runaway = false;
         // if there is no counselor, it should not get to here
-        sGirl* counselor = random_girl_on_job(*girl.m_Building, JOB_COUNSELOR, is_night);
+        sGirl* counselor = girl.m_Building->girls().get_random_girl(HasJob(JOB_COUNSELOR, is_night));
         ss << "\n \n${name} fought hard with her counselor " << counselor->FullName();
         /// TODO Gangs and Security
         auto winner = GirlFightsGirl(*counselor, girl);
@@ -273,9 +273,8 @@ void Rehab::OnFinish(sGirl& girl) {
     girl.add_temporary_trait("Former Addict", 40);
 }
 
-std::vector<std::unique_ptr<IGenericJob>> GetTherapyJobs() {
-    std::vector<std::unique_ptr<IGenericJob>> jobs;
-    jobs.push_back(std::make_unique<AngerManagement>(JOB_ANGER, sTherapyData{
+void RegisterTherapyJobs(cJobManager& mgr) {
+    mgr.register_job(std::make_unique<AngerManagement>(JOB_ANGER, sTherapyData{
         "${name} underwent therapy for anger issues.",
         "${name} doesn't need anger management so she was sent to the waiting room.",
         "She should stay in anger management to treat her other anger issues.",
@@ -287,7 +286,7 @@ std::vector<std::unique_ptr<IGenericJob>> GetTherapyJobs() {
         {{"Aggressive", "She is no longer Aggressive."},
          {"Tsundere", "She is no longer a Tsundere."},
          {"Yandere", "She is no longer a Yandere."}}}));
-    jobs.push_back(std::make_unique<TherapyJob>(JOB_EXTHERAPY, sTherapyData{
+    mgr.register_job(std::make_unique<TherapyJob>(JOB_EXTHERAPY, sTherapyData{
         "${name} underwent therapy for extreme mental issues.",
         "${name} doesn't need extreme therapy for anything so she was sent to the waiting room.",
         "She should stay in extreme therapy to treat her other disorders.",
@@ -299,7 +298,7 @@ std::vector<std::unique_ptr<IGenericJob>> GetTherapyJobs() {
         {{"Mind Fucked", "She is no longer mind fucked."},
         {"Broken Will", "She is no longer has a broken will."}}
     }));
-    jobs.push_back(std::make_unique<TherapyJob>(JOB_THERAPY, sTherapyData{
+    mgr.register_job(std::make_unique<TherapyJob>(JOB_THERAPY, sTherapyData{
         "${name} underwent therapy for mental issues.",
         "${name} doesn't need therapy for anything so she was sent to the waiting room.",
         "She should stay in therapy to treat her other disorders.",
@@ -313,7 +312,7 @@ std::vector<std::unique_ptr<IGenericJob>> GetTherapyJobs() {
          {"Pessimist", "She is no longer a Pessimist about everything."}}
     }));
 
-    jobs.push_back(std::make_unique<TherapyJob>(JOB_THERAPY, sTherapyData{
+    mgr.register_job(std::make_unique<TherapyJob>(JOB_THERAPY, sTherapyData{
         "${name} underwent rehab for her addiction.",
         "${name} is not addicted to anything so she was sent to the waiting room.",
         "She should stay in rehab to treat her other addictions.",
@@ -330,6 +329,4 @@ std::vector<std::unique_ptr<IGenericJob>> GetTherapyJobs() {
          {"Viras Blood Addict", "She is no longer a viras blood addict."}
         }
     }));
-
-    return std::move(jobs);
 }

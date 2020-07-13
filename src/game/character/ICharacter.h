@@ -45,7 +45,7 @@ class ITraitsCollection;
 */
 class ICharacter {
 public:
-    ICharacter(std::unique_ptr<ITraitsCollection> tc);
+    ICharacter(std::unique_ptr<ITraitsCollection> tc, bool unqiue=false);
     virtual ~ICharacter();
 
     ICharacter(ICharacter&&) noexcept;
@@ -61,13 +61,15 @@ public:
     void SetName(std::string first, std::string middle, std::string last);
     void SetSurname(std::string surname);
 
-    int BirthYear()     { return m_BirthYear; }
-    int BirthMonth()    { return m_BirthMonth; }
-    int BirthDay()      { return m_BirthDay; }
+    int BirthYear() const     { return m_BirthYear; }
+    int BirthMonth() const    { return m_BirthMonth; }
+    int BirthDay() const      { return m_BirthDay; }
 
     int SetBirthYear(int n);
     int SetBirthMonth(int n);
     int SetBirthDay(int n);
+
+    bool IsUnique() const;
 
     // -----------------------------------------------------------------------------------------------------------------
     //                                        Inventory
@@ -265,6 +267,8 @@ protected:
 
     std::array<sAttributeValue, NUM_STATS> m_Stats;
     std::array<sAttributeValue, NUM_SKILLS> m_Skills;
+
+    bool m_IsUnique = false;
 
     // Birth Data
     int m_BirthYear  = 1190;    // the game starts in year 1209 so default start age is 18

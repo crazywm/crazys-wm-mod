@@ -32,6 +32,7 @@
 #include "Inventory.hpp"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
+#include "character/cGirlPool.h"
 
 namespace settings{
     extern const char* PREG_COOL_DOWN;
@@ -39,13 +40,8 @@ namespace settings{
 
 extern cConfig cfg;
 
-void do_food_and_digs(IBuilding * brothel, sGirl * girl);
-void updateGirlTurnBrothelStats(sGirl* girl);
-
-sGirl* IBuilding::find_girl_by_name(std::string name) const
-{
-    return find_first_girl(HasName(std::move(name)));
-}
+void do_food_and_digs(IBuilding& brothel, sGirl& girl);
+void updateGirlTurnBrothelStats(sGirl& girl);
 
 const char* building_type_to_str(BuildingType type) {
     switch(type) {
@@ -74,12 +70,7 @@ const char* IBuilding::type_str() const
 
 int IBuilding::get_girl_index(const sGirl& girl) const
 {
-    auto found = std::find(begin(m_Girls), end(m_Girls), &girl);
-    //! \todo this is a rather inefficient implementation for std::list
-    if(found != end(m_Girls)) {
-        return std::distance(begin(m_Girls), found);
-    }
-    return -1;
+    return m_Girls->get_index(&girl);
 }
 
 // ----- Matron  // `J` added building checks
@@ -109,135 +100,133 @@ void IBuilding::BeginWeek()
     m_AntiPregUsed = 0;
     m_Events.Clear();
 
-    std::vector<sGirl*> dead_girls;
+    std::vector<const sGirl*> dead_girls;
 
     stringstream ss;
-    for(auto& cgirl : m_Girls)
-    {
+    m_Girls->apply([&](sGirl& cgirl){
         m_Filthiness++;
 
-        if (cgirl->is_dead())            // Remove any dead bodies from last week
+        if (cgirl.is_dead())            // Remove any dead bodies from last week
         {
             m_Filthiness++; // `J` Death is messy
-            // increase all the girls fear and hate of the player for letting her die (weather his fault or not)
-            for(auto& girl : m_Girls)
-            {
-                girl->pcfear(2);
-                girl->pchate(1);
-            }
-
-            ss.str(""); ss << cgirl->FullName() << " has died from her injuries, the other girls all fear and hate you a little more.";
-            cgirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
+            ss.str(""); ss << cgirl.FullName() << " has died from her injuries, the other girls all fear and hate you a little more.";
+            cgirl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
             g_Game->push_message(ss.str(), COLOR_RED);
-            ss.str(""); ss << cgirl->FullName() << " has died from her injuries.  Her body will be removed by the end of the week.";
-            cgirl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
-            dead_girls.push_back(cgirl);
-            continue;
+            ss.str(""); ss << "${name} has died from her injuries.  Her body will be removed by the end of the week.";
+            cgirl.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
+            dead_girls.push_back(&cgirl);
+            return;
         }
         else
         {
-            cgirl->m_Building = this;
-            cgirl->m_Tort = false;
+            cgirl.m_Building = this;
+            cgirl.m_Tort = false;
 
-            cgirl->m_Events.Clear();                // Clear the girls' events from the last turn
-            cgirl->m_Pay = cgirl->m_Tips = 0;
+            cgirl.m_Events.Clear();                // Clear the girls' events from the last turn
+            cgirl.m_Pay = cgirl.m_Tips = 0;
 
             // `J` Check for out of building jobs
-            if (cgirl->m_DayJob      < m_FirstJob || cgirl->m_DayJob   > m_LastJob)    cgirl->m_DayJob = m_RestJob;
-            if (cgirl->m_NightJob < m_FirstJob || cgirl->m_NightJob > m_LastJob)    cgirl->m_NightJob = m_RestJob;
-            if (cgirl->m_PrevDayJob    < m_FirstJob || cgirl->m_PrevDayJob > m_LastJob)        cgirl->m_PrevDayJob = 255;
-            if (cgirl->m_PrevNightJob < m_FirstJob || cgirl->m_PrevNightJob > m_LastJob)    cgirl->m_PrevNightJob = 255;
+            if (cgirl.m_DayJob      < m_FirstJob || cgirl.m_DayJob   > m_LastJob)    cgirl.m_DayJob = m_RestJob;
+            if (cgirl.m_NightJob < m_FirstJob || cgirl.m_NightJob > m_LastJob)    cgirl.m_NightJob = m_RestJob;
+            if (cgirl.m_PrevDayJob    < m_FirstJob || cgirl.m_PrevDayJob > m_LastJob)        cgirl.m_PrevDayJob = 255;
+            if (cgirl.m_PrevNightJob < m_FirstJob || cgirl.m_PrevNightJob > m_LastJob)    cgirl.m_PrevNightJob = 255;
 
             // set yesterday jobs for everyone
-            cgirl->m_YesterDayJob = cgirl->m_DayJob;
-            cgirl->m_YesterNightJob = cgirl->m_NightJob;
-            cgirl->m_Refused_To_Work_Day = cgirl->m_Refused_To_Work_Night = false;
-            cgirl->m_NumCusts_old = cgirl->m_NumCusts;// prepare for this week
+            cgirl.m_YesterDayJob = cgirl.m_DayJob;
+            cgirl.m_YesterNightJob = cgirl.m_NightJob;
+            cgirl.m_Refused_To_Work_Day = cgirl.m_Refused_To_Work_Night = false;
+            cgirl.m_NumCusts_old = cgirl.m_NumCusts;// prepare for this week
             string summary;
 
-            cgirl->add_tiredness();                    // `J` moved all girls add tiredness to one place
-            do_food_and_digs(this, cgirl);            // Brothel only update for girls accommodation level
+            cgirl.add_tiredness();                    // `J` moved all girls add tiredness to one place
+            do_food_and_digs(*this, cgirl);            // Brothel only update for girls accommodation level
             cGirls::CalculateGirlType(cgirl);        // update the fetish traits
             cGirls::updateGirlAge(cgirl, true);        // update birthday counter and age the girl
-            g_Game->girl_pool().HandleChildren(cgirl, summary);    // handle pregnancy and children growing up
+            handle_children(cgirl, summary, true);    // handle pregnancy and children growing up
             cGirls::updateSTD(cgirl);                // health loss to STD's                NOTE: Girl can die
             cGirls::updateHappyTraits(cgirl);        // Update happiness due to Traits    NOTE: Girl can die
             updateGirlTurnBrothelStats(cgirl);        // Update daily stats                Now only runs once per day
             cGirls::updateGirlTurnStats(cgirl);        // Stat Code common to Dugeon and Brothel
 
 
-            if (cgirl->m_JustGaveBirth)        // if she gave birth, let her rest this week
+            if (cgirl.m_JustGaveBirth)        // if she gave birth, let her rest this week
             {
-                if (cgirl->m_DayJob != m_RestJob)        cgirl->m_PrevDayJob = cgirl->m_DayJob;
-                if (cgirl->m_NightJob != m_RestJob)    cgirl->m_PrevNightJob = cgirl->m_NightJob;
-                cgirl->m_DayJob = cgirl->m_NightJob = m_RestJob;
+                if (cgirl.m_DayJob != m_RestJob)        cgirl.m_PrevDayJob = cgirl.m_DayJob;
+                if (cgirl.m_NightJob != m_RestJob)    cgirl.m_PrevNightJob = cgirl.m_NightJob;
+                cgirl.m_DayJob = cgirl.m_NightJob = m_RestJob;
             }
         }
-    }
+    });
 
-    for(auto& dead : dead_girls) {
-        m_Girls.remove(dead);
-        delete dead;
+    if(!dead_girls.empty()) {
+        // increase all the girls fear and hate of the player for letting her die (weather his fault or not)
+        m_Girls->apply([&](auto& girl) {
+            girl.pcfear(2 * dead_girls.size());
+            girl.pchate(1 * dead_girls.size());
+        });
+
+        for (auto& dead : dead_girls) {
+            m_Girls->TakeGirl(dead);
+        }
     }
 }
 
 void IBuilding::HandleRestingGirls(bool is_night, bool has_matron, const char * matron_name)
 {
     std::stringstream ss;
-    for(auto& current : girls())
-    {
-        unsigned int sw = current->get_job(is_night);
-        if (current->is_dead() || sw != m_RestJob)
+    m_Girls->apply([&](sGirl& current){
+        unsigned int sw = current.get_job(is_night);
+        if (current.is_dead() || sw != m_RestJob)
         {    // skip dead girls and anyone not resting
-            continue;
+            return;
         }
         int sum = EVENT_SUMMARY;
         std::string summary;
         ss.str("");
-        const auto& girlName = current->FullName();
+        const auto& girlName = current.FullName();
 
-        if (current->m_PregCooldown == g_Game->settings().get_integer(settings::PREG_COOL_DOWN))
+        if (current.m_PregCooldown == g_Game->settings().get_integer(settings::PREG_COOL_DOWN))
         {
             ss << girlName << " is on maternity leave.";
         }
-        else if (handle_resting_girl(*current, is_night, has_matron, ss)) {
+        else if (handle_resting_girl(current, is_night, has_matron, ss)) {
             // nothing to do her, handle_resting_girl did all the work.
         }
-        else if (current->health() < 80 || current->tiredness() > 20)
+        else if (current.health() < 80 || current.tiredness() > 20)
         {
-            g_Game->job_manager().do_job(m_RestJob, *current, is_night);
+            g_Game->job_manager().do_job(m_RestJob, current, is_night);
         }
         else if (has_matron)    // send her back to work
         {
-            int psw = (is_night ? current->m_PrevNightJob : current->m_PrevDayJob);
+            int psw = current.get_job(is_night);
             if (psw != m_RestJob && psw != 255)
             {    // if she had a previous job, put her back to work.
-                if(!handle_back_to_work(*current, ss, is_night)) {
+                if(!handle_back_to_work(current, ss, is_night)) {
                     if (is_night == SHIFT_DAY)
                     {
-                        current->m_DayJob = current->m_PrevDayJob;
-                        if (current->m_NightJob == m_RestJob && current->m_PrevNightJob != m_RestJob && current->m_PrevNightJob != 255)
-                            current->m_NightJob = current->m_PrevNightJob;
+                        current.m_DayJob = current.m_PrevDayJob;
+                        if (current.m_NightJob == m_RestJob && current.m_PrevNightJob != m_RestJob && current.m_PrevNightJob != 255)
+                            current.m_NightJob = current.m_PrevNightJob;
                     }
                     else
                     {
-                        if (current->m_DayJob == m_RestJob && current->m_PrevDayJob != m_RestJob && current->m_PrevDayJob != 255)
-                            current->m_DayJob = current->m_PrevDayJob;
-                        current->m_NightJob = current->m_PrevNightJob;
+                        if (current.m_DayJob == m_RestJob && current.m_PrevDayJob != m_RestJob && current.m_PrevDayJob != 255)
+                            current.m_DayJob = current.m_PrevDayJob;
+                        current.m_NightJob = current.m_PrevNightJob;
                     }
                     ss << "The " << matron_name << " puts " << girlName << " back to work.\n";
                 }
             }
-            else if (current->m_DayJob == m_RestJob && current->m_NightJob == m_RestJob)
+            else if (current.m_DayJob == m_RestJob && current.m_NightJob == m_RestJob)
             {
                 auto_assign_job(current, ss, is_night);
             }
-            current->m_PrevDayJob = current->m_PrevNightJob = 255;
+            current.m_PrevDayJob = current.m_PrevNightJob = 255;
             sum = EVENT_BACKTOWORK;
         }
-        else if (current->health() < 100 || current->tiredness() > 0)    // if there is no matron to send her somewhere just do resting
+        else if (current.health() < 100 || current.tiredness() > 0)    // if there is no matron to send her somewhere just do resting
         {
-            g_Game->job_manager().do_job(m_RestJob, *current, is_night);
+            g_Game->job_manager().do_job(m_RestJob, current, is_night);
         }
         else    // no one to send her back to work
         {
@@ -245,8 +234,8 @@ void IBuilding::HandleRestingGirls(bool is_night, bool has_matron, const char * 
             sum = EVENT_WARNING;
         }
 
-        if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-    }
+        if (ss.str().length() > 0) current.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+    });
 }
 
 void IBuilding::Update()
@@ -260,90 +249,89 @@ void IBuilding::Update()
 
 void IBuilding::EndShift(const string& matron_title, bool Day0Night1, bool has_matron)
 {
-    for(auto& current : girls())
+    m_Girls->apply([&](sGirl& current)
     {
-        if (current->is_dead())
+        if (current.is_dead())
         {    // skip dead girls
-            continue;
+            return;
         }
-        string girlName = current->FullName();
         int sum = EVENT_SUMMARY;
         stringstream ss;
         ss.str("");
 
         // update for girls items that are not used up
-        do_daily_items(*current);                    // `J` added
+        do_daily_items(current);                    // `J` added
 
         // Level the girl up if nessessary
         cGirls::LevelUp(current);
         // Natural healing, 2% health and 2% tiredness per day
-        current->upd_base_stat(STAT_HEALTH, 2, false);
-        current->upd_base_stat(STAT_TIREDNESS, -2, false);
+        current.upd_base_stat(STAT_HEALTH, 2, false);
+        current.upd_base_stat(STAT_TIREDNESS, -2, false);
 
         // list increase (moved here from jobs)
         int libido = 1;
-        if (current->has_active_trait("Nymphomaniac"))    { libido += 2; }
-        current->upd_temp_stat(STAT_LIBIDO, (g_Dice % libido) + 1, false);
+        if (current.has_active_trait("Nymphomaniac"))    { libido += 2; }
+        current.upd_temp_stat(STAT_LIBIDO, (g_Dice % libido) + 1, false);
 
-        u_int sw = (Day0Night1 ? current->m_NightJob : current->m_DayJob);
-        if (current->happiness()< 40)
+        u_int sw = current.get_job(Day0Night1);
+        if (current.happiness()< 40)
         {
             if (sw != m_MatronJob && has_matron && num_girls() > 1 && g_Dice.percent(70))
             {
-                ss << "The " << matron_title << " helps cheer up " << girlName << " when she is feeling sad.\n";
-                current->happiness(g_Dice % 10 + 5);
+                ss << "The " << matron_title << " helps cheer up ${name} when she is feeling sad.\n";
+                current.happiness(g_Dice % 10 + 5);
             }
             else if (num_girls() > 10 && g_Dice.percent(50))
             {
-                ss << "Some of the other girls help cheer up " << girlName << " when she is feeling sad.\n";
-                current->happiness(g_Dice % 8 + 3);
+                ss << "Some of the other girls help cheer up ${name} when she is feeling sad.\n";
+                current.happiness(g_Dice % 8 + 3);
             }
             else if (num_girls() > 1 && g_Dice.percent(max((int)num_girls(), 50)))
             {
-                ss << "One of the other girls helps cheer up " << girlName << " when she is feeling sad.\n";
-                current->happiness(g_Dice % 6 + 2);
+                ss << "One of the other girls helps cheer up ${name} when she is feeling sad.\n";
+                current.happiness(g_Dice % 6 + 2);
             }
             else if (num_girls() == 1 && g_Dice.percent(70))
             {
-                ss << girlName << " plays around in the empty building until she feels better.\n";
-                current->happiness(g_Dice % 10 + 10);
+                ss << "${name} plays around in the empty building until she feels better.\n";
+                current.happiness(g_Dice % 10 + 10);
             }
-            else if (current->health()< 20) // no one helps her and she is really unhappy
+            else if (current.health()< 20) // no one helps her and she is really unhappy
             {
-                ss << girlName << " is looking very depressed. You may want to do something about that before she does something drastic.\n";
+                ss << "${name} is looking very depressed. You may want to do something about that before she does something drastic.\n";
                 sum = EVENT_WARNING;
             }
         }
 
-        int t = current->tiredness();
-        int h = current->health();
+        int t = current.tiredness();
+        int h = current.health();
         if (sw == m_MatronJob && (t > 60 || h < 40))
         {
-            ss << "As " << matron_title << ", " << girlName << " has the keys to the store room.\nShe used them to 'borrow' ";
+            ss << "As " << matron_title << ", ${name} has the keys to the store room.\nShe used them to 'borrow' ";
             if (t > 50 && h < 50)
             {
                 ss << "some potions";
-                current->upd_base_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
-                current->upd_base_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+                current.upd_base_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
+                current.upd_base_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
                 g_Game->gold().consumable_cost(20, true);
             }
             else if (t > 50)
             {
                 ss << "a resting potion";
-                current->upd_base_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
+                current.upd_base_stat(STAT_TIREDNESS, -(20 + g_Dice % 20), false);
                 g_Game->gold().consumable_cost(10, true);
             }
             else if (h < 50)
             {
                 ss << "a healing potion";
-                current->upd_base_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
+                current.upd_base_stat(STAT_HEALTH, 20 + g_Dice % 20, false);
                 g_Game->gold().consumable_cost(10, true);
             }
             else
             {
                 ss << "a potion";
-                current->upd_base_stat(STAT_HEALTH, 10 + g_Dice % 10, false);
-                current->upd_base_stat(STAT_TIREDNESS, -(10 + g_Dice % 10), false);
+                current.upd_base_stat(STAT_HEALTH, 10 + g_Dice % 10, false);
+                current.upd_base_stat(STAT_TIREDNESS, -(10 + g_Dice % 10), false);
                 g_Game->gold().consumable_cost(5, true);
             }
             ss << " for herself.\n";
@@ -352,7 +340,7 @@ void IBuilding::EndShift(const string& matron_title, bool Day0Night1, bool has_m
         {
             if (!has_matron)    // do no matron first as it is the easiest
             {
-                ss << "WARNING! " << girlName;
+                ss << "WARNING! ${name}";
                 /* */if (t > 80 && h < 20)    ss << " is in real bad shape, she is tired and injured.\nShe should go to the Clinic.\n";
                 else if (t > 80 && h < 40)    ss << " is in bad shape, she is tired and injured.\nShe should rest or she may die!\n";
                 else if (t > 80)/*      */    ss << " is desparatly in need of rest.\nGive her some free time\n";
@@ -362,12 +350,12 @@ void IBuilding::EndShift(const string& matron_title, bool Day0Night1, bool has_m
             }
             else    // do all other girls with a matron working
             {
-                if (current->m_PrevNightJob == 255 && current->m_PrevDayJob == 255) // the girl has been working
+                if (current.m_PrevNightJob == 255 && current.m_PrevDayJob == 255) // the girl has been working
                 {
-                    current->m_PrevDayJob = current->m_DayJob;
-                    current->m_PrevNightJob = current->m_NightJob;
-                    current->m_DayJob = current->m_NightJob = m_RestJob;
-                    ss << "The " << matron_title << " takes " << girlName << " off duty to rest due to her ";
+                    current.m_PrevDayJob = current.m_DayJob;
+                    current.m_PrevNightJob = current.m_NightJob;
+                    current.m_DayJob = current.m_NightJob = m_RestJob;
+                    ss << "The " << matron_title << " takes ${name} off duty to rest due to her ";
                     if (t > 80 && h < 40)    ss << "exhaustion.\n";
                     else if (t > 80)        ss << "tiredness.\n";
                     else if (h < 40)        ss << "low health.\n";
@@ -381,89 +369,76 @@ void IBuilding::EndShift(const string& matron_title, bool Day0Night1, bool has_m
                         ss << "The " << matron_title << "helps ";
                         if (t > 80 && h < 40)
                         {
-                            ss << girlName << " recuperate.\n";
-                          current->upd_base_stat(STAT_HEALTH, 2 + g_Dice % 4, false);
-                          current->upd_base_stat(STAT_TIREDNESS, -(2 + g_Dice % 4), false);
+                            ss << "${name} recuperate.\n";
+                          current.upd_base_stat(STAT_HEALTH, 2 + g_Dice % 4, false);
+                          current.upd_base_stat(STAT_TIREDNESS, -(2 + g_Dice % 4), false);
                         }
                         else if (t > 80)
                         {
-                            ss << girlName << " to relax.\n";
-                          current->upd_base_stat(STAT_TIREDNESS, -(5 + g_Dice % 5), false);
+                            ss << "${name} to relax.\n";
+                          current.upd_base_stat(STAT_TIREDNESS, -(5 + g_Dice % 5), false);
                         }
                         else if (h < 40)
                         {
-                            ss << " heal " << girlName << ".\n";
-                          current->upd_base_stat(STAT_HEALTH, 5 + g_Dice % 5, false);
+                            ss << " heal ${name}.\n";
+                          current.upd_base_stat(STAT_HEALTH, 5 + g_Dice % 5, false);
                         }
                     }
                 }
             }
         }
 
-        if (ss.str().length() > 0)    current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-    }
+        if (ss.str().length() > 0)    current.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+    });
 }
 
 
-IBuilding::~IBuilding()
-{
-    for(sGirl* girl : m_Girls)
-    {
-        delete girl;
-    }
-}
+IBuilding::~IBuilding() = default;
 
 int IBuilding::num_girls() const
 {
-    return m_Girls.size();
+    return m_Girls->num();
 }
 
 int IBuilding::num_girls_on_job(JOBS jobID, int is_night) const
 {
-    return num_girls_with(HasJob(jobID, is_night));
+    return m_Girls->count(HasJob(jobID, is_night));
 }
 
-void IBuilding::add_girl(sGirl* girl, bool keep_job)
+void IBuilding::add_girl(std::shared_ptr<sGirl> girl, bool keep_job)
 {
     girl->m_Building = this;
-    m_Girls.push_back(girl);
     if (!keep_job) {
         girl->m_DayJob = girl->m_NightJob = m_RestJob;
     }
     girl->FixFreeTimeJobs();
+    m_Girls->AddGirl(std::move(girl));
 }
 
-void IBuilding::remove_girl(sGirl* girl)
+std::shared_ptr<sGirl> IBuilding::remove_girl(sGirl* girl)
 {
-    m_Girls.remove(girl);
+    auto girl_sptr = m_Girls->TakeGirl(girl);
     girl->m_Building = nullptr;
+    return girl_sptr;
 }
 
 void IBuilding::save_girls_xml(tinyxml2::XMLElement& target) const
 {
     auto& elGirls = PushNewElement(target, "Girls");
-    for(sGirl* girl : m_Girls)
-    {
-        girl->SaveGirlXML(elGirls);
-    }
+    m_Girls->SaveXML(elGirls);
 }
 
 void IBuilding::load_girls_xml(const tinyxml2::XMLElement& root)
 {
     auto pGirls = root.FirstChildElement("Girls");
-    for (auto pGirl = pGirls->FirstChildElement("Girl");
-         pGirl;
-         pGirl = pGirl->NextSiblingElement("Girl"))// load each girl and add her
-    {
-        auto girl = std::make_unique<sGirl>();
-        if (girl->LoadGirlXML(pGirl))
-        {
-            add_girl(girl.release(), true);
-        }
-    }
+    m_Girls->LoadXML(*pGirls);
+    m_Girls->apply([this](sGirl& g){
+        g.m_Building = this;
+    });
 }
 
-IBuilding::IBuilding(BuildingType type, std::string name) : m_Type(type), m_Finance(0), m_Name(std::move(name))
+IBuilding::IBuilding(BuildingType type, std::string name) :
+    m_Type(type), m_Finance(0), m_Name(std::move(name)), m_Girls(std::make_unique<cGirlPool>())
 {
 
 }
@@ -592,29 +567,21 @@ void IBuilding::save_xml(tinyxml2::XMLElement& root) const
 
 sGirl* IBuilding::get_girl(int index)
 {
-    if(m_Girls.empty())
-        return nullptr;
-
-    if(index >= m_Girls.size())
-        return nullptr;
-
-    auto girl = m_Girls.begin();
-    std::advance(girl, index);
-    return *girl;
+    return m_Girls->get_girl(index);
 }
 
 void IBuilding::BeginShift()
 {
-    for(auto& girl : girls()) {
-        if (girl->is_dead())        // skip dead girls
+    m_Girls->apply([](sGirl& girl){
+        if (girl.is_dead())        // skip dead girls
         {
-            continue;
+            return;
         }
 
         cGirls::UseItems(girl);
         cGirls::CalculateGirlType(girl);        // update the fetish traits
-        cGirls::CalculateAskPrice(girl, true);    // Calculate the girls asking price
-    }
+        cGirls::UpdateAskPrice(girl, true);    // Calculate the girls asking price
+    });
 }
 
 //void cBrothelManager::AddAntiPreg(int amount)
@@ -628,106 +595,119 @@ void IBuilding::AddAntiPreg(int amount) // unused
 bool IBuilding::SetupMatron(bool is_night, const string& title)
 {
     int has_matron = num_girls_on_job(m_MatronJob, is_night);
-    for(auto& current : girls())
-    {
-        if (current->is_dead() ||
-            (has_matron && (current->m_DayJob != m_MatronJob || current->m_NightJob != m_MatronJob)) ||
-            (!has_matron && (current->m_PrevDayJob != m_MatronJob || current->m_PrevNightJob != m_MatronJob)))
+    
+    sGirl* matron_candidate = m_Girls->get_first_girl([&](const sGirl& current){
+        if (current.is_dead() ||
+            (has_matron && (current.m_DayJob != m_MatronJob || current.m_NightJob != m_MatronJob)) ||
+            (!has_matron && (current.m_PrevDayJob != m_MatronJob || current.m_PrevNightJob != m_MatronJob)))
         {    // Sanity check! Don't process dead girls and only process those with matron jobs
-            continue;
+            return false;
         }
         // `J` so someone is or was a matron
 
-        string girlName = current->FullName();
         // if there is no matron on duty, we see who was on duty previously
         if (has_matron < 1)
         {
             // if a matron was found and she is healthy, not tired and not on maternity leave... send her back to work
-            if (current->health() >= 50 && current->tiredness() <= 50 && current->m_PregCooldown < g_Game->settings().get_integer(settings::PREG_COOL_DOWN))
-                // Matron job is more important so she will go back to work at 50% instead of regular 80% health and 20% tired
+            // Matron job is more important so she will go back to work at 50% instead of regular 80% health and 20% tired
+            if (current.health() >= 50 && current.tiredness() <= 50 && current.m_PregCooldown < g_Game->settings().get_integer(settings::PREG_COOL_DOWN))
             {
-                current->m_DayJob = current->m_NightJob = m_MatronJob;
-                current->m_PrevDayJob = current->m_PrevNightJob = 255;
-                current->m_Events.AddMessage("The " + title + " puts herself back to work.", IMGTYPE_PROFILE,
-                                             EVENT_BACKTOWORK);
-            }
-            else { continue; }
-        }
-
-        // `J` Now we have a matron so lets see if she will work
-        stringstream ss;
-        int sum = EVENT_SUMMARY;
-
-        // `J` she can refuse the first shift then decide to work the second shift
-        if (!current->m_Refused_To_Work_Day && is_night)    // but if she worked the first shift she continues the rest of the night
-        {
-            ss << girlName << " continued to help the other girls throughout the night.";
-            current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
-            return true;
-        }
-        else if (current->disobey_check(ACTION_WORKMATRON, JOB_MATRON))
-        {
-            if(is_night) {
-                current->m_Refused_To_Work_Night = true;
-            } else {
-                current->m_Refused_To_Work_Day = true;
-            }
-            m_Fame -= current->fame();
-            ss << girlName << " refused to work as the " << title << ".";
-            current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
-            return false;
-        }
-        else    // so there is less chance of a matron refusing the entire turn
-        {
-            int totalGold = 0;
-            string summary;
-            g_Game->job_manager().do_job(m_MatronJob, *current, is_night ? 1 : 0);
-            totalGold += current->m_Pay + current->m_Tips;
-
-            // She does not get paid for the first shift and gets docked some pay from the second shift if she refused once
-            if (is_night) totalGold /= 3;
-
-            // TODO this line is useless!
-            current->m_Pay += max(0, totalGold);
-            current->m_Pay = current->m_Tips = 0;
-
-            m_Fame += current->fame();
-            if (totalGold > 0)            { ss << girlName << " earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; }
-            else if (totalGold == 0)    { ss << girlName << " made no money."; }
-            else if (totalGold < 0)        {
-                sum = EVENT_DEBUG;
-                ss << "ERROR: She has a loss of " << totalGold << " gold.\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n\n";
-                ss << "Girl Name: " << current->FullName();
-                ss << "\nJob: " << g_Game->job_manager().JobData[(is_night ? current->m_NightJob : current->m_DayJob)].name;
-                ss << "\nPay:     " << current->m_Pay << "\nTips:   " << current->m_Tips << "\nTotal: " << totalGold;
+                return true;
 
             }
-            current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-            return true;
+            else { return false; }
         }
+        return true;
+    });
+    
+    if(!matron_candidate)
+        return false;
+    
+    // 1) back-to-work
+    if(has_matron < 1) {
+        matron_candidate->m_DayJob = matron_candidate->m_NightJob = m_MatronJob;
+        matron_candidate->m_PrevDayJob = matron_candidate->m_PrevNightJob = 255;
+        matron_candidate->AddMessage("The " + title + " puts herself back to work.", IMGTYPE_PROFILE,
+                           EVENT_BACKTOWORK);
     }
-    return false;
+
+    // `J` Now we have a matron so lets see if she will work
+    stringstream ss;
+    int sum = EVENT_SUMMARY;
+
+    // `J` she can refuse the first shift then decide to work the second shift
+    if (!matron_candidate->m_Refused_To_Work_Day && is_night)    // but if she worked the first shift she continues the rest of the night
+    {
+        ss << "${name} continued to help the other girls throughout the night.";
+        matron_candidate->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
+        return true;
+    }
+    else if (matron_candidate->disobey_check(ACTION_WORKMATRON, JOB_MATRON))
+    {
+        if(is_night) {
+            matron_candidate->m_Refused_To_Work_Night = true;
+        } else {
+            matron_candidate->m_Refused_To_Work_Day = true;
+        }
+        m_Fame -= matron_candidate->fame();
+        ss << "${name} refused to work as the " << title << ".";
+        matron_candidate->AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NOWORK);
+        return false;
+    }
+    else    // so there is less chance of a matron refusing the entire turn
+    {
+        int totalGold = 0;
+        string summary;
+        g_Game->job_manager().do_job(m_MatronJob, *matron_candidate, is_night);
+        totalGold += matron_candidate->m_Pay + matron_candidate->m_Tips;
+
+        // She does not get paid for the first shift and gets docked some pay from the second shift if she refused once
+        if (is_night) totalGold /= 3;
+
+        // TODO this line is useless!
+        matron_candidate->m_Pay += max(0, totalGold);
+        matron_candidate->m_Pay = matron_candidate->m_Tips = 0;
+
+        m_Fame += matron_candidate->fame();
+        if (totalGold > 0)            { ss << "${name} earned a total of " << totalGold << " gold directly from you. She gets to keep it all."; }
+        else if (totalGold == 0)    { ss << "${name} made no money."; }
+        else if (totalGold < 0)        {
+            sum = EVENT_DEBUG;
+            ss << "ERROR: She has a loss of " << totalGold << " gold.\n \nPlease report this to the Pink Petal Devloment Team at http://pinkpetal.org\n\n";
+            ss << "Girl Name: " << matron_candidate->FullName();
+            ss << "\nJob: " << g_Game->job_manager().JobData[(is_night ? matron_candidate->m_NightJob : matron_candidate->m_DayJob)].name;
+            ss << "\nPay:     " << matron_candidate->m_Pay << "\nTips:   " << matron_candidate->m_Tips << "\nTotal: " << totalGold;
+
+        }
+        matron_candidate->AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
+        return true;
+    }
 }
 
 std::vector<sGirl*> IBuilding::girls_on_job(JOBS jobID, int is_night) const
 {
-    return find_all_girls(HasJob(jobID, is_night));
+    std::vector<sGirl*> result;
+    auto predicate = HasJob(jobID, is_night);
+    m_Girls->apply([&](sGirl& g){
+        if(predicate(g))
+            result.push_back(&g);
+    });
+    return std::move(result);
 }
 
 void IBuilding::update_all_girls_stat(STATS stat, int amount)
 {
-    for (auto& girl : girls()) {
-      girl->upd_base_stat(stat, amount);
-    }
+    m_Girls->apply([&](sGirl& girl) {
+        girl.upd_base_stat(stat, amount);
+    });
 }
 
 int IBuilding::total_fame() const
 {
     int total_fame = 0;
-    for(auto& current : girls())
-    {
-        total_fame += current->fame();
-    }
+    m_Girls->visit([&](const sGirl& girl) {
+        total_fame += girl.fame();
+    });
     return total_fame;
 }
 
@@ -1753,7 +1733,7 @@ void IBuilding::CalculatePay(sGirl& girl, u_int Job)
     if (!stolen) return;                                    // If she didn't steal anything, we're done
     sGang* gang = g_Game->gang_manager().GetGangOnMission(MISS_SPYGIRLS);    // if no-one is watching for theft, we're done
     if (!gang) return;
-    int catch_pc = g_Game->gang_manager().chance_to_catch(&girl);            // work out the % chance that the girl gets caught
+    int catch_pc = g_Game->gang_manager().chance_to_catch(girl);            // work out the % chance that the girl gets caught
     if (!g_Dice.percent(catch_pc)) return;                    // if they don't catch her, we're done
 
     // OK: she got caught. Tell the player
@@ -1761,18 +1741,9 @@ void IBuilding::CalculatePay(sGirl& girl, u_int Job)
     gang->m_Events.AddMessage(gmess.str(), IMGTYPE_PROFILE, EVENT_GANG);
 }
 
-sGirl* IBuilding::find_random_girl() const
-{
-    if(m_Girls.empty())
-        return nullptr;
-
-    int index = g_Dice % m_Girls.size();
-    return *std::next(m_Girls.begin(), index);
-}
-
 int IBuilding::free_rooms() const
 {
-    return m_NumRooms - m_Girls.size();
+    return m_NumRooms - m_Girls->num();
 }
 
 int IBuilding::num_rooms() const
@@ -1785,7 +1756,7 @@ void IBuilding::set_background_image(std::string img)
     m_BackgroundImage = std::move(img);
 }
 
-sGirl* IBuilding::meet_girl() const
+std::shared_ptr<sGirl> IBuilding::meet_girl() const
 {
     return g_Game->GetRandomGirl();
 }
@@ -1794,18 +1765,17 @@ void IBuilding::EndWeek() {
     // update the global cash
     g_Game->gold().brothel_accounts(m_Finance, m_id);
 
-    for(auto cgirl : girls())
-    {
-        cGirls::updateTemp(cgirl);            // update temp stuff
-        cGirls::EndDayGirls(*this, cgirl);
-    }
+    m_Girls->apply([this](sGirl& girl){
+        cGirls::updateTemp(girl);            // update temp stuff
+        cGirls::EndDayGirls(*this, girl);
+    });
 
     // cap filthiness and security at 0
     if (m_Filthiness < 0)        m_Filthiness = 0;
     if (m_SecurityLevel < 0)    m_SecurityLevel = 0;
 }
 
-sGirl* IBuilding::TryEncounter() {
+std::shared_ptr<sGirl> IBuilding::TryEncounter() {
     if (m_HasDoneEncounter && !g_Game->allow_cheats())
     {
         g_Game->push_message("You can only do this once per week.", COLOR_RED);
@@ -1821,14 +1791,14 @@ sGirl* IBuilding::TryEncounter() {
         return nullptr;
     }
 
-    sGirl* girl = meet_girl();
+    auto girl = meet_girl();
     if (girl == nullptr)                                                // if there's no girl, no meeting
     {
         g_Game->push_message("Error: Could not generate a girl to meet.", COLOR_RED);
         return nullptr;
     }
 
-    return girl;
+    return std::move(girl);
 }
 
 std::string IBuilding::meet_no_luck() const {

@@ -31,7 +31,7 @@
 void Shutdown();
 bool Init(CGraphics& gfx);
 
-string monthnames[13]
+std::string monthnames[13]
 {
     "No Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
 };
@@ -145,7 +145,7 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     /*
     *       build the caption string
     */
-    stringstream ss;
+    std::stringstream ss;
     ss << "Whore Master v" << g_MajorVersion << "." << g_MinorVersionA << g_MinorVersionB << "." << g_StableVersion << " BETA" << " Svn: " << svn_revision;
     /*
     *       init the graphics, with the caption on the titlebar

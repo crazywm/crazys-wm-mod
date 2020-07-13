@@ -27,11 +27,11 @@
 #include "sConfig.h"
 #include <sstream>
 
-extern    string                    pic_types[];
-extern    string                    galtxt[];
+extern    std::string                    pic_types[];
+extern    std::string                    galtxt[];
 extern  cConfig                 cfg;
 
-extern    string    numeric;
+extern    std::string    numeric;
 
 static int Mode = 0;
 static int Img = 0;    // what image currently drawing
@@ -78,7 +78,7 @@ void cScreenGallery::set_ids()
 void cScreenGallery::change_image()
 {
     PrepareImage(image_id, m_SelectedGirl, Mode, false, Img, true);
-    string t = GetImage(image_id)->m_Message;
+    std::string t = GetImage(image_id)->m_Message;
     if (t.empty()) t = GetImage(image_id)->m_Image.GetFileName();
     EditTextItem(t, imagename_id);
     SetSelectedItemInList(imagelist_id, Mode, false);
@@ -113,10 +113,10 @@ void cScreenGallery::init(bool back)
     {
         if (i == IMGTYPE_PREGNANT)
         {
-            string ext[3] = { "*g", "ani", "gif" };
+            std::string ext[3] = { "*g", "ani", "gif" };
             for (u_int e = 0; e < 3; e++)
             {
-                string t = ("preg." + ext[e]);
+                std::string t = ("preg." + ext[e]);
                 FileList testmode(imagedir, t.c_str());
                 for (unsigned j = 0; j < numeric.size(); j++)
                 {
@@ -136,10 +136,10 @@ void cScreenGallery::init(bool back)
         if (numimages[i][0] > 0)
         {
             if (startmode == -1) startmode = i;
-            stringstream num0;    num0 << numimages[i][0];
-            stringstream num1;    num1 << numimages[i][1];
-            stringstream num2;    num2 << numimages[i][2];
-            stringstream num3;    num3 << numimages[i][3];
+            std::stringstream num0;    num0 << numimages[i][0];
+            std::stringstream num1;    num1 << numimages[i][1];
+            std::stringstream num2;    num2 << numimages[i][2];
+            std::stringstream num3;    num3 << numimages[i][3];
 
             std::vector<std::string> dataP{ galtxt[i], num0.str(), num1.str(), num2.str(), num3.str() };
             AddToListBox(imagelist_id, i, std::move(dataP));

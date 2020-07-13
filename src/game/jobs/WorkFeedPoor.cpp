@@ -44,7 +44,7 @@ bool WorkFeedPoor(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked feeding the poor.";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     bool blow = false, sex = false;
     int wages = 20, tips = 0;

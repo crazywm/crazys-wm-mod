@@ -45,7 +45,7 @@ bool WorkCombatTraining(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} trains for combat.\n \n";
 
-    cGirls::EquipCombat(&girl);    // Ready for combat training
+    cGirls::EquipCombat(girl);    // Ready for combat training
 
     int enjoy = 0;                                                //
     int tips = 0;                                                //

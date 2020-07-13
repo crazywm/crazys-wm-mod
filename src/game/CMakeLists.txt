@@ -109,7 +109,12 @@ set(JOBS_SRC
         jobs/WorkSOLesbian.cpp
         jobs/WorkSOStraight.cpp
         jobs/WorkTorturer.cpp
-        jobs/Film.cpp jobs/Crafting.cpp jobs/GenericJob.cpp jobs/Matron.cpp)
+        jobs/Film.cpp
+        jobs/Crafting.cpp
+        jobs/GenericJob.cpp
+        jobs/Matron.cpp
+        jobs/Therapy.cpp
+        )
 
 set(BUILDINGS_SRC
         buildings/cArena.cpp
@@ -131,7 +136,13 @@ set(CHARACTER_SRC
         character/sAttribute.cpp
         character/sGirl.cpp
         character/traits/cTraitsCollection.cpp
-        character/traits/cTraitsManager.cpp character/traits/cTraitsManager.h character/traits/cTraitSpec.cpp character/traits/cTraitSpec.h character/predicates.cpp character/pregnancy.cpp character/pregnancy.h character/cDynamicStat.cpp character/cDynamicStat.h)
+        character/traits/cTraitsManager.cpp
+        character/traits/cTraitSpec.cpp
+        character/predicates.cpp
+        character/pregnancy.cpp
+        character/cDynamicStat.cpp
+        character/cDynamicStat.h
+        character/cGirlPool.cpp)
 
 set(SCRIPTING_SRC
         scripting/cEventMapping.cpp
@@ -167,7 +178,11 @@ set(SRC cEvents.cpp
         Inventory.cpp
         sStorage.cpp
         XmlMisc.cpp
-        cGameSettings.cpp cGameSettings.h combat/combat.h combat/combat.cpp combat/action.h combat/action.cpp combat/combatant.cpp combat/combatant.h)
+        cGameSettings.cpp
+        combat/combat.cpp
+        combat/action.cpp
+        combat/combatant.cpp
+        )
 
 add_executable(WhoreMaster ${BUILDINGS_SRC} ${SCREENS_SRC} ${JOBS_SRC} ${CHARACTER_SRC} ${SCRIPTING_SRC} ${SRC} main.cpp)
 target_link_libraries(WhoreMaster PUBLIC WMEngine pthread)

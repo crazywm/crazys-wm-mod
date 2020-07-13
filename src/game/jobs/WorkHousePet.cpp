@@ -24,6 +24,7 @@
 #include "cJobManager.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
+#include "character/cCustomers.h"
 
 #pragma endregion
 
@@ -53,26 +54,26 @@ bool WorkHousePet(sGirl& girl, bool Day0Night1, cRng& rng)
 
     int imagetype = IMGTYPE_PUPPYGIRL;
 
-    sGirl* headonduty = random_girl_on_job(*girl.m_Building, JOB_HEADGIRL, Day0Night1);
+    const sGirl* headonduty = random_girl_on_job(*girl.m_Building, JOB_HEADGIRL, Day0Night1);
     string headname = (headonduty ? "Head Girl " + headonduty->FullName() + "" : "the Head girl");
 
     // torturer can be in any brothel. need not be in house
-    sGirl* tortureronduty = random_girl_on_job(g_Game->buildings(), JOB_CLEANHOUSE, Day0Night1);
+    const sGirl* tortureronduty = random_girl_on_job(g_Game->buildings(), JOB_CLEANHOUSE, Day0Night1);
     string torturername = (tortureronduty ? "Torturer " + tortureronduty->FullName() + "" : "the Torturer");
 
-    sGirl* recruiteronduty = random_girl_on_job(*girl.m_Building, JOB_RECRUITER, Day0Night1);
+    const sGirl* recruiteronduty = random_girl_on_job(*girl.m_Building, JOB_RECRUITER, Day0Night1);
     string recruitername = (recruiteronduty ? "Recruiter " + recruiteronduty->FullName() + "" : "the Recruiter");
 
-    sGirl* bedwarmeronduty = random_girl_on_job(*girl.m_Building, JOB_PERSONALBEDWARMER, Day0Night1);
+    const sGirl* bedwarmeronduty = random_girl_on_job(*girl.m_Building, JOB_PERSONALBEDWARMER, Day0Night1);
     string bedname = (bedwarmeronduty ? "Bed warmer " + bedwarmeronduty->FullName() + "" : "the Bed warmer");
 
-    sGirl* cleaneronduty = random_girl_on_job(*girl.m_Building, JOB_CLEANHOUSE, Day0Night1);
+    const sGirl* cleaneronduty = random_girl_on_job(*girl.m_Building, JOB_CLEANHOUSE, Day0Night1);
     string cleanername = (cleaneronduty ? "House cleaner " + cleaneronduty->FullName() + "" : "the house cleaner");
 
-    sGirl* traningonduty = random_girl_on_job(*girl.m_Building, JOB_PERSONALTRAINING, Day0Night1);
+    const sGirl* traningonduty = random_girl_on_job(*girl.m_Building, JOB_PERSONALTRAINING, Day0Night1);
     string traningname = (traningonduty ? "Personal trained " + traningonduty->FullName() + "" : "the Personal trained");
 
-    sGirl* puppyonduty = random_girl_on_job(*girl.m_Building, JOB_HOUSEPET, Day0Night1);
+    const sGirl* puppyonduty = random_girl_on_job(*girl.m_Building, JOB_HOUSEPET, Day0Night1);
     string puppyname = (puppyonduty ? "Puppy girl " + puppyonduty->FullName() + "" : "the Puppy girl");
 
     if (train >= 50)            // they refuse to train
@@ -474,7 +475,7 @@ bool WorkHousePet(sGirl& girl, bool Day0Night1, cRng& rng)
                                 girl.upd_temp_stat(STAT_LIBIDO, -20, true);
                                 girl.beastiality(2);
                                 imagetype = IMGTYPE_BEAST;
-                                if (!girl.calc_insemination(*cGirls::GetBeast(), 1.0))
+                                if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
                                 {
                                     g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
                                 }

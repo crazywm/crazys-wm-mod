@@ -125,8 +125,8 @@ void MatronJob::MatronGains(sGirl& girl, bool Day0Night1,  int conf) {
     girl.service(uniform(2, skill + 2));
     girl.upd_temp_stat(STAT_LIBIDO, uniform(0, libido));
 
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 30, ACTION_WORKMATRON, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Psychic", 60, ACTION_WORKMATRON, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 30, ACTION_WORKMATRON, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Psychic", 60, ACTION_WORKMATRON, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
 }
 
 void MatronJob::HandleMatronResult(sGirl& girl, int &conf) {

@@ -37,7 +37,7 @@ bool WorkFilmDirector(sGirl& girl, bool Day0Night1, cRng& rng)
 
     ss << "${name} worked as a Film Director.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // not for studio crew
+    cGirls::UnequipCombat(girl);    // not for studio crew
 
     int wages = 50;
     int tips = 0;
@@ -86,8 +86,8 @@ bool WorkFilmDirector(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.service(rng%skill + 2);
 
 
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Psychic", 90, actiontype, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 30, actiontype, "She has worked as a matron long enough that she has learned to be more Charismatic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Psychic", 90, actiontype, "She has learned to handle the girls so well that you'd almost think she was Psychic.", Day0Night1);
 
     return false;
 }

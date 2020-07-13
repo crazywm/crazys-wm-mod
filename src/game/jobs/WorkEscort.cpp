@@ -47,7 +47,7 @@ bool WorkEscort(sGirl& girl, bool Day0Night1, cRng& rng)
         return false;
     }
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = 0, tips = 0;
     double escort = 0, fame = 0;
@@ -1938,12 +1938,12 @@ break;    // end Es_DeadBeat
     girl.AddMessage(ss.str(), imagetype, Day0Night1);
 
     //gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 60, actiontype, "Dealing with customers and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Elegant", 40, actiontype, "Playing the doting girlfriend has given ${name} an Elegant nature.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with customers and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Elegant", 40, actiontype, "Playing the doting girlfriend has given ${name} an Elegant nature.", Day0Night1);
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 40, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
-    cGirls::PossiblyLoseExistingTrait(&girl, "Aggressive", 70, actiontype, "Controlling her temper has greatly reduced ${name}'s Aggressive tendencies.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 40, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Aggressive", 70, actiontype, "Controlling her temper has greatly reduced ${name}'s Aggressive tendencies.", Day0Night1);
 
     return false;
 }

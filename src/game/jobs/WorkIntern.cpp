@@ -54,7 +54,7 @@ bool WorkIntern(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} trains in the Medical field.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     int enjoy = 0;                                                //
     int wages = 0;                                                //

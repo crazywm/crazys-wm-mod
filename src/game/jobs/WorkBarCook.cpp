@@ -75,10 +75,10 @@ bool WorkBarCook(sGirl& girl, bool Day0Night1, cRng& rng)
         ss << "${name} is assigned to work as a cook in the kitchen, preparing food for the customers.\n \n";
     }
 
-    cGirls::UnequipCombat(&girl);  // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);  // put that shit away, you'll scare off the customers!
 
 
-    sGirl* barmaidonduty = random_girl_on_job(*girl.m_Building, JOB_BARMAID, Day0Night1);
+    const sGirl* barmaidonduty = random_girl_on_job(*girl.m_Building, JOB_BARMAID, Day0Night1);
     string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid");
 
     int wages = 15, tips = 0;
@@ -504,7 +504,7 @@ bool WorkBarCook(sGirl& girl, bool Day0Night1, cRng& rng)
     //gain traits
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Clumsy", 30, actiontype, "It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, actiontype, "It took her breaking hundreds of dishes, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", Day0Night1);
 
 #pragma endregion
     return false;

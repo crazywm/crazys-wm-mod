@@ -25,7 +25,7 @@
 #include "Game.hpp"
 #include "CLog.h"
 
-static stringstream ss;
+static std::stringstream ss;
 
 cScreenGangs::cScreenGangs() : cInterfaceWindowXML("gangs_screen.xml")
 {
@@ -235,7 +235,7 @@ void cScreenGangs::init(bool back)
     for(auto& gang : g_Game->gang_manager().GetPlayerGangs())
     {
         // format the string with the gang name, mission and number of men
-        std::vector<string> Data(11);
+        std::vector<std::string> Data(11);
         ss.str("");    ss << gang->name(); Data[0] = ss.str();
         ss.str("");    ss << gang->m_Num; Data[1] = ss.str();
         ss.str("");    ss << short_mission_desc(gang->m_MissionID); Data[2] = ss.str();
@@ -267,7 +267,7 @@ void cScreenGangs::init(bool back)
     for (auto& current : g_Game->gang_manager().GetHireableGangs())
     {
         // format the string with the gang name, mission and number of men
-        std::vector<string> Data(10);
+        std::vector<std::string> Data(10);
         Data[0] = current->name();
         Data[1] = std::to_string(current->m_Num);
         ss.str("");    ss << current->combat() << "%";        Data[2] = ss.str();
@@ -397,7 +397,7 @@ void cScreenGangs::on_select_mission()
     }
 }
 
-string cScreenGangs::mission_desc(int mid)
+std::string cScreenGangs::mission_desc(int mid)
 {
     switch (mid) {
     case MISS_GUARDING:        return "Your men will guard your property.";
@@ -419,7 +419,7 @@ string cScreenGangs::mission_desc(int mid)
     return ss.str();
 }
 
-string cScreenGangs::short_mission_desc(int mid)
+std::string cScreenGangs::short_mission_desc(int mid)
 {
     switch (mid)
     {
@@ -442,7 +442,7 @@ string cScreenGangs::short_mission_desc(int mid)
 int cScreenGangs::set_mission_desc(int mid)
 {
     int price = g_Game->tariff().goon_mission_cost(mid);            // OK: get the difficulty-adjusted price for this mission
-    string desc = mission_desc(mid);                    // and get a description of the mission
+    std::string desc = mission_desc(mid);                    // and get a description of the mission
     ss.str(""); ss << desc << " (" << price << "g)";                // stick 'em both together ...
     EditTextItem(ss.str(), missiondesc_id);                // ... and set the text field
     return price;                                        // return the mission price

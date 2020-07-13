@@ -45,7 +45,7 @@ bool WorkHallXXXEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a sexual entertainer in the gambling hall.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = 25, tips = 0;
     int work = 0, fame = 0;
@@ -664,13 +664,13 @@ bool WorkHallXXXEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.performance(rng%skill + 1);
 
     //gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to perform sexual entertainment for patrons every day has made ${name} quite the nympho.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Nymphomaniac", 75, ACTION_WORKSTRIP, "Having to perform sexual entertainment for patrons every day has made ${name} quite the nympho.", Day0Night1);
     //SIN: new trait
-    cGirls::PossiblyGainNewTrait(&girl, "Exhibitionist", 50, ACTION_WORKSTRIP, "Performing sexual entertainment for strangers every day has made ${name} quite keen to show off her sexuality.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Exhibitionist", 50, ACTION_WORKSTRIP, "Performing sexual entertainment for strangers every day has made ${name} quite keen to show off her sexuality.", Day0Night1);
 
     if (jobperformance >= 140 && rng.percent(25))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks  sexiness.", Day0Night1);
     }
 
 #pragma endregion

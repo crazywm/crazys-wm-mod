@@ -37,7 +37,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     stringstream ss;
     int roll_a = rng.d100(), roll_c = rng.d100(), roll_d = rng.d100(), roll;
     //g_Building = BUILDING_HOUSE;
-    cGirls::UnequipCombat(&girl);    // put that shit away, not needed for sex training
+    cGirls::UnequipCombat(girl);    // put that shit away, not needed for sex training
     int imagetype = IMGTYPE_MAID;
     int msgtype = Day0Night1;
 
@@ -49,10 +49,8 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     // Headgirl can influence against refusal
-    auto hg = girl.m_Building->girls_on_job(JOB_HEADGIRL, Day0Night1);
-    sGirl* headGirl = hg.empty() ? nullptr : hg[0];
-    bool headOnDuty = (headGirl ? true : false);
-    string headName = (headOnDuty ? headGirl->FullName() : "");
+    sGirl* headGirl = random_girl_on_job(*brothel, JOB_HEADGIRL, Day0Night1);
+    string headName = (headGirl ? headGirl->FullName() : "");
 
     //    refusal check
     if (girl.disobey_check(ACTION_WORKHAREM, JOB_PERSONALBEDWARMER))
@@ -61,7 +59,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         ss << " but she refuses to lay with you.";
         int effectiveness = rng.d100();
 
-        if (headOnDuty)
+        if (headGirl)
         {
             ss << "\n \nHead Girl " << headName << " intervenes";
             if (girl.is_slave())
@@ -610,7 +608,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             ss << "You get them to bathe together. Then you watch as ";
             break;
         case 2:
-            if (headOnDuty) ss << "Your Head Girl sits with you to watch as ";
+            if (headGirl) ss << "Your Head Girl sits with you to watch as ";
             else ss << "There are squeals, yelps, shouts and groans as ";
             break;
         case 3:

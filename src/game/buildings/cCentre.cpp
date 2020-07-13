@@ -45,8 +45,6 @@ void sCentre::UpdateGirls(bool is_night)
     stringstream ss;
     string girlName;
 
-    int sum = EVENT_SUMMARY;
-
     bool counselor = false;
 
     //////////////////////////////////////////////////////
@@ -63,29 +61,27 @@ void sCentre::UpdateGirls(bool is_night)
     //////////////////////////////////////////////////////////
     //  JOB_COUNSELOR needs to be checked before all others //
     //////////////////////////////////////////////////////////
-    for(auto& current : girls())
+    m_Girls->apply([&](auto& current)
     {
-        auto sw = current->get_job(is_night);
-        if (current->is_dead() || sw != JOB_COUNSELOR)
+        auto sw = current.get_job(is_night);
+        if (current.is_dead() || sw != JOB_COUNSELOR)
         {    // skip dead girls and anyone who is not a counselor
-            continue;
+           return;
         }
-        sum = EVENT_SUMMARY;
         ss.str("");
-        girlName = current->FullName();
-        
-        if (current->disobey_check(ACTION_WORKCOUNSELOR, (JOBS)sw))
+
+        if (current.disobey_check(ACTION_WORKCOUNSELOR, (JOBS)sw))
         {
-            (is_night ? current->m_Refused_To_Work_Night = true : current->m_Refused_To_Work_Day = true);
-            m_Fame -= current->fame();
-            ss << girlName << " refused to work so made no money.";
+           (is_night ? current.m_Refused_To_Work_Night = true : current.m_Refused_To_Work_Day = true);
+           m_Fame -= current.fame();
+           ss << "${name} refused to work so made no money.";
         }
         else
         {
-            counselor = true;
+           counselor = true;
         }
-        if (ss.str().length() > 0) current->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, sum);
-    }
+        if (ss.str().length() > 0) current.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_SUMMARY);
+    });
 
     /////////////////////////////////////////////////////////////////////////////////
     //  Anyone not in the Therapy Cantre can be assigned to counselor if need be.  //
@@ -111,75 +107,74 @@ void sCentre::UpdateGirls(bool is_night)
     /////////////////////////////////////
     //  Do all the Centre staff jobs.  //
     /////////////////////////////////////
-    for(auto& current : girls())
+    m_Girls->apply([&](auto& current)
     {
-        auto sw = current->get_job(is_night);
-        if (current->is_dead() || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE && sw != JOB_COUNSELOR) ||
+        auto sw = current.get_job(is_night);
+        if (current.is_dead() || (sw != JOB_FEEDPOOR && sw != JOB_COMUNITYSERVICE && sw != JOB_CLEANCENTRE && sw != JOB_COUNSELOR) ||
             // skip dead girls and anyone who is not staff
-            (sw == JOB_COUNSELOR && ((is_night == SHIFT_DAY && current->m_Refused_To_Work_Day) || (is_night == SHIFT_NIGHT && current->m_Refused_To_Work_Night))))
+            (sw == JOB_COUNSELOR && ((is_night == SHIFT_DAY && current.m_Refused_To_Work_Day) || (is_night == SHIFT_NIGHT && current.m_Refused_To_Work_Night))))
         {
-            continue;
+            return;
         }
 
-        g_Game->job_manager().handle_simple_job(*current, is_night);
-    }
+        g_Game->job_manager().handle_simple_job(current, is_night);
+    });
 
 
     ////////////////////////////////////////////////////////////////////
     //  Do Rehab and therapy last if there is a counselor available.  //
     ////////////////////////////////////////////////////////////////////
-    for(auto& current : girls())
-    {
-        auto sw = current->get_job(is_night);
-        if (current->is_dead() || (sw != JOB_REHAB && sw != JOB_ANGER && sw != JOB_EXTHERAPY && sw != JOB_THERAPY))
+    m_Girls->apply([&](auto& current){
+        auto sw = current.get_job(is_night);
+        if (current.is_dead() || (sw != JOB_REHAB && sw != JOB_ANGER && sw != JOB_EXTHERAPY && sw != JOB_THERAPY))
         {
-            continue;
+            return;
         }
-        g_Game->job_manager().do_job(*current, is_night);
-    }
+        g_Game->job_manager().do_job(current, is_night);
+    });
 
     EndShift("Centre Manager", is_night, matron);
 }
 
-void sCentre::auto_assign_job(sGirl* target, std::stringstream& message, bool is_night)
+void sCentre::auto_assign_job(sGirl& target, std::stringstream& message, bool is_night)
 {
     std::stringstream& ss = message;
 
     // if they have no job at all, assign them a job
-    ss << "The Centre Manager assigns " << target->FullName() << " to ";
+    ss << "The Centre Manager assigns " << target.FullName() << " to ";
     // first send any addicts to rehab
-    if (is_addict(*target))
+    if (is_addict(target))
     {
-        target->m_DayJob = target->m_NightJob = JOB_REHAB;
+        target.m_DayJob = target.m_NightJob = JOB_REHAB;
         ss << "go to Rehab.";
     }
         // Make sure there is at least 1 counselor on duty
-    else if (target->is_free() && num_girls_on_job(JOB_COUNSELOR, is_night) < 1)
+    else if (target.is_free() && num_girls_on_job(JOB_COUNSELOR, is_night) < 1)
     {
-        target->m_DayJob = target->m_NightJob = JOB_COUNSELOR;
+        target.m_DayJob = target.m_NightJob = JOB_COUNSELOR;
         ss << "work as a Counselor.";
     }
         // assign 1 cleaner per 20 girls
     else if (num_girls_on_job(JOB_CLEANCENTRE, is_night) < max(1, num_girls() / 20))
     {
-        target->m_DayJob = target->m_NightJob = JOB_CLEANCENTRE;
+        target.m_DayJob = target.m_NightJob = JOB_CLEANCENTRE;
         ss << "clean the Centre.";
     }
         // assign 1 counselor per 20 girls
-    else if (target->is_free() && num_girls_on_job(JOB_COUNSELOR, is_night) < num_girls() / 20)
+    else if (target.is_free() && num_girls_on_job(JOB_COUNSELOR, is_night) < num_girls() / 20)
     {
-        target->m_DayJob = target->m_NightJob = JOB_COUNSELOR;
+        target.m_DayJob = target.m_NightJob = JOB_COUNSELOR;
         ss << "work as a Counselor.";
     }
         // split all the rest between JOB_COMUNITYSERVICE and JOB_FEEDPOOR
     else if (num_girls_on_job(JOB_COMUNITYSERVICE, is_night) < num_girls_on_job(JOB_FEEDPOOR, is_night))
     {
-        target->m_DayJob = target->m_NightJob = JOB_COMUNITYSERVICE;
+        target.m_DayJob = target.m_NightJob = JOB_COMUNITYSERVICE;
         ss << "work doing comunity service.";
     }
     else
     {
-        target->m_DayJob = target->m_NightJob = JOB_FEEDPOOR;
+        target.m_DayJob = target.m_NightJob = JOB_FEEDPOOR;
         ss << "work feeding the poor.";
     }
 }
@@ -209,26 +204,28 @@ bool sCentre::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
 }
 
 bool sCentre::FindCounselor(bool is_night, std::initializer_list<JOBS> current_job) {
-    for(auto& current : girls())
-    {
-        auto sw = current->get_job(is_night);
+    auto found = m_Girls->get_first_girl([&](auto& current){
+        auto sw = current.get_job(is_night);
         // skip dead girls
-        if (current->is_dead()) {
-            continue;
+        if (current.is_dead()) {
+            return false;
         }
 
         // skip anyone with a different job
         bool right_job = std::any_of(begin(current_job), end(current_job), [sw](JOBS job){ return sw == job; });
         if(!right_job)
-            continue;
+            return false;
 
-        if (!current->disobey_check(ACTION_WORKCOUNSELOR, (JOBS)sw)) {
-            std::string message = "There was no Counselor available to work so " + current->FullName() + " was assigned to do it.";
-            current->m_DayJob = current->m_NightJob = JOB_COUNSELOR;
-            current->m_Events.AddMessage(message, IMGTYPE_PROFILE, EVENT_SUMMARY);
-            return true;
-        }
+        //  we really need a const disobey_check
+        return !const_cast<sGirl&>(current).disobey_check(ACTION_WORKCOUNSELOR, (JOBS)sw);
+    });
+
+    if(found) {
+        std::string message = "There was no Counselor available to work so {name} was assigned to do it.";
+        found->m_DayJob = found->m_NightJob = JOB_COUNSELOR;
+        found->AddMessage(message, IMGTYPE_PROFILE, EVENT_SUMMARY);
     }
-    return false;
+
+    return found;
 }
 

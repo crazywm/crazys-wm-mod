@@ -38,7 +38,7 @@ bool WorkFarmVeterinarian(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a Veterinarian on the farm.";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = 20, tips = 0;
     int enjoy = 0;

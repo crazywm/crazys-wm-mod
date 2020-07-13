@@ -31,6 +31,8 @@
 #include "ICharacter.h"
 #include "scripting/fwd.hpp"
 #include "scripting/sLuaParameter.hpp"
+#include "pregnancy.h"
+
 
 class TraitSpec;
 class sInventoryItem;
@@ -96,7 +98,7 @@ typedef struct sChild
 // Represents a single girl
 struct sGirl : public ICharacter
 {
-    sGirl();
+    sGirl(bool unique);
     ~sGirl();
 
     std::string m_Name;                                // The girls name
@@ -208,7 +210,7 @@ struct sGirl : public ICharacter
 
     tinyxml2::XMLElement& SaveGirlXML(tinyxml2::XMLElement& elRoot);
     bool LoadGirlXML(const tinyxml2::XMLElement* pGirl);
-    static std::unique_ptr<sGirl> LoadFromTemplate(const tinyxml2::XMLElement& root);
+    static std::shared_ptr<sGirl> LoadFromTemplate(const tinyxml2::XMLElement& root);
 
     /*
     *    stream operator - used for debug
@@ -225,7 +227,7 @@ struct sGirl : public ICharacter
     int upd_Enjoyment(Action_Types stat_id, int amount);
     int upd_Training(int stat_id, int amount, bool usetraits = true);
 
-    int rebel();
+    int rebel() const;
     bool FixFreeTimeJobs();
 
     int get_enjoyment(Action_Types actiontype) const;
@@ -258,9 +260,9 @@ struct sGirl : public ICharacter
 
     int breast_size() const;
     bool is_dead() const;        // `J` replaces a few DeadGirl checks
-    bool is_fighter(bool canbehelped = false);
+    bool is_fighter(bool canbehelped = false) const;
 
-    sGirl* run_away();
+    void run_away();
 
     bool keep_tips() const;
     /// returns whether the girl receives payment. This is not the case if she is a slave and you don't pay your slaves
@@ -268,24 +270,23 @@ struct sGirl : public ICharacter
     bool is_slave()    const;
     bool is_free() const;
     void set_slave();
-    bool is_monster();
-    bool is_human();
-    bool is_arena();
-    bool is_yourdaughter();
-    bool is_isdaughter();
-    bool is_resting();
-    bool is_havingsex();
-    bool was_resting();
+    bool is_monster() const;
+    bool is_human() const;
+    bool is_arena() const;
+    bool is_isdaughter() const;
+    bool is_resting() const;
+    bool is_havingsex() const;
+    bool was_resting() const;
 
-    void OutputGirlRow(std::vector<std::string>& Data, const std::vector<std::string>& columnNames);
-    void OutputGirlDetailString(std::string& Data, const std::string& detailName);
+    void OutputGirlRow(std::vector<std::string>& Data, const std::vector<std::string>& columnNames) const;
+    void OutputGirlDetailString(std::string& Data, const std::string& detailName) const;
 
     // END MOD
 
     double job_performance(JOBS job, bool estimate=true) const;
 
     // more useful functions
-    int get_num_item_equiped(int Type);
+    int get_num_item_equiped(int Type) const;
     void set_default_house_percent();
 
     bool equip(const sInventoryItem* item, bool force);

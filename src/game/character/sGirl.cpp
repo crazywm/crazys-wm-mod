@@ -68,7 +68,7 @@ const char *sGirl::training_jobs[] = {
         "general training"
 };
 
-sGirl::sGirl() : ICharacter( g_Game->create_traits_collection() ),
+sGirl::sGirl(bool unique) : ICharacter( g_Game->create_traits_collection(), unique ),
         m_EventMapping(g_Game->script_manager().CreateEventMapping("GirlEventMapping", "DefaultGirl"))
 {
     // Names
@@ -145,7 +145,7 @@ bool sGirl::disobey_check(int action, JOBS job)
 {
     int diff;
     int chance_to_obey = 0;                            // high value - more likely to obey
-    chance_to_obey = -cGirls::GetRebelValue(this, false, job);    // let's start out with the basic rebelliousness
+    chance_to_obey = -cGirls::GetRebelValue(*this, false, job);    // let's start out with the basic rebelliousness
     chance_to_obey += 100;                            // make it range from 0 to 200
     chance_to_obey /= 2;                            // get a conventional percentage value
     /*
@@ -379,7 +379,7 @@ int sGirl::lookup_jobs_code(string s)
 bool sGirl::equip(const sInventoryItem* item, bool force) {
     if (force || can_equip(item))
     {
-        g_Game->inventory_manager().Equip(this, item, force);
+        g_Game->inventory_manager().Equip(*this, item, force);
         return true;
     }
     return false;
@@ -592,16 +592,14 @@ int sGirl::get_stat(int stat_id) const
 
 }
 
-sGirl *sGirl::run_away()
+void sGirl::run_away()
 {
     if(m_Building)
-        m_Building->remove_girl(this);
+        g_Game->AddGirlToRunaways(m_Building->remove_girl(this));
     if (m_NightJob == JOB_INDUNGEON)
-        g_Game->dungeon().RemoveGirl(this);
+        g_Game->AddGirlToRunaways(g_Game->dungeon().RemoveGirl(this));
     m_RunAway = 6;        // player has 6 weeks to retreive
     m_NightJob = m_DayJob = JOB_RUNAWAY;
-    g_Game->AddGirlToRunaways(this);
-    return nullptr;
 }
 
 bool sGirl::keep_tips() const {
@@ -745,7 +743,7 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     // TODO load their triggers
     if (age() < 18) set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 
-    cGirls::CalculateGirlType(this);
+    cGirls::CalculateGirlType(*this);
 
     // get the number of daugher names
     /*ifs  >>  temp >> ws;
@@ -998,7 +996,7 @@ bool sGirl::is_dead() const
     return health() <= 0;
 }
 
-bool sGirl::is_fighter(bool canbehelped)
+bool sGirl::is_fighter(bool canbehelped) const
 {
     if (canbehelped)
     {
@@ -1013,7 +1011,7 @@ bool sGirl::is_fighter(bool canbehelped)
            has_active_trait("Tsundere");
 }
 
-bool sGirl::is_resting()
+bool sGirl::is_resting() const
 {
     return ((m_DayJob == JOB_FILMFREETIME    && m_NightJob == JOB_FILMFREETIME) ||
             (m_DayJob == JOB_ARENAREST        && m_NightJob == JOB_ARENAREST) ||
@@ -1023,7 +1021,7 @@ bool sGirl::is_resting()
             (m_DayJob == JOB_FARMREST        && m_NightJob == JOB_FARMREST) ||
             (m_DayJob == JOB_RESTING        && m_NightJob == JOB_RESTING));
 }
-bool sGirl::is_havingsex()
+bool sGirl::is_havingsex() const
 {
     return (
             m_DayJob == JOB_TRAINING || m_NightJob == JOB_TRAINING ||
@@ -1055,7 +1053,7 @@ bool sGirl::is_havingsex()
             m_DayJob == JOB_HOUSEPET || m_NightJob == JOB_HOUSEPET
     );
 }
-bool sGirl::was_resting()
+bool sGirl::was_resting() const
 {
     return ((m_PrevDayJob == JOB_FILMFREETIME    && m_PrevNightJob == JOB_FILMFREETIME) ||
             (m_PrevDayJob == JOB_ARENAREST        && m_PrevNightJob == JOB_ARENAREST) ||
@@ -1067,7 +1065,7 @@ bool sGirl::was_resting()
 }
 
 
-void sGirl::OutputGirlRow(vector<string>& Data, const vector<string>& columnNames)
+void sGirl::OutputGirlRow(vector<string>& Data, const vector<string>& columnNames) const
 {
     Data.resize(columnNames.size());
     for (unsigned int x = 0; x < columnNames.size(); ++x)
@@ -1077,7 +1075,7 @@ void sGirl::OutputGirlRow(vector<string>& Data, const vector<string>& columnName
     }
 }
 
-void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
+void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
 {
     //given a statistic name, set a string to a value that represents that statistic
     static stringstream ss;
@@ -1341,8 +1339,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
     else if (detailName == "is_poisoned")        { ss << (is_poisoned() ? "Yes" : "No"); }
     else if (detailName == "Value")
     {
-        cGirls::CalculateAskPrice(this, false);
-        ss << (int)g_Game->tariff().slave_price(this, false);
+        // TODO this should not be modifying the girl
+        cGirls::UpdateAskPrice(*const_cast<sGirl*>(this), false);
+        ss << (int)g_Game->tariff().slave_price(*const_cast<sGirl*>(this), false);
     }
     else if (detailName == "SO")
     {
@@ -1367,13 +1366,12 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName)
     Data = ss.str();
 }
 
-int sGirl::rebel()
+int sGirl::rebel() const
 {
-    // return cGirls::GetRebelValue(this, this->m_DayJob == JOB_MATRON); // `J` old version
     if (this->m_DayJob == JOB_INDUNGEON)    // `J` Dungeon "Matron" can be a Torturer from any brothel
-        return cGirls::GetRebelValue(this, random_girl_on_job(g_Game->buildings(), JOB_TORTURER, 0));
+        return cGirls::GetRebelValue(*this, random_girl_on_job(g_Game->buildings(), JOB_TORTURER, 0));
     if(m_Building)
-        return cGirls::GetRebelValue(this, m_Building->matron_count() > 0);
+        return cGirls::GetRebelValue(*this, m_Building->matron_count() > 0);
     g_LogFile.log(ELogLevel::ERROR, "Getting rebel value of girl '", FullName(), "' that is not associated with any building!");
     return 0;
 }
@@ -1449,7 +1447,7 @@ int sGirl::upd_Training(int stat_id, int amount, bool usetraits)
     return get_training(stat_id);
 }
 
-int sGirl::get_num_item_equiped(int Type)
+int sGirl::get_num_item_equiped(int Type) const
 {
     return inventory().num_equipped_of_type(Type);
 }
@@ -1491,7 +1489,7 @@ bool sGirl::unequip(const sInventoryItem* item) {
 
         if (affects == sEffect::Skill)    upd_mod_skill(eff_id, -amount);
         else if (affects == sEffect::Stat)    upd_mod_stat(eff_id, -amount);
-        else if (affects == sEffect::Enjoy)    cGirls::UpdateEnjoymentMod(this, eff_id, -amount);
+        else if (affects == sEffect::Enjoy)    cGirls::UpdateEnjoymentMod(*this, eff_id, -amount);
         else if (affects == sEffect::GirlStatus)    // adds/removes status
         {
             if (amount == 1) m_States &= ~(1 << eff_id);        // add status
@@ -1499,7 +1497,7 @@ bool sGirl::unequip(const sInventoryItem* item) {
         }
     }
 
-    cGirls::CalculateGirlType(this);
+    cGirls::CalculateGirlType(*this);
 
     return true;
 }
@@ -1509,9 +1507,9 @@ scripting::sScriptValue sGirl::TriggerEvent(scripting::sEventID id)
     return m_EventMapping->RunEvent(id, *this);
 }
 
-std::unique_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
+std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
 {
-    auto girl = std::make_unique<sGirl>();            // walk the XML DOM to get the girl data
+    auto girl = std::make_shared<sGirl>(true);            // walk the XML DOM to get the girl data
     const char *pt;
     // get the simple fields
     girl->m_Name = GetStringAttribute(root, "Name");
@@ -1615,10 +1613,6 @@ void sGirl::set_default_house_percent() {
     house(g_Game->settings().get_integer(is_slave() ? settings::USER_HOUSE_PERCENT_SLAVE : settings::USER_HOUSE_PERCENT_FREE));
 }
 
-bool sGirl::is_yourdaughter() {
-    return has_active_trait("Your Daughter");
-}
-
 int sGirl::get_enjoyment(Action_Types actiontype) const {
     if (actiontype < 0) return 0;
     // Generic calculation
@@ -1644,13 +1638,13 @@ bool sGirl::is_slave() const { return has_status(STATUS_SLAVE); }
 
 bool sGirl::is_free() const { return !is_slave(); }
 
-bool sGirl::is_monster() { return has_status(STATUS_CATACOMBS); }
+bool sGirl::is_monster() const { return has_status(STATUS_CATACOMBS); }
 
-bool sGirl::is_human() { return !is_monster(); }
+bool sGirl::is_human() const { return !is_monster(); }
 
-bool sGirl::is_arena() { return has_status(STATUS_ARENA); }
+bool sGirl::is_arena() const { return has_status(STATUS_ARENA); }
 
-bool sGirl::is_isdaughter() { return has_status(STATUS_ISDAUGHTER); }
+bool sGirl::is_isdaughter() const { return has_status(STATUS_ISDAUGHTER); }
 
 void sGirl::set_slave() { set_status(STATUS_SLAVE); }
 

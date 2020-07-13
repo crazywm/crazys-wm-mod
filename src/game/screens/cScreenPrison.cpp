@@ -23,6 +23,7 @@
 #include "Game.hpp"
 #include <sstream>
 #include "character/predicates.h"
+#include "character/cGirlPool.h"
 
 static int ImageNum = -1;
 
@@ -41,15 +42,16 @@ void cScreenPrison::init(bool back)
     selection = -1;
     update_details();
 
-    int i = 0;
     ClearListBox(prison_list_id);
-    for(sGirl* pgirls : g_Game->GetPrison())
+    auto& prison = g_Game->GetPrison();
+    for(int i = 0; i < prison.num(); ++i)
     {
-        stringstream ss;
-        int cost = PrisonReleaseCost(pgirls);
-        ss << pgirls->FullName() << "  (release cost: " << cost << " gold)";
+        sGirl* girl = prison.get_girl(i);
+        int cost = PrisonReleaseCost(*girl);
+        ss << girl->FullName() << "  (release cost: " << cost << " gold)";
         AddToListBox(prison_list_id, i, ss.str());
         i++;
+        ss.str("");
     }
 }
 
@@ -89,20 +91,14 @@ void cScreenPrison::update_details()
     sGirl* pgirls = get_selected_girl();
     if (!pgirls) return;
 
-    if (DetailLevel == 1)        EditTextItem(cGirls::GetMoreDetailsString(pgirls, true), girl_desc_id, true);
-    else if (DetailLevel == 2)    EditTextItem(cGirls::GetThirdDetailsString(pgirls), girl_desc_id, true);
-    else                        EditTextItem(cGirls::GetDetailsString(pgirls, true), girl_desc_id, true);
+    if (DetailLevel == 1)        EditTextItem(cGirls::GetMoreDetailsString(*pgirls, true), girl_desc_id, true);
+    else if (DetailLevel == 2)    EditTextItem(cGirls::GetThirdDetailsString(*pgirls), girl_desc_id, true);
+    else                        EditTextItem(cGirls::GetDetailsString(*pgirls, true), girl_desc_id, true);
 }
 
 sGirl* cScreenPrison::get_selected_girl()
 {
-    if (selection == -1) return nullptr;
-    int i = 0;
-    for(sGirl* pgirls : g_Game->GetPrison()) {
-        if (i == selection) return pgirls;
-        i++;
-    }
-    return nullptr;
+    return g_Game->GetPrison().get_girl(selection);
 }
 
 void cScreenPrison::more_button()
@@ -118,7 +114,7 @@ void cScreenPrison::release_button()
     if (selection == -1) return;
     sGirl* pgirls = get_selected_girl();
     if (!pgirls) return;
-    int cost = PrisonReleaseCost(pgirls);
+    int cost = PrisonReleaseCost(*pgirls);
     if (!g_Game->gold().afford((double)cost))
     {
         push_message("You don't have enough gold", 0);
@@ -126,30 +122,30 @@ void cScreenPrison::release_button()
     }
     g_Game->gold().item_cost((double)cost);
     g_Game->gold().girl_support((double)cost);
-    g_Game->RemoveGirlFromPrison(pgirls);
+    auto girl = g_Game->GetPrison().TakeGirl(pgirls);
     IBuilding& bld = active_building();
     if (bld.free_rooms() < 1)
     {
         string text = pgirls->FullName();
         text += " has been sent to your dungeon, since current brothel is full.";
         g_Game->push_message(text, 0);
-        g_Game->dungeon().AddGirl(pgirls, DUNGEON_NEWGIRL);
+        g_Game->dungeon().AddGirl(std::move(girl), DUNGEON_NEWGIRL);
     }
     else
     {
         string text = pgirls->FullName();
         text += " has been sent to your current brothel.";
         g_Game->push_message(text, 0);
-        bld.add_girl(pgirls);
+        bld.add_girl(std::move(girl));
     }
 }
 
-int cScreenPrison::PrisonReleaseCost(sGirl* girl)
+int cScreenPrison::PrisonReleaseCost(sGirl& girl)
 {
-    cGirls::CalculateAskPrice(girl, false);
-    int cost = girl->askprice() * 15;
+    cGirls::UpdateAskPrice(girl, false);
+    int cost = girl.askprice() * 15;
     cost += cGirls::GetSkillWorth(girl);
-    if (is_virgin(*girl)) cost += int(cost / 2);    //    `J` fixed virgin adds half cost more
+    if (is_virgin(girl)) cost += int(cost / 2);    //    `J` fixed virgin adds half cost more
     cost *= 2;
     return cost;
 }

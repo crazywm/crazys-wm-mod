@@ -36,7 +36,7 @@ class cGirlTorture {
     sGirl            *m_Torturer;
     sDungeonGirl    *m_DungeonGirl;
     cDungeon        *m_Dungeon;
-    string            m_Message;
+    std::string     m_Message;
     bool            m_Fight;
     bool            m_TorturedByPlayer;
 

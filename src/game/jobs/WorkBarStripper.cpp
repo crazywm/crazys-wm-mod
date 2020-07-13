@@ -43,7 +43,7 @@ bool WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a stripper in the club.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = 30, tips = 0;
     int enjoy = 0, fame = 0;
@@ -510,18 +510,18 @@ bool WorkBarStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_temp_stat(STAT_CONFIDENCE, rng % 2); //SIN - slow boost to confidence
 
     //gained
-    cGirls::PossiblyGainNewTrait(&girl, "Sexy Air", 80, actiontype, "${name} has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl, "Exhibitionist", 60, actiontype, "${name} has been stripping for so long she loves to be naked now.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, actiontype, "${name} has been stripping and having to be sexy for so long she now reeks of sexyness.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Exhibitionist", 60, actiontype, "${name} has been stripping for so long she loves to be naked now.", Day0Night1);
     if (jobperformance >= 140 && rng.percent(25))
     {
-        cGirls::PossiblyGainNewTrait(&girl, "Agile", 40, actiontype, "${name} has been working the pole long enough to become quite Agile.", Day0Night1);
+        cGirls::PossiblyGainNewTrait(girl, "Agile", 40, actiontype, "${name} has been working the pole long enough to become quite Agile.", Day0Night1);
     }
 
     //lose
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 20, actiontype, "${name} has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 20, actiontype, "${name} has had so many people see her naked she is no longer nervous about anything.", Day0Night1);
     if (jobperformance > 150 && girl.confidence() > 65)
     {
-        cGirls::PossiblyLoseExistingTrait(&girl, "Shy", 60, actiontype, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);
+        cGirls::PossiblyLoseExistingTrait(girl, "Shy", 60, actiontype, "${name} has been stripping for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);
     }
 
 #pragma endregion

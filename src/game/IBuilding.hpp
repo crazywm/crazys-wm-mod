@@ -36,6 +36,7 @@
 
 #include "tinyxml2.h"
 #include "character/sGirl.hpp"
+#include "character/cGirlPool.h"
 
 class IBuilding
 {
@@ -45,7 +46,7 @@ public:
 
     IBuilding(const IBuilding&) = delete;
 
-    virtual void auto_assign_job(sGirl* target, std::stringstream& message, bool is_night) = 0;
+    virtual void auto_assign_job(sGirl& target, std::stringstream& message, bool is_night) = 0;
 
     // info functions
     BuildingType type() const { return m_Type; };
@@ -81,51 +82,15 @@ public:
     virtual void save_xml(tinyxml2::XMLElement& root) const;
 
     // girl management
-    const std::list<sGirl*>& girls() const { return m_Girls; }
+    const cGirlPool& girls() const { return *m_Girls; }
+    cGirlPool& girls() { return *m_Girls; }
+
     sGirl* get_girl(int index);
     int get_girl_index(const sGirl& girl) const;
-    void add_girl(sGirl* girl, bool keep_job = false);
-    void remove_girl(sGirl* girl);
-
-    // predicate based lookup. Options are: find first, find random, find all, count
-    // the methods named find_ all return a sGirl* and may return nullptr if no girl
-    // is found.
-    template<class F>
-    sGirl* find_first_girl(F&& predicate) const {
-        auto found = std::find_if(begin(m_Girls), end(m_Girls), predicate);
-        if(found == end(m_Girls)) {
-            return nullptr;
-        } else {
-            return *found;
-        }
-    }
-
-    template<class F>
-    sGirl* find_random_girl_with(F&& predicate) const {
-        RandomSelector<sGirl> selector;
-        for(auto& girl : m_Girls) {
-            if(predicate(girl)) {
-                selector.process(girl);
-            }
-        }
-        return selector.selection();
-    }
-
-    template<class F>
-    int num_girls_with(F predicate) const {
-        return std::count_if(begin(m_Girls), end(m_Girls), predicate);
-    }
-
-    template<class F>
-    std::vector<sGirl*> find_all_girls(F&& predicate) const {
-        std::vector<sGirl*> found;
-        std::copy_if(begin(m_Girls), end(m_Girls), std::back_inserter(found), std::forward<F>(predicate));
-        return std::move(found);
-    }
+    void add_girl(shared_ptr<sGirl> girl, bool keep_job = false);
+    std::shared_ptr<sGirl> remove_girl(sGirl* girl);
 
     // utilities: common uses of the functions above
-    sGirl* find_random_girl() const;
-    sGirl* find_girl_by_name(std::string name) const;
     int    num_girls_on_job(JOBS jobID, int is_night = 0) const;
     std::vector<sGirl*> girls_on_job(JOBS jobID, int is_night = 0) const;
 
@@ -212,10 +177,10 @@ public:
 
     // this is called for when the player tries to meet a new girl at this location
     bool CanEncounter() const;
-    sGirl* TryEncounter();
+    std::shared_ptr<sGirl> TryEncounter();
 protected:
     std::string m_Name;
-    std::list<sGirl*> m_Girls;
+    std::unique_ptr<cGirlPool> m_Girls;
 
 private:
     std::unordered_set<SKILLS> m_ForbiddenSexType;
@@ -227,23 +192,19 @@ private:
     bool m_HasDoneEncounter = false;
 
     // meeting new girls
-    virtual sGirl* meet_girl() const;
+    virtual std::shared_ptr<sGirl> meet_girl() const;
     virtual std::string meet_no_luck() const;
 };
 
 // predicates
 // ---------------------------------------------------------------------------------------------------------------------
 
-inline bool is_nonhuman(const sGirl* girl) {
-    return girl->has_active_trait("Not Human");
-}
-
 struct HasName {
     explicit HasName(std::string name) : m_Name(std::move(name)) {
     }
 
-    bool operator()(const sGirl* girl) const {
-        return m_Name == girl->FullName();
+    bool operator()(const sGirl& girl) const {
+        return m_Name == girl.FullName();
     }
 
     std::string m_Name;
@@ -254,8 +215,8 @@ struct HasJob {
 
     }
 
-    bool operator()(const sGirl* girl) const {
-        return girl->get_job(m_DayNight) == m_Job;
+    bool operator()(const sGirl& girl) const {
+        return girl.get_job(m_DayNight) == m_Job;
     }
 
     JOBS m_Job;

@@ -86,17 +86,17 @@ void FilmAction::DoScene(sGirl& girl) {
 void FilmAction::GainTraits(sGirl& girl, int performance) const {
     if (performance >= 140 && chance(50))
     {
-        if (cGirls::PossiblyGainNewTrait(&girl, "Brawler", 60, ACTION_COMBAT, "She has performed in enough fight scenes that she has become quite a brawler.", false));
-        else if (cGirls::PossiblyGainNewTrait(&girl, "Tough", 70, ACTION_COMBAT, "She has performed in enough fight scenes that she has become quite tough.", false));
-        else if (cGirls::PossiblyGainNewTrait(&girl, "Agile", 80, ACTION_COMBAT, "She has performed martial arts scenes that she is becoming agile.", false));
-        else (cGirls::PossiblyGainNewTrait(&girl, "Fleet of Foot", 90, ACTION_COMBAT, "She has performed so many action scenes that she has become fast on her feet.", false));
+        if (cGirls::PossiblyGainNewTrait(girl, "Brawler", 60, ACTION_COMBAT, "She has performed in enough fight scenes that she has become quite a brawler.", false));
+        else if (cGirls::PossiblyGainNewTrait(girl, "Tough", 70, ACTION_COMBAT, "She has performed in enough fight scenes that she has become quite tough.", false));
+        else if (cGirls::PossiblyGainNewTrait(girl, "Agile", 80, ACTION_COMBAT, "She has performed martial arts scenes that she is becoming agile.", false));
+        else (cGirls::PossiblyGainNewTrait(girl, "Fleet of Foot", 90, ACTION_COMBAT, "She has performed so many action scenes that she has become fast on her feet.", false));
     }
 
     if (performance >= 140 && chance(50))
     {
-        if (cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 60, ACTION_WORKMOVIE, "She has performed in enough movie scenes that she has become charismatic.", false));
-        else if (cGirls::PossiblyGainNewTrait(&girl, "Actress", 70, ACTION_WORKMOVIE, "She has performed in enough movie scenes that she has become a good actress.", false));
-        else cGirls::PossiblyGainNewTrait(&girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks sexiness.", false);
+        if (cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKMOVIE, "She has performed in enough movie scenes that she has become charismatic.", false));
+        else if (cGirls::PossiblyGainNewTrait(girl, "Actress", 70, ACTION_WORKMOVIE, "She has performed in enough movie scenes that she has become a good actress.", false));
+        else cGirls::PossiblyGainNewTrait(girl, "Sexy Air", 80, ACTION_WORKSTRIP, "${name} has been having to be sexy for so long she now reeks sexiness.", false);
     }
 }
 

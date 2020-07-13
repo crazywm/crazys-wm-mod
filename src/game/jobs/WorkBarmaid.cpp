@@ -58,7 +58,7 @@ bool WorkBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a barmaid.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = 0;
     double tips = 0;
@@ -870,11 +870,11 @@ bool WorkBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype, enjoy);
 
     //gain traits
-    cGirls::PossiblyGainNewTrait(&girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
-    if (jobperformance < 100 && roll_c <= 2) cGirls::PossiblyGainNewTrait(&girl, "Assassin", 10, ACTION_WORKBAR, "${name}'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, ACTION_WORKBAR, "Dealing with customers at the bar and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);
+    if (jobperformance < 100 && roll_c <= 2) cGirls::PossiblyGainNewTrait(girl, "Assassin", 10, ACTION_WORKBAR, "${name}'s lack of skill at mixing drinks has been killing people left and right making her into quite the Assassin.", Day0Night1);
 
     //lose traits
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous", 40, ACTION_WORKBAR, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous", 40, ACTION_WORKBAR, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
 
 #pragma endregion
     return false;

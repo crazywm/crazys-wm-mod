@@ -44,12 +44,12 @@ struct sBrothel : public IBuilding
     void save_additional_xml(tinyxml2::XMLElement& root) const override;
     virtual bool LoadXML(tinyxml2::XMLElement * pBrothel);
     // currently unused for brothel
-    void auto_assign_job(sGirl* target, std::stringstream& message, bool is_night) override {};
+    void auto_assign_job(sGirl& target, std::stringstream& message, bool is_night) override {};
 
     void Update() override;
     void UpdateGirls(bool is_night) override;
 
-    bool runaway_check(sGirl * girl);
+    bool runaway_check(sGirl& girl);
 };
 
 #endif  /* __CBROTHEL_H */

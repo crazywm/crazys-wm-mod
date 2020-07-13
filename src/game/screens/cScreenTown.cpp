@@ -26,6 +26,7 @@
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
 #include "sConfig.h"
+#include <sstream>
 
 extern bool                        g_WalkAround;
 extern bool                        g_AllTogle;
@@ -133,7 +134,7 @@ void cScreenTown::init(bool back)
 {
     if (gold_id >= 0)
     {
-        stringstream ss; ss << "Gold: " << g_Game->gold().ival();
+        std::stringstream ss; ss << "Gold: " << g_Game->gold().ival();
         EditTextItem(ss.str(), gold_id);
     }
 
@@ -188,7 +189,7 @@ void cScreenTown::do_walk()
         g_Game->push_message("You can only do this once per week.", COLOR_RED);
         return;
     }
-    sGirl *girl = g_Game->GetRandomGirl();                        // let's get a girl for the player to meet
+    auto girl = g_Game->GetRandomGirl();                        // let's get a girl for the player to meet
     if (girl == nullptr)                                                // if there's no girl, no meeting
     {
         g_Game->push_message(walk_no_luck(), COLOR_RED);
@@ -203,17 +204,18 @@ void cScreenTown::do_walk()
 
     if (girlimage_id != -1)
     {
-        PrepareImage(girlimage_id, girl, IMGTYPE_PROFILE, true, ImageNum);
+        PrepareImage(girlimage_id, girl.get(), IMGTYPE_PROFILE, true, ImageNum);
         HideWidget(girlimage_id, false);
     }
 
+    /// TODO at this point, the girl is nowhere; I think acquiring by script will fail
     girl->TriggerEvent("girl:meet:town");
 }
 
 bool cScreenTown::buy_building(static_brothel_data* bck)
 {
     locale syslocale("");
-    stringstream ss;
+    std::stringstream ss;
     ss.imbue(syslocale);
 
     if (!g_Game->gold().afford(bck->price) || g_Game->gang_manager().GetNumBusinessExtorted() < bck->business)

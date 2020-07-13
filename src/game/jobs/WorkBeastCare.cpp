@@ -45,7 +45,7 @@ bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
         ss << "There were no beasts in the brothel to take care of.\n \n";
     }
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     int wages = 20, tips = 0;
     int enjoy = 0;
@@ -165,7 +165,7 @@ bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.animalhandling(max(1, (rng % skill) + 1));
 
     girl.upd_Enjoyment(actiontype, enjoy);
-    cGirls::PossiblyLoseExistingTrait(&girl, "Elegant", 40, actiontype, " Working with dirty, smelly beasts has damaged ${name}'s hair, skin and nails making her less Elegant.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Elegant", 40, actiontype, " Working with dirty, smelly beasts has damaged ${name}'s hair, skin and nails making her less Elegant.", Day0Night1);
 
 #pragma endregion
     return false;

@@ -45,7 +45,7 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked as a marketer on the farm.";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away, you'll scare off the customers!
+    cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int wages = 20, tips = 0;
     int enjoy = 0;
@@ -67,7 +67,7 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
     // `J` Farm Bookmark - adding in items that can be created in the farm
     if (ForSale_Food >= 10000 && rng.percent(5))
     {
-        sGirl* ugirl = nullptr;
+        std::shared_ptr<sGirl> ugirl = nullptr;
         int cost = 10000;
         if (ForSale_Food >= 15000 && rng.percent( g_Game->settings().get_percent( settings::SLAVE_MARKET_UNIQUE_CHANCE ) ))
         {
@@ -77,7 +77,7 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
         if (ugirl == nullptr)        // if not unique or a unique girl can not be found
         {
             cost = 10000;
-            ugirl = g_Game->CreateRandomGirl(0).release();    // create a random girl
+            ugirl = g_Game->CreateRandomGirl(0);    // create a random girl
         }
         if (ugirl)
         {
@@ -98,9 +98,9 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
 
             Umsg << ugirl->FullName() << " was purchased by Farm Marketer ${name} in exchange for " << cost << " units of food.\n";
             ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
-            g_Game->dungeon().AddGirl(ugirl, DUNGEON_NEWGIRL);    // Either type of girl goes to the dungeon
-
             ss << "\n \nA merchant from a far off village brought a girl from his village to trade for " << cost << " units of food.\n" << ugirl->FullName() << " has been sent to your dungeon.\n";
+
+            g_Game->dungeon().AddGirl(std::move(ugirl), DUNGEON_NEWGIRL);    // Either type of girl goes to the dungeon
             g_Game->storage().add_to_food(-cost);
         }
     }
@@ -253,11 +253,11 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
     int I_farming        = max(0, (rng % skill) - 2);        girl.farming(I_farming);
 
     girl.upd_Enjoyment(actiontype, enjoy);
-    cGirls::PossiblyGainNewTrait(&girl,        "Charismatic",    30, actiontype, "${name} has been selling long enough that she has learned to be more Charismatic.", Day0Night1);
-    cGirls::PossiblyLoseExistingTrait(&girl, "Meek",            40, actiontype, "${name}'s having to work with customers every day has forced her to get over her meekness.", Day0Night1);
-    cGirls::PossiblyLoseExistingTrait(&girl, "Shy",            50, actiontype, "${name} has been selling for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);
-    cGirls::PossiblyLoseExistingTrait(&girl, "Nervous",        70, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
-    cGirls::PossiblyGainNewTrait(&girl,        "Psychic",        90, actiontype, "${name} has learned to size up the buyers so well that you'd almost think she was Psychic.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl,        "Charismatic",    30, actiontype, "${name} has been selling long enough that she has learned to be more Charismatic.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Meek",            40, actiontype, "${name}'s having to work with customers every day has forced her to get over her meekness.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Shy",            50, actiontype, "${name} has been selling for so long now that her confidence is super high and she is no longer Shy.", Day0Night1);
+    cGirls::PossiblyLoseExistingTrait(girl, "Nervous",        70, actiontype, "${name} seems to finally be getting over her shyness. She's not always so Nervous anymore.", Day0Night1);
+    cGirls::PossiblyGainNewTrait(girl,        "Psychic",        90, actiontype, "${name} has learned to size up the buyers so well that you'd almost think she was Psychic.", Day0Night1);
 
     // Push out the turn report
     girl.AddMessage(ss.str(), imagetype, msgtype);

@@ -44,10 +44,10 @@ void CleaningUpdateGirl(sGirl& girl, cRng& rng, bool is_night, int enjoy, int ti
     girl.upd_Enjoyment(ACTION_WORKCLEANING, enjoy);
     // Gain Traits
     if (rng.percent(girl.service()))
-        cGirls::PossiblyGainNewTrait(&girl, "Maid", 70, ACTION_WORKCLEANING, "${name} has cleaned enough that she could work professionally as a Maid anywhere.", is_night);
+        cGirls::PossiblyGainNewTrait(girl, "Maid", 70, ACTION_WORKCLEANING, "${name} has cleaned enough that she could work professionally as a Maid anywhere.", is_night);
     // Lose Traits
     if (rng.percent(girl.service()))
-        cGirls::PossiblyLoseExistingTrait(&girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", is_night);
+        cGirls::PossiblyLoseExistingTrait(girl, "Clumsy", 30, ACTION_WORKCLEANING, "It took her spilling hundreds of buckets, and just as many reprimands, but ${name} has finally stopped being so Clumsy.", is_night);
 }
 
 // `J` Job Brothel - General - job_is_cleaning
@@ -66,7 +66,7 @@ bool WorkCleaning(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked cleaning the brothel.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     double jobperformance = girl.job_performance(JOB_CLEANING, false);        // `J` a replacement for job performance
     int enjoy = 0;
@@ -284,7 +284,7 @@ bool WorkCleanArena(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked cleaning the arena.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     double CleanAmt = girl.job_performance(JOB_CLEANARENA, false);
     int enjoy = 0;
@@ -361,7 +361,7 @@ bool WorkCleanCentre(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked cleaning the Centre.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     double CleanAmt = girl.job_performance(JOB_CLEANCENTRE, false);
     int enjoy = 0;
@@ -459,7 +459,7 @@ bool WorkCleanHouse(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked cleaning your house.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     double CleanAmt = girl.job_performance(JOB_CLEANHOUSE, false);
     int enjoy = 0;
@@ -532,7 +532,7 @@ bool WorkJanitor(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} worked cleaning the Clinic.\n \n";
 
-    cGirls::UnequipCombat(&girl);    // put that shit away
+    cGirls::UnequipCombat(girl);    // put that shit away
 
     double CleanAmt = girl.job_performance(JOB_JANITOR, false);
     int enjoy = 0;

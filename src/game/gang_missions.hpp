@@ -21,6 +21,7 @@
 #define CRAZYS_WM_MOD_GANG_MISSIONS_HPP
 
 #include <string>
+#include <memory>
 
 class sGang;
 class sGirl;
@@ -71,7 +72,7 @@ public:
     cMissionKidnap();
     bool execute_mission(sGang& gang, std::stringstream& event_text) override;
 private:
-    bool kidnap(sGang& gang, std::stringstream& event_text, sGirl& target);
+    bool kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<sGirl> girl);
 };
 
 class cMissionSabotage : public IGangMission {
