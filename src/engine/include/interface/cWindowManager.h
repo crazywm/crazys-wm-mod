@@ -56,6 +56,9 @@ public:
     void PopToWindow(const std::string& window_name);
 
     void UpdateCurrent();
+    // user interaction
+    // this function is called when a key is pressed
+    void OnKeyEvent(SDL_Keysym key, bool down);
     void UpdateMouseMovement(int x, int y);
     void OnMouseClick(int x, int y, bool down);
     void OnMouseWheel(int x, int y, bool mouseWheelDown = false);
@@ -70,9 +73,7 @@ public:
 
     CGraphics& GetGraphics();
 
-    // user interaction
-    // this function is called when a key is pressed
-    void OnKeyPress(SDL_Keysym key);
+
 
     IBuilding* GetActiveBuilding() const;
     void SetActiveBuilding(IBuilding*);
@@ -91,6 +92,10 @@ public:
     // girl selection
     sGirl* GetActiveGirl() const;
     void SetActiveGirl(sGirl* girl);
+
+    // key state functions
+    bool IsCtrlHeld() const;
+    bool IsShiftHeld() const;
 private:
     // normal windows
     std::vector<std::shared_ptr<cInterfaceWindow>> m_WindowStack;
@@ -109,6 +114,10 @@ private:
 
     // counter to allow recursive enabling/disabling of text input
     int m_TextInputEnabled = 0;
+
+    // keep track of the state of control keys
+    bool m_IsCtrlHeld = false;
+    bool m_IsShiftHeld = false;
 };
 
 

@@ -186,6 +186,8 @@ protected:
     void pop_window() const;
     void pop_to_window(const std::string& target) const;
 
+    bool is_ctrl_held() const;
+
     // input handling
     void input_integer(std::function<void(int)> callback, int def_value=0);
     void input_confirm(std::function<void()> callback);

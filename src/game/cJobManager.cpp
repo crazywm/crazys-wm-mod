@@ -45,8 +45,6 @@
 extern cRng g_Dice;
 extern cConfig cfg;
 
-extern    bool    g_CTRLDown;
-
 cJobManager::cJobManager() = default;
 cJobManager::~cJobManager() = default;
 
@@ -855,7 +853,6 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 bool cJobManager::HandleSpecialJobs(sGirl* Girl, int JobID, int OldJobID, bool Day0Night1, bool fulltime)
 {
     bool MadeChanges = true;  // whether a special case applies to specified job or not
-    g_CTRLDown = false;
 
     /*    `J` added to reset working days only if her job actually changes
      * m_WorkingDay is only used for full time jobs that take more than 1 day to complete

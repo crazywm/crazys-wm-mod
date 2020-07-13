@@ -32,8 +32,6 @@ extern    int    g_TalkCount;
 extern bool g_AllTogle;
 extern cConfig cfg;
 
-extern    bool    g_CTRLDown;
-
 static stringstream ss;
 
 static int ImageNum = -1;
@@ -116,7 +114,7 @@ void cScreenGirlDetails::set_ids()
         RefreshJobList();
     });
     SetListBoxSelectionCallback(joblist_id, [this](int selection){
-        if (selection != -1) { on_select_job(selection, g_CTRLDown);  }
+        if (selection != -1) { on_select_job(selection, is_ctrl_held());  }
     });
 
     SetCheckBoxCallback(antipreg_id, [this](int on) {

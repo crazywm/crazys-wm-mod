@@ -28,8 +28,6 @@
 #include "character/traits/ITraitsCollection.h"
 #include "character/predicates.h"
 
-extern    bool    g_ShiftDown;
-
 cScreenSlaveMarket::cScreenSlaveMarket() : cGameWindow("slavemarket_screen.xml")
 {
     m_SelectedGirl = -1;
@@ -106,7 +104,7 @@ void cScreenSlaveMarket::set_ids()
 
     AddKeyCallback(SDLK_s, [this](){
         sGirl *girl = g_Game->GetMarketSlave(m_SelectedGirl);
-        if (g_ShiftDown)
+        if (is_ctrl_held())
         {
             DetailLevel = 2;
             EditTextItem(cGirls::GetThirdDetailsString(girl), details_id);

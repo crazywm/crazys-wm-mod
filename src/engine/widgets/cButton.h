@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -31,7 +31,7 @@ class cButton : public cUIWidget
 public:
     cButton(cInterfaceWindow* parent, const std::string& OffImage, const std::string& DisabledImage, const std::string& OnImage, int ID,
             int x, int y, int width, int height, bool transparency = false);
-    ~cButton();
+    ~cButton() override;
 
     bool HandleClick(int x, int y, bool press) override;
     void HandleMouseMove(bool over, int x, int y) override;

@@ -165,9 +165,16 @@ void cWindowManager::Draw()
     }
 }
 
-void cWindowManager::OnKeyPress(SDL_Keysym key)
+void cWindowManager::OnKeyEvent(SDL_Keysym key, bool down)
 {
-    GetWindow()->OnKeyPress(key);
+    if(key.scancode == SDL_SCANCODE_RCTRL || key.scancode == SDL_SCANCODE_LCTRL) {
+        m_IsCtrlHeld = down;
+    } else if(key.scancode == SDL_SCANCODE_RSHIFT || key.scancode == SDL_SCANCODE_LSHIFT) {
+        m_IsShiftHeld = down;
+    }
+
+    if(down)
+        GetWindow()->OnKeyPress(key);
 }
 
 void cWindowManager::add_window(std::string name, std::shared_ptr<cInterfaceWindow> win)
@@ -277,6 +284,14 @@ void cWindowManager::DisableTextInput() {
     m_TextInputEnabled -= 1;
     if(m_TextInputEnabled == 0)
         SDL_StopTextInput();
+}
+
+bool cWindowManager::IsCtrlHeld() const {
+    return m_IsCtrlHeld;
+}
+
+bool cWindowManager::IsShiftHeld() const {
+    return m_IsShiftHeld;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

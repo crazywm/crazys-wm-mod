@@ -31,8 +31,6 @@
 void Shutdown();
 bool Init(CGraphics& gfx);
 
-bool g_ShiftDown = false;    bool g_CTRLDown = false;
-
 string monthnames[13]
 {
     "No Month", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
@@ -54,22 +52,6 @@ std::unique_ptr<Game> g_Game;
 cNameList g_GirlNameList;
 cNameList g_BoysNameList;
 cNameList g_SurnameList;
-
-void handle_hotkeys(const SDL_Event& vent)
-{
-    switch (vent.key.keysym.sym)
-    {
-    case SDLK_RSHIFT:
-    case SDLK_LSHIFT:
-        g_ShiftDown = true;        // enable multi select
-        break;
-    case SDLK_RCTRL:
-    case SDLK_LCTRL:
-        g_CTRLDown = true;        // enable multi select
-        break;
-    default:    break;
-    }
-}
 
 int main(int ac, char* av[])    // `J` Bookmark - #1 - Entering the game
 {
@@ -116,21 +98,11 @@ int main(int ac, char* av[])    // `J` Bookmark - #1 - Entering the game
             }
             else if (vent.type == SDL_KEYUP)
             {
-                switch (vent.key.keysym.sym)
-                {
-                case SDLK_RSHIFT:
-                case SDLK_LSHIFT:    g_ShiftDown = false;    break;    // enable multi select
-                case SDLK_RCTRL:
-                case SDLK_LCTRL: {
-                    g_CTRLDown = false;
-                }
-                break;    // enable multi select
-                }
+                window_manager().OnKeyEvent(vent.key.keysym, false);
             }
             else if (vent.type == SDL_KEYDOWN)
             {
-                window_manager().OnKeyPress(vent.key.keysym);
-                handle_hotkeys(vent);
+                window_manager().OnKeyEvent(vent.key.keysym, true);
             }
             else if (vent.type == SDL_MOUSEMOTION)
             {

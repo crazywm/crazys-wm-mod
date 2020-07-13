@@ -30,7 +30,6 @@
 #include <sstream>
 #include "sConfig.h"
 
-extern bool g_CTRLDown;
 extern cConfig cfg;
 
 extern bool g_TryOuts;
@@ -85,7 +84,7 @@ void IBuildingScreen::set_ids()
     });
 
     SetButtonCallback(weeks_id, [this]() {
-        if (!g_CTRLDown) { AutoSaveGame(); }
+        if (!is_ctrl_held()) { AutoSaveGame(); }
         // need to switch the windows first, so that any new events will show up!
         push_window("Turn Summary");
         NextWeek();

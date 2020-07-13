@@ -736,6 +736,10 @@ cInterfaceWindow::cInterfaceWindow(std::string name) : m_Name(name) {
 
 }
 
+bool cInterfaceWindow::is_ctrl_held() const {
+    return window_manager().IsCtrlHeld();
+}
+
 void cModalWindow::process() {
     if(!m_Widgets.empty()) {
         if(m_Widgets.front()->IsDisabled()) {

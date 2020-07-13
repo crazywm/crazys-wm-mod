@@ -40,8 +40,6 @@
 extern cRng g_Dice;
 extern cConfig cfg;
 
-extern    bool    g_CTRLDown;
-
 #pragma endregion
 #pragma region //    Local Variables            //
 
@@ -124,7 +122,6 @@ void NextWeek()
 
     g_Game->next_week();
 
-    g_CTRLDown = false;
     g_LogFile.log(ELogLevel::DEBUG, " *** NextWeek || End ***");
 }
 

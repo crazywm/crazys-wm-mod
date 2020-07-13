@@ -30,8 +30,6 @@
 
 #include "Game.hpp"
 
-extern    bool    g_CTRLDown;
-
 #pragma endregion
 
 static int leftBrothel = 0;

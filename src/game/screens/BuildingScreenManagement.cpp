@@ -22,7 +22,6 @@ extern vector<int> cycle_girls;
 extern int cycle_pos;
 
 extern    bool            g_AltKeys;    // New hotkeys --PP
-extern    bool            g_CTRLDown;
 
 
 IBuildingScreenManagement::IBuildingScreenManagement(BuildingType type, const char * base_file) :
@@ -224,7 +223,7 @@ void IBuildingScreenManagement::set_ids() {
 
 void IBuildingScreenManagement::on_select_job(int selection)
 {
-    bool fulltime = g_CTRLDown;
+    bool fulltime = is_ctrl_held();
     if (selection != -1)
     {
         EditTextItem(job_manager().JobData[selection].description, jobdesc_id);        // first handle the descriptions

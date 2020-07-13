@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,9 @@
 #include "interface/cColor.h"
 #include "sConfig.h"
 #include "cScrollBar.h"
+#include "interface/cWindowManager.h"
 
 extern cConfig cfg;
-
-extern bool g_ShiftDown;
-extern bool g_CTRLDown;
 
 extern sColor g_ListBoxBorderColor;
 extern sColor g_ListBoxBackgroundColor;
@@ -264,7 +262,7 @@ bool cListBox::HandleClick(int x, int y, bool press)
     bool deselect = false;
     if (m_MultiSelect)
     {
-        if (!g_ShiftDown && !g_CTRLDown)
+        if (!window_manager().IsShiftHeld() && !window_manager().IsCtrlHeld())
         {
             m_HasMultiSelect = false;
             deselect = true;
@@ -284,7 +282,7 @@ bool cListBox::HandleClick(int x, int y, bool press)
     bool singleSelect = true;
     if (m_MultiSelect)
     {
-        if (g_ShiftDown)
+        if (window_manager().IsShiftHeld())
             singleSelect = false;
     }
     else singleSelect = true;
@@ -307,7 +305,7 @@ bool cListBox::HandleClick(int x, int y, bool press)
     }
     else
     {
-        if (g_ShiftDown)    // select from first to last
+        if (window_manager().IsShiftHeld())    // select from first to last
         {
             auto clicked = FindItemAtPosition(x - m_XPos, y - m_YPos);
             bool select = false;

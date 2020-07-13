@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -33,8 +33,6 @@
 #include "sConfig.h"
 
 extern cConfig cfg;
-
-extern    bool    g_CTRLDown;
 
 #pragma endregion
 #pragma region //    Local Variables            //
@@ -80,7 +78,7 @@ void cScreenTurnSummary::set_ids()
     });
     */
     SetButtonCallback(nextweek_id, [this]() {
-        if (!g_CTRLDown) { AutoSaveGame(); }
+        if (!is_ctrl_held()) { AutoSaveGame(); }
         NextWeek();
         init(false);
     });
@@ -115,7 +113,7 @@ void cScreenTurnSummary::set_ids()
     AddKeyCallback(SDLK_RETURN, [this]() {
         if (cfg.resolution.next_turn_enter())
         {
-            if (!g_CTRLDown) { g_CTRLDown = false; AutoSaveGame(); }
+            if (!is_ctrl_held()) { AutoSaveGame(); }
             NextWeek();
             init(false);
         }
