@@ -26,7 +26,10 @@ class lua_State;
 namespace scripting {
     class cLuaState {
     public:
-        explicit cLuaState(lua_State *state) : m_State(state) {};
+        explicit cLuaState(lua_State *state, int thread_id=0) :
+            m_State(state), m_ThreadID(thread_id) {
+
+        };
 
         void load(const std::string &file);
 
@@ -43,9 +46,12 @@ namespace scripting {
         lua_State *get_state() { return m_State; }
 
         std::string get_error();
-    private:
 
-        lua_State *m_State = nullptr;
+        void CleanThread();
+    private:
+        lua_State* m_State = nullptr;
+        /// If this state represents a specific thread, this variable saves the thread id.
+        int m_ThreadID = 0;
     };
 
     // A cLuaState class with owns the underlying lua_State,

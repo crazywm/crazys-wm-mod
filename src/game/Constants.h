@@ -426,6 +426,8 @@ enum JOBS {
     JOB_RUNAWAY,            //
 
     NUM_JOBS,                // number of Jobs
+
+    JOB_UNSET = 255
 };// End JOBS enum
 #if 0
 // - Community Centre
@@ -838,24 +840,23 @@ const int PREG_OFFSET = IMGTYPE_PREGNANT + 1;
 const std::array<const char*, NUM_IMGTYPES>& get_imgtype_names();
 
 
-const int NUM_GIRLFLAGS                = 30;
 const int MAXNUM_RIVAL_INVENTORY    = 40;        // Maximum number of items a Rival can have in inventory
 
 // Event constants oved from cEvents.h
 const int    EVENT_DAYSHIFT        = 0;
-const int    EVENT_NIGHTSHIFT    = 1;
-const int    EVENT_WARNING        = 2;
-const int    EVENT_DANGER        = 3;
+const int    EVENT_NIGHTSHIFT      = 1;
+const int    EVENT_WARNING         = 2;
+const int    EVENT_DANGER          = 3;
 const int    EVENT_GOODNEWS        = 4;
-const int    EVENT_SUMMARY        = 5;
-const int    EVENT_DUNGEON        = 6;            // For torturer reports
-const int    EVENT_MATRON        = 7;            // For Matron reports
+const int    EVENT_SUMMARY         = 5;
+const int    EVENT_DUNGEON         = 6;            // For torturer reports
+const int    EVENT_MATRON          = 7;            // For Matron reports
 const int    EVENT_GANG            = 8;
-const int    EVENT_BROTHEL        = 9;
-const int    EVENT_NOWORK        = 10;
-const int    EVENT_BACKTOWORK    = 11;
-const int    EVENT_LEVELUP        = 12;    // `J` added
-const int    EVENT_DEBUG            = 99;
+const int    EVENT_BROTHEL         = 9;
+const int    EVENT_NOWORK          = 10;
+const int    EVENT_BACKTOWORK      = 11;
+const int    EVENT_LEVELUP         = 12;    // `J` added
+const int    EVENT_DEBUG           = 99;
 
 // The following constants are used with counting child types for girls.
 const int CHILD00_TOTAL_BIRTHS        = 0;

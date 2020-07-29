@@ -259,6 +259,7 @@ cSurface cImageCache::FillRect(const cSurface& source, SDL_Rect area, sColor col
     std::stringstream name;
     name << "CustomSurface#";
     name << m_ImageCreateCount;
+    name << "@FillRect";
     return AddToCache(sImageCacheKey{std::move(name.str()), (int)raw.width(), (int)raw.height(), false, false}, std::move(target), source.GetFileName());
 }
 
@@ -270,11 +271,8 @@ cSurface cImageCache::BlitSurface(const cSurface& target, SDL_Rect* target_area,
     auto new_surface = CloneSDLSurface(raw.surface());
     // blit the other surface
     SDL_BlitSurface(source.RawSurface()->surface(), src_area, new_surface.get(), target_area);
-    // and create a new cache entry
-    std::stringstream name;
-    name << "CustomSurface#";
-    name << m_ImageCreateCount;
-    return AddToCache(sImageCacheKey{std::move(name.str()), (int)raw.width(), (int)raw.height(), false, false}, std::move(new_surface), target.GetFileName());
+    auto ccs =  std::make_shared<cCachedSurface>(std::move(new_surface), target.GetFileName());
+    return cSurface(std::move(ccs), m_GFX);
 }
 
 cAnimatedSurface cImageCache::LoadGif(std::string filename, int target_width, int target_height)

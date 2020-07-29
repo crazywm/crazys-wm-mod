@@ -181,7 +181,7 @@ void sCentre::auto_assign_job(sGirl& target, std::stringstream& message, bool is
 
 bool sCentre::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_night)
 {
-    int psw = (is_night ? girl.m_PrevNightJob : girl.m_PrevDayJob);
+    JOBS psw = (is_night ? girl.m_PrevNightJob : girl.m_PrevDayJob);
     if (psw == JOB_COUNSELOR && girl.is_free())
     {
         girl.m_DayJob = girl.m_NightJob = JOB_COUNSELOR;

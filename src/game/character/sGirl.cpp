@@ -78,7 +78,7 @@ sGirl::sGirl(bool unique) : ICharacter( g_Game->create_traits_collection(), uniq
     m_BDay = 0;        m_WeeksPast = 0;
 
     // Jobs and money
-    m_DayJob = m_NightJob = 255;
+    m_DayJob = m_NightJob = JOB_UNSET;
     m_WorkingDay = m_PrevWorkingDay = m_SpecialJobGoal = 0;
 
     m_Refused_To_Work_Day = m_Refused_To_Work_Night = false;
@@ -110,7 +110,6 @@ sGirl::sGirl(bool unique) : ICharacter( g_Game->create_traits_collection(), uniq
         m_Training[i] = m_TrainingMods[i] = m_TrainingTemps[i] = 0;
 
     // Others
-    for (char & m_Flag : m_Flags)        { m_Flag = 0; }
     for (int & i : m_ChildrenCount)        { i = 0; }
     m_States = 0;
     m_FetishTypes.clear();
@@ -352,7 +351,7 @@ void sGirl::setup_maps()
     jobs_lookup["255"] = 255;
 }
 
-int sGirl::lookup_jobs_code(string s)
+JOBS sGirl::lookup_jobs_code(string s)
 {
     if (!m_maps_setup)    // only need to do this once
         setup_maps();
@@ -364,13 +363,13 @@ int sGirl::lookup_jobs_code(string s)
         for (int i = 0; i < NUM_JOBS; i++)
         {
             if (g_Game->job_manager().JobData[i].brief == s || g_Game->job_manager().JobData[i].name == s)
-                return i;
+                return static_cast<JOBS>(i);
         }
         // if still not found, send original error message
         g_LogFile.log(ELogLevel::ERROR,  "[sGirl::jobs_enjoy_code] Error: unknown Job: ", s);
-        return -1;
+        return static_cast<JOBS>(-1);
     }
-    return jobs_lookup[s];
+    return static_cast<JOBS>(jobs_lookup[s]);
 }
 
 // END MOD
@@ -671,17 +670,8 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     tempst = pGirl->Attribute("YesterDayJob");            m_YesterDayJob = lookup_jobs_code(tempst);
     tempst = pGirl->Attribute("YesterNightJob");        m_YesterNightJob = lookup_jobs_code(tempst);
 
-    // `J` now check if any of the jobs failed the lookup and see if they are numbers - aka use the old code
-    // load day/night jobs
-    if (m_DayJob < 0 || m_DayJob > 255)                    { pGirl->QueryIntAttribute("DayJob", &tempInt);            m_DayJob = tempInt; tempInt = 0; }
-    if (m_NightJob < 0 || m_NightJob >255)                { pGirl->QueryIntAttribute("NightJob", &tempInt);        m_NightJob = tempInt; tempInt = 0; }
-    if (m_PrevDayJob < 0 || m_PrevDayJob >255)            { pGirl->QueryIntAttribute("PrevDayJob", &tempInt);        m_PrevDayJob = tempInt; tempInt = 0; }
-    if (m_PrevNightJob < 0 || m_PrevNightJob >255)        { pGirl->QueryIntAttribute("PrevNightJob", &tempInt);    m_PrevNightJob = tempInt; tempInt = 0; }
-    if (m_YesterDayJob < 0 || m_YesterDayJob >255)        { pGirl->QueryIntAttribute("YesterDayJob", &tempInt);    m_YesterDayJob = tempInt; tempInt = 0; }
-    if (m_YesterNightJob < 0 || m_YesterNightJob >255)    { pGirl->QueryIntAttribute("YesterNightJob", &tempInt);    m_YesterNightJob = tempInt; tempInt = 0; }
-
-    if (m_YesterDayJob < 0)        m_YesterDayJob = 255;
-    if (m_YesterNightJob < 0)    m_YesterNightJob = 255;
+    if (m_YesterDayJob < 0)        m_YesterDayJob = JOB_UNSET;
+    if (m_YesterNightJob < 0)    m_YesterNightJob = JOB_UNSET;
 
     // load runnayway value
     pGirl->QueryIntAttribute("RunAway", &tempInt); m_RunAway = tempInt; tempInt = 0;
@@ -697,22 +687,6 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     // load number of customers slept with
     pGirl->QueryAttribute("NumCusts", &m_NumCusts);
     m_NumCusts_old = m_NumCusts;
-
-    // load girl flags
-    /// TODO remove those
-    auto* pFlags = pGirl->FirstChildElement("Flags");
-    if (pFlags)
-    {
-        std::string flagNumber;
-        for (int i = 0; i < NUM_GIRLFLAGS; i++)
-        {
-            flagNumber = "Flag_";
-            std::stringstream stream;
-            stream << i;
-            flagNumber.append(stream.str());
-            pFlags->QueryIntAttribute(flagNumber.c_str(), &tempInt); m_Flags[i] = tempInt; tempInt = 0;
-        }
-    }
 
     // load their torture value
     pGirl->QueryAttribute("Tort", &m_Tort);
@@ -807,19 +781,6 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
     elGirl.SetAttribute("WeeksPreg", m_WeeksPreg);
 
     elGirl.SetAttribute("NumCusts", m_NumCusts);                // number of customers slept with
-
-    // girl flags
-    auto& elFlags = PushNewElement(elGirl, "Flags");
-    std::string flagNumber;
-    for (int i = 0; i < NUM_GIRLFLAGS; i++)
-    {
-        flagNumber = "Flag_";
-        std::stringstream stream;
-        stream << i;
-        flagNumber.append(stream.str());
-        elFlags.SetAttribute(flagNumber.c_str(), m_Flags[i]);
-    }
-
     elGirl.SetAttribute("Tort", m_Tort);                        // save their torture value
 
     // save their children
@@ -1064,17 +1025,6 @@ bool sGirl::was_resting() const
             (m_PrevDayJob == JOB_RESTING        && m_PrevNightJob == JOB_RESTING));
 }
 
-
-void sGirl::OutputGirlRow(vector<string>& Data, const vector<string>& columnNames) const
-{
-    Data.resize(columnNames.size());
-    for (unsigned int x = 0; x < columnNames.size(); ++x)
-    {
-        //for each column, write out the statistic that goes in it
-        OutputGirlDetailString(Data[x], columnNames[x]);
-    }
-}
-
 void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
 {
     //given a statistic name, set a string to a value that represents that statistic
@@ -1082,9 +1032,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
     ss.str("");
 
     bool interrupted = false;    // `J` added
-    if (this->m_YesterDayJob != (this)->m_DayJob &&
-        (cJobManager::is_Surgery_Job((this)->m_YesterDayJob) || (this)->m_YesterDayJob == JOB_REHAB) &&
-        (((this)->m_WorkingDay > 0) || (this)->m_PrevWorkingDay > 0))
+    if (m_YesterDayJob != m_DayJob &&
+        (cJobManager::is_Surgery_Job(m_YesterDayJob) || m_YesterDayJob == JOB_REHAB) &&
+        ((m_WorkingDay > 0) || m_PrevWorkingDay > 0))
         interrupted = true;
 
     /* */if (detailName == "Name")                { ss << FullName(); }
@@ -1100,7 +1050,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
     {
         if (is_pregnant())
         {
-            ss << get_preg_duration() - (this)->m_WeeksPreg;
+            ss << get_preg_duration() - m_WeeksPreg;
         }
         else
         {
@@ -1135,7 +1085,7 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
     else if (detailName == "DayJob" || detailName == "NightJob")
     {
         bool DN_Day = detailName == "NightJob";
-        int DN_Job = (DN_Day ? m_NightJob : m_DayJob);
+        int DN_Job = get_job(DN_Day);
 
         // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
         if (DN_Job >= NUM_JOBS)
@@ -1182,11 +1132,11 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
         else if (DN_Job == JOB_GETREPAIRS)
         {
             if (m_Building->num_girls_on_job(JOB_MECHANIC, DN_Day) > 0 &&
-                (this->has_active_trait("Construct") || this->has_active_trait("Half-Construct")))
+                (has_active_trait("Construct") || has_active_trait("Half-Construct")))
             {
                 ss << g_Game->job_manager().JobData[DN_Job].name;
             }
-            else if (this->has_active_trait("Construct"))
+            else if (has_active_trait("Construct"))
             {
                 ss << g_Game->job_manager().JobData[DN_Job].name << " ****";
             }
@@ -1380,8 +1330,9 @@ bool sGirl::FixFreeTimeJobs()
 {
     bool fixedD = false;
     bool fixedN = false;
-    if (this->m_DayJob == JOB_FILMFREETIME || this->m_DayJob == JOB_ARENAREST || this->m_DayJob == JOB_CENTREREST || this->m_DayJob == JOB_CLINICREST ||
-        this->m_DayJob == JOB_HOUSEREST || this->m_DayJob == JOB_FARMREST || this->m_DayJob == JOB_RESTING || this->m_DayJob == 255)
+    unsigned int dj = m_DayJob;
+    if (dj == JOB_FILMFREETIME || dj == JOB_ARENAREST || dj == JOB_CENTREREST || dj == JOB_CLINICREST ||
+        dj == JOB_HOUSEREST || dj == JOB_FARMREST || dj == JOB_RESTING || dj == 255)
     {
         auto old_job = m_DayJob;
         if(m_Building) {
@@ -1393,8 +1344,9 @@ bool sGirl::FixFreeTimeJobs()
 
         fixedD = old_job != m_DayJob;
     }
-    if (this->m_NightJob == JOB_FILMFREETIME || this->m_NightJob == JOB_ARENAREST || this->m_NightJob == JOB_CENTREREST || this->m_NightJob == JOB_CLINICREST ||
-        this->m_NightJob == JOB_HOUSEREST || this->m_NightJob == JOB_FARMREST || this->m_NightJob == JOB_RESTING || this->m_NightJob == 255)
+    unsigned int nj = m_NightJob;
+    if (nj == JOB_FILMFREETIME || nj == JOB_ARENAREST || nj == JOB_CENTREREST || nj == JOB_CLINICREST ||
+        nj == JOB_HOUSEREST || nj == JOB_FARMREST || nj == JOB_RESTING || nj == 255)
     {
         auto old_job = m_NightJob;
         if(m_Building) {

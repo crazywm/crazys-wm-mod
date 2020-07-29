@@ -40,7 +40,7 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
     if (!has_disease(girl))
     {
         ss << "${name} has no diseases";
-        int newjob = JOB_CLINICREST;
+        JOBS newjob = JOB_CLINICREST;
         if (girl.health() < 80 || girl.tiredness() > 20)
         {
             ss << ". She was not feeling well so she ";

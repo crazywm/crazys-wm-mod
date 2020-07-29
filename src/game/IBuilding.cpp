@@ -128,8 +128,8 @@ void IBuilding::BeginWeek()
             // `J` Check for out of building jobs
             if (cgirl.m_DayJob      < m_FirstJob || cgirl.m_DayJob   > m_LastJob)    cgirl.m_DayJob = m_RestJob;
             if (cgirl.m_NightJob < m_FirstJob || cgirl.m_NightJob > m_LastJob)    cgirl.m_NightJob = m_RestJob;
-            if (cgirl.m_PrevDayJob    < m_FirstJob || cgirl.m_PrevDayJob > m_LastJob)        cgirl.m_PrevDayJob = 255;
-            if (cgirl.m_PrevNightJob < m_FirstJob || cgirl.m_PrevNightJob > m_LastJob)    cgirl.m_PrevNightJob = 255;
+            if (cgirl.m_PrevDayJob    < m_FirstJob || cgirl.m_PrevDayJob > m_LastJob)        cgirl.m_PrevDayJob = JOB_UNSET;
+            if (cgirl.m_PrevNightJob < m_FirstJob || cgirl.m_PrevNightJob > m_LastJob)    cgirl.m_PrevNightJob = JOB_UNSET;
 
             // set yesterday jobs for everyone
             cgirl.m_YesterDayJob = cgirl.m_DayJob;
@@ -221,7 +221,7 @@ void IBuilding::HandleRestingGirls(bool is_night, bool has_matron, const char * 
             {
                 auto_assign_job(current, ss, is_night);
             }
-            current.m_PrevDayJob = current.m_PrevNightJob = 255;
+            current.m_PrevDayJob = current.m_PrevNightJob = JOB_UNSET;
             sum = EVENT_BACKTOWORK;
         }
         else if (current.health() < 100 || current.tiredness() > 0)    // if there is no matron to send her somewhere just do resting
@@ -438,7 +438,9 @@ void IBuilding::load_girls_xml(const tinyxml2::XMLElement& root)
 }
 
 IBuilding::IBuilding(BuildingType type, std::string name) :
-    m_Type(type), m_Finance(0), m_Name(std::move(name)), m_Girls(std::make_unique<cGirlPool>())
+    m_Type(type), m_Finance(0),
+    m_Name(std::move(name)),
+    m_Girls(std::make_unique<cGirlPool>())
 {
 
 }
@@ -626,7 +628,7 @@ bool IBuilding::SetupMatron(bool is_night, const string& title)
     // 1) back-to-work
     if(has_matron < 1) {
         matron_candidate->m_DayJob = matron_candidate->m_NightJob = m_MatronJob;
-        matron_candidate->m_PrevDayJob = matron_candidate->m_PrevNightJob = 255;
+        matron_candidate->m_PrevDayJob = matron_candidate->m_PrevNightJob = JOB_UNSET;
         matron_candidate->AddMessage("The " + title + " puts herself back to work.", IMGTYPE_PROFILE,
                            EVENT_BACKTOWORK);
     }

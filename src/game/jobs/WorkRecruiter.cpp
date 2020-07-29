@@ -116,7 +116,7 @@ bool WorkRecruiter(sGirl& girl, bool Day0Night1, cRng& rng)
     int findroll = (rng.d100());
     if (findroll < findchance + 10)    // `J` While out recruiting she does find someone...
     {
-        auto newgirl = g_Game->GetRandomGirl(false, (dispmod == -3 && rng % 4 != 0));
+        std::shared_ptr<sGirl> newgirl = g_Game->GetRandomGirl(false, (dispmod == -3 && rng % 4 != 0));
         if (newgirl)
         {
             bool add = false;
@@ -182,7 +182,7 @@ bool WorkRecruiter(sGirl& girl, bool Day0Night1, cRng& rng)
                 newgirl->house(60);
                 stringstream NGmsg;
                 NGmsg << newgirl->FullName() << " was recruited by ${name} to work for you.";
-                newgirl->m_Events.AddMessage(NGmsg.str(), imagetype, EVENT_GANG);
+                newgirl->AddMessage(NGmsg.str(), imagetype, EVENT_GANG);
 
                 g_Game->dungeon().AddGirl(std::move(newgirl), DUNGEON_RECRUITED);
             }

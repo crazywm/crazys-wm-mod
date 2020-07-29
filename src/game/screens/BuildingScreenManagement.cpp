@@ -101,7 +101,7 @@ void IBuildingScreenManagement::RefreshJobList()
     }
     if (selected_girl)
     {
-        int sel_job = Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob;
+        int sel_job = selected_girl->get_job(Day0Night1);
         SetSelectedItemInList(joblist_id, sel_job, false);
         EditTextItem(g_Game->job_manager().JobData[sel_job].description + update_job_description(*selected_girl), jobdesc_id);
         SetSelectedItemText(joblist_id, sel_job, jobname_with_count((JOBS)sel_job, Day0Night1));
@@ -232,7 +232,7 @@ void IBuildingScreenManagement::on_select_job(int selection)
         while (GSelection != -1)
         {
             // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
-            int new_job = selection;
+            JOBS new_job = static_cast<JOBS>(selection);
             auto girl = active_building().get_girl(GSelection);
             if (girl)
             {
@@ -244,10 +244,10 @@ void IBuildingScreenManagement::on_select_job(int selection)
     else EditTextItem("Nothing Selected", jobdesc_id);
 }
 
-void IBuildingScreenManagement::assign_job(sGirl& girl, int new_job, int girl_selection, bool fulltime)
+void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_selection, bool fulltime)
 {
     // handle special job requirements and assign
-    unsigned int old_job   = Day0Night1 ? girl.m_NightJob : girl.m_DayJob;
+    unsigned int old_job = girl.get_job(Day0Night1);
     
     // if HandleSpecialJobs returns true, the job assignment was modified or cancelled
     if (job_manager().HandleSpecialJobs(girl, new_job, old_job, Day0Night1, fulltime))
@@ -443,7 +443,10 @@ void IBuildingScreenManagement::init(bool back)
         sGirl* gir = active_building().get_girl(i);
         if (selected_girl == gir) selection = i;
         unsigned int item_color = (gir->health() <= 30 || gir->tiredness() >= 80 || gir->happiness() <= 30) ? COLOR_RED : COLOR_BLUE;
-        gir->OutputGirlRow(data, columnNames);
+        for (unsigned int x = 0; x < columnNames.size(); ++x)
+        {
+            gir->OutputGirlDetailString(data[x], columnNames[x]);
+        }
         AddToListBox(girllist_id, i, data, item_color);
     }
 
@@ -918,7 +921,7 @@ void IBuildingScreenManagement::RefreshSelectedJobType()
     int selection = GetSelectedItemFromList(girllist_id);
     if (selection < 0) return;
     selected_girl = active_building().get_girl(selection);
-    int job = (Day0Night1 ? selected_girl->m_NightJob : selected_girl->m_DayJob);
+    int job = selected_girl->get_job(Day0Night1);
     for(auto& filter : m_JobFilters) {
         if(job_manager().job_filter(filter, (JOBS)job)) {
             SetSelectedItemInList(jobtypelist_id, filter);
@@ -1119,7 +1122,7 @@ std::string cScreenClinicManagement::update_job_description(const sGirl& girl)
 {
     if(cJobManager::is_Surgery_Job(girl.m_YesterDayJob) && girl.m_YesterDayJob != girl.m_DayJob && (girl.m_WorkingDay > 0 || girl.m_PrevWorkingDay > 0))
     {
-        int sel_job = (Day0Night1 ? girl.m_NightJob : girl.m_DayJob);
+        int sel_job = girl.get_job(Day0Night1);
         SetSelectedItemInList(joblist_id, sel_job, false);
 
         std::stringstream ss;

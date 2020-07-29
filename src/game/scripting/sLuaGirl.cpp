@@ -18,7 +18,6 @@ extern "C" {
 #include "utils/string.hpp"
 #include "cGirlTorture.h"
 #include "character/predicates.h"
-#include "buildings/cBrothel.h"
 #include "buildings/cBuildingManager.h"
 
 using namespace scripting;
@@ -215,14 +214,13 @@ int sLuaGirl::acquire_girl(lua_State* L) {
             how to fix it, so I'm explicitly setting the percentage to 60 here */
     girl.house(60);
 
-    std::shared_ptr<sGirl> girl_owner = nullptr;
-    if(girl.m_Building) {
-        girl_owner = girl.m_Building->remove_girl(&girl);
-    } else {
-        girl_owner = g_Game->girl_pool().TakeGirl(&girl);
-    }
+    std::shared_ptr<sGirl> girl_owner = girl.shared_from_this();
+    assert(girl_owner != nullptr);
+    assert(girl.m_Building == nullptr);
+    // of she's in the global girl pool, we can now remove her.
+    g_Game->girl_pool().TakeGirl(&girl);
 
-    string text = girl.FullName();
+    std::string text = girl.FullName();
 /*
 *    OK: how rebellious is this floozy?
 */

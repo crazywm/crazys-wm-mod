@@ -212,6 +212,8 @@ void cScreenTurnSummary::process()
 
 void cScreenTurnSummary::change_category(SummaryCategory new_category)
 {
+    SummaryCategory old = m_ActiveCategory;
+    m_ActiveCategory = new_category;
     ClearListBox(item_id);
     ClearListBox(event_id);
     switch(new_category) {
@@ -231,13 +233,11 @@ void cScreenTurnSummary::change_category(SummaryCategory new_category)
 
     // if the category has not changed, keep the selected item
     int new_item = 0;
-    if (m_ActiveCategory == new_category) {
+    if (m_ActiveCategory == old) {
         new_item = GetSelectedItemFromList(item_id);
     }
     if (new_item >= GetListBoxSize(item_id) || new_item < 0) new_item = 0;
     SetSelectedItemInList(item_id, new_item);
-
-    m_ActiveCategory = new_category;
 
     string sorttext = "ITEM";
     if (summarysortorder == 1 && m_ActiveCategory == Summary_GIRLS)
@@ -300,7 +300,9 @@ void cScreenTurnSummary::change_item(int selection)
         Fill_Events_Gang(selection);
         break;
     case Summary_BUILDINGS:
-        Fill_Events_Buildings(selection);
+        if(selection != -1) {
+            Fill_Events_Buildings(selection);
+        }
         break;
     case Summary_DUNGEON:
         if (g_Game->dungeon().GetGirlByName(GetSelectedTextFromList(item_id))) {
@@ -362,7 +364,12 @@ void cScreenTurnSummary::goto_selected()
     break;
     case Summary_BUILDINGS: {
         // set active building?
-        auto bld = &g_Game->buildings().get_building(GetSelectedItemFromList(item_id));
+        auto bld_id = GetSelectedItemFromList(item_id);
+        // TODO disable the goto button if nothing is selected!
+        if(bld_id == -1)
+            return;
+
+        auto bld = &g_Game->buildings().get_building(bld_id);
         set_active_building(bld);
         push_window("Building Management");
     }

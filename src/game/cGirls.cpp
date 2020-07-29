@@ -156,7 +156,7 @@ cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, 
 
 
     // set all jobs to null
-    newGirl->m_DayJob = newGirl->m_NightJob = 255;
+    newGirl->m_DayJob = newGirl->m_NightJob = JOB_UNSET;
     newGirl->m_WorkingDay = newGirl->m_PrevWorkingDay = newGirl->m_SpecialJobGoal = 0;
 
     newGirl->m_Money = (g_Dice % (girl_template.m_MaxMoney - girl_template.m_MinMoney)) + girl_template.m_MinMoney;    // money
@@ -1667,6 +1667,7 @@ void cGirls::UseItems(sGirl& girl)
 
     int usedFood = (g_Dice % 3) + 1;
     int usedFoodCount = 0;
+    std::vector<const sInventoryItem*> use_items;
     for(auto& element : girl.inventory().all_items())     // use a food item if it is in stock, and remove any bad things if disobedient
     {
         const sInventoryItem* curItem = element.first;
@@ -1787,8 +1788,7 @@ void cGirls::UseItems(sGirl& girl)
 
             if (checktouseit < (int)curItem->m_Effects.size() / 2) // if more than half of the effects are useful, use it
             {  // hey, this consumable item might actually be useful... gobble gobble gobble
-                girl.equip(curItem, false);
-                usedFoodCount++;
+                use_items.push_back(curItem);
             }
         }
 
@@ -1797,6 +1797,11 @@ void cGirls::UseItems(sGirl& girl)
         //{
         //    g_Game->inventory_manager().Unequip(girl, i);
         //}
+    }
+
+    for(auto& item : use_items) {
+        girl.equip(item, false);
+        usedFoodCount++;
     }
 
     // add the selling of items that are no longer needed here
@@ -1880,7 +1885,7 @@ std::string AdjustTraitGroup(sGirl& girl, int adjustment, std::initializer_list<
         count += 1;
     }
 
-    int new_group = std::min(std::max(0, group + adjustment), (int)traits.size());
+    int new_group = std::min(std::max(0, group + adjustment), (int)traits.size() - 1);
     if(group == new_group)
         return "";
 
@@ -1988,8 +1993,8 @@ void cGirls::updateHappyTraits(sGirl& girl)
             else
             {
                 string msg = girl.FullName() + " has killed herself since she was unhappy and depressed.";
-                girl.m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_DANGER);
-                g_Game->push_message(ss.str(), COLOR_RED);
+                girl.AddMessage(msg, IMGTYPE_DEATH, EVENT_DANGER);
+                g_Game->push_message(msg, COLOR_RED);
                 girl.health(-1000);
             }
         }
@@ -2221,7 +2226,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     if (SexType == SKILL_GROUP)    introtext += " her customers ";
     else introtext += " her customer ";
 
-    int currentjob = (Day0Night1 ? girl->m_NightJob : girl->m_DayJob);
+    int currentjob = girl->get_job(Day0Night1);
     if (currentjob == JOB_WHOREBROTHEL || currentjob == JOB_BARWHORE || currentjob == JOB_WHOREGAMBHALL)
     {
         //SIN - added some variety here

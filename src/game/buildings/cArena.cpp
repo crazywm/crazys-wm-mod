@@ -44,22 +44,13 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
 {
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cArena.cpp
     stringstream ss;
-    string girlName;
 
-    //////////////////////////////////////////////////////
     //  Handle the start of shift stuff for all girls.  //
-    //////////////////////////////////////////////////////
     BeginShift();
     bool matron = SetupMatron(is_night, "Doctore");
-    
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Now If there is a matron and she is not refusing to work, then she can delegate the girls in this building.  //
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    HandleRestingGirls(is_night, matron, "Doctore");
 
-    ////////////////////////////////////////
-    //  Run any races the girls can run.  //
-    ////////////////////////////////////////
+    //  Now If there is a matron and she is not refusing to work, then she can delegate the girls in this building.  //
+    HandleRestingGirls(is_night, matron, "Doctore");
 
     /////////////////////////////////////////////////////////////////
     //  All other Jobs in the Arena can be done at the same time.  //
@@ -229,7 +220,10 @@ std::shared_ptr<sGirl> sArena::meet_girl() const
 {
     // let's get a girl for the player to meet was to get arena.. dont think this should happen this is tryouts arena girl should be ready to fight. CRAZY
     auto girl = g_Game->GetRandomGirl(false, false, true);
-    girl->TriggerEvent( EDefaultEvent::MEET_GIRL_ARENA );
+    if(girl) {
+        g_Game->girl_pool().AddGirl(girl);
+        girl->TriggerEvent(EDefaultEvent::MEET_GIRL_ARENA);
+    }
     return girl;
 }
 

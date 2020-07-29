@@ -24,6 +24,7 @@
 #include "sConfig.h"
 #include <vector>
 #include <numeric>
+#include <cassert>
 #include "interface/cColor.h"
 
 cFont::cFont(CGraphics* gfx) : m_GFX(gfx)
@@ -159,6 +160,7 @@ cSurface cFont::RenderMultilineText(std::string text, int width) const
 
     // create a surface to render all the text too
     auto message = m_GFX->CreateSurface(width, height, sColor(0xff, 0, 0), true);
+    assert(message);
 
     cConfig cfg;
     for (unsigned int i = 0; i < lines.size(); i++)

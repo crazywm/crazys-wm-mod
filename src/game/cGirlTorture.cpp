@@ -241,7 +241,7 @@ void cGirlTorture::DoTorture()
             }
             else
             {
-                sMsg = sGirlName + "  health is low from ongoing torture.";
+                sMsg = sGirlName + "'s health is low from ongoing torture.";
                 // WD    Low health warnings done as part of cDungeon::Update()
                 //m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_DANGER);
                 m_Torturer->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DANGER);

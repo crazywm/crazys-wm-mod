@@ -77,6 +77,13 @@ public:
     void SaveXML(tinyxml2::XMLElement& target) const;
 private:
     std::vector<std::shared_ptr<sGirl>> m_Pool;
+    mutable int m_DebugIsIterating = 0;
+    struct DebugHelper {
+        const cGirlPool* gp;
+        explicit DebugHelper(const cGirlPool* g) :gp(g) { ++(gp->m_DebugIsIterating); }
+        ~DebugHelper() { --(gp->m_DebugIsIterating); }
+    };
+    friend class DebugHelper;
 };
 
 #endif //WM_CGIRLPOOL_H

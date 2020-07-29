@@ -151,10 +151,16 @@ cScrollBar* cInterfaceWindow::AddScrollBar(int x, int y, int width, int height, 
     return (cScrollBar*)m_Widgets.back().get();
 }
 
+cUIWidget* cInterfaceWindow::GetWidget(int id)
+{
+    if (id == -1 || id >= m_Widgets.size()) return nullptr;
+    return m_Widgets[id].get();
+}
+
 cButton* cInterfaceWindow::GetButton(int id)
 {
     if (id == -1) return nullptr;
-    return dynamic_cast<cButton*>(m_Widgets[id].get());
+    return dynamic_cast<cButton*>(m_Widgets.at(id).get());
 }
 
 bool cInterfaceWindow::HasFocus(int id)
@@ -738,6 +744,10 @@ cInterfaceWindow::cInterfaceWindow(std::string name) : m_Name(name) {
 
 bool cInterfaceWindow::is_ctrl_held() const {
     return window_manager().IsCtrlHeld();
+}
+
+std::size_t cInterfaceWindow::NumWidgets() const {
+    return m_Widgets.size();
 }
 
 void cModalWindow::process() {

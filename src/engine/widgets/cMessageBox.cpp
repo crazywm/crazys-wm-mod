@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <cassert>
 #include "cMessageBox.h"
 #include "interface/CGraphics.h"
 #include "sConfig.h"
@@ -109,6 +110,7 @@ void cMessageBox::Advance()
 {
     m_Position += m_Height / m_Font->GetFontLineSkip();
 
+    assert(m_PreRendered);
     if(m_Position >= m_PreRendered.GetHeight() / m_Font->GetFontLineSkip()) {
         m_Messages.pop_front();
         if(!m_Messages.empty()) {
@@ -133,6 +135,7 @@ void cMessageBox::UpdateMessageText()
         }
 
         m_PreRendered = m_Font->RenderMultilineText(m_Text, m_Width - 4);
+        assert(m_PreRendered);
     }
 }
 

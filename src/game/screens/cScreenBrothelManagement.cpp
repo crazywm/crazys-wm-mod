@@ -32,11 +32,6 @@
 
 extern cConfig cfg;
 
-extern bool g_TryOuts;
-extern bool g_TryCentre;
-extern bool g_TryEr;
-extern bool g_TryCast;
-
 static std::string get_building_summary(const IBuilding& building);
 
 // -------------------------------------------------------------------------------------------------

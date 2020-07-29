@@ -79,7 +79,7 @@ void cScreenGallery::change_image()
 {
     PrepareImage(image_id, m_SelectedGirl, Mode, false, Img, true);
     std::string t = GetImage(image_id)->m_Message;
-    if (t.empty()) t = GetImage(image_id)->m_Image.GetFileName();
+    if (t.empty() && GetImage(image_id)->m_Image) t = GetImage(image_id)->m_Image.GetFileName();
     EditTextItem(t, imagename_id);
     SetSelectedItemInList(imagelist_id, Mode, false);
 }

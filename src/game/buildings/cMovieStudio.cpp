@@ -182,7 +182,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
     });
 
     // last check, is there a crew to film?
-    bool readytofilm = (camera && crystal);
+    bool readytofilm = (camera && crystal && matron);
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // If the filming can not procede even after trying to fill the jobs (or there is no Director to fill the jobs)  //
@@ -308,7 +308,7 @@ void sMovieStudio::auto_assign_job(sGirl& target, std::stringstream& message, bo
 
     if (assign_actress)        // everyone else gets assigned to film something they are good at
     {
-        int sw = JOB_FILMRANDOM;
+        JOBS sw = JOB_FILMRANDOM;
         int test = 80;
         do // now roll a random number and if that skill is higher than the test number set that as her job
         {
@@ -1069,6 +1069,9 @@ std::string sMovieStudio::meet_no_luck() const {
 
 std::shared_ptr<sGirl> sMovieStudio::meet_girl() const {
     auto girl = g_Game->GetRandomGirl();
-    girl->TriggerEvent( EDefaultEvent::MEET_GIRL_STUDIO );
+    if(girl) {
+        g_Game->girl_pool().AddGirl(girl);
+        girl->TriggerEvent(EDefaultEvent::MEET_GIRL_STUDIO);
+    }
     return girl;
 }

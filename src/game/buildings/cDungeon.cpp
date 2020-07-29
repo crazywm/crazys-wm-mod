@@ -32,6 +32,7 @@
 #include "xml/util.h"
 #include "cGirlGangFight.h"
 #include "character/pregnancy.h"
+#include "character/cPlayer.h"
 
 extern cRng                g_Dice;
 
@@ -465,7 +466,13 @@ void cDungeon::Update()
 
     // WD:    Did we torture the girls
     // WD: If so, who is the Torturer
-    if (m_TortureDone) { TorturerGirlref = random_girl_on_job(g_Game->buildings(), JOB_TORTURER, 0); }
+    if (m_TortureDone) {
+        TorturerGirlref = random_girl_on_job(g_Game->buildings(), JOB_TORTURER, 0);
+        if(!TorturerGirlref) {
+            g_Game->push_message("ERROR: Cannot find the torturer! How did this happen?", COLOR_RED);
+            m_TortureDone = false;
+        }
+    }
 
     /*********************************
     *    DO ALL DUNGEON GIRLS
@@ -497,8 +504,7 @@ void cDungeon::Update()
             else
             {
                 m_NumberDied++;
-                current.m_Reason = DUNGEON_DEAD;
-                g_Game->RunEvent(EDefaultEvent::DUNGEON_GIRL_DIED);
+                OnGirlDead(current);
                 continue;
             }
         }
@@ -522,21 +528,18 @@ void cDungeon::Update()
         if (girl->health() <= 0)
         {
             m_NumberDied++;
-            current.m_Reason = DUNGEON_DEAD;
-            g_Game->RunEvent(EDefaultEvent::DUNGEON_GIRL_DIED);
+            OnGirlDead(current);
 
             msg.str(""); ss.str("");
-            msg << girlName << " has died in the dungeon.";
-            girl->m_Events.AddMessage(msg.str(), IMGTYPE_DEATH, EVENT_DANGER);
-            ss << girlName << " has died.  Her body will be removed by the end of the week.\n";
-            girl->m_Events.AddMessage(ss.str(), IMGTYPE_DEATH, EVENT_SUMMARY);
+            girl->AddMessage("${name} has died in the dungeon.", IMGTYPE_DEATH, EVENT_DANGER);
+            girl->AddMessage("${name} has died.  Her body will be removed by the end of the week.\n", IMGTYPE_DEATH, EVENT_SUMMARY);
 
             // if there is a torturer send her a message
             if (m_TortureDone)
             {
                 msg.str("");
                 msg << girlName << " has died in the dungeon under her care!";
-                TorturerGirlref->m_Events.AddMessage(msg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
+                TorturerGirlref->AddMessage(msg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
             }
 
             continue;
@@ -618,9 +621,7 @@ void cDungeon::Update()
             current->m_Tort = false;
             if (current->m_Health <= 0)
             {
-                m_NumberDied++;
-                current->m_Reason = DUNGEON_DEAD;
-                g_Game->RunEvent(EDefaultEvent::DUNGEON_CUST_DIED);
+                OnCustomerDead(current);
             }
             if (current->m_Reason == DUNGEON_DEAD)
             {
@@ -643,11 +644,40 @@ void cDungeon::Update()
             {
                 m_NumberDied++;
                 current->m_Reason = DUNGEON_DEAD;
-                g_Game->RunEvent(EDefaultEvent::DUNGEON_CUST_DIED);
+                OnCustomerDead(current);
             }
             current = current->m_Next;
         }
     }
+}
+
+void cDungeon::OnGirlDead(sDungeonGirl& current) const {
+    current.m_Reason = DUNGEON_DEAD;
+    g_Game->push_message("A girl has died in the dungeon.\nHer body will be removed by the end of the week.", COLOR_RED);
+
+    if (g_Dice.percent(10))	// only 10% of being discovered
+    {
+        g_Game->player().suspicion(1);
+    }
+    g_Game->player().disposition(-1);
+    for(auto& bld : g_Game->buildings().buildings()) {
+        bld->girls().apply([](sGirl& g){
+            g.pcfear(2);
+        });
+    };
+}
+
+void cDungeon::OnCustomerDead(sDungeonCust* current) {
+    m_NumberDied++;
+    current->m_Reason = DUNGEON_DEAD;
+    g_Game->push_message("A customer has died in the dungeon.\nTheir body will be removed by the end of the week.", COLOR_RED);
+
+    if (g_Dice.percent(10))	// only 10% chance of being found out
+    {
+        g_Game->player().suspicion(1);
+    }
+    g_Game->player().disposition(-1);
+    g_Game->player().customerfear(1);
 }
 
 void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)

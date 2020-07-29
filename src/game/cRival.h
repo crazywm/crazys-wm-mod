@@ -23,6 +23,7 @@
 #include "Constants.h"
 #include "cNameList.h"
 #include <memory>
+#include <functional>
 
 class sInventoryItem;
 namespace tinyxml2 {
@@ -77,7 +78,7 @@ public:
     }
 
     void Update(int& NumPlayerBussiness);
-    cRival* GetRandomRival();
+    cRival* GetRandomRival(std::function<bool(const cRival&)> predicate={});
     cRival* GetRandomRivalWithGangs();
     cRival* GetRandomRivalWithBusinesses();
     cRival* GetRandomRivalToSabotage();

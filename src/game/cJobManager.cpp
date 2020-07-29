@@ -559,6 +559,7 @@ JobData[JOB_RECRUITER].description = "She will go out and try and recruit girls 
     RegisterWrappedJobs(*this);
     RegisterManagerJobs(*this);
     RegisterFilmJobs(*this);
+    RegisterTherapyJobs(*this);
 }
 
 sCustomer cJobManager::GetMiscCustomer(IBuilding& brothel)
@@ -846,7 +847,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 }
 
 // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cJobManager.cpp > HandleSpecialJobs
-bool cJobManager::HandleSpecialJobs(sGirl& Girl, int JobID, int OldJobID, bool Day0Night1, bool fulltime)
+bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool Day0Night1, bool fulltime)
 {
     bool MadeChanges = true;  // whether a special case applies to specified job or not
 
@@ -871,16 +872,16 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, int JobID, int OldJobID, bool D
     {
         Girl.m_WorkingDay = Girl.m_PrevWorkingDay;    // `J` ...it will restore the previous days
     }
-    u_int rest = JOB_RESTING;
+    JOBS rest = JOB_RESTING;
     if(Girl.m_Building)
         rest = Girl.m_Building->m_RestJob;
 
     // rest jobs
-    if (u_int(JobID) == JOB_FILMFREETIME)
+    if (JobID == JOB_FILMFREETIME)
     {
         Girl.m_NightJob = Girl.m_DayJob = JobID;
     }
-    else if (u_int(JobID) == rest)
+    else if (JobID == rest)
     {
         /*   */if (fulltime)    Girl.m_NightJob = Girl.m_DayJob = JobID;
         else if (Day0Night1)    Girl.m_NightJob = JobID;
@@ -1272,7 +1273,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, int JobID, int OldJobID, bool D
     {
         MadeChanges = false;
         Girl.m_DayJob = rest;
-        Girl.m_NightJob = u_int(JobID);
+        Girl.m_NightJob = JobID;
     }
     else
     {
@@ -2376,7 +2377,7 @@ bool cJobManager::is_Surgery_Job(int testjob) {
 }
 
 void cJobManager::CatchGirl(sGirl& girl, stringstream& fuckMessage, const sGang* guardgang) {// try to find an item
-    sInventoryItem* item;
+    sInventoryItem* item = nullptr;
     if(g_Game->player().inventory().has_item("Brainwashing Oil")) {
         item = g_Game->inventory_manager().GetItem("Brainwashing Oil");
     } else if(g_Game->player().inventory().has_item("Necklace of Control")) {

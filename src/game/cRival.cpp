@@ -34,6 +34,7 @@
 #include "sConfig.h"
 #include "cGirls.h"
 #include "cGirlGangFight.h"
+#include "utils/streaming_random_selection.hpp"
 
 
 extern cRng g_Dice;
@@ -776,77 +777,47 @@ void cRivalManager::Update(int& NumPlayerBussiness)
     }
 }
 
-cRival* cRivalManager::GetRandomRival()
+cRival* cRivalManager::GetRandomRival(std::function<bool(const cRival&)> predicate)
 {
     if(m_Rivals.empty())
         return nullptr;
 
-    int number = g_Dice % m_Rivals.size();
-    return m_Rivals[number].get();
+    if(predicate) {
+        RandomSelector<cRival> selector;
+        for(auto& rival : m_Rivals) {
+            if(predicate(*rival))
+                selector.process(rival.get());
+        }
+        return selector.selection();
+    } else {
+        int number = g_Dice % m_Rivals.size();
+        return m_Rivals[number].get();
+    }
 }
 
 // check a random rival for gangs
 cRival* cRivalManager::GetRandomRivalWithGangs()
 {
-    if(m_Rivals.empty())
-        return nullptr;
-
-    for(int tries = 0; tries < 6 * m_Rivals.size(); ++tries)
-    {
-        tries--;
-        int number = g_Dice%m_Rivals.size();
-        if(m_Rivals[number]->m_NumGangs > 0)
-            return m_Rivals[number].get();
-    }
-
-    // do one last check of all rivals if the random check failed
-    for(auto& rival : m_Rivals) {
-        if(rival->m_NumGangs > 0) return rival.get();
-    }
-    return nullptr;
+    return GetRandomRival([](const cRival& rv){
+        return rv.m_NumGangs > 0;
+    });
 }
 
 // check a random rival for gangs
 cRival* cRivalManager::GetRandomRivalWithBusinesses()
 {
-    if(m_Rivals.empty())
-        return nullptr;
-
-    for(int tries = 0; tries < 6 * m_Rivals.size(); ++tries)
-    {
-        tries--;
-        int number = g_Dice%m_Rivals.size();
-        if(m_Rivals[number]->m_BusinessesExtort > 0)
-            return m_Rivals[number].get();
-    }
-
-    // do one last check of all rivals if the random check failed
-    for(auto& rival : m_Rivals) {
-        if(rival->m_BusinessesExtort > 0) return rival.get();
-    }
-    return nullptr;
+    return GetRandomRival([](const cRival& rv){
+        return rv.m_BusinessesExtort > 0;
+    });
 }
 
 // `J` added - hit whoever has the most brothels
 cRival* cRivalManager::GetRandomRivalToSabotage()
 {
-    if(m_Rivals.empty())
-        return nullptr;
-
-    for(int tries = 0; tries < 6 * m_Rivals.size(); ++tries)
-    {
-        tries--;
-        int number = g_Dice%m_Rivals.size();
-        if(m_Rivals[number]->m_BusinessesExtort > 0)
-            return m_Rivals[number].get();
-    }
-
-    // do one last check of all rivals if the random check failed
-    cRival* best = m_Rivals.front().get();
-    for(auto& rival : m_Rivals) {
-        if (best->m_NumBrothels < rival->m_NumBrothels) best = rival.get();
-    }
-    return best;
+    /// TODO find a good criterion here.
+    return GetRandomRival([](const cRival& rv){
+        return rv.m_NumBrothels > 0;
+    });
 }
 
 // how many businesses are controlled by rivals

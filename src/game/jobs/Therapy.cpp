@@ -312,7 +312,7 @@ void RegisterTherapyJobs(cJobManager& mgr) {
          {"Pessimist", "She is no longer a Pessimist about everything."}}
     }));
 
-    mgr.register_job(std::make_unique<TherapyJob>(JOB_THERAPY, sTherapyData{
+    mgr.register_job(std::make_unique<Rehab>(JOB_REHAB, sTherapyData{
         "${name} underwent rehab for her addiction.",
         "${name} is not addicted to anything so she was sent to the waiting room.",
         "She should stay in rehab to treat her other addictions.",

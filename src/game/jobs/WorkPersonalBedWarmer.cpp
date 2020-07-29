@@ -592,7 +592,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         wages += 50;
 
         //SCENARIOS
-        //Was gonna use a random number for this, but since script runs seperately for each girl
+        //Was gonna use a random number for this, but since script runs separately for each girl
         //resulted in one member of group reporting one kind of orgy, another reporting completely different one
         //using date as a common field. should result in same psuedo-random option for all
         if (Day0Night1)    roll = g_Game->date().day % NUMSCENARIOS;
@@ -875,7 +875,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
             if (girl.is_slave()) ss << " master";
             ss << ",\" she whispers.\n";
         }
-        else if (rng.percent(5) && (girl.has_active_trait("Sadist") || girl.has_active_trait("Aggressive")))
+        else if (rng.percent(5) && (girl.has_active_trait("Sadistic") || girl.has_active_trait("Aggressive")))
         {
             ss << "\n\"If you made me Head Girl, I'd keep these bitches in line for you,";
             if (girl.is_slave()) ss << " master";

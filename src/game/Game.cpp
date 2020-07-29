@@ -289,7 +289,7 @@ void Game::next_week()
 void Game::UpdateRunaways() {
     for(auto it = m_Runaways.begin(); it != m_Runaways.end(); )
     {
-        auto& rgirl = *it;
+        auto rgirl = *it;
         if (rgirl->m_RunAway > 0)
         {
             // there is a chance the authorities will catch her if she is branded a slave
@@ -794,7 +794,8 @@ void Game::UpdateMarketSlaves()
     g_LogFile.debug("game", "Removing slaves from market");
     for(int i = 0; i < m_MarketGirls->num(); ++i) {
         if(g_Dice % 2 == 0) {
-            m_Girls->GiveGirl(m_MarketGirls->TakeGirl(i));
+            auto taken = m_MarketGirls->TakeGirl(i);
+            m_Girls->GiveGirl(std::move(taken));
             --i;  // need to decrement the iterator because the market has just lost a girl
         }
     }

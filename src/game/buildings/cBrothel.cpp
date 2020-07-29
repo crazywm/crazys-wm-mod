@@ -112,6 +112,8 @@ void sBrothel::UpdateGirls(bool is_night)
     *    handle any girls training during this shift
     */
     cJobManager::do_training(this, is_night);
+
+    std::vector<sGirl*> runaways;
     /*
     *    as for the rest of them...
     */
@@ -131,14 +133,14 @@ void sBrothel::UpdateGirls(bool is_night)
                 current.health() >= 80 && current.tiredness() <= 20)
             {
                 if ((matron || current.m_PrevDayJob == m_MatronJob)                    // do we have a director, or was she the director and made herself rest?
-                    && current.m_PrevDayJob != 255 && current.m_PrevNightJob != 255)    // 255 = nothing, in other words no previous job stored
+                    && current.m_PrevDayJob != JOB_UNSET && current.m_PrevNightJob != JOB_UNSET)    // 255 = nothing, in other words no previous job stored
                 {
                     g_Game->job_manager().HandleSpecialJobs(current, current.m_PrevDayJob, current.m_DayJob, false);
                     if (current.m_DayJob == current.m_PrevDayJob)  // only update night job if day job passed HandleSpecialJobs
                         current.m_NightJob = current.m_PrevNightJob;
                     else
                         current.m_NightJob = m_RestJob;
-                    current.m_PrevDayJob = current.m_PrevNightJob = 255;
+                    current.m_PrevDayJob = current.m_PrevNightJob = JOB_UNSET;
                     current.AddMessage("The Matron puts ${name} back to work.\n", IMGTYPE_PROFILE, EVENT_BACKTOWORK);
                 }
                 else
@@ -223,7 +225,7 @@ void sBrothel::UpdateGirls(bool is_night)
         else if (totalGold > 0)
         {
             ss << "${name} earned a total of " << totalGold << " gold";
-            u_int job = (is_night ? current.m_NightJob : current.m_DayJob);
+            u_int job = current.get_job(is_night);
             // if it is a player paid job and you pay her
             if ((g_Game->job_manager().is_job_Paid_Player(job) && !current.is_unpaid()))
                 ss << " directly from you. She gets to keep it all.";
@@ -262,8 +264,7 @@ void sBrothel::UpdateGirls(bool is_night)
         // Runaway, Depression & Drug checking
         if (runaway_check(current))
         {
-            remove_girl(&current);
-            current.run_away();
+            runaways.push_back(&current);
             return;
         }
 
@@ -360,9 +361,13 @@ void sBrothel::UpdateGirls(bool is_night)
             current.upd_base_stat(STAT_TIREDNESS, -2, false);
         }
 
-        // Level the girl up if nessessary
+        // Level the girl up if necessary
         cGirls::LevelUp(current);
     });
+
+    for(auto& g : runaways) {
+        g->run_away();
+    }
 }
 
 bool sBrothel::runaway_check(sGirl& girl)

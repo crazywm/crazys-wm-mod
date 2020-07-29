@@ -52,3 +52,11 @@ void sStorage::load_from_xml(const tinyxml2::XMLElement& el)
 // TODO
 }
 
+sStorage::sStorage() {
+    m_Storage[food_key].amount = 0;
+    m_Storage[drink_key].amount = 0;
+    m_Storage[beast_key].amount = 0;
+    m_Storage[goods_key].amount = 0;
+    m_Storage[alchemy_key].amount = 0;
+}
+

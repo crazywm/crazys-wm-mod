@@ -83,7 +83,7 @@ public:
     std::array<sJobFilter, NUMJOBTYPES> JobFilters;
 
     // return a job description along with a count of how many girls are on it
-    bool HandleSpecialJobs(sGirl& Girl, int JobID, int OldJobID, bool Day0Night1, bool fulltime = false );  // check for and handle special job assignments
+    bool HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool Day0Night1, bool fulltime = false );  // check for and handle special job assignments
 
     void Setup();
 

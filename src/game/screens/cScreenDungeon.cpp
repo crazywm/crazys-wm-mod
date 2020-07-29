@@ -162,7 +162,7 @@ void cScreenDungeon::set_ids()
 
 void cScreenDungeon::init(bool back)
 {
-    if(m_ReleaseBuilding == nullptr)
+    if(!back)
         m_ReleaseBuilding = &active_building();
 
     Focused();
@@ -234,11 +234,11 @@ void cScreenDungeon::init(bool back)
     HideWidget(brothel4_id, mum_brothels < 5);
     HideWidget(brothel5_id, mum_brothels < 6);
     HideWidget(brothel6_id, mum_brothels < 7);
-    HideWidget(clinic_id, g_Game->has_building(BuildingType::CLINIC));
-    HideWidget(studio_id, g_Game->has_building(BuildingType::STUDIO));
-    HideWidget(arena_id, g_Game->has_building(BuildingType::ARENA));
-    HideWidget(centre_id, g_Game->has_building(BuildingType::CENTRE));
-    HideWidget(farm_id, g_Game->has_building(BuildingType::FARM));
+    HideWidget(clinic_id, !g_Game->has_building(BuildingType::CLINIC));
+    HideWidget(studio_id, !g_Game->has_building(BuildingType::STUDIO));
+    HideWidget(arena_id, !g_Game->has_building(BuildingType::ARENA));
+    HideWidget(centre_id, !g_Game->has_building(BuildingType::CENTRE));
+    HideWidget(farm_id, !g_Game->has_building(BuildingType::FARM));
 
     // if a selection of girls is stored, try to re-select them
     if (!select_girls.empty())
@@ -255,7 +255,7 @@ void cScreenDungeon::init(bool back)
 
 void cScreenDungeon::selection_change()
 {
-    selection = GetLastSelectedItemFromList(girllist_id);
+    selection = GetSelectedItemFromList(girllist_id);
     // if nothing is selected, then we just need to disable some buttons and we're done
     if (selection == -1)
     {
@@ -269,7 +269,6 @@ void cScreenDungeon::selection_change()
         //        cerr << "selection = " << selection << " (-1) - disabling torture" << endl;    // `J` commented out
         DisableWidget(viewdetails_id);
         DisableWidget(sellslave_id);
-        selection = -1;        // can this have changed?
         return;
     }
     // otherwise, we need to enable some buttons...
@@ -286,13 +285,17 @@ void cScreenDungeon::selection_change()
         cerr << "Player selecting Dungeon Customer #" << selection << endl;    // `J` rewrote to reduce confusion
         int num = (selection - g_Game->dungeon().GetNumGirls());
         sDungeonCust* cust = g_Game->dungeon().GetCust(num);
+        if(cust == nullptr) {
+            push_message("Could not select the target. If you encounter this error, please"
+                         "provide us a description / save game of how you managed this.", COLOR_RED);
+            return;
+        }
         DisableWidget(viewdetails_id);
         DisableWidget(allowfood_id, cust->m_Feeding);
         DisableWidget(stopfood_id, !cust->m_Feeding);
         return;
     }
     // Not a customer then. Must be a girl...
-    cerr << "Player selecting Dungeon Girl #" << selection << endl;    // `J` rewrote to reduce confusion
     int num = selection;
     auto dgirl = g_Game->dungeon().GetGirl(num);
     auto girl = dgirl->m_Girl;
@@ -383,7 +386,9 @@ int cScreenDungeon::enslave()
 
     store_selected_girls();
     // roll on vectors!
-    for (selection = GetNextSelectedItemFromList(girllist_id, 0, pos); selection != -1; selection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos))
+    for (int selection = GetNextSelectedItemFromList(girllist_id, 0, pos);
+         selection != -1;
+         selection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos))
     {
         if ((selection - (g_Game->dungeon().GetNumGirls() + numGirlsRemoved)) >= 0)    // it is a customer
         {

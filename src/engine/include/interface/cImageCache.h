@@ -96,6 +96,8 @@ public:
 
     // Modifying functions
     cSurface FillRect(const cSurface& source, SDL_Rect area, sColor color);
+    /// Creates a new SDL surface by blitting one surface over another. The new surface is returned, but since
+    /// we have no way of directly reusing it, it is not put into the image cache.
     cSurface BlitSurface(const cSurface& target, SDL_Rect* target_area, const cSurface& source, SDL_Rect* src_area);
 
     // Low Level Functions

@@ -42,7 +42,7 @@ void cCheckBox::DrawWidget(const CGraphics& gfx)
     {
         m_Image.DrawSurface(m_XPos + off, m_YPos);
     }
-    m_Label.DrawSurface(m_XPos + (m_LeftOrRight ? 0 : m_Width + 4), m_YPos);
+    m_Label.DrawSurface(m_XPos + (m_LeftOrRight ? 0 : m_Border.GetWidth() + 4), m_YPos);
 }
 
 cCheckBox::cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, int height, std::string text, int fontsize, bool leftorright):

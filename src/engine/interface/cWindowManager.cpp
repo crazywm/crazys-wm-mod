@@ -214,6 +214,10 @@ void cWindowManager::InputString(std::function<void(const std::string&)> callbac
 
 void cWindowManager::PushMessage(std::string text, int color, std::function<void()> callback)
 {
+    if(text.empty()) {
+        return;
+    }
+
     auto window = GetModalWindow();
     auto cb = std::make_unique<cMessageBox>(window.get());
     cb->PushMessage(std::move(text), color);

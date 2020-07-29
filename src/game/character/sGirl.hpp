@@ -96,7 +96,7 @@ typedef struct sChild
 }sChild;
 
 // Represents a single girl
-struct sGirl : public ICharacter
+struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 {
     sGirl(bool unique);
     ~sGirl();
@@ -120,12 +120,12 @@ struct sGirl : public ICharacter
     /// gets the girls job for the day or night shift
     JOBS get_job(bool night_shift) const;
     void FullJobReset(JOBS job);
-    unsigned int m_DayJob;                        // id for what job the girl is currently doing
-    unsigned int m_NightJob;                    // id for what job the girl is currently doing
-    unsigned int m_PrevDayJob     = 255;        // id for what job the girl was doing
-    unsigned int m_PrevNightJob   = 255;        // id for what job the girl was doing
-    unsigned int m_YesterDayJob   = 255;        // id for what job the girl did yesterday
-    unsigned int m_YesterNightJob = 255;        // id for what job the girl did yesternight
+    JOBS m_DayJob;                            // id for what job the girl is currently doing
+    JOBS m_NightJob;                          // id for what job the girl is currently doing
+    JOBS m_PrevDayJob     = JOB_UNSET;        // id for what job the girl was doing
+    JOBS m_PrevNightJob   = JOB_UNSET;        // id for what job the girl was doing
+    JOBS m_YesterDayJob   = JOB_UNSET;        // id for what job the girl did yesterday
+    JOBS m_YesterNightJob = JOB_UNSET;        // id for what job the girl did yesternight
 
     int m_Enjoyment[NUM_ACTIONTYPES];            // these values determine how much a girl likes an action
     int m_EnjoymentMods[NUM_ACTIONTYPES];        // `J` added perminant modifiers to stats
@@ -162,8 +162,6 @@ struct sGirl : public ICharacter
     int m_Tips;                                    // used to keep track of tips this turn
 
     std::set<Fetishs> m_FetishTypes;            // the types of fetishes this girl has
-
-    char m_Flags[NUM_GIRLFLAGS];                // flags used by scripts
 
     void AddMessage(std::string message, int nImgType, int nEvent);
     cEvents m_Events;                            // Each girl keeps track of all her events that happened to her in the last turn
@@ -205,7 +203,7 @@ struct sGirl : public ICharacter
     static std::map<std::string, unsigned int>    jobs_lookup;
     static void        setup_maps();
 
-    static int lookup_jobs_code(std::string s);
+    static JOBS lookup_jobs_code(std::string s);
 
 
     tinyxml2::XMLElement& SaveGirlXML(tinyxml2::XMLElement& elRoot);
@@ -278,7 +276,6 @@ struct sGirl : public ICharacter
     bool is_havingsex() const;
     bool was_resting() const;
 
-    void OutputGirlRow(std::vector<std::string>& Data, const std::vector<std::string>& columnNames) const;
     void OutputGirlDetailString(std::string& Data, const std::string& detailName) const;
 
     // END MOD

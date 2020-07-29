@@ -51,8 +51,6 @@ extern cConfig cfg;
 
 bool loading = true;
 int load0new1 = 0;
-tinyxml2::XMLDocument    doc;
-tinyxml2::XMLElement*    pRoot = nullptr;
 stringstream ss1;
 stringstream ss2;
 
@@ -85,6 +83,9 @@ void cScreenPreparingGame::init(bool back)
         g_Game = std::make_unique<Game>();
     }
 
+    // make sure we clear any remaining active girl from the previous game
+    set_active_girl(nullptr);
+
     if (g_ReturnInt >= 0)
     {
         resetScreen();
@@ -112,8 +113,6 @@ void cScreenPreparingGame::init(bool back)
 
 void cScreenPreparingGame::resetScreen()
 {
-    doc.Clear();
-    pRoot = nullptr;
     ss1.str("");
     ss2.str("");
     stringEmUp();
@@ -191,12 +190,13 @@ bool cScreenPreparingGame::LoadGame(std::string name) {
         m_Messages.push_back(std::move(str));
     };
 
+    tinyxml2::XMLDocument doc;
     if (doc.LoadFile(thefile.c_str()) != tinyxml2::XML_SUCCESS) {
         loading = false;
         callback(doc.ErrorStr());
         return false;
     }
-    pRoot = doc.FirstChildElement("Root");
+    auto pRoot = doc.FirstChildElement("Root");
     if (pRoot == nullptr) {
         return false;
     }

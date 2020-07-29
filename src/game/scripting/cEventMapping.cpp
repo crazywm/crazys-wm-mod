@@ -54,10 +54,6 @@ std::string GetEventID(EDefaultEvent e) {
         return "customer:gambling-cheat";
     case EDefaultEvent::CUSTOMER_NOPAY:
         return "customer:no-pay";
-    case EDefaultEvent::DUNGEON_CUST_DIED:
-        return "dungeon:died.customer";
-    case EDefaultEvent::DUNGEON_GIRL_DIED:
-        return "dungeon:died.girl";
     case EDefaultEvent::NEXT_WEEK:
         return "next-week.*";
     case EDefaultEvent::RIVAL_LOST:

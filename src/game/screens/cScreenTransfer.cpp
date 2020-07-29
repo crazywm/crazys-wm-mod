@@ -133,7 +133,6 @@ void cScreenTransfer::select_brothel(Side side, int selected)
 {
     int own_list_id = side == Side::Right ? listright_id : listleft_id;
     vector<string> columnNames = GetListBox(own_list_id)->GetColumnNames();
-    std::vector<string> Data;
 
     ClearListBox(own_list_id);
     (side == Side::Right ? rightBrothel : leftBrothel) = selected;
@@ -143,9 +142,13 @@ void cScreenTransfer::select_brothel(Side side, int selected)
 
         int selection = 0;
         int i = 0;
-        temp->girls().visit([&](const sGirl& girl){
+        temp->girls().visit([&](const sGirl& girl) {
             if (selected_girl().get() == &girl) selection = i;
-            girl.OutputGirlRow(Data, columnNames);
+            std::vector<string> Data(columnNames.size());
+            for (unsigned int x = 0; x < columnNames.size(); ++x)
+            {
+                girl.OutputGirlDetailString(Data[x], columnNames[x]);
+            }
             AddToListBox(own_list_id, i, std::move(Data), checkjobcolor(girl));
             i++;
         });

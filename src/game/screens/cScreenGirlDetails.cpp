@@ -148,7 +148,7 @@ void cScreenGirlDetails::init(bool back)
         }
     }
 
-    int job = Day0Night1 ? m_SelectedGirl->m_NightJob : m_SelectedGirl->m_DayJob;
+    int job = m_SelectedGirl->get_job(Day0Night1);
 
     EditTextItem(m_SelectedGirl->FullName(), girlname_id);
 
@@ -318,11 +318,11 @@ void cScreenGirlDetails::set_house_percentage(int value)
 
 void cScreenGirlDetails::on_select_job(int selection, bool fulltime)
 {// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
-    int old_job = (Day0Night1 ? m_SelectedGirl->m_NightJob : m_SelectedGirl->m_DayJob);
+    int old_job = m_SelectedGirl->get_job(Day0Night1);
     // handle special job requirements and assign - if HandleSpecialJobs returns true, the job assignment was modified or cancelled
-    if (g_Game->job_manager().HandleSpecialJobs(*m_SelectedGirl, selection, old_job, Day0Night1, fulltime))
+    if (g_Game->job_manager().HandleSpecialJobs(*m_SelectedGirl, JOBS(selection), old_job, Day0Night1, fulltime))
     {
-        selection = (Day0Night1 ? m_SelectedGirl->m_NightJob : m_SelectedGirl->m_DayJob);
+        selection = m_SelectedGirl->get_job(Day0Night1);
         SetSelectedItemInList(joblist_id, selection, false);
     }
     // refresh job worker counts for former job and current job
@@ -425,7 +425,7 @@ void cScreenGirlDetails::RefreshJobList()
     }
     if (m_SelectedGirl)
     {
-        int sel_job = Day0Night1 ? m_SelectedGirl->m_NightJob : m_SelectedGirl->m_DayJob;
+        int sel_job = m_SelectedGirl->get_job(Day0Night1);
         SetSelectedItemInList(joblist_id, sel_job, false);
     }
 }
@@ -473,6 +473,12 @@ std::shared_ptr<sGirl> cScreenGirlDetails::get_next_girl()        // return next
     {
         return g_Game->dungeon().GetGirl(g_Game->dungeon().GetGirlPos(m_SelectedGirl.get()) + 1)->m_Girl;
     }
+    else if (m_SelectedGirl->m_DayJob == JOB_RUNAWAY) {
+        // how does this happen?
+        g_LogFile.log(ELogLevel::ERROR, "Selected girl ", m_SelectedGirl->FullName(), " is a runaway!");
+        push_message("ERROR: Selected girl is a runaway", COLOR_RED);
+        return active_building().girls().get_ref_counted(active_building().get_girl(0));
+    }
     else
     {
         auto source_building = m_SelectedGirl->m_Building;
@@ -496,6 +502,7 @@ void cScreenGirlDetails::take_gold(sGirl& girl)
     if(girl.m_RunAway) {
         m_SelectedGirl = nextGirl;
         if (m_SelectedGirl == nullptr) pop_window();
+        set_active_girl(m_SelectedGirl);
     }
     init(true);
 }

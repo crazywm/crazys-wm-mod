@@ -28,6 +28,8 @@ namespace tinyxml2 {
 
 class sStorage {
 public:
+    sStorage();
+
     // get amount available
     int food() const     { return get_stored_amount(food_key); }
     int drinks() const   { return get_stored_amount(drink_key); }

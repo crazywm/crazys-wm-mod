@@ -83,7 +83,6 @@ public:
     *    are stored in the vector
     */
     FileList(DirPath dp, const char *pattern = "*");
-    FileList(DirPath dp, const char *pattern, bool no_load);
     /*
     *    [] operators so you can subscript the list like an array
     */

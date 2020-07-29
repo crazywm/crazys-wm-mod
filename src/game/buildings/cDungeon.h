@@ -133,6 +133,10 @@ public:
 
 private:
     void PlaceDungeonGirl(sDungeonGirl newGirl);
+
+    void OnCustomerDead(sDungeonCust* current);
+
+    void OnGirlDead(sDungeonGirl& current) const;
 };
 
 

@@ -136,6 +136,7 @@ cLuaScript::cLuaScript()
 }
 
 sScriptValue cLuaScript::RunEvent(const std::string& event_name, std::initializer_list<sLuaParameter> params) {
+    g_LogFile.info("lua", "Running function '", event_name, "'");
     // create new thread
     auto thread = m_State.newthread();
     // find function
@@ -155,6 +156,10 @@ sScriptValue cLuaScript::RunEvent(const std::string& event_name, std::initialize
         g_LogFile.error("scripting", thread.get_error());
     } else {
         int top = lua_gettop(s);
+        // OK, thread has finished, no need to keep it around
+        if(result == 0) {
+            thread.CleanThread();
+        }
         if(top > 0) {
             if(lua_isnumber(s, top)) {
                 return sScriptValue((float)lua_tonumberx(s, top, nullptr));

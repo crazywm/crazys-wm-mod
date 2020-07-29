@@ -104,7 +104,7 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     ss << "As she enjoys showing off her body, ${name} lets her opponent cut away her already-skimpy clothing, ending her match all but naked - but victorious.  Many of the patrons seem to enjoy the show.\n";
                 }
-                else if (girl.has_active_trait("Sadist"))
+                else if (girl.has_active_trait("Sadistic"))
                 {
                     ss << "As the match draws to a close, ${name} stops trying to win and simply toys with her opponent, practically torturing her in front of the audience.  Many patrons disapprove, although a few respond favorably.\n";
                 }
@@ -151,7 +151,7 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 ss << "As she enjoys showing off her body, ${name} lets her opponent cut away her already-skimpy clothing, but either because of her lack of skill or just bad luck, she takes a real hit and is defeated.\n";
             }
-            else if (girl.has_active_trait("Sadist"))
+            else if (girl.has_active_trait("Sadistic"))
             {
                 ss << "${name} tries to torment her opponent, but her overconfidence leads to a stunning defeat when the other fighter feigns injury.\n";
             }

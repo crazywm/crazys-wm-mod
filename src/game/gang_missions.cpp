@@ -101,7 +101,7 @@ bool cMissionGrandTheft::execute_mission(sGang& gang, std::stringstream& ss)
     int gangs = g_Game->rivals().GetNumRivalGangs();
     int chance = 10 + std::max(30, gangs * 2);                // 10% base +2% per gang, 40% max
     ss << "The " << place << " ";
-    std::unique_ptr<sGang> defenders;
+    std::unique_ptr<sGang> defenders = std::make_unique<sGang>();
     if (g_Dice.percent(chance))
     {
         rival = g_Game->rivals().GetRandomRivalWithGangs();

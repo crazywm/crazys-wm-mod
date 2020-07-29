@@ -51,7 +51,7 @@ static static_brothel_data brothel_data[] = {
         { 300000, 170, 50, 500, "Brothel6.jpg", BuildingType::BROTHEL },
         { 1000000, 220, 80, 600, "Brothel7.jpg", BuildingType::BROTHEL },
         { 5000, 5, 20, 200, "Centre.jpg", BuildingType::CENTRE },
-        { 10000, 10, 20, 200, "Farm.jpg", BuildingType::FARM },
+        { 10000, 10, 20, 200, "Farm.png", BuildingType::FARM },
         { 15000, 15, 20, 200, "Arena.png", BuildingType::ARENA },
         { 20000, 20, 20, 200, "Movies.jpg", BuildingType::STUDIO },
         { 25000, 25, 20, 200, "Clinic.png", BuildingType::CLINIC }
@@ -209,6 +209,7 @@ void cScreenTown::do_walk()
     }
 
     /// TODO at this point, the girl is nowhere; I think acquiring by script will fail
+    g_Game->girl_pool().AddGirl(girl);
     girl->TriggerEvent("girl:meet:town");
 }
 

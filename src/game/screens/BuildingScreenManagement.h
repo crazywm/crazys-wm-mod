@@ -98,7 +98,7 @@ private:
 protected:
     bool Day0Night1 = SHIFT_DAY;
 
-    void assign_job(sGirl& girl, int new_job, int girl_selection, bool fulltime);
+    void assign_job(sGirl& girl, JOBS new_job, int girl_selection, bool fulltime);
 
     void on_select_job(int selection);
 

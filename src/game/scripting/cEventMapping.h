@@ -33,7 +33,7 @@ namespace scripting
 
     class cScriptManager;
 
-    class cEventMapping : public IEventMapping
+    class cEventMapping final : public IEventMapping
     {
     public:
         explicit cEventMapping(std::string name, const cScriptManager * mgr, pEventMapping fallback);

@@ -71,6 +71,9 @@ public:
     bool HasFocus(int id);
     void AddWidget(std::unique_ptr<cUIWidget> widget);
 
+    cUIWidget* GetWidget(int id);
+    std::size_t NumWidgets() const;
+
     // Buttons
     // MOD: added a couple of overloads for the cases where we
     // can deduce the image names from the stem&

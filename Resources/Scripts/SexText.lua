@@ -1793,6 +1793,7 @@ function GetOralMessage(girl, customer)
             --    g_Game->player().suspicion(10);
             --    }
             --    }
+            return message
         elseif wm.Percent(30) and girl:has_trait("Shy", "Nervous", "Lolita") then
             local message = "${name} blushed furiously, with no idea how to pleasure this thing in front of her. "
             if wm.Percent(50) then
@@ -1988,6 +1989,7 @@ function GetOralMessage(girl, customer)
                 end
             end
             customer:happiness(20)
+            return message
         elseif wm.Percent(60) and girl:has_trait("Queen") then
             customer:happiness(10)
             girl:fame(5)
@@ -2130,7 +2132,6 @@ function GetOralMessage(girl, customer)
         elseif choice == 18 then
             message = message .. "the untapped virgin."
         end
-
         return message
     end
 end

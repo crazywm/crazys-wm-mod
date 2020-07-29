@@ -250,7 +250,7 @@ bool sClinic::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_ni
     u_int firstjob = JOB_GETHEALING;
     u_int lastjob = JOB_JANITOR;
 
-    unsigned psw = (is_night ? girl.m_PrevNightJob : girl.m_PrevDayJob);
+    JOBS psw = (is_night ? girl.m_PrevNightJob : girl.m_PrevDayJob);
     bool backtowork = false;
     if (psw == JOB_DOCTOR || psw == JOB_NURSE || psw == JOB_INTERN || psw == JOB_MECHANIC)
     {
@@ -355,12 +355,15 @@ std::string sClinic::meet_no_luck() const {
 
 std::shared_ptr<sGirl> sClinic::meet_girl() const {
     auto girl = g_Game->GetRandomGirl();
-    girl->TriggerEvent( EDefaultEvent::MEET_GIRL_CLINIC );
+    if(girl) {
+        g_Game->girl_pool().AddGirl(girl);
+        girl->TriggerEvent(EDefaultEvent::MEET_GIRL_CLINIC);
+    }
     return girl;
 }
 
 bool sClinic::promote_to_doctor(sGirl& current, JOBS job, bool is_night) {
-    auto sw = (is_night ? current.m_NightJob : current.m_DayJob);
+    auto sw = current.get_job(is_night);
     if (current.is_dead() || sw != job || current.is_slave() || current.intelligence() < 50 ||
         current.medicine() < 50) {
         // skip dead girls and anyone who is not an intern and make sure they are qualified to be a doctor

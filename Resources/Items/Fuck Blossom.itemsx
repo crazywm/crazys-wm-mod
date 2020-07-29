@@ -13,6 +13,6 @@
         <Effect What="Skill" Name="Handjob" Amount="20" />
         <Effect What="Stat" Name="Health" Amount="-20" />
         <Effect What="Stat" Name="Morality" Amount="-40" />
-        <Effect What="Trait" Name="Nyphomaniac" Amount="1" Duration="5" />
+        <Effect What="Trait" Name="Nymphomaniac" Amount="1" Duration="5" />
     </Item>
 </Items>
