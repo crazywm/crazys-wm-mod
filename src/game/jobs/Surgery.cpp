@@ -119,7 +119,7 @@ bool SurgeryJob::DoWork(sGirl& girl, bool is_night) {
     }
     ss << " " << m_SurgeryData.SurgeryMessage << "\n \n";
 
-    int msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
     cGirls::UnequipCombat(girl);    // not for patient
 
     // update progress

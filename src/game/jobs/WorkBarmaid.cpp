@@ -845,7 +845,7 @@ bool WorkBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     brothel->m_Fame += Bfame;
     brothel->m_Filthiness += Bfilth;
 
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), imagetype, msgtype ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 
     // Improve stats

@@ -57,7 +57,7 @@ bool WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (roll_a >= 90)    { enjoy += rng % 3 + 1;    ss << "She had a pleasant time working."; }
     else /*             */    { enjoy += rng % 2;        ss << "Otherwise, the shift passed uneventfully."; }
 
-    girl.AddMessage(ss.str(), IMGTYPE_TEACHER, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_TEACHER, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     int rehabers = brothel->num_girls_on_job(JOB_REHAB, Day0Night1);
     // work out the pay between the house and the girl

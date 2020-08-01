@@ -22,6 +22,7 @@
 #include <string>
 #include "Constants.h"
 #include "cNameList.h"
+#include "cEvents.h"
 #include <memory>
 #include <functional>
 
@@ -110,10 +111,14 @@ public:
     bool player_safe()                { return m_PlayerSafe; }
     cRival* get_influential_rival();
     std::string rivals_plunder_pc_gold(cRival* rival);
+
+    const cEvents& events() const { return m_Events; }
 private:
     std::vector<std::unique_ptr<cRival>> m_Rivals;
     bool m_PlayerSafe;
     cDoubleNameList names;
+
+    cEvents m_Events;
 };
 
 #endif

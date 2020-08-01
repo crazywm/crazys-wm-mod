@@ -557,7 +557,7 @@ void cDungeon::Update()
         //    `J` set the basics
         msg.str(""); ss.str("");
         msg << girlName << " is languishing in the dungeon.\n \n";
-        int msgtype = EVENT_DUNGEON;
+        EventType msgtype = EVENT_DUNGEON;
         int imgtype = IMGTYPE_JAIL;
         int    nHealth = girl->health();
         int    nTired = girl->tiredness();
@@ -592,7 +592,7 @@ void cDungeon::Update()
             else if (nTired > 60)                    { msg << " tired."; }
             msg << "\n \nHer health is " << nHealth << ".\nHer tiredness is " << nTired << ".";
         }
-        girl->m_Events.AddMessage(msg.str(), imgtype, msgtype);
+        girl->AddMessage(msg.str(), imgtype, msgtype);
 
         girl->m_Tort = false;
     }

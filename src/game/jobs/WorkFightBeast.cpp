@@ -40,7 +40,7 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
     if (g_Game->storage().beasts() < 1)
     {
         ss << "${name} had no beasts to fight.";
-        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+        girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         return false;    // not refusing
     }
     int roll = rng.d100();
@@ -105,7 +105,7 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
         fightxp = 3;
         ss << " fights against a beast. She won the fight.";//was confusing
         enjoy += 3;
-        girl.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
+        girl.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         int roll_max = girl.fame() + girl.charisma();
         roll_max /= 4;
         wages += 10 + rng%roll_max;
@@ -123,7 +123,7 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
             ss << " So as punishment you allow the beast to have its way with her."; enjoy -= 1;
             girl.upd_temp_stat(STAT_LIBIDO, -50, true);
             girl.beastiality(2);
-            girl.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
+            girl.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
             {
                 g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
@@ -132,7 +132,7 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
         else
         {
             ss << " So you send your men in to cage the beast before it can harm her.";
-            girl.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
+            girl.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             girl.fame(-1);
         }
     }
@@ -188,7 +188,7 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
     brothel->m_Finance.arena_income(earned);
     ss.str("");
     ss << "${name} drew in " << jobperformance << " people to watch her and you earned " << earned << " from it.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     girl.upd_Enjoyment(actiontype, enjoy);
     // Improve girl

@@ -102,7 +102,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
                 {
                     stringstream sse;
                     sse << "(Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness)";
-                    girl.AddMessage(sse.str(), IMGTYPE_PROFILE, Day0Night1);
+                    girl.AddMessage(sse.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                     fight_outcome = 1;
                 }
             }
@@ -241,7 +241,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
 
     if (num_monsters + num_items + gold < 1) ss << "She came out empty handed.";
 
-    girl.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     ss.str("");
     if (girl.get_stat(STAT_LIBIDO) > 90 && type_monster_girls + type_unique_monster_girls > 0 && brothel->is_sex_type_allowed(SKILL_LESBIAN))
@@ -249,14 +249,14 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
         ss << "${name} was real horny so she had a little fun with the girl" << (type_monster_girls + type_unique_monster_girls > 1 ? "s" : "") << " she captured.";
         girl.upd_temp_stat(STAT_LIBIDO, -50, true);
         girl.lesbian(type_monster_girls + type_unique_monster_girls);
-        girl.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1);
+        girl.AddMessage(ss.str(), IMGTYPE_LESBIAN, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
     else if (girl.get_stat(STAT_LIBIDO) > 90 && type_beasts > 0 && brothel->is_sex_type_allowed(SKILL_BEASTIALITY))
     {
         ss << "${name} was real horny so she had a little fun with the beast" << (type_beasts > 1 ? "s" : "") << " she captured.";
         girl.upd_temp_stat(STAT_LIBIDO, -50, true);
         girl.beastiality(type_beasts);
-        girl.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
+        girl.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
         {
             g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);

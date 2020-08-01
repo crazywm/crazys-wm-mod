@@ -161,7 +161,7 @@ bool WorkMechanic(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma region    //    Finish the shift            //
 
 
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     int roll_max = (girl.intelligence() + girl.service());
     roll_max /= 4;
     wages += 10 + rng%roll_max;

@@ -210,9 +210,9 @@ void sBrothel::UpdateGirls(bool is_night)
             summary += "${name} continued to help the other girls throughout the night.";
 
             // `J` temporary -1 until I reflow brothel jobs
-        else if (sw == JOB_TRAINING || sw == JOB_ADVERTISING)    sum = -1;
+        else if (sw == JOB_TRAINING || sw == JOB_ADVERTISING)    sum = EVENT_NONE;
             // WD:    No night shift summary message needed for Torturer job
-        else if (sw == JOB_TORTURER && is_night == SHIFT_NIGHT)    sum = -1;
+        else if (sw == JOB_TORTURER && is_night == SHIFT_NIGHT)    sum = EVENT_NONE;
 
         // TODO this seems to contain some copy/paste form IBuilding::CalculatePlay
             // `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
@@ -254,7 +254,7 @@ void sBrothel::UpdateGirls(bool is_night)
             summary += ss.str();
             sum = EVENT_DEBUG;
         }
-        if (sum >= 0)    // `J` temporary -1 not to show until I reflow brothel jobs
+        if (sum != EVENT_NONE)    // `J` temporary -1 not to show until I reflow brothel jobs
             current.AddMessage(summary, IMGTYPE_PROFILE, sum);
 
         summary = "";
@@ -333,7 +333,7 @@ void sBrothel::UpdateGirls(bool is_night)
 
         if (!MatronMsg.empty())
         {
-            current.AddMessage(MatronMsg, IMGTYPE_PROFILE, is_night);
+            current.AddMessage(MatronMsg, IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             MatronMsg = "";
         }
 

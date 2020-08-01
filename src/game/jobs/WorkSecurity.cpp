@@ -157,7 +157,7 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
     brothel->m_SecurityLevel += int(SecLev);
 
     ss << "\nPatrolling the building, ${name} increased the security level by " << int(SecLev) << ".";
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve girl
     int xp = 15, skill = 2;

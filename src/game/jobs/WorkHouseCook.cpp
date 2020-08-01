@@ -124,7 +124,7 @@ bool WorkHouseCook(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     // do all the output
-    girl.AddMessage(ss.str(), IMGTYPE_COOK, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_COOK, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 
     // Improve girl

@@ -191,8 +191,8 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<
     string girlName = girl->FullName();
     stringstream NGmsg;
     int girlimagetype = IMGTYPE_PROFILE;
-    int eventtype = EVENT_GANG;
-    int gangeventtype = EVENT_GANG;
+    auto eventtype = EVENT_GANG;
+    auto gangeventtype = EVENT_GANG;
     int dungeonreason = DUNGEON_GIRLKIDNAPPED;
 
 
@@ -510,7 +510,7 @@ bool cMissionRecapture::execute_mission(sGang& gang, std::stringstream& event_te
     string girlName = runaway->FullName();
     bool captured = false;
     int girlimagetype = IMGTYPE_PROFILE;
-    int gangeventtype = EVENT_GANG;
+    auto gangeventtype = EVENT_GANG;
 
     ss << "Your goons find " << girlName << " and ";
 

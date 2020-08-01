@@ -95,7 +95,7 @@ bool WorkGetAbort(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << "${name} is in the Clinic to get an abortion.\n \n";
 
-    int msgtype = Day0Night1;
+    auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
     cGirls::UnequipCombat(girl);    // not for patient
 
 #pragma endregion

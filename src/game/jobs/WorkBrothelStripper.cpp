@@ -429,7 +429,7 @@ bool WorkBrothelStripper(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma region    //    Finish the shift            //
 
     girl.upd_Enjoyment(actiontype, enjoy);
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Money
     girl.m_Tips = max(0, tips);

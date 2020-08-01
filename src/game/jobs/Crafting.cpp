@@ -48,7 +48,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     int imagetype = m_CraftingData.Image;
-    int msgtype = is_night;
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma endregion
 #pragma region //    Job Performance            //

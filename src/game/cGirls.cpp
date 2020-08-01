@@ -1835,7 +1835,7 @@ int cGirls::GetNumItemType(const sGirl& girl, int Type, bool splitsubtype)
 // ----- Traits
 
 // If a girl enjoys a job enough, she has a chance of gaining traits associated with it
-bool cGirls::PossiblyGainNewTrait(sGirl& girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, int eventtype)
+bool cGirls::PossiblyGainNewTrait(sGirl& girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, EventType eventtype)
 {
     if (girl.m_Enjoyment[ActionType] > Threshold)
     {

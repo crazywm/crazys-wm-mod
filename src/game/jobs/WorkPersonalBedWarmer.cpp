@@ -39,7 +39,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     //g_Building = BUILDING_HOUSE;
     cGirls::UnequipCombat(girl);    // put that shit away, not needed for sex training
     int imagetype = IMGTYPE_MAID;
-    int msgtype = Day0Night1;
+    auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
     ss << "You tell ${name} she is going to warm your bed tonight";
 
@@ -465,7 +465,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             ss << "${name} is diseased and refuses to put you at risk.\n";
             girl.morality(2);
-            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+            girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             return true;
         }
         else if (HateLove > -40)  //if she doesn't care...

@@ -107,7 +107,7 @@ bool WorkCityGuard(sGirl& girl, bool Day0Night1, cRng& rng)
         }
     }
 
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     g_Game->player().suspicion(sus);
     girl.m_Tips = max(0, tips);
     girl.m_Pay = max(0, wages);

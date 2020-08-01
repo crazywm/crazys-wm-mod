@@ -393,7 +393,7 @@ bool WorkNurse(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma region    //    Finish the shift            //
 
 
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Money
     girl.m_Tips = max(0, tips);
@@ -409,7 +409,7 @@ bool WorkNurse(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     brothel->m_Finance.clinic_income(earned);
     ss.str("");    ss << "${name} earned " << earned << " gold from taking care of " << patients << " patients.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 
     // Improve stats

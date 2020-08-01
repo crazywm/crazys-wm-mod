@@ -636,7 +636,7 @@ bool WorkHallXXXEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(ACTION_WORKHALL, work);
     girl.upd_Enjoyment(ACTION_WORKSTRIP, work);
 
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 
 

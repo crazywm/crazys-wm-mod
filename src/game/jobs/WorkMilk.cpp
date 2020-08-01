@@ -124,7 +124,7 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             ss << "She sends in one of your beasts to get the job done.";
             girl.beastiality(2);
-            girl.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1);
+            girl.AddMessage(ss.str(), IMGTYPE_BEAST, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             if (!girl.calc_insemination(cGirls::GetBeast(), 1.0))
             {
                 g_Game->push_message(girl.FullName() + " has gotten inseminated", 0);
@@ -134,7 +134,7 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             ss << "She found a random man off the street and offered him the chance to have sex with ${name} for free as long as he cummed inside her. He jumped at the chance for it.";
             girl.normalsex(2);
-            girl.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1);
+            girl.AddMessage(ss.str(), IMGTYPE_SEX, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             if (!girl.calc_pregnancy(Cust, 1.0))
             {
                 g_Game->push_message(girl.FullName() + " has gotten pregnant", 0);
@@ -644,10 +644,10 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.m_Tips = max(0, tips);
     girl.m_Pay = max(0, wages);
 
-    girl.AddMessage(ss.str(), IMGTYPE_MILK, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_MILK, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 #if 1
     //generate extra message
-    if (extraEvent) girl.AddMessage(ssextra.str(), extraimage, Day0Night1);
+    if (extraEvent) girl.AddMessage(ssextra.str(), extraimage, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 #endif
     // Improve stats
     int xp = 5, skill = 3;

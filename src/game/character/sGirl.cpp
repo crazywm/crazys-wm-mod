@@ -1617,6 +1617,6 @@ double sGirl::job_performance(JOBS job, bool estimate) const {
 }
 
 extern std::string process_message(const sGirl& girl, std::string message);
-void sGirl::AddMessage(std::string message, int nImgType, int nEvent) {
-    m_Events.AddMessage(process_message(*this, std::move(message)), nImgType, nEvent);
+void sGirl::AddMessage(std::string message, int nImgType, EventType event) {
+    m_Events.AddMessage(process_message(*this, std::move(message)), nImgType, event);
 }

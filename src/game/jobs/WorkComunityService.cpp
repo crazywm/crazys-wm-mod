@@ -52,7 +52,7 @@ bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
     int wages = 20, tips = 0;
     int enjoy = 0, help = 0, fame = 0;
     int imagetype = IMGTYPE_PROFILE;
-    int msgtype = Day0Night1;
+    auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma endregion
 #pragma region //    Job Performance            //
@@ -201,7 +201,7 @@ bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
 
     ss.str("");
     ss << "${name} helped " << help << " people today.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
     int xp = 10, skill = 3;

@@ -74,7 +74,7 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
     else/*            */    ss << "${name} is in the Clinic to get treatment for " << diseases[0];
     ss << ".\n \n";
 
-    int msgtype = Day0Night1;
+    auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
     cGirls::UnequipCombat(girl);    // not for patient
 
     //    `J` We want to get 2 doctors and 4 nurses if possible

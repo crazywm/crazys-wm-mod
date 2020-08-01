@@ -44,6 +44,7 @@ private:
         Summary_GANGS,
         Summary_BUILDINGS,
         Summary_DUNGEON,
+        Summary_RIVALS,
     };
 
     SummaryCategory m_ActiveCategory = SummaryCategory::Summary_GIRLS;
@@ -73,4 +74,7 @@ public:
     void change_event(int selection);
 
     void goto_selected();
+
+    void Fill_Items_RIVALS();
+    void Fill_Events_Rivals();
 };

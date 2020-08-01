@@ -108,7 +108,7 @@ bool WorkRepairShop(sGirl& girl, bool Day0Night1, cRng& rng)
         if (girl.m_NightJob == JOB_GETREPAIRS)    girl.m_NightJob = JOB_CLINICREST;
     }
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     return false;
 }

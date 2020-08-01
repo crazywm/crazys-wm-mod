@@ -96,7 +96,7 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
                 sw = JOB_FIGHTTRAIN;
             }
             ssc << " instead.\n"<<"\n";
-            current.AddMessage(ssc.str(), IMGTYPE_PROFILE, is_night);
+            current.AddMessage(ssc.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         }
 
         // TODO this does not respect the changed job!

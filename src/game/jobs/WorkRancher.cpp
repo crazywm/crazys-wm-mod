@@ -196,7 +196,7 @@ bool WorkRancher(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     ss << ".";
 
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), imagetype, msgtype ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Money
     girl.m_Tips = max(0, tips);

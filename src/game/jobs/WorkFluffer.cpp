@@ -88,7 +88,7 @@ bool WorkFluffer(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (jobperformance < 0)    ss << "She performed poorly, she reduced the scene quality " << (int)jobperformance << "% with her lack of passion while sucking dicks. \n";
     else /*                   */    ss << "She did not really effect the scene quality.\n";
 
-    girl.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_ORAL, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     brothel->m_FlufferQuality += (int)jobperformance;
     girl.m_Tips = max(0, tips);
     girl.m_Pay = max(0, wages);

@@ -95,7 +95,7 @@ bool WorkDoctor(sGirl& girl, bool Day0Night1, cRng& rng)
         ss << "Otherwise, the shift passed uneventfully.\n";
     }
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     patients += (int)(jobperformance / 10);        // `J` 1 patient per 10 point of performance
 
     /* `J` this will be a place holder until a better payment system gets done
@@ -109,7 +109,7 @@ bool WorkDoctor(sGirl& girl, bool Day0Night1, cRng& rng)
     brothel->m_Finance.clinic_income(earned);
     ss.str("");
     ss << "${name} earned " << earned << " gold from taking care of " << patients << " patients.\n";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     wages += (patients * 10);
     girl.m_Tips = max(0, tips);

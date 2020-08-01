@@ -127,7 +127,8 @@ bool WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
         else
         {
             //If there aren't enough customers to take care of, time to quit.
-            girl.AddMessage(girl.FullName() + " ran out of customers to take care of.", IMGTYPE_PROFILE, Day0Night1);
+            girl.AddMessage(girl.FullName() + " ran out of customers to take care of.", IMGTYPE_PROFILE,
+                    Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
             break;
         }
     }
@@ -151,7 +152,7 @@ bool WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
 
     girl.m_Pay += 50;
     g_Game->gold().staff_wages(50);  // wages come from you
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Raise skills
     int xp = 5 + (serviced / 5), skill = 2 + (serviced / 10);

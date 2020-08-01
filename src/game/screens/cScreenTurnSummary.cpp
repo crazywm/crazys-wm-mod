@@ -32,6 +32,7 @@
 #include "cJobManager.h"
 #include "sConfig.h"
 #include <sstream>
+#include "cRival.h"
 
 extern cConfig cfg;
 
@@ -86,7 +87,7 @@ void cScreenTurnSummary::set_ids()
     SetButtonCallback(nextweek_id, [this]() {
         if (!is_ctrl_held()) { AutoSaveGame(); }
         NextWeek();
-        init(false);
+        init(true);
     });
 
     SetListBoxHotKeys(category_id, SDLK_e, SDLK_q);
@@ -129,7 +130,7 @@ void cScreenTurnSummary::set_ids()
 void cScreenTurnSummary::init(bool back)
 {
     Focused();
-    if (selected_girl())
+    if (selected_girl() &&!back)
     {
         if(selected_girl()->is_dead())
             set_active_girl(nullptr);
@@ -155,6 +156,7 @@ void cScreenTurnSummary::init(bool back)
     EditTextItem("", labeldesc_id);
 
     AddToListBox(category_id, Summary_BUILDINGS, "BUILDINGS");
+    AddToListBox(category_id, Summary_RIVALS, "RIVALS");
     AddToListBox(category_id, Summary_GANGS, "GANGS");
     AddToListBox(category_id, Summary_DUNGEON, "DUNGEON");
     for(int i = 0; i < g_Game->buildings().num_buildings(); ++i) {
@@ -229,6 +231,8 @@ void cScreenTurnSummary::change_category(SummaryCategory new_category)
     case Summary_GIRLS:
         Fill_Items_GIRLS(&active_building());
         break;
+    case Summary_RIVALS:
+        Fill_Items_RIVALS();
     }
 
     // if the category has not changed, keep the selected item
@@ -288,6 +292,11 @@ void cScreenTurnSummary::change_event(int selection)
             text = brothel->m_Events.GetMessage(selection).GetMessage();
             EditTextItem(brothel->name(), brothel_id);
         }
+    } else if (m_ActiveCategory == Summary_RIVALS) {
+        if (!g_Game->rivals().events().IsEmpty()) {
+            text = g_Game->rivals().events().GetMessage(selection).GetMessage();
+            EditTextItem("Rival", brothel_id);
+        }
     }
     EditTextItem(text, labeldesc_id);
 }
@@ -309,14 +318,18 @@ void cScreenTurnSummary::change_item(int selection)
             set_active_girl(g_Game->dungeon().GetGirlByName(GetSelectedTextFromList(item_id))->m_Girl);
         }
         break;
-    case Summary_GIRLS:
+    case Summary_GIRLS: {
         auto girl = find_girl_by_name(active_building(), GetSelectedTextFromList(item_id));
-        if(girl && girl->m_Building) {
+        if (girl && girl->m_Building) {
             set_active_girl(girl->m_Building->girls().get_ref_counted(girl));
         } else {
             set_active_girl(nullptr);
         }
         Fill_Events(selected_girl().get());
+    }
+        break;
+    case Summary_RIVALS:
+        Fill_Events_Rivals();
         break;
     }
 
@@ -627,4 +640,22 @@ void cScreenTurnSummary::Fill_Items_DUNGEON()
         }
         ID++;
     }
+}
+
+void cScreenTurnSummary::Fill_Items_RIVALS() {
+    //
+}
+
+void cScreenTurnSummary::Fill_Events_Rivals() {
+    auto& rivals = g_Game->rivals();
+    if (!rivals.events().IsEmpty())
+    {
+        for (int l = 0; l < rivals.events().GetNumEvents(); l++)
+        {
+            string          sTitle          = rivals.events().GetMessage(l).TitleText();
+            unsigned int    uiListboxColour = rivals.events().GetMessage(l).ListboxColour();
+            AddToListBox(event_id, l, sTitle, uiListboxColour);
+        }
+    }
+    if (GetListBoxSize(event_id) > 0) SetSelectedItemInList(event_id, 0);
 }

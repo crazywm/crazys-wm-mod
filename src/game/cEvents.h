@@ -32,7 +32,7 @@ struct CombatReport {
 class CEvent
 {
 public:
-    CEvent(unsigned char event, unsigned char type, std::string message, std::shared_ptr<CombatReport> rep);
+    CEvent(EventType event, unsigned char type, std::string message, std::shared_ptr<CombatReport> rep);
 
     std::string        TitleText()     const;        //    Default listbox Text
     unsigned int    ListboxColour() const;        //    Default Listbox Colour
@@ -47,12 +47,12 @@ public:
 
     const std::string& GetMessage() const { return m_Message; }
     unsigned char GetMessageType() const  { return m_MessageType; }
-    int           GetEvent() const { return m_Event; }
+    EventType           GetEvent() const  { return m_Event; }
     std::shared_ptr<const CombatReport> GetReport() const { return m_Report; }
 
 private:
-    unsigned char    m_Event;                // type of event
-    unsigned char    m_MessageType;            // Image Type of message
+    EventType          m_Event;                  // type of event
+    unsigned char      m_MessageType;            // Image Type of message
     std::string        m_Message;
     std::shared_ptr<CombatReport> m_Report = nullptr;
 };
@@ -65,9 +65,9 @@ public:
 
     void            Clear();
 
-    void            AddMessage(std::string message, int nImgType, int nEvent);
-    void            AddMessage(std::string summary, int nEvent, std::shared_ptr<CombatReport> report);
-    const CEvent& GetMessage(int id);
+    void            AddMessage(std::string message, int nImgType, EventType event_type);
+    void            AddMessage(std::string summary, EventType event, std::shared_ptr<CombatReport> rep);
+    const CEvent&   GetMessage(int id) const;
     int                GetNumEvents() const { return events.size(); }
     bool            IsEmpty()      const { return events.empty() ; }
     bool            HasGoodNews() const;

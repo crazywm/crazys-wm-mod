@@ -123,7 +123,7 @@ bool WorkCrystalPurifier(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (jobperformance < 0)    ss << "She did a bad job today, she reduced the scene quality " << (int)jobperformance << "% with her poor performance. \n";
     else /*                   */    ss << "She did not really help the scene quality.\n";
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     brothel->m_PurifierQaulity += (int)jobperformance;
     girl.m_Tips = max(0, tips);
     girl.m_Pay = max(0, wages);

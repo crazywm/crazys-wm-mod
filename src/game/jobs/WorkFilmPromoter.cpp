@@ -89,7 +89,7 @@ bool WorkFilmPromoter(sGirl& girl, bool Day0Night1, cRng& rng)
         else /*                   */    ss << " She did not really help promote the studio.\n";
     }
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, SHIFT_NIGHT);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NIGHTSHIFT);
     girl.m_Tips = max(0, tips);
     girl.m_Pay = max(0, wages);
 

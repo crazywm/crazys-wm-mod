@@ -1935,7 +1935,7 @@ break;    // end Es_DeadBeat
     girl.fame(rng%skill);
     girl.performance(rng%skill + 1);
 
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     //gain traits
     cGirls::PossiblyGainNewTrait(girl, "Charismatic", 60, actiontype, "Dealing with customers and talking with them about their problems has made ${name} more Charismatic.", Day0Night1);

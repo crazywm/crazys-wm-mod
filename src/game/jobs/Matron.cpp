@@ -95,7 +95,7 @@ bool MatronJob::DoWork(sGirl& girl, bool is_night) {
 
     // Complications
     HandleMatronResult(girl, conf);
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve girl
     MatronGains(girl, is_night, conf);
@@ -351,7 +351,7 @@ bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
         brothel->update_all_girls_stat(STAT_HAPPINESS, -1);
     }
 
-    girl.AddMessage(ss.str(), imagetype, is_night);
+    girl.AddMessage(ss.str(), imagetype, is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve girl
     MatronGains(girl, is_night, conf);

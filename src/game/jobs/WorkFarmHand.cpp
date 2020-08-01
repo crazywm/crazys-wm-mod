@@ -131,7 +131,7 @@ bool WorkFarmHand(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     // do all the output
-    girl.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     brothel->m_Filthiness -= int(CleanAmt);
 
     // Money

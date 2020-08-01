@@ -97,7 +97,7 @@ bool TherapyJob::DoWork(sGirl& girl, bool is_night) {
     cGirls::UnequipCombat(girl);    // not for patient
 
     int enjoy = 0;
-    int msgtype = is_night;
+    auto msgtype = is_night ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma endregion
 #pragma region //    Count the Days                //

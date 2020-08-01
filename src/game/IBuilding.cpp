@@ -180,7 +180,7 @@ void IBuilding::HandleRestingGirls(bool is_night, bool has_matron, const char * 
         {    // skip dead girls and anyone not resting
             return;
         }
-        int sum = EVENT_SUMMARY;
+        auto sum = EVENT_SUMMARY;
         std::string summary;
         ss.str("");
         const auto& girlName = current.FullName();
@@ -255,7 +255,7 @@ void IBuilding::EndShift(const string& matron_title, bool Day0Night1, bool has_m
         {    // skip dead girls
             return;
         }
-        int sum = EVENT_SUMMARY;
+        auto sum = EVENT_SUMMARY;
         stringstream ss;
         ss.str("");
 
@@ -635,7 +635,7 @@ bool IBuilding::SetupMatron(bool is_night, const string& title)
 
     // `J` Now we have a matron so lets see if she will work
     stringstream ss;
-    int sum = EVENT_SUMMARY;
+    auto sum = EVENT_SUMMARY;
 
     // `J` she can refuse the first shift then decide to work the second shift
     if (!matron_candidate->m_Refused_To_Work_Day && is_night)    // but if she worked the first shift she continues the rest of the night

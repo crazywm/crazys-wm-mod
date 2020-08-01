@@ -49,10 +49,10 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 
     // `J` NOTE: one message to tell she is resting - use a separate one to tell the anything else she does
     ss << "${name} rested and recovered some energy.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     int imagetype = IMGTYPE_PROFILE;
-    int messagetype = Day0Night1;
+    auto messagetype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
     ss.str("");
     stringstream girldiedmsg;
 

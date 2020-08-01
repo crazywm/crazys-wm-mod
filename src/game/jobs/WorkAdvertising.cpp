@@ -45,7 +45,7 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
     int wages = 20, tips = 0;
     int enjoy = 0, fame = 0;
     int imagetype = IMGTYPE_SIGN;
-    int msgtype = EVENT_SUMMARY;
+    auto msgtype = EVENT_SUMMARY;
 
 #pragma endregion
 #pragma region //    Job Performance            //

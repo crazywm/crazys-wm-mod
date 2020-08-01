@@ -283,7 +283,7 @@ bool WorkBeastCapture(sGirl& girl, bool Day0Night1, cRng& rng)
     //lose traits
     cGirls::PossiblyLoseExistingTrait(girl, "Fragile", 15, actiontype, "${name} has had to heal from so many injuries you can't say she is fragile anymore.", Day0Night1);
 
-    girl.AddMessage(ss.str(), imagetype, msgtype);
+    girl.AddMessage(ss.str(), imagetype, msgtype ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 #pragma endregion
     return false;

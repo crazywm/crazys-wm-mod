@@ -67,6 +67,8 @@ string cRivalManager::rivals_plunder_pc_gold(cRival* rival)
 
 void cRivalManager::Update(int& NumPlayerBussiness)
 {
+    m_Events.Clear();
+
     if (g_Game->date().year >= 1209 && g_Game->date().month > 3) m_PlayerSafe = false;
 
     // first, remove killed rivals
@@ -305,7 +307,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                             sGang* miss1 = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
                             if (miss1)                                    // if you have a gang guarding
                             {
-                                ss << "Your guards encounter " << curr->m_Name << (" going after some of your territory.");
+                                ss << "Your guards encounter " << curr->m_Name << " going after some of your territory.";
 
                                 sGang rGang = g_Game->gang_manager().GetTempGang(curr->m_Power);
                                 rGang.give_potions(10);
@@ -314,20 +316,21 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                                     if (rGang.m_Num == 0) curr->m_NumGangs--;
                                     ss << ("\nBut you maintain control of the territory.");
                                     miss1->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                                    m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_WARNING);
                                 }
                                 else                                    // if you lose
                                 {
                                     if (miss1->m_Num == 0) g_Game->gang_manager().RemoveGang(miss1);
-                                    ss << ("\nYou lose the territory.");
+                                    ss << "\nYou lose the territory.";
                                     NumPlayerBussiness--;
                                     curr->m_BusinessesExtort++;
-                                    g_Game->push_message(ss.str(), COLOR_RED);
+                                    m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_DANGER);
                                 }
                             }
                             else                                        // if you do not have a gang guarding
                             {
-                                ss << ("Your rival ") << curr->m_Name << (" has taken one of the undefended territories you control.");
-                                g_Game->push_message(ss.str(), COLOR_RED);
+                                ss << "Your rival " << curr->m_Name << " has taken one of the undefended territories you control.";
+                                m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_DANGER);
                                 NumPlayerBussiness--;
                                 curr->m_BusinessesExtort++;
                             }
@@ -335,7 +338,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                     }
                     else    // attack another rival
                     {
-                        ss << ("The ") << curr->m_Name << (" attacked the territories of ");
+                        ss << "The " << curr->m_Name << " attacked the territories of ";
                         cRival* rival = GetRival(who);
                         if (rival != curr.get() && rival->m_BusinessesExtort > 0)
                         {
@@ -364,7 +367,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                                 rival->m_BusinessesExtort--;
                                 curr->m_BusinessesExtort++;
                             }
-                            g_Game->push_message(ss.str(), COLOR_BLUE);
+                            m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_RIVAL);
                         }
                     }
                 }
@@ -404,24 +407,25 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                         sGang* miss1 = g_Game->gang_manager().GetGangOnMission(MISS_GUARDING);
                         if (miss1)
                         {
-                            ss << ("Your rival the ") << curr->m_Name << (" attack your assets.");
+                            ss << "Your rival the " << curr->m_Name << " attack your assets.";
 
                             if (GangBrawl(*miss1, cG1) == EFightResult::DEFEAT)
                             {
                                 if (miss1->m_Num == 0) g_Game->gang_manager().RemoveGang(miss1);
-                                ss << ("\nYour men are defeated.");
+                                ss << "\nYour men are defeated.";
                                 damage = true;
                             }
                             else
                             {
                                 if (cG1.m_Num == 0) curr->m_NumGangs--;
-                                ss << (" But they fail.");
+                                ss << " But they fail.";
                                 miss1->m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_GANG);
+                                m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_GANG);
                             }
                         }
                         else
                         {
-                            ss << ("You have no guards so your rival ") << curr->m_Name << (" attacks.");
+                            ss << "You have no guards so your rival " << curr->m_Name << " attacks.";
                             if (NumPlayerBussiness > 0 || g_Game->gold().ival() > 0)
                             {
                                 num = (g_Dice % 3) + 1;
@@ -447,12 +451,12 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                             else ss << ".";
 
                             ss << rivals_plunder_pc_gold(curr.get());
-                            g_Game->push_message(ss.str(), COLOR_RED);
+                            m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_DANGER);
                         }
                     }
                     else
                     {
-                        ss << ("The ") << curr->m_Name << (" launched an assault on ");
+                        ss << "The " << curr->m_Name << " launched an assault on ";
                         cRival* rival = GetRival(who);
                         if (rival && rival != curr.get())
                         {
@@ -519,7 +523,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                                     ss << "\nThey destroyed one of their Bars.";
                                 }
                             }
-                            g_Game->push_message(ss.str(), 0);
+                            m_Events.AddMessage(ss.str(), IMGTYPE_COMBAT, EVENT_RIVAL);
                         }
                     }
                 }
@@ -937,9 +941,6 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 
     auto rival = std::make_unique<cRival>();
 
-    DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
-    DirPath last_names = DirPath() << "Resources" << "Data" << "RivalGangLastNames.txt";
-
     rival->m_Gold = gold;
     rival->m_NumBrothels = brothels;
     rival->m_NumGirls = Girls;
@@ -958,9 +959,9 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
         
     //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
       rival->m_NumInventory = 0;
-      for(int i = 0; i <MAXNUM_RIVAL_INVENTORY; i++)
+      for(auto & i : rival->m_Inventory)
       {
-            rival->m_Inventory[i] = nullptr;
+            i = nullptr;
       }
 
 

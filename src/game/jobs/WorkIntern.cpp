@@ -169,7 +169,7 @@ bool WorkIntern(sGirl& girl, bool Day0Night1, cRng& rng)
     else /*             */    { enjoy += rng % 2;        ss << "Otherwise, the shift passed uneventfully."; }
     girl.upd_Enjoyment(actiontype, enjoy);
 
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     if (girl.is_unpaid()) { wages = 0; }
     else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more

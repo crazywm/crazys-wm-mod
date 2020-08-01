@@ -1371,22 +1371,22 @@ bool cJobManager::work_related_violence(sGirl& girl, bool Day0Night1, bool stree
         switch (g_Dice % 5)
             {
             case 0:
-                girl.AddMessage(("She beat the customer silly."), IMGTYPE_COMBAT, Day0Night1);
+                girl.AddMessage(("She beat the customer silly."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             case 1:
-                girl.AddMessage(("The customer's face annoyed her, so she punched it until it went away."), IMGTYPE_COMBAT, Day0Night1);
+                girl.AddMessage(("The customer's face annoyed her, so she punched it until it went away."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             case 2:
-                girl.AddMessage(("The customer acted like he owned her - so she pwned him."), IMGTYPE_COMBAT, Day0Night1);
+                girl.AddMessage(("The customer acted like he owned her - so she pwned him."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             case 3:
-                girl.AddMessage(("The customer's attitude was bad. She corrected it."), IMGTYPE_COMBAT, Day0Night1);
+                girl.AddMessage(("The customer's attitude was bad. She corrected it."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             case 4:
-                girl.AddMessage(("He tried to insert a bottle into her, so she 'gave it' to him instead."), IMGTYPE_COMBAT, Day0Night1);
+                girl.AddMessage(("He tried to insert a bottle into her, so she 'gave it' to him instead."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             default:
-                girl.AddMessage(("Did som(E)thing violent."), IMGTYPE_COMBAT, Day0Night1);
+                girl.AddMessage(("Did som(E)thing violent."), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
                 break;
             }
         girl.fame(-1);
@@ -2083,7 +2083,7 @@ double JP_Training(const sGirl& girl, bool estimate)
 void cJobManager::do_solo_training(sGirl& girl, bool Day0Night1)
 {
     TrainableGirl trainee(&girl);
-    girl.AddMessage(("She trained during this shift by herself, so learning anything worthwhile was difficult."), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(("She trained during this shift by herself, so learning anything worthwhile was difficult."), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 /*
  *    50% chance nothing happens
  */
@@ -2201,7 +2201,7 @@ void cJobManager::do_training_set(vector<sGirl*> girls, bool Day0Night1)
         }
         ss << (".");
 
-        girl->AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+        girl->AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
         ss.str("");
         ss << ("She trained during this shift");
 

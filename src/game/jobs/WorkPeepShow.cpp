@@ -366,7 +366,7 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(ACTION_WORKSTRIP, enjoy);
 
     // work out the pay between the house and the girl
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     // Money
     girl.m_Tips = max(0, tips);
     girl.m_Pay = max(0, wages);

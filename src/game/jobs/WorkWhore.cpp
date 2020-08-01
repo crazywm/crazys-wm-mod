@@ -691,7 +691,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
         // WD:    Save gold earned
         wages += pay;
         tips += tip;
-        girl.AddMessage(fuckMessage.str(), imageType, Day0Night1);
+        girl.AddMessage(fuckMessage.str(), imageType, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     }
 
     // WD:    Reduce number of availabe customers for next whore
@@ -708,7 +708,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
 
     girl.m_Tips = max(0, tips);
     girl.m_Pay = max(0, wages);
-    girl.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     //gain
     cGirls::PossiblyGainNewTrait(girl, "Good Kisser", 50, actiontype, "${name} has had a lot of practice kissing and as such as become a Good Kisser.", Day0Night1);

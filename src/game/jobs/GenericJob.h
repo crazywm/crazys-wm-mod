@@ -36,14 +36,14 @@ class cRng;
 
 struct sTraitChange {
     // explicit constructor needed for mingw
-    constexpr sTraitChange(bool g, const char* tn, int th, Action_Types a, const char* m, int e = EVENT_GOODNEWS) :
+    constexpr sTraitChange(bool g, const char* tn, int th, Action_Types a, const char* m, EventType e = EVENT_GOODNEWS) :
             Gain(g), TraitName(tn), Threshold(th), Action(a), Message(m), EventType(e) {}
     bool Gain;
     const char* TraitName;
     int Threshold;
     Action_Types Action;
     const char* Message;
-    int EventType = EVENT_GOODNEWS;
+    ::EventType EventType = EVENT_GOODNEWS;
 };
 
 class IGenericJob {

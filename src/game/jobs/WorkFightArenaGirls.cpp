@@ -232,7 +232,7 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.m_Pay = max(0, wages);
 
 
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     girl.fame(fame);
     girl.exp(xp);
     girl.combat(rng%fightxp + skill);
@@ -253,7 +253,7 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
     brothel->m_Finance.arena_income(earned);
     ss.str("");
     ss << "${name} drew in " << jobperformance << " people to watch her and you earned " << earned << " from it.";
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 
     //gain traits

@@ -730,7 +730,7 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.handjob(hand);
     girl.anal(anal);
     girl.upd_Enjoyment(actiontype, enjoy);
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve stats
     int xp = 15, skill = 3;

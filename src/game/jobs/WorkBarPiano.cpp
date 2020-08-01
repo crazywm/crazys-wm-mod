@@ -55,7 +55,7 @@ bool WorkBarPiano(sGirl& girl, bool Day0Night1, cRng& rng)
     int wages = 20, tips = 0;
     int enjoy = 0, fame = 0;
     int imagetype = IMGTYPE_PROFILE;
-    int msgtype = Day0Night1;
+    auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
 
 #pragma endregion
 #pragma region //    Job Performance            //

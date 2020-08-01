@@ -237,7 +237,7 @@ bool WorkCleaning(sGirl& girl, bool Day0Night1, cRng& rng)
         wages = int(jobperformance); // `J` Pay her based on how much she cleaned
     }
 
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     CleaningUpdateGirl(girl, rng, Day0Night1, enjoy, tips, wages, jobperformance);
     return false;
 }
@@ -339,7 +339,7 @@ bool WorkCleanArena(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     // do all the output
-    girl.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     CleaningUpdateGirl(girl, rng, Day0Night1, enjoy, tips, wages, CleanAmt);
     return false;
@@ -368,7 +368,7 @@ bool WorkCleanCentre(sGirl& girl, bool Day0Night1, cRng& rng)
     int wages = 0;
     int tips = 0;
     int imagetype = IMGTYPE_MAID;
-    int msgtype = Day0Night1;
+    auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
     bool playtime = false;
 
     if (roll_a <= 10)
@@ -510,7 +510,7 @@ bool WorkCleanHouse(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     // do all the output
-    girl.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     CleaningUpdateGirl(girl, rng, Day0Night1, enjoy, tips, wages, CleanAmt);
     return false;
@@ -621,7 +621,7 @@ bool WorkJanitor(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     // do all the output
-    girl.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_MAID, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Improve girl
     CleaningUpdateGirl(girl, rng, Day0Night1, enjoy, tips, wages, CleanAmt);

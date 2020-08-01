@@ -126,7 +126,7 @@ bool WorkFarmVeterinarian(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     girl.upd_Enjoyment(ACTION_WORKFARM, enjoy);
-    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Money
     girl.m_Tips = max(0, tips);

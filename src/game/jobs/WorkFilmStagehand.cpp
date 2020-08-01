@@ -131,7 +131,7 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
 
-    girl.AddMessage(ss.str(), imagetype, SHIFT_NIGHT);
+    girl.AddMessage(ss.str(), imagetype, EVENT_NIGHTSHIFT);
     if (filming) brothel->m_StagehandQuality += int(jobperformance);
     brothel->m_Filthiness -= int(CleanAmt);
     girl.m_Tips = max(0, tips);

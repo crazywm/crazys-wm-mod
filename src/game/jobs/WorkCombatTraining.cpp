@@ -276,7 +276,7 @@ bool WorkCombatTraining(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.upd_Enjoyment(actiontype, enjoy);
     girl.upd_Enjoyment(actiontype2, enjoy);
 
-    girl.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1);
+    girl.AddMessage(ss.str(), IMGTYPE_COMBAT, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     brothel->m_Filthiness += 2;    // fighting is dirty
     if (girl.is_unpaid()) { wages = 0; }
     else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more

@@ -339,7 +339,7 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
 
     girl.upd_Enjoyment(actiontype, work);
 
-    girl.AddMessage(ss.str(), imageType, Day0Night1);
+    girl.AddMessage(ss.str(), imageType, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
 
     // Improve stats

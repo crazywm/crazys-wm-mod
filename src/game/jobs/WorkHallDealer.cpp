@@ -608,7 +608,7 @@ bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     girl.upd_Enjoyment(ACTION_WORKHALL, work);
-    girl.AddMessage(ss.str(), imagetype, Day0Night1);
+    girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // work out the pay between the house and the girl
     wages += (rng % ((int)(((girl.beauty() + girl.charisma()) / 2)*0.5f))) + 10;

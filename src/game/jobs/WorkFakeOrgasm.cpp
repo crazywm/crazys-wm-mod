@@ -51,7 +51,8 @@ bool WorkFakeOrgasm(sGirl& girl, bool Day0Night1, cRng& rng)
 
     int enjoy = 0, wages = 10;
     int startday = girl.m_WorkingDay;
-    int msgtype = Day0Night1, imagetype = IMGTYPE_MAST;
+    auto msgtype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
+    int imagetype = IMGTYPE_MAST;
 
     // Base adjustment
     int tired = 5 + rng % 11;

@@ -163,7 +163,7 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 
     std::set<Fetishs> m_FetishTypes;            // the types of fetishes this girl has
 
-    void AddMessage(std::string message, int nImgType, int nEvent);
+    void AddMessage(std::string message, int nImgType, EventType event);
     cEvents m_Events;                            // Each girl keeps track of all her events that happened to her in the last turn
 
     // triggers
