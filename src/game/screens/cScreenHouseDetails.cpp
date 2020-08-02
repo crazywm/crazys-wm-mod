@@ -26,7 +26,7 @@
 
 extern    int    g_TalkCount;
 
-static string fmt_objective(stringstream &ss, string desc, int limit, int sofar = -1)
+static std::string fmt_objective(std::stringstream &ss, std::string desc, int limit, int sofar = -1)
 {
     ss << desc;
     if (limit != -1) { ss << " in " << limit << " weeks"; }
@@ -64,7 +64,7 @@ void cScreenHouseDetails::init(bool back)
 {
     Focused();
 
-    stringstream ss;
+    std::stringstream ss;
     ss << "CURRENT OBJECTIVE: ";
     sObjective* obj = g_Game->get_objective();
     if (obj)

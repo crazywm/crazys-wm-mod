@@ -23,6 +23,7 @@
 #include <sstream>
 #include "Game.hpp"
 #include "character/predicates.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -32,7 +33,7 @@ bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKHALL;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_DEALER))
     {
@@ -56,9 +57,9 @@ bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
     int jobperformance = (int)girl.job_performance(JOB_DEALER, false);
 
     const sGirl* enteronduty = random_girl_on_job(*girl.m_Building, JOB_ENTERTAINMENT, Day0Night1);
-    string entername = (enteronduty ? "Entertainer " + enteronduty->FullName() + "" : "the Entertainer");
+    std::string entername = (enteronduty ? "Entertainer " + enteronduty->FullName() + "" : "the Entertainer");
     const sGirl* xxxenteronduty = random_girl_on_job(*girl.m_Building, JOB_XXXENTERTAINMENT, Day0Night1);
-    string xxxentername = (xxxenteronduty ? "Entertainer " + xxxenteronduty->FullName() + "" : "the Sexual Entertainer");
+    std::string xxxentername = (xxxenteronduty ? "Entertainer " + xxxenteronduty->FullName() + "" : "the Sexual Entertainer");
 
 
     //a little pre-game randomness
@@ -613,8 +614,8 @@ bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
     // work out the pay between the house and the girl
     wages += (rng % ((int)(((girl.beauty() + girl.charisma()) / 2)*0.5f))) + 10;
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
 
 
@@ -623,7 +624,7 @@ bool WorkHallDealer(sGirl& girl, bool Day0Night1, cRng& rng)
 
     if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
     else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
-    if (!girl.has_active_trait("Straight"))    { girl.upd_temp_stat(STAT_LIBIDO, min(3, brothel->num_girls_on_job(JOB_XXXENTERTAINMENT, false))); }
+    if (!girl.has_active_trait("Straight"))    { girl.upd_temp_stat(STAT_LIBIDO, std::min(3, brothel->num_girls_on_job(JOB_XXXENTERTAINMENT, false))); }
     if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
     if (girl.fame() < 20 && jobperformance >= 100)        { fame += 1; }
     if (girl.fame() < 40 && jobperformance >= 145)        { fame += 1; }

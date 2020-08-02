@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "IBuilding.hpp"
+#include "buildings/IBuilding.h"
 #include "buildings/cDungeon.h"
 #include "cScreenPrison.h"
 #include "interface/cWindowManager.h"
@@ -34,7 +34,7 @@ cScreenPrison::cScreenPrison() : cGameWindow("prison_screen.xml")
 
 void cScreenPrison::init(bool back)
 {
-    stringstream ss;
+    std::stringstream ss;
     Focused();
 
     DisableWidget(more_id, true);
@@ -126,16 +126,16 @@ void cScreenPrison::release_button()
     IBuilding& bld = active_building();
     if (bld.free_rooms() < 1)
     {
-        string text = pgirls->FullName();
+        std::string text = pgirls->FullName();
         text += " has been sent to your dungeon, since current brothel is full.";
-        g_Game->push_message(text, 0);
+        push_message(text, 0);
         g_Game->dungeon().AddGirl(std::move(girl), DUNGEON_NEWGIRL);
     }
     else
     {
-        string text = pgirls->FullName();
+        std::string text = pgirls->FullName();
         text += " has been sent to your current brothel.";
-        g_Game->push_message(text, 0);
+        push_message(text, 0);
         bld.add_girl(std::move(girl));
     }
 }

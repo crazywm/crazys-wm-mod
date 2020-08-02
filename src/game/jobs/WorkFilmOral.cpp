@@ -28,7 +28,7 @@ void FilmOral::DoScene(sGirl& girl) {
     {
         if (Gang && Gang->m_Num > 0 && chance(50))
         {
-            int members = min(rng().bell(0, Gang->m_Num * 2), Gang->m_Num);
+            int members = std::min(rng().bell(0, Gang->m_Num * 2), Gang->m_Num);
             ss << "When the 'actor' didn't turn up, ${name} expertly sucked off ";
             if (members >= Gang->m_Num)    ss << "everyone";
             else if (members > 1)/*  */    ss << members << " lucky guys";

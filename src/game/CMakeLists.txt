@@ -172,7 +172,7 @@ set(SRC cEvents.cpp
         cTrainable.cpp
         Game.cpp
         gang_missions.cpp
-        IBuilding.cpp
+        buildings/IBuilding.cpp
         InterfaceGlobals.cpp
         InterfaceProcesses.cpp
         Inventory.cpp

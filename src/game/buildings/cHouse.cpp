@@ -24,6 +24,7 @@
 #include "Game.hpp"
 #include "cJobManager.h"
 #include "character/predicates.h"
+#include "cGirls.h"
 extern cRng             g_Dice;
 
 // // ----- Strut sHouse Create / destroy
@@ -40,7 +41,7 @@ sHouse::~sHouse() = default;
 void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
 {
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cHouse.cpp
-    stringstream ss;
+    std::stringstream ss;
     u_int sw = 0;
 
     //////////////////////////////////////////////////////
@@ -101,7 +102,7 @@ void sHouse::auto_assign_job(sGirl& target, std::stringstream& message, bool is_
         ss << "work recruiting girls for you.";
     }
         // assign a slave to clean
-    else if (target.is_slave() && num_girls_on_job(JOB_CLEANHOUSE, is_night) < max(1, num_girls() / 20))
+    else if (target.is_slave() && num_girls_on_job(JOB_CLEANHOUSE, is_night) < std::max(1, num_girls() / 20))
     {
         target.m_DayJob = target.m_NightJob = JOB_CLEANHOUSE;
         ss << "work cleaning the house.";
@@ -120,7 +121,7 @@ void sHouse::auto_assign_job(sGirl& target, std::stringstream& message, bool is_
         ss << "work warming your bed.";
     }
         // assign 1 cleaner per 20 girls
-    else if (num_girls_on_job(JOB_CLEANHOUSE, is_night) < max(1, num_girls() / 20))
+    else if (num_girls_on_job(JOB_CLEANHOUSE, is_night) < std::max(1, num_girls() / 20))
     {
         target.m_DayJob = target.m_NightJob = JOB_CLEANHOUSE;
         ss << "work cleaning the house.";

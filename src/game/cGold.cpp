@@ -67,7 +67,6 @@ void cGoldBase::item_sales(double income)
 
     m_value += income;
     m_cash_in += income;
-    detail_in.item_sales += income;
 }
 
 // ditto at the slave market
@@ -75,7 +74,6 @@ void cGoldBase::slave_sales(double income)
 {
     m_value += income;
     m_cash_in += income;
-    detail_in.slave_sales += income;
 }
 
 /*
@@ -86,97 +84,82 @@ void cGoldBase::slave_sales(double income)
 void cGoldBase::misc_credit(double income)
 {
     m_value += income;
-    detail_in.misc += income;
 }
 
 // this is for girls working at the brothel - goes into income
 void cGoldBase::brothel_work(double income)
 {
     m_income += income;
-    detail_in.brothel_work += income;
 }
 
 // for when a girl gives birth to a monster -  The cash goes to the brothel, so we add this to m_income
 void cGoldBase::creature_sales(double income)
 {
     m_income += income;
-    detail_in.creature_sales += income;
 }
 
 // income from movie crystals
 void cGoldBase::movie_income(double income)
 {
     m_income += income;
-    detail_in.movie_income += income;
 }
 
 // income from the clinic
 void cGoldBase::clinic_income(double income)
 {
     m_income += income;
-    detail_in.clinic_income += income;
 }
 
 // income from the arena
 void cGoldBase::arena_income(double income)
 {
     m_income += income;
-    detail_in.arena_income += income;
 }
 
 // income from the farm
 void cGoldBase::farm_income(double income)
 {
     m_income += income;
-    detail_in.farm_income += income;
 }
 
 // income from the bar
 void cGoldBase::bar_income(double income)
 {
     m_income += income;
-    detail_in.bar_income += income;
 }
 
 // income from gambling halls
 void cGoldBase::gambling_profits(double income)
 {
     m_income += income;
-    detail_in.gambling_profits += income;
 }
 
 // income from businesess under player control
 void cGoldBase::extortion(double income)
 {
     m_income += income;
-    detail_in.extortion += income;
 }
 
 // These happen at end of turn anyway - so let's do them as delayed transactions
 void cGoldBase::objective_reward(double income)
 {
     m_income += income;
-    detail_in.objective_reward += income;
 }
 void cGoldBase::plunder(double income)
 {
     m_income += income;
-    detail_in.plunder += income;
 }
 void cGoldBase::petty_theft(double income)
 {
     m_income += income;
-    detail_in.petty_theft += income;
 }
 void cGoldBase::grand_theft(double income)
 {
     m_income += income;
-    detail_in.grand_theft += income;
 }
 void cGoldBase::catacomb_loot(double income)
 {
     m_income += income;
-    detail_in.catacomb_loot += income;
 }
 
 /*
@@ -204,7 +187,6 @@ bool cGoldBase::debit_if_ok(double price, bool force)
 void cGoldBase::movie_cost(double price)
 {
     m_upkeep += price;
-    detail_out.movie_cost += price;
 }
 
 /*
@@ -215,7 +197,6 @@ void cGoldBase::movie_cost(double price)
 void cGoldBase::building_upkeep(double price)
 {
     m_upkeep += price;
-    detail_out.building_upkeep += price;
 }
 
 // buying stuff from the market - instant
@@ -223,7 +204,6 @@ bool cGoldBase::item_cost(double price)
 {
     if (debit_if_ok(price))
     {
-        detail_out.item_cost += price;
         return true;
     }
     return false;
@@ -234,7 +214,6 @@ bool cGoldBase::misc_debit(double price)
 {
     if (debit_if_ok(price))
     {
-        detail_out.misc_debit += price;
         return true;
     }
     return false;
@@ -251,7 +230,6 @@ bool cGoldBase::consumable_cost(double price, bool force)
 
     if (debit_if_ok(price, force))
     {
-        detail_out.consumable_cost += price;
         return true;
     }
     return false;
@@ -263,7 +241,6 @@ bool cGoldBase::slave_cost(double price)
 {
     if (debit_if_ok(price))
     {
-        detail_out.slave_cost += price;
         return true;
     }
     return false;
@@ -274,7 +251,6 @@ bool cGoldBase::brothel_cost(double price)
 {
     if (debit_if_ok(price))
     {
-        detail_out.brothel_cost += price;
         return true;
     }
     return false;
@@ -284,87 +260,63 @@ bool cGoldBase::brothel_cost(double price)
 void cGoldBase::girl_training(double cost)
 {
     m_upkeep += cost;
-    detail_out.girl_training += cost;
 }
 
 void cGoldBase::girl_support(double cost)
 {
     m_upkeep += cost;
-    detail_out.girl_support += cost;
 }
 
 void cGoldBase::bribes(double cost)
 {
     m_upkeep += cost;
-    detail_out.bribes += cost;
 }
 
 void cGoldBase::fines(double cost)
 {
     m_value -= cost;
     m_cash_out -= cost;
-    detail_out.fines += cost;
 }
 
 void cGoldBase::tax(double cost)
 {
     m_value -= cost;
     m_cash_out -= cost;
-    detail_out.tax += cost;
 }
 
 void cGoldBase::goon_wages(double cost)
 {
     m_upkeep += cost;
-    detail_out.goon_wages += cost;
 }
 
 void cGoldBase::staff_wages(double cost)
 {
     m_upkeep += cost;
-    detail_out.staff_wages += cost;
-}
-
-void cGoldBase::bar_upkeep(double cost)
-{
-    m_upkeep += cost;
-    detail_out.bar_upkeep += cost;
-}
-
-void cGoldBase::casino_upkeep(double cost)
-{
-    m_upkeep += cost;
-    detail_out.casino_upkeep += cost;
 }
 
 void cGoldBase::advertising_costs(double cost)
 {
     m_upkeep += cost;
-    detail_out.advertising_costs += cost;
 }
 
 void cGoldBase::centre_costs(double cost)
 {
     m_upkeep += cost;
-    detail_out.centre_costs += cost;
 }
 
 void cGoldBase::arena_costs(double cost)
 {
     m_upkeep += cost;
-    detail_out.arena_costs += cost;
 }
 void cGoldBase::clinic_costs(double cost)
 {
     m_upkeep += cost;
-    detail_out.clinic_costs += cost;
 }
 
 void cGoldBase::rival_raids(double cost)
 {
     m_value -= cost;
     m_cash_out -= cost;
-    detail_out.rival_raids += cost;
 }
 
 void cGoldBase::bank_interest(double income)
@@ -512,42 +464,4 @@ int cGold::total_earned() const
 
 void cGold::gen_report(int month)
 {
-}
-
-std::string cGoldBase::in::str(int brothel_no)
-{
-    using std::setw;
-    std::stringstream ss;
-    ss << "  --- Whores ---                              --- Sales ---";
-    ss << "# Brothel  Street   Movie     Bar  Casino   Items  "
-          "Monster Loc'Biz   Raids P.Theft G.Theft C'combs  "
-          "Reward Intr'st    Misc      Clinic        Arena"
-            ;
-    if (brothel_no == -1) {
-        ss << brothel_no << " ";
-    }
-    else {
-        ss << "  ";
-    }
-    ss << setw(7) << brothel_work << " ";
-    ss << setw(7) << street_work << " ";
-    ss << setw(7) << movie_income << " ";
-    ss << setw(7) << bar_income << " ";
-    ss << setw(7) << gambling_profits << " ";
-    ss << setw(7) << item_sales << " ";
-    ss << setw(7) << slave_sales << " ";
-    ss << setw(7) << creature_sales << " ";
-    ss << setw(7) << extortion << " ";
-    ss << setw(7) << plunder << " ";
-    ss << setw(7) << petty_theft << " ";
-    ss << setw(7) << grand_theft << " ";
-    ss << setw(7) << catacomb_loot << " ";
-    ss << setw(7) << objective_reward << " ";
-    ss << setw(7) << bank_interest << " ";
-    ss << setw(7) << misc << " ";
-    ss << setw(7) << clinic_income << " ";
-    ss << setw(7) << arena_income << " ";
-    ss << setw(7) << farm_income << " ";
-    ss << std::endl;
-    return ss.str();
 }

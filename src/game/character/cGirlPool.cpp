@@ -20,7 +20,7 @@
 #include "cGirlPool.h"
 #include <algorithm>
 #include "xml/util.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "utils/streaming_random_selection.hpp"
 
 /// use this in predicate calling functions, so that they cannot modify the collection while we're iterating

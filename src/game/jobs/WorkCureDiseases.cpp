@@ -22,6 +22,7 @@
 #include <sstream>
 #include "cJobManager.h"
 #include "character/predicates.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -30,7 +31,7 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
-    stringstream ss;
+    std::stringstream ss;
 
     // if she was not in JOB_CUREDISEASES yesterday, reset working days to 0 before proceding
     if (girl.m_YesterDayJob != JOB_CUREDISEASES) girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
@@ -63,7 +64,7 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     int cost = 0;
-    vector<string> diseases;
+    std::vector<std::string> diseases;
     if (girl.has_active_trait("Herpes"))        { diseases.push_back("Herpes"); cost += 50; }
     if (girl.has_active_trait("Chlamydia"))    { diseases.push_back("Chlamydia"); cost += 100; }
     if (girl.has_active_trait("Syphilis"))    { diseases.push_back("Syphilis"); cost += 150; }
@@ -79,8 +80,8 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
 
     //    `J` We want to get 2 doctors and 4 nurses if possible
     int d1 = -1, d2 = -1, n1 = -1, n2 = -1, n3 = -1, n4 = -1;
-    vector<sGirl*> doctors = brothel->girls_on_job(JOB_DOCTOR, Day0Night1);
-    vector<sGirl*> nurses = brothel->girls_on_job(JOB_NURSE, Day0Night1);
+    std::vector<sGirl*> doctors = brothel->girls_on_job(JOB_DOCTOR, Day0Night1);
+    std::vector<sGirl*> nurses = brothel->girls_on_job(JOB_NURSE, Day0Night1);
 
     if (numdoctor > 2)    // choose 2 random doctors
     {
@@ -212,12 +213,12 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
 
     if (Day0Night1)    // Count up the points at the end of the day
     {
-        if (Doctor1)    girl.m_WorkingDay += min(doctormax, ((Doctor1->medicine() + Doctor1->intelligence() + Doctor1->magic() + Doctor1->herbalism()) / doctordiv));
-        if (Doctor2)    girl.m_WorkingDay += min(doctormax, ((Doctor2->medicine() + Doctor2->intelligence() + Doctor2->magic() + Doctor2->herbalism()) / doctordiv));
-        if (Nurse1)        girl.m_WorkingDay += min(nursemax, ((Nurse1->medicine() + Nurse1->intelligence() + Nurse1->magic() + Nurse1->herbalism()) / nursediv));
-        if (Nurse2)        girl.m_WorkingDay += min(nursemax, ((Nurse2->medicine() + Nurse2->intelligence() + Nurse2->magic() + Nurse2->herbalism()) / nursediv));
-        if (Nurse3)        girl.m_WorkingDay += min(nursemax, ((Nurse3->medicine() + Nurse3->intelligence() + Nurse3->magic() + Nurse1->herbalism()) / nursediv));
-        if (Nurse4)        girl.m_WorkingDay += min(nursemax, ((Nurse4->medicine() + Nurse4->intelligence() + Nurse4->magic() + Nurse4->herbalism()) / nursediv));
+        if (Doctor1)    girl.m_WorkingDay += std::min(doctormax, ((Doctor1->medicine() + Doctor1->intelligence() + Doctor1->magic() + Doctor1->herbalism()) / doctordiv));
+        if (Doctor2)    girl.m_WorkingDay += std::min(doctormax, ((Doctor2->medicine() + Doctor2->intelligence() + Doctor2->magic() + Doctor2->herbalism()) / doctordiv));
+        if (Nurse1)        girl.m_WorkingDay += std::min(nursemax, ((Nurse1->medicine() + Nurse1->intelligence() + Nurse1->magic() + Nurse1->herbalism()) / nursediv));
+        if (Nurse2)        girl.m_WorkingDay += std::min(nursemax, ((Nurse2->medicine() + Nurse2->intelligence() + Nurse2->magic() + Nurse2->herbalism()) / nursediv));
+        if (Nurse3)        girl.m_WorkingDay += std::min(nursemax, ((Nurse3->medicine() + Nurse3->intelligence() + Nurse3->magic() + Nurse1->herbalism()) / nursediv));
+        if (Nurse4)        girl.m_WorkingDay += std::min(nursemax, ((Nurse4->medicine() + Nurse4->intelligence() + Nurse4->magic() + Nurse4->herbalism()) / nursediv));
 
     }
     if (numnurse == 4)
@@ -256,7 +257,7 @@ bool WorkCureDiseases(sGirl& girl, bool Day0Night1, cRng& rng)
         msgtype = EVENT_GOODNEWS;
         girl.m_WorkingDay = girl.m_PrevWorkingDay = 0;
 
-        string diseasecured = diseases[rng%numdiseases];
+        std::string diseasecured = diseases[rng%numdiseases];
         girl.lose_trait(diseasecured.c_str());
         numdiseases--;
         ss << "You pay " << cost << " gold for last dose of the medicine used in her treatment.\n \nThe treatment is a success, ${name} no longer has " << diseasecured << "!\n \n";

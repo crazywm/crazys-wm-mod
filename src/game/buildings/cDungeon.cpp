@@ -17,8 +17,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <sstream>
-#include "character/sGirl.hpp"
-#include "IBuilding.hpp"
+#include "character/sGirl.h"
+#include "IBuilding.h"
 #include "buildings/cBuildingManager.h"
 #include "interface/constants.h"
 
@@ -280,7 +280,7 @@ void cDungeon::RemoveCust(sDungeonCust* cust)
     m_NumCusts--;
 }
 
-void cDungeon::OutputGirlRow(int i, vector<string>& Data, const vector<string>& columnNames)
+void cDungeon::OutputGirlRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames)
 {
     Data.resize(columnNames.size());
     int tmp = 0;
@@ -298,10 +298,10 @@ void cDungeon::OutputGirlRow(int i, vector<string>& Data, const vector<string>& 
     }
 }
 
-void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName)
+void sDungeonGirl::OutputGirlDetailString(std::string& Data, const std::string& detailName)
 {
     //given a statistic name, set a string to a value that represents that statistic
-    static stringstream ss;
+    static std::stringstream ss;
     ss.str("");
     if (detailName == "Rebelliousness")    // `J` Dungeon "Matron" can be a Torturer from any brothel
     {
@@ -344,7 +344,7 @@ void sDungeonGirl::OutputGirlDetailString(string& Data, const string& detailName
     Data = ss.str();
 }
 
-void cDungeon::OutputCustRow(int i, vector<string>& Data, const vector<string>& columnNames)
+void cDungeon::OutputCustRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames)
 {
     Data.resize(columnNames.size());
     sDungeonCust* cust = m_Custs;
@@ -365,10 +365,10 @@ void cDungeon::OutputCustRow(int i, vector<string>& Data, const vector<string>& 
     }
 }
 
-void sDungeonCust::OutputCustDetailString(string& Data, const string& detailName)
+void sDungeonCust::OutputCustDetailString(std::string& Data, const std::string& detailName)
 {
     //given a statistic name, set a string to a value that represents that statistic
-    static stringstream ss;
+    static std::stringstream ss;
     ss.str("");
     if (detailName == "Name")                    { ss << "Customer"; }
     else if (detailName == "Health")    { if (m_Health <= 0) ss << "DEAD"; else ss << m_Health << "%"; }
@@ -406,7 +406,7 @@ sDungeonGirl* cDungeon::GetGirl(int i)
     return nullptr;
 }
 
-sDungeonGirl* cDungeon::GetGirlByName(string name)
+sDungeonGirl* cDungeon::GetGirlByName(std::string name)
 {
     if (name.empty()) return nullptr;
     for(auto& current : m_Girls)
@@ -457,9 +457,9 @@ void cDungeon::Update()
     *
     */
     sGirl* TorturerGirlref = nullptr;
-    string girlName;
-    stringstream msg;
-    stringstream ss;
+    std::string girlName;
+    std::stringstream msg;
+    std::stringstream ss;
 
     // Reset counters
     m_NumGirlsTort = m_NumCustsTort = 0;
@@ -467,9 +467,9 @@ void cDungeon::Update()
     // WD:    Did we torture the girls
     // WD: If so, who is the Torturer
     if (m_TortureDone) {
-        TorturerGirlref = random_girl_on_job(g_Game->buildings(), JOB_TORTURER, 0);
+        TorturerGirlref = random_girl_on_job(g_Game->buildings(), JOB_TORTURER, false);
         if(!TorturerGirlref) {
-            g_Game->push_message("ERROR: Cannot find the torturer! How did this happen?", COLOR_RED);
+            g_Game->error("ERROR: Cannot find the torturer! How did this happen?");
             m_TortureDone = false;
         }
     }
@@ -511,7 +511,7 @@ void cDungeon::Update()
         /*
         *            DAILY Processing
         */
-        string summary;
+        std::string summary;
 
         current.m_Weeks++;                        // the number of weeks they have been in the dungeon
         cGirls::CalculateGirlType(*girl);        // update the fetish traits
@@ -687,8 +687,8 @@ void cDungeon::updateGirlTurnDungeonStats(sDungeonGirl* d_girl)
     */
 
     sGirl* girl = d_girl->m_Girl.get();
-    string msg;
-    string girlName = girl->FullName();
+    std::string msg;
+    std::string girlName = girl->FullName();
 
     // Sanity check. Abort on dead girl
     if (girl->is_dead()) return;
@@ -776,7 +776,7 @@ bool cDungeon::SendGirlToDungeon(std::shared_ptr<sGirl> girl)
             ss << "She will escape for good in 6 weeks if you don't send someone after her.";
             girl->run_away();
             success = false;
-            stringstream smess;
+            std::stringstream smess;
             smess << girl->FullName() << " has run away";
             g_Game->push_message(smess.str(), 1);
     }

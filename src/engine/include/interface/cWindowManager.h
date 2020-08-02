@@ -86,6 +86,7 @@ public:
 
     // message box
     void PushMessage(std::string text, int color, std::function<void()> cb = {});
+    void PushError(std::string text);
 
     std::shared_ptr<cModalWindow> GetModalWindow();
 

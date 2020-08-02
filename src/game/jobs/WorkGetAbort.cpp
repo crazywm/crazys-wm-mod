@@ -22,6 +22,7 @@
 #include <sstream>
 #include "cJobManager.h"
 #include "Game.hpp"
+#include "cGirls.h"
 
 namespace settings {
     extern const char* PREG_COOL_DOWN;
@@ -72,7 +73,7 @@ bool WorkGetAbort(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
-    stringstream ss;
+    std::stringstream ss;
     // if she was not in surgery last turn, reset working days to 0 before proceding
     if (girl.m_YesterDayJob != JOB_GETABORT) { girl.m_WorkingDay = girl.m_PrevWorkingDay = 0; }
     girl.m_DayJob = girl.m_NightJob = JOB_GETABORT;    // it is a full time job

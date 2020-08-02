@@ -18,7 +18,7 @@
 */
 #include "Game.hpp"
 #include "character/cPlayer.h"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "Films.h"
 #include "character/predicates.h"
 #include "character/cCustomers.h"

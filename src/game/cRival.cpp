@@ -22,7 +22,7 @@
 #include "Game.hpp"
 #include "utils/algorithms.hpp"
 #include "character/cPlayer.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "cRng.h"
 #include "cGold.h"
 #include "utils/DirPath.h"
@@ -49,18 +49,18 @@ cRivalManager::cRivalManager()
     names.load(first_names, last_names);
 }
 
-string cRivalManager::rivals_plunder_pc_gold(cRival* rival)
+std::string cRivalManager::rivals_plunder_pc_gold(cRival* rival)
 {
     if (g_Game->gold().ival() <= 0) return "";                        // no gold to sieze? nothing to do.
     long pc_gold = g_Game->gold().ival();                            // work out how much they take. make a note of how much we have
 
-    long gold = g_Dice.random(min((long)2000, pc_gold));
+    long gold = g_Dice.random(std::min((long)2000, pc_gold));
     if (gold < 45) gold = 45;                                // make sure there's at least 45 gold taken
     if (pc_gold < gold) gold = pc_gold;                        // unless the pc has less than that, in which case take the lot
     g_Game->gold().rival_raids(gold);                                // deduct the losses against rival raid losses
     rival->m_Gold += gold;                                    // add the aount to rival coffers
 
-    stringstream ss;
+    std::stringstream ss;
     ss << "\nThey get away with " << gold << " gold.";    // format a message and store it in the string that was passed to us
     return ss.str();
 }
@@ -85,9 +85,9 @@ void cRivalManager::Update(int& NumPlayerBussiness)
         // `J` added - rival power
         // `J` reworked to reduce the rival's power
         curr->m_Power =
-            max(0, curr->m_NumBrothels * 5) +
-            max(0, curr->m_NumGamblingHalls * 2) +
-            max(0, curr->m_NumBars * 1);
+                std::max(0, curr->m_NumBrothels * 5) +
+                std::max(0, curr->m_NumGamblingHalls * 2) +
+                std::max(0, curr->m_NumBars * 1);
 
         // check if a rival is in danger
         if (curr->m_Gold <= 0 || curr->m_NumBrothels <= 0 || curr->m_NumGirls <= 0 || curr->m_NumGamblingHalls <= 0 || curr->m_NumBars <= 0)
@@ -298,7 +298,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                 }
                 else            // if there are no uncontrolled businesses
                 {
-                    stringstream ss;
+                    std::stringstream ss;
                     int who = (g_Dice % (m_Rivals.size() + 1));                // who to attack
                     if (who == m_Rivals.size())                                // try to attack you
                     {
@@ -396,9 +396,9 @@ void cRivalManager::Update(int& NumPlayerBussiness)
             }break;
             case MISS_SABOTAGE:            // attack rivals
             {
-                if (g_Dice.percent(min(90, cG1.intelligence())))    // chance they find a target
+                if (g_Dice.percent(std::min(90, cG1.intelligence())))    // chance they find a target
                 {
-                    stringstream ss;
+                    std::stringstream ss;
                     int who = (g_Dice % (m_Rivals.size() + 1));
                     if (who == m_Rivals.size() && !player_safe())    // if it is you and you are a valid target
                     {
@@ -723,7 +723,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
                 upkeep -= 550;
             }
             // hire gangs
-            int gangsavailable = (max(0, (g_Dice % 5) - 2));
+            int gangsavailable = std::max(0, (g_Dice % 5) - 2);
             while (curr->m_Gold + income + upkeep - 90 >= 0 && gangsavailable > 0 && curr->m_NumGangs < 8)
             {
                 curr->m_NumGangs++;
@@ -917,7 +917,7 @@ bool cRivalManager::LoadRivalsXML(const tinyxml2::XMLElement* pRivalManager)
             pRival->QueryIntAttribute("NumGangs", &current->m_NumGangs);
 
             // `J` cleanup rival power for .06.01.17
-            if (current->m_Power > 50) current->m_Power = max(0, current->m_NumBrothels * 5) + max(0, current->m_NumGamblingHalls * 2) + max(0, current->m_NumBars * 1);
+            if (current->m_Power > 50) current->m_Power = std::max(0, current->m_NumBrothels * 5) + std::max(0, current->m_NumGamblingHalls * 2) + std::max(0, current->m_NumBars * 1);
 
             //jim: re-initializing rival inventory to zero (hopefully fixes Linux segfaults)
             current->m_NumInventory = 0;
@@ -936,9 +936,6 @@ bool cRivalManager::LoadRivalsXML(const tinyxml2::XMLElement* pRivalManager)
 
 void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars, int gambHalls, int Girls, int brothels, int gangs, int power)
 {
-    ifstream in;
-
-
     auto rival = std::make_unique<cRival>();
 
     rival->m_Gold = gold;
@@ -952,10 +949,10 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
 
     // `J` added - rival power
     // `J` reworked to reduce the rival's power
-    rival->m_Power = max(power,
-        max(0, rival->m_NumBrothels * 5) +
-        max(0, rival->m_NumGamblingHalls * 2) +
-        max(0, rival->m_NumBars * 1));
+    rival->m_Power = std::max(power,
+                              std::max(0, rival->m_NumBrothels * 5) +
+                              std::max(0, rival->m_NumGamblingHalls * 2) +
+                              std::max(0, rival->m_NumBars * 1));
         
     //jim: initializing rival inventory to zero (hopefully fixes Linux segfaults)
       rival->m_NumInventory = 0;
@@ -985,7 +982,7 @@ void cRivalManager::CreateRival(long bribeRate, int extort, long gold, int bars,
     m_Rivals.push_back(std::move(rival));
 }
 
-bool cRivalManager::NameExists(string name)
+bool cRivalManager::NameExists(const std::string& name)
 {
     for(auto& current : m_Rivals)
     {
@@ -996,11 +993,7 @@ bool cRivalManager::NameExists(string name)
 
 void cRivalManager::CreateRandomRival()
 {
-    ifstream in;
     auto rival = std::make_unique<cRival>();
-
-    DirPath first_names = DirPath() << "Resources" << "Data" << "RivalGangFirstNames.txt";
-    DirPath last_names = DirPath() << "Resources" << "Data" << "RivalGangLastNames.txt";
 
     rival->m_Gold = (g_Dice % 20000) + 5000;
     rival->m_NumBrothels = (g_Dice % 3) + 1;
@@ -1051,9 +1044,9 @@ void cRivalManager::check_rivals()
 }
 
 // `J` moved from cBrothel
-string cRivalManager::new_rival_text()
+std::string cRivalManager::new_rival_text()
 {
-    stringstream ss;
+    std::stringstream ss;
 
     enum {
         Slaver = 0,
@@ -1074,7 +1067,7 @@ string cRivalManager::new_rival_text()
     *    let's put the gender specific terms in
     *    variables. Might make the code cleaner
     */
-    string man, boy, He, he, him, his, sorcerer, gladiator, fellow, patriarch;
+    std::string man, boy, He, he, him, his, sorcerer, gladiator, fellow, patriarch;
     if (male)
     {
         He = "He";
@@ -1140,7 +1133,7 @@ string cRivalManager::new_rival_text()
 // `J` moved from cBrothel
 void cRivalManager::peace_breaks_out()
 {
-    stringstream ss;
+    std::stringstream ss;
     // if the PC already won, this is just an minor outbreak of peace in the day-to-day feuding in crossgate
     if (g_Game->player().m_WinGame)
     {

@@ -32,10 +32,9 @@
 #include "cEvents.h"
 #include "Constants.h"
 #include "cGold.h"
-#include "cGirls.h"
 
 #include "tinyxml2.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "character/cGirlPool.h"
 
 class IBuilding
@@ -87,7 +86,7 @@ public:
 
     sGirl* get_girl(int index);
     int get_girl_index(const sGirl& girl) const;
-    void add_girl(shared_ptr<sGirl> girl, bool keep_job = false);
+    void add_girl(std::shared_ptr<sGirl> girl, bool keep_job = false);
     std::shared_ptr<sGirl> remove_girl(sGirl* girl);
 
     // utilities: common uses of the functions above

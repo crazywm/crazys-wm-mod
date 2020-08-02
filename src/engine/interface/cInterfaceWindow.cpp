@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -45,9 +45,7 @@ extern sColor g_WindowBorderColor;
 extern sColor g_WindowBackgroundColor;
 extern cConfig cfg;
 
-cInterfaceWindow::~cInterfaceWindow()
-{
-}
+cInterfaceWindow::~cInterfaceWindow() = default;
 
 void cInterfaceWindow::load(cWindowManager* root) {
     assert(!m_WindowManager);
@@ -62,16 +60,23 @@ void cInterfaceWindow::UpdateWindow(int x, int y)
 void cInterfaceWindow::MouseClick(int x, int y, bool down)
 {
     // this method added to handle draggable objects
+    /// If we are in fuzz-testing mode, don't do the try/catch, because we
+    /// want the debugger to trigger in the original callstack, so we can
+    /// pinpoint the problem
+    #ifndef FUZZ_TESTING
     try {
+    #endif
         for(auto& widget : m_Widgets)
             if(widget->OnMouseClick(x, y, down)) return;
         // nobody wanted to handle this click -> remove focus
         SetFocusTo(nullptr);
+    #ifndef FUZZ_TESTING
     } catch (std::exception& exception) {
         g_LogFile.error("interface", "Error when handling MouseClick event at (", x, ", ", y,
                 "): ", exception.what());
-        push_message(exception.what(), 1);
+        push_error(exception.what());
     }
+    #endif
 }
 
 void cInterfaceWindow::MouseWheel(int x, int y, bool down)
@@ -86,7 +91,7 @@ void cInterfaceWindow::MouseWheel(int x, int y, bool down)
     } catch (std::exception& exception) {
         g_LogFile.error("interface", "Error when handling MouseWheel event at (", x, ", ", y,
                 "): ", exception.what());
-        push_message(exception.what(), 1);
+        push_error(exception.what());
     }
 }
 
@@ -605,13 +610,14 @@ void cInterfaceWindow::OnKeyPress(SDL_Keysym keysym)
         if(m_KeyboardFocusWidget) {
             if(m_KeyboardFocusWidget->OnKeyPress(keysym)) return;
         }
+
         for(auto& wdg : m_Widgets) {
             if(wdg->OnKeyPress(keysym)) return;
         }
     } catch (std::exception& exception) {
         g_LogFile.error("interface", "Error when handling KeyPress event of key ", keysym.sym,
                 ": ", exception.what());
-        push_message(exception.what(), 1);
+        push_error(exception.what());
     }
 }
 
@@ -695,6 +701,10 @@ void cInterfaceWindow::SetListBoxHotKeys(int id, SDL_Keycode up, SDL_Keycode dow
 void cInterfaceWindow::push_message(std::string text, int color)
 {
     window_manager().PushMessage(std::move(text), color);
+}
+
+void cInterfaceWindow::push_error(std::string text) {
+    window_manager().PushError(std::move(text));
 }
 
 void cInterfaceWindow::TabFocus()

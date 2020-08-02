@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "Films.h"
-#include "IBuilding.hpp"
+#include "buildings/IBuilding.h"
 
 void FilmTease::DoScene(sGirl& girl) {
     struct BonusItem {

@@ -20,11 +20,10 @@
 #include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include <sstream>
-#include "CLog.h"
-#include "cGold.h"
 #include "character/cCustomers.h"
 #include "cJobManager.h"
 #include "character/predicates.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -34,7 +33,7 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKSTRIP;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
     if (girl.disobey_check(actiontype, JOB_PEEP))
     {
@@ -49,7 +48,7 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     int wages = girl.askprice() + rng % 50;
-    int tips = max((rng % 50) - 10, 0);
+    int tips = std::max((rng % 50) - 10, 0);
     int enjoy = 0, fame = 0;
     SKILLS sextype = SKILL_STRIP;
     int imagetype = IMGTYPE_STRIP;
@@ -293,8 +292,8 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     // `J` calculate base pay and tips with mod before special pay and tips are added
-    tips = max(0, int(tips * mod));
-    wages = max(0, int(wages * mod));
+    tips = std::max(0, int(tips * mod));
+    wages = std::max(0, int(wages * mod));
 
     if (girl.beauty() > 85 && rng.percent(20))
     {
@@ -310,7 +309,7 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
         Cust.m_SexPref = sextype;                                // they don't get a say in this
         if (sextype == SKILL_LESBIAN) Cust.m_IsWoman = true;    // make sure it is a lesbian
 
-        string message = ss.str();
+        std::string message = ss.str();
         cGirls::GirlFucks(&girl, Day0Night1, &Cust, false, message, sextype);
         ss.str(""); ss << message;
         brothel->m_Happiness += Cust.happiness();
@@ -320,9 +319,9 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
         girl.upd_temp_stat(STAT_LIBIDO, -20);
         //*/
 
-        int sexwages = min(rng % (Cust.m_Money / 4) + girl.askprice(), int(Cust.m_Money));
+        int sexwages = std::min(rng % (Cust.m_Money / 4) + girl.askprice(), int(Cust.m_Money));
         Cust.m_Money -= sexwages;
-        int sextips = max(0, int(rng%Cust.m_Money - (Cust.m_Money / 2)));
+        int sextips = std::max(0, int(rng%Cust.m_Money - (Cust.m_Money / 2)));
         Cust.m_Money -= sextips;
         wages += sexwages;
         tips += sextips;
@@ -368,8 +367,8 @@ bool WorkPeepShow(sGirl& girl, bool Day0Night1, cRng& rng)
     // work out the pay between the house and the girl
     girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 15, skill = 3;

@@ -20,7 +20,7 @@
 #include "cGirlGangFight.h"
 #include "cGangs.h"
 #include "Game.hpp"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include "combat/combat.h"
 

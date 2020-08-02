@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,9 +19,8 @@
 #include "cJobManager.h"
 #include "cRng.h"
 #include "CLog.h"
-#include "cGold.h"
 #include "buildings/cBuildingManager.h"
-#include "cJobManager.h"
+#include "cGirls.h"
 
 // `J` Job Arena - Fighting - Learning_Job - Combat_Job
 bool WorkCombatTraining(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -29,7 +28,7 @@ bool WorkCombatTraining(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_COMBAT, actiontype2 = ACTION_WORKTRAINING;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.combat() + girl.magic() + girl.agility() +
         girl.constitution() + girl.strength() >= 500)
     {
@@ -280,8 +279,8 @@ bool WorkCombatTraining(sGirl& girl, bool Day0Night1, cRng& rng)
     brothel->m_Filthiness += 2;    // fighting is dirty
     if (girl.is_unpaid()) { wages = 0; }
     else { wages = 25 + (skill * 5); } // `J` Pay her more if she learns more
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 5 + skill;

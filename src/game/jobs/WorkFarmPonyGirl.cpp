@@ -31,7 +31,7 @@ bool WorkFarmPonyGirl(sGirl& girl, bool Day0Night1, cRng& rng)
     if (Day0Night1) return false;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKHOUSEPET;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     int train = roll_a - girl.obedience() - girl.get_training(TRAINING_PUPPY);
 
@@ -40,7 +40,7 @@ bool WorkFarmPonyGirl(sGirl& girl, bool Day0Night1, cRng& rng)
     int imagetype = IMGTYPE_PONYGIRL;
 
     const sGirl* headonduty = random_girl_on_job(*girl.m_Building, JOB_HEADGIRL, Day0Night1);
-    string headname = (headonduty ? "Head Girl " + headonduty->FullName() + "" : "the Head girl");
+    std::string headname = (headonduty ? "Head Girl " + headonduty->FullName() + "" : "the Head girl");
 
     if (train >= 50)            // they refuse to train
     {

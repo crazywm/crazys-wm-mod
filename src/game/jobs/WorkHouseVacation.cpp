@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,12 @@
 // `J` House Job - General
 bool WorkHouseVacation(sGirl& girl, bool Day0Night1, cRng& rng)
 {
-    stringstream ss;
+    std::stringstream ss;
 
     int roll_a = rng%100;
 
     // `CRAZY` This is places she can go
-    string vac_type_text = "an onsen";
+    std::string vac_type_text = "an onsen";
     /* */if (roll_a <= 20)    { vac_type_text = "a local camp ground"; }
     else if (roll_a <= 40)    { vac_type_text = "a spa and resort"; }
     else if (roll_a <= 60)    { vac_type_text = "a near by beach"; }

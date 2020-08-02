@@ -22,12 +22,13 @@
 #include <algorithm>
 #include "cJobManager.h"
 #include "character/predicates.h"
+#include "cGirls.h"
 
 // `J` Job Brothel - Bar
 bool WorkEscort(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     Action_Types actiontype = ACTION_WORKESCORT;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_ESCORT))
     {
         ss << "${name} refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -58,7 +59,7 @@ bool WorkEscort(sGirl& girl, bool Day0Night1, cRng& rng)
     int prepare = (girl.agility() + girl.service()/2);
     double cust_wealth = 1;
     int cust_type = 0;
-    string cust_type_text;
+    std::string cust_type_text;
 
     int sex = false;
     int anal = false;
@@ -1920,8 +1921,8 @@ break;    // end Es_DeadBeat
     ss << "\n \n${name} receives " << wages << " in payment for her work as an Escort for a " << cust_type_text << " client. Her fame as an Escort has changed by " << fame << ".";
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 20, skill = 3;

@@ -17,10 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include <vector>
+#include <sstream>
+#include "CLog.h"
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
 #include "character/cPlayer.h"
-#include "main.h"
 #include "cScreenSlaveMarket.h"
 #include "cTariff.h"
 #include "Game.hpp"
@@ -131,7 +132,7 @@ void cScreenSlaveMarket::set_ids()
 void cScreenSlaveMarket::init(bool back)
 {
     Focused();
-    stringstream ss;
+    std::stringstream ss;
 
     //buttons enable/disable
     DisableWidget(more_id, true);
@@ -211,8 +212,8 @@ void cScreenSlaveMarket::process()
 
 bool cScreenSlaveMarket::buy_slaves()
 {
-    stringstream ss;
-    stringstream sendtotext;
+    std::stringstream ss;
+    std::stringstream sendtotext;
 
     // set the brothel
     if (m_TargetBuilding == nullptr) sendtotext << "the Dungeon";
@@ -261,12 +262,12 @@ bool cScreenSlaveMarket::buy_slaves()
     {
         if (m_TargetBuilding->free_rooms() < 0)
         {
-            g_Game->push_message("The current building has no more room.\nChoose another building to send them to.", 0);
+            push_message("The current building has no more room.\nChoose another building to send them to.", 0);
             return false;
         }
         if (m_TargetBuilding->free_rooms() < numgirls)
         {
-            g_Game->push_message("The current building does not have enough room for all the girls you want to send there.\nChoose another building or select fewer girls at a time to buy.", 0);
+            push_message("The current building does not have enough room for all the girls you want to send there.\nChoose another building or select fewer girls at a time to buy.", 0);
             return false;
         }
     }
@@ -274,7 +275,7 @@ bool cScreenSlaveMarket::buy_slaves()
     // `J` check if we can afford all the girls selected
     if (!g_Game->gold().slave_cost(totalcost))    // this pays for them if you can afford them
     {                                    // otherwise this part runs and returns a fail message.
-        stringstream text;
+        std::stringstream text;
         if (numgirls > 4 && g_Game->gold().ival() < totalcost / 2) text << "Calm down!  ";
         text << "You don't have enough money to purchase ";
         switch (numgirls)
@@ -286,7 +287,7 @@ bool cScreenSlaveMarket::buy_slaves()
         default: text << numgirls; break;
         }
         text << (numgirls <= 1 ? "" : " girls") << ".";
-        g_Game->push_message(text.str(), 0);
+        push_message(text.str(), 0);
         return false;
     }
 
@@ -475,12 +476,12 @@ bool cScreenSlaveMarket::buy_slaves()
             girl->health(100);
             girl->happiness(100);
             girl->tiredness(-100);
-            girl->service(max(0, g_Dice.bell(-1, 3)));
-            girl->medicine(max(0, g_Dice.bell(-2, 3)));
-            girl->morality(max(0, g_Dice.bell(-2, 2)));
+            girl->service(std::max(0, g_Dice.bell(-1, 3)));
+            girl->medicine(std::max(0, g_Dice.bell(-2, 3)));
+            girl->morality(std::max(0, g_Dice.bell(-2, 2)));
             if (has_disease(*girl))
             {
-                vector<string> diseases;
+                std::vector<std::string> diseases;
                 if (girl->has_active_trait("AIDS"))        diseases.emplace_back("AIDS");
                 if (girl->has_active_trait("Chlamydia"))    diseases.emplace_back("Chlamydia");
                 if (girl->has_active_trait("Herpes"))        diseases.emplace_back("Herpes");
@@ -527,9 +528,9 @@ bool cScreenSlaveMarket::buy_slaves()
         }
         else                    // multiple girl flavor texts
         {
-            string pornstarname;    int pornstarnum = 0;
-            string actressname;    int actressnum = 0;
-            string shygirlname;    int shygirlnum = 0;
+            std::string pornstarname;    int pornstarnum = 0;
+            std::string actressname;    int actressnum = 0;
+            std::string shygirlname;    int shygirlnum = 0;
 
             for (auto& girl : girls_bought)
             {
@@ -588,9 +589,10 @@ bool cScreenSlaveMarket::buy_slaves()
     // `J` send them where they need to go
     for (auto& girl : girls_bought)
     {
-        stringstream sss;
+        std::stringstream sss;
         sss << "Purchased from the Slave Market for " << g_Game->tariff().slave_buy_price(*girl) << " gold.";
         girl->AddMessage(sss.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
+        girl->set_default_house_percent();
 
         if(m_TargetBuilding) {
             m_TargetBuilding->add_girl(g_Game->GetSlaveMarket().TakeGirl(girl));
@@ -603,8 +605,8 @@ bool cScreenSlaveMarket::buy_slaves()
     }
 
     // `J` now tell the player what happened
-    if (numgirls <= 0)    g_Game->push_message("Error, no girls names in the list", 0);
-    else g_Game->push_message(ss.str(), 0);
+    if (numgirls <= 0)    push_message("Error, no girls names in the list", 0);
+    else push_message(ss.str(), 0);
 
     // finish it
     m_SelectedGirl = -1;
@@ -636,7 +638,7 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.morality(g_Dice.bell(-2, 5));
         girl.refinement(g_Dice.bell(-2, 5));
         girl.sanity(g_Dice.bell(-1, 5));
-        girl.fame(max(0, g_Dice.bell(-1, 1)));
+        girl.fame(std::max(0, g_Dice.bell(-1, 1)));
     }
     else if (g_Game->player().disposition() >= 50)            // Nice
     {
@@ -686,7 +688,7 @@ void cScreenSlaveMarket::affect_girl_by_disposition(sGirl& girl) const
         girl.morality(-(g_Dice % 2));
         girl.refinement(-(g_Dice % 2));
         girl.sanity(g_Dice.bell(-2, 2));
-        girl.bdsm(max(0, g_Dice.bell(-2, 5)));
+        girl.bdsm(std::max(0, g_Dice.bell(-2, 5)));
     }
     else if (g_Game->player().disposition() >= -80)            //Mean
     {
@@ -778,7 +780,7 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
                 m_SelectedGirl, ')');
         return true;
     }
-    string detail;
+    std::string detail;
 
     if (DetailLevel == 0)        detail = cGirls::GetDetailsString(*girl, true);
     else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(*girl, true);
@@ -792,9 +794,9 @@ bool cScreenSlaveMarket::change_selected_girl(int selected)
     return true;
 }
 
-string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
+std::string cScreenSlaveMarket::get_buy_slave_string(sGirl* girl)
 {
-    string text = girl->FullName();
+    std::string text = girl->FullName();
 
     if (active_building().free_rooms() <= 0)
     {
@@ -877,7 +879,7 @@ void cScreenSlaveMarket::preparescreenitems(sGirl* girl)
 {
 
     int trait_count = 0;
-    stringstream traits_text;
+    std::stringstream traits_text;
     traits_text << "Traits:      ";
 
     // loop through her traits, populating the box
@@ -981,7 +983,7 @@ void cScreenSlaveMarket::affect_dungeon_girl_by_disposition(sGirl& girl) const
 
 void cScreenSlaveMarket::change_release(BuildingType target, int index)
 {
-    stringstream ss;
+    std::stringstream ss;
     m_TargetBuilding = g_Game->buildings().building_with_type(target, index);
 
     ss.str("");

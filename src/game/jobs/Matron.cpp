@@ -20,9 +20,9 @@
 #include "GenericJob.h"
 #include <sstream>
 #include <cGirls.h>
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "character/predicates.h"
-#include "IBuilding.hpp"
+#include "buildings/IBuilding.h"
 #include "Game.hpp"
 #include "cInventory.h"
 #include "sConfig.h"
@@ -197,7 +197,7 @@ bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
 
         if (roll_b < brothel->m_SecurityLevel)
         {
-            stringstream warning;
+            std::stringstream warning;
             warning << "Your security spotted ${name} trying to take " << steal << " gold from the Brothel for herself.\n";
             ss << "\n" << warning.str() << "\n";
             girl.AddMessage(warning.str(), IMGTYPE_PROFILE, EVENT_WARNING);
@@ -215,7 +215,7 @@ bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
         int method = 0;    // 1 = out of pocket, 2 = brothel money, 3 = sex, 4 = bj
         // 'Mute' Added so if the cost of the item changes then the gold amout will be correct
         sInventoryItem* item = nullptr;
-        string itemName;
+        std::string itemName;
         /* */if (girl.has_active_trait("Viras Blood Addict"))    { itemName = "Vira Blood"; }
         else if (girl.has_active_trait("Shroud Addict"))        { itemName = "Shroud Mushroom"; }
         else if (girl.has_active_trait("Fairy Dust Addict"))    { itemName = "Fairy Dust"; }
@@ -236,7 +236,7 @@ bool BrothelMatronJob::DoWork(sGirl& girl, bool is_night) {
             method = 2;
         else method = uniform(3, 7);
 
-        stringstream warning;
+        std::stringstream warning;
         int warningimage = IMGTYPE_PROFILE;
         switch (method)
         {

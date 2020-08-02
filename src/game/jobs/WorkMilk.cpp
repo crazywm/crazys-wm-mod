@@ -20,12 +20,13 @@
 #include "buildings/cBuildingManager.h"
 #include "Game.hpp"
 #include "character/cCustomers.h"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include <sstream>
 #include "cJobManager.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
 #include "buildings/cDungeon.h"
+#include "cGirls.h"
 
 
 //BSIN: function used to convert to ounces
@@ -39,7 +40,7 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKMILK;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_MILK))            // they refuse to work
     {
         ss << "${name} refused to let her breasts be milked " << (Day0Night1 ? "tonight." : "today.");
@@ -53,7 +54,7 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::UnequipCombat(girl);    // not needed
 
     const sGirl* farmmanonduty = random_girl_on_job(*girl.m_Building, JOB_FARMMANGER, Day0Night1);
-    string farmmanname = (farmmanonduty ? "Farm Manager " + farmmanonduty->FullName() + "" : "the Farm Manager");
+    std::string farmmanname = (farmmanonduty ? "Farm Manager " + farmmanonduty->FullName() + "" : "the Farm Manager");
 
     int enjoy = 0;
     int wages = 0, tips = 0;
@@ -100,7 +101,7 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
     int HateLove = 0;
     HateLove = girl.pclove() - girl.pchate();
     //BSIN: Update: to generate an extra message in case of certain event
-    stringstream ssextra;
+    std::stringstream ssextra;
     int extraimage = 0;
     bool extraEvent = false;
     bool noAnti = girl.m_UseAntiPreg = false;
@@ -641,8 +642,8 @@ bool WorkMilk(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     girl.upd_Enjoyment(actiontype, enjoy);
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     girl.AddMessage(ss.str(), IMGTYPE_MILK, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 #if 1

@@ -25,6 +25,7 @@
 #include "sConfig.h"
 #include "cScrollBar.h"
 #include "interface/cWindowManager.h"
+#include "interface/cInterfaceWindow.h"
 
 extern cConfig cfg;
 
@@ -197,7 +198,7 @@ int cListBox::ArrowUpList()
     return current->m_ID;
 }
 
-bool cListBox::HasMultiSelected()
+bool cListBox::HasMultiSelected() const
 {
     return m_HasMultiSelect;
 }
@@ -234,6 +235,8 @@ bool cListBox::DoubleClicked()
 
 bool cListBox::HandleClick(int x, int y, bool press)
 {
+    GetParent()->SetFocusTo(this);
+
     if (press) return false;
     if (m_Items.empty())    // it doesn't matter if there are no items in the list
         return true;
@@ -860,7 +863,16 @@ void cListBox::SetDoubleClickCallback(std::function<void(int)> cb)
     m_DoubleClickCallback = std::move(cb);
 }
 
-bool cListBox::HandleKeyPress(SDL_Keysym key){
+bool cListBox::HandleKeyPress(SDL_Keysym key) {
+    if(HasFocus()) {
+        if(key.sym == SDLK_UP) {
+            ArrowUpList();
+            return true;
+        } else if(key.sym == SDLK_DOWN) {
+            ArrowDownList();
+            return true;
+        }
+    }
     if(m_UpArrowHotKey != SDLK_UNKNOWN && key.sym == m_UpArrowHotKey) {
         ArrowUpList();
         return true;

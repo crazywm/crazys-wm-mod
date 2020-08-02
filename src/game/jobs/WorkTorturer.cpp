@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,13 +22,14 @@
 #include "Game.hpp"
 #include "cJobManager.h"
 #include "buildings/cDungeon.h"
+#include "cGirls.h"
 
 // `J` Job Brothel - General
 bool WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     Action_Types actiontype = ACTION_WORKTORTURER;
     if (Day0Night1) return false;        // Do this only once a day
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_TORTURER))
     {
         ss << "${name} refused to torture anyone.";
@@ -155,8 +156,8 @@ bool WorkTorturer(sGirl& girl, bool Day0Night1, cRng& rng)
         wages += 65;
         //g_Game->gold().staff_wages(65);  // wages come from you
     }
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     girl.exp(xp);
     girl.morality(-2);

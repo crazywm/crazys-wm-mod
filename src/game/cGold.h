@@ -27,63 +27,6 @@ struct sBrothel;
 
 class cGoldBase
 {
-    struct in {
-        double brothel_work;
-
-        double street_work;
-        double movie_income;
-        double bar_income;
-        double gambling_profits;
-        double item_sales;
-        double slave_sales;
-        double creature_sales;
-        double extortion;
-        double plunder;
-        double petty_theft;
-        double grand_theft;
-        double catacomb_loot;
-        double objective_reward;
-        double bank_interest;
-        double misc;
-        double clinic_income;
-        double arena_income;
-        double farm_income;
-
-        //01234567890123456789012345678901234567890123456789012345678901234567890123456789
-        // --- Whores ---                              --- Sales ---
-        // Brothel  Street   Movie     Bar  Casino   Items  Monster Loc'Biz   Raids P.Theft G.Theft C'combs  Reward Intr'st    Misc
-        //  123456 1234567 1234567 1234567 1234567 1234567  1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567
-        std::string str(int brothel_no = -1);
-    } detail_in;
-
-    struct out {
-        double brothel_cost;
-        double slave_cost;
-        double item_cost;
-        double consumable_cost;
-        double movie_cost;
-        double goon_wages;
-        double staff_wages;
-        double girl_support;
-        double girl_training;
-        double building_upkeep;
-        double bar_upkeep;
-        double casino_upkeep;
-        double advertising_costs;
-        double centre_costs;
-        double arena_costs;
-        double clinic_costs;
-        double bribes;
-        double fines;
-        double tax;
-        double rival_raids;
-        double misc_debit;
-    } detail_out;
-
-    //   -------     Purchase    -------  Making --  Support  --    Girl ------   Upkeep  ------
-    // # Brothel  Slaves   Items Consume  Movies    Goon    Girl Train'g Build'g     Bar  Casino Adverts  Bribes   Fines Raiders
-    //   1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567 1234567
-
 protected:
 
     /*
@@ -156,8 +99,6 @@ public:
     void girl_support(double cost);
     void girl_training(double cost);
     void building_upkeep(double cost);
-    void bar_upkeep(double cost);
-    void casino_upkeep(double cost);
     void advertising_costs(double cost);
     void centre_costs(double cost);
     void arena_costs(double cost);

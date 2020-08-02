@@ -17,26 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "gang_missions.hpp"
+#include "gang_missions.h"
 
 #include <sstream>
 
 #include "Game.hpp"
 #include "cGangs.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "cRival.h"
 #include "character/cPlayer.h"
 #include "cGold.h"
 #include "cInventory.h"
 #include "buildings/cDungeon.h"
 #include "cObjectiveManager.hpp"
-#include "sStorage.hpp"
-#include "IBuilding.hpp"
+#include "sStorage.h"
+#include "buildings/IBuilding.h"
 #include "buildings/cBuildingManager.h"
 #include "CLog.h"
 #include "combat/combat.h"
 #include "sConfig.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 #include "cGirlGangFight.h"
 
 
@@ -87,7 +87,7 @@ bool cMissionGrandTheft::execute_mission(sGang& gang, std::stringstream& ss)
     g_Game->player().disposition(-3);    g_Game->player().customerfear(3);    g_Game->player().suspicion(3);
     bool fightrival = false;        cRival* rival = nullptr;
     std::string place = "place";            int defencechance = 0;            long gold = 1;
-    int difficulty = max(0, g_Dice.bell(0, 6) - 2);    // 0-4
+    int difficulty = std::max(0, g_Dice.bell(0, 6) - 2);    // 0-4
 
     if (difficulty <= 0)    { place = "small shop";        defencechance = 10;        gold += 10 + g_Dice % 290; difficulty = 0; }
     if (difficulty == 1)    { place = "smithy";            defencechance = 30;        gold += 50 + g_Dice % 550; }
@@ -170,7 +170,7 @@ bool cMissionKidnap::execute_mission(sGang& gang, std::stringstream& ss)
 {
     ss << "Gang   " << gang.name() << "   is kidnapping girls.\n \n";
 
-    if (g_Dice.percent(min(75, gang.intelligence())))    // chance to find a girl to kidnap
+    if (g_Dice.percent(std::min(75, gang.intelligence())))    // chance to find a girl to kidnap
     {
         auto girl = g_Game->GetRandomGirl();
         if (girl != nullptr)
@@ -188,8 +188,8 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<
     bool captured = false;
     /// TODO kidnap event
 
-    string girlName = girl->FullName();
-    stringstream NGmsg;
+    std::string girlName = girl->FullName();
+    std::stringstream NGmsg;
     int girlimagetype = IMGTYPE_PROFILE;
     auto eventtype = EVENT_GANG;
     auto gangeventtype = EVENT_GANG;
@@ -202,7 +202,7 @@ bool cMissionKidnap::kidnap(sGang& gang, std::stringstream& ss, std::shared_ptr<
     girl->house(60);
 
     ss << "Your men find a girl, " << girlName << ", and ";
-    if (g_Dice.percent(min(75, gang.charisma())))    // convince her
+    if (g_Dice.percent(std::min(75, gang.charisma())))    // convince her
     {
         ss << "convince her that she should work for you.\n";
         NGmsg << girlName << " was talked into working for you by " << gang.name() << ".";
@@ -270,7 +270,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
     *    Allow a "scout" activity for gangs that improves the
     *    chances of a raid. That sort of thing.
     */
-    if (!g_Dice.percent(min(90, gang.intelligence())))
+    if (!g_Dice.percent(std::min(90, gang.intelligence())))
     {
         gang.m_Events.AddMessage("They failed to find any enemy assets to hit.", IMGTYPE_PROFILE, EVENT_GANG);
         return false;
@@ -318,7 +318,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
                 }
                 return false;
         }
-        ss << "Your men win." << endl;
+        ss << "Your men win." << std::endl;
         if (rival_gang.m_Num <= 0)            // clean up the rival gang
         {
             rival->m_NumGangs--;
@@ -427,7 +427,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
     }
     else ss << "The losers have no gold to take.\n";
 
-    if (rival->m_NumInventory > 0 && g_Dice.percent(min(75, gang.intelligence())))
+    if (rival->m_NumInventory > 0 && g_Dice.percent(std::min(75, gang.intelligence())))
     {
         cRivalManager r;
         int num = r.GetRandomRivalItemNum(rival);
@@ -440,7 +440,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
         }
     }
 
-    if (rival->m_NumBrothels > 0 && g_Dice.percent(gang.intelligence() / min(3, 11 - rival->m_NumBrothels)))
+    if (rival->m_NumBrothels > 0 && g_Dice.percent(gang.intelligence() / std::min(3, 11 - rival->m_NumBrothels)))
     {
         rival->m_NumBrothels--;
         rival->m_Power--;
@@ -449,7 +449,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
         else if (rival->m_NumBrothels <= 3)            ss << " is in control of very few Brothels.\n";
         else                                        ss << " has many Brothels left.\n";
     }
-    if (rival->m_NumGamblingHalls > 0 && g_Dice.percent(gang.intelligence() / min(1, 9 - rival->m_NumGamblingHalls)))
+    if (rival->m_NumGamblingHalls > 0 && g_Dice.percent(gang.intelligence() / std::min(1, 9 - rival->m_NumGamblingHalls)))
     {
         rival->m_NumGamblingHalls--;
         ss << "\nYour men burn down one of " << rival->m_Name << "'s Gambling Halls. " << rival->m_Name;
@@ -457,7 +457,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
         else if (rival->m_NumGamblingHalls <= 3)    ss << " is in control of very few Gambling Halls .\n";
         else                                        ss << " has many Gambling Halls left.\n";
     }
-    if (rival->m_NumBars > 0 && g_Dice.percent(gang.intelligence() / min(1, 7 - rival->m_NumBars)))
+    if (rival->m_NumBars > 0 && g_Dice.percent(gang.intelligence() / std::min(1, 7 - rival->m_NumBars)))
     {
         rival->m_NumBars--;
         ss << "\nYour men burn down one of " << rival->m_Name << "'s Bars. " << rival->m_Name;
@@ -480,7 +480,7 @@ bool cMissionSabotage::execute_mission(sGang& gang, std::stringstream& ss)
 
     if (VictoryPoints >= 4)
     {
-        stringstream ssVic;
+        std::stringstream ssVic;
         ssVic << "You have dealt " << rival->m_Name << " a fatal blow.  Their criminal organization crumbles to nothing before you.";
         g_Game->rivals().RemoveRival(rival);
         gang.m_Events.AddMessage(ssVic.str(), IMGTYPE_PROFILE, EVENT_GOODNEWS);
@@ -494,7 +494,7 @@ cMissionRecapture::cMissionRecapture() : IGangMission("Recapture", true, true)
 
 bool cMissionRecapture::execute_mission(sGang& gang, std::stringstream& event_text)
 {
-    stringstream ss;
+    std::stringstream ss;
     ss << "Gang   " << gang.name() << "   is looking for escaped girls.\n \n";
 
     // check if any girls have run away, if no runaway then the gang continues on as normal
@@ -505,9 +505,9 @@ bool cMissionRecapture::execute_mission(sGang& gang, std::stringstream& event_te
         return false;
     }
 
-    stringstream RGmsg;
+    std::stringstream RGmsg;
     auto runaway = g_Game->GetRunaways().front();
-    string girlName = runaway->FullName();
+    std::string girlName = runaway->FullName();
     bool captured = false;
     int girlimagetype = IMGTYPE_PROFILE;
     auto gangeventtype = EVENT_GANG;
@@ -688,7 +688,7 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
 
     // `J` chance of running into a rival gang updated for .06.02.41
     int gangs = g_Game->rivals().GetNumRivalGangs();
-    int chance = 5 + max(20, gangs * 2);                // 5% base +2% per gang, 25% max
+    int chance = 5 + std::max(20, gangs * 2);                // 5% base +2% per gang, 25% max
 
     if (g_Dice.percent(chance))
     {
@@ -726,8 +726,8 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
         if (girl->has_active_trait("Incorporeal")) girl = g_Game->GetRandomGirl();        // try not to get an incorporeal girl but only 1 check
         if (girl)
         {
-            string girlName = girl->FullName();
-            stringstream NGmsg;
+            std::string girlName = girl->FullName();
+            std::stringstream NGmsg;
 
             // `J` make sure she is ready for a fight
             if (girl->combat() < 50)        girl->combat(10 + g_Dice % 30);
@@ -800,8 +800,8 @@ bool cMissionPettyTheft::execute_mission(sGang& gang, std::stringstream& ss)
         }
     }
 
-    int difficulty = max(0, g_Dice.bell(1, 6) - 2);    // 0-4
-    string who = "people";
+    int difficulty = std::max(0, g_Dice.bell(1, 6) - 2);    // 0-4
+    std::string who = "people";
     int fightbackchance = 0;
     int numberoftargets = 2 + g_Dice % 9;
     int targetfight = numberoftargets;
@@ -866,7 +866,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
     ss << cGirls::catacombs_look_for(gang_manager().Gang_Gets_Girls(), gang_manager().Gang_Gets_Items(), gang_manager().Gang_Gets_Beast());
 
     // do the bring back loop
-    while (gang.m_Num >= 1 && bringbacknum < gang.m_Num * max(1, gang.strength() / 20))
+    while (gang.m_Num >= 1 && bringbacknum < gang.m_Num * std::max(1, gang.strength() / 20))
     {
         double choice = (g_Dice % 10001) / 100.0;
         gold += g_Dice % (gang.m_Num * 20);
@@ -932,7 +932,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                 // the last few members will runaway or allow the beast to run away so that the can still bring back what they have
                 while (gang.m_Num > 1 + g_Dice % 3 && !gotbeast)
                 {
-                    if (g_Dice.percent(min(90, gang.combat())))
+                    if (g_Dice.percent(std::min(90, gang.combat())))
                     {
                         gotbeast = true;
                         continue;
@@ -988,7 +988,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                 {
                     ss << "   " << ugirl->FullName() << "   (u)\n";
                     ugirl->remove_status(STATUS_CATACOMBS);
-                    stringstream NGmsg;
+                    std::stringstream NGmsg;
                     ugirl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
                     NGmsg << ugirl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
                     ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
@@ -1000,7 +1000,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
                     if (ugirl != nullptr)  // make sure a girl was returned
                     {
                         ss << "   " << ugirl->FullName() << "\n";
-                        stringstream NGmsg;
+                        std::stringstream NGmsg;
                         ugirl->add_temporary_trait("Kidnapped", 2 + g_Dice % 10);
                         NGmsg << ugirl->FullName() << " was captured in the catacombs by " << gang.name() << ".";
                         ugirl->m_Events.AddMessage(NGmsg.str(), IMGTYPE_PROFILE, EVENT_GANG);
@@ -1059,7 +1059,7 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
 
     int susp = g_Dice.bell(0, 2), fear = g_Dice.bell(0, 2), disp = g_Dice.bell(0, 3), serv = g_Dice.bell(0, 3);
     int cha = 0, intl = 0, agil = 0, mag = 0, gold = 0, sec = 0, dirt = 0, beasts = 0;
-    int percent = max(1, min(gang.m_Num * 5, gang.service()));
+    int percent = std::max(1, std::min(gang.m_Num * 5, gang.service()));
 
     for (int i = 0; i < gang.m_Num / 2; i++)
     {
@@ -1080,9 +1080,9 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
         }
     }
 
-    if (gang.m_Num < 15 && g_Dice.percent(min(25 - gang.m_Num, gang.charisma())))
+    if (gang.m_Num < 15 && g_Dice.percent(std::min(25 - gang.m_Num, gang.charisma())))
     {
-        int addnum = max(1, g_Dice.bell(-2, 4));
+        int addnum = std::max(1, g_Dice.bell(-2, 4));
         if (addnum + gang.m_Num > 15)    addnum = 15 - gang.m_Num;
         ss << "\n \n";
         /* */if (addnum <= 1)    { addnum = 1;    ss << "A local boy"; }
@@ -1092,19 +1092,19 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
         gang.m_Num += addnum;
     }
 
-    if (g_Dice.percent(max(10, min(gang.m_Num * 6, gang.intelligence()))))
+    if (g_Dice.percent(std::max(10, std::min(gang.m_Num * 6, gang.intelligence()))))
     {
         IBuilding* brothel = g_Game->buildings().random_building_with_type(BuildingType::BROTHEL);
-        sec = max(5 + g_Dice % 26, gang.intelligence() / 4);
-        dirt = max(5 + g_Dice % 26, gang.service() / 4);
+        sec = std::max(5 + g_Dice % 26, gang.intelligence() / 4);
+        dirt = std::max(5 + g_Dice % 26, gang.service() / 4);
         brothel->m_SecurityLevel += sec;
         brothel->m_Filthiness -= dirt;
         ss << "\n \nThey cleaned up around " << brothel->name()
            << "; fixing lights, removing debris and making sure the area is secure.";
     }
-    if (g_Dice.percent(max(10, min(gang.m_Num * 6, gang.intelligence()))))
+    if (g_Dice.percent(std::max(10, std::min(gang.m_Num * 6, gang.intelligence()))))
     {
-        beasts += (max(1, g_Dice.bell(-4, 4)));
+        beasts += std::max(1, g_Dice.bell(-4, 4));
         ss << "\n \nThey rounded up ";
         if (beasts <= 1)        { beasts = 1;    ss << "a"; }
         else if (beasts == 2)    { ss << "two"; }
@@ -1114,7 +1114,7 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
 
         if (g_Dice.percent(beasts * 5))
         {
-            string itemfound;
+            std::string itemfound;
             switch (g_Dice % 4)
             {
             case 0:        itemfound = "Black Cat";        break;
@@ -1129,7 +1129,7 @@ bool cMissionService::execute_mission(sGang& gang, std::stringstream& ss)
                 sGirl* girl = brothel->girls().get_random_girl();
                 if (girl->add_item(item))                        // see if a girl can take it
                 {
-                    stringstream gss;
+                    std::stringstream gss;
                     gss << "While " << gang.name() << " was bringing in the ";
                     if (beasts == 1)
                     {
@@ -1194,7 +1194,7 @@ bool cMissionTraining::execute_mission(sGang& gang, std::stringstream& ss)
     int old_str = gang.strength();
     int old_serv = gang.service();
 
-    vector<int*> possible_skills;
+    std::vector<int*> possible_skills;
     possible_skills.push_back(&gang.m_Skills[SKILL_COMBAT]);
     possible_skills.push_back(&gang.m_Skills[SKILL_MAGIC]);
     possible_skills.push_back(&gang.m_Stats[STAT_INTELLIGENCE]);
@@ -1237,7 +1237,7 @@ bool cMissionRecruiting::execute_mission(sGang& gang, std::stringstream& ss)
     int recruit = 0;
     int start = g_Dice.bell(1, 6);        // 1-6 people are available for recruitment
     int available = start;
-    int add = max(0, g_Dice.bell(0, 4) - 1);        // possibly get 1-3 without having to ask
+    int add = std::max(0, g_Dice.bell(0, 4) - 1);        // possibly get 1-3 without having to ask
     start += add;
     int disp = g_Game->player().disposition();
     while (available > 0)
@@ -1292,7 +1292,7 @@ bool cMissionRecruiting::execute_mission(sGang& gang, std::stringstream& ss)
             if (passto)
             {
                 ss << "sent the rest to join " << passto->name() << ".";
-                stringstream pss;
+                std::stringstream pss;
                 pss << gang.name() << " sent " << passnum << " recruit" << (passnum > 1 ? "s" : "") << " that they had no room for to " << passto->name();
                 int passnumgotthere = 0;
                 for (int i = 0; i < passnum; i++)

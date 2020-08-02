@@ -20,7 +20,7 @@
 #include "cGirls.h"
 #include "cGirlTorture.h"
 #include "buildings/cDungeon.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include "cGirlGangFight.h"
 #include "Game.hpp"
@@ -112,8 +112,8 @@ void cGirlTorture::DoTorture()
 
     m_Fight = false;
 
-    string sGirlName = m_Girl->FullName();
-    string sMsg;
+    std::string sGirlName = m_Girl->FullName();
+    std::string sMsg;
 
     // clear down the message and start with her name
     m_Message = "";
@@ -377,8 +377,8 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
     *        Now check for injury first
     *        Use usigned int so can't pass negative chance
     */
-    string    sMsg;
-    string    sGirlName = m_Girl->FullName();
+    std::string    sMsg;
+    std::string    sGirlName = m_Girl->FullName();
     int        nMod = static_cast<int>(unModifier);
     if (cfg.initial.torture_mod() < 0){ nMod += nMod; }
 
@@ -489,7 +489,7 @@ void cGirlTorture::UpdateTraits()
     }
 }
 
-void cGirlTorture::add_trait(string trait, int pc)
+void cGirlTorture::add_trait(const std::string& trait, int pc)
 {
     if (m_Girl->has_active_trait(trait.c_str())) return;
     /*
@@ -500,7 +500,7 @@ void cGirlTorture::add_trait(string trait, int pc)
     if (!m_TorturedByPlayer) pc /= 2;
     if (!g_Dice.percent(pc)) return;
 
-    string sMsg = m_Girl->FullName() + " has gained trait \"" + trait + "\" from being tortured.";
+    std::string sMsg = m_Girl->FullName() + " has gained trait \"" + trait + "\" from being tortured.";
 
     if (m_TorturedByPlayer)
     {
@@ -513,7 +513,7 @@ void cGirlTorture::add_trait(string trait, int pc)
     m_Girl->gain_trait(trait.c_str());
 }
 
-inline void cGirlTorture::MakeEvent(string sMsg)
+inline void cGirlTorture::MakeEvent(const std::string& sMsg)
 {
     m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
     m_Torturer->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);

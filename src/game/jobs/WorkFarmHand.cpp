@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include "cRng.h"
 #include "buildings/cBuildingManager.h"
 #include <sstream>
+#include "cGirls.h"
 
 // `J` Job Farm - Staff - job_is_cleaning
 bool WorkFarmHand(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -26,7 +27,7 @@ bool WorkFarmHand(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKFARM; Action_Types actiontype2 = ACTION_WORKCLEANING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
     if (roll_a <= 50 && (girl.disobey_check(actiontype, JOB_FARMHAND) || girl.disobey_check(actiontype2, JOB_FARMHAND)))
     {
@@ -135,8 +136,8 @@ bool WorkFarmHand(sGirl& girl, bool Day0Night1, cRng& rng)
     brothel->m_Filthiness -= int(CleanAmt);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve girl
     int xp = 5, libido = 1, skill = 3;
@@ -152,9 +153,9 @@ bool WorkFarmHand(sGirl& girl, bool Day0Night1, cRng& rng)
     // primary (+2 for single or +1 for multiple)
     girl.service((rng % skill));
     // secondary (-1 for one then -2 for others)
-    girl.crafting(max(0, (rng % skill) - 1));
-    girl.farming(max(0, (rng % skill) - 2));
-    girl.strength(max(0, (rng % skill) - 2));
+    girl.crafting(std::max(0, (rng % skill) - 1));
+    girl.farming(std::max(0, (rng % skill) - 2));
+    girl.strength(std::max(0, (rng % skill) - 2));
 
     girl.upd_Enjoyment(actiontype, enjoyF);
     girl.upd_Enjoyment(actiontype2, enjoyC);

@@ -102,6 +102,7 @@ public:
 
     // messages
     void push_message(std::string text, int color);
+    void error(std::string message);
 
     // customers
     cCustomers& customers();
@@ -169,8 +170,8 @@ public:
     void enable_cheating();
 
     // utilities
-    bool NameExists(std::string name) const;
-    bool SurnameExists(std::string surname) const;
+    bool NameExists(const std::string& name) const;
+    bool SurnameExists(const std::string& surname) const;
 
     // Global actions
     void TalkToGirl(sGirl& target);

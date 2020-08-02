@@ -22,7 +22,7 @@
 #include "cCentre.h"
 #include "cGangs.h"
 #include "Game.hpp"
-#include "queries.hpp"
+#include "queries.h"
 #include "cJobManager.h"
 #include "character/predicates.h"
 
@@ -42,8 +42,8 @@ sCentre::~sCentre()    = default;
 void sCentre::UpdateGirls(bool is_night)
 {
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cCentre.cpp
-    stringstream ss;
-    string girlName;
+    std::stringstream ss;
+    std::string girlName;
 
     bool counselor = false;
 
@@ -155,7 +155,7 @@ void sCentre::auto_assign_job(sGirl& target, std::stringstream& message, bool is
         ss << "work as a Counselor.";
     }
         // assign 1 cleaner per 20 girls
-    else if (num_girls_on_job(JOB_CLEANCENTRE, is_night) < max(1, num_girls() / 20))
+    else if (num_girls_on_job(JOB_CLEANCENTRE, is_night) < std::max(1, num_girls() / 20))
     {
         target.m_DayJob = target.m_NightJob = JOB_CLEANCENTRE;
         ss << "clean the Centre.";

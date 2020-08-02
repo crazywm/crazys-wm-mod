@@ -23,7 +23,7 @@
 #include <vector>
 #include <string>
 #include <functional>
-#include "Inventory.hpp"
+#include "Inventory.h"
 
 class sInventoryItem;
 class sGirl;

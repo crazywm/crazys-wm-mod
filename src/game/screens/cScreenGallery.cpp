@@ -23,7 +23,7 @@
 #include "InterfaceProcesses.h"
 #include "cGangs.h"
 #include "utils/FileList.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "sConfig.h"
 #include <sstream>
 
@@ -105,7 +105,8 @@ void cScreenGallery::init(bool back)
     }
     if (usefolder == 0)
     {
-        throw std::runtime_error("ERROR: " + m_SelectedGirl->FullName() + " ( " + m_SelectedGirl->m_Name + " ) has no images.");
+        pop_window();
+        push_message(m_SelectedGirl->FullName() + " ( " + m_SelectedGirl->m_Name + " ) has no images.", COLOR_RED);
     }
     FileList readall(imagedir, "*.*");
 

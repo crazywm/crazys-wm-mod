@@ -16,6 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <sstream>
 #include "cScreenItemManagement.h"
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
@@ -28,7 +29,6 @@
 #include "InterfaceProcesses.h"
 #include "sConfig.h"
 #include "cGirls.h"
-#include "main.h"
 #include "Game.hpp"
 #include "cInventory.h"
 #include "cShop.h"
@@ -44,7 +44,7 @@ static bool AutoUseItems = false;
 
 struct cInventoryProviderPlayer: public IInventoryProvider {
     std::vector<std::string> get_data(int filter) const override {
-        stringstream ss, ss2;
+        std::stringstream ss, ss2;
         int num_items = g_Game->player().inventory().get_num_items();
         if (num_items > 0) ss << num_items;
         int numtype = g_Game->player().inventory().get_num_of_type(filter);
@@ -53,7 +53,7 @@ struct cInventoryProviderPlayer: public IInventoryProvider {
         return std::vector<std::string> {"Player", ss.str(), ss2.str()};
     }
 
-    void enumerate_items(const function<void(const sInventoryItem *, int)> &callback) const override
+    void enumerate_items(const std::function<void(const sInventoryItem *, int)> &callback) const override
     {
         for(auto entry : g_Game->player().inventory().all_items()) {
             callback(entry.first, entry.second.count);
@@ -82,7 +82,7 @@ struct cInventoryProviderShop : public IInventoryProvider {
         return std::vector<std::string> {"Shop", "", ""};
     }
 
-    void enumerate_items(const function<void(const sInventoryItem*, int)> &callback) const override
+    void enumerate_items(const std::function<void(const sInventoryItem*, int)> &callback) const override
     {
         g_Game->shop().IterateItems(callback);
     }
@@ -135,7 +135,7 @@ struct cInventoryProviderGirl : public IInventoryProvider {
         return cGirls::GetSimpleDetails(*m_Girl);
     }
 
-    void enumerate_items(const function<void(const sInventoryItem *, int)> &callback) const override
+    void enumerate_items(const std::function<void(const sInventoryItem *, int)> &callback) const override
     {
         for (auto & item : m_Girl->inventory().all_items()) {
             callback(item.first, item.second.count);
@@ -306,7 +306,7 @@ void cScreenItemManagement::init(bool back)    // `J` bookmark
 {
     Focused();
 
-    string brothel = "Current Brothel: ";
+    std::string brothel = "Current Brothel: ";
     brothel += active_building().name();
     EditTextItem(brothel, curbrothel_id);
 
@@ -387,10 +387,10 @@ void cScreenItemManagement::AddGirlsFromBuilding(IBuilding * brothel) {
 
 void cScreenItemManagement::write_item_text(const sInventoryItem* item, int owner, int target)
 {
-    stringstream ss;
-    stringstream iCost;
-    stringstream iSell;
-    stringstream iType;
+    std::stringstream ss;
+    std::stringstream iCost;
+    std::stringstream iSell;
+    std::stringstream iType;
 
     if (item == nullptr || owner < 0) {
         EditTextItem("", desc_id);
@@ -528,7 +528,7 @@ void cScreenItemManagement::update_button_states(Side side)
 void cScreenItemManagement::refresh_item_list(Side which_list)
 {
     // good enough place as any to update the cost shown on the screen
-    string temp = "PLAYER GOLD: ";
+    std::string temp = "PLAYER GOLD: ";
     temp += g_Game->gold().sval();
     EditTextItem(temp, gold_id);
 
@@ -559,7 +559,7 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
         int i = 0;
         m_OwnerList[selection]->enumerate_items([this, &data, &i](const sInventoryItem* item, int amount) {
             int          ItemColor = -1;
-            stringstream it;
+            std::stringstream it;
             it << item->m_Name;
             if(amount > 1 && amount < 999) {
                 it << " (" << amount << ")";
@@ -623,9 +623,9 @@ void cScreenItemManagement::attempt_transfer(Side transfer_from, int num)
     refresh_item_list(Side::Right);
 }
 
-string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, const sGirl& girl, string ItemName)
+std::string cScreenItemManagement::GiveItemText(int goodbad, int HateLove, const sGirl& girl, const std::string& ItemName)
 {
-    string message = "";
+    std::string message;
     if (goodbad < 20)
     {
         if (HateLove < -80)         message = "She grudgingly accepts the gift, but makes it clear that she still thinks that you rate slightly below a toad in her worldview.";

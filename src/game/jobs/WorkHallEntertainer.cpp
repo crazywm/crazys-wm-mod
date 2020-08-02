@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include <sstream>
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -29,7 +30,7 @@ bool WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKHALL;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_ENTERTAINMENT))
     {
@@ -44,7 +45,7 @@ bool WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::UnequipCombat(girl);    // put that shit away, you'll scare off the customers!
 
     const sGirl* dealeronduty = random_girl_on_job(*girl.m_Building, JOB_DEALER, Day0Night1);
-    string dealername = (dealeronduty ? "Dealer " + dealeronduty->FullName() + "" : "the Dealer");
+    std::string dealername = (dealeronduty ? "Dealer " + dealeronduty->FullName() + "" : "the Dealer");
 
     int wages = 25, tips = 0;
     int work = 0, fame = 0;
@@ -528,8 +529,8 @@ bool WorkHallEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
 
     wages += (rng % ((int)(((girl.beauty() + girl.charisma()) / 2)*0.5f))) + 10;
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
 
     // Improve girl

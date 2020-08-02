@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include "buildings/cBuildingManager.h"
 #include <sstream>
 #include "cJobManager.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -29,7 +30,7 @@ bool WorkSOStraight(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
-    stringstream ss;
+    std::stringstream ss;
     Action_Types actiontype = ACTION_WORKTRAINING;
     // if she was not in JOB_SO_STRAIGHT yesterday, reset working days to 0 before proceding
     if (girl.m_YesterDayJob != JOB_SO_STRAIGHT) girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
@@ -123,7 +124,7 @@ bool WorkSOStraight(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma region //    Count the Days                //
 
     int total = girl.m_WorkingDay - startday;
-    int xp = 1 + (max(0, girl.m_WorkingDay / 20));
+    int xp = 1 + std::max(0, girl.m_WorkingDay / 20);
     if (total <= 0)                                // she lost time so more tired
     {
         tired += 5 + rng % (-total);
@@ -166,7 +167,7 @@ bool WorkSOStraight(sGirl& girl, bool Day0Night1, cRng& rng)
             tired -= (girl.m_WorkingDay - 100) / 2;    // her last day so she rested a bit
         }
         else ss << "in progress (" << girl.m_WorkingDay << "%).";
-        wages = min(100, girl.m_WorkingDay);
+        wages = std::min(100, girl.m_WorkingDay);
     }
 
 #pragma endregion

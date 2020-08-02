@@ -21,11 +21,11 @@
 #include <cGirls.h>
 #include "pregnancy.h"
 #include "ICharacter.h"
-#include "IBuilding.hpp"
-#include "sGirl.hpp"
+#include "buildings/IBuilding.h"
+#include "sGirl.h"
 #include "predicates.h"
 #include "cTariff.h"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "character/traits/ITraitsCollection.h"
 #include "character/traits/ITraitSpec.h"
 #include "cGangs.h"
@@ -130,7 +130,7 @@ void create_pregnancy(sGirl& girl, int num_children, int type, const ICharacter&
     girl.m_Children.push_back(std::move(child));
 }
 
-bool child_is_due(sGirl& girl, sChild& child, string& summary, bool PlayerControlled) {
+bool child_is_due(sGirl& girl, sChild& child, std::string& summary, bool PlayerControlled) {
     if (child.m_MultiBirth < 1) child.m_MultiBirth = 1; // `J` fix old code
     if (child.m_MultiBirth > 5 && girl.carrying_human())
         child.m_MultiBirth = 5; // `J` fix old code - maximum 5 human children - no max for beasts
@@ -502,7 +502,7 @@ bool child_is_due(sGirl& girl, sChild& child, string& summary, bool PlayerContro
 
 void handle_son(sGirl& mom, std::string& summary, bool PlayerControlled)
 {
-    stringstream ss;
+    std::stringstream ss;
 
     summary += "A son has grown of age. ";
     ss << "Her son has grown of age";
@@ -546,7 +546,7 @@ int calc_abnormal_pc(const sGirl& mom, sGirl& sprog, bool is_players)
 }
 
 void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
-    stringstream ss;
+    std::stringstream ss;
     bool playerfather = child.m_IsPlayers;        // is 1 if father is player
     summary += "A daughter has grown of age. ";
 
@@ -613,15 +613,15 @@ void handle_daughter(sGirl& mom, const sChild& child, std::string& summary) {
         int s = 0;
         if (mom.get_base_skill(i) < child.m_Skills[i]) s = child.m_Skills[i];
         else s = mom.get_base_skill(i);
-        sprog->set_skill(i, g_Dice % min(s, 20));
+        sprog->set_skill(i, g_Dice % std::min(s, 20));
     }
 
 
     // new code to add first and last name to girls
 
     // at this point the sprog should have temporary firstname, surname, and realname
-    string prevsurname = sprog->Surname();        // save the temporary surname incase it is needed later
-    string biography;
+    std::string prevsurname = sprog->Surname();        // save the temporary surname incase it is needed later
+    std::string biography;
     if (playerfather) {
         sprog->SetSurname(g_Game->player().Surname());
         biography = "Daughter of " + mom.FullName() + " and the Brothel owner, Mr. " + g_Game->player().FullName();

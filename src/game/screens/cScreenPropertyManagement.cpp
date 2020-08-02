@@ -25,7 +25,7 @@
 #include <sstream>
 
 
-static stringstream ss;
+static std::stringstream ss;
 
 cScreenPropertyManagement::cScreenPropertyManagement() : cGameWindow("property_management.xml")
 {

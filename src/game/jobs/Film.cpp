@@ -19,7 +19,7 @@
 
 #include "cJobManager.h"
 #include "cGirls.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include "buildings/cMovieStudio.h"
 #include <sstream>
@@ -77,7 +77,7 @@ bool GenericFilmJob::WorkFilm(sGirl& girl) {
 
     // no tips at the movie set
     girl.m_Tips = 0;
-    girl.m_Pay = max(0, result.wages);
+    girl.m_Pay = std::max(0, result.wages);
 
     // Improve stats
     int xp = 10, skill = 3;

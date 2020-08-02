@@ -24,7 +24,7 @@
 #include "Game.hpp"
 #include "CLog.h"
 
-static stringstream ss;
+static std::stringstream ss;
 
 cScreenBuildingSetup::cScreenBuildingSetup() : cGameWindow("building_setup_screen.xml")
 {
@@ -85,7 +85,7 @@ void cScreenBuildingSetup::init(bool back)
     Focused();
 
     int rooms = 20, maxrooms = 200, antipregnum = 0, antipregused = 0, advert = 0;
-    string brothel;
+    std::string brothel;
     IBuilding& building = active_building();
     brothel = building.name();
 
@@ -121,7 +121,7 @@ void cScreenBuildingSetup::init(bool back)
     EditTextItem(ss.str(), potionavail_id);
     DisableWidget(autopotions_id, antipregnum < 1);
 
-    ss.str("");    ss << "Add Rooms: " << g_Game->tariff().add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
+    ss.str("");    ss << "Add Rooms: " << g_Game->tariff().add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << std::endl;
     EditTextItem(ss.str(), roomcost_id);
     DisableWidget(buyrooms_id, rooms >= maxrooms);
 
@@ -152,7 +152,7 @@ void cScreenBuildingSetup::buy_potions(int buypotions)
 
         auto& building = active_building();
         antipregnum = building.m_AntiPregPotions;
-        if (antipregnum + buynum > MaxSupplies) buysum = max(0, MaxSupplies - antipregnum);
+        if (antipregnum + buynum > MaxSupplies) buysum = std::max(0, MaxSupplies - antipregnum);
         building.m_AntiPregPotions += buysum;
 
         if (buysum < buynum)
@@ -163,7 +163,7 @@ void cScreenBuildingSetup::buy_potions(int buypotions)
                 ss << "\nYou buy " << buysum << " to fill the stock.";
                 g_Game->gold().item_cost(g_Game->tariff().anti_preg_price(buysum));
             }
-            g_Game->push_message(ss.str(), 0);
+            push_message(ss.str(), 0);
         }
         else g_Game->gold().item_cost(g_Game->tariff().anti_preg_price(buynum));
     }
@@ -176,7 +176,7 @@ void cScreenBuildingSetup::buy_rooms()
     {
         ss.str("");
         ss << "You Need " << g_Game->tariff().add_room_cost(5) << " gold to add 5 rooms.";
-        g_Game->push_message(ss.str(), COLOR_RED);
+        push_message(ss.str(), COLOR_RED);
     }
     else
     {
@@ -185,7 +185,7 @@ void cScreenBuildingSetup::buy_rooms()
         int rooms = target.m_NumRooms;
         int maxrooms = target.m_MaxNumRooms;
 
-        ss.str(""); ss << "Add Rooms: " << g_Game->tariff().add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << endl;
+        ss.str(""); ss << "Add Rooms: " << g_Game->tariff().add_room_cost(5) << " gold\nCurrent: " << rooms << "\nMaximum: " << maxrooms << std::endl;
         EditTextItem(ss.str(), roomcost_id);
         DisableWidget(buyrooms_id, rooms >= maxrooms);
         init(false);

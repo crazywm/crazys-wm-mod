@@ -24,6 +24,7 @@
 #include "Game.hpp"
 #include "character/predicates.h"
 #include "cJobManager.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -33,7 +34,7 @@ bool WorkNurse(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKNURSE;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.has_active_trait("AIDS"))
     {
@@ -396,8 +397,8 @@ bool WorkNurse(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     /* `J` this will be a place holder until a better payment system gets done
     *  this does not take into account any of your girls in surgery

@@ -38,7 +38,7 @@ namespace settings {
     extern const char* INITIAL_BOOSTED_GANGS;
 }
 
-extern string g_ReturnText;
+extern std::string g_ReturnText;
 extern int g_ReturnInt;
 
 extern cNameList g_GirlNameList;
@@ -51,8 +51,8 @@ extern cConfig cfg;
 
 bool loading = true;
 int load0new1 = 0;
-stringstream ss1;
-stringstream ss2;
+std::stringstream ss1;
+std::stringstream ss2;
 
 cScreenPreparingGame::cScreenPreparingGame() : cGameWindow("preparing_game_screen.xml")
 {
@@ -94,13 +94,13 @@ void cScreenPreparingGame::init(bool back)
         load0new1 = g_ReturnInt;
         if(g_ReturnInt != 0) {
             ss1 << "Starting New Game:   " << g_ReturnText;
-            m_AsyncLoad = std::async(launch::async,
+            m_AsyncLoad = std::async(std::launch::async,
                        [this](){
                return NewGame(g_ReturnText);
             });
         } else {
             ss1 << "Loading Game:   " << g_ReturnText;
-            m_AsyncLoad = std::async(launch::async,
+            m_AsyncLoad = std::async(std::launch::async,
                                      [this](){
                                          return LoadGame(g_ReturnText);
                                      });
@@ -207,7 +207,7 @@ bool cScreenPreparingGame::LoadGame(std::string name) {
         callback("You must start a new game with this version");
         return false;
     }
-    string version("<blank>");
+    std::string version("<blank>");
     if (pRoot->Attribute("ExeVersion")) { version = pRoot->Attribute("ExeVersion"); }
     if (version != "official") {
         callback("Warning, the exe was not detected as official, it was detected as " + version + ".  Attempting to load anyways.");

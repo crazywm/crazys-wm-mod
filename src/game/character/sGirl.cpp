@@ -1,10 +1,10 @@
 #include "utils/algorithms.hpp"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "CLog.h"
 #include "XmlMisc.h"
 #include "cJobManager.h"
 #include "cTariff.h"
-#include "IBuilding.hpp"
+#include "buildings/IBuilding.h"
 #include "Game.hpp"
 #include "cGangs.h"
 #include "character/cCustomers.h"
@@ -15,7 +15,7 @@
 #include "xml/util.h"
 #include "xml/getattr.h"
 #include "sConfig.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 #include "traits/ITraitsCollection.h"
 #include "predicates.h"
 #include "pregnancy.h"
@@ -53,7 +53,7 @@ namespace settings {
 * first: static members need declaring
 */
 bool sGirl::m_maps_setup = false;
-map<string, unsigned int> sGirl::jobs_lookup;
+std::map<std::string, unsigned int> sGirl::jobs_lookup;
 
 const char *sGirl::children_type_names[] =
                    {
@@ -79,7 +79,7 @@ sGirl::sGirl(bool unique) : ICharacter( g_Game->create_traits_collection(), uniq
 
     // Jobs and money
     m_DayJob = m_NightJob = JOB_UNSET;
-    m_WorkingDay = m_PrevWorkingDay = m_SpecialJobGoal = 0;
+    m_WorkingDay = m_PrevWorkingDay = 0;
 
     m_Refused_To_Work_Day = m_Refused_To_Work_Night = false;
     m_Money = m_Pay = m_Tips = 0;
@@ -127,9 +127,9 @@ sGirl::~sGirl()        // destructor
     m_Events.Clear();
 }
 
-string stringtolowerj(string name)
+std::string stringtolowerj(std::string name)
 {
-    string s;
+    std::string s;
     for (char i : name)
     {
         if (tolower(i) != tolower(' ') && tolower(i) != tolower('.') && tolower(i) != tolower(','))
@@ -171,7 +171,7 @@ bool sGirl::disobey_check(int action, JOBS job)
     {
     case ACTION_COMBAT:
         // WD use best stat as many girls have only one stat high
-        diff = max(combat(), magic()) - 50;
+        diff = std::max(combat(), magic()) - 50;
         diff /= 3;
         chance_to_obey += diff;
         break;
@@ -351,7 +351,7 @@ void sGirl::setup_maps()
     jobs_lookup["255"] = 255;
 }
 
-JOBS sGirl::lookup_jobs_code(string s)
+JOBS sGirl::lookup_jobs_code(std::string s)
 {
     if (!m_maps_setup)    // only need to do this once
         setup_maps();
@@ -519,7 +519,7 @@ int sGirl::upd_base_stat(int stat_id, int amount, bool usetraits) {
 // returns false if she becomes pregnant or true if she does not
 bool sGirl::calc_pregnancy(int chance, int type, const ICharacter& father)
 {
-    string text = "She has";
+    std::string text = "She has";
     if (g_Dice.percent(100 - chance)) return true;
     /*
     *    narrative depends on what it was that Did The Deed
@@ -652,10 +652,8 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     // load working day counter
     pGirl->QueryIntAttribute("WorkingDay", &m_WorkingDay);
     pGirl->QueryIntAttribute("PrevWorkingDay", &m_PrevWorkingDay);    // `J` added
-    pGirl->QueryIntAttribute("SpecialJobGoal", &m_SpecialJobGoal);    // `J` added
     if (m_WorkingDay < 0)        m_WorkingDay = 0;
     if (m_PrevWorkingDay < 0)    m_PrevWorkingDay = 0;
-    if (m_SpecialJobGoal < 0)    m_SpecialJobGoal = 0;
 
     // load acom level
     pGirl->QueryIntAttribute("AccLevel", &m_AccLevel);
@@ -663,7 +661,7 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     pGirl->QueryIntAttribute("HousePercent", &m_HousePercent);
 
     // `J` changeing jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
-    string tempst = pGirl->Attribute("DayJob");            m_DayJob = lookup_jobs_code(tempst);
+    std::string tempst = pGirl->Attribute("DayJob");            m_DayJob = lookup_jobs_code(tempst);
     tempst = pGirl->Attribute("NightJob");                m_NightJob = lookup_jobs_code(tempst);
     tempst = pGirl->Attribute("PrevDayJob");            m_PrevDayJob = lookup_jobs_code(tempst);
     tempst = pGirl->Attribute("PrevNightJob");            m_PrevNightJob = lookup_jobs_code(tempst);
@@ -751,7 +749,6 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
     // save working day counter
     elGirl.SetAttribute("WorkingDay", m_WorkingDay);
     elGirl.SetAttribute("PrevWorkingDay", m_PrevWorkingDay);    // `J` added
-    elGirl.SetAttribute("SpecialJobGoal", m_SpecialJobGoal);    // `J` added
 
     // `J` changed jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
     // save day/night jobs
@@ -1025,10 +1022,10 @@ bool sGirl::was_resting() const
             (m_PrevDayJob == JOB_RESTING        && m_PrevNightJob == JOB_RESTING));
 }
 
-void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
+void sGirl::OutputGirlDetailString(std::string& Data, const std::string& detailName) const
 {
     //given a statistic name, set a string to a value that represents that statistic
-    static stringstream ss;
+    static std::stringstream ss;
     ss.str("");
 
     bool interrupted = false;    // `J` added
@@ -1198,9 +1195,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
         }
     }
 
-    else if (detailName.find("STAT_") != string::npos)
+    else if (detailName.find("STAT_") != std::string::npos)
     {
-        string stat = detailName;
+        std::string stat = detailName;
         stat.replace(0, 5, "");
         int code = get_stat_id(stat);
         if (code != -1)
@@ -1212,9 +1209,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
             ss << "Error";
         }
     }
-    else if (detailName.find("SKILL_") != string::npos)
+    else if (detailName.find("SKILL_") != std::string::npos)
     {
-        string skill = detailName;
+        std::string skill = detailName;
         skill.replace(0, 6, "");
         int code = get_skill_id(skill);
         if (code != -1)
@@ -1226,9 +1223,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
             ss << "Error";
         }
     }
-    else if (detailName.find("TRAIT_") != string::npos)
+    else if (detailName.find("TRAIT_") != std::string::npos)
     {
-        string trait = detailName;
+        std::string trait = detailName;
         trait.replace(0, 6, "");
         if (this->has_active_trait(trait.c_str()))
         {
@@ -1239,9 +1236,9 @@ void sGirl::OutputGirlDetailString(string& Data, const string& detailName) const
             ss << "No";
         }
     }
-    else if (detailName.find("STATUS_") != string::npos)
+    else if (detailName.find("STATUS_") != std::string::npos)
     {
-        string status = detailName;
+        std::string status = detailName;
         status.replace(0, 7, "");
         int code = get_status_id(status);
         if (code != -1)
@@ -1507,7 +1504,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
         std::string tag = child.Value();
         if (tag == "Canonical_Daughters")
         {
-            string s = child.Attribute("Name");
+            std::string s = child.Attribute("Name");
             girl->m_Canonical_Daughters.push_back(s);
         }
         if (tag == "Trait")    //get the trait name

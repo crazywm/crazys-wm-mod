@@ -21,7 +21,8 @@
 #include "cRng.h"
 #include "buildings/cBuildingManager.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -30,7 +31,7 @@ bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
 {
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKCARING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100();
     if (roll_a < 50 && girl.disobey_check(actiontype, JOB_BEASTCARER))
     {
@@ -73,7 +74,7 @@ bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
             else ss << addbeasts << " beasts";
             ss << " for the brothel" << (addbeasts > 0 ? "." : " but failed.");
             girl.magic(addbeasts);
-            girl.mana(-30 * max(1, addbeasts));
+            girl.mana(-30 * std::max(1, addbeasts));
         }
         else if (girl.animalhandling() > 50 && girl.charisma() > 50)
         {
@@ -151,8 +152,8 @@ bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve girl
     int xp = 5 + (g_Game->storage().beasts() / 10), skill = 2 + (g_Game->storage().beasts() / 20);
@@ -161,8 +162,8 @@ bool WorkBeastCare(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
 
     girl.exp(xp);
-    girl.service(max(1, (rng % skill) - 1));
-    girl.animalhandling(max(1, (rng % skill) + 1));
+    girl.service(std::max(1, (rng % skill) - 1));
+    girl.animalhandling(std::max(1, (rng % skill) + 1));
 
     girl.upd_Enjoyment(actiontype, enjoy);
     cGirls::PossiblyLoseExistingTrait(girl, "Elegant", 40, actiontype, " Working with dirty, smelly beasts has damaged ${name}'s hair, skin and nails making her less Elegant.", Day0Night1);

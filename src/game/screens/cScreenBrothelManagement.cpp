@@ -24,8 +24,7 @@
 #include "cScreenBrothelManagement.h"
 #include "utils/FileList.h"
 #include "Game.hpp"
-#include "CLog.h"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "scripting/GameEvents.h"
 #include <sstream>
 #include "sConfig.h"
@@ -86,7 +85,7 @@ void IBuildingScreen::set_ids()
     });
     SetButtonCallback(save_id, [this]() {
         SaveGame();
-        g_Game->push_message("Game Saved", COLOR_GREEN);
+        push_message("Game Saved", COLOR_GREEN);
     });
     SetButtonCallback(quit_id, [this]() {
         input_confirm([this]() {
@@ -143,7 +142,7 @@ void IBuildingScreen::try_walk()
 
 static std::string fame_text(const IBuilding* brothel)
 {
-    stringstream ss;
+    std::stringstream ss;
     /* */if (brothel->m_Fame >= 90)/*     */    ss << "World Renowned";
     else if (brothel->m_Fame >= 80)/*     */    ss << "Famous";
     else if (brothel->m_Fame >= 70)/*     */    ss << "Well Known";
@@ -157,7 +156,7 @@ static std::string fame_text(const IBuilding* brothel)
 
 static std::string happiness_text(const IBuilding* brothel)
 {
-    stringstream ss;
+    std::stringstream ss;
     /* */if (brothel->m_Happiness >= 80)/* */    ss << "High";
     else if (brothel->m_Happiness < 40)/*  */    ss << "Low";
     else /*                                */    ss << "Medium";
@@ -167,13 +166,13 @@ static std::string happiness_text(const IBuilding* brothel)
 
 static std::string get_building_summary(const IBuilding& building)
 {
-    stringstream ss;
+    std::stringstream ss;
     long profit = building.m_Finance.total_profit();
     /*
     *    format the summary into one big string, and return it
     */
     ss << "Customer Happiness: " << happiness_text(&building);
-    ss << "\nFame: " << fame_text(&building) << endl;
+    ss << "\nFame: " << fame_text(&building) << std::endl;
     ss << "\nRooms (available/current): " << building.free_rooms() << " / " << building.num_rooms();
     ss << "\nThis brothel's Profit: " << profit;
     ss << "\nYour Gold: " << g_Game->gold().ival();

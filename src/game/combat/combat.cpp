@@ -21,16 +21,17 @@
 #include "combatant.h"
 
 #include <algorithm>
-#include <main.h>
 #include "utils/streaming_random_selection.hpp"
 #include "cGirlGangFight.h"
 #include "cGangs.h"
 #include "Game.hpp"
-#include "character/sGirl.hpp"
+#include "cNameList.h"
+#include "character/sGirl.h"
 #include "character/cPlayer.h"
 #include <cmath>
 
 extern cRng g_Dice;
+extern cNameList g_BoysNameList;
 
 Combatant& Party::draw_target() {
     return *active_members[ g_Dice % active_members.size() ];
@@ -232,7 +233,7 @@ Combat::Combat(ECombatObjective attacker_aim, ECombatObjective defender_aim) :
     m_Actions.push_back(std::make_unique<Capture>(this));
 }
 
-Combatant& Combat::add_combatant(ECombatSide side, unique_ptr<Combatant> combatant) {
+Combatant& Combat::add_combatant(ECombatSide side, std::unique_ptr<Combatant> combatant) {
     if(side == ECombatSide::ATTACKER) {
         combatant->setup_parties(&m_Attackers, &m_Defenders);
         return m_Attackers.add_member(std::move(combatant));

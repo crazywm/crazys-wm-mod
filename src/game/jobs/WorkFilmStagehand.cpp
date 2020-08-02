@@ -18,9 +18,10 @@
 */
 #include "cRng.h"
 #include "buildings/cMovieStudio.h"
-#include "buildings/queries.hpp"
+#include "buildings/queries.h"
 #include <sstream>
 #include "cJobManager.h"
+#include "cGirls.h"
 
 // `J` Job Movie Studio - Crew - job_is_cleaning
 bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -28,7 +29,7 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = dynamic_cast<sMovieStudio*>(girl.m_Building);
 
     Action_Types actiontype = ACTION_WORKMOVIE; Action_Types actiontype2 = ACTION_WORKCLEANING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100();
     if (roll_a <= 50 && (girl.disobey_check(actiontype, JOB_STAGEHAND) || girl.disobey_check(actiontype2, JOB_STAGEHAND)))
     {
@@ -79,7 +80,7 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     else
     {
-        enjoyc += max(0, rng % 3 - 1); if (filming) enjoym += max(0, rng % 3 - 1);
+        enjoyc += std::max(0, rng % 3 - 1); if (filming) enjoym += std::max(0, rng % 3 - 1);
         ss << "Otherwise, the shift passed uneventfully.";
     }
     jobperformance += enjoyc + enjoym;
@@ -93,12 +94,12 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
 
         if (jobperformance > 0)
         {
-            jobperformance = max(1.0, jobperformance / 10);
+            jobperformance = std::max(1.0, jobperformance / 10);
             ss << "She helped improve the scene " << (int)jobperformance << "% with her production skills.";
         }
         else if (jobperformance < 0)
         {
-            jobperformance = min(-1.0, jobperformance / 10);
+            jobperformance = std::min(-1.0, jobperformance / 10);
             ss << "She did a bad job today, reduceing the scene quality " << (int)jobperformance << "% with her poor performance.";
         }
         else ss << "She did not really help the scene quality.";
@@ -134,8 +135,8 @@ bool WorkFilmStagehand(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.AddMessage(ss.str(), imagetype, EVENT_NIGHTSHIFT);
     if (filming) brothel->m_StagehandQuality += int(jobperformance);
     brothel->m_Filthiness -= int(CleanAmt);
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
 
     // Improve girl

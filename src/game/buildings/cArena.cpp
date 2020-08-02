@@ -21,11 +21,12 @@
 
 #include "cArena.h"
 #include "cGangs.h"
-#include "IBuilding.hpp"
+#include "IBuilding.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "cJobManager.h"
 #include "scripting/GameEvents.h"
+#include "cGirls.h"
 
 extern cRng             g_Dice;
 
@@ -43,7 +44,7 @@ sArena::~sArena() = default;
 void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
 {
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cArena.cpp
-    stringstream ss;
+    std::stringstream ss;
 
     //  Handle the start of shift stuff for all girls.  //
     BeginShift();
@@ -77,7 +78,7 @@ void sArena::UpdateGirls(bool is_night)    // Start_Building_Process_B
         // fight beasts so if there is no beasts dont want them doing nothing
         if (sw == JOB_FIGHTBEASTS && g_Game->storage().beasts() < 1)
         {
-            stringstream ssc;
+            std::stringstream ssc;
             ssc << "There are no beasts to fight so ${name} was sent to ";
 
             if (current.health() < 50)
@@ -221,7 +222,6 @@ std::shared_ptr<sGirl> sArena::meet_girl() const
     // let's get a girl for the player to meet was to get arena.. dont think this should happen this is tryouts arena girl should be ready to fight. CRAZY
     auto girl = g_Game->GetRandomGirl(false, false, true);
     if(girl) {
-        g_Game->girl_pool().AddGirl(girl);
         girl->TriggerEvent(EDefaultEvent::MEET_GIRL_ARENA);
     }
     return girl;

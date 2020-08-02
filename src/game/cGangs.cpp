@@ -28,8 +28,8 @@
 #include "cObjectiveManager.hpp"
 #include "cInventory.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
-#include "gang_missions.hpp"
+#include "sStorage.h"
+#include "gang_missions.h"
 #include "cRival.h"
 
 #include "utils/DirPath.h"
@@ -58,7 +58,7 @@ cGangManager::cGangManager()
     m_Gang_Gets_Girls = m_Gang_Gets_Items = m_Gang_Gets_Beast = 0;
 
     // load gang names
-    ifstream in;
+    std::ifstream in;
     // WD: Typecast to resolve ambiguous call in VS 2010
     DirPath dp = DirPath() << "Resources" << "Data" << "HiredGangNames.txt";
     in.open(dp.c_str());
@@ -203,13 +203,13 @@ bool sGang::LoadGangXML(const tinyxml2::XMLElement& element)
         m_Stats[STAT_CONSTITUTION] <= 0 || m_Stats[STAT_CHARISMA] <= 0 || m_Stats[STAT_STRENGTH] <= 0 || m_Skills[SKILL_SERVICE] <= 0)
     {
         int total =
-            max(0, m_Skills[SKILL_MAGIC]) +
-            max(0, m_Skills[SKILL_COMBAT]) +
-            max(0, m_Stats[STAT_INTELLIGENCE]) +
-            max(0, m_Stats[STAT_AGILITY]) +
-            max(0, m_Stats[STAT_CONSTITUTION]) +
-            max(0, m_Stats[STAT_CHARISMA]) +
-            max(0, m_Stats[STAT_STRENGTH]);
+                std::max(0, m_Skills[SKILL_MAGIC]) +
+                std::max(0, m_Skills[SKILL_COMBAT]) +
+                std::max(0, m_Stats[STAT_INTELLIGENCE]) +
+                std::max(0, m_Stats[STAT_AGILITY]) +
+                std::max(0, m_Stats[STAT_CONSTITUTION]) +
+                std::max(0, m_Stats[STAT_CHARISMA]) +
+                std::max(0, m_Stats[STAT_STRENGTH]);
         int low = total / 8;
         int high = total / 6;
         if (m_Skills[SKILL_MAGIC] <= 0)                m_Skills[SKILL_MAGIC] = g_Dice.bell(low, high);
@@ -285,7 +285,7 @@ void cGangManager::AddNewGang(bool boosted)
     int max_members = g_Game->settings().get_integer(settings::GANG_MAX_START_MEMBERS);
     int min_members = g_Game->settings().get_integer(settings::GANG_MIN_START_MEMBERS);
     newGang->m_Num = g_Dice.in_range(min_members, max_members);
-    if (boosted) newGang->m_Num = min(15, newGang->m_Num + 5);
+    if (boosted) newGang->m_Num = std::min(15, newGang->m_Num + 5);
 
     int new_val;
     for (int & m_Skill : newGang->m_Skills)
@@ -357,7 +357,7 @@ sGang cGangManager::GetTempGang()
 sGang cGangManager::GetTempGang(int mod)
 {
     sGang newGang;
-    newGang.m_Num = min(15, g_Dice.bell(6, 18));
+    newGang.m_Num = std::min(15, g_Dice.bell(6, 18));
     for (int & m_Skill : newGang.m_Skills)
     {
         m_Skill = (g_Dice % 40) + 21 + (g_Dice % mod);
@@ -451,7 +451,7 @@ void sGang::BoostRandomSkill(const std::vector<int *>& possible_skills, int coun
     {
         int *affect_skill = nullptr;
         int total_chance = 0;
-        vector<int> chance;
+        std::vector<int> chance;
 
         for (int i = 0; i < (int)possible_skills.size(); i++)
         {  // figure chances for each skill/stat; more likely to choose those they're better at
@@ -601,7 +601,7 @@ void sGang::use_potion()
 // Missions done here - Updated for .06.01.09
 void cGangManager::UpdateGangs()
 {
-    stringstream ss;
+    std::stringstream ss;
 
     // maintain recruitable gangs list, potentially pruning some old ones
     auto remove_chance = g_Game->settings().get_percent(settings::GANG_REMOVE_CHANCE);
@@ -644,7 +644,7 @@ void cGangManager::UpdateGangs()
             m_Missions[currentGang->m_MissionID]->run(*currentGang);
             break;
         default: {
-            stringstream sse;
+            std::stringstream sse;
             g_LogFile.log(ELogLevel::ERROR, "no mission set or mission not found : ", currentGang->m_MissionID);
             sse << "Error: no mission set or mission not found : " << currentGang->m_MissionID;
             currentGang->m_Events.AddMessage(sse.str(), IMGTYPE_PROFILE, EVENT_GANG);
@@ -759,9 +759,9 @@ sGang* cGangManager::GetGangRecruitingNotFull(int roomfor)
 }
 
 // Get a vector with all the gangs doing MISS_FOO
-vector<sGang*> cGangManager::gangs_on_mission(u_int mission_id)
+std::vector<sGang*> cGangManager::gangs_on_mission(u_int mission_id)
 {
-    vector<sGang*> v; // loop through the gangs
+    std::vector<sGang*> v; // loop through the gangs
     for(auto& gang : m_PlayersGangs)
     {
         // if they're not doing the job we are looking for, disregard them
@@ -772,9 +772,9 @@ vector<sGang*> cGangManager::gangs_on_mission(u_int mission_id)
 }
 
 // `J` - Added for .06.01.09
-vector<sGang*> cGangManager::gangs_watching_girls()
+std::vector<sGang*> cGangManager::gangs_watching_girls()
 {
-    vector<sGang*> v; // loop through the gangs
+    std::vector<sGang*> v; // loop through the gangs
     for(auto& gang : m_PlayersGangs)
     {
         // if they're not doing the job we are looking for, disregard them
@@ -791,7 +791,7 @@ vector<sGang*> cGangManager::gangs_watching_girls()
 int cGangManager::chance_to_catch(const sGirl& girl)
 {
     int pc = 0;
-    vector<sGang*> gvec = gangs_on_mission(MISS_SPYGIRLS);    // get a vector containing all the spying gangs
+    std::vector<sGang*> gvec = gangs_on_mission(MISS_SPYGIRLS);    // get a vector containing all the spying gangs
     for (const auto& gang: gvec)        // whizz down the vector adding probability as we go
     {
         /*
@@ -818,7 +818,7 @@ bool cGangManager::losegang(sGang& gang)
 {
     if (gang.m_Num <= 0)
     {
-        stringstream ss;
+        std::stringstream ss;
         int mission = gang.m_MissionID;
         ss << gang.name() << " was lost while ";
         switch (mission)
@@ -846,7 +846,7 @@ bool cGangManager::losegang(sGang& gang)
 // `J` - Added for .06.01.09
 void cGangManager::check_gang_recruit(sGang& gang)
 {
-    stringstream ss;
+    std::stringstream ss;
     if (gang.m_MissionID == MISS_SERVICE || gang.m_MissionID == MISS_TRAINING){}    // `J` service and training can have as few as 1 member doing it.
     else if (gang.m_Num <= 5 && gang.m_MissionID != MISS_RECRUIT)
     {
@@ -876,7 +876,7 @@ void cGangManager::check_gang_recruit(sGang& gang)
 // `J` - Added for .06.01.09
 void cGangManager::GangStartOfShift()
 {
-    stringstream ss;
+    std::stringstream ss;
 
     RestockNetsAndPots();
 

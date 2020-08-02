@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "Game.hpp"
 #include "sConfig.h"
 #include <sstream>
+#include "cGirls.h"
 
 extern bool                        g_WalkAround;
 extern bool                        g_AllTogle;
@@ -151,7 +152,7 @@ void cScreenTown::init(bool back)
     HideWidget(brothel6_id, num_brothels < 6);
 
 
-    string brothel = "Current Brothel: ";
+    std::string brothel = "Current Brothel: ";
     brothel += active_building().name();
     EditTextItem(brothel, curbrothel_id);
 }
@@ -162,7 +163,7 @@ void cScreenTown::process()
     if (girlimage_id != -1) HideWidget(girlimage_id, true);
 }
 
-string cScreenTown::walk_no_luck()
+std::string cScreenTown::walk_no_luck()
 {
     if (m_first_walk)
     {
@@ -186,19 +187,19 @@ void cScreenTown::do_walk()
 {
     if (g_WalkAround)
     {
-        g_Game->push_message("You can only do this once per week.", COLOR_RED);
+        push_message("You can only do this once per week.", COLOR_RED);
         return;
     }
     auto girl = g_Game->GetRandomGirl();                        // let's get a girl for the player to meet
     if (girl == nullptr)                                                // if there's no girl, no meeting
     {
-        g_Game->push_message(walk_no_luck(), COLOR_RED);
+        push_message(walk_no_luck(), COLOR_RED);
         return;
     }
     // most of the time, you're not going to find anyone unless you're cheating, of course.
     if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Game->allow_cheats())
     {
-        g_Game->push_message(walk_no_luck(), COLOR_BLUE);
+        push_message(walk_no_luck(), COLOR_BLUE);
         return;
     }
 
@@ -208,14 +209,12 @@ void cScreenTown::do_walk()
         HideWidget(girlimage_id, false);
     }
 
-    /// TODO at this point, the girl is nowhere; I think acquiring by script will fail
-    g_Game->girl_pool().AddGirl(girl);
     girl->TriggerEvent("girl:meet:town");
 }
 
 bool cScreenTown::buy_building(static_brothel_data* bck)
 {
-    locale syslocale("");
+    std::locale syslocale("");
     std::stringstream ss;
     ss.imbue(syslocale);
 
@@ -226,17 +225,17 @@ bool cScreenTown::buy_building(static_brothel_data* bck)
             ss << "\n" << ("You need ") << (bck->price - g_Game->gold().ival()) << (" more gold to afford it.");
         if (g_Game->gang_manager().GetNumBusinessExtorted() < bck->business)
             ss << "\n" << ("You need to control ") << (bck->business - g_Game->gang_manager().GetNumBusinessExtorted()) << (" more businesses.");
-        g_Game->push_message(ss.str(), 0);
+        push_message(ss.str(), 0);
         return false;
     }
     else    // can buy it
     {
         ss << ("Do you wish to purchase this building for ") << bck->price << (" gold? It has ") << bck->data.rooms << (" rooms.");
-        g_Game->push_message(ss.str(), 2);
+        push_message(ss.str(), 2);
         input_choice("", std::vector<std::string>{"Buy It", "Don't Buy It"}, [this, bck](int selection) {
             if(selection != 0) return;
             if (bck->data.type == BuildingType::BROTHEL) {
-                g_Game->push_message("Enter a name for your new brothel.", 0);
+                push_message("Enter a name for your new brothel.", 0);
                 input_string([this, bck](const std::string& name){
                     if (g_Game->get_objective() && g_Game->get_objective()->m_Objective == OBJECTIVE_GETNEXTBROTHEL)
                         g_Game->objective_manager().PassObjective();

@@ -22,7 +22,8 @@
 #include "cRng.h"
 #include <sstream>
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -32,7 +33,7 @@ bool WorkBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKBAR;
-    stringstream ss;
+    std::stringstream ss;
     int roll_jp = rng.d100(), roll_e = rng.d100(), roll_c = rng.d100();
     //Does she work?
     if (girl.libido() >= 90 && girl.has_active_trait("Nymphomaniac") && rng.percent(20))
@@ -680,8 +681,8 @@ bool WorkBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma region    //    Money                    //
 
     // drinks are sold for 3gp each, if there are not enough in stock they cost 1gp.
-    int ds = max(0, (int)drinkssold);
-    int dw = max(0, (int)drinkswasted);
+    int ds = std::max(0, (int)drinkssold);
+    int dw = std::max(0, (int)drinkswasted);
     int d1 = ds + dw;                                                    // all drinks needed
     int d2 = g_Game->storage().drinks() >= d1 ? d1 : g_Game->storage().drinks();        // Drinks taken from stock
     int d3 = g_Game->storage().drinks() >= d1 ? 0 : d1 - g_Game->storage().drinks();    // Drinks needed to be bought
@@ -758,9 +759,9 @@ bool WorkBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             girl.happiness(-(dw / 5));
 
-            int c = min(dw, (int)wages);
-            int d = min(dw - c, (int)tips);
-            int e = min(0, dw - d);
+            int c = std::min(dw, (int)wages);
+            int d = std::min(dw - c, (int)tips);
+            int e = std::min(0, dw - d);
             bool left = false;
             if (dw < (int)wages)                    // she pays for all wasted drinks out of wages
             {
@@ -824,17 +825,17 @@ bool WorkBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     int t0 = d1;
     int easydrinks = (girl.constitution() + girl.service()) / 4;
     int t1 = easydrinks;                    // 1 tired per 20 drinks
-    int t2 = max(0, t0 - t1);                // 1 tired per 10 drinks
-    int t3 = max(0, t0 - (t1+t2));            // 1 tired per 2 drinks
-    int tired = max(0,(t1/20))+max(0,(t2/10))+max(0,(t3/2));
+    int t2 = std::max(0, t0 - t1);                // 1 tired per 10 drinks
+    int t3 = std::max(0, t0 - (t1+t2));            // 1 tired per 2 drinks
+    int tired = std::max(0,(t1/20))+std::max(0,(t2/10))+std::max(0,(t3/2));
 #else
     int tired = max(1, (600 - ((int)jobperformance + (girl.constitution() * 3))) / 10);
 
 #endif
 
     // Money
-    girl.m_Tips = max(0, (int)tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, (int)tips);
+    girl.m_Pay = std::max(0, wages);
 
     g_Game->gold().bar_income(profit);
 

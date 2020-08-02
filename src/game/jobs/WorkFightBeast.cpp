@@ -21,13 +21,14 @@
 #include "cInventory.h"
 #include <sstream>
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "CLog.h"
 #include "cGirlGangFight.h"
 #include "combat/combat.h"
 #include "combat/combatant.h"
 #include "character/predicates.h"
 #include "character/cCustomers.h"
+#include "cGirls.h"
 
 // `J` Job Arena - Fighting
 bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -35,7 +36,7 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_COMBAT;
-    stringstream ss;
+    std::stringstream ss;
 
     if (g_Game->storage().beasts() < 1)
     {
@@ -109,8 +110,8 @@ bool WorkFightBeast(sGirl& girl, bool Day0Night1, cRng& rng)
         int roll_max = girl.fame() + girl.charisma();
         roll_max /= 4;
         wages += 10 + rng%roll_max;
-        girl.m_Tips = max(0, tips);
-        girl.m_Pay = max(0, wages);
+        girl.m_Tips = std::max(0, tips);
+        girl.m_Pay = std::max(0, wages);
         girl.fame(2);
     }
     else  // she lost or it was a draw

@@ -22,6 +22,7 @@
 #include "Game.hpp"
 #include <sstream>
 #include "sConfig.h"
+#include "cGirls.h"
 
 extern cConfig cfg;
 
@@ -32,7 +33,7 @@ bool WorkFilmDirector(sGirl& girl, bool Day0Night1, cRng& rng)
 
     Action_Types actiontype = ACTION_WORKMATRON;
     // DisobeyCheck is done in the building flow.
-    stringstream ss;
+    std::stringstream ss;
     brothel->m_DirectorName = girl.FullName();
 
     ss << "${name} worked as a Film Director.\n \n";
@@ -68,8 +69,8 @@ bool WorkFilmDirector(sGirl& girl, bool Day0Night1, cRng& rng)
     else /*                   */    ss << "She did not really help the scene quality.\n";
 
     wages += int(float(100.0 + (((girl.get_skill(SKILL_SERVICE) + girl.get_stat(STAT_CHARISMA) + girl.get_stat(STAT_INTELLIGENCE) + girl.get_stat(STAT_CONFIDENCE) + girl.get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
     brothel->m_DirectorQuality += (int)jobperformance;
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NIGHTSHIFT);
 

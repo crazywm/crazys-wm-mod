@@ -47,7 +47,7 @@ void cScreenMayor::set_ids()
 void cScreenMayor::init(bool back)
 {
     Focused();
-    stringstream ss;
+    std::stringstream ss;
     ss << "Influence Details\n";
 
     g_Game->UpdateBribeInfluence();

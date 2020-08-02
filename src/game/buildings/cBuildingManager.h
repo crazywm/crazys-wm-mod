@@ -23,7 +23,7 @@
 #define WM_CBUILDINGMANAGER_H
 
 #include <string>
-#include "IBuilding.hpp"
+#include "IBuilding.h"
 
 struct BrothelCreationData {
     int    rooms;
@@ -84,8 +84,8 @@ public:
     bool has_building(BuildingType type) const;
 
     /// name checks
-    bool NameExists(string name) const;
-    bool SurnameExists(const string& name) const;
+    bool NameExists(std::string name) const;
+    bool SurnameExists(const std::string& name) const;
 
     const std::vector<std::unique_ptr<IBuilding>>& buildings() const {
         return m_Buildings;

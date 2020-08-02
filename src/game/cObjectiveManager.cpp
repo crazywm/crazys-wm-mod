@@ -27,7 +27,7 @@
 #include "cInventory.h"
 #include <sstream>
 #include "xml/util.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 #include "buildings/cBuildingManager.h"
 
 extern cRng                    g_Dice;
@@ -66,7 +66,7 @@ void cObjectiveManager::UpdateObjective()
         // `J` moved to the end and fixed so if the objective is passed (thus deleted), failure is not returned
         if (m_Objective != nullptr && m_Objective->m_Limit == 0)
         {
-            stringstream ss;
+            std::stringstream ss;
             if (!m_Objective->m_FailText.empty())        ss << "You have failed your objective:\n" << m_Objective->m_FailText;
             else if (m_Objective->m_Text.empty())    ss << "You have failed an objective.";
             else ss << "You have failed your objective to " << m_Objective->m_Text;
@@ -312,7 +312,7 @@ void cObjectiveManager::PassObjective()
             if (!rival) m_Objective->m_Reward = REWARD_GOLD;
         }
 
-        stringstream ss;
+        std::stringstream ss;
         if (m_Objective->m_Text.empty())    ss << "You have completed your objective and you";
         else ss << "You have completed your objective to " << m_Objective->m_Text <<"\nYou";
 
@@ -327,7 +327,7 @@ void cObjectiveManager::PassObjective()
             // `J` if you had a time limit you get extra gold for the unused time
             int mod = m_Objective->m_Target;
             if (m_Objective->m_Objective == OBJECTIVE_REACHGOLDTARGET || m_Objective->m_Objective == OBJECTIVE_STEALXAMOUNTOFGOLD)
-                mod = min(1, m_Objective->m_Target / 100);
+                mod = std::min(1, m_Objective->m_Target / 100);
             if (m_Objective->m_Limit > 0) gold += mod * m_Objective->m_Limit;
 
             ss << " get " << gold << " gold.";
@@ -341,19 +341,19 @@ void cObjectiveManager::PassObjective()
 
             // `J` throw in a few extra girls if your mission was to get more girls
             int div = 0;
-            int bonus = min(5, m_Objective->m_Limit < 4 ? 1 : m_Objective->m_Limit / 2);
+            int bonus = std::min(5, m_Objective->m_Limit < 4 ? 1 : m_Objective->m_Limit / 2);
             if (m_Objective->m_Objective == OBJECTIVE_CAPTUREXCATACOMBGIRLS || m_Objective->m_Objective == OBJECTIVE_KIDNAPXGIRLS)
                 div = 10;
             if (m_Objective->m_Objective == OBJECTIVE_HAVEXMONSTERGIRLS || m_Objective->m_Objective == OBJECTIVE_HAVEXAMOUNTOFGIRLS)
                 div = 20;
-            if (bonus > 0 && div > 0) girls += min(bonus, m_Objective->m_Target / div);
+            if (bonus > 0 && div > 0) girls += std::min(bonus, m_Objective->m_Target / div);
 
 
             ss << " get " << girls << " slave girl" << (girls > 1 ? "s" : "") << ":\n";
             while (girls > 0)
             {
                 auto girl = g_Game->CreateRandomGirl(0, true, false, g_Dice % 3 == 1);
-                stringstream ssg;
+                std::stringstream ssg;
                 ss << girl->FullName() << "\n";
                 ssg << girl->FullName() << " was given to you as a reward for completing your objective.";
                 girl->m_Events.AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
@@ -424,9 +424,9 @@ void cObjectiveManager::PassObjective()
 
         case REWARD_ITEM:
         {
-            int numItems = max(1, m_Objective->m_Difficulty);
+            int numItems = std::max(1, m_Objective->m_Difficulty);
             int tries = numItems * 10;
-            vector<string> itemnames;
+            std::vector<std::string> itemnames;
             while (numItems > 0 && tries > 0)
             {
                 tries--;

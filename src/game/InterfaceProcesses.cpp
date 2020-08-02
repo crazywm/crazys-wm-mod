@@ -17,8 +17,8 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #pragma region //    Includes and Externs            //
+#include "CLog.h"
 #include "InterfaceProcesses.h"
-#include "main.h"
 #include "Revision.h"
 #include "utils/FileList.h"
 #include "utils/DirPath.h"
@@ -28,6 +28,7 @@
 #include "cGangs.h"
 #include "cInventory.h"
 #include "sConfig.h"
+#include "cNameList.h"
 
 #undef bool
 
@@ -39,12 +40,15 @@
 
 extern cRng g_Dice;
 extern cConfig cfg;
+extern cNameList g_GirlNameList;
+extern cNameList g_BoysNameList;
+extern cNameList g_SurnameList;
 
 #pragma endregion
 #pragma region //    Local Variables            //
 
 // globals used for the interface
-string g_ReturnText;
+std::string g_ReturnText;
 int g_ReturnInt = -1;
 bool g_AllTogle = false;    // used on screens when wishing to apply something to all items
 
@@ -54,46 +58,16 @@ bool g_WalkAround = false;
 int g_TalkCount = 10;
 
 
-vector<int> cycle_girls;  // globally available sorted list of girl IDs for Girl Details screen to cycle through
+std::vector<int> cycle_girls;  // globally available sorted list of girl IDs for Girl Details screen to cycle through
 int cycle_pos;  //currently selected girl's position in the cycle_girls vector
-int summarysortorder = 0;    // the order girls get sorted in the summary lists
 
 #pragma endregion
 
-static string clobber_extension(string s)    // `J` debug logging
+static std::string clobber_extension(std::string s)    // `J` debug logging
 {
     size_t pos = s.rfind(".");
-    string base = s.substr(0, pos);
+    std::string base = s.substr(0, pos);
     return base;
-}
-
-// interim loader to load XML files, and then non-xml ones if there was no xml version.
-void LoadXMLItems(FileList &fl)
-{
-    map<string, string> lookup;
-    g_LogFile.log(ELogLevel::DEBUG, "itemsx files:");
-    fl.scan("*.itemsx");
-    for (int i = 0; i < fl.size(); i++)
-    {
-
-        string str = fl[i].full();
-        string key = clobber_extension(str);
-        lookup[key] = str;
-        g_LogFile.debug("items",   "    adding ", key, " = ", str);
-    }
-
-    // Iterate over the map and print out all key/value pairs. kudos: wikipedia
-    g_LogFile.debug("items", "walking map...");
-    for (auto & it : lookup)
-    {
-        try {
-            string full_path = it.second;
-            g_LogFile.debug("items", "\t\tLoading xml Item from", full_path);
-            g_Game->inventory_manager().LoadItemsXML(full_path);
-        } catch (std::runtime_error& error) {
-            g_LogFile.error("items", "Could not load items from '", it.second, "': ", error.what());
-        }
-    }
 }
 
 void LoadNames()
@@ -132,8 +106,8 @@ void AutoSaveGame()
 
 void SaveGame()
 {
-    string filename = g_Game->buildings().get_building(0).name();
-    string filenamedotgam = filename + ".gam";
+    std::string filename = g_Game->buildings().get_building(0).name();
+    std::string filenamedotgam = filename + ".gam";
 
     SaveGameXML(DirPath(cfg.folders.saves().c_str()) << filenamedotgam);
     if (cfg.folders.backupsaves())
@@ -142,7 +116,7 @@ void SaveGame()
     }
 }
 
-void SaveGameXML(string filename)
+void SaveGameXML(std::string filename)
 {
     g_LogFile.info("save", "Saving game to '", filename, '\'');
     tinyxml2::XMLDocument doc;

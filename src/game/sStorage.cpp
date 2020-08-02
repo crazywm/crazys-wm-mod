@@ -17,7 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "sStorage.hpp"
+#include "sStorage.h"
 
 std::string sStorage::food_key    = "food";
 std::string sStorage::drink_key   = "drink";

@@ -25,6 +25,7 @@
 #include "utils/algorithms.hpp"
 #include "character/predicates.h"
 #include "scripting/GameEvents.h"
+#include "cGirls.h"
 
 
 extern cRng    g_Dice;
@@ -43,8 +44,8 @@ sClinic::~sClinic()    = default;
 void sClinic::UpdateGirls(bool is_night)    // Start_Building_Process_B
 {
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cClinic.cpp
-    stringstream ss;
-    string girlName;
+    std::stringstream ss;
+    std::string girlName;
 
     int numDoctors = 0;
 
@@ -203,7 +204,7 @@ void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is
     else if (has_disease(target))                                    // treat anyone with a disease
     {
         target.m_DayJob = target.m_NightJob = JOB_CUREDISEASES;
-        vector<const char*> diseases;
+        std::vector<const char*> diseases;
         if (target.has_active_trait("Herpes"))            diseases.emplace_back("Herpes");
         if (target.has_active_trait("Chlamydia"))        diseases.emplace_back("Chlamydia");
         if (target.has_active_trait("Syphilis"))        diseases.emplace_back("Syphilis");
@@ -356,7 +357,6 @@ std::string sClinic::meet_no_luck() const {
 std::shared_ptr<sGirl> sClinic::meet_girl() const {
     auto girl = g_Game->GetRandomGirl();
     if(girl) {
-        g_Game->girl_pool().AddGirl(girl);
         girl->TriggerEvent(EDefaultEvent::MEET_GIRL_CLINIC);
     }
     return girl;

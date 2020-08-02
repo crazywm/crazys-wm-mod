@@ -20,14 +20,15 @@
 #include "cRng.h"
 #include "buildings/cBuildingManager.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "cInventory.h"
 #include "CLog.h"
 #include "cGirlGangFight.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -36,7 +37,7 @@ bool WorkBeastCapture(sGirl& girl, bool Day0Night1, cRng& rng)
 {
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_COMBAT;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_BEASTCAPTURE))            // they refuse to work
     {
         ss << "${name} refused to capture beasts during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -175,7 +176,7 @@ bool WorkBeastCapture(sGirl& girl, bool Day0Night1, cRng& rng)
     // `J` Farm Bookmark - adding in items that can be gathered in the farm
     if (rng.percent(5))
     {
-        string itemfound; string itemfoundtext;
+        std::string itemfound; std::string itemfoundtext;
         int chooseitem = rng.d100();
 
         if (chooseitem < 25)
@@ -246,8 +247,8 @@ bool WorkBeastCapture(sGirl& girl, bool Day0Night1, cRng& rng)
     g_Game->storage().add_to_beasts(gain);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve girl
     // Base Improvement and trait modifiers
@@ -263,10 +264,10 @@ bool WorkBeastCapture(sGirl& girl, bool Day0Night1, cRng& rng)
     int I_animalh        = (rng % skill) + 1;                girl.animalhandling(I_animalh);
     int I_strength        = (rng % skill) + 1;                girl.strength(I_strength);
     // secondary improvement (-1 for one then -2 for others)
-    int I_constitution    = max(0, (rng % skill) - 1);        girl.constitution(I_constitution);
-    int I_beastiality    = max(0, (rng % skill) - 2);        girl.beastiality(I_beastiality);
-    int I_agility        = max(0, (rng % skill) - 2);        girl.agility(I_agility);
-    int I_magic            = max(0, (rng % skill) - 2);        girl.magic(I_magic);
+    int I_constitution    = std::max(0, (rng % skill) - 1);        girl.constitution(I_constitution);
+    int I_beastiality    = std::max(0, (rng % skill) - 2);        girl.beastiality(I_beastiality);
+    int I_agility        = std::max(0, (rng % skill) - 2);        girl.agility(I_agility);
+    int I_magic            = std::max(0, (rng % skill) - 2);        girl.magic(I_magic);
 
     // Update Enjoyment
     girl.upd_Enjoyment(actiontype, enjoy);

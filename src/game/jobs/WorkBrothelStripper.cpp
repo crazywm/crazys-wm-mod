@@ -24,6 +24,7 @@
 #include <sstream>
 #include "Game.hpp"
 #include "character/predicates.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -33,7 +34,7 @@ bool WorkBrothelStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKSTRIP;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_BROTHELSTRIPPER))
     {
@@ -297,7 +298,7 @@ bool WorkBrothelStripper(sGirl& girl, bool Day0Night1, cRng& rng)
 
     if (is_addict(girl, true) && !sex && !mast && rng.percent(60)) // not going to get money or drugs any other way
     {
-        string warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
+        const char* warning = "Noticing her addiction, a customer offered her drugs for a blowjob. She accepted, taking him out of sight of security and sucking him off for no money.\n";
         ss << "\n" << warning << "\n";
         if (girl.has_active_trait("Shroud Addict"))            girl.add_item(g_Game->inventory_manager().GetItem("Shroud Mushroom"));
         if (girl.has_active_trait("Fairy Dust Addict"))        girl.add_item(g_Game->inventory_manager().GetItem("Fairy Dust"));
@@ -432,8 +433,8 @@ bool WorkBrothelStripper(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 15, skill = 3;

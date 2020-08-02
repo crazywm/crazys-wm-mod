@@ -20,11 +20,12 @@
 #include "cRng.h"
 #include "buildings/cBuildingManager.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "cInventory.h"
 #include <sstream>
-#include "Inventory.hpp"
+#include "Inventory.h"
 #include "character/cPlayer.h"
+#include "cGirls.h"
 
 
 #pragma endregion
@@ -34,7 +35,7 @@ bool WorkMilker(sGirl& girl, bool Day0Night1, cRng& rng)
 {
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKFARM;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_MILKER))            // they refuse to work
     {
@@ -168,7 +169,7 @@ bool WorkMilker(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             while (milk > 0)    // add milk
             {
-                string itemname;
+                std::string itemname;
                 /* */if (milkitems[3] && milk > 3 && rng.percent(30))
                 {
                     milk -= 4;
@@ -229,8 +230,8 @@ bool WorkMilker(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.AddMessage(ss.str(), imagetype, msgtype);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 5, skill = 3;
@@ -243,9 +244,9 @@ bool WorkMilker(sGirl& girl, bool Day0Night1, cRng& rng)
     // primary (+2 for single or +1 for multiple)
     girl.animalhandling((rng % skill) + 2);
     // secondary (-1 for one then -2 for others)
-    girl.handjob(max(0, (rng % skill) - 1));
-    girl.farming(max(0, (rng % skill) - 2));
-    girl.intelligence(max(0, (rng % skill) - 2));
+    girl.handjob(std::max(0, (rng % skill) - 1));
+    girl.farming(std::max(0, (rng % skill) - 2));
+    girl.intelligence(std::max(0, (rng % skill) - 2));
 
     girl.upd_Enjoyment(actiontype, enjoy);
 

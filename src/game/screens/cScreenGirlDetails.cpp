@@ -16,7 +16,7 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "IBuilding.hpp"
+#include "buildings/IBuilding.h"
 #include "buildings/cDungeon.h"
 #include "cScreenGirlDetails.h"
 #include "interface/cWindowManager.h"
@@ -32,7 +32,7 @@ extern    int    g_TalkCount;
 extern bool g_AllTogle;
 extern cConfig cfg;
 
-static stringstream ss;
+static std::stringstream ss;
 
 static int ImageNum = -1;
 static int DetailLevel = 0;
@@ -152,7 +152,7 @@ void cScreenGirlDetails::init(bool back)
 
     EditTextItem(m_SelectedGirl->FullName(), girlname_id);
 
-    string detail;
+    std::string detail;
     if (DetailLevel == 0)        detail = cGirls::GetDetailsString(*m_SelectedGirl);
     else if (DetailLevel == 1)    detail = cGirls::GetMoreDetailsString(*m_SelectedGirl);
     else                        detail = cGirls::GetThirdDetailsString(*m_SelectedGirl);
@@ -311,7 +311,7 @@ void cScreenGirlDetails::set_house_percentage(int value)
     EditTextItem(ss.str(), housepercval_id);
     if (DetailLevel == 0)                                // Rebelliousness might have changed, so update details
     {
-        string detail = cGirls::GetDetailsString(*m_SelectedGirl);
+        std::string detail = cGirls::GetDetailsString(*m_SelectedGirl);
         EditTextItem(detail, girldesc_id, true);
     }
 }
@@ -328,7 +328,7 @@ void cScreenGirlDetails::on_select_job(int selection, bool fulltime)
     // refresh job worker counts for former job and current job
     if (old_job != selection)
     {
-        stringstream text;
+        std::stringstream text;
         text << g_Game->job_manager().JobData[old_job].name << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)old_job, Day0Night1) << ")";
         SetSelectedItemText(joblist_id, old_job, text.str());
         text.str("");
@@ -353,7 +353,7 @@ void cScreenGirlDetails::release_from_dungeon()
     IBuilding& current_brothel = active_building();
     if (current_brothel.free_rooms() <= 0)
     {
-        g_Game->push_message("The current brothel has no more room.\nBuy a new one, get rid of some girls, or change the brothel you are currently managing.", 0);
+        push_message("The current brothel has no more room.\nBuy a new one, get rid of some girls, or change the brothel you are currently managing.", 0);
     }
     else
     {
@@ -407,7 +407,7 @@ void cScreenGirlDetails::RefreshJobList()
     int job_filter = GetSelectedItemFromList(jobtypelist_id);
     if (job_filter == -1) return;
 
-    string text;
+    std::string text;
     // populate Jobs listbox with jobs in the selected category
     for (auto i : g_Game->job_manager().JobFilters[job_filter].Contents)
     {
@@ -476,7 +476,7 @@ std::shared_ptr<sGirl> cScreenGirlDetails::get_next_girl()        // return next
     else if (m_SelectedGirl->m_DayJob == JOB_RUNAWAY) {
         // how does this happen?
         g_LogFile.log(ELogLevel::ERROR, "Selected girl ", m_SelectedGirl->FullName(), " is a runaway!");
-        push_message("ERROR: Selected girl is a runaway", COLOR_RED);
+        push_error("ERROR: Selected girl is a runaway");
         return active_building().girls().get_ref_counted(active_building().get_girl(0));
     }
     else
@@ -521,7 +521,7 @@ void cScreenGirlDetails::OnKeyPress(SDL_Keysym keysym)
         // Rebelliousness might have changed, so update details
         if (DetailLevel == 0)
         {
-            string detail = cGirls::GetDetailsString(*m_SelectedGirl);
+            std::string detail = cGirls::GetDetailsString(*m_SelectedGirl);
             EditTextItem(detail, girldesc_id);
         }
     }

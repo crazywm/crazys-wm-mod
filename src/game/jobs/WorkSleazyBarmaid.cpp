@@ -21,9 +21,9 @@
 #include "character/cCustomers.h"
 #include "cRng.h"
 #include <sstream>
-#include "cGold.h"
 #include "Game.hpp"
 #include "character/predicates.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -33,7 +33,7 @@ bool WorkSleazyBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKCLUB;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_SLEAZYBARMAID))
     {
@@ -251,8 +251,8 @@ bool WorkSleazyBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     roll_max /= 4;
     wages += 10 + rng%roll_max;
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 15, skill = 3;
@@ -260,7 +260,7 @@ bool WorkSleazyBarmaid(sGirl& girl, bool Day0Night1, cRng& rng)
     if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
     else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
     if (!girl.has_active_trait("Straight"))    {
-        girl.upd_temp_stat(STAT_LIBIDO, min(3, brothel->num_girls_on_job(JOB_BARSTRIPPER, false)));
+        girl.upd_temp_stat(STAT_LIBIDO, std::min(3, brothel->num_girls_on_job(JOB_BARSTRIPPER, false)));
     }
     if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
     if (girl.fame() < 20 && jobperformance >= 100)        { fame += 1; }

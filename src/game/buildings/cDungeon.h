@@ -92,8 +92,8 @@ public:
     tinyxml2::XMLElement& SaveDungeonDataXML(tinyxml2::XMLElement * pRoot);    // saves dungeon data
     bool LoadDungeonDataXML(const tinyxml2::XMLElement* pDungeon);
 
-    bool SendGirlToDungeon(shared_ptr<sGirl> girl);
-    void AddGirl(shared_ptr<sGirl> girl, int reason);
+    bool SendGirlToDungeon(std::shared_ptr<sGirl> girl);
+    void AddGirl(std::shared_ptr<sGirl> girl, int reason);
     void AddCust(int reason, int numDaughters, bool hasWife);
     void OutputGirlRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames);
     void OutputCustRow(int i, std::vector<std::string>& Data, const std::vector<std::string>& columnNames);
@@ -112,16 +112,12 @@ public:
     int GetNumGirls()                { return m_Girls.size(); }
     unsigned long GetNumDied()        { return m_NumberDied; }
 
-    int NumGirlsTort()                { return m_NumGirlsTort; }
     int NumGirlsTort(int n)           { m_NumGirlsTort += n; return m_NumGirlsTort; }
-    int NumCustsTort()                { return m_NumCustsTort; }
-    int NumCustsTort(int n)           { m_NumCustsTort += n; return m_NumCustsTort; }
 
     std::vector<sDungeonGirl>& girls() { return m_Girls; }
 
 
     // WD:    Torturer tortures dungeon girl. 
-    //void doTorturer(sDungeonGirl* d_girl, sGirl* t_girl, string& summary);    { cGirlTorture::cGirlTorture(d_girl, t_girl) }
     void PlaceDungeonCustomer(sDungeonCust* newCust);
 
     void SetTortureDone();
@@ -135,7 +131,6 @@ private:
     void PlaceDungeonGirl(sDungeonGirl newGirl);
 
     void OnCustomerDead(sDungeonCust* current);
-
     void OnGirlDead(sDungeonGirl& current) const;
 };
 

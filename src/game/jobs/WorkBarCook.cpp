@@ -20,6 +20,7 @@
 #include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include <sstream>
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -29,7 +30,7 @@ bool WorkBarCook(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKBAR;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_BARCOOK))
     {
@@ -79,7 +80,7 @@ bool WorkBarCook(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     const sGirl* barmaidonduty = random_girl_on_job(*girl.m_Building, JOB_BARMAID, Day0Night1);
-    string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid");
+    std::string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid");
 
     int wages = 15, tips = 0;
     int enjoy = 0, fame = 0;
@@ -480,8 +481,8 @@ bool WorkBarCook(sGirl& girl, bool Day0Night1, cRng& rng)
     roll_max /= 4;
     wages += 10 + rng%roll_max;
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 10, skill = 3;

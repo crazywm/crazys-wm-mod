@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include "cRng.h"
 #include <sstream>
 #include "buildings/cBuildingManager.h"
+#include "cGirls.h"
 
 // `J` Job House - Cook
 bool WorkHouseCook(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -26,7 +27,7 @@ bool WorkHouseCook(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKCOOKING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100();
     if (roll_a <= 50 && girl.disobey_check(actiontype, JOB_HOUSECOOK))
     {
@@ -117,8 +118,8 @@ bool WorkHouseCook(sGirl& girl, bool Day0Night1, cRng& rng)
     else
     {
         // Money
-        girl.m_Tips = max(0, tips);
-        girl.m_Pay = max(0, wages);
+        girl.m_Tips = std::max(0, tips);
+        girl.m_Pay = std::max(0, wages);
     }
 #pragma endregion
 

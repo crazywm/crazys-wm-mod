@@ -23,12 +23,13 @@
 #include "CLog.h"
 #include "cGirlGangFight.h"
 #include "cJobManager.h"
+#include "cGirls.h"
 
 // `J` Job Arena - Staff
 bool WorkCityGuard(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     Action_Types actiontype = ACTION_WORKSECURITY;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_CITYGUARD))            // they refuse to work
     {
         ss << "${name} refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -109,8 +110,8 @@ bool WorkCityGuard(sGirl& girl, bool Day0Night1, cRng& rng)
 
     girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     g_Game->player().suspicion(sus);
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
 
     // Improve girl

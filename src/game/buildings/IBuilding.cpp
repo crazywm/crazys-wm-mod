@@ -17,22 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "IBuilding.hpp"
+#include "IBuilding.h"
 
 #include <memory>
 #include "buildings/cBrothel.h"
 #include "cTariff.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "cGangs.h"
 #include <sstream>
 #include "sConfig.h"
 #include "xml/util.h"
 #include "cJobManager.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
 #include "character/cGirlPool.h"
+#include "cGirls.h"
 
 namespace settings{
     extern const char* PREG_COOL_DOWN;
@@ -102,7 +103,7 @@ void IBuilding::BeginWeek()
 
     std::vector<const sGirl*> dead_girls;
 
-    stringstream ss;
+    std::stringstream ss;
     m_Girls->apply([&](sGirl& cgirl){
         m_Filthiness++;
 
@@ -136,7 +137,7 @@ void IBuilding::BeginWeek()
             cgirl.m_YesterNightJob = cgirl.m_NightJob;
             cgirl.m_Refused_To_Work_Day = cgirl.m_Refused_To_Work_Night = false;
             cgirl.m_NumCusts_old = cgirl.m_NumCusts;// prepare for this week
-            string summary;
+            std::string summary;
 
             cgirl.add_tiredness();                    // `J` moved all girls add tiredness to one place
             do_food_and_digs(*this, cgirl);            // Brothel only update for girls accommodation level
@@ -247,7 +248,7 @@ void IBuilding::Update()
 }
 
 
-void IBuilding::EndShift(const string& matron_title, bool Day0Night1, bool has_matron)
+void IBuilding::EndShift(const std::string& matron_title, bool Day0Night1, bool has_matron)
 {
     m_Girls->apply([&](sGirl& current)
     {
@@ -256,8 +257,7 @@ void IBuilding::EndShift(const string& matron_title, bool Day0Night1, bool has_m
             return;
         }
         auto sum = EVENT_SUMMARY;
-        stringstream ss;
-        ss.str("");
+        std::stringstream ss;
 
         // update for girls items that are not used up
         do_daily_items(current);                    // `J` added
@@ -286,7 +286,7 @@ void IBuilding::EndShift(const string& matron_title, bool Day0Night1, bool has_m
                 ss << "Some of the other girls help cheer up ${name} when she is feeling sad.\n";
                 current.happiness(g_Dice % 8 + 3);
             }
-            else if (num_girls() > 1 && g_Dice.percent(max((int)num_girls(), 50)))
+            else if (num_girls() > 1 && g_Dice.percent(std::max((int)num_girls(), 50)))
             {
                 ss << "One of the other girls helps cheer up ${name} when she is feeling sad.\n";
                 current.happiness(g_Dice % 6 + 2);
@@ -594,7 +594,7 @@ void IBuilding::AddAntiPreg(int amount) // unused
         m_AntiPregPotions = 700;
 }
 
-bool IBuilding::SetupMatron(bool is_night, const string& title)
+bool IBuilding::SetupMatron(bool is_night, const std::string& title)
 {
     int has_matron = num_girls_on_job(m_MatronJob, is_night);
     
@@ -634,7 +634,7 @@ bool IBuilding::SetupMatron(bool is_night, const string& title)
     }
 
     // `J` Now we have a matron so lets see if she will work
-    stringstream ss;
+    std::stringstream ss;
     auto sum = EVENT_SUMMARY;
 
     // `J` she can refuse the first shift then decide to work the second shift
@@ -659,7 +659,7 @@ bool IBuilding::SetupMatron(bool is_night, const string& title)
     else    // so there is less chance of a matron refusing the entire turn
     {
         int totalGold = 0;
-        string summary;
+        std::string summary;
         g_Game->job_manager().do_job(m_MatronJob, *matron_candidate, is_night);
         totalGold += matron_candidate->m_Pay + matron_candidate->m_Tips;
 
@@ -667,7 +667,7 @@ bool IBuilding::SetupMatron(bool is_night, const string& title)
         if (is_night) totalGold /= 3;
 
         // TODO this line is useless!
-        matron_candidate->m_Pay += max(0, totalGold);
+        matron_candidate->m_Pay += std::max(0, totalGold);
         matron_candidate->m_Pay = matron_candidate->m_Tips = 0;
 
         m_Fame += matron_candidate->fame();
@@ -732,8 +732,8 @@ void IBuilding::do_daily_items(sGirl& girl)
 {
     if (girl.inventory().empty()) return;    // no items so skip it
 
-    stringstream ss;
-    string girlName = girl.FullName();
+    std::stringstream ss;
+    std::string girlName = girl.FullName();
     int HateLove = girl.pclove() - girl.pchate();
 
     int mast = false;
@@ -933,7 +933,7 @@ void IBuilding::do_daily_items(sGirl& girl)
             girl.has_item("Black String Bikini")))
     {
 #if 1
-        string wearwhat; string wearwhere;
+        std::string wearwhat; std::string wearwhere;
         while (wearwhat.empty())
         {
             switch (g_Dice % 7)
@@ -1431,7 +1431,7 @@ void IBuilding::do_daily_items(sGirl& girl)
         }
         else
         {
-            string thoughts;
+            std::string thoughts;
             switch (g_Dice % 20)
             {
             case 0:        girl.happiness(1);                    thoughts = " happy";        break;
@@ -1490,8 +1490,8 @@ void IBuilding::do_daily_items(sGirl& girl)
     if (girl.has_item("Art Easel") && g_Dice.percent(girl.fame() / 10))
     {
 #if 1
-        string paintingtype;
-        int sale = ((1 + g_Dice % 30) * max(1, (girl.fame()))) / 10;
+        std::string paintingtype;
+        int sale = ((1 + g_Dice % 30) * std::max(1, (girl.fame()))) / 10;
         switch (g_Dice % 50)                                            // start with simple painting types
         {
         case 0:        girl.happiness(1);                    paintingtype = "happy";            break;
@@ -1728,7 +1728,7 @@ void IBuilding::CalculatePay(sGirl& girl, u_int Job)
     if (house > girl.m_Pay) house = girl.m_Pay;            // this shouldn't happen. That said...
 
     girl.m_Money += girl.m_Pay - house;                    // The girl collects her part of the pay
-    m_Finance.brothel_work(house);                    // and add the rest to the brothel finances
+    m_Finance.brothel_work(house);                          // and add the rest to the brothel finances
     girl.m_Pay = 0;                                        // clear pay
     if (girl.m_Money < 0) girl.m_Money = 0;                // Not sure how this could happen - suspect it's just a sanity check
 
@@ -1739,7 +1739,7 @@ void IBuilding::CalculatePay(sGirl& girl, u_int Job)
     if (!g_Dice.percent(catch_pc)) return;                    // if they don't catch her, we're done
 
     // OK: she got caught. Tell the player
-    stringstream gmess; gmess << "Your Goons spotted " << girl.FullName() << " taking more gold then she reported.";
+    std::stringstream gmess; gmess << "Your Goons spotted " << girl.FullName() << " taking more gold then she reported.";
     gang->m_Events.AddMessage(gmess.str(), IMGTYPE_PROFILE, EVENT_GANG);
 }
 

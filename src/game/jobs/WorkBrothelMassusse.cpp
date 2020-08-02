@@ -23,6 +23,7 @@
 #include <sstream>
 #include "Game.hpp"
 #include "character/predicates.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -32,7 +33,7 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKMASSEUSE;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
     if (girl.disobey_check(actiontype, JOB_MASSEUSE))
     {
@@ -334,8 +335,8 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma region    //    Finish the shift            //
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     girl.upd_Enjoyment(actiontype, work);
 

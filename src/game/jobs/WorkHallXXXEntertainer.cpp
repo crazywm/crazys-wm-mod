@@ -24,6 +24,7 @@
 #include "character/cCustomers.h"
 #include "cJobManager.h"
 #include "character/cPlayer.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -33,7 +34,7 @@ bool WorkHallXXXEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKSTRIP;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_XXXENTERTAINMENT))
     {
@@ -80,7 +81,7 @@ bool WorkHallXXXEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
             wages += 30;
             fame += 1;
         }
-        else if (girl.age() > 30 && rng.percent(min(90, max((girl.age() - 30) * 3, 1))) && girl.beauty() < 30)
+        else if (girl.age() > 30 && rng.percent(std::min(90, std::max((girl.age() - 30) * 3, 1))) && girl.beauty() < 30)
         {    //"Too old!" - chance of heckle: age<30y= 0%, then 4%/year (32y - 6%, 40y - 30%...) max 90%... (but only a 20% chance this bit even runs)
             // note: demons are exempt as they age differently
             ss << "Some customers heckle ${name} over her age.";
@@ -643,8 +644,8 @@ bool WorkHallXXXEntertainer(sGirl& girl, bool Day0Night1, cRng& rng)
     // work out the pay between the house and the girl
     wages += (rng % ((int)(((girl.beauty() + girl.charisma()) / 2)*0.5f))) + 10;
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
 
     // Improve girl

@@ -298,6 +298,10 @@ bool cWindowManager::IsShiftHeld() const {
     return m_IsShiftHeld;
 }
 
+void cWindowManager::PushError(std::string text) {
+    PushMessage(std::move(text), COLOR_RED);
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 static std::unique_ptr<cWindowManager> WindowManager;

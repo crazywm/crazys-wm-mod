@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,8 @@
 #include "CLog.h"
 #include "buildings/cBuildingManager.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
+#include "cGirls.h"
 
 
 #pragma endregion
@@ -32,7 +33,7 @@ bool WorkRancher(sGirl& girl, bool Day0Night1, cRng& rng)
 {
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKFARM;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_RANCHER))            // they refuse to work
     {
@@ -199,8 +200,8 @@ bool WorkRancher(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.AddMessage(ss.str(), imagetype, msgtype ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 5, skill = 3;
@@ -213,9 +214,9 @@ bool WorkRancher(sGirl& girl, bool Day0Night1, cRng& rng)
     // primary (+2 for single or +1 for multiple)
     girl.animalhandling((rng % skill) + 2);
     // secondary (-1 for one then -2 for others)
-    girl.confidence(max(0, (rng % skill) - 1));
-    girl.charisma(max(0, (rng % skill) - 2));
-    girl.intelligence(max(0, (rng % skill) - 2));
+    girl.confidence(std::max(0, (rng % skill) - 1));
+    girl.charisma(std::max(0, (rng % skill) - 2));
+    girl.intelligence(std::max(0, (rng % skill) - 2));
 
     girl.upd_Enjoyment(actiontype, enjoy);
 

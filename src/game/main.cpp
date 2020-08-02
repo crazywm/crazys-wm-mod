@@ -17,12 +17,15 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "main.h"
 #include "InterfaceProcesses.h"
 #include "sConfig.h"
 #include "interface/CGraphics.h"
 #include "Revision.h"
 #include "Game.hpp"
+#include "CLog.h"
+#include "cRng.h"
+#include "cNameList.h"
+#include "interface/cWindowManager.h"
 
 #include <sstream>
 #include <SDL_events.h>

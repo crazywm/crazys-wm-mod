@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "character/cCustomers.h"
-#include "IBuilding.hpp"
+#include "buildings/IBuilding.h"
 #include "Game.hpp"
 #include <sstream>
 #include "character/traits/ITraitsCollection.h"
@@ -210,8 +210,8 @@ void cCustomers::GenerateCustomers(IBuilding& brothel, bool Day0Night1)
     // TODO Free any existing customers?
     if (brothel.num_girls() == 0) return;    // no girls, no customers
 
-    stringstream ss;
-    string daynighttime = (Day0Night1 ? "nighttime" : "daytime");
+    std::stringstream ss;
+    std::string daynighttime = (Day0Night1 ? "nighttime" : "daytime");
     /*
  *    base number of customers = number of girls times 1.5f
  *    (was set to time 5 - reverting it to agree with the comment for now
@@ -245,7 +245,7 @@ void cCustomers::GenerateCustomers(IBuilding& brothel, bool Day0Night1)
     }
 
     // filthiness will take away customers
-    int LostCustomers = max(0, int(brothel.filthiness() / 10));        // was /3, but that was overly harsh; changed to /10
+    int LostCustomers = std::max(0, int(brothel.filthiness() / 10));        // was /3, but that was overly harsh; changed to /10
     num -= LostCustomers;
 
     if (LostCustomers <= 0)    ss << "Your brothel was spotlessly clean, so you didn't lose any " << daynighttime << " customers due to filthiness.\n \n";
@@ -287,7 +287,7 @@ void cCustomers::ChangeCustomerBase()
     // leaving 10-80% poor
 }
 
-void cCustomers::Add(unique_ptr<sCustomer> cust)
+void cCustomers::Add(std::unique_ptr<sCustomer> cust)
 {
     m_Customers.push_back(std::move(cust));
 }

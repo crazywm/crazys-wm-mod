@@ -9,10 +9,10 @@ extern "C" {
 #include "character/cCustomers.h"
 #include "character/cPlayer.h"
 
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "Game.hpp"
 #include "buildings/cDungeon.h"
-#include "IBuilding.hpp"
+#include "buildings/IBuilding.h"
 #include "sLuaGirl.h"
 #include "cLuaState.h"
 #include "utils/string.hpp"
@@ -55,6 +55,7 @@ void sLuaGirl::init(lua_State* L) {
             {"add_message", sLuaGirl::add_message},
             {"give_money", sLuaGirl::give_money},
             {"torture", sLuaGirl::torture},
+            {"__gc", sLuaGirl::finalize},
             {nullptr, nullptr}
     };
     luaL_setfuncs(L, methods, 0);
@@ -75,19 +76,31 @@ void sLuaGirl::init(lua_State* L) {
     }
 }
 
+using LuaGirlRecord = std::shared_ptr<sGirl>;
+
 void sLuaGirl::create(lua_State* L, sGirl* girl) {
-    size_t nbytes = sizeof(sGirl**);
-    auto a = (sGirl**)lua_newuserdata(L, nbytes);
-    *a = girl;
+    size_t nbytes = sizeof(LuaGirlRecord);
+    auto a = (LuaGirlRecord*)lua_newuserdata(L, nbytes);
+    new(a) LuaGirlRecord;
+    *a = girl->shared_from_this();
 
     luaL_getmetatable(L, "wm.Girl");
     lua_setmetatable(L, -2);
 }
 
+int sLuaGirl::finalize(lua_State* L) {
+    void* ud = luaL_checkudata(L, -1, "wm.Girl");
+    luaL_argcheck(L, ud != nullptr, -1, "`Girl' expected");
+    auto gp = (LuaGirlRecord*)ud;
+    gp->~shared_ptr();
+    return 0;
+}
+
+
 sGirl& sLuaGirl::check_type(lua_State* L, int index) {
     void *ud = luaL_checkudata(L, index, "wm.Girl");
     luaL_argcheck(L, ud != nullptr, index, "`Girl' expected");
-    sGirl* gp = *(sGirl**)ud;
+    auto& gp = *(LuaGirlRecord*)ud;
     luaL_argcheck(L, gp != nullptr, index, "girl pointer is null");
     return *gp;
 }
@@ -196,7 +209,7 @@ int sLuaGirl::get_name(lua_State *L) {
 int sLuaGirl::calc_player_pregnancy(lua_State *L) {
     auto& girl = check_type(L, 1);
 
-    bool preg = false;
+    bool preg;
     if(lua_gettop(L) == 2) {
         double factor = luaL_checknumber(L, 2);
         preg = girl.calc_pregnancy(&g_Game->player(), factor);
@@ -423,7 +436,6 @@ int sLuaGirl::pregnancy_term(lua_State* L)
     lua_pushinteger(L, girl.get_preg_duration());
     return 1;
 }
-
 
 
 void sLuaCustomer::init(lua_State* L) {

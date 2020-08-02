@@ -22,7 +22,7 @@
 #ifndef __CFARM_H
 #define __CFARM_H
 
-#include "IBuilding.hpp"
+#include "IBuilding.h"
 
 // defines a single farm
 struct sFarm : public IBuilding

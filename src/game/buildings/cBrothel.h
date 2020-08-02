@@ -22,7 +22,7 @@
 #ifndef __CBROTHEL_H
 #define __CBROTHEL_H
 
-#include "IBuilding.hpp"
+#include "IBuilding.h"
 
 // ---------------------------------------------------------------------------------------------------------------------
 

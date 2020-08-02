@@ -26,6 +26,7 @@
 #include "cJobManager.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -35,7 +36,7 @@ bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKCENTRE;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_COMUNITYSERVICE))            // they refuse to work
     {
@@ -191,8 +192,8 @@ bool WorkComunityService(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma region    //    Finish the shift            //
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     g_Game->player().disposition(dispo);
     girl.AddMessage(ss.str(), imagetype, msgtype);

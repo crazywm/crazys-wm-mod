@@ -23,10 +23,10 @@
 #include "scripting/GameEvents.h"
 
 #include "Game.hpp"
+#include "cGirls.h"
 #include "cShop.h"
 #include "cJobManager.h"
 #include "character/predicates.h"
-#include "character/cGirlPool.h"
 #include "buildings/cDungeon.h"
 
 // `J` Job Brothel - General
@@ -34,7 +34,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 
-    stringstream ss;
+    std::stringstream ss;
 
     int U_Tiredness = -(10 + rng % 21);
     int U_Health = 10 + (girl.constitution() / 10);
@@ -54,7 +54,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
     int imagetype = IMGTYPE_PROFILE;
     auto messagetype = Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT;
     ss.str("");
-    stringstream girldiedmsg;
+    std::stringstream girldiedmsg;
 
 
     int roll = rng.d100();
@@ -805,7 +805,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             // 2. buy any items that catch her fancy
             int numberToBuy = rng % 10;    // try to buy up to 10 things
             int itemsBought = 0;
-            string buyList;
+            std::string buyList;
             imagetype = IMGTYPE_SHOP;
 
             for (int i = 0; i < numberToBuy; i++)
@@ -885,8 +885,8 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
                 else // 'Mute' Manages to steal Drugs
                 {
-                    string itemname;
-                    string itemprefix = "a";
+                    std::string itemname;
+                    std::string itemprefix = "a";
                     /* */if (girl.has_active_trait("Fairy Dust Addict"))    { itemprefix = "a vial of"; itemname = "Fairy Dust"; }
                     else if (girl.has_active_trait("Shroud Addict"))        { itemprefix = "a"; itemname = "Shroud Mushroom"; }
                     else if (girl.has_active_trait("Viras Blood Addict"))    { itemprefix = "a vial of"; itemname = "Vira Blood"; }
@@ -950,8 +950,8 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
             bool playerclinic = g_Game->has_building(BuildingType::CLINIC);
             sGirl* doctoronduty = nullptr;
             sGirl* nurseonduty = nullptr;
-            string doctorname = "the Doctor";    // Who?
-            string nursename = "the Nurse";
+            std::string doctorname = "the Doctor";    // Who?
+            std::string nursename = "the Nurse";
             if (playerclinic)
             {
                 doctoronduty = random_girl_on_job(g_Game->buildings(), JOB_DOCTOR, Day0Night1);
@@ -1037,7 +1037,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             // `CRAZY` This is movies she can watch
-            /*default*/    string mov_type_text = "a porno";
+            /*default*/    std::string mov_type_text = "a porno";
             /* */if (roll_c <= 20)    { mov_type_text = "a romance movie"; }
             else if (roll_c <= 40)    { mov_type_text = "a comedy"; }
             else if (roll_c <= 60)    { mov_type_text = "a scary movie"; }
@@ -1178,7 +1178,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             // `CRAZY` The type of music at the concert
-            /*default*/     string song_type_text = "Death Metal";
+            /*default*/     std::string song_type_text = "Death Metal";
             /* */if (roll_c <= 14)    { song_type_text = "Goth Rock"; }
             else if (roll_c <= 28)    { song_type_text = "Classical"; }
             else if (roll_c <= 42)    { song_type_text = "Metal"; }
@@ -1388,7 +1388,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             sGirl* barmaidonduty = random_girl_on_job(g_Game->buildings(), JOB_BARMAID, Day0Night1);
-            string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid");
+            std::string barmaidname = (barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid");
             ss << "${name} decides to go to the bar.\n";
             if (girl.has_active_trait("Alcoholic"))
             {
@@ -1418,11 +1418,11 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             sGirl* clubbaronduty = random_girl_on_job(g_Game->buildings(), JOB_SLEAZYBARMAID, Day0Night1);
-            string clubbarname = (clubbaronduty ? "Bartender " + clubbaronduty->FullName() + "" : "the Bartender");
+            std::string clubbarname = (clubbaronduty ? "Bartender " + clubbaronduty->FullName() + "" : "the Bartender");
             sGirl* stripperonduty = random_girl_on_job(g_Game->buildings(), JOB_BARSTRIPPER, Day0Night1);
-            string strippername = (stripperonduty ? "Stripper " + stripperonduty->FullName() + "" : "the Stripper");
+            std::string strippername = (stripperonduty ? "Stripper " + stripperonduty->FullName() + "" : "the Stripper");
             sGirl* clubwaitonduty = random_girl_on_job(g_Game->buildings(), JOB_SLEAZYWAITRESS, Day0Night1);
-            string clubwaitname = (clubwaitonduty ? "Waitress " + clubwaitonduty->FullName() + "" : "the Waitress");
+            std::string clubwaitname = (clubwaitonduty ? "Waitress " + clubwaitonduty->FullName() + "" : "the Waitress");
 
             ss << "${name} puts on her best dress before leaving and going to the club.";
             if (clubbaronduty)
@@ -1666,9 +1666,9 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             sGirl* fightgirlonduty = random_girl_on_job(g_Game->buildings(), JOB_FIGHTARENAGIRLS, Day0Night1);
-            string fightgirlname = (fightgirlonduty ? "Gladiator " + fightgirlonduty->FullName() + "" : "the Gladiator");
+            std::string fightgirlname = (fightgirlonduty ? "Gladiator " + fightgirlonduty->FullName() + "" : "the Gladiator");
             sGirl* fightbeastonduty = random_girl_on_job(g_Game->buildings(), JOB_FIGHTBEASTS, Day0Night1);
-            string fightbeastname = (fightbeastonduty ? "Beast fighter " + fightbeastonduty->FullName() + "" : "the Beast fighter");
+            std::string fightbeastname = (fightbeastonduty ? "Beast fighter " + fightbeastonduty->FullName() + "" : "the Beast fighter");
             ss << "${name} decides to go to the arena and watch some fights.\n";
             if (fightgirlonduty && fightbeastonduty)
             {
@@ -1703,11 +1703,11 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
 #if 1
         {
             sGirl* dealeronduty = random_girl_on_job(g_Game->buildings(), JOB_DEALER, Day0Night1);
-            string dealername = (dealeronduty ? "Dealer " + dealeronduty->FullName() + "" : "the Dealer");
+            std::string dealername = (dealeronduty ? "Dealer " + dealeronduty->FullName() + "" : "the Dealer");
             sGirl* enteronduty = random_girl_on_job(g_Game->buildings(), JOB_ENTERTAINMENT, Day0Night1);
-            string entername = (enteronduty ? "Entertainment " + enteronduty->FullName() + "" : "the Entertainment");
+            std::string entername = (enteronduty ? "Entertainment " + enteronduty->FullName() + "" : "the Entertainment");
             sGirl* xxxonduty = random_girl_on_job(g_Game->buildings(), JOB_XXXENTERTAINMENT, Day0Night1);
-            string xxxname = (xxxonduty ? "XXX Entertainment " + xxxonduty->FullName() + "" : "the XXX Entertainment");
+            std::string xxxname = (xxxonduty ? "XXX Entertainment " + xxxonduty->FullName() + "" : "the XXX Entertainment");
             ss << "${name} decides to go to ";
             int gamble = rng % 1000 + 1;
             if (roll > 75)
@@ -2381,7 +2381,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
     return false;
 }
 
-bool cJobManager::AddictBuysDrugs(string Addiction, string Drug, sGirl& girl, IBuilding * brothel, bool Day0Night1)
+bool cJobManager::AddictBuysDrugs(std::string Addiction, std::string Drug, sGirl& girl, IBuilding * brothel, bool Day0Night1)
 {
     int avail = g_Game->shop().CountItem(Drug);
     if(avail == 0) return false;                        // quit if the shop does not have the item

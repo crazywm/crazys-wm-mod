@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #pragma region //    Includes and Externs            //
 #include "buildings/cBuildingManager.h"
 #include "cRng.h"
+#include "cGirls.h"
 #include <sstream>
 
 #pragma endregion
@@ -29,7 +30,7 @@ bool WorkMechanic(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKMECHANIC;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100();
     if (girl.disobey_check(actiontype, JOB_MECHANIC))            // they refuse to work
     {
@@ -167,8 +168,8 @@ bool WorkMechanic(sGirl& girl, bool Day0Night1, cRng& rng)
     wages += 10 + rng%roll_max;
     wages += 5 * brothel->num_girls_on_job(JOB_GETREPAIRS, Day0Night1);    // `J` pay her 5 for each patient you send to her
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
 
     // Improve stats

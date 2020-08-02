@@ -22,13 +22,12 @@
 #include <sstream>
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "CLog.h"
 #include "cGirlGangFight.h"
 #include "cJobManager.h"
 #include "sConfig.h"
-#include "Inventory.hpp"
-#include "character/predicates.h"
+#include "Inventory.h"
 #include "buildings/cDungeon.h"
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
@@ -41,7 +40,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_COMBAT;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_EXPLORECATACOMBS))
     {
         ss << "${name} refused to go into the catacombs during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -58,9 +57,9 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     long gold = 0;
     int wages = 0, tips = 0;
     bool raped = false;
-    string UGirls_list;
-    string Girls_list;
-    string item_list;
+    std::string UGirls_list;
+    std::string Girls_list;
+    std::string item_list;
 
     cGirls::EquipCombat(girl);    // ready armor and weapons!
 
@@ -78,37 +77,33 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
         if (roll < beastpercent)                        getwhat = 1;
         else if (roll < beastpercent + itemspercent)    getwhat = 2;
 
-        std::uint8_t fight_outcome = 0;
+        EFightResult fight_outcome = EFightResult::DRAW;
         // she may be able to coax a beast or if they are looking for an item, it may be guarded
         if ((getwhat == 1 && rng.percent((girl.animalhandling() + girl.beastiality()) / 3))
             || (getwhat == 2 && rng.percent(50)))
-            fight_outcome = 1;    // no fight so auto-win
+            fight_outcome = EFightResult::VICTORY;    // no fight so auto-win
         else        // otherwise do the fight
         {
             auto tempgirl = g_Game->CreateRandomGirl(18, false, false, true);
             if (tempgirl)        // `J` reworked incase there are no Non-Human Random Girls
             {
-                if(GirlFightsGirl(girl, *tempgirl) == EFightResult::VICTORY) {
-                    fight_outcome = 1;
-                } else {
-                    fight_outcome = 2;
-                }
+                fight_outcome = GirlFightsGirl(girl, *tempgirl);
             }
             else // `J` this should have been corrected with the addition of the default random girl but leaving it in just in case.
             {
                 g_LogFile.log(ELogLevel::ERROR, "You have no Non-Human Random Girls for your girls to fight");
-                if (rng % girl.get_skill(SKILL_COMBAT) < 5) fight_outcome = 2;
+                if (rng % girl.get_skill(SKILL_COMBAT) < 5) fight_outcome = EFightResult::DEFEAT;
                 else
                 {
-                    stringstream sse;
+                    std::stringstream sse;
                     sse << "(Error: You need a Non-Human Random Girl to allow WorkExploreCatacombs randomness)";
                     girl.AddMessage(sse.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
-                    fight_outcome = 1;
+                    fight_outcome = EFightResult::VICTORY;
                 }
             }
         }
 
-        if (fight_outcome == 1)  // If she won
+        if (fight_outcome == EFightResult::VICTORY)  // If she won
         {
             if (getwhat == 0)        { haulcount -= 5;    numgirls++; }                        // Catacombs girl type
             else if (getwhat == 1)    { haulcount -= 3;    type_beasts++;    num_monsters++; }    // Beast type
@@ -123,13 +118,13 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
                 }
             }
         }
-        else if (fight_outcome == 2) // she lost
+        else if (fight_outcome == EFightResult::DEFEAT) // she lost
         {
             haulcount -= 50;
             raped = true;
             break;
         }
-        else if (fight_outcome == 0) // it was a draw
+        else if (fight_outcome == EFightResult::DRAW) // it was a draw
         {
             haulcount -= 1 + rng % 5;
         }
@@ -198,7 +193,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
             {
                 g_Game->get_objective()->m_SoFar++;
             }
-            stringstream Umsg;
+            std::stringstream Umsg;
             ugirl->add_temporary_trait("Kidnapped", 2 + rng % 15);
             Umsg << ugirl->FullName() << " was captured in the catacombs by ${name}.\n";
             ugirl->m_Events.AddMessage(Umsg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
@@ -277,8 +272,8 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     wages += gold;
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve girl
     int num = type_monster_girls + type_unique_monster_girls + type_beasts + 1;

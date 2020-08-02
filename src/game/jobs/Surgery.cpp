@@ -20,8 +20,8 @@
 #include "GenericJob.h"
 #include "cJobManager.h"
 #include "cGirls.h"
-#include "character/sGirl.hpp"
-#include "IBuilding.hpp"
+#include "character/sGirl.h"
+#include "buildings/IBuilding.h"
 #include <sstream>
 #include "character/predicates.h"
 

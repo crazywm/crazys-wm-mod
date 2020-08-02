@@ -20,8 +20,8 @@
 #include "Crafting.h"
 #include "Game.hpp"
 #include "cGirls.h"
-#include "character/sGirl.hpp"
-#include "IBuilding.hpp"
+#include "character/sGirl.h"
+#include "buildings/IBuilding.h"
 #include "cInventory.h"
 #include "character/cPlayer.h"
 
@@ -78,7 +78,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
 
     // not receiving money reduces motivation
     float girl_pay = girl.is_unpaid() ? 0.f : 1.f - girl.house() / 100.f;
-    craftpoints *= min(1.0, girl_pay / 2 + 0.66);
+    craftpoints *= std::min(1.0, girl_pay / 2 + 0.66);
 
     if (craftpoints > 0)
     {
@@ -107,7 +107,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
             numitems++;
 
             // add item sell worth to wages
-            wages += min(g_Game->settings().get_percent(settings::MONEY_SELL_ITEM) * item->m_Cost * girl_pay, 100.f);
+            wages += std::min(g_Game->settings().get_percent(settings::MONEY_SELL_ITEM) * item->m_Cost * girl_pay, 100.f);
         }
     }
 
@@ -116,7 +116,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
 
     // Money
     girl.m_Tips = 0;
-    girl.m_Pay = max(0, wages);
+    girl.m_Pay = std::max(0, wages);
 
     // Base Improvement and trait modifiers
     int xp = 5, skill = 3;
@@ -136,7 +136,7 @@ bool GenericCraftingJob::WorkCrafting(sGirl& girl, bool is_night) {
     // secondary improvement (-1 for one then -2 for others)
     int sub = 1;
     for(auto& att : m_CraftingData.SecondaryGains) {
-        girl.update_attribute(att, max(0,(uniform(0, skill)-sub)));
+        girl.update_attribute(att, std::max(0,(uniform(0, skill)-sub)));
         sub = -2;
     }
 
@@ -235,7 +235,7 @@ void cBlacksmithJob::DoWorkEvents(sGirl& girl) {
         enjoy -= uniform(0, 3);
         if (roll_b < 10)    // fire
         {
-            int fire = max(0, rng().bell(-2, 10));
+            int fire = std::max(0, rng().bell(-2, 10));
             girl.m_Building->m_Filthiness += fire * 2;
             craftpoints *= (1 - fire * 0.1);
             if (girl.pcfear() > 20) girl.pcfear(fire / 2);    // she is afraid you will get mad at her
@@ -599,7 +599,7 @@ void cJewelerJob::DoWorkEvents(sGirl& girl) {
         enjoy -= uniform(0, 3);
         if (roll_b < 10)    // fire
         {
-            int fire = max(0, rng().bell(-2, 10));
+            int fire = std::max(0, rng().bell(-2, 10));
             girl.m_Building->m_Filthiness += fire * 2;
             craftpoints -= (craftpoints * (fire * 0.1));
             if (girl.pcfear() > 20) girl.pcfear(fire / 2);    // she is afraid you will get mad at her

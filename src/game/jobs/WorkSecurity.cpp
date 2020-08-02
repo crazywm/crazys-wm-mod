@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "buildings/cBuildingManager.h"
 #include <sstream>
 #include "cJobManager.h"
+#include "cGirls.h"
 
 
 // `J` Job Brothel - General
@@ -28,7 +29,7 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKSECURITY;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_SECURITY))
     {
         ss << "${name} refused to work security in your brothel " << (Day0Night1 ? "tonight." : "today.");
@@ -49,10 +50,10 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
     cGirls::EquipCombat(girl);    // ready armor and weapons!
 
     const sGirl* stripperonduty = random_girl_on_job(*brothel, JOB_BARSTRIPPER, Day0Night1);
-    string strippername = (stripperonduty ? "Stripper " + stripperonduty->FullName() + "" : "the Stripper");
+    std::string strippername = (stripperonduty ? "Stripper " + stripperonduty->FullName() + "" : "the Stripper");
 
     const sGirl* whoreonduty = random_girl_on_job(*brothel, JOB_WHOREBROTHEL, Day0Night1);
-    string whorename = (whoreonduty ? "Whore " + whoreonduty->FullName() + "" : "the Whore");
+    std::string whorename = (whoreonduty ? "Whore " + whoreonduty->FullName() + "" : "the Whore");
 
 
     double SecLev = girl.job_performance(JOB_SECURITY, false);
@@ -166,8 +167,8 @@ bool WorkSecurity(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 5; }
 
     wages += 70;
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     //g_Game->gold().staff_wages(70);  // wages come from
     // 'Mute' Updated

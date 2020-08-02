@@ -20,6 +20,7 @@
 #include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include "Game.hpp"
+#include "cGirls.h"
 #include <sstream>
 
 #pragma endregion
@@ -30,7 +31,7 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKADVERTISING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100();
     if (girl.disobey_check(actiontype, JOB_ADVERTISING))
     {
@@ -124,9 +125,8 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
 
         if (saysomething > 50)
         {
-            stringstream warning;
-            warning << "${name} comes up to you and asks you to change her job, She does not like advertizing.\n";
-            girl.AddMessage(warning.str(), IMGTYPE_PROFILE, EVENT_WARNING);
+            girl.AddMessage("${name} comes up to you and asks you to change her job, She does not like advertizing.\n",
+                            IMGTYPE_PROFILE, EVENT_WARNING);
         }
         else if (saysomething > 25)
         {
@@ -159,8 +159,8 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
     brothel->m_AdvertisingLevel += (multiplier / 100);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Base Improvement and trait modifiers
     int xp = 5, skill = 3;
@@ -174,8 +174,8 @@ bool WorkAdvertising(sGirl& girl, bool Day0Night1, cRng& rng)
     int I_charisma        = (rng % skill) + 1;                girl.charisma(I_charisma);
 
     // secondary improvement (-1 for one then -2 for others)
-    int I_service        = max(0, (rng % skill) - 1);        girl.service(I_service);
-    int I_confidence    = max(0, (rng % skill) - 2);        girl.confidence(I_confidence);
+    int I_service        = std::max(0, (rng % skill) - 1);        girl.service(I_service);
+    int I_confidence    = std::max(0, (rng % skill) - 2);        girl.confidence(I_confidence);
     int I_fame            = fame;                                girl.fame(I_fame);
 
     // Update Enjoyment

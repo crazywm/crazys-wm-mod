@@ -99,19 +99,12 @@ typedef struct sChild
 struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 {
     sGirl(bool unique);
-    ~sGirl();
+    ~sGirl() override;
 
-    std::string m_Name;                                // The girls name
-    /*    `J` adding first and surnames for future use.
-    *    m_Realname will be used for girl tracking until first and surnames are fully integrated
-    *    a girl id number system may be added in the future to allow for absolute tracking
-    */
-    std::string m_MotherName;                        //    `J` added mother and father names
-    std::string m_FatherName;                        //    `J` added mother and father names
-    /*
-    *    MOD: changed from char* -- easier to change from lua -- doc
-    */
-    std::string m_Desc;                                // Short story about the girl
+    std::string m_Name;                                 // The girls name
+    std::string m_MotherName;                           //    `J` added mother and father names
+    std::string m_FatherName;                           //    `J` added mother and father names
+    std::string m_Desc;                                 // Short story about the girl
 
     int house() const                               { return m_HousePercent; }                /* It's NOT lupus! */
     void house(int n)                                { m_HousePercent = std::min(std::max(0 , n), 100); }
@@ -186,7 +179,6 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
     IBuilding* m_Building = nullptr;
     int m_PrevWorkingDay;                        // `J` save the last count of the number of working days
     int m_WorkingDay;                            // count the number of working day
-    int m_SpecialJobGoal;                        // `J` Special Jobs like surgeries will have a specific goal
     bool m_Refused_To_Work_Day;                    // `J` to track better if she refused to work her assigned job
     bool m_Refused_To_Work_Night;                // `J` to track better if she refused to work her assigned job
 

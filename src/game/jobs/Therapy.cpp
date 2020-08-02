@@ -20,8 +20,8 @@
 #include "GenericJob.h"
 #include "cJobManager.h"
 #include "cGirls.h"
-#include "character/sGirl.hpp"
-#include "IBuilding.hpp"
+#include "character/sGirl.h"
+#include "buildings/IBuilding.h"
 #include <sstream>
 #include "character/predicates.h"
 #include "Game.hpp"
@@ -237,7 +237,7 @@ void AngerManagement::FightEvent(sGirl& girl, bool is_night) {
             if (chance(10))    // and ran away
             {
                 runaway = true;
-                stringstream smess;
+                std::stringstream smess;
                 smess << girl.FullName() << " fought with her counselor and ran away.\nSend your goons after her to attempt recapture.\nShe will escape for good after 6 weeks.\n";
                 g_Game->push_message(smess.str(), COLOR_RED);
                 girl.run_away();
@@ -252,7 +252,7 @@ void AngerManagement::FightEvent(sGirl& girl, bool is_night) {
             counselor->upd_Enjoyment(ACTION_WORKCOUNSELOR, -1);
             counselor->upd_Enjoyment(ACTION_COMBAT, 2);
         }
-        stringstream ssc;
+        std::stringstream ssc;
         ssc << "${name} had to defend herself from " << girl.FullName() << " who she was counseling.\n";
         if (runaway) ss << "${name} ran out of the Counceling Centre and has not been heard from since.";
         counselor->AddMessage(ssc.str(), IMGTYPE_COMBAT, EVENT_WARNING);

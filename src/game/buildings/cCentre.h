@@ -22,7 +22,7 @@
 #ifndef __CCENTRE_H
 #define __CCENTRE_H
 
-#include "IBuilding.hpp"
+#include "IBuilding.h"
 
 // defines a single centre
 struct sCentre : public IBuilding

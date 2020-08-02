@@ -196,7 +196,7 @@ void cScreenTurnSummary::process()
             PrepareImage(image_id, selected_girl().get(), Image_Type, true, Image);
             if (imagename_id >= 0)
             {
-                string t;
+                std::string t;
                 if (image_item) t = image_item->m_Image.GetFileName();
                 EditTextItem(t, imagename_id);
             }
@@ -243,7 +243,7 @@ void cScreenTurnSummary::change_category(SummaryCategory new_category)
     if (new_item >= GetListBoxSize(item_id) || new_item < 0) new_item = 0;
     SetSelectedItemInList(item_id, new_item);
 
-    string sorttext = "ITEM";
+    std::string sorttext = "ITEM";
     if (summarysortorder == 1 && m_ActiveCategory == Summary_GIRLS)
     {
         if (active_building().type() == BuildingType::STUDIO)    { sorttext += " (Jobs)"; }
@@ -347,7 +347,7 @@ void cScreenTurnSummary::goto_selected()
         }
         return;
     }
-    string selectedName = GetSelectedTextFromList(item_id);
+    std::string selectedName = GetSelectedTextFromList(item_id);
     switch (m_ActiveCategory)
     {
     case Summary_GANGS:
@@ -414,7 +414,7 @@ void cScreenTurnSummary::Fill_Events(sGirl* girl)
         girl->m_Events.DoSort();        // Sort Events to put Warnings & Dangers first.
         for (int l = 0; l < girl->m_Events.GetNumEvents(); l++)
         {
-            string            sTitle = girl->m_Events.GetMessage(l).TitleText();
+            std::string            sTitle = girl->m_Events.GetMessage(l).TitleText();
             unsigned int    uiListboxColour = girl->m_Events.GetMessage(l).ListboxColour();
             AddToListBox(event_id, l, sTitle, uiListboxColour);
         }
@@ -432,7 +432,7 @@ void cScreenTurnSummary::Fill_Events_Gang(int gang_id)
 
         for (int l = 0; l < gang->m_Events.GetNumEvents(); l++)
         {
-            string            sTitle = gang->m_Events.GetMessage(l).TitleText();
+            std::string            sTitle = gang->m_Events.GetMessage(l).TitleText();
             unsigned int    uiListboxColour = gang->m_Events.GetMessage(l).ListboxColour();
             AddToListBox(event_id, l, sTitle, uiListboxColour);
         }
@@ -448,7 +448,7 @@ void cScreenTurnSummary::Fill_Events_Buildings(int building_id)
 
         for (int l = 0; l < pSelectedBrothel.m_Events.GetNumEvents(); l++)
         {
-            string            sTitle = pSelectedBrothel.m_Events.GetMessage(l).TitleText();
+            std::string            sTitle = pSelectedBrothel.m_Events.GetMessage(l).TitleText();
             unsigned int    uiListboxColour = pSelectedBrothel.m_Events.GetMessage(l).ListboxColour();
             AddToListBox(event_id, l, sTitle, uiListboxColour);
         }
@@ -652,7 +652,7 @@ void cScreenTurnSummary::Fill_Events_Rivals() {
     {
         for (int l = 0; l < rivals.events().GetNumEvents(); l++)
         {
-            string          sTitle          = rivals.events().GetMessage(l).TitleText();
+            std::string     sTitle          = rivals.events().GetMessage(l).TitleText();
             unsigned int    uiListboxColour = rivals.events().GetMessage(l).ListboxColour();
             AddToListBox(event_id, l, sTitle, uiListboxColour);
         }

@@ -20,9 +20,9 @@
 #include "cJobManager.h"
 #include "buildings/cBuildingManager.h"
 #include "Game.hpp"
-#include "cJobManager.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
+#include "cGirls.h"
 
 // `J` Job House - General - Learning_Job
 bool WorkPersonalTraining(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -30,7 +30,7 @@ bool WorkPersonalTraining(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_SEX;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_PERSONALTRAINING))            // they refuse to work
     {
         ss << "${name} refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";

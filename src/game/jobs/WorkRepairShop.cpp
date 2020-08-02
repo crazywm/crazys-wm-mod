@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,15 @@
 #include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include <sstream>
-#include "cGold.h"
 #include "cJobManager.h"
+#include "cGirls.h"
 
 // `J` Job Clinic - Surgery
 bool WorkRepairShop(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 
-    stringstream ss;
+    std::stringstream ss;
     cGirls::UnequipCombat(girl);    // not for patients
 
     if (!girl.has_active_trait("Construct") && !girl.has_active_trait("Half-Construct"))

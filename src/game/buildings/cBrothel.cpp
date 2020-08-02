@@ -31,6 +31,7 @@
 #include "cJobManager.h"
 #include "cTariff.h"
 #include "utils/string.hpp"
+#include "cGirls.h"
 
 // fwd-declare the relevant settings
 namespace settings {
@@ -105,7 +106,7 @@ void sBrothel::UpdateGirls(bool is_night)
 
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cBrothel.cpp
     bool matron = num_girls_on_job(m_MatronJob, false) >= 1;
-    stringstream ss;
+    std::stringstream ss;
 
 
     /*
@@ -145,7 +146,7 @@ void sBrothel::UpdateGirls(bool is_night)
                 }
                 else
                 {;
-                    current.m_Events.AddMessage("WARNING ${name} is doing nothing!\n", IMGTYPE_PROFILE, EVENT_WARNING);
+                    current.AddMessage("WARNING ${name} is doing nothing!\n", IMGTYPE_PROFILE, EVENT_WARNING);
                 }
             }
 
@@ -442,7 +443,7 @@ bool sBrothel::runaway_check(sGirl& girl)
         girl.set_stat(STAT_TIREDNESS, 0);
         girl.set_stat(STAT_HEALTH, 100);
         girl.m_RunAway = 6;
-        stringstream smess;
+        std::stringstream smess;
         smess << girl.FullName() << " has run away.\nSend your goons after her to attempt recapture.\nShe will escape for good after 6 weeks.\n";
         g_Game->push_message(smess.str(), COLOR_RED);
         return true;
@@ -455,7 +456,7 @@ bool sBrothel::runaway_check(sGirl& girl)
     */
     bool starts_drugs = false;
     //Crazy changed it to this might not be the best // `J` made it better :p
-    string drug;
+    std::string drug;
     int i = 0;
     if (girl.happiness() <= 20 && girl.has_active_trait( "Former Addict"))
     {
@@ -507,7 +508,7 @@ bool sBrothel::runaway_check(sGirl& girl)
     /*
     *    otherwise, report the sad occurrence
     */
-    stringstream ss;
+    std::stringstream ss;
     ss << "This girl's unhappiness has turned her into " << (drug == "Alcoholic" ? "an" : "a") << " " << drug << ".";
     girl.m_Events.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
     return false;
@@ -515,7 +516,7 @@ bool sBrothel::runaway_check(sGirl& girl)
 
 void sBrothel::Update()
 {
-    stringstream ss;
+    std::stringstream ss;
     // reset the data
     m_Happiness = m_MiscCustomers = m_TotalCustomers = 0;
     m_RejectCustomersRestrict = m_RejectCustomersDisease = 0;
@@ -569,7 +570,7 @@ void sBrothel::Update()
     if (!girls().empty())
         m_Fame = (total_fame() / girls().num());
     if (m_Happiness > 0 && g_Game->GetNumCustomers())
-        m_Happiness = min(100, m_Happiness / m_TotalCustomers);
+        m_Happiness = std::min(100, m_Happiness / m_TotalCustomers);
 
 
     // advertising costs are set independently for each brothel
@@ -653,7 +654,7 @@ void sBrothel::Update()
 void do_food_and_digs(IBuilding& brothel, sGirl& girl)
 {
     // `J` new code for .06.01.18
-    stringstream ss;
+    std::stringstream ss;
 
     // Gold per accommodation level
     int gold = (girl.is_slave() ? 5 : 20) * (girl.m_AccLevel + 1);
@@ -859,8 +860,8 @@ void updateGirlTurnBrothelStats(sGirl& girl)
     // Sanity check. Abort on dead girl
     if (girl.is_dead()) { return; }
 
-    stringstream ss;
-    string girlName = girl.FullName();
+    std::stringstream ss;
+    std::string girlName = girl.FullName();
     int statHouse = girl.house();
     int bonus = (60 - statHouse) / 30;
 

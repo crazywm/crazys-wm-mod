@@ -25,10 +25,10 @@
 #include "utils/algorithms.hpp"
 #include "cGangs.h"
 #include "buildings/cMovieStudio.h"
-#include "IBuilding.hpp"
+#include "buildings/IBuilding.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
-#include "character/sGirl.hpp"
+#include "sStorage.h"
+#include "character/sGirl.h"
 #include "character/cCustomers.h"
 #include "cInventory.h"
 #include "interface/cFont.h"
@@ -42,7 +42,7 @@
 #include "utils/FileList.h"
 #include "sConfig.h"
 #include "character/traits/ITraitSpec.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 #include "character/traits/ITraitsCollection.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
@@ -71,6 +71,8 @@ extern cNameList g_BoysNameList;
 extern cNameList g_SurnameList;
 
 extern cConfig cfg;
+
+using namespace std;
 
 // ----- Create / destroy
 
@@ -157,7 +159,7 @@ cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, 
 
     // set all jobs to null
     newGirl->m_DayJob = newGirl->m_NightJob = JOB_UNSET;
-    newGirl->m_WorkingDay = newGirl->m_PrevWorkingDay = newGirl->m_SpecialJobGoal = 0;
+    newGirl->m_WorkingDay = newGirl->m_PrevWorkingDay = 0;
 
     newGirl->m_Money = (g_Dice % (girl_template.m_MaxMoney - girl_template.m_MinMoney)) + girl_template.m_MinMoney;    // money
 
@@ -3912,11 +3914,10 @@ int cGirls::PreferredAccom(const sGirl& girl)
 // `J` the girl will check the customer for diseases before continuing.
 bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCustomer * Cust, double mod)
 {
-    string girlName = girl.FullName();
     stringstream ss;
     if (g_Dice.percent(0.1))    // 0.001 chance of false positive
     {
-        ss << "${name} thought she detected that her customer had a disease and refused to allow them to touch her just to be safe.";
+        ss << girl.FullName() << " thought she detected that her customer had a disease and refused to allow them to touch her just to be safe.";
         g_Game->push_message(ss.str(), COLOR_RED);
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);
         return true;
@@ -3951,7 +3952,7 @@ bool cGirls::detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCusto
     }
 
     if(found_disease) {
-        ss << girlName << " detected that her customer has " << found_disease <<
+        ss << girl.FullName() << " detected that her customer has " << found_disease <<
             " and refused to allow them to touch her.";
         g_Game->push_message(ss.str(), COLOR_RED);
         girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_WARNING);

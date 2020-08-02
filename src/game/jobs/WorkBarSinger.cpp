@@ -20,6 +20,7 @@
 #include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include <sstream>
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -29,7 +30,7 @@ bool WorkBarSinger(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKMUSIC;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (girl.disobey_check(actiontype, JOB_SINGER))
     {
@@ -61,7 +62,7 @@ bool WorkBarSinger(sGirl& girl, bool Day0Night1, cRng& rng)
     double jobperformance = girl.job_performance(JOB_SINGER, false);
 
     const sGirl* pianoonduty = random_girl_on_job(*girl.m_Building, JOB_PIANO, Day0Night1);
-    string pianoname = (pianoonduty ? "Pianist " + pianoonduty->FullName() + "" : "the Pianist");
+    std::string pianoname = (pianoonduty ? "Pianist " + pianoonduty->FullName() + "" : "the Pianist");
 
     //dont effect things but what she sings
     if (rng.percent(60) && (girl.has_active_trait("Country Gal") || girl.has_active_trait("Farmers Daughter")))
@@ -74,7 +75,7 @@ bool WorkBarSinger(sGirl& girl, bool Day0Night1, cRng& rng)
         roll_a = 90;    // Pop Songs
 
     // `CRAZY` The type of music she sings
-    string song_type_text = "Various types of music";
+    std::string song_type_text = "Various types of music";
     /* */if (roll_a <= 10)    { song_type_text = "Goth Rock songs"; }
     else if (roll_a <= 20)    { song_type_text = "Death Metal songs"; }
     else if (roll_a <= 30)    { song_type_text = "Classical songs"; }
@@ -84,7 +85,7 @@ bool WorkBarSinger(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (roll_a >= 90)    { song_type_text = "Pop songs"; }
 
     // `CRAZY` How well she sings
-    /*default*/    string sing_pre_text;
+    /*default*/    std::string sing_pre_text;
     /* */if (jobperformance >= 245)    { sing_pre_text = " perfectly"; }
     else if (jobperformance >= 185)    { sing_pre_text = " great"; }
     else if (jobperformance >= 145)    { sing_pre_text = " good"; }
@@ -397,8 +398,8 @@ bool WorkBarSinger(sGirl& girl, bool Day0Night1, cRng& rng)
     wages += 10 + rng%roll_max;
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 10, skill = 3;

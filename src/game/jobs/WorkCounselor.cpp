@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 #include "cRng.h"
 #include <sstream>
 #include "cJobManager.h"
+#include "cGirls.h"
 
 // `J` Job Centre - Rehab_Job - Full_Time_Job
 bool WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -31,7 +32,7 @@ bool WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
     bool SkipDisobey = true;
     girl.m_DayJob = girl.m_NightJob = JOB_COUNSELOR;    // it is a full time job
 
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100();
     if (!SkipDisobey)    // `J` skip the disobey check because it has already been done in the building flow
     {
@@ -65,8 +66,8 @@ bool WorkCounselor(sGirl& girl, bool Day0Night1, cRng& rng)
     roll_max /= 4;
     wages += 10 + rng%roll_max;
     wages += 5 * rehabers;    // `J` pay her 5 for each patient you send to her
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 5 + (rehabers / 2), skill = 2 + (rehabers / 2);

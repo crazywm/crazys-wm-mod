@@ -22,9 +22,9 @@
 #include "cInventory.h"
 #include <sstream>
 #include "Game.hpp"
-#include "cJobManager.h"
 #include "character/predicates.h"
 #include "character/cPlayer.h"
+#include "cGirls.h"
 
 // `J` Job House - General
 bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -34,7 +34,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     // `J` moving multiple bed warmers to a group function
     //    if (haremcount > 1)    return girl.disobey_check(ACTION_WORKHAREM, brothel);
 
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_c = rng.d100(), roll_d = rng.d100(), roll;
     //g_Building = BUILDING_HOUSE;
     cGirls::UnequipCombat(girl);    // put that shit away, not needed for sex training
@@ -50,7 +50,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
 
     // Headgirl can influence against refusal
     sGirl* headGirl = random_girl_on_job(*brothel, JOB_HEADGIRL, Day0Night1);
-    string headName = (headGirl ? headGirl->FullName() : "");
+    std::string headName = (headGirl ? headGirl->FullName() : "");
 
     //    refusal check
     if (girl.disobey_check(ACTION_WORKHAREM, JOB_PERSONALBEDWARMER))
@@ -547,7 +547,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     //If we have lots of slaves let's put them all together...
 
     //**********ONE: check for lots of bedwarmers
-    vector<sGirl*> harem = brothel->girls_on_job(JOB_PERSONALBEDWARMER, Day0Night1);
+    std::vector<sGirl*> harem = brothel->girls_on_job(JOB_PERSONALBEDWARMER, Day0Night1);
 
     //total girls on job
     int warmers = harem.size();
@@ -1274,48 +1274,44 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         if (girl.lose_trait("Chlamydia", 30))
         {
             g_Game->gold().misc_debit(500);
-            stringstream ssm;
-            ssm << "${name} gave you Chlamydia.\nYou spend 500 gold getting your shit cleaned up.\nYou use the medicine to clear her up too.\n";
-            ss << ssm.str();
-            g_Game->push_message(ssm.str(), 0);
+            const char* ssm = "${name} gave you Chlamydia.\nYou spend 500 gold getting your shit cleaned up.\nYou use the medicine to clear her up too.\n";
+            ss << ssm;
+            g_Game->push_message(ssm, 0);
         }
         else if (girl.lose_trait("Herpes",30))
         {
             g_Game->gold().misc_debit(1000);
             girl.pclove(1);
             girl.pchate(-1);
-            stringstream ssm;
-            ssm << "${name} gave you herpes.\nMedicine for it costs you 1,000 gold.\nYou use the medicine to clear her up too.\n";
-            ss << ssm.str();
-            g_Game->push_message(ssm.str(), 0);
+            const char* ssm = "${name} gave you herpes.\nMedicine for it costs you 1,000 gold.\nYou use the medicine to clear her up too.\n";
+            ss << ssm;
+            g_Game->push_message(ssm, 0);
         }
         else if (girl.lose_trait("Syphilis", 30))
         {
             g_Game->gold().misc_debit(3500);
             girl.pclove(3);
             girl.pchate(-3);
-            stringstream ssm;
-            ssm << "${name} gave you syphilis.\nMedicine for it is hard to track down, costing you 3,500 gold.\nYou share it with her.\n";
-            ss << ssm.str();
-            g_Game->push_message(ssm.str(), 0);
+            const char* ssm = "${name} gave you syphilis.\nMedicine for it is hard to track down, costing you 3,500 gold.\nYou share it with her.\n";
+            ss << ssm;
+            g_Game->push_message(ssm, 0);
         }
         else if (girl.lose_trait("AIDS", 30))
         {
             g_Game->gold().misc_debit(8000);
             girl.pclove(6);
             girl.pchate(-6);
-            stringstream ssm;
-            ssm << "${name} gave you AIDS.\n8,000 gold later and the wizards' incantations have finally cleansed you both.\n";
-            ss << ssm.str();
-            g_Game->push_message(ssm.str(), 0);
+            const char* ssm = "${name} gave you AIDS.\n8,000 gold later and the wizards' incantations have finally cleansed you both.\n";
+            ss << ssm;
+            g_Game->push_message(ssm, 0);
         }
     }
 
 #endif
     if (wages < 0) wages = 0;
     g_Game->gold().girl_support(wages);  // wages come from you
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 10;

@@ -30,10 +30,10 @@ namespace settings {
     extern const char* USER_MOVIES_AUTO;
 }
 
-extern vector<int> cycle_girls;
+extern std::vector<int> cycle_girls;
 extern int cycle_pos;
 
-static stringstream ss;
+static std::stringstream ss;
 
 static int ImageNum = -1;
 static int selection = -1;
@@ -151,7 +151,7 @@ void cScreenMovieMaker::init(bool back)
     DisableWidget(movedown_id, (cRowM == -1 || cRowM >= GetListBox(makethismovie_id)->GetSize() - 1));
     DisableWidget(releasemovie_id, GetListBox(makethismovie_id)->GetSize() < 1);
 
-    stringstream movietext;
+    std::stringstream movietext;
     if (GetListBox(makethismovie_id)->GetSize() > 0)
     {
         movietext << brothel.BuildDirectorList() << "\n\n";
@@ -167,7 +167,7 @@ void cScreenMovieMaker::on_select_movie_scene(int selection)
     DisableWidget(removescene_id, ::selection == -1);
     DisableWidget(moveup_id, ::selection <= 0);
     DisableWidget(movedown_id, ::selection == -1 || ::selection >= GetListBox(makethismovie_id)->GetSize() - 1);
-    stringstream scenedetails;
+    std::stringstream scenedetails;
     if (::selection != -1)
     {
 
@@ -180,7 +180,7 @@ void cScreenMovieMaker::on_select_source_scene(int selection)
     DisableWidget(addscene_id, ::selection == -1);
     DisableWidget(scrapscene_id, ::selection == -1);
 
-    stringstream scenedetails;
+    std::stringstream scenedetails;
     if (::selection != -1)
     {
 
@@ -205,7 +205,7 @@ void cScreenMovieMaker::movie_scene_down()
 void cScreenMovieMaker::movie_add_scene()
 {
     selection = GetSelectedItemFromList(sceneslist_id);
-    vector<int> a = getStudio().AddSceneToMovie(selection);
+    std::vector<int> a = getStudio().AddSceneToMovie(selection);
     cRow = a[0];
     cRowM = a[1];
     init(false);
@@ -213,7 +213,7 @@ void cScreenMovieMaker::movie_add_scene()
 
 void cScreenMovieMaker::movie_remove_scene(){
     selection = GetSelectedItemFromList(makethismovie_id);
-    vector<int> a = getStudio().RemoveSceneFromMovie(selection);
+    std::vector<int> a = getStudio().RemoveSceneFromMovie(selection);
     cRow = a[0];
     cRowM = a[1];
     init(false);

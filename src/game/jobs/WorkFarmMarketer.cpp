@@ -21,7 +21,7 @@
 #include "CLog.h"
 #include "buildings/cBuildingManager.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include "buildings/cDungeon.h"
 
 namespace settings {
@@ -35,7 +35,7 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
 {
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKCUSTSERV;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100();
     if (girl.disobey_check(actiontype, JOB_MARKETER))            // they refuse to work
     {
@@ -81,7 +81,7 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
         }
         if (ugirl)
         {
-            stringstream Umsg;
+            std::stringstream Umsg;
             // improve her a bit because she should be a good girl to be traded
             ugirl->tiredness(-100);                    ugirl->happiness(100);        ugirl->health(100);
             ugirl->charisma(10 + rng % 30);            ugirl->beauty(10 + rng % 10);
@@ -167,11 +167,11 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
 
     double gold = 0.0;
     // start with how many of each she can sell
-    int Sell_HandmadeGoods    = min(ForSale_HandmadeGoods,    (int)(jobperformance / 2.0 * ForSale_HandmadeGoods));
-    int Sell_Beasts            = min(ForSale_Beasts,            (int)(jobperformance / 2.5 * ForSale_Beasts));
-    int Sell_Food            = min(ForSale_Food,                (int)(jobperformance / 2.0 * ForSale_Food));
-    int Sell_Drinks            = min(ForSale_Drinks,            (int)(jobperformance / 2.0 * ForSale_Drinks));
-    int Sell_Alchemy        = min(ForSale_Alchemy,            (int)(jobperformance / 3.0 * ForSale_Alchemy));
+    int Sell_HandmadeGoods    = std::min(ForSale_HandmadeGoods,    (int)(jobperformance / 2.0 * ForSale_HandmadeGoods));
+    int Sell_Beasts            = std::min(ForSale_Beasts,            (int)(jobperformance / 2.5 * ForSale_Beasts));
+    int Sell_Food            = std::min(ForSale_Food,                (int)(jobperformance / 2.0 * ForSale_Food));
+    int Sell_Drinks            = std::min(ForSale_Drinks,            (int)(jobperformance / 2.0 * ForSale_Drinks));
+    int Sell_Alchemy        = std::min(ForSale_Alchemy,            (int)(jobperformance / 3.0 * ForSale_Alchemy));
     // for how much
     gold += (pricemultiplier * 1 * Sell_HandmadeGoods);
     gold += (pricemultiplier * (rng % 451 + 50) * Sell_Beasts);
@@ -231,8 +231,8 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
 
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
     g_Game->gold().farm_income(gold);
 
     // Improve stats
@@ -245,12 +245,12 @@ bool WorkFarmMarketer(sGirl& girl, bool Day0Night1, cRng& rng)
     int I_xp = (rng % xp) + 1;                            girl.exp(I_xp);
 
     // primary (+2 for single or +1 for multiple)
-    int I_charisma        = max(0, (rng % skill) + 1);        girl.charisma(I_charisma);
-    int I_confidence    = max(0, (rng % skill) + 1);        girl.confidence(I_confidence);
+    int I_charisma        = std::max(0, (rng % skill) + 1);        girl.charisma(I_charisma);
+    int I_confidence    = std::max(0, (rng % skill) + 1);        girl.confidence(I_confidence);
     // secondary (-1 for one then -2 for others)
-    int I_intelligence    = max(0, (rng % skill) - 1);        girl.intelligence(I_intelligence);
-    int I_fame            = max(0, (rng % skill) - 2);        girl.fame(I_fame);
-    int I_farming        = max(0, (rng % skill) - 2);        girl.farming(I_farming);
+    int I_intelligence    = std::max(0, (rng % skill) - 1);        girl.intelligence(I_intelligence);
+    int I_fame            = std::max(0, (rng % skill) - 2);        girl.fame(I_fame);
+    int I_farming        = std::max(0, (rng % skill) - 2);        girl.farming(I_farming);
 
     girl.upd_Enjoyment(actiontype, enjoy);
     cGirls::PossiblyGainNewTrait(girl,        "Charismatic",    30, actiontype, "${name} has been selling long enough that she has learned to be more Charismatic.", Day0Night1);

@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 #include "cRng.h"
 #include <sstream>
 #include "cJobManager.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -29,7 +30,7 @@ bool WorkFakeOrgasm(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
-    stringstream ss;
+    std::stringstream ss;
     Action_Types actiontype = ACTION_WORKTRAINING;
     // if she was not in JOB_FAKEORGASM yesterday, reset working days to 0 before proceding
     if (girl.m_YesterDayJob != JOB_FAKEORGASM) girl.m_PrevWorkingDay = girl.m_WorkingDay = 0;
@@ -193,7 +194,7 @@ bool WorkFakeOrgasm(sGirl& girl, bool Day0Night1, cRng& rng)
 #pragma region //    Count the Days                //
 
     int total = girl.m_WorkingDay - startday;
-    int xp = 1 + (max(0, girl.m_WorkingDay / 20));
+    int xp = 1 + std::max(0, girl.m_WorkingDay / 20);
     if (total <= 0)                                // she lost time so more tired
     {
         tired += 5 + rng % (-total);
@@ -250,7 +251,7 @@ bool WorkFakeOrgasm(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         if (girl.m_WorkingDay >= 100)        tired -= (girl.m_WorkingDay - 100) / 2;    // her last day so she rested a bit
         else    ss << "Training in progress (" << girl.m_WorkingDay << "%).\n \n";
-        wages = min(100, girl.m_WorkingDay);
+        wages = std::min(100, girl.m_WorkingDay);
         /* */if (girl.m_WorkingDay < 25)    ss << "She has no idea what she sounds like durring sex but it ain't orgasmic.";
         else if (girl.m_WorkingDay < 50)    ss << "When she realizes she should finish, you can see it click in her mind and easily notice her changing things up.";
         else if (girl.m_WorkingDay < 75)    ss << "She is still not getting into rhythm with " << (rng % 3 ? "you" : "her partner") << " but it still seems enjoyable.";
@@ -281,12 +282,12 @@ bool WorkFakeOrgasm(sGirl& girl, bool Day0Night1, cRng& rng)
     // Improve girl
     int I_performance = (rng.bell(3, 15));
     int I_confidence = (rng.bell(-1, 5));
-    int I_constitution = (max(0, rng.bell(-2, 1)));
+    int I_constitution = std::max(0, rng.bell(-2, 1));
     int I_spirit = (rng.bell(-5, 5));
     int I_lesbian = (rng.bell(0, 5));
     int I_normalsex = (rng.bell(0, 5));
     int I_group = (rng.bell(0, 5));
-    int I_anal = (max(0, rng.bell(-2, 2)));
+    int I_anal = std::max(0, rng.bell(-2, 2));
 
     girl.exp(xp);
     girl.tiredness(tired);

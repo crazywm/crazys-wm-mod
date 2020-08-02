@@ -36,6 +36,7 @@ struct sCharacter {
 struct sLuaGirl : public sCharacter<sLuaGirl>{
     static void init(lua_State* L);
     static void create(lua_State* state, sGirl* girl);
+    static int finalize(lua_State* state);
     static sGirl& check_type(lua_State* L, int index);
 
     static int add_trait(lua_State* L);

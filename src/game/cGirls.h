@@ -38,8 +38,6 @@ class cGirlPool;
 
 extern cRng g_Dice;
 
-using namespace std;
-
 // Prototypes
 class   IBuilding;
 struct  sInventoryItem;
@@ -59,7 +57,7 @@ public:
     cGirls();
     ~cGirls();
 
-    void LoadGirlsXML(string filename);
+    void LoadGirlsXML(std::string filename);
     /*
     *    SaveGirls doesn't seem to be the inverse of LoadGirls
     *    but rather writes girl data to the save file
@@ -71,11 +69,11 @@ public:
     std::shared_ptr<sGirl> TakeGirl(const sGirl* girl);      // Removes a girl from the global pool, returns the shared ptr to be put somewhere else
     /// releases a girl back to the rooster: if the girl is unique, it will become available again, if it was procedual it will be
     /// deleted
-    void GiveGirl(shared_ptr<sGirl> girl);
+    void GiveGirl(std::shared_ptr<sGirl> girl);
 
     sGirl* GetGirl(int girl);    // gets the girl by count
 
-    static void GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, string& message, SKILLS &SexType);    // does the logic for fucking
+    static void GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool group, std::string& message, SKILLS &SexType);    // does the logic for fucking
 
     // MYR: More functions for attack/defense/agility-style combat.
     static bool GirlInjured(sGirl& girl, unsigned int unModifier, std::function<void(std::string)> handler = {});
@@ -94,13 +92,13 @@ public:
     static double GetAverageOfSexSkills(const sGirl& girl);    // `J` added
     static double GetAverageOfNSxSkills(const sGirl& girl);    // `J` added
 
-    static bool PossiblyGainNewTrait(sGirl& girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1, EventType eventtype = EVENT_GOODNEWS);
-    static bool PossiblyLoseExistingTrait(sGirl& girl, string Trait, int Threshold, int ActionType, string Message, bool Day0Night1);
+    static bool PossiblyGainNewTrait(sGirl& girl, std::string Trait, int Threshold, int ActionType, std::string Message, bool Day0Night1, EventType eventtype = EVENT_GOODNEWS);
+    static bool PossiblyLoseExistingTrait(sGirl& girl, std::string Trait, int Threshold, int ActionType, std::string Message, bool Day0Night1);
 
     // `J` adding these to allow single step adjustment of linked traits
-    static string AdjustTraitGroupGagReflex(sGirl& girl, int steps, bool showmessage = false);
-    static string AdjustTraitGroupBreastSize(sGirl& girl, int adjustment, bool showmessage = false);
-    static string AdjustTraitGroupFertility(sGirl& girl, int steps, bool showmessage = false);
+    static std::string AdjustTraitGroupGagReflex(sGirl& girl, int steps, bool showmessage = false);
+    static std::string AdjustTraitGroupBreastSize(sGirl& girl, int adjustment, bool showmessage = false);
+    static std::string AdjustTraitGroupFertility(sGirl& girl, int steps, bool showmessage = false);
 
     int GetNumYourDaughterGirls();
 
@@ -108,18 +106,18 @@ public:
     static void EquipCombat(sGirl& girl);        // girl makes sure best armor and weapons are equipped, ready for combat
     static void UnequipCombat(sGirl& girl);    // girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs
 
-    void LoadRandomGirl(string filename);
+    void LoadRandomGirl(std::string filename);
     std::shared_ptr<sGirl>
     CreateRandomGirl(int age, bool slave = false, bool undead = false, bool Human0Monster1 = false,
                      bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false,
-                     string findbyname = "");
+                     std::string findbyname = "");
 
     std::shared_ptr<sGirl> GetRandomGirl(bool slave = false, bool catacomb = false, bool arena = false, bool daughter = false, bool isdaughter = false);
     std::shared_ptr<sGirl> GetUniqueYourDaughterGirl(int Human0Monster1 = -1);    // -1 either, 0 human, 1 monster
     std::shared_ptr<sGirl> GetDaughterByName(const std::string& name, bool slave, bool non_human, bool player_dad);
     std::shared_ptr<sGirl> CreateDaughter(sGirl& mother, bool player_dad);
 
-    static string GetHoroscopeName(int month, int day);
+    static std::string GetHoroscopeName(int month, int day);
 
     static const sInventoryItem* GetWorseItem(const sGirl& girl, int type, int cost);
     static int GetNumItemType(const sGirl& girl, int Type, bool splitsubtype = false);
@@ -127,11 +125,11 @@ public:
     static void UseItems(sGirl& girl);
 
     static int GetSkillWorth(const sGirl& girl);
-    static string GetDetailsString(sGirl& girl, bool purchase = false);
-    static string GetMoreDetailsString(const sGirl& girl, bool purchase = false);
-    static string GetThirdDetailsString(const sGirl& girl);
-    static string GetGirlMood(const sGirl& girl);
-    static string GetSimpleDetails(const sGirl& girl);
+    static std::string GetDetailsString(sGirl& girl, bool purchase = false);
+    static std::string GetMoreDetailsString(const sGirl& girl, bool purchase = false);
+    static std::string GetThirdDetailsString(const sGirl& girl);
+    static std::string GetGirlMood(const sGirl& girl);
+    static std::string GetSimpleDetails(const sGirl& girl);
 
     static void UpdateAskPrice(sGirl& girl, bool vari);
 
@@ -154,9 +152,9 @@ public:
     static bool girl_has_matron(const sGirl& girl, int shift = 0);
     static bool detect_disease_in_customer(IBuilding * brothel, sGirl& girl, sCustomer * Cust, double mod = 0.0);
 
-    static string Accommodation(int acc);
+    static std::string Accommodation(int acc);
     static int PreferredAccom(const sGirl& girl);
-    static string catacombs_look_for(int girls, int items, int beast);
+    static std::string catacombs_look_for(int girls, int items, int beast);
 
     static sCustomer GetBeast();
 
@@ -166,7 +164,7 @@ public:
 private:
     std::unique_ptr<cGirlPool> m_Girls;    // list of girls who are dead, gone or in use
 
-    sGirl* find_girl_by_name(const string& name);
+    sGirl* find_girl_by_name(const std::string& name);
 
     cRandomGirls m_RandomGirls;
 };

@@ -24,7 +24,7 @@
 #include "cInventory.h"
 #include "CLog.h"
 #include "Game.hpp"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "xml/util.h"
 #include "ICharacter.h"
 #include "sConfig.h"
@@ -154,9 +154,9 @@ int cPlayer::customerfear(int n)
 }
 
 
-string cPlayer::SetTitle(string title)
+std::string cPlayer::SetTitle(std::string title)
 {
-    m_Title = title;
+    m_Title = std::move(title);
     return m_Title;
 }
 
@@ -506,7 +506,7 @@ void cPlayer::AdjustGender(int male, int female)
 
 std::string cPlayer::disposition_text() const
 {
-    stringstream ss;
+    std::stringstream ss;
     if (m_Disposition >= 100)    ss << "Saint";
     else if (m_Disposition >= 80)    ss << "Benevolent";
     else if (m_Disposition >= 50)    ss << "Nice";
@@ -521,7 +521,7 @@ std::string cPlayer::disposition_text() const
 
 std::string cPlayer::suss_text() const
 {
-    stringstream ss;
+    std::stringstream ss;
     if (m_Suspicion >= 80)        ss << "Town Scum";
     else if (m_Suspicion >= 50)        ss << "Miscreant";
     else if (m_Suspicion >= 10)        ss << "Suspect";
@@ -671,7 +671,7 @@ bool cPlayer::Combat(sGirl& girl)        //  **************************** for no
     return true;
 }
 
-void cPlayer::AutomaticFoodItemUse(sGirl& girl, const char* item_name, string message)
+void cPlayer::AutomaticFoodItemUse(sGirl& girl, const char* item_name, std::string message)
 {
     if(!has_item(item_name))
         return;
@@ -683,7 +683,7 @@ void cPlayer::AutomaticFoodItemUse(sGirl& girl, const char* item_name, string me
     girl.AddMessage(message, IMGTYPE_DEATH, EVENT_WARNING);
 }
 
-void cPlayer::AutomaticItemUse(sGirl& girl, const char* item_name, string message)
+void cPlayer::AutomaticItemUse(sGirl& girl, const char* item_name, std::string message)
 {
     if(!has_item(item_name))
         return;
@@ -699,7 +699,7 @@ void cPlayer::AutomaticItemUse(sGirl& girl, const char* item_name, string messag
     }
 }
 
-bool cPlayer::AutomaticSlotlessItemUse(sGirl& girl, const char* item_name, string message)
+bool cPlayer::AutomaticSlotlessItemUse(sGirl& girl, const char* item_name, std::string message)
 {
     // Slotless items include manuals, stripper poles, free weights, etc...
     if(!has_item(item_name))

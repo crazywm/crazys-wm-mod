@@ -79,7 +79,7 @@ public:
     int ArrowDownList();
     int ArrowUpList();
 
-    bool HasMultiSelected();
+    bool HasMultiSelected() const;
 
     void ScrollDown(int amount = 0, bool updatebar = true);
     void ScrollUp(int amount = 0, bool updatebar = true);
@@ -180,6 +180,7 @@ private:
     void HandleColumnHeaderClick(const sColumnData& column);
 
     void UpdatePositionsAfterSort();
+    bool HandleSetFocus(bool focus) override { return true; }
 };
 
 #endif

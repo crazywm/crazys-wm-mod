@@ -18,12 +18,13 @@
 */
 #include <sstream>
 #include "buildings/cBuildingManager.h"
+#include "cGirls.h"
 
 void CleaningUpdateGirl(sGirl& girl, cRng& rng, bool is_night, int enjoy, int tips, int wages, int clean_amount) {
     girl.m_Building->m_Filthiness -= (int)clean_amount;
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Base Improvement and trait modifiers
     int xp = 5, skill = 3;
@@ -36,8 +37,8 @@ void CleaningUpdateGirl(sGirl& girl, cRng& rng, bool is_night, int enjoy, int ti
     // primary improvement (+2 for single or +1 for multiple)
     girl.service((rng % skill) + 2);
     // secondary improvement (-1 for one then -2 for others)
-    girl.morality(max(-1, (rng % skill) - 1));        // possibly go down but mostly go up
-    girl.refinement(max(-1, (rng % skill) - 2));    // possibly go up or down
+    girl.morality(std::max(-1, (rng % skill) - 1));        // possibly go down but mostly go up
+    girl.refinement(std::max(-1, (rng % skill) - 2));    // possibly go up or down
 
 
     // Update Enjoyment
@@ -56,7 +57,7 @@ bool WorkCleaning(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKCLEANING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (roll_a <= 50 && girl.disobey_check(actiontype, JOB_CLEANING))
     {
@@ -274,7 +275,7 @@ bool WorkCleanArena(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKCLEANING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (roll_a <= 50 && girl.disobey_check(actiontype, JOB_CLEANARENA))
     {
@@ -322,7 +323,7 @@ bool WorkCleanArena(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     else
     {
-        wages = min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
+        wages = std::min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
     }
 
     // `J` if she can clean more than is needed, she has a little free time after her shift
@@ -351,7 +352,7 @@ bool WorkCleanCentre(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKCLEANING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
     if (roll_a <= 50 && girl.disobey_check(actiontype, JOB_CLEANCENTRE))
     {
@@ -400,7 +401,7 @@ bool WorkCleanCentre(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     else
     {
-        wages = min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
+        wages = std::min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
     }
 
     // `J` if she can clean more than is needed, she has a little free time after her shift
@@ -449,7 +450,7 @@ bool WorkCleanHouse(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKCLEANING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (roll_a <= 50 && girl.disobey_check(actiontype, JOB_CLEANHOUSE))
     {
@@ -496,7 +497,7 @@ bool WorkCleanHouse(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     else
     {
-        wages = min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
+        wages = std::min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
     }
 
     // `J` if she can clean more than is needed, she has a little free time after her shift
@@ -522,7 +523,7 @@ bool WorkJanitor(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKCLEANING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100();
     if (roll_a <= 50 && girl.disobey_check(actiontype, JOB_JANITOR))
     {
@@ -569,7 +570,7 @@ bool WorkJanitor(sGirl& girl, bool Day0Night1, cRng& rng)
     }
     else
     {
-        wages = min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
+        wages = std::min(30, int(30 + (CleanAmt / 10))); // `J` Pay her based on how much she cleaned
     }
 
     // `J` if she can clean more than is needed, she has a little free time after her shift

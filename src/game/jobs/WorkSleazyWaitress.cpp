@@ -23,6 +23,7 @@
 #include "cInventory.h"
 #include <sstream>
 #include "Game.hpp"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -32,7 +33,7 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKCLUB;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
     if (girl.disobey_check(actiontype, JOB_SLEAZYWAITRESS))
     {
@@ -57,10 +58,10 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
     double jobperformance = girl.job_performance(JOB_SLEAZYWAITRESS, false);
 
     const sGirl* barmaidonduty = random_girl_on_job(*girl.m_Building, JOB_SLEAZYBARMAID, Day0Night1);
-    string barmaidname = barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid";
+    std::string barmaidname = barmaidonduty ? "Barmaid " + barmaidonduty->FullName() + "" : "the Barmaid";
 
     // `CRAZY`
-    /*default*/ string dick_type_text = "normal sized";
+    /*default*/ std::string dick_type_text = "normal sized";
     /* */if (roll_c <= 10)    { dick_type_text = "huge"; }
     else if (roll_c >= 90)    { dick_type_text = "small"; }
 
@@ -551,14 +552,14 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
         tips -= 10;
         wages -= 50;
         girl.upd_temp_stat(STAT_LIBIDO, -20, true);
-        girl.anal(max(0, rng % 4 + 1));
-        girl.bdsm(max(0, rng % 4 - 1));
-        girl.normalsex(max(0, rng % 4 + 1));
-        girl.group(max(2, rng % 4 + 2));
-        girl.oralsex(max(0, rng % 4 + 0));
-        girl.tittysex(max(0, rng % 4 - 1));
-        girl.handjob(max(0, rng % 4 + 0));
-        girl.footjob(max(0, rng % 4 - 1));
+        girl.anal(std::max(0, rng % 4 + 1));
+        girl.bdsm(std::max(0, rng % 4 - 1));
+        girl.normalsex(std::max(0, rng % 4 + 1));
+        girl.group(std::max(2, rng % 4 + 2));
+        girl.oralsex(std::max(0, rng % 4 + 0));
+        girl.tittysex(std::max(0, rng % 4 - 1));
+        girl.handjob(std::max(0, rng % 4 + 0));
+        girl.footjob(std::max(0, rng % 4 - 1));
         girl.happiness(-5);
         girl.health(-1);
         girl.upd_Enjoyment(ACTION_SEX, -2);
@@ -574,7 +575,7 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
             girl.spirit(-1);
         }
         sCustomer Cust = g_Game->GetCustomer(*brothel);
-        Cust.m_Amount = min(1, rng % 11);
+        Cust.m_Amount = std::min(1, rng % 11);
         if (!girl.calc_group_pregnancy(Cust, false, 1.0))
         {
             g_Game->push_message(girl.FullName() + " has gotten pregnant.", 0);
@@ -719,8 +720,8 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
     roll_max /= 4;
     wages += 10 + rng%roll_max;
 
-    girl.m_Tips = max(0, (int)tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, (int)tips);
+    girl.m_Pay = std::max(0, wages);
 
 #pragma endregion
 #pragma region    //    Finish the shift            //
@@ -738,7 +739,7 @@ bool WorkSleazyWaitress(sGirl& girl, bool Day0Night1, cRng& rng)
     if (girl.has_active_trait("Quick Learner"))        { skill += 1; xp += 3; }
     else if (girl.has_active_trait("Slow Learner"))    { skill -= 1; xp -= 3; }
     if (!girl.has_active_trait("Straight"))    {
-        girl.upd_temp_stat(STAT_LIBIDO, min(3, brothel->num_girls_on_job(JOB_BARSTRIPPER, false)));
+        girl.upd_temp_stat(STAT_LIBIDO, std::min(3, brothel->num_girls_on_job(JOB_BARSTRIPPER, false)));
     }
     if (girl.fame() < 10 && jobperformance >= 70)        { fame += 1; }
     if (girl.fame() < 20 && jobperformance >= 100)        { fame += 1; }

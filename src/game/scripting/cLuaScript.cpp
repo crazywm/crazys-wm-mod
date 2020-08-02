@@ -18,31 +18,33 @@
  */
 
 #include <stdexcept>
-#include "CLog.h"
 #include <vector>
+
+#include "interface/fwd.hpp"
+#include "interface/cWindowManager.h"
+#include "screens/cGameWindow.h"
+
+#include "CLog.h"
+#include "cNameList.h"
 #include "Game.hpp"
 #include "cGold.h"
 #include "cInventory.h"
-#include <main.h>
-
-#include "interface/fwd.hpp"
-#include "screens/cGameWindow.h"
+#include "sStorage.h"
+#include "Inventory.h"
+#include "utils/string.hpp"
 
 #include "character/cPlayer.h"
+#include "character/sGirl.h"
 #include "buildings/cDungeon.h"
-#include "character/sGirl.hpp"
 
 #include "cLuaScript.h"
 #include "cLuaState.h"
 #include "sLuaGirl.h"
 #include "sLuaParameter.hpp"
-#include "sStorage.hpp"
-#include "Inventory.hpp"
-#include "sLuaParameter.hpp"
-#include "utils/string.hpp"
 
 
 extern cRng g_Dice;
+extern cNameList g_SurnameList;
 
 extern "C" {
 #include "lua.h"
@@ -286,7 +288,7 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     bool arena = lua_toboolean(L, 6);
 
     // Set the surname for the family
-    string surname;
+    std::string surname;
     for (int i = 0; i < 5; i++)
     {
         surname = g_SurnameList.random();
@@ -300,10 +302,10 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
     std::shared_ptr<sGirl> Daughter2 = nullptr;
     std::shared_ptr<sGirl> Daughter3 = nullptr;
     std::shared_ptr<sGirl> Mother = nullptr;
-    stringstream NGmsg1;
-    stringstream NGmsg2;
-    stringstream NGmsg3;
-    stringstream NGmsgM;
+    std::stringstream NGmsg1;
+    std::stringstream NGmsg2;
+    std::stringstream NGmsg3;
+    std::stringstream NGmsgM;
 
     int oldest = 18;    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
     if (num_daughters > 0)
@@ -337,7 +339,7 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
         if (!g_Dice.percent(Mother->age())) Mother->gain_trait("MILF");    // the younger the mother the more likely she will be a MILF
         Mother->lose_trait("Virgin");
 
-        string biography = "Daughter of " + Mother->FullName() + " and a deadbeat brothel client.";
+        std::string biography = "Daughter of " + Mother->FullName() + " and a deadbeat brothel client.";
 
         if (Daughter1)    Daughter1->m_Desc = Daughter1->m_Desc + "\n \n" + biography;
         if (Daughter2)    Daughter2->m_Desc = Daughter2->m_Desc + "\n \n" + biography;
@@ -348,7 +350,7 @@ int cLuaScript::AddFamilyToDungeon(lua_State *L) {
         Mother->m_ChildrenCount[CHILD04_CUSTOMER_GIRLS] += num_daughters;
 
     }
-    string kstring = (kidnapped ? "kidnapped from her family" : "captured");
+    std::string kstring = (kidnapped ? "kidnapped from her family" : "captured");
 
     if (num_daughters > 0)
     {

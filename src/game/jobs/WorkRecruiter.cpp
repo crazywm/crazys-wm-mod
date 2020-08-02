@@ -19,11 +19,11 @@
 #pragma region //    Includes and Externs            //
 #include "buildings/cBuildingManager.h"
 #include <sstream>
-#include "cGold.h"
 #include "Game.hpp"
 #include "character/traits/ITraitsCollection.h"
 #include "character/cPlayer.h"
 #include "buildings/cDungeon.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -33,7 +33,7 @@ bool WorkRecruiter(sGirl& girl, bool Day0Night1, cRng& rng)
     if (Day0Night1) return false;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKRECRUIT;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100();
     if (girl.disobey_check(actiontype, JOB_RECRUITER))            // they refuse to work
     {
@@ -180,8 +180,8 @@ bool WorkRecruiter(sGirl& girl, bool Day0Night1, cRng& rng)
             if (add)
             {
                 newgirl->house(60);
-                stringstream NGmsg;
-                NGmsg << newgirl->FullName() << " was recruited by ${name} to work for you.";
+                std::stringstream NGmsg;
+                NGmsg << "${name} was recruited by " << girl.FullName() << " to work for you.";
                 newgirl->AddMessage(NGmsg.str(), imagetype, EVENT_GANG);
 
                 g_Game->dungeon().AddGirl(std::move(newgirl), DUNGEON_RECRUITED);
@@ -233,8 +233,8 @@ bool WorkRecruiter(sGirl& girl, bool Day0Night1, cRng& rng)
     roll_max /= 4;
     wages += 10 + rng%roll_max;
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
 
     // Improve stats

@@ -29,8 +29,6 @@
 #include "Constants.h"
 #include <memory>
 
-using namespace std;
-
 struct sGirl;
 namespace tinyxml2 {
     class XMLElement;
@@ -51,18 +49,13 @@ struct sEffect
         Enjoy        = 5
     };
     What m_Affects;
-/*
- *    define an ostream operator so it will pretty print
- *    (more useful for debugging than game play
- *    but why take it out?)
- */
-    friend ostream& operator << (ostream& os, sEffect::What &w);
+
 /*
  *    and a function to go the other way
  *    we need this to turn the strings in the xml file
  *    into numbers
  */
-    void set_what(string s);
+    void set_what(std::string s);
 /*
  *    can't make an enum for this since it can represent
  *    different quantites.
@@ -79,10 +72,10 @@ struct sEffect
  *    WD:    Change to use definition and code in sGirl::
  *        remove duplicated code
  */
-    bool set_skill(string s);
-    bool set_girl_status(string s);
-    bool set_stat(string s);
-    bool set_Enjoyment(string s);
+    bool set_skill(std::string s);
+    bool set_girl_status(std::string s);
+    bool set_stat(std::string s);
+    bool set_Enjoyment(std::string s);
 
 
 /*
@@ -99,18 +92,13 @@ struct sEffect
 /*
  *    name of the trait it adds
  */
-    string m_Trait;
+    std::string m_Trait;
 
     // chance that the effect happens (percent)
     // this only makes sense for consumable items, otherwise just re-equipping
     // can change this effect.
     int m_Chance = 100;
 
-/*
- *    and a pretty printer for the class as a whole
- *    just a debug thing, really
- */
-    friend ostream& operator << (ostream& os, sEffect &eff);
     // end mod
 };
 
@@ -151,8 +139,8 @@ private:
 
 struct sInventoryItem
 {
-    string m_Name;
-    string m_Desc;
+    std::string m_Name;
+    std::string m_Desc;
     /*
      *    item type: let's make an enum
      */
@@ -193,7 +181,7 @@ struct sInventoryItem
     /*
      *    the number of effects this item has
      */
-    vector<sEffect> m_Effects;
+    std::vector<sEffect> m_Effects;
     /*
      *    how much the item is worth?
      */
@@ -230,16 +218,11 @@ struct sInventoryItem
     };
     Rarity m_Rarity;
 
-    void set_rarity(const string& s);
-    void set_special(const string& s);
-    void set_type(const string& s);
+    void set_rarity(const std::string& s);
+    void set_special(const std::string& s);
+    void set_type(const std::string& s);
 
     CraftingData m_Crafting;
-
-    friend ostream& operator << (ostream& os, sInventoryItem::Special &spec);
-    friend ostream& operator << (ostream& os, sInventoryItem::Rarity &r);
-    friend ostream& operator << (ostream& os, sInventoryItem::Type &typ);
-    friend ostream& operator << (ostream& os, sInventoryItem &it);
 };
 
 class cInventory
@@ -249,8 +232,8 @@ public:
     }
     ~cInventory();
 
-    bool LoadItemsXML(const string& filename);
-    sInventoryItem* GetItem(string name);
+    bool LoadItemsXML(const std::string& filename);
+    sInventoryItem* GetItem(std::string name);
     sInventoryItem* GetRandomItem();
     sInventoryItem* GetRandomCatacombItem();
 

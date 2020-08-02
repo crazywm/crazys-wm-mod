@@ -29,7 +29,7 @@
 #include "xml/util.h"
 #include "xml/getattr.h"
 #include "traits/ITraitsCollection.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 
 extern cRng g_Dice;
 

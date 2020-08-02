@@ -20,6 +20,7 @@
 #include "cRng.h"
 #include "buildings/cBuildingManager.h"
 #include <sstream>
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -28,7 +29,7 @@ bool WorkCatacombRancher(sGirl& girl, bool Day0Night1, cRng& rng)
 {
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKFARM;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_CATACOMBRANCHER))            // they refuse to work
     {
         ss << "${name} refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -124,8 +125,8 @@ bool WorkCatacombRancher(sGirl& girl, bool Day0Night1, cRng& rng)
     int roll_max = (girl.beauty() + girl.charisma());
     roll_max /= 4;
     wages += 10 + rng%roll_max;
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
 
     // Improve stats
@@ -139,9 +140,9 @@ bool WorkCatacombRancher(sGirl& girl, bool Day0Night1, cRng& rng)
     // primary (+2 for single or +1 for multiple)
     girl.animalhandling(skill);
     // secondary (-1 for one then -2 for others)
-    girl.strength(max(0, (rng % skill) - 1));
-    girl.confidence(max(0, (rng % skill) - 2));
-    girl.constitution(max(0, (rng % skill) - 2));
+    girl.strength(std::max(0, (rng % skill) - 1));
+    girl.confidence(std::max(0, (rng % skill) - 2));
+    girl.constitution(std::max(0, (rng % skill) - 2));
 
 #pragma endregion
     return false;

@@ -40,9 +40,8 @@ sFarm::~sFarm()    = default;
 void sFarm::UpdateGirls(bool is_night)        // Start_Building_Process_B
 {
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cFarm.cpp
-    stringstream ss;
-    string girlName;
-    u_int sw = 0;
+    std::stringstream ss;
+    std::string girlName;
 
     //////////////////////////////////////////////////////
     //  Handle the start of shift stuff for all girls.  //

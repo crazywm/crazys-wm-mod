@@ -164,6 +164,7 @@ public:
     void AddKeyCallback(SDL_Keycode key, std::function<void()> callback);
 
     void push_message(std::string text, int color);
+    void push_error(std::string text);
 
     // initialize the window
     virtual void load(cWindowManager* root);

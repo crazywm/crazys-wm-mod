@@ -22,7 +22,7 @@
 #ifndef __CHOUSE_H
 #define __CHOUSE_H
 
-#include "IBuilding.hpp"
+#include "IBuilding.h"
 
 // defines a single House
 struct sHouse : public IBuilding

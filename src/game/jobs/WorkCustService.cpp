@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include <algorithm>
 #include "Game.hpp"
 #include "cJobManager.h"
+#include "cGirls.h"
 
 // `J` Job Brothel - General
 bool WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -31,7 +32,7 @@ bool WorkCustService(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 
     Action_Types actiontype = ACTION_WORKCUSTSERV;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_CUSTOMERSERVICE))
     {
         //SIN - More informative mssg to show *what* she refuses

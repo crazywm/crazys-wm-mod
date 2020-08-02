@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "queries.hpp"
-#include "IBuilding.hpp"
+#include "queries.h"
+#include "IBuilding.h"
 
 
 bool DoctorNeeded(IBuilding& building) {

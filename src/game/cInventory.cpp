@@ -21,7 +21,7 @@
 #include <iostream>
 #include "cGirls.h"
 #include "character/pregnancy.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "character/cCustomers.h"
 #include "character/cPlayer.h"
 #include "Game.hpp"
@@ -30,7 +30,7 @@
 #include "xml/util.h"
 #include "xml/getattr.h"
 #include "sConfig.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 
 using namespace std;
 

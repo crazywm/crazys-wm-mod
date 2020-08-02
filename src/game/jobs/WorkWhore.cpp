@@ -30,6 +30,7 @@
 #include "CLog.h"
 #include "scripting/GameEvents.h"
 #include "cJobManager.h"
+#include "cGirls.h"
 
 
 bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
@@ -94,8 +95,8 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
     cGirls::UnequipCombat(girl);
 
 
-    stringstream fuckMessage;
-    stringstream ss;
+    std::stringstream fuckMessage;
+    std::stringstream ss;
     int iNum = 0;
     int iOriginal = 0;
     int    AskPrice = girl.askprice();
@@ -124,7 +125,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
 
     // Max number on customers the girl can fuck
     int b = girl.beauty(), c = girl.charisma(), f = girl.fame();
-    int NumCusts = min(8, 2 + ((b + c + f + 1) / 50));
+    int NumCusts = std::min(8, 2 + ((b + c + f + 1) / 50));
     int NumSleptWith = 0;        // Total num customers she fucks this session
 
     if (bStreetWork)
@@ -152,7 +153,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
             ss << "${name} ran into some enemy goons and was attacked.\n";
 
             // WD: Health loss, Damage 0-15, 25% chance of 0 damage
-            iNum = max(rng % 20 - 5, 0);
+            iNum = std::max(rng % 20 - 5, 0);
             iOriginal = girl.health();
             girl.health(-iNum);
             iNum = iOriginal - girl.health();
@@ -181,7 +182,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
     }
 
     // WD: Set the limits on the Number of customers a girl can try and fuck
-    LoopCount = max(NumCusts * 2, 5);
+    LoopCount = std::max(NumCusts * 2, 5);
 
     // WD: limit to number of customers left
     if (LoopCount > g_Game->GetNumCustomers()) LoopCount = g_Game->GetNumCustomers();
@@ -433,7 +434,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
         }
 
         // Horizontal boogy
-        string fm;
+        std::string fm;
         cGirls::GirlFucks(&girl, Day0Night1, &Cust, group, fm, SexType);
         fuckMessage << fm;
 
@@ -706,8 +707,8 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
     else if (NumSleptWith < NumCusts)        { ss << "\n \nShe ran out of customers who like her."; }
     summary += ss.str();
 
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
     girl.AddMessage(summary, IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     //gain

@@ -33,7 +33,7 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_COMBAT;
-    stringstream ss;
+    std::stringstream ss;
     if (girl.disobey_check(actiontype, JOB_FIGHTARENAGIRLS))            // they refuse to work
     {
         ss << "${name} refused to work during the " << (Day0Night1 ? "night" : "day") << " shift.";
@@ -70,9 +70,9 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
             }
             if (ugirl)
             {
-                stringstream msg;    // goes to the girl and the g_MessageQue
-                stringstream Umsg;    // goes to the new girl
-                stringstream Tmsg;    // temp msg
+                std::stringstream msg;    // goes to the girl and the g_MessageQue
+                std::stringstream Umsg;    // goes to the new girl
+                std::stringstream Tmsg;    // temp msg
                 ugirl->set_stat(STAT_HEALTH, rng.in_range(1, 50));
                 ugirl->set_stat(STAT_HAPPINESS, rng.in_range(1, 80));
                 ugirl->set_stat(STAT_TIREDNESS, rng.in_range(50, 100));
@@ -228,8 +228,8 @@ bool WorkFightArenaGirls(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
 
     girl.AddMessage(ss.str(), imagetype, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);

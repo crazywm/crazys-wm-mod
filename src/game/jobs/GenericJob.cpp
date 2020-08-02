@@ -20,7 +20,7 @@
 #include "GenericJob.h"
 #include <functional>
 #include "cRng.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 
 class sBrothel;
 

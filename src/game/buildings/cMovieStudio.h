@@ -22,7 +22,7 @@
 #ifndef __CMOVIESTUDIO_H
 #define __CMOVIESTUDIO_H
 
-#include "IBuilding.hpp"
+#include "IBuilding.h"
 #include "cJobManager.h"
 
 using std::string;
@@ -62,7 +62,7 @@ struct sMovieScene
     int m_RunWeeks;
     sMovieScene()        = default;
     ~sMovieScene()       = default;
-    void OutputSceneRow(vector<string>& Data, const vector<string>& columnNames);
+    void OutputSceneRow(std::vector<string>& Data, const std::vector<string>& columnNames);
     void OutputSceneDetailString(string& Data, const string& detailName);
 };
 
@@ -98,15 +98,15 @@ struct sMovieStudio : public IBuilding
     sMovieScene* GetMovieScene(int num);
     int GetNumScenes() const;
     int GetNumMovieScenes() const;
-    vector<int> AddSceneToMovie(int num);
-    vector<int> RemoveSceneFromMovie(int num);
+    std::vector<int> AddSceneToMovie(int num);
+    std::vector<int> RemoveSceneFromMovie(int num);
     int MovieSceneUp(int num);
     int MovieSceneDown(int num);
     int DeleteScene(int num);
     void SortMovieScenes();
 
-    vector<sMovieScene*> m_availableScenes;
-    vector<sMovieScene*> m_movieScenes;
+    std::vector<sMovieScene*> m_availableScenes;
+    std::vector<sMovieScene*> m_movieScenes;
 
     int                m_MovieRunTime = 0;        // see above, counter for the 7 week effect
 

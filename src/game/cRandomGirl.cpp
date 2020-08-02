@@ -21,7 +21,7 @@
 #include "cGirls.h"
 #include "CLog.h"
 #include "Game.hpp"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "cInventory.h"
 #include <iomanip>
 #include "xml/util.h"
@@ -143,50 +143,6 @@ void sRandomGirl::load_from_xml(tinyxml2::XMLElement *el)
         g_LogFile.log(ELogLevel::WARNING, "Unexpected tag: ", child->Value(),
                 "    don't know what do to, ignoring");
     }
-}
-
-ostream& operator<<(ostream &os, sRandomGirl &g)
-{
-    os << g.m_Name << endl;
-    os << g.m_Desc << endl;
-    os << ("Human? ") << (g.m_Human ? "Yes" : "No") << endl;
-    os << ("Catacomb Dweller? ") << (g.m_Catacomb ? "Yes" : "No") << endl;
-    os << ("Arena Girl? ") << (g.m_Arena ? "Yes" : "No") << endl;
-    os << ("Your Daughter? ") << (g.m_YourDaughter ? "Yes": "No") << endl;
-    os << ("Is Daughter? ") << (g.m_IsDaughter ? "Yes" : "No") << endl;
-    os << ("Money: Min = ") << g.m_MinMoney << ". Max = " << g.m_MaxMoney << endl;
-    /*
-    *    loop through stats
-    *    setw sets a field width for the next operation,
-    *    left forces left alignment. Makes the columns line up.
-    */
-    for (unsigned int i = 0; i < NUM_STATS; i++)
-    {
-        os << setw(14) << left << get_stat_name((STATS)i) << ": Min = " << (g.m_MinStats[i]) << endl;
-        os << setw(14) << "" << ": Max = " << (g.m_MaxStats[i]) << endl;
-    }
-    /*
-    *    loop through skills
-    */
-    for (unsigned int i = 0; i < NUM_SKILLS; i++)
-    {
-        os << setw(14) << left << get_skill_name((SKILLS)i) << ": Min = " << int(g.m_MinSkills[i]) << endl;
-        os << setw(14) << "" << ": Max = " << int(g.m_MaxSkills[i]) << endl;
-    }
-    /*
-    *    loop through traits
-    */
-    for (int i = 0; i < g.m_TraitNames.size(); i++)
-    {
-        string name = g.m_TraitNames[i];
-        int percent = int(g.m_TraitChance[i]);
-        os << "Trait: " << setw(14) << left << name << ": " << percent << "%" << endl;
-    }
-    /*
-    *    important to return the stream, so the next
-    *    thing in the << chain has something on which to operate
-    */
-    return os;
 }
 
 sRandomGirl

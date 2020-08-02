@@ -25,10 +25,10 @@
 #include "combat.h"
 #include "character/ICharacter.h"
 #include "Game.hpp"
-#include "character/sGirl.hpp" // TODO only needed to determine the pronoun
+#include "character/sGirl.h" // TODO only needed to determine the pronoun
 #include "traits.h"
 #include "cInventory.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 
 
 int Combatant::get_initiative() const {

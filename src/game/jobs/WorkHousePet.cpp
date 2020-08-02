@@ -25,6 +25,7 @@
 #include "character/predicates.h"
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -35,7 +36,7 @@ bool WorkHousePet(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKHOUSEPET;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
     int train = roll_a - girl.obedience() - girl.get_training(TRAINING_PUPPY);
 
@@ -55,26 +56,26 @@ bool WorkHousePet(sGirl& girl, bool Day0Night1, cRng& rng)
     int imagetype = IMGTYPE_PUPPYGIRL;
 
     const sGirl* headonduty = random_girl_on_job(*girl.m_Building, JOB_HEADGIRL, Day0Night1);
-    string headname = (headonduty ? "Head Girl " + headonduty->FullName() + "" : "the Head girl");
+    std::string headname = (headonduty ? "Head Girl " + headonduty->FullName() + "" : "the Head girl");
 
     // torturer can be in any brothel. need not be in house
     const sGirl* tortureronduty = random_girl_on_job(g_Game->buildings(), JOB_CLEANHOUSE, Day0Night1);
-    string torturername = (tortureronduty ? "Torturer " + tortureronduty->FullName() + "" : "the Torturer");
+    std::string torturername = (tortureronduty ? "Torturer " + tortureronduty->FullName() + "" : "the Torturer");
 
     const sGirl* recruiteronduty = random_girl_on_job(*girl.m_Building, JOB_RECRUITER, Day0Night1);
-    string recruitername = (recruiteronduty ? "Recruiter " + recruiteronduty->FullName() + "" : "the Recruiter");
+    std::string recruitername = (recruiteronduty ? "Recruiter " + recruiteronduty->FullName() + "" : "the Recruiter");
 
     const sGirl* bedwarmeronduty = random_girl_on_job(*girl.m_Building, JOB_PERSONALBEDWARMER, Day0Night1);
-    string bedname = (bedwarmeronduty ? "Bed warmer " + bedwarmeronduty->FullName() + "" : "the Bed warmer");
+    std::string bedname = (bedwarmeronduty ? "Bed warmer " + bedwarmeronduty->FullName() + "" : "the Bed warmer");
 
     const sGirl* cleaneronduty = random_girl_on_job(*girl.m_Building, JOB_CLEANHOUSE, Day0Night1);
-    string cleanername = (cleaneronduty ? "House cleaner " + cleaneronduty->FullName() + "" : "the house cleaner");
+    std::string cleanername = (cleaneronduty ? "House cleaner " + cleaneronduty->FullName() + "" : "the house cleaner");
 
     const sGirl* traningonduty = random_girl_on_job(*girl.m_Building, JOB_PERSONALTRAINING, Day0Night1);
-    string traningname = (traningonduty ? "Personal trained " + traningonduty->FullName() + "" : "the Personal trained");
+    std::string traningname = (traningonduty ? "Personal trained " + traningonduty->FullName() + "" : "the Personal trained");
 
     const sGirl* puppyonduty = random_girl_on_job(*girl.m_Building, JOB_HOUSEPET, Day0Night1);
-    string puppyname = (puppyonduty ? "Puppy girl " + puppyonduty->FullName() + "" : "the Puppy girl");
+    std::string puppyname = (puppyonduty ? "Puppy girl " + puppyonduty->FullName() + "" : "the Puppy girl");
 
     if (train >= 50)            // they refuse to train
     {

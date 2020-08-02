@@ -23,7 +23,7 @@
 
 #include "Film.h"
 // common includes
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "cGirls.h"
 
 struct FilmAction : public GenericFilmJob {

@@ -21,10 +21,11 @@
 #include "buildings/cBuildingManager.h"
 #include "cInventory.h"
 #include "Game.hpp"
-#include "sStorage.hpp"
+#include "sStorage.h"
 #include <sstream>
-#include "Inventory.hpp"
+#include "Inventory.h"
 #include "character/cPlayer.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -33,7 +34,7 @@ bool WorkFarmer(sGirl& girl, bool Day0Night1, cRng& rng)
 {
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKFARM;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
     if (girl.disobey_check(actiontype, JOB_FARMER))            // they refuse to work
     {
@@ -144,7 +145,7 @@ bool WorkFarmer(sGirl& girl, bool Day0Night1, cRng& rng)
 
     if (rng.percent((girl.farming() + girl.magic()) / 10) && rng.percent(jobperformance / 10))
     {
-        string itemname; int itemnumber = 1;
+        std::string itemname; int itemnumber = 1;
         /* */if (roll_c > 30)    { itemname = "Nut of Knowledge";        itemnumber = (roll_c > 90 ? rng % 3 + 2 : 1); }
         else if (roll_c > 10)    { itemname = "Mango of Knowledge";        itemnumber = (roll_c > 28 ? 2 : 1); }
         else/*            */    { itemname = "Watermelon of Knowledge"; itemnumber = (roll_c == 9 ? 2 : 1); }
@@ -204,8 +205,8 @@ bool WorkFarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     if (goodsproduced > 0)        g_Game->storage().add_to_goods((int)goodsproduced);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Base Improvement and trait modifiers
     int xp = 5, skill = 3;
@@ -218,9 +219,9 @@ bool WorkFarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     // primary improvement (+2 for single or +1 for multiple)
     int I_farming = (rng % skill) + 2;                    girl.farming(I_farming);
     // secondary improvement (-1 for one then -2 for others)
-    int I_strength = max(0, (rng % skill) - 1);            girl.strength(I_strength);
-    int I_constitution = max(0, (rng % skill) - 2);        girl.constitution(I_constitution);
-    int I_intelligence = max(0, (rng % skill) - 2);        girl.intelligence(I_intelligence);
+    int I_strength = std::max(0, (rng % skill) - 1);            girl.strength(I_strength);
+    int I_constitution = std::max(0, (rng % skill) - 2);        girl.constitution(I_constitution);
+    int I_intelligence = std::max(0, (rng % skill) - 2);        girl.intelligence(I_intelligence);
 
     // Update Enjoyment
     if (jobperformance < 50) enjoy -= 1;

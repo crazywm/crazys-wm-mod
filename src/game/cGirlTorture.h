@@ -45,9 +45,9 @@ class cGirlTorture {
     void            AddTextTorturerGirl();
     void            UpdateStats();
     void            UpdateTraits();
-    void            add_trait(std::string trait, int pc);
+    void            add_trait(const std::string& trait, int pc);
     bool            IsGirlInjured(unsigned int unModifier);        // Based on cGirls::GirlInjured() 
-    void            MakeEvent(std::string sMsg);
+    void            MakeEvent(const std::string& sMsg);
     void            DoTorture();
 
 public:

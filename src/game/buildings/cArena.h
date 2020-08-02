@@ -22,7 +22,7 @@
 #ifndef __CARENA_H
 #define __CARENA_H
 
-#include "IBuilding.hpp"
+#include "IBuilding.h"
 
 // defines a single arena
 class sArena : public IBuilding

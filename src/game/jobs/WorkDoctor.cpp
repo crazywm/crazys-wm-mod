@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,6 +19,7 @@
 #include "buildings/cBuildingManager.h"
 #include "cRng.h"
 #include <sstream>
+#include "cGirls.h"
 
 // `J` Job Clinic - Staff
 bool WorkDoctor(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -27,7 +28,7 @@ bool WorkDoctor(sGirl& girl, bool Day0Night1, cRng& rng)
 
     Action_Types actiontype = ACTION_WORKDOCTOR;
     bool SkipDisobey = true; // summary == "SkipDisobey");
-    stringstream ss;
+    std::stringstream ss;
     if (girl.has_active_trait("AIDS"))
     {
         ss << "Health laws prohibit anyone with AIDS from working in the Medical profession so ${name} was sent to the waiting room.";
@@ -112,8 +113,8 @@ bool WorkDoctor(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     wages += (patients * 10);
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 10 + (patients / 2),  skill = 1 + (patients / 3);

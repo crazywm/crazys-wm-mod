@@ -24,7 +24,6 @@
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
 #include "character/cPlayer.h"
-#include "main.h"
 #include "utils/DirPath.h"
 #include "cTariff.h"
 #include "cGirlGangFight.h"
@@ -33,12 +32,12 @@
 
 extern cRng                    g_Dice;
 extern int                    g_TalkCount;
-extern vector<int>            cycle_girls;
+extern std::vector<int>            cycle_girls;
 extern int                    cycle_pos;
 
 static int                    ImageNum = -1;
-static vector<int>            select_girls;
-static stringstream ss;
+static std::vector<int>            select_girls;
+static std::stringstream ss;
 
 cScreenDungeon::cScreenDungeon() : cGameWindow("dungeon_screen.xml")
 {
@@ -168,7 +167,7 @@ void cScreenDungeon::init(bool back)
     Focused();
     ClearListBox(girllist_id);                // clear the lists
     //get a list of all the column names, so we can find which data goes in that column
-    vector<string> columnNames = GetListBox(girllist_id)->GetColumnNames();
+    std::vector<std::string> columnNames = GetListBox(girllist_id)->GetColumnNames();
 
     if (gold_id >= 0)
     {
@@ -180,7 +179,7 @@ void cScreenDungeon::init(bool back)
     EditTextItem(ss.str(), header_id);
     // Fill the list box
     selection = g_Game->dungeon().GetNumGirls() > 0 ? 0 : -1;
-    std::vector<string> Data;
+    std::vector<std::string> Data;
     for (int i = 0; i < g_Game->dungeon().GetNumGirls(); i++)                                                // add girls
     {
         sGirl *girl = g_Game->dungeon().GetGirl(i)->m_Girl.get();                                            // get the i-th girl
@@ -282,7 +281,6 @@ void cScreenDungeon::selection_change()
     if ((selection - g_Game->dungeon().GetNumGirls()) >= 0)
     {
         // It's a customer! All we need to do is toggle some buttons
-        cerr << "Player selecting Dungeon Customer #" << selection << endl;    // `J` rewrote to reduce confusion
         int num = (selection - g_Game->dungeon().GetNumGirls());
         sDungeonCust* cust = g_Game->dungeon().GetCust(num);
         if(cust == nullptr) {
@@ -358,7 +356,7 @@ int cScreenDungeon::enslave_customer(int girls_removed, int custs_removed)
     long gold = (g_Dice % 200) + 63;
     g_Game->gold().slave_sales(gold);
     ss.str("");    ss << "You force the customer into slavery lawfully for committing a crime against your business and sell them for " << gold << " gold.";
-    g_Game->push_message(ss.str(), 0);
+    push_message(ss.str(), 0);
     g_Game->player().evil(1);
     int customer_index = selection - g_Game->dungeon().GetNumGirls();    // get the index of the about-to-be-sold customer
     customer_index += girls_removed;
@@ -407,7 +405,7 @@ int cScreenDungeon::enslave()
             set_slave_stats(girl);
             ss.str("");
             ss << girl->FullName() << " submits the the enchanted slave tattoo being placed upon her.";
-            g_Game->push_message(ss.str(), 0);
+            push_message(ss.str(), 0);
             break;
         case EGirlEscapeAttemptResult::STOPPED_BY_GOONS:
             g_Game->player().evil(5);    // evil up the player for doing a naughty thing and adjust the girl's stats
@@ -415,7 +413,7 @@ int cScreenDungeon::enslave()
             ss.str("");
             ss << girl->FullName() << " puts up a fight "
                << "but your goons control her as the enchanted slave tattoo is placed upon her.";
-            g_Game->push_message(ss.str(), COLOR_RED);    // and queue the message
+            push_message(ss.str(), COLOR_RED);    // and queue the message
             break;
         case EGirlEscapeAttemptResult::STOPPED_BY_PLAYER:
             // adjust the girl's stats to reflect her new status and then evil up the player because he forced her into slavery
@@ -424,7 +422,7 @@ int cScreenDungeon::enslave()
             ss.str("");
             ss << girl->FullName()
                << " breaks free from your goons' control. You restrain her personally while the slave tattoo placed upon her.";
-            g_Game->push_message(ss.str(), COLOR_RED);
+            push_message(ss.str(), COLOR_RED);
             break;
         case EGirlEscapeAttemptResult::SUCCESS:
             ss << "After defeating you goons and you, she escapes to the outside.\n";
@@ -434,10 +432,10 @@ int cScreenDungeon::enslave()
             girl->run_away();
             g_Game->player().suspicion(15);                    // suspicion goes up
             g_Game->player().evil(15);                        // so does evil
-            g_Game->push_message(ss.str(), COLOR_RED);    // add to the message queue
+            push_message(ss.str(), COLOR_RED);    // add to the message queue
         }
     }
-    if (deadcount > 0) g_Game->push_message("There's not much point in using a slave tattoo on a dead body.", 0);
+    if (deadcount > 0) push_message("There's not much point in using a slave tattoo on a dead body.", 0);
     init(false);
     return Return;
 }
@@ -460,10 +458,10 @@ void cScreenDungeon::release_all_customers()
 void cScreenDungeon::sell_slaves()
 {
     int paid = 0, count = 0, deadcount = 0;
-    vector<int> girl_array;
+    std::vector<int> girl_array;
     get_selected_girls(&girl_array);  // get and sort array of girls/customers
-    vector<string> girl_names;
-    vector<int> sell_gold;
+    std::vector<std::string> girl_names;
+    std::vector<int> sell_gold;
     for (int i = girl_array.size(); i-- > 0;)
     {
         selection = girl_array[i];
@@ -488,7 +486,7 @@ void cScreenDungeon::sell_slaves()
         sell_gold.push_back(cost);
         g_Game->girl_pool().GiveGirl(removed_girl);
     }
-    if (deadcount > 0) g_Game->push_message("Nobody is currently in the market for dead girls.", COLOR_YELLOW);
+    if (deadcount > 0) push_message("Nobody is currently in the market for dead girls.", COLOR_YELLOW);
     if (count <= 0) return;
 
     ss.str(""); ss << "You sold ";
@@ -502,7 +500,7 @@ void cScreenDungeon::sell_slaves()
         }
         ss << "\nFor a total of " << paid << " gold.";
     }
-    g_Game->push_message(ss.str(), 0);
+    push_message(ss.str(), 0);
     selection = -1;
     init(false);
 }
@@ -518,7 +516,7 @@ void cScreenDungeon::release_all_girls()
             continue;
         }
         // we only get here if we run out of space
-        g_Game->push_message("There is no more room in the current building.\nBuild more rooms, get rid of some girls, or change the building you are currently releasing girls to.", 0);
+        push_message("There is no more room in the current building.\nBuild more rooms, get rid of some girls, or change the building you are currently releasing girls to.", 0);
         break;
     }
 }
@@ -553,7 +551,7 @@ void cScreenDungeon::torture_customer(int girls_removed)
     if (cust->m_Tort && !g_Game->allow_cheats())         // don't let the PL torture more than once a day (unless cheating is enabled)
     {
         ss << "You may only torture someone once per week.";
-        g_Game->push_message(ss.str(), 0);
+        push_message(ss.str(), 0);
         return;
     }
     cust->m_Tort = true;        // flag the customer as tortured, decrement his health
@@ -570,7 +568,7 @@ void cScreenDungeon::torture_customer(int girls_removed)
         ss<<" gradually growing softer until it stops completely.\nThey are dead.";
         g_Game->player().evil(2);
     }
-    g_Game->push_message(ss.str(), 0);
+    push_message(ss.str(), 0);
 }
 
 /*
@@ -633,7 +631,7 @@ void cScreenDungeon::change_release(BuildingType building, int index)
 
 void cScreenDungeon::release()
 {
-    vector<int> girl_array;
+    std::vector<int> girl_array;
     get_selected_girls(&girl_array);            // get and sort array of girls/customers
     for (int i = girl_array.size(); i--> 0;)
     {
@@ -658,7 +656,7 @@ void cScreenDungeon::release()
             continue;
         }
         // if we run out of space
-        g_Game->push_message("The current building has no more room.\nBuy a new one, get rid of some girls, or change the building you are currently releasing girls to.", 0);
+        push_message("The current building has no more room.\nBuy a new one, get rid of some girls, or change the building you are currently releasing girls to.", 0);
         break;        // no point in running round the loop any further we're out of space
     }
 }
@@ -698,7 +696,7 @@ void cScreenDungeon::UpdateImage(int imagetype) {
     HideWidget(girlimage_id, false);
 }
 
-void cScreenDungeon::get_selected_girls(vector<int> *girl_array)
+void cScreenDungeon::get_selected_girls(std::vector<int> *girl_array)
 {  // take passed vector and fill it with sorted list of girl/customer IDs
     int pos = 0;
     int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);

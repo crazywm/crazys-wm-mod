@@ -6,11 +6,12 @@
 #include "cTariff.h"
 #include "InterfaceProcesses.h"
 #include "Game.hpp"
-#include "buildings/queries.hpp"
+#include "buildings/queries.h"
 #include "character/cPlayer.h"
 #include <sstream>
 #include "cJobManager.h"
 #include "sConfig.h"
+#include "cGirls.h"
 
 namespace settings {
     extern const char* USER_ACCOMODATION_FREE;
@@ -18,7 +19,7 @@ namespace settings {
 }
 
 extern cConfig cfg;
-extern vector<int> cycle_girls;
+extern std::vector<int> cycle_girls;
 extern int cycle_pos;
 
 extern    bool            g_AltKeys;    // New hotkeys --PP
@@ -41,7 +42,7 @@ void IBuildingScreenManagement::update_image()
         bool Rand = false;
         if (m_LastSelection != selected_girl)
         {
-            stringstream text;
+            std::stringstream text;
             text << cGirls::GetGirlMood(*selected_girl) << "\n \n" << selected_girl->m_Desc;
             if (cfg.debug.log_extradetails()) text << "\n \nBased on: " << selected_girl->m_Name;
             EditTextItem(text.str(), girldesc_id);
@@ -76,7 +77,7 @@ void IBuildingScreenManagement::ViewSelectedGirl()
     }
 }
 
-void IBuildingScreenManagement::GetSelectedGirls(vector<int> *girl_array)
+void IBuildingScreenManagement::GetSelectedGirls(std::vector<int> *girl_array)
 {  // take passed vector and fill it with sorted list of selected girl IDs
     int pos = 0;
     int GSelection = GetNextSelectedItemFromList(girllist_id, 0, pos);
@@ -110,7 +111,7 @@ void IBuildingScreenManagement::RefreshJobList()
 
 void IBuildingScreenManagement::handle_ffsd(int flag)
 {
-    vector<int> girl_array;
+    std::vector<int> girl_array;
     GetSelectedGirls(&girl_array);
     if(!girl_array.empty()) {
         ffsd_choice(flag, girl_array);
@@ -259,7 +260,7 @@ void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_s
 
     unsigned int day_job   = girl.m_DayJob;
     unsigned int night_job = girl.m_NightJob;
-    stringstream ss;
+    std::stringstream ss;
     // update the girl's listing to reflect the job change
     ss << job_manager().JobData[day_job].name;
     SetSelectedItemColumnText(girllist_id, girl_selection, ss.str(), "DayJob");
@@ -434,7 +435,7 @@ void IBuildingScreenManagement::init(bool back)
     ClearListBox(jobtypelist_id);
 
     // get a list of all the column names, so we can find which data goes in that column
-    vector<string> columnNames = GetListBox(girllist_id)->GetColumnNames();
+    std::vector<std::string> columnNames = GetListBox(girllist_id)->GetColumnNames();
     int numColumns = columnNames.size();
     std::vector<std::string> data(numColumns);
 
@@ -470,11 +471,11 @@ void IBuildingScreenManagement::init(bool back)
     update_image();
 }
 
-static vector<int> ffsd_choicelist;
+static std::vector<int> ffsd_choicelist;
 
 void IBuildingScreenManagement::ffsd_outcome(int selected)
 {
-    vector<int> girl_array;
+    std::vector<int> girl_array;
     GetSelectedGirls(&girl_array);
 
     bool free = false, fire = false, sell = false, dump = false;
@@ -513,9 +514,12 @@ void IBuildingScreenManagement::ffsd_outcome(int selected)
 
     if (free || fire || sell || dump)
     {
-        stringstream ss;
-        vector<int>    sellgirl_price;
-        vector<string> freegirl_names; vector<string> firegirl_names; vector<string> sellgirl_names; vector<string> dumpgirl_names;
+        std::stringstream ss;
+        std::vector<int>    sellgirl_price;
+        std::vector<std::string> freegirl_names;
+        std::vector<std::string> firegirl_names;
+        std::vector<std::string> sellgirl_names;
+        std::vector<std::string> dumpgirl_names;
 
         for (int i = girl_array.size(); i-- > 0;)    // OK, we have the array, now step through it backwards
         {
@@ -729,17 +733,17 @@ void IBuildingScreenManagement::ffsd_outcome(int selected)
             if (option == FFSD_dump3) ss << " on the side of the road.";
             ss << ".\n \n";
         }
-        if (ss.str().length() > 0)    g_Game->push_message(ss.str(), 0);
+        if (ss.str().length() > 0)    push_message(ss.str(), 0);
 
         freegirl_names.clear(); firegirl_names.clear(); sellgirl_names.clear(); dumpgirl_names.clear();
         sellgirl_price.clear();
     }
 }
 
-void IBuildingScreenManagement::ffsd_choice(int ffsd, vector<int> girl_array) // `J` added for .06.02.37
+void IBuildingScreenManagement::ffsd_choice(int ffsd, std::vector<int> girl_array) // `J` added for .06.02.37
 {
     int slavegirls = 0, freegirls = 0, deadgirls = 0, selltotal = 0;
-    stringstream firstgirlname;
+    std::stringstream firstgirlname;
 
     for (int i = girl_array.size(); i-- > 0;)    // OK, we have the array, now step through it backwards
     {
@@ -759,7 +763,7 @@ void IBuildingScreenManagement::ffsd_choice(int ffsd, vector<int> girl_array) //
     int totalgirls = freegirls + slavegirls + deadgirls;
     if (totalgirls == 0) return;                            // No girls so quit
 
-    stringstream ask, question, keep, fire, free, dump, sell, dump1, dump2, dump3, dump4,
+    std::stringstream ask, question, keep, fire, free, dump, sell, dump1, dump2, dump3, dump4,
                  frdu1, frdu2, fidu, fise, fisd, frdu, sedu, sedu1, free1;
     keep << "\"Nevermind, Back to work.\"";
 
@@ -899,13 +903,13 @@ void IBuildingScreenManagement::ffsd_choice(int ffsd, vector<int> girl_array) //
             choices.push_back(options[i]->str());
         }
     }
-    if (ask.str().length() > 0)    g_Game->push_message(ask.str(), 0);
+    if (ask.str().length() > 0)    push_message(ask.str(), 0);
     input_choice(question.str(), std::move(choices), [this](int selected){ ffsd_outcome(selected); });
 }
 
 std::string IBuildingScreenManagement::jobname_with_count(JOBS job_id, bool is_night)
 {
-    stringstream text;
+    std::stringstream text;
     text << g_Game->job_manager().JobData[job_id].name;
     text << " (" << active_building().num_girls_on_job(job_id, is_night) << ")";
     return text.str();
@@ -1099,7 +1103,7 @@ std::string cScreenCentreManagement::update_job_description(const sGirl& girl)
 
 std::string cScreenCentreManagement::get_job_description(int selection)
 {
-    stringstream jdmessage; jdmessage << job_manager().JobFilters[selection].Description;
+    std::stringstream jdmessage; jdmessage << job_manager().JobFilters[selection].Description;
     auto& centre = active_building();
     if ((centre.num_girls_on_job(JOB_COUNSELOR, 0) < 1 && Num_Patients(centre, 0) > 0) ||
          (centre.num_girls_on_job(JOB_COUNSELOR, 1) < 1 && Num_Patients(centre, 1) > 0))
@@ -1145,7 +1149,7 @@ std::string cScreenClinicManagement::update_job_description(const sGirl& girl)
 
 std::string cScreenClinicManagement::get_job_description(int selection)
 {
-    stringstream jdmessage; jdmessage << job_manager().JobFilters[selection].Description;
+    std::stringstream jdmessage; jdmessage << job_manager().JobFilters[selection].Description;
     if (DoctorNeeded(active_building()))
         jdmessage << "\n*** A Doctor is required to perform any surgeries. ";
     if ((active_building().num_girls_on_job(JOB_MECHANIC, SHIFT_DAY) < 1 &&
@@ -1219,7 +1223,7 @@ void cScreenStudioManagement::set_ids()
 
 std::string cScreenStudioManagement::get_job_description(int selection)
 {
-    stringstream jdmessage;        jdmessage << job_manager().JobFilters[selection].Description;
+    std::stringstream jdmessage;        jdmessage << job_manager().JobFilters[selection].Description;
     if (CrewNeeded(active_building()))    jdmessage << "\n** At least one Camera Mage and one Crystal Purifier are required to film a scene. ";
     return jdmessage.str();
 }

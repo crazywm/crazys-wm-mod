@@ -22,7 +22,7 @@
 #include "cGirls.h"
 #include "cTrainable.h"
 #include "Constants.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 
 extern    cRng    g_Dice;
 

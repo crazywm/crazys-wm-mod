@@ -8,8 +8,8 @@
 #include "cGangs.h"
 #include "cJobManager.h"
 #include "cObjectiveManager.hpp"
-#include "IBuilding.hpp"
-#include "sStorage.hpp"
+#include "buildings/IBuilding.h"
+#include "sStorage.h"
 #include "interface/cWindowManager.h"
 #include <tinyxml2.h>
 #include "character/cCustomers.h"
@@ -181,7 +181,7 @@ void Game::next_week()
         {
             auto girl = m_Girls->CreateRandomGirl(17);
             ss << "A man cannot pay so he sells you his daughter " << girl->FullName() << " to clear his debt to you.\n";
-            stringstream ssg;
+            std::stringstream ssg;
             ssg << girl->FullName() << "'s father could not pay his debt to you so he gave her to you as payment.";
             girl->m_Events.AddMessage(ssg.str(), IMGTYPE_PROFILE, EVENT_DUNGEON);
             dungeon().AddGirl(std::move(girl), DUNGEON_NEWGIRL);
@@ -551,7 +551,7 @@ void Game::do_tax()
         return;
     }
     m_Gold->tax(tax);
-    stringstream ss;
+    std::stringstream ss;
     /*
     *    Let's report the laundering, at least.
     *    Otherwise, it just makes the tax rate wobble a bit
@@ -570,7 +570,7 @@ void Game::RemoveGirlFromRunaways(sGirl* girl)
     m_Runaways.remove_if([&](auto& ptr){ return ptr.get() == girl; });
 }
 
-void Game::AddGirlToRunaways(shared_ptr<sGirl> girl)
+void Game::AddGirlToRunaways(std::shared_ptr<sGirl> girl)
 {
     girl->m_DayJob = girl->m_NightJob = JOB_RUNAWAY;
     m_Runaways.push_back(std::move(girl));
@@ -605,7 +605,7 @@ Game::~Game() = default;
 
 
 // ----- Drugs & addiction
-void Game::check_druggy_girl(stringstream& ss)
+void Game::check_druggy_girl(std::stringstream& ss)
 {
     if (g_Dice.percent(90)) return;
     sGirl* girl = GetDrugPossessor();
@@ -676,7 +676,7 @@ void Game::check_raid()
     /*
     *    OK, the raid is on. Start formatting a message
     */
-    stringstream ss;
+    std::stringstream ss;
     ss << "The local authorities perform a bust on your operations: ";
     /*
     *    if we make our influence check, the guard captain will be under
@@ -826,7 +826,7 @@ void Game::UpdateMarketSlaves()
     }
 }
 
-bool Game::NameExists(string name) const
+bool Game::NameExists(const std::string& name) const
 {
     auto girl = m_Girls->GetGirl(0);
     for(int i = 0; girl;)
@@ -842,7 +842,7 @@ bool Game::NameExists(string name) const
     return false;
 }
 
-bool Game::SurnameExists(string name) const
+bool Game::SurnameExists(const std::string& name) const
 {
     auto girl = m_Girls->GetGirl(0);
     for(int i = 0; girl;)
@@ -1125,4 +1125,8 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
     callback("Loading Gangs.");
     g_LogFile.log(ELogLevel::INFO, "Loading Gangs");
     g_Game->gang_manager().LoadGangsXML(source.FirstChildElement("Gang_Manager"));
+}
+
+void Game::error(std::string message) {
+    window_manager().PushError(std::move(message));
 }

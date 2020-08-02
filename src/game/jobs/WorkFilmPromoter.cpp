@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -21,13 +21,14 @@
 #include "buildings/cMovieStudio.h"
 #include "Game.hpp"
 #include <sstream>
+#include "cGirls.h"
 
 // `J` Job Movie Studio - Crew
 bool WorkFilmPromoter(sGirl& girl, bool Day0Night1, cRng& rng)
 {
     sMovieStudio* brothel = dynamic_cast<sMovieStudio*>(girl.m_Building);
 
-    stringstream ss;
+    std::stringstream ss;
     int roll = rng.d100();
     if (roll <= 20 && girl.disobey_check(ACTION_WORKMOVIE, JOB_PROMOTER))
     {
@@ -90,8 +91,8 @@ bool WorkFilmPromoter(sGirl& girl, bool Day0Night1, cRng& rng)
     }
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, EVENT_NIGHTSHIFT);
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     brothel->m_PromoterBonus = (double)(brothel->m_AdvertisingBudget / 10) + jobperformance;
 

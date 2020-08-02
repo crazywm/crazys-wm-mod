@@ -19,7 +19,7 @@
 
 #include "cInventory.h"
 #include "cShop.h"
-#include "character/sGirl.hpp"
+#include "character/sGirl.h"
 #include "cGirls.h"
 #include "Game.hpp"
 

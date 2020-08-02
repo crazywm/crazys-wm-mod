@@ -23,8 +23,9 @@
 #include "Game.hpp"
 #include <sstream>
 #include "cJobManager.h"
-#include "Inventory.hpp"
+#include "Inventory.h"
 #include "character/cPlayer.h"
+#include "cGirls.h"
 
 #pragma endregion
 
@@ -34,7 +35,7 @@ bool WorkFarmResearch(sGirl& girl, bool Day0Night1, cRng& rng)
     auto brothel = girl.m_Building;
 #pragma region //    Job setup                //
     Action_Types actiontype = ACTION_WORKTRAINING;
-    stringstream ss;
+    std::stringstream ss;
     int roll_a = rng.d100(), roll_b = rng.d100(), roll_c = rng.d100();
     if (girl.disobey_check(actiontype, JOB_RESEARCH))            // they refuse to work
     {
@@ -160,7 +161,7 @@ bool WorkFarmResearch(sGirl& girl, bool Day0Night1, cRng& rng)
     if (girl.intelligence() + girl.crafting() > 100 && rng.percent(girl.intelligence() + girl.crafting() / 10))    // 10-20%
     {
         sInventoryItem* item = nullptr;
-        string itemname;
+        std::string itemname;
         int tries = skill;
         while (itemname.empty() && tries > 0)
         {
@@ -326,8 +327,8 @@ bool WorkFarmResearch(sGirl& girl, bool Day0Night1, cRng& rng)
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
 
     // Money
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 5 + skill;

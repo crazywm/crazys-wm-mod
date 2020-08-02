@@ -107,7 +107,7 @@ public:
     int GetNumBusinesses();
     int GetNumRivals()                { return m_Rivals.size(); }
     int GetNumRivalGangs();
-    bool NameExists(std::string name);
+    bool NameExists(const std::string& name);
     bool player_safe()                { return m_PlayerSafe; }
     cRival* get_influential_rival();
     std::string rivals_plunder_pc_gold(cRival* rival);

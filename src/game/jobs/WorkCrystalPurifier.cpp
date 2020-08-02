@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -17,9 +17,10 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "buildings/cMovieStudio.h"
-#include "buildings/queries.hpp"
+#include "buildings/queries.h"
 #include "cRng.h"
 #include <sstream>
+#include "cGirls.h"
 
 // `J` Job Movie Studio - Crew
 bool WorkCrystalPurifier(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -28,7 +29,7 @@ bool WorkCrystalPurifier(sGirl& girl, bool Day0Night1, cRng& rng)
 
     Action_Types actiontype = ACTION_WORKMOVIE;
     bool SkipDisobey = false;
-    stringstream ss;
+    std::stringstream ss;
 
     // No film crew.. then go home    // `J` this will be taken care of in building flow, leaving it in for now
     if (brothel->num_girls_on_job(JOB_CAMERAMAGE, SHIFT_NIGHT) == 0 || brothel->num_girls_on_job(JOB_CRYSTALPURIFIER, SHIFT_NIGHT) == 0)
@@ -125,8 +126,8 @@ bool WorkCrystalPurifier(sGirl& girl, bool Day0Night1, cRng& rng)
 
     girl.AddMessage(ss.str(), IMGTYPE_PROFILE, Day0Night1 ? EVENT_NIGHTSHIFT : EVENT_DAYSHIFT);
     brothel->m_PurifierQaulity += (int)jobperformance;
-    girl.m_Tips = max(0, tips);
-    girl.m_Pay = max(0, wages);
+    girl.m_Tips = std::max(0, tips);
+    girl.m_Pay = std::max(0, wages);
 
     // Improve stats
     int xp = 5, skill = 3;

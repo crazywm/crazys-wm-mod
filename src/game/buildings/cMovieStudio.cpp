@@ -18,7 +18,7 @@
 */
 
 #include <sstream>
-#include "queries.hpp"
+#include "queries.h"
 
 #include <vector>
 #include <algorithm>
@@ -30,6 +30,7 @@
 #include "xml/util.h"
 #include "interface/constants.h"
 #include "scripting/GameEvents.h"
+#include "cGirls.h"
 
 extern cRng             g_Dice;
 
@@ -61,7 +62,7 @@ void sMovieStudio::UpdateGirls(bool is_night)            // Start_Building_Proce
         return;
 
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cMovieStudio.cpp
-    stringstream ss;
+    std::stringstream ss;
 
     bool camera = false, crystal = false;
 
@@ -473,8 +474,8 @@ void sMovieStudio::save_additional_xml(tinyxml2::XMLElement& root) const
 void sMovieStudio::Update()
 {
     // Cannot use UpdateBase here currently, as this expects two shifts.
-    stringstream ss;
-    string girlName;
+    std::stringstream ss;
+    std::string girlName;
 
     m_Finance.zero();
     m_AntiPregUsed = 0;
@@ -557,7 +558,7 @@ int sMovieStudio::GetNumMovieScenes() const
     return m_movieScenes.size();
 }
 
-vector<int> sMovieStudio::AddSceneToMovie(int num)
+std::vector<int> sMovieStudio::AddSceneToMovie(int num)
 {
     if (num >= 0)
     {
@@ -570,7 +571,7 @@ vector<int> sMovieStudio::AddSceneToMovie(int num)
     }
     return{ (num >= GetNumScenes() ? GetNumScenes() - 1 : num), GetNumMovieScenes() - 1 };
 }
-vector<int> sMovieStudio::RemoveSceneFromMovie(int num)
+std::vector<int> sMovieStudio::RemoveSceneFromMovie(int num)
 {
     if (num >= 0)
     {
@@ -635,7 +636,7 @@ void sMovieStudio::SortMovieScenes()
 }
 
 
-void sMovieScene::OutputSceneRow(vector<string>& Data, const vector<string>& columnNames)
+void sMovieScene::OutputSceneRow(std::vector<string>& Data, const std::vector<string>& columnNames)
 {
     Data.resize(columnNames.size());
     for (unsigned int x = 0; x < columnNames.size(); ++x)
@@ -648,7 +649,7 @@ void sMovieScene::OutputSceneRow(vector<string>& Data, const vector<string>& col
 void sMovieScene::OutputSceneDetailString(string& Data, const string& detailName)
 {
     //given a statistic name, set a string to a value that represents that statistic
-    static stringstream ss;
+    static std::stringstream ss;
     ss.str("");
     /* */if (detailName == "SceneNumber")        { ss << m_SceneNum; }
     else if (detailName == "MovieSceneNumber")    { ss << m_MovieSceneNum; }
@@ -699,8 +700,8 @@ void sMovieStudio::EndMovie()
 // ----- Add / remove
 int sMovieStudio::AddScene(sGirl& girl, int Job, int Bonus, int jobType, const char* scene_name)
 {
-    stringstream ss;
-    string girlName = girl.FullName();
+    std::stringstream ss;
+    std::string girlName = girl.FullName();
 
     auto Director = random_girl_on_job(*girl.m_Building, JOB_DIRECTOR, SHIFT_NIGHT);
     auto CM = random_girl_on_job(*girl.m_Building, JOB_CAMERAMAGE, SHIFT_NIGHT);
@@ -832,7 +833,7 @@ void sMovieStudio::LoadScene(int m_SceneNum, string m_Name, string m_Actress, st
 
 long sMovieStudio::calc_movie_quality(bool autoreleased)
 {
-    stringstream ss;
+    std::stringstream ss;
     long quality = 0;
 
 
@@ -941,9 +942,9 @@ void sMovieStudio::ReleaseCurrentMovie(bool autoreleased, bool save)
 }
 string sMovieStudio::BuildDirectorList(bool autoreleased, bool save)
 {
-    vector<string> names;
-    vector<string> namesB;
-    stringstream ss;
+    std::vector<std::string> names;
+    std::vector<std::string> namesB;
+    std::stringstream ss;
     if (autoreleased)
     {
         for (auto & m_availableScene : m_availableScenes)
@@ -976,11 +977,11 @@ string sMovieStudio::BuildDirectorList(bool autoreleased, bool save)
 
     return ss.str();
 }
-string sMovieStudio::BuildCastList(bool autoreleased, bool save)
+std::string sMovieStudio::BuildCastList(bool autoreleased, bool save)
 {
-    vector<string> names;
-    vector<string> namesB;
-    stringstream ss;
+    std::vector<std::string> names;
+    std::vector<std::string> namesB;
+    std::stringstream ss;
     if (autoreleased)
     {
         for (auto & scene : m_availableScenes)
@@ -1015,9 +1016,9 @@ string sMovieStudio::BuildCastList(bool autoreleased, bool save)
 }
 string sMovieStudio::BuildCrewList(bool autoreleased, bool save)
 {
-    vector<string> names;
-    vector<string> namesB;
-    stringstream ss;
+    std::vector<std::string> names;
+    std::vector<std::string> namesB;
+    std::stringstream ss;
     if (autoreleased)
     {
         for (auto & scene : m_availableScenes)
@@ -1070,7 +1071,6 @@ std::string sMovieStudio::meet_no_luck() const {
 std::shared_ptr<sGirl> sMovieStudio::meet_girl() const {
     auto girl = g_Game->GetRandomGirl();
     if(girl) {
-        g_Game->girl_pool().AddGirl(girl);
         girl->TriggerEvent(EDefaultEvent::MEET_GIRL_STUDIO);
     }
     return girl;
