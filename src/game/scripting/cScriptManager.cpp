@@ -31,19 +31,44 @@
 
 using namespace scripting;
 
+namespace {
+    class cAsyncScriptHandle : public IAsyncScriptHandle {
+    public:
+        bool is_finished() const override { return m_IsFinished; }
+        const sScriptValue& result() const override { return m_Result; }
 
-sScriptValue cScriptManager::RunEvent(const sEventTarget& event, sGirl &girl) const {
-    return RunEvent(event, {sLuaParameter(girl)});
+        void NotifyDone(sScriptValue value) {
+            m_Result = std::move(value);
+            m_IsFinished = true;
+            if(m_Callback)
+                m_Callback(m_Result);
+        }
+
+        void SetDoneCallback(std::function<void(const sScriptValue& val)> callback) override {
+            m_Callback = std::move(callback);
+        }
+    private:
+        std::function<void(const sScriptValue& val)> m_Callback;
+        sScriptValue m_Result = boost::blank{};
+        bool m_IsFinished = false;
+    };
 }
 
-sScriptValue cScriptManager::RunEvent(const sEventTarget& event) const {
-    return RunEvent(event, {});
-}
-
-sScriptValue cScriptManager::RunEvent(const sEventTarget& event, std::initializer_list<sLuaParameter> params) const
+sAsyncScriptHandle cScriptManager::RunEventAsync(const sEventTarget& event, std::initializer_list<sLuaParameter> params) const
 {
     cLuaScript& script = *m_Scripts.at(event.script);
-    return script.RunEvent(event.function, params);
+    auto handle = std::make_shared<cAsyncScriptHandle>();
+    sLuaThread* thread = script.RunAsync(event.function, params);
+    thread->DoneHandler = [handle](sScriptValue val){
+        handle->NotifyDone(std::move(val));
+    };
+    return handle;
+}
+
+sScriptValue cScriptManager::RunEventSync(const sEventTarget& event, std::initializer_list<sLuaParameter> params) const
+{
+    cLuaScript& script = *m_Scripts.at(event.script);
+    return script.RunSynchronous(event.function, params);
 }
 
 pEventMapping cScriptManager::CreateEventMapping(std::string name, const std::string& fallback) const
@@ -51,19 +76,19 @@ pEventMapping cScriptManager::CreateEventMapping(std::string name, const std::st
     if(name.empty())
         throw std::logic_error("The EventMapping must have a (non-empty) name");
 
-    pEventMapping fb;
+    pEventMapping fallback_mapping;
     if(!fallback.empty()) {
-        fb = m_EventMappings.at(fallback);
+        fallback_mapping = m_EventMappings.at(fallback);
     }
-    return std::make_unique<cEventMapping>(std::move(name), this, fb);
+    return std::make_unique<cEventMapping>(std::move(name), this, fallback_mapping);
 }
 
 void cScriptManager::LoadScript(std::string name, const std::string& file)
 {
-    auto ls = std::make_unique<cLuaScript>();
-    ls->LoadSource(DirPath() << "Resources" << "Scripts" << "API.lua");
-    ls->LoadSource(DirPath() << "Resources" << "Scripts" << file);
-    m_Scripts[std::move(name)] = std::move(ls);
+    auto script = std::make_unique<cLuaScript>();
+    script->LoadSource(DirPath() << "Resources" << "Scripts" << "API.lua");
+    script->LoadSource(DirPath() << "Resources" << "Scripts" << file);
+    m_Scripts[std::move(name)] = std::move(script);
 }
 
 void cScriptManager::RegisterEventMapping(pEventMapping mapping)

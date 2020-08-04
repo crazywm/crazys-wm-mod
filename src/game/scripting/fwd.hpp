@@ -23,6 +23,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <functional>
 #include <boost/variant/variant_fwd.hpp>
 
 enum class EDefaultEvent : int;
@@ -56,6 +57,19 @@ namespace scripting {
         bool is_specific() const { return name.back() != '*'; }
     };
 
+    /// This is returned from an async script run
+    class IAsyncScriptHandle {
+    public:
+        virtual ~IAsyncScriptHandle() = default;
+        virtual bool is_finished() const = 0;
+        virtual const sScriptValue& result() const = 0;
+
+        /// sets a callback that is triggered when the thread finishes
+        virtual void SetDoneCallback(std::function<void(const sScriptValue& val)> callback) = 0;
+    };
+
+    using sAsyncScriptHandle = std::shared_ptr<IAsyncScriptHandle>;
+
     /*!
      * \brief Maps event names to event targets.
      * \details This class is responsible for determining which scripts to execute when a certain event or trigger is
@@ -87,15 +101,19 @@ namespace scripting {
         virtual const sEventTarget& GetEvent(const sEventID& event) const = 0;
 
         // Run functions
-        virtual sScriptValue RunEvent(const sEventID& event) const = 0;
-        virtual sScriptValue RunEvent(const sEventID& event, sGirl& girl) const = 0;
-        virtual sScriptValue RunEvent(const sEventID& event, std::initializer_list<sLuaParameter> params) const = 0;
+        virtual sAsyncScriptHandle RunAsync(const sEventID& event, std::initializer_list<sLuaParameter> params) const = 0;
 
         template<class... T>
-        auto RunEvent(const sEventID& event, T&&... params) -> typename _id<T...>::type {
-            return RunEvent(event, {sLuaParameter(std::forward<T>(params))...});
+        sAsyncScriptHandle RunAsync(const sEventID& event, T&&... params) {
+            return RunAsync(event, {sLuaParameter(std::forward<T>(params))...});
         };
 
+        virtual sScriptValue RunSynchronous(const sEventID& event, std::initializer_list<sLuaParameter> params) const = 0;
+
+        template<class... T>
+        auto RunSynchronous(const sEventID& event, T&&... params) -> typename _id<T...>::type {
+            return RunSynchronous(event, {sLuaParameter(std::forward<T>(params))...});
+        };
     };
 
     using pEventMapping = std::shared_ptr<IEventMapping>;

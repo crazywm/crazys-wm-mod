@@ -1443,12 +1443,19 @@ void cGirls::LoadGirlsXML(string filename)
     }
     for (auto& el : IterateChildElements(*root))
     {
-        auto girl = sGirl::LoadFromTemplate(el);
-        if (girl->age() < 18) girl->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+        try {
+            auto girl = sGirl::LoadFromTemplate(el);
 
-        // TOOD load triggers if the girl has any
-        CalculateGirlType(*girl);            // Fetish list for customer happiness
-        AddGirl(girl);                        // add the girl to the list
+            if (girl->age() < 18) girl->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
+
+            // TOOD load triggers if the girl has any
+            CalculateGirlType(*girl);            // Fetish list for customer happiness
+            AddGirl(girl);                        // add the girl to the list
+        } catch (const std::exception& ex) {
+            g_LogFile.error("girls", "Could not load girl from file '", filename, "': ", ex.what());
+            /// TODO how to report the error here? g_Game may not be ready yet.
+            // g_Game->error("Could not load girl from file " + filename);
+        }
     }
 }
 
@@ -2696,7 +2703,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
     case SKILL_STRIP:       event = EDefaultEvent::GIRL_SEX_STRIP; break;
     }    //end switch
 
-    auto result = girl->TriggerEvent(event, customer);
+    auto result = girl->CallScriptFunction(event, customer);
     message += process_message(*girl, boost::get<std::string>(result)) + '\n';
 
 

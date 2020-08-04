@@ -1451,9 +1451,9 @@ bool sGirl::unequip(const sInventoryItem* item) {
     return true;
 }
 
-scripting::sScriptValue sGirl::TriggerEvent(scripting::sEventID id)
+scripting::sAsyncScriptHandle sGirl::TriggerEvent(scripting::sEventID id)
 {
-    return m_EventMapping->RunEvent(id, *this);
+    return m_EventMapping->RunAsync(id, *this);
 }
 
 std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)

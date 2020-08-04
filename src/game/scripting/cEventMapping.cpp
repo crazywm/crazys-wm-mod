@@ -143,30 +143,38 @@ const std::string& cEventMapping::GetName() const
     return m_Name;
 }
 
-sScriptValue cEventMapping::RunEvent(const sEventID& event) const
-{
-    return RunEventWithParams(event, {});
+sAsyncScriptHandle cEventMapping::RunAsync(const sEventID& event, std::initializer_list<sLuaParameter> params) const {
+    return RunAsyncWithParams(event, params);
 }
 
-sScriptValue cEventMapping::RunEvent(const sEventID& event, sGirl& girl) const
-{
-    return RunEventWithParams(event, {sLuaParameter(girl)});
+sScriptValue cEventMapping::RunSynchronous(const sEventID& event, std::initializer_list<sLuaParameter> params) const {
+    return RunSyncWithParams(event, params);
 }
 
-sScriptValue cEventMapping::RunEvent(const sEventID& event, std::initializer_list<sLuaParameter> params) const {
-    return RunEventWithParams(event, params);
-}
-
-
-sScriptValue cEventMapping::RunEventWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const
+sAsyncScriptHandle cEventMapping::RunAsyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const
 {
     if(event.is_specific()) {
-        return m_Manager->RunEvent(GetEvent(event), params);
+        return m_Manager->RunEventAsync(GetEvent(event), params);
     } else {
         auto split_point = event.name.rfind('.');
         auto handlers = m_Triggers.at(event.name.substr(0, split_point));
         for(auto& handler : handlers) {
-            m_Manager->RunEvent(handler, params);
+            m_Manager->RunEventAsync(handler, params);
+        }
+    }
+    g_LogFile.warning("scripting", "Could not find event ", event.name, "to run!");
+    return nullptr;
+}
+
+sScriptValue
+cEventMapping::RunSyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const {
+    if(event.is_specific()) {
+        return m_Manager->RunEventSync(GetEvent(event), params);
+    } else {
+        auto split_point = event.name.rfind('.');
+        auto handlers = m_Triggers.at(event.name.substr(0, split_point));
+        for(auto& handler : handlers) {
+            m_Manager->RunEventSync(handler, params);
         }
     }
     g_LogFile.warning("scripting", "Could not find event ", event.name, "to run!");

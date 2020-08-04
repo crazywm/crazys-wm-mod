@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,24 @@
 #define CRAZYS_WM_MOD_CLUASTATE_H
 
 #include <string>
+#include <functional>
+#include "fwd.hpp"
+
 class lua_State;
 
 namespace scripting {
+    struct sLuaThread {
+        lua_State* InterpreterState;
+        std::function<void(sScriptValue)> DoneHandler;
+
+        static sLuaThread* create(lua_State* L);
+        static sLuaThread* get_active_thread(lua_State* L);
+        static void get_threads_table(lua_State* L);
+
+        void resume(int num_params);
+        void destroy();
+    };
+
     class cLuaState {
     public:
         explicit cLuaState(lua_State *state, int thread_id=0) :
@@ -38,21 +53,19 @@ namespace scripting {
         void settable(int index, const char* key, int value);
         void settable(int index, const std::string& key, int value) { settable(index, key.c_str(), value); }
 
-        cLuaState newthread() const;
-
         // common operations
         bool get_function(const std::string &name);
 
         lua_State *get_state() { return m_State; }
-
         std::string get_error();
-
-        void CleanThread();
     private:
         lua_State* m_State = nullptr;
         /// If this state represents a specific thread, this variable saves the thread id.
         int m_ThreadID = 0;
     };
+
+    // lua helper functions
+    sScriptValue get_value(lua_State* interpreter, int index);
 
     // A cLuaState class with owns the underlying lua_State,
     // i.e a new lua state is created in the constructor and

@@ -2454,7 +2454,7 @@ void cJobManager::CatchGirl(sGirl& girl, std::stringstream& fuckMessage, const s
         // `J` add the customer to the dungeon
         g_Game->dungeon().AddGirl(custgirl, DUNGEON_CUSTNOPAY);
     } else {
-        g_Game->RunEvent(EDefaultEvent::CUSTOMER_NOPAY);    // if not taken as a slave, use the old code
+        g_Game->PushEvent(EDefaultEvent::CUSTOMER_NOPAY);    // if not taken as a slave, use the old code
     }
 }
 

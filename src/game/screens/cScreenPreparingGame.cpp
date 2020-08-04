@@ -268,7 +268,7 @@ void cScreenPreparingGame::process()
         set_active_building(&g_Game->buildings().get_building(0));
         push_window("Building Management");
         if(load0new1 == 1) {
-            g_Game->RunEvent("intro");
+            g_Game->PushEvent("intro");
         }
     }
 }

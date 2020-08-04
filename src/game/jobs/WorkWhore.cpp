@@ -654,7 +654,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
 
         if (custout)
         {
-            g_Game->RunEvent(EDefaultEvent::CUSTOMER_NOPAY);    // male customers use the old code
+            g_Game->PushEvent(EDefaultEvent::CUSTOMER_NOPAY);    // male customers use the old code
         }
         else if (femalecustcaught)
         {

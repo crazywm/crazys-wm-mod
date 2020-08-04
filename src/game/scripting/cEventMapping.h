@@ -45,11 +45,11 @@ namespace scripting
         bool HasEvent(const sEventID& event) const final;
         const sEventTarget& GetEvent(const sEventID& event) const final;
 
-        sScriptValue RunEvent(const sEventID& event) const final;
-        sScriptValue RunEvent(const sEventID& event, sGirl& girl) const final;
-        sScriptValue RunEvent(const sEventID& event, std::initializer_list<sLuaParameter> params) const final;
+        sAsyncScriptHandle RunAsync(const sEventID& event, std::initializer_list<sLuaParameter> params) const final;
+        sScriptValue RunSynchronous(const sEventID& event, std::initializer_list<sLuaParameter> params) const final;
     private:
-        sScriptValue RunEventWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const;
+        sScriptValue       RunSyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const;
+        sAsyncScriptHandle RunAsyncWithParams(const sEventID& event, std::initializer_list<sLuaParameter> params) const;
         std::string m_Name;
         const cScriptManager* m_Manager = nullptr;
         pEventMapping  m_Fallback = nullptr;

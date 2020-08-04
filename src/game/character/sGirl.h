@@ -161,10 +161,15 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 
     // triggers
     scripting::pEventMapping m_EventMapping;
-    scripting::sScriptValue TriggerEvent(scripting::sEventID id);
+    scripting::sAsyncScriptHandle TriggerEvent(scripting::sEventID id);
     template<class ...T>
-    scripting::sScriptValue TriggerEvent(scripting::sEventID id, T&&... args) {
-        return m_EventMapping->RunEvent(id, *this, std::forward<T>(args)...);
+    scripting::sAsyncScriptHandle TriggerEvent(scripting::sEventID id, T&&... args) {
+        return m_EventMapping->RunAsync(id, *this, std::forward<T>(args)...);
+    }
+
+    template<class ...T>
+    scripting::sScriptValue CallScriptFunction(scripting::sEventID id, T&&... args) {
+        return m_EventMapping->RunSynchronous(id, *this, std::forward<T>(args)...);
     }
 
     unsigned char m_DaysUnhappy;                // used to track how many days they are really unhappy for

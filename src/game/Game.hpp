@@ -131,7 +131,7 @@ public:
     cJobManager& job_manager();
 
     scripting::cScriptManager& script_manager();
-    void RunEvent(const scripting::sEventID& event);
+    void PushEvent(const scripting::sEventID& event);
 
     // time keeping
     const Date& date() const;
@@ -222,6 +222,12 @@ private:
 
     // This keeps track of all unqiue girl files that are used for this game.
     std::unordered_set<std::string> m_GirlFiles;
+
+    // event stack
+    struct sScriptEventStack;
+    std::unique_ptr<sScriptEventStack> m_EventStack;
+
+    void RunNextEvent(const scripting::sEventID& event);
 
 private:
     void LoadGirlFiles(DirPath location);

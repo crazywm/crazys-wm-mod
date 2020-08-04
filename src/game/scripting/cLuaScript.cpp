@@ -137,47 +137,53 @@ cLuaScript::cLuaScript()
     sLuaCustomer::init(m_State.get_state());
 }
 
-sScriptValue cLuaScript::RunEvent(const std::string& event_name, std::initializer_list<sLuaParameter> params) {
+sLuaThread* cLuaScript::RunAsync(const std::string& event_name, std::initializer_list<sLuaParameter> params) {
     g_LogFile.info("lua", "Running function '", event_name, "'");
     // create new thread
-    auto thread = m_State.newthread();
+    auto thread = sLuaThread::create(m_State.get_state());
+    auto ts = cLuaState(thread->InterpreterState);
     // find function
-    if(!thread.get_function(event_name)) {
+    if(!ts.get_function(event_name)) {
         g_LogFile.error("scripting", "Could not find lua function '", event_name, "'");
         throw std::runtime_error("Could not find lua function");
     }
 
     for(auto& arg : params) {
-        arg.push(thread);
+        arg.push(ts);
     }
 
     // run thread
-    lua_State* s = thread.get_state();
-    int result = lua_resume(s, nullptr, params.size());
-    if(result != 0 && result != LUA_YIELD) {
-        g_LogFile.error("scripting", thread.get_error());
+    thread->resume(params.size());
+    return thread;
+}
+
+sScriptValue cLuaScript::RunSynchronous(const std::string& event_name, std::initializer_list<sLuaParameter> params) {
+    g_LogFile.info("lua", "Running sync function '", event_name, "'");
+    // find function
+    if(!m_State.get_function(event_name)) {
+        g_LogFile.error("scripting", "Could not find lua function '", event_name, "'");
+        throw std::runtime_error("Could not find lua function");
+    }
+
+    for(auto& arg : params) {
+        arg.push(m_State);
+    }
+
+    // run thread
+    lua_State* s = m_State.get_state();
+    if(lua_pcall(s, params.size(), 1, 0)) {
+        std::string error = m_State.get_error();
+        g_LogFile.error("scripting", m_State.get_error());
+        throw std::runtime_error(error);
     } else {
         int top = lua_gettop(s);
-        // OK, thread has finished, no need to keep it around
-        if(result == 0) {
-            thread.CleanThread();
-        }
         if(top > 0) {
-            if(lua_isnumber(s, top)) {
-                return sScriptValue((float)lua_tonumberx(s, top, nullptr));
-            } else if(lua_isstring(s, top)) {
-                return sScriptValue(std::string(lua_tostring(s, top)));
-            } else if(lua_isboolean(s, top)) {
-                return sScriptValue((bool)lua_toboolean(s, top));
-            } else {
-                const char* top_as_str = lua_tostring(s, top);
-                g_LogFile.warning("lua", "Could not convert lua return value to C++ value: ", top_as_str);
-                return boost::blank{};
-            }
+            return get_value(s, top);
         }
     }
     return boost::blank{};
 }
+
 
 int cLuaScript::ChoiceBox(lua_State* state)
 {
@@ -195,11 +201,9 @@ int cLuaScript::ChoiceBox(lua_State* state)
     }
 
     auto callback = [state](int choice) {
+        sLuaThread* thread = sLuaThread::get_active_thread(state);
         lua_pushinteger(state, choice);
-        auto result = lua_resume(state, nullptr, 1);
-        if(result != 0 && result != LUA_YIELD) {
-            g_LogFile.error("scripting", cLuaState{state}.get_error());
-        }
+        thread->resume(1);
     };
 
     window_manager().InputChoice(question, std::move(options), callback);
@@ -209,7 +213,10 @@ int cLuaScript::ChoiceBox(lua_State* state)
 int cLuaScript::Dialog(lua_State* state)
 {
     std::string text = luaL_checkstring(state, -1);
-    window_manager().PushMessage(text, 0, [state](){ lua_resume(state, nullptr, 0); });
+    window_manager().PushMessage(text, 0, [state](){
+        sLuaThread* thread = sLuaThread::get_active_thread(state);
+        thread->resume(0);
+    });
     return 0;
 }
 

@@ -37,6 +37,11 @@ namespace settings {
     extern const char* SLAVE_MARKET_UNIQUE_CHANCE;
 }
 
+struct Game::sScriptEventStack {
+    scripting::sAsyncScriptHandle ActiveScript;
+    std::deque<scripting::sEventID> EventStack;
+};
+
 cRivalManager& Game::rivals()
 {
     return *m_Rivals;
@@ -65,7 +70,8 @@ Game::Game() :
     m_ScriptManager( new scripting::cScriptManager() ),
     m_GameSettings(new cGameSettings()),
     m_MarketGirls( new cGirlPool() ),
-    m_Prison( new cGirlPool() )
+    m_Prison( new cGirlPool() ),
+    m_EventStack( new sScriptEventStack() )
 {
     m_Player = std::make_unique<cPlayer>( create_traits_collection() );
 
@@ -951,8 +957,29 @@ void Game::TalkToGirl(sGirl &target) {
 
 }
 
-void Game::RunEvent(const scripting::sEventID& event) {
-    m_ScriptManager->RunEvent(m_ScriptManager->GetGlobalEventMapping()->GetEvent(event));
+void Game::PushEvent(const scripting::sEventID& event) {
+    if(m_EventStack->ActiveScript) {
+        m_EventStack->EventStack.push_back(event);
+    } else {
+        RunNextEvent(event);
+    }
+}
+
+void Game::RunNextEvent(const scripting::sEventID& event) {
+    m_EventStack->ActiveScript = m_ScriptManager->GetGlobalEventMapping()->RunAsync(event, {});
+    if(!m_EventStack->ActiveScript)
+        return;
+    m_EventStack->ActiveScript->SetDoneCallback([this](const scripting::sScriptValue& v){
+        // if done, start next script if one is available
+        if(!m_EventStack->EventStack.empty()) {
+            // handle the next event
+            RunNextEvent(m_EventStack->EventStack.front());
+            m_EventStack->EventStack.pop_front();
+        } else {
+            // otherwise, we no longer have an active script
+            m_EventStack->ActiveScript = nullptr;
+        }
+    });
 }
 
 IKeyValueStore& Game::settings()
@@ -1130,3 +1157,4 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
 void Game::error(std::string message) {
     window_manager().PushError(std::move(message));
 }
+

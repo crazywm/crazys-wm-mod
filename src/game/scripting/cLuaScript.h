@@ -33,7 +33,10 @@ namespace scripting {
         explicit cLuaScript();
         void LoadSource(const std::string& file);
 
-        sScriptValue RunEvent(const std::string &event_name, std::initializer_list<sLuaParameter> params);
+        sLuaThread* RunAsync(const std::string &event_name, std::initializer_list<sLuaParameter> params);
+        /// Runs a script in synchronous mode. This call blocks until the script has finished. This means
+        /// that there cannot be any user interaction in that script.
+        sScriptValue RunSynchronous(const std::string &event_name, std::initializer_list<sLuaParameter> params);
     private:
         void PushParameter(sLuaParameter param);
         cLuaInterpreter m_State;

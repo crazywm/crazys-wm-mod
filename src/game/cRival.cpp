@@ -73,7 +73,7 @@ void cRivalManager::Update(int& NumPlayerBussiness)
 
     // first, remove killed rivals
     if(erase_if(m_Rivals, [](auto& rival){ return rival->is_defeated(); })) {
-        g_Game->script_manager().RunEvent(g_Game->script_manager().GetGlobalEvent(EDefaultEvent::RIVAL_LOST));
+        g_Game->PushEvent(EDefaultEvent::RIVAL_LOST);
     }
 
     for(auto& curr : m_Rivals)

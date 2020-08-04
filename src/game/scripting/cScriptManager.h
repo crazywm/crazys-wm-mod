@@ -35,10 +35,11 @@ namespace scripting {
         cScriptManager();
         ~cScriptManager();
 
-        // running events
-        sScriptValue RunEvent(const sEventTarget& event) const;
-        sScriptValue RunEvent(const sEventTarget& event, sGirl& girl) const;
-        sScriptValue RunEvent(const sEventTarget& event, std::initializer_list<sLuaParameter> params) const;
+        /// Runs an event in async mode.
+        sAsyncScriptHandle RunEventAsync(const sEventTarget& event, std::initializer_list<sLuaParameter> params) const;
+
+        /// Runs an event in synchronous mode
+        sScriptValue RunEventSync(const sEventTarget& event, std::initializer_list<sLuaParameter> params = {}) const;
 
         // registering
         /// Load the script from `file` and save under the name `name`.
