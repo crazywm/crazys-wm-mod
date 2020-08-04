@@ -1171,8 +1171,8 @@ cScreenGirlManagement::cScreenGirlManagement() :
 void cScreenGirlManagement::set_ids()
 {
     IBuildingScreenManagement::set_ids();
-    prev_id            /**/ = get_id("PrevButton","Prev","*Unused*");
-    next_id            /**/ = get_id("NextButton","Next","*Unused*");
+    int prev_id = get_id("PrevButton","Prev","*Unused*");
+    int next_id = get_id("NextButton","Next","*Unused*");
 
     SetButtonCallback(prev_id, [this](){ cycle_building(-1); });
     SetButtonCallback(next_id, [this](){ cycle_building(1); });

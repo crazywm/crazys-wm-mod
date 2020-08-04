@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -41,17 +41,21 @@ cScreenHouseDetails::cScreenHouseDetails() : cInterfaceWindowXML("house_screen.x
 
 void cScreenHouseDetails::set_ids()
 {
-    header_id        /**/ = get_id("ScreenHeader");
-    interact_id        /**/ = get_id("InteractText");
-    interactb_id    /**/ = get_id("BuyInteract");
-    interactb10_id    /**/ = get_id("BuyInteract10");
-    slavedate_id    /**/ = get_id("SlaveDate", "*Unused*");//
-    details_id        /**/ = get_id("HouseDetails");
-    back_id            /**/ = get_id("BackButton", "Back");
+    header_id        = get_id("ScreenHeader");
+    interact_id      = get_id("InteractText");
+    interactb_id     = get_id("BuyInteract");
+    interactb10_id   = get_id("BuyInteract10");
+    slavedate_id     = get_id("SlaveDate", "*Unused*");
+    details_id       = get_id("HouseDetails");
+    int back_id      = get_id("BackButton", "Back");
 
     SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(interactb_id, [this]() {buy_interactions(1); });
     SetButtonCallback(interactb10_id, [this]() {buy_interactions(10); });
+
+    SetButtonCallback(get_id("Settings"), [this](){
+        push_window("UserSettings");
+    });
 }
 
 void cScreenHouseDetails::buy_interactions(int num)

@@ -22,10 +22,18 @@
 #include "CLog.h"
 #include "Game.hpp"
 #include <algorithm>
+#include "utils/string.hpp"
+#include "utils/algorithms.hpp"
 
 std::string get_class(const sKeyValueEntry* var) {
     // this const cast should not be necessary, but is required for mingw32
     return std::string(var->tag, const_cast<const char*>(std::strchr(var->tag, '.')));
+}
+
+cScreenGameConfig::cScreenGameConfig(bool use_in_game_mode) :
+        cInterfaceWindowXML("game_setup.xml") ,
+        m_InGameMode(use_in_game_mode) {
+
 }
 
 void cScreenGameConfig::init(bool back) {
@@ -36,6 +44,12 @@ void cScreenGameConfig::init(bool back) {
     std::sort(begin(m_SettingsList), end(m_SettingsList), [](const auto& a, const auto& b){
         return std::strcmp(a->tag, b->tag) <= 0;
     });
+
+    if(m_InGameMode) {
+        erase_if(m_SettingsList, [](const sKeyValueEntry* kve){
+            return !starts_with(kve->tag, "user");
+        });
+    }
 
     std::map<std::string, std::pair<std::string, std::string>> headings =
             {{"initial", {"Initial", "Defines the starting setup of the game"}},
@@ -93,20 +107,17 @@ void cScreenGameConfig::init(bool back) {
     }
 }
 
-cScreenGameConfig::cScreenGameConfig()  : cInterfaceWindowXML("game_setup.xml") {
-
-}
-
 void cScreenGameConfig::set_ids() {
-    back_id                     = get_id("BackButton");
+    back_id                   = get_id("BackButton");
     ok_id                     = get_id("OkButton");
     revert_id                 = get_id("RevertButton");
     list_id                   = get_id("SettingsList");
 
     SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(revert_id, [this](){ m_Settings = dynamic_cast<cGameSettings&>(g_Game->settings()); this->init(false); });
-    SetButtonCallback(ok_id, [this](){
-        dynamic_cast<cGameSettings&>(g_Game->settings()) = m_Settings; pop_window();
+    SetButtonCallback(ok_id, [this]() {
+        dynamic_cast<cGameSettings&>(g_Game->settings()) = m_Settings;
+        pop_window();
     });
     SetListBoxDoubleClickCallback(list_id, [this](int sel){
         if(sel < 0) return;

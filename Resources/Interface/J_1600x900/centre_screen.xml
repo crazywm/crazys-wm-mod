@@ -13,7 +13,7 @@
 <Button     Name="Staff Management"     Image="Staff"                       XPos="1288"     YPos="527"      Width="187"     Height="38"     Transparency="true"     Scale="true"     />
 <Button     Name="Setup"                Image="Building"                    XPos="1288"     YPos="586"      Width="187"     Height="38"     Transparency="true"     Scale="true"     />
 <Button     Name="Dungeon"              Image="Dungeon"                     XPos="1288"     YPos="645"      Width="187"     Height="38"     Transparency="true"     Scale="true"     />
-<Button     Name="WalkButton"           Image=""                            XPos="1288"     YPos="703"      Width="187"     Height="38"     Transparency="true"     Scale="true"     />
+<!-- <Button     Name="WalkButton"           Image=""                            XPos="1288"     YPos="703"      Width="187"     Height="38"     Transparency="true"     Scale="true"     /> -->
 <Button     Name="Visit Town"           Image="VisitTown"                   XPos="1288"     YPos="762"      Width="187"     Height="38"     Transparency="true"     Scale="true"     />
 
 <Button     Name="Turn Summary"         Image="TurnSum"                     XPos="960"      YPos="818"      Width="187"     Height="38"     Transparency="true"     Scale="true"  />

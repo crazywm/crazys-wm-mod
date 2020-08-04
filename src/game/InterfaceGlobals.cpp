@@ -55,8 +55,8 @@ extern cConfig cfg;
 
 cScreenGetInput*          g_GetInput          = nullptr;
 
-template<class T>
-T* load_window(const char* name, bool nonav=false);
+template<class T, class... Args>
+T* load_window(const char* name, bool nonav=false, Args&&... args);
 
 sColor& LookupThemeColor(const std::string& name);
 
@@ -135,7 +135,8 @@ void LoadInterface()
     load_window<cScreenBank>("Bank");
     load_window<cScreenHouseDetails>("House");
     load_window<cScreenPrison>("Prison");
-    load_window<cScreenGameConfig>("GameSetup");
+    load_window<cScreenGameConfig>("GameSetup", false, false);
+    load_window<cScreenGameConfig>("UserSettings", false, true);
 
     auto duration = std::chrono::steady_clock::now() - start_time;
     g_LogFile.debug("interface", "Loaded screens in ", std::chrono::duration_cast<std::chrono::milliseconds>(duration).count(), "ms");
@@ -197,11 +198,11 @@ sColor& LookupThemeColor(const std::string& name) {
     return null;
 }
 
-template<class T>
-T* load_window(const char* name, bool nonav)
+template<class T, class... Args>
+T* load_window(const char* name, bool nonav, Args&&... args)
 {
     g_LogFile.log(ELogLevel::DEBUG, "Loading Window '", name, '\'');
-    auto window = std::make_shared<T>();
+    auto window = std::make_shared<T>(std::forward<Args>(args)...);
     auto result = window.get();
     if (!nonav) {
         register_global_nav_keys(*window);

@@ -3,8 +3,9 @@
 <Image      Name="HouseIcon"            File="House.png"                    XPos="28"       YPos="28"       Width="141"      Height="141"  />
 <Text       Name="ScreenHeader"         Text="Your House"                   XPos="169"       YPos="28"       Width="394"     Height="90"  FontSize="56"  />
 <Text       Name="InteractText"         Text="Interactions: 0"              XPos="28"       YPos="450"      Width="506"     Height="112" FontSize="39"  />
-<Button     Name="BuyInteract"          Image="Buy"                         XPos="56"       YPos="562"      Width="202"      Height="90" Transparency="true" Scale="true"  />
-<Button     Name="BuyInteract10"        Image="Buy10"                       XPos="332"      YPos="562"      Width="202"      Height="90" Transparency="true" Scale="true"  />
+<Button     Name="BuyInteract"          Image="Buy"                         XPos="56"       YPos="562"      Width="202"      Height="90"  Transparency="true" Scale="true"  />
+<Button     Name="BuyInteract10"        Image="Buy10"                       XPos="332"      YPos="562"      Width="202"      Height="90"  Transparency="true" Scale="true"  />
 <Text       Name="BuildingDetails"      Text=""                             XPos="562"      YPos="28"       Width="1068"     Height="1069" FontSize="39"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="1439"      YPos="1508"      Width="534"     Height="107"  Transparency="true"    Scale="true"  />
+<Button     Name="Settings"             Image="Settings"                    XPos="56"       YPos="844"      Width="534"     Height="107"  Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="1439"      YPos="1508"      Width="534"     Height="107"  Transparency="true" Scale="true"  />
 </Screen>

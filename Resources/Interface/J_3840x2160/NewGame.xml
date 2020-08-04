@@ -15,6 +15,7 @@
 <Text       Name="PlayerBirthMonthNum"  Text="January"                      XPos="618"      YPos="1339"      Width="843"      Height="90"  FontSize="45"  />
 <Text       Name="PlayerBirthDayNum"    Text="1"                            XPos="900"      YPos="1339"      Width="843"      Height="90"  FontSize="45"  />
 <Text       Name="PlayerHoroscope"      Text="Capricorn"                    XPos="1349"      YPos="1339"      Width="1124"     Height="90"  FontSize="45"  />
-<Button     Name="Ok"                   Image="Ok"                          XPos="562"      YPos="1491"      Width="450"     Height="90"  Transparency="true" Scale="true"  />
-<Button     Name="Cancel"               Image="Cancel"                      XPos="1237"      YPos="1491"      Width="450"     Height="90"  Transparency="true" Scale="true"  />
+<Button     Name="Ok"                   Image="Ok"                          XPos="506"      YPos="1491"      Width="450"     Height="90"  Transparency="true" Scale="true"  />
+<Button     Name="Config"               Image="ShowMore"                    XPos="900"      YPos="1491"      Width="450"     Height="90"  Transparency="true" Scale="true"  />
+<Button     Name="Cancel"               Image="Cancel"                      XPos="1377"      YPos="1491"      Width="450"     Height="90"  Transparency="true" Scale="true"  />
 </Screen>

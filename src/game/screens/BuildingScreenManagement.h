@@ -148,9 +148,6 @@ public:
 class cScreenGirlManagement : public IBuildingScreenManagement
 {
 private:
-    int next_id;
-    int prev_id;
-
     void set_ids() override;
 
 public:

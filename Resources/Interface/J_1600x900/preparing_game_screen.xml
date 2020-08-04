@@ -3,9 +3,7 @@
 <Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="937"     Height="703"  />
 <Text       Name="Text1"                Text=""                             XPos="117"      YPos="23"       Width="937"     Height="70"  FontSize="35"  />
 <Text       Name="Text2"                Text=""                             XPos="117"      YPos="70"       Width="234"     Height="586" FontSize="18"  />
-<Text       Name="Text3"                Text=""                             XPos="351"      YPos="117"      Width="351"     Height="35"  FontSize="18"  />
-<Text       Name="Text4"                Text=""                             XPos="351"      YPos="164"      Width="351"     Height="35"  FontSize="18"  />
-<Text       Name="Text5"                Text=""                             XPos="351"      YPos="211"      Width="351"     Height="35"  FontSize="18"  />
+<Text       Name="Text3"                Text=""                             XPos="351"      YPos="117"      Width="351"     Height="105"  FontSize="18"  />
 <!--                                                                                        
 <Slider     Name="Counter1"                                                 XPos="351"      YPos="328"      Width="469"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
 <Slider     Name="Counter2"                                                 XPos="351"      YPos="352"      Width="469"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />

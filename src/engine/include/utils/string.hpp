@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include <string>
 #include <algorithm>
 #include <cstring>
+#include <boost/algorithm/string/predicate.hpp>
 
 inline std::string tolower(std::string str) {
     std::transform(begin(str), end(str), begin(str), [](char c) { return std::tolower(c); });
@@ -62,5 +63,7 @@ inline std::size_t case_insensitive_hash(const char* str)
     }
     return result;
 }
+
+using boost::algorithm::starts_with;
 
 #endif //CRAZYS_WM_MOD_STRING_HPP
