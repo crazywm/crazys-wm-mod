@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,7 +19,6 @@
 #include "cScreenGallery.h"
 #include "interface/cWindowManager.h"
 #include "widgets/cImageItem.h"
-#include "interface/cSurface.h"
 #include "InterfaceProcesses.h"
 #include "cGangs.h"
 #include "utils/FileList.h"
@@ -91,19 +90,11 @@ void cScreenGallery::init(bool back)
     Focused();
     ClearListBox(imagelist_id);
 
-    int usefolder = 0;    // 0=none, 1=cfg, 2=original
     int startmode = -1;
     // start with what the config has set
-    DirPath imagedir = DirPath(cfg.folders.characters().c_str()) << m_SelectedGirl->m_Name;
+    DirPath imagedir = m_SelectedGirl->GetImageFolder();
     FileList testall(imagedir, "*.*");
-    if (testall.size() > 0)        usefolder = 1;
-    else        // if config is not found, check for images in the original folder
-    {
-        imagedir = DirPath() << "Resources" << "Characters" << m_SelectedGirl->m_Name;
-        FileList testall(imagedir, "*.*");
-        if (testall.size() > 0) usefolder = 2;
-    }
-    if (usefolder == 0)
+    if (testall.size() == 0)
     {
         pop_window();
         push_message(m_SelectedGirl->FullName() + " ( " + m_SelectedGirl->m_Name + " ) has no images.", COLOR_RED);

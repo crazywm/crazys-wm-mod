@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -18,10 +18,7 @@
 */
 #include "utils/FileList.h"
 #include "CLog.h"
-#include <map>
 #include <string>
-
-static std::string clobber_extension(const std::string& s);
 
 FileList::FileList(DirPath dp, const char *pattern) : folder( std::move(dp) )
 {
@@ -40,6 +37,7 @@ void FileList::scan(const char * pattern)
 #include <cerrno>
 #include <regex.h>
 #include <cstring>
+#include <sys/stat.h>
 
 static std::string& gsub(std::string& str, const char *pat_pt, const char *repl_pt)
 {
@@ -118,6 +116,37 @@ void FileList::add(const char *pattern)
     closedir(dpt);
 }
 
+std::vector<std::string> FileList::ListSubdirs(std::string path) {
+    std::vector<std::string> result;
+    DIR        *dpt;
+    struct dirent *dent;
+    const char* base_path = path.c_str();
+
+    /*
+     *    open the directory. Print an error to the console if it fails
+     */
+    if ((dpt = opendir(base_path)) == nullptr) {
+        g_LogFile.error("engine", "Could not open directory '", base_path, "' (", errno, ")");
+        return {};
+    }
+
+    struct stat buf{};
+    while ((dent = readdir(dpt)) != nullptr) {
+        if(stat((path + "/" + dent->d_name).c_str(), &buf) == -1) {
+            g_LogFile.error("engine", "Could calling stat on '", path, "/", dent->d_name, "' (", errno, ")");
+            continue;
+        };
+        if(S_ISDIR(buf.st_mode)) {
+            std::string dir_name = dent->d_name;
+            // exclude special directories
+            if(dir_name.front() != '.') {
+                result.emplace_back(dent->d_name);
+            }
+        }
+    }
+    return std::move(result);
+}
+
 #else
 #include<windows.h>
 
@@ -125,12 +154,11 @@ void FileList::add(const char *pattern)
 void FileList::add(const char * pattern)
 {
     WIN32_FIND_DATAA FindFileData;
-    HANDLE hFind;
     DirPath loc = folder.c_str();
     loc << pattern;
     std::string base = folder.c_str();
     std::string filename;
-    hFind = FindFirstFileA(loc.c_str(), &FindFileData);
+    HANDLE hFind = FindFirstFileA(loc.c_str(), &FindFileData);
 
     int i = 0;
     while (hFind != INVALID_HANDLE_VALUE) {
@@ -144,63 +172,27 @@ void FileList::add(const char * pattern)
     FindClose(hFind);
 }
 
+std::vector<std::string> FileList::ListSubdirs(std::string path) {
+    // https://www.bfilipek.com/2019/04/dir-iterate.html#on-windows-winapi
+    WIN32_FIND_DATA FindFileData;
+    HANDLE hFind = FindFirstFile((path + "/*").c_str(), &FindFileData);
+    std::vector<std::string> result;
+    if (hFind == INVALID_HANDLE_VALUE) {
+        g_LogFile.error("engine", "FindFirstFile failed (", GetLastError(), ")");
+        return {};
+    }
+
+    do {
+        if (FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            if(FindFileData.cFileName[0] != '.') {
+                result.emplace_back(FindFileData.cFileName);
+            }
+        }
+    } while (FindNextFile(hFind, &FindFileData) != 0);
+
+    FindClose(hFind);
+
+    return std::move(result);
+}
+
 #endif
-
-
-
-XMLFileList::XMLFileList(DirPath dp, char const *pattern)
-{
-    folder = dp;
-    scan(pattern);
-}
-
-void XMLFileList::scan(const char *pattern)
-{
-    std::map<std::string, FileListEntry> lookup;
-    FileList fl(folder, pattern);
-    /*
-    *    OK: do a scan with the non xml file name
-    *    and store the results in a map keyed by filename
-    *    minus extension
-    */
-    for (int i = 0; i < fl.size(); i++) {
-        std::string str = fl[i].full();
-        std::string key = clobber_extension(str);
-        lookup[key] = fl[i];
-        //cerr << "       adding " << str << endl;
-        //cerr << "       under " << key << endl;
-        //cerr << "       result " << lookup[key].full() << endl;
-    }
-    /*
-    *    Repeat with "x" added to the end of the pattern.
-    *    If an xml file shadows a non-XML version, the XML
-    *    pathname will overwrite the non-XML one
-    */
-    std::string newpat = pattern; newpat += "x";
-    fl.scan(newpat.c_str());
-    for (int i = 0; i < fl.size(); i++) {
-        std::string str = fl[i].full();
-        std::string key = clobber_extension(str);
-        lookup[key] = fl[i];
-        //cerr << "       adding " << str << endl;
-        //cerr << "       under " << key << endl;
-        //cerr << "       result " << lookup[key].full() << endl;
-    }
-    /*
-    *    We now have a map of files with the desired extensions
-    *    and where ".foox" takes precedence over ",foo"
-    *
-    *    now walk the map, and populate the vector
-    */
-    files.clear();
-    for (std::map<std::string, FileListEntry>::const_iterator it = lookup.begin(); it != lookup.end(); ++it) {
-        files.push_back(it->second);
-    }
-}
-
-static std::string clobber_extension(const std::string& s)
-{
-    size_t pos = s.rfind('.');
-    std::string base = s.substr(0, pos);
-    return base;
-}

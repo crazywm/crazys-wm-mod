@@ -31,7 +31,9 @@ class TraitSpec;
 #include <string>
 #include <vector>
 #include <array>
+#include <functional>
 #include "utils/sPercent.h"
+#include "utils/DirPath.h"
 #include "Constants.h"
 
 // structure to hold randomly generated girl information
@@ -68,13 +70,8 @@ struct sRandomGirl
 
     int m_MinMoney;    // min and max money they can start with
     int m_MaxMoney;
+    DirPath m_ImageDirectory;
 
-    /*
-    *    MOD: DocClox Sun Nov 15 06:11:43 GMT 2009
-    *    stream operator for debugging
-    *    plus a shitload of XML loader funcs
-    */
-    friend std::ostream& operator<<(std::ostream &os, sRandomGirl &g);
     /*
     *    one func to load the girl node,
     *    and then one each for each embedded node
@@ -92,7 +89,8 @@ struct sRandomGirl
 
 class cRandomGirls {
 public:
-    void LoadRandomGirlXML(const std::string& filename);
+    void LoadRandomGirlXML(const std::string& filename, const std::string& base_path,
+                           const std::function<void(const std::string&)>& error_handler);
     sRandomGirl* find_random_girl_by_name(const std::string& name);
     sRandomGirl CreateRandomGirl(bool Human0Monster1, bool arena, bool daughter, const std::string& findbyname);
 private:

@@ -981,6 +981,16 @@ int TryImageType(int imagetype, int tries)
 }
 
 
+bool CheckForImages(const DirPath& location, const std::vector<std::string>& patterns) {
+    assert(!patterns.empty());
+    FileList testall(location, patterns.front().c_str());
+    for(int i = 1; i < patterns.size(); ++i) {
+        testall.add(patterns[i].c_str());
+    }
+    return testall.size() > 0;
+}
+
+
 std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool gallery, std::string ImageName) {
     if (imagetype < 0 || ImageName == "blank")        // no girl, no images
     {
@@ -991,26 +1001,22 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
         return {};
     }
 
-    std::string girlName = girl.m_Name;
-    g_LogFile.log(ELogLevel::DEBUG, "Debug Alt Images || Getting image for: ", girl.FullName(), " (", girlName, ")");
+    const auto& image_folder = girl.GetImageFolder();
+    g_LogFile.log(ELogLevel::DEBUG, "Debug Alt Images || Getting image for: ", girl.FullName(), " (", image_folder, ")");
 
     int dir = 0; DirPath usedir = "";
-    DirPath imagedirCc = DirPath(cfg.folders.characters().c_str()) << girlName;    // usedir = 1
-    DirPath imagedirCo = DirPath() << "Resources" << "Characters" << girlName;    // usedir = 2
     DirPath imagedirDc = DirPath(cfg.folders.defaultimageloc().c_str());        // usedir = -1
     DirPath imagedirDo = DirPath() << "Resources" << "DefaultImages";            // usedir = -2
-    FileList tiCc(imagedirCc, "*.*");
-    FileList tiCo(imagedirCo, "*.*");
+    FileList tiCc(image_folder, "*.*");
     FileList tiDc(imagedirDc, "*.*");
     FileList tiDo(imagedirDo, "*.*");
 
     int totalimagesCc = tiCc.size();
-    int totalimagesCo = tiCo.size();
     int totalimagesDc = tiDc.size();
     int totalimagesDo = tiDo.size();
-    if (totalimagesCc + totalimagesCo + totalimagesDc + totalimagesDo < 1)    // no images at all so return a blank image
+    if (totalimagesCc + totalimagesDc + totalimagesDo < 1)    // no images at all so return a blank image
     {
-        g_LogFile.log(ELogLevel::WARNING, "No Images found for: ", girlName, " and no Default images found");
+        g_LogFile.log(ELogLevel::WARNING, "No Images found for: ", image_folder, " and no Default images found");
         return {};
     }
 
@@ -1028,7 +1034,7 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
     if (gallery) tries = 0;
     else    // try some corrections
     {
-        if (cfg.folders.preferdefault() || totalimagesCc + totalimagesCo < 1)    tries = 10;
+        if (cfg.folders.preferdefault() || totalimagesCc < 1)    tries = 10;
         if (imagetype < 0 || imagetype > NUM_IMGTYPES)        imagetype = IMGTYPE_PROFILE;
 
         if (imagetype == IMGTYPE_PROFILE && g_Dice.percent(10))
@@ -1059,6 +1065,8 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
         }
     }
 
+    std::vector<std::string> patterns;
+
     do
     {
         int tryimagetype = TryImageType(imagetype, tries);
@@ -1071,83 +1079,34 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
         if (tryimagetype == IMGTYPE_PREGNANT) checkfor = "pregnant*.*";
         if (tryimagetype == IMGTYPE_SUCKBALLS) checkfor = "suckballs*.*";
 
-        if (totalimagesCc > 0)
+        patterns.clear();
+        patterns.push_back(checkfor);
+        if (tryimagetype == IMGTYPE_PREGNANT)
         {
-            FileList testall(imagedirCc, checkfor.c_str());
-            if (tryimagetype == IMGTYPE_PREGNANT)
+            for (u_int i = 0; i < numeric.size(); i++)
             {
-                for (u_int i = 0; i < numeric.size(); i++)
-                {
-                    std::string t = ("preg" + numeric.substr(i, 1) + "*.*");
-                    testall.add(t.c_str());
-                }
+                patterns.push_back(("preg" + numeric.substr(i, 1) + "*.*"));
             }
-            if (tryimagetype == IMGTYPE_SUCKBALLS)
-            {
-                for (u_int i = 0; i < numeric.size(); i++)
-                {
-                    std::string t = ("balls*.*");
-                    testall.add(t.c_str());
-                }
-            }
-            if (testall.size() > 0)
-            {
-                usedir = imagedirCc;
-                dir = 1;
-            }
+        } else if(tryimagetype == IMGTYPE_SUCKBALLS)
+        {
+            patterns.emplace_back("balls*.*");
         }
-        if (dir == 0 && totalimagesCo > 0)    // if config is not found, check for images in the original folder
+
+        if (totalimagesCc > 0 && CheckForImages(image_folder, patterns))
         {
-            FileList testall(imagedirCo, checkfor.c_str());
-            if (tryimagetype == IMGTYPE_PREGNANT)
-            {
-                for (u_int i = 0; i < numeric.size(); i++)
-                {
-                    std::string t = ("preg" + numeric.substr(i, 1) + "*.*");
-                    testall.add(t.c_str());
-                }
-            }
-            if (tryimagetype == IMGTYPE_SUCKBALLS)
-            {
-                for (u_int i = 0; i < numeric.size(); i++)
-                {
-                    std::string t = ("balls*.*");
-                    testall.add(t.c_str());
-                }
-            }
-            if (testall.size() > 0)
-            {
-                usedir = imagedirCo;
-                dir = 2;
-            }
+            usedir = image_folder;
+            dir = 1;
         }
         if (dir == 0 && gallery)    // gallery stops here if there are no images
         {
-            g_LogFile.log(ELogLevel::WARNING, "Debug Alt Images || No gallery images found for: ", girlName);
+            g_LogFile.log(ELogLevel::WARNING, "Debug Alt Images || No gallery images found for: ", image_folder);
             return {};
         }
 
         // if neither character folder has what we are looking for try the defaults
         if (totalimagesDc > 0 && dir == 0 && tries < 10)
         {
-            FileList testall(imagedirDc, checkfor.c_str());
-            if (tryimagetype == IMGTYPE_PREGNANT)
-            {
-                for (u_int i = 0; i < numeric.size(); i++)
-                {
-                    std::string t = ("preg" + numeric.substr(i, 1) + "*.*");
-                    testall.add(t.c_str());
-                }
-            }
-            if (tryimagetype == IMGTYPE_SUCKBALLS)
-            {
-                for (u_int i = 0; i < numeric.size(); i++)
-                {
-                    std::string t = ("balls*.*");
-                    testall.add(t.c_str());
-                }
-            }
-            if (testall.size() > 0)
+            if (CheckForImages(imagedirDc, patterns))
             {
                 usedir = imagedirDc;
                 dir = -1;
@@ -1155,24 +1114,7 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
         }
         if (totalimagesDo > 0 && dir == 0 && tries < 10)
         {
-            FileList testall(imagedirDo, checkfor.c_str());
-            if (tryimagetype == IMGTYPE_PREGNANT)
-            {
-                for (u_int i = 0; i < numeric.size(); i++)
-                {
-                    std::string t = ("preg" + numeric.substr(i, 1) + "*.*");
-                    testall.add(t.c_str());
-                }
-            }
-            if (tryimagetype == IMGTYPE_SUCKBALLS)
-            {
-                for (u_int i = 0; i < numeric.size(); i++)
-                {
-                    std::string t = ("balls*.*");
-                    testall.add(t.c_str());
-                }
-            }
-            if (testall.size() > 0)
+            if (CheckForImages(imagedirDo, patterns))
             {
                 usedir = imagedirDo;
                 dir = -2;
@@ -1184,29 +1126,17 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
         }
 
         FileList testall(usedir, checkfor.c_str());
-        if (tryimagetype == IMGTYPE_PREGNANT)
-        {
-            for (u_int i = 0; i < numeric.size(); i++)
-            {
-                std::string t = ("preg" + numeric.substr(i, 1) + "*.*");
-                testall.add(t.c_str());
-            }
-        }
-        if (tryimagetype == IMGTYPE_SUCKBALLS)
-        {
-            for (u_int i = 0; i < numeric.size(); i++)
-            {
-                std::string t = ("balls*.*");
-                testall.add(t.c_str());
-            }
+        for(int i = 1; i < patterns.size(); ++i) {
+            testall.add(patterns[i].c_str());
         }
         if (testall.size() <= 0) continue;
         std::vector<std::string> result;
+        result.reserve(testall.size());
         for(int i = 0; i < testall.size(); ++i) {
             result.emplace_back(testall[i].full());
         }
         return result;
-    }    while (!imagechosen && --tries > 0);
+    } while (!imagechosen && --tries > 0);
 
     return {};
 }

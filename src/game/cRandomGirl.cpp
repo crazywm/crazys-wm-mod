@@ -206,16 +206,31 @@ cRandomGirls::CreateRandomGirl(bool Human0Monster1, bool arena, bool daughter, c
 
 }
 
-void cRandomGirls::LoadRandomGirlXML(const std::string& filename)
+void cRandomGirls::LoadRandomGirlXML(const std::string& filename, const std::string& base_path,
+                                     const std::function<void(const std::string&)>& error_handler)
 {
     auto doc = LoadXMLDocument(filename);
     g_LogFile.log(ELogLevel::INFO, "Loading File ::: ", filename);
 
-    for (auto& el : IterateChildElements(*doc->RootElement()))
+    auto root_element = doc->RootElement();
+    if(!root_element) {
+        if(error_handler)
+            error_handler("ERROR: No XML root found in girl file " + filename);
+        return;
+    }
+
+    for (auto& el : IterateChildElements(*root_element))
     {
         m_RandomGirls.emplace_back();
         auto& girl = m_RandomGirls.back();
-        girl.load_from_xml(&el);                    // uses sRandomGirl::load_from_xml
+        try {
+            girl.load_from_xml(&el);
+            girl.m_ImageDirectory = DirPath(base_path.c_str()) << girl.m_Name;
+        } catch (const std::exception& error) {
+            g_LogFile.error("girls", "Could not load rgirl from file '", filename, "': ", error.what());
+            if(error_handler)
+                error_handler("ERROR: Could not load rgirl from file " + filename + ": " + error.what());
+        }
 
         if (girl.m_YourDaughter)
         {

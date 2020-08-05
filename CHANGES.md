@@ -1,4 +1,12 @@
-# Version 07.00.alpha (work in progress)
+# Version 07.00.alpha2 (work in progress)
+## Changes
+* Recursively scan character folder for girl files
+
+## Fixes
+
+
+
+# Version 07.00.alpha1
 ## Major new features
 * Events based on lua scripts
 * Combat overhaul and combat reports

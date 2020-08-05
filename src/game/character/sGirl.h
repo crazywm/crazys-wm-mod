@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@
 #include "scripting/fwd.hpp"
 #include "scripting/sLuaParameter.hpp"
 #include "pregnancy.h"
+#include "utils/DirPath.h"
 
 
 class TraitSpec;
@@ -100,6 +101,9 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 {
     sGirl(bool unique);
     ~sGirl() override;
+
+    const DirPath& GetImageFolder() const;
+    void SetImageFolder(DirPath p);
 
     std::string m_Name;                                 // The girls name
     std::string m_MotherName;                           //    `J` added mother and father names
@@ -300,6 +304,8 @@ struct sGirl : public ICharacter, public std::enable_shared_from_this<sGirl>
 
 private:
     int m_States = 0;                                // Holds the states the girl has
+
+    DirPath m_ImageFolder;
 };
 
 #endif //CRAZYS_WM_MOD_SGIRL_HPP

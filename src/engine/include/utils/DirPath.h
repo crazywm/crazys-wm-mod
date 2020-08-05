@@ -50,10 +50,10 @@ public:
             path[pos] = 0;
         }
     }
-    // `J` - not sure if this will work but it shuts up the compiler
-    DirPath(const DirPath& dp) {
-        path = dp.path;
-    }
+
+    DirPath(const DirPath& dp) = default;
+    DirPath(DirPath&&) = default;
+    DirPath& operator=(const DirPath&) = default;
 
 
 /*
@@ -76,22 +76,8 @@ public:
         path += pt;
         return *this;
     }
-/*
- *    same operator, but overloaded on ostream
- *    so you can use << to print the path on debug messages
- */
-    std::ostream& operator << (std::ostream& os) {
-        return os << path;
-    }
-/*
- *    a c_str() method so I can drop this sucker in where 
- *    the code used to use a string
- */
-    const char *c_str()    const { return path.c_str(); }
 
-/*
- * Get the path as a string
- */
+    const char *c_str()    const { return path.c_str(); }
     const std::string& str() const { return path; }
 /*
  *    and a couple of type coercion operators, so I shouldn't
@@ -100,6 +86,10 @@ public:
     operator const char *()    { return path.c_str(); }
     operator std::string()    { return path; }
 };
+
+inline std::ostream& operator<<(std::ostream& target, const DirPath& content) {
+    return target << content.str();
+}
 
 class ImagePath : public DirPath {
 public:

@@ -151,6 +151,7 @@ cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, 
 
     auto newGirl = std::make_shared<sGirl>(false);
     newGirl->m_AccLevel = g_Game->settings().get_integer(settings::USER_ACCOMODATION_FREE);
+    newGirl->SetImageFolder(girl_template.m_ImageDirectory);
 
     newGirl->m_Desc = girl_template.m_Desc;
     newGirl->m_Name = girl_template.m_Name;
@@ -1410,50 +1411,40 @@ int cGirls::GetSkillWorth(const sGirl& girl)
 
 // ----- Load save
 
-void cGirls::LoadRandomGirl(string filename)
+void cGirls::LoadRandomGirl(const string& filename, const std::string& base_path,
+                            const std::function<void(const std::string&)>& error_handler)
 {
-    /*
-    *    before we go any further: files that end in "x" are
-    *    in XML format. Get the last char of the filename.
-    */
-    char c = filename.at(filename.length() - 1);
-    /*
-    *    now decide how we want to really load the file
-    */
-    if (c == 'x')
-    {
-        cerr << "loading " << filename << " as XML" << endl;
-        m_RandomGirls.LoadRandomGirlXML(filename);
-    }
-    else
-    {
-        cerr << ".06 no longer supports Legacy Girls. Use the Whore Master Editor to update '" << filename << "'" << endl;
-    }
+    m_RandomGirls.LoadRandomGirlXML(filename, base_path, error_handler);
 }
 
-void cGirls::LoadGirlsXML(const std::string& filename, const std::function<void(const std::string&)>& error_handler)
+void cGirls::LoadGirlsXML(const std::string& file_path, const std::string& base_path,
+                          const std::function<void(const std::string&)>& error_handler)
 {
-    auto doc = LoadXMLDocument(filename);
+    auto doc = LoadXMLDocument(file_path);
     // loop over the elements attached to the root
     auto root = doc->RootElement();
     if(!root) {
-        g_LogFile.error("girls", "No XML root found in girl file ", filename);
+        if(error_handler)
+            error_handler("ERROR: No XML root found in girl file " + file_path);
+
+        g_LogFile.error("girls", "No XML root found in girl file ", file_path);
         return;
     }
-    for (auto& el : IterateChildElements(*root))
+    for (auto& el : IterateChildElements(*root, "Girl"))
     {
         try {
             auto girl = sGirl::LoadFromTemplate(el);
+            girl->SetImageFolder(DirPath(base_path.c_str()) << girl->m_Name);
 
             if (girl->age() < 18) girl->set_stat(STAT_AGE, 18);    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
 
-            // TOOD load triggers if the girl has any
+            // TODO load triggers if the girl has any
             CalculateGirlType(*girl);            // Fetish list for customer happiness
             AddGirl(girl);                        // add the girl to the list
         } catch (const std::exception& ex) {
-            g_LogFile.error("girls", "Could not load girl from file '", filename, "': ", ex.what());
+            g_LogFile.error("girls", "Could not load girl from file '", file_path, "': ", ex.what());
             if(error_handler)
-                error_handler("ERROR: Could not load girl from file " + filename + ": " + ex.what());
+                error_handler("ERROR: Could not load girl from file " + file_path + ": " + ex.what());
         }
     }
 }

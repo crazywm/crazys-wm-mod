@@ -8,8 +8,8 @@
 * [ ] Move all remaining game code out of the user interface
 * [x] Create a new NewGame function with a callback for progress feedback
 * [ ] Replace image name based tags by an xml file
-* [x] New ownership semantics for girl pointers
-* [ ] Scan subfolders for girl packs
+* [x] Scan subfolders for girl packs
+* [ ] Improve image paths handling / image selection
 
 ## Scripting
 * [ ] Extend lua scripting to cover everything the old scripts did

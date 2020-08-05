@@ -28,6 +28,7 @@
 #include <string>
 #include <tinyxml2.h>
 #include <functional>
+#include <utils/DirPath.h>
 #include "character/ICharacter.h"
 
 #include "Constants.h"
@@ -57,7 +58,8 @@ public:
     cGirls();
     ~cGirls();
 
-    void LoadGirlsXML(const std::string& filename, const std::function<void(const std::string&)>& error_handler={});
+    void LoadGirlsXML(const std::string& file_path, const std::string& base_path,
+                      const std::function<void(const std::string&)>& error_handler);
     /*
     *    SaveGirls doesn't seem to be the inverse of LoadGirls
     *    but rather writes girl data to the save file
@@ -106,7 +108,8 @@ public:
     static void EquipCombat(sGirl& girl);        // girl makes sure best armor and weapons are equipped, ready for combat
     static void UnequipCombat(sGirl& girl);    // girl unequips armor and weapons, ready for brothel work or other non-aggressive jobs
 
-    void LoadRandomGirl(std::string filename);
+    void LoadRandomGirl(const std::string& filename, const std::string& base_path,
+                        const std::function<void(const std::string&)>& error_handler);
     std::shared_ptr<sGirl>
     CreateRandomGirl(int age, bool slave = false, bool undead = false, bool Human0Monster1 = false,
                      bool childnaped = false, bool arena = false, bool daughter = false, bool isdaughter = false,

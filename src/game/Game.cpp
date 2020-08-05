@@ -993,6 +993,7 @@ std::unique_ptr<ITraitsCollection> Game::create_traits_collection() {
 
 void Game::LoadGirlFiles(const DirPath& location,
                          const std::function<void(const std::string&)>& error_handler) {
+    g_LogFile.debug("girls", "Loading girl files from ", location.c_str());
     // first, load unique girls. Process only those that are not
     // already present in the current game.
     FileList girlfiles(location, "*.girlsx");
@@ -1003,14 +1004,20 @@ void Game::LoadGirlFiles(const DirPath& location,
             continue;
         }
         m_GirlFiles.insert(girlfiles[i].leaf());
-        girl_pool().LoadGirlsXML(girlfiles[i].full(), error_handler);
+        girl_pool().LoadGirlsXML(girlfiles[i].full(), location.str(), error_handler);
     }
 
     // load all random girls.
     FileList rgirlfiles(location, "*.rgirlsx");
     for (int i = 0; i < rgirlfiles.size(); i++)
     {
-        girl_pool().LoadRandomGirl(rgirlfiles[i].full());
+        girl_pool().LoadRandomGirl(rgirlfiles[i].full(), location.str(), error_handler);
+    }
+
+    // and recurse into subdirectories
+    auto subdirs = FileList::ListSubdirs(location.str());
+    for(auto& dir : subdirs) {
+        LoadGirlFiles(DirPath(location) << dir.c_str(), error_handler);
     }
 }
 

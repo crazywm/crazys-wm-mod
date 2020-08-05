@@ -52,14 +52,14 @@ public:
     /*
     *    and some simple accessors
     */
-    std::string &leaf() { return m_leaf; }
-    std::string &path() { return m_path; }
+    std::string& leaf() { return m_leaf; }
+    std::string& path() { return m_path; }
     /*
     *    we could do this on the fly, here,
     *    but the overhead of storing an extra string
     *    should be trivial
     */
-    std::string &full() { return m_full; }
+    std::string& full() { return m_full; }
 };
 
 class FileList {
@@ -108,18 +108,6 @@ public:
             files.push_back(l[i]);
         }
     }
+
+    static std::vector<std::string> ListSubdirs(std::string path);
 };
-
-
-class XMLFileList {
-    DirPath folder;
-    std::vector<FileListEntry>    files;
-public:
-    XMLFileList(DirPath dp, char const *pattern = "*");
-    FileListEntry &operator[](int index) {
-        return files[index];    // just pass it on to the vector
-    }
-    int    size() { return files.size(); }
-    void    scan(const char *);
-};
-

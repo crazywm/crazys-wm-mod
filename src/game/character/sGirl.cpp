@@ -71,9 +71,6 @@ const char *sGirl::training_jobs[] = {
 sGirl::sGirl(bool unique) : ICharacter( g_Game->create_traits_collection(), unique ),
         m_EventMapping(g_Game->script_manager().CreateEventMapping("GirlEventMapping", "DefaultGirl"))
 {
-    // Names
-    m_Name = m_FullName = m_FirstName = m_MiddleName = m_Surname = m_MotherName = m_FatherName = m_Desc = "";
-
     // Time
     m_BDay = 0;        m_WeeksPast = 0;
 
@@ -628,6 +625,9 @@ bool sGirl::LoadGirlXML(const tinyxml2::XMLElement* pGirl)
     // load the amount of days they are unhappy in a row
     pGirl->QueryIntAttribute("DaysUnhappy", &tempInt); m_DaysUnhappy = tempInt; tempInt = 0;
 
+    // loading the image path
+    m_ImageFolder = GetStringAttribute(*pGirl, "ImagePath");
+
     // load their states
     pGirl->QueryAttribute("States", &m_States);
 
@@ -749,6 +749,8 @@ tinyxml2::XMLElement& sGirl::SaveGirlXML(tinyxml2::XMLElement& elRoot)
     // save working day counter
     elGirl.SetAttribute("WorkingDay", m_WorkingDay);
     elGirl.SetAttribute("PrevWorkingDay", m_PrevWorkingDay);    // `J` added
+
+    elGirl.SetAttribute("ImagePath", GetImageFolder().c_str());
 
     // `J` changed jobs to save as quick codes in stead of numbers so if new jobs are added they don't shift jobs
     // save day/night jobs
@@ -1495,7 +1497,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
         /* */if (strcmp(pt, "Catacombs") == 0)        girl->m_States |= (1u << STATUS_CATACOMBS);
         else if (strcmp(pt, "Slave") == 0)            girl->m_States |= (1u << STATUS_SLAVE);
         else if (strcmp(pt, "Arena") == 0)            girl->m_States |= (1u << STATUS_ARENA);
-        else if (strcmp(pt, "Is Daughter") == 0)    girl->m_States |= (1u << STATUS_ISDAUGHTER);
+        else if (strcmp(pt, "Is Daughter") == 0)      girl->m_States |= (1u << STATUS_ISDAUGHTER);
         //        else    m_States = 0;
     }
 
@@ -1616,4 +1618,12 @@ double sGirl::job_performance(JOBS job, bool estimate) const {
 extern std::string process_message(const sGirl& girl, std::string message);
 void sGirl::AddMessage(std::string message, int nImgType, EventType event) {
     m_Events.AddMessage(process_message(*this, std::move(message)), nImgType, event);
+}
+
+const DirPath& sGirl::GetImageFolder() const {
+    return m_ImageFolder;
+}
+
+void sGirl::SetImageFolder(DirPath p) {
+    m_ImageFolder = std::move(p);
 }
