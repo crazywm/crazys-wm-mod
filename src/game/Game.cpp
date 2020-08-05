@@ -991,7 +991,8 @@ std::unique_ptr<ITraitsCollection> Game::create_traits_collection() {
     return m_Traits->create_collection();
 }
 
-void Game::LoadGirlFiles(DirPath location) {
+void Game::LoadGirlFiles(const DirPath& location,
+                         const std::function<void(const std::string&)>& error_handler) {
     // first, load unique girls. Process only those that are not
     // already present in the current game.
     FileList girlfiles(location, "*.girlsx");
@@ -1002,14 +1003,14 @@ void Game::LoadGirlFiles(DirPath location) {
             continue;
         }
         m_GirlFiles.insert(girlfiles[i].leaf());
-        girl_pool().LoadGirlsXML(girlfiles[i].full());
+        girl_pool().LoadGirlsXML(girlfiles[i].full(), error_handler);
     }
 
     // load all random girls.
     FileList rgirlfiles(location, "*.rgirlsx");
     for (int i = 0; i < rgirlfiles.size(); i++)
     {
-        g_Game->girl_pool().LoadRandomGirl(rgirlfiles[i].full());
+        girl_pool().LoadRandomGirl(rgirlfiles[i].full());
     }
 }
 
@@ -1072,7 +1073,7 @@ void Game::NewGame(const std::function<void(std::string)>& callback) {
 
     callback("Loading Girls");
     g_LogFile.info("prepare", "Loading Girl Files");
-    LoadGirlFiles(cfg.folders.characters().c_str());
+    LoadGirlFiles(cfg.folders.characters().c_str(), callback);
 
     g_LogFile.info("prepare", "Update Shop");
     m_Shop->RestockShop();
@@ -1108,7 +1109,7 @@ void Game::LoadGame(const tinyxml2::XMLElement& source, const std::function<void
 
     callback("Loading Girl Files");
     g_LogFile.info("prepare", "Loading Girl Files");
-    LoadGirlFiles(cfg.folders.characters().c_str());
+    LoadGirlFiles(cfg.folders.characters().c_str(), callback);
 
     g_LogFile.log(ELogLevel::INFO, "Loading Rivals");
     callback("Loading Rivals");

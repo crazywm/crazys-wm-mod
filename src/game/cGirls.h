@@ -57,7 +57,7 @@ public:
     cGirls();
     ~cGirls();
 
-    void LoadGirlsXML(std::string filename);
+    void LoadGirlsXML(const std::string& filename, const std::function<void(const std::string&)>& error_handler={});
     /*
     *    SaveGirls doesn't seem to be the inverse of LoadGirls
     *    but rather writes girl data to the save file

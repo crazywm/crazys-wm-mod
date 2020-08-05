@@ -32,6 +32,7 @@
 #include "CLog.h"
 #include "sConfig.h"
 #include "cNameList.h"
+#include "utils/string.hpp"
 
 namespace settings {
     extern const char* INITIAL_RANDOM_GANGS;
@@ -51,8 +52,6 @@ extern cConfig cfg;
 
 bool loading = true;
 int load0new1 = 0;
-std::stringstream ss1;
-std::stringstream ss2;
 
 cScreenPreparingGame::cScreenPreparingGame() : cGameWindow("preparing_game_screen.xml")
 {
@@ -93,13 +92,17 @@ void cScreenPreparingGame::init(bool back)
         loading = true;
         load0new1 = g_ReturnInt;
         if(g_ReturnInt != 0) {
+            std::stringstream ss1;
             ss1 << "Starting New Game:   " << g_ReturnText;
+            EditTextItem(ss1.str(), text1_id);
             m_AsyncLoad = std::async(std::launch::async,
                        [this](){
                return NewGame(g_ReturnText);
             });
         } else {
+            std::stringstream ss1;
             ss1 << "Loading Game:   " << g_ReturnText;
+            EditTextItem(ss1.str(), text1_id);
             m_AsyncLoad = std::async(std::launch::async,
                                      [this](){
                                          return LoadGame(g_ReturnText);
@@ -113,9 +116,9 @@ void cScreenPreparingGame::init(bool back)
 
 void cScreenPreparingGame::resetScreen()
 {
-    ss1.str("");
-    ss2.str("");
-    stringEmUp();
+    m_MessagesText.str("");
+    EditTextItem("", text1_id);
+    EditTextItem("", text2_id);
 }
 
 bool cScreenPreparingGame::NewGame(std::string name) {
@@ -124,7 +127,10 @@ bool cScreenPreparingGame::NewGame(std::string name) {
 
     auto callback = [this](std::string str) {
         std::lock_guard<std::mutex> lck(m_Mutex);
-        m_Messages.push_back(std::move(str));
+        if(starts_with(str, "ERROR:")) {
+            m_LastError = str;
+        }
+        m_NewMessages.push_back(std::move(str));
     };
     g_Game->NewGame(callback);
 
@@ -180,14 +186,17 @@ bool cScreenPreparingGame::NewGame(std::string name) {
     return true;
 }
 
-bool cScreenPreparingGame::LoadGame(std::string name) {
+bool cScreenPreparingGame::LoadGame(const std::string& name) {
     DirPath location = cfg.folders.saves().c_str();
     DirPath thefile = location.c_str();
     thefile << name;
 
     auto callback = [this](std::string str) {
         std::lock_guard<std::mutex> lck(m_Mutex);
-        m_Messages.push_back(std::move(str));
+        if(starts_with(str, "ERROR:")) {
+            m_LastError = str;
+        }
+        m_NewMessages.push_back(std::move(str));
     };
 
     tinyxml2::XMLDocument doc;
@@ -212,6 +221,7 @@ bool cScreenPreparingGame::LoadGame(std::string name) {
     if (version != "official") {
         callback("Warning, the exe was not detected as official, it was detected as " + version + ".  Attempting to load anyways.");
     }
+
     g_Game->LoadGame(*pRoot, callback);
 
     g_WalkAround = false;       pRoot->QueryAttribute("WalkAround", &g_WalkAround);
@@ -225,23 +235,21 @@ void cScreenPreparingGame::loadFailed()
     EditTextItem("Something went wrong while loading the game. Click the back button to go to the main menu.", text3_id);
 }
 
-void cScreenPreparingGame::stringEmUp()
-{
-    EditTextItem(ss1.str(), text1_id);
-    EditTextItem(ss2.str(), text2_id);
-}
-
 void cScreenPreparingGame::process()
 {
+    std::string last_error;
     {
         std::lock_guard<std::mutex> lck(m_Mutex);
-        for(auto& msg : m_Messages) {
-            ss2 << msg << "\n";
+        for(auto& msg : m_NewMessages) {
+            m_MessagesText << msg << "\n";
         }
-        if(!m_Messages.empty()) {
-            stringEmUp();
+        if(!m_NewMessages.empty()) {
+            EditTextItem(m_MessagesText.str(), text2_id);
         }
-        m_Messages.clear();
+        m_NewMessages.clear();
+
+        last_error = m_LastError;
+        m_LastError.clear();
     }
 
     DisableWidget(cancel_id, loading);
@@ -250,6 +258,9 @@ void cScreenPreparingGame::process()
         loadFailed();
         return;
     }
+
+    if(!last_error.empty())
+        push_error(std::move(last_error));
 
     if(m_AsyncLoad.wait_for(std::chrono::milliseconds(1)) == std::future_status::timeout) {
         return;

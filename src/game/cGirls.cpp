@@ -20,7 +20,6 @@
 #include <algorithm>
 #include "cTariff.h"
 #include "cGirls.h"
-#include "cEvents.h"
 #include <tinyxml2.h>
 #include "utils/algorithms.hpp"
 #include "cGangs.h"
@@ -1432,7 +1431,7 @@ void cGirls::LoadRandomGirl(string filename)
     }
 }
 
-void cGirls::LoadGirlsXML(string filename)
+void cGirls::LoadGirlsXML(const std::string& filename, const std::function<void(const std::string&)>& error_handler)
 {
     auto doc = LoadXMLDocument(filename);
     // loop over the elements attached to the root
@@ -1453,8 +1452,8 @@ void cGirls::LoadGirlsXML(string filename)
             AddGirl(girl);                        // add the girl to the list
         } catch (const std::exception& ex) {
             g_LogFile.error("girls", "Could not load girl from file '", filename, "': ", ex.what());
-            /// TODO how to report the error here? g_Game may not be ready yet.
-            // g_Game->error("Could not load girl from file " + filename);
+            if(error_handler)
+                error_handler("ERROR: Could not load girl from file " + filename + ": " + ex.what());
         }
     }
 }

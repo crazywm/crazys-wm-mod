@@ -100,7 +100,7 @@ cSurface cFont::RenderText(std::string text) const
 
 }
 
-cSurface cFont::RenderMultilineText(std::string text, int width) const
+cSurface cFont::RenderMultilineText(std::string text, int max_width) const
 {
     text = UpdateLineEndings(std::move(text));
 
@@ -108,50 +108,63 @@ cSurface cFont::RenderMultilineText(std::string text, int width) const
     std::vector<std::string> lines;
     std::string temp(text);    // current line of text
     temp += " ";    // makes sure that all the text will be displayed
-    int n = 0;    // current index into the string
-    int q = 0;    // the next \n int the string
-    int p = 0;    // holds the previous index into the string
-    int charwidth, charheight;
-    width = width - 10;  // pad the sides a bit, it was otherwise slightly overflowing
+    int next_word_boundary = 0;    // current index into the string
+    int next_newline = 0;    // the next \n int the string
+    int last_split_point = 0;    // holds the previous index into the string
+    max_width = max_width - 10;  // pad the sides a bit, it was otherwise slightly overflowing
 
-    // -- Get until either ' ' or '\n'
-    while (n != -1)
+    // -- Get until either ' ', '/' or '\n'
+    while (next_word_boundary != -1)
     {
         std::string strSub;
-        n = temp.find(' ', p + 1);        // -- Find the next " "
-        q = temp.find('\n', p + 1);        // -- Find the next "\n"
-        if (q < n && q != -1)
+        next_word_boundary = temp.find(' ', last_split_point + 1);        // -- Find the next " "
+        next_newline = temp.find('\n', last_split_point + 1);        // -- Find the next "\n"
+        if (next_newline < next_word_boundary && next_newline != -1)
         {
-            strSub = temp.substr(0, q);
+            int charwidth, charheight;
+            strSub = temp.substr(0, next_newline);
             GetSize(strSub, charwidth, charheight);
-            if (charwidth >= width)
+            // if the text until the next newline is too long, we split lines
+            if (charwidth >= max_width)
             {
-                strSub = temp.substr(0, p);
-                lines.push_back(strSub);    // -- Puts strSub into the lines vector
-                temp = temp.substr(p + 1, std::string::npos);
-                p = 0;
+                strSub = temp.substr(0, last_split_point);
+                lines.push_back(strSub);
+                temp = temp.substr(last_split_point + 1, std::string::npos);
+                last_split_point = 0;
             }
+            // otherwise, next line is until newline
             else
             {
-                strSub = temp.substr(0, q);
+                strSub = temp.substr(0, next_newline);
                 lines.push_back(strSub);
-                temp = temp.substr(q + 1, std::string::npos);
-                p = 0;
+                temp = temp.substr(next_newline + 1, std::string::npos);
+                last_split_point = 0;
             }
         }
-        else
+        else    // word boundary before newline
         {
-            strSub = temp.substr(0, n);
+            strSub = temp.substr(0, next_word_boundary);
+            int charwidth, charheight;
             GetSize(strSub, charwidth, charheight);
-            if (charwidth >= width || n == -1)
+            // of we exceed the line, or this is the last word, use the last split point as split position
+            if (charwidth >= max_width || next_word_boundary == -1)
             {
-                strSub = temp.substr(0, p);
-                lines.push_back(strSub);    // -- Puts strSub into the lines vector
-                if (n != -1) temp = temp.substr(p + 1, std::string::npos);
-                p = 0;
+                // if we don't have any preceeding words, there is no point in splitting
+                if(last_split_point == 0) {
+                    lines.push_back(strSub);  // put this long word into a signle line
+                    if (next_word_boundary != -1)
+                        temp = temp.substr(next_word_boundary + 1, std::string::npos);
+                    last_split_point = 0;
+                } else {
+                    strSub = temp.substr(0, last_split_point);
+                    lines.push_back(strSub);    // -- Puts strSub into the lines vector
+                    if (next_word_boundary != -1) temp = temp.substr(last_split_point + 1, std::string::npos);
+                    last_split_point = 0;
+                }
             }
             else
-                p = n;
+                // if it fits, include this word in the next segment
+                last_split_point = next_word_boundary;
         }
     }
 
@@ -159,7 +172,7 @@ cSurface cFont::RenderMultilineText(std::string text, int width) const
     int height = lines.size()*lineskip;
 
     // create a surface to render all the text too
-    auto message = m_GFX->CreateSurface(width, height, sColor(0xff, 0, 0), true);
+    auto message = m_GFX->CreateSurface(max_width, height, sColor(0xff, 0, 0), true);
     assert(message);
 
     cConfig cfg;

@@ -230,7 +230,7 @@ private:
     void RunNextEvent(const scripting::sEventID& event);
 
 private:
-    void LoadGirlFiles(DirPath location);
+    void LoadGirlFiles(const DirPath& location, const std::function<void(const std::string&)>& error_handler);
     void LoadItemFiles(DirPath location);
     void LoadTraitFiles(DirPath location);
 };
