@@ -36,8 +36,8 @@ function PlayerRapeGirl(girl)
 
     local preg = girl:calc_player_pregnancy(false, 1.0);
     if preg then Dialog(girl:name() .. " has gotten pregnant") end
-    -- TODO set image if possible
-    -- g_GirlDetails->lastsexact = IMGTYPE_SEX;
+    -- set image if possible
+    wm.UpdateImage(wm.IMG.SEX)
 end
 
 ---@param girl wm.Girl
@@ -51,7 +51,8 @@ function PlayerFucksGirl(girl)
     local preg = girl:calc_player_pregnancy(false, 1.0);
     if preg then Dialog(girl:name() .. " has gotten pregnant") end
 
-    -- TODO image
+    -- Set image
+    wm.UpdateImage(wm.IMG.SEX)
 end
 
 
