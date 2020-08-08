@@ -20,9 +20,9 @@
 
 #include <string>
 #include <memory>
-#include <SDL_video.h>
 #include "interface/fwd.hpp"
 #include "interface/cSurface.h"
+#include "cColor.h"
 
 // fonts
 struct FontDeleter {
@@ -49,7 +49,7 @@ public:
     cSurface RenderTable(const std::string& text, int width) const;
 private:
     ttf_font_ptr m_Font    = nullptr;
-    SDL_Color m_TextColor;
+    sColor m_TextColor;
 
     static std::string UpdateLineEndings(std::string text) ;  // added function to fix line endings ("/n"=>"/r/n") for Windows
 

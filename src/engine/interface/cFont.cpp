@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include <cassert>
 #include "interface/cColor.h"
 
-cFont::cFont(CGraphics* gfx) : m_GFX(gfx)
+cFont::cFont(CGraphics* gfx) : m_GFX(gfx), m_TextColor(0, 0, 0)
 {
 }
 
@@ -96,7 +96,7 @@ cSurface cFont::RenderText(std::string text) const
 {
     cConfig cfg;
     return m_GFX->GetImageCache().CreateTextSurface(m_Font.get(), std::move(text),
-            sColor(m_TextColor.r, m_TextColor.g, m_TextColor.b), cfg.fonts.antialias());
+            m_TextColor, cfg.fonts.antialias());
 
 }
 
@@ -172,7 +172,7 @@ cSurface cFont::RenderMultilineText(std::string text, int max_width) const
     int height = lines.size()*lineskip;
 
     // create a surface to render all the text too
-    auto message = m_GFX->CreateSurface(max_width, height, sColor(0xff, 0, 0), true);
+    auto message = m_GFX->CreateSurface(max_width, height, m_TextColor, true);
     assert(message);
 
     cConfig cfg;
@@ -180,11 +180,10 @@ cSurface cFont::RenderMultilineText(std::string text, int max_width) const
     {
         if(!lines[i].empty()) {
             auto line = m_GFX->GetImageCache().CreateTextSurface(
-                    m_Font.get(), lines[i], sColor(m_TextColor.r, m_TextColor.g, m_TextColor.b),
+                    m_Font.get(), lines[i], m_TextColor,
                     cfg.fonts.antialias());
             if(!line)
                 continue;
-            SDL_SetSurfaceBlendMode(line.RawSurface()->surface(), SDL_BLENDMODE_NONE);
             SDL_Rect dst = {0, static_cast<Sint16>(i * lineskip),
                             static_cast<Uint16>(line.GetWidth()), static_cast<Uint16>(line.GetHeight())};
             message = message.BlitOther(line, nullptr, &dst);
@@ -216,10 +215,10 @@ cSurface cFont::RenderTable(const std::string& text, int max_width) const {
         }
 
         auto render = m_GFX->GetImageCache().CreateTextSurface(
-                m_Font.get(), text, sColor(m_TextColor.r, m_TextColor.g, m_TextColor.b),
+                m_Font.get(), text, m_TextColor,
                 cfg.fonts.antialias());
-        SDL_SetSurfaceBlendMode(render.RawSurface()->surface(), SDL_BLENDMODE_NONE);
 
+        // SDL_SetSurfaceBlendMode(render.RawSurface()->surface(), SDL_BLENDMODE_NONE);
         cells.push_back(sCellData{tab, std::move(text), std::move(render), last});
     };
 
@@ -268,16 +267,14 @@ cSurface cFont::RenderTable(const std::string& text, int max_width) const {
             std::string last = cells[i].content.substr(split_point);
 
             auto render = m_GFX->GetImageCache().CreateTextSurface(
-                    m_Font.get(), first, sColor(m_TextColor.r, m_TextColor.g, m_TextColor.b),
+                    m_Font.get(), first, m_TextColor,
                     cfg.fonts.antialias());
-            SDL_SetSurfaceBlendMode(render.RawSurface()->surface(), SDL_BLENDMODE_NONE);
 
             cells[i] = sCellData{tab, std::move(first), std::move(render), true};
 
             render = m_GFX->GetImageCache().CreateTextSurface(
-                    m_Font.get(), last, sColor(m_TextColor.r, m_TextColor.g, m_TextColor.b),
+                    m_Font.get(), last, m_TextColor,
                     cfg.fonts.antialias());
-            SDL_SetSurfaceBlendMode(render.RawSurface()->surface(), SDL_BLENDMODE_NONE);
             cells.insert(cells.begin() + i + 1, sCellData{0, std::move(last), std::move(render), true} );
         }
 
@@ -288,7 +285,7 @@ cSurface cFont::RenderTable(const std::string& text, int max_width) const {
     int height = (num_lines+1)*lineskip;
 
     // create a surface to render all the text too
-    auto message = m_GFX->CreateSurface(max_width, height, sColor(0xff, 0, 0), true);
+    auto message = m_GFX->CreateSurface(max_width, height, m_TextColor, true);
 
     int line = 0;
     for(int i = 0; i < cells.size(); ++i) {
