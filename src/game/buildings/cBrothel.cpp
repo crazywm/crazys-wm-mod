@@ -114,7 +114,6 @@ void sBrothel::UpdateGirls(bool is_night)
     */
     cJobManager::do_training(this, is_night);
 
-    std::vector<sGirl*> runaways;
     /*
     *    as for the rest of them...
     */
@@ -265,7 +264,7 @@ void sBrothel::UpdateGirls(bool is_night)
         // Runaway, Depression & Drug checking
         if (runaway_check(current))
         {
-            runaways.push_back(&current);
+            current.run_away();
             return;
         }
 
@@ -365,10 +364,6 @@ void sBrothel::UpdateGirls(bool is_night)
         // Level the girl up if necessary
         cGirls::LevelUp(current);
     });
-
-    for(auto& g : runaways) {
-        g->run_away();
-    }
 }
 
 bool sBrothel::runaway_check(sGirl& girl)

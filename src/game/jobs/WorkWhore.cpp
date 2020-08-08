@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -435,6 +435,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
 
         // Horizontal boogy
         std::string fm;
+        /// TODO this has the possibility of the girl running away. In that case, the job should stop.
         cGirls::GirlFucks(&girl, Day0Night1, &Cust, group, fm, SexType);
         fuckMessage << fm;
 

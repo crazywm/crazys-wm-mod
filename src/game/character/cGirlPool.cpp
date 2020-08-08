@@ -21,10 +21,11 @@
 #include <algorithm>
 #include "xml/util.h"
 #include "character/sGirl.h"
+#include "utils/algorithms.hpp"
 #include "utils/streaming_random_selection.hpp"
 
 /// use this in predicate calling functions, so that they cannot modify the collection while we're iterating
-#define ITERATING_FUNCTION DebugHelper _dbg_helper_var(this);
+#define ITERATING_FUNCTION sIterationGuard _dbg_helper_var(this);
 
 std::size_t cGirlPool::num() const {
     return m_Pool.size();
@@ -45,10 +46,13 @@ const sGirl* cGirlPool::get_girl(int index) const {
 }
 
 void cGirlPool::AddGirl(std::shared_ptr<sGirl> girl) {
-    assert(m_DebugIsIterating == 0);
     if(girl == nullptr)
         throw std::invalid_argument("Trying to add nullptr to girl pool.");
-    m_Pool.push_back(std::move(girl));
+    if(m_IsIterating) {
+        m_WaitingToBeAdded.emplace_back(std::move(girl));
+    } else {
+        m_Pool.emplace_back(std::move(girl));
+    }
 }
 
 void cGirlPool::LoadXML(const tinyxml2::XMLElement& source) {
@@ -70,25 +74,37 @@ void cGirlPool::SaveXML(tinyxml2::XMLElement& target) const {
 }
 
 std::shared_ptr<sGirl> cGirlPool::TakeGirl(const sGirl* girl) {
-    assert(m_DebugIsIterating == 0);
     auto iter = std::find_if(begin(m_Pool), end(m_Pool),
-            [&](auto& ptr){ return ptr.get() == girl; });
-    if(iter == m_Pool.end())
+                             [&](auto& ptr) { return ptr.get() == girl; });
+    if (iter == m_Pool.end())
         return nullptr;
 
     auto result = *iter;
-    m_Pool.erase(iter);
+
+    // if we're not in an iteration, do a direct delete, otherwise
+    // we need to set to zero and will clean up after the iteration
+    // is completed
+    if(m_IsIterating == 0) {
+        m_Pool.erase(iter);
+    } else {
+        *iter = nullptr;
+    }
     return std::move(result);
 }
 
 std::shared_ptr<sGirl> cGirlPool::TakeGirl(int index) {
-    assert(m_DebugIsIterating == 0);
     if(index < 0 || index >= num())
         return nullptr;
     auto iter = m_Pool.begin() + index;
 
     auto result = *iter;
-    m_Pool.erase(iter);
+
+    if(m_IsIterating == 0) {
+        m_Pool.erase(iter);
+    } else {
+        *iter = nullptr;
+    }
+
     return std::move(result);
 }
 
@@ -101,19 +117,25 @@ sGirl* cGirlPool::get_random_girl(const std::function<bool(const sGirl&)>& predi
     if(!predicate) {
         if(m_Pool.empty()) return nullptr;
         int index = g_Dice % m_Pool.size();
-        return m_Pool[index].get();
+        if(sGirl* candidate = m_Pool[index].get()) {
+            return candidate;
+        }
+
+        // OK, we seem to be in iteration mode and have picked a deleted girl.
+        // Have to do this the hard way
+        return get_random_girl([](const sGirl& g){ return true; });
     }
 
     RandomSelector<sGirl> selector;
     for(auto& girl : m_Pool)
     {
+        if(!girl) continue;
         if (predicate(*girl))    selector.process(girl.get());
     }
     return selector.selection();
 }
 
 const sGirl* cGirlPool::get_random_girl(const std::function<bool(const sGirl&)>& predicate) const {
-    ITERATING_FUNCTION;
     return const_cast<cGirlPool*>(this)->get_random_girl(predicate);
 }
 
@@ -121,13 +143,13 @@ sGirl* cGirlPool::get_first_girl(const std::function<bool(const sGirl&)>& predic
     ITERATING_FUNCTION;
     for(auto& girl : m_Pool)
     {
+        if(!girl) continue;
         if (predicate(*girl))    return girl.get();
     }
     return nullptr;
 }
 
 const sGirl* cGirlPool::get_first_girl(const std::function<bool(const sGirl&)>& predicate) const {
-    ITERATING_FUNCTION;
     return const_cast<cGirlPool*>(this)->get_first_girl(predicate);
 }
 
@@ -135,6 +157,7 @@ const sGirl* cGirlPool::get_first_girl(const std::function<bool(const sGirl&)>& 
 std::size_t cGirlPool::count(const std::function<bool(const sGirl&)>& predicate) const {
     ITERATING_FUNCTION;
     return std::count_if(begin(m_Pool), end(m_Pool), [&](const auto& ptr) {
+        if(!ptr) return false;
         return predicate(*ptr);
     });
 }
@@ -142,11 +165,13 @@ std::size_t cGirlPool::count(const std::function<bool(const sGirl&)>& predicate)
 bool cGirlPool::has_any(const std::function<bool(const sGirl&)>& predicate) const {
     ITERATING_FUNCTION;
     return std::any_of(begin(m_Pool), end(m_Pool), [&](const auto& ptr) {
+        if(!ptr) return false;
         return predicate(*ptr);
     });
 }
 
 int cGirlPool::get_index(const sGirl* girl) const {
+    // this iterates, but has no predicate so it is save
     auto found = std::find_if(begin(m_Pool), end(m_Pool), [&](auto& ptr){ return ptr.get() == girl; });
     if(found != end(m_Pool)) {
         return std::distance(begin(m_Pool), found);
@@ -156,14 +181,20 @@ int cGirlPool::get_index(const sGirl* girl) const {
 
 void cGirlPool::visit(const std::function<void(const sGirl&)>& handler) const {
     ITERATING_FUNCTION;
-    for(auto& g : m_Pool)
-        handler(*g);
+    for(auto& g : m_Pool) {
+        if (g) {
+            handler(*g);
+        }
+    }
 }
 
 void cGirlPool::apply(const std::function<void(sGirl&)>& handler) {
     ITERATING_FUNCTION;
-    for(auto& g : m_Pool)
-        handler(*g);
+    for(auto& g : m_Pool) {
+        if (g) {
+            handler(*g);
+        }
+    }
 }
 
 std::shared_ptr<sGirl> cGirlPool::get_ref_counted(const sGirl* source) {
@@ -173,4 +204,21 @@ std::shared_ptr<sGirl> cGirlPool::get_ref_counted(const sGirl* source) {
         return nullptr;
 
     return *iter;
+}
+
+void cGirlPool::finalize_after_iteration() {
+    // get rid of all deleted girls
+    erase_if(m_Pool, [](const auto& gptr){ return gptr == nullptr; });
+
+    // add the new girls
+    std::move(begin(m_WaitingToBeAdded), end(m_WaitingToBeAdded), std::back_inserter(m_Pool));
+    m_WaitingToBeAdded.clear();
+}
+
+cGirlPool::sIterationGuard::~sIterationGuard() {
+    --(gp->m_IsIterating);
+    // if no one is iterating anymore, clean up
+    if(gp->m_IsIterating == 0) {
+        const_cast<cGirlPool*>(gp)->finalize_after_iteration();
+    }
 }

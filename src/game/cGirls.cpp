@@ -2055,7 +2055,7 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
         else if (g_Game->player().disposition() < 33) runawaymsg << "You could send a gang to retrieve her. Or you could leave her. No hurry.";
         else runawaymsg << "You should send a gang right away to rescue the poor girl.";
 
-        runawaymsg << "(When you find her, she may be... changed.)";
+        runawaymsg << " (When you find her, she may be... changed.)";
 
         //If she was a virgin, she won't be now...
         girl->lose_trait("Virgin");

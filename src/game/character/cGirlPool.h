@@ -29,7 +29,7 @@ namespace tinyxml2 {
 }
 
 /*!
- * Manages a container of girls using shared_ptr
+ * Manages a container of girls using shared_ptr.
  */
 class cGirlPool {
 public:
@@ -77,13 +77,20 @@ public:
     void SaveXML(tinyxml2::XMLElement& target) const;
 private:
     std::vector<std::shared_ptr<sGirl>> m_Pool;
-    mutable int m_DebugIsIterating = 0;
-    struct DebugHelper {
+    /// these are the girls that will be added after all iterations are finalized.
+    std::vector<std::shared_ptr<sGirl>> m_WaitingToBeAdded;
+
+    /// This keeps track of how many nested iteration loops we're in.
+    mutable int m_IsIterating = 0;
+
+    struct sIterationGuard {
         const cGirlPool* gp;
-        explicit DebugHelper(const cGirlPool* g) :gp(g) { ++(gp->m_DebugIsIterating); }
-        ~DebugHelper() { --(gp->m_DebugIsIterating); }
+        explicit sIterationGuard(const cGirlPool* g) : gp(g) { ++(gp->m_IsIterating); }
+        ~sIterationGuard();
     };
-    friend class DebugHelper;
+    friend class sIterationGuard;
+
+    void finalize_after_iteration();
 };
 
 #endif //WM_CGIRLPOOL_H
