@@ -68,7 +68,7 @@ bool WorkFilmDirector(sGirl& girl, bool Day0Night1, cRng& rng)
     else if (jobperformance < 0)    ss << "She did a bad job today, she reduced the scene quality " << (int)jobperformance << "% with her poor performance. \n";
     else /*                   */    ss << "She did not really help the scene quality.\n";
 
-    wages += int(float(100.0 + (((girl.get_skill(SKILL_SERVICE) + girl.get_stat(STAT_CHARISMA) + girl.get_stat(STAT_INTELLIGENCE) + girl.get_stat(STAT_CONFIDENCE) + girl.get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls) * cfg.out_fact.matron_wages()));
+    wages += int(float(100.0 + (((girl.get_skill(SKILL_SERVICE) + girl.get_stat(STAT_CHARISMA) + girl.get_stat(STAT_INTELLIGENCE) + girl.get_stat(STAT_CONFIDENCE) + girl.get_skill(SKILL_MEDICINE) + 50) / 50)*numgirls)));
     girl.m_Tips = std::max(0, tips);
     girl.m_Pay = std::max(0, wages);
     brothel->m_DirectorQuality += (int)jobperformance;

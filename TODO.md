@@ -10,6 +10,8 @@
 * [ ] Replace image name based tags by an xml file
 * [x] Scan subfolders for girl packs
 * [ ] Improve image paths handling / image selection
+* [ ] re-implement cycle list stuff
+* [ ] Move game specific stuff out of sConfig
 
 ## Scripting
 * [ ] Extend lua scripting to cover everything the old scripts did
@@ -21,6 +23,7 @@
 
 ## UI
 * [ ] numeric column sorting
+* [ ] interface/resolution/fullscreen selection to settings screen
 
 ## Bugs
 * [x] girl->run_away is currently dangerous, if called in an apply loop
@@ -36,4 +39,4 @@
 * [ ] "ERROR: Selected girl is a runaway"
 * [ ] Clicking the item filter in the inventory screen sets focus to left inventory
 * [ ] async scripts and messages may get scrambled
-* [ ] Black bars in Gallery screen
+* [x] Black bars in Gallery screen

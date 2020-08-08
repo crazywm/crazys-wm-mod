@@ -37,9 +37,8 @@
 
 namespace settings{
     extern const char* PREG_COOL_DOWN;
+    extern const char* WORLD_ENCOUNTER_CHANCE;
 }
-
-extern cConfig cfg;
 
 void do_food_and_digs(IBuilding& brothel, sGirl& girl);
 void updateGirlTurnBrothelStats(sGirl& girl);
@@ -1787,7 +1786,7 @@ std::shared_ptr<sGirl> IBuilding::TryEncounter() {
     m_HasDoneEncounter = true;
 
     // most of the time, you're not going to find anyone unless you're cheating, of course.
-    if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Game->allow_cheats())
+    if (!g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_CHANCE)) && !g_Game->allow_cheats())
     {
         g_Game->push_message(meet_no_luck(), COLOR_BLUE);
         return nullptr;

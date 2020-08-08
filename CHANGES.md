@@ -1,9 +1,26 @@
 # Version 07.00.alpha2 (work in progress)
 ## Changes
 * Recursively scan character folder for girl files
+* Adjusted (and made configurable) the gang weapon upgrade cost to account for the fact they
+are now per gang.
+* New per-game settings. Some of these have been ported over from the config.xml
+  * `world.encounter_chance`    Chance to meet a girl when walking around
+  * `world.catacombs.unique_chance` Unique girl chance for catacombs
+  * `world.rape-chance.{brothel,street}` Chance that the customer tries to rape a whore 
+  * `gang.weapon_upgrade_cost`  Base cost for gang weapon upgrades
+  * `money.buy.slave` Multiplier for slave cost
+  * `money.cost.{room,contraception,healing_potion,net}` Price for a room, contraceptive, healing potion, or net
+
+
+# Minor improvements
+* Preserve selected item after adjusting a setting in the new game screen
+* Removed Gang Catacomb Orders from settings, as these are set per game in the Gang Management screen
 
 ## Fixes
-
+* Fixed font bug on gallery screen
+* Fixed Gallery back button
+* Fixed runaway crashes
+* Feeding buttons on dungeon screen
 
 
 # Version 07.00.alpha1

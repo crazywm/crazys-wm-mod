@@ -113,7 +113,7 @@ void MatronJob::MatronGains(sGirl& girl, bool Day0Night1,  int conf) {
     else  if (!girl.has_active_trait("Straight")) libido += numgirls / 20;
     int stat_sum = girl.get_skill(SKILL_SERVICE) + girl.get_stat(STAT_CHARISMA) + girl.get_stat(STAT_INTELLIGENCE) +
                    girl.get_stat(STAT_CONFIDENCE) + girl.get_skill(SKILL_MEDICINE);
-    int wages = int((100.f + (stat_sum / 50.f + 1) * numgirls) * cfg.out_fact.matron_wages());
+    int wages = int((100.f + (stat_sum / 50.f + 1) * numgirls));
     girl.m_Tips = 0;
     girl.m_Pay = std::max(0, wages);
 

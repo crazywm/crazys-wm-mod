@@ -46,6 +46,11 @@
 extern cRng g_Dice;
 extern cConfig cfg;
 
+namespace settings {
+    extern const char* WORLD_RAPE_STREETS;
+    extern const char* WORLD_RAPE_BROTHEL;
+}
+
 cJobManager::cJobManager() = default;
 cJobManager::~cJobManager() = default;
 
@@ -1312,7 +1317,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
 bool cJobManager::work_related_violence(sGirl& girl, bool Day0Night1, bool streets)
 {
     // the base chance of an attempted rape is higher on the streets
-    int rape_chance = (streets ? (int)cfg.prostitution.rape_streets() : (int)cfg.prostitution.rape_brothel());
+    float rape_chance = (float)g_Game->settings().get_percent(streets ? settings::WORLD_RAPE_STREETS : settings::WORLD_RAPE_BROTHEL);
 
     IBuilding * Brothl = girl.m_Building;
 
@@ -1322,7 +1327,7 @@ bool cJobManager::work_related_violence(sGirl& girl, bool Day0Night1, bool stree
     int gang_coverage = guard_coverage(&gangs_guarding);
 
     // night time doubles the chance of attempted rape and reduces the chance for a gang to catch it by 20%
-    if (Day0Night1) { rape_chance *= 2; gang_coverage = (int)((float)gang_coverage*0.8f); }
+    if (Day0Night1) { rape_chance *= 2.f; gang_coverage = (int)((float)gang_coverage*0.8f); }
 
     // if the player has a -ve disposition, this can scare the would-be rapist into behaving himself
     if (g_Dice.percent(g_Game->player().disposition() * -1)) rape_chance = 1;
@@ -2250,7 +2255,6 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
     *    dirt and training costs, for a start
     */
     brothel->m_Filthiness += girls.size();
-    brothel->m_Finance.girl_training(g_Game->tariff().girl_training() * girls.size());
     /*
     *    and then each girl gets to feel tired and horny
     *    as a result of training

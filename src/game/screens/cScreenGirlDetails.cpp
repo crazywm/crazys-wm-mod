@@ -36,7 +36,6 @@ static std::stringstream ss;
 
 static int ImageNum = -1;
 static int DetailLevel = 0;
-static bool Day0Night1 = SHIFT_DAY;
 
 cScreenGirlDetails::cScreenGirlDetails() : cGameWindow("girl_details_screen.xml")
 {
@@ -44,39 +43,39 @@ cScreenGirlDetails::cScreenGirlDetails() : cGameWindow("girl_details_screen.xml"
 
 void cScreenGirlDetails::set_ids()
 {
-    back_id            /**/ = get_id("BackButton", "Back");
-    girlname_id        /**/ = get_id("GirlName");
-    girldesc_id        /**/ = get_id("GirlDescription");
-    girlimage_id    /**/ = get_id("GirlImage");
-    more_id            /**/ = get_id("MoreButton");
-    antipreg_id        /**/ = get_id("UseAntiPregToggle");
-    prev_id            /**/ = get_id("PrevButton","Prev");
-    next_id            /**/ = get_id("NextButton","Next");
-    inventory_id    /**/ = get_id("InventoryButton");
-    senddungeon_id    /**/ = get_id("SendDungeonButton");
-    reldungeon_id    /**/ = get_id("ReleaseDungeonButton");
-    interact_id        /**/ = get_id("InteractButton");
-    interactc_id    /**/ = get_id("InteractCount");
-    takegold_id        /**/ = get_id("TakeGoldButton");
-    accomup_id        /**/ = get_id("AccomUpButton");//
-    accomdown_id    /**/ = get_id("AccomDownButton");//
-    accom_id        /**/ = get_id("AccomSlider");
-    accomval_id        /**/ = get_id("AccomValue");
-    houseperc_id    /**/ = get_id("HousePercSlider");
-    housepercval_id    /**/ = get_id("HousePercValue");
-    gallery_id        /**/ = get_id("GalleryButton");
-    jobtypehead_id    /**/ = get_id("JobTypeHeader");
-    jobtypelist_id    /**/ = get_id("JobTypeList");
-    jobhead_id        /**/ = get_id("JobHeader");
-    joblist_id        /**/ = get_id("JobList");
-    day_id            /**/ = get_id("DayButton");
-    night_id        /**/ = get_id("NightButton");
-    traithead_id    /**/ = get_id("TraitHeader");
-    traitlist_id    /**/ = get_id("TraitList");
-    traitdesc_id    /**/ = get_id("TraitDescription");
+    back_id           = get_id("BackButton", "Back");
+    girlname_id       = get_id("GirlName");
+    girldesc_id       = get_id("GirlDescription");
+    girlimage_id      = get_id("GirlImage");
+    more_id           = get_id("MoreButton");
+    antipreg_id       = get_id("UseAntiPregToggle");
+    prev_id           = get_id("PrevButton","Prev");
+    next_id           = get_id("NextButton","Next");
+    inventory_id      = get_id("InventoryButton");
+    senddungeon_id    = get_id("SendDungeonButton");
+    reldungeon_id     = get_id("ReleaseDungeonButton");
+    interact_id       = get_id("InteractButton");
+    interactc_id      = get_id("InteractCount");
+    takegold_id       = get_id("TakeGoldButton");
+    accomup_id        = get_id("AccomUpButton");//
+    accomdown_id      = get_id("AccomDownButton");//
+    accom_id          = get_id("AccomSlider");
+    accomval_id       = get_id("AccomValue");
+    houseperc_id      = get_id("HousePercSlider");
+    housepercval_id   = get_id("HousePercValue");
+    gallery_id        = get_id("GalleryButton");
+    jobtypehead_id    = get_id("JobTypeHeader");
+    jobtypelist_id    = get_id("JobTypeList");
+    jobhead_id        = get_id("JobHeader");
+    joblist_id        = get_id("JobList");
+    day_id            = get_id("DayButton");
+    night_id          = get_id("NightButton");
+    traithead_id      = get_id("TraitHeader");
+    traitlist_id      = get_id("TraitList");
+    traitdesc_id      = get_id("TraitDescription");
 
     SetButtonNavigation(back_id, "<back>");
-    SetButtonNavigation(gallery_id, "Gallery");
+    SetButtonNavigation(gallery_id, "Gallery", false);
     SetButtonHotKey(gallery_id, SDLK_SPACE);
     SetButtonCallback(day_id, [this]( ) { set_shift(SHIFT_DAY); });
     SetButtonCallback(night_id, [this]( ) { set_shift(SHIFT_NIGHT); });
@@ -148,7 +147,7 @@ void cScreenGirlDetails::init(bool back)
         }
     }
 
-    int job = m_SelectedGirl->get_job(Day0Night1);
+    int job = m_SelectedGirl->get_job(m_EditNightShift);
 
     EditTextItem(m_SelectedGirl->FullName(), girlname_id);
 
@@ -269,8 +268,8 @@ void cScreenGirlDetails::init(bool back)
     HideWidget(night_id, HideDNButtons);
     if (!HideDNButtons)
     {
-        DisableWidget(day_id, (Day0Night1 == SHIFT_DAY));
-        DisableWidget(night_id, (Day0Night1 == SHIFT_NIGHT));
+        DisableWidget(day_id, !m_EditNightShift);
+        DisableWidget(night_id, m_EditNightShift);
     }
 
     ClearListBox(traitlist_id);
@@ -318,21 +317,21 @@ void cScreenGirlDetails::set_house_percentage(int value)
 
 void cScreenGirlDetails::on_select_job(int selection, bool fulltime)
 {// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
-    int old_job = m_SelectedGirl->get_job(Day0Night1);
+    int old_job = m_SelectedGirl->get_job(m_EditNightShift);
     // handle special job requirements and assign - if HandleSpecialJobs returns true, the job assignment was modified or cancelled
-    if (g_Game->job_manager().HandleSpecialJobs(*m_SelectedGirl, JOBS(selection), old_job, Day0Night1, fulltime))
+    if (g_Game->job_manager().HandleSpecialJobs(*m_SelectedGirl, JOBS(selection), old_job, m_EditNightShift, fulltime))
     {
-        selection = m_SelectedGirl->get_job(Day0Night1);
+        selection = m_SelectedGirl->get_job(m_EditNightShift);
         SetSelectedItemInList(joblist_id, selection, false);
     }
     // refresh job worker counts for former job and current job
     if (old_job != selection)
     {
         std::stringstream text;
-        text << g_Game->job_manager().JobData[old_job].name << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)old_job, Day0Night1) << ")";
+        text << g_Game->job_manager().JobData[old_job].name << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)old_job, m_EditNightShift) << ")";
         SetSelectedItemText(joblist_id, old_job, text.str());
         text.str("");
-        text << g_Game->job_manager().JobData[selection].name << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)selection, Day0Night1) << ")";
+        text << g_Game->job_manager().JobData[selection].name << " (" << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)selection, m_EditNightShift) << ")";
     }
     RefreshJobList();
 }
@@ -395,7 +394,7 @@ void cScreenGirlDetails::do_interaction()
 
 void cScreenGirlDetails::set_shift(int shift)
 {
-    Day0Night1 = shift;
+    m_EditNightShift = shift;
     DisableWidget(day_id, shift == SHIFT_DAY);
     DisableWidget(night_id, shift == SHIFT_NIGHT);
     init(true);
@@ -416,7 +415,7 @@ void cScreenGirlDetails::RefreshJobList()
         btext << g_Game->job_manager().JobData[i].name;
         btext << " (";
         if(m_SelectedGirl->m_Building) {
-            btext << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)i, Day0Night1);
+            btext << m_SelectedGirl->m_Building->num_girls_on_job((JOBS)i, m_EditNightShift);
         } else {
             btext << '?';
         }
@@ -425,7 +424,7 @@ void cScreenGirlDetails::RefreshJobList()
     }
     if (m_SelectedGirl)
     {
-        int sel_job = m_SelectedGirl->get_job(Day0Night1);
+        int sel_job = m_SelectedGirl->get_job(m_EditNightShift);
         SetSelectedItemInList(joblist_id, sel_job, false);
     }
 }

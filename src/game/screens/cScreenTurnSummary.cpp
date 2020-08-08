@@ -89,6 +89,7 @@ void cScreenTurnSummary::set_ids()
         NextWeek();
         init(true);
     });
+    SetButtonHotKey(nextweek_id, SDLK_RETURN);
 
     SetListBoxHotKeys(category_id, SDLK_e, SDLK_q);
     SetListBoxSelectionCallback(category_id, [this](int selection) {
@@ -115,15 +116,6 @@ void cScreenTurnSummary::set_ids()
     AddKeyCallback(SDLK_o, [this]() {
         summarysortorder = summarysortorder == 0 ? 1 : 0;
         change_category(m_ActiveCategory);
-    });
-
-    AddKeyCallback(SDLK_RETURN, [this]() {
-        if (cfg.resolution.next_turn_enter())
-        {
-            if (!is_ctrl_held()) { AutoSaveGame(); }
-            NextWeek();
-            init(false);
-        }
     });
 }
 

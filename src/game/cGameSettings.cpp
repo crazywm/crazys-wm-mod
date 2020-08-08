@@ -38,12 +38,19 @@ namespace settings {
     const char* INITIAL_BOOSTED_GANGS = "initial.gang_boosted";
     const char* INITIAL_RANDOM_GANGS  = "initial.gang_random";
 
-    const char* GANG_MAX_RECRUIT_LIST  = "gang.max_recruit_list";
-    const char* GANG_MIN_START_MEMBERS = "gang.min_start_members";
-    const char* GANG_MAX_START_MEMBERS = "gang.max_start_members";
-    const char* GANG_REMOVE_CHANCE     = "gang.chance_remove";
-    const char* GANG_MIN_WEEKLY_NEW    = "gang.min_weekly_new";
-    const char* GANG_MAX_WEEKLY_NEW    = "gang.max_weekly_new";
+    const char* WORLD_ENCOUNTER_CHANCE   = "world.encounter_chance";
+    const char* WORLD_CATACOMB_UNIQUE    = "world.catacombs.unique_chance";
+    const char* WORLD_RAPE_STREETS       = "world.rape-chance.streets";
+    const char* WORLD_RAPE_BROTHEL       = "world.rape-chance.brothel";
+
+    const char* GANG_MAX_RECRUIT_LIST    = "gang.max_recruit_list";
+    const char* GANG_MIN_START_MEMBERS   = "gang.min_start_members";
+    const char* GANG_MAX_START_MEMBERS   = "gang.max_start_members";
+    const char* GANG_REMOVE_CHANCE       = "gang.chance_remove";
+    const char* GANG_MIN_WEEKLY_NEW      = "gang.min_weekly_new";
+    const char* GANG_MAX_WEEKLY_NEW      = "gang.max_weekly_new";
+    const char* GANG_WEAPON_UPGRADE_COST = "gang.weapon_upgrade_cost";
+    const char* GANG_WAGES_FACTOR        = "gang.wages_factor";
 
     const char* USER_HOUSE_PERCENT_FREE  = "user.house_percent.free";
     const char* USER_HOUSE_PERCENT_SLAVE = "user.house_percent.slave";
@@ -82,6 +89,13 @@ namespace settings {
 
     const char* MONEY_SELL_ITEM    = "money.sell.item";
     const char* MONEY_SELL_SLAVE   = "money.sell.slave";
+    const char* MONEY_BUY_SLAVE    = "money.buy.slave";
+    const char* MONEY_COST_ROOM    = "money.cost.room";
+    const char* MONEY_COST_CONTRA  = "money.cost.contraception";
+    const char* MONEY_COST_HP      = "money.cost.healing_potion";
+    const char* MONEY_COST_NET     = "money.cost.net";
+
+    const char* TORTURE_INJURY_CHANCE   = "interact.torture_injury_chance";
 }
 
 using namespace settings;
@@ -93,12 +107,23 @@ cGameSettings::cGameSettings()
     add_setting(INITIAL_BOOSTED_GANGS, "Start Gangs Boosted", "The number of boosted gangs available at game start", 2);
     add_setting(INITIAL_RANDOM_GANGS, "Start Gangs Random", "The number of random gangs available at game start", 2);
 
+    add_setting(WORLD_ENCOUNTER_CHANCE, "Encounter Chance", "Chance to meet a girl when walking in town/arena tryouts/casting",
+                sPercent(30));
+    add_setting(WORLD_CATACOMB_UNIQUE, "Catacombs Unique Chance", "Percentage of unique girls in catacomb encounters",
+                sPercent(50));
+    add_setting(WORLD_RAPE_STREETS, "Rape Streets", "Chance that a customer will try to rape a girl when working the streets",
+                sPercent(5));
+    add_setting(WORLD_RAPE_BROTHEL, "Rape Brothel", "Chance that a customer will try to rape a girl when whoring in the brothel",
+                sPercent(1));
+
     add_setting(GANG_MAX_RECRUIT_LIST, "Max Recruit List", "The maximum amount of gangs available for recruitment.", 6);
     add_setting(GANG_MIN_START_MEMBERS, "Init Member Min", "The minimum number of members in a newly created gang.", 1);
     add_setting(GANG_MAX_START_MEMBERS, "Init Member Max", "The maximum number of members in a newly created gang.", 10);
     add_setting(GANG_REMOVE_CHANCE, "Remove Unwanted", "The chance that an unrecruited gang will be removed.", sPercent(0.25f));
     add_setting(GANG_MIN_WEEKLY_NEW, "Add New Weekly Min", "The minimum number of new gangs created each week.", 0);
     add_setting(GANG_MAX_WEEKLY_NEW, "Add New Weekly Max", "The maximum number of new gangs created each week.", 2);
+    add_setting(GANG_WEAPON_UPGRADE_COST, "Weapon Upgrade Cost", "The base cost for a weapon upgrade.", 150);
+    add_setting(GANG_WAGES_FACTOR, "Wages Factor", "Multiplier for all gang wages (mission costs).", 1.f);
 
     // user adjustable settings
     add_setting(USER_HOUSE_PERCENT_FREE, "Free House %", "The percentage of earnings that are taken from free girls by default.", 60);
@@ -114,9 +139,6 @@ cGameSettings::cGameSettings()
     add_setting(USER_HOROSCOPE, "Horoscope", "Which horoscope to use", 1);
     add_setting(USER_MOVIES_AUTO, "Auto Make Movies", "Whether scenes should automatically be combined to movies", true);
     add_setting(USER_COMBAT_POPUP, "Combat Popup", "Whether combat details are shown in a popup", true);
-    // add_setting("user.torture_mod", "Whether free girls are allowed to keep their tips.", true);
-    // TODO Figure out what this one does
-    // add_setting("user.slave_pay", "Whether free girls are allowed to keep their tips.", true);
 
     add_setting(SLAVE_MARKET_MIN_WEEKLY_NEW, "Slaves Per Week Min", "Minimum amount of new girls at the slave market each week", 5);
     add_setting(SLAVE_MARKET_MAX_WEEKLY_NEW, "Slaves Per Week Max", "Maximum amount of new girls at the slave market each week", 12);
@@ -143,7 +165,15 @@ cGameSettings::cGameSettings()
     add_setting(PREG_GOOD_FACTOR, "Good Preg Factor", "??? FIGURE OUT WHAT THIS DOES ???", 2.f);
 
     add_setting(MONEY_SELL_ITEM, "Sell Item Factor", "Percentage of item's worth (buy price) you get when selling", sPercent(.5f));
-    add_setting(MONEY_SELL_SLAVE, "Sell Slave Factor", "Percentage of slave's worth (buy price) you get when selling", sPercent(.9f));
+    add_setting(MONEY_SELL_SLAVE, "Sell Slave Factor", "Percentage of slave's worth you get when selling", sPercent(.9f));
+    add_setting(MONEY_BUY_SLAVE, "Buy Slave Factor", "Factor of slave's worth used when buying", sPercent(.9f));
+    add_setting(MONEY_COST_ROOM, "Room Cost", "The cost for buying a new room.", 1000);
+    add_setting(MONEY_COST_CONTRA, "Contraception Cost", "The cost of a contraception potion.", 2);
+    add_setting(MONEY_COST_HP, "HP Potion Cost", "The cost of a healing potion (for gangs).", 10);
+    add_setting(MONEY_COST_NET, "Net Cost", "The cost of a net (for gangs).", 5);
+
+    add_setting(TORTURE_INJURY_CHANCE, "Torture Injury Chance", "Base chance for inflicting permanent damage on a girl during torture.",
+                sPercent(.03f));
 }
 
 void cGameSettings::add_setting(const char* tag, const char* name, const char* desc, settings_value_t default_value)

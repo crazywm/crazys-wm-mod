@@ -37,6 +37,7 @@ cScreenGameConfig::cScreenGameConfig(bool use_in_game_mode) :
 }
 
 void cScreenGameConfig::init(bool back) {
+    int last_selection = GetSelectedItemFromList(list_id);
     ClearListBox(list_id);
 
     m_SettingsList = m_Settings.list_all_settings();
@@ -104,6 +105,10 @@ void cScreenGameConfig::init(bool back) {
         }
 
         AddToListBox(list_id, i, {setting->name, setting->description, value});
+    }
+
+    if(last_selection != -1) {
+        SetSelectedItemInList(list_id, last_selection);
     }
 }
 

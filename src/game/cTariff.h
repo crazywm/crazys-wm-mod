@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,11 +32,6 @@ public:
     int nets_price(int n);
     int anti_preg_price(int n);
 
-    /*
- *    let's have matron wages go up as skill level increases.
- *    `J` this is no longer used
- */
-    int matron_wages(int level = 50, int numgirls = 1);
     int empty_room_cost(IBuilding& brothel);
 
     int advertising_costs(int budget);
@@ -48,5 +43,4 @@ public:
 
     int male_slave_sales();
     int creature_sales();
-    int girl_training();
 };

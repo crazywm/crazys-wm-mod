@@ -131,11 +131,6 @@ int cPlayer::disposition(int n)
 }
 int cPlayer::evil(int n)
 {
-    // `J` add check for if harsher torture is set
-    if (cfg.initial.torture_mod() < 0 && n > 0)
-    {
-        n += n;        // `J` double evil if increasing it BUT NOT IF LOWERING IT
-    }    
     return disposition(-1 * n);
 }
 

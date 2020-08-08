@@ -32,6 +32,10 @@
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
 
+namespace settings {
+    extern const char* WORLD_CATACOMB_UNIQUE;
+}
+
 extern cConfig cfg;
 
 // `J` Job Brothel - General
@@ -165,7 +169,7 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
     {
         numgirls--;
         std::shared_ptr<sGirl> ugirl = nullptr;
-        if (rng.percent(cfg.catacombs.unique_catacombs()))    // chance of getting unique girl
+        if (rng.percent( g_Game->settings().get_percent(settings::WORLD_CATACOMB_UNIQUE) ))    // chance of getting unique girl
         {
             ugirl = g_Game->GetRandomGirl(false, true);                // Unique monster girl type
         }

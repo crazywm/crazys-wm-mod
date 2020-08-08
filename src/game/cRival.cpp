@@ -37,6 +37,12 @@
 #include "utils/streaming_random_selection.hpp"
 
 
+namespace settings {
+    extern const char* WORLD_RAPE_STREETS;
+    extern const char* WORLD_RAPE_BROTHEL;
+}
+
+
 extern cRng g_Dice;
 extern cConfig cfg;
 
@@ -151,11 +157,12 @@ void cRivalManager::Update(int& NumPlayerBussiness)
         for (int i = 0; i < curr->m_NumGirls; i++)    // from girls
         {
             // If a rival has more girls than their brothels can handle, the rest work on the streets
-            double rapechance = (i > curr->m_NumBrothels * 20 ? cfg.prostitution.rape_brothel() : cfg.prostitution.rape_streets());
+            bool in_brothel = i > curr->m_NumBrothels * 20;
+            float rape_chance = (float)g_Game->settings().get_percent(in_brothel ? settings::WORLD_RAPE_BROTHEL : settings::WORLD_RAPE_STREETS);
             int Customers = g_Dice % 6;                // 0-5 cust per girl
             for (int i = 0; i < Customers;i++)
             {
-                if (g_Dice.percent(rapechance))
+                if (g_Dice.percent(rape_chance))
                 {
                     upkeep -= 50;                    // pay off the girl and the officials after killing the rapist
                 }

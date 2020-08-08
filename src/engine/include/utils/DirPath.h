@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,6 +85,8 @@ public:
  */
     operator const char *()    { return path.c_str(); }
     operator std::string()    { return path; }
+
+    bool is_directory() const;
 };
 
 inline std::ostream& operator<<(std::ostream& target, const DirPath& content) {

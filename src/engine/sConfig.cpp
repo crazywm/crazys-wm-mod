@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@
 #include "Revision.h"
 #include "SDL.h"
 #include "xml/util.h"
+#include "xml/getattr.h"
 // TODO(refactor) get rid of this dependence!
 #include "../game/Constants.h"
 
@@ -70,9 +71,6 @@ sConfigData::sConfigData(const char *a_filename)
         std::string tag = el.Value();        //    now, depending on the tag name...
         if (tag == "Folders")        { get_folders_data(&el);    continue; }
         if (tag == "Resolution")    { get_resolution_data(&el);    continue; }
-        if (tag == "Initial")        { get_initial_values(&el);    continue; }
-        if (tag == "Expenses")        { get_expense_factors(&el);    continue; }
-        if (tag == "Prostitution")    { get_pros_factors(&el);    continue; }
         if (tag == "Catacombs")        { get_catacombs_data(&el);    continue; }
         if (tag == "Fonts")            { get_font_data(&el);        continue; }
         if (tag == "Debug")            { get_debug_flags(&el);        continue; }
@@ -113,21 +111,6 @@ void sConfigData::get_att(XMLElement *el, const char *name, bool &bval)
     g_LogFile.error("engine", "config.xml: : Binary attribute '", name, "': unexpected value '", s, "'");
 }
 
-
-void sConfigData::get_att(XMLElement *el, const char *name, double *dpt)
-{
-    if (el->QueryAttribute(name, dpt) == tinyxml2::XML_SUCCESS) { return; }
-    g_LogFile.warning("engine", "config.xml: No '", name, "' attribute: defaulting to ", *dpt);
-}
-
-void sConfigData::get_att(XMLElement *el, const char *name, std::string &s)
-{
-    const char *pt;
-    pt = el->Attribute(name);
-    if (pt) { s = pt;    return; }
-    g_LogFile.warning("engine", "config.xml: No '", name, "' attribute: defaulting to ", s);
-}
-
 void sConfigData::get_att(XMLElement *el, const char *name, int *ipt)
 {
     int def_val = *ipt;
@@ -138,8 +121,6 @@ void sConfigData::get_att(XMLElement *el, const char *name, int *ipt)
 
 void sConfigData::get_folders_data(XMLElement *el)
 {
-    const char *pt;
-
     folders.backupsaves = false;
     folders.preferdefault = false;
     folders.characters        = (DirPath() << "Resources" << "Characters").c_str();
@@ -147,114 +128,41 @@ void sConfigData::get_folders_data(XMLElement *el)
     folders.items            = (DirPath() << "Resources" << "Items").c_str();
     folders.defaultimageloc    = (DirPath() << "Resources" << "DefaultImages").c_str();
 
-    std::string testch, testsa, testdi, testil;
-    if (pt = el->Attribute("Characters"))        get_att(el, "Characters", testch);
-    if (pt = el->Attribute("Saves"))            get_att(el, "Saves", testsa);
-    if (pt = el->Attribute("Items"))            get_att(el, "Items", testil);
-    if (pt = el->Attribute("BackupSaves"))        get_att(el, "BackupSaves", folders.backupsaves);
-    if (pt = el->Attribute("DefaultImages"))    get_att(el, "DefaultImages", testdi);
-    if (pt = el->Attribute("PreferDefault"))    get_att(el, "PreferDefault", folders.preferdefault);
+    std::string testch = GetDefaultedStringAttribute(*el, "Characters", "");
+    std::string testsa = GetDefaultedStringAttribute(*el, "Saves", "");
+    std::string testil = GetDefaultedStringAttribute(*el, "Items", "");
+    std::string testdi = GetDefaultedStringAttribute(*el, "DefaultImages", "");
+    if (el->Attribute("BackupSaves"))        get_att(el, "BackupSaves", folders.backupsaves);
+    if (el->Attribute("PreferDefault"))    get_att(el, "PreferDefault", folders.preferdefault);
 
-    if (!testch.empty())
-    {
-        DirPath abs_ch = DirPath(testch.c_str());
-        DirPath rel_ch = DirPath() << testch;
-        FileList abstest(abs_ch, "*.*girlsx");
-        FileList reltest(rel_ch, "*.*girlsx");
-        if (abstest.size() > 0)
-        {
-            folders.characters = abs_ch.c_str();
-            g_LogFile.info("engine", "Success: config.xml: Loading Characters from absolute location: ", folders.characters);
-        }
-        else if (reltest.size() > 0)
-        {
-            folders.characters = rel_ch.c_str();
-            g_LogFile.info("engine", "Success: config.xml: Loading Characters from relative location: ", folders.characters);
-        }
-        else
-        {
-            g_LogFile.warning("engine", "config.xml: Characters folder '", testch, "' does not exist or has no girls in it.\n\tDefaulting to ./Resources/Characters");
-        }
-    }
+    set_directory(folders.characters, testch, "Character");
+    set_directory(folders.saves, testsa, "Saves");
+    set_directory(folders.items, testil, "Items");
+    set_directory(folders.defaultimageloc, testdi, "Default Images");
 
-    if (!testsa.empty())
-    {
-        DirPath abs_sa = DirPath(testsa.c_str());
-        DirPath rel_sa = DirPath() << testsa;
-        FILE *fp;
-        DirPath testloc = DirPath(abs_sa) << ".Whore Master Save Games folder";
-        if ((fp = fopen(testloc, "w")) != nullptr) fclose(fp);
-        DirPath testlocrel = DirPath(rel_sa) << ".Whore Master Save Games folder";
-        if ((fp = fopen(testlocrel, "w")) != nullptr) fclose(fp);
-        FileList abstest(abs_sa, "*.*");
-        FileList reltest(rel_sa, "*.*");
+    // check if we can write to the save folder
+    DirPath savegame_check = DirPath(folders.saves.c_str()) << ".Whore Master Save Games folder";
+    FILE* fp = fopen(savegame_check.c_str(), "w");
+    if (fp != nullptr) {
+        fclose(fp);
+    } else {
+        g_LogFile.error("settings", "Cannot write to Saves directory");
+        std::stringstream msg;
+        msg << "Could not write to the save game directory '" << folders.saves << "'";
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Invalid Save Game Location",
+                                     msg.str().c_str(),
+                                     nullptr);
 
-        if (abstest.size() > 0)
-        {
-            folders.saves = abs_sa.c_str();
-            g_LogFile.info("engine", "Success: config.xml: Loading Saves from absolute location: ", folders.saves);
-        }
-        else if (reltest.size() > 0)
-        {
-            folders.saves = rel_sa.c_str();
-            g_LogFile.info("engine", "Success: config.xml: Loading Saves from relative location: ", folders.saves);
-        }
-        else
-        {
-            g_LogFile.warning("engine", "config.xml: Save game folder '", testsa, "' does not exist.\n\tDefaulting to ./Saves");
-        }
-    }
-    if (!testil.empty())
-    {
-        DirPath abs_il = DirPath(testil.c_str());
-        DirPath rel_il = DirPath() << testil;
-        FileList abstest(abs_il, "*.itemsx");
-        FileList reltest(rel_il, "*.itemsx");
-        if (abstest.size() > 0)
-        {
-            folders.items = abs_il.c_str();
-            g_LogFile.info("engine", "Success: config.xml: Loading Items from absolute location: ", folders.items);
-        }
-        else if (reltest.size() > 0)
-        {
-            folders.items = rel_il.c_str();
-            g_LogFile.info("engine", "Success: config.xml: Loading Items from relative location: ", folders.items);
-        }
-        else
-        {
-            g_LogFile.warning("engine", "config.xml: Items folder '", testil, "' does not exist or has no Items in it.\n\tDefaulting to ./Resources/Items");
-        }
-    }
-    if (!testdi.empty())
-    {
-        DirPath abs_di = DirPath(testdi.c_str());
-        DirPath rel_di = DirPath() << testdi;
-        FileList abstest(abs_di, "*.*g"); abstest.add("*.ani"); abstest.add("*.gif");
-        FileList reltest(rel_di, "*.*g"); reltest.add("*.ani"); reltest.add("*.gif");
-
-        if (abstest.size() > 0)
-        {
-            folders.defaultimageloc = abs_di.c_str();
-            g_LogFile.info("engine", "Success: config.xml: Loading Default Images from absolute location: ", folders.defaultimageloc);
-        }
-        else if (reltest.size() > 0)
-        {
-            folders.defaultimageloc = rel_di.c_str();
-            g_LogFile.info("engine", "Success: config.xml: Loading Default Images from relative location: ", folders.defaultimageloc);
-        }
-        else
-        {
-            g_LogFile.warning("engine", "Default Images folder '", testdi, "' does not exist or has no images in it.");
-        }
     }
 }
 
 void sConfigData::get_resolution_data(XMLElement *el)
 {
     resolution.configXML = false;
-    const char *pt;
     std::string testa;
-    if (pt = el->Attribute("Resolution"))        get_att(el, "Resolution", testa);
+    if (el->Attribute("Resolution")) {
+        testa = GetStringAttribute(*el, "Resolution");
+    }
     if (!testa.empty())
     {
         DirPath location = DirPath() << "Resources" << "Interface" << testa;
@@ -273,69 +181,23 @@ void sConfigData::get_resolution_data(XMLElement *el)
     {
         g_LogFile.warning("engine", "config.xml: No Resolution specified, using defaults.");
     }
-    if (pt = el->Attribute("Width"))            { get_att(el, "Width", &resolution.width);        resolution.configXML = true; }
-    if (pt = el->Attribute("Height"))            { get_att(el, "Height", &resolution.height);    resolution.configXML = true; }
-    if (pt = el->Attribute("FullScreen"))        { get_att(el, "FullScreen", resolution.fullscreen); }
-    if (pt = el->Attribute("ListScrollAmount"))    { get_att(el, "ListScrollAmount", &resolution.list_scroll); }
-    if (pt = el->Attribute("TextScrollAmount"))    { get_att(el, "TextScrollAmount", &resolution.text_scroll); }
-    if (pt = el->Attribute("NextTurnEnter"))    { get_att(el, "NextTurnEnter", resolution.next_turn_enter); }
-
-}
-
-void sConfigData::get_initial_values(XMLElement *el)
-{
-    const char *pt;
-    /// TODO redo loading of superceded settings
-    // if (pt = el->Attribute("Gold"))                    get_att(el, "Gold", &initial.gold);
-    if (pt = el->Attribute("GirlMeet"))                get_att(el, "GirlMeet", &initial.girl_meet);
-    if (pt = el->Attribute("TortureTraitWeekMod"))    get_att(el, "TortureTraitWeekMod", &initial.torture_mod);
-}
-
-void sConfigData::get_expense_factors(XMLElement *el)
-{
-    const char *pt;
-    if (pt = el->Attribute("Training"))                get_att(el, "Training", &out_fact.training);
-    if (pt = el->Attribute("MovieCost"))            get_att(el, "MovieCost", &out_fact.movie_cost);
-    if (pt = el->Attribute("ActressWages"))            get_att(el, "ActressWages", &out_fact.actress_wages);        // `J` ?not used?
-    if (pt = el->Attribute("GoonWages"))            get_att(el, "GoonWages", &out_fact.goon_wages);
-    if (pt = el->Attribute("MatronWages"))            get_att(el, "MatronWages", &out_fact.matron_wages);
-    if (pt = el->Attribute("StaffWages"))            get_att(el, "StaffWages", &out_fact.staff_wages);            // `J` ?not used?
-    if (pt = el->Attribute("GirlSupport"))            get_att(el, "GirlSupport", &out_fact.girl_support);            // `J` ?not used?
-    if (pt = el->Attribute("Consumables"))            get_att(el, "Consumables", &out_fact.consumables);
-    if (pt = el->Attribute("Items"))                get_att(el, "Items", &out_fact.item_cost);
-    if (pt = el->Attribute("SlavesBought"))            get_att(el, "SlavesBought", &out_fact.slave_cost);
-    if (pt = el->Attribute("BuyBrothel"))            get_att(el, "BuyBrothel", &out_fact.brothel_cost);
-    if (pt = el->Attribute("BrothelSupport"))        get_att(el, "BrothelSupport", &out_fact.brothel_support);
-    if (pt = el->Attribute("Bribes"))                get_att(el, "Bribes", &out_fact.bribes);                    // `J` ?not used?
-    if (pt = el->Attribute("Fines"))                get_att(el, "Fines", &out_fact.fines);                        // `J` ?not used?
-    if (pt = el->Attribute("Advertising"))            get_att(el, "Advertising", &out_fact.advertising);
-}
-
-void sConfigData::get_pros_factors(XMLElement *el)
-{
-    const char *pt;
-    if (pt = el->Attribute("RapeStreet"))            get_att(el, "RapeStreet", &prostitution.rape_streets);
-    if (pt = el->Attribute("RapeBrothel"))            get_att(el, "RapeBrothel", &prostitution.rape_brothel);
+    if (el->Attribute("Width"))            { get_att(el, "Width", &resolution.width);        resolution.configXML = true; }
+    if (el->Attribute("Height"))            { get_att(el, "Height", &resolution.height);    resolution.configXML = true; }
+    if (el->Attribute("FullScreen"))        { get_att(el, "FullScreen", resolution.fullscreen); }
+    el->QueryIntAttribute("ListScrollAmount", &resolution.list_scroll);
+    el->QueryIntAttribute("TextScrollAmount", &resolution.text_scroll);
 }
 
 void sConfigData::get_catacombs_data(XMLElement *el)
 {
-    const char *pt;
-    if (pt = el->Attribute("UniqueCatacombs"))        get_att(el, "UniqueCatacombs", &catacombs.unique_catacombs);
     // load them
-    if (pt = el->Attribute("GirlGetsGirls"))        get_att(el, "GirlGetsGirls", &catacombs.girl_gets_girls);
-    if (pt = el->Attribute("GirlGetsItems"))        get_att(el, "GirlGetsItems", &catacombs.girl_gets_items);
-    if (pt = el->Attribute("GirlGetsBeast"))        get_att(el, "GirlGetsBeast", &catacombs.girl_gets_beast);
-    if (pt = el->Attribute("GangGetsGirls"))        get_att(el, "GangGetsGirls", &catacombs.gang_gets_girls);
-    if (pt = el->Attribute("GangGetsItems"))        get_att(el, "GangGetsItems", &catacombs.gang_gets_items);
-    if (pt = el->Attribute("GangGetsBeast"))        get_att(el, "GangGetsBeast", &catacombs.gang_gets_beast);
+    el->QueryIntAttribute("GirlGetsGirls", &catacombs.girl_gets_girls);
+    el->QueryIntAttribute("GirlGetsItems", &catacombs.girl_gets_items);
+    el->QueryIntAttribute("GirlGetsBeast", &catacombs.girl_gets_beast);
     // make them positive
     if (catacombs.girl_gets_girls < 0) catacombs.girl_gets_girls = -catacombs.girl_gets_girls;
     if (catacombs.girl_gets_items < 0) catacombs.girl_gets_items = -catacombs.girl_gets_items;
     if (catacombs.girl_gets_beast < 0) catacombs.girl_gets_beast = -catacombs.girl_gets_beast;
-    if (catacombs.gang_gets_girls < 0) catacombs.gang_gets_girls = -catacombs.gang_gets_girls;
-    if (catacombs.gang_gets_items < 0) catacombs.gang_gets_items = -catacombs.gang_gets_items;
-    if (catacombs.gang_gets_beast < 0) catacombs.gang_gets_beast = -catacombs.gang_gets_beast;
     // make them percents
     double checkggirl = catacombs.girl_gets_girls + catacombs.girl_gets_items + catacombs.girl_gets_beast;
     if (checkggirl == 0) catacombs.girl_gets_girls = catacombs.girl_gets_items = catacombs.girl_gets_beast = (100 / 3);
@@ -345,23 +207,14 @@ void sConfigData::get_catacombs_data(XMLElement *el)
         catacombs.girl_gets_items = int((100.0 / checkggirl) * (double)catacombs.girl_gets_items);
         catacombs.girl_gets_beast = int(100.0 - (double)catacombs.girl_gets_girls - (double)catacombs.girl_gets_items);
     }
-    double checkggang = catacombs.gang_gets_girls + catacombs.gang_gets_items + catacombs.gang_gets_beast;
-    if (checkggang == 0) catacombs.gang_gets_girls = catacombs.gang_gets_items = catacombs.gang_gets_beast = (100 / 3);
-    else if (checkggang != 100)
-    {
-        catacombs.gang_gets_girls = int((100.0 / checkggang) * (double)catacombs.gang_gets_girls);
-        catacombs.gang_gets_items = int((100.0 / checkggang) * (double)catacombs.gang_gets_items);
-        catacombs.gang_gets_beast = int(100.0 - (double)catacombs.gang_gets_girls - (double)catacombs.gang_gets_items);
-    }
 }
 
 void sConfigData::get_font_data(XMLElement *el)
 {
-    const char *pt;
-    if (pt = el->Attribute("Normal"))            get_att(el, "Normal", fonts.normal);
-    if (pt = el->Attribute("Fixed"))            get_att(el, "Fixed", fonts.fixed);
-    if (pt = el->Attribute("Antialias"))        get_att(el, "Antialias", fonts.antialias);
-    if (pt = el->Attribute("ShowPercent"))        get_att(el, "ShowPercent", fonts.showpercent);
+    fonts.normal = GetDefaultedStringAttribute(*el, "Normal", fonts.normal.c_str());
+    fonts.fixed = GetDefaultedStringAttribute(*el, "Fixed", fonts.fixed.c_str());
+    if (el->Attribute("Antialias"))        get_att(el, "Antialias", fonts.antialias);
+    if (el->Attribute("ShowPercent"))        get_att(el, "ShowPercent", fonts.showpercent);
 }
 
 void sConfigData::ReadItemData()
@@ -369,7 +222,7 @@ void sConfigData::ReadItemData()
     // check interface for colors
     DirPath dpi = DirPath() << "Resources" << "Interface" << resolution.resolution << "InterfaceColors.xml";
     tinyxml2::XMLDocument doci;
-    for (int i = 0; i<NUM_ITEM_RARITY; i++)
+    for (int i = 0; i < NUM_ITEM_RARITY; i++)
     {
         items.rarity_color[i] = new SDL_Color();
     }
@@ -437,32 +290,10 @@ void sConfigData::set_defaults()
     resolution.configXML = false;            // `J` added - Will be changed to interfaces
     resolution.list_scroll = 3;                // `Dagoth` added
     resolution.text_scroll = 3;                // `Dagoth` added
-    resolution.next_turn_enter = false;        // `J` added - for `mjsmagalhaes`
 
-    initial.girl_meet = 30;
-    initial.torture_mod = 1;                // `J` added
-
-    out_fact.training = 0.0;
-    out_fact.movie_cost = 1.0;
-    out_fact.goon_wages = 1.0;
-    out_fact.matron_wages = 1.0;
-    out_fact.consumables = 1.0;
-    out_fact.item_cost = 1.0;
-    out_fact.slave_cost = 1.0;
-    out_fact.brothel_cost = 1.0;
-    out_fact.brothel_support = 1.0;
-    out_fact.advertising = 1.0;
-
-    prostitution.rape_brothel = 1;
-    prostitution.rape_streets = 5;
-
-    catacombs.unique_catacombs = 50;
     catacombs.girl_gets_girls = 34;
     catacombs.girl_gets_items = 33;
     catacombs.girl_gets_beast = 33;
-    catacombs.gang_gets_girls = 34;
-    catacombs.gang_gets_items = 33;
-    catacombs.gang_gets_beast = 33;
 
     ReadItemData();
 
@@ -479,4 +310,26 @@ void sConfigData::set_defaults()
     debug.log_all = false;
     debug.log_extra_details = false;
     debug.log_show_numbers = false;
+}
+
+void sConfigData::set_directory(std::string& target, const std::string& setting, const char* name) {
+    if (!setting.empty())
+    {
+        DirPath abs_ch = DirPath(setting.c_str());
+        DirPath rel_ch = DirPath() << setting;
+        if (abs_ch.is_directory())
+        {
+            target = abs_ch.c_str();
+            g_LogFile.info("engine", "Success: config.xml: Setting ", name, " folder to absolute location: ", target);
+        }
+        else if (rel_ch.is_directory())
+        {
+            target = rel_ch.c_str();
+            g_LogFile.info("engine", "Success: config.xml: Setting ", name, " folder to relative location: ", target);
+        }
+        else
+        {
+            g_LogFile.warning("engine", "config.xml: ", name, " folder '", setting, "' does not exist.\n\tDefaulting to ", target);
+        }
+    }
 }

@@ -31,7 +31,10 @@
 
 extern bool                        g_WalkAround;
 extern bool                        g_AllTogle;
-extern cConfig                  cfg;
+
+namespace settings {
+    extern const char* WORLD_ENCOUNTER_CHANCE;
+}
 
 
 static int ImageNum = -1;
@@ -197,7 +200,7 @@ void cScreenTown::do_walk()
         return;
     }
     // most of the time, you're not going to find anyone unless you're cheating, of course.
-    if (!g_Dice.percent(cfg.initial.girl_meet()) && !g_Game->allow_cheats())
+    if (!g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_ENCOUNTER_CHANCE)) && !g_Game->allow_cheats())
     {
         push_message(walk_no_luck(), COLOR_BLUE);
         return;

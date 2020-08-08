@@ -26,6 +26,13 @@
 
 namespace settings {
     extern const char* MONEY_SELL_SLAVE;
+    extern const char* MONEY_BUY_SLAVE;
+    extern const char* GANG_WEAPON_UPGRADE_COST;
+    extern const char* GANG_WAGES_FACTOR;
+    extern const char* MONEY_COST_ROOM;
+    extern const char* MONEY_COST_CONTRA;
+    extern const char* MONEY_COST_HP;
+    extern const char* MONEY_COST_NET;
 }
 
 
@@ -47,7 +54,7 @@ double cTariff::slave_base_price(sGirl& girl) const
 
 int cTariff::slave_buy_price(sGirl& girl) const
 {
-    return int(slave_base_price(girl) * cfg.out_fact.slave_cost());
+    return int(slave_base_price(girl) * g_Game->settings().get_percent(settings::MONEY_BUY_SLAVE));
 }
 
 int cTariff::slave_sell_price(sGirl& girl) const
@@ -68,43 +75,43 @@ int cTariff::empty_room_cost(IBuilding& brothel)
     */
     cost = brothel.m_NumRooms - brothel.num_girls();
     cost *= 2;
-    cost *= cfg.out_fact.brothel_support();
     return int(cost);
 }
 
 int cTariff::goon_weapon_upgrade(int level)
 {
 
-    return int((level + 1) * 1200 * cfg.out_fact.item_cost());
+    return int((level + 1) * g_Game->settings().get_integer(settings::GANG_WEAPON_UPGRADE_COST));
 }
 
 int cTariff::goon_mission_cost(int mission)
 {
 
-    double cost = 0.0, factor = cfg.out_fact.goon_wages();
+    double cost = 0.0;
     switch (mission)
     {
-    case MISS_SABOTAGE:        cost = factor * 150;    break;
-    case MISS_SPYGIRLS:        cost = factor * 40;        break;
-    case MISS_CAPTUREGIRL:    cost = factor * 125;    break;
-    case MISS_EXTORTION:    cost = factor * 116;    break;
-    case MISS_PETYTHEFT:    cost = factor * 110;    break;
-    case MISS_GRANDTHEFT:    cost = factor * 250;    break;
-    case MISS_KIDNAPP:        cost = factor * 150;    break;
-    case MISS_CATACOMBS:    cost = factor * 300;    break;
-    case MISS_TRAINING:        cost = factor * 90;        break;
-    case MISS_RECRUIT:        cost = factor * 80;        break;
-    case MISS_SERVICE:        cost = factor * 100;    break;
+    case MISS_SABOTAGE:        cost = 150;    break;
+    case MISS_SPYGIRLS:        cost = 40;        break;
+    case MISS_CAPTUREGIRL:    cost = 125;    break;
+    case MISS_EXTORTION:    cost = 116;    break;
+    case MISS_PETYTHEFT:    cost = 110;    break;
+    case MISS_GRANDTHEFT:    cost = 250;    break;
+    case MISS_KIDNAPP:        cost = 150;    break;
+    case MISS_CATACOMBS:    cost = 300;    break;
+    case MISS_TRAINING:        cost = 90;        break;
+    case MISS_RECRUIT:        cost = 80;        break;
+    case MISS_SERVICE:        cost = 100;    break;
         //    case MISS_SAIGON:        just kidding
     case MISS_GUARDING:
     default:
-        cost = factor * 60;
+        cost = 60;
         if (mission == MISS_GUARDING) break;    // `J` rearranged to make sure it works as intended
         g_LogFile.log(ELogLevel::ERROR, "cTariff: unrecognised goon mission ", mission, " changed to guard mission");
         break;
     }
 
-    return int(cost);
+    double factor = g_Game->settings().get_float(settings::GANG_WAGES_FACTOR);
+    return int(cost * factor);
 }
 
 
@@ -112,37 +119,27 @@ int cTariff::goon_mission_cost(int mission)
 
 int cTariff::healing_price(int n)
 {
-    return int(n * 10 * cfg.out_fact.consumables());
+    return int(n * g_Game->settings().get_integer(settings::MONEY_COST_HP));
 }
 
 int cTariff::nets_price(int n)
 {
-    return int(n * 5 * cfg.out_fact.consumables());
+    return int(n * g_Game->settings().get_integer(settings::MONEY_COST_NET));
 }
 
 int cTariff::anti_preg_price(int n)
 {
-    return int(n * 2 * cfg.out_fact.consumables());
-}
-
-/*
-*    let's have matron wages go up as skill level increases.
-*    `J` this is no longer used
-*/
-int cTariff::matron_wages(int level, int numgirls)
-{
-    int base = (level * 2) + numgirls * 2;
-    return int(base * cfg.out_fact.matron_wages());
+    return int(n * 2 * g_Game->settings().get_integer(settings::MONEY_COST_CONTRA));
 }
 
 int cTariff::advertising_costs(int budget)
 {
-    return int(budget * cfg.out_fact.advertising());
+    return int(budget);
 }
 
 int cTariff::add_room_cost(int n)
 {
-    return int(n * 1000 * cfg.out_fact.brothel_cost());
+    return int(n * 1000 * g_Game->settings().get_integer(settings::MONEY_COST_ROOM));
 }
 
 
@@ -164,9 +161,4 @@ int cTariff::male_slave_sales()
 int cTariff::creature_sales()
 {
     return g_Dice.random(2000) + 100;
-}
-
-int cTariff::girl_training()
-{
-    return int(cfg.out_fact.training() * 5);
 }

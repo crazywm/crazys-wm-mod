@@ -18,10 +18,10 @@
 				before trying to find alternate images from the image tree.
 	-->
     <Folders
-        Characters="..\Characters"
-        Saves="..\Saves"
-        DefaultImages="..\DefaultImages"
-        Items="..\Items"
+        Characters="Resources/Characters"
+        Saves="Saves"
+        DefaultImages="Resources/DefaultImages"
+        Items="Resources/Items"
         BackupSaves="false"
         PreferDefault="false" />
     <!--
@@ -83,165 +83,6 @@
         TextScrollAmount="3" />
 -->
     <!--
-	Gold is how much gold you start the game with.
-	GirlMeet is the %chance you'll meet a girl when walking around town.
-	GirlsHousePerc and SlaveHousePerc is the default House Percentage for free girls and slave girls.
-	GirlsKeepTips and GirlsKeepTips is whether they keep tips separate from house percent.
-	SlavePayOutOfPocket is wether or not slave girls get paid by the player directly for certain jobs
-		ie. Cleaning, Advertising, Farming jobs, Film jobs, etc.
-	AutoUseItems is whether or not the game will try to automatically use
-		the player's items intelligently on girls each week.
-		This feature needs more testing.
-	AutoCombatEquip determines whether girls will automatically equip their best weapon and
-		armor for combat jobs and also automatically unequip weapon and armor for regular
-		jobs where such gear would be considered inappropriate (i.e. whores-with-swords).
-		Set to "false" to disable this feature.
-
-	TortureTraitWeekMod affects multiplying the duration that they will
-		keep a temporary trait that they get from being tortured.
-		It is multiplied by the number of weeks in the dungeon.
-`J` added		If TortureTraitWeekMod is set to -1 then torture is harsher.
-		This doubles the chance of injuring the girls and doubles evil gain.
-		Damage is increased by half. It also makes breaking the girls wills permanent.
-	-->
-    <Initial
-        Gold="4000"
-        GirlMeet="30"
-        GirlsHousePerc="60"
-        GirlsKeepTips="true"
-        SlaveHousePerc="100"
-        SlavePayOutOfPocket="true"
-        SlaveKeepTips="false"
-        GirlsAccom="5"
-        SlaveAccom="1"
-        AutoUseItems="false"
-        AutoCombatEquip="true"
-        TortureTraitWeekMod="1"
-        HoroscopeType="1" />
-    <!--
-	These are the numbers that will multiply the money from various sources of income.
-		So setting "GirlsWorkBrothel" to "0.5" will reduce the cash your girls generate in the brothel by half.
-		You can also use numbers >1 to increase income if you are so inclined.
-	-->
-    <Income
-        ExtortionIncome="1.0"
-        GirlsWorkBrothel="1.0"
-        GirlsWorkStreet="1.0"
-        MovieIncome="1.0"
-        StripperIncome="1.0"
-        BarmaidIncome="1.0"
-        SlaveSales="1.0"
-        ItemSales="0.5"
-        ClinicIncome="1.0"
-        ArenaIncome="1.0"
-        FarmIncome="1.0" />
-    <!--
-	These are the multipliers for your expenses.
-
-	Training doesn't currently have a cost, so I'm setting it to 1 gold per girl per week
-		and defaulting the multiplier to 0 (so no change by default).
-	Set it higher and training begins to cost beyond the simple loss of income.
-
-	ActressWages are like training costs:
-	A per-girl expense nominally 1 gold per girl, but with a default factor of 0,
-		so no change to the current scheme unless you alter that.
-
-	MakingMovies is the setup cost for a movie:
-	I'm going to make this 1000 gold per movie, but again, with a zero factor by default.
-
-	Otherwise, same as above, except you probably want numbers > 1 to make things more expensive here.
-
-	* not all are used but are retained just in case.
-	-->
-    <Expenses
-        Training="0.0"
-        MovieCost="0.0"
-        ActressWages="0.0"
-        GoonWages="1.0"
-        MatronWages="1.0"
-        StaffWages="1.0"
-        GirlSupport="1.0"
-        Consumables="1.0"
-        Items="1.0"
-        SlavesBought="1.0"
-        BuyBrothel="1.0"
-        BrothelSupport="1.0"
-        BarSupport="1.0"
-        CasinoSupport="1.0"
-        Bribes="1.0"
-        Fines="1.0"
-        Advertising="1.0" />
-    <!--
-	Gambling:
-
-	The starting %chance for the tables is given by "Odds"
-
-	Wins and losses on the tables are calculated as the "Base" value
-		plus a random number between 1 and the value of "Spread".
-	If the house wins, the amount is multiplied by the HouseFactor
-	If the customer wins, by the customer factor.
-
-	So: if Base = 50 and spread = 100 then the basic amount
-		won or lost per customer would be 50+d100.
-
-	As it stands, the default odds are near 50%
-	while the payout is 2:1 in favour of the house.
-	So by default, the tables are rigged!
-	-->
-    <Gambling
-        Odds="49%"
-        Base="79"
-        Spread="100"
-        CustomerFactor="0.5"
-        HouseFactor="1.0" />
-    <!--
-	Taxes:
-	Rate is the rate at which your income is taxed.
-	Min is the minimum adjusted rate after influence is used to lower the tax rate.
-	Laundry is the Maximum % of your income that can be Laundered and so escape taxation.
-		So if you have 100g income, and a 25% laundry rating, then between 1 and 25 gold will go directly into your pocket.
-		The remaining 75 Gold will be taxed at 6% (assuming no reduction due to political influence)
-	-->
-    <Tax
-        Rate="6%"
-        Minimum="1%"
-        Laundry="25%" />
-    <!--
-	Pregnancy:
-	PlayerChance, CustomerChance and MonsterChance give the odds of her
-		getting knocked up by the PC, a customer and a monster, respectively
-	GoodSexFactor is the multiplier for the pregnancy chance if both parties were happy post coitus.
-	ChanceOfGirl is the %chance of any baby being female.
-	WeeksPregnant and WeeksMonsterP is how long she is pregnant for.
-	MiscarriageChance and MiscarriageMonster is the weekly percent chance that the pregnancy may fail.
-	WeeksTillGrown is how long is takes for the baby to grow up to age 18
-		The magic of the world the game is set in causes children to age much faster.
-		Real world is 936 weeks.
-	CoolDown is how long before the girl can get pregnant again after giving birth.
-	AntiPregFailure is the chance that an Anti-Preg Potion fails to work.
-	MultiBirthChance is the chance of multiple births.
-	-->
-    <Pregnancy
-        PlayerChance="8%"
-        CustomerChance="8%"
-        MonsterChance="8%"
-        GoodSexFactor="2.0"
-        ChanceOfGirl="50%"
-        WeeksPregnant="38"
-        WeeksMonsterP="20"
-        MiscarriageChance="0.1%"
-        MiscarriageMonster="1.0%"
-        WeeksTillGrown="60"
-        CoolDown="4"
-        AntiPregFailure="0.0"
-        MultiBirthChance="2.0" />
-    <!--
-	These are the base chances of rape occurring in a brothel and streetwalking.
-	-->
-    <Prostitution
-        RapeBrothel="1%"
-        RapeStreet="5%" />
-    <!--
 	Catacombs Settings:
 	UniqueCatacombs:   Chance to get a Unique Girl when exploring the Catacombs.
 		After all Unique Girls have been found, the rest will be random girls.
@@ -253,52 +94,9 @@
 		Negative numbers are not allowed and all 0s will set to (100/3)% each.
 	-->
     <Catacombs
-        UniqueCatacombs="50"
-        ControlGirls="true"
-        ControlGangs="true"
         GirlGetsGirls="34"
         GirlGetsItems="33"
-        GirlGetsBeast="33"
-        GangGetsGirls="34"
-        GangGetsItems="33"
-        GangGetsBeast="33" />
-    <!--
-	Slave Market Settings:
-	UniqueMarket:   Chance to get a Unique Girl from the Slave Market.
-		After all Unique Girls have been found, the rest will be random girls.
-	
-	SlavesNewWeekly...:	The minimum and maximum number of girls in the slave market each turn.
-		Absolude minimum of 0 and maximum of 20.
-		If min is higher than max, they get switched.
-	-->
-    <SlaveMarket
-        UniqueMarket="35"
-        SlavesNewWeeklyMin="5"
-        SlavesNewWeeklyMax="12" />
-    <!--
-	Gangs:
-	MaxRecruitList limits the maximum number of recruitable gangs listed for you to hire.
-		WARNING: BE CAREFUL here; the number of recruitable gangs plus the number of potential hired
-			gangs must not exceed the number of names stored in HiredGangNames.txt.
-		For example, with 20 names, you could have a max of 12 recruitables since you have to
-			account for the possible 8 hired gangs.
-	StartRandom is how many random recruitable gangs are created for you at the start of a new game.
-	StartBoosted is how many stat-boosted starting gangs are also added.
-	InitMemberMin and InitMemberMax indicate the number of initial gang members which are in each recruitable gang;
-		a random number between Min and Max is picked.
-	AddNewWeeklyMin and AddNewWeeklyMax indicate how many new random gangs are added to the recruitable
-		gangs list each week; a random number between Min and Max is picked.
-	ChanceRemoveUnwanted is the %chance each week that each unhired gang in the recruitable list is removed.
-	-->
-    <Gangs
-        MaxRecruitList="12"
-        StartRandom="2"
-        StartBoosted="2"
-        InitMemberMin="1"
-        InitMemberMax="10"
-        AddNewWeeklyMin="0"
-        AddNewWeeklyMax="3"
-        ChanceRemoveUnwanted="33%" />
+        GirlGetsBeast="33"/>
     <!--
 	Items:
 	*** AutoCombatEquip was moved to Initial for .06. Kept here for .05 and earlier.

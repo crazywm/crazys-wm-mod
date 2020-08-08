@@ -133,9 +133,9 @@ bool cGangManager::LoadGangsXML(const tinyxml2::XMLElement* pGangManager)
     if ((m_Gang_Gets_Girls == 0 && m_Gang_Gets_Items == 0 && m_Gang_Gets_Beast == 0) ||
         m_Gang_Gets_Girls + m_Gang_Gets_Items + m_Gang_Gets_Beast != 100)
     {
-        m_Gang_Gets_Items = (int)cfg.catacombs.gang_gets_items();
-        m_Gang_Gets_Beast = (int)cfg.catacombs.gang_gets_beast();
-        m_Gang_Gets_Girls = 100 - m_Gang_Gets_Items - m_Gang_Gets_Beast;
+        m_Gang_Gets_Items = 34;
+        m_Gang_Gets_Beast = 33;
+        m_Gang_Gets_Girls = 33;
     }
 
     return true;
@@ -165,9 +165,9 @@ tinyxml2::XMLElement& cGangManager::SaveGangsXML(tinyxml2::XMLElement& elRoot)
     // `J` added for .06.01.10
     if (m_Gang_Gets_Girls == 0 && m_Gang_Gets_Items == 0 && m_Gang_Gets_Beast == 0)
     {
-        m_Gang_Gets_Items = (int)cfg.catacombs.gang_gets_items();
-        m_Gang_Gets_Beast = (int)cfg.catacombs.gang_gets_beast();
-        m_Gang_Gets_Girls = 100 - m_Gang_Gets_Items - m_Gang_Gets_Beast;
+        m_Gang_Gets_Items = 34;
+        m_Gang_Gets_Beast = 33;
+        m_Gang_Gets_Girls = 33;
 
     }
     elGangManager.SetAttribute("Gang_Gets_Girls", m_Gang_Gets_Girls);

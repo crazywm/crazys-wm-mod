@@ -29,6 +29,11 @@
 
 extern    cRng            g_Dice;
 extern cConfig cfg;
+
+namespace settings {
+    extern const char* TORTURE_INJURY_CHANCE;
+}
+
 /*
 * ideally, we'd keep a queue of message strings and
 * pop them out in order at the end
@@ -184,7 +189,7 @@ void cGirlTorture::DoTorture()
     /*
     *    check for injury
     */
-    if (IsGirlInjured(3))
+    if (IsGirlInjured())
     {
         if (m_TorturedByPlayer)
         {
@@ -193,8 +198,8 @@ void cGirlTorture::DoTorture()
         else
         {
             sMsg = sGirlName + " was seriously injured in the dungeon this week.\n";
-            m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
-            m_Torturer->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
+            m_Girl->AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
+            m_Torturer->AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
         }
     }
     /*
@@ -316,26 +321,8 @@ void cGirlTorture::AddTextTorturerGirl()
 
 void cGirlTorture::UpdateStats()
 {
-    /*
-    *    WD Stats based on ortiginal torture job code
-    *
-    */
     // do heavy torture
-    if (cfg.initial.torture_mod() < 0) // `J`  added
-    {
-        m_Girl->health(-7);
-        m_Girl->happiness(-7);
-        m_Girl->constitution(1 + g_Dice % 5); // 1 ~ 5
-        m_Girl->confidence(-7);
-        m_Girl->obedience(9 + g_Dice % 3);    // 9 ~ 11
-        m_Girl->spirit(-4 - g_Dice % 3);      // -4 ~ -6
-        m_Girl->tiredness(-5 - g_Dice % 3);   // -5 ~ -7
-        m_Girl->pchate(6);
-        m_Girl->pclove(-10);
-        m_Girl->pcfear(10);
-        m_Girl->bdsm(1 + g_Dice % 5);         // 1 ~ 5
-    }
-    else if (m_Girl->health() > 10)
+    if (m_Girl->health() > 10)
     {
         m_Girl->health(-5);
         m_Girl->happiness(-5);
@@ -364,8 +351,8 @@ void cGirlTorture::UpdateStats()
     }
 }
 
-bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
-{  // modifier: 5 = 5% chance, 10 = 10% chance
+bool cGirlTorture::IsGirlInjured()
+{
     // Sanity check, Can't get injured
     if (m_Girl->has_active_trait("Incorporeal")) return false;
 
@@ -379,9 +366,7 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
     */
     std::string    sMsg;
     std::string    sGirlName = m_Girl->FullName();
-    int        nMod = static_cast<int>(unModifier);
-    if (cfg.initial.torture_mod() < 0){ nMod += nMod; }
-
+    int nMod = int(100 * (float)g_Game->settings().get_percent(settings::TORTURE_INJURY_CHANCE));
 
     if (m_Girl->has_active_trait("Fragile")) nMod += nMod;    // nMod *= 2;
     if (m_Girl->has_active_trait("Tough")) nMod /= 2;
@@ -404,14 +389,10 @@ bool cGirlTorture::IsGirlInjured(unsigned int unModifier)
     }
 
     if(m_TorturedByPlayer) {
-        cGirls::GirlInjured(*m_Girl, unModifier, [&](std::string msg){ m_Message += std::move(msg); });
+        cGirls::GirlInjured(*m_Girl, 3, [&](std::string msg){ m_Message += std::move(msg); });
     } else {
-        cGirls::GirlInjured(*m_Girl, unModifier, [&](std::string msg){ MakeEvent(std::move(msg)); });
+        cGirls::GirlInjured(*m_Girl, 3, [&](std::string msg){ MakeEvent(std::move(msg)); });
     }
-
-    if (cfg.initial.torture_mod() < 0){
-        m_Girl->health(-2 - g_Dice % 5);
-    } // `J` Lose between 7 - 21 hp if harsh torture
 
     // Post any new Player messages in Red Message Box Colour 1
     if (m_TorturedByPlayer && !m_Message.empty() && m_Message != sGirlName + ": ")
@@ -458,34 +439,20 @@ bool cGirlTorture::girl_escapes()
 
 void cGirlTorture::UpdateTraits()
 {
-    int nWeekMod = 1;
-    bool harshtorture = false;
-    /* `J` added to allow permanent trait gain on torture
-    if TortureTraitWeekMod is set to a negative number in the config.xml
-    then "Broken Will", "Masochist" and "Mind Fucked" are permanent
-    doubles chance of injuring girls when torturing them
-    evil gained from torture is also doubled  */
-    if (cfg.initial.torture_mod() < 0){ harshtorture = true; }
-    else { nWeekMod = cfg.initial.torture_mod() * m_DungeonGirl->m_Weeks; }
+    int nWeekMod = m_DungeonGirl->m_Weeks;
     if (nWeekMod < 1) nWeekMod = 1;
 
     if (g_Dice.percent(30) && m_Girl->spirit() < 20 && m_Girl->health() < 20)
     {
-        g_LogFile.log(ELogLevel::DEBUG, "Debug cGirlTorture || add_trait Broken Will");
-        if (harshtorture)    { m_Girl->gain_trait("Broken Will"); }
-        else                { m_Girl->add_temporary_trait("Broken Will", int(5 + nWeekMod / 2)); }
+        m_Girl->add_temporary_trait("Broken Will", int(5 + nWeekMod / 2));
     }
     if (g_Dice.percent(30) && m_Girl->bdsm() > 30)
     {
-        g_LogFile.log(ELogLevel::DEBUG, "Debug cGirlTorture || add_trait Masochist");
-        if (harshtorture)    { m_Girl->gain_trait("Masochist"); }
-        else                { m_Girl->add_temporary_trait("Masochist", 10 + nWeekMod); }
+        m_Girl->add_temporary_trait("Masochist", 10 + nWeekMod);
     }
     if (g_Dice.percent(30) && m_Girl->health() < 10)
     {
-        g_LogFile.log(ELogLevel::DEBUG, "Debug cGirlTorture || add_trait Mind Fucked");
-        if (harshtorture)    { m_Girl->gain_trait("Mind Fucked"); }
-        else                { m_Girl->add_temporary_trait("Mind Fucked", 10 + nWeekMod); }
+        m_Girl->add_temporary_trait("Mind Fucked", 10 + nWeekMod);
     }
 }
 
@@ -500,12 +467,12 @@ void cGirlTorture::add_trait(const std::string& trait, int pc)
     if (!m_TorturedByPlayer) pc /= 2;
     if (!g_Dice.percent(pc)) return;
 
-    std::string sMsg = m_Girl->FullName() + " has gained trait \"" + trait + "\" from being tortured.";
+    std::string sMsg = "${name} has gained trait \"" + trait + "\" from being tortured.";
 
     if (m_TorturedByPlayer)
     {
         g_Game->push_message(sMsg, 2);
-        m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
+        m_Girl->AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
     }
     else MakeEvent(sMsg);
 
@@ -515,7 +482,7 @@ void cGirlTorture::add_trait(const std::string& trait, int pc)
 
 inline void cGirlTorture::MakeEvent(const std::string& sMsg)
 {
-    m_Girl->m_Events.AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
-    m_Torturer->m_Events.AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
+    m_Girl->AddMessage(sMsg, IMGTYPE_TORTURE, EVENT_WARNING);
+    m_Torturer->AddMessage(sMsg, IMGTYPE_PROFILE, EVENT_DUNGEON);
 }
 

@@ -26,7 +26,6 @@
 #include "character/sGirl.h"
 #include "cRival.h"
 #include "character/cPlayer.h"
-#include "cGold.h"
 #include "cInventory.h"
 #include "buildings/cDungeon.h"
 #include "cObjectiveManager.hpp"
@@ -35,13 +34,15 @@
 #include "buildings/cBuildingManager.h"
 #include "CLog.h"
 #include "combat/combat.h"
-#include "sConfig.h"
 #include "Inventory.h"
 #include "cGirlGangFight.h"
 
 
+namespace settings {
+    extern const char* WORLD_CATACOMB_UNIQUE;
+}
+
 extern cRng g_Dice;
-extern cConfig cfg;
 
 IGangMission::IGangMission(std::string name, bool potions, bool nets):
     m_Name(std::move(name)), m_RequiresPotions(potions), m_RequiresNets(nets)
@@ -978,7 +979,7 @@ bool cMissionCatacombs::execute_mission(sGang& gang, std::stringstream& ss)
             for (int i = 0; i < totalgirls; i++)
             {
                 std::shared_ptr<sGirl> ugirl = nullptr;
-                bool unique = g_Dice.percent(cfg.catacombs.unique_catacombs());    // chance of getting unique girl
+                bool unique = g_Dice.percent(g_Game->settings().get_percent(settings::WORLD_CATACOMB_UNIQUE));    // chance of getting unique girl
                 if (unique)
                 {
                     ugirl = g_Game->GetRandomGirl(false, true);

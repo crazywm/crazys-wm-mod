@@ -17,14 +17,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "utils/DirPath.h"
+#include "CLog.h"
 
 /*
  * kind of trivial...
  */
 #ifdef LINUX
+#include <dirent.h>
+#include <cerrno>
+#include <cstring>
+
 const char    DirPath::sep[] = "/";
+
+bool DirPath::is_directory() const {
+    DIR* dir = opendir(path.c_str());
+    if (dir) {
+        /* Directory exists. */
+        closedir(dir);
+        return true;
+    } else if (ENOENT == errno) {
+       return false;
+    } else {
+        /* opendir() failed for some other reason. */
+        g_LogFile.warning("io", "Error (", errno, ") when opening '", path, "': ", std::strerror(errno));
+        return false;
+    }
+}
+
 #else
 const char    DirPath::sep[] = "\\";
+
+bool DirPath::is_directory() const {
+    return PathIsDirectoryA(path.c_str());
+}
+
 #endif
 
 ImagePath::ImagePath(const std::string& filename)

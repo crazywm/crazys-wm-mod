@@ -69,6 +69,7 @@ private:
     void OnKeyPress(SDL_Keysym keysym) override;
 
     bool m_Refresh = false;
+    bool m_EditNightShift = false;
 
     std::vector<sTraitInfo> m_TraitInfoCache;
 public:
