@@ -43,6 +43,14 @@ protected:
     sGirl& active_girl() const;
     std::shared_ptr<sGirl> selected_girl() const;
     void set_active_girl(std::shared_ptr<sGirl> girl);
+
+    void reset_cycle_list();
+    void cycle_girl_forward();
+    void cycle_girl_backward();
+    bool cycle_to(const sGirl* target);
+    bool remove_from_cycle();
+
+    void add_to_cycle_list(std::shared_ptr<sGirl> girl);
 private:
 
 };

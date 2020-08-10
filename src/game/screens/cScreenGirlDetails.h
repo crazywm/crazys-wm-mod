@@ -59,8 +59,7 @@ private:
     void RefreshJobList();
     void PrevGirl();
     void NextGirl();
-    std::shared_ptr<sGirl> get_prev_girl();
-    std::shared_ptr<sGirl> get_next_girl();
+
     void take_gold(sGirl& girl);
     void set_shift(int shift);
 

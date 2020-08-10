@@ -64,13 +64,50 @@ sGirl& cGameWindow::active_girl() const
 
 void cGameWindow::set_active_girl(std::shared_ptr<sGirl> girl)
 {
-    window_manager().SetActiveGirl(std::move(girl));
+    window_manager().ResetCycleList();
+    if(girl)
+        window_manager().AddToCycleList(std::move(girl));
 }
 
 std::shared_ptr<sGirl> cGameWindow::selected_girl() const
 {
     return window_manager().GetActiveGirl();
 }
+
+void cGameWindow::add_to_cycle_list(std::shared_ptr<sGirl> girl) {
+    window_manager().AddToCycleList(std::move(girl));
+}
+
+void cGameWindow::cycle_girl_forward() {
+    window_manager().CycleGirlsForward();
+}
+
+void cGameWindow::cycle_girl_backward() {
+    window_manager().CycleGirlsBackward();
+}
+
+bool cGameWindow::remove_from_cycle() {
+    return window_manager().RemoveActiveGirlFromCycle();
+}
+
+void cGameWindow::reset_cycle_list() {
+    window_manager().ResetCycleList();
+}
+
+bool cGameWindow::cycle_to(const sGirl* target) {
+    auto girl = window_manager().GetActiveGirl().get();
+    if(!girl)
+        return false;
+
+    do {
+        if(window_manager().GetActiveGirl().get() == target) {
+            return true;
+        }
+        cycle_girl_forward();
+    } while(window_manager().GetActiveGirl().get() != girl);
+    return false;
+}
+
 
 
 std::string numeric = "0123456789 ().,[]-";

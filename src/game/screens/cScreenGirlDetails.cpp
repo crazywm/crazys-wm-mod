@@ -132,6 +132,10 @@ void cScreenGirlDetails::init(bool back)
 {
     m_Refresh = false;
     m_SelectedGirl = selected_girl();
+    if(!m_SelectedGirl) {
+        pop_window();
+        return;
+    }
     m_TraitInfoCache = m_SelectedGirl->get_trait_info();
     Focused();
 
@@ -356,16 +360,8 @@ void cScreenGirlDetails::release_from_dungeon()
     }
     else
     {
-        auto nextGirl = get_next_girl();
         auto tempGirl = g_Game->dungeon().RemoveGirl(m_SelectedGirl.get());
         current_brothel.add_girl(std::move(tempGirl));
-
-        if (g_Game->dungeon().GetNumGirls() == 0)
-        {
-            m_SelectedGirl = nullptr;
-            pop_window();
-        }
-        else m_SelectedGirl = nextGirl;
     }
     init(true);
 }
@@ -375,11 +371,11 @@ void cScreenGirlDetails::send_to_dungeon()
     if (!m_SelectedGirl) return;
     if(!m_SelectedGirl->m_Building) return;
 
-    auto nextGirl = get_next_girl();
     if(g_Game->dungeon().SendGirlToDungeon(m_SelectedGirl->m_Building->remove_girl(m_SelectedGirl.get()))) {
         // if this was successful
+    } else {
+        remove_from_cycle();
     }
-    set_active_girl(nextGirl);
 
     // cannot call init() directly, because we would enable the release button directly under the pressed mouse
     m_Refresh = true;
@@ -431,77 +427,28 @@ void cScreenGirlDetails::RefreshJobList()
 
 void cScreenGirlDetails::PrevGirl()
 {
-    set_active_girl(get_prev_girl());
-    init(false);
-}
-
-void cScreenGirlDetails::NextGirl()
-{
-    auto candidate = get_next_girl();
-    set_active_girl(candidate);
+    cycle_girl_backward();
     // if we did change the girl, update screen
     if(m_SelectedGirl.get() != &active_girl()) {
         init(false);
     }
 }
 
-std::shared_ptr<sGirl> cScreenGirlDetails::get_prev_girl()        // return previous girl in the sorted list
+void cScreenGirlDetails::NextGirl()
 {
-    if (m_SelectedGirl->m_DayJob == JOB_INDUNGEON)
-    {
-        return g_Game->dungeon().GetGirl(g_Game->dungeon().GetGirlPos(m_SelectedGirl.get()) - 1)->m_Girl;
-    }
-    else
-    {
-        auto source_building = m_SelectedGirl->m_Building;
-
-        auto index = source_building->get_girl_index(*m_SelectedGirl);
-        if(index == -1) {
-            g_LogFile.log(ELogLevel::ERROR, "Girl is not in building she claims she is!");
-            return m_SelectedGirl;
-        } else if (index == 0) {
-            return source_building->girls().get_ref_counted(source_building->get_girl(source_building->num_girls() - 1));
-        }
-        return source_building->girls().get_ref_counted(source_building->get_girl(index - 1));
+    cycle_girl_forward();
+    // if we did change the girl, update screen
+    if(m_SelectedGirl.get() != &active_girl()) {
+        init(false);
     }
 }
-
-std::shared_ptr<sGirl> cScreenGirlDetails::get_next_girl()        // return next girl in the sorted list
-{
-    if (m_SelectedGirl->m_DayJob == JOB_INDUNGEON)
-    {
-        return g_Game->dungeon().GetGirl(g_Game->dungeon().GetGirlPos(m_SelectedGirl.get()) + 1)->m_Girl;
-    }
-    else if (m_SelectedGirl->m_DayJob == JOB_RUNAWAY) {
-        // how does this happen?
-        g_LogFile.log(ELogLevel::ERROR, "Selected girl ", m_SelectedGirl->FullName(), " is a runaway!");
-        push_error("ERROR: Selected girl is a runaway");
-        return active_building().girls().get_ref_counted(active_building().get_girl(0));
-    }
-    else
-    {
-        auto source_building = m_SelectedGirl->m_Building;
-        auto index = source_building->get_girl_index(*m_SelectedGirl);
-        if(index == -1) {
-            g_LogFile.log(ELogLevel::ERROR, "Girl is not in building she claims she is!");
-            return m_SelectedGirl;
-        } else if (index == source_building->num_girls() - 1) {
-            return source_building->girls().get_ref_counted(source_building->get_girl(0));
-        }
-        return source_building->girls().get_ref_counted(source_building->get_girl(index + 1));
-    }
-}
-
 
 void cScreenGirlDetails::take_gold(sGirl& girl)
 {
     // a bit inefficient, but we can't do this after the girl has run away
-    auto nextGirl = get_next_girl();
     cGirls::TakeGold(girl);
     if(girl.m_RunAway) {
-        m_SelectedGirl = nextGirl;
-        if (m_SelectedGirl == nullptr) pop_window();
-        set_active_girl(m_SelectedGirl);
+        if (remove_from_cycle()) pop_window();;
     }
     init(true);
 }

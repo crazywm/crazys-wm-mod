@@ -57,10 +57,6 @@ bool g_WalkAround = false;
 
 int g_TalkCount = 10;
 
-
-std::vector<int> cycle_girls;  // globally available sorted list of girl IDs for Girl Details screen to cycle through
-int cycle_pos;  //currently selected girl's position in the cycle_girls vector
-
 #pragma endregion
 
 static std::string clobber_extension(std::string s)    // `J` debug logging

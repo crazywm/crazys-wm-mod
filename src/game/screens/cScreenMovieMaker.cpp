@@ -30,9 +30,6 @@ namespace settings {
     extern const char* USER_MOVIES_AUTO;
 }
 
-extern std::vector<int> cycle_girls;
-extern int cycle_pos;
-
 static std::stringstream ss;
 
 static int ImageNum = -1;

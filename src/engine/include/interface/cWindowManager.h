@@ -92,7 +92,11 @@ public:
 
     // girl selection
     std::shared_ptr<sGirl> GetActiveGirl() const;
-    void SetActiveGirl(std::shared_ptr<sGirl> girl);
+    void AddToCycleList(std::shared_ptr<sGirl> girl);
+    void ResetCycleList();
+    void CycleGirlsForward();
+    void CycleGirlsBackward();
+    bool RemoveActiveGirlFromCycle();
 
     // key state functions
     bool IsCtrlHeld() const;
@@ -108,7 +112,8 @@ private:
     IBuilding* m_ActiveBuilding = nullptr;
 
     // the active girl list.
-    std::vector<std::shared_ptr<sGirl>> m_SelectedGirls;
+    std::vector<std::shared_ptr<sGirl>> m_GirlCycleList;
+    int m_SelectedGirlIndex;
 
     // pointer to the graphics engine
     CGraphics* m_GFX;

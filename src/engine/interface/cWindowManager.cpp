@@ -227,15 +227,32 @@ void cWindowManager::PushMessage(std::string text, int color, std::function<void
 
 std::shared_ptr<sGirl> cWindowManager::GetActiveGirl() const
 {
-    if(m_SelectedGirls.empty())
+    if(m_GirlCycleList.empty() || m_SelectedGirlIndex == -1)
         return nullptr;
-    return m_SelectedGirls.front();
+    return m_GirlCycleList.at(m_SelectedGirlIndex);
 }
 
-void cWindowManager::SetActiveGirl(std::shared_ptr<sGirl> girl)
-{
-    m_SelectedGirls.clear();
-    m_SelectedGirls.push_back(std::move(girl));
+void cWindowManager::AddToCycleList(std::shared_ptr<sGirl> girl) {
+    assert(girl);
+    m_GirlCycleList.push_back(std::move(girl));
+    if(m_SelectedGirlIndex == -1)
+        m_SelectedGirlIndex = 0;
+}
+
+void cWindowManager::ResetCycleList() {
+    m_GirlCycleList.clear();
+    m_SelectedGirlIndex = -1;
+}
+
+void cWindowManager::CycleGirlsForward() {
+    m_SelectedGirlIndex = (m_SelectedGirlIndex + 1) % (int)m_GirlCycleList.size();
+}
+
+void cWindowManager::CycleGirlsBackward() {
+    m_SelectedGirlIndex = m_SelectedGirlIndex - 1;
+    if(m_SelectedGirlIndex < 0) {
+        m_SelectedGirlIndex = (int)m_GirlCycleList.size() - 1;
+    }
 }
 
 void cWindowManager::InputChoice(std::string question, std::vector<std::string> options, std::function<void(int)> callback)
@@ -300,6 +317,23 @@ bool cWindowManager::IsShiftHeld() const {
 
 void cWindowManager::PushError(std::string text) {
     PushMessage(std::move(text), COLOR_RED);
+}
+
+bool cWindowManager::RemoveActiveGirlFromCycle() {
+    if(m_GirlCycleList.empty()) {
+        return false;
+    }
+
+    m_GirlCycleList.erase(m_GirlCycleList.begin() + m_SelectedGirlIndex);
+    if(m_GirlCycleList.empty()) {
+        return false;
+    }
+
+    if(m_SelectedGirlIndex >= m_GirlCycleList.size()) {
+        m_SelectedGirlIndex = static_cast<int>(m_GirlCycleList.size()) - 1;
+    }
+
+    return true;
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

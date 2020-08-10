@@ -19,9 +19,6 @@ namespace settings {
 }
 
 extern cConfig cfg;
-extern std::vector<int> cycle_girls;
-extern int cycle_pos;
-
 extern    bool            g_AltKeys;    // New hotkeys --PP
 
 
@@ -64,15 +61,26 @@ void IBuildingScreenManagement::ViewSelectedGirl()
     if (selected_girl)
     {
         if (selected_girl->is_dead()) return;
-        //load up the cycle_girls vector with the ordered list of girl IDs
-        FillSortedIDList(girllist_id, cycle_girls, cycle_pos);
-        for (int i = cycle_girls.size(); i-- > 0;)
-        {  // no viewing dead girls
-            if (active_building().get_girl(cycle_girls[i])->is_dead())
-                cycle_girls.erase(cycle_girls.begin() + i);
-        }
+        reset_cycle_list();
 
-        set_active_girl(selected_girl->m_Building->girls().get_ref_counted(selected_girl));
+        if(IsMultiSelected(girllist_id)) {
+            // if multiple girls are selected, put them into the selection list
+            int pos = 0;
+            int sel = GetNextSelectedItemFromList(girllist_id, 0, pos);
+            while (sel != -1)
+            {
+                add_to_cycle_list(active_building().get_girl(sel)->shared_from_this());
+                sel = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
+            }
+        } else {
+            // if only a single girl is selected, allow iterating over all
+            active_building().girls().apply([this](sGirl& g) {
+                if (!g.is_dead()) {
+                    add_to_cycle_list(g.shared_from_this());
+                }
+            });
+            cycle_to(selected_girl);
+        }
         push_window("Girl Details");
     }
 }

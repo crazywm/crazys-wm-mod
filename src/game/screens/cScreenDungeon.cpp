@@ -24,7 +24,6 @@
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
 #include "character/cPlayer.h"
-#include "utils/DirPath.h"
 #include "cTariff.h"
 #include "cGirlGangFight.h"
 #include "cGirlTorture.h"
@@ -32,8 +31,6 @@
 
 extern cRng                    g_Dice;
 extern int                    g_TalkCount;
-extern std::vector<int>            cycle_girls;
-extern int                    cycle_pos;
 
 static int                    ImageNum = -1;
 static std::vector<int>            select_girls;
@@ -46,38 +43,38 @@ cScreenDungeon::cScreenDungeon() : cGameWindow("dungeon_screen.xml")
 
 void cScreenDungeon::set_ids()
 {
-    back_id         /**/ = get_id("BackButton", "Back");
-    header_id         /**/ = get_id("DungeonHeader");
-    gold_id            /**/ = get_id("Gold");
-    girllist_id     /**/ = get_id("GirlList");
-    girlimage_id     /**/ = get_id("GirlImage");
-    brandslave_id     /**/ = get_id("BrandSlaveButton");
-    release_id         /**/ = get_id("ReleaseButton");
-    allowfood_id     /**/ = get_id("AllowFoodButton");
-    torture_id         /**/ = get_id("TortureButton");
-    stopfood_id     /**/ = get_id("StopFeedingButton");
-    interact_id     /**/ = get_id("InteractButton");
-    interactc_id    /**/ = get_id("InteractCount");
-    releaseall_id     /**/ = get_id("ReleaseAllButton");
-    releasecust_id     /**/ = get_id("ReleaseCustButton");
-    viewdetails_id     /**/ = get_id("DetailsButton");
-    sellslave_id     /**/ = get_id("SellButton");
+    back_id         = get_id("BackButton", "Back");
+    header_id       = get_id("DungeonHeader");
+    gold_id         = get_id("Gold");
+    girllist_id     = get_id("GirlList");
+    girlimage_id    = get_id("GirlImage");
+    brandslave_id   = get_id("BrandSlaveButton");
+    release_id      = get_id("ReleaseButton");
+    allowfood_id    = get_id("AllowFoodButton");
+    torture_id      = get_id("TortureButton");
+    stopfood_id     = get_id("StopFeedingButton");
+    interact_id     = get_id("InteractButton");
+    interactc_id    = get_id("InteractCount");
+    releaseall_id   = get_id("ReleaseAllButton");
+    releasecust_id  = get_id("ReleaseCustButton");
+    viewdetails_id  = get_id("DetailsButton");
+    sellslave_id    = get_id("SellButton");
 
-    releaseto_id     /**/ = get_id("ReleaseTo");
-    roomsfree_id     /**/ = get_id("RoomsFree");
-    brothel0_id     /**/ = get_id("Brothel0");
-    brothel1_id     /**/ = get_id("Brothel1");
-    brothel2_id     /**/ = get_id("Brothel2");
-    brothel3_id     /**/ = get_id("Brothel3");
-    brothel4_id     /**/ = get_id("Brothel4");
-    brothel5_id     /**/ = get_id("Brothel5");
-    brothel6_id     /**/ = get_id("Brothel6");
-    house_id         /**/ = get_id("House");
-    clinic_id         /**/ = get_id("Clinic");
-    studio_id         /**/ = get_id("Studio");
-    arena_id         /**/ = get_id("Arena");
-    centre_id         /**/ = get_id("Centre");
-    farm_id         /**/ = get_id("Farm");
+    releaseto_id    = get_id("ReleaseTo");
+    roomsfree_id    = get_id("RoomsFree");
+    brothel0_id     = get_id("Brothel0");
+    brothel1_id     = get_id("Brothel1");
+    brothel2_id     = get_id("Brothel2");
+    brothel3_id     = get_id("Brothel3");
+    brothel4_id     = get_id("Brothel4");
+    brothel5_id     = get_id("Brothel5");
+    brothel6_id     = get_id("Brothel6");
+    house_id        = get_id("House");
+    clinic_id       = get_id("Clinic");
+    studio_id       = get_id("Studio");
+    arena_id        = get_id("Arena");
+    centre_id       = get_id("Centre");
+    farm_id         = get_id("Farm");
 
     struct RelBtn {
         const char* name;
@@ -102,7 +99,7 @@ void cScreenDungeon::set_ids()
     };
 
     for(const auto& btn : btns) {
-        SetButtonCallback(get_id(btn.name), [this, btn](){
+        SetButtonCallback(get_id(btn.name), [this, btn]() {
             change_release(btn.type, btn.index);
         });
     }
@@ -149,7 +146,6 @@ void cScreenDungeon::set_ids()
         if (IsMultiSelected(girllist_id))         // disable buttons based on multiselection
         {
             DisableWidget(interact_id, true);
-            DisableWidget(viewdetails_id, true);
         }
         update_image();
     });
@@ -179,9 +175,9 @@ void cScreenDungeon::init(bool back)
     EditTextItem(ss.str(), header_id);
     // Fill the list box
     selection = g_Game->dungeon().GetNumGirls() > 0 ? 0 : -1;
-    std::vector<std::string> Data;
     for (int i = 0; i < g_Game->dungeon().GetNumGirls(); i++)                                                // add girls
     {
+        std::vector<std::string> Data;
         sGirl *girl = g_Game->dungeon().GetGirl(i)->m_Girl.get();                                            // get the i-th girl
         if (selected_girl().get() == girl) selection = i;                                                            // if selected_girl is this girl, update selection
         girl->m_DayJob = girl->m_NightJob = JOB_INDUNGEON;
@@ -193,6 +189,7 @@ void cScreenDungeon::init(bool back)
     int offset = g_Game->dungeon().GetNumGirls();
     for (int i = 0; i < g_Game->dungeon().GetNumCusts(); i++)    // add customers
     {
+        std::vector<std::string> Data;
         int col = (g_Game->dungeon().GetCust(i)->m_Health <= 30) ? COLOR_RED : COLOR_BLUE;
         g_Game->dungeon().OutputCustRow(i, Data, columnNames);
         AddToListBox(girllist_id, i + offset, std::move(Data), col);
@@ -289,6 +286,7 @@ void cScreenDungeon::selection_change()
             return;
         }
         DisableWidget(viewdetails_id);
+        DisableWidget(interact_id);
         DisableWidget(allowfood_id, cust->m_Feeding);
         DisableWidget(stopfood_id, !cust->m_Feeding);
         return;
@@ -322,27 +320,34 @@ int cScreenDungeon::view_girl()
 
     if (selection == -1) return Continue;                            // nothing selected, nothing to do.
     if ((selection - g_Game->dungeon().GetNumGirls()) >= 0) return Continue;    // if this is a customer, we're not interested
-    auto girl = g_Game->dungeon().GetGirl(selection)->m_Girl;                // if we can't find the girl, there's nothing we can do
-    if (!girl) return Continue;
-    if (girl->health() > 0)
-    {
-        //load up the cycle_girls vector with the ordered list of girl IDs
-        FillSortedIDList(girllist_id, cycle_girls, cycle_pos);
-        // we don't want customers or dead girls in this list
-        // TODO(buildings) figure out what this cycle list is for and how to handle it!
-        for (int i = cycle_girls.size(); i-- > 0;)
-        {
-            if (cycle_girls[i] >= g_Game->dungeon().GetNumGirls() || g_Game->dungeon().GetGirl(cycle_girls[i])->m_Girl->is_dead())
-                cycle_girls.erase(cycle_girls.begin() + i);
-        }
+    reset_cycle_list();
 
-        set_active_girl(std::move(girl));
-        push_window("Girl Details");
-        return Return;
+    if(IsMultiSelected(girllist_id)) {
+        // if multiple girls are selected, put them into the selection list
+        int pos = 0;
+        int sel = GetNextSelectedItemFromList(girllist_id, 0, pos);
+        while (sel != -1 && sel < g_Game->dungeon().GetNumGirls())
+        {
+            add_to_cycle_list(g_Game->dungeon().GetGirl(sel)->m_Girl);
+            sel = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
+        }
+    } else {
+        auto girl = g_Game->dungeon().GetGirl(selection)->m_Girl;
+        // TODO can this happen?
+        if(!girl) return Continue;
+        else if(girl->is_dead()) {
+            push_message("This is a dead girl. She has ceased to be.", COLOR_RED);
+            return Return;
+        }
+        // if only a single girl is selected, allow iterating over all
+        for(auto& g : g_Game->dungeon().girls()) {
+            if (!g.m_Girl->is_dead()) {
+                add_to_cycle_list(g.m_Girl);
+            }
+        }
+        cycle_to(girl.get());
     }
-    // can't ... resist ...
-    push_message("This is a dead girl. She has ceased to be.", COLOR_RED);
-    // Furthermore, she's shuffled off this mortal coil and joined the bleeding choir invisible!
+    push_window("Girl Details");
     return Return;
 }
 

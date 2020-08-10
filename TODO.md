@@ -10,7 +10,7 @@
 * [ ] Replace image name based tags by an xml file
 * [x] Scan subfolders for girl packs
 * [ ] Improve image paths handling / image selection
-* [ ] re-implement cycle list stuff
+* [x] re-implement cycle list stuff
 * [ ] Move game specific stuff out of sConfig
 
 ## Scripting
@@ -40,3 +40,5 @@
 * [ ] Clicking the item filter in the inventory screen sets focus to left inventory
 * [ ] async scripts and messages may get scrambled
 * [x] Black bars in Gallery screen
+* [ ] Bought a dead girl from the market?
+* [ ] Update Dungeon list after stop feeding/allow food button
