@@ -20,7 +20,7 @@ are now per gang.
 * Fixed font bug on gallery screen
 * Fixed Gallery back button
 * Fixed runaway crashes
-* Feeding buttons on dungeon screen
+* Feeding/Interact buttons on dungeon screen
 
 
 # Version 07.00.alpha1

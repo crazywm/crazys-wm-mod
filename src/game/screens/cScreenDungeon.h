@@ -94,7 +94,6 @@ public:
     void    release();
     void    talk();
     void    get_selected_girls(std::vector<int> *girl_array);
-    void    store_selected_girls();
     void    update_image();
     void UpdateImage(int imagetype) override;
 

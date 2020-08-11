@@ -33,7 +33,6 @@ extern cRng                    g_Dice;
 extern int                    g_TalkCount;
 
 static int                    ImageNum = -1;
-static std::vector<int>            select_girls;
 static std::stringstream ss;
 
 cScreenDungeon::cScreenDungeon() : cGameWindow("dungeon_screen.xml")
@@ -237,16 +236,7 @@ void cScreenDungeon::init(bool back)
     HideWidget(farm_id, !g_Game->has_building(BuildingType::FARM));
 
     // if a selection of girls is stored, try to re-select them
-    if (!select_girls.empty())
-    {
-        selection = select_girls.back();
-        for (int i = 0; i < (int)select_girls.size(); i++)
-        {
-            SetSelectedItemInList(girllist_id, select_girls[i], (select_girls[i] == select_girls.back()), false);
-        }
-        select_girls.clear();
-    }
-    else if (selection >= 0) SetSelectedItemInList(girllist_id, selection);
+    if (selection >= 0) SetSelectedItemInList(girllist_id, selection);
 }
 
 void cScreenDungeon::selection_change()
@@ -262,7 +252,6 @@ void cScreenDungeon::selection_change()
         DisableWidget(interact_id);
         DisableWidget(release_id);
         DisableWidget(torture_id);
-        //        cerr << "selection = " << selection << " (-1) - disabling torture" << endl;    // `J` commented out
         DisableWidget(viewdetails_id);
         DisableWidget(sellslave_id);
         return;
@@ -270,8 +259,7 @@ void cScreenDungeon::selection_change()
     // otherwise, we need to enable some buttons...
     DisableWidget(sellslave_id);
     DisableWidget(torture_id, !torture_possible());
-    //    cerr << "selection = " << selection << " - enabling torture" << endl;    // `J` commented out
-    DisableWidget(interact_id, g_TalkCount == 0);
+    DisableWidget(interact_id, g_TalkCount == 0 || IsMultiSelected(girllist_id));
     EnableWidget(release_id);
     DisableWidget(brandslave_id);
     // and then decide if this is a customer selected, or a girl customer is easiest, so we do that first
@@ -387,7 +375,6 @@ int cScreenDungeon::enslave()
     int numGirlsRemoved = 0;
     int pos = 0, deadcount = 0;
 
-    store_selected_girls();
     // roll on vectors!
     for (int selection = GetNextSelectedItemFromList(girllist_id, 0, pos);
          selection != -1;
@@ -532,18 +519,19 @@ void cScreenDungeon::stop_feeding()
     for (int selection = multi_first(); selection != -1; selection = multi_next())
     {
         g_Game->dungeon().SetFeeding(selection, false);
+        SetSelectedItemColumnText(girllist_id, selection, "No", "Feeding");
     }
+    selection_change();
 }
 
 void cScreenDungeon::start_feeding()
 {
-    int pos = 0;
-    selection = GetNextSelectedItemFromList(girllist_id, 0, pos);
-    while (selection != -1)
+    for (int selection = multi_first(); selection != -1; selection = multi_next())
     {
         g_Game->dungeon().SetFeeding(selection, true);
-        selection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
+        SetSelectedItemColumnText(girllist_id, selection, "Yes", "Feeding");
     }
+    selection_change();
 }
 
 void cScreenDungeon::torture_customer(int girls_removed)
@@ -611,9 +599,10 @@ void cScreenDungeon::torture()
 {
     int pos = 0;
     int numGirlsRemoved = 0;
-    store_selected_girls();
 
-    for (selection = GetNextSelectedItemFromList(girllist_id, 0, pos); selection != -1; selection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos))
+    for (int selection = GetNextSelectedItemFromList(girllist_id, 0, pos);
+        selection != -1;
+        selection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos))
     {
         // if it's a customer, we have a separate routine
         if ((selection - (g_Game->dungeon().GetNumGirls() + numGirlsRemoved)) >= 0)
@@ -711,18 +700,4 @@ void cScreenDungeon::get_selected_girls(std::vector<int> *girl_array)
         GSelection = GetNextSelectedItemFromList(girllist_id, pos + 1, pos);
     }
     sort(girl_array->begin(), girl_array->end());
-}
-
-void cScreenDungeon::store_selected_girls()
-{  // save list of multi-selected girls
-    select_girls.clear();
-    get_selected_girls(&select_girls);
-    if (select_girls.empty()) return;
-
-    // we're not really interested in customers here
-    while (select_girls.back() >= g_Game->dungeon().GetNumGirls())
-    {
-        select_girls.pop_back();
-        if (select_girls.empty()) break;
-    }
 }
