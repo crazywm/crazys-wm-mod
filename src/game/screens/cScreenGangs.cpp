@@ -361,7 +361,7 @@ void cScreenGangs::on_select_mission()
         *                if the gang is already doing <whatever>
         *                then let them get on with it
         */
-        if (gang->m_MissionID == u_int(mission_id)) { continue; }
+        if (gang->m_MissionID == mission_id) { continue; }
         /*
         *                if they were recruiting, turn off the
         *                auto-recruit flag

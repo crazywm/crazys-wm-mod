@@ -232,10 +232,8 @@ sInventoryItem* cInventory::GetRandomCatacombItem()
 
 sInventoryItem* cInventory::GetItem(string name)
 {
-    sInventoryItem* item;
-    for (u_int i = 0; i < m_Items.size(); i++)
+    for (auto& item : m_Items)
     {
-        item = m_Items[i];
         if (item->m_Name == name) return item;
     }
     return nullptr;
@@ -256,8 +254,8 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
     {
         int age = girl.age();
         // reset all numbers to default
-        for (u_int i = 0; i < NUM_SKILLS; i++)    girl.set_skill(i, 0);
-        for (int i = 0; i < NUM_STATS; i++)        girl.set_stat(i, 0);
+        for (int i = 0; i < NUM_SKILLS; i++)    girl.set_skill(i, 0);
+        for (int i = 0; i < NUM_STATS; i++)     girl.set_stat(i, 0);
         girl.set_stat(STAT_HEALTH, 100);
         girl.set_stat(STAT_HAPPINESS, 100);
         girl.set_stat(STAT_AGE, (age == 100 ? 100 : 18)); // keep ageless girls ageless    // `J` Legal Note: 18 is the Legal Age of Majority for the USA where I live
@@ -590,7 +588,7 @@ void cInventory::Equip(sGirl& girl, const sInventoryItem* item, bool force)
 
     // apply the effects
     bool is_consumed = item->m_Type == sInventoryItem::Food || item->m_Type == sInventoryItem::Makeup;
-    for (u_int i = 0; i < item->m_Effects.size(); i++)
+    for (int i = 0; i < item->m_Effects.size(); i++)
     {
         int affects = item->m_Effects[i].m_Affects;
         int eff_id = item->m_Effects[i].m_EffectID;

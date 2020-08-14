@@ -71,7 +71,7 @@ TrainableGirl::TrainableGirl(sGirl *girl)
 
 std::string TrainableGirl::update_random(int size)
 {
-    u_int index = g_Dice.random(stats.size());
+    int index = g_Dice.random(stats.size());
     stats[index].upd(size);
     return stats[index].name();
 }
@@ -90,7 +90,7 @@ IdealAttr::IdealAttr(std::vector<TrainableGirl> set, std::string name, int attr_
  *    attr_idx. That's TrainableGirl indices,
  *    not the SKILL_ and STAT_ constants, dig?
  */
-    for(u_int i = 0; i < set.size(); i++) {
+    for(int i = 0; i < set.size(); i++) {
 /*
  *        get the girl for this iteration
  */
@@ -112,7 +112,7 @@ IdealAttr::IdealAttr(std::vector<TrainableGirl> set, std::string name, int attr_
  *    potential. We do that by summing the differences
  *    from the ideal
  */
-    for(u_int i = 0; i < set.size(); i++) {
+    for(int i = 0; i < set.size(); i++) {
         TrainableGirl &trainee = set[i];
         int diff = m_value - trainee[attr_idx].value();
         m_potential += diff;
@@ -125,7 +125,7 @@ IdealGirl::IdealGirl(std::vector<TrainableGirl> set)
 /*
  *    just set up the attribues. use the first girl in the set
  */
-    for(u_int i = 0; i < girl_zero.size(); i++) {
+    for(int i = 0; i < girl_zero.size(); i++) {
         stats.push_back(IdealAttr( set, girl_zero[i].name(), i));
     }
 }
@@ -189,7 +189,7 @@ std::vector<int> IdealGirl::training_indices()
  *    and we use it to store the attribute indices
  *    of the top three elements (or less if there are less)
  */
-     for(u_int i = 0; i < 3; i++) {
+     for(int i = 0; i < 3; i++) {
         //indices[i] = copyvec[i].attr_index();
         indices.push_back(copyvec[i].attr_index());
     }

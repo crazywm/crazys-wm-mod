@@ -106,7 +106,7 @@ void cScreenGallery::init(bool back)
         if (i == IMGTYPE_PREGNANT)
         {
             std::string ext[3] = { "*g", "ani", "gif" };
-            for (u_int e = 0; e < 3; e++)
+            for (int e = 0; e < 3; e++)
             {
                 std::string t = ("preg." + ext[e]);
                 FileList testmode(imagedir, t.c_str());

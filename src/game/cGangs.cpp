@@ -702,7 +702,7 @@ void cGangManager::RestockNetsAndPots()
     }
 }
 
-sGang* cGangManager::GetGangOnMission(u_int missID)
+sGang* cGangManager::GetGangOnMission(int missID)
 {
     auto found = std::find_if(begin(m_PlayersGangs), end(m_PlayersGangs),
             [missID](auto& gang) {
@@ -714,7 +714,7 @@ sGang* cGangManager::GetGangOnMission(u_int missID)
     return found->get();
 }
 
-sGang* cGangManager::GetRandomGangOnMission(u_int missID)
+sGang* cGangManager::GetRandomGangOnMission(int missID)
 {
     RandomSelector<sGang> selector;
     for(auto& gang : m_PlayersGangs) {
@@ -759,7 +759,7 @@ sGang* cGangManager::GetGangRecruitingNotFull(int roomfor)
 }
 
 // Get a vector with all the gangs doing MISS_FOO
-std::vector<sGang*> cGangManager::gangs_on_mission(u_int mission_id)
+std::vector<sGang*> cGangManager::gangs_on_mission(int mission_id)
 {
     std::vector<sGang*> v; // loop through the gangs
     for(auto& gang : m_PlayersGangs)

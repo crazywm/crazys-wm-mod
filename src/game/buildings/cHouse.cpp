@@ -42,7 +42,6 @@ void sHouse::UpdateGirls(bool is_night)    // Start_Building_Process_B
 {
     // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cHouse.cpp
     std::stringstream ss;
-    u_int sw = 0;
 
     //////////////////////////////////////////////////////
     //  Handle the start of shift stuff for all girls.  //

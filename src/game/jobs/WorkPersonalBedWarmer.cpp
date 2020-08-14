@@ -555,7 +555,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
     //Slaves are the only ones we can guarantee haven't refused
     //so this is just going to include slaves
     bool other_notslave = false, other_sick = false;
-    for (u_int i = warmers; i-- > 0; other_notslave = other_sick = false)
+    for (int i = warmers; i-- > 0; other_notslave = other_sick = false)
         // need to walk backwards through vector, as working forward while erasing no good
     {
 
@@ -643,7 +643,7 @@ bool WorkPersonalBedWarmer(sGirl& girl, bool Day0Night1, cRng& rng)
         {
             //if more than two
             ss << harem[0]->FullName();
-            for (u_int i = 1; i < (harem.size() - 1); i++)
+            for (int i = 1; i < (harem.size() - 1); i++)
             {
                 ss << ", " << harem[i]->FullName();
             }

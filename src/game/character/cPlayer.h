@@ -92,8 +92,6 @@ public:
     std::string disposition_text() const;
     std::string suss_text() const;
 
-    bool Combat(sGirl& girl);    // returns true if the girl wins
-
     /// automatically use items on the given girl
     void apply_items(sGirl& girl);
     void AutomaticFoodItemUse(sGirl& girl, const char* item_name, std::string message);

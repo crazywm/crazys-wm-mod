@@ -39,8 +39,6 @@
 
 using namespace std;
 
-typedef unsigned int u_int;
-
 extern sColor g_WindowBorderColor;
 extern sColor g_WindowBackgroundColor;
 extern cConfig cfg;

@@ -256,7 +256,7 @@ void IBuildingScreenManagement::on_select_job(int selection)
 void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_selection, bool fulltime)
 {
     // handle special job requirements and assign
-    unsigned int old_job = girl.get_job(Day0Night1);
+    JOBS old_job = girl.get_job(Day0Night1);
     
     // if HandleSpecialJobs returns true, the job assignment was modified or cancelled
     if (job_manager().HandleSpecialJobs(girl, new_job, old_job, Day0Night1, fulltime))
@@ -266,8 +266,8 @@ void IBuildingScreenManagement::assign_job(sGirl& girl, JOBS new_job, int girl_s
         SetSelectedItemInList(joblist_id, new_job, false);
     }
 
-    unsigned int day_job   = girl.m_DayJob;
-    unsigned int night_job = girl.m_NightJob;
+    JOBS day_job   = girl.m_DayJob;
+    JOBS night_job = girl.m_NightJob;
     std::stringstream ss;
     // update the girl's listing to reflect the job change
     ss << job_manager().JobData[day_job].name;

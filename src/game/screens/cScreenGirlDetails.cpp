@@ -321,7 +321,7 @@ void cScreenGirlDetails::set_house_percentage(int value)
 
 void cScreenGirlDetails::on_select_job(int selection, bool fulltime)
 {// `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >>
-    int old_job = m_SelectedGirl->get_job(m_EditNightShift);
+    JOBS old_job = m_SelectedGirl->get_job(m_EditNightShift);
     // handle special job requirements and assign - if HandleSpecialJobs returns true, the job assignment was modified or cancelled
     if (g_Game->job_manager().HandleSpecialJobs(*m_SelectedGirl, JOBS(selection), old_job, m_EditNightShift, fulltime))
     {

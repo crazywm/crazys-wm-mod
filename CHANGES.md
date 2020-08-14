@@ -12,7 +12,7 @@ are now per gang.
   * `money.cost.{room,contraception,healing_potion,net}` Price for a room, contraceptive, healing potion, or net
 
 
-# Minor improvements
+## Minor improvements
 * Preserve selected item after adjusting a setting in the new game screen
 * Removed Gang Catacomb Orders from settings, as these are set per game in the Gang Management screen
 

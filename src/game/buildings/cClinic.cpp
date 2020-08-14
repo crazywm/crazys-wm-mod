@@ -248,8 +248,8 @@ void sClinic::auto_assign_job(sGirl& target, std::stringstream& message, bool is
 
 bool sClinic::handle_back_to_work(sGirl& girl, std::stringstream& ss, bool is_night)
 {
-    u_int firstjob = JOB_GETHEALING;
-    u_int lastjob = JOB_JANITOR;
+    JOBS firstjob = JOB_GETHEALING;
+    JOBS lastjob = JOB_JANITOR;
 
     JOBS psw = (is_night ? girl.m_PrevNightJob : girl.m_PrevDayJob);
     bool backtowork = false;

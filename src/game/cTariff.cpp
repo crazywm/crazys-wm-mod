@@ -44,7 +44,7 @@ double cTariff::slave_base_price(sGirl& girl) const
     double cost;
     cGirls::UpdateAskPrice(girl, false);
     cost = girl.askprice() * 15;                        // base price is the girl's ask price stat
-    for (u_int i = 0; i < NUM_SKILLS; i++)                // add to that the sum of her skills
+    for (int i = 0; i < NUM_SKILLS; i++)                // add to that the sum of her skills
     {
         cost += (unsigned int)girl.get_skill(i);
     }

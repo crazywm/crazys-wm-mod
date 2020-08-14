@@ -241,7 +241,7 @@ bool WorkBrothelMasseuse(sGirl& girl, bool Day0Night1, cRng& rng)
     if ((girl.libido() > 90) && !bannedCustomer)
         //ANON: sanity check: not gonna give 'perks' to the cust she just banned for wanting perks!
     {
-        u_int n;
+        int n;
         ss << "Because she was quite horny, she ended up ";
         sCustomer Cust = g_Game->GetCustomer(*brothel);
         brothel->m_Happiness += 100;

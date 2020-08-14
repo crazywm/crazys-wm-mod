@@ -24,8 +24,6 @@
 #include <cstdlib>
 #include <initializer_list>
 #include <utils/sPercent.h>
-
-typedef unsigned int u_int;
  
 struct cRng
 {

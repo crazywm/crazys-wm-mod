@@ -83,7 +83,7 @@ public:
     std::array<sJobFilter, NUMJOBTYPES> JobFilters;
 
     // return a job description along with a count of how many girls are on it
-    bool HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool Day0Night1, bool fulltime = false );  // check for and handle special job assignments
+    bool HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool Day0Night1, bool fulltime = false );  // check for and handle special job assignments
 
     void Setup();
 
@@ -97,7 +97,7 @@ public:
     static bool gang_stops_rape(sGirl& girl, std::vector<sGang *> gangs_guarding, sGang *enemy_gang, int coverage, int day_night);
     static bool girl_fights_rape(sGirl& girl, sGang *enemy_gang, int day_night);
     static void customer_rape(sGirl& girl, int numberofattackers);
-    static std::string GetGirlAttackedString(u_int attacktype = SKILL_COMBAT);    // `J` added attacktype to be used with sextype for more specific attacks defaulting to combat
+    static std::string GetGirlAttackedString(int attacktype = SKILL_COMBAT);    // `J` added attacktype to be used with sextype for more specific attacks defaulting to combat
 
 
     static sCustomer GetMiscCustomer(IBuilding& brothel);
@@ -110,8 +110,8 @@ public:
     void do_whorejobs(IBuilding& brothel, bool Day0Night1);
     void do_custjobs(IBuilding& brothel, bool Day0Night1);
 
-    bool is_job_Paid_Player(u_int Job);        //    WD:    Test for all jobs paid by player
-    bool FullTimeJob(u_int Job);            //    `J`    Test if job is takes both shifts
+    bool is_job_Paid_Player(JOBS Job);        //    WD:    Test for all jobs paid by player
+    bool FullTimeJob(JOBS Job);            //    `J`    Test if job is takes both shifts
     std::string GirlPaymentText(IBuilding * brothel, sGirl& girl, int totalTips, int totalPay, int totalGold,
                                 bool Day0Night1);
 

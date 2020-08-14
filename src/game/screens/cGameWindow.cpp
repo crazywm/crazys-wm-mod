@@ -1120,7 +1120,7 @@ std::vector<std::string> FindImage(const sGirl& girl, int imagetype, bool galler
         patterns.push_back(checkfor);
         if (tryimagetype == IMGTYPE_PREGNANT)
         {
-            for (u_int i = 0; i < numeric.size(); i++)
+            for (unsigned i = 0; i < numeric.size(); i++)
             {
                 patterns.push_back(("preg" + numeric.substr(i, 1) + "*.*"));
             }

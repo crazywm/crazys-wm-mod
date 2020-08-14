@@ -272,7 +272,7 @@ void IBuilding::EndShift(const std::string& matron_title, bool Day0Night1, bool 
         if (current.has_active_trait("Nymphomaniac"))    { libido += 2; }
         current.upd_temp_stat(STAT_LIBIDO, (g_Dice % libido) + 1, false);
 
-        u_int sw = current.get_job(Day0Night1);
+        JOBS sw = current.get_job(Day0Night1);
         if (current.happiness()< 40)
         {
             if (sw != m_MatronJob && has_matron && num_girls() > 1 && g_Dice.percent(70))
@@ -1685,7 +1685,7 @@ double calc_pilfering(sGirl& girl)
 }
 
 
-void IBuilding::CalculatePay(sGirl& girl, u_int Job)
+void IBuilding::CalculatePay(sGirl& girl, JOBS Job)
 {
     // no pay or tips, no need to continue
     if (girl.m_Pay <= 0 && girl.m_Tips <= 0) { girl.m_Pay = girl.m_Tips = 0; return; }

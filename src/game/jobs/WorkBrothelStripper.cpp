@@ -308,7 +308,7 @@ bool WorkBrothelStripper(sGirl& girl, bool Day0Night1, cRng& rng)
 
     if (sex)
     {
-        u_int n;
+        int n;
         ss << "In one of the private shows, she ended up ";
         brothel->m_Happiness += 100;
         //int imageType = IMGTYPE_SEX;

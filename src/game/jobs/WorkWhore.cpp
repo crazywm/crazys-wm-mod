@@ -114,7 +114,7 @@ bool WorkWhore(sGirl& girl, bool Day0Night1, cRng& rng) {
     bool acceptsGirl = false;        // Customer will sleep girl
 
     int oralcount = 0;        // how much oral she gave for use with AdjustTraitGroupGagReflex
-    u_int job = girl.get_job(Day0Night1);
+    JOBS job = girl.get_job(Day0Night1);
     bool bStreetWork = (job == JOB_WHORESTREETS);
 
     // work out how many customers the girl can service

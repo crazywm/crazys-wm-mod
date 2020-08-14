@@ -104,7 +104,7 @@ public:
     int m_Skills[NUM_SKILLS];    // skills of the gang
     int m_Stats[NUM_STATS];    // stats of the gang
 
-    u_int m_MissionID;    // the type of mission currently performing
+    int m_MissionID;    // the type of mission currently performing
     int m_LastMissID = -1;    // the last mission if auto changed to recruit mission
     bool m_AutoRecruit;    // true if auto recruiting
     bool m_Combat = false;    // is true when gang has seen combat in the last week
@@ -138,8 +138,8 @@ public:
     // sends a gang on a mission
     sGang* GetGang(int gangID);                                            // gets a gang
     // gets a recruitable gang
-    sGang* GetGangOnMission(u_int missID);                                // gets a gang on the current mission
-    sGang* GetRandomGangOnMission(u_int missID);                        // gets a random gang on the current mission
+    sGang* GetGangOnMission(int missID);                                // gets a gang on the current mission
+    sGang* GetRandomGangOnMission(int missID);                        // gets a random gang on the current mission
     sGang* GetGangNotFull(int roomfor = 0, bool recruiting = true);        // gets a gang with room to spare
     sGang* GetGangRecruitingNotFull(int roomfor = 0);                    // gets a gang recruiting with room to spare
     void UpdateGangs();
@@ -175,7 +175,7 @@ public:
 
     int chance_to_catch(const sGirl& girl);
 
-    std::vector<sGang*> gangs_on_mission(u_int mission_id);
+    std::vector<sGang*> gangs_on_mission(int mission_id);
     std::vector<sGang*> gangs_watching_girls();
 
     int Gang_Gets_Girls()    { return m_Gang_Gets_Girls; }

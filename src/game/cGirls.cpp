@@ -164,7 +164,7 @@ cGirls::CreateRandomGirl(int age, bool slave, bool undead, bool Human0Monster1, 
     newGirl->m_Money = (g_Dice % (girl_template.m_MaxMoney - girl_template.m_MinMoney)) + girl_template.m_MinMoney;    // money
 
     // skills
-    for (u_int i = 0; i < NUM_SKILLS; i++)
+    for (int i = 0; i < NUM_SKILLS; i++)
     {
         newGirl->set_skill(i, g_Dice.in_range(girl_template.m_MinSkills[i], girl_template.m_MaxSkills[i]));
     }
@@ -385,7 +385,7 @@ void cGirls::LevelUpStats(sGirl& girl)
     for (int i = 0; i < 8; i++) girl.upd_base_stat(i, g_Dice % DiceSize);
 
     // level up skills
-    for (u_int i = 0; i < NUM_SKILLS; i++)    girl.upd_skill(i, g_Dice%DiceSize);
+    for (int i = 0; i < NUM_SKILLS; i++)    girl.upd_skill(i, g_Dice%DiceSize);
 }
 
 /*
@@ -1675,7 +1675,7 @@ void cGirls::UseItems(sGirl& girl)
             if (!g_Dice.percent(curItem->m_GirlBuyChance)) continue;   // make sure she'd want it herself
 
             int checktouseit = curItem->m_Effects.size();
-            for (u_int j = 0; j < curItem->m_Effects.size(); j++)
+            for (int j = 0; j < curItem->m_Effects.size(); j++)
             {
                 const sEffect* curEffect = &curItem->m_Effects[j];
                 if (curEffect->m_Affects == sEffect::Nothing)
@@ -3566,7 +3566,7 @@ void cGirls::updateTempEnjoyment(sGirl& girl)
     // Sanity check. Abort on dead girl
     if (girl.is_dead()) return;
 
-    for (u_int i = 0; i < NUM_ACTIONTYPES; i++)
+    for (int i = 0; i < NUM_ACTIONTYPES; i++)
     {
         if (girl.m_EnjoymentTemps[i] != 0)
         {                                            // normalize towards 0 by 30% each week
@@ -3768,7 +3768,7 @@ ostream& operator<<(ostream& os, sGirl &g)
     }
     os << endl;
 
-    for (u_int i = 0; i < NUM_SKILLS; i++)
+    for (int i = 0; i < NUM_SKILLS; i++)
     {
         os.width(20);
         os.flags(ios::left);

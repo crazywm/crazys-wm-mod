@@ -159,7 +159,7 @@ struct cInventoryProviderGirl : public IInventoryProvider {
     int give_item(const sInventoryItem *item, int amount) override {
         while(amount > 0) {
             int   goodbad  = item->m_Badness;
-            u_int type     = item->m_Type;
+            int   type     = item->m_Type;
             int   HateLove = m_Girl->pclove() - m_Girl->pchate();
             g_Game->push_message(cScreenItemManagement::GiveItemText(goodbad, HateLove, *m_Girl), 0);
 

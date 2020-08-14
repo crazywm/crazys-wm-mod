@@ -99,7 +99,7 @@ sGirl::sGirl(bool unique) : ICharacter( g_Game->create_traits_collection(), uniq
     // Enjoyment
     for (int i = 0; i < NUM_ACTIONTYPES; i++)    // `J` Added m_Enjoyment here to zero out any that are not specified
         m_Enjoyment[i] = m_EnjoymentMods[i] = m_EnjoymentTemps[i] = 0;
-    for (u_int i = 0; i < NUM_ACTIONTYPES; i++)    // `J` randomize starting likes -10 to 10 most closer to 0
+    for (int i = 0; i < NUM_ACTIONTYPES; i++)    // `J` randomize starting likes -10 to 10 most closer to 0
         m_Enjoyment[i] = (g_Dice.bell(-10, 10));
 
     // Training
@@ -382,7 +382,7 @@ bool sGirl::equip(const sInventoryItem* item, bool force) {
 }
 
 int sGirl::upd_base_stat(int stat_id, int amount, bool usetraits) {
-    u_int stat = stat_id;
+    int stat = stat_id;
     switch (stat) {
 
     case STAT_HEALTH:
@@ -1432,7 +1432,7 @@ bool sGirl::unequip(const sInventoryItem* item) {
     if (!item) return false;    // if already unequiped do nothing
     if(!inventory().remove_from_equipment(item)) return false;        // nothing was unequipped
     // unapply the effects
-    for (u_int i = 0; i < item->m_Effects.size(); i++)
+    for (int i = 0; i < item->m_Effects.size(); i++)
     {
         int eff_id = item->m_Effects[i].m_EffectID;
         int affects = item->m_Effects[i].m_Affects;
@@ -1487,7 +1487,7 @@ std::shared_ptr<sGirl> sGirl::LoadFromTemplate(const tinyxml2::XMLElement& root)
         }
     }
 
-    for (u_int i = 0; i < NUM_SKILLS; i++)    //    loop through skills
+    for (int i = 0; i < NUM_SKILLS; i++)    //    loop through skills
     {
         root.QueryAttribute(get_skill_name((SKILLS)i), &girl->m_Skills[i].m_Value);
     }

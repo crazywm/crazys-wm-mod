@@ -168,7 +168,7 @@ void sBrothel::UpdateGirls(bool is_night)
         /*
         *        JOB PROCESSING
         */
-        u_int sw = current.get_job(is_night);
+        JOBS sw = current.get_job(is_night);
 
         // Sanity check! Don't process runaways
         if (sw == JOB_RUNAWAY)        // `J` added for .06.03.00
@@ -225,7 +225,7 @@ void sBrothel::UpdateGirls(bool is_night)
         else if (totalGold > 0)
         {
             ss << "${name} earned a total of " << totalGold << " gold";
-            u_int job = current.get_job(is_night);
+            JOBS job = current.get_job(is_night);
             // if it is a player paid job and you pay her
             if ((g_Game->job_manager().is_job_Paid_Player(job) && !current.is_unpaid()))
                 ss << " directly from you. She gets to keep it all.";

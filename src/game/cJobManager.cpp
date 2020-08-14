@@ -636,7 +636,7 @@ void cJobManager::do_custjobs(IBuilding& brothel, bool Day0Night1)
     });
 }
 
-bool cJobManager::FullTimeJob(u_int Job)
+bool cJobManager::FullTimeJob(JOBS Job)
 {
     return (
         Job == JOB_MATRON ||
@@ -683,7 +683,7 @@ bool cJobManager::FullTimeJob(u_int Job)
         false);
 }
 
-bool cJobManager::is_job_Paid_Player(u_int Job)
+bool cJobManager::is_job_Paid_Player(JOBS Job)
 {
 /*
  *    WD:    Tests for jobs that the player pays the wages for
@@ -852,7 +852,7 @@ bool cJobManager::is_job_Paid_Player(u_int Job)
 }
 
 // `J` When modifying Jobs, search for "J-Change-Jobs"  :  found in >> cJobManager.cpp > HandleSpecialJobs
-bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool Day0Night1, bool fulltime)
+bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, JOBS OldJobID, bool Day0Night1, bool fulltime)
 {
     bool MadeChanges = true;  // whether a special case applies to specified job or not
 
@@ -894,7 +894,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
     }
 // Special Brothel Jobs
 #if 1
-    else if (u_int(JobID) == JOB_MATRON)
+    else if (JobID == JOB_MATRON)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_MATRON, Day0Night1) > 0)
             g_Game->push_message("You can only have one matron per brothel.", 0);
@@ -903,7 +903,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         else
             Girl.m_NightJob = Girl.m_DayJob = JOB_MATRON;
     }
-    else if (u_int(JobID) == JOB_TORTURER)
+    else if (JobID == JOB_TORTURER)
     {
         if (random_girl_on_job(g_Game->buildings(), JOB_TORTURER, 0))
             g_Game->push_message("You can only have one torturer among all of your brothels.", 0);
@@ -915,43 +915,43 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
 #endif
     // Special House Jobs
 #if 1
-    else if (u_int(JobID) == JOB_HEADGIRL)
+    else if (JobID == JOB_HEADGIRL)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_HEADGIRL, Day0Night1) > 0)    g_Game->push_message("There can be only one Head Girl!", 0);
         else if (Girl.is_slave())/*            */    g_Game->push_message("The Head Girl cannot be a slave.", 0);
         else /*                                 */    Girl.m_NightJob = Girl.m_DayJob = JOB_HEADGIRL;
     }
-    else if (u_int(JobID) == JOB_RECRUITER)
+    else if (JobID == JOB_RECRUITER)
     {
         if (Girl.is_slave())/*                 */    g_Game->push_message("The recruiter cannot be a slave.", 0);
         else /*                                 */    Girl.m_NightJob = Girl.m_DayJob = JOB_RECRUITER;
     }
-    else if (u_int(JobID) == JOB_FAKEORGASM)
+    else if (JobID == JOB_FAKEORGASM)
     {
         if (Girl.has_active_trait("Fake Orgasm Expert"))    g_Game->push_message("She already has \"Fake Orgasm Expert\".", 0);
         else /*                                 */    Girl.m_DayJob = Girl.m_NightJob = JOB_FAKEORGASM;
     }
-    else if (u_int(JobID) == JOB_SO_BISEXUAL)
+    else if (JobID == JOB_SO_BISEXUAL)
     {
         if (Girl.has_active_trait("Bisexual"))/*      */    g_Game->push_message("She is already Bisexual.", 0);
         else /*                                 */    Girl.m_DayJob = Girl.m_NightJob = JOB_SO_BISEXUAL;
     }
-    else if (u_int(JobID) == JOB_SO_LESBIAN)
+    else if (JobID == JOB_SO_LESBIAN)
     {
         if (Girl.has_active_trait("Lesbian"))/*       */    g_Game->push_message("She is already a Lesbian.", 0);
         else /*                                 */    Girl.m_DayJob = Girl.m_NightJob = JOB_SO_LESBIAN;
     }
-    else if (u_int(JobID) == JOB_SO_STRAIGHT)
+    else if (JobID == JOB_SO_STRAIGHT)
     {
         if (Girl.has_active_trait("Straight"))/*      */    g_Game->push_message("She is already Straight.", 0);
         else /*                                 */    Girl.m_DayJob = Girl.m_NightJob = JOB_SO_STRAIGHT;
     }
-    else if (u_int(JobID) == JOB_HOUSEPET)
+    else if (JobID == JOB_HOUSEPET)
     {
         if (Girl.is_slave())/*                 */    Girl.m_NightJob = Girl.m_DayJob = JOB_HOUSEPET;
         else /*                                 */    g_Game->push_message("Only slaves can take this training.", 0);
     }
-//    else if (u_int(JobID) == JOB_PONYGIRL)
+//    else if (JobID == JOB_PONYGIRL)
 //    {
 //        if (Girl.is_slave())    Girl.m_NightJob = Girl.m_DayJob = JOB_PONYGIRL;
 //        else                    g_Game->push_message(("Only slaves can take this training."), 0);
@@ -959,7 +959,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
 #endif
     // Special Farm Jobs
 #if 1
-    else if (u_int(JobID) == JOB_FARMMANGER)
+    else if (JobID == JOB_FARMMANGER)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_FARMMANGER, Day0Night1) > 0)
             g_Game->push_message("There can be only one Farm Manager!", 0);
@@ -968,7 +968,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         else
             Girl.m_NightJob = Girl.m_DayJob = JOB_FARMMANGER;
     }
-    else if (u_int(JobID) == JOB_MARKETER)
+    else if (JobID == JOB_MARKETER)
     {
         if (Girl.is_slave())
             g_Game->push_message("The Farm Marketer cannot be a slave.", 0);
@@ -992,7 +992,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
 #endif
     // Special Arena Jobs
 #if 1
-    else if (u_int(JobID) == JOB_DOCTORE)
+    else if (JobID == JOB_DOCTORE)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_DOCTORE, Day0Night1) > 0)
             g_Game->push_message("There can be only one Doctore!", 0);
@@ -1001,11 +1001,11 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         else
             Girl.m_NightJob = Girl.m_DayJob = JOB_DOCTORE;
     }
-    else if (u_int(JobID) == JOB_CITYGUARD && Girl.is_slave())
+    else if (JobID == JOB_CITYGUARD && Girl.is_slave())
     {
         g_Game->push_message("Slaves can not work as City Guards.", 0);
     }
-    else if (u_int(JobID) == JOB_FIGHTTRAIN && (Girl.combat() > 99 && Girl.magic() > 99 && Girl.agility() > 99 && Girl.constitution() > 99))
+    else if (JobID == JOB_FIGHTTRAIN && (Girl.combat() > 99 && Girl.magic() > 99 && Girl.agility() > 99 && Girl.constitution() > 99))
     {    // `J` added then modified
         g_Game->push_message("There is nothing more she can learn here.", 0);
         if (Girl.m_DayJob == JOB_FIGHTTRAIN)    Girl.m_DayJob = rest;
@@ -1014,7 +1014,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
 #endif
     // Special Clinic Jobs
 #if 1
-    else if (u_int(JobID) == JOB_CHAIRMAN)
+    else if (JobID == JOB_CHAIRMAN)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_CHAIRMAN, Day0Night1)>0)
             g_Game->push_message("There can be only one Chairman!", 0);
@@ -1024,7 +1024,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
             Girl.m_NightJob = Girl.m_DayJob = JOB_CHAIRMAN;
     }
 
-    else if (Girl.has_active_trait("AIDS") && (u_int(JobID) == JOB_DOCTOR || u_int(JobID) == JOB_NURSE || u_int(JobID) == JOB_INTERN))
+    else if (Girl.has_active_trait("AIDS") && (JobID == JOB_DOCTOR || JobID == JOB_NURSE || JobID == JOB_INTERN))
     {
         g_Game->push_message("Health laws prohibit anyone with AIDS from working in the Medical profession", 0);
         if (Girl.m_DayJob == JOB_INTERN || Girl.m_DayJob == JOB_NURSE || Girl.m_DayJob == JOB_DOCTOR)
@@ -1032,7 +1032,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         if (Girl.m_NightJob == JOB_INTERN || Girl.m_NightJob == JOB_NURSE || Girl.m_NightJob == JOB_DOCTOR)
             Girl.m_NightJob = rest;
     }
-    else if (u_int(JobID) == JOB_DOCTOR)
+    else if (JobID == JOB_DOCTOR)
     {
         if (Girl.is_slave())
         {
@@ -1046,7 +1046,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         }
         else Girl.m_NightJob = Girl.m_DayJob = JOB_DOCTOR;
     }
-    else if (u_int(JobID) == JOB_INTERN && Girl.medicine() > 99 && Girl.intelligence() > 99 && Girl.charisma() > 99)
+    else if (JobID == JOB_INTERN && Girl.medicine() > 99 && Girl.intelligence() > 99 && Girl.charisma() > 99)
     {
         std::stringstream ss;
         ss << "There is nothing more she can learn here.\n";
@@ -1067,11 +1067,11 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         }
         g_Game->push_message(ss.str(), 0);
     }
-    else if (u_int(JobID) == JOB_MECHANIC)
+    else if (JobID == JOB_MECHANIC)
     {
         Girl.m_NightJob = Girl.m_DayJob = JOB_MECHANIC;
     }
-    else if (u_int(JobID) == JOB_GETHEALING && Girl.has_active_trait("Construct"))
+    else if (JobID == JOB_GETHEALING && Girl.has_active_trait("Construct"))
     {
         if (fulltime)
             Girl.m_DayJob = Girl.m_NightJob = JOB_GETREPAIRS;
@@ -1081,7 +1081,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
             Girl.m_NightJob = JOB_GETREPAIRS;
         g_Game->push_message(("The Doctor does not work on Constructs so she sends ") + Girl.FullName() + (" to the Mechanic."), 0);
     }
-    else if (u_int(JobID) == JOB_GETREPAIRS && !Girl.has_active_trait("Construct") && !Girl.has_active_trait(
+    else if (JobID == JOB_GETREPAIRS && !Girl.has_active_trait("Construct") && !Girl.has_active_trait(
             "Half-Construct"))
     {
         if (fulltime)
@@ -1094,17 +1094,17 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
     }
     // `J` condensed clinic surgery jobs into one check
     else if (
-        u_int(JobID) == JOB_CUREDISEASES ||
-        u_int(JobID) == JOB_GETABORT ||
-        u_int(JobID) == JOB_COSMETICSURGERY ||
-        u_int(JobID) == JOB_BREASTREDUCTION ||
-        u_int(JobID) == JOB_BOOBJOB ||
-        u_int(JobID) == JOB_ASSJOB ||
-        u_int(JobID) == JOB_FACELIFT ||
-        u_int(JobID) == JOB_VAGINAREJUV ||
-        u_int(JobID) == JOB_LIPO ||
-        u_int(JobID) == JOB_TUBESTIED ||
-        u_int(JobID) == JOB_FERTILITY)
+        JobID == JOB_CUREDISEASES ||
+        JobID == JOB_GETABORT ||
+        JobID == JOB_COSMETICSURGERY ||
+        JobID == JOB_BREASTREDUCTION ||
+        JobID == JOB_BOOBJOB ||
+        JobID == JOB_ASSJOB ||
+        JobID == JOB_FACELIFT ||
+        JobID == JOB_VAGINAREJUV ||
+        JobID == JOB_LIPO ||
+        JobID == JOB_TUBESTIED ||
+        JobID == JOB_FERTILITY)
     {
         bool jobgood = true;
         if (Girl.m_Building->num_girls_on_job(JOB_DOCTOR, Day0Night1) == 0)
@@ -1112,50 +1112,50 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
             g_Game->push_message(("You must have a Doctor on duty to perform surgery."), 0);
             jobgood = false;
         }
-        else if (u_int(JobID) == JOB_CUREDISEASES && !has_disease(Girl))
+        else if (JobID == JOB_CUREDISEASES && !has_disease(Girl))
         {
             g_Game->push_message(("Oops, the girl does not have any diseases."), 0);
             jobgood = false;
         }
-        else if (u_int(JobID) == JOB_GETABORT && !Girl.is_pregnant())
+        else if (JobID == JOB_GETABORT && !Girl.is_pregnant())
         {
             g_Game->push_message(("Oops, the girl is not pregant."), 0);
             jobgood = false;
         }
-        else if (u_int(JobID) == JOB_COSMETICSURGERY)
+        else if (JobID == JOB_COSMETICSURGERY)
         {
         }
-        else if (u_int(JobID) == JOB_BREASTREDUCTION && Girl.has_active_trait("Flat Chest"))
+        else if (JobID == JOB_BREASTREDUCTION && Girl.has_active_trait("Flat Chest"))
         {
             g_Game->push_message(("Her boobs can't get no smaller."), 0);
             jobgood = false;
         }
-        else if (u_int(JobID) == JOB_BOOBJOB && Girl.has_active_trait("Titanic Tits"))
+        else if (JobID == JOB_BOOBJOB && Girl.has_active_trait("Titanic Tits"))
         {
             g_Game->push_message(("Her boobs can't get no bigger."), 0);
             jobgood = false;
         }
-        else if (u_int(JobID) == JOB_ASSJOB && Girl.has_active_trait("Great Arse"))
+        else if (JobID == JOB_ASSJOB && Girl.has_active_trait("Great Arse"))
         {
             g_Game->push_message(("Her ass can't get no better."), 0);
             jobgood = false;
         }
-        else if (u_int(JobID) == JOB_FACELIFT && Girl.age() <= 21)
+        else if (JobID == JOB_FACELIFT && Girl.age() <= 21)
         {
             g_Game->push_message(("She is to young for a face lift."), 0);
             jobgood = false;
         }
-        else if (u_int(JobID) == JOB_VAGINAREJUV && is_virgin(Girl))
+        else if (JobID == JOB_VAGINAREJUV && is_virgin(Girl))
         {
             g_Game->push_message(("She is a virgin and has no need of this operation."), 0);
             jobgood = false;
         }
-        else if (u_int(JobID) == JOB_LIPO && Girl.has_active_trait("Great Figure"))
+        else if (JobID == JOB_LIPO && Girl.has_active_trait("Great Figure"))
         {
             g_Game->push_message(("She already has a great figure and doesn't need this."), 0);
             jobgood = false;
         }
-        else if (u_int(JobID) == JOB_TUBESTIED)
+        else if (JobID == JOB_TUBESTIED)
         {
             if (Girl.is_pregnant())
             {
@@ -1168,7 +1168,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
                 jobgood = false;
             }
         }
-        else if (u_int(JobID) == JOB_FERTILITY)
+        else if (JobID == JOB_FERTILITY)
         {
             if (Girl.is_pregnant())
             {
@@ -1187,7 +1187,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
 #endif
     // Special Centre Jobs
 #if 1
-    else if (u_int(JobID) == JOB_CENTREMANAGER)
+    else if (JobID == JOB_CENTREMANAGER)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_CENTREMANAGER, Day0Night1) >0)
             g_Game->push_message(("There can be only one Centre Manager!"), 0);
@@ -1196,14 +1196,14 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         else
             Girl.m_NightJob = Girl.m_DayJob = JOB_CENTREMANAGER;
     }
-    else if (u_int(JobID) == JOB_COUNSELOR)
+    else if (JobID == JOB_COUNSELOR)
     {
         if (Girl.is_slave())
             g_Game->push_message(("The Counselor cannot be a slave."), 0);
         else
             Girl.m_NightJob = Girl.m_DayJob = JOB_COUNSELOR;
     }
-    else if (u_int(JobID) == JOB_REHAB)
+    else if (JobID == JOB_REHAB)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
             g_Game->push_message(("You must have a counselor for rehab."), 0);
@@ -1212,7 +1212,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         else
             Girl.m_DayJob = Girl.m_NightJob = JOB_REHAB;
     }
-    else if (u_int(JobID) == JOB_ANGER)
+    else if (JobID == JOB_ANGER)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
             g_Game->push_message(("You must have a counselor for anger management."), 0);
@@ -1223,7 +1223,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         else
             Girl.m_DayJob = Girl.m_NightJob = JOB_ANGER;
     }
-    else if (u_int(JobID) == JOB_EXTHERAPY)
+    else if (JobID == JOB_EXTHERAPY)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
             g_Game->push_message(("You must have a counselor for extreme therapy."), 0);
@@ -1233,7 +1233,7 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
         else
             Girl.m_DayJob = Girl.m_NightJob = JOB_EXTHERAPY;
     }
-    else if (u_int(JobID) == JOB_THERAPY)
+    else if (JobID == JOB_THERAPY)
     {
         if (Girl.m_Building->num_girls_on_job(JOB_COUNSELOR, Day0Night1) < 1)
             g_Game->push_message(("You must have a counselor for therapy."), 0);
@@ -1247,19 +1247,19 @@ bool cJobManager::HandleSpecialJobs(sGirl& Girl, JOBS JobID, int OldJobID, bool 
 #endif
     // Special Movie Studio Jobs
 #if 1
-    else if (u_int(JobID) == JOB_DIRECTOR && Girl.m_Building->num_girls_on_job(JOB_DIRECTOR, SHIFT_NIGHT) >0)
+    else if (JobID == JOB_DIRECTOR && Girl.m_Building->num_girls_on_job(JOB_DIRECTOR, SHIFT_NIGHT) >0)
     {
         g_Game->push_message(("There can be only one Director!"), 0);
     }
-    else if (u_int(JobID) == JOB_DIRECTOR && Girl.is_slave())
+    else if (JobID == JOB_DIRECTOR && Girl.is_slave())
     {
         g_Game->push_message(("The Director cannot be a slave."), 0);
     }
-    else if (u_int(JobID) == JOB_PROMOTER && Girl.m_Building->num_girls_on_job(JOB_PROMOTER, SHIFT_NIGHT) > 0)
+    else if (JobID == JOB_PROMOTER && Girl.m_Building->num_girls_on_job(JOB_PROMOTER, SHIFT_NIGHT) > 0)
     {
         g_Game->push_message(("There can be only one Promoter."), 0);
     }
-    else if (u_int(JobID) == JOB_PROMOTER && Girl.is_slave())
+    else if (JobID == JOB_PROMOTER && Girl.is_slave())
     {
         g_Game->push_message(("The Promoter cannot be a slave."), 0);
     }
@@ -1405,7 +1405,7 @@ int cJobManager::guard_coverage(std::vector<sGang*> *vpt)
     int pc = 0;
     std::vector<sGang*> v = g_Game->gang_manager().gangs_on_mission(MISS_GUARDING);
     if (vpt != nullptr) *vpt = v;
-    for (u_int i = 0; i < v.size(); i++)
+    for (int i = 0; i < v.size(); i++)
     {
         sGang *gang = v[i];
         // our modifier is (gang int - 50) so that gives us a value from -50 to + 50
@@ -1592,7 +1592,7 @@ bool cJobManager::security_stops_rape(sGirl& girl, sGang *enemy_gang, int day_ni
     }
     else  // Loss
     {
-        u_int attacktype = SKILL_COMBAT;                                                // can be anything
+        int attacktype = SKILL_COMBAT;                                                // can be anything
         if (enemy_gang->m_Num > 1 && g_Dice.percent(40)) attacktype = SKILL_GROUP;        // standard group attack
         else if (enemy_gang->m_Num > 1 && g_Dice.percent(40)) attacktype = SKILL_BDSM;    // special group attack
         else if (g_Dice.percent(20)) attacktype = SKILL_LESBIAN;                        // female attacker
@@ -1745,7 +1745,7 @@ bool cJobManager::girl_fights_rape(sGirl& girl, sGang *enemy_gang, int day_night
  */
 void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
 {
-    u_int attacktype = SKILL_COMBAT;                                                // can be anything
+    int attacktype = SKILL_COMBAT;                                                // can be anything
     /* */if (numberofattackers > 1 && g_Dice.percent(40)) attacktype = SKILL_GROUP;    // standard group attack
     else if (numberofattackers > 1 && g_Dice.percent(40)) attacktype = SKILL_BDSM;    // special group attack
     else if (g_Dice.percent(20)) attacktype = SKILL_LESBIAN;                        // female attacker
@@ -1830,7 +1830,7 @@ void cJobManager::customer_rape(sGirl& girl, int numberofattackers)
 // the caller doesn't need the stream and gcc is giving weird type coercion
 // errors
 
-std::string cJobManager::GetGirlAttackedString(u_int attacktype)
+std::string cJobManager::GetGirlAttackedString(int attacktype)
 {
     int roll1 = 0, roll2 = 0, roll3 = 0, rolla = 0;
     int maxroll1 = 21, maxroll2 = 20, maxroll3 = 21;
@@ -2028,13 +2028,14 @@ std::string cJobManager::GetGirlAttackedString(u_int attacktype)
  */
 void cJobManager::get_training_set(std::vector<sGirl*> &v, std::vector<sGirl*> &t_set)
 {
-    u_int max = 4;
-    u_int v_siz = v.size();
-
+    int max = 4;
     // empty out the trainable set
     t_set.clear();
-     if (v_siz == 0u) return;    // if there's nothing in the vector, return with t_set empty
-    if (v_siz == 1u)            // if there's just one, return with t_set containing that
+    if(v.empty())
+        return;                 // if there's nothing in the vector, return with t_set empty
+    int v_siz = v.size();
+
+    if (v_siz == 1)            // if there's just one, return with t_set containing that
     {
         t_set.push_back(v.back());
         v.pop_back();
@@ -2058,11 +2059,11 @@ void cJobManager::get_training_set(std::vector<sGirl*> &v, std::vector<sGirl*> &
  *    we don't compare against v.size() because
  *    that will change as the loop progresses
  */
-    u_int lim = (max < v_siz ? max : v_siz);
+    int lim = (max < v_siz ? max : v_siz);
 /*
  *    now loop until we hit max, or run out of girls
  */
-     for(u_int i = 0; i < lim; i++)
+     for(int i = 0; i < lim; i++)
     {
         t_set.push_back(v.back());
         v.pop_back();
@@ -2110,7 +2111,6 @@ void cJobManager::do_solo_training(sGirl& girl, bool Day0Night1)
 
 void cJobManager::do_training_set(std::vector<sGirl*> girls, bool Day0Night1)
 {
-    sGirl *girl;
     std::stringstream ss;
     /*
     *    we're getting a vector of 1-4 girls here
@@ -2136,12 +2136,10 @@ void cJobManager::do_training_set(std::vector<sGirl*> girls, bool Day0Night1)
     *    making that a class constant - or a static class member
     *    initialised from the config file. Later for that.
     */
-    u_int num_girls = girls.size();
-    for (u_int i = 0; i < num_girls; i++)
+    for (auto& girl : girls)
     {
-        girl = girls[i];
         if (girl == nullptr) break;
-        set.push_back(TrainableGirl(girl));
+        set.emplace_back(girl);
     }
     /*
     *    now get an idealized composite of the girls in the set
@@ -2154,11 +2152,11 @@ void cJobManager::do_training_set(std::vector<sGirl*> girls, bool Day0Night1)
     /*
     *    OK. Loop over the girls, and then over the indices
     */
-    for (u_int g_idx = 0; g_idx < set.size(); g_idx++)
+    for (int g_idx = 0; g_idx < set.size(); g_idx++)
     {
         TrainableGirl &trainee = set[g_idx];
 
-        for (u_int i_idx = 0; i_idx < indices.size(); i_idx++)
+        for (int i_idx = 0; i_idx < indices.size(); i_idx++)
         {
             int index = indices[i_idx];
             /*
@@ -2197,12 +2195,12 @@ void cJobManager::do_training_set(std::vector<sGirl*> girls, bool Day0Night1)
         //int n_girls = set.size();
         ss.str("");
         ss << ("She trained during this shift in the following grouping: ");
-        for (u_int i = 0; i < num_girls; i++)
+        for (int i = 0; i < girls.size(); i++)
         {
             ss << girls[i]->FullName();
-            if (i == 0 && num_girls == 2)    ss << (" and ");
-            else if (i < num_girls - 2)        ss << (", ");
-            else if (i == num_girls - 2)    ss << (", and ");
+            if (i == 0 && girls.size() == 2)    ss << (" and ");
+            else if (i < girls.size() - 2)        ss << (", ");
+            else if (i == girls.size() - 2)    ss << (", and ");
         }
         ss << (".");
 
@@ -2211,7 +2209,7 @@ void cJobManager::do_training_set(std::vector<sGirl*> girls, bool Day0Night1)
         ss << ("She trained during this shift");
 
         bool raised = false;
-        for (u_int i_idx = 0; i_idx < indices.size(); i_idx++)
+        for (int i_idx = 0; i_idx < indices.size(); i_idx++)
         {
             int index = indices[i_idx];
             int gain = trainee[index].gain();
@@ -2236,7 +2234,7 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
     std::vector<sGirl*> t_set;
     std::vector<sGirl*> girls = brothel->girls_on_job(JOB_TRAINING, Day0Night1);
 
-    for (u_int i = girls.size(); i-- > 0;)
+    for (int i = girls.size(); i-- > 0;)
     {  // no girls sneaking in training if she gave birth
         if ((girls[i]->m_WeeksPreg > 0 &&
             girls[i]->m_WeeksPreg + 1 >= girls[i]->get_preg_duration())
@@ -2259,9 +2257,8 @@ void cJobManager::do_training(sBrothel* brothel, bool Day0Night1)
     *    and then each girl gets to feel tired and horny
     *    as a result of training
     */
-    for (u_int i = 0; i < girls.size(); i++)
+    for (auto& girl : girls)
     {
-        sGirl *girl = girls[i];
         int libido = (girl->has_active_trait("Nymphomaniac")) ? 4 : 2;
         girl->upd_temp_stat(STAT_LIBIDO, libido);
     }
@@ -2274,7 +2271,7 @@ std::string cJobManager::GirlPaymentText(IBuilding * brothel, sGirl& girl, int t
 {
     std::stringstream ss;
     std::string girlName = girl.FullName();
-    u_int sw = girl.get_job(Day0Night1);
+    auto sw = girl.get_job(Day0Night1);
 
     // `J` if a slave does a job that is normally paid by you but you don't pay your slaves...
     if (girl.is_unpaid() && is_job_Paid_Player(sw))

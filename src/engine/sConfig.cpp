@@ -100,7 +100,7 @@ void sConfigData::get_att(XMLElement *el, const char *name, bool &bval)
     *    convert to a string, and then squash that to lower case
     */
     std::string s = pt;
-    for (u_int i = 0; i < s.length(); i++) { s[i] = std::tolower(s[i]); }
+    for(char& c : s) { c = std::tolower(c); }
     /*
     *    now we expect either "true" or "false"
     *    we can take "1" and "0" as well

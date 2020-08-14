@@ -1343,7 +1343,7 @@ bool WorkFreetime(sGirl& girl, bool Day0Night1, cRng& rng)
                                 /*This should work better then what I had before*/
                                 else
                                 {
-                                    u_int n;
+                                    int n;
                                     switch (rng % 10)
                                     {
                                     case 0:        n = SKILL_NORMALSEX;  ss << "lead singer.";            break;

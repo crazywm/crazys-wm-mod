@@ -172,7 +172,7 @@ public:
 
     void do_daily_items(sGirl& girl);
 
-    void CalculatePay(sGirl& girl, u_int Job);
+    void CalculatePay(sGirl& girl, JOBS Job);
 
     // this is called for when the player tries to meet a new girl at this location
     bool CanEncounter() const;
