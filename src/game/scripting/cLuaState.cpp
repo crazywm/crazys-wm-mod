@@ -92,6 +92,8 @@ cLuaInterpreter::~cLuaInterpreter() {
 }
 
 sLuaThread* sLuaThread::create(lua_State* L) {
+    lua_checkstack(L, 20);
+
     // create the new thread
     get_threads_table(L);
 
