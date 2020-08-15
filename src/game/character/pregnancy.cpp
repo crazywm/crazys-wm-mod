@@ -50,11 +50,12 @@ namespace settings {
     extern const char* PREG_CHANCE_BEAST;
     extern const char* PREG_DURATION_HUMAN;
     extern const char* PREG_DURATION_MONSTER;
-    extern const char* PREG_GIRL_CHANCE;
+    extern const char* PREG_GIRL_CHILD;
     extern const char* PREG_COOL_DOWN;
     extern const char* PREG_MISS_HUMAN;
     extern const char* PREG_MISS_MONSTER;
     extern const char* PREG_WEEKS_GROW;
+    extern const char* PREG_CHANCE_GIRL;
 }
 
 int calc_abnormal_pc(const sGirl& mom, sGirl& sprog, bool is_players);
@@ -95,15 +96,14 @@ bool UseAntiPreg(const sGirl& girl)
 
 
 int fertility(const sGirl& girl) {
-    if (girl.get_trait_modifier("tag:sterile") > 0)          return 0;
+    if (girl.get_trait_modifier("tag:sterile") > 0)     return 0;
     if (girl.is_pregnant())                                  return 0;
     if (girl.m_PregCooldown > 0)                             return 0;
     if(UseAntiPreg(girl)) {
         return 0;
     }
 
-    int chance = 0;
-    if (is_virgin(girl)) chance += 10;
+    int chance = 100.f * g_Game->settings().get_percent(settings::PREG_CHANCE_GIRL);
     chance += girl.get_trait_modifier("fertility");
     return chance;
 }

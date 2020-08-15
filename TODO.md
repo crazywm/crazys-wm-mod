@@ -4,6 +4,7 @@
 * [ ] use ffmpeg to support animation/video files
 * [ ] file system abstraction (physfs? / boost::filesystem?)
 * [ ] libarchive for archive handling
+* [ ] Integrate boost::stacktrace for better debugging
 
 ## Code
 * [ ] Move all remaining game code out of the user interface
@@ -22,6 +23,7 @@
 ## UI
 * [ ] numeric column sorting
 * [ ] interface/resolution/fullscreen selection to settings screen
+* [ ] Per building/global anti preg setting
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing
@@ -36,3 +38,4 @@
 * [ ] Clicking the item filter in the inventory screen sets focus to left inventory
 * [ ] async scripts and messages may get scrambled
 * [ ] Bought a dead girl from the market?
+* [x] Girls can't get pregnant 

@@ -44,7 +44,7 @@ namespace settings {
     extern const char* PREG_CHANCE_BEAST;
     extern const char* PREG_DURATION_HUMAN;
     extern const char* PREG_DURATION_MONSTER;
-    extern const char* PREG_GIRL_CHANCE;
+    extern const char* PREG_GIRL_CHILD;
 }
 
 /*
@@ -885,7 +885,7 @@ sChild::sChild(bool is_players, Gender gender, int MultiBirth)
 }
 
 sChild::Gender sChild::RandomGender() {
-    auto chance = g_Game->settings().get_percent(settings::PREG_GIRL_CHANCE);
+    auto chance = g_Game->settings().get_percent(settings::PREG_GIRL_CHILD);
     return g_Dice.percent(chance) ? Girl : Boy;
 }
 

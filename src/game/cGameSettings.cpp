@@ -80,7 +80,8 @@ namespace settings {
     const char* PREG_CHANCE_PLAYER = "pregnancy.chance.player";
     const char* PREG_CHANCE_CUST   = "pregnancy.chance.customer";
     const char* PREG_CHANCE_BEAST  = "pregnancy.chance.beast";
-    const char* PREG_GIRL_CHANCE   = "pregnancy.chance.girl";
+    const char* PREG_CHANCE_GIRL  = "pregnancy.chance.girl";
+    const char* PREG_GIRL_CHILD   = "pregnancy.child.girl-chance";
     const char* PREG_DURATION_HUMAN    = "pregnancy.duration.human";
     const char* PREG_DURATION_MONSTER  = "pregnancy.duration.monster";
     const char* PREG_WEEKS_GROW    = "pregnancy.duration.growth";
@@ -153,11 +154,12 @@ cGameSettings::cGameSettings()
     add_setting(PREG_MISS_HUMAN, "Miscarriage Chance", "Chance for miscarriage in monster pregnancy", sPercent(0.01f));
     add_setting(PREG_MISS_MONSTER, "Miscarriage Monster", "Chance for miscarriage in normal pregnancy", sPercent(0.001f));
 
-    add_setting(PREG_CHANCE_PLAYER, "Player Chance", "Base chance for getting impregnated by the player.", sPercent(0.08f));
-    add_setting(PREG_CHANCE_CUST, "Customer Chance", "Base chance for getting impregnated by a customer.", sPercent(0.08f));
-    add_setting(PREG_CHANCE_BEAST, "Monster Chance", "Base chance for getting impregnated by a monster.", sPercent(0.08f));
+    add_setting(PREG_CHANCE_PLAYER, "Player Chance", "Base chance for getting impregnated by the player.", sPercent(0.25f));
+    add_setting(PREG_CHANCE_CUST, "Customer Chance", "Base chance for getting impregnated by a customer.", sPercent(0.25f));
+    add_setting(PREG_CHANCE_BEAST, "Monster Chance", "Base chance for getting impregnated by a monster.", sPercent(0.25f));
+    add_setting(PREG_CHANCE_GIRL, "Girl Chance", "Base chance that the girl is fertile.", sPercent(0.25f));
 
-    add_setting(PREG_GIRL_CHANCE, "Chance Of Girl", "Percentage of children that will be girls.", sPercent(0.5f));
+    add_setting(PREG_GIRL_CHILD, "Chance Of Girl", "Percentage of children that will be girls.", sPercent(0.5f));
     add_setting(PREG_DURATION_HUMAN, "Weeks Pregnant", "Pregnancy duration (in weeks) for human babies.", 38);
     add_setting(PREG_DURATION_MONSTER, "Weeks Monster P", "Pregnancy duration (in weeks) for monster babies.", 20);
     add_setting(PREG_WEEKS_GROW, "Weeks Till Grown", "How long (weeks) it takes for a child to grow up.", 60);
