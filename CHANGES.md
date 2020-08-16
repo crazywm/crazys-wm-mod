@@ -1,4 +1,15 @@
-# Version 07.00.alpha2 (work in progress)
+# Version 07.00.alpha3 (work in progress)
+## Changes
+* Can now have video files instead of gifs
+
+## Minor improvements
+
+## Fixes
+* Girls can get pregnant again
+* Fixed interaction script experience gain
+
+
+# Version 07.00.alpha2
 ## Changes
 * Recursively scan character folder for girl files
 * Adjusted (and made configurable) the gang weapon upgrade cost to account for the fact they

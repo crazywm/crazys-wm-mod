@@ -46,12 +46,12 @@ void cWindowManager::push(const std::string& window_name)
     }
 
     m_WindowStack.push_back(windows[window_name]);
-    try {
+    //try {
         m_WindowStack.back()->init(false);
-    } catch(...) {
+    /*} catch(...) {
         m_WindowStack.pop_back();
         throw;
-    }
+    }*/
 }
 
 void cWindowManager::replace(const std::string& window_name)
@@ -59,13 +59,13 @@ void cWindowManager::replace(const std::string& window_name)
     g_LogFile.info("interface", "Replace Window '", window_name, '\'');
     auto current = m_WindowStack.back();
     m_WindowStack.pop_back();
-    try {
+    //try {
         push(window_name);
-    } catch(...) {
+    /*} catch(...) {
         // in case of exception, roll back the pop
         m_WindowStack.push_back(current);
         throw;
-    }
+    }*/
 }
 
 

@@ -20,15 +20,25 @@
 #include "interface/cImageCache.h"
 #include "interface/cSurface.h"
 #include "interface/cColor.h"
-#include <string>
-#include <SDL.h>
-#include <SDL_image.h>
-#include "SDL_anigif.h"
-#include <SDL_ttf.h>
 #include "CLog.h"
+#include "ffmpeg.h"
+
+#include <string>
+#include <stdexcept>
+#include <memory>
 #include <cassert>
 #include <utility>
-#include <iostream> // TODO replace with real logging!
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+
+extern "C" {
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/imgutils.h>
+#include <libswscale/swscale.h>
+}
 
 // hashing (https://www.boost.org/doc/libs/1_55_0/doc/html/hash/reference.html#boost.hash_combine)
 std::size_t combine() { return 0; }
@@ -275,63 +285,115 @@ cSurface cImageCache::BlitSurface(const cSurface& target, SDL_Rect* target_area,
     return cSurface(std::move(ccs), m_GFX);
 }
 
-cAnimatedSurface cImageCache::LoadGif(std::string filename, int target_width, int target_height)
-{
-    // TODO
-    int frames = AG_LoadGIF(filename.c_str(), nullptr, 0);
-    if (frames) {
-        auto gpAG = std::make_unique<AG_Frame[]>(frames);
-        AG_LoadGIF(filename.c_str(), gpAG.get(), frames);
-        // convert to display format. This can increase the memory requirements about 4x, but allows
-        // us to work with a simple array of frames from now on.
-        AG_NormalizeSurfacesToDisplayFormat(gpAG.get(), frames);
+struct sFrameData {
+    unsigned char* Data;
+    int Wrap;
+    int Width;
+    int Height;
+    long Time;
+};
 
-        // extract the frames to "surfaces"
-        std::vector<sAnimationFrame> surfaces;
-        for(int i = 0; i < frames; ++i) {
-            std::stringstream name;
-            name << filename << "@" << i;
-            auto surface = AddToCache(sImageCacheKey{std::move(name.str()), target_width, target_height, false, false},
-                                      ResizeImage(surface_ptr_t{gpAG[i].surface}, target_width, target_height, true), filename);
-            surfaces.push_back({std::move(surface), gpAG[i].delay});
+// https://github.com/FFmpeg/FFmpeg/blob/master/doc/examples/decode_video.c
+// https://ffmpeg.org/doxygen/trunk/group__lavc__core.html#gae80afec6f26df6607eaacf39b561c315
+
+class sConverter {
+public:
+    sConverter(int src_w, int src_h, AVPixelFormat src_fmt, int dst_w, int dst_h, AVPixelFormat dst_fmt) :
+            m_Context(sws_getContext(src_w, src_h, src_fmt,
+                                     dst_w, dst_h, dst_fmt,
+                                     SWS_BILINEAR | SWS_ACCURATE_RND, nullptr, nullptr, nullptr)) {
+        if (!m_Context) {
+            g_LogFile.error("ffmpeg", "Impossible to create scale context for the conversion fmt: ",
+                            av_get_pix_fmt_name(src_fmt), " s: ", src_w, "x", src_h, " ->  fmt: ",
+                            av_get_pix_fmt_name(dst_fmt), " s: ", dst_w, "x", dst_h);
         }
-        return cAnimatedSurface{std::move(surfaces)};
+    }
+    ~sConverter() {
+        sws_freeContext(m_Context);
     }
 
-    return {};
+    void scale(const AVFrame* src, ffmpeg::sImageBuffer& target) {
+        sws_scale(m_Context, src->data, src->linesize, 0, src->height, target.Data, target.Linesize);
+    }
+private:
+    SwsContext* m_Context;
+};
+
+template<class F>
+void ReadMovie(std::string& file_name, F&& callback) {
+    auto format = ffmpeg::open_format(file_name.c_str());
+    find_stream_info(format);
+
+    AVCodec* dec = nullptr;
+    int stream_index = av_find_best_stream(format.get(), AVMEDIA_TYPE_VIDEO, -1, -1, &dec, 0);
+    if (stream_index < 0) {
+        throw std::runtime_error("Could not find video stream");
+    }
+
+    auto ctx = ffmpeg::alloc_context(dec);
+    auto stream = format->streams[stream_index];
+    load_parameters(ctx, stream->codecpar);
+    open(ctx, dec);
+
+    AVPacket pkt;
+    av_init_packet(&pkt);
+    pkt.data = nullptr;
+    pkt.size = 0;
+
+    sConverter converter{ctx->width, ctx->height, ctx->pix_fmt,
+                         ctx->width, ctx->height, AV_PIX_FMT_RGBA};
+
+    ffmpeg::sImageBuffer converted(ctx->width, ctx->height, AV_PIX_FMT_RGBA);
+    auto converter_callback = [&](ffmpeg::Frame& frame) {
+
+        converter.scale(frame.get(), converted);
+        sFrameData data{converted.Data[0], converted.Linesize[0],
+                        frame->width, frame->height, (1000 * frame->best_effort_timestamp * stream->time_base.num) / stream->time_base.den};
+        callback(data);
+    };
+
+    auto frame = ffmpeg::alloc_frame();
+    while (av_read_frame(format.get(), &pkt) >= 0) {
+        // check if the packet belongs to a stream we are interested in, otherwise
+        // skip it
+        if (pkt.stream_index == stream_index) {
+            decode_packet(ctx, frame, &pkt, converter_callback);
+        }
+        av_packet_unref(&pkt);
+    }
+    decode_packet(ctx, frame, nullptr, converter_callback);
 }
 
-cAnimatedSurface cImageCache::LoadAni(std::string gfx_file, const std::string& ani_file, int target_width, int target_height)
-{
-    int numFrames, speed, aniwidth, aniheight;
-    std::ifstream input;
-    input.open(ani_file);
-    if (!input)
-    {
-        throw std::runtime_error("Invalid data file for animation - " + ani_file );
-    }
-    else
-    {
-        input >> numFrames >> speed >> aniwidth >> aniheight;
-        auto base_image = LoadImage(std::move(gfx_file), -1, -1, true);
+cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, int target_width, int target_height) {
+    std::vector<sAnimationFrame> surfaces;
+    auto start = std::chrono::steady_clock::now();
+    int frame_num = 0;
+    long last_frame = 0;
+    ReadMovie(movie, [&](const sFrameData& frame) {
+        std::stringstream name;
 
-        auto cols = base_image.GetWidth() / aniwidth;
-        auto rows = base_image.GetHeight() / aniheight;
-        SDL_Rect rect;
-        rect.w = aniwidth;
-        rect.h = aniheight;
-
-        std::vector<sAnimationFrame> surfaces;
-        for(auto row = 0; row < rows; ++row) {
-            for(auto col = 0; col < cols; ++col) {
-                rect.x = col*rect.w;
-                rect.y = row*rect.h;
-                auto sf = GetSubImage(target_width, target_height, base_image, rect);
-                surfaces.push_back(sAnimationFrame{std::move(sf), speed});
-            }
+        // create SDL surface from image data
+        m_ImageCreateCount++;
+        auto sf = SDL_CreateRGBSurfaceFrom(frame.Data, frame.Width, frame.Height, 32, frame.Wrap,
+                                           0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+        if(!sf) {
+            throw std::runtime_error("Could not create SDL surface");
         }
-        return cAnimatedSurface{std::move(surfaces)};
-    }
+        SDL_SetSurfaceBlendMode(sf, SDL_BLENDMODE_BLEND);
+        auto surface_ptr = surface_ptr_t{sf};
+
+        name << movie << "@" << frame_num;
+        auto surface = AddToCache(sImageCacheKey{std::move(name.str()), target_width, target_height, false, false},
+                                  ResizeImage(std::move(surface_ptr), target_width, target_height, true), movie);
+        // TODO is this off by one? first frame seems to be at time "0"
+        surfaces.push_back({std::move(surface), int(frame.Time - last_frame)});
+        last_frame = frame.Time;
+        ++frame_num;
+    });
+
+    int dur = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
+    g_LogFile.info("ffmpeg", "Loaded ", movie, " with ", surfaces.size(), " frames in ", dur, "ms");
+    return cAnimatedSurface{std::move(surfaces)};
 }
 
 cSurface cImageCache::CreateTextSurface(TTF_Font* font, std::string text, sColor color, bool antialias)

@@ -17,6 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <utils/algorithms.hpp>
 #include "cInventory.h"
 #include "cGameWindow.h"
 #include "interface/cWindowManager.h"
@@ -1200,63 +1201,19 @@ void cGameWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, in
         std::string file     = images[num];
 
         std::string ext = tolower(file.substr(file.find_last_of('.') + 1));
-        if (ext == "ani") {
-#ifdef LINUX
-            auto splitpoint = file.find_last_of('/');
-#else
-            auto splitpoint = file.find_last_of('\\');
-#endif
-            DirPath anidir = DirPath() << file.substr(0, splitpoint) << "ani";
-            anidir << "ani";
-            std::string name = file.substr(splitpoint+1);
-            name.erase(name.size() - 4, 4);
-            name += ".jpg";
-            FileList testani(anidir, name.c_str());
-            if (testani.size() <= 0) {
-                if (gallery) {
-                    image->SetImage(
-                            GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(),
-                                                    true));
-                    image->m_Message = "Bad ani file: Missing its matching jpg file: " + file;
-                    return;
-                }
-                // try a different image if there is a loading error
-                images.erase(images.begin() + num);
-                continue;
-            }
-            anidir << name;
-
-            try {
-                image->SetImage(
-                        GetGraphics().GetImageCache().LoadAni(anidir, file, image->GetWidth(), image->GetHeight()));
-                image->m_Message = file;
-            } catch (std::runtime_error&) {
-                if (gallery) {
-                    image->SetImage(
-                            GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(),
-                                                    true));
-                    image->m_Message = "Bad ani file: Incorrect data file given for animation: " + file;
-                    return;
-                }
-                // try a different image if there is a loading error
-                images.erase(images.begin() + num);
-                continue;
-            }
-        } else if (ext == "gif") {
-            auto gif = GetGraphics().GetImageCache().LoadGif(file, image->GetWidth(), image->GetHeight());
+        // this is the list of supported formats found on SDL_image's website
+        // BMP, PNM (PPM/PGM/PBM), XPM, LBM, PCX, GIF, JPEG, PNG, TGA, and TIFF
+        if(is_in(ext, {"jpg", "jpeg", "png", "bmp", "tga", "tiff"})) {
+            image->SetImage(GetGraphics().LoadImage(file, image->GetWidth(), image->GetHeight(), true));
+        } else {
+            auto gif = GetGraphics().GetImageCache().LoadFfmpeg(file, image->GetWidth(), image->GetHeight());
             if (gif) {
                 image->SetImage(gif);
-            } else    // if it does not read as a gif, just load it as a normal image
-            {
-                image->SetImage(GetGraphics().LoadImage(file, image->GetWidth(), image->GetHeight(), true));
+            } else {
+                // OK, loading didn't work, try another image
+                images.erase(images.begin() + num);
+                continue;
             }
-        } else if (ext == "jpg" || ext == "jpeg" || ext == "png") {
-            image->SetImage(GetGraphics().LoadImage(file, image->GetWidth(), image->GetHeight(), true));
-        } else    // any other extension gets cleared.
-        {
-            // try a different image if there is an unrecognized extension
-            images.erase(images.begin() + num);
-            continue;
         }
 
         if (image->m_Message.empty()) {

@@ -91,8 +91,7 @@ public:
     cSurface GetSubImage(int width, int height, const cSurface& source, SDL_Rect src_rect);
     cSurface CreateTextSurface(TTF_Font* font, std::string text, sColor color, bool antialias);
 
-    cAnimatedSurface LoadGif(std::string filename, int target_width, int target_height);
-    cAnimatedSurface LoadAni(std::string gfx_file, const std::string& ani_file, int target_width, int target_);
+    cAnimatedSurface LoadFfmpeg(std::string movie, int target_width, int target_height);
 
     // Modifying functions
     cSurface FillRect(const cSurface& source, SDL_Rect area, sColor color);

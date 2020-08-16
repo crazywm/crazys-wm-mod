@@ -42,8 +42,8 @@ auto find_if(const T& container, F&& predicate)
     return std::find_if(begin(container), end(container), std::forward<F>(predicate));
 }
 
-template<class T>
-bool is_in(T value, std::initializer_list<T> set) {
+template<class T, class U>
+bool is_in(T value, std::initializer_list<U> set) {
     return std::any_of(begin(set), end(set), [&](const T& ref){ return ref == value; });
 }
 
