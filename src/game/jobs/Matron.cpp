@@ -25,7 +25,6 @@
 #include "buildings/IBuilding.h"
 #include "Game.hpp"
 #include "cInventory.h"
-#include "sConfig.h"
 
 class MatronJob : public IGenericJob {
 public:
@@ -44,8 +43,6 @@ public:
     using MatronJob::MatronJob;
     bool DoWork(sGirl& girl, bool is_night) override;
 };
-
-extern cConfig cfg;
 
 double MatronJob::GetPerformance(const sGirl& girl, bool estimate) const {
     double jobperformance = 0.0;

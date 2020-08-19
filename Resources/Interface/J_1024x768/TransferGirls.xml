@@ -1,25 +1,25 @@
 <Screen>
-<Window     Name="Transfer Girls"                                           XPos="12"       YPos="14"       Width="1000"    Height="740"    Border="1"  />
-<Text       Name="LabelLeft"            Text="Buildings"                    XPos="20"       YPos="2"        Width="140"     Height="32"     FontSize="15"  />
-<Text       Name="LabelRight"           Text="Buildings"                    XPos="860"      YPos="2"        Width="140"     Height="32"     FontSize="15"  />
-<ListBox    Name="BrothelLeft"                                              XPos="10"       YPos="40"       Width="140"     Height="300"    Border="1"  Multi="false"   Events="true" />
-<ListBox    Name="ListLeft"                                                 XPos="160"      YPos="10"       Width="490"     Height="663"    Border="1"  Multi="true"   Events="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<Window     Name="Transfer Girls"                                           XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
+<Text       Name="LabelLeft"            Text="Buildings"                    XPos="15"       YPos="2"        Width="150"     Height="32"     FontSize="11"  />
+<Text       Name="LabelRight"           Text="Buildings"                    XPos="855"     YPos="2"        Width="150"     Height="32"     FontSize="11"  />
+<ListBox    Name="BrothelLeft"                                              XPos="7"       YPos="35"       Width="150"     Height="260"    FontSize="9" RowHeight="19" Border="1"  Multi="false"   Events="true" />
+<ListBox    Name="ListLeft"                                                 XPos="165"      YPos="10"       Width="487"     Height="720"    FontSize="9" RowHeight="19" Border="1"  Multi="true"   Events="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Name"                 Header="Girl Name"                  Offset="0" />
-<Column     Name="Health"               Header="Health"                     Offset="140" />
-<Column     Name="Happiness"            Header="Happy"                      Offset="180" />
-<Column     Name="Tiredness"            Header="Tired"                      Offset="220" />
-<Column     Name="DayJobShort"          Header="Day"                        Offset="260" />
-<Column     Name="NightJobShort"        Header="Night"                      Offset="300" />
-<Column     Name="is_pregnant"          Header="Preg"                       Offset="340" />
-<Column     Name="is_slave"             Header="Slave"                      Offset="380" />
-<Column     Name="Rebel"                Header="Rebel"                      Offset="420" />
+<Column     Name="Health"               Header="Health"                     Offset="150" />
+<Column     Name="Happiness"            Header="Happy"                      Offset="187" />
+<Column     Name="Tiredness"            Header="Tired"                      Offset="224" />
+<Column     Name="DayJobShort"          Header="Day"                        Offset="261" />
+<Column     Name="NightJobShort"        Header="Night"                      Offset="298" />
+<Column     Name="is_pregnant"          Header="Preg"                       Offset="335" />
+<Column     Name="is_slave"             Header="Slave"                      Offset="372" />
+<Column     Name="Rebel"                Header="Rebel"                      Offset="409" />
 </ListBox>
-<ListBox    Name="ListRight"                                                XPos="700"      YPos="10"       Width="140"     Height="663"    Border="1"  Multi="true"   Events="true" ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="ListRight"                                                XPos="690"      YPos="10"       Width="150"     Height="720"   FontSize="9" RowHeight="19"  Border="1"  Multi="true"   Events="true" ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Name"                 Header="Girl Name"                  Offset="0" />
 </ListBox>
-<ListBox    Name="BrothelRight"                                             XPos="850"      YPos="40"       Width="140"     Height="300"    Border="1"  Multi="false"   Events="true" />
-<Button     Name="ShiftRight"           Image="ShiftRight"                  XPos="650"      YPos="300"      Width="50"      Height="50"     Transparency="true" Scale="true"  />
-<Button     Name="ShiftLeft"            Image="ShiftLeft"                   XPos="650"      YPos="400"      Width="50"      Height="50"     Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
+<ListBox    Name="BrothelRight"                                             XPos="847"      YPos="35"       Width="150"     Height="260"    FontSize="9" RowHeight="19" Border="1"  Multi="false"   Events="true" />
+<Button     Name="ShiftRight"           Image="ShiftRight"                  XPos="652"      YPos="300"      Width="37"      Height="50"     Transparency="true" Scale="true"  />
+<Button     Name="ShiftLeft"            Image="ShiftLeft"                   XPos="652"      YPos="400"      Width="37"      Height="50"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="847"      YPos="690"      Width="150"     Height="40"     Transparency="true" Scale="true"  />
 
 </Screen>

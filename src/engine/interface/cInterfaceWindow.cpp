@@ -479,6 +479,10 @@ void cInterfaceWindow::FillSortedIDList(int listBoxID, vector<int>& id_vec, int&
 
 void cInterfaceWindow::AddToListBox(int listBoxID, int dataID, std::vector<std::string> data, int color)
 {
+    if(listBoxID < 0) {
+        g_LogFile.error("interface", "Trying to access invalid ListBox");
+        return;
+    }
     GetListBox(listBoxID)->AddElement(dataID, std::move(data), color);
 }
 
@@ -538,7 +542,7 @@ void cInterfaceWindow::SetListTopPos(int listBoxID, int pos)
 
 void cInterfaceWindow::SetSelectedItemInList(int listBoxID, int itemID, bool ev, bool DeselectOthers)
 {
-    if (itemID == -1)    return;
+    if (itemID == -1 || listBoxID == -1)    return;
     GetListBox(listBoxID)->SetSelected(itemID, ev, DeselectOthers);
 }
 

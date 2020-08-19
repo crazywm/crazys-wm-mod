@@ -24,11 +24,9 @@
 #include "character/cPlayer.h"
 #include "cGirlGangFight.h"
 #include "Game.hpp"
-#include "sConfig.h"
 #include "character/traits/ITraitsCollection.h"
 
 extern    cRng            g_Dice;
-extern cConfig cfg;
 
 namespace settings {
     extern const char* TORTURE_INJURY_CHANCE;

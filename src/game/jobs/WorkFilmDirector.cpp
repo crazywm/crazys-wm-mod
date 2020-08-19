@@ -21,10 +21,7 @@
 #include "buildings/cMovieStudio.h"
 #include "Game.hpp"
 #include <sstream>
-#include "sConfig.h"
 #include "cGirls.h"
-
-extern cConfig cfg;
 
 // `J` Job Movie Studio - Crew - Matron_Job - Full_Time_Job
 bool WorkFilmDirector(sGirl& girl, bool Day0Night1, cRng& rng)

@@ -26,7 +26,6 @@
 #include "sStorage.h"
 #include "cGangs.h"
 #include <sstream>
-#include "sConfig.h"
 #include "xml/util.h"
 #include "cJobManager.h"
 #include "Inventory.h"

@@ -39,7 +39,6 @@
 
 #include "utils/DirPath.h"
 #include "utils/FileList.h"
-#include "sConfig.h"
 #include "character/traits/ITraitSpec.h"
 #include "Inventory.h"
 #include "character/traits/ITraitsCollection.h"
@@ -55,6 +54,7 @@ namespace settings {
     extern const char* USER_ACCOMODATION_FREE;
     extern const char* USER_ACCOMODATION_SLAVE;
     extern const char* USER_ITEMS_AUTO_EQUIP_COMBAT;
+    extern const char* USER_SHOW_NUMBERS;
     extern const char* USER_HOROSCOPE;
     extern const char* PREG_WEEKS_GROW;
     extern const char* PREG_MULTI_CHANCE;
@@ -68,8 +68,6 @@ extern cRng g_Dice;
 extern cNameList g_GirlNameList;
 extern cNameList g_BoysNameList;
 extern cNameList g_SurnameList;
-
-extern cConfig cfg;
 
 using namespace std;
 
@@ -718,11 +716,9 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
 
     // display status
     /* */if (girl.is_slave())    ss << "Is Branded a Slave\n";
-    else if (cfg.debug.log_extradetails())            ss << "( She Is Not a Slave )\n";
     else ss << "\n";
 
     /* */if (is_virgin(girl))            ss << "She is a Virgin\n";
-    else if (cfg.debug.log_extradetails())            ss << "( She Is Not a Virgin )\n";
     else ss << "\n";
 
     if (!purchase)
@@ -732,7 +728,6 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
         else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
         else if (girl.has_status(STATUS_INSEMINATED))            { ss << "Is inseminated, due: " << to_go << " weeks\n"; }
         else if (girl.m_PregCooldown != 0)                            { ss << "Cannot get pregnant for: " << girl.m_PregCooldown << " weeks\n"; }
-        else if (cfg.debug.log_extradetails())                        { ss << "( She Is not Pregnant )\n"; }
         else ss << "\n";
         // `J` moved the rest of children lines to second detail list
     }
@@ -742,14 +737,12 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
     /* */if (addict && !diseased) ss << "Has an addiciton\n";
     else if (!addict && diseased)    ss << "Has a disease\n";
     else if (addict && diseased)    ss << "Has an addiciton and a disease\n";
-    else if (cfg.debug.log_extradetails())                ss << "( She Has No Addicitons or Diseases )\n";
     else                                                ss << "\n";
 
     if (!purchase)
     {
         if (girl.has_status(STATUS_BADLY_POISONED))   ss << "Is badly poisoned\n";
         else if (girl.has_status(STATUS_POISONED))    ss << "Is poisoned\n";
-        else if (cfg.debug.log_extradetails())                ss << "( She Is Not Poisoned )\n";
         else                                                ss << "\n";
     }
 
@@ -761,17 +754,14 @@ string cGirls::GetDetailsString(sGirl& girl, bool purchase)
 
     // display Skills
     ss << "\n \nSKILLS";
-    if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
 
     for (int i = 0; i < 22; i++)
     {
         if (i == 11)
         {
             ss << "\n \nSEX SKILLS";
-            if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
         }
         ss << "\n" << skillstr[i] << girl.get_skill(skillnum[i]);
-        if (cfg.debug.log_extradetails() && !purchase) ss << "    (" << girl.get_base_skill(skillnum[i]) << "+" << girl.get_temp_skill(skillnum[i]) << "+" << girl.get_mod_skill(skillnum[i]) << ")";
     }
     return ss.str();
 }
@@ -782,19 +772,18 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
 
     // `J` When modifying Stats or Skills, search for "J-Change-Stats-Skills"  :  found in >> cGirls.cpp > GetMoreDetailsString
     ss << "STATS";
-    if (cfg.debug.log_extradetails() && !purchase) ss << "           (base+temp+item+trait)";
-    int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE, STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
+    int statnum[] = { STAT_CHARISMA, STAT_BEAUTY, STAT_LIBIDO, STAT_MANA, STAT_INTELLIGENCE, STAT_CONFIDENCE, STAT_OBEDIENCE,
+                      STAT_SPIRIT, STAT_AGILITY, STAT_STRENGTH, STAT_FAME, STAT_LACTATION ,STAT_PCFEAR, STAT_PCLOVE, STAT_PCHATE };
     int statnumsize = 15;
     string statstr[] = { "Charisma : \t", "Beauty : \t", "Libido : \t", "Mana : \t", "Intelligence : \t", "Confidence : \t",
                          "Obedience : \t", "Spirit : \t", "Agility : \t", "Strength : \t", "Fame : \t", "Lactation : \t",
                          "PCFear : \t", "PCLove : \t", "PCHate : \t", "Gold : \t" };
 
-    int show = (cfg.debug.log_extradetails() && !purchase) ? statnumsize : statnumsize - 3;
+    int show = statnumsize - 3;
 
     for (int i = 0; i < show; i++)
     {
         ss << "\n" << statstr[i] << girl.get_stat(statnum[i]);
-        if (cfg.debug.log_extradetails() && !purchase) ss << "    (" << girl.get_base_stat(statnum[i]) << "+" << girl.get_temp_stat(statnum[i]) << "+" << girl.get_mod_stat(statnum[i])  << ")";
     }
     if (!purchase)
     {
@@ -813,13 +802,7 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
     if (!purchase)
     {
         ss << "\n \nAccommodation: \t";
-        if (cfg.debug.log_extradetails()) ss << "( " << girl.m_AccLevel << " ) ";
         ss << Accommodation(girl.m_AccLevel);
-        if (cfg.debug.log_extradetails())
-        {
-            ss << "\n" << (girl.is_free() ? "Preferred  Accom:" : "Expected Accom: ")
-                << " ( " << PreferredAccom(girl) << " ) " << Accommodation(PreferredAccom(girl));
-        }
         ss << "\nCost per turn: \t" << ((girl.is_slave() ? 5 : 20) * (girl.m_AccLevel + 1)) << " gold.\n";
 
         //ss << "\nDetails:\n";
@@ -840,7 +823,6 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
         else if (girl.has_status(STATUS_PREGNANT_BY_PLAYER))    { ss << "Is pregnant with your child, due: " << to_go << " weeks\n"; }
         else if (girl.has_status(STATUS_INSEMINATED))            { ss << "Is inseminated, due: " << to_go << " weeks\n"; }
         else if (girl.m_PregCooldown != 0)                            { ss << "Cannot get pregnant for: " << girl.m_PregCooldown << " weeks\n"; }
-        else if (cfg.debug.log_extradetails())                        { ss << "( She Is not Pregnant )\n"; }
         else ss << "\n";
         // count the total births
         if (girl.m_ChildrenCount[CHILD00_TOTAL_BIRTHS] > 0)
@@ -874,7 +856,6 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
             }
             ss << "\n";
         }
-        else if (cfg.debug.log_extradetails())                        ss << "( She Has No Daughters )\n";
 
         // count the boys born
         if (girl.m_ChildrenCount[CHILD03_ALL_BOYS] > 0)
@@ -904,7 +885,6 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
             }
             ss << "\n";
         }
-        else if (cfg.debug.log_extradetails())                    ss << "( She Has No Sons )\n";
 
         if (girl.m_ChildrenCount[CHILD01_ALL_BEASTS] > 0)        ss << "She has given birth to " << girl.m_ChildrenCount[CHILD01_ALL_BEASTS] << " Beast" << (girl.m_ChildrenCount[CHILD01_ALL_BEASTS] > 1 ? "s" : "") << ".\n";
         if (girl.m_ChildrenCount[CHILD08_MISCARRIAGES] > 0)    ss << "She has had " << girl.m_ChildrenCount[CHILD08_MISCARRIAGES] << " Miscarriage" << (girl.m_ChildrenCount[CHILD08_MISCARRIAGES] > 1 ? "s" : "") << ".\n";
@@ -939,7 +919,6 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
     if (!purchase)
     {
         ss << "\n \nJOB PREFERENCES";
-        if (cfg.debug.log_extradetails() && !purchase) ss << "\n    (base+temp+item+trait)";
         ss << "\n";
         string base = "She";
         string text;
@@ -952,26 +931,17 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
             else if (e < -30)    { text = " dislikes "; }
             else if (e < -20)    { text = " doesn't particularly enjoy "; }
             // if she's indifferent, why specify it? Let's instead skip it.
-            else if (e < 15)    { if (cfg.debug.log_extradetails())    { text = " is indifferent to "; } else continue; }
+            else if (e < 15)    { continue; }
             else if (e < 30)    { text = " is happy enough with "; }
             else if (e < 50)    { text = " likes "; }
             else if (e < 70)    { text = " really enjoys "; }
             else                { text = " loves "; }
             ss << base << text << get_action_descr((Action_Types)i) << ".";
-            if (cfg.debug.log_extradetails() || cfg.debug.log_show_numbers())
-            {
-                if (cfg.debug.log_extradetails()) ss << "\n";
-                ss << "    ( " << girl.m_Enjoyment[i];
-                if (cfg.debug.log_extradetails())
-                    ss << " + " << girl.m_EnjoymentTemps[i] << " + " << girl.m_EnjoymentMods[i];
-                ss << " )";
-            }
             ss << "\n";
             enjcount++;
         }
-        if (cfg.debug.log_extradetails())            { ss << "\n"; }
-        else if (enjcount > 0)                        { ss << "\nShe is indifferent to all other tasks.\n \n"; }
-        else                                        { ss << "At the moment, she is indifferent to all tasks.\n \n"; }
+        if (enjcount > 0)                        { ss << "\nShe is indifferent to all other tasks.\n \n"; }
+        else                                     { ss << "At the moment, she is indifferent to all tasks.\n \n"; }
 
         int tricount = 0;
         for (int i = 0; i < NUM_TRAININGTYPES; ++i)
@@ -980,26 +950,17 @@ string cGirls::GetMoreDetailsString(const sGirl& girl, bool purchase)
             int e = girl.get_training(i);
             /* */if (e < 0)    { text = " hasn't started "; }
             // if she's indifferent, why specify it? Let's instead skip it.
-            else if (e < 15)    { if (cfg.debug.log_extradetails())    { text = " is indifferent to "; } else continue; }
+            else if (e < 15)    { continue; }
             else if (e < 30)    { text = " has started "; }
             else if (e < 50)    { text = " knows the basics of "; }
             else if (e < 70)    { text = " has knowledge of "; }
             else                { text = " performs well in"; }
             ss << base << text << sGirl::training_jobs[i] << ".";
-            if (cfg.debug.log_extradetails() || cfg.debug.log_show_numbers())
-            {
-                if (cfg.debug.log_extradetails()) ss << "\n";
-                ss << "    ( " << girl.m_Training[i];
-                if (cfg.debug.log_extradetails())
-                    ss << " + " << girl.m_TrainingTemps[i] << " + " << girl.m_TrainingMods[i];
-                ss << " )";
-            }
             ss << "\n";
             tricount++;
         }
-        if (cfg.debug.log_extradetails())            { ss << "\n"; }
-        else if (tricount > 0)                        { ss << "\nShe hasn't started any other training.\n \n"; }
-        else                                        { ss << "At the moment, she hasn't started any special training.\n \n"; }
+        if (tricount > 0)                        { ss << "\nShe hasn't started any other training.\n \n"; }
+        else                                     { ss << "At the moment, she hasn't started any special training.\n \n"; }
     }
 
     ss << "\n \n\nBased on:  " << girl.m_Name;
@@ -1031,7 +992,7 @@ namespace {
             double value = girl.job_performance(job.job, true);
 
             jr << JobRatingLetter(value) << "  " << job.mark << "  " << g_Game->job_manager().JobData[job.job].name;
-            if (cfg.debug.log_extradetails()) jr << "   ( " << (int) value << " )";
+            if (g_Game->settings().get_bool(settings::USER_SHOW_NUMBERS)) jr << "   ( " << (int) value << " )";
             jr << "\n";
         }
         jr << "\n";
@@ -2006,23 +1967,6 @@ void cGirls::GirlFucks(sGirl* girl, bool Day0Night1, sCustomer* customer, bool g
 {
     int check = girl->get_skill(SexType);
     string girlName = girl->FullName();
-
-    if (cfg.debug.log_extradetails())
-    {
-        message += "\n(Debug: Customer wants ";
-        /* */if (SexType == SKILL_ANAL)            message += "anal";
-        else if (SexType == SKILL_BDSM)            message += "bondage";
-        else if (SexType == SKILL_NORMALSEX)    message += "sex";
-        else if (SexType == SKILL_BEASTIALITY)    message += "beast";
-        else if (SexType == SKILL_GROUP)        message += "gangbang";
-        else if (SexType == SKILL_LESBIAN)        message += "lesbian";
-        else if (SexType == SKILL_STRIP)        message += "a strip";
-        else if (SexType == SKILL_ORALSEX)        message += "oral";
-        else if (SexType == SKILL_TITTYSEX)        message += "titty sex";
-        else if (SexType == SKILL_HANDJOB)        message += "a handjob";
-        else if (SexType == SKILL_FOOTJOB)        message += "a footjob";
-        message += ").\n";
-    }
 
     //SIN: let's add a problem...
     if (g_Dice.percent(33) && (girl->happiness() < 40) && (girl->intelligence() < 50)

@@ -1,49 +1,49 @@
 <Screen>
-<Window     Name="Dungeon Window"                                           XPos="12"       YPos="14"       Width="1000"    Height="740"    Border="1"  />
-<Text       Name="DungeonHeader"        Text="Dungeon Screen"               XPos="10"       YPos="2"        Width="500"     Height="32"     FontSize="24"  />
-<Text       Name="Gold"                 Text="Player Gold: 0"               XPos="550"      YPos="2"        Width="250"     Height="32"     FontSize="24"  />
-<Image      Name="GirlImage"            File="blank.png"                    XPos="800"      YPos="10"       Width="190"     Height="190"     />
-<Button     Name="DetailsButton"        Image="ViewDetails"                 XPos="815"      YPos="205"      Width="160"     Height="32"     Transparency="true" Scale="true"  />
+<Window     Name="Dungeon Window"                                           XPos="10"       YPos="14"       Width="1005"    Height="740"    Border="1"  />
+<Text       Name="DungeonHeader"        Text="Dungeon Screen"               XPos="7"       YPos="2"        Width="375"     Height="32"     FontSize="18"  />
+<Text       Name="Gold"                 Text="Player Gold: 0"               XPos="600"      YPos="2"        Width="225"     Height="32"     FontSize="18"  />
+<Image      Name="GirlImage"            File="blank.png"                    XPos="772"     YPos="10"       Width="225"     Height="300"     />
+<Button     Name="DetailsButton"        Image="ViewDetails"                 XPos="825"     YPos="320"      Width="120"     Height="32"     Transparency="true" Scale="true"  />
 
-<Button     Name="StopFeedingButton"    Image="NoFeed"                      XPos="815"      YPos="300"      Width="120"     Height="24" Transparency="true" Scale="true"  />
-<Button     Name="AllowFoodButton"      Image="Feed"                        XPos="855"      YPos="330"      Width="120"     Height="24" Transparency="true" Scale="true"  />
-<Button     Name="BrandSlaveButton"     Image="ForceSlave"                  XPos="815"      YPos="400"      Width="120"     Height="24" Transparency="true" Scale="true"  />
-<Button     Name="SellButton"           Image="SellSlave"                   XPos="855"      YPos="430"      Width="120"     Height="24" Transparency="true" Scale="true"  />
-<Button     Name="TortureButton"        Image="Torture"                     XPos="815"      YPos="500"      Width="160"     Height="32" Transparency="true" Scale="true"  />
-<Button     Name="InteractButton"       Image="Talk"                        XPos="815"      YPos="550"      Width="160"     Height="32" Transparency="true" Scale="true"  />
-<Text       Name="InteractCount"        Text="Interactions Left: 0"         XPos="815"     YPos="582"      Width="160"     Height="15"     FontSize="8"  />
+<Button     Name="StopFeedingButton"    Image="NoFeed"                      XPos="787"     YPos="500"      Width="90"     Height="24"     Transparency="true" Scale="true"  />
+<Button     Name="AllowFoodButton"      Image="Feed"                        XPos="892"     YPos="500"      Width="90"     Height="24"     Transparency="true" Scale="true"  />
+<Button     Name="BrandSlaveButton"     Image="ForceSlave"                  XPos="787"     YPos="550"      Width="90"     Height="24"     Transparency="true" Scale="true"  />
+<Button     Name="SellButton"           Image="SellSlave"                   XPos="892"     YPos="550"      Width="90"     Height="24"     Transparency="true" Scale="true"  />
+<Button     Name="TortureButton"        Image="Torture"                     XPos="825"     YPos="600"      Width="120"     Height="32"     Transparency="true" Scale="true"  />
+<Button     Name="InteractButton"       Image="Talk"                        XPos="825"     YPos="400"      Width="120"     Height="32"     Transparency="true" Scale="true"  />
+<Text       Name="InteractCount"        Text="Interactions Left: 0"         XPos="825"     YPos="432"      Width="120"     Height="15"     FontSize="6"  />
 
-<Button     Name="ReleaseButton"        Image="Release"                     XPos="815"      YPos="600"      Width="120"     Height="24" Transparency="true" Scale="true"  />
-<Button     Name="ReleaseAllButton"     Image="ReleaseAllGirls"             XPos="835"      YPos="630"      Width="120"     Height="24" Transparency="true" Scale="true"  />
-<Button     Name="ReleaseCustButton"    Image="ReleaseAllCustomers"         XPos="855"      YPos="660"      Width="120"     Height="24" Transparency="true" Scale="true"  />
-<Button     Name="BackButton"           Image="Back"                        XPos="800"      YPos="692"      Width="190"     Height="38"     Transparency="true" Scale="true"  />
+<Button     Name="ReleaseCustButton"    Image="ReleaseAllCustomers"         XPos="7"       YPos="670"      Width="90"     Height="24"     Transparency="true" Scale="true"  />
+<Button     Name="ReleaseButton"        Image="Release"                     XPos="112"      YPos="686"      Width="120"     Height="32"     Transparency="true" Scale="true"  />
+<Button     Name="ReleaseAllButton"     Image="ReleaseAllGirls"             XPos="7"       YPos="706"      Width="90"     Height="24"     Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="847"     YPos="690"      Width="150"     Height="40"     Transparency="true" Scale="true"  />
 
-<ListBox    Name="GirlList"                                                 XPos="10"       YPos="35"       Width="780"     Height="632"    FontSize="12"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
+<ListBox    Name="GirlList"                                                 XPos="7"       YPos="35"       Width="765"     Height="632"    FontSize="9"       RowHeight="21"      Border="1"          Events="true"      Multi="true"   ShowHeaders="true"   HeaderDiv="true"   HeaderClicksSort="true"   >
 <Column     Name="Name"                 Header="Girl Name"                  Offset="0"  />                                   
-<Column     Name="Health"               Header="Health"                     Offset="180"  />                                 
-<Column     Name="Happiness"            Header="Happy"                      Offset="225"  />                                 
-<Column     Name="Rebelliousness"       Header="Rebel"                      Offset="270"  />                                 
-<Column     Name="is_slave"             Header="Slave"                      Offset="310"  />                                 
-<Column     Name="is_addict"            Header="Addict"                     Offset="350"  />                                 
-<Column     Name="has_disease"          Header="Disease"                    Offset="400"  />                                 
-<Column     Name="Duration"             Header="Weeks In"                   Offset="450"  />                                 
-<Column     Name="Feeding"              Header="Feeding"                    Offset="510"  />                                 
-<Column     Name="Tortured"             Header="Tortured"                   Offset="560"  />                                 
-<Column     Name="Reason"               Header="Reason for Imprisonment"    Offset="620"  />                                 
+<Column     Name="Health"               Header="Health"                     Offset="150"  />                                 
+<Column     Name="Happiness"            Header="Happy"                      Offset="187"  />                                 
+<Column     Name="Rebelliousness"       Header="Rebel"                      Offset="224"  />                                 
+<Column     Name="is_slave"             Header="Slave"                      Offset="261"  />                                 
+<Column     Name="is_addict"            Header="Addict"                     Offset="317"  />                                 
+<Column     Name="has_disease"          Header="Disease"                    Offset="373"  />                                 
+<Column     Name="Duration"             Header="Weeks In"                   Offset="429"  />                                 
+<Column     Name="Feeding"              Header="Feeding"                    Offset="485"  />                                 
+<Column     Name="Tortured"             Header="Tortured"                   Offset="541"  />                                 
+<Column     Name="Reason"               Header="Reason for Imprisonment"    Offset="597"  />                                 
 </ListBox>                                                                                                                  
-<Text       Name="ReleaseTo"            Text="Release Girl to: Brothel 0"   XPos="10"       YPos="670"      Width="350"     Height="24"  FontSize="16"  />
-<Text       Name="RoomsFree"            Text="Room for # more girls."       XPos="500"      YPos="670"      Width="200"     Height="24"  FontSize="16"  />
-<Button     Name="Brothel0"             Image="Brothel"         Disabled="" XPos="025"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel1"             Image="Brothel2"        Disabled="" XPos="075"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />      
-<Button     Name="Brothel2"             Image="Brothel3"        Disabled="" XPos="125"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />      
-<Button     Name="Brothel3"             Image="Brothel4"        Disabled="" XPos="175"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />      
-<Button     Name="Brothel4"             Image="Brothel5"        Disabled="" XPos="225"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel5"             Image="Brothel6"        Disabled="" XPos="275"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Brothel6"             Image="Brothel7"        Disabled="" XPos="325"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Studio"               Image="Studio"          Disabled="" XPos="425"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Arena"                Image="Arena"           Disabled="" XPos="475"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Centre"               Image="Centre"          Disabled="" XPos="525"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />      
-<Button     Name="Clinic"               Image="Clinic"          Disabled="" XPos="575"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="Farm"                 Image="Farm"            Disabled="" XPos="625"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
-<Button     Name="House"                Image="House"           Disabled="" XPos="675"      YPos="692"      Width="38"      Height="38"  Transparency="true" Scale="true"  />
+<Text       Name="ReleaseTo"            Text="Send Girl to: Brothel 0"      XPos="262"      YPos="670"      Width="262"     Height="24"  FontSize="12"  />
+<Text       Name="RoomsFree"            Text="Room for # more girls."       XPos="562"      YPos="670"      Width="150"     Height="24"  FontSize="12"  />
+<Button     Name="Brothel0"             Image="Brothel"         Disabled="" XPos="244"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="Brothel1"             Image="Brothel2"        Disabled="" XPos="281"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />      
+<Button     Name="Brothel2"             Image="Brothel3"        Disabled="" XPos="319"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />      
+<Button     Name="Brothel3"             Image="Brothel4"        Disabled="" XPos="356"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />      
+<Button     Name="Brothel4"             Image="Brothel5"        Disabled="" XPos="394"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="Brothel5"             Image="Brothel6"        Disabled="" XPos="431"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="Brothel6"             Image="Brothel7"        Disabled="" XPos="469"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="Studio"               Image="Studio"          Disabled="" XPos="506"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="Arena"                Image="Arena"           Disabled="" XPos="543"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="Centre"               Image="Centre"          Disabled="" XPos="581"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />      
+<Button     Name="Clinic"               Image="Clinic"          Disabled="" XPos="618"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="Farm"                 Image="Farm"            Disabled="" XPos="656"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
+<Button     Name="House"                Image="House"           Disabled="" XPos="693"      YPos="692"      Width="28"      Height="38"  Transparency="true" Scale="true"  />
 </Screen>

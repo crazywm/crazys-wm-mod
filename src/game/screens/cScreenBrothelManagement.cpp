@@ -27,9 +27,10 @@
 #include "sStorage.h"
 #include "scripting/GameEvents.h"
 #include <sstream>
-#include "sConfig.h"
 
-extern cConfig cfg;
+namespace settings {
+    extern const char* USER_SHOW_NUMBERS;
+}
 
 static std::string get_building_summary(const IBuilding& building);
 
@@ -150,7 +151,7 @@ static std::string fame_text(const IBuilding* brothel)
     else if (brothel->m_Fame >= 50)/*     */    ss << "Somewhat known";
     else if (brothel->m_Fame >= 30)/*     */    ss << "Mostly unknown";
     else/*                                */    ss << "Unknown";
-    if (cfg.debug.log_show_numbers())/*   */    ss << " (" << (int)brothel->m_Fame << ")";
+    if (g_Game->settings().get_bool(settings::USER_SHOW_NUMBERS))    ss << " (" << (int)brothel->m_Fame << ")";
     return ss.str();
 }
 
@@ -160,7 +161,7 @@ static std::string happiness_text(const IBuilding* brothel)
     /* */if (brothel->m_Happiness >= 80)/* */    ss << "High";
     else if (brothel->m_Happiness < 40)/*  */    ss << "Low";
     else /*                                */    ss << "Medium";
-    if (cfg.debug.log_show_numbers())            ss << " (" << brothel->m_Happiness << ")";
+    if (g_Game->settings().get_bool(settings::USER_SHOW_NUMBERS))            ss << " (" << brothel->m_Happiness << ")";
     return ss.str();
 }
 

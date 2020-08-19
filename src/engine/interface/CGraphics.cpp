@@ -21,12 +21,9 @@
 #include <SDL_image.h>
 #include "CLog.h"
 #include "utils/DirPath.h"
-#include "sConfig.h"
 #include "interface/cColor.h"
 #include "cTimer.h"
 #include "interface/cFont.h"
-
-extern cConfig cfg;
 
 CGraphics::CGraphics() : m_ImageCache(this)
 {
@@ -73,19 +70,11 @@ bool CGraphics::End()
     return true;
 }
 
-bool CGraphics::InitGraphics(std::string caption, int Width, int Height)
+bool CGraphics::InitGraphics(std::string caption, int Width, int Height, bool Fullscreen)
 {
     m_ScreenWidth = Width;
     m_ScreenHeight = Height;
-    if (cfg.resolution.configXML())
-    {
-        m_Fullscreen = cfg.resolution.fullscreen();
-    }
-    else
-    {
-        g_LogFile.info("interface","Skipping Screen Mode");
-        m_Fullscreen = false;
-    }
+    m_Fullscreen = Fullscreen;
 
     // init SDL
     g_LogFile.info("interface", "Initializing SDL");

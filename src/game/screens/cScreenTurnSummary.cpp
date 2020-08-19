@@ -30,11 +30,8 @@
 #include "widgets/cImageItem.h"
 #include "Game.hpp"
 #include "cJobManager.h"
-#include "sConfig.h"
 #include <sstream>
 #include "cRival.h"
-
-extern cConfig cfg;
 
 #pragma endregion
 #pragma region //    Local Variables            //

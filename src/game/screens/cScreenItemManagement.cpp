@@ -27,11 +27,11 @@
 #include "interface/cWindowManager.h"
 #include "interface/CGraphics.h"
 #include "InterfaceProcesses.h"
-#include "sConfig.h"
 #include "cGirls.h"
 #include "Game.hpp"
 #include "cInventory.h"
 #include "cShop.h"
+#include "sConfig.h"
 
 namespace settings {
     extern const char* MONEY_SELL_ITEM;
@@ -401,12 +401,6 @@ void cScreenItemManagement::write_item_text(const sInventoryItem* item, int owne
         iCost << item->m_Cost << " gold";
         iSell << int(((float)item->m_Cost) * g_Game->settings().get_percent(settings::MONEY_SELL_ITEM)) << " gold";
         iType << item->m_Type;
-    }
-    if (target == 1)
-    {
-        cFont check = GetGraphics().LoadFont(cfg.fonts.normal(), cfg.fonts.detailfontsize());
-        int w, h, size = int(GetTextItem(desc_id)->GetWidth()*0.25);
-        check.GetSize(iCost.str(), w, h); while (w < size) { iCost << " "; check.GetSize(iCost.str(), w, h); }
     }
     ss << "Item Name:      " << item->m_Name;
     ss << "\nCost:  " << iCost.str();

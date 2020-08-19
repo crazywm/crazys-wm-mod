@@ -37,11 +37,9 @@
 #include "utils/algorithms.hpp"
 #include "CLog.h"
 #include "xml/util.h"
-#include "sConfig.h"
 #include "buildings/cBuildingManager.h"
 
 extern cRng g_Dice;
-extern cConfig cfg;
 
 namespace settings {
     extern const char* GANG_MAX_RECRUIT_LIST;

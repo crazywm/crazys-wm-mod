@@ -23,7 +23,6 @@
 #include "character/cCustomers.h"
 #include "cRng.h"
 #include "cInventory.h"
-#include "sConfig.h"
 #include <sstream>
 #include "CLog.h"
 #include "cTrainable.h"
@@ -44,7 +43,6 @@
 #include "cGirlGangFight.h"
 
 extern cRng g_Dice;
-extern cConfig cfg;
 
 namespace settings {
     extern const char* WORLD_RAPE_STREETS;

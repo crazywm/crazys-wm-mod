@@ -30,9 +30,9 @@
 #include "character/cCustomers.h"
 #include "cInventory.h"
 #include "CLog.h"
-#include "sConfig.h"
 #include "cNameList.h"
 #include "utils/string.hpp"
+#include "sConfig.h"
 
 namespace settings {
     extern const char* INITIAL_RANDOM_GANGS;
@@ -58,11 +58,11 @@ cScreenPreparingGame::cScreenPreparingGame() : cGameWindow("preparing_game_scree
 }
 void cScreenPreparingGame::set_ids()
 {
-    text1_id            /**/ = get_id("Text1");
-    text2_id            /**/ = get_id("Text2");
-    text3_id            /**/ = get_id("Text3");
+    text1_id  = get_id("Text1");
+    text2_id  = get_id("Text2");
+    text3_id  = get_id("Text3");
 
-    cancel_id            /**/ = get_id("BackButton","Back");
+    cancel_id = get_id("BackButton","Back");
 
     SetButtonCallback(cancel_id, [this]() {
         if (!loading)

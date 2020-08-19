@@ -14,7 +14,6 @@
 #include "scripting/cScriptManager.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
-#include "sConfig.h"
 #include "Inventory.h"
 #include "traits/ITraitsCollection.h"
 #include "predicates.h"
@@ -23,7 +22,6 @@
 #include "buildings/cDungeon.h"
 
 extern cRng g_Dice;
-extern cConfig cfg;
 
 bool is_Actress_Job(int testjob);
 bool CrewNeeded(const IBuilding& building);

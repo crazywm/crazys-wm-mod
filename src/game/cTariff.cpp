@@ -21,7 +21,6 @@
 #include "cGirls.h"
 #include "buildings/cBrothel.h"
 #include "Game.hpp"
-#include "sConfig.h"
 #include "character/predicates.h"
 
 namespace settings {
@@ -34,9 +33,6 @@ namespace settings {
     extern const char* MONEY_COST_HP;
     extern const char* MONEY_COST_NET;
 }
-
-
-extern cConfig cfg;
 
 double cTariff::slave_base_price(sGirl& girl) const
 {

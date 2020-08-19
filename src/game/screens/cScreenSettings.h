@@ -31,8 +31,6 @@ public:
 
     void update_settings();
 
-    void update_girl_sliders();
-
 private:
     int back_id = -1;
     int ok_id = -1;
@@ -45,11 +43,5 @@ private:
     int items_id = -1;
     int backupsaves_id = -1;
     int preferdefault_id = -1;
-
-    // Catacombs
-    int girlgetsgirls_id = -1;
-    int girlgetsitems_id = -1;
-    int girlgetsbeast_id = -1;
-    int girlsgirlspercslider_id = -1;
-    int girlsitemspercslider_id = -1;
+    int theme_id = -1;
 };

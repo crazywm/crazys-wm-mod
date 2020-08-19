@@ -1,18 +1,16 @@
 <Screen>
-<Window     Name="Preparing Game"                                           XPos="112"      YPos="84"       Width="800"     Height="600" Border="1"  />
-<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="800"     Height="600"  />
-<Text       Name="Text1"                Text=""                             XPos="100"      YPos="20"       Width="800"     Height="60"  FontSize="30"  />
-<Text       Name="Text2"                Text=""                             XPos="100"      YPos="60"       Width="200"     Height="500" FontSize="15"  />
-<Text       Name="Text3"                Text=""                             XPos="300"      YPos="100"      Width="300"     Height="30"  FontSize="15"  />
-<Text       Name="Text4"                Text=""                             XPos="300"      YPos="140"      Width="300"     Height="30"  FontSize="15"  />
-<Text       Name="Text5"                Text=""                             XPos="300"      YPos="180"      Width="300"     Height="30"  FontSize="15"  />
+<Window     Name="Preparing Game"                                           XPos="212"      YPos="84"       Width="600"     Height="600" Border="1"  />
+<Image      Name="Background"           File="building_mgt_bg.jpg"          XPos="0"        YPos="0"        Width="600"     Height="600"  />
+<Text       Name="Text1"                Text=""                             XPos="75"      YPos="20"       Width="600"     Height="60"  FontSize="22"  />
+<Text       Name="Text2"                Text=""                             XPos="75"      YPos="60"       Width="150"     Height="500" FontSize="11"  />
+<Text       Name="Text3"                Text=""                             XPos="225"      YPos="100"      Width="225"     Height="90"  FontSize="11"  />
 <!--                                                                                        
-<Slider     Name="Counter1"                                                 XPos="300"      YPos="280"      Width="400"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
-<Slider     Name="Counter2"                                                 XPos="300"      YPos="300"      Width="400"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
-<Slider     Name="Counter3"                                                 XPos="300"      YPos="320"      Width="400"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
-<Slider     Name="Counter4"                                                 XPos="300"      YPos="340"      Width="400"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
-<Slider     Name="Counter5"                                                 XPos="300"      YPos="360"      Width="400"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
+<Slider     Name="Counter1"                                                 XPos="225"      YPos="280"      Width="300"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
+<Slider     Name="Counter2"                                                 XPos="225"      YPos="300"      Width="300"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
+<Slider     Name="Counter3"                                                 XPos="225"      YPos="320"      Width="300"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
+<Slider     Name="Counter4"                                                 XPos="225"      YPos="340"      Width="300"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
+<Slider     Name="Counter5"                                                 XPos="225"      YPos="360"      Width="300"     MinValue="0" MaxValue="100"      Value="0"      Increment="1"      LiveUpdate="true"      Hidden="false"      Disabled="false"       />
 -->                                                                                         
-<Button     Name="BackButton"           Image="Back"                        XPos="440"      YPos="530"      Width="160"     Height="32"  Transparency="true" Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="330"      YPos="530"      Width="120"     Height="32"  Transparency="true" Scale="true"  />
 
 </Screen>

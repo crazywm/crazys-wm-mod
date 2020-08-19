@@ -25,7 +25,6 @@
 #include "utils/FileList.h"
 #include "cObjectiveManager.hpp"
 #include "Game.hpp"
-#include "sConfig.h"
 #include <sstream>
 #include "cGirls.h"
 

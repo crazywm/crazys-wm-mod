@@ -10,7 +10,6 @@
 #include "character/cPlayer.h"
 #include <sstream>
 #include "cJobManager.h"
-#include "sConfig.h"
 #include "cGirls.h"
 
 namespace settings {
@@ -18,7 +17,6 @@ namespace settings {
     extern const char* USER_ACCOMODATION_SLAVE;
 }
 
-extern cConfig cfg;
 extern    bool            g_AltKeys;    // New hotkeys --PP
 
 
@@ -41,7 +39,6 @@ void IBuildingScreenManagement::update_image()
         {
             std::stringstream text;
             text << cGirls::GetGirlMood(*selected_girl) << "\n \n" << selected_girl->m_Desc;
-            if (cfg.debug.log_extradetails()) text << "\n \nBased on: " << selected_girl->m_Name;
             EditTextItem(text.str(), girldesc_id);
             Rand = true;
             m_LastSelection = selected_girl;

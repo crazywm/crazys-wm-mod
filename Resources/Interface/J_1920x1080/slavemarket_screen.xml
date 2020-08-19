@@ -3,7 +3,7 @@
 <Text       Name="SlaveMarket"          Text="Slave Market"                 XPos="14"       YPos="3"        Width="281"     Height="45"     FontSize="34"   Red="128"          />
 <Text       Name="SlaveDetails"         Text=""                             XPos="14"       YPos="49"       Width="281"     Height="844"    FontSize="13"          />
 <Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="63"       YPos="900"      Width="169"     Height="34"     Transparency="true"         Scale="true"          />
-<Text       Name="TraitListT"                                               XPos="14"       YPos="942"      Width="351"     Height="141"    FontSize="13"          />
+<Text       Name="TraitListT"           Text="Traits"                       XPos="14"       YPos="942"      Width="351"     Height="141"    FontSize="13"          />
 
 <Image      Name="GirlImage"            File="blank.png"                    XPos="295"      YPos="14"       Width="1293"     Height="914"  />
 

@@ -23,12 +23,10 @@
 #include "cGangs.h"
 #include "utils/FileList.h"
 #include "character/sGirl.h"
-#include "sConfig.h"
 #include <sstream>
 
 extern    std::string                    pic_types[];
 extern    std::string                    galtxt[];
-extern  cConfig                 cfg;
 
 extern    std::string    numeric;
 
@@ -42,12 +40,12 @@ cScreenGallery::cScreenGallery() : cGameWindow("gallery_screen.xml")
 
 void cScreenGallery::set_ids()
 {
-    back_id            /**/ = get_id("BackButton", "Back");
-    prev_id            /**/ = get_id("PrevButton","Prev");
-    next_id            /**/ = get_id("NextButton","Next");
-    image_id        /**/ = get_id("GirlImage");
-    imagename_id    /**/ = get_id("ImageName");
-    imagelist_id    /**/ = get_id("ImageList");
+    back_id        = get_id("BackButton", "Back");
+    prev_id        = get_id("PrevButton","Prev");
+    next_id        = get_id("NextButton","Next");
+    image_id       = get_id("GirlImage");
+    imagename_id   = get_id("ImageName");
+    imagelist_id   = get_id("ImageList");
 
     std::vector<std::string> ILColumns{ "ILName", "ILTotal", "ILjpg", "ILAni", "ILGif" };
     SortColumns(imagelist_id, ILColumns);

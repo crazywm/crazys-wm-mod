@@ -76,6 +76,10 @@ public:
 protected:
     void add_setting(const char* tag, const char* name, settings_value_t default_value,
             const char* description=nullptr, const char* fallback=nullptr);
+    // we need this explicit overload to prevent char* being converted to bool
+    void add_setting(const char* tag, const char* name, const char* default_value,
+            const char* description=nullptr, const char* fallback=nullptr);
+
 
     settings_value_t & get_value(const char* tag) override;
     struct sKeyValueEntry {

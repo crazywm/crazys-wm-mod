@@ -49,7 +49,7 @@ T GetBasicTAttribute(const tinyxml2::XMLElement& element, const char* name, T* f
         return value;
     case tinyxml2::XML_NO_ATTRIBUTE: {
         std::stringstream error;
-        error << "Could not find attribute '" << name << "' in element ' " << element.Value() << "'";
+        error << "Could not find attribute '" << name << "' in element '" << element.Value() << "'";
         if(fallback) {
             g_LogFile.log(ELogLevel::WARNING, error.str());
             return *fallback;

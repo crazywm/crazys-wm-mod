@@ -25,12 +25,10 @@
 #include "cGangs.h"
 #include "Game.hpp"
 #include "CLog.h"
-#include "sConfig.h"
 #include "character/traits/ITraitSpec.h"
 
 extern    int    g_TalkCount;
 extern bool g_AllTogle;
-extern cConfig cfg;
 
 static std::stringstream ss;
 
@@ -183,11 +181,6 @@ void cScreenGirlDetails::init(bool back)
     if (accomval_id != -1)
     {
         ss.str(""); ss << "Accommodation: " << cGirls::Accommodation(SliderValue(accom_id));
-        if (cfg.debug.log_extradetails())
-        {
-            int val = SliderValue(accom_id) - cGirls::PreferredAccom(*m_SelectedGirl);
-            if (val != 0) ss << "  ( " << (val > 0 ? "+" : "") << val << " )";
-        }
         EditTextItem(ss.str(), accomval_id);
     }
     DisableWidget(interact_id, (g_TalkCount <= 0));
@@ -296,11 +289,6 @@ void cScreenGirlDetails::set_accomodation(int value)
     if (accomval_id != -1)
     {
         ss.str(""); ss << "Accommodation: " << cGirls::Accommodation(value);
-        if (cfg.debug.log_extradetails())
-        {
-            int val = SliderValue(accom_id) - cGirls::PreferredAccom(*m_SelectedGirl);
-            if (val != 0) ss << "  ( " << (val > 0 ? "+" : "") << val << " )";
-        }
         EditTextItem(ss.str(), accomval_id);
     }
     init(true);

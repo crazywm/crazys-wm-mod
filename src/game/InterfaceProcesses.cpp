@@ -27,8 +27,8 @@
 #include "Game.hpp"
 #include "cGangs.h"
 #include "cInventory.h"
-#include "sConfig.h"
 #include "cNameList.h"
+#include "sConfig.h"
 
 #undef bool
 

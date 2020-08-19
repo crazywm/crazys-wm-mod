@@ -34,7 +34,8 @@ source = intDir / 'J_1366x768'
 # Adding to this is as simple as adding to the array and creating the folder in the correct place
 products = {
     # Resolution : [xMultiplier, yMultiplier]
-    'J_1600x900': [800 / 683,75 / 64],
+    'J_1024x768': [512 / 683, 1],
+    'J_1600x900': [800 / 683, 75 / 64],
     'J_1920x1080': [960 / 683, 45 / 32],
     'J_3840x2160': [1920 / 683, 45 / 16]
 }

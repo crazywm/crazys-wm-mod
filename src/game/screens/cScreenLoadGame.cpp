@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,11 @@
 #include "cScreenLoadGame.hpp"
 #include "CLog.h"
 #include "utils/FileList.h"
-#include "sConfig.h"
 #include <tinyxml2.h>
 #include "widgets/cListBox.h"
 #include "xml/getattr.h"
 #include "xml/util.h"
+#include "sConfig.h"
 
 extern cConfig cfg;
 extern std::string g_ReturnText;

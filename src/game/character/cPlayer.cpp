@@ -27,10 +27,12 @@
 #include "character/sGirl.h"
 #include "xml/util.h"
 #include "ICharacter.h"
-#include "sConfig.h"
 #include "character/traits/ITraitsCollection.h"
 
-extern cConfig cfg;
+
+namespace settings {
+    extern const char* USER_SHOW_NUMBERS;
+}
 
 
 cPlayer::cPlayer(std::unique_ptr<ITraitsCollection> tc)    : ICharacter(std::move(tc))        // constructor
@@ -510,7 +512,7 @@ std::string cPlayer::disposition_text() const
     else if (m_Disposition >= -50)    ss << "Not nice";
     else if (m_Disposition >= -80)    ss << "Mean";
     else ss << "Evil";
-    if (cfg.debug.log_show_numbers()) ss << " (" << m_Disposition << ")";
+    if (g_Game->settings().get_bool(settings::USER_SHOW_NUMBERS)) ss << " (" << m_Disposition << ")";
     return ss.str();
 }
 
@@ -524,7 +526,7 @@ std::string cPlayer::suss_text() const
     else if (m_Suspicion >= -50)    ss << "Lawful";
     else if (m_Suspicion >= -80)    ss << "Philanthropist";
     else /*                               */    ss << "Town Hero";
-    if (cfg.debug.log_show_numbers())            ss << " (" << m_Suspicion << ")";
+    if (g_Game->settings().get_bool(settings::USER_SHOW_NUMBERS))            ss << " (" << m_Suspicion << ")";
     return ss.str();
 }
 

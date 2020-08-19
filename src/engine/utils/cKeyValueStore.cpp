@@ -100,9 +100,9 @@ void cKeyValueBase::set_value(const char* name, sPercent value) {
 }
 
 void cKeyValueBase::load_xml(const tinyxml2::XMLElement& root) {
-    for(auto& element : IterateChildElements(root, "Setting")) {
+    for(auto& element : IterateChildElements(root, "Entry")) {
         try {
-            auto name = GetStringAttribute(element, "Name");
+            auto name = GetStringAttribute(element, "Key");
             auto& value = get_value(name);
             switch(value.which()) {
                 case 0:         // bool
@@ -127,7 +127,7 @@ void cKeyValueBase::load_xml(const tinyxml2::XMLElement& root) {
                 }
                 case 4:         // string
                 default:
-                    value = GetStringAttribute(element, "Value");
+                    value = std::string(GetStringAttribute(element, "Value"));
                     break;
             }
 
@@ -207,4 +207,9 @@ void cSimpleKeyValue::save_xml(tinyxml2::XMLElement& target) const {
 void cSimpleKeyValue::add_setting(const char* tag, const char* name, settings_value_t default_value,
                                   const char* description, const char* fallback) {
     m_Settings[tag] = sKeyValueEntry{tag, name, description, fallback, std::move(default_value)};
+}
+
+void cSimpleKeyValue::add_setting(const char* tag, const char* name, const char* default_value, const char* description,
+                                  const char* fallback) {
+    add_setting(tag, name, std::string(default_value), description, fallback);
 }

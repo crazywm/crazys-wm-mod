@@ -94,9 +94,8 @@ void cFont::GetSize(const std::string& text, int& width, int& height) const
 
 cSurface cFont::RenderText(std::string text) const
 {
-    cConfig cfg;
     return m_GFX->GetImageCache().CreateTextSurface(m_Font.get(), std::move(text),
-            m_TextColor, cfg.fonts.antialias());
+            m_TextColor, true);
 
 }
 
@@ -175,13 +174,11 @@ cSurface cFont::RenderMultilineText(std::string text, int max_width) const
     auto message = m_GFX->CreateSurface(max_width, height, m_TextColor, true);
     assert(message);
 
-    cConfig cfg;
     for (unsigned int i = 0; i < lines.size(); i++)
     {
         if(!lines[i].empty()) {
             auto line = m_GFX->GetImageCache().CreateTextSurface(
-                    m_Font.get(), lines[i], m_TextColor,
-                    cfg.fonts.antialias());
+                    m_Font.get(), lines[i], m_TextColor, true);
             if(!line)
                 continue;
             SDL_Rect dst = {0, static_cast<Sint16>(i * lineskip),
@@ -205,7 +202,6 @@ cSurface cFont::RenderTable(const std::string& text, int max_width) const {
     int num_tabs = 0;
     std::vector<sCellData> cells;
     std::string next_cell;
-    cConfig cfg;
 
     auto add_cell = [&, this](std::string text, bool last) {
         num_tabs = std::max(tab+1, num_tabs);
@@ -215,8 +211,7 @@ cSurface cFont::RenderTable(const std::string& text, int max_width) const {
         }
 
         auto render = m_GFX->GetImageCache().CreateTextSurface(
-                m_Font.get(), text, m_TextColor,
-                cfg.fonts.antialias());
+                m_Font.get(), text, m_TextColor, true);
 
         // SDL_SetSurfaceBlendMode(render.RawSurface()->surface(), SDL_BLENDMODE_NONE);
         cells.push_back(sCellData{tab, std::move(text), std::move(render), last});
@@ -267,14 +262,12 @@ cSurface cFont::RenderTable(const std::string& text, int max_width) const {
             std::string last = cells[i].content.substr(split_point);
 
             auto render = m_GFX->GetImageCache().CreateTextSurface(
-                    m_Font.get(), first, m_TextColor,
-                    cfg.fonts.antialias());
+                    m_Font.get(), first, m_TextColor, true);
 
             cells[i] = sCellData{tab, std::move(first), std::move(render), true};
 
             render = m_GFX->GetImageCache().CreateTextSurface(
-                    m_Font.get(), last, m_TextColor,
-                    cfg.fonts.antialias());
+                    m_Font.get(), last, m_TextColor, true);
             cells.insert(cells.begin() + i + 1, sCellData{0, std::move(last), std::move(render), true} );
         }
 

@@ -18,8 +18,8 @@
 */
 #include "cScreenSettings.h"
 #include "utils/FileList.h"
-#include "sConfig.h"
 #include "CLog.h"
+#include "sConfig.h"
 
 extern cConfig cfg;
 
@@ -30,48 +30,31 @@ void cScreenSettings::set_ids()
     revert_id                 = get_id("RevertButton");
 
     // Folders
-    characters_id             = get_id("CharactersFol");
-    saves_id                 = get_id("SavesFol");
-    defaultimages_id         = get_id("DefaultImagesFol");
-    items_id                 = get_id("ItemsFol");
-    backupsaves_id             = get_id("BackupSavesFol");
-    preferdefault_id         = get_id("PreferDefaultFol");
+    characters_id             = get_id("Characters");
+    saves_id                 = get_id("Saves");
+    defaultimages_id         = get_id("DefaultImages");
+    items_id                 = get_id("Items");
+    backupsaves_id             = get_id("BackupSaves");
+    preferdefault_id         = get_id("PreferDefault");
 
-    // Catacombs
-    girlgetsgirls_id         = get_id("GirlGetsGirlsCat");
-    girlgetsitems_id         = get_id("GirlGetsItemsCat");
-    girlgetsbeast_id         = get_id("GirlGetsBeastCat");
-    girlsgirlspercslider_id     = get_id("GirlsGirlsPercSliderCat");
-    girlsitemspercslider_id     = get_id("GirlsItemsPercSliderCat");
+    theme_id                 = get_id("ThemeList");
 
     SetButtonNavigation(back_id, "Main Menu");
     SetButtonCallback(revert_id, [this]() { init(false); });
     SetButtonCallback(ok_id, [this]() {
         update_settings();
-        init(false);
+        pop_window();
     });
 
-    SetSliderCallback(girlsgirlspercslider_id, [this](int value) {
-        int s1 = value;
-        int s2 = SliderValue(girlsitemspercslider_id);
-        if (s2 < s1)
-        {
-            s2 = s1;
-            SliderRange(girlsitemspercslider_id, 0, 100, s2, 1);
+    auto themes = FileList::ListSubdirs("Resources/Interface");
+    for(auto& theme : themes) {
+        if(theme == cfg.resolution.resolution()) {
+            AddToListBox(theme_id, 1, theme, COLOR_DARKBLUE);
+        } else {
+            AddToListBox(theme_id, 0, theme);
         }
-        update_girl_sliders();
-    });
-
-    SetSliderCallback(girlsitemspercslider_id, [this](int value) {
-        int s1 = value;
-        int s2 = SliderValue(girlsgirlspercslider_id);
-        if (s1 < s2)
-        {
-            s2 = s1;
-            SliderRange(girlsgirlspercslider_id, 0, 100, s2, 1);
-        }
-        update_girl_sliders();
-    });
+    }
+    SetSelectedItemInList(theme_id, 1, false, true);
 }
 
 cScreenSettings::cScreenSettings() : cInterfaceWindowXML("settings.xml")
@@ -90,12 +73,6 @@ void cScreenSettings::init(bool back)
         SetEditBoxText(items_id, cfg.folders.items());
         SetCheckBox(backupsaves_id, cfg.folders.backupsaves());
         SetCheckBox(preferdefault_id, cfg.folders.preferdefault());
-
-        ss.str("");    ss << "Girls: " << cfg.catacombs.girl_gets_girls() << "%";    EditTextItem(ss.str(), girlgetsgirls_id);
-        ss.str("");    ss << "Items: " << cfg.catacombs.girl_gets_items() << "%";    EditTextItem(ss.str(), girlgetsitems_id);
-        ss.str("");    ss << "Beast: " << cfg.catacombs.girl_gets_beast() << "%";    EditTextItem(ss.str(), girlgetsbeast_id);
-        SliderValue(girlsgirlspercslider_id, cfg.catacombs.girl_gets_girls());
-        SliderValue(girlsitemspercslider_id, cfg.catacombs.girl_gets_girls() + cfg.catacombs.girl_gets_items());
     }
 //    backupsaves_id
 //    preferdefault_id
@@ -103,37 +80,17 @@ void cScreenSettings::init(bool back)
 
 }
 
-void cScreenSettings::update_girl_sliders()
-{
-    std::stringstream ss;
-    int s1 = SliderValue(girlsgirlspercslider_id);
-    int s2 = SliderValue(girlsitemspercslider_id);
-    cfg.catacombs.girl_gets_girls() = s1;
-    cfg.catacombs.girl_gets_items() = s2 - s1;
-    cfg.catacombs.girl_gets_beast() = 100 - s2;
-    ss.str("");
-    ss << "Girls: " << cfg.catacombs.girl_gets_girls() << "%";
-    EditTextItem(ss.str(), girlgetsgirls_id);
-    ss.str("");
-    ss << "Items: " << cfg.catacombs.girl_gets_items() << "%";
-    EditTextItem(ss.str(), girlgetsitems_id);
-    ss.str("");
-    ss << "Beast: " << cfg.catacombs.girl_gets_beast() << "%";
-    EditTextItem(ss.str(), girlgetsbeast_id);
-}
-
 void cScreenSettings::update_settings()
 {
-    cfg.folders.characters()      = GetEditBoxText(characters_id);
-    cfg.folders.saves()           = GetEditBoxText(saves_id);
-    cfg.folders.defaultimageloc() = GetEditBoxText(defaultimages_id);
-    cfg.folders.items()           = GetEditBoxText(items_id);
-    cfg.folders.backupsaves()     = GetCheckBox(backupsaves_id);
-    cfg.folders.preferdefault()   = GetCheckBox(preferdefault_id);
+    cfg.set_value("folders.characters", GetEditBoxText(characters_id));
+    cfg.set_value("folders.saves", GetEditBoxText(characters_id));
+    cfg.set_value("folders.default_images", GetEditBoxText(defaultimages_id));
+    cfg.set_value("folders.items", GetEditBoxText(items_id));
 
-    int s1 = SliderValue(girlsgirlspercslider_id);
-    int s2 = SliderValue(girlsitemspercslider_id);
-    cfg.catacombs.girl_gets_girls() = s1;
-    cfg.catacombs.girl_gets_items() = s2 - s1;
-    cfg.catacombs.girl_gets_beast() = 100 - s2;
+    cfg.set_value("folders.backup_saves", GetCheckBox(backupsaves_id));
+    cfg.set_value("folders.prefer_defaults", GetCheckBox(preferdefault_id));
+
+    cfg.set_value("interface.theme", GetSelectedTextFromList(theme_id));
+
+    cfg.save();
 }

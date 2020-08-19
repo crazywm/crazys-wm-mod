@@ -26,17 +26,15 @@
 #include "CLog.h"
 #include "cGirlGangFight.h"
 #include "cJobManager.h"
-#include "sConfig.h"
 #include "Inventory.h"
 #include "buildings/cDungeon.h"
 #include "character/cPlayer.h"
 #include "character/cCustomers.h"
+#include "cGangs.h"
 
 namespace settings {
     extern const char* WORLD_CATACOMB_UNIQUE;
 }
-
-extern cConfig cfg;
 
 // `J` Job Brothel - General
 bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
@@ -69,8 +67,8 @@ bool WorkExploreCatacombs(sGirl& girl, bool Day0Night1, cRng& rng)
 
     int haulcount = 2 + ((girl.strength() + girl.constitution()) / 10);    // how much she can bring back            - max 22 points
     // each girl costs 5 haul points                        - max 5 girls
-    double beastpercent = cfg.catacombs.girl_gets_beast();    // each beast costs 3 haul points                        - max 8 beasts
-    double itemspercent = cfg.catacombs.girl_gets_items();    // each item costs 2 if an item is found or 1 if not    - max 11 items
+    float beastpercent = g_Game->gang_manager().Gang_Gets_Beast();      // each beast costs 3 haul points                       - max 8 beasts
+    double itemspercent = g_Game->gang_manager().Gang_Gets_Items();     // each item costs 2 if an item is found or 1 if not    - max 11 items
     int numgirls = 0, numitems = 0;
 
     while (haulcount > 0 && girl.health() > 40)

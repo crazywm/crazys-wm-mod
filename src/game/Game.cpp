@@ -25,8 +25,8 @@
 #include "scripting/GameEvents.h"
 #include "xml/util.h"
 #include "character/traits/ITraitsCollection.h"
-#include "sConfig.h"
 #include "character/cGirlPool.h"
+#include "sConfig.h"
 
 namespace settings {
     extern const char* TAXES_RATE;

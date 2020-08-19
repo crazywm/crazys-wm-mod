@@ -29,7 +29,6 @@
 #include "CLog.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
-#include "sConfig.h"
 #include "Inventory.h"
 
 using namespace std;
@@ -39,7 +38,6 @@ namespace settings {
 }
 
 extern cRng g_Dice;
-extern cConfig      cfg;
 
 extern string stringtolowerj(string name);
 

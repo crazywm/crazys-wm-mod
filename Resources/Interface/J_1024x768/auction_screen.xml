@@ -1,13 +1,13 @@
 <Screen>
-<Window	Name="Auction Window"			XPos="10"	YPos="10"	Width="780"	Height="580"	Border="1" />
-<Image	Name="Arena"	File=""		XPos="8"	YPos="48"	Width="584"	Height="480"	/>
-<Text    	Name="ArenaDetails"	Text=""	XPos="600"	YPos="20"	Width="160"	Height="170"	FontSize="10"	/>
-<Button  	Name="BackButton"	Image="Back"	XPos="600"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="WalkButton"	Image=""		XPos="176"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="Girls"	Image="Girls"	XPos="600"	YPos="258"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="Staff"	Image="Staff"	XPos="600"	YPos="298"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="Dungeon"	Image="Dungeon"	XPos="600"	YPos="398"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="Turn"	Image="TurnSum"		XPos="432"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="Weeks"	Image="NextWeek"	XPos="600"	YPos="5"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
-<Button  	Name="SetUp"	Image=""		XPos="600"	YPos="340"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+<Window	Name="Auction Window"			XPos="7"	YPos="10"	Width="585"	Height="580"	Border="1" />
+<Image	Name="Arena"	File=""		XPos="6"	YPos="48"	Width="438"	Height="480"	/>
+<Text    	Name="ArenaDetails"	Text=""	XPos="450"	YPos="20"	Width="120"	Height="170"	FontSize="7"	/>
+<Button  	Name="BackButton"	Image="Back"	XPos="450"	YPos="540"	Width="120"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button  	Name="WalkButton"	Image=""		XPos="132"	YPos="540"	Width="120"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Girls"	Image="Girls"	XPos="450"	YPos="258"	Width="120"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Staff"	Image="Staff"	XPos="450"	YPos="298"	Width="120"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Dungeon"	Image="Dungeon"	XPos="450"	YPos="398"	Width="120"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Turn"	Image="TurnSum"		XPos="324"	YPos="540"	Width="120"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button  	Name="Weeks"	Image="NextWeek"	XPos="450"	YPos="5"	Width="120"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button  	Name="SetUp"	Image=""		XPos="450"	YPos="340"	Width="120"	Height="32"	Transparency="true"	Scale="true"	/>
 </Screen>

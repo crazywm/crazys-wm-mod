@@ -1,13 +1,13 @@
 
 <Screen>
-<Window     Name="Prison Screen Window"                                     XPos="300"      YPos="170"      Width="400"     Height="400" Border="1"  />
-<Image      Name="PrisonIcon"           File="Prison.png"                   XPos="10"       YPos="10"       Width="50"      Height="50"                   />
-<Text       Name="ScreenHeader"         Text="Town Prison"                  XPos="70"       YPos="10"       Width="160"     Height="32"                  FontSize="20"                   />
-<ListBox    Name="PrisonList"                                               XPos="10"       YPos="60"       Width="210"     Height="330"                  Border="1"                  Events="true"                  Multi="false"                   />
+<Window     Name="Prison Screen Window"                                     XPos="362"      YPos="170"      Width="300"     Height="400" Border="1"  />
+<Image      Name="PrisonIcon"           File="Prison.png"                   XPos="7"       YPos="10"       Width="37"      Height="50"                   />
+<Text       Name="ScreenHeader"         Text="Town Prison"                  XPos="52"       YPos="10"       Width="120"     Height="32"                  FontSize="15"                   />
+<ListBox    Name="PrisonList"                                               XPos="7"       YPos="60"       Width="157"     Height="330"  FontSize="9" RowHeight="19"                 Border="1"                  Events="true"                  Multi="false"                   />
 
-<Text       Name="GirlDescription"      Text="None Selected"                XPos="230"      YPos="10"       Width="160"     Height="300"                  FontSize="10"                   />
-<Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="230"      YPos="310"      Width="160"     Height="32"                  Transparency="true"                  Scale="true"                   />
-<Button     Name="ReleaseButton"        Image="Release"                     XPos="230"      YPos="358"      Width="160"     Height="32"                  Transparency="true"                  Scale="true"                   />
+<Text       Name="GirlDescription"      Text="None Selected"                XPos="172"      YPos="10"       Width="120"     Height="300"                  FontSize="7"                   />
+<Button     Name="ShowMoreButton"       Image="ShowMore"                    XPos="172"      YPos="310"      Width="120"     Height="32"                  Transparency="true"                  Scale="true"                   />
+<Button     Name="ReleaseButton"        Image="Release"                     XPos="172"      YPos="358"      Width="120"     Height="32"                  Transparency="true"                  Scale="true"                   />
 
-<Button     Name="BackButton"           Image="Back"                        XPos="512"      YPos="536"      Width="190"     Height="38"  Transparency="true"    Scale="true"  />
+<Button     Name="BackButton"           Image="Back"                        XPos="384"      YPos="536"      Width="142"     Height="38"  Transparency="true"    Scale="true"  />
 </Screen>
