@@ -39,7 +39,7 @@ public:
     CGraphics();
     ~CGraphics();
 
-    bool InitGraphics(std::string caption, int Width, int Height, bool Fullscreen);
+    bool InitGraphics(const std::string& caption, int Width, int Height, bool Fullscreen);
     bool End();        // End Drawing Stuff
     void Begin();      // begins drawing stuff
 

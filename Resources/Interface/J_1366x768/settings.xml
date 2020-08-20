@@ -15,11 +15,9 @@
 <EditBox    Name="Items"                                                    XPos="110"      YPos="140"      Width="300"     Height="20"     FontSize="10"                  Border="1"  />
 <Checkbox   Name="BackupSaves"              Text="Backup Saves"             XPos="60"       YPos="170"      Width="16"      Height="16"     FontSize="12" LeftOrRight="false" />
 <Checkbox   Name="PreferDefault"            Text="Prefer Default"           XPos="260"      YPos="170"      Width="16"      Height="16"     FontSize="12" LeftOrRight="false" />
+
 <Text       Name="ThemeLabel"               Text="Theme"                    XPos="10"       YPos="220"      Width="100"     Height="20"     FontSize="12"  />
 <ListBox    Name="ThemeList"                                                XPos="110"      YPos="220"      Width="210"     Height="60"     FontSize="12" RowHeight="20"   Border="1" Events="true" Multi="false" />
-
-<Define     Widget="Fonts">
-<Checkbox   Name="ShowPercent"              Text="Show % Signs"             XPos="0"        YPos="0"        Width="16"      Height="16"     FontSize="12"                  LeftOrRight="false" />
-</Define>
+<Checkbox   Name="Fullscreen"               Text="Fullscreen"               XPos="60"       YPos="290"      Width="16"      Height="16"     FontSize="12" LeftOrRight="false" />
 
 </Screen>

@@ -25,19 +25,20 @@ extern cConfig cfg;
 
 void cScreenSettings::set_ids()
 {
-    back_id                     = get_id("BackButton", "Back");
-    ok_id                     = get_id("OkButton");
-    revert_id                 = get_id("RevertButton");
+    back_id            = get_id("BackButton", "Back");
+    ok_id              = get_id("OkButton");
+    revert_id          = get_id("RevertButton");
 
     // Folders
-    characters_id             = get_id("Characters");
-    saves_id                 = get_id("Saves");
-    defaultimages_id         = get_id("DefaultImages");
-    items_id                 = get_id("Items");
-    backupsaves_id             = get_id("BackupSaves");
-    preferdefault_id         = get_id("PreferDefault");
+    characters_id      = get_id("Characters");
+    saves_id           = get_id("Saves");
+    defaultimages_id   = get_id("DefaultImages");
+    items_id           = get_id("Items");
+    backupsaves_id     = get_id("BackupSaves");
+    preferdefault_id   = get_id("PreferDefault");
 
-    theme_id                 = get_id("ThemeList");
+    theme_id           = get_id("ThemeList");
+    fullscreen_id      = get_id("Fullscreen");
 
     SetButtonNavigation(back_id, "Main Menu");
     SetButtonCallback(revert_id, [this]() { init(false); });
@@ -73,11 +74,9 @@ void cScreenSettings::init(bool back)
         SetEditBoxText(items_id, cfg.folders.items());
         SetCheckBox(backupsaves_id, cfg.folders.backupsaves());
         SetCheckBox(preferdefault_id, cfg.folders.preferdefault());
+        SetCheckBox(fullscreen_id, cfg.resolution.fullscreen());
+        SetSelectedItemInList(theme_id, 1, false, true);
     }
-//    backupsaves_id
-//    preferdefault_id
-
-
 }
 
 void cScreenSettings::update_settings()
@@ -87,10 +86,11 @@ void cScreenSettings::update_settings()
     cfg.set_value("folders.default_images", GetEditBoxText(defaultimages_id));
     cfg.set_value("folders.items", GetEditBoxText(items_id));
 
-    cfg.set_value("folders.backup_saves", GetCheckBox(backupsaves_id));
-    cfg.set_value("folders.prefer_defaults", GetCheckBox(preferdefault_id));
+    cfg.set_value("folders.backup_saves", IsCheckboxOn(backupsaves_id));
+    cfg.set_value("folders.prefer_defaults", IsCheckboxOn(preferdefault_id));
 
     cfg.set_value("interface.theme", GetSelectedTextFromList(theme_id));
+    cfg.set_value("interface.fullscreen", IsCheckboxOn(fullscreen_id));
 
     cfg.save();
 }

@@ -43,5 +43,7 @@ private:
     int items_id = -1;
     int backupsaves_id = -1;
     int preferdefault_id = -1;
+
     int theme_id = -1;
+    int fullscreen_id = -1;
 };

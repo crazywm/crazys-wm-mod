@@ -26,10 +26,11 @@
 
 ## UI
 * [ ] numeric column sorting
-* [ ] interface/resolution/fullscreen selection to settings screen
+* [x] interface/fullscreen selection to settings screen
 * [ ] Per building/global anti preg setting
 * [ ] Game-Mode files
 * [ ] Update Gallery
+* [ ] separate logical and actual render size and make configurable
 
 ## Bugs
 * [ ] some parts of the old scripts are still missing

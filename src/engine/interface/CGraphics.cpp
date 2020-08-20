@@ -70,7 +70,7 @@ bool CGraphics::End()
     return true;
 }
 
-bool CGraphics::InitGraphics(std::string caption, int Width, int Height, bool Fullscreen)
+bool CGraphics::InitGraphics(const std::string& caption, int Width, int Height, bool Fullscreen)
 {
     m_ScreenWidth = Width;
     m_ScreenHeight = Height;
@@ -86,7 +86,7 @@ bool CGraphics::InitGraphics(std::string caption, int Width, int Height, bool Fu
     }
 
     // set window icon
-    g_LogFile.info("interface","Setting Window Icon");
+    g_LogFile.info("interface", "Setting Window Icon");
     SDL_Surface* loadIcon = IMG_Load(ImagePath("window_icon.png"));
     if(!loadIcon)
     {
@@ -118,6 +118,8 @@ bool CGraphics::InitGraphics(std::string caption, int Width, int Height, bool Fu
             m_ScreenWidth, m_ScreenHeight);
     if(!(m_ScreenBuffer && m_Screen))    // check for error
     {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SDL Error",
+                                 "Could not prepare screen buffer", m_Window);
         g_LogFile.error("interface", "Could not prepare screen buffer");
         g_LogFile.error("interface", SDL_GetError());
         return false;
@@ -136,6 +138,8 @@ bool CGraphics::InitGraphics(std::string caption, int Width, int Height, bool Fu
     g_LogFile.info("interface","Initializing TTF");
     if(TTF_Init() == -1)
     {
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "SDL Error",
+                                 "Could not initialize SDL_TTF", m_Window);
         g_LogFile.error("interface", "Could not initialize SDL_TTF");
         g_LogFile.error("interface", TTF_GetError());
         return false;

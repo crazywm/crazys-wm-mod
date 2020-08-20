@@ -4,9 +4,9 @@
     <Entry Key="interface.height" Value="1080"/>
     <Entry Key="font.font" Value="comic.ttf"/>
     <Entry Key="interface.width" Value="1920"/>
-    <Entry Key="interface.theme" Value="J_1920x1080"/>
+    <Entry Key="interface.theme" Value="J_1366x768"/>
     <Entry Key="folders.prefer_defaults" Value="true"/>
-    <Entry Key="interface.fullscreen" Value="true"/>
+    <Entry Key="interface.fullscreen" Value="false"/>
     <Entry Key="folders.backup_saves" Value="true"/>
     <Entry Key="interface.text_scroll" Value="3"/>
     <Entry Key="folders.default_images" Value="./Resources/DefaultImages"/>
