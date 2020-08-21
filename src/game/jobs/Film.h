@@ -40,7 +40,6 @@ struct FilmJobData {
     const char*  SceneName;         //!< Display name for a scene of this type.
     const char*  MsgWork;           //!< Default message for doing the work
     const char*  MsgRefuse;         //!< Default message refusing to work
-    std::vector<sTraitChange> TraitChanges;
 };
 
 struct SceneResult {
@@ -67,8 +66,6 @@ protected:
     // some helpers for common code
     void PerformanceToEnjoyment(const char* good_message, const char* neutral_message, const char* bad_message);
     void PrintPerfSceneEval();
-    double JobPerformanceCalculation(const sGirl& girl, bool estimate, std::initializer_list<STATS> primary,
-            std::initializer_list<SKILLS> secondary, const char* modifier) const;
 
     // common data
     std::stringstream ss;
@@ -77,10 +74,10 @@ protected:
     FilmJobData m_FilmData;
 
     // common trait changes
-    static constexpr sTraitChange GainPornStar = {true, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star."};
-    static constexpr sTraitChange GainFaker = {true, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker."};
-    static constexpr sTraitChange GainSlut = {true, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", EVENT_WARNING};
-    static constexpr sTraitChange GainMasochist = {true, "Masochist", 65, ACTION_SEX, "${name} has turned into a Masochist from filming so many BDSM scenes."};
+    static sTraitChange GainPornStar;
+    static sTraitChange GainFaker;
+    static sTraitChange GainSlut;
+    static sTraitChange GainMasochist;
 
 private:
     void NiceMovieGirlUpdate(sGirl& girl) const;

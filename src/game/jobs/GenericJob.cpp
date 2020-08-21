@@ -19,6 +19,7 @@
 
 #include "GenericJob.h"
 #include <functional>
+#include "cGirls.h"
 #include "cRng.h"
 #include "character/sGirl.h"
 
@@ -178,12 +179,7 @@ void RegisterWrappedJobs(cJobManager& mgr) {
     REGISTER_JOB(JOB_EXPLORECATACOMBS, ExploreCatacombs);
     REGISTER_JOB(JOB_BEASTCARER, BeastCare);
 
-    REGISTER_JOB(JOB_BARMAID, Barmaid);
-    REGISTER_JOB(JOB_WAITRESS, BarWaitress);
-    REGISTER_JOB(JOB_SINGER, BarSinger);
-    REGISTER_JOB(JOB_PIANO, BarPiano);
     REGISTER_JOB(JOB_ESCORT, Escort);
-    REGISTER_JOB(JOB_BARCOOK, BarCook);
 
     REGISTER_JOB(JOB_DEALER, HallDealer);
     REGISTER_JOB(JOB_ENTERTAINMENT, HallEntertainer);
@@ -306,4 +302,20 @@ double cBasicJob::GetPerformance(const sGirl& girl, bool estimate) const {
 
 void cBasicJob::set_performance_data(const char* mod, std::vector<StatSkill> primary, std::vector<StatSkill> secondary) {
     m_PerformanceData = sJobPerformance{mod, std::move(primary), std::move(secondary)};
+}
+
+void cBasicJob::add_trait_chance(sTraitChange c) {
+    m_TraitChanges.push_back(c);
+}
+
+void cBasicJob::gain_traits(sGirl& girl) {
+    for(auto& trait : m_TraitChanges) {
+        if(trait.Gain) {
+            cGirls::PossiblyGainNewTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
+                                         trait.Message, false, trait.EventType);
+        } else {
+            cGirls::PossiblyLoseExistingTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
+                                              trait.Message, false);
+        }
+    }
 }

@@ -26,9 +26,13 @@
 FilmBdsm::FilmBdsm() : GenericFilmJob(JOB_FILMBONDAGE, {
     IMGTYPE_BDSM, ACTION_SEX, SKILL_BDSM, 50, 8,
     FilmJobData::EVIL, SKILL_BDSM, "Bondage",
-    nullptr, nullptr, {GainFaker, GainSlut, GainPornStar, GainMasochist}
+    nullptr, nullptr
 }) {
     set_performance_data("work.film.bondage", {STAT_CHARISMA, STAT_BEAUTY, STAT_DIGNITY}, {});
+    add_trait_chance(GainFaker);
+    add_trait_chance(GainSlut);
+    add_trait_chance(GainPornStar);
+    add_trait_chance(GainMasochist);
 }
 
 

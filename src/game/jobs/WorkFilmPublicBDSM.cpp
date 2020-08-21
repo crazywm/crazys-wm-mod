@@ -386,7 +386,9 @@ void FilmPubBDSM::Reset() {
 FilmPubBDSM::FilmPubBDSM() : GenericFilmJob(JOB_FILMPUBLICBDSM, {
         IMGTYPE_BDSM, ACTION_SEX, SKILL_BDSM, 50, 10,
         FilmJobData::EVIL, SKILL_BDSM, "Public BDSM",
-        nullptr,nullptr, {GainPornStar, GainMasochist}
+        nullptr, nullptr
 }) {
     set_performance_data("work.film.publicbdsm", {STAT_CHARISMA, STAT_BEAUTY, STAT_DIGNITY}, {});
+    add_trait_chance(GainPornStar);
+    add_trait_chance(GainMasochist);
 }

@@ -23,10 +23,10 @@ FilmChef::FilmChef() : GenericFilmJob(JOB_FILMCHEF, {
       FilmJobData::NICE, SKILL_COOKING, "Cooking",
       " worked filming sexy chef scenes to educate and entertain viewers.",
       " refused to make a kitchen show today.",
-      {{true, "Charming", 80, ACTION_WORKMOVIE, "She has become quite Charming."},
-       {true, "Actress", 80, ACTION_WORKMOVIE, "Working on camera has improved her acting skills."}}
 }) {
     set_performance_data("work.film.chef", {STAT_CHARISMA, STAT_BEAUTY, STAT_CONFIDENCE}, {SKILL_COOKING});
+    add_trait_chance({true, "Charming", 80, ACTION_WORKMOVIE, "She has become quite Charming."});
+    add_trait_chance({true, "Actress", 80, ACTION_WORKMOVIE, "Working on camera has improved her acting skills."});
 }
 
 void FilmChef::DoScene(sGirl& girl) {

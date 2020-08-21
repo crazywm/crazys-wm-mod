@@ -123,9 +123,9 @@ FilmTease::FilmTease() : GenericFilmJob(JOB_FILMTEASE, {
         FilmJobData::NICE, SKILL_STRIP, "Teaser",
         " worked filming teaser scenes to arouse viewers.",
         " refused to make a teaser clip today.",
-        {{true, "Charming", 80, ACTION_WORKMOVIE, "Flirting and seducing on film has made her Charming."},
-         {true, "Actress", 80, ACTION_WORKSTRIP, "All this flirting and teasing with a camera in a studio has improved her acting skills."}}
 }) {
     set_performance_data("work.film.tease", {STAT_CHARISMA, STAT_BEAUTY, STAT_CONFIDENCE}, {SKILL_PERFORMANCE, SKILL_STRIP});
+    add_trait_chance({true, "Charming", 80, ACTION_WORKMOVIE, "Flirting and seducing on film has made her Charming."});
+    add_trait_chance({true, "Actress", 80, ACTION_WORKSTRIP, "All this flirting and teasing with a camera in a studio has improved her acting skills."});
 }
 

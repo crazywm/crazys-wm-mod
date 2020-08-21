@@ -82,9 +82,14 @@ public:
 protected:
 
     void set_performance_data(const char* mod, std::vector<StatSkill> primary, std::vector<StatSkill> secondary);
+    const sJobPerformance& get_performance_data() const { return m_PerformanceData; }
 
+    void add_trait_chance(sTraitChange c);
+
+    void gain_traits(sGirl& girl);
 private:
     sJobPerformance m_PerformanceData;
+    std::vector<sTraitChange> m_TraitChanges;
 };
 
 void RegisterCraftingJobs(cJobManager& mgr);
@@ -93,5 +98,6 @@ void RegisterWrappedJobs(cJobManager& mgr);
 void RegisterManagerJobs(cJobManager& mgr);
 void RegisterFilmJobs(cJobManager& mgr);
 void RegisterTherapyJobs(cJobManager& mgr);
+void RegisterBarJobs(cJobManager& mgr);
 
 #endif //WM_GENERICJOB_H

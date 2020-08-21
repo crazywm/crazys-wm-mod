@@ -231,7 +231,8 @@ FilmThroat::FilmThroat() : GenericFilmJob(JOB_FILMFACEFUCK, {
       FilmJobData::EVIL, SKILL_ORALSEX, "Facefucking",
       " worked filming teaser scenes to arouse viewers.",
       " refused to make a teaser clip today.",
-      {GainMasochist, {true, "Mind Fucked", 90, ACTION_WORKMOVIE, "She has been abused so much she is now completely Mind Fucked."}}
 }) {
     set_performance_data("work.film.throat", {STAT_CHARISMA, STAT_BEAUTY}, {SKILL_ORALSEX});
+    add_trait_chance(GainMasochist);
+    add_trait_chance({true, "Mind Fucked", 90, ACTION_WORKMOVIE, "She has been abused so much she is now completely Mind Fucked."});
 }

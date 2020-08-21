@@ -29,12 +29,7 @@ set(SCREENS_SRC
 set(JOBS_SRC
         jobs/WorkAdvertising.cpp
         jobs/Surgery.cpp
-        jobs/WorkBarCook.cpp
-        jobs/WorkBarmaid.cpp
-        jobs/WorkBarPiano.cpp
-        jobs/WorkBarSinger.cpp
         jobs/WorkBarStripper.cpp
-        jobs/WorkBarWaitress.cpp
         jobs/WorkBeastCapture.cpp
         jobs/WorkBeastCare.cpp
         jobs/WorkBrothelMassusse.cpp
@@ -114,7 +109,7 @@ set(JOBS_SRC
         jobs/GenericJob.cpp
         jobs/Matron.cpp
         jobs/Therapy.cpp
-        )
+        jobs/BarJobs.cpp)
 
 set(BUILDINGS_SRC
         buildings/cArena.cpp

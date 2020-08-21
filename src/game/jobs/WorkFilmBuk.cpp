@@ -24,11 +24,11 @@ FilmBuk::FilmBuk() : GenericFilmJob(JOB_FILMBUKKAKE, {
         IMGTYPE_ORAL, Action_Types::NUM_ACTIONTYPES, SKILL_BDSM, 50, 5,
         FilmJobData::EVIL, SKILL_GROUP, "Bukkake",
         " was filmed being splattered with cum in bukkake scenes.",
-        nullptr, {
-            {true, "Masochist", 75, ACTION_SEX, "${name} has turned into a Masochist from all the degradation."},
-            {true, "Cum Addict", 80, ACTION_WORKMOVIE, "${name} has become addicted to cum."}}
+        nullptr
 }) {
     set_performance_data("work.film.buk", {STAT_CHARISMA, STAT_BEAUTY}, {});
+    add_trait_chance({true, "Masochist", 75, ACTION_SEX, "${name} has turned into a Masochist from all the degradation."});
+    add_trait_chance({true, "Cum Addict", 80, ACTION_WORKMOVIE, "${name} has become addicted to cum."});
 }
 
 //Useful fn

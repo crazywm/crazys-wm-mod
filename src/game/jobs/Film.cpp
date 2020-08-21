@@ -95,15 +95,7 @@ bool GenericFilmJob::WorkFilm(sGirl& girl) {
     girl.upd_Enjoyment(ACTION_WORKMOVIE, result.enjoy);
 
     // gain simple traits
-    for(auto& trait : m_FilmData.TraitChanges) {
-        if(trait.Gain) {
-            cGirls::PossiblyGainNewTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
-                                         trait.Message, false, trait.EventType);
-        } else {
-            cGirls::PossiblyLoseExistingTrait(girl, trait.TraitName, trait.Threshold, trait.Action,
-                                              trait.Message, false);
-        }
-    }
+    gain_traits(girl);
 
     if(m_FilmData.Type == FilmJobData::EVIL) {
         EvilMovieGirlUpdate(girl);
@@ -200,12 +192,14 @@ void SimpleFilmJob::DoScene(sGirl& girl) {
 struct FilmTitty : public SimpleFilmJob
 {
     FilmTitty() : SimpleFilmJob(JOB_FILMTITTY, {
-    IMGTYPE_TITTY, ACTION_SEX, SKILL_TITTYSEX, 50, -5,
-    FilmJobData::NORMAL, SKILL_TITTYSEX, "Titty",
-    " worked as an actress filming titty fucking scenes.",
-    " refused to have her titty's fucked on film today.",
-    {GainPornStar}})
-    {};
+            IMGTYPE_TITTY, ACTION_SEX, SKILL_TITTYSEX, 50, -5,
+            FilmJobData::NORMAL, SKILL_TITTYSEX, "Titty",
+            " worked as an actress filming titty fucking scenes.",
+            " refused to have her titty's fucked on film today.",
+    })
+    {
+        add_trait_chance(GainPornStar);
+    };
 
     void narrate(const sGirl& girl, int roll) override {
         if (roll <= 10) { ss << "She used her breasts on his cock, but didn't like it."; }
@@ -244,8 +238,10 @@ struct FilmLesbian : public SimpleFilmJob
            FilmJobData::NORMAL, SKILL_LESBIAN, "Lesbian",
            " worked as an actress filming lesbian scenes.",
            " refused to film a lesbian scene today.",
-           {GainPornStar, GainFaker}
-    }) {};
+    }) {
+        add_trait_chance(GainPornStar);
+        add_trait_chance(GainFaker);
+    };
 
     int handle_events(sGirl& girl) override {
         if (is_virgin(girl)) {
@@ -269,8 +265,9 @@ struct FilmHandJob : public SimpleFilmJob
           FilmJobData::NORMAL, SKILL_HANDJOB, "Handjob",
           " worked as an actress filming hand job scenes.",
           " refused to churn his butter on film today.",
-          {GainPornStar}
-    }) {}
+    }) {
+        add_trait_chance(GainPornStar);
+    }
 
     void narrate(const sGirl& girl, int roll) override {
         if (roll <= 10) { ss << "She used her hand on his cock, but didn't like it."; }
@@ -286,8 +283,9 @@ struct FilmFootJob : public SimpleFilmJob
           FilmJobData::NORMAL, SKILL_FOOTJOB, "Footjob",
           " worked as an actress filming foot job scenes.",
           " refused to use her feet on film today.",
-          {GainPornStar}
-    }) {}
+    }) {
+        add_trait_chance(GainPornStar);
+    }
 
     void narrate(const sGirl& girl, int roll) override {
         if (roll <= 10) { ss << "She used her feet on his cock, but didn't like it."; }
@@ -303,8 +301,11 @@ struct FilmAnal : public SimpleFilmJob
            FilmJobData::NORMAL, SKILL_ANAL, "Anal",
            " worked as an actress filming anal scenes.",
            " refused to do anal on film today.",
-           {GainPornStar, GainFaker, GainSlut}
-    }) {}
+    }) {
+        add_trait_chance(GainPornStar);
+        add_trait_chance(GainFaker);
+        add_trait_chance(GainSlut);
+    }
 
     int handle_events(sGirl& girl) override {
         if (is_virgin(girl)) {
@@ -328,8 +329,10 @@ struct FilmMast : public SimpleFilmJob
            FilmJobData::NICE, SKILL_PERFORMANCE, "Masturbation",
            " worked as an actress filming Masturbation scenes.",
            " refused to masturbate on film today.",
-           {GainFaker, GainPornStar}
-    }) {}
+    }) {
+        add_trait_chance(GainFaker);
+        add_trait_chance(GainPornStar);
+    }
 
     int handle_events(sGirl& girl) override {
         if (is_virgin(girl))
@@ -445,28 +448,7 @@ void GenericFilmJob::PrintPerfSceneEval() {
     }
 }
 
-double GenericFilmJob::JobPerformanceCalculation(const sGirl& girl, bool estimate, std::initializer_list<STATS> primary,
-                                                 std::initializer_list<SKILLS> secondary, const char* modifier) const {
-    double performance = 0;
-    for(auto& stat : primary) {
-        performance += (double)girl.get_stat(stat) / primary.size();
-    }
-
-    for(auto& skill : secondary) {
-        performance += (double)girl.get_skill(skill) / secondary.size();
-    }
-
-    if(primary.size() == 0 || secondary.size() == 0)
-        performance *= 2;
-
-    if (!estimate)
-    {
-        int t = girl.tiredness() - 80;
-        if (t > 0)
-            performance -= (t + 2) * (t / 3);
-    }
-
-    performance += girl.get_trait_modifier(modifier);
-
-    return performance;
-}
+sTraitChange GenericFilmJob::GainPornStar = {true, "Porn Star", 80, ACTION_WORKMOVIE, "She has performed in enough sex scenes that she has become a well known Porn Star."};
+sTraitChange GenericFilmJob::GainFaker = {true, "Fake Orgasm Expert", 50, ACTION_SEX, "She has become quite the faker."};
+sTraitChange GenericFilmJob::GainSlut = {true, "Slut", 80, ACTION_SEX, "${name} has turned into quite a slut.", EVENT_WARNING};
+sTraitChange GenericFilmJob::GainMasochist = {true, "Masochist", 65, ACTION_SEX, "${name} has turned into a Masochist from filming so many BDSM scenes."};
