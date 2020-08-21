@@ -70,10 +70,10 @@ bool CGraphics::End()
     return true;
 }
 
-bool CGraphics::InitGraphics(const std::string& caption, int Width, int Height, bool Fullscreen)
+bool CGraphics::InitGraphics(const std::string& caption, int UIWidth, int UIHeight, int WindowWidth, int WindowHeight, bool Fullscreen)
 {
-    m_ScreenWidth = Width;
-    m_ScreenHeight = Height;
+    m_ScreenWidth = UIWidth;
+    m_ScreenHeight = UIHeight;
     m_Fullscreen = Fullscreen;
 
     // init SDL
@@ -98,11 +98,14 @@ bool CGraphics::InitGraphics(const std::string& caption, int Width, int Height, 
     g_LogFile.info("interface", "Determining Fullscreen or Windowed Mode");
     if (m_Fullscreen) {
         SDL_CreateWindowAndRenderer(0, 0, SDL_WINDOW_FULLSCREEN_DESKTOP, &m_Window, &m_Renderer);
-        SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // make the scaled rendering look smoother.
-        SDL_RenderSetLogicalSize(m_Renderer, m_ScreenWidth, m_ScreenHeight);
     }
-    else
-        SDL_CreateWindowAndRenderer(m_ScreenWidth, m_ScreenHeight, 0, &m_Window, &m_Renderer);
+    else {
+        SDL_CreateWindowAndRenderer(WindowWidth, WindowHeight, 0, &m_Window, &m_Renderer);
+    }
+
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");  // make the scaled rendering look smoother.
+    SDL_RenderSetLogicalSize(m_Renderer, m_ScreenWidth, m_ScreenHeight);
+
     if(!(m_Window && m_Renderer))    // check for error
     {
         g_LogFile.error("interface", "Could not SDL_CreateWindowAndRenderer");

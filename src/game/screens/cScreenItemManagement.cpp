@@ -17,6 +17,7 @@
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <sstream>
+#include <xml/util.h>
 #include "cScreenItemManagement.h"
 #include "buildings/cBuildingManager.h"
 #include "buildings/cDungeon.h"
@@ -32,6 +33,7 @@
 #include "cInventory.h"
 #include "cShop.h"
 #include "sConfig.h"
+#include "CLog.h"
 
 namespace settings {
     extern const char* MONEY_SELL_ITEM;
@@ -200,6 +202,7 @@ struct cInventoryProviderGirl : public IInventoryProvider {
 extern bool g_AllTogle;
 extern cConfig cfg;
 extern bool playershopinventory;
+static cColor ColorConvert;
 
 cScreenItemManagement::cScreenItemManagement() : cGameWindow("itemmanagement_screen.xml")
 {
@@ -209,7 +212,7 @@ cScreenItemManagement::cScreenItemManagement() : cGameWindow("itemmanagement_scr
 static int filter = 0;
 static int filterpos = 0;
 
-static SDL_Color* RarityColor[9];
+static SDL_Color RarityColor[9];
 
 void cScreenItemManagement::load_ids(sItemTransferSide& target, Side side)
 {
@@ -255,7 +258,38 @@ void cScreenItemManagement::set_ids()
     load_ids(m_LeftData, Side::Left);
     load_ids(m_RightData, Side::Right);
 
-    for (int i = 0; i < 9; i++) RarityColor[i] = cfg.items.rarity_color(i);
+
+    // check interface for colors
+    DirPath dpi = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.xml";
+    tinyxml2::XMLDocument doci;
+    if (doci.LoadFile(dpi.c_str()) == tinyxml2::XML_SUCCESS)
+    {
+        for (auto& el : IterateChildElements(*doci.RootElement()))
+        {
+            std::string tag = el.Value();
+            /// TODO move this to all the other interface stuff
+            if (tag == "Color")
+            {
+                int r, g, b;
+                if(el.QueryAttribute("R", &r) == tinyxml2::XML_SUCCESS && el.QueryAttribute("G", &g) == tinyxml2::XML_SUCCESS &&
+                   el.QueryAttribute("B", &b) == tinyxml2::XML_SUCCESS) {
+                    std::string name = el.Attribute("Name");
+                    /* */if (name == "ItemRarity0") ColorConvert.RGBToSDLColor(&RarityColor[0], r, g, b);
+                    else if (name == "ItemRarity1") ColorConvert.RGBToSDLColor(&RarityColor[1], r, g, b);
+                    else if (name == "ItemRarity2") ColorConvert.RGBToSDLColor(&RarityColor[2], r, g, b);
+                    else if (name == "ItemRarity3") ColorConvert.RGBToSDLColor(&RarityColor[3], r, g, b);
+                    else if (name == "ItemRarity4") ColorConvert.RGBToSDLColor(&RarityColor[4], r, g, b);
+                    else if (name == "ItemRarity5") ColorConvert.RGBToSDLColor(&RarityColor[5], r, g, b);
+                    else if (name == "ItemRarity6") ColorConvert.RGBToSDLColor(&RarityColor[6], r, g, b);
+                    else if (name == "ItemRarity7") ColorConvert.RGBToSDLColor(&RarityColor[7], r, g, b);
+                    else if (name == "ItemRarity8") ColorConvert.RGBToSDLColor(&RarityColor[8], r, g, b);
+                } else {
+                    g_LogFile.error("interface", "Error reading Color definition from '", dpi.c_str(), "': ",  el.GetLineNum());
+                }
+
+            }
+        }
+    }
 
     SetButtonNavigation(back_id, "<back>");
 
@@ -570,7 +604,7 @@ void cScreenItemManagement::refresh_item_list(Side which_list)
                 ++i;
             }
 
-            if (ItemColor > -1) SetSelectedItemTextColor(data.items_id, i, *RarityColor[ItemColor]);
+            if (ItemColor > -1) SetSelectedItemTextColor(data.items_id, i, RarityColor[ItemColor]);
         });
     }
 

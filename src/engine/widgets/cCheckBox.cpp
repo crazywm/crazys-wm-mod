@@ -46,13 +46,13 @@ void cCheckBox::DrawWidget(const CGraphics& gfx)
 }
 
 cCheckBox::cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, int height, std::string text, int fontsize, bool leftorright):
-    cUIWidget(id, x, y, width, height, parent), m_Font(&GetGraphics())
+    cUIWidget(id, x, y, width, height, parent),
+    m_Font(GetGraphics().LoadFont(cfg.fonts.normal(), fontsize))
 {
     m_Image = GetGraphics().LoadImage(ImagePath("CheckBoxCheck.png").str(), m_Width, m_Height, true);
     m_Border = GetGraphics().CreateSurface(width, height, g_CheckBoxBorderColor);
     m_Surface = GetGraphics().CreateSurface(width - 2, height - 2, g_CheckBoxBackgroundColor);
 
-    m_Font.LoadFont(cfg.fonts.normal(), fontsize);
     m_Font.SetColor(0, 0, 0);
     m_Label = m_Font.RenderText(std::move(text));
     m_LeftOrRight = leftorright;

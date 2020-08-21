@@ -18,27 +18,10 @@
 */
 #pragma once
 
-#include <iostream>
 #include <string>
-#include <vector>
 #include "utils/cKeyValueStore.h"
 
-namespace tinyxml2
-{
-    class XMLElement;
-}
-
-struct SDL_Color;
-
-struct sConfigData : public cSimpleKeyValue
-{
-    struct item_data {
-        SDL_Color*    rarity_color[9];
-    } items;
-
-    sConfigData(const char *filename = "config.xml");
-    void    ReadItemData();
-};
+struct sConfigData;
 
 class cConfig
 {
@@ -47,29 +30,25 @@ public:
     cConfig();
 
     struct font_data {
-        const std::string&    normal()             { return data->get_str("font.font"); }
+        const std::string&    normal();
     } fonts;
 
-    struct item_data {
-        SDL_Color* rarity_color(int num)    { return data->items.rarity_color[num]; }
-    } items;
-
     struct Folders {
-        const std::string&    characters()         { return data->get_str("folders.characters"); }
-        const std::string&    saves()              { return data->get_str("folders.saves"); }
-        const std::string&    items()              { return data->get_str("folders.items"); }
-        const std::string&    defaultimageloc()    { return data->get_str("folders.default_images");  }
-        bool                  backupsaves()        { return data->get_bool("folders.backup_saves"); }
-        bool                  preferdefault()      { return data->get_bool("folders.prefer_defaults"); }
+        const std::string&    characters();
+        const std::string&    saves();
+        const std::string&    items();
+        const std::string&    defaultimageloc();
+        bool                  backupsaves();
+        bool                  preferdefault();
     } folders;
 
     struct Resolution{
-        const std::string& resolution()            { return data->get_str("interface.theme"); }
-        int                width()                 { return data->get_integer("interface.width"); }
-        int                height()                { return data->get_integer("interface.height"); }
-        bool               fullscreen()            { return data->get_bool("interface.fullscreen"); }
-        int                list_scroll()           { return data->get_integer("interface.list_scroll"); }
-        int                text_scroll()           { return data->get_integer("interface.text_scroll"); }
+        const std::string& resolution();
+        int                width();
+        int                height();
+        bool               fullscreen();
+        int                list_scroll();
+        int                text_scroll();
     } resolution;
 
     void set_value(const char* id, std::string value);

@@ -45,6 +45,7 @@ bool DirPath::is_directory() const {
 }
 
 #else
+#include <shlwapi.h>
 const char    DirPath::sep[] = "\\";
 
 bool DirPath::is_directory() const {

@@ -1,12 +1,13 @@
 # Version 07.00.alpha3 (work in progress)
 ## Changes
-* Can now have video files instead of gifs
-
-## Minor improvements
+* Support for video files!
+* Select theme and fullscreen from settings
+* More unification of job code -- slight changes in bar behaviour of Bar jobs possible
 
 ## Fixes
 * Girls can get pregnant again
 * Fixed interaction script experience gain
+* Fixed game setting loading
 
 
 # Version 07.00.alpha2

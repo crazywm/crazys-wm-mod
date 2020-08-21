@@ -21,14 +21,16 @@
 #include "CLog.h"
 #include "utils/FileList.h"
 #include <tinyxml2.h>
-#include "interface/cColor.h"
 #include "Revision.h"
-#include "SDL.h"
 #include "xml/util.h"
-// TODO(refactor) get rid of this dependence!
-#include "../game/Constants.h"
 
-static cColor ColorConvert;
+
+struct sConfigData : public cSimpleKeyValue
+{
+    sConfigData(const char *filename = "config.xml");
+    void load(const DirPath& source);
+};
+
 sConfigData *cConfig::data;
 
 cConfig::cConfig()
@@ -78,8 +80,14 @@ sConfigData::sConfigData(const char *a_filename)
 
     add_setting("font.font", "Font", "comic.ttf");
 
-    DirPath dpdef = DirPath() << a_filename;    // `J` moved to root directory
-    std::string filenamedef = dpdef.c_str();
+    load(DirPath() << a_filename);
+
+    // next, load the theme -- this overrides width and height
+    load(DirPath() << "Resources" << "Interface" << get_str("interface.theme") << "config.xml");
+}
+
+void sConfigData::load(const DirPath& source) {
+    std::string filenamedef = source.c_str();
     pXMLDocument doc;
     g_LogFile.info( "engine", "Attempting to load config file: ",filenamedef );
     try {
@@ -91,45 +99,20 @@ sConfigData::sConfigData(const char *a_filename)
         g_LogFile.error("engine", "Could not load any config.xml files, using defaults.");
         return;
     }
-
-    ReadItemData();
 }
 
-void sConfigData::ReadItemData()
-{
-    // check interface for colors
-    DirPath dpi = DirPath() << "Resources" << "Interface" << get_str("interface.theme") << "InterfaceColors.xml";
-    tinyxml2::XMLDocument doci;
-    for (int i = 0; i < NUM_ITEM_RARITY; i++)
-    {
-        items.rarity_color[i] = new SDL_Color();
-    }
-    if (doci.LoadFile(dpi.c_str()) == tinyxml2::XML_SUCCESS)
-    {
-        for (auto& el : IterateChildElements(*doci.RootElement()))
-        {
-            std::string tag = el.Value();
-            /// TODO move this to all the other interface stuff
-            if (tag == "Color")
-            {
-                int r, g, b;
-                if(el.QueryAttribute("R", &r) == tinyxml2::XML_SUCCESS && el.QueryAttribute("G", &g) == tinyxml2::XML_SUCCESS &&
-                    el.QueryAttribute("B", &b) == tinyxml2::XML_SUCCESS) {
-                    std::string name = el.Attribute("Name");
-                    /* */if (name == "ItemRarity0") ColorConvert.RGBToSDLColor(items.rarity_color[0], r, g, b);
-                    else if (name == "ItemRarity1") ColorConvert.RGBToSDLColor(items.rarity_color[1], r, g, b);
-                    else if (name == "ItemRarity2") ColorConvert.RGBToSDLColor(items.rarity_color[2], r, g, b);
-                    else if (name == "ItemRarity3") ColorConvert.RGBToSDLColor(items.rarity_color[3], r, g, b);
-                    else if (name == "ItemRarity4") ColorConvert.RGBToSDLColor(items.rarity_color[4], r, g, b);
-                    else if (name == "ItemRarity5") ColorConvert.RGBToSDLColor(items.rarity_color[5], r, g, b);
-                    else if (name == "ItemRarity6") ColorConvert.RGBToSDLColor(items.rarity_color[6], r, g, b);
-                    else if (name == "ItemRarity7") ColorConvert.RGBToSDLColor(items.rarity_color[7], r, g, b);
-                    else if (name == "ItemRarity8") ColorConvert.RGBToSDLColor(items.rarity_color[8], r, g, b);
-                } else {
-                    g_LogFile.error("engine", "Error reading Color definition from '", dpi.c_str(), "': ",  el.GetLineNum());
-                }
+const std::string& cConfig::font_data::normal() { return data->get_str("font.font"); }
 
-            }
-        }
-    }
-}
+const std::string& cConfig::Folders::characters() { return data->get_str("folders.characters"); }
+const std::string& cConfig::Folders::saves() { return data->get_str("folders.saves"); }
+const std::string& cConfig::Folders::items() { return data->get_str("folders.items"); }
+bool cConfig::Folders::backupsaves() { return data->get_bool("folders.backup_saves"); }
+const std::string& cConfig::Folders::defaultimageloc() { return data->get_str("folders.default_images");  }
+bool cConfig::Folders::preferdefault() { return data->get_bool("folders.prefer_defaults"); }
+
+const std::string& cConfig::Resolution::resolution() { return data->get_str("interface.theme"); }
+int cConfig::Resolution::width() { return data->get_integer("interface.width"); }
+int cConfig::Resolution::height() { return data->get_integer("interface.height"); }
+bool cConfig::Resolution::fullscreen() { return data->get_bool("interface.fullscreen"); }
+int cConfig::Resolution::list_scroll() { return data->get_integer("interface.list_scroll"); }
+int cConfig::Resolution::text_scroll() { return data->get_integer("interface.text_scroll"); }
