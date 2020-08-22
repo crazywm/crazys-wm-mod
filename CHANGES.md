@@ -1,4 +1,9 @@
-# Version 07.00.alpha3 (work in progress)
+# Version 07.00.alpha4 (work in progress)
+
+## Fixes
+* Save folder set correctly in settings
+
+# Version 07.00.alpha3
 ## Changes
 * Support for video files!
 * Select theme and fullscreen from settings

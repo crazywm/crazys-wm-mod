@@ -11,6 +11,6 @@
     <Entry Key="interface.text_scroll" Value="3"/>
     <Entry Key="folders.default_images" Value="./Resources/DefaultImages"/>
     <Entry Key="folders.items" Value="./Resources/Items"/>
-    <Entry Key="folders.saves" Value="./Resources/Characters"/>
+    <Entry Key="folders.saves" Value="./Saves"/>
     <Entry Key="folders.characters" Value="./Resources/Characters"/>
 </Config>

@@ -82,7 +82,7 @@ void cScreenSettings::init(bool back)
 void cScreenSettings::update_settings()
 {
     cfg.set_value("folders.characters", GetEditBoxText(characters_id));
-    cfg.set_value("folders.saves", GetEditBoxText(characters_id));
+    cfg.set_value("folders.saves", GetEditBoxText(saves_id));
     cfg.set_value("folders.default_images", GetEditBoxText(defaultimages_id));
     cfg.set_value("folders.items", GetEditBoxText(items_id));
 
