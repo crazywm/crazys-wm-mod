@@ -193,7 +193,6 @@ void cScreenTurnSummary::process()
         else if (Image_Change)
         {
             SetImage(image_id, "blank.png");
-            image_item->m_Message       = "";
             if (imagename_id >= 0)    EditTextItem("", imagename_id);
         }
     }

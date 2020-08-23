@@ -32,7 +32,7 @@ extern    std::string    numeric;
 
 static int Mode = 0;
 static int Img = 0;    // what image currently drawing
-static int numimages[NUM_IMGTYPES][4];
+static int numimages[NUM_IMGTYPES];
 
 cScreenGallery::cScreenGallery() : cGameWindow("gallery_screen.xml")
 {
@@ -47,27 +47,27 @@ void cScreenGallery::set_ids()
     imagename_id   = get_id("ImageName");
     imagelist_id   = get_id("ImageList");
 
-    std::vector<std::string> ILColumns{ "ILName", "ILTotal", "ILjpg", "ILAni", "ILGif" };
+    std::vector<std::string> ILColumns{ "ILName", "ILTotal" };
     SortColumns(imagelist_id, ILColumns);
 
     SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(prev_id, [this](){
         Img--;
-        if (Img < 0) Img = numimages[Mode][0] - 1;
+        if (Img < 0) Img = numimages[Mode] - 1;
         change_image();
     });
     SetButtonHotKey(prev_id, SDLK_LEFT);
 
     SetButtonCallback(next_id, [this](){
         Img++;
-        if (Img == numimages[Mode][0]) Img = 0;
+        if (Img == numimages[Mode]) Img = 0;
         change_image();
     });
     SetButtonHotKey(next_id, SDLK_RIGHT);
 
     SetListBoxSelectionCallback(imagelist_id, [this](int selection) {
         Mode = selection;
-        if (Img > numimages[Mode][0]) Img = 0;
+        if (Img > numimages[Mode]) Img = 0;
         change_image();
     });
 }
@@ -75,9 +75,12 @@ void cScreenGallery::set_ids()
 void cScreenGallery::change_image()
 {
     PrepareImage(image_id, m_SelectedGirl, Mode, false, Img, true);
-    std::string t = GetImage(image_id)->m_Message;
-    if (t.empty() && GetImage(image_id)->m_Image) t = GetImage(image_id)->m_Image.GetFileName();
-    EditTextItem(t, imagename_id);
+    cImageItem* image_ui = GetImage(image_id);
+    if (image_ui->m_Image)
+        EditTextItem(image_ui->m_Image.GetFileName(), imagename_id);
+    else if(image_ui->m_AnimatedImage)
+        EditTextItem(image_ui->m_AnimatedImage.GetFileName(), imagename_id);
+
     SetSelectedItemInList(imagelist_id, Mode, false);
 }
 
@@ -101,37 +104,13 @@ void cScreenGallery::init(bool back)
 
     for (int i = 0; i < NUM_IMGTYPES; i++)
     {
-        if (i == IMGTYPE_PREGNANT)
-        {
-            std::string ext[3] = { "*g", "ani", "gif" };
-            for (int e = 0; e < 3; e++)
-            {
-                std::string t = ("preg." + ext[e]);
-                FileList testmode(imagedir, t.c_str());
-                for (unsigned j = 0; j < numeric.size(); j++)
-                {
-                    t = ("preg" + numeric.substr(j, 1) + "*." + ext[e]);
-                    testmode.add(t.c_str());
-                }
-                numimages[i][e + 1] = testmode.size();
-            }
-        }
-        else
-        {
-            FileList testmode1(imagedir, (pic_types[i] + "*g").c_str());    numimages[i][1] = testmode1.size();
-            FileList testmode2(imagedir, (pic_types[i] + "ani").c_str());    numimages[i][2] = testmode2.size();
-            FileList testmode3(imagedir, (pic_types[i] + "gif").c_str());    numimages[i][3] = testmode3.size();
-        }
-        numimages[i][0] = numimages[i][1] + numimages[i][2] + numimages[i][3];
-        if (numimages[i][0] > 0)
+        FileList testmode1(imagedir, (pic_types[i] + "*").c_str());    numimages[i] = testmode1.size();
+        if (numimages[i] > 0)
         {
             if (startmode == -1) startmode = i;
-            std::stringstream num0;    num0 << numimages[i][0];
-            std::stringstream num1;    num1 << numimages[i][1];
-            std::stringstream num2;    num2 << numimages[i][2];
-            std::stringstream num3;    num3 << numimages[i][3];
+            std::stringstream num0;    num0 << numimages[i];
 
-            std::vector<std::string> dataP{ galtxt[i], num0.str(), num1.str(), num2.str(), num3.str() };
+            std::vector<std::string> dataP{ galtxt[i], num0.str() };
             AddToListBox(imagelist_id, i, std::move(dataP));
         }
     }
@@ -152,7 +131,7 @@ void cScreenGallery::OnKeyPress(SDL_Keysym keysym)
             if (Mode < 0) Mode = NUM_IMGTYPES - 1;
             if (Mode >= NUM_IMGTYPES) Mode = 0;
             Img = 0;
-            if (numimages[Mode][0] > 0)
+            if (numimages[Mode] > 0)
             {
                 change_image();
                 return;

@@ -1190,7 +1190,6 @@ void cGameWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, in
     auto images = FindImage(*girl, imagetype, gallery, ImageName);
     if(images.empty()) {
         image->SetImage(GetGraphics().LoadImage(ImagePath("blank.png"), image->GetWidth(), image->GetHeight(), true));
-        image->m_Message = "No image found.";
         return;
     }
 
@@ -1216,12 +1215,8 @@ void cGameWindow::PrepareImage(int id, sGirl* girl, int imagetype, bool rand, in
             }
         }
 
-        if (image->m_Message.empty()) {
-            if(image->m_Image)
-                image->m_Message = image->m_Image.GetFileName();
-        }
-
-        g_LogFile.verbose("image", "Loading image: ", image->m_Message);
+        if(image->m_Image)
+            g_LogFile.verbose("image", "Loading image: ", image->m_Image.GetFileName());
         return;
     }
 }

@@ -113,33 +113,6 @@ cSurface cImageCache::LoadImage(std::string filename, int width, int height, boo
     return AddToCache(std::move(key), std::move(loaded), std::move(filename));
 }
 
-
-cSurface cImageCache::GetSubImage(int width, int height, const cSurface& source, SDL_Rect src_rect)
-{
-    std::string fake_name;
-    std::stringstream ss;
-    ss << source.GetFileName() << "@[" << src_rect.x << ":" << src_rect.x + src_rect.x + src_rect.w << ","
-                               << src_rect.y << ":" << src_rect.y + src_rect.h << "]";
-    fake_name = ss.str();
-
-    // TODO transparency; keep ratio
-    sImageCacheKey key{fake_name, width, height, false, true};
-    auto           lookup = m_SurfaceCache.find(key);
-    if(lookup != m_SurfaceCache.end()) {
-        // otherwise, return from cache
-        m_ImageFoundCount++;
-        return cSurface{lookup->second, m_GFX};
-    }
-
-    auto sf = CreateSDLSurface(src_rect.w, src_rect.h, false);
-    // Draw the current frame using the frame rectangle.
-    SDL_BlitSurface(source.RawSurface()->surface(), &src_rect, sf.get(), nullptr);
-    sf = ResizeImage(std::move(sf), width, height, true);
-
-    return AddToCache(std::move(key), std::move(sf), std::move(fake_name));
-}
-
-
 surface_ptr_t cImageCache::ResizeImage(surface_ptr_t input, int width, int height, bool keep_ratio)
 {
     if (width != input->w || height != input->h)
@@ -393,7 +366,7 @@ cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, int target_width, in
 
     int dur = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
     g_LogFile.info("ffmpeg", "Loaded ", movie, " with ", surfaces.size(), " frames in ", dur, "ms");
-    return cAnimatedSurface{std::move(surfaces)};
+    return cAnimatedSurface{std::move(movie), std::move(surfaces)};
 }
 
 cSurface cImageCache::CreateTextSurface(TTF_Font* font, std::string text, sColor color, bool antialias)

@@ -23,7 +23,9 @@
 #include "interface/cImageCache.h"
 #include <chrono>
 
-cAnimatedSurface::cAnimatedSurface(std::vector<sAnimationFrame> frames) : m_Frames(std::move(frames))
+cAnimatedSurface::cAnimatedSurface(std::string file_name, std::vector<sAnimationFrame> frames) :
+    m_FileName(std::move(file_name)),
+    m_Frames(std::move(frames))
 {
 }
 

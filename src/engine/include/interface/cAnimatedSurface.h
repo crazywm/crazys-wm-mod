@@ -34,7 +34,7 @@ class cAnimatedSurface
 {
 public:
     cAnimatedSurface() = default;
-    explicit cAnimatedSurface(std::vector<sAnimationFrame>);
+    cAnimatedSurface(std::string file_name, std::vector<sAnimationFrame>);
 
     explicit operator bool() const { return !m_Frames.empty(); }
 
@@ -42,9 +42,12 @@ public:
     void DrawSurface(int x, int y, SDL_Rect* clip = nullptr) const;
     void UpdateFrame();
 
+    std::string GetFileName() const { return m_FileName; }
 private:
     std::chrono::high_resolution_clock::time_point m_LastTime {};
     std::vector<sAnimationFrame> m_Frames;
 
     int m_CurrentFrame = 0;                // Current frame in a playing animation
+
+    std::string m_FileName;
 };

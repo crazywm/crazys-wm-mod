@@ -87,8 +87,7 @@ public:
     // Generating new surfaces.
     cSurface CreateSurface(int width, int height, sColor color, bool make_unique=false) noexcept(false);
     cSurface LoadImage(std::string filename, int width=-1, int height=-1, bool transparency=false, bool keep_ratio=true, SDL_Rect* clip=nullptr);
-    /// TODO imporve this one
-    cSurface GetSubImage(int width, int height, const cSurface& source, SDL_Rect src_rect);
+
     cSurface CreateTextSurface(TTF_Font* font, std::string text, sColor color, bool antialias);
 
     cAnimatedSurface LoadFfmpeg(std::string movie, int target_width, int target_height);
