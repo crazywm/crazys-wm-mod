@@ -75,3 +75,13 @@ cImageCache* cSurface::GetCache()
 {
     return &m_GFX->GetImageCache();
 }
+
+void cSurface::DrawScaled(int x, int y, int width, int height, SDL_Rect* clip) const {
+    if(!m_Surface) return;
+    SDL_Rect offset;
+    offset.x = x;
+    offset.y = y;
+    offset.w = width;
+    offset.h = height;
+    SDL_BlitScaled(m_Surface->surface(), clip, m_GFX->GetScreen(), &offset);
+}

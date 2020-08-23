@@ -42,6 +42,7 @@ public:
 
     // Drawing functions
     void DrawSurface(int x, int y, SDL_Rect* clip = nullptr) const;
+    void DrawScaled(int x, int y, int width, int height, SDL_Rect* clip = nullptr) const;
 
     cSurface FillRect(SDL_Rect area, sColor color) const;
     cSurface BlitOther(const cSurface& source, SDL_Rect* src_rect=nullptr, SDL_Rect* dst_rect=nullptr) const;
