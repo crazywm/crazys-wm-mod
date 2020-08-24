@@ -536,8 +536,6 @@ void IBuildingScreenManagement::ffsd_outcome(int selected)
                 {
                     dumpgirl_names.push_back(selected_girl->FullName());
                     active_building().remove_girl(selected_girl);
-                    // dead girls get removed from the game
-                    delete selected_girl;
                     selected_girl = nullptr;
                 }
                 continue;
