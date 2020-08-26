@@ -44,8 +44,6 @@ public:
     cAnimatedSurface m_AnimatedImage;
     cSurface m_Image;
     bool m_loaded;
-
-    std::string m_Message;  // `J` added for new gallery screen
 };
 
 #endif

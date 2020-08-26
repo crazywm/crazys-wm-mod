@@ -20,18 +20,13 @@
 #ifndef CRAZYS_WM_MOD_CSCREENLOADGAME_HPP
 #define CRAZYS_WM_MOD_CSCREENLOADGAME_HPP
 
-#include "interface/cInterfaceWindow.h"
+#include "interface/cInterfaceWindowXML.h"
 
-class cScreenLoadGame : public cInterfaceWindow
+class cScreenLoadGame : public cInterfaceWindowXML
 {
 private:
     // UI IDs
-    int STATIC_STATIC;
-
-    int IMAGE_BGIMAGE;
-    int LIST_LOADGSAVES;
-    int BUTTON_LOADGLOAD;
-    int BUTTON_LOADGBACK;
+    int id_saveslist;
     void load_game();
 
     void OnKeyPress(SDL_Keysym keysym) override;
@@ -39,7 +34,7 @@ public:
     cScreenLoadGame();
     void init(bool back) override;
     void process() override {};
-    void load(cWindowManager* root) override;
+    void set_ids() override;
 };
 
 

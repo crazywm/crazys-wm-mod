@@ -20,7 +20,6 @@
 #include <chrono>
 #include "interface/cColor.h"
 #include "utils/DirPath.h"
-#include "cTariff.h"
 #include "interface/cWindowManager.h"
 #include "screens/cScreenPropertyManagement.h"    // `J` added
 #include "screens/cScreenPrison.h"
@@ -49,9 +48,6 @@
 #include "CLog.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
-#include "sConfig.h"
-
-extern cConfig cfg;
 
 cScreenGetInput*          g_GetInput          = nullptr;
 
@@ -60,7 +56,7 @@ T* load_window(const char* name, bool nonav=false, Args&&... args);
 
 sColor& LookupThemeColor(const std::string& name);
 
-void LoadInterface()
+void LoadInterface(const std::string& theme)
 {
     std::stringstream ss;
     std::string image; std::string text; std::string file;
@@ -68,7 +64,7 @@ void LoadInterface()
 
     // load interface colors
     try {
-        DirPath dp = DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << "InterfaceColors.xml";
+        DirPath dp = DirPath() << "Resources" << "Interface" << theme << "InterfaceColors.xml";
         auto docInterfaceColors = LoadXMLDocument(dp.c_str());
         g_LogFile.log(ELogLevel::INFO,"Loading InterfaceColors.xml");
         const std::string& m_filename = dp.str();
