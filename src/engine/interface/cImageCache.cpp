@@ -113,6 +113,14 @@ cSurface cImageCache::LoadImage(std::string filename, int width, int height, boo
     return AddToCache(std::move(key), std::move(loaded), std::move(filename));
 }
 
+void keep_ratio_rescaling(int width, int height, int& target_width, int& target_height) {
+    double scale_x = (double)target_width / (double)width;
+    double scale_y = (double)target_height / (double)height;
+    double s = std::min(scale_x, scale_y);
+    target_width = width * s;
+    target_height = height * s;
+}
+
 surface_ptr_t cImageCache::ResizeImage(surface_ptr_t input, int width, int height, bool keep_ratio)
 {
     if (width != input->w || height != input->h)
@@ -120,11 +128,7 @@ surface_ptr_t cImageCache::ResizeImage(surface_ptr_t input, int width, int heigh
         if(width  == -1) { width = input->w; }
         if(height == -1) { height = input->h; }
         if (keep_ratio)  {
-            double scale_x = (double)width / (double)input->w;
-            double scale_y = (double)height / (double)input->h;
-            double s = std::min(scale_x, scale_y);
-            width = input->w * s;
-            height = input->h * s;
+            keep_ratio_rescaling(input->w, input->h, width, height);
         }
 
         auto target = CreateSDLSurface(width, height, true);
@@ -293,7 +297,7 @@ private:
 };
 
 template<class F>
-void ReadMovie(std::string& file_name, F&& callback) {
+void ReadMovie(std::string& file_name, int width, int height, F&& callback) {
     auto format = ffmpeg::open_format(file_name.c_str());
     find_stream_info(format);
 
@@ -313,15 +317,22 @@ void ReadMovie(std::string& file_name, F&& callback) {
     pkt.data = nullptr;
     pkt.size = 0;
 
-    sConverter converter{ctx->width, ctx->height, ctx->pix_fmt,
-                         ctx->width, ctx->height, AV_PIX_FMT_RGBA};
+    if(width == 0)
+        width = ctx->width;
+    if(height == 0)
+        height = ctx->height;
 
-    ffmpeg::sImageBuffer converted(ctx->width, ctx->height, AV_PIX_FMT_RGBA);
+    keep_ratio_rescaling(ctx->width, ctx->height, width, height);
+
+    sConverter converter{ctx->width, ctx->height, ctx->pix_fmt,
+                         width, height, AV_PIX_FMT_RGBA};
+
+    ffmpeg::sImageBuffer converted(width, height, AV_PIX_FMT_RGBA);
     auto converter_callback = [&](ffmpeg::Frame& frame) {
 
         converter.scale(frame.get(), converted);
         sFrameData data{converted.Data[0], converted.Linesize[0],
-                        frame->width, frame->height, (1000 * frame->best_effort_timestamp * stream->time_base.num) / stream->time_base.den};
+                        width, height, (1000 * frame->best_effort_timestamp * stream->time_base.num) / stream->time_base.den};
         callback(data);
     };
 
@@ -342,22 +353,25 @@ cAnimatedSurface cImageCache::LoadFfmpeg(std::string movie, int target_width, in
     auto start = std::chrono::steady_clock::now();
     int frame_num = 0;
     long last_frame = 0;
-    ReadMovie(movie, [&](const sFrameData& frame) {
+    ReadMovie(movie, target_width, target_height, [&](const sFrameData& frame) {
         std::stringstream name;
 
         // create SDL surface from image data
         m_ImageCreateCount++;
+        // this does not create a copy of the data!
         auto sf = SDL_CreateRGBSurfaceFrom(frame.Data, frame.Width, frame.Height, 32, frame.Wrap,
                                            0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
         if(!sf) {
             throw std::runtime_error("Could not create SDL surface");
         }
-        SDL_SetSurfaceBlendMode(sf, SDL_BLENDMODE_BLEND);
-        auto surface_ptr = surface_ptr_t{sf};
+        // but this does
+        auto surface_ptr = surface_ptr_t(SDL_ConvertSurfaceFormat(sf, SDL_PIXELFORMAT_ARGB8888, 0));
+        SDL_SetSurfaceBlendMode(surface_ptr.get(), SDL_BLENDMODE_BLEND);
+        SDL_FreeSurface(sf);
 
         name << movie << "@" << frame_num;
-        auto surface = AddToCache(sImageCacheKey{std::move(name.str()), target_width, target_height, false, false},
-                                  ResizeImage(std::move(surface_ptr), target_width, target_height, true), movie);
+        auto surface = AddToCache(sImageCacheKey{std::move(name.str()), frame.Width, frame.Height, false, false},
+                                  ResizeImage(std::move(surface_ptr), frame.Width, frame.Height, true), movie);
         // TODO is this off by one? first frame seems to be at time "0"
         surfaces.push_back({std::move(surface), int(frame.Time - last_frame)});
         last_frame = frame.Time;
