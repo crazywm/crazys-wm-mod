@@ -30,7 +30,7 @@ protected:
     int walk_id = -1;            // Walk Around Town button
 
     int weeks_id = -1;            // next week map button
-    int    details_id = -1;    // description text
+    int details_id = -1;    // description text
     int girls_id = -1;            // girl management map button
     int staff_id = -1;            // gang map button
     int setup_id = -1;            // setup map button

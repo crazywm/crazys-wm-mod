@@ -41,24 +41,24 @@ void IBuildingScreen::set_ids()
     buildinglabel_id = get_id("BuildingLabel", "Header");
     background_id    = get_id("Background");
     // TODO walk button does not exist for all building types.
-    walk_id             = get_id("WalkButton");
+    walk_id          = get_id("WalkButton");
 
     weeks_id         = get_id("Next Week", "Weeks");
     girls_id         = get_id("Girl Management", "Girls");
     staff_id         = get_id("Staff Management", "Staff");
     setup_id         = get_id("Setup", "SetUp");
-    dungeon_id         = get_id("Dungeon");
+    dungeon_id       = get_id("Dungeon");
     turns_id         = get_id("Turn Summary", "Turn");
 
     girlimage_id     = get_id("GirlImage");
 
-    prevbrothel_id     = get_id("PrevButton", "Prev", "*Unused*");
-    nextbrothel_id     = get_id("NextButton", "Next", "*Unused*");
+    prevbrothel_id   = get_id("PrevButton", "Prev", "*Unused*");
+    nextbrothel_id   = get_id("NextButton", "Next", "*Unused*");
 
     details_id       = get_id("BuildingDetails", "Details");
-    town_id             = get_id("Visit Town");
-    save_id             = get_id("Save");
-    quit_id              = get_id("Quit");
+    town_id          = get_id("Visit Town");
+    save_id          = get_id("Save");
+    quit_id          = get_id("Quit");
 
     // set button callbacks
     // TODO walk button does not exist for all building types.
@@ -89,9 +89,9 @@ void IBuildingScreen::set_ids()
         push_message("Game Saved", COLOR_GREEN);
     });
     SetButtonCallback(quit_id, [this]() {
-        input_confirm([this]() {
+        /*input_confirm([this]() {
             pop_to_window("Main Menu");
-        });
+        });*/
     });
 }
 
@@ -116,7 +116,7 @@ void IBuildingScreen::init(bool back)
         return;
     }
 
-    EditTextItem(get_building_summary(active_building()), details_id);
+    EditTextItem(get_building_summary(active_building()), details_id, true);
     std::stringstream ss;
 
     ss << "Day: " << g_Game->date().day << " Month: " << g_Game->date().month << " Year: " << g_Game->date().year
@@ -172,22 +172,22 @@ static std::string get_building_summary(const IBuilding& building)
     /*
     *    format the summary into one big string, and return it
     */
-    ss << "Customer Happiness: " << happiness_text(&building);
-    ss << "\nFame: " << fame_text(&building) << std::endl;
-    ss << "\nRooms (available/current): " << building.free_rooms() << " / " << building.num_rooms();
-    ss << "\nThis brothel's Profit: " << profit;
-    ss << "\nYour Gold: " << g_Game->gold().ival();
-    ss << "\nSecurity Level: " << building.security();
-    ss << "\nDisposition: " << g_Game->player().disposition_text();
-    ss << "\nSuspicion: " << g_Game->player().suss_text();
-    ss << "\nFilthiness: " << building.filthiness();
-    ss << "\nBeasts Housed Here: " << g_Game->storage().beasts();
+    ss << "Customer Happiness: \t" << happiness_text(&building);
+    ss << "\nFame: \t" << fame_text(&building);
+    ss << "\nRooms (available/current): \t" << building.free_rooms() << " / " << building.num_rooms();
+    ss << "\nThis brothel's Profit: \t" << profit;
+    ss << "\nYour Gold: \t" << g_Game->gold().ival();
+    ss << "\nSecurity Level: \t" << building.security();
+    ss << "\nDisposition: \t" << g_Game->player().disposition_text();
+    ss << "\nSuspicion: \t" << g_Game->player().suss_text();
+    ss << "\nFilthiness: \t" << building.filthiness();
+    ss << "\nBeasts Housed Here: \t" << g_Game->storage().beasts();
 
     if(building.type() == BuildingType::FARM) {
-        ss << "\nFood Stored: " << g_Game->storage().food()
-           << "\nDrink Stored: " << g_Game->storage().drinks()
-           << "\nGoods Stored: " << g_Game->storage().goods()
-           << "\nAlchemy Items: " << g_Game->storage().alchemy();
+        ss << "\nFood Stored: \t" << g_Game->storage().food()
+           << "\nDrink Stored: \t" << g_Game->storage().drinks()
+           << "\nGoods Stored: \t" << g_Game->storage().goods()
+           << "\nAlchemy Items: \t" << g_Game->storage().alchemy();
     }
     return ss.str();
 }
@@ -212,7 +212,6 @@ cScreenCentre::cScreenCentre() : IBuildingScreen("centre_screen.xml", BuildingTy
 {
     //
 }
-
 
 cScreenClinic::cScreenClinic() : IBuildingScreen("clinic_screen.xml", BuildingType::CLINIC)
 {
