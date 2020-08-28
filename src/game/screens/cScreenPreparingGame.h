@@ -42,7 +42,9 @@ private:
     std::stringstream m_MessagesText;
 
     bool NewGame(std::string name);
-    bool LoadGame(const std::string& name);
+    bool LoadGame(const std::string& file_path);
+
+    bool m_Loading = true;
 public:
     cScreenPreparingGame();
 
@@ -50,5 +52,4 @@ public:
     void process() override;
     void resetScreen();
     void loadFailed();
-    void stringEmUp();
 };

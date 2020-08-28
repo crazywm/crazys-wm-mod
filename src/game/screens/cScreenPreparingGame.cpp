@@ -30,9 +30,7 @@
 #include "character/cCustomers.h"
 #include "cInventory.h"
 #include "CLog.h"
-#include "cNameList.h"
 #include "utils/string.hpp"
-#include "sConfig.h"
 
 namespace settings {
     extern const char* INITIAL_RANDOM_GANGS;
@@ -42,15 +40,9 @@ namespace settings {
 extern std::string g_ReturnText;
 extern int g_ReturnInt;
 
-extern cNameList g_GirlNameList;
-extern cNameList g_BoysNameList;
-extern cNameList g_SurnameList;
-
 extern bool g_WalkAround;
 extern int g_TalkCount;
-extern cConfig cfg;
 
-bool loading = true;
 int load0new1 = 0;
 
 cScreenPreparingGame::cScreenPreparingGame() : cGameWindow("preparing_game_screen.xml")
@@ -65,9 +57,9 @@ void cScreenPreparingGame::set_ids()
     cancel_id = get_id("BackButton","Back");
 
     SetButtonCallback(cancel_id, [this]() {
-        if (!loading)
+        if (!m_Loading)
         {
-            loading = true;
+            m_Loading = true;
             pop_to_window("Main Menu");
         }
     });
@@ -89,7 +81,7 @@ void cScreenPreparingGame::init(bool back)
     {
         resetScreen();
 
-        loading = true;
+        m_Loading = true;
         load0new1 = g_ReturnInt;
         if(g_ReturnInt != 0) {
             std::stringstream ss1;
@@ -101,6 +93,7 @@ void cScreenPreparingGame::init(bool back)
             });
         } else {
             std::stringstream ss1;
+            // TODO strip the save path here?
             ss1 << "Loading Game:   " << g_ReturnText;
             EditTextItem(ss1.str(), text1_id);
             m_AsyncLoad = std::async(std::launch::async,
@@ -186,11 +179,7 @@ bool cScreenPreparingGame::NewGame(std::string name) {
     return true;
 }
 
-bool cScreenPreparingGame::LoadGame(const std::string& name) {
-    DirPath location = cfg.folders.saves().c_str();
-    DirPath thefile = location.c_str();
-    thefile << name;
-
+bool cScreenPreparingGame::LoadGame(const std::string& file_path) {
     auto callback = [this](std::string str) {
         std::lock_guard<std::mutex> lck(m_Mutex);
         if(starts_with(str, "ERROR:")) {
@@ -200,8 +189,8 @@ bool cScreenPreparingGame::LoadGame(const std::string& name) {
     };
 
     tinyxml2::XMLDocument doc;
-    if (doc.LoadFile(thefile.c_str()) != tinyxml2::XML_SUCCESS) {
-        loading = false;
+    if (doc.LoadFile(file_path.c_str()) != tinyxml2::XML_SUCCESS) {
+        m_Loading = false;
         callback(doc.ErrorStr());
         return false;
     }
@@ -252,8 +241,8 @@ void cScreenPreparingGame::process()
         m_LastError.clear();
     }
 
-    DisableWidget(cancel_id, loading);
-    if (!loading)
+    DisableWidget(cancel_id, m_Loading);
+    if (!m_Loading)
     {
         loadFailed();
         return;
@@ -267,12 +256,12 @@ void cScreenPreparingGame::process()
     } else {
         try {
             if (!m_AsyncLoad.get()) {
-                loading = false;
+                m_Loading = false;
                 return;
             }
         } catch (const std::exception& ex) {
             push_message(ex.what(), 1);
-            loading = false;
+            m_Loading = false;
             return;
         }
         g_LogFile.info("prepare", "Finished");

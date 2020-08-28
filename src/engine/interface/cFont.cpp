@@ -16,12 +16,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <iostream>
+
 #include "interface/cFont.h"
 #include <SDL_ttf.h>
 #include "CLog.h"
 #include "interface/CGraphics.h"
-#include "sConfig.h"
 #include <vector>
 #include <numeric>
 #include <cassert>
@@ -43,7 +42,6 @@ void cFont::SetColor(unsigned char r, unsigned char g, unsigned char b)
  */
 bool cFont::LoadFont(const std::string& font, int size)
 {
-    cConfig cfg;
     m_Font = nullptr;
     g_LogFile.debug("interface", "loading font: '", font, "' at size ", size);
 

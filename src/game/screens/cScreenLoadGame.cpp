@@ -19,15 +19,15 @@
 #include "cScreenLoadGame.hpp"
 #include "utils/FileList.h"
 #include "widgets/cListBox.h"
-#include "sConfig.h"
 
-extern cConfig cfg;
 extern std::string g_ReturnText;
 extern int g_ReturnInt;
 
 
 
-cScreenLoadGame::cScreenLoadGame() : cInterfaceWindowXML("LoadMenu.xml")
+cScreenLoadGame::cScreenLoadGame(const std::string& save_folder) :
+    cInterfaceWindowXML("LoadMenu.xml"),
+    m_SavesPath(save_folder.c_str())
 {
 }
 
@@ -40,7 +40,9 @@ void cScreenLoadGame::load_game()
     {
         return;
     }
-    g_ReturnText = GetSelectedTextFromList(id_saveslist);;
+    auto lp = m_SavesPath;
+    lp << GetSelectedTextFromList(id_saveslist);
+    g_ReturnText = lp.str();
     g_ReturnInt = 0;
     replace_window("Preparing Game");
 }
@@ -60,9 +62,8 @@ void cScreenLoadGame::OnKeyPress(SDL_Keysym keysym)
 
 void cScreenLoadGame::init(bool back)
 {
-    DirPath    location = DirPath(cfg.folders.saves().c_str());
     const char *pattern = "*.gam";
-    FileList   fl       = FileList(location, pattern);
+    FileList   fl       = FileList(m_SavesPath, pattern);
 
     Focused();
     ClearListBox(id_saveslist);    // clear the list box with the save games

@@ -48,6 +48,7 @@
 #include "CLog.h"
 #include "xml/util.h"
 #include "xml/getattr.h"
+#include "sConfig.h"
 
 cScreenGetInput*          g_GetInput          = nullptr;
 
@@ -58,6 +59,7 @@ sColor& LookupThemeColor(const std::string& name);
 
 void LoadInterface(const std::string& theme)
 {
+    cConfig cfg;
     std::stringstream ss;
     std::string image; std::string text; std::string file;
     std::ifstream incol;
@@ -95,7 +97,7 @@ void LoadInterface(const std::string& theme)
     load_window<cScreenPreparingGame>("Preparing Game", true);
     load_window<cScreenMainMenu>("Main Menu", true);
     load_window<cScreenNewGame>("New Game", true);
-    load_window<cScreenLoadGame>("Load Game", true);
+    load_window<cScreenLoadGame>("Load Game", true, cfg.folders.saves());
     load_window<cScreenSettings>("Settings", true);
 
     load_window<cScreenBrothelManagement>("Brothel Management");

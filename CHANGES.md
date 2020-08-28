@@ -1,7 +1,13 @@
 # Version 07.00.alpha4 (work in progress)
 
+## Minor improvements
+* Slightly faster movie loading
+* Cleaned up gallery screen
+* better text formatting on brothel main screen
+
 ## Fixes
 * Save folder set correctly in settings
+* Fix crash on funeral
 
 # Version 07.00.alpha3
 ## Changes

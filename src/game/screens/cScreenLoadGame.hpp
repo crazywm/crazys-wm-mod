@@ -21,20 +21,23 @@
 #define CRAZYS_WM_MOD_CSCREENLOADGAME_HPP
 
 #include "interface/cInterfaceWindowXML.h"
+#include "utils/DirPath.h"
 
 class cScreenLoadGame : public cInterfaceWindowXML
 {
+public:
+    cScreenLoadGame(const std::string& save_folder);
+    void init(bool back) override;
+    void process() override {};
+    void set_ids() override;
 private:
     // UI IDs
     int id_saveslist;
     void load_game();
 
     void OnKeyPress(SDL_Keysym keysym) override;
-public:
-    cScreenLoadGame();
-    void init(bool back) override;
-    void process() override {};
-    void set_ids() override;
+
+    DirPath m_SavesPath;
 };
 
 
