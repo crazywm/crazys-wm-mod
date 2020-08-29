@@ -77,7 +77,7 @@ struct sJobPerformance {
 class cBasicJob : public IGenericJob {
 public:
     using IGenericJob::IGenericJob;
-    double GetPerformance(const sGirl& girl, bool estimate) const;
+    double GetPerformance(const sGirl& girl, bool estimate) const override;
 
 protected:
 
@@ -99,5 +99,6 @@ void RegisterManagerJobs(cJobManager& mgr);
 void RegisterFilmJobs(cJobManager& mgr);
 void RegisterTherapyJobs(cJobManager& mgr);
 void RegisterBarJobs(cJobManager& mgr);
+void RegisterFarmJobs(cJobManager& mgr);
 
 #endif //WM_GENERICJOB_H

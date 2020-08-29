@@ -26,7 +26,7 @@
   - [ ] Studio
   - [ ] Clinic
   - [ ] Centre
-  - [ ] Farm
+  - [x] Farm
 
 ## Scripting
 * [ ] Extend lua scripting to cover everything the old scripts did
@@ -49,8 +49,6 @@
 * [ ] some parts of the old scripts are still missing
 * [ ] Scrollbar release mouse while outside problem
 * [ ] Pregnancies of runaway/prison girls currently don't work
-* [ ] Crash: Load Game -> Go to dungeon -> exit -> load game -> go to dungeon: Dungeon Screen keeps reference to old
-        building.
 * [ ] GetRandomRivalToSabotage function is wrong
 * [ ] "ERROR: Cannot find the torturer!"
 * [ ] "Could not select the target. If you encounter this error, "

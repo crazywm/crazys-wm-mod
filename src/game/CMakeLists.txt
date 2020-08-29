@@ -30,13 +30,11 @@ set(JOBS_SRC
         jobs/WorkAdvertising.cpp
         jobs/Surgery.cpp
         jobs/WorkBarStripper.cpp
-        jobs/WorkBeastCapture.cpp
         jobs/WorkBeastCare.cpp
         jobs/WorkBrothelMassusse.cpp
         jobs/WorkBrothelStripper.cpp
         jobs/WorkWhore.cpp
         jobs/WorkCameraMage.cpp
-        jobs/WorkCatacombRancher.cpp
         jobs/WorkCityGuard.cpp
         jobs/WorkCleaning.cpp
         jobs/WorkCombatTraining.cpp
@@ -49,12 +47,8 @@ set(JOBS_SRC
         jobs/WorkEscort.cpp
         jobs/WorkExploreCatacombs.cpp
         jobs/WorkFakeOrgasm.cpp
-        jobs/WorkFarmer.cpp
         jobs/WorkFarmHand.cpp
-        jobs/WorkFarmMarketer.cpp
         jobs/WorkFarmPonyGirl.cpp
-        jobs/WorkFarmResearch.cpp
-        jobs/WorkFarmVeterinarian.cpp
         jobs/WorkFeedPoor.cpp
         jobs/WorkFightArenaGirls.cpp
         jobs/WorkFightBeast.cpp
@@ -87,17 +81,13 @@ set(JOBS_SRC
         jobs/WorkHouseVacation.cpp
         jobs/WorkIntern.cpp
         jobs/WorkMechanic.cpp
-        jobs/WorkMilk.cpp
-        jobs/WorkMilker.cpp
         jobs/WorkNurse.cpp
         jobs/WorkPeepShow.cpp
         jobs/WorkPersonalBedWarmer.cpp
         jobs/WorkPersonalTraining.cpp
-        jobs/WorkRancher.cpp
         jobs/WorkRecruiter.cpp
         jobs/WorkRepairShop.cpp
         jobs/WorkSecurity.cpp
-        jobs/WorkShepherd.cpp
         jobs/WorkSleazyBarmaid.cpp
         jobs/WorkSleazyWaitress.cpp
         jobs/WorkSOBisexual.cpp
@@ -109,7 +99,8 @@ set(JOBS_SRC
         jobs/GenericJob.cpp
         jobs/Matron.cpp
         jobs/Therapy.cpp
-        jobs/BarJobs.cpp)
+        jobs/BarJobs.cpp
+        jobs/FarmJobs.cpp)
 
 set(BUILDINGS_SRC
         buildings/cArena.cpp

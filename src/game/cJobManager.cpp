@@ -564,6 +564,7 @@ JobData[JOB_RECRUITER].description = "She will go out and try and recruit girls 
     RegisterFilmJobs(*this);
     RegisterTherapyJobs(*this);
     RegisterBarJobs(*this);
+    RegisterFarmJobs(*this);
 }
 
 sCustomer cJobManager::GetMiscCustomer(IBuilding& brothel)

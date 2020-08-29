@@ -244,19 +244,7 @@ void RegisterWrappedJobs(cJobManager& mgr) {
 
 // - Farm - Staff
     REGISTER_JOB(JOB_FARMREST, Freetime);
-    REGISTER_JOB(JOB_VETERINARIAN, FarmVeterinarian);
-    REGISTER_JOB(JOB_MARKETER, FarmMarketer);
-    REGISTER_JOB(JOB_RESEARCH, FarmResearch);
     REGISTER_JOB_MANUAL(JOB_FARMHAND, FarmHand, Cleaning);
-
-// - Farm - Laborers
-    REGISTER_JOB(JOB_FARMER, Farmer);
-    REGISTER_JOB(JOB_SHEPHERD, Shepherd);
-    REGISTER_JOB(JOB_RANCHER, Rancher);
-    REGISTER_JOB(JOB_CATACOMBRANCHER, CatacombRancher);
-    REGISTER_JOB(JOB_BEASTCAPTURE, BeastCapture);
-    REGISTER_JOB(JOB_MILKER, Milker);
-    REGISTER_JOB(JOB_MILK, Milk);
 
 // house
     REGISTER_JOB(JOB_HOUSEREST, Freetime);
