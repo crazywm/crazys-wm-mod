@@ -1,3 +1,6 @@
+# Version 07.00.alpha5
+
+
 # Version 07.00.alpha4
 
 ## Minor improvements
@@ -9,6 +12,7 @@
 ## Fixes
 * Save folder set correctly in settings
 * Fix crash on funeral
+
 
 # Version 07.00.alpha3
 ## Changes

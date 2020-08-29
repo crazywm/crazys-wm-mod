@@ -31,7 +31,7 @@
 ## Scripting
 * [ ] Extend lua scripting to cover everything the old scripts did
 * [ ] New Commands:
-  - [ ] Take gold
+  - [x] Take gold
   - [ ] Player inventory
 * [ ] New Triggers:
   - [ ] OnBought

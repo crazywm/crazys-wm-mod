@@ -83,8 +83,9 @@ static const luaL_Reg funx [] = {
         { "GetPlayerDisposition",        cify_no_arg([](){ return g_Game->player().disposition(); })},
         /// TODO make separate fns for adding and for requesting beasts
         { "AddBeasts",                   cify_int_arg([](int amount) { g_Game->storage().add_to_beasts(amount); })},
-        { "GetBeasts",                     cify_no_arg([](){ return g_Game->storage().beasts(); })},
+        { "GetBeasts",                   cify_no_arg([](){ return g_Game->storage().beasts(); })},
         { "AddPlayerGold",               cify_int_arg([](int amount) { g_Game->gold().misc_credit(amount); })},
+        { "TakePlayerGold",              cify_int_arg([](int amount) { return g_Game->gold().misc_debit(amount); })},
         { "GameOver",                    cLuaScript::GameOver},
         { "GivePlayerRandomSpecialItem", cLuaScript::GivePlayerRandomSpecialItem},
         { "AddCustomerToDungeon",        cLuaScript::AddCustomerToDungeon},
