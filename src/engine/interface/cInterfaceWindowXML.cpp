@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -19,31 +19,30 @@
 
 #include "interface/cInterfaceWindowXML.h"
 #include "utils/DirPath.h"
-#include "sConfig.h"
 #include "CLog.h"
 #include <tinyxml2.h>
 #include "xml/util.h"
 #include "xml/getattr.h"
 
 #include "widgets/cListBox.h"
-
-extern cConfig cfg;
+#include "interface/cWindowManager.h"
 
 cInterfaceWindowXML::cInterfaceWindowXML(const char* base_file) :
-    cInterfaceWindow(base_file),
-    m_filename( (DirPath() << "Resources" << "Interface" << cfg.resolution.resolution() << base_file).str() ) {
-
+        cInterfaceWindow(base_file),
+        m_ScreenName(base_file) {
 }
 
 cInterfaceWindowXML::~cInterfaceWindowXML()
 {
-    g_LogFile.debug("interface", "~cInterfaceWindowXML: ", m_filename);
+    g_LogFile.debug("interface", "~cInterfaceWindowXML: ", m_ScreenName);
 }
 
 void cInterfaceWindowXML::load(cWindowManager* wm)
 {
     cInterfaceWindow::load(wm);
-    auto doc = LoadXMLDocument(m_filename);
+    DirPath xml_source = {};
+    xml_source << "Resources" << "Interface" << wm->GetTheme() << m_ScreenName;
+    auto doc = LoadXMLDocument(xml_source.str());
     widget_map_t widgets;
     /*
     *    loop over the elements attached to the root
@@ -63,13 +62,13 @@ void cInterfaceWindowXML::load(cWindowManager* wm)
             if (tag == "Checkbox"){ read_checkbox_definition(el);        continue; }
             if (tag == "Slider") { read_slider_definition(el);            continue; }
         } catch(std::runtime_error& e) {
-            g_LogFile.error("interface", "Could not create Widget ", tag, " from file '", m_filename, "': ", e.what());
+            g_LogFile.error("interface", "Could not create Widget ", tag, " from file '", m_ScreenName, "': ", e.what());
         }
 
-        g_LogFile.log(ELogLevel::WARNING, "Unexpected tag in '", m_filename, "': '", tag, '\'');
+        g_LogFile.log(ELogLevel::WARNING, "Unexpected tag in '", m_ScreenName, "': '", tag, '\'');
     }
 
-    g_LogFile.debug("interface", "calling set_ids for window ", m_filename);
+    g_LogFile.debug("interface", "calling set_ids for window ", m_ScreenName);
     set_ids();
 }
 
@@ -182,7 +181,7 @@ void cInterfaceWindowXML::add_widget(std::string widget_name, int x, int y, std:
         if (tag == "Button") {
             auto bp = [](const std::string& source) -> std::string { return source.empty() ? "" : ButtonPath(source); };
             id = AddButton(bp(xw.off), bp(xw.disabled_img), bp(xw.on), full_x, full_y, xw.w, xw.h,
-                           xw.alpha, xw.scale);
+                           xw.alpha);
             register_id(id, name);
             HideWidget(id, xw.hide);
         }
@@ -371,7 +370,7 @@ void cInterfaceWindowXML::read_button_definition(tinyxml2::XMLElement& el)
     DirPath dp = ImagePath(wdg.file);
 
     auto bp = [](const std::string& source) -> std::string { return source.empty() ? "" : ButtonPath(source); };
-    id = AddButton(bp(wdg.off), bp(wdg.disabled_img), bp(wdg.on), wdg.x, wdg.y, wdg.w, wdg.h, wdg.alpha, wdg.scale);
+    id = AddButton(bp(wdg.off), bp(wdg.disabled_img), bp(wdg.on), wdg.x, wdg.y, wdg.w, wdg.h, wdg.alpha);
     register_id(id, wdg.name);
 }
 
@@ -470,6 +469,6 @@ int cInterfaceWindowXML::get_id(std::string a, std::string b, std::string c, std
 
     if (!un) {
         g_LogFile.error("interface", "setting ids for interface ", (un ? " but it is not used or optional " : ""),
-                "- acceptable names for this item are : '", a, "', '", b, "', '", c, "', '", d, "'. Please check ", m_filename); }
+                        "- acceptable names for this item are : '", a, "', '", b, "', '", c, "', '", d, "'. Please check ", m_ScreenName); }
     return -1;
 }

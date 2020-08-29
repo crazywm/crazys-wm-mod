@@ -21,20 +21,18 @@
 #include "Revision.h"
 #include <SDL.h>
 #include "Game.hpp"
-#include "sConfig.h"
 
 extern std::string g_ReturnText;
 extern int g_ReturnInt;
-extern cConfig cfg;
 
 void cScreenMainMenu::set_ids()
 {
-    continue_id        = get_id("Continue");
-    load_id            = get_id("Load Game");
-    new_id            = get_id("New Game");
-    settings_id        = get_id("Settings");
-    quit_id            = get_id("Quit Game");
-    version_id        = get_id("Version");
+    continue_id   = get_id("Continue");
+    load_id       = get_id("Load Game");
+    new_id        = get_id("New Game");
+    settings_id   = get_id("Settings");
+    quit_id       = get_id("Quit Game");
+    version_id    = get_id("Version");
 
     SetButtonNavigation(new_id, "New Game", false);
     SetButtonHotKey(new_id, SDLK_n);
@@ -60,7 +58,9 @@ void cScreenMainMenu::set_ids()
 
 }
 
-cScreenMainMenu::cScreenMainMenu() : cInterfaceWindowXML("main_menu.xml")
+cScreenMainMenu::cScreenMainMenu(std::string saves_path) :
+    cInterfaceWindowXML("main_menu.xml"),
+    m_SaveGamesPath(std::move(saves_path))
 {
 }
 
@@ -68,7 +68,7 @@ void cScreenMainMenu::init(bool back)
 {
     Focused();
 
-    DirPath location = DirPath(cfg.folders.saves().c_str());
+    DirPath location = DirPath(m_SaveGamesPath.c_str());
     FileList fl(location, "autosave.gam");
     FileList fla(location, "*.gam");
     bool d_continue = fl.size() < 1;

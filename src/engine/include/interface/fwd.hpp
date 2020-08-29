@@ -40,7 +40,7 @@ class cSurface;
 class sColor;
 
 // some useful global stuff
-void InitInterface(CGraphics* gfx);
+void InitInterface(CGraphics* g, std::string theme);
 void ShutdownInterface();
 
 cWindowManager& window_manager();

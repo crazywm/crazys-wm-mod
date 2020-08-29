@@ -27,8 +27,6 @@
 extern sColor g_CheckBoxBorderColor;
 extern sColor g_CheckBoxBackgroundColor;
 
-extern cConfig cfg;
-
 void cCheckBox::DrawWidget(const CGraphics& gfx)
 {
     if (IsDisabled()) return;
@@ -47,7 +45,7 @@ void cCheckBox::DrawWidget(const CGraphics& gfx)
 
 cCheckBox::cCheckBox(cInterfaceWindow* parent, int id, int x, int y, int width, int height, std::string text, int fontsize, bool leftorright):
     cUIWidget(id, x, y, width, height, parent),
-    m_Font(GetGraphics().LoadFont(cfg.fonts.normal(), fontsize))
+    m_Font(GetGraphics().LoadNormalFont(fontsize))
 {
     m_Image = GetGraphics().LoadImage(ImagePath("CheckBoxCheck.png").str(), m_Width, m_Height, true);
     m_Border = GetGraphics().CreateSurface(width, height, g_CheckBoxBorderColor);

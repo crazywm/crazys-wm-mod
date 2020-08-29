@@ -38,7 +38,7 @@ class CGraphics;
 class cWindowManager
 {
 public:
-    explicit cWindowManager(CGraphics*);
+    cWindowManager(CGraphics*, std::string theme);
     ~cWindowManager();
 
     void add_window(std::string name, std::shared_ptr<cInterfaceWindow> win);
@@ -72,6 +72,7 @@ public:
     void Draw();
 
     CGraphics& GetGraphics();
+    const std::string& GetTheme() const;
 
 
 
@@ -117,6 +118,9 @@ private:
 
     // pointer to the graphics engine
     CGraphics* m_GFX;
+
+    // The theme folder. This is where all xml screens will be loaded from
+    std::string m_Theme;
 
     // counter to allow recursive enabling/disabling of text input
     int m_TextInputEnabled = 0;

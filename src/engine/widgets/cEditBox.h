@@ -23,8 +23,7 @@
 #include <memory>
 #include "interface/cSurface.h"
 #include "interface/cInterfaceObject.h"
-
-class cFont;
+#include "interface/cFont.h"
 
 class cEditBox : public cUIWidget
 {
@@ -51,7 +50,7 @@ public:
     int      m_BorderSize;
 
 private:
-    std::unique_ptr<cFont> m_Font;
+    cFont m_Font;
 
     void UpdateText();
 };

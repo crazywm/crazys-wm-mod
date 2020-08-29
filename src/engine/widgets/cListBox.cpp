@@ -27,8 +27,6 @@
 #include "interface/cWindowManager.h"
 #include "interface/cInterfaceWindow.h"
 
-extern cConfig cfg;
-
 extern sColor g_ListBoxBorderColor;
 extern sColor g_ListBoxBackgroundColor;
 extern sColor g_ListBoxElementBackgroundColor[5];
@@ -44,10 +42,10 @@ extern sColor g_ListBoxHeaderTextColor;
 cListBox::cListBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, bool MultiSelect,
         bool ShowHeaders, bool HeaderDiv, bool HeaderSort, int fontsize, int rowheight):
     cUIWidget(ID, x, y, width, height, parent),
-    m_ShowHeaders(ShowHeaders), m_HeaderDividers(HeaderDiv), m_HeaderClicksSort(HeaderSort), m_BorderSize(BorderSize), m_Font(&GetGraphics())
+    m_ShowHeaders(ShowHeaders), m_HeaderDividers(HeaderDiv), m_HeaderClicksSort(HeaderSort), m_BorderSize(BorderSize),
+    m_FontSize( fontsize == 0 ? 10 : fontsize ),
+    m_Font(GetGraphics().LoadNormalFont(m_FontSize))
 {
-    m_FontSize = fontsize == 0 ? 10 : fontsize;
-    m_Font.LoadFont(cfg.fonts.normal(), m_FontSize);
     m_Font.SetColor(g_ListBoxTextColor.r, g_ListBoxTextColor.g, g_ListBoxTextColor.b);
 
     m_LastSelected = m_Items.end();

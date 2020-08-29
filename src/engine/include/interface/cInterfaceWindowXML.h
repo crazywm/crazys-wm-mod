@@ -57,7 +57,7 @@ public:
 class cInterfaceWindowXML : public cInterfaceWindow
 {
 protected:
-    std::string    m_filename;
+    std::string m_ScreenName;
     std::map<std::string,int>        name_to_id;
     std::map<int,std::string>        id_to_name;
 

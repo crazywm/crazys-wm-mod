@@ -166,11 +166,11 @@ bool Init(CGraphics& gfx)        // `J` Bookmark    - Initializing the game
     g_LogFile.log(ELogLevel::INFO,"Graphics Initialized");
 
     g_LogFile.log(ELogLevel::INFO, "Loading Interface");
-    InitInterface(&gfx);
-    LoadInterface(cfg.resolution.resolution());        // Load the interface
+    InitInterface(&gfx, cfg.resolution.resolution());
+    LoadInterface();        // Load the interface
     gfx.GetImageCache().PrintStats();
 
-    g_LogFile.log(ELogLevel::INFO,"Interface Loaded");
+    g_LogFile.log(ELogLevel::INFO, "Interface Loaded");
 
     return true;
 }

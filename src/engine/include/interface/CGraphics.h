@@ -56,6 +56,7 @@ public:
     int GetHeight() const {return m_ScreenHeight;}
 
     cFont LoadFont(const std::string& font, int size);
+    cFont LoadNormalFont(int size);
 
 private:
     // scaling

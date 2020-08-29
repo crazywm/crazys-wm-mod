@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@
 #include "interface/cColor.h"
 #include "cTimer.h"
 #include "interface/cFont.h"
+#include "sConfig.h"
 
 CGraphics::CGraphics() : m_ImageCache(this)
 {
@@ -169,5 +170,11 @@ cFont CGraphics::LoadFont(const std::string& font, int size)
 {
     cFont f{this};
     f.LoadFont(font, size);
-    return std::move(f);
+    return f;
+}
+
+extern cConfig cfg;
+
+cFont CGraphics::LoadNormalFont(int size) {
+    return LoadFont(cfg.fonts.normal(), size);
 }

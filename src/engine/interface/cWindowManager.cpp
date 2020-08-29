@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,8 @@
 
 extern cScreenGetInput*    g_GetInput;
 
-cWindowManager::cWindowManager(CGraphics* g) : m_GFX(g) {
+cWindowManager::cWindowManager(CGraphics* g, std::string theme) :
+    m_GFX(g), m_Theme(std::move(theme)) {
 
 }
 
@@ -46,12 +47,12 @@ void cWindowManager::push(const std::string& window_name)
     }
 
     m_WindowStack.push_back(windows[window_name]);
-    //try {
+    try {
         m_WindowStack.back()->init(false);
-    /*} catch(...) {
+    } catch(...) {
         m_WindowStack.pop_back();
         throw;
-    }*/
+    }
 }
 
 void cWindowManager::replace(const std::string& window_name)
@@ -336,6 +337,8 @@ bool cWindowManager::RemoveActiveGirlFromCycle() {
     return true;
 }
 
+const std::string& cWindowManager::GetTheme() const { return m_Theme; }
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 static std::unique_ptr<cWindowManager> WindowManager;
@@ -346,9 +349,9 @@ cWindowManager& window_manager()
     return *WindowManager;
 }
 
-void InitInterface(CGraphics* g) {
+void InitInterface(CGraphics* g, std::string theme) {
     assert(!WindowManager);
-    WindowManager = std::make_unique<cWindowManager>(g);
+    WindowManager = std::make_unique<cWindowManager>(g, std::move(theme));
 }
 
 void ShutdownInterface()

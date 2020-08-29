@@ -20,11 +20,9 @@
 
 #include <memory>
 #include "interface/CGraphics.h"
-#include "sConfig.h"
 #include "utils/DirPath.h"
 #include "interface/cColor.h"
 
-extern cConfig cfg;
 extern sColor g_ChoiceMessageTextColor;
 extern sColor g_ChoiceMessageBorderColor;
 extern sColor g_ChoiceMessageHeaderColor;
@@ -33,7 +31,7 @@ extern sColor g_ChoiceMessageSelectedColor;
 
 cChoice::cChoice(int x, int y, int width, int height, int ID, std::string question, std::vector<std::string> options, int fontsize, cInterfaceWindow* parent) :
         cUIWidget(ID, x, y, width, height, parent), m_Choices(options.size()), m_ChoicesSurface(options.size()), m_FontSize(fontsize),
-        m_Font(GetGraphics().LoadFont(cfg.fonts.normal(), fontsize))
+        m_Font(GetGraphics().LoadNormalFont(fontsize))
 {
     m_Font.SetColor(g_ChoiceMessageTextColor.r, g_ChoiceMessageTextColor.g, g_ChoiceMessageTextColor.b);
     Question(std::move(question));

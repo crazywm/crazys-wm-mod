@@ -1,7 +1,7 @@
 /*
 * Copyright 2009, 2010, The Pink Petal Development Team.
 * The Pink Petal Devloment Team are defined as the game's coders
-* who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+* who meet on http://pinkpetal.org
 *
 * This program is free software: you can redistribute it and/or modify
 * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,13 @@
 
 class cScreenMainMenu : public cInterfaceWindowXML
 {
+public:
+    void set_ids() override;
+
+    cScreenMainMenu(std::string saves_path);
+    void init(bool back) override;
+    void process() override {};
+
 private:
     int continue_id;
     int load_id;
@@ -30,10 +37,5 @@ private:
     int quit_id;
     int version_id;
 
-public:
-    void set_ids() override;
-
-    cScreenMainMenu();
-    void init(bool back) override;
-    void process() override {};
+    std::string m_SaveGamesPath;
 };

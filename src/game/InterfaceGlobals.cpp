@@ -57,7 +57,7 @@ T* load_window(const char* name, bool nonav=false, Args&&... args);
 
 sColor& LookupThemeColor(const std::string& name);
 
-void LoadInterface(const std::string& theme)
+void LoadInterface()
 {
     cConfig cfg;
     std::stringstream ss;
@@ -66,7 +66,7 @@ void LoadInterface(const std::string& theme)
 
     // load interface colors
     try {
-        DirPath dp = DirPath() << "Resources" << "Interface" << theme << "InterfaceColors.xml";
+        DirPath dp = DirPath() << "Resources" << "Interface" << window_manager().GetTheme() << "InterfaceColors.xml";
         auto docInterfaceColors = LoadXMLDocument(dp.c_str());
         g_LogFile.log(ELogLevel::INFO,"Loading InterfaceColors.xml");
         const std::string& m_filename = dp.str();
@@ -95,7 +95,7 @@ void LoadInterface(const std::string& theme)
 
     // `J` Bookmark - Loading the screens
     load_window<cScreenPreparingGame>("Preparing Game", true);
-    load_window<cScreenMainMenu>("Main Menu", true);
+    load_window<cScreenMainMenu>("Main Menu", true, cfg.folders.saves());
     load_window<cScreenNewGame>("New Game", true);
     load_window<cScreenLoadGame>("Load Game", true, cfg.folders.saves());
     load_window<cScreenSettings>("Settings", true);

@@ -112,29 +112,20 @@ void cInterfaceWindow::Draw(const CGraphics& gfx)
     for (auto& widget : m_Widgets) widget->Draw(gfx);
 }
 
-void cInterfaceWindow::AddButton(std::string image, int& ID, int x, int y, int width, int height, bool transparency,
-                                 bool scale)
+void cInterfaceWindow::AddButton(std::string image, int& ID, int x, int y, int width, int height, bool transparency)
 {
     std::string dp = ButtonPath(image);
     string on = dp + "On.png";
     string off = dp + "Off.png";
     string disabled;
     disabled = dp + "Disabled.png";
-    ID = AddButton(off, disabled, on, x, y, width, height, transparency, scale);
+    ID = AddButton(off, disabled, on, x, y, width, height, transparency);
 }
 
 int
 cInterfaceWindow::AddButton(std::string OffImage, std::string DisabledImage, const std::string& OnImage, int x, int y,
-                            int width,
-                            int height, bool transparency, bool scale)
+                            int width, int height, bool transparency)
 {
-    if (scale)
-    {
-        width = (int)((float)width);
-        height = (int)((float)height);
-        x = (int)((float)x);
-        y = (int)((float)y);
-    }
     int ID = m_Widgets.size();
     // create button
     auto newButton = std::make_unique<cButton>(this, OffImage, DisabledImage, OnImage, ID, x + m_XPos, y + m_YPos,

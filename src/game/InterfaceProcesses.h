@@ -29,6 +29,6 @@ void SaveGame();
 void SaveGameXML(std::string filename);
 void LoadNames();
 
-void LoadInterface(const std::string& theme);
+void LoadInterface();
 
 #endif

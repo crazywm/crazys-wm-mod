@@ -77,10 +77,10 @@ public:
     // Buttons
     // MOD: added a couple of overloads for the cases where we
     // can deduce the image names from the stem&
-    void AddButton(std::string image, int& ID, int x, int y, int width, int height, bool transparency = false, bool scale = true);
+    void AddButton(std::string image, int& ID, int x, int y, int width, int height, bool transparency = false);
     // END MOD
     int AddButton(std::string OffImage, std::string DisabledImage, const std::string& OnImage, int x, int y, int width,
-                  int height, bool transparency = false, bool scale = true);
+                  int height, bool transparency = false);
     void SetButtonCallback(int id, std::function<void()>);
     void SetButtonNavigation(int id, std::string target, bool replace = true);
     void SetButtonHotKey(int id, SDL_Keycode key);

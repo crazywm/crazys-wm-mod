@@ -144,12 +144,12 @@ public:
     item_list_t::iterator FindSelected(const item_list_t::iterator& start);
 
 private:
+    int m_FontSize = -1;
     cFont m_Font;
 
     item_list_t m_Items;
     item_list_t::iterator m_LastSelected;
 
-    int m_FontSize = -1;
 
     void handle_selection_change();
     std::function<void(int)> m_SelectionCallback;

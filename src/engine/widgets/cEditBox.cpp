@@ -1,7 +1,7 @@
 /*
  * Copyright 2009, 2010, The Pink Petal Development Team.
  * The Pink Petal Devloment Team are defined as the game's coders 
- * who meet on http://pinkpetal.org     // old site: http://pinkpetal .co.cc
+ * who meet on http://pinkpetal.org
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@
 #include "interface/cWindowManager.h"
 #include "interface/cColor.h"
 
-extern cConfig cfg;
-
 void cEditBox::DrawWidget(const CGraphics& gfx)
 {
     m_Border.DrawSurface(m_XPos, m_YPos);
@@ -43,14 +41,13 @@ void cEditBox::DrawWidget(const CGraphics& gfx)
 
 cEditBox::cEditBox(cInterfaceWindow* parent, int ID, int x, int y, int width, int height, int BorderSize, int FontSize):
         cUIWidget(ID, x, y, width, height, parent), m_BorderSize(BorderSize),
-        m_Font(std::make_unique<cFont>(&GetGraphics()))
+        m_Font(GetGraphics().LoadNormalFont(FontSize))
 {
     m_Border = GetGraphics().CreateSurface(width, height, g_EditBoxBorderColor);
     m_Background = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2), g_EditBoxBackgroundColor);
     m_FocusedBackground = GetGraphics().CreateSurface(width - (BorderSize*2), height - (BorderSize*2), g_EditBoxSelectedColor);
 
-    m_Font->LoadFont(cfg.fonts.normal(), FontSize);
-    m_Font->SetColor(g_EditBoxTextColor.r, g_EditBoxTextColor.g, g_EditBoxTextColor.b);
+    m_Font.SetColor(g_EditBoxTextColor.r, g_EditBoxTextColor.g, g_EditBoxTextColor.b);
 
     UpdateText();
 }
@@ -95,7 +92,7 @@ bool cEditBox::HandleKeyPress(SDL_Keysym sym)
 void cEditBox::HandleTextInput(const char* t) {
     m_Text += t;
     int w = 0, h = 0;
-    m_Font->GetSize(m_Text, w, h);
+    m_Font.GetSize(m_Text, w, h);
     if(w > m_Width) {
         // too long, remove that character again
         m_Text.erase(m_Text.length()-1);
@@ -116,7 +113,7 @@ bool cEditBox::HandleSetFocus(bool focus)
 
 void cEditBox::UpdateText()
 {
-    m_TextGFX = m_Font->RenderText(m_Text);
+    m_TextGFX = m_Font.RenderText(m_Text);
 }
 
 void cEditBox::SetText(std::string text)
