@@ -19,8 +19,7 @@ else()
     find_library(SWSCALE_LIB swscale PATHS ${prefix}/lib REQUIRED)
     find_library(AVUTIL_LIB avutil PATHS ${prefix}/lib REQUIRED)
     set(FFMPEG_LIBRARIES ${AVFORMAT_LIB} ${AVCODEC_LIB} ${SWSCALE_LIB} ${AVUTIL_LIB})
-	
-	message(WARNING ${FFMPEG_LIBRARIES})
+
 	add_library(FFMPEG INTERFACE)
     target_link_libraries(FFMPEG INTERFACE ${FFMPEG_LIBRARIES})
 	

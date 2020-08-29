@@ -18,6 +18,6 @@
 
 <Text       Name="ThemeLabel"               Text="Theme"                    XPos="14"       YPos="309"      Width="141"     Height="28"     FontSize="17"  />
 <ListBox    Name="ThemeList"                                                XPos="155"      YPos="309"      Width="295"     Height="84"     FontSize="17" RowHeight="28"   Border="1" Events="true" Multi="false" />
-<Checkbox   Name="Fullscreen"               Text="Fullscreen"               XPos="84"       YPos="394"      Width="22"      Height="22"     FontSize="17" LeftOrRight="false" />
+<Checkbox   Name="Fullscreen"               Text="Fullscreen"               XPos="84"       YPos="408"      Width="22"      Height="22"     FontSize="17" LeftOrRight="false" />
 
 </Screen>

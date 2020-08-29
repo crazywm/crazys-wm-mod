@@ -10,8 +10,5 @@
 <ListBox    Name="ImageList"                                                XPos="847"      YPos="10"       Width="150"     Height="622" FontSize="7" RowHeight="17" Border="1" Events="true" Multi="false" ShowHeaders="true" HeaderDiv="true" HeaderClicksSort="true" >
 <Column     Name="Name"                 Header="Image Types"                Offset="0" />
 <Column     Name="All"                  Header="All"                        Offset="75" />
-<Column     Name="jpg"                  Header="*g"                         Offset="91" />
-<Column     Name="Ani"                  Header="Ani"                        Offset="107" />
-<Column     Name="Gif"                  Header="Gif"                        Offset="123" />
 </ListBox>
 </Screen>
