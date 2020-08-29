@@ -40,9 +40,7 @@
 * [ ] numeric column sorting
 * [ ] Per building/global anti preg setting
 * [ ] Game-Mode files
-* [x] Update Gallery
 * [ ] separate logical and actual render size and make configurable
-* [x] Table formatting for brothel overview on main page
 * [ ] Read navigation buttons from xml
 
 ## Bugs
@@ -61,4 +59,3 @@
   - [ ] "your inventory is full", but seems to buy anyway
   - [ ] "your inventory is full" for sell button
 * [ ] gracefully handle missing/corrupt config file
-* [x] gallery screen file path is wrong

@@ -1,9 +1,10 @@
-# Version 07.00.alpha4 (work in progress)
+# Version 07.00.alpha4
 
 ## Minor improvements
 * Slightly faster movie loading
 * Cleaned up gallery screen
 * better text formatting on brothel main screen
+* More unification of job code -- slight changes in behaviour of Farm jobs possible
 
 ## Fixes
 * Save folder set correctly in settings
@@ -13,7 +14,7 @@
 ## Changes
 * Support for video files!
 * Select theme and fullscreen from settings
-* More unification of job code -- slight changes in bar behaviour of Bar jobs possible
+* More unification of job code -- slight changes in behaviour of Bar jobs possible
 
 ## Fixes
 * Girls can get pregnant again
