@@ -29,14 +29,8 @@ protected:
     int background_id = -1;
     int walk_id = -1;            // Walk Around Town button
 
-    int weeks_id = -1;            // next week map button
-    int details_id = -1;    // description text
-    int girls_id = -1;            // girl management map button
-    int staff_id = -1;            // gang map button
-    int setup_id = -1;            // setup map button
-    int dungeon_id = -1;            //
-    int turns_id = -1;            // turn summary map button
-    int town_id = -1;
+    int weeks_id = -1;           // next week map button
+    int details_id = -1;         // description text
     int save_id = -1;
     int quit_id = -1;
 
@@ -100,20 +94,12 @@ public:
 
 class cScreenHouse : public IBuildingScreen
 {
-private:
-    int house_id;
-    void set_ids() override;
-
 public:
     cScreenHouse();
 };
 
 class cMovieScreen : public IBuildingScreen
 {
-private:
-    int createmovie_id;        // Create Movie
-
-    void set_ids() override;
 public:
     cMovieScreen();
 

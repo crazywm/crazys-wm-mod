@@ -24,7 +24,6 @@
 class cScreenMayor : public cInterfaceWindowXML
 {
 private:
-    int back_id;            // Back button
     int bribe_id;            // Bribe button
     int details_id;            // Mayor Details text
     int header_id;            // page header text ("Town Hall")

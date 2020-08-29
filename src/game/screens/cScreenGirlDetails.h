@@ -24,15 +24,10 @@
 class cScreenGirlDetails : public cGameWindow
 {
 private:
-    int back_id;            // Back button
     int girlname_id;        // Girl Name text
     int girldesc_id;        // Girl Description text
     int girlimage_id;        // Girl image
-    int more_id;            // More button
     int antipreg_id;        // Use Anti-preg checkbox
-    int prev_id;            // Prev button
-    int next_id;            // Next button
-    int inventory_id;        // Inventory button
     int senddungeon_id;        // Send To Dungeon button
     int reldungeon_id;        // Release From Dungeon button
     int interact_id;        // Interact button
@@ -44,14 +39,10 @@ private:
     int accomval_id;        // Accom value text
     int houseperc_id;        // House Percentage slider
     int housepercval_id;    // House Percentage value text
-    int gallery_id;            // Gallery button
-    int jobtypehead_id;        // Job Types header text
     int jobtypelist_id;        // Job Types listbox
-    int jobhead_id;            // Job header text
     int joblist_id;            // Job listbox
     int day_id;                // Day button
     int night_id;            // Night button
-    int traithead_id;        // Trait header text
     int traitlist_id;        // Trait listbox
     int traitdesc_id;        // Trait Description text
 

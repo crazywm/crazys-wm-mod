@@ -24,13 +24,11 @@
 class cScreenBank : public cInterfaceWindowXML
 {
 private:
-    int back_id;            // Back button
     int deposit_id;            // Deposit button
     int depositall_id;        // Deposit All button
     int withdraw_id;        // Withdraw button
     int withdrawall_id;        // Withdrawall button
     int details_id;            // Bank Details text
-    int header_id;            // page header text ("Town Bank")
 
     void set_ids() override;
 

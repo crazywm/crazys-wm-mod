@@ -32,28 +32,26 @@ cScreenBuildingSetup::cScreenBuildingSetup() : cGameWindow("building_setup_scree
 
 void cScreenBuildingSetup::set_ids()
 {
-    back_id            /**/ = get_id("BackButton", "Back");
-    curbrothel_id    /**/ = get_id("CurrentBrothel");
-    gold_id            /**/ = get_id("Gold");
-    potioncost_id    /**/ = get_id("PotionCost");
-    potionavail_id    /**/ = get_id("AvailablePotions");
-    potions10_id    /**/ = get_id("10PotionsButton");
-    potions20_id    /**/ = get_id("20PotionsButton");
-    autopotions_id    /**/ = get_id("AutoBuyPotionToggle");
-    barstaff_id        /**/ = get_id("BarStaffCost", "*Unused*");//
-    barhire_id        /**/ = get_id("BarHireButton", "*Unused*");//
-    barfire_id        /**/ = get_id("BarFireButton", "*Unused*");//
-    casinostaff_id    /**/ = get_id("CasinoStaffCost", "*Unused*");//
-    casinohire_id    /**/ = get_id("CasinoHireButton", "*Unused*");//
-    casinofire_id    /**/ = get_id("CasinoFireButton", "*Unused*");//
-    roomcost_id        /**/ = get_id("RoomAddCost");
-    buyrooms_id        /**/ = get_id("BuildRoomsButton");
-    restrict_id        /**/ = get_id("SexRestrictions", "*Unused*");//
+    curbrothel_id    = get_id("CurrentBrothel");
+    gold_id          = get_id("Gold");
+    potioncost_id    = get_id("PotionCost");
+    potionavail_id   = get_id("AvailablePotions");
+    potions10_id     = get_id("10PotionsButton");
+    potions20_id     = get_id("20PotionsButton");
+    autopotions_id   = get_id("AutoBuyPotionToggle");
+    barstaff_id      = get_id("BarStaffCost", "*Unused*");//
+    barhire_id       = get_id("BarHireButton", "*Unused*");//
+    barfire_id       = get_id("BarFireButton", "*Unused*");//
+    casinostaff_id   = get_id("CasinoStaffCost", "*Unused*");//
+    casinohire_id    = get_id("CasinoHireButton", "*Unused*");//
+    casinofire_id    = get_id("CasinoFireButton", "*Unused*");//
+    roomcost_id      = get_id("RoomAddCost");
+    buyrooms_id      = get_id("BuildRoomsButton");
+    restrict_id      = get_id("SexRestrictions", "*Unused*");//
 
-    advertsli_id    /**/ = get_id("AdvertisingSlider");
-    advertamt_id    /**/ = get_id("AdvertisingValue");
+    advertsli_id     = get_id("AdvertisingSlider");
+    advertamt_id     = get_id("AdvertisingValue");
 
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(buyrooms_id, [this](){ buy_rooms(); });
     SetButtonCallback(potions10_id, [this](){ buy_potions(10); });
     SetButtonCallback(potions20_id, [this](){ buy_potions(20); });

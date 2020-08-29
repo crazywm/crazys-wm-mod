@@ -143,7 +143,7 @@
 <Text    	Name="P_Cl_Name"	Text=""						XPos="10"	YPos="420"	Width="200"	Height="32"	FontSize="16"/>
 
 
-<Button  	Name="BackButton"	Image="Back"					XPos="600"	YPos="540"	Width="160"	Height="32"	Transparency="true"	Scale="true"	/>
+<Button  	Name="BackButton"	Image="Back"					XPos="600"	YPos="540"	Width="160"	Height="32"	Transparency="true"	 PushWindow="<back>"/>
 
 <!--
 <Text    	Name="SexRestrictions"	Text="Sex Restrictions:"		XPos="230"	YPos="170"	Width="200"	Height="32"	FontSize="19"/>

@@ -23,7 +23,6 @@
 class cScreenMovieMaker : public cGameWindow
 {
 private:
-    int back_id;            // Back button
     int autocreatemovies_id;// auto create movies checkbox
     int sceneslist_id;        // Scenes listbox
     int makethismovie_id;    // Make this movie

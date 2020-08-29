@@ -42,7 +42,6 @@ cScreenDungeon::cScreenDungeon() : cGameWindow("dungeon_screen.xml")
 
 void cScreenDungeon::set_ids()
 {
-    back_id         = get_id("BackButton", "Back");
     header_id       = get_id("DungeonHeader");
     gold_id         = get_id("Gold");
     girllist_id     = get_id("GirlList");
@@ -103,7 +102,6 @@ void cScreenDungeon::set_ids()
         });
     }
 
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(brandslave_id, [this]() { enslave(); });
     SetButtonCallback(releasecust_id, [this]() { release_all_customers(); });
     SetButtonCallback(sellslave_id, [this]() { sell_slaves(); });

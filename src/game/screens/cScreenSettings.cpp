@@ -25,7 +25,6 @@ extern cConfig cfg;
 
 void cScreenSettings::set_ids()
 {
-    back_id            = get_id("BackButton", "Back");
     ok_id              = get_id("OkButton");
     revert_id          = get_id("RevertButton");
 
@@ -40,7 +39,6 @@ void cScreenSettings::set_ids()
     theme_id           = get_id("ThemeList");
     fullscreen_id      = get_id("Fullscreen");
 
-    SetButtonNavigation(back_id, "Main Menu");
     SetButtonCallback(revert_id, [this]() { init(false); });
     SetButtonCallback(ok_id, [this]() {
         update_settings();

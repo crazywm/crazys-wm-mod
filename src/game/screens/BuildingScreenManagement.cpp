@@ -167,19 +167,16 @@ void IBuildingScreenManagement::on_select_girl(int selection)
 }
 
 void IBuildingScreenManagement::set_ids() {
-    back_id      = get_id("BackButton", "Back");
     girlimage_id = get_id("GirlImage");
     girldesc_id  = get_id("GirlDescription");
     girllist_id  = get_id("GirlList");
 
     viewdetails_id = get_id("ViewDetailsButton");
     gold_id      = get_id("Gold");
-    transfer_id  = get_id("TransferButton");
     firegirl_id  = get_id("FireButton");
     freeslave_id = get_id("FreeSlaveButton");
     sellslave_id = get_id("SellSlaveButton");
 
-    jobhead_id   = get_id("JobHeader");
     day_id       = get_id("DayButton");
     night_id     = get_id("NightButton");
 
@@ -195,11 +192,9 @@ void IBuildingScreenManagement::set_ids() {
     SortColumns(girllist_id, GetListBox(girllist_id)->GetColumnNames());
 
     // setting up button callbacks
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(viewdetails_id, [this](){
         ViewSelectedGirl();
     });
-    SetButtonNavigation(transfer_id, "Transfer Screen");
     SetButtonCallback(firegirl_id, [this](){  handle_ffsd(FFSD_fire); });
     SetButtonCallback(freeslave_id, [this](){  handle_ffsd(FFSD_free); });
     SetButtonCallback(sellslave_id, [this](){  handle_ffsd(FFSD_sell); });
@@ -1219,8 +1214,7 @@ cScreenStudioManagement::cScreenStudioManagement() :
 void cScreenStudioManagement::set_ids()
 {
     IBuildingScreenManagement::set_ids();
-    createmovie_id    /**/ = get_id("CreateMovieButton");
-    SetButtonNavigation(createmovie_id, "Movie Maker", false);
+    int createmovie_id = get_id("CreateMovieButton");
     SetButtonHotKey(createmovie_id, SDLK_c);
 }
 

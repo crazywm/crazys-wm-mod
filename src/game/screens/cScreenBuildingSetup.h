@@ -23,7 +23,6 @@
 class cScreenBuildingSetup : public cGameWindow
 {
 private:
-    int back_id;            // Back button
     int curbrothel_id;        // Current Brothel text
     int gold_id;            // Player Gold
     int potioncost_id;        // Potion Cost text

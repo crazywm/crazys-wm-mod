@@ -30,13 +30,11 @@ cScreenMayor::cScreenMayor() : cInterfaceWindowXML("mayor_screen.xml")
 
 void cScreenMayor::set_ids()
 {
-    back_id            = get_id("BackButton", "Back");
-    bribe_id        = get_id("BribeButton");
-    details_id        = get_id("MayorDetails");
-    header_id        = get_id("ScreenHeader");
+    bribe_id     = get_id("BribeButton");
+    details_id   = get_id("MayorDetails");
+    header_id    = get_id("ScreenHeader");
 
     // setup event handlers
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(bribe_id, [this](){
         input_integer([](int amount){
             if (amount >= 0) { g_Game->SetBribeRate(amount); }

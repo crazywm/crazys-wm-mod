@@ -49,7 +49,6 @@ protected:
     int joblist_id;            // Job listbox
     int jobtypelist_id;        // Job Types listbox
     int jobdesc_id;            // Job Description text
-    int jobhead_id;            // Job header text
     int jobtypedesc_id;        // Job Types Description text
     int jobtypehead_id;        // Job Types header text
 
@@ -64,14 +63,12 @@ protected:
 private:
     void OnKeyPress(SDL_Keysym keysym) override;
 
-    int back_id;            // Back button
     int gold_id;            // Player Gold
     int girldesc_id;        // Girl Description text
     int girlimage_id;        // Girl image
     int firegirl_id;        // Fire Girl button
     int freeslave_id;        // Free Slave Button
     int sellslave_id;        // Sell Slave button
-    int transfer_id;        // Transfer Girl button
     int viewdetails_id;        // View Details button
 
     virtual std::string update_job_description(const sGirl& girl) { return ""; };
@@ -165,8 +162,6 @@ public:
 class cScreenStudioManagement : public IBuildingScreenManagement
 {
 private:
-    int createmovie_id;        // Create Movie
-
     void set_ids() override;
     std::string get_job_description(int selection) override;
 public:

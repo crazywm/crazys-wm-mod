@@ -24,7 +24,6 @@ class cScreenPrison : public cGameWindow
 {
 private:
     int header_id;            // screen header
-    int back_id;            // Back button
     int more_id;            // More button
     int release_id;            // Release button
     int prison_list_id;        // Prisoner list

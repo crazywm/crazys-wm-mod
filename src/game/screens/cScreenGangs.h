@@ -23,7 +23,6 @@
 class cScreenGangs : public cInterfaceWindowXML
 {
 private:
-    int back_id;            // Back button
     int gangcost_id;        // Gang Hiring Cost text
     int ganghire_id;        // Hire Gang button
     int gangfire_id;        // Fire Gang button

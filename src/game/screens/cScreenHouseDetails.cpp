@@ -47,9 +47,7 @@ void cScreenHouseDetails::set_ids()
     interactb10_id   = get_id("BuyInteract10");
     slavedate_id     = get_id("SlaveDate", "*Unused*");
     details_id       = get_id("HouseDetails");
-    int back_id      = get_id("BackButton", "Back");
 
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(interactb_id, [this]() {buy_interactions(1); });
     SetButtonCallback(interactb10_id, [this]() {buy_interactions(10); });
 

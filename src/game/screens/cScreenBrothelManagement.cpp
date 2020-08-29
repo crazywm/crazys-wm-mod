@@ -44,11 +44,6 @@ void IBuildingScreen::set_ids()
     walk_id          = get_id("WalkButton");
 
     weeks_id         = get_id("Next Week", "Weeks");
-    girls_id         = get_id("Girl Management", "Girls");
-    staff_id         = get_id("Staff Management", "Staff");
-    setup_id         = get_id("Setup", "SetUp");
-    dungeon_id       = get_id("Dungeon");
-    turns_id         = get_id("Turn Summary", "Turn");
 
     girlimage_id     = get_id("GirlImage");
 
@@ -56,19 +51,12 @@ void IBuildingScreen::set_ids()
     nextbrothel_id   = get_id("NextButton", "Next", "*Unused*");
 
     details_id       = get_id("BuildingDetails", "Details");
-    town_id          = get_id("Visit Town");
     save_id          = get_id("Save");
     quit_id          = get_id("Quit");
 
     // set button callbacks
     // TODO walk button does not exist for all building types.
     SetButtonCallback(walk_id, [this]() { try_walk(); });
-    SetButtonNavigation(town_id, "Town", false);
-    SetButtonNavigation(dungeon_id, "Dungeon", false);
-    SetButtonNavigation(setup_id,"Building Setup", false);
-    SetButtonNavigation(turns_id, "Turn Summary", false);
-    SetButtonNavigation(staff_id, "Gangs", false);
-    SetButtonNavigation(girls_id, "Girl Management", false);
     SetButtonCallback(prevbrothel_id, [this]() {
         cycle_building(-1);
         replace_window("Building Management");
@@ -226,24 +214,9 @@ cScreenHouse::cScreenHouse() : IBuildingScreen("playerhouse_screen.xml", Buildin
 {
 }
 
-void cScreenHouse::set_ids()
-{
-    IBuildingScreen::set_ids();
-    house_id        = get_id("House");
-    SetButtonNavigation(house_id,"House", false);
-}
-
 cMovieScreen::cMovieScreen() : IBuildingScreen("movie_screen.xml", BuildingType::STUDIO)
 {
 }
-
-void cMovieScreen::set_ids()
-{
-    IBuildingScreen::set_ids();
-    createmovie_id = get_id("CreateMovieButton", "*Unused*");
-    SetButtonNavigation(createmovie_id, "Movie Maker", false);
-}
-
 
 void CBuildingScreenDispatch::init(bool back)
 {

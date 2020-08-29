@@ -250,7 +250,6 @@ void cScreenItemManagement::load_ids(sItemTransferSide& target, Side side)
 void cScreenItemManagement::set_ids()
 {
     curbrothel_id    = get_id("CurrentBrothel");
-    back_id            = get_id("BackButton","Back");
     gold_id            = get_id("PlayerGold");
     desc_id            = get_id("ItemDesc");
     filter_id        = get_id("FilterList");
@@ -290,8 +289,6 @@ void cScreenItemManagement::set_ids()
             }
         }
     }
-
-    SetButtonNavigation(back_id, "<back>");
 
     SetListBoxHotKeys(m_LeftData.owners_id, SDLK_t, SDLK_g);
     SetListBoxHotKeys(m_RightData.owners_id, SDLK_y, SDLK_h);

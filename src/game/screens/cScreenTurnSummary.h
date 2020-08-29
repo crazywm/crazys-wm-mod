@@ -33,7 +33,6 @@ private:
     int labeldesc_id;
     int goto_id;
     int nextweek_id;
-    int back_id;
     int prev_id;
     int next_id;
     int image_id;

@@ -68,51 +68,39 @@ cScreenTown::cScreenTown() : cGameWindow("town_screen.xml")
 
 void cScreenTown::set_ids()
 {
-    back_id            /**/ = get_id("BackButton", "Back");
-    gold_id            /**/ = get_id("Gold", "*Unused*");//
-    walk_id            /**/ = get_id("WalkButton");
-    girlimage_id    /**/    = get_id("GirlImage");
-    curbrothel_id    /**/   = get_id("CurrentBrothel");
-    slavemarket_id    /**/  = get_id("SlaveMarket");
-    shop_id            /**/ = get_id("Shop");
-    mayor_id        /**/    = get_id("MayorsOffice");
-    bank_id            /**/ = get_id("Bank");
-    house_id        /**/    = get_id("House");
-    clinic_id        /**/   = get_id("Clinic");
-    studio_id        /**/   = get_id("Studio");
-    arena_id        /**/    = get_id("Arena");
-    centre_id        /**/   = get_id("Centre");
-    farm_id            /**/ = get_id("Farm");
-    prison_id        /**/   = get_id("Prison");
-    brothel0_id        /**/ = get_id("Brothel0");
-    brothel1_id        /**/ = get_id("Brothel1");
-    brothel2_id        /**/ = get_id("Brothel2");
-    brothel3_id        /**/ = get_id("Brothel3");
-    brothel4_id        /**/ = get_id("Brothel4");
-    brothel5_id        /**/ = get_id("Brothel5");
-    brothel6_id        /**/ = get_id("Brothel6");
-    setup_id        /**/    = get_id("SetUp", "*Unused*");//
+    gold_id             = get_id("Gold", "*Unused*");//
+    walk_id             = get_id("WalkButton");
+    girlimage_id        = get_id("GirlImage");
+    curbrothel_id       = get_id("CurrentBrothel");
+    slavemarket_id      = get_id("SlaveMarket");
+    shop_id             = get_id("Shop");
+    house_id            = get_id("House");
+    clinic_id           = get_id("Clinic");
+    studio_id           = get_id("Studio");
+    arena_id            = get_id("Arena");
+    centre_id           = get_id("Centre");
+    farm_id             = get_id("Farm");
+    brothel0_id         = get_id("Brothel0");
+    brothel1_id         = get_id("Brothel1");
+    brothel2_id         = get_id("Brothel2");
+    brothel3_id         = get_id("Brothel3");
+    brothel4_id         = get_id("Brothel4");
+    brothel5_id         = get_id("Brothel5");
+    brothel6_id         = get_id("Brothel6");
 
-    SetButtonNavigation(back_id, "<back>");
-    SetButtonNavigation(slavemarket_id, "Slave Market");
-    SetButtonNavigation(prison_id, "Prison");
-    SetButtonNavigation(bank_id, "Bank");
-    SetButtonNavigation(mayor_id, "Mayor");
-    SetButtonNavigation(setup_id, "Property Management");
-
-    SetButtonCallback(brothel0_id, [this]() {check_building(0); });
-    SetButtonCallback(brothel1_id, [this]() {check_building(1); });
-    SetButtonCallback(brothel2_id, [this]() {check_building(2); });
-    SetButtonCallback(brothel3_id, [this]() {check_building(3); });
-    SetButtonCallback(brothel4_id, [this]() {check_building(4); });
-    SetButtonCallback(brothel5_id, [this]() {check_building(5); });
-    SetButtonCallback(brothel6_id, [this]() {check_building(6); });
-    SetButtonCallback(centre_id, [this]() {check_building(7); });
-    SetButtonCallback(farm_id, [this]() {check_building(8); });
-    SetButtonCallback(arena_id, [this]() {check_building(9); });
-    SetButtonCallback(studio_id, [this]() {check_building(10); });
-    SetButtonCallback(clinic_id, [this]() {check_building(11); });
-    SetButtonCallback(house_id, [this]() {
+    SetButtonCallback(brothel0_id, [this]() { check_building(0); });
+    SetButtonCallback(brothel1_id, [this]() { check_building(1); });
+    SetButtonCallback(brothel2_id, [this]() { check_building(2); });
+    SetButtonCallback(brothel3_id, [this]() { check_building(3); });
+    SetButtonCallback(brothel4_id, [this]() { check_building(4); });
+    SetButtonCallback(brothel5_id, [this]() { check_building(5); });
+    SetButtonCallback(brothel6_id, [this]() { check_building(6); });
+    SetButtonCallback(centre_id,   [this]() { check_building(7); });
+    SetButtonCallback(farm_id,     [this]() { check_building(8); });
+    SetButtonCallback(arena_id,    [this]() { check_building(9); });
+    SetButtonCallback(studio_id,   [this]() { check_building(10); });
+    SetButtonCallback(clinic_id,   [this]() { check_building(11); });
+    SetButtonCallback(house_id,    [this]() {
         set_active_building(g_Game->buildings().building_with_type(BuildingType::HOUSE));
         push_window("Player House");
     });

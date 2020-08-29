@@ -57,16 +57,14 @@ void cScreenPrison::init(bool back)
 
 void cScreenPrison::set_ids()
 {
-    header_id            /**/ = get_id("ScreenHeader");
-    back_id                /**/ = get_id("BackButton","Back");
-    more_id                /**/ = get_id("ShowMoreButton");
-    release_id            /**/ = get_id("ReleaseButton");
-    prison_list_id        /**/ = get_id("PrisonList");
-    girl_desc_id        /**/ = get_id("GirlDescription");
-    girlimage_id        /**/ = get_id("GirlImage", "*Unused*");//
-    DetailLevel            /**/ = 0;
+    header_id      = get_id("ScreenHeader");
+    more_id        = get_id("ShowMoreButton");
+    release_id     = get_id("ReleaseButton");
+    prison_list_id = get_id("PrisonList");
+    girl_desc_id   = get_id("GirlDescription");
+    girlimage_id   = get_id("GirlImage", "*Unused*");//
+    DetailLevel    = 0;
 
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(more_id, [this]() { more_button(); });
     SetButtonCallback(release_id, [this]() {
         release_button();

@@ -33,7 +33,6 @@ cScreenPropertyManagement::cScreenPropertyManagement() : cGameWindow("property_m
 
 void cScreenPropertyManagement::set_ids()
 {
-    back_id = get_id("BackButton", "Back");
     barstaff_id     = get_id("BarStaffCost");  // not used anymore?
     barhire_id      = get_id("BarHireButton");  // not used anymore?
     barfire_id      = get_id("BarFireButton");  // not used anymore?
@@ -57,26 +56,24 @@ void cScreenPropertyManagement::set_ids()
     load_brothel_ui_ids("P_Ho", BuildingType::HOUSE, 0, p_ho);
     load_brothel_ui_ids("P_Fa", BuildingType::FARM, 0, p_fa);
 
-    curbrothel_id    = get_id("CurrentBrothel");
-    buyrooms_id        = get_id("BuildRoomsButton");
-    potioncost_id    = get_id("PotionCost");
-    potionavail_id    = get_id("AvailablePotions");
+    curbrothel_id   = get_id("CurrentBrothel");
+    buyrooms_id     = get_id("BuildRoomsButton");
+    potioncost_id   = get_id("PotionCost");
+    potionavail_id  = get_id("AvailablePotions");
     potions10_id    = get_id("10PotionsButton");
     potions20_id    = get_id("20PotionsButton");
-    autopotions_id    = get_id("AutoBuyPotionToggle");
-    noanal_id        = get_id("ProhibitAnalToggleRes");
-    nobdsm_id        = get_id("ProhibitBDSMToggleRes");
-    nonormal_id        = get_id("ProhibitNormalToggleRes");
-    nobeast_id        = get_id("ProhibitBeastToggleRes");
-    nogroup_id        = get_id("ProhibitGroupToggleRes");
+    autopotions_id  = get_id("AutoBuyPotionToggle");
+    noanal_id       = get_id("ProhibitAnalToggleRes");
+    nobdsm_id       = get_id("ProhibitBDSMToggleRes");
+    nonormal_id     = get_id("ProhibitNormalToggleRes");
+    nobeast_id      = get_id("ProhibitBeastToggleRes");
+    nogroup_id      = get_id("ProhibitGroupToggleRes");
     nolesbian_id    = get_id("ProhibitLesbianToggleRes");
-    nooral_id        = get_id("ProhibitOralToggleRes");
-    notitty_id        = get_id("ProhibitTittyToggleRes");
-    nohand_id        = get_id("ProhibitHandToggleRes");
+    nooral_id       = get_id("ProhibitOralToggleRes");
+    notitty_id      = get_id("ProhibitTittyToggleRes");
+    nohand_id       = get_id("ProhibitHandToggleRes");
     advertsli_id    = get_id("AdvertisingSlider");
     advertamt_id    = get_id("AdvertisingValue");
-
-    SetButtonNavigation(back_id, "<back>");
 }
 
 namespace {

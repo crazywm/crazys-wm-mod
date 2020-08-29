@@ -24,7 +24,6 @@
 class cScreenDungeon : public cGameWindow
 {
 private:
-    int back_id;            // Back button
     int girllist_id;        // Girls listbox
     int girlimage_id;        // Girl image
     int header_id;            // Dungeon header text

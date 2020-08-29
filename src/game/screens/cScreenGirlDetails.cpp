@@ -41,15 +41,10 @@ cScreenGirlDetails::cScreenGirlDetails() : cGameWindow("girl_details_screen.xml"
 
 void cScreenGirlDetails::set_ids()
 {
-    back_id           = get_id("BackButton", "Back");
     girlname_id       = get_id("GirlName");
     girldesc_id       = get_id("GirlDescription");
     girlimage_id      = get_id("GirlImage");
-    more_id           = get_id("MoreButton");
     antipreg_id       = get_id("UseAntiPregToggle");
-    prev_id           = get_id("PrevButton","Prev");
-    next_id           = get_id("NextButton","Next");
-    inventory_id      = get_id("InventoryButton");
     senddungeon_id    = get_id("SendDungeonButton");
     reldungeon_id     = get_id("ReleaseDungeonButton");
     interact_id       = get_id("InteractButton");
@@ -61,19 +56,19 @@ void cScreenGirlDetails::set_ids()
     accomval_id       = get_id("AccomValue");
     houseperc_id      = get_id("HousePercSlider");
     housepercval_id   = get_id("HousePercValue");
-    gallery_id        = get_id("GalleryButton");
-    jobtypehead_id    = get_id("JobTypeHeader");
     jobtypelist_id    = get_id("JobTypeList");
-    jobhead_id        = get_id("JobHeader");
     joblist_id        = get_id("JobList");
     day_id            = get_id("DayButton");
     night_id          = get_id("NightButton");
-    traithead_id      = get_id("TraitHeader");
     traitlist_id      = get_id("TraitList");
     traitdesc_id      = get_id("TraitDescription");
 
-    SetButtonNavigation(back_id, "<back>");
-    SetButtonNavigation(gallery_id, "Gallery", false);
+    int prev_id       = get_id("PrevButton","Prev");
+    int next_id       = get_id("NextButton","Next");
+    int inventory_id  = get_id("InventoryButton");
+    int gallery_id    = get_id("GalleryButton");
+    int more_id       = get_id("MoreButton");
+
     SetButtonHotKey(gallery_id, SDLK_SPACE);
     SetButtonCallback(day_id, [this]( ) { set_shift(SHIFT_DAY); });
     SetButtonCallback(night_id, [this]( ) { set_shift(SHIFT_NIGHT); });

@@ -23,7 +23,6 @@
 class cScreenGallery : public cGameWindow
 {
 private:
-    int        back_id;        // Back button
     int        next_id;        // next button
     int        prev_id;        // prev button
     int        image_id;        // the image

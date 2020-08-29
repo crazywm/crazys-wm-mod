@@ -31,7 +31,6 @@ private:
     int    brothelright_id;
     int    shiftright_id;
     int    shiftleft_id;
-    int    back_id;
 
     void set_ids() override;
 public:

@@ -34,9 +34,14 @@ struct sXmlWidgetPart : public sXmlWidgetBase {
 public:
     int         r = 0, g = 0, b = 0;
     int         fontsize=0, bordersize=0;
-    bool        stat, alpha, scale, events, multi, leftorright;
+    bool        stat, alpha, events, multi, leftorright;
     std::string on, off, disabled_img, type, text, file, seq;
     bool        force_scroll = false;
+
+    // for now, these are for buttons
+    /// TODO this code really needs to be cleaned up!
+    std::string push_window;
+    std::string replace_window;
 };
 
 class cXmlWidget {

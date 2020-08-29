@@ -55,7 +55,6 @@ cScreenTurnSummary::cScreenTurnSummary() : cGameWindow("TurnSummary.xml")
 
 void cScreenTurnSummary::set_ids()
 {
-    back_id            = get_id("BackButton", "Back");
     brothel_id        = get_id("CurrentBrothel");
     category_id        = get_id("Category");
     gold_id            = get_id("Gold", "*Unused*");//
@@ -70,7 +69,6 @@ void cScreenTurnSummary::set_ids()
     image_id        = get_id("Background");
     imagename_id    = get_id("ImageName", "*Unused*");//
 
-    SetButtonNavigation(back_id, "<back>");
     /*
     SetButtonCallback(next_id, [this]() {
         cycle_building(1);

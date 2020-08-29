@@ -183,6 +183,12 @@ void cInterfaceWindowXML::add_widget(std::string widget_name, int x, int y, std:
             id = AddButton(bp(xw.off), bp(xw.disabled_img), bp(xw.on), full_x, full_y, xw.w, xw.h,
                            xw.alpha);
             register_id(id, name);
+            if(!xw.push_window.empty()) {
+                SetButtonNavigation(id, xw.push_window, false);
+            }
+            if(!xw.replace_window.empty()) {
+                SetButtonNavigation(id, xw.replace_window, true);
+            }
             HideWidget(id, xw.hide);
         }
         else if (tag == "Image") {
@@ -371,6 +377,12 @@ void cInterfaceWindowXML::read_button_definition(tinyxml2::XMLElement& el)
 
     auto bp = [](const std::string& source) -> std::string { return source.empty() ? "" : ButtonPath(source); };
     id = AddButton(bp(wdg.off), bp(wdg.disabled_img), bp(wdg.on), wdg.x, wdg.y, wdg.w, wdg.h, wdg.alpha);
+    if(!wdg.push_window.empty()) {
+        SetButtonNavigation(id, wdg.push_window, false);
+    }
+    if(!wdg.replace_window.empty()) {
+        SetButtonNavigation(id, wdg.replace_window, true);
+    }
     register_id(id, wdg.name);
 }
 
@@ -434,8 +446,14 @@ void cInterfaceWindowXML::widget_button_item(tinyxml2::XMLElement& el, sXmlWidge
     if(const char* on = el.Attribute("On"))             { xw.on = on; }
     if(const char* off = el.Attribute("Off"))         { xw.off = off; }
     if(const char* dis = el.Attribute("Disabled"))     { xw.disabled_img = dis; }
-    xw.scale = GetBoolAttribute(el, "Scale");
     xw.alpha = GetBoolAttribute(el, "Transparency");
+
+    if(const char* pw = el.Attribute("PushWindow")) {
+        xw.push_window = pw;
+    }
+    if(const char* pw = el.Attribute("ReplaceWindow")) {
+        xw.replace_window = pw;
+    }
 }
 
 void cInterfaceWindowXML::widget_image_item(tinyxml2::XMLElement& el, sXmlWidgetPart& xw)

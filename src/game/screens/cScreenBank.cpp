@@ -28,16 +28,13 @@ cScreenBank::cScreenBank() : cInterfaceWindowXML("bank_screen.xml")
 
 void cScreenBank::set_ids()
 {
-    back_id            = get_id("BackButton", "Back");
-    details_id        = get_id("BankDetails");
-    header_id        = get_id("ScreenHeader");
-    deposit_id        = get_id("DepositButton");
-    depositall_id    = get_id("DepositAllButton");
-    withdraw_id        = get_id("WithdrawButton");
-    withdrawall_id    = get_id("WithdrawAllButton");
+    details_id     = get_id("BankDetails");
+    deposit_id     = get_id("DepositButton");
+    depositall_id  = get_id("DepositAllButton");
+    withdraw_id    = get_id("WithdrawButton");
+    withdrawall_id = get_id("WithdrawAllButton");
 
     // setup callbacks
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(depositall_id, [this](){ deposit_all(); });
     SetButtonCallback(withdrawall_id, [this](){ withdraw_all(); });
     SetButtonCallback(deposit_id, [this]() {

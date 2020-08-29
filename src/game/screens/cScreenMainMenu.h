@@ -32,9 +32,6 @@ public:
 private:
     int continue_id;
     int load_id;
-    int new_id;
-    int settings_id;
-    int quit_id;
     int version_id;
 
     std::string m_SaveGamesPath;

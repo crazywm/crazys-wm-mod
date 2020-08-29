@@ -69,6 +69,8 @@ void cScreenPreparingGame::set_ids()
 void cScreenPreparingGame::init(bool back)
 {
     LoadNames();
+    EditTextItem("", text2_id);
+    EditTextItem("", text3_id);
 
     if(!g_Game) {
         g_Game = std::make_unique<Game>();

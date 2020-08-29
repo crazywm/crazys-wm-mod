@@ -51,7 +51,6 @@ struct BrothelUiIDs {
 class cScreenPropertyManagement : public cGameWindow
 {
 private:
-    int back_id;            // Back button
     int barstaff_id;        // Bar Staff Cost text
     int barhire_id;            // Hire Bar Staff button
     int barfire_id;            // Fire Bar Staff button

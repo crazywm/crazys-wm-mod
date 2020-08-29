@@ -75,11 +75,8 @@ void cScreenLoadGame::init(bool back)
 
 void cScreenLoadGame::set_ids() {
     id_saveslist = get_id("FileName");
-
-    int id_back = get_id("BackButton");
     int id_load = get_id("LoadGame");
 
-    SetButtonNavigation(id_back, "Main Menu");
     SetButtonCallback(id_load, [this]() { load_game(); });
     SetListBoxDoubleClickCallback(id_saveslist, [this](int sel) { load_game(); });
 }

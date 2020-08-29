@@ -43,21 +43,18 @@ cScreenMovieMaker::cScreenMovieMaker() : cGameWindow("movie_maker_screen.xml")
 
 void cScreenMovieMaker::set_ids()
 {
-    back_id                /**/ = get_id("BackButton");
-    autocreatemovies_id    /**/ = get_id("AutoCreateMovies");
-    sceneslist_id        /**/ = get_id("ScenesList");
-    makethismovie_id    /**/ = get_id("MakeThisMovie");
-    releasemovie_id        /**/ = get_id("ReleaseMovieButton");
-    girlimage_id        /**/ = get_id("GirlImage");
-    scrapscene_id        /**/ = get_id("ScrapScene");
-    moveup_id            /**/ = get_id("MoveUp");
-    movedown_id            /**/ = get_id("MoveDown");
-    addscene_id            /**/ = get_id("AddScene");
-    removescene_id        /**/ = get_id("RemoveScene");
-    scenedetails_id        /**/ = get_id("SceneDetails");
-    moviedetails_id        /**/ = get_id("MovieDetails");
-
-    SetButtonNavigation(back_id, "<back>");
+    autocreatemovies_id = get_id("AutoCreateMovies");
+    sceneslist_id       = get_id("ScenesList");
+    makethismovie_id    = get_id("MakeThisMovie");
+    releasemovie_id     = get_id("ReleaseMovieButton");
+    girlimage_id        = get_id("GirlImage");
+    scrapscene_id       = get_id("ScrapScene");
+    moveup_id           = get_id("MoveUp");
+    movedown_id         = get_id("MoveDown");
+    addscene_id         = get_id("AddScene");
+    removescene_id      = get_id("RemoveScene");
+    scenedetails_id     = get_id("SceneDetails");
+    moviedetails_id     = get_id("MovieDetails");
 
     SetButtonCallback(moveup_id, [this]() { movie_scene_up(); });
     SetButtonHotKey(moveup_id, SDLK_e);

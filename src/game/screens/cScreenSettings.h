@@ -32,7 +32,6 @@ public:
     void update_settings();
 
 private:
-    int back_id = -1;
     int ok_id = -1;
     int revert_id = -1;
 

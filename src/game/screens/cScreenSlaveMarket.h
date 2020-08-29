@@ -23,7 +23,6 @@
 class cScreenSlaveMarket : public cGameWindow
 {
 private:
-    int back_id;            // Back button
     int more_id;            // More Details button
     int buy_slave_id;        // Buy button
     int cur_brothel_id;        // Current Brothel text

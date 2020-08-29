@@ -40,7 +40,6 @@ cScreenGallery::cScreenGallery() : cGameWindow("gallery_screen.xml")
 
 void cScreenGallery::set_ids()
 {
-    back_id        = get_id("BackButton", "Back");
     prev_id        = get_id("PrevButton","Prev");
     next_id        = get_id("NextButton","Next");
     image_id       = get_id("GirlImage");
@@ -50,7 +49,6 @@ void cScreenGallery::set_ids()
     std::vector<std::string> ILColumns{ "ILName", "ILTotal" };
     SortColumns(imagelist_id, ILColumns);
 
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(prev_id, [this](){
         Img--;
         if (Img < 0) Img = numimages[Mode] - 1;

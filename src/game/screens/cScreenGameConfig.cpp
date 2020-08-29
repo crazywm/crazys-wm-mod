@@ -113,12 +113,10 @@ void cScreenGameConfig::init(bool back) {
 }
 
 void cScreenGameConfig::set_ids() {
-    back_id                   = get_id("BackButton");
-    ok_id                     = get_id("OkButton");
-    revert_id                 = get_id("RevertButton");
-    list_id                   = get_id("SettingsList");
+    ok_id          = get_id("OkButton");
+    revert_id      = get_id("RevertButton");
+    list_id        = get_id("SettingsList");
 
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(revert_id, [this](){ m_Settings = dynamic_cast<cGameSettings&>(g_Game->settings()); this->init(false); });
     SetButtonCallback(ok_id, [this]() {
         dynamic_cast<cGameSettings&>(g_Game->settings()) = m_Settings;

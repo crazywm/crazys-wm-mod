@@ -26,7 +26,6 @@ class cScreenGameConfig: public cInterfaceWindowXML
 private:
     cGameSettings m_Settings;
     std::vector<const sKeyValueEntry*> m_SettingsList;
-    int back_id;
     int ok_id;
     int revert_id;
     int list_id;

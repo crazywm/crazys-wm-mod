@@ -29,16 +29,13 @@ void cScreenMainMenu::set_ids()
 {
     continue_id   = get_id("Continue");
     load_id       = get_id("Load Game");
-    new_id        = get_id("New Game");
-    settings_id   = get_id("Settings");
-    quit_id       = get_id("Quit Game");
     version_id    = get_id("Version");
+    int new_id        = get_id("New Game");
+    int settings_id   = get_id("Settings");
+    int quit_id       = get_id("Quit Game");
 
-    SetButtonNavigation(new_id, "New Game", false);
     SetButtonHotKey(new_id, SDLK_n);
-    SetButtonNavigation(load_id, "Load Game", false);
     SetButtonHotKey(load_id, SDLK_l);
-    SetButtonNavigation(settings_id, "Settings", false);
     SetButtonHotKey(settings_id, SDLK_s);
     SetButtonCallback(continue_id, [this]()
     {
@@ -75,7 +72,6 @@ void cScreenMainMenu::init(bool back)
     bool d_load = (fla.size() < 1 || (fla.size() == 1 && !d_continue));
     DisableWidget(continue_id, d_continue);    // `J` disable continue button if autosave.gam is not found
     DisableWidget(load_id, d_load);            // `J` disable load game button if there are no save games found
-    DisableWidget(settings_id, false);        // `J` disable settings button until settings page is added
     if (version_id >= 0) EditTextItem(svn_revision, version_id);
 
     g_Game = nullptr;

@@ -40,23 +40,21 @@ cScreenSlaveMarket::cScreenSlaveMarket() : cGameWindow("slavemarket_screen.xml")
 
 void cScreenSlaveMarket::set_ids()
 {
-    back_id                /**/ = get_id("BackButton", "Back");
-    more_id                /**/ = get_id("ShowMoreButton");
-    buy_slave_id        /**/ = get_id("BuySlaveButton");
-    cur_brothel_id        /**/ = get_id("CurrentBrothel","*Unused*");//
-    slave_list_id        /**/ = get_id("SlaveList");
-    trait_list_id        /**/ = get_id("TraitList","*Unused*");//
-    trait_list_text_id    /**/ = get_id("TraitListT");
-    details_id            /**/ = get_id("SlaveDetails");
-    trait_id            /**/ = get_id("TraitDesc","*Unused*");//
-    girl_desc_id        /**/ = get_id("GirlDesc");
-    image_id            /**/ = get_id("GirlImage");
-    header_id            /**/ = get_id("ScreenHeader","*Unused*");//
-    gold_id                /**/ = get_id("Gold", "*Unused*");
-    slave_market_id        /**/ = get_id("SlaveMarket");
-
-    releaseto_id        /**/ = get_id("ReleaseTo");
-    roomsfree_id        /**/ = get_id("RoomsFree");
+    more_id             = get_id("ShowMoreButton");
+    buy_slave_id        = get_id("BuySlaveButton");
+    cur_brothel_id      = get_id("CurrentBrothel","*Unused*");//
+    slave_list_id       = get_id("SlaveList");
+    trait_list_id       = get_id("TraitList","*Unused*");//
+    trait_list_text_id  = get_id("TraitListT");
+    details_id          = get_id("SlaveDetails");
+    trait_id            = get_id("TraitDesc","*Unused*");//
+    girl_desc_id        = get_id("GirlDesc");
+    image_id            = get_id("GirlImage");
+    header_id           = get_id("ScreenHeader","*Unused*");//
+    gold_id             = get_id("Gold", "*Unused*");
+    slave_market_id     = get_id("SlaveMarket");
+    releaseto_id        = get_id("ReleaseTo");
+    roomsfree_id        = get_id("RoomsFree");
 
     // set up structure with all "release girl to ... " buttons
     m_ReleaseButtons.emplace_back(RelBtnData{get_id("Brothel0"), BuildingType::BROTHEL, 0});
@@ -76,7 +74,6 @@ void cScreenSlaveMarket::set_ids()
     dungeon_id            /**/ = get_id("Dungeon");
 
     // set button callbacks
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(buy_slave_id, [this](){
         buy_slaves();
         init(false);

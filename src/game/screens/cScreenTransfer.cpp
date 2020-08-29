@@ -41,17 +41,15 @@ cScreenTransfer::cScreenTransfer() : cGameWindow("TransferGirls.xml")
 
 void cScreenTransfer::set_ids()
 {
-    labelleft_id    /**/ = get_id("LabelLeft");
-    labelright_id    /**/ = get_id("LabelRight");
-    brothelleft_id    /**/ = get_id("BrothelLeft"); //0
-    listleft_id        /**/ = get_id("ListLeft");
-    listright_id    /**/ = get_id("ListRight");
-    brothelright_id    /**/ = get_id("BrothelRight"); //3
-    shiftright_id    /**/ = get_id("ShiftRight");
-    shiftleft_id    /**/ = get_id("ShiftLeft");
-    back_id            /**/ = get_id("BackButton","Back");
+    labelleft_id    = get_id("LabelLeft");
+    labelright_id   = get_id("LabelRight");
+    brothelleft_id  = get_id("BrothelLeft"); //0
+    listleft_id     = get_id("ListLeft");
+    listright_id    = get_id("ListRight");
+    brothelright_id = get_id("BrothelRight"); //3
+    shiftright_id   = get_id("ShiftRight");
+    shiftleft_id    = get_id("ShiftLeft");
 
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(shiftright_id, [this]() {
         if ((rightBrothel != -1 && leftBrothel != -1))
         {

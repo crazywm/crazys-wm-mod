@@ -43,37 +43,36 @@ int cScreenGangs::multi_next()
 
 void cScreenGangs::set_ids()
 {
-    back_id                /**/ = get_id("BackButton", "Back");
-    ganghire_id            /**/ = get_id("GangHireButton");
-    gangfire_id            /**/ = get_id("GangFireButton");
-    totalcost_id        /**/ = get_id("TotalCost");
-    gold_id                /**/ = get_id("Gold");
-    ganglist_id            /**/ = get_id("GangList");
-    missionlist_id        /**/ = get_id("MissionList");
-    gangdesc_id            /**/ = get_id("GangDescription","*Unused*");//
-    missiondesc_id        /**/ = get_id("MissionDescription");
-    weaponlevel_id        /**/ = get_id("WeaponDescription");
-    weaponup_id            /**/ = get_id("WeaponUpButton");
-    netdesc_id            /**/ = get_id("NetDescription");
-    netbuy_id            /**/ = get_id("BuyNetsButton");
-    netbuy10_id            /**/ = get_id("BuyNetsButton10");
-    netbuy20_id            /**/ = get_id("BuyNetsButton20");
-    netautobuy_id        /**/ = get_id("AutoBuyNetsToggle");
-    healdesc_id            /**/ = get_id("HealPotDescription");
-    healbuy_id            /**/ = get_id("BuyHealPotButton");
-    healbuy10_id        /**/ = get_id("BuyHealPotButton10");
-    healbuy20_id        /**/ = get_id("BuyHealPotButton20");
-    healautobuy_id        /**/ = get_id("AutoBuyHealToggle");
-    recruitlist_id        /**/ = get_id("RecruitList");
+    ganghire_id        = get_id("GangHireButton");
+    gangfire_id        = get_id("GangFireButton");
+    totalcost_id       = get_id("TotalCost");
+    gold_id            = get_id("Gold");
+    ganglist_id        = get_id("GangList");
+    missionlist_id     = get_id("MissionList");
+    gangdesc_id        = get_id("GangDescription","*Unused*");//
+    missiondesc_id     = get_id("MissionDescription");
+    weaponlevel_id     = get_id("WeaponDescription");
+    weaponup_id        = get_id("WeaponUpButton");
+    netdesc_id         = get_id("NetDescription");
+    netbuy_id          = get_id("BuyNetsButton");
+    netbuy10_id        = get_id("BuyNetsButton10");
+    netbuy20_id        = get_id("BuyNetsButton20");
+    netautobuy_id      = get_id("AutoBuyNetsToggle");
+    healdesc_id        = get_id("HealPotDescription");
+    healbuy_id         = get_id("BuyHealPotButton");
+    healbuy10_id       = get_id("BuyHealPotButton10");
+    healbuy20_id       = get_id("BuyHealPotButton20");
+    healautobuy_id     = get_id("AutoBuyHealToggle");
+    recruitlist_id     = get_id("RecruitList");
 
     // `J` added for .06.01.10
-    controlcatacombs_id    /**/ = get_id("ControlCatacombs");
-    catacombslabel_id    /**/ = get_id("Catacombs");
-    ganggetsgirls_id    /**/ = get_id("GangGetsGirls");
-    ganggetsitems_id    /**/ = get_id("GangGetsItems");
-    ganggetsbeast_id    /**/ = get_id("GangGetsBeast");
-    girlspercslider_id    /**/ = get_id("GirlsPercSlider");
-    itemspercslider_id    /**/ = get_id("ItemsPercSlider");
+    controlcatacombs_id = get_id("ControlCatacombs");
+    catacombslabel_id   = get_id("Catacombs");
+    ganggetsgirls_id    = get_id("GangGetsGirls");
+    ganggetsitems_id    = get_id("GangGetsItems");
+    ganggetsbeast_id    = get_id("GangGetsBeast");
+    girlspercslider_id  = get_id("GirlsPercSlider");
+    itemspercslider_id  = get_id("ItemsPercSlider");
 
     //Set the default sort order for columns, so listboxes know the order in which data will be sent
     std::vector<std::string> RecruitColumns{ "GangName", "Number", "Combat", "Magic", "Intelligence", "Agility", "Constitution", "Charisma", "Strength", "Service" };
@@ -82,7 +81,6 @@ void cScreenGangs::set_ids()
     SortColumns(ganglist_id, GangColumns);
 
     // set button callbacks
-    SetButtonNavigation(back_id, "<back>");
     SetButtonCallback(gangfire_id, [this](){
         int selection = GetLastSelectedItemFromList(ganglist_id);
         if (selection != -1)
@@ -92,18 +90,16 @@ void cScreenGangs::set_ids()
         };
     });
 
-    SetButtonCallback(ganghire_id, [this](){
+    SetButtonCallback(ganghire_id, [this]() {
         hire_recruitable();
     });
 
-    SetButtonCallback(weaponup_id, [this](){
-        int cost = 0;
-
+    SetButtonCallback(weaponup_id, [this]() {
         for (int selection = multi_first(); selection != -1; selection = multi_next()) {
             sGang* gang = g_Game->gang_manager().GetGang(selection);
             if(gang) {
                 int wlev = gang->weapon_level();
-                cost = g_Game->tariff().goon_weapon_upgrade(wlev);
+                int cost = g_Game->tariff().goon_weapon_upgrade(wlev);
                 if (g_Game->gold().item_cost(cost) && wlev < 3)
                 {
                     gang->set_weapon_level(wlev + 1);                }

@@ -60,7 +60,6 @@ private:
     };
 
     int curbrothel_id;    // Current Brothel text
-    int back_id;        // Back button
     int gold_id;        // Player Gold text
     int desc_id;        // Item Description text
     int filter_id;        // Filter list
